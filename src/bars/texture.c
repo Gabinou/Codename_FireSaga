@@ -11,7 +11,6 @@ struct TextureBar TextureBar_default = {
 };
 
 void TextureBar_Draw(struct TextureBar *tb, SDL_Renderer *renderer) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Compute fill -- */
     /* - init - */
     SDL_Rect srcrect = {0, 0, tb->size_pixels.x, tb->size_pixels.y};
@@ -50,6 +49,5 @@ void TextureBar_Draw(struct TextureBar *tb, SDL_Renderer *renderer) {
         SDL_RenderCopy(renderer, tb->textures, &srcrect, &dstrect);
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 

@@ -33,7 +33,6 @@ void MapHPBar_Draw(struct MapHPBar *mbar, struct Camera *camera, i32 tilesize[TW
 void MapHPBar_Update(struct MapHPBar *mbar, struct Camera *camera,
                      i32 tilesize[TWO_D], SDL_Texture *render_target,
                      SDL_Renderer *renderer, tnecs_world_t *world) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(mbar->unit_ent > TNECS_NULL);
     mbar->update = false;
 
@@ -87,5 +86,4 @@ void MapHPBar_Update(struct MapHPBar *mbar, struct Camera *camera,
     Utilities_DrawColor_Reset(renderer);
     SDL_SetRenderTarget(renderer, render_target);
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

@@ -7,15 +7,12 @@
 
 /* --- Map utilities --- */
 void Game_Map_Unload(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     Game_Map_Free(sota);
     Game_Tiles_Unload(sota);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_Map_Load(struct Game *sota, const i16 in_map_index) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("%ld \n", in_map_index);
     SDL_assert((in_map_index > CHAPTER_START) && (in_map_index < CHAPTER_END));
     SOTA_Log_Debug("Associated map filename     %s \n", mapFilenames[in_map_index]);
@@ -37,12 +34,10 @@ void Game_Map_Load(struct Game *sota, const i16 in_map_index) {
     struct cJSON *jshadow_tileset = cJSON_GetObjectItem(jshadow_tileset_file, "shadow_tileset");
     Tilemap_Shader_Load_Tileset_JSON(sota->map->tilemap_shader, jshadow_tileset);
     cJSON_Delete(jshadow_tileset_file);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_Map_Free(struct Game *sota) {
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     if (sota->map != NULL) {
         Map_Units_Hide(sota->map);
@@ -50,18 +45,14 @@ void Game_Map_Free(struct Game *sota) {
         free(sota->map);
         sota->map = NULL;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_debugMap_Free(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Game_Map_Load(sota, CHAPTER_TEST_V6);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_debugMap_Load(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     SOTA_Log_Debug("Loading in test Map\n");
     strncpy(sota->reason, "for testing", sizeof(sota->reason));
@@ -108,20 +99,16 @@ void Game_debugMap_Load(struct Game *sota) {
 
     SOTA_Log_Debug("Loading in reinforcements\n");
     Game_Map_Reinforcements_Load(sota);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Reinforcements --- */
 void Game_Map_Reinforcements_Free(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota                 != NULL);
     if (sota->map_enemies == NULL) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
     if (DARR_NUM(sota->map_enemies) == 0) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     char filename[DEFAULT_BUFFER_SIZE];
@@ -138,11 +125,9 @@ void Game_Map_Reinforcements_Free(struct Game *sota) {
             Sprite_Free(sprite);
     }
     DARR_NUM(sota->map_enemies) = 0;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_Map_Reinforcements_Load(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota->map != NULL);
     char filename[DEFAULT_BUFFER_SIZE];
     char unitname[DEFAULT_BUFFER_SIZE];
@@ -267,19 +252,15 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
                      position->tilemap_pos.y, temp_unit_ent);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Tiles & tilesets  --- */
 void Game_Tiles_Unload(struct Game *sota) {
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_Tilesets_Dump(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char dumpname[DEFAULT_BUFFER_SIZE] = "";
     char temp[DEFAULT_BUFFER_SIZE];
     i32 tile_ind;
@@ -299,5 +280,4 @@ void Game_Tilesets_Dump(struct Game *sota) {
         // Filesystem_Texture_Dump(dumpname, sota->renderer, temptexture, SDL_PIXELFORMAT_ARGB8888);
         // memset(&dumpname, 0, DEFAULT_BUFFER_SIZE);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

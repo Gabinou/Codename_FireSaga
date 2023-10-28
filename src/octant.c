@@ -43,7 +43,6 @@ struct Point Ternary_Direction_Octant(struct Point pos, struct Point target, int
 }
 
 int Ternary_Direction_Straight(int direction) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Collapse diagonals to straight direction */
     int out = direction;
     SDL_assert(direction > SOTA_DIRECTION_NULL);
@@ -62,12 +61,10 @@ int Ternary_Direction_Straight(int direction) {
             out = SOTA_DIRECTION_BOTTOM;
             break;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 int Ternary_Direction(struct Point move) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    struct Point point = Ternary_Direction_Unbalanced(move);
+        struct Point point = Ternary_Direction_Unbalanced(move);
     return (Ternary_Direction_Index(point.x, point.y));
 }

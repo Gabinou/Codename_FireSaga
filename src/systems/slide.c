@@ -2,7 +2,6 @@
 #include "systems/slide.h"
 
 void Cursor_Target(struct Slider *slider, struct Sprite *sprite, Position *position) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (position->onTilemap) {
         slider->target.x  = position->tilemap_pos.x * sprite->tilesize[0];
         slider->target.x -= sprite->tilesize[0] / 2;
@@ -12,18 +11,14 @@ void Cursor_Target(struct Slider *slider, struct Sprite *sprite, Position *posit
         slider->target.x = position->pixel_pos.x;
         slider->target.y = position->pixel_pos.y;
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Sprite_Target(struct Slider *slider, struct Sprite *sprite, Position *position) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     slider->target.x = (i32)lround(position->tilemap_pos.x * position->scale[0]);
     slider->target.y = (i32)lround(position->tilemap_pos.y * position->scale[1]);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void hoverAny(tnecs_system_input_t *input) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     /* -- Get components arrays -- */
     struct Hover    *hover_arr    = TNECS_COMPONENTS_LIST(input, Hover);
@@ -42,13 +37,11 @@ void hoverAny(tnecs_system_input_t *input) {
         Hover_Compute_Next(hover, &position->pixel_pos);
         hover->timer_ns = 0;
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* Slide systems */
 /* Compute next Popup position according to target position */
 void slideSprite(tnecs_system_input_t *input) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     SDL_assert(input->user_data != NULL);
     /* -- Get components arrays -- */
@@ -93,12 +86,10 @@ void slideSprite(tnecs_system_input_t *input) {
         dstrect_func_t func = dstrect_funcs[position->absolute][isCursor];
         func(sprite, &position->pixel_pos, &sota->camera);
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* slidePopUp MAY RUN TWICE on popups WITH slidePopUpOffscreen */
 void slidePopUp(tnecs_system_input_t *input) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     SDL_assert(input->user_data != NULL);
     /* -- Get components arrays -- */
@@ -118,11 +109,9 @@ void slidePopUp(tnecs_system_input_t *input) {
         Slider_Compute_Next(slider, &position->pixel_pos, &slider->target, false);
         slider->timer_ns = 0;
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void slidePopUpOffscreen(tnecs_system_input_t *input) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     SDL_assert(input->user_data != NULL);
     /* -- Get components arrays -- */
@@ -150,5 +139,4 @@ void slidePopUpOffscreen(tnecs_system_input_t *input) {
         #endif
         slider->timer_ns = 0;
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

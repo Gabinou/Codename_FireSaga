@@ -19,37 +19,30 @@ float sb_drop_table[RNG_SB_BASE_NUM] = {
 };
 
 void RNG_Init_tinymt(struct TINYMT32_T *tinymt) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(tinymt);
     tinymt->mat1 = 1990UL;
     tinymt->mat2 = 5UL;
     tinymt->tmat = 8UL;
     tinymt32_init(tinymt, 777UL);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 u8 RNG_URN_debug(struct TINYMT32_T *tinymt) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    return (URN_debug);
+        return (URN_debug);
 }
 
 u8 RNG_URN(struct TINYMT32_T *tinymt) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    return ((u8)RNG_openBSD_uint32_t(tinymt, RN_MAX, RN_MIN));
+        return ((u8)RNG_openBSD_uint32_t(tinymt, RN_MAX, RN_MIN));
 }
 
 bool RNG_single_roll(u8 RN, u8 rate) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    return (RN < rate);
+        return (RN < rate);
 }
 
 bool RNG_double_roll(u8 RN1, u8 RN2, u8 rate) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    return (((RN1 + RN2) / 2) < rate);
+        return (((RN1 + RN2) / 2) < rate);
 }
 
 u8 *RNG_boxmuller(const u8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Box-Muller Transform.
     // 2 U distributed RNs -> 2 G distributed RNs
     // RN_G can be < 0 and > 100.
@@ -69,12 +62,10 @@ u8 *RNG_boxmuller(const u8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev) 
     float term2 = 2 * M_PI * RNreal_U[1];
     RN_G[0] = (u8)((term1 * sin(term2)) * std_dev + avg);
     RN_G[1] = (u8)((term1 * cos(term2)) * std_dev + avg);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (RN_G);
 }
 
 u16 RNG_openBSD_uint32_t(struct TINYMT32_T *tinymt, u32 max, u32 min) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // "Scales" uniform integer from [0 and 2**32 - 1] to [min, max[
     // Unbiased according to: Fast Random Integer Generation in an Interval
     u32 t = -(max - min) % (max - min);
@@ -85,12 +76,10 @@ u16 RNG_openBSD_uint32_t(struct TINYMT32_T *tinymt, u32 max, u32 min) {
         // Ex: 32 with max=5 -> rejects 30,31,32
     } while (x < t);
     u16 out = min + (x % max);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 bool RNG_checkRate(struct TINYMT32_T *in_tinymt, i16 rate, i16 mode) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Uses tinyMT_global if (in_tinymt==NULL)
     bool hit = false;
     u8 RN1, RN2;
@@ -106,13 +95,11 @@ bool RNG_checkRate(struct TINYMT32_T *in_tinymt, i16 rate, i16 mode) {
             hit = RNG_double_roll(RN1, RN2, rate);
             break;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (hit);
 }
 
 /* --- RNG SEQUENCE BREAKER (SB) --- */
 void RNG_checkSequence_twoWay(struct RNG_Sequence *sequence, bool draw) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Two way Sequence Breaker. Saves sequence.len for both hit or miss sequences.
         When a sequence is broken, the sequence->hit value is updated.
         If the next draw value is equal to the new hit value, a new sequence begins.
@@ -123,11 +110,9 @@ void RNG_checkSequence_twoWay(struct RNG_Sequence *sequence, bool draw) {
         sequence->hit = draw;
         sequence->len = 1;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void RNG_checkSequence_oneWay(struct RNG_Sequence *sequence, bool draw) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* One way Sequence Breaker. Input sequence->hit is never changed here.
         Only saves sequence->len for user sequence->hit.
     */
@@ -136,15 +121,12 @@ void RNG_checkSequence_oneWay(struct RNG_Sequence *sequence, bool draw) {
     else {
         sequence->len = 0;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 
 u16 SB_Rate_Drop(u16 rate, u16 n) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     float fout = rate, base = sb_drop_table[rate / RNG_SB_BASE_NUM];
     i8 exponent = (i8)(n - RNG_SB_SEQ_OFFSET);
     fout /= sota_slowpow(base, exponent);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return ((u16)fout);
 }

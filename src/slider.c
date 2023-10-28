@@ -17,7 +17,6 @@ struct SliderOffscreen SliderOffscreen_default = {
 
 void Slider_Start(struct Slider *slider, struct Point *pos,
                   struct Point *target) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     switch (slider->slidetype) {
         case SLIDETYPE_LINEARXY:
         case SLIDETYPE_LINEARYX:
@@ -34,12 +33,10 @@ void Slider_Start(struct Slider *slider, struct Point *pos,
             slider->point.y = pos->y + (target->y - pos->y) / 2;
             break;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Slider_Target_Offscreen(struct Slider *slider, struct SliderOffscreen *offscreen,
                              struct Point *pos) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Point res = offscreen->settings->res;
     if (slider->target.x != pos->x)
         offscreen->target.x = pos->x > (res.x / 2) ? pos->x + res.x : pos->x - res.x;
@@ -52,12 +49,10 @@ void Slider_Target_Offscreen(struct Slider *slider, struct SliderOffscreen *offs
         offscreen->target.y = slider->target.y; /* just in case */
 
     offscreen->go_offscreen = true;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void SliderOffscreen_Compute_Next(struct Slider *slider, struct SliderOffscreen *offscreen,
                                   struct Point *pos) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Slider goes offscreen and reappears on the other side
     SDL_assert(slider != NULL);
     SDL_assert(pos != NULL);
@@ -92,12 +87,10 @@ void SliderOffscreen_Compute_Next(struct Slider *slider, struct SliderOffscreen 
     }
     current_target = offscreen->go_offscreen ? &offscreen->target : &slider->target;
     Slider_Compute_Next(slider, pos, current_target, offscreen->go_offscreen);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
                          struct Point *target, bool go_offscreen) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // This function is used by Slidepopup. Should not be changed.
     // Extract what other sprites need
 
@@ -158,5 +151,4 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
     // sign is 0 if dist is 0, adding 0 to pos
     pos->x += sign.x * NMATH_MIN(abs(dist.x), abs(slide.x));
     pos->y += sign.y * NMATH_MIN(abs(dist.y), abs(slide.y));
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

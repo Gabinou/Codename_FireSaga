@@ -2,11 +2,9 @@
 
 /* --- Constructors/Destructors --- */
 void Game_Items_Free(struct dtab *items_dtab) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (items_dtab == NULL) {
         return;
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-    }
+        }
 
     struct Item *cast_dtab = items_dtab->values;
     SDL_assert(cast_dtab != NULL);
@@ -17,15 +15,12 @@ void Game_Items_Free(struct dtab *items_dtab) {
     DTAB_FREE(items_dtab);
     items_dtab = NULL;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_Weapons_Free(struct dtab *weapons_dtab) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (weapons_dtab == NULL) {
         return;
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-    }
+        }
 
     struct Weapon *cast_dtab = weapons_dtab->values;
     SDL_assert(cast_dtab != NULL);
@@ -36,12 +31,10 @@ void Game_Weapons_Free(struct dtab *weapons_dtab) {
     DTAB_FREE(weapons_dtab);
     weapons_dtab = NULL;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Wait/Refresh --- */
 void Game_Unit_Wait(struct Game *sota, tnecs_entity_t ent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, ent, Unit);
     SDL_assert(unit != NULL);
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, ent, Sprite);
@@ -58,19 +51,16 @@ void Game_Unit_Wait(struct Game *sota, tnecs_entity_t ent) {
     TNECS_REMOVE_COMPONENTS(sota->world, ent, Timer);
     Sprite_Draw(sprite, sota->renderer);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_Unit_Refresh(struct Game *sota, tnecs_entity_t ent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, ent, Unit);
     SDL_assert(unit != NULL);
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, ent, Sprite);
     SDL_assert(sprite != NULL);
     /* refresh unit */
     if (!unit->waits) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     Unit_refresh(unit);
@@ -86,12 +76,10 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity_t ent) {
     * timer = Timer_default;
     Sprite_Draw(sprite, sota->renderer);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Party utilities --- */
 void Game_Party_Load(struct Game *sota, i16 *unit_ids, size_t load_num) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char filename[DEFAULT_BUFFER_SIZE];
     struct Unit temp_unit;
     Game_Party_Clear(sota);
@@ -107,30 +95,24 @@ void Game_Party_Load(struct Game *sota, i16 *unit_ids, size_t load_num) {
         jsonio_readJSON(filename, &temp_unit);
         sota->party[unit_ids[i]] = temp_unit;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_Party_Clear(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     for (size_t i = 0; i < SOTA_MAX_PARTY_SIZE; i++)
         sota->party[i] = Unit_default;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_Party_Unload(struct Game *sota, i16 *to_unload_ids, size_t unload_num) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     for (size_t i = 0; i < unload_num; i++) {
         for (size_t j = 0; j < SOTA_MAX_PARTY_SIZE; j++) {
             if (sota->party[j]._id == to_unload_ids[i])
                 sota->party[j] = Unit_default;
         }
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 tnecs_entity_t Game_Unit_Entity_Create(struct Game *sota, i16 in_unit,
                                        struct Point in_pos) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->units_loaded[in_unit] < 1) {
         tnecs_world_t *world = sota->world;
         SOTA_Log_Debug("-- create entity for unit %ld --", in_unit);
@@ -227,16 +209,13 @@ tnecs_entity_t Game_Unit_Entity_Create(struct Game *sota, i16 in_unit,
         SDL_assert(world->entities_bytype[typeflag_id1][current_num - 1] == temp_unit_ent);
         sota->units_loaded[in_unit] = temp_unit_ent;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (sota->units_loaded[in_unit]);
 }
 /* --- Unitmap --- */
 void Game_UnitsonMap_Free(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_entity_t temp_unit_ent;
     if (sota->map == NULL) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
     for (size_t i = 0; i < sota->map->col_len * sota->map->row_len; i++) {
         temp_unit_ent = sota->map->unitmap[i];
@@ -251,11 +230,9 @@ void Game_UnitsonMap_Free(struct Game *sota) {
         if (sprite)
             Sprite_Free(sprite);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 void Game_putPConMap(struct Game *sota, i16 *unit_ids,
                      struct Point *posarr, size_t load_num) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota->map != NULL);
     SDL_assert(posarr != NULL);
     SDL_assert(load_num > 0);
@@ -266,15 +243,12 @@ void Game_putPConMap(struct Game *sota, i16 *unit_ids,
         SDL_assert(temp_unit_ent);
         Map_Unit_Put(sota->map, sota->world, posarr[i].x, posarr[i].y, temp_unit_ent);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Utilities --- */
 void Game_Weapons_Rewrite(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("Rewriting weapons with new data\n");
     Weapons_All_Load(sota->weapons_dtab);
     Weapons_All_Save(sota->weapons_dtab);
     getchar();
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

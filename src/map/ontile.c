@@ -28,15 +28,12 @@ size_t *entity_where(u64 *array, u64 to_find, size_t arr_len) {
 }
 
 void Map_startingPos_Add(struct Map *map, i32 col, i32 row) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Point pos = {col, row};
     DARR_PUT(map->start_pos, pos);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Unit_Put(struct Map *map, tnecs_world_t *world, u8 col, u8 row,
                   tnecs_entity_t entity) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("%lu", entity);
     SDL_assert(map->unitmap != NULL);
     SDL_assert((row < map->row_len) && (col < map->col_len));
@@ -90,11 +87,9 @@ void Map_Unit_Put(struct Map *map, tnecs_world_t *world, u8 col, u8 row,
     }
     if (temp_unit->_id == 0)
         Map_addArmy(map, temp_unit->army);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Unit_Move(struct Map *map, u8 col, u8 row, u8 new_col, u8 new_row) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Note: Does NOT check if [new_x, new_y] is empty.
     SDL_assert(map->unitmap != NULL);
     SDL_assert(col      < map->col_len);
@@ -114,11 +109,9 @@ void Map_Unit_Move(struct Map *map, u8 col, u8 row, u8 new_col, u8 new_row) {
     pos->tilemap_pos.x   = new_col;
     pos->tilemap_pos.y   = new_row;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 tnecs_entity_t *Map_Units_Get(struct Map *map, tnecs_world_t *world, const u8 army) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_entity_t *unit_ents = NULL;
     unit_ents = DARR_INIT(unit_ents, tnecs_entity_t, 16);
     tnecs_entity_t current_unit_ent;
@@ -129,36 +122,26 @@ tnecs_entity_t *Map_Units_Get(struct Map *map, tnecs_world_t *world, const u8 ar
         if (current_unit->army == army)
             DARR_PUT(unit_ents, current_unit_ent);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (unit_ents);
 }
 
 tnecs_entity_t Map_Unit_Get(struct Map *map, u8 col, u8 row) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(map->unitmap != NULL);
     SDL_assert(col < map->col_len);
     SDL_assert(row < map->row_len);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (map->unitmap[row * map->col_len + col]);
 }
 
 void Map_Breakable_onBroken(struct Map *map, tnecs_world_t *world, tnecs_entity_t breakable) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Door_onOpen(struct Map *map, tnecs_world_t *world, tnecs_entity_t door) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Chest_onOpen(struct Map *map, tnecs_world_t *world, tnecs_entity_t chest) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_addArmy(struct Map *map, const u8 army) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     bool found = false;
     for (u8 i = 0; i < map->num_armies_onfield; i++)
         found |= (map->armies_onfield[i] == army);
@@ -167,11 +150,9 @@ void Map_addArmy(struct Map *map, const u8 army) {
         DARR_PUT(map->armies_onfield, army);
         map->num_armies_onfield++;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Unit_Remove(struct Map *map, const tnecs_entity_t entity) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     size_t *found = NULL;
     if (entity_isIn(map->friendlies_onfield, entity, map->num_friendlies_onfield)) {
         found = entity_where(map->friendlies_onfield, entity, map->num_friendlies_onfield);
@@ -191,20 +172,16 @@ void Map_Unit_Remove(struct Map *map, const tnecs_entity_t entity) {
         map->num_units_onfield--;
         free(found);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Unit_Remove_fromPos(struct Map *map, u8 col, u8 row) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(map->unitmap != NULL);
     tnecs_entity_t ontile_ent = map->unitmap[row * map->col_len + col];
     map->unitmap[row * map->col_len + col] = 0;
     Map_Unit_Remove(map, ontile_ent);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Unit_Remove_fromEntity(struct Map *map, tnecs_world_t *world, tnecs_entity_t entity) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // assumes there are no doubles in the _onfield arrays
     SDL_assert(map->unitmap != NULL);
     struct Position *pos = TNECS_GET_COMPONENT(world, entity, Position);
@@ -215,5 +192,4 @@ void Map_Unit_Remove_fromEntity(struct Map *map, tnecs_world_t *world, tnecs_ent
     if (ontile_ent == entity)
         map->unitmap[pos->tilemap_pos.y * map->col_len + pos->tilemap_pos.x] = 0;
     Map_Unit_Remove(map, entity);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

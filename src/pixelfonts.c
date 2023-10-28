@@ -81,18 +81,15 @@ struct PixelFont TextureFont_default =  {
 
 /*--- Constructors/Destructors --- */
 struct PixelFont *PixelFont_Alloc() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct PixelFont *font  = malloc(sizeof(struct PixelFont));
     SDL_assert(font);
     *font = PixelFont_default;
     font->glyph_bbox_width  = calloc(font->charset_num, sizeof(*font->glyph_bbox_width));
     font->glyph_bbox_height = calloc(font->charset_num, sizeof(*font->glyph_bbox_height));
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (font);
 }
 
 void PixelFont_Free(struct PixelFont *font, bool isfree) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(font != NULL);
     if (font->texture != NULL) {
         SDL_DestroyTexture(font->texture);
@@ -116,11 +113,9 @@ void PixelFont_Free(struct PixelFont *font, bool isfree) {
             font = NULL;
         }
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void PixelFont_Load(struct PixelFont *font, SDL_Renderer *renderer, char *fontname) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(fontname != NULL);
     SDL_assert(font != NULL);
     font->surface = Filesystem_Surface_Load(fontname, SDL_PIXELFORMAT_INDEX8);
@@ -131,11 +126,9 @@ void PixelFont_Load(struct PixelFont *font, SDL_Renderer *renderer, char *fontna
     font->texture = SDL_CreateTextureFromSurface(renderer, font->surface);
     SDL_assert(font->texture);
     PixelFont_Compute_Glyph_BBox(font);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 struct PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct PixelFont *font = malloc(sizeof(struct PixelFont));
     SDL_assert(font);
     *font = TextureFont_default;
@@ -147,14 +140,12 @@ struct PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len) {
     font->glyph_bbox_width  = malloc(font->charset_num * sizeof(*font->glyph_bbox_width));
     font->glyph_bbox_height = malloc(font->charset_num * sizeof(*font->glyph_bbox_height));
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (font);
 }
 
 
 /*--- Internals --- */
 void PixelFont_Swap_Palette(struct PixelFont *font, SDL_Renderer *renderer, i8 NEWw, i8 NEWb) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(NEWw < PALETTE_NES_COLOR_NUM);
     SDL_assert(NEWb < PALETTE_NES_COLOR_NUM);
     SDL_assert(palette_NES->ncolors == PALETTE_NES_COLOR_NUM);
@@ -202,11 +193,9 @@ void PixelFont_Swap_Palette(struct PixelFont *font, SDL_Renderer *renderer, i8 N
         palette_NES->colors[NESb].b = old_black.b;
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void TextLines_Realloc(struct TextLines *textlines, size_t len) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(len > textlines->line_len);
     if (textlines->lines == NULL) {
         textlines->lines = calloc(len, sizeof(*textlines->lines));
@@ -236,7 +225,6 @@ void TextLines_Realloc(struct TextLines *textlines, size_t len) {
         memset(textlines->lines_len + textlines->line_len, 0, bytesize);
     }
     textlines->line_len = len;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void TextLines_Free(struct TextLines *textlines) {
@@ -263,7 +251,6 @@ struct TextLines PixelFont_Lines_Len(struct PixelFont *font, const char *text, s
 
 struct TextLines PixelFont_Lines(struct PixelFont *font, const char *text, size_t len_char,
                                  size_t line_len_px) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(font != NULL);
     SDL_assert(font->glyph_bbox_width != NULL);
     struct TextLines textlines = TextLines_default;
@@ -341,7 +328,6 @@ struct TextLines PixelFont_Lines(struct PixelFont *font, const char *text, size_
         SDL_assert(textlines.lines_len[line_i] > 0);
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (textlines);
 }
 
@@ -349,7 +335,6 @@ struct TextLines PixelFont_Lines(struct PixelFont *font, const char *text, size_
 /* NOTE: len [char], line_len [px] */
 int PixelFont_Lines_Num(struct PixelFont *font, const char *text, size_t len_char,
                         size_t line_len_px) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(line_len_px > 0);
     SDL_assert(font != NULL);
     SDL_assert(font->glyph_bbox_width != NULL);
@@ -383,13 +368,11 @@ int PixelFont_Lines_Num(struct PixelFont *font, const char *text, size_t len_cha
     }
     if (rows < 1)
         rows = 1;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (rows);
 }
 
 int PixelFont_NextLine_Break(struct PixelFont *font, const char *text, int previous_break,
                              size_t len_char, size_t line_len_px) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Find char that exceeds line pixel length, from previous start. -- */
     int width_px = 0;
     int current_break = previous_break;
@@ -400,12 +383,10 @@ int PixelFont_NextLine_Break(struct PixelFont *font, const char *text, int previ
             break;
         current_break += 1;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (current_break);
 }
 
 int NextLine_Start(const char *text, int previous_break, int current_break, size_t line_len_char) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Find char that starts a newline. -- */
     // Breaking a new line:
     //  1. If word > 4 char: Add "-" in middle of word. Send part after - to new line.
@@ -443,7 +424,6 @@ int NextLine_Start(const char *text, int previous_break, int current_break, size
     }
 
     free(buffer);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (next_char);
 }
 
@@ -461,18 +441,15 @@ int PixelFont_Width_Len(struct PixelFont *font, const char *text) {
 
 /* Compute exact width of text, including spaces */
 int PixelFont_Width(struct PixelFont *font, const char *text, size_t len) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     int width = 0;
     for (size_t i = 0; i < len; i++) {
         unsigned char ascii = (unsigned char)text[i];
         width += font->glyph_bbox_width[ascii];
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (width);
 }
 
 void PixelFont_Compute_Glyph_BBox(struct PixelFont *font) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(font->surface);
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(font->surface->format->format));
     SDL_LockSurface(font->surface);
@@ -512,7 +489,6 @@ void PixelFont_Compute_Glyph_BBox(struct PixelFont *font) {
         font->glyph_bbox_width[ascii] = font->word_space;
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /*--- Scrolling --- */
@@ -538,7 +514,6 @@ void PixelFont_Write_Scroll(struct PixelFont *font, SDL_Renderer *rdr, char *tex
 
 void PixelFont_Write(struct PixelFont *font, SDL_Renderer *renderer, char *text,
                      size_t len, u32 pos_x, u32 pos_y) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(font          != NULL);
     SDL_assert(renderer      != NULL);
     SDL_assert(font->texture != NULL);
@@ -570,5 +545,4 @@ void PixelFont_Write(struct PixelFont *font, SDL_Renderer *renderer, char *text,
         /* - move to next letter - */
         dstrect.x += (font->glyph_bbox_width[text[i]] + font->glyph_space);
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

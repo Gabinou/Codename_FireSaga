@@ -57,14 +57,11 @@ struct Graph Graph_default = {
 };
 
 void Graph_Stat_Remove(struct Graph *graph, u8 stat_id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     graph->graph_stats[stat_id].stat_id = -1;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Graph_Stat_Add(struct Graph *graph, struct Unit_stats *base_stats,
                     struct Unit_stats *grown_stats, i8 level, i8 base_level, u8 stat_id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     u8 *stat_arr, *base_arr, total_grown = 0;
     struct GraphStat graph_stat = GraphStat_default;
     graph_stat.level = level;
@@ -84,12 +81,10 @@ void Graph_Stat_Add(struct Graph *graph, struct Unit_stats *base_stats,
         graph_stat.cumul_stat[i] = *(base_arr + stat_id) + total_grown;
     }
     graph->graph_stats[stat_id] = graph_stat;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Graph_Draw(struct Graph *graph, struct n9Patch *n9patch, struct PixelFont *pixelnours_big,
                 SDL_Renderer *renderer, SDL_Texture *render_target) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(graph != NULL);
     SDL_assert(graph->plot_min.x != graph->plot_max.x);
     SDL_assert(graph->plot_min.y != graph->plot_max.y);
@@ -110,13 +105,11 @@ void Graph_Draw(struct Graph *graph, struct n9Patch *n9patch, struct PixelFont *
             _Graph_Draw_Stat(graph, i, n9patch, pixelnours_big, renderer, render_target);
     }
     SDL_SetRenderTarget(renderer, render_target);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _Graph_Draw_Axes(struct Graph *graph, struct n9Patch *n9patch,
                       struct PixelFont *pixelnours_big,
                       SDL_Renderer *renderer, SDL_Texture *render_target) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Clear graph -- */
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_TRANSPARENT);
     SDL_RenderFillRect(renderer, NULL);
@@ -229,13 +222,11 @@ void _Graph_Draw_Axes(struct Graph *graph, struct n9Patch *n9patch,
         stbsp_sprintf(numbuff, "%02d", i * y_lvl_dist);
         PixelFont_Write(pixelnours_big, renderer, numbuff, strlen(numbuff), label.x, label.y);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _Graph_Draw_Stat(struct Graph *graph, u8 stat_id, struct n9Patch *n9patch,
                       struct PixelFont *pixelnours_big,
                       SDL_Renderer *renderer, SDL_Texture *render_target) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     struct GraphStat graph_stat = graph->graph_stats[stat_id];
     SDL_Rect axes = {
@@ -268,5 +259,4 @@ void _Graph_Draw_Stat(struct Graph *graph, u8 stat_id, struct n9Patch *n9patch,
         point.y = axes.y - graph->y_lenperpixel * graph_stat.cumul_stat[i];
         SDL_RenderFillRect(renderer, &point);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

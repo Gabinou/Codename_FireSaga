@@ -156,7 +156,6 @@ struct MenuElemDirections GM_links[GM_ELEM_NUM] = {
 };
 
 struct GrowthsMenu *GrowthsMenu_Alloc() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct GrowthsMenu *gm = malloc(sizeof(struct GrowthsMenu));
     SDL_assert(gm);
     *gm = GrowthsMenu_default;
@@ -175,12 +174,10 @@ struct GrowthsMenu *GrowthsMenu_Alloc() {
     gm->graph.footer       = GM_OFFSET_GRAPH_FOOTER;
     gm->graph.margin_left  = GM_OFFSET_GRAPH_MARGINL;
     gm->graph.margin_right = GM_OFFSET_GRAPH_MARGINR;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (gm);
 }
 
 void GrowthsMenu_Free(struct GrowthsMenu *gm) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(gm != NULL);
     if (gm->texture != NULL) {
         SDL_DestroyTexture(gm->texture);
@@ -198,19 +195,15 @@ void GrowthsMenu_Free(struct GrowthsMenu *gm) {
         free(gm);
         gm = NULL;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void GrowthsMenu_Unit_Set(struct GrowthsMenu *gm, struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit != NULL);
     gm->unit   = unit;
     gm->update = true;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void GrowthsMenu_Load(struct GrowthsMenu *gm, SDL_Renderer *renderer, struct n9Patch *n9patch) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     n9Patch_Free(n9patch);
     n9patch->patch_pixels.x = MENU_PATCH_PIXELS;
     n9patch->patch_pixels.y = MENU_PATCH_PIXELS;
@@ -225,19 +218,16 @@ void GrowthsMenu_Load(struct GrowthsMenu *gm, SDL_Renderer *renderer, struct n9P
         n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void GrowthsMenu_Elem_Pos(struct GrowthsMenu *gm, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Scales elem_pos to menu size. */
     /* 1. Makes the cursor focus on right place on the Screen       */
     /* 2. Box lined are drawn in menu frame, making thinner lines   */
 
     /* - Skip if already in screen frame - */
     if (mc->elem_pos_frame == ELEM_POS_SCREEN_FRAME) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     for (size_t i = 0; i < mc->elem_num; i++) {
@@ -246,19 +236,16 @@ void GrowthsMenu_Elem_Pos(struct GrowthsMenu *gm, struct Menu *mc) {
     }
 
     mc->elem_pos_frame = ELEM_POS_SCREEN_FRAME;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void GrowthsMenu_Elem_Pos_Revert(struct GrowthsMenu *gm, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Scales elem_pos to menu size. */
     /* 1. Makes the cursor focus on right place on the Screen       */
     /* 2. Box lined are drawn in menu frame, making thinner lines   */
 
     /* - Skip if already in screen frame - */
     if (mc->elem_pos_frame == ELEM_POS_MENU_FRAME) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     for (size_t i = 0; i < mc->elem_num; i++) {
@@ -267,12 +254,10 @@ void GrowthsMenu_Elem_Pos_Revert(struct GrowthsMenu *gm, struct Menu *mc) {
     }
 
     mc->elem_pos_frame = ELEM_POS_MENU_FRAME;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void GrowthsMenu_Draw(struct Menu *mc, SDL_Texture *render_target,
                       SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct GrowthsMenu *gm  =  mc->data;
     struct n9Patch *n9patch = &mc->n9patch;
 
@@ -289,7 +274,6 @@ void GrowthsMenu_Draw(struct Menu *mc, SDL_Texture *render_target,
     dstrect.x = gm->pos.x;
     dstrect.y = gm->pos.y;
     SDL_RenderCopy(renderer, gm->texture, NULL, &dstrect);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _GrowthsMenu_Draw_Talk(struct GrowthsMenu *gm, SDL_Renderer *renderer) {
@@ -490,7 +474,6 @@ void _GrowthsMenu_Draw_Supports(struct GrowthsMenu *gm, SDL_Renderer *renderer) 
 
 void GrowthsMenu_Update(struct GrowthsMenu *gm, struct n9Patch *n9patch,
                         SDL_Texture *render_target, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     SDL_assert(n9patch  != NULL);
     SDL_assert(renderer != NULL);
@@ -538,5 +521,4 @@ void GrowthsMenu_Update(struct GrowthsMenu *gm, struct n9Patch *n9patch,
     /* -- Finish -- */
     SDL_SetRenderTarget(renderer, render_target);
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

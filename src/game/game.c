@@ -105,7 +105,6 @@ struct Game Game_default = {
 
 /* --- Constructors/Destructors --- */
 void Game_Free(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Game_Cursor_Free(sota);
     Game_PopUp_Tile_Free(sota);
     Game_Mouse_Free(sota);
@@ -225,10 +224,8 @@ void Game_Free(struct Game *sota) {
     TTF_Quit();
     SOTA_Log_Debug("Game cleaned.");
     SDL_free(sota);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 struct Game *Game_Init() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("Allocing Game");
     struct Game *out_game;
     out_game    = SDL_malloc(sizeof(struct Game));
@@ -461,13 +458,11 @@ struct Game *Game_Init() {
     /* --- Set default contextual inputs --- */
     fsm_Input_s[out_game->state](out_game);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_game);
 }
 
 // TODO: Rename
 void Game_Startup(struct Game *sota, struct Input_Arguments in_args) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     strncpy(sota->reason, "Initial sota startup", sizeof(sota->reason));
 
     /* -- Load Cursor and mouse -- */
@@ -484,11 +479,9 @@ void Game_Startup(struct Game *sota, struct Input_Arguments in_args) {
     /* -- Load Background -- */
     SDL_assert(sota->state      == GAME_STATE_Title_Screen);
     SDL_assert(sota->substate   == GAME_SUBSTATE_MENU);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_Save_Copy(const i16 from_ind, const i16 to_ind) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(PHYSFS_exists(SAVE_FOLDER));
     char filenameto[DEFAULT_BUFFER_SIZE] = SAVE_FOLDER;
     char filenamefrom[DEFAULT_BUFFER_SIZE] = SAVE_FOLDER;
@@ -508,11 +501,9 @@ void Game_Save_Copy(const i16 from_ind, const i16 to_ind) {
     PHYSFS_writeBytes(pto, longbuffer, len);
     PHYSFS_close(pfrom);
     PHYSFS_close(pto);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_Save_Delete(const i16 save_ind) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(PHYSFS_exists(SAVE_FOLDER));
     char filename[DEFAULT_BUFFER_SIZE] = SAVE_FOLDER;
     char temp[DEFAULT_BUFFER_SIZE];
@@ -520,11 +511,9 @@ void Game_Save_Delete(const i16 save_ind) {
     strcat(filename, temp);
     SOTA_Log_Debug("Deleting Game: %s\n", filename);
     PHYSFS_delete(filename);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_loadJSON(struct Game *sota, const i16 save_ind) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(PHYSFS_exists(SAVE_FOLDER));
     char filename[DEFAULT_BUFFER_SIZE] = SAVE_FOLDER;
     char temp[DEFAULT_BUFFER_SIZE];
@@ -567,11 +556,9 @@ void Game_loadJSON(struct Game *sota, const i16 save_ind) {
         junit = junit->next;
     }
     cJSON_Delete(json);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_saveJSON(struct Game *sota, const i16 save_ind) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (!PHYSFS_exists(SAVE_FOLDER))
         PHYSFS_mkdir(SAVE_FOLDER);
     char filename[DEFAULT_BUFFER_SIZE] = SAVE_FOLDER;
@@ -621,12 +608,10 @@ void Game_saveJSON(struct Game *sota, const i16 save_ind) {
     Filesystem_printJSON(fp, json);
     PHYSFS_close(fp);
     cJSON_Delete(json);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- State --- */
 void Game_subState_Set(struct Game *sota, const i8 new_substate, const char *reason) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("Substate set to %d because: %s", new_substate, reason);
     SOTA_Log_Debug("%s", reason);
     SDL_assert(new_substate > 0);
@@ -643,11 +628,9 @@ void Game_subState_Set(struct Game *sota, const i8 new_substate, const char *rea
 
     if (fsm_Input_sGmpMap_ss[sota->substate] != NULL)
         fsm_Input_sGmpMap_ss[sota->substate](sota);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_State_Set(struct Game *sota, const i8 new_state, const char *reason) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("State set to %d, because: %s", new_state, reason);
     SOTA_Log_Debug("%s", reason);
     SDL_assert(new_state > 0);
@@ -662,12 +645,10 @@ void Game_State_Set(struct Game *sota, const i8 new_state, const char *reason) {
     SOTA_Log_Debug("Game state changed %d->%d: %s->%s", sota->state_previous, sota->state,
                    gameStatenames[sota->state_previous], gameStatenames[sota->state]);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Camera --- */
 void Game_Camera_Scroll(struct Game *sota) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Position *cursor_position;
     cursor_position = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     SDL_assert(cursor_position != NULL);
@@ -699,19 +680,16 @@ void Game_Camera_Scroll(struct Game *sota) {
             sota->map->camera_moved = true;
         }
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Time --- */
 void Game_Delay(struct Game *sota, i64 delay_ms, u64 currentTime_ns,
                 u64 elapsedTime_ns) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota != NULL);
 
     /* - Skip if negative delay - */
     if (delay_ms < 0) {
-        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     /* - Delay game in case synchronization took > 1ms - */
@@ -727,28 +705,24 @@ void Game_Delay(struct Game *sota, i64 delay_ms, u64 currentTime_ns,
 
     sota->runtime_ns += new_elapsedTime_ns + (delay > 0) * delay * SOTA_us;
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- FPS --- */
 i64 Game_FPS_Delay(struct Game *sota, u64 elapsedTime_ns) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i64 delay       = 0;
     int fps_cap     = sota->settings.FPS.cap;    /* [s^-1] */
     int ff_cap      = sota->settings.FPS.ff_cap; /* [%]    */
 
     /* 0 frame delay if fast-forwarding (ff) without limit */
     if ((sota->fast_forward) && (ff_cap <= SOTA_100PERCENT)) {
-        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return (delay);
+            return (delay);
     }
 
     /* Compute delay for ff_cap */
     if ((sota->fast_forward) && (ff_cap > SOTA_100PERCENT)) {
         int ff_fps_cap = fps_cap * ff_cap / SOTA_100PERCENT;
         delay = ceil((1000.0f / ff_fps_cap) - (elapsedTime_ns / 1e6));
-        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return (delay);
+            return (delay);
     }
 
     /* Compute delay for no ff */
@@ -756,13 +730,11 @@ i64 Game_FPS_Delay(struct Game *sota, u64 elapsedTime_ns) {
         delay = ceil((1000.0f / fps_cap) - (elapsedTime_ns / 1e6));
 
     SDL_assert(delay >= 0);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (delay);
 }
 
 
 void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->entity_fps != 0)
         tnecs_entity_destroy(sota->world, sota->entity_fps);
     sota->entity_fps = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position, Text, Timer);
@@ -797,5 +769,4 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
 
     SDL_assert(sota->world->entity_typeflags[sota->entity_fps] ==
                TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Timer, Position, Text));
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

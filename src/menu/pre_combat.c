@@ -33,17 +33,14 @@ struct PreCombatMenu PreCombatMenu_default =  {
 };
 
 struct PreCombatMenu *PreCombatMenu_Alloc() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct PreCombatMenu *pcm = malloc(sizeof(struct PreCombatMenu));
     SDL_assert(pcm);
     *pcm = PreCombatMenu_default;
     SDL_assert(pcm->texture == NULL);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (pcm);
 }
 
 void PreCombatMenu_Free(struct PreCombatMenu *pcm) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(pcm != NULL);
     if (pcm->texture != NULL) {
         SDL_DestroyTexture(pcm->texture);
@@ -59,12 +56,10 @@ void PreCombatMenu_Free(struct PreCombatMenu *pcm) {
         free(pcm);
         pcm = NULL;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void PreCombatMenu_Load(struct PreCombatMenu *pcm, tnecs_entity_t aggressor,
                         tnecs_entity_t defendant, SDL_Renderer *renderer, struct n9Patch *n9patch) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(pcm       != NULL);
     SDL_assert(pcm->sota != NULL);
     SDL_assert(aggressor > TNECS_NULL);
@@ -97,12 +92,10 @@ void PreCombatMenu_Load(struct PreCombatMenu *pcm, tnecs_entity_t aggressor,
     struct Position *agg_pos = TNECS_GET_COMPONENT(pcm->sota->world, pcm->aggressor, Position);
     struct Position *dft_pos = TNECS_GET_COMPONENT(pcm->sota->world, pcm->defendant, Position);
     _PreCombatMenu_Load(pcm, agg_unit, dft_unit, agg_pos, dft_pos, renderer);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _PreCombatMenu_Load(struct PreCombatMenu *pcm, struct Unit *agg_unit, struct Unit *dft_unit,
                          struct Position *agg_pos, struct Position *dft_pos, SDL_Renderer *renderer) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     pcm->agg_pos  = agg_pos;
     pcm->dft_pos  = dft_pos;
     pcm->agg_unit = agg_unit;
@@ -111,10 +104,8 @@ void _PreCombatMenu_Load(struct PreCombatMenu *pcm, struct Unit *agg_unit, struc
     pcm->update = true;
     _PreCombatMenu_Load_Faces(pcm, renderer);
     _PreCombatMenu_Load_Icons(pcm, renderer);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 void PreCombatMenu_Free_Faces(struct PreCombatMenu *pcm) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (pcm->texture_face_defendant != NULL) {
         SDL_DestroyTexture(pcm->texture_face_defendant);
         pcm->texture_face_defendant = NULL;
@@ -123,53 +114,43 @@ void PreCombatMenu_Free_Faces(struct PreCombatMenu *pcm) {
         SDL_DestroyTexture(pcm->texture_face_aggressor);
         pcm->texture_face_aggressor = NULL;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _PreCombatMenu_Load_Faces(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(pcm);
     SDL_assert(pcm->agg_unit > TNECS_NULL);
     SDL_assert(pcm->dft_unit > TNECS_NULL);
     // TODO: find face file from unit name
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void PreCombatMenu_Free_Icons(struct PreCombatMenu *pcm) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (pcm->texture_weapons != NULL) {
         SDL_DestroyTexture(pcm->texture_weapons);
         pcm->texture_weapons = NULL;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _PreCombatMenu_Load_Icons(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(pcm);
     SDL_assert(renderer != NULL);
     char *path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Weapons.png");
     pcm->texture_weapons = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(pcm->texture_weapons);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Setters --- */
 void PreCombatMenu_Set(struct PreCombatMenu *pcm, struct Game *sota) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota != NULL);
     /* -- give aggressor and defendant units to Pre_Combat -- */
     pcm->sota     = sota;
     pcm->update   = true;
     pcm->forecast = &sota->combat_forecast;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Drawing --- */
 /* Draw the doubling/tripling/quadrupling symbol */
 void _PreCombatMenu_Draw_Doubling(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     /* - Checking number of phases to draw - */
     int phases_agg = pcm->forecast->flow.aggressor_phases;
@@ -231,12 +212,10 @@ void _PreCombatMenu_Draw_Doubling(struct PreCombatMenu *pcm, SDL_Renderer *rende
     /* - Finish - */
     SDL_SetRenderTarget(renderer, pcm->texture);
     Utilities_DrawColor_Reset(renderer);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void PreCombatMenu_Draw(struct Menu *mc, SDL_Texture *render_target,
                         SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct PreCombatMenu *pcm = (struct PreCombatMenu *)mc->data;
     struct n9Patch *n9patch   = &mc->n9patch;
 
@@ -257,7 +236,6 @@ void PreCombatMenu_Draw(struct Menu *mc, SDL_Texture *render_target,
     SDL_assert(pcm->texture != NULL);
     SDL_RenderCopy(renderer, pcm->texture, NULL, &dstrect);
     Utilities_DrawColor_Reset(renderer);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _PreCombatMenu_Draw_Names(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
@@ -776,7 +754,6 @@ void _PreCombatMenu_Draw_Stats(struct PreCombatMenu *pcm, SDL_Renderer *renderer
 
 void PreCombatMenu_Update(struct PreCombatMenu *pcm, struct n9Patch *n9patch,
                           SDL_Texture *render_target, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     SDL_assert(pcm                  != NULL);
     SDL_assert(renderer             != NULL);
@@ -825,5 +802,4 @@ void PreCombatMenu_Update(struct PreCombatMenu *pcm, struct n9Patch *n9patch,
     /* - Finish - */
     SDL_SetRenderTarget(renderer, render_target);
     Utilities_DrawColor_Reset(renderer);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

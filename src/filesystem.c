@@ -2,7 +2,6 @@
 
 /* --- INIT --- */
 int Filesystem_Init(char *argv0) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Creating buffers for paths -- */
     char *srcDir    = SDL_malloc(DEFAULT_BUFFER_SIZE);
     char *assetsDir = SDL_malloc(DEFAULT_BUFFER_SIZE);
@@ -39,8 +38,7 @@ int Filesystem_Init(char *argv0) {
 
     SOTA_Log_Debug("Mounting %s", output);
     if (!PHYSFS_mount(output, NULL, 1)) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-        SOTA_Log_Debug("Could not mount %s", output);
+            SOTA_Log_Debug("Could not mount %s", output);
         exit(ERROR_PHYSFSCannotMount);
     };
     PHYSFS_setWriteDir(output);
@@ -56,8 +54,7 @@ int Filesystem_Init(char *argv0) {
 
     SOTA_Log_Debug("Mounting %s", temp);
     if (!PHYSFS_mount(temp, NULL, 1)) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-        SOTA_Log_Debug("Could not mount %s", temp);
+            SOTA_Log_Debug("Could not mount %s", temp);
         exit(ERROR_PHYSFSCannotMount);
     };
 
@@ -66,8 +63,7 @@ int Filesystem_Init(char *argv0) {
     strcat(temp, SOTA_BUILD_DIR DIR_SEPARATOR);
     SOTA_Log_Debug("Mounting %s", temp);
     if (!PHYSFS_mount(temp, NULL, 1)) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-        SOTA_Log_Debug("Could not mount %s", temp);
+            SOTA_Log_Debug("Could not mount %s", temp);
         exit(ERROR_PHYSFSCannotMount);
     };
 
@@ -77,8 +73,7 @@ int Filesystem_Init(char *argv0) {
     strcat(temp, "tiles"DIR_SEPARATOR);
     SOTA_Log_Debug("Mounting %s", temp);
     if (!PHYSFS_mount(temp, NULL, 1)) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-        SOTA_Log_Debug("Could not mount %s", temp);
+            SOTA_Log_Debug("Could not mount %s", temp);
         exit(ERROR_PHYSFSCannotMount);
     };
 
@@ -88,8 +83,7 @@ int Filesystem_Init(char *argv0) {
     strcat(temp, "scenes"DIR_SEPARATOR);
     SOTA_Log_Debug("Mounting %s", temp);
     if (!PHYSFS_mount(temp, NULL, 1)) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-        SOTA_Log_Debug("Could not mount %s", temp);
+            SOTA_Log_Debug("Could not mount %s", temp);
         exit(ERROR_PHYSFSCannotMount);
     };
 
@@ -99,8 +93,7 @@ int Filesystem_Init(char *argv0) {
     strcat(temp, "items"DIR_SEPARATOR);
     SOTA_Log_Debug("Mounting %s", temp);
     if (!PHYSFS_mount(temp, NULL, 1)) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-        SOTA_Log_Debug("Could not mount %s", temp);
+            SOTA_Log_Debug("Could not mount %s", temp);
         exit(ERROR_PHYSFSCannotMount);
     };
 
@@ -110,8 +103,7 @@ int Filesystem_Init(char *argv0) {
     strcat(temp, "units"DIR_SEPARATOR);
     SOTA_Log_Debug("Mounting %s", temp);
     if (!PHYSFS_mount(temp, NULL, 1)) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-        SOTA_Log_Debug("Could not mount %s", temp);
+            SOTA_Log_Debug("Could not mount %s", temp);
         exit(ERROR_PHYSFSCannotMount);
     };
 
@@ -121,8 +113,7 @@ int Filesystem_Init(char *argv0) {
     strcat(temp, "assets");
     SOTA_Log_Debug("Mounting %s", temp);
     if (!PHYSFS_mount(temp, NULL, 1)) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-        SOTA_Log_Debug("Could not mount %s", temp);
+            SOTA_Log_Debug("Could not mount %s", temp);
         exit(ERROR_PHYSFSCannotMount);
     };
 
@@ -132,8 +123,7 @@ int Filesystem_Init(char *argv0) {
     strcat(temp, "assets"DIR_SEPARATOR"Maps"DIR_SEPARATOR);
     SOTA_Log_Debug("Mounting %s", temp);
     if (!PHYSFS_mount(temp, NULL, 1)) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-        SOTA_Log_Debug("Could not mount %s", temp);
+            SOTA_Log_Debug("Could not mount %s", temp);
         exit(ERROR_PHYSFSCannotMount);
     };
 
@@ -143,8 +133,7 @@ int Filesystem_Init(char *argv0) {
     strcat(temp, "assets"DIR_SEPARATOR"Tiles"DIR_SEPARATOR);
     SOTA_Log_Debug("Mounting %s", temp);
     if (!PHYSFS_mount(temp, NULL, 1)) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-        SOTA_Log_Debug("Could not mount %s", temp);
+            SOTA_Log_Debug("Could not mount %s", temp);
         exit(ERROR_PHYSFSCannotMount);
     };
 
@@ -154,8 +143,7 @@ int Filesystem_Init(char *argv0) {
     strcat(temp, "assets"DIR_SEPARATOR"Map_Units"DIR_SEPARATOR);
     SOTA_Log_Debug("Mounting %s", temp);
     if (!PHYSFS_mount(temp, NULL, 1)) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-        SOTA_Log_Debug("Could not mount %s", temp);
+            SOTA_Log_Debug("Could not mount %s", temp);
         exit(ERROR_PHYSFSCannotMount);
     };
 
@@ -173,8 +161,7 @@ int Filesystem_Init(char *argv0) {
     if (!PHYSFS_mount(output, NULL, 1)) {
         SOTA_Log_Debug("Mount 1 failed");
         if (!PHYSFS_mount("../assets.binou", NULL, 1)) {
-            SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-            SOTA_Log_Debug("Missing assets.binou: PHYSFS_ERROR: %s\n",
+                    SOTA_Log_Debug("Missing assets.binou: PHYSFS_ERROR: %s\n",
                            PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
             SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Missing assets.binou", "Missing assets.binou",
                                      NULL);
@@ -186,12 +173,10 @@ int Filesystem_Init(char *argv0) {
     SDL_free(srcDir);
     SDL_free(assetsDir);
     SOTA_Log_Debug("Filesystem_Init");
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return 1;
 }
 
 int Filesystem_Free() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
     return (PHYSFS_deinit());
 }
 
@@ -207,7 +192,6 @@ void Filesystem_Log2file(void *userdata, int cat, SDL_LogPriority pri, const cha
 
 /* --- UTILITIES --- */
 void Filesystem_Load_Bytes(const char *name, u8 **mem, size_t *len) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Open file */
     PHYSFS_File *physfs_file = PHYSFS_openRead(name);
     SDL_assert(physfs_file != NULL);
@@ -224,11 +208,9 @@ void Filesystem_Load_Bytes(const char *name, u8 **mem, size_t *len) {
     /* Read file, then close it */
     PHYSFS_readBytes(physfs_file, *mem, length);
     PHYSFS_close(physfs_file);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 bool Filesystem_fequal(const char *filename1, const char *filename2) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     bool out = false;
     PHYSFS_file *fp1  = PHYSFS_openRead(filename1);
     PHYSFS_file *fp2  = PHYSFS_openRead(filename2);
@@ -244,13 +226,11 @@ bool Filesystem_fequal(const char *filename1, const char *filename2) {
     if (filelen1 == filelen2)
         out = Utilities_charArr_Equal(filebuffer1, filebuffer2, filelen1);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 /* --- SURFACES AND TEXTURES --- */
 SDL_Surface *Filesystem_Surface_Load(const char *filename, const u32 format) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("%s\n", filename);
     SDL_Surface *loadedsurface  = NULL, *outsurface   = NULL;
     SDL_Surface *conv1surface   = NULL, *conv2surface = NULL;
@@ -299,17 +279,14 @@ SDL_Surface *Filesystem_Surface_Load(const char *filename, const u32 format) {
 
     // SDL_SaveBMP(outsurface, "outsurface.bmp");
     if (outsurface == NULL) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        SOTA_Log_Debug("Could not open: %s\n", filename);
+                SOTA_Log_Debug("Could not open: %s\n", filename);
         exit(ERROR_CannotOpenFile);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     SDL_assert(outsurface != NULL);
     return (outsurface);
 }
 
 SDL_Surface *Filesystem_Surface_Palette_Swap(SDL_Surface *surface, SDL_Palette *palette) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* allocates memory for new surface with switched palette */
     /* Caller deals with memory */
 
@@ -331,12 +308,10 @@ SDL_Surface *Filesystem_Surface_Palette_Swap(SDL_Surface *surface, SDL_Palette *
     SDL_UnlockSurface(out_surface);
     SDL_UnlockSurface(surface);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_surface);
 }
 
 SDL_Texture *Filesystem_Texture_Load(struct SDL_Renderer *renderer, const char *file, u32 format) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("%s\n", file);
     SDL_Surface *tempsurface = Filesystem_Surface_Load(file, format);
     // SDL_SaveBMP(tempsurface, "readsurface.png");
@@ -345,14 +320,12 @@ SDL_Texture *Filesystem_Texture_Load(struct SDL_Renderer *renderer, const char *
     SDL_assert(texture);
     SDL_FreeSurface(tempsurface);
     SDL_assert(texture);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (texture);
 }
 
 /* Note: pixels are in a separate buffer that needs to be freed separately. */
 SDL_Surface *Filesystem_TexturetoSurface(SDL_Renderer *renderer, SDL_Texture *texture,
                                          u32 format, SDL_Texture *render_target) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(texture         != NULL);
     SDL_Surface *out_surface    = NULL;
     SDL_Texture *render_texture = NULL;
@@ -386,19 +359,16 @@ SDL_Surface *Filesystem_TexturetoSurface(SDL_Renderer *renderer, SDL_Texture *te
     SDL_assert(out_surface);
     SDL_SetRenderTarget(renderer, render_target);
     SDL_DestroyTexture(render_texture);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_surface);
 }
 
 SDL_Surface *Filesystem_indexedSurface_Init(size_t w, size_t h) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_Surface *surface;
 
     surface = SDL_CreateRGBSurfaceWithFormat(SDL_IGNORE, w, h, 8, SDL_PIXELFORMAT_INDEX8);
 
     if (PALETTE_DEFAULT == NULL) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        SOTA_Log_Debug("palette_NES not loaded");
+                SOTA_Log_Debug("palette_NES not loaded");
         exit(ERROR_NullPointer);
     }
 
@@ -415,13 +385,11 @@ SDL_Surface *Filesystem_indexedSurface_Init(size_t w, size_t h) {
     memset(surface->pixels, 0, surface->h * surface->pitch);
 
     SDL_UnlockSurface(surface);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (surface);
 }
 
 /* Convert ABGR color image to indexed images (NES colors) */
 void Filesystem_Surface_Pixels2Indices(SDL_Surface *abgr_surf, SDL_Surface *index_surf) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* VERY SLOW */
     SDL_assert(abgr_surf    != NULL);
     SDL_assert(index_surf   != NULL);
@@ -472,46 +440,38 @@ void Filesystem_Surface_Pixels2Indices(SDL_Surface *abgr_surf, SDL_Surface *inde
     }
     SDL_UnlockSurface(abgr_surf);
     SDL_UnlockSurface(index_surf);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_Texture_Dump(const char *filename, SDL_Renderer *renderer, SDL_Texture *texture,
                              const u32 format, SDL_Texture *render_target) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (!texture) {
         SOTA_Log_Debug("Warning: Input texture is NULL");
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-    }
+        }
 
     SDL_Surface *surface = Filesystem_TexturetoSurface(renderer, texture, format, render_target);
     /* Save result to an image */
     if (IMG_SavePNG(surface, filename) != 0) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        SOTA_Log_Debug("PHYSFS_setBuffer failed");
+                SOTA_Log_Debug("PHYSFS_setBuffer failed");
         exit(ERROR_CannotWriteFile);
     }
     SDL_free(surface->pixels);
     SDL_FreeSurface(surface);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- JSON READ & WRITE --- */
 // TODO: rewrite with input cjson
 void Filesystem_readJSON_Shop(const char *filename, struct Shop *shop) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("%s", filename);
     struct cJSON *jfile = jsonio_parseJSON(filename);
     SDL_assert(jfile != NULL);
     struct cJSON *jshop = cJSON_GetObjectItem(jfile, "Shop");
     if (jshop == NULL) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-        SOTA_Log_Debug("No Shop element in shop json");
+            SOTA_Log_Debug("No Shop element in shop json");
         exit(ERROR_JSONParsingFailed);
     }
     struct cJSON *jitems = cJSON_GetObjectItem(jshop, "Items");
     if (jitems == NULL) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-        SOTA_Log_Debug("No Items array in shop json");
+            SOTA_Log_Debug("No Items array in shop json");
         exit(ERROR_JSONParsingFailed);
     }
     size_t items_num = cJSON_GetArraySize(jitems);
@@ -526,24 +486,20 @@ void Filesystem_readJSON_Shop(const char *filename, struct Shop *shop) {
     shop->shopkeeper = Hashes_shopkeeperName2ID(cJSON_GetStringValue(jshopkeeper));
     if (jfile != NULL)
         cJSON_Delete(jfile);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_readJSON_Promotion(const char *filename, struct Promotion *promotion) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("%s", filename);
     struct cJSON *jfile = jsonio_parseJSON(filename);
     SDL_assert(jfile != NULL);
     struct cJSON *jpromotion = cJSON_GetObjectItem(jfile, "Promotion");
     if (jpromotion == NULL) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-        SOTA_Log_Debug("No Promotion element in promotion json");
+            SOTA_Log_Debug("No Promotion element in promotion json");
         exit(ERROR_JSONParsingFailed);
     }
     struct cJSON *jstats = cJSON_GetObjectItem(jpromotion, "Stats");
     if (jstats == NULL) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        SOTA_Log_Debug("No Stats element in promotion json");
+                SOTA_Log_Debug("No Stats element in promotion json");
         exit(ERROR_JSONParsingFailed);
     }
     Filesystem_readJSON_Unitstats(jstats, &promotion->bonus);
@@ -551,8 +507,7 @@ void Filesystem_readJSON_Promotion(const char *filename, struct Promotion *promo
     if (jskill != NULL) {
         struct cJSON *jname = cJSON_GetObjectItem(jskill, "Name");
         if (jname == NULL) {
-            SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-            SOTA_Log_Debug("No Name element in skills element of promotion json");
+                        SOTA_Log_Debug("No Name element in skills element of promotion json");
             exit(ERROR_JSONParsingFailed);
         }
         promotion->skill = Hashes_skillName2ID(cJSON_GetStringValue(jname));
@@ -565,31 +520,26 @@ void Filesystem_readJSON_Promotion(const char *filename, struct Promotion *promo
     if (jfile != NULL)
         cJSON_Delete(jfile);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_readJSON_Palette(const char *filename, struct SDL_Palette *palette) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("%s", filename);
     struct cJSON *jfile = jsonio_parseJSON(filename);
     SDL_assert(jfile != NULL);
     struct cJSON *jpalette = cJSON_GetObjectItem(jfile, "Palette");
     if (jpalette == NULL) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        SOTA_Log_Debug("No Palette element in palette json");
+                SOTA_Log_Debug("No Palette element in palette json");
         exit(ERROR_JSONParsingFailed);
     }
     struct cJSON *jrgbs = cJSON_GetObjectItem(jpalette, "rgb");
     if (jrgbs == NULL) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        SOTA_Log_Debug("No rgb array in palette json");
+                SOTA_Log_Debug("No rgb array in palette json");
         exit(ERROR_JSONParsingFailed);
     }
 
     size_t colors_num = cJSON_GetArraySize(jrgbs);
     if (colors_num != PALETTE_NES_COLOR_NUM) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        SOTA_Log_Debug("Invalid number of colors in Palette");
+                SOTA_Log_Debug("Invalid number of colors in Palette");
         exit(ERROR_JSONParsingFailed);
     }
 
@@ -603,32 +553,27 @@ void Filesystem_readJSON_Palette(const char *filename, struct SDL_Palette *palet
     if (jfile != NULL)
         cJSON_Delete(jfile);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_readJSON_PaletteTable(const char *filename, u8   *table) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("%s", filename);
     struct cJSON *jfile = jsonio_parseJSON(filename);
     SDL_assert(jfile != NULL);
     struct cJSON *jpalette_table = cJSON_GetObjectItem(jfile, "Palette Table");
     if (jpalette_table == NULL) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        SOTA_Log_Debug("No 'Palette Table' element in palette table json");
+                SOTA_Log_Debug("No 'Palette Table' element in palette table json");
         exit(ERROR_JSONParsingFailed);
     }
 
     struct cJSON *jfrom_tos = cJSON_GetObjectItem(jpalette_table, "from_to");
     if (jfrom_tos == NULL) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        SOTA_Log_Debug("No from_to array in palette table json");
+                SOTA_Log_Debug("No from_to array in palette table json");
         exit(ERROR_JSONParsingFailed);
     }
 
     size_t colors_num = cJSON_GetArraySize(jfrom_tos);
     if (colors_num != PALETTE_NES_COLOR_NUM) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        SOTA_Log_Debug("Invalid number of colors in Palette Table");
+                SOTA_Log_Debug("Invalid number of colors in Palette Table");
         exit(ERROR_JSONParsingFailed);
     }
 
@@ -639,18 +584,14 @@ void Filesystem_readJSON_PaletteTable(const char *filename, u8   *table) {
     if (jfile != NULL)
         cJSON_Delete(jfile);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_readJSON_MObj_Link(const struct cJSON *const j, struct Mobj_Link *restrict b) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_readJSON_Breakable(const struct cJSON *const jbreak,
                                    struct Breakable *restrict breaka) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct cJSON *jhp  = cJSON_GetObjectItem(jbreak, "hp");
     struct cJSON *jdef = cJSON_GetObjectItem(jbreak, "def");
     struct cJSON *jres = cJSON_GetObjectItem(jbreak, "res");
@@ -661,11 +602,9 @@ void Filesystem_readJSON_Breakable(const struct cJSON *const jbreak,
         breaka->def = cJSON_GetNumberValue(jdef);
     if (jhp != NULL)
         breaka->hp  = cJSON_GetNumberValue(jhp);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_readJSON_Door(const struct cJSON *const jdoor, struct Door *restrict door) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct cJSON *jtile          = cJSON_GetObjectItem(jdoor, "tile");
     struct cJSON *jevent         = cJSON_GetObjectItem(jdoor, "event");
     struct cJSON *jscene         = cJSON_GetObjectItem(jdoor, "scene");
@@ -682,11 +621,9 @@ void Filesystem_readJSON_Door(const struct cJSON *const jdoor, struct Door *rest
         door->scene         = cJSON_GetNumberValue(jscene);
     if (jtile != NULL)
         door->tile          = cJSON_GetNumberValue(jtile);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_readJSON_Chest(const struct cJSON *const jchest, struct Chest *restrict chest) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(jchest != NULL);
     SDL_assert(chest != NULL);
     struct cJSON *jgold = cJSON_GetObjectItem(jchest, "gold");
@@ -702,11 +639,9 @@ void Filesystem_readJSON_Chest(const struct cJSON *const jchest, struct Chest *r
         if (name != NULL)
             chest->item = Hashes_itemName2ID(name);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_readJSON_Position(const struct cJSON *const jpos, struct Point *pos) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(jpos != NULL);
     SDL_assert(pos != NULL);
     if (cJSON_IsArray(jpos)) {
@@ -720,12 +655,10 @@ void Filesystem_readJSON_Position(const struct cJSON *const jpos, struct Point *
         if (jrow != NULL)
             pos->y = cJSON_GetNumberValue(jrow);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_readJSON_mvtcost(const struct cJSON          *const    jcost,
                                  struct fMovement_cost *restrict cost) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(cost != NULL);
     struct cJSON *jmages       = cJSON_GetObjectItem(jcost, "mages");
     struct cJSON *jfliers      = cJSON_GetObjectItem(jcost, "fliers");
@@ -745,23 +678,19 @@ void Filesystem_readJSON_mvtcost(const struct cJSON          *const    jcost,
     cost->foot_fast   = cJSON_GetNumberValue(jfoot_fast);
     cost->riders_slow = cJSON_GetNumberValue(jriders_slow);
     cost->riders_fast = cJSON_GetNumberValue(jriders_fast);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_readJSON_Array(const struct cJSON *const jarray, i32 *restrict array) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(array != NULL);
     struct cJSON *jnum;
     size_t i = 0;
     cJSON_ArrayForEach(jnum, jarray) {
         array[i++] = (i32)cJSON_GetNumberValue(jnum);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_readJSON_2DArray(const struct cJSON *const jarr, i32 *restrict arr2D,
                                  u8 row_len, u8 col_len) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* caller deals with memory */
     SDL_assert(jarr != NULL);
     SDL_assert(cJSON_IsArray(jarr));
@@ -774,23 +703,19 @@ void Filesystem_readJSON_2DArray(const struct cJSON *const jarr, i32 *restrict a
             arr2D[(row * col_len + col)] = (i32)cJSON_GetNumberValue(jnum);
         }
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_writeJSON_Array(struct cJSON *jarr, const i32 *restrict arr, size_t num) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("%zu", num);
     SDL_assert(arr != NULL);
     for (u8 i = 0; i < num; i++) {
         struct cJSON *jnum = cJSON_CreateNumber(arr[i]);
         cJSON_AddItemToArray(jarr, jnum);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_writeJSON_2DArray(struct cJSON *arr, const i32 *restrict arr2D, u8 row_len,
                                   u8 col_len) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("%d %d", row_len, col_len);
     SDL_assert(arr != NULL);
     struct cJSON *jrow, *jnum;
@@ -804,11 +729,9 @@ void Filesystem_writeJSON_2DArray(struct cJSON *arr, const i32 *restrict arr2D, 
         stbsp_sprintf(rowname, "row %d", row);
         cJSON_AddItemToObject(arr, rowname, jrow);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_writeJSON_mvtcost(struct cJSON *jcost, const struct fMovement_cost *restrict cost) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(jcost != NULL);
     struct cJSON *jmages       = cJSON_CreateNumber(cost->mages);
     struct cJSON *jfliers      = cJSON_CreateNumber(cost->fliers);
@@ -828,12 +751,10 @@ void Filesystem_writeJSON_mvtcost(struct cJSON *jcost, const struct fMovement_co
     cJSON_AddItemToObject(jcost, "foot_fast",   jfoot_fast);
     cJSON_AddItemToObject(jcost, "riders_slow", jriders_slow);
     cJSON_AddItemToObject(jcost, "riders_fast", jriders_fast);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_readJSON_Tilestats(const struct cJSON      *const    jstats,
                                    struct Tile_stats *restrict stats) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(jstats != NULL);
     struct cJSON *jdodge = cJSON_GetObjectItem(jstats, "Dodge");
     struct cJSON *jPprot = cJSON_GetObjectItem(jstats, "Pprot");
@@ -843,12 +764,10 @@ void Filesystem_readJSON_Tilestats(const struct cJSON      *const    jstats,
     stats->Pprot         = cJSON_GetNumberValue(jPprot);
     stats->Mprot         = cJSON_GetNumberValue(jMprot);
     stats->heal          = cJSON_GetNumberValue(jHeal);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_readJSON_Reinforce(const struct cJSON         *const jarrival,
                                    struct Reinforcement *restrict arrival) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(arrival  != NULL);
     SDL_assert(jarrival != NULL);
     struct cJSON *jid       = cJSON_GetObjectItem(jarrival,  "id");
@@ -866,12 +785,10 @@ void Filesystem_readJSON_Reinforce(const struct cJSON         *const jarrival,
     arrival->levelups   = cJSON_GetNumberValue(jlevelups);
     arrival->position.x = cJSON_GetNumberValue(jrow);
     arrival->position.y = cJSON_GetNumberValue(jcol);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_writeJSON_arrival(      struct cJSON                  *jarrival,
                                         const struct Reinforcement *restrict arrival) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(jarrival != NULL);
     struct cJSON *jid       = cJSON_CreateNumber(arrival->id);
     struct cJSON *jrow      = cJSON_CreateNumber(arrival->position.x);
@@ -887,12 +804,10 @@ void Filesystem_writeJSON_arrival(      struct cJSON                  *jarrival,
     cJSON_AddItemToObject(jarrival,  "levelups", jlevelups);
     cJSON_AddItemToObject(jarrival,  "turn",     jturn);
     cJSON_AddItemToObject(jarrival,  "Position", jposition);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_writeJSON_Tilestats(      struct cJSON      *restrict jstats,
                                           const struct Tile_stats *restrict stats) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(jstats != NULL);
     struct cJSON *jdodge = cJSON_CreateNumber(stats->dodge);
     struct cJSON *jPprot = cJSON_CreateNumber(stats->Pprot);
@@ -902,12 +817,10 @@ void Filesystem_writeJSON_Tilestats(      struct cJSON      *restrict jstats,
     cJSON_AddItemToObject(jstats, "Pprot", jPprot);
     cJSON_AddItemToObject(jstats, "Mprot", jMprot);
     cJSON_AddItemToObject(jstats, "Heal",  jheal);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_writeJSON_Unitstats(struct cJSON *restrict jstats,
                                     const struct Unit_stats *restrict stats) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(jstats != NULL);
     struct cJSON *php   = cJSON_CreateNumber(stats->hp);
     struct cJSON *pstr  = cJSON_CreateNumber(stats->str);
@@ -931,12 +844,10 @@ void Filesystem_writeJSON_Unitstats(struct cJSON *restrict jstats,
     cJSON_AddItemToObject(jstats, "con",  pcon);
     cJSON_AddItemToObject(jstats, "move", pmove);
     cJSON_AddItemToObject(jstats, "prof", pprof);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_writeJSON_Itemstats(struct cJSON *restrict jstats,
                                     const struct Item_stats *restrict stats) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(jstats != NULL);
     struct cJSON *jAP    = cJSON_CreateNumber(stats->AP);
     struct cJSON *juses  = cJSON_CreateNumber(stats->uses);
@@ -944,12 +855,10 @@ void Filesystem_writeJSON_Itemstats(struct cJSON *restrict jstats,
     cJSON_AddItemToObject(jstats, "uses", juses);
     cJSON_AddItemToObject(jstats, "price", jprice);
     cJSON_AddItemToObject(jstats, "AP", jAP);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_writeJSON_Wpnstats(      struct cJSON                *jstats,
                                          const struct Weapon_stats *restrict stats) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(jstats != NULL);
     struct cJSON *pprot   = cJSON_CreateArray();
     struct cJSON *prange  = cJSON_CreateArray();
@@ -980,12 +889,10 @@ void Filesystem_writeJSON_Wpnstats(      struct cJSON                *jstats,
     cJSON_AddItemToObject(jstats, "Range",      prange);
     // cJSON_AddItemToObject(jstats, "hand", pminhand);
     // cJSON_AddItemToObject(jstats, "dmg_type", pdmg_type);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_readJSON_Item(const struct cJSON *const jitem,
                               struct Inventory_item *restrict item) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(jitem != NULL);
     struct cJSON *jid       = cJSON_GetObjectItem(jitem, "id");
     struct cJSON *jused     = cJSON_GetObjectItem(jitem, "used");
@@ -993,11 +900,9 @@ void Filesystem_readJSON_Item(const struct cJSON *const jitem,
     item->id       = cJSON_GetNumberValue(jid);
     item->used     = cJSON_GetNumberValue(jused);
     item->infusion = cJSON_GetNumberValue(jinfusion);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_writeJSON_item(struct cJSON *jitem, const struct Inventory_item *restrict item) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(jitem != NULL);
     char buffer[DEFAULT_BUFFER_SIZE];
     cJSON *jid       = cJSON_CreateNumber(item->id);
@@ -1006,12 +911,10 @@ void Filesystem_writeJSON_item(struct cJSON *jitem, const struct Inventory_item 
     cJSON_AddItemToObject(jitem, "id",       jid);
     cJSON_AddItemToObject(jitem, "used",     jused);
     cJSON_AddItemToObject(jitem, "infusion", jinfusion);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_readJSON_Itemstats(const struct cJSON *const jstats,
                                    struct Item_stats *restrict stats) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(jstats != NULL);
     struct cJSON *jAP    = cJSON_GetObjectItem(jstats, "AP");
     struct cJSON *juses  = cJSON_GetObjectItem(jstats, "uses");
@@ -1019,12 +922,10 @@ void Filesystem_readJSON_Itemstats(const struct cJSON *const jstats,
     stats->AP    = cJSON_GetNumberValue(jAP);
     stats->uses  = cJSON_GetNumberValue(juses);
     stats->price = cJSON_GetNumberValue(jprice);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_readJSON_Wpnstats(const struct cJSON        *const    jstats,
                                   struct Weapon_stats *restrict  stats) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(jstats != NULL);
     struct cJSON *jnum;
     size_t i;
@@ -1058,12 +959,10 @@ void Filesystem_readJSON_Wpnstats(const struct cJSON        *const    jstats,
     stats->favor = cJSON_GetNumberValue(jfavor);
     stats->dodge = cJSON_GetNumberValue(jdodge);
     // stats->hand = cJSON_GetNumberValue(jhand);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_readJSON_Unitstats(const struct cJSON      *const    jstats,
                                    struct Unit_stats *restrict stats) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(stats != NULL);
     SDL_assert(jstats != NULL);
     struct cJSON *jhp   = cJSON_GetObjectItem(jstats, "hp");
@@ -1090,19 +989,16 @@ void Filesystem_readJSON_Unitstats(const struct cJSON      *const    jstats,
     stats->con  = cJSON_GetNumberValue(jcon);
     stats->move = cJSON_GetNumberValue(jmove);
     stats->prof = cJSON_GetNumberValue(jprof);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Filesystem_printJSON(PHYSFS_file *fp, const struct cJSON *const json) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Write json element bytes to buffer */
     char *buffer = cJSON_Print(json);
 
     /* Set up buffering for a PhysicsFS file handle. */
     size_t length = strlen(buffer);
     if (!PHYSFS_setBuffer(fp, length)) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-        SOTA_Log_Debug("PHYSFS_setBuffer failed");
+            SOTA_Log_Debug("PHYSFS_setBuffer failed");
         exit(ERROR_CannotWriteFile);
     }
 
@@ -1111,12 +1007,10 @@ void Filesystem_printJSON(PHYSFS_file *fp, const struct cJSON *const json) {
 
     /* Free buffer */
     cJSON_free(buffer);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- SCENE --- */
 void Filesystem_Scene_Chapter(char *filename, int chapter) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (chapter < CHAPTER_1) {
         strcat(filename, "Prologue");
     } else if (chapter == CHAPTER_FOLDER_TEST) {
@@ -1130,5 +1024,4 @@ void Filesystem_Scene_Chapter(char *filename, int chapter) {
         strcat(filename, chapter_num);
     }
     strcat(filename, DIR_SEPARATOR);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

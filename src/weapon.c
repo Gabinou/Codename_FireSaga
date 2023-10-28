@@ -22,7 +22,6 @@ struct WpnorItem WpnorItem_default = {
 
 /* --- Constructors/Destructors --- */
 void Weapon_Init(struct Weapon *weapon) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Weapon_Free(weapon);
 
     SDL_assert(weapon       != NULL);
@@ -30,14 +29,11 @@ void Weapon_Init(struct Weapon *weapon) {
 
     weapon->item    = malloc(sizeof(struct Item));
     *(weapon->item) = Item_default;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Weapon_Free(struct Weapon *weapon) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (weapon == NULL) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     if (weapon->json_filename != NULL) {
@@ -46,54 +42,43 @@ void Weapon_Free(struct Weapon *weapon) {
     }
 
     if (weapon->item == NULL) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     Item_Free(weapon->item);
     free(weapon->item);
     weapon->item = NULL;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- isCan? --- */
 bool Weapon_canInfuse(const struct Weapon         *weapon, const struct Inventory_item *item) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(weapon);
     bool out = (item->infusion <= SOTA_INFUSEABLE) && !weapon->isMagic;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 bool Weapon_canAttack(struct Weapon *weapon) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     weapon->canAttack  = Weapon_canAttackfromType(weapon);
     weapon->canAttack *= Weapon_canAttackfromID(weapon);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (weapon->canAttack);
 }
 
 bool Weapon_canAttackfromType(const struct Weapon *weapon) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("%ld", weapon->item->type);
     SDL_assert(weapon);
     SDL_assert(weapon->item != NULL);
     bool iscan = flagsum_isIn(weapon->item->type, ITEM_TYPE_canATTACK);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (iscan);
 }
 
 bool Weapon_canAttackfromID(const struct Weapon *weapon) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(weapon);
     SDL_assert(weapon->item != NULL);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return ((weapon->item->id == ITEM_NULL) || (weapon->item->id == ITEM_ID_BROKEN) ? 0 : 1);
 }
 
 /* --- I/O --- */
 void Weapon_readJSON(void *input, const cJSON *const jwpn) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Weapon *weapon = (struct Weapon *) input;
     SDL_assert(weapon != NULL);
     SDL_assert(jwpn != NULL);
@@ -114,11 +99,9 @@ void Weapon_readJSON(void *input, const cJSON *const jwpn) {
     weapon->item->range.max = weapon->stats.range.max;
     weapon->effective       = cJSON_GetNumberValue(jeffective);
     weapon->canAttack       = Weapon_canAttack(weapon);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Weapon_writeJSON(const void *input, cJSON *jwpn) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Weapon *weapon = (struct Weapon *) input;
     SDL_assert(jwpn         != NULL);
     SDL_assert(weapon       != NULL);
@@ -136,29 +119,24 @@ void Weapon_writeJSON(const void *input, cJSON *jwpn) {
     cJSON_AddItemToObject(jwpn, "Subtype",    jsubtype);
     cJSON_AddItemToObject(jwpn, "Effective",  jeffective);
     cJSON_AddItemToObject(jwpn, "Handedness", jhandedness);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Weapon_Reload(struct dtab *weapons_dtab, i16 id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Overwrite weapon ONLY if it already exists */
     if (DTAB_GET(weapons_dtab, id) != NULL) {
         Weapon_Free(DTAB_GET(weapons_dtab, id));
         DTAB_DEL(weapons_dtab, id);
         Weapon_Load(weapons_dtab, id);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(Weapon_ID_isValid(id));
     SDL_assert(weapons_dtab != NULL);
 
     /* -- Skip is already loaded -- */
     if (DTAB_GET(weapons_dtab, id) != NULL) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-        return;
+            return;
     }
 
 
@@ -181,11 +159,9 @@ void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
     /* - Add weapon to dtab - */
     DTAB_ADD(weapons_dtab, &temp_weapon, id);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Weapon_Filename(char *filename, i16 id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char buffer[DEFAULT_BUFFER_SIZE];
     char *token;
 
@@ -210,12 +186,10 @@ void Weapon_Filename(char *filename, i16 id) {
     /* - add .json to filename - */
     strcat(filename, ".json");
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 
 void Weapon_Save(struct dtab *weapons_dtab, i16 id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(Weapon_ID_isValid(id));
     SDL_assert(weapons_dtab != NULL);
     char *token;
@@ -238,31 +212,25 @@ void Weapon_Save(struct dtab *weapons_dtab, i16 id) {
         struct Weapon *weapon = (struct Weapon *)DTAB_GET(weapons_dtab, id);
         jsonio_writeJSON(filename, weapon, false);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Weapons_All_Load(struct dtab *weapons_dtab) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     for (size_t i = ITEM_NULL; i < ITEM_ID_CLAW_END; i++) {
         SOTA_Log_Debug("Loading Weapon %zu", i);
         if (Weapon_ID_isValid(i))
             Weapon_Load(weapons_dtab, i);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Weapons_All_Reload(struct dtab *weapons_dtab) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     for (size_t i = ITEM_NULL; i < ITEM_ID_CLAW_END; i++) {
         SOTA_Log_Debug("Reloading Weapon %zu", i);
         if (Weapon_ID_isValid(i))
             Weapon_Reload(weapons_dtab, i);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Weapons_All_Save(struct dtab *weapons_dtab) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     for (size_t i = ITEM_NULL; i < ITEM_ID_CLAW_END; i++) {
         SOTA_Log_Debug("%zu", i);
         if (!Weapon_ID_isValid(i))
@@ -272,21 +240,17 @@ void Weapons_All_Save(struct dtab *weapons_dtab) {
             Weapon_Save(weapons_dtab, i);
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Weapons_All_Free(struct dtab *weapons_dtab) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     for (size_t i = ITEM_NULL; i < ITEM_ID_CLAW_END; i++) {
         if (DTAB_GET(weapons_dtab, i) != NULL)
             Weapon_Free(DTAB_GET(weapons_dtab, i));
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 u16 Weapon_TypeExp(const struct Weapon *weapon) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     u64 wpntypecode = weapon->item->type;
 
     SDL_assert(wpntypecode > ITEM_NULL);
@@ -294,20 +258,17 @@ u16 Weapon_TypeExp(const struct Weapon *weapon) {
 
     if ((wpntypecode & ITEM_TYPE_SWORD) && (wpntypecode & ITEM_TYPE_OFFHAND)) {
         return (ITEM_TYPE_EXP_DOUBLE_SWORDOFFHAND);
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-    }
+        }
 
     /* Double type: SwordAxe*/
     if ((wpntypecode & ITEM_TYPE_SWORD) && (wpntypecode & ITEM_TYPE_AXE)) {
         return (ITEM_TYPE_EXP_DOUBLE_SWORDAXE);
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-    }
+        }
 
     /* Double type: LanceAxe*/
     if ((wpntypecode & ITEM_TYPE_LANCE) && (wpntypecode & ITEM_TYPE_AXE)) {
         return (ITEM_TYPE_EXP_DOUBLE_LANCEAXE);
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-    }
+        }
 
     /* Single type loop*/
     u16 type_exp = 1;
@@ -317,33 +278,25 @@ u16 Weapon_TypeExp(const struct Weapon *weapon) {
         type_exp++;
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (type_exp);
 }
 
 bool Weapon_isOffhand(u16 id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     bool is = ((id > ITEM_ID_OFFHAND_START) && (id < ITEM_ID_OFFHAND_END));
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (is);
 }
 
 bool Weapon_isShield(u16 id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     bool is = ((id > ITEM_ID_SHIELD_START) && (id < ITEM_ID_SHIELD_END));
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (is);
 }
 
 bool Weapon_isStaff(u16 id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     bool is = ((id > ITEM_ID_STAFF_START) && (id < ITEM_ID_STAFF_END));
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (is);
 }
 
 bool Weapon_ID_isValid(u16 id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     bool valid = false;
     valid |= ((id > ITEM_ID_SWORD_START)     && (id < ITEM_ID_SWORD_END));
     valid |= ((id > ITEM_ID_LANCE_START)     && (id < ITEM_ID_LANCE_END));
@@ -358,13 +311,11 @@ bool Weapon_ID_isValid(u16 id) {
     valid |= ((id > ITEM_ID_CLAW_START)      && (id < ITEM_ID_CLAW_END));
     valid |= ((id > ITEM_ID_TRINKET_START)   && (id < ITEM_ID_TRINKET_END));
     valid |= (id == ITEM_ID_GBE);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (valid);
 }
 
 /* --- Repair --- */
 void Weapon_Repair(struct Weapon *wpn, struct Inventory_item *item, u8 AP) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Repair scaled by item STRENGTH.*/
     /* TODO: hardness equation */
     u8 hardness = Equation_Weapon_Attackvar(5,
@@ -376,27 +327,22 @@ void Weapon_Repair(struct Weapon *wpn, struct Inventory_item *item, u8 AP) {
 
     u8 repaired_uses = AP / hardness;
     item->used = repaired_uses > item->used ? 0 : item->used - repaired_uses;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Stats --- */
 int Weapon_Stat(const struct Weapon *weapon, i16 stattype) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert((stattype > ITEM_STAT_START) && (stattype < WEAPON_STAT_END));
 
     if ((stattype > ITEM_STAT_START) && (stattype < ITEM_STAT_END)) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return (Item_Stat(weapon->item, stattype));
+            return (Item_Stat(weapon->item, stattype));
     }
 
     u8 *wpn_stats_arr  = (u8 *)&weapon->stats;
     int stat = wpn_stats_arr[stattype - WEAPON_STAT_START - 1];
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (stat);
 }
 
 int Weapon_Stat_inRange(const struct Weapon *weapon, i16 stattype, int distance) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Gives weapon stat if distance is in range.
     *  Shields and offhands are always in range.
     *    DEBUG: input -1 to always be in_range
@@ -405,6 +351,5 @@ int Weapon_Stat_inRange(const struct Weapon *weapon, i16 stattype, int distance)
     bool in_range = ((distance < 0) || (range.min <= distance) && (distance <= range.min));
     bool isshield  = Weapon_isShield(weapon->item->id);
     bool isoffhand = Weapon_isOffhand(weapon->item->id);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return ((in_range || isshield || isoffhand) ? Weapon_Stat(weapon, stattype) : 0);
 }

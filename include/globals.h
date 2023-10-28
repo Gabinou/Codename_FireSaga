@@ -6,7 +6,6 @@
 
 /* --- FIRST OF MANY POSSIBLE GLOBAL DECLARATIONS --- */
 extern bool rng_sequence_breaker_miss_growth;
-extern int  call_stack_depth;
 
 #define RENDER2WINDOW /* VERY FAST */
 

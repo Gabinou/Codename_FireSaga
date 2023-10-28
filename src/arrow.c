@@ -16,16 +16,13 @@ struct Arrow Arrow_default = {
 
 /* --- Constructors/Deconstructors --- */
 void Arrow_Init(struct Arrow *arrow, i32 tilesize[TWO_D]) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     arrow->map_tilesize[0]      = tilesize[0];
     arrow->map_tilesize[1]      = tilesize[1];
     arrow->pathlist             = DARR_INIT(arrow->pathlist, i32, 16);
     DARR_NUM(arrow->pathlist)   = 0;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Arrow_Free(struct Arrow *arrow) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (arrow->pathlist != NULL) {
         DARR_FREE(arrow->pathlist);
         arrow->pathlist = NULL;
@@ -34,22 +31,18 @@ void Arrow_Free(struct Arrow *arrow) {
         SDL_DestroyTexture(arrow->textures);
         arrow->textures = NULL;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- I/O --- */
 void Arrow_Textures_Load(struct Arrow *arrow, const char *filename, SDL_Renderer *renderer) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(renderer != NULL);
     arrow->textures = Filesystem_Texture_Load(renderer, filename, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(arrow->textures != NULL);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Internals --- */
 void Arrow_Path_Init(struct Arrow *arrow, i32 *costmap, i32 move,
                      struct Point start) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(costmap != NULL);
     arrow->move                 = move;
     arrow->costmap              = costmap;
@@ -57,12 +50,10 @@ void Arrow_Path_Init(struct Arrow *arrow, i32 *costmap, i32 move,
     DARR_PUT(arrow->pathlist, start.x);
     DARR_PUT(arrow->pathlist, start.y);
     arrow->show = true;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* - Adding next point to path or not decision function - */
 void Arrow_Path_Add(struct Arrow *arrow, i32 x_next, i32 y_next) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     SDL_assert(arrow->textures != NULL);
     SDL_assert(arrow->costmap != NULL);
@@ -105,12 +96,10 @@ void Arrow_Path_Add(struct Arrow *arrow, i32 x_next, i32 y_next) {
         if (point_current > 0)
             _Arrow_Decider(arrow, point_current - 1);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* - Retracing path using A* (A_star) algorithm - */
 void _Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(arrow->textures != NULL);
     SDL_assert(arrow->costmap  != NULL);
     struct Point end   = {end_in.x, end_in.y};
@@ -128,12 +117,10 @@ void _Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in) {
             _Arrow_Decider(arrow, i);
     } else
         DARR_NUM(arrow->pathlist) = TWO_D;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* - Texture decider: for current point - */
 void _Arrow_Decider(struct Arrow *arrow, i32 point) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     SDL_assert(arrow->textures != NULL);
     SDL_assert(point >= 0);
@@ -169,12 +156,10 @@ void _Arrow_Decider(struct Arrow *arrow, i32 point) {
         arrow->rendereds[point] = _Arrow_Decider_Middle(x_0, y_0, x_1, y_1, x_2, y_2);
     }
     SDL_assert(arrow->textures != NULL);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* Short arrow, start and end point in one tile. */
 struct Rendered _Arrow_Decider_Startend(i32 x_0, i32 y_0, i32 x_1, i32 y_1) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Rendered out = Rendered_default;
     struct Point move   = {x_1 - x_0, y_1 - y_0};
     int direction_01    = Ternary_Direction(move);
@@ -194,13 +179,11 @@ struct Rendered _Arrow_Decider_Startend(i32 x_0, i32 y_0, i32 x_1, i32 y_1) {
             out.graphics.index = ARROW_STARTEND_UP;
             break;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 /* Start tile of arrow, if longer than one tile. */
 struct Rendered _Arrow_Decider_Start(i32 x_0, i32 y_0, i32 x_1, i32 y_1) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Rendered out = Rendered_default;
     struct Point move   = {x_1 - x_0, y_1 - y_0};
     int direction_01    = Ternary_Direction(move);
@@ -220,13 +203,11 @@ struct Rendered _Arrow_Decider_Start(i32 x_0, i32 y_0, i32 x_1, i32 y_1) {
             out.graphics.index = ARROW_START_UP;
             break;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 /* Middle tile of arrow, if longer than one tile. */
 struct Rendered _Arrow_Decider_Middle(i32 x_0, i32 y_0, i32 x_1, i32 y_1, i32 x_2, i32 y_2) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(((x_0 != x_2) || (y_0 != y_2)));
     struct Rendered out  = Rendered_default;
     struct Point move_01 = {x_1 - x_0, y_1 - y_0};
@@ -275,13 +256,11 @@ struct Rendered _Arrow_Decider_Middle(i32 x_0, i32 y_0, i32 x_1, i32 y_1, i32 x_
             }
             break;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 /* End tile of arrow, if longer than one tile. */
 struct Rendered _Arrow_Decider_End(i32 x_0, i32 y_0, i32 x_1, i32 y_1, i32 x_2, i32 y_2) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Rendered out  = Rendered_default;
 
     struct Point move_01 = {x_1 - x_0, y_1 - y_0};
@@ -332,12 +311,10 @@ struct Rendered _Arrow_Decider_End(i32 x_0, i32 y_0, i32 x_1, i32 y_1, i32 x_2, 
             }
             break;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 void Arrow_Draw(struct Arrow *arrow, SDL_Renderer *renderer, struct Camera *camera) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(arrow->textures != NULL);
     SDL_assert(arrow->pathlist != NULL);
 
@@ -372,5 +349,4 @@ void Arrow_Draw(struct Arrow *arrow, SDL_Renderer *renderer, struct Camera *came
         /* -- Rendering -- */
         SDL_RenderCopyEx(renderer, arrow->textures, &srcrect, &dstrect, 0, NULL, rend.flip);
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

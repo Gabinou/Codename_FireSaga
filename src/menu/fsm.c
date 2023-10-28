@@ -157,7 +157,6 @@ fsm_menu_t fsm_Pop_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
 
 /* --- fsm_eAcpt_sGmpMap_ssMapCndt_mo --- */
 void fsm_eAcpt_sGmpMap_ssMapCndt_moTrade(struct Game *sota, struct Menu *in_mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - Open Trade menu - */
     tnecs_entity_t active   = sota->selected_unit_entity;
     tnecs_entity_t passive  = sota->candidates[sota->candidate];
@@ -169,11 +168,9 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moTrade(struct Game *sota, struct Menu *in_mc) 
     Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
 
     /* DESIGN QUESTION: should unit wait if weapon was traded? */
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eAcpt_sGmpMap_ssMapCndt_moDance(struct Game *sota, struct Menu *in_mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* - Refresh spectator - */
     SDL_assert(sota->candidates != NULL);
@@ -202,11 +199,9 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moDance(struct Game *sota, struct Menu *in_mc) 
     /* - Go back to standby - */
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, data1_entity, NULL);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *in_mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     tnecs_entity_t healer = sota->selected_unit_entity;
     /* - Healer uses staff on patient - */
@@ -248,11 +243,9 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *in_mc) 
     /* - Go back to standby - */
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, data1_entity, NULL);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eAcpt_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* - Set Defendant to selected unit - */
     // ONLY FOR ATTACK! HOW TO SWITCH FOR SPECTATOR/PATIENTS?
@@ -271,12 +264,10 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
     // ONLY FOR ATTACK! HOW TO SWITCH FOR SPECTATOR/PATIENTS?
     Event_Emit(__func__, SDL_USEREVENT, event_Defendant_Select, data1_entity, data2_entity);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- fsm_eCncl_sGmpMap_ssMapCndt_mo --- */
 void fsm_eCncl_sGmpMap_ssMapCndt_moDance(struct Game *sota, struct Menu *in_mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* 1. Turn menu_player_select_unit_action visible */
     tnecs_entity_t menu = sota->player_select_menus[MENU_PLAYER_SELECT_UNIT_ACTION];
@@ -294,11 +285,9 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moDance(struct Game *sota, struct Menu *in_mc) 
     int new_elem = PlayerSelectMenu_Option_Index(psm, MENU_OPTION_DANCE);
     Menu_Elem_Set(mc, sota, new_elem);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eCncl_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *in_mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* 1. Turn top menu (Staff_Select_Menu) visible */
     int stack_top = DARR_NUM(sota->menu_stack) - 1;
@@ -321,11 +310,9 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *in_mc) 
     tnecs_entity_t cursor = sota->entity_cursor;
     Menu_Elem_Set(mc, sota, 0);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eCncl_sGmpMap_ssMapCndt_moTrade(struct Game *sota, struct Menu *in_mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* 1. Turn Player_Select_Menu visible */
     int stack_top = DARR_NUM(sota->menu_stack) - 1;
     tnecs_entity_t menu_top = sota->menu_stack[stack_top];
@@ -342,11 +329,9 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moTrade(struct Game *sota, struct Menu *in_mc) 
     /* 3. Focus on menu */
     Game_cursorFocus_onMenu(sota);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* 1. Turn Item_Select_Menu visible */
     int stack_top               = DARR_NUM(sota->menu_stack) - 1;
@@ -382,18 +367,14 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
     /* 6. HUD reappear */
     popup->visible = true;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- fsm_eCncl_sGmpMap_ssMenu_m --- */
 void fsm_eCrsMvs_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // TODO: update healmap when STAFF CHANGES
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eCrsMvs_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(mc->elem < DEFAULT_EQUIPMENT_SIZE);
     /* -- Update Popup_Loadout_Stats to potential loadout -- */
     struct LoadoutSelectMenu *wsm = mc->data;
@@ -423,11 +404,9 @@ void fsm_eCrsMvs_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
 
     PopUp_Loadout_Stats_New(pls);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eCrsMvs_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Update Popup_Loadout_Stats to potential loadout -- */
     struct LoadoutSelectMenu *ism = mc->data;
 
@@ -461,12 +440,10 @@ void fsm_eCrsMvs_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
     }
     PopUp_Loadout_Stats_New(pls);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- fsm_eCncl_sGmpMap_ssMenu_m --- */
 void fsm_eCncl_sGmpMap_ssMenu_mTM(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct TradeMenu *tm = mc->data;
     SDL_assert(tm);
 
@@ -475,8 +452,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mTM(struct Game *sota, struct Menu *mc) {
     bool isTrader = (tm->selected_trader == TRADER_PASSIVE) || (tm->selected_trader == TRADER_ACTIVE);
     if (isItem || isTrader) {
         // TradeMenu_Deselect(tm);
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     /* - Hide TradeMenu - */
@@ -494,11 +470,9 @@ void fsm_eCncl_sGmpMap_ssMenu_mTM(struct Game *sota, struct Menu *mc) {
     Game_Switch_toCandidates(sota, sota->passives);
     Game_Cursor_Move_toCandidate(sota);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // IF not staff skill
     // - Destroy staff_select menu
     SDL_assert(mc->type == MENU_TYPE_STAFF_SELECT);
@@ -537,11 +511,9 @@ void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
         Menu_Elem_Set(mc_ua, sota, new_elem);
 
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eCncl_sGmpMap_ssMenu_mPCM(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Menu *menu;
     menu = TNECS_GET_COMPONENT(sota->world, sota->weapon_select_menu, Menu);
     struct LoadoutSelectMenu *wsm = menu->data;
@@ -569,11 +541,9 @@ void fsm_eCncl_sGmpMap_ssMenu_mPCM(struct Game *sota, struct Menu *mc) {
     SDL_assert(wsm->selected[UNIT_HAND_LEFT]    > -1);
     SDL_assert(wsm->selected[UNIT_HAND_RIGHT]   > -1);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eCncl_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(DARR_NUM(sota->menu_stack) > 0);
     bool destroy = false;
     tnecs_entity_t menu_popped_entity = Game_menuStack_Pop(sota, destroy);
@@ -584,11 +554,9 @@ void fsm_eCncl_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
     if (fsm_Pop_sGmpMap_ssMenu_m[mc_pop->type] != NULL)
         fsm_Pop_sGmpMap_ssMenu_m[mc_pop->type](sota, mc);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eCncl_sGmpMap_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(mc->type == MENU_TYPE_WEAPON_SELECT);
     struct LoadoutSelectMenu *wsm = mc->data;
 
@@ -650,11 +618,9 @@ void fsm_eCncl_sGmpMap_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
     }
     Map_Stacked_Dangermap_Compute(sota->map);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eCncl_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(mc->type == MENU_TYPE_ITEM_SELECT);
     struct LoadoutSelectMenu *ism = mc->data;
 
@@ -671,11 +637,9 @@ void fsm_eCncl_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
     ism->selected[UNIT_HAND_LEFT]   = -1;
     ism->selected[UNIT_HAND_RIGHT]  = -1;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eCncl_sGmpMap_ssMenu_mSM(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     bool destroy = false;
     tnecs_entity_t menu_popped_entity = Game_menuStack_Pop(sota, destroy);
@@ -685,12 +649,10 @@ void fsm_eCncl_sGmpMap_ssMenu_mSM(struct Game *sota, struct Menu *mc) {
     strncpy(sota->reason, "stops showing stats menu", sizeof(sota->reason));
     Game_subState_Set(sota, new_substate, sota->reason);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- fsm_eAcpt_sGmpMap_ssMenu_m --- */
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moTrade(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* - Turn player_select_menu invisible - */
     mc->visible = false;
@@ -704,11 +666,9 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moTrade(struct Game *sota, struct Menu *mc) {
     //  - Deselect item
     // - IF no item selected
     //  - Destroy staff_select menu
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mTM(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct TradeMenu *tm = mc->data;
     SDL_assert(tm);
 
@@ -717,37 +677,28 @@ void fsm_eAcpt_sGmpMap_ssMenu_mTM(struct Game *sota, struct Menu *mc) {
     // bool isTrader = (tm->selected_trader == TRADER_PASSIVE) || (tm->selected_trader == TRADER_ACTIVE);
     // if (!isItem || !isTrader) {
     //     TradeMenu_Select(tm);
-    //     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-    //     return;
+    //     //     return;
     // }
 
     // TradeMenu_Select(tm, mc->elem);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPCM(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* Start Combat */
     Event_Emit(__func__, SDL_USEREVENT, event_Combat_Start, data1_entity, data2_entity);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mSM(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* Swap weapons */
     struct LoadoutSelectMenu *wsm = mc->data;
@@ -802,11 +753,9 @@ void fsm_eAcpt_sGmpMap_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
         }
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert((sota->state == GAME_STATE_Gameplay_Map) || (sota->state == GAME_STATE_Title_Screen));
     SDL_assert(sota->substate == GAME_SUBSTATE_MENU);
 
@@ -815,11 +764,9 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
     sota->selected_menu_option = psm_ptr->options[mc->elem];
     if (fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo[sota->selected_menu_option] != NULL)
         fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo[sota->selected_menu_option](sota, mc);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct LoadoutSelectMenu *ssm = mc->data;
     SDL_assert(mc->elem >= 0);
     SDL_assert(mc->elem < DEFAULT_EQUIPMENT_SIZE);
@@ -851,19 +798,15 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
         }
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- fsm_psm_option_accept --- */
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moQuit(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Quit, data1_entity, data2_entity);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moWait(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* Pop all menus */
     bool destroy = false;
@@ -872,18 +815,14 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moWait(struct Game *sota, struct Menu *mc) {
 
     Event_Emit(__func__, SDL_USEREVENT, event_Unit_Wait, data1_entity, data2_entity);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moEndT(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_End, data1_entity, data2_entity);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDance(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(DARR_NUM(sota->spectators) > 0);
 
     /* - Turn player_select_menu invisible - */
@@ -895,11 +834,9 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDance(struct Game *sota, struct Menu *mc) {
     strncpy(sota->reason, "dance was selected, time to select spectator", sizeof(sota->reason));
     Game_Switch_toCandidates(sota, sota->spectators);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* -- Create StaffSelectMenu -- */
     if (sota->staff_select_menu == TNECS_NULL)
@@ -926,11 +863,9 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff(struct Game *sota, struct Menu *mc) {
 
     /* -- TODO: Render Face -- */
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Create WeaponSelectMenu -- */
     //      -> WeaponsSelectMenu should only show weapons USABLE ON TILE
 
@@ -983,11 +918,9 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
 
     /* -- TODO: Render Face -- */
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moItem(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Create ItemSelectMenu -- */
     if (sota->item_select_menu == TNECS_NULL)
         Game_ItemSelectMenu_Create(sota);
@@ -1009,21 +942,17 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moItem(struct Game *sota, struct Menu *mc) {
 
     /* -- TODO: Render Face -- */
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDbgMap(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota->state == GAME_STATE_Title_Screen);
     SDL_assert(sota->substate == GAME_SUBSTATE_MENU);
     Event_Emit(__func__, SDL_USEREVENT, event_Load_Debug_Map, data1_entity, data2_entity);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* -- Menu Pop/Exit FSM -- */
 // For Last menu popped? for Any menu popped?
 void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Popped menu reverter */
     // TODO fsm_Pop_sGmpMap_ssMenu_m -> for menu popping
     struct PlayerSelectMenu *menu_ptr = (struct PlayerSelectMenu *)mc->data;
@@ -1089,6 +1018,5 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
     if ((sota->substate != new_substate) && (new_substate > 0))
         Game_subState_Set(sota, new_substate, sota->reason);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 

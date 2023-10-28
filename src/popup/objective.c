@@ -12,16 +12,13 @@ struct PopUp_Objective PopUp_Objective_default =  {
 
 /* --- Constructor/Destructor --- */
 struct PopUp_Objective *PopUp_Objective_Alloc() {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct PopUp_Objective *po = SDL_malloc(sizeof(struct PopUp_Objective));
     *po = PopUp_Objective_default;
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (po);
 }
 
 void PopUp_Objective_Load(struct PopUp_Objective *po, SDL_Renderer *renderer,
                           struct n9Patch *n9patch) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(po != NULL);
     *n9patch                 = n9Patch_default;
     n9patch->patch_pixels.x  = PO_PATCH_PIXELS;
@@ -36,11 +33,9 @@ void PopUp_Objective_Load(struct PopUp_Objective *po, SDL_Renderer *renderer,
     n9patch->pos.y           = 0;
     char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "tilepopup8px.png");
     n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void PopUp_Objective_Free(struct PopUp_Objective *po) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(po != NULL);
     if (po->texture != NULL) {
         SDL_DestroyTexture(po->texture);
@@ -60,12 +55,10 @@ void PopUp_Objective_Free(struct PopUp_Objective *po) {
     }
     SDL_free(po);
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Setters --- */
 void PopUp_Objective_Set_Obj(struct PopUp_Objective *po, char *obj) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (po->objective != NULL) {
         SOTA_Log_Debug("Objective '%s' removed.", po->objective);
         free(po->objective);
@@ -74,11 +67,9 @@ void PopUp_Objective_Set_Obj(struct PopUp_Objective *po, char *obj) {
     po->objective = malloc(len);
     strncpy(po->objective, obj, len);
     SOTA_Log_Debug("Objective set to '%s'", po->objective);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void PopUp_Objective_Set_SubObj(struct PopUp_Objective *po, char *subobj) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (po->objective != NULL) {
         SOTA_Log_Debug("Sub-Objective %s removed.", po->sub_objective);
         free(po->sub_objective);
@@ -87,12 +78,10 @@ void PopUp_Objective_Set_SubObj(struct PopUp_Objective *po, char *subobj) {
     po->sub_objective = malloc(len);
     strncpy(po->sub_objective, subobj, len);
     SOTA_Log_Debug("Sub-Objective set to '%s'", po->sub_objective);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Computers --- */
 void PopUp_Objective_Compute_Size(struct PopUp_Objective *po, struct n9Patch *n9patch) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* - Compute qith opf current objectives - */
     int obj_w = 0, subobj_w = 0;
@@ -116,13 +105,11 @@ void PopUp_Objective_Compute_Size(struct PopUp_Objective *po, struct n9Patch *n9
     /* - Destroy texture because it does not fit new size - */
     SDL_DestroyTexture(po->texture);
     po->texture = NULL;
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Drawing --- */
 void PopUp_Objective_Draw(struct PopUp *popup, struct Point pos,
                           SDL_Texture *render_target, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct PopUp_Objective *po = (struct PopUp_Objective *)popup->data;
     struct n9Patch *n9patch = &popup->n9patch;
 
@@ -138,12 +125,10 @@ void PopUp_Objective_Draw(struct PopUp *popup, struct Point pos,
     };
     SDL_assert(po->texture != NULL);
     SDL_RenderCopy(renderer, po->texture, NULL, &dstrect);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void PopUp_Objective_Update(struct PopUp_Objective *po,
                             struct n9Patch *n9patch, SDL_Texture *render_target, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     SDL_assert(n9patch != NULL);
     SDL_assert(po != NULL);
@@ -205,5 +190,4 @@ void PopUp_Objective_Update(struct PopUp_Objective *po,
     po->update = false;
     SDL_SetRenderTarget(renderer, render_target);
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

@@ -18,17 +18,13 @@ struct Tilemap_Shader Tilemap_Shader_default = {
 
 i32 *matrix_circ_noise(i32 *matrix, i32 origx, i32 origy,
                        size_t width, size_t height, size_t row_len, size_t col_len) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (NULL);
 }
 
 i32 *matrix_rect_noise(i32 *matrix, i32 origx, i32 origy,
                        size_t diameter, size_t row_len, size_t col_len) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // How to add noise?
     // flip bits inside a certain radius, greater than the circle? uniformly distributed points?
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (NULL);
 }
 
@@ -68,7 +64,6 @@ u8 *pixels_and(u8 *matrix1, u8 *matrix2, size_t arr_len) {
 
 void _Index_Shade_Pixels(u8 *to, SDL_Surface *unlocked_surface, u8 *pixels_list,
                          size_t pixels_num, size_t offset_x, size_t offset_y) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(unlocked_surface->format->format));
     SDL_assert(pixels_num > 0);
     u8 *pixels = unlocked_surface->pixels;
@@ -83,11 +78,9 @@ void _Index_Shade_Pixels(u8 *to, SDL_Surface *unlocked_surface, u8 *pixels_list,
         size_t pos = Util_SDL_Surface_Index(unlocked_surface, (x + offset_x), (y + offset_y));
         pixels[pos] = to[pixels[pos]];
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _Index_Shade_Rect( u8 *to, SDL_Surface *unlocked_surface, SDL_Rect *rect) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     u8 *pixels = unlocked_surface->pixels;
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(unlocked_surface->format->format));
     for (size_t x = rect->x; x < rect->x + rect->w; x++) {
@@ -96,12 +89,10 @@ void _Index_Shade_Rect( u8 *to, SDL_Surface *unlocked_surface, SDL_Rect *rect) {
             pixels[index] = to[pixels[index]];
         }
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- TILEMAP SHADER --- */
 void Tilemap_Shader_Load_Tilemap_JSON(struct Tilemap_Shader *shd, const cJSON *const jmap) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     SDL_assert(shd != NULL);
     SDL_assert(jmap != NULL);
@@ -139,11 +130,9 @@ void Tilemap_Shader_Load_Tilemap_JSON(struct Tilemap_Shader *shd, const cJSON *c
         /* - Put shadow tilemap in list of shadow tilemaps - */
         DARR_PUT(shd->shadow_tilemaps, shadow_tilemap);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Tilemap_Shader_Free(struct Tilemap_Shader *shd) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("shadowtile_pixels_lists");
     SDL_assert(shd != NULL);
     if (shd->shadowtile_pixels_lists != NULL) {
@@ -173,29 +162,23 @@ void Tilemap_Shader_Free(struct Tilemap_Shader *shd) {
         DARR_FREE(shd->shadow_tilemaps);
         shd->shadow_tilemaps = NULL;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _Tilemap_Shader_Shadow_Free( struct Tilemap_Shader *shd) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (shd->shadowtile_pixels_num != NULL)
         free(shd->shadowtile_pixels_num);
     if (shd->shadowtile_pixels_lists != NULL)
         free(shd->shadowtile_pixels_lists);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Tilemap_Shader_Alloc(struct Tilemap_Shader *shd, size_t tilenum) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     shd->shadowtile_num = tilenum;
     shd->shadowtile_pixels_num = calloc(tilenum, sizeof(*shd->shadowtile_pixels_num));
     shd->shadowtile_pixels_lists = calloc(tilenum, sizeof(*shd->shadowtile_pixels_lists));
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Tilemap_Shader_Load_Tileset_pixels(struct Tilemap_Shader *shd, const char *filename,
                                         size_t tilenum, i32 tilesize[TWO_D]) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     _Tilemap_Shader_Shadow_Free( shd);
     Tilemap_Shader_Alloc(shd, tilenum);
@@ -222,12 +205,10 @@ void Tilemap_Shader_Load_Tileset_pixels(struct Tilemap_Shader *shd, const char *
     }
     SDL_UnlockSurface(surf);
     SDL_FreeSurface(surf);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Tilemap_Shader_Load_Tileset_JSON(struct Tilemap_Shader *shd,
                                       const cJSON *const jshadow_tileset) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     SDL_assert(shd != NULL);
     SDL_assert(jshadow_tileset != NULL);
@@ -269,23 +250,19 @@ void Tilemap_Shader_Load_Tileset_JSON(struct Tilemap_Shader *shd,
             shd->shadowtile_pixels_lists[i][j++] = (u8)cJSON_GetNumberValue(jnum);
         }
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Tilemap_Shader_Load_JSON(struct Tilemap_Shader *shd, const cJSON *const jmap,
                               const cJSON *const jshadow_tileset) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(shd);
     SDL_assert(jmap);
     SDL_assert(jshadow_tileset);
     Tilemap_Shader_Load_Tilemap_JSON(shd, jmap);
     Tilemap_Shader_Load_Tileset_JSON(shd, jshadow_tileset);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 SDL_Surface *Tilemap_Shade_Surface(struct Tilemap_Shader *shd, SDL_Surface *surf, u8 frame,
                                    const struct Settings *settings, struct Camera *camera) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     SDL_assert(shd != NULL);
     SDL_assert(surf != NULL);
@@ -311,13 +288,11 @@ SDL_Surface *Tilemap_Shade_Surface(struct Tilemap_Shader *shd, SDL_Surface *surf
         }
     }
     SDL_UnlockSurface(surf);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (surf);
 }
 
 /* --- INDEX SHADER --- */
 void Index_Shader_Load(struct Index_Shader *shd, SDL_Surface *surf, SDL_Rect *rect) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     SDL_assert(surf != NULL);
     SDL_assert(rect != NULL);
@@ -344,22 +319,18 @@ void Index_Shader_Load(struct Index_Shader *shd, SDL_Surface *surf, SDL_Rect *re
     shd->pixels_num = (DARR_NUM(shd->pixels_list) / 2);
     free(temp_arr);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Index_Shader_Free(struct Index_Shader *shd) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (shd != NULL) {
         if (shd->shaded_pixels != NULL)
             free(shd->shaded_pixels);
         if (shd->pixels_list != NULL)
             DARR_FREE(shd->pixels_list);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 SDL_Surface *Index_Shade_Surface(struct Index_Shader *shd, SDL_Surface *surf, SDL_Rect *rect) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     SDL_assert(shd != NULL);
     SDL_assert(shd->pixels_list != NULL);
@@ -389,6 +360,5 @@ SDL_Surface *Index_Shade_Surface(struct Index_Shader *shd, SDL_Surface *surf, SD
     _Index_Shade_Pixels(shd->to, out, shd->pixels_list, shd->pixels_num, rect->x, rect->y);
     SDL_UnlockSurface(out);
     SDL_UnlockSurface(surf);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }

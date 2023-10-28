@@ -131,7 +131,6 @@ struct controllerGamepad controllerGamepad_default = {
 
 /* --- Constructors/Destructors --- */
 void Gamepad_Init(struct controllerGamepad *gp) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Gamepad_Free(gp);
     gp->controllers_num     = controllerGamepad_default.controllers_num;
     gp->controllers_len     = controllerGamepad_default.controllers_len;
@@ -140,11 +139,9 @@ void Gamepad_Init(struct controllerGamepad *gp) {
     gp->joystick_instances  = calloc(gp->controllers_len, sizeof(*gp->joystick_instances));
     SDL_assert(gp->joystick_instances != NULL);
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Gamepad_Free(struct controllerGamepad *gp) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (gp->controllers != NULL) {
         free(gp->controllers);
         gp->controllers = NULL;
@@ -153,11 +150,9 @@ void Gamepad_Free(struct controllerGamepad *gp) {
         free(gp->joystick_instances);
         gp->joystick_instances = NULL;
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 bool Gamepad_ButtonorAxis(struct controllerGamepad *gp, int sdl_button, int i, bool isbutton) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_GameController *controller  = gp->controllers[i];
     bool out;
     if (isbutton) {
@@ -170,12 +165,10 @@ bool Gamepad_ButtonorAxis(struct controllerGamepad *gp, int sdl_button, int i, b
         // SDL_Log("Gamepad pressing %s", sdl_axis_names[sdl_button]);
     }
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 // Note: input button index in GamepadInputMap
 bool Gamepad_isPressed(struct controllerGamepad *gp, int sota_button) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     struct GamepadInputMap *map = gp->inputmap;
     int sdl_button = sdl_buttons[sota_button];
@@ -188,12 +181,10 @@ bool Gamepad_isPressed(struct controllerGamepad *gp, int sota_button) {
     for (int i = 0; i < gp->controllers_num; i++) {
         out |= Gamepad_ButtonorAxis(gp, sdl_button, i, isbutton);
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 struct Point Gamepad_Joystick_Direction(struct controllerGamepad *gp) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32    jdead     =  gp->deadzone_joystick;
     struct Point cursor_move = {0};
     struct GamepadInputMap      *im = gp->inputmap;
@@ -226,13 +217,11 @@ struct Point Gamepad_Joystick_Direction(struct controllerGamepad *gp) {
             break;
     }
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (cursor_move);
 }
 
 
 void Gamepad_removeController(struct controllerGamepad *gp, i32 joystick_instance) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("remove joystick %ld", joystick_instance);
     for (int i = 0; i < gp->controllers_num; i++) {
         if (joystick_instance == gp->joystick_instances[i]) {
@@ -251,11 +240,9 @@ void Gamepad_removeController(struct controllerGamepad *gp, i32 joystick_instanc
             }
         }
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _Gamepad_Realloc(struct controllerGamepad *gp) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(gp->controllers        != NULL);
     SDL_assert(gp->joystick_instances != NULL);
     SDL_assert(gp->controllers_len    > 0);
@@ -272,11 +259,9 @@ void _Gamepad_Realloc(struct controllerGamepad *gp) {
     SDL_assert(gp->controllers        != NULL);
     SDL_assert(gp->joystick_instances != NULL);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Gamepad_addController(struct controllerGamepad *gp, i32 joystick_device) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("add joystick %ld", joystick_device);
     SDL_assert(SDL_IsGameController(joystick_device));
     if ((gp->controllers_num + 1) >= gp->controllers_len)
@@ -288,11 +273,9 @@ void Gamepad_addController(struct controllerGamepad *gp, i32 joystick_device) {
     gp->joystick_instances[gp->controllers_num] = SDL_JoystickInstanceID(joystick);
     gp->controllers_num++;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Gamepad_Held(i8 *held, size_t *h_num, i32 *held_ns, i8 *pressed, size_t p_num, i32 dt_ns) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(p_num < SOTA_INPUT_END);
     SDL_assert(p_num >= 0);
     bool arrequal = false;
@@ -312,5 +295,4 @@ void Gamepad_Held(i8 *held, size_t *h_num, i32 *held_ns, i8 *pressed, size_t p_n
         *held_ns    = 0;
     }
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

@@ -34,18 +34,15 @@ struct MenuElemDirections idm_links[IDM_ELEM_NUM] = {
 
 /* --- Constructors/Destructors --- */
 struct ItemDropMenu *ItemDropMenu_Alloc() {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct ItemDropMenu *idm = malloc(sizeof(struct ItemDropMenu));
     SDL_assert(idm != NULL);
     *idm = ItemDropMenu_default;
     SDL_assert(idm->texture == NULL);
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (idm);
 }
 
 void ItemDropMenu_Load(struct ItemDropMenu *idm, SDL_Renderer *renderer, struct n9Patch *n9patch) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* n9patch init */
     n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;
     n9patch->patch_pixels.y  = MENU_PATCH_PIXELS;
@@ -61,11 +58,9 @@ void ItemDropMenu_Load(struct ItemDropMenu *idm, SDL_Renderer *renderer, struct 
         n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     }
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void ItemDropMenu_Free(struct ItemDropMenu *idm) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (idm->texture != NULL) {
         SDL_DestroyTexture(idm->texture);
         idm->texture = NULL;
@@ -74,7 +69,6 @@ void ItemDropMenu_Free(struct ItemDropMenu *idm) {
         free(idm);
         idm = NULL;
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Elements --- */
@@ -84,21 +78,16 @@ void ItemDropMenu_Elem_Pos(struct ItemDropMenu *idm, struct Menu *mc) {
 
 /* --- Selection --- */
 void ItemDropMenu_Select(struct ItemDropMenu *idm, i8 elem) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (elem == IDM_ELEM_YES)
         ItemDropMenu_Drop(idm);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void ItemDropMenu_Drop(struct ItemDropMenu *idm) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Unit_Item_Drop(idm->unit, idm->item_todrop);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Drawing --- */
 void ItemDropMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct ItemDropMenu *idm = (struct ItemDropMenu *)mc->data;
     SDL_assert(idm       != NULL);
     SDL_assert(idm->unit != NULL);
@@ -120,12 +109,10 @@ void ItemDropMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *rende
     SDL_RenderCopy(renderer, idm->texture, NULL, &dstrect);
     Utilities_DrawColor_Reset(renderer);
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void ItemDropMenu_Update(struct  ItemDropMenu  *idm, struct n9Patch *n9patch,
                          SDL_Texture *render_target, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     SDL_assert((idm->item_todrop >= 0) && (idm->item_todrop < DEFAULT_EQUIPMENT_SIZE));
     SDL_assert(renderer                != NULL);
@@ -217,6 +204,5 @@ void ItemDropMenu_Update(struct  ItemDropMenu  *idm, struct n9Patch *n9patch,
 
     SDL_SetRenderTarget(renderer, render_target);
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 

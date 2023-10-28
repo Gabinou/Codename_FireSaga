@@ -12,16 +12,13 @@ struct n9Patch n9Patch_default =  {
 
 
 void n9Patch_Free(struct n9Patch *n9patch) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (n9patch->texture != NULL) {
         SDL_DestroyTexture(n9patch->texture);
         n9patch->texture = NULL;
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void n9Patch_Fit(struct n9Patch *n9patch, struct Point content) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(n9patch->patch_pixels.x  > 0);
     SDL_assert(n9patch->patch_pixels.y  > 0);
     SDL_assert(content.x                > 0);
@@ -41,11 +38,9 @@ void n9Patch_Fit(struct n9Patch *n9patch, struct Point content) {
         n9patch->size_patches.y++;
         n9patch->fit.y = n9patch->patch_pixels.y - n9patch->fit.y;
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void n9Patch_Draw(struct n9Patch *n9patch, struct SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(n9patch);
     SDL_assert(n9patch->patch_pixels.x > 0);
     SDL_assert(n9patch->patch_pixels.y > 0);
@@ -91,5 +86,4 @@ void n9Patch_Draw(struct n9Patch *n9patch, struct SDL_Renderer *renderer) {
             SDL_RenderCopy(renderer, n9patch->texture, &srcrect, &dstrect);
         }
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

@@ -2,7 +2,6 @@
 
 /* --- Combat --- */
 void Game_Combat_Outcome(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     struct Unit *defendant       = TNECS_GET_COMPONENT(sota->world, sota->defendant, Unit);
     struct Unit *aggressor       = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Unit);
@@ -16,5 +15,4 @@ void Game_Combat_Outcome(struct Game *sota) {
     Compute_Combat_Outcome(sota->combat_phases, sota->combat_attacks, &sota->combat_forecast,
                            &sota->tinymt32, aggressor, defendant);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

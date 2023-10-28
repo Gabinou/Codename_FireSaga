@@ -18,7 +18,6 @@ SDL_Palette *palette_NES_purple = NULL;
 SDL_Palette **sota_palettes = NULL;
 
 void Palettes_Load() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     palette_NES =                        SDL_AllocPalette(PALETTE_NES_COLOR_NUM);
     palette_NES_enemy =                  SDL_AllocPalette(PALETTE_NES_COLOR_NUM);
     palette_NES_filter_green =           SDL_AllocPalette(PALETTE_NES_COLOR_NUM);
@@ -78,11 +77,9 @@ void Palettes_Load() {
     sota_palettes[PALETTE_NES_PURPLE] =           palette_NES_purple;
     SDL_assert(palette_NES != NULL);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Palettes_Free() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota_palettes != NULL) {
         for (size_t i = 0; i < PALETTE_NUM; i++) {
             if (sota_palettes[i] != NULL)
@@ -91,7 +88,6 @@ void Palettes_Free() {
         free(sota_palettes);
         sota_palettes = NULL;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 u8 palette_table_NES_shadow[PALETTE_NES_COLOR_NUM];
@@ -105,7 +101,6 @@ u8 palette_table_NES_lighten[PALETTE_NES_COLOR_NUM];
 u8 palette_table_NES_lightenmore[PALETTE_NES_COLOR_NUM];
 
 void Palette_Tables_Load() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Filesystem_readJSON_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_shadow)".json",palette_table_NES_shadow);
     Filesystem_readJSON_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_night)".json",palette_table_NES_night);
     Filesystem_readJSON_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_filter_darkred)".json",palette_table_NES_filter_darkred);
@@ -115,5 +110,4 @@ void Palette_Tables_Load() {
     Filesystem_readJSON_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_darken)".json",palette_table_NES_darken);
     Filesystem_readJSON_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_lighten)".json",palette_table_NES_lighten);
     Filesystem_readJSON_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_lightenmore)".json",palette_table_NES_lightenmore);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

@@ -3,7 +3,6 @@
 
 /* --- TopoffBar --- */
 void TopoffBar_Draw(struct SimpleBar *tob, SDL_Renderer *renderer) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /*   FLIPPED BAR     NO FLIP BAR    */
     /*  |     -------|  |--------    |  */
     /*  |____________|  |____________|  */
@@ -80,6 +79,5 @@ void TopoffBar_Draw(struct SimpleBar *tob, SDL_Renderer *renderer) {
     /* -- Finish -- */
     Utilities_DrawColor_Reset(renderer);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 

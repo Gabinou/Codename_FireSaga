@@ -2,7 +2,6 @@
 #include "systems/time_system.h"
 
 void timeSynchronize(tnecs_system_input_t *in_input) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     SDL_assert(in_input->user_data == NULL);
     /* -- Get components arrays -- */
@@ -20,5 +19,4 @@ void timeSynchronize(tnecs_system_input_t *in_input) {
         ut->frame_count = (!ut->reset) * (ut->frame_count + 1);
         ut->reset       = false;
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

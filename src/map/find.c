@@ -40,13 +40,11 @@ void Map_Find_Usable(struct Map *map, tnecs_world_t *world, tnecs_entity_t unit_
     }
 
     DARR_FREE(defendants);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 tnecs_entity_t *Map_Find_Defendants(struct Map *map, i32 *attacktolist,
                                     tnecs_entity_t *defendants, tnecs_entity_t aggressor,
                                     bool fastquit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Find all defendants on attacktolist according to alignment */
 
     /* Note: Assumes attacktolist was created before with matrix2list_noM */
@@ -71,13 +69,11 @@ tnecs_entity_t *Map_Find_Defendants(struct Map *map, i32 *attacktolist,
         if (align_a != align_t)
             DARR_PUT(defendants, unitontile);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (defendants);
 }
 
 tnecs_entity_t *Map_Find_Breakables(struct Map *map, i32 *attacktolist,
                                     tnecs_entity_t *attackable, bool fastquit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Find all breakables on attacktolist */
 
     // Note: Assumes attacktolist was created before with matrix2list_noM
@@ -98,7 +94,6 @@ tnecs_entity_t *Map_Find_Breakables(struct Map *map, i32 *attacktolist,
                 DARR_PUT(attackable, map->breakables_ent[i]);
         }
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (attackable);
 }
 
@@ -107,7 +102,6 @@ tnecs_entity_t *Map_Find_Patients(struct Map *map, struct dtab *weapons_dtab, i3
                                   bool fastquit) {
     /* Find all patients on healtolist according to alignment */
     /* Assumes healtolist was created before with matrix2list_noM */
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Unit *healer = TNECS_GET_COMPONENT(map->world, healer_ent, Unit);
 
     /* TODO: full health people arent patients. */
@@ -138,12 +132,10 @@ tnecs_entity_t *Map_Find_Patients(struct Map *map, struct dtab *weapons_dtab, i3
         if (add)
             DARR_PUT(patients, unitontile);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (patients);
 }
 
 tnecs_entity_t Map_Find_Breakable_Ent(struct Map *map, i32 x, i32 y) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_entity_t out = TNECS_NULL;
     for (size_t i = 0; i < map->breakable_num; i++) {
         struct Position *pos;
@@ -153,12 +145,10 @@ tnecs_entity_t Map_Find_Breakable_Ent(struct Map *map, i32 x, i32 y) {
             break;
         }
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 tnecs_entity_t Map_Find_Door_Ent(struct Map *map, i32 x, i32 y) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_entity_t out = TNECS_NULL;
     for (size_t i = 0; i < map->breakable_num; i++) {
         struct Position *pos = TNECS_GET_COMPONENT(map->world, map->doors_ent[i], Position);
@@ -167,12 +157,10 @@ tnecs_entity_t Map_Find_Door_Ent(struct Map *map, i32 x, i32 y) {
             break;
         }
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 tnecs_entity_t Map_Find_Chest_Ent(struct Map *map, i32 x, i32 y) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_entity_t out = TNECS_NULL;
     for (size_t i = 0; i < map->breakable_num; i++) {
         struct Position *pos = TNECS_GET_COMPONENT(map->world, map->chests_ent[i], Position);
@@ -181,12 +169,10 @@ tnecs_entity_t Map_Find_Chest_Ent(struct Map *map, i32 x, i32 y) {
             break;
         }
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 tnecs_entity_t *Map_Find_Spectators(struct Map *map, tnecs_entity_t *spectators, i32 x, i32 y) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Find spectator on neighbour tiles (to dance) -- */
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
         int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, map->col_len);
@@ -202,12 +188,10 @@ tnecs_entity_t *Map_Find_Spectators(struct Map *map, tnecs_entity_t *spectators,
         if (unit->waits)
             DARR_PUT(spectators, spectator);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (spectators);
 }
 
 tnecs_entity_t *Map_Find_Auditors(struct Map *map, tnecs_entity_t *auditors, i32 x, i32 y) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Find auditors on neighbour tiles (to speak) -- */
 
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
@@ -224,12 +208,10 @@ tnecs_entity_t *Map_Find_Auditors(struct Map *map, tnecs_entity_t *auditors, i32
         if (unit->talkable)
             DARR_PUT(auditors, auditor_ent);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (auditors);
 }
 
 tnecs_entity_t *Map_Find_Traders(struct Map *map, tnecs_entity_t *passives, i32 x, i32 y) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Find traders on neighbours (to trade with) -- */
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
         int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, map->col_len);
@@ -244,13 +226,11 @@ tnecs_entity_t *Map_Find_Traders(struct Map *map, tnecs_entity_t *passives, i32 
         if (SotA_isPC(unit->army))
             DARR_PUT(passives, passive);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (passives);
 }
 
 tnecs_entity_t *Map_Find_Victims(struct Map *map, tnecs_entity_t *victims_ent,
                                  i32 x, i32 y, tnecs_entity_t savior_ent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Find victims on neighbours (to rescue)
 
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
@@ -267,12 +247,10 @@ tnecs_entity_t *Map_Find_Victims(struct Map *map, tnecs_entity_t *victims_ent,
         if (Unit_canCarry(savior, victim) && SotA_isPC(victim->army))
             DARR_PUT(victims_ent, victim_ent);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (victims_ent);
 }
 
 tnecs_entity_t *Map_Find_Doors(struct Map *map, tnecs_entity_t *openable, i32 x, i32 y) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Check if unit is next to a door -- */
     for (size_t i = 0; i < map->door_num; i++) {
         struct Position *pos = TNECS_GET_COMPONENT(map->world, map->doors_ent[i], Position);
@@ -287,12 +265,10 @@ tnecs_entity_t *Map_Find_Doors(struct Map *map, tnecs_entity_t *openable, i32 x,
             DARR_PUT(openable, map->doors_ent[i]);
         // TODO: check if key in inventory to put in openable
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (openable);
 }
 
 tnecs_entity_t *Map_Find_Chests(struct Map *map, tnecs_entity_t *openable, i32 x, i32 y) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Find Chests on current position and neighbours
     for (size_t i = 0; i < map->chest_num; i++) {
         struct Position *pos = TNECS_GET_COMPONENT(map->world, map->chests_ent[i], Position);
@@ -307,6 +283,5 @@ tnecs_entity_t *Map_Find_Chests(struct Map *map, tnecs_entity_t *openable, i32 x
             DARR_PUT(openable, map->chests_ent[i]);
         // TODO: check if key in inventory to put in openable
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (openable);
 }

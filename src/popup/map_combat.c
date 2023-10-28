@@ -19,7 +19,6 @@ struct PopUp_Map_Combat PopUp_Map_Combat_default = {
 
 /* --- Constructors/Destructors --- */
 void PopUp_Map_Combat_Free(struct PopUp_Map_Combat *pmc) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     if (pmc->texture_header_blue != NULL) {
         SDL_DestroyTexture(pmc->texture_header_blue);
@@ -46,12 +45,10 @@ void PopUp_Map_Combat_Free(struct PopUp_Map_Combat *pmc) {
         pmc->texture = NULL;
     }
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void PopUp_Map_Combat_Load(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer,
                            struct n9Patch *n9patch) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     n9patch->size_pixels.x    = POPUP_MAP_COMBAT_PATCH_SIZE_X * 2;
     n9patch->patch_pixels.y   = POPUP_MAP_COMBAT_PATCH_SIZE_Y;
@@ -96,14 +93,12 @@ void PopUp_Map_Combat_Load(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer,
     pmc->circlebar_dft.pos.y    = POPUP_MAP_COMBAT_CIRCLE_BAR_Y;
     pmc->circlebar_agg.flip     = SDL_FLIP_HORIZONTAL;
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void PopUp_Map_Combat_Units(struct PopUp_Map_Combat *pmc, struct Game *sota,
                             struct Unit *aggressor, struct Unit *defendant,
                             const struct Point *agg_pos, const struct Point *dft_pos) {
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     // tnecs_entity_t popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
     // SDL_assert(popup_ent != TNECS_NULL);
@@ -127,13 +122,11 @@ void PopUp_Map_Combat_Units(struct PopUp_Map_Combat *pmc, struct Game *sota,
     pmc->dft_current_hp = pmc->defendant->current_hp;
     pmc->phases         = sota->combat_phases;
     pmc->update         = true;
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Drawing --- */
 void PopUp_Map_Combat_Draw(struct PopUp *popup, struct Point pos,
                            SDL_Texture *render_target, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct PopUp_Map_Combat *pmc = (struct PopUp_Map_Combat *)popup->data;
     struct n9Patch *n9patch = &popup->n9patch;
 
@@ -152,7 +145,6 @@ void PopUp_Map_Combat_Draw(struct PopUp *popup, struct Point pos,
     SDL_assert(dstrect.x > 0);
     SDL_assert(pmc->texture != NULL);
     SDL_RenderCopy(renderer, pmc->texture, NULL, &dstrect);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _PopUp_Map_Combat_Draw_HP(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer) {
@@ -373,7 +365,6 @@ struct n9Patch PopUp_Map_Combat_Compute_Patch(struct PopUp_Map_Combat *pmc,
 
 void PopUp_Map_Combat_Update(struct PopUp_Map_Combat *pmc, struct n9Patch *n9patch,
                              SDL_Texture *render_target, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     SDL_assert(n9patch                      != NULL);
     SDL_assert(pmc                          != NULL);
@@ -454,5 +445,4 @@ void PopUp_Map_Combat_Update(struct PopUp_Map_Combat *pmc, struct n9Patch *n9pat
     Utilities_DrawColor_Reset(renderer);
     // Filesystem_Texture_Dump("PopupMapCombat.png", renderer, pmc->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

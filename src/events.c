@@ -17,21 +17,16 @@ tnecs_entity_t *data1_entity;
 tnecs_entity_t *data2_entity;
 
 void Events_Data_Malloc() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     data1_entity = SDL_malloc(sizeof(tnecs_entity_t));
     data2_entity = SDL_malloc(sizeof(tnecs_entity_t));
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Events_Data_Free() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     free(data1_entity);
     free(data2_entity);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 tnecs_entity_t Events_Controllers_Check(struct Game *sota, i32 code) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_entity_t out_accepter_entity;
     struct controllerGamepad  *gamepad_ptr;
     struct controllerKeyboard *keyboard_ptr;
@@ -90,13 +85,11 @@ tnecs_entity_t Events_Controllers_Check(struct Game *sota, i32 code) {
             printf("controller code is invalid.");
             exit;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_accepter_entity);
 }
 
 /* --- EVENT RECEIVERS --- */
 void Event_Emit(const char *emitter, u32 type, i32 code, void *data1, void *data2) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(code > 0);
     char *event_name = event_names[code - event_Start];
     SOTA_Log_Debug("emitter -> %s, event -> %s", emitter, event_name);
@@ -107,33 +100,25 @@ void Event_Emit(const char *emitter, u32 type, i32 code, void *data1, void *data
     event.user.data1    = data1;
     event.user.data2    = data2;
     SDL_PushEvent(&event);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Start(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_End(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     sota->isrunning = false;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Load_Debug_Map(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- UNLOAD FirstMenu -- */
     Game_FirstMenu_Destroy(sota);
     Game_Title_Destroy(sota);
     /* -- LOAD Debug map -- */
     Game_debugMap_Load(sota);
     Utilities_DrawColor_Reset(sota->renderer);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 controller_type = *(i32 *) userevent->user.data2;
     tnecs_entity_t mover_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(mover_entity > 0);
@@ -152,11 +137,9 @@ void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
     Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moved, &sota->cursor_move,
                userevent->user.data2);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Cursor_Moved(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(userevent->user.data2 != NULL);
     i32 controller_type = * (i32 *) userevent->user.data2;
     tnecs_entity_t mover_entity = Events_Controllers_Check(sota, controller_type);
@@ -177,61 +160,43 @@ void receive_event_Cursor_Moved(struct Game *sota, SDL_Event *userevent) {
 
     // cursor_move->x = 0;
     // cursor_move->y = 0;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Input_CANCEL(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 controller_type = * (i32 *) userevent->user.data1;
     tnecs_entity_t canceller_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(canceller_entity > 0);
     if (fsm_eCncl_s[sota->state] != NULL)
         fsm_eCncl_s[sota->state](sota, canceller_entity);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Map_Win(struct Game *sota, SDL_Event *Map_Win) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Map_Lose(struct Game *sota, SDL_Event *Map_Lose) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Item_Get(struct Game *sota, SDL_Event *Map_Lose) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Mouse_Disable(struct Game *sota, SDL_Event *Mouse_Disable) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Game_Mouse_Disable(sota);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Mouse_Enable(struct Game *sota, SDL_Event *Mouse_Enable) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Game_Mouse_Enable(sota);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Cursor_Enable(struct Game *sota, SDL_Event *Cursor_Enable) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Game_Cursor_Enable(sota);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Cursor_Disable(struct Game *sota, SDL_Event *Cursor_Disable) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Game_Cursor_Disable(sota);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // u8 army = * (u8 *) userevent->user.data1;
     struct Map *map = sota->map;
     SDL_assert(sota->state == GAME_STATE_Gameplay_Map);
@@ -249,11 +214,9 @@ void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
 
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     u8 army = * (u8 *) userevent->user.data1;
     if (SotA_isPC(army)) {
         // Game_State_Set(sota, GAME_STATE_Gameplay_Map);
@@ -267,11 +230,9 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         Game_subState_Set(sota, GAME_SUBSTATE_MAP_NPCTURN, sota->reason);
         Game_Cursor_Free(sota);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Input_STATS(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota != NULL);
     i32 controller_type = * (i32 *) userevent->user.data1;
     tnecs_entity_t accepter_entity = Events_Controllers_Check(sota, controller_type);
@@ -283,11 +244,9 @@ void receive_event_Input_STATS(struct Game *sota, SDL_Event *userevent) {
     // }
     if (fsm_eStats_ss[sota->substate] != NULL)
         fsm_eStats_ss[sota->substate](sota, accepter_entity);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* -- Popping all menus -- */
     bool destroy = false;
@@ -335,22 +294,18 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
         Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Input_GLOBALRANGE(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
 
     if (fsm_eGlbRng_ss[sota->substate] != NULL)
         fsm_eGlbRng_ss[sota->substate](sota);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Input_ACCEPT(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     SDL_assert(sota);
     i32 controller_type = * (i32 *) userevent->user.data1;
@@ -360,36 +315,26 @@ void receive_event_Input_ACCEPT(struct Game *sota, SDL_Event *userevent) {
 
     if (fsm_eAcpt_s[sota->state] != NULL)
         fsm_eAcpt_s[sota->state](sota, accepter_entity);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_SDL_AUDIODEVICEADDED(struct Game *sota, SDL_Event *event) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_SDL_AUDIODEVICEREMOVED(struct Game *sota, SDL_Event *event) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 // SDL_CONTROLLERBUTTONDOWN emitted ONCE for the click
 void receive_event_SDL_CONTROLLERBUTTONDOWN(struct Game *sota, SDL_Event *event) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 // SDL_KEYDOWN emitted unreliably/not every frame
 void receive_event_SDL_KEYDOWN(struct Game *sota, SDL_Event *event) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // why is SDL_KEYDOWN unused?
     //  -> SDL_KEYDOWN is NOT emitted every frame
     // control system needs to run EVERY STEP
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Quit(struct Game *sota, SDL_Event *event) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Quit gameplay, go back to start menu
     strncpy(sota->reason, "Quitting gameplay", sizeof(sota->reason));
     Game_State_Set(sota, GAME_STATE_Title_Screen, sota->reason);
@@ -411,12 +356,10 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
     struct Input_Arguments args = Input_Arguments_default;
     Game_titleScreen_Load(sota, args);
     Game_cursorFocus_onMenu(sota);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Reload_Entities_Archetype(struct Game *sota, entity_reload_f reload_func,
                                const char *component) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_component_t component_flag;
     size_t flag_id;
 
@@ -432,12 +375,10 @@ void Reload_Entities_Archetype(struct Game *sota, entity_reload_f reload_func,
         Reload_Entities(sota, reload_func, archetype_id, component);
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Reload_Entities(struct Game *sota, entity_reload_f reload_func, size_t flag_id,
                      const char *component) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     size_t num_entities = sota->world->num_entities_bytype[flag_id];
 
     for (size_t i = 0; i < num_entities; i++) {
@@ -447,23 +388,18 @@ void Reload_Entities(struct Game *sota, entity_reload_f reload_func, size_t flag
         reload_func(struct_ptr);
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Reload_JSON(void *struct_ptr) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char **json_filename  = ((char **)struct_ptr + JSON_FILENAME_bOFFSET);
     jsonio_readJSON(*json_filename, struct_ptr);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Reload_Menu(void *struct_ptr) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Menu *mc     = struct_ptr;
 
     if (!mc->visible) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     void *menu          = mc->data;
@@ -472,16 +408,13 @@ void Reload_Menu(void *struct_ptr) {
     b32  *update        = (b32 *)update_byte;
 
     *update      = true;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Reload_Popup(void *struct_ptr) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct PopUp *pc    = struct_ptr;
 
     if (!pc->visible) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     void *popup         = pc->data;
@@ -490,18 +423,14 @@ void Reload_Popup(void *struct_ptr) {
     b32  *update        = (b32 *)update_byte;
 
     *update      = true;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Reload_MapHpBar(void *struct_ptr) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct MapHPBar *map_hp_bar = struct_ptr;
     map_hp_bar->update = true;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Reload(struct Game *sota, SDL_Event *event) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- Benchmarking reload time --- */
     u64 before_ns = tnecs_get_ns();
 
@@ -544,17 +473,13 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     float frame     = (float)(sota->instant_fps * elapsed_ms) / SOTA_ms;
     SDL_Log("Reload %d ms %f frames", elapsed_ms, frame);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_SDL_QUIT(struct Game *sota, SDL_Event *event) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     sota->isrunning = false;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_SDL_CONTROLLERDEVICEREMOVED(struct Game *sota, SDL_Event *event) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // event->cdevice.which of DEVICEREMOVED is different from DEVICEADDED!
     // DEVICEREMOVED-> JoystickInstanceID which increments for every joystick
 
@@ -567,7 +492,6 @@ void receive_event_SDL_CONTROLLERDEVICEREMOVED(struct Game *sota, SDL_Event *eve
     else
         SOTA_Log_Debug("entity_cursor has no controllerGamepad component");
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_SDL_JOYDEVICEADDED(struct Game *sota, SDL_Event *event) {
@@ -577,14 +501,12 @@ void receive_event_SDL_JOYDEVICEREMOVED(struct Game *sota, SDL_Event *event) {
 }
 
 void receive_event_SDL_CONTROLLERDEVICEADDED(struct Game *sota, SDL_Event *event) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // event->cdevice.which of DEVICEREMOVED is different from DEVICEADDED!
     // DEVICEADDED-> JoystickDeviceID which is stable e.g. 0 for player 1, etc.
 
     if (sota->entity_cursor == TNECS_NULL) {
         SOTA_Log_Debug("Entity_cursor is not valid");
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     struct controllerGamepad *gamepad_ptr;
@@ -594,27 +516,22 @@ void receive_event_SDL_CONTROLLERDEVICEADDED(struct Game *sota, SDL_Event *event
     else
         SOTA_Log_Debug("entity_cursor has no controllerGamepad component");
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_SDL_MOUSEMOTION(struct Game *sota, SDL_Event *event) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(event);
     if (sota->runtime_ns <= CURSOR_FIRSTMENU_PAUSE_ns) {
         SOTA_Log_FPS("Sota first init pause.");
-        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
     if (event->motion.windowID != SDL_GetWindowID(sota->window)) {
         SOTA_Log_FPS("Wrong window");
-        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
     tnecs_entity_t mouse = sota->entity_mouse;
     if (sota->entity_mouse == TNECS_NULL) {
         SOTA_Log_FPS("Mouse disabled");
-        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     struct Sprite   *msprite  = TNECS_GET_COMPONENT(sota->world, mouse, Sprite);
@@ -630,20 +547,17 @@ void receive_event_SDL_MOUSEMOTION(struct Game *sota, SDL_Event *event) {
         msprite->dstrect.x  = mpos->pixel_pos.x;
         msprite->dstrect.y  = mpos->pixel_pos.y;
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 // SDL_MOUSEBUTTON emitted ONCE for the CLICK
 void receive_event_SDL_MOUSEBUTTON(struct Game *sota, SDL_Event *event) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota->window != NULL);
     SDL_assert(event        != NULL);
     SDL_assert(sota->entity_mouse > 0);
 
     if (event->motion.windowID != SDL_GetWindowID(sota->window)) {
         SOTA_Log_FPS("Wrong window");
-        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     struct controllerMouse *mouse;
@@ -651,11 +565,9 @@ void receive_event_SDL_MOUSEBUTTON(struct Game *sota, SDL_Event *event) {
         mouse = TNECS_GET_COMPONENT(sota->world, sota->entity_mouse, controllerMouse);
         Mouse_checkButton(mouse, event->button.button);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - Pop all menus - */
     while (DARR_NUM(sota->menu_stack) > 0) {
         tnecs_entity_t menu_pop     = DARR_POP(sota->menu_stack);
@@ -676,44 +588,33 @@ void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
     //      - Perform AI actions
     //      - End turn
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_Begin, NULL, NULL);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Unit_Enters_Shop(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Unit_Enters_Village(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Unit_Enters_Armory(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Unit_Select(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     sota->selected_unit_entity = *((tnecs_entity_t *) userevent->user.data2);
     sota->aggressor = sota->selected_unit_entity;
     SDL_assert(sota->selected_unit_entity > TNECS_NULL);
     SDL_assert(sota->state                == GAME_STATE_Gameplay_Map);
     if (fsm_eUnitSel_ss[sota->substate] != NULL)
         fsm_eUnitSel_ss[sota->substate](sota, sota->entity_cursor);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Unit_Deselect(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota->entity_cursor != TNECS_NULL);
     sota->aggressor = TNECS_NULL;
     sota->defendant = TNECS_NULL;
 
     if (sota->selected_unit_entity == TNECS_NULL) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     tnecs_entity_t unit_ent     = sota->selected_unit_entity;
@@ -743,16 +644,12 @@ void receive_event_Unit_Deselect(struct Game *sota, SDL_Event *userevent) {
 
     sota->selected_unit_entity = TNECS_NULL;
     // sota->hovered_unit_entity  = TNECS_NULL;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Unit_Entity_Return(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Unit_Icon_Return(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* - Hide overlay/movemap - */
     sota->map->show_overlay = false;
@@ -780,11 +677,9 @@ void receive_event_Unit_Icon_Return(struct Game *sota, SDL_Event *userevent) {
     pos_ptr->pixel_pos.x = initial.x * pos_ptr->scale[0];
     pos_ptr->pixel_pos.y = initial.y * pos_ptr->scale[1];
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(userevent->user.data1 != NULL);
     SDL_assert(sota->entity_cursor          != TNECS_NULL);
     SDL_assert(sota->selected_unit_entity   != TNECS_NULL);
@@ -814,57 +709,43 @@ void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
     Sprite_Animation_Loop(sprite);
     Sprite_Draw(sprite, sota->renderer);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Cursor_Hovers_Unit(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     sota->hovered_unit_entity = *(tnecs_entity_t *)userevent->user.data2;
     SDL_assert(sota->hovered_unit_entity != TNECS_NULL);
 
     if (fsm_eCrsHvUnit_ss[sota->substate] != NULL)
         fsm_eCrsHvUnit_ss[sota->substate](sota, sota->hovered_unit_entity);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Cursor_Dehovers_Unit(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_entity_t dehovered_unit_entity = sota->hovered_unit_entity;
     sota->hovered_unit_entity            = TNECS_NULL;
 
     if (fsm_eCrsDeHvUnit_ss[sota->substate] != NULL)
         fsm_eCrsDeHvUnit_ss[sota->substate](sota, dehovered_unit_entity);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Units_Refresh(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Unit_Danger(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota->entity_cursor != TNECS_NULL);
 
     if (fsm_eUnitDng_ss[sota->substate] != NULL)
         fsm_eUnitDng_ss[sota->substate](sota, sota->entity_cursor);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Unit_Dance(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Menu_Select(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 // Menu_Created event should be the ONLY EVENT that changes game substate to menu
 void receive_event_Menu_Created(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_entity_t menu_entity = *(tnecs_entity_t *)userevent->user.data1;
 
     /* - Set sprite to combat stance - */
@@ -885,11 +766,9 @@ void receive_event_Menu_Created(struct Game *sota, SDL_Event *userevent) {
     if (sota->substate != GAME_SUBSTATE_MENU)
         Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Aggressor loadout was selected, time to select defendant. */
 
     /* - Turn menu_attack invisible - */
@@ -911,11 +790,9 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     strncpy(sota->reason, "loadout was selected, time to select defendant", sizeof(sota->reason));
     Game_Switch_toCandidates(sota, sota->defendants);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Check: Only Zoom_in on the map -- */
     SDL_assert(sota->state == GAME_STATE_Gameplay_Map);
     bool correct_substate = (sota->substate == GAME_SUBSTATE_STANDBY);
@@ -956,11 +833,9 @@ void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {
     sota->map->camera_moved = true;
 
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Input_ZOOM_OUT(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Check: Only Zoom_out on the map -- */
     SDL_assert(sota->state == GAME_STATE_Gameplay_Map);
     bool correct_substate = (sota->substate == GAME_SUBSTATE_STANDBY);
@@ -1001,7 +876,6 @@ void receive_event_Input_ZOOM_OUT(struct Game *sota, SDL_Event *userevent) {
     sota->map->camera_moved = true;
 
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Input_UP(    struct Game *sota, SDL_Event *userevent) {}
@@ -1010,68 +884,51 @@ void receive_event_Input_DOWN(  struct Game *sota, SDL_Event *userevent) {}
 void receive_event_Input_RIGHT( struct Game *sota, SDL_Event *userevent) {}
 
 void receive_event_Input_MENURIGHT(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
 
     if (fsm_eMenuRight_s[sota->state] != NULL)
         fsm_eMenuRight_s[sota->state](sota, controller_type);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 
 void receive_event_Input_MENULEFT(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
 
     if (fsm_eMenuLeft_s[sota->state] != NULL)
         fsm_eMenuLeft_s[sota->state](sota, controller_type);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Input_MINIMAP(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Input_FASTER(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Input_PAUSE(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Pausing opens options */
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Unit_Seize(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Game_Defeat(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Unit_Refresh(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Unit_Wait(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* -- Preliminaries -- */
     tnecs_entity_t unit_ent = sota->selected_unit_entity;
@@ -1091,33 +948,27 @@ void receive_event_Unit_Wait(struct Game *sota, SDL_Event *userevent) {
     if (DARR_NUM(sota->menu_stack) == 0)
         Game_cursorFocus_onMap(sota);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Unit_Talk(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota->entity_cursor          > TNECS_NULL);
     SDL_assert(sota->selected_unit_entity   > TNECS_NULL);
     tnecs_entity_t unit_ent = sota->selected_unit_entity;
     Game_Unit_Wait(sota, unit_ent);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Unit_Rescue(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota->entity_cursor          > TNECS_NULL);
     SDL_assert(sota->selected_unit_entity   > TNECS_NULL);
     tnecs_entity_t unit_ent = sota->selected_unit_entity;
     Game_Unit_Wait(sota, unit_ent);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     struct Sprite *agg_sprite = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Sprite);
     struct Sprite *dft_sprite = TNECS_GET_COMPONENT(sota->world, sota->defendant, Sprite);
@@ -1206,11 +1057,9 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     /* - Set previous candidate to NULL - */
     sota->previous_candidate = -1;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Unit_Wait, NULL, NULL);
 
@@ -1258,11 +1107,9 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(map_hp_bar->update);
     SDL_assert(map_hp_bar->visible);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Defendant_Select(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     // 1. Compute Combat stuff
     Game_Combat_Outcome(sota);
@@ -1292,11 +1139,9 @@ void receive_event_Defendant_Select(struct Game *sota, SDL_Event *userevent) {
     Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_ATTACK);
     Map_Stacked_Dangermap_Compute(sota->map);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Unit_Trade(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota->entity_cursor > TNECS_NULL);
     if (sota->selected_unit_entity == TNECS_NULL)
         return;
@@ -1304,11 +1149,9 @@ void receive_event_Unit_Trade(struct Game *sota, SDL_Event *userevent) {
     Game_Unit_Wait(sota, sota->selected_unit_entity);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Unit_Escape(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota->entity_cursor > TNECS_NULL);
     if (sota->selected_unit_entity == TNECS_NULL)
         return;
@@ -1316,64 +1159,48 @@ void receive_event_Unit_Escape(struct Game *sota, SDL_Event *userevent) {
     Game_Unit_Wait(sota, sota->selected_unit_entity);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Unit_Staff(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Unit_Items(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota->entity_cursor > TNECS_NULL);
     SDL_assert(sota->selected_unit_entity != TNECS_NULL);
 
     Game_Unit_Wait(sota, sota->selected_unit_entity);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Unit_Heals(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Convoy_Check(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Convoy_Map(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_entity_t killer_entity = *(tnecs_entity_t *) userevent->user.data1;
     tnecs_entity_t victim_entity = *(tnecs_entity_t *) userevent->user.data2;
     struct Unit *killer = TNECS_GET_COMPONENT(sota->world, killer_entity, Unit);
     struct Unit *victim = TNECS_GET_COMPONENT(sota->world, victim_entity, Unit);
     int regrets = killer->regrets;
     killer->regrets = regrets > UINT8_MAX - REGRET_KILL ? UINT8_MAX : regrets + REGRET_KILL;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Unit_Loots(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_entity_t looter_entity = *(tnecs_entity_t *) userevent->user.data1;
     tnecs_entity_t victim_entity = *(tnecs_entity_t *) userevent->user.data2;
     struct Unit *looter = TNECS_GET_COMPONENT(sota->world, looter_entity, Unit);
     struct Unit *victim = TNECS_GET_COMPONENT(sota->world, victim_entity, Unit);
     int regrets = looter->regrets;
     looter->regrets = regrets > UINT8_MAX - REGRET_LOOT ? UINT8_MAX : regrets + REGRET_LOOT;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Should be called only during map combat
 
     tnecs_entity_t popup_ent;
@@ -1401,23 +1228,19 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->defendant != TNECS_NULL);
     pmc->update = true;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void receive_event_Unit_Agonizes(struct Game *sota, SDL_Event *userevent) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_entity_t victor_entity = *(tnecs_entity_t *) userevent->user.data1;
     tnecs_entity_t victim_entity = *(tnecs_entity_t *) userevent->user.data2;
     struct Unit *victor = TNECS_GET_COMPONENT(sota->world, victor_entity, Unit);
     struct Unit *victim = TNECS_GET_COMPONENT(sota->world, victim_entity, Unit);
     int regrets = victor->regrets;
     victor->regrets = regrets > UINT8_MAX - REGRET_LOOT ? UINT8_MAX : regrets + REGRET_LOOT;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- EVENT UTILITIES --- */
 void receive_event_SDL_WINDOWEVENT(struct Game *sota, SDL_Event *event) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (event->window.windowID != SDL_GetWindowID(sota->window))
         return;
 
@@ -1428,11 +1251,9 @@ void receive_event_SDL_WINDOWEVENT(struct Game *sota, SDL_Event *event) {
             break;
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Events_Names_Declare() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     event_Start = SDL_RegisterEvents(1);
 #define REGISTER_ENUM(x, y) event_##x = SDL_RegisterEvents(1);
 #include "names/events.h"
@@ -1441,11 +1262,9 @@ void Events_Names_Declare() {
 #include "names/input.h"
 #undef REGISTER_ENUM
     event_End = SDL_RegisterEvents(1);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 extern void Events_Names_Free() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (event_names == NULL)
         return;
 
@@ -1456,12 +1275,10 @@ extern void Events_Names_Free() {
         }
     }
     free(event_names);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 char **event_names = NULL;
 extern void Events_Names_Alloc() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("event_End event_Start %d %d", event_End, event_Start);
     SOTA_Log_Debug("event_End - event_Start %d", event_End - event_Start);
     event_names = (char **)calloc((event_End - event_Start) + 1, sizeof(*event_names));
@@ -1482,18 +1299,14 @@ extern void Events_Names_Alloc() {
 #include "names/input.h"
 #undef REGISTER_ENUM
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Events_Receivers_Free() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (receivers_dtab != NULL)
         DTAB_FREE(receivers_dtab);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Events_Receivers_Declare() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     u32 temp_index;
     Events_Receivers_Free();
     receiver_t temp_receiver_p;
@@ -1523,11 +1336,9 @@ void Events_Receivers_Declare() {
     temp_index          = SDL_QUIT;
     temp_receiver_p     = &receive_event_SDL_QUIT;
     DTAB_ADD(receivers_dtab, &temp_receiver_p, temp_index);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Events_Manage(struct Game *sota) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota != NULL);
     SDL_Event event;
 
@@ -1540,5 +1351,4 @@ void Events_Manage(struct Game *sota) {
         if (receiver != NULL)
             (*receiver)(sota, &event);
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

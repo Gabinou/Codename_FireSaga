@@ -24,7 +24,6 @@ struct PopUp_Loadout_Stats PopUp_Loadout_Stats_default = {
 };
 
 void PopUp_Loadout_Stats_Free(struct PopUp_Loadout_Stats *pls) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (pls->texture != NULL) {
         SDL_DestroyTexture(pls->texture);
         pls->texture = NULL;
@@ -42,12 +41,10 @@ void PopUp_Loadout_Stats_Free(struct PopUp_Loadout_Stats *pls) {
         pls->texture_weapon_icons = NULL;
     }
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer,
                               struct n9Patch *n9patch) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(pls != NULL);
     PopUp_Loadout_Stats_Free(pls);
     n9Patch_Free(n9patch);
@@ -92,11 +89,9 @@ void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls, SDL_Renderer *ren
     pls->texture_equip = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(pls->texture_equip);
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Get item type of each waepon in hand to draw icons.
     SDL_assert(pls->unit != NULL);
     SDL_assert(pls->unit->weapons_dtab != NULL);
@@ -119,12 +114,10 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
         pls->type_right = ITEM_TYPE_ITEM;
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Setters --- */
 void PopUp_Loadout_Stats_Unit(struct PopUp_Loadout_Stats *pls, struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit != NULL);
     pls->unit = unit;
     int stronghand = Unit_Hand_Strong(pls->unit);
@@ -136,34 +129,28 @@ void PopUp_Loadout_Stats_Unit(struct PopUp_Loadout_Stats *pls, struct Unit *unit
 
     PopUp_Loadout_Stats_ItemTypes(pls);
     PopUp_Loadout_Stats_Previous(pls);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void PopUp_Loadout_Stats_Previous(struct PopUp_Loadout_Stats *pls) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     PopUp_Loadout_Stats_ItemTypes(pls);
 
     pls->previous_cs = Unit_computedStats_wLoadout(pls->unit, pls->item_left, pls->item_right,
                                                    pls->distance);
     pls->new_cs      = pls->previous_cs;
     pls->update      = true;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void PopUp_Loadout_Stats_New(struct PopUp_Loadout_Stats *pls) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     PopUp_Loadout_Stats_ItemTypes(pls);
     pls->new_cs     = Unit_computedStats_wLoadout(pls->unit, pls->item_left, pls->item_right,
                                                   pls->distance);
     pls->update     = true;
     pls->twoHanding = Unit_Loadout_twoHanding(pls->item_left, pls->item_right);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Select --- */
 void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls, struct LoadoutSelectMenu *wsm,
                                int elem) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(pls       != NULL);
     SDL_assert(wsm       != NULL);
     SDL_assert(wsm->unit != NULL);
@@ -194,7 +181,6 @@ void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls, struct LoadoutSe
             pls->item_right = new_strong_side_i;
         }
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 
@@ -681,7 +667,6 @@ void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls, SDL_Ren
 
 void PopUp_Loadout_Stats_Draw(struct PopUp *popup, struct Point pos,
                               SDL_Texture *render_target, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct PopUp_Loadout_Stats *pls     =  popup->data;
     struct n9Patch             *n9patch = &popup->n9patch;
 
@@ -701,12 +686,10 @@ void PopUp_Loadout_Stats_Draw(struct PopUp *popup, struct Point pos,
     SDL_RenderCopy(renderer, pls->texture, NULL, &dstrect);
     Utilities_DrawColor_Reset(renderer);
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void PopUp_Loadout_Stats_Update(struct PopUp_Loadout_Stats *pls, struct n9Patch *n9patch,
                                 SDL_Texture *render_target, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     SDL_assert(pls != NULL);
     SDL_assert(pls->unit != NULL);
@@ -765,5 +748,4 @@ void PopUp_Loadout_Stats_Update(struct PopUp_Loadout_Stats *pls, struct n9Patch 
     _PopUp_Loadout_Stats_Draw_Stats(     pls, renderer);
     _PopUp_Loadout_Stats_Draw_Arrows(    pls, renderer);
     SDL_SetRenderTarget(renderer, render_target);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

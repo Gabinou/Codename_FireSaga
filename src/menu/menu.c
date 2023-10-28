@@ -23,7 +23,6 @@ struct Menu Menu_default =  {
 
 /* --- Menu --- */
 void Menu_Elem_Free(struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (mc->elem_pos != NULL) {
         free(mc->elem_pos);
         mc->elem_pos = NULL;
@@ -44,11 +43,9 @@ void Menu_Elem_Free(struct Menu *mc) {
         free(mc->elem_links);
         mc->elem_links = NULL;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 int Periodic_Elem_Move(struct Menu *in_menu, int direction, int min, int max) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Cursor can only move in 2 directions between elems
     // Cursor movement is periodid
     direction = Ternary_Direction_Straight(direction);
@@ -64,12 +61,10 @@ int Periodic_Elem_Move(struct Menu *in_menu, int direction, int min, int max) {
         out = in_menu->elem;
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 void Menu_Elem_Set(struct Menu *mc, struct Game *sota, i8 new_elem) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(new_elem >= 0);
     SDL_assert(new_elem != MENU_ELEM_NULL);
 
@@ -80,11 +75,9 @@ void Menu_Elem_Set(struct Menu *mc, struct Game *sota, i8 new_elem) {
     Cursor_Box_Offset(&cursor_pos->pixel_pos);
     mc->elem = new_elem;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 int Menu_Elem_Move(struct Menu *in_menu, int direction) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Cursor can only move in 4 directions between elems
     direction = Ternary_Direction_Straight(direction);
     SDL_assert(sizeof(*in_menu->elem_links) == MENU_ELEM_DIRECTIONS_PACKED_BYTESIZE);
@@ -98,12 +91,10 @@ int Menu_Elem_Move(struct Menu *in_menu, int direction) {
     int direction_i = direction_arr_i[direction];
     if (links[direction_i] < in_menu->elem_num)
         out = links[direction_i] > MENU_ELEM_NULL ? links[direction_i] : in_menu->elem;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 void Menu_Elem_Boxes_Check(struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Fit elem_box to linked elems snuggly */
     for (u32 i = 0; i < mc->elem_num; i++) {
         /* Get elem pos and initial box */
@@ -167,12 +158,10 @@ void Menu_Elem_Boxes_Check(struct Menu *mc) {
             }
         }
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Debug --- */
 void Menu_Elem_Boxes_Draw(struct Menu *mc, struct SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Set colors of elem_box to NES palette -- */
     for (int i = 0; i < mc->elem_num; i++) {
         int color = i + 2 % palette_NES->ncolors;
@@ -186,5 +175,4 @@ void Menu_Elem_Boxes_Draw(struct Menu *mc, struct SDL_Renderer *renderer) {
         SDL_RenderDrawRect(renderer, &rect);
     }
     Utilities_DrawColor_Reset(renderer);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

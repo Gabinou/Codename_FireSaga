@@ -2,7 +2,6 @@
 #include "systems/render.h"
 
 void scrollText(tnecs_system_input_t *in_input) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     /* -- Get components arrays -- */
     struct Timer     *ut_arr = TNECS_COMPONENTS_LIST(in_input, Timer);
@@ -14,11 +13,9 @@ void scrollText(tnecs_system_input_t *in_input) {
 
         ut->reset = PixelFont_Scroll(pf, ut->time_ns);
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void animateSprite(tnecs_system_input_t *in_input) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     /* -- Get components arrays -- */
     struct Timer  *ut_arr     = TNECS_COMPONENTS_LIST(in_input, Timer);
@@ -44,11 +41,9 @@ void animateSprite(tnecs_system_input_t *in_input) {
         ut->reset = true;
         Sprite_Animation_Loop(sprite);
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void drawCursor(tnecs_system_input_t *in_input) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     struct Game *sota = in_input->user_data;
@@ -74,11 +69,9 @@ void drawCursor(tnecs_system_input_t *in_input) {
         Sprite_Draw(sprite, sota->renderer);
     }
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void drawMouse(tnecs_system_input_t *in_input) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     struct Game *sota = in_input->user_data;
@@ -96,11 +89,9 @@ void drawMouse(tnecs_system_input_t *in_input) {
 
         Sprite_Draw(sprite, sota->renderer);
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void drawMapUnit(tnecs_system_input_t *in_input) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     struct Game *sota = in_input->user_data;
@@ -123,11 +114,9 @@ void drawMapUnit(tnecs_system_input_t *in_input) {
         func(sprite, &position->pixel_pos, &sota->camera);
         Sprite_Draw(sprite, sota->renderer);
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void drawMap_HPBar(tnecs_system_input_t *in_input) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     struct Game *sota = in_input->user_data;
@@ -148,11 +137,9 @@ void drawMap_HPBar(tnecs_system_input_t *in_input) {
                       sota->renderer, sota->world);
     }
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void drawPopUp(tnecs_system_input_t *in_input) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     struct Game *sota = in_input->user_data;
@@ -173,11 +160,9 @@ void drawPopUp(tnecs_system_input_t *in_input) {
         struct Position *position = (position_arr + order);
         popup->draw(popup, position->pixel_pos, sota->render_target, sota->renderer);
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void drawMenu(tnecs_system_input_t *in_input) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     struct Game *sota = in_input->user_data;
@@ -200,11 +185,9 @@ void drawMenu(tnecs_system_input_t *in_input) {
         Menu_Elem_Boxes_Draw(mc, sota->renderer);
         #endif
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void drawText(tnecs_system_input_t *in_input) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     SDL_Rect dstrect;
     /* -- Get game -- */
@@ -228,11 +211,9 @@ void drawText(tnecs_system_input_t *in_input) {
 
         Text_Draw(text, sota->renderer, &dstrect);
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void drawTextTimer(tnecs_system_input_t *in_input) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     SDL_Rect dstrect;
     /* -- Get game -- */
@@ -267,5 +248,4 @@ void drawTextTimer(tnecs_system_input_t *in_input) {
 
         Text_Draw(text, sota->renderer, &dstrect);
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

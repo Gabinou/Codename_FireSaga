@@ -2,7 +2,6 @@
 
 /* --- Constructors/Destructors --- */
 void Game_PopUps_Free(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // /* - Popup Loadout Stats - */
     // int popup_id = POPUP_TYPE_HUD_LOADOUT_STATS;
     // struct PopUp * popup
@@ -22,17 +21,14 @@ void Game_PopUps_Free(struct Game *sota) {
     // tnecs_entity_destroy(sota->world, sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS]);
     // sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS] = TNECS_NULL;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- POPUP_LOADOUT_STATS --- */
 void Game_PopUp_Loadout_Stats_Create(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     if (sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS] != TNECS_NULL) {
         SOTA_Log_Debug("Popup POPUP_TYPE_HUD_LOADOUT_STATS is already loaded");
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     tnecs_entity_t popup_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position, PopUp);
@@ -64,19 +60,15 @@ void Game_PopUp_Loadout_Stats_Create(struct Game *sota) {
 
     PopUp_Loadout_Stats_Load(pls, sota->renderer, &popup->n9patch);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 void Game_PopUp_Loadout_Stats_Hide(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, sota->popups[popup_ind], PopUp);
     popup->visible = false;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- POPUP_PRE_COMBAT --- */
 void Game_PopUp_Pre_Combat_Create(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->pre_combat_menu == TNECS_NULL)
         sota->pre_combat_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
     else {
@@ -107,11 +99,9 @@ void Game_PopUp_Pre_Combat_Create(struct Game *sota) {
     /* - scaling elem_pos: put it last cause dependencies - */
     Menu_Elem_Boxes_Check(mc);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_PopUp_Pre_Combat_Enable(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->pre_combat_menu == 0)
         Game_PopUp_Pre_Combat_Create(sota);
     Game_menuStack_Push(sota, sota->pre_combat_menu);
@@ -126,22 +116,17 @@ void Game_PopUp_Pre_Combat_Enable(struct Game *sota) {
     strncpy(sota->reason, "PreCombat Menu was created", sizeof(sota->reason));
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->stats_menu, NULL);
     Game_cursorFocus_onMenu(sota);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_PopUp_Pre_Combat_Free(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- POPUP_UNIT --- */
 void Game_PopUp_Unit_Create(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->popups[POPUP_TYPE_HUD_UNIT] != TNECS_NULL) {
         SOTA_Log_Debug("Popup POPUP_TYPE_HUD_UNIT is already loaded");
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     tnecs_entity_t ent;
@@ -203,24 +188,19 @@ void Game_PopUp_Unit_Create(struct Game *sota) {
     PopUp_Unit_Set(popup_unit, sota);
     SDL_assert(popup_unit->unit != NULL);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_PopUp_Unit_Hide(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota->popups[POPUP_TYPE_HUD_UNIT] != TNECS_NULL);
     struct PopUp *popup;
     popup = TNECS_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_HUD_UNIT], PopUp);
     popup->visible = false;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - Does Popup entity exist - */
     if (sota->popups[POPUP_TYPE_HUD_UNIT] == TNECS_NULL) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     /* - Is popup is visible - */
@@ -235,8 +215,7 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
     SDL_assert(popup);
 
     if (!popup->visible) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     /* - Has popup target position changed - */
@@ -252,8 +231,7 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
     bool moved = (new_target.x != slider->target.x) || (new_target.y != slider->target.y);
 
     if (!moved) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     /* - Update the slider target - */
@@ -270,24 +248,20 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
     Slider_Start(slider, &position->pixel_pos, &slider->target);
     #endif
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_PopUp_Tile_Place(struct Game *sota, struct Point cursor_pos) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - Does Popup entity exist - */
     tnecs_entity_t ent = sota->popups[POPUP_TYPE_HUD_TILE];
     if (ent == TNECS_NULL) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     /* - Is popup is visible - */
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, ent, PopUp);
     SDL_assert(popup);
     if (!popup->visible) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     /* - Has popup target position changed - */
@@ -307,8 +281,7 @@ void Game_PopUp_Tile_Place(struct Game *sota, struct Point cursor_pos) {
 
     bool moved = (new_target.x != slider->target.x) || (new_target.y != slider->target.y);
     if (!moved) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     /* - Update the slider target - */
@@ -320,16 +293,13 @@ void Game_PopUp_Tile_Place(struct Game *sota, struct Point cursor_pos) {
     Slider_Start(slider, &position->pixel_pos, &slider->target);
     #endif
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- PopUp_Map_Combat --- */
 void Game_PopUp_Map_Combat_Create(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->popups[POPUP_TYPE_MAP_COMBAT] > TNECS_NULL) {
         SOTA_Log_Debug("Popup POPUP_TYPE_MAP_COMBAT is already loaded");
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     tnecs_entity_t ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position, PopUp);
@@ -369,33 +339,27 @@ void Game_PopUp_Map_Combat_Create(struct Game *sota) {
     position->pixel_pos.x   = sota->settings.res.x / 2;
     position->pixel_pos.y   = sota->settings.res.y / 2;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_PopUp_Map_Combat_Hide(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_entity_t popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
     SDL_assert(popup_ent != TNECS_NULL);
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
     popup->visible = false;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_PopUp_Map_Combat_Free(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_entity_t popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
     struct PopUp_Map_Combat *pmc = popup->data;
     PopUp_Map_Combat_Free(pmc);
     tnecs_entity_destroy(sota->world, popup_ent);
     sota->popups[POPUP_TYPE_MAP_COMBAT] = TNECS_NULL;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- POPUP_TILE --- */
 // void Game_PopUp_Tile_Set(struct Game *sota) {
-//     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-//     struct Position *cursor_position;
+// //     struct Position *cursor_position;
 //     cursor_position = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
 
 //     /* -- Get popup stuff -- */
@@ -413,40 +377,31 @@ void Game_PopUp_Map_Combat_Free(struct Game *sota) {
 //     i32 tile_order = Map_Tile_Order(sota->map, tile_ind);
 //     popup_tile->tile = &sota->map->tiles[tile_order];
 //     popup_tile->update = true;
-//     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-// }
+// // }
 
 void Game_PopUp_Tile_Destroy(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_PopUp_Tile_Hide(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota->popups[POPUP_TYPE_HUD_TILE] != TNECS_NULL);
     struct PopUp *popup;
     popup = TNECS_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_HUD_TILE], PopUp);
     popup->visible = false;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_PopUp_Tile_Free(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->popups[POPUP_TYPE_HUD_TILE] > TNECS_NULL) {
         struct PopUp *popup;
         popup = TNECS_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_HUD_TILE], PopUp);
         free(popup->data);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_PopUp_Tile_Create(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->popups[POPUP_TYPE_HUD_TILE] != TNECS_NULL) {
         SOTA_Log_Debug("Popup POPUP_TYPE_HUD_TILE is already loaded");
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
     tnecs_entity_t ent;
     ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position, PopUp, Slider, SliderOffscreen);
@@ -503,5 +458,4 @@ void Game_PopUp_Tile_Create(struct Game *sota) {
     SDL_assert(popup->n9patch.pos.x == 0);
     SDL_assert(popup->n9patch.pos.y == 0);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

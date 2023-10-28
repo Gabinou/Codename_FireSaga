@@ -2,18 +2,15 @@
 
 /* --- All Menus --- */
 bool Game_Menus_Init(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     bool success = true;
     if (sota->menu_stack != NULL)
         DARR_FREE(sota->menu_stack);
     sota->menu_stack = DARR_INIT(sota->menu_stack, tnecs_entity_t, MENU_PLAYER_SELECT_END);
     memset(sota->menu_stack, 0, MENU_PLAYER_SELECT_END * sizeof(*sota->menu_stack));
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (success);
 }
 
 void Game_Switch_toCandidates(struct Game *sota, tnecs_entity_t *candidates) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     sota->candidates = candidates;
     Game_subState_Set(sota, GAME_SUBSTATE_MAP_CANDIDATES, sota->reason);
 
@@ -36,12 +33,10 @@ void Game_Switch_toCandidates(struct Game *sota, tnecs_entity_t *candidates) {
     *data2_entity = sota->candidates[index];
     Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Hovers_Unit, NULL, data2_entity);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Menu stack --- */
 void Game_menuStack_Free(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     struct StatsMenu *stats_menu;
     struct PlayerSelectMenu *psm_menu;
@@ -74,20 +69,16 @@ void Game_menuStack_Free(struct Game *sota) {
     DARR_FREE(sota->menu_stack);
     sota->menu_stack = NULL;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_menuStack_Push(struct Game *sota, tnecs_entity_t in_menu_entity) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("%ld", in_menu_entity);
     SDL_assert(in_menu_entity > 0);
     DARR_PUT(sota->menu_stack, in_menu_entity);
     SOTA_Log_Debug("DARR_NUM %ld", DARR_NUM(sota->menu_stack));
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 tnecs_entity_t Game_menuStack_Pop(struct Game *sota, bool destroy) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_entity_t menu_stack_top_entity = DARR_POP(sota->menu_stack);
     SDL_assert(menu_stack_top_entity > 0);
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world,
@@ -97,13 +88,11 @@ tnecs_entity_t Game_menuStack_Pop(struct Game *sota, bool destroy) {
     // mc->elem = 0;
     if (destroy) {
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (menu_stack_top_entity);
 }
 
 /* --- GrowthsMenu --- */
 void Game_GrowthsMenu_Enable(struct Game *sota, tnecs_entity_t unit_entity_ontile) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->GM_menu == 0)
         Game_GrowthsMenu_Create(sota);
     Game_menuStack_Push(sota, sota->GM_menu);
@@ -112,11 +101,9 @@ void Game_GrowthsMenu_Enable(struct Game *sota, tnecs_entity_t unit_entity_ontil
     strncpy(sota->reason, "GM_MENU was created", sizeof(sota->reason));
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->stats_menu, NULL);
     Game_cursorFocus_onMenu(sota);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_GrowthsMenu_Create(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->GM_menu == TNECS_NULL)
         sota->GM_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
     else {
@@ -157,11 +144,9 @@ void Game_GrowthsMenu_Create(struct Game *sota) {
     Menu_Elem_Boxes_Check(mc);
     mc->elem_box[GM_GROWTHS].x *= 2;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_GrowthsMenu_Update(struct Game *sota, tnecs_entity_t unit_entity_ontile) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit_entity_ontile > TNECS_NULL);
     struct Unit *unit_ontile = TNECS_GET_COMPONENT(sota->world, unit_entity_ontile, Unit);
     SDL_assert(unit_ontile != NULL);
@@ -172,12 +157,10 @@ void Game_GrowthsMenu_Update(struct Game *sota, tnecs_entity_t unit_entity_ontil
     struct GrowthsMenu *GM_menu = (struct GrowthsMenu *)mc->data;
     SDL_assert(unit_ontile->weapons_dtab != NULL);
     GrowthsMenu_Unit_Set(GM_menu, unit_ontile);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- StatsMenu --- */
 void Game_StatsMenu_Create(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     // creates statsmenu entity, sets sizes, fonts
     if (sota->stats_menu == TNECS_NULL)
@@ -206,11 +189,9 @@ void Game_StatsMenu_Create(struct Game *sota) {
     SDL_assert(sota->pixelnours_big != NULL);
     stats_menu->pixelnours      = sota->pixelnours;
     stats_menu->pixelnours_big  = sota->pixelnours_big;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_StatsMenu_Update(struct Game *sota, tnecs_entity_t unit_entity_ontile) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit_entity_ontile > TNECS_NULL);
     /* - Get unit on tile - */
     struct Unit *unit_ontile = TNECS_GET_COMPONENT(sota->world, unit_entity_ontile, Unit);
@@ -229,11 +210,9 @@ void Game_StatsMenu_Update(struct Game *sota, tnecs_entity_t unit_entity_ontile)
     StatsMenu_Elem_Pos(stats_menu, mc);
     Menu_Elem_Boxes_Check(mc);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_StatsMenu_Enable(struct Game *sota, tnecs_entity_t unit_entity_ontile) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->stats_menu == 0)
         Game_StatsMenu_Create(sota);
     Game_menuStack_Push(sota, sota->stats_menu);
@@ -242,11 +221,9 @@ void Game_StatsMenu_Enable(struct Game *sota, tnecs_entity_t unit_entity_ontile)
     strncpy(sota->reason, "STATS_MENU was created", sizeof(sota->reason));
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->stats_menu, NULL);
     Game_cursorFocus_onMenu(sota);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 /* --- PlayerSelectMenu --- */
 void Game_PlayerSelectMenus_Free(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     for (size_t i = 0; i < MENU_PLAYER_SELECT_NUM; i++) {
         if (sota->player_select_menus[i] == TNECS_NULL)
             continue;
@@ -261,11 +238,9 @@ void Game_PlayerSelectMenus_Free(struct Game *sota) {
         PlayerSelectMenu_Free(psm_menu, mc);
         mc->data = NULL;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_postLoadout_Defendants(struct Game *sota, tnecs_entity_t actor) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Finding possible defendants with equipped weapons -- */
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, actor, Unit);
     DARR_NUM(sota->defendants) = 0;
@@ -278,11 +253,9 @@ void Game_postLoadout_Defendants(struct Game *sota, tnecs_entity_t actor) {
     sota->defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist,
                                            sota->defendants, actor, false);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_postLoadout_Patients(struct Game *sota, tnecs_entity_t actor) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, actor, Unit);
     assert(Unit_canStaff(unit));
     DARR_NUM(sota->patients) = 0;
@@ -295,12 +268,10 @@ void Game_postLoadout_Patients(struct Game *sota, tnecs_entity_t actor) {
     sota->patients = Map_Find_Patients(sota->map, sota->weapons_dtab, sota->map->healtolist,
                                        sota->patients, actor, false);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* -- Finding if any staff equipment has a patient -- */
 void Game_preLoadout_Patients(struct Game *sota, tnecs_entity_t actor) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     DARR_NUM(sota->defendants) = 0;
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, actor, Unit);
@@ -319,12 +290,10 @@ void Game_preLoadout_Patients(struct Game *sota, tnecs_entity_t actor) {
     sota->patients = Map_Find_Patients(sota->map, sota->weapons_dtab, sota->map->healtolist,
                                        sota->patients, actor, true);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* -- Finding if any weapon in equipment has a defendant -- */
 void Game_preLoadout_Defendants(struct Game *sota, tnecs_entity_t actor) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     DARR_NUM(sota->defendants) = 0;
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, actor, Unit);
@@ -342,7 +311,6 @@ void Game_preLoadout_Defendants(struct Game *sota, tnecs_entity_t actor) {
     sota->defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist,
                                            sota->defendants, actor, true);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* -- Decides which option are in UnitAction menu -- */
@@ -354,7 +322,6 @@ void Game_preLoadout_Defendants(struct Game *sota, tnecs_entity_t actor) {
         - Can be computed right now:
 */
 void Game_preUnitAction_Targets(struct Game *sota, tnecs_entity_t actor) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Resetting lists -- */
     DARR_NUM(sota->victims)     = 0;
     DARR_NUM(sota->passives)    = 0;
@@ -380,16 +347,13 @@ void Game_preUnitAction_Targets(struct Game *sota, tnecs_entity_t actor) {
     sota->openables = Map_Find_Doors(sota->map,     sota->openables, x, y);
     sota->openables = Map_Find_Chests(sota->map,    sota->openables, x, y);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_PlayerSelectMenu_Create(struct Game *sota, i8 in_menu) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     SDL_assert((in_menu > MENU_PLAYER_SELECT_START) & (in_menu < MENU_PLAYER_SELECT_END));
     if (sota->player_select_menus[in_menu] != TNECS_NULL) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     tnecs_entity_t ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
@@ -417,11 +381,9 @@ void Game_PlayerSelectMenu_Create(struct Game *sota, i8 in_menu) {
     SDL_assert(mc->n9patch.pos.y == 0);
 
     SDL_assert(sota->player_select_menus[in_menu] > TNECS_NULL);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_PlayerSelectMenu_Update(struct Game *sota, i8 in_playerselect_menu) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("%d", in_playerselect_menu);
     SDL_assert((in_playerselect_menu > MENU_PLAYER_SELECT_START) & (in_playerselect_menu <
                MENU_PLAYER_SELECT_END));
@@ -461,11 +423,9 @@ void Game_PlayerSelectMenu_Update(struct Game *sota, i8 in_playerselect_menu) {
     SDL_assert(mc->n9patch.pos.x == 0);
     SDL_assert(mc->n9patch.pos.y == 0);
     menu->update = true;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 /* --- WeaponSelectMenu --- */
 void Game_WeaponSelectMenu_Create(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     if (sota->weapon_select_menu == TNECS_NULL)
         sota->weapon_select_menu =  TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
@@ -507,11 +467,9 @@ void Game_WeaponSelectMenu_Create(struct Game *sota) {
     wsm->pixelnours_big         = sota->pixelnours_big;
     LoadoutSelectMenu_Elem_Pos(wsm, mc);
     Menu_Elem_Boxes_Check(mc);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_WeaponSelectMenu_Update(struct Game *sota, tnecs_entity_t unit_entity_ontile) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit_entity_ontile > TNECS_NULL);
     struct Unit *unit_ontile = TNECS_GET_COMPONENT(sota->world, unit_entity_ontile, Unit);
     SDL_assert(unit_ontile != NULL);
@@ -532,11 +490,9 @@ void Game_WeaponSelectMenu_Update(struct Game *sota, tnecs_entity_t unit_entity_
     LoadoutSelectMenu_Elem_Reset(wsm, mc);
     LoadoutSelectMenu_Elem_Pos(  wsm, mc);
     Menu_Elem_Boxes_Check(mc);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_WeaponSelectMenu_Enable(struct Game *sota, tnecs_entity_t uent_ontile) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->weapon_select_menu == TNECS_NULL)
         Game_WeaponSelectMenu_Create(sota);
     Game_menuStack_Push(sota, sota->weapon_select_menu);
@@ -545,12 +501,10 @@ void Game_WeaponSelectMenu_Enable(struct Game *sota, tnecs_entity_t uent_ontile)
     strncpy(sota->reason, "WeaponSelectMenu was created", sizeof(sota->reason));
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->weapon_select_menu, NULL);
     Game_cursorFocus_onMenu(sota);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- TradeMenu --- */
 void Game_TradeMenu_Create(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->trade_menu == TNECS_NULL)
         sota->trade_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
     else {
@@ -595,11 +549,9 @@ void Game_TradeMenu_Create(struct Game *sota) {
     // tm->passive->pixelnours =       sota->pixelnours;
     // tm->passive->pixelnours_big =   sota->pixelnours_big;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_TradeMenu_Update(struct Game *sota, tnecs_entity_t selected, tnecs_entity_t candidate) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(selected     > TNECS_NULL);
     SDL_assert(candidate    > TNECS_NULL);
     struct Unit *active     = TNECS_GET_COMPONENT(sota->world, selected, Unit);
@@ -627,11 +579,9 @@ void Game_TradeMenu_Update(struct Game *sota, tnecs_entity_t selected, tnecs_ent
     // TradeMenu_Elem_Pos(tm, mc);
 
     /* scaling elem_pos: put it last cause dependences */
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_TradeMenu_Enable(struct Game *sota, tnecs_entity_t selected, tnecs_entity_t candidate) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // if (sota->trade_menu == TNECS_NULL)
     //     Game_TradeMenu_Create(sota);
     // SDL_assert(sota->trade_menu > TNECS_NULL);
@@ -641,12 +591,10 @@ void Game_TradeMenu_Enable(struct Game *sota, tnecs_entity_t selected, tnecs_ent
     // strncpy(sota->reason, "TradeMenu was created", sizeof(sota->reason));
     // Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->trade_menu, NULL);
     // Game_cursorFocus_onMenu(sota);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- ItemSelectMenu --- */
 void Game_ItemSelectMenu_Create(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     if (sota->item_select_menu == TNECS_NULL)
         sota->item_select_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
@@ -690,11 +638,9 @@ void Game_ItemSelectMenu_Create(struct Game *sota) {
     Menu_Elem_Boxes_Check(mc);
     LoadoutSelectMenu_Elem_Pos(ism, mc);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_ItemSelectMenu_Update(struct Game *sota, tnecs_entity_t unit_entity_ontile) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit_entity_ontile > TNECS_NULL);
     struct Unit *unit_ontile = TNECS_GET_COMPONENT(sota->world, unit_entity_ontile, Unit);
     SDL_assert(unit_ontile != NULL);
@@ -710,11 +656,9 @@ void Game_ItemSelectMenu_Update(struct Game *sota, tnecs_entity_t unit_entity_on
     // LoadoutSelectMenu_Load(ism, unit_ontile, sota->renderer);
 
     /* scaling elem_pos: put it last cause dependences */
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_ItemSelectMenu_Enable(struct Game *sota, tnecs_entity_t uent_ontile) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->item_select_menu == TNECS_NULL)
         Game_ItemSelectMenu_Create(sota);
     Game_menuStack_Push(sota, sota->item_select_menu);
@@ -723,12 +667,10 @@ void Game_ItemSelectMenu_Enable(struct Game *sota, tnecs_entity_t uent_ontile) {
     strncpy(sota->reason, "ItemSelectMenu was created", sizeof(sota->reason));
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->item_select_menu, NULL);
     Game_cursorFocus_onMenu(sota);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- StaffSelectMenu --- */
 void Game_StaffSelectMenu_Create(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->staff_select_menu == TNECS_NULL)
         sota->staff_select_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
     else {
@@ -760,11 +702,9 @@ void Game_StaffSelectMenu_Create(struct Game *sota) {
     Menu_Elem_Boxes_Check(mc);
     LoadoutSelectMenu_Elem_Pos(ssm, mc);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_StaffSelectMenu_Update(struct Game *sota, tnecs_entity_t unit_entity_ontile) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit_entity_ontile > TNECS_NULL);
     struct Unit *unit_ontile = TNECS_GET_COMPONENT(sota->world, unit_entity_ontile, Unit);
     SDL_assert(unit_ontile != NULL);
@@ -806,11 +746,9 @@ void Game_StaffSelectMenu_Update(struct Game *sota, tnecs_entity_t unit_entity_o
     // /* scaling elem_pos: put it last cause dependences */
 
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_StaffSelectMenu_Enable(struct Game *sota, tnecs_entity_t unit_entity_ontile) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->staff_select_menu == TNECS_NULL)
         Game_StaffSelectMenu_Create(sota);
     Game_menuStack_Push(sota, sota->staff_select_menu);
@@ -819,14 +757,12 @@ void Game_StaffSelectMenu_Enable(struct Game *sota, tnecs_entity_t unit_entity_o
     strncpy(sota->reason, "STAFF_SELECT_MENU was created", sizeof(sota->reason));
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->staff_select_menu, NULL);
     Game_cursorFocus_onMenu(sota);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Menu location --- */
 void Game_Menu_LocationfromUnit(struct Game *sota, tnecs_entity_t in_menu_entity,
                                 tnecs_entity_t in_unit_entity) {
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Menu *mc = NULL;
     struct Position *unit_pos = NULL;
     SDL_assert(in_unit_entity > 0);
@@ -850,11 +786,9 @@ void Game_Menu_LocationfromUnit(struct Game *sota, tnecs_entity_t in_menu_entity
     // SDL_assert(mc->n9patch.pixel_pos.y > 0);
     // SDL_assert(mc->n9patch.patch_pixels.x > 0);
     // SDL_assert(mc->n9patch.patch_pixels.y > 0);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_Menu_LocationfromCursor(struct Game *sota, tnecs_entity_t in_menu_entity) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota->entity_cursor);
     SDL_assert(in_menu_entity > 0);
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, in_menu_entity,
@@ -872,12 +806,10 @@ void Game_Menu_LocationfromCursor(struct Game *sota, tnecs_entity_t in_menu_enti
     mc->n9patch.pos.x = sota->settings.res.x / 2;
     mc->n9patch.pos.y = sota->settings.res.y / 2;
     // }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Title Screen --- */
 void Game_FirstMenu_Update(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->first_menu == 0) {
         SOTA_Log_Debug("First menu is not loaded");
         exit(ERROR_Generic);
@@ -900,11 +832,9 @@ void Game_FirstMenu_Update(struct Game *sota) {
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
     SDL_assert(mc->n9patch.pos.x == 0);
     SDL_assert(mc->n9patch.pos.y == 0);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_FirstMenu_Destroy(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->first_menu != TNECS_NULL) {
         struct Menu *mc;
         mc = TNECS_GET_COMPONENT(sota->world, sota->first_menu, Menu);
@@ -921,16 +851,13 @@ void Game_FirstMenu_Destroy(struct Game *sota) {
 
     sota->first_menu = TNECS_NULL;
     Game_Title_Destroy(sota);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_Title_Create(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_SetRenderDrawColor(sota->renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
     if (sota->title != TNECS_NULL) {
         SOTA_Log_Debug("Title is already loaded");
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     sota->title = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position, Text);
@@ -958,11 +885,9 @@ void Game_Title_Create(struct Game *sota) {
     SDL_assert((text->rect.w > 0) && (text->rect.h > 0));
     SDL_assert(sota->pixelnours_big != NULL);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_Title_Destroy(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->title != TNECS_NULL) {
         struct Text *text = TNECS_GET_COMPONENT(sota->world, sota->title, Text);
 
@@ -972,15 +897,12 @@ void Game_Title_Destroy(struct Game *sota) {
         tnecs_entity_destroy(sota->world, sota->title);
         sota->title = TNECS_NULL;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_FirstMenu_Create(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->first_menu != TNECS_NULL) {
         SOTA_Log_Debug("FirstMenu is already loaded");
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
     sota->first_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
     struct Menu *mc;
@@ -1004,15 +926,12 @@ void Game_FirstMenu_Create(struct Game *sota) {
     SDL_assert(mc->n9patch.pos.x == 0);
     SDL_assert(mc->n9patch.pos.y == 0);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_titleScreen_Load(struct Game *sota, struct Input_Arguments in_args) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_SetRenderDrawColor(sota->renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
     Game_FirstMenu_Create(sota);
     Game_FirstMenu_Update(sota);
     Game_menuStack_Push(sota, sota->first_menu);
     Game_Title_Create(sota);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

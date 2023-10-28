@@ -5,7 +5,6 @@ u8 statbar_highlights[STATBAR_HIGHLIGHT_NUM] = {4, 12, 18, 22, 25, 26, 32, 35};
 
 void StatBar_Init(struct SimpleBar *statbar, u8 stat, u8 cap, int posx,
                   int posy) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     //*
     statbar->pos.x = posx * statbar->scale.x;
     statbar->pos.y = posy * statbar->scale.y;
@@ -14,38 +13,30 @@ void StatBar_Init(struct SimpleBar *statbar, u8 stat, u8 cap, int posx,
         statbar->fill = ((float) stat) / ((float)cap);
     else
         statbar->fill = 0;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void HPBar_Init(struct SimpleBar *statbar, u8 stat, u8 cap, int posx,
                 int posy) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     StatBar_Init(statbar, stat, cap, posx, posy);
     statbar->len = HPBAR_LEN * statbar->scale.x;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- STATBAR --- */
 void StatBar_Colors_NES(struct SimpleBar *statbar, int BG_dark, int BG_light, int FG_dark,
                         int FG_light) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     statbar->BG_dark = palette_NES->colors[BG_dark];
     statbar->BG_light = palette_NES->colors[BG_light];
     statbar->FG_dark = palette_NES->colors[FG_dark];
     statbar->FG_light = palette_NES->colors[FG_light];
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 u8 StatBar_Len(int cap) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     u8 max_len = STATBAR_MAX_LEN;
     u8 cap_len = ((float)cap / STATBAR_MAX_CAP) * STATBAR_MAX_LEN;
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (cap_len < max_len ? cap_len : max_len);
 }
 
 void HPBar_Draw(struct SimpleBar *statbar, SDL_Renderer *renderer) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_Rect out_rect;
     SDL_Rect temp_rect;
 #define BG_DARK_RECT_NUM 3
@@ -196,11 +187,9 @@ void HPBar_Draw(struct SimpleBar *statbar, SDL_Renderer *renderer) {
 #undef FG_DARK_RECT_NUM
 #undef FG_LIGHT_RECT_NUM
 #undef BLACK_RECT_NUM
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void StatBar_Draw(struct SimpleBar *statbar, SDL_Renderer *renderer) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_Rect out_rect;
     SDL_Rect temp_rect;
 #define BG_DARK_RECT_NUM 2
@@ -340,5 +329,4 @@ void StatBar_Draw(struct SimpleBar *statbar, SDL_Renderer *renderer) {
 #undef FG_DARK_RECT_NUM
 #undef FG_LIGHT_RECT_NUM
 #undef BLACK_RECT_NUM
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

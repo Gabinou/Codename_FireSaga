@@ -3,29 +3,24 @@
 
 u8 HexDistance_HexPoints(struct nmath_hexpoint_int32_t in_point1,
                          struct nmath_hexpoint_int32_t in_point2) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     u8 distance = (labs(in_point1.x - in_point2.x) + abs(in_point1.y - in_point2.y) +
                    labs(
                            in_point1.z - in_point2.z)) / 2;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (distance);
 }
 
 u8 HexDistance_Points(struct Point in_point1,
                       struct Point in_point2) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 z1 = -in_point1.x - in_point1.y;
     i32 z2 = -in_point2.x - in_point2.y;
     u8 distance = (labs(in_point1.x - in_point2.x) + abs(in_point1.y - in_point2.y) +
                    labs(
                            z1 - z2)) / 2;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (distance);
 }
 
 extern void plotHex2DArray(i16 *in_array, size_t depth_len, size_t col_len,
                            int in_orientation) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (in_array != NULL) {
         switch (in_orientation) {
             case POINTY_TOP:
@@ -48,12 +43,10 @@ extern void plotHex2DArray(i16 *in_array, size_t depth_len, size_t col_len,
                 break;
         }
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 struct nmath_hexpoint_int32_t *cube_directions = NULL;
 void HexPosition_makeDirections() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (cube_directions != NULL)
         DARR_FREE(cube_directions);
     DARR_INIT(cube_directions, struct nmath_hexpoint_int32_t, CUBE_DIRECTIONS_NUM);
@@ -63,22 +56,18 @@ void HexPosition_makeDirections() {
     cube_directions[CUBE_NMATH_DIRECTION_YM] = Cube_Direction_ym;
     cube_directions[CUBE_NMATH_DIRECTION_ZP] = Cube_Direction_zp;
     cube_directions[CUBE_NMATH_DIRECTION_ZM] = Cube_Direction_zm;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void HexPosition_Move(struct HexPosition *in_hexpos, u8 in_direction,
                       u8 in_magnitude) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct nmath_hexpoint_int32_t direction = cube_directions[in_direction];
     in_hexpos->pos.x += in_magnitude * direction.x;
     in_hexpos->pos.y += in_magnitude * direction.y;
     in_hexpos->pos.z += in_magnitude * direction.z;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 struct Point Hex2Pixel(struct nmath_hexpoint_int32_t in_hexpoint,
                        i32 in_radius, bool in_orientation) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Point out;
     float sqrt3 = carmack_sqrt_int32_t(3);
     if (in_orientation == FLAT_TOP) {
@@ -88,12 +77,10 @@ struct Point Hex2Pixel(struct nmath_hexpoint_int32_t in_hexpoint,
         out.x = in_radius * (sqrt3 * in_hexpoint.x + sqrt3 / 2.0f * in_hexpoint.z);
         out.y = in_radius * (3.0f / 2.0f * in_hexpoint.z);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 struct nmath_hexpoint_int32_t HexRound(struct nmath_hexpoint_float in_point) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct nmath_hexpoint_int32_t out;
     struct nmath_hexpoint_int32_t diff;
     out.x = lroundf(in_point.x);
@@ -108,14 +95,12 @@ struct nmath_hexpoint_int32_t HexRound(struct nmath_hexpoint_float in_point) {
         out.y = -out.x - out.z;
     else
         out.z = -out.x - out.y;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 struct nmath_hexpoint_int32_t Pixel2Hex(struct Point in_point,
                                         i32 in_radius,
                                         bool in_orientation) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct nmath_hexpoint_float temp;
     float sqrt3 = carmack_sqrt_int32_t(3);
     if (in_orientation == FLAT_TOP) {
@@ -127,6 +112,5 @@ struct nmath_hexpoint_int32_t Pixel2Hex(struct Point in_point,
     }
     temp.y = - temp.x - temp.z;
     struct nmath_hexpoint_int32_t out = HexRound(temp);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }

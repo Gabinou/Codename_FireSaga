@@ -4,80 +4,66 @@
 void Control_Cursor_Moves(struct Game *sota,    struct Point cursor_move,
                           struct Point target,  struct Point px_pos,
                           i32 controller_type) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - Immobile cursor - */
     if ((cursor_move.x == 0) && (cursor_move.y == 0)) {
-        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     sota->cursor_frame_moved = true;
 
     /* - Block sliding cursor - */
     if ((target.x != px_pos.x) || (target.y != px_pos.y)) {
-        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     /* - Pause cursor after moving - */
     int min = 0;
     int max = CURSOR_FIRSTMOVE_PAUSE_ms;
     if ((sota->cursor_moved_time_ms > min) && (sota->cursor_moved_time_ms < max)) {
-        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     sota->cursor_move     = cursor_move;
     sota->controller_code = controller_type;
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Gamepad_Pressed(i8 sota_b, i8 *press, i8 *pressed_num, i32 *controller_type,
                      u32 event, struct controllerGamepad *gp) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 theld       = gp->timeheld_button_ns;
     i32 min_held    = GAMEPAD_MINHELD_ns;
     bool butblk     = gp->block_buttons;
 
     Control_Pressed(sota_b, press, pressed_num, butblk, theld,
                     controller_type, event, min_held);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Keyboard_Pressed(i8 sota_b, i8 *press, i8 *pressed_num, i32 *controller_type,
                       u32 event, struct controllerKeyboard *kb) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 theld      = kb->timeheld_button_ns;
     i32 min_held   = KEYBOARD_MINHELD_ns;
     bool butblk     = kb->block_buttons;
 
     Control_Pressed(sota_b, press, pressed_num, butblk, theld,
                     controller_type, event, min_held);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Control_Pressed(i8 sota_b, i8 *press, i8 *pressed_num, bool block, i32 t_held_ns,
                      i32 *controller_type, u32 event, i32 t_min_ns) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     press[(*pressed_num)++] = sota_b;
     if (block) {
-        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
     if (event <= 0) {
-        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
     // TODO: fsm for button events
     if ((t_min_ns <= 0) || (t_held_ns > t_min_ns)) {
         Event_Emit(__func__, SDL_USEREVENT, event, controller_type, NULL);
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Control_Keyboard(tnecs_system_input_t *input) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     SDL_assert(input->user_data != NULL);
     struct Point cursor_move = {0};
@@ -158,11 +144,9 @@ void Control_Keyboard(tnecs_system_input_t *input) {
         struct Point pixel_pos = pos_arr[order].pixel_pos;
         Control_Cursor_Moves(sota, cursor_move, target, pixel_pos, *ct);
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Control_Gamepad(tnecs_system_input_t *input) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     SDL_assert(input->user_data != NULL);
     struct Point cursor_move = {0};
@@ -240,10 +224,7 @@ void Control_Gamepad(tnecs_system_input_t *input) {
         struct Point pixel_pos = pos_arr[order].pixel_pos;
         Control_Cursor_Moves(sota, cursor_move, target, pixel_pos, gp->controller_type);
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Control_Touchpad(tnecs_system_input_t *input) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

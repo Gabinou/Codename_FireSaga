@@ -46,7 +46,6 @@ struct Text_Bubble TextBubble_default = {
 };
 
 void TextBubble_Free(struct Text_Bubble *bubble) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (bubble->text != NULL) {
         free(bubble->text);
         bubble->text = NULL;
@@ -64,11 +63,9 @@ void TextBubble_Free(struct Text_Bubble *bubble) {
         bubble->tail.texture = NULL;
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void TextBubble_Load(struct Text_Bubble *bubble, SDL_Renderer *renderer, struct n9Patch *n9patch) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(bubble != NULL);
 
     /* -- Free before re-allocating -- */
@@ -96,11 +93,9 @@ void TextBubble_Load(struct Text_Bubble *bubble, SDL_Renderer *renderer, struct 
     bubble->tail.texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(bubble->tail.texture != NULL);
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void TextBubble_Set_Text(struct Text_Bubble *bubble, const char *text, struct n9Patch *n9patch) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Free before re-allocating -- */
     if (bubble->text != NULL) {
         free(bubble->text);
@@ -118,21 +113,17 @@ void TextBubble_Set_Text(struct Text_Bubble *bubble, const char *text, struct n9
     /* -- Compute bubble size from text lines -- */
     TextBubble_Compute_Size(bubble, n9patch);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void TextBubble_Set_Target(struct Text_Bubble *bubble, struct Point target) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Compute everything related to new target --  */
     /* target is relative to bubble position */
     bubble->target = target;
     TextBubble_Tail_Octant(bubble);
     TextBubble_Tail_Angle( bubble);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 int TextBubble_Tail_Octant(struct Text_Bubble *bubble) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Find octant around text bubble target is in -- */
     struct Point pos = {TEXT_BUBBLE_RENDER_PAD, TEXT_BUBBLE_RENDER_PAD};
     struct Point ternary;
@@ -141,12 +132,10 @@ int TextBubble_Tail_Octant(struct Text_Bubble *bubble) {
     bubble->tail.octant = Ternary_Direction_Index(ternary.x, ternary.y);
     SDL_assert(bubble->tail.octant != SOTA_DIRECTION_INSIDE);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (bubble->tail.octant);
 }
 
 void TextBubble_Tail_Pos(struct Text_Bubble *bubble, struct n9Patch *n9patch) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Decide tail position. */
     struct Point pos = {TEXT_BUBBLE_RENDER_PAD, TEXT_BUBBLE_RENDER_PAD};
 
@@ -197,11 +186,9 @@ void TextBubble_Tail_Pos(struct Text_Bubble *bubble, struct n9Patch *n9patch) {
             bubble->tail.dstrect.y = -2;
             break;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void TextBubble_Tail_Angle(struct Text_Bubble *bubble) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Decide orientation of tail, except flip. */
     // Only puts tail in correct octant
 
@@ -240,12 +227,10 @@ void TextBubble_Tail_Angle(struct Text_Bubble *bubble) {
             bubble->tail.index = TEXT_BUBBLE_DIAGONAL;
             break;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 
 void TextBubble_Tail_Draw(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_Rect srcrect;
     srcrect.x = Text_Bubble_Tail_SIZE * bubble->tail.index;
     srcrect.y = 0;
@@ -261,11 +246,9 @@ void TextBubble_Tail_Draw(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
     SDL_RenderCopyEx(renderer, bubble->tail.texture, &srcrect, &dstrect,
                      bubble->tail.angle, &center, bubble->tail.flip);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void TextBubble_Compute_Size(struct Text_Bubble *bu, struct n9Patch *n9patch) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Check -- */
     if (bu->text == NULL) {
         SOTA_Log_Debug("bubble's text is NULL");
@@ -305,12 +288,10 @@ void TextBubble_Compute_Size(struct Text_Bubble *bu, struct n9Patch *n9patch) {
     SDL_assert(n9patch->size_patches.x >= 2);
     SDL_assert(n9patch->size_patches.y >= 2);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void TextBubble_Set_All(struct Text_Bubble *bubble, const char *text, struct Point target,
                         struct n9Patch *n9patch) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     TextBubble_Set_Text(bubble, text, n9patch);
     TextBubble_Set_Target(bubble, target);
@@ -318,13 +299,11 @@ void TextBubble_Set_All(struct Text_Bubble *bubble, const char *text, struct Poi
     SDL_assert(bubble->height > 0);
     TextBubble_Tail_Pos(bubble, n9patch);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* -- Drawing elements -- */
 void TextBubble_Copy_VScroll(struct Text_Bubble *bubble, SDL_Renderer *renderer,
                              SDL_Texture *render_target) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - Copy written text + middle of n9patch for VScroll - */
     bubble->vscroll = 0;
 
@@ -348,27 +327,22 @@ void TextBubble_Copy_VScroll(struct Text_Bubble *bubble, SDL_Renderer *renderer,
     SDL_SetRenderTarget(renderer, bubble->texture_vscroll);
     SDL_RenderCopy(renderer, bubble->texture, &srcrect, &dstrect);
     SDL_SetRenderTarget(renderer, render_target);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void TextBubble_VScroll(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - To do vscroll - */
     SDL_assert(bubble->vscroll_speed > 0);
     bubble->vscroll += bubble->vscroll_speed;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void TextBubble_VScroll_Draw(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - To do vscroll - */
     SDL_Rect srcrect = {0}, dstrect = {0};
     dstrect.h = bubble->height - TEXT_BUBBLE_COPY_PAD * 2;
     if (bubble->vscroll > dstrect.h) {
         bubble->vscroll      = 0;
         bubble->vscroll_anim = false;
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
     dstrect.w = bubble->width  - TEXT_BUBBLE_COPY_PAD * 2;
 
@@ -385,13 +359,11 @@ void TextBubble_VScroll_Draw(struct Text_Bubble *bubble, SDL_Renderer *renderer)
 
     SDL_assert(bubble->texture_vscroll != NULL);
     SDL_RenderCopy(renderer, bubble->texture_vscroll, &srcrect, &dstrect);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 
 /* --- Scrolling --- */
 void TextBubble_Write(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - name - */
     int x = bubble->padding.left + TEXT_BUBBLE_RENDER_PAD, y;
     int scroll_len_rem = bubble->pixelfont->scroll_len;
@@ -440,13 +412,11 @@ void TextBubble_Write(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
         PixelFont_Write(bubble->pixelfont, renderer, bubble->lines.lines[i], to_render, x, y);
     }
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Drawing --- */
 void TextBubble_Update(struct Text_Bubble *bubble, struct n9Patch *n9patch,
                        SDL_Texture *render_target, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     SDL_assert(bubble != NULL);
     SDL_assert(renderer != NULL);
@@ -495,12 +465,10 @@ void TextBubble_Update(struct Text_Bubble *bubble, struct n9Patch *n9patch,
 
     SDL_SetRenderTarget(renderer, render_target);
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void TextBubble_Draw(struct PopUp *popup, struct Point pos,
                      SDL_Texture *target, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct n9Patch     *n9patch  = &popup->n9patch;
     struct Text_Bubble *bubble   =  popup->data;
 
@@ -520,5 +488,4 @@ void TextBubble_Draw(struct PopUp *popup, struct Point pos,
     SDL_RenderCopy(renderer, bubble->texture, NULL, &dstrect);
     Utilities_DrawColor_Reset(renderer);
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

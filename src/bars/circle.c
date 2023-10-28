@@ -8,15 +8,12 @@ struct CircleBar CircleBar_default = {
 };
 
 void CircleBar_Fill(struct CircleBar *circlebar, int attack_i, int attack_num) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(attack_num > 0);
     SDL_assert(attack_i <= attack_num);
     circlebar->fill = attack_i * CIRCLE_BAR_FILL_LEN / attack_num;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void CircleBar_Draw(struct CircleBar *circlebar, SDL_Renderer *renderer) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /*   FLIPPED BAR     NO FLIP BAR    */
     /*  |     -------|  |--------    |  */
     /*  |____________|  |____________|  */
@@ -167,5 +164,4 @@ void CircleBar_Draw(struct CircleBar *circlebar, SDL_Renderer *renderer) {
 
     Utilities_DrawColor_Reset(renderer);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

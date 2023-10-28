@@ -2,7 +2,6 @@
 #include "map/render.h"
 
 void Map_Frame_Pauses(struct Map *map, const struct Settings *settings) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(map);
     SDL_assert(map->tilemap_frame_factor > 0.0f);
     SDL_assert(map->tilemap_frame_factor < 1.0f);
@@ -10,48 +9,38 @@ void Map_Frame_Pauses(struct Map *map, const struct Settings *settings) {
     SDL_assert(map->shadow_frame_factor  < 1.0f);
     map->tilemap_frame_pause = (u8)(map->tilemap_frame_factor * settings->FPS.cap);
     map->shadow_frame_pause  = (u8)(map->shadow_frame_factor  * settings->FPS.cap);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Palettemap_Reset(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(map->row_len > 0);
     SDL_assert(map->col_len > 0);
     size_t bytesize = map->col_len * map->row_len * sizeof(*map->palettemap);
     SDL_assert(map->palettemap != NULL);
     memset(map->palettemap, PALETTE_NES, bytesize);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Palettemap_addMap(struct Map *map, i32 *palettemap, u8 palette) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(palette >= PALETTE_NES);
     SDL_assert(palette  < PALETTE_NUM);
     for (size_t i = 0; i < (map->col_len * map->row_len); i++)
         (palettemap[i] > 0) && (map->palettemap[i] = palette); /* short-circuit */
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Palettemap_addList(struct Map *map, i32 *list, u8 palette) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     size_t bytesize = map->row_len * map->col_len * sizeof(*map->palettemap);
     memset(map->palettemap, PALETTE_NES, bytesize);
     for (size_t i = 0; i < DARR_NUM(list) / TWO_D; i++)
         map->palettemap[list[TWO_D * i] * map->col_len + list[TWO_D * i + 1]] = palette;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Renderer_Set(struct Map *map, SDL_Renderer *renderer) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(renderer);
     map->renderer = renderer;
     if (map->arrow != NULL)
         Arrow_Textures_Load(map->arrow, ARROW_FILENAME, map->renderer);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Palettemap_Autoset(struct Map *map, u16 flagsum) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Map_Palettemap_Reset(map);
     int size = map->row_len * map->col_len;
     i32 *palette = map->temp_palette;
@@ -93,19 +82,15 @@ void Map_Palettemap_Autoset(struct Map *map, u16 flagsum) {
     }
     memset(palette, 0, bytesize);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Palettemap_SetwMap(struct Map *map, u8 *palettemap) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     size_t bytesize = map->row_len * map->col_len * sizeof(*map->palettemap);
     SDL_assert(map->palettemap != NULL);
     memcpy(map->palettemap, palettemap, bytesize);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *render_target) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Preliminaries */
     SDL_Rect dstrect = {0, 0, map->tilesize[0], map->tilesize[1]};
     SDL_Rect srcrect = {0, 0, map->tilesize[0], map->tilesize[1]};
@@ -170,11 +155,9 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
         }
     }
     SDL_SetRenderTarget(map->renderer, render_target); /* render to default again */
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (map->tilemap_texture);
 }
 void Map_Visible_Tiles(struct Map *map, const struct Settings *settings, struct Camera *camera) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Point visiblemprev = map->visiblemin;
     struct Point visiblemax_prev = map->visiblemax;
     map->visiblemin.x = camera->offset.x > 0 ? 0 : SOTA_DEZOOM(
@@ -200,11 +183,9 @@ void Map_Visible_Tiles(struct Map *map, const struct Settings *settings, struct 
     map->visible_changed |= (visiblemprev.y != map->visiblemin.y);
     map->visible_changed |= (visiblemax_prev.x != map->visiblemax.x);
     map->visible_changed |= (visiblemax_prev.y != map->visiblemax.y);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(map->tilemap_surface != NULL);
     SDL_assert(map->tilemap_surface->w == (map->col_len * map->tilesize[0]));
     SDL_assert(map->tilemap_surface->h == (map->row_len * map->tilesize[1]));
@@ -282,24 +263,20 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
                 break;
         }
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (map->tilemap_surface);
 }
 
 void Map_swappedTextures_All(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     for (size_t palette_id = PALETTE_START + 1; palette_id < PALETTE_NUM; palette_id++) {
         for (size_t tile_order = 0; tile_order < DARR_NUM(map->tiles); tile_order++)
             Map_Tileset_newPalette(map, map->tilesindex[tile_order], palette_id);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* Indices of tiles visible to player depending on zoom level */
 /* min is inclusive, max is exclusive */
 void Map_Visible_Bounds(u8 *min, u8 *max, size_t row_len, size_t col_len,
                         i32 tilesize[TWO_D], const struct Point *res, struct Camera *camera) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 edge_min[TWO_D], edge_max[TWO_D];
     edge_max[0] = SOTA_PIXEL2TILEMAP(res->x, tilesize[0], camera->offset.x, camera->zoom) + 2;
     edge_max[1] = SOTA_PIXEL2TILEMAP(res->y, tilesize[1], camera->offset.y, camera->zoom) + 2;
@@ -309,15 +286,12 @@ void Map_Visible_Bounds(u8 *min, u8 *max, size_t row_len, size_t col_len,
     max[1]      = (edge_max[1] > row_len) ? row_len : edge_max[1];
     min[0]      = (edge_min[0] <    0   ) ?    0    : edge_min[0];
     min[1]      = (edge_min[1] <    1   ) ?    0    : edge_min[1];
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Grid_Draw(struct Map *map, const struct Settings *settings, struct Camera *camera) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     if (!settings->map_settings.grid_show) {
-        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
     struct Point line;
     int success, edge1, edge2;
@@ -350,11 +324,9 @@ void Map_Grid_Draw(struct Map *map, const struct Settings *settings, struct Came
     }
     Utilities_DrawColor_Reset(map->renderer);
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 bool Map_Shadowmap_newFrame(struct Map *map) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     bool shadow_updates = false;
     #if !defined(MAP_NO_ANIMATION) || !defined(MAP_SHADOW_NO_ANIMATION)
     if (map->shadow_frame_counter++ > map->shadow_frame_pause) {
@@ -362,12 +334,10 @@ bool Map_Shadowmap_newFrame(struct Map *map) {
         map->shadow_frame_counter = 0;
     }
     #endif /* !defined(MAP_NO_ANIMATION) || !defined(MAP_SHADOW_NO_ANIMATION) */
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (shadow_updates);
 }
 
 bool Map_Tilemap_newFrame(struct Map *map) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     bool tm_up = false ;
     #if !defined(MAP_NO_ANIMATION) || !defined(MAP_TILEMAP_NO_ANIMATION)
     if (map->tilemap_frame_counter++ > map->tilemap_frame_pause) {
@@ -375,13 +345,11 @@ bool Map_Tilemap_newFrame(struct Map *map) {
         map->tilemap_frame_counter = 0;
     }
     #endif /* !defined(MAP_NO_ANIMATION) || !defined(MAP_TILEMAP_NO_ANIMATION) */
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (tm_up);
 }
 
 void Map_Update(struct Map *map, const struct Settings *settings,
                 struct Camera *camera, struct SDL_Texture *render_target) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(map->tilemap_texture);
     if (map->tilemap_shader != NULL) {
         Map_Tilemap_Surface_Stitch(map);
@@ -400,12 +368,10 @@ void Map_Update(struct Map *map, const struct Settings *settings,
     map->camera_moved = false;
     map->shading_changed = false;
     map->update = false;
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Draw(struct Map *map, const struct Settings *settings,
               struct Camera *camera, struct SDL_Texture *render_target) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(map->renderer != NULL);
 
     /* -- Preliminaries -- */
@@ -438,6 +404,5 @@ void Map_Draw(struct Map *map, const struct Settings *settings,
         Arrow_Draw(map->arrow, map->renderer, camera);
 
     Utilities_DrawColor_Reset(map->renderer);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 

@@ -39,18 +39,13 @@ struct MenuElemDirections ssm_links[WSM_ELEMS_NUM] = {
 };
 
 bool StaffSelectMenu_canEqItem(struct LoadoutSelectMenu *ssm) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    return (Unit_canStaff_oneHand(ssm->unit));
+        return (Unit_canStaff_oneHand(ssm->unit));
 }
 
 void StaffSelectMenu_Switch_Items(struct  LoadoutSelectMenu *ssm) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     ssm->update     = true;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void StaffSelectMenu_Switch_Staves(struct LoadoutSelectMenu *ssm) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     ssm->update     = true;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

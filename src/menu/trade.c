@@ -63,23 +63,18 @@ struct MenuElemDirections trade_menu_links[TRADE_MENU_ELEMS_NUM] = {
 };
 
 struct TradeMenu *TradeMenu_Alloc() {
-    SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct TradeMenu *tm = malloc(sizeof(struct TradeMenu));
     tm->selected_item   = ITEM_NULL;
     tm->selected_trader = TRADER_NULL;
-    SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-    return (tm);
+        return (tm);
 }
 
 void TradeMenu_Deselect(struct TradeMenu *tm) {
-    SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tm->selected_item   = ITEM_NULL;
     tm->selected_trader = TRADER_NULL;
-    SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-}
+    }
 
 void TradeMenu_Select(struct   TradeMenu *tm, i8 selected) {
-    SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i8 trader  = 1 - selected / DEFAULT_EQUIPMENT_SIZE;
     i8 item    =     selected % DEFAULT_EQUIPMENT_SIZE;
     SDL_assert((trader == TRADER_PASSIVE) || (trader == TRADER_ACTIVE));
@@ -89,15 +84,13 @@ void TradeMenu_Select(struct   TradeMenu *tm, i8 selected) {
     if ((tm->selected_item == ITEM_NULL) || (tm->selected_trader == TRADER_NULL)) {
         tm->selected_item   = item;
         tm->selected_trader = trader;
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+                return;
     }
 
     /* If item swapped item is the same, deselect it */
     if ((item == tm->selected_item) && (trader == tm->selected_trader)) {
         TradeMenu_Deselect(tm);
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+                return;
     }
 
     tm->target_trader = trader;
@@ -107,11 +100,9 @@ void TradeMenu_Select(struct   TradeMenu *tm, i8 selected) {
     TradeMenu_Trade(tm);
     TradeMenu_Deselect(tm);
 
-    SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-}
+    }
 
 void TradeMenu_Trade(struct TradeMenu *tm) {
-    SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     struct Unit *giver = tm->selected_trader ? tm->active->unit : tm->passive->unit;
     struct Unit *taker = tm->target_trader   ? tm->active->unit : tm->passive->unit;
@@ -140,11 +131,9 @@ void TradeMenu_Trade(struct TradeMenu *tm) {
     tm->active->update  = true;
     tm->passive->update = true;
 
-    SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-}
+    }
 
 void TradeMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct TradeMenu *tm = (struct TradeMenu *)mc->data;
     struct LoadoutSelectMenu *active =     tm->active;
     struct LoadoutSelectMenu *passive =    tm->passive;
@@ -181,11 +170,9 @@ void TradeMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *renderer
 
     SDL_RenderCopy(renderer, passive->texture, NULL, &dstrect);
     Utilities_DrawColor_Reset(renderer);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void TradeMenu_Elem_Pos(struct TradeMenu *tm, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Scales elem_pos to menu size
     SDL_assert(tm != NULL);
     SDL_assert(mc != NULL);
@@ -201,5 +188,4 @@ void TradeMenu_Elem_Pos(struct TradeMenu *tm, struct Menu *mc) {
             mc->elem_pos[i].y = tm->passive->pos.y + trade_menu_elem_pos[i].y * mc->n9patch.scale.y;
         }
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

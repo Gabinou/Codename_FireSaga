@@ -89,62 +89,49 @@ use_function_t item_effect_funcs[ITEM_EFFECT_NUM] = {
 i8 useEffect_STAFF_HEAL(struct Item *restrict item,
                         struct Unit *restrict user,
                         struct Unit *restrict target) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // HEALING ITEMS CAN BE USED ON OTHER UNITS/PEGASUSES/ENEMIES.
     u8 healing = Equation_Staff_Healing(item->stats.AP, user->current_stats.mag);
     Unit_getsHealed(target, healing);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (-1);
 }
 
 i8 useEffect_USE_DIVINE_SHIELD(struct Item *restrict item,
                                struct Unit *restrict user,
                                struct Unit *restrict target) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     target->divine_shield = true;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (-1);
 }
 
 i8 useEffect_BLOW_HORN(struct Item *restrict item,
                        struct Unit *restrict user,
                        struct Unit *restrict target) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (-1);
 }
 
 i8 useEffect_USE_PROMOTE(struct Item *restrict item,
                          struct Unit *restrict user,
                          struct Unit *restrict target) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Unit_Promote(unit, i8 new_class_index);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (-1);
 }
 
 i8 useEffect_USE_LVL_UP(struct Item *restrict item,
                         struct Unit *restrict user,
                         struct Unit *restrict target) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Unit_lvlUp(user);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (-1);
 }
 
 i8 useEffect_USE_GAIN_SKILL(struct Item *restrict item,
                             struct Unit *restrict user,
                             struct Unit *restrict target) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     target->skills += item->stats.AP;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (-1);
 }
 
 i8 useEffect_USE_GAIN_STATS(struct Item *restrict item,
                             struct Unit *restrict user,
                             struct Unit *restrict target) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     switch (item->id) {
         case ITEM_ID_TALISMAN_HP:
             target->current_stats.hp += item->stats.AP;
@@ -183,62 +170,48 @@ i8 useEffect_USE_GAIN_STATS(struct Item *restrict item,
             SOTA_Log_Debug("Wrong id for stat booster.");
             exit(ERROR_Generic);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (-1);
 }
 
 i8 useEffect_CALL_PEGASUS(struct Item *restrict item,
                           struct Unit *restrict user,
                           struct Unit *restrict target) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (-1);
 }
 
 i8 useEffect_CALL_HORSE(struct Item *restrict item,
                         struct Unit *restrict user,
                         struct Unit *restrict target) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (-1);
 }
 
 /* --- ITEM --- */
 void Inventory_item_Swap(struct Inventory_item *restrict items, u8 i1, u8 i2) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Inventory_item buffer = items[i1];
     items[i1] = items[i2];
     items[i2] = buffer;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Inventory_item_Deplete(struct Inventory_item *restrict inventory_item, int uses) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Decrease Durability */
     inventory_item->used++;
     if (inventory_item->used >= uses)
         Inventory_item_Break(inventory_item);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Inventory_item_Break(struct Inventory_item *restrict inventory_item) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // TODO: Game animation/notification of some kind.
     *inventory_item = Inventory_item_broken;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 bool Item_ID_isValid(u16 id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     bool valid = false;
     valid |= ((id > ITEM_ID_ITEM_START) && (id < ITEM_ID_ITEM_END));
     valid |= (id == ITEM_ID_BROKEN);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (valid);
 }
 
 bool Item_canUse(struct Item *restrict item, const struct Unit *restrict unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* ITEM Checks if current unit can use item. GAME checks if target is in range */
     SDL_assert(item != NULL);
     SDL_assert(unit != NULL);
@@ -274,24 +247,20 @@ bool Item_canUse(struct Item *restrict item, const struct Unit *restrict unit) {
         }
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (item->canUse = (has_effect && is_user && is_class));
 }
 
 void Item_Use(struct Item *restrict item, struct Unit *restrict user,
               struct Unit *restrict targets) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Game takes charge of uses-- */
     SDL_assert(item != NULL);
     SDL_assert(item->active != NULL);
     for (i16 i = 0; i < DARR_NUM(targets); i++)
         item->active(item, user, &targets[i]);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- I/O --- */
 void Item_Filename(char *filename, i16 id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char buffer[DEFAULT_BUFFER_SIZE];
     char *token;
 
@@ -308,24 +277,20 @@ void Item_Filename(char *filename, i16 id) {
     /* - add .json to filename - */
     strcat(filename, ".json");
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Item_Reload(struct dtab *items_dtab, i16 id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Overwrite item ONLY if it already exists */
     if (DTAB_GET(items_dtab, id) != NULL) {
         Item_Free(DTAB_GET(items_dtab, id));
         DTAB_DEL(items_dtab, id);
         Item_Load(items_dtab, id);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 
 /* Loads only pure items */
 void Item_Load(struct dtab *items_dtab, i16 id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(Item_ID_isValid(id));
     SDL_assert(items_dtab != NULL);
 
@@ -347,31 +312,25 @@ void Item_Load(struct dtab *items_dtab, i16 id) {
     /* - Add weapon to dtab - */
     DTAB_ADD(items_dtab, &temp_item, id);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Item_All_Load(struct dtab *items_dtab) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     for (size_t i = ITEM_ID_ITEM_START; i < ITEM_ID_ITEM_END; i++) {
         SOTA_Log_Debug("%zu", i);
         if (Item_ID_isValid(i))
             Item_Load(items_dtab, i);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Item_All_Reload(struct dtab *items_dtab) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     for (size_t i = ITEM_ID_ITEM_START; i < ITEM_ID_ITEM_END; i++) {
         SOTA_Log_Debug("%zu", i);
         if (Item_ID_isValid(i))
             Item_Reload(items_dtab, i);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Item_writeJSON(const void *restrict input, cJSON *restrict jitem) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - Preliminaries - */
     const struct Item *item = input;
     SDL_assert(jitem != NULL);
@@ -453,11 +412,9 @@ void Item_writeJSON(const void *restrict input, cJSON *restrict jitem) {
         Filesystem_writeJSON_Itemstats(jstats, stats);
         cJSON_AddItemToObject(jitem, "Stats", jstats);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Item_readJSON(void *input, const cJSON *jitem) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(jitem != NULL);
 
     /* - Preliminaries - */
@@ -545,11 +502,9 @@ void Item_readJSON(void *input, const cJSON *jitem) {
     /* - Repairable - */
     if (jcanRepair != NULL)
         item->canRepair = cJSON_IsTrue(jcanRepair);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Item_Free(struct Item *restrict item) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (item->users != NULL) {
         DARR_FREE(item->users);
         item->users = NULL;
@@ -559,13 +514,11 @@ void Item_Free(struct Item *restrict item) {
         item->json_filename = NULL;
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Is --- */
 int Item_Archetype(i16 id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    int archetype = ITEM_ARCHETYPE_ITEM;
+        int archetype = ITEM_ARCHETYPE_ITEM;
     if (Weapon_ID_isValid(id)) {
         if (Weapon_isStaff(id)) {
             archetype = ITEM_ARCHETYPE_STAFF;
@@ -579,34 +532,28 @@ int Item_Archetype(i16 id) {
 }
 
 bool Item_isOffhand(i16  id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    return (Weapon_isOffhand(id));
+        return (Weapon_isOffhand(id));
 }
 
 bool Item_isShield(i16  id) {
     /* Must be equivalent to using shield item archetype */
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    return (Weapon_isShield(id));
+        return (Weapon_isShield(id));
 }
 
 bool Item_isStaff(i16  id) {
     /* Must be equivalent to using staff item archetype */
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    return (Weapon_isStaff(id));
+        return (Weapon_isStaff(id));
 }
 
 bool Item_isWeapon(i16 id) {
     /* Must be equivalent to using weapon item archetype */
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    return (Item_Archetype(id) == ITEM_ARCHETYPE_WEAPON);
+        return (Item_Archetype(id) == ITEM_ARCHETYPE_WEAPON);
 }
 
 int Item_Stat(const struct Item *item, i16 stattype)  {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert((stattype > ITEM_STAT_START) && (stattype < ITEM_STAT_END));
     u8 *item_stats_arr = (u8 *)&item->stats;
     int stat = item_stats_arr[stattype - 1];
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (stat);
 }
 

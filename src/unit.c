@@ -138,7 +138,6 @@ struct Unit Unit_default = {
 };
 
 struct Unit Unit_Nibal_make() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Unit Nibal_unit = {
         .json_element = JSON_UNIT,
         /*                  hp str mag agi dex fth luck def res con move prof */
@@ -176,22 +175,18 @@ struct Unit Unit_Nibal_make() {
 
         .num_equipment  = 0,
     };
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (Nibal_unit);
 }
 
 /* --- Constructors/Destructors --- */
 void Unit_Init(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit != NULL);
     Unit_Free(unit);
     unit->grown_stats  = DARR_INIT(unit->grown_stats,  struct Unit_stats, SOTA_MAX_LEVEL / 8);
     unit->status_queue = DARR_INIT(unit->status_queue, struct Unit_status, 2);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Unit_Free(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit != NULL);
     if (unit->grown_stats != NULL) {
         DARR_FREE(unit->grown_stats);
@@ -205,25 +200,20 @@ void Unit_Free(struct Unit *unit) {
         DARR_FREE(unit->status_queue);
         unit->status_queue = NULL;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Unit_InitWweapons(struct Unit *unit, struct dtab *weapons_dtab) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Unit_Init(unit);
     unit->weapons_dtab = weapons_dtab;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Setters/Getters --- */
 struct WpnorItem Unit_WpnorItem(struct Unit *unit, int i) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit->weapons_dtab != NULL);
     SDL_assert(unit->items_dtab   != NULL);
 
     struct Inventory_item *inv_item = Unit_Item_Side(unit, i);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (Utilities_WpnorItem(inv_item->id, unit->weapons_dtab, unit->items_dtab));
 }
 
@@ -271,18 +261,15 @@ int Unit_Hand_Side2Strong(const struct Unit *unit, int side_i) {
 
 /* Note: weakhand = 1 - stronghand */
 int Unit_Hand_Strong(const struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    SDL_assert(unit != NULL);
+        SDL_assert(unit != NULL);
     return (SotA_Hand_Strong(unit->handedness));
 }
 
 int SotA_Hand_Strong(i8 handedness) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if ((handedness <= UNIT_HAND_NULL) || (handedness >= UNIT_HAND_END)) {
         SOTA_Log_Debug("Wrong handedness");
         exit(ERROR_Generic);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     /* Stronghand is left hand only for left-handed.
     *  Stronghand is right hand for for right-handed AND ambidextrous. */
     return ( (handedness == UNIT_HAND_LEFTIE) ? UNIT_HAND_LEFT : UNIT_HAND_RIGHT);
@@ -290,15 +277,12 @@ int SotA_Hand_Strong(i8 handedness) {
 
 
 void Unit_setid(struct Unit *unit, i16 id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit != NULL);
     unit->_id = id;
     strcpy(unit->name, global_unitNames[unit->_id]);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Unit_setSkills(struct Unit *unit, u64 skills) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     unit->skills = skills;
     if (unit->skill_names != NULL)
@@ -307,11 +291,9 @@ void Unit_setSkills(struct Unit *unit, u64 skills) {
     SOTA_Log_Debug("Unit new skills: %lx \n", unit->skills);
     for (u8 i = 0; DARR_LEN(unit->skill_names); i++)
         SOTA_Log_Debug("Skill name: %s", unit->skill_names[i]);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Unit_setClassind(struct Unit *unit, i8 class_index) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     SDL_assert((class_index > 0) && (class_index < UNIT_CLASS_END));
     unit->class      = class_index;
@@ -323,80 +305,64 @@ void Unit_setClassind(struct Unit *unit, i8 class_index) {
 
     Unit_Rangemap_Default(unit);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Unit_setStats(struct Unit *unit, struct Unit_stats stats) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     unit->current_hp    = unit->current_stats.hp;
     unit->current_stats = stats;
     Unit_effectiveStats(unit);
     Unit_computedStats(unit, -1);
     unit->current_hp = unit->effective_stats.hp;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Unit_setBases(struct Unit *unit, struct Unit_stats stats) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     unit->base_stats = stats;
     unit->current_hp = unit->base_stats.hp;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 struct Unit_stats Unit_getStats(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Unit_stats out_stats = unit->current_stats;
     SDL_assert(unit);
     Unit_effectiveStats(unit);
     Unit_stats_plus(out_stats,  unit->bonus_stats);
     Unit_stats_minus(out_stats, unit->malus_stats);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_stats);
 }
 
 /* --- Second-order info --- */
 u8 Unit_mvtType(const struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    return (class_mvt_types[unit->class]);
+        return (class_mvt_types[unit->class]);
 }
 
 u8 SotA_army2alignment(u8 army) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if ((army <= ARMY_START) || (army >= ARMY_END)) {
-        SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-        SOTA_Log_Debug("Army out of bounds");
+            SOTA_Log_Debug("Army out of bounds");
         exit(ERROR_OutofBounds);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (army_alignment[army]);
 }
 
 bool SotA_isPC(u8 army) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if ((army <= ARMY_START) || (army >= ARMY_END)) {
         SOTA_Log_Debug("Army out of bounds");
         exit(ERROR_OutofBounds);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (army_isPC[army]);
 }
 
 /* --- Usability --- */
 void Unit_Find_Usable(struct Unit *unit, int archetype) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Find usable weapons in eq_space --  */
     unit->num_usable = 0;
     for (int i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
         if (Unit_Eq_Usable(unit, archetype, i))
             unit->eq_usable[unit->num_usable++] = i;
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 bool Unit_All_Usable(struct Unit *unit) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Set all weapons to be usable --  */
     /* Use case: Dropping item  */
     unit->num_usable = 0;
@@ -407,7 +373,6 @@ bool Unit_All_Usable(struct Unit *unit) {
             all_usable = false;
         unit->num_usable++;
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (all_usable);
 }
 
@@ -418,7 +383,6 @@ bool Unit_Eq_Usable(const struct Unit *unit, int archetype, int i) {
 }
 
 bool Unit_Item_Usable(const struct Unit *unit, int archetype, int id) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     bool usable = false;
     do {
         /* -- If item select, everything is usable --  */
@@ -442,19 +406,16 @@ bool Unit_Item_Usable(const struct Unit *unit, int archetype, int id) {
         }
 
     } while (false);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (usable);
 }
 
 /* --- Skills --- */
 bool Unit_hasSkill(const struct Unit *unit, u64 skill) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    return ((unit->skills & skill) > 0);
+        return ((unit->skills & skill) > 0);
 }
 
 /* --- Statuses --- */
 void Unit_Status_Add(struct Unit *unit, struct Unit_status status) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i16 i = Unit_Status_Find(unit, status.status);
     if (unit->status_queue == NULL)
         unit->status_queue = DARR_INIT(unit->status_queue, struct Unit_status, 2);
@@ -466,14 +427,11 @@ void Unit_Status_Add(struct Unit *unit, struct Unit_status status) {
         i = Unit_Status_Find_Turns(unit, unit->status_queue[i].turns);
         DARR_INSERT(unit->status_queue, status, i);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Unit_Status_Decrement(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (unit->status_queue == NULL) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
     for (size_t i = 0; i < DARR_NUM(unit->status_queue); i++) {
         unit->status_queue[i].turns--;
@@ -481,26 +439,21 @@ void Unit_Status_Decrement(struct Unit *unit) {
             DARR_DEL(unit->status_queue, i);
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 i16 Unit_Status_Find(struct Unit *unit, i16 status) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit->status_queue != NULL);
     for (size_t i = 0; i < DARR_NUM(unit->status_queue); i++) {
         if (unit->status_queue[i].status == status) {
-            SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-            return (i);
+                    return (i);
         }
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (-1);
 }
 
 // What is that for?
 i16 Unit_Status_Find_Turns(struct Unit *unit, i16 turns) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i16 out = -1;
     SDL_assert(unit->status_queue != NULL);
     for (size_t i = 0; i < DARR_NUM(unit->status_queue); i++) {
@@ -510,7 +463,6 @@ i16 Unit_Status_Find_Turns(struct Unit *unit, i16 turns) {
         }
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
@@ -518,7 +470,6 @@ i16 Unit_Status_Find_Turns(struct Unit *unit, i16 turns) {
 /* Private item atker at specific spot. Does no checks
  */
 void _Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, size_t i) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     unit->_equipment[i] = item;
 }
 
@@ -526,12 +477,10 @@ void _Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, size_t i) 
     - During gameplay, errors if taken at non-empty location
  */
 void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, size_t i) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab != NULL);
     if (item.id == ITEM_NULL) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
     Weapon_Load(unit->weapons_dtab, item.id);
 
@@ -546,11 +495,9 @@ void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, size_t i) {
     _Unit_Item_Takeat(unit, item, i);
     unit->num_equipment++;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Unit_Item_Take(struct Unit *unit, struct Inventory_item item) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     if (unit->num_equipment >= DEFAULT_EQUIPMENT_SIZE) {
         SOTA_Log_Debug("Unit Inventory full, should not be able to take item");
@@ -568,19 +515,15 @@ void Unit_Item_Take(struct Unit *unit, struct Inventory_item item) {
             break;
         }
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Unit_Equipment_Drop(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     for (int i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
         Unit_Item_Drop(unit, i);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 struct Inventory_item Unit_Item_Drop(struct Unit *unit, i16 i) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if ((i < 0) || (i >= DEFAULT_EQUIPMENT_SIZE)) {
         SOTA_Log_Debug("Item index out of bounds");
         exit(ERROR_OutofBounds);
@@ -592,12 +535,10 @@ struct Inventory_item Unit_Item_Drop(struct Unit *unit, i16 i) {
     else
         unit->num_equipment = 0;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 void Unit_Item_Swap(struct Unit *unit, i16 i1, i16 i2) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     if ((i1 < 0) || (i1 >= DEFAULT_EQUIPMENT_SIZE)) {
         SOTA_Log_Debug("Item index1 out of bounds");
@@ -610,11 +551,9 @@ void Unit_Item_Swap(struct Unit *unit, i16 i1, i16 i2) {
     struct Inventory_item buffer = unit->_equipment[i1];
     unit->_equipment[i1]          = unit->_equipment[i2];
     unit->_equipment[i2]          = buffer;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Unit_Item_Trade(struct Unit *giver, struct Unit *taker, i16 ig, i16 it) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(giver);
     SDL_assert(taker);
     if ((it < 0) || (it >= DEFAULT_EQUIPMENT_SIZE)) {
@@ -629,11 +568,9 @@ void Unit_Item_Trade(struct Unit *giver, struct Unit *taker, i16 ig, i16 it) {
     struct Inventory_item buffer_taker = Unit_Item_Drop(taker, it);
     Unit_Item_Takeat(taker, buffer_giver, it);
     Unit_Item_Takeat(giver, buffer_taker, ig);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 struct Inventory_item Unit_Equip_TwoHanding(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit != NULL);
     /* Weapon is in stronghand, equipping to weakhand */
     int stronghand = Unit_Hand_Strong(unit);
@@ -655,7 +592,6 @@ struct Inventory_item Unit_Equip_TwoHanding(struct Unit *unit) {
     unit->equipped[weakhand]   = true;
     unit->isTwoHanding         = true;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
@@ -674,56 +610,46 @@ void _Unit_Check_Equipped(struct Unit *unit, bool hand) {
 }
 
 void Unit_Check_Equipped(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Checks if equipped weapon is BORKED, de-equips if so */
     _Unit_Check_Equipped(unit, UNIT_HAND_LEFT);
     _Unit_Check_Equipped(unit, UNIT_HAND_RIGHT);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 bool Unit_Equip(struct Unit *unit, bool hand, int i) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Unit_Item_Swap(unit, hand, i);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (Unit_Equip_inHand(unit, hand));
 }
 
 bool Unit_Equip_inHand(struct Unit *unit, bool hand) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("hand %d, equipment id %ld", hand, unit->_equipment[hand].id);
     SDL_assert(unit != NULL);
 
     /* -- Error if try to equip NULL item -- */
     if (unit->_equipment[hand].id <= ITEM_NULL) {
         SOTA_Log_Debug("No item in hand. Cannot equip.");
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return (unit->equipped[hand] = false);
+            return (unit->equipped[hand] = false);
     }
     Weapon_Load(unit->weapons_dtab, unit->_equipment[hand].id);
 
     /* -- Error checking -- */
     if (!Unit_canEquip(unit, unit->_equipment[hand].id)) {
         SOTA_Log_Debug("Cannot equip item.");
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return (unit->equipped[hand] = false);
+            return (unit->equipped[hand] = false);
     }
 
     if (!unit->hands[hand]) {
         SOTA_Log_Debug("No hand to equip with.");
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return (unit->equipped[hand] = false);
+            return (unit->equipped[hand] = false);
     }
 
     unit->equipped[hand] = true;
     Unit_isdualWielding(unit);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (unit->equipped[hand]);
 }
 
 void Unit_Unequip(struct Unit *unit, bool hand) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
 
     /* -- Unequip -- */
@@ -737,7 +663,6 @@ void Unit_Unequip(struct Unit *unit, bool hand) {
     /* -- If dual wielding, not anymore! -- */
     unit->isDualWielding = false;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* Makes unit take damage.
@@ -745,7 +670,6 @@ void Unit_Unequip(struct Unit *unit, bool hand) {
 * Input crit bool just to determine if unit dies instantly or not.
 */
 void Unit_takesDamage(struct Unit *unit, u8 damage, bool crit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("%s takes %d damage \n", unit->name, damage);
     /* -- Checks -- */
     SDL_assert(unit);
@@ -765,11 +689,9 @@ void Unit_takesDamage(struct Unit *unit, u8 damage, bool crit) {
         else
             Unit_agonizes(unit);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Unit_getsHealed(struct Unit *unit, u8 healing) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("%s gets healed for %d\n", unit->name, healing);
     /* -- Checks -- */
     SDL_assert(unit);
@@ -778,43 +700,33 @@ void Unit_getsHealed(struct Unit *unit, u8 healing) {
     /* -- Actually heal -- */
     int missing_hp   = unit->current_stats.hp - unit->current_hp;
     unit->current_hp = healing > missing_hp ? unit->current_stats.hp : unit->current_hp + healing;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Unit_wait(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     unit->waits = true;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Unit_refresh(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     unit->waits = false;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 i16 Unit_getLvl(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (ceil(unit->exp / SOTA_100PERCENT) + 1);
 }
 
 void Unit_gainExp(struct Unit *unit, u16 exp) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     if (((unit->exp % SOTA_100PERCENT) + exp) > SOTA_100PERCENT) {
         /* Never should have two level ups at one time.*/
         Unit_lvlUp(unit);
     }
     unit->exp += exp;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Unit_supportUp(struct Unit *unit, i16 id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     int i;
     for (i = 0; i < unit->support_num; i++) {
@@ -829,12 +741,10 @@ void Unit_supportUp(struct Unit *unit, i16 id) {
         exit(ERROR_Generic);
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 // This function is ugly as sin. TODO: Refactor this. Make more understandable.
 void Unit_lvlUp(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit != NULL);
     struct Unit_stats grows = Unit_stats_default;
     u8 temp_growth;
@@ -879,59 +789,46 @@ void Unit_lvlUp(struct Unit *unit) {
 
     /* -- Adding current lvlup to all grown stats -- */
     DARR_PUT(unit->grown_stats, temp_stats);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Unit_agonizes(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     unit->agonizes = true;
     SOTA_Log_Debug("%s is agonizing. %d turns until death\n", unit->name, unit->computed_stats.agony);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Unit_dies(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     unit->is_alive = false;
     SOTA_Log_Debug("%s is dead.\n", unit->name);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* Can unit equip weapon input item? */
 bool Unit_canEquip(const struct Unit *unit, i16 id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (id <= ITEM_NULL) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return (false);
+            return (false);
     }
 
     bool type    = Unit_canEquip_Type(unit, id);
     bool left    = Unit_canEquip_Hand(unit, id, UNIT_HAND_LEFT);
     bool right   = Unit_canEquip_Hand(unit, id, UNIT_HAND_RIGHT);
     // SOTA_Log_Debug("Unit_canEquip_Hand %d %d %d", type, right, left);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (type && (left || right));
 }
 
 /* Can unit equip weapon currently in hand? */
 bool Unit_canEquip_inHand(const struct Unit *unit, bool hand) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit->weapons_dtab != NULL);
     i16 hand_id = unit->_equipment[hand].id;
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (Unit_canEquip_Hand(unit, hand_id, hand));
 }
 
 /* Can unit equip arbitrary weapon in its hand? */
 bool Unit_canEquip_Hand(const struct Unit *unit, i16 id, bool hand) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (id <= ITEM_NULL) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return (false);
+            return (false);
     }
     if (!Weapon_ID_isValid(id)) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return (false);
+            return (false);
     }
 
     SDL_assert(unit->weapons_dtab != NULL);
@@ -945,26 +842,21 @@ bool Unit_canEquip_Hand(const struct Unit *unit, i16 id, bool hand) {
     // TODO: Right hand or left hand
 
     if (eq_2O || eq_any  || eq_1A) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return (true);
+            return (true);
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (false);
 }
 
 /* Can unit equip arbitrary weapon with a certain type? */
 bool Unit_canEquip_Type(const struct Unit *unit, i16 id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Unequippable if ITEM_NULL */
     if (id <= ITEM_NULL) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return (false);
+            return (false);
     }
 
     if (!Weapon_ID_isValid(id)) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return (false);
+            return (false);
     }
 
     SDL_assert(unit->weapons_dtab != NULL);
@@ -975,8 +867,7 @@ bool Unit_canEquip_Type(const struct Unit *unit, i16 id) {
 
     /* Is unit among weapon's users? */
     if ((weapon->item->users == NULL) || (DARR_NUM(weapon->item->users) == 0)) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return ((unit->equippable & wpntypecode) > 0);
+            return ((unit->equippable & wpntypecode) > 0);
     }
 
     /* Is weapon's type equippable by unit? */
@@ -984,18 +875,15 @@ bool Unit_canEquip_Type(const struct Unit *unit, i16 id) {
     for (u8 i = 0; i < DARR_NUM(weapon->item->users); i++) {
         found = (weapon->item->users[i] == unit->_id);
         if (found) {
-            SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-            return ((unit->equippable & wpntypecode) > 0);
+                    return ((unit->equippable & wpntypecode) > 0);
         }
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (false);
 }
 
 /* Is a rightie using a weapon in its left hand? */
 bool Unit_iswrongHanding(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     bool out = false;
     do {
         struct Inventory_item *item = Unit_Item_Strong(unit, UNIT_HAND_WEAK);
@@ -1009,7 +897,6 @@ bool Unit_iswrongHanding(struct Unit *unit) {
         out = true;
     } while (false);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
@@ -1033,7 +920,6 @@ bool Unit_isWielding(struct Unit *unit, bool hand) {
 
 /* If a unit dual wielding? i.e. wielding a weapon in both hands */
 bool Unit_isdualWielding(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
 
     // Unit_Equipment_Print(unit);
@@ -1041,44 +927,35 @@ bool Unit_isdualWielding(struct Unit *unit) {
     bool left   = Unit_isWielding(unit, UNIT_HAND_LEFT);
     bool right  = Unit_isWielding(unit, UNIT_HAND_RIGHT);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (unit->isDualWielding = left && right && !unit->isTwoHanding);
 }
 
 bool Unit_canCarry(struct Unit *savior, struct Unit *victim) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Unit_stats victim_stats = Unit_effectiveStats(victim);
     struct Unit_stats savior_stats = Unit_effectiveStats(savior);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (Equation_canCarry(savior_stats.con, victim_stats.con));
 }
 
 bool Unit_canDance(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     bool out = (unit->class == UNIT_CLASS_DANCER);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 /* - Unit has any usable staff in Equipment? - */
 int Unit_canStaff_Eq(const struct  Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     for (int i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
         struct Inventory_item item = unit->_equipment[i];
         if (Weapon_isStaff(item.id)) {
-            SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-            return (true);
+                    return (true);
         }
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (false);
 }
 
 /* - Can unit equip a staff in strong hand? - */
 int Unit_canStaff(const struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     bool out = false, stronghand = Unit_Hand_Strong(unit);
 
@@ -1087,20 +964,17 @@ int Unit_canStaff(const struct Unit *unit) {
         out = Weapon_isStaff(item.id);
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 /* - Can unit equip a staff with only one hand? - */
 int Unit_canStaff_oneHand(const struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    return (Unit_hasSkill(unit, PASSIVE_SKILL_STAFF_ONE_HAND));
+        return (Unit_hasSkill(unit, PASSIVE_SKILL_STAFF_ONE_HAND));
 }
 
 
 /* - Any Weapon to attack with in equipment - */
 bool Unit_canAttack_Eq(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit != NULL);
     SDL_assert(unit->weapons_dtab != NULL);
     /* - If any item in equipment is a weapon, can attack - */
@@ -1118,24 +992,20 @@ bool Unit_canAttack_Eq(struct Unit *unit) {
         if (!wpn->canAttack)
             continue;
 
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return (true);
+            return (true);
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (false);
 }
 
 /* - Can unit attack with equipped weapons - */
 bool Unit_canAttack(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit != NULL);
     SDL_assert(unit->weapons_dtab != NULL);
 
     bool left   = _Unit_canAttack(unit, UNIT_HAND_LEFT);
     bool right  = _Unit_canAttack(unit, UNIT_HAND_RIGHT);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (left || right);
 }
 
@@ -1168,7 +1038,6 @@ struct Weapon *Unit_Get_Equipped_Weapon(const struct Unit *unit, bool hand) {
 
 /* Add-up all malus stat sources */
 i8 Unit_computeMalus(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i8 out = 0;
     unit->malus_stats = Unit_stats_default;
     struct Unit_stats temp;
@@ -1190,13 +1059,11 @@ i8 Unit_computeMalus(struct Unit *unit) {
     if (weapon != NULL)
         unit->malus_stats = Unit_stats_plus(unit->malus_stats, weapon->item->malus_stats);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 /* Add-up all bonus stat sources */
 i8 Unit_computeBonus(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i8 out = 0;
     unit->bonus_stats = Unit_stats_default;
 
@@ -1211,7 +1078,6 @@ i8 Unit_computeBonus(struct Unit *unit) {
     if (weapon != NULL)
         unit->bonus_stats = Unit_stats_plus(unit->bonus_stats, weapon->item->bonus_stats);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
@@ -1230,7 +1096,6 @@ u8 *Unit_Shield_Protection(struct Unit *unit, bool hand) {
 }
 
 u8 *Unit_computeDefense(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Reset unit protections */
     unit->computed_stats.protection[DMG_TYPE_PHYSICAL] = 0;
     unit->computed_stats.protection[DMG_TYPE_MAGICAL]  = 0;
@@ -1252,12 +1117,10 @@ u8 *Unit_computeDefense(struct Unit *unit) {
     struct Unit_stats effstats = unit->effective_stats;
     unit->computed_stats.protection[DMG_TYPE_PHYSICAL] = Equation_Weapon_defense(prot_P, effstats.def);
     unit->computed_stats.protection[DMG_TYPE_MAGICAL]  = Equation_Weapon_defense(prot_M, effstats.res);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (unit->computed_stats.protection);
 }
 
 u8 *Unit_computeAttack(struct Unit *unit, int distance) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
     /* Reset unit attacks */
@@ -1327,7 +1190,6 @@ u8 *Unit_computeAttack(struct Unit *unit, int distance) {
     u8 *att = unit->computed_stats.attack;
     att[DMG_TYPE_TOTAL] = att[DMG_TYPE_PHYSICAL] + att[DMG_TYPE_MAGICAL] + att[DMG_TYPE_TRUE];
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (unit->computed_stats.attack);
 }
 /* -- Loadout Range -- */
@@ -1336,7 +1198,6 @@ u8 *Unit_computeAttack(struct Unit *unit, int distance) {
 *   - UNLESS dual-wielding. Ranges combine, BUT only add stats if in range.
 */
 struct Range *Unit_Range_Loadout(struct Unit   *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     struct Range *range = &unit->computed_stats.range_loadout;
     range->min = UINT8_MAX;
@@ -1372,12 +1233,10 @@ struct Range *Unit_Range_Loadout(struct Unit   *unit) {
         Ranges_Combine(range, wpn->stats.range);
     } while (false);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (range);
 }
 
 struct Range *Unit_Range_Item(struct Unit   *unit, int i) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Range *range = &unit->computed_stats.range_combined;
     range->min = UINT8_MAX;
     range->max = 0;
@@ -1392,7 +1251,6 @@ struct Range *Unit_Range_Item(struct Unit   *unit, int i) {
         Ranges_Combine(range, wpn->stats.range);
     } while (false);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (range);
 }
 
@@ -1406,7 +1264,6 @@ struct Range *Unit_Range_Item(struct Unit   *unit, int i) {
 
 struct Range *_Unit_Range_Combine(const struct Unit   *unit, struct Range *range,
                                   bool equipped, int archetype) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - Finds range of ANYTHING - */
     int num = equipped ? UNIT_HANDS_NUM : DEFAULT_EQUIPMENT_SIZE;
     bool stronghand = Unit_Hand_Strong(unit);
@@ -1440,19 +1297,16 @@ struct Range *_Unit_Range_Combine(const struct Unit   *unit, struct Range *range
         Ranges_Combine(range, wpn->stats.range);
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (range);
 }
 
 struct Range *Unit_Range_Combine_Equipment(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    /* Compute range of equipment, using unit rangemap */
+        /* Compute range of equipment, using unit rangemap */
     /* Used to find if any */
     return (Unit_Range_Combine(unit, false));
 }
 
 struct Range *Unit_Range_Combine(struct Unit *unit, bool equipped) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Compute range using unit rangemap */
     int archetype = ITEM_ARCHETYPE_WEAPON;
     int rangemap = unit->user_rangemap > RANGEMAP_NULL ? unit->user_rangemap : unit->rangemap;
@@ -1466,12 +1320,10 @@ struct Range *Unit_Range_Combine(struct Unit *unit, bool equipped) {
     struct Range *range = &unit->computed_stats.range_combined;
     range->min = UINT8_MAX;
     range->max = 0;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (_Unit_Range_Combine(unit, range, equipped, archetype));
 }
 
 struct Range *Unit_Range_Combine_Staves(struct Unit *unit, bool equipped) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - Finds range only for same weapon type as DECIDED BY INPUT - */
 
     struct Range *range = &unit->computed_stats.range_combined;
@@ -1479,13 +1331,11 @@ struct Range *Unit_Range_Combine_Staves(struct Unit *unit, bool equipped) {
     range->max = 0;
     _Unit_Range_Combine(unit, range, equipped, ITEM_ARCHETYPE_STAFF);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (range);
 }
 
 
 struct Range *Unit_Range_Combine_Weapons(struct Unit *unit, bool equipped) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - Finds range only for same weapon type as DECIDED BY INPUT - */
 
     struct Range *range = &unit->computed_stats.range_combined;
@@ -1493,18 +1343,15 @@ struct Range *Unit_Range_Combine_Weapons(struct Unit *unit, bool equipped) {
     range->max = 0;
     _Unit_Range_Combine(unit, range, equipped, ITEM_ARCHETYPE_WEAPON);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (range);
 }
 
 bool Range_Valid(struct Range range) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    return ((range.max > 0) && (range.min > 0) && (range.min <= SOTA_MAX_RANGE)
+        return ((range.max > 0) && (range.min > 0) && (range.min <= SOTA_MAX_RANGE)
             && (range.max <= SOTA_MAX_RANGE));
 }
 
 void Ranges_Combine(struct Range *r1, struct Range r2) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Gap example:    1  2  3  4  5
     // r1: [1,1]      |-|             (gap with    r2)
     // r1: [1,2]      |----|          (no gap with r2)
@@ -1521,17 +1368,14 @@ void Ranges_Combine(struct Range *r1, struct Range r2) {
 
     r1->max = r1->max > r2.max ? r1->max : r2.max; /* Best max range is biggest  */
     r1->min = r1->min < r2.min ? r1->min : r2.min; /* Best min range is smallest */
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 bool Unit_Equipment_Full(const struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    return (unit->num_equipment == DEFAULT_EQUIPMENT_SIZE);
+        return (unit->num_equipment == DEFAULT_EQUIPMENT_SIZE);
 }
 
 
 void Unit_Equipment_Print(const struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit != NULL);
     for (u8 i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
         if (unit->_equipment[i].id == ITEM_NULL) {
@@ -1548,13 +1392,11 @@ void Unit_Equipment_Print(const struct Unit *unit) {
         SOTA_Log_Debug("%d %s", i, wpn->item->name);
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 
 struct Computed_Stats Unit_supportBonus(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    return (unit->support_bonus);
+        return (unit->support_bonus);
 }
 
 /* --- Loadout Manipulation --- */
@@ -1567,7 +1409,6 @@ bool Unit_Loadout_twoHanding(int lh, int rh) {
 
 /* - Public: Chooses between tohanding and not - */
 void Unit_Loadout_Swap(struct Unit *unit, int lh, int rh) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     bool lh_valid = (lh > -1) && (lh < DEFAULT_EQUIPMENT_SIZE);
     bool rh_valid = (rh > -1) && (rh < DEFAULT_EQUIPMENT_SIZE);
     bool twohands = Unit_Loadout_twoHanding(lh, rh);
@@ -1581,11 +1422,9 @@ void Unit_Loadout_Swap(struct Unit *unit, int lh, int rh) {
     }
     // Unit_Equipment_Print(unit);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Unit_Loadout_Swap_Reverse(struct Unit *unit, int lh, int rh) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     bool lh_valid = (lh > -1) && (lh < DEFAULT_EQUIPMENT_SIZE);
     bool rh_valid = (rh > -1) && (rh < DEFAULT_EQUIPMENT_SIZE);
     bool twohands = Unit_Loadout_twoHanding(lh, rh);
@@ -1599,21 +1438,17 @@ void Unit_Loadout_Swap_Reverse(struct Unit *unit, int lh, int rh) {
     }
     // Unit_Equipment_Print(unit);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _Unit_Loadout_Swap_Twohanding(struct Unit *unit, int i) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     int stronghand  = Unit_Hand_Strong(unit);
     if (i != stronghand)
         Unit_Item_Swap(unit, stronghand, i);
     unit->temp = Unit_Equip_TwoHanding(unit);
     // TODO: Place in an empty inventory spot.
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _Unit_Loadout_Swap_Reverse_Twohanding(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     int stronghand  = Unit_Hand_Strong(unit);
     int weakhand    = 1 - stronghand;
     // TODO: Only takeat if item was not previously dropped.
@@ -1621,11 +1456,9 @@ void _Unit_Loadout_Swap_Reverse_Twohanding(struct Unit *unit) {
     // Unit_Equipment_Print(unit);
     unit->temp = Inventory_item_default;
     unit->isTwoHanding = false;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _Unit_Loadout_Swap(struct Unit *unit, int lh, int rh) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(lh != rh); /* no twohanding here */
     bool lh_valid = ((lh > -1) && (lh < DEFAULT_EQUIPMENT_SIZE));
     bool rh_valid = ((rh > -1) && (rh < DEFAULT_EQUIPMENT_SIZE));
@@ -1652,12 +1485,10 @@ void _Unit_Loadout_Swap(struct Unit *unit, int lh, int rh) {
     else
         Unit_Unequip(unit, UNIT_HAND_RIGHT);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* If input hand indices (lh, rh) are unvalid, unequip hand */
 void _Unit_Loadout_Swap_Reverse(struct Unit *unit, int lh, int rh) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(lh != rh); /* no twohanding here */
     bool lh_valid = ((lh > -1) && (lh < DEFAULT_EQUIPMENT_SIZE));
     bool rh_valid = ((rh > -1) && (rh < DEFAULT_EQUIPMENT_SIZE));
@@ -1685,27 +1516,22 @@ void _Unit_Loadout_Swap_Reverse(struct Unit *unit, int lh, int rh) {
     else
         Unit_Unequip(unit, UNIT_HAND_RIGHT);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 struct Computed_Stats Unit_computedStats_wLoadout(struct Unit *unit, int lh, int rh, int dist) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // TODO: what if unit is already twohanding?
     Unit_Loadout_Swap(unit, lh, rh);
     Unit_computedStats(unit, dist);
     Unit_Loadout_Swap_Reverse(unit, lh, rh);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (unit->computed_stats);
 }
 
 /* Computed stats at distance (-1 is always in range) */
 struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     if (!unit->update_stats) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return (unit->computed_stats);
+            return (unit->computed_stats);
     }
 
     /* check if no weapons in hand*/
@@ -1737,13 +1563,11 @@ struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance) {
     Unit_computeRegrets(unit);
     Unit_Range_Loadout(unit);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (unit->computed_stats);
 }
 
 /* Add regrets to computed stats. */
 i8 Unit_computeRegrets(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     /* Pre-computation */
     i8 malus = Equation_Regrets(unit->regrets, unit->effective_stats.fth);
@@ -1754,12 +1578,10 @@ i8 Unit_computeRegrets(struct Unit *unit) {
     unit->computed_stats.dodge = stats.dodge > malus + INT8_MIN  ? stats.dodge - malus : INT8_MIN;
     unit->computed_stats.crit  = stats.crit  > malus ? stats.crit              - malus : 0;
     unit->computed_stats.favor = stats.favor > malus ? stats.favor             - malus : 0;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (malus);
 }
 
 u8 Unit_computeHit(struct Unit *unit, int distance) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
     u8 supports = 0, wpn_hit = 0;
@@ -1780,12 +1602,10 @@ u8 Unit_computeHit(struct Unit *unit, int distance) {
 
     struct Unit_stats effstats = unit->effective_stats;
     unit->computed_stats.hit   = Equation_Unit_Hit(wpn_hit, effstats.dex, effstats.luck, supports);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (unit->computed_stats.hit);
 }
 
 i8 Unit_computeDodge(struct Unit *unit, int distance) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
     u8 support   = 0, tile_dodge = 0;
@@ -1814,12 +1634,10 @@ i8 Unit_computeDodge(struct Unit *unit, int distance) {
     unit->computed_stats.dodge = Equation_Unit_Dodge(wpn_wgt, wpn_dodge, effstats.luck,
                                                      effstats.fth, effstats.agi, effstats.str,
                                                      effstats.con, tile_dodge, support);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (unit->computed_stats.dodge);
 }
 
 u8 Unit_computeCritical(struct Unit *unit, int distance) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
     // TODO: get support bonus
@@ -1841,12 +1659,10 @@ u8 Unit_computeCritical(struct Unit *unit, int distance) {
 
     struct Unit_stats effstats = unit->effective_stats;
     unit->computed_stats.crit = Equation_Unit_Crit(wpn_crit, effstats.dex, effstats.luck, supports);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (unit->computed_stats.crit);
 }
 
 u8 Unit_computeFavor(struct Unit *unit, int distance) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
     u8 supports = 0 ;
@@ -1867,22 +1683,18 @@ u8 Unit_computeFavor(struct Unit *unit, int distance) {
 
     struct Unit_stats effstats = unit->effective_stats;
     unit->computed_stats.favor = Equation_Unit_Favor(wpn_favor, effstats.fth, supports);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (unit->computed_stats.favor);
 }
 
 u8 Unit_computeAgony(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
     struct Unit_stats effstats = unit->effective_stats;
     unit->computed_stats.agony = Equation_Agony_Turns(effstats.str, effstats.def, effstats.con);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (unit->computed_stats.agony);
 }
 
 i8 Unit_computeSpeed(struct Unit *unit, int distance) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
     int weight_L = 0, weight_R = 0;
@@ -1906,89 +1718,71 @@ i8 Unit_computeSpeed(struct Unit *unit, int distance) {
     // TODO: compute effective_weight
     struct Unit_stats fstats = unit->effective_stats;
     unit->computed_stats.speed = Equation_Unit_Speed(wpn_wgt, fstats.agi, fstats.con, fstats.str);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (unit->computed_stats.speed);
 }
 
 i8 Unit_computeMove(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     i8 move = unit->effective_stats.move;
     if (unit->mount != NULL)
         move = MOVE_WITH_MOUNT;
     unit->computed_stats.move = move;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (unit->computed_stats.move);
 }
 
 /* -- Deplete: decrease durability -- */
 void _Unit_Item_Deplete(struct Unit *unit, int i, int archetype) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Only unit function that calls Inventory_item_Deplete */
 
     /* Skip if NULL. Not an error, unit can have empty hand. */
     if (unit->_equipment[i].id == ITEM_NULL) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     /* Skip if item's archetype to deplete does not match input. */
     if (!(Item_Archetype(unit->_equipment[i].id) != archetype)) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, unit->_equipment[i].id);
     struct Item   *item   = weapon->item;
     Inventory_item_Deplete(&unit->_equipment[UNIT_HAND_LEFT], item->stats.uses);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _Unit_Equipped_Deplete(struct Unit *unit, bool hand, int archetype) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (!unit->equipped[hand]) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     _Unit_Item_Deplete(unit, hand, archetype);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Unit_Item_Deplete(struct Unit *unit, int i) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    /* Upon use, decrease item durability */
+        /* Upon use, decrease item durability */
     _Unit_Item_Deplete(unit, i, ITEM_ARCHETYPE_NULL);
 }
 
 void Unit_Equipped_Staff_Deplete(struct Unit *unit, bool hand) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Upon healing, decrease staff durability */
     _Unit_Equipped_Deplete(unit, hand, ITEM_ARCHETYPE_STAFF);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Unit_Equipped_Weapons_Deplete(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Upon getting hit, decrease shields durability */
     _Unit_Equipped_Deplete(unit, UNIT_HAND_LEFT, ITEM_ARCHETYPE_WEAPON);
     if (!unit->isTwoHanding)
         _Unit_Equipped_Deplete(unit, UNIT_HAND_RIGHT, ITEM_ARCHETYPE_WEAPON);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Unit_Equipped_Shields_Deplete(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Upon getting hit, use shields */
     _Unit_Equipped_Deplete(unit, UNIT_HAND_LEFT, ITEM_ARCHETYPE_SHIELD);
     if (!unit->isTwoHanding)
         _Unit_Equipped_Deplete(unit, UNIT_HAND_RIGHT, ITEM_ARCHETYPE_SHIELD);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- I/O --- */
 void Unit_readJSON(void *input, const cJSON *const junit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Unit *unit = (struct Unit *)input;
     SDL_assert(unit);
     SOTA_Log_Debug("-- Get json objects --");
@@ -2085,12 +1879,10 @@ void Unit_readJSON(void *input, const cJSON *const junit) {
         Unit_Equip_inHand(unit, UNIT_HAND_RIGHT);
     if (unit->_equipment[UNIT_HAND_LEFT].id != ITEM_NULL )
         Unit_Equip_inHand(unit, UNIT_HAND_LEFT);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 
 void Unit_writeJSON(const void *input, cJSON *junit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Unit *unit = (struct Unit *)input;
     SDL_assert(unit);
     SDL_assert(junit);
@@ -2142,15 +1934,12 @@ void Unit_writeJSON(const void *input, cJSON *junit) {
         cJSON_AddItemToArray(jitems, jitem);
     }
     cJSON_AddItemToObject(junit, "Items", jitems);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 u8 Unit_computeEffectivefactor(struct Unit *attacker, struct Unit *defender) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(attacker);
     SDL_assert(defender);
     u8 effective = NOTEFFECTIVE_FACTOR;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (effective);
 }
 
@@ -2159,7 +1948,6 @@ u8 Unit_computeEffectivefactor(struct Unit *attacker, struct Unit *defender) {
     This means that -> Brave factor DOES NOT STACK <-
 */
 u8 Unit_Brave(const struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     SDL_assert(unit);
     u8 out_brave   = 1;
@@ -2187,12 +1975,10 @@ u8 Unit_Brave(const struct Unit *unit) {
         else if (flagsum_isIn(temp_effect, ITEM_EFFECT_BRAVE4X))
             out_brave = 4;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_brave);
 }
 
 void Unit_Cap_Stats(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     unit->current_stats.hp   = unit->caps_stats.hp;
     unit->current_stats.str  = unit->caps_stats.str;
     unit->current_stats.mag  = unit->caps_stats.mag;
@@ -2205,13 +1991,11 @@ void Unit_Cap_Stats(struct Unit *unit) {
     unit->current_stats.con  = unit->caps_stats.con;
     unit->current_stats.prof = unit->caps_stats.prof;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* What is this for?
 caps before promotion? */
 void Unit_HalfCap_Stats(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     unit->current_stats.hp   = unit->caps_stats.hp   / 2;
     unit->current_stats.str  = unit->caps_stats.str  / 2;
     unit->current_stats.mag  = unit->caps_stats.mag  / 2;
@@ -2224,26 +2008,21 @@ void Unit_HalfCap_Stats(struct Unit *unit) {
     unit->current_stats.con  = unit->caps_stats.con  / 2;
     unit->current_stats.prof = unit->caps_stats.prof / 2;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 struct Unit_stats Unit_effectiveGrowths(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     unit->effective_growths = unit->growths;
     Unit_stats_plus(unit->bonus_growths, unit->effective_growths);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (unit->effective_growths);
 }
 
 struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* bases + grown + bonus - malus */
     SDL_assert(unit);
     /* Skip if not update_stats? */
     if (!unit->update_stats) {
-        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return (unit->effective_stats);
+            return (unit->effective_stats);
     }
 
     /* Preparation */
@@ -2282,31 +2061,25 @@ struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
     unit->effective_stats.hp = unit->current_stats.hp;
     //TODO: hp bonuses
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (unit->effective_stats);
 }
 
 void Unit_Promote(struct Unit *unit, i8 new_class_index) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     // struct Unit_stats promotion_bonus = DTAB_GET(promotion_bonus_stats, new_class_index);
     // DARR_PUT(unit->grown_stats, promotion_bonus);
     // Unit_stats_plus(unit->current_stats, promotion_bonus);
     // unit->skills += DTAB_GET(promotion_bonus_skills, new_class_index);
     // unit->class = new_class_index;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Rangemap --- */
 int Unit_Rangemap_Get(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     int rangemap = unit->user_rangemap > RANGEMAP_NULL ? unit->user_rangemap : unit->rangemap;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (rangemap);
 }
 
 void Unit_Rangemap_Toggle(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert((unit->rangemap > RANGEMAP_NULL) && (unit->rangemap < RANGEMAP_NUM));
 
     /* Set user_rangemap to default */
@@ -2325,7 +2098,6 @@ void Unit_Rangemap_Toggle(struct Unit *unit) {
     if (toggle)
         unit->user_rangemap = RANGEMAP_NUM - unit->user_rangemap;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Unit_Rangemap_Equipment(struct Unit *unit) {
@@ -2341,8 +2113,7 @@ void Unit_Rangemap_Equipment(struct Unit *unit) {
         } else {
             unit->rangemap = RANGEMAP_ATTACKMAP;
         }
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     /* 2- Weapon equipped in weak hand */
@@ -2358,13 +2129,11 @@ void Unit_Rangemap_Equipment(struct Unit *unit) {
             unit->rangemap = RANGEMAP_ATTACKMAP;
         }
 
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 }
 
 void Unit_Rangemap_Default(struct Unit *unit) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     int rangemap = unit->user_rangemap > RANGEMAP_NULL ? unit->user_rangemap : unit->rangemap;
     // Compute default rangemap priority
 
@@ -2376,12 +2145,10 @@ void Unit_Rangemap_Default(struct Unit *unit) {
         unit->rangemap = RANGEMAP_ATTACKMAP;
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Unit stats --- */
 struct Unit_stats Unit_stats_plus_cst(struct Unit_stats in_stats1, int cst) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Unit_stats out_stats = Unit_stats_default;
     out_stats.hp    = nmath_bplus(in_stats1.hp,   cst, UINT8_MAX);
     out_stats.str   = nmath_bplus(in_stats1.str,  cst, UINT8_MAX);
@@ -2394,13 +2161,11 @@ struct Unit_stats Unit_stats_plus_cst(struct Unit_stats in_stats1, int cst) {
     out_stats.con   = nmath_bplus(in_stats1.con,  cst, UINT8_MAX);
     out_stats.move  = nmath_bplus(in_stats1.move, cst, UINT8_MAX);
     out_stats.prof  = nmath_bplus(in_stats1.prof, cst, UINT8_MAX);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_stats);
 }
 
 struct Unit_stats Unit_stats_plus(struct Unit_stats in_stats1,
                                   struct Unit_stats in_stats2) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Unit_stats out_stats = Unit_stats_default;
     out_stats.hp    = nmath_bplus(in_stats1.hp,    in_stats2.hp,   UINT8_MAX);
     out_stats.str   = nmath_bplus(in_stats1.str,   in_stats2.str,  UINT8_MAX);
@@ -2413,12 +2178,10 @@ struct Unit_stats Unit_stats_plus(struct Unit_stats in_stats1,
     out_stats.con   = nmath_bplus(in_stats1.con,   in_stats2.con,  UINT8_MAX);
     out_stats.move  = nmath_bplus(in_stats1.move,  in_stats2.move, UINT8_MAX);
     out_stats.prof  = nmath_bplus(in_stats1.prof,  in_stats2.prof, UINT8_MAX);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_stats);
 }
 
 struct Unit_stats Unit_stats_minus_cst(struct Unit_stats in_stats1, int cst) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Unit_stats out_stats = Unit_stats_default;
     out_stats.hp    = nmath_bminus(in_stats1.hp,   cst, 0);
     out_stats.str   = nmath_bminus(in_stats1.str,  cst, 0);
@@ -2431,12 +2194,10 @@ struct Unit_stats Unit_stats_minus_cst(struct Unit_stats in_stats1, int cst) {
     out_stats.con   = nmath_bminus(in_stats1.con,  cst, 0);
     out_stats.move  = nmath_bminus(in_stats1.move, cst, 0);
     out_stats.prof  = nmath_bminus(in_stats1.prof, cst, 0);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_stats);
 }
 
 struct Unit_stats Unit_stats_div_cst(struct Unit_stats in_stats1, int cst) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Unit_stats out_stats = Unit_stats_default;
     out_stats.hp    = in_stats1.hp    / cst;
     out_stats.str   = in_stats1.str   / cst;
@@ -2449,12 +2210,10 @@ struct Unit_stats Unit_stats_div_cst(struct Unit_stats in_stats1, int cst) {
     out_stats.con   = in_stats1.con   / cst;
     out_stats.move  = in_stats1.move  / cst;
     out_stats.prof  = in_stats1.prof  / cst;
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_stats);
 }
 
 struct Unit_stats Unit_stats_minus(struct Unit_stats in_stats1, struct Unit_stats in_stats2) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Unit_stats out_stats = Unit_stats_default;
     out_stats.hp    = nmath_bminus(in_stats1.hp,    in_stats2.hp,   0);
     out_stats.str   = nmath_bminus(in_stats1.str,   in_stats2.str,  0);
@@ -2467,18 +2226,15 @@ struct Unit_stats Unit_stats_minus(struct Unit_stats in_stats1, struct Unit_stat
     out_stats.con   = nmath_bminus(in_stats1.con,   in_stats2.con,  0);
     out_stats.move  = nmath_bminus(in_stats1.move,  in_stats2.move, 0);
     out_stats.prof  = nmath_bminus(in_stats1.prof,  in_stats2.prof, 0);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_stats);
 }
 
 
 bool Unit_ID_Valid(u16 id) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("Unit ID valid: %d", id);
     bool out = (id > UNIT_ID_PC_START)      && (id < UNIT_ID_PC_END);
     out |=     (id > UNIT_ID_NPC_START)     && (id < UNIT_ID_NPC_END);
     out |=     (id > UNIT_ID_GENERIC_START) && (id < UNIT_ID_GENERIC_END);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 

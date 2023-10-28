@@ -48,7 +48,6 @@ struct Sprite Sprite_default = {
 
 /* --- SPRITESHEET --- */
 void Spritesheet_Free(struct Spritesheet *spritesheet) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (spritesheet->loops_pos != NULL) {
         free(spritesheet->loops_pos);
         spritesheet->loops_pos = NULL;
@@ -78,11 +77,9 @@ void Spritesheet_Free(struct Spritesheet *spritesheet) {
     }
 
     spritesheet->loop_num = 0;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Sprite_readJSON(void *input, const cJSON *const jsprite) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Sprite *sprite = input;
     cJSON *jspritesheet = cJSON_GetObjectItem(jsprite, "Spritesheet");
     if (jspritesheet == NULL) {
@@ -92,12 +89,10 @@ void Sprite_readJSON(void *input, const cJSON *const jsprite) {
 
     SDL_assert(sprite->spritesheet != NULL);
     Spritesheet_readJSON(sprite->spritesheet, jspritesheet);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 
 void Spritesheet_readJSON(void *input, const cJSON *const jspritesheet) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Spritesheet *spritesheet = (struct Spritesheet *) input;
     SDL_assert(spritesheet);
     Spritesheet_Free(spritesheet);
@@ -148,11 +143,9 @@ void Spritesheet_readJSON(void *input, const cJSON *const jspritesheet) {
         }
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Spritesheet_Loop_Set(struct Spritesheet *spritesheet, int loop, SDL_RendererFlip flip) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(loop < spritesheet->loop_num);
     SDL_assert(loop >= 0);
     spritesheet->current_loop = loop;
@@ -169,13 +162,11 @@ void Spritesheet_Loop_Set(struct Spritesheet *spritesheet, int loop, SDL_Rendere
 
     spritesheet->current_frame = 0;
     spritesheet->frame_i = 0;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- SPRITE --- */
 /* -- Constructor/Destructors -- */
 void Sprite_Free(struct Sprite *sprite) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("Freeing shaders");
     if (sprite->shader_any != NULL) {
         Index_Shader_Free(sprite->shader_any);
@@ -214,20 +205,16 @@ void Sprite_Free(struct Sprite *sprite) {
         SDL_DestroyTexture(sprite->texture);
         sprite->texture = NULL;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Initialization --- */
 void Sprite_Tilesize_Set(struct Sprite *sprite, u16 *tilesize) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sprite != NULL);
     sprite->tilesize[0] = tilesize[0];
     sprite->tilesize[1] = tilesize[1];
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Sprite_defaultShaders_Load(struct Sprite *sprite) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sprite->spritesheet->surface != NULL);
     /* -- Shade whole surface always -- */
     sprite->srcrect_shadow.x = 0;
@@ -249,11 +236,9 @@ void Sprite_defaultShaders_Load(struct Sprite *sprite) {
     SDL_assert(sprite->shader_lighten != NULL);
     sprite->shader_lighten->to = palette_table_NES_lighten;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit, SDL_Renderer *renderer) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* -- Alloc Spritesheet -- */
     if (sprite->spritesheet != NULL) {
@@ -302,12 +287,10 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit, SDL_Renderer
     sprite->map_unit = true;
     SDL_assert(sprite->spritesheet->current_loop == 0);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 // Load Sprite to spritesheet by default
 void Sprite_Load(struct Sprite *sprite, const char *asset_name, SDL_Renderer *renderer) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Saving asset name -- */
     if (sprite->asset_name != NULL)
         SDL_free(sprite->asset_name);
@@ -332,22 +315,18 @@ void Sprite_Load(struct Sprite *sprite, const char *asset_name, SDL_Renderer *re
     sprite->spritesheet->surface = Filesystem_Surface_Load(asset_name, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(sprite->spritesheet->surface != NULL);
     sprite->texture = SDL_CreateTextureFromSurface(renderer, sprite->spritesheet->surface);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* -- rect computation -- */
 void Cursor_Rects_Init(struct Sprite *sprite) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sprite != NULL);
     sprite->srcrect.w = DEFAULT_CURSOR_SRC_W;
     sprite->srcrect.h = DEFAULT_CURSOR_SRC_H;
     sprite->dstrect.w = sprite->tilesize[0] * DEFAULT_CURSOR_FACTOR;
     sprite->dstrect.h = sprite->tilesize[1] * DEFAULT_CURSOR_FACTOR;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Sprite_Rects_Init(struct Sprite *sprite) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sprite != NULL);
     sprite->srcrect.w        = DEFAULT_SPRITE_SRC_W;
     sprite->srcrect.h        = DEFAULT_SPRITE_SRC_H;
@@ -360,24 +339,20 @@ void Sprite_Rects_Init(struct Sprite *sprite) {
         sprite->dstrect.w = sprite->tilesize[0] * MAP_UNIT_TILESIZE_X;
         sprite->dstrect.h = sprite->tilesize[1] * MAP_UNIT_TILESIZE_Y;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Cursor_Dstrect_Relative(struct Sprite *sprite, struct Point *pixel_pos,
                              struct Camera *camera) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     float zoom = camera->zoom;
     sprite->dstrect.x = SOTA_ZOOM(pixel_pos->x, zoom) + camera->offset.x;
     sprite->dstrect.y = SOTA_ZOOM(pixel_pos->y, zoom) + camera->offset.y;
     sprite->dstrect.w = SOTA_ZOOM(sprite->tilesize[0] * DEFAULT_CURSOR_FACTOR, zoom);
     sprite->dstrect.h = SOTA_ZOOM(sprite->tilesize[1] * DEFAULT_CURSOR_FACTOR, zoom);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Sprite_Dstrect_Relative(struct Sprite *sprite, struct Point *pixel_pos,
                              struct Camera *camera) {
     float zoom = camera->zoom;
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sprite->map_unit) {
         struct Spritesheet *spritesheet = sprite->spritesheet;
         SDL_assert(spritesheet != NULL);
@@ -400,39 +375,31 @@ void Sprite_Dstrect_Relative(struct Sprite *sprite, struct Point *pixel_pos,
         sprite->dstrect.w = SOTA_ZOOM(sprite->tilesize[0], zoom);
         sprite->dstrect.h = SOTA_ZOOM(sprite->tilesize[1], zoom);
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Sprite_Dstrect_Absolute(struct Sprite *sprite, struct Point *pixel_pos,
                              struct Camera *camera) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     sprite->dstrect.x = pixel_pos->x;
     sprite->dstrect.y = pixel_pos->y;
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Cursor_Dstrect_Absolute(struct Sprite *sprite, struct Point *pixel_pos,
                              struct Camera *camera) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     sprite->dstrect.x = pixel_pos->x;
     sprite->dstrect.y = pixel_pos->y;
     sprite->dstrect.w = sprite->tilesize[0] * sprite->scale.x;
     sprite->dstrect.h = sprite->tilesize[1] * sprite->scale.y;
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Shading --- */
 void Sprite_Palette_Swap(struct Sprite *sprite, SDL_Palette *palette, SDL_Renderer *renderer) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     sprite->spritesheet->palette = palette;
     SDL_Surface *surface = sprite->spritesheet->surface;
     sprite->spritesheet->surface = Filesystem_Surface_Palette_Swap(surface, palette);
     sprite->texture = SDL_CreateTextureFromSurface(renderer, sprite->spritesheet->surface);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Sprite_Shade(struct Sprite *sprite, SDL_Renderer *renderer, struct Index_Shader *is) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     SDL_Surface *surface = sprite->spritesheet->surface;
     SDL_Surface *surface_shaded = sprite->spritesheet->surface_shaded;
@@ -450,30 +417,22 @@ void Sprite_Shade(struct Sprite *sprite, SDL_Renderer *renderer, struct Index_Sh
     sprite->texture = SDL_CreateTextureFromSurface(renderer, surface_shaded);
     SDL_FreeSurface(surface_shaded);
     surface_shaded = NULL;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Sprite_Unveil(struct Sprite *sprite, SDL_Renderer *renderer) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     sprite->texture = SDL_CreateTextureFromSurface(renderer, sprite->spritesheet->surface);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Sprite_Darken(struct Sprite *sprite, SDL_Renderer *renderer) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Sprite_Shade(sprite, renderer, sprite->shader_darken);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Sprite_Lighten(struct Sprite *sprite, SDL_Renderer *renderer) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Sprite_Shade(sprite, renderer, sprite->shader_lighten);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Animation --- */
 void Sprite_Animation_Restart(struct Sprite *sprite, int loop) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sprite != NULL);
     struct Spritesheet *spritesheet = sprite->spritesheet;
     Spritesheet_Loop_Set(spritesheet, loop, sprite->flip);
@@ -488,11 +447,9 @@ void Sprite_Animation_Restart(struct Sprite *sprite, int loop) {
     sprite->srcrect.x = sprite->srcrect.w * frame_x;
     sprite->srcrect.y = sprite->srcrect.h * frame_y;
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Sprite_Animation_Loop(struct Sprite *sprite) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sprite != NULL);
     struct Spritesheet *spritesheet = sprite->spritesheet;
     i16 next_frame_i = ++spritesheet->frame_i;
@@ -529,15 +486,12 @@ void Sprite_Animation_Loop(struct Sprite *sprite) {
     sprite->srcrect.x = sprite->srcrect.w * frame_x;
     sprite->srcrect.y = sprite->srcrect.h * frame_y;
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Sprite_Draw(struct Sprite *sp, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sp->flip != SDL_FLIP_NONE)
         SDL_RenderCopyEx(renderer, sp->texture, &sp->srcrect, &sp->dstrect, 0.0f, NULL, sp->flip);
     else
         SDL_RenderCopy(renderer, sp->texture, &sp->srcrect, &sp->dstrect);
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

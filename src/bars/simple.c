@@ -9,7 +9,6 @@ struct SimpleBar SimpleBar_default = {
 };
 
 void SimpleBar_Draw(struct SimpleBar *sb, SDL_Renderer *renderer) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     SDL_Rect FG_dark_rects[SIMPLEBAR_FG_DARK_RECT_NUM];
     SDL_Rect black_rects[SIMPLEBAR_BLACK_RECT_NUM];
@@ -81,5 +80,4 @@ void SimpleBar_Draw(struct SimpleBar *sb, SDL_Renderer *renderer) {
     temp_rect.y -= sb->scale.y;
     black_rects[4] = temp_rect;
     SDL_RenderFillRects(renderer, black_rects, SIMPLEBAR_BLACK_RECT_NUM);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

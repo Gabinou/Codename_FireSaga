@@ -41,7 +41,6 @@ struct controllerKeyboard controllerKeyboard_default = {
 };
 
 void Keyboard_Held(i8 *held, size_t *h_num, i32 *timeheld, i8 *pressed, size_t p_num, i32 dt) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(p_num < SOTA_INPUT_END);
     SDL_assert(p_num >= 0);
     bool arrequal = false;
@@ -58,11 +57,9 @@ void Keyboard_Held(i8 *held, size_t *h_num, i32 *timeheld, i8 *pressed, size_t p
         *timeheld = 0.0f;
     }
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 bool Keyboard_isPressed(struct controllerKeyboard *kb, const u8 *state_array, int button) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* -- Preliminaries -- */
     struct KeyboardInputMap *map = kb->inputmap;
@@ -82,6 +79,5 @@ bool Keyboard_isPressed(struct controllerKeyboard *kb, const u8 *state_array, in
         }
     }
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }

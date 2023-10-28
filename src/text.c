@@ -14,7 +14,6 @@ struct Text Text_default = {
 
 /* -- Text: Standalone Pixelfont -- */
 void Text_Set(struct Text *text, char *line) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     text->len = strlen(line);
     SDL_assert(text->len > 0);
     memset(text->line, 0, DEFAULT_BUFFER_SIZE);
@@ -23,12 +22,10 @@ void Text_Set(struct Text *text, char *line) {
     text->rect.w = PixelFont_Width(text->pixelfont, line, text->len);
     text->rect.h = text->pixelfont->glyph_height;
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Text_onUpdate_FPS(struct Game *sota, tnecs_entity_t entity_fps,
                        u32 frame_count, i64 last_update_ns, void *data) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota != NULL);
     SDL_assert(sota->world != NULL);
     SDL_assert(entity_fps != TNECS_NULL);
@@ -57,16 +54,13 @@ void Text_onUpdate_FPS(struct Game *sota, tnecs_entity_t entity_fps,
     text->rect.h    = text->pixelfont->glyph_height;
     text->update    = true;
     SDL_assert((text->rect.w > 0) && (text->rect.h > 0));
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Text_Update(struct Text *text, SDL_Renderer *renderer) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(renderer         != NULL);
     SDL_assert(text->pixelfont  != NULL);
     if (text->len <= 0) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
     SDL_assert(text->len        >  0);
 
@@ -86,11 +80,9 @@ void Text_Update(struct Text *text, SDL_Renderer *renderer) {
 
     PixelFont_Write(text->pixelfont, renderer, text->line, text->len, 0, 0);
     SDL_SetRenderTarget(renderer, NULL);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Text_Draw(struct Text *text, SDL_Renderer *renderer, SDL_Rect *dstrect) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(text     != NULL);
     SDL_assert(renderer != NULL);
     SDL_assert((dstrect->w > 0) && (dstrect->h > 0));
@@ -102,5 +94,4 @@ void Text_Draw(struct Text *text, SDL_Renderer *renderer, SDL_Rect *dstrect) {
     SDL_RenderCopy(renderer, text->texture, NULL, dstrect);
     Utilities_DrawColor_Reset(renderer);
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

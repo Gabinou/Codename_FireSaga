@@ -111,7 +111,6 @@ struct Map Map_default = {
 /* --- Constructor/Destructors --- */
 
 struct Map *Map_Init(struct Map *map, i32 width, i32 height) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (map != NULL)
         Map_Free(map);
     map = (struct Map *)SDL_malloc(sizeof(struct Map));
@@ -129,13 +128,10 @@ struct Map *Map_Init(struct Map *map, i32 width, i32 height) {
     map->arrow = malloc(sizeof(*map->arrow));
     *map->arrow = Arrow_default;
     Arrow_Init(map->arrow, map->tilesize);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (map); // return cause pointer address can change.
 }
 
 void Map_Units_Free(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* -- Free units on unitmap -- */
     SDL_assert(map->unitmap);
@@ -176,11 +172,9 @@ void Map_Units_Free(struct Map *map) {
     map->unitmap = NULL;
 
     /* -- Free loaded reinforcements -- */
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Units_Hide(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     for (size_t i = 0; i < (map->col_len * map->row_len); i++) {
         tnecs_entity_t uent = map->unitmap[i];
@@ -191,11 +185,9 @@ void Map_Units_Hide(struct Map *map) {
             sprite->visible = false;
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Free(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(map);
     if (map->breakables_ent != NULL) {
         free(map->breakables_ent);
@@ -286,11 +278,9 @@ void Map_Free(struct Map *map) {
         map->texture = NULL;
     }
     Map_dArrays_Free(map);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_dArrays_Init(struct Map *map, const struct Settings *settings) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Map_dArrays_Free(map);
     SDL_assert(map->row_len > 0);
     SDL_assert(map->col_len > 0);
@@ -321,11 +311,9 @@ void Map_dArrays_Init(struct Map *map, const struct Settings *settings) {
         map->stacked_global_dangermap   = calloc(len, sizeof(*map->stacked_global_dangermap));
     }
     Map_Palettemap_Reset(map);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_dArrays_Free(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (map->unitmap != NULL) {
         free(map->unitmap);
         map->unitmap = NULL;
@@ -407,11 +395,9 @@ void Map_dArrays_Free(struct Map *map) {
         map->healtolist = NULL;
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Texture_Alloc(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (map->texture != NULL)
         SDL_DestroyTexture(map->texture);
 
@@ -420,48 +406,37 @@ void Map_Texture_Alloc(struct Map *map) {
                                      map->tilesize[1] * map->row_len);
     SDL_SetTextureBlendMode(map->texture, SDL_BLENDMODE_BLEND);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _Map_Tilemap_Shader_Free(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Tilemap_Shader_Free(map->tilemap_shader);
     if (map->tilemap_shader != NULL) {
         SDL_free(map->tilemap_shader);
         map->tilemap_shader = NULL;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _Map_Tilemap_Shader_Init(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     map->tilemap_shader         = SDL_malloc(sizeof(struct Tilemap_Shader));
     *map->tilemap_shader        = Tilemap_Shader_default;
     map->tilemap_shader->map    = map;
     map->tilemap_shader->to     = palette_table_NES_shadow;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _Map_Tilesindex_Free(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (map->tilesindex != NULL)
         DARR_FREE(map->tilesindex);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _Map_Tilesindex_Init(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     _Map_Tilesindex_Free(map);
     map->tilesindex = DARR_INIT(map->tilesindex, i32, DEFAULT_TILESPRITE_BUFFER);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 
 void Map_Tilesprites_Free(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (map->tilesprites_ind == NULL)  {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
     for (size_t i = 0; i < DARR_NUM(map->tilesprites_ind); i++) {
         if (map->tilesprites_ind[i] == NULL)
@@ -472,11 +447,9 @@ void Map_Tilesprites_Free(struct Map *map) {
     DARR_FREE(map->tilesprites_ind);
     map->tilesprites_ind = NULL;
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Tilesprites_Init(struct Map *map, size_t tiles_num) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(tiles_num > 0);
     Map_Tilesprites_Free(map);
     map->tilesprites_ind = DARR_INIT(map->tilesprites_ind, u16 *, tiles_num);
@@ -484,21 +457,17 @@ void Map_Tilesprites_Init(struct Map *map, size_t tiles_num) {
     for (size_t i = 0; i < tiles_num; i++) {
         map->tilesprites_ind[i] = DARR_INIT(map->tilesprites_ind[i], u16, DEFAULT_TILESPRITE_BUFFER);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 
 void Map_Tilemap_Texture_Free(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (map->tilemap_texture != NULL) {
         SDL_DestroyTexture(map->tilemap_texture);
         map->tilemap_texture = NULL;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Tilemap_Texture_Init(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(map->renderer);
     Map_Tilemap_Texture_Free(map);
     int x_size = map->tilesize[0] * map->col_len;
@@ -506,18 +475,14 @@ void Map_Tilemap_Texture_Init(struct Map *map) {
     map->tilemap_texture = SDL_CreateTexture(map->renderer, SDL_PIXELFORMAT_RGB888,
                                              SDL_TEXTUREACCESS_TARGET, x_size, y_size);
     SDL_assert(map->tilemap_texture);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Tilemap_Surface_Free(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (map->tilemap_surface != NULL)
         SDL_FreeSurface(map->tilemap_surface);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Tilemap_Surface_Init(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(map->col_len > 0);
     SDL_assert(map->row_len > 0);
     Map_Tilemap_Surface_Free(map);
@@ -526,12 +491,10 @@ void Map_Tilemap_Surface_Init(struct Map *map) {
     map->tilemap_surface = Filesystem_indexedSurface_Init(x_size, y_size);
     SDL_assert(map->tilemap_surface->w == map->tilesize[0] * map->col_len);
     SDL_assert(map->tilemap_surface->h == map->tilesize[1] * map->row_len);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- I/O --- */
 void Map_writeJSON(const void *input, cJSON *jmap) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Map *map = (struct Map *) input;
     SDL_assert(jmap != NULL);
     /* -- Preliminaries -- */
@@ -614,11 +577,9 @@ void Map_writeJSON(const void *input, cJSON *jmap) {
     cJSON *jtilemap = cJSON_CreateObject();
     Filesystem_writeJSON_2DArray(jtilemap, map->tilemap, map->row_len, map->col_len);
     cJSON_AddItemToObject(jmap, "Tilemap", jtilemap);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_readJSON(void *input, const cJSON *const jmap) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Map *map = (struct Map *) input;
     SDL_assert(jmap != NULL);
     cJSON *jchapter     = cJSON_GetObjectItem(jmap, "chapter");
@@ -849,12 +810,9 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
     SDL_assert(map->tilemap_shader->shadow_tilemaps);
     Map_Tilemap_Texture_Init(map);
     Map_Texture_Alloc(map);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Map events / Triggers --- */
 void Map_Turn_Increment(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     map->turn++;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

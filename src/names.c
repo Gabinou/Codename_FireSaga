@@ -7,20 +7,17 @@
     strcat(sceneTimes[SCENE_TIME_##x], "_");
 char **sceneTimes;
 void Names_sceneTimes() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     sceneTimes = calloc(SCENE_TIME_NUM, sizeof(*sceneTimes));
     char *temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);
     strncpy(temp_str, "", sizeof(""));
     sceneTimes[0] = temp_str;
 #include "names/scene_time.h"
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 #undef REGISTER_ENUM
 
 char **global_unitNames = NULL;
 struct dtab *global_unitOrders = NULL;
 void Names_unitNames() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char *temp_str = NULL;
     size_t order = 0;
 
@@ -46,7 +43,6 @@ void Names_unitNames() {
     DARR_PUT(global_unitNames, nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2));
 #include "names/units_PC.h"
 #include "names/units_NPC.h"
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 #undef REGISTER_ENUM
 
@@ -56,26 +52,22 @@ void Names_unitNames() {
 
 char **statNames = NULL;
 void Names_statNames() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char *temp_str = NULL;
     statNames = calloc(ITEM_STAT_END, sizeof(*statNames));
     temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);
     strncpy(temp_str, "", sizeof(""));
     statNames[0] = temp_str;
 #include "names/items_stats.h"
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 #undef REGISTER_ENUM
 char **sexNames = NULL;
 void Names_sexNames() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     sexNames = (char **)calloc(UNIT_SEX_NUM, sizeof(*sexNames));
     sexNames[UNIT_SEX_F] = (char *) malloc(2);
     strncpy(sexNames[UNIT_SEX_F], "F\0", 2);
     sexNames[UNIT_SEX_M] = (char *) malloc(2);
     strncpy(sexNames[UNIT_SEX_M], "M\0", 2);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 #define REGISTER_ENUM(x) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
@@ -83,11 +75,9 @@ void Names_sexNames() {
     armyNames[ARMY_##x] = nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')),' ', 2);
 char **armyNames = NULL;
 void Names_armyNames() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char *temp_str = NULL;
     armyNames = calloc(ARMY_END, sizeof(*armyNames));
 #include "names/armies.h"
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 #undef REGISTER_ENUM
 
@@ -97,18 +87,15 @@ void Names_armyNames() {
 
 char **unitStates = NULL;
 void Names_unitStates() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char *temp_str = NULL;
     unitStates = calloc(UNIT_STATUS_END, sizeof(*unitStates));
 #include "names/units_statuses.h"
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 #undef REGISTER_ENUM
 
 char **global_itemNames         = NULL;
 struct dtab *global_itemOrders  = NULL;
 void Names_itemNames() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     size_t order = 0;
 
     global_itemNames = DARR_INIT(global_itemNames, char *, 128);
@@ -128,21 +115,17 @@ void Names_itemNames() {
     DARR_PUT(global_itemNames, nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2));
 #include "names/items.h"
     SDL_assert(order == DARR_NUM(global_itemNames));
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 #undef REGISTER_ENUM
 
 char **support_types = NULL;
 void Names_supportTypes() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     support_types = malloc(TILE_ID_MAX * sizeof(global_tilenames));
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 char **global_tilenames = NULL;
 i32 *global_tilesID = NULL;
 void Names_tileNames() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     global_tilenames = malloc(TILE_ID_MAX * sizeof(global_tilenames));
     char *temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);
     strncpy(temp_str, "NULL", sizeof("NULL"));
@@ -156,7 +139,6 @@ void Names_tileNames() {
 #include "names/tiles.h"
     // SDL_free(temp_str);
     // hmdefault(global_tilenames, "");
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 #undef REGISTER_ENUM
 
@@ -166,11 +148,9 @@ void Names_tileNames() {
 
 char **campjobNames = NULL;
 void Names_campjobNames() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     campjobNames = calloc(CAMPJOB_END, sizeof(*campjobNames));
     char *temp_str = NULL;
 #include "names/camp_jobs.h"
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 #undef REGISTER_ENUM
 
@@ -179,11 +159,9 @@ void Names_campjobNames() {
     menuOptionnames[MENU_OPTION_##x] = nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2);
 char **menuOptionnames = NULL;
 void Menu_MakeOptionnames() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char *temp_str = NULL;
     menuOptionnames = calloc(MENU_OPTION_END, sizeof(*menuOptionnames));
 #include "names/menu/options.h"
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 #undef REGISTER_ENUM
 
@@ -193,11 +171,9 @@ void Menu_MakeOptionnames() {
 
 char **gamesubStatenames = NULL;
 void Names_gamesubStatenames() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char *temp_str = NULL;
     gamesubStatenames = calloc(GAME_SUBSTATE_END, sizeof(*gamesubStatenames));
 #include "names/game_substates.h"
-    SOTA_Log_Func(" %d\t %s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 #undef REGISTER_ENUM
 
@@ -207,11 +183,9 @@ void Names_gamesubStatenames() {
 
 char **gameStatenames = NULL;
 void Names_gameStatenames() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char *temp_str = NULL;
     gameStatenames = calloc(GAME_STATE_END, sizeof(*gameStatenames));
 #include "names/game_states.h"
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 #undef REGISTER_ENUM
 
@@ -223,11 +197,9 @@ void Names_gameStatenames() {
 
 char **mapFilenames = NULL;
 void Names_mapFilenames() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char *temp_str = NULL;
     mapFilenames = calloc(CHAPTER_END, sizeof(*mapFilenames));
 #include "names/chapters.h"
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 #undef REGISTER_ENUM
 
@@ -237,11 +209,9 @@ void Names_mapFilenames() {
 
 char **classNames =  NULL;
 void Names_classNames() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char *temp_str = NULL;
     classNames = calloc(UNIT_CLASS_END, sizeof(*classNames));
 #include "names/classes.h"
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 #undef  REGISTER_ENUM
 
@@ -251,12 +221,10 @@ void Names_classNames() {
         DARR_PUT(skill_names, nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')),' ', 2));\
     }
 char **Names_skillNames(uint64_t in_skillscode) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char **skill_names = DARR_INIT(skill_names, char *, UNIT_SKILL_END);
     char *temp_str = NULL;
 #include "names/skills_passive.h"
 #include "names/skills_active.h"
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (skill_names);
 }
 #undef  REGISTER_ENUM
@@ -267,11 +235,9 @@ char **Names_skillNames(uint64_t in_skillscode) {
         DARR_PUT(state_names, nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')),' ', 2));\
     }
 char **Names_unitstateNames(uint32_t in_statecode) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char *temp_str = NULL;
     char **state_names = DARR_INIT(state_names, char *, UNIT_STATUS_END);
 #include "names/units_statuses.h"
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (state_names);
 }
 #undef  REGISTER_ENUM
@@ -279,11 +245,9 @@ char **Names_unitstateNames(uint32_t in_statecode) {
 #define REGISTER_ENUM(name, id, x, y, z) class_equippables[UNIT_CLASS_##name] = z;
 u16 *class_equippables;
 void Names_class_equippables() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     class_equippables = DARR_INIT(class_equippables, u16, UNIT_CLASS_END);
     // DARR_PUT(class_equippables, 0);
 #include "names/classes.h"
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 #undef  REGISTER_ENUM
 
@@ -293,11 +257,9 @@ void Names_class_equippables() {
         DARR_PUT(out, nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2));\
     }
 char **Names_unitTypes(u16 in_typecode) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char *temp_str = NULL;
     char **out = DARR_INIT(out, char *, UNIT_TYPE_END);
 #include "names/units_types.h"
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 #undef REGISTER_ENUM
@@ -308,11 +270,9 @@ char **Names_unitTypes(u16 in_typecode) {
         DARR_PUT(wpn_effects, nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2));\
     }
 char **Names_wpnEffects(u64 in_effect) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char *temp_str = NULL;
     char **wpn_effects = DARR_INIT(wpn_effects, char *, UNIT_TYPE_END);
 #include "names/items_effects.h"
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (wpn_effects);
 }
 #undef REGISTER_ENUM
@@ -323,12 +283,10 @@ char **Names_wpnEffects(u64 in_effect) {
 
 char **jsonElementnames = NULL;
 void Names_jsonElementnames() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char *temp_str = NULL;
     jsonElementnames = calloc(JSON_END, sizeof(*jsonElementnames));
 #include "names/json_elements.h"
     strcpy(jsonElementnames[JSON_WEAPON], "Item");
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 #undef REGISTER_ENUM
 
@@ -338,11 +296,9 @@ void Names_jsonElementnames() {
         DARR_PUT(type_names, nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')),' ', 2));\
     }
 char **Names_wpnType(u16 in_typecode) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char **type_names = DARR_INIT(type_names, char *, ITEM_TYPE_END);
     char *temp_str;
 #include "names/items_types.h"
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (type_names);
 }
 #undef REGISTER_ENUM
@@ -358,7 +314,6 @@ void Names_wpnType_Free(char **type_names) {
 
 /* --- API --- */
 void Names_Load_All() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Names_unitNames();
     Names_sceneTimes();
     Hashes_supportHashes();
@@ -378,11 +333,9 @@ void Names_Load_All() {
     Names_mapFilenames();
     Names_class_equippables();
     Names_armyNames();
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Names_Free() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     SOTA_Log_Debug("menuOptionnames");
     if (menuOptionnames != NULL) {
@@ -567,11 +520,9 @@ void Names_Free() {
         DARR_FREE(class_equippables);
         class_equippables = NULL;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Names_Print_All(const char *foldername) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("foldername %s", foldername);
     char filename[DEFAULT_BUFFER_SIZE] = "";
     char buffer[DEFAULT_BUFFER_SIZE] = "";
@@ -696,5 +647,4 @@ void Names_Print_All(const char *foldername) {
     }
     fclose(fp);
     memset(filename, 0, sizeof(filename));
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

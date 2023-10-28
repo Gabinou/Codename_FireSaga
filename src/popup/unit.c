@@ -15,7 +15,6 @@ struct PopUp_Unit PopUp_Unit_default = {
 };
 
 void PopUp_Unit_Free(struct PopUp_Unit *pu) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (pu->texture != NULL) {
         SDL_DestroyTexture(pu->texture);
         pu->texture = NULL;
@@ -26,11 +25,9 @@ void PopUp_Unit_Free(struct PopUp_Unit *pu) {
         pu->texture_weapons = NULL;
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void PopUp_Unit_Load(struct PopUp_Unit *pu, SDL_Renderer *renderer, struct n9Patch *n9patch) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     PopUp_Unit_Free(pu);
     n9Patch_Free(n9patch);
 
@@ -55,38 +52,30 @@ void PopUp_Unit_Load(struct PopUp_Unit *pu, SDL_Renderer *renderer, struct n9Pat
     pu->texture_weapons = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
 
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Setters --- */
 void PopUp_Unit_Set(struct PopUp_Unit *pu, struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(pu != NULL);
     pu->unit   = TNECS_GET_COMPONENT(sota->world, sota->hovered_unit_entity, Unit);
     pu->update = true;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 
 /* --- Positioning --- */
 struct Point PopUp_Unit_Offset(struct PopUp_Unit *pu, struct Settings *settings) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     pu->offset.x = settings->res.x / PU_FACTOR_X;
     pu->offset.y = settings->res.y / PU_FACTOR_Y;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (pu->offset);
 }
 
 void PopUp_Unit_Limits(struct PopUp *popup, struct PopUp_Unit *pu, struct Settings *settings) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     pu->cursor_limit_min.x = 0.4f * settings->res.x;
     pu->cursor_limit_max.x = 0.6f * settings->res.x;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 struct Point PopUp_Unit_Center_Name(struct PopUp_Unit *pu, struct n9Patch *n9patch,
                                     char *numbuff, size_t str_len) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(pu->pixelnours_big != NULL);
     struct Point out = {PU_ID_X, PU_ID_Y};
     size_t len = 0;
@@ -94,14 +83,12 @@ struct Point PopUp_Unit_Center_Name(struct PopUp_Unit *pu, struct n9Patch *n9pat
         len += pu->pixelnours_big->glyph_bbox_width[numbuff[i]];
     SDL_assert(len < n9patch->size_pixels.x);
     out.x = (n9patch->size_pixels.x - len) / 2 - PU_ID_X;
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 struct Point PopUp_Unit_Position(struct PopUp *popup, struct PopUp_Unit *pu,
                                  struct n9Patch *n9patch, struct Settings *settings,
                                  struct Point *pixel_pos) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* error checking: PopUp_Unit should NOT be on bottom*/
     switch (pu->corner) {
         case SOTA_DIRECTION_DIAGONAL_BR:
@@ -149,19 +136,16 @@ struct Point PopUp_Unit_Position(struct PopUp *popup, struct PopUp_Unit *pu,
     }
     out.x += sign.x * pu->offset.x * n9patch->scale.x;
     out.y += sign.y * pu->offset.y * n9patch->scale.y;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     // if popup->pos is set with this output, sliding is skipped
     return (out);
 }
 
 void PopUp_Unit_Draw(struct PopUp *popup, struct Point pos,
                      SDL_Texture *render_target, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct PopUp_Unit *pu   = (struct PopUp_Unit *)popup->data;
 
     if (pu->unit == NULL) {
-        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     struct n9Patch *n9patch = &popup->n9patch;
@@ -178,12 +162,10 @@ void PopUp_Unit_Draw(struct PopUp *popup, struct Point pos,
     };
     SDL_assert(pu->texture != NULL);
     SDL_RenderCopy(renderer, pu->texture, NULL, &dstrect);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
                        SDL_Texture *render_target, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     SDL_assert(n9patch  != NULL);
     SDL_assert(pu       != NULL);
@@ -375,5 +357,4 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     SDL_SetRenderTarget(renderer, render_target);
     Utilities_DrawColor_Reset(renderer);
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

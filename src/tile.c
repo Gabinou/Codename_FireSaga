@@ -35,26 +35,21 @@ struct Tile Tile_default = {
 };
 
 void Mobj_Link_Init(struct Mobj_Link *mobj) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Mobj_Link_Free(mobj);
     if (mobj->num_linked > 0) {
         mobj->relpos_linked = calloc(mobj->num_linked * TWO_D, sizeof(*mobj->relpos_linked));
         mobj->abspos_linked = calloc(mobj->num_linked * TWO_D, sizeof(*mobj->abspos_linked));
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Mobj_Link_Free(struct Mobj_Link *mobj) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (mobj->relpos_linked != NULL)
         free(mobj->relpos_linked);
     if (mobj->abspos_linked != NULL)
         free(mobj->abspos_linked);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Mobj_Link_writeJSON(const void *input, cJSON *jmobj) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Mobj_Link *mobj = (struct Mobj_Link *) input;
     SDL_assert(jmobj != NULL);
     cJSON *jnum, *jrelpos, *jabspos;
@@ -80,11 +75,9 @@ void Mobj_Link_writeJSON(const void *input, cJSON *jmobj) {
     // cJSON * jnum2change = cJSON_CreateNumber(mobj->num2change);
     jrelpos = cJSON_CreateArray();
     jabspos = cJSON_CreateArray();
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Mobj_Link_readJSON(void *input, const cJSON *jmobj) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Mobj_Link *mobj = (struct Mobj_Link *)input;
     cJSON *jlinked = cJSON_GetObjectItemCaseSensitive(jmobj, "linked");
     cJSON *jlinked_num = cJSON_GetObjectItemCaseSensitive(jlinked, "num");
@@ -100,11 +93,9 @@ void Mobj_Link_readJSON(void *input, const cJSON *jmobj) {
         cJSON *j2change = cJSON_GetObjectItemCaseSensitive(jmobj, "2change");
         cJSON *j2change_num = cJSON_GetObjectItemCaseSensitive(j2change, "num");
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Tile_makeMvtCostarray(struct Tile *tile) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(tile != NULL);
     tile->cost_array[UNIT_MVT_FOOT_SLOW]   = tile->cost_struct.foot_slow;
     tile->cost_array[UNIT_MVT_FOOT_FAST]   = tile->cost_struct.foot_fast;
@@ -115,20 +106,16 @@ void Tile_makeMvtCostarray(struct Tile *tile) {
     tile->cost_array[UNIT_MVT_ARMORS]      = tile->cost_struct.armors;
     tile->cost_array[UNIT_MVT_PIRATES]     = tile->cost_struct.pirates;
     tile->cost_array[UNIT_MVT_BANDITS]     = tile->cost_struct.bandits;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Tile_Free(struct Tile *tile) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (tile->name != NULL) {
         free(tile->name);
         tile->name = NULL;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Tile_readJSON(void *input, const cJSON *const jtile) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Tile *tile = (struct Tile *)input;
     SDL_assert(jtile != NULL);
     cJSON *jname    = cJSON_GetObjectItemCaseSensitive(jtile, "Name");
@@ -146,11 +133,9 @@ void Tile_readJSON(void *input, const cJSON *const jtile) {
     tile->inside = cJSON_IsTrue(jinside);
     Filesystem_readJSON_mvtcost(jmvtcost, &(tile->cost_struct));
     Tile_makeMvtCostarray(tile);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Tile_writeJSON(const void *input, cJSON *jtile) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Tile *tile = (struct Tile *)input;
     SDL_assert(jtile != NULL);
     cJSON *jtilestats   = cJSON_CreateObject();
@@ -164,11 +149,9 @@ void Tile_writeJSON(const void *input, cJSON *jtile) {
     cJSON_AddBoolToObject(jtile, "inside",  tile->inside);
     cJSON_AddItemToObject(jtile, "Stats",   jtilestats);
     cJSON_AddItemToObject(jtile, "MvtCost", jcost);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Breakable_readJSON(void *input, cJSON *jbreakable) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Breakable *breakable = (struct Breakable *) input;
     cJSON *jhp      = cJSON_GetObjectItemCaseSensitive(jbreakable, "hp");
     cJSON *jdef     = cJSON_GetObjectItemCaseSensitive(jbreakable, "def");
@@ -178,11 +161,9 @@ void Breakable_readJSON(void *input, cJSON *jbreakable) {
     breakable->def  = cJSON_GetNumberValue(jdef);
     breakable->res  = cJSON_GetNumberValue(jres);
     // Mobj_Link_readJSON(breakable->link, jmobj);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Breakable_writeJSON(const void *input, cJSON *jbreakable) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Breakable *breakable = (struct Breakable *) input;
     SDL_assert(jbreakable != NULL);
     cJSON *jhp  = cJSON_CreateNumber(breakable->hp);
@@ -193,11 +174,9 @@ void Breakable_writeJSON(const void *input, cJSON *jbreakable) {
     cJSON_AddItemToObject(jbreakable, "res", jres);
     cJSON *jmobj = cJSON_CreateObject();
     // Mobj_Link_writeJSON(breakable->link, jmobj);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Door_readJSON(void *input, cJSON *jdoor) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Door *door = (struct Door *) input;
     cJSON *jchapter = cJSON_GetObjectItemCaseSensitive(jdoor, "chapter");
     cJSON *jevent   = cJSON_GetObjectItemCaseSensitive(jdoor, "event");
@@ -207,11 +186,9 @@ void Door_readJSON(void *input, cJSON *jdoor) {
     door->event         = cJSON_GetNumberValue(jchapter);
     door->scene         = cJSON_GetNumberValue(jscene);
     // Mobj_Link_readJSON(door->link, jmobj);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Door_writeJSON(const void *input, cJSON *jdoor) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Door *door = (struct Door *) input;
     SDL_assert(jdoor != NULL);
     cJSON *jchapter_open    = cJSON_CreateNumber(door->chapter_open);
@@ -224,22 +201,18 @@ void Door_writeJSON(const void *input, cJSON *jdoor) {
     cJSON_AddItemToObject(jdoor, "scene",           jscene);
     cJSON *jmobj = cJSON_CreateObject();
     // Mobj_Link_writeJSON(door->link, jmobj);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Chest_readJSON(void *input, cJSON *jchest) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Chest *chest = (struct Chest *) input;
     cJSON *jgold = cJSON_GetObjectItemCaseSensitive(jchest, "gold");
     chest->gold  = cJSON_GetNumberValue(jgold);
     cJSON *jitem = cJSON_GetObjectItemCaseSensitive(jchest, "item");
     chest->item  = cJSON_GetNumberValue(jitem);
     cJSON *jmobj = cJSON_GetObjectItemCaseSensitive(jchest, "Map Object");
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Chest_writeJSON(const void *input, cJSON *jchest) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Chest *chest = (struct Chest *) input;
     SDL_assert(jchest != NULL);
     cJSON *jgold = cJSON_CreateNumber(chest->gold);
@@ -247,5 +220,4 @@ void Chest_writeJSON(const void *input, cJSON *jchest) {
     cJSON_AddItemToObject(jchest, "gold", jgold);
     cJSON_AddItemToObject(jchest, "item", jitem);
     cJSON *jmobj = cJSON_CreateObject();
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

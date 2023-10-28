@@ -349,17 +349,14 @@ struct StatsMenu StatsMenu_default = {
 };
 
 struct StatsMenu *StatsMenu_Alloc() {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct StatsMenu *stats_menu = malloc(sizeof(struct StatsMenu));
     SDL_assert(stats_menu);
     *stats_menu = StatsMenu_default;
     SDL_assert(stats_menu->texture == NULL);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (stats_menu);
 }
 
 void StatsMenu_Free(struct StatsMenu *stats_menu) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(stats_menu != NULL);
     if (stats_menu->texture != NULL) {
         SDL_DestroyTexture(stats_menu->texture);
@@ -375,12 +372,10 @@ void StatsMenu_Free(struct StatsMenu *stats_menu) {
         free(stats_menu);
         stats_menu = NULL;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void StatsMenu_Load(struct StatsMenu *stats_menu, struct Unit *unit,
                     SDL_Renderer *renderer, struct n9Patch *n9patch) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(stats_menu != NULL);
     SDL_assert(unit != NULL);
     SDL_assert(unit->weapons_dtab != NULL);
@@ -404,28 +399,22 @@ void StatsMenu_Load(struct StatsMenu *stats_menu, struct Unit *unit,
         n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _StatsMenu_Free_Face(struct StatsMenu *stats_menu) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (stats_menu->texture_face != NULL) {
         SDL_DestroyTexture(stats_menu->texture_face);
         stats_menu->texture_face = NULL;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _StatsMenu_Load_Face(struct StatsMenu *stats_menu) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(stats_menu);
     SDL_assert(stats_menu->unit);
     // TODO: find face file from unit name
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _StatsMenu_Free_Icons(struct StatsMenu *stats_menu) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (stats_menu->texture_sex != NULL) {
         SDL_DestroyTexture(stats_menu->texture_sex);
         stats_menu->texture_sex = NULL;
@@ -442,11 +431,9 @@ void _StatsMenu_Free_Icons(struct StatsMenu *stats_menu) {
         SDL_DestroyTexture(stats_menu->texture_statuses);
         stats_menu->texture_statuses = NULL;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _StatsMenu_Load_Icons(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(stats_menu);
     SDL_assert(renderer != NULL);
 
@@ -471,20 +458,17 @@ void _StatsMenu_Load_Icons(struct StatsMenu *stats_menu, SDL_Renderer *renderer)
     stats_menu->texture_statuses = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(stats_menu->texture_statuses);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Positioning --- */
 void StatsMenu_Elem_Pos(struct StatsMenu *sm, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Scales elem_pos to menu size. */
     /* 1. Makes the cursor focus on right place on the Screen       */
     /* 2. Box lined are drawn in menu frame, making thinner lines   */
 
     /* - Skip if already in screen frame - */
     if (mc->elem_pos_frame == ELEM_POS_SCREEN_FRAME) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     for (size_t i = 0; i < mc->elem_num; i++) {
@@ -499,17 +483,14 @@ void StatsMenu_Elem_Pos(struct StatsMenu *sm, struct Menu *mc) {
     }
 
     mc->elem_pos_frame = ELEM_POS_SCREEN_FRAME;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void StatsMenu_Elem_Pos_Revert(struct StatsMenu *sm, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Reset elem_pos to menu size. */
 
     /* - Skip if already in menu frame - */
     if (mc->elem_pos_frame == ELEM_POS_MENU_FRAME) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     for (size_t i = 0; i < mc->elem_num; i++) {
@@ -524,12 +505,10 @@ void StatsMenu_Elem_Pos_Revert(struct StatsMenu *sm, struct Menu *mc) {
     }
 
     mc->elem_pos_frame = ELEM_POS_MENU_FRAME;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Drawing --- */
 void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- HEADER WRITING -- */
     SDL_Rect dstrect, srcrect;
     struct Unit_stats     *effective_stats  = &stats_menu->unit->effective_stats;
@@ -605,7 +584,6 @@ void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *renderer) 
     stbsp_sprintf(numbuff, "%d", effective_stats->move);
     x = MOVE_STAT_X_OFFSET, y = MOVE_STAT_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _StatsMenu_Draw_Mount(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
@@ -1137,7 +1115,6 @@ void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Renderer *r
 }
 
 void StatsMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct StatsMenu *stats_menu = (struct StatsMenu *)mc->data;
     struct n9Patch   *n9patch    = &mc->n9patch;
 
@@ -1169,13 +1146,11 @@ void StatsMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *renderer) {
     SDL_assert(stats_menu->texture != NULL);
     SDL_RenderCopy(renderer, stats_menu->texture, NULL, &dstrect);
     Utilities_DrawColor_Reset(renderer);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 
 void StatsMenu_Update(struct StatsMenu *stats_menu, struct n9Patch *n9patch,
                       SDL_Texture *rt, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     SDL_assert(renderer         != NULL);
     SDL_assert(stats_menu       != NULL);
@@ -1229,5 +1204,4 @@ void StatsMenu_Update(struct StatsMenu *stats_menu, struct n9Patch *n9patch,
     SDL_SetRenderTarget(renderer, rt);
 
     SDL_assert(stats_menu->texture);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

@@ -53,7 +53,6 @@ struct LoadoutSelectMenu LoadoutSelectMenu_default = {
 
 /* --- Constructors/Destructors --- */
 struct LoadoutSelectMenu *LoadoutSelectMenu_Alloc() {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct LoadoutSelectMenu *lsm = malloc(sizeof(struct LoadoutSelectMenu));
     SDL_assert(lsm != NULL);
     *lsm = LoadoutSelectMenu_default;
@@ -64,12 +63,10 @@ struct LoadoutSelectMenu *LoadoutSelectMenu_Alloc() {
         lsm->texture_hands = NULL;
     }
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (lsm);
 }
 
 void LoadoutSelectMenu_Free(struct LoadoutSelectMenu *lsm) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (lsm->texture != NULL) {
         SDL_DestroyTexture(lsm->texture);
         lsm->texture = NULL;
@@ -90,13 +87,11 @@ void LoadoutSelectMenu_Free(struct LoadoutSelectMenu *lsm) {
         free(lsm);
         lsm = NULL;
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void WeaponSelectMenu_Load_n9Patch(struct LoadoutSelectMenu *lsm, SDL_Renderer *r,
                                    struct n9Patch *n9patch)  {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    SDL_assert(n9patch != NULL);
+        SDL_assert(n9patch != NULL);
     n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;
     n9patch->patch_pixels.y  = MENU_PATCH_PIXELS;
     n9patch->size_patches.x  = WSM_PATCH_X_SIZE;
@@ -109,8 +104,7 @@ void WeaponSelectMenu_Load_n9Patch(struct LoadoutSelectMenu *lsm, SDL_Renderer *
 
 void WeaponSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, tnecs_world_t *world,
                            tnecs_entity_t unit_ent, SDL_Renderer *renderer, struct n9Patch *n9patch) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    WeaponSelectMenu_Load_n9Patch(lsm, renderer, n9patch);
+        WeaponSelectMenu_Load_n9Patch(lsm, renderer, n9patch);
 
     lsm->archetype_stronghand = ITEM_ARCHETYPE_WEAPON;
     LoadoutSelectMenu_Load(lsm, map, world, unit_ent, renderer, n9patch, lsm->archetype_stronghand);
@@ -118,8 +112,7 @@ void WeaponSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, tnecs
 
 void StaffSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, tnecs_world_t *world,
                           tnecs_entity_t unit_ent, SDL_Renderer *renderer, struct n9Patch *n9patch) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    SDL_assert(n9patch != NULL);
+        SDL_assert(n9patch != NULL);
     n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;
     n9patch->patch_pixels.y  = MENU_PATCH_PIXELS;
     n9patch->size_patches.x  = WSM_PATCH_X_SIZE;
@@ -136,18 +129,15 @@ void StaffSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, tnecs_
 void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, tnecs_world_t *world,
                             tnecs_entity_t unit_ent, SDL_Renderer *renderer, struct n9Patch *n9patch, int archetype) {
     SDL_assert(n9patch != NULL);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(lsm != NULL);
     SDL_assert(unit_ent > TNECS_NULL);
     struct Unit     *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     _LoadoutSelectMenu_Load(lsm, unit, renderer, n9patch);
     Map_Find_Usable(map, world, unit_ent, false, archetype);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void _LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Unit *unit,
                              SDL_Renderer *renderer, struct n9Patch *n9patch) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit               != NULL);
     SDL_assert(n9patch            != NULL);
     SDL_assert(unit->weapons_dtab != NULL);
@@ -166,13 +156,11 @@ void _LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Unit *unit,
     SDL_assert(n9patch->texture != NULL);
 
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 
 /* --- Elements --- */
 void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Get number of elements for the menu */
     int stronghand       = Unit_Hand_Strong(lsm->unit);
     bool strong_selected = (lsm->selected[stronghand] > -1);
@@ -187,11 +175,9 @@ void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct Menu *mc
         mc->elem_links[i].bottom = WSM_ELEM_NULL;
     }
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void LoadoutSelectMenu_Elem_Pos(struct LoadoutSelectMenu *lsm, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Scales elem_pos to menu size. */
     /* 1. Makes the cursor focus on right place on the Screen       */
     /* 2. Box lined are drawn in menu frame, making thinner lines   */
@@ -199,8 +185,7 @@ void LoadoutSelectMenu_Elem_Pos(struct LoadoutSelectMenu *lsm, struct Menu *mc) 
     bool header_drawn = (lsm->header != NULL);
     /* - Skip if already in screen frame - */
     if (mc->elem_pos_frame == ELEM_POS_SCREEN_FRAME) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     for (size_t i = 0; i < mc->elem_num; i++) {
@@ -215,11 +200,9 @@ void LoadoutSelectMenu_Elem_Pos(struct LoadoutSelectMenu *lsm, struct Menu *mc) 
     }
 
     mc->elem_pos_frame = ELEM_POS_SCREEN_FRAME;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void LoadoutSelectMenu_Elem_Pos_revert(struct LoadoutSelectMenu *lsm, struct Menu *mc) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Scales elem_pos to menu size. */
     /* 1. Makes the cursor focus on right place on the Screen       */
     /* 2. Box lined are drawn in menu frame, making thinner lines   */
@@ -227,8 +210,7 @@ void LoadoutSelectMenu_Elem_Pos_revert(struct LoadoutSelectMenu *lsm, struct Men
     bool header_drawn = (lsm->header != NULL);
     /* - Skip if already in screen frame - */
     if (mc->elem_pos_frame == ELEM_POS_MENU_FRAME) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     for (size_t i = 0; i < mc->elem_num; i++) {
@@ -243,13 +225,11 @@ void LoadoutSelectMenu_Elem_Pos_revert(struct LoadoutSelectMenu *lsm, struct Men
     }
 
     mc->elem_pos_frame = ELEM_POS_MENU_FRAME;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 
 /* --- Checking --- */
 bool WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Are there any side_i weapons left in rest of inventory? */
     bool remains = false;
 
@@ -267,7 +247,6 @@ bool WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm) {
         remains = lsm->unit->num_equipment > 1; /* Any item remains */
     }
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (remains);
 }
 
@@ -279,16 +258,13 @@ int LoadoutSelectMenu_num_items(struct LoadoutSelectMenu *lsm) {
 }
 
 void LoadoutSelectMenu_Select_Reset(struct LoadoutSelectMenu *lsm) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     lsm->selected[UNIT_HAND_LEFT]  = -1;
     lsm->selected[UNIT_HAND_RIGHT] = -1;
     lsm->update                    = true;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* - Select Weapon/Staff - */
 void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, int select) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Select loadout: 2 weapons if two hands  */
     // TODO: return int that says if selection remains?
 
@@ -337,20 +313,16 @@ void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, int select) {
         exit(ERROR_Generic);
     }
     lsm->update = true;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void ItemSelectMenu_Select(struct LoadoutSelectMenu *lsm, int s) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Select item: 1 among equipment  */
     // TODO: return int that says if selection remains?
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 
 void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Revert selected item, only for second hand -- */
     SDL_assert(lsm       != NULL);
     SDL_assert(lsm->unit != NULL);
@@ -382,7 +354,6 @@ void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
     lsm->update               = true;
     Unit_Equip_inHand(lsm->unit, reverthand);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void LoadoutSelectMenu_Name_Alloc(struct LoadoutSelectMenu *lsm, char *name) {
@@ -470,7 +441,6 @@ void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9p
 }
 
 void LoadoutSelectMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *renderer) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct LoadoutSelectMenu *lsm = (struct LoadoutSelectMenu *)mc->data;
     SDL_assert(lsm != NULL);
     struct n9Patch *n9patch = &mc->n9patch;
@@ -490,11 +460,9 @@ void LoadoutSelectMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *
     SDL_assert(lsm->texture != NULL);
     SDL_RenderCopy(renderer, lsm->texture, NULL, &dstrect);
     Utilities_DrawColor_Reset(renderer);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm, const char *header) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (lsm->header != NULL) {
         free(lsm->header);
     }
@@ -502,7 +470,6 @@ void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm, const char *hea
     lsm->header = calloc(len + 1, sizeof(*lsm->header));
     strncpy(lsm->header, header, len);
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 
@@ -791,7 +758,6 @@ void LoadoutSelectMenu_Texture_Create(struct LoadoutSelectMenu  *lsm, struct n9P
 
 void LoadoutSelectMenu_Update(struct LoadoutSelectMenu *lsm, struct n9Patch *n9patch,
                               SDL_Texture *target, SDL_Renderer *renderer) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     SDL_assert(lsm      != NULL);
     SDL_assert(renderer != NULL);
@@ -820,5 +786,4 @@ void LoadoutSelectMenu_Update(struct LoadoutSelectMenu *lsm, struct n9Patch *n9p
     _LoadoutSelectMenu_Draw_Items(lsm, renderer);
 
     SDL_SetRenderTarget(renderer, target);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

@@ -19,7 +19,6 @@ struct Scene Scene_default =  {
 };
 
 void Scene_Free(struct Scene *scene) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Scene_Free_Read(scene);
     if (scene->replace != NULL) {
         for (size_t i = 0; i < scene->replace_num; i++) {
@@ -42,11 +41,9 @@ void Scene_Free(struct Scene *scene) {
         scene->with = NULL;
     }
     scene->replace_num = 0;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Scene_Free_Read(struct Scene *scene) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (scene->lines != NULL) {
         for (size_t i = 0; i < scene->line_num; i++) {
             if (scene->lines[i] != NULL) {
@@ -66,11 +63,9 @@ void Scene_Free_Read(struct Scene *scene) {
         scene->actors = NULL;
     }
     scene->actors_num = scene->line_num = scene->id = 0;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 bool Condition_Read(u32 *bitfield, size_t bits, cJSON *jcondition) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(jcondition != NULL);
     bool out;
     cJSON *jelem;
@@ -102,22 +97,18 @@ bool Condition_Read(u32 *bitfield, size_t bits, cJSON *jcondition) {
         out = Bitfield_isIn(cond, bitfield, bits / BITFIELD_BITSPERLEN);
         SDL_free(cond);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 void Scene_Prune(struct Scene *scene) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Realloc strings to size */
     SDL_assert(scene->replace_num > 0);
     for (i16 j = 0; j < scene->line_num; j++) {
         scene->lines[j] = SDL_realloc(scene->lines[j], strlen(scene->lines[j]) + 1);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Scene_Replace(struct Scene *scene) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Replaces strings in replace by with */
     SDL_assert(scene->replace_num > 0);
     for (i16 i = 0; i < scene->replace_num; i++) {
@@ -125,11 +116,9 @@ void Scene_Replace(struct Scene *scene) {
             nstr_Replace(scene->lines[j], scene->replace[i], scene->with[i]);
         }
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 bool Conditions_Read(struct Conditions *conds, cJSON *jconds) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(jconds != NULL);
     SDL_assert(conds != NULL);
     SDL_assert(conds->alive != NULL);
@@ -146,13 +135,11 @@ bool Conditions_Read(struct Conditions *conds, cJSON *jconds) {
         out &= Condition_Read(conds->dead, conds->bits, jdead);
     if (jrecruited)
         out &= Condition_Read(conds->recruited, conds->bits, jrecruited);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_conds,
                           i16 chapter, u16 scene_time) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* scenes darr */
     if (sdarr != NULL)
         DARR_FREE(sdarr);
@@ -170,11 +157,9 @@ struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_conds,
         stbsp_sprintf(extension, "%d.json", i);
         strcpy(filename, base);
         strcat(filename, extension);
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-        if (!PHYSFS_exists(filename))
+            if (!PHYSFS_exists(filename))
             break;
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-        jfile = jsonio_parseJSON(filename);
+            jfile = jsonio_parseJSON(filename);
         SDL_assert(jfile);
         jscene = cJSON_GetObjectItem(jfile, "Scene");
         SDL_assert(jscene);
@@ -190,12 +175,10 @@ struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_conds,
         if (jfile != NULL)
             cJSON_Delete(jfile);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (sdarr);
 }
 
 void Scene_readJSON(void *input, const struct cJSON *const jscene) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Scene *scene = (struct Scene *) input;
     Scene_Free_Read(scene);
     cJSON *jlines = cJSON_GetObjectItem(jscene, "Lines");
@@ -239,5 +222,4 @@ void Scene_readJSON(void *input, const struct cJSON *const jscene) {
     scene->speakers = SDL_realloc(scene->speakers,
                                   scene->line_num * sizeof(*scene->speakers));
     scene->actors = SDL_realloc(scene->actors, scene->actors_num * sizeof(*scene->actors));
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

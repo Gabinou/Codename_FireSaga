@@ -10,7 +10,6 @@ struct Position Position_default = {
 };
 
 void Position_replaceInbounds(struct Position *spos) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Point *pos = spos->onTilemap ? &(spos->tilemap_pos) : & (spos->pixel_pos);
     SDL_assert(pos != NULL);
     if (pos->x < spos->boundsmin.x)
@@ -21,21 +20,17 @@ void Position_replaceInbounds(struct Position *spos) {
         pos->y = spos->boundsmin.y;
     if (pos->y > spos->boundsmax.y)
         pos->y = spos->boundsmax.y;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Position_Bounds_Set(struct Position *spos, i32 xmin, i32 xmax, i32 ymin, i32 ymax) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     spos->boundsmin.x = xmin;
     spos->boundsmax.x = xmax;
     spos->boundsmin.y = ymin;
     spos->boundsmax.y = ymax;
     Position_replaceInbounds(spos);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 bool Position_Pos_Add(struct Position *spos, i32 move_x, i32 move_y) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_FPS("%d %d", move_x, move_y);
     // used by cursor only, and cursor is basically always on the tilemap...
     i32 new_x, new_y;
@@ -46,12 +41,10 @@ bool Position_Pos_Add(struct Position *spos, i32 move_x, i32 move_y) {
         new_x = move_x + spos->pixel_pos.x;
         new_y = move_y + spos->pixel_pos.y;
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (Position_Pos_Set(spos, new_x, new_y));
 }
 
 bool Position_Pos_Set(struct Position *spos, i32 new_x, i32 new_y) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     bool moved = false;
     struct Point *pos = spos->onTilemap ? &(spos->tilemap_pos) : &(spos->pixel_pos);
     SDL_assert(pos != NULL);
@@ -73,6 +66,5 @@ bool Position_Pos_Set(struct Position *spos, i32 new_x, i32 new_y) {
         else if (new_y > spos->boundsmax.y)
             pos->y = spos->boundsmax.y;
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (moved);
 }

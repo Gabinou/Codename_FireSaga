@@ -32,17 +32,14 @@ struct Camp Camp_default = {
 };
 
 void Camp_Job_Hire(struct Camp *in_camp, i16 unit_id, i16 job_id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(in_camp->workers[job_id] < (max_jobs[job_id]));
     SDL_assert(in_camp->forbidden_jobs[unit_id] != job_id);
     u8 *jobs_arr = (u8 *)&in_camp->guards;
     u8 *job_arr = jobs_arr + ((job_id - 1) * CAMP_JOB_MAX);
     job_arr[in_camp->workers[job_id]++] = unit_id;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Camp_Job_Fire(struct Camp *in_camp, i16 unit_id, i16 job_id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(in_camp->workers[job_id - 1] < (max_jobs[job_id - 1] - 1));
     u8 *jobs_arr = (u8 *)&in_camp->guards;
     u8 *job_arr = jobs_arr + ((job_id - 1) * CAMP_JOB_MAX);
@@ -59,17 +56,13 @@ void Camp_Job_Fire(struct Camp *in_camp, i16 unit_id, i16 job_id) {
         memmove(job_arr + index, job_arr + index + 1,
                 (CAMP_JOB_MAX - index - 1) * sizeof(*job_arr));
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Camp_Job_Forbid(struct Camp *in_camp, i16 unit_id, i16 job_id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     in_camp->forbidden_jobs[unit_id] = job_id;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 u8 Camp_hasJob(struct Camp *in_camp, i16 unit_id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     u8 *jobs_arr = (u8 *)&in_camp->guards;
     bool found = false;
     u8 has_job = CAMP_JOB_NULL;
@@ -84,21 +77,17 @@ u8 Camp_hasJob(struct Camp *in_camp, i16 unit_id) {
             break;
         }
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (has_job);
 }
 
 u8 *Camp_Job_Get(struct Camp *in_camp, i16 job_id) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(in_camp->workers[job_id] < (max_jobs[job_id] - 1));
     u8 *jobs_arr = (u8 *)&in_camp->guards;
     u8 *job_arr = jobs_arr + (job_id * CAMP_JOB_MAX);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (job_arr);
 }
 
 void Camp_Jobs_Clear(struct Camp *in_camp) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     u8 *jobs_arr = (u8 *)&in_camp->guards;
     for (int_fast8_t i = CAMPJOB_GUARD; i < CAMPJOB_END ; ++i) {
         u8 *job_arr = jobs_arr + ((i - 1) * CAMP_JOB_MAX);
@@ -107,11 +96,9 @@ void Camp_Jobs_Clear(struct Camp *in_camp) {
         job_arr[2] = CAMP_JOB_NULL;
         job_arr[3] = CAMP_JOB_NULL;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Camp_writeJSON(const void *input, cJSON *in_jcamp) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Camp *in_camp = (struct Camp *) input;
     SDL_assert(in_jcamp != NULL);
     u8 *jobs_arr = (u8 *)&in_camp->guards;
@@ -127,11 +114,9 @@ void Camp_writeJSON(const void *input, cJSON *in_jcamp) {
     }
     cJSON_AddItemToObject(in_jcamp, "Forbidden", jforbidden);
     cJSON_AddItemToObject(in_jcamp, "Jobs", jjobs);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Camp_readJSON(void *input, const cJSON *const in_jcamp) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Camp *in_camp = (struct Camp *) input;
     cJSON *jjobs = cJSON_GetObjectItemCaseSensitive(in_jcamp, "Jobs");
     u8 *jobs_arr = (u8 *)&in_camp->guards;
@@ -146,5 +131,4 @@ void Camp_readJSON(void *input, const cJSON *const in_jcamp) {
         cJSON *jtemp = cJSON_GetArrayItem(jforbidden, i);
         in_camp->forbidden_jobs[i] = cJSON_GetNumberValue(jtemp);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

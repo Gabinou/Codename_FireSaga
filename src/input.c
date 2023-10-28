@@ -18,7 +18,6 @@ static struct parg_opt longopts[] = {
 };
 
 struct Input_Arguments Input_parseInputs(int argc, char *argv[]) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Input_Arguments out_args = Input_Arguments_default;
     struct parg_state ps = parg_state_default;
     int *longindex;
@@ -66,6 +65,5 @@ struct Input_Arguments Input_parseInputs(int argc, char *argv[]) {
     for (c = ps.optind; c < argc; ++c)
         printf("argument '%s'\n", argv[c]);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_args);
 }

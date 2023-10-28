@@ -33,18 +33,15 @@ struct Combat_Death Combat_Death_default = {
 };
 
 bool Combat_canDouble(const struct Unit *restrict attacker, const struct Unit *restrict defender) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(attacker && defender);
     i8 diff        = (attacker->computed_stats.speed - defender->computed_stats.speed);
     bool doubles    = (diff > SOTA_DOUBLING_SPEED);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (doubles);
 }
 
 bool Combat_canAttack_Equipped(struct Unit *restrict attacker, struct Unit *restrict defender,
                                const struct Point *restrict att_pos,
                                const struct Point *restrict dfd_pos) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(attacker && defender);
     SDL_assert(att_pos  && dfd_pos);
     /* Get range of current loadout */
@@ -52,14 +49,12 @@ bool Combat_canAttack_Equipped(struct Unit *restrict attacker, struct Unit *rest
     /* Is enemy in range? */
     u8 distance = abs(dfd_pos->x - att_pos->x) + abs(dfd_pos->y - att_pos->y);
     bool can     = (distance >= att_range->min) && (distance <= att_range->max);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (can);
 }
 
 struct Combat_Flow Compute_Combat_Flow(struct Unit *restrict agg, struct Unit *restrict dft,
                                        const struct Point *restrict agg_pos,
                                        const struct Point *restrict dft_pos) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(agg      && dft);
     SDL_assert(agg_pos  && dft_pos);
     struct Combat_Flow out_flow;
@@ -82,13 +77,11 @@ struct Combat_Flow Compute_Combat_Flow(struct Unit *restrict agg, struct Unit *r
 
     out_flow.aggressor_brave = Unit_Brave(agg);
     out_flow.defendant_brave = Unit_Brave(dft);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_flow);
 }
 
 struct Damage Compute_Combat_Damage(struct Unit *restrict attacker,
                                     struct Unit *restrict defender) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(attacker && defender);
     u8 eff = Unit_computeEffectivefactor(attacker, defender);
     u8 aap = attacker->computed_stats.attack[DMG_TYPE_PHYSICAL];
@@ -112,20 +105,16 @@ struct Damage Compute_Combat_Damage(struct Unit *restrict attacker,
                                                    1);
     attacker->damage.dmg_crit[DMG_TYPE_TRUE]     = Equation_Combat_Damage(aat, 0, eff, CRIT_FACTOR, 1);
     Equation_Damage_Total(&attacker->damage);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (attacker->damage);
 }
 
 void Combat_Death_isPossible(struct Combat_Flow flow, u8 *restrict out) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     out[SOTA_DEFENDANT] = 0;
     // TODO: compute total damage
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 struct Combat_Death Compute_Combat_Death(struct Unit *aggressor, struct Unit *defendant,
                                          struct Combat_Stats forecast, struct Combat_Flow flow) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(aggressor && defendant);
 
     /* DOES NOT WORK */
@@ -184,7 +173,6 @@ struct Combat_Death Compute_Combat_Death(struct Unit *aggressor, struct Unit *de
         //     out_death.aggressor_possible = true;
     } while (0);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_death);
 }
 
@@ -192,7 +180,6 @@ struct Combat_Rates Compute_Combat_Rates(struct Unit *restrict attacker,
                                          struct Unit *restrict defender,
                                          const struct Point *restrict att_pos,
                                          const struct Point *restrict dfd_pos) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(attacker && defender);
     u8 distance = abs(dfd_pos->x - att_pos->x) + abs(dfd_pos->y - att_pos->y);
     struct Combat_Rates out_rates = Combat_Rates_default;
@@ -200,7 +187,6 @@ struct Combat_Rates Compute_Combat_Rates(struct Unit *restrict attacker,
     struct Computed_Stats CS_D    = Unit_computedStats(defender, distance);
     out_rates.hit                 = Equation_Combat_Hit(CS_A.hit,   CS_D.dodge);
     out_rates.crit                = Equation_Combat_Crit(CS_A.crit, CS_D.favor);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_rates);
 }
 
@@ -210,7 +196,6 @@ struct Combat_Forecast Compute_Combat_Forecast(struct Unit *restrict agg,
                                                const struct Point *restrict agg_pos,
                                                const struct Point *restrict dft_pos) {
 // *INDENT-ON*
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(agg        &&dft);
     SDL_assert(agg_pos    &&dft_pos);
     struct Combat_Forecast out = {0};
@@ -226,19 +211,16 @@ struct Combat_Forecast Compute_Combat_Forecast(struct Unit *restrict agg,
         out.stats.dft_rates     = Compute_Combat_Rates(dft,  agg, dft_pos, agg_pos);
         out.stats.dft_damage    = Compute_Combat_Damage(dft, agg);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 void Combat_totalDamage(struct Combat_Attack *restrict attack, struct Damage *restrict damage) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - crit hit should be computed before - */
     attack->total_damage = 0;
     if (attack->hit && !attack->crit)
         attack->total_damage = damage->dmg[DMG_TYPE_TOTAL];
     else if (attack->hit && attack->crit)
         attack->total_damage = damage->dmg_crit[DMG_TYPE_TOTAL];
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Compute_Combat_Outcome(struct Combat_Phase    *restrict phases,
@@ -247,7 +229,6 @@ void Compute_Combat_Outcome(struct Combat_Phase    *restrict phases,
                             struct TINYMT32_T      *restrict tinymt32,
                             struct Unit         *aggressor,
                             struct Unit         *defendant) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // TODO: tripling with SPEED DEMON skill
 
     /* -- Resetting attacks list -- */
@@ -304,12 +285,10 @@ void Compute_Combat_Outcome(struct Combat_Phase    *restrict phases,
         phases[forecast->phase_num++] = temp_phase;
     }
     forecast->attack_num = DARR_NUM(darr_attacks);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* -- Combat Attacks -- */
 int Combat_Phase_Attack_Num(struct Combat_Phase *restrict phase, int brave_factor) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(brave_factor >= 1);
     int attacks = 0;
     for (int i = 0; i < brave_factor; ++i) {
@@ -318,17 +297,14 @@ int Combat_Phase_Attack_Num(struct Combat_Phase *restrict phase, int brave_facto
         //          -> that is the DEFINITION of a multiplication
         attacks += phase->skillp_multipliers[i] * phase->skill_multiplier;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (attacks);
 }
 
 int Combat_TotalAttack_Num(struct Combat_Phase *restrict phases, int brave_factor, int phase_num) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     int total_attacks = 0;
     for (int i = 0; i < phase_num; ++i)
         total_attacks += Combat_Phase_Attack_Num(&phases[i], brave_factor);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (total_attacks);
 }
 
@@ -336,19 +312,16 @@ void Compute_Combat_Phase(struct TINYMT32_T     *restrict tinymt32,
                           struct Combat_Phase *restrict phase,
                           struct Combat_Attack  *restrict darr_attacks, struct Damage        damage,
                           struct Unit *restrict attacker, u8 hit_rate, u8 crit_rate, u8 brave_factor) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     phase->attack_num = Combat_Phase_Attack_Num(phase, brave_factor);
     for (int i = 0; i < phase->attack_num; i++)
         Compute_Combat_Attack(tinymt32, phase, darr_attacks, damage, attacker, hit_rate, crit_rate);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Compute_Combat_Attack(struct TINYMT32_T    *restrict tinymt32,
                            struct Combat_Phase  *restrict phase,
                            struct Combat_Attack *restrict darr_attacks, struct Damage damage,
                            struct Unit *restrict attacker, u8 hit_rate, u8 crit_rate) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Combat_Attack temp_attack;
 
     attacker->hit_sequence.eff_rate = hit_rate;
@@ -403,19 +376,15 @@ void Compute_Combat_Attack(struct TINYMT32_T    *restrict tinymt32,
 
     temp_attack.attacker = phase->attacker;
     DARR_PUT(darr_attacks, temp_attack); // growing here breaks, address changes
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 u8 Combat_Next_HP(struct Combat_Attack attack, u8 hp) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     u8 next_hp = hp < attack.total_damage ? hp : hp - attack.total_damage;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (next_hp);
 }
 
 void Combat_Resolve(struct Combat_Attack *combat_attacks, u8 attack_num,
                     struct Unit *aggressor, struct Unit *defendant) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(attack_num > 0);
     SDL_assert(attack_num <= SOTA_COMBAT_MAX_PHASES);
     struct Unit *attacker, *defender;
@@ -430,16 +399,13 @@ void Combat_Resolve(struct Combat_Attack *combat_attacks, u8 attack_num,
         if (!aggressor->is_alive | !defendant->is_alive)
             break;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Resolve_Attack(struct Combat_Attack attack,
                     struct Unit *restrict attacker,
                     struct Unit *restrict defender) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (!attack.hit) {
-        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     if (defender->divine_shield) {
@@ -452,5 +418,4 @@ void Resolve_Attack(struct Combat_Attack attack,
     Unit_Equipped_Weapons_Deplete(attacker);
     Unit_Check_Equipped(attacker);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

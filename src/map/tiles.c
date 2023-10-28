@@ -2,18 +2,15 @@
 #include "map/tiles.h"
 
 void Map_Tiles_Free(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (map->tiles != NULL) {
         for (size_t i = 0; i < DARR_NUM(map->tiles); i++)
             Tile_Free(&map->tiles[i]);
         DARR_FREE(map->tiles);
         map->tiles = NULL;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Tiles_Load(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Tile *temp_tile = NULL;
     char filename[DEFAULT_BUFFER_SIZE];
     for (size_t i = 0; i < DARR_NUM(map->tilesindex); i++) {
@@ -38,11 +35,9 @@ void Map_Tiles_Load(struct Map *map) {
         DARR_PUT(map->tiles_id, tile_id);
         free(temp_tile);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Tilesets_Free(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(DARR_NUM(map->tiles) > 0);
     SDL_assert(DARR_NUM(map->tiles) < 1000);
 
@@ -82,11 +77,9 @@ void Map_Tilesets_Free(struct Map *map) {
         map->tileset_textures = NULL;
     } while (0);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Tilesets_Load(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(DARR_NUM(map->tiles) > 0);
     SDL_assert(map->tilesindex != NULL);
     /* -- Preliminaries -- */
@@ -129,20 +122,16 @@ void Map_Tilesets_Load(struct Map *map) {
         map->tileset_surfaces[PALETTE_NES][i] = surf;
         memset(&tilesetname, 0, DEFAULT_BUFFER_SIZE);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Tilemap_MapObjects(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Map_Tilemap_Breakables(map);
     /* Breakables tiles overriden by doors/chests */
     Map_Tilemap_Doors(map);
     Map_Tilemap_Chests(map);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Tilemap_Chests(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(map->chest_num > 0);
     for (size_t i = 0; i < map->chest_num; i++) {
         struct Chest *chest     = TNECS_GET_COMPONENT(map->world, map->chests_ent[i], Chest);
@@ -154,11 +143,9 @@ void Map_Tilemap_Chests(struct Map *map) {
         i32 tile = chest->tile + TILE_CHEST * TILE_DIVISOR;
         map->tilemap[y * map->col_len + x] = tile;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Tilemap_Breakables(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(map->breakable_num > 0);
     for (size_t i = 0; i < map->breakable_num; i++) {
         struct Breakable *breaka;
@@ -175,11 +162,9 @@ void Map_Tilemap_Breakables(struct Map *map) {
         map->tilemap[y * map->col_len + x] = tile;
     }
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Tilemap_Doors(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(map->door_num > 0);
     for (size_t i = 0; i < map->door_num; i++) {
         struct Door *door = TNECS_GET_COMPONENT(map->world, map->doors_ent[i], Door);
@@ -191,29 +176,23 @@ void Map_Tilemap_Doors(struct Map *map) {
         i32 tile = door->tile + TILE_DOOR * TILE_DIVISOR;
         map->tilemap[y * map->col_len + x] = tile;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Tileset_Stack_Add(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(map->tilesindex);
     DARR_PUT(map->tilesindex, TILE_ICONS);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Tilesize_Set(struct Map *map, i32 width, i32 height) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     map->tilesize[0] = width;
     map->tilesize[1] = height;
     if (map->arrow) {
         map->arrow->map_tilesize[0] = width;
         map->arrow->map_tilesize[1] = height;
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Unique_TilesindexfromTilemap(struct Map *map) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(map->tilemap);
     for (size_t i = 0; i < map->col_len * map->row_len; i++) {
         i32 tile_ind = map->tilemap[i] / TILE_DIVISOR;
@@ -233,11 +212,9 @@ void Map_Unique_TilesindexfromTilemap(struct Map *map) {
             DARR_PUT(tilesprite_ind, tofind);
         DARR_FREE(tile_orders);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 u8 Map_Tile_Order(struct Map *map, i32 tile) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(tile > TILE_START);
     SDL_assert(map->tiles_id);
     SDL_assert(map->tiles);
@@ -250,12 +227,10 @@ u8 Map_Tile_Order(struct Map *map, i32 tile) {
         }
     }
     SDL_assert(out != UINT8_MAX);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 void Map_Tileset_newPalette(struct Map *map, i32 tile, u8 palette) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     SDL_assert(map);
     SDL_assert(tile > 0);
@@ -283,6 +258,5 @@ void Map_Tileset_newPalette(struct Map *map, i32 tile, u8 palette) {
         SDL_DestroyTexture(map->tileset_textures[palette][tileset_order]);
     SDL_Texture *new_textu = SDL_CreateTextureFromSurface(map->renderer, new_surf);
     map->tileset_textures[palette][tileset_order] = new_textu;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 

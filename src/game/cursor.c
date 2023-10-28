@@ -2,7 +2,6 @@
 
 /* -- Focus -- */
 void Game_cursorFocus_onMap(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_entity_t cursor = sota->entity_cursor;
     SDL_assert(cursor > TNECS_NULL);
 
@@ -73,11 +72,9 @@ void Game_cursorFocus_onMap(struct Game *sota) {
     position->scale[1] = (float)map_tilesize[1];
 
     sota->map->update = true;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_cursorFocus_onMenu(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // focuses on menu on top of sota->menu_stack
 
     /* - Preliminaries - */
@@ -149,13 +146,11 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
     sprite->scale.y = 8;
     Sprite_Tilesize_Set(sprite, sota->settings.tilesize);
     Cursor_Dstrect_Absolute(sprite, &cursor_pos->pixel_pos, &sota->camera);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* -- Follows mouse -- */
 /* if the cursor is far away from elem box, move in the direction. */
 void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* --- SKIPPING --- */
     tnecs_entity_t menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
@@ -168,8 +163,7 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
     skip |= (sota->entity_cursor <= TNECS_NULL);
 
     if (skip) {
-        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     /* --- SLIDING --- */
@@ -182,8 +176,7 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
     bool slidex = (cursor_slider->target.x != cursor_position->pixel_pos.x);
     bool slidey = (cursor_slider->target.y != cursor_position->pixel_pos.y);
     if (!(slidex || slidey)) {
-        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
     /* -- Menu type -- */
     /* - menu pos - */
@@ -214,12 +207,10 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
             sota->controller_code = CONTROLLER_MOUSE;
     }
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* -- Moves -- */
 void Game_Cursor_movedTime_Compute(struct Game *sota, uint64_t time_ns) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     // Compute time that cursor has been moving
     if (sota->cursor_frame_moved)
@@ -228,12 +219,10 @@ void Game_Cursor_movedTime_Compute(struct Game *sota, uint64_t time_ns) {
         sota->cursor_moved_time_ms = 0;
         sota->cursor_move.x = sota->cursor_move.y = 0;
     }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 bool Game_isCursoronTilemap(struct Game *sota) {
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     bool out = false;
     if (sota->ismouse) {
@@ -248,12 +237,10 @@ bool Game_isCursoronTilemap(struct Game *sota) {
         bool y_isIn = int_inbounds(tilemap_pos.y, 0, sota->map->row_len - 1);
         out = (x_isIn && y_isIn);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
 void Game_CursorfollowsMouse_onMap(struct Game *sota) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota != NULL);
     SDL_assert(sota->world != NULL);
     SDL_assert(sota->map != NULL);
@@ -265,8 +252,7 @@ void Game_CursorfollowsMouse_onMap(struct Game *sota) {
     skip |= (sota->entity_mouse <= TNECS_NULL);
     skip |= (sota->entity_cursor <= TNECS_NULL);
     if (skip) {
-        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     /* - Skip if cursor is sliding - */
@@ -279,8 +265,7 @@ void Game_CursorfollowsMouse_onMap(struct Game *sota) {
     bool slidex = (cursor_slider->target.x != cursor_position->pixel_pos.x);
     bool slidey = (cursor_slider->target.y != cursor_position->pixel_pos.y);
     if (slidex || slidey) {
-        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     /* - Get cursor tile position - */
@@ -310,10 +295,8 @@ void Game_CursorfollowsMouse_onMap(struct Game *sota) {
     if ((sota->cursor_move.x != 0) || (sota->cursor_move.y != 0))
         sota->controller_code = CONTROLLER_MOUSE;
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 void Game_Cursor_Moves_onMenu(struct Game *sota) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // For basically all states except Gameplay_map.standby
     tnecs_entity_t menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     Game_Cursor_Moves_Straight(sota);
@@ -322,19 +305,15 @@ void Game_Cursor_Moves_onMenu(struct Game *sota) {
 
     if (!skip)
         Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moves, &sota->cursor_move, &sota->controller_code);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_Cursor_Moves_Straight(struct Game *sota) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Reduces cursor movement to only straight.
     // Prioritizes y
     sota->cursor_move.x *= (sota->cursor_move.y == 0);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_Cursor_Move_toCandidate(struct Game *sota) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Set cursor to new candidate position
     tnecs_entity_t candidate = sota->candidates[sota->candidate];
     struct Position *candidate_pos, *cursor_pos;
@@ -344,10 +323,8 @@ void Game_Cursor_Move_toCandidate(struct Game *sota) {
     cursor_pos->tilemap_pos.y = candidate_pos->tilemap_pos.y;
     SOTA_Log_Debug("tilemap_pos.x %d %d", cursor_pos->tilemap_pos.x, cursor_pos->tilemap_pos.y);
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 void Game_Cursor_Next_Candidate(struct Game *sota) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_entity_t menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     Game_Cursor_Moves_Straight(sota);
     bool skip = ((sota->cursor_move.x == 0) && (sota->cursor_move.y == 0));
@@ -357,12 +334,10 @@ void Game_Cursor_Next_Candidate(struct Game *sota) {
         Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moves, &sota->cursor_move,
                    &sota->controller_code);
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_Cursor_Moves_onMap(struct Game *sota) {
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* --- SKIPPING --- */
     /* - skip if any sota->cursor_move 0 - */
@@ -370,8 +345,7 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
     skip |= (sota->entity_cursor <= TNECS_NULL);
 
     if (skip) {
-        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-        return;
+            return;
     }
 
     /* --- SENDING --- */
@@ -414,12 +388,10 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
         Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moves, &sota->cursor_move,
                    &sota->controller_code);
 
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Cursor --- */
 void Game_Cursor_Create(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Game_Cursor_Free(sota);
     sota->entity_cursor = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Slider, Position, Sprite,
                                                           controllerKeyboard, controllerGamepad,
@@ -486,11 +458,9 @@ void Game_Cursor_Create(struct Game *sota) {
     struct Position *position = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     SDL_assert(position != NULL);
     *position = Position_default;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_Cursor_Free(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->entity_cursor != 0) {
         struct controllerGamepad *gamepad;
         gamepad = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, controllerGamepad);
@@ -503,22 +473,18 @@ void Game_Cursor_Free(struct Game *sota) {
 
         tnecs_entity_destroy(sota->world, sota->entity_cursor);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_Cursor_Enable(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     sota->iscursor = true;
     sota->controller_code = CONTROLLER_KEYBOARD;
     SDL_assert(sota->entity_cursor != 0);
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
     SDL_assert(sprite != NULL);
     sprite->visible = true;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_Cursor_Disable(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     sota->iscursor = false;
     SDL_assert(sota->entity_cursor != 0);
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
@@ -526,12 +492,10 @@ void Game_Cursor_Disable(struct Game *sota) {
     #ifndef DEBUG_CURSOR_SHOW_wDISABLED
     sprite->visible = false;
     #endif
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Mouse --- */
 void Game_Mouse_Create(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Game_Mouse_Free(sota);
     sota->entity_mouse = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, controllerMouse,
                                                          Position, Sprite, MouseFlag);
@@ -575,11 +539,9 @@ void Game_Mouse_Create(struct Game *sota) {
     SDL_assert(sprite->dstrect.w);
     SDL_assert(sprite->dstrect.h);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_Mouse_Enable(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     sota->ismouse = true;
     sota->controller_code = CONTROLLER_MOUSE;
     SDL_assert(sota->entity_mouse != 0);
@@ -589,11 +551,9 @@ void Game_Mouse_Enable(struct Game *sota) {
 
     SDL_assert(sprite != NULL);
     sprite->visible = true;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_Mouse_Disable(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     sota->ismouse = false;
     sota->controller_code = CONTROLLER_KEYBOARD;
     SDL_assert(sota->entity_mouse != 0);
@@ -603,16 +563,13 @@ void Game_Mouse_Disable(struct Game *sota) {
 
     SDL_assert(sprite != NULL);
     sprite->visible = false;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Game_Mouse_Free(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->entity_mouse > 0) {
         struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_mouse, Sprite);
         if (sprite != NULL)
             Sprite_Free(sprite);
         tnecs_entity_destroy(sota->world, sota->entity_mouse);
     }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

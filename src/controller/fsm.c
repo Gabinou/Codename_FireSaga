@@ -32,23 +32,18 @@ fsm_Input_s_t fsm_Input_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
 
 /* Gamecube controller has NO shoulder_left */
 void fsm_Input_sGAMEPLAY_MAP(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (fsm_Input_sGmpMap_ss[sota->substate] != NULL)
         fsm_Input_sGmpMap_ss[sota->substate](sota);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_Input_sTITLE_SCREEN(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (fsm_Input_sGmpMap_ss[sota->substate] != NULL)
         fsm_Input_sGmpMap_ss[sota->substate](sota);
 
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_Input_sGmpMap_ssMenu(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     sota->inputs[SOTA_BUTTON_DPAD_RIGHT]      = 0;
     sota->inputs[SOTA_BUTTON_DPAD_UP]         = 0;
     sota->inputs[SOTA_BUTTON_DPAD_LEFT]       = 0;
@@ -62,11 +57,9 @@ void fsm_Input_sGmpMap_ssMenu(struct Game *sota) {
     sota->inputs[SOTA_BUTTON_SHOULDER_RIGHT]  = event_Input_FASTER;
     sota->inputs[SOTA_BUTTON_TRIGGER_LEFT]    = event_Input_MENULEFT;
     sota->inputs[SOTA_BUTTON_TRIGGER_RIGHT]   = event_Input_MENURIGHT;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void fsm_Input_sGmpMap_ssStby(struct Game *sota) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     sota->inputs[SOTA_BUTTON_DPAD_RIGHT]      = 0;
     sota->inputs[SOTA_BUTTON_DPAD_UP]         = 0;
     sota->inputs[SOTA_BUTTON_DPAD_LEFT]       = 0;
@@ -80,5 +73,4 @@ void fsm_Input_sGmpMap_ssStby(struct Game *sota) {
     sota->inputs[SOTA_BUTTON_SHOULDER_RIGHT]  = event_Input_FASTER;
     sota->inputs[SOTA_BUTTON_TRIGGER_LEFT]    = event_Input_ZOOM_IN;
     sota->inputs[SOTA_BUTTON_TRIGGER_RIGHT]   = event_Input_ZOOM_OUT;
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

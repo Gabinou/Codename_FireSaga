@@ -21,12 +21,10 @@ struct MouseInputMap MouseInputMap_default = {
 };
 
 void Mouse_checkButton(struct controllerMouse *mouse, u8 button) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (button == mouse->inputmap.accept)
         Event_Emit(__func__, SDL_USEREVENT, event_Input_ACCEPT, mouse, NULL);
     else if (button == mouse->inputmap.cancel)
         Event_Emit(__func__, SDL_USEREVENT, event_Input_CANCEL, mouse, NULL);
     else if (button == mouse->inputmap.stats)
         Event_Emit(__func__, SDL_USEREVENT, event_Input_STATS, mouse, NULL);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
