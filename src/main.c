@@ -49,12 +49,17 @@ int main(int argc, char *argv[]) {
     /* --- LOGGING --- */
     fclose(fopen(LOGFILE, "w"));
 
-    SDL_Log("A %d", 1);
     #ifndef __SOTA_RELEASE__
     SDL_LogSetOutputFunction(Log2file, NULL);
     SDL_Log("Logfile set\n");
     #endif /* __SOTA_RELEASE__ */
-    SDL_Log("B %d", 2);
+    SDL_Log("default");
+    SDL_LogCritical(SOTA_LOG_FPS, "CRITICAL");
+    SDL_LogError(SOTA_LOG_FPS, "Error");
+    SDL_LogInfo(SOTA_LOG_FPS, "Info");
+    SDL_LogVerbose(SOTA_LOG_FPS, "verbose");
+    SDL_LogWarn(SOTA_LOG_FPS, "Warn");
+
     getchar();
     // SOTA_Log_Debug("%d\n", SDL_ISPIXELFORMAT_INDEXED(SDL_PIXELFORMAT_RGBA32));
     // SOTA_Log_Debug("%d\n", SDL_BITSPERPIXEL(SDL_PIXELFORMAT_RGBA32));
