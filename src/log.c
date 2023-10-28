@@ -25,6 +25,9 @@ void Log_Init() {
     #endif /* SOTA_VERBOSE */
 
     /* -- SOTA_LOG_FPS -- */
+    /* Change to SDL_LOG_PRIORITY_DEBUG to see system logs */
+    SDL_LogSetPriority(SOTA_LOG_SYSTEM, SDL_LOG_PRIORITY_INFO);
+
     /* Change to SDL_LOG_PRIORITY_VERBOSE to see FPS */
     SDL_LogSetPriority(SOTA_LOG_FPS, SDL_LOG_PRIORITY_CRITICAL);
 
