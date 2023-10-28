@@ -6,7 +6,7 @@
 #include "narrative.h"
 
 void test_tile() {
-    
+
     if (PHYSFS_stat("saves", NULL) == 0) {
         PHYSFS_mkdir("saves");
     }

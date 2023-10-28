@@ -181,13 +181,28 @@ int Filesystem_Free() {
 }
 
 /* --- LOG --- */
-void Filesystem_Log2file(void *userdata, int cat, SDL_LogPriority pri, const char *message) {
+/* Copied from SDL_log.c */
+static const char *SDL_priority_prefixes[SDL_NUM_LOG_PRIORITIES] = {
+    NULL,
+    "VERBOSE",
+    "DEBUG",
+    "INFO",
+    "WARN",
+    "ERROR",
+    "CRITICAL"
+};
+
+void Filesystem_Log2file(void *userdata, int category, SDL_LogPriority priority,
+                         const char *message) {
+    /* -- Log to file -- */
     FILE *logf = fopen(LOGFILE, "a");
     fprintf(logf, "%s", message);
     fprintf(logf, "%s", "\n");
     fclose(logf);
-    printf("%s", message);
-    printf("\n");
+
+    /* -- Log  -- */
+    /* Copied from SDL_log.c */
+    fprintf(stderr, "%s: %s\n", SDL_priority_prefixes[priority], message);
 }
 
 /* --- UTILITIES --- */

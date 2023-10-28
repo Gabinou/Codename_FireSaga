@@ -4,7 +4,7 @@
 #include "RNG.h"
 
 void test_camp() {
-    
+
     struct Camp camp  = Camp_default;
     struct Camp camp2 = Camp_default;
 

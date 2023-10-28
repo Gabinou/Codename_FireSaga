@@ -5,7 +5,7 @@
 #include "jsonio.h"
 
 void test_scene() {
-    
+
     /* -- Setup conditions -- */
     struct Conditions conditions;
     u32 *alive = BITFIELD_INIT_BITS(UNIT_ID_END);

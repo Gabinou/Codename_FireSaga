@@ -4,7 +4,7 @@
 #include "unit.h"
 
 void test_popup_objective() {
-    
+
     /* -- Preliminaries -- */
     sota_mkdir("popup_objective");
 

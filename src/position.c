@@ -31,7 +31,7 @@ void Position_Bounds_Set(struct Position *spos, i32 xmin, i32 xmax, i32 ymin, i3
 }
 
 bool Position_Pos_Add(struct Position *spos, i32 move_x, i32 move_y) {
-    SOTA_Log_FPS("%d %d", move_x, move_y);
+    SDL_LogVerbose(SOTA_LOG_FPS, "%d %d", move_x, move_y);
     // used by cursor only, and cursor is basically always on the tilemap...
     i32 new_x, new_y;
     if (spos->onTilemap) {

@@ -3,7 +3,7 @@
 #include "text_bubble.h"
 
 void test_pixelfonts_internals() {
-    
+
     SDL_assert(palette_NES != NULL);
 
     /* -- Create renderer -- */

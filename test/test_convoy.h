@@ -4,7 +4,7 @@
 #include "game/unit.h"
 
 void testConvoyfull() {
-    
+
     struct Convoy convoy = Convoy_default;
     struct Inventory_item temp = Inventory_item_default;
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
@@ -30,7 +30,7 @@ void testConvoyfull() {
 }
 
 void testConvoysort() {
-    
+
     struct Convoy convoy = Convoy_default;
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
 
@@ -184,7 +184,7 @@ void testConvoysort() {
 }
 
 void testConvoyWriteRead() {
-    
+
     struct Convoy convoy = Convoy_default;
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
 
@@ -377,7 +377,7 @@ void testConvoyWriteRead() {
 }
 
 void testConvoyExp() {
-    
+
     nourstest_true(0 == Convoy_TypeCode2Exp(NULL, 0));
     nourstest_true(1 == Convoy_TypeCode2Exp(NULL, 1));
     nourstest_true(2 == Convoy_TypeCode2Exp(NULL, 2));
@@ -430,7 +430,7 @@ void testConvoySwap() {
 }
 
 void test_convoy() {
-    
+
     testConvoyfull();
     testConvoyWriteRead();
     testConvoysort();

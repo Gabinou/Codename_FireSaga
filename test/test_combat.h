@@ -8,7 +8,7 @@
 #include "RNG.h"
 
 void test_combat_stats() {
-    
+
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
     struct Unit *attacker = (struct Unit *)malloc(sizeof(struct Unit));
     * attacker = Unit_default;
@@ -142,7 +142,7 @@ void test_combat_stats() {
 }
 
 void test_combat_death() {
-    
+
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
     struct Unit attacker = Unit_default;
     struct Unit defender = Unit_default;
@@ -299,7 +299,7 @@ void test_combat_death() {
 }
 
 void test_combat_flow() {
-    
+
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
     struct Combat_Flow temp_flow;
     struct Unit attacker = Unit_default;
@@ -541,7 +541,7 @@ void test_combat_flow() {
 #endif /* RNG_SEQUENCE_BREAKER_NOCRIT */
 
 void test_combat_sequence() {
-    
+
     struct TINYMT32_T tinymt32;
     RNG_Init_tinymt(&tinymt32);
     struct Unit Silou = Unit_default;
@@ -679,7 +679,7 @@ void test_combat_sequence() {
 }
 
 void test_combat() {
-    
+
     test_combat_stats();
     // test_combat_death();
     test_combat_flow();

@@ -48,13 +48,13 @@ int main(int argc, char *argv[]) {
     /* --- LOGGING --- */
     fclose(fopen(LOGFILE, "w"));
 
+    SDL_Log("A %d", 1);
     #ifndef __SOTA_RELEASE__
     SDL_LogSetOutputFunction(Filesystem_Log2file, NULL);
-    SOTA_Log_Debug("Logfile set\n");
-    #else
-    SDL_LogSetOutputFunction(Filesystem_Log, NULL);
+    SDL_Log("Logfile set\n");
     #endif /* __SOTA_RELEASE__ */
-
+    SDL_Log("B %d", 2);
+    getchar();
     // SOTA_Log_Debug("%d\n", SDL_ISPIXELFORMAT_INDEXED(SDL_PIXELFORMAT_RGBA32));
     // SOTA_Log_Debug("%d\n", SDL_BITSPERPIXEL(SDL_PIXELFORMAT_RGBA32));
 

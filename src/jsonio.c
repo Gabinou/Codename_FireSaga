@@ -29,7 +29,7 @@ json_write_t json_write_funcs[JSON_END] = {
 };
 
 struct cJSON *jsonio_parseJSON(const char *filename) {
-    
+
     /* Error if file doesn't exist */
     if (!PHYSFS_exists(filename)) {
         SDL_Log("File %s does not exist", filename);
@@ -52,12 +52,12 @@ struct cJSON *jsonio_parseJSON(const char *filename) {
 
     /* Actually parse the JSON */
     struct cJSON *jfile = cJSON_ParseWithLength(filebuffer, filelen);
-    
+
     return (jfile);
 }
 
 void jsonio_readJSON(const char *filename, void *struct_ptr) {
-    
+
     SOTA_Log_Debug("Reading JSON: %s", filename);
 
     /* Parse the json file */
@@ -99,11 +99,11 @@ void jsonio_readJSON(const char *filename, void *struct_ptr) {
     /* Clean the jfile */
     if (jfile != NULL)
         cJSON_Delete(jfile);
-    
+
 }
 
 void jsonio_writeJSON(const char *filename, const void *struct_ptr, bool append) {
-    
+
     SOTA_Log_Debug("%s:", filename);
 
     /* Parse the json file */
@@ -144,5 +144,5 @@ void jsonio_writeJSON(const char *filename, const void *struct_ptr, bool append)
     PHYSFS_close(fp);
     if (json != NULL)
         cJSON_Delete(json);
-    
+
 }

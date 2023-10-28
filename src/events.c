@@ -521,16 +521,16 @@ void receive_event_SDL_CONTROLLERDEVICEADDED(struct Game *sota, SDL_Event *event
 void receive_event_SDL_MOUSEMOTION(struct Game *sota, SDL_Event *event) {
     SDL_assert(event);
     if (sota->runtime_ns <= CURSOR_FIRSTMENU_PAUSE_ns) {
-        SOTA_Log_FPS("Sota first init pause.");
+        SDL_LogVerbose(SOTA_LOG_FPS, "Sota first init pause.");
         return;
     }
     if (event->motion.windowID != SDL_GetWindowID(sota->window)) {
-        SOTA_Log_FPS("Wrong window");
+        SDL_LogVerbose(SOTA_LOG_FPS, "Wrong window");
         return;
     }
     tnecs_entity_t mouse = sota->entity_mouse;
     if (sota->entity_mouse == TNECS_NULL) {
-        SOTA_Log_FPS("Mouse disabled");
+        SDL_LogVerbose(SOTA_LOG_FPS, "Mouse disabled");
         return;
     }
 
@@ -556,7 +556,7 @@ void receive_event_SDL_MOUSEBUTTON(struct Game *sota, SDL_Event *event) {
     SDL_assert(sota->entity_mouse > 0);
 
     if (event->motion.windowID != SDL_GetWindowID(sota->window)) {
-        SOTA_Log_FPS("Wrong window");
+        SDL_LogVerbose(SOTA_LOG_FPS, "Wrong window");
         return;
     }
 

@@ -4,21 +4,8 @@
 #include "macros.h"
 
 /* -- Manual Logging switches -- */
-#define SOTA_Log_FPS(...) do {} while (0)
-// #define SOTA_Log_FPS(...) SDL_Log(__VA_ARGS__)
-
-#define SOTA_Log_Func(...) do {} while (0)
-// #define SOTA_Log_Func(...) SDL_Log(__VA_ARGS__)
-
 // #define SOTA_Log_Debug(...) do {} while (0)
 #define SOTA_Log_Debug(...) SDL_Log(__VA_ARGS__)
-
-/* -- Automatic Logging switches -- */
-// #ifdef __SOTA_RELEASE__
-//     #define SOTA_Log_Debug(...) do {} while (0)
-// #else
-//     #define SOTA_Log_Debug(...) SDL_Log(__VA_ARGS__)
-// #endif /* __SOTA_RELEASE__ */
 
 /* -- Various defines -- */
 #define SOTA_RNG GAME_RN_DOUBLE

@@ -81,7 +81,7 @@ void Control_Keyboard(tnecs_system_input_t *input) {
     SDL_assert(keyboard_arr != NULL);
 
     for (int order = 0; order < input->num_entities; order++) {
-        SOTA_Log_FPS("%d", order);
+        SDL_LogVerbose(SOTA_LOG_FPS, "%d", order);
 
         /* -- Preliminaries -- */
         struct controllerKeyboard *kb       = keyboard_arr + order;
@@ -160,7 +160,7 @@ void Control_Gamepad(tnecs_system_input_t *input) {
     struct controllerGamepad *gamepad_arr   = TNECS_COMPONENTS_LIST(input, controllerGamepad);
 
     for (int order = 0; order < input->num_entities; order++) {
-        SOTA_Log_FPS("%d", order);
+        SDL_LogVerbose(SOTA_LOG_FPS, "%d", order);
         struct controllerGamepad *gp = gamepad_arr + order;
 
         /* -- Preliminaries -- */

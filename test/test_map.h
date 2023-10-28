@@ -45,6 +45,6 @@ void test_map_simple() {
 #undef TEST_MAP_COL_LEN
 
 void test_map() {
-    
+
     test_map_simple();
 }
