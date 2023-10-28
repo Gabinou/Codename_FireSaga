@@ -46,6 +46,7 @@ struct Map Map_default = {
     .attacktomap            = NULL,
     .attacktolist           = NULL,
     .healtomap              = NULL,
+    .healfrommap            = NULL,
     .dangermap              = NULL,
     .global_dangermap       = NULL,
     .global_rangemap        = NULL,
@@ -102,6 +103,11 @@ struct Map Map_default = {
 
     .stacked_dangermap          = NULL,
     .stacked_global_dangermap   = NULL,
+    .temp_palette               = NULL,
+
+    .healtolist     = NULL,
+    .attacktolist   = NULL,
+    .temp   = NULL,
 
     // .boss;
     // .bossdied;
@@ -305,7 +311,7 @@ void Map_dArrays_Init(struct Map *map, const struct Settings *settings) {
         map->dangermap          = calloc(len,  sizeof(*map->dangermap));
     if (map->palettemap == NULL)
         map->palettemap         = malloc(len * sizeof(*map->palettemap));
-    if (map->palettemap == NULL)
+    if (map->attacktomap == NULL)
         map->attacktomap        = calloc(len,  sizeof(*map->attacktomap));
     if (map->healtomap == NULL)
         map->healtomap          = calloc(len,  sizeof(*map->healtomap));
