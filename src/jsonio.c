@@ -39,7 +39,7 @@ struct cJSON *jsonio_parseJSON(const char *filename) {
     /* Error if file can't be read */
     PHYSFS_file *fp = PHYSFS_openRead(filename);
     if (fp == NULL) {
-        SOTA_Log_Debug("%s " STRINGIZE(__LINE__), __func__);
+        SDL_Log("%s " STRINGIZE(__LINE__), __func__);
         SDL_Log("Could not read JSON file");
         exit(ERROR_CannotOpenFile);
     }
@@ -58,7 +58,7 @@ struct cJSON *jsonio_parseJSON(const char *filename) {
 
 void jsonio_readJSON(const char *filename, void *struct_ptr) {
 
-    SOTA_Log_Debug("Reading JSON: %s", filename);
+    SDL_Log("Reading JSON: %s", filename);
 
     /* Parse the json file */
     struct cJSON *jfile = jsonio_parseJSON(filename);
@@ -70,7 +70,7 @@ void jsonio_readJSON(const char *filename, void *struct_ptr) {
     /* Get the json element id */
     u8 jelem_id = *(u8 *)struct_ptr;
     char *elem_name = jsonElementnames[jelem_id];
-    SOTA_Log_Debug("Reading JSON element %d %s", jelem_id, elem_name);
+    SDL_Log("Reading JSON element %d %s", jelem_id, elem_name);
     if (jelem_id >= JSON_END) {
         SDL_Log("JSON element not set");
         exit(ERROR_JSONElementNotSet);
@@ -104,7 +104,7 @@ void jsonio_readJSON(const char *filename, void *struct_ptr) {
 
 void jsonio_writeJSON(const char *filename, const void *struct_ptr, bool append) {
 
-    SOTA_Log_Debug("%s:", filename);
+    SDL_Log("%s:", filename);
 
     /* Parse the json file */
     PHYSFS_file *fp = NULL;
@@ -112,7 +112,7 @@ void jsonio_writeJSON(const char *filename, const void *struct_ptr, bool append)
 
     /* Get the json element id */
     u8 jelem_id = *(u8 *)struct_ptr;
-    SOTA_Log_Debug("Writing JSON element %s", jsonElementnames[jelem_id]);
+    SDL_Log("Writing JSON element %s", jsonElementnames[jelem_id]);
     if (jelem_id >= JSON_END) {
         SDL_Log("JSON element not set");
         exit(ERROR_JSONElementNotSet);

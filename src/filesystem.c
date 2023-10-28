@@ -37,34 +37,34 @@ int Filesystem_Init(char *argv0) {
             strcat(output, DIR_SEPARATOR);
     }
 
-    SOTA_Log_Debug("Mounting %s", output);
+    SDL_Log("Mounting %s", output);
     if (!PHYSFS_mount(output, NULL, 1)) {
-        SOTA_Log_Debug("Could not mount %s", output);
+        SDL_Log("Could not mount %s", output);
         exit(ERROR_PHYSFSCannotMount);
     };
     PHYSFS_setWriteDir(output);
-    SOTA_Log_Debug("Base directory: %s\n", output);
+    SDL_Log("Base directory: %s\n", output);
 
     /* -- Mounting saves directory -- */
     strcpy(temp, output);
     strcat(temp, "saves"DIR_SEPARATOR);
     if (PHYSFS_stat(temp, NULL) == 0) {
-        SOTA_Log_Debug("mkdir %s", temp);
+        SDL_Log("mkdir %s", temp);
         sota_mkdir(temp);
     }
 
-    SOTA_Log_Debug("Mounting %s", temp);
+    SDL_Log("Mounting %s", temp);
     if (!PHYSFS_mount(temp, NULL, 1)) {
-        SOTA_Log_Debug("Could not mount %s", temp);
+        SDL_Log("Could not mount %s", temp);
         exit(ERROR_PHYSFSCannotMount);
     };
 
     /* -- Mounting build directory -- */
     strcpy(temp, output);
     strcat(temp, SOTA_BUILD_DIR DIR_SEPARATOR);
-    SOTA_Log_Debug("Mounting %s", temp);
+    SDL_Log("Mounting %s", temp);
     if (!PHYSFS_mount(temp, NULL, 1)) {
-        SOTA_Log_Debug("Could not mount %s", temp);
+        SDL_Log("Could not mount %s", temp);
         exit(ERROR_PHYSFSCannotMount);
     };
 
@@ -72,9 +72,9 @@ int Filesystem_Init(char *argv0) {
     temp[0] = '\0';
     strcpy(temp, output);
     strcat(temp, "tiles"DIR_SEPARATOR);
-    SOTA_Log_Debug("Mounting %s", temp);
+    SDL_Log("Mounting %s", temp);
     if (!PHYSFS_mount(temp, NULL, 1)) {
-        SOTA_Log_Debug("Could not mount %s", temp);
+        SDL_Log("Could not mount %s", temp);
         exit(ERROR_PHYSFSCannotMount);
     };
 
@@ -82,9 +82,9 @@ int Filesystem_Init(char *argv0) {
     temp[0] = '\0';
     strcpy(temp, output);
     strcat(temp, "scenes"DIR_SEPARATOR);
-    SOTA_Log_Debug("Mounting %s", temp);
+    SDL_Log("Mounting %s", temp);
     if (!PHYSFS_mount(temp, NULL, 1)) {
-        SOTA_Log_Debug("Could not mount %s", temp);
+        SDL_Log("Could not mount %s", temp);
         exit(ERROR_PHYSFSCannotMount);
     };
 
@@ -92,9 +92,9 @@ int Filesystem_Init(char *argv0) {
     temp[0] = '\0';
     strcpy(temp, output);
     strcat(temp, "items"DIR_SEPARATOR);
-    SOTA_Log_Debug("Mounting %s", temp);
+    SDL_Log("Mounting %s", temp);
     if (!PHYSFS_mount(temp, NULL, 1)) {
-        SOTA_Log_Debug("Could not mount %s", temp);
+        SDL_Log("Could not mount %s", temp);
         exit(ERROR_PHYSFSCannotMount);
     };
 
@@ -102,9 +102,9 @@ int Filesystem_Init(char *argv0) {
     temp[0] = '\0';
     strcpy(temp, output);
     strcat(temp, "units"DIR_SEPARATOR);
-    SOTA_Log_Debug("Mounting %s", temp);
+    SDL_Log("Mounting %s", temp);
     if (!PHYSFS_mount(temp, NULL, 1)) {
-        SOTA_Log_Debug("Could not mount %s", temp);
+        SDL_Log("Could not mount %s", temp);
         exit(ERROR_PHYSFSCannotMount);
     };
 
@@ -112,9 +112,9 @@ int Filesystem_Init(char *argv0) {
     temp[0] = '\0';
     strcpy(temp, output);
     strcat(temp, "assets");
-    SOTA_Log_Debug("Mounting %s", temp);
+    SDL_Log("Mounting %s", temp);
     if (!PHYSFS_mount(temp, NULL, 1)) {
-        SOTA_Log_Debug("Could not mount %s", temp);
+        SDL_Log("Could not mount %s", temp);
         exit(ERROR_PHYSFSCannotMount);
     };
 
@@ -122,9 +122,9 @@ int Filesystem_Init(char *argv0) {
     temp[0] = '\0';
     strcpy(temp, output);
     strcat(temp, "assets"DIR_SEPARATOR"Maps"DIR_SEPARATOR);
-    SOTA_Log_Debug("Mounting %s", temp);
+    SDL_Log("Mounting %s", temp);
     if (!PHYSFS_mount(temp, NULL, 1)) {
-        SOTA_Log_Debug("Could not mount %s", temp);
+        SDL_Log("Could not mount %s", temp);
         exit(ERROR_PHYSFSCannotMount);
     };
 
@@ -132,9 +132,9 @@ int Filesystem_Init(char *argv0) {
     temp[0] = '\0';
     strcpy(temp, output);
     strcat(temp, "assets"DIR_SEPARATOR"Tiles"DIR_SEPARATOR);
-    SOTA_Log_Debug("Mounting %s", temp);
+    SDL_Log("Mounting %s", temp);
     if (!PHYSFS_mount(temp, NULL, 1)) {
-        SOTA_Log_Debug("Could not mount %s", temp);
+        SDL_Log("Could not mount %s", temp);
         exit(ERROR_PHYSFSCannotMount);
     };
 
@@ -142,9 +142,9 @@ int Filesystem_Init(char *argv0) {
     temp[0] = '\0';
     strcpy(temp, output);
     strcat(temp, "assets"DIR_SEPARATOR"Map_Units"DIR_SEPARATOR);
-    SOTA_Log_Debug("Mounting %s", temp);
+    SDL_Log("Mounting %s", temp);
     if (!PHYSFS_mount(temp, NULL, 1)) {
-        SOTA_Log_Debug("Could not mount %s", temp);
+        SDL_Log("Could not mount %s", temp);
         exit(ERROR_PHYSFSCannotMount);
     };
 
@@ -158,12 +158,12 @@ int Filesystem_Init(char *argv0) {
         strcpy(output, PHYSFS_getBaseDir());
         strcat(output, DIR_SEPARATOR"assets.binou");
     }
-    SOTA_Log_Debug("Path to assets: %s\n", output);
+    SDL_Log("Path to assets: %s\n", output);
     if (!PHYSFS_mount(output, NULL, 1)) {
-        SOTA_Log_Debug("Mount 1 failed");
+        SDL_Log("Mount 1 failed");
         if (!PHYSFS_mount("../assets.binou", NULL, 1)) {
-            SOTA_Log_Debug("Missing assets.binou: PHYSFS_ERROR: %s\n",
-                           PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+            SDL_Log("Missing assets.binou: PHYSFS_ERROR: %s\n",
+                    PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
             SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Missing assets.binou", "Missing assets.binou",
                                      NULL);
             exit(ERROR_MissingAssets);
@@ -173,7 +173,7 @@ int Filesystem_Init(char *argv0) {
     /* -- Cleanup -- */
     SDL_free(srcDir);
     SDL_free(assetsDir);
-    SOTA_Log_Debug("Filesystem_Init");
+    SDL_Log("Filesystem_Init");
     return 1;
 }
 
@@ -222,7 +222,7 @@ bool Filesystem_fequal(const char *filename1, const char *filename2) {
 
 /* --- SURFACES AND TEXTURES --- */
 SDL_Surface *Filesystem_Surface_Load(const char *filename, const u32 format) {
-    SOTA_Log_Debug("%s\n", filename);
+    SDL_Log("%s\n", filename);
     SDL_Surface *loadedsurface  = NULL, *outsurface   = NULL;
     SDL_Surface *conv1surface   = NULL, *conv2surface = NULL;
     SDL_Surface *indexedsurface = NULL;
@@ -232,7 +232,7 @@ SDL_Surface *Filesystem_Surface_Load(const char *filename, const u32 format) {
 
     SDL_assert(loadedsurface != NULL);
     if (SDL_ISPIXELFORMAT_INDEXED(format)) {
-        SOTA_Log_Debug("is indexed %d\n", SDL_ISPIXELFORMAT_INDEXED(format));
+        SDL_Log("is indexed %d\n", SDL_ISPIXELFORMAT_INDEXED(format));
         /* align bits for Filesystem_Surface_Pixels2Indices allocs */
         conv1surface = SDL_ConvertSurfaceFormat(loadedsurface, SDL_PIXELFORMAT_ABGR8888, SDL_IGNORE);
         SDL_FreeSurface(loadedsurface);
@@ -270,7 +270,7 @@ SDL_Surface *Filesystem_Surface_Load(const char *filename, const u32 format) {
 
     // SDL_SaveBMP(outsurface, "outsurface.bmp");
     if (outsurface == NULL) {
-        SOTA_Log_Debug("Could not open: %s\n", filename);
+        SDL_Log("Could not open: %s\n", filename);
         exit(ERROR_CannotOpenFile);
     }
     SDL_assert(outsurface != NULL);
@@ -303,7 +303,7 @@ SDL_Surface *Filesystem_Surface_Palette_Swap(SDL_Surface *surface, SDL_Palette *
 }
 
 SDL_Texture *Filesystem_Texture_Load(struct SDL_Renderer *renderer, const char *file, u32 format) {
-    SOTA_Log_Debug("%s\n", file);
+    SDL_Log("%s\n", file);
     SDL_Surface *tempsurface = Filesystem_Surface_Load(file, format);
     // SDL_SaveBMP(tempsurface, "readsurface.png");
 
@@ -359,7 +359,7 @@ SDL_Surface *Filesystem_indexedSurface_Init(size_t w, size_t h) {
     surface = SDL_CreateRGBSurfaceWithFormat(SDL_IGNORE, w, h, 8, SDL_PIXELFORMAT_INDEX8);
 
     if (PALETTE_DEFAULT == NULL) {
-        SOTA_Log_Debug("palette_NES not loaded");
+        SDL_Log("palette_NES not loaded");
         exit(ERROR_NullPointer);
     }
 
@@ -436,13 +436,13 @@ void Filesystem_Surface_Pixels2Indices(SDL_Surface *abgr_surf, SDL_Surface *inde
 void Filesystem_Texture_Dump(const char *filename, SDL_Renderer *renderer, SDL_Texture *texture,
                              const u32 format, SDL_Texture *render_target) {
     if (!texture) {
-        SOTA_Log_Debug("Warning: Input texture is NULL");
+        SDL_Log("Warning: Input texture is NULL");
     }
 
     SDL_Surface *surface = Filesystem_TexturetoSurface(renderer, texture, format, render_target);
     /* Save result to an image */
     if (IMG_SavePNG(surface, filename) != 0) {
-        SOTA_Log_Debug("PHYSFS_setBuffer failed");
+        SDL_Log("PHYSFS_setBuffer failed");
         exit(ERROR_CannotWriteFile);
     }
     SDL_free(surface->pixels);
@@ -452,17 +452,17 @@ void Filesystem_Texture_Dump(const char *filename, SDL_Renderer *renderer, SDL_T
 /* --- JSON READ & WRITE --- */
 // TODO: rewrite with input cjson
 void Filesystem_readJSON_Shop(const char *filename, struct Shop *shop) {
-    SOTA_Log_Debug("%s", filename);
+    SDL_Log("%s", filename);
     struct cJSON *jfile = jsonio_parseJSON(filename);
     SDL_assert(jfile != NULL);
     struct cJSON *jshop = cJSON_GetObjectItem(jfile, "Shop");
     if (jshop == NULL) {
-        SOTA_Log_Debug("No Shop element in shop json");
+        SDL_Log("No Shop element in shop json");
         exit(ERROR_JSONParsingFailed);
     }
     struct cJSON *jitems = cJSON_GetObjectItem(jshop, "Items");
     if (jitems == NULL) {
-        SOTA_Log_Debug("No Items array in shop json");
+        SDL_Log("No Items array in shop json");
         exit(ERROR_JSONParsingFailed);
     }
     size_t items_num = cJSON_GetArraySize(jitems);
@@ -480,17 +480,17 @@ void Filesystem_readJSON_Shop(const char *filename, struct Shop *shop) {
 }
 
 void Filesystem_readJSON_Promotion(const char *filename, struct Promotion *promotion) {
-    SOTA_Log_Debug("%s", filename);
+    SDL_Log("%s", filename);
     struct cJSON *jfile = jsonio_parseJSON(filename);
     SDL_assert(jfile != NULL);
     struct cJSON *jpromotion = cJSON_GetObjectItem(jfile, "Promotion");
     if (jpromotion == NULL) {
-        SOTA_Log_Debug("No Promotion element in promotion json");
+        SDL_Log("No Promotion element in promotion json");
         exit(ERROR_JSONParsingFailed);
     }
     struct cJSON *jstats = cJSON_GetObjectItem(jpromotion, "Stats");
     if (jstats == NULL) {
-        SOTA_Log_Debug("No Stats element in promotion json");
+        SDL_Log("No Stats element in promotion json");
         exit(ERROR_JSONParsingFailed);
     }
     Filesystem_readJSON_Unitstats(jstats, &promotion->bonus);
@@ -498,7 +498,7 @@ void Filesystem_readJSON_Promotion(const char *filename, struct Promotion *promo
     if (jskill != NULL) {
         struct cJSON *jname = cJSON_GetObjectItem(jskill, "Name");
         if (jname == NULL) {
-            SOTA_Log_Debug("No Name element in skills element of promotion json");
+            SDL_Log("No Name element in skills element of promotion json");
             exit(ERROR_JSONParsingFailed);
         }
         promotion->skill = Hashes_skillName2ID(cJSON_GetStringValue(jname));
@@ -514,23 +514,23 @@ void Filesystem_readJSON_Promotion(const char *filename, struct Promotion *promo
 }
 
 void Filesystem_readJSON_Palette(const char *filename, struct SDL_Palette *palette) {
-    SOTA_Log_Debug("%s", filename);
+    SDL_Log("%s", filename);
     struct cJSON *jfile = jsonio_parseJSON(filename);
     SDL_assert(jfile != NULL);
     struct cJSON *jpalette = cJSON_GetObjectItem(jfile, "Palette");
     if (jpalette == NULL) {
-        SOTA_Log_Debug("No Palette element in palette json");
+        SDL_Log("No Palette element in palette json");
         exit(ERROR_JSONParsingFailed);
     }
     struct cJSON *jrgbs = cJSON_GetObjectItem(jpalette, "rgb");
     if (jrgbs == NULL) {
-        SOTA_Log_Debug("No rgb array in palette json");
+        SDL_Log("No rgb array in palette json");
         exit(ERROR_JSONParsingFailed);
     }
 
     size_t colors_num = cJSON_GetArraySize(jrgbs);
     if (colors_num != PALETTE_NES_COLOR_NUM) {
-        SOTA_Log_Debug("Invalid number of colors in Palette");
+        SDL_Log("Invalid number of colors in Palette");
         exit(ERROR_JSONParsingFailed);
     }
 
@@ -547,24 +547,24 @@ void Filesystem_readJSON_Palette(const char *filename, struct SDL_Palette *palet
 }
 
 void Filesystem_readJSON_PaletteTable(const char *filename, u8   *table) {
-    SOTA_Log_Debug("%s", filename);
+    SDL_Log("%s", filename);
     struct cJSON *jfile = jsonio_parseJSON(filename);
     SDL_assert(jfile != NULL);
     struct cJSON *jpalette_table = cJSON_GetObjectItem(jfile, "Palette Table");
     if (jpalette_table == NULL) {
-        SOTA_Log_Debug("No 'Palette Table' element in palette table json");
+        SDL_Log("No 'Palette Table' element in palette table json");
         exit(ERROR_JSONParsingFailed);
     }
 
     struct cJSON *jfrom_tos = cJSON_GetObjectItem(jpalette_table, "from_to");
     if (jfrom_tos == NULL) {
-        SOTA_Log_Debug("No from_to array in palette table json");
+        SDL_Log("No from_to array in palette table json");
         exit(ERROR_JSONParsingFailed);
     }
 
     size_t colors_num = cJSON_GetArraySize(jfrom_tos);
     if (colors_num != PALETTE_NES_COLOR_NUM) {
-        SOTA_Log_Debug("Invalid number of colors in Palette Table");
+        SDL_Log("Invalid number of colors in Palette Table");
         exit(ERROR_JSONParsingFailed);
     }
 
@@ -697,7 +697,7 @@ void Filesystem_readJSON_2DArray(const struct cJSON *const jarr, i32 *restrict a
 }
 
 void Filesystem_writeJSON_Array(struct cJSON *jarr, const i32 *restrict arr, size_t num) {
-    SOTA_Log_Debug("%zu", num);
+    SDL_Log("%zu", num);
     SDL_assert(arr != NULL);
     for (u8 i = 0; i < num; i++) {
         struct cJSON *jnum = cJSON_CreateNumber(arr[i]);
@@ -707,7 +707,7 @@ void Filesystem_writeJSON_Array(struct cJSON *jarr, const i32 *restrict arr, siz
 
 void Filesystem_writeJSON_2DArray(struct cJSON *arr, const i32 *restrict arr2D, u8 row_len,
                                   u8 col_len) {
-    SOTA_Log_Debug("%d %d", row_len, col_len);
+    SDL_Log("%d %d", row_len, col_len);
     SDL_assert(arr != NULL);
     struct cJSON *jrow, *jnum;
     char rowname[DEFAULT_BUFFER_SIZE / 8];
@@ -989,7 +989,7 @@ void Filesystem_printJSON(PHYSFS_file *fp, const struct cJSON *const json) {
     /* Set up buffering for a PhysicsFS file handle. */
     size_t length = strlen(buffer);
     if (!PHYSFS_setBuffer(fp, length)) {
-        SOTA_Log_Debug("PHYSFS_setBuffer failed");
+        SDL_Log("PHYSFS_setBuffer failed");
         exit(ERROR_CannotWriteFile);
     }
 

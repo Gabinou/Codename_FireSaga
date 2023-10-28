@@ -161,7 +161,7 @@ void _PreCombatMenu_Draw_Doubling(struct PreCombatMenu *pcm, SDL_Renderer *rende
     SDL_assert(max_phase <= SOTA_UNIT_MAX_COMBAT_PHASES);
 
     if (max_phase <= 1) {
-        SOTA_Log_Debug("Number of phases too low. Exiting.");
+        SDL_Log("Number of phases too low. Exiting.");
         return;
     }
 

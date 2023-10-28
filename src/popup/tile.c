@@ -92,7 +92,7 @@ struct Point PopUp_Tile_Position(struct PopUp *popup, struct PopUp_Tile *pt,
             sign.x = -1;
             break;
         default:
-            SOTA_Log_Debug("Invalid PopUp_Tile corner value");
+            SDL_Log("Invalid PopUp_Tile corner value");
     }
     out.y = settings->res.y - n9patch->size_pixels.y * n9patch->scale.y;
 

@@ -321,7 +321,7 @@ void Game_Cursor_Move_toCandidate(struct Game *sota) {
     cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     cursor_pos->tilemap_pos.x = candidate_pos->tilemap_pos.x;
     cursor_pos->tilemap_pos.y = candidate_pos->tilemap_pos.y;
-    SOTA_Log_Debug("tilemap_pos.x %d %d", cursor_pos->tilemap_pos.x, cursor_pos->tilemap_pos.y);
+    SDL_Log("tilemap_pos.x %d %d", cursor_pos->tilemap_pos.x, cursor_pos->tilemap_pos.y);
 
 }
 void Game_Cursor_Next_Candidate(struct Game *sota) {
@@ -378,7 +378,7 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
     #ifndef INFINITE_MOVE_ALL
     //    5- cursor is NOT in movemap IN map_unit move SUBSTATE
     if (sota->substate == GAME_SUBSTATE_MAP_UNIT_MOVES) {
-        // SOTA_Log_Debug("sota->cursor_move %d %d", sota->cursor_move.x, sota->cursor_move.y);
+        // SDL_Log("sota->cursor_move %d %d", sota->cursor_move.x, sota->cursor_move.y);
         int nx = int_inbounds(tx + cx, 0, sota->map->col_len - 1);
         int ny = int_inbounds(ty + cy, 0, sota->map->row_len - 1);
         canSend &= (sota->map->movemap[ny * cl + nx] >= NMATH_MOVEMAP_MOVEABLEMIN);

@@ -2,7 +2,7 @@
 #include "map/path.h"
 
 void Map_Bounds_Compute(struct Map *map) {
-    SOTA_Log_Debug("%d %d", map->col_len, map->row_len);
+    SDL_Log("%d %d", map->col_len, map->row_len);
     SDL_assert((map->col_len != 0) || (map->row_len != 0));
     map->boundsmin.x = 0;
     map->boundsmax.x = map->col_len - 1;
@@ -59,7 +59,7 @@ void Map_Stacked_Dangermap_Compute(struct Map *map) {
 void Map_Stacked_Dangermap_Reset(struct Map *map) {
     int len = map->row_len * map->col_len;
     if (map->stacked_dangermap != NULL) {
-        SOTA_Log_Debug("Map_Stackmap_Reset SETdanger");
+        SDL_Log("Map_Stackmap_Reset SETdanger");
         int size = sizeof(*map->stacked_dangermap);
         map->stacked_dangermap = memset(map->stacked_dangermap, 0, size * len);
     }
@@ -149,7 +149,7 @@ i32 *Map_Healtomap_Compute(struct Map *map, tnecs_world_t *world, tnecs_entity_t
     _Map_Movemap_Compute(map, start, move_stat);
     struct Range range = {.min = UINT8_MAX, .max = 0 };
     _Unit_Range_Combine(unit, &range, equipped, ITEM_ARCHETYPE_STAFF);
-    // SOTA_Log_Debug("range %d %d", range.min, range.max);
+    // SDL_Log("range %d %d", range.min, range.max);
 
     map->update = true;
     map->healtomap = _Map_tomap_Compute(map->healtomap, map->movemap, map->row_len, map->col_len,

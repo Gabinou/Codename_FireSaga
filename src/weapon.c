@@ -64,7 +64,7 @@ bool Weapon_canAttack(struct Weapon *weapon) {
 }
 
 bool Weapon_canAttackfromType(const struct Weapon *weapon) {
-    SOTA_Log_Debug("%ld", weapon->item->type);
+    SDL_Log("%ld", weapon->item->type);
     SDL_assert(weapon);
     SDL_assert(weapon->item != NULL);
     bool iscan = flagsum_isIn(weapon->item->type, ITEM_TYPE_canATTACK);
@@ -144,7 +144,7 @@ void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
     Weapon_Filename(filename, id);
 
     struct Weapon temp_weapon = Weapon_default;
-    SOTA_Log_Debug("Loading weapon %ld %s", id, filename);
+    SDL_Log("Loading weapon %ld %s", id, filename);
     SDL_assert(temp_weapon.json_element == JSON_WEAPON);
 
     /* - read weapon - */
@@ -195,11 +195,11 @@ void Weapon_Save(struct dtab *weapons_dtab, i16 id) {
     char *token;
     char buffer[DEFAULT_BUFFER_SIZE];
     if (DTAB_GET(weapons_dtab, id) != NULL) {
-        SOTA_Log_Debug("Saving Weapon id %ld", id);
+        SDL_Log("Saving Weapon id %ld", id);
         char filename[DEFAULT_BUFFER_SIZE] = "items"PHYSFS_SEPARATOR;
         size_t item_order = *(u16 *)DTAB_GET(global_itemOrders, id);
         SDL_assert(item_order != 0);
-        SOTA_Log_Debug("%s", global_itemNames[item_order]);
+        SDL_Log("%s", global_itemNames[item_order]);
         strncpy(buffer, global_itemNames[item_order], DEFAULT_BUFFER_SIZE);
         token = strtok(buffer, " \t");
         while (token != NULL) {
@@ -207,7 +207,7 @@ void Weapon_Save(struct dtab *weapons_dtab, i16 id) {
             token = strtok(NULL, " \t");
         }
         strcat(filename, ".json");
-        SOTA_Log_Debug("Saving weapon %ld %s", id, filename);
+        SDL_Log("Saving weapon %ld %s", id, filename);
         bool append = false;
         struct Weapon *weapon = (struct Weapon *)DTAB_GET(weapons_dtab, id);
         jsonio_writeJSON(filename, weapon, false);
@@ -216,7 +216,7 @@ void Weapon_Save(struct dtab *weapons_dtab, i16 id) {
 
 void Weapons_All_Load(struct dtab *weapons_dtab) {
     for (size_t i = ITEM_NULL; i < ITEM_ID_CLAW_END; i++) {
-        SOTA_Log_Debug("Loading Weapon %zu", i);
+        SDL_Log("Loading Weapon %zu", i);
         if (Weapon_ID_isValid(i))
             Weapon_Load(weapons_dtab, i);
     }
@@ -224,7 +224,7 @@ void Weapons_All_Load(struct dtab *weapons_dtab) {
 
 void Weapons_All_Reload(struct dtab *weapons_dtab) {
     for (size_t i = ITEM_NULL; i < ITEM_ID_CLAW_END; i++) {
-        SOTA_Log_Debug("Reloading Weapon %zu", i);
+        SDL_Log("Reloading Weapon %zu", i);
         if (Weapon_ID_isValid(i))
             Weapon_Reload(weapons_dtab, i);
     }
@@ -232,7 +232,7 @@ void Weapons_All_Reload(struct dtab *weapons_dtab) {
 
 void Weapons_All_Save(struct dtab *weapons_dtab) {
     for (size_t i = ITEM_NULL; i < ITEM_ID_CLAW_END; i++) {
-        SOTA_Log_Debug("%zu", i);
+        SDL_Log("%zu", i);
         if (!Weapon_ID_isValid(i))
             continue;
 

@@ -148,34 +148,34 @@ void Game_Free(struct Game *sota) {
     }
 
     if (sota->renderer)
-        SOTA_Log_Debug("Free Control");
+        SDL_Log("Free Control");
     // controlFree();
-    SOTA_Log_Debug("Free Map");
+    SDL_Log("Free Map");
     Game_UnitsonMap_Free(sota);
     Game_Map_Reinforcements_Free(sota);
     Game_Map_Free(sota);
-    SOTA_Log_Debug("Free Camera");
+    SDL_Log("Free Camera");
     // if (sota->camera != NULL)
     // SDL_free(sota->camera);
-    SOTA_Log_Debug("Free Events");
+    SDL_Log("Free Events");
     Events_Data_Free();
     Events_Names_Free();
     Events_Receivers_Free();
     #ifndef SOTA_OPENGL
-    SOTA_Log_Debug("Free Renderer");
+    SDL_Log("Free Renderer");
     if (sota->render_target != NULL)
         SDL_DestroyTexture(sota->render_target);
     if (sota->renderer != NULL) {
         SDL_DestroyRenderer(sota->renderer); /* free renderer before window */
     }
-    SOTA_Log_Debug("Free Window");
+    SDL_Log("Free Window");
     if (sota->window != NULL)
         SDL_DestroyWindow(sota->window);
     SDL_QuitSubSystem(SDL_INIT_EVERYTHING);
     SDL_Quit();
     #else /* SOTA_OPENGL */
     #endif /* SOTA_OPENGL */
-    SOTA_Log_Debug("Free tnecs world");
+    SDL_Log("Free tnecs world");
     if (sota->world != NULL) {
         tnecs_world_destroy(sota->world); /* crashes */
     }
@@ -222,17 +222,17 @@ void Game_Free(struct Game *sota) {
     }
 
     TTF_Quit();
-    SOTA_Log_Debug("Game cleaned.");
+    SDL_Log("Game cleaned.");
     SDL_free(sota);
 }
 struct Game *Game_Init() {
-    SOTA_Log_Debug("Allocing Game");
+    SDL_Log("Allocing Game");
     struct Game *out_game;
     out_game    = SDL_malloc(sizeof(struct Game));
     *out_game   = Game_default;
     out_game->settings = Settings_default;
     SDL_assert(out_game->settings.FPS.cap > 0);
-    SOTA_Log_Debug("Init game");
+    SDL_Log("Init game");
     i16 flags = 0;
     strcpy(out_game->filename_menu, PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png"));
     /* init weapons_dtab */
@@ -257,18 +257,18 @@ struct Game *Game_Init() {
     out_game->camera.offset.y = DEFAULT_CAMERA_YOFFSET;
     out_game->camera.zoom = DEFAULT_CAMERA_ZOOM;
 
-    // SOTA_Log_Debug("Firesaga: Font Initialization");
+    // SDL_Log("Firesaga: Font Initialization");
     // if (TTF_Init() == -1) {
-    //     SOTA_Log_Debug("TTF_Init: %s\n", TTF_GetError());
+    //     SDL_Log("TTF_Init: %s\n", TTF_GetError());
     //     exit(ERROR_TTFInitFail);
     // }
 
     // out_game->font = TTF_OpenFont(PATH_JOIN("..", "fonts", "arial.ttf"), out_game->settings.fontsize);
     // SDL_assert(out_game->font != NULL);
-    // SOTA_Log_Debug("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
+    // SDL_Log("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
 
     #ifndef SOTA_OPENGL
-    SOTA_Log_Debug("Firesaga: Window Initialization");
+    SDL_Log("Firesaga: Window Initialization");
     int success = SDL_Init(SDL_INIT_EVERYTHING);
     //  --- SDL_INIT LEAKS A LOT OF MEMORY ---
     //     reachable 224,425 bytes in 1,445 blocks
@@ -283,16 +283,16 @@ struct Game *Game_Init() {
     SDL_assert(out_game->window_w == out_game->settings.res.x);
     SDL_assert(out_game->window_h == out_game->settings.res.y);
     if (out_game->window) {
-        SOTA_Log_Debug("Window created\n");
+        SDL_Log("Window created\n");
         out_game->renderer = SDL_CreateRenderer(out_game->window, -1, SDL_RENDERER_TARGETTEXTURE);
         SDL_assert(out_game->renderer);
         if (out_game->renderer) {
             Utilities_DrawColor_Reset(out_game->renderer);
-            SOTA_Log_Debug("Renderer created\n");
+            SDL_Log("Renderer created\n");
         }
     }
     #ifndef RENDER2WINDOW
-    SOTA_Log_Debug("Rendering to sota->render_target\n");
+    SDL_Log("Rendering to sota->render_target\n");
     SDL_assert(out_game->settings.res.x > 0);
     SDL_assert(out_game->settings.res.y > 0);
     SDL_assert(sota->renderer != NULL);
@@ -304,7 +304,7 @@ struct Game *Game_Init() {
     SDL_assert(sota->render_target != NULL);
     #endif
     #else
-    SOTA_Log_Debug("Firesaga: OpenGL Window Initialization");
+    SDL_Log("Firesaga: OpenGL Window Initialization");
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -334,22 +334,22 @@ struct Game *Game_Init() {
     const char *separator = PHYSFS_getDirSeparator();
     strcat(path_mapping, separator);
     strcat(path_mapping, DIR_SEPARATOR"gamecontrollerdb.txt");
-    SOTA_Log_Debug("Path to gamecontrollerdb: %s\n", path_mapping);
+    SDL_Log("Path to gamecontrollerdb: %s\n", path_mapping);
     if (SDL_GameControllerAddMappingsFromFile(path_mapping) < 0)
-        SOTA_Log_Debug("gamecontrollerdb.txt not found!\n");
+        SDL_Log("gamecontrollerdb.txt not found!\n");
     free(path_mapping);
-    SOTA_Log_Debug("Allocating space for globals\n");
-    SOTA_Log_Debug("Allocating space for events\n");
+    SDL_Log("Allocating space for globals\n");
+    SDL_Log("Allocating space for events\n");
     Events_Data_Malloc();
-    SOTA_Log_Debug("Initializing user events\n");
+    SDL_Log("Initializing user events\n");
     Events_Names_Declare();
     Events_Names_Alloc();
     Events_Receivers_Declare();
-    SOTA_Log_Debug("Initializing Menus\n");
+    SDL_Log("Initializing Menus\n");
     Game_Menus_Init(out_game);
-    SOTA_Log_Debug("Genesis of tnecs\n");
+    SDL_Log("Genesis of tnecs\n");
     out_game->world = tnecs_world_genesis();
-    SOTA_Log_Debug("Components Registration\n");
+    SDL_Log("Components Registration\n");
     TNECS_REGISTER_COMPONENT(out_game->world, Position);
     TNECS_REGISTER_COMPONENT(out_game->world, Sprite);
     TNECS_REGISTER_COMPONENT(out_game->world, Unit);
@@ -377,7 +377,7 @@ struct Game *Game_Init() {
     TNECS_REGISTER_COMPONENT(out_game->world, PixelFont);
     out_game->timer_typeflag = TNECS_COMPONENT_NAME2TYPE(out_game->world, Timer);
 
-    SOTA_Log_Debug("System Registration\n");
+    SDL_Log("System Registration\n");
     tnecs_world_t *world = out_game->world;
     /* --- SYSTEM REGISTERING: FIRST COME FIRST SERVED ---*/
     /* -- Control systems ran first --  */
@@ -414,12 +414,12 @@ struct Game *Game_Init() {
     /* - draw Cursor and Mouse last -> on top - */
     TNECS_REGISTER_SYSTEM_wEXCL(world, drawCursor,    0, Sprite,          Position, CursorFlag);
     TNECS_REGISTER_SYSTEM_wEXCL(world, drawMouse,     1, controllerMouse, Position, Sprite, MouseFlag);
-    SOTA_Log_Debug("System Registration DONE\n");
+    SDL_Log("System Registration DONE\n");
 
     out_game->isrunning = true;
     out_game->keyboardInputMap  = KeyboardInputMap_default;
     out_game->gamepadInputMap   = GamepadInputMap_gamecube;
-    SOTA_Log_Debug("Loading pixelfonts\n");
+    SDL_Log("Loading pixelfonts\n");
     out_game->pixelnours = PixelFont_Alloc();
     char *path = PATH_JOIN("..", "assets", "Fonts", "pixelnours.png");
     PixelFont_Load(out_game->pixelnours, out_game->renderer, path);
@@ -491,7 +491,7 @@ void Game_Save_Copy(const i16 from_ind, const i16 to_ind) {
     stbsp_snprintf(tempfrom, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", from_ind);
     strcat(filenameto, tempto);
     strcat(filenamefrom, tempfrom);
-    SOTA_Log_Debug("copy saveJSON Game from %s to %s\n", filenamefrom, filenameto);
+    SDL_Log("copy saveJSON Game from %s to %s\n", filenamefrom, filenameto);
     PHYSFS_file *pfrom = PHYSFS_openRead(filenamefrom);
     SDL_assert(pfrom != NULL);
     PHYSFS_file *pto = PHYSFS_openWrite(filenameto);
@@ -509,7 +509,7 @@ void Game_Save_Delete(const i16 save_ind) {
     char temp[DEFAULT_BUFFER_SIZE];
     stbsp_snprintf(temp, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", save_ind);
     strcat(filename, temp);
-    SOTA_Log_Debug("Deleting Game: %s\n", filename);
+    SDL_Log("Deleting Game: %s\n", filename);
     PHYSFS_delete(filename);
 }
 
@@ -565,7 +565,7 @@ void Game_saveJSON(struct Game *sota, const i16 save_ind) {
     char temp[DEFAULT_BUFFER_SIZE];
     stbsp_snprintf(temp, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", save_ind);
     strcat(filename, temp);
-    SOTA_Log_Debug("saveJSON Game to: %s\n", filename);
+    SDL_Log("saveJSON Game to: %s\n", filename);
     PHYSFS_delete(filename);
     PHYSFS_file *fp = PHYSFS_openWrite(filename);
     SDL_assert(fp);
@@ -581,7 +581,7 @@ void Game_saveJSON(struct Game *sota, const i16 save_ind) {
     cJSON *jRN_mat2     = cJSON_CreateNumber(sota->tinymt32.mat2);
     cJSON *jRN_tmat     = cJSON_CreateNumber(sota->tinymt32.tmat);
     cJSON *jtemp;
-    // SOTA_Log_Debug("RnStatus[0] %d", tinymt32.status[0]);
+    // SDL_Log("RnStatus[0] %d", tinymt32.status[0]);
     jtemp = cJSON_CreateNumber(sota->tinymt32.status[0]);
     cJSON_AddItemToArray(jRN_status, jtemp);
     jtemp = cJSON_CreateNumber(sota->tinymt32.status[1]);
@@ -612,15 +612,15 @@ void Game_saveJSON(struct Game *sota, const i16 save_ind) {
 
 /* --- State --- */
 void Game_subState_Set(struct Game *sota, const i8 new_substate, const char *reason) {
-    SOTA_Log_Debug("Substate set to %d because: %s", new_substate, reason);
-    SOTA_Log_Debug("%s", reason);
+    SDL_Log("Substate set to %d because: %s", new_substate, reason);
+    SDL_Log("%s", reason);
     SDL_assert(new_substate > 0);
     SDL_assert(sota->substate != new_substate);
     sota->substate_previous = sota->substate;
     sota->substate = new_substate;
-    SOTA_Log_Debug("Game substate changed %d->%d: %s->%s", sota->substate_previous,
-                   sota->substate, gamesubStatenames[sota->substate_previous],
-                   gamesubStatenames[sota->substate]);
+    SDL_Log("Game substate changed %d->%d: %s->%s", sota->substate_previous,
+            sota->substate, gamesubStatenames[sota->substate_previous],
+            gamesubStatenames[sota->substate]);
     if (new_substate == GAME_SUBSTATE_STANDBY)
         sota->cursor_diagonal = true;
     else
@@ -631,8 +631,8 @@ void Game_subState_Set(struct Game *sota, const i8 new_substate, const char *rea
 }
 
 void Game_State_Set(struct Game *sota, const i8 new_state, const char *reason) {
-    SOTA_Log_Debug("State set to %d, because: %s", new_state, reason);
-    SOTA_Log_Debug("%s", reason);
+    SDL_Log("State set to %d, because: %s", new_state, reason);
+    SDL_Log("%s", reason);
     SDL_assert(new_state > 0);
     SDL_assert(sota->state != new_state);
     sota->state_previous = sota->state;
@@ -642,8 +642,8 @@ void Game_State_Set(struct Game *sota, const i8 new_state, const char *reason) {
     if (fsm_Input_s[sota->state] != NULL)
         fsm_Input_s[sota->state](sota);
 
-    SOTA_Log_Debug("Game state changed %d->%d: %s->%s", sota->state_previous, sota->state,
-                   gameStatenames[sota->state_previous], gameStatenames[sota->state]);
+    SDL_Log("Game state changed %d->%d: %s->%s", sota->state_previous, sota->state,
+            gameStatenames[sota->state_previous], gameStatenames[sota->state]);
 
 }
 

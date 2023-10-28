@@ -27,7 +27,7 @@ void Game_PopUps_Free(struct Game *sota) {
 void Game_PopUp_Loadout_Stats_Create(struct Game *sota) {
     /* -- Preliminaries -- */
     if (sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS] != TNECS_NULL) {
-        SOTA_Log_Debug("Popup POPUP_TYPE_HUD_LOADOUT_STATS is already loaded");
+        SDL_Log("Popup POPUP_TYPE_HUD_LOADOUT_STATS is already loaded");
         return;
     }
 
@@ -125,7 +125,7 @@ void Game_PopUp_Pre_Combat_Free(struct Game *sota) {
 /* --- POPUP_UNIT --- */
 void Game_PopUp_Unit_Create(struct Game *sota) {
     if (sota->popups[POPUP_TYPE_HUD_UNIT] != TNECS_NULL) {
-        SOTA_Log_Debug("Popup POPUP_TYPE_HUD_UNIT is already loaded");
+        SDL_Log("Popup POPUP_TYPE_HUD_UNIT is already loaded");
         return;
     }
 
@@ -298,7 +298,7 @@ void Game_PopUp_Tile_Place(struct Game *sota, struct Point cursor_pos) {
 /* --- PopUp_Map_Combat --- */
 void Game_PopUp_Map_Combat_Create(struct Game *sota) {
     if (sota->popups[POPUP_TYPE_MAP_COMBAT] > TNECS_NULL) {
-        SOTA_Log_Debug("Popup POPUP_TYPE_MAP_COMBAT is already loaded");
+        SDL_Log("Popup POPUP_TYPE_MAP_COMBAT is already loaded");
         return;
     }
 
@@ -400,7 +400,7 @@ void Game_PopUp_Tile_Free(struct Game *sota) {
 
 void Game_PopUp_Tile_Create(struct Game *sota) {
     if (sota->popups[POPUP_TYPE_HUD_TILE] != TNECS_NULL) {
-        SOTA_Log_Debug("Popup POPUP_TYPE_HUD_TILE is already loaded");
+        SDL_Log("Popup POPUP_TYPE_HUD_TILE is already loaded");
         return;
     }
     tnecs_entity_t ent;

@@ -309,7 +309,7 @@ void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, int select) {
         }
     } else {
         /* - Both Hands already selected - */
-        SOTA_Log_Debug("Both weapons already selected, but select sent to LoadoutSelectMenu");
+        SDL_Log("Both weapons already selected, but select sent to LoadoutSelectMenu");
         exit(ERROR_Generic);
     }
     lsm->update = true;
@@ -337,7 +337,7 @@ void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
 
     /*- Skip if no item to revert -*/
     if (select == -1) {
-        SOTA_Log_Debug("Warning: No item to deselect");
+        SDL_Log("Warning: No item to deselect");
         return;
     }
 
@@ -403,7 +403,7 @@ void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9p
             LoadoutSelectMenu_Name_Alloc(lsm, pure_item->name);
             strncpy(lsm->item_name, pure_item->name, strlen(pure_item->name));
         } else {
-            SOTA_Log_Debug("LoadoutSelectMenu: Neither a valid item nor weapon");
+            SDL_Log("LoadoutSelectMenu: Neither a valid item nor weapon");
             exit(ERROR_Generic);
         }
 

@@ -115,22 +115,22 @@ tnecs_entity_t Game_Unit_Entity_Create(struct Game *sota, i16 in_unit,
                                        struct Point in_pos) {
     if (sota->units_loaded[in_unit] < 1) {
         tnecs_world_t *world = sota->world;
-        SOTA_Log_Debug("-- create entity for unit %ld --", in_unit);
+        SDL_Log("-- create entity for unit %ld --", in_unit);
         char filename[DEFAULT_BUFFER_SIZE];
-        SOTA_Log_Debug("-- create entity --");
+        SDL_Log("-- create entity --");
         tnecs_entity_t temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position, Sprite,
                                        Timer, MapHPBar);
         tnecs_component_t typeflag = TNECS_COMPONENT_NAMES2TYPEFLAG(world, Unit, Position, Sprite,
                                                                     Timer, MapHPBar);
         size_t typeflag_id1 = tnecs_typeflagid(world, typeflag);
         size_t typeflag_id2 = tnecs_typeflagid(world, world->entity_typeflags[temp_unit_ent]);
-        SOTA_Log_Debug("temp_unit_ent %ld", temp_unit_ent);
-        SOTA_Log_Debug("typeflag %ld", world->entity_typeflags[temp_unit_ent]);
+        SDL_Log("temp_unit_ent %ld", temp_unit_ent);
+        SDL_Log("typeflag %ld", world->entity_typeflags[temp_unit_ent]);
         SDL_assert(world->entities[temp_unit_ent] == temp_unit_ent);
         SDL_assert(temp_unit_ent);
         SDL_assert(sota->world->entity_typeflags[temp_unit_ent] == typeflag);
 
-        SOTA_Log_Debug("-- loading unit --");
+        SDL_Log("-- loading unit --");
         struct Unit *unit = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
         SDL_assert(unit != NULL);
 
@@ -148,7 +148,7 @@ tnecs_entity_t Game_Unit_Entity_Create(struct Game *sota, i16 in_unit,
         if (item->id > ITEM_NULL)
             Unit_Equip_inHand(unit, UNIT_HAND_STRONG);
 
-        // SOTA_Log_Debug("-- loading slider --");
+        // SDL_Log("-- loading slider --");
         // struct Slider * slider = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Slider);
         // SDL_assert(slider != NULL);
         // *slider = Slider_default;
@@ -156,14 +156,14 @@ tnecs_entity_t Game_Unit_Entity_Create(struct Game *sota, i16 in_unit,
         // slider->slidefactors[DIMENSION_Y] = 2.0f;
         // slider->update_wait = CURSOR_SLIDEWAIT;
         // slider->slidetype = SLIDETYPE_GEOMETRIC;
-        SOTA_Log_Debug("-- loading map_hp_bar --");
+        SDL_Log("-- loading map_hp_bar --");
         struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, MapHPBar);
         *map_hp_bar = MapHPBar_default;
         map_hp_bar->unit_ent = temp_unit_ent;
         map_hp_bar->len = sota->settings.tilesize[0];
         SDL_assert(unit->status_queue != NULL);
 
-        SOTA_Log_Debug("-- loading position --");
+        SDL_Log("-- loading position --");
         struct Position *pos;
         pos = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Position);
         SDL_assert(pos != NULL);
@@ -179,7 +179,7 @@ tnecs_entity_t Game_Unit_Entity_Create(struct Game *sota, i16 in_unit,
         pos->pixel_pos.x = (i32)lround(pos->tilemap_pos.x * pos->scale[0]);
         pos->pixel_pos.y = (i32)lround(pos->tilemap_pos.y * pos->scale[1]);
 
-        SOTA_Log_Debug("-- loading sprite --");
+        SDL_Log("-- loading sprite --");
         struct Timer *timer;
         timer = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Timer);
         SDL_assert(timer != NULL);
@@ -192,7 +192,7 @@ tnecs_entity_t Game_Unit_Entity_Create(struct Game *sota, i16 in_unit,
         sprite->visible = true;
         sprite->flip = SDL_FLIP_HORIZONTAL;
 
-        SOTA_Log_Debug("name %s", unit->name);
+        SDL_Log("name %s", unit->name);
         SDL_assert(sprite->spritesheet != NULL);
         SDL_assert(sprite->spritesheet->current_loop == MAP_UNIT_SPRITE_LOOP_IDLE);
         SDL_assert(sprite->spritesheet->frames != NULL);
@@ -202,7 +202,7 @@ tnecs_entity_t Game_Unit_Entity_Create(struct Game *sota, i16 in_unit,
         Sprite_Rects_Init(sprite);
         Sprite_defaultShaders_Load(sprite);
 
-        SOTA_Log_Debug("-- checks --");
+        SDL_Log("-- checks --");
         sprite->visible = true;
         SDL_assert(typeflag_id1 == typeflag_id2);
         size_t current_num = world->num_entities_bytype[typeflag_id1];
@@ -247,7 +247,7 @@ void Game_putPConMap(struct Game *sota, i16 *unit_ids,
 
 /* --- Utilities --- */
 void Game_Weapons_Rewrite(struct Game *sota) {
-    SOTA_Log_Debug("Rewriting weapons with new data\n");
+    SDL_Log("Rewriting weapons with new data\n");
     Weapons_All_Load(sota->weapons_dtab);
     Weapons_All_Save(sota->weapons_dtab);
     getchar();

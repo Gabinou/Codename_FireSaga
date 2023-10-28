@@ -133,7 +133,7 @@ void Tilemap_Shader_Load_Tilemap_JSON(struct Tilemap_Shader *shd, const cJSON *c
 }
 
 void Tilemap_Shader_Free(struct Tilemap_Shader *shd) {
-    SOTA_Log_Debug("shadowtile_pixels_lists");
+    SDL_Log("shadowtile_pixels_lists");
     SDL_assert(shd != NULL);
     if (shd->shadowtile_pixels_lists != NULL) {
         for (size_t i = 0; i < shd->shadowtile_num; i++) {
@@ -145,12 +145,12 @@ void Tilemap_Shader_Free(struct Tilemap_Shader *shd) {
         free(shd->shadowtile_pixels_lists);
         shd->shadowtile_pixels_lists = NULL;
     }
-    SOTA_Log_Debug("shadowtile_pixels_num");
+    SDL_Log("shadowtile_pixels_num");
     if (shd->shadowtile_pixels_num != NULL) {
         free(shd->shadowtile_pixels_num);
         shd->shadowtile_pixels_num = NULL;
     }
-    SOTA_Log_Debug("shadow_tilemaps i");
+    SDL_Log("shadow_tilemaps i");
     if (shd->shadow_tilemaps != NULL) {
         for (size_t i = 0; i < shd->frames; i++) {
             if (shd->shadow_tilemaps[i] != NULL) {
@@ -158,7 +158,7 @@ void Tilemap_Shader_Free(struct Tilemap_Shader *shd) {
                 shd->shadow_tilemaps[i] = NULL;
             }
         }
-        SOTA_Log_Debug("shadow_tilemaps");
+        SDL_Log("shadow_tilemaps");
         DARR_FREE(shd->shadow_tilemaps);
         shd->shadow_tilemaps = NULL;
     }

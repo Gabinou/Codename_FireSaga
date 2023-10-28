@@ -167,7 +167,7 @@ void Spritesheet_Loop_Set(struct Spritesheet *spritesheet, int loop, SDL_Rendere
 /* --- SPRITE --- */
 /* -- Constructor/Destructors -- */
 void Sprite_Free(struct Sprite *sprite) {
-    SOTA_Log_Debug("Freeing shaders");
+    SDL_Log("Freeing shaders");
     if (sprite->shader_any != NULL) {
         Index_Shader_Free(sprite->shader_any);
         free(sprite->shader_any);
@@ -183,14 +183,14 @@ void Sprite_Free(struct Sprite *sprite) {
         free(sprite->shader_lighten);
         sprite->shader_lighten = NULL;
     }
-    SOTA_Log_Debug("Freeing spritesheets");
+    SDL_Log("Freeing spritesheets");
     if (sprite->spritesheet != NULL) {
         Spritesheet_Free(sprite->spritesheet);
         free(sprite->spritesheet);
         sprite->spritesheet = NULL;
     }
 
-    SOTA_Log_Debug("Freeing name");
+    SDL_Log("Freeing name");
     if (sprite->asset_name != NULL) {
         free(sprite->asset_name);
         sprite->asset_name = NULL;
@@ -200,7 +200,7 @@ void Sprite_Free(struct Sprite *sprite) {
         sprite->json_filename = NULL;
     }
 
-    SOTA_Log_Debug("Freeing Textures");
+    SDL_Log("Freeing Textures");
     if (sprite->texture != NULL) {
         SDL_DestroyTexture(sprite->texture);
         sprite->texture = NULL;
@@ -252,14 +252,14 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit, SDL_Renderer
     /* -- Loading spritesheet metadata -- */
     char filename[DEFAULT_BUFFER_SIZE] = {0};
     strcat(filename, PATH_JOIN("assets", "Map_Units")PHYSFS_SEPARATOR);
-    SOTA_Log_Debug("unit->id %lu",    unit->_id);
-    SOTA_Log_Debug("unit->name %s",   unit->name);
-    SOTA_Log_Debug("unit->class %ld", unit->class);
+    SDL_Log("unit->id %lu",    unit->_id);
+    SDL_Log("unit->name %s",   unit->name);
+    SDL_Log("unit->class %ld", unit->class);
     SDL_assert(classNames[unit->class] != NULL);
 
     strcat(filename, classNames[unit->class]);
     strcat(filename, ".json");
-    SOTA_Log_Debug("FILE %s", filename);
+    SDL_Log("FILE %s", filename);
     SDL_assert(PHYSFS_exists(filename));
     jsonio_readJSON(filename, sprite);
 
@@ -269,7 +269,7 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit, SDL_Renderer
     strcat(filename, classNames[unit->class]);
     strcat(filename, ".png");
 
-    SOTA_Log_Debug("FILE %s", filename);
+    SDL_Log("FILE %s", filename);
     // SDL_assert(PHYSFS_exists(filename));
     /* -- Saving asset name -- */
     if (sprite->asset_name != NULL)
@@ -280,7 +280,7 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit, SDL_Renderer
 
     /* -- Loading Surface, creating Texture -- */
     SDL_assert(sprite->spritesheet->surface == NULL);
-    SOTA_Log_Debug("FILE %s", filename);
+    SDL_Log("FILE %s", filename);
     sprite->spritesheet->surface = Filesystem_Surface_Load(filename, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(sprite->spritesheet->surface != NULL);
     sprite->texture = SDL_CreateTextureFromSurface(renderer, sprite->spritesheet->surface);

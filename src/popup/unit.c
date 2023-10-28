@@ -118,7 +118,7 @@ struct Point PopUp_Unit_Position(struct PopUp *popup, struct PopUp_Unit *pu,
                 sign.x = -1;
                 break;
             default:
-                SOTA_Log_Debug("Invalid PopUp_Unit corner value");
+                SDL_Log("Invalid PopUp_Unit corner value");
         }
     } else {
         /* - PopUpUnit shows itself - */
@@ -131,7 +131,7 @@ struct Point PopUp_Unit_Position(struct PopUp *popup, struct PopUp_Unit *pu,
                 sign.x = -1;
                 break;
             default:
-                SOTA_Log_Debug("Invalid PopUp_Unit corner value");
+                SDL_Log("Invalid PopUp_Unit corner value");
         }
     }
     out.x += sign.x * pu->offset.x * n9patch->scale.x;

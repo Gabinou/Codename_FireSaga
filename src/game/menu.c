@@ -72,10 +72,10 @@ void Game_menuStack_Free(struct Game *sota) {
 }
 
 void Game_menuStack_Push(struct Game *sota, tnecs_entity_t in_menu_entity) {
-    SOTA_Log_Debug("%ld", in_menu_entity);
+    SDL_Log("%ld", in_menu_entity);
     SDL_assert(in_menu_entity > 0);
     DARR_PUT(sota->menu_stack, in_menu_entity);
-    SOTA_Log_Debug("DARR_NUM %ld", DARR_NUM(sota->menu_stack));
+    SDL_Log("DARR_NUM %ld", DARR_NUM(sota->menu_stack));
 }
 
 tnecs_entity_t Game_menuStack_Pop(struct Game *sota, bool destroy) {
@@ -384,12 +384,12 @@ void Game_PlayerSelectMenu_Create(struct Game *sota, i8 in_menu) {
 }
 
 void Game_PlayerSelectMenu_Update(struct Game *sota, i8 in_playerselect_menu) {
-    SOTA_Log_Debug("%d", in_playerselect_menu);
+    SDL_Log("%d", in_playerselect_menu);
     SDL_assert((in_playerselect_menu > MENU_PLAYER_SELECT_START) & (in_playerselect_menu <
                MENU_PLAYER_SELECT_END));
     tnecs_entity_t ent = sota->player_select_menus[in_playerselect_menu];
     if (ent == TNECS_NULL) {
-        SOTA_Log_Debug("menu %d is not loaded", in_playerselect_menu);
+        SDL_Log("menu %d is not loaded", in_playerselect_menu);
         exit(ERROR_NotLoaded);
     }
     void *data_1 = NULL;
@@ -811,7 +811,7 @@ void Game_Menu_LocationfromCursor(struct Game *sota, tnecs_entity_t in_menu_enti
 /* --- Title Screen --- */
 void Game_FirstMenu_Update(struct Game *sota) {
     if (sota->first_menu == 0) {
-        SOTA_Log_Debug("First menu is not loaded");
+        SDL_Log("First menu is not loaded");
         exit(ERROR_Generic);
     }
     SDL_assert(sota->first_menu > TNECS_NULL);
@@ -856,7 +856,7 @@ void Game_FirstMenu_Destroy(struct Game *sota) {
 void Game_Title_Create(struct Game *sota) {
     SDL_SetRenderDrawColor(sota->renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
     if (sota->title != TNECS_NULL) {
-        SOTA_Log_Debug("Title is already loaded");
+        SDL_Log("Title is already loaded");
         return;
     }
 
@@ -901,7 +901,7 @@ void Game_Title_Destroy(struct Game *sota) {
 
 void Game_FirstMenu_Create(struct Game *sota) {
     if (sota->first_menu != TNECS_NULL) {
-        SOTA_Log_Debug("FirstMenu is already loaded");
+        SDL_Log("FirstMenu is already loaded");
         return;
     }
     sota->first_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);

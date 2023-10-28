@@ -60,24 +60,24 @@ void PopUp_Objective_Free(struct PopUp_Objective *po) {
 /* --- Setters --- */
 void PopUp_Objective_Set_Obj(struct PopUp_Objective *po, char *obj) {
     if (po->objective != NULL) {
-        SOTA_Log_Debug("Objective '%s' removed.", po->objective);
+        SDL_Log("Objective '%s' removed.", po->objective);
         free(po->objective);
     }
     size_t len = strlen(obj) + 1;
     po->objective = malloc(len);
     strncpy(po->objective, obj, len);
-    SOTA_Log_Debug("Objective set to '%s'", po->objective);
+    SDL_Log("Objective set to '%s'", po->objective);
 }
 
 void PopUp_Objective_Set_SubObj(struct PopUp_Objective *po, char *subobj) {
     if (po->objective != NULL) {
-        SOTA_Log_Debug("Sub-Objective %s removed.", po->sub_objective);
+        SDL_Log("Sub-Objective %s removed.", po->sub_objective);
         free(po->sub_objective);
     }
     size_t len = strlen(subobj) + 1;
     po->sub_objective = malloc(len);
     strncpy(po->sub_objective, subobj, len);
-    SOTA_Log_Debug("Sub-Objective set to '%s'", po->sub_objective);
+    SDL_Log("Sub-Objective set to '%s'", po->sub_objective);
 }
 
 /* --- Computers --- */

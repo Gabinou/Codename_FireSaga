@@ -251,7 +251,7 @@ void TextBubble_Tail_Draw(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
 void TextBubble_Compute_Size(struct Text_Bubble *bu, struct n9Patch *n9patch) {
     /* -- Check -- */
     if (bu->text == NULL) {
-        SOTA_Log_Debug("bubble's text is NULL");
+        SDL_Log("bubble's text is NULL");
         return;
     }
 

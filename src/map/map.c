@@ -255,19 +255,19 @@ void Map_Free(struct Map *map) {
         map->units_onfield = NULL;
     }
     Map_Tilemap_Surface_Free(map);
-    SOTA_Log_Debug("armies_onfield");
+    SDL_Log("armies_onfield");
     _Map_Tilesindex_Free(map);
     if (map->armies_onfield != NULL) {
         free(map->armies_onfield);
         map->armies_onfield = NULL;
     }
-    SOTA_Log_Debug("Arrow");
+    SDL_Log("Arrow");
     Arrow_Free(map->arrow);
     if (map->arrow != NULL) {
         free(map->arrow);
         map->arrow = NULL;
     }
-    SOTA_Log_Debug("tilemap_shader");
+    SDL_Log("tilemap_shader");
     if (map->tilemap_shader != NULL) {
         Tilemap_Shader_Free(map->tilemap_shader);
         SDL_free(map->tilemap_shader);
@@ -595,11 +595,11 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
         map->arrow->col_len = map->col_len;
         map->arrow->row_len = map->row_len;
     }
-    SOTA_Log_Debug("%d %d ", map->row_len, map->col_len);
+    SDL_Log("%d %d ", map->row_len, map->col_len);
     Map_dArrays_Init(map, &Settings_default);
 
     /* -- Read Starting Positions -- */
-    SOTA_Log_Debug("Read Starting Positions");
+    SDL_Log("Read Starting Positions");
     cJSON *jstart_pos_arr = cJSON_GetObjectItem(jmap, "Starting Positions");
     SDL_assert(cJSON_IsArray(jstart_pos_arr));
     if (map->start_pos != NULL)
@@ -613,7 +613,7 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
     }
 
     /* -- Read tiles -- */
-    SOTA_Log_Debug("Read tiles");
+    SDL_Log("Read tiles");
     cJSON *jtiles = cJSON_GetObjectItem(jmap, "tiles");
     cJSON *jid, *jtile;
     _Map_Tilesindex_Init(map);
@@ -628,7 +628,7 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
     SDL_assert(map->tileset_surfaces[0]);
 
     /* -- Read Reinforcements --  */
-    SOTA_Log_Debug("Read Reinforcements");
+    SDL_Log("Read Reinforcements");
     if (map->reinforcements != NULL)
         DARR_FREE(map->reinforcements);
     map->reinforcements = DARR_INIT(map->reinforcements, struct Reinforcement, 16);
@@ -658,7 +658,7 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
                 DARR_PUT(temp_equip, temp_item);
             }
         } else {
-            SOTA_Log_Debug("Missing Equipment array in Reinforcement %d", i);
+            SDL_Log("Missing Equipment array in Reinforcement %d", i);
         }
         DARR_PUT(map->reinf_equipments, temp_equip);
     }
@@ -674,7 +674,7 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
     map->boundsmax.y    = cJSON_GetNumberValue(jcol_max);
 
     /* -- Read Map objects -- */
-    SOTA_Log_Debug("Read Map objects");
+    SDL_Log("Read Map objects");
     cJSON *jmobj        = cJSON_GetObjectItem(jmap,  "Map_Objects");
     cJSON *jdoors       = cJSON_GetObjectItem(jmobj, "Doors");
     cJSON *jchests      = cJSON_GetObjectItem(jmobj, "Chests");

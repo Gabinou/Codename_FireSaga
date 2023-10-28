@@ -65,7 +65,7 @@ void Support_Type_Bonus(struct Computed_Stats *bonus, u16 type, u16 level) {
             bonus->crit += SUPPORT_CRIT_FACTOR * level;
             break;
         default:
-            SOTA_Log_Debug("Invalid support type");
+            SDL_Log("Invalid support type");
             break;
     }
 }

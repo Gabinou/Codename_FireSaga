@@ -831,7 +831,7 @@ void fsm_eAcpt_sGmpMap(struct Game *sota, tnecs_entity_t accepter) {
 // Only fsm_eAcpt_sGmpMap_ssMenu called for other states
 void fsm_eAcpt_sTtlScrn(struct Game *sota, tnecs_entity_t accepter) {
     if (sota->substate != GAME_SUBSTATE_MENU) {
-        SOTA_Log_Debug("Wrong substate %d on Title_Screen state", sota->substate);
+        SDL_Log("Wrong substate %d on Title_Screen state", sota->substate);
         exit(EPERM);
     }
     fsm_eAcpt_sGmpMap_ssMenu(sota, accepter);
@@ -1003,7 +1003,7 @@ void fsm_eStats_ssStby(struct Game *sota, tnecs_entity_t accepter) {
         Game_StatsMenu_Enable(sota, ontile);
     else {
         /* -- TODO: draw a map marker here, like tear ring saga -- */
-        SOTA_Log_Debug("NO UNIT ON TILE");
+        SDL_Log("NO UNIT ON TILE");
     }
 }
 
@@ -1093,13 +1093,13 @@ void fsm_eMenuRight_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     struct Menu *new_menu_comp;
     switch (stats_menu_cycle[new_id]) {
         case MENU_TYPE_STATS:
-            SOTA_Log_Debug("NEW MENU_TYPE_STATS");
+            SDL_Log("NEW MENU_TYPE_STATS");
             Game_StatsMenu_Enable(sota, ontile);
             new_menu_comp = TNECS_GET_COMPONENT(sota->world, sota->stats_menu, Menu);
             new_menu_comp->visible = true;
             break;
         case MENU_TYPE_GROWTHS:
-            SOTA_Log_Debug("NEW MENU_TYPE_GROWTHS");
+            SDL_Log("NEW MENU_TYPE_GROWTHS");
             Game_GrowthsMenu_Enable(sota, ontile);
             new_menu_comp = TNECS_GET_COMPONENT(sota->world, sota->GM_menu, Menu);
             new_menu_comp->visible = true;
@@ -1143,13 +1143,13 @@ void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     struct Menu *new_menu_comp;
     switch (stats_menu_cycle[new_id]) {
         case MENU_TYPE_STATS:
-            SOTA_Log_Debug("NEW MENU_TYPE_STATS");
+            SDL_Log("NEW MENU_TYPE_STATS");
             Game_StatsMenu_Enable(sota, ontile);
             new_menu_comp = TNECS_GET_COMPONENT(sota->world, sota->stats_menu, Menu);
             new_menu_comp->visible = true;
             break;
         case MENU_TYPE_GROWTHS:
-            SOTA_Log_Debug("NEW MENU_TYPE_GROWTHS");
+            SDL_Log("NEW MENU_TYPE_GROWTHS");
             Game_GrowthsMenu_Enable(sota, ontile);
             new_menu_comp = TNECS_GET_COMPONENT(sota->world, sota->GM_menu, Menu);
             new_menu_comp->visible = true;

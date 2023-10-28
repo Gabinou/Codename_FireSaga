@@ -3,10 +3,6 @@
 
 #include "macros.h"
 
-/* -- Manual Logging switches -- */
-// #define SOTA_Log_Debug(...) do {} while (0)
-#define SOTA_Log_Debug(...) SDL_Log(__VA_ARGS__)
-
 /* -- Various defines -- */
 #define SOTA_RNG GAME_RN_DOUBLE
 

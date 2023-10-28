@@ -4,8 +4,8 @@ void matrix_print_float(float *array, size_t row_len, size_t col_len) {
     for (size_t row = 0; row < row_len; row++) {
         // for (size_t col = 0; col < col_len; col++)
         // array[row * col_len + col];
-        SOTA_Log_Debug("%zu", row);
-        SOTA_Log_Debug("\n");
+        SDL_Log("%zu", row);
+        SDL_Log("\n");
     }
 }
 
@@ -39,7 +39,7 @@ struct CRT CRT_default = {
 };
 
 void CRT_Init(struct CRT *in_crt, uint_fast32_t width, uint_fast32_t height) {
-    SOTA_Log_Debug("CRT_Init");
+    SDL_Log("CRT_Init");
     // ideally intermediate_height = integer * num_scanlines
     // ideally intermediate_width = integer * input_width
     in_crt->input_width = width;
@@ -56,7 +56,7 @@ void CRT_Init(struct CRT *in_crt, uint_fast32_t width, uint_fast32_t height) {
 void CRT_Pixels2Floats(struct FloatRGB *floatrgb, SDL_Surface *surface,
                        uint_fast32_t width,
                        uint_fast32_t height) {
-    SOTA_Log_Debug("CRT_Pixels2Floats");
+    SDL_Log("CRT_Pixels2Floats");
     SDL_assert(surface);
     SDL_assert(surface->w == width);
     SDL_LockSurface(surface);
@@ -78,7 +78,7 @@ void CRT_Pixels2Floats(struct FloatRGB *floatrgb, SDL_Surface *surface,
 
 SDL_Surface *CRT_Floats2Pixels(struct FloatRGB *floatrgb, uint_fast32_t width,
                                uint_fast32_t height) {
-    SOTA_Log_Debug("CRT_Floats2Pixels");
+    SDL_Log("CRT_Floats2Pixels");
     uint32_t *pixels = (uint32_t *)malloc(height * width * sizeof(*pixels));
     SDL_assert(pixels != NULL);
     uint32_t pixel32;
@@ -107,7 +107,7 @@ SDL_Surface *CRT_Floats2Pixels(struct FloatRGB *floatrgb, uint_fast32_t width,
 
 void CRT_Shadow_Filter(u8 *mask, float *color, uint_fast32_t size_x,
                        uint_fast32_t size_y) {
-    SOTA_Log_Debug("CRT_Shadow_Filter");
+    SDL_Log("CRT_Shadow_Filter");
     for (uint_fast32_t j = 0; j < size_y; j++) {
         for (uint_fast32_t i = 0; i < size_x; i++)
             color[i + j * size_x] *= (float)mask[i + j * size_x];
@@ -119,7 +119,7 @@ void CRT_Shadow_Mask(u8 *mask, uint_fast32_t size_x, uint_fast32_t size_y,
                      u8 Vblank,
                      u8 stagger, uint_fast32_t x_offset, uint_fast32_t y_offset) {
     /* mask should be set to 0 everywhere. */
-    SOTA_Log_Debug("CRT_Shadow_Mask");
+    SDL_Log("CRT_Shadow_Mask");
     for (uint_fast32_t j = 0; j < size_y; j++) {
         for (uint_fast32_t i = 0; i < size_x; i++) {
             bool tostagger = ((i + x_offset) % (2 * (cell_width + Hblank))) >=
@@ -134,13 +134,13 @@ void CRT_Shadow_Mask(u8 *mask, uint_fast32_t size_x, uint_fast32_t size_y,
 extern void Nearest_Scanline_Filter_2D(float *samples, float *filtered,
                                        uint_fast32_t size_samples_x, uint_fast32_t size_samples_y, uint_fast32_t size_filtered_x,
                                        uint_fast32_t size_filtered_y) {
-    SOTA_Log_Debug("Nearest_Scanline_Filter_2D");
+    SDL_Log("Nearest_Scanline_Filter_2D");
     // cols and rows separate?
     for (uint_fast32_t jy = 0; jy < size_filtered_y; jy++) {
         float y = (float)size_samples_y / (float)size_filtered_y * (float)jy;
         uint_fast32_t y_nearest = (uint_fast32_t)floorf(y);
         float fraction = (y - (float)y_nearest);
-        // SOTA_Log_Debug("%f", fraction);
+        // SDL_Log("%f", fraction);
         float bright = Scanline_Brightness(SCANLINE_BRIGHT_C, fraction);
         for (uint_fast32_t jx = 0; jx < size_filtered_x; jx++) {
             float x = (float)size_samples_x / (float)size_filtered_x * (float)jx;
@@ -152,7 +152,7 @@ extern void Nearest_Scanline_Filter_2D(float *samples, float *filtered,
 }
 
 float Lanczos_Kernel(float x, int_fast8_t a) {
-    // SOTA_Log_Debug("Lanczos_Kernel");
+    // SDL_Log("Lanczos_Kernel");
     // kernel supposed to be 0 if |x| > a but Lanczos_Filter does not input out of bounds x
     float out = 1.0f;
     float dist = fabsf(x) - fabsf((float)a);
@@ -167,7 +167,7 @@ void Lanczos_Filter_2D_T(float *samples, float *filtered, uint_fast32_t size_sam
                          uint_fast32_t size_samples_y, uint_fast32_t size_filtered_x,
                          uint_fast32_t size_filtered_y,
                          int_fast8_t a) {
-    SOTA_Log_Debug("Lanczos_Filter_2D");
+    SDL_Log("Lanczos_Filter_2D");
     float *filtered_cols = calloc(size_samples_x * size_filtered_y, sizeof(*filtered_cols));
     memset(filtered, 0, size_filtered_x * size_filtered_y * sizeof(*filtered));
     float delta_y = (float)size_samples_y / (float)size_filtered_y;
@@ -212,7 +212,7 @@ void Lanczos_Filter_2D(float *samples, float *filtered, uint_fast32_t size_sampl
                        uint_fast32_t size_samples_y, uint_fast32_t size_filtered_x,
                        uint_fast32_t size_filtered_y,
                        int_fast8_t a) {
-    SOTA_Log_Debug("Lanczos_Filter_2D");
+    SDL_Log("Lanczos_Filter_2D");
     float *filtered_rows = calloc(size_filtered_x * size_samples_y, sizeof(*filtered_rows));
     memset(filtered, 0, size_filtered_x * size_filtered_y * sizeof(*filtered));
     /* Separate Rows and Cols is much faster*/
@@ -255,7 +255,7 @@ void Lanczos_Filter_2D(float *samples, float *filtered, uint_fast32_t size_sampl
 
 void Lanczos_Filter_1D(float *samples, float *filtered, uint_fast32_t size_samples,
                        uint_fast32_t size_filtered, int_fast8_t a) {
-    SOTA_Log_Debug("CRT_dest2Surface");
+    SDL_Log("CRT_dest2Surface");
     memset(filtered, 0, size_filtered * sizeof(*filtered));
     for (uint_fast32_t j = 0; j < size_filtered; j++) {
         /* x is interpolated abscissa, j is associated index in filtered*/
@@ -272,7 +272,7 @@ void Lanczos_Filter_1D(float *samples, float *filtered, uint_fast32_t size_sampl
 }
 
 float Scanline_Brightness(float c, float n) {
-    // SOTA_Log_Debug("Scanline_Brightness");
+    // SDL_Log("Scanline_Brightness");
     /* c = 0.3 is good according to Bisqwit */
     float factor = -0.5 * (n - 0.5) * (n - 0.5) / c / c;
     return (exp(factor));
@@ -280,7 +280,7 @@ float Scanline_Brightness(float c, float n) {
 
 /* --- BLOOM --- */
 void CRT_Bloom(float *color, uint_fast32_t width, uint_fast32_t height, float radius) {
-    SOTA_Log_Debug("CRT_Bloom");
+    SDL_Log("CRT_Bloom");
     // for Gamma == 2
     float *copy = malloc(width * height * sizeof(*copy));
     memcpy(copy, color, width * height * sizeof(*copy));
@@ -300,35 +300,35 @@ void CRT_Bloom(float *color, uint_fast32_t width, uint_fast32_t height, float ra
 }
 
 void CRT_Bloom_Correction_Denom(float *color, uint_fast32_t size) {
-    SOTA_Log_Debug("CRT_Bloom_Correction_Enum");
+    SDL_Log("CRT_Bloom_Correction_Enum");
     // for Gamma == 2
     for (uint_fast32_t j = 0; j < size; j++)
         color[j] = color[j] * color[j] / BLOOM_DENOM;
 }
 
 void CRT_Bloom_Correction_Enum(float *color, uint_fast32_t size) {
-    SOTA_Log_Debug("CRT_Bloom_Correction_Enum");
+    SDL_Log("CRT_Bloom_Correction_Enum");
     // for Gamma == 2
     for (uint_fast32_t j = 0; j < size; j++)
         color[j] = color[j] * color[j] * BLOOM_ENUM;
 }
 
 void CRT_Bloom_Correction(float *color, uint_fast32_t size) {
-    SOTA_Log_Debug("CRT_Bloom_Correction");
+    SDL_Log("CRT_Bloom_Correction");
     // for Gamma == 2
     for (uint_fast32_t j = 0; j < size; j++)
         color[j] = color[j] * color[j] * BLOOM_ENUM / BLOOM_DENOM;
 }
 
 void CRT_Gamma_Correction(float *color, uint_fast32_t size) {
-    SOTA_Log_Debug("CRT_Bloom_Correction");
+    SDL_Log("CRT_Bloom_Correction");
     // for Gamma == 2
     for (uint_fast32_t j = 0; j < size; j++)
         color[j] = color[j] * color[j] ;
 }
 
 void CRT_Gamma_Uncorrection(float *color, uint_fast32_t size) {
-    SOTA_Log_Debug("CRT_Gamma_Uncorrection");
+    SDL_Log("CRT_Gamma_Uncorrection");
     // for Gamma == 2
     for (uint_fast32_t j = 0; j < size; j++)
         color[j] = sqrtf(color[j]);
@@ -337,7 +337,7 @@ void CRT_Gamma_Uncorrection(float *color, uint_fast32_t size) {
 /* CLAMPING */
 void CRT_Clamping(float *R, float *G, float *B, uint_fast32_t width,
                   uint_fast32_t height) {
-    SOTA_Log_Debug("CRT_Clamping");
+    SDL_Log("CRT_Clamping");
     float saturation, temp_sat, temp_value;
     for (uint_fast32_t j = 0; j < height; j++) {
         for (uint_fast32_t i = 0; i < width; i++) {
@@ -484,8 +484,8 @@ void blur(const float *input, float *output, float *temp, i32 w,
 void gaussBlur_4(float *src, float *dest, uint_fast32_t width, uint_fast32_t height,
                  float radius,
                  uint_fast32_t n) {
-    SOTA_Log_Debug("gaussBlur_4 %lu %lu", width, height);
-    // SOTA_Log_Debug("n %d", n);
+    SDL_Log("gaussBlur_4 %lu %lu", width, height);
+    // SDL_Log("n %d", n);
     uint_fast32_t *sizes = malloc(n * sizeof(*sizes));
     boxesForGauss(sizes, radius, n);
     float radiuss = (sizes[0] - 1.0f) / 2.0f;
@@ -497,7 +497,7 @@ void gaussBlur_4(float *src, float *dest, uint_fast32_t width, uint_fast32_t hei
 }
 
 void boxesForGauss(uint_fast32_t *sizes, float sigma, uint_fast32_t n) {
-    SOTA_Log_Debug("boxesForGauss");
+    SDL_Log("boxesForGauss");
     // sizes has length n
     // float wideal = q_sqrt_float((12.0f * sigma * sigma / (float)n) + 1.0f); // ideal averaging filter width
     float wideal = (float)sqrtf((12.0f * sigma * sigma / (float)n) +
@@ -510,12 +510,12 @@ void boxesForGauss(uint_fast32_t *sizes, float sigma, uint_fast32_t n) {
     uint_fast32_t m = (uint_fast32_t)floorf(mideal);
     for (size_t i = 0; i < n; i++)
         sizes[i] = i < m ? wl : wu;
-    // SOTA_Log_Debug("sizes %d %d %d", sizes[0], sizes[1], sizes[2]);
+    // SDL_Log("sizes %d %d %d", sizes[0], sizes[1], sizes[2]);
 }
 
 void boxBlur_4(float *src, float *dest, uint_fast32_t width, uint_fast32_t height,
                float radius) {
-    SOTA_Log_Debug("boxBlur_4");
+    SDL_Log("boxBlur_4");
     for (uint_fast32_t i = 0; i < (width * height); i++)
         dest[i] = src[i];
     boxBlurH_4(dest, src, width, height, radius);
@@ -524,7 +524,7 @@ void boxBlur_4(float *src, float *dest, uint_fast32_t width, uint_fast32_t heigh
 
 void boxBlurH_4(float *src, float *dest, uint_fast32_t width, uint_fast32_t height,
                 float radius) {
-    SOTA_Log_Debug("boxBlurH_4");
+    SDL_Log("boxBlurH_4");
     uint_fast32_t intradius = (uint_fast32_t)radius;
     float iarr = 1.0f / (radius + radius + 1.0f);
     for (uint_fast32_t i = 0; i < height; i++) {
@@ -553,7 +553,7 @@ void boxBlurH_4(float *src, float *dest, uint_fast32_t width, uint_fast32_t heig
 
 void boxBlurT_4(float *src, float *dest, uint_fast32_t width, uint_fast32_t height,
                 float radius) {
-    SOTA_Log_Debug("boxBlurT_4");
+    SDL_Log("boxBlurT_4");
     float iarr = 1.0f / (radius + radius + 1.0f);
     for (uint_fast32_t  i = 0; i < width; i++) {
         uint_fast32_t ti = i;
@@ -589,7 +589,7 @@ void boxBlurT_4(float *src, float *dest, uint_fast32_t width, uint_fast32_t heig
 /* Filtering Algorithm */
 void CRT_Filter(struct CRT *in_crt, SDL_Texture *render_target,
                 SDL_Renderer *renderer) {
-    SOTA_Log_Debug("CRT_Filter");
+    SDL_Log("CRT_Filter");
     // MUCH too slow to be used realistically.
     SDL_assert(render_target != NULL);
     in_crt->unfiltered_text = render_target;
@@ -630,8 +630,8 @@ void CRT_Filter(struct CRT *in_crt, SDL_Texture *render_target,
                                          *scanline_floatrgb.G));
     scanline_floatrgb.B = malloc(in_crt->input_width * in_crt->num_scanlines * sizeof(
                                          *scanline_floatrgb.B));
-    SOTA_Log_Debug("in_crt->input_height, in_crt->num_scanlines %lu %luy", in_crt->input_height,
-                   in_crt->num_scanlines);
+    SDL_Log("in_crt->input_height, in_crt->num_scanlines %lu %luy", in_crt->input_height,
+            in_crt->num_scanlines);
     // Lanczos_Filter_2D is borked. it makes stripes in the y axis.
     Lanczos_Filter_2D(input_floatrgb.R, scanline_floatrgb.R, in_crt->input_width,
                       in_crt->input_height,
@@ -738,12 +738,12 @@ void CRT_Filter(struct CRT *in_crt, SDL_Texture *render_target,
     in_crt->filtered = CRT_Floats2Pixels(&output_floatrgb, in_crt->output_width,
                                          in_crt->output_height);
     SDL_SaveBMP(in_crt->filtered, "CRT_DOWNSCALED.png");
-    SOTA_Log_Debug("CRT_DOWNSCALED");
+    SDL_Log("CRT_DOWNSCALED");
     // CRT_Floats2Pixels(in_crt, &output_floatrgb, in_crt->filtered, in_crt->output_width, in_crt->output_height);
     // SDL_assert(in_crt->filtered != NULL);
     // in_crt->filtered_text = SDL_CreateTextureFromSurface(renderer, in_crt->filtered);
     // SDL_assert(in_crt->filtered_text != NULL);
-    // SOTA_Log_Debug("CRT_Floats2Pixels OUT");
+    // SDL_Log("CRT_Floats2Pixels OUT");
     // Filesystem_Texture_Dump("CRT_Filtered.png", renderer, in_crt->filtered_text, in_crt->target_format);
     // Bloom BORKED
     CRT_Bloom(output_floatrgb.G, in_crt->output_width, in_crt->output_height,
@@ -767,7 +767,7 @@ void CRT_Filter(struct CRT *in_crt, SDL_Texture *render_target,
                                          in_crt->output_height);
     SDL_SaveBMP(in_crt->filtered, "CRT_Filtered_Surface.png");
     SDL_assert(in_crt->filtered != NULL);
-    SOTA_Log_Debug("CRT_Floats2Pixels OUT");
+    SDL_Log("CRT_Floats2Pixels OUT");
     Filesystem_Texture_Dump("CRT_Filtered.png", renderer, in_crt->filtered_text,
                             in_crt->target_format, render_target);
     in_crt->filtered_text = SDL_CreateTextureFromSurface(renderer, in_crt->filtered);

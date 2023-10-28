@@ -746,7 +746,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
 
         /* - Check that a defendant is in range of current loadout - */
         if (DARR_NUM(sota->defendants) == 0) {
-            SOTA_Log_Debug("Invalid Loadout: no defendant in range");
+            SDL_Log("Invalid Loadout: no defendant in range");
             LoadoutSelectMenu_Deselect(wsm);
         } else {
             Event_Emit(__func__, SDL_USEREVENT, event_Loadout_Selected, data1_entity, data2_entity);
@@ -788,7 +788,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
         /* TODO: remove the check, ssm should only have staves with patients in range */
 
         if (DARR_NUM(sota->patients) == 0) {
-            SOTA_Log_Debug("Invalid Loadout: no patient in range");
+            SDL_Log("Invalid Loadout: no patient in range");
             LoadoutSelectMenu_Deselect(ssm);
         } else {
             Game_postLoadout_Patients(sota, sota->aggressor);
@@ -1011,7 +1011,7 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
             strncpy(sota->reason, "Map action is taken on standby only", sizeof(sota->reason));
             break;
         default:
-            SOTA_Log_Debug("invalid PlayerSelectMenu id");
+            SDL_Log("invalid PlayerSelectMenu id");
     }
 
     strncpy(sota->reason, "stops showing player select menu", sizeof(sota->reason));

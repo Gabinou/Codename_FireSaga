@@ -83,7 +83,7 @@ void Convoy_Swap(struct Convoy *in_convoy, i16 i1, i16 i2) {
 
 void Convoy_Deposit_byIndex(struct Convoy *in_convoy, struct Inventory_item in_item,
                             i16 i) {
-    SOTA_Log_Debug("Depositing: %ld at %ld", in_item.id, i);
+    SDL_Log("Depositing: %ld at %ld", in_item.id, i);
     SDL_assert(i < in_convoy->size);
     u16 stored_type_exp = Convoy_Id2TypeExp(in_convoy, i);
     Convoy_Shift_Plus(in_convoy, i, stored_type_exp);
@@ -92,7 +92,7 @@ void Convoy_Deposit_byIndex(struct Convoy *in_convoy, struct Inventory_item in_i
 
 void Convoy_Deposit_byType(struct Convoy *in_convoy, struct Inventory_item in_item,
                            i16 type_exp) {
-    SOTA_Log_Debug("Depositing: %ld", in_item.id);
+    SDL_Log("Depositing: %ld", in_item.id);
     SDL_assert(in_convoy->weapons_dtab != NULL);
     Weapon_Load(in_convoy->weapons_dtab, in_item.id);
     u16 typecode = ((struct Weapon *)DTAB_GET(in_convoy->weapons_dtab,
@@ -161,7 +161,7 @@ void Convoy_AllStats_Print(struct Convoy *in_convoy, i16 type_exp) {
         struct Weapon *weapon = ((struct Weapon *)DTAB_GET(in_convoy->weapons_dtab, item.id));
         char *wpn_stats_string = Utilities_Print_wpnStats(weapon->stats);
         char *item_stats_string = Utilities_Print_itemStats(weapon->item->stats);
-        SOTA_Log_Debug("%-20s \t %s %s", weapon->item->name, item_stats_string, wpn_stats_string);
+        SDL_Log("%-20s \t %s %s", weapon->item->name, item_stats_string, wpn_stats_string);
         SDL_free(wpn_stats_string);
         SDL_free(item_stats_string);
     }
@@ -175,7 +175,7 @@ void Convoy_Stats_Print(struct Convoy *in_convoy, i16 type_exp, i16 stattype) {
     for (i16 i = start; i < end; i++) {
         struct Inventory_item item = in_convoy->items[i];
         struct Weapon *weapon = ((struct Weapon *)DTAB_GET(in_convoy->weapons_dtab, item.id));
-        SOTA_Log_Debug("%-20s %d ", weapon->item->name, Weapon_Stat(weapon, stattype));
+        SDL_Log("%-20s %d ", weapon->item->name, Weapon_Stat(weapon, stattype));
     }
 }
 

@@ -35,8 +35,8 @@ void Names_unitNames() {
 
 #define REGISTER_ENUM(x, y) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
     strncpy(temp_str, #x, sizeof(#x));\
-    SOTA_Log_Debug("%d", UNIT_ID_##x);\
-    SOTA_Log_Debug("%s", #x);\
+    SDL_Log("%d", UNIT_ID_##x);\
+    SDL_Log("%s", #x);\
     dtab_add(global_unitOrders, &order, UNIT_ID_##x);\
     SDL_assert(*(u16 *)dtab_get(global_unitOrders, UNIT_ID_##x) == order);\
     order++;\
@@ -337,7 +337,7 @@ void Names_Load_All() {
 
 void Names_Free() {
 
-    SOTA_Log_Debug("menuOptionnames");
+    SDL_Log("menuOptionnames");
     if (menuOptionnames != NULL) {
         for (size_t i = MENU_OPTION_START + 1; i < MENU_OPTION_END; i++) {
             if (menuOptionnames[i] != NULL) {
@@ -357,7 +357,7 @@ void Names_Free() {
         sceneTimes = NULL;
     }
 
-    SOTA_Log_Debug("gamesubStatenames");
+    SDL_Log("gamesubStatenames");
     for (size_t i = 0; i < GAME_SUBSTATE_END; i++) {
         if (gamesubStatenames[i] != NULL) {
             SDL_free(gamesubStatenames[i]);
@@ -368,7 +368,7 @@ void Names_Free() {
         SDL_free(gamesubStatenames);
         gamesubStatenames = NULL;
     }
-    SOTA_Log_Debug("gameStatenames");
+    SDL_Log("gameStatenames");
     for (size_t i = 0; i < GAME_STATE_END; i++) {
         if (gameStatenames[i] != NULL) {
             SDL_free(gameStatenames[i]);
@@ -379,7 +379,7 @@ void Names_Free() {
         SDL_free(gameStatenames);
         gameStatenames = NULL;
     }
-    SOTA_Log_Debug("mapFilenames");
+    SDL_Log("mapFilenames");
     for (size_t i = 0; i < CHAPTER_END; i++) {
         if (mapFilenames[i] != NULL) {
             SDL_free(mapFilenames[i]);
@@ -390,7 +390,7 @@ void Names_Free() {
         SDL_free(mapFilenames);
         mapFilenames = NULL;
     }
-    SOTA_Log_Debug("jsonElementnames");
+    SDL_Log("jsonElementnames");
     for (size_t i = 0; i < JSON_END; i++) {
         if (jsonElementnames[i] != NULL) {
             SDL_free(jsonElementnames[i]);
@@ -401,7 +401,7 @@ void Names_Free() {
         SDL_free(jsonElementnames);
         jsonElementnames = NULL;
     }
-    SOTA_Log_Debug("armyNames");
+    SDL_Log("armyNames");
     for (size_t i = 0; i < ARMY_END; i++) {
         if (armyNames[i] != NULL) {
             SDL_free(armyNames[i]);
@@ -412,7 +412,7 @@ void Names_Free() {
         SDL_free(armyNames);
         armyNames = NULL;
     }
-    SOTA_Log_Debug("global_itemNames");
+    SDL_Log("global_itemNames");
     for (size_t i = 0; i < DARR_NUM(global_itemNames); i++) {
         // Names that start with Space are invalid.
         if (global_itemNames[i][0] != ' ') {
@@ -428,24 +428,24 @@ void Names_Free() {
         DTAB_FREE(global_itemOrders);
         global_itemOrders = NULL;
     }
-    SOTA_Log_Debug("global_tilenames i");
+    SDL_Log("global_tilenames i");
     for (size_t i = TILE_START; i < TILE_END; i++) {
         if (global_tilenames[i] != NULL) {
             SDL_free(global_tilenames[i]);
             global_tilenames[i] = NULL;
         }
     }
-    SOTA_Log_Debug("global_tilenames");
+    SDL_Log("global_tilenames");
     if (global_tilenames  != NULL) {
         SDL_free(global_tilenames);
         global_tilenames = NULL;
     }
-    SOTA_Log_Debug("global_tilesID");
+    SDL_Log("global_tilesID");
     if (global_tilesID  != NULL) {
         DARR_FREE(global_tilesID);
         global_tilesID = NULL;
     }
-    SOTA_Log_Debug("campjobNames");
+    SDL_Log("campjobNames");
     for (size_t i = 0; i < CAMPJOB_END; i++) {
         if (campjobNames[i]  != NULL) {
             SDL_free(campjobNames[i]);
@@ -456,7 +456,7 @@ void Names_Free() {
         SDL_free(campjobNames);
         campjobNames = NULL;
     }
-    SOTA_Log_Debug("global_unitNames");
+    SDL_Log("global_unitNames");
     if (global_unitNames != NULL) {
         for (int i = 0; i < DARR_NUM(global_unitNames); i++) {
             if (global_unitNames[i] != NULL) {
@@ -472,7 +472,7 @@ void Names_Free() {
         global_unitOrders = NULL;
     }
 
-    SOTA_Log_Debug("statNames");
+    SDL_Log("statNames");
     for (size_t i = 0; i < ITEM_STAT_END; i++) {
         if (statNames[i] != NULL) {
             SDL_free(statNames[i]);
@@ -483,7 +483,7 @@ void Names_Free() {
         SDL_free(statNames);
         statNames = NULL;
     }
-    SOTA_Log_Debug("sexNames");
+    SDL_Log("sexNames");
     for (size_t i = 0; i < UNIT_SEX_NUM; i++) {
         if (sexNames[i] != NULL) {
             SDL_free(sexNames[i]);
@@ -494,7 +494,7 @@ void Names_Free() {
         SDL_free(sexNames);
         sexNames = NULL;
     }
-    SOTA_Log_Debug("unitStates");
+    SDL_Log("unitStates");
     for (size_t i = 0; i < UNIT_STATUS_END; i++) {
         if (unitStates[i] != NULL) {
             SDL_free(unitStates[i]);
@@ -505,7 +505,7 @@ void Names_Free() {
         SDL_free(unitStates);
         unitStates = NULL;
     }
-    SOTA_Log_Debug("classNames");
+    SDL_Log("classNames");
     for (size_t i = 0; i < UNIT_CLASS_END; i++) {
         if (classNames[i] != NULL) {
             SDL_free(classNames[i]);
@@ -523,13 +523,13 @@ void Names_Free() {
 }
 
 void Names_Print_All(const char *foldername) {
-    SOTA_Log_Debug("foldername %s", foldername);
+    SDL_Log("foldername %s", foldername);
     char filename[DEFAULT_BUFFER_SIZE] = "";
     char buffer[DEFAULT_BUFFER_SIZE] = "";
     FILE *fp = NULL;
     strcat(filename, foldername);
     strcat(filename, "Utilities_unitArmies.txt");
-    SOTA_Log_Debug("filename %s", filename);
+    SDL_Log("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = ARMY_START; i < (ARMY_END - 1); i++)
@@ -538,7 +538,7 @@ void Names_Print_All(const char *foldername) {
     memset(filename, 0, sizeof(filename));
     strcat(filename, foldername);
     strcat(filename, "Utilities_unitStates.txt");
-    SOTA_Log_Debug("filename %s", filename);
+    SDL_Log("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = UNIT_STATUS_EXP_START; i < (UNIT_STATUS_EXP_END - 1); i++)
@@ -547,7 +547,7 @@ void Names_Print_All(const char *foldername) {
     memset(filename, 0, sizeof(filename));
     strcat(filename, foldername);
     strcat(filename, "Utilities_jsonElementnames.txt");
-    SOTA_Log_Debug("filename %s", filename);
+    SDL_Log("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = JSON_START; i < (JSON_END - 1); i++)
@@ -556,7 +556,7 @@ void Names_Print_All(const char *foldername) {
     memset(filename, 0, sizeof(filename));
     strcat(filename, foldername);
     strcat(filename, "Utilities_campjobNames.txt");
-    SOTA_Log_Debug("filename %s", filename);
+    SDL_Log("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = CAMPJOB_START; i < (CAMPJOB_END - 1); i++)
@@ -565,7 +565,7 @@ void Names_Print_All(const char *foldername) {
     memset(filename, 0, sizeof(filename));
     strcat(filename, foldername);
     strcat(filename, "Utilities_gameStatenames.txt");
-    SOTA_Log_Debug("filename %s", filename);
+    SDL_Log("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = GAME_STATE_START; i < (GAME_STATE_END - 1); i++)
@@ -574,7 +574,7 @@ void Names_Print_All(const char *foldername) {
     memset(filename, 0, sizeof(filename));
     strcat(filename, foldername);
     strcat(filename, "Utilities_menuOptionnames.txt");
-    SOTA_Log_Debug("filename %s", filename);
+    SDL_Log("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = MENU_OPTION_START; i < MENU_OPTION_END; i++)
@@ -583,7 +583,7 @@ void Names_Print_All(const char *foldername) {
     memset(filename, 0, sizeof(filename));
     strcat(filename, foldername);
     strcat(filename, "Utilities_gamesubStatenames.txt");
-    SOTA_Log_Debug("filename %s", filename);
+    SDL_Log("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = GAME_SUBSTATE_START; i < (GAME_SUBSTATE_END - 1); i++)
@@ -592,7 +592,7 @@ void Names_Print_All(const char *foldername) {
     memset(filename, 0, sizeof(filename));
     strcat(filename, foldername);
     strcat(filename, "Utilities_unitNames.txt");
-    SOTA_Log_Debug("filename %s", filename);
+    SDL_Log("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
     for (size_t i = 0; i < DARR_NUM(global_unitNames); i++)
@@ -601,7 +601,7 @@ void Names_Print_All(const char *foldername) {
     memset(filename, 0, sizeof(filename));
     strcat(filename, foldername);
     strcat(filename, "Utilities_itemNames.txt");
-    SOTA_Log_Debug("filename %s", filename);
+    SDL_Log("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
     for (size_t i = 0; i < DARR_NUM(global_itemNames); i++)
@@ -610,7 +610,7 @@ void Names_Print_All(const char *foldername) {
     memset(filename, 0, sizeof(filename));
     strcat(filename, foldername);
     strcat(filename, "Utilities_statNames.txt");
-    SOTA_Log_Debug("filename %s", filename);
+    SDL_Log("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = ITEM_STAT_START; i < (ITEM_STAT_END - 1); i++)
@@ -619,7 +619,7 @@ void Names_Print_All(const char *foldername) {
     memset(filename, 0, sizeof(filename));
     strcat(filename, foldername);
     strcat(filename, "utilitiessexNames.txt");
-    SOTA_Log_Debug("filename %s", filename);
+    SDL_Log("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = UNIT_SEX_F; i < (UNIT_SEX_M + 1); i++)
@@ -628,7 +628,7 @@ void Names_Print_All(const char *foldername) {
     memset(filename, 0, sizeof(filename));
     strcat(filename, foldername);
     strcat(filename, "Utilities_classNames.txt");
-    SOTA_Log_Debug("filename %s", filename);
+    SDL_Log("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = UNIT_CLASS_START; i < UNIT_CLASS_END; i++)
@@ -637,7 +637,7 @@ void Names_Print_All(const char *foldername) {
     memset(filename, 0, sizeof(filename));
     strcat(filename, foldername);
     strcat(filename, "Utilities_tilenames.txt");
-    SOTA_Log_Debug("filename %s", filename);
+    SDL_Log("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
     SDL_assert(global_tilenames != NULL);

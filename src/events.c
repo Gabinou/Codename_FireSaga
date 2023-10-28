@@ -32,7 +32,7 @@ tnecs_entity_t Events_Controllers_Check(struct Game *sota, i32 code) {
     struct controllerKeyboard *keyboard_ptr;
     switch (code) {
         case CONTROLLER_MOUSE:
-            SOTA_Log_Debug("CONTROLLER_MOUSE");
+            SDL_Log("CONTROLLER_MOUSE");
             if (!sota->ismouse) {
                 Event_Emit(__func__, SDL_USEREVENT, event_Mouse_Enable, NULL, NULL);
                 // Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Disable, NULL, NULL);
@@ -40,7 +40,7 @@ tnecs_entity_t Events_Controllers_Check(struct Game *sota, i32 code) {
             out_accepter_entity = sota->entity_mouse;
             break;
         case CONTROLLER_GAMEPAD:
-            SOTA_Log_Debug("CONTROLLER_GAMEPAD");
+            SDL_Log("CONTROLLER_GAMEPAD");
             if (!sota->iscursor) {
                 Event_Emit(__func__, SDL_USEREVENT, event_Mouse_Disable, NULL, NULL);
                 Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Enable, NULL, NULL);
@@ -54,7 +54,7 @@ tnecs_entity_t Events_Controllers_Check(struct Game *sota, i32 code) {
             keyboard_ptr->timeheld_button_ns  = SOTA_ns / sota->settings.FPS.cap;
             break;
         case CONTROLLER_KEYBOARD:
-            SOTA_Log_Debug("CONTROLLER_KEYBOARD");
+            SDL_Log("CONTROLLER_KEYBOARD");
             if (!sota->iscursor) {
                 Event_Emit(__func__, SDL_USEREVENT, event_Mouse_Disable, NULL, NULL);
                 Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Enable, NULL, NULL);
@@ -68,7 +68,7 @@ tnecs_entity_t Events_Controllers_Check(struct Game *sota, i32 code) {
             keyboard_ptr->timeheld_button_ns  = SOTA_ns / sota->settings.FPS.cap;
             break;
         case CONTROLLER_TOUCHPAD:
-            SOTA_Log_Debug("CONTROLLER_TOUCHPAD");
+            SDL_Log("CONTROLLER_TOUCHPAD");
             if (!sota->iscursor) {
                 Event_Emit(__func__, SDL_USEREVENT, event_Mouse_Disable, NULL, NULL);
                 Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Enable, NULL, NULL);
@@ -92,7 +92,7 @@ tnecs_entity_t Events_Controllers_Check(struct Game *sota, i32 code) {
 void Event_Emit(const char *emitter, u32 type, i32 code, void *data1, void *data2) {
     SDL_assert(code > 0);
     char *event_name = event_names[code - event_Start];
-    SOTA_Log_Debug("emitter -> %s, event -> %s", emitter, event_name);
+    SDL_Log("emitter -> %s, event -> %s", emitter, event_name);
     SDL_assert(type != ((UINT32_MAX) - 1));
     SDL_Event event;
     event.type          = type;
@@ -238,7 +238,7 @@ void receive_event_Input_STATS(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity_t accepter_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(accepter_entity > 0);
     *data1_entity = accepter_entity;
-    SOTA_Log_Debug("sota->state %d", sota->state);
+    SDL_Log("sota->state %d", sota->state);
     // if (fsm_Input_Stats_state[sota->state] != NULL) {
     //     fsm_Input_Stats_state[sota->state](sota, accepter_entity);
     // }
@@ -490,7 +490,7 @@ void receive_event_SDL_CONTROLLERDEVICEREMOVED(struct Game *sota, SDL_Event *eve
     if (gamepad_ptr != NULL)
         Gamepad_removeController(gamepad_ptr, event->cdevice.which);
     else
-        SOTA_Log_Debug("entity_cursor has no controllerGamepad component");
+        SDL_Log("entity_cursor has no controllerGamepad component");
 
 }
 
@@ -505,7 +505,7 @@ void receive_event_SDL_CONTROLLERDEVICEADDED(struct Game *sota, SDL_Event *event
     // DEVICEADDED-> JoystickDeviceID which is stable e.g. 0 for player 1, etc.
 
     if (sota->entity_cursor == TNECS_NULL) {
-        SOTA_Log_Debug("Entity_cursor is not valid");
+        SDL_Log("Entity_cursor is not valid");
         return;
     }
 
@@ -514,7 +514,7 @@ void receive_event_SDL_CONTROLLERDEVICEADDED(struct Game *sota, SDL_Event *event
     if (gamepad_ptr != NULL)
         Gamepad_addController(gamepad_ptr, event->cdevice.which);
     else
-        SOTA_Log_Debug("entity_cursor has no controllerGamepad component");
+        SDL_Log("entity_cursor has no controllerGamepad component");
 
 }
 
@@ -1246,7 +1246,7 @@ void receive_event_SDL_WINDOWEVENT(struct Game *sota, SDL_Event *event) {
 
     switch (event->window.event) {
         case SDL_WINDOWEVENT_CLOSE:
-            SOTA_Log_Debug("SDL_WINDOWEVENT_CLOSE");
+            SDL_Log("SDL_WINDOWEVENT_CLOSE");
             Event_Emit(__func__, SDL_QUIT, event_SDL_QUIT, NULL, NULL);
             break;
     }
@@ -1279,8 +1279,8 @@ extern void Events_Names_Free() {
 
 char **event_names = NULL;
 extern void Events_Names_Alloc() {
-    SOTA_Log_Debug("event_End event_Start %d %d", event_End, event_Start);
-    SOTA_Log_Debug("event_End - event_Start %d", event_End - event_Start);
+    SDL_Log("event_End event_Start %d %d", event_End, event_Start);
+    SDL_Log("event_End - event_Start %d", event_End - event_Start);
     event_names = (char **)calloc((event_End - event_Start) + 1, sizeof(*event_names));
     SDL_assert(event_names != NULL);
     char *temp_str;

@@ -167,7 +167,7 @@ i8 useEffect_USE_GAIN_STATS(struct Item *restrict item,
             target->current_stats.move += item->stats.AP;
             break;
         default:
-            SOTA_Log_Debug("Wrong id for stat booster.");
+            SDL_Log("Wrong id for stat booster.");
             exit(ERROR_Generic);
     }
     return (-1);
@@ -303,7 +303,7 @@ void Item_Load(struct dtab *items_dtab, i16 id) {
     Item_Filename(filename, id);
 
     struct Item temp_item = Item_default;
-    SOTA_Log_Debug("Loading item %ld %s", id, filename);
+    SDL_Log("Loading item %ld %s", id, filename);
     SDL_assert(temp_item.json_element == JSON_ITEM);
 
     /* - read weapon - */
@@ -316,7 +316,7 @@ void Item_Load(struct dtab *items_dtab, i16 id) {
 
 void Item_All_Load(struct dtab *items_dtab) {
     for (size_t i = ITEM_ID_ITEM_START; i < ITEM_ID_ITEM_END; i++) {
-        SOTA_Log_Debug("%zu", i);
+        SDL_Log("%zu", i);
         if (Item_ID_isValid(i))
             Item_Load(items_dtab, i);
     }
@@ -324,7 +324,7 @@ void Item_All_Load(struct dtab *items_dtab) {
 
 void Item_All_Reload(struct dtab *items_dtab) {
     for (size_t i = ITEM_ID_ITEM_START; i < ITEM_ID_ITEM_END; i++) {
-        SOTA_Log_Debug("%zu", i);
+        SDL_Log("%zu", i);
         if (Item_ID_isValid(i))
             Item_Reload(items_dtab, i);
     }

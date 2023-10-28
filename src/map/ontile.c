@@ -34,7 +34,7 @@ void Map_startingPos_Add(struct Map *map, i32 col, i32 row) {
 
 void Map_Unit_Put(struct Map *map, tnecs_world_t *world, u8 col, u8 row,
                   tnecs_entity_t entity) {
-    SOTA_Log_Debug("%lu", entity);
+    SDL_Log("%lu", entity);
     SDL_assert(map->unitmap != NULL);
     SDL_assert((row < map->row_len) && (col < map->col_len));
     SDL_assert(entity);
@@ -42,7 +42,7 @@ void Map_Unit_Put(struct Map *map, tnecs_world_t *world, u8 col, u8 row,
     /* -- Preliminaries -- */
     tnecs_entity_t current = map->unitmap[row * map->col_len + col];
     if (current != TNECS_NULL) {
-        SOTA_Log_Debug("Unit already on map");
+        SDL_Log("Unit already on map");
         exit(ERROR_Generic);
     }
     map->unitmap[row * map->col_len + col] = entity;

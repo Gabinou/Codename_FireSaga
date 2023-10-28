@@ -61,7 +61,7 @@ tnecs_entity_t *Map_Find_Defendants(struct Map *map, i32 *attacktolist,
             continue;
 
         /* - Found unit, checking alignmentt - */
-        // SOTA_Log_Debug("Found unit on %lu %lu ", x_at, y_at);
+        // SDL_Log("Found unit on %lu %lu ", x_at, y_at);
         struct Unit *agg    = TNECS_GET_COMPONENT(map->world, aggressor, Unit);
         struct Unit *unit   = TNECS_GET_COMPONENT(map->world, unitontile, Unit);
         u8 align_t         = SotA_army2alignment(unit->army);

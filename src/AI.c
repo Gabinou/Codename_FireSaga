@@ -70,7 +70,7 @@ struct AI AI_default = {
 // extern tnecs_entity_t AI_Target_Heal(tnecs_world_t * in_world,
 //                                      tnecs_entity_t in_staffWielder,
 //                                      tnecs_entity_t * in_possiblePatients, u8 num_patients) {
-//     SOTA_Log_Debug("AI_Target_Heal");
+//     SDL_Log("AI_Target_Heal");
 //     struct AI * temp_ai_ptr;
 //     tnecs_entity_t out_target = 0;
 //     temp_ai_ptr = TNECS_GET_COMPONENT(in_world, in_staffWielder, AI);
@@ -122,7 +122,7 @@ struct AI AI_default = {
 // tnecs_entity_t AI_Target_Silence(tnecs_world_t * in_world, tnecs_entity_t in_staffWielder,
 //                                  u8 * in_hit_rates, tnecs_entity_t * in_possibleDefenders,
 //                                  u8 num_defender) {
-//     SOTA_Log_Debug("AI_Target_Silence");
+//     SDL_Log("AI_Target_Silence");
 //     struct AI * temp_ai_ptr;
 //     // const struct Unit * temp_unit_ptr;
 //     temp_ai_ptr = TNECS_GET_COMPONENT(in_world, in_staffWielder, AI);
@@ -144,14 +144,14 @@ struct AI AI_default = {
 //             }
 //         }
 //     } else
-//         SOTA_Log_Debug("no defenders");
+//         SDL_Log("no defenders");
 //     return (out_target);
 // }
 
 // tnecs_entity_t AI_Target_Pull(tnecs_world_t * in_world, tnecs_entity_t in_staffWielder,
 //                               tnecs_entity_t * in_friendlies, u8 num_friendly, tnecs_entity_t * in_enemies,
 //                               u8 num_enemy) {
-//     SOTA_Log_Debug("AI_Target_Pull");
+//     SDL_Log("AI_Target_Pull");
 //     struct AI * temp_ai_ptr;
 //     struct Unit * temp_unit_ptr;
 //     temp_ai_ptr = TNECS_GET_COMPONENT(in_world, in_staffWielder, AI);
@@ -204,7 +204,7 @@ struct AI AI_default = {
 // tnecs_entity_t AI_Target_Push(tnecs_world_t * in_world, tnecs_entity_t in_staffWielder,
 //                               tnecs_entity_t * in_friendlies, u8 num_friendly, tnecs_entity_t * in_enemies,
 //                               u8 num_enemy) {
-//     SOTA_Log_Debug("AI_Target_Push");
+//     SDL_Log("AI_Target_Push");
 //     struct AI * temp_ai_ptr;
 //     struct Unit * temp_unit_ptr;
 //     temp_ai_ptr = TNECS_GET_COMPONENT(in_world, in_staffWielder, AI);
@@ -234,7 +234,7 @@ struct AI AI_default = {
 //             }
 //         }
 //     } else
-//         SOTA_Log_Debug("no defenders");
+//         SDL_Log("no defenders");
 //     return (out_target);
 // }
 
@@ -325,7 +325,7 @@ struct AI AI_default = {
 
 // struct AI_PushPull_Out AI_PushPull_Enemy_Defensively_Rating(tnecs_world_t * in_world,
 //         struct Map * in_map, tnecs_entity_t in_enemy_ent) {
-//     SOTA_Log_Debug("AI_PushPull_Enemy_Defensively_Rating");
+//     SDL_Log("AI_PushPull_Enemy_Defensively_Rating");
 //     int_fast8_t rating = 0;
 //     int_fast8_t rating_buffer;
 //     struct Unit * enemy_ptr = TNECS_GET_COMPONENT(in_world, in_enemy_ent, Unit);

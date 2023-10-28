@@ -48,7 +48,7 @@
 int main(int argc, char *argv[]) {
     /* --- LOGGING --- */
     fclose(fopen(LOGFILE, "w"));
-    
+
     Log_Init();
 
     #ifndef SOTA_VERBOSE
@@ -61,62 +61,51 @@ int main(int argc, char *argv[]) {
     SDL_LogSetOutputFunction(Log2file, NULL);
     SDL_Log("Logfile set\n");
     #endif /* __SOTA_RELEASE__ */
-    SDL_Log("default");
-
-    printf("SOTA_LOG_FPS\n");
-    SDL_LogVerbose(SOTA_LOG_FPS,  "verbose");
-    SDL_LogDebug(SOTA_LOG_FPS,    "debug");
-    SDL_LogInfo(SOTA_LOG_FPS,     "Info");
-    SDL_LogWarn(SOTA_LOG_FPS,     "Warn");
-    SDL_LogError(SOTA_LOG_FPS,    "Error");
-    SDL_LogCritical(SOTA_LOG_FPS, "CRITICAL");
-
-    getchar();
 
     #ifdef SDL_ASSERT_LEVEL
-    SOTA_Log_Debug("SDL_ASSERT_LEVEL %d\n", SDL_ASSERT_LEVEL);
+    SDL_Log("SDL_ASSERT_LEVEL %d\n", SDL_ASSERT_LEVEL);
     #endif /* SDL_ASSERT_LEVEL */
 
     /* --- STARTUP --- */
-    SOTA_Log_Debug("Starting SOTA\n");
+    SDL_Log("Starting SOTA\n");
     /* -- Platform detection -- */
     atexit(SDL_Quit);
     if (PLATFORM != platform_fromSDL()) {
-        SOTA_Log_Debug("C Platform not the same as SDL platform");
+        SDL_Log("C Platform not the same as SDL platform");
         exit(ERROR_PlatformMismatch);
     }
-    SOTA_Log_Debug("Running on "PLATFORM_NAME);
-    SOTA_Log_Debug("SDL version  %d %d %d ", SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL);
-    SOTA_Log_Debug("SotA version %d %d %d ", SOTA_VER_MAJOR,    SOTA_VER_MINOR,    SOTA_VER_PATCH);
+    SDL_Log("Running on "PLATFORM_NAME);
+    SDL_Log("SDL version  %d %d %d ", SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL);
+    SDL_Log("SotA version %d %d %d ", SOTA_VER_MAJOR,    SOTA_VER_MINOR,    SOTA_VER_PATCH);
     if (SDL_BYTEORDER == SDL_LIL_ENDIAN)
-        SOTA_Log_Debug("SDL endianness is SDL_LIL_ENDIAN");
+        SDL_Log("SDL endianness is SDL_LIL_ENDIAN");
     else
-        SOTA_Log_Debug("SDL endianness is SDL_BIG_ENDIAN");
-    SOTA_Log_Debug("Checking input arguments\n");
+        SDL_Log("SDL endianness is SDL_BIG_ENDIAN");
+    SDL_Log("Checking input arguments\n");
 
     /* -- Input parsing -- */
     struct Input_Arguments args = Input_parseInputs(argc, argv);
 
     /* -- Actual startup -- */
-    SOTA_Log_Debug("Initializing filesystem \n");
+    SDL_Log("Initializing filesystem \n");
     Filesystem_Init(argv[0]);
 
-    SOTA_Log_Debug("Initializing utilities\n");
+    SDL_Log("Initializing utilities\n");
     Utilities_Load();
     #ifndef __SOTA_RELEASE__
-    SOTA_Log_Debug("Printing all names\n");
+    SDL_Log("Printing all names\n");
     Names_Print_All("");
     #endif /* __SOTA_RELEASE__ */
 
-    SOTA_Log_Debug("Creating game object\n");
+    SDL_Log("Creating game object\n");
     struct Game *sota = Game_Init();
     Utilities_DrawColor_Reset(sota->renderer);
 
-    SOTA_Log_Debug("Initializing TinyMT RNG\n");
+    SDL_Log("Initializing TinyMT RNG\n");
     RNG_Init_tinymt(&sota->tinymt32);
     tinyMT_global = &sota->tinymt32;
 
-    SOTA_Log_Debug("Game startup, according to user inputs\n");
+    SDL_Log("Game startup, according to user inputs\n");
     Game_Startup(sota, args);
     SDL_assert(sota->entity_mouse);
 
@@ -125,9 +114,9 @@ int main(int argc, char *argv[]) {
     u64 elapsedTime_ns      = 0;
     i64 delay_ms            = 0;
     tnecs_ns_t time_ns = 0;
-    SOTA_Log_Debug("sota->settings.FPS.cap %d \n", sota->settings.FPS.cap);
+    SDL_Log("sota->settings.FPS.cap %d \n", sota->settings.FPS.cap);
 
-    SOTA_Log_Debug("Starting main game loop\n");
+    SDL_Log("Starting main game loop\n");
     u64 updateTime_ns = SOTA_ns / sota->settings.FPS.cap;
     while (sota->isrunning) {
         /* --- PRE-FRAME --- */
@@ -170,9 +159,9 @@ int main(int argc, char *argv[]) {
     /* -- Cleaning & Quitting -- */
     Utilities_Free();
     Game_Free(sota);
-    SOTA_Log_Debug("Freeing filesystem\n");
+    SDL_Log("Freeing filesystem\n");
     Filesystem_Free();
-    SOTA_Log_Debug("SotA quit.\n");
+    SDL_Log("SotA quit.\n");
     return (NO_ERROR);
 }
 

@@ -267,7 +267,7 @@ int Unit_Hand_Strong(const struct Unit *unit) {
 
 int SotA_Hand_Strong(i8 handedness) {
     if ((handedness <= UNIT_HAND_NULL) || (handedness >= UNIT_HAND_END)) {
-        SOTA_Log_Debug("Wrong handedness");
+        SDL_Log("Wrong handedness");
         exit(ERROR_Generic);
     }
     /* Stronghand is left hand only for left-handed.
@@ -288,9 +288,9 @@ void Unit_setSkills(struct Unit *unit, u64 skills) {
     if (unit->skill_names != NULL)
         DARR_FREE(unit->skill_names);
     unit->skill_names = Names_skillNames(unit->skills);
-    SOTA_Log_Debug("Unit new skills: %lx \n", unit->skills);
+    SDL_Log("Unit new skills: %lx \n", unit->skills);
     for (u8 i = 0; DARR_LEN(unit->skill_names); i++)
-        SOTA_Log_Debug("Skill name: %s", unit->skill_names[i]);
+        SDL_Log("Skill name: %s", unit->skill_names[i]);
 }
 
 void Unit_setClassind(struct Unit *unit, i8 class_index) {
@@ -338,7 +338,7 @@ u8 Unit_mvtType(const struct Unit *unit) {
 
 u8 SotA_army2alignment(u8 army) {
     if ((army <= ARMY_START) || (army >= ARMY_END)) {
-        SOTA_Log_Debug("Army out of bounds");
+        SDL_Log("Army out of bounds");
         exit(ERROR_OutofBounds);
     }
     return (army_alignment[army]);
@@ -346,7 +346,7 @@ u8 SotA_army2alignment(u8 army) {
 
 bool SotA_isPC(u8 army) {
     if ((army <= ARMY_START) || (army >= ARMY_END)) {
-        SOTA_Log_Debug("Army out of bounds");
+        SDL_Log("Army out of bounds");
         exit(ERROR_OutofBounds);
     }
     return (army_isPC[army]);
@@ -485,11 +485,11 @@ void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, size_t i) {
     Weapon_Load(unit->weapons_dtab, item.id);
 
     if ((i < 0) || (i >= DEFAULT_EQUIPMENT_SIZE)) {
-        SOTA_Log_Debug("Item i out of bounds");
+        SDL_Log("Item i out of bounds");
         exit(ERROR_OutofBounds);
     }
     if (unit->_equipment[i].id != ITEM_NULL) {
-        SOTA_Log_Debug("Item taken at non-empty spot");
+        SDL_Log("Item taken at non-empty spot");
         exit(ERROR_OutofBounds);
     }
     _Unit_Item_Takeat(unit, item, i);
@@ -500,12 +500,12 @@ void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, size_t i) {
 void Unit_Item_Take(struct Unit *unit, struct Inventory_item item) {
     SDL_assert(unit);
     if (unit->num_equipment >= DEFAULT_EQUIPMENT_SIZE) {
-        SOTA_Log_Debug("Unit Inventory full, should not be able to take item");
+        SDL_Log("Unit Inventory full, should not be able to take item");
         exit(ERROR_OutofBounds);
     }
 
     if (item.id == ITEM_NULL) {
-        SOTA_Log_Debug("Unit should not be able to take NULL item");
+        SDL_Log("Unit should not be able to take NULL item");
         exit(ERROR_OutofBounds);
     }
 
@@ -525,7 +525,7 @@ void Unit_Equipment_Drop(struct Unit *unit) {
 
 struct Inventory_item Unit_Item_Drop(struct Unit *unit, i16 i) {
     if ((i < 0) || (i >= DEFAULT_EQUIPMENT_SIZE)) {
-        SOTA_Log_Debug("Item index out of bounds");
+        SDL_Log("Item index out of bounds");
         exit(ERROR_OutofBounds);
     }
     struct Inventory_item out  = unit->_equipment[i];
@@ -541,11 +541,11 @@ struct Inventory_item Unit_Item_Drop(struct Unit *unit, i16 i) {
 void Unit_Item_Swap(struct Unit *unit, i16 i1, i16 i2) {
     SDL_assert(unit);
     if ((i1 < 0) || (i1 >= DEFAULT_EQUIPMENT_SIZE)) {
-        SOTA_Log_Debug("Item index1 out of bounds");
+        SDL_Log("Item index1 out of bounds");
         exit(ERROR_OutofBounds);
     }
     if ((i2 < 0) || (i2 >= DEFAULT_EQUIPMENT_SIZE)) {
-        SOTA_Log_Debug("Item index2 out of bounds");
+        SDL_Log("Item index2 out of bounds");
         exit(ERROR_OutofBounds);
     }
     struct Inventory_item buffer = unit->_equipment[i1];
@@ -557,11 +557,11 @@ void Unit_Item_Trade(struct Unit *giver, struct Unit *taker, i16 ig, i16 it) {
     SDL_assert(giver);
     SDL_assert(taker);
     if ((it < 0) || (it >= DEFAULT_EQUIPMENT_SIZE)) {
-        SOTA_Log_Debug("Taker Item index out of bounds");
+        SDL_Log("Taker Item index out of bounds");
         exit(ERROR_OutofBounds);
     }
     if ((ig < 0) || (ig >= DEFAULT_EQUIPMENT_SIZE)) {
-        SOTA_Log_Debug("Giver Item index out of bounds");
+        SDL_Log("Giver Item index out of bounds");
         exit(ERROR_OutofBounds);
     }
     struct Inventory_item buffer_giver = Unit_Item_Drop(giver, ig);
@@ -576,7 +576,7 @@ struct Inventory_item Unit_Equip_TwoHanding(struct Unit *unit) {
     int stronghand = Unit_Hand_Strong(unit);
     bool weakhand  = 1 - stronghand;
     if (!unit->hands[weakhand] || !unit->hands[stronghand]) {
-        SOTA_Log_Debug("Can't equip a weapon in two hands without two hands");
+        SDL_Log("Can't equip a weapon in two hands without two hands");
         exit(ERROR_Generic);
     }
 
@@ -622,24 +622,24 @@ bool Unit_Equip(struct Unit *unit, bool hand, int i) {
 }
 
 bool Unit_Equip_inHand(struct Unit *unit, bool hand) {
-    SOTA_Log_Debug("hand %d, equipment id %ld", hand, unit->_equipment[hand].id);
+    SDL_Log("hand %d, equipment id %ld", hand, unit->_equipment[hand].id);
     SDL_assert(unit != NULL);
 
     /* -- Error if try to equip NULL item -- */
     if (unit->_equipment[hand].id <= ITEM_NULL) {
-        SOTA_Log_Debug("No item in hand. Cannot equip.");
+        SDL_Log("No item in hand. Cannot equip.");
         return (unit->equipped[hand] = false);
     }
     Weapon_Load(unit->weapons_dtab, unit->_equipment[hand].id);
 
     /* -- Error checking -- */
     if (!Unit_canEquip(unit, unit->_equipment[hand].id)) {
-        SOTA_Log_Debug("Cannot equip item.");
+        SDL_Log("Cannot equip item.");
         return (unit->equipped[hand] = false);
     }
 
     if (!unit->hands[hand]) {
-        SOTA_Log_Debug("No hand to equip with.");
+        SDL_Log("No hand to equip with.");
         return (unit->equipped[hand] = false);
     }
 
@@ -670,11 +670,11 @@ void Unit_Unequip(struct Unit *unit, bool hand) {
 * Input crit bool just to determine if unit dies instantly or not.
 */
 void Unit_takesDamage(struct Unit *unit, u8 damage, bool crit) {
-    SOTA_Log_Debug("%s takes %d damage \n", unit->name, damage);
+    SDL_Log("%s takes %d damage \n", unit->name, damage);
     /* -- Checks -- */
     SDL_assert(unit);
     if (unit->current_hp == 0) {
-        SOTA_Log_Debug("Error: Unit HP was already 0 before taking damage.");
+        SDL_Log("Error: Unit HP was already 0 before taking damage.");
         exit(ERROR_Generic);
     }
 
@@ -692,7 +692,7 @@ void Unit_takesDamage(struct Unit *unit, u8 damage, bool crit) {
 }
 
 void Unit_getsHealed(struct Unit *unit, u8 healing) {
-    SOTA_Log_Debug("%s gets healed for %d\n", unit->name, healing);
+    SDL_Log("%s gets healed for %d\n", unit->name, healing);
     /* -- Checks -- */
     SDL_assert(unit);
 
@@ -737,7 +737,7 @@ void Unit_supportUp(struct Unit *unit, i16 id) {
     }
 
     if (id != unit->supports[i].other_id) {
-        SOTA_Log_Debug("Supporting Unit not found");
+        SDL_Log("Supporting Unit not found");
         exit(ERROR_Generic);
     }
 
@@ -793,13 +793,13 @@ void Unit_lvlUp(struct Unit *unit) {
 
 void Unit_agonizes(struct Unit *unit) {
     unit->agonizes = true;
-    SOTA_Log_Debug("%s is agonizing. %d turns until death\n", unit->name, unit->computed_stats.agony);
+    SDL_Log("%s is agonizing. %d turns until death\n", unit->name, unit->computed_stats.agony);
 }
 
 void Unit_dies(struct Unit *unit) {
     SDL_assert(unit);
     unit->is_alive = false;
-    SOTA_Log_Debug("%s is dead.\n", unit->name);
+    SDL_Log("%s is dead.\n", unit->name);
 }
 
 /* Can unit equip weapon input item? */
@@ -811,7 +811,7 @@ bool Unit_canEquip(const struct Unit *unit, i16 id) {
     bool type    = Unit_canEquip_Type(unit, id);
     bool left    = Unit_canEquip_Hand(unit, id, UNIT_HAND_LEFT);
     bool right   = Unit_canEquip_Hand(unit, id, UNIT_HAND_RIGHT);
-    // SOTA_Log_Debug("Unit_canEquip_Hand %d %d %d", type, right, left);
+    // SDL_Log("Unit_canEquip_Hand %d %d %d", type, right, left);
     return (type && (left || right));
 }
 
@@ -1208,26 +1208,26 @@ struct Range *Unit_Range_Loadout(struct Unit   *unit) {
     do {
         /* If dual wielding, range_loadout is combined. */
         if (unit->isDualWielding) {
-            SOTA_Log_Debug("IS dual wielding,");
+            SDL_Log("IS dual wielding,");
             _Unit_Range_Combine(unit, range, true, ITEM_ARCHETYPE_WEAPON);
             break;
         }
 
         /* If not dual wielding, compute range of weapon in stronghand. */
         if (!unit->equipped[stronghand]) {
-            SOTA_Log_Debug("If not dual wielding,");
+            SDL_Log("If not dual wielding,");
             break;
         }
 
         if (!Unit_Eq_Usable(unit, ITEM_ARCHETYPE_WEAPON, stronghand)) {
-            SOTA_Log_Debug("If not usable,");
+            SDL_Log("If not usable,");
             break;
         }
 
         Weapon_Load(unit->weapons_dtab, unit->_equipment[stronghand].id);
         struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[stronghand].id);
         if (wpn == NULL) {
-            SOTA_Log_Debug("wpn null,");
+            SDL_Log("wpn null,");
             break;
         }
         Ranges_Combine(range, wpn->stats.range);
@@ -1362,7 +1362,7 @@ void Ranges_Combine(struct Range *r1, struct Range r2) {
     bool gap  = (r1->max < (r2.min  - 1)) || (r1->min > (r2.max  + 1));
 
     if (gap && r1_valid && r2_valid) {
-        SOTA_Log_Debug("Gap in combined ranges. Should never happen.");
+        SDL_Log("Gap in combined ranges. Should never happen.");
         exit(ERROR_OutofBounds);
     }
 
@@ -1379,17 +1379,17 @@ void Unit_Equipment_Print(const struct Unit *unit) {
     SDL_assert(unit != NULL);
     for (u8 i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
         if (unit->_equipment[i].id == ITEM_NULL) {
-            SOTA_Log_Debug("%d ITEM_NULL", i);
+            SDL_Log("%d ITEM_NULL", i);
             continue;
         }
 
         struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[i].id);
         if (wpn == NULL) {
-            SOTA_Log_Debug("%d Unloaded", i);
+            SDL_Log("%d Unloaded", i);
             continue;
         }
 
-        SOTA_Log_Debug("%d %s", i, wpn->item->name);
+        SDL_Log("%d %s", i, wpn->item->name);
     }
 
 }
@@ -1418,7 +1418,7 @@ void Unit_Loadout_Swap(struct Unit *unit, int lh, int rh) {
     } else if (lh_valid || rh_valid) {
         _Unit_Loadout_Swap(unit, lh, rh);
     } else {
-        SOTA_Log_Debug("Invalid input. Not swapping items %d %d", lh, rh);
+        SDL_Log("Invalid input. Not swapping items %d %d", lh, rh);
     }
     // Unit_Equipment_Print(unit);
 
@@ -1434,7 +1434,7 @@ void Unit_Loadout_Swap_Reverse(struct Unit *unit, int lh, int rh) {
     } else if (lh_valid || rh_valid) {
         _Unit_Loadout_Swap_Reverse(unit, lh, rh);
     } else {
-        SOTA_Log_Debug("Invalid input. Not swapping items %d %d", lh, rh);
+        SDL_Log("Invalid input. Not swapping items %d %d", lh, rh);
     }
     // Unit_Equipment_Print(unit);
 
@@ -1785,7 +1785,7 @@ void Unit_Equipped_Shields_Deplete(struct Unit *unit) {
 void Unit_readJSON(void *input, const cJSON *const junit) {
     struct Unit *unit = (struct Unit *)input;
     SDL_assert(unit);
-    SOTA_Log_Debug("-- Get json objects --");
+    SDL_Log("-- Get json objects --");
     cJSON *jid              = cJSON_GetObjectItem(junit, "id");
     cJSON *jsex             = cJSON_GetObjectItem(junit, "Sex");
     cJSON *jexp             = cJSON_GetObjectItem(junit, "Exp");
@@ -1803,7 +1803,7 @@ void Unit_readJSON(void *input, const cJSON *const junit) {
     cJSON *jcurrent_stats   = cJSON_GetObjectItem(junit, "Stats");
     unit->_id = cJSON_GetNumberValue(jid); //returns 0 if junit is NULL
 
-    SOTA_Log_Debug("-- startup misc --");
+    SDL_Log("-- startup misc --");
     SDL_assert(unit->name != NULL);
     strncpy(unit->name, cJSON_GetStringValue(jname), strlen(cJSON_GetStringValue(jname)));
     unit->sex               = cJSON_IsTrue(jsex);
@@ -1812,7 +1812,7 @@ void Unit_readJSON(void *input, const cJSON *const junit) {
     Unit_setClassind(unit, cJSON_GetNumberValue(jclass_index));
     SDL_assert(jcurrent_stats);
 
-    SOTA_Log_Debug("-- Supports --");
+    SDL_Log("-- Supports --");
     unit->support_type = cJSON_GetNumberValue(jsupport_type);
     if (cJSON_IsArray(jsupports)) {
         unit->support_num = cJSON_GetArraySize(jsupports);
@@ -1824,10 +1824,10 @@ void Unit_readJSON(void *input, const cJSON *const junit) {
             unit->supports[i].other_type = 0;
         }
     } else {
-        SOTA_Log_Debug("Supports is not an array");
+        SDL_Log("Supports is not an array");
     }
 
-    SOTA_Log_Debug("--set stats --");
+    SDL_Log("--set stats --");
     Filesystem_readJSON_Unitstats(jcurrent_stats, &unit->current_stats);
     SDL_assert(jcaps_stats);
     Filesystem_readJSON_Unitstats(jcaps_stats, &unit->caps_stats);
@@ -1858,7 +1858,7 @@ void Unit_readJSON(void *input, const cJSON *const junit) {
     };
 
     /* -- Unit should also read/write equipped -- */
-    SOTA_Log_Debug("-- items --");
+    SDL_Log("-- items --");
 
     /* -- Drop everything, unequip all -- */
     Unit_Equipment_Drop(unit);
@@ -2231,7 +2231,7 @@ struct Unit_stats Unit_stats_minus(struct Unit_stats in_stats1, struct Unit_stat
 
 
 bool Unit_ID_Valid(u16 id) {
-    SOTA_Log_Debug("Unit ID valid: %d", id);
+    SDL_Log("Unit ID valid: %d", id);
     bool out = (id > UNIT_ID_PC_START)      && (id < UNIT_ID_PC_END);
     out |=     (id > UNIT_ID_NPC_START)     && (id < UNIT_ID_NPC_END);
     out |=     (id > UNIT_ID_GENERIC_START) && (id < UNIT_ID_GENERIC_END);
