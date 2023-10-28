@@ -25,13 +25,6 @@ void Game_Map_Load(struct Game *sota, const i16 in_map_index) {
     jsonio_readJSON(mapFilenames[in_map_index], sota->map);
     // read_json sets the row_len and col_len necessary for dArrays_Init
     // Game_Tilesets_Dump(sota);
-
-    /* --- Parsing shadow tileset --- */
-    char *path = PATH_JOIN("assets", "Tiles", "Tileset_Shadow.json");
-    struct cJSON *jshadow_tileset_file  = jsonio_parseJSON(path);
-    struct cJSON *jshadow_tileset       = cJSON_GetObjectItem(jshadow_tileset_file, "shadow_tileset");
-    Tilemap_Shader_Load_Tileset_JSON(sota->map->tilemap_shader, jshadow_tileset);
-    cJSON_Delete(jshadow_tileset_file);
 }
 
 void Game_Map_Free(struct Game *sota) {

@@ -834,6 +834,13 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
     SDL_assert(map->tilemap_shader->shadow_tilemaps);
     Map_Tilemap_Texture_Init(map);
     Map_Texture_Alloc(map);
+
+    /* --- Parsing shadow tileset --- */
+    char *path = PATH_JOIN("assets", "Tiles", "Tileset_Shadow.json");
+    struct cJSON *jshadow_tileset_file  = jsonio_parseJSON(path);
+    struct cJSON *jshadow_tileset       = cJSON_GetObjectItem(jshadow_tileset_file, "shadow_tileset");
+    Tilemap_Shader_Load_Tileset_JSON(map->tilemap_shader, jshadow_tileset);
+    cJSON_Delete(jshadow_tileset_file);
 }
 
 /* --- Map events / Triggers --- */
