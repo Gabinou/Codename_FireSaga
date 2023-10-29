@@ -144,6 +144,7 @@ void test_RNG() {
     test_RNG_SequenceBreaker();
 }
 
+#undef ITERATIONS
 #define ITERATIONS 10000000
 
 void bench_RNG() {

@@ -209,5 +209,3 @@ u16 SB_Rate_Drop(u16 rate, u16 n) {
     fout /= sota_slowpow(base, exponent);
     return ((u16)fout);
 }
-
-

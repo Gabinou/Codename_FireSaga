@@ -15,6 +15,7 @@
 #include "test_item.h"
 #include "test_map.h"
 #include "test_menu.h"
+#include "test_nstr.h"
 #include "test_RNG.h"
 #include "test_pathfinding.h"
 #include "test_position.h"
@@ -53,10 +54,6 @@ void render_tests() {
     // test_popup_objective();
     test_popup_objective();
     test_text_bubble();
-}
-
-void benchmarks() {
-    bench_RNG();
 }
 
 void unit_tests() {
@@ -102,7 +99,8 @@ int main(int argc, char *argv[]) {
     RNG_Init_xoroshiro256ss();
 
     /* -- Running benchmarks -- */
-    // benchmarks();
+    // bench_nstr();
+    // bench_RNG()
     // getchar();
 
     /* -- Running tests -- */
