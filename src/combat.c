@@ -32,16 +32,16 @@ struct Combat_Death Combat_Death_default = {
     .defendant_certain   = false,
 };
 
-bool Combat_canDouble(const struct Unit *restrict attacker, const struct Unit *restrict defender) {
+bool Combat_canDouble(const struct Unit * attacker, const struct Unit * defender) {
     SDL_assert(attacker && defender);
     i8 diff        = (attacker->computed_stats.speed - defender->computed_stats.speed);
     bool doubles    = (diff > SOTA_DOUBLING_SPEED);
     return (doubles);
 }
 
-bool Combat_canAttack_Equipped(struct Unit *restrict attacker, struct Unit *restrict defender,
-                               const struct Point *restrict att_pos,
-                               const struct Point *restrict dfd_pos) {
+bool Combat_canAttack_Equipped(struct Unit * attacker, struct Unit * defender,
+                               const struct Point * att_pos,
+                               const struct Point * dfd_pos) {
     SDL_assert(attacker && defender);
     SDL_assert(att_pos  && dfd_pos);
     /* Get range of current loadout */
@@ -52,9 +52,9 @@ bool Combat_canAttack_Equipped(struct Unit *restrict attacker, struct Unit *rest
     return (can);
 }
 
-struct Combat_Flow Compute_Combat_Flow(struct Unit *restrict agg, struct Unit *restrict dft,
-                                       const struct Point *restrict agg_pos,
-                                       const struct Point *restrict dft_pos) {
+struct Combat_Flow Compute_Combat_Flow(struct Unit * agg, struct Unit * dft,
+                                       const struct Point * agg_pos,
+                                       const struct Point * dft_pos) {
     SDL_assert(agg      && dft);
     SDL_assert(agg_pos  && dft_pos);
     struct Combat_Flow out_flow;
@@ -80,8 +80,8 @@ struct Combat_Flow Compute_Combat_Flow(struct Unit *restrict agg, struct Unit *r
     return (out_flow);
 }
 
-struct Damage Compute_Combat_Damage(struct Unit *restrict attacker,
-                                    struct Unit *restrict defender) {
+struct Damage Compute_Combat_Damage(struct Unit * attacker,
+                                    struct Unit * defender) {
     SDL_assert(attacker && defender);
     u8 eff = Unit_computeEffectivefactor(attacker, defender);
     u8 aap = attacker->computed_stats.attack[DMG_TYPE_PHYSICAL];
@@ -108,7 +108,7 @@ struct Damage Compute_Combat_Damage(struct Unit *restrict attacker,
     return (attacker->damage);
 }
 
-void Combat_Death_isPossible(struct Combat_Flow flow, u8 *restrict out) {
+void Combat_Death_isPossible(struct Combat_Flow flow, u8 * out) {
     out[SOTA_DEFENDANT] = 0;
     // TODO: compute total damage
 }
@@ -176,10 +176,10 @@ struct Combat_Death Compute_Combat_Death(struct Unit *aggressor, struct Unit *de
     return (out_death);
 }
 
-struct Combat_Rates Compute_Combat_Rates(struct Unit *restrict attacker,
-                                         struct Unit *restrict defender,
-                                         const struct Point *restrict att_pos,
-                                         const struct Point *restrict dfd_pos) {
+struct Combat_Rates Compute_Combat_Rates(struct Unit * attacker,
+                                         struct Unit * defender,
+                                         const struct Point * att_pos,
+                                         const struct Point * dfd_pos) {
     SDL_assert(attacker && defender);
     u8 distance = abs(dfd_pos->x - att_pos->x) + abs(dfd_pos->y - att_pos->y);
     struct Combat_Rates out_rates = Combat_Rates_default;
@@ -191,10 +191,10 @@ struct Combat_Rates Compute_Combat_Rates(struct Unit *restrict attacker,
 }
 
 // *INDENT-OFF*
-struct Combat_Forecast Compute_Combat_Forecast(struct Unit *restrict agg, 
-                                               struct Unit *restrict dft,
-                                               const struct Point *restrict agg_pos,
-                                               const struct Point *restrict dft_pos) {
+struct Combat_Forecast Compute_Combat_Forecast(struct Unit * agg, 
+                                               struct Unit * dft,
+                                               const struct Point * agg_pos,
+                                               const struct Point * dft_pos) {
 // *INDENT-ON*
     SDL_assert(agg        &&dft);
     SDL_assert(agg_pos    &&dft_pos);
@@ -214,7 +214,7 @@ struct Combat_Forecast Compute_Combat_Forecast(struct Unit *restrict agg,
     return (out);
 }
 
-void Combat_totalDamage(struct Combat_Attack *restrict attack, struct Damage *restrict damage) {
+void Combat_totalDamage(struct Combat_Attack * attack, struct Damage * damage) {
     /* - crit hit should be computed before - */
     attack->total_damage = 0;
     if (attack->hit && !attack->crit)
@@ -223,10 +223,9 @@ void Combat_totalDamage(struct Combat_Attack *restrict attack, struct Damage *re
         attack->total_damage = damage->dmg_crit[DMG_TYPE_TOTAL];
 }
 
-void Compute_Combat_Outcome(struct Combat_Phase    *restrict phases,
-                            struct Combat_Attack   *restrict darr_attacks,
-                            struct Combat_Forecast *restrict forecast,
-                            struct TINYMT32_T      *restrict tinymt32,
+void Compute_Combat_Outcome(struct Combat_Phase    * phases,
+                            struct Combat_Attack   * darr_attacks,
+                            struct Combat_Forecast * forecast,
                             struct Unit         *aggressor,
                             struct Unit         *defendant) {
     // TODO: tripling with SPEED DEMON skill
@@ -244,7 +243,7 @@ void Compute_Combat_Outcome(struct Combat_Phase    *restrict phases,
     u8 brave   = forecast->flow.aggressor_brave;
     temp_phase.attacker = SOTA_AGGRESSOR;
 
-    Compute_Combat_Phase(tinymt32, &temp_phase, darr_attacks, damage, attacker, hit, crit, brave);
+    Compute_Combat_Phase(&temp_phase, darr_attacks, damage, attacker, hit, crit, brave);
     phases[forecast->phase_num++] = temp_phase;
 
     /* -- Defendant, Retaliation 1 -- */
@@ -256,7 +255,7 @@ void Compute_Combat_Outcome(struct Combat_Phase    *restrict phases,
         attacker    = defendant;
         temp_phase.attacker = SOTA_DEFENDANT;
 
-        Compute_Combat_Phase(tinymt32, &temp_phase, darr_attacks, damage, defendant, hit, crit, brave);
+        Compute_Combat_Phase(&temp_phase, darr_attacks, damage, defendant, hit, crit, brave);
         phases[forecast->phase_num++] = temp_phase;
     }
     /* -- Aggressor, Phase 2 -- */
@@ -268,7 +267,7 @@ void Compute_Combat_Outcome(struct Combat_Phase    *restrict phases,
         attacker    = aggressor;
         temp_phase.attacker = SOTA_AGGRESSOR;
 
-        Compute_Combat_Phase(tinymt32, &temp_phase, darr_attacks, damage, attacker, hit, crit, brave);
+        Compute_Combat_Phase(&temp_phase, darr_attacks, damage, attacker, hit, crit, brave);
         phases[forecast->phase_num++] = temp_phase;
 
     }
@@ -281,14 +280,14 @@ void Compute_Combat_Outcome(struct Combat_Phase    *restrict phases,
         attacker    = defendant;
         temp_phase.attacker = SOTA_DEFENDANT;
 
-        Compute_Combat_Phase(tinymt32, &temp_phase, darr_attacks, damage, defendant, hit, crit, brave);
+        Compute_Combat_Phase(&temp_phase, darr_attacks, damage, defendant, hit, crit, brave);
         phases[forecast->phase_num++] = temp_phase;
     }
     forecast->attack_num = DARR_NUM(darr_attacks);
 }
 
 /* -- Combat Attacks -- */
-int Combat_Phase_Attack_Num(struct Combat_Phase *restrict phase, int brave_factor) {
+int Combat_Phase_Attack_Num(struct Combat_Phase * phase, int brave_factor) {
     SDL_assert(brave_factor >= 1);
     int attacks = 0;
     for (int i = 0; i < brave_factor; ++i) {
@@ -300,7 +299,7 @@ int Combat_Phase_Attack_Num(struct Combat_Phase *restrict phase, int brave_facto
     return (attacks);
 }
 
-int Combat_TotalAttack_Num(struct Combat_Phase *restrict phases, int brave_factor, int phase_num) {
+int Combat_TotalAttack_Num(struct Combat_Phase * phases, int brave_factor, int phase_num) {
     int total_attacks = 0;
     for (int i = 0; i < phase_num; ++i)
         total_attacks += Combat_Phase_Attack_Num(&phases[i], brave_factor);
@@ -308,20 +307,18 @@ int Combat_TotalAttack_Num(struct Combat_Phase *restrict phases, int brave_facto
     return (total_attacks);
 }
 
-void Compute_Combat_Phase(struct TINYMT32_T     *restrict tinymt32,
-                          struct Combat_Phase *restrict phase,
-                          struct Combat_Attack  *restrict darr_attacks, struct Damage        damage,
-                          struct Unit *restrict attacker, u8 hit_rate, u8 crit_rate, u8 brave_factor) {
+void Compute_Combat_Phase(struct Combat_Phase * phase,
+                          struct Combat_Attack  * darr_attacks, struct Damage        damage,
+                          struct Unit * attacker, u8 hit_rate, u8 crit_rate, u8 brave_factor) {
     phase->attack_num = Combat_Phase_Attack_Num(phase, brave_factor);
     for (int i = 0; i < phase->attack_num; i++)
-        Compute_Combat_Attack(tinymt32, phase, darr_attacks, damage, attacker, hit_rate, crit_rate);
+        Compute_Combat_Attack(phase, darr_attacks, damage, attacker, hit_rate, crit_rate);
 
 }
 
-void Compute_Combat_Attack(struct TINYMT32_T    *restrict tinymt32,
-                           struct Combat_Phase  *restrict phase,
-                           struct Combat_Attack *restrict darr_attacks, struct Damage damage,
-                           struct Unit *restrict attacker, u8 hit_rate, u8 crit_rate) {
+void Compute_Combat_Attack(struct Combat_Phase  * phase,
+                           struct Combat_Attack * darr_attacks, struct Damage damage,
+                           struct Unit * attacker, u8 hit_rate, u8 crit_rate) {
     struct Combat_Attack temp_attack;
 
     attacker->hit_sequence.eff_rate = hit_rate;
@@ -343,7 +340,7 @@ void Compute_Combat_Attack(struct TINYMT32_T    *restrict tinymt32,
     #endif /* RNG_SEQUENCE_BREAKER_MISS */
 
     /* -- checking hit or miss -- */
-    temp_attack.hit = RNG_checkRate(tinymt32, attacker->hit_sequence.eff_rate, SOTA_RNG);
+    temp_attack.hit = RNG_checkRate(attacker->hit_sequence.eff_rate, SOTA_RNG);
     /* -- checking sequence -- */
     #if defined(RNG_SEQUENCE_BREAKER_HIT) || defined(RNG_SEQUENCE_BREAKER_MISS)
     RNG_checkSequence_twoWay(&attacker->hit_sequence, temp_attack.hit);
@@ -365,7 +362,7 @@ void Compute_Combat_Attack(struct TINYMT32_T    *restrict tinymt32,
     }
     #endif /* RNG_SEQUENCE_BREAKER_MISS */
     /* -- checking crit or nocrit -- */
-    temp_attack.crit = RNG_checkRate(tinymt32, crit_rate, SOTA_RNG);
+    temp_attack.crit = RNG_checkRate(crit_rate, SOTA_RNG);
     /* -- checking sequence -- */
     #if defined(RNG_SEQUENCE_BREAKER_CRIT) || defined(RNG_SEQUENCE_BREAKER_NOCRIT)
     RNG_checkSequence_twoWay(&attacker->crit_sequence, temp_attack.crit);
@@ -402,8 +399,8 @@ void Combat_Resolve(struct Combat_Attack *combat_attacks, u8 attack_num,
 }
 
 void Resolve_Attack(struct Combat_Attack attack,
-                    struct Unit *restrict attacker,
-                    struct Unit *restrict defender) {
+                    struct Unit * attacker,
+                    struct Unit * defender) {
     if (!attack.hit) {
         return;
     }

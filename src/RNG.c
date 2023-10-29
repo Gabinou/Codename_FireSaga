@@ -1,9 +1,6 @@
 #include "RNG.h"
 
-RNG_URN_ptr global_RNG_URN = RNG_URN;
 u8 URN_debug = 1;
-
-struct TINYMT32_T *tinyMT_global = NULL;
 
 // TODO: Different tables for difficulties?
 /* -- Sequence Breaker tables -- */
@@ -79,12 +76,8 @@ void RNG_Init_tinymt(struct TINYMT32_T *tinymt) {
     tinymt32_init(tinymt, 777UL);
 }
 
-u8 RNG_URN_debug(struct TINYMT32_T *tinymt) {
-    return (URN_debug);
-}
-
-u8 RNG_URN(struct TINYMT32_T *tinymt) {
-    return ((u8)RNG_openBSD_u32(tinymt, RN_MIN, RN_MAX));
+u8 RNG_URN(void) {
+    return ((u8)RNG_openBSD_u64(RN_MIN, RN_MAX));
 }
 
 bool RNG_single_roll(u8 RN, u8 rate) {
@@ -133,19 +126,33 @@ u32 RNG_openBSD_u32(struct TINYMT32_T *tinymt, u32 min, u32 max) {
     return (out);
 }
 
-bool RNG_checkRate(struct TINYMT32_T *in_tinymt, i16 rate, i16 mode) {
-    // Uses tinyMT_global if (in_tinymt==NULL)
+u64 RNG_openBSD_u64(u64 min, u64 max) {
+    // "Scales" uniform integer from [0 and 2**32 - 1] to [min, max[
+    // Unbiased according to: Fast Random Integer Generation in an Interval
+    u64 x;
+    u64 s = max - min;
+    u64 t = (UINT32_MAX - s + 1) % s;
+    do {
+        x = next_xoshiro256ss();
+        // Rejects the last pigeonhole
+        // Ex: 32 with max=5 -> rejects 30,31,32
+    } while (x < t);
+    u64 out = min + (x % s);
+    return (out);
+}
+
+bool RNG_checkRate(i16 rate, i16 mode) {
     bool hit = false;
     u8 RN1, RN2;
     switch (mode) {
         case GAME_RN_SINGLE:
-            RN1 = global_RNG_URN(in_tinymt);
+            RN1 = RNG_URN();
             hit = RNG_single_roll(RN1, rate);
             break;
         case GAME_RN_DOUBLE:
         default:
-            RN1 = global_RNG_URN(in_tinymt);
-            RN2 = global_RNG_URN(in_tinymt);
+            RN1 = RNG_URN();
+            RN2 = RNG_URN();
             hit = RNG_double_roll(RN1, RN2, rate);
             break;
     }

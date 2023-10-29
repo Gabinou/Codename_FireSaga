@@ -125,7 +125,7 @@ extern struct Combat_Forecast Compute_Combat_Forecast(struct Unit *agg, struct U
 
 /* -- Combat Outcome -- */
 extern void Compute_Combat_Outcome(struct Combat_Phase *,    struct Combat_Attack *,
-                                   struct Combat_Forecast *, struct TINYMT32_T *,
+                                   struct Combat_Forecast *
                                    struct Unit *,            struct Unit *);
 
 /* -- Combat Resolution -- */
@@ -153,10 +153,10 @@ extern struct Combat_Flow Compute_Combat_Flow(struct Unit *agg, struct Unit *dft
 
 /* -- Combat Attacks -- */
 extern void
-Compute_Combat_Phase(struct TINYMT32_T *, struct Combat_Phase *, struct Combat_Attack *,
+Compute_Combat_Phase(struct Combat_Phase *, struct Combat_Attack *,
                      struct Damage, struct Unit *, u8, u8, u8);
-extern void Compute_Combat_Attack(struct TINYMT32_T *, struct Combat_Phase *,
-                                  struct Combat_Attack *, struct Damage, struct Unit *, u8, u8);
+extern void Compute_Combat_Attack(struct Combat_Phase *, struct Combat_Attack *,
+                                  struct Damage, struct Unit *, u8, u8);
 
 extern int Combat_TotalAttack_Num( struct Combat_Phase *phases, int b, int num);
 extern int Combat_Phase_Attack_Num(struct Combat_Phase *phase,  int brave_factor);

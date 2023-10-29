@@ -23,7 +23,7 @@ float sota_slowpow(float base, int exponent);
 /* std_dev: standard deviation      */
 
 /* --- TYPEDEFS --- */
-typedef u8(*RNG_URN_ptr)(struct TINYMT32_T *);
+typedef u8(*RNG_URN_ptr)();
 
 /* --- CONSTANTS --- */
 enum SOTA_RN {
@@ -39,20 +39,14 @@ enum SOTA_RN {
 u64  next_xoshiro256ss(void);
 void RNG_Init_xoroshiro256ss(void);
 
-extern struct TINYMT32_T *tinyMT_global;
-
+/* --- Tinymt --- */
 /* -- API -- */
-bool RNG_checkRate(  struct TINYMT32_T *tinymt, i16 rate, i16 mode);
-void RNG_Init_tinymt(struct TINYMT32_T *tinymt);
-
-// Pointer to RNG function used everywhere in SOTA
-extern RNG_URN_ptr global_RNG_URN;
+bool RNG_checkRate(i16 rate, i16 mode);
 
 /* -- Internals -- */
 /* - Uniform - */
-u8  RNG_URN(             struct TINYMT32_T *tinymt);
-static u32 RNG_openBSD_u32(struct TINYMT32_T *tinymt, u32 max, u32 min);
-static u64 RNG_openBSD_u64(struct TINYMT32_T *tinymt, u64 max, u64 min);
+u8 RNG_URN(void);
+static u64 RNG_openBSD_u64(u64 max, u64 min);
 
 /* - Checkers - */
 bool RNG_single_roll(u8 RN,  u8 hit);
@@ -61,10 +55,6 @@ bool RNG_double_roll(u8 RN1, u8 RN2, u8 hit);
 /* - Gaussian - */
 u8 *RNG_boxmuller(const u8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev);
 /* defaults: avg = 50, std_dev = 20 */
-
-/* -- Debug -- */
-u8 RNG_URN_debug(struct TINYMT32_T *tinymt);
-extern u8 URN_debug; /* Value returned by RNG_URN_debug */
 
 /* --- RNG SEQUENCE BREAKER (SB) --- */
 /* Sequence breaker increases or decreases probability of next draw
