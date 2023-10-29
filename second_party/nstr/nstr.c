@@ -3,9 +3,9 @@
 /* --- Pascal String s8 strings --- */
 // 3x-4x faster than null-terminated strings!
 s8 *s8_Init(char *string) {
-    s8 *s8_string       = malloc(sizeof(*s8_string));
-    s8_string->len      = strlen(string) - 1;
-    s8_string->data     = malloc(s8_string->len);
+    s8 *s8_string   = malloc(sizeof(*s8_string));
+    s8_string->len  = strlen(string) - 1;
+    s8_string->data = malloc(s8_string->len);
     memcpy(s8_string->data, string, s8_string->len);
     return(s8_string);
 }
@@ -18,14 +18,50 @@ void s8_Free(s8 *string) {
     free(string);
 }
 
+void s8_slicefromStart(s8 *string, size_t toslice) {
+    for (size_t i = toslice; i < string->len; i++)
+        *(string->data + i - toslice) = (u8) *(string->data + i);
+    string->len -= toslice;
+}
+
+void s8_slicefromEnd(s8 *string, size_t toslice) {
+    for (size_t i = 0; i < (string->len - toslice) ; i++)
+        *(string->data + i) = (u8) *(string->data + i);
+    string->len -= toslice;
+}
+
 void s8_toLower(s8 *string) {
     for (size_t i = 0; i < string->len; i++)
-        *(string->data + i) = (char)tolower(*(string->data + i));
+        *(string->data + i) = (u8)tolower(*(string->data + i));
 }
 
 void s8_toUpper(s8 *string) {
     for (size_t i = 0; i < string->len; i++)
-        *(string->data + i) = (char)toupper(*(string->data + i));
+        *(string->data + i) = (u8)toupper(*(string->data + i));
+}
+
+void s8_camelCase(s8 *str8, const char separator, size_t minwordlen) {
+    size_t wlen = 0;
+    for (size_t i = 0; i <= str8->len; i++) {
+        int word_end = (*(str8->data + i) == separator) || (i == str8->len);
+        if (!word_end) {
+            /* Next character in word. */
+            wlen++;
+            continue;
+        }
+        /* Word end found. */
+        if (wlen > minwordlen)
+            /* Upper First letter of word, if longer than min */
+            *(str8->data + i - wlen) = (u8)toupper(*(str8->data + i - wlen));
+        wlen = 0;
+    }
+}
+
+void s8_replaceSingle(s8 *string, const char replace, const char with) {
+    for (size_t i = 0; i < string->len; i++) {
+        if (*(string->data + i) == replace)
+            *(string->data + i) = with;
+    }
 }
 
 
@@ -33,7 +69,7 @@ void s8_toUpper(s8 *string) {
 // NOTE: caller deals with memory
 char *nstr_slicefromStart(char *in_str, size_t toslice) {
     for (size_t i = toslice; i < strlen(in_str) ; i++) {
-        *(in_str + i - toslice) = (char) * (in_str + i);
+        *(in_str + i - toslice) = (u8) * (in_str + i);
     }
     *(in_str - toslice + strlen(in_str)) = '\0';
     return (in_str);
@@ -41,7 +77,7 @@ char *nstr_slicefromStart(char *in_str, size_t toslice) {
 
 char *nstr_slicefromEnd(char *in_str, size_t toslice) {
     for (size_t i = 0; i < (strlen(in_str) - toslice) ; i++) {
-        *(in_str + i) = (char) * (in_str + i);
+        *(in_str + i) = (u8) * (in_str + i);
     }
     *(in_str - toslice + strlen(in_str)) = '\0';
     return (in_str);
@@ -56,7 +92,7 @@ char *nstr_toLower(char *in_str) {
 
 char *nstr_toUpper(char *in_str) {
     for (size_t i = 0; i < strlen(in_str); i++) {
-        *(in_str + i) = (char)toupper(*(in_str + i));
+        *(in_str + i) = (u8)toupper(*(in_str + i));
     }
     return (in_str);
 }
@@ -66,7 +102,7 @@ char *nstr_camelCase(char *in_str, const char separator, size_t minwordlen) {
     for (size_t i = 0; i <= strlen(in_str) ; i++) {
         if ((*(in_str + i) == separator) || (i == strlen(in_str))) {
             if (wordlen > minwordlen) {
-                *(in_str + i - wordlen) = (char)toupper(*(in_str + i - wordlen));
+                *(in_str + i - wordlen) = (u8)toupper(*(in_str + i - wordlen));
             }
             wordlen = 0;
         } else {
