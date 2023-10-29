@@ -25,8 +25,6 @@ float sota_slowpow(float base, int exponent);
 typedef u8(*RNG_URN_ptr)(struct TINYMT32_T *);
 
 /* --- CONSTANTS --- */
-#define TWOPOWER32 0x100000000
-
 enum SOTA_RN {
     RN_MAX          = 100, /* 100 excluded */
     RN_5050         = 50,  /* < for 50/50  */
