@@ -28,7 +28,6 @@ worldwide. This software is distributed without any warranty.
 
 See <http://creativecommons.org/publicdomain/zero/1.0/>. */
 
-#include <stdint.h>
 
 /* This is xoroshiro128** 1.0, one of our all-purpose, rock-solid,
    small-state generators. It is extremely (sub-ns) fast and it passes all
@@ -43,16 +42,16 @@ See <http://creativecommons.org/publicdomain/zero/1.0/>. */
    output to fill s. */
 
 
-static inline uint64_t rotl(const uint64_t x, int k) {
+static inline u64 rotl(const u64 x, int k) {
     return (x << k) | (x >> (64 - k));
 }
 
-static uint64_t s[2];
+static u64 s[2];
 
-uint64_t next(void) {
-    const uint64_t s0 = s[0];
-    uint64_t s1 = s[1];
-    const uint64_t result = rotl(s0 * 5, 7) * 9;
+u64 next(void) {
+    const u64 s0 = s[0];
+    u64       s1 = s[1];
+    const u64 result = rotl(s0 * 5, 7) * 9;
 
     s1 ^= s0;
     s[0] = rotl(s0, 24) ^ s1 ^ (s1 << 16); // a, b
@@ -62,12 +61,13 @@ uint64_t next(void) {
 }
 
 /* --- RNG --- */
-void RNG_Init_xoroshiro128ss(struct TINYMT32_T *tinymt) {
-    SDL_assert(tinymt);
-    tinymt->mat1 = 1990UL;
-    tinymt->mat2 = 5UL;
-    tinymt->tmat = 8UL;
-    tinymt32_init(tinymt, 777UL);
+void RNG_Init_xoroshiro128ss(void) {
+    SDL_assert(s);
+    u32 *s_32   = (u32 *)s;
+    s_32[0]     = 1990;
+    s_32[1]     =    5;
+    s_32[2]     =    8;
+    s_32[3]     =  777;
 }
 
 void RNG_Init_tinymt(struct TINYMT32_T *tinymt) {
@@ -121,7 +121,7 @@ u32 RNG_openBSD_uint32_t(struct TINYMT32_T *tinymt, u32 min, u32 max) {
     // "Scales" uniform integer from [0 and 2**32 - 1] to [min, max[
     // Unbiased according to: Fast Random Integer Generation in an Interval
     u32 s = max - min;
-    u32 t = (UINT32_T_MAX - s + 1) % s;
+    u32 t = (UINT32_MAX - s + 1) % s;
     u32 x;
     do {
         x = tinymt32_generate_uint32(tinymt);

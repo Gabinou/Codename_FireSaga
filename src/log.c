@@ -44,7 +44,6 @@ void Log_Init() {
 void Log2file(void *userdata, int category, SDL_LogPriority priority,
               const char *message) {
     /* -- Log to file -- */
-    fprintf(logf, "%s:\t%s\n", SDL_priority_prefixes[priority], message);
     FILE *logf = fopen(LOGFILE, "a");
     fprintf(logf, "%s:\t%s\n", SDL_priority_prefixes[priority], message);
     fclose(logf);

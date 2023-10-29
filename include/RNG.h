@@ -1,6 +1,7 @@
 #ifndef RNG_H
 #define RNG_H
 
+#include <stdint.h>
 #include "enums.h"
 #include "globals.h"
 #include "debug.h"
@@ -13,13 +14,13 @@
 float sota_slowpow(float base, int exponent);
 
 /* -- GLOSSARY: -- */
-/* RN: Random number             */
-/* RNG: Random number generator  */
-/* SB: sequence breaker          */
-/* U: Uniform(ly)                */
-/* G: Gaussian/Normal(ly)        */
-/* std_dev: standard deviation   */
-/* avg: average                  */
+/* RN:      Random number           */
+/* RNG:     Random number generator */
+/* SB:      sequence breaker        */
+/* U:       Uniform(ly)             */
+/* G:       Gaussian/Normal(ly)     */
+/* avg:     average                 */
+/* std_dev: standard deviation      */
 
 /* --- TYPEDEFS --- */
 typedef u8(*RNG_URN_ptr)(struct TINYMT32_T *);
@@ -31,6 +32,10 @@ enum SOTA_RN {
     RN_MIN          = 0,
     RN_TABLE_SIZE   = 100,
 };
+
+
+/* -- API -- */
+u64 next(void);
 
 extern struct TINYMT32_T *tinyMT_global;
 
