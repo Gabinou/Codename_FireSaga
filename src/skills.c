@@ -23,7 +23,7 @@ void Skill_DANCE(struct Unit *actor, void *patient) {
 
 void Skill_ROCK_SHIELD(struct Unit *actor, void *data1) {
     struct Inventory_item rock_shield = Inventory_item_default;
-    if (RNG_URN(tinyMT_global) < ROCK_SHIELD_BOULDER_PROB)
+    if (RNG_URN() < ROCK_SHIELD_BOULDER_PROB)
         rock_shield.id = ITEM_ID_OBSIDIAN_SLAB;
     else
         rock_shield.id = ITEM_ID_BOULDER;

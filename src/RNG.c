@@ -68,6 +68,23 @@ void RNG_Init_xoroshiro256ss(void) {
     s[3] =  777ULL;
 }
 
+void RNG_Set_xoroshiro256ss(u64 s1, u64 s2, u64 s3, u64 s4) {
+    SDL_assert(s);
+    s[0] = s1;
+    s[1] = s2;
+    s[2] = s3;
+    s[3] = s4;
+}
+
+void RNG_Get_xoroshiro256ss(u64 *s_out) {
+    SDL_assert(s     != NULL);
+    SDL_assert(s_out != NULL);
+    s_out[0] = s[0];
+    s_out[1] = s[1];
+    s_out[2] = s[2];
+    s_out[3] = s[3];
+}
+
 void RNG_Init_tinymt(struct TINYMT32_T *tinymt) {
     SDL_assert(tinymt);
     tinymt->mat1 = 1990UL;

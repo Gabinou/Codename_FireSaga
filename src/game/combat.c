@@ -12,7 +12,7 @@ void Game_Combat_Outcome(struct Game *sota) {
     const struct Point *dft_pos = (struct Point *)&dft_pos_cmp->tilemap_pos;
     sota->combat_forecast = Compute_Combat_Forecast(aggressor, defendant, agg_pos, dft_pos);
 
-    Compute_Combat_Outcome(sota->combat_phases, sota->combat_attacks, &sota->combat_forecast,
-                           &sota->tinymt32, aggressor, defendant);
+    Compute_Combat_Outcome(sota->combat_phases, sota->combat_attacks, &sota->combat_forecast, aggressor,
+                           defendant);
 
 }

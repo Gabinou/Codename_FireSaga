@@ -95,8 +95,7 @@ int main(int argc, char *argv[]) {
     Utilities_DrawColor_Reset(sota->renderer);
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Initializing TinyMT RNG\n");
-    RNG_Init_tinymt(&sota->tinymt32);
-    tinyMT_global = &sota->tinymt32;
+    RNG_Init_xoroshiro256ss();
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Game startup, according to user inputs\n");
     Game_Startup(sota, args);

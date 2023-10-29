@@ -28,8 +28,8 @@ typedef u8(*RNG_URN_ptr)();
 /* --- CONSTANTS --- */
 enum SOTA_RN {
     RN_MAX          = 100, /* 100 excluded */
-    RN_5050         = 50,  /* < for 50/50  */
-    RN_MIN          = 0,
+    RN_5050         =  50,  /* < for 50/50  */
+    RN_MIN          =   0,
     RN_TABLE_SIZE   = 100,
 };
 
@@ -38,6 +38,9 @@ enum SOTA_RN {
 /* 2x faster than tinymt */
 u64  next_xoshiro256ss(void);
 void RNG_Init_xoroshiro256ss(void);
+
+void RNG_Set_xoroshiro256ss(u64 s1, u64 s2, u64 s3, u64 s4);
+void RNG_Get_xoroshiro256ss(u64 *s);
 
 /* --- Tinymt --- */
 /* -- API -- */

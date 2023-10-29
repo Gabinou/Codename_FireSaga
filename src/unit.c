@@ -775,7 +775,7 @@ void Unit_lvlUp(struct Unit *unit) {
             temp_growth = sequence->eff_rate = SB_GROWTH_RISE(temp_growth, sequence->len);
         }
 
-        grows_arr[i]  = (temp_growth >= global_RNG_URN(tinyMT_global));
+        grows_arr[i]  = (temp_growth >= RNG_URN());
 
         if (rng_sequence_breaker_miss_growth)
             RNG_checkSequence_oneWay(sequence, grows_arr[i]);

@@ -125,7 +125,7 @@ extern struct Combat_Forecast Compute_Combat_Forecast(struct Unit *agg, struct U
 
 /* -- Combat Outcome -- */
 extern void Compute_Combat_Outcome(struct Combat_Phase *,    struct Combat_Attack *,
-                                   struct Combat_Forecast *
+                                   struct Combat_Forecast *,
                                    struct Unit *,            struct Unit *);
 
 /* -- Combat Resolution -- */

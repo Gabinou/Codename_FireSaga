@@ -77,7 +77,6 @@ struct Game Game_default = {
     .units_loaded  = NULL,
     .selected_unit_moved_position   = {-1, -1},
     .selected_unit_initial_position = {-1, -1},
-    // tinymt32_t tinymt32,
     // .convoy = Convoy_default,
     // .camp = Camp_default,
 
@@ -508,21 +507,16 @@ void Game_loadJSON(struct Game *sota, const i16 save_ind) {
     cJSON *json         = jsonio_parseJSON(filename);
     // readJSON_narrative(json, &sota->narrative);
     cJSON *jRN          = cJSON_GetObjectItem(json, "RN");
-    cJSON *jRN_status   = cJSON_GetObjectItem(jRN, "Status");
-    cJSON *jRN_mat1     = cJSON_GetObjectItem(jRN, "mat1");
-    cJSON *jRN_mat2     = cJSON_GetObjectItem(jRN, "mat2");
-    cJSON *jRN_tmat     = cJSON_GetObjectItem(jRN, "tmat");
-    sota->tinymt32.mat1 = cJSON_GetNumberValue(jRN_mat1);
-    sota->tinymt32.mat2 = cJSON_GetNumberValue(jRN_mat2);
-    sota->tinymt32.tmat = cJSON_GetNumberValue(jRN_tmat);
-    cJSON *jelement;
-    i16 i = 0;
-    cJSON_ArrayForEach(jelement, jRN_status) {
-        if ((i >= 0) && (i < 4)) {
-            sota->tinymt32.status[i] = cJSON_GetNumberValue(jelement);
-            i++;
-        }
-    }
+    cJSON *jRN_s1       = cJSON_GetObjectItem(jRN, "s1");
+    cJSON *jRN_s2       = cJSON_GetObjectItem(jRN, "s2");
+    cJSON *jRN_s3       = cJSON_GetObjectItem(jRN, "s3");
+    cJSON *jRN_s4       = cJSON_GetObjectItem(jRN, "s4");
+    u64 s1              = cJSON_GetNumberValue(jRN_s1);
+    u64 s2              = cJSON_GetNumberValue(jRN_s2);
+    u64 s3              = cJSON_GetNumberValue(jRN_s3);
+    u64 s4              = cJSON_GetNumberValue(jRN_s4);
+    RNG_Set_xoroshiro256ss(s1, s2, s3, s4);
+
     cJSON *jconvoy = cJSON_GetObjectItem(json, "Convoy");
     Convoy_Clear(&sota->convoy);
     Convoy_readJSON(&sota->convoy, jconvoy);
@@ -563,28 +557,23 @@ void Game_saveJSON(struct Game *sota, const i16 save_ind) {
     cJSON *junit;
     cJSON *jRN          = cJSON_CreateObject();
     cJSON *jRN_status   = cJSON_CreateArray();
-    cJSON *jRN_mat1     = cJSON_CreateNumber(sota->tinymt32.mat1);
-    cJSON *jRN_mat2     = cJSON_CreateNumber(sota->tinymt32.mat2);
-    cJSON *jRN_tmat     = cJSON_CreateNumber(sota->tinymt32.tmat);
-    cJSON *jtemp;
-    // SDL_LogDebug(SOTA_LOG_SYSTEM, "RnStatus[0] %d", tinymt32.status[0]);
-    jtemp = cJSON_CreateNumber(sota->tinymt32.status[0]);
-    cJSON_AddItemToArray(jRN_status, jtemp);
-    jtemp = cJSON_CreateNumber(sota->tinymt32.status[1]);
-    cJSON_AddItemToArray(jRN_status, jtemp);
-    jtemp = cJSON_CreateNumber(sota->tinymt32.status[2]);
-    cJSON_AddItemToArray(jRN_status, jtemp);
-    jtemp = cJSON_CreateNumber(sota->tinymt32.status[3]);
-    cJSON_AddItemToArray(jRN_status, jtemp);
+
+    // TODO: save xoshiro256ss state
+    RNG_Get_xoroshiro256ss(sota->s_xoshiro256ss);
+    cJSON *jRN_s1     = cJSON_CreateNumber(sota->s_xoshiro256ss[0]);
+    cJSON *jRN_s2     = cJSON_CreateNumber(sota->s_xoshiro256ss[0]);
+    cJSON *jRN_s3     = cJSON_CreateNumber(sota->s_xoshiro256ss[0]);
+    cJSON *jRN_s4     = cJSON_CreateNumber(sota->s_xoshiro256ss[0]);
+
     for (u8 i = 0; i < sota->party_size; i++) {
         junit = cJSON_CreateObject();
         Unit_writeJSON(&sota->party[i], junit);
         cJSON_AddItemToObject(jparty, "Unit", junit);
     }
-    cJSON_AddItemToObject(jRN,  "Status",   jRN_status);
-    cJSON_AddItemToObject(jRN,  "mat1",     jRN_mat1);
-    cJSON_AddItemToObject(jRN,  "mat2",     jRN_mat2);
-    cJSON_AddItemToObject(jRN,  "tmat",     jRN_tmat);
+    cJSON_AddItemToObject(jRN,  "s1",       jRN_s1);
+    cJSON_AddItemToObject(jRN,  "s2",       jRN_s2);
+    cJSON_AddItemToObject(jRN,  "s3",       jRN_s3);
+    cJSON_AddItemToObject(jRN,  "s4",       jRN_s4);
     cJSON_AddItemToObject(json, "RN",       jRN);
     cJSON_AddItemToObject(json, "Party",    jparty);
     Convoy_writeJSON(&sota->convoy, jconvoy);

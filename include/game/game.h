@@ -145,9 +145,9 @@ struct Game {
     int  window_h;
 
     struct Settings    settings;
-    struct TINYMT32_T  tinymt32;
     struct Convoy      convoy;
     // struct Camp camp;
+    u64 s_xoshiro256ss[4]; /* Only used to read s from RNG file */
 
     struct Point cursor_move;
     bool cursor_frame_moved;
