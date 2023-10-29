@@ -31,7 +31,7 @@ u8 RNG_URN_debug(struct TINYMT32_T *tinymt) {
 }
 
 u8 RNG_URN(struct TINYMT32_T *tinymt) {
-    return ((u8)RNG_openBSD_uint32_t(tinymt, RN_MAX, RN_MIN));
+    return ((u8)RNG_openBSD_uint32_t(tinymt, RN_MIN, RN_MAX));
 }
 
 bool RNG_single_roll(u8 RN, u8 rate) {
@@ -65,17 +65,18 @@ u8 *RNG_boxmuller(const u8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev) 
     return (RN_G);
 }
 
-u16 RNG_openBSD_uint32_t(struct TINYMT32_T *tinymt, u32 max, u32 min) {
+u32 RNG_openBSD_uint32_t(struct TINYMT32_T *tinymt, u32 min, u32 max) {
     // "Scales" uniform integer from [0 and 2**32 - 1] to [min, max[
     // Unbiased according to: Fast Random Integer Generation in an Interval
-    u32 t = -(max - min) % (max - min);
+    u32 s = max - min;
+    u32 t = (UINT32_T_MAX - s + 1) % s;
     u32 x;
     do {
         x = tinymt32_generate_uint32(tinymt);
         // Rejects the last pigeonhole
         // Ex: 32 with max=5 -> rejects 30,31,32
     } while (x < t);
-    u16 out = min + (x % max);
+    u32 out = min + (x % s);
     return (out);
 }
 

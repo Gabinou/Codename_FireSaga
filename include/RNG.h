@@ -46,7 +46,7 @@ extern RNG_URN_ptr global_RNG_URN;
 /* -- Internals -- */
 /* - Uniform - */
 u8  RNG_URN(             struct TINYMT32_T *tinymt);
-u16 RNG_openBSD_uint32_t(struct TINYMT32_T *tinymt, u32 max, u32 min);
+u32 RNG_openBSD_uint32_t(struct TINYMT32_T *tinymt, u32 max, u32 min);
 
 /* - Checkers - */
 bool RNG_single_roll(u8 RN,  u8 hit);
