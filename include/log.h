@@ -11,7 +11,6 @@
 //      SDL_LogVerbose(SOTA_LOG_FPS, "");  -> only publishes if category is verbose
 //      SDL_LogCritical(0, "");            -> always publishes
 
-
 /* --- LOG --- */
 enum SOTA_LOG {
     SOTA_LOG_APP    = SDL_LOG_CATEGORY_APPLICATION,

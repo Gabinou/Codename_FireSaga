@@ -35,32 +35,22 @@ void Log_Init() {
     /* Change to SDL_LOG_PRIORITY_VERBOSE to see FPS */
     SDL_LogSetPriority(SOTA_LOG_FPS, SDL_LOG_PRIORITY_CRITICAL);
 
+    #if HAVE_STDIO_H
     SDL_LogSetOutputFunction(Log2file, NULL);
+    #endif
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Logfile set\n");
 }
 
 void Log2file(void *userdata, int category, SDL_LogPriority priority,
               const char *message) {
     /* -- Log to file -- */
-    SDL_RWops *logf = SDL_RWFromFile(LOGFILE, "a");
-    if (logf == NULL) {
-        SDL_LogError(SOTA_LOG_SYSTEM, "Could not open log file %s", LOGFILE);
-        return;
-    }
-    char buffer[DEFAULT_BUFFER_SIZE] = {0};
-    stbsp_snprintf(buffer, DEFAULT_BUFFER_SIZE, "%s:\t%s\n", SDL_priority_prefixes[priority], message);
-
-    SDL_RWwrite(logf, buffer, DEFAULT_BUFFER_SIZE, 1);
-
-    // fprintf(logf, "%s:\t%s\n", SDL_priority_prefixes[priority], message);
-    // FILE *logf = fopen(LOGFILE, "a");
-    // fprintf(logf, "%s:\t%s\n", SDL_priority_prefixes[priority], message);
-    // fclose(logf);
+    fprintf(logf, "%s:\t%s\n", SDL_priority_prefixes[priority], message);
+    FILE *logf = fopen(LOGFILE, "a");
+    fprintf(logf, "%s:\t%s\n", SDL_priority_prefixes[priority], message);
+    fclose(logf);
 
     /* -- Log  -- */
     /* Copied from SDL_log.c */
-    #if HAVE_STDIO_H
     fprintf(stderr, "%s:    %s\n", SDL_priority_prefixes[priority], message);
-    #endif
 }
 

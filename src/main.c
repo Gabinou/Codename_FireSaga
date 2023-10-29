@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) {
         exit(ERROR_PlatformMismatch);
     }
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Running on "PLATFORM_NAME);
-    SDL_LogDebug(SOTA_LOG_SYSTEM, "SDL version  %d %d %d ", SDL_MAJOR_VERSION, SDL_MINOR_VERSION,
+    SDL_LogDebug(SOTA_LOG_SYSTEM, "SDL version  %d %d %d ", SDL_MAJOR_VERSION,  SDL_MINOR_VERSION,
                  SDL_PATCHLEVEL);
     SDL_LogDebug(SOTA_LOG_SYSTEM, "SotA version %d %d %d ", SOTA_VER_MAJOR,    SOTA_VER_MINOR,
                  SOTA_VER_PATCH);
@@ -82,8 +82,12 @@ int main(int argc, char *argv[]) {
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Initializing utilities\n");
     Utilities_Load();
     #ifndef __SOTA_RELEASE__
+    #if HAVE_STDIO_H
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Printing all names\n");
     Names_Print_All("");
+    #else
+    SDL_LogError(SOTA_LOG_SYSTEM, "Could not print all names, no stdio\n");
+    #endif /* HAVE_STDIO_H */
     #endif /* __SOTA_RELEASE__ */
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
