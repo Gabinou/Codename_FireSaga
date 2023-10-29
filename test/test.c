@@ -55,6 +55,10 @@ void render_tests() {
     test_text_bubble();
 }
 
+void benchmarks() {
+    bench_RNG();
+}
+
 void unit_tests() {
     SDL_Log("Running nourstests\n");
     printf("Running nourstests\n");
@@ -97,6 +101,10 @@ int main(int argc, char *argv[]) {
     SDL_Log("Initializing TinyMT\n");
     tinyMT_global = malloc(sizeof(*tinyMT_global));
     RNG_Init_tinymt(tinyMT_global);
+
+    /* -- Running benchmarks -- */
+    // benchmarks();
+    // getchar();
 
     /* -- Running tests -- */
     unit_tests();

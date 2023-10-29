@@ -18,7 +18,7 @@ float sb_drop_table[RNG_SB_BASE_NUM] = {
     1.02f, 1.02f, 1.05f, 1.05f, 1.10f, 1.10f, 1.05f, 1.02f, 1.01f, 1.00f /* Factor */
 };
 
-/* --- xoroshiro128** --- */
+/* --- xoroshiro256** --- */
 
 /*  Written in 2018 by David Blackman and Sebastiano Vigna (vigna@acm.org)
 
@@ -28,14 +28,12 @@ worldwide. This software is distributed without any warranty.
 
 See <http://creativecommons.org/publicdomain/zero/1.0/>. */
 
+/* This is xoshiro256** 1.0, one of our all-purpose, rock-solid
+   generators. It has excellent (sub-ns) speed, a state (256 bits) that is
+   large enough for any parallel application, and it passes all tests we
+   are aware of.
 
-/* This is xoroshiro128** 1.0, one of our all-purpose, rock-solid,
-   small-state generators. It is extremely (sub-ns) fast and it passes all
-   tests we are aware of, but its state space is large enough only for
-   mild parallelism.
-
-   For generating just floating-point numbers, xoroshiro128+ is even
-   faster (but it has a very mild bias, see notes in the comments).
+   For generating just floating-point numbers, xoshiro256+ is even faster.
 
    The state must be seeded so that it is not everywhere zero. If you have
    a 64-bit seed, we suggest to seed a splitmix64 generator and use its
@@ -46,35 +44,38 @@ static inline u64 rotl(const u64 x, int k) {
     return (x << k) | (x >> (64 - k));
 }
 
-static u64 s[2];
+static u64 s[4];
 
-u64 next(void) {
-    const u64 s0 = s[0];
-    u64       s1 = s[1];
-    const u64 result = rotl(s0 * 5, 7) * 9;
+u64 next_xoshiro256ss(void) {
+    const u64 result = rotl(s[1] * 5, 7) * 9;
+    const u64      t = s[1] << 17;
 
-    s1 ^= s0;
-    s[0] = rotl(s0, 24) ^ s1 ^ (s1 << 16); // a, b
-    s[1] = rotl(s1, 37); // c
+    s[2] ^= s[0];
+    s[3] ^= s[1];
+    s[1] ^= s[2];
+    s[0] ^= s[3];
+
+    s[2] ^= t;
+
+    s[3] = rotl(s[3], 45);
 
     return result;
 }
 
 /* --- RNG --- */
-void RNG_Init_xoroshiro128ss(void) {
+void RNG_Init_xoroshiro256ss(void) {
     SDL_assert(s);
-    u32 *s_32   = (u32 *)s;
-    s_32[0]     = 1990;
-    s_32[1]     =    5;
-    s_32[2]     =    8;
-    s_32[3]     =  777;
+    s[0] = 1990ULL;
+    s[1] =    5ULL;
+    s[2] =    8ULL;
+    s[3] =  777ULL;
 }
 
 void RNG_Init_tinymt(struct TINYMT32_T *tinymt) {
     SDL_assert(tinymt);
     tinymt->mat1 = 1990UL;
-    tinymt->mat2 = 5UL;
-    tinymt->tmat = 8UL;
+    tinymt->mat2 =    5UL;
+    tinymt->tmat =    8UL;
     tinymt32_init(tinymt, 777UL);
 }
 
@@ -83,7 +84,7 @@ u8 RNG_URN_debug(struct TINYMT32_T *tinymt) {
 }
 
 u8 RNG_URN(struct TINYMT32_T *tinymt) {
-    return ((u8)RNG_openBSD_uint32_t(tinymt, RN_MIN, RN_MAX));
+    return ((u8)RNG_openBSD_u32(tinymt, RN_MIN, RN_MAX));
 }
 
 bool RNG_single_roll(u8 RN, u8 rate) {
@@ -117,7 +118,7 @@ u8 *RNG_boxmuller(const u8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev) 
     return (RN_G);
 }
 
-u32 RNG_openBSD_uint32_t(struct TINYMT32_T *tinymt, u32 min, u32 max) {
+u32 RNG_openBSD_u32(struct TINYMT32_T *tinymt, u32 min, u32 max) {
     // "Scales" uniform integer from [0 and 2**32 - 1] to [min, max[
     // Unbiased according to: Fast Random Integer Generation in an Interval
     u32 s = max - min;

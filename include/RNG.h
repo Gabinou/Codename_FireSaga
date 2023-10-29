@@ -34,8 +34,10 @@ enum SOTA_RN {
 };
 
 
-/* -- API -- */
-u64 next(void);
+/* --- xoshiro256** --- */
+/* 2x faster than tinymt */
+u64  next_xoshiro256ss(void);
+void RNG_Init_xoroshiro256ss(void);
 
 extern struct TINYMT32_T *tinyMT_global;
 
@@ -49,7 +51,8 @@ extern RNG_URN_ptr global_RNG_URN;
 /* -- Internals -- */
 /* - Uniform - */
 u8  RNG_URN(             struct TINYMT32_T *tinymt);
-u32 RNG_openBSD_uint32_t(struct TINYMT32_T *tinymt, u32 max, u32 min);
+static u32 RNG_openBSD_u32(struct TINYMT32_T *tinymt, u32 max, u32 min);
+static u64 RNG_openBSD_u64(struct TINYMT32_T *tinymt, u64 max, u64 min);
 
 /* - Checkers - */
 bool RNG_single_roll(u8 RN,  u8 hit);

@@ -152,3 +152,26 @@ void test_RNG() {
     }
     test_RNG_SequenceBreaker();
 }
+
+#define ITERATIONS 10000000
+
+void bench_RNG() {
+    u64 before_ns = tnecs_get_ns();
+    struct TINYMT32_T tinymt;
+    RNG_Init_tinymt(&tinymt);
+    for (int i = 0; i < ITERATIONS; ++i) {
+        tinymt32_generate_uint32(&tinymt);
+    }
+    u64 after_ns    = tnecs_get_ns();
+    u64 elapsed_ms  = (after_ns - before_ns) / SOTA_us;
+    SDL_Log("Tinymt %d ms", elapsed_ms);
+
+    before_ns = tnecs_get_ns();
+    RNG_Init_xoroshiro256ss();
+    for (int i = 0; i < ITERATIONS; ++i) {
+        next_xoshiro256ss();
+    }
+    after_ns    = tnecs_get_ns();
+    elapsed_ms  = (after_ns - before_ns) / SOTA_us;
+    SDL_Log("xoshiro256ss %d ms", elapsed_ms);
+}
