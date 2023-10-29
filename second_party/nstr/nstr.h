@@ -8,15 +8,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* --- NOTE --- */
-
-/* --- caller deals with memory --- */
 typedef uint8_t u8;
 
-#define countof(a)  (sizeof(a) / sizeof(*(a)))  /* Includes \0 */
-#define lengthof(s) (countof(s) - 1)            /* Excludes \0 */
-
-// #define s8(s) (s8){(u8 *)s, strlen(s)-1}
+/* --- Pascal String s8 strings --- */
+s8 *s8_Init(char *string) {
 typedef struct {
     u8      *data;
     size_t   len;
@@ -24,10 +19,23 @@ typedef struct {
 s8  *s8_Init(char *string);
 void s8_Free(s8  *string);
 
+void s8_slicefromEnd(  s8 *string, size_t toslice);
+void s8_slicefromStart(s8 *string, size_t toslice);
+
 void s8_toLower(s8 *string);
 void s8_toUpper(s8 *string);
 
-/* caller deals with memory */
+void s8_camelCase(s8 *str8, const char separator, size_t minwordlen);
+
+void s8_Replace(      s8 *string, const char *replace, const char *with);
+void s8_replaceSingle(s8 *string, const char  replace, const char  with);
+
+
+void s8_Path_Remove_Top(s8 *path, const char separator);
+
+
+/* --- Null-terminated strings --- */
+/* - Note: caller deals with memory - */
 char *nstr_toLower(        char *str);
 char *nstr_toUpper(        char *str);
 char *nstr_Replace(        char *line, char * replace, char * with);

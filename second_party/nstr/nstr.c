@@ -64,6 +64,32 @@ void s8_replaceSingle(s8 *string, const char replace, const char with) {
     }
 }
 
+void s8_Path_Remove_Top(s8 *path, const char separator) {
+    char *folder        = strrchr(path->data, separator) + 1;
+    size_t len_folder   = strlen(folder);
+    *(path + (path->len - len_folder - 1)) = '\0';
+    path->len -= len_folder;
+}
+
+void s8_Replace(s8 *string, const char *replace, const char *with) {
+    /* find replace pos */
+    char *found = strstr(string->data, replace);
+    if (found != NULL) {
+        size_t len_f  = found - string->data;
+        size_t len_r  = strlen(replace);
+        size_t len_w  = strlen(with);
+        size_t len_l  = strlen(string->data);
+        size_t len_nl = len_l + len_w - len_r;
+        /* accomodate new str len */
+        memmove(string->data + len_f + len_w,
+                string->data + len_f + len_r,
+                len_l - (len_f + len_r));
+        /* overwrite replace with */
+        strncpy(string->data + len_f, with, len_w);
+        string->data[len_nl] = '\0';
+        string->len          = len_nl;
+    }
+}
 
 /* --- Null-terminated strings --- */
 // NOTE: caller deals with memory
