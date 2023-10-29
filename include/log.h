@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "types.h"
 #include "globals.h"
+#include "enums.h"
 #include "SDL.h"
 
 /* --- Useful log funcs --- */
