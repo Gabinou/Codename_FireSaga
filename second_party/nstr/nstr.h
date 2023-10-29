@@ -11,7 +11,6 @@
 typedef uint8_t u8;
 
 /* --- Pascal String s8 strings --- */
-s8 *s8_Init(char *string) {
 typedef struct {
     u8      *data;
     size_t   len;

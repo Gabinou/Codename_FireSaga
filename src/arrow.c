@@ -15,7 +15,9 @@ struct Arrow Arrow_default = {
 };
 
 /* --- Constructors/Deconstructors --- */
-void Arrow_Init(struct Arrow *arrow, i32 tilesize[TWO_D]) {
+struct Arrow *Arrow_Init(i32 tilesize[TWO_D]) {
+    struct Arrow *arrow  = malloc(sizeof(*arrow));
+    *arrow = Arrow_default;
     arrow->map_tilesize[0]      = tilesize[0];
     arrow->map_tilesize[1]      = tilesize[1];
     arrow->pathlist             = DARR_INIT(arrow->pathlist, i32, 16);
@@ -23,6 +25,9 @@ void Arrow_Init(struct Arrow *arrow, i32 tilesize[TWO_D]) {
 }
 
 void Arrow_Free(struct Arrow *arrow) {
+    if (arrow == NULL)
+        return;
+
     if (arrow->pathlist != NULL) {
         DARR_FREE(arrow->pathlist);
         arrow->pathlist = NULL;
@@ -31,6 +36,7 @@ void Arrow_Free(struct Arrow *arrow) {
         SDL_DestroyTexture(arrow->textures);
         arrow->textures = NULL;
     }
+    free(arrow);
 }
 
 /* --- I/O --- */

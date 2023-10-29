@@ -248,9 +248,10 @@ struct Game *Game_Init() {
     if (out_game->settings.fullscreen)
         flags = SDL_WINDOW_FULLSCREEN;
     out_game->units_loaded = SDL_calloc(UNIT_ID_END, sizeof(* out_game->units_loaded));
+
     out_game->camera.offset.x = DEFAULT_CAMERA_XOFFSET;
     out_game->camera.offset.y = DEFAULT_CAMERA_YOFFSET;
-    out_game->camera.zoom = DEFAULT_CAMERA_ZOOM;
+    out_game->camera.zoom     = DEFAULT_CAMERA_ZOOM;
 
     #ifndef SOTA_OPENGL
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Firesaga: Window Initialization");
@@ -619,7 +620,6 @@ void Game_State_Set(struct Game *sota, const i8 new_state, const char *reason) {
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Game state changed %d->%d: %s->%s",
                  sota->state_previous, sota->state,
                  gameStatenames[sota->state_previous], gameStatenames[sota->state]);
-
 }
 
 /* --- Camera --- */
@@ -627,7 +627,7 @@ void Game_Camera_Scroll(struct Game *sota) {
     struct Position *cursor_position;
     cursor_position = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     SDL_assert(cursor_position != NULL);
-    if (cursor_position->absolute)
+    if (cursor_position->absol  ute)
         return;
 
     const struct Sprite *cursor_sprite;

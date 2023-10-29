@@ -23,8 +23,8 @@ void test_menu_stats() {
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
 
     /* -- Stats Menu -- */
-    struct StatsMenu *sm = StatsMenu_Alloc();
-    sm->update_stats = false;
+    struct StatsMenu *sm    = StatsMenu_Alloc();
+    sm->update_stats        = false;
 
     /* - loading fonts - */
     sm->pixelnours = PixelFont_Alloc();

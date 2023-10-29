@@ -129,9 +129,9 @@ struct Map *Map_Init(struct Map *map, i32 width, i32 height) {
     map->reinf_equipments   = DARR_INIT(map->reinf_equipments, struct Inventory_item *, 30);
     map->armies_onfield     = calloc(10, sizeof(*map->armies_onfield));
     Map_Tilesize_Set(map, width, height);
-    map->arrow  = malloc(sizeof(*map->arrow));
-    *map->arrow = Arrow_default;
-    Arrow_Init(map->arrow, map->tilesize);
+    if (map->arrow != NULL)
+        Arrow_Free(map->arrow);
+    map->arrow = Arrow_Init(map->tilesize);
     return (map); // return cause pointer address can change.
 }
 
@@ -247,10 +247,6 @@ void Map_Free(struct Map *map) {
     }
     SDL_Log("Arrow");
     Arrow_Free(map->arrow);
-    if (map->arrow != NULL) {
-        free(map->arrow);
-        map->arrow = NULL;
-    }
     SDL_Log("tilemap_shader");
     if (map->tilemap_shader != NULL) {
         Tilemap_Shader_Free(map->tilemap_shader);

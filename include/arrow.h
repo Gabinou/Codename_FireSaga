@@ -57,8 +57,8 @@ typedef struct Arrow {
 extern struct Arrow Arrow_default;
 
 /* --- Constructors/Deconstructors --- */
-void Arrow_Init(struct Arrow *a, i32 tilesize[TWO_D]);
-void Arrow_Free(struct Arrow *a);
+struct Arrow *Arrow_Init(i32 tilesize[TWO_D]);
+void          Arrow_Free(struct Arrow *a);
 
 /* --- Path --- */
 /* -- Public -- */
