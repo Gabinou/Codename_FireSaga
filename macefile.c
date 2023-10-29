@@ -95,17 +95,17 @@ struct Target win_sota = {
 struct Target sota = {
     .includes           = ".,include,include/bars,include/menu,include/popup,"
                           "include/systems,names,names/popup,names/menu,"
-                          "include/systems,names,names/popup,names/menu,"
                           "second_party/nstr,second_party/noursmath,second_party/tnecs,"
                           "second_party/parg,second_party/nourstest,"
                           "third_party/physfs,third_party/tinymt,third_party/stb,"
-                          "third_party/cJson",
+                          "third_party/cJson,/usr/include/SDL2",
     .sources            = "src/*.c,src/bars/,src/menu/,src/popup/,src/systems/,"
                           "src/game/,src/map,src/controller",
     .links              = "SDL2,SDL2_image,SDL2_ttf,m,GLEW,cjson,noursmath,physfs,"
                           "tinymt,tnecs,nstr,parg",
-    .flags              = "-fwrapv,-fno-strict-overflow,-fno-strict-aliasing,"
-                          "-fno-delete-null-pointer-checks,-DSDL_DISABLE_IMMINTRIN_H",
+    .flags              = "-L/usr/lib,-fno-strict-overflow,-fno-strict-aliasing,"
+                          "-fwrapv,-fno-delete-null-pointer-checks,"
+                          "-D_REENTRANT,-DSDL_DISABLE_IMMINTRIN_H",
     .command_pre_build  = "astyle --options=utils/style.txt --verbose "
                           "--recursive src/* include/* test/* names/*",
     .kind               = MACE_EXECUTABLE,
@@ -118,15 +118,16 @@ struct Target test = {
                           "second_party/nstr,second_party/noursmath,second_party/tnecs,"
                           "second_party/parg,second_party/nourstest,"
                           "third_party/physfs,third_party/tinymt,third_party/stb,"
-                          "third_party/cJson",
+                          "third_party/cJson,/usr/include/SDL2",
                           "test,test/menu,test/popup",
     .sources            = "test/*.c,src/*.c,src/bars/,src/menu/,src/popup/,"
                           "src/systems/,src/game/,src/map,src/controller",
     .excludes           = "src/main.c",
-    .flags              = "-fwrapv,-fno-strict-overflow,-fno-strict-aliasing,"
-                          "-fno-delete-null-pointer-checks,-DSDL_DISABLE_IMMINTRIN_H",
     .links              = "SDL2,SDL2_image,SDL2_ttf,m,GLEW,cjson,noursmath,physfs,"
                           "tinymt,tnecs,nstr,parg",
+    .flags              = "-L/usr/lib,-fno-strict-overflow,-fno-strict-aliasing,"
+                          "-fwrapv,-fno-delete-null-pointer-checks,"
+                          "-D_REENTRANT,-DSDL_DISABLE_IMMINTRIN_H",
     .command_pre_build  = "astyle --options=utils/style.txt --verbose "
                           "--recursive src/* include/* test/* names/*",
     .kind               = MACE_EXECUTABLE,
