@@ -104,6 +104,8 @@ struct Point PopUp_Tile_Position(struct PopUp *popup, struct PopUp_Tile *pt,
 
 struct Point PopUp_Tile_Center_Name(struct PopUp_Tile *pt, struct n9Patch *n9patch,
                                     char *numbuff, size_t str_len) {
+    SDL_assert(numbuff != NULL);
+    SDL_assert(pt->pixelnours_big != NULL);
     struct Point out = {PT_NAME_X, PT_NAME_Y};
     size_t len = 0;
     for (size_t i = 0; i < str_len; i++)
@@ -229,6 +231,7 @@ void PopUp_Tile_Update(struct PopUp_Tile *pt, struct n9Patch *n9patch,
     /* -- NAME -- */
     struct Point pos;
     char *name = pt->tile->name;
+    SDL_assert(name != NULL);
     pos = PopUp_Tile_Center_Name(pt, n9patch, name, strlen(name));
     PixelFont_Write(pt->pixelnours, renderer, name, strlen(name), pos.x, pos.y);
 
