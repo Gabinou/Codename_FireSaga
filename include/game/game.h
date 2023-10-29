@@ -37,8 +37,6 @@
 #include "systems/slide.h"
 #include "combat.h"
 #include "SDL.h"
-#include "SDL2/SDL_image.h"
-#include "SDL2/SDL_ttf.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
@@ -72,8 +70,6 @@ struct Game {
     struct dtab *tiles_loaded_dtab;
     struct dtab *units_loaded_dtab;
     tnecs_entity_t *units_loaded;
-
-    // TTF_Font *font;
 
     struct KeyboardInputMap  keyboardInputMap;
     struct GamepadInputMap   gamepadInputMap;

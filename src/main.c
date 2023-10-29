@@ -26,7 +26,7 @@
 #include "SDL.h"
 #ifdef SOTA_OPENGL
     #include <GL/glew.h>
-    #include <SDL2/SDL_opengl.h>
+    #include <SDL_opengl.h>
     #include <GL/glu.h>
 #endif
 #include "globals.h"

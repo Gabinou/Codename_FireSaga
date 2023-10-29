@@ -3,7 +3,6 @@
 
 #undef M_PI
 #include "SDL.h"
-// #include "SDL2/SDL2_gfx.h"
 #include "filesystem.h"
 #include <math.h>
 

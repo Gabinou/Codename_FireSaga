@@ -14,9 +14,6 @@
 #include "jsonio.h"
 #include "tile.h"
 #include "SDL.h"
-#include "SDL2/SDL_pixels.h"
-#include "SDL2/SDL_ttf.h"
-#include "SDL2/SDL_image.h"
 #include "stb_sprintf.h"
 
 /* --- FORWARD DECLARATINOS --- */

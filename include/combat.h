@@ -7,7 +7,6 @@
 #include "RNG.h"
 #include "nmath.h"
 #include "SDL.h"
-#include "SDL2/SDL_render.h"
 #include "unit.h"
 
 /* --- FORWARD DECLARATIONS --- */

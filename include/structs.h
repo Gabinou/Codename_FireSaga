@@ -7,7 +7,6 @@
 #include "nmath.h"
 #include "tnecs.h"
 #include "SDL.h"
-#include "SDL2/SDL_render.h"
 
 struct MenuElemDirections {
     i8 right;

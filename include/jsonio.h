@@ -13,7 +13,6 @@
 #include "narrative.h"
 #include "utilities.h"
 #include "SDL.h"
-#include "SDL2/SDL_image.h"
 
 /* --- TYPEDEFS --- */
 typedef void (*json_read_t)(       void *, const cJSON *const);

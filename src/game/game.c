@@ -187,10 +187,6 @@ void Game_Free(struct Game *sota) {
         SDL_free(sota->units_loaded);
         sota->units_loaded = NULL;
     }
-    // if (sota->font != NULL) {
-    //     TTF_CloseFont(sota->font);
-    //     sota->font = NULL;
-    // }
     if (sota->menu_pixelfont != NULL) {
         PixelFont_Free(sota->menu_pixelfont, false);
     }
@@ -223,7 +219,6 @@ void Game_Free(struct Game *sota) {
         sota->openables = NULL;
     }
 
-    TTF_Quit();
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Game cleaned.");
     SDL_free(sota);
 }
@@ -257,16 +252,6 @@ struct Game *Game_Init() {
     out_game->camera.offset.x = DEFAULT_CAMERA_XOFFSET;
     out_game->camera.offset.y = DEFAULT_CAMERA_YOFFSET;
     out_game->camera.zoom = DEFAULT_CAMERA_ZOOM;
-
-    // SDL_LogVerbose(SOTA_LOG_SYSTEM, "Firesaga: Font Initialization");
-    // if (TTF_Init() == -1) {
-    //     SDL_LogVerbose(SOTA_LOG_SYSTEM, "TTF_Init: %s\n", TTF_GetError());
-    //     exit(ERROR_TTFInitFail);
-    // }
-
-    // out_game->font = TTF_OpenFont(PATH_JOIN("..", "fonts", "arial.ttf"), out_game->settings.fontsize);
-    // SDL_assert(out_game->font != NULL);
-    // SDL_LogVerbose(SOTA_LOG_SYSTEM, "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
 
     #ifndef SOTA_OPENGL
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Firesaga: Window Initialization");
