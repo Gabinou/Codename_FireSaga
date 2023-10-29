@@ -98,9 +98,8 @@ int main(int argc, char *argv[]) {
     Filesystem_Init(0);
     SDL_Log("Initializing utilities\n");
     Utilities_Load();
-    SDL_Log("Initializing TinyMT\n");
-    tinyMT_global = malloc(sizeof(*tinyMT_global));
-    RNG_Init_tinymt(tinyMT_global);
+    SDL_Log("Initializing RNG\n");
+    RNG_Init_xoroshiro256ss();
 
     /* -- Running benchmarks -- */
     // benchmarks();
@@ -113,7 +112,6 @@ int main(int argc, char *argv[]) {
     /* -- Postliminaries -- */
     Utilities_Free();
     Filesystem_Free();
-    free(tinyMT_global);
     SDL_Quit();
     fclose(stdout);
     return (0);

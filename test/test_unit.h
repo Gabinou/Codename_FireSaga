@@ -547,7 +547,6 @@ void test_growth() {
     Silou.current_stats = in_stats;
     Silou.growths       = in_growths;
 
-    global_RNG_URN  = RNG_URN_debug;
     URN_debug       = 11;
     /* Testing the Sequence Breaker */
     /* After a sequence of 1 no level up, con and move SHould level up because of increased rate.
@@ -700,4 +699,6 @@ void test_unit() {
     test_wpn_or_item();
     // test_io();
     test_growth();
+
+    URN_debug = -1;
 }

@@ -1,6 +1,6 @@
 #include "RNG.h"
 
-u8 URN_debug = 1;
+i16 URN_debug = -1;
 
 // TODO: Different tables for difficulties?
 /* -- Sequence Breaker tables -- */
@@ -94,7 +94,8 @@ void RNG_Init_tinymt(struct TINYMT32_T *tinymt) {
 }
 
 u8 RNG_URN(void) {
-    return ((u8)RNG_openBSD_u64(RN_MIN, RN_MAX));
+    u8 out = (u8)RNG_openBSD_u64(RN_MIN, RN_MAX);
+    return (URN_debug >= 0 ? URN_debug : out);
 }
 
 bool RNG_single_roll(u8 RN, u8 rate) {
