@@ -11,7 +11,7 @@
 #include "globals.h"
 #include "utilities.h"
 #include "controller/gamepad.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 extern struct KeyboardInputMap {
     /* Physical dpad -> Keyboard equivalent */

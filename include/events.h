@@ -21,7 +21,7 @@
 #include "macros.h"
 #include "nmath.h"
 #include "globals.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;

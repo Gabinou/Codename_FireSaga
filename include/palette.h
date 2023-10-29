@@ -9,7 +9,7 @@
 #include "filesystem.h"
 #include "debug.h"
 #include "macros.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* --- DEFINITIONS --- */
 /* -- Color Palettes -- */

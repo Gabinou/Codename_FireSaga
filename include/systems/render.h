@@ -7,7 +7,7 @@
 #include "position.h"
 #include "slider.h"
 #include "popup/tile.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 // TODO: Check if that causes issue with Interactive Programming
 extern bool CursorFlag;

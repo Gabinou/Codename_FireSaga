@@ -7,7 +7,7 @@
 #include "popup/popup.h"
 #include "unit.h"
 #include "pixelfonts.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 #include "stb_sprintf.h"
 
 /* What should the objective popup do? */

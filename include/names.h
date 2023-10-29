@@ -10,7 +10,7 @@
 #include "macros.h"
 #include "debug.h"
 #include "hashes.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* -- Names -- */
 extern char         **mapFilenames;

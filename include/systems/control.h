@@ -2,7 +2,7 @@
 #define SYSTEM_CONTROL_H
 
 #include <stdio.h>
-#include "SDL2/SDL.h"
+#include "SDL.h"
 #include "tnecs.h"
 #include "enums.h"
 #include "debug.h"

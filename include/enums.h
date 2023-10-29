@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "types.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 #define SOTA_VER_MAJOR         0
 #define SOTA_VER_MINOR         7

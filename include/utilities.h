@@ -23,7 +23,7 @@
 #include "structs.h"
 #include "nmath.h"
 #include "nstr.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* #if SDL_BYTEORDER == SDL_BIG_ENDIAN */
 /* rmask = 0xff000000;                 */

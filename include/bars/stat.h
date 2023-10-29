@@ -2,7 +2,7 @@
 #define STAT_BAR_H
 
 #include "bars/simple.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* -- Stat bar and HP bar -- */
 // Normal stat bar for Stats menu. Slanted, with highlights.

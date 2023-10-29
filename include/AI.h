@@ -3,7 +3,7 @@
 #define AI_H
 
 #include <stdint.h>
-#include "SDL2/SDL.h"
+#include "SDL.h"
 #include "types.h"
 #include "enums.h"
 #include "unit.h"

@@ -3,7 +3,7 @@
 
 #include "nmath.h"
 #include "index_shader.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Index_Shader;

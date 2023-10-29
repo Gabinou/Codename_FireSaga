@@ -12,7 +12,7 @@
 #include "nmath.h"
 #include "cJSON.h"
 #include "bitfields.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* -- Game Narrative Conditions -- */
 // 1- To load and play Scenes,

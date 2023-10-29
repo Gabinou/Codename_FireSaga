@@ -1,7 +1,7 @@
 #ifndef INDEX_SHADER_H
 #define INDEX_SHADER_H
 
-#include "SDL2/SDL.h"
+#include "SDL.h"
 #include "structs.h"
 #include "utilities.h"
 #include "enums.h"

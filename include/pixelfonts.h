@@ -6,7 +6,7 @@
 #include "globals.h"
 #include "debug.h"
 #include "macros.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* --- CONSTANTS --- */
 enum PIXELFONT {

@@ -9,7 +9,7 @@
 #include "nstr.h"
 #include "menu/stats.h"
 #include "stb_sprintf.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* Octants around text bubble:
 //      X -> BELOW      X -> EQUAL         X -> ABOVE

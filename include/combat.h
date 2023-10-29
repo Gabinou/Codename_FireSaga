@@ -6,7 +6,7 @@
 #include "structs.h"
 #include "RNG.h"
 #include "nmath.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 #include "SDL2/SDL_render.h"
 #include "unit.h"
 

@@ -4,7 +4,7 @@
 #include <math.h>
 #include "bars/simple.h"
 #include "utilities.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* -- TopOffbar -- */
 // Bar with top off, for map combat

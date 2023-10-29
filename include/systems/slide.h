@@ -10,7 +10,7 @@
 #include "popup/tile.h"
 #include "popup/unit.h"
 #include "popup/popup.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;

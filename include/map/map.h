@@ -14,7 +14,7 @@
 #include "unit.h"
 #include "position.h"
 #include "sprite.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 #include "SDL2/SDL_render.h"
 
 /* --- FORWARD DECLARATIONS --- */

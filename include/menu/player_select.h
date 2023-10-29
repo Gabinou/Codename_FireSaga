@@ -8,7 +8,7 @@
 #include "events.h"
 #include "nstr.h"
 #include "stb_sprintf.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Menu;

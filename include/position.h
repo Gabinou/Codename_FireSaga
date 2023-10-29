@@ -10,7 +10,7 @@
 #include "structs.h"
 #include "macros.h"
 #include "nmath.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* --- 2D POSITION ON A SQUARE GRID --- */
 /* NOTE. no UPDATABLE bool:

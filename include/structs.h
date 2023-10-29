@@ -6,7 +6,7 @@
 #include "enums.h"
 #include "nmath.h"
 #include "tnecs.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 #include "SDL2/SDL_render.h"
 
 struct MenuElemDirections {

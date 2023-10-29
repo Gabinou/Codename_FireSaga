@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include "types.h"
 #include "globals.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* --- Useful log funcs --- */
 //      SDL_LogVerbose(SOTA_LOG_FPS, "");  -> only publishes if category is verbose

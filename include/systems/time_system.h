@@ -6,7 +6,7 @@
 #include "structs.h"
 #include "globals.h"
 #include "debug.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 void timeSynchronize(tnecs_system_input_t *in_input);
 

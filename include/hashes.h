@@ -9,7 +9,7 @@
 #include "tnecs.h"
 #include "nmath.h"
 #include "types.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* -- Hashes -- */
 extern u64 *unitHashes;

@@ -2,7 +2,7 @@
 #define CRT_H
 
 #undef M_PI
-#include "SDL2/SDL.h"
+#include "SDL.h"
 // #include "SDL2/SDL2_gfx.h"
 #include "filesystem.h"
 #include <math.h>

@@ -1,8 +1,7 @@
 #ifndef ARROW_H
 #define ARROW_H
 
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_render.h"
+#include "SDL.h"
 #include "nmath.h"
 #include "pathfinding.h"
 #include "enums.h"
