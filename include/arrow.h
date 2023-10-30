@@ -62,7 +62,7 @@ struct Arrow *Arrow_Init(i32 tilesize[TWO_D]);
 void          Arrow_Free(struct Arrow *a);
 
 /* -- Path -- */
-void Arrow_Path_Add( struct Arrow *a, i32 x, i32 y);
+void Arrow_Path_Add( struct Arrow *a, i32  x, i32 y);
 void Arrow_Path_Init(struct Arrow *a, i32 *c, i32 m, struct Point s);
 
 /* -- I/O -- */

@@ -15,7 +15,7 @@ void test_menu_stats() {
 
     /* -- Create n9patch -- */
     struct n9Patch n9patch = n9Patch_default;
-    // render_target is NULL cause there is render_target!
+    // render_target is NULL cause there is no render_target!
     SDL_Texture *render_target = NULL;
 
     /* -- Create renderer -- */

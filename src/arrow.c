@@ -338,6 +338,7 @@ void Arrow_Draw(struct Arrow *arrow, SDL_Renderer *renderer, struct Camera *came
 
     /* Loop over all tiles that make up the arrow */
     for (i32 i = 0; i < (num - 1); i++) {
+        SDL_Log("%d", i);
         /* - srcrect - */
         struct Rendered rend = arrow->rendereds[i];
         i32 x_texture   = (rend.graphics.index - 1) % TILESET_COL_LEN;
