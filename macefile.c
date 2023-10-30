@@ -8,10 +8,7 @@
     #define AR "ar"
 #endif
 
-struct Config debug         = {.flags = "-g3 -rdynamic -O0 -DSDL_ASSERT_LEVEL=2 "
-                               "-Wall -Wextra -Wconversion -Wdouble-promotion"
-                               "-Wno-unused-parameter -Wno-unused-function" 
-                               "-Wno-sign-conversion"};
+struct Config debug         = {.flags = "-g3 -rdynamic -O0 -DSDL_ASSERT_LEVEL=2"};
 struct Config release       = {.flags = "-O2 -DSDL_ASSERT_LEVEL=1"};
 
 struct Config win_debug     = {.flags = "-g -O0",              .target = "win_sota",

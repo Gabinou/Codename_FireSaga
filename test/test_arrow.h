@@ -5,7 +5,7 @@
 #define COL_LEN 21
 
 void test_arrow_draw_start_end(struct Camera *camera, struct Arrow *arrow,
-                               struct Renderer *renderer, struct Point start, struct Point end) {
+                               SDL_Renderer *renderer, struct Point start, struct Point end) {
     /* -- Fill canvas with white -- */
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
     SDL_assert(SDL_RenderFillRect(renderer, NULL) == 0);
@@ -15,12 +15,12 @@ void test_arrow_draw_start_end(struct Camera *camera, struct Arrow *arrow,
     dstrect.w           = SOTA_ZOOM(arrow->map_tilesize[0], camera->zoom);
     dstrect.h           = SOTA_ZOOM(arrow->map_tilesize[1], camera->zoom);
 
-    /* -- Drawing black start square -- */
+    /* -- Drawing light grey start square -- */
     i32 x_zoom          = SOTA_ZOOM(start.x * arrow->map_tilesize[0], camera->zoom);
     i32 y_zoom          = SOTA_ZOOM(start.y * arrow->map_tilesize[1], camera->zoom);
     dstrect.x           = x_zoom + camera->offset.x;
     dstrect.y           = y_zoom + camera->offset.y;
-    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
+    SDL_SetRenderDrawColor(renderer, 0x44, 0x44, 0x44, SDL_ALPHA_OPAQUE);
     SDL_assert(SDL_RenderFillRect(renderer, &dstrect) == 0);
 
     /* -- Drawing gray end square -- */
