@@ -16,12 +16,13 @@ struct Arrow Arrow_default = {
 
 /* --- Constructors/Deconstructors --- */
 struct Arrow *Arrow_Init(i32 tilesize[TWO_D]) {
-    struct Arrow *arrow  = malloc(sizeof(*arrow));
+    struct Arrow *arrow = malloc(sizeof(*arrow));
     *arrow = Arrow_default;
     arrow->map_tilesize[0]      = tilesize[0];
     arrow->map_tilesize[1]      = tilesize[1];
     arrow->pathlist             = DARR_INIT(arrow->pathlist, i32, 16);
     DARR_NUM(arrow->pathlist)   = 0;
+    return (arrow);
 }
 
 void Arrow_Free(struct Arrow *arrow) {

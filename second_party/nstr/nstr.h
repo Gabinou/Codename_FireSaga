@@ -9,6 +9,7 @@
 #include <string.h>
 
 typedef uint8_t u8;
+typedef int32_t b32;
 
 /* --- Pascal String s8 strings --- */
 typedef struct {
@@ -23,6 +24,9 @@ void s8_slicefromStart(s8 *string, size_t toslice);
 
 void s8_toLower(s8 *string);
 void s8_toUpper(s8 *string);
+
+// TODO: use s8_Equal instead of strcmp 
+b32 s8_Equal(s8 *s1, s8 *s2);
 
 void s8_camelCase(s8 *str8, const char separator, size_t minwordlen);
 

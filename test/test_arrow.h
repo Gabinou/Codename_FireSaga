@@ -16,8 +16,8 @@ void test_arrow() {
     /* -- Create arrow -- */
     i32 tilesize[TWO_D] = {SOTA_TILESIZE, SOTA_TILESIZE};
     struct Arrow *arrow = Arrow_Init(arrow, tilesize);
-    arrow->col_len = COL_LEN; 
-    arrow->row_len = ROW_LEN; 
+    arrow->col_len = COL_LEN;
+    arrow->row_len = ROW_LEN;
 
     /* -- Create renderer -- */
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);

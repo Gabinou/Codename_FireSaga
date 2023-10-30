@@ -627,7 +627,7 @@ void Game_Camera_Scroll(struct Game *sota) {
     struct Position *cursor_position;
     cursor_position = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     SDL_assert(cursor_position != NULL);
-    if (cursor_position->absol  ute)
+    if (cursor_position->absolute)
         return;
 
     const struct Sprite *cursor_sprite;
