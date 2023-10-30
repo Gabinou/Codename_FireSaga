@@ -2,10 +2,9 @@
 #include "platform.h"
 #include "pathfinding.h"
 
-enum ENUM_TEST_PATHFINDING {
-    ROW_LEN = 21,
-    COL_LEN = 25,
-};
+#define ROW_LEN 25
+#define COL_LEN 21
+
 void test_pathfinding_Astar() {
 
     /* --- PRELIMINARIES --- */
@@ -242,7 +241,9 @@ void test_pathfinding_sight() {
 }
 
 void test_pathfinding() {
-
     test_pathfinding_sight();
     test_pathfinding_Astar();
 }
+
+#undef ROW_LEN
+#undef COL_LEN

@@ -1,8 +1,8 @@
 #include "nourstest.h"
 #include "arrow.h"
 
-#define ROW_LEN = 25;
-#define COL_LEN = 21;
+#define ROW_LEN 25
+#define COL_LEN 21
 
 void test_arrow() {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
@@ -15,7 +15,7 @@ void test_arrow() {
 
     /* -- Create arrow -- */
     i32 tilesize[TWO_D] = {SOTA_TILESIZE, SOTA_TILESIZE};
-    struct Arrow *arrow = Arrow_Init(arrow, tilesize);
+    struct Arrow *arrow = Arrow_Init(tilesize);
     arrow->col_len = COL_LEN;
     arrow->row_len = ROW_LEN;
 
@@ -26,5 +26,8 @@ void test_arrow() {
     Arrow_Draw(arrow, renderer, &camera);
 
     /* --- FREE --- */
-    struct Arrow *arrow = Arrow_Free(arrow);
+    Arrow_Free(arrow);
 }
+
+#undef ROW_LEN
+#undef COL_LEN
