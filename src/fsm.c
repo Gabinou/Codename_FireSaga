@@ -832,7 +832,7 @@ void fsm_eAcpt_sGmpMap(struct Game *sota, tnecs_entity_t accepter) {
 void fsm_eAcpt_sTtlScrn(struct Game *sota, tnecs_entity_t accepter) {
     if (sota->substate != GAME_SUBSTATE_MENU) {
         SDL_Log("Wrong substate %d on Title_Screen state", sota->substate);
-        exit(EPERM);
+        exit(ERROR_Generic);
     }
     fsm_eAcpt_sGmpMap_ssMenu(sota, accepter);
 }

@@ -15,6 +15,13 @@
 * See README for more details.
 */
 
+// TODO: Think about arena allocators
+// TODO: think about strings
+//  - Idea: replace null-terminated strings with n8 pascal string
+//  - strncpy, strcat -> memcpy
+//  - strncmp -> s8_Equal
+//  - strtok -> ?
+
 #define _XOPEN_SOURCE 500
 #include <assert.h>
 #include <stdio.h>

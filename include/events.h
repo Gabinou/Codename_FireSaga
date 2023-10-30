@@ -1,7 +1,6 @@
 #ifndef EVENTS_H
 #define EVENTS_H
 
-#include <errno.h>
 #include "bars/map_hp.h"
 #include "game/game.h"
 #include "log.h"

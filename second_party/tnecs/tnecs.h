@@ -28,6 +28,11 @@
 * Systems are inclusive by default, meaning that they run over entities with
 * additional components to the system's.
 */
+// TODO: Think about arena allocators
+//  - Simplify malloc and free
+//  - Need guaranteed contiguous allocators
+// TODO: strings
+//  - strncpy -> memcpy
 
 #include <stdio.h>
 #include <string.h>
