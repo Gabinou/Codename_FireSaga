@@ -354,6 +354,8 @@ void Arrow_Draw(struct Arrow *arrow, SDL_Renderer *renderer, struct Camera *came
         dstrect.x       = x_zoom + camera->offset.x;
         dstrect.y       = y_zoom + camera->offset.y;
 
+        SDL_Log("srcrect %d %d %d %d", srcrect.x, srcrect.y, srcrect.h, srcrect.w);
+        SDL_Log("dstrect %d %d %d %d", dstrect.x, dstrect.y, dstrect.h, dstrect.w);
         /* -- Rendering -- */
         SDL_RenderCopyEx(renderer, arrow->textures, &srcrect, &dstrect, 0, NULL, rend.flip);
     }
