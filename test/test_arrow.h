@@ -1,8 +1,8 @@
 #include "nourstest.h"
 #include "arrow.h"
 
-#define ROW_LEN 25
-#define COL_LEN 21
+#define ROW_LEN 21
+#define COL_LEN 25
 
 void test_arrow_draw_start_end(struct Camera *camera, struct Arrow *arrow,
                                SDL_Renderer *renderer, struct Point start, struct Point end) {
@@ -94,8 +94,8 @@ void test_arrow() {
 
     /* -- Loading arrow textures -- */
     Arrow_Textures_Load(arrow, ARROW_FILENAME, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_Textures.png"), renderer,
-                            arrow->textures, SDL_PIXELFORMAT_ARGB8888,  render_target);
+    // Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_Textures.png"), renderer,
+    //                         arrow->textures, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Start arrow -- */
     start.x = 4;
@@ -108,7 +108,7 @@ void test_arrow() {
     end.y = 5;
     test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
     Arrow_Draw(arrow, renderer, &camera);
-    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_Down0.png"), renderer,
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_00.png"), renderer,
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path down -- */
@@ -119,7 +119,7 @@ void test_arrow() {
     test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
 
     Arrow_Draw(arrow, renderer, &camera);
-    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_Down1.png"), renderer,
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_01.png"), renderer,
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path down -- */
@@ -129,7 +129,7 @@ void test_arrow() {
     end.y = 7;
     test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
     Arrow_Draw(arrow, renderer, &camera);
-    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_Down2.png"), renderer,
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_02.png"), renderer,
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path down -- */
@@ -139,7 +139,7 @@ void test_arrow() {
     end.y = 8;
     test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
     Arrow_Draw(arrow, renderer, &camera);
-    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_Down3.png"), renderer,
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_03.png"), renderer,
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
 
@@ -150,7 +150,7 @@ void test_arrow() {
     end.y = 8;
     test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
     Arrow_Draw(arrow, renderer, &camera);
-    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_Down4.png"), renderer,
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_04.png"), renderer,
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path up -- */
@@ -160,7 +160,223 @@ void test_arrow() {
     end.y = 7;
     test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
     Arrow_Draw(arrow, renderer, &camera);
-    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_Down5.png"), renderer,
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_05.png"), renderer,
+                            render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
+
+    /* -- Add 1 path up -- */
+    Arrow_Path_Add(arrow, 5, 6);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 4);
+    end.x = 5;
+    end.y = 6;
+    test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
+    Arrow_Draw(arrow, renderer, &camera);
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_06.png"), renderer,
+                            render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
+
+    /* -- Add 1 path up -- */
+    Arrow_Path_Add(arrow, 5, 5);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 3);
+    end.x = 5;
+    end.y = 5;
+    test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
+    Arrow_Draw(arrow, renderer, &camera);
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_07.png"), renderer,
+                            render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
+
+
+    /* -- Add 1 path up -- */
+    Arrow_Path_Add(arrow, 5, 4);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 2);
+    end.x = 5;
+    end.y = 4;
+    test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
+    Arrow_Draw(arrow, renderer, &camera);
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_08.png"), renderer,
+                            render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
+
+
+    /* -- Add 1 path up -- */
+    Arrow_Path_Add(arrow, 5, 3);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 3);
+    end.x = 5;
+    end.y = 3;
+    test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
+    Arrow_Draw(arrow, renderer, &camera);
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_09.png"), renderer,
+                            render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
+
+    /* -- Add 1 path up -- */
+    Arrow_Path_Add(arrow, 5, 2);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 4);
+    end.x = 5;
+    end.y = 2;
+    test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
+    Arrow_Draw(arrow, renderer, &camera);
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_10.png"), renderer,
+                            render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
+
+    /* -- Add 1 path up -- */
+    Arrow_Path_Add(arrow, 5, 1);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 5);
+    end.x = 5;
+    end.y = 1;
+    test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
+    Arrow_Draw(arrow, renderer, &camera);
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_11.png"), renderer,
+                            render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
+
+
+    /* -- Add 1 path up -- */
+    Arrow_Path_Add(arrow, 5, 0);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 6);
+    end.x = 5;
+    end.y = 0;
+    test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
+    Arrow_Draw(arrow, renderer, &camera);
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_12.png"), renderer,
+                            render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
+
+    /* -- Add 1 path left -- */
+    Arrow_Path_Add(arrow, 4, 0);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 5);
+    end.x = 4;
+    end.y = 0;
+    test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
+    Arrow_Draw(arrow, renderer, &camera);
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_13.png"), renderer,
+                            render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
+
+    /* -- Add 1 path left -- */
+    Arrow_Path_Add(arrow, 3, 0);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 6);
+    end.x = 3;
+    end.y = 0;
+    test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
+    Arrow_Draw(arrow, renderer, &camera);
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_14.png"), renderer,
+                            render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
+
+    /* -- Add 1 path left -- */
+    Arrow_Path_Add(arrow, 2, 0);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 7);
+    end.x = 2;
+    end.y = 0;
+    test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
+    Arrow_Draw(arrow, renderer, &camera);
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_15.png"), renderer,
+                            render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
+
+    /* -- Add 1 path left -- */
+    Arrow_Path_Add(arrow, 1, 0);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 8);
+    end.x = 1;
+    end.y = 0;
+    test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
+    Arrow_Draw(arrow, renderer, &camera);
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_16.png"), renderer,
+                            render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
+
+    /* -- Add 1 path left -- */
+    Arrow_Path_Add(arrow, 0, 0);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 9);
+    end.x = 0;
+    end.y = 0;
+    test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
+    Arrow_Draw(arrow, renderer, &camera);
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_17.png"), renderer,
+                            render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
+
+
+    /* -- Add 1 path left -- */
+    Arrow_Path_Add(arrow, 0, 1);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 8);
+    end.x = 0;
+    end.y = 1;
+    test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
+    Arrow_Draw(arrow, renderer, &camera);
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_18.png"), renderer,
+                            render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
+
+    /* -- Add 1 path left -- */
+    Arrow_Path_Add(arrow, 0, 2);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 7);
+    end.x = 0;
+    end.y = 2;
+    test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
+    Arrow_Draw(arrow, renderer, &camera);
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_19.png"), renderer,
+                            render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
+
+
+    /* -- Add 1 path left -- */
+    Arrow_Path_Add(arrow, 0, 3);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 6);
+    end.x = 0;
+    end.y = 3;
+    test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
+    Arrow_Draw(arrow, renderer, &camera);
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_20.png"), renderer,
+                            render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
+
+
+    // /* -- Add 1 path left -- */
+    Arrow_Path_Add(arrow, 0, 4);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 5);
+    end.x = 0;
+    end.y = 4;
+    test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
+    Arrow_Draw(arrow, renderer, &camera);
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_21.png"), renderer,
+                            render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
+
+    /* -- Add 1 path left -- */
+    Arrow_Path_Add(arrow, 1, 4);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 4);
+    end.x = 1;
+    end.y = 4;
+    test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
+    Arrow_Draw(arrow, renderer, &camera);
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_22.png"), renderer,
+                            render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
+
+    /* -- Add 1 path left -- */
+    Arrow_Path_Add(arrow, 2, 4);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 3);
+    end.x = 2;
+    end.y = 4;
+    test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
+    Arrow_Draw(arrow, renderer, &camera);
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_23.png"), renderer,
+                            render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
+
+    /* -- Add 1 path left -- */
+    Arrow_Path_Add(arrow, 3, 4);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 2);
+    end.x = 3;
+    end.y = 4;
+    test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
+    Arrow_Draw(arrow, renderer, &camera);
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_24.png"), renderer,
+                            render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
+
+    /* -- Add 1 path left -- */
+    Arrow_Path_Add(arrow, 3, 3);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 3);
+    end.x = 3;
+    end.y = 3;
+    test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
+    Arrow_Draw(arrow, renderer, &camera);
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_25.png"), renderer,
+                            render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
+
+    /* -- Add 1 path left -- */
+    Arrow_Path_Add(arrow, 4, 3);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 4);
+    end.x = 4;
+    end.y = 3;
+    test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
+    Arrow_Draw(arrow, renderer, &camera);
+    Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_26.png"), renderer,
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* --- FREE --- */

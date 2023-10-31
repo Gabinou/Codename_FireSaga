@@ -257,7 +257,7 @@ void Game_postLoadout_Defendants(struct Game *sota, tnecs_entity_t actor) {
 
 void Game_postLoadout_Patients(struct Game *sota, tnecs_entity_t actor) {
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, actor, Unit);
-    assert(Unit_canStaff(unit));
+    SDL_assert(Unit_canStaff(unit));
     DARR_NUM(sota->patients) = 0;
 
     /* - Compute healtolist - */

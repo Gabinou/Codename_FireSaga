@@ -2,8 +2,8 @@
 #include "platform.h"
 #include "pathfinding.h"
 
-#define ROW_LEN 25
-#define COL_LEN 21
+#define ROW_LEN 21
+#define COL_LEN 25
 
 void test_pathfinding_Astar() {
 

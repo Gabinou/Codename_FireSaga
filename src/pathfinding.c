@@ -199,9 +199,9 @@ i32 *Pathfinding_Astar(i32 *path_list, i32 *costmap, size_t row_len,
     /* Assumes square grid, path_list is a DARR */
     /* [1]: http://www.redblobgames.com/pathfinding/a-star/introduction.html */
     /* Checks */
-    assert((start.x != end.x) || (start.y != end.y));
-    assert(costmap[start.y * col_len + start.x] >= MOVEMAP_MOVEABLEMIN);
-    assert(costmap[end.y   * col_len + end.x]   >= MOVEMAP_MOVEABLEMIN);
+    SDL_assert((start.x != end.x) || (start.y != end.y));
+    SDL_assert(costmap[start.y * col_len + start.x] >= MOVEMAP_MOVEABLEMIN);
+    SDL_assert(costmap[end.y   * col_len + end.x]   >= MOVEMAP_MOVEABLEMIN);
 
     /* Resetting path_list */
     DARR_NUM(path_list) = 0;
