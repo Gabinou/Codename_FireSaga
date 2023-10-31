@@ -5,7 +5,7 @@ u8 platform_fromSDL() {
     u8 out = NO_PLATFORM;
 
     s8 name     = s8(SDL_GetPlatform());
-    
+
     s8 mac      = s8("Mac OS X");
     s8 ios      = s8("iOS");
     s8 linux    = s8("Linux");

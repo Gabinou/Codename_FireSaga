@@ -18,7 +18,7 @@ void s8_Free(s8 *string) {
     free(string);
 }
 
-b32 s8_Equal(s8 *s1, s8 *s2) {
+b32 s8equal(s8 *s1, s8 *s2) {
     if(s1->len != s2->len)
         return(false);
 

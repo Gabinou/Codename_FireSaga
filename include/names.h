@@ -2,6 +2,7 @@
 #define NAMES_H
 
 #include <math.h>
+#include "nstr.h"
 #include "platform.h"
 #include "unit.h"
 #include "types.h"
@@ -32,7 +33,7 @@ extern char         **global_tilenames;
 extern i32           *tilesID_arr;
 extern i32           *global_tilesID;
 extern char         **support_types;
-extern u16          *class_equippables;
+extern u16           *class_equippables;
 extern char         **armyNames;
 
 /* -- Name makers -- */

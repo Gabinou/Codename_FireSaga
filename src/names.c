@@ -641,8 +641,10 @@ void Names_Print_All(const char *foldername) {
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
     SDL_assert(global_tilenames != NULL);
+    s8 s8null = s8("");
     for (u8 i = TILE_START; i < TILE_END; i++) {
-        if (strcmp(global_tilenames[i], "") != 0)
+        s8 tilename = s8(global_tilenames[i]);
+        if (!s8equal(&tilename, &s8null))
             fprintf(fp, "%d %s \n", i, global_tilenames[i]);
     }
     fclose(fp);
