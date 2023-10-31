@@ -117,7 +117,7 @@ void _Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in) {
         /* A* implemented here. Goes backwards for some reason. */
         /* IMPORTANT NOTE: Switching start and end CRASHES MY COMPUTER. */
         arrow->pathlist = Pathfinding_Astar(arrow->pathlist, arrow->costmap,
-                                            arrow->row_len,  arrow->col_len, start, end);
+                                            arrow->row_len,  arrow->col_len, end, start);
         /* Flipping path. */
         i32 pointnum    = DARR_NUM(arrow->pathlist) / TWO_D;
         for (i32 i = 0; i < (pointnum - 1); i++)
@@ -338,13 +338,12 @@ void Arrow_Draw(struct Arrow *arrow, SDL_Renderer *renderer, struct Camera *came
 
     /* Loop over all tiles that make up the arrow */
     for (i32 i = 0; i < (num - 1); i++) {
-        SDL_Log("%d", i);
         /* - srcrect - */
         struct Rendered rend = arrow->rendereds[i];
         i32 x_texture   = (rend.graphics.index - 1) % TILESET_COL_LEN;
         i32 y_texture   = (rend.graphics.index - 1) / TILESET_COL_LEN;
         srcrect.x       = x_texture * arrow->tilesize[0];
-        srcrect.y       = x_texture * arrow->tilesize[1];
+        srcrect.y       = y_texture * arrow->tilesize[1];
 
         /* - dstrect - */
         i32 x           = arrow->pathlist[TWO_D * i];
@@ -354,8 +353,6 @@ void Arrow_Draw(struct Arrow *arrow, SDL_Renderer *renderer, struct Camera *came
         dstrect.x       = x_zoom + camera->offset.x;
         dstrect.y       = y_zoom + camera->offset.y;
 
-        SDL_Log("srcrect %d %d %d %d", srcrect.x, srcrect.y, srcrect.h, srcrect.w);
-        SDL_Log("dstrect %d %d %d %d", dstrect.x, dstrect.y, dstrect.h, dstrect.w);
         /* -- Rendering -- */
         SDL_RenderCopyEx(renderer, arrow->textures, &srcrect, &dstrect, 0, NULL, rend.flip);
     }
