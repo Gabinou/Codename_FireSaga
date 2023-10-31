@@ -29,6 +29,7 @@ void bench_s8() {
     elapsed_ms  = (after_ns - before_ns) / SOTA_us;
     SDL_Log("null %d ms", elapsed_ms);
 
+
     /* --- FREE --- */
     s8_Free(s8_string);
     /* --- CONCLUSION --- */
@@ -38,4 +39,12 @@ void bench_s8() {
 void bench_nstr() {
     SDL_Log("Benchmarking nstr");
     bench_s8();
+}
+
+void test_nstr() {
+    SDL_Log("Testing nstr");
+    s8 mac = s8("Mac OS X");
+    nourstest_true(mac.len == 8);
+    s8 lizard = s8("The lizard is a wizard, by joving rove. I say living hell.");
+    nourstest_true(lizard.len == 58);
 }

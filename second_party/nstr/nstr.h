@@ -12,10 +12,21 @@ typedef uint8_t u8;
 typedef int32_t b32;
 
 /* --- Pascal String s8 strings --- */
+
 typedef struct {
     u8      *data;
     size_t   len;
 } s8;
+
+/* -- Immutable s8 -- */
+#define countof(a)   (sizeof(a) / sizeof(*(a)))
+#define lengthof(s)  (countof(s) - 1)
+#define s8(s) (s8){(u8 *)s, lengthof(s)}
+
+#define s8_var(s) s8_var_(s)
+#define s8_var_(s) (s8){(u8 *)s, lengthof(s)}
+
+/* -- Mutable s8 -- */
 s8  *s8_Init(char *string);
 void s8_Free(s8  *string);
 

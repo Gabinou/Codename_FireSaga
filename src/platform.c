@@ -3,16 +3,24 @@
 
 u8 platform_fromSDL() {
     u8 out = NO_PLATFORM;
-    const char *platform_name = SDL_GetPlatform();
-    if (strcmp(platform_name, "Windows")        == 0)
+
+    s8 name     = s8(SDL_GetPlatform());
+    
+    s8 mac      = s8("Mac OS X");
+    s8 ios      = s8("iOS");
+    s8 linux    = s8("Linux");
+    s8 android  = s8("Android");
+    s8 windows  = s8("Windows");
+
+    if (s8_Equal(&name, &windows))
         out = WINDOWS_32;
-    else if (strcmp(platform_name, "Mac OS X")  == 0)
+    else if (s8_Equal(&name, &mac))
         out = MAC_OS_X;
-    else if (strcmp(platform_name, "Linux")     == 0)
+    else if (s8_Equal(&name, &linux))
         out = LINUX;
-    else if (strcmp(platform_name, "Android")   == 0)
+    else if (s8_Equal(&name, &android))
         out = ANDROID;
-    else if (strcmp(platform_name, "iOS")       == 0)
+    else if (s8_Equal(&name, &ios))
         out = iOS;
     return (out);
 }

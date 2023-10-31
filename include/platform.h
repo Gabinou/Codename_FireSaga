@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <string.h>
 #include "types.h"
+#include "nstr.h"
 #include "SDL.h"
 
 /* --- IDs --- */
