@@ -21,7 +21,7 @@ typedef struct {
 /* -- Immutable s8 -- */
 #define countof(a)   (sizeof(a) / sizeof(*(a)))
 #define lengthof(s)  (countof(s) - 1)
-#define s8(s) (s8){(u8 *)s, lengthof(s)}
+#define s8(s) (s8){(u8 *)s, strlen(s)}
 
 #define s8_var(s) s8_var_(s)
 #define s8_var_(s) (s8){(u8 *)s, lengthof(s)}
