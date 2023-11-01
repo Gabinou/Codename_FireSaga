@@ -105,7 +105,7 @@ struct Target sota = {
                           "tinymt,tnecs,nstr,parg",
     .flags              = "-L/usr/lib,-fno-strict-overflow,-fno-strict-aliasing,"
                           "-fwrapv,-fno-delete-null-pointer-checks,"
-                          "-D_REENTRANT,-DSDL_DISABLE_IMMINTRIN_H, $(sdl2-config --cflags)",
+                          "-D_REENTRANT,-DSDL_DISABLE_IMMINTRIN_H",
     .command_pre_build  = "astyle --options=utils/style.txt --verbose "
                           "--recursive src/* include/* test/* names/*",
     .kind               = MACE_EXECUTABLE,

@@ -43,8 +43,8 @@ void bench_nstr() {
 
 void test_nstr() {
     SDL_Log("Testing nstr");
-    s8 mac = s8("Mac OS X");
+    s8 mac = s8_literal("Mac OS X");
     nourstest_true(mac.len == 8);
-    s8 lizard = s8("The lizard is a wizard, by joving rove. I say living hell.");
+    s8 lizard = s8_literal("The lizard is a wizard, by joving rove. I say living hell.");
     nourstest_true(lizard.len == 58);
 }

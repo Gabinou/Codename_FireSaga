@@ -12,7 +12,6 @@ typedef uint8_t u8;
 typedef int32_t b32;
 
 /* --- Pascal String s8 strings --- */
-
 typedef struct {
     u8      *data;
     size_t   len;
@@ -21,20 +20,22 @@ typedef struct {
 /* -- Immutable s8 -- */
 #define countof(a)   (sizeof(a) / sizeof(*(a)))
 #define lengthof(s)  (countof(s) - 1)
-#define s8(s) (s8){(u8 *)s, strlen(s)}
 
+#define s8_literal(s) (s8){(u8 *)s, lengthof(s)}
 #define s8_var(s) s8_var_(s)
-#define s8_var_(s) (s8){(u8 *)s, lengthof(s)}
+#define s8_var_(s) (s8){(u8 *)s, strlen(s)}
 
 /* -- Mutable s8 -- */
 s8  *s8_Init(char *string);
-void s8_Free(s8  *string);
+void s8_Free(s8   *string);
 
 void s8_slicefromEnd(  s8 *string, size_t toslice);
 void s8_slicefromStart(s8 *string, size_t toslice);
 
 void s8_toLower(s8 *string);
 void s8_toUpper(s8 *string);
+
+void s8append(s8 *string, const char*in);
 
 // TODO: use s8equal instead of strcmp 
 b32 s8equal(s8 *s1, s8 *s2);

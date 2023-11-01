@@ -62,24 +62,25 @@ void test_pixelfonts_internals() {
     nourstest_true(PixelFont_Width_Len(test_font, text_lines.lines[1]) < line_len_px);
     nourstest_true(PixelFont_Width_Len(test_font, text_lines.lines[2]) < line_len_px);
     nourstest_true(PixelFont_Width_Len(test_font, text_lines.lines[3]) < line_len_px);
-    s8 s8temp1 = s8(text_lines.lines[0]);
-    s8 s8temp2 = s8("The lizard is a");
-    SDL_assert(sizeof("The lizard is a") == 15)
-    SDL_assert(sizeof(*"The lizard is a") == 1)
-    SDL_Log("'%s' %d", text_lines.lines[0], strlen(text_lines.lines[0]));
+    s8 s8temp1 = s8_var(text_lines.lines[0]);
+    s8 s8temp2 = s8_literal("The lizard is a");
+
+    SDL_assert(s8temp1.len == 15);
+    SDL_assert(s8temp2.len == 15);
+    SDL_assert(s8temp2.len == s8temp1.len);
     SDL_Log("'%s' %d", s8temp1.data, s8temp1.len);
     SDL_Log("'%s' %d", s8temp2.data, s8temp2.len);
-    // getchar();
-    
+    getchar();
+
     nourstest_true(s8equal(&s8temp1, &s8temp2));
-    s8temp1 = s8(text_lines.lines[1]);
-    s8temp2 = s8("wizard, by joving");
+    s8temp1 = s8_var(text_lines.lines[1]);
+    s8temp2 = s8_literal("wizard, by joving");
     nourstest_true(s8equal(&s8temp1, &s8temp2));
-    s8temp1 = s8(text_lines.lines[2]);
-    s8temp2 = s8("rove. I say living");
+    s8temp1 = s8_var(text_lines.lines[2]);
+    s8temp2 = s8_literal("rove. I say living");
     nourstest_true(s8equal(&s8temp1, &s8temp2));
-    s8temp1 = s8(text_lines.lines[3]);
-    s8temp2 = s8("hell.");
+    s8temp1 = s8_var(text_lines.lines[3]);
+    s8temp2 = s8_literal("hell.");
     nourstest_true(s8equal(&s8temp1, &s8temp2));
 
     /* -- Lines split by breaking words in halves -- */

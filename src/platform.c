@@ -4,19 +4,19 @@
 u8 platform_fromSDL() {
     u8 out = NO_PLATFORM;
 
-    s8 name     = s8(SDL_GetPlatform());
+    s8 name     = s8_var(SDL_GetPlatform());
 
-    s8 mac      = s8("Mac OS X");
-    s8 ios      = s8("iOS");
-    s8 linux    = s8("Linux");
-    s8 android  = s8("Android");
-    s8 windows  = s8("Windows");
+    s8 mac      = s8_literal("Mac OS X");
+    s8 ios      = s8_literal("iOS");
+    s8 slinux   = s8_literal("Linux");
+    s8 android  = s8_literal("Android");
+    s8 windows  = s8_literal("Windows");
 
     if (s8equal(&name, &windows))
         out = WINDOWS_32;
     else if (s8equal(&name, &mac))
         out = MAC_OS_X;
-    else if (s8equal(&name, &linux))
+    else if (s8equal(&name, &slinux))
         out = LINUX;
     else if (s8equal(&name, &android))
         out = ANDROID;

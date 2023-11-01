@@ -23,7 +23,7 @@ b32 s8equal(s8 *s1, s8 *s2) {
         return(false);
 
     for (int i = 0; i < s1->len; i++)
-        if (s1->data[1] != s1->data[2])
+        if (s1->data[i] != s1->data[i])
             return(false);
 
     return(true);
