@@ -10,7 +10,7 @@ static int test_num = 0, fail_num = 0;
 static void nourstest_results() {
     char message[5] = "FAIL\0";
     if (fail_num == 0)
-        strncpy(message, "PASS", 4);
+        strncpy(message, "PASS", 5);
     printf("%s (%d/%d)\n", message, test_num - fail_num, test_num);
 }
 #define nourstest_true(test) do {\

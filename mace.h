@@ -15,13 +15,6 @@
 * See README for more details.
 */
 
-// TODO: Think about arena allocators
-// TODO: think about strings
-//  - Idea: replace null-terminated strings with n8 pascal string
-//  - strncpy, strcat -> memcpy
-//  - strncmp -> s8_Equal
-//  - strtok -> ?
-
 #define _XOPEN_SOURCE 500
 #include <assert.h>
 #include <stdio.h>
@@ -261,13 +254,13 @@ struct Config {
     *---------------------------------------------------------------------*/
 
     /*-------------------------- PRIVATE MEMBERS -------------------------*/
-    char * _name;          /* config name                         */
+    char         * _name;          /* config name                         */
     uint64_t       _hash;          /* config name hash                    */
     int            _order;         /* config order added by user          */
 
-    uint64_t            _target_order;
-    char     ** _flags;
-    int                 _flag_num;      /* Number of flags                */
+    uint64_t       _target_order;
+    char        ** _flags;
+    int            _flag_num;      /* Number of flags                */
 };
 
 struct Mace_Arguments {
@@ -298,6 +291,7 @@ void Mace_Arguments_Free(struct Mace_Arguments *args);
 enum MACE {
     MACE_DEFAULT_TARGET_LEN     =    8,
     MACE_MAX_COMMANDS           =    8,
+    MACE_MAX_ITERATIONS         =  128,
     MACE_DEFAULT_OBJECT_LEN     =   16,
     MACE_DEFAULT_OBJECTS_LEN    =  128,
     MACE_CWD_BUFFERSIZE         =  128,
@@ -441,17 +435,35 @@ glob_t  mace_glob_sources(const char *path);
 
 #endif /* MACE_CONVENIENCE_EXECUTABLE */
 /* --- mace_exec --- */
-pid_t mace_exec(const char * exec, char *const arguments[]);
+pid_t MACE_EXEC(const char * exec, char *const arguments[]);
 void  mace_wait_pid(int pid);
 void  mace_exec_print(char *const arguments[], size_t argnum);
 #ifndef MACE_CONVENIENCE_EXECUTABLE
 
-typedef uint8_t u8;
 /* --- Pascal String s8 strings --- */
+typedef uint8_t u8;
+typedef int32_t b32;
+#define countof(a)   (sizeof(a) / sizeof(*(a)))
+#define lengthof(s)  (countof(s) - 1)
+
 typedef struct {
     u8      *data;
     size_t   len;
 } s8;
+#define s8_literal(s) (s8){(u8 *)s, lengthof(s)}
+#define s8_var(s) s8_var_(s)
+#define s8_var_(s) (s8){(u8 *)s, strlen(s)}
+
+b32 s8equal(s8 *s1, s8 *s2) {
+    if(s1->len != s2->len)
+        return(false);
+
+    for (int i = 0; i < s1->len; i++)
+        if (s1->data[i] != s1->data[i])
+            return(false);
+
+    return(true);
+}
 
 /* --- mace_build --- */
 /* -- linking -- */
@@ -3701,13 +3713,13 @@ void mace_set_compiler(char *compiler) {
     cc = compiler;
 
     if (strstr(cc, "gcc") != NULL) {
-        cc_depflag = "-MM";
+        cc_depflag = "-MM ";
         ar = "ar";
     } else if (strstr(cc, "tcc") != NULL) {
-        cc_depflag = "-MD";
+        cc_depflag = "-MD ";
         ar = "tcc -ar";
     } else if (strstr(cc, "clang") != NULL) {
-        cc_depflag = "-MM";
+        cc_depflag = "-MM ";
         ar = "llvm-ar";
     } else {
         fprintf(stderr, "mace error: unknown compiler '%s'. \n", compiler);
@@ -4018,7 +4030,7 @@ void mace_Target_argv_allatonce(struct Target *target) {
     /* -- argv -c flag for libraries -- */
     mace_Target_argv_grow(target);
     char *compflag = calloc(3, sizeof(*compflag));
-    strncpy(compflag, "-c", 2);
+    strncpy(compflag, "-c ", 3);
     target->_argv[target->_argc++] = compflag;
 
     /* -- add config -- */
@@ -4054,7 +4066,7 @@ void mace_Target_argv_compile(struct Target *target) {
     target->_argc_tail =    target->_argc;
     mace_Target_argv_grow(target);
     char *compflag = calloc(3, sizeof(*compflag));
-    strncpy(compflag, "-c", 2);
+    strncpy(compflag, "-c ", 3);
     target->_argv[target->_argc++] = compflag;
 
     /* -- argv -fPIC flag for objects -- */
@@ -4149,15 +4161,35 @@ void mace_exec_print(char *const arguments[], size_t argnum) {
     vsprintf("\n");
 }
 
-s8 mace_args2line(char *const arguments[]) {
-    int i = 0;
-    while(arguments[i] != NULL) {
+char* mace_args2line(char *const arguments[]) {
+    int i   = 0;
+    int num = 0, len = 64;
 
+    char* argline = calloc(len, sizeof(*argline));
+    while((arguments[i] != NULL) && (i < MACE_MAX_ITERATIONS)) {
+        size_t ilen = strlen(arguments[i]);
+        if ((num + ilen + 1) > len) {
+            argline = realloc(argline, len * 2 * sizeof(*argline));
+            memset(argline + len, 0, len);
+            len *= 2;
+        }
+        memcpy(argline + num, arguments[i], ilen);
+        num += ilen;
+        argline[num++] = ' ';
+        i++;
     }
+
+    if ((num + 1) > len) {
+        argline = realloc(argline, len * 2 * sizeof(*argline));
+        memset(argline + len, 0, len);
+        len *= 2;
+    }
+    argline[num++] = ' ';
+    return(argline);
 }
 
 pid_t mace_exec_wbash(const char *exec, char *const arguments[]) {
-    s8 argline = mace_args2line(arguments);
+    char *argline = mace_args2line(arguments);
     pid_t pid = fork();
     if (pid < 0) {
         fprintf(stderr, "Error: forking issue.\n");
@@ -4166,12 +4198,14 @@ pid_t mace_exec_wbash(const char *exec, char *const arguments[]) {
         char *bashargs[] = {
             "/bin/bash",
             "-c",
-            argline.data,
+            argline,
             NULL
         };
+        mace_exec_print(bashargs, 3);
         execvp("/bin/bash", bashargs);
         exit(0);
     }
+    free(argline);
     return (pid);
 }
 
@@ -4186,6 +4220,7 @@ pid_t mace_exec(const char *exec, char *const arguments[]) {
     }
     return (pid);
 }
+#define MACE_EXEC mace_exec_wbash
 
 /* Wait on process with pid to finish */
 void mace_wait_pid(int pid) {
@@ -4222,8 +4257,8 @@ void mace_link_dynamic_library(struct Target * target) {
 
     /* --- Adding target --- */
     size_t oflag_len = 2;
-    size_t lib_len = strlen(lib);
-    char *libv     = calloc(lib_len + oflag_len + 1, sizeof(*libv));
+    size_t lib_len   = strlen(lib);
+    char *libv       = calloc(lib_len + oflag_len + 1, sizeof(*libv));
     strncpy(libv, "-o", oflag_len);
     strncpy(libv + oflag_len, lib, lib_len);
     int libc  = argc;
@@ -4232,14 +4267,14 @@ void mace_link_dynamic_library(struct Target * target) {
     /* --- Adding -fPIC flag --- */
     char *fPICflag     = calloc(6, sizeof(*fPICflag));
     strncpy(fPICflag, "-fPIC", 5);
-    int cfPICflag = argc;
-    argv[argc++] = fPICflag;
+    int cfPICflag   = argc;
+    argv[argc++]    = fPICflag;
 
     /* --- Adding -shared flag --- */
     char *sharedflag     = calloc(8, sizeof(*sharedflag));
     strncpy(sharedflag, "-shared", 7);
     int csharedflag = argc;
-    argv[argc++] = sharedflag;
+    argv[argc++]    = sharedflag;
 
     /* --- Adding objects --- */
     if ((argc_objects > 0) && (argv_objects != NULL)) {
@@ -4257,7 +4292,7 @@ void mace_link_dynamic_library(struct Target * target) {
     /* --- Actual linking --- */
     mace_exec_print(argv, argc);
     if (!dry_run) {
-        pid_t pid = mace_exec(argv[0], argv);
+        pid_t pid = MACE_EXEC(argv[0], argv);
         mace_wait_pid(pid);
     }
 
@@ -4318,7 +4353,7 @@ void mace_link_static_library(struct Target * target) {
     /* --- Actual linking --- */
     mace_exec_print(argv, argc);
     if (!dry_run) {
-        pid_t pid = mace_exec(argv[0], argv);
+        pid_t pid = MACE_EXEC(argv[0], argv);
         mace_wait_pid(pid);
     }
     free(buffer);
@@ -4395,7 +4430,7 @@ void mace_link_executable(struct Target * target) {
     /* --- Actual linking --- */
     mace_exec_print(argv, argc);
     if (!dry_run) {
-        pid_t pid = mace_exec(argv[0], argv);
+        pid_t pid = MACE_EXEC(argv[0], argv);
         mace_wait_pid(pid);
     }
 
@@ -4420,7 +4455,7 @@ void mace_Target_compile_allatonce(struct Target *target) {
     /* -- Actual compilation -- */
     mace_exec_print(target->_argv, target->_argc);
     if (!dry_run) {
-        pid_t pid = mace_exec(target->_argv[0], target->_argv);
+        pid_t pid = MACE_EXEC(target->_argv[0], target->_argv);
         mace_wait_pid(pid);
     }
 
@@ -4451,12 +4486,11 @@ void mace_Target_precompile(struct Target *target) {
             size_t len = strlen(target->_argv[MACE_ARGV_OBJECT]);
             target->_argv[MACE_ARGV_OBJECT][len - 1] = 'd';
 
-            // TODO: test with clang and tcc
             argc++;
 
             /* -- Actual pre-compilation -- */
             mace_exec_print(target->_argv, target->_argc);
-            pid_t pid = mace_exec(target->_argv[0], target->_argv);
+            pid_t pid = MACE_EXEC(target->_argv[0], target->_argv);
             mace_pqueue_put(pid);
 
             target->_argv[MACE_ARGV_OBJECT][len - 1] = 'o';
@@ -4517,7 +4551,7 @@ void mace_Target_compile(struct Target *target) {
             /* -- Actual compilation -- */
             mace_exec_print(target->_argv, target->_argc);
             if (!dry_run) {
-                pid_t pid = mace_exec(target->_argv[0], target->_argv);
+                pid_t pid = MACE_EXEC(target->_argv[0], target->_argv);
                 mace_pqueue_put(pid);
             }
         }
@@ -5004,7 +5038,7 @@ void mace_run_commands(const char *commands) {
 
         mace_exec_print(argv, argc);
         if (!dry_run) {
-            pid_t pid = mace_exec(argv[0], argv);
+            pid_t pid = MACE_EXEC(argv[0], argv);
             mace_wait_pid(pid);
         }
 

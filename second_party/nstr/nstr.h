@@ -35,8 +35,6 @@ void s8_slicefromStart(s8 *string, size_t toslice);
 void s8_toLower(s8 *string);
 void s8_toUpper(s8 *string);
 
-void s8append(s8 *string, const char*in);
-
 // TODO: use s8equal instead of strcmp 
 b32 s8equal(s8 *s1, s8 *s2);
 
