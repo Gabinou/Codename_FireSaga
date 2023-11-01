@@ -74,6 +74,7 @@ struct Target tinymt = {
 };
 
 /* - SotA - */
+/* TODO: Can remove win-sota target and use only sota? */
 struct Target win_sota = {
     .includes           = ".,include,include/bars,include/menu,include/popup,"
                           "include/systems,names,names/popup,names/menu,"
@@ -85,8 +86,10 @@ struct Target win_sota = {
                           "src/game/,src/map,src/controller",
     .links              = "SDL2,SDL2_image,SDL2_ttf,m,cjson,noursmath,physfs,"
                           "tinymt,tnecs,nstr,parg",
+                          /* TODO: Remove flags given by sdl2-config */
     .flags              = "-lmingw32,-lSDL2main,-fwrapv,-fno-strict-overflow,"
                           "-fno-strict-aliasing,-fno-delete-null-pointer-checks",
+                          "$(sdl2-config --cflags)",
     .command_pre_build  = "astyle --options=utils/style.txt --verbose "
                           "--recursive src/* include/* test/* names/*",
     .kind               = MACE_EXECUTABLE,
@@ -103,11 +106,12 @@ struct Target sota = {
                           "src/game/,src/map,src/controller",
     .links              = "SDL2,SDL2_image,SDL2_ttf,m,GLEW,cjson,noursmath,physfs,"
                           "tinymt,tnecs,nstr,parg",
-    .flags              = "-L/usr/lib,-fno-strict-overflow,-fno-strict-aliasing,"
+    .flags              = "-fno-strict-overflow,-fno-strict-aliasing,"
                           "-fwrapv,-fno-delete-null-pointer-checks,"
-                          "-D_REENTRANT,-DSDL_DISABLE_IMMINTRIN_H",
+                          "-DSDL_DISABLE_IMMINTRIN_H,"
+                          "$(sdl2-config --cflags)",
     .command_pre_build  = "astyle --options=utils/style.txt --verbose "
-                          "--recursive 'src/*' 'include/*' 'test/*' 'names/*'",
+                          "--recursive src/* include/* test/* names/*",
     .kind               = MACE_EXECUTABLE,
 };
 
@@ -127,9 +131,10 @@ struct Target test = {
                           "tinymt,tnecs,nstr,parg",
     .flags              = "-L/usr/lib,-fno-strict-overflow,-fno-strict-aliasing,"
                           "-fwrapv,-fno-delete-null-pointer-checks,"
-                          "-D_REENTRANT,-DSDL_DISABLE_IMMINTRIN_H",
+                          "-DSDL_DISABLE_IMMINTRIN_H,"
+                          "$(sdl2-config --cflags)",
     .command_pre_build  = "astyle --options=utils/style.txt --verbose "
-                          "--recursive 'src/*' 'include/*' 'test/*' 'names/*'",
+                          "--recursive src/* include/* test/* names/*",
     .kind               = MACE_EXECUTABLE,
 };
 

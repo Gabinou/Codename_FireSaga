@@ -282,9 +282,9 @@ void Mace_Arguments_Free(struct Mace_Arguments *args);
 
 /********************************** CONSTANTS *********************************/
 #define MACE_VER_PATCH 1
-#define MACE_VER_MINOR 4
+#define MACE_VER_MINOR 5
 #define MACE_VER_MAJOR 0
-#define MACE_VER_STRING "1.4.0"
+#define MACE_VER_STRING "1.5.0"
 #define MACE_USAGE_MIDCOLW 12
 #ifndef MACE_CONVENIENCE_EXECUTABLE
 
@@ -435,7 +435,7 @@ glob_t  mace_glob_sources(const char *path);
 
 #endif /* MACE_CONVENIENCE_EXECUTABLE */
 /* --- mace_exec --- */
-pid_t MACE_EXEC(const char * exec, char *const arguments[]);
+pid_t mace_exec(const char * exec, char *const arguments[]);
 void  mace_wait_pid(int pid);
 void  mace_exec_print(char *const arguments[], size_t argnum);
 #ifndef MACE_CONVENIENCE_EXECUTABLE
@@ -3713,13 +3713,13 @@ void mace_set_compiler(char *compiler) {
     cc = compiler;
 
     if (strstr(cc, "gcc") != NULL) {
-        cc_depflag = "-MM ";
+        cc_depflag = "-MM";
         ar = "ar";
     } else if (strstr(cc, "tcc") != NULL) {
-        cc_depflag = "-MD ";
+        cc_depflag = "-MD";
         ar = "tcc -ar";
     } else if (strstr(cc, "clang") != NULL) {
-        cc_depflag = "-MM ";
+        cc_depflag = "-MM";
         ar = "llvm-ar";
     } else {
         fprintf(stderr, "mace error: unknown compiler '%s'. \n", compiler);
@@ -4030,7 +4030,7 @@ void mace_Target_argv_allatonce(struct Target *target) {
     /* -- argv -c flag for libraries -- */
     mace_Target_argv_grow(target);
     char *compflag = calloc(3, sizeof(*compflag));
-    strncpy(compflag, "-c ", 3);
+    strncpy(compflag, "-c", 3);
     target->_argv[target->_argc++] = compflag;
 
     /* -- add config -- */
@@ -4066,7 +4066,7 @@ void mace_Target_argv_compile(struct Target *target) {
     target->_argc_tail =    target->_argc;
     mace_Target_argv_grow(target);
     char *compflag = calloc(3, sizeof(*compflag));
-    strncpy(compflag, "-c ", 3);
+    strncpy(compflag, "-c", 3);
     target->_argv[target->_argc++] = compflag;
 
     /* -- argv -fPIC flag for objects -- */
@@ -5038,7 +5038,7 @@ void mace_run_commands(const char *commands) {
 
         mace_exec_print(argv, argc);
         if (!dry_run) {
-            pid_t pid = MACE_EXEC(argv[0], argv);
+            pid_t pid = mace_exec(argv[0], argv);
             mace_wait_pid(pid);
         }
 
