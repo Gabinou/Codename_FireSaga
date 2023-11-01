@@ -64,10 +64,13 @@ void test_pixelfonts_internals() {
     nourstest_true(PixelFont_Width_Len(test_font, text_lines.lines[3]) < line_len_px);
     s8 s8temp1 = s8(text_lines.lines[0]);
     s8 s8temp2 = s8("The lizard is a");
+    SDL_assert(sizeof("The lizard is a") == 15)
+    SDL_assert(sizeof(*"The lizard is a") == 1)
     SDL_Log("'%s' %d", text_lines.lines[0], strlen(text_lines.lines[0]));
     SDL_Log("'%s' %d", s8temp1.data, s8temp1.len);
     SDL_Log("'%s' %d", s8temp2.data, s8temp2.len);
     // getchar();
+    
     nourstest_true(s8equal(&s8temp1, &s8temp2));
     s8temp1 = s8(text_lines.lines[1]);
     s8temp2 = s8("wizard, by joving");
