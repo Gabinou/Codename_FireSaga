@@ -43,9 +43,7 @@ void s8_camelCase(s8 *str8, const char separator, size_t minwordlen);
 void s8_Replace(      s8 *string, const char *replace, const char *with);
 void s8_replaceSingle(s8 *string, const char  replace, const char  with);
 
-
 void s8_Path_Remove_Top(s8 *path, const char separator);
-
 
 /* --- Null-terminated strings --- */
 /* - Note: caller deals with memory - */
