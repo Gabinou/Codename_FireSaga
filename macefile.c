@@ -107,7 +107,7 @@ struct Target sota = {
                           "-fwrapv,-fno-delete-null-pointer-checks,"
                           "-D_REENTRANT,-DSDL_DISABLE_IMMINTRIN_H",
     .command_pre_build  = "astyle --options=utils/style.txt --verbose "
-                          "--recursive src/* include/* test/* names/*",
+                          "--recursive 'src/*' 'include/*' 'test/*' 'names/*'",
     .kind               = MACE_EXECUTABLE,
 };
 
@@ -129,7 +129,7 @@ struct Target test = {
                           "-fwrapv,-fno-delete-null-pointer-checks,"
                           "-D_REENTRANT,-DSDL_DISABLE_IMMINTRIN_H",
     .command_pre_build  = "astyle --options=utils/style.txt --verbose "
-                          "--recursive src/* include/* test/* names/*",
+                          "--recursive 'src/*' 'include/*' 'test/*' 'names/*'",
     .kind               = MACE_EXECUTABLE,
 };
 
