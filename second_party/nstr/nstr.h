@@ -28,8 +28,8 @@ typedef struct {
 #define s8_var_(s) (s8){(u8 *)s, strlen(s)}
 
 /* -- Mutable s8 -- */
-s8  *s8_Init(char *string);
-void s8_Free(s8   *string);
+s8   s8_mut(char *string);
+void s8_free(s8   string);
 
 void s8_slicefromEnd(  s8 *string, size_t toslice);
 void s8_slicefromStart(s8 *string, size_t toslice);
@@ -39,6 +39,7 @@ void s8_toUpper(s8 *string);
 
 // TODO: use s8equal instead of strcmp 
 b32 s8equal(s8 *s1, s8 *s2);
+b32 s8equallit(s8 s1, s8 s2);
 
 void s8_camelCase(s8 *str8, const char separator, size_t minwordlen);
 

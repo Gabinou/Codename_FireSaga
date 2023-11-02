@@ -10,9 +10,10 @@ u8 platform_fromSDL() {
     s8 ios      = s8_literal("iOS");
     s8 slinux   = s8_literal("Linux");
     s8 android  = s8_literal("Android");
-    s8 windows  = s8_literal("Windows");
+    // s8 windows  = s8_literal("Windows");
 
-    if (s8equal(&name, &windows))
+    // if (s8equal(&name, &windows))
+    if (s8equallit(name, s8_literal("Windows")))
         out = WINDOWS_32;
     else if (s8equal(&name, &mac))
         out = MAC_OS_X;

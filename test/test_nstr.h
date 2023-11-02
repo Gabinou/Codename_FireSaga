@@ -8,10 +8,10 @@ void bench_s8() {
 
     /* Benchmark n8 */
     u64 before_ns = tnecs_get_ns();
-    s8 *s8_string = s8_Init(string);
+    s8 s8_string = s8_mut(string);
     for (int i = 0; i < ITERATIONS; i++) {
-        s8_toLower(s8_string);
-        s8_toUpper(s8_string);
+        s8_toLower(&s8_string);
+        s8_toUpper(&s8_string);
     }
 
     u64 after_ns    = tnecs_get_ns();
@@ -31,7 +31,7 @@ void bench_s8() {
 
 
     /* --- FREE --- */
-    s8_Free(s8_string);
+    s8_free(s8_string);
     /* --- CONCLUSION --- */
     // n8 string 3x-4x faster than null-terminated strings!
 }
@@ -47,4 +47,12 @@ void test_nstr() {
     nourstest_true(mac.len == 8);
     s8 lizard = s8_literal("The lizard is a wizard, by joving rove. I say living hell.");
     nourstest_true(lizard.len == 58);
+
+    s8 windows1 = s8_var("Windows");
+    s8 windows2 = s8_literal("Windows");
+    s8 windows3 = s8_mut("Windows");
+
+    nourstest_true(s8equallit(windows1, windows2));
+    nourstest_true(s8equallit(windows2, windows3));
+    nourstest_true(s8equallit(windows1, windows3));
 }

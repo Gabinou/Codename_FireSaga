@@ -145,7 +145,7 @@ void test_RNG() {
 }
 
 #undef ITERATIONS
-#define ITERATIONS 10000000 
+#define ITERATIONS 10000000
 
 void bench_RNG() {
     u64 before_ns = tnecs_get_ns();
