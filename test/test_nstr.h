@@ -51,8 +51,19 @@ void test_nstr() {
     s8 windows1 = s8_var("Windows");
     s8 windows2 = s8_literal("Windows");
     s8 windows3 = s8_mut("Windows");
+    nourstest_true(windows1.len == windows2.len);
+    nourstest_true(windows2.len == windows3.len);
+    nourstest_true(windows1.len == windows3.len);
+    nourstest_true(windows1.len == 7);
 
-    nourstest_true(s8equallit(windows1, windows2));
-    nourstest_true(s8equallit(windows2, windows3));
-    nourstest_true(s8equallit(windows1, windows3));
+    nourstest_true(s8equal(windows1, windows2));
+    nourstest_true(s8equal(windows2, windows3));
+    nourstest_true(s8equal(windows1, windows3));
+
+    s8 windows4 = s8_var(windows3.data);
+    s8 windows5 = s8_var(windows3.data);
+    nourstest_true(windows4.len == windows5.len);
+    nourstest_true(windows1.len == windows4.len);
+    nourstest_true(windows1.len == windows5.len);
+
 }

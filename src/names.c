@@ -644,7 +644,7 @@ void Names_Print_All(const char *foldername) {
     s8 s8null = s8_literal("");
     for (u8 i = TILE_START; i < TILE_END; i++) {
         s8 tilename = s8_var(global_tilenames[i]);
-        if (!s8equal(&tilename, &s8null))
+        if (!s8equal(tilename, s8null))
             fprintf(fp, "%d %s \n", i, global_tilenames[i]);
     }
     fclose(fp);

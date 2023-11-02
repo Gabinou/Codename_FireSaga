@@ -4,7 +4,7 @@
 // 3x-4x faster than null-terminated strings!
 s8 s8_mut(char *string) {
     s8 s8_string;
-    s8_string.len  = strlen(string) - 1;
+    s8_string.len  = strlen(string);
     s8_string.data = malloc(s8_string.len);
     memcpy(s8_string.data, string, s8_string.len);
     return(s8_string);
@@ -15,18 +15,7 @@ void s8_free(s8 string) {
         free(string.data);
 }
 
-b32 s8equal(s8 *s1, s8 *s2) {
-    if(s1->len != s2->len)
-        return(false);
-
-    for (int i = 0; i < s1->len; i++)
-        if (s1->data[i] != s1->data[i])
-            return(false);
-
-    return(true);
-}
-
-b32 s8equallit(s8 s1, s8 s2) {
+b32 s8equal(s8 s1, s8 s2) {
     if(s1.len != s2.len)
         return(false);
 

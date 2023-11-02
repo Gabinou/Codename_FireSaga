@@ -69,16 +69,16 @@ void test_pixelfonts_internals() {
     SDL_assert(s8temp2.len == 15);
     SDL_assert(s8temp2.len == s8temp1.len);
 
-    nourstest_true(s8equal(&s8temp1, &s8temp2));
+    nourstest_true(s8equal(s8temp1, s8temp2));
     s8temp1 = s8_var(text_lines.lines[1]);
     s8temp2 = s8_literal("wizard, by joving");
-    nourstest_true(s8equal(&s8temp1, &s8temp2));
+    nourstest_true(s8equal(s8temp1, s8temp2));
     s8temp1 = s8_var(text_lines.lines[2]);
     s8temp2 = s8_literal("rove. I say living");
-    nourstest_true(s8equal(&s8temp1, &s8temp2));
+    nourstest_true(s8equal(s8temp1, s8temp2));
     s8temp1 = s8_var(text_lines.lines[3]);
     s8temp2 = s8_literal("hell.");
-    nourstest_true(s8equal(&s8temp1, &s8temp2));
+    nourstest_true(s8equal(s8temp1, s8temp2));
 
     /* -- Lines split by breaking words in halves -- */
     char *text4 =

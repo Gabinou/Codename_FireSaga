@@ -24,7 +24,8 @@ typedef struct {
 /* -- Immutable s8 -- */
 #define s8_literal(s) (s8){(u8 *)s, lengthof(s)}
 
-#define s8_var(s) s8_var_(s)
+// sizeof() of mutable string gives pointer size
+#define s8_var(s)   s8_var_(s) 
 #define s8_var_(s) (s8){(u8 *)s, strlen(s)}
 
 /* -- Mutable s8 -- */
@@ -38,8 +39,7 @@ void s8_toLower(s8 *string);
 void s8_toUpper(s8 *string);
 
 // TODO: use s8equal instead of strcmp 
-b32 s8equal(s8 *s1, s8 *s2);
-b32 s8equallit(s8 s1, s8 s2);
+b32 s8equal(s8 s1, s8 s2);
 
 void s8_camelCase(s8 *str8, const char separator, size_t minwordlen);
 
