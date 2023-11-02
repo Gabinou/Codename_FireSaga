@@ -21,10 +21,11 @@ typedef struct {
 #define countof(a)   (sizeof(a) / sizeof(*(a)))
 #define lengthof(s)  (countof(s) - 1)
 
-/* -- Immutable s8 -- */
+/* -- s8 from string literal, string array -- */
 #define s8_literal(s) (s8){(u8 *)s, lengthof(s)}
 
-// sizeof() of mutable string gives pointer size
+/* -- s8 from pointer to string -- */
+// -> Needed cause sizeof() gives pointer size... 
 #define s8_var(s)   s8_var_(s) 
 #define s8_var_(s) (s8){(u8 *)s, strlen(s)}
 
