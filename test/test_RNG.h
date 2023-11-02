@@ -145,7 +145,7 @@ void test_RNG() {
 }
 
 #undef ITERATIONS
-#define ITERATIONS 10000000
+#define ITERATIONS 10000000 
 
 void bench_RNG() {
     u64 before_ns = tnecs_get_ns();
@@ -155,7 +155,10 @@ void bench_RNG() {
         tinymt32_generate_uint32(&tinymt);
     }
     u64 after_ns    = tnecs_get_ns();
-    u64 elapsed_ms  = (after_ns - before_ns) / SOTA_us;
+    u64 elapsed_ns  = (after_ns - before_ns);
+    u64 elapsed_ms  = elapsed_ns / SOTA_us;
+    SDL_Log("Tinymt %d ns", elapsed_ns);
+    SDL_Log("Tinymt %d ns / RN", elapsed_ns / ITERATIONS);
     SDL_Log("Tinymt %d ms", elapsed_ms);
 
     before_ns = tnecs_get_ns();
@@ -164,6 +167,11 @@ void bench_RNG() {
         next_xoshiro256ss();
     }
     after_ns    = tnecs_get_ns();
-    elapsed_ms  = (after_ns - before_ns) / SOTA_us;
+    elapsed_ns  = (after_ns - before_ns);
+    elapsed_ms  = elapsed_ns / SOTA_us;
+    SDL_Log("xoshiro256ss %d ns", elapsed_ns);
+    SDL_Log("xoshiro256ss %d ns / RN", elapsed_ns / ITERATIONS);
     SDL_Log("xoshiro256ss %d ms", elapsed_ms);
+
+    // Conclusion: xoshiro256ss < 2x faster than tinymt32
 }

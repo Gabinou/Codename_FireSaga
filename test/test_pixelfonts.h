@@ -68,9 +68,6 @@ void test_pixelfonts_internals() {
     SDL_assert(s8temp1.len == 15);
     SDL_assert(s8temp2.len == 15);
     SDL_assert(s8temp2.len == s8temp1.len);
-    SDL_Log("'%s' %d", s8temp1.data, s8temp1.len);
-    SDL_Log("'%s' %d", s8temp2.data, s8temp2.len);
-    getchar();
 
     nourstest_true(s8equal(&s8temp1, &s8temp2));
     s8temp1 = s8_var(text_lines.lines[1]);
