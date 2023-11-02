@@ -10,8 +10,8 @@ void bench_s8() {
     u64 before_ns = tnecs_get_ns();
     s8 s8_string = s8_mut(string);
     for (int i = 0; i < ITERATIONS; i++) {
-        s8_toLower(&s8_string);
-        s8_toUpper(&s8_string);
+        s8_toLower(s8_string);
+        s8_toUpper(s8_string);
     }
 
     u64 after_ns    = tnecs_get_ns();

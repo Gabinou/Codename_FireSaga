@@ -26,32 +26,32 @@ b32 s8equal(s8 s1, s8 s2) {
     return(true);
 }
 
-void s8_slicefromStart(s8 *string, size_t toslice) {
-    for (size_t i = toslice; i < string->len; i++)
-        *(string->data + i - toslice) = (u8) *(string->data + i);
-    string->len -= toslice;
+void s8_slicefromStart(s8 str8, size_t toslice) {
+    for (size_t i = toslice; i < str8.len; i++)
+        *(str8.data + i - toslice) = (u8) *(str8.data + i);
+    str8.len -= toslice;
 }
 
-void s8_slicefromEnd(s8 *string, size_t toslice) {
-    for (size_t i = 0; i < (string->len - toslice) ; i++)
-        *(string->data + i) = (u8) *(string->data + i);
-    string->len -= toslice;
+void s8_slicefromEnd(s8 str8, size_t toslice) {
+    for (size_t i = 0; i < (str8.len - toslice) ; i++)
+        *(str8.data + i) = (u8) *(str8.data + i);
+    str8.len -= toslice;
 }
 
-void s8_toLower(s8 *string) {
-    for (size_t i = 0; i < string->len; i++)
-        *(string->data + i) = (u8)tolower(*(string->data + i));
+void s8_toLower(s8 str8) {
+    for (size_t i = 0; i < str8.len; i++)
+        *(str8.data + i) = (u8)tolower(*(str8.data + i));
 }
 
-void s8_toUpper(s8 *string) {
-    for (size_t i = 0; i < string->len; i++)
-        *(string->data + i) = (u8)toupper(*(string->data + i));
+void s8_toUpper(s8 str8) {
+    for (size_t i = 0; i < str8.len; i++)
+        *(str8.data + i) = (u8)toupper(*(str8.data + i));
 }
 
-void s8_camelCase(s8 *str8, const char separator, size_t minwordlen) {
+void s8_camelCase(s8 str8, const char separator, size_t minwordlen) {
     size_t wlen = 0;
-    for (size_t i = 0; i <= str8->len; i++) {
-        int word_end = (*(str8->data + i) == separator) || (i == str8->len);
+    for (size_t i = 0; i <= str8.len; i++) {
+        int word_end = (*(str8.data + i) == separator) || (i == str8.len);
         if (!word_end) {
             /* Next character in word. */
             wlen++;
@@ -60,42 +60,42 @@ void s8_camelCase(s8 *str8, const char separator, size_t minwordlen) {
         /* Word end found. */
         if (wlen > minwordlen)
             /* Upper First letter of word, if longer than min */
-            *(str8->data + i - wlen) = (u8)toupper(*(str8->data + i - wlen));
+            *(str8.data + i - wlen) = (u8)toupper(*(str8.data + i - wlen));
         wlen = 0;
     }
 }
 
-void s8_replaceSingle(s8 *string, const char replace, const char with) {
-    for (size_t i = 0; i < string->len; i++) {
-        if (*(string->data + i) == replace)
-            *(string->data + i) = with;
+void s8_replaceSingle(s8 str8, const char replace, const char with) {
+    for (size_t i = 0; i < str8.len; i++) {
+        if (*(str8.data + i) == replace)
+            *(str8.data + i) = with;
     }
 }
 
-void s8_Path_Remove_Top(s8 *path, const char separator) {
-    char *folder        = strrchr(path->data, separator) + 1;
+void s8_Path_Remove_Top(s8 str8, const char separator) {
+    char *folder        = strrchr(str8.data, separator) + 1;
     size_t len_folder   = strlen(folder);
-    *(path->data + (path->len - len_folder - 1)) = '\0';
-    path->len -= len_folder;
+    *(str8.data + (str8.len - len_folder - 1)) = '\0';
+    str8.len -= len_folder;
 }
 
-void s8_Replace(s8 *string, const char *replace, const char *with) {
+void s8_Replace(s8 str8, const char *replace, const char *with) {
     /* find replace pos */
-    char *found = strstr(string->data, replace);
+    char *found = strstr(str8.data, replace);
     if (found != NULL) {
-        // size_t len_f  = found - string->data;
+        // size_t len_f  = found - str8.data;
         // size_t len_r  = strlen(replace);
         // size_t len_w  = strlen(with);
-        // size_t len_l  = strlen(string->data);
+        // size_t len_l  = strlen(str8.data);
         // size_t len_nl = len_l + len_w - len_r;
         // /* accomodate new str len */
-        // memmove(string->data + len_f + len_w,
-        //         string->data + len_f + len_r,
+        // memmove(str8.data + len_f + len_w,
+        //         str8.data + len_f + len_r,
         //         len_l - (len_f + len_r));
         // /* overwrite replace with */
-        // strncpy(string->data + len_f, with, len_w);
-        // string->data[len_nl] = '\0';
-        // string->len          = len_nl;
+        // strncpy(str8.data + len_f, with, len_w);
+        // str8.data[len_nl] = '\0';
+        // str8.len          = len_nl;
     }
 }
 
