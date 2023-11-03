@@ -31,26 +31,30 @@ typedef struct s8 {
 #define s8_var_(s) (s8){(u8 *)s, strlen(s), strlen(s)}
 
 /* -- Mutable s8 -- */
+// s8 function input notes
+//  - foo(s8 *str8) -> foo can change all member variables
+//  - bar(s8  str8) -> bar can only change *str8.data, 
+//                     ie what str8.data points to
 s8   s8_mut(char *string);
-void s8_free(s8  *string);
+void s8_free(s8  *str8);
 
-void s8_slicefromEnd(  s8 str8, size_t toslice);
-void s8_slicefromStart(s8 str8, size_t toslice);
+s8 s8_slicefromEnd(  s8 str8, size_t toslice);
+s8 s8_slicefromStart(s8 str8, size_t toslice);
 
-void s8_toLower(s8 str8);
-void s8_toUpper(s8 str8);
+s8 s8_toLower(s8 str8);
+s8 s8_toUpper(s8 str8);
 
 // TODO: use s8equal instead of strcmp 
 b32 s8equal(s8 s1, s8 s2);
 
 s8 s8cat(s8 s1, s8 s2);
 
-void s8_camelCase(s8 str8, const char separator, size_t minwordlen);
+s8 s8_camelCase(s8 str8, const char separator, size_t minwordlen);
 
-void s8_Replace(      s8 str8, const char *replace, const char *with);
-void s8_replaceSingle(s8 str8, const char  replace, const char  with);
+s8 s8_Replace(      s8 str8, const char *replace, const char *with);
+s8 s8_replaceSingle(s8 str8, const char  replace, const char  with);
 
-void s8_Path_Remove_Top(s8 path, const char separator);
+s8 s8_Path_Remove_Top(s8 path, const char separator);
 
 /* --- Null-terminated strings --- */
 /* - Note: caller deals with memory - */

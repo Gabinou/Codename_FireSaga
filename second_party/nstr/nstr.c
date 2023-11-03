@@ -42,29 +42,33 @@ s8 s8cat(s8 s1, s8 s2) {
     return(s1);
 }
 
-void s8_slicefromStart(s8 str8, size_t toslice) {
+s8 s8_slicefromStart(s8 str8, size_t toslice) {
     for (size_t i = toslice; i < str8.num; i++)
         *(str8.data + i - toslice) = (u8) *(str8.data + i);
     str8.num -= toslice;
+    return(str8);
 }
 
-void s8_slicefromEnd(s8 str8, size_t toslice) {
+s8 s8_slicefromEnd(s8 str8, size_t toslice) {
     for (size_t i = 0; i < (str8.num - toslice) ; i++)
         *(str8.data + i) = (u8) *(str8.data + i);
     str8.num -= toslice;
+    return(str8);
 }
 
-void s8_toLower(s8 str8) {
+s8 s8_toLower(s8 str8) {
     for (size_t i = 0; i < str8.num; i++)
         *(str8.data + i) = (u8)tolower(*(str8.data + i));
+    return(str8);
 }
 
-void s8_toUpper(s8 str8) {
+s8 s8_toUpper(s8 str8) {
     for (size_t i = 0; i < str8.num; i++)
         *(str8.data + i) = (u8)toupper(*(str8.data + i));
+    return(str8);
 }
 
-void s8_camelCase(s8 str8, const char separator, size_t minwordlen) {
+s8 s8_camelCase(s8 str8, const char separator, size_t minwordlen) {
     size_t wlen = 0;
     for (size_t i = 0; i <= str8.num; i++) {
         int word_end = (*(str8.data + i) == separator) || (i == str8.num);
@@ -79,23 +83,27 @@ void s8_camelCase(s8 str8, const char separator, size_t minwordlen) {
             *(str8.data + i - wlen) = (u8)toupper(*(str8.data + i - wlen));
         wlen = 0;
     }
+    return(str8);
 }
 
-void s8_replaceSingle(s8 str8, const char replace, const char with) {
-    for (size_t i = 0; i < str8.num; i++) {
-        if (*(str8.data + i) == replace)
-            *(str8.data + i) = with;
-    }
-}
-
-void s8_Path_Remove_Top(s8 str8, const char separator) {
+s8 s8_Path_Remove_Top(s8 str8, const char separator) {
     char *folder        = strrchr(str8.data, separator) + 1;
     size_t len_folder   = strlen(folder);
     *(str8.data + (str8.num - len_folder - 1)) = '\0';
     str8.num -= len_folder;
+    return(str8);
 }
 
-void s8_Replace(s8 str8, const char *replace, const char *with) {
+s8 s8_replaceSingle(s8 str8, const char replace, const char with) {
+    for (size_t i = 0; i < str8.num; i++) {
+        if (*(str8.data + i) == replace)
+            *(str8.data + i) = with;
+    }
+    return(str8);
+}
+
+
+s8 s8_Replace(s8 str8, const char *replace, const char *with) {
     /* find replace pos */
     char *found = strstr(str8.data, replace);
     if (found != NULL) {
@@ -113,6 +121,7 @@ void s8_Replace(s8 str8, const char *replace, const char *with) {
         // str8.data[len_nl] = '\0';
         // str8.num          = len_nl;
     }
+    return(str8);
 }
 
 /* --- Null-terminated strings --- */
