@@ -35,9 +35,10 @@ typedef i8(* use_function_t)(struct Item *, struct Unit *, struct Unit *);
 
 typedef struct Item {
     u8      json_element;  /* JSON_ELEM_bOFFSET = 0 */
+    // TODO: Change to s8
     char   *json_filename; /* JSON_ELEM_bOFFSET = 1 */
 
-    u8 target;         /* units on which item is usable. */
+    u8 target;  /* units on which item is usable. */
     struct Range range;
 
     struct Unit_stats bonus_stats;
@@ -55,6 +56,7 @@ typedef struct Item {
     /* Use function is used for Staves effects too. */
     use_function_t active; /* NULL if not usable */
 
+    // TODO: Change to s8
     char name[DEFAULT_BUFFER_SIZE];
     char description[DEFAULT_BUFFER_SIZE * 2];
 

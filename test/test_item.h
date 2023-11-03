@@ -11,7 +11,7 @@ void test_item() {
     struct Item item1 = Item_default;
     struct Item item2 = Item_default;
     struct Item item3 = Item_default;
-    //                               hp, str, mag, agi, dex, fth, luck, def, res, con, move
+    //                          hp,str,mag,agi,dex,fth,luck,def,res,con,mv
     struct Unit_stats in_stats = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
     struct Unit_stats out_stats;
     uint64_t in_effect;
@@ -22,8 +22,8 @@ void test_item() {
     item1.id    = ITEM_ID_CROSS;
     char in_description[DEFAULT_BUFFER_SIZE] = {"Naturally full of angelic energy. Protects against demons."};
     char *out_description;
-    strncpy(item1.description, in_description, strlen(in_description));
-    strncpy(item1.name, "Cross", strlen("Cross"));
+    memcpy(item1.description, in_description, strlen(in_description));
+    memcpy(item1.name, "Cross", strlen("Cross"));
     item1.passive     = in_effect;
     item1.bonus_stats = in_stats;
     item1.malus_stats = in_stats;
