@@ -14,7 +14,7 @@ typedef int32_t b32;
 /* --- Pascal String s8 strings --- */
 typedef struct s8 {
     u8      *data;
-    size_t   len;
+    size_t   len; /* allocated */
     size_t   num;
 } s8;
 

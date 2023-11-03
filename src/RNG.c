@@ -130,30 +130,30 @@ u8 *RNG_boxmuller(const u8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev) 
 }
 
 u32 RNG_openBSD_u32(struct TINYMT32_T *tinymt, u32 min, u32 max) {
-    // "Scales" uniform integer from [0 and 2**32 - 1] to [min, max[
-    // Unbiased according to: Fast Random Integer Generation in an Interval
+    /* "Scales" uniform integer from [0 and 2**32 - 1] to [min, max[        */
+    /* Unbiased according to: Fast Random Integer Generation in an Interval */
     u32 s = max - min;
     u32 t = (UINT32_MAX - s + 1) % s;
     u32 x;
     do {
         x = tinymt32_generate_uint32(tinymt);
-        // Rejects the last pigeonhole
-        // Ex: 32 with max=5 -> rejects 30,31,32
+        /* Rejects the last pigeonhole           */
+        /* Ex: 32 with max=5 -> rejects 30,31,32 */
     } while (x < t);
     u32 out = min + (x % s);
     return (out);
 }
 
 u64 RNG_openBSD_u64(u64 min, u64 max) {
-    // "Scales" uniform integer from [0 and 2**32 - 1] to [min, max[
-    // Unbiased according to: Fast Random Integer Generation in an Interval
+    /* "Scales" uniform integer from [0 and 2**32 - 1] to [min, max[        */
+    /* Unbiased according to: Fast Random Integer Generation in an Interval */
     u64 x;
     u64 s = max - min;
     u64 t = (UINT32_MAX - s + 1) % s;
     do {
         x = next_xoshiro256ss();
-        // Rejects the last pigeonhole
-        // Ex: 32 with max=5 -> rejects 30,31,32
+        /* Rejects the last pigeonhole           */
+        /* Ex: 32 with max=5 -> rejects 30,31,32 */
     } while (x < t);
     u64 out = min + (x % s);
     return (out);

@@ -4,7 +4,8 @@
 // 3x-4x faster than null-terminated strings!
 s8 s8_mut(char *string) {
     s8 s8_string;
-    s8_string.len  = strlen(string);
+    s8_string.num  = strlen(string);
+    s8_string.len  = s8_string.num;
     s8_string.data = malloc(s8_string.len);
     memcpy(s8_string.data, string, s8_string.len);
     return(s8_string);
@@ -16,10 +17,10 @@ void s8_free(s8 string) {
 }
 
 b32 s8equal(s8 s1, s8 s2) {
-    if(s1.len != s2.len)
+    if(s1.num != s2.num)
         return(false);
 
-    for (int i = 0; i < s1.len; i++)
+    for (int i = 0; i < s1.num; i++)
         if (s1.data[i] != s1.data[i])
             return(false);
 
@@ -27,31 +28,31 @@ b32 s8equal(s8 s1, s8 s2) {
 }
 
 void s8_slicefromStart(s8 str8, size_t toslice) {
-    for (size_t i = toslice; i < str8.len; i++)
+    for (size_t i = toslice; i < str8.num; i++)
         *(str8.data + i - toslice) = (u8) *(str8.data + i);
-    str8.len -= toslice;
+    str8.num -= toslice;
 }
 
 void s8_slicefromEnd(s8 str8, size_t toslice) {
-    for (size_t i = 0; i < (str8.len - toslice) ; i++)
+    for (size_t i = 0; i < (str8.num - toslice) ; i++)
         *(str8.data + i) = (u8) *(str8.data + i);
-    str8.len -= toslice;
+    str8.num -= toslice;
 }
 
 void s8_toLower(s8 str8) {
-    for (size_t i = 0; i < str8.len; i++)
+    for (size_t i = 0; i < str8.num; i++)
         *(str8.data + i) = (u8)tolower(*(str8.data + i));
 }
 
 void s8_toUpper(s8 str8) {
-    for (size_t i = 0; i < str8.len; i++)
+    for (size_t i = 0; i < str8.num; i++)
         *(str8.data + i) = (u8)toupper(*(str8.data + i));
 }
 
 void s8_camelCase(s8 str8, const char separator, size_t minwordlen) {
     size_t wlen = 0;
-    for (size_t i = 0; i <= str8.len; i++) {
-        int word_end = (*(str8.data + i) == separator) || (i == str8.len);
+    for (size_t i = 0; i <= str8.num; i++) {
+        int word_end = (*(str8.data + i) == separator) || (i == str8.num);
         if (!word_end) {
             /* Next character in word. */
             wlen++;
@@ -66,7 +67,7 @@ void s8_camelCase(s8 str8, const char separator, size_t minwordlen) {
 }
 
 void s8_replaceSingle(s8 str8, const char replace, const char with) {
-    for (size_t i = 0; i < str8.len; i++) {
+    for (size_t i = 0; i < str8.num; i++) {
         if (*(str8.data + i) == replace)
             *(str8.data + i) = with;
     }
@@ -75,8 +76,8 @@ void s8_replaceSingle(s8 str8, const char replace, const char with) {
 void s8_Path_Remove_Top(s8 str8, const char separator) {
     char *folder        = strrchr(str8.data, separator) + 1;
     size_t len_folder   = strlen(folder);
-    *(str8.data + (str8.len - len_folder - 1)) = '\0';
-    str8.len -= len_folder;
+    *(str8.data + (str8.num - len_folder - 1)) = '\0';
+    str8.num -= len_folder;
 }
 
 void s8_Replace(s8 str8, const char *replace, const char *with) {
@@ -95,7 +96,7 @@ void s8_Replace(s8 str8, const char *replace, const char *with) {
         // /* overwrite replace with */
         // strncpy(str8.data + len_f, with, len_w);
         // str8.data[len_nl] = '\0';
-        // str8.len          = len_nl;
+        // str8.num          = len_nl;
     }
 }
 

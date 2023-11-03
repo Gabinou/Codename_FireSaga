@@ -52,7 +52,8 @@ bool RNG_checkRate(i16 rate, i16 mode);
 /* -- Internals -- */
 /* - Uniform - */
 u8 RNG_URN(void);
-static u64 RNG_openBSD_u64(u64 max, u64 min);
+u64 RNG_openBSD_u64(u64 max, u64 min);
+u32 RNG_openBSD_u32(struct TINYMT32_T *tinymt, u32 min, u32 max);
 
 /* - Checkers - */
 bool RNG_single_roll(u8 RN,  u8 hit);
