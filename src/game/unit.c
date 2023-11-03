@@ -80,19 +80,18 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity_t ent) {
 
 /* --- Party utilities --- */
 void Game_Party_Load(struct Game *sota, i16 *unit_ids, size_t load_num) {
-    char filename[DEFAULT_BUFFER_SIZE];
     struct Unit temp_unit;
     Game_Party_Clear(sota);
     for (size_t i = 0; i < load_num; i++) {
         SDL_assert((unit_ids[i] > 0) && (unit_ids[i] < UNIT_ID_PC_END));
-        temp_unit = Unit_default;
-        strcpy(filename, "units"PHYSFS_SEPARATOR);
-        size_t order = *(u16 *)DTAB_GET(global_unitOrders, unit_ids[i]);
-        strcat(filename, global_unitNames[order]);
-        strcat(filename, ".json");
+        temp_unit       = Unit_default;
+        s8 filename     = s8_mut("units"PHYSFS_SEPARATOR);
+        size_t order    = *(u16 *)DTAB_GET(global_unitOrders, unit_ids[i]);
+        filename        = s8cat(filename, s8_var(global_unitNames[order]));
+        filename        = s8cat(filename, s8_literal(".json"));
         temp_unit.items_dtab   = sota->items_dtab;
         temp_unit.weapons_dtab = sota->weapons_dtab;
-        jsonio_readJSON(filename, &temp_unit);
+        jsonio_readJSON(filename.data, &temp_unit);
         sota->party[unit_ids[i]] = temp_unit;
     }
 }
