@@ -2,7 +2,7 @@
 
 /* -- Makers -- */
 u64 *supportHashes = NULL;
-#define REGISTER_ENUM(x, y) strncpy(temp_str, #x, sizeof(#x));\
+#define REGISTER_ENUM(x, y) memcpy(temp_str, #x, sizeof(#x));\
     temp_str[sizeof(#x)] = '\0';\
     supportHashes[UNIT_ID_##x] = tnecs_hash_djb2(nstr_toLower(temp_str));
 void Hashes_supportHashes() {
@@ -11,7 +11,7 @@ void Hashes_supportHashes() {
 #include "names/units_PC.h"
 #include "names/units_NPC.h"
 #undef REGISTER_ENUM
-#define REGISTER_ENUM(name, id, x, y, z) strncpy(temp_str, #name, sizeof(#name));\
+#define REGISTER_ENUM(name, id, x, y, z) memcpy(temp_str, #name, sizeof(#name));\
     supportHashes[UNIT_ID_##name] = tnecs_hash_djb2(nstr_toLower(temp_str));
 #include "names/classes.h"
     SDL_free(temp_str);
@@ -19,7 +19,7 @@ void Hashes_supportHashes() {
 #undef REGISTER_ENUM
 
 u64 *itemHashes = NULL;
-#define REGISTER_ENUM(x, y) strncpy(temp_str, #x, sizeof(#x));\
+#define REGISTER_ENUM(x, y) memcpy(temp_str, #x, sizeof(#x));\
     temp_str[sizeof(#x)] = '\0';\
     DARR_PUT(itemHashes, tnecs_hash_djb2(nstr_toLower(temp_str)));
 void Hashes_itemHashes() {
@@ -31,7 +31,7 @@ void Hashes_itemHashes() {
 #undef REGISTER_ENUM
 
 u64 *unitHashes = NULL;
-#define REGISTER_ENUM(x, y) strncpy(temp_str, #x, sizeof(#x));\
+#define REGISTER_ENUM(x, y) memcpy(temp_str, #x, sizeof(#x));\
     temp_str[sizeof(#x)] = '\0';\
     unitHashes[UNIT_ID_##x] = tnecs_hash_djb2(nstr_toLower(temp_str));
 void Hashes_unitHashes() {
@@ -40,7 +40,7 @@ void Hashes_unitHashes() {
 #include "names/units_PC.h"
 #include "names/units_NPC.h"
 #undef REGISTER_ENUM
-#define REGISTER_ENUM(name, id, x, y, z) strncpy(temp_str, #name, sizeof(#name));\
+#define REGISTER_ENUM(name, id, x, y, z) memcpy(temp_str, #name, sizeof(#name));\
     unitHashes[UNIT_ID_##name] = tnecs_hash_djb2(nstr_toLower(temp_str));
 #include "names/classes.h"
     SDL_free(temp_str);
@@ -52,7 +52,7 @@ u16 Hashes_supportName2ID(char *name) {
     SDL_assert(name != NULL);
     size_t len = strlen(name);
     char *temp = SDL_calloc(len + 1, 1);
-    strncpy(temp, name, len);
+    memcpy(temp, name, len);
     temp[len] = '\0';
     u16 id = Hashes_supportHash2ID(tnecs_hash_djb2(nstr_toLower(temp)));
     SDL_free(temp);
@@ -85,7 +85,7 @@ u16 Hashes_itemName2ID(char *name) {
     SDL_assert(name != NULL);
     size_t len = strlen(name);
     char *temp = SDL_calloc(len + 1, 1);
-    strncpy(temp, name, len);
+    memcpy(temp, name, len);
     temp[len] = '\0';
     u16 id = Hashes_itemHash2ID(tnecs_hash_djb2(nstr_toLower(temp)));
     SDL_free(temp);
@@ -96,7 +96,7 @@ u16 Hashes_unitName2ID(char *name) {
     SDL_assert(name != NULL);
     size_t len = strlen(name);
     char *temp = SDL_calloc(len + 1, 1);
-    strncpy(temp, name, len);
+    memcpy(temp, name, len);
     temp[len] = '\0';
     u16 id = Hashes_unitHash2ID(tnecs_hash_djb2(nstr_toLower(temp)));
     SDL_free(temp);

@@ -967,7 +967,7 @@ void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *renderer, 
     SDL_assert(weapon             != NULL);
     SDL_assert(weapon->item       != NULL);
     SDL_assert(weapon->item->name != NULL);
-    strncpy(item_name, weapon->item->name, strlen(weapon->item->name));
+    memcpy(item_name, weapon->item->name, strlen(weapon->item->name));
 
     /* - uses left - */
     SDL_assert(weapon->item->stats.uses > 0);

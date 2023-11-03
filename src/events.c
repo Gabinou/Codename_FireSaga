@@ -226,7 +226,7 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         // Game_setCursorstate(sota, MENU_MAP);
         // Game_Mouse_State_Set(sota, MENU_MAP);
     } else {
-        strncpy(sota->reason, "control was switched to a non-player army", sizeof(sota->reason));
+        memcpy(sota->reason, "control was switched to a non-player army", sizeof(sota->reason));
         Game_subState_Set(sota, GAME_SUBSTATE_MAP_NPCTURN, sota->reason);
         Game_Cursor_Free(sota);
     }
@@ -289,8 +289,8 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
 
     /* -- Setting game substate -- */
     if (sota->substate != GAME_SUBSTATE_STANDBY) {
-        strncpy(sota->reason, "sota->substate returns to Standby",
-                sizeof(sota->reason));
+        memcpy(sota->reason, "sota->substate returns to Standby",
+               sizeof(sota->reason));
         Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
     }
 
@@ -336,7 +336,7 @@ void receive_event_SDL_KEYDOWN(struct Game *sota, SDL_Event *event) {
 
 void receive_event_Quit(struct Game *sota, SDL_Event *event) {
     // Quit gameplay, go back to start menu
-    strncpy(sota->reason, "Quitting gameplay", sizeof(sota->reason));
+    memcpy(sota->reason, "Quitting gameplay", sizeof(sota->reason));
     Game_State_Set(sota, GAME_STATE_Title_Screen, sota->reason);
     if (sota->substate != GAME_SUBSTATE_MENU)
         Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
@@ -692,7 +692,7 @@ void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->map->costmap   != NULL);
     struct Map *map = sota->map;
     Arrow_Path_Init(map->arrow, map->costmap, Unit_computeMove(selected), cpos->tilemap_pos);
-    strncpy(sota->reason, "friendly unit was selected and can move", sizeof(sota->reason));
+    memcpy(sota->reason, "friendly unit was selected and can move", sizeof(sota->reason));
     Game_subState_Set(sota, GAME_SUBSTATE_MAP_UNIT_MOVES, sota->reason);
 
     /* -- Sprite walking animation -- */
@@ -785,7 +785,7 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     /* - Switch to Map_Candidates substate - */
     SDL_assert(sota->state    == GAME_STATE_Gameplay_Map);
     SDL_assert(sota->substate == GAME_SUBSTATE_MENU);
-    strncpy(sota->reason, "loadout was selected, time to select defendant", sizeof(sota->reason));
+    memcpy(sota->reason, "loadout was selected, time to select defendant", sizeof(sota->reason));
     Game_Switch_toCandidates(sota, sota->defendants);
 
 }
@@ -978,7 +978,7 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     // 3. Animate Combat
     /* -- TODO choose map animation or combat animation -- */
     /* -- change game substate -- */
-    strncpy(sota->reason, "Quitting gameplay", sizeof(sota->reason));
+    memcpy(sota->reason, "Quitting gameplay", sizeof(sota->reason));
     Game_subState_Set(sota, GAME_SUBSTATE_MAP_ANIMATION, sota->reason);
     /* -- find attack direction -- */
     struct Position *agg_posc = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Position);
@@ -1123,7 +1123,7 @@ void receive_event_Defendant_Select(struct Game *sota, SDL_Event *userevent) {
     // TODO: place at appropriate places.
 
     // 4. Switch substate to Menu
-    strncpy(sota->reason, "defendant was selected, need to select combat", sizeof(sota->reason));
+    memcpy(sota->reason, "defendant was selected, need to select combat", sizeof(sota->reason));
     Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
 
     // 5. Focus on Menu
@@ -1284,14 +1284,14 @@ extern void Events_Names_Alloc() {
     char *temp_str;
 
 #define REGISTER_ENUM(x, y) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
-    strncpy(temp_str, #x, sizeof(#x));\
+    memcpy(temp_str, #x, sizeof(#x));\
     temp_str[sizeof(#x)] = '\0';\
     event_names[(event_##x - event_Start)] = nstr_toUpper(temp_str);
 #include "names/events.h"
 #undef REGISTER_ENUM
 
 #define REGISTER_ENUM(x, y) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
-    strncpy(temp_str, #x, sizeof(#x));\
+    memcpy(temp_str, #x, sizeof(#x));\
     temp_str[sizeof(#x)] = '\0';\
     event_names[(event_Input_##x - event_Start)] = nstr_toUpper(temp_str);
 #include "names/input.h"

@@ -17,7 +17,7 @@ void Text_Set(struct Text *text, char *line) {
     text->len = strlen(line);
     SDL_assert(text->len > 0);
     memset(text->line, 0, DEFAULT_BUFFER_SIZE);
-    strncpy(text->line, line, text->len);
+    memcpy(text->line, line, text->len);
 
     text->rect.w = PixelFont_Width(text->pixelfont, line, text->len);
     text->rect.h = text->pixelfont->glyph_height;

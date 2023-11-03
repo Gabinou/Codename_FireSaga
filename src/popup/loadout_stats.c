@@ -618,7 +618,7 @@ void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls, SDL_Ren
 
         size_t len = strlen(wpn->item->name);
         char *buffer = calloc(len + 1, sizeof(char));
-        strncpy(buffer, wpn->item->name, len);
+        memcpy(buffer, wpn->item->name, len);
         buffer = nstr_toUpper(buffer);
 
         if (pls->twoHanding) {
@@ -655,7 +655,7 @@ void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls, SDL_Ren
 
         size_t len = strlen(wpn->item->name);
         char *buffer = calloc(len + 1, sizeof(char));
-        strncpy(buffer, wpn->item->name, len);
+        memcpy(buffer, wpn->item->name, len);
         buffer = nstr_toUpper(buffer);
         width = PixelFont_Width(pls->pixelnours, buffer, len);
 

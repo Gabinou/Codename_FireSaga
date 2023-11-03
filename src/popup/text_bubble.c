@@ -104,7 +104,7 @@ void TextBubble_Set_Text(struct Text_Bubble *bubble, const char *text, struct n9
     /* -- Copying input text -- */
     size_t len   = strlen(text);
     bubble->text = calloc(len + 1, sizeof(*bubble->text));
-    strncpy(bubble->text, text, len);
+    memcpy(bubble->text, text, len);
 
     /* -- Split text into n lines depending on bubble max line length -- */
     TextLines_Free(&bubble->lines);

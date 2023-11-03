@@ -137,21 +137,21 @@ void ItemDropMenu_Update(struct  ItemDropMenu  *idm, struct n9Patch *n9patch,
         SDL_assert(wpn_or_item.item == NULL);
         len     = strlen(wpn_or_item.wpn->item->name);
         name    = calloc(len + 1, sizeof(*name));
-        strncpy(name, wpn_or_item.wpn->item->name, len);
+        memcpy(name, wpn_or_item.wpn->item->name, len);
     } else {
         SDL_assert(wpn_or_item.wpn == NULL);
         len     = strlen(wpn_or_item.item->name);
         name    = calloc(len + 1, sizeof(*name));
-        strncpy(name, wpn_or_item.item->name, len);
+        memcpy(name, wpn_or_item.item->name, len);
     }
     name = nstr_toUpper(name);
 
     /* --- Compute menu width dynamically --- */
     size_t len_done = 8;
     char  *question  = calloc((len + len_done), sizeof(*question));
-    strncpy(question,           "DROP \'", 6);
-    strncpy(question + 6,       name,    len);
-    strncpy(question + 6 + len, "\'?",     2);
+    memcpy(question,           "DROP \'", 6);
+    memcpy(question + 6,       name,    len);
+    memcpy(question + 6 + len, "\'?",     2);
     idm->item_width         = PixelFont_Width(idm->pixelnours_big, question, (len + len_done));
     int new_size_x          = IDM_LEFT_OF_TEXT + idm->item_width + IDM_RIGHT_OF_TEXT;
 

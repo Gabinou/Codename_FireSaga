@@ -113,7 +113,7 @@ void Game_PopUp_Pre_Combat_Enable(struct Game *sota) {
     PreCombatMenu_Set(pcm, sota);
     PreCombatMenu_Load(pcm, sota->aggressor, sota->defendant, sota->renderer, &mc->n9patch);
 
-    strncpy(sota->reason, "PreCombat Menu was created", sizeof(sota->reason));
+    memcpy(sota->reason, "PreCombat Menu was created", sizeof(sota->reason));
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->stats_menu, NULL);
     Game_cursorFocus_onMenu(sota);
 }

@@ -44,10 +44,10 @@ void Game_debugMap_Free(struct Game *sota) {
 void Game_debugMap_Load(struct Game *sota) {
     /* -- Preliminaries -- */
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Loading in test Map\n");
-    strncpy(sota->reason, "for testing", sizeof(sota->reason));
+    memcpy(sota->reason, "for testing", sizeof(sota->reason));
     Game_State_Set(sota, GAME_STATE_Gameplay_Map, sota->reason);
-    strncpy(sota->reason, "on Init state to GAME_STATE_Gameplay_Map substate is idle",
-            sizeof(sota->reason));
+    memcpy(sota->reason, "on Init state to GAME_STATE_Gameplay_Map substate is idle",
+           sizeof(sota->reason));
     Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
     Game_Map_Load(sota, CHAPTER_TEST_V6);
     Game_PopUp_Tile_Create(sota);
@@ -167,7 +167,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         unit->weapons_dtab = sota->weapons_dtab;
         size_t order = *(u16 *)DTAB_GET(global_unitOrders, sota->map->reinforcements[i].id);
-        strncpy(unitname, "", 1);
+        memcpy(unitname, "", 1);
         strcat(unitname, global_unitNames[order]);
         strcat(unitname, ".json");
         SDL_Log("unitname: %ld %s", sota->map->reinforcements[i].id, unitname);

@@ -164,7 +164,7 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moTrade(struct Game *sota, struct Menu *in_mc) 
     SDL_assert(passive      > TNECS_NULL);
     // Game_TradeMenu_Enable(sota, active, passive);
 
-    strncpy(sota->reason, "time to trade", sizeof(sota->reason));
+    memcpy(sota->reason, "time to trade", sizeof(sota->reason));
     Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
 
     /* DESIGN QUESTION: should unit wait if weapon was traded? */
@@ -466,7 +466,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mTM(struct Game *sota, struct Menu *mc) {
     mc->visible = false;
 
     /* - Switch to Map_Candidates substate - */
-    strncpy(sota->reason, "trade was selected, time to select passive trade", sizeof(sota->reason));
+    memcpy(sota->reason, "trade was selected, time to select passive trade", sizeof(sota->reason));
     Game_Switch_toCandidates(sota, sota->passives);
     Game_Cursor_Move_toCandidate(sota);
 
@@ -646,7 +646,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mSM(struct Game *sota, struct Menu *mc) {
     SDL_assert(menu_popped_entity > 0);
 
     i8 new_substate = GAME_SUBSTATE_STANDBY;
-    strncpy(sota->reason, "stops showing stats menu", sizeof(sota->reason));
+    memcpy(sota->reason, "stops showing stats menu", sizeof(sota->reason));
     Game_subState_Set(sota, new_substate, sota->reason);
 
 }
@@ -658,7 +658,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moTrade(struct Game *sota, struct Menu *mc) {
     mc->visible = false;
 
     /* - Switch to Map_Candidates substate - */
-    strncpy(sota->reason, "trade was selected, time to select passive trade", sizeof(sota->reason));
+    memcpy(sota->reason, "trade was selected, time to select passive trade", sizeof(sota->reason));
     Game_Switch_toCandidates(sota, sota->passives);
 
     // IF staff skill
@@ -793,7 +793,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
         } else {
             Game_postLoadout_Patients(sota, sota->aggressor);
             mc->visible = false;
-            strncpy(sota->reason, "staff was selected, time to select patient", sizeof(sota->reason));
+            memcpy(sota->reason, "staff was selected, time to select patient", sizeof(sota->reason));
             Game_Switch_toCandidates(sota, sota->patients);
         }
     }
@@ -831,7 +831,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDance(struct Game *sota, struct Menu *mc) {
     /* - Switch to Map_Candidates substate - */
     SDL_assert(sota->state      == GAME_STATE_Gameplay_Map);
     SDL_assert(sota->substate   == GAME_SUBSTATE_MENU);
-    strncpy(sota->reason, "dance was selected, time to select spectator", sizeof(sota->reason));
+    memcpy(sota->reason, "dance was selected, time to select spectator", sizeof(sota->reason));
     Game_Switch_toCandidates(sota, sota->spectators);
 
 }
@@ -966,8 +966,8 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
             struct Unit *unit             = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
             struct Position *selected_pos = TNECS_GET_COMPONENT(sota->world, unit_ent, Position);
             new_substate                  = GAME_SUBSTATE_MAP_UNIT_MOVES;
-            strncpy(sota->reason, "Unit action is taken after Map_unit moves only",
-                    sizeof(sota->reason));
+            memcpy(sota->reason, "Unit action is taken after Map_unit moves only",
+                   sizeof(sota->reason));
 
             // 1. Moving entity back to original spot in map
             struct Point moved_pos = sota->selected_unit_moved_position;
@@ -1008,13 +1008,13 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
             break;
         case MENU_PLAYER_SELECT_MAP_ACTION:
             new_substate = GAME_SUBSTATE_STANDBY;
-            strncpy(sota->reason, "Map action is taken on standby only", sizeof(sota->reason));
+            memcpy(sota->reason, "Map action is taken on standby only", sizeof(sota->reason));
             break;
         default:
             SDL_Log("invalid PlayerSelectMenu id");
     }
 
-    strncpy(sota->reason, "stops showing player select menu", sizeof(sota->reason));
+    memcpy(sota->reason, "stops showing player select menu", sizeof(sota->reason));
     if ((sota->substate != new_substate) && (new_substate > 0))
         Game_subState_Set(sota, new_substate, sota->reason);
 

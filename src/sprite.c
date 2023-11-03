@@ -276,7 +276,7 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit, SDL_Renderer
         SDL_free(sprite->asset_name);
     size_t len = strlen(filename);
     sprite->asset_name = calloc(len, sizeof(*sprite->asset_name));
-    strncpy(sprite->asset_name, filename, len);
+    memcpy(sprite->asset_name, filename, len);
 
     /* -- Loading Surface, creating Texture -- */
     SDL_assert(sprite->spritesheet->surface == NULL);
@@ -296,7 +296,7 @@ void Sprite_Load(struct Sprite *sprite, const char *asset_name, SDL_Renderer *re
         SDL_free(sprite->asset_name);
     size_t len = strlen(asset_name);
     sprite->asset_name = calloc(len, sizeof(*sprite->asset_name));
-    strncpy(sprite->asset_name, asset_name, len);
+    memcpy(sprite->asset_name, asset_name, len);
 
     /* -- Putting surface in default spritesheet -- */
     if (sprite->spritesheet == NULL) {

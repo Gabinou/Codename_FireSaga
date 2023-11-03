@@ -1805,7 +1805,7 @@ void Unit_readJSON(void *input, const cJSON *const junit) {
 
     SDL_Log("-- startup misc --");
     SDL_assert(unit->name != NULL);
-    strncpy(unit->name, cJSON_GetStringValue(jname), strlen(cJSON_GetStringValue(jname)));
+    memcpy(unit->name, cJSON_GetStringValue(jname), strlen(cJSON_GetStringValue(jname)));
     unit->sex               = cJSON_IsTrue(jsex);
     unit->exp               = cJSON_GetNumberValue(jexp);
     unit->base_exp          = cJSON_GetNumberValue(jbase_exp);

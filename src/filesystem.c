@@ -11,8 +11,8 @@ int Filesystem_Init(char *argv0) {
 
     /* -- Getting base path from SDL -- */
     char *temp_base = SDL_GetBasePath();
-    strncpy(srcDir,    temp_base, DEFAULT_BUFFER_SIZE);
-    strncpy(assetsDir, temp_base, DEFAULT_BUFFER_SIZE);
+    memcpy(srcDir,    temp_base, DEFAULT_BUFFER_SIZE);
+    memcpy(assetsDir, temp_base, DEFAULT_BUFFER_SIZE);
     free(temp_base);
 
     /* -- Finalize paths -- */

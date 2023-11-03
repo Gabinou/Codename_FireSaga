@@ -39,7 +39,7 @@ struct Input_Arguments Input_parseInputs(int argc, char *argv[]) {
                 if (out_args.save_filename != NULL)
                     free(out_args.save_filename);
                 out_args.save_filename = (char *) SDL_malloc(strlen(ps.optarg));
-                strncpy(out_args.save_filename, ps.optarg, sizeof(*ps.optarg));
+                memcpy(out_args.save_filename, ps.optarg, sizeof(*ps.optarg));
                 // printf("out_args.save_filename %s\n", out_args.save_filename);
                 break;
             case 'v':

@@ -38,10 +38,10 @@ void test_weapon1() {
     wpn1.item->type = in_type;
     wpn1.stats = in_wpn_stats;
     wpn1.item->id = ITEM_ID_WOODEN_SWORD;
-    strncpy(wpn1.item->name, "Wooden Sword", strlen("Wooden Sword"));
+    memcpy(wpn1.item->name, "Wooden Sword", strlen("Wooden Sword"));
     char *in_description = "Practice sword, made of wood. It's crushing blows are still deadly.";
     char *out_description;
-    strncpy(wpn1.item->description, in_description, strlen(in_description));
+    memcpy(wpn1.item->description, in_description, strlen(in_description));
     wpn1.item->passive      = in_effect;
     wpn1.item->bonus_stats  = in_stats;
     wpn1.item->malus_stats  = in_stats;

@@ -127,7 +127,7 @@ void Tile_readJSON(void *input, const cJSON *const jtile) {
     char *temp_str = cJSON_GetStringValue(jname);
     if (temp_str != NULL) {
         tile->name = malloc(strlen(temp_str) + 1);
-        strncpy(tile->name, temp_str, strlen(temp_str) + 1);
+        memcpy(tile->name, temp_str, strlen(temp_str) + 1);
     }
     Filesystem_readJSON_Tilestats(jstats, &(tile->stats));
     tile->inside = cJSON_IsTrue(jinside);

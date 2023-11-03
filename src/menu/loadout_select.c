@@ -395,13 +395,13 @@ void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9p
             struct Weapon *weapon = DTAB_GET(lsm->unit->weapons_dtab, item->id);
             SDL_assert(weapon != NULL);
             LoadoutSelectMenu_Name_Alloc(lsm, weapon->item->name);
-            strncpy(lsm->item_name, weapon->item->name, strlen(weapon->item->name));
+            memcpy(lsm->item_name, weapon->item->name, strlen(weapon->item->name));
         } else if (Item_ID_isValid(item->id)) {
             /* Pure item */
             Item_Load(lsm->unit->items_dtab, item->id);
             struct Item *pure_item = DTAB_GET(lsm->unit->items_dtab, item->id);
             LoadoutSelectMenu_Name_Alloc(lsm, pure_item->name);
-            strncpy(lsm->item_name, pure_item->name, strlen(pure_item->name));
+            memcpy(lsm->item_name, pure_item->name, strlen(pure_item->name));
         } else {
             SDL_Log("LoadoutSelectMenu: Neither a valid item nor weapon");
             exit(ERROR_Generic);
@@ -468,7 +468,7 @@ void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm, const char *hea
     }
     size_t len  = strlen(header);
     lsm->header = calloc(len + 1, sizeof(*lsm->header));
-    strncpy(lsm->header, header, len);
+    memcpy(lsm->header, header, len);
 
 }
 
@@ -716,7 +716,7 @@ void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm, SDL_Renderer 
 
         /* - Write weapon name - */
         LoadoutSelectMenu_Name_Alloc(lsm, weapon->item->name);
-        strncpy(lsm->item_name, weapon->item->name, strlen(weapon->item->name));
+        memcpy(lsm->item_name, weapon->item->name, strlen(weapon->item->name));
 
         int name_w = PixelFont_Width(lsm->pixelnours, nstr_toUpper(lsm->item_name), strlen(lsm->item_name));
 

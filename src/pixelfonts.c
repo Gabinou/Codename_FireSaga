@@ -278,7 +278,7 @@ struct TextLines PixelFont_Lines(struct PixelFont *font, const char *text, size_
         /* -- Break: text fits in final row -- */
         if (current_break >= len_char) {
             textlines.lines[line_i] = calloc(line_len_char + 1, sizeof(char));
-            strncpy(textlines.lines[line_i], text + current_start, line_len_char);
+            memcpy(textlines.lines[line_i], text + current_start, line_len_char);
 
             /* -- Measure line length -- */
             textlines.lines_len[line_i] = strlen(textlines.lines[line_i]);
@@ -292,7 +292,7 @@ struct TextLines PixelFont_Lines(struct PixelFont *font, const char *text, size_
             /* Push current_break one space, beginning new line */
             int line_i = textlines.line_num - 1;
             textlines.lines[line_i] = calloc(line_len_char + 1, sizeof(char));
-            strncpy(textlines.lines[line_i], text + current_start, line_len_char);
+            memcpy(textlines.lines[line_i], text + current_start, line_len_char);
             next_start = current_break + 1;
 
             /* -- Measure line length -- */
@@ -317,7 +317,7 @@ struct TextLines PixelFont_Lines(struct PixelFont *font, const char *text, size_
 
         /* -- Copy test line -- */
         textlines.lines[line_i] = calloc(line_len_char + 1, sizeof(char));
-        strncpy(textlines.lines[line_i], text + current_start, line_len_char);
+        memcpy(textlines.lines[line_i], text + current_start, line_len_char);
 
         /* -- Add hyphen if necessary -- */
         if (add_hyphen)
@@ -395,7 +395,7 @@ int NextLine_Start(const char *text, int previous_break, int current_break, size
     /* - If current_break is a char, need to check word length - */
     /* Get first half of length */
     char *buffer = calloc(line_len_char + 1, sizeof(buffer));
-    strncpy(buffer, text + previous_break, line_len_char);
+    memcpy(buffer, text + previous_break, line_len_char);
     char *space_before  = strrchr(buffer, ' ');
     size_t word_half1 = line_len_char - (space_before - buffer) - 1;
 

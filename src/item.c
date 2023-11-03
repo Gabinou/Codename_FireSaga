@@ -267,7 +267,7 @@ void Item_Filename(char *filename, i16 id) {
     /* - add item name to filename - */
     size_t item_order = *(u16 *)DTAB_GET(global_itemOrders, id);
     SDL_assert(item_order != 0);
-    strncpy(buffer, global_itemNames[item_order], DEFAULT_BUFFER_SIZE);
+    memcpy(buffer, global_itemNames[item_order], DEFAULT_BUFFER_SIZE);
     token = strtok(buffer, " \t");
     while (token != NULL) {
         strcat(filename, token);
@@ -438,7 +438,7 @@ void Item_readJSON(void *input, const cJSON *jitem) {
     item->id            = cJSON_GetNumberValue(jid); /* returns 0 if junit is NULL */
 
     /* - Name - */
-    strncpy(item->name, cJSON_GetStringValue(jname), strlen(cJSON_GetStringValue(jname)));
+    memcpy(item->name, cJSON_GetStringValue(jname), strlen(cJSON_GetStringValue(jname)));
 
     /* - Users - */
     cJSON *jusers_ids = cJSON_GetObjectItem(jusers, "id");
@@ -463,11 +463,11 @@ void Item_readJSON(void *input, const cJSON *jitem) {
     SDL_assert(global_itemNames[item_order] != NULL);
 
     size_t len = strlen(global_itemNames[item_order]);
-    strncpy(item->name, global_itemNames[item_order], len);
+    memcpy(item->name, global_itemNames[item_order], len);
 
     /* - Description - */
     char *string = cJSON_GetStringValue(jdescription);
-    strncpy(item->description, string, strlen(string));
+    memcpy(item->description, string, strlen(string));
 
     /* - Bonus/Malus - */
     Filesystem_readJSON_Unitstats(jbonus_stats, &(item->bonus_stats));

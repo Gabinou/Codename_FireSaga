@@ -65,7 +65,7 @@ void PopUp_Objective_Set_Obj(struct PopUp_Objective *po, char *obj) {
     }
     size_t len = strlen(obj) + 1;
     po->objective = malloc(len);
-    strncpy(po->objective, obj, len);
+    memcpy(po->objective, obj, len);
     SDL_Log("Objective set to '%s'", po->objective);
 }
 
@@ -76,7 +76,7 @@ void PopUp_Objective_Set_SubObj(struct PopUp_Objective *po, char *subobj) {
     }
     size_t len = strlen(subobj) + 1;
     po->sub_objective = malloc(len);
-    strncpy(po->sub_objective, subobj, len);
+    memcpy(po->sub_objective, subobj, len);
     SDL_Log("Sub-Objective set to '%s'", po->sub_objective);
 }
 

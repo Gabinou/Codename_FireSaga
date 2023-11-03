@@ -88,7 +88,7 @@ void jsonio_readJSON(const char *filename, void *struct_ptr) {
     if (*json_filename == NULL) {
         size_t len      = strlen(filename);
         *json_filename  = calloc(len + 1, sizeof(**json_filename));
-        strncpy(*json_filename, filename, len);
+        memcpy(*json_filename, filename, len);
     }
     SDL_Log("json_filename '%s'", *json_filename);
 

@@ -192,7 +192,7 @@ void Scene_readJSON(void *input, const struct cJSON *const jscene) {
         /* - speaker - */
         size_t len = strlen(jline->child->string);
         char *temp = calloc(len + 1, 1);
-        strncpy(temp, jline->child->string, len);
+        memcpy(temp, jline->child->string, len);
         i16 id = Hashes_unitHash2ID(tnecs_hash_djb2(nstr_toLower(temp)));
         SDL_free(temp);
         /* - line - */
@@ -207,7 +207,7 @@ void Scene_readJSON(void *input, const struct cJSON *const jscene) {
             if (len >= scene->line_len)
                 scene->line_len *= 2;
             scene->lines[scene->line_num] = SDL_calloc(scene->line_len, 1);
-            strncpy(scene->lines[scene->line_num], temp, len);
+            memcpy(scene->lines[scene->line_num], temp, len);
             scene->lines[scene->line_num][len] = '\0';
             scene->speakers[scene->line_num++] = id;
             /* - participant -*/

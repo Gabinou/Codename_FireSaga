@@ -314,7 +314,7 @@ struct Game *Game_Init() {
     char *path_mapping = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);
     char *temp_base = SDL_GetBasePath();
     SDL_assert(DEFAULT_BUFFER_SIZE >= strlen(temp_base));
-    strncpy(path_mapping, temp_base, DEFAULT_BUFFER_SIZE);
+    memcpy(path_mapping, temp_base, DEFAULT_BUFFER_SIZE);
     free(temp_base);
     path_mapping = nstr_Path_Remove_Top(path_mapping, DIR_SEPARATOR[0]);
     const char *separator = PHYSFS_getDirSeparator();
@@ -449,7 +449,7 @@ struct Game *Game_Init() {
 
 // TODO: Rename
 void Game_Startup(struct Game *sota, struct Input_Arguments in_args) {
-    strncpy(sota->reason, "Initial sota startup", sizeof(sota->reason));
+    memcpy(sota->reason, "Initial sota startup", sizeof(sota->reason));
 
     /* -- Load Cursor and mouse -- */
     SDL_ShowCursor(SDL_DISABLE); // for default cursor.

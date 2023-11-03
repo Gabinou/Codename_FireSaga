@@ -176,7 +176,7 @@ void Weapon_Filename(char *filename, i16 id) {
     /* - add weapon name to filename - */
     size_t item_order = *(u16 *)DTAB_GET(global_itemOrders, id);
     SDL_assert(item_order != 0);
-    strncpy(buffer, global_itemNames[item_order], DEFAULT_BUFFER_SIZE);
+    memcpy(buffer, global_itemNames[item_order], DEFAULT_BUFFER_SIZE);
     token = strtok(buffer, " \t");
     while (token != NULL) {
         strcat(filename, token);
@@ -200,7 +200,7 @@ void Weapon_Save(struct dtab *weapons_dtab, i16 id) {
         size_t item_order = *(u16 *)DTAB_GET(global_itemOrders, id);
         SDL_assert(item_order != 0);
         SDL_Log("%s", global_itemNames[item_order]);
-        strncpy(buffer, global_itemNames[item_order], DEFAULT_BUFFER_SIZE);
+        memcpy(buffer, global_itemNames[item_order], DEFAULT_BUFFER_SIZE);
         token = strtok(buffer, " \t");
         while (token != NULL) {
             strcat(filename, token);
