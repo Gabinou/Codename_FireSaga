@@ -108,6 +108,7 @@ s8 s8_Path_Remove_Top(s8 str8, const char separator) {
     size_t len_folder   = strlen(folder);
     *(str8.data + (str8.num - (len_folder + 1))) = '\0';
     str8.num -= (len_folder + 1);
+    memset(str8.data + str8.num, 0, str8.len - str8.num);
     return(str8);
 }
 
