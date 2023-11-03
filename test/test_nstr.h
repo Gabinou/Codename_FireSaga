@@ -77,9 +77,9 @@ void test_nstr() {
 
     /* --- s8_Path_Remove_Top --- */
     s8 path_mut = s8_mut("/home/gabinours/Sync/Firesaga/build");
-    SDL_Log("path_mut '%s' %d %d", path_mut.data, path_mut.len, path_mut.num);
+    // SDL_Log("path_mut '%s' %d %d", path_mut.data, path_mut.len, path_mut.num);
     path_mut = s8_Path_Remove_Top(path_mut, '/');
-    SDL_Log("path_mut '%s' %d %d", path_mut.data, path_mut.len, path_mut.num);
+    // SDL_Log("path_mut '%s' %d %d", path_mut.data, path_mut.len, path_mut.num);
     s8 temp = s8_literal("/home/gabinours/Sync/Firesaga");
     nourstest_true(path_mut.num == temp.num);
     nourstest_true(s8equal(path_mut, s8_literal("/home/gabinours/Sync/Firesaga")));

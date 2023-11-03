@@ -14,30 +14,20 @@ void Filesystem_Mount(s8 folder) {
 
 int Filesystem_Init(char *argv0) {
     /* -- Creating buffers for paths -- */
-    // char *srcDir    = SDL_malloc(DEFAULT_BUFFER_SIZE);
-    // char *assetsDir = SDL_malloc(DEFAULT_BUFFER_SIZE);
-    // char temp[DEFAULT_BUFFER_SIZE]   = "";
-    // char output[DEFAULT_BUFFER_SIZE] = "";
     s8 temp     = s8_mut("");
-    s8 output   = s8_mut("");
 
     /* -- Getting base path from SDL -- */
     char *temp_base = SDL_GetBasePath();
     s8 srcDir       = s8_mut(temp_base);
     s8 assetsDir    = s8_mut(temp_base);
-    // memcpy(srcDir,    temp_base, DEFAULT_BUFFER_SIZE);
-    // memcpy(assetsDir, temp_base, DEFAULT_BUFFER_SIZE);
 
     /* -- Finalize paths -- */
     if (srcDir.data[srcDir.num - 1] == DIR_SEPARATOR[0])
         srcDir = s8_Path_Remove_Top(srcDir,    DIR_SEPARATOR[0]);
     srcDir = s8_Path_Remove_Top(srcDir,    DIR_SEPARATOR[0]);
 
-    assetsDir   = s8_Path_Remove_Top(assetsDir, DIR_SEPARATOR[0]);
-    // srcDir    = nstr_Path_Remove_Top(srcDir,    DIR_SEPARATOR[0]);
-    // assetsDir = nstr_Path_Remove_Top(assetsDir, DIR_SEPARATOR[0]);
+    assetsDir = s8_Path_Remove_Top(assetsDir, DIR_SEPARATOR[0]);
     assetsDir = s8cat(assetsDir, s8_literal(DIR_SEPARATOR"assets"));
-    // strcat(assetsDir, DIR_SEPARATOR"assets");
 
     /* -- PhysFS init -- */
     if (PHYSFS_init(argv0) <= 0) {
@@ -46,27 +36,20 @@ int Filesystem_Init(char *argv0) {
     }
     PHYSFS_permitSymbolicLinks(1);
     /* bsa: bear strategic archive */
-    PHYSFS_setSaneConfig("AvgBear", "CodenameFiresaga", "bsa", 0, 0);
+    PHYSFS_setSaneConfig("AvgBear", "SotA", "bsa", 0, 0);
 
     /* -- Mounting srcDir -- */
     if (srcDir.num > 0) {
-        // memcpy(output.data, srcDir.data, srcDir.num);
-        output = s8cpy(output, srcDir);
+        temp = s8cpy(temp, srcDir);
         /* We later append to this path and assume it ends in a slash */
-        if (output.data[output.num - 1] != DIR_SEPARATOR[0])
-            s8cat(output, s8_literal(DIR_SEPARATOR));
+        if (temp.data[temp.num - 1] != DIR_SEPARATOR[0])
+            s8cat(temp, s8_literal(DIR_SEPARATOR));
     }
-
-    SDL_Log("Mounting src dir: '%s'", output.data);
-    if (!PHYSFS_mount(output.data, NULL, 1)) {
-        SDL_Log("Could not mount %s", output.data);
-        exit(ERROR_PHYSFSCannotMount);
-    };
-    PHYSFS_setWriteDir(output.data);
-    SDL_Log("Base directory: %s\n", output.data);
+    Filesystem_Mount(temp);
+    PHYSFS_setWriteDir(temp.data);
+    SDL_Log("Base directory: %s\n", temp.data);
 
     /* -- Mounting saves directory -- */
-    temp = s8cpy(temp, output);
     temp = s8cat(temp, s8_literal(DIR_SEPARATOR"saves"));
     if (PHYSFS_stat(temp.data, NULL) == 0) {
         SDL_Log("mkdir %s", temp.data);
@@ -77,7 +60,7 @@ int Filesystem_Init(char *argv0) {
     Filesystem_Mount(temp);
 
     /* -- Mounting build directory -- */
-    temp = s8cpy(temp, output);
+    temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
     temp = s8cat(temp, s8_literal(DIR_SEPARATOR SOTA_BUILD_DIR));
     Filesystem_Mount(temp);
 
@@ -114,35 +97,16 @@ int Filesystem_Init(char *argv0) {
     temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
     temp = s8cat(temp, s8_literal(DIR_SEPARATOR"Tiles"));
     Filesystem_Mount(temp);
-    getchar();
 
-    // /* -- Mounting assets/Map_Units -- */
-    // temp[0] = '\0';
-    // memcpy(temp, output);
-    // strcat(temp, "assets"DIR_SEPARATOR"Map_Units"DIR_SEPARATOR);
-    // Filesystem_Mount(temp);
+    /* -- Mounting assets/Map_Units -- */
+    temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
+    temp = s8cat(temp, s8_literal(DIR_SEPARATOR"Map_Units"));
+    Filesystem_Mount(temp);
 
-    // /* -- Mount assets.binou -- */
-    // // TODO: Remove -> use .bsa instead
-    // temp[0] = '\0';
-    // if (assetsDir) {
-    //     memcpy(output, assetsDir);
-    //     strcat(output, DIR_SEPARATOR"assets.binou\0");
-    // } else {
-    //     memcpy(output, PHYSFS_getBaseDir());
-    //     strcat(output, DIR_SEPARATOR"assets.binou");
-    // }
-    // SDL_Log("Path to assets: %s\n", output);
-    // if (!PHYSFS_mount(output, NULL, 1)) {
-    //     SDL_Log("Mount 1 failed");
-    //     if (!PHYSFS_mount("../assets.binou", NULL, 1)) {
-    //         SDL_Log("Missing assets.binou: PHYSFS_ERROR: %s\n",
-    //                 PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
-    //         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Missing assets.binou", "Missing assets.binou",
-    //                                  NULL);
-    //         exit(ERROR_MissingAssets);
-    //     }
-    // }
+    /* -- Mount assets.binou -- */
+    temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
+    temp = s8cat(temp, s8_literal(DIR_SEPARATOR"assets.binou"));
+    Filesystem_Mount(temp);
 
     /* -- Cleanup -- */
     s8_free(&srcDir);
@@ -443,8 +407,8 @@ void Filesystem_readJSON_Shop(const char *filename, struct Shop *shop) {
     shop->items = calloc(items_num, sizeof(*shop->items));
     for (int i = 0; i < items_num; i++) {
         struct cJSON *jitem = cJSON_GetArrayItem(jitems, i);
-        shop->qty[i] = cJSON_GetNumberValue(jitem);
-        shop->items[i] = Hashes_itemName2ID(jitem->string);
+        shop->qty[i]        = cJSON_GetNumberValue(jitem);
+        shop->items[i]      = Hashes_itemName2ID(jitem->string);
     }
     struct cJSON *jshopkeeper = cJSON_GetObjectItem(jshop, "Shopkeeper");
     shop->shopkeeper = Hashes_shopkeeperName2ID(cJSON_GetStringValue(jshopkeeper));
