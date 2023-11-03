@@ -26,7 +26,7 @@ void test_tile() {
     Tile_makeMvtCostarray(&tile1);
     struct fMovement_cost out_cost = fMovement_cost_default;
     u8 cost_array[UNIT_MVT_END];
-    nourstest_true(strcmp(tile1.name, "Throne") == 0);
+    nourstest_true(s8equal(s8_var(tile1.name), s8_literal("Throne")));
     nourstest_true(tile1.id == TILE_THRONE);
     out_cost        = tile1.cost_struct;
     out_tile_stats  = tile1.stats;
@@ -64,7 +64,7 @@ void test_tile() {
                                      PATH_JOIN("saves", "tile_rewrite.json")));
     nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "tile_rewrite.json")));
     nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "tile_test.json")));
-    nourstest_true(strcmp(tile1.name, tile3.name) == 0);
+    nourstest_true(s8equal(s8_var(tile1.name), s8_var(tile3.name)));
     nourstest_true(tile1.id == tile3.id);
     memcpy(cost_array, tile1.cost_array, sizeof(*cost_array) * (UNIT_MVT_END));
     out_cost        = tile1.cost_struct;

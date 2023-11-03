@@ -29,12 +29,12 @@ void test_item() {
     item1.malus_stats = in_stats;
     item1.canSell     = in_canSell;
     out_description   = item1.description;
-    nourstest_true(strcmp(in_description, out_description) == 0);
-    nourstest_true(strcmp(in_description,
-                          "Naturally full of angelic energy. Protects against demons.") == 0);
-    nourstest_true(strcmp(out_description,
-                          "Naturally full of angelic energy. Protects against demons.") == 0);
-    nourstest_true(strcmp(item1.name, "Cross") == 0);
+    nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
+    nourstest_true(s8equal(s8_var(in_description),
+                           s8_literal("Naturally full of angelic energy. Protects against demons.")));
+    nourstest_true(s8equal(s8_var(out_description),
+                           s8_literal("Naturally full of angelic energy. Protects against demons.")));
+    nourstest_true(s8equal(s8_var(item1.name), s8_literal("Cross")));
     nourstest_true(item1.passive  == in_effect);
     nourstest_true(item1.type     == in_type);
     nourstest_true(item1.canSell  == in_canSell);
@@ -68,8 +68,8 @@ void test_item() {
     SDL_Log("Saved item_test");
     jsonio_readJSON("saves/item_test.json", &item2);
     out_description = item2.description;
-    nourstest_true(strcmp(in_description, out_description) == 0);
-    nourstest_true(strcmp(item2.name, "Cross") == 0);
+    nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
+    nourstest_true(s8equal(s8_var(item2.name), s8_literal("Cross")));
     nourstest_true(item2.passive  == in_effect);
     nourstest_true(item2.type     == in_type);
     nourstest_true(item2.canSell  == in_canSell);
