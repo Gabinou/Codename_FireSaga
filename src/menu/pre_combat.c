@@ -80,7 +80,7 @@ void PreCombatMenu_Load(struct PreCombatMenu *pcm, tnecs_entity_t aggressor,
     SDL_assert(n9patch->patch_pixels.x > 0);
     SDL_assert(n9patch->patch_pixels.y > 0);
     if (n9patch->texture == NULL) {
-        n9patch->texture = Filesystem_Texture_Load(renderer, pcm->sota->filename_menu,
+        n9patch->texture = Filesystem_Texture_Load(renderer, pcm->sota->filename_menu.data,
                                                    SDL_PIXELFORMAT_INDEX8);
     }
 

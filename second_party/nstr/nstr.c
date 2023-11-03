@@ -46,6 +46,10 @@ s8 s8cat(s8 s1, s8 s2) {
 }
 
 s8 s8cpy(s8 s1, s8 s2) {
+    if (s1.len == 0) {
+        printf("nstr Error! Input string s1 has 0 len\n");
+        exit(1);
+    }
     while (s2.num > s1.len) {
         size_t newlen = s1.len * 2;
         s1.data = realloc(s1.data, newlen * sizeof(*s1.data));

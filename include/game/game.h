@@ -100,7 +100,7 @@ struct Game {
     tnecs_entity_t GM_menu;
     tnecs_entity_t map_animation;
 
-    char filename_menu[DEFAULT_BUFFER_SIZE];
+    s8 filename_menu;
     char reason[DEFAULT_BUFFER_SIZE];
 
     tnecs_entity_t entity_cursor;

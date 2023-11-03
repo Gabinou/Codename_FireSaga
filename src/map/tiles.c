@@ -18,7 +18,6 @@ void Map_Tiles_Free(struct Map *map) {
 void Map_Tiles_Load(struct Map *map) {
     Map_Tiles_Free(map);
     struct Tile *temp_tile = NULL;
-    char filename[DEFAULT_BUFFER_SIZE];
     map->tiles      = DARR_INIT(map->tiles, struct Tile, 64);
     map->tiles_id   = DARR_INIT(map->tiles_id, i32, 64);
 
@@ -26,19 +25,17 @@ void Map_Tiles_Load(struct Map *map) {
         /* -- Get tile_id -- */
         i32 tile_id = map->tilesindex[i];
         /* - If above TILE_ID_MAX, tile_id encodes the tile sprite too - */
-        (tile_id > TILE_ID_MAX) &&(tile_id /= TILE_DIVISOR);   /* short-circuit */
+        (tile_id > TILE_ID_MAX) && (tile_id /= TILE_DIVISOR);   /* short-circuit */
 
         /* -- Alloc tile -- */
         temp_tile   = malloc(sizeof(struct Tile));
         *temp_tile  = Tile_default;
 
         /* -- Load tile -- */
-        strcpy(filename, "");
-        strcat(filename, "tiles");
-        strcat(filename, PHYSFS_SEPARATOR);
-        strcat(filename, global_tilenames[tile_id]);
-        strcat(filename, ".json");
-        jsonio_readJSON(filename, temp_tile);
+        s8 filename = s8_literal("tiles" PHYSFS_SEPARATOR);
+        filename    = s8cat(filename, s8_var(global_tilenames[tile_id]));
+        filename    = s8cat(filename, s8_literal(".json"));
+        jsonio_readJSON(filename.data, temp_tile);
         Tile_makeMvtCostarray(temp_tile);
         DARR_PUT(map->tiles, *temp_tile);
         DARR_PUT(map->tiles_id, tile_id);

@@ -47,7 +47,7 @@ struct Game Game_default = {
     .weapons_dtab           = NULL,
     .runtime_ns             = 0,
     .combat_attacks         = NULL,
-
+    .filename_menu          = {0},
     .menu_options_dtab      = NULL,
     .menu_stack             = NULL,
     .player_select_menus    = {0},
@@ -227,9 +227,13 @@ struct Game *Game_Init() {
     *out_game   = Game_default;
     out_game->settings = Settings_default;
     SDL_assert(out_game->settings.FPS.cap > 0);
-    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Init game");
+    SDL_LogInfo(SOTA_LOG_SYSTEM, "Init game");
     i16 flags = 0;
-    strcpy(out_game->filename_menu, PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png"));
+    out_game->filename_menu = s8_mut("");
+    s8cpy(out_game->filename_menu, s8_literal(PATH_JOIN("..", "assets", "GUI",
+                                                        "n9Patch", "menu8px.png")));
+
+    SDL_LogInfo(SOTA_LOG_SYSTEM, "Init game");
     /* init weapons_dtab */
     if (out_game->weapons_dtab != NULL) {
         DTAB_FREE(out_game->weapons_dtab);
@@ -256,11 +260,11 @@ struct Game *Game_Init() {
     #ifndef SOTA_OPENGL
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Firesaga: Window Initialization");
     int success = SDL_Init(SDL_INIT_EVERYTHING);
-    //  --- SDL_INIT LEAKS A LOT OF MEMORY ---
-    //     reachable 224,425 bytes in 1,445 blocks
-    //     suppressed 16 bytes in 1 blocks
-    //     It may be cause of X11.
-    //     Someone on Stack overflow said his NVIDIA drivers leak 10Mb.
+    /*  NOTE: --- SDL_INIT LEAKS A LOT OF MEMORY --- */
+    //  Ex:     reachable 224,425 bytes in 1,445 blocks
+    //          suppressed 16 bytes in 1 blocks
+    //          It may be cause of X11.
+    //      Someone on Stack overflow said his NVIDIA drivers leak 10Mb.
     SDL_assert(success == 0);
     out_game->window = SDL_CreateWindow(out_game->settings.title, out_game->settings.pos.x,
                                         out_game->settings.pos.y, out_game->settings.res.x, out_game->settings.res.y, flags);

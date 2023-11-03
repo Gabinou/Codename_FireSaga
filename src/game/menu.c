@@ -523,7 +523,8 @@ void Game_TradeMenu_Create(struct Game *sota) {
     mc->n9patch.scale.y =           WSM_N9PATCH_SCALE_Y;
     mc->n9patch.size_pixels.x =     MENU_PATCH_PIXELS * mc->n9patch.size_patches.x;
     mc->n9patch.size_pixels.y =     MENU_PATCH_PIXELS * mc->n9patch.size_patches.y;
-    mc->n9patch.texture =           Filesystem_Texture_Load(sota->renderer, sota->filename_menu,
+    mc->n9patch.texture =           Filesystem_Texture_Load(sota->renderer,
+                                                            sota->filename_menu.data,
                                                             SDL_PIXELFORMAT_INDEX8);
     /* stats_menu struct init */
     // struct TradeMenu *tm =          TradeMenu_Alloc();
@@ -614,7 +615,8 @@ void Game_ItemSelectMenu_Create(struct Game *sota) {
     mc->n9patch.scale.y             = ISM_N9PATCH_SCALE_Y;
     mc->n9patch.size_pixels.x       = MENU_PATCH_PIXELS * ISM_PATCH_X_SIZE;
     mc->n9patch.size_pixels.y       = MENU_PATCH_PIXELS * ISM_PATCH_Y_SIZE;
-    mc->n9patch.texture             = Filesystem_Texture_Load(sota->renderer, sota->filename_menu,
+    mc->n9patch.texture             = Filesystem_Texture_Load(sota->renderer,
+                                                              sota->filename_menu.data,
                                                               SDL_PIXELFORMAT_INDEX8);
 
     /* stats_menu struct init */

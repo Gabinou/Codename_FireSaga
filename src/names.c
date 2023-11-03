@@ -190,7 +190,7 @@ void Names_gameStatenames() {
 #undef REGISTER_ENUM
 
 #define REGISTER_ENUM(x, y, z) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
-    strcpy(temp_str, "");\
+    memcpy(temp_str, "\0", 1);\
     strcat(temp_str, "assets"PHYSFS_SEPARATOR"Maps"PHYSFS_SEPARATOR);\
     strcat(temp_str, #y);\
     mapFilenames[CHAPTER_##x] =  temp_str;
@@ -286,7 +286,7 @@ void Names_jsonElementnames() {
     char *temp_str = NULL;
     jsonElementnames = calloc(JSON_END, sizeof(*jsonElementnames));
 #include "names/json_elements.h"
-    strcpy(jsonElementnames[JSON_WEAPON], "Item");
+    memcpy(jsonElementnames[JSON_WEAPON], "Item\0", 5);
 }
 #undef REGISTER_ENUM
 

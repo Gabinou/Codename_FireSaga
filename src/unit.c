@@ -132,6 +132,8 @@ struct Unit Unit_default = {
     .computed_stats  = {{0, 0}, {0, 0}, 0, 0, 0, 0, 0, 0, 0, {-1, -1}},
 
     .temp            = {0},
+    .name            = {0},
+    .title           = {0},
     .num_equipment   =  0,
     .eq_usable       = {0},
     .num_usable      =  0,
@@ -279,7 +281,7 @@ int SotA_Hand_Strong(i8 handedness) {
 void Unit_setid(struct Unit *unit, i16 id) {
     SDL_assert(unit != NULL);
     unit->_id = id;
-    strcpy(unit->name, global_unitNames[unit->_id]);
+    memcpy(unit->name, global_unitNames[unit->_id], strlen(global_unitNames[unit->_id]));
 }
 
 void Unit_setSkills(struct Unit *unit, u64 skills) {
