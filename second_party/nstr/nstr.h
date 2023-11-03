@@ -12,9 +12,10 @@ typedef uint8_t u8;
 typedef int32_t b32;
 
 /* --- Pascal String s8 strings --- */
-typedef struct {
+typedef struct s8 {
     u8      *data;
     size_t   len;
+    size_t   num;
 } s8;
 
 /* -- Utilities -- */
@@ -22,12 +23,12 @@ typedef struct {
 #define lengthof(s)  (countof(s) - 1)
 
 /* -- s8 from string literal, string array -- */
-#define s8_literal(s) (s8){(u8 *)s, lengthof(s)}
+#define s8_literal(s) (s8){(u8 *)s, lengthof(s), lengthof(s)}
 
 /* -- s8 from pointer to string -- */
 // -> Needed cause sizeof() gives pointer size... 
 #define s8_var(s)   s8_var_(s) 
-#define s8_var_(s) (s8){(u8 *)s, strlen(s)}
+#define s8_var_(s) (s8){(u8 *)s, strlen(s), strlen(s)}
 
 /* -- Mutable s8 -- */
 s8   s8_mut(char *string);

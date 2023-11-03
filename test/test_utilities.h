@@ -94,19 +94,24 @@ void test_utilities() {
 
     SDL_Log("test_str");
     char temp_str[DEFAULT_BUFFER_SIZE];
-    s8 temp = s8("test_utilities");
+    s8 temp = s8_literal("test_utilities");
+
     memcpy(temp_str, temp.data, temp.len);
-    nourstest_true(s8equal(temp.data, s8_var(nstr_replaceSingle(temp_str, '_', ' '))));
+    nourstest_true(s8equal(temp, s8_var(nstr_replaceSingle(temp_str, '_', ' '))));
+
     memcpy(temp_str, temp.data, temp.len);
     nourstest_true(s8equal(s8_literal("Test_Utilities"), s8_var(nstr_camelCase(temp_str, '_', 2))));
+
     memcpy(temp_str, temp.data, temp.len);
     nourstest_true(s8equal(s8_literal("Test Utilities"), s8_var(nstr_camelCase(temp_str, ' ', 2))));
-    s8 temp = s8("vial of light");
+    temp = s8_literal("vial of light");
+
     memcpy(temp_str, temp.data, temp.len);
     nourstest_true(s8equal(s8_literal("Vial of Light"), s8_var(nstr_camelCase(temp_str, ' ', 2))));
     nourstest_true(s8equal(s8_literal("Vial Of Light"), s8_var(nstr_camelCase(temp_str, ' ', 1))));
+
     memcpy(temp_str, temp.data, temp.len);
-    nourstest_true(s8equal(temp.data, s8_var(nstr_toLower(temp_str))));
+    nourstest_true(s8equal(temp, s8_var(nstr_toLower(temp_str))));
 
     if (PHYSFS_stat(SAVE_FOLDER, NULL)) {
         PHYSFS_mkdir(SAVE_FOLDER);

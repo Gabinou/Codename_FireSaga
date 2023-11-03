@@ -32,6 +32,7 @@ void bench_s8() {
 
     /* --- FREE --- */
     s8_free(s8_string);
+
     /* --- CONCLUSION --- */
     // n8 string 3x-4x faster than null-terminated strings!
 }
