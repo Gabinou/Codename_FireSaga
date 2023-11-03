@@ -32,7 +32,7 @@ typedef struct s8 {
 
 /* -- Mutable s8 -- */
 s8   s8_mut(char *string);
-void s8_free(s8  *  string);
+void s8_free(s8  *string);
 
 void s8_slicefromEnd(  s8 str8, size_t toslice);
 void s8_slicefromStart(s8 str8, size_t toslice);

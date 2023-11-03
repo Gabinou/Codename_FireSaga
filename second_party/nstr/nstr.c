@@ -11,10 +11,11 @@ s8 s8_mut(char *string) {
     return(s8_string);
 }
 
-void s8_free(s8 *string) {
-    if (string->data != NULL) {
-        free(string->data);
-        string->data = NULL;
+void s8_free(s8 *str8) {
+    // str8 is a pointer to modify to member variables
+    if (str8->data != NULL) {
+        free(str8->data);
+        str8->data = NULL;
     }
 }
 

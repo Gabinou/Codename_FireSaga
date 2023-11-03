@@ -93,27 +93,31 @@ void test_utilities() {
     nourstest_true(s8equal(s8_var(global_unitNames[order]), s8_literal("Fencer")));
 
     SDL_Log("test_str");
-    char temp_str[DEFAULT_BUFFER_SIZE];
 
-    s8 temp = s8_literal("test_utilities");
-    memcpy(temp_str, temp.data, temp.len);
-    nourstest_true(s8equal(temp, s8_var(nstr_replaceSingle(temp_str, '_', ' '))));
+    s8 temp = s8_mut("test_utilities");
+    s8_replaceSingle(temp, '_', ' ');
+    nourstest_true(s8equal(s8_literal("test utilities"), temp));
 
-    memcpy(temp_str, temp.data, temp.len);
-    nourstest_true(s8equal(s8_literal("Test_Utilities"), s8_var(nstr_camelCase(temp_str, '_', 2))));
+    memcpy(temp.data, "test_utilities", temp.len);
+    s8_camelCase(temp, '_', 2);
+    nourstest_true(s8equal(s8_literal("Test_Utilities"), temp));
 
-    memcpy(temp_str, temp.data, temp.len);
-    nourstest_true(s8equal(s8_literal("Test Utilities"), s8_var(nstr_camelCase(temp_str, ' ', 2))));
+    memcpy(temp.data, "test_utilities", temp.len);
+    s8_camelCase(temp, ' ', 2);
+    nourstest_true(s8equal(s8_literal("Test Utilities"), temp));
 
-    temp = s8_literal("vial of light");
-    memset(temp_str, 0, DEFAULT_BUFFER_SIZE);
-    memcpy(temp_str, temp.data, temp.len);
+    s8_free(&temp);
+    temp = s8_mut("vial of light");
+    s8_camelCase(temp, ' ', 2);
+    nourstest_true(s8equal(s8_literal("Vial of Light"), temp));
 
-    nourstest_true(s8equal(s8_literal("Vial of Light"), s8_var(nstr_camelCase(temp_str, ' ', 2))));
-    nourstest_true(s8equal(s8_literal("Vial Of Light"), s8_var(nstr_camelCase(temp_str, ' ', 1))));
+    memcpy(temp.data, "vial of light", temp.len);
+    s8_camelCase(temp, ' ', 1);
+    nourstest_true(s8equal(s8_literal("Vial Of Light"), temp));
 
-    memcpy(temp_str, temp.data, temp.len);
-    nourstest_true(s8equal(temp, s8_var(nstr_toLower(temp_str))));
+    memcpy(temp.data, "Vial Of Light", temp.len);
+    s8_toLower(temp);
+    nourstest_true(s8equal(s8_literal("vial of light"), temp));
 
     if (PHYSFS_stat(SAVE_FOLDER, NULL)) {
         PHYSFS_mkdir(SAVE_FOLDER);
