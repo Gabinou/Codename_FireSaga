@@ -7,7 +7,7 @@ s8 s8_mut(char *string) {
     size_t len = strlen(string);
     s8_string.num  = len;
     s8_string.len  = len < NSTR_MIN_LEN ? NSTR_MIN_LEN : len;
-    s8_string.data = malloc(s8_string.len);
+    s8_string.data = calloc(1, s8_string.len);
     memcpy(s8_string.data, string, s8_string.len);
     return(s8_string);
 }
@@ -106,8 +106,8 @@ s8 s8_camelCase(s8 str8, const char separator, size_t minwordlen) {
 s8 s8_Path_Remove_Top(s8 str8, const char separator) {
     char *folder        = strrchr(str8.data, separator) + 1;
     size_t len_folder   = strlen(folder);
-    *(str8.data + (str8.num - len_folder - 1)) = '\0';
-    str8.num -= len_folder;
+    *(str8.data + (str8.num - (len_folder + 1))) = '\0';
+    str8.num -= (len_folder + 1);
     return(str8);
 }
 
