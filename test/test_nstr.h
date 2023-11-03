@@ -71,7 +71,13 @@ void test_nstr() {
     s8 lizard_result = s8_mut("The lizard is a wizard, by joving rove.Windows");
     nourstest_true(s8equal(lizard_mut, lizard_result));
 
+    s8 path_mut = s8_mut("/home/gabinours/Sync/Firesaga/build");
+    s8_Path_Remove_Top(path_mut, '/');
+    nourstest_true(s8equal(path_mut, s8_literal("/home/gabinours/Sync/Firesaga")));
+
     s8_free(&windows3);
     s8_free(&windows3);
     s8_free(&lizard_mut);
+
+
 }

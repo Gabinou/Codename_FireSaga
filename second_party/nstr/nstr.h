@@ -8,6 +8,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+enum NSTR {
+    NSTR_MIN_LEN = 16,
+};
+
 typedef uint8_t u8;
 typedef int32_t b32;
 
@@ -30,7 +34,7 @@ typedef struct s8 {
 #define s8_var(s)   s8_var_(s) 
 #define s8_var_(s) (s8){(u8 *)s, strlen(s), strlen(s)}
 
-/* -- Mutable s8 -- */
+/* -- Mutable s8 functions -- */
 // s8 function input notes
 //  - foo(s8 *str8) -> foo can change all member variables
 //  - bar(s8  str8) -> bar can only change *str8.data, 
@@ -48,6 +52,7 @@ s8 s8_toUpper(s8 str8);
 b32 s8equal(s8 s1, s8 s2);
 
 s8 s8cat(s8 s1, s8 s2);
+s8 s8cpy(s8 s1, s8 s2);
 
 s8 s8_camelCase(s8 str8, const char separator, size_t minwordlen);
 

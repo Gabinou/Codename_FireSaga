@@ -4,8 +4,9 @@
 // 3x-4x faster than null-terminated strings!
 s8 s8_mut(char *string) {
     s8 s8_string;
-    s8_string.num  = strlen(string);
-    s8_string.len  = s8_string.num;
+    size_t len = strlen(string);
+    s8_string.num  = len;
+    s8_string.len  = len < NSTR_MIN_LEN ? NSTR_MIN_LEN : len;
     s8_string.data = malloc(s8_string.len);
     memcpy(s8_string.data, string, s8_string.len);
     return(s8_string);
@@ -31,16 +32,32 @@ b32 s8equal(s8 s1, s8 s2) {
 }
 
 s8 s8cat(s8 s1, s8 s2) {
+    /* Grow buffer */
     while ((s1.num + s2.num) > s1.len) {
         size_t newlen = s1.len * 2;
         s1.data = realloc(s1.data, newlen * sizeof(*s1.data));
         memset(s1.data + s1.len, 0, newlen - s1.len);
         s1.len = newlen;
     }
+    /* Concatenate */
     memcpy(s1.data + s1.num, s2.data, s2.num);
     s1.num += s2.num;
     return(s1);
 }
+
+s8 s8cpy(s8 s1, s8 s2) {
+    while (s2.num > s1.len) {
+        size_t newlen = s1.len * 2;
+        s1.data = realloc(s1.data, newlen * sizeof(*s1.data));
+        memset(s1.data + s1.len, 0, newlen - s1.len);
+        s1.len = newlen;
+    }
+    /* Copy */
+    memcpy(s1.data, s2.data, s2.num);
+    s1.num = s2.num;
+    return(s1);
+}
+
 
 s8 s8_slicefromStart(s8 str8, size_t toslice) {
     for (size_t i = toslice; i < str8.num; i++)

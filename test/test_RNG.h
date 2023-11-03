@@ -195,7 +195,6 @@ void bench_RNG() {
     SDL_Log("RNG_openBSD_u64 %d ns / RN", elapsed_ns / ITERATIONS);
     SDL_Log("RNG_openBSD_u64 %d ms", elapsed_ms);
 
-
     /* --- CONCLUSION --- */
     /* xoshiro256ss < 2x faster than tinymt32 */
 }
