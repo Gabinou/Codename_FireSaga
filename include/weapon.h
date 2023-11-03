@@ -57,7 +57,7 @@ void Weapons_All_Free(struct dtab *weapons_dtab);
 void Weapon_Reload(     struct dtab *weapons_dtab, i16 id);
 void Weapons_All_Reload(struct dtab *weapons_dtab);
 
-void Weapon_Filename(char *filename, i16 id);
+s8 Weapon_Filename(s8 filename, i16 id);
 
 /* --- Stats --- */
 int Weapon_Stat(        const struct Weapon *wpn, i16 s);

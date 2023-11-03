@@ -140,28 +140,27 @@ void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
     }
 
 
-    char filename[DEFAULT_BUFFER_SIZE] = "items"PHYSFS_SEPARATOR;
-    Weapon_Filename(filename, id);
+    s8 filename = s8_mut("items"PHYSFS_SEPARATOR);
+    filename    = Weapon_Filename(filename, id);
 
     struct Weapon temp_weapon = Weapon_default;
-    SDL_Log("Loading weapon %ld %s", id, filename);
+    SDL_Log("Loading weapon %ld %s", id, filename.data);
     SDL_assert(temp_weapon.json_element == JSON_WEAPON);
 
     /* - read weapon - */
-    jsonio_readJSON(filename, &temp_weapon);
+    jsonio_readJSON(filename.data, &temp_weapon);
     SDL_assert(temp_weapon.item != NULL);
     temp_weapon.item->type = 1 << (id / ITEM_DIVISOR);
     if (temp_weapon.item->id != id) {
-        SDL_Log("Read id %d from file %s, expected %d", temp_weapon.item->id, filename, id);
+        SDL_Log("Read id %d from file %s, expected %d", temp_weapon.item->id, filename.data, id);
         exit(ERROR_Generic);
     }
 
     /* - Add weapon to dtab - */
     DTAB_ADD(weapons_dtab, &temp_weapon, id);
-
 }
 
-void Weapon_Filename(char *filename, i16 id) {
+s8 Weapon_Filename(s8 filename, i16 id) {
     char buffer[DEFAULT_BUFFER_SIZE];
     char *token;
 
@@ -169,8 +168,8 @@ void Weapon_Filename(char *filename, i16 id) {
     int type_exp = id / SOTA_WPN_ID_FACTOR;
     i16 typecode = (1 << type_exp);
     char **types = Names_wpnType(typecode);
-    strncat(filename, types[0], strlen(types[0]));
-    strncat(filename, PHYSFS_SEPARATOR, 2);
+    filename = s8cat(filename, s8_var(types[0]));
+    filename = s8cat(filename, s8_var(PHYSFS_SEPARATOR));
     Names_wpnType_Free(types);
 
     /* - add weapon name to filename - */
@@ -179,13 +178,13 @@ void Weapon_Filename(char *filename, i16 id) {
     memcpy(buffer, global_itemNames[item_order], DEFAULT_BUFFER_SIZE);
     token = strtok(buffer, " \t");
     while (token != NULL) {
-        strcat(filename, token);
+        filename = s8cat(filename, s8_var(token));
         token = strtok(NULL, " \t");
     }
 
     /* - add .json to filename - */
-    strcat(filename, ".json");
-
+    filename = s8cat(filename, s8_literal(".json"));
+    return (filename);
 }
 
 
@@ -196,21 +195,21 @@ void Weapon_Save(struct dtab *weapons_dtab, i16 id) {
     char buffer[DEFAULT_BUFFER_SIZE];
     if (DTAB_GET(weapons_dtab, id) != NULL) {
         SDL_Log("Saving Weapon id %ld", id);
-        char filename[DEFAULT_BUFFER_SIZE] = "items"PHYSFS_SEPARATOR;
+        s8 filename = s8_mut("items"PHYSFS_SEPARATOR);
         size_t item_order = *(u16 *)DTAB_GET(global_itemOrders, id);
         SDL_assert(item_order != 0);
         SDL_Log("%s", global_itemNames[item_order]);
         memcpy(buffer, global_itemNames[item_order], DEFAULT_BUFFER_SIZE);
         token = strtok(buffer, " \t");
         while (token != NULL) {
-            strcat(filename, token);
+            filename = s8cat(filename, s8_var(token));
             token = strtok(NULL, " \t");
         }
-        strcat(filename, ".json");
-        SDL_Log("Saving weapon %ld %s", id, filename);
+        filename = s8cat(filename, s8_literal(".json"));
+        SDL_Log("Saving weapon %ld %s", id, filename.data);
         bool append = false;
         struct Weapon *weapon = (struct Weapon *)DTAB_GET(weapons_dtab, id);
-        jsonio_writeJSON(filename, weapon, false);
+        jsonio_writeJSON(filename.data, weapon, false);
     }
 }
 
