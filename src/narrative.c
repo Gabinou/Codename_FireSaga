@@ -145,21 +145,21 @@ struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_conds,
         DARR_FREE(sdarr);
     sdarr = DARR_INIT(sdarr, struct Scene, 4);
     /* Creating base filename */
-    char base[DEFAULT_BUFFER_SIZE] = {0}, filename[DEFAULT_BUFFER_SIZE] = {0};
+    s8 filename     = s8_mut("");
     char extension[8] = {0};
-    strcpy(base, "scenes"DIR_SEPARATOR);
-    Filesystem_Scene_Chapter(base, chapter);
-    strcat(base, sceneTimes[scene_time]);
+    s8 base         = s8_mut("scenes"DIR_SEPARATOR);
+    base            = Filesystem_Scene_Chapter(base, chapter);
+    base            = s8cat(base, s8_var(sceneTimes[scene_time]));
 
     /* Reading scene files */
     struct cJSON *jscene, *jfile;
     for (i16 i = 1; i < DEFAULT_BUFFER_SIZE; i++) {
         stbsp_sprintf(extension, "%d.json", i);
-        strcpy(filename, base);
-        strcat(filename, extension);
-        if (!PHYSFS_exists(filename))
+        s8cpy(filename, base);
+        s8cat(filename, s8_var(extension));
+        if (!PHYSFS_exists(filename.data))
             break;
-        jfile = jsonio_parseJSON(filename);
+        jfile = jsonio_parseJSON(filename.data);
         SDL_assert(jfile);
         jscene = cJSON_GetObjectItem(jfile, "Scene");
         SDL_assert(jscene);

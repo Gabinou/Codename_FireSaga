@@ -202,8 +202,8 @@ void Weapon_Save(struct dtab *weapons_dtab, i16 id) {
         memcpy(buffer, global_itemNames[item_order], DEFAULT_BUFFER_SIZE);
         token = strtok(buffer, " \t");
         while (token != NULL) {
-            filename = s8cat(filename, s8_var(token));
-            token = strtok(NULL, " \t");
+            filename    = s8cat(filename, s8_var(token));
+            token       = strtok(NULL, " \t");
         }
         filename = s8cat(filename, s8_literal(".json"));
         SDL_Log("Saving weapon %ld %s", id, filename.data);

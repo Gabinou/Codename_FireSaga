@@ -112,6 +112,6 @@ void Filesystem_writeJSON_Tilestats(struct cJSON *j, const struct Tile_stats    
 void Filesystem_printJSON(PHYSFS_file *fp, const struct cJSON *json);
 
 /* --- SCENE --- */
-void Filesystem_Scene_Chapter(char *f, int chapter);
+s8 Filesystem_Scene_Chapter(s8 filename, int chapter);
 
 #endif /* FILESYSTEM_H */

@@ -938,18 +938,19 @@ void Filesystem_printJSON(PHYSFS_file *fp, const struct cJSON *const json) {
 }
 
 /* --- SCENE --- */
-void Filesystem_Scene_Chapter(char *filename, int chapter) {
+s8 Filesystem_Scene_Chapter(s8 filename, int chapter) {
     if (chapter < CHAPTER_1) {
-        strcat(filename, "Prologue");
+        filename = s8cat(filename, s8_literal("Prologue"));
     } else if (chapter == CHAPTER_FOLDER_TEST) {
-        strcat(filename, "Test");
+        filename = s8cat(filename, s8_literal("Test"));
     } else if (chapter == CHAPTER_EPILOGUE) {
-        strcat(filename, "Epilogue");
+        filename = s8cat(filename, s8_literal("Epilogue"));
     } else {
-        strcat(filename, "Chapter_");
+        filename = s8cat(filename, s8_literal("Chapter_"));
         char chapter_num[2];
         stbsp_sprintf(chapter_num, "%d", chapter);
-        strcat(filename, chapter_num);
+        filename = s8cat(filename, s8_literal(chapter_num));
     }
-    strcat(filename, DIR_SEPARATOR);
+    filename = s8cat(filename, s8_literal(DIR_SEPARATOR));
+    return (filename);
 }
