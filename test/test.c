@@ -102,8 +102,8 @@ int main(int argc, char *argv[]) {
 
     /* -- Running benchmarks -- */
     // bench_nstr();
-    bench_RNG();
-    getchar();
+    // bench_RNG();
+    // getchar();
 
     /* -- Running tests -- */
     unit_tests();

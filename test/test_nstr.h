@@ -29,9 +29,8 @@ void bench_s8() {
     elapsed_ms  = (after_ns - before_ns) / SOTA_us;
     SDL_Log("null %d ms", elapsed_ms);
 
-
     /* --- FREE --- */
-    s8_free(s8_string);
+    s8_free(&s8_string);
 
     /* --- CONCLUSION --- */
     // n8 string 3x-4x faster than null-terminated strings!
@@ -67,4 +66,12 @@ void test_nstr() {
     nourstest_true(windows1.len == windows4.len);
     nourstest_true(windows1.len == windows5.len);
 
+    s8 lizard_mut = s8_mut("The lizard is a wizard, by joving rove.");
+    lizard_mut = s8cat(lizard_mut, windows4);
+    s8 lizard_result = s8_mut("The lizard is a wizard, by joving rove.Windows");
+    nourstest_true(s8equal(lizard_mut, lizard_result));
+
+    s8_free(&windows3);
+    s8_free(&windows3);
+    s8_free(&lizard_mut);
 }

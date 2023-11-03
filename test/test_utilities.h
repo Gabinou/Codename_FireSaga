@@ -94,8 +94,8 @@ void test_utilities() {
 
     SDL_Log("test_str");
     char temp_str[DEFAULT_BUFFER_SIZE];
-    s8 temp = s8_literal("test_utilities");
 
+    s8 temp = s8_literal("test_utilities");
     memcpy(temp_str, temp.data, temp.len);
     nourstest_true(s8equal(temp, s8_var(nstr_replaceSingle(temp_str, '_', ' '))));
 
@@ -104,9 +104,11 @@ void test_utilities() {
 
     memcpy(temp_str, temp.data, temp.len);
     nourstest_true(s8equal(s8_literal("Test Utilities"), s8_var(nstr_camelCase(temp_str, ' ', 2))));
-    temp = s8_literal("vial of light");
 
+    temp = s8_literal("vial of light");
+    memset(temp_str, 0, DEFAULT_BUFFER_SIZE);
     memcpy(temp_str, temp.data, temp.len);
+
     nourstest_true(s8equal(s8_literal("Vial of Light"), s8_var(nstr_camelCase(temp_str, ' ', 2))));
     nourstest_true(s8equal(s8_literal("Vial Of Light"), s8_var(nstr_camelCase(temp_str, ' ', 1))));
 

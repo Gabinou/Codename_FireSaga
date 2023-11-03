@@ -11,9 +11,11 @@ s8 s8_mut(char *string) {
     return(s8_string);
 }
 
-void s8_free(s8 string) {
-    if (string.data != NULL)
-        free(string.data);
+void s8_free(s8 *string) {
+    if (string->data != NULL) {
+        free(string->data);
+        string->data = NULL;
+    }
 }
 
 b32 s8equal(s8 s1, s8 s2) {
@@ -25,6 +27,18 @@ b32 s8equal(s8 s1, s8 s2) {
             return(false);
 
     return(true);
+}
+
+s8 s8cat(s8 s1, s8 s2) {
+    while ((s1.num + s2.num) > s1.len) {
+        size_t newlen = s1.len * 2;
+        s1.data = realloc(s1.data, newlen * sizeof(*s1.data));
+        memset(s1.data + s1.len, 0, newlen - s1.len);
+        s1.len = newlen;
+    }
+    memcpy(s1.data + s1.num, s2.data, s2.num);
+    s1.num += s2.num;
+    return(s1);
 }
 
 void s8_slicefromStart(s8 str8, size_t toslice) {
