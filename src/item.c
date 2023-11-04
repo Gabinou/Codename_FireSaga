@@ -260,7 +260,7 @@ void Item_Use(struct Item *restrict item, struct Unit *restrict user,
 }
 
 /* --- I/O --- */
-void Item_Filename(char *filename, i16 id) {
+s8 Item_Filename(s8 filename, i16 id) {
     char buffer[DEFAULT_BUFFER_SIZE];
     char *token;
 
@@ -270,13 +270,14 @@ void Item_Filename(char *filename, i16 id) {
     memcpy(buffer, global_itemNames[item_order], DEFAULT_BUFFER_SIZE);
     token = strtok(buffer, " \t");
     while (token != NULL) {
-        strcat(filename, token);
-        token = strtok(NULL, " \t");
+        filename    = s8cat(filename, s8_var(token));
+        filename    = s8cat(filename, s8_var(token));
+        token       = strtok(NULL, " \t");
     }
 
     /* - add .json to filename - */
-    strcat(filename, ".json");
-
+    filename = s8cat(filename, s8_literal(".json"));
+    return (filename);
 }
 
 void Item_Reload(struct dtab *items_dtab, i16 id) {
@@ -299,15 +300,15 @@ void Item_Load(struct dtab *items_dtab, i16 id) {
         DTAB_DEL(items_dtab, id);
     }
 
-    char filename[DEFAULT_BUFFER_SIZE] = "items"PHYSFS_SEPARATOR"Item"PHYSFS_SEPARATOR;
-    Item_Filename(filename, id);
+    s8 filename = s8_mut("items"PHYSFS_SEPARATOR"Item"PHYSFS_SEPARATOR);
+    filename = Item_Filename(filename, id);
 
     struct Item temp_item = Item_default;
     SDL_Log("Loading item %ld %s", id, filename);
     SDL_assert(temp_item.json_element == JSON_ITEM);
 
     /* - read weapon - */
-    jsonio_readJSON(filename, &temp_item);
+    jsonio_readJSON(filename.data, &temp_item);
 
     /* - Add weapon to dtab - */
     DTAB_ADD(items_dtab, &temp_item, id);
