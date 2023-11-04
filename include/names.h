@@ -30,7 +30,7 @@ extern char         **jsonElementnames;
 extern char         **global_unitNames;  /* global_unitNames[order] = unit_name */
 extern char         **global_itemNames;
 extern char         **global_tilenames;
-extern char         **gamesubStatenames;
+extern s8 gamesubStatenames[GAME_SUBSTATE_END];
 
 // TODO: change into simple array + simple function?
 //      -> simpler #include

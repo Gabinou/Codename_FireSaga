@@ -128,17 +128,13 @@ void Menu_MakeOptionnames() {
 #undef REGISTER_ENUM
 }
 
-#define REGISTER_ENUM(x, y) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
-    memcpy(temp_str, #x, sizeof(#x));\
-    gamesubStatenames[GAME_SUBSTATE_##x] = nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2);
 
-char **gamesubStatenames = NULL;
+s8 gamesubStatenames[GAME_SUBSTATE_END] = {0};
 void Names_gamesubStatenames() {
-    char *temp_str = NULL;
-    gamesubStatenames = calloc(GAME_SUBSTATE_END, sizeof(*gamesubStatenames));
+#define REGISTER_ENUM(x, y) gamesubStatenames[GAME_SUBSTATE_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);
 #include "names/game_substates.h"
-}
 #undef REGISTER_ENUM
+}
 
 
 s8 gameStatenames[GAME_STATE_END] = {0};
@@ -296,14 +292,7 @@ void Names_Free() {
 
     SDL_Log("gamesubStatenames");
     for (size_t i = 0; i < GAME_SUBSTATE_END; i++) {
-        if (gamesubStatenames[i] != NULL) {
-            SDL_free(gamesubStatenames[i]);
-            gamesubStatenames[i] = NULL;
-        }
-    }
-    if (gamesubStatenames != NULL) {
-        SDL_free(gamesubStatenames);
-        gamesubStatenames = NULL;
+        s8_free(&gamesubStatenames[i]);
     }
     SDL_Log("gameStatenames");
     for (size_t i = 0; i < GAME_STATE_END; i++) {
@@ -455,7 +444,7 @@ void Names_Print_All(const char *foldername) {
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = GAME_STATE_START; i < (GAME_STATE_END - 1); i++)
-        fprintf(fp, "%d %s \n", i, gameStatenames[i]);
+        fprintf(fp, "%d %s \n", i, gameStatenames[i].data);
     fclose(fp);
     s8_free(&filename);
 
@@ -466,7 +455,7 @@ void Names_Print_All(const char *foldername) {
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = MENU_OPTION_START; i < MENU_OPTION_END; i++)
-        fprintf(fp, "%d %s \n", i, menuOptionnames[i]);
+        fprintf(fp, "%d %s \n", i, menuOptionnames[i].data);
     fclose(fp);
     s8_free(&filename);
 
@@ -477,7 +466,7 @@ void Names_Print_All(const char *foldername) {
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = GAME_SUBSTATE_START; i < (GAME_SUBSTATE_END - 1); i++)
-        fprintf(fp, "%d %s \n", i, gamesubStatenames[i]);
+        fprintf(fp, "%d %s \n", i, gamesubStatenames[i].data);
     fclose(fp);
     s8_free(&filename);
 
