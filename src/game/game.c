@@ -104,7 +104,6 @@ struct Game Game_default = {
 
 /* --- Constructors/Destructors --- */
 void Game_Free(struct Game *sota) {
-    s8_free(&sota->filename_menu);
     Game_Cursor_Free(sota);
     Game_PopUp_Tile_Free(sota);
     Game_Mouse_Free(sota);
@@ -230,9 +229,7 @@ struct Game *Game_Init() {
     SDL_assert(out_game->settings.FPS.cap > 0);
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Init game");
     i16 flags = 0;
-    out_game->filename_menu = s8_mut("");
-    s8cpy(out_game->filename_menu, s8_literal(PATH_JOIN("..", "assets", "GUI",
-                                                        "n9Patch", "menu8px.png")));
+    out_game->filename_menu = s8_literal(PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png"));
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Init game");
     /* init weapons_dtab */

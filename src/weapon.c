@@ -36,8 +36,6 @@ void Weapon_Free(struct Weapon *weapon) {
         return;
     }
 
-    SDL_Log("weapon == NULL %d", weapon == NULL);
-    SDL_Log("json_filename '%s'", weapon->json_filename);
     if (weapon->json_filename != NULL) {
         free(weapon->json_filename);
         weapon->json_filename = NULL;
@@ -53,7 +51,7 @@ void Weapon_Free(struct Weapon *weapon) {
 }
 
 /* --- isCan? --- */
-bool Weapon_canInfuse(const struct Weapon         *weapon, const struct Inventory_item *item) {
+bool Weapon_canInfuse(const struct Weapon *weapon, const struct Inventory_item *item) {
     SDL_assert(weapon);
     bool out = (item->infusion <= SOTA_INFUSEABLE) && !weapon->isMagic;
     return (out);
