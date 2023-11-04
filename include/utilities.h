@@ -9,10 +9,10 @@
 #include <unistd.h>
 #include "platform.h"
 #include "palette.h"
-#include "names.h"
 #include "types.h"
 #include "hashes.h"
 #include "octant.h"
+#include "unit.h"
 #include "enums.h"
 #include "macros.h"
 #include "debug.h"
@@ -22,6 +22,7 @@
 #include "structs.h"
 #include "nmath.h"
 #include "nstr.h"
+// #include "names.h"
 #include "SDL.h"
 
 /* #if SDL_BYTEORDER == SDL_BIG_ENDIAN */

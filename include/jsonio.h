@@ -12,6 +12,7 @@
 #include "unit.h"
 #include "narrative.h"
 #include "utilities.h"
+#include "names.h"
 #include "SDL.h"
 
 /* --- TYPEDEFS --- */

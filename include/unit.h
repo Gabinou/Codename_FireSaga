@@ -29,12 +29,6 @@ enum STATUSES {
     STATUS_DEFAULT_TURNS = 5,
 };
 
-enum UNIT_SEX {
-    UNIT_SEX_F   = 0,
-    UNIT_SEX_M   = 1,
-    UNIT_SEX_NUM = 2
-};
-
 /* -- Unit second-order info -- */
 extern u8  army_alignment[ARMY_END];
 extern bool army_isPC[ARMY_END];

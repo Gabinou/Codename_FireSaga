@@ -1,6 +1,11 @@
 #include "names.h"
 #include "stb_sprintf.h"
 
+s8 sexNames[UNIT_SEX_NUM] = {
+    s8_literal("F"),
+    s8_literal("M"),
+};
+
 #define REGISTER_ENUM(x) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
     memcpy(temp_str, #x, sizeof(#x));\
     sceneTimes[SCENE_TIME_##x] = nstr_camelCase(nstr_toLower(temp_str), '_', 2);\
@@ -35,8 +40,6 @@ void Names_unitNames() {
 
 #define REGISTER_ENUM(x, y) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
     memcpy(temp_str, #x, sizeof(#x));\
-    SDL_Log("%d", UNIT_ID_##x);\
-    SDL_Log("%s", #x);\
     dtab_add(global_unitOrders, &order, UNIT_ID_##x);\
     SDL_assert(*(u16 *)dtab_get(global_unitOrders, UNIT_ID_##x) == order);\
     order++;\
@@ -61,14 +64,10 @@ void Names_statNames() {
 }
 
 #undef REGISTER_ENUM
-char **sexNames = NULL;
-void Names_sexNames() {
-    sexNames = (char **)calloc(UNIT_SEX_NUM, sizeof(*sexNames));
-    sexNames[UNIT_SEX_F] = (char *) SDL_malloc(2);
-    memcpy(sexNames[UNIT_SEX_F], "F\0", 2);
-    sexNames[UNIT_SEX_M] = (char *) SDL_malloc(2);
-    memcpy(sexNames[UNIT_SEX_M], "M\0", 2);
-}
+// void Names_sexNames() {
+//     sexNames[UNIT_SEX_F] = s8_literal("F");
+//     sexNames[UNIT_SEX_M] = s8_literal("M");
+// }
 
 #define REGISTER_ENUM(x) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
     memcpy(temp_str, #x, sizeof(#x));\
@@ -135,10 +134,7 @@ void Names_tileNames() {
 #define REGISTER_ENUM(x) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
     memcpy(temp_str, #x, sizeof(#x));\
     global_tilenames[temp_id++] = nstr_camelCase(nstr_toLower(temp_str), ' ', 2);
-    // temp_id++;
 #include "names/tiles.h"
-    // SDL_free(temp_str);
-    // hmdefault(global_tilenames, "");
 }
 #undef REGISTER_ENUM
 
@@ -297,7 +293,7 @@ void Names_jsonElementnames() {
     }
 char **Names_wpnType(u16 in_typecode) {
     char **type_names = DARR_INIT(type_names, char *, ITEM_TYPE_END);
-    char *temp_str;
+    char  *temp_str;
 #include "names/items_types.h"
     return (type_names);
 }
@@ -322,7 +318,7 @@ void Names_Load_All() {
     Names_tileNames();
     Names_campjobNames();
     Names_statNames();
-    Names_sexNames();
+    // Names_sexNames();
     Menu_MakeOptionnames();
     Names_unitStates();
     Names_jsonElementnames();
@@ -482,17 +478,6 @@ void Names_Free() {
     if (statNames != NULL) {
         SDL_free(statNames);
         statNames = NULL;
-    }
-    SDL_Log("sexNames");
-    for (size_t i = 0; i < UNIT_SEX_NUM; i++) {
-        if (sexNames[i] != NULL) {
-            SDL_free(sexNames[i]);
-            sexNames[i] = NULL;
-        }
-    }
-    if (sexNames != NULL) {
-        SDL_free(sexNames);
-        sexNames = NULL;
     }
     SDL_Log("unitStates");
     for (size_t i = 0; i < UNIT_STATUS_END; i++) {

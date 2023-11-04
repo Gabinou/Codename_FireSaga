@@ -132,6 +132,12 @@ enum SOTA {
     SOTA_ITERATIONS_LIMIT                   = 1000,
 };
 
+enum UNIT_SEX {
+    UNIT_SEX_F   = 0,
+    UNIT_SEX_M   = 1,
+    UNIT_SEX_NUM = 2
+};
+
 enum SOTA_SETTINGS {
     DEFAULT_RESOLUTION_X                    = 1600,
     DEFAULT_RESOLUTION_Y                    =  800,

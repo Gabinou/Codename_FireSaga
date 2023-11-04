@@ -15,26 +15,28 @@
 /* -- Names -- */
 // TODO migrate names to s8
 // TODO make names not global
-extern char         **mapFilenames;
+extern s8 sexNames[UNIT_SEX_NUM];
+extern char         **statNames;
+extern char         **armyNames;
+extern char         **classNames;
 extern char         **sceneTimes;
 extern char         **unitStates;
-extern char         **jsonElementnames;
 extern char         **campjobNames;
-extern char         **menuOptionnames;
+extern char         **mapFilenames;
+extern char         **support_types;
 extern char         **gameStatenames;
+extern char         **menuOptionnames;
+extern char         **jsonElementnames;
+extern char         **global_unitNames;  /* global_unitNames[order] = unit_name */
+extern char         **global_itemNames;
+extern char         **global_tilenames;
 extern char         **gamesubStatenames;
 
-extern char         **global_unitNames;     /* global_unitNames[order] = unit_name      */
-extern char         **global_itemNames;
+// TODO: change into simple array + simple function?
+//      -> simpler #include
+extern struct dtab   *global_itemOrders; /* DTAB_GET(global_unitOrders, id) = order */
+extern struct dtab   *global_unitOrders; /* DTAB_GET(global_unitOrders, id) = order */
 
-extern struct dtab   *global_itemOrders;    /* DTAB_GET(global_unitOrders, id) = order  */
-extern struct dtab   *global_unitOrders;    /* DTAB_GET(global_unitOrders, id) = order  */
-extern char         **statNames;
-extern char         **sexNames;
-extern char         **classNames;
-extern char         **global_tilenames;
-extern char         **support_types;
-extern char         **armyNames;
 extern i32           *tilesID_arr;
 extern i32           *global_tilesID;
 extern u16           *class_equippables;
@@ -49,7 +51,7 @@ void Names_jsonElementnames();
 void Names_gamesubStatenames();
 
 /* - units - */
-void   Names_sexNames();
+// void   Names_sexNames();
 void   Names_armyNames();
 void   Names_unitNames();
 void   Names_statNames();
@@ -69,8 +71,8 @@ void Names_tileNames();
 void Names_wpnType_Free(char **types);
 char **Names_wpnType(   u16 typecode);
 char **Names_unitTypes( u16 typecode);
-char **Names_skillNames(u64  skillscode);
-char **Names_wpnEffects(u64  effect);
+char **Names_skillNames(u64 skillscode);
+char **Names_wpnEffects(u64 effect);
 
 /* -- API -- */
 void Names_Free();
