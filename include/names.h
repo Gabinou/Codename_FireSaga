@@ -67,8 +67,8 @@ void Names_tileNames();
 /* --- X macros generators --- */
 void Names_wpnType_Free(char **types);
 char **Names_wpnType(   u16 typecode);
-char **Names_skillNames(u64 skillscode);
 s8 *Names_unitTypes( u16 typecode);
+s8 *Names_skillNames(u64 skillscode);
 s8 *Names_wpnEffects(u64 effect);
 
 /* -- API -- */

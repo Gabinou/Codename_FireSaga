@@ -195,6 +195,9 @@ void Unit_Free(struct Unit *unit) {
         unit->grown_stats = NULL;
     }
     if (unit->skill_names != NULL) {
+        for (int i = 0; i < DARR_NUM(unit->skill_names); i++) {
+            s8_free(&unit->skill_names[i]);
+        }
         DARR_FREE(unit->skill_names);
         unit->skill_names = NULL;
     }
@@ -292,7 +295,7 @@ void Unit_setSkills(struct Unit *unit, u64 skills) {
     unit->skill_names = Names_skillNames(unit->skills);
     SDL_Log("Unit new skills: %lx \n", unit->skills);
     for (u8 i = 0; DARR_LEN(unit->skill_names); i++)
-        SDL_Log("Skill name: %s", unit->skill_names[i]);
+        SDL_Log("Skill name: %s", unit->skill_names[i].data);
 }
 
 void Unit_setClassind(struct Unit *unit, i8 class_index) {

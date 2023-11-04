@@ -159,14 +159,12 @@ void Names_classNames() {
 #undef  REGISTER_ENUM
 }
 
+
+s8 *Names_skillNames(uint64_t in_skillscode) {
+    s8 *skill_names = DARR_INIT(skill_names, s8, UNIT_SKILL_END);
 #define REGISTER_ENUM(x) if flagsum_isIn(in_skillscode, UNIT_SKILL_##x) {\
-        temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
-        memcpy(temp_str, #x, sizeof(#x));\
-        DARR_PUT(skill_names, nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')),' ', 2));\
+        DARR_PUT(skill_names, s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2));\
     }
-char **Names_skillNames(uint64_t in_skillscode) {
-    char **skill_names = DARR_INIT(skill_names, char *, UNIT_SKILL_END);
-    char *temp_str = NULL;
 #include "names/skills_passive.h"
 #include "names/skills_active.h"
     return (skill_names);

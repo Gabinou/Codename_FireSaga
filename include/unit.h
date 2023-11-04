@@ -114,7 +114,7 @@ typedef struct Unit {
     bool hands   [UNIT_HANDS_NUM];      /* Does unit have hands?     */
     bool equipped[UNIT_HANDS_NUM];      /* Is Item in hand equipped? */
 
-    char **skill_names;
+    s8 *skill_names;
 
     struct dtab *weapons_dtab;
     struct dtab *items_dtab;

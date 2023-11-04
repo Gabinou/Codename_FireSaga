@@ -374,11 +374,11 @@ void Item_writeJSON(const void *restrict input, cJSON *restrict jitem) {
     cJSON *jpassive = NULL;
     jpassive = cJSON_CreateNumber(item->passive);
     cJSON_AddItemToObject(jpassives, "id", jpassive);
-    char **effects = Names_wpnEffects(item->passive);
+    s8 *effects = Names_wpnEffects(item->passive);
     for (i16 i = 0; i < DARR_NUM(effects); i++) {
-        jpassive = cJSON_CreateString(effects[i]);
+        jpassive = cJSON_CreateString(effects[i].data);
         cJSON_AddItemToObject(jpassives, "Effect", jpassive);
-        free(effects[i]);
+        s8_free(&effects[i]);
     }
     DARR_FREE(effects);
 
