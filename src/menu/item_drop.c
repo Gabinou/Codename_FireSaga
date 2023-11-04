@@ -131,26 +131,28 @@ void ItemDropMenu_Update(struct  ItemDropMenu  *idm, struct n9Patch *n9patch,
     struct WpnorItem wpn_or_item = Unit_WpnorItem(idm->unit, idm->item_todrop);
 
     /* Item name */
-    char *name = NULL;
+    s8 name = s8_mut("");
     size_t len;
     if (wpn_or_item.dtab == SOTA_DTAB_WEAPONS) {
         SDL_assert(wpn_or_item.item == NULL);
-        len     = strlen(wpn_or_item.wpn->item->name);
-        name    = calloc(len + 1, sizeof(*name));
-        memcpy(name, wpn_or_item.wpn->item->name, len);
+        // len     = strlen(wpn_or_item.wpn->item->name);
+        // name    = calloc(len + 1, sizeof(*name));
+        // memcpy(name, wpn_or_item.wpn->item->name, len);
+        name = s8cat(name, wpn_or_item.wpn->item->name);
     } else {
         SDL_assert(wpn_or_item.wpn == NULL);
-        len     = strlen(wpn_or_item.item->name);
-        name    = calloc(len + 1, sizeof(*name));
-        memcpy(name, wpn_or_item.item->name, len);
+        // len     = strlen(wpn_or_item.item->name);
+        // name    = calloc(len + 1, sizeof(*name));
+        // memcpy(name, wpn_or_item.item->name, len);
+        name = s8cat(name, wpn_or_item.item->name);
     }
-    name = nstr_toUpper(name);
+    name = s8_toUpper(name);
 
     /* --- Compute menu width dynamically --- */
     size_t len_done = 8;
     char  *question  = calloc((len + len_done), sizeof(*question));
     memcpy(question,           "DROP \'", 6);
-    memcpy(question + 6,       name,    len);
+    memcpy(question + 6,       name.data,    len);
     memcpy(question + 6 + len, "\'?",     2);
     idm->item_width         = PixelFont_Width(idm->pixelnours_big, question, (len + len_done));
     int new_size_x          = IDM_LEFT_OF_TEXT + idm->item_width + IDM_RIGHT_OF_TEXT;
@@ -190,7 +192,7 @@ void ItemDropMenu_Update(struct  ItemDropMenu  *idm, struct n9Patch *n9patch,
     PixelFont_Write(idm->pixelnours_big, renderer, question, (len + len_done), IDM_ITEM_NAME_X,
                     IDM_ITEM_NAME_Y);
     free(question);
-    free(name);
+    s8_free(&name);
 
     /* - Yes - */
     int yes_w    = PixelFont_Width(idm->pixelnours_big, "Yes", 3);

@@ -57,7 +57,7 @@ typedef struct Item {
     use_function_t active; /* NULL if not usable */
 
     // TODO: Change to s8
-    char name[DEFAULT_BUFFER_SIZE];
+    s8 name;
     char description[DEFAULT_BUFFER_SIZE * 2];
 
     bool canSell     : 1;

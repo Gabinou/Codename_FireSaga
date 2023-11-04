@@ -337,7 +337,7 @@ void Item_writeJSON(const void *restrict input, cJSON *restrict jitem) {
     const struct Item *item = input;
     SDL_assert(jitem != NULL);
     cJSON *jid        = cJSON_CreateNumber(item->id);
-    cJSON *jname      = cJSON_CreateString(item->name);
+    cJSON *jname      = cJSON_CreateString(item->name.data);
     cJSON *jbonus     = cJSON_CreateObject();
     cJSON *jmalus     = cJSON_CreateObject();
     cJSON *jcanSell   = cJSON_CreateBool(item->canSell);
@@ -439,8 +439,6 @@ void Item_readJSON(void *input, const cJSON *jitem) {
     cJSON *jtypeid      = cJSON_GetObjectItemCaseSensitive(jtypes,   "id");
     item->id            = cJSON_GetNumberValue(jid); /* returns 0 if junit is NULL */
 
-    /* - Name - */
-    memcpy(item->name, cJSON_GetStringValue(jname), strlen(cJSON_GetStringValue(jname)));
 
     /* - Users - */
     cJSON *jusers_ids = cJSON_GetObjectItem(jusers, "id");
@@ -464,8 +462,11 @@ void Item_readJSON(void *input, const cJSON *jitem) {
     SDL_assert(global_itemNames             != NULL);
     SDL_assert(global_itemNames[item_order] != NULL);
 
-    size_t len = strlen(global_itemNames[item_order]);
-    memcpy(item->name, global_itemNames[item_order], len);
+    /* - Name - */
+    // item->name = s8_mut(cJSON_GetStringValue(jname));
+    // size_t len = strlen(global_itemNames[item_order]);
+    // memcpy(item->name, global_itemNames[item_order], len);
+    item->name = s8_mut(global_itemNames[item_order]);
 
     /* - Description - */
     char *string = cJSON_GetStringValue(jdescription);

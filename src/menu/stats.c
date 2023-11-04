@@ -964,10 +964,10 @@ void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *renderer, 
     SDL_assert(unit->weapons_dtab != NULL);
     struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, item->id);
     memset(item_name, 0, DEFAULT_BUFFER_SIZE);
-    SDL_assert(weapon             != NULL);
-    SDL_assert(weapon->item       != NULL);
-    SDL_assert(weapon->item->name != NULL);
-    memcpy(item_name, weapon->item->name, strlen(weapon->item->name));
+    SDL_assert(weapon                   != NULL);
+    SDL_assert(weapon->item             != NULL);
+    SDL_assert(weapon->item->name.data  != NULL);
+    memcpy(item_name, weapon->item->name.data, weapon->item->name.num);
 
     /* - uses left - */
     SDL_assert(weapon->item->stats.uses > 0);

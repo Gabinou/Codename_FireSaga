@@ -394,14 +394,14 @@ void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9p
             SDL_assert(lsm->unit->weapons_dtab != NULL);
             struct Weapon *weapon = DTAB_GET(lsm->unit->weapons_dtab, item->id);
             SDL_assert(weapon != NULL);
-            LoadoutSelectMenu_Name_Alloc(lsm, weapon->item->name);
-            memcpy(lsm->item_name, weapon->item->name, strlen(weapon->item->name));
+            LoadoutSelectMenu_Name_Alloc(lsm, weapon->item->name.data);
+            memcpy(lsm->item_name, weapon->item->name.data, weapon->item->name.num);
         } else if (Item_ID_isValid(item->id)) {
             /* Pure item */
             Item_Load(lsm->unit->items_dtab, item->id);
             struct Item *pure_item = DTAB_GET(lsm->unit->items_dtab, item->id);
-            LoadoutSelectMenu_Name_Alloc(lsm, pure_item->name);
-            memcpy(lsm->item_name, pure_item->name, strlen(pure_item->name));
+            LoadoutSelectMenu_Name_Alloc(lsm, pure_item->name.data);
+            memcpy(lsm->item_name, pure_item->name.data, pure_item->name.num);
         } else {
             SDL_Log("LoadoutSelectMenu: Neither a valid item nor weapon");
             exit(ERROR_Generic);
@@ -501,8 +501,8 @@ void _LoadoutSelectMenu_Draw_Highlight(struct LoadoutSelectMenu  *lsm, SDL_Rende
     SDL_assert(lsm->unit->weapons_dtab != NULL);
     struct Inventory_item *item   = Unit_Item_Strong(lsm->unit, UNIT_HAND_STRONG);
     struct Weapon         *weapon = DTAB_GET(lsm->unit->weapons_dtab, item->id);
-    char *name = weapon->item->name;
-    srcrect.w  = PixelFont_Width(lsm->pixelnours, nstr_toUpper(name), strlen(name));
+    s8 name = weapon->item->name;
+    srcrect.w  = PixelFont_Width(lsm->pixelnours, s8_toUpper(name).data, name.num);
     int uses_left = weapon->item->stats.uses - item->used;
     char numbuff[2];
     stbsp_sprintf(numbuff, "%d", uses_left);
@@ -715,8 +715,8 @@ void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm, SDL_Renderer 
                         item_dura_x_offset,  item_dura_y_offset);
 
         /* - Write weapon name - */
-        LoadoutSelectMenu_Name_Alloc(lsm, weapon->item->name);
-        memcpy(lsm->item_name, weapon->item->name, strlen(weapon->item->name));
+        LoadoutSelectMenu_Name_Alloc(lsm, weapon->item->name.data);
+        memcpy(lsm->item_name, weapon->item->name.data, weapon->item->name.num);
 
         int name_w = PixelFont_Width(lsm->pixelnours, nstr_toUpper(lsm->item_name), strlen(lsm->item_name));
 

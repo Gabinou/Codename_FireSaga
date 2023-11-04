@@ -616,17 +616,15 @@ void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls, SDL_Ren
         if (wpn == NULL)
             break;
 
-        size_t len = strlen(wpn->item->name);
-        char *buffer = calloc(len + 1, sizeof(char));
-        memcpy(buffer, wpn->item->name, len);
-        buffer = nstr_toUpper(buffer);
+        s8 buffer   = s8_mut(wpn->item->name.data);
+        buffer      = s8_toUpper(buffer);
 
         if (pls->twoHanding) {
-            width = PixelFont_Width(pls->pixelnours, buffer, len);
+            width = PixelFont_Width(pls->pixelnours, buffer.data, buffer.num);
             x = PLS_HEADER_X - width / 2 + PLS_HEADER_W / 2;
         }
-        PixelFont_Write(pls->pixelnours, renderer, buffer, len, x, y);
-        free(buffer);
+        PixelFont_Write(pls->pixelnours, renderer, buffer.data, buffer.num, x, y);
+        s8_free(&buffer);
     } while (false);
 
     /* Right hand */
@@ -653,15 +651,14 @@ void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls, SDL_Ren
         if (wpn == NULL)
             break;
 
-        size_t len = strlen(wpn->item->name);
-        char *buffer = calloc(len + 1, sizeof(char));
-        memcpy(buffer, wpn->item->name, len);
-        buffer = nstr_toUpper(buffer);
-        width = PixelFont_Width(pls->pixelnours, buffer, len);
+        s8 buffer   = s8_mut(wpn->item->name.data);
+        buffer      = s8_toUpper(buffer);
 
-        PixelFont_Write(pls->pixelnours, renderer, buffer, len, x - width, y);
+        width = PixelFont_Width(pls->pixelnours, buffer.data, buffer.num);
 
-        free(buffer);
+        PixelFont_Write(pls->pixelnours, renderer, buffer.data, buffer.num, x - width, y);
+
+        s8_free(&buffer);
     } while (false);
 }
 
