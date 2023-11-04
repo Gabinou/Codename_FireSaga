@@ -16,7 +16,7 @@
 // TODO migrate names to s8
 // TODO make names not global
 extern s8 sexNames[UNIT_SEX_NUM];
-extern char         **statNames;
+extern s8 statNames[UNIT_STAT_NUM];
 extern char         **armyNames;
 extern char         **classNames;
 extern char         **sceneTimes;
@@ -51,7 +51,6 @@ void Names_jsonElementnames();
 void Names_gamesubStatenames();
 
 /* - units - */
-// void   Names_sexNames();
 void   Names_armyNames();
 void   Names_unitNames();
 void   Names_statNames();

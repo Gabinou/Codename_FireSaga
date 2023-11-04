@@ -559,6 +559,7 @@ enum UNIT_ARMIES {
     ARMY_START = 0,
 #include "names/armies.h"
     ARMY_END,
+    ARMY_NUM = ARMY_END,
 };
 #undef REGISTER_ENUM
 

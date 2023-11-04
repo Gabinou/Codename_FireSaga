@@ -3,7 +3,7 @@
 
 s8 sexNames[UNIT_SEX_NUM] = {
     s8_literal("F"),
-    s8_literal("M"),
+    s8_literal("M")
 };
 
 #define REGISTER_ENUM(x) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
@@ -49,25 +49,14 @@ void Names_unitNames() {
 }
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x)  temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
-    memcpy(temp_str, #x, sizeof(#x));\
-    statNames[ITEM_STAT_##x] = nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2);
 
-char **statNames = NULL;
+s8 statNames[UNIT_STAT_NUM] = {0};
 void Names_statNames() {
-    char *temp_str = NULL;
-    statNames = calloc(ITEM_STAT_END, sizeof(*statNames));
-    temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);
-    memcpy(temp_str, "", sizeof(""));
-    statNames[0] = temp_str;
+#define REGISTER_ENUM(x) statNames[ITEM_STAT_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);
 #include "names/items_stats.h"
+#undef REGISTER_ENUM
 }
 
-#undef REGISTER_ENUM
-// void Names_sexNames() {
-//     sexNames[UNIT_SEX_F] = s8_literal("F");
-//     sexNames[UNIT_SEX_M] = s8_literal("M");
-// }
 
 #define REGISTER_ENUM(x) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
     memcpy(temp_str, #x, sizeof(#x));\
@@ -318,7 +307,6 @@ void Names_Load_All() {
     Names_tileNames();
     Names_campjobNames();
     Names_statNames();
-    // Names_sexNames();
     Menu_MakeOptionnames();
     Names_unitStates();
     Names_jsonElementnames();
@@ -470,15 +458,9 @@ void Names_Free() {
 
     SDL_Log("statNames");
     for (size_t i = 0; i < ITEM_STAT_END; i++) {
-        if (statNames[i] != NULL) {
-            SDL_free(statNames[i]);
-            statNames[i] = NULL;
-        }
+        s8_free(&statNames[i]);
     }
-    if (statNames != NULL) {
-        SDL_free(statNames);
-        statNames = NULL;
-    }
+
     SDL_Log("unitStates");
     for (size_t i = 0; i < UNIT_STATUS_END; i++) {
         if (unitStates[i] != NULL) {
@@ -616,7 +598,7 @@ void Names_Print_All(const char *foldername) {
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = ITEM_STAT_START; i < (ITEM_STAT_END - 1); i++)
-        fprintf(fp, "%d %s \n", i, statNames[i]);
+        fprintf(fp, "%d %s \n", i, statNames[i].data);
     fclose(fp);
 
     /* --- Sex names --- */
