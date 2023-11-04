@@ -59,17 +59,13 @@ void Names_armyNames() {
 #undef REGISTER_ENUM
 }
 
-#define REGISTER_ENUM(x) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
-    memcpy(temp_str, #x, sizeof(#x));\
-    unitStates[UNIT_STATUS_##x] =  nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2);
 
-char **unitStates = NULL;
-void Names_unitStates() {
-    char *temp_str = NULL;
-    unitStates = calloc(UNIT_STATUS_END, sizeof(*unitStates));
+s8 unitStatuses[UNIT_STATUS_END];
+void Names_unitStatuses() {
+#define REGISTER_ENUM(x) unitStatuses[UNIT_STATUS_##x] =  s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);
 #include "names/units_statuses.h"
-}
 #undef REGISTER_ENUM
+}
 
 char **global_itemNames         = NULL;
 struct dtab *global_itemOrders  = NULL;
@@ -294,7 +290,7 @@ void Names_Load_All() {
     Names_campjobNames();
     Names_statNames();
     Menu_MakeOptionnames();
-    Names_unitStates();
+    Names_unitStatuses();
     Names_jsonElementnames();
     Names_gameStatenames();
     Names_gamesubStatenames();
@@ -435,17 +431,11 @@ void Names_Free() {
         s8_free(&statNames[i]);
     }
 
-    SDL_Log("unitStates");
+    SDL_Log("unitStatuses");
     for (size_t i = 0; i < UNIT_STATUS_END; i++) {
-        if (unitStates[i] != NULL) {
-            SDL_free(unitStates[i]);
-            unitStates[i] = NULL;
-        }
+        s8_free(&unitStatuses[i]);
     }
-    if (unitStates != NULL) {
-        SDL_free(unitStates);
-        unitStates = NULL;
-    }
+
     SDL_Log("classNames");
     for (size_t i = 0; i < UNIT_CLASS_END; i++) {
         s8_free(&classNames[i]);
@@ -472,12 +462,12 @@ void Names_Print_All(const char *foldername) {
 
     /* --- Stat names --- */
     filename = s8_mut(foldername);
-    filename = s8cat(filename, s8_literal("Utilities_unitStates.txt"));
+    filename = s8cat(filename, s8_literal("Utilities_unitStatuses.txt"));
     SDL_Log("filename %s", filename.data);
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = UNIT_STATUS_EXP_START; i < (UNIT_STATUS_EXP_END - 1); i++)
-        fprintf(fp, "%d %s \n", i, unitStates[i]);
+        fprintf(fp, "%d %s \n", i, unitStatuses[i].data);
     fclose(fp);
     s8_free(&filename);
 

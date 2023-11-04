@@ -20,7 +20,7 @@ extern s8 statNames[UNIT_STAT_NUM];
 extern s8 armyNames[ARMY_NUM];
 extern s8 classNames[UNIT_CLASS_NUM];
 extern s8 sceneTimes[SCENE_TIME_NUM];
-extern char         **unitStates;
+extern s8 unitStatuses[UNIT_STATUS_END];
 extern char         **campjobNames;
 extern char         **mapFilenames;
 extern char         **support_types;
@@ -55,7 +55,7 @@ void   Names_armyNames();
 void   Names_unitNames();
 void   Names_statNames();
 void   Names_classNames();
-void   Names_unitStates();
+void   Names_unitStatuses();
 void   Names_class_equippables();
 char **Names_unitstateNames(u32 statecode);
 
