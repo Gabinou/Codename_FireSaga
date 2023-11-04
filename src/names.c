@@ -524,121 +524,144 @@ void Names_Free() {
 
 void Names_Print_All(const char *foldername) {
     SDL_Log("foldername %s", foldername);
-    char filename[DEFAULT_BUFFER_SIZE] = "";
-    char buffer[DEFAULT_BUFFER_SIZE] = "";
     FILE *fp = NULL;
-    strcat(filename, foldername);
-    strcat(filename, "Utilities_unitArmies.txt");
-    SDL_Log("filename %s", filename);
-    fp = fopen(filename, "w+");
+    /* --- Army names --- */
+    s8 filename = s8_mut(foldername);
+    filename = s8cat(filename, s8_literal("Utilities_unitArmies.txt"));
+    SDL_Log("filename %s", filename.data);
+    fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = ARMY_START; i < (ARMY_END - 1); i++)
         fprintf(fp, "%d %s \n", i, armyNames[i]);
     fclose(fp);
-    memset(filename, 0, sizeof(filename));
-    strcat(filename, foldername);
-    strcat(filename, "Utilities_unitStates.txt");
-    SDL_Log("filename %s", filename);
-    fp = fopen(filename, "w+");
+    s8_free(&filename);
+
+    /* --- Stat names --- */
+    filename = s8_mut(foldername);
+    filename = s8cat(filename, s8_literal("Utilities_unitStates.txt"));
+    SDL_Log("filename %s", filename.data);
+    fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = UNIT_STATUS_EXP_START; i < (UNIT_STATUS_EXP_END - 1); i++)
         fprintf(fp, "%d %s \n", i, unitStates[i]);
     fclose(fp);
-    memset(filename, 0, sizeof(filename));
-    strcat(filename, foldername);
-    strcat(filename, "Utilities_jsonElementnames.txt");
-    SDL_Log("filename %s", filename);
-    fp = fopen(filename, "w+");
+    s8_free(&filename);
+
+    /* --- Json element names --- */
+    filename = s8_mut(foldername);
+    filename = s8cat(filename, s8_literal("Utilities_jsonElementnames.txt"));
+    SDL_Log("filename %s", filename.data);
+    fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = JSON_START; i < (JSON_END - 1); i++)
         fprintf(fp, "%d %s \n", i, jsonElementnames[i]);
     fclose(fp);
-    memset(filename, 0, sizeof(filename));
-    strcat(filename, foldername);
-    strcat(filename, "Utilities_campjobNames.txt");
-    SDL_Log("filename %s", filename);
-    fp = fopen(filename, "w+");
+    s8_free(&filename);
+
+    /* --- Camp job names --- */
+    filename = s8_mut(foldername);
+    filename = s8cat(filename, s8_literal("Utilities_campjobNames.txt"));
+    SDL_Log("filename %s", filename.data);
+    fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = CAMPJOB_START; i < (CAMPJOB_END - 1); i++)
         fprintf(fp, "%d %s \n", i, campjobNames[i]);
     fclose(fp);
-    memset(filename, 0, sizeof(filename));
-    strcat(filename, foldername);
-    strcat(filename, "Utilities_gameStatenames.txt");
-    SDL_Log("filename %s", filename);
-    fp = fopen(filename, "w+");
+    s8_free(&filename);
+
+    /* --- Game State names --- */
+    filename = s8_mut(foldername);
+    filename = s8cat(filename, s8_literal("Utilities_gameStatenames.txt"));
+    SDL_Log("filename %s", filename.data);
+    fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = GAME_STATE_START; i < (GAME_STATE_END - 1); i++)
         fprintf(fp, "%d %s \n", i, gameStatenames[i]);
     fclose(fp);
-    memset(filename, 0, sizeof(filename));
-    strcat(filename, foldername);
-    strcat(filename, "Utilities_menuOptionnames.txt");
-    SDL_Log("filename %s", filename);
-    fp = fopen(filename, "w+");
+    s8_free(&filename);
+
+    /* --- Menu Option names --- */
+    filename = s8_mut(foldername);
+    filename = s8cat(filename, s8_literal("Utilities_menuOptionnames.txt"));
+    SDL_Log("filename %s", filename.data);
+    fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = MENU_OPTION_START; i < MENU_OPTION_END; i++)
         fprintf(fp, "%d %s \n", i, menuOptionnames[i]);
     fclose(fp);
-    memset(filename, 0, sizeof(filename));
-    strcat(filename, foldername);
-    strcat(filename, "Utilities_gamesubStatenames.txt");
-    SDL_Log("filename %s", filename);
-    fp = fopen(filename, "w+");
+    s8_free(&filename);
+
+    /* --- Game substate names --- */
+    filename = s8_mut(foldername);
+    filename = s8cat(filename, s8_literal("Utilities_gamesubStatenames.txt"));
+    SDL_Log("filename %s", filename.data);
+    fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = GAME_SUBSTATE_START; i < (GAME_SUBSTATE_END - 1); i++)
         fprintf(fp, "%d %s \n", i, gamesubStatenames[i]);
     fclose(fp);
-    memset(filename, 0, sizeof(filename));
-    strcat(filename, foldername);
-    strcat(filename, "Utilities_unitNames.txt");
-    SDL_Log("filename %s", filename);
-    fp = fopen(filename, "w+");
+    s8_free(&filename);
+
+    /* --- Unit names --- */
+    filename = s8_mut(foldername);
+    filename = s8cat(filename, s8_literal("Utilities_unitNames.txt"));
+    SDL_Log("filename %s", filename.data);
+    fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (size_t i = 0; i < DARR_NUM(global_unitNames); i++)
         fprintf(fp, "%zu %s \n", i, global_unitNames[i]);
     fclose(fp);
-    memset(filename, 0, sizeof(filename));
-    strcat(filename, foldername);
-    strcat(filename, "Utilities_itemNames.txt");
-    SDL_Log("filename %s", filename);
-    fp = fopen(filename, "w+");
+    s8_free(&filename);
+
+    /* --- Item names --- */
+    filename = s8_mut(foldername);
+    filename = s8cat(filename, s8_literal("Utilities_itemNames.txt"));
+    SDL_Log("filename %s", filename.data);
+    fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (size_t i = 0; i < DARR_NUM(global_itemNames); i++)
         fprintf(fp, "%zu %s \n", i, global_itemNames[i]);
     fclose(fp);
-    memset(filename, 0, sizeof(filename));
-    strcat(filename, foldername);
-    strcat(filename, "Utilities_statNames.txt");
-    SDL_Log("filename %s", filename);
-    fp = fopen(filename, "w+");
+
+    /* --- State names --- */
+    s8_free(&filename);
+    filename = s8_mut(foldername);
+    filename = s8cat(filename, s8_literal("Utilities_statNames.txt"));
+    SDL_Log("filename %s", filename.data);
+    fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = ITEM_STAT_START; i < (ITEM_STAT_END - 1); i++)
         fprintf(fp, "%d %s \n", i, statNames[i]);
     fclose(fp);
-    memset(filename, 0, sizeof(filename));
-    strcat(filename, foldername);
-    strcat(filename, "utilitiessexNames.txt");
-    SDL_Log("filename %s", filename);
-    fp = fopen(filename, "w+");
+
+    /* --- Sex names --- */
+    s8_free(&filename);
+    filename = s8_mut(foldername);
+    filename = s8cat(filename, s8_literal("utilitiessexNames.txt"));
+    SDL_Log("filename %s", filename.data);
+    fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = UNIT_SEX_F; i < (UNIT_SEX_M + 1); i++)
         fprintf(fp, "%d %s \n", i, sexNames[i]);
     fclose(fp);
-    memset(filename, 0, sizeof(filename));
-    strcat(filename, foldername);
-    strcat(filename, "Utilities_classNames.txt");
-    SDL_Log("filename %s", filename);
-    fp = fopen(filename, "w+");
+
+    /* --- Class names --- */
+    s8_free(&filename);
+    filename = s8_mut(foldername);
+    filename = s8cat(filename, s8_literal("Utilities_classNames.txt"));
+    SDL_Log("filename %s", filename.data);
+    fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = UNIT_CLASS_START; i < UNIT_CLASS_END; i++)
         fprintf(fp, "%d %s \n", i, classNames[i]);
     fclose(fp);
-    memset(filename, 0, sizeof(filename));
-    strcat(filename, foldername);
-    strcat(filename, "Utilities_tilenames.txt");
-    SDL_Log("filename %s", filename);
-    fp = fopen(filename, "w+");
+    s8_free(&filename);
+
+    /* --- Tile names --- */
+    filename = s8_mut(foldername);
+    filename = s8cat(filename, s8_literal("Utilities_tilenames.txt"));
+    SDL_Log("filename %s", filename.data);
+    fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     SDL_assert(global_tilenames != NULL);
     s8 s8null = s8_literal("");
@@ -648,5 +671,5 @@ void Names_Print_All(const char *foldername) {
             fprintf(fp, "%d %s \n", i, global_tilenames[i]);
     }
     fclose(fp);
-    memset(filename, 0, sizeof(filename));
+    s8_free(&filename);
 }

@@ -72,6 +72,7 @@ char **Names_wpnEffects(u64  effect);
 /* -- API -- */
 void Names_Free();
 void Names_Load_All();
+void Names_Print(s8 filename);
 void Names_Print_All(const char *filename);
 
 #endif /* NAMES_H */
