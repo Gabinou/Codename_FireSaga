@@ -22,7 +22,7 @@ void Game_Map_Load(struct Game *sota, const i16 in_map_index) {
 
     /* --- Reading map from json files --- */
     // Map_dArrays_Init(sota->map, &sota->settings);
-    jsonio_readJSON(mapFilenames[in_map_index], sota->map);
+    jsonio_readJSON(mapFilenames[in_map_index].data, sota->map);
     // read_json sets the row_len and col_len necessary for dArrays_Init
     // Game_Tilesets_Dump(sota);
 }

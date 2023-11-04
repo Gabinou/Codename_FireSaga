@@ -22,7 +22,7 @@ extern s8 classNames[UNIT_CLASS_NUM];
 extern s8 sceneTimes[SCENE_TIME_NUM];
 extern s8 unitStatuses[UNIT_STATUS_END];
 extern s8 campjobNames[CAMPJOB_END];
-extern char         **mapFilenames;
+extern s8 mapFilenames[CHAPTER_END];
 extern char         **support_types;
 extern char         **gameStatenames;
 extern char         **menuOptionnames;

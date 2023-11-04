@@ -156,19 +156,13 @@ void Names_gameStatenames() {
 }
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y, z) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
-    memcpy(temp_str, "\0", 1);\
-    strcat(temp_str, "assets"PHYSFS_SEPARATOR"Maps"PHYSFS_SEPARATOR);\
-    strcat(temp_str, #y);\
-    mapFilenames[CHAPTER_##x] =  temp_str;
 
-char **mapFilenames = NULL;
+s8 mapFilenames[CHAPTER_END] = {0};
 void Names_mapFilenames() {
-    char *temp_str = NULL;
-    mapFilenames = calloc(CHAPTER_END, sizeof(*mapFilenames));
+#define REGISTER_ENUM(x, y, z) mapFilenames[CHAPTER_##x] = s8cat(s8_mut("assets"PHYSFS_SEPARATOR"Maps"PHYSFS_SEPARATOR), s8_literal(#y));
 #include "names/chapters.h"
-}
 #undef REGISTER_ENUM
+}
 
 
 s8 classNames[UNIT_CLASS_NUM] = {0};
@@ -338,14 +332,7 @@ void Names_Free() {
     }
     SDL_Log("mapFilenames");
     for (size_t i = 0; i < CHAPTER_END; i++) {
-        if (mapFilenames[i] != NULL) {
-            SDL_free(mapFilenames[i]);
-            mapFilenames[i] = NULL;
-        }
-    }
-    if (mapFilenames != NULL) {
-        SDL_free(mapFilenames);
-        mapFilenames = NULL;
+        s8_free(&mapFilenames[i]);
     }
     SDL_Log("jsonElementnames");
     for (size_t i = 0; i < JSON_END; i++) {
