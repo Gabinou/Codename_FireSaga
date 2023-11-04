@@ -6,19 +6,13 @@ s8 sexNames[UNIT_SEX_NUM] = {
     s8_literal("M")
 };
 
-#define REGISTER_ENUM(x) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
-    memcpy(temp_str, #x, sizeof(#x));\
-    sceneTimes[SCENE_TIME_##x] = nstr_camelCase(nstr_toLower(temp_str), '_', 2);\
-    strcat(sceneTimes[SCENE_TIME_##x], "_");
-char **sceneTimes;
+
+s8 sceneTimes[SCENE_TIME_NUM] = {0};
 void Names_sceneTimes() {
-    sceneTimes = calloc(SCENE_TIME_NUM, sizeof(*sceneTimes));
-    char *temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);
-    memcpy(temp_str, "", sizeof(""));
-    sceneTimes[0] = temp_str;
+#define REGISTER_ENUM(x) sceneTimes[SCENE_TIME_##x] = s8cat(s8_camelCase(s8_toLower(s8_mut(#x)), '_', 2), s8_literal("_"));
 #include "names/scene_time.h"
-}
 #undef REGISTER_ENUM
+}
 
 char **global_unitNames = NULL;
 struct dtab *global_unitOrders = NULL;
@@ -324,13 +318,8 @@ void Names_Free() {
         SDL_free(menuOptionnames);
     }
 
-    if (sceneTimes != NULL) {
-        for (size_t i = 0; i < SCENE_TIME_NUM; i++) {
-            SDL_free(sceneTimes[i]);
-            sceneTimes[i] = NULL;
-        }
-        SDL_free(sceneTimes);
-        sceneTimes = NULL;
+    for (size_t i = 0; i < SCENE_TIME_NUM; i++) {
+        s8_free(&sceneTimes[i]);
     }
 
     SDL_Log("gamesubStatenames");

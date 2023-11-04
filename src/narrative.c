@@ -149,7 +149,7 @@ struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_conds,
     char extension[8] = {0};
     s8 base         = s8_mut("scenes"DIR_SEPARATOR);
     base            = Filesystem_Scene_Chapter(base, chapter);
-    base            = s8cat(base, s8_var(sceneTimes[scene_time]));
+    base            = s8cat(base, s8_var(sceneTimes[scene_time].data));
 
     /* Reading scene files */
     struct cJSON *jscene, *jfile;
