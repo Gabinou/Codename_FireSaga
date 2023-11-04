@@ -25,7 +25,7 @@ extern s8 campjobNames[CAMPJOB_END];
 extern s8 mapFilenames[CHAPTER_END];
 extern s8 support_types[SUPPORT_TYPE_NUM];
 extern s8 gameStatenames[GAME_STATE_END];
-extern char         **menuOptionnames;
+extern s8 menuOptionnames[MENU_OPTION_END];
 extern char         **jsonElementnames;
 extern char         **global_unitNames;  /* global_unitNames[order] = unit_name */
 extern char         **global_itemNames;

@@ -120,16 +120,13 @@ void Names_campjobNames() {
 #undef REGISTER_ENUM
 }
 
-#define REGISTER_ENUM(x, y) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
-    memcpy(temp_str, #x, sizeof(#x));\
-    menuOptionnames[MENU_OPTION_##x] = nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2);
-char **menuOptionnames = NULL;
+
+s8 menuOptionnames[MENU_OPTION_END] = {0};
 void Menu_MakeOptionnames() {
-    char *temp_str = NULL;
-    menuOptionnames = calloc(MENU_OPTION_END, sizeof(*menuOptionnames));
+#define REGISTER_ENUM(x, y) menuOptionnames[MENU_OPTION_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);
 #include "names/menu/options.h"
-}
 #undef REGISTER_ENUM
+}
 
 #define REGISTER_ENUM(x, y) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
     memcpy(temp_str, #x, sizeof(#x));\
@@ -289,14 +286,8 @@ void Names_Load_All() {
 void Names_Free() {
 
     SDL_Log("menuOptionnames");
-    if (menuOptionnames != NULL) {
-        for (size_t i = MENU_OPTION_START + 1; i < MENU_OPTION_END; i++) {
-            if (menuOptionnames[i] != NULL) {
-                SDL_free(menuOptionnames[i]);
-                menuOptionnames[i] = NULL;
-            }
-        }
-        SDL_free(menuOptionnames);
+    for (size_t i = MENU_OPTION_START + 1; i < MENU_OPTION_END; i++) {
+        s8_free(&menuOptionnames[i]);
     }
 
     for (size_t i = 0; i < SCENE_TIME_NUM; i++) {
