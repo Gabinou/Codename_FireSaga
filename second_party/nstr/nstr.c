@@ -13,13 +13,13 @@ s8 s8_mut(char *string) {
 }
 
 void s8_free(s8 *str8) {
-    // str8 is a pointer to modify to member variables
+    /* str8 is a pointer to modify to member variables */
     if (str8->data != NULL) {
         free(str8->data);
         str8->data = NULL;
     }
 }
-
+// tiles/Door.json%
 b32 s8equal(s8 s1, s8 s2) {
     if(s1.num != s2.num)
         return(false);
@@ -33,10 +33,10 @@ b32 s8equal(s8 s1, s8 s2) {
 
 s8 s8cat(s8 s1, s8 s2) {
     /* Grow buffer */
-    while ((s1.num + s2.num) > s1.len) {
+    while ((s1.num + s2.num) >= (s1.len - 1)) {
         size_t newlen = s1.len * 2;
         s1.data = realloc(s1.data, newlen * sizeof(*s1.data));
-        memset(s1.data + s1.len, 0, newlen - s1.len);
+        memset(s1.data + s1.num, 0, newlen - s1.num);
         s1.len = newlen;
     }
     /* Concatenate */
@@ -50,10 +50,10 @@ s8 s8cpy(s8 s1, s8 s2) {
         printf("nstr Error! Input string s1 has 0 len\n");
         exit(1);
     }
-    while (s2.num > s1.len) {
+    while (s2.num >= (s1.len-1)) {
         size_t newlen = s1.len * 2;
         s1.data = realloc(s1.data, newlen * sizeof(*s1.data));
-        memset(s1.data + s1.len, 0, newlen - s1.len);
+        memset(s1.data + s1.num, 0, newlen - s1.num);
         s1.len = newlen;
     }
     /* Copy */
