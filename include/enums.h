@@ -534,6 +534,7 @@ enum UNIT_CLASSES {
     UNIT_CLASS_START = 0,
 #include "names/classes.h"
     UNIT_CLASS_END,
+    UNIT_CLASS_NUM = UNIT_CLASS_END,
 };
 #undef REGISTER_ENUM
 

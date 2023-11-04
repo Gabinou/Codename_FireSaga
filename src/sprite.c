@@ -253,9 +253,8 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit, SDL_Renderer
     SDL_Log("unit->id %lu",    unit->_id);
     SDL_Log("unit->name %s",   unit->name);
     SDL_Log("unit->class %ld", unit->class);
-    SDL_assert(classNames[unit->class] != NULL);
 
-    filename = s8cat(filename, s8_var(classNames[unit->class]));
+    filename = s8cat(filename, s8_var(classNames[unit->class].data));
     filename = s8cat(filename, s8_literal(".json"));
     SDL_Log("FILE %s", filename.data);
     SDL_assert(PHYSFS_exists(filename.data));
@@ -266,7 +265,7 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit, SDL_Renderer
 
     s8_free(&sprite->asset_name);
     sprite->asset_name = s8_mut(PATH_JOIN("..", "assets", "Map_Units")DIR_SEPARATOR);
-    sprite->asset_name = s8cat(sprite->asset_name, s8_var(classNames[unit->class]));
+    sprite->asset_name = s8cat(sprite->asset_name, s8_var(classNames[unit->class].data));
     sprite->asset_name = s8cat(sprite->asset_name, s8_literal(".png"));
 
     /* -- Loading Surface, creating Texture -- */

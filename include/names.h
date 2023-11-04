@@ -18,7 +18,7 @@
 extern s8 sexNames[UNIT_SEX_NUM];
 extern s8 statNames[UNIT_STAT_NUM];
 extern s8 armyNames[ARMY_NUM];
-extern char         **classNames;
+extern s8 classNames[UNIT_CLASS_NUM];
 extern char         **sceneTimes;
 extern char         **unitStates;
 extern char         **campjobNames;

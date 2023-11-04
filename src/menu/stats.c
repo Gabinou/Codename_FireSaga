@@ -540,7 +540,7 @@ void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *renderer) 
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, name, x, y);
 
     /* - class - */
-    char *class = nstr_toUpper(classNames[stats_menu->unit->class]);
+    char *class = nstr_toUpper(classNames[stats_menu->unit->class].data);
     x = CLASS_X_OFFSET, y = CLASS_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours, renderer, class, x, y);
 

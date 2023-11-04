@@ -1892,7 +1892,7 @@ void Unit_writeJSON(const void *input, cJSON *junit) {
     cJSON *jexp           = cJSON_CreateNumber(unit->base_exp);
     cJSON *jsex           = cJSON_CreateBool(unit->sex);
     cJSON *jname          = cJSON_CreateString(unit->name);
-    cJSON *jclass         = cJSON_CreateString(classNames[unit->class]);
+    cJSON *jclass         = cJSON_CreateString(classNames[unit->class].data);
     cJSON *jbase_exp      = cJSON_CreateNumber(unit->exp);
     cJSON *jcurrent_hp    = cJSON_CreateNumber(unit->current_hp);
     cJSON *jclass_index   = cJSON_CreateNumber(unit->class);

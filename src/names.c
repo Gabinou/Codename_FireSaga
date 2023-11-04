@@ -184,17 +184,13 @@ void Names_mapFilenames() {
 }
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(name, id, x, y, z) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
-    memcpy(temp_str, #name, sizeof(#name));\
-    classNames[UNIT_CLASS_##name] = nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')),' ', 2);
 
-char **classNames =  NULL;
+s8 classNames[UNIT_CLASS_NUM] = {0};
 void Names_classNames() {
-    char *temp_str = NULL;
-    classNames = calloc(UNIT_CLASS_END, sizeof(*classNames));
+#define REGISTER_ENUM(name, id, x, y, z) classNames[UNIT_CLASS_##name] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#name), '_', ' ')),' ', 2);
 #include "names/classes.h"
-}
 #undef  REGISTER_ENUM
+}
 
 #define REGISTER_ENUM(x) if flagsum_isIn(in_skillscode, UNIT_SKILL_##x) {\
         temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
@@ -463,14 +459,7 @@ void Names_Free() {
     }
     SDL_Log("classNames");
     for (size_t i = 0; i < UNIT_CLASS_END; i++) {
-        if (classNames[i] != NULL) {
-            SDL_free(classNames[i]);
-            classNames[i] = NULL;
-        }
-    }
-    if (classNames != NULL) {
-        SDL_free(classNames);
-        classNames = NULL;
+        s8_free(&classNames[i]);
     }
     if (class_equippables != NULL) {
         DARR_FREE(class_equippables);
