@@ -91,8 +91,8 @@ tnecs_entity_t Events_Controllers_Check(struct Game *sota, i32 code) {
 /* --- EVENT RECEIVERS --- */
 void Event_Emit(const char *emitter, u32 type, i32 code, void *data1, void *data2) {
     SDL_assert(code > 0);
-    char *event_name = event_names[code - event_Start];
-    SDL_Log("emitter -> %s, event -> %s", emitter, event_name);
+    s8 event_name = event_names[code - event_Start];
+    SDL_Log("emitter -> %s, event -> %s", emitter, event_name.data);
     SDL_assert(type != ((UINT32_MAX) - 1));
     SDL_Event event;
     event.type          = type;
@@ -1267,33 +1267,23 @@ extern void Events_Names_Free() {
         return;
 
     for (size_t i = 0; i < ((event_End - event_Start) + 1); i++) {
-        if (event_names[i] != NULL) {
-            free(event_names[i]);
-            event_names[i] = NULL;
-        }
+        s8_free(&event_names[i]);
     }
     free(event_names);
 }
 
-char **event_names = NULL;
+s8 *event_names = NULL;
 extern void Events_Names_Alloc() {
     SDL_Log("event_End event_Start %d %d", event_End, event_Start);
     SDL_Log("event_End - event_Start %d", event_End - event_Start);
-    event_names = (char **)calloc((event_End - event_Start) + 1, sizeof(*event_names));
+    event_names = calloc((event_End - event_Start) + 1, sizeof(*event_names));
     SDL_assert(event_names != NULL);
-    char *temp_str;
 
-#define REGISTER_ENUM(x, y) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
-    memcpy(temp_str, #x, sizeof(#x));\
-    temp_str[sizeof(#x)] = '\0';\
-    event_names[(event_##x - event_Start)] = nstr_toUpper(temp_str);
+#define REGISTER_ENUM(x, y)event_names[(event_##x - event_Start)] = s8_toUpper(s8_mut(#x));
 #include "names/events.h"
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
-    memcpy(temp_str, #x, sizeof(#x));\
-    temp_str[sizeof(#x)] = '\0';\
-    event_names[(event_Input_##x - event_Start)] = nstr_toUpper(temp_str);
+#define REGISTER_ENUM(x, y) event_names[(event_Input_##x - event_Start)] = s8_toUpper(s8_mut(#x));
 #include "names/input.h"
 #undef REGISTER_ENUM
 

@@ -66,7 +66,7 @@ extern u32 event_Start;
 extern u32 event_End;
 
 /* -- Constructor/Destructors -- */
-extern char **event_names;
+extern s8 *event_names;
 void Events_Names_Declare();
 void Events_Names_Alloc();
 void Events_Names_Free();
