@@ -1,5 +1,8 @@
 #include "RNG.h"
 
+/* --- FIRST AND ONLY DEFINITION OF GLOBALS --- */
+b32 rng_sequence_breaker_miss_growth = true;
+
 i16 URN_debug = -1;
 
 // TODO: Different tables for difficulties?

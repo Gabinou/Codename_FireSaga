@@ -6,6 +6,8 @@
 /* -- Various defines -- */
 #define SOTA_RNG GAME_RN_DOUBLE
 
+#define RENDER2WINDOW /* VERY FAST */
+
 #define SOTA_DEBUG_MENU_BOXES
 
 #define SOTA_INTERACTIVE_RELOAD SDL_SCANCODE_SPACE
