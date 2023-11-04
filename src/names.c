@@ -222,18 +222,14 @@ char **Names_wpnEffects(u64 in_effect) {
 }
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x)  temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
-    memcpy(temp_str, #x, sizeof(#x));\
-    jsonElementnames[JSON_##x] = nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')),' ', 2);
 
-char **jsonElementnames = NULL;
+s8 jsonElementnames[JSON_END] = {0};
 void Names_jsonElementnames() {
-    char *temp_str = NULL;
-    jsonElementnames = calloc(JSON_END, sizeof(*jsonElementnames));
+#define REGISTER_ENUM(x) jsonElementnames[JSON_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2);
 #include "names/json_elements.h"
-    memcpy(jsonElementnames[JSON_WEAPON], "Item\0", 5);
-}
 #undef REGISTER_ENUM
+    jsonElementnames[JSON_WEAPON] = s8_mut("Item");
+}
 
 #define REGISTER_ENUM(x) if flagsum_isIn(in_typecode, ITEM_TYPE_##x) {\
         temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
@@ -304,14 +300,7 @@ void Names_Free() {
     }
     SDL_Log("jsonElementnames");
     for (size_t i = 0; i < JSON_END; i++) {
-        if (jsonElementnames[i] != NULL) {
-            SDL_free(jsonElementnames[i]);
-            jsonElementnames[i] = NULL;
-        }
-    }
-    if (jsonElementnames != NULL) {
-        SDL_free(jsonElementnames);
-        jsonElementnames = NULL;
+        s8_free(&jsonElementnames[i]);
     }
     SDL_Log("armyNames");
     for (size_t i = 0; i < ARMY_END; i++) {
@@ -422,7 +411,7 @@ void Names_Print_All(const char *foldername) {
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = JSON_START; i < (JSON_END - 1); i++)
-        fprintf(fp, "%d %s \n", i, jsonElementnames[i]);
+        fprintf(fp, "%d %s \n", i, jsonElementnames[i].data);
     fclose(fp);
     s8_free(&filename);
 

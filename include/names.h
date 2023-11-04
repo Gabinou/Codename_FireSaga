@@ -26,7 +26,7 @@ extern s8 mapFilenames[CHAPTER_END];
 extern s8 support_types[SUPPORT_TYPE_NUM];
 extern s8 gameStatenames[GAME_STATE_END];
 extern s8 menuOptionnames[MENU_OPTION_END];
-extern char         **jsonElementnames;
+extern s8 jsonElementnames[JSON_END];
 extern char         **global_unitNames;  /* global_unitNames[order] = unit_name */
 extern char         **global_itemNames;
 extern char         **global_tilenames;

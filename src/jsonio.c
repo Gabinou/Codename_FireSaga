@@ -68,7 +68,7 @@ void jsonio_readJSON(const char *filename, void *struct_ptr) {
 
     /* Get the json element id */
     u8 jelem_id = *(u8 *)struct_ptr;
-    char *elem_name = jsonElementnames[jelem_id];
+    char *elem_name = jsonElementnames[jelem_id].data;
     SDL_Log("Reading JSON element %d %s", jelem_id, elem_name);
     if (jelem_id >= JSON_END) {
         SDL_Log("JSON element not set");
@@ -136,7 +136,7 @@ void jsonio_writeJSON(const char *filename, const void *struct_ptr, bool append)
         json_write_funcs[jelem_id](struct_ptr, jelement);
 
     /* Actually write to the file */
-    cJSON_AddItemToObject(json, jsonElementnames[jelem_id], jelement);
+    cJSON_AddItemToObject(json, jsonElementnames[jelem_id].data, jelement);
     Filesystem_printJSON(fp, json);
 
     /* Clean the file */
