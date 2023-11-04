@@ -1,14 +1,14 @@
 #include "names.h"
 #include "stb_sprintf.h"
 
-#define REGISTER_ENUM(x) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+#define REGISTER_ENUM(x) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
     memcpy(temp_str, #x, sizeof(#x));\
     sceneTimes[SCENE_TIME_##x] = nstr_camelCase(nstr_toLower(temp_str), '_', 2);\
     strcat(sceneTimes[SCENE_TIME_##x], "_");
 char **sceneTimes;
 void Names_sceneTimes() {
     sceneTimes = calloc(SCENE_TIME_NUM, sizeof(*sceneTimes));
-    char *temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);
+    char *temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);
     memcpy(temp_str, "", sizeof(""));
     sceneTimes[0] = temp_str;
 #include "names/scene_time.h"
@@ -29,11 +29,11 @@ void Names_unitNames() {
     dtab_add(global_unitOrders, &order, UNIT_NULL);
     order++;
 
-    temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);
+    temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);
     memcpy(temp_str, "", sizeof(""));
     DARR_PUT(global_unitNames, temp_str);
 
-#define REGISTER_ENUM(x, y) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+#define REGISTER_ENUM(x, y) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
     memcpy(temp_str, #x, sizeof(#x));\
     SDL_Log("%d", UNIT_ID_##x);\
     SDL_Log("%s", #x);\
@@ -46,7 +46,7 @@ void Names_unitNames() {
 }
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x)  temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+#define REGISTER_ENUM(x)  temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
     memcpy(temp_str, #x, sizeof(#x));\
     statNames[ITEM_STAT_##x] = nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2);
 
@@ -54,7 +54,7 @@ char **statNames = NULL;
 void Names_statNames() {
     char *temp_str = NULL;
     statNames = calloc(ITEM_STAT_END, sizeof(*statNames));
-    temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);
+    temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);
     memcpy(temp_str, "", sizeof(""));
     statNames[0] = temp_str;
 #include "names/items_stats.h"
@@ -64,13 +64,13 @@ void Names_statNames() {
 char **sexNames = NULL;
 void Names_sexNames() {
     sexNames = (char **)calloc(UNIT_SEX_NUM, sizeof(*sexNames));
-    sexNames[UNIT_SEX_F] = (char *) malloc(2);
+    sexNames[UNIT_SEX_F] = (char *) SDL_malloc(2);
     memcpy(sexNames[UNIT_SEX_F], "F\0", 2);
-    sexNames[UNIT_SEX_M] = (char *) malloc(2);
+    sexNames[UNIT_SEX_M] = (char *) SDL_malloc(2);
     memcpy(sexNames[UNIT_SEX_M], "M\0", 2);
 }
 
-#define REGISTER_ENUM(x) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+#define REGISTER_ENUM(x) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
     memcpy(temp_str, #x, sizeof(#x));\
     armyNames[ARMY_##x] = nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')),' ', 2);
 char **armyNames = NULL;
@@ -81,7 +81,7 @@ void Names_armyNames() {
 }
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+#define REGISTER_ENUM(x) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
     memcpy(temp_str, #x, sizeof(#x));\
     unitStates[UNIT_STATUS_##x] =  nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2);
 
@@ -108,7 +108,7 @@ void Names_itemNames() {
     order++;
 
     char *temp_str = NULL;
-#define REGISTER_ENUM(x, y) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+#define REGISTER_ENUM(x, y) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
     memcpy(temp_str, #x, sizeof(#x));\
     dtab_add(global_itemOrders, &order, ITEM_ID_##x);\
     order++;\
@@ -120,19 +120,19 @@ void Names_itemNames() {
 
 char **support_types = NULL;
 void Names_supportTypes() {
-    support_types = malloc(TILE_ID_MAX * sizeof(global_tilenames));
+    support_types = SDL_malloc(TILE_ID_MAX * sizeof(global_tilenames));
 }
 
 char **global_tilenames = NULL;
 i32 *global_tilesID = NULL;
 void Names_tileNames() {
-    global_tilenames = malloc(TILE_ID_MAX * sizeof(global_tilenames));
-    char *temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);
+    global_tilenames = SDL_malloc(TILE_ID_MAX * sizeof(global_tilenames));
+    char *temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);
     memcpy(temp_str, "NULL", sizeof("NULL"));
     global_tilenames[0] = temp_str;
     uint64_t temp_id = 1; /* 0 is reserved for NULL*/
     // size_t num_tile = 0;
-#define REGISTER_ENUM(x) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+#define REGISTER_ENUM(x) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
     memcpy(temp_str, #x, sizeof(#x));\
     global_tilenames[temp_id++] = nstr_camelCase(nstr_toLower(temp_str), ' ', 2);
     // temp_id++;
@@ -142,7 +142,7 @@ void Names_tileNames() {
 }
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+#define REGISTER_ENUM(x) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
     memcpy(temp_str, #x, sizeof(#x));\
     campjobNames[CAMPJOB_##x] = nstr_camelCase(nstr_toLower(temp_str), ' ', 2);
 
@@ -154,7 +154,7 @@ void Names_campjobNames() {
 }
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+#define REGISTER_ENUM(x, y) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
     memcpy(temp_str, #x, sizeof(#x));\
     menuOptionnames[MENU_OPTION_##x] = nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2);
 char **menuOptionnames = NULL;
@@ -165,7 +165,7 @@ void Menu_MakeOptionnames() {
 }
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+#define REGISTER_ENUM(x, y) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
     memcpy(temp_str, #x, sizeof(#x));\
     gamesubStatenames[GAME_SUBSTATE_##x] = nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2);
 
@@ -177,7 +177,7 @@ void Names_gamesubStatenames() {
 }
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+#define REGISTER_ENUM(x, y) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
     memcpy(temp_str, #x, sizeof(#x));\
     gameStatenames[GAME_STATE_##x] = nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2);
 
@@ -189,7 +189,7 @@ void Names_gameStatenames() {
 }
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y, z) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+#define REGISTER_ENUM(x, y, z) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
     memcpy(temp_str, "\0", 1);\
     strcat(temp_str, "assets"PHYSFS_SEPARATOR"Maps"PHYSFS_SEPARATOR);\
     strcat(temp_str, #y);\
@@ -203,7 +203,7 @@ void Names_mapFilenames() {
 }
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(name, id, x, y, z) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+#define REGISTER_ENUM(name, id, x, y, z) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
     memcpy(temp_str, #name, sizeof(#name));\
     classNames[UNIT_CLASS_##name] = nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')),' ', 2);
 
@@ -216,7 +216,7 @@ void Names_classNames() {
 #undef  REGISTER_ENUM
 
 #define REGISTER_ENUM(x) if flagsum_isIn(in_skillscode, UNIT_SKILL_##x) {\
-        temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+        temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
         memcpy(temp_str, #x, sizeof(#x));\
         DARR_PUT(skill_names, nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')),' ', 2));\
     }
@@ -230,7 +230,7 @@ char **Names_skillNames(uint64_t in_skillscode) {
 #undef  REGISTER_ENUM
 
 #define REGISTER_ENUM(x) if flagsum_isIn(in_statecode, UNIT_STATUS_##x) {\
-        temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+        temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
         memcpy(temp_str, #x, sizeof(#x));\
         DARR_PUT(state_names, nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')),' ', 2));\
     }
@@ -252,7 +252,7 @@ void Names_class_equippables() {
 #undef  REGISTER_ENUM
 
 #define REGISTER_ENUM(x) if flagsum_isIn(in_typecode, UNIT_TYPE_##x) {\
-        temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+        temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
         memcpy(temp_str, #x, sizeof(#x));\
         DARR_PUT(out, nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2));\
     }
@@ -265,7 +265,7 @@ char **Names_unitTypes(u16 in_typecode) {
 #undef REGISTER_ENUM
 
 #define REGISTER_ENUM(x, y) if flagsum_isIn(in_effect, ITEM_EFFECT_##x) {\
-        temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+        temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
         memcpy(temp_str, #x, sizeof(#x));\
         DARR_PUT(wpn_effects, nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2));\
     }
@@ -277,7 +277,7 @@ char **Names_wpnEffects(u64 in_effect) {
 }
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x)  temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+#define REGISTER_ENUM(x)  temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
     memcpy(temp_str, #x, sizeof(#x));\
     jsonElementnames[JSON_##x] = nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')),' ', 2);
 
@@ -291,7 +291,7 @@ void Names_jsonElementnames() {
 #undef REGISTER_ENUM
 
 #define REGISTER_ENUM(x) if flagsum_isIn(in_typecode, ITEM_TYPE_##x) {\
-        temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+        temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
         memcpy(temp_str, #x, sizeof(#x));\
         DARR_PUT(type_names, nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')),' ', 2));\
     }
@@ -306,7 +306,7 @@ char **Names_wpnType(u16 in_typecode) {
 void Names_wpnType_Free(char **type_names) {
     for (int i = 0; i < DARR_NUM(type_names); ++i) {
         if (type_names[i] != NULL)
-            free(type_names[i]);
+            SDL_free(type_names[i]);
     }
     DARR_FREE(type_names);
 }
@@ -460,7 +460,7 @@ void Names_Free() {
     if (global_unitNames != NULL) {
         for (int i = 0; i < DARR_NUM(global_unitNames); i++) {
             if (global_unitNames[i] != NULL) {
-                free(global_unitNames[i]);
+                SDL_free(global_unitNames[i]);
                 global_unitNames[i] = NULL;
             }
         }

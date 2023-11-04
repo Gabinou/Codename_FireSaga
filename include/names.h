@@ -14,6 +14,8 @@
 #include "SDL.h"
 
 /* -- Names -- */
+// TODO migrate names to s8
+// TODO make names not global
 extern char         **mapFilenames;
 extern char         **sceneTimes;
 extern char         **unitStates;
@@ -22,19 +24,21 @@ extern char         **campjobNames;
 extern char         **menuOptionnames;
 extern char         **gameStatenames;
 extern char         **gamesubStatenames;
+
 extern char         **global_unitNames;     /* global_unitNames[order] = unit_name      */
-extern struct dtab   *global_unitOrders;    /* DTAB_GET(global_unitOrders, id) = order  */
 extern char         **global_itemNames;
+
 extern struct dtab   *global_itemOrders;    /* DTAB_GET(global_unitOrders, id) = order  */
+extern struct dtab   *global_unitOrders;    /* DTAB_GET(global_unitOrders, id) = order  */
 extern char         **statNames;
 extern char         **sexNames;
 extern char         **classNames;
 extern char         **global_tilenames;
+extern char         **support_types;
+extern char         **armyNames;
 extern i32           *tilesID_arr;
 extern i32           *global_tilesID;
-extern char         **support_types;
 extern u16           *class_equippables;
-extern char         **armyNames;
 
 /* -- Name makers -- */
 void Names_sceneTimes();
