@@ -96,17 +96,10 @@ s8 support_types[SUPPORT_TYPE_NUM] = {0};
 void Names_supportTypes() {
 }
 
-char **global_tilenames = NULL;
+s8 global_tilenames[TILE_ID_MAX] = {0};
 void Names_tileNames() {
-    global_tilenames = SDL_malloc(TILE_ID_MAX * sizeof(global_tilenames));
-    char *temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);
-    memcpy(temp_str, "NULL", sizeof("NULL"));
-    global_tilenames[0] = temp_str;
     uint64_t temp_id = 1; /* 0 is reserved for NULL*/
-    // size_t num_tile = 0;
-#define REGISTER_ENUM(x) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
-    memcpy(temp_str, #x, sizeof(#x));\
-    global_tilenames[temp_id++] = nstr_camelCase(nstr_toLower(temp_str), ' ', 2);
+#define REGISTER_ENUM(x) global_tilenames[temp_id++] = s8_camelCase(s8_toLower(s8_mut(#x)), ' ', 2);
 #include "names/tiles.h"
 }
 #undef REGISTER_ENUM
@@ -307,15 +300,7 @@ void Names_Free() {
     }
     SDL_Log("global_tilenames i");
     for (size_t i = TILE_START; i < TILE_END; i++) {
-        if (global_tilenames[i] != NULL) {
-            SDL_free(global_tilenames[i]);
-            global_tilenames[i] = NULL;
-        }
-    }
-    SDL_Log("global_tilenames");
-    if (global_tilenames  != NULL) {
-        SDL_free(global_tilenames);
-        global_tilenames = NULL;
+        s8_free(&global_tilenames[i]);
     }
     SDL_Log("campjobNames");
     for (size_t i = 0; i < CAMPJOB_END; i++) {
@@ -501,9 +486,9 @@ void Names_Print_All(const char *foldername) {
     SDL_assert(global_tilenames != NULL);
     s8 s8null = s8_literal("");
     for (u8 i = TILE_START; i < TILE_END; i++) {
-        s8 tilename = s8_var(global_tilenames[i]);
+        s8 tilename = global_tilenames[i];
         if (!s8equal(tilename, s8null))
-            fprintf(fp, "%d %s \n", i, global_tilenames[i]);
+            fprintf(fp, "%d %s \n", i, tilename.data);
     }
     fclose(fp);
     s8_free(&filename);

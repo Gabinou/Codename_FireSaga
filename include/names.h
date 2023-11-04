@@ -29,7 +29,7 @@ extern s8 menuOptionnames[MENU_OPTION_END];
 extern s8 jsonElementnames[JSON_END];
 extern char         **global_unitNames;  /* global_unitNames[order] = unit_name */
 extern char         **global_itemNames;
-extern char         **global_tilenames;
+extern s8 global_tilenames[TILE_ID_MAX];
 extern s8 gamesubStatenames[GAME_SUBSTATE_END];
 
 // TODO: change into simple array + simple function?

@@ -532,10 +532,10 @@ void Map_writeJSON(const void *input, cJSON *jmap) {
         jtile = cJSON_CreateObject();
         if (map->tilesindex[i] >= TILE_END) {
             temp_tile_id = map->tilesindex[i];
-            jtilename   = cJSON_CreateString(global_tilenames[temp_tile_id]);
+            jtilename   = cJSON_CreateString(global_tilenames[temp_tile_id].data);
             jtileid     = cJSON_CreateNumber(temp_tile_id);
         } else {
-            jtilename   = cJSON_CreateString(global_tilenames[map->tilesindex[i]]);
+            jtilename   = cJSON_CreateString(global_tilenames[map->tilesindex[i]].data);
             jtileid     = cJSON_CreateNumber(map->tilesindex[i]);
         }
         cJSON_AddItemToObject(jtile, "id", jtileid);

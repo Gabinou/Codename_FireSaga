@@ -33,7 +33,7 @@ void Map_Tiles_Load(struct Map *map) {
 
         /* -- Load tile -- */
         s8 filename = s8_mut("tiles" PHYSFS_SEPARATOR);
-        filename    = s8cat(filename, s8_var(global_tilenames[tile_id]));
+        filename    = s8cat(filename, global_tilenames[tile_id]);
         filename    = s8cat(filename, s8_literal(".json"));
         jsonio_readJSON(filename.data, temp_tile);
         Tile_makeMvtCostarray(temp_tile);
