@@ -143,17 +143,13 @@ void Names_gamesubStatenames() {
 }
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
-    memcpy(temp_str, #x, sizeof(#x));\
-    gameStatenames[GAME_STATE_##x] = nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2);
 
-char **gameStatenames = NULL;
+s8 gameStatenames[GAME_STATE_END] = {0};
 void Names_gameStatenames() {
-    char *temp_str = NULL;
-    gameStatenames = calloc(GAME_STATE_END, sizeof(*gameStatenames));
+#define REGISTER_ENUM(x, y) gameStatenames[GAME_STATE_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);
 #include "names/game_states.h"
-}
 #undef REGISTER_ENUM
+}
 
 
 s8 mapFilenames[CHAPTER_END] = {0};
@@ -320,14 +316,7 @@ void Names_Free() {
     }
     SDL_Log("gameStatenames");
     for (size_t i = 0; i < GAME_STATE_END; i++) {
-        if (gameStatenames[i] != NULL) {
-            SDL_free(gameStatenames[i]);
-            gameStatenames[i] = NULL;
-        }
-    }
-    if (gameStatenames != NULL) {
-        SDL_free(gameStatenames);
-        gameStatenames = NULL;
+        s8_free(&gameStatenames[i]);
     }
     SDL_Log("mapFilenames");
     for (size_t i = 0; i < CHAPTER_END; i++) {
