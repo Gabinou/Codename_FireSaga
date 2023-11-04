@@ -221,23 +221,19 @@ void Names_jsonElementnames() {
     jsonElementnames[JSON_WEAPON] = s8_mut("Item");
 }
 
+s8 *Names_wpnType(u16 in_typecode) {
+    s8 *type_names = DARR_INIT(type_names, s8, ITEM_TYPE_END);
 #define REGISTER_ENUM(x) if flagsum_isIn(in_typecode, ITEM_TYPE_##x) {\
-        temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
-        memcpy(temp_str, #x, sizeof(#x));\
-        DARR_PUT(type_names, nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')),' ', 2));\
+        DARR_PUT(type_names, s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2));\
     }
-char **Names_wpnType(u16 in_typecode) {
-    char **type_names = DARR_INIT(type_names, char *, ITEM_TYPE_END);
-    char  *temp_str;
 #include "names/items_types.h"
+#undef REGISTER_ENUM
     return (type_names);
 }
-#undef REGISTER_ENUM
 
-void Names_wpnType_Free(char **type_names) {
+void Names_wpnType_Free(s8 *type_names) {
     for (int i = 0; i < DARR_NUM(type_names); ++i) {
-        if (type_names[i] != NULL)
-            SDL_free(type_names[i]);
+        s8_free(&type_names[i]);
     }
     DARR_FREE(type_names);
 }

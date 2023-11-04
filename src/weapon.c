@@ -168,8 +168,8 @@ s8 Weapon_Filename(s8 filename, i16 id) {
     /* - add weapon type subfolder to filename - */
     int type_exp = id / SOTA_WPN_ID_FACTOR;
     i16 typecode = (1 << type_exp);
-    char **types = Names_wpnType(typecode);
-    filename = s8cat(filename, s8_var(types[0]));
+    s8 *types = Names_wpnType(typecode);
+    filename = s8cat(filename, types[0]);
     filename = s8cat(filename, s8_var(PHYSFS_SEPARATOR));
     Names_wpnType_Free(types);
 

@@ -387,11 +387,11 @@ void Item_writeJSON(const void *restrict input, cJSON *restrict jitem) {
     cJSON *jtype2 = NULL;
     jtype2 = cJSON_CreateNumber(item->type);
     cJSON_AddItemToObject(jtypes, "id", jtype2);
-    char **types = Names_wpnType(item->type);
+    s8 *types = Names_wpnType(item->type);
     for (i16 i = 0; i < DARR_NUM(types); i++) {
-        jtype2 = cJSON_CreateString(types[i]);
+        jtype2 = cJSON_CreateString(types[i].data);
         cJSON_AddItemToObject(jtypes, "Type", jtype2);
-        free(types[i]);
+        s8_free(&types[i]);
     }
     DARR_FREE(types);
 
