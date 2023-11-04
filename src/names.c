@@ -113,17 +113,13 @@ void Names_tileNames() {
 }
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
-    memcpy(temp_str, #x, sizeof(#x));\
-    campjobNames[CAMPJOB_##x] = nstr_camelCase(nstr_toLower(temp_str), ' ', 2);
 
-char **campjobNames = NULL;
+s8 campjobNames[CAMPJOB_END] = {0};
 void Names_campjobNames() {
-    campjobNames = calloc(CAMPJOB_END, sizeof(*campjobNames));
-    char *temp_str = NULL;
+#define REGISTER_ENUM(x) campjobNames[CAMPJOB_##x] = s8_camelCase(s8_toLower(s8_mut(#x)), ' ', 2);
 #include "names/camp_jobs.h"
-}
 #undef REGISTER_ENUM
+}
 
 #define REGISTER_ENUM(x, y) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
     memcpy(temp_str, #x, sizeof(#x));\
@@ -401,14 +397,7 @@ void Names_Free() {
     }
     SDL_Log("campjobNames");
     for (size_t i = 0; i < CAMPJOB_END; i++) {
-        if (campjobNames[i]  != NULL) {
-            SDL_free(campjobNames[i]);
-            campjobNames[i] = NULL;
-        }
-    }
-    if (campjobNames  != NULL) {
-        SDL_free(campjobNames);
-        campjobNames = NULL;
+        s8_free(&campjobNames[i]);
     }
     SDL_Log("global_unitNames");
     if (global_unitNames != NULL) {
@@ -489,7 +478,7 @@ void Names_Print_All(const char *foldername) {
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = CAMPJOB_START; i < (CAMPJOB_END - 1); i++)
-        fprintf(fp, "%d %s \n", i, campjobNames[i]);
+        fprintf(fp, "%d %s \n", i, campjobNames[i].data);
     fclose(fp);
     s8_free(&filename);
 

@@ -21,7 +21,7 @@ extern s8 armyNames[ARMY_NUM];
 extern s8 classNames[UNIT_CLASS_NUM];
 extern s8 sceneTimes[SCENE_TIME_NUM];
 extern s8 unitStatuses[UNIT_STATUS_END];
-extern char         **campjobNames;
+extern s8 campjobNames[CAMPJOB_END];
 extern char         **mapFilenames;
 extern char         **support_types;
 extern char         **gameStatenames;
