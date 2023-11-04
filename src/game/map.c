@@ -101,7 +101,6 @@ void Game_Map_Reinforcements_Free(struct Game *sota) {
     }
 
     char filename[DEFAULT_BUFFER_SIZE];
-    char unitname[DEFAULT_BUFFER_SIZE];
     for (i16 i = 0; i < DARR_NUM(sota->map_enemies); i++) {
         tnecs_entity_t temp_unit_ent =  DARR_POP(sota->map_enemies);
 
@@ -119,7 +118,6 @@ void Game_Map_Reinforcements_Free(struct Game *sota) {
 void Game_Map_Reinforcements_Load(struct Game *sota) {
     SDL_assert(sota->map != NULL);
     char filename[DEFAULT_BUFFER_SIZE];
-    char unitname[DEFAULT_BUFFER_SIZE];
     for (i16 i = 0; i < DARR_NUM(sota->map->reinforcements); i++) {
         SDL_Log("-- turn: %d --", sota->map->reinforcements[i].turn);
 
@@ -167,18 +165,18 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         unit->weapons_dtab = sota->weapons_dtab;
         size_t order = *(u16 *)DTAB_GET(global_unitOrders, sota->map->reinforcements[i].id);
-        memcpy(unitname, "", 1);
-        strcat(unitname, global_unitNames[order]);
-        strcat(unitname, ".json");
-        SDL_Log("unitname: %ld %s", sota->map->reinforcements[i].id, unitname);
+        s8 unitname = s8_mut(global_unitNames[order]);
+        unitname    = s8cat(unitname, s8_literal(".json"));
+        SDL_Log("unitname: %ld %s", sota->map->reinforcements[i].id, unitname.data);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
-        jsonio_readJSON(unitname, unit);
+        jsonio_readJSON(unitname.data, unit);
         if (!Unit_ID_Valid(unit->_id)) {
             SDL_Log("Unit %s.json has wrong ID. Should be %d.", unit->name, sota->map->reinforcements[i].id);
             exit(ERROR_Generic);
         }
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         unit->army = sota->map->reinforcements[i].army;
+        
         SDL_Log("-- loading unit equipment --");
         for (int j = 0; j < DARR_NUM(sota->map->reinf_equipments[i]); j++) {
             unit->_equipment[j] = sota->map->reinf_equipments[i][j];
@@ -245,11 +243,9 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
 /* --- Tiles & tilesets  --- */
 void Game_Tilesets_Dump(struct Game *sota) {
-    char dumpname[DEFAULT_BUFFER_SIZE] = "";
-    char temp[DEFAULT_BUFFER_SIZE];
     i32 tile_ind;
     for (size_t i = 0; i < DARR_NUM(sota->map->tiles); i++) {
-        strcat(dumpname, "Tileset_");
+        s8 dumpname = s8_mut("Tileset_");
         if (sota->map->tilesindex[i] > TILE_ID_MAX)
             tile_ind = sota->map->tilesindex[i] / TILE_DIVISOR;
         else
@@ -257,8 +253,8 @@ void Game_Tilesets_Dump(struct Game *sota) {
         SDL_assert(tile_ind > 0);
         size_t tile_order = Map_Tile_Order(sota->map, tile_ind);
         struct Tile *temp_tile = sota->map->tiles + tile_order;
-        strcat(dumpname, temp_tile->name);
-        strcat(dumpname, ".png");
+        dumpname = s8cat(dumpname, s8_var(temp_tile->name));
+        dumpname = s8cat(dumpname, s8_literal(".png"));
         SDL_Log("%s", dumpname);
         // SDL_Texture * temptexture = DTAB_GET(sota->map->textures, (sota->map->tilesindex[i]));
         // Filesystem_Texture_Dump(dumpname, sota->renderer, temptexture, SDL_PIXELFORMAT_ARGB8888);
