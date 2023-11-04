@@ -2,7 +2,6 @@
 #define STATS_MENU_H
 
 #include "enums.h"
-#include "globals.h"
 #include "bars/simple.h"
 #include "bars/stat.h"
 #include "pixelfonts.h"

@@ -3,7 +3,6 @@
 
 #include "enums.h"
 #include "filesystem.h"
-#include "globals.h"
 #include "debug.h"
 #include "macros.h"
 #include "SDL.h"

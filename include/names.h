@@ -7,7 +7,6 @@
 #include "unit.h"
 #include "types.h"
 #include "enums.h"
-#include "globals.h"
 #include "macros.h"
 #include "debug.h"
 #include "hashes.h"

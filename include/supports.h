@@ -5,7 +5,6 @@
 #include "enums.h"
 #include "structs.h"
 #include "macros.h"
-#include "globals.h"
 #include "debug.h"
 #include "SDL.h"
 

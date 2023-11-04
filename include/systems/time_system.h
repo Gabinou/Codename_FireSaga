@@ -3,8 +3,6 @@
 
 #include <stdio.h>
 #include "tnecs.h"
-#include "structs.h"
-#include "globals.h"
 #include "debug.h"
 #include "SDL.h"
 

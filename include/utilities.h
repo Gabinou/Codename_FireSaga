@@ -14,7 +14,6 @@
 #include "hashes.h"
 #include "octant.h"
 #include "enums.h"
-#include "globals.h"
 #include "macros.h"
 #include "debug.h"
 #include "item.h"

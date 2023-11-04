@@ -358,7 +358,7 @@ u8 Unit_Brave(const struct Unit *u);
 
 /* --- Lvlup && Promotion --- */
 void Unit_lvlUp(  struct Unit *u);
-i16 Unit_getLvl( struct Unit *u);
+i16 Unit_getLvl(  struct Unit *u);
 void Unit_Promote(struct Unit *u, i8 new_class_i);
 
 bool Range_Valid(struct Range r1);

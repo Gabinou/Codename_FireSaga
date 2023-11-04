@@ -2,7 +2,6 @@
 #define WSM_H
 
 #include "enums.h"
-#include "globals.h"
 #include "pixelfonts.h"
 #include "n9patch.h"
 #include "events.h"

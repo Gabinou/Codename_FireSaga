@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include "index_shader.h"
 #include "narrative.h"
-#include "globals.h"
 #include "enums.h"
 #include "structs.h"
 #include "bitfields.h"

@@ -29,7 +29,6 @@
     #include <SDL_opengl.h>
     #include <GL/glu.h>
 #endif
-#include "globals.h"
 #include "game/game.h"
 #include "game/cursor.h"
 #include "nstr.h"

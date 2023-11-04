@@ -7,7 +7,6 @@
 #include "nmath.h"
 #include "types.h"
 #include "macros.h"
-#include "globals.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Settings;

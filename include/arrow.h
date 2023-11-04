@@ -10,7 +10,6 @@
 #include "structs.h"
 #include "utilities.h"
 #include "filesystem.h"
-#include "globals.h"
 
 /* NOTE: Arrow breaks if INFINITE_MOVE_ALL is defined. DON'T CARE. */
 

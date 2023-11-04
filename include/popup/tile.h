@@ -2,7 +2,6 @@
 #define PT_H
 
 #include "enums.h"
-#include "globals.h"
 #include "n9patch.h"
 #include "game/game.h"
 #include "map/tiles.h"

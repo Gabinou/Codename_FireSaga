@@ -8,7 +8,6 @@
 #include "debug.h"
 #include "events.h"
 #include "position.h"
-#include "globals.h"
 #include "controller/keyboard.h"
 #include "controller/gamepad.h"
 #include "controller/touchpad.h"

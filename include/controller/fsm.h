@@ -2,7 +2,6 @@
 #define FSM_CONTROLLER_H
 
 #include <stdint.h>
-#include "globals.h"
 #include "enums.h"
 #include "events.h"
 #include "game/game.h"

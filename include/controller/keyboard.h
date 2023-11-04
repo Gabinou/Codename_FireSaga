@@ -8,7 +8,6 @@
 #include "macros.h"
 #include "debug.h"
 #include "nmath.h"
-#include "globals.h"
 #include "utilities.h"
 #include "controller/gamepad.h"
 #include "SDL.h"

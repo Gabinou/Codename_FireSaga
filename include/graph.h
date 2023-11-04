@@ -2,7 +2,6 @@
 #define GRAPH_H
 
 #include "SDL.h"
-#include "globals.h"
 #include "debug.h"
 #include "tnecs.h"
 #include "nmath.h"

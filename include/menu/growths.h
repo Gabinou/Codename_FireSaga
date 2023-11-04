@@ -4,7 +4,6 @@
 #include "enums.h"
 #include "pixelfonts.h"
 #include "menu.h"
-#include "globals.h"
 #include "graph.h"
 #include "n9patch.h"
 #include "stb_sprintf.h"

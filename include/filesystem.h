@@ -2,7 +2,6 @@
 #define FILESYSTEM_H
 
 #include "types.h"
-#include "globals.h"
 #include "enums.h"
 #include "structs.h"
 #include "physfs.h"

@@ -2,7 +2,6 @@
 #define TRADE_MENU_H
 
 #include "enums.h"
-#include "globals.h"
 #include "pixelfonts.h"
 #include "menu.h"
 #include "n9patch.h"

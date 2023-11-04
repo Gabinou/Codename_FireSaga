@@ -3,7 +3,6 @@
 
 #include <stdint.h>
 #include "enums.h"
-#include "globals.h"
 #include "debug.h"
 #include "macros.h"
 #include "types.h"

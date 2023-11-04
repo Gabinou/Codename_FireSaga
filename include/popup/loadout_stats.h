@@ -2,7 +2,6 @@
 #define PLS_H
 
 #include "enums.h"
-#include "globals.h"
 #include "n9patch.h"
 #include "popup/popup.h"
 #include "slider.h"

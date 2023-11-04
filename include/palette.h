@@ -5,7 +5,6 @@
 #include "platform.h"
 #include "types.h"
 #include "enums.h"
-#include "globals.h"
 #include "filesystem.h"
 #include "debug.h"
 #include "macros.h"

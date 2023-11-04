@@ -2,7 +2,6 @@
 #define MAP_ANIMATION_H
 
 #include "enums.h"
-#include "globals.h"
 #include "n9patch.h"
 #include "bars.h"
 #include "game/game.h"

@@ -2,7 +2,6 @@
 #define FSM_H
 
 #include <stdint.h>
-#include "globals.h"
 #include "enums.h"
 #include "game/game.h"
 #include "game/popup.h"

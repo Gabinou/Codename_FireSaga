@@ -4,7 +4,6 @@
 #include "enums.h"
 #include "game/game.h"
 #include "game/cursor.h"
-#include "globals.h"
 #include "n9patch.h"
 
 /* --- FINITE-STATE MACHINE FOR CONTROL --- */

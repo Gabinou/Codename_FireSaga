@@ -2,7 +2,6 @@
 #define PLAYER_SELECT_MENU_H
 
 #include "enums.h"
-#include "globals.h"
 #include "pixelfonts.h"
 #include "n9patch.h"
 #include "events.h"

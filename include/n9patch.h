@@ -2,9 +2,7 @@
 #define N9PATCH_H
 
 #include "enums.h"
-// #include "nmath.h"
 #include "structs.h"
-#include "globals.h"
 #include "macros.h"
 #include "debug.h"
 #include "types.h"

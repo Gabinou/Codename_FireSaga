@@ -2,7 +2,6 @@
 #define HASHES_H
 
 #include "enums.h"
-#include "globals.h"
 #include "debug.h"
 #include "supports.h"
 #include "nstr.h"

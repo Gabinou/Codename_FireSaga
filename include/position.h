@@ -2,7 +2,6 @@
 #define POSITION_H
 
 #include <stdbool.h>
-#include "globals.h"
 #include "types.h"
 #include "enums.h"
 #include "log.h"

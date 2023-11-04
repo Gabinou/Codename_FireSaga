@@ -10,7 +10,6 @@
 #include "types.h"
 #include "combat.h"
 #include "structs.h"
-#include "globals.h"
 #include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */

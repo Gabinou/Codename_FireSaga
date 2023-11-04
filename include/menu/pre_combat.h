@@ -2,7 +2,6 @@
 #define PRE_COMBAT_MENU_H
 
 #include "enums.h"
-#include "globals.h"
 #include "game/game.h"
 #include "pixelfonts.h"
 #include "menu.h"

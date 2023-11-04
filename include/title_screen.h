@@ -2,7 +2,6 @@
 #define TITLE_PAGE_H
 
 #include "enums.h"
-#include "globals.h"
 #include "n9patch.h"
 #include "menu/player_select.h"
 

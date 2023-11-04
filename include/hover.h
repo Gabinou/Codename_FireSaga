@@ -2,7 +2,6 @@
 #define HOVER_H
 
 #include "enums.h"
-#include "globals.h"
 #include "macros.h"
 #include "debug.h"
 #include "structs.h"

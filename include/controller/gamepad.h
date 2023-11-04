@@ -8,7 +8,6 @@
 #include "debug.h"
 #include "utilities.h"
 #include "macros.h"
-#include "globals.h"
 #include "SDL.h"
 
 /* -- How to present controller remapping to players? -- */

@@ -19,7 +19,6 @@
 #include "menu/menu.h"
 #include "macros.h"
 #include "nmath.h"
-#include "globals.h"
 #include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */

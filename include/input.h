@@ -5,7 +5,6 @@
 #include "parg.h"
 #include "nourstest.h"
 #include "structs.h"
-#include "globals.h"
 #include "utilities.h"
 
 /* Note: no argp on Windows.                                */

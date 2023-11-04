@@ -2,7 +2,6 @@
 #define MENU_H
 
 #include "enums.h"
-#include "globals.h"
 #include "n9patch.h"
 #include "game/game.h"
 #include "game/menu.h"

@@ -2,7 +2,6 @@
 #define POPUP_MAP_COMBAT_H
 
 #include "enums.h"
-#include "globals.h"
 #include "game/game.h"
 #include "n9patch.h"
 #include "popup/popup.h"

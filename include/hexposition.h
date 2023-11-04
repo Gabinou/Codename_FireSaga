@@ -9,7 +9,6 @@
 #include "types.h"
 #include "debug.h"
 #include "structs.h"
-#include "globals.h"
 
 // hexmap are stored as i16 * map[col_len*depth_len]
 // map[z*col_len + x] with y = - x - z

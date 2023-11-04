@@ -2,7 +2,6 @@
 #define TEXT_BUBBLE_H
 
 #include "enums.h"
-#include "globals.h"
 #include "nmath.h"
 #include "n9patch.h"
 #include "pixelfonts.h"
