@@ -97,7 +97,6 @@ void Names_supportTypes() {
 }
 
 char **global_tilenames = NULL;
-i32 *global_tilesID = NULL;
 void Names_tileNames() {
     global_tilenames = SDL_malloc(TILE_ID_MAX * sizeof(global_tilenames));
     char *temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);
@@ -333,11 +332,6 @@ void Names_Free() {
     if (global_tilenames  != NULL) {
         SDL_free(global_tilenames);
         global_tilenames = NULL;
-    }
-    SDL_Log("global_tilesID");
-    if (global_tilesID  != NULL) {
-        DARR_FREE(global_tilesID);
-        global_tilesID = NULL;
     }
     SDL_Log("campjobNames");
     for (size_t i = 0; i < CAMPJOB_END; i++) {

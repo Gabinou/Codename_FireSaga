@@ -38,7 +38,6 @@ extern struct dtab   *global_itemOrders; /* DTAB_GET(global_unitOrders, id) = or
 extern struct dtab   *global_unitOrders; /* DTAB_GET(global_unitOrders, id) = order */
 
 extern i32           *tilesID_arr;
-extern i32           *global_tilesID;
 extern u16           *class_equippables;
 
 /* -- Name makers -- */
