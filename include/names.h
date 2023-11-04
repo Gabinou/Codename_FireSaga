@@ -37,7 +37,6 @@ extern s8 gamesubStatenames[GAME_SUBSTATE_END];
 extern struct dtab   *global_itemOrders; /* DTAB_GET(global_unitOrders, id) = order */
 extern struct dtab   *global_unitOrders; /* DTAB_GET(global_unitOrders, id) = order */
 
-extern i32           *tilesID_arr;
 extern u16           *class_equippables;
 
 /* -- Name makers -- */
@@ -68,9 +67,9 @@ void Names_tileNames();
 /* --- X macros generators --- */
 void Names_wpnType_Free(char **types);
 char **Names_wpnType(   u16 typecode);
-char **Names_unitTypes( u16 typecode);
 char **Names_skillNames(u64 skillscode);
-char **Names_wpnEffects(u64 effect);
+s8 *Names_unitTypes( u16 typecode);
+s8 *Names_wpnEffects(u64 effect);
 
 /* -- API -- */
 void Names_Free();

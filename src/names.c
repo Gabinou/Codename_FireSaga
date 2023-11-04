@@ -186,40 +186,33 @@ char **Names_unitstateNames(uint32_t in_statecode) {
 }
 #undef  REGISTER_ENUM
 
-#define REGISTER_ENUM(name, id, x, y, z) class_equippables[UNIT_CLASS_##name] = z;
-u16 *class_equippables;
+u16 *class_equippables = NULL;
 void Names_class_equippables() {
     class_equippables = DARR_INIT(class_equippables, u16, UNIT_CLASS_END);
-    // DARR_PUT(class_equippables, 0);
+#define REGISTER_ENUM(name, id, x, y, z) class_equippables[UNIT_CLASS_##name] = z;
 #include "names/classes.h"
-}
 #undef  REGISTER_ENUM
+}
 
+s8 *Names_unitTypes(u16 in_typecode) {
+    s8 *out = DARR_INIT(out, s8, UNIT_TYPE_END);
 #define REGISTER_ENUM(x) if flagsum_isIn(in_typecode, UNIT_TYPE_##x) {\
-        temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
-        memcpy(temp_str, #x, sizeof(#x));\
-        DARR_PUT(out, nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2));\
+        DARR_PUT(out, s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2));\
     }
-char **Names_unitTypes(u16 in_typecode) {
-    char *temp_str = NULL;
-    char **out = DARR_INIT(out, char *, UNIT_TYPE_END);
 #include "names/units_types.h"
+#undef REGISTER_ENUM
     return (out);
 }
-#undef REGISTER_ENUM
 
+s8 *Names_wpnEffects(u64 in_effect) {
+    s8 *wpn_effects = DARR_INIT(wpn_effects, s8, UNIT_TYPE_END);
 #define REGISTER_ENUM(x, y) if flagsum_isIn(in_effect, ITEM_EFFECT_##x) {\
-        temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
-        memcpy(temp_str, #x, sizeof(#x));\
-        DARR_PUT(wpn_effects, nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2));\
+        DARR_PUT(wpn_effects, s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2));\
     }
-char **Names_wpnEffects(u64 in_effect) {
-    char *temp_str = NULL;
-    char **wpn_effects = DARR_INIT(wpn_effects, char *, UNIT_TYPE_END);
 #include "names/items_effects.h"
+#undef REGISTER_ENUM
     return (wpn_effects);
 }
-#undef REGISTER_ENUM
 
 
 s8 jsonElementnames[JSON_END] = {0};
