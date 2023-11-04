@@ -39,6 +39,7 @@ void Map_Tiles_Load(struct Map *map) {
         Tile_makeMvtCostarray(temp_tile);
         DARR_PUT(map->tiles, *temp_tile);
         DARR_PUT(map->tiles_id, tile_id);
+        s8_free(&filename);
         free(temp_tile);
     }
 }
@@ -114,24 +115,22 @@ void Map_Tilesets_Load(struct Map *map) {
         SDL_assert(tile_ind > 0);
 
         /* - Get tile - */
-        strcat(tilesetname, PATH_JOIN("..", "assets", "Tiles"));
+        s8 tilesetname = s8_mut(PATH_JOIN("..", "assets", "Tiles"));
         size_t tile_order = Map_Tile_Order(map, tile_ind);
         struct Tile *temp_tile = map->tiles + tile_order;
 
         /* - Load tileset - */
-        strcat(tilesetname, DIR_SEPARATOR);
-        strcat(tilesetname, "Tileset_");
-        strcat(tilesetname, temp_tile->name);
-        strcat(tilesetname, ".png");
+        tilesetname = s8cat(tilesetname, s8_literal(DIR_SEPARATOR"Tileset_"));
+        tilesetname = s8cat(tilesetname, s8_var(temp_tile->name));
+        tilesetname = s8cat(tilesetname, s8_literal(".png"));
         if (map->tileset_surfaces[PALETTE_NES][i] != NULL)
             SDL_FreeSurface(map->tileset_surfaces[PALETTE_NES][i]);
 
-        SDL_Surface *surf = Filesystem_Surface_Load(tilesetname, SDL_PIXELFORMAT_INDEX8);
-        // SDL_SaveBMP(map->tileset_surfaces[PALETTE_NES][i], strcat(temp_tile->name, ".bmp"));
+        SDL_Surface *surf = Filesystem_Surface_Load(tilesetname.data, SDL_PIXELFORMAT_INDEX8);
         SDL_assert(surf != NULL);
         SDL_assert(SDL_ISPIXELFORMAT_INDEXED(surf->format->format));
         map->tileset_surfaces[PALETTE_NES][i] = surf;
-        memset(&tilesetname, 0, DEFAULT_BUFFER_SIZE);
+        s8_free(&tilesetname);
     }
 }
 

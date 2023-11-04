@@ -301,7 +301,7 @@ void Item_Load(struct dtab *items_dtab, i16 id) {
     }
 
     s8 filename = s8_mut("items"PHYSFS_SEPARATOR"Item"PHYSFS_SEPARATOR);
-    filename = Item_Filename(filename, id);
+    filename    = Item_Filename(filename, id);
 
     struct Item temp_item = Item_default;
     SDL_Log("Loading item %ld %s", id, filename);
@@ -313,6 +313,7 @@ void Item_Load(struct dtab *items_dtab, i16 id) {
     /* - Add weapon to dtab - */
     DTAB_ADD(items_dtab, &temp_item, id);
 
+    s8_free(&filename);
 }
 
 void Item_All_Load(struct dtab *items_dtab) {

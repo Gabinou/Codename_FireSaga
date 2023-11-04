@@ -93,6 +93,7 @@ void Game_Party_Load(struct Game *sota, i16 *unit_ids, size_t load_num) {
         temp_unit.weapons_dtab = sota->weapons_dtab;
         jsonio_readJSON(filename.data, &temp_unit);
         sota->party[unit_ids[i]] = temp_unit;
+        s8_free(&filename);
     }
 }
 

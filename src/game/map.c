@@ -170,6 +170,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_Log("unitname: %ld %s", sota->map->reinforcements[i].id, unitname.data);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         jsonio_readJSON(unitname.data, unit);
+        s8_free(&unitname);
         if (!Unit_ID_Valid(unit->_id)) {
             SDL_Log("Unit %s.json has wrong ID. Should be %d.", unit->name, sota->map->reinforcements[i].id);
             exit(ERROR_Generic);
@@ -259,5 +260,6 @@ void Game_Tilesets_Dump(struct Game *sota) {
         // SDL_Texture * temptexture = DTAB_GET(sota->map->textures, (sota->map->tilesindex[i]));
         // Filesystem_Texture_Dump(dumpname, sota->renderer, temptexture, SDL_PIXELFORMAT_ARGB8888);
         // memset(&dumpname, 0, DEFAULT_BUFFER_SIZE);
+        s8_free(&dumpname);
     }
 }

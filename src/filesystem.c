@@ -111,6 +111,7 @@ int Filesystem_Init(char *argv0) {
     /* -- Cleanup -- */
     s8_free(&srcDir);
     s8_free(&assetsDir);
+    s8_free(&temp);
     return 1;
 }
 

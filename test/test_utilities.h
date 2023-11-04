@@ -112,6 +112,7 @@ void test_utilities() {
 
     memcpy(temp.data, "Vial Of Light", temp.len);
     nourstest_true(s8equal(s8_literal("vial of light"), s8_toLower(temp)));
+    s8_free(&temp);
 
     if (PHYSFS_stat(SAVE_FOLDER, NULL)) {
         PHYSFS_mkdir(SAVE_FOLDER);

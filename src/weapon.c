@@ -158,6 +158,7 @@ void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
 
     /* - Add weapon to dtab - */
     DTAB_ADD(weapons_dtab, &temp_weapon, id);
+    s8_free(&filename);
 }
 
 s8 Weapon_Filename(s8 filename, i16 id) {
@@ -210,6 +211,7 @@ void Weapon_Save(struct dtab *weapons_dtab, i16 id) {
         bool append = false;
         struct Weapon *weapon = (struct Weapon *)DTAB_GET(weapons_dtab, id);
         jsonio_writeJSON(filename.data, weapon, false);
+        s8_free(&filename);
     }
 }
 

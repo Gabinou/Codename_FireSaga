@@ -175,6 +175,9 @@ struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_conds,
         if (jfile != NULL)
             cJSON_Delete(jfile);
     }
+
+    s8_free(&filename);
+    s8_free(&base);
     return (sdarr);
 }
 

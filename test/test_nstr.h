@@ -70,9 +70,9 @@ void test_nstr() {
     nourstest_true(windows1.num == windows5.num);
 
     /* --- s8cat --- */
-    s8 lizard_mut = s8_mut("The lizard is a wizard, by joving rove.");
-    lizard_mut = s8cat(lizard_mut, windows4);
-    s8 lizard_result = s8_mut("The lizard is a wizard, by joving rove.Windows");
+    s8 lizard_mut       = s8_mut("The lizard is a wizard, by joving rove.");
+    lizard_mut          = s8cat(lizard_mut, windows4);
+    s8 lizard_result    = s8_mut("The lizard is a wizard, by joving rove.Windows");
     nourstest_true(s8equal(lizard_mut, lizard_result));
 
     /* --- s8_Path_Remove_Top --- */
@@ -84,8 +84,11 @@ void test_nstr() {
     nourstest_true(path_mut.num == temp.num);
     nourstest_true(s8equal(path_mut, s8_literal("/home/gabinours/Sync/Firesaga")));
 
+    s8_free(&windows1);
+    s8_free(&windows2);
     s8_free(&windows3);
     s8_free(&windows3);
     s8_free(&lizard_mut);
+    s8_free(&lizard_result);
     s8_free(&path_mut);
 }
