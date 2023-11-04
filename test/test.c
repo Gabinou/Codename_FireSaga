@@ -101,9 +101,9 @@ int main(int argc, char *argv[]) {
     RNG_Init_xoroshiro256ss();
 
     /* -- Running benchmarks -- */
-    // bench_nstr();
+    bench_nstr();
     // bench_RNG();
-    // getchar();
+    getchar();
 
     /* -- Running tests -- */
     unit_tests();

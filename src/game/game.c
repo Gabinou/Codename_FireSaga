@@ -217,6 +217,7 @@ void Game_Free(struct Game *sota) {
         DARR_FREE(sota->openables);
         sota->openables = NULL;
     }
+    s8_free(&sota->filename_menu);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Game cleaned.");
     SDL_free(sota);
@@ -315,19 +316,20 @@ struct Game *Game_Init() {
         success = false;
     }
     #endif /* SOTA_OPENGL */
-    char *path_mapping = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);
+    // char *path_mapping = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);
     char *temp_base = SDL_GetBasePath();
     SDL_assert(DEFAULT_BUFFER_SIZE >= strlen(temp_base));
-    memcpy(path_mapping, temp_base, DEFAULT_BUFFER_SIZE);
+    s8 path_mapping =  s8_mut(temp_base);
     free(temp_base);
-    path_mapping = nstr_Path_Remove_Top(path_mapping, DIR_SEPARATOR[0]);
+
+    path_mapping = s8_Path_Remove_Top(path_mapping, DIR_SEPARATOR[0]);
     const char *separator = PHYSFS_getDirSeparator();
-    strcat(path_mapping, separator);
-    strcat(path_mapping, DIR_SEPARATOR"gamecontrollerdb.txt");
-    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Path to gamecontrollerdb: %s\n", path_mapping);
-    if (SDL_GameControllerAddMappingsFromFile(path_mapping) < 0)
+    path_mapping = s8cat(path_mapping, s8_var(separator));
+    path_mapping = s8cat(path_mapping, s8_literal(DIR_SEPARATOR"gamecontrollerdb.txt"));
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Path to gamecontrollerdb: %s\n", path_mapping.data);
+    if (SDL_GameControllerAddMappingsFromFile(path_mapping.data) < 0)
         SDL_LogWarn(SOTA_LOG_SYSTEM, "gamecontrollerdb.txt not found!\n");
-    free(path_mapping);
+    s8_free(&path_mapping);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Allocating space for globals\n");
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Allocating space for events\n");
     Events_Data_Malloc();
@@ -473,43 +475,48 @@ void Game_Startup(struct Game *sota, struct Input_Arguments in_args) {
 
 void Game_Save_Copy(const i16 from_ind, const i16 to_ind) {
     SDL_assert(PHYSFS_exists(SAVE_FOLDER));
-    char filenameto[DEFAULT_BUFFER_SIZE] = SAVE_FOLDER;
-    char filenamefrom[DEFAULT_BUFFER_SIZE] = SAVE_FOLDER;
+    s8 filenameto       = s8_mut(SAVE_FOLDER);
+    s8 filenamefrom     = s8_mut(SAVE_FOLDER);
     char tempto[DEFAULT_BUFFER_SIZE];
     char tempfrom[DEFAULT_BUFFER_SIZE];
     stbsp_snprintf(tempto,   DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", to_ind);
     stbsp_snprintf(tempfrom, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", from_ind);
-    strcat(filenameto, tempto);
-    strcat(filenamefrom, tempfrom);
+    filenameto      = s8cat(filenameto,     s8_var(tempto));
+    filenamefrom    = s8cat(filenamefrom,   s8_var(tempfrom));
     SDL_LogDebug(SOTA_LOG_APP, "copy saveJSON Game from %s to %s\n", filenamefrom, filenameto);
-    PHYSFS_file *pfrom = PHYSFS_openRead(filenamefrom);
-    SDL_assert(pfrom != NULL);
-    PHYSFS_file *pto = PHYSFS_openWrite(filenameto);
+    PHYSFS_file *pfrom  = PHYSFS_openRead(filenamefrom.data);
+    PHYSFS_file *pto    = PHYSFS_openWrite(filenameto.data);
+    SDL_assert(pfrom    != NULL);
+    SDL_assert(pto      != NULL);
+
     i16 len = PHYSFS_fileLength(pfrom);
     char longbuffer[len];
     PHYSFS_readBytes(pfrom, longbuffer, len);
     PHYSFS_writeBytes(pto, longbuffer, len);
     PHYSFS_close(pfrom);
     PHYSFS_close(pto);
+    s8_free(&filenameto);
+    s8_free(&filenamefrom);
 }
 
 void Game_Save_Delete(const i16 save_ind) {
     SDL_assert(PHYSFS_exists(SAVE_FOLDER));
-    char filename[DEFAULT_BUFFER_SIZE] = SAVE_FOLDER;
+    s8 filename = s8_mut(SAVE_FOLDER);
     char temp[DEFAULT_BUFFER_SIZE];
     stbsp_snprintf(temp, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", save_ind);
-    strcat(filename, temp);
-    SDL_LogDebug(SOTA_LOG_APP, "Deleting Game: %s\n", filename);
-    PHYSFS_delete(filename);
+    filename = s8cat(filename, s8_var(temp));
+    SDL_LogDebug(SOTA_LOG_APP, "Deleting Game: %s\n", filename.data);
+    PHYSFS_delete(filename.data);
+    s8_free(&filename);
 }
 
 void Game_loadJSON(struct Game *sota, const i16 save_ind) {
     SDL_assert(PHYSFS_exists(SAVE_FOLDER));
-    char filename[DEFAULT_BUFFER_SIZE] = SAVE_FOLDER;
+    s8 filename = s8_mut(SAVE_FOLDER);
     char temp[DEFAULT_BUFFER_SIZE];
     stbsp_snprintf(temp, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", save_ind);
-    strcat(filename, temp);
-    cJSON *json         = jsonio_parseJSON(filename);
+    filename = s8cat(filename, s8_var(temp));
+    cJSON *json         = jsonio_parseJSON(filename.data);
     // readJSON_narrative(json, &sota->narrative);
     cJSON *jRN          = cJSON_GetObjectItem(json, "RN");
     cJSON *jRN_s1       = cJSON_GetObjectItem(jRN, "s1");
@@ -546,13 +553,13 @@ void Game_loadJSON(struct Game *sota, const i16 save_ind) {
 void Game_saveJSON(struct Game *sota, const i16 save_ind) {
     if (!PHYSFS_exists(SAVE_FOLDER))
         PHYSFS_mkdir(SAVE_FOLDER);
-    char filename[DEFAULT_BUFFER_SIZE] = SAVE_FOLDER;
+    s8 filename = s8_mut(SAVE_FOLDER);
     char temp[DEFAULT_BUFFER_SIZE];
     stbsp_snprintf(temp, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", save_ind);
-    strcat(filename, temp);
-    SDL_LogDebug(SOTA_LOG_APP, "saveJSON Game to: %s\n", filename);
-    PHYSFS_delete(filename);
-    PHYSFS_file *fp = PHYSFS_openWrite(filename);
+    filename = s8cat(filename, s8_var(temp));
+    SDL_LogDebug(SOTA_LOG_APP, "saveJSON Game to: %s\n", filename.data);
+    PHYSFS_delete(filename.data);
+    PHYSFS_file *fp = PHYSFS_openWrite(filename.data);
     SDL_assert(fp);
     cJSON *json         = cJSON_CreateObject();
     // writeJSON_narrative(json, &sota->narrative);

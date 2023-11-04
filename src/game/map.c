@@ -176,7 +176,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         }
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         unit->army = sota->map->reinforcements[i].army;
-        
+
         SDL_Log("-- loading unit equipment --");
         for (int j = 0; j < DARR_NUM(sota->map->reinf_equipments[i]); j++) {
             unit->_equipment[j] = sota->map->reinf_equipments[i][j];
