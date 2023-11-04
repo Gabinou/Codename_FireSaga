@@ -84,13 +84,15 @@ bool Condition_Read(u32 *bitfield, size_t bits, cJSON *jcondition) {
         if (cJSON_IsArray(jcondition)) {
             cJSON_ArrayForEach(jelem, jcondition) {
                 char *name = cJSON_GetStringValue(jelem);
-                i16 id = Hashes_unitName2ID(name);
+                // i16 id = Hashes_unitName2ID(name);
+                i16 id = 0;
                 if (id > 0)
                     Bitfield_On(cond, id - 1);
             }
         } else if (cJSON_IsString(jcondition)) {
             char *name = cJSON_GetStringValue(jcondition);
-            i16 id = Hashes_unitName2ID(name);
+            i16 id = 0;
+            // i16 id = Hashes_unitName2ID(name);
             if (id > 0)
                 Bitfield_On(cond, id - 1);
         }
@@ -196,7 +198,8 @@ void Scene_readJSON(void *input, const struct cJSON *const jscene) {
         size_t len = strlen(jline->child->string);
         char *temp = calloc(len + 1, 1);
         memcpy(temp, jline->child->string, len);
-        i16 id = Hashes_unitHash2ID(tnecs_hash_djb2(nstr_toLower(temp)));
+        // i16 id = Hashes_unitHash2ID(tnecs_hash_djb2(nstr_toLower(temp)));
+        i16 id = 0;
         SDL_free(temp);
         /* - line - */
         temp = cJSON_GetStringValue(jline->child);

@@ -8,7 +8,11 @@
 #include "tnecs.h"
 #include "nmath.h"
 #include "types.h"
+#include "supports.h"
 #include "SDL.h"
+
+/* What are hashes for? */
+// - I use simples indices, order to indentiy things
 
 /* -- Hashes -- */
 extern u64 *unitHashes;

@@ -409,10 +409,10 @@ void Filesystem_readJSON_Shop(const char *filename, struct Shop *shop) {
     for (int i = 0; i < items_num; i++) {
         struct cJSON *jitem = cJSON_GetArrayItem(jitems, i);
         shop->qty[i]        = cJSON_GetNumberValue(jitem);
-        shop->items[i]      = Hashes_itemName2ID(jitem->string);
+        // shop->items[i]      = Hashes_itemName2ID(jitem->string);
     }
     struct cJSON *jshopkeeper = cJSON_GetObjectItem(jshop, "Shopkeeper");
-    shop->shopkeeper = Hashes_shopkeeperName2ID(cJSON_GetStringValue(jshopkeeper));
+    // shop->shopkeeper = Hashes_shopkeeperName2ID(cJSON_GetStringValue(jshopkeeper));
     if (jfile != NULL)
         cJSON_Delete(jfile);
 }
@@ -439,7 +439,7 @@ void Filesystem_readJSON_Promotion(const char *filename, struct Promotion *promo
             SDL_Log("No Name element in skills element of promotion json");
             exit(ERROR_JSONParsingFailed);
         }
-        promotion->skill = Hashes_skillName2ID(cJSON_GetStringValue(jname));
+        // promotion->skill = Hashes_skillName2ID(cJSON_GetStringValue(jname));
 
         struct cJSON *jlvl = cJSON_GetObjectItem(jskill, "level");
         if (jlvl != NULL)
@@ -565,8 +565,8 @@ void Filesystem_readJSON_Chest(const struct cJSON *const jchest, struct Chest *r
         chest->gold = cJSON_GetNumberValue(jgold);
     if (jitem != NULL) {
         char *name  = cJSON_GetStringValue(jitem);
-        if (name != NULL)
-            chest->item = Hashes_itemName2ID(name);
+        // if (name != NULL)
+        // chest->item = Hashes_itemName2ID(name);
     }
 }
 

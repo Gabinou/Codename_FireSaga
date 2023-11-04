@@ -293,7 +293,7 @@ void Utilities_Load() {
 void Utilities_Free() {
     Palettes_Free();
     Names_Free();
-    Hashes_Free();
+    // Hashes_Free();
 }
 
 void SOTA_Free_Surfaces(SDL_Surface **surfaces, int num) {

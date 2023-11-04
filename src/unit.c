@@ -1824,7 +1824,7 @@ void Unit_readJSON(void *input, const cJSON *const junit) {
         for (int i = 0; i < unit->support_num; ++i) {
             struct cJSON *jsupport = cJSON_GetArrayItem(jsupports, i);
             char *name = cJSON_GetStringValue(jsupport);
-            unit->supports[i].other_id = Hashes_supportName2ID(name);
+            // unit->supports[i].other_id = Hashes_supportName2ID(name);
             unit->supports[i].level = 0;
             unit->supports[i].other_type = 0;
         }

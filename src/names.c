@@ -233,9 +233,9 @@ void Names_wpnType_Free(s8 *type_names) {
 void Names_Load_All() {
     Names_unitNames();
     Names_sceneTimes();
-    Hashes_supportHashes();
-    Hashes_unitHashes();
-    Hashes_itemHashes();
+    // Hashes_supportHashes();
+    // Hashes_unitHashes();
+    // Hashes_itemHashes();
     Names_tileNames();
     Names_campjobNames();
     Names_statNames();
