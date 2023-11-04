@@ -171,18 +171,15 @@ s8 *Names_skillNames(uint64_t in_skillscode) {
 }
 #undef  REGISTER_ENUM
 
+s8 *Names_unitstateNames(uint32_t in_statecode) {
+    s8 *state_names = DARR_INIT(state_names, s8, UNIT_STATUS_END);
 #define REGISTER_ENUM(x) if flagsum_isIn(in_statecode, UNIT_STATUS_##x) {\
-        temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
-        memcpy(temp_str, #x, sizeof(#x));\
-        DARR_PUT(state_names, nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')),' ', 2));\
+        DARR_PUT(state_names, s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2));\
     }
-char **Names_unitstateNames(uint32_t in_statecode) {
-    char *temp_str = NULL;
-    char **state_names = DARR_INIT(state_names, char *, UNIT_STATUS_END);
 #include "names/units_statuses.h"
+#undef  REGISTER_ENUM
     return (state_names);
 }
-#undef  REGISTER_ENUM
 
 u16 *class_equippables = NULL;
 void Names_class_equippables() {

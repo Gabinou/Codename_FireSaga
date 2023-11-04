@@ -55,7 +55,6 @@ void   Names_statNames();
 void   Names_classNames();
 void   Names_unitStatuses();
 void   Names_class_equippables();
-char **Names_unitstateNames(u32 statecode);
 
 /* - supports - */
 void Names_supportTypes();
@@ -65,11 +64,12 @@ void Names_itemNames();
 void Names_tileNames();
 
 /* --- X macros generators --- */
-void Names_wpnType_Free(s8 *types);
-s8 *Names_wpnType(   u16 typecode);
-s8 *Names_unitTypes( u16 typecode);
-s8 *Names_skillNames(u64 skillscode);
-s8 *Names_wpnEffects(u64 effect);
+void Names_wpnType_Free( s8 *types);
+s8 *Names_wpnType(       u16 typecode);
+s8 *Names_unitTypes(     u16 typecode);
+s8 *Names_skillNames(    u64 skillscode);
+s8 *Names_wpnEffects(    u64 effect);
+s8 *Names_unitstateNames(u32 statecode);
 
 /* -- API -- */
 void Names_Free();
