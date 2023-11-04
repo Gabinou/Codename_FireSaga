@@ -19,7 +19,7 @@ void s8_free(s8 *str8) {
         str8->data = NULL;
     }
 }
-// tiles/Door.json%
+
 b32 s8equal(s8 s1, s8 s2) {
     if(s1.num != s2.num)
         return(false);

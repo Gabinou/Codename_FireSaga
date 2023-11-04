@@ -58,16 +58,12 @@ void Names_statNames() {
 }
 
 
-#define REGISTER_ENUM(x) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
-    memcpy(temp_str, #x, sizeof(#x));\
-    armyNames[ARMY_##x] = nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')),' ', 2);
-char **armyNames = NULL;
+s8 armyNames[ARMY_NUM] = {0};
 void Names_armyNames() {
-    char *temp_str = NULL;
-    armyNames = calloc(ARMY_END, sizeof(*armyNames));
+#define REGISTER_ENUM(x) armyNames[ARMY_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2);
 #include "names/armies.h"
-}
 #undef REGISTER_ENUM
+}
 
 #define REGISTER_ENUM(x) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
     memcpy(temp_str, #x, sizeof(#x));\
@@ -387,14 +383,7 @@ void Names_Free() {
     }
     SDL_Log("armyNames");
     for (size_t i = 0; i < ARMY_END; i++) {
-        if (armyNames[i] != NULL) {
-            SDL_free(armyNames[i]);
-            armyNames[i] = NULL;
-        }
-    }
-    if (armyNames != NULL) {
-        SDL_free(armyNames);
-        armyNames = NULL;
+        s8_free(&armyNames[i]);
     }
     SDL_Log("global_itemNames");
     for (size_t i = 0; i < DARR_NUM(global_itemNames); i++) {
