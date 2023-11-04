@@ -39,7 +39,7 @@ typedef struct s8 {
 //  - foo(s8 *str8) -> foo can change all member variables
 //  - bar(s8  str8) -> bar can only change *str8.data, 
 //                     ie what str8.data points to
-s8   s8_mut(char *string);
+s8   s8_mut(const char *string);
 void s8_free(s8  *str8);
 
 s8 s8_slicefromEnd(  s8 str8, size_t toslice);

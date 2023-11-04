@@ -130,10 +130,10 @@ dtab_ptr = dtab_ptr = malloc(sizeof(*dtab_ptr));
 ...
 */
 #define DTAB_INIT(dtab_ptr, type) dtab_ptr = malloc(sizeof(*dtab_ptr));\
-dtab_ptr->len = DTAB_LEN_INIT;\
-dtab_ptr->num = DTAB_NUM_INIT;\
-dtab_ptr->values = calloc(DTAB_LEN_INIT, sizeof(type));\
-dtab_ptr->keys = malloc(sizeof(*dtab_ptr->keys) * (DTAB_LEN_INIT));\
+dtab_ptr->len       = DTAB_LEN_INIT;\
+dtab_ptr->num       = DTAB_NUM_INIT;\
+dtab_ptr->values    = calloc(DTAB_LEN_INIT, sizeof(type));\
+dtab_ptr->keys      = malloc(sizeof(*dtab_ptr->keys) * (DTAB_LEN_INIT));\
 dtab_ptr->keys[DTAB_NULL] = DTAB_NULL;\
 dtab_ptr->bytesize = sizeof(type);
 

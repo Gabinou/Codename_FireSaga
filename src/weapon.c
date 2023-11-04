@@ -36,6 +36,8 @@ void Weapon_Free(struct Weapon *weapon) {
         return;
     }
 
+    SDL_Log("weapon == NULL %d", weapon == NULL);
+    SDL_Log("json_filename '%s'", weapon->json_filename);
     if (weapon->json_filename != NULL) {
         free(weapon->json_filename);
         weapon->json_filename = NULL;

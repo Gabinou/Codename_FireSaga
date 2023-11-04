@@ -3,6 +3,7 @@
 
 #include "nmath.h"
 #include "index_shader.h"
+#include "nstr.h"
 #include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
@@ -101,10 +102,10 @@ typedef struct Sprite {
     /* Each sprite can have ONE spritesheets -> one timer per entity */
     struct Spritesheet *spritesheet;
 
-    char *asset_name;
+    s8 asset_name;
 
     bool map_unit : 1;
-    bool visible : 1;
+    bool visible  : 1;
 } Sprite;
 extern struct Sprite Sprite_default;
 

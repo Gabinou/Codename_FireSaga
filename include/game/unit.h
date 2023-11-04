@@ -13,8 +13,8 @@
 struct Item;
 
 /* --- Constructors/Destructors --- */
-void Game_Items_Free(  struct dtab *items_dtab);
-void Game_Weapons_Free(struct dtab *weapons_dtab);
+void Game_Items_Free(  struct dtab **items_dtab);
+void Game_Weapons_Free(struct dtab **weapons_dtab);
 
 /* --- Party utilities --- */
 void Game_Party_Load(  struct Game *s, i16 *to_load_ids, size_t load_num);

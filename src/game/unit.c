@@ -1,36 +1,34 @@
 #include "game/unit.h"
 
 /* --- Constructors/Destructors --- */
-void Game_Items_Free(struct dtab *items_dtab) {
-    if (items_dtab == NULL) {
+void Game_Items_Free(struct dtab **items_dtab) {
+    if (*items_dtab == NULL) {
         return;
     }
 
-    struct Item *cast_dtab = items_dtab->values;
+    struct Item *cast_dtab = (*items_dtab)->values;
     SDL_assert(cast_dtab != NULL);
-    for (size_t i = 0 ; i < items_dtab->num; i++) {
+    for (size_t i = 0 ; i < (*items_dtab)->num; i++) {
         Item_Free((cast_dtab + i));
     }
 
-    DTAB_FREE(items_dtab);
-    items_dtab = NULL;
-
+    DTAB_FREE((*items_dtab));
+    *items_dtab = NULL;
 }
 
-void Game_Weapons_Free(struct dtab *weapons_dtab) {
-    if (weapons_dtab == NULL) {
+void Game_Weapons_Free(struct dtab **weapons_dtab) {
+    if ((*weapons_dtab) == NULL) {
         return;
     }
 
-    struct Weapon *cast_dtab = weapons_dtab->values;
+    struct Weapon *cast_dtab = (*weapons_dtab)->values;
     SDL_assert(cast_dtab != NULL);
-    for (size_t i = 0 ; i < weapons_dtab->num; i++) {
+    for (size_t i = 0 ; i < (*weapons_dtab)->num; i++) {
         Weapon_Free((cast_dtab + i));
     }
 
-    DTAB_FREE(weapons_dtab);
-    weapons_dtab = NULL;
-
+    DTAB_FREE((*weapons_dtab));
+    *weapons_dtab = NULL;
 }
 
 /* --- Wait/Refresh --- */

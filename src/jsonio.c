@@ -57,7 +57,6 @@ struct cJSON *jsonio_parseJSON(const char *filename) {
 }
 
 void jsonio_readJSON(const char *filename, void *struct_ptr) {
-
     SDL_Log("Reading JSON: %s", filename);
 
     /* Parse the json file */

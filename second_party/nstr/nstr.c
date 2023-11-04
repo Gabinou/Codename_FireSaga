@@ -2,7 +2,7 @@
 
 /* --- Pascal String s8 strings --- */
 // 3x-4x faster than null-terminated strings!
-s8 s8_mut(char *string) {
+s8 s8_mut(const char *string) {
     s8 s8_string;
     size_t len = strlen(string);
     s8_string.num  = len;

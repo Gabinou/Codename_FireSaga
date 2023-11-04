@@ -104,6 +104,7 @@ struct Game Game_default = {
 
 /* --- Constructors/Destructors --- */
 void Game_Free(struct Game *sota) {
+    s8_free(&sota->filename_menu);
     Game_Cursor_Free(sota);
     Game_PopUp_Tile_Free(sota);
     Game_Mouse_Free(sota);
@@ -180,8 +181,8 @@ void Game_Free(struct Game *sota) {
     if (sota->world != NULL) {
         tnecs_world_destroy(sota->world); /* crashes */
     }
-    Game_Items_Free(  sota->items_dtab);
-    Game_Weapons_Free(sota->weapons_dtab);
+    Game_Items_Free(  &sota->items_dtab);
+    Game_Weapons_Free(&sota->weapons_dtab);
     if (sota->units_loaded != NULL) {
         SDL_free(sota->units_loaded);
         sota->units_loaded = NULL;
@@ -217,7 +218,6 @@ void Game_Free(struct Game *sota) {
         DARR_FREE(sota->openables);
         sota->openables = NULL;
     }
-    s8_free(&sota->filename_menu);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Game cleaned.");
     SDL_free(sota);

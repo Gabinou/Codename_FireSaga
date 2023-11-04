@@ -42,8 +42,9 @@ struct Sprite Sprite_default = {
     .spritesheet    = NULL,
     .texture        = NULL,
     .flip           = SDL_FLIP_NONE,
-    .visible        = true,
-    .map_unit       = false
+    .asset_name     = {0},
+    .map_unit       = false,
+    .visible        = true
 };
 
 /* --- SPRITESHEET --- */
@@ -191,10 +192,8 @@ void Sprite_Free(struct Sprite *sprite) {
     }
 
     SDL_Log("Freeing name");
-    if (sprite->asset_name != NULL) {
-        free(sprite->asset_name);
-        sprite->asset_name = NULL;
-    }
+    s8_free(&sprite->asset_name);
+
     if (sprite->json_filename != NULL) {
         free(sprite->json_filename);
         sprite->json_filename = NULL;
@@ -250,38 +249,31 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit, SDL_Renderer
     SDL_assert(sprite->spritesheet->json_element == JSON_SPRITE);
 
     /* -- Loading spritesheet metadata -- */
-    char filename[DEFAULT_BUFFER_SIZE] = {0};
-    strcat(filename, PATH_JOIN("assets", "Map_Units")PHYSFS_SEPARATOR);
+    s8 filename = s8_mut(PATH_JOIN("assets", "Map_Units")PHYSFS_SEPARATOR);
     SDL_Log("unit->id %lu",    unit->_id);
     SDL_Log("unit->name %s",   unit->name);
     SDL_Log("unit->class %ld", unit->class);
     SDL_assert(classNames[unit->class] != NULL);
 
-    strcat(filename, classNames[unit->class]);
-    strcat(filename, ".json");
-    SDL_Log("FILE %s", filename);
-    SDL_assert(PHYSFS_exists(filename));
-    jsonio_readJSON(filename, sprite);
+    filename = s8cat(filename, s8_var(classNames[unit->class]));
+    filename = s8cat(filename, s8_literal(".json"));
+    SDL_Log("FILE %s", filename.data);
+    SDL_assert(PHYSFS_exists(filename.data));
+    jsonio_readJSON(filename.data, sprite);
 
     /* -- Loading spritesheet surface -- */
-    memset(filename, 0, DEFAULT_BUFFER_SIZE);
-    strcat(filename, PATH_JOIN("..", "assets", "Map_Units")DIR_SEPARATOR);
-    strcat(filename, classNames[unit->class]);
-    strcat(filename, ".png");
+    s8_free(&filename);
 
-    SDL_Log("FILE %s", filename);
-    // SDL_assert(PHYSFS_exists(filename));
-    /* -- Saving asset name -- */
-    if (sprite->asset_name != NULL)
-        SDL_free(sprite->asset_name);
-    size_t len = strlen(filename);
-    sprite->asset_name = calloc(len, sizeof(*sprite->asset_name));
-    memcpy(sprite->asset_name, filename, len);
+    s8_free(&sprite->asset_name);
+    sprite->asset_name = s8_mut(PATH_JOIN("..", "assets", "Map_Units")DIR_SEPARATOR);
+    sprite->asset_name = s8cat(sprite->asset_name, s8_var(classNames[unit->class]));
+    sprite->asset_name = s8cat(sprite->asset_name, s8_literal(".png"));
 
     /* -- Loading Surface, creating Texture -- */
     SDL_assert(sprite->spritesheet->surface == NULL);
-    SDL_Log("FILE %s", filename);
-    sprite->spritesheet->surface = Filesystem_Surface_Load(filename, SDL_PIXELFORMAT_INDEX8);
+    SDL_Log("FILE %s", sprite->asset_name.data);
+    sprite->spritesheet->surface = Filesystem_Surface_Load(sprite->asset_name.data,
+                                                           SDL_PIXELFORMAT_INDEX8);
     SDL_assert(sprite->spritesheet->surface != NULL);
     sprite->texture = SDL_CreateTextureFromSurface(renderer, sprite->spritesheet->surface);
     sprite->map_unit = true;
@@ -292,11 +284,8 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit, SDL_Renderer
 // Load Sprite to spritesheet by default
 void Sprite_Load(struct Sprite *sprite, const char *asset_name, SDL_Renderer *renderer) {
     /* -- Saving asset name -- */
-    if (sprite->asset_name != NULL)
-        SDL_free(sprite->asset_name);
-    size_t len = strlen(asset_name);
-    sprite->asset_name = calloc(len, sizeof(*sprite->asset_name));
-    memcpy(sprite->asset_name, asset_name, len);
+    s8_free(&sprite->asset_name);
+    sprite->asset_name = s8_mut(asset_name);
 
     /* -- Putting surface in default spritesheet -- */
     if (sprite->spritesheet == NULL) {
@@ -312,7 +301,8 @@ void Sprite_Load(struct Sprite *sprite, const char *asset_name, SDL_Renderer *re
         SDL_DestroyTexture(sprite->texture);
 
     /* -- Keep spritesheed in memory -- */
-    sprite->spritesheet->surface = Filesystem_Surface_Load(asset_name, SDL_PIXELFORMAT_INDEX8);
+    sprite->spritesheet->surface = Filesystem_Surface_Load(sprite->asset_name.data,
+                                                           SDL_PIXELFORMAT_INDEX8);
     SDL_assert(sprite->spritesheet->surface != NULL);
     sprite->texture = SDL_CreateTextureFromSurface(renderer, sprite->spritesheet->surface);
 }
