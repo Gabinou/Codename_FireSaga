@@ -92,9 +92,8 @@ void Names_itemNames() {
 }
 #undef REGISTER_ENUM
 
-char **support_types = NULL;
+s8 support_types[SUPPORT_TYPE_NUM] = {0};
 void Names_supportTypes() {
-    support_types = SDL_malloc(TILE_ID_MAX * sizeof(global_tilenames));
 }
 
 char **global_tilenames = NULL;
