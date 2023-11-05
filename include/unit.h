@@ -46,9 +46,8 @@ extern struct Unit_status Unit_status_default;
 
 /* --- UNIT --- */
 typedef struct Unit {
-    u8      json_element;  /* JSON_ELEM_bOFFSET = 0 */
-    char   *json_filename; /* JSON_ELEM_bOFFSET = 1 */
-
+    u8      json_element;  /* JSON_ELEM_bOFFSET = 0 (+  1) */
+    char   *json_filename; /* JSON_ELEM_bOFFSET = 1 (+ 24) */
 
     i16    class;
     i8     mvt_type;
@@ -133,8 +132,8 @@ typedef struct Unit {
     struct Mount *mount;
     bool mounted;
 
-    char name [DEFAULT_BUFFER_SIZE / 4];
-    char title[DEFAULT_BUFFER_SIZE / 4];    /* Lord, Duke, etc. */
+    s8 name;
+    s8 title;    /* Lord, Duke, etc. */
     struct Computed_Stats computed_stats;   /* Computed from Unit_Stats */
     struct Computed_Stats support_bonuses[SOTA_MAX_SUPPORTS];
     struct Computed_Stats support_bonus;
@@ -155,7 +154,7 @@ extern struct Unit Unit_default;
 
 /* --- Constructors/Destructors --- */
 void Unit_Init(        struct Unit *u);
-void Unit_SDL_free(        struct Unit *u);
+void Unit_Free(        struct Unit *u);
 void Unit_InitWweapons(struct Unit *u, struct dtab *weapons_dtab);
 
 /* --- Setters/Getters --- */

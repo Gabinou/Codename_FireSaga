@@ -222,7 +222,7 @@ void Game_UnitsonMap_SDL_free(struct Game *sota) {
 
         struct Unit *unit = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
         if (unit)
-            Unit_SDL_free(unit);
+            Unit_Free(unit);
 
         struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Sprite);
         if (sprite)

@@ -30,7 +30,7 @@ void Game_PopUp_Tile_Create(         struct Game *sota);
 
 /* --- PopUp_Unit --- */
 void Game_PopUp_Unit_Hide(           struct Game *sota);
-void Game_PopUp_Unit_SDL_free(           struct Game *sota);
+void Game_PopUp_Unit_Free(           struct Game *sota);
 void Game_PopUp_Unit_Place(          struct Game *sota, struct Point pos);
 void Game_PopUp_Unit_Create(         struct Game *sota);
 

@@ -338,7 +338,7 @@ void test_canEquip() {
     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
 
     Game_Weapons_SDL_free(&weapons_dtab);
-    Unit_SDL_free(&Silou);
+    Unit_Free(&Silou);
 }
 
 void test_skills() {
@@ -387,8 +387,8 @@ void test_skills() {
     Unit_computedStats(&Enemy, distance);
 
     /* --- FREE --- */
-    Unit_SDL_free(&Silou);
-    Unit_SDL_free(&Enemy);
+    Unit_Free(&Silou);
+    Unit_Free(&Enemy);
     Game_Weapons_SDL_free(&weapons_dtab);
 }
 
@@ -519,11 +519,11 @@ void test_io() {
     nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "unit_rewrite.json"))   != 0);
     nourstest_true(Filesystem_fequal(PATH_JOIN("saves", "unit_test.json"),
                                      PATH_JOIN("saves", "unit_rewrite.json")));
-    Unit_SDL_free(&unit1);
-    Unit_SDL_free(&unit2);
-    Unit_SDL_free(&unit3);
-    Unit_SDL_free(&unit4);
-    Unit_SDL_free(&unit5);
+    Unit_Free(&unit1);
+    Unit_Free(&unit2);
+    Unit_Free(&unit3);
+    Unit_Free(&unit4);
+    Unit_Free(&unit5);
     Game_Weapons_SDL_free(&weapons_dtab);
     Game_Weapons_SDL_free(&weapons_dtab2);
 }
@@ -631,7 +631,7 @@ void test_growth() {
     nourstest_true(Silou.move_sequence.len      == 0);
     nourstest_true(Silou.con_sequence.len       == 0);
 
-    Unit_SDL_free(&Silou);
+    Unit_Free(&Silou);
 }
 
 void test_wpn_or_item() {
@@ -687,7 +687,7 @@ void test_wpn_or_item() {
 
     Game_Items_SDL_free(&items_dtab);
     Game_Weapons_SDL_free(&weapons_dtab);
-    Unit_SDL_free(&Silou);
+    Unit_Free(&Silou);
 }
 
 void test_unit() {

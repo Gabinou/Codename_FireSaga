@@ -183,12 +183,12 @@ struct Unit Unit_Nibal_make() {
 /* --- Constructors/Destructors --- */
 void Unit_Init(struct Unit *unit) {
     SDL_assert(unit != NULL);
-    Unit_SDL_free(unit);
+    Unit_Free(unit);
     unit->grown_stats  = DARR_INIT(unit->grown_stats,  struct Unit_stats, SOTA_MAX_LEVEL / 8);
     unit->status_queue = DARR_INIT(unit->status_queue, struct Unit_status, 2);
 }
 
-void Unit_SDL_free(struct Unit *unit) {
+void Unit_Free(struct Unit *unit) {
     SDL_assert(unit != NULL);
     if (unit->grown_stats != NULL) {
         DARR_FREE(unit->grown_stats);
@@ -205,6 +205,8 @@ void Unit_SDL_free(struct Unit *unit) {
         DARR_FREE(unit->status_queue);
         unit->status_queue = NULL;
     }
+    s8_free(&unit->name);
+    s8_free(&unit->title);
 }
 
 void Unit_InitWweapons(struct Unit *unit, struct dtab *weapons_dtab) {
@@ -283,8 +285,9 @@ int SotA_Hand_Strong(i8 handedness) {
 
 void Unit_setid(struct Unit *unit, i16 id) {
     SDL_assert(unit != NULL);
-    unit->_id = id;
-    memcpy(unit->name, global_unitNames[unit->_id].data, global_unitNames[unit->_id].num);
+    unit->_id   = id;
+    s8_free(&unit->name);
+    unit->name  = s8cpy(unit->name, global_unitNames[unit->_id]);
 }
 
 void Unit_setSkills(struct Unit *unit, u64 skills) {
@@ -675,7 +678,7 @@ void Unit_Unequip(struct Unit *unit, bool hand) {
 * Input crit bool just to determine if unit dies instantly or not.
 */
 void Unit_takesDamage(struct Unit *unit, u8 damage, bool crit) {
-    SDL_Log("%s takes %d damage \n", unit->name, damage);
+    SDL_Log("%s takes %d damage \n", unit->name.data, damage);
     /* -- Checks -- */
     SDL_assert(unit);
     if (unit->current_hp == 0) {
@@ -697,7 +700,7 @@ void Unit_takesDamage(struct Unit *unit, u8 damage, bool crit) {
 }
 
 void Unit_getsHealed(struct Unit *unit, u8 healing) {
-    SDL_Log("%s gets healed for %d\n", unit->name, healing);
+    SDL_Log("%s gets healed for %d\n", unit->name.data, healing);
     /* -- Checks -- */
     SDL_assert(unit);
 
@@ -798,13 +801,13 @@ void Unit_lvlUp(struct Unit *unit) {
 
 void Unit_agonizes(struct Unit *unit) {
     unit->agonizes = true;
-    SDL_Log("%s is agonizing. %d turns until death\n", unit->name, unit->computed_stats.agony);
+    SDL_Log("%s is agonizing. %d turns until death\n", unit->name.data, unit->computed_stats.agony);
 }
 
 void Unit_dies(struct Unit *unit) {
     SDL_assert(unit);
     unit->is_alive = false;
-    SDL_Log("%s is dead.\n", unit->name);
+    SDL_Log("%s is dead.\n", unit->name.data);
 }
 
 /* Can unit equip weapon input item? */
@@ -1806,11 +1809,9 @@ void Unit_readJSON(void *input, const cJSON *const junit) {
     cJSON *jclass_index     = cJSON_GetObjectItem(junit, "Class Index");
     cJSON *jsupport_type    = cJSON_GetObjectItem(junit, "Support Type");
     cJSON *jcurrent_stats   = cJSON_GetObjectItem(junit, "Stats");
-    unit->_id = cJSON_GetNumberValue(jid); //returns 0 if junit is NULL
+    Unit_setid(unit, cJSON_GetNumberValue(jid));
 
     SDL_Log("-- startup misc --");
-    SDL_assert(unit->name != NULL);
-    memcpy(unit->name, cJSON_GetStringValue(jname), strlen(cJSON_GetStringValue(jname)));
     unit->sex               = cJSON_IsTrue(jsex);
     unit->exp               = cJSON_GetNumberValue(jexp);
     unit->base_exp          = cJSON_GetNumberValue(jbase_exp);
@@ -1894,7 +1895,7 @@ void Unit_writeJSON(const void *input, cJSON *junit) {
     cJSON *jid            = cJSON_CreateNumber(unit->_id);
     cJSON *jexp           = cJSON_CreateNumber(unit->base_exp);
     cJSON *jsex           = cJSON_CreateBool(unit->sex);
-    cJSON *jname          = cJSON_CreateString(unit->name);
+    cJSON *jname          = cJSON_CreateString(unit->name.data);
     cJSON *jclass         = cJSON_CreateString(classNames[unit->class].data);
     cJSON *jbase_exp      = cJSON_CreateNumber(unit->exp);
     cJSON *jcurrent_hp    = cJSON_CreateNumber(unit->current_hp);

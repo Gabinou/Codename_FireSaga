@@ -14,7 +14,7 @@ struct PopUp_Unit PopUp_Unit_default = {
     .distance         = -1,
 };
 
-void PopUp_Unit_SDL_free(struct PopUp_Unit *pu) {
+void PopUp_Unit_Free(struct PopUp_Unit *pu) {
     if (pu->texture != NULL) {
         SDL_DestroyTexture(pu->texture);
         pu->texture = NULL;
@@ -28,7 +28,7 @@ void PopUp_Unit_SDL_free(struct PopUp_Unit *pu) {
 }
 
 void PopUp_Unit_Load(struct PopUp_Unit *pu, SDL_Renderer *renderer, struct n9Patch *n9patch) {
-    PopUp_Unit_SDL_free(pu);
+    PopUp_Unit_Free(pu);
     n9Patch_SDL_free(n9patch);
 
     *n9patch                    = n9Patch_default;
@@ -224,9 +224,9 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     SDL_RenderCopy(renderer, pu->texture_header, NULL, &dstrect);
     /* -- NAME -- */
     struct Point pos;
-    char *name = pu->unit->name;
-    pos = PopUp_Unit_Center_Name(pu, n9patch, name, strlen(name));
-    PixelFont_Write(pu->pixelnours_big, renderer, name, strlen(name), pos.x, pos.y);
+    s8 name = pu->unit->name;
+    pos = PopUp_Unit_Center_Name(pu, n9patch, name.data, name.num);
+    PixelFont_Write(pu->pixelnours_big, renderer, name.data, name.num, pos.x, pos.y);
     /* -- PORTRAIT/FACE -- */
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
     srcrect.w = PU_PORTRAIT_W;

@@ -375,7 +375,7 @@ void test_popup_map_combat() {
     Game_Weapons_SDL_free(&weapons_dtab);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
-    Unit_SDL_free(&aggressor);
-    Unit_SDL_free(&defendant);
+    Unit_Free(&aggressor);
+    Unit_Free(&defendant);
     SDL_Quit();
 }

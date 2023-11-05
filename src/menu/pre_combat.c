@@ -240,12 +240,12 @@ void PreCombatMenu_Draw(struct Menu *mc, SDL_Texture *render_target,
 
 void _PreCombatMenu_Draw_Names(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
     /* - Name - */
-    char *name = pcm->agg_unit->name;
+    s8 name = pcm->agg_unit->name;
     int x = PCM_SIMPLE_ANAME_X, y = PCM_SIMPLE_ANAME_Y;
-    PixelFont_Write_Len(pcm->pixelnours_big, renderer, name, x, y);
+    PixelFont_Write_Len(pcm->pixelnours_big, renderer, name.data, x, y);
     name = pcm->dft_unit->name;
     x = PCM_SIMPLE_DNAME_X,     y = PCM_SIMPLE_DNAME_Y;
-    PixelFont_Write_Len(pcm->pixelnours_big, renderer, name, x, y);
+    PixelFont_Write_Len(pcm->pixelnours_big, renderer, name.data, x, y);
 }
 
 void _PreCombatMenu_Draw_Faces(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {

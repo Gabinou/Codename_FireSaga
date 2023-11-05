@@ -535,9 +535,9 @@ void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *renderer) 
     SDL_RenderFillRect(renderer, &srcrect);
 
     /* - name - */
-    char *name = stats_menu->unit->name;
+    s8 name = stats_menu->unit->name;
     x = NAME_X_OFFSET, y = NAME_Y_OFFSET;
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, name, x, y);
+    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, name.data, x, y);
 
     /* - class - */
     s8 class = s8_mut(classNames[stats_menu->unit->class].data);
@@ -547,9 +547,9 @@ void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *renderer) 
     s8_free(&class);
 
     /* - title - */
-    char *title = stats_menu->unit->title;
+    s8 title = stats_menu->unit->title;
     x = TITLE_X_OFFSET, y = TITLE_Y_OFFSET;
-    PixelFont_Write_Len(stats_menu->pixelnours, renderer, title, x, y);
+    PixelFont_Write_Len(stats_menu->pixelnours, renderer, title.data, x, y);
 
     /* - HP simplebar - */
     struct SimpleBar hp_bar = SimpleBar_default;

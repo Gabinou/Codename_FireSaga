@@ -134,9 +134,9 @@ void test_combat_stats() {
     nourstest_true((temp_stats.dft_stats.move == defender_stats.move));
 
     /* --- FREE --- */
-    Unit_SDL_free(attacker);
+    Unit_Free(attacker);
     SDL_free(attacker);
-    Unit_SDL_free(defender);
+    Unit_Free(defender);
     SDL_free(defender);
     Game_Weapons_SDL_free(&weapons_dtab);
 }
@@ -522,8 +522,8 @@ void test_combat_flow() {
     nourstest_true(temp_flow.defendant_phases == 2);
 
     /* --- FREE --- */
-    Unit_SDL_free(&attacker);
-    Unit_SDL_free(&defender);
+    Unit_Free(&attacker);
+    Unit_Free(&defender);
     Game_Weapons_SDL_free(&weapons_dtab);
 }
 

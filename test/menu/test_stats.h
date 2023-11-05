@@ -398,5 +398,5 @@ void test_menu_stats() {
         SDL_DestroyTexture(n9patch.texture);
 
     SDL_DestroyRenderer(renderer);
-    Unit_SDL_free(&Silou);
+    Unit_Free(&Silou);
 }

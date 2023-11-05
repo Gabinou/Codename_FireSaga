@@ -145,7 +145,7 @@ void Map_Units_SDL_free(struct Map *map) {
             continue;
         struct Unit *unit = TNECS_GET_COMPONENT(map->world, uent, Unit);
         if (unit != NULL)
-            Unit_SDL_free(unit);
+            Unit_Free(unit);
         struct Sprite *sprite = TNECS_GET_COMPONENT(map->world, uent, Sprite);
         if (sprite != NULL)
             Sprite_SDL_free(sprite);

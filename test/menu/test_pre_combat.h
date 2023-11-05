@@ -522,8 +522,8 @@ void test_menu_pre_combat() {
                             renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* --- FREE --- */
-    Unit_SDL_free(&Silou);
-    Unit_SDL_free(&Hamilcar);
+    Unit_Free(&Silou);
+    Unit_Free(&Hamilcar);
     PixelFont_SDL_free(pcm->pixelnours, true);
     PixelFont_SDL_free(pcm->pixelnours_big, true);
 
@@ -535,5 +535,5 @@ void test_menu_pre_combat() {
         SDL_DestroyTexture(n9patch.texture);
 
     SDL_DestroyRenderer(renderer);
-    Unit_SDL_free(&Silou);
+    Unit_Free(&Silou);
 }

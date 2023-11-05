@@ -184,18 +184,19 @@ void _PopUp_Map_Combat_Draw_HP(struct PopUp_Map_Combat *pmc, SDL_Renderer *rende
 void _PopUp_Map_Combat_Draw_Names(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer) {
     /* --- Names --- */
     struct Point temp_pos;
-    int width = PixelFont_Width(pmc->pixelnours_tight, pmc->aggressor->name,
-                                strlen(pmc->aggressor->name));
+    s8 name = pmc->aggressor->name;
+    int width = PixelFont_Width(pmc->pixelnours_tight, name.data, name.num);
 
     temp_pos.x = POPUP_MAP_COMBAT_PATCH_BLUE_NAME_X - width / 2;
     temp_pos.y = POPUP_MAP_COMBAT_PATCH_BLUE_NAME_Y;
-    PixelFont_Write(pmc->pixelnours_big, renderer, pmc->aggressor->name,
-                    strlen(pmc->aggressor->name), temp_pos.x, temp_pos.y);
+    PixelFont_Write(pmc->pixelnours_big, renderer, name.data, name.num,
+                    temp_pos.x, temp_pos.y);
 
     temp_pos.x = POPUP_MAP_COMBAT_PATCH_RED_NAME_X - width / 2;
     temp_pos.y = POPUP_MAP_COMBAT_PATCH_RED_NAME_Y;
-    PixelFont_Write(pmc->pixelnours_big, renderer, pmc->defendant->name,
-                    strlen(pmc->defendant->name), temp_pos.x, temp_pos.y);
+    name = pmc->defendant->name;
+    PixelFont_Write(pmc->pixelnours_big, renderer, name.data, name.num,
+                    temp_pos.x, temp_pos.y);
 }
 void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer) {
     /* --- DMGs --- */

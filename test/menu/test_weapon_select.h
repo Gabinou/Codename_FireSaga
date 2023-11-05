@@ -234,7 +234,7 @@ void test_menu_weapon_select() {
 
     if (n9patch.texture != NULL)
         SDL_DestroyTexture(n9patch.texture);
-    Unit_SDL_free(&Silou);
+    Unit_Free(&Silou);
 
     SDL_DestroyRenderer(renderer);
 }
