@@ -48,7 +48,6 @@ s8 s8_slicefromStart(s8 str8, size_t toslice);
 s8 s8_toLower(s8 str8);
 s8 s8_toUpper(s8 str8);
 
-// TODO: use s8equal instead of strcmp 
 b32 s8equal(s8 s1, s8 s2);
 
 s8 s8cat(s8 s1, s8 s2);

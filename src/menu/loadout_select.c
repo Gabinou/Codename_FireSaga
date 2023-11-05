@@ -373,17 +373,18 @@ void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9p
         if (item->id == ITEM_NULL)
             continue;
 
+        s8_free(&lsm->item_name);
         if (Weapon_ID_isValid(item->id)) {
             /* Item is a weapon */
             SDL_assert(lsm->unit->weapons_dtab != NULL);
             struct Weapon *weapon = DTAB_GET(lsm->unit->weapons_dtab, item->id);
             SDL_assert(weapon != NULL);
-            lsm->item_name = s8cpy(lsm->item_name, weapon->item->name);
+            lsm->item_name = s8_mut(weapon->item->name.data);
         } else if (Item_ID_isValid(item->id)) {
             /* Pure item */
             Item_Load(lsm->unit->items_dtab, item->id);
             struct Item *pure_item = DTAB_GET(lsm->unit->items_dtab, item->id);
-            lsm->item_name = s8cpy(lsm->item_name, pure_item->name);
+            lsm->item_name = s8_mut(pure_item->name.data);
         } else {
             SDL_Log("LoadoutSelectMenu: Neither a valid item nor weapon");
             exit(ERROR_Generic);
