@@ -31,8 +31,8 @@ extern s8 global_itemNames[ITEM_NUM];
 extern s8 global_tilenames[TILE_ID_MAX];
 extern s8 gamesubStatenames[GAME_SUBSTATE_END];
 
-// TODO: change into simple array + simple function?
-//      -> simpler #include
+/* --- Order at run-time --- */
+/* order at comp-time: use ITEM_ORDER_##X */
 extern struct dtab   *global_itemOrders; /* DTAB_GET(global_unitOrders, id) = order */
 extern struct dtab   *global_unitOrders; /* DTAB_GET(global_unitOrders, id) = order */
 

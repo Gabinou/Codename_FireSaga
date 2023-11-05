@@ -55,26 +55,18 @@ void Names_unitStatuses() {
 #undef REGISTER_ENUM
 }
 
-char **global_itemNames         = NULL;
+s8 global_itemNames[ITEM_NUM] = {0};
 struct dtab *global_itemOrders  = NULL;
 void Names_itemNames() {
-    size_t order = 0;
-
-    global_itemNames = DARR_INIT(global_itemNames, char *, 128);
-    DARR_PUT(global_itemNames, ITEM_NAME_INVALID);
 
     DTAB_INIT(global_itemOrders, i32);
     SDL_assert(global_itemOrders != NULL);
-    // SDL_assert(order == global_itemOrders->num);
-    dtab_add(global_itemOrders, &order, ITEM_NULL);
-    order++;
-
-    char *temp_str = NULL;
-#define REGISTER_ENUM(x, y) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
-    memcpy(temp_str, #x, sizeof(#x));\
-    dtab_add(global_itemOrders, &order, ITEM_ID_##x);\
+    
+    size_t order = 1;
+    
+#define REGISTER_ENUM(x, y) dtab_add(global_itemOrders, &order, ITEM_ID_##x);\
     order++;\
-    DARR_PUT(global_itemNames, nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2));
+    global_itemNames[ITEM_ORDER_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2));
 #include "names/items.h"
     SDL_assert(order == DARR_NUM(global_itemNames));
 }
