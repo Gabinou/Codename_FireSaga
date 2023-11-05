@@ -15,7 +15,7 @@ struct Map_condition Map_condition_default = {
 
 struct Map Map_default = {
     .json_element           = JSON_MAP,
-    .json_filename          = NULL,
+    .json_filename          = {0},
 
     .world                  = NULL,
     .renderer               = NULL,
@@ -152,6 +152,8 @@ void Map_Units_Free(struct Map *map) {
         tnecs_entity_destroy(map->world, uent);
 
     }
+
+    s8_free(&map->json_filename);
 
     /* -- Free unitmap -- */
     SDL_free(map->unitmap);

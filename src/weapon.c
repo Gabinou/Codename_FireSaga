@@ -3,7 +3,7 @@
 
 struct Weapon Weapon_default = {
     .json_element   = JSON_WEAPON,
-    .json_filename  = NULL,
+    .json_filename  = {0},
 
     .item         = NULL,
     .handedness   = WEAPON_HAND_ANY,
@@ -36,14 +36,12 @@ void Weapon_Free(struct Weapon *weapon) {
         return;
     }
 
-    if (weapon->json_filename != NULL) {
-        SDL_free(weapon->json_filename);
-        weapon->json_filename = NULL;
-    }
+    s8_free(&weapon->json_filename);
 
     if (weapon->item == NULL) {
         return;
     }
+
 
     Item_Free(weapon->item);
     SDL_free(weapon->item);

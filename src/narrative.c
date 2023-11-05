@@ -20,6 +20,7 @@ struct Scene Scene_default =  {
 
 void Scene_Free(struct Scene *scene) {
     Scene_Free_Read(scene);
+    s8_free(&scene->json_filename);
     if (scene->replace != NULL) {
         for (size_t i = 0; i < scene->replace_num; i++) {
             if (scene->replace[i] != NULL) {

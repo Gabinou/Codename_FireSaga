@@ -3,7 +3,7 @@
 
 struct Item Item_default = {
     .json_element   = JSON_ITEM,
-    .json_filename  = NULL,
+    .json_filename  = {0},
 
     .bonus_stats  = {0},
     .malus_stats  = {0},
@@ -512,11 +512,7 @@ void Item_Free(struct Item *restrict item) {
         DARR_FREE(item->users);
         item->users = NULL;
     }
-    if (item->json_filename != NULL) {
-        SDL_free(item->json_filename);
-        item->json_filename = NULL;
-    }
-
+    s8_free(&item->json_filename);
 }
 
 /* --- Is --- */

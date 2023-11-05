@@ -113,6 +113,7 @@ void Tile_Free(struct Tile *tile) {
         SDL_free(tile->name);
         tile->name = NULL;
     }
+    s8_free(&tile->json_filename);
 }
 
 void Tile_readJSON(void *input, const cJSON *const jtile) {

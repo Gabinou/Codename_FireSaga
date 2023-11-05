@@ -68,7 +68,7 @@ struct Unit_stats Unit_stats_default = {
 
 struct Unit Unit_default = {
     .json_element   = JSON_UNIT,
-    .json_filename  = NULL,
+    .json_filename  = {0},
 
     /*                  hp str mag agi dex fth luck def res con move prof */
     .base_stats      = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
@@ -205,6 +205,7 @@ void Unit_Free(struct Unit *unit) {
         DARR_FREE(unit->status_queue);
         unit->status_queue = NULL;
     }
+    s8_free(&unit->json_filename);
     s8_free(&unit->name);
     s8_free(&unit->title);
 }

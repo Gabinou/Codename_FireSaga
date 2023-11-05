@@ -21,7 +21,7 @@ int map_unit_offsets[MAP_UNIT_SPRITE_LOOP_NUM][TWO_D] = {
 /* --- Defaults --- */
 struct Spritesheet Spritesheet_default = {
     .json_element   = JSON_SPRITE,
-    .json_filename  = NULL,
+    .json_filename  = {0},
     .surface        = NULL,
     .palette        = NULL,
     .loops_pos      = NULL,
@@ -78,6 +78,7 @@ void Spritesheet_Free(struct Spritesheet *spritesheet) {
     }
 
     spritesheet->loop_num = 0;
+    s8_free(&spritesheet->json_filename);
 }
 
 void Sprite_readJSON(void *input, const cJSON *const jsprite) {
@@ -193,11 +194,7 @@ void Sprite_Free(struct Sprite *sprite) {
 
     SDL_Log("Freeing name");
     s8_free(&sprite->asset_name);
-
-    if (sprite->json_filename != NULL) {
-        SDL_free(sprite->json_filename);
-        sprite->json_filename = NULL;
-    }
+    s8_free(&sprite->json_filename);
 
     SDL_Log("Freeing Textures");
     if (sprite->texture != NULL) {

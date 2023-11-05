@@ -65,7 +65,7 @@ typedef struct Camp {
     u8 json_element;  /* JSON_ELEM_bOFFSET = 0 (+  1) */
     s8 json_filename; /* JSON_ELEM_bOFFSET = 1 (+ 24) */
 
-    // All jobs
+    /* All jobs */
     u8 guards[CAMP_JOB_MAX];
     u8 librarians[CAMP_JOB_MAX];
     u8 assistants[CAMP_JOB_MAX];
