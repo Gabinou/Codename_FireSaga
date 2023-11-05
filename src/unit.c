@@ -284,7 +284,7 @@ int SotA_Hand_Strong(i8 handedness) {
 void Unit_setid(struct Unit *unit, i16 id) {
     SDL_assert(unit != NULL);
     unit->_id = id;
-    memcpy(unit->name, global_unitNames[unit->_id], strlen(global_unitNames[unit->_id]));
+    memcpy(unit->name, global_unitNames[unit->_id].data, global_unitNames[unit->_id].num);
 }
 
 void Unit_setSkills(struct Unit *unit, u64 skills) {

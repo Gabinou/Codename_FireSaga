@@ -572,6 +572,7 @@ enum UNIT_ARMIES {
 #define REGISTER_ENUM(x, y) UNIT_ID_##x = y,
 enum UNIT_IDS {
     UNIT_NULL           = 0,
+    UNIT_ID_NULL        = 0,
     UNIT_ID_START       = 0,
     UNIT_ID_PC_START    = 0,
 #include "names/units_PC.h"
@@ -584,11 +585,12 @@ enum UNIT_IDS {
 // global_unitNames[ITEM_ORDER...] -> correct item name
 // name should be all caps
 #define UNIT_ORDER(name) UNIT_ORDER_##name
-#define REGISTER_ENUM(x, y) UNIT_ORDER##x,
+#define REGISTER_ENUM(x, y) UNIT_ORDER_##x,
 enum UNIT_ORDER {
     UNIT_ORDER_START = 0,
 #include "names/units_PC.h"
 #include "names/units_NPC.h"
+    UNIT_NUM,
 };
 #undef REGISTER_ENUM
 

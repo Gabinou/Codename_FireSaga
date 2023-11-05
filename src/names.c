@@ -14,30 +14,18 @@ void Names_sceneTimes() {
 #undef REGISTER_ENUM
 }
 
-char **global_unitNames = NULL;
+s8 global_unitNames[UNIT_NUM] = {0};
 struct dtab *global_unitOrders = NULL;
 void Names_unitNames() {
-    char *temp_str = NULL;
-    size_t order = 0;
-
-    global_unitNames = DARR_INIT(global_unitNames, char *, 128);
-    SDL_assert(global_unitNames != NULL);
 
     DTAB_INIT(global_unitOrders, u16);
     SDL_assert(global_unitOrders != NULL);
-    dtab_add(global_unitOrders, &order, UNIT_NULL);
-    order++;
+    dtab_add(global_unitOrders, UNIT_NULL, UNIT_NULL);
 
-    temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);
-    memcpy(temp_str, "", sizeof(""));
-    DARR_PUT(global_unitNames, temp_str);
-
-#define REGISTER_ENUM(x, y) temp_str = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);\
-    memcpy(temp_str, #x, sizeof(#x));\
-    dtab_add(global_unitOrders, &order, UNIT_ID_##x);\
-    SDL_assert(*(u16 *)dtab_get(global_unitOrders, UNIT_ID_##x) == order);\
-    order++;\
-    DARR_PUT(global_unitNames, nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2));
+    int order = 0;
+#define REGISTER_ENUM(x, y) dtab_add(global_unitOrders, &order, UNIT_ID_##x);\
+    SDL_assert(*(u16 *)dtab_get(global_unitOrders, UNIT_ID_##x) == order++);\
+    global_unitNames[UNIT_ORDER_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);
 #include "names/units_PC.h"
 #include "names/units_NPC.h"
 }
@@ -307,15 +295,8 @@ void Names_Free() {
         s8_free(&campjobNames[i]);
     }
     SDL_Log("global_unitNames");
-    if (global_unitNames != NULL) {
-        for (int i = 0; i < DARR_NUM(global_unitNames); i++) {
-            if (global_unitNames[i] != NULL) {
-                SDL_free(global_unitNames[i]);
-                global_unitNames[i] = NULL;
-            }
-        }
-        DARR_FREE(global_unitNames);
-        global_unitNames = NULL;
+    for (int i = 0; i < UNIT_NUM; i++) {
+        s8_free(&global_unitNames[i]);
     }
     if (global_unitOrders != NULL) {
         DTAB_FREE(global_unitOrders);
@@ -428,8 +409,8 @@ void Names_Print_All(const char *foldername) {
     SDL_Log("filename %s", filename.data);
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
-    for (size_t i = 0; i < DARR_NUM(global_unitNames); i++)
-        fprintf(fp, "%zu %s \n", i, global_unitNames[i]);
+    for (size_t i = 0; i < UNIT_NUM; i++)
+        fprintf(fp, "%zu %s \n", i, global_unitNames[i].data);
     fclose(fp);
     s8_free(&filename);
 

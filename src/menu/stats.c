@@ -819,10 +819,10 @@ void _StatsMenu_Draw_Rescue(struct StatsMenu *stats_menu, SDL_Renderer *renderer
     x = RESCUE_X_OFFSET, y = RESCUE_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "RESCUE", 7, x, y);
     if (unit->rescuee > UNIT_ID_START) {
-        char *name = global_unitNames[unit->rescuee];
-        int width = PixelFont_Width_Len(stats_menu->pixelnours, name);
+        s8 name = global_unitNames[unit->rescuee];
+        int width = PixelFont_Width_Len(stats_menu->pixelnours, name.data);
         x = RESCUEE_X_OFFSET - width / 2, y = RESCUEE_Y_OFFSET;
-        PixelFont_Write_Len(stats_menu->pixelnours, renderer, name, x, y);
+        PixelFont_Write_Len(stats_menu->pixelnours, renderer, name.data, x, y);
     } else {
         x = RESCUE_NONE_X_OFFSET, y = RESCUE_NONE_Y_OFFSET;
         PixelFont_Write(stats_menu->pixelnours, renderer, "-", 1, x, y);
