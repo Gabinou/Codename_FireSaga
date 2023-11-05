@@ -156,9 +156,8 @@ struct LoadoutSelectMenu {
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
     i8 selected[UNIT_HANDS_NUM]; /* side space */
-    char *item_name;
-    size_t item_name_len;
-    char *header;
+    s8 item_name;
+    s8 header;
 
     int archetype_stronghand;
     int archetype_weakhand;
@@ -188,7 +187,6 @@ void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm, const char *hea
 void LoadoutSelectMenu_Select(       struct LoadoutSelectMenu *lsm, int s);
 void LoadoutSelectMenu_Deselect(     struct LoadoutSelectMenu *lsm);
 int  LoadoutSelectMenu_num_items(    struct LoadoutSelectMenu *lsm);
-void LoadoutSelectMenu_Name_Alloc(   struct LoadoutSelectMenu *lsm, char *n);
 void LoadoutSelectMenu_Select_Reset( struct LoadoutSelectMenu *lsm);
 bool WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm);
 void ItemSelectMenu_Select(          struct LoadoutSelectMenu *lsm, int s);

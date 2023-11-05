@@ -48,7 +48,8 @@ struct LoadoutSelectMenu LoadoutSelectMenu_default = {
     .unit                   = NULL,
     .pixelnours             = NULL,
     .pixelnours_big         = NULL,
-    .item_name_len          = 8,
+    .header                 = {0},
+    .item_name              = {0},
 };
 
 /* --- Constructors/Destructors --- */
@@ -75,14 +76,8 @@ void LoadoutSelectMenu_Free(struct LoadoutSelectMenu *lsm) {
         SDL_DestroyTexture(lsm->texture_hands);
         lsm->texture_hands = NULL;
     }
-    if (lsm->header != NULL) {
-        free(lsm->header);
-        lsm->header = NULL;
-    }
-    if (lsm->item_name != NULL) {
-        free(lsm->item_name);
-        lsm->item_name = NULL;
-    }
+    s8_free(&lsm->header);
+    s8_free(&lsm->item_name);
     if (lsm != NULL) {
         free(lsm);
         lsm = NULL;
@@ -182,7 +177,7 @@ void LoadoutSelectMenu_Elem_Pos(struct LoadoutSelectMenu *lsm, struct Menu *mc) 
     /* 1. Makes the cursor focus on right place on the Screen       */
     /* 2. Box lined are drawn in menu frame, making thinner lines   */
 
-    bool header_drawn = (lsm->header != NULL);
+    bool header_drawn = (lsm->header.data != NULL);
     /* - Skip if already in screen frame - */
     if (mc->elem_pos_frame == ELEM_POS_SCREEN_FRAME) {
         return;
@@ -207,7 +202,7 @@ void LoadoutSelectMenu_Elem_Pos_revert(struct LoadoutSelectMenu *lsm, struct Men
     /* 1. Makes the cursor focus on right place on the Screen       */
     /* 2. Box lined are drawn in menu frame, making thinner lines   */
 
-    bool header_drawn = (lsm->header != NULL);
+    bool header_drawn = (lsm->header.data != NULL);
     /* - Skip if already in screen frame - */
     if (mc->elem_pos_frame == ELEM_POS_MENU_FRAME) {
         return;
@@ -356,17 +351,6 @@ void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
 
 }
 
-void LoadoutSelectMenu_Name_Alloc(struct LoadoutSelectMenu *lsm, char *name) {
-    size_t len = strlen(name);
-    if ((len >= lsm->item_name_len) || (lsm->item_name == NULL)) {
-        if (lsm->item_name != NULL)
-            free(lsm->item_name);
-        lsm->item_name_len *= 2;
-        lsm->item_name = malloc(lsm->item_name_len * sizeof(lsm->item_name));
-    }
-    memset(lsm->item_name, 0, lsm->item_name_len * sizeof(lsm->item_name));
-}
-
 /* --- Drawing --- */
 void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9patch) {
     /* - Compute new menu width and height - */
@@ -394,27 +378,25 @@ void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9p
             SDL_assert(lsm->unit->weapons_dtab != NULL);
             struct Weapon *weapon = DTAB_GET(lsm->unit->weapons_dtab, item->id);
             SDL_assert(weapon != NULL);
-            LoadoutSelectMenu_Name_Alloc(lsm, weapon->item->name.data);
-            memcpy(lsm->item_name, weapon->item->name.data, weapon->item->name.num);
+            lsm->item_name = s8cpy(lsm->item_name, weapon->item->name);
         } else if (Item_ID_isValid(item->id)) {
             /* Pure item */
             Item_Load(lsm->unit->items_dtab, item->id);
             struct Item *pure_item = DTAB_GET(lsm->unit->items_dtab, item->id);
-            LoadoutSelectMenu_Name_Alloc(lsm, pure_item->name.data);
-            memcpy(lsm->item_name, pure_item->name.data, pure_item->name.num);
+            lsm->item_name = s8cpy(lsm->item_name, pure_item->name);
         } else {
             SDL_Log("LoadoutSelectMenu: Neither a valid item nor weapon");
             exit(ERROR_Generic);
         }
 
-        width = PixelFont_Width(lsm->pixelnours_big, lsm->item_name, strlen(lsm->item_name));
+        width = PixelFont_Width(lsm->pixelnours_big, lsm->item_name.data, lsm->item_name.num);
         max_width = width > max_width ? width : max_width;
     }
     int header_w = 0;
-    bool header_drawn = (lsm->header != NULL);
+    bool header_drawn = (lsm->header.data != NULL);
     if (header_drawn) {
-        header_w = PixelFont_Width(lsm->pixelnours_big, lsm->header,
-                                   strlen(lsm->header)) + WSM_HEADER_LEFT + WSM_HEADER_RIGHT;
+        header_w = PixelFont_Width(lsm->pixelnours_big, lsm->header.data,
+                                   lsm->header.num) + WSM_HEADER_LEFT + WSM_HEADER_RIGHT;
     }
 
     int size_raw_x    = max_width + WSM_LEFT_OF_TEXT + WSM_RIGHT_OF_TEXT;
@@ -463,25 +445,19 @@ void LoadoutSelectMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *
 }
 
 void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm, const char *header) {
-    if (lsm->header != NULL) {
-        free(lsm->header);
-    }
-    size_t len  = strlen(header);
-    lsm->header = calloc(len + 1, sizeof(*lsm->header));
-    memcpy(lsm->header, header, len);
-
+    s8_free(&lsm->header);
+    lsm->header = s8_mut(header);
 }
 
 
 void _LoadoutSelectMenu_Draw_Header(struct LoadoutSelectMenu  *lsm, SDL_Renderer *renderer) {
     /* Skip if no header to draw */
-    if (lsm->header == NULL)
+    if (lsm->header.data == NULL)
         return;
 
     /* Draw textual header: information to the player */
-    size_t len = strlen(lsm->header);
-    int dura_w = PixelFont_Width(lsm->pixelnours_big, lsm->header, len);
-    PixelFont_Write(lsm->pixelnours_big, renderer, lsm->header, len,
+    int dura_w = PixelFont_Width(lsm->pixelnours_big, lsm->header.data, lsm->header.num);
+    PixelFont_Write(lsm->pixelnours_big, renderer, lsm->header.data, lsm->header.num,
                     WSM_HEADER_LEFT,  WSM_TOP_OF_TEXT);
 }
 
@@ -492,7 +468,7 @@ void _LoadoutSelectMenu_Draw_Highlight(struct LoadoutSelectMenu  *lsm, SDL_Rende
         return;
 
     /* - Top Weapon highlight - */
-    bool header_drawn = (lsm->header != NULL);
+    bool header_drawn = (lsm->header.data != NULL);
     SDL_Rect srcrect;
 
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
@@ -536,7 +512,7 @@ void _LoadoutSelectMenu_Draw_Hands(struct LoadoutSelectMenu  *lsm, SDL_Renderer 
     /* -- Preliminaries -- */
     int num_items       = LoadoutSelectMenu_num_items(lsm);
     int stronghand      = Unit_Hand_Strong(lsm->unit);
-    bool header_drawn   = (lsm->header != NULL);
+    bool header_drawn   = (lsm->header.data != NULL);
     SDL_Rect srcrect, dstrect;
 
     /* Computing y offset for weak hand, or twohanding icon placement */
@@ -600,7 +576,7 @@ void _LoadoutSelectMenu_Draw_Hands(struct LoadoutSelectMenu  *lsm, SDL_Renderer 
 
 void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm, SDL_Renderer *renderer) {
     /* -- Preliminaries -- */
-    bool header_drawn = (lsm->header != NULL);
+    bool header_drawn = (lsm->header.data != NULL);
     SDL_Rect srcrect, dstrect;
     struct Unit *unit = lsm->unit;
     char numbuff[10];
@@ -715,10 +691,9 @@ void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm, SDL_Renderer 
                         item_dura_x_offset,  item_dura_y_offset);
 
         /* - Write weapon name - */
-        LoadoutSelectMenu_Name_Alloc(lsm, weapon->item->name.data);
-        memcpy(lsm->item_name, weapon->item->name.data, weapon->item->name.num);
-
-        int name_w = PixelFont_Width(lsm->pixelnours, nstr_toUpper(lsm->item_name), strlen(lsm->item_name));
+        lsm->item_name = s8cpy(lsm->item_name, weapon->item->name);
+        lsm->item_name = s8_toUpper(lsm->item_name);
+        int name_w = PixelFont_Width(lsm->pixelnours, lsm->item_name.data, lsm->item_name.num);
 
         if (strong_i == UNIT_HAND_LEFT) {
             if (stronghand == UNIT_HAND_LEFT) {
@@ -736,8 +711,8 @@ void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm, SDL_Renderer 
             }
         }
 
-        PixelFont_Write(lsm->pixelnours, renderer, nstr_toUpper(lsm->item_name),
-                        strlen(lsm->item_name), item_x_offset, item_y_offset);
+        PixelFont_Write(lsm->pixelnours, renderer, lsm->item_name.data, lsm->item_name.num, item_x_offset,
+                        item_y_offset);
     }
 
 }
