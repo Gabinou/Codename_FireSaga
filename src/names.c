@@ -20,9 +20,8 @@ void Names_unitNames() {
 
     DTAB_INIT(global_unitOrders, u16);
     SDL_assert(global_unitOrders != NULL);
-    dtab_add(global_unitOrders, UNIT_NULL, UNIT_NULL);
 
-    int order = 0;
+    int order = 1;
 #define REGISTER_ENUM(x, y) dtab_add(global_unitOrders, &order, UNIT_ID_##x);\
     SDL_assert(*(u16 *)dtab_get(global_unitOrders, UNIT_ID_##x) == order++);\
     global_unitNames[UNIT_ORDER_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);
@@ -68,7 +67,6 @@ void Names_itemNames() {
     order++;\
     global_itemNames[ITEM_ORDER_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);
 #include "names/items.h"
-    SDL_assert(order == DARR_NUM(global_itemNames));
 }
 #undef REGISTER_ENUM
 
@@ -263,7 +261,7 @@ void Names_Free() {
         s8_free(&armyNames[i]);
     }
     SDL_Log("global_itemNames");
-    for (size_t i = 0; i < DARR_NUM(global_itemNames); i++) {
+    for (size_t i = 0; i < ITEM_NUM; i++) {
         s8_free(&global_itemNames[i]);
     }
     SDL_Log("global_tilenames i");
