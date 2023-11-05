@@ -35,8 +35,8 @@ extern bool army_isPC[ARMY_END];
 
 /* --- UNIT STATUS --- */
 struct Unit_status {
-    // Number of turns to be in this state.
-    // <0 means forever.
+    /* Number of turns to be in this state. *
+    /* <0 means forever. */
     i8 status;
     i8 turns;
 };
@@ -225,10 +225,10 @@ u8  SotA_army2alignment(u8 a);
 u8  Unit_mvtType(const struct Unit *u);
 
 /* --- Unit status --- */
-void Unit_Status_Add(       struct Unit *u, struct Unit_status);
+void Unit_Status_Add(      struct Unit *u, struct Unit_status);
 i16 Unit_Status_Find(      struct Unit *u, i16 status);
-void Unit_Status_Remove(    struct Unit *u, i16 i);
-void Unit_Status_Decrement( struct Unit *u);
+void Unit_Status_Remove(   struct Unit *u, i16 i);
+void Unit_Status_Decrement(struct Unit *u);
 i16 Unit_Status_Find_Turns(struct Unit *unit, i16 turns);
 
 /* --- Unit stats --- */
