@@ -46,18 +46,18 @@ extern struct Unit_status Unit_status_default;
 
 /* --- UNIT --- */
 typedef struct Unit {
-    u8      json_element;  /* JSON_ELEM_bOFFSET = 0 (+  1) */
-    char   *json_filename; /* JSON_ELEM_bOFFSET = 1 (+ 24) */
+    u8  json_element;  /* JSON_ELEM_bOFFSET = 0 (+  1) */
+    s8  json_filename; /* JSON_ELEM_bOFFSET = 1 (+ 24) */
 
-    i16    class;
-    i8     mvt_type;
-    i8     army;
-    u8     current_agony;
-    u8     current_hp;
-    i8     handedness;
-    u16    talkable;
-    i8     agony; /* turns left before death (-1 not agonizing) */
-    u8     regrets;
+    i16 class;
+    i8  mvt_type;
+    i8  army;
+    u8  current_agony;
+    u8  current_hp;
+    i8  handedness;
+    u16 talkable;
+    i8  agony; /* turns left before death (-1 not agonizing) */
+    u8  regrets;
 
     // Status with least remaining turns on top.
     struct Unit_status *status_queue;

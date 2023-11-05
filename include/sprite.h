@@ -44,8 +44,8 @@ enum MAP_UNIT_SPRITE_LOOPS {
 extern int map_unit_offsets[MAP_UNIT_SPRITE_LOOP_NUM][TWO_D];
 
 struct Spritesheet {
-    u8      json_element;  /* JSON_ELEM_bOFFSET = 0 */
-    char   *json_filename; /* JSON_ELEM_bOFFSET = 1 */
+    u8  json_element;  /* JSON_ELEM_bOFFSET = 0 (+  1) */
+    s8  json_filename; /* JSON_ELEM_bOFFSET = 1 (+ 24) */
 
     /* metadata for 8 column spritesheet */
     SDL_Surface *surface;           /* pixels with NES color palette        */

@@ -2,8 +2,8 @@
 #include "convoy.h"
 
 struct Convoy Convoy_default = {
-    .JSONElement = {JSON_CONVOY},
-    .weapons_dtab = NULL,
+    .json_element    = JSON_CONVOY,
+    .json_filename   = {0},
 
     .books  = {0},
     .items  = {0},

@@ -24,7 +24,9 @@ enum SOTA_CONVOY {
 };
 
 typedef struct Convoy {
-    char JSONElement[DEFAULT_BUFFER_SIZE]; // JSON_ELEM_bOFFSET = 0
+    u8  json_element;  /* JSON_ELEM_bOFFSET = 0 (+  1) */
+    s8  json_filename; /* JSON_ELEM_bOFFSET = 1 (+ 24) */
+
     struct dtab *weapons_dtab;
 
     struct Inventory_item books[SOTA_BOOKS_NUM];

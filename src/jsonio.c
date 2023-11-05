@@ -84,11 +84,14 @@ void jsonio_readJSON(s8 filename, void *struct_ptr) {
     }
 
     /* Set json_filename in struct to input filename */
-    char **json_filename = ((char **)struct_ptr + JSON_FILENAME_bOFFSET);
-    if (*json_filename == NULL) {
-        *json_filename  = calloc(filename.num + 1, sizeof(**json_filename));
-        memcpy(*json_filename, filename.data, filename.num);
-    }
+    s8 *json_filename = ((char *)struct_ptr + JSON_FILENAME_bOFFSET);
+    *json_filename = filename;
+
+    // if (json_filename->data == NULL) {
+
+    // *json_filename  = calloc(filename.num + 1, sizeof(**json_filename));
+    // memcpy(*json_filename, filename.data, filename.num);
+    // }
 
     /* Actually read the json file */
     if (json_read_funcs[jelem_id] != NULL)
