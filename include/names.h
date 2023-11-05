@@ -27,7 +27,7 @@ extern s8 gameStatenames[GAME_STATE_END];
 extern s8 menuOptionnames[MENU_OPTION_END];
 extern s8 jsonElementnames[JSON_END];
 extern s8 global_unitNames[UNIT_NUM];  /* global_unitNames[order] = unit_name */
-extern char         **global_itemNames;
+extern s8 global_itemNames[ITEM_NUM];
 extern s8 global_tilenames[TILE_ID_MAX];
 extern s8 gamesubStatenames[GAME_SUBSTATE_END];
 

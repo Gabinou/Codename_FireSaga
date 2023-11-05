@@ -165,7 +165,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         unit->weapons_dtab = sota->weapons_dtab;
         size_t order = *(u16 *)DTAB_GET(global_unitOrders, sota->map->reinforcements[i].id);
-        s8 unitname = s8_mut(global_unitNames[order]);
+        s8 unitname = s8cpy(unitname, global_unitNames[order]);
         unitname    = s8cat(unitname, s8_literal(".json"));
         SDL_Log("unitname: %ld %s", sota->map->reinforcements[i].id, unitname.data);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);

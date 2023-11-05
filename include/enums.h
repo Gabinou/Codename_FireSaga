@@ -345,24 +345,12 @@ enum OPTIONS {
 *   global_itemNames[ITEM_ORDER...] -> correct item name
 */
 
-#define REGISTER_ENUM(x, y) ITEM_ID_##x = y,
 enum ITEM_IDs {
     ITEM_NULL     = 0,
     ITEM_ID_START = 0,
+#define REGISTER_ENUM(x, y) ITEM_ID_##x = y,
 #include "names/items.h"
 #undef REGISTER_ENUM
-};
-
-// ITEM_ORDER is the implicit, compiler-friendly item position in array
-// global_itemNames[ITEM_ORDER...] -> correct item name
-#define REGISTER_ENUM(x, y) ITEM_ORDER_##x,
-enum ITEM_ORDER {
-    ITEM_ORDER_START = 0,
-#include "names/items.h"
-#undef REGISTER_ENUM
-
-    // name should be all caps
-#define ITEM_ORDER(name) ITEM_ORDER_##name
 
 #define REGISTER_ENUM(x) ITEM_ID_TALISMAN_##x,
 #include "names/units_stats.h"
@@ -371,9 +359,21 @@ enum ITEM_ORDER {
 #define REGISTER_ENUM(x) ITEM_ID_SCRIPTURE_##x,
 #include "names/skills_passive.h"
 #include "names/skills_active.h"
+#undef REGISTER_ENUM
     ITEM_ID_BOOKEND,
 };
+
+// ITEM_ORDER is the implicit, compiler-friendly item position in array
+// global_itemNames[ITEM_ORDER...] -> correct item name
+enum ITEM_ORDER {
+    ITEM_ORDER_START = 0,
+#define REGISTER_ENUM(x, y) ITEM_ORDER_##x,
+#include "names/items.h"
 #undef REGISTER_ENUM
+#define ITEM_ORDER(name) ITEM_ORDER_##name
+    ITEM_NUM,
+#undef REGISTER_ENUM
+};
 
 /* --- ITEM HIERARCHY --- */
 /* Example: Fleuret                 */
