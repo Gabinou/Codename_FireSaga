@@ -53,13 +53,13 @@ void test_tile() {
     nourstest_true(out_tile_stats.Mprot == in_tile_stats.Mprot);
     nourstest_true(out_tile_stats.heal  == in_tile_stats.heal);
     nourstest_true(tile1.inside == true);
-    jsonio_writeJSON(PATH_JOIN("saves", "tile_test.json"), &tile1, false);
-    jsonio_readJSON(PATH_JOIN("saves", "tile_test.json"), &tile3);
+    jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "tile_test.json")), &tile1, false);
+    jsonio_readJSON(s8_literal(PATH_JOIN("saves", "tile_test.json")), &tile3);
     nourstest_true(tile3.stats.dodge == in_tile_stats.dodge);
     nourstest_true(tile3.stats.Pprot == in_tile_stats.Pprot);
     nourstest_true(tile3.stats.Mprot == in_tile_stats.Mprot);
     nourstest_true(tile3.stats.heal  == in_tile_stats.heal);
-    jsonio_writeJSON(PATH_JOIN("saves", "tile_rewrite.json"), &tile3, false);
+    jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "tile_rewrite.json")), &tile3, false);
     nourstest_true(Filesystem_fequal(PATH_JOIN("saves", "tile_test.json"),
                                      PATH_JOIN("saves", "tile_rewrite.json")));
     nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "tile_rewrite.json")));

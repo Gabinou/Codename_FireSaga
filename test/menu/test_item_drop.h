@@ -39,7 +39,7 @@ void test_menu_item_drop() {
     Silou.weapons_dtab = weapons_dtab;
     Silou.items_dtab   = items_dtab;
     SDL_assert(Silou.num_equipment == 0);
-    jsonio_readJSON(PATH_JOIN("units", "Silou_test.json"), &Silou);
+    jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);
     SDL_assert(Silou.num_equipment == 4);
 
     /* - Unit equip - */

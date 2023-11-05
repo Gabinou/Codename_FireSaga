@@ -32,12 +32,12 @@ void test_camp() {
 
     Camp_Job_Forbid(&camp, UNIT_ID_SILOU, CAMPJOB_STABLEHAND);
 
-    jsonio_writeJSON("saves"PHYSFS_SEPARATOR"camp_test.json", &camp, false);
-    nourstest_true(PHYSFS_exists("saves"PHYSFS_SEPARATOR"camp_test.json"));
+    jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "camp_test.json")), &camp, false);
+    nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "camp_test.json")));
 
-    jsonio_readJSON("saves"PHYSFS_SEPARATOR"camp_test.json", &camp2);
-    jsonio_writeJSON("saves"PHYSFS_SEPARATOR"camp_rewrite.json", &camp2, false);
-    nourstest_true(PHYSFS_exists("saves"PHYSFS_SEPARATOR"camp_rewrite.json"));
-    nourstest_true(Filesystem_fequal("saves"PHYSFS_SEPARATOR"camp_rewrite.json",
-                                     "saves"PHYSFS_SEPARATOR"camp_test.json"));
+    jsonio_readJSON(s8_literal(PATH_JOIN("saves", "camp_test.json")), &camp2);
+    jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "camp_rewrite.json")), &camp2, false);
+    nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "camp_rewrite.json")));
+    nourstest_true(Filesystem_fequal(PATH_JOIN("saves", "camp_rewrite.json"),
+                                     PATH_JOIN("saves", "camp_test.json")));
 }

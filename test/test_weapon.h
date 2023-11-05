@@ -94,8 +94,8 @@ void test_weapon1() {
     }
 
     PHYSFS_mount("saves", NULL, 1);
-    jsonio_writeJSON("saves"PHYSFS_SEPARATOR"weapon_test.json", &wpn1, false);
-    jsonio_readJSON("saves"PHYSFS_SEPARATOR"weapon_test.json", &wpn3);
+    jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "weapon_test.json")), &wpn1, false);
+    jsonio_readJSON(s8_literal(PATH_JOIN("saves", "weapon_test.json")), &wpn3);
     out_wpn_stats = wpn3.stats;
     nourstest_true(in_wpn_stats.attack[DAMAGE_TYPE_PHYSICAL] ==
                    out_wpn_stats.attack[DAMAGE_TYPE_PHYSICAL]);
@@ -139,9 +139,9 @@ void test_weapon1() {
     nourstest_true(in_stats.con     == out_stats.con);
     nourstest_true(in_stats.move    == out_stats.move);
     nourstest_true(in_stats.prof    == out_stats.prof);
-    jsonio_writeJSON("saves"PHYSFS_SEPARATOR"weapon_rewrite.json", &wpn3, false);
-    nourstest_true(Filesystem_fequal("saves"PHYSFS_SEPARATOR"weapon_test.json",
-                                     "saves"PHYSFS_SEPARATOR"weapon_rewrite.json"));
+    jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "weapon_rewrite.json")), &wpn3, false);
+    nourstest_true(Filesystem_fequal(PATH_JOIN("saves", "weapon_test.json"),
+                                     PATH_JOIN("saves", "weapon_rewrite.json")));
     out_wpn_stats = wpn3.stats;
     nourstest_true(in_wpn_stats.attack[DAMAGE_TYPE_PHYSICAL] ==
                    out_wpn_stats.attack[DAMAGE_TYPE_PHYSICAL]);
@@ -185,9 +185,9 @@ void test_weapon1() {
     nourstest_true(in_stats.con     == out_stats.con);
     nourstest_true(in_stats.move    == out_stats.move);
     nourstest_true(in_stats.prof    == out_stats.prof);
-    jsonio_writeJSON("saves"PHYSFS_SEPARATOR"weapon_rewrite.json", &wpn3, false);
-    nourstest_true(Filesystem_fequal("saves"PHYSFS_SEPARATOR"weapon_test.json",
-                                     "saves"PHYSFS_SEPARATOR"weapon_rewrite.json"));
+    jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "weapon_rewrite.json")), &wpn3, false);
+    nourstest_true(Filesystem_fequal(PATH_JOIN("saves", "weapon_test.json"),
+                                     PATH_JOIN("saves", "weapon_rewrite.json")));
 
     Weapon_SDL_free(&wpn1);
     Weapon_SDL_free(&wpn2);

@@ -511,14 +511,14 @@ void test_io() {
     if (PHYSFS_stat("saves", NULL) == 0) {
         PHYSFS_mkdir("saves");
     }
-    jsonio_writeJSON("saves"PHYSFS_SEPARATOR"unit_test.json", &unit1, false);
-    jsonio_writeJSON("saves"PHYSFS_SEPARATOR"unit_test.binou", &unit1, false);
-    jsonio_readJSON("saves"PHYSFS_SEPARATOR"unit_test.json", &unit4);
-    jsonio_writeJSON("saves"PHYSFS_SEPARATOR"unit_rewrite.json", &unit4, false);
-    nourstest_true(PHYSFS_exists("saves"PHYSFS_SEPARATOR"unit_test.json") != 0);
-    nourstest_true(PHYSFS_exists("saves"PHYSFS_SEPARATOR"unit_rewrite.json") != 0);
-    nourstest_true(Filesystem_fequal("saves"PHYSFS_SEPARATOR"unit_test.json",
-                                     "saves"PHYSFS_SEPARATOR"unit_rewrite.json"));
+    jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "unit_test.json")), &unit1, false);
+    jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "unit_test.binou")), &unit1, false);
+    jsonio_readJSON(s8_literal(PATH_JOIN("saves", "unit_test.json")), &unit4);
+    jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "unit_rewrite.json")), &unit4, false);
+    nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "unit_test.json"))      != 0);
+    nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "unit_rewrite.json"))   != 0);
+    nourstest_true(Filesystem_fequal(PATH_JOIN("saves", "unit_test.json"),
+                                     PATH_JOIN("saves", "unit_rewrite.json")));
     Unit_SDL_free(&unit1);
     Unit_SDL_free(&unit2);
     Unit_SDL_free(&unit3);

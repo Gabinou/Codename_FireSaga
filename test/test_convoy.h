@@ -363,16 +363,16 @@ void testConvoyWriteRead() {
     if (PHYSFS_stat("saves", NULL) == 0) {
         PHYSFS_mkdir("saves");
     }
-    jsonio_writeJSON("saves"PHYSFS_SEPARATOR"convoy_test.json", &convoy, false);
-    nourstest_true(PHYSFS_exists("saves"PHYSFS_SEPARATOR"convoy_test.json"));
+    jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "convoy_test.json")), &convoy, false);
+    nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "convoy_test.json")));
     struct Convoy convoy2 = Convoy_default;
     convoy2.weapons_dtab = weapons_dtab;
 
-    jsonio_readJSON("saves"PHYSFS_SEPARATOR"convoy_test.json", &convoy2);
-    jsonio_writeJSON("saves"PHYSFS_SEPARATOR"convoy_rewrite.json", &convoy2, false);
-    nourstest_true(PHYSFS_exists("saves"PHYSFS_SEPARATOR"convoy_rewrite.json"));
-    nourstest_true(Filesystem_fequal("saves"PHYSFS_SEPARATOR"convoy_rewrite.json",
-                                     "saves"PHYSFS_SEPARATOR"convoy_test.json"));
+    jsonio_readJSON(s8_literal(PATH_JOIN("saves", "convoy_test.json")), &convoy2);
+    jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "convoy_rewrite.json")), &convoy2, false);
+    nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "convoy_rewrite.json")));
+    nourstest_true(Filesystem_fequal(PATH_JOIN("saves", "convoy_rewrite.json"),
+                                     PATH_JOIN("saves", "convoy_test.json")));
     Game_Weapons_SDL_free(&weapons_dtab);
 }
 

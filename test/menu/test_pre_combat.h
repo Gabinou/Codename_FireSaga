@@ -55,9 +55,9 @@ void test_menu_pre_combat() {
     Hamilcar.weapons_dtab = weapons_dtab;
     nourstest_true(Silou.num_equipment    == 0);
     nourstest_true(Hamilcar.num_equipment == 0);
-    jsonio_readJSON(PATH_JOIN("units", "Silou_test.json"), &Silou);
+    jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);
     nourstest_true(Silou.num_equipment == 4);
-    jsonio_readJSON(PATH_JOIN("units", "Hamilcar_test.json"), &Hamilcar);
+    jsonio_readJSON(s8_literal(PATH_JOIN("units", "Hamilcar_test.json")), &Hamilcar);
 
     /* - Combatants equip - */
     struct Inventory_item in_wpn = Inventory_item_default;

@@ -63,10 +63,10 @@ void test_item() {
     nourstest_true(in_stats.move  == out_stats.move);
     nourstest_true(in_stats.prof  == out_stats.prof);
     item1.write_stats = true;
-    jsonio_writeJSON("saves/item_test.json", &item1, false);
+    jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "item_test.json")), &item1, false);
 
     SDL_Log("Saved item_test");
-    jsonio_readJSON("saves/item_test.json", &item2);
+    jsonio_readJSON(s8_literal(PATH_JOIN("saves", "item_test.json")), &item2);
     out_description = item2.description;
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
     nourstest_true(s8equal(item2.name, s8_literal("Cross")));
@@ -98,9 +98,10 @@ void test_item() {
     nourstest_true(in_stats.move  == out_stats.move);
     nourstest_true(in_stats.prof  == out_stats.prof);
     item2.write_stats = true;
-    jsonio_writeJSON("saves/item_rewrite.json", &item2, false);
-    nourstest_true(Filesystem_fequal("saves/item_test.json", "saves/item_rewrite.json"));
-    nourstest_true(PHYSFS_exists("saves/item_rewrite.json"));
-    nourstest_true(PHYSFS_exists("saves/item_test.json"));
+    jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "item_rewrite.json")), &item2, false);
+    nourstest_true(Filesystem_fequal(PATH_JOIN("saves", "item_test.json"), PATH_JOIN("saves",
+                                     "item_rewrite.json")));
+    nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "item_rewrite.json")));
+    nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "item_test.json")));
     Item_SDL_free(&item2);
 }

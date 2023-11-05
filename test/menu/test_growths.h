@@ -42,7 +42,7 @@ void test_menu_growths() {
     SDL_assert(Silou.grown_stats == NULL);
     Silou.weapons_dtab = weapons_dtab;
     SDL_assert(Silou.num_equipment == 0);
-    jsonio_readJSON(PATH_JOIN("units", "Silou_test.json"), &Silou);
+    jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);
     SDL_assert(Silou.grown_stats != NULL);
     SDL_assert(Silou.num_equipment == 4);
 
