@@ -176,7 +176,7 @@ s8 Weapon_Filename(s8 filename, i16 id) {
     /* - add weapon name to filename - */
     size_t item_order = *(u16 *)DTAB_GET(global_itemOrders, id);
     SDL_assert(item_order != 0);
-    memcpy(buffer, global_itemNames[item_order], DEFAULT_BUFFER_SIZE);
+    memcpy(buffer, global_itemNames[item_order].data, global_itemNames[item_order].num);
     token = strtok(buffer, " \t");
     while (token != NULL) {
         filename = s8cat(filename, s8_var(token));
@@ -199,8 +199,8 @@ void Weapon_Save(struct dtab *weapons_dtab, i16 id) {
         s8 filename = s8_mut("items"PHYSFS_SEPARATOR);
         size_t item_order = *(u16 *)DTAB_GET(global_itemOrders, id);
         SDL_assert(item_order != 0);
-        SDL_Log("%s", global_itemNames[item_order]);
-        memcpy(buffer, global_itemNames[item_order], DEFAULT_BUFFER_SIZE);
+        SDL_Log("%s", global_itemNames[item_order].data);
+        memcpy(buffer, global_itemNames[item_order].data, global_itemNames[item_order].num);
         token = strtok(buffer, " \t");
         while (token != NULL) {
             filename    = s8cat(filename, s8_var(token));

@@ -261,13 +261,13 @@ void Item_Use(struct Item *restrict item, struct Unit *restrict user,
 
 /* --- I/O --- */
 s8 Item_Filename(s8 filename, i16 id) {
-    char buffer[DEFAULT_BUFFER_SIZE];
+    char buffer[DEFAULT_BUFFER_SIZE] = {0};
     char *token;
 
     /* - add item name to filename - */
     size_t item_order = *(u16 *)DTAB_GET(global_itemOrders, id);
     SDL_assert(item_order != 0);
-    memcpy(buffer, global_itemNames[item_order], DEFAULT_BUFFER_SIZE);
+    memcpy(buffer, global_itemNames[item_order].data, global_itemNames[item_order].num);
     token = strtok(buffer, " \t");
     while (token != NULL) {
         filename    = s8cat(filename, s8_var(token));
@@ -458,14 +458,14 @@ void Item_readJSON(void *input, const cJSON *jitem) {
     SDL_assert((item_order > 0));
     SDL_assert(((i32)item_order < (i32)max_order));
 
-    SDL_assert(global_itemNames             != NULL);
-    SDL_assert(global_itemNames[item_order] != NULL);
+    SDL_assert(global_itemNames[item_order].data != NULL);
 
     /* - Name - */
     // item->name = s8_mut(cJSON_GetStringValue(jname));
     // size_t len = strlen(global_itemNames[item_order]);
     // memcpy(item->name, global_itemNames[item_order], len);
-    item->name = s8_mut(global_itemNames[item_order]);
+    s8_free(&item->name);
+    item->name = s8cpy(item->name, global_itemNames[item_order]);
 
     /* - Description - */
     char *string = cJSON_GetStringValue(jdescription);

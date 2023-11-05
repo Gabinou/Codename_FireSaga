@@ -61,12 +61,12 @@ void Names_itemNames() {
 
     DTAB_INIT(global_itemOrders, i32);
     SDL_assert(global_itemOrders != NULL);
-    
+
     size_t order = 1;
-    
+
 #define REGISTER_ENUM(x, y) dtab_add(global_itemOrders, &order, ITEM_ID_##x);\
     order++;\
-    global_itemNames[ITEM_ORDER_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2));
+    global_itemNames[ITEM_ORDER_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);
 #include "names/items.h"
     SDL_assert(order == DARR_NUM(global_itemNames));
 }
@@ -264,19 +264,7 @@ void Names_Free() {
     }
     SDL_Log("global_itemNames");
     for (size_t i = 0; i < DARR_NUM(global_itemNames); i++) {
-        // Names that start with Space are invalid.
-        if (global_itemNames[i][0] != ' ') {
-            SDL_free(global_itemNames[i]);
-            global_itemNames[i] = NULL;
-        }
-    }
-    if (global_itemNames != NULL) {
-        DARR_FREE(global_itemNames);
-        global_itemNames = NULL;
-    }
-    if (global_itemOrders != NULL) {
-        DTAB_FREE(global_itemOrders);
-        global_itemOrders = NULL;
+        s8_free(&global_itemNames[i]);
     }
     SDL_Log("global_tilenames i");
     for (size_t i = TILE_START; i < TILE_END; i++) {
