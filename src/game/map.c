@@ -132,7 +132,8 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         // tnecs_entity_t temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Unit, Position, Sprite, Timer, MapHPBar);
 
         SDL_Log("-- checks --");
-        tnecs_component_t typeflag = TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Unit, Position, Sprite,
+        tnecs_component_t typeflag = TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Unit,
+                                                                    Position, Sprite,
                                                                     Timer, MapHPBar);
 
         SDL_Log("- 1 -");
@@ -165,8 +166,9 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         unit->weapons_dtab = sota->weapons_dtab;
         size_t order = *(u16 *)DTAB_GET(global_unitOrders, sota->map->reinforcements[i].id);
-        s8 unitname = s8cpy(unitname, global_unitNames[order]);
-        unitname    = s8cat(unitname, s8_literal(".json"));
+        s8 unitname = {0};
+        unitname    = s8cpy(unitname, global_unitNames[order]);
+        unitname    = s8cat(unitname, s8_literal(".json\0"));
         SDL_Log("unitname: %ld %s", sota->map->reinforcements[i].id, unitname.data);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         jsonio_readJSON(unitname.data, unit);

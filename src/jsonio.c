@@ -83,14 +83,13 @@ void jsonio_readJSON(const char *filename, void *struct_ptr) {
         exit(ERROR_JSONElementNotSet);
     }
 
-    /* Set json_filename to input filename */
+    /* Set json_filename in struct to input filename */
     char **json_filename = ((char **)struct_ptr + JSON_FILENAME_bOFFSET);
     if (*json_filename == NULL) {
         size_t len      = strlen(filename);
         *json_filename  = calloc(len + 1, sizeof(**json_filename));
         memcpy(*json_filename, filename, len);
     }
-    SDL_Log("json_filename '%s'", *json_filename);
 
     /* Actually read the json file */
     if (json_read_funcs[jelem_id] != NULL)
