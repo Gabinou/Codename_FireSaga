@@ -22,7 +22,7 @@ void Game_Map_Load(struct Game *sota, const i16 in_map_index) {
 
     /* --- Reading map from json files --- */
     // Map_dArrays_Init(sota->map, &sota->settings);
-    jsonio_readJSON(mapFilenames[in_map_index].data, sota->map);
+    jsonio_readJSON(mapFilenames[in_map_index], sota->map);
     // read_json sets the row_len and col_len necessary for dArrays_Init
     // Game_Tilesets_Dump(sota);
 }
@@ -171,7 +171,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         unitname    = s8cat(unitname, s8_literal(".json\0"));
         SDL_Log("unitname: %ld %s", sota->map->reinforcements[i].id, unitname.data);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
-        jsonio_readJSON(unitname.data, unit);
+        jsonio_readJSON(unitname, unit);
         s8_free(&unitname);
         if (!Unit_ID_Valid(unit->_id)) {
             SDL_Log("Unit %s.json has wrong ID. Should be %d.", unit->name, sota->map->reinforcements[i].id);

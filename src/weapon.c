@@ -148,7 +148,7 @@ void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
     SDL_assert(temp_weapon.json_element == JSON_WEAPON);
 
     /* - read weapon - */
-    jsonio_readJSON(filename.data, &temp_weapon);
+    jsonio_readJSON(filename, &temp_weapon);
     SDL_assert(temp_weapon.item != NULL);
     temp_weapon.item->type = 1 << (id / ITEM_DIVISOR);
     if (temp_weapon.item->id != id) {
@@ -210,7 +210,7 @@ void Weapon_Save(struct dtab *weapons_dtab, i16 id) {
         SDL_Log("Saving weapon %ld %s", id, filename.data);
         bool append = false;
         struct Weapon *weapon = (struct Weapon *)DTAB_GET(weapons_dtab, id);
-        jsonio_writeJSON(filename.data, weapon, false);
+        jsonio_writeJSON(filename, weapon, false);
         s8_free(&filename);
     }
 }

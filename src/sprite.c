@@ -258,7 +258,7 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit, SDL_Renderer
     filename = s8cat(filename, s8_literal(".json"));
     SDL_Log("FILE %s", filename.data);
     SDL_assert(PHYSFS_exists(filename.data));
-    jsonio_readJSON(filename.data, sprite);
+    jsonio_readJSON(filename, sprite);
 
     /* -- Loading spritesheet surface -- */
     s8_free(&filename);

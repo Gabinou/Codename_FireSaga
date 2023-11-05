@@ -392,7 +392,7 @@ void Reload_Entities(struct Game *sota, entity_reload_f reload_func, size_t flag
 
 void Reload_JSON(void *struct_ptr) {
     char **json_filename  = ((char **)struct_ptr + JSON_FILENAME_bOFFSET);
-    jsonio_readJSON(*json_filename, struct_ptr);
+    jsonio_readJSON(s8_var(*json_filename), struct_ptr);
 }
 
 void Reload_Menu(void *struct_ptr) {
@@ -458,7 +458,7 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     Reload_Entities_Archetype(sota, Reload_MapHpBar,  "MapHPBar");
 
     /* -- Reload Map -- */
-    jsonio_readJSON(sota->map->json_filename, sota->map);
+    jsonio_readJSON(s8_var(sota->map->json_filename), sota->map);
     sota->map->update = true;
 
     /* -- TODO: Reload Scenes -- */

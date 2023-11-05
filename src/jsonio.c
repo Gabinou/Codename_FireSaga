@@ -28,17 +28,17 @@ json_write_t json_write_funcs[JSON_END] = {
     /* JSON_SPRITESHEET */ NULL,
 };
 
-struct cJSON *jsonio_parseJSON(const char *filename) {
+struct cJSON *jsonio_parseJSON(s8 filename) {
 
     /* Error if file doesn't exist */
-    if (!PHYSFS_exists(filename)) {
-        SDL_Log("File %s does not exist", filename);
+    if (!PHYSFS_exists(filename.data)) {
+        SDL_Log("File %s does not exist", filename.data);
         SDL_assert(false);
         exit(ERROR_CannotOpenFile);
     }
 
     /* Error if file can't be read */
-    PHYSFS_file *fp = PHYSFS_openRead(filename);
+    PHYSFS_file *fp = PHYSFS_openRead(filename.data);
     if (fp == NULL) {
         SDL_Log("%s " STRINGIZE(__LINE__), __func__);
         SDL_Log("Could not read JSON file");
@@ -57,13 +57,13 @@ struct cJSON *jsonio_parseJSON(const char *filename) {
     return (jfile);
 }
 
-void jsonio_readJSON(const char *filename, void *struct_ptr) {
-    SDL_Log("Reading JSON: %s", filename);
+void jsonio_readJSON(s8 filename, void *struct_ptr) {
+    SDL_Log("Reading JSON: %s", filename.data);
 
     /* Parse the json file */
     struct cJSON *jfile = jsonio_parseJSON(filename);
     if (jfile == NULL) {
-        SDL_Log("Could not parse JSON file '%s'", filename);
+        SDL_Log("Could not parse JSON file '%s'", filename.data);
         exit(ERROR_JSONElementNotSet);
     }
 
@@ -79,16 +79,15 @@ void jsonio_readJSON(const char *filename, void *struct_ptr) {
     /* Get the json element */
     struct cJSON *jelement = cJSON_GetObjectItem(jfile, elem_name);
     if (jelement == NULL) {
-        SDL_Log("JSON element %s does not exist in %s", elem_name, filename);
+        SDL_Log("JSON element %s does not exist in %s", elem_name, filename.data);
         exit(ERROR_JSONElementNotSet);
     }
 
     /* Set json_filename in struct to input filename */
     char **json_filename = ((char **)struct_ptr + JSON_FILENAME_bOFFSET);
     if (*json_filename == NULL) {
-        size_t len      = strlen(filename);
-        *json_filename  = calloc(len + 1, sizeof(**json_filename));
-        memcpy(*json_filename, filename, len);
+        *json_filename  = calloc(filename.num + 1, sizeof(**json_filename));
+        memcpy(*json_filename, filename.data, filename.num);
     }
 
     /* Actually read the json file */
@@ -101,9 +100,8 @@ void jsonio_readJSON(const char *filename, void *struct_ptr) {
 
 }
 
-void jsonio_writeJSON(const char *filename, const void *struct_ptr, bool append) {
-
-    SDL_Log("%s:", filename);
+void jsonio_writeJSON(s8 filename, const void *struct_ptr, bool append) {
+    SDL_Log("%s:", filename.data);
 
     /* Parse the json file */
     PHYSFS_file *fp = NULL;
@@ -122,12 +120,12 @@ void jsonio_writeJSON(const char *filename, const void *struct_ptr, bool append)
 
     /* Open the file */
     if (append)
-        fp = PHYSFS_openAppend(filename);
+        fp = PHYSFS_openAppend(filename.data);
     else
-        fp = PHYSFS_openWrite(filename);
+        fp = PHYSFS_openWrite(filename.data);
 
     if (!fp) {
-        SDL_Log("Could not open %s for writing\n", filename);
+        SDL_Log("Could not open %s for writing\n", filename.data);
         exit(ERROR_CannotOpenFile);
     }
 

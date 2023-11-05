@@ -513,7 +513,7 @@ void Game_loadJSON(struct Game *sota, const i16 save_ind) {
     char temp[DEFAULT_BUFFER_SIZE];
     stbsp_snprintf(temp, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", save_ind);
     filename = s8cat(filename, s8_var(temp));
-    cJSON *json         = jsonio_parseJSON(filename.data);
+    cJSON *json         = jsonio_parseJSON(filename);
     // readJSON_narrative(json, &sota->narrative);
     cJSON *jRN          = cJSON_GetObjectItem(json, "RN");
     cJSON *jRN_s1       = cJSON_GetObjectItem(jRN, "s1");

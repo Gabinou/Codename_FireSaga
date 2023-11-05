@@ -391,7 +391,7 @@ void Filesystem_Texture_Dump(const char *filename, SDL_Renderer *renderer, SDL_T
 // TODO: rewrite with input cjson
 void Filesystem_readJSON_Shop(const char *filename, struct Shop *shop) {
     SDL_Log("%s", filename);
-    struct cJSON *jfile = jsonio_parseJSON(filename);
+    struct cJSON *jfile = jsonio_parseJSON(s8_var(filename));
     SDL_assert(jfile != NULL);
     struct cJSON *jshop = cJSON_GetObjectItem(jfile, "Shop");
     if (jshop == NULL) {
@@ -419,7 +419,7 @@ void Filesystem_readJSON_Shop(const char *filename, struct Shop *shop) {
 
 void Filesystem_readJSON_Promotion(const char *filename, struct Promotion *promotion) {
     SDL_Log("%s", filename);
-    struct cJSON *jfile = jsonio_parseJSON(filename);
+    struct cJSON *jfile = jsonio_parseJSON(s8_var(filename));
     SDL_assert(jfile != NULL);
     struct cJSON *jpromotion = cJSON_GetObjectItem(jfile, "Promotion");
     if (jpromotion == NULL) {
@@ -453,7 +453,7 @@ void Filesystem_readJSON_Promotion(const char *filename, struct Promotion *promo
 
 void Filesystem_readJSON_Palette(const char *filename, struct SDL_Palette *palette) {
     SDL_Log("%s", filename);
-    struct cJSON *jfile = jsonio_parseJSON(filename);
+    struct cJSON *jfile = jsonio_parseJSON(s8_var(filename));
     SDL_assert(jfile != NULL);
     struct cJSON *jpalette = cJSON_GetObjectItem(jfile, "Palette");
     if (jpalette == NULL) {
@@ -486,7 +486,7 @@ void Filesystem_readJSON_Palette(const char *filename, struct SDL_Palette *palet
 
 void Filesystem_readJSON_PaletteTable(const char *filename, u8   *table) {
     SDL_Log("%s", filename);
-    struct cJSON *jfile = jsonio_parseJSON(filename);
+    struct cJSON *jfile = jsonio_parseJSON(s8_var(filename));
     SDL_assert(jfile != NULL);
     struct cJSON *jpalette_table = cJSON_GetObjectItem(jfile, "Palette Table");
     if (jpalette_table == NULL) {

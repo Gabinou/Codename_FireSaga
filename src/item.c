@@ -307,7 +307,7 @@ void Item_Load(struct dtab *items_dtab, i16 id) {
     SDL_assert(temp_item.json_element == JSON_ITEM);
 
     /* - read weapon - */
-    jsonio_readJSON(filename.data, &temp_item);
+    jsonio_readJSON(filename, &temp_item);
 
     /* - Add weapon to dtab - */
     DTAB_ADD(items_dtab, &temp_item, id);

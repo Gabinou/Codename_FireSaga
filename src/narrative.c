@@ -161,7 +161,7 @@ struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_conds,
         s8cat(filename, s8_var(extension));
         if (!PHYSFS_exists(filename.data))
             break;
-        jfile = jsonio_parseJSON(filename.data);
+        jfile = jsonio_parseJSON(filename);
         SDL_assert(jfile);
         jscene = cJSON_GetObjectItem(jfile, "Scene");
         SDL_assert(jscene);
