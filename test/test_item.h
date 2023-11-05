@@ -23,7 +23,7 @@ void test_item() {
     char in_description[DEFAULT_BUFFER_SIZE] = {"Naturally full of angelic energy. Protects against demons."};
     char *out_description;
     memcpy(item1.description, in_description, strlen(in_description));
-    memcpy(item1.name, "Cross", strlen("Cross"));
+    item1.name = s8_mut("Cross");
     item1.passive     = in_effect;
     item1.bonus_stats = in_stats;
     item1.malus_stats = in_stats;
@@ -34,7 +34,7 @@ void test_item() {
                            s8_literal("Naturally full of angelic energy. Protects against demons.")));
     nourstest_true(s8equal(s8_var(out_description),
                            s8_literal("Naturally full of angelic energy. Protects against demons.")));
-    nourstest_true(s8equal(s8_var(item1.name), s8_literal("Cross")));
+    nourstest_true(s8equal(item1.name, s8_literal("Cross")));
     nourstest_true(item1.passive  == in_effect);
     nourstest_true(item1.type     == in_type);
     nourstest_true(item1.canSell  == in_canSell);
@@ -69,7 +69,7 @@ void test_item() {
     jsonio_readJSON("saves/item_test.json", &item2);
     out_description = item2.description;
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
-    nourstest_true(s8equal(s8_var(item2.name), s8_literal("Cross")));
+    nourstest_true(s8equal(item2.name, s8_literal("Cross")));
     nourstest_true(item2.passive  == in_effect);
     nourstest_true(item2.type     == in_type);
     nourstest_true(item2.canSell  == in_canSell);

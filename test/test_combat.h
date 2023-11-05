@@ -138,7 +138,7 @@ void test_combat_stats() {
     free(attacker);
     Unit_Free(defender);
     free(defender);
-    Game_Weapons_Free(weapons_dtab);
+    Game_Weapons_Free(&weapons_dtab);
 }
 
 void test_combat_death() {
@@ -524,7 +524,7 @@ void test_combat_flow() {
     /* --- FREE --- */
     Unit_Free(&attacker);
     Unit_Free(&defender);
-    Game_Weapons_Free(weapons_dtab);
+    Game_Weapons_Free(&weapons_dtab);
 }
 
 #ifndef RNG_SEQUENCE_BREAKER_HIT
