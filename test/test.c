@@ -110,8 +110,8 @@ int main(int argc, char *argv[]) {
     // render_tests();
 
     /* -- Postliminaries -- */
-    Utilities_Free();
-    Filesystem_Free();
+    Utilities_SDL_free();
+    Filesystem_SDL_free();
     SDL_Quit();
     fclose(stdout);
     return (0);

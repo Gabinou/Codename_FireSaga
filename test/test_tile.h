@@ -84,5 +84,5 @@ void test_tile() {
     nourstest_true(out_tile_stats.Pprot == in_tile_stats.Pprot);
     nourstest_true(out_tile_stats.Mprot == in_tile_stats.Mprot);
     nourstest_true(out_tile_stats.heal  == in_tile_stats.heal);
-    Tile_Free(&tile3);
+    Tile_SDL_free(&tile3);
 }

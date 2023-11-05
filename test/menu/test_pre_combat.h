@@ -522,18 +522,18 @@ void test_menu_pre_combat() {
                             renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* --- FREE --- */
-    Unit_Free(&Silou);
-    Unit_Free(&Hamilcar);
-    PixelFont_Free(pcm->pixelnours, true);
-    PixelFont_Free(pcm->pixelnours_big, true);
+    Unit_SDL_free(&Silou);
+    Unit_SDL_free(&Hamilcar);
+    PixelFont_SDL_free(pcm->pixelnours, true);
+    PixelFont_SDL_free(pcm->pixelnours_big, true);
 
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_SDL_free(&weapons_dtab);
     SDL_FreeSurface(surface);
-    PreCombatMenu_Free(pcm);
+    PreCombatMenu_SDL_free(pcm);
 
     if (n9patch.texture != NULL)
         SDL_DestroyTexture(n9patch.texture);
 
     SDL_DestroyRenderer(renderer);
-    Unit_Free(&Silou);
+    Unit_SDL_free(&Silou);
 }

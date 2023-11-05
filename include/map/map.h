@@ -195,31 +195,31 @@ struct Map {
 extern struct Map Map_default;
 
 /* --- Constructor/Destructors --- */
-void        Map_Free(      struct Map *map);
+void        Map_SDL_free(      struct Map *map);
 struct Map *Map_Init(      struct Map *map, i32 width, i32 height);
-void        Map_Units_Free(struct Map *map);
+void        Map_Units_SDL_free(struct Map *map);
 void        Map_Units_Hide(struct Map *map);
 
 void Map_Texture_Alloc(struct Map *map);
 
 /* -- Dynamic arrays -- */
-void Map_dArrays_Free(struct Map *map);
+void Map_dArrays_SDL_free(struct Map *map);
 void Map_dArrays_Init(struct Map *map, const struct Settings *settings);
 
 /* --- Tilemap --- */
 static void _Map_Tilemap_Shader_Init( struct Map *map);
-static void _Map_Tilemap_Shader_Free( struct Map *map);
+static void _Map_Tilemap_Shader_SDL_free( struct Map *map);
 void Map_Tilemap_Surface_Init(struct Map *map);
-void Map_Tilemap_Surface_Free(struct Map *map);
+void Map_Tilemap_Surface_SDL_free(struct Map *map);
 void Map_Tilemap_Texture_Init(struct Map *map);
-void Map_Tilemap_Texture_Free(struct Map *map);
+void Map_Tilemap_Texture_SDL_free(struct Map *map);
 
 static void _Map_Tilesindex_Init(struct Map  *map);
-static void _Map_Tilesindex_Free(struct Map  *map);
+static void _Map_Tilesindex_SDL_free(struct Map  *map);
 
 /* --- Tilesprites --- */
 void Map_Tilesprites_Init(struct Map *map, size_t tiles_num);
-void Map_Tilesprites_Free(struct Map *map);
+void Map_Tilesprites_SDL_free(struct Map *map);
 
 /* --- I/O --- */
 void Map_readJSON(       void *input, const cJSON *const jmap);

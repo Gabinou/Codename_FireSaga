@@ -65,7 +65,7 @@ void Map_Palettemap_Autoset(struct Map *map, u16 flagsum) {
         palette = matrix_sgreater_noM(palette, map->dangermap, 0, size);
         i32 *temp_palette2 = matrix_ssmaller(map->dangermap, DANGERMAP_UNIT_DIVISOR, size);
         palette = matrix_and_noM(palette, temp_palette2, palette, size);
-        free(temp_palette2);
+        SDL_free(temp_palette2);
         Map_Palettemap_addMap(map, palette, PALETTE_NES_FILTER_DARKREDwSHADOW);
     }
     memset(palette, 0, bytesize);

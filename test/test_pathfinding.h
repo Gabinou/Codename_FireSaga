@@ -109,9 +109,9 @@ void test_pathfinding_Astar() {
     for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
         nourstest_true(computed_path[i] == expected_path[i]);
 
-    free(movemapp);
+    SDL_free(movemapp);
     DARR_FREE(path_list);
-    free(computed_path);
+    SDL_free(computed_path);
 }
 
 
@@ -237,7 +237,7 @@ void test_pathfinding_sight() {
         nourstest_true(sightmap[i] == expected_vision_9[i]);
     // matrix_print(sightmap, ROW_LEN, COL_LEN);
 
-    free(sightmap);
+    SDL_free(sightmap);
 }
 
 void test_pathfinding() {

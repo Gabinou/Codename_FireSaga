@@ -23,7 +23,7 @@ struct PopUp_Loadout_Stats PopUp_Loadout_Stats_default = {
     .update                  = false,
 };
 
-void PopUp_Loadout_Stats_Free(struct PopUp_Loadout_Stats *pls) {
+void PopUp_Loadout_Stats_SDL_free(struct PopUp_Loadout_Stats *pls) {
     if (pls->texture != NULL) {
         SDL_DestroyTexture(pls->texture);
         pls->texture = NULL;
@@ -46,8 +46,8 @@ void PopUp_Loadout_Stats_Free(struct PopUp_Loadout_Stats *pls) {
 void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer,
                               struct n9Patch *n9patch) {
     SDL_assert(pls != NULL);
-    PopUp_Loadout_Stats_Free(pls);
-    n9Patch_Free(n9patch);
+    PopUp_Loadout_Stats_SDL_free(pls);
+    n9Patch_SDL_free(n9patch);
 
     pls->update = true;
 

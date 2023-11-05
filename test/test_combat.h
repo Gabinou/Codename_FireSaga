@@ -134,11 +134,11 @@ void test_combat_stats() {
     nourstest_true((temp_stats.dft_stats.move == defender_stats.move));
 
     /* --- FREE --- */
-    Unit_Free(attacker);
-    free(attacker);
-    Unit_Free(defender);
-    free(defender);
-    Game_Weapons_Free(&weapons_dtab);
+    Unit_SDL_free(attacker);
+    SDL_free(attacker);
+    Unit_SDL_free(defender);
+    SDL_free(defender);
+    Game_Weapons_SDL_free(&weapons_dtab);
 }
 
 void test_combat_death() {
@@ -522,9 +522,9 @@ void test_combat_flow() {
     nourstest_true(temp_flow.defendant_phases == 2);
 
     /* --- FREE --- */
-    Unit_Free(&attacker);
-    Unit_Free(&defender);
-    Game_Weapons_Free(&weapons_dtab);
+    Unit_SDL_free(&attacker);
+    Unit_SDL_free(&defender);
+    Game_Weapons_SDL_free(&weapons_dtab);
 }
 
 #ifndef RNG_SEQUENCE_BREAKER_HIT

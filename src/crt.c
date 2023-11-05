@@ -205,7 +205,7 @@ void Lanczos_Filter_2D_T(float *samples, float *filtered, uint_fast32_t size_sam
             }
         }
     }
-    free(filtered_cols);
+    SDL_free(filtered_cols);
 }
 
 void Lanczos_Filter_2D(float *samples, float *filtered, uint_fast32_t size_samples_x,
@@ -250,7 +250,7 @@ void Lanczos_Filter_2D(float *samples, float *filtered, uint_fast32_t size_sampl
             }
         }
     }
-    free(filtered_rows);
+    SDL_free(filtered_rows);
 }
 
 void Lanczos_Filter_1D(float *samples, float *filtered, uint_fast32_t size_samples,
@@ -295,8 +295,8 @@ void CRT_Bloom(float *color, uint_fast32_t width, uint_fast32_t height, float ra
         for (uint_fast32_t i = 0; i < width; i++)
             color[i + j * width] += copy_blurred[i + j * width];
     }
-    free(copy);
-    free(copy_blurred);
+    SDL_free(copy);
+    SDL_free(copy_blurred);
 }
 
 void CRT_Bloom_Correction_Denom(float *color, uint_fast32_t size) {
@@ -772,22 +772,22 @@ void CRT_Filter(struct CRT *in_crt, SDL_Texture *render_target,
                             in_crt->target_format, render_target);
     in_crt->filtered_text = SDL_CreateTextureFromSurface(renderer, in_crt->filtered);
     SDL_assert(in_crt->filtered_text != NULL);
-    free(temp_mask);
-    free(intermediate_floatrgb.R);
-    free(intermediate_floatrgb.G);
-    free(intermediate_floatrgb.B);
-    free(input_floatrgb.R);
-    free(input_floatrgb.G);
-    free(input_floatrgb.B);
-    free(scanline_floatrgb.R);
-    free(scanline_floatrgb.G);
-    free(scanline_floatrgb.B);
+    SDL_free(temp_mask);
+    SDL_free(intermediate_floatrgb.R);
+    SDL_free(intermediate_floatrgb.G);
+    SDL_free(intermediate_floatrgb.B);
+    SDL_free(input_floatrgb.R);
+    SDL_free(input_floatrgb.G);
+    SDL_free(input_floatrgb.B);
+    SDL_free(scanline_floatrgb.R);
+    SDL_free(scanline_floatrgb.G);
+    SDL_free(scanline_floatrgb.B);
 }
 
-void CRT_Free(struct CRT *in_crt) {
+void CRT_SDL_free(struct CRT *in_crt) {
     if (in_crt->unfiltered != NULL) {
         SDL_LockSurface(in_crt->unfiltered);
-        free(in_crt->unfiltered->pixels);
+        SDL_free(in_crt->unfiltered->pixels);
         SDL_UnlockSurface(in_crt->unfiltered);
         SDL_FreeSurface(in_crt->unfiltered);
     }

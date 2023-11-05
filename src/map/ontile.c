@@ -66,9 +66,9 @@ void Map_Unit_Put(struct Map *map, tnecs_world_t *world, u8 col, u8 row,
             SDL_assert(Unit_ID_Valid(temp_unit->_id));
             SDL_assert(global_unitOrders != NULL);
             SDL_assert(dtab_get(global_unitOrders, temp_unit->_id) != NULL);
-            u16 index = *(u16 *)dtab_get(global_unitOrders, temp_unit->_id);
-            SDL_assert(index != 0);
-            SDL_assert(index < DARR_NUM(global_unitNames));
+            u16 order = *(u16 *)dtab_get(global_unitOrders, temp_unit->_id);
+            SDL_assert(order > 0);
+            SDL_assert(order < UNIT_NUM);
             DARR_PUT(map->friendlies_onfield, entity);
             map->num_friendlies_onfield++;
             break;
@@ -77,9 +77,9 @@ void Map_Unit_Put(struct Map *map, tnecs_world_t *world, u8 col, u8 row,
             SDL_assert(Unit_ID_Valid(temp_unit->_id));
             SDL_assert(global_unitOrders != NULL);
             SDL_assert(dtab_get(global_unitOrders, temp_unit->_id) != NULL);
-            u16 index = *(u16 *)dtab_get(global_unitOrders, temp_unit->_id);
-            SDL_assert(index != 0);
-            SDL_assert(index < DARR_NUM(global_unitNames));
+            u16 order = *(u16 *)dtab_get(global_unitOrders, temp_unit->_id);
+            SDL_assert(order > 0);
+            SDL_assert(order < UNIT_NUM);
             DARR_PUT(map->enemies_onfield, entity);
             map->num_enemies_onfield++;
             break;
@@ -158,19 +158,19 @@ void Map_Unit_Remove(struct Map *map, const tnecs_entity_t entity) {
         found = entity_where(map->friendlies_onfield, entity, map->num_friendlies_onfield);
         DARR_DEL(map->friendlies_onfield, found[0]);
         map->num_friendlies_onfield--;
-        free(found);
+        SDL_free(found);
     }
     if (entity_isIn(map->enemies_onfield, entity, map->num_enemies_onfield)) {
         found = entity_where(map->enemies_onfield, entity, map->num_enemies_onfield);
         DARR_DEL(map->enemies_onfield, found[0]);
         map->num_enemies_onfield--;
-        free(found);
+        SDL_free(found);
     }
     if (entity_isIn(map->units_onfield, entity, map->num_units_onfield)) {
         found = entity_where(map->units_onfield, entity, map->num_units_onfield);
         DARR_DEL(map->units_onfield, found[0]);
         map->num_units_onfield--;
-        free(found);
+        SDL_free(found);
     }
 }
 

@@ -115,7 +115,7 @@ extern struct PopUp_Map_Combat PopUp_Map_Combat_default;
 
 /* --- Constructors/Destructors --- */
 void PopUp_Map_Combat_Load(struct PopUp_Map_Combat *pmc, SDL_Renderer *r, struct n9Patch *n);
-void PopUp_Map_Combat_Free(struct PopUp_Map_Combat *pmc);
+void PopUp_Map_Combat_SDL_free(struct PopUp_Map_Combat *pmc);
 
 /* --- Setters --- */
 void PopUp_Map_Combat_Units(struct PopUp_Map_Combat *pmc, struct Game *sota,

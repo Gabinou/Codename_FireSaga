@@ -47,7 +47,7 @@ struct Mobj_Link;
 
 /* --- INIT --- */
 int Filesystem_Init(char *argv0);
-int Filesystem_Free(void);
+int Filesystem_SDL_free(void);
 
 void Filesystem_Mount(s8 folder);
 

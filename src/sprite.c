@@ -48,24 +48,24 @@ struct Sprite Sprite_default = {
 };
 
 /* --- SPRITESHEET --- */
-void Spritesheet_Free(struct Spritesheet *spritesheet) {
+void Spritesheet_SDL_free(struct Spritesheet *spritesheet) {
     if (spritesheet->loops_pos != NULL) {
-        free(spritesheet->loops_pos);
+        SDL_free(spritesheet->loops_pos);
         spritesheet->loops_pos = NULL;
     }
     if (spritesheet->speeds != NULL) {
         for (int i = 0; i < spritesheet->loop_num; ++i) {
-            free(spritesheet->speeds[i]);
+            SDL_free(spritesheet->speeds[i]);
         }
-        free(spritesheet->speeds);
+        SDL_free(spritesheet->speeds);
         spritesheet->speeds = NULL;
     }
     if (spritesheet->frames != NULL) {
-        free(spritesheet->frames);
+        SDL_free(spritesheet->frames);
         spritesheet->frames = NULL;
     }
     if (spritesheet->loop_modes != NULL) {
-        free(spritesheet->loop_modes);
+        SDL_free(spritesheet->loop_modes);
         spritesheet->loop_modes = NULL;
     }
     if (spritesheet->surface != NULL) {
@@ -96,7 +96,7 @@ void Sprite_readJSON(void *input, const cJSON *const jsprite) {
 void Spritesheet_readJSON(void *input, const cJSON *const jspritesheet) {
     struct Spritesheet *spritesheet = (struct Spritesheet *) input;
     SDL_assert(spritesheet);
-    Spritesheet_Free(spritesheet);
+    Spritesheet_SDL_free(spritesheet);
     cJSON *jframes      = cJSON_GetObjectItem(jspritesheet, "frames");
     cJSON *jspeeds      = cJSON_GetObjectItem(jspritesheet, "speeds");
     cJSON *jloops_pos   = cJSON_GetObjectItem(jspritesheet, "loops_pos");
@@ -167,27 +167,27 @@ void Spritesheet_Loop_Set(struct Spritesheet *spritesheet, int loop, SDL_Rendere
 
 /* --- SPRITE --- */
 /* -- Constructor/Destructors -- */
-void Sprite_Free(struct Sprite *sprite) {
+void Sprite_SDL_free(struct Sprite *sprite) {
     SDL_Log("Freeing shaders");
     if (sprite->shader_any != NULL) {
-        Index_Shader_Free(sprite->shader_any);
-        free(sprite->shader_any);
+        Index_Shader_SDL_free(sprite->shader_any);
+        SDL_free(sprite->shader_any);
         sprite->shader_any = NULL;
     }
     if (sprite->shader_darken != NULL) {
-        Index_Shader_Free(sprite->shader_darken);
-        free(sprite->shader_darken);
+        Index_Shader_SDL_free(sprite->shader_darken);
+        SDL_free(sprite->shader_darken);
         sprite->shader_darken = NULL;
     }
     if (sprite->shader_lighten != NULL) {
-        Index_Shader_Free(sprite->shader_lighten);
-        free(sprite->shader_lighten);
+        Index_Shader_SDL_free(sprite->shader_lighten);
+        SDL_free(sprite->shader_lighten);
         sprite->shader_lighten = NULL;
     }
     SDL_Log("Freeing spritesheets");
     if (sprite->spritesheet != NULL) {
-        Spritesheet_Free(sprite->spritesheet);
-        free(sprite->spritesheet);
+        Spritesheet_SDL_free(sprite->spritesheet);
+        SDL_free(sprite->spritesheet);
         sprite->spritesheet = NULL;
     }
 
@@ -195,7 +195,7 @@ void Sprite_Free(struct Sprite *sprite) {
     s8_free(&sprite->asset_name);
 
     if (sprite->json_filename != NULL) {
-        free(sprite->json_filename);
+        SDL_free(sprite->json_filename);
         sprite->json_filename = NULL;
     }
 
@@ -241,7 +241,7 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit, SDL_Renderer
 
     /* -- Alloc Spritesheet -- */
     if (sprite->spritesheet != NULL) {
-        Spritesheet_Free(sprite->spritesheet);
+        Spritesheet_SDL_free(sprite->spritesheet);
     } else {
         sprite->spritesheet  = malloc(sizeof(*sprite->spritesheet));
         *sprite->spritesheet = Spritesheet_default;

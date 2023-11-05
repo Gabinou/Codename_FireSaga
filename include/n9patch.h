@@ -29,7 +29,7 @@ typedef struct n9Patch {
 extern struct n9Patch n9Patch_default;
 
 /* --- Constructor/Destructor --- */
-void n9Patch_Free(struct n9Patch *n9);
+void n9Patch_SDL_free(struct n9Patch *n9);
 
 /* --- Fitting --- */
 void n9Patch_Fit(        struct n9Patch *n9, struct Point c);

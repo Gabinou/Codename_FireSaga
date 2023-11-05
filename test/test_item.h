@@ -102,5 +102,5 @@ void test_item() {
     nourstest_true(Filesystem_fequal("saves/item_test.json", "saves/item_rewrite.json"));
     nourstest_true(PHYSFS_exists("saves/item_rewrite.json"));
     nourstest_true(PHYSFS_exists("saves/item_test.json"));
-    Item_Free(&item2);
+    Item_SDL_free(&item2);
 }

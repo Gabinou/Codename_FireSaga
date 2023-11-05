@@ -337,8 +337,8 @@ void test_canEquip() {
     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 1);
     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
 
-    Game_Weapons_Free(&weapons_dtab);
-    Unit_Free(&Silou);
+    Game_Weapons_SDL_free(&weapons_dtab);
+    Unit_SDL_free(&Silou);
 }
 
 void test_skills() {
@@ -387,9 +387,9 @@ void test_skills() {
     Unit_computedStats(&Enemy, distance);
 
     /* --- FREE --- */
-    Unit_Free(&Silou);
-    Unit_Free(&Enemy);
-    Game_Weapons_Free(&weapons_dtab);
+    Unit_SDL_free(&Silou);
+    Unit_SDL_free(&Enemy);
+    Game_Weapons_SDL_free(&weapons_dtab);
 }
 
 void test_io() {
@@ -519,13 +519,13 @@ void test_io() {
     nourstest_true(PHYSFS_exists("saves"PHYSFS_SEPARATOR"unit_rewrite.json") != 0);
     nourstest_true(Filesystem_fequal("saves"PHYSFS_SEPARATOR"unit_test.json",
                                      "saves"PHYSFS_SEPARATOR"unit_rewrite.json"));
-    Unit_Free(&unit1);
-    Unit_Free(&unit2);
-    Unit_Free(&unit3);
-    Unit_Free(&unit4);
-    Unit_Free(&unit5);
-    Game_Weapons_Free(&weapons_dtab);
-    Game_Weapons_Free(&weapons_dtab2);
+    Unit_SDL_free(&unit1);
+    Unit_SDL_free(&unit2);
+    Unit_SDL_free(&unit3);
+    Unit_SDL_free(&unit4);
+    Unit_SDL_free(&unit5);
+    Game_Weapons_SDL_free(&weapons_dtab);
+    Game_Weapons_SDL_free(&weapons_dtab2);
 }
 
 void test_growth() {
@@ -631,7 +631,7 @@ void test_growth() {
     nourstest_true(Silou.move_sequence.len      == 0);
     nourstest_true(Silou.con_sequence.len       == 0);
 
-    Unit_Free(&Silou);
+    Unit_SDL_free(&Silou);
 }
 
 void test_wpn_or_item() {
@@ -685,9 +685,9 @@ void test_wpn_or_item() {
     nourstest_true(wpn_or_item.item->id      == ITEM_ID_PANACEA);
     nourstest_true(wpn_or_item.wpn           == NULL);
 
-    Game_Items_Free(&items_dtab);
-    Game_Weapons_Free(&weapons_dtab);
-    Unit_Free(&Silou);
+    Game_Items_SDL_free(&items_dtab);
+    Game_Weapons_SDL_free(&weapons_dtab);
+    Unit_SDL_free(&Silou);
 }
 
 void test_unit() {

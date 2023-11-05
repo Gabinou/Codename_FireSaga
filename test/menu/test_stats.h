@@ -386,17 +386,17 @@ void test_menu_stats() {
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* --- FREE --- */
-    PixelFont_Free(sm->pixelnours, true);
-    PixelFont_Free(sm->pixelnours_big, true);
+    PixelFont_SDL_free(sm->pixelnours, true);
+    PixelFont_SDL_free(sm->pixelnours_big, true);
 
-    Game_Weapons_Free(&weapons_dtab);
-    Game_Items_Free(&items_dtab);
+    Game_Weapons_SDL_free(&weapons_dtab);
+    Game_Items_SDL_free(&items_dtab);
     SDL_FreeSurface(surface);
-    StatsMenu_Free(sm);
+    StatsMenu_SDL_free(sm);
 
     if (n9patch.texture != NULL)
         SDL_DestroyTexture(n9patch.texture);
 
     SDL_DestroyRenderer(renderer);
-    Unit_Free(&Silou);
+    Unit_SDL_free(&Silou);
 }

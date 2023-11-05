@@ -1,11 +1,11 @@
 
 #include "map/tiles.h"
 
-void Map_Tiles_Free(struct Map *map) {
-    Map_Tilesets_Free(map);
+void Map_Tiles_SDL_free(struct Map *map) {
+    Map_Tilesets_SDL_free(map);
     if (map->tiles != NULL) {
         for (size_t i = 0; i < DARR_NUM(map->tiles); i++)
-            Tile_Free(&map->tiles[i]);
+            Tile_SDL_free(&map->tiles[i]);
         DARR_FREE(map->tiles);
         map->tiles = NULL;
     }
@@ -16,7 +16,7 @@ void Map_Tiles_Free(struct Map *map) {
 }
 
 void Map_Tiles_Load(struct Map *map) {
-    Map_Tiles_Free(map);
+    Map_Tiles_SDL_free(map);
     struct Tile *temp_tile = NULL;
     map->tiles      = DARR_INIT(map->tiles, struct Tile, 64);
     map->tiles_id   = DARR_INIT(map->tiles_id, i32, 64);
@@ -40,11 +40,11 @@ void Map_Tiles_Load(struct Map *map) {
         DARR_PUT(map->tiles, *temp_tile);
         DARR_PUT(map->tiles_id, tile_id);
         s8_free(&filename);
-        free(temp_tile);
+        SDL_free(temp_tile);
     }
 }
 
-void Map_Tilesets_Free(struct Map *map) {
+void Map_Tilesets_SDL_free(struct Map *map) {
     if (map->tiles == NULL)
         return;
 
@@ -65,10 +65,10 @@ void Map_Tilesets_Free(struct Map *map) {
                 continue;
 
             SOTA_Free_Surfaces(map->tileset_surfaces[i], DARR_NUM(map->tiles));
-            free(map->tileset_surfaces[i]);
+            SDL_free(map->tileset_surfaces[i]);
             map->tileset_surfaces[i] = NULL;
         }
-        free(map->tileset_surfaces);
+        SDL_free(map->tileset_surfaces);
         map->tileset_surfaces = NULL;
     } while (0);
 
@@ -82,10 +82,10 @@ void Map_Tilesets_Free(struct Map *map) {
                 continue;
 
             SOTA_Free_Textures(map->tileset_textures[i], DARR_NUM(map->tiles));
-            free(map->tileset_textures[i]);
+            SDL_free(map->tileset_textures[i]);
             map->tileset_textures[i] = NULL;
         }
-        free(map->tileset_textures);
+        SDL_free(map->tileset_textures);
         map->tileset_textures = NULL;
     } while (0);
 
@@ -97,7 +97,7 @@ void Map_Tilesets_Load(struct Map *map) {
     /* -- Preliminaries -- */
     i32 tile_ind;
     char tilesetname[DEFAULT_BUFFER_SIZE] = "";
-    Map_Tilesets_Free(map);
+    Map_Tilesets_SDL_free(map);
 
     /* -- Alloc tilesets -- */
     map->tileset_surfaces = calloc(PALETTE_NUM, sizeof(*map->tileset_surfaces));

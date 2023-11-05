@@ -89,7 +89,7 @@ struct PixelFont *PixelFont_Alloc() {
     return (font);
 }
 
-void PixelFont_Free(struct PixelFont *font, bool isfree) {
+void PixelFont_SDL_free(struct PixelFont *font, bool isfree) {
     SDL_assert(font != NULL);
     if (font->texture != NULL) {
         SDL_DestroyTexture(font->texture);
@@ -100,16 +100,16 @@ void PixelFont_Free(struct PixelFont *font, bool isfree) {
         font->surface = NULL;
     }
     if (font->glyph_bbox_width != NULL) {
-        free(font->glyph_bbox_width);
+        SDL_free(font->glyph_bbox_width);
         font->glyph_bbox_width = NULL;
     }
     if (font->glyph_bbox_height != NULL) {
-        free(font->glyph_bbox_height);
+        SDL_free(font->glyph_bbox_height);
         font->glyph_bbox_height = NULL;
     }
     if (isfree) {
         if (font != NULL) {
-            free(font);
+            SDL_free(font);
             font = NULL;
         }
     }
@@ -227,19 +227,19 @@ void TextLines_Realloc(struct TextLines *textlines, size_t len) {
     textlines->line_len = len;
 }
 
-void TextLines_Free(struct TextLines *textlines) {
+void TextLines_SDL_free(struct TextLines *textlines) {
     if (textlines->lines != NULL) {
         for (int i = 0; i < textlines->line_len; i++) {
             if (textlines->lines[i] != NULL) {
-                free(textlines->lines[i]);
+                SDL_free(textlines->lines[i]);
                 textlines->lines[i] = NULL;
             }
         }
-        free(textlines->lines);
+        SDL_free(textlines->lines);
         textlines->lines = NULL;
     }
     if (textlines->lines_len != NULL) {
-        free(textlines->lines_len);
+        SDL_free(textlines->lines_len);
         textlines->lines_len = NULL;
     }
 }
@@ -423,7 +423,7 @@ int NextLine_Start(const char *text, int previous_break, int current_break, size
         next_char = current_break - 1;
     }
 
-    free(buffer);
+    SDL_free(buffer);
     return (next_char);
 }
 

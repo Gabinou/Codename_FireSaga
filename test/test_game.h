@@ -450,9 +450,9 @@ void test_combat_game() {
     nourstest_true(firesaga.combat_forecast.flow.defendant_phases == 1);
 
     /* --- FREE --- */
-    Unit_Free(&attacker);
-    Unit_Free(&defender);
-    Game_Weapons_Free(&weapons_dtab);
+    Unit_SDL_free(&attacker);
+    Unit_SDL_free(&defender);
+    Game_Weapons_SDL_free(&weapons_dtab);
     DARR_FREE(firesaga.combat_attacks);
 }
 

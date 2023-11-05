@@ -71,7 +71,7 @@ extern struct Item Item_default;
 void Inventory_item_Swap(struct Inventory_item *items, u8 i1, u8 i2);
 
 /* --- Constructors/Destructors --- */
-void Item_Free(struct Item *item);
+void Item_SDL_free(struct Item *item);
 
 /* --- I/O --- */
 void Item_Load(      struct dtab *items_dtab, i16 id);

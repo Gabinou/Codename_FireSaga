@@ -73,7 +73,7 @@ extern struct PixelFont TextureFont_default;
 struct PixelFont *PixelFont_Alloc();
 struct PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len);
 
-void PixelFont_Free(struct PixelFont *f, bool free);
+void PixelFont_SDL_free(struct PixelFont *f, bool free);
 void PixelFont_Load(struct PixelFont *f, SDL_Renderer *r, char *fontname);
 
 /* --- Internals --- */
@@ -81,7 +81,7 @@ void PixelFont_Swap_Palette(struct PixelFont *f, SDL_Renderer *r, i8 w, i8 b);
 
 /* --- Lines --- */
 /* -- Counting lines -- */
-void TextLines_Free(   struct TextLines *tl);
+void TextLines_SDL_free(   struct TextLines *tl);
 void TextLines_Realloc(struct TextLines *tl, size_t len);
 
 /* -- Splitting lines -- */

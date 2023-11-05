@@ -94,7 +94,7 @@ size_t Util_SDL_Surface_Index(SDL_Surface *surf, int x, int y);
 
 /* -- Loading -- */
 void Utilities_Load();
-void Utilities_Free();
+void Utilities_SDL_free();
 
 void SOTA_Free_Surfaces(SDL_Surface **surfaces, int num);
 void SOTA_Free_Textures(SDL_Texture **textures, int num);

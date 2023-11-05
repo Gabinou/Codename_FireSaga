@@ -191,9 +191,9 @@ void test_menu_player_select() {
     // struct Game *sota = Game_Init();
 
     /* --- FREE --- */
-    PixelFont_Free(psm->pixelnours, true);
+    PixelFont_SDL_free(psm->pixelnours, true);
     SDL_FreeSurface(surface);
-    PlayerSelectMenu_Free(psm, mc);
-    free(mc);
+    PlayerSelectMenu_SDL_free(psm, mc);
+    SDL_free(mc);
     SDL_DestroyRenderer(renderer);
 }

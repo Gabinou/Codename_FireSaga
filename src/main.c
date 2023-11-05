@@ -149,11 +149,11 @@ int main(int argc, char *argv[]) {
 
     /* -- Cleaning & Quitting -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Utilities\n");
-    Utilities_Free();
+    Utilities_SDL_free();
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Game\n");
-    Game_Free(sota);
+    Game_SDL_free(sota);
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Filesystem\n");
-    Filesystem_Free();
+    Filesystem_SDL_free();
     SDL_Log("SotA quit.\n");
     return (NO_ERROR);
 }

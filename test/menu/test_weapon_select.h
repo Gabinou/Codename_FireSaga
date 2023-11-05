@@ -225,16 +225,16 @@ void test_menu_weapon_select() {
 
 
     /* --- FREE --- */
-    PixelFont_Free(wsm->pixelnours,     true);
-    PixelFont_Free(wsm->pixelnours_big, true);
+    PixelFont_SDL_free(wsm->pixelnours,     true);
+    PixelFont_SDL_free(wsm->pixelnours_big, true);
 
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_SDL_free(&weapons_dtab);
     SDL_FreeSurface(surface);
-    LoadoutSelectMenu_Free(wsm);
+    LoadoutSelectMenu_SDL_free(wsm);
 
     if (n9patch.texture != NULL)
         SDL_DestroyTexture(n9patch.texture);
-    Unit_Free(&Silou);
+    Unit_SDL_free(&Silou);
 
     SDL_DestroyRenderer(renderer);
 }

@@ -38,7 +38,7 @@ void test_map_simple() {
         }
     }
     DARR_FREE(list);
-    free(test_matrix);
+    SDL_free(test_matrix);
 }
 
 #undef TEST_MAP_ROW_LEN

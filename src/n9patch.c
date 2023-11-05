@@ -11,7 +11,7 @@ struct n9Patch n9Patch_default =  {
 };
 
 
-void n9Patch_Free(struct n9Patch *n9patch) {
+void n9Patch_SDL_free(struct n9Patch *n9patch) {
     if (n9patch->texture != NULL) {
         SDL_DestroyTexture(n9patch->texture);
         n9patch->texture = NULL;

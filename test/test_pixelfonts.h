@@ -83,7 +83,7 @@ void test_pixelfonts_internals() {
     /* -- Lines split by breaking words in halves -- */
     char *text4 =
             "Conglomerate a rock y baka agglomeration bakanumeration stupidification negativitiation.";
-    TextLines_Free(&text_lines);
+    TextLines_SDL_free(&text_lines);
     text_lines = PixelFont_Lines_Len(test_font, text4, line_len_px);
     line_num   = PixelFont_Lines_Num_Len(test_font, text4, line_len_px);
     nourstest_true(line_num == 6);
@@ -103,8 +103,8 @@ void test_pixelfonts_internals() {
     // nourstest_true(s8equal(&text_lines.lines[5], "vitiation.") == 0);
 
     /* -- FREE -- */
-    PixelFont_Free(test_font, true);
-    TextLines_Free(&text_lines);
+    PixelFont_SDL_free(test_font, true);
+    TextLines_SDL_free(&text_lines);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
 }
@@ -148,7 +148,7 @@ void test_pixelfonts_render() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - Pixelnours_big - */
-    PixelFont_Free(bubble.pixelfont, true);
+    PixelFont_SDL_free(bubble.pixelfont, true);
     bubble.pixelfont = PixelFont_Alloc();
     TextBubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "Fonts",
@@ -214,7 +214,7 @@ void test_pixelfonts_render() {
     SDL_assert(n9patch.texture != NULL);
 
 
-    PixelFont_Free(bubble.pixelfont, true);
+    PixelFont_SDL_free(bubble.pixelfont, true);
     bubble.pixelfont = PixelFont_Alloc();
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "Fonts",
                                                          "pixelnours_Big.png"));
@@ -245,8 +245,8 @@ void test_pixelfonts_render() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* FREE */
-    PixelFont_Free(bubble.pixelfont, true);
-    TextBubble_Free(&bubble);
+    PixelFont_SDL_free(bubble.pixelfont, true);
+    TextBubble_SDL_free(&bubble);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
 }

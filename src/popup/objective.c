@@ -35,7 +35,7 @@ void PopUp_Objective_Load(struct PopUp_Objective *po, SDL_Renderer *renderer,
     n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
 }
 
-void PopUp_Objective_Free(struct PopUp_Objective *po) {
+void PopUp_Objective_SDL_free(struct PopUp_Objective *po) {
     SDL_assert(po != NULL);
     if (po->texture != NULL) {
         SDL_DestroyTexture(po->texture);
@@ -46,11 +46,11 @@ void PopUp_Objective_Free(struct PopUp_Objective *po) {
         po->texture_header = NULL;
     }
     if (po->objective != NULL) {
-        free(po->objective);
+        SDL_free(po->objective);
         po->objective = NULL;
     }
     if (po->sub_objective != NULL) {
-        free(po->sub_objective);
+        SDL_free(po->sub_objective);
         po->sub_objective = NULL;
     }
     SDL_free(po);
@@ -61,7 +61,7 @@ void PopUp_Objective_Free(struct PopUp_Objective *po) {
 void PopUp_Objective_Set_Obj(struct PopUp_Objective *po, char *obj) {
     if (po->objective != NULL) {
         SDL_Log("Objective '%s' removed.", po->objective);
-        free(po->objective);
+        SDL_free(po->objective);
     }
     size_t len = strlen(obj) + 1;
     po->objective = malloc(len);
@@ -72,7 +72,7 @@ void PopUp_Objective_Set_Obj(struct PopUp_Objective *po, char *obj) {
 void PopUp_Objective_Set_SubObj(struct PopUp_Objective *po, char *subobj) {
     if (po->objective != NULL) {
         SDL_Log("Sub-Objective %s removed.", po->sub_objective);
-        free(po->sub_objective);
+        SDL_free(po->sub_objective);
     }
     size_t len = strlen(subobj) + 1;
     po->sub_objective = malloc(len);

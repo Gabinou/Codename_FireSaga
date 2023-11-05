@@ -198,7 +198,7 @@ s8 *Names_wpnType(u16 in_typecode) {
     return (type_names);
 }
 
-void Names_wpnType_Free(s8 *type_names) {
+void Names_wpnType_SDL_free(s8 *type_names) {
     for (int i = 0; i < DARR_NUM(type_names); ++i) {
         s8_free(&type_names[i]);
     }
@@ -228,7 +228,7 @@ void Names_Load_All() {
     Names_armyNames();
 }
 
-void Names_Free() {
+void Names_SDL_free() {
 
     SDL_Log("menuOptionnames");
     for (size_t i = MENU_OPTION_START + 1; i < MENU_OPTION_END; i++) {

@@ -11,7 +11,7 @@ void Game_Map_Load(struct Game *sota, const i16 in_map_index) {
     SDL_LogDebug(SOTA_LOG_SYSTEM, "%ld \n", in_map_index);
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Associated map filename     %s \n", mapFilenames[in_map_index]);
     /* --- PRELIMINARIES --- */
-    Game_Map_Free(sota);
+    Game_Map_SDL_free(sota);
 
     /* --- Allocating map --- */
     sota->map = Map_Init(sota->map, sota->settings.tilesize[0], sota->settings.tilesize[1]);
@@ -27,16 +27,16 @@ void Game_Map_Load(struct Game *sota, const i16 in_map_index) {
     // Game_Tilesets_Dump(sota);
 }
 
-void Game_Map_Free(struct Game *sota) {
+void Game_Map_SDL_free(struct Game *sota) {
     if (sota->map != NULL) {
         Map_Units_Hide(sota->map);
-        Map_Free(sota->map);
-        free(sota->map);
+        Map_SDL_free(sota->map);
+        SDL_free(sota->map);
         sota->map = NULL;
     }
 }
 
-void Game_debugMap_Free(struct Game *sota) {
+void Game_debugMap_SDL_free(struct Game *sota) {
     // Game_Map_Load(sota, CHAPTER_TEST_V6);
 
 }
@@ -91,7 +91,7 @@ void Game_debugMap_Load(struct Game *sota) {
 }
 
 /* --- Reinforcements --- */
-void Game_Map_Reinforcements_Free(struct Game *sota) {
+void Game_Map_Reinforcements_SDL_free(struct Game *sota) {
     SDL_assert(sota                 != NULL);
     if (sota->map_enemies == NULL) {
         return;
@@ -106,11 +106,11 @@ void Game_Map_Reinforcements_Free(struct Game *sota) {
 
         struct Unit *unit = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
         if (unit)
-            Unit_Free(unit);
+            Unit_SDL_free(unit);
 
         struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Sprite);
         if (sprite)
-            Sprite_Free(sprite);
+            Sprite_SDL_free(sprite);
     }
     DARR_NUM(sota->map_enemies) = 0;
 }

@@ -26,7 +26,7 @@ void testConvoyfull() {
     nourstest_true(!Convoy_isFull(&convoy));
     Convoy_Deposit_byType(&convoy, temp, ITEM_TYPE_EXP_LANCE);
     nourstest_true(Convoy_isFull(&convoy));
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_SDL_free(&weapons_dtab);
 }
 
 void testConvoysort() {
@@ -180,7 +180,7 @@ void testConvoysort() {
 
     // Convoy_Stats_Print(&convoy, ITEM_TYPE_EXP_SWORD, WEAPON_STAT_HIT);
     // Convoy_AllStats_Print(&convoy, ITEM_TYPE_EXP_SWORD);
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_SDL_free(&weapons_dtab);
 }
 
 void testConvoyWriteRead() {
@@ -373,7 +373,7 @@ void testConvoyWriteRead() {
     nourstest_true(PHYSFS_exists("saves"PHYSFS_SEPARATOR"convoy_rewrite.json"));
     nourstest_true(Filesystem_fequal("saves"PHYSFS_SEPARATOR"convoy_rewrite.json",
                                      "saves"PHYSFS_SEPARATOR"convoy_test.json"));
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_SDL_free(&weapons_dtab);
 }
 
 void testConvoyExp() {
@@ -426,7 +426,7 @@ void testConvoySwap() {
     nourstest_true(convoy.items[3].id == ITEM_ID_DAMAS_LANCE);
     Convoy_Swap(&convoy, 2, 3);
 
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_SDL_free(&weapons_dtab);
 }
 
 void test_convoy() {

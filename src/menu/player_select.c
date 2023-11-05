@@ -42,10 +42,10 @@ struct PlayerSelectMenu *PlayerSelectMenu_Alloc() {
     return (psm);
 }
 
-void PlayerSelectMenu_Free(struct PlayerSelectMenu *psm, struct Menu *mc) {
+void PlayerSelectMenu_SDL_free(struct PlayerSelectMenu *psm, struct Menu *mc) {
     SDL_assert(psm);
     SDL_assert(mc);
-    Menu_Elem_Free(mc);
+    Menu_Elem_SDL_free(mc);
     if (psm->options != NULL) {
         DARR_FREE(psm->options);
         psm->options = NULL;
@@ -58,11 +58,11 @@ void PlayerSelectMenu_Free(struct PlayerSelectMenu *psm, struct Menu *mc) {
         SDL_DestroyTexture(psm->texture);
         psm->texture = NULL;
     }
-    free(psm);
+    SDL_free(psm);
 }
 
 void FirstMenu_Load(struct PlayerSelectMenu *psm, SDL_Renderer *renderer, struct n9Patch *n9patch) {
-    n9Patch_Free(n9patch);
+    n9Patch_SDL_free(n9patch);
     *n9patch                 = n9Patch_default;
     n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;
     n9patch->patch_pixels.y  = MENU_PATCH_PIXELS;
@@ -85,7 +85,7 @@ void FirstMenu_Load(struct PlayerSelectMenu *psm, SDL_Renderer *renderer, struct
 
 void PlayerSelectMenu_Load(struct PlayerSelectMenu *psm, SDL_Renderer *renderer,
                            struct n9Patch *n9patch) {
-    n9Patch_Free(n9patch);
+    n9Patch_SDL_free(n9patch);
 
     *n9patch                 = n9Patch_default;
     n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;
@@ -159,7 +159,7 @@ void PlayerSelectMenu_Compute_Size(struct PlayerSelectMenu *psm, struct n9Patch 
 
 void PlayerSelectMenu_Elem_Links(struct PlayerSelectMenu *psm, struct Menu *mc) {
     if (mc->elem_links != NULL)
-        free(mc->elem_links);
+        SDL_free(mc->elem_links);
     SDL_assert(mc->elem_num == psm->option_num);
     mc->elem_links = malloc(psm->option_num * sizeof(*mc->elem_links));
     for (i32 i = 0; i < psm->option_num; i++) {
@@ -181,7 +181,7 @@ void PlayerSelectMenu_Cursor_Pos(struct PlayerSelectMenu *m, struct Menu *mc) {
 
 void PlayerSelectMenu_Elem_Boxes(struct PlayerSelectMenu *psm, struct Menu *mc) {
     if (mc->elem_box != NULL)
-        free(mc->elem_box);
+        SDL_free(mc->elem_box);
     SDL_assert(mc->elem_num > 0);
     mc->elem_box = malloc(mc->elem_num * sizeof(*mc->elem_box));
     for (i32 i = 0; i < mc->elem_num; i++) {
@@ -195,7 +195,7 @@ void PlayerSelectMenu_Elem_Pos(struct PlayerSelectMenu *psm, struct Menu *mc) {
     struct Point pos9 = mc->n9patch.pos, scale = mc->n9patch.scale;
 
     if (mc->elem_pos != NULL)
-        free(mc->elem_pos);
+        SDL_free(mc->elem_pos);
     mc->elem_pos = calloc(mc->elem_num, sizeof(*mc->elem_pos));
     for (i32 i = 0; i < mc->elem_num; i++) {
         mc->elem_pos[i].x = psm->pos.x + pos9.x + mp.left * scale.x;

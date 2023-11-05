@@ -220,9 +220,9 @@ void test_menu_growths() {
                             gm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* --- FREE --- */
-    Unit_Free(&Silou);
-    Game_Weapons_Free(&weapons_dtab);
-    GrowthsMenu_Free(gm);
+    Unit_SDL_free(&Silou);
+    Game_Weapons_SDL_free(&weapons_dtab);
+    GrowthsMenu_SDL_free(gm);
     SDL_FreeSurface(surface);
 
     if (n9patch.texture != NULL)

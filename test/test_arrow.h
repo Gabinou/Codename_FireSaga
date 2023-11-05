@@ -380,7 +380,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* --- FREE --- */
-    Arrow_Free(arrow);
+    Arrow_SDL_free(arrow);
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(render_target);
 }

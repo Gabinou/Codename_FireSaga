@@ -132,29 +132,29 @@ void Tilemap_Shader_Load_Tilemap_JSON(struct Tilemap_Shader *shd, const cJSON *c
     }
 }
 
-void Tilemap_Shader_Free(struct Tilemap_Shader *shd) {
+void Tilemap_Shader_SDL_free(struct Tilemap_Shader *shd) {
     SDL_Log("shadowtile_pixels_lists");
     SDL_assert(shd != NULL);
     if (shd->shadowtile_pixels_lists != NULL) {
         for (size_t i = 0; i < shd->shadowtile_num; i++) {
             if (shd->shadowtile_pixels_lists[i] != NULL) {
-                free(shd->shadowtile_pixels_lists[i]);
+                SDL_free(shd->shadowtile_pixels_lists[i]);
                 shd->shadowtile_pixels_lists[i] = NULL;
             }
         }
-        free(shd->shadowtile_pixels_lists);
+        SDL_free(shd->shadowtile_pixels_lists);
         shd->shadowtile_pixels_lists = NULL;
     }
     SDL_Log("shadowtile_pixels_num");
     if (shd->shadowtile_pixels_num != NULL) {
-        free(shd->shadowtile_pixels_num);
+        SDL_free(shd->shadowtile_pixels_num);
         shd->shadowtile_pixels_num = NULL;
     }
     SDL_Log("shadow_tilemaps i");
     if (shd->shadow_tilemaps != NULL) {
         for (size_t i = 0; i < shd->frames; i++) {
             if (shd->shadow_tilemaps[i] != NULL) {
-                free(shd->shadow_tilemaps[i]);
+                SDL_free(shd->shadow_tilemaps[i]);
                 shd->shadow_tilemaps[i] = NULL;
             }
         }
@@ -164,11 +164,11 @@ void Tilemap_Shader_Free(struct Tilemap_Shader *shd) {
     }
 }
 
-void _Tilemap_Shader_Shadow_Free( struct Tilemap_Shader *shd) {
+void _Tilemap_Shader_Shadow_SDL_free( struct Tilemap_Shader *shd) {
     if (shd->shadowtile_pixels_num != NULL)
-        free(shd->shadowtile_pixels_num);
+        SDL_free(shd->shadowtile_pixels_num);
     if (shd->shadowtile_pixels_lists != NULL)
-        free(shd->shadowtile_pixels_lists);
+        SDL_free(shd->shadowtile_pixels_lists);
 }
 
 void Tilemap_Shader_Alloc(struct Tilemap_Shader *shd, size_t tilenum) {
@@ -180,7 +180,7 @@ void Tilemap_Shader_Alloc(struct Tilemap_Shader *shd, size_t tilenum) {
 void Tilemap_Shader_Load_Tileset_pixels(struct Tilemap_Shader *shd, const char *filename,
                                         size_t tilenum, i32 tilesize[TWO_D]) {
     /* -- Preliminaries -- */
-    _Tilemap_Shader_Shadow_Free( shd);
+    _Tilemap_Shader_Shadow_SDL_free( shd);
     Tilemap_Shader_Alloc(shd, tilenum);
     SDL_Surface *surf = Filesystem_Surface_Load(filename, SDL_PIXELFORMAT_INDEX8);
     SDL_LockSurface(surf);
@@ -217,7 +217,7 @@ void Tilemap_Shader_Load_Tileset_JSON(struct Tilemap_Shader *shd,
     cJSON *jtilesnum = cJSON_GetObjectItem(jshadow_tileset, "tiles_num");
 
     /* -- Alloc shadow tiles -- */
-    _Tilemap_Shader_Shadow_Free( shd);
+    _Tilemap_Shader_Shadow_SDL_free( shd);
     Tilemap_Shader_Alloc(shd, cJSON_GetNumberValue(jtilesnum));
     cJSON *jtiles_pixelnum = cJSON_GetObjectItem(jshadow_tileset, "tiles_pixelnum");
     SDL_assert(jtiles_pixelnum != NULL);
@@ -317,14 +317,14 @@ void Index_Shader_Load(struct Index_Shader *shd, SDL_Surface *surf, SDL_Rect *re
         DARR_FREE(shd->pixels_list);
     shd->pixels_list = pixels2list(temp_arr, rect->h, rect->w);
     shd->pixels_num = (DARR_NUM(shd->pixels_list) / 2);
-    free(temp_arr);
+    SDL_free(temp_arr);
 
 }
 
-void Index_Shader_Free(struct Index_Shader *shd) {
+void Index_Shader_SDL_free(struct Index_Shader *shd) {
     if (shd != NULL) {
         if (shd->shaded_pixels != NULL)
-            free(shd->shaded_pixels);
+            SDL_free(shd->shaded_pixels);
         if (shd->pixels_list != NULL)
             DARR_FREE(shd->pixels_list);
     }

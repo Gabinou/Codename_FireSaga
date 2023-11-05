@@ -282,7 +282,7 @@ s8 Item_Filename(s8 filename, i16 id) {
 void Item_Reload(struct dtab *items_dtab, i16 id) {
     /* Overwrite item ONLY if it already exists */
     if (DTAB_GET(items_dtab, id) != NULL) {
-        Item_Free(DTAB_GET(items_dtab, id));
+        Item_SDL_free(DTAB_GET(items_dtab, id));
         DTAB_DEL(items_dtab, id);
         Item_Load(items_dtab, id);
     }
@@ -295,7 +295,7 @@ void Item_Load(struct dtab *items_dtab, i16 id) {
     SDL_assert(items_dtab != NULL);
 
     if (DTAB_GET(items_dtab, id) != NULL) {
-        Weapon_Free(DTAB_GET(items_dtab, id));
+        Weapon_SDL_free(DTAB_GET(items_dtab, id));
         DTAB_DEL(items_dtab, id);
     }
 
@@ -420,7 +420,7 @@ void Item_readJSON(void *input, const cJSON *jitem) {
 
     /* - Preliminaries - */
     struct Item *item = (struct Item *)input;
-    Item_Free(item);
+    Item_SDL_free(item);
     cJSON *jname        = cJSON_GetObjectItemCaseSensitive(jitem,    "Name");
     cJSON *jid          = cJSON_GetObjectItemCaseSensitive(jitem,    "id");
     cJSON *jdescription = cJSON_GetObjectItemCaseSensitive(jitem,    "Description");
@@ -507,13 +507,13 @@ void Item_readJSON(void *input, const cJSON *jitem) {
         item->canRepair = cJSON_IsTrue(jcanRepair);
 }
 
-void Item_Free(struct Item *restrict item) {
+void Item_SDL_free(struct Item *restrict item) {
     if (item->users != NULL) {
         DARR_FREE(item->users);
         item->users = NULL;
     }
     if (item->json_filename != NULL) {
-        free(item->json_filename);
+        SDL_free(item->json_filename);
         item->json_filename = NULL;
     }
 

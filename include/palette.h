@@ -41,7 +41,7 @@ extern u8 palette_table_NES_filter_purple[];
 
 /* --- API --- */
 void Palettes_Load();
-void Palettes_Free();
+void Palettes_SDL_free();
 
 void Palette_Tables_Load();
 

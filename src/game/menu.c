@@ -36,7 +36,7 @@ void Game_Switch_toCandidates(struct Game *sota, tnecs_entity_t *candidates) {
 }
 
 /* --- Menu stack --- */
-void Game_menuStack_Free(struct Game *sota) {
+void Game_menuStack_SDL_free(struct Game *sota) {
 
     struct StatsMenu *stats_menu;
     struct PlayerSelectMenu *psm_menu;
@@ -53,12 +53,12 @@ void Game_menuStack_Free(struct Game *sota) {
         switch (mc->type) {
             case MENU_TYPE_STATS:
                 stats_menu = mc->data;
-                StatsMenu_Free(stats_menu);
+                StatsMenu_SDL_free(stats_menu);
                 mc->data = NULL;
                 break;
             case MENU_TYPE_PLAYER_SELECT:
                 psm_menu = mc->data;
-                PlayerSelectMenu_Free(psm_menu, mc);
+                PlayerSelectMenu_SDL_free(psm_menu, mc);
                 mc->data = NULL;
                 break;
         }
@@ -223,7 +223,7 @@ void Game_StatsMenu_Enable(struct Game *sota, tnecs_entity_t unit_entity_ontile)
     Game_cursorFocus_onMenu(sota);
 }
 /* --- PlayerSelectMenu --- */
-void Game_PlayerSelectMenus_Free(struct Game *sota) {
+void Game_PlayerSelectMenus_SDL_free(struct Game *sota) {
     for (size_t i = 0; i < MENU_PLAYER_SELECT_NUM; i++) {
         if (sota->player_select_menus[i] == TNECS_NULL)
             continue;
@@ -235,7 +235,7 @@ void Game_PlayerSelectMenus_Free(struct Game *sota) {
             continue;
 
         struct PlayerSelectMenu *psm_menu = mc->data;
-        PlayerSelectMenu_Free(psm_menu, mc);
+        PlayerSelectMenu_SDL_free(psm_menu, mc);
         mc->data = NULL;
     }
 }
@@ -841,7 +841,7 @@ void Game_FirstMenu_Destroy(struct Game *sota) {
         struct Menu *mc;
         mc = TNECS_GET_COMPONENT(sota->world, sota->first_menu, Menu);
         SDL_DestroyTexture(mc->n9patch.texture);
-        PlayerSelectMenu_Free(mc->data, mc);
+        PlayerSelectMenu_SDL_free(mc->data, mc);
         mc->data = NULL;
         tnecs_entity_destroy(sota->world, sota->first_menu);
     }
@@ -894,7 +894,7 @@ void Game_Title_Destroy(struct Game *sota) {
         struct Text *text = TNECS_GET_COMPONENT(sota->world, sota->title, Text);
 
         if (text != NULL)
-            PixelFont_Free(text->pixelfont, true);
+            PixelFont_SDL_free(text->pixelfont, true);
 
         tnecs_entity_destroy(sota->world, sota->title);
         sota->title = TNECS_NULL;

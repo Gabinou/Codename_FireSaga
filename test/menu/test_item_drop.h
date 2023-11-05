@@ -88,13 +88,13 @@ void test_menu_item_drop() {
                             idm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- FREE -- */
-    Unit_Free(&Silou);
-    n9Patch_Free(&n9patch);
+    Unit_SDL_free(&Silou);
+    n9Patch_SDL_free(&n9patch);
     SDL_FreeSurface(surface);
-    PixelFont_Free(idm->pixelnours, true);
-    PixelFont_Free(idm->pixelnours_big, true);
-    ItemDropMenu_Free(idm);
-    Weapons_All_Free(weapons_dtab);
+    PixelFont_SDL_free(idm->pixelnours, true);
+    PixelFont_SDL_free(idm->pixelnours_big, true);
+    ItemDropMenu_SDL_free(idm);
+    Weapons_All_SDL_free(weapons_dtab);
     DTAB_FREE(items_dtab);
     DTAB_FREE(weapons_dtab);
     SDL_DestroyRenderer(renderer);

@@ -33,7 +33,7 @@ bool Bitfield_isIn(u32 *bf1, u32 *bf2, size_t len) {
     u32 *anded = BITFIELD_INIT_LEN(len);
     Bitfield_And(bf1, bf2, anded, len);
     bool out = Bitfield_All(bf1, anded, len);
-    BITFIELD_FREE(anded);
+    BITFIELD_SDL_free(anded);
     return (out);
 }
 

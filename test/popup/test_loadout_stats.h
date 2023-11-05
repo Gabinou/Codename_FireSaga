@@ -224,14 +224,14 @@ void test_popup_loadout_stats() {
                             renderer, pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- FREE -- */
-    Unit_Free(&unit);
-    n9Patch_Free(&n9patch);
-    PixelFont_Free(pls.pixelnours, true);
-    PixelFont_Free(pls.pixelnours_big, true);
-    PopUp_Loadout_Stats_Free(&pls);
+    Unit_SDL_free(&unit);
+    n9Patch_SDL_free(&n9patch);
+    PixelFont_SDL_free(pls.pixelnours, true);
+    PixelFont_SDL_free(pls.pixelnours_big, true);
+    PopUp_Loadout_Stats_SDL_free(&pls);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
-    Weapons_All_Free(weapons_dtab);
+    Weapons_All_SDL_free(weapons_dtab);
     DTAB_FREE(weapons_dtab);
     SDL_Quit();
 }

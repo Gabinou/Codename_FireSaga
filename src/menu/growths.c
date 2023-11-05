@@ -177,22 +177,22 @@ struct GrowthsMenu *GrowthsMenu_Alloc() {
     return (gm);
 }
 
-void GrowthsMenu_Free(struct GrowthsMenu *gm) {
+void GrowthsMenu_SDL_free(struct GrowthsMenu *gm) {
     SDL_assert(gm != NULL);
     if (gm->texture != NULL) {
         SDL_DestroyTexture(gm->texture);
         gm->texture = NULL;
     }
     if (gm->pixelnours != NULL) {
-        PixelFont_Free(gm->pixelnours, true);
+        PixelFont_SDL_free(gm->pixelnours, true);
         gm->pixelnours = NULL;
     }
     if (gm->pixelnours_big != NULL) {
-        PixelFont_Free(gm->pixelnours_big, true);
+        PixelFont_SDL_free(gm->pixelnours_big, true);
         gm->pixelnours_big = NULL;
     }
     if (gm != NULL) {
-        free(gm);
+        SDL_free(gm);
         gm = NULL;
     }
 }
@@ -204,7 +204,7 @@ void GrowthsMenu_Unit_Set(struct GrowthsMenu *gm, struct Unit *unit) {
 }
 
 void GrowthsMenu_Load(struct GrowthsMenu *gm, SDL_Renderer *renderer, struct n9Patch *n9patch) {
-    n9Patch_Free(n9patch);
+    n9Patch_SDL_free(n9patch);
     n9patch->patch_pixels.x = MENU_PATCH_PIXELS;
     n9patch->patch_pixels.y = MENU_PATCH_PIXELS;
     n9patch->size_patches.x = GM_PATCH_X_SIZE;

@@ -183,12 +183,12 @@ struct Unit Unit_Nibal_make() {
 /* --- Constructors/Destructors --- */
 void Unit_Init(struct Unit *unit) {
     SDL_assert(unit != NULL);
-    Unit_Free(unit);
+    Unit_SDL_free(unit);
     unit->grown_stats  = DARR_INIT(unit->grown_stats,  struct Unit_stats, SOTA_MAX_LEVEL / 8);
     unit->status_queue = DARR_INIT(unit->status_queue, struct Unit_status, 2);
 }
 
-void Unit_Free(struct Unit *unit) {
+void Unit_SDL_free(struct Unit *unit) {
     SDL_assert(unit != NULL);
     if (unit->grown_stats != NULL) {
         DARR_FREE(unit->grown_stats);

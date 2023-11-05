@@ -264,8 +264,8 @@ i32 *Pathfinding_Astar(i32 *path_list, i32 *costmap, size_t row_len,
         }
     }
     path_list = Pathfinding_CameFrom_List(path_list, came_from, col_len, start, end);
-    free(cost);
-    free(came_from);
+    SDL_free(cost);
+    SDL_free(came_from);
     DARR_FREE(frontier_queue);
 
     return (path_list);

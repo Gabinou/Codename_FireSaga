@@ -22,25 +22,25 @@ struct Menu Menu_default =  {
 };
 
 /* --- Menu --- */
-void Menu_Elem_Free(struct Menu *mc) {
+void Menu_Elem_SDL_free(struct Menu *mc) {
     if (mc->elem_pos != NULL) {
-        free(mc->elem_pos);
+        SDL_free(mc->elem_pos);
         mc->elem_pos = NULL;
     }
     if (mc->cursor_pos != NULL) {
-        free(mc->elem_pos);
+        SDL_free(mc->elem_pos);
         mc->elem_pos = NULL;
     }
     if (mc->elem_box != NULL) {
-        free(mc->elem_box);
+        SDL_free(mc->elem_box);
         mc->elem_box = NULL;
     }
     if (mc->elem_description != NULL) {
-        free(mc->elem_description);
+        SDL_free(mc->elem_description);
         mc->elem_description = NULL;
     }
     if (mc->elem_links != NULL) {
-        free(mc->elem_links);
+        SDL_free(mc->elem_links);
         mc->elem_links = NULL;
     }
 }

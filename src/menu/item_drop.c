@@ -60,13 +60,13 @@ void ItemDropMenu_Load(struct ItemDropMenu *idm, SDL_Renderer *renderer, struct 
 
 }
 
-void ItemDropMenu_Free(struct ItemDropMenu *idm) {
+void ItemDropMenu_SDL_free(struct ItemDropMenu *idm) {
     if (idm->texture != NULL) {
         SDL_DestroyTexture(idm->texture);
         idm->texture = NULL;
     }
     if (idm != NULL) {
-        free(idm);
+        SDL_free(idm);
         idm = NULL;
     }
 }
@@ -191,7 +191,7 @@ void ItemDropMenu_Update(struct  ItemDropMenu  *idm, struct n9Patch *n9patch,
     /* - Question - */
     PixelFont_Write(idm->pixelnours_big, renderer, question, (len + len_done), IDM_ITEM_NAME_X,
                     IDM_ITEM_NAME_Y);
-    free(question);
+    SDL_free(question);
     s8_free(&name);
 
     /* - Yes - */

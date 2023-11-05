@@ -25,7 +25,7 @@ struct Arrow *Arrow_Init(i32 tilesize[TWO_D]) {
     return (arrow);
 }
 
-void Arrow_Free(struct Arrow *arrow) {
+void Arrow_SDL_free(struct Arrow *arrow) {
     if (arrow == NULL)
         return;
 
@@ -37,7 +37,7 @@ void Arrow_Free(struct Arrow *arrow) {
         SDL_DestroyTexture(arrow->textures);
         arrow->textures = NULL;
     }
-    free(arrow);
+    SDL_free(arrow);
 }
 
 /* --- I/O --- */

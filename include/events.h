@@ -48,7 +48,7 @@ void Reload_MapHpBar(   void *struct_ptr);
 
 /* -- Constructor/Destructor -- */
 void Events_Data_Malloc();
-void Events_Data_Free();
+void Events_Data_SDL_free();
 
 /* -- Controller -- */
 tnecs_entity_t Events_Controllers_Check(struct Game *sota, i32 code);
@@ -69,7 +69,7 @@ extern u32 event_End;
 extern s8 *event_names;
 void Events_Names_Declare();
 void Events_Names_Alloc();
-void Events_Names_Free();
+void Events_Names_SDL_free();
 
 /* --- HOMEMADE EVENT RECEIVERS --- */
 /* -- Function Declaration -- */
@@ -85,7 +85,7 @@ typedef void (* receiver_t)(struct Game *, SDL_Event *);
 extern struct dtab *receivers_dtab;
 
 /* -- Constructor/Destructors -- */
-void Events_Receivers_Free();
+void Events_Receivers_SDL_free();
 void Events_Receivers_Declare();
 
 /* --- SDL_EVENT RECEIVERS --- */

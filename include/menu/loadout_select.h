@@ -166,7 +166,7 @@ extern struct LoadoutSelectMenu LoadoutSelectMenu_default;
 
 /* --- Constructors/Destructors --- */
 struct LoadoutSelectMenu *LoadoutSelectMenu_Alloc();
-void LoadoutSelectMenu_Free(struct LoadoutSelectMenu *lsm);
+void LoadoutSelectMenu_SDL_free(struct LoadoutSelectMenu *lsm);
 void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
                             tnecs_world_t *w, tnecs_entity_t ent, SDL_Renderer *r, struct n9Patch *n9, int a);
 

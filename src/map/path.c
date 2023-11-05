@@ -52,7 +52,7 @@ void Map_Stacked_Dangermap_Compute(struct Map *map) {
     map->stacked_dangermap = matrix_and_noM(map->stacked_dangermap, map->stacked_dangermap,
                                             map->movemap, map->row_len * map->col_len);
 
-    free(temp_map);
+    SDL_free(temp_map);
     map->shading_changed = true;
 }
 

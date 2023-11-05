@@ -13,8 +13,8 @@
 struct Item;
 
 /* --- Constructors/Destructors --- */
-void Game_Items_Free(  struct dtab **items_dtab);
-void Game_Weapons_Free(struct dtab **weapons_dtab);
+void Game_Items_SDL_free(  struct dtab **items_dtab);
+void Game_Weapons_SDL_free(struct dtab **weapons_dtab);
 
 /* --- Party utilities --- */
 void Game_Party_Load(  struct Game *s, i16 *to_load_ids, size_t load_num);
@@ -24,7 +24,7 @@ void Game_Party_Unload(struct Game *s, i16 *to_unload,   size_t unload_num);
 tnecs_entity_t Game_Unit_Entity_Create(struct Game *s, i16 in_unit, struct Point in_pos);
 
 /* --- Unitmap --- */
-void Game_UnitsonMap_Free(struct Game *s);
+void Game_UnitsonMap_SDL_free(struct Game *s);
 void Game_putPConMap(struct Game *s, i16 *u, struct Point *p, size_t l);
 
 /* --- Utilities --- */

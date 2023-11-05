@@ -45,9 +45,9 @@ struct Text_Bubble TextBubble_default = {
     },
 };
 
-void TextBubble_Free(struct Text_Bubble *bubble) {
+void TextBubble_SDL_free(struct Text_Bubble *bubble) {
     if (bubble->text != NULL) {
-        free(bubble->text);
+        SDL_free(bubble->text);
         bubble->text = NULL;
     }
 
@@ -56,7 +56,7 @@ void TextBubble_Free(struct Text_Bubble *bubble) {
         bubble->texture = NULL;
     }
 
-    TextLines_Free(&bubble->lines);
+    TextLines_SDL_free(&bubble->lines);
 
     if (bubble->tail.texture != NULL) {
         SDL_DestroyTexture(bubble->tail.texture);
@@ -69,8 +69,8 @@ void TextBubble_Load(struct Text_Bubble *bubble, SDL_Renderer *renderer, struct 
     SDL_assert(bubble != NULL);
 
     /* -- Free before re-allocating -- */
-    TextBubble_Free(bubble);
-    n9Patch_Free(n9patch);
+    TextBubble_SDL_free(bubble);
+    n9Patch_SDL_free(n9patch);
 
     /* -- Bubble defaults -- */
     bubble->update = true;
@@ -98,7 +98,7 @@ void TextBubble_Load(struct Text_Bubble *bubble, SDL_Renderer *renderer, struct 
 void TextBubble_Set_Text(struct Text_Bubble *bubble, const char *text, struct n9Patch *n9patch) {
     /* -- Free before re-allocating -- */
     if (bubble->text != NULL) {
-        free(bubble->text);
+        SDL_free(bubble->text);
         bubble->text = NULL;
     }
     /* -- Copying input text -- */
@@ -107,7 +107,7 @@ void TextBubble_Set_Text(struct Text_Bubble *bubble, const char *text, struct n9
     memcpy(bubble->text, text, len);
 
     /* -- Split text into n lines depending on bubble max line length -- */
-    TextLines_Free(&bubble->lines);
+    TextLines_SDL_free(&bubble->lines);
     bubble->lines = PixelFont_Lines_Len(bubble->pixelfont, bubble->text, bubble->line_len_px);
 
     /* -- Compute bubble size from text lines -- */

@@ -185,7 +185,7 @@ extern struct GrowthsMenu GrowthsMenu_default;
 
 /* --- Constructors/Destructors --- */
 struct GrowthsMenu *GrowthsMenu_Alloc();
-void GrowthsMenu_Free(struct GrowthsMenu *gm);
+void GrowthsMenu_SDL_free(struct GrowthsMenu *gm);
 
 /* --- Loading --- */
 void GrowthsMenu_Load(struct GrowthsMenu *gm, SDL_Renderer *r, struct n9Patch *n9);

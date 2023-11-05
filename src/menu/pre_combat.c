@@ -40,7 +40,7 @@ struct PreCombatMenu *PreCombatMenu_Alloc() {
     return (pcm);
 }
 
-void PreCombatMenu_Free(struct PreCombatMenu *pcm) {
+void PreCombatMenu_SDL_free(struct PreCombatMenu *pcm) {
     SDL_assert(pcm != NULL);
     if (pcm->texture != NULL) {
         SDL_DestroyTexture(pcm->texture);
@@ -53,7 +53,7 @@ void PreCombatMenu_Free(struct PreCombatMenu *pcm) {
     PreCombatMenu_Free_Faces(pcm);
     PreCombatMenu_Free_Icons(pcm);
     if (pcm != NULL) {
-        free(pcm);
+        SDL_free(pcm);
         pcm = NULL;
     }
 }

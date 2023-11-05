@@ -62,7 +62,7 @@ struct CRT { /* Cathode-Ray Tube filter for pretty pixels */
 extern struct CRT CRT_default;
 
 extern void CRT_Init(struct CRT *in_crt, uint_fast32_t width, uint_fast32_t height);
-extern void CRT_Free(struct CRT *in_crt);
+extern void CRT_SDL_free(struct CRT *in_crt);
 
 /* CRT_FILTER */
 extern void CRT_Filter(struct CRT *in_crt, SDL_Texture *target,

@@ -58,7 +58,7 @@ extern struct Arrow Arrow_default;
 /* --- PUBLIC --- */
 /* -- Constructors/Deconstructors -- */
 struct Arrow *Arrow_Init(i32 tilesize[TWO_D]);
-void          Arrow_Free(struct Arrow *a);
+void          Arrow_SDL_free(struct Arrow *a);
 
 /* -- Path -- */
 void Arrow_Path_Add( struct Arrow *a, i32  x, i32 y);

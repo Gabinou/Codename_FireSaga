@@ -35,18 +35,18 @@ struct Tile Tile_default = {
 };
 
 void Mobj_Link_Init(struct Mobj_Link *mobj) {
-    Mobj_Link_Free(mobj);
+    Mobj_Link_SDL_free(mobj);
     if (mobj->num_linked > 0) {
         mobj->relpos_linked = calloc(mobj->num_linked * TWO_D, sizeof(*mobj->relpos_linked));
         mobj->abspos_linked = calloc(mobj->num_linked * TWO_D, sizeof(*mobj->abspos_linked));
     }
 }
 
-void Mobj_Link_Free(struct Mobj_Link *mobj) {
+void Mobj_Link_SDL_free(struct Mobj_Link *mobj) {
     if (mobj->relpos_linked != NULL)
-        free(mobj->relpos_linked);
+        SDL_free(mobj->relpos_linked);
     if (mobj->abspos_linked != NULL)
-        free(mobj->abspos_linked);
+        SDL_free(mobj->abspos_linked);
 }
 
 void Mobj_Link_writeJSON(const void *input, cJSON *jmobj) {
@@ -108,9 +108,9 @@ void Tile_makeMvtCostarray(struct Tile *tile) {
     tile->cost_array[UNIT_MVT_BANDITS]     = tile->cost_struct.bandits;
 }
 
-void Tile_Free(struct Tile *tile) {
+void Tile_SDL_free(struct Tile *tile) {
     if (tile->name != NULL) {
-        free(tile->name);
+        SDL_free(tile->name);
         tile->name = NULL;
     }
 }

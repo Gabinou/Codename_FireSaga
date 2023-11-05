@@ -85,7 +85,7 @@ extern char sota_input_names[SOTA_INPUT_END][SOTA_INPUT_NAME_MAX_LEN];
 
 /* --- Constructors/Destructors --- */
 extern void Gamepad_Init(   struct controllerGamepad *g);
-extern void Gamepad_Free(   struct controllerGamepad *g);
+extern void Gamepad_SDL_free(   struct controllerGamepad *g);
 
 extern void _Gamepad_Realloc(struct controllerGamepad *g);
 

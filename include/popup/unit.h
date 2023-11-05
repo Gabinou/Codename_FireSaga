@@ -123,7 +123,7 @@ typedef struct PopUp_Unit {
 extern struct PopUp_Unit PopUp_Unit_default;
 
 /* --- Constructors/Destructors --- */
-void PopUp_Unit_Free(struct PopUp_Unit *pu);
+void PopUp_Unit_SDL_free(struct PopUp_Unit *pu);
 void PopUp_Unit_Load(struct PopUp_Unit *pu, SDL_Renderer *r, struct n9Patch *n9);
 
 /* --- Positioning --- */

@@ -136,7 +136,7 @@ void test_Text_Bubble_Tail() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - Pixelnours_big - */
-    PixelFont_Free(bubble.pixelfont, true);
+    PixelFont_SDL_free(bubble.pixelfont, true);
     TextBubble_Load(&bubble, renderer, &n9patch);
     bubble.pixelfont = PixelFont_Alloc();
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "Fonts",
@@ -333,8 +333,8 @@ void test_Text_Bubble_Tail() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* FREE */
-    PixelFont_Free(bubble.pixelfont, true);
-    TextBubble_Free(&bubble);
+    PixelFont_SDL_free(bubble.pixelfont, true);
+    TextBubble_SDL_free(&bubble);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
 }
@@ -391,8 +391,8 @@ void test_text_bubble_scroll() {
     }
 
     /* FREE */
-    PixelFont_Free(bubble.pixelfont, true);
-    TextBubble_Free(&bubble);
+    PixelFont_SDL_free(bubble.pixelfont, true);
+    TextBubble_SDL_free(&bubble);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
 }
@@ -452,8 +452,8 @@ void test_text_bubble_scroll_vertical() {
     }
 
     /* FREE */
-    PixelFont_Free(bubble.pixelfont, true);
-    TextBubble_Free(&bubble);
+    PixelFont_SDL_free(bubble.pixelfont, true);
+    TextBubble_SDL_free(&bubble);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
 }
@@ -524,8 +524,8 @@ void test_text_bubble_VScroll_Anim() {
     }
 
     /* FREE */
-    PixelFont_Free(bubble.pixelfont, true);
-    TextBubble_Free(&bubble);
+    PixelFont_SDL_free(bubble.pixelfont, true);
+    TextBubble_SDL_free(&bubble);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
 }

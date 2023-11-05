@@ -18,12 +18,12 @@ struct Scene Scene_default =  {
     .actors_num =    0,
 };
 
-void Scene_Free(struct Scene *scene) {
+void Scene_SDL_free(struct Scene *scene) {
     Scene_Free_Read(scene);
     if (scene->replace != NULL) {
         for (size_t i = 0; i < scene->replace_num; i++) {
             if (scene->replace[i] != NULL) {
-                free(scene->replace[i]);
+                SDL_free(scene->replace[i]);
                 scene->replace[i] = NULL;
             }
         }
@@ -33,7 +33,7 @@ void Scene_Free(struct Scene *scene) {
     if (scene->with != NULL) {
         for (size_t i = 0; i < scene->replace_num; i++) {
             if (scene->with[i] != NULL) {
-                free(scene->with[i]);
+                SDL_free(scene->with[i]);
                 scene->with[i] = NULL;
             }
         }
@@ -47,7 +47,7 @@ void Scene_Free_Read(struct Scene *scene) {
     if (scene->lines != NULL) {
         for (size_t i = 0; i < scene->line_num; i++) {
             if (scene->lines[i] != NULL) {
-                free(scene->lines[i]);
+                SDL_free(scene->lines[i]);
                 scene->lines[i] = NULL;
             }
         }

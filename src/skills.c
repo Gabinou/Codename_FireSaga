@@ -69,7 +69,7 @@ void Skill_PICK(struct Unit *actor, void *tile_data) {
     /* TODO: Check pick in hand */
     /* TODO: make it use one time. */
     // actor->
-    // free(tile->door);
+    // SDL_free(tile->door);
     // tile->door = NULL;
 }
 

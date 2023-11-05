@@ -103,12 +103,12 @@ struct Game Game_default = {
 };
 
 /* --- Constructors/Destructors --- */
-void Game_Free(struct Game *sota) {
-    Game_Cursor_Free(sota);
-    Game_PopUp_Tile_Free(sota);
-    Game_Mouse_Free(sota);
-    Game_menuStack_Free(sota);
-    Game_PlayerSelectMenus_Free(sota);
+void Game_SDL_free(struct Game *sota) {
+    Game_Cursor_SDL_free(sota);
+    Game_PopUp_Tile_SDL_free(sota);
+    Game_Mouse_SDL_free(sota);
+    Game_menuStack_SDL_free(sota);
+    Game_PlayerSelectMenus_SDL_free(sota);
     if (sota->map_enemies != NULL) {
         DARR_FREE(sota->map_enemies);
         sota->map_enemies = NULL;
@@ -119,9 +119,9 @@ void Game_Free(struct Game *sota) {
         sota->combat_attacks = NULL;
     }
 
-    PixelFont_Free(sota->pixelnours,       true);
-    PixelFont_Free(sota->pixelnours_big,   true);
-    PixelFont_Free(sota->pixelnours_tight, true);
+    PixelFont_SDL_free(sota->pixelnours,       true);
+    PixelFont_SDL_free(sota->pixelnours_big,   true);
+    PixelFont_SDL_free(sota->pixelnours_tight, true);
 
     if (sota->stats_menu > TNECS_NULL) {
         struct Menu *mc;
@@ -130,7 +130,7 @@ void Game_Free(struct Game *sota) {
             struct StatsMenu *stats_menu = mc->data;
             if (mc->n9patch.texture != NULL)
                 SDL_DestroyTexture(mc->n9patch.texture);
-            StatsMenu_Free(stats_menu);
+            StatsMenu_SDL_free(stats_menu);
             mc->data = NULL;
         }
     }
@@ -140,28 +140,28 @@ void Game_Free(struct Game *sota) {
         mc = TNECS_GET_COMPONENT(sota->world, sota->item_select_menu, Menu);
         if (mc->data != NULL) {
             struct LoadoutSelectMenu *ism = mc->data;
-            LoadoutSelectMenu_Free(ism);
-            free(ism);
+            LoadoutSelectMenu_SDL_free(ism);
+            SDL_free(ism);
             mc->data = NULL;
         }
     }
 
     if (sota->renderer) {
         SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Control");
-        // controlFree();
+        // controlSDL_free();
     }
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Map");
-    Game_UnitsonMap_Free(sota);
-    Game_Map_Reinforcements_Free(sota);
-    Game_Map_Free(sota);
+    Game_UnitsonMap_SDL_free(sota);
+    Game_Map_Reinforcements_SDL_free(sota);
+    Game_Map_SDL_free(sota);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Camera");
     // if (sota->camera != NULL)
     // SDL_free(sota->camera);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Events");
-    Events_Data_Free();
-    Events_Names_Free();
-    Events_Receivers_Free();
+    Events_Data_SDL_free();
+    Events_Names_SDL_free();
+    Events_Receivers_SDL_free();
     #ifndef SOTA_OPENGL
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Renderer");
     if (sota->render_target != NULL)
@@ -180,14 +180,14 @@ void Game_Free(struct Game *sota) {
     if (sota->world != NULL) {
         tnecs_world_destroy(sota->world); /* crashes */
     }
-    Game_Items_Free(  &sota->items_dtab);
-    Game_Weapons_Free(&sota->weapons_dtab);
+    Game_Items_SDL_free(  &sota->items_dtab);
+    Game_Weapons_SDL_free(&sota->weapons_dtab);
     if (sota->units_loaded != NULL) {
         SDL_free(sota->units_loaded);
         sota->units_loaded = NULL;
     }
     if (sota->menu_pixelfont != NULL) {
-        PixelFont_Free(sota->menu_pixelfont, false);
+        PixelFont_SDL_free(sota->menu_pixelfont, false);
     }
     if (sota->defendants != NULL) {
         DARR_FREE(sota->defendants);
@@ -317,7 +317,7 @@ struct Game *Game_Init() {
     char *temp_base = SDL_GetBasePath();
     SDL_assert(DEFAULT_BUFFER_SIZE >= strlen(temp_base));
     s8 path_mapping =  s8_mut(temp_base);
-    free(temp_base);
+    SDL_free(temp_base);
 
     path_mapping = s8_Path_Remove_Top(path_mapping, DIR_SEPARATOR[0]);
     const char *separator = PHYSFS_getDirSeparator();
