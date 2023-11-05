@@ -389,8 +389,8 @@ void test_menu_stats() {
     PixelFont_Free(sm->pixelnours, true);
     PixelFont_Free(sm->pixelnours_big, true);
 
-    Game_Weapons_Free(weapons_dtab);
-    Game_Items_Free(items_dtab);
+    Game_Weapons_Free(&weapons_dtab);
+    Game_Items_Free(&items_dtab);
     SDL_FreeSurface(surface);
     StatsMenu_Free(sm);
 

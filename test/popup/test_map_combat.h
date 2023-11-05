@@ -372,7 +372,7 @@ void test_popup_map_combat() {
     PixelFont_Free(pmc.pixelnours_big,   true);
     PopUp_Map_Combat_Free(&pmc);
     DARR_FREE(combat_attacks);
-    Game_Weapons_Free(weapons_dtab);
+    Game_Weapons_Free(&weapons_dtab);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
     Unit_Free(&aggressor);

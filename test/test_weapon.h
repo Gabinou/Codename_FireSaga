@@ -38,7 +38,7 @@ void test_weapon1() {
     wpn1.item->type = in_type;
     wpn1.stats = in_wpn_stats;
     wpn1.item->id = ITEM_ID_WOODEN_SWORD;
-    memcpy(wpn1.item->name, "Wooden Sword", strlen("Wooden Sword"));
+    wpn1.item->name = s8_mut("Wooden Sword");
     char *in_description = "Practice sword, made of wood. It's crushing blows are still deadly.";
     char *out_description;
     memcpy(wpn1.item->description, in_description, strlen(in_description));
@@ -61,7 +61,7 @@ void test_weapon1() {
     nourstest_true(in_wpn_stats.range.max   == out_wpn_stats.range.max);
     out_description = wpn1.item->description;
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
-    nourstest_true(s8equal(s8_var(wpn1.item->name), s8_literal("Wooden Sword")));
+    nourstest_true(s8equal(wpn1.item->name, s8_literal("Wooden Sword")));
     nourstest_true(wpn1.item->passive   == in_effect);
     nourstest_true(wpn1.item->type      == in_type);
     nourstest_true(wpn1.item->canSell   == in_canSell);
@@ -111,7 +111,7 @@ void test_weapon1() {
     nourstest_true(in_wpn_stats.range.max == out_wpn_stats.range.max);
     out_description = wpn3.item->description;
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
-    nourstest_true(s8equal(s8_var(wpn3.item->name), s8_literal("Wooden Sword")));
+    nourstest_true(s8equal(wpn3.item->name, s8_literal("Wooden Sword")));
     nourstest_true(wpn3.item->passive   == in_effect);
     nourstest_true(wpn3.item->type      == in_type);
     nourstest_true(wpn3.item->canSell   == in_canSell);
@@ -157,7 +157,7 @@ void test_weapon1() {
     nourstest_true(in_wpn_stats.range.max   == out_wpn_stats.range.max);
     out_description = wpn3.item->description;
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
-    nourstest_true(s8equal(s8_var(wpn3.item->name), s8_literal("Wooden Sword")));
+    nourstest_true(s8equal(wpn3.item->name, s8_literal("Wooden Sword")));
     nourstest_true(wpn3.item->passive    == in_effect);
     nourstest_true(wpn3.item->type       == in_type);
     nourstest_true(wpn3.item->canSell    == in_canSell);

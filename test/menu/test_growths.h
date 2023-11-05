@@ -221,7 +221,7 @@ void test_menu_growths() {
 
     /* --- FREE --- */
     Unit_Free(&Silou);
-    Game_Weapons_Free(weapons_dtab);
+    Game_Weapons_Free(&weapons_dtab);
     GrowthsMenu_Free(gm);
     SDL_FreeSurface(surface);
 

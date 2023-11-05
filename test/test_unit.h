@@ -337,7 +337,7 @@ void test_canEquip() {
     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 1);
     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
 
-    Game_Weapons_Free(weapons_dtab);
+    Game_Weapons_Free(&weapons_dtab);
     Unit_Free(&Silou);
 }
 
@@ -389,7 +389,7 @@ void test_skills() {
     /* --- FREE --- */
     Unit_Free(&Silou);
     Unit_Free(&Enemy);
-    Game_Weapons_Free(weapons_dtab);
+    Game_Weapons_Free(&weapons_dtab);
 }
 
 void test_io() {
@@ -524,8 +524,8 @@ void test_io() {
     Unit_Free(&unit3);
     Unit_Free(&unit4);
     Unit_Free(&unit5);
-    Game_Weapons_Free(weapons_dtab);
-    Game_Weapons_Free(weapons_dtab2);
+    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&weapons_dtab2);
 }
 
 void test_growth() {
@@ -685,8 +685,8 @@ void test_wpn_or_item() {
     nourstest_true(wpn_or_item.item->id      == ITEM_ID_PANACEA);
     nourstest_true(wpn_or_item.wpn           == NULL);
 
-    Game_Items_Free(items_dtab);
-    Game_Weapons_Free(weapons_dtab);
+    Game_Items_Free(&items_dtab);
+    Game_Weapons_Free(&weapons_dtab);
     Unit_Free(&Silou);
 }
 

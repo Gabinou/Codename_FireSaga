@@ -228,7 +228,7 @@ void test_menu_weapon_select() {
     PixelFont_Free(wsm->pixelnours,     true);
     PixelFont_Free(wsm->pixelnours_big, true);
 
-    Game_Weapons_Free(weapons_dtab);
+    Game_Weapons_Free(&weapons_dtab);
     SDL_FreeSurface(surface);
     LoadoutSelectMenu_Free(wsm);
 

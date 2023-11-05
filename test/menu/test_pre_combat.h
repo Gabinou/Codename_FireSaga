@@ -527,7 +527,7 @@ void test_menu_pre_combat() {
     PixelFont_Free(pcm->pixelnours, true);
     PixelFont_Free(pcm->pixelnours_big, true);
 
-    Game_Weapons_Free(weapons_dtab);
+    Game_Weapons_Free(&weapons_dtab);
     SDL_FreeSurface(surface);
     PreCombatMenu_Free(pcm);
 
