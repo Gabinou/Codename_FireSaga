@@ -10,9 +10,9 @@
 void test_combat_stats() {
 
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
-    struct Unit *attacker = (struct Unit *)malloc(sizeof(struct Unit));
+    struct Unit *attacker = (struct Unit *)calloc(1, sizeof(struct Unit));
     * attacker = Unit_default;
-    struct Unit *defender = (struct Unit *)malloc(sizeof(struct Unit));
+    struct Unit *defender = (struct Unit *)calloc(1, sizeof(struct Unit));
     * defender = Unit_default;
     Unit_InitWweapons(attacker, weapons_dtab);
     Unit_InitWweapons(defender, weapons_dtab);
@@ -58,10 +58,11 @@ void test_combat_stats() {
     Unit_computedStats(attacker, distance);
     Unit_computedStats(defender, distance);
 
-    agg_stats = Unit_computedStats(attacker, distance);
-    dft_stats = Unit_computedStats(defender, distance);
-    forecast = Compute_Combat_Forecast(attacker, defender, (struct Point *)&attacker_pos,
-                                       (struct Point *)&defender_pos);
+    agg_stats   = Unit_computedStats(attacker, distance);
+    dft_stats   = Unit_computedStats(defender, distance);
+    forecast    = Compute_Combat_Forecast(attacker, defender,
+                                          (struct Point *)&attacker_pos,
+                                          (struct Point *)&defender_pos);
     temp_stats = forecast.stats;
     nourstest_true((temp_stats.agg_rates.hit    == Equation_Combat_Hit(agg_stats.hit,
                     dft_stats.dodge)));
@@ -131,7 +132,7 @@ void test_combat_stats() {
     nourstest_true((temp_stats.dft_stats.agony == dft_stats.agony));
     nourstest_true((temp_stats.dft_stats.speed == dft_stats.speed));
     nourstest_true((temp_stats.dft_stats.speed == dft_stats.speed));
-    nourstest_true((temp_stats.dft_stats.move == defender_stats.move));
+    nourstest_true((temp_stats.dft_stats.move  == defender_stats.move));
 
     /* --- FREE --- */
     Unit_Free(attacker);
@@ -443,11 +444,11 @@ void test_combat_flow() {
     nourstest_true(temp_flow.aggressor_phases == 1);
     nourstest_true(temp_flow.defendant_phases == 1);
 
-    attacker_pos.x = 1;
-    attacker_pos.y = 2;
-    defender_pos.x = 2;
-    defender_pos.y = 2;
-    attacker_stats.agi = 9;
+    attacker_pos.x      = 1;
+    attacker_pos.y      = 2;
+    defender_pos.x      = 2;
+    defender_pos.y      = 2;
+    attacker_stats.agi  = 9;
     Unit_setStats(&attacker, attacker_stats);
     Unit_computedStats(&attacker, distance);
     Unit_computedStats(&defender, distance);
@@ -675,7 +676,6 @@ void test_combat_sequence() {
 }
 
 void test_combat() {
-
     test_combat_stats();
     // test_combat_death();
     test_combat_flow();

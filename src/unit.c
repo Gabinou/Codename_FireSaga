@@ -283,12 +283,16 @@ int SotA_Hand_Strong(i8 handedness) {
     return ( (handedness == UNIT_HAND_LEFTIE) ? UNIT_HAND_LEFT : UNIT_HAND_RIGHT);
 }
 
-
 void Unit_setid(struct Unit *unit, i16 id) {
     SDL_assert(unit != NULL);
-    unit->_id   = id;
+    SDL_assert(Unit_ID_Valid(id));
+
+    unit->_id = id;
     s8_free(&unit->name);
-    unit->name  = s8cpy(unit->name, global_unitNames[unit->_id]);
+    SDL_assert(unit->name.data == NULL);
+
+    u16 order = *(u16 *)dtab_get(global_unitOrders, id);
+    unit->name = s8cpy(unit->name, global_unitNames[order]);
 }
 
 void Unit_setSkills(struct Unit *unit, u64 skills) {

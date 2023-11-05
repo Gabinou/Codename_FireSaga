@@ -86,13 +86,15 @@ void jsonio_readJSON(s8 filename, void *struct_ptr) {
         exit(ERROR_JSONElementNotSet);
     }
 
-    /* Set json_filename in struct to input filename */
-    s8 *json_filename   = (s8 *)((char *)struct_ptr + JSON_FILENAME_bOFFSET);
-    *json_filename      = filename_mut;
-
     /* Actually read the json file */
     if (json_read_funcs[jelem_id] != NULL)
         json_read_funcs[jelem_id](struct_ptr, jelement);
+
+    /* Set json_filename in struct to input filename */
+    s8 *json_filename   = (s8 *)((char *)struct_ptr + JSON_FILENAME_bOFFSET);
+    json_filename->data = filename_mut.data;
+    json_filename->len  = filename_mut.len;
+    json_filename->num  = filename_mut.num;
 
     /* Clean the jfile */
     if (jfile != NULL)

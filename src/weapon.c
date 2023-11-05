@@ -3,7 +3,7 @@
 
 struct Weapon Weapon_default = {
     .json_element   = JSON_WEAPON,
-    .json_filename  = {0},
+    .json_filename  = {.data = NULL},
 
     .item         = NULL,
     .handedness   = WEAPON_HAND_ANY,
@@ -22,7 +22,7 @@ struct WpnorItem WpnorItem_default = {
 
 /* --- Constructors/Destructors --- */
 void Weapon_Init(struct Weapon *weapon) {
-    Weapon_Free(weapon);
+    *weapon = Weapon_default;
 
     SDL_assert(weapon       != NULL);
     SDL_assert(weapon->item == NULL);
@@ -41,7 +41,6 @@ void Weapon_Free(struct Weapon *weapon) {
     if (weapon->item == NULL) {
         return;
     }
-
 
     Item_Free(weapon->item);
     SDL_free(weapon->item);
@@ -136,7 +135,6 @@ void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
     if (DTAB_GET(weapons_dtab, id) != NULL) {
         return;
     }
-
 
     s8 filename = s8_mut("items"PHYSFS_SEPARATOR);
     filename    = Weapon_Filename(filename, id);

@@ -11,6 +11,9 @@ void test_item() {
     struct Item item1 = Item_default;
     struct Item item2 = Item_default;
     struct Item item3 = Item_default;
+    SDL_assert(item1.json_filename.data == NULL);
+    SDL_assert(item2.json_filename.data == NULL);
+    SDL_assert(item3.json_filename.data == NULL);
     //                          hp,str,mag,agi,dex,fth,luck,def,res,con,mv
     struct Unit_stats in_stats = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
     struct Unit_stats out_stats;
@@ -66,6 +69,8 @@ void test_item() {
     jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "item_test.json")), &item1, false);
 
     SDL_Log("Saved item_test");
+    SDL_assert(item2.json_filename.data == NULL);
+    s8_free(&item2.json_filename);
     jsonio_readJSON(s8_literal(PATH_JOIN("saves", "item_test.json")), &item2);
     out_description = item2.description;
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
