@@ -454,9 +454,10 @@ void Item_readJSON(void *input, const cJSON *jitem) {
     /* - Item order - */
     SDL_assert(global_itemOrders != NULL);
     i32 item_order = *(i32 *)DTAB_GET(global_itemOrders, item->id);
-    i32 max_order  = DARR_NUM(global_itemNames);
-    SDL_assert((item_order > 0));
-    SDL_assert(((i32)item_order < (i32)max_order));
+    // i32 max_order  = DARR_NUM(global_itemNames);
+    // SDL_Log("%d %d", item_order, max_order);
+    // SDL_assert((item_order > 0));
+    SDL_assert(item_order < ITEM_NUM);
 
     SDL_assert(global_itemNames[item_order].data != NULL);
 

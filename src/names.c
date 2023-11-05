@@ -14,14 +14,14 @@ void Names_sceneTimes() {
 #undef REGISTER_ENUM
 }
 
-s8 global_unitNames[UNIT_NUM] = {0};
-struct dtab *global_unitOrders = NULL;
+s8 global_unitNames[UNIT_NUM]   = {0};
+struct dtab *global_unitOrders  = NULL;
 void Names_unitNames() {
-
     DTAB_INIT(global_unitOrders, u16);
     SDL_assert(global_unitOrders != NULL);
-
-    int order = 1;
+    int order = 0;
+    dtab_add(global_unitOrders, &order, UNIT_ID_NULL);
+    order++;
 #define REGISTER_ENUM(x, y) dtab_add(global_unitOrders, &order, UNIT_ID_##x);\
     SDL_assert(*(u16 *)dtab_get(global_unitOrders, UNIT_ID_##x) == order++);\
     global_unitNames[UNIT_ORDER_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);
@@ -54,21 +54,20 @@ void Names_unitStatuses() {
 #undef REGISTER_ENUM
 }
 
-s8 global_itemNames[ITEM_NUM] = {0};
+s8 global_itemNames[ITEM_NUM]   = {0};
 struct dtab *global_itemOrders  = NULL;
 void Names_itemNames() {
-
     DTAB_INIT(global_itemOrders, i32);
     SDL_assert(global_itemOrders != NULL);
-
-    size_t order = 1;
-
+    int order = 0;
+    dtab_add(global_itemOrders, &order, ITEM_NULL);
+    order++;
 #define REGISTER_ENUM(x, y) dtab_add(global_itemOrders, &order, ITEM_ID_##x);\
     order++;\
     global_itemNames[ITEM_ORDER_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);
 #include "names/items.h"
-}
 #undef REGISTER_ENUM
+}
 
 s8 support_types[SUPPORT_TYPE_NUM] = {0};
 void Names_supportTypes() {

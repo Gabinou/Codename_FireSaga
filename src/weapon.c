@@ -162,7 +162,7 @@ void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
 }
 
 s8 Weapon_Filename(s8 filename, i16 id) {
-    char buffer[DEFAULT_BUFFER_SIZE];
+    char buffer[DEFAULT_BUFFER_SIZE] = {0};
     char *token;
 
     /* - add weapon type subfolder to filename - */

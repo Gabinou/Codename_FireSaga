@@ -360,6 +360,7 @@ enum ITEM_IDs {
 #include "names/skills_passive.h"
 #include "names/skills_active.h"
 #undef REGISTER_ENUM
+
     ITEM_ID_BOOKEND,
 };
 
@@ -370,9 +371,17 @@ enum ITEM_ORDER {
 #define REGISTER_ENUM(x, y) ITEM_ORDER_##x,
 #include "names/items.h"
 #undef REGISTER_ENUM
-#define ITEM_ORDER(name) ITEM_ORDER_##name
-    ITEM_NUM,
+
+#define REGISTER_ENUM(x) ITEM_ORDER_TALISMAN_##x,
+#include "names/units_stats.h"
 #undef REGISTER_ENUM
+
+#define REGISTER_ENUM(x) ITEM_ORDER_SCRIPTURE_##x,
+#include "names/skills_passive.h"
+#include "names/skills_active.h"
+#undef REGISTER_ENUM
+
+    ITEM_NUM,
 };
 
 /* --- ITEM HIERARCHY --- */
