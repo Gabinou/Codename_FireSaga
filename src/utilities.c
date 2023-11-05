@@ -328,7 +328,7 @@ struct WpnorItem Utilities_WpnorItem(i16 id, struct dtab *weapons_dtab, struct d
 
     if (out.dtab == SOTA_DTAB_ITEMS) {
         Item_Load(items_dtab, id);
-        out.item = DTAB_GET(items_dtab,    id);
+        out.item = DTAB_GET(items_dtab,  id);
     } else {
         Weapon_Load(weapons_dtab, id);
         out.wpn = DTAB_GET(weapons_dtab, id);

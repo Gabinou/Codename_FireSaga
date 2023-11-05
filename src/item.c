@@ -271,7 +271,6 @@ s8 Item_Filename(s8 filename, i16 id) {
     token = strtok(buffer, " \t");
     while (token != NULL) {
         filename    = s8cat(filename, s8_var(token));
-        filename    = s8cat(filename, s8_var(token));
         token       = strtok(NULL, " \t");
     }
 
@@ -304,7 +303,7 @@ void Item_Load(struct dtab *items_dtab, i16 id) {
     filename    = Item_Filename(filename, id);
 
     struct Item temp_item = Item_default;
-    SDL_Log("Loading item %ld %s", id, filename);
+    SDL_Log("Loading item %ld %s", id, filename.data);
     SDL_assert(temp_item.json_element == JSON_ITEM);
 
     /* - read weapon - */

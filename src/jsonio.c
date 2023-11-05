@@ -33,6 +33,7 @@ struct cJSON *jsonio_parseJSON(const char *filename) {
     /* Error if file doesn't exist */
     if (!PHYSFS_exists(filename)) {
         SDL_Log("File %s does not exist", filename);
+        SDL_assert(false);
         exit(ERROR_CannotOpenFile);
     }
 

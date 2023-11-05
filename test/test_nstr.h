@@ -84,8 +84,6 @@ void test_nstr() {
     nourstest_true(path_mut.num == temp.num);
     nourstest_true(s8equal(path_mut, s8_literal("/home/gabinours/Sync/Firesaga")));
 
-    s8_free(&windows1);
-    s8_free(&windows2);
     s8_free(&windows3);
     s8_free(&windows3);
     s8_free(&lizard_mut);
