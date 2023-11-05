@@ -1,7 +1,9 @@
 #include "nstr.h"
 
 /* --- Pascal String s8 strings --- */
-// 3x-4x faster than null-terminated strings!
+/* 3x-4x faster than null-terminated strings! */
+/* -- s8_mut ONLY, unless noted otherwise -- */
+
 s8 s8_mut(const char *string) {
     s8 s8_string;
     size_t len = strlen(string);
@@ -21,6 +23,7 @@ void s8_free(s8 *str8) {
 }
 
 b32 s8equal(s8 s1, s8 s2) {
+    /* -- s8_literal and s8_var OK -- */
     if(s1.num != s2.num)
         return(false);
 
@@ -39,6 +42,7 @@ s8 s8cat(s8 s1, s8 s2) {
         memset(s1.data + s1.num, 0, newlen - s1.num);
         s1.len = newlen;
     }
+    
     /* Concatenate */
     memcpy(s1.data + s1.num, s2.data, s2.num);
     s1.num += s2.num;
@@ -46,22 +50,23 @@ s8 s8cat(s8 s1, s8 s2) {
 }
 
 s8 s8cpy(s8 s1, s8 s2) {
-    if (s1.len == 0) {
-        printf("nstr Error! Input string s1 has 0 len\n");
-        exit(1);
-    }
-    while (s2.num >= (s1.len-1)) {
-        size_t newlen = s1.len * 2;
+    /* If null, allocate a copy */
+    if (s1.data == NULL)
+        return(s8_mut(s2.data));
+
+    /* Increase buffer size for string to copy */
+    while (s2.num >= (s1.len - 1)) {
+        size_t newlen = s1.len < NSTR_MIN_LEN ? NSTR_MIN_LEN * 2 : s1.len * 2;
         s1.data = realloc(s1.data, newlen * sizeof(*s1.data));
         memset(s1.data + s1.num, 0, newlen - s1.num);
         s1.len = newlen;
     }
+
     /* Copy */
     memcpy(s1.data, s2.data, s2.num);
     s1.num = s2.num;
     return(s1);
 }
-
 
 s8 s8_slicefromStart(s8 str8, size_t toslice) {
     for (size_t i = toslice; i < str8.num; i++)
@@ -123,7 +128,6 @@ s8 s8_replaceSingle(s8 str8, const char replace, const char with) {
     }
     return(str8);
 }
-
 
 s8 s8_Replace(s8 str8, const char *replace, const char *with) {
     /* find replace pos */
