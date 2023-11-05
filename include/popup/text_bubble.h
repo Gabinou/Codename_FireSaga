@@ -101,7 +101,7 @@ struct Text_Bubble {
 extern struct Text_Bubble TextBubble_default;
 
 /* --- Constructor/Destructor --- */
-void TextBubble_SDL_free(struct Text_Bubble *b);
+void TextBubble_Free(struct Text_Bubble *b);
 void TextBubble_Load(struct Text_Bubble *b, SDL_Renderer *r, struct n9Patch *n9patch);
 
 /* --- Setters --- */

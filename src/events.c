@@ -21,7 +21,7 @@ void Events_Data_Malloc() {
     data2_entity = SDL_malloc(sizeof(tnecs_entity_t));
 }
 
-void Events_Data_SDL_free() {
+void Events_Data_Free() {
     SDL_free(data1_entity);
     SDL_free(data2_entity);
 }
@@ -228,7 +228,7 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
     } else {
         memcpy(sota->reason, "control was switched to a non-player army", sizeof(sota->reason));
         Game_subState_Set(sota, GAME_SUBSTATE_MAP_NPCTURN, sota->reason);
-        Game_Cursor_SDL_free(sota);
+        Game_Cursor_Free(sota);
     }
 }
 
@@ -351,7 +351,7 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
     Game_PopUp_Tile_Hide(sota);
 
     /* -- Map_Free -- */
-    Game_Map_SDL_free(sota);
+    Game_Map_Free(sota);
     /* -- Load TitleScreen -- */
     struct Input_Arguments args = Input_Arguments_default;
     Game_titleScreen_Load(sota, args);
@@ -1262,7 +1262,7 @@ void Events_Names_Declare() {
     event_End = SDL_RegisterEvents(1);
 }
 
-extern void Events_Names_SDL_free() {
+extern void Events_Names_Free() {
     if (event_names == NULL)
         return;
 
@@ -1289,14 +1289,14 @@ extern void Events_Names_Alloc() {
 
 }
 
-void Events_Receivers_SDL_free() {
+void Events_Receivers_Free() {
     if (receivers_dtab != NULL)
         DTAB_FREE(receivers_dtab);
 }
 
 void Events_Receivers_Declare() {
     u32 temp_index;
-    Events_Receivers_SDL_free();
+    Events_Receivers_Free();
     receiver_t temp_receiver_p;
     DTAB_INIT(receivers_dtab, receiver_t);
 

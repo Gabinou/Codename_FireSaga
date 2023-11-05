@@ -48,7 +48,7 @@ struct Scene {
 extern bool Conditions_Read(struct Conditions *conditions, cJSON *jconditions);
 extern bool Condition_Read(u32 *bitfield, size_t bits, cJSON *jcondition);
 
-extern void Scene_SDL_free(struct Scene *scene);
+extern void Scene_Free(struct Scene *scene);
 extern void Scene_Free_Read(struct Scene *scene);
 extern void Scene_Replace(struct Scene *scene);
 extern void Scene_Prune(struct Scene *scene);

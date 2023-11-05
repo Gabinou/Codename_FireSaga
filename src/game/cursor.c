@@ -392,7 +392,7 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
 
 /* --- Cursor --- */
 void Game_Cursor_Create(struct Game *sota) {
-    Game_Cursor_SDL_free(sota);
+    Game_Cursor_Free(sota);
     sota->entity_cursor = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Slider, Position, Sprite,
                                                           controllerKeyboard, controllerGamepad,
                                                           controllerTouchpad, Timer, CursorFlag);
@@ -460,16 +460,16 @@ void Game_Cursor_Create(struct Game *sota) {
     *position = Position_default;
 }
 
-void Game_Cursor_SDL_free(struct Game *sota) {
+void Game_Cursor_Free(struct Game *sota) {
     if (sota->entity_cursor != 0) {
         struct controllerGamepad *gamepad;
         gamepad = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, controllerGamepad);
         SDL_assert(gamepad != NULL);
-        Gamepad_SDL_free(gamepad);
+        Gamepad_Free(gamepad);
 
         struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
         SDL_assert(sprite != NULL);
-        Sprite_SDL_free(sprite);
+        Sprite_Free(sprite);
 
         tnecs_entity_destroy(sota->world, sota->entity_cursor);
     }
@@ -496,7 +496,7 @@ void Game_Cursor_Disable(struct Game *sota) {
 
 /* --- Mouse --- */
 void Game_Mouse_Create(struct Game *sota) {
-    Game_Mouse_SDL_free(sota);
+    Game_Mouse_Free(sota);
     sota->entity_mouse = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, controllerMouse,
                                                          Position, Sprite, MouseFlag);
     struct Position *position;
@@ -565,11 +565,11 @@ void Game_Mouse_Disable(struct Game *sota) {
     sprite->visible = false;
 }
 
-void Game_Mouse_SDL_free(struct Game *sota) {
+void Game_Mouse_Free(struct Game *sota) {
     if (sota->entity_mouse > 0) {
         struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_mouse, Sprite);
         if (sprite != NULL)
-            Sprite_SDL_free(sprite);
+            Sprite_Free(sprite);
         tnecs_entity_destroy(sota->world, sota->entity_mouse);
     }
 }

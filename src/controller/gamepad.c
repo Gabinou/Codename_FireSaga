@@ -131,7 +131,7 @@ struct controllerGamepad controllerGamepad_default = {
 
 /* --- Constructors/Destructors --- */
 void Gamepad_Init(struct controllerGamepad *gp) {
-    Gamepad_SDL_free(gp);
+    Gamepad_Free(gp);
     gp->controllers_num     = controllerGamepad_default.controllers_num;
     gp->controllers_len     = controllerGamepad_default.controllers_len;
     gp->controllers         = calloc(gp->controllers_len, sizeof(*gp->controllers));
@@ -141,7 +141,7 @@ void Gamepad_Init(struct controllerGamepad *gp) {
 
 }
 
-void Gamepad_SDL_free(struct controllerGamepad *gp) {
+void Gamepad_Free(struct controllerGamepad *gp) {
     if (gp->controllers != NULL) {
         SDL_free(gp->controllers);
         gp->controllers = NULL;

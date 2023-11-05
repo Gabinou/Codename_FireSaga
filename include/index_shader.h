@@ -40,10 +40,10 @@ struct Tilemap_Shader {
 extern struct Tilemap_Shader Tilemap_Shader_default;
 
 /* -- Constructor/Destructor -- */
-void Tilemap_Shader_SDL_free(       struct Tilemap_Shader *s);
+void Tilemap_Shader_Free(       struct Tilemap_Shader *s);
 void Tilemap_Shader_Alloc(      struct Tilemap_Shader *s, size_t tilenum);
 
-static void _Tilemap_Shader_Shadow_SDL_free( struct Tilemap_Shader *s);
+static void _Tilemap_Shader_Shadow_Free( struct Tilemap_Shader *s);
 
 /* -- Loading -- */
 void Tilemap_Shader_Load_JSON(struct Tilemap_Shader *s, const cJSON *const jm,
@@ -69,7 +69,7 @@ struct Index_Shader {
 extern struct Index_Shader Index_Shader_default;
 
 /* -- Constructor/Destructor -- */
-void Index_Shader_SDL_free(struct Index_Shader *is);
+void Index_Shader_Free(struct Index_Shader *is);
 
 /* -- Loading -- */
 void Index_Shader_Load(struct Index_Shader *is, SDL_Surface *s, SDL_Rect *r);

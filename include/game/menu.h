@@ -23,7 +23,7 @@ void Game_Switch_toCandidates(struct Game *sota, tnecs_entity_t *candidates);
 /* --- Menu stack --- */
 tnecs_entity_t Game_menuStack_Pop(struct Game *sota, bool destroy);
 void Game_menuStack_Push(struct Game *sota, tnecs_entity_t in_menu_entity);
-void Game_menuStack_SDL_free(struct Game *sota);
+void Game_menuStack_Free(struct Game *sota);
 
 /* --- GrowthsMenu --- */
 void Game_GrowthsMenu_Create(struct Game *sota);
@@ -58,7 +58,7 @@ void Game_ItemSelectMenu_Enable(struct Game *sota, tnecs_entity_t ent);
 /* --- PlayerSelectMenu --- */
 void Game_PlayerSelectMenu_Create(struct Game *sota, i8 in_menu);
 void Game_PlayerSelectMenu_Update(struct Game *sota, i8 in_menu);
-void Game_PlayerSelectMenus_SDL_free( struct Game *sota);
+void Game_PlayerSelectMenus_Free( struct Game *sota);
 void Game_PlayerSelectMenu_Disable_Entity(struct Game *sota, tnecs_entity_t in_menu_entity);
 
 /* --- Game_preLoadout_... --- */

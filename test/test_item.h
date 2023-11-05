@@ -103,5 +103,5 @@ void test_item() {
                                      "item_rewrite.json")));
     nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "item_rewrite.json")));
     nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "item_test.json")));
-    Item_SDL_free(&item2);
+    Item_Free(&item2);
 }

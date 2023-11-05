@@ -84,7 +84,7 @@ void test_bitfields() {
     Bitfield_Off(bitfield, 0);
     nourstest_true(bitfield[0] == 2);
 
-    BITFIELD_SDL_free(bitfield);
-    BITFIELD_SDL_free(allones);
-    BITFIELD_SDL_free(allzeros);
+    BITFIELD_Free(bitfield);
+    BITFIELD_Free(allones);
+    BITFIELD_Free(allzeros);
 }

@@ -64,7 +64,7 @@ struct Spritesheet {
 extern struct Spritesheet Spritesheet_default;
 
 /* --- Constructor/Destructors --- */
-void Spritesheet_SDL_free(struct Spritesheet *ss);
+void Spritesheet_Free(struct Spritesheet *ss);
 
 /* --- Animation --- */
 void Spritesheet_Loop_Set(struct Spritesheet *ss, int l, SDL_RendererFlip f);
@@ -114,7 +114,7 @@ typedef void (*dstrect_func_t)(struct Sprite *, struct Point *, struct Camera *)
 extern dstrect_func_t dstrect_funcs[TWO_D][2];
 
 /* --- Constructor/Destructors --- */
-void Sprite_SDL_free(struct Sprite *s);
+void Sprite_Free(struct Sprite *s);
 
 /* --- Initialization --- */
 void Sprite_Load(               struct Sprite *s, const char *n, SDL_Renderer *r);

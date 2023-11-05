@@ -452,7 +452,7 @@ void test_combat_game() {
     /* --- FREE --- */
     Unit_Free(&attacker);
     Unit_Free(&defender);
-    Game_Weapons_SDL_free(&weapons_dtab);
+    Game_Weapons_Free(&weapons_dtab);
     DARR_FREE(firesaga.combat_attacks);
 }
 

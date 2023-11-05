@@ -67,7 +67,7 @@ struct LoadoutSelectMenu *LoadoutSelectMenu_Alloc() {
     return (lsm);
 }
 
-void LoadoutSelectMenu_SDL_free(struct LoadoutSelectMenu *lsm) {
+void LoadoutSelectMenu_Free(struct LoadoutSelectMenu *lsm) {
     if (lsm->texture != NULL) {
         SDL_DestroyTexture(lsm->texture);
         lsm->texture = NULL;

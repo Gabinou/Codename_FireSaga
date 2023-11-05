@@ -42,10 +42,10 @@ struct PlayerSelectMenu *PlayerSelectMenu_Alloc() {
     return (psm);
 }
 
-void PlayerSelectMenu_SDL_free(struct PlayerSelectMenu *psm, struct Menu *mc) {
+void PlayerSelectMenu_Free(struct PlayerSelectMenu *psm, struct Menu *mc) {
     SDL_assert(psm);
     SDL_assert(mc);
-    Menu_Elem_SDL_free(mc);
+    Menu_Elem_Free(mc);
     if (psm->options != NULL) {
         DARR_FREE(psm->options);
         psm->options = NULL;
@@ -62,7 +62,7 @@ void PlayerSelectMenu_SDL_free(struct PlayerSelectMenu *psm, struct Menu *mc) {
 }
 
 void FirstMenu_Load(struct PlayerSelectMenu *psm, SDL_Renderer *renderer, struct n9Patch *n9patch) {
-    n9Patch_SDL_free(n9patch);
+    n9Patch_Free(n9patch);
     *n9patch                 = n9Patch_default;
     n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;
     n9patch->patch_pixels.y  = MENU_PATCH_PIXELS;
@@ -85,7 +85,7 @@ void FirstMenu_Load(struct PlayerSelectMenu *psm, SDL_Renderer *renderer, struct
 
 void PlayerSelectMenu_Load(struct PlayerSelectMenu *psm, SDL_Renderer *renderer,
                            struct n9Patch *n9patch) {
-    n9Patch_SDL_free(n9patch);
+    n9Patch_Free(n9patch);
 
     *n9patch                 = n9Patch_default;
     n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;

@@ -59,7 +59,7 @@ void Palettes_Load() {
     Filesystem_readJSON_Palette(PATH_JOIN("assets", "Palettes",
                                           STRINGIZE(palette_NES_lightenmore)".json"), palette_NES_lightenmore);
 
-    Palettes_SDL_free();
+    Palettes_Free();
     sota_palettes = calloc(PALETTE_NUM, sizeof(*sota_palettes));
     sota_palettes[PALETTE_NULL] =                 NULL;
     sota_palettes[PALETTE_NES] =                  palette_NES;
@@ -79,7 +79,7 @@ void Palettes_Load() {
 
 }
 
-void Palettes_SDL_free() {
+void Palettes_Free() {
     if (sota_palettes != NULL) {
         for (size_t i = 0; i < PALETTE_NUM; i++) {
             if (sota_palettes[i] != NULL)

@@ -53,7 +53,7 @@ struct TradeMenu {
 
 /* --- Constructors/Destructors --- */
 struct TradeMenu *TradeMenu_Alloc();
-void TradeMenu_SDL_free(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
+void TradeMenu_Free(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
 
 /* --- Item placement --- */
 void TradeMenu_Trade(   struct TradeMenu *tm);

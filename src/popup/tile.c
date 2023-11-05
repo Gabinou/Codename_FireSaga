@@ -14,7 +14,7 @@ struct PopUp_Tile PopUp_Tile_default = {
 };
 
 /* --- Constructor/Destructor --- */
-void PopUp_Tile_SDL_free(struct PopUp_Tile *pt) {
+void PopUp_Tile_Free(struct PopUp_Tile *pt) {
     if (pt->texture_header != NULL) {
         SDL_DestroyTexture(pt->texture_header);
         pt->texture_header = NULL;
@@ -23,8 +23,8 @@ void PopUp_Tile_SDL_free(struct PopUp_Tile *pt) {
 
 void PopUp_Tile_Load(struct PopUp_Tile *pt, SDL_Renderer *renderer, struct n9Patch *n9patch) {
     /* - Popup position, scale, n9Patch - */
-    PopUp_Tile_SDL_free(pt);
-    n9Patch_SDL_free(n9patch);
+    PopUp_Tile_Free(pt);
+    n9Patch_Free(n9patch);
 
     *n9patch                  = n9Patch_default;
     n9patch->patch_pixels.x   = PT_PATCH_PIXELS;

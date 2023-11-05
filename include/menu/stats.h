@@ -389,7 +389,7 @@ extern struct StatsMenu StatsMenu_default;
 
 /* --- Constructors/Destructors --- */
 struct StatsMenu *StatsMenu_Alloc();
-void StatsMenu_SDL_free(      struct StatsMenu *sm);
+void StatsMenu_Free(      struct StatsMenu *sm);
 
 static void _StatsMenu_Free_Face( struct StatsMenu *sm);
 static void _StatsMenu_Free_Icons(struct StatsMenu *sm);

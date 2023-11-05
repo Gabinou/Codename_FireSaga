@@ -9,7 +9,7 @@
 #include "systems/control.h"
 
 /* --- Cursor --- */
-void Game_Cursor_SDL_free(   struct Game *sota);
+void Game_Cursor_Free(   struct Game *sota);
 void Game_Cursor_Create( struct Game *sota);
 void Game_Cursor_Enable( struct Game *sota);
 void Game_Cursor_Disable(struct Game *sota);
@@ -34,7 +34,7 @@ void Game_Cursor_movedTime_Compute(struct Game *sota, u64 time_ms);
 bool Game_isCursoronTilemap(struct Game *sota);
 
 /* --- Mouse --- */
-void Game_Mouse_SDL_free(   struct Game *sota);
+void Game_Mouse_Free(   struct Game *sota);
 void Game_Mouse_Create( struct Game *sota);
 void Game_Mouse_Enable( struct Game *sota);
 void Game_Mouse_Disable(struct Game *sota);

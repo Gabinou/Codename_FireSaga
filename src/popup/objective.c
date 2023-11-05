@@ -35,7 +35,7 @@ void PopUp_Objective_Load(struct PopUp_Objective *po, SDL_Renderer *renderer,
     n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
 }
 
-void PopUp_Objective_SDL_free(struct PopUp_Objective *po) {
+void PopUp_Objective_Free(struct PopUp_Objective *po) {
     SDL_assert(po != NULL);
     if (po->texture != NULL) {
         SDL_DestroyTexture(po->texture);

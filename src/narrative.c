@@ -18,7 +18,7 @@ struct Scene Scene_default =  {
     .actors_num =    0,
 };
 
-void Scene_SDL_free(struct Scene *scene) {
+void Scene_Free(struct Scene *scene) {
     Scene_Free_Read(scene);
     if (scene->replace != NULL) {
         for (size_t i = 0; i < scene->replace_num; i++) {

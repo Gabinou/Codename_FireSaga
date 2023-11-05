@@ -22,7 +22,7 @@ struct WpnorItem WpnorItem_default = {
 
 /* --- Constructors/Destructors --- */
 void Weapon_Init(struct Weapon *weapon) {
-    Weapon_SDL_free(weapon);
+    Weapon_Free(weapon);
 
     SDL_assert(weapon       != NULL);
     SDL_assert(weapon->item == NULL);
@@ -31,7 +31,7 @@ void Weapon_Init(struct Weapon *weapon) {
     *(weapon->item) = Item_default;
 }
 
-void Weapon_SDL_free(struct Weapon *weapon) {
+void Weapon_Free(struct Weapon *weapon) {
     if (weapon == NULL) {
         return;
     }
@@ -45,7 +45,7 @@ void Weapon_SDL_free(struct Weapon *weapon) {
         return;
     }
 
-    Item_SDL_free(weapon->item);
+    Item_Free(weapon->item);
     SDL_free(weapon->item);
     weapon->item = NULL;
 }
@@ -124,7 +124,7 @@ void Weapon_writeJSON(const void *input, cJSON *jwpn) {
 void Weapon_Reload(struct dtab *weapons_dtab, i16 id) {
     /* Overwrite weapon ONLY if it already exists */
     if (DTAB_GET(weapons_dtab, id) != NULL) {
-        Weapon_SDL_free(DTAB_GET(weapons_dtab, id));
+        Weapon_Free(DTAB_GET(weapons_dtab, id));
         DTAB_DEL(weapons_dtab, id);
         Weapon_Load(weapons_dtab, id);
     }
@@ -171,7 +171,7 @@ s8 Weapon_Filename(s8 filename, i16 id) {
     s8 *types = Names_wpnType(typecode);
     filename = s8cat(filename, types[0]);
     filename = s8cat(filename, s8_var(PHYSFS_SEPARATOR));
-    Names_wpnType_SDL_free(types);
+    Names_wpnType_Free(types);
 
     /* - add weapon name to filename - */
     size_t item_order = *(u16 *)DTAB_GET(global_itemOrders, id);
@@ -243,10 +243,10 @@ void Weapons_All_Save(struct dtab *weapons_dtab) {
 
 }
 
-void Weapons_All_SDL_free(struct dtab *weapons_dtab) {
+void Weapons_All_Free(struct dtab *weapons_dtab) {
     for (size_t i = ITEM_NULL; i < ITEM_ID_CLAW_END; i++) {
         if (DTAB_GET(weapons_dtab, i) != NULL)
-            Weapon_SDL_free(DTAB_GET(weapons_dtab, i));
+            Weapon_Free(DTAB_GET(weapons_dtab, i));
     }
 
 }

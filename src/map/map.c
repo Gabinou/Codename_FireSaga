@@ -118,7 +118,7 @@ struct Map Map_default = {
 
 struct Map *Map_Init(struct Map *map, i32 width, i32 height) {
     if (map != NULL)
-        Map_SDL_free(map);
+        Map_Free(map);
     map  = (struct Map *)SDL_malloc(sizeof(struct Map));
     *map = Map_default;
     map->items_num          = DARR_INIT(map->items_num, u8, 8);
@@ -130,12 +130,12 @@ struct Map *Map_Init(struct Map *map, i32 width, i32 height) {
     map->armies_onfield     = calloc(10, sizeof(*map->armies_onfield));
     Map_Tilesize_Set(map, width, height);
     if (map->arrow != NULL)
-        Arrow_SDL_free(map->arrow);
+        Arrow_Free(map->arrow);
     map->arrow = Arrow_Init(map->tilesize);
     return (map); // return cause pointer address can change.
 }
 
-void Map_Units_SDL_free(struct Map *map) {
+void Map_Units_Free(struct Map *map) {
 
     /* -- Free units on unitmap -- */
     SDL_assert(map->unitmap);
@@ -148,7 +148,7 @@ void Map_Units_SDL_free(struct Map *map) {
             Unit_Free(unit);
         struct Sprite *sprite = TNECS_GET_COMPONENT(map->world, uent, Sprite);
         if (sprite != NULL)
-            Sprite_SDL_free(sprite);
+            Sprite_Free(sprite);
         tnecs_entity_destroy(map->world, uent);
 
     }
@@ -171,7 +171,7 @@ void Map_Units_Hide(struct Map *map) {
 
 }
 
-void Map_SDL_free(struct Map *map) {
+void Map_Free(struct Map *map) {
     SDL_assert(map);
     if (map->breakables_ent != NULL) {
         SDL_free(map->breakables_ent);
@@ -186,11 +186,11 @@ void Map_SDL_free(struct Map *map) {
         map->doors_ent = NULL;
     }
 
-    Map_Units_SDL_free(map);
-    Map_Tilesets_SDL_free(map);
-    Map_Tilesprites_SDL_free(map);
-    Map_Tilemap_Texture_SDL_free(map);
-    Map_Tiles_SDL_free(map);
+    Map_Units_Free(map);
+    Map_Tilesets_Free(map);
+    Map_Tilesprites_Free(map);
+    Map_Tilemap_Texture_Free(map);
+    Map_Tiles_Free(map);
     if (map->friendlies_onfield != NULL) {
         DARR_FREE(map->friendlies_onfield);
         map->friendlies_onfield = NULL;
@@ -238,18 +238,18 @@ void Map_SDL_free(struct Map *map) {
         DARR_FREE(map->units_onfield);
         map->units_onfield = NULL;
     }
-    Map_Tilemap_Surface_SDL_free(map);
+    Map_Tilemap_Surface_Free(map);
     SDL_Log("armies_onfield");
-    _Map_Tilesindex_SDL_free(map);
+    _Map_Tilesindex_Free(map);
     if (map->armies_onfield != NULL) {
         SDL_free(map->armies_onfield);
         map->armies_onfield = NULL;
     }
     SDL_Log("Arrow");
-    Arrow_SDL_free(map->arrow);
+    Arrow_Free(map->arrow);
     SDL_Log("tilemap_shader");
     if (map->tilemap_shader != NULL) {
-        Tilemap_Shader_SDL_free(map->tilemap_shader);
+        Tilemap_Shader_Free(map->tilemap_shader);
         SDL_free(map->tilemap_shader);
         map->tilemap_shader = NULL;
     }
@@ -257,7 +257,7 @@ void Map_SDL_free(struct Map *map) {
         SDL_DestroyTexture(map->texture);
         map->texture = NULL;
     }
-    Map_dArrays_SDL_free(map);
+    Map_dArrays_Free(map);
 }
 
 void Map_dArrays_Init(struct Map *map, const struct Settings *settings) {
@@ -311,7 +311,7 @@ void Map_dArrays_Init(struct Map *map, const struct Settings *settings) {
     Map_Palettemap_Reset(map);
 }
 
-void Map_dArrays_SDL_free(struct Map *map) {
+void Map_dArrays_Free(struct Map *map) {
     if (map->unitmap != NULL) {
         SDL_free(map->unitmap);
         map->unitmap = NULL;
@@ -406,8 +406,8 @@ void Map_Texture_Alloc(struct Map *map) {
 
 }
 
-void _Map_Tilemap_Shader_SDL_free(struct Map *map) {
-    Tilemap_Shader_SDL_free(map->tilemap_shader);
+void _Map_Tilemap_Shader_Free(struct Map *map) {
+    Tilemap_Shader_Free(map->tilemap_shader);
     if (map->tilemap_shader != NULL) {
         SDL_free(map->tilemap_shader);
         map->tilemap_shader = NULL;
@@ -421,18 +421,18 @@ void _Map_Tilemap_Shader_Init(struct Map *map) {
     map->tilemap_shader->to     = palette_table_NES_shadow;
 }
 
-void _Map_Tilesindex_SDL_free(struct Map *map) {
+void _Map_Tilesindex_Free(struct Map *map) {
     if (map->tilesindex != NULL)
         DARR_FREE(map->tilesindex);
 }
 
 void _Map_Tilesindex_Init(struct Map *map) {
-    _Map_Tilesindex_SDL_free(map);
+    _Map_Tilesindex_Free(map);
     map->tilesindex = DARR_INIT(map->tilesindex, i32, DEFAULT_TILESPRITE_BUFFER);
 }
 
 
-void Map_Tilesprites_SDL_free(struct Map *map) {
+void Map_Tilesprites_Free(struct Map *map) {
     if (map->tilesprites_ind == NULL)  {
         return;
     }
@@ -449,7 +449,7 @@ void Map_Tilesprites_SDL_free(struct Map *map) {
 
 void Map_Tilesprites_Init(struct Map *map, size_t tiles_num) {
     SDL_assert(tiles_num > 0);
-    Map_Tilesprites_SDL_free(map);
+    Map_Tilesprites_Free(map);
     map->tilesprites_ind = DARR_INIT(map->tilesprites_ind, u16 *, tiles_num);
     DARR_NUM(map->tilesprites_ind) = tiles_num;
     for (size_t i = 0; i < tiles_num; i++) {
@@ -458,7 +458,7 @@ void Map_Tilesprites_Init(struct Map *map, size_t tiles_num) {
 }
 
 
-void Map_Tilemap_Texture_SDL_free(struct Map *map) {
+void Map_Tilemap_Texture_Free(struct Map *map) {
     if (map->tilemap_texture != NULL) {
         SDL_DestroyTexture(map->tilemap_texture);
         map->tilemap_texture = NULL;
@@ -467,7 +467,7 @@ void Map_Tilemap_Texture_SDL_free(struct Map *map) {
 
 void Map_Tilemap_Texture_Init(struct Map *map) {
     SDL_assert(map->renderer);
-    Map_Tilemap_Texture_SDL_free(map);
+    Map_Tilemap_Texture_Free(map);
     int x_size = map->tilesize[0] * map->col_len;
     int y_size = map->tilesize[1] * map->row_len;
     map->tilemap_texture = SDL_CreateTexture(map->renderer, SDL_PIXELFORMAT_RGB888,
@@ -475,7 +475,7 @@ void Map_Tilemap_Texture_Init(struct Map *map) {
     SDL_assert(map->tilemap_texture);
 }
 
-void Map_Tilemap_Surface_SDL_free(struct Map *map) {
+void Map_Tilemap_Surface_Free(struct Map *map) {
     if (map->tilemap_surface != NULL)
         SDL_FreeSurface(map->tilemap_surface);
 }
@@ -483,7 +483,7 @@ void Map_Tilemap_Surface_SDL_free(struct Map *map) {
 void Map_Tilemap_Surface_Init(struct Map *map) {
     SDL_assert(map->col_len > 0);
     SDL_assert(map->row_len > 0);
-    Map_Tilemap_Surface_SDL_free(map);
+    Map_Tilemap_Surface_Free(map);
     int x_size = map->tilesize[0] * map->col_len;
     int y_size = map->tilesize[1] * map->row_len;
     map->tilemap_surface = Filesystem_indexedSurface_Init(x_size, y_size);
@@ -620,8 +620,8 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
         DARR_PUT(map->tilesindex, cJSON_GetNumberValue(jid));
     }
     // SDL_assert(map->tileset_surfaces == NULL);
-    Map_Tilesets_SDL_free(map);
-    Map_Tiles_SDL_free(map);
+    Map_Tilesets_Free(map);
+    Map_Tiles_Free(map);
 
     Map_Tiles_Load(map);
     Map_Tilesets_Load(map);

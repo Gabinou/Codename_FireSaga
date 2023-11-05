@@ -290,10 +290,10 @@ void Utilities_Load() {
     Palette_Tables_Load();
 }
 
-void Utilities_SDL_free() {
-    Palettes_SDL_free();
-    Names_SDL_free();
-    // Hashes_SDL_free();
+void Utilities_Free() {
+    Palettes_Free();
+    Names_Free();
+    // Hashes_Free();
 }
 
 void SOTA_Free_Surfaces(SDL_Surface **surfaces, int num) {

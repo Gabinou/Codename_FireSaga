@@ -82,11 +82,11 @@ extern struct Door Door_default;
 
 /* --- Constructors/Destructors --- */
 /* -- Tile -- */
-void Tile_SDL_free(struct Tile *tile);
+void Tile_Free(struct Tile *tile);
 
 /* -- Mobj -- */
 void Mobj_Link_Init(struct Mobj_Link *mobj);
-void Mobj_Link_SDL_free(struct Mobj_Link *mobj);
+void Mobj_Link_Free(struct Mobj_Link *mobj);
 
 /* --- I/O --- */
 /* -- Tile -- */

@@ -29,7 +29,7 @@ struct WpnorItem {
 extern struct WpnorItem WpnorItem_default;
 
 /* --- Constructors/Destructors --- */
-void Weapon_SDL_free(struct Weapon *wpn);
+void Weapon_Free(struct Weapon *wpn);
 void Weapon_Init(struct Weapon *wpn);
 
 /* --- isCan? --- */
@@ -52,7 +52,7 @@ void Weapon_Load(     struct dtab *weapons_dtab, i16 id);
 void Weapon_Save(     struct dtab *weapons_dtab, i16 id);
 void Weapons_All_Load(struct dtab *weapons_dtab);
 void Weapons_All_Save(struct dtab *weapons_dtab);
-void Weapons_All_SDL_free(struct dtab *weapons_dtab);
+void Weapons_All_Free(struct dtab *weapons_dtab);
 
 void Weapon_Reload(     struct dtab *weapons_dtab, i16 id);
 void Weapons_All_Reload(struct dtab *weapons_dtab);

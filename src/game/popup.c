@@ -1,7 +1,7 @@
 #include "game/popup.h"
 
 /* --- Constructors/Destructors --- */
-void Game_PopUps_SDL_free(struct Game *sota) {
+void Game_PopUps_Free(struct Game *sota) {
     // /* - Popup Loadout Stats - */
     // int popup_id = POPUP_TYPE_HUD_LOADOUT_STATS;
     // struct PopUp * popup
@@ -118,7 +118,7 @@ void Game_PopUp_Pre_Combat_Enable(struct Game *sota) {
     Game_cursorFocus_onMenu(sota);
 }
 
-void Game_PopUp_Pre_Combat_SDL_free(struct Game *sota) {
+void Game_PopUp_Pre_Combat_Free(struct Game *sota) {
 
 }
 
@@ -348,11 +348,11 @@ void Game_PopUp_Map_Combat_Hide(struct Game *sota) {
     popup->visible = false;
 }
 
-void Game_PopUp_Map_Combat_SDL_free(struct Game *sota) {
+void Game_PopUp_Map_Combat_Free(struct Game *sota) {
     tnecs_entity_t popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
     struct PopUp_Map_Combat *pmc = popup->data;
-    PopUp_Map_Combat_SDL_free(pmc);
+    PopUp_Map_Combat_Free(pmc);
     tnecs_entity_destroy(sota->world, popup_ent);
     sota->popups[POPUP_TYPE_MAP_COMBAT] = TNECS_NULL;
 }
@@ -390,7 +390,7 @@ void Game_PopUp_Tile_Hide(struct Game *sota) {
     popup->visible = false;
 }
 
-void Game_PopUp_Tile_SDL_free(struct Game *sota) {
+void Game_PopUp_Tile_Free(struct Game *sota) {
     if (sota->popups[POPUP_TYPE_HUD_TILE] > TNECS_NULL) {
         struct PopUp *popup;
         popup = TNECS_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_HUD_TILE], PopUp);

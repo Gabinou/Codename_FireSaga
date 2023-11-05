@@ -115,7 +115,7 @@ int Filesystem_Init(char *argv0) {
     return 1;
 }
 
-int Filesystem_SDL_free() {
+int Filesystem_Free() {
     return (PHYSFS_deinit());
 }
 

@@ -356,7 +356,7 @@ struct StatsMenu *StatsMenu_Alloc() {
     return (stats_menu);
 }
 
-void StatsMenu_SDL_free(struct StatsMenu *stats_menu) {
+void StatsMenu_Free(struct StatsMenu *stats_menu) {
     SDL_assert(stats_menu != NULL);
     if (stats_menu->texture != NULL) {
         SDL_DestroyTexture(stats_menu->texture);
@@ -365,7 +365,7 @@ void StatsMenu_SDL_free(struct StatsMenu *stats_menu) {
     _StatsMenu_Free_Face(stats_menu);
     _StatsMenu_Free_Icons(stats_menu);
     if (stats_menu->font_wpns != NULL) {
-        PixelFont_SDL_free(stats_menu->font_wpns, true);
+        PixelFont_Free(stats_menu->font_wpns, true);
         stats_menu->font_wpns = NULL;
     }
     if (stats_menu != NULL) {

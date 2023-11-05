@@ -63,7 +63,7 @@ struct Menu {
 extern struct Menu Menu_default;
 
 /* --- Constructors/Destructors --- */
-void Menu_Elem_SDL_free(struct Menu *mc);
+void Menu_Elem_Free(struct Menu *mc);
 
 /* --- Internals --- */
 int Periodic_Elem_Move(     struct Menu *mc, int d, int min, int max);

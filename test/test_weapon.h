@@ -189,9 +189,9 @@ void test_weapon1() {
     nourstest_true(Filesystem_fequal(PATH_JOIN("saves", "weapon_test.json"),
                                      PATH_JOIN("saves", "weapon_rewrite.json")));
 
-    Weapon_SDL_free(&wpn1);
-    Weapon_SDL_free(&wpn2);
-    Weapon_SDL_free(&wpn3);
+    Weapon_Free(&wpn1);
+    Weapon_Free(&wpn2);
+    Weapon_Free(&wpn3);
 }
 
 void test_weapon_stats() {

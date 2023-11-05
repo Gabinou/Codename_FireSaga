@@ -60,7 +60,7 @@ void ItemDropMenu_Load(struct ItemDropMenu *idm, SDL_Renderer *renderer, struct 
 
 }
 
-void ItemDropMenu_SDL_free(struct ItemDropMenu *idm) {
+void ItemDropMenu_Free(struct ItemDropMenu *idm) {
     if (idm->texture != NULL) {
         SDL_DestroyTexture(idm->texture);
         idm->texture = NULL;

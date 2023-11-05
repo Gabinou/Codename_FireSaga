@@ -784,7 +784,7 @@ void CRT_Filter(struct CRT *in_crt, SDL_Texture *render_target,
     SDL_free(scanline_floatrgb.B);
 }
 
-void CRT_SDL_free(struct CRT *in_crt) {
+void CRT_Free(struct CRT *in_crt) {
     if (in_crt->unfiltered != NULL) {
         SDL_LockSurface(in_crt->unfiltered);
         SDL_free(in_crt->unfiltered->pixels);

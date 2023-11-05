@@ -1,7 +1,7 @@
 #include "game/unit.h"
 
 /* --- Constructors/Destructors --- */
-void Game_Items_SDL_free(struct dtab **items_dtab) {
+void Game_Items_Free(struct dtab **items_dtab) {
     if (*items_dtab == NULL) {
         return;
     }
@@ -9,14 +9,14 @@ void Game_Items_SDL_free(struct dtab **items_dtab) {
     struct Item *cast_dtab = (*items_dtab)->values;
     SDL_assert(cast_dtab != NULL);
     for (size_t i = 0 ; i < (*items_dtab)->num; i++) {
-        Item_SDL_free((cast_dtab + i));
+        Item_Free((cast_dtab + i));
     }
 
     DTAB_FREE((*items_dtab));
     *items_dtab = NULL;
 }
 
-void Game_Weapons_SDL_free(struct dtab **weapons_dtab) {
+void Game_Weapons_Free(struct dtab **weapons_dtab) {
     if ((*weapons_dtab) == NULL) {
         return;
     }
@@ -24,7 +24,7 @@ void Game_Weapons_SDL_free(struct dtab **weapons_dtab) {
     struct Weapon *cast_dtab = (*weapons_dtab)->values;
     SDL_assert(cast_dtab != NULL);
     for (size_t i = 0 ; i < (*weapons_dtab)->num; i++) {
-        Weapon_SDL_free((cast_dtab + i));
+        Weapon_Free((cast_dtab + i));
     }
 
     DTAB_FREE((*weapons_dtab));
@@ -210,7 +210,7 @@ tnecs_entity_t Game_Unit_Entity_Create(struct Game *sota, i16 in_unit,
     return (sota->units_loaded[in_unit]);
 }
 /* --- Unitmap --- */
-void Game_UnitsonMap_SDL_free(struct Game *sota) {
+void Game_UnitsonMap_Free(struct Game *sota) {
     tnecs_entity_t temp_unit_ent;
     if (sota->map == NULL) {
         return;
@@ -226,7 +226,7 @@ void Game_UnitsonMap_SDL_free(struct Game *sota) {
 
         struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Sprite);
         if (sprite)
-            Sprite_SDL_free(sprite);
+            Sprite_Free(sprite);
     }
 }
 void Game_putPConMap(struct Game *sota, i16 *unit_ids,

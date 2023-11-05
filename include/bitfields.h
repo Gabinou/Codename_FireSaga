@@ -15,7 +15,7 @@ enum BITFIELD {BITFIELD_BITSPERLEN = 32};
 #define BITFIELD_INIT_BITS(bits) BITFIELD_INIT_BITS_(bits)
 #define BITFIELD_INIT_BITS_(bits) (calloc((BITFIELD_LEN(bits)), sizeof(u32)))
 #define BITFIELD_INIT_LEN(len) (calloc(len, sizeof(u32)))
-#define BITFIELD_SDL_free(bitfield) SDL_free(bitfield)
+#define BITFIELD_Free(bitfield) SDL_free(bitfield)
 
 /* -- Setters -- */
 // For nth bit in bitfield

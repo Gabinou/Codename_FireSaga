@@ -89,7 +89,7 @@ struct PixelFont *PixelFont_Alloc() {
     return (font);
 }
 
-void PixelFont_SDL_free(struct PixelFont *font, bool isfree) {
+void PixelFont_Free(struct PixelFont *font, bool isfree) {
     SDL_assert(font != NULL);
     if (font->texture != NULL) {
         SDL_DestroyTexture(font->texture);
@@ -227,7 +227,7 @@ void TextLines_Realloc(struct TextLines *textlines, size_t len) {
     textlines->line_len = len;
 }
 
-void TextLines_SDL_free(struct TextLines *textlines) {
+void TextLines_Free(struct TextLines *textlines) {
     if (textlines->lines != NULL) {
         for (int i = 0; i < textlines->line_len; i++) {
             if (textlines->lines[i] != NULL) {

@@ -368,11 +368,11 @@ void test_popup_map_combat() {
                             pmc.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- FREE -- */
-    PixelFont_SDL_free(pmc.pixelnours_tight, true);
-    PixelFont_SDL_free(pmc.pixelnours_big,   true);
-    PopUp_Map_Combat_SDL_free(&pmc);
+    PixelFont_Free(pmc.pixelnours_tight, true);
+    PixelFont_Free(pmc.pixelnours_big,   true);
+    PopUp_Map_Combat_Free(&pmc);
     DARR_FREE(combat_attacks);
-    Game_Weapons_SDL_free(&weapons_dtab);
+    Game_Weapons_Free(&weapons_dtab);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
     Unit_Free(&aggressor);

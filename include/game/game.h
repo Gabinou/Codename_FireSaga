@@ -42,7 +42,7 @@ struct Item;
 struct Game;
 
 void Events_Data_Malloc();
-void Events_Data_SDL_free();
+void Events_Data_Free();
 void Events_Names_Strings();
 void Events_Names_Declare();
 void Events_Receivers_Declare();
@@ -197,7 +197,7 @@ extern struct Game Game_default;
 
 /* --- Constructors/Destructors --- */
 struct Game *Game_Init();
-void Game_SDL_free(   struct Game *sota);
+void Game_Free(   struct Game *sota);
 void Game_Startup(struct Game *sota, struct Input_Arguments in_args);
 
 
@@ -219,7 +219,7 @@ void Game_Delay(struct Game *sota, i64 d, u64 c, u64 e);
 
 /* --- FPS --- */
 i64 Game_FPS_Delay(  struct Game *sota, u64 e);
-void Game_FPS_SDL_free(  struct Game *sota);
+void Game_FPS_Free(  struct Game *sota);
 void Game_FPS_Create(struct Game *sota, i64 ut);
 
 #endif /* GAME_STRUCT_H */

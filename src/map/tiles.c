@@ -1,11 +1,11 @@
 
 #include "map/tiles.h"
 
-void Map_Tiles_SDL_free(struct Map *map) {
-    Map_Tilesets_SDL_free(map);
+void Map_Tiles_Free(struct Map *map) {
+    Map_Tilesets_Free(map);
     if (map->tiles != NULL) {
         for (size_t i = 0; i < DARR_NUM(map->tiles); i++)
-            Tile_SDL_free(&map->tiles[i]);
+            Tile_Free(&map->tiles[i]);
         DARR_FREE(map->tiles);
         map->tiles = NULL;
     }
@@ -16,7 +16,7 @@ void Map_Tiles_SDL_free(struct Map *map) {
 }
 
 void Map_Tiles_Load(struct Map *map) {
-    Map_Tiles_SDL_free(map);
+    Map_Tiles_Free(map);
     struct Tile *temp_tile = NULL;
     map->tiles      = DARR_INIT(map->tiles, struct Tile, 64);
     map->tiles_id   = DARR_INIT(map->tiles_id, i32, 64);
@@ -44,7 +44,7 @@ void Map_Tiles_Load(struct Map *map) {
     }
 }
 
-void Map_Tilesets_SDL_free(struct Map *map) {
+void Map_Tilesets_Free(struct Map *map) {
     if (map->tiles == NULL)
         return;
 
@@ -97,7 +97,7 @@ void Map_Tilesets_Load(struct Map *map) {
     /* -- Preliminaries -- */
     i32 tile_ind;
     char tilesetname[DEFAULT_BUFFER_SIZE] = "";
-    Map_Tilesets_SDL_free(map);
+    Map_Tilesets_Free(map);
 
     /* -- Alloc tilesets -- */
     map->tileset_surfaces = calloc(PALETTE_NUM, sizeof(*map->tileset_surfaces));
