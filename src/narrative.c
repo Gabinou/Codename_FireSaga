@@ -115,7 +115,7 @@ void Scene_Replace(struct Scene *scene) {
     SDL_assert(scene->replace_num > 0);
     for (i16 i = 0; i < scene->replace_num; i++) {
         for (i16 j = 0; j < scene->line_num; j++) {
-            nstr_Replace(scene->lines[j], scene->replace[i], scene->with[i]);
+            // s8_Replace(scene->lines[j], scene->replace[i], scene->with[i]);
         }
     }
 }
@@ -198,7 +198,7 @@ void Scene_readJSON(void *input, const struct cJSON *const jscene) {
         size_t len = strlen(jline->child->string);
         char *temp = calloc(len + 1, 1);
         memcpy(temp, jline->child->string, len);
-        // i16 id = Hashes_unitHash2ID(tnecs_hash_djb2(nstr_toLower(temp)));
+        // i16 id = Hashes_unitHash2ID(tnecs_hash_djb2(s8_toLower(temp)));
         i16 id = 0;
         SDL_free(temp);
         /* - line - */
