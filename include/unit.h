@@ -46,8 +46,8 @@ extern struct Unit_status Unit_status_default;
 
 /* --- UNIT --- */
 typedef struct Unit {
-    u8  json_element;  /* JSON_ELEM_bOFFSET = 0 (+  1) */
-    s8  json_filename; /* JSON_ELEM_bOFFSET = 1 (+ 24) */
+    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
+    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
 
     i16 class;
     i8  mvt_type;

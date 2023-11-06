@@ -2,8 +2,8 @@
 #include "weapon.h"
 
 struct Weapon Weapon_default = {
+    .json_filename  = {0},
     .json_element   = JSON_WEAPON,
-    .json_filename  = {.data = NULL},
 
     .item         = NULL,
     .handedness   = WEAPON_HAND_ANY,
@@ -144,7 +144,28 @@ void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
     SDL_assert(temp_weapon.json_element == JSON_WEAPON);
 
     /* - read weapon - */
+    SDL_assert(temp_weapon.json_filename.data == NULL);
+    SDL_Log("&temp_weapon %p", &temp_weapon);
+    SDL_Log("&temp_weapon.json_element %p", &temp_weapon.json_element);
+    SDL_Log("&temp_weapon.json_filename %p", &temp_weapon.json_filename);
+    SDL_Log("&temp_weapon.handedness %p", &temp_weapon.handedness);
+
+    struct Item temp_item = Item_default;
+    SDL_Log("&temp_item %p", &temp_item);
+    SDL_Log("&temp_item.json_element %p", &temp_item.json_element);
+    SDL_Log("&temp_item.json_filename %p", &temp_item.json_filename);
+
+    SDL_Log("Weapon_Load before %d %d", temp_weapon.json_filename.len, temp_weapon.json_filename.num);
     jsonio_readJSON(filename, &temp_weapon);
+    // SDL_Log("json_elem %d %d", temp_weapon.json_element, JSON_WEAPON);
+    SDL_Log("Weapon_Load after %d %d", temp_weapon.json_filename.len, temp_weapon.json_filename.num);
+    SDL_Log("temp_weapon.json_filename.data %p", temp_weapon.json_filename.data);
+
+    // SDL_assert(temp_weapon.json_filename.data != NULL);
+    SDL_assert(temp_weapon.json_filename.data != NULL);
+    // SDL_Log("%s", (temp_weapon.json_filename.data == NULL));
+    SDL_Log("Weapon_Load %s", temp_weapon.json_filename.data);
+    getchar();
     SDL_assert(temp_weapon.item != NULL);
     temp_weapon.item->type = 1 << (id / ITEM_DIVISOR);
     if (temp_weapon.item->id != id) {

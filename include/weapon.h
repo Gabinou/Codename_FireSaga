@@ -6,18 +6,20 @@
 #include "SDL.h"
 
 /* --- WEAPON/ITEM --- */
-typedef struct Weapon {
-    u8  json_element;  /* JSON_ELEM_bOFFSET = 0 (+  1) */
-    s8  json_filename; /* JSON_ELEM_bOFFSET = 1 (+ 24) */
+struct  Weapon {
+    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
+    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
 
     u8 handedness;
     u8 subtype;        /* ex: thrust swords     */
-    u16 effective;
     bool isMagic   : 1;
     bool canAttack : 1; /* for special weapons   */
+    u16 effective;
     struct Item         *item;
     struct Weapon_stats  stats;
-} Weapon;
+};
+
+typedef struct Weapon Weapon;
 extern struct Weapon Weapon_default;
 
 /* --- Union and discriminator for Weapons/Items --- */

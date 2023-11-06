@@ -3,12 +3,13 @@
 
 #include "types.h"
 #include "enums.h"
+#include "nstr.h"
 #include "structs.h"
 
 /* -- Mount -- */
 struct Mount {
-    u8      json_element;   /* JSON_ELEM_bOFFSET = 0 */
-    char   *json_filename; /* JSON_ELEM_bOFFSET = 1 */
+    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
+    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
 
     i8     gets_attached;  /* How many lvlups till rider becomes owner. */
     i8     carry_capacity;

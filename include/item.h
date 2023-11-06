@@ -34,8 +34,8 @@ enum ITEM_TARGET {
 typedef i8(* use_function_t)(struct Item *, struct Unit *, struct Unit *);
 
 typedef struct Item {
-    u8  json_element;  /* JSON_ELEM_bOFFSET = 0 (+  1) */
-    s8  json_filename; /* JSON_ELEM_bOFFSET = 1 (+ 24) */
+    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
+    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
 
     u8 target;  /* units on which item is usable. */
     struct Range range;

@@ -28,8 +28,10 @@ enum bOFFSET {
     // In words:
     // Cast struct pointer to bytes, bOFFSET it, cast to WHAT is at bOFFSET
     MENU_POS_bOFFSET        = 0, /* for struct Point in menu structs      */
-    JSON_ELEM_bOFFSET       = 0, /* for u8 in json read/writable structs  */
-    JSON_FILENAME_bOFFSET   = 1,
+    JSON_FILENAME_bOFFSET   = 0,
+    JSON_ELEM_bOFFSET       = 24, /* for u8 in json read/writable structs  */
+    // STRUCT ALIGNMENT -> s8 is 8-byte aligned.
+    // json_element before json_filename -> 7 bytes padding for alignment!
 };
 
 enum SOTA_RANGEMAP {
