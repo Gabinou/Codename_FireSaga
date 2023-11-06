@@ -61,8 +61,14 @@ void jsonio_readJSON(s8 filename, void *struct_ptr) {
     SDL_Log("Reading JSON: '%s'", filename.data);
 
     /* Make mutable filename */
-    s8 filename_mut = {0};
-    filename_mut = s8cpy(filename_mut, filename);
+    const char *string = filename.data;
+    SDL_Log("string '%s' %d", string, strlen(string));
+    SDL_Log("filename.data '%s' %d", filename.data, strlen(filename.data));
+    s8 filename_mut = s8_mut(filename.data);
+    SDL_Log("filename_mut.data '%s' %d", filename_mut.data, strlen(filename_mut.data));
+    SDL_Log("filename.data '%s' %d", filename.data, strlen(filename.data));
+    SDL_Log("%d %d", filename_mut.num, filename.num);
+    SDL_assert(filename_mut.num == filename.num);
     SDL_assert(filename_mut.num == filename.num);
 
     /* Parse the json file */

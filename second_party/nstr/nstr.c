@@ -10,7 +10,7 @@ s8 s8_mut(const char *string) {
     s8_string.num  = len;
     s8_string.len  = len < NSTR_MIN_LEN ? NSTR_MIN_LEN : len;
     s8_string.data = calloc(1, s8_string.len);
-    memcpy(s8_string.data, string, s8_string.len);
+    memcpy(s8_string.data, string, s8_string.num);
     return(s8_string);
 }
 
@@ -47,6 +47,7 @@ s8 s8cat(s8 s1, s8 s2) {
     /* Concatenate */
     memcpy(s1.data + s1.num, s2.data, s2.num);
     s1.num += s2.num;
+    assert(strlen(s1.data) == s1.num);
     return(s1);
 }
 
