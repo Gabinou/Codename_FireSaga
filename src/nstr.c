@@ -11,7 +11,7 @@ s8 s8_mut(const char *string) {
     s8_string.len  = len < NSTR_MIN_LEN ? NSTR_MIN_LEN : len;
     s8_string.data = calloc(1, s8_string.len);
     memcpy(s8_string.data, string, s8_string.num);
-    return(s8_string);
+    return (s8_string);
 }
 
 void s8_free(s8 *str8) {
@@ -25,14 +25,14 @@ void s8_free(s8 *str8) {
 
 b32 s8equal(s8 s1, s8 s2) {
     /* -- s8_literal and s8_var OK -- */
-    if(s1.num != s2.num)
-        return(false);
+    if (s1.num != s2.num)
+        return (false);
 
     for (int i = 0; i < s1.num; i++)
         if (s1.data[i] != s1.data[i])
-            return(false);
+            return (false);
 
-    return(true);
+    return (true);
 }
 
 s8 s8cat(s8 s1, s8 s2) {
@@ -43,18 +43,18 @@ s8 s8cat(s8 s1, s8 s2) {
         memset(s1.data + s1.num, 0, newlen - s1.num);
         s1.len = newlen;
     }
-    
+
     /* Concatenate */
     memcpy(s1.data + s1.num, s2.data, s2.num);
     s1.num += s2.num;
-    assert(strlen(s1.data) == s1.num);
-    return(s1);
+    SDL_assert(strlen(s1.data) == s1.num);
+    return (s1);
 }
 
 s8 s8cpy(s8 s1, s8 s2) {
     /* If null, allocate a copy */
     if (s1.data == NULL)
-        return(s8_mut(s2.data));
+        return (s8_mut(s2.data));
 
     /* Increase buffer size for string to copy */
     while (s2.num >= (s1.len - 1)) {
@@ -67,33 +67,33 @@ s8 s8cpy(s8 s1, s8 s2) {
     /* Copy */
     memcpy(s1.data, s2.data, s2.num);
     s1.num = s2.num;
-    return(s1);
+    return (s1);
 }
 
 s8 s8_slicefromStart(s8 str8, size_t toslice) {
     for (size_t i = toslice; i < str8.num; i++)
-        *(str8.data + i - toslice) = (u8) *(str8.data + i);
+        *(str8.data + i - toslice) = (u8) * (str8.data + i);
     str8.num -= toslice;
-    return(str8);
+    return (str8);
 }
 
 s8 s8_slicefromEnd(s8 str8, size_t toslice) {
     for (size_t i = 0; i < (str8.num - toslice) ; i++)
-        *(str8.data + i) = (u8) *(str8.data + i);
+        *(str8.data + i) = (u8) * (str8.data + i);
     str8.num -= toslice;
-    return(str8);
+    return (str8);
 }
 
 s8 s8_toLower(s8 str8) {
     for (size_t i = 0; i < str8.num; i++)
         *(str8.data + i) = (u8)tolower(*(str8.data + i));
-    return(str8);
+    return (str8);
 }
 
 s8 s8_toUpper(s8 str8) {
     for (size_t i = 0; i < str8.num; i++)
         *(str8.data + i) = (u8)toupper(*(str8.data + i));
-    return(str8);
+    return (str8);
 }
 
 s8 s8_camelCase(s8 str8, const char separator, size_t minwordlen) {
@@ -111,7 +111,7 @@ s8 s8_camelCase(s8 str8, const char separator, size_t minwordlen) {
             *(str8.data + i - wlen) = (u8)toupper(*(str8.data + i - wlen));
         wlen = 0;
     }
-    return(str8);
+    return (str8);
 }
 
 s8 s8_Path_Remove_Top(s8 str8, const char separator) {
@@ -120,7 +120,7 @@ s8 s8_Path_Remove_Top(s8 str8, const char separator) {
     *(str8.data + (str8.num - (len_folder + 1))) = '\0';
     str8.num -= (len_folder + 1);
     memset(str8.data + str8.num, 0, str8.len - str8.num);
-    return(str8);
+    return (str8);
 }
 
 s8 s8_replaceSingle(s8 str8, const char replace, const char with) {
@@ -128,7 +128,7 @@ s8 s8_replaceSingle(s8 str8, const char replace, const char with) {
         if (*(str8.data + i) == replace)
             *(str8.data + i) = with;
     }
-    return(str8);
+    return (str8);
 }
 
 s8 s8_Replace(s8 str8, const char *replace, const char *with) {
@@ -149,7 +149,7 @@ s8 s8_Replace(s8 str8, const char *replace, const char *with) {
         // str8.data[len_nl] = '\0';
         // str8.num          = len_nl;
     }
-    return(str8);
+    return (str8);
 }
 
 /* --- Null-terminated strings --- */
@@ -257,5 +257,5 @@ char *nstr_Replace(char *line, char *replace, char *with) {
         strncpy(line + len_f, with, len_w);
         line[len_nl] = '\0';
     }
-    return(line);
+    return (line);
 }

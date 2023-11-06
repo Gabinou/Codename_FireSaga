@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
+#include "SDL.h"
 
 enum NSTR {
     NSTR_MIN_LEN = 16,
@@ -31,14 +31,14 @@ typedef struct s8 {
 #define s8_literal(s) (s8){(u8 *)s, lengthof(s), lengthof(s)}
 
 /* -- s8 from pointer to string -- */
-// -> Needed cause sizeof() gives pointer size... 
-#define s8_var(s)   s8_var_(s) 
+// -> Needed cause sizeof() gives pointer size...
+#define s8_var(s)   s8_var_(s)
 #define s8_var_(s) (s8){(u8 *)s, strlen(s), strlen(s)}
 
 /* -- Mutable s8 functions -- */
 // s8 function input notes
 //  - foo(s8 *str8) -> foo can change all member variables
-//  - bar(s8  str8) -> bar can only change *str8.data, 
+//  - bar(s8  str8) -> bar can only change *str8.data,
 //                     ie what str8.data points to
 s8   s8_mut(const char *string);
 void s8_free(s8  *str8);
@@ -65,13 +65,13 @@ s8 s8_Path_Remove_Top(s8 path, const char separator);
 /* - Note: caller deals with memory - */
 char *nstr_toLower(        char *str);
 char *nstr_toUpper(        char *str);
-char *nstr_Replace(        char *line, char * replace, char * with);
+char *nstr_Replace(        char *line, char *replace, char *with);
 char *nstr_camelCase(      char *str, const char separator, size_t minwordlen);
 char *nstr_slicefromEnd(   char *str, size_t toslice);
 char *nstr_replaceSingle(  char *str, const char replace, const char with);
 char *nstr_slicefromStart( char *str, size_t toslice);
 
-char *nstr_Path_Join(      char *path, char * top);
+char *nstr_Path_Join(      char *path, char *top);
 char *nstr_Path_Extension( char *filename);
 char *nstr_Path_Split_Top( char *path, const char separator);
 char *nstr_Path_Remove_Top(char *path, const char separator);

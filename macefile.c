@@ -23,12 +23,6 @@ struct Target noursmath = {
     .kind               = MACE_STATIC_LIBRARY,
 };
 
-struct Target nstr = {
-    .sources            = ".",
-    .base_dir           = "second_party/nstr",
-    .kind               = MACE_STATIC_LIBRARY,
-};
-
 struct Target parg = {
     .sources            = ".",
     .base_dir           = "second_party/parg",
@@ -78,14 +72,14 @@ struct Target tinymt = {
 struct Target win_sota = {
     .includes           = ".,include,include/bars,include/menu,include/popup,"
                           "include/systems,names,names/popup,names/menu,"
-                          "second_party/nstr,second_party/noursmath,second_party/tnecs,"
+                          "second_party/noursmath,second_party/tnecs,"
                           "second_party/parg,second_party/nourstest,"
                           "third_party/physfs,third_party/tinymt,third_party/stb,"
                           "third_party/cJson",
     .sources            = "src/*.c,src/bars/,src/menu/,src/popup/,src/systems/,"
                           "src/game/,src/map,src/controller",
     .links              = "SDL2,SDL2_image,SDL2_ttf,m,cjson,noursmath,physfs,"
-                          "tinymt,tnecs,nstr,parg",
+                          "tinymt,tnecs,parg",
                           /* TODO: Remove flags given by sdl2-config */
     .flags              = "-lmingw32,-lSDL2main,-fwrapv,-fno-strict-overflow,"
                           "-fno-strict-aliasing,-fno-delete-null-pointer-checks",
@@ -98,14 +92,14 @@ struct Target win_sota = {
 struct Target sota = {
     .includes           = ".,include,include/bars,include/menu,include/popup,"
                           "include/systems,names,names/popup,names/menu,"
-                          "second_party/nstr,second_party/noursmath,second_party/tnecs,"
+                          "second_party/noursmath,second_party/tnecs,"
                           "second_party/parg,second_party/nourstest,"
                           "third_party/physfs,third_party/tinymt,third_party/stb,"
                           "third_party/cJson,/usr/include/SDL2",
     .sources            = "src/*.c,src/bars/,src/menu/,src/popup/,src/systems/,"
                           "src/game/,src/map,src/controller",
     .links              = "SDL2,SDL2_image,SDL2_ttf,m,GLEW,cjson,noursmath,physfs,"
-                          "tinymt,tnecs,nstr,parg",
+                          "tinymt,tnecs,parg",
     .flags              = "-fno-strict-overflow,-fno-strict-aliasing,"
                           "-fwrapv,-fno-delete-null-pointer-checks,"
                           "-DSDL_DISABLE_IMMINTRIN_H,"
@@ -119,7 +113,7 @@ struct Target sota = {
 struct Target test = {
     .includes           = ".,include,include/bars,include/menu,include/popup,"
                           "include/systems,names,names/popup,names/menu,"
-                          "second_party/nstr,second_party/noursmath,second_party/tnecs,"
+                          "second_party/noursmath,second_party/tnecs,"
                           "second_party/parg,second_party/nourstest,"
                           "third_party/physfs,third_party/tinymt,third_party/stb,"
                           "third_party/cJson,/usr/include/SDL2",
@@ -128,7 +122,7 @@ struct Target test = {
                           "src/systems/,src/game/,src/map,src/controller",
     .excludes           = "src/main.c",
     .links              = "SDL2,SDL2_image,SDL2_ttf,m,GLEW,cjson,noursmath,physfs,"
-                          "tinymt,tnecs,nstr,parg",
+                          "tinymt,tnecs,parg",
     .flags              = "-L/usr/lib,-fno-strict-overflow,-fno-strict-aliasing,"
                           "-fwrapv,-fno-delete-null-pointer-checks,"
                           "-DSDL_DISABLE_IMMINTRIN_H,"
@@ -154,7 +148,6 @@ int mace(int argc, char *argv[]) {
     /* -- Targets -- */
     /* - second_party - */
     MACE_ADD_TARGET(noursmath);
-    MACE_ADD_TARGET(nstr);
     MACE_ADD_TARGET(parg); 
     MACE_ADD_TARGET(tnecs);
 
