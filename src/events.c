@@ -712,6 +712,8 @@ void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Cursor_Hovers_Unit(struct Game *sota, SDL_Event *userevent) {
     sota->hovered_unit_entity = *(tnecs_entity_t *)userevent->user.data2;
     SDL_assert(sota->hovered_unit_entity != TNECS_NULL);
+    struct Unit *temp = TNECS_GET_COMPONENT(sota->world, sota->hovered_unit_entity, Unit);
+    SDL_assert(temp->name.data != NULL);
 
     if (fsm_eCrsHvUnit_ss[sota->substate] != NULL)
         fsm_eCrsHvUnit_ss[sota->substate](sota, sota->hovered_unit_entity);

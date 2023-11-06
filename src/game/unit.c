@@ -93,6 +93,7 @@ void Game_Party_Load(struct Game *sota, i16 *unit_ids, size_t load_num) {
         jsonio_readJSON(filename, &temp_unit);
         sota->party[unit_ids[i]] = temp_unit;
         s8_free(&filename);
+        SDL_assert(temp_unit.name.data != NULL);
     }
 }
 
@@ -119,7 +120,8 @@ tnecs_entity_t Game_Unit_Entity_Create(struct Game *sota, i16 in_unit,
         SDL_Log("-- create entity --");
         tnecs_entity_t temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position, Sprite,
                                        Timer, MapHPBar);
-        tnecs_component_t typeflag = TNECS_COMPONENT_NAMES2TYPEFLAG(world, Unit, Position, Sprite,
+        tnecs_component_t typeflag = TNECS_COMPONENT_NAMES2TYPEFLAG(world, Unit,
+                                                                    Position, Sprite,
                                                                     Timer, MapHPBar);
         size_t typeflag_id1 = tnecs_typeflagid(world, typeflag);
         size_t typeflag_id2 = tnecs_typeflagid(world, world->entity_typeflags[temp_unit_ent]);
@@ -135,7 +137,9 @@ tnecs_entity_t Game_Unit_Entity_Create(struct Game *sota, i16 in_unit,
 
         memcpy(unit, &Unit_default, sizeof(Unit_default));
         *unit = sota->party[in_unit];
-        SDL_assert(unit->_id > 0);
+        Unit_setid(unit, in_unit);
+        SDL_assert(unit->name.data != NULL);
+
         Unit_Init(unit);
         SDL_assert(unit->status_queue != NULL);
         unit->items_dtab   = sota->items_dtab;
@@ -191,7 +195,6 @@ tnecs_entity_t Game_Unit_Entity_Create(struct Game *sota, i16 in_unit,
         sprite->visible = true;
         sprite->flip = SDL_FLIP_HORIZONTAL;
 
-        SDL_Log("name %s", unit->name);
         SDL_assert(sprite->spritesheet != NULL);
         SDL_assert(sprite->spritesheet->current_loop == MAP_UNIT_SPRITE_LOOP_IDLE);
         SDL_assert(sprite->spritesheet->frames != NULL);
@@ -207,6 +210,7 @@ tnecs_entity_t Game_Unit_Entity_Create(struct Game *sota, i16 in_unit,
         size_t current_num = world->num_entities_bytype[typeflag_id1];
         SDL_assert(world->entities_bytype[typeflag_id1][current_num - 1] == temp_unit_ent);
         sota->units_loaded[in_unit] = temp_unit_ent;
+        SDL_assert(unit->name.data != NULL);
     }
     return (sota->units_loaded[in_unit]);
 }
@@ -240,6 +244,9 @@ void Game_putPConMap(struct Game *sota, i16 *unit_ids,
         size_t order = *(u16 *)DTAB_GET(global_unitOrders, unit_ids[i]);
         tnecs_entity_t temp_unit_ent = Game_Unit_Entity_Create(sota, unit_ids[i], posarr[i]);
         SDL_assert(temp_unit_ent);
+        struct Unit *temp = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
+        SDL_assert(temp->name.data != NULL);
+
         Map_Unit_Put(sota->map, sota->world, posarr[i].x, posarr[i].y, temp_unit_ent);
     }
 }

@@ -50,8 +50,6 @@ void PopUp_Unit_Load(struct PopUp_Unit *pu, SDL_Renderer *renderer, struct n9Pat
 
     path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Weapons.png");
     pu->texture_weapons = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
-
-
 }
 
 /* --- Setters --- */
@@ -59,6 +57,7 @@ void PopUp_Unit_Set(struct PopUp_Unit *pu, struct Game *sota) {
     SDL_assert(pu != NULL);
     pu->unit   = TNECS_GET_COMPONENT(sota->world, sota->hovered_unit_entity, Unit);
     pu->update = true;
+    SDL_assert(pu->unit->name.data != NULL);
 }
 
 
@@ -225,6 +224,8 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     /* -- NAME -- */
     struct Point pos;
     s8 name = pu->unit->name;
+    SDL_assert(name.data != NULL);
+    SDL_Log("name.data %s %d", name.data, name.num );
     pos = PopUp_Unit_Center_Name(pu, n9patch, name.data, name.num);
     PixelFont_Write(pu->pixelnours_big, renderer, name.data, name.num, pos.x, pos.y);
     /* -- PORTRAIT/FACE -- */

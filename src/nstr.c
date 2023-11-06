@@ -19,8 +19,9 @@ void s8_free(s8 *str8) {
     if (str8->data != NULL) {
         free(str8->data);
         str8->data = NULL;
-        str8->data = NULL;
     }
+    str8->num = 0;
+    str8->len = 0;
 }
 
 b32 s8equal(s8 s1, s8 s2) {

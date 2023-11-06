@@ -78,7 +78,7 @@ void Game_debugMap_Load(struct Game *sota) {
     temp_point.y = 3;
 
     /* -- Putting party on map -- */
-    Game_Party_Load(sota, unit_inds, DARR_NUM(unit_inds));
+    // Game_Party_Load(sota, unit_inds, DARR_NUM(unit_inds));
     DARR_PUT(positions_list, temp_point);
 
     SDL_assert(DARR_NUM(unit_inds) == DARR_NUM(positions_list));
@@ -167,15 +167,13 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         unit->weapons_dtab = sota->weapons_dtab;
         size_t order = *(u16 *)DTAB_GET(global_unitOrders, sota->map->reinforcements[i].id);
         s8 unitname = s8_mut(global_unitNames[order].data);
-        SDL_Log("unitname: '%s'", unitname.data);
         s8 json_literal = s8_literal(".json");
-        SDL_Log("json_literal: '%s'", json_literal.data);
         SDL_assert(json_literal.num == 5);
         SDL_assert(json_literal.num == strlen(json_literal.data));
         unitname    = s8cat(unitname, json_literal);
-        SDL_Log("unitname: %ld %s", sota->map->reinforcements[i].id, unitname.data);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         jsonio_readJSON(unitname, unit);
+        SDL_assert(unit->name.data != NULL);
         s8_free(&unitname);
         if (!Unit_ID_Valid(unit->_id)) {
             SDL_Log("Unit %s.json has wrong ID. Should be %d.", unit->name, sota->map->reinforcements[i].id);

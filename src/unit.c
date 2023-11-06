@@ -1815,6 +1815,7 @@ void Unit_readJSON(void *input, const cJSON *const junit) {
     cJSON *jsupport_type    = cJSON_GetObjectItem(junit, "Support Type");
     cJSON *jcurrent_stats   = cJSON_GetObjectItem(junit, "Stats");
     Unit_setid(unit, cJSON_GetNumberValue(jid));
+    SDL_assert(unit->name.data != NULL);
 
     SDL_Log("-- startup misc --");
     unit->sex               = cJSON_IsTrue(jsex);
