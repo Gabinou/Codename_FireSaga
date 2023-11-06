@@ -14,8 +14,8 @@ u8 max_jobs[CAMPJOB_END] = {
 };
 
 struct Camp Camp_default = {
-    .json_element   = JSON_CAMP,
     .json_filename  = {0},
+    .json_element   = JSON_CAMP,
 
     .guards = {CAMP_JOB_NULL},
     .librarians = {CAMP_JOB_NULL},

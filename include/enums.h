@@ -30,7 +30,8 @@ enum bOFFSET {
     MENU_POS_bOFFSET        = 0, /* for struct Point in menu structs      */
     JSON_FILENAME_bOFFSET   = 0,
     JSON_ELEM_bOFFSET       = 24, /* for u8 in json read/writable structs  */
-    // STRUCT ALIGNMENT -> s8 is 8-byte aligned.
+
+    // STRUCT ALIGNMENT -> s8 is 8-byte aligned because >
     // json_element before json_filename -> 7 bytes padding for alignment!
 };
 

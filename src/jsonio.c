@@ -73,7 +73,9 @@ void jsonio_readJSON(s8 filename, void *struct_ptr) {
     }
 
     /* Get the json element id */
-    u8 jelem_id = *(u8 *)struct_ptr;
+    u8 *byte_ptr    = (u8 *)struct_ptr;
+    u8 jelem_id     = *(byte_ptr + JSON_ELEM_bOFFSET);
+
     s8 elem_name = jsonElementnames[jelem_id];
     SDL_Log("Reading JSON element %d %s", jelem_id, elem_name.data);
     if (jelem_id >= JSON_END) {
@@ -93,42 +95,30 @@ void jsonio_readJSON(s8 filename, void *struct_ptr) {
         json_read_funcs[jelem_id](struct_ptr, jelement);
 
     /* Set json_filename in struct to input filename */
-    char *byte_ptr = (char *)struct_ptr;
-    char *json_filenamew  = (byte_ptr + JSON_FILENAME_bOFFSET);
-    s8 *json_filename   = (s8 *)json_filenamew;
+    byte_ptr            = (u8 *)struct_ptr;
+    s8 *json_filename   = (s8 *)(byte_ptr + JSON_FILENAME_bOFFSET);
+
     SDL_assert(json_filename->data == NULL);
     SDL_assert(json_filename->num  == 0);
     SDL_assert(json_filename->len  == 0);
     *json_filename = filename_mut;
-    // json_filename->data = filename_mut.data;
-    // json_filename->len  = filename_mut.len;
-    // json_filename->num  = filename_mut.num;
-    SDL_Log("sizeof(char) %d", sizeof(struct Weapon));
-    SDL_Log("sizeof(char) %d", sizeof(char));
-    SDL_Log("sizeof(u8) %d", sizeof(u8));
-    SDL_Log("JSON_FILENAME_bOFFSET %d", JSON_FILENAME_bOFFSET);
-    SDL_Log("filename_mut.data %p", filename_mut.data);
-    SDL_Log("json_filename->data %p", json_filename->data);
-    // SDL_Log("json_elem %d %d", *json_elem, JSON_WEAPON);
-    SDL_Log("json_filename '%s' %d %d", json_filename->data, json_filename->len, json_filename->num);
-    SDL_Log("json_filename '%s' %d %d", json_filename->data, json_filename->len, json_filename->num);
 
     /* Clean the jfile */
     if (jfile != NULL)
         cJSON_Delete(jfile);
-    SDL_Log("json_filename->data %p", json_filename->data);
-    SDL_Log("json_filename '%s' %d %d", json_filename->data, json_filename->len, json_filename->num);
 }
 
 void jsonio_writeJSON(s8 filename, const void *struct_ptr, bool append) {
     SDL_Log("%s:", filename.data);
 
     /* Parse the json file */
-    PHYSFS_file *fp = NULL;
-    struct cJSON *json = cJSON_CreateObject();
+    PHYSFS_file *fp     = NULL;
+    struct cJSON *json  = cJSON_CreateObject();
 
     /* Get the json element id */
-    u8 jelem_id = *(u8 *)struct_ptr;
+    u8 *byte_ptr    = (u8 *)struct_ptr;
+    u8 jelem_id     = *(byte_ptr + JSON_ELEM_bOFFSET);
+
     s8 elem_name = jsonElementnames[jelem_id];
     SDL_Log("Writing JSON element %s", elem_name.data);
     if (jelem_id >= JSON_END) {
