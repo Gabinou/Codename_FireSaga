@@ -69,6 +69,9 @@ struct Game Game_default = {
 
     .isShadow = false,
 
+    .party          = {0},
+    .party_loaded   = {0},
+
     // .menu_font       = NULL,
     .menu_pixelfont     = NULL,
 
