@@ -274,10 +274,7 @@ int Unit_Hand_Strong(const struct Unit *unit) {
 }
 
 int SotA_Hand_Strong(i8 handedness) {
-    if ((handedness <= UNIT_HAND_NULL) || (handedness >= UNIT_HAND_END)) {
-        SDL_Log("Wrong handedness");
-        exit(ERROR_Generic);
-    }
+    SDL_assert((handedness > UNIT_HAND_NULL) && (handedness < UNIT_HAND_END));
     /* Stronghand is left hand only for left-handed.
     *  Stronghand is right hand for for right-handed AND ambidextrous. */
     return ( (handedness == UNIT_HAND_LEFTIE) ? UNIT_HAND_LEFT : UNIT_HAND_RIGHT);

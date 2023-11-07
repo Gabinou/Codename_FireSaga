@@ -79,9 +79,12 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity_t ent) {
 
 /* --- Party utilities --- */
 void Game_Party_Load(struct Game *sota, i16 *unit_ids, size_t load_num) {
+    /* Read unit data from filename */
     struct Unit temp_unit;
     Game_Party_Clear(sota);
     for (size_t i = 0; i < load_num; i++) {
+        // TODO: Read base party unit when recruiting
+        // TODO: Read savefile party units otherwise
         SDL_assert((unit_ids[i] > 0) && (unit_ids[i] < UNIT_ID_PC_END));
         temp_unit       = Unit_default;
         s8 filename     = s8_mut("units"PHYSFS_SEPARATOR);
@@ -94,6 +97,8 @@ void Game_Party_Load(struct Game *sota, i16 *unit_ids, size_t load_num) {
         sota->party[unit_ids[i]] = temp_unit;
         s8_free(&filename);
         SDL_assert(temp_unit.name.data != NULL);
+        SDL_assert((temp_unit.handedness > UNIT_HAND_NULL) && (temp_unit.handedness < UNIT_HAND_END));
+        // getchar();
     }
 }
 
@@ -111,8 +116,9 @@ void Game_Party_Unload(struct Game *sota, i16 *to_unload_ids, size_t unload_num)
     }
 }
 
-tnecs_entity_t Game_Unit_Entity_Create(struct Game *sota, i16 in_unit,
+tnecs_entity_t Game_Party_Entity_Create(struct Game *sota, i16 in_unit,
                                        struct Point in_pos) {
+// Create Unit entity from previously loaded party unit.
     if (sota->units_loaded[in_unit] < 1) {
         tnecs_world_t *world = sota->world;
         SDL_Log("-- create entity for unit %ld --", in_unit);
@@ -135,13 +141,15 @@ tnecs_entity_t Game_Unit_Entity_Create(struct Game *sota, i16 in_unit,
         struct Unit *unit = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
         SDL_assert(unit != NULL);
 
-        memcpy(unit, &Unit_default, sizeof(Unit_default));
-        *unit = sota->party[in_unit];
+        memcpy(unit, &sota->party[in_unit], sizeof(struct Unit));
+
+        SDL_assert((sota->party[in_unit].handedness > UNIT_HAND_NULL)
+                   && (sota->party[in_unit].handedness    < UNIT_HAND_END));
+        SDL_assert((unit->handedness > UNIT_HAND_NULL) && (unit->handedness < UNIT_HAND_END));
+
         Unit_setid(unit, in_unit);
         SDL_assert(unit->name.data != NULL);
 
-        Unit_Init(unit);
-        SDL_assert(unit->status_queue != NULL);
         unit->items_dtab   = sota->items_dtab;
         unit->weapons_dtab = sota->weapons_dtab;
         struct Inventory_item *item = Unit_Item_Strong(unit, UNIT_HAND_WEAK);
@@ -164,7 +172,6 @@ tnecs_entity_t Game_Unit_Entity_Create(struct Game *sota, i16 in_unit,
         *map_hp_bar = MapHPBar_default;
         map_hp_bar->unit_ent = temp_unit_ent;
         map_hp_bar->len = sota->settings.tilesize[0];
-        SDL_assert(unit->status_queue != NULL);
 
         SDL_Log("-- loading position --");
         struct Position *pos;
@@ -242,7 +249,7 @@ void Game_putPConMap(struct Game *sota, i16 *unit_ids,
     for (i16 i = 0; i < load_num; i++) {
         SDL_assert(Unit_ID_Valid(unit_ids[i]));
         size_t order = *(u16 *)DTAB_GET(global_unitOrders, unit_ids[i]);
-        tnecs_entity_t temp_unit_ent = Game_Unit_Entity_Create(sota, unit_ids[i], posarr[i]);
+        tnecs_entity_t temp_unit_ent = Game_Party_Entity_Create(sota, unit_ids[i], posarr[i]);
         SDL_assert(temp_unit_ent);
         struct Unit *temp = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
         SDL_assert(temp->name.data != NULL);

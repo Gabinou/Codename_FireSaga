@@ -78,7 +78,7 @@ void Game_debugMap_Load(struct Game *sota) {
     temp_point.y = 3;
 
     /* -- Putting party on map -- */
-    // Game_Party_Load(sota, unit_inds, DARR_NUM(unit_inds));
+    Game_Party_Load(sota, unit_inds, DARR_NUM(unit_inds));
     DARR_PUT(positions_list, temp_point);
 
     SDL_assert(DARR_NUM(unit_inds) == DARR_NUM(positions_list));
