@@ -357,7 +357,7 @@ u8 SotA_army2alignment(u8 army) {
 
 bool SotA_isPC(u8 army) {
     if ((army <= ARMY_START) || (army >= ARMY_END)) {
-        SDL_Log("Army out of bounds");
+        SDL_Log("Army is not PC");
         exit(ERROR_OutofBounds);
     }
     return (army_isPC[army]);
@@ -376,8 +376,8 @@ void Unit_Find_Usable(struct Unit *unit, int archetype) {
 bool Unit_All_Usable(struct Unit *unit) {
     /* -- Set all weapons to be usable --  */
     /* Use case: Dropping item  */
-    unit->num_usable = 0;
-    bool all_usable = true;
+    unit->num_usable    = 0;
+    bool all_usable     = true;
     for (int i = 0; i < unit->num_equipment; i++) {
         unit->eq_usable[unit->num_usable] = i;
         if (!unit->eq_usable[unit->num_usable])
@@ -559,7 +559,7 @@ void Unit_Item_Swap(struct Unit *unit, i16 i1, i16 i2) {
         SDL_Log("Item index2 out of bounds");
         exit(ERROR_OutofBounds);
     }
-    struct Inventory_item buffer = unit->_equipment[i1];
+    struct Inventory_item buffer  = unit->_equipment[i1];
     unit->_equipment[i1]          = unit->_equipment[i2];
     unit->_equipment[i2]          = buffer;
 }
@@ -1820,7 +1820,8 @@ void Unit_readJSON(void *input, const cJSON *const junit) {
     char *json_name = cJSON_GetStringValue(jname);
 
     if (!s8equal(unit->name, s8_var(json_name))) {
-        SDL_LogError(SOTA_LOG_SYSTEM, "Name in unit filename '%s' does not match id name %d->'%s'",
+        SDL_LogError(SOTA_LOG_SYSTEM,
+                     "Name in unit filename '%s' does not match id name %d->'%s'",
                      json_name, unit->_id, unit->name.data);
         exit(ERROR_Generic);
     }

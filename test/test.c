@@ -43,17 +43,16 @@
 void render_tests() {
     SDL_Log("Running rendering tests\n");
     printf("Running rendering tests\n");
-    test_arrow();
-    test_menu_growths();
-    test_menu_weapon_select();
-    test_menu_player_select();
-    test_menu_pre_combat();
-    test_menu_item_drop();
-    test_menu_stats();
-    test_popup_loadout_stats();
+    // test_arrow();
+    // test_menu_growths();
+    // test_menu_weapon_select();
+    // test_menu_player_select();
+    // test_menu_pre_combat();
+    // test_menu_item_drop();
+    // test_menu_stats();
+    // test_popup_loadout_stats();
     test_popup_map_combat();
-    // test_popup_objective();
-    test_popup_objective();
+    // // test_popup_objective();
     test_text_bubble();
 }
 
@@ -92,6 +91,7 @@ void unit_tests() {
 int main(int argc, char *argv[]) {
     /* -- Preliminaries -- */
     // SDL_LogSetOutputFunction(Filesystem_Log2file, NULL);
+    Log_Init();
     freopen("test_results.txt", "w+", stdout);
     SDL_Log("Filesystem_Init\n");
     Filesystem_Init(0);
@@ -107,7 +107,7 @@ int main(int argc, char *argv[]) {
 
     /* -- Running tests -- */
     unit_tests();
-    // render_tests();
+    render_tests();
 
     /* -- Postliminaries -- */
     Utilities_Free();
