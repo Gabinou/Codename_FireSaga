@@ -184,6 +184,7 @@ struct Unit Unit_Nibal_make() {
 void Unit_Init(struct Unit *unit) {
     SDL_assert(unit != NULL);
     Unit_Free(unit);
+    *unit = Unit_default;
     unit->grown_stats  = DARR_INIT(unit->grown_stats,  struct Unit_stats, SOTA_MAX_LEVEL / 8);
     unit->status_queue = DARR_INIT(unit->status_queue, struct Unit_status, 2);
 }
@@ -1800,6 +1801,7 @@ void Unit_readJSON(void *input, const cJSON *const junit) {
     cJSON *jsex             = cJSON_GetObjectItem(junit, "Sex");
     cJSON *jexp             = cJSON_GetObjectItem(junit, "Exp");
     cJSON *jname            = cJSON_GetObjectItem(junit, "Name");
+    cJSON *jtitle           = cJSON_GetObjectItem(junit, "Title");
     cJSON *jitems           = cJSON_GetObjectItem(junit, "Items");
     cJSON *jgrowths         = cJSON_GetObjectItem(junit, "Growths");
     cJSON *jlevelups        = cJSON_GetObjectItem(junit, "Level-ups");
@@ -1811,8 +1813,17 @@ void Unit_readJSON(void *input, const cJSON *const junit) {
     cJSON *jclass_index     = cJSON_GetObjectItem(junit, "Class Index");
     cJSON *jsupport_type    = cJSON_GetObjectItem(junit, "Support Type");
     cJSON *jcurrent_stats   = cJSON_GetObjectItem(junit, "Stats");
+
+    SDL_Log("-- setting name from ID --");
     Unit_setid(unit, cJSON_GetNumberValue(jid));
     SDL_assert(unit->name.data != NULL);
+    char *json_name = cJSON_GetStringValue(jname);
+
+    if (!s8equal(unit->name, s8_var(json_name))) {
+        SDL_LogError(SOTA_LOG_SYSTEM, "Name in unit filename '%s' does not match id name %d->'%s'",
+                     json_name, unit->_id, unit->name.data);
+        exit(ERROR_Generic);
+    }
 
     SDL_Log("-- startup misc --");
     unit->sex               = cJSON_IsTrue(jsex);
@@ -1899,6 +1910,10 @@ void Unit_writeJSON(const void *input, cJSON *junit) {
     cJSON *jexp           = cJSON_CreateNumber(unit->base_exp);
     cJSON *jsex           = cJSON_CreateBool(unit->sex);
     cJSON *jname          = cJSON_CreateString(unit->name.data);
+    cJSON *jtitle         = NULL;
+    if (unit->title.data != NULL)
+        jtitle            = cJSON_CreateString(unit->title.data);
+
     cJSON *jclass         = cJSON_CreateString(classNames[unit->class].data);
     cJSON *jbase_exp      = cJSON_CreateNumber(unit->exp);
     cJSON *jcurrent_hp    = cJSON_CreateNumber(unit->current_hp);
@@ -1917,6 +1932,9 @@ void Unit_writeJSON(const void *input, cJSON *junit) {
     cJSON_AddItemToObject(junit, "level",       jlevel);
     cJSON_AddItemToObject(junit, "id",          jid);
     cJSON_AddItemToObject(junit, "Name",        jname);
+    if (jtitle != NULL)
+        cJSON_AddItemToObject(junit, "Title",   jtitle);
+
     cJSON_AddItemToObject(junit, "Sex",         jsex);
     cJSON_AddItemToObject(junit, "BaseExp",     jbase_exp);
     cJSON_AddItemToObject(junit, "Exp",         jexp);

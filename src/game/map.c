@@ -162,7 +162,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         struct Unit *unit = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
         SDL_assert(unit != NULL);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
-        *unit = Unit_default;
+        Unit_Init(unit);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         unit->weapons_dtab = sota->weapons_dtab;
         size_t order = *(u16 *)DTAB_GET(global_unitOrders, sota->map->reinforcements[i].id);
@@ -179,6 +179,8 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
             SDL_Log("Unit %s.json has wrong ID. Should be %d.", unit->name, sota->map->reinforcements[i].id);
             exit(ERROR_Generic);
         }
+        SDL_assert(unit->name.data != NULL);
+
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         unit->army = sota->map->reinforcements[i].army;
 
@@ -192,7 +194,6 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         if (unit->_equipment[UNIT_HAND_LEFT].id > 0)
             Unit_Equip_inHand(unit, UNIT_HAND_LEFT);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
-        Unit_Init(unit);
         SDL_assert(unit->status_queue != NULL);
 
         // // SDL_Log("-- loading map_hp_bar --");
@@ -243,6 +244,8 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         Map_Unit_Put(sota->map, sota->world, position->tilemap_pos.x,
                      position->tilemap_pos.y, temp_unit_ent);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
+
+        SDL_assert(unit->name.data != NULL);
     }
 }
 

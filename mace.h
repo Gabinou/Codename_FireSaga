@@ -4564,10 +4564,6 @@ void mace_Target_compile(struct Target *target) {
         if (pnum > 0) {
             pid_t wait = mace_pqueue_pop();
             mace_wait_pid(wait);
-        //  TODO: check if compilation fails
-        // If it failed, delete .d file.
-        // Idea= all .d file should have .o file. rm .d files that don't have .o equivalent after the fact.
-            
         }
 
         /* Check if more to compile */

@@ -90,7 +90,8 @@ void Game_Party_Load(struct Game *sota, i16 *unit_ids, size_t load_num) {
 
         /* Getting party unit filename */
         // TODO: party unit filename builder utility
-        temp_unit       = Unit_default;
+        memset(&temp_unit, 0, sizeof(temp_unit));
+        Unit_Init(&temp_unit);
         s8 filename     = s8_mut("units"PHYSFS_SEPARATOR);
         size_t order    = *(u16 *)DTAB_GET(global_unitOrders, unit_ids[i]);
         filename        = s8cat(filename, global_unitNames[order]);
@@ -153,7 +154,6 @@ tnecs_entity_t Game_Party_Entity_Create(struct Game *sota, i16 in_unit,
     SDL_assert(sota->party_loaded[in_unit]);
 
     memcpy(unit, &sota->party[in_unit], sizeof(struct Unit));
-
     SDL_assert((sota->party[in_unit].handedness > UNIT_HAND_NULL)
                && (sota->party[in_unit].handedness    < UNIT_HAND_END));
     SDL_assert((unit->handedness > UNIT_HAND_NULL) && (unit->handedness < UNIT_HAND_END));
