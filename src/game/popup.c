@@ -164,8 +164,6 @@ void Game_PopUp_Unit_Create(struct Game *sota) {
     *offscreen = SliderOffscreen_default;
     offscreen->go_offscreen = false;
     offscreen->settings = &sota->settings;
-    char *path = PATH_JOIN("..", "assets", "GUI", "Popup", "PopUp_Tile_Header.png");
-    popup_unit->texture_header = Filesystem_Texture_Load(sota->renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(sota->pixelnours != NULL);
 
     /* - Popup Pixelfonts - */

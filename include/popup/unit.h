@@ -42,27 +42,27 @@ enum POPUP_UNIT {
     PU_HIT_X        = 57,
     PU_HIT_Y        = PU_ID_Y  + PU_LINESPACE,
     PU_HIT_X_STAT   = PU_HIT_X + 19,
-    PU_HIT_Y_STAT   = PU_HIT_Y -  1,
+    PU_HIT_Y_STAT   = PU_HIT_Y,
 
     PU_CRIT_X       = PU_HIT_X  -  5,
     PU_CRIT_Y       = PU_HIT_Y  + PU_LINESPACE,
     PU_CRIT_X_STAT  = PU_CRIT_X + 28,
-    PU_CRIT_Y_STAT  = PU_CRIT_Y -  1,
+    PU_CRIT_Y_STAT  = PU_CRIT_Y,
 
     PU_ATK_X        = PU_HIT_X  -  1,
     PU_ATK_Y        = PU_CRIT_Y + PU_LINESPACE,
     PU_ATK_X_STAT1  = PU_ATK_X  + 24,
-    PU_ATK_Y_STAT1  = PU_ATK_Y  -  1,
+    PU_ATK_Y_STAT1  = PU_ATK_Y,
 
     PU_PROT_X       = PU_ATK_X  + 1,
     PU_PROT_Y       = PU_ATK_Y  + PU_LINESPACE,
     PU_PROT_X_STAT1 = PU_PROT_X + 23,
-    PU_PROT_Y_STAT1 = PU_PROT_Y -  1,
+    PU_PROT_Y_STAT1 = PU_PROT_Y,
 
     PU_SPEED_X      = PU_HIT_X   - 10,
     PU_SPEED_Y      = PU_PROT_Y  + PU_LINESPACE,
     PU_SPEED_X_STAT = PU_SPEED_X + 40,
-    PU_SPEED_Y_STAT = PU_SPEED_Y -  1,
+    PU_SPEED_Y_STAT = PU_SPEED_Y,
 
     PU_FACTOR_X     = 200,
     PU_FACTOR_Y     = 200,
@@ -70,11 +70,11 @@ enum POPUP_UNIT {
     PU_EXP_X        = 57,
     PU_EXP_Y        = PU_ID_Y,
     PU_EXP_STAT_X   = PU_EXP_X + 17,
-    PU_EXP_STAT_Y   = PU_EXP_Y -  1,
+    PU_EXP_STAT_Y   = PU_EXP_Y,
     PU_LV_X         = PU_EXP_X + 28,
     PU_LV_Y         = PU_EXP_Y,
     PU_LV_STAT_X    = PU_LV_X  + 10,
-    PU_LV_STAT_Y    = PU_LV_Y  -  1,
+    PU_LV_STAT_Y    = PU_LV_Y,
 
     /* Portrait: face + item icons */
     PU_PORTRAIT_X   =  9,
@@ -96,11 +96,11 @@ enum POPUP_UNIT {
     PU_HYPHEN_OFFSET_Y = 3,
 
     PU_HP_X         = PU_PORTRAIT_X,
-    PU_HP_Y         = PU_PORTRAIT_Y + PU_PORTRAIT_H + PU_LINESPACE - 6,
+    PU_HP_Y         = PU_PORTRAIT_Y + PU_PORTRAIT_H + PU_LINESPACE - 7,
     PU_HP_STAT_X    = PU_HP_X + 14,
-    PU_HP_STAT_Y    = PU_HP_Y -  1,
+    PU_HP_STAT_Y    = PU_HP_Y,
     PU_HPBAR_X      = PU_HP_X + 38,
-    PU_HPBAR_Y      = PU_HP_Y +  1,
+    PU_HPBAR_Y      = PU_HP_Y +  2,
     PU_HPBAR_LEN    = 55,
 };
 
@@ -135,7 +135,8 @@ struct Point PopUp_Unit_Position(struct PopUp *p,       struct PopUp_Unit *pu,
                                  struct Point *tp);
 
 /* --- Setters --- */
-void PopUp_Unit_Set(struct PopUp_Unit *pu, struct Game *sota);
+void _PopUp_Unit_Set(struct PopUp_Unit *pu, struct Unit *unit);
+void  PopUp_Unit_Set(struct PopUp_Unit *pu, struct Game *sota);
 
 /* --- Drawing --- */
 void PopUp_Unit_Draw(struct PopUp *p, struct Point pos,

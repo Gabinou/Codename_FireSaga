@@ -30,15 +30,17 @@
 #include "test_weapon.h"
 
 #include "menu/test_growths.h"
-#include "menu/test_weapon_select.h"
+#include "menu/test_item_drop.h"
 #include "menu/test_player_select.h"
 #include "menu/test_pre_combat.h"
-#include "menu/test_item_drop.h"
 #include "menu/test_stats.h"
+#include "menu/test_weapon_select.h"
+
 #include "popup/test_loadout_stats.h"
 #include "popup/test_map_combat.h"
 #include "popup/test_objective.h"
 #include "popup/test_text_bubble.h"
+#include "popup/test_unit.h"
 
 void render_tests() {
     SDL_Log("Running rendering tests\n");
@@ -53,6 +55,7 @@ void render_tests() {
     test_popup_loadout_stats();
     test_popup_map_combat();
     test_popup_objective();
+    test_popup_unit();
     test_text_bubble();
 }
 

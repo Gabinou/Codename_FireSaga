@@ -50,12 +50,23 @@ void PopUp_Unit_Load(struct PopUp_Unit *pu, SDL_Renderer *renderer, struct n9Pat
 
     path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Weapons.png");
     pu->texture_weapons = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+
+    path = PATH_JOIN("..", "assets", "GUI", "Popup", "PopUp_Tile_Header.png");
+    pu->texture_header = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+
+
 }
 
 /* --- Setters --- */
 void PopUp_Unit_Set(struct PopUp_Unit *pu, struct Game *sota) {
     SDL_assert(pu != NULL);
-    pu->unit   = TNECS_GET_COMPONENT(sota->world, sota->hovered_unit_entity, Unit);
+    struct Unit *unit = TNECS_GET_COMPONENT(sota->world, sota->hovered_unit_entity, Unit);
+    _PopUp_Unit_Set(pu, unit);
+}
+
+void _PopUp_Unit_Set(struct PopUp_Unit *pu, struct Unit *unit) {
+    SDL_assert(pu != NULL);
+    pu->unit   = unit;
     pu->update = true;
     SDL_assert(pu->unit->name.data != NULL);
 }
@@ -202,7 +213,6 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     SDL_RenderFillRect(renderer, NULL);
 
     SDL_assert(pu->texture != NULL);
-    SDL_assert(pu->texture_header != NULL);
     /* --- RENDERING PopUp_Unit --- */
     /* -- PATCHES DRAW -- */
     int scale_x = n9patch->scale.x;
@@ -216,11 +226,14 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     n9patch->scale.y = scale_y;
 
     /* -- HEADER WRITING -- */
-    dstrect.x = PU_HEADER_X;
-    dstrect.y = PU_HEADER_Y;
-    dstrect.w = PU_HEADER_W;
-    dstrect.h = PU_HEADER_H;
-    SDL_RenderCopy(renderer, pu->texture_header, NULL, &dstrect);
+    if (pu->texture_header != NULL) {
+        dstrect.x = PU_HEADER_X;
+        dstrect.y = PU_HEADER_Y;
+        dstrect.w = PU_HEADER_W;
+        dstrect.h = PU_HEADER_H;
+
+        SDL_RenderCopy(renderer, pu->texture_header, NULL, &dstrect);
+    }
     /* -- NAME -- */
     struct Point pos;
     s8 name = pu->unit->name;
