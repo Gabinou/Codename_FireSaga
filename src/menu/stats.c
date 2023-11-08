@@ -556,7 +556,9 @@ void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *renderer) 
     /* - HP simplebar - */
     struct SimpleBar hp_bar = SimpleBar_default;
     hp_bar.scale.x = 1, hp_bar.scale.y = 1;
-    StatBar_Colors_NES(&hp_bar, 13, 14, 52, 54);
+    StatBar_Colors_NES(&hp_bar, STATS_MENU_HPBAR_BD, STATS_MENU_HPBAR_BL,
+                       STATS_MENU_HPBAR_FD, STATS_MENU_HPBAR_FL);
+
     x = (HP_X_OFFSET + HPBAR_X_OFFSET), y = (HP_Y_OFFSET + HPBAR_Y_OFFSET);
     HPBar_Init(&hp_bar, stats_menu->unit->current_hp, effective_stats->hp, x, y);
 
@@ -648,7 +650,8 @@ void _StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *renderer)
     struct SimpleBar stat_bar = SimpleBar_default;
     stat_bar.scale.x = 1;
     stat_bar.scale.y = 1;
-    StatBar_Colors_NES(&stat_bar, 29, 26, 52, 54);
+    StatBar_Colors_NES(&stat_bar, STATS_MENU_STATBAR_BD, STATS_MENU_STATBAR_BL,
+                       STATS_MENU_STATBAR_FD, STATS_MENU_STATBAR_FL);
 
     /* - str - */
     x = STR_X_OFFSET, y = STR_Y_OFFSET;
