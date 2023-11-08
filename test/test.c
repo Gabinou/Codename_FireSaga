@@ -45,7 +45,7 @@ void render_tests() {
     printf("Running rendering tests\n");
     test_arrow();
     test_menu_growths();
-    test_menu_weapon_select();
+    test_menu_loadout_select();
     test_menu_player_select();
     test_menu_pre_combat();
     test_menu_item_drop();

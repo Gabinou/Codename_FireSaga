@@ -87,7 +87,7 @@ enum WSM_MENU {
     WSM1_DURA_Y_OFFSET          = WSM1_Y_OFFSET + 2,
 
     WSM1_NAME_X_OFFSET          = WSM1_DURA_X_OFFSET + 8,
-    WSM1_NAME_Y_OFFSET          = WSM1_Y_OFFSET + 3,
+    WSM1_NAME_Y_OFFSET          = WSM1_Y_OFFSET + 2,
 
     WSM2_X_OFFSET               = WSM1_X_OFFSET,
     WSM3_X_OFFSET               = WSM1_X_OFFSET,

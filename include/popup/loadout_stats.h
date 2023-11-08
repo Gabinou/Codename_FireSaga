@@ -87,10 +87,10 @@ enum POPUP_LOADOUT_STATS {
 
     /* WEAPON NAMES */
     PLS_NAMEL_X         = PLS_ICON_EQUIPL_X + PLS_ICON_EQUIP_W + 4,
-    PLS_NAMEL_Y         = PLS_WPNL_Y + 5,
+    PLS_NAMEL_Y         = PLS_WPNL_Y + 4,
 
     PLS_NAMER_X         = PLS_ICON_EQUIPR_X - PLS_ICON_EQUIP_W + 4,
-    PLS_NAMER_Y         = PLS_WPNR_Y + 5,
+    PLS_NAMER_Y         = PLS_WPNR_Y + 4,
 
     /* ARROW ICON */
     PLS_ARROW_W         =  8,
@@ -100,7 +100,7 @@ enum POPUP_LOADOUT_STATS {
     PLS_ATK_X           = 22,
     PLS_ATK_Y           = 37,
     PLS_ATK_X_STAT      = PLS_ATK_X         +  6,
-    PLS_ATK_Y_STAT      = PLS_ATK_Y         +  8,
+    PLS_ATK_Y_STAT      = PLS_ATK_Y         +  9,
     PLS_ATK_LARROW_X    = PLS_ATK_X_STAT    - 20,
     PLS_ATK_LARROW_Y    = PLS_ATK_Y_STAT    -  1,
     PLS_ATK_RARROW_X    = PLS_ATK_X_STAT    + 16,
@@ -109,7 +109,7 @@ enum POPUP_LOADOUT_STATS {
     PLS_PROT_X          = PLS_ATK_X         + 1,
     PLS_PROT_Y          = PLS_ATK_Y         + 21,
     PLS_PROT_X_STAT     = PLS_PROT_X        +  5,
-    PLS_PROT_Y_STAT     = PLS_PROT_Y        +  8,
+    PLS_PROT_Y_STAT     = PLS_PROT_Y        +  9,
     PLS_PROT_LARROW_X   = PLS_PROT_X_STAT   - 20,
     PLS_PROT_LARROW_Y   = PLS_PROT_Y_STAT   -  1,
     PLS_PROT_RARROW_X   = PLS_PROT_X_STAT   + 16,
@@ -118,7 +118,7 @@ enum POPUP_LOADOUT_STATS {
     PLS_HIT_X           = PLS_ATK_X         + 58,
     PLS_HIT_Y           = PLS_ATK_Y         +  0,
     PLS_HIT_X_STAT      = PLS_HIT_X         +  5,
-    PLS_HIT_Y_STAT      = PLS_HIT_Y         +  8,
+    PLS_HIT_Y_STAT      = PLS_HIT_Y         +  9,
     PLS_HIT_LARROW_X    = PLS_HIT_X_STAT    - 24,
     PLS_HIT_LARROW_Y    = PLS_HIT_Y_STAT    -  1,
     PLS_HIT_RARROW_X    = PLS_HIT_X_STAT    + 20,
@@ -127,7 +127,7 @@ enum POPUP_LOADOUT_STATS {
     PLS_CRIT_X          = PLS_HIT_X         -  3,
     PLS_CRIT_Y          = PLS_HIT_Y         + 21,
     PLS_CRIT_X_STAT     = PLS_CRIT_X        +  8,
-    PLS_CRIT_Y_STAT     = PLS_CRIT_Y        +  8,
+    PLS_CRIT_Y_STAT     = PLS_CRIT_Y        +  9,
     PLS_CRIT_LARROW_X   = PLS_CRIT_X_STAT   - 24,
     PLS_CRIT_LARROW_Y   = PLS_CRIT_Y_STAT   -  1,
     PLS_CRIT_RARROW_X   = PLS_CRIT_X_STAT   + 20,
@@ -136,7 +136,7 @@ enum POPUP_LOADOUT_STATS {
     PLS_RANGE_X         = PLS_HIT_X         + 52,
     PLS_RANGE_Y         = PLS_HIT_Y         +  0,
     PLS_RANGE_X_STAT    = PLS_RANGE_X       +  3,
-    PLS_RANGE_Y_STAT    = PLS_RANGE_Y       +  8,
+    PLS_RANGE_Y_STAT    = PLS_RANGE_Y       +  9,
     PLS_RANGE_LARROW_X  = PLS_RANGE_X_STAT  - 11,
     PLS_RANGE_LARROW_Y  = PLS_RANGE_Y_STAT  -  1,
     PLS_RANGE_RARROW_X  = PLS_RANGE_X_STAT  + 20,
@@ -145,7 +145,7 @@ enum POPUP_LOADOUT_STATS {
     PLS_SPEED_X         = PLS_RANGE_X       +  0,
     PLS_SPEED_Y         = PLS_RANGE_Y       + 21,
     PLS_SPEED_X_STAT    = PLS_SPEED_X       + 11,
-    PLS_SPEED_Y_STAT    = PLS_SPEED_Y       +  8,
+    PLS_SPEED_Y_STAT    = PLS_SPEED_Y       +  9,
     PLS_SPEED_ARROW_X   = PLS_SPEED_X_STAT  - 16,
     PLS_SPEED_ARROW_Y   = PLS_SPEED_Y_STAT  -  1,
 };
