@@ -90,8 +90,6 @@ Homemade libraries developped specifically for use in Codename:Firesaga.
 The source code is made available with the GPLv3 [licence](https://gitlab.com/Gabinou/firesagamaker/-/blob/master/LICENCE_SRC.md).
 Please do not distribute compiled executables.
 
-The assets are distributed under the [CC BY-NC-ND 3.0 licence](https://gitlab.com/Gabinou/firesagamaker/-/blob/master/LICENCE_ASSETS.md). Please do not use assets for commercial purposes or distribute the assets if you modify them. Please provide credit if you use assets for non-commercial purposes.
-
 Third-Party software libraries are distributed according to their respective licences.
 
 ## Contributing
