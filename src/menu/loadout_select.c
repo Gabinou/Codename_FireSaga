@@ -97,8 +97,9 @@ void WeaponSelectMenu_Load_n9Patch(struct LoadoutSelectMenu *lsm, SDL_Renderer *
     n9patch->size_pixels.y   = MENU_PATCH_PIXELS * WSM_PATCH_Y_SIZE;
 }
 
-void WeaponSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, tnecs_world_t *world,
-                           tnecs_entity_t unit_ent, SDL_Renderer *renderer, struct n9Patch *n9patch) {
+void WeaponSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map,
+                           tnecs_world_t *world, tnecs_entity_t unit_ent,
+                           SDL_Renderer *renderer, struct n9Patch *n9patch) {
     WeaponSelectMenu_Load_n9Patch(lsm, renderer, n9patch);
 
     lsm->archetype_stronghand = ITEM_ARCHETYPE_WEAPON;
@@ -176,6 +177,8 @@ void LoadoutSelectMenu_Elem_Pos(struct LoadoutSelectMenu *lsm, struct Menu *mc) 
     /* Scales elem_pos to menu size. */
     /* 1. Makes the cursor focus on right place on the Screen       */
     /* 2. Box lined are drawn in menu frame, making thinner lines   */
+    SDL_assert(mc->n9patch.scale.x > 0);
+    SDL_assert(mc->n9patch.scale.y > 0);
 
     bool header_drawn = (lsm->header.data != NULL);
     /* - Skip if already in screen frame - */
@@ -192,12 +195,14 @@ void LoadoutSelectMenu_Elem_Pos(struct LoadoutSelectMenu *lsm, struct Menu *mc) 
         int elem_y  = mc->elem_pos[i].y;
         mc->elem_pos[i].x = x + elem_x * scale_x;
         mc->elem_pos[i].y = y + elem_y * scale_y;
+        SDL_Log("x y %d %d", mc->elem_pos[i].x, mc->elem_pos[i].y);
     }
 
     mc->elem_pos_frame = ELEM_POS_SCREEN_FRAME;
+    getchar();
 }
 
-void LoadoutSelectMenu_Elem_Pos_revert(struct LoadoutSelectMenu *lsm, struct Menu *mc) {
+void LoadoutSelectMenu_Elem_Pos_Revert(struct LoadoutSelectMenu *lsm, struct Menu *mc) {
     /* Scales elem_pos to menu size. */
     /* 1. Makes the cursor focus on right place on the Screen       */
     /* 2. Box lined are drawn in menu frame, making thinner lines   */

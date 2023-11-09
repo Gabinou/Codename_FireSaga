@@ -437,16 +437,6 @@ void Game_WeaponSelectMenu_Create(struct Game *sota) {
     mc->type        = MENU_TYPE_WEAPON_SELECT;
     mc->draw        = &LoadoutSelectMenu_Draw;
 
-    // /* n9patch init */
-    // mc->n9patch.patch_pixels.x  = MENU_PATCH_PIXELS;
-    // mc->n9patch.patch_pixels.y  = MENU_PATCH_PIXELS;
-    // mc->n9patch.size_patches.x  = WSM_PATCH_X_SIZE;
-    // mc->n9patch.size_patches.y  = WSM_PATCH_X_SIZE;
-    // mc->n9patch.scale.x         = WSM_N9PATCH_SCALE_X;
-    // mc->n9patch.scale.y         = WSM_N9PATCH_SCALE_Y;
-    // mc->n9patch.size_pixels.x   = MENU_PATCH_PIXELS * WSM_PATCH_X_SIZE;
-    // mc->n9patch.size_pixels.y   = MENU_PATCH_PIXELS * WSM_PATCH_Y_SIZE;
-
     /* stats_menu struct init */
     struct LoadoutSelectMenu *wsm   = LoadoutSelectMenu_Alloc();
     wsm->pos.x                      = sota->settings.res.x / 2;
@@ -465,8 +455,6 @@ void Game_WeaponSelectMenu_Create(struct Game *sota) {
     SDL_assert(sota->pixelnours_big != NULL);
     wsm->pixelnours             = sota->pixelnours;
     wsm->pixelnours_big         = sota->pixelnours_big;
-    LoadoutSelectMenu_Elem_Pos(wsm, mc);
-    Menu_Elem_Boxes_Check(mc);
 }
 
 void Game_WeaponSelectMenu_Update(struct Game *sota, tnecs_entity_t unit_entity_ontile) {
@@ -482,8 +470,10 @@ void Game_WeaponSelectMenu_Update(struct Game *sota, tnecs_entity_t unit_entity_
     struct LoadoutSelectMenu *wsm = mc->data;
     SDL_assert(mc->elem_pos == wsm_elem_pos);
     // LoadoutSelectMenu_Load(wsm, unit_ontile, sota->renderer);
-    WeaponSelectMenu_Load(wsm, sota->map, sota->world, unit_entity_ontile, sota->renderer,
-                          &mc->n9patch);
+    WeaponSelectMenu_Load(wsm, sota->map, sota->world, unit_entity_ontile,
+                          sota->renderer, &mc->n9patch);
+    SDL_assert(mc->n9patch.scale.x > 0);
+    SDL_assert(mc->n9patch.scale.y > 0);
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
 

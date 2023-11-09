@@ -699,7 +699,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
-
     /* Swap weapons */
     struct LoadoutSelectMenu *wsm = mc->data;
     SDL_assert(mc->elem >= 0);
@@ -708,7 +707,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
 
     /* - Compute new attackmap with equipped - */
     int rangemap = Unit_Rangemap_Get(wsm->unit);
-    Map_Healtomap_Compute(sota->map,   sota->world, sota->aggressor, false, true);
+    Map_Healtomap_Compute(  sota->map, sota->world, sota->aggressor, false, true);
     Map_Attacktomap_Compute(sota->map, sota->world, sota->aggressor, false, true);
 
     if (rangemap        == RANGEMAP_HEALMAP) {
@@ -720,7 +719,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
 
     // TODO: Change to if other item in invetory
     if (WeaponSelectMenu_Usable_Remains(wsm)) {
-
+        SDL_assert(mc->n9patch.scale.x > 0);
+        SDL_assert(mc->n9patch.scale.y > 0);
         /* move cursor to second hand */
         int new_elem            = WSM_ELEM_ITEM2;
         tnecs_entity_t cursor   = sota->entity_cursor;
@@ -735,8 +735,9 @@ void fsm_eAcpt_sGmpMap_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
         pls->item_right = UNIT_HAND_RIGHT;
         PopUp_Loadout_Stats_Previous(pls);
 
+        LoadoutSelectMenu_Elem_Pos_Revert(wsm, mc);
         LoadoutSelectMenu_Elem_Reset(wsm, mc);
-        LoadoutSelectMenu_Elem_Pos(  wsm, mc);
+        LoadoutSelectMenu_Elem_Pos(wsm, mc);
         Menu_Elem_Boxes_Check(mc);
 
     } else {
@@ -879,6 +880,9 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
 
     struct Menu *mc;
     mc = TNECS_GET_COMPONENT(sota->world, sota->weapon_select_menu, Menu);
+    SDL_assert(mc->n9patch.scale.x > 0);
+    SDL_assert(mc->n9patch.scale.y > 0);
+
     struct LoadoutSelectMenu *wsm = mc->data;
 
     /* -- Create PopUp_Loadout_Stats -- */
