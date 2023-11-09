@@ -195,11 +195,9 @@ void LoadoutSelectMenu_Elem_Pos(struct LoadoutSelectMenu *lsm, struct Menu *mc) 
         int elem_y  = mc->elem_pos[i].y;
         mc->elem_pos[i].x = x + elem_x * scale_x;
         mc->elem_pos[i].y = y + elem_y * scale_y;
-        SDL_Log("x y %d %d", mc->elem_pos[i].x, mc->elem_pos[i].y);
     }
 
     mc->elem_pos_frame = ELEM_POS_SCREEN_FRAME;
-    getchar();
 }
 
 void LoadoutSelectMenu_Elem_Pos_Revert(struct LoadoutSelectMenu *lsm, struct Menu *mc) {

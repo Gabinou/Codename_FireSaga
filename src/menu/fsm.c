@@ -581,6 +581,12 @@ void fsm_eCncl_sGmpMap_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
         PopUp_Loadout_Stats_Previous(pls);
         // pls->previous_cs = Unit_computedStats_wLoadout(wsm->unit, pls->item_left, pls->item_right);
 
+        LoadoutSelectMenu_Elem_Pos_Revert(wsm, mc);
+        LoadoutSelectMenu_Elem_Reset(wsm, mc);
+        LoadoutSelectMenu_Elem_Pos(wsm, mc);
+        Menu_Elem_Boxes_Check(mc);
+
+
         SDL_assert(wsm->update == true);
     } else {
         /* -- No item was selected, destroying wsm menu -- */
