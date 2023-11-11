@@ -26,4 +26,8 @@ void drawTextTimer(tnecs_system_input_t *in_input);
 void animateSprite(tnecs_system_input_t *in_input);
 void drawMap_HPBar(tnecs_system_input_t *in_input);
 
+
+void Animate_Combat_onMap(tnecs_system_input_t *in_input);
+
+
 #endif /* SYSTEMRENDER_H */

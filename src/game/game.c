@@ -406,6 +406,7 @@ struct Game *Game_Init() {
     /* - draw Cursor and Mouse last -> on top - */
     TNECS_REGISTER_SYSTEM_wEXCL(world, drawCursor,    0, Sprite,          Position, CursorFlag);
     TNECS_REGISTER_SYSTEM_wEXCL(world, drawMouse,     1, controllerMouse, Position, Sprite, MouseFlag);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Combat_onMap, 1, CombatAnimation, Timer);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration DONE\n");
 
     out_game->isrunning = true;
