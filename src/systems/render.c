@@ -256,28 +256,23 @@ void Animate_Combat_onMap(tnecs_system_input_t *in_input) {
     if (in_input->num_entities < 1)
         return;
 
-
     /* -- Get game -- */
     struct Game *sota = (struct Game *)in_input->user_data;
     SDL_assert(sota != NULL);
     SDL_assert(sota->combat_forecast.attack_num > 0);
 
     /* -- Get components arrays -- */
-    // struct Text     *text_arr        = TNECS_COMPONENTS_LIST(in_input, Text);
-    // Timer, CombatAnimation
-    // struct Position *position_arr    = TNECS_COMPONENTS_LIST(in_input, Position);
-    struct Timer *timer_arr = TNECS_COMPONENTS_LIST(in_input, Timer);
-    struct CombatAnimation *combatanim_arr = TNECS_COMPONENTS_LIST(in_input, CombatAnimation);
-    SDL_assert(timer_arr != NULL);
-    SDL_assert(combatanim_arr != NULL);
+    struct CombatAnimation *combatanim_arr;
+    struct Timer *timer_arr      = TNECS_COMPONENTS_LIST(in_input, Timer);
+                 *combatanim_arr = TNECS_COMPONENTS_LIST(in_input, CombatAnimation);
+    SDL_assert(timer_arr        != NULL);
+    SDL_assert(combatanim_arr   != NULL);
 
-    // for (u16 order = 0; order < in_input->num_entities; order++) {
-    // }
     /* - getting attacker - */
     struct CombatAnimation *map_anim        = &combatanim_arr[0];
     struct Timer           *combat_timer    = &timer_arr[0];
+    SDL_assert(map_anim     != NULL);
     SDL_assert(combat_timer != NULL);
-    SDL_assert(map_anim != NULL);
 
     if (map_anim->attack_ind >= sota->combat_forecast.attack_num) {
         /* - Check for remaining attack, ending combat after pause - */
