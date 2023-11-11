@@ -400,7 +400,7 @@ struct Game *Game_Init() {
 
     TNECS_REGISTER_SYSTEM_wEXCL(world, drawMenu,      0, Menu);
     TNECS_REGISTER_SYSTEM_wEXCL(world, drawText,      1, Text, Position);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, drawTextTimer, 1, Text, Position, Timer);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, drawTextTimer, 0, Text, Position, Timer);
     TNECS_REGISTER_SYSTEM_wEXCL(world, drawPopUp,     0, PopUp, Position);
     /* - draw Cursor and Mouse last -> on top - */
     TNECS_REGISTER_SYSTEM_wEXCL(world, drawCursor,    0, Sprite,          Position, CursorFlag);

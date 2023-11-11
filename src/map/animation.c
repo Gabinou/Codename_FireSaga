@@ -80,6 +80,7 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity_t entity,
 
 void Map_TurnTransition_Animate(struct Game *sota, tnecs_entity_t entity,
                                 struct MapAnimation *map_anim, struct Timer *timer) {
+    SDL_Log("Map_TurnTransition_Animate");
     /* - Animation is complete, begin a turn - */
     if (timer->time_ns >= map_anim->time_ns) {
         tnecs_entity_destroy(sota->world, entity);

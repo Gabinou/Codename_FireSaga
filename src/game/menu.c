@@ -876,7 +876,6 @@ void Game_Title_Create(struct Game *sota) {
     Text_Set(text, GAME_TITLE);
     SDL_assert((text->rect.w > 0) && (text->rect.h > 0));
     SDL_assert(sota->pixelnours_big != NULL);
-
 }
 
 void Game_Title_Destroy(struct Game *sota) {
