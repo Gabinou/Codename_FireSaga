@@ -838,8 +838,8 @@ u8 Map_Army_Next(struct Map *map) {
     /* If player turn came back, increment turn number5 */
     if (map->army_i == 0)
         Map_Turn_Increment(map);
-    
-    return(map->army_i);
+
+    return (map->army_i);
 }
 
 void Map_Turn_Increment(struct Map *map) {

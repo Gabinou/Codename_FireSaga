@@ -9,7 +9,7 @@
 
 /* --- FORWARD DECLARATIONS --- */
 
-// Map_animation Systems: 
+// Map_animation Systems:
 //     - Unit movement: entity with Unit, MapAnimation components
 //         - Movement to do is encoded in Arrow sota->map->arrow
 //     - Turn transition: entity with Text, Position, MapAnimation components
@@ -20,10 +20,10 @@
 /* --- MapAnimation --- */
 // Blocks control (except to go faster)
 typedef struct MapAnimation { /* on Map */
-    
-}MapAnimation;
 
-    // TODO change to MapAnimation component
+} MapAnimation;
+
+// TODO change to MapAnimation component
 typedef struct CombatAnimation { /* on Map */
 
 } CombatAnimation;

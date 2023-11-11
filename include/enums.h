@@ -275,7 +275,7 @@ enum SOTA_POPUP_WAIT {
 enum SOTA_CONTROL {
     SOTA_PLAYER = 0,
     SOTA_AI     = 1,
-}
+};
 
 enum SOTA_CONTROLLER_WAIT {
     KEYBOARD_MINHELD_ns     = 0,
