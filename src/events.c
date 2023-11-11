@@ -196,26 +196,6 @@ void receive_event_Cursor_Disable(struct Game *sota, SDL_Event *Cursor_Disable) 
     Game_Cursor_Disable(sota);
 }
 
-void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
-    // u8 army = * (u8 *) userevent->user.data1;
-    struct Map *map = sota->map;
-    SDL_assert(sota->state == GAME_STATE_Gameplay_Map);
-
-    /* - Refresh all units - */
-    for (int i = 0; i < map->num_units_onfield; i++) {
-        if (map->units_onfield[i] != TNECS_NULL) {
-            Game_Unit_Refresh(sota, map->units_onfield[i]);
-        }
-    }
-
-    // TODO:
-    // - Perform turn begin animation
-    Map_Turn_Increment(sota->map);
-
-    Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
-
-}
-
 void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) {
     u8 army = * (u8 *) userevent->user.data1;
     if (SotA_isPC(army)) {
@@ -565,6 +545,33 @@ void receive_event_SDL_MOUSEBUTTON(struct Game *sota, SDL_Event *event) {
     }
 }
 
+
+void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
+    // u8 army = * (u8 *) userevent->user.data1;
+    struct Map *map = sota->map;
+    SDL_assert(sota->state == GAME_STATE_Gameplay_Map);
+
+    /* - Refresh all units - */
+    for (int i = 0; i < map->num_units_onfield; i++) {
+        if (map->units_onfield[i] != TNECS_NULL) {
+            Game_Unit_Refresh(sota, map->units_onfield[i]);
+        }
+    }
+
+    // TODO:
+    // - Perform turn begin animation
+    Map_Turn_Increment(sota->map);
+
+    Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
+
+}
+
+void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
+    // TODO:
+    // Create transition animation entity
+    // Change game state to map_animation
+}
+
 void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
     /* - Pop all menus - */
     while (DARR_NUM(sota->menu_stack) > 0) {
@@ -577,15 +584,11 @@ void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
 
     /* - focus cursor on tilemap - */
     Game_cursorFocus_onMap(sota);
+    
+    // TODO: Remove player control
 
-    // TODO:
-    // - Get next army
-    // - Give control to Ai/Playerr
-    // - Begin for next army Turn
-    // - if AI:
-    //      - Perform AI actions
-    //      - End turn
-    Event_Emit(__func__, SDL_USEREVENT, event_Turn_Begin, NULL, NULL);
+    Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
+    // Event_Emit(__func__, SDL_USEREVENT, event_Turn_Begin, NULL, NULL);
 }
 
 void receive_event_Unit_Enters_Shop(struct Game *sota, SDL_Event *userevent) {
@@ -1062,7 +1065,6 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
-
     Event_Emit(__func__, SDL_USEREVENT, event_Unit_Wait, NULL, NULL);
 
     // 1. Resolve Combat

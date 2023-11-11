@@ -2,13 +2,14 @@
 #include "map/animation.h"
 
 struct CombatAnimation CombatAnimation_default = {
-    .attack_ind =          0,
-    .pause_before_ms =    10,
-    .pause_after_ms =   1000,
+    .attack_ind         =    0,
+    .pause_before_ms    =   10,
+    .pause_after_ms     = 1000,
+    .frame_count        =    0,
 };
 
-void CombatAnimation_Play(struct Game *sota, tnecs_entity_t entity,
-                          struct CombatAnimation *map_anim, struct Timer *combat_timer) {
+void Map_Combat_Animate(struct Game *sota, tnecs_entity_t entity,
+                        struct CombatAnimation *map_anim, struct Timer *combat_timer) {
     SDL_assert(map_anim     != NULL);
     SDL_assert(combat_timer != NULL);
 
@@ -30,9 +31,8 @@ void CombatAnimation_Play(struct Game *sota, tnecs_entity_t entity,
     struct Timer *att_timer = TNECS_GET_COMPONENT(sota->world, attacker, Timer);
     SDL_assert(att_timer != NULL);
     att_timer->paused = ((combat_timer->time_ns / SOTA_us) < map_anim->pause_before_ms);
-    if (att_timer->paused) {
+    if (att_timer->paused)
         return;
-    }
 
     /* - Add RenderTop component to attacker - */
     if (!TNECS_ENTITY_HASCOMPONENT(sota->world, attacker, RenderTop)) {
@@ -42,8 +42,8 @@ void CombatAnimation_Play(struct Game *sota, tnecs_entity_t entity,
     /* - map_anim's frame count only grows - */
     struct Sprite *att_sprite = TNECS_GET_COMPONENT(sota->world, attacker, Sprite);
     SDL_assert(att_sprite != NULL);
-    int current_frame = att_sprite->spritesheet->current_frame;
-    int frame_count = map_anim->frame_count;
+    int current_frame   = att_sprite->spritesheet->current_frame;
+    int frame_count     = map_anim->frame_count;
     map_anim->frame_count = current_frame > frame_count ? current_frame : frame_count;
 
     /* - Checking if map_anim->attack_ind should be incremented - */
@@ -71,4 +71,16 @@ void CombatAnimation_Play(struct Game *sota, tnecs_entity_t entity,
         TNECS_REMOVE_COMPONENTS(sota->world, attacker, RenderTop);
     if (TNECS_ENTITY_HASCOMPONENT(sota->world, defender, RenderTop))
         TNECS_REMOVE_COMPONENTS(sota->world, defender, RenderTop);
+}
+
+
+void Map_TurnTransition_Animate(struct Game *sota, tnecs_entity_t entity,
+                                struct MapAnimation *map_anim, struct Timer *timer) {
+    /* - Animation is complete, begin a turn - */
+    if (timer->time_ns >= map_anim->time_ns) {
+        tnecs_entity_destroy(sota->world, entity);
+        Event_Emit(__func__, SDL_USEREVENT, event_Turn_Begin, NULL, NULL);
+        return;
+    }
+
 }

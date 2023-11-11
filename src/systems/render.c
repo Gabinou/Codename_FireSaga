@@ -251,11 +251,7 @@ void drawTextTimer(tnecs_system_input_t *in_input) {
 }
 
 void Animate_Combat_onMap(tnecs_system_input_t *in_input) {
-    /* -- Should only be ONE MapAnimation at a time -- */
-    SDL_assert(in_input->num_entities <= 1);
-    if (in_input->num_entities < 1)
-        return;
-
+    /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     struct Game *sota = (struct Game *)in_input->user_data;
     SDL_assert(sota != NULL);
@@ -275,7 +271,35 @@ void Animate_Combat_onMap(tnecs_system_input_t *in_input) {
         size_t           typeflag_id = in_input->entity_typeflag_id;
         tnecs_entity_t   entity      = world->entities_bytype[typeflag_id][order];
 
-        CombatAnimation_Play(sota, entity, map_anim, combat_timer);
+        Map_Combat_Animate(sota, entity, map_anim, combat_timer);
     }
 }
 
+void Animate_Turn_Transition(tnecs_system_input_t *in_input) {
+    /* --- PRELIMINARIES --- */
+    /* -- Get game -- */
+    struct Game *sota = (struct Game *)in_input->user_data;
+    SDL_assert(sota != NULL);
+
+    /* -- Get components arrays -- */
+    struct Timer        *timer_arr = TNECS_COMPONENTS_LIST(in_input, Timer);
+    struct Text         *text_arr  = TNECS_COMPONENTS_LIST(in_input, Text);
+    struct Position     *pos_arr   = TNECS_COMPONENTS_LIST(in_input, Position);
+    struct MapAnimation *mapanim_arr;
+    mapanim_arr = TNECS_COMPONENTS_LIST(in_input, MapAnimation);
+
+    /* --- DRAWING TEXT ENTITIES --- */
+    for (u16 order = 0; order < in_input->num_entities; order++) {
+        struct MapAnimation *map_anim   = &mapanim_arr[order];
+        struct Timer        *timer      = &timer_arr[order];
+        struct Position     *pos        = &pos_arr[order];
+        struct Text         *text       = &text_arr[order];
+
+        tnecs_world_t   *world       = in_input->world;
+        size_t           typeflag_id = in_input->entity_typeflag_id;
+        tnecs_entity_t   entity      = world->entities_bytype[typeflag_id][order];
+
+        Map_TurnTransition_Animate(sota, entity, map_anim, timer);
+    }
+
+}

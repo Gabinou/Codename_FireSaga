@@ -14,10 +14,11 @@ struct CombatAnimation;
 //     - Unit movement: entity with Unit, MapAnimation components
 //         - Movement to do is encoded in Arrow sota->map->arrow
 //     - Turn transition: entity with Text, Position, MapAnimation components
+//
 //     - Unit Combat: entity with Timer,  CombatAnimation
 //         - Units to fight are encoded in sota->aggressor, sota->defendant
 
-typedef struct CombatAnimation {
+typedef struct CombatAnimation { /* on Map */
     int attack_ind;
     int pause_after_ms;
     int pause_before_ms;
@@ -28,13 +29,17 @@ extern struct CombatAnimation CombatAnimation_default;
 
 /* --- MapAnimation --- */
 // Blocks control (except to go faster)
-typedef struct MapAnimation { /* on Map */
-
+typedef struct MapAnimation {
+    i64 time_ns;
 } MapAnimation;
 /* --- Constructors/Destructors --- */
 
 /* --- Play --- */
 // TODO put fps_fsm combat animation functionality here
-void CombatAnimation_Play(struct Game *s, tnecs_entity_t, struct CombatAnimation *, struct Timer *);
+void Map_UnitMove_Animate(struct Game *s, tnecs_entity_t, struct Timer *);
+void Map_TurnTransition_Animate(struct Game *, tnecs_entity_t,
+                                struct MapAnimation *, struct Timer *);
+
+void Map_Combat_Animate(struct Game *s, tnecs_entity_t, struct CombatAnimation *, struct Timer *);
 
 #endif /* MAP_ANIMATION_H */

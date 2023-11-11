@@ -344,7 +344,6 @@ struct Game *Game_Init() {
     TNECS_REGISTER_COMPONENT(out_game->world, Position);
     TNECS_REGISTER_COMPONENT(out_game->world, Sprite);
     TNECS_REGISTER_COMPONENT(out_game->world, Unit);
-    // TNECS_REGISTER_COMPONENT(out_game->world, Text_TTF);
     TNECS_REGISTER_COMPONENT(out_game->world, Menu);
     TNECS_REGISTER_COMPONENT(out_game->world, controllerGamepad);
     TNECS_REGISTER_COMPONENT(out_game->world, controllerMouse);
@@ -406,6 +405,7 @@ struct Game *Game_Init() {
     TNECS_REGISTER_SYSTEM_wEXCL(world, drawCursor,    0, Sprite,          Position, CursorFlag);
     TNECS_REGISTER_SYSTEM_wEXCL(world, drawMouse,     1, controllerMouse, Position, Sprite, MouseFlag);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Combat_onMap, 1, CombatAnimation, Timer);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Turn_Transition, 1, MapAnimation, Position, Text, Timer);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration DONE\n");
 
     out_game->isrunning = true;

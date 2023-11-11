@@ -1,5 +1,6 @@
 REGISTER_ENUM(Quit,                          Quit)
 REGISTER_ENUM(Turn_Begin,                    TurnBg)
+REGISTER_ENUM(Turn_Transition,               TurnTrans)
 REGISTER_ENUM(Turn_End,                      TurnEnd)
 REGISTER_ENUM(Mouse_Disable,                 MsDisa)
 REGISTER_ENUM(Mouse_Enable,                  MsEna)
