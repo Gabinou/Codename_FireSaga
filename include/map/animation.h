@@ -1,13 +1,14 @@
 #ifndef MAP_ANIMATION_H
 #define MAP_ANIMATION_H
 
+#include "structs.h"
 #include "enums.h"
 #include "n9patch.h"
-#include "bars.h"
 #include "game/game.h"
 #include "stb_sprintf.h"
 
 /* --- FORWARD DECLARATIONS --- */
+struct CombatAnimation;
 
 // Map_animation Systems:
 //     - Unit movement: entity with Unit, MapAnimation components
@@ -22,16 +23,10 @@
 typedef struct MapAnimation { /* on Map */
 
 } MapAnimation;
-
-// TODO change to MapAnimation component
-typedef struct CombatAnimation { /* on Map */
-
-} CombatAnimation;
-
 /* --- Constructors/Destructors --- */
 
 /* --- Play --- */
 // TODO put fps_fsm combat animation functionality here
-void CombatAnimation_Play();
+void CombatAnimation_Play(struct Game *s, struct CombatAnimation *, struct Timer *);
 
 #endif /* MAP_ANIMATION_H */

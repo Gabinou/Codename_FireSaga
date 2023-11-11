@@ -3,10 +3,12 @@
 
 #include "tnecs.h"
 #include "sprite.h"
+#include "structs.h"
 #include "game/game.h"
 #include "position.h"
 #include "slider.h"
 #include "popup/tile.h"
+#include "map/animation.h"
 #include "SDL.h"
 
 // TODO: Check if that causes issue with Interactive Programming
