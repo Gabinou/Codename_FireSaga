@@ -42,11 +42,10 @@ void Names_statNames() {
 
 s8 armyNames[ARMY_NUM] = {0};
 void Names_armyNames() {
-#define REGISTER_ENUM(x) armyNames[ARMY_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2);
+#define REGISTER_ENUM(x, y) armyNames[ARMY_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2);
 #include "names/armies.h"
 #undef REGISTER_ENUM
 }
-
 
 s8 unitStatuses[UNIT_STATUS_END];
 void Names_unitStatuses() {
