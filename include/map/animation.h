@@ -27,6 +27,6 @@ typedef struct MapAnimation { /* on Map */
 
 /* --- Play --- */
 // TODO put fps_fsm combat animation functionality here
-void CombatAnimation_Play(struct Game *s, struct CombatAnimation *, struct Timer *);
+void CombatAnimation_Play(struct Game *s, tnecs_entity_t, struct CombatAnimation *, struct Timer *);
 
 #endif /* MAP_ANIMATION_H */

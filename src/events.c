@@ -1026,10 +1026,11 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
 
     /* -- Create combat animation entity -- */
     // TODO change to MapAnimation component
-    sota->map_animation = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer, CombatAnimation);
+    tnecs_entity_t map_animation;
+    map_animation = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer, CombatAnimation);
 
     struct CombatAnimation *map_anim;
-    map_anim  = TNECS_GET_COMPONENT(sota->world, sota->map_animation, CombatAnimation);
+    map_anim  = TNECS_GET_COMPONENT(sota->world, map_animation, CombatAnimation);
     *map_anim = CombatAnimation_default;
 
     /* - Hide pre combat popup - */

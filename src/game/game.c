@@ -55,7 +55,6 @@ struct Game Game_default = {
     .stats_menu             = TNECS_NULL,
     .pre_combat_menu        = TNECS_NULL,
     .GM_menu                = TNECS_NULL,
-    .map_animation          = TNECS_NULL,
 
     .cursor_move            = {0},
     .entity_mouse           = TNECS_NULL,

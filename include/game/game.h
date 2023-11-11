@@ -97,7 +97,6 @@ struct Game {
     tnecs_entity_t first_menu;
     tnecs_entity_t title;
     tnecs_entity_t GM_menu;
-    tnecs_entity_t map_animation;
 
     s8 filename_menu;
     char reason[DEFAULT_BUFFER_SIZE];

@@ -1,8 +1,8 @@
 
 #include "map/animation.h"
 
-void CombatAnimation_Play(struct Game *sota, struct CombatAnimation *map_anim,
-                          struct Timer *combat_timer) {
+void CombatAnimation_Play(struct Game *sota, tnecs_entity_t entity,
+                          struct CombatAnimation *map_anim, struct Timer *combat_timer) {
     SDL_assert(map_anim     != NULL);
     SDL_assert(combat_timer != NULL);
 
@@ -10,8 +10,7 @@ void CombatAnimation_Play(struct Game *sota, struct CombatAnimation *map_anim,
         /* - Check for remaining attack, ending combat after pause - */
         bool paused = ((combat_timer->time_ns / SOTA_ms) < map_anim->pause_after_ms);
         if (!paused) {
-            tnecs_entity_destroy(sota->world, sota->map_animation);
-            sota->map_animation = TNECS_NULL;
+            tnecs_entity_destroy(sota->world, entity);
             Event_Emit(__func__, SDL_USEREVENT, event_Combat_End, NULL, NULL);
         }
         /* - Skip if no more attacks to animate - */
