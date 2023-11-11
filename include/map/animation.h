@@ -13,7 +13,7 @@
 //     - Unit movement: entity with Unit, MapAnimation components
 //         - Movement to do is encoded in Arrow sota->map->arrow
 //     - Turn transition: entity with Text, Position, MapAnimation components
-//     - Unit Combat: entity with MapAnimation
+//     - Unit Combat: entity with Timer,  MapAnimation
 //         - Units to fight are encoded in sota->aggressor, sota->defendant
 
 
@@ -23,14 +23,15 @@ typedef struct MapAnimation { /* on Map */
     
 }MapAnimation;
 
+    // TODO change to MapAnimation component
+typedef struct CombatAnimation { /* on Map */
 
-struct CombatAnimation { /* on Map */
-
-};
+} CombatAnimation;
 
 /* --- Constructors/Destructors --- */
 
 /* --- Play --- */
-void CombatAnimation_Play(struct CombatAnimation *ca);
+// TODO put fps_fsm combat animation functionality here
+void CombatAnimation_Play();
 
 #endif /* MAP_ANIMATION_H */

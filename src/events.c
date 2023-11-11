@@ -1025,6 +1025,7 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     dft_timer->paused = true;
 
     /* -- Create combat animation entity -- */
+    // TODO change to MapAnimation component
     sota->map_animation = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer, CombatAnimation);
 
     struct CombatAnimation *map_anim;
