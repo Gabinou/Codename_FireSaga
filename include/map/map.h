@@ -135,16 +135,16 @@ struct Map {
     tnecs_entity_t costmap_ent;
 
     /* --- ARMIES --- */
+    int army_i; /* Current army in control */
     tnecs_entity_t *units_onfield;
     tnecs_entity_t *friendlies_onfield;
     tnecs_entity_t *enemies_onfield;
     i8 num_enemies;
     i8 num_friendlies;
-    u8 *armies_onfield;
     u8 num_units_onfield;
-    u8 num_armies_onfield;
     u8 num_enemies_onfield;
     u8 num_friendlies_onfield;
+    u8 *army_onfield;
     struct Point *units_positions_list;  /* same order as unit_onfield */
     struct Point *start_pos;
 
@@ -228,5 +228,6 @@ void Map_writeJSON(const void *input, cJSON             *jmap);
 
 /* --- Map events / Triggers --- */
 void Map_Turn_Increment(struct Map *map);
+u8 Map_Army_Next(struct Map *map);
 
 #endif /* MAP_H */

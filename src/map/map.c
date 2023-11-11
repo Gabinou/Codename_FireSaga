@@ -90,8 +90,8 @@ struct Map Map_default = {
     .door_num               = 0,
 
     .start_pos              = NULL,
-    .armies_onfield         = NULL,
-    .num_armies_onfield     = 0,
+    .army_i                 = 0,
+    .army_onfield           = NULL,
     .units_onfield          = NULL,
     .num_units_onfield      = 0,
     .friendlies_onfield     = NULL,
@@ -127,7 +127,7 @@ struct Map *Map_Init(struct Map *map, i32 width, i32 height) {
     map->friendlies_onfield = DARR_INIT(map->friendlies_onfield, tnecs_entity_t, 20);
     map->units_onfield      = DARR_INIT(map->units_onfield, tnecs_entity_t, 20);
     map->reinf_equipments   = DARR_INIT(map->reinf_equipments, struct Inventory_item *, 30);
-    map->armies_onfield     = calloc(10, sizeof(*map->armies_onfield));
+    map->army_onfield     = DARR_INIT(map->army_onfield, u8, 5);
     Map_Tilesize_Set(map, width, height);
     if (map->arrow != NULL)
         Arrow_Free(map->arrow);
@@ -228,6 +228,10 @@ void Map_Free(struct Map *map) {
         DARR_FREE(map->items_num);
         map->items_num = NULL;
     }
+    if (map->army_onfield != NULL) {
+        DARR_FREE(map->army_onfield);
+        map->army_onfield = NULL;
+    }
     if (map->start_pos != NULL) {
         DARR_FREE(map->start_pos);
         map->start_pos = NULL;
@@ -241,12 +245,7 @@ void Map_Free(struct Map *map) {
         map->units_onfield = NULL;
     }
     Map_Tilemap_Surface_Free(map);
-    SDL_Log("armies_onfield");
     _Map_Tilesindex_Free(map);
-    if (map->armies_onfield != NULL) {
-        SDL_free(map->armies_onfield);
-        map->armies_onfield = NULL;
-    }
     SDL_Log("Arrow");
     Arrow_Free(map->arrow);
     SDL_Log("tilemap_shader");
@@ -822,6 +821,27 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
 }
 
 /* --- Map events / Triggers --- */
+/* Ouputs index of army in army_onfield*/
+u8 Map_Army_Next(struct Map *map) {
+    /* Get next army in line for control */
+    SDL_assert(map->army_onfield != NULL);
+    SDL_assert(map->army_onfield[0] == ARMY_FRIENDLY);
+    /* Get number of armies on field */
+    size_t army_num = DARR_NUM(map->army_onfield);
+    SDL_assert(army_num <= ARMY_NUM);
+
+    /* Check for wrap around back to player */
+    map->army_i = ((map->army_i + 1) >= army_num) ? 0 : (map->army_i + 1);
+    SDL_assert(map->army_i >= 0);
+    SDL_assert(map->army_i < ARMY_NUM);
+
+    /* If player turn came back, increment turn number5 */
+    if (map->army_i == 0)
+        Map_Turn_Increment(map);
+    
+    return(map->army_i);
+}
+
 void Map_Turn_Increment(struct Map *map) {
     map->turn++;
 }

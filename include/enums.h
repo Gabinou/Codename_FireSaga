@@ -272,6 +272,11 @@ enum SOTA_POPUP_WAIT {
     POPUP_UNIT_SLIDEWAIT_ns = 10000000,
 };
 
+enum SOTA_CONTROL {
+    SOTA_PLAYER = 0,
+    SOTA_AI     = 1,
+}
+
 enum SOTA_CONTROLLER_WAIT {
     KEYBOARD_MINHELD_ns     = 0,
     GAMEPAD_MINHELD_ns      = 0,
@@ -567,7 +572,7 @@ enum UNIT_TYPES {
 };
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x) ARMY_##x,
+#define REGISTER_ENUM(x, y) ARMY_##x,
 enum UNIT_ARMIES {
     ARMY_START = 0,
 #include "names/armies.h"
@@ -575,6 +580,8 @@ enum UNIT_ARMIES {
     ARMY_NUM = ARMY_END,
 };
 #undef REGISTER_ENUM
+
+extern u8 army_control[ARMY_NUM];
 
 /* UNIT_ID is the explicit, human-friendly unit index
 * EXAMPLE:

@@ -96,6 +96,7 @@ void fsm_cFrame_sGmpMap_ssMapCndt(struct Game *sota) {
 }
 
 /* Map animation for units fighting on map */
+// TODO: Think about how to use map/animation.h to play animation instead
 void fsm_cFrame_sGmpMap_ssMapAnim(struct Game *sota) {
     SDL_assert(sota->combat_forecast.attack_num > 0);
 
