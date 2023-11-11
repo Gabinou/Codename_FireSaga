@@ -95,6 +95,7 @@ void fsm_cFrame_sGmpMap_ssMapCndt(struct Game *sota) {
     Game_Cursor_Next_Candidate(sota);
 }
 
+/* Map animation for units fighting on map */
 void fsm_cFrame_sGmpMap_ssMapAnim(struct Game *sota) {
     SDL_assert(sota->combat_forecast.attack_num > 0);
 

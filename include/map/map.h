@@ -21,7 +21,8 @@
 struct Game;
 
 /* --- ENUMS --- */
-#define ARROW_FILENAME ".."DIR_SEPARATOR"assets"DIR_SEPARATOR"GUI"DIR_SEPARATOR"arrow.png"
+#define ARROW_FILENAME ARROW_FILENAME_
+#define ARROW_FILENAME_ PATH_JOIN("..", "assets", "GUI", "arrow.png")
 
 /* --- STRUCTS --- */
 struct Map_condition {
