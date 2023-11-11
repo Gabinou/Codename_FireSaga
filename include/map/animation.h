@@ -14,8 +14,16 @@ struct CombatAnimation;
 //     - Unit movement: entity with Unit, MapAnimation components
 //         - Movement to do is encoded in Arrow sota->map->arrow
 //     - Turn transition: entity with Text, Position, MapAnimation components
-//     - Unit Combat: entity with Timer,  MapAnimation
+//     - Unit Combat: entity with Timer,  CombatAnimation
 //         - Units to fight are encoded in sota->aggressor, sota->defendant
+
+typedef struct CombatAnimation {
+    int attack_ind;
+    int pause_after_ms;
+    int pause_before_ms;
+    int frame_count; /* highest frame index played in current animation */
+} CombatAnimation;
+extern struct CombatAnimation CombatAnimation_default;
 
 
 /* --- MapAnimation --- */

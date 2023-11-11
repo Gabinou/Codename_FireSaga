@@ -1,6 +1,12 @@
 
 #include "map/animation.h"
 
+struct CombatAnimation CombatAnimation_default = {
+    .attack_ind =          0,
+    .pause_before_ms =    10,
+    .pause_after_ms =   1000,
+};
+
 void CombatAnimation_Play(struct Game *sota, tnecs_entity_t entity,
                           struct CombatAnimation *map_anim, struct Timer *combat_timer) {
     SDL_assert(map_anim     != NULL);

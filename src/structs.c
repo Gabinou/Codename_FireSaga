@@ -15,11 +15,6 @@ struct nmath_hexpoint_int32_t Cube_Diagonal_zp =    { 1, -2,  1};
 struct nmath_hexpoint_int32_t Cube_Diagonal_zm =    {-1,  2, -1};
 
 struct Damage Damage_default = {{0, 0}, {0, 0}};
-struct CombatAnimation CombatAnimation_default = {
-    .attack_ind =          0,
-    .pause_before_ms =    10,
-    .pause_after_ms =   1000,
-};
 
 struct HP HP_default = {0, 0, 0, 0};
 

@@ -22,14 +22,6 @@ struct Damage {
 };
 extern struct Damage Damage_default;
 
-typedef struct CombatAnimation {
-    int attack_ind;
-    int pause_after_ms;
-    int pause_before_ms;
-    int frame_count; /* highest frame index played in current animation */
-} CombatAnimation;
-extern struct CombatAnimation CombatAnimation_default;
-
 union Graphics {
     SDL_Texture *texture;
     SDL_Surface *surface;
