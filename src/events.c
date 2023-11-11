@@ -584,7 +584,7 @@ void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
 
     /* - focus cursor on tilemap - */
     Game_cursorFocus_onMap(sota);
-    
+
     // TODO: Remove player control
 
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);

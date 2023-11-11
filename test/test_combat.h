@@ -673,6 +673,7 @@ void test_combat_sequence() {
 
     /* Free everything */
     DARR_FREE(darr_attacks);
+    URN_debug = -1;
 }
 
 void test_combat() {

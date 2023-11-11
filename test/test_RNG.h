@@ -134,13 +134,18 @@ void test_RNG_SequenceBreaker() {
 
 void test_RNG() {
     SDL_Log("test_RNG");
-    // Actually testing the box-muller transform, the tinyMT is a little more involved.
-    // NOt done here because FUCK THAT.
+    PHYSFS_file *fp = PHYSFS_openWrite(PATH_JOIN("build", "RNG.csv"));
+    char buffer[6] = {0};
+    URN_debug = -1;
 
     for (size_t i = 0; i < 100000; i++) {
         i16 out = RNG_URN();
         nourstest_true((out < 100) && (out >= 0));
+        stbsp_sprintf(buffer, "%d\n\0", out);
+        PHYSFS_writeBytes(fp, buffer, strlen(buffer));
     }
+    PHYSFS_close(fp);
+
     test_RNG_SequenceBreaker();
 }
 
