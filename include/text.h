@@ -27,7 +27,7 @@ typedef struct Text {
 } Text;
 extern struct Text Text_default;
 
-void Text_Set(       struct Text *t, char *l);
+void Text_Set(       struct Text *t, char *l, int o);
 void Text_Draw(      struct Text *t, SDL_Renderer *r, SDL_Rect *d);
 void Text_Update(    struct Text *t, SDL_Renderer *r);
 void Text_onUpdate(  struct Text *t);

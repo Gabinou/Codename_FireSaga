@@ -573,12 +573,17 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity_t turn_transition;
     turn_transition = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, MapAnimation, Position, Text, Timer);
 
+    struct Timer *timer;
+    timer  = TNECS_GET_COMPONENT(sota->world, turn_transition, Timer);
+    *timer = Timer_default;
+
     struct MapAnimation *map_anim;
     map_anim  = TNECS_GET_COMPONENT(sota->world, turn_transition, MapAnimation);
     *map_anim = MapAnimation_default;
 
     struct Position *position;
     position  = TNECS_GET_COMPONENT(sota->world, turn_transition, Position);
+    *position = Position_default;
     position->onTilemap = false;
     position->pixel_pos.x = sota->settings.res.x / 2;
     position->pixel_pos.y = sota->settings.res.y / 2;
@@ -587,11 +592,10 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
 
     struct Text *text;
     text  = TNECS_GET_COMPONENT(sota->world, turn_transition, Text);
+    *text = Text_default;
     text->pixelfont         = sota->pixelnours_big;
-    Text_Set(text, "Enemy Turn");
+    Text_Set(text, "Enemy Turn", PIXELNOURS_BIG_Y_OFFSET);
     SDL_assert((text->rect.w > 0) && (text->rect.h > 0));
-
-    // Change game state to map_animation
 }
 
 void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {

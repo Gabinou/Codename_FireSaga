@@ -753,7 +753,7 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
     text->pixelfont         = sota->pixelnours_big;
     text->onUpdate          = &Text_onUpdate_FPS;
     text->update_time_ns    = in_update_time_ns;
-    Text_Set(text, "60.1");
+    Text_Set(text, "60.1", PIXELNOURS_BIG_Y_OFFSET);
 
     SDL_assert(sota->world->entity_typeflags[sota->entity_fps] ==
                TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Timer, Position, Text));

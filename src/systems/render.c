@@ -231,7 +231,6 @@ void drawTextTimer(tnecs_system_input_t *in_input) {
         struct Position *pos  = (position_arr    + order);
         struct Text     *text = (text_arr        + order);
         struct Timer    *ut   = (updatetimer_arr + order);
-        SDL_Log("text %s", text->line);
 
         tnecs_world_t   *world       = in_input->world;
         size_t           typeflag_id = in_input->entity_typeflag_id;

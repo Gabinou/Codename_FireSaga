@@ -35,6 +35,12 @@ enum SCROLLING {
     SCROLL_TIME_SLOW            = 200,
 };
 
+enum PIXELFONT_OFFSET {
+    PIXELNOURS_Y_OFFSET         = 1,
+    PIXELNOURS_BIG_Y_OFFSET     = 2,
+    PIXELNOURS_GOTHIC_Y_OFFSET  = 0,
+};
+
 extern u8 pixelfont_y_offset[ASCII_GLYPH_NUM];
 extern u8 pixelfont_big_y_offset[ASCII_GLYPH_NUM];
 

@@ -873,7 +873,7 @@ void Game_Title_Create(struct Game *sota) {
     PixelFont_Load(text->pixelfont, sota->renderer, path);
 
     /* - Set title - */
-    Text_Set(text, GAME_TITLE);
+    Text_Set(text, GAME_TITLE, PIXELNOURS_GOTHIC_Y_OFFSET);
     SDL_assert((text->rect.w > 0) && (text->rect.h > 0));
     SDL_assert(sota->pixelnours_big != NULL);
 }
