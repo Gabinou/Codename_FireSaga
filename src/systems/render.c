@@ -64,7 +64,7 @@ void drawCursor(tnecs_system_input_t *in_input) {
         if (!sprite->visible)
             continue;
 
-        dstrect_func_t func = dstrect_funcs[position->absolute][isCursor];
+        dstrect_func_t func = dstrect_funcs[!position->onTilemap][isCursor];
         func(sprite, &position->pixel_pos, &sota->camera);
         Sprite_Draw(sprite, sota->renderer);
     }
@@ -110,7 +110,7 @@ void drawMapUnit(tnecs_system_input_t *in_input) {
         if (!sprite->visible)
             continue;
 
-        dstrect_func_t func = dstrect_funcs[position->absolute][isCursor];
+        dstrect_func_t func = dstrect_funcs[!position->onTilemap][isCursor];
         func(sprite, &position->pixel_pos, &sota->camera);
         Sprite_Draw(sprite, sota->renderer);
     }
@@ -255,7 +255,6 @@ void Animate_Combat_onMap(tnecs_system_input_t *in_input) {
     /* -- Get game -- */
     struct Game *sota = (struct Game *)in_input->user_data;
     SDL_assert(sota != NULL);
-    SDL_assert(sota->combat_forecast.attack_num > 0);
 
     /* -- Get components arrays -- */
     struct CombatAnimation *combatanim_arr;

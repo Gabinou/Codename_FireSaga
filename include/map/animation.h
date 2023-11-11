@@ -32,6 +32,7 @@ extern struct CombatAnimation CombatAnimation_default;
 typedef struct MapAnimation {
     i64 time_ns;
 } MapAnimation;
+extern struct MapAnimation MapAnimation_default;
 /* --- Constructors/Destructors --- */
 
 /* --- Play --- */

@@ -3,7 +3,6 @@
 
 struct Position Position_default = {
     .onTilemap      = true,
-    .absolute       = false,
     .pixel_pos      = {1, 1},
     .tilemap_pos    = {1, 1},
     .scale          = {1.0f, 1.0f},

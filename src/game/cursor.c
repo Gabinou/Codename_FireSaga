@@ -34,7 +34,6 @@ void Game_cursorFocus_onMap(struct Game *sota) {
     struct Position *position = TNECS_GET_COMPONENT(sota->world, cursor, Position);
     SDL_assert(position != NULL);
     position->onTilemap = true;
-    position->absolute = false;
     Map_Bounds_Compute(sota->map);
 
     struct Point min = sota->map->boundsmin;
@@ -100,7 +99,6 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
 
     /* - Setting cursor - */
     cursor_pos->onTilemap = false;
-    cursor_pos->absolute = true;
 
     /* - cursor position on menu - */
     /* DESIGN: Reset cursor pos to elem 0 or keep elem in memory? Or something else? */

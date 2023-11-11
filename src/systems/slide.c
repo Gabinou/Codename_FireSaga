@@ -83,7 +83,7 @@ void slideSprite(tnecs_system_input_t *input) {
             slider->timer_ns = 0;
         }
 
-        dstrect_func_t func = dstrect_funcs[position->absolute][isCursor];
+        dstrect_func_t func = dstrect_funcs[!position->onTilemap][isCursor];
         func(sprite, &position->pixel_pos, &sota->camera);
     }
 }

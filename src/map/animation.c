@@ -8,6 +8,10 @@ struct CombatAnimation CombatAnimation_default = {
     .frame_count        =    0,
 };
 
+struct MapAnimation MapAnimation_default = {
+    .time_ns         = 2 * SOTA_ns,
+};
+
 void Map_Combat_Animate(struct Game *sota, tnecs_entity_t entity,
                         struct CombatAnimation *map_anim, struct Timer *combat_timer) {
     SDL_assert(map_anim     != NULL);

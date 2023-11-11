@@ -23,7 +23,7 @@ typedef struct Position {
     struct Point boundsmin;
     struct Point boundsmax;
     float scale[TWO_D];
-    bool absolute   : 1; /* independent of the camera       */
+    /* If not on the Tilemap, position is absolute in window */
     bool onTilemap  : 1; /* position transformed by scale   */
 } Position;
 extern struct Position Position_default;

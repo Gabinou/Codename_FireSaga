@@ -569,6 +569,18 @@ void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     // TODO:
     // Create transition animation entity
+    //
+    tnecs_entity_t turn_transition;
+    turn_transition = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, MapAnimation, Position, Text, Timer);
+
+    struct MapAnimation *map_anim;
+    map_anim  = TNECS_GET_COMPONENT(sota->world, turn_transition, MapAnimation);
+    *map_anim = MapAnimation_default;
+
+    struct Position *position;
+    position  = TNECS_GET_COMPONENT(sota->world, turn_transition, Position);
+    position->onTilemap = false;
+
     // Change game state to map_animation
 }
 

@@ -363,6 +363,7 @@ struct Game *Game_Init() {
     TNECS_REGISTER_COMPONENT(out_game->world, Mobj_Link);
     TNECS_REGISTER_COMPONENT(out_game->world, MapHPBar);
     TNECS_REGISTER_COMPONENT(out_game->world, CombatAnimation);
+    TNECS_REGISTER_COMPONENT(out_game->world, MapAnimation);
     TNECS_REGISTER_COMPONENT(out_game->world, RenderTop);
     TNECS_REGISTER_COMPONENT(out_game->world, PixelFont);
     out_game->timer_typeflag = TNECS_COMPONENT_NAME2TYPE(out_game->world, Timer);
@@ -638,7 +639,7 @@ void Game_Camera_Scroll(struct Game *sota) {
     struct Position *cursor_position;
     cursor_position = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     SDL_assert(cursor_position != NULL);
-    if (cursor_position->absolute)
+    if (!cursor_position->onTilemap)
         return;
 
     const struct Sprite *cursor_sprite;
