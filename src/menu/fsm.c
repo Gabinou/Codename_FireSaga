@@ -826,6 +826,10 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moWait(struct Game *sota, struct Menu *mc) {
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moEndT(struct Game *sota, struct Menu *mc) {
 
+    // int army_i = Map_Army_Next(sota->map);
+    // Todo start transition animation
+    // Todo switch control to next army
+
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_End, data1_entity, data2_entity);
 }
 

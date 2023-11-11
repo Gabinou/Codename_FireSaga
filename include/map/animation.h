@@ -9,16 +9,20 @@
 
 /* --- FORWARD DECLARATIONS --- */
 
-// What should animations and cutscene do?
-// FOR COMBAT:
-//      Input combat Forecast and Attacks
-//      Get the correct animation frames
-//          To get the frames, need -> SPRITESHEET
-//      Play the animation
+// Map_animation Systems: 
+//     - Unit movement: entity with Unit, MapAnimation components
+//         - Movement to do is encoded in Arrow sota->map->arrow
+//     - Turn transition: entity with Text, Position, MapAnimation components
+//     - Unit Combat: entity with MapAnimation
+//         - Units to fight are encoded in sota->aggressor, sota->defendant
 
-struct CombatCutscene { /* on Map */
 
-};
+/* --- MapAnimation --- */
+// Blocks control (except to go faster)
+typedef struct MapAnimation { /* on Map */
+    
+}MapAnimation;
+
 
 struct CombatAnimation { /* on Map */
 
