@@ -9,7 +9,7 @@ struct CombatAnimation CombatAnimation_default = {
 };
 
 struct MapAnimation MapAnimation_default = {
-    .time_ns         = 2 * SOTA_ns,
+    .time_ns         = SOTA_ns,
 };
 
 void Map_Combat_Animate(struct Game *sota, tnecs_entity_t entity,
@@ -80,12 +80,11 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity_t entity,
 
 void Map_TurnTransition_Animate(struct Game *sota, tnecs_entity_t entity,
                                 struct MapAnimation *map_anim, struct Timer *timer) {
-    SDL_Log("Map_TurnTransition_Animate");
     /* - Animation is complete, begin a turn - */
     if (timer->time_ns >= map_anim->time_ns) {
+        SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "Turn Transition Finished");
         tnecs_entity_destroy(sota->world, entity);
         Event_Emit(__func__, SDL_USEREVENT, event_Turn_Begin, NULL, NULL);
         return;
     }
-
 }

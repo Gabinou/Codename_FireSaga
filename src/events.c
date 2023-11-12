@@ -116,6 +116,8 @@ void receive_event_Load_Debug_Map(struct Game *sota, SDL_Event *userevent) {
     /* -- LOAD Debug map -- */
     Game_debugMap_Load(sota);
     Utilities_DrawColor_Reset(sota->renderer);
+
+    Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
 }
 
 void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
@@ -551,7 +553,6 @@ void receive_event_SDL_MOUSEBUTTON(struct Game *sota, SDL_Event *event) {
 
 
 void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
-    // u8 army = * (u8 *) userevent->user.data1;
     struct Map *map = sota->map;
     SDL_assert(sota->state == GAME_STATE_Gameplay_Map);
 
@@ -569,7 +570,6 @@ void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
         Map_Turn_Increment(sota->map);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
-
 }
 
 void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
@@ -587,15 +587,7 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     struct MapAnimation *map_anim;
     map_anim  = TNECS_GET_COMPONENT(sota->world, turn_transition, MapAnimation);
     *map_anim = MapAnimation_default;
-
-    struct Position *position;
-    position  = TNECS_GET_COMPONENT(sota->world, turn_transition, Position);
-    *position = Position_default;
-    position->onTilemap = false;
-    position->pixel_pos.x = sota->settings.res.x / 2;
-    position->pixel_pos.y = sota->settings.res.y / 2;
-    position->scale[0] = 10;
-    position->scale[1] = 10;
+    map_anim->time_ns = SOTA_ns;
 
     /* Get Army name */
     SDL_assert(DARR_NUM(sota->map->army_onfield) > 0);
@@ -607,8 +599,6 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(army >= 0);
     SDL_assert(army < ARMY_NUM);
     s8 army_name = armyNames[army];
-    // SDL_Log("army_name %d '%s'", army, army_name.data);
-    // getchar();
 
     struct Text *text;
     text  = TNECS_GET_COMPONENT(sota->world, turn_transition, Text);
@@ -619,6 +609,15 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     Text_Set(text, line.data, PIXELNOURS_BIG_Y_OFFSET);
     SDL_assert((text->rect.w > 0) && (text->rect.h > 0));
     s8_free(&line);
+
+    struct Position *position;
+    position  = TNECS_GET_COMPONENT(sota->world, turn_transition, Position);
+    *position = Position_default;
+    position->onTilemap = false;
+    position->scale[0] = 10;
+    position->scale[1] = 10;
+    position->pixel_pos.x = sota->settings.res.x / 2 - text->rect.w / 2 * position->scale[0];
+    position->pixel_pos.y = sota->settings.res.y / 2;
 }
 
 void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
@@ -637,7 +636,6 @@ void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
     // TODO: Remove player control
 
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
-    // Event_Emit(__func__, SDL_USEREVENT, event_Turn_Begin, NULL, NULL);
 }
 
 void receive_event_Unit_Enters_Shop(struct Game *sota, SDL_Event *userevent) {
