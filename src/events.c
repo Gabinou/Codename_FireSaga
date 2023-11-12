@@ -566,8 +566,12 @@ void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
     }
 
     /* If player turn came back, increment turn number5 */
-    if (sota->map->army_i == 0)
+    u8 army = sota->map->army_onfield[sota->map->army_i];
+    
+    if (army == ARMY_FRIENDLY) {
         Map_Turn_Increment(sota->map);
+        // TODO: Give back player control
+    }
 
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
 }
