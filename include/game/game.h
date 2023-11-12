@@ -70,6 +70,8 @@ struct Game {
     struct dtab *units_loaded_dtab;
     tnecs_entity_t *units_loaded;
 
+    tnecs_entity_t ai_timer; /* TODO: remove once AI works.*/
+
     struct KeyboardInputMap  keyboardInputMap;
     struct GamepadInputMap   gamepadInputMap;
     // struct MouseInputMap  mouseInputMap;

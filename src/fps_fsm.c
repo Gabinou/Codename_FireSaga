@@ -79,6 +79,20 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     //      - Check if remaining unit in army can move
     //      - Move army unit
     //      - Wait a couple frames I guess
+
+    /* Placeholder for AI control: timer to turn end */
+    if (sota->ai_timer == TNECS_NULL)
+        return;
+
+    struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->ai_timer, Timer);
+
+    if (timer->time_ns >= SOTA_ns) { /* 1s until AI turn finishes */
+        // SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "AI Turn Finished");
+        SDL_Log("AI Turn Finished");
+        tnecs_entity_destroy(sota->world, sota->ai_timer);
+        Event_Emit(__func__, SDL_USEREVENT, event_Turn_End, NULL, NULL);
+        return;
+    }
 }
 
 void fsm_cFrame_sGmpMap_ssSave(struct Game *sota) {

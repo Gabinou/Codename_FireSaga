@@ -572,10 +572,17 @@ void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
         Map_Turn_Increment(sota->map);
         // TODO: Give back player control
         //  use game_substate -> switch state OUT of MAP_NPCTURN, back to Standby
-
+        Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
+    } else {
+        sota->ai_timer      = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer);
+        struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->ai_timer, Timer);
+        *timer = Timer_default;
+        /* -- Setting game substate -- */
+        memcpy(sota->reason, "Ai control turn",
+               sizeof(sota->reason));
+        Game_subState_Set(sota, GAME_SUBSTATE_MAP_NPCTURN, sota->reason);
     }
 
-    Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
 }
 
 void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {

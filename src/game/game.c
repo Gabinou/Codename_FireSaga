@@ -68,6 +68,8 @@ struct Game Game_default = {
 
     .isShadow = false,
 
+    .ai_timer = false,
+
     .party          = {0},
     .party_loaded   = {0},
 
