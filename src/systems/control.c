@@ -40,8 +40,8 @@ void Gamepad_Pressed(i8 sota_b, i8 *press, i8 *pressed_num, i32 *controller_type
 
 void Keyboard_Pressed(i8 sota_b, i8 *press, i8 *pressed_num, i32 *controller_type,
                       u32 event, struct controllerKeyboard *kb) {
-    i32 theld      = kb->timeheld_button_ns;
-    i32 min_held   = KEYBOARD_MINHELD_ns;
+    i32 theld       = kb->timeheld_button_ns;
+    i32 min_held    = KEYBOARD_MINHELD_ns;
     bool butblk     = kb->block_buttons;
 
     Control_Pressed(sota_b, press, pressed_num, butblk, theld,
@@ -57,8 +57,18 @@ void Control_Pressed(i8 sota_b, i8 *press, i8 *pressed_num, bool block, i32 t_he
     if (event <= 0) {
         return;
     }
+    // TODO: block user input
+    //  - Where should the block happen?
+    //  - Not at "Keyboard_Held" level: Physical button IS pressed
+    //  - Prevent "Event_Emit"? maybe
+    //      - Meaning: Button is pressed, event not sent. Seems okay
+    //  - Inside event receiver?
+    //      - More code, switch, etc etc to check inside event
+    //      - Event happens MEANS input was gottent
     // TODO: fsm for button events
     if ((t_min_ns <= 0) || (t_held_ns > t_min_ns)) {
+        // TODO: block user input
+        // if substate MAP_NPCTURN -> don't emit certain events
         Event_Emit(__func__, SDL_USEREVENT, event, controller_type, NULL);
     }
 }
@@ -91,11 +101,11 @@ void Control_Keyboard(tnecs_system_input_t *input) {
 
         /* -- Keyboard button checking -- */
         i8 press[SOTA_BUTTON_END];
-        i8 pnum         = 0;
+        i8 pnum          = 0;
         bool butblk      =  kb->block_buttons;
         size_t *mheld    = &kb->held_move_num;
-        i32   *theld    = &kb->timeheld_button_ns;
-        i32   *theld_ns = &kb->timeheld_move_ns;
+        i32    *theld    = &kb->timeheld_button_ns;
+        i32    *theld_ns = &kb->timeheld_move_ns;
         size_t *bheld    = &kb->held_button_num;
 
         for (int sota_b = SOTA_BUTTON_A; sota_b <= SOTA_BUTTON_TRIGGER_RIGHT; sota_b++) {
@@ -150,6 +160,7 @@ void Control_Gamepad(tnecs_system_input_t *input) {
     /* --- PRELIMINARIES --- */
     SDL_assert(input->user_data != NULL);
     struct Point cursor_move = {0};
+
     /* -- Get game -- */
     struct Game *sota = input->user_data;
     SDL_assert(sota != NULL);
@@ -227,4 +238,5 @@ void Control_Gamepad(tnecs_system_input_t *input) {
 }
 
 void Control_Touchpad(tnecs_system_input_t *input) {
+
 }

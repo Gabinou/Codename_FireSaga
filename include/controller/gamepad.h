@@ -49,22 +49,22 @@ typedef struct controllerGamepad {
     SDL_GameController     **controllers;
     struct GamepadInputMap  *inputmap;
 
-    i32       *joystick_instances;
-    i32        controller_type;
+    i32        *joystick_instances;
+    i32         controller_type;
     int         controllers_num;
     int         controllers_len;
 
-    i16        deadzone_joystick;
-    i16        deadzone_trigger;
+    i16         deadzone_joystick;
+    i16         deadzone_trigger;
 
-    i8         held_move[SOTA_DIRECTIONS_MAIN_NUM];
-    i8         held_button[SOTA_INPUT_END];
+    i8          held_move[SOTA_DIRECTIONS_MAIN_NUM];
+    i8          held_button[SOTA_INPUT_END];
 
     size_t      held_move_num;
     size_t      held_button_num;
 
-    i32        timeheld_move_ns;
-    i32        timeheld_button_ns;
+    i32         timeheld_move_ns;
+    i32         timeheld_button_ns;
     char      **sdl_button_names;
 
     bool        block_buttons   : 1;

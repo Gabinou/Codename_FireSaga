@@ -75,7 +75,10 @@ void fsm_cFrame_sGmpMap_ssMapCmbt(struct Game *sota) {
 }
 
 void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
-
+    // TODO: AI stuff
+    //      - Check if remaining unit in army can move
+    //      - Move army unit
+    //      - Wait a couple frames I guess
 }
 
 void fsm_cFrame_sGmpMap_ssSave(struct Game *sota) {
