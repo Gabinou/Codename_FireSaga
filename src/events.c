@@ -575,7 +575,6 @@ void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
         Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
     } else {
         sota->ai_timer      = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer);
-        SDL_assert(sota->world->entities[sota->ai_timer] == sota->ai_timer);
         struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->ai_timer, Timer);
         *timer = Timer_default;
 
