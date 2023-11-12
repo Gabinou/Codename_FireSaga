@@ -68,7 +68,7 @@ struct Game Game_default = {
 
     .isShadow = false,
 
-    .ai_timer = false,
+    .ai_timer = TNECS_NULL,
 
     .party          = {0},
     .party_loaded   = {0},
