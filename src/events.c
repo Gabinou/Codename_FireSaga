@@ -594,27 +594,28 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     position->scale[0] = 10;
     position->scale[1] = 10;
 
+    /* Get Army name */
     SDL_assert(DARR_NUM(sota->map->army_onfield) > 0);
     u8 army_i    = Map_Army_Next(sota->map);
-    SDL_Log("army_i %d %d %d", 0, army_i, DARR_NUM(sota->map->army_onfield));
     SDL_assert(army_i >= 0);
     SDL_assert(army_i < DARR_NUM(sota->map->army_onfield));
+
     u8 army      = sota->map->army_onfield[army_i];
-    SDL_Log("army %d %d %d", 0, army, ARMY_NUM);
     SDL_assert(army >= 0);
     SDL_assert(army < ARMY_NUM);
     s8 army_name = armyNames[army];
-    SDL_Log("army_name %d '%s'", army, army_name.data);
-    getchar();
+    // SDL_Log("army_name %d '%s'", army, army_name.data);
+    // getchar();
 
     struct Text *text;
     text  = TNECS_GET_COMPONENT(sota->world, turn_transition, Text);
     *text = Text_default;
     text->pixelfont         = sota->pixelnours_big;
-    Text_Set(text, "Enemy Turn", PIXELNOURS_BIG_Y_OFFSET);
+    s8 line = s8_mut(army_name.data);
+    line = s8cat(line, s8_literal(" Turn"));
+    Text_Set(text, line.data, PIXELNOURS_BIG_Y_OFFSET);
     SDL_assert((text->rect.w > 0) && (text->rect.h > 0));
-
-
+    s8_free(&line);
 }
 
 void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {

@@ -85,8 +85,10 @@ void Map_Unit_Put(struct Map *map, tnecs_world_t *world, u8 col, u8 row,
             break;
         }
     }
-    if (temp_unit->_id == 0)
-        Map_addArmy(map, temp_unit->army);
+    SDL_assert(temp_unit->_id > UNIT_ID_NULL);
+    SDL_assert(temp_unit->_id < UNIT_ID_END);
+
+    Map_addArmy(map, temp_unit->army);
 }
 
 void Map_Unit_Move(struct Map *map, u8 col, u8 row, u8 new_col, u8 new_row) {
