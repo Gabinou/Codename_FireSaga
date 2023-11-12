@@ -132,13 +132,13 @@ void Game_PopUp_Unit_Create(struct Game *sota) {
     tnecs_entity_t ent;
     ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position, PopUp, Slider, SliderOffscreen);
     sota->popups[POPUP_TYPE_HUD_UNIT] = ent;
-    struct PopUp *popup                 = TNECS_GET_COMPONENT(sota->world, ent, PopUp);
-    struct Slider *slider               = TNECS_GET_COMPONENT(sota->world, ent, Slider);
-    struct Position *position           = TNECS_GET_COMPONENT(sota->world, ent, Position);
-    struct SliderOffscreen *offscreen   = TNECS_GET_COMPONENT(sota->world, ent, SliderOffscreen);
-    SDL_assert(position != NULL);
-    SDL_assert(popup != NULL);
-    SDL_assert(slider != NULL);
+    struct PopUp           *popup     = TNECS_GET_COMPONENT(sota->world, ent, PopUp);
+    struct Slider          *slider    = TNECS_GET_COMPONENT(sota->world, ent, Slider);
+    struct Position        *position  = TNECS_GET_COMPONENT(sota->world, ent, Position);
+    struct SliderOffscreen *offscreen = TNECS_GET_COMPONENT(sota->world, ent, SliderOffscreen);
+    SDL_assert(popup     != NULL);
+    SDL_assert(slider    != NULL);
+    SDL_assert(position  != NULL);
     SDL_assert(offscreen != NULL);
 
     /* - Popup - */
@@ -245,7 +245,6 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
     #else
     Slider_Start(slider, &position->pixel_pos, &slider->target);
     #endif
-
 }
 
 void Game_PopUp_Tile_Place(struct Game *sota, struct Point cursor_pos) {
@@ -394,6 +393,7 @@ void Game_PopUp_Tile_Free(struct Game *sota) {
         popup = TNECS_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_HUD_TILE], PopUp);
         SDL_free(popup->data);
     }
+    sota->popups[POPUP_TYPE_HUD_TILE] = TNECS_NULL;
 }
 
 void Game_PopUp_Tile_Create(struct Game *sota) {

@@ -240,17 +240,21 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
     /* --- Visible Popups --- */
     tnecs_entity_t popup_ent;
     struct PopUp *popup_ptr;
-    /* -- Popup_Tile -- */
-    popup_ent = sota->popups[POPUP_TYPE_HUD_TILE];
-    popup_ptr = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
-    SDL_assert(popup_ptr != NULL);
-    popup_ptr->visible = true;
+    /* -- Make Popup_Tile visible -- */
+    if (popup_ent > TNECS_NULL) {
+        popup_ent = sota->popups[POPUP_TYPE_HUD_TILE];
+        popup_ptr = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
+        SDL_assert(popup_ptr != NULL);
+        popup_ptr->visible = true;
+    }
 
     /* -- Make Popup_Unit visible -- */
     popup_ent = sota->popups[POPUP_TYPE_HUD_UNIT];
-    popup_ptr = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
-    SDL_assert(popup_ptr != NULL);
-    popup_ptr->visible = true;
+    if (popup_ent > TNECS_NULL) {
+        popup_ptr = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
+        SDL_assert(popup_ptr != NULL);
+        popup_ptr->visible = true;
+    }
 
     /* --- Invisible Popups --- */
     /* -- Popup_Loadout_stats -- */
@@ -563,7 +567,6 @@ void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
     /* If player turn came back, increment turn number5 */
     if (sota->map->army_i == 0)
         Map_Turn_Increment(sota->map);
-
 
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
 
