@@ -305,12 +305,13 @@ void Names_Print_All(const char *foldername) {
     FILE *fp = NULL;
     /* --- Army names --- */
     s8 filename = s8_mut(foldername);
-    filename = s8cat(filename, s8_literal("Utilities_unitArmies.txt"));
+    filename = s8cat(filename, s8_literal("Utilities_armyNames.txt"));
     SDL_Log("filename %s", filename.data);
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
-    for (u8 i = ARMY_START; i < (ARMY_END - 1); i++)
-        fprintf(fp, "%d %s \n", i, armyNames[i]);
+    for (u8 i = ARMY_START; i < (ARMY_END - 1); i++) {
+        fprintf(fp, "%d %s \n", i, armyNames[i].data);
+    }
     fclose(fp);
     s8_free(&filename);
 
@@ -398,7 +399,7 @@ void Names_Print_All(const char *foldername) {
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (size_t i = 0; i < DARR_NUM(global_itemNames); i++)
-        fprintf(fp, "%zu %s \n", i, global_itemNames[i]);
+        fprintf(fp, "%zu %s \n", i, global_itemNames[i].data);
     fclose(fp);
 
     /* --- State names --- */
@@ -420,7 +421,7 @@ void Names_Print_All(const char *foldername) {
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = UNIT_SEX_F; i < (UNIT_SEX_M + 1); i++)
-        fprintf(fp, "%d %s \n", i, sexNames[i]);
+        fprintf(fp, "%d %s \n", i, sexNames[i].data);
     fclose(fp);
 
     /* --- Class names --- */
@@ -431,7 +432,7 @@ void Names_Print_All(const char *foldername) {
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = UNIT_CLASS_START; i < UNIT_CLASS_END; i++)
-        fprintf(fp, "%d %s \n", i, classNames[i]);
+        fprintf(fp, "%d %s \n", i, classNames[i].data);
     fclose(fp);
     s8_free(&filename);
 

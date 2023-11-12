@@ -594,10 +594,17 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     position->scale[0] = 10;
     position->scale[1] = 10;
 
+    SDL_assert(DARR_NUM(sota->map->army_onfield) > 0);
     u8 army_i    = Map_Army_Next(sota->map);
+    SDL_Log("army_i %d %d %d", 0, army_i, DARR_NUM(sota->map->army_onfield));
+    SDL_assert(army_i >= 0);
+    SDL_assert(army_i < DARR_NUM(sota->map->army_onfield));
     u8 army      = sota->map->army_onfield[army_i];
+    SDL_Log("army %d %d %d", 0, army, ARMY_NUM);
+    SDL_assert(army >= 0);
+    SDL_assert(army < ARMY_NUM);
     s8 army_name = armyNames[army];
-    SDL_Log("army_name %s", army_name.data);
+    SDL_Log("army_name %d '%s'", army, army_name.data);
     getchar();
 
     struct Text *text;

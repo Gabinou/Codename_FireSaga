@@ -825,6 +825,7 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
 u8 Map_Army_Next(struct Map *map) {
     /* Get next army in line for control */
     SDL_assert(map->army_onfield != NULL);
+
     /* Get number of armies on field */
     size_t army_num = DARR_NUM(map->army_onfield);
     SDL_assert(army_num <= ARMY_NUM);
