@@ -825,7 +825,6 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
 u8 Map_Army_Next(struct Map *map) {
     /* Get next army in line for control */
     SDL_assert(map->army_onfield != NULL);
-    SDL_assert(map->army_onfield[0] == ARMY_FRIENDLY);
     /* Get number of armies on field */
     size_t army_num = DARR_NUM(map->army_onfield);
     SDL_assert(army_num <= ARMY_NUM);
@@ -834,10 +833,6 @@ u8 Map_Army_Next(struct Map *map) {
     map->army_i = ((map->army_i + 1) >= army_num) ? 0 : (map->army_i + 1);
     SDL_assert(map->army_i >= 0);
     SDL_assert(map->army_i < ARMY_NUM);
-
-    /* If player turn came back, increment turn number5 */
-    if (map->army_i == 0)
-        Map_Turn_Increment(map);
 
     return (map->army_i);
 }

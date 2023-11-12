@@ -142,13 +142,22 @@ void Map_Chest_onOpen(struct Map *map, tnecs_world_t *world, tnecs_entity_t ches
 }
 
 void Map_addArmy(struct Map *map, const u8 army) {
-    bool found = false;
+    /* -- Don't add army if found -- */
     for (u8 i = 0; i < DARR_NUM(map->army_onfield); i++)
-        found |= (map->army_onfield[i] == army);
+        if (map->army_onfield[i] == army)
+            return;
 
-    // TODO: check army priority
-    if (!found)
-        DARR_PUT(map->army_onfield, army);
+    /* -- Army priority: smaller army go first -- */
+    int insert = 0;
+    /* If DARR_NUM(map->army_onfield) is 0, insert is 0 */
+    for (int i = 0; i < DARR_NUM(map->army_onfield); i++) {
+        if (army > map->army_onfield[i]) {
+            insert = i;
+            break;
+        }
+    }
+
+    DARR_INSERT(map->army_onfield, army, insert);
 }
 
 void Map_Unit_Remove(struct Map *map, const tnecs_entity_t entity) {

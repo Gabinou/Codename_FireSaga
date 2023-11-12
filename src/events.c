@@ -551,25 +551,25 @@ void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
     struct Map *map = sota->map;
     SDL_assert(sota->state == GAME_STATE_Gameplay_Map);
 
+
     /* - Refresh all units - */
+    // TODO: Move to turn end? Make units colored again
     for (int i = 0; i < map->num_units_onfield; i++) {
         if (map->units_onfield[i] != TNECS_NULL) {
             Game_Unit_Refresh(sota, map->units_onfield[i]);
         }
     }
 
-    // TODO:
-    // - Perform turn begin animation
-    Map_Turn_Increment(sota->map);
+    /* If player turn came back, increment turn number5 */
+    if (sota->map->army_i == 0)
+        Map_Turn_Increment(sota->map);
+
 
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
 
 }
 
 void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
-    // TODO:
-    // Create transition animation entity
-    //
     tnecs_entity_t turn_transition;
     turn_transition = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, MapAnimation, Position, Text, Timer);
 
@@ -577,6 +577,10 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     timer  = TNECS_GET_COMPONENT(sota->world, turn_transition, Timer);
     *timer = Timer_default;
 
+    // TODO: How to do a fancy animation?
+    // 1- draw animation pixel art
+    // 2- Modify MapAnimation component
+    // 3- Implement animation checker in Map_TurnTransition_Animate
     struct MapAnimation *map_anim;
     map_anim  = TNECS_GET_COMPONENT(sota->world, turn_transition, MapAnimation);
     *map_anim = MapAnimation_default;
@@ -590,12 +594,20 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     position->scale[0] = 10;
     position->scale[1] = 10;
 
+    u8 army_i    = Map_Army_Next(sota->map);
+    u8 army      = sota->map->army_onfield[army_i];
+    s8 army_name = armyNames[army];
+    SDL_Log("army_name %s", army_name.data);
+    getchar();
+
     struct Text *text;
     text  = TNECS_GET_COMPONENT(sota->world, turn_transition, Text);
     *text = Text_default;
     text->pixelfont         = sota->pixelnours_big;
     Text_Set(text, "Enemy Turn", PIXELNOURS_BIG_Y_OFFSET);
     SDL_assert((text->rect.w > 0) && (text->rect.h > 0));
+
+
 }
 
 void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {

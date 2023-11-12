@@ -57,7 +57,7 @@ DARR_GROW(darr);\
 darr[DARR_NUM(darr)++] = elem;\
 } while(0)
 
-// DARR_INSERT: Put elem at inde, moving other elements over
+// DARR_INSERT: Put elem at index, moving other elements over
 #define DARR_INSERT(darr, elem, index) do {if ((++DARR_NUM(darr)) >= (DARR_LEN(darr))) {\
 DARR_GROW(darr);\
 }\
