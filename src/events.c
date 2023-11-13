@@ -200,17 +200,20 @@ void receive_event_Cursor_Disable(struct Game *sota, SDL_Event *Cursor_Disable) 
 
 void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) {
     u8 army = * (u8 *) userevent->user.data1;
-    if (SotA_isPC(army)) {
-        // Game_State_Set(sota, GAME_STATE_Gameplay_Map);
-        if (sota->entity_cursor > TNECS_NULL)
-            Game_Cursor_Create(sota);
-        Game_Cursor_Enable(sota);
-        // Game_setCursorstate(sota, MENU_MAP);
-        // Game_Mouse_State_Set(sota, MENU_MAP);
+
+    if (army == ARMY_FRIENDLY) {
+        Map_Turn_Increment(sota->map);
+        // TODO: Give back player control
+        //  use game_substate -> switch state OUT of MAP_NPCTURN, back to Standby
+        Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
     } else {
-        memcpy(sota->reason, "control was switched to a non-player army", sizeof(sota->reason));
+        sota->ai_timer      = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer);
+        struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->ai_timer, Timer);
+        *timer = Timer_default;
+
+        /* -- Setting game substate -- */
+        memcpy(sota->reason, "Ai control turn", sizeof(sota->reason));
         Game_subState_Set(sota, GAME_SUBSTATE_MAP_NPCTURN, sota->reason);
-        Game_Cursor_Free(sota);
     }
 }
 
@@ -566,22 +569,9 @@ void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
     }
 
     /* If player turn came back, increment turn number5 */
-    u8 army = sota->map->army_onfield[sota->map->army_i];
+    u8 *army = &sota->map->army_onfield[sota->map->army_i];
+    Event_Emit(__func__, SDL_USEREVENT, event_Game_Control_Switch, army, NULL);
 
-    if (army == ARMY_FRIENDLY) {
-        Map_Turn_Increment(sota->map);
-        // TODO: Give back player control
-        //  use game_substate -> switch state OUT of MAP_NPCTURN, back to Standby
-        Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
-    } else {
-        sota->ai_timer      = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer);
-        struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->ai_timer, Timer);
-        *timer = Timer_default;
-
-        /* -- Setting game substate -- */
-        memcpy(sota->reason, "Ai control turn", sizeof(sota->reason));
-        Game_subState_Set(sota, GAME_SUBSTATE_MAP_NPCTURN, sota->reason);
-    }
 }
 
 void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
@@ -648,8 +638,6 @@ void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
     /* - focus cursor on tilemap - */
     Game_cursorFocus_onMap(sota);
 
-    // TODO: Remove player control
-    //  use game_substate -> switch state MAP_NPCTURN
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
 }
 
