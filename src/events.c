@@ -630,6 +630,9 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     position->scale[1] = 10;
     position->pixel_pos.x = sota->settings.res.x / 2 - text->rect.w / 2 * position->scale[0];
     position->pixel_pos.y = sota->settings.res.y / 2;
+
+    memcpy(sota->reason, "Turn transition is an animation", sizeof(sota->reason));
+    Game_subState_Set(sota, GAME_SUBSTATE_MAP_ANIMATION, sota->reason);
 }
 
 void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {

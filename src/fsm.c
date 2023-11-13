@@ -587,6 +587,7 @@ void fsm_eCncl_sGmpMap_ssMapCmbt(struct Game *sota, tnecs_entity_t canceller) {
 }
 
 void fsm_eCncl_sGmpMap_ssMapNPC(struct Game *sota, tnecs_entity_t canceller) {
+
 }
 
 // -- FSM: CURSOR_MOVES EVENT --

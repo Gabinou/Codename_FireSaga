@@ -88,7 +88,7 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->ai_timer, Timer);
     SDL_assert(timer != NULL);
 
-    if (timer->time_ns >= SOTA_ns) { /* 1s until AI turn finishes */
+    if (timer->time_ns >= (1ULL * SOTA_ns)) { /* 1s until AI turn finishes */
         // SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "AI Turn Finished");
         SDL_Log("AI Turn Finished");
         tnecs_entity_destroy(sota->world, sota->ai_timer);

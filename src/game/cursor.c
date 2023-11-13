@@ -335,8 +335,6 @@ void Game_Cursor_Next_Candidate(struct Game *sota) {
 }
 
 void Game_Cursor_Moves_onMap(struct Game *sota) {
-
-
     /* --- SKIPPING --- */
     /* - skip if any sota->cursor_move 0 - */
     bool skip = ((sota->cursor_move.x == 0) && (sota->cursor_move.y == 0));
@@ -391,9 +389,12 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
 /* --- Cursor --- */
 void Game_Cursor_Create(struct Game *sota) {
     Game_Cursor_Free(sota);
-    sota->entity_cursor = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Slider, Position, Sprite,
-                                                          controllerKeyboard, controllerGamepad,
-                                                          controllerTouchpad, Timer, CursorFlag);
+    sota->entity_cursor = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Slider,
+                                                          Position, Sprite,
+                                                          controllerKeyboard,
+                                                          controllerGamepad,
+                                                          controllerTouchpad,
+                                                          Timer, CursorFlag);
     SDL_assert(sota->entity_cursor != 0);
     struct controllerKeyboard *keyboard;
     keyboard = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, controllerKeyboard);

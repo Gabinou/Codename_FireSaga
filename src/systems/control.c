@@ -57,18 +57,9 @@ void Control_Pressed(i8 sota_b, i8 *press, i8 *pressed_num, bool block, i32 t_he
     if (event <= 0) {
         return;
     }
-    // TODO: block user input
-    //  - Where should the block happen?
-    //  - Not at "Keyboard_Held" level: Physical button IS pressed
-    //  - Prevent "Event_Emit"? maybe
-    //      - Meaning: Button is pressed, event not sent. Seems okay
-    //  - Inside event receiver?
-    //      - More code, switch, etc etc to check inside event
-    //      - Event happens MEANS input was gottent
-    // TODO: fsm for button events
     if ((t_min_ns <= 0) || (t_held_ns > t_min_ns)) {
-        // TODO: block user input
-        // if substate MAP_NPCTURN -> don't emit certain events
+        // NOTE: 1- User input is blocked in FSM.
+        //       2- Control System always sends events.
         Event_Emit(__func__, SDL_USEREVENT, event, controller_type, NULL);
     }
 }
