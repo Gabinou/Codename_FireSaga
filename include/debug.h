@@ -17,6 +17,9 @@
 
 #define DEBUG_CURSOR_SHOW_wDISABLED
 
+#define SOTA_PLAYER_CONTROLS_ENEMY
+// #define SOTA_PLAYER_CONTROLS_NEUTRAL
+
 // #define DEBUG_LOADOUT_STATS_SHOW_ARROWS
 
 /* Flags for debugging. 0 disabled, 1 enabled. */

@@ -202,11 +202,14 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
     u8 army = * (u8 *) userevent->user.data1;
 
     if (army == ARMY_FRIENDLY) {
-        Map_Turn_Increment(sota->map);
-        // TODO: Give back player control
-        //  use game_substate -> switch state OUT of MAP_NPCTURN, back to Standby
+        /* --- Control goes back to player --- */ 
         Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
+        /* -- Turn only increments at the start of player turn -- */ 
+        Map_Turn_Increment(sota->map);
     } else {
+        #ifndef SOTA_PLAYER_CONTROLS_ENEMY
+        /* --- AI control for enemy turn --- */
+        /* -- Timer for AI -- */
         sota->ai_timer      = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer);
         struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->ai_timer, Timer);
         *timer = Timer_default;
@@ -214,6 +217,11 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         /* -- Setting game substate -- */
         memcpy(sota->reason, "Ai control turn", sizeof(sota->reason));
         Game_subState_Set(sota, GAME_SUBSTATE_MAP_NPCTURN, sota->reason);
+
+        #else /* SOTA_PLAYER_CONTROLS_ENEMY */
+        /* --- Player control for enemy turn --- */
+        Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
+        #endif /* SOTA_PLAYER_CONTROLS_ENEMY */
     }
 }
 
