@@ -1240,14 +1240,32 @@ void receive_event_Convoy_Map(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
-    tnecs_entity_t killer_entity = *(tnecs_entity_t *) userevent->user.data1;
-    tnecs_entity_t victim_entity = *(tnecs_entity_t *) userevent->user.data2;
+    /* --- PRELIMINARIES --- */
+    tnecs_entity_t victim_entity = *(tnecs_entity_t *) userevent->user.data1;
+    tnecs_entity_t killer_entity = *(tnecs_entity_t *) userevent->user.data2;
     struct Unit *killer = TNECS_GET_COMPONENT(sota->world, killer_entity, Unit);
     struct Unit *victim = TNECS_GET_COMPONENT(sota->world, victim_entity, Unit);
+
+    /* --- Increasing Killer's regrets --- */
     int regrets = killer->regrets;
     killer->regrets = regrets > UINT8_MAX - REGRET_KILL ? UINT8_MAX : regrets + REGRET_KILL;
 
+    /* --- Removing unit from map --- */
     Map_Unit_Remove(sota->map, sota->world, victim_entity);
+
+    /* --- Making unit sprite invisible --- */
+    struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, victim_entity, Sprite);
+    sprite->visible = false;
+
+    /* --- Making unit HPbar invisible --- */
+    struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(sota->world, victim_entity, MapHPBar);
+    map_hp_bar->visible = false;
+    map_hp_bar->update  = false;
+
+    /* --- Deleting entity? --- */
+    // - Delete now useless components of entity
+    //      HPbar, sprite
+    // - Put unit entity in list of killed units
 }
 
 void receive_event_Unit_Loots(struct Game *sota, SDL_Event *userevent) {

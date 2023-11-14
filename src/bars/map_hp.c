@@ -27,7 +27,6 @@ void MapHPBar_Draw(struct MapHPBar *mbar, struct Camera *camera, i32 tilesize[TW
 
     if (mbar->visible)
         SDL_RenderCopy(renderer, mbar->texture, NULL, &dstrect);
-
 }
 
 void MapHPBar_Update(struct MapHPBar *mbar, struct Camera *camera,
