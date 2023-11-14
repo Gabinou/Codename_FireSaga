@@ -1260,6 +1260,8 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     struct Unit *victim = TNECS_GET_COMPONENT(sota->world, victim_entity, Unit);
     int regrets = killer->regrets;
     killer->regrets = regrets > UINT8_MAX - REGRET_KILL ? UINT8_MAX : regrets + REGRET_KILL;
+
+    Map_Unit_Remove(sota->map, sota->world, victim_entity);
 }
 
 void receive_event_Unit_Loots(struct Game *sota, SDL_Event *userevent) {
