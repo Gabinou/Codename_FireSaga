@@ -36,7 +36,7 @@ void Map_Unit_Put(struct Map *map, tnecs_world_t *world, u8 col, u8 row,
     SDL_assert(temp_unit != NULL);
 
     /* -- Adding unit to army list -- */
-    switch (SotA_army2alignment(temp_unit->army)) {
+    switch (army_alignment[temp_unit->army]) {
         case ALIGNMENT_FRIENDLY: {
             SDL_assert(Unit_ID_Valid(temp_unit->_id));
             SDL_assert(global_unitOrders != NULL);

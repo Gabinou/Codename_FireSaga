@@ -252,19 +252,19 @@ char *Utilities_Print_itemStats(struct Item_stats stats) {
 
 u8 army_alignment[ARMY_END] = {
     /* ARMY_START                     */ ALIGNMENT_ENEMY,
-    /* ARMY_FRIENDLY                  */ ALIGNMENT_FRIENDLY,
-    /* ARMY_ERWIN                     */ ALIGNMENT_FRIENDLY,
-    /* ARMY_FREE_MILITIA              */ ALIGNMENT_FRIENDLY,
-    /* ARMY_NEUTRAL                   */ ALIGNMENT_FRIENDLY,
-    /* ARMY_IMPERIAL                  */ ALIGNMENT_FRIENDLY,
-    /* ARMY_HAMILCAR                  */ ALIGNMENT_ENEMY,
-    /* ARMY_FIRST_EXPEDITIONARY_FORCE */ ALIGNMENT_ENEMY,
-    /* ARMY_THEOCRACY                 */ ALIGNMENT_FRIENDLY,
-    /* ARMY_VOLDAN                    */ ALIGNMENT_FRIENDLY,
-    /* ARMY_KEWAC                     */ ALIGNMENT_ENEMY,
-    /* ARMY_KESIRU                    */ ALIGNMENT_FRIENDLY,
-    /* ARMY_ENEMY                     */ ALIGNMENT_ENEMY,
-    /* ARMY_BANDITS                   */ ALIGNMENT_ENEMY,
+    /* FRIENDLY                       */ ALIGNMENT_FRIENDLY,
+    /* ENEMY                          */ ALIGNMENT_ENEMY,
+    /* ERWIN                          */ ALIGNMENT_FRIENDLY,
+    /* FREE_MILITIA                   */ ALIGNMENT_FRIENDLY,
+    /* NEUTRAL                        */ ALIGNMENT_FRIENDLY,
+    /* IMPERIAL                       */ ALIGNMENT_FRIENDLY,
+    /* HAMILCAR                       */ ALIGNMENT_ENEMY,
+    /* FIRST_EXPEDITIONARY_FORCE      */ ALIGNMENT_ENEMY,
+    /* THEOCRACY                      */ ALIGNMENT_FRIENDLY,
+    /* VOLDAN                         */ ALIGNMENT_FRIENDLY,
+    /* KEWAC                          */ ALIGNMENT_ENEMY,
+    /* KESIRU                         */ ALIGNMENT_FRIENDLY,
+    /* BANDITS                        */ ALIGNMENT_ENEMY,
 };
 
 bool army_isPC[ARMY_END] = {
