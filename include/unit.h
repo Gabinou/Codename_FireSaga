@@ -52,10 +52,10 @@ typedef struct Unit {
     i16 class;
     i8  mvt_type;
     i8  army;
-    u8  current_agony;
     u8  current_hp;
     i8  handedness;
     u16 talkable;
+    u8  current_agony;
     i8  agony; /* turns left before death (-1 not agonizing) */
     u8  regrets;
 
@@ -140,7 +140,7 @@ typedef struct Unit {
 
     bool sex            : 1; /* 0:F, 1:M. eg. hasPenis. */
     bool waits          : 1;
-    bool is_alive       : 1;
+    bool alive          : 1;
     bool agonizes       : 1;
     bool literate       : 1; /* Reading/writing for scribe job. */
     bool courageous     : 1; /* For reaction to story events    */

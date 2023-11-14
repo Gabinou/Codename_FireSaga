@@ -570,7 +570,7 @@ void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
 
     /* - Refresh all units - */
     // TODO: Move to turn end? Make units colored again
-    for (int i = 0; i < map->num_units_onfield; i++) {
+    for (int i = 0; i < DARR_NUM(map->units_onfield); i++) {
         if (map->units_onfield[i] != TNECS_NULL) {
             Game_Unit_Refresh(sota, map->units_onfield[i]);
         }
@@ -1139,13 +1139,11 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
 
     // 2. Update maphpbars.
     struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(sota->world, sota->aggressor, MapHPBar);
-    struct Unit *unit           = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Unit);
     SDL_assert(map_hp_bar != NULL);
     SDL_assert(map_hp_bar->unit_ent == sota->aggressor);
     map_hp_bar->update  = true;
     map_hp_bar->visible = true;
     map_hp_bar = TNECS_GET_COMPONENT(sota->world, sota->defendant, MapHPBar);
-    unit = TNECS_GET_COMPONENT(sota->world, sota->defendant, Unit);
     map_hp_bar->update  = true;
     map_hp_bar->visible = true;
 
@@ -1162,7 +1160,18 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
     // 5. Hide PopUp_Map_Combat
     // Game_PopUp_Map_Combat_Hide(sota);
 
-    // 6. Return to standby
+    // 6. Check for unit agony/death
+    struct Unit *agg_unit = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Unit);
+    struct Unit *dft_unit = TNECS_GET_COMPONENT(sota->world, sota->defendant, Unit);
+
+    if ((!agg_unit->alive) || (agg_unit->agony >= 0)) {
+        Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &sota->aggressor, &sota->defendant);
+    }
+    if ((!dft_unit->alive) || (dft_unit->agony >= 0)) {
+        Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &sota->defendant, &sota->aggressor);
+    }
+
+    // 7. Return to standby
     *data1_entity = sota->entity_cursor;
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
 

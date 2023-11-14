@@ -2,31 +2,6 @@
 #include "map/ontile.h"
 
 /* --- Entity finders --- */
-bool entity_isIn(u64 *array, u64 to_find, size_t arr_len) {
-    bool found = false;
-    for (size_t i = 0; i < arr_len; i++) {
-        if (array[i] == to_find) {
-            found = true;
-            break;
-        }
-    }
-    return (found);
-}
-
-size_t *entity_where(u64 *array, u64 to_find, size_t arr_len) {
-    size_t *found_list = DARR_INIT(found_list, size_t, arr_len);
-    for (size_t i = 0; i < arr_len; i++) {
-        if (array[i] == to_find) {
-            DARR_PUT(found_list, i);
-            break;
-        }
-    }
-    DARR_LEN(found_list) = DARR_NUM(found_list);
-    size_t newl = (DARR_NUM(found_list) < SOTA_MINLEN ? SOTA_MINLEN : DARR_NUM(found_list));
-    found_list = DARR_REALLOC(found_list, newl);
-    return (found_list);
-}
-
 void Map_startingPos_Add(struct Map *map, i32 col, i32 row) {
     struct Point pos = {col, row};
     DARR_PUT(map->start_pos, pos);
@@ -47,7 +22,7 @@ void Map_Unit_Put(struct Map *map, tnecs_world_t *world, u8 col, u8 row,
     }
     map->unitmap[row * map->col_len + col] = entity;
     DARR_PUT(map->units_onfield, entity);
-    map->num_units_onfield++;
+    // DARR_NUM(map->units_onfield)++;
 
     /* -- Updating unit pos -- */
     struct Position *pos         = TNECS_GET_COMPONENT(world, entity, Position);
@@ -70,7 +45,7 @@ void Map_Unit_Put(struct Map *map, tnecs_world_t *world, u8 col, u8 row,
             SDL_assert(order > 0);
             SDL_assert(order < UNIT_NUM);
             DARR_PUT(map->friendlies_onfield, entity);
-            map->num_friendlies_onfield++;
+            DARR_NUM(map->friendlies_onfield)++;
             break;
         }
         case ALIGNMENT_ENEMY: {
@@ -81,7 +56,7 @@ void Map_Unit_Put(struct Map *map, tnecs_world_t *world, u8 col, u8 row,
             SDL_assert(order > 0);
             SDL_assert(order < UNIT_NUM);
             DARR_PUT(map->enemies_onfield, entity);
-            map->num_enemies_onfield++;
+            DARR_NUM(map->enemies_onfield)++;
             break;
         }
     }
@@ -118,7 +93,7 @@ tnecs_entity_t *Map_Units_Get(struct Map *map, tnecs_world_t *world, const u8 ar
     unit_ents = DARR_INIT(unit_ents, tnecs_entity_t, 16);
     tnecs_entity_t current_unit_ent;
     struct Unit *current_unit;
-    for (u8 i = 0; i < map->num_units_onfield; i++) {
+    for (u8 i = 0; i < DARR_NUM(map->units_onfield); i++) {
         current_unit_ent = map->units_onfield[i];
         current_unit = TNECS_GET_COMPONENT(world, current_unit_ent, Unit);
         if (current_unit->army == army)
@@ -162,44 +137,58 @@ void Map_addArmy(struct Map *map, const u8 army) {
     DARR_INSERT(map->army_onfield, army, insert);
 }
 
-void Map_Unit_Remove(struct Map *map, const tnecs_entity_t entity) {
-    size_t *found = NULL;
-    if (entity_isIn(map->friendlies_onfield, entity, map->num_friendlies_onfield)) {
-        found = entity_where(map->friendlies_onfield, entity, map->num_friendlies_onfield);
-        DARR_DEL(map->friendlies_onfield, found[0]);
-        map->num_friendlies_onfield--;
-        SDL_free(found);
+// size_t *entity_where(u64 *array, u64 to_find, size_t arr_len) {
+//     size_t *found_list = DARR_INIT(found_list, size_t, arr_len);
+//     for (size_t i = 0; i < arr_len; i++) {
+//         if (array[i] == to_find) {
+//             DARR_PUT(found_list, i);
+//             break;
+//         }
+//     }
+//     DARR_LEN(found_list) = DARR_NUM(found_list);
+//     size_t newl = (DARR_NUM(found_list) < SOTA_MINLEN ? SOTA_MINLEN : DARR_NUM(found_list));
+//     found_list = DARR_REALLOC(found_list, newl);
+//     return (found_list);
+// }
+
+int entity_isIn(u64 *array, u64 to_find, size_t arr_len) {
+    int found = -1;
+    for (size_t i = 0; i < arr_len; i++) {
+        if (array[i] == to_find)
+            return (i);
     }
-    if (entity_isIn(map->enemies_onfield, entity, map->num_enemies_onfield)) {
-        found = entity_where(map->enemies_onfield, entity, map->num_enemies_onfield);
-        DARR_DEL(map->enemies_onfield, found[0]);
-        map->num_enemies_onfield--;
-        SDL_free(found);
-    }
-    if (entity_isIn(map->units_onfield, entity, map->num_units_onfield)) {
-        found = entity_where(map->units_onfield, entity, map->num_units_onfield);
-        DARR_DEL(map->units_onfield, found[0]);
-        map->num_units_onfield--;
-        SDL_free(found);
-    }
+    return (found);
 }
 
-void Map_Unit_Remove_fromPos(struct Map *map, u8 col, u8 row) {
+void _Map_Unit_Remove_List(struct Map *map, const tnecs_entity_t entity) {
+    int found = entity_isIn(map->friendlies_onfield, entity, DARR_NUM(map->friendlies_onfield));
+    if (found > -1)
+        DARR_DEL(map->friendlies_onfield, found);
+
+    found = entity_isIn(map->enemies_onfield, entity, DARR_NUM(map->enemies_onfield));
+    if (found > -1)
+        DARR_DEL(map->enemies_onfield, found);
+
+    found = entity_isIn(map->units_onfield, entity, DARR_NUM(map->units_onfield));
+    if (found > -1)
+        DARR_DEL(map->units_onfield, found);
+}
+
+void _Map_Unit_Remove_Map(struct Map *map, u8 col, u8 row) {
     SDL_assert(map->unitmap != NULL);
-    tnecs_entity_t ontile_ent = map->unitmap[row * map->col_len + col];
     map->unitmap[row * map->col_len + col] = 0;
-    Map_Unit_Remove(map, ontile_ent);
 }
 
-void Map_Unit_Remove_fromEntity(struct Map *map, tnecs_world_t *world, tnecs_entity_t entity) {
-    // assumes there are no doubles in the _onfield arrays
+void Map_Unit_Remove(struct Map *map, tnecs_world_t *world, tnecs_entity_t entity) {
     SDL_assert(map->unitmap != NULL);
+    /* --- Check that entity is really on map --- */
     struct Position *pos = TNECS_GET_COMPONENT(world, entity, Position);
-    tnecs_entity_t ontile_ent = 0;
-    if (pos->onTilemap)
-        ontile_ent = map->unitmap[pos->tilemap_pos.y * map->col_len + pos->tilemap_pos.x];
-    SDL_assert(ontile_ent != 0);
-    if (ontile_ent == entity)
-        map->unitmap[pos->tilemap_pos.y * map->col_len + pos->tilemap_pos.x] = 0;
-    Map_Unit_Remove(map, entity);
+    SDL_assert(pos->onTilemap);
+    int index = pos->tilemap_pos.y * map->col_len + pos->tilemap_pos.x;
+    tnecs_entity_t ontile_ent = map->unitmap[index];
+    SDL_assert(ontile_ent == entity);
+
+    /* --- Check that entity is really on map --- */
+    _Map_Unit_Remove_Map(map, pos->tilemap_pos.x, pos->tilemap_pos.y);
+    _Map_Unit_Remove_List(map, entity);
 }

@@ -119,7 +119,7 @@ struct Unit Unit_default = {
     .weapons_dtab    = NULL,
 
     .current_hp      = SOTA_MIN_HP,
-    .is_alive        = true,
+    .alive        = true,
     .talkable        = 0,
 
     .sex             = false, // 0:F, 1:M. eg. hasPenis.
@@ -162,7 +162,7 @@ struct Unit Unit_Nibal_make() {
         .weapons_dtab   = NULL,
 
         .current_hp     = 35,
-        .is_alive       = true,
+        .alive       = true,
         .talkable       = 0,
 
         .sex            = true,  /* 0:F, 1:M. eg. hasPenis. */
@@ -809,7 +809,7 @@ void Unit_agonizes(struct Unit *unit) {
 
 void Unit_dies(struct Unit *unit) {
     SDL_assert(unit);
-    unit->is_alive = false;
+    unit->alive = false;
     SDL_Log("%s is dead.\n", unit->name.data);
 }
 

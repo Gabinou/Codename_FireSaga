@@ -93,11 +93,8 @@ struct Map Map_default = {
     .army_i                 = 0,
     .army_onfield           = NULL,
     .units_onfield          = NULL,
-    .num_units_onfield      = 0,
     .friendlies_onfield     = NULL,
-    .num_friendlies_onfield = 0,
     .enemies_onfield        = NULL,
-    .num_enemies_onfield    = 0,
     .unitmap                = NULL,
     .arrow                  = NULL,
 

@@ -269,7 +269,7 @@ struct AI AI_default = {
 //     // i32 * movemapp = Map_Pathfinding_Moveto(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(friendly_mptr), POINTS_MATRIX);
 //     // struct Position * temp_pos;
 //     // struct Point * enemy_points = NULL;
-//     // for (u8 i = 0; i < in_map->num_enemies_onfield; i++) {
+//     // for (u8 i = 0; i < in_DARR_NUM(map->friendlies_onfield); i++) {
 //     //     if (in_map->friendlies_onfield[i] > 0) {
 //     //         temp_pos = TNECS_GET_COMPONENT(in_world, in_map->enemies_onfield[i], Position);
 //     //         if (temp_pos != NULL) {
@@ -278,7 +278,7 @@ struct AI AI_default = {
 //     //     }
 //     // }
 //     // i32 * unit_range = Unit_Range_Combine_Equipment(friendly_mptr);
-//     // i32 * gradientmapp_enemy = pathfinding_Map_unitGradient_int32_t(costmapp_pushpull, in_map->row_len, in_map->col_len, enemy_points, in_map->num_enemies_onfield);
+//     // i32 * gradientmapp_enemy = pathfinding_Map_unitGradient_int32_t(costmapp_pushpull, in_map->row_len, in_map->col_len, enemy_points, in_DARR_NUM(map->friendlies_onfield));
 //     // i32 * attacktomapp = pathfinding_Map_Attackto_int32_t(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
 //     // i32 * gradientmapp_enemy_masked = linalg_mask_i16(gradientmapp_enemy, attacktomapp, in_map->row_len, in_map->col_len);
 //     // struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_enemy_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, 1);
@@ -306,7 +306,7 @@ struct AI AI_default = {
 //     // i32 * movemapp = Map_Pathfinding_Moveto(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(friendly_mptr), POINTS_MATRIX);
 //     // struct Position * temp_pos;
 //     // struct Point * friendly_points = NULL;
-//     // for (u8 i = 0; i < in_map->num_friendlies_onfield; i++) {
+//     // for (u8 i = 0; i < in_DARR_NUM(map->friendlies_onfield); i++) {
 //     //     if (in_map->friendlies_onfield[i] > 0) {
 //     //         temp_pos = TNECS_GET_COMPONENT(in_world, in_map->friendlies_onfield[i], Position);
 //     //         if (temp_pos != NULL) {
@@ -315,7 +315,7 @@ struct AI AI_default = {
 //     //     }
 //     // }
 //     // i32 * unit_range = Unit_Range_Combine_Equipment(friendly_mptr);
-//     // i32 * gradientmapp_friendly = pathfinding_Map_unitGradient_int32_t(costmapp_pushpull, in_map->row_len, in_map->col_len, friendly_points, in_map->num_friendlies_onfield);
+//     // i32 * gradientmapp_friendly = pathfinding_Map_unitGradient_int32_t(costmapp_pushpull, in_map->row_len, in_map->col_len, friendly_points, in_DARR_NUM(map->friendlies_onfield));
 //     // i32 * attacktomapp = pathfinding_Map_Attackto_int32_t(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
 //     // i32 * gradientmapp_friendly_masked = linalg_mask_i16(gradientmapp_friendly, attacktomapp, in_map->row_len, in_map->col_len);
 //     // struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_friendly_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, -1);
@@ -344,7 +344,7 @@ struct AI AI_default = {
 //     // i32 * movemapp = Map_Pathfinding_Moveto(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(enemy_mptr), POINTS_MATRIX);
 //     // struct Position * temp_pos;
 //     // struct Point * enemy_points = NULL;
-//     // for (u8 i = 0; i < in_map->num_enemies_onfield; i++) {
+//     // for (u8 i = 0; i < in_DARR_NUM(map->friendlies_onfield); i++) {
 //     //     if (in_map->friendlies_onfield[i] > 0) {
 //     //         temp_pos = TNECS_GET_COMPONENT(in_world, in_map->enemies_onfield[i], Position);
 //     //         if (temp_pos != NULL) {
@@ -353,7 +353,7 @@ struct AI AI_default = {
 //     //     }
 //     // }
 //     // i32 * unit_range = Unit_Range_Combine_Equipment(enemy_mptr);
-//     // i32 * gradientmapp_enemy = pathfinding_Map_unitGradient_int32_t(costmapp_pushpull, in_map->row_len, in_map->col_len, enemy_points, in_map->num_enemies_onfield);
+//     // i32 * gradientmapp_enemy = pathfinding_Map_unitGradient_int32_t(costmapp_pushpull, in_map->row_len, in_map->col_len, enemy_points, in_DARR_NUM(map->friendlies_onfield));
 //     // i32 * attacktomapp = pathfinding_Map_Attackto_int32_t(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
 //     // i32 * gradientmapp_enemy_masked = linalg_mask_i16(gradientmapp_enemy, attacktomapp, in_map->row_len, in_map->col_len);
 //     // struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_enemy_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, 1);
@@ -381,7 +381,7 @@ struct AI AI_default = {
 //     // i32 * movemapp = Map_Pathfinding_Moveto(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(enemy_mptr), POINTS_MATRIX);
 //     // struct Position * temp_pos;
 //     // struct Point * friendly_points = NULL;
-//     // for (u8 i = 0; i < in_map->num_friendlies_onfield; i++) {
+//     // for (u8 i = 0; i < in_DARR_NUM(map->friendlies_onfield); i++) {
 //     //     if (in_map->friendlies_onfield[i] > 0) {
 //     //         temp_pos = TNECS_GET_COMPONENT(in_world, in_map->friendlies_onfield[i], Position);
 //     //         if (temp_pos != NULL) {
@@ -390,7 +390,7 @@ struct AI AI_default = {
 //     //     }
 //     // }
 //     // i32 * unit_range = Unit_Range_Combine_Equipment(enemy_mptr);
-//     // i32 * gradientmapp_friendly = pathfinding_Map_unitGradient_int32_t(costmapp_pushpull, in_map->row_len, in_map->col_len, friendly_points, in_map->num_friendlies_onfield);
+//     // i32 * gradientmapp_friendly = pathfinding_Map_unitGradient_int32_t(costmapp_pushpull, in_map->row_len, in_map->col_len, friendly_points, in_DARR_NUM(map->friendlies_onfield));
 //     // i32 * attacktomapp = pathfinding_Map_Attackto_int32_t(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
 //     // i32 * gradientmapp_friendly_masked = linalg_mask_i16(gradientmapp_friendly, attacktomapp, in_map->row_len, in_map->col_len);
 //     // struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_friendly_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, -1);

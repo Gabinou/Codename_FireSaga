@@ -42,8 +42,7 @@ struct Map;
 // Attackable-> list of 2D positions
 
 /* --- Entity finders --- */
-bool entity_isIn(    u64 *array, u64 to_find, size_t arr_len);
-size_t *entity_where(u64 *array, u64 to_find, size_t arr_len);
+int entity_isIn(u64 *array, u64 to_find, size_t arr_len);
 
 /* --- Units --- */
 void Map_startingPos_Add(       struct Map *map, i32 col, i32 row);
@@ -51,9 +50,9 @@ void Map_addArmy(struct Map *map, const u8 army);
 
 void Map_Unit_Put(      struct Map *map, tnecs_world_t *w, u8 c, u8 r, tnecs_entity_t u);
 void Map_Unit_Move(             struct Map *map, u8 x, u8 y, u8 new_x, u8 new_y);
-void Map_Unit_Remove(           struct Map *map, tnecs_entity_t entity);
-void Map_Unit_Remove_fromPos(   struct Map *map, u8 col, u8 row);
-void Map_Unit_Remove_fromEntity(struct Map *map, tnecs_world_t *w, tnecs_entity_t entity);
+void  Map_Unit_Remove(     struct Map *map, tnecs_world_t *w, tnecs_entity_t entity);
+void _Map_Unit_Remove_Map( struct Map *map, u8 col, u8 row);
+void _Map_Unit_Remove_List(struct Map *map, tnecs_entity_t entity);
 
 tnecs_entity_t  Map_Unit_Get(   struct Map *map, u8 col, u8 row);
 tnecs_entity_t *Map_Unit_Gets(  struct Map *map, tnecs_world_t *w, u8 army);

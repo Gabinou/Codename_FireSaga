@@ -340,11 +340,11 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, u8 alignment) {
     switch (alignment) {
         case ALIGNMENT_FRIENDLY:
             unit_entities       = map->friendlies_onfield;
-            num_unit_entities   = map->num_friendlies_onfield;
+            num_unit_entities   = DARR_NUM(map->friendlies_onfield);
             break;
         case ALIGNMENT_ENEMY:
             unit_entities       = map->enemies_onfield;
-            num_unit_entities   = map->num_enemies_onfield;
+            num_unit_entities   = DARR_NUM(map->friendlies_onfield);
             break;
     }
     /* TODO: Only recompute if enemy died, turn changed */

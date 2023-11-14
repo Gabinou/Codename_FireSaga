@@ -139,11 +139,10 @@ struct Map {
     tnecs_entity_t *units_onfield;
     tnecs_entity_t *friendlies_onfield;
     tnecs_entity_t *enemies_onfield;
+
     i8 num_enemies;
     i8 num_friendlies;
-    u8 num_units_onfield;
-    u8 num_enemies_onfield;
-    u8 num_friendlies_onfield;
+
     u8 *army_onfield;
     struct Point *units_positions_list;  /* same order as unit_onfield */
     struct Point *start_pos;

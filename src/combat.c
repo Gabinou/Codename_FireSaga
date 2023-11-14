@@ -393,7 +393,7 @@ void Combat_Resolve(struct Combat_Attack *combat_attacks, u8 attack_num,
         if (Unit_canAttack(attacker))
             Resolve_Attack(combat_attacks[i], attacker, defender);
 
-        if (!aggressor->is_alive | !defendant->is_alive)
+        if (!aggressor->alive | !defendant->alive)
             break;
     }
 }
