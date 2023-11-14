@@ -51,6 +51,7 @@ struct Game Game_default = {
     .menu_options_dtab      = NULL,
     .menu_stack             = NULL,
     .player_select_menus    = {0},
+    .combat_forecast        = {0},
     .popups                 = {TNECS_NULL},
     .stats_menu             = TNECS_NULL,
     .pre_combat_menu        = TNECS_NULL,

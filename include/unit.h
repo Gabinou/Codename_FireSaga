@@ -141,7 +141,6 @@ typedef struct Unit {
     bool sex            : 1; /* 0:F, 1:M. eg. hasPenis. */
     bool waits          : 1;
     bool alive          : 1;
-    bool agonizes       : 1;
     bool literate       : 1; /* Reading/writing for scribe job. */
     bool courageous     : 1; /* For reaction to story events    */
     bool show_danger    : 1;

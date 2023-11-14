@@ -100,16 +100,17 @@ extern struct Combat_Stats {
     struct Damage           dft_damage;
     struct Computed_Stats   agg_stats;
     struct Computed_Stats   dft_stats;
-    i8                     agg_equipment[UNIT_HANDS_NUM];
-    i8                     dft_equipment[UNIT_HANDS_NUM];
+    i8                      agg_equipment[UNIT_HANDS_NUM];
+    i8                      dft_equipment[UNIT_HANDS_NUM];
 } Combat_Stats_default;
 
 struct Combat_Forecast {
     struct Combat_Flow      flow;
     struct Combat_Death     death;
     struct Combat_Stats     stats;
-    u8                     phase_num;
-    u8                     attack_num;
+    u8                      phase_num;
+    u8                      attack_num;
+    b32                     ended;
 };
 
 struct canAttack {

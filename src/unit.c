@@ -684,14 +684,10 @@ void Unit_takesDamage(struct Unit *unit, u8 damage, bool crit) {
     SDL_Log("%s takes %d damage \n", unit->name.data, damage);
     /* -- Checks -- */
     SDL_assert(unit);
-    if (unit->current_hp == 0) {
-        SDL_Log("Error: Unit HP was already 0 before taking damage.");
-        exit(ERROR_Generic);
-    }
+    SDL_assert(unit->current_hp > 0);
 
     /* -- Actually take damage -- */
     unit->current_hp = (damage > unit->current_hp) ? 0 : (unit->current_hp - damage);
-
     /* -- Check for Death or Agony -- */
     if (unit->current_hp == 0) {
         // TODO: Check for frail skill, other things that kill instantly.
@@ -700,6 +696,10 @@ void Unit_takesDamage(struct Unit *unit, u8 damage, bool crit) {
         else
             Unit_agonizes(unit);
     }
+    SDL_Log("unit->current_hp %d", unit->current_hp);
+    SDL_Log("unit->agonizes %d", unit->agony);
+    SDL_Log("unit->alive %d", unit->alive);
+    // getchar();
 }
 
 void Unit_getsHealed(struct Unit *unit, u8 healing) {
@@ -803,14 +803,14 @@ void Unit_lvlUp(struct Unit *unit) {
 }
 
 void Unit_agonizes(struct Unit *unit) {
-    unit->agonizes = true;
-    SDL_Log("%s is agonizing. %d turns until death\n", unit->name.data, unit->computed_stats.agony);
+    unit->agony = 1;
+    // SDL_Log("%s is agonizing. %d turns until death\n", unit->name.data, unit->computed_stats.agony);
 }
 
 void Unit_dies(struct Unit *unit) {
     SDL_assert(unit);
     unit->alive = false;
-    SDL_Log("%s is dead.\n", unit->name.data);
+    // SDL_Log("%s is dead.\n", unit->name.data);
 }
 
 /* Can unit equip weapon input item? */

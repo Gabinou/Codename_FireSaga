@@ -398,12 +398,10 @@ void Combat_Resolve(struct Combat_Attack *combat_attacks, u8 attack_num,
     }
 }
 
-void Resolve_Attack(struct Combat_Attack attack,
-                    struct Unit *attacker,
+void Resolve_Attack(struct Combat_Attack attack, struct Unit *attacker,
                     struct Unit *defender) {
-    if (!attack.hit) {
+    if (!attack.hit)
         return;
-    }
 
     if (defender->divine_shield) {
         defender->divine_shield = false;
@@ -414,5 +412,4 @@ void Resolve_Attack(struct Combat_Attack attack,
     }
     Unit_Equipped_Weapons_Deplete(attacker);
     Unit_Check_Equipped(attacker);
-
 }
