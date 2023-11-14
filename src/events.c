@@ -202,9 +202,9 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
     u8 army = * (u8 *) userevent->user.data1;
 
     if (army == ARMY_FRIENDLY) {
-        /* --- Control goes back to player --- */ 
+        /* --- Control goes back to player --- */
         Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
-        /* -- Turn only increments at the start of player turn -- */ 
+        /* -- Turn only increments at the start of player turn -- */
         Map_Turn_Increment(sota->map);
     } else {
         #ifndef SOTA_PLAYER_CONTROLS_ENEMY

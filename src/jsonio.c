@@ -1,5 +1,6 @@
 
 #include "jsonio.h"
+
 json_read_t  json_read_funcs [JSON_END] = {
     /* JSON_NULL        */ NULL,
     /* JSON_ITEM        */ Item_readJSON,
@@ -63,12 +64,7 @@ void jsonio_readJSON(s8 filename, void *struct_ptr) {
     /* Make mutable filename */
     const char *string = filename.data;
     SDL_Log("string '%s' %d", string, strlen(string));
-    SDL_Log("filename.data '%s' %d", filename.data, strlen(filename.data));
     s8 filename_mut = s8_mut(filename.data);
-    SDL_Log("filename_mut.data '%s' %d", filename_mut.data, strlen(filename_mut.data));
-    SDL_Log("filename.data '%s' %d", filename.data, strlen(filename.data));
-    SDL_Log("%d %d", filename_mut.num, filename.num);
-    SDL_assert(filename_mut.num == filename.num);
     SDL_assert(filename_mut.num == filename.num);
 
     /* Parse the json file */
@@ -104,10 +100,8 @@ void jsonio_readJSON(s8 filename, void *struct_ptr) {
     byte_ptr            = (u8 *)struct_ptr;
     s8 *json_filename   = (s8 *)(byte_ptr + JSON_FILENAME_bOFFSET);
 
-    SDL_assert(json_filename->data == NULL);
-    SDL_assert(json_filename->num  == 0);
-    SDL_assert(json_filename->len  == 0);
-    *json_filename = filename_mut;
+    if (json_filename->data == NULL)
+        *json_filename = filename_mut;
 
     /* Clean the jfile */
     if (jfile != NULL)
