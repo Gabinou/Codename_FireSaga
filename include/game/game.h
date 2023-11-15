@@ -126,8 +126,7 @@ struct Game {
 
     i32  cursor_moved_time_ms;
 
-    struct Combat_Phase      combat_phases[SOTA_COMBAT_MAX_PHASES];
-    struct Combat_Attack    *combat_attacks;
+    struct Combat_Outcome    combat_outcome;
     struct Combat_Forecast   combat_forecast;
     struct Combat_Flow       combat_flow;
     struct Combat_Forecast  *AI_forecasts;

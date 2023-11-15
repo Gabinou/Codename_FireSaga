@@ -22,7 +22,6 @@ void Map_Unit_Put(struct Map *map, tnecs_world_t *world, u8 col, u8 row,
     }
     map->unitmap[row * map->col_len + col] = entity;
     DARR_PUT(map->units_onfield, entity);
-    // DARR_NUM(map->units_onfield)++;
 
     /* -- Updating unit pos -- */
     struct Position *pos         = TNECS_GET_COMPONENT(world, entity, Position);

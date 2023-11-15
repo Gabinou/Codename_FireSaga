@@ -93,6 +93,8 @@ struct Combat_Rates {
     u8 crit;
 } Combat_Rates_default;
 
+/* -- Combat_Stats -- */
+// All combatant stats related to combats
 struct Combat_Stats {
     struct Combat_Rates     agg_rates;
     struct Combat_Rates     dft_rates;
@@ -104,13 +106,24 @@ struct Combat_Stats {
     i8                      dft_equipment[UNIT_HANDS_NUM];
 } Combat_Stats_default;
 
+/* -- Combat_Forecast -- */
+// All stats required to predict how combat will go, 
+// before actually doing the RNG check
 struct Combat_Forecast {
     struct Combat_Flow      flow;
     struct Combat_Death     death;
     struct Combat_Stats     stats;
     u8                      phase_num;
     u8                      attack_num;
-    b32                     ended; /* death before all attacks */
+};
+
+/* -- Combat_Outcome -- */
+// Actual phases and attacks that happen during combat
+/* RNG CHECK HAPPENS HERE. */
+struct Combat_Outcome {
+    struct Combat_Phase   phases[SOTA_COMBAT_MAX_PHASES];
+    struct Combat_Attack *attacks;
+    b32                   ended; /* death before all attacks */
 };
 
 struct canAttack {
@@ -123,9 +136,9 @@ struct Combat_Forecast Compute_Combat_Forecast(struct Unit *agg, struct Unit *df
                                                struct Point *ap, struct Point *dp);
 
 /* -- Combat Outcome -- */
-void Compute_Combat_Outcome(struct Combat_Phase *,    struct Combat_Attack *,
-                            struct Combat_Forecast *,
-                            struct Unit *,            struct Unit *);
+/* RNG CHECK HAPPENS HERE. */
+void Compute_Combat_Outcome(struct Combat_Outcome *, struct Combat_Forecast *,
+                            struct Unit *,           struct Unit *);
 
 /* --- INTERNALS --- */
 /* -- isCan -- */

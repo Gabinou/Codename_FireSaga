@@ -23,14 +23,8 @@ struct Combat_Flow Combat_Flow_default = {
     .defendant_retaliates   = false,
 } ;
 
-struct Combat_Rates Combat_Rates_default = {0, 0};
-
-struct Combat_Death Combat_Death_default = {
-    .aggressor_possible  = false,
-    .aggressor_certain   = false,
-    .defendant_possible  = false,
-    .defendant_certain   = false,
-};
+struct Combat_Rates Combat_Rates_default = {0};
+struct Combat_Death Combat_Death_default = {0};
 
 b32 Combat_canDouble(struct Unit *_att, struct Unit *_dfd) {
     SDL_assert(_att != NULL);
@@ -46,15 +40,15 @@ bool Combat_canAttack_Equipped(struct Unit *attacker, struct Unit *defender,
     /* Get range of current loadout */
     struct Range *att_range = Unit_Range_Loadout(attacker);
     /* Is enemy in range? */
-    u8 distance = abs(dfd_pos->x - att_pos->x) + abs(dfd_pos->y - att_pos->y);
+    u8 distance  = abs(dfd_pos->x - att_pos->x) +  abs(dfd_pos->y - att_pos->y);
     bool can     = (distance >= att_range->min) && (distance <= att_range->max);
     return (can);
 }
 
 struct Combat_Flow Compute_Combat_Flow(struct Unit *agg, struct Unit *dft,
                                        struct Point *agg_pos, struct Point *dft_pos) {
-    SDL_assert(agg      && dft);
-    SDL_assert(agg_pos  && dft_pos);
+    SDL_assert(agg     && dft);
+    SDL_assert(agg_pos && dft_pos);
     struct Combat_Flow out_flow;
     out_flow.aggressor_phases = 1;
     out_flow.defendant_phases = 0;
@@ -222,12 +216,13 @@ void Combat_totalDamage(struct Combat_Attack *attack, struct Damage *damage) {
         attack->total_damage = damage->dmg_crit[DMG_TYPE_TOTAL];
 }
 
-void Compute_Combat_Outcome(struct Combat_Phase     *phases,
-                            struct Combat_Attack    *darr_attacks,
-                            struct Combat_Forecast *forecast,
-                            struct Unit         *aggressor,
-                            struct Unit         *defendant) {
+void Compute_Combat_Outcome(struct Combat_Outcome   *outcome,
+                            struct Combat_Forecast  *forecast,
+                            struct Unit             *aggressor,
+                            struct Unit             *defendant) {
     // TODO: tripling with SPEED DEMON skill
+    struct Combat_Phase  *phases        = outcome->phases;
+    struct Combat_Attack *darr_attacks  = outcome->attacks;
 
     /* -- Resetting attacks list -- */
     forecast->phase_num     = 0;
@@ -306,18 +301,21 @@ int Combat_Attack_Total_Num(struct Combat_Phase *phases, int brave_factor, int p
     return (total_attacks);
 }
 
-void Compute_Combat_Phase(struct Combat_Phase *phase,
-                          struct Combat_Attack   *darr_attacks, struct Damage        damage,
-                          struct Unit *attacker, u8 hit_rate, u8 crit_rate, u8 brave_factor) {
+void Compute_Combat_Phase(struct Combat_Phase   *phase,
+                          struct Combat_Attack  *darr_attacks,
+                          struct Damage          damage,
+                          struct Unit           *attacker,
+                          u8 hit_rate, u8 crit_rate, u8 brave_factor) {
     phase->attack_num = Combat_Phase_Attack_Num(phase, brave_factor);
     for (int i = 0; i < phase->attack_num; i++)
         Compute_Combat_Attack(phase, darr_attacks, damage, attacker, hit_rate, crit_rate);
-
 }
 
-void Compute_Combat_Attack(struct Combat_Phase   *phase,
-                           struct Combat_Attack *darr_attacks, struct Damage damage,
-                           struct Unit *attacker, u8 hit_rate, u8 crit_rate) {
+void Compute_Combat_Attack(struct Combat_Phase  *phase,
+                           struct Combat_Attack *darr_attacks,
+                           struct Damage         damage,
+                           struct Unit          *attacker,
+                           u8 hit_rate, u8 crit_rate) {
     struct Combat_Attack temp_attack;
 
     attacker->hit_sequence.eff_rate = hit_rate;

@@ -1283,7 +1283,7 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     pmc->defendant = TNECS_GET_COMPONENT(sota->world, sota->defendant, Unit);
 
     // 1. Get next HP of attacked unit
-    struct Combat_Attack attack = sota->combat_attacks[pmc->current_attack++];
+    struct Combat_Attack attack = sota->combat_outcome.attacks[pmc->current_attack++];
     struct Unit *attacker, *defender;
     attacker = attack.attacker ? pmc->aggressor : pmc->defendant;
     defender = attack.attacker ? pmc->defendant : pmc->aggressor;
@@ -1300,7 +1300,7 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
         Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &sota->defendant, &sota->aggressor);
     }
 
-    sota->combat_forecast.ended = (agg_death || dft_death);
+    sota->combat_outcome.ended = (agg_death || dft_death);
 
     SDL_assert(popup_ptr != NULL);
     SDL_assert(pmc != NULL);

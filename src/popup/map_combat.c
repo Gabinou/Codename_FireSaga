@@ -120,7 +120,7 @@ void PopUp_Map_Combat_Units(struct PopUp_Map_Combat *pmc, struct Game *sota,
     pmc->forecast       = &sota->combat_forecast;
     pmc->agg_current_hp = pmc->aggressor->current_hp;
     pmc->dft_current_hp = pmc->defendant->current_hp;
-    pmc->phases         = sota->combat_phases;
+    pmc->phases         = sota->combat_outcome.phases;
     pmc->update         = true;
 }
 

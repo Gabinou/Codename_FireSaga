@@ -46,7 +46,7 @@ struct Game Game_default = {
     .items_dtab             = NULL,
     .weapons_dtab           = NULL,
     .runtime_ns             = 0,
-    .combat_attacks         = NULL,
+    .combat_outcome         = {0},
     .filename_menu          = {0},
     .menu_options_dtab      = NULL,
     .menu_stack             = NULL,
@@ -119,9 +119,9 @@ void Game_Free(struct Game *sota) {
         sota->map_enemies = NULL;
     }
 
-    if (sota->combat_attacks != NULL) {
-        DARR_FREE(sota->combat_attacks);
-        sota->combat_attacks = NULL;
+    if (sota->combat_outcome.attacks != NULL) {
+        DARR_FREE(sota->combat_outcome.attacks);
+        sota->combat_outcome.attacks = NULL;
     }
 
     PixelFont_Free(sota->pixelnours,       true);
@@ -448,8 +448,8 @@ struct Game *Game_Init() {
     out_game->openables    = DARR_INIT(out_game->openables,  tnecs_entity_t, 4);
 
     /* --- Alloc combat arrays --- */
-    out_game->combat_attacks = DARR_INIT(out_game->combat_attacks, struct Combat_Attack,
-                                         SOTA_COMBAT_MAX_ATTACKS);
+    out_game->combat_outcome.attacks = DARR_INIT(out_game->combat_outcome.attacks, struct Combat_Attack,
+                                                 SOTA_COMBAT_MAX_ATTACKS);
 
     /* --- Set default contextual inputs --- */
     fsm_Input_s[out_game->state](out_game);

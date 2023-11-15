@@ -136,12 +136,15 @@ struct Map {
 
     /* --- ARMIES --- */
     int army_i; /* Current army in control */
-    tnecs_entity_t *units_onfield;
+    tnecs_entity_t *units_onfield; // TODO: get rid of this?
     tnecs_entity_t *friendlies_onfield;
     tnecs_entity_t *enemies_onfield;
 
-    i8 num_enemies;
-    i8 num_friendlies;
+    tnecs_entity_t *friendlies_agony;
+    tnecs_entity_t *enemies_agony;
+
+    tnecs_entity_t *friendlies_killed;
+    tnecs_entity_t *enemies_killed;
 
     u8 *army_onfield;
     struct Point *units_positions_list;  /* same order as unit_onfield */

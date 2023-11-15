@@ -11,9 +11,7 @@ void Game_Combat_Outcome(struct Game *sota) {
 
     struct Point *agg_pos = &agg_pos_cmp->tilemap_pos;
     struct Point *dft_pos = &dft_pos_cmp->tilemap_pos;
-    sota->combat_forecast = Compute_Combat_Forecast(aggressor, defendant,
-                                                    agg_pos, dft_pos);
+    sota->combat_forecast = Compute_Combat_Forecast(aggressor, defendant, agg_pos, dft_pos);
 
-    Compute_Combat_Outcome( sota->combat_phases, sota->combat_attacks,
-                            &sota->combat_forecast, aggressor, defendant);
+    Compute_Combat_Outcome(&sota->combat_outcome, &sota->combat_forecast, aggressor, defendant);
 }
