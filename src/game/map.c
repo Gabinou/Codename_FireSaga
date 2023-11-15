@@ -201,6 +201,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         // *map_hp_bar = MapHPBar_default;
         map_hp_bar->unit_ent = temp_unit_ent;
         map_hp_bar->len = sota->settings.tilesize[0];
+        map_hp_bar->update = true;
 
         SDL_Log("-- loading position --");
         struct Position *position = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Position);

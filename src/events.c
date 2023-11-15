@@ -1134,15 +1134,19 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
     struct PopUp *popup_ptr      = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
     struct PopUp_Map_Combat *pmc = popup_ptr->data;
 
-    // 2. Update maphpbars.
+    /* 2. Update maphpbars. */
+    // Unit might be dead, only update if maphpbar exists
     struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(sota->world, sota->aggressor, MapHPBar);
-    SDL_assert(map_hp_bar != NULL);
-    SDL_assert(map_hp_bar->unit_ent == sota->aggressor);
-    map_hp_bar->update  = true;
-    map_hp_bar->visible = true;
+    if (map_hp_bar != NULL) {
+        map_hp_bar->update  = true;
+        map_hp_bar->visible = true;
+    }
+
     map_hp_bar = TNECS_GET_COMPONENT(sota->world, sota->defendant, MapHPBar);
-    map_hp_bar->update  = true;
-    map_hp_bar->visible = true;
+    if (map_hp_bar != NULL) {
+        map_hp_bar->update  = true;
+        map_hp_bar->visible = true;
+    }
 
     // 3. reset animation states
     struct Sprite *dft_sprite = TNECS_GET_COMPONENT(sota->world, sota->defendant, Sprite);
@@ -1160,10 +1164,6 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
     // 6. Return to standby
     *data1_entity = sota->entity_cursor;
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
-
-    SDL_assert(map_hp_bar->update);
-    SDL_assert(map_hp_bar->visible);
-
 }
 
 void receive_event_Defendant_Select(struct Game *sota, SDL_Event *userevent) {
@@ -1257,10 +1257,8 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, victim_entity, Sprite);
     sprite->visible = false;
 
-    /* --- Making unit HPbar invisible --- */
-    struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(sota->world, victim_entity, MapHPBar);
-    map_hp_bar->visible = false;
-    map_hp_bar->update  = false;
+    /* --- Remove MapHPbar --- */
+    TNECS_REMOVE_COMPONENTS(sota->world, victim_entity, MapHPBar);
 
     /* --- Deleting entity? --- */
     // - Delete now useless components of entity
@@ -1298,6 +1296,7 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     b32 agg_death = (!pmc->aggressor->alive) || (pmc->aggressor->agony >= 0);
     b32 dft_death = (!pmc->defendant->alive) || (pmc->defendant->agony >= 0);
     sota->combat_forecast.ended = (agg_death || dft_death);
+
     if (agg_death) {
         Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &sota->aggressor, &sota->defendant);
     }
@@ -1305,16 +1304,11 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
         Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &sota->defendant, &sota->aggressor);
     }
 
-
     SDL_assert(popup_ptr != NULL);
     SDL_assert(pmc != NULL);
     SDL_assert(sota->aggressor != TNECS_NULL);
     SDL_assert(sota->defendant != TNECS_NULL);
     pmc->update = true;
-
-
-
-
 }
 
 void receive_event_Unit_Agonizes(struct Game *sota, SDL_Event *userevent) {
