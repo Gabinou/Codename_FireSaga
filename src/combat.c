@@ -376,11 +376,6 @@ void Compute_Combat_Attack(struct Combat_Phase   *phase,
     DARR_PUT(darr_attacks, temp_attack); // growing here breaks, address changes
 }
 
-u8 Combat_Next_HP(struct Combat_Attack attack, u8 hp) {
-    u8 next_hp = hp < attack.total_damage ? hp : hp - attack.total_damage;
-    return (next_hp);
-}
-
 void Combat_Resolve(struct Combat_Attack *combat_attacks, u8 attack_num,
                     struct Unit *aggressor, struct Unit *defendant) {
     SDL_assert(attack_num > 0);

@@ -120,33 +120,30 @@ struct canAttack {
 
 /* -- Combat Forecast -- */
 struct Combat_Forecast Compute_Combat_Forecast(struct Unit *agg, struct Unit *dft,
-                                               const struct Point *ap, const struct Point *dp);
+                                               struct Point *ap, struct Point *dp);
 
 /* -- Combat Outcome -- */
 void Compute_Combat_Outcome(struct Combat_Phase *,    struct Combat_Attack *,
                             struct Combat_Forecast *,
                             struct Unit *,            struct Unit *);
 
-/* -- Combat Resolution -- */
-u8 Combat_Next_HP( struct Combat_Attack, u8 hp);
-
 /* --- INTERNALS --- */
 /* -- isCan -- */
 bool Combat_canDouble(struct Unit *_a, struct Unit *_d);
-bool Combat_canAttack_Equipped(struct Unit  *agg,           struct Unit  *dft,
-                               const struct Point *agg_pos, const struct Point *dft_pos);
+bool Combat_canAttack_Equipped(struct Unit  *agg, struct Unit  *dft,
+                               struct Point *_ag, struct Point *_df);
 void Combat_Death_isPossible(struct Combat_Flow, u8 *out);
 
 /* -- Combat Forecast -- */
 struct Damage Compute_Combat_Damage(     struct Unit *att, struct Unit *dfd);
 struct Combat_Rates Compute_Combat_Rates(struct Unit *att, struct Unit *dfd,
-                                         const struct Point *agg_pos, const struct Point *dft_pos);
+                                         struct Point *_a, struct Point *_d);
 
 struct Combat_Death Compute_Combat_Death(struct Unit *agg, struct Unit *dft,
                                          struct Combat_Stats, struct Combat_Flow);
 
 struct Combat_Flow Compute_Combat_Flow(struct Unit *agg, struct Unit *dft,
-                                       const struct Point *agg_pos, const struct Point *dft_pos);
+                                       struct Point *_a, struct Point *_d);
 
 /* -- Combat Attacks -- */
 void Compute_Combat_Phase( struct Combat_Phase *, struct Combat_Attack *,
