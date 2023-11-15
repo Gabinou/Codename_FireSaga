@@ -1287,7 +1287,7 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     struct Unit *attacker, *defender;
     attacker = attack.attacker ? pmc->aggressor : pmc->defendant;
     defender = attack.attacker ? pmc->defendant : pmc->aggressor;
-    Resolve_Attack(attack, attacker, defender);
+    Combat_Resolve_Attack(attack, attacker, defender);
 
     // 2. Check for unit agony/death
     b32 agg_death = (!pmc->aggressor->alive) || (pmc->aggressor->agony >= 0);

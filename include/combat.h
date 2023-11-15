@@ -48,7 +48,7 @@ struct Unit;
 /* -- Combat_Phase -- */
 // Total attack num in phase = for i < brave_factor -> SUM(skillp_multipliers[i]) * skill_multiplier
 // skill_multiplier and skillp_multipliers stack, BUT -> no skills should use both.
-extern struct Combat_Phase {
+struct Combat_Phase {
     // skillp_multipliers: Different multiplier for every brave applies to every attack in phase
     u8     skillp_multipliers[SOTA_BRAVE_MAX];
     // skill_multiplier: Applies to every higher priority attack in phase
@@ -58,7 +58,7 @@ extern struct Combat_Phase {
 } Combat_Phase_default;
 
 /* -- Combat_Attack -- */
-extern struct Combat_Attack {
+struct Combat_Attack {
     u8     total_damage; // total damage taken, depending on hit/crit
     bool    hit         : 1;
     bool    crit        : 1;
@@ -69,7 +69,7 @@ extern struct Combat_Attack {
 // Number of combat phases initiated by each combatants
 // (aggressor_phases > 1) -> (defendant_phases <= 1) and vice versa
 // Brave: attack multiplier combat for all phases
-extern struct Combat_Flow {
+struct Combat_Flow {
     bool    defendant_retaliates;
     u8     defendant_phases;
     u8     aggressor_phases;
@@ -80,7 +80,7 @@ extern struct Combat_Flow {
 /* -- Combat_Death -- */
 // Can combatants die?
 // WILL combatants die?
-extern struct Combat_Death {
+struct Combat_Death {
     bool aggressor_certain;
     bool defendant_certain;
     bool aggressor_possible;
@@ -88,12 +88,12 @@ extern struct Combat_Death {
 } Combat_Death_default;
 
 /* -- Combat_Rates -- */
-extern struct Combat_Rates {
+struct Combat_Rates {
     u8 hit;
     u8 crit;
 } Combat_Rates_default;
 
-extern struct Combat_Stats {
+struct Combat_Stats {
     struct Combat_Rates     agg_rates;
     struct Combat_Rates     dft_rates;
     struct Damage           agg_damage;
@@ -118,52 +118,47 @@ struct canAttack {
     bool with[DEFAULT_EQUIPMENT_SIZE]; // which weapon can unit attack with
 };
 
-/* --- API --- */
-
 /* -- Combat Forecast -- */
-extern struct Combat_Forecast Compute_Combat_Forecast(struct Unit *agg, struct Unit *dft,
-                                                      const struct Point *ap, const struct Point *dp);
+struct Combat_Forecast Compute_Combat_Forecast(struct Unit *agg, struct Unit *dft,
+                                               const struct Point *ap, const struct Point *dp);
 
 /* -- Combat Outcome -- */
-extern void Compute_Combat_Outcome(struct Combat_Phase *,    struct Combat_Attack *,
-                                   struct Combat_Forecast *,
-                                   struct Unit *,            struct Unit *);
+void Compute_Combat_Outcome(struct Combat_Phase *,    struct Combat_Attack *,
+                            struct Combat_Forecast *,
+                            struct Unit *,            struct Unit *);
 
 /* -- Combat Resolution -- */
-/* - Execute all combat attacks - */
-extern u8 Combat_Next_HP( struct Combat_Attack, u8 hp);
-extern void Combat_Resolve(struct Combat_Attack *, u8 a, struct Unit *, struct Unit *);
+u8 Combat_Next_HP( struct Combat_Attack, u8 hp);
 
 /* --- INTERNALS --- */
 /* -- isCan -- */
-extern bool Combat_canDouble(const struct Unit *a, const struct Unit *d);
-extern bool Combat_canAttack_Equipped(      struct Unit  *agg,           struct Unit  *dft,
-                                            const struct Point *agg_pos, const struct Point *dft_pos);
-extern void Combat_Death_isPossible(struct Combat_Flow, u8 *out);
+bool Combat_canDouble(struct Unit *_a, struct Unit *_d);
+bool Combat_canAttack_Equipped(struct Unit  *agg,           struct Unit  *dft,
+                               const struct Point *agg_pos, const struct Point *dft_pos);
+void Combat_Death_isPossible(struct Combat_Flow, u8 *out);
 
 /* -- Combat Forecast -- */
-extern struct Damage Compute_Combat_Damage(struct      Unit *att, struct Unit *dfd);
-extern struct Combat_Rates Compute_Combat_Rates(struct Unit  *att, struct Unit  *dfd,
-                                                const struct Point *agg_pos, const struct Point *dft_pos);
+struct Damage Compute_Combat_Damage(     struct Unit *att, struct Unit *dfd);
+struct Combat_Rates Compute_Combat_Rates(struct Unit *att, struct Unit *dfd,
+                                         const struct Point *agg_pos, const struct Point *dft_pos);
 
-extern struct Combat_Death Compute_Combat_Death(struct Unit *agg, struct Unit *dft,
-                                                struct Combat_Stats, struct Combat_Flow);
+struct Combat_Death Compute_Combat_Death(struct Unit *agg, struct Unit *dft,
+                                         struct Combat_Stats, struct Combat_Flow);
 
-extern struct Combat_Flow Compute_Combat_Flow(struct Unit *agg, struct Unit *dft,
-                                              const struct Point *agg_pos, const struct Point *dft_pos);
+struct Combat_Flow Compute_Combat_Flow(struct Unit *agg, struct Unit *dft,
+                                       const struct Point *agg_pos, const struct Point *dft_pos);
 
 /* -- Combat Attacks -- */
-extern void
-Compute_Combat_Phase(struct Combat_Phase *, struct Combat_Attack *,
-                     struct Damage, struct Unit *, u8, u8, u8);
-extern void Compute_Combat_Attack(struct Combat_Phase *, struct Combat_Attack *,
-                                  struct Damage, struct Unit *, u8, u8);
+void Compute_Combat_Phase( struct Combat_Phase *, struct Combat_Attack *,
+                           struct Damage, struct Unit *, u8, u8, u8);
+void Compute_Combat_Attack(struct Combat_Phase *, struct Combat_Attack *,
+                           struct Damage, struct Unit *, u8, u8);
 
-extern int Combat_TotalAttack_Num( struct Combat_Phase *phases, int b, int num);
-extern int Combat_Phase_Attack_Num(struct Combat_Phase *phase,  int brave_factor);
+int Combat_TotalAttack_Num( struct Combat_Phase *phases, int b, int num);
+int Combat_Phase_Attack_Num(struct Combat_Phase *phase,  int brave_factor);
 
 /* -- Combat Resolution -- */
-/* - Execute one attack during combat - */
-extern void Resolve_Attack(struct Combat_Attack, struct Unit *, struct Unit *);
+void Combat_Resolve_Attack(struct Combat_Attack,  struct Unit *, struct Unit *);
+void Combat_Resolve(struct Combat_Attack *, u8 a, struct Unit *, struct Unit *);
 
 #endif /* COMBAT_H */

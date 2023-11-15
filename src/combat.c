@@ -32,11 +32,11 @@ struct Combat_Death Combat_Death_default = {
     .defendant_certain   = false,
 };
 
-bool Combat_canDouble(const struct Unit *attacker, const struct Unit *defender) {
-    SDL_assert(attacker && defender);
-    i8 diff        = (attacker->computed_stats.speed - defender->computed_stats.speed);
-    bool doubles    = (diff > SOTA_DOUBLING_SPEED);
-    return (doubles);
+b32 Combat_canDouble(struct Unit *_att, struct Unit *_dfd) {
+    SDL_assert(_att != NULL);
+    SDL_assert(_dfd != NULL);
+    i8 diff      = (_att->computed_stats.speed - _dfd->computed_stats.speed);
+    return (diff > SOTA_DOUBLING_SPEED);
 }
 
 bool Combat_canAttack_Equipped(struct Unit *attacker, struct Unit *defender,
@@ -113,6 +113,7 @@ void Combat_Death_isPossible(struct Combat_Flow flow, u8 *out) {
     // TODO: compute total damage
 }
 
+/* Possible Combat death: For AI*/
 struct Combat_Death Compute_Combat_Death(struct Unit *aggressor, struct Unit *defendant,
                                          struct Combat_Stats forecast, struct Combat_Flow flow) {
     SDL_assert(aggressor && defendant);
@@ -391,7 +392,7 @@ void Combat_Resolve(struct Combat_Attack *combat_attacks, u8 attack_num,
         defender = combat_attacks[i].attacker ? defendant : aggressor;
 
         if (Unit_canAttack(attacker))
-            Resolve_Attack(combat_attacks[i], attacker, defender);
+            Combat_Resolve_Attack(combat_attacks[i], attacker, defender);
 
         b32 agg_death = (!aggressor->alive) || (aggressor->agony >= 0);
         b32 dft_death = (!defendant->alive) || (defendant->agony >= 0);
@@ -401,8 +402,8 @@ void Combat_Resolve(struct Combat_Attack *combat_attacks, u8 attack_num,
     }
 }
 
-void Resolve_Attack(struct Combat_Attack attack, struct Unit *attacker,
-                    struct Unit *defender) {
+void Combat_Resolve_Attack(struct Combat_Attack attack, struct Unit *attacker,
+                           struct Unit *defender) {
     /* - Skip if attack doesn't hit - */
     if (!attack.hit)
         /* - Deplete ranged weapons here? - */
