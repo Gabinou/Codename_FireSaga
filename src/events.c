@@ -1128,7 +1128,6 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
     // 1. Resolve Combat
     struct Unit *aggressor = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Unit);
     struct Unit *defendant = TNECS_GET_COMPONENT(sota->world, sota->defendant, Unit);
-    // Combat_Resolve(sota->combat_attacks, sota->combat_forecast.attack_num, aggressor, defendant);
 
     tnecs_entity_t popup_ent     = sota->popups[POPUP_TYPE_MAP_COMBAT];
     struct PopUp *popup_ptr      = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
@@ -1276,17 +1275,15 @@ void receive_event_Unit_Loots(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
-    tnecs_entity_t popup_ent;
     /* -- Popup_Map_Combat -- */
-    popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
-    struct PopUp *popup_ptr = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
+    tnecs_entity_t popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
+    struct PopUp *popup_ptr  = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
     struct PopUp_Map_Combat *pmc = popup_ptr->data;
     pmc->aggressor = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Unit);
     pmc->defendant = TNECS_GET_COMPONENT(sota->world, sota->defendant, Unit);
 
     // 1. Get next HP of attacked unit
     struct Combat_Attack attack = sota->combat_attacks[pmc->current_attack++];
-    // Combat_Resolve(sota->combat_attacks, sota->combat_forecast.attack_num, aggressor, defendant);
     struct Unit *attacker, *defender;
     attacker = attack.attacker ? pmc->aggressor : pmc->defendant;
     defender = attack.attacker ? pmc->defendant : pmc->aggressor;
@@ -1294,15 +1291,16 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
 
     // 2. Check for unit agony/death
     b32 agg_death = (!pmc->aggressor->alive) || (pmc->aggressor->agony >= 0);
-    b32 dft_death = (!pmc->defendant->alive) || (pmc->defendant->agony >= 0);
-    sota->combat_forecast.ended = (agg_death || dft_death);
-
     if (agg_death) {
         Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &sota->aggressor, &sota->defendant);
     }
+
+    b32 dft_death = (!pmc->defendant->alive) || (pmc->defendant->agony >= 0);
     if (dft_death) {
         Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &sota->defendant, &sota->aggressor);
     }
+
+    sota->combat_forecast.ended = (agg_death || dft_death);
 
     SDL_assert(popup_ptr != NULL);
     SDL_assert(pmc != NULL);

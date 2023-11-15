@@ -110,7 +110,7 @@ struct Combat_Forecast {
     struct Combat_Stats     stats;
     u8                      phase_num;
     u8                      attack_num;
-    b32                     ended;
+    b32                     ended; /* death before all attacks */
 };
 
 struct canAttack {

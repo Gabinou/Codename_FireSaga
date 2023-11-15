@@ -393,23 +393,35 @@ void Combat_Resolve(struct Combat_Attack *combat_attacks, u8 attack_num,
         if (Unit_canAttack(attacker))
             Resolve_Attack(combat_attacks[i], attacker, defender);
 
-        if (!aggressor->alive | !defendant->alive)
+        b32 agg_death = (!aggressor->alive) || (aggressor->agony >= 0);
+        b32 dft_death = (!defendant->alive) || (defendant->agony >= 0);
+
+        if (agg_death || dft_death)
             break;
     }
 }
 
 void Resolve_Attack(struct Combat_Attack attack, struct Unit *attacker,
                     struct Unit *defender) {
+    /* - Skip if attack doesn't hit - */
     if (!attack.hit)
+        /* - Deplete ranged weapons here? - */
         return;
 
+    /* - Pop divine shield - */
     if (defender->divine_shield) {
         defender->divine_shield = false;
-    } else {
-        Unit_takesDamage(defender, attack.total_damage, attack.crit);
-        Unit_Equipped_Shields_Deplete(defender);
-        Unit_Check_Equipped(defender);
+        return;
     }
+
+    /* - Unit takes damage - */
+    Unit_takesDamage(defender, attack.total_damage, attack.crit);
+
+    /* - Deplete defender shields - */
+    Unit_Equipped_Shields_Deplete(defender);
+    Unit_Check_Equipped(defender);
+
+    /* - Deplete attacker weapons - */
     Unit_Equipped_Weapons_Deplete(attacker);
     Unit_Check_Equipped(attacker);
 }
