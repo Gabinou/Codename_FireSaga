@@ -40,8 +40,7 @@ b32 Combat_canDouble(struct Unit *_att, struct Unit *_dfd) {
 }
 
 bool Combat_canAttack_Equipped(struct Unit *attacker, struct Unit *defender,
-                               const struct Point *att_pos,
-                               const struct Point *dfd_pos) {
+                               struct Point *att_pos, struct Point *dfd_pos) {
     SDL_assert(attacker && defender);
     SDL_assert(att_pos  && dfd_pos);
     /* Get range of current loadout */
@@ -53,8 +52,7 @@ bool Combat_canAttack_Equipped(struct Unit *attacker, struct Unit *defender,
 }
 
 struct Combat_Flow Compute_Combat_Flow(struct Unit *agg, struct Unit *dft,
-                                       const struct Point *agg_pos,
-                                       const struct Point *dft_pos) {
+                                       struct Point *agg_pos, struct Point *dft_pos) {
     SDL_assert(agg      && dft);
     SDL_assert(agg_pos  && dft_pos);
     struct Combat_Flow out_flow;
@@ -179,8 +177,8 @@ struct Combat_Death Compute_Combat_Death(struct Unit *aggressor, struct Unit *de
 
 struct Combat_Rates Compute_Combat_Rates(struct Unit *attacker,
                                          struct Unit *defender,
-                                         const struct Point *att_pos,
-                                         const struct Point *dfd_pos) {
+                                         struct Point *att_pos,
+                                         struct Point *dfd_pos) {
     SDL_assert(attacker && defender);
     u8 distance = abs(dfd_pos->x - att_pos->x) + abs(dfd_pos->y - att_pos->y);
     struct Combat_Rates out_rates = Combat_Rates_default;
@@ -194,8 +192,8 @@ struct Combat_Rates Compute_Combat_Rates(struct Unit *attacker,
 // *INDENT-OFF*
 struct Combat_Forecast Compute_Combat_Forecast(struct Unit * agg, 
                                                struct Unit * dft,
-                                               const struct Point * agg_pos,
-                                               const struct Point * dft_pos) {
+                                               struct Point * agg_pos,
+                                               struct Point * dft_pos) {
 // *INDENT-ON*
     SDL_assert(agg        &&dft);
     SDL_assert(agg_pos    &&dft_pos);
@@ -300,7 +298,7 @@ int Combat_Phase_Attack_Num(struct Combat_Phase *phase, int brave_factor) {
     return (attacks);
 }
 
-int Combat_TotalAttack_Num(struct Combat_Phase *phases, int brave_factor, int phase_num) {
+int Combat_Attack_Total_Num(struct Combat_Phase *phases, int brave_factor, int phase_num) {
     int total_attacks = 0;
     for (int i = 0; i < phase_num; ++i)
         total_attacks += Combat_Phase_Attack_Num(&phases[i], brave_factor);

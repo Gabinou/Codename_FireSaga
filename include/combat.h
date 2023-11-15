@@ -129,7 +129,7 @@ void Compute_Combat_Outcome(struct Combat_Phase *,    struct Combat_Attack *,
 
 /* --- INTERNALS --- */
 /* -- isCan -- */
-bool Combat_canDouble(struct Unit *_a, struct Unit *_d);
+b32 Combat_canDouble(struct Unit *_a, struct Unit *_d);
 bool Combat_canAttack_Equipped(struct Unit  *agg, struct Unit  *dft,
                                struct Point *_ag, struct Point *_df);
 void Combat_Death_isPossible(struct Combat_Flow, u8 *out);
@@ -151,8 +151,8 @@ void Compute_Combat_Phase( struct Combat_Phase *, struct Combat_Attack *,
 void Compute_Combat_Attack(struct Combat_Phase *, struct Combat_Attack *,
                            struct Damage, struct Unit *, u8, u8);
 
-int Combat_TotalAttack_Num( struct Combat_Phase *phases, int b, int num);
-int Combat_Phase_Attack_Num(struct Combat_Phase *phase,  int brave_factor);
+int Combat_Attack_Total_Num(struct Combat_Phase *phases, int b, int num);
+int Combat_Phase_Attack_Num(struct Combat_Phase *phases, int brave_factor);
 
 /* -- Combat Resolution -- */
 void Combat_Resolve_Attack(struct Combat_Attack,  struct Unit *, struct Unit *);
