@@ -412,29 +412,33 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity_t dehov_ent) {
     SDL_assert(popup_ent > TNECS_NULL);
 
     /* -- Making unit NULL -- */
+    struct Position *cursor_pos;
+    cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    struct Point pos    = cursor_pos->tilemap_pos;
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
     struct PopUp_Unit *popup_unit = popup->data;
     popup_unit->unit = NULL;
+    Game_PopUp_Unit_Place(sota, pos);
 
     /* -- Placing popup_unit out of view -- */
     struct SliderOffscreen *offscreen;
     offscreen = TNECS_GET_COMPONENT(sota->world, popup_ent, SliderOffscreen);
     offscreen->go_offscreen = false;
-    struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
-    struct Point pos = cursor_pos->tilemap_pos;
 
     /* -- Changing animation loop to IDLE -- */
+    struct Unit *unit     = TNECS_GET_COMPONENT(sota->world, dehov_ent, Unit);
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, dehov_ent, Sprite);
+    SDL_assert(unit   != NULL);
     SDL_assert(sprite != NULL);
     bool animated = TNECS_ENTITY_HASCOMPONENT(sota->world, dehov_ent, Timer);
-    if ((sprite->spritesheet != NULL) && (animated)) {
+    SDL_Log("'%s' waits %d", unit->name.data, unit->waits);
+    if ((sprite->spritesheet != NULL) && (animated) && (!unit->waits)) {
         SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_SPRITE_LOOP_NUM);
         Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_SPRITE_LOOP_IDLE, sprite->flip);
         Sprite_Animation_Loop(sprite);
         Sprite_Draw(sprite, sota->renderer);
     }
-
-    Game_PopUp_Unit_Place(sota, pos);
+    getchar();
 
     // In case an enemy unit was selected.
     sota->selected_unit_entity = TNECS_NULL;

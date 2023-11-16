@@ -135,7 +135,6 @@ struct Combat_Forecast Compute_Combat_Forecast(struct Unit *agg, struct Unit *df
 void Compute_Combat_Outcome(struct Combat_Outcome *, struct Combat_Forecast *,
                             struct Unit *,           struct Unit *);
 
-/* --- INTERNALS --- */
 /* -- isCan -- */
 b32 Combat_canDouble(struct Unit *_a, struct Unit *_d);
 bool Combat_canAttack_Equipped(struct Unit  *agg, struct Unit  *dft,
@@ -163,7 +162,7 @@ int Combat_Attack_Total_Num(struct Combat_Phase *phases, int b, int num);
 int Combat_Phase_Attack_Num(struct Combat_Phase *phases, int brave_factor);
 
 /* -- Combat Resolution -- */
-void Combat_Resolve_Attack(struct Combat_Attack,  struct Unit *, struct Unit *);
 void Combat_Resolve(struct Combat_Attack *, u8 a, struct Unit *, struct Unit *);
+void Combat_Resolve_Attack(struct Combat_Attack,  struct Unit *, struct Unit *);
 
 #endif /* COMBAT_H */

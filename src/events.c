@@ -702,7 +702,6 @@ void receive_event_Unit_Deselect(struct Game *sota, SDL_Event *userevent) {
     }
 
     sota->selected_unit_entity = TNECS_NULL;
-    // sota->hovered_unit_entity  = TNECS_NULL;
 }
 
 void receive_event_Unit_Entity_Return(struct Game *sota, SDL_Event *userevent) {
@@ -1127,6 +1126,8 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
 
     // 1. Resolve Combat
     struct Unit *aggressor = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Unit);
+    aggressor->waits = true;
+    aggressor->waits = true;
     struct Unit *defendant = TNECS_GET_COMPONENT(sota->world, sota->defendant, Unit);
 
     tnecs_entity_t popup_ent     = sota->popups[POPUP_TYPE_MAP_COMBAT];
@@ -1160,7 +1161,10 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
     // 5. Hide PopUp_Map_Combat
     // Game_PopUp_Map_Combat_Hide(sota);
 
-    // 6. Return to standby
+    // 6. Revert hovered entity to aggressor
+    sota->hovered_unit_entity = sota->aggressor;
+
+    // 7. Return to standby
     *data1_entity = sota->entity_cursor;
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
 }
