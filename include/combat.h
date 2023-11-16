@@ -107,8 +107,8 @@ struct Combat_Stats {
 } Combat_Stats_default;
 
 /* -- Combat_Forecast -- */
-// All stats required to predict how combat will go, 
-// before actually doing the RNG check
+// All stats required to predict how combat will go,
+// before actually doing the RNG check.
 struct Combat_Forecast {
     struct Combat_Flow      flow;
     struct Combat_Death     death;
@@ -124,11 +124,6 @@ struct Combat_Outcome {
     struct Combat_Phase   phases[SOTA_COMBAT_MAX_PHASES];
     struct Combat_Attack *attacks;
     b32                   ended; /* death before all attacks */
-};
-
-struct canAttack {
-    bool iscan;
-    bool with[DEFAULT_EQUIPMENT_SIZE]; // which weapon can unit attack with
 };
 
 /* -- Combat Forecast -- */
