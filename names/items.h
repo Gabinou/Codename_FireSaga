@@ -65,7 +65,9 @@ REGISTER_ENUM(BATTLEAXE,                     211)
 REGISTER_ENUM(VIDYU,                         212)
 REGISTER_ENUM(HEPHAESTUS,                    213)
 REGISTER_ENUM(WRATH_AXE,                     214)
-REGISTER_ENUM(AXE_END,                       215)
+REGISTER_ENUM(WOOD_AXE,                      215)
+REGISTER_ENUM(SHOVEL,                        216)
+REGISTER_ENUM(AXE_END,                       217)
 
 REGISTER_ENUM(BOW_START,                     300)
 REGISTER_ENUM(REPEATABLE_CROSSBOW,           301)
@@ -205,7 +207,8 @@ REGISTER_ENUM(FINE_WHETSTONE,               1111) // Repairs weapons
 REGISTER_ENUM(DOUBLE_SIDED_WHETSTONE,       1112) // Repairs weapons
 REGISTER_ENUM(REPAIR_KIT,                   1113) // Repairs bows and shields
 REGISTER_ENUM(MAGICAL_REPAIR_KIT,           1114) // Repairs bows and shields
-REGISTER_ENUM(ITEM_END,                     1115)
+REGISTER_ENUM(LUMBER,                       1115) // Build siege weapons
+REGISTER_ENUM(ITEM_END,                     1116)
 
 REGISTER_ENUM(TRINKET_START,                1200)
 REGISTER_ENUM(TRINKET_END,                  1201)

@@ -431,14 +431,14 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity_t dehov_ent) {
     SDL_assert(unit   != NULL);
     SDL_assert(sprite != NULL);
     bool animated = TNECS_ENTITY_HASCOMPONENT(sota->world, dehov_ent, Timer);
-    SDL_Log("'%s' waits %d", unit->name.data, unit->waits);
+
+    /* Only if unit doesn't wait */
     if ((sprite->spritesheet != NULL) && (animated) && (!unit->waits)) {
         SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_SPRITE_LOOP_NUM);
         Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_SPRITE_LOOP_IDLE, sprite->flip);
         Sprite_Animation_Loop(sprite);
         Sprite_Draw(sprite, sota->renderer);
     }
-    getchar();
 
     // In case an enemy unit was selected.
     sota->selected_unit_entity = TNECS_NULL;
