@@ -448,7 +448,6 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity_t dehov_ent) {
 }
 
 void fsm_eCrsDeHvUnit_ssMapCndt(struct Game *sota, tnecs_entity_t dehov_ent) {
-
     /* -- Reset unit loop to Idle --  */
     // ONLY FOR ATTACK
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, dehov_ent, Sprite);

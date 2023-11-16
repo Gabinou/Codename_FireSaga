@@ -670,20 +670,33 @@ void Game_StaffSelectMenu_Create(struct Game *sota) {
     }
     struct Menu *mc;
     mc          = TNECS_GET_COMPONENT(sota->world, sota->staff_select_menu, Menu);
-    mc->type        = MENU_TYPE_STAFF_SELECT;
-    mc->draw        = &LoadoutSelectMenu_Draw;
+    mc->type    = MENU_TYPE_STAFF_SELECT;
+    mc->draw    = &LoadoutSelectMenu_Draw;
+
+    /* n9patch init */
+    mc->n9patch.patch_pixels.x      = MENU_PATCH_PIXELS;
+    mc->n9patch.patch_pixels.y      = MENU_PATCH_PIXELS;
+    mc->n9patch.size_patches.x      = ISM_PATCH_X_SIZE;
+    mc->n9patch.size_patches.y      = ISM_PATCH_Y_SIZE;
+    mc->n9patch.scale.x             = ISM_N9PATCH_SCALE_X;
+    mc->n9patch.scale.y             = ISM_N9PATCH_SCALE_Y;
+    mc->n9patch.size_pixels.x       = MENU_PATCH_PIXELS * ISM_PATCH_X_SIZE;
+    mc->n9patch.size_pixels.y       = MENU_PATCH_PIXELS * ISM_PATCH_Y_SIZE;
+    mc->n9patch.texture             = Filesystem_Texture_Load(sota->renderer,
+                                                              sota->filename_menu.data,
+                                                              SDL_PIXELFORMAT_INDEX8);
 
     /* stats_menu struct init */
-    struct LoadoutSelectMenu *ssm    = LoadoutSelectMenu_Alloc();
-    ssm->pos.x                  = sota->settings.res.x / 2;
-    ssm->pos.y                  = sota->settings.res.y / 2;
-    ssm->archetype_stronghand   = ITEM_ARCHETYPE_STAFF;
-    mc->data                    = ssm;
-    mc->visible                 = true;
-    mc->elem_links              = ssm_links;
-    mc->elem_pos                = ssm_elem_pos;
-    mc->elem_box                = ssm_elem_box;
-    mc->elem_num                = SSM_ELEMS_NUM;
+    struct LoadoutSelectMenu *ssm   = LoadoutSelectMenu_Alloc();
+    ssm->pos.x                      = sota->settings.res.x / 2;
+    ssm->pos.y                      = sota->settings.res.y / 2;
+    ssm->archetype_stronghand       = ITEM_ARCHETYPE_STAFF;
+    mc->data                        = ssm;
+    mc->visible                     = true;
+    mc->elem_links                  = ssm_links;
+    mc->elem_pos                    = ssm_elem_pos;
+    mc->elem_box                    = ssm_elem_box;
+    mc->elem_num                    = SSM_ELEMS_NUM;
 
     // TODO: copy descriptions
     // mc->elem_description = stats_menu_description;
@@ -693,7 +706,6 @@ void Game_StaffSelectMenu_Create(struct Game *sota) {
     ssm->pixelnours_big              = sota->pixelnours_big;
     Menu_Elem_Boxes_Check(mc);
     LoadoutSelectMenu_Elem_Pos(ssm, mc);
-
 }
 
 void Game_StaffSelectMenu_Update(struct Game *sota, tnecs_entity_t unit_entity_ontile) {
