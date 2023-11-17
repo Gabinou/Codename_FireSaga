@@ -43,40 +43,40 @@ typedef struct Convoy {
 extern struct Convoy Convoy_default;
 
 /* --- (De)Constructors --- */
-extern void Convoy_Clear(struct Convoy *in_convoy);
+void Convoy_Clear(struct Convoy *in_convoy);
 
 /* --- Items --- */
-extern void Convoy_Swap(struct Convoy *in_convoy, i16 i1, i16 i2);
+void Convoy_Swap(struct Convoy *in_convoy, i16 i1, i16 i2);
 // Convoy_Deposit_byType inputs type_exp because some weapons have multiple types
-extern void Convoy_Deposit_byType(struct Convoy *c, struct Inventory_item i, i16 exp);
-extern void Convoy_Deposit_byIndex(struct Convoy *c, struct Inventory_item i, i16 exp);
+void Convoy_Deposit_byType(struct Convoy *c, struct Inventory_item i, i16 exp);
+void Convoy_Deposit_byIndex(struct Convoy *c, struct Inventory_item i, i16 exp);
 
-extern struct Inventory_item Convoy_Withdraw(struct Convoy *in_convoy, i16 i);
-extern bool Convoy_isFull(struct Convoy *in_convoy);
+struct Inventory_item Convoy_Withdraw(struct Convoy *in_convoy, i16 i);
+bool Convoy_isFull(struct Convoy *in_convoy);
 
 /* --- Conversion --- */
-extern u16 Convoy_Id2TypeExp(struct Convoy *in_convoy, i16 i);
-extern u16 Convoy_TypeCode2Exp(struct Convoy *in_convoy, u16 typecode);
+u16 Convoy_Id2TypeExp(struct Convoy *in_convoy, i16 i);
+u16 Convoy_TypeCode2Exp(struct Convoy *in_convoy, u16 typecode);
 
 /* --- Money --- */
-extern i16 Convoy_Earn(struct Convoy *in_convoy, i16 in_money);
-extern i16 Convoy_Spend(struct Convoy *in_convoy, i16 out_money);
+i16 Convoy_Earn(struct Convoy *in_convoy, i16 in_money);
+i16 Convoy_Spend(struct Convoy *in_convoy, i16 out_money);
 
 /* --- Sorting --- */
-extern void Convoy_Sort(struct Convoy *in_convoy, i16 stattype);
+void Convoy_Sort(struct Convoy *in_convoy, i16 stattype);
 /* quicksort */
-extern void Convoy_Quicksort(struct Convoy *c, u8 a[], u8 l, u8 h);
-extern u8 Convoy_Partition_wDuplicates(struct Convoy *c, u8 a[], u8 l, u8 h);
+void Convoy_Quicksort(struct Convoy *c, u8 a[], u8 l, u8 h);
+u8 Convoy_Partition_wDuplicates(struct Convoy *c, u8 a[], u8 l, u8 h);
 /* cunum shift */
-extern void Convoy_Shift_Plus(struct Convoy *in_convoy, i16 i, i16 exp);
-extern void Convoy_Shift_Minus(struct Convoy *in_convoy, i16 i);
+void Convoy_Shift_Plus(struct Convoy *in_convoy, i16 i, i16 exp);
+void Convoy_Shift_Minus(struct Convoy *in_convoy, i16 i);
 
 /* --- Debug --- */
-extern void Convoy_Stats_Print(struct Convoy *c, i16 wpnType, i16 stattype);
-extern void Convoy_AllStats_Print(struct Convoy *in_convoy, i16 wpnType);
+void Convoy_Stats_Print(struct Convoy *c, i16 wpnType, i16 stattype);
+void Convoy_AllStats_Print(struct Convoy *in_convoy, i16 wpnType);
 
 /* --- I/O --- */
-extern void Convoy_readJSON(void        *input, const cJSON *const in_json);
-extern void Convoy_writeJSON(const void *input,       cJSON       *in_json);
+void Convoy_readJSON(void        *input, const cJSON *const in_json);
+void Convoy_writeJSON(const void *input,       cJSON       *in_json);
 
 #endif /* CONVOY_H */

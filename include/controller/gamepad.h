@@ -84,19 +84,19 @@ extern char sota_button_names[SOTA_BUTTON_END][SOTA_BUTTON_NAME_MAX_LEN];
 extern char sota_input_names[SOTA_INPUT_END][SOTA_INPUT_NAME_MAX_LEN];
 
 /* --- Constructors/Destructors --- */
-extern void Gamepad_Init(   struct controllerGamepad *g);
-extern void Gamepad_Free(   struct controllerGamepad *g);
+void Gamepad_Init(   struct controllerGamepad *g);
+void Gamepad_Free(   struct controllerGamepad *g);
 
-extern void _Gamepad_Realloc(struct controllerGamepad *g);
+void _Gamepad_Realloc(struct controllerGamepad *g);
 
 /* -- Controller management -- */
-extern void Gamepad_addController(   struct controllerGamepad *g, i32 j);
-extern void Gamepad_removeController(struct controllerGamepad *g, i32 i);
+void Gamepad_addController(   struct controllerGamepad *g, i32 j);
+void Gamepad_removeController(struct controllerGamepad *g, i32 i);
 
 /* -- Pressed button -- */
-extern void Gamepad_Held(i8 *h, size_t *hn, i32 *t, i8 *p, size_t pn, i32 dt);
-extern bool Gamepad_isPressed(   struct controllerGamepad *g,  int sb);
-extern bool Gamepad_ButtonorAxis(struct controllerGamepad *g,  int b, int i, bool is);
-extern struct Point Gamepad_Joystick_Direction(struct controllerGamepad *g);
+void Gamepad_Held(i8 *h, size_t *hn, i32 *t, i8 *p, size_t pn, i32 dt);
+bool Gamepad_isPressed(   struct controllerGamepad *g,  int sb);
+bool Gamepad_ButtonorAxis(struct controllerGamepad *g,  int b, int i, bool is);
+struct Point Gamepad_Joystick_Direction(struct controllerGamepad *g);
 
 #endif /* CONTROLLERGAMEPAD_H */

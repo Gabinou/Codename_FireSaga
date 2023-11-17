@@ -38,6 +38,6 @@ typedef struct controllerMouse {
 } controllerMouse;
 extern struct controllerMouse controllerMouse_default;
 
-extern void Mouse_checkButton(struct controllerMouse *mouse, u8 button);
+void Mouse_checkButton(struct controllerMouse *mouse, u8 button);
 
 #endif /* CONTROLLERMOUSE_H */

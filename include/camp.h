@@ -15,45 +15,45 @@ struct Item;
 
 enum SOTA_CAMP {
     // Bonus for Guards if an ambush is prevented
-    CAMP_BONUSEXP_AMBUSH = 50,
-    CAMP_JOB_NULL = 0,
+    CAMP_BONUSEXP_AMBUSH    = 50,
+    CAMP_JOB_NULL           = 0,
 };
 
 enum SOTA_CAMP_JOB_canFIGHT {
-    CAMP_GUARD_canFIGHT = false,
-    CAMP_LIBRARIAN_canFIGHT = true,
-    CAMP_ASSISTANT_canFIGHT = true,
-    CAMP_COOK_canFIGHT = true,
-    CAMP_SCRIBE_canFIGHT = true,
-    CAMP_STABLEHAND_canFIGHT = true,
-    CAMP_CLERGYMAN_canFIGHT = true,
-    CAMP_STORAGEMASTER_canFIGHT = true,
+    CAMP_GUARD_canFIGHT           = false,
+    CAMP_LIBRARIAN_canFIGHT       = true,
+    CAMP_ASSISTANT_canFIGHT       = true,
+    CAMP_COOK_canFIGHT            = true,
+    CAMP_SCRIBE_canFIGHT          = true,
+    CAMP_STABLEHAND_canFIGHT      = true,
+    CAMP_CLERGYMAN_canFIGHT       = true,
+    CAMP_STORAGEMASTER_canFIGHT   = true,
     CAMP_MAGICRESEARCHER_canFIGHT = false,
 };
 
 enum SOTA_CAMP_JOB_EXP_BONUS {
-    CAMP_GUARD_EXP_BONUS = 50,
-    CAMP_LIBRARIAN_EXP_BONUS = 10,
-    CAMP_ASSISTANT_EXP_BONUS = 10,
-    CAMP_COOK_EXP_BONUS = 20,
-    CAMP_SCRIBE_EXP_BONUS = 20,
-    CAMP_STABLEHAND_EXP_BONUS = 20,
-    CAMP_CLERGYMAN_EXP_BONUS = 20,
-    CAMP_STORAGEMASTER_EXP_BONUS = 10,
-    CAMP_MAGICRESEARCHER_EXP_BONUS = 50,
+    CAMP_GUARD_EXP_BONUS            = 50,
+    CAMP_LIBRARIAN_EXP_BONUS        = 10,
+    CAMP_ASSISTANT_EXP_BONUS        = 10,
+    CAMP_COOK_EXP_BONUS             = 20,
+    CAMP_SCRIBE_EXP_BONUS           = 20,
+    CAMP_STABLEHAND_EXP_BONUS       = 20,
+    CAMP_CLERGYMAN_EXP_BONUS        = 20,
+    CAMP_STORAGEMASTER_EXP_BONUS    = 10,
+    CAMP_MAGICRESEARCHER_EXP_BONUS  = 50,
 };
 
 enum SOTA_CAMP_JOB_MAX {
-    CAMP_GUARD_MAX = 4,
-    CAMP_LIBRARIAN_MAX = 2,
-    CAMP_ASSISTANT_MAX = 1,
-    CAMP_COOK_MAX = 3,
-    CAMP_SCRIBE_MAX = 2,
-    CAMP_STABLEHAND_MAX = 2,
-    CAMP_CLERGYMAN_MAX = 2,
-    CAMP_STORAGEMASTER_MAX = 2,
+    CAMP_GUARD_MAX           = 4,
+    CAMP_LIBRARIAN_MAX       = 2,
+    CAMP_ASSISTANT_MAX       = 1,
+    CAMP_COOK_MAX            = 3,
+    CAMP_SCRIBE_MAX          = 2,
+    CAMP_STABLEHAND_MAX      = 2,
+    CAMP_CLERGYMAN_MAX       = 2,
+    CAMP_STORAGEMASTER_MAX   = 2,
     CAMP_MAGICRESEARCHER_MAX = 2,
-    CAMP_JOB_MAX = 4,
+    CAMP_JOB_MAX             = 4,
     CAMP_JOB_TOTAL = CAMP_GUARD_MAX + CAMP_LIBRARIAN_MAX + CAMP_ASSISTANT_MAX + CAMP_COOK_MAX + CAMP_SCRIBE_MAX + CAMP_STABLEHAND_MAX + CAMP_CLERGYMAN_MAX + CAMP_STORAGEMASTER_MAX + CAMP_MAGICRESEARCHER_MAX,
 };
 
@@ -83,19 +83,19 @@ typedef struct Camp {
 extern struct Camp Camp_default;
 
 /* --- API --- */
-extern void Camp_Job_Hire(struct Camp *c, i16 u, i16 j);
-extern void Camp_Job_Fire(struct Camp *c, i16 u, i16 j);
-extern void Camp_Job_Forbid(struct Camp *c, i16 u, i16 j);
+void Camp_Job_Hire(struct Camp *c, i16 u, i16 j);
+void Camp_Job_Fire(struct Camp *c, i16 u, i16 j);
+void Camp_Job_Forbid(struct Camp *c, i16 u, i16 j);
 
 /* --- isCan --- */
-extern u8 Camp_hasJob(struct Camp *in_camp, i16 unit_id);
+u8 Camp_hasJob(struct Camp *in_camp, i16 unit_id);
 
 /* --- Internals --- */
-extern u8 *Camp_Job_Get(struct Camp *in_camp, i16 job_id);
-extern void Camp_Jobs_Clear(struct Camp *in_camp);
+u8 *Camp_Job_Get(struct Camp *in_camp, i16 job_id);
+void Camp_Jobs_Clear(struct Camp *in_camp);
 
 /* --- I/O --- */
-extern void Camp_readJSON(void         *input, const cJSON *const in_jcamp);
-extern void Camp_writeJSON(const  void *input,       cJSON       *in_jcamp);
+void Camp_readJSON(void         *input, const cJSON *const in_jcamp);
+void Camp_writeJSON(const  void *input,       cJSON       *in_jcamp);
 
 #endif /* CAMP_H */

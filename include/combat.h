@@ -153,7 +153,6 @@ struct Combat_Rates    Compute_Combat_Rates(   struct Unit *att, struct Unit *df
 struct Combat_Forecast Compute_Combat_Forecast(struct Unit *agg, struct Unit *dft,
                                                struct Point *ap, struct Point *dp);
 
-
 /* -- Combat Outcome -- */
 /* RNG check happens here. */
 void Compute_Combat_Outcome(struct Combat_Outcome *, struct Combat_Forecast *,

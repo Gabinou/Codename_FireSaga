@@ -51,7 +51,7 @@ int Filesystem_Free(void);
 
 void Filesystem_Mount(s8 folder);
 
-
+// TODO: remove const in favor of "_<var>" convention
 /* --- MISC. --- */
 bool Filesystem_fequal(const char *filename1, const char *filename2);
 void Filesystem_Load_Bytes(const char *name, u8 **mem, size_t *len);
