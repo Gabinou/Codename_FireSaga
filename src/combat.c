@@ -33,15 +33,15 @@ b32 Combat_canDouble(struct Unit *_att, struct Unit *_dfd) {
     return (diff > SOTA_DOUBLING_SPEED);
 }
 
-bool Combat_canAttack_Equipped(struct Unit *attacker, struct Unit *defender,
-                               struct Point *att_pos, struct Point *dfd_pos) {
+b32 Combat_canAttack_Equipped(struct Unit *attacker, struct Unit *defender,
+                              struct Point *att_pos, struct Point *dfd_pos) {
     SDL_assert(attacker && defender);
     SDL_assert(att_pos  && dfd_pos);
     /* Get range of current loadout */
     struct Range *att_range = Unit_Range_Loadout(attacker);
     /* Is enemy in range? */
     u8 distance  = abs(dfd_pos->x - att_pos->x) +  abs(dfd_pos->y - att_pos->y);
-    bool can     = (distance >= att_range->min) && (distance <= att_range->max);
+    b32 can     = (distance >= att_range->min) && (distance <= att_range->max);
     return (can);
 }
 
@@ -100,11 +100,6 @@ struct Damage Compute_Combat_Damage(struct Unit *attacker,
     return (attacker->damage);
 }
 
-void Combat_Death_isPossible(struct Combat_Flow flow, u8 *out) {
-    out[SOTA_DEFENDANT] = 0;
-    // TODO: compute total damage
-}
-
 /* Possible Combat death: For AI*/
 struct Combat_Death Compute_Combat_Death(struct Unit *aggressor, struct Unit *defendant,
                                          struct Combat_Stats forecast, struct Combat_Flow flow) {
@@ -112,8 +107,6 @@ struct Combat_Death Compute_Combat_Death(struct Unit *aggressor, struct Unit *de
 
     /* DOES NOT WORK */
     struct Combat_Death out_death = Combat_Death_default;
-    u8 defendant_possible[2];
-    Combat_Death_isPossible(flow, defendant_possible);
     u8 attacker_maxDamage_nocrit = 0, attacker_maxDamage_crit = 0;
     u8 defender_maxDamage_nocrit = 0, defender_maxDamage_crit = 0;
 

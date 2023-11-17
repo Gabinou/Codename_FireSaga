@@ -54,15 +54,15 @@ struct Combat_Phase {
     // skill_multiplier: Applies to every higher priority attack in phase
     u8     skill_multiplier;
     u8     attack_num;
-    bool    attacker    : 1;
+    b32    attacker    : 1;
 } Combat_Phase_default;
 
 /* -- Combat_Attack -- */
 struct Combat_Attack {
     u8     total_damage; // total damage taken, depending on hit/crit
-    bool    hit         : 1;
-    bool    crit        : 1;
-    bool    attacker    : 1;
+    b32    hit         : 1;
+    b32    crit        : 1;
+    b32    attacker    : 1;
 } Combat_Attack_default;
 
 /* -- Combat_Flow -- */
@@ -70,7 +70,7 @@ struct Combat_Attack {
 // (aggressor_phases > 1) -> (defendant_phases <= 1) and vice versa
 // Brave: attack multiplier combat for all phases
 struct Combat_Flow {
-    bool    defendant_retaliates;
+    b32    defendant_retaliates;
     u8     defendant_phases;
     u8     aggressor_phases;
     u8     aggressor_brave;
@@ -81,10 +81,10 @@ struct Combat_Flow {
 // Can combatants die?
 // WILL combatants die?
 struct Combat_Death {
-    bool aggressor_certain;
-    bool defendant_certain;
-    bool aggressor_possible;
-    bool defendant_possible;
+    b32 aggressor_certain;
+    b32 defendant_certain;
+    b32 aggressor_possible;
+    b32 defendant_possible;
 } Combat_Death_default;
 
 /* -- Combat_Rates -- */
@@ -126,31 +126,14 @@ struct Combat_Outcome {
     b32                   ended; /* death before all attacks */
 };
 
-/* -- Combat Forecast -- */
-struct Combat_Forecast Compute_Combat_Forecast(struct Unit *agg, struct Unit *dft,
-                                               struct Point *ap, struct Point *dp);
-
-/* -- Combat Outcome -- */
-/* RNG CHECK HAPPENS HERE. */
-void Compute_Combat_Outcome(struct Combat_Outcome *, struct Combat_Forecast *,
-                            struct Unit *,           struct Unit *);
-
 /* -- isCan -- */
 b32 Combat_canDouble(struct Unit *_a, struct Unit *_d);
-bool Combat_canAttack_Equipped(struct Unit  *agg, struct Unit  *dft,
-                               struct Point *_ag, struct Point *_df);
-void Combat_Death_isPossible(struct Combat_Flow, u8 *out);
+b32 Combat_canAttack_Equipped(struct Unit  *agg, struct Unit  *dft,
+                              struct Point *_ag, struct Point *_df);
 
-/* -- Combat Forecast -- */
-struct Damage Compute_Combat_Damage(     struct Unit *att, struct Unit *dfd);
-struct Combat_Rates Compute_Combat_Rates(struct Unit *att, struct Unit *dfd,
-                                         struct Point *_a, struct Point *_d);
-
+/* -- Combat Death -- */
 struct Combat_Death Compute_Combat_Death(struct Unit *agg, struct Unit *dft,
                                          struct Combat_Stats, struct Combat_Flow);
-
-struct Combat_Flow Compute_Combat_Flow(struct Unit *agg, struct Unit *dft,
-                                       struct Point *_a, struct Point *_d);
 
 /* -- Combat Attacks -- */
 void Compute_Combat_Phase( struct Combat_Phase *, struct Combat_Attack *,
@@ -161,7 +144,23 @@ void Compute_Combat_Attack(struct Combat_Phase *, struct Combat_Attack *,
 int Combat_Attack_Total_Num(struct Combat_Phase *phases, int b, int num);
 int Combat_Phase_Attack_Num(struct Combat_Phase *phases, int brave_factor);
 
+/* -- Combat Forecast -- */
+struct Damage          Compute_Combat_Damage(  struct Unit *att, struct Unit *dfd);
+struct Combat_Flow     Compute_Combat_Flow(    struct Unit *agg, struct Unit *dft,
+                                               struct Point *_a, struct Point *_d);
+struct Combat_Rates    Compute_Combat_Rates(   struct Unit *att, struct Unit *dfd,
+                                               struct Point *_a, struct Point *_d);
+struct Combat_Forecast Compute_Combat_Forecast(struct Unit *agg, struct Unit *dft,
+                                               struct Point *ap, struct Point *dp);
+
+
+/* -- Combat Outcome -- */
+/* RNG check happens here. */
+void Compute_Combat_Outcome(struct Combat_Outcome *, struct Combat_Forecast *,
+                            struct Unit *,           struct Unit *);
+
 /* -- Combat Resolution -- */
+/* Dealing damage happens here. */
 void Combat_Resolve(struct Combat_Attack *, u8 a, struct Unit *, struct Unit *);
 void Combat_Resolve_Attack(struct Combat_Attack,  struct Unit *, struct Unit *);
 
