@@ -16,8 +16,8 @@
 // - True Damaged
 
 struct BarDamage {
-    uint32_t dmg[DAMAGE_TYPES];
-    uint32_t previoushp;
+    u32 dmg[DAMAGE_TYPES];
+    u32 previoushp;
 };
 
 struct Combat_HPBar {

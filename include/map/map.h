@@ -69,7 +69,7 @@ struct Map {
     i8 chapter;
     i32 tilesize[TWO_D];
     struct Arrow    *arrow;
-    tnecs_world_t   *world;
+    tnecs_world   *world;
     SDL_Renderer    *renderer;
 
     /* --- SHADERS --- */
@@ -122,7 +122,7 @@ struct Map {
     i32 *global_rangemap;       /* 2D dynamic array */
     float *fcostmap;            /* 2D dynamic array */
     float *fmovemap;            /* 2D dynamic array */
-    tnecs_entity_t *unitmap;    /* [row * col_len + col] */
+    tnecs_entity *unitmap;    /* [row * col_len + col] */
 
     /* --- PALETTES --- */
     SDL_Palette *palette_default;
@@ -132,19 +132,19 @@ struct Map {
     /* --- AGONY --- */
     struct Agony_timer *agony_stack;
     u8 num_agonizing;
-    tnecs_entity_t costmap_ent;
+    tnecs_entity costmap_ent;
 
     /* --- ARMIES --- */
     int army_i; /* Current army in control */
-    tnecs_entity_t *units_onfield; // TODO: get rid of this?
-    tnecs_entity_t *friendlies_onfield;
-    tnecs_entity_t *enemies_onfield;
+    tnecs_entity *units_onfield; // TODO: get rid of this?
+    tnecs_entity *friendlies_onfield;
+    tnecs_entity *enemies_onfield;
 
-    tnecs_entity_t *friendlies_agony;
-    tnecs_entity_t *enemies_agony;
+    tnecs_entity *friendlies_agony;
+    tnecs_entity *enemies_agony;
 
-    tnecs_entity_t *friendlies_killed;
-    tnecs_entity_t *enemies_killed;
+    tnecs_entity *friendlies_killed;
+    tnecs_entity *enemies_killed;
 
     u8 *army_onfield;
     struct Point *units_positions_list;  /* same order as unit_onfield */
@@ -172,9 +172,9 @@ struct Map {
     struct Inventory_item **reinf_equipments;
 
     /* --- MAP ENTITIES --- */
-    tnecs_entity_t *doors_ent;  /* breakable doors are here */
-    tnecs_entity_t *chests_ent;
-    tnecs_entity_t *breakables_ent;
+    tnecs_entity *doors_ent;  /* breakable doors are here */
+    tnecs_entity *chests_ent;
+    tnecs_entity *breakables_ent;
     u16 door_num;
     u16 chest_num;
     u16 breakable_num;

@@ -67,12 +67,12 @@ struct AI AI_default = {
 //     return (rating);
 // }
 
-// extern tnecs_entity_t AI_Target_Heal(tnecs_world_t * in_world,
-//                                      tnecs_entity_t in_staffWielder,
-//                                      tnecs_entity_t * in_possiblePatients, u8 num_patients) {
+// extern tnecs_entity AI_Target_Heal(tnecs_world * in_world,
+//                                      tnecs_entity in_staffWielder,
+//                                      tnecs_entity * in_possiblePatients, u8 num_patients) {
 //     SDL_Log("AI_Target_Heal");
 //     struct AI * temp_ai_ptr;
-//     tnecs_entity_t out_target = 0;
+//     tnecs_entity out_target = 0;
 //     temp_ai_ptr = TNECS_GET_COMPONENT(in_world, in_staffWielder, AI);
 //     if (num_patients > 0) {
 //         out_target = linalg_isIn_int32_t(in_possiblePatients, temp_ai_ptr->target_protect,
@@ -95,8 +95,8 @@ struct AI AI_default = {
 //     return (out_target);
 // }
 
-// int_fast8_t AI_Silence_Rating(tnecs_world_t * in_world, u8 in_hit_rate,
-//                               tnecs_entity_t in_enemy_ent) {
+// int_fast8_t AI_Silence_Rating(tnecs_world * in_world, u8 in_hit_rate,
+//                               tnecs_entity in_enemy_ent) {
 //     int_fast8_t rating = 0;
 //     int_fast8_t rating_buffer;
 //     struct Unit * enemy_ptr = TNECS_GET_COMPONENT(in_world, in_enemy_ent, Unit);
@@ -119,14 +119,14 @@ struct AI AI_default = {
 //     return (rating);
 // }
 
-// tnecs_entity_t AI_Target_Silence(tnecs_world_t * in_world, tnecs_entity_t in_staffWielder,
-//                                  u8 * in_hit_rates, tnecs_entity_t * in_possibleDefenders,
+// tnecs_entity AI_Target_Silence(tnecs_world * in_world, tnecs_entity in_staffWielder,
+//                                  u8 * in_hit_rates, tnecs_entity * in_possibleDefenders,
 //                                  u8 num_defender) {
 //     SDL_Log("AI_Target_Silence");
 //     struct AI * temp_ai_ptr;
 //     // const struct Unit * temp_unit_ptr;
 //     temp_ai_ptr = TNECS_GET_COMPONENT(in_world, in_staffWielder, AI);
-//     tnecs_entity_t out_target = 0;
+//     tnecs_entity out_target = 0;
 //     if (num_defender > 0) {
 //         out_target = linalg_isIn_int32_t(temp_ai_ptr->target_kill, in_possibleDefenders,
 //                                          num_defender);
@@ -148,14 +148,14 @@ struct AI AI_default = {
 //     return (out_target);
 // }
 
-// tnecs_entity_t AI_Target_Pull(tnecs_world_t * in_world, tnecs_entity_t in_staffWielder,
-//                               tnecs_entity_t * in_friendlies, u8 num_friendly, tnecs_entity_t * in_enemies,
+// tnecs_entity AI_Target_Pull(tnecs_world * in_world, tnecs_entity in_staffWielder,
+//                               tnecs_entity * in_friendlies, u8 num_friendly, tnecs_entity * in_enemies,
 //                               u8 num_enemy) {
 //     SDL_Log("AI_Target_Pull");
 //     struct AI * temp_ai_ptr;
 //     struct Unit * temp_unit_ptr;
 //     temp_ai_ptr = TNECS_GET_COMPONENT(in_world, in_staffWielder, AI);
-//     tnecs_entity_t out_target = 0;
+//     tnecs_entity out_target = 0;
 //     float missing_hp_prop = 0.0f;
 //     float missing_hp_prop_max = 0.0f;
 //     switch (temp_ai_ptr->priority) {
@@ -201,23 +201,23 @@ struct AI AI_default = {
 //     return (out_target);
 // }
 
-// tnecs_entity_t AI_Target_Push(tnecs_world_t * in_world, tnecs_entity_t in_staffWielder,
-//                               tnecs_entity_t * in_friendlies, u8 num_friendly, tnecs_entity_t * in_enemies,
+// tnecs_entity AI_Target_Push(tnecs_world * in_world, tnecs_entity in_staffWielder,
+//                               tnecs_entity * in_friendlies, u8 num_friendly, tnecs_entity * in_enemies,
 //                               u8 num_enemy) {
 //     SDL_Log("AI_Target_Push");
 //     struct AI * temp_ai_ptr;
 //     struct Unit * temp_unit_ptr;
 //     temp_ai_ptr = TNECS_GET_COMPONENT(in_world, in_staffWielder, AI);
-//     tnecs_entity_t out_target = 0;
+//     tnecs_entity out_target = 0;
 //     return (out_target);
 // }
 
-// tnecs_entity_t AI_Target_Attack(tnecs_world_t * in_world, tnecs_entity_t in_attacker,
-//                                 tnecs_entity_t * in_possibleDefenders, struct Combat_Forecast * in_forecasts,
+// tnecs_entity AI_Target_Attack(tnecs_world * in_world, tnecs_entity in_attacker,
+//                                 tnecs_entity * in_possibleDefenders, struct Combat_Forecast * in_forecasts,
 //                                 u8 num_defender) {
 //     struct AI * temp_ai_ptr;
 //     temp_ai_ptr = TNECS_GET_COMPONENT(in_world, in_attacker, AI);
-//     tnecs_entity_t out_target = 0;
+//     tnecs_entity out_target = 0;
 //     if (num_defender > 0) {
 //         out_target = linalg_isIn_int32_t(in_possibleDefenders, temp_ai_ptr->target_kill,
 //                                          num_defender);
@@ -238,8 +238,8 @@ struct AI AI_default = {
 //     return (out_target);
 // }
 
-// struct AI_PushPull_Out AI_PushPull_Friendly_Offensively_Rating(tnecs_world_t * in_world,
-//         struct Map * in_map, tnecs_entity_t in_friendly_ent) {
+// struct AI_PushPull_Out AI_PushPull_Friendly_Offensively_Rating(tnecs_world * in_world,
+//         struct Map * in_map, tnecs_entity in_friendly_ent) {
 //     int_fast8_t rating = 0;
 //     int_fast8_t rating_buffer;
 //     struct Unit * friendly_ptr = TNECS_GET_COMPONENT(in_world, in_friendly_ent, Unit);
@@ -286,8 +286,8 @@ struct AI AI_default = {
 //     // return (ai_pushpull_out);
 // }
 
-// struct AI_PushPull_Out AI_PushPull_Friendly_Defensively_Rating(tnecs_world_t * in_world,
-//         struct Map * in_map, tnecs_entity_t in_friendly_ent) {
+// struct AI_PushPull_Out AI_PushPull_Friendly_Defensively_Rating(tnecs_world * in_world,
+//         struct Map * in_map, tnecs_entity in_friendly_ent) {
 //     int_fast8_t rating = 0;
 //     int_fast8_t rating_buffer;
 //     struct Unit * friendly_ptr = TNECS_GET_COMPONENT(in_world, in_friendly_ent, Unit);
@@ -323,8 +323,8 @@ struct AI AI_default = {
 //     // return (ai_pushpull_out);
 // }
 
-// struct AI_PushPull_Out AI_PushPull_Enemy_Defensively_Rating(tnecs_world_t * in_world,
-//         struct Map * in_map, tnecs_entity_t in_enemy_ent) {
+// struct AI_PushPull_Out AI_PushPull_Enemy_Defensively_Rating(tnecs_world * in_world,
+//         struct Map * in_map, tnecs_entity in_enemy_ent) {
 //     SDL_Log("AI_PushPull_Enemy_Defensively_Rating");
 //     int_fast8_t rating = 0;
 //     int_fast8_t rating_buffer;
@@ -361,8 +361,8 @@ struct AI AI_default = {
 //     // return (ai_pushpull_out);
 // }
 
-// struct AI_PushPull_Out AI_PushPull_Enemy_Offensively_Rating(tnecs_world_t * in_world,
-//         struct Map * in_map, tnecs_entity_t in_enemy_ent) {
+// struct AI_PushPull_Out AI_PushPull_Enemy_Offensively_Rating(tnecs_world * in_world,
+//         struct Map * in_map, tnecs_entity in_enemy_ent) {
 //     int_fast8_t rating = 0;
 //     int_fast8_t rating_buffer;
 //     struct Unit * enemy_ptr = TNECS_GET_COMPONENT(in_world, in_enemy_ent, Unit);

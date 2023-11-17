@@ -158,8 +158,8 @@ fsm_menu_t fsm_Pop_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
 /* --- fsm_eAcpt_sGmpMap_ssMapCndt_mo --- */
 void fsm_eAcpt_sGmpMap_ssMapCndt_moTrade(struct Game *sota, struct Menu *in_mc) {
     /* - Open Trade menu - */
-    tnecs_entity_t active   = sota->selected_unit_entity;
-    tnecs_entity_t passive  = sota->candidates[sota->candidate];
+    tnecs_entity active   = sota->selected_unit_entity;
+    tnecs_entity passive  = sota->candidates[sota->candidate];
     SDL_assert(active       > TNECS_NULL);
     SDL_assert(passive      > TNECS_NULL);
     // Game_TradeMenu_Enable(sota, active, passive);
@@ -175,12 +175,12 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moDance(struct Game *sota, struct Menu *in_mc) 
     /* - Refresh spectator - */
     SDL_assert(sota->candidates != NULL);
     SDL_assert(sota->candidates[sota->candidate] > TNECS_NULL);
-    tnecs_entity_t spectator = sota->candidates[sota->candidate];
+    tnecs_entity spectator = sota->candidates[sota->candidate];
     SDL_assert(spectator > TNECS_NULL);
     Game_Unit_Refresh(sota, spectator);
 
     /* - Dancer waits - */
-    tnecs_entity_t dancer = sota->selected_unit_entity;
+    tnecs_entity dancer = sota->selected_unit_entity;
     SDL_assert(dancer > TNECS_NULL);
     Game_Unit_Wait(sota, dancer);
 
@@ -203,11 +203,11 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moDance(struct Game *sota, struct Menu *in_mc) 
 
 void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *in_mc) {
 
-    tnecs_entity_t healer = sota->selected_unit_entity;
+    tnecs_entity healer = sota->selected_unit_entity;
     /* - Healer uses staff on patient - */
     /* IF no one hand staff SKILL */
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, healer, Unit);
-    tnecs_entity_t patient_ent = sota->candidates[sota->candidate];
+    tnecs_entity patient_ent = sota->candidates[sota->candidate];
     struct Unit *patient = TNECS_GET_COMPONENT(sota->world, patient_ent, Unit);
     struct Inventory_item *staff_inv = Unit_Item_Strong(unit, UNIT_HAND_STRONG);
     struct Weapon *staff = DTAB_GET(unit->weapons_dtab, staff_inv->id);
@@ -270,7 +270,7 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
 void fsm_eCncl_sGmpMap_ssMapCndt_moDance(struct Game *sota, struct Menu *in_mc) {
 
     /* 1. Turn menu_player_select_unit_action visible */
-    tnecs_entity_t menu = sota->player_select_menus[MENU_PLAYER_SELECT_UNIT_ACTION];
+    tnecs_entity menu = sota->player_select_menus[MENU_PLAYER_SELECT_UNIT_ACTION];
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, menu, Menu);
     SDL_assert(mc != NULL);
     SDL_assert(mc->elem_pos != NULL);
@@ -291,7 +291,7 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *in_mc) 
 
     /* 1. Turn top menu (Staff_Select_Menu) visible */
     int stack_top = DARR_NUM(sota->menu_stack) - 1;
-    tnecs_entity_t menu_top = sota->menu_stack[stack_top];
+    tnecs_entity menu_top = sota->menu_stack[stack_top];
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, menu_top, Menu);
     SDL_assert(mc != NULL);
     SDL_assert(mc->elem_pos != NULL);
@@ -307,7 +307,7 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *in_mc) 
 
     /* 4. Move cursor to correct hand */
     // new_elem is hand 0 if its -1, else its hand 1
-    tnecs_entity_t cursor = sota->entity_cursor;
+    tnecs_entity cursor = sota->entity_cursor;
     Menu_Elem_Set(mc, sota, 0);
 
 }
@@ -315,7 +315,7 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *in_mc) 
 void fsm_eCncl_sGmpMap_ssMapCndt_moTrade(struct Game *sota, struct Menu *in_mc) {
     /* 1. Turn Player_Select_Menu visible */
     int stack_top = DARR_NUM(sota->menu_stack) - 1;
-    tnecs_entity_t menu_top = sota->menu_stack[stack_top];
+    tnecs_entity menu_top = sota->menu_stack[stack_top];
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, menu_top, Menu);
     SDL_assert(mc != NULL);
     SDL_assert(mc->elem_pos != NULL);
@@ -335,7 +335,7 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
 
     /* 1. Turn Item_Select_Menu visible */
     int stack_top               = DARR_NUM(sota->menu_stack) - 1;
-    tnecs_entity_t menu_top     = sota->menu_stack[stack_top];
+    tnecs_entity menu_top     = sota->menu_stack[stack_top];
     struct Menu *mc    = TNECS_GET_COMPONENT(sota->world, menu_top, Menu);
     SDL_assert(mc != NULL);
     SDL_assert(mc->elem_pos != NULL);
@@ -380,7 +380,7 @@ void fsm_eCrsMvs_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
     struct LoadoutSelectMenu *wsm = mc->data;
 
     /* - Get Popup_Loadout_Stats -- */
-    tnecs_entity_t popup_ent        = sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS];
+    tnecs_entity popup_ent        = sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS];
     struct PopUp *popup             = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
     struct PopUp_Loadout_Stats *pls = popup->data;
     SDL_assert(popup_ent > TNECS_NULL);
@@ -412,7 +412,7 @@ void fsm_eCrsMvs_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
 
     /* - Get Popup_Loadout_Stats -- */
     SDL_assert(mc->elem < DEFAULT_EQUIPMENT_SIZE);
-    tnecs_entity_t popup_ent = sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS];
+    tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS];
     SDL_assert(popup_ent > TNECS_NULL);
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
     struct PopUp_Loadout_Stats *pls = (struct PopUp_Loadout_Stats *)popup->data;
@@ -457,7 +457,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mTM(struct Game *sota, struct Menu *mc) {
 
     /* - Hide TradeMenu - */
     bool destroy = false;
-    tnecs_entity_t menu_popped_entity = Game_menuStack_Pop(sota, destroy);
+    tnecs_entity menu_popped_entity = Game_menuStack_Pop(sota, destroy);
     SDL_assert(menu_popped_entity == sota->trade_menu);
 
     /* - Go back to MapCandidates with traders - */
@@ -483,7 +483,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
     if ((ssm->selected[tophand] > -1) && (StaffSelectMenu_canEqItem(ssm))) {
         /* move cursor to first hand */
         int new_elem = WSM_ELEM_ITEM1;
-        tnecs_entity_t cursor = sota->entity_cursor;
+        tnecs_entity cursor = sota->entity_cursor;
         Menu_Elem_Set(mc, sota, new_elem);
 
         /* Item selected in hand 0, swapping */
@@ -496,7 +496,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
     } else {
         /* move cursor to second hand */
         bool destroy = false;
-        tnecs_entity_t menu_popped_entity = Game_menuStack_Pop(sota, destroy);
+        tnecs_entity menu_popped_entity = Game_menuStack_Pop(sota, destroy);
         SDL_assert(menu_popped_entity == sota->staff_select_menu);
 
         /* -- No item was selected, destroying ism menu -- */
@@ -504,7 +504,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
         Game_cursorFocus_onMenu(sota);
 
         /* 3. Move cursor to Staff menu option on psm */
-        tnecs_entity_t menu = sota->player_select_menus[MENU_PLAYER_SELECT_UNIT_ACTION];
+        tnecs_entity menu = sota->player_select_menus[MENU_PLAYER_SELECT_UNIT_ACTION];
         struct Menu *mc_ua = TNECS_GET_COMPONENT(sota->world, menu, Menu);
         struct PlayerSelectMenu *psm = (struct PlayerSelectMenu *)mc_ua->data;
         int new_elem = PlayerSelectMenu_Option_Index(psm, MENU_OPTION_STAFF);
@@ -523,7 +523,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mPCM(struct Game *sota, struct Menu *mc) {
     // 1. Destroy pre_combat menu
     SDL_assert(DARR_NUM(sota->menu_stack) > 0);
     bool destroy = false;
-    tnecs_entity_t menu_popped_entity = Game_menuStack_Pop(sota, destroy);
+    tnecs_entity menu_popped_entity = Game_menuStack_Pop(sota, destroy);
     SDL_assert(menu_popped_entity > 0);
 
     // 2. Make cursor visible
@@ -546,7 +546,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mPCM(struct Game *sota, struct Menu *mc) {
 void fsm_eCncl_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
     SDL_assert(DARR_NUM(sota->menu_stack) > 0);
     bool destroy = false;
-    tnecs_entity_t menu_popped_entity = Game_menuStack_Pop(sota, destroy);
+    tnecs_entity menu_popped_entity = Game_menuStack_Pop(sota, destroy);
     SDL_assert(menu_popped_entity > 0);
     struct Menu *mc_pop;
     mc_pop = TNECS_GET_COMPONENT(sota->world, menu_popped_entity, Menu);
@@ -566,7 +566,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
     if (wsm->selected[tophand] > -1) {
         /* move cursor to first hand */
         int new_elem = WSM_ELEM_ITEM1;
-        tnecs_entity_t cursor = sota->entity_cursor;
+        tnecs_entity cursor = sota->entity_cursor;
         Menu_Elem_Set(mc, sota, new_elem);
 
         /* Item selected in hand 0, swapping */
@@ -591,14 +591,14 @@ void fsm_eCncl_sGmpMap_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
     } else {
         /* -- No item was selected, destroying wsm menu -- */
         bool destroy = false;
-        tnecs_entity_t popped_ent = Game_menuStack_Pop(sota, destroy);
+        tnecs_entity popped_ent = Game_menuStack_Pop(sota, destroy);
         SDL_assert(popped_ent > 0);
 
         /* 2. Focus on psm */
         Game_cursorFocus_onMenu(sota);
 
         /* 3. Move cursor to Attack menu option on psm */
-        tnecs_entity_t menu          = sota->player_select_menus[MENU_PLAYER_SELECT_UNIT_ACTION];
+        tnecs_entity menu          = sota->player_select_menus[MENU_PLAYER_SELECT_UNIT_ACTION];
         struct Menu *mc     = TNECS_GET_COMPONENT(sota->world, menu, Menu);
         struct PlayerSelectMenu *psm = (struct PlayerSelectMenu *)mc->data;
         int new_elem = PlayerSelectMenu_Option_Index(psm, MENU_OPTION_ATTACK);
@@ -632,7 +632,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
 
     /* -- Popping ism -- */
     bool destroy = false;
-    tnecs_entity_t popped_ent = Game_menuStack_Pop(sota, destroy);
+    tnecs_entity popped_ent = Game_menuStack_Pop(sota, destroy);
     SDL_assert(popped_ent > 0);
 
     /* Focus on unit action menu */
@@ -648,7 +648,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
 void fsm_eCncl_sGmpMap_ssMenu_mSM(struct Game *sota, struct Menu *mc) {
 
     bool destroy = false;
-    tnecs_entity_t menu_popped_entity = Game_menuStack_Pop(sota, destroy);
+    tnecs_entity menu_popped_entity = Game_menuStack_Pop(sota, destroy);
     SDL_assert(menu_popped_entity > 0);
 
     i8 new_substate = GAME_SUBSTATE_STANDBY;
@@ -729,7 +729,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
         SDL_assert(mc->n9patch.scale.y > 0);
         /* move cursor to second hand */
         int new_elem            = WSM_ELEM_ITEM2;
-        tnecs_entity_t cursor   = sota->entity_cursor;
+        tnecs_entity cursor   = sota->entity_cursor;
         Menu_Elem_Set(mc, sota, new_elem);
 
         int popup_ind       = POPUP_TYPE_HUD_LOADOUT_STATS;
@@ -787,7 +787,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
     if (StaffSelectMenu_canEqItem(ssm)) {
         /* move cursor to second hand */
         int new_elem            = WSM_ELEM_ITEM2;
-        tnecs_entity_t cursor   = sota->entity_cursor;
+        tnecs_entity cursor   = sota->entity_cursor;
         Menu_Elem_Set(mc, sota, new_elem);
         StaffSelectMenu_Switch_Items(ssm);
     } else {
@@ -976,7 +976,7 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
         case MENU_PLAYER_SELECT_UNIT_ACTION:
             ;
 
-            tnecs_entity_t unit_ent       = sota->selected_unit_entity;
+            tnecs_entity unit_ent       = sota->selected_unit_entity;
             struct Unit *unit             = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
             struct Position *selected_pos = TNECS_GET_COMPONENT(sota->world, unit_ent, Position);
             new_substate                  = GAME_SUBSTATE_MAP_UNIT_MOVES;

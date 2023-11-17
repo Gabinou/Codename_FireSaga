@@ -20,6 +20,6 @@ enum TOPOFF_BAR {
 };
 
 /* -- Drawing -- */
-extern void TopoffBar_Draw(struct SimpleBar *sb, SDL_Renderer *r);
+void TopoffBar_Draw(struct SimpleBar *sb, SDL_Renderer *r);
 
 #endif /* TOPOFF_BAR_H */

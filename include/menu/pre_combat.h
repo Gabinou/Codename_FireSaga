@@ -203,8 +203,8 @@ struct PreCombatMenu {
     SDL_Texture *texture_face_defendant;
     SDL_Texture *texture_doubling;  // actually can render any number of phases
 
-    tnecs_entity_t defendant;
-    tnecs_entity_t aggressor;
+    tnecs_entity defendant;
+    tnecs_entity aggressor;
 
     struct Unit *dft_unit;
     struct Unit *agg_unit;
@@ -227,8 +227,8 @@ void PreCombatMenu_Free_Icons(struct PreCombatMenu *pcm);
 void PreCombatMenu_Free_Faces(struct PreCombatMenu *pcm);
 
 /* --- Loading --- */
-void PreCombatMenu_Load(struct PreCombatMenu *pcm, tnecs_entity_t a,
-                        tnecs_entity_t d, SDL_Renderer *r, struct n9Patch *n9patch);
+void PreCombatMenu_Load(struct PreCombatMenu *pcm, tnecs_entity a,
+                        tnecs_entity d, SDL_Renderer *r, struct n9Patch *n9patch);
 void _PreCombatMenu_Load(struct PreCombatMenu *pcm, struct Unit *a, struct Unit *d,
                          struct Position *ap, struct Position *dp, SDL_Renderer *r);
 

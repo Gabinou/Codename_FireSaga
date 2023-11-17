@@ -20,8 +20,8 @@ void Bitfield_And(u32 *bf1, u32 *bf2, u32 *out, size_t len) {
         out[i] = bf1[i] & bf2[i];
 }
 
-bool Bitfield_All(u32 *bf1, u32 *bf2, size_t len) {
-    bool out = true;
+b32 Bitfield_All(u32 *bf1, u32 *bf2, size_t len) {
+    b32 out = true;
     for (u32 i = 0; i < len; i++)
         out &= (bf1[i] == bf2[i]);
     return (out);
@@ -29,10 +29,10 @@ bool Bitfield_All(u32 *bf1, u32 *bf2, size_t len) {
 
 // Combination Bitfield_And and Bitfield_All
 // is bf1 in bf2 -> all bits set in bf1 are set in bf2
-bool Bitfield_isIn(u32 *bf1, u32 *bf2, size_t len) {
+b32 Bitfield_isIn(u32 *bf1, u32 *bf2, size_t len) {
     u32 *anded = BITFIELD_INIT_LEN(len);
     Bitfield_And(bf1, bf2, anded, len);
-    bool out = Bitfield_All(bf1, anded, len);
+    b32 out = Bitfield_All(bf1, anded, len);
     BITFIELD_Free(anded);
     return (out);
 }

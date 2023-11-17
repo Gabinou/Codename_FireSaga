@@ -16,21 +16,21 @@ extern bool CursorFlag;
 extern bool MouseFlag;
 extern bool RenderTop;
 
-void drawText(     tnecs_system_input_t *in_input);
-void drawMouse(    tnecs_system_input_t *in_input);
-void moveMouse(    tnecs_system_input_t *in_input);
-void drawMenu(     tnecs_system_input_t *in_input);
-void drawPopUp(    tnecs_system_input_t *in_input);
-void drawCursor(   tnecs_system_input_t *in_input);
-void scrollText(   tnecs_system_input_t *in_input);
-void drawMapUnit(  tnecs_system_input_t *in_input);
-void drawTextTimer(tnecs_system_input_t *in_input);
-void animateSprite(tnecs_system_input_t *in_input);
-void drawMap_HPBar(tnecs_system_input_t *in_input);
+void drawText(     tnecs_system_input *in_input);
+void drawMouse(    tnecs_system_input *in_input);
+void moveMouse(    tnecs_system_input *in_input);
+void drawMenu(     tnecs_system_input *in_input);
+void drawPopUp(    tnecs_system_input *in_input);
+void drawCursor(   tnecs_system_input *in_input);
+void scrollText(   tnecs_system_input *in_input);
+void drawMapUnit(  tnecs_system_input *in_input);
+void drawTextTimer(tnecs_system_input *in_input);
+void animateSprite(tnecs_system_input *in_input);
+void drawMap_HPBar(tnecs_system_input *in_input);
 
 
-void Animate_Combat_onMap(tnecs_system_input_t *in_input);
-void Animate_Turn_Transition(tnecs_system_input_t *in_input);
+void Animate_Combat_onMap(tnecs_system_input *in_input);
+void Animate_Turn_Transition(tnecs_system_input *in_input);
 
 
 #endif /* SYSTEMRENDER_H */

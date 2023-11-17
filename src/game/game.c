@@ -251,7 +251,7 @@ struct Game *Game_Init() {
     }
     DTAB_INIT(out_game->items_dtab, struct Item);
 
-    out_game->map_enemies = DARR_INIT(out_game->map_enemies, tnecs_entity_t, 16);
+    out_game->map_enemies = DARR_INIT(out_game->map_enemies, tnecs_entity, 16);
     if (out_game->settings.fullscreen)
         flags = SDL_WINDOW_FULLSCREEN;
     out_game->units_loaded = SDL_calloc(UNIT_ID_END, sizeof(* out_game->units_loaded));
@@ -372,7 +372,7 @@ struct Game *Game_Init() {
     out_game->timer_typeflag = TNECS_COMPONENT_NAME2TYPE(out_game->world, Timer);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration\n");
-    tnecs_world_t *world = out_game->world;
+    tnecs_world *world = out_game->world;
     /* --- SYSTEM REGISTERING: FIRST COME FIRST SERVED ---*/
     /* -- Control systems ran first --  */
     TNECS_REGISTER_SYSTEM_wEXCL(world, Control_Keyboard, 0, Position, Sprite, controllerKeyboard);
@@ -439,13 +439,13 @@ struct Game *Game_Init() {
     dstrect_funcs[absolute][isCursor = false]       = &Sprite_Dstrect_Absolute;
 
     /* --- Alloc arrays of entities --- */
-    out_game->defendants   = DARR_INIT(out_game->defendants, tnecs_entity_t, 4);
-    out_game->patients     = DARR_INIT(out_game->patients,   tnecs_entity_t, 4);
-    out_game->victims      = DARR_INIT(out_game->victims,    tnecs_entity_t, 4);
-    out_game->spectators   = DARR_INIT(out_game->spectators, tnecs_entity_t, 4);
-    out_game->auditors     = DARR_INIT(out_game->auditors,   tnecs_entity_t, 4);
-    out_game->passives     = DARR_INIT(out_game->passives,   tnecs_entity_t, 4);
-    out_game->openables    = DARR_INIT(out_game->openables,  tnecs_entity_t, 4);
+    out_game->defendants   = DARR_INIT(out_game->defendants, tnecs_entity, 4);
+    out_game->patients     = DARR_INIT(out_game->patients,   tnecs_entity, 4);
+    out_game->victims      = DARR_INIT(out_game->victims,    tnecs_entity, 4);
+    out_game->spectators   = DARR_INIT(out_game->spectators, tnecs_entity, 4);
+    out_game->auditors     = DARR_INIT(out_game->auditors,   tnecs_entity, 4);
+    out_game->passives     = DARR_INIT(out_game->passives,   tnecs_entity, 4);
+    out_game->openables    = DARR_INIT(out_game->openables,  tnecs_entity, 4);
 
     /* --- Alloc combat arrays --- */
     out_game->combat_outcome.attacks = DARR_INIT(out_game->combat_outcome.attacks, struct Combat_Attack,

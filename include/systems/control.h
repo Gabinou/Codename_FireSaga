@@ -14,9 +14,9 @@
 #include "controller/mouse.h"
 
 /* -- Systems -- */
-void Control_Gamepad( tnecs_system_input_t *in_input);
-void Control_Keyboard(tnecs_system_input_t *in_input);
-void Control_Touchpad(tnecs_system_input_t *in_input);
+void Control_Gamepad( tnecs_system_input *in_input);
+void Control_Keyboard(tnecs_system_input *in_input);
+void Control_Touchpad(tnecs_system_input *in_input);
 
 /* -- Utilities -- */
 void Control_Cursor_Moves(struct Game *s, struct Point cm, struct Point t,

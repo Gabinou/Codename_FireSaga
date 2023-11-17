@@ -23,7 +23,7 @@ void Text_Set(struct Text *text, char *line, int offset) {
     text->rect.h = text->pixelfont->glyph_height + offset;
 }
 
-void Text_onUpdate_FPS(struct Game *sota, tnecs_entity_t entity_fps,
+void Text_onUpdate_FPS(struct Game *sota, tnecs_entity entity_fps,
                        u32 frame_count, i64 last_update_ns, void *data) {
     SDL_assert(sota != NULL);
     SDL_assert(sota->world != NULL);

@@ -64,7 +64,7 @@ void Control_Pressed(i8 sota_b, i8 *press, i8 *pressed_num, bool block, i32 t_he
     }
 }
 
-void Control_Keyboard(tnecs_system_input_t *input) {
+void Control_Keyboard(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_assert(input->user_data != NULL);
     struct Point cursor_move = {0};
@@ -147,7 +147,7 @@ void Control_Keyboard(tnecs_system_input_t *input) {
     }
 }
 
-void Control_Gamepad(tnecs_system_input_t *input) {
+void Control_Gamepad(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_assert(input->user_data != NULL);
     struct Point cursor_move = {0};
@@ -228,6 +228,6 @@ void Control_Gamepad(tnecs_system_input_t *input) {
     }
 }
 
-void Control_Touchpad(tnecs_system_input_t *input) {
+void Control_Touchpad(tnecs_system_input *input) {
 
 }

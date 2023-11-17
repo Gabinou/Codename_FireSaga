@@ -29,20 +29,20 @@ extern u8 statbar_highlights[STATBAR_HIGHLIGHT_NUM]; /* < STATBAR_MAX_LEN */
 
 /* --- STAT BAR --- */
 /* -- Constructors/Destructors -- */
-extern void StatBar_Init(struct SimpleBar *b, u8 s, u8 c, int x, int y);
+void StatBar_Init(struct SimpleBar *b, u8 s, u8 c, int x, int y);
 
 /* -- Internals -- */
-extern u8 StatBar_Len(int cap);
-extern void StatBar_Colors_NES(struct SimpleBar *b, int bd, int bl, int fd, int fl);
+u8 StatBar_Len(int cap);
+void StatBar_Colors_NES(struct SimpleBar *b, int bd, int bl, int fd, int fl);
 
 /* -- Drawing -- */
-extern void StatBar_Draw(struct SimpleBar *b, SDL_Renderer *r);
+void StatBar_Draw(struct SimpleBar *b, SDL_Renderer *r);
 
 /* --- HP BAR --- */
 /* -- Constructors/Destructors -- */
-extern void HPBar_Init(struct SimpleBar *b, u8 s, u8 c, int x, int y);
+void HPBar_Init(struct SimpleBar *b, u8 s, u8 c, int x, int y);
 
 /* -- Drawing -- */
-extern void HPBar_Draw(struct SimpleBar *b, SDL_Renderer *r);
+void HPBar_Draw(struct SimpleBar *b, SDL_Renderer *r);
 
 #endif /* STAT_BAR_H */

@@ -56,9 +56,9 @@ struct Game {
     SDL_GLContext  gl_context;
     SDL_Window     *gl_window;
     #endif /* SOTA_OPENGL */
-    tnecs_world_t  *world;
+    tnecs_world  *world;
 
-    tnecs_component_t           timer_typeflag;
+    tnecs_component           timer_typeflag;
     struct Point  cursor_lastpos;
 
     struct dtab *menu_options_dtab;
@@ -68,9 +68,9 @@ struct Game {
     struct dtab *weapons_dtab;
     struct dtab *tiles_loaded_dtab;
     struct dtab *units_loaded_dtab;
-    tnecs_entity_t *units_loaded;
+    tnecs_entity *units_loaded;
 
-    tnecs_entity_t ai_timer; /* TODO: remove once AI works.*/
+    tnecs_entity ai_timer; /* TODO: remove once AI works.*/
 
     struct KeyboardInputMap  keyboardInputMap;
     struct GamepadInputMap   gamepadInputMap;
@@ -87,30 +87,30 @@ struct Game {
     /* gameplay state bitfields, narrative conditions */
     struct Conditions *conditions;
 
-    tnecs_entity_t *menu_stack;
-    tnecs_entity_t player_select_menus[MENU_PLAYER_SELECT_NUM]; /* [PLAYER_SELECT_MENU_...] */
-    tnecs_entity_t popups[POPUP_TYPE_NUM]; /* [POPUP_TYPE_...] */
-    tnecs_entity_t item_select_menu;
-    tnecs_entity_t trade_menu;
-    tnecs_entity_t staff_select_menu;
-    tnecs_entity_t weapon_select_menu;
-    tnecs_entity_t stats_menu;
-    tnecs_entity_t pre_combat_menu;
-    tnecs_entity_t first_menu;
-    tnecs_entity_t title;
-    tnecs_entity_t GM_menu;
+    tnecs_entity *menu_stack;
+    tnecs_entity player_select_menus[MENU_PLAYER_SELECT_NUM]; /* [PLAYER_SELECT_MENU_...] */
+    tnecs_entity popups[POPUP_TYPE_NUM]; /* [POPUP_TYPE_...] */
+    tnecs_entity item_select_menu;
+    tnecs_entity trade_menu;
+    tnecs_entity staff_select_menu;
+    tnecs_entity weapon_select_menu;
+    tnecs_entity stats_menu;
+    tnecs_entity pre_combat_menu;
+    tnecs_entity first_menu;
+    tnecs_entity title;
+    tnecs_entity GM_menu;
 
     s8 filename_menu;
     char reason[DEFAULT_BUFFER_SIZE];
 
-    tnecs_entity_t entity_cursor;
-    tnecs_entity_t entity_mouse;
-    tnecs_entity_t entity_transition;
-    tnecs_entity_t entity_highlighted;
-    tnecs_entity_t entity_shadowed;
-    tnecs_entity_t entity_fps;
-    tnecs_entity_t selected_unit_entity;
-    tnecs_entity_t hovered_unit_entity;
+    tnecs_entity entity_cursor;
+    tnecs_entity entity_mouse;
+    tnecs_entity entity_transition;
+    tnecs_entity entity_highlighted;
+    tnecs_entity entity_shadowed;
+    tnecs_entity entity_fps;
+    tnecs_entity selected_unit_entity;
+    tnecs_entity hovered_unit_entity;
 
     i8 moved_direction;
     i8 selected_menu_option;
@@ -118,11 +118,11 @@ struct Game {
     struct Point selected_unit_initial_position;
     struct Point selected_unit_moved_position;
 
-    tnecs_entity_t *map_enemies;
+    tnecs_entity *map_enemies;
     struct Unit party[SOTA_MAX_PARTY_SIZE];
     b32 party_loaded[SOTA_MAX_PARTY_SIZE];
 
-    tnecs_entity_t *ent_unit_loaded;
+    tnecs_entity *ent_unit_loaded;
 
     i32  cursor_moved_time_ms;
 
@@ -161,23 +161,23 @@ struct Game {
     int previous_candidate; // previously selected candidate
     /* -- Chosen by player -- */
     // Also use for non-combat: staff, item use...
-    tnecs_entity_t aggressor; // combat -> player unit
-    tnecs_entity_t defendant; // combat -> player chose
+    tnecs_entity aggressor; // combat -> player unit
+    tnecs_entity defendant; // combat -> player chose
 
     /* -- Choices list for player -- */
 
     /* --- UNIT ACTION CANDIDATES --- */
     // copy of one other psm list, used by choosecandidates
-    tnecs_entity_t *candidates;
+    tnecs_entity *candidates;
     /* on attackmap */
-    tnecs_entity_t *defendants;     // combat
-    tnecs_entity_t *patients;       // staff
+    tnecs_entity *defendants;     // combat
+    tnecs_entity *patients;       // staff
     /* on neighbouring tiles */
-    tnecs_entity_t *victims;        // rescue
-    tnecs_entity_t *spectators;     // dance
-    tnecs_entity_t *auditors;       // talk
-    tnecs_entity_t *passives;       // trade
-    tnecs_entity_t *openables;      // doors and chests
+    tnecs_entity *victims;        // rescue
+    tnecs_entity *spectators;     // dance
+    tnecs_entity *auditors;       // talk
+    tnecs_entity *passives;       // trade
+    tnecs_entity *openables;      // doors and chests
 
     i32   controller_code;
 

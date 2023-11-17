@@ -12,6 +12,9 @@
 #include "nmath.h"
 #include "cJSON.h"
 
+typedef tnecs_world world;
+typedef tnecs_entity entity;
+
 // --- FORWARD DECLARATIONS ---
 struct Game;
 
@@ -67,8 +70,8 @@ enum AI_MOVEMENT_TYPE {
 #define AI_PUSH_FRIENDLY_MISSINGHP 0.75f
 
 typedef struct AI {
-    tnecs_entity_t target_protect;
-    tnecs_entity_t target_kill;
+    entity target_protect;
+    entity target_kill;
     struct Point target_seize;
     struct Point target_open;
     struct Point target_defend;
@@ -77,69 +80,50 @@ typedef struct AI {
     u8 move_chapter;
     u8 move_type;
 } AI;
-extern struct AI AI_default;
+struct AI AI_default;
 
-extern struct Point *Target_Assailable_Positions(
-        tnecs_entity_t in_attacker,
-        tnecs_entity_t in_defender, i32 *in_movemap);
+struct Point *Target_Assailable_Positions(entity att, entity dfd, i32 *movemap);
 
-extern u8 AI_menuOption_Choose(tnecs_world_t *in_world,
-                               tnecs_entity_t in_attacker);
+u8 AI_menuOption_Choose(world *world, entity att);
 
-extern tnecs_entity_t AI_Target_Attack(tnecs_world_t *in_world,
-                                       tnecs_entity_t in_attacker,
-                                       tnecs_entity_t *in_possibleDefenders, struct Combat_Forecast *in_forecasts,
-                                       u8 num_defender);
-extern tnecs_entity_t AI_Target_Heal(tnecs_world_t *in_world,
-                                     tnecs_entity_t in_staffWielder,
-                                     tnecs_entity_t *in_possiblePatients, u8 num_patients);
-extern tnecs_entity_t AI_Target_magicShield(tnecs_world_t *in_world,
-                                            tnecs_entity_t in_staffWielder, tnecs_entity_t *in_possiblePatients,
-                                            u8 num_patients);
-extern tnecs_entity_t AI_Target_Silence(tnecs_world_t *in_world,
-                                        tnecs_entity_t in_staffWielder,
-                                        u8 *in_hit_rates, tnecs_entity_t *in_possibleDefenders,
-                                        u8 num_defender);
-extern tnecs_entity_t AI_Target_Pull(tnecs_world_t *in_world,
-                                     tnecs_entity_t in_staffWielder,
-                                     tnecs_entity_t *in_friendlies, u8 num_friendly, tnecs_entity_t *in_enemies,
-                                     u8 num_enemy);
-extern tnecs_entity_t AI_Target_Push(tnecs_world_t *in_world,
-                                     tnecs_entity_t in_staffWielder,
-                                     tnecs_entity_t *in_friendlies, u8 num_friendly, tnecs_entity_t *in_enemies,
-                                     u8 num_enemy);
+entity AI_Target_Attack(world *world, entity att, entity *possibleDefenders,
+                        struct Combat_Forecast *forecasts, u8 num_defender);
+entity AI_Target_Heal(world *world, entity staffWielder,
+                      entity *possiblePatients, u8 num_patients);
+entity AI_Target_magicShield(world *world, entity staffWielder,
+                             entity *possiblePatients, u8 num_patients);
+entity AI_Target_Silence(world *world, entity staffWielder, u8 *hit_rates,
+                         entity *possibleDefenders, u8 num_defender);
+entity AI_Target_Pull(world *world, entity staffWielder, entity *friendlies,
+                      u8 num_friendly, entity *enemies, u8 num_enemy);
+entity AI_Target_Push(world *world, entity staffWielder, entity *friendlies,
+                      u8 num_friendly, entity *enemies, u8 num_enemy);
 
-extern tnecs_entity_t AI_interimTarget_Compute(struct Map *in_map,
-                                               tnecs_entity_t in_actor);
-extern tnecs_entity_t AI_MovetoTarget(struct Map *in_map, tnecs_entity_t in_actor);
+entity AI_interimTarget_Compute(struct Map *map, entity actor);
+entity AI_MovetoTarget(struct Map *map, entity actor);
 
-extern i8 AI_Forecast_Rating(struct Combat_Forecast in_forecast);
-extern i8 AI_Silence_Rating(tnecs_world_t *in_world, u8 in_hit_rate,
-                            tnecs_entity_t in_enemy_ent);
+i8 AI_Forecast_Rating(struct Combat_Forecast forecast);
+i8 AI_Silence_Rating(world *world, u8 hit_rate, entity enemy_ent);
 
-extern struct AI_PushPull_Out AI_PushPull_bestPosition(i32 *in_gradientmap,
-                                                       size_t row_len,
-                                                       size_t col_len, i32 pushpull_distance, struct Point victim_pos,
-                                                       i8 sign);
+struct AI_PushPull_Out AI_PushPull_bestPosition(i32 *gradientmap,
+                                                size_t row_len, size_t col_len,
+                                                i32 pushpull_distance,
+                                                struct Point victim_pos, i8 sign);
 
-extern struct AI_PushPull_Out AI_PushPull_Friendly_Offensively_Rating(
-        tnecs_world_t *in_world,
-        struct Map *in_map, tnecs_entity_t in_friendly_ent);
-extern struct AI_PushPull_Out AI_PushPull_Friendly_Defensively_Rating(
-        tnecs_world_t *in_world,
-        struct Map *in_map, tnecs_entity_t in_friendly_ent);
+struct AI_PushPull_Out AI_PushPull_Friendly_Offensively_Rating(
+        world *world, struct Map *map, entity friendly_ent);
+struct AI_PushPull_Out AI_PushPull_Friendly_Defensively_Rating(
+        world *world, struct Map *map, entity friendly_ent);
 
-extern struct AI_PushPull_Out AI_PushPull_Enemy_Offensively_Rating(
-        tnecs_world_t *in_world,
-        struct Map *in_map, tnecs_entity_t in_enemy_ent);
-extern struct AI_PushPull_Out AI_PushPull_Enemy_Defensively_Rating(
-        tnecs_world_t *in_world,
-        struct Map *in_map, tnecs_entity_t in_enemy_ent);
+struct AI_PushPull_Out AI_PushPull_Enemy_Offensively_Rating(
+        world *world, struct Map *map, entity enemy_ent);
+struct AI_PushPull_Out AI_PushPull_Enemy_Defensively_Rating(
+        world *world, struct Map *map, entity enemy_ent);
 
-extern struct Point AI_Boss_Arc3_Target_Leg_Right(tnecs_entity_t *unitmap);
-extern struct Point AI_Boss_Arc3_Target_Leg_Left(tnecs_entity_t *unitmap);
-extern struct Point AI_Boss_Arc3_Target_Arm_Right(tnecs_entity_t *unitmap);
-extern struct Point AI_Boss_Arc3_Target_Arm_Left(tnecs_entity_t *unitmap);
+struct Point AI_Boss_Arc3_Target_Leg_Right(entity *unitmap);
+struct Point AI_Boss_Arc3_Target_Leg_Left(entity *unitmap);
+struct Point AI_Boss_Arc3_Target_Arm_Right(entity *unitmap);
+struct Point AI_Boss_Arc3_Target_Arm_Left(entity *unitmap);
 
 
 #endif /* AI_H */

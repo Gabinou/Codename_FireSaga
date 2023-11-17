@@ -3,7 +3,7 @@
 
 /*-- Map Usable -- */
 /* Find if a weapon/staff usable by unit has an enemy in range */
-void Map_Find_Usable(struct Map *map, tnecs_world_t *world, tnecs_entity_t unit_ent,
+void Map_Find_Usable(struct Map *map, tnecs_world *world, tnecs_entity unit_ent,
                      bool move, int archetype) {
     Map_Costmap_Movement_Compute(map, world, unit_ent);
     struct Unit     *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
@@ -14,7 +14,7 @@ void Map_Find_Usable(struct Map *map, tnecs_world_t *world, tnecs_entity_t unit_
     _Map_Movemap_Compute(map, start, move_stat);
 
     /* Alloc defendants */
-    tnecs_entity_t *defendants  = DARR_INIT(defendants, tnecs_entity_t, 4);
+    tnecs_entity *defendants  = DARR_INIT(defendants, tnecs_entity, 4);
 
     unit->num_usable = 0;
     for (int i = 0; i < DEFAULT_EQUIPMENT_SIZE; ++i) {
@@ -42,9 +42,9 @@ void Map_Find_Usable(struct Map *map, tnecs_world_t *world, tnecs_entity_t unit_
     DARR_FREE(defendants);
 }
 
-tnecs_entity_t *Map_Find_Defendants(struct Map *map, i32 *attacktolist,
-                                    tnecs_entity_t *defendants, tnecs_entity_t aggressor,
-                                    bool fastquit) {
+tnecs_entity *Map_Find_Defendants(struct Map *map, i32 *attacktolist,
+                                  tnecs_entity *defendants, tnecs_entity aggressor,
+                                  bool fastquit) {
     /* Find all defendants on attacktolist according to alignment */
 
     /* Note: Assumes attacktolist was created before with matrix2list_noM */
@@ -56,7 +56,7 @@ tnecs_entity_t *Map_Find_Defendants(struct Map *map, i32 *attacktolist,
 
         /* - Checking for units on x_at, y_at - */
         size_t index = y_at * map->col_len + x_at;
-        tnecs_entity_t unitontile = map->unitmap[index];
+        tnecs_entity unitontile = map->unitmap[index];
         if (unitontile <= TNECS_NULL)
             continue;
 
@@ -72,8 +72,8 @@ tnecs_entity_t *Map_Find_Defendants(struct Map *map, i32 *attacktolist,
     return (defendants);
 }
 
-tnecs_entity_t *Map_Find_Breakables(struct Map *map, i32 *attacktolist,
-                                    tnecs_entity_t *attackable, bool fastquit) {
+tnecs_entity *Map_Find_Breakables(struct Map *map, i32 *attacktolist,
+                                  tnecs_entity *attackable, bool fastquit) {
     /* Find all breakables on attacktolist */
 
     // Note: Assumes attacktolist was created before with matrix2list_noM
@@ -97,9 +97,9 @@ tnecs_entity_t *Map_Find_Breakables(struct Map *map, i32 *attacktolist,
     return (attackable);
 }
 
-tnecs_entity_t *Map_Find_Patients(struct Map *map, struct dtab *weapons_dtab, i32 *healtolist,
-                                  tnecs_entity_t *patients, tnecs_entity_t healer_ent,
-                                  bool fastquit) {
+tnecs_entity *Map_Find_Patients(struct Map *map, struct dtab *weapons_dtab, i32 *healtolist,
+                                tnecs_entity *patients, tnecs_entity healer_ent,
+                                bool fastquit) {
     /* Find all patients on healtolist according to alignment */
     /* Assumes healtolist was created before with matrix2list_noM */
     struct Unit *healer = TNECS_GET_COMPONENT(map->world, healer_ent, Unit);
@@ -115,7 +115,7 @@ tnecs_entity_t *Map_Find_Patients(struct Map *map, struct dtab *weapons_dtab, i3
     for (size_t i = 0; i < DARR_NUM(healtolist) / 2; i++) {
         size_t x_at = healtolist[TWO_D * i];
         size_t y_at = healtolist[TWO_D * i + 1];
-        tnecs_entity_t unitontile = map->unitmap[y_at * map->col_len + x_at];
+        tnecs_entity unitontile = map->unitmap[y_at * map->col_len + x_at];
         if (unitontile <= TNECS_NULL)
             continue;
         struct Unit *patient = TNECS_GET_COMPONENT(map->world, unitontile, Unit);
@@ -135,8 +135,8 @@ tnecs_entity_t *Map_Find_Patients(struct Map *map, struct dtab *weapons_dtab, i3
     return (patients);
 }
 
-tnecs_entity_t Map_Find_Breakable_Ent(struct Map *map, i32 x, i32 y) {
-    tnecs_entity_t out = TNECS_NULL;
+tnecs_entity Map_Find_Breakable_Ent(struct Map *map, i32 x, i32 y) {
+    tnecs_entity out = TNECS_NULL;
     for (size_t i = 0; i < map->breakable_num; i++) {
         struct Position *pos;
         pos = TNECS_GET_COMPONENT(map->world, map->breakables_ent[i], Position);
@@ -148,8 +148,8 @@ tnecs_entity_t Map_Find_Breakable_Ent(struct Map *map, i32 x, i32 y) {
     return (out);
 }
 
-tnecs_entity_t Map_Find_Door_Ent(struct Map *map, i32 x, i32 y) {
-    tnecs_entity_t out = TNECS_NULL;
+tnecs_entity Map_Find_Door_Ent(struct Map *map, i32 x, i32 y) {
+    tnecs_entity out = TNECS_NULL;
     for (size_t i = 0; i < map->breakable_num; i++) {
         struct Position *pos = TNECS_GET_COMPONENT(map->world, map->doors_ent[i], Position);
         if ((x == pos->tilemap_pos.x) && (y == pos->tilemap_pos.y)) {
@@ -160,8 +160,8 @@ tnecs_entity_t Map_Find_Door_Ent(struct Map *map, i32 x, i32 y) {
     return (out);
 }
 
-tnecs_entity_t Map_Find_Chest_Ent(struct Map *map, i32 x, i32 y) {
-    tnecs_entity_t out = TNECS_NULL;
+tnecs_entity Map_Find_Chest_Ent(struct Map *map, i32 x, i32 y) {
+    tnecs_entity out = TNECS_NULL;
     for (size_t i = 0; i < map->breakable_num; i++) {
         struct Position *pos = TNECS_GET_COMPONENT(map->world, map->chests_ent[i], Position);
         if ((x == pos->tilemap_pos.x) && (y == pos->tilemap_pos.y)) {
@@ -172,14 +172,14 @@ tnecs_entity_t Map_Find_Chest_Ent(struct Map *map, i32 x, i32 y) {
     return (out);
 }
 
-tnecs_entity_t *Map_Find_Spectators(struct Map *map, tnecs_entity_t *spectators, i32 x, i32 y) {
+tnecs_entity *Map_Find_Spectators(struct Map *map, tnecs_entity *spectators, i32 x, i32 y) {
     /* -- Find spectator on neighbour tiles (to dance) -- */
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
         int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, map->col_len);
         int y_at = int_inbounds(y + q_cycle4_zmzp(i), 0, map->row_len);
         SDL_assert((x_at == (x + 1)) || (x_at == (x - 1)) || (y_at == (y + 1)) || (y_at == (y - 1)));
 
-        tnecs_entity_t spectator = map->unitmap[y_at * map->col_len + x_at];
+        tnecs_entity spectator = map->unitmap[y_at * map->col_len + x_at];
         if (spectator == TNECS_NULL)
             continue;
 
@@ -191,7 +191,7 @@ tnecs_entity_t *Map_Find_Spectators(struct Map *map, tnecs_entity_t *spectators,
     return (spectators);
 }
 
-tnecs_entity_t *Map_Find_Auditors(struct Map *map, tnecs_entity_t *auditors, i32 x, i32 y) {
+tnecs_entity *Map_Find_Auditors(struct Map *map, tnecs_entity *auditors, i32 x, i32 y) {
     /* -- Find auditors on neighbour tiles (to speak) -- */
 
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
@@ -199,7 +199,7 @@ tnecs_entity_t *Map_Find_Auditors(struct Map *map, tnecs_entity_t *auditors, i32
         int y_at = int_inbounds(y + q_cycle4_zmzp(i), 0, map->row_len);
         SDL_assert((x_at == (x + 1)) || (x_at == (x - 1)) || (y_at == (y + 1)) || (y_at == (y - 1)));
 
-        tnecs_entity_t auditor_ent = map->unitmap[y_at * map->col_len + x_at];
+        tnecs_entity auditor_ent = map->unitmap[y_at * map->col_len + x_at];
         if (auditor_ent <= TNECS_NULL)
             continue;
 
@@ -211,14 +211,14 @@ tnecs_entity_t *Map_Find_Auditors(struct Map *map, tnecs_entity_t *auditors, i32
     return (auditors);
 }
 
-tnecs_entity_t *Map_Find_Traders(struct Map *map, tnecs_entity_t *passives, i32 x, i32 y) {
+tnecs_entity *Map_Find_Traders(struct Map *map, tnecs_entity *passives, i32 x, i32 y) {
     /* -- Find traders on neighbours (to trade with) -- */
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
         int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, map->col_len);
         int y_at = int_inbounds(y + q_cycle4_zmzp(i), 0, map->row_len);
         SDL_assert((x_at == (x + 1)) || (x_at == (x - 1)) || (y_at == (y + 1)) || (y_at == (y - 1)));
 
-        tnecs_entity_t passive = map->unitmap[y_at * map->col_len + x_at];
+        tnecs_entity passive = map->unitmap[y_at * map->col_len + x_at];
         if (passive <= TNECS_NULL)
             continue;
 
@@ -229,8 +229,8 @@ tnecs_entity_t *Map_Find_Traders(struct Map *map, tnecs_entity_t *passives, i32 
     return (passives);
 }
 
-tnecs_entity_t *Map_Find_Victims(struct Map *map, tnecs_entity_t *victims_ent,
-                                 i32 x, i32 y, tnecs_entity_t savior_ent) {
+tnecs_entity *Map_Find_Victims(struct Map *map, tnecs_entity *victims_ent,
+                               i32 x, i32 y, tnecs_entity savior_ent) {
     // Find victims on neighbours (to rescue)
 
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
@@ -238,7 +238,7 @@ tnecs_entity_t *Map_Find_Victims(struct Map *map, tnecs_entity_t *victims_ent,
         int y_at = int_inbounds(y + q_cycle4_zmzp(i), 0, map->row_len);
         SDL_assert((x_at == (x + 1)) || (x_at == (x - 1)) || (y_at == (y + 1)) || (y_at == (y - 1)));
 
-        tnecs_entity_t victim_ent = map->unitmap[y_at * map->col_len + x_at];
+        tnecs_entity victim_ent = map->unitmap[y_at * map->col_len + x_at];
         if (victim_ent <= TNECS_NULL)
             continue;
 
@@ -250,7 +250,7 @@ tnecs_entity_t *Map_Find_Victims(struct Map *map, tnecs_entity_t *victims_ent,
     return (victims_ent);
 }
 
-tnecs_entity_t *Map_Find_Doors(struct Map *map, tnecs_entity_t *openable, i32 x, i32 y) {
+tnecs_entity *Map_Find_Doors(struct Map *map, tnecs_entity *openable, i32 x, i32 y) {
     /* -- Check if unit is next to a door -- */
     for (size_t i = 0; i < map->door_num; i++) {
         struct Position *pos = TNECS_GET_COMPONENT(map->world, map->doors_ent[i], Position);
@@ -268,7 +268,7 @@ tnecs_entity_t *Map_Find_Doors(struct Map *map, tnecs_entity_t *openable, i32 x,
     return (openable);
 }
 
-tnecs_entity_t *Map_Find_Chests(struct Map *map, tnecs_entity_t *openable, i32 x, i32 y) {
+tnecs_entity *Map_Find_Chests(struct Map *map, tnecs_entity *openable, i32 x, i32 y) {
     // Find Chests on current position and neighbours
     for (size_t i = 0; i < map->chest_num; i++) {
         struct Position *pos = TNECS_GET_COMPONENT(map->world, map->chests_ent[i], Position);

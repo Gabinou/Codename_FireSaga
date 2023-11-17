@@ -7,15 +7,15 @@ void Map_startingPos_Add(struct Map *map, i32 col, i32 row) {
     DARR_PUT(map->start_pos, pos);
 }
 
-void Map_Unit_Put(struct Map *map, tnecs_world_t *world, u8 col, u8 row,
-                  tnecs_entity_t entity) {
+void Map_Unit_Put(struct Map *map, tnecs_world *world, u8 col, u8 row,
+                  tnecs_entity entity) {
     SDL_Log("%lu", entity);
     SDL_assert(map->unitmap != NULL);
     SDL_assert((row < map->row_len) && (col < map->col_len));
     SDL_assert(entity);
 
     /* -- Preliminaries -- */
-    tnecs_entity_t current = map->unitmap[row * map->col_len + col];
+    tnecs_entity current = map->unitmap[row * map->col_len + col];
     if (current != TNECS_NULL) {
         SDL_Log("Unit already on map");
         exit(ERROR_Generic);
@@ -76,7 +76,7 @@ void Map_Unit_Move(struct Map *map, u8 col, u8 row, u8 new_col, u8 new_row) {
     /* -- Update unitmap -- */
     size_t old_i = row * map->col_len + col;
     size_t new_i = new_row * map->col_len + new_col;
-    tnecs_entity_t unit = map->unitmap[old_i];
+    tnecs_entity unit = map->unitmap[old_i];
     map->unitmap[new_i] = unit;
     map->unitmap[old_i] = TNECS_NULL;
 
@@ -87,10 +87,10 @@ void Map_Unit_Move(struct Map *map, u8 col, u8 row, u8 new_col, u8 new_row) {
 
 }
 
-tnecs_entity_t *Map_Units_Get(struct Map *map, tnecs_world_t *world, const u8 army) {
-    tnecs_entity_t *unit_ents = NULL;
-    unit_ents = DARR_INIT(unit_ents, tnecs_entity_t, 16);
-    tnecs_entity_t current_unit_ent;
+tnecs_entity *Map_Units_Get(struct Map *map, tnecs_world *world, const u8 army) {
+    tnecs_entity *unit_ents = NULL;
+    unit_ents = DARR_INIT(unit_ents, tnecs_entity, 16);
+    tnecs_entity current_unit_ent;
     struct Unit *current_unit;
     for (u8 i = 0; i < DARR_NUM(map->units_onfield); i++) {
         current_unit_ent = map->units_onfield[i];
@@ -101,20 +101,20 @@ tnecs_entity_t *Map_Units_Get(struct Map *map, tnecs_world_t *world, const u8 ar
     return (unit_ents);
 }
 
-tnecs_entity_t Map_Unit_Get(struct Map *map, u8 col, u8 row) {
+tnecs_entity Map_Unit_Get(struct Map *map, u8 col, u8 row) {
     SDL_assert(map->unitmap != NULL);
     SDL_assert(col < map->col_len);
     SDL_assert(row < map->row_len);
     return (map->unitmap[row * map->col_len + col]);
 }
 
-void Map_Breakable_onBroken(struct Map *map, tnecs_world_t *world, tnecs_entity_t breakable) {
+void Map_Breakable_onBroken(struct Map *map, tnecs_world *world, tnecs_entity breakable) {
 }
 
-void Map_Door_onOpen(struct Map *map, tnecs_world_t *world, tnecs_entity_t door) {
+void Map_Door_onOpen(struct Map *map, tnecs_world *world, tnecs_entity door) {
 }
 
-void Map_Chest_onOpen(struct Map *map, tnecs_world_t *world, tnecs_entity_t chest) {
+void Map_Chest_onOpen(struct Map *map, tnecs_world *world, tnecs_entity chest) {
 }
 
 void Map_addArmy(struct Map *map, const u8 army) {
@@ -159,7 +159,7 @@ int entity_isIn(u64 *array, u64 to_find, size_t arr_len) {
     return (found);
 }
 
-void _Map_Unit_Remove_List(struct Map *map, const tnecs_entity_t entity) {
+void _Map_Unit_Remove_List(struct Map *map, const tnecs_entity entity) {
     int found = entity_isIn(map->friendlies_onfield, entity, DARR_NUM(map->friendlies_onfield));
     if (found > -1)
         DARR_DEL(map->friendlies_onfield, found);
@@ -178,13 +178,13 @@ void _Map_Unit_Remove_Map(struct Map *map, u8 col, u8 row) {
     map->unitmap[row * map->col_len + col] = 0;
 }
 
-void Map_Unit_Remove(struct Map *map, tnecs_world_t *world, tnecs_entity_t entity) {
+void Map_Unit_Remove(struct Map *map, tnecs_world *world, tnecs_entity entity) {
     SDL_assert(map->unitmap != NULL);
     /* --- Check that entity is really on map --- */
     struct Position *pos = TNECS_GET_COMPONENT(world, entity, Position);
     SDL_assert(pos->onTilemap);
     int index = pos->tilemap_pos.y * map->col_len + pos->tilemap_pos.x;
-    tnecs_entity_t ontile_ent = map->unitmap[index];
+    tnecs_entity ontile_ent = map->unitmap[index];
     SDL_assert(ontile_ent == entity);
 
     /* --- Check that entity is really on map --- */

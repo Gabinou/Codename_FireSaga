@@ -26,8 +26,8 @@ struct Item;
 struct Game;
 
 /* --- EVENT DATA ENTITIES --- */
-extern tnecs_entity_t *data1_entity;
-extern tnecs_entity_t *data2_entity;
+extern tnecs_entity *data1_entity;
+extern tnecs_entity *data2_entity;
 
 /* --- CORE --- */
 void Event_Emit(const char *em, u32 et, i32 ec, void *d1, void *d2);
@@ -51,7 +51,7 @@ void Events_Data_Malloc();
 void Events_Data_Free();
 
 /* -- Controller -- */
-tnecs_entity_t Events_Controllers_Check(struct Game *sota, i32 code);
+tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code);
 
 /* --- EVENT NAMES --- */
 /* -- Declaration -- */

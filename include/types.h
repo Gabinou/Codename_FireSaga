@@ -15,14 +15,14 @@ typedef uint32_t bitflag32_t;
 typedef uint64_t bitflag64_t;
 
 /* -- Standard Integer types -- */
-typedef uint8_t       u8;
-typedef uint16_t      u16;
-typedef uint32_t      u32;
-typedef uint64_t      u64;
-typedef int8_t        i8;
-typedef int16_t       i16;
-typedef int32_t       i32;
-typedef int64_t       i64;
+typedef uint8_t  u8;
+typedef uint16_t u16;
+typedef uint32_t u32;
+typedef uint64_t u64;
+typedef int8_t   i8;
+typedef int16_t  i16;
+typedef int32_t  i32;
+typedef int64_t  i64;
 /* - Why no fast types? - */
 //   - Variable size type make byte-alignment more difficult
 //   - int should be the fastest

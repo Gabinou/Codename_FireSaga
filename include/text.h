@@ -7,7 +7,7 @@
 #include "SDL.h"
 #include "nmath.h"
 
-typedef void (* onUpdate_t)(struct Game *, tnecs_entity_t, u32, i64, void *);
+typedef void (* onUpdate_t)(struct Game *, tnecs_entity, u32, i64, void *);
 
 enum SOTA_TEXT_CONSTANTS {
     SOTA_FPS_BUFFER = 8,
@@ -32,6 +32,6 @@ void Text_Draw(      struct Text *t, SDL_Renderer *r, SDL_Rect *d);
 void Text_Update(    struct Text *t, SDL_Renderer *r);
 void Text_onUpdate(  struct Text *t);
 
-void Text_onUpdate_FPS(struct Game *g, tnecs_entity_t ent, u32 fc, i64 up, void *data);
+void Text_onUpdate_FPS(struct Game *g, tnecs_entity ent, u32 fc, i64 up, void *data);
 
 #endif /* TEXT_H */

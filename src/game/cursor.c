@@ -2,7 +2,7 @@
 
 /* -- Focus -- */
 void Game_cursorFocus_onMap(struct Game *sota) {
-    tnecs_entity_t cursor = sota->entity_cursor;
+    tnecs_entity cursor = sota->entity_cursor;
     SDL_assert(cursor > TNECS_NULL);
 
     /* - Load square animated cursor - */
@@ -80,14 +80,14 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
     SDL_assert(DARR_NUM(sota->menu_stack) > 0);
 
     /* cursor */
-    tnecs_entity_t cursor = sota->entity_cursor;
+    tnecs_entity cursor = sota->entity_cursor;
     SDL_assert(cursor != 0);
     struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, cursor, Position);
     SDL_assert(cursor_pos != NULL);
 
     /* menu_stack top */
     int stack_top = DARR_NUM(sota->menu_stack) - 1;
-    tnecs_entity_t menu_top = sota->menu_stack[stack_top];
+    tnecs_entity menu_top = sota->menu_stack[stack_top];
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, menu_top, Menu);
     SDL_assert(mc != NULL);
     SDL_assert(mc->elem_pos != NULL);
@@ -125,7 +125,7 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
 
     /* disabling menues on stack bottom */
     for (int i = 0; i < stack_top; i++) {
-        tnecs_entity_t menu = sota->menu_stack[i];
+        tnecs_entity menu = sota->menu_stack[i];
         struct Menu *mc_inv = TNECS_GET_COMPONENT(sota->world, menu, Menu);
         mc_inv->visible = false;
     }
@@ -151,7 +151,7 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
 void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
 
     /* --- SKIPPING --- */
-    tnecs_entity_t menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
+    tnecs_entity menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     /* - Skip if Keyboard/Gamepad set sota->cursor_move -*/
     bool skip = !((sota->cursor_move.x == 0) && (sota->cursor_move.y == 0));
     skip |= (menu == TNECS_NULL);
@@ -165,7 +165,7 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
     }
 
     /* --- SLIDING --- */
-    tnecs_entity_t cursor = sota->entity_cursor;
+    tnecs_entity cursor = sota->entity_cursor;
     struct Position *cursor_position = TNECS_GET_COMPONENT(sota->world, cursor, Position);
     SDL_assert(cursor_position != NULL);
     struct Slider *cursor_slider = TNECS_GET_COMPONENT(sota->world, cursor, Slider);
@@ -224,7 +224,7 @@ bool Game_isCursoronTilemap(struct Game *sota) {
 
     bool out = false;
     if (sota->ismouse) {
-        tnecs_entity_t mouse = sota->entity_mouse;
+        tnecs_entity mouse = sota->entity_mouse;
         struct Point mouse_pos, tilemap_pos;
         SDL_GetMouseState(&mouse_pos.x, &mouse_pos.y);
         tilemap_pos.x = SOTA_PIXEL2TILEMAP(mouse_pos.x, sota->map->tilesize[0],
@@ -254,7 +254,7 @@ void Game_CursorfollowsMouse_onMap(struct Game *sota) {
     }
 
     /* - Skip if cursor is sliding - */
-    tnecs_entity_t cursor = sota->entity_cursor;
+    tnecs_entity cursor = sota->entity_cursor;
     struct Position *cursor_position = TNECS_GET_COMPONENT(sota->world, cursor, Position);
     SDL_assert(cursor_position != NULL);
     struct Slider *cursor_slider = TNECS_GET_COMPONENT(sota->world, cursor, Slider);
@@ -296,7 +296,7 @@ void Game_CursorfollowsMouse_onMap(struct Game *sota) {
 }
 void Game_Cursor_Moves_onMenu(struct Game *sota) {
     // For basically all states except Gameplay_map.standby
-    tnecs_entity_t menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
+    tnecs_entity menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     Game_Cursor_Moves_Straight(sota);
     bool skip = ((sota->cursor_move.x == 0) && (sota->cursor_move.y == 0));
     skip |= (menu == TNECS_NULL);
@@ -313,7 +313,7 @@ void Game_Cursor_Moves_Straight(struct Game *sota) {
 
 void Game_Cursor_Move_toCandidate(struct Game *sota) {
     // Set cursor to new candidate position
-    tnecs_entity_t candidate = sota->candidates[sota->candidate];
+    tnecs_entity candidate = sota->candidates[sota->candidate];
     struct Position *candidate_pos, *cursor_pos;
     candidate_pos = TNECS_GET_COMPONENT(sota->world, candidate, Position);
     cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
@@ -323,7 +323,7 @@ void Game_Cursor_Move_toCandidate(struct Game *sota) {
 
 }
 void Game_Cursor_Next_Candidate(struct Game *sota) {
-    tnecs_entity_t menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
+    tnecs_entity menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     Game_Cursor_Moves_Straight(sota);
     bool skip = ((sota->cursor_move.x == 0) && (sota->cursor_move.y == 0));
     skip |= (menu == TNECS_NULL);
@@ -345,7 +345,7 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
     }
 
     /* --- SENDING --- */
-    tnecs_entity_t cursor = sota->entity_cursor;
+    tnecs_entity cursor = sota->entity_cursor;
     const struct Position *position;
     position = TNECS_GET_COMPONENT(sota->world, cursor, Position);
     SDL_assert(position != NULL);

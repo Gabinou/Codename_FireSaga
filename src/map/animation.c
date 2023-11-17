@@ -12,7 +12,7 @@ struct MapAnimation MapAnimation_default = {
     .time_ns         = SOTA_ns,
 };
 
-void Map_Combat_Animate(struct Game *sota, tnecs_entity_t entity,
+void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
                         struct CombatAnimation *map_anim, struct Timer *combat_timer) {
     SDL_assert(map_anim     != NULL);
     SDL_assert(combat_timer != NULL);
@@ -31,7 +31,7 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity_t entity,
 
     /* - pausing attacker - */
     int attacker_i = sota->combat_outcome.phases[map_anim->attack_ind].attacker;
-    tnecs_entity_t attacker = attacker_i ? sota->aggressor : sota->defendant;
+    tnecs_entity attacker = attacker_i ? sota->aggressor : sota->defendant;
 
     struct Timer *att_timer = TNECS_GET_COMPONENT(sota->world, attacker, Timer);
     SDL_assert(att_timer != NULL);
@@ -66,7 +66,7 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity_t entity,
     att_timer->paused = true;
 
     /* - pause defender - */
-    tnecs_entity_t defender = attacker_i ? sota->defendant : sota->aggressor;
+    tnecs_entity defender = attacker_i ? sota->defendant : sota->aggressor;
     struct Timer *def_timer = TNECS_GET_COMPONENT(sota->world, defender, Timer);
     SDL_assert(def_timer != NULL);
     def_timer->paused = true;
@@ -79,7 +79,7 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity_t entity,
 }
 
 
-void Map_TurnTransition_Animate(struct Game *sota, tnecs_entity_t entity,
+void Map_TurnTransition_Animate(struct Game *sota, tnecs_entity entity,
                                 struct MapAnimation *map_anim, struct Timer *timer) {
     /* - Animation is complete, begin a turn - */
     if (timer->time_ns >= map_anim->time_ns) {

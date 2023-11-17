@@ -100,7 +100,7 @@ void PopUp_Map_Combat_Units(struct PopUp_Map_Combat *pmc, struct Game *sota,
                             const struct Point *agg_pos, const struct Point *dft_pos) {
 
     /* -- Preliminaries -- */
-    // tnecs_entity_t popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
+    // tnecs_entity popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
     // SDL_assert(popup_ent != TNECS_NULL);
     // struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
     // struct PopUp_Map_Combat *pmc = popup->data;

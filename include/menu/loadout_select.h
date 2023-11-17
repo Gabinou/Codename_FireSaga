@@ -168,18 +168,18 @@ extern struct LoadoutSelectMenu LoadoutSelectMenu_default;
 struct LoadoutSelectMenu *LoadoutSelectMenu_Alloc();
 void LoadoutSelectMenu_Free(struct LoadoutSelectMenu *lsm);
 void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
-                            tnecs_world_t *w, tnecs_entity_t ent, SDL_Renderer *r, struct n9Patch *n9, int a);
+                            tnecs_world *w, tnecs_entity ent, SDL_Renderer *r, struct n9Patch *n9, int a);
 
 void _LoadoutSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Unit *u, SDL_Renderer *r,
                              struct n9Patch *n9);
 
 void WeaponSelectMenu_Load_n9Patch(struct LoadoutSelectMenu *sm, SDL_Renderer *r,
                                    struct n9Patch *n9);
-void WeaponSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map, tnecs_world_t *w,
-                           tnecs_entity_t ent, SDL_Renderer *r, struct n9Patch *n9);
+void WeaponSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map, tnecs_world *w,
+                           tnecs_entity ent, SDL_Renderer *r, struct n9Patch *n9);
 
 void StaffSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
-                          tnecs_world_t *w, tnecs_entity_t ent, SDL_Renderer *r, struct n9Patch *n9);
+                          tnecs_world *w, tnecs_entity ent, SDL_Renderer *r, struct n9Patch *n9);
 
 void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm, const char *header);
 

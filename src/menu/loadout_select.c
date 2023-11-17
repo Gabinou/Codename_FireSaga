@@ -98,7 +98,7 @@ void WeaponSelectMenu_Load_n9Patch(struct LoadoutSelectMenu *lsm, SDL_Renderer *
 }
 
 void WeaponSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map,
-                           tnecs_world_t *world, tnecs_entity_t unit_ent,
+                           tnecs_world *world, tnecs_entity unit_ent,
                            SDL_Renderer *renderer, struct n9Patch *n9patch) {
     WeaponSelectMenu_Load_n9Patch(lsm, renderer, n9patch);
 
@@ -106,8 +106,8 @@ void WeaponSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map,
     LoadoutSelectMenu_Load(lsm, map, world, unit_ent, renderer, n9patch, lsm->archetype_stronghand);
 }
 
-void StaffSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, tnecs_world_t *world,
-                          tnecs_entity_t unit_ent, SDL_Renderer *renderer, struct n9Patch *n9patch) {
+void StaffSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, tnecs_world *world,
+                          tnecs_entity unit_ent, SDL_Renderer *renderer, struct n9Patch *n9patch) {
     SDL_assert(n9patch != NULL);
     n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;
     n9patch->patch_pixels.y  = MENU_PATCH_PIXELS;
@@ -122,8 +122,8 @@ void StaffSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, tnecs_
     LoadoutSelectMenu_Load(lsm, map, world, unit_ent, renderer, n9patch, lsm->archetype_stronghand);
 }
 
-void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, tnecs_world_t *world,
-                            tnecs_entity_t unit_ent, SDL_Renderer *renderer, struct n9Patch *n9patch, int archetype) {
+void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, tnecs_world *world,
+                            tnecs_entity unit_ent, SDL_Renderer *renderer, struct n9Patch *n9patch, int archetype) {
     SDL_assert(n9patch != NULL);
     SDL_assert(lsm != NULL);
     SDL_assert(unit_ent > TNECS_NULL);

@@ -102,7 +102,7 @@ void Game_Map_Reinforcements_Free(struct Game *sota) {
 
     char filename[DEFAULT_BUFFER_SIZE];
     for (i16 i = 0; i < DARR_NUM(sota->map_enemies); i++) {
-        tnecs_entity_t temp_unit_ent =  DARR_POP(sota->map_enemies);
+        tnecs_entity temp_unit_ent =  DARR_POP(sota->map_enemies);
 
         struct Unit *unit = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
         if (unit)
@@ -126,15 +126,15 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
         SDL_Log("-- loading reinforcements %ld --", i);
         SDL_Log("-- create entity --");
-        tnecs_entity_t temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Unit, Position, Sprite,
-                                       Timer, MapHPBar);
+        tnecs_entity temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Unit, Position, Sprite,
+                                     Timer, MapHPBar);
         DARR_PUT(sota->map_enemies, temp_unit_ent);
-        // tnecs_entity_t temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Unit, Position, Sprite, Timer, MapHPBar);
+        // tnecs_entity temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Unit, Position, Sprite, Timer, MapHPBar);
 
         SDL_Log("-- checks --");
-        tnecs_component_t typeflag = TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Unit,
-                                                                    Position, Sprite,
-                                                                    Timer, MapHPBar);
+        tnecs_component typeflag = TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Unit,
+                                                                  Position, Sprite,
+                                                                  Timer, MapHPBar);
 
         SDL_Log("- 1 -");
         size_t typeflag_id1 = tnecs_typeflagid(sota->world, typeflag);
@@ -146,7 +146,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_Log("- current -");
         size_t current_num = sota->world->num_entities_bytype[typeflag_id1];
 
-        tnecs_entity_t **entities_bytype = sota->world->entities_bytype;
+        tnecs_entity **entities_bytype = sota->world->entities_bytype;
         SDL_assert(entities_bytype != NULL);
 
         // SDL_Log("-- loading slider --");

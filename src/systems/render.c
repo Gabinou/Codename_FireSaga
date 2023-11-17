@@ -1,7 +1,7 @@
 
 #include "systems/render.h"
 
-void scrollText(tnecs_system_input_t *in_input) {
+void scrollText(tnecs_system_input *in_input) {
     /* --- PRELIMINARIES --- */
     /* -- Get components arrays -- */
     struct Timer     *ut_arr = TNECS_COMPONENTS_LIST(in_input, Timer);
@@ -15,7 +15,7 @@ void scrollText(tnecs_system_input_t *in_input) {
     }
 }
 
-void animateSprite(tnecs_system_input_t *in_input) {
+void animateSprite(tnecs_system_input *in_input) {
     /* --- PRELIMINARIES --- */
     /* -- Get components arrays -- */
     struct Timer  *ut_arr     = TNECS_COMPONENTS_LIST(in_input, Timer);
@@ -43,7 +43,7 @@ void animateSprite(tnecs_system_input_t *in_input) {
     }
 }
 
-void drawCursor(tnecs_system_input_t *in_input) {
+void drawCursor(tnecs_system_input *in_input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     struct Game *sota = in_input->user_data;
@@ -71,7 +71,7 @@ void drawCursor(tnecs_system_input_t *in_input) {
 
 }
 
-void drawMouse(tnecs_system_input_t *in_input) {
+void drawMouse(tnecs_system_input *in_input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     struct Game *sota = in_input->user_data;
@@ -91,7 +91,7 @@ void drawMouse(tnecs_system_input_t *in_input) {
     }
 }
 
-void drawMapUnit(tnecs_system_input_t *in_input) {
+void drawMapUnit(tnecs_system_input *in_input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     struct Game *sota = in_input->user_data;
@@ -116,7 +116,7 @@ void drawMapUnit(tnecs_system_input_t *in_input) {
     }
 }
 
-void drawMap_HPBar(tnecs_system_input_t *in_input) {
+void drawMap_HPBar(tnecs_system_input *in_input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     struct Game *sota = in_input->user_data;
@@ -139,7 +139,7 @@ void drawMap_HPBar(tnecs_system_input_t *in_input) {
 
 }
 
-void drawPopUp(tnecs_system_input_t *in_input) {
+void drawPopUp(tnecs_system_input *in_input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     struct Game *sota = in_input->user_data;
@@ -162,7 +162,7 @@ void drawPopUp(tnecs_system_input_t *in_input) {
     }
 }
 
-void drawMenu(tnecs_system_input_t *in_input) {
+void drawMenu(tnecs_system_input *in_input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     struct Game *sota = in_input->user_data;
@@ -187,7 +187,7 @@ void drawMenu(tnecs_system_input_t *in_input) {
     }
 }
 
-void drawText(tnecs_system_input_t *in_input) {
+void drawText(tnecs_system_input *in_input) {
     /* --- PRELIMINARIES --- */
     SDL_Rect dstrect;
     /* -- Get game -- */
@@ -213,7 +213,7 @@ void drawText(tnecs_system_input_t *in_input) {
     }
 }
 
-void drawTextTimer(tnecs_system_input_t *in_input) {
+void drawTextTimer(tnecs_system_input *in_input) {
     /* --- PRELIMINARIES --- */
     SDL_Rect dstrect;
     /* -- Get game -- */
@@ -232,9 +232,9 @@ void drawTextTimer(tnecs_system_input_t *in_input) {
         struct Text     *text = (text_arr        + order);
         struct Timer    *ut   = (updatetimer_arr + order);
 
-        tnecs_world_t   *world       = in_input->world;
+        tnecs_world   *world       = in_input->world;
         size_t           typeflag_id = in_input->entity_typeflag_id;
-        tnecs_entity_t   entity      = world->entities_bytype[typeflag_id][order];
+        tnecs_entity   entity      = world->entities_bytype[typeflag_id][order];
 
         if ((text->onUpdate != NULL) && (ut->time_ns >= text->update_time_ns)) {
             (*text->onUpdate)(sota, entity, ut->frame_count, ut->time_ns, NULL);
@@ -250,7 +250,7 @@ void drawTextTimer(tnecs_system_input_t *in_input) {
     }
 }
 
-void Animate_Combat_onMap(tnecs_system_input_t *in_input) {
+void Animate_Combat_onMap(tnecs_system_input *in_input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     struct Game *sota = (struct Game *)in_input->user_data;
@@ -266,15 +266,15 @@ void Animate_Combat_onMap(tnecs_system_input_t *in_input) {
         struct CombatAnimation *map_anim        = &combatanim_arr[order];
         struct Timer           *combat_timer    = &timer_arr[order];
 
-        tnecs_world_t   *world       = in_input->world;
+        tnecs_world   *world       = in_input->world;
         size_t           typeflag_id = in_input->entity_typeflag_id;
-        tnecs_entity_t   entity      = world->entities_bytype[typeflag_id][order];
+        tnecs_entity   entity      = world->entities_bytype[typeflag_id][order];
 
         Map_Combat_Animate(sota, entity, map_anim, combat_timer);
     }
 }
 
-void Animate_Turn_Transition(tnecs_system_input_t *in_input) {
+void Animate_Turn_Transition(tnecs_system_input *in_input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     struct Game *sota = (struct Game *)in_input->user_data;
@@ -294,9 +294,9 @@ void Animate_Turn_Transition(tnecs_system_input_t *in_input) {
         struct Position     *pos        = &pos_arr[order];
         struct Text         *text       = &text_arr[order];
 
-        tnecs_world_t   *world       = in_input->world;
+        tnecs_world   *world       = in_input->world;
         size_t           typeflag_id = in_input->entity_typeflag_id;
-        tnecs_entity_t   entity      = world->entities_bytype[typeflag_id][order];
+        tnecs_entity   entity      = world->entities_bytype[typeflag_id][order];
 
         Map_TurnTransition_Animate(sota, entity, map_anim, timer);
     }

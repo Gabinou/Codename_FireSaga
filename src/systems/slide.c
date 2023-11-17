@@ -18,7 +18,7 @@ void Sprite_Target(struct Slider *slider, struct Sprite *sprite, Position *posit
     slider->target.y = (i32)lround(position->tilemap_pos.y * position->scale[1]);
 }
 
-void hoverAny(tnecs_system_input_t *input) {
+void hoverAny(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get components arrays -- */
     struct Hover    *hover_arr    = TNECS_COMPONENTS_LIST(input, Hover);
@@ -41,7 +41,7 @@ void hoverAny(tnecs_system_input_t *input) {
 
 /* Slide systems */
 /* Compute next Popup position according to target position */
-void slideSprite(tnecs_system_input_t *input) {
+void slideSprite(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_assert(input->user_data != NULL);
     /* -- Get components arrays -- */
@@ -57,16 +57,16 @@ void slideSprite(tnecs_system_input_t *input) {
     SDL_assert(sota != NULL);
 
     /* -- Check if entity is cursor -- */
-    tnecs_component_t cursor_Component_Flag = TNECS_COMPONENT_NAME2TYPE(input->world, CursorFlag);
+    tnecs_component cursor_Component_Flag = TNECS_COMPONENT_NAME2TYPE(input->world, CursorFlag);
 
     for (u16 order = 0; order < input->num_entities; order++) {
         struct Position *position   = position_arr  + order;
         struct Slider   *slider     = slider_arr    + order;
         struct Sprite   *sprite     = sprite_arr    + order;
 
-        tnecs_component_t typeflag_id   = input->entity_typeflag_id;
-        tnecs_entity_t current_ent      = input->world->entities_bytype[typeflag_id][order];
-        tnecs_component_t ent_typeflag  = input->world->entity_typeflags[current_ent];
+        tnecs_component typeflag_id   = input->entity_typeflag_id;
+        tnecs_entity current_ent      = input->world->entities_bytype[typeflag_id][order];
+        tnecs_component ent_typeflag  = input->world->entity_typeflags[current_ent];
         int isCursor = TNECS_TYPEFLAG_HAS_TYPE(cursor_Component_Flag, ent_typeflag);
 
         if (!sprite->visible)
@@ -89,7 +89,7 @@ void slideSprite(tnecs_system_input_t *input) {
 }
 
 /* slidePopUp MAY RUN TWICE on popups WITH slidePopUpOffscreen */
-void slidePopUp(tnecs_system_input_t *input) {
+void slidePopUp(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_assert(input->user_data != NULL);
     /* -- Get components arrays -- */
@@ -111,7 +111,7 @@ void slidePopUp(tnecs_system_input_t *input) {
     }
 }
 
-void slidePopUpOffscreen(tnecs_system_input_t *input) {
+void slidePopUpOffscreen(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_assert(input->user_data != NULL);
     /* -- Get components arrays -- */

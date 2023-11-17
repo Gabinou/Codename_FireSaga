@@ -118,9 +118,9 @@ struct Map *Map_Init(struct Map *map, i32 width, i32 height) {
     *map = Map_default;
     map->items_num          = DARR_INIT(map->items_num, u8, 8);
     map->start_pos          = DARR_INIT(map->start_pos, struct Point, 20);
-    map->enemies_onfield    = DARR_INIT(map->enemies_onfield, tnecs_entity_t, 20);
-    map->friendlies_onfield = DARR_INIT(map->friendlies_onfield, tnecs_entity_t, 20);
-    map->units_onfield      = DARR_INIT(map->units_onfield, tnecs_entity_t, 20);
+    map->enemies_onfield    = DARR_INIT(map->enemies_onfield, tnecs_entity, 20);
+    map->friendlies_onfield = DARR_INIT(map->friendlies_onfield, tnecs_entity, 20);
+    map->units_onfield      = DARR_INIT(map->units_onfield, tnecs_entity, 20);
     map->reinf_equipments   = DARR_INIT(map->reinf_equipments, struct Inventory_item *, 30);
     map->army_onfield     = DARR_INIT(map->army_onfield, u8, 5);
     Map_Tilesize_Set(map, width, height);
@@ -135,7 +135,7 @@ void Map_Units_Free(struct Map *map) {
     /* -- Free units on unitmap -- */
     SDL_assert(map->unitmap);
     for (size_t i = 0; i < map->col_len * map->row_len ; i++) {
-        tnecs_entity_t uent = map->unitmap[i];
+        tnecs_entity uent = map->unitmap[i];
         if (uent == TNECS_NULL)
             continue;
         struct Unit *unit = TNECS_GET_COMPONENT(map->world, uent, Unit);
@@ -158,7 +158,7 @@ void Map_Units_Free(struct Map *map) {
 void Map_Units_Hide(struct Map *map) {
 
     for (size_t i = 0; i < (map->col_len * map->row_len); i++) {
-        tnecs_entity_t uent = map->unitmap[i];
+        tnecs_entity uent = map->unitmap[i];
         if (uent == TNECS_NULL)
             continue;
         struct Sprite *sprite = TNECS_GET_COMPONENT(map->world, uent, Sprite);
@@ -693,7 +693,7 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
 
         map->chests_ent = calloc(map->chest_num, sizeof(*map->chests_ent));
         for (size_t i = 0; i < map->chest_num; i++) {
-            tnecs_entity_t temp_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Chest, Position);
+            tnecs_entity temp_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Chest, Position);
             struct Chest *chest     = TNECS_GET_COMPONENT(map->world, temp_ent, Chest);
             struct Position *pos    = TNECS_GET_COMPONENT(map->world, temp_ent, Position);
             cJSON *jchest   = cJSON_GetArrayItem(jchests, i);
@@ -722,7 +722,7 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
 
         map->doors_ent = calloc(map->door_num, sizeof(*map->doors_ent));
         for (size_t i = 0; i < map->door_num; i++) {
-            tnecs_entity_t temp_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Door, Position);
+            tnecs_entity temp_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Door, Position);
             struct Door *door       = TNECS_GET_COMPONENT(map->world, temp_ent, Door);
             struct Position *pos    = TNECS_GET_COMPONENT(map->world, temp_ent, Position);
             cJSON *jdoor    = cJSON_GetArrayItem(jdoors, i);
@@ -751,7 +751,7 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
 
         map->breakables_ent = calloc(map->breakable_num, sizeof(*map->breakables_ent));
         for (size_t i = 0; i < map->breakable_num; i++) {
-            tnecs_entity_t temp_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Breakable, Position);
+            tnecs_entity temp_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Breakable, Position);
             struct Position *pos    = TNECS_GET_COMPONENT(map->world, temp_ent, Position);
             cJSON *jbreakable   = cJSON_GetArrayItem(jbreakables, i);
             cJSON *jpos         = cJSON_GetObjectItem(jbreakable, "position");
@@ -761,8 +761,8 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
             // -> add Breakable component to Door/Chest instead
             // -> add Door/Chest + breakable entity to breakable list
             int x = pos->tilemap_pos.x, y = pos->tilemap_pos.y;
-            tnecs_entity_t door_ent     = Map_Find_Door_Ent(map, x, y);
-            tnecs_entity_t chest_ent    = Map_Find_Chest_Ent(map, x, y);
+            tnecs_entity door_ent     = Map_Find_Door_Ent(map, x, y);
+            tnecs_entity chest_ent    = Map_Find_Chest_Ent(map, x, y);
 
             if ((door_ent) || (chest_ent)) {
                 tnecs_entity_destroy(map->world, temp_ent);

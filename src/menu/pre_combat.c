@@ -58,8 +58,8 @@ void PreCombatMenu_Free(struct PreCombatMenu *pcm) {
     }
 }
 
-void PreCombatMenu_Load(struct PreCombatMenu *pcm, tnecs_entity_t aggressor,
-                        tnecs_entity_t defendant, SDL_Renderer *renderer, struct n9Patch *n9patch) {
+void PreCombatMenu_Load(struct PreCombatMenu *pcm, tnecs_entity aggressor,
+                        tnecs_entity defendant, SDL_Renderer *renderer, struct n9Patch *n9patch) {
     SDL_assert(pcm       != NULL);
     SDL_assert(pcm->sota != NULL);
     SDL_assert(aggressor > TNECS_NULL);

@@ -29,7 +29,7 @@ struct CircleBar {
 extern struct CircleBar CircleBar_default;
 
 /* --- Drawing --- */
-extern void CircleBar_Draw(struct CircleBar *cb, SDL_Renderer *r);
-extern void CircleBar_Fill(struct CircleBar *cb, int attack_i, int attack_num);
+void CircleBar_Draw(struct CircleBar *cb, SDL_Renderer *r);
+void CircleBar_Fill(struct CircleBar *cb, int attack_i, int attack_num);
 
 #endif /* CIRCLE_BAR_H */

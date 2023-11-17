@@ -12,7 +12,7 @@ struct MapHPBar MapHPBar_default = {
 } ;
 
 void MapHPBar_Draw(struct MapHPBar *mbar, struct Camera *camera, i32 tilesize[TWO_D],
-                   SDL_Texture *render_target, SDL_Renderer *renderer, tnecs_world_t *world) {
+                   SDL_Texture *render_target, SDL_Renderer *renderer, tnecs_world *world) {
 
     SDL_Rect dstrect = {
         .x = SOTA_TILEMAP2PIXEL(mbar->tilemap_pos.x, tilesize[0], camera->offset.x, camera->zoom),
@@ -31,7 +31,7 @@ void MapHPBar_Draw(struct MapHPBar *mbar, struct Camera *camera, i32 tilesize[TW
 
 void MapHPBar_Update(struct MapHPBar *mbar, struct Camera *camera,
                      i32 tilesize[TWO_D], SDL_Texture *render_target,
-                     SDL_Renderer *renderer, tnecs_world_t *world) {
+                     SDL_Renderer *renderer, tnecs_world *world) {
     SDL_assert(mbar->unit_ent > TNECS_NULL);
     mbar->update = false;
 

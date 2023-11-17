@@ -33,7 +33,7 @@ void Game_Weapons_Free(struct dtab **weapons_dtab) {
 }
 
 /* --- Wait/Refresh --- */
-void Game_Unit_Wait(struct Game *sota, tnecs_entity_t ent) {
+void Game_Unit_Wait(struct Game *sota, tnecs_entity ent) {
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, ent, Unit);
     SDL_assert(unit != NULL);
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, ent, Sprite);
@@ -52,7 +52,7 @@ void Game_Unit_Wait(struct Game *sota, tnecs_entity_t ent) {
 
 }
 
-void Game_Unit_Refresh(struct Game *sota, tnecs_entity_t ent) {
+void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, ent, Unit);
     SDL_assert(unit != NULL);
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, ent, Sprite);
@@ -125,21 +125,21 @@ void Game_Party_Unload(struct Game *sota, i16 *to_unload_ids, size_t unload_num)
     }
 }
 
-tnecs_entity_t Game_Party_Entity_Create(struct Game *sota, i16 in_unit,
-                                        struct Point in_pos) {
+tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 in_unit,
+                                      struct Point in_pos) {
     // Create Unit entity from previously loaded party unit.
     if (sota->units_loaded[in_unit] != TNECS_NULL)
         return (sota->units_loaded[in_unit]);
 
-    tnecs_world_t *world = sota->world;
+    tnecs_world *world = sota->world;
     SDL_Log("-- create entity for unit %ld --", in_unit);
     char filename[DEFAULT_BUFFER_SIZE];
     SDL_Log("-- create entity --");
-    tnecs_entity_t temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position, Sprite,
-                                   Timer, MapHPBar);
-    tnecs_component_t typeflag = TNECS_COMPONENT_NAMES2TYPEFLAG(world, Unit,
-                                                                Position, Sprite,
-                                                                Timer, MapHPBar);
+    tnecs_entity temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position, Sprite,
+                                 Timer, MapHPBar);
+    tnecs_component typeflag = TNECS_COMPONENT_NAMES2TYPEFLAG(world, Unit,
+                                                              Position, Sprite,
+                                                              Timer, MapHPBar);
     size_t typeflag_id1 = tnecs_typeflagid(world, typeflag);
     size_t typeflag_id2 = tnecs_typeflagid(world, world->entity_typeflags[temp_unit_ent]);
     SDL_Log("temp_unit_ent %ld", temp_unit_ent);
@@ -234,7 +234,7 @@ tnecs_entity_t Game_Party_Entity_Create(struct Game *sota, i16 in_unit,
 }
 /* --- Unitmap --- */
 void Game_UnitsonMap_Free(struct Game *sota) {
-    tnecs_entity_t temp_unit_ent;
+    tnecs_entity temp_unit_ent;
     if (sota->map == NULL) {
         return;
     }
@@ -260,7 +260,7 @@ void Game_putPConMap(struct Game *sota, i16 *unit_ids,
     for (i16 i = 0; i < load_num; i++) {
         SDL_assert(Unit_ID_Valid(unit_ids[i]));
         size_t order = *(u16 *)DTAB_GET(global_unitOrders, unit_ids[i]);
-        tnecs_entity_t temp_unit_ent = Game_Party_Entity_Create(sota, unit_ids[i], posarr[i]);
+        tnecs_entity temp_unit_ent = Game_Party_Entity_Create(sota, unit_ids[i], posarr[i]);
         SDL_assert(temp_unit_ent);
         struct Unit *temp = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
         SDL_assert(temp->name.data != NULL);

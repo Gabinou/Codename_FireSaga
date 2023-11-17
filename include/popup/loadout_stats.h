@@ -167,7 +167,7 @@ enum PLS_ELEMS {
 
 typedef struct PopUp_Loadout_Stats {
     b32 update;
-    tnecs_entity_t unit_ent;
+    tnecs_entity unit_ent;
     struct Unit *unit;
     SDL_Texture *texture;
     SDL_Texture *texture_arrows;

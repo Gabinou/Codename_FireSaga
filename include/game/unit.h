@@ -21,7 +21,7 @@ void Game_Party_Load(  struct Game *s, i16 *to_load_ids, size_t load_num);
 void Game_Party_Clear( struct Game *s);
 void Game_Party_Unload(struct Game *s, i16 *to_unload,   size_t unload_num);
 
-tnecs_entity_t Game_Party_Entity_Create(struct Game *s, i16 in_unit, struct Point in_pos);
+tnecs_entity Game_Party_Entity_Create(struct Game *s, i16 in_unit, struct Point in_pos);
 
 /* --- Unitmap --- */
 void Game_UnitsonMap_Free(struct Game *s);
@@ -31,7 +31,7 @@ void Game_putPConMap(struct Game *s, i16 *u, struct Point *p, size_t l);
 void Game_Weapons_Rewrite(struct Game *s);
 
 /* --- Wait/Refresh --- */
-void Game_Unit_Wait(   struct Game *s, tnecs_entity_t u);
-void Game_Unit_Refresh(struct Game *s, tnecs_entity_t u);
+void Game_Unit_Wait(   struct Game *s, tnecs_entity u);
+void Game_Unit_Refresh(struct Game *s, tnecs_entity u);
 
 #endif /* GAME_UNIT_H */

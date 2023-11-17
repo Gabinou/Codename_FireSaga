@@ -1,7 +1,7 @@
 
 #include "systems/time_system.h"
 
-void timeSynchronize(tnecs_system_input_t *in_input) {
+void timeSynchronize(tnecs_system_input *in_input) {
     /* --- PRELIMINARIES --- */
     SDL_assert(in_input->user_data == NULL);
     /* -- Get components arrays -- */

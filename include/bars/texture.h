@@ -23,6 +23,6 @@ struct TextureBar {
 extern struct TextureBar TextureBar_default;
 
 /* -- Drawing -- */
-extern void TextureBar_Draw(struct TextureBar *tb, SDL_Renderer *r);
+void TextureBar_Draw(struct TextureBar *tb, SDL_Renderer *r);
 
 #endif /* TEXTURE_BAR_H */

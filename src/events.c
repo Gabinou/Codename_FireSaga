@@ -13,12 +13,12 @@ u32 event_Start;
 u32 event_End;
 
 /* --- DATA ENTITIES DEFINITION --- */
-tnecs_entity_t *data1_entity;
-tnecs_entity_t *data2_entity;
+tnecs_entity *data1_entity;
+tnecs_entity *data2_entity;
 
 void Events_Data_Malloc() {
-    data1_entity = SDL_malloc(sizeof(tnecs_entity_t));
-    data2_entity = SDL_malloc(sizeof(tnecs_entity_t));
+    data1_entity = SDL_malloc(sizeof(tnecs_entity));
+    data2_entity = SDL_malloc(sizeof(tnecs_entity));
 }
 
 void Events_Data_Free() {
@@ -26,8 +26,8 @@ void Events_Data_Free() {
     SDL_free(data2_entity);
 }
 
-tnecs_entity_t Events_Controllers_Check(struct Game *sota, i32 code) {
-    tnecs_entity_t out_accepter_entity;
+tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code) {
+    tnecs_entity out_accepter_entity;
     struct controllerGamepad  *gamepad_ptr;
     struct controllerKeyboard *keyboard_ptr;
     switch (code) {
@@ -122,7 +122,7 @@ void receive_event_Load_Debug_Map(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
     i32 controller_type = *(i32 *) userevent->user.data2;
-    tnecs_entity_t mover_entity = Events_Controllers_Check(sota, controller_type);
+    tnecs_entity mover_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(mover_entity > 0);
     SDL_assert(userevent->user.data1 != NULL);
     // struct Point * cursor_move = (struct Point *)
@@ -144,7 +144,7 @@ void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Cursor_Moved(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(userevent->user.data2 != NULL);
     i32 controller_type = * (i32 *) userevent->user.data2;
-    tnecs_entity_t mover_entity = Events_Controllers_Check(sota, controller_type);
+    tnecs_entity mover_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(mover_entity > 0);
     SDL_assert(userevent->user.data1 != NULL);
     struct Point *cursor_move = userevent->user.data1;
@@ -166,7 +166,7 @@ void receive_event_Cursor_Moved(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Input_CANCEL(struct Game *sota, SDL_Event *userevent) {
     i32 controller_type = * (i32 *) userevent->user.data1;
-    tnecs_entity_t canceller_entity = Events_Controllers_Check(sota, controller_type);
+    tnecs_entity canceller_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(canceller_entity > 0);
     if (fsm_eCncl_s[sota->state] != NULL)
         fsm_eCncl_s[sota->state](sota, canceller_entity);
@@ -228,7 +228,7 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
 void receive_event_Input_STATS(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota != NULL);
     i32 controller_type = * (i32 *) userevent->user.data1;
-    tnecs_entity_t accepter_entity = Events_Controllers_Check(sota, controller_type);
+    tnecs_entity accepter_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(accepter_entity > 0);
     *data1_entity = accepter_entity;
     SDL_Log("sota->state %d", sota->state);
@@ -251,7 +251,7 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
     Game_cursorFocus_onMap(sota);
 
     /* --- Visible Popups --- */
-    tnecs_entity_t popup_ent;
+    tnecs_entity popup_ent;
     struct PopUp *popup_ptr;
     /* -- Make Popup_Tile visible -- */
     if (popup_ent > TNECS_NULL) {
@@ -306,7 +306,7 @@ void receive_event_Input_ACCEPT(struct Game *sota, SDL_Event *userevent) {
 
     SDL_assert(sota);
     i32 controller_type = * (i32 *) userevent->user.data1;
-    tnecs_entity_t accepter_entity = Events_Controllers_Check(sota, controller_type);
+    tnecs_entity accepter_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(accepter_entity > 0);
     *data1_entity = accepter_entity;
 
@@ -357,7 +357,7 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
 
 void Reload_Entities_Archetype(struct Game *sota, entity_reload_f reload_func,
                                const char *component) {
-    tnecs_component_t component_flag;
+    tnecs_component component_flag;
     size_t flag_id;
 
     component_flag  = tnecs_component_names2typeflag(sota->world, 1, component);
@@ -379,7 +379,7 @@ void Reload_Entities(struct Game *sota, entity_reload_f reload_func, size_t flag
     size_t num_entities = sota->world->num_entities_bytype[flag_id];
 
     for (size_t i = 0; i < num_entities; i++) {
-        tnecs_entity_t entity = sota->world->entities_bytype[flag_id][i];
+        tnecs_entity entity = sota->world->entities_bytype[flag_id][i];
         size_t component_id   = tnecs_component_name2id(sota->world, component);
         void *struct_ptr      = tnecs_entity_get_component(sota->world, entity, component_id);
         reload_func(struct_ptr);
@@ -439,7 +439,7 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     Reload_Entities_Archetype(sota, Reload_JSON,  "Unit");
 
     /* --- Reload Unit entity's Sprite component --- */
-    tnecs_component_t component_flag;
+    tnecs_component component_flag;
     size_t flag_id;
 
     component_flag  = tnecs_component_names2typeflag(sota->world, 2, "Sprite", "Unit");
@@ -523,7 +523,7 @@ void receive_event_SDL_MOUSEMOTION(struct Game *sota, SDL_Event *event) {
         SDL_LogVerbose(SOTA_LOG_FPS, "Wrong window");
         return;
     }
-    tnecs_entity_t mouse = sota->entity_mouse;
+    tnecs_entity mouse = sota->entity_mouse;
     if (sota->entity_mouse == TNECS_NULL) {
         SDL_LogVerbose(SOTA_LOG_FPS, "Mouse disabled");
         return;
@@ -583,7 +583,7 @@ void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
-    tnecs_entity_t turn_transition;
+    tnecs_entity turn_transition;
     turn_transition = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, MapAnimation, Position, Text, Timer);
 
     struct Timer *timer;
@@ -636,7 +636,7 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
     /* - Pop all menus - */
     while (DARR_NUM(sota->menu_stack) > 0) {
-        tnecs_entity_t menu_pop     = DARR_POP(sota->menu_stack);
+        tnecs_entity menu_pop     = DARR_POP(sota->menu_stack);
         struct Menu *mc    = TNECS_GET_COMPONENT(sota->world, menu_pop, Menu);
         SDL_assert(mc           != NULL);
         SDL_assert(mc->elem_pos != NULL);
@@ -659,7 +659,7 @@ void receive_event_Unit_Enters_Armory(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Unit_Select(struct Game *sota, SDL_Event *userevent) {
-    sota->selected_unit_entity = *((tnecs_entity_t *) userevent->user.data2);
+    sota->selected_unit_entity = *((tnecs_entity *) userevent->user.data2);
     sota->aggressor = sota->selected_unit_entity;
     SDL_assert(sota->selected_unit_entity > TNECS_NULL);
     SDL_assert(sota->state                == GAME_STATE_Gameplay_Map);
@@ -676,7 +676,7 @@ void receive_event_Unit_Deselect(struct Game *sota, SDL_Event *userevent) {
         return;
     }
 
-    tnecs_entity_t unit_ent     = sota->selected_unit_entity;
+    tnecs_entity unit_ent     = sota->selected_unit_entity;
     struct Position *pos_ptr    = TNECS_GET_COMPONENT(sota->world, unit_ent, Position);
     struct Unit *unit_ptr       = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
     SDL_assert(pos_ptr  != NULL);
@@ -696,7 +696,7 @@ void receive_event_Unit_Deselect(struct Game *sota, SDL_Event *userevent) {
     } else {
         /* - Show NPC danger - */
         if (unit_ptr->show_danger) {
-            tnecs_entity_t *ent_ptr = &sota->selected_unit_entity;
+            tnecs_entity *ent_ptr = &sota->selected_unit_entity;
             Event_Emit(__func__, SDL_USEREVENT, event_Unit_Danger, NULL, ent_ptr);
         }
     }
@@ -711,7 +711,7 @@ void receive_event_Unit_Icon_Return(struct Game *sota, SDL_Event *userevent) {
 
     /* - Hide overlay/movemap - */
     sota->map->show_overlay = false;
-    tnecs_entity_t returning = sota->selected_unit_entity;
+    tnecs_entity returning = sota->selected_unit_entity;
     SDL_assert(returning > TNECS_NULL);
 
     struct Position *pos_ptr  = TNECS_GET_COMPONENT(sota->world, returning, Position);
@@ -770,7 +770,7 @@ void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Cursor_Hovers_Unit(struct Game *sota, SDL_Event *userevent) {
-    sota->hovered_unit_entity = *(tnecs_entity_t *)userevent->user.data2;
+    sota->hovered_unit_entity = *(tnecs_entity *)userevent->user.data2;
     SDL_assert(sota->hovered_unit_entity != TNECS_NULL);
     struct Unit *temp = TNECS_GET_COMPONENT(sota->world, sota->hovered_unit_entity, Unit);
     SDL_assert(temp->name.data != NULL);
@@ -780,7 +780,7 @@ void receive_event_Cursor_Hovers_Unit(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Cursor_Dehovers_Unit(struct Game *sota, SDL_Event *userevent) {
-    tnecs_entity_t dehovered_unit_entity = sota->hovered_unit_entity;
+    tnecs_entity dehovered_unit_entity = sota->hovered_unit_entity;
     sota->hovered_unit_entity            = TNECS_NULL;
 
     if (fsm_eCrsDeHvUnit_ss[sota->substate] != NULL)
@@ -806,7 +806,7 @@ void receive_event_Menu_Select(struct Game *sota, SDL_Event *userevent) {
 
 // Menu_Created event should be the ONLY EVENT that changes game substate to menu
 void receive_event_Menu_Created(struct Game *sota, SDL_Event *userevent) {
-    tnecs_entity_t menu_entity = *(tnecs_entity_t *)userevent->user.data1;
+    tnecs_entity menu_entity = *(tnecs_entity *)userevent->user.data1;
 
     /* - Set sprite to combat stance - */
     // Note: Map Action menu does not select unit
@@ -833,7 +833,7 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
 
     /* - Turn menu_attack invisible - */
     int stack_top               = DARR_NUM(sota->menu_stack) - 1;
-    tnecs_entity_t menu_top     = sota->menu_stack[stack_top];
+    tnecs_entity menu_top     = sota->menu_stack[stack_top];
     struct Menu *mc    = TNECS_GET_COMPONENT(sota->world, menu_top, Menu);
     SDL_assert(mc              != NULL);
     SDL_assert(mc->type        == MENU_TYPE_WEAPON_SELECT);
@@ -991,7 +991,7 @@ void receive_event_Unit_Refresh(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Unit_Wait(struct Game *sota, SDL_Event *userevent) {
 
     /* -- Preliminaries -- */
-    tnecs_entity_t unit_ent = sota->selected_unit_entity;
+    tnecs_entity unit_ent = sota->selected_unit_entity;
     SDL_assert(unit_ent > TNECS_NULL);
     Game_Unit_Wait(sota, unit_ent);
 
@@ -1013,7 +1013,7 @@ void receive_event_Unit_Wait(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Unit_Talk(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->entity_cursor          > TNECS_NULL);
     SDL_assert(sota->selected_unit_entity   > TNECS_NULL);
-    tnecs_entity_t unit_ent = sota->selected_unit_entity;
+    tnecs_entity unit_ent = sota->selected_unit_entity;
     Game_Unit_Wait(sota, unit_ent);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
@@ -1022,7 +1022,7 @@ void receive_event_Unit_Talk(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Unit_Rescue(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->entity_cursor          > TNECS_NULL);
     SDL_assert(sota->selected_unit_entity   > TNECS_NULL);
-    tnecs_entity_t unit_ent = sota->selected_unit_entity;
+    tnecs_entity unit_ent = sota->selected_unit_entity;
     Game_Unit_Wait(sota, unit_ent);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
@@ -1086,7 +1086,7 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
 
     /* -- Create combat animation entity -- */
     // TODO change to MapAnimation component
-    tnecs_entity_t map_animation;
+    tnecs_entity map_animation;
     map_animation = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer, CombatAnimation);
 
     struct CombatAnimation *map_anim;
@@ -1130,7 +1130,7 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
     aggressor->waits = true;
     struct Unit *defendant = TNECS_GET_COMPONENT(sota->world, sota->defendant, Unit);
 
-    tnecs_entity_t popup_ent     = sota->popups[POPUP_TYPE_MAP_COMBAT];
+    tnecs_entity popup_ent     = sota->popups[POPUP_TYPE_MAP_COMBAT];
     struct PopUp *popup_ptr      = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
     struct PopUp_Map_Combat *pmc = popup_ptr->data;
 
@@ -1244,8 +1244,8 @@ void receive_event_Convoy_Map(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     /* --- PRELIMINARIES --- */
-    tnecs_entity_t victim_entity = *(tnecs_entity_t *) userevent->user.data1;
-    tnecs_entity_t killer_entity = *(tnecs_entity_t *) userevent->user.data2;
+    tnecs_entity victim_entity = *(tnecs_entity *) userevent->user.data1;
+    tnecs_entity killer_entity = *(tnecs_entity *) userevent->user.data2;
     struct Unit *killer = TNECS_GET_COMPONENT(sota->world, killer_entity, Unit);
     struct Unit *victim = TNECS_GET_COMPONENT(sota->world, victim_entity, Unit);
 
@@ -1270,8 +1270,8 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Unit_Loots(struct Game *sota, SDL_Event *userevent) {
-    tnecs_entity_t looter_entity = *(tnecs_entity_t *) userevent->user.data1;
-    tnecs_entity_t victim_entity = *(tnecs_entity_t *) userevent->user.data2;
+    tnecs_entity looter_entity = *(tnecs_entity *) userevent->user.data1;
+    tnecs_entity victim_entity = *(tnecs_entity *) userevent->user.data2;
     struct Unit *looter = TNECS_GET_COMPONENT(sota->world, looter_entity, Unit);
     struct Unit *victim = TNECS_GET_COMPONENT(sota->world, victim_entity, Unit);
     int regrets = looter->regrets;
@@ -1280,7 +1280,7 @@ void receive_event_Unit_Loots(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     /* -- Popup_Map_Combat -- */
-    tnecs_entity_t popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
+    tnecs_entity popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
     struct PopUp *popup_ptr  = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
     struct PopUp_Map_Combat *pmc = popup_ptr->data;
     pmc->aggressor = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Unit);
@@ -1314,8 +1314,8 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Unit_Agonizes(struct Game *sota, SDL_Event *userevent) {
-    tnecs_entity_t victor_entity = *(tnecs_entity_t *) userevent->user.data1;
-    tnecs_entity_t victim_entity = *(tnecs_entity_t *) userevent->user.data2;
+    tnecs_entity victor_entity = *(tnecs_entity *) userevent->user.data1;
+    tnecs_entity victim_entity = *(tnecs_entity *) userevent->user.data2;
     struct Unit *victor = TNECS_GET_COMPONENT(sota->world, victor_entity, Unit);
     struct Unit *victim = TNECS_GET_COMPONENT(sota->world, victim_entity, Unit);
     int regrets = victor->regrets;

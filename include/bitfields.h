@@ -19,12 +19,12 @@ enum BITFIELD {BITFIELD_BITSPERLEN = 32};
 
 /* -- Setters -- */
 // For nth bit in bitfield
-extern void Bitfield_On( u32 *bf, size_t bit);
-extern void Bitfield_Off(u32 *bf, size_t bit);
+void Bitfield_On( u32 *bf, size_t bit);
+void Bitfield_Off(u32 *bf, size_t bit);
 
 /* -- Boolean Operations -- */
-extern void Bitfield_And( u32 *bf1, u32 *bf2, u32 *out, size_t len);
-extern bool Bitfield_All( u32 *bf1, u32 *bf2, size_t len);
-extern bool Bitfield_isIn(u32 *bf1, u32 *bf2, size_t len);
+void Bitfield_And( u32 *bf1, u32 *bf2, u32 *out, size_t len);
+b32  Bitfield_All( u32 *bf1, u32 *bf2, size_t len);
+b32  Bitfield_isIn(u32 *bf1, u32 *bf2, size_t len);
 
 #endif /* BITFIELDS_H */

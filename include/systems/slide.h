@@ -18,10 +18,10 @@ struct Game;
 void Sprite_Target(struct Slider *sl, struct Sprite *sp, struct Position *pos);
 void Cursor_Target(struct Slider *sl, struct Sprite *sp, struct Position *pos);
 
-void slidePopUp(         tnecs_system_input_t *input);
-void slideSprite(        tnecs_system_input_t *input);
-void slidePopUpOffscreen(tnecs_system_input_t *input);
+void slidePopUp(         tnecs_system_input *input);
+void slideSprite(        tnecs_system_input *input);
+void slidePopUpOffscreen(tnecs_system_input *input);
 
-void hoverAny(tnecs_system_input_t *input);
+void hoverAny(tnecs_system_input *input);
 
 #endif /* SLIDE_SYSTEM_H */
