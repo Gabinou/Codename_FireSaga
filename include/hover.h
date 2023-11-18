@@ -30,6 +30,6 @@ typedef struct Hover {
 } Hover;
 extern struct Hover Hover_default;
 
-extern void Hover_Compute_Next(struct Hover *hover, struct Point *pos);
+void Hover_Compute_Next(struct Hover *hover, struct Point *pos);
 
 #endif /* HOVER_H */

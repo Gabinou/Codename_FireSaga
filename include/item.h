@@ -126,7 +126,6 @@ enum ITEM_EFFECTS_ORDER {
 #undef REGISTER_ENUM
 
 extern use_function_t item_effect_funcs[ITEM_EFFECT_NUM];
-extern i16           item_effect_ids  [ITEM_EFFECT_NUM];
-
+extern i16            item_effect_ids  [ITEM_EFFECT_NUM];
 
 #endif /* ITEM_H */

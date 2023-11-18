@@ -31,10 +31,10 @@ struct cJSON *jsonio_parseJSON(s8 f);
 
 /* --- UTILITIES --- */
 /* -- Read -- */
-void jsonio_Read_Array(    struct cJSON *j, i32 *arr);
-void jsonio_Read_2DArray(  struct cJSON *j, i32 *, u8 rl, u8 cl);
+void jsonio_Read_Array(  struct cJSON *j, i32 *arr);
+void jsonio_Read_2DArray(struct cJSON *j, i32 *, u8 rl, u8 cl);
 
-void jsonio_Read_RNseed(   struct cJSON *_j);
+void jsonio_Read_RNseed( struct cJSON *_j);
 
 void jsonio_Read_Shop(        char *f, struct Shop         *s);
 void jsonio_Read_Palette(     char *f, struct SDL_Palette  *p);

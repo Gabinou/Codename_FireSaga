@@ -272,9 +272,11 @@ struct Game *Game_Init() {
     out_game->window = SDL_CreateWindow(out_game->settings.title, out_game->settings.pos.x,
                                         out_game->settings.pos.y, out_game->settings.res.x, out_game->settings.res.y, flags);
     // SDL_assert(SDL_ISPIXELFORMAT_INDEXED(SDL_GetWindowPixelFormat(out_game->window)));
-    SDL_GetWindowSize(out_game->window, &out_game->window_w, &out_game->window_h);
-    SDL_assert(out_game->window_w == out_game->settings.res.x);
-    SDL_assert(out_game->window_h == out_game->settings.res.y);
+    int window_w;
+    int window_h;
+    SDL_GetWindowSize(out_game->window, &window_w, &window_h);
+    SDL_assert(window_w == out_game->settings.res.x);
+    SDL_assert(window_h == out_game->settings.res.y);
     if (out_game->window) {
         SDL_LogVerbose(SOTA_LOG_SYSTEM, "Window created\n");
         out_game->renderer = SDL_CreateRenderer(out_game->window, -1, SDL_RENDERER_TARGETTEXTURE);
@@ -325,7 +327,7 @@ struct Game *Game_Init() {
     SDL_free(temp_base);
 
     path_mapping = s8_Path_Remove_Top(path_mapping, DIR_SEPARATOR[0]);
-    char *separator = PHYSFS_getDirSeparator();
+    const char *separator = PHYSFS_getDirSeparator();
     path_mapping = s8cat(path_mapping, s8_var(separator));
     path_mapping = s8cat(path_mapping, s8_literal(DIR_SEPARATOR"gamecontrollerdb.txt"));
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Path to gamecontrollerdb: %s\n", path_mapping.data);
@@ -737,7 +739,8 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
     *timer = Timer_default;
 
     /* -- Get position -- */
-    struct Position *position = TNECS_GET_COMPONENT(sota->world, sota->entity_fps, Position);
+    struct Position *position;
+    position = TNECS_GET_COMPONENT(sota->world, sota->entity_fps, Position);
     *position = Position_default;
 
     SDL_assert(position != NULL);

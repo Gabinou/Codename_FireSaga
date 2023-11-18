@@ -41,6 +41,7 @@ void Map_UnitMove_Animate(struct Game *s, tnecs_entity, struct Timer *);
 void Map_TurnTransition_Animate(struct Game *, tnecs_entity,
                                 struct MapAnimation *, struct Timer *);
 
-void Map_Combat_Animate(struct Game *s, tnecs_entity, struct CombatAnimation *, struct Timer *);
+void Map_Combat_Animate(struct Game *s, tnecs_entity,
+                        struct CombatAnimation *, struct Timer *);
 
 #endif /* MAP_ANIMATION_H */

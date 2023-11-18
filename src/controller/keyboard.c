@@ -56,10 +56,9 @@ void Keyboard_Held(i8 *held, size_t *h_num, i32 *timeheld, i8 *pressed, size_t p
         *h_num = p_num;
         *timeheld = 0.0f;
     }
-
 }
 
-bool Keyboard_isPressed(struct controllerKeyboard *kb,  u8 *state_array, int button) {
+bool Keyboard_isPressed(struct controllerKeyboard *kb, const u8 *state_array, int button) {
 
     /* -- Preliminaries -- */
     struct KeyboardInputMap *map = kb->inputmap;

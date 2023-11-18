@@ -38,15 +38,16 @@ enum ORIENTATIONS {
     POINTY_TOP = 1,
 };
 
-extern void HexPosition_Move(struct HexPosition *in_hexpos, u8 direction, u8 magnitude);
-extern u8 HexDistance_HexPoints(struct nmath_hexpoint_int32_t p1,
-                                struct nmath_hexpoint_int32_t p2);
-extern u8 HexDistance_Points(struct Point p1, struct Point p2);
+u8 HexDistance_Points(   struct Point p1, struct Point p2);
+u8 HexDistance_HexPoints(struct nmath_hexpoint_int32_t p1,
+                         struct nmath_hexpoint_int32_t p2);
 
-extern struct nmath_hexpoint_int32_t HexRound(struct nmath_hexpoint_float p);
+void HexPosition_Move(struct HexPosition *in_hexpos, u8 direction, u8 magnitude);
 
-extern struct Point Hex2Pixel(struct nmath_hexpoint_int32_t hp, i32 r, bool o);
-extern struct nmath_hexpoint_int32_t Pixel2Hex(struct Point p,  i32 r, bool o);
-extern void plotHex2DArray(i16 *in_array, size_t x_len, size_t z_len, int o);
+struct nmath_hexpoint_int32_t HexRound(struct nmath_hexpoint_float p);
+
+struct Point Hex2Pixel(struct nmath_hexpoint_int32_t hp, i32 r, bool o);
+struct nmath_hexpoint_int32_t Pixel2Hex(struct Point p,  i32 r, bool o);
+void plotHex2DArray(i16 *in_array, size_t x_len, size_t z_len, int o);
 
 #endif /* HexPOSITION_H */

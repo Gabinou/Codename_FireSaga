@@ -41,10 +41,10 @@ void Reload_Entities(          struct Game *sota, entity_reload_f func, size_t f
 void Reload_Entities_Archetype(struct Game *sota, entity_reload_f func,  char *c);
 
 /* -- Reload funcs -- */
-void Reload_JSON(       void *struct_ptr);
-void Reload_Menu(       void *struct_ptr);
-void Reload_Popup(      void *struct_ptr);
-void Reload_MapHpBar(   void *struct_ptr);
+void Reload_JSON(    void *struct_ptr);
+void Reload_Menu(    void *struct_ptr);
+void Reload_Popup(   void *struct_ptr);
+void Reload_MapHpBar(void *struct_ptr);
 
 /* -- ructor/Destructor -- */
 void Events_Data_Malloc();

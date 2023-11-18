@@ -36,14 +36,14 @@ struct PopUp_Loadout_Stats;
 *   Type:       fsm_<trigger>_<combo_states>_<state prefix>_t
     - Ex: `fsm_eAcpt_sGmpMap_ssMenu_m_t`
 
-*   Function:   fsm_<trigger>_<state1>_<state2>...
+*   Function:   fsm_<trigger>_<combo_states>_...
 
     - <trigger>  -> <prefix><abbreviation> OR <Exit/Entry>
         - event OR Exit/Entry
         - Prefix: e for event
         - See abbreviations in names/game_states.h ...
 
-    - <stateN>      -> <prefix><abbreviation>
+    - <combo_states> -> <state1>_<state2>_... -> <prefix><abbreviation>_...
         - Prefixes: s for state, ss for substate, m for menu
 
     - Combo example: `fsm_eCncl_sGMap_ssMenu_mPlSlct`
@@ -104,7 +104,7 @@ extern fsm_eCrsHvUnit_s_t fsm_eCrsHvUnit_ss[GAME_SUBSTATE_NUM];
 
 void fsm_eCrsHvUnit_sGmpMap(struct Game *sota, tnecs_entity ent);
 
-void fsm_eCrsHvUnit_ssStby(       struct Game *sota, tnecs_entity ent);
+void fsm_eCrsHvUnit_ssStby(   struct Game *sota, tnecs_entity ent);
 void fsm_eCrsHvUnit_ssMapCndt(struct Game *sota, tnecs_entity ent);
 
 /* -- FSM: Cursor_Dehovers_Unit EVENT -- */
@@ -158,19 +158,19 @@ void fsm_eStats_ssStby(struct Game *sota, tnecs_entity ent);
 extern fsm_eMenuRight_s_t  fsm_eMenuRight_s[GAME_STATE_NUM];
 extern fsm_eMenuRight_sGmpMap_ss_t fsm_eMenuRight_sGmpMap_ss[GAME_SUBSTATE_NUM];
 
-void fsm_eMenuRight_sGmpMap(struct Game *sota, int32_t c);
+void fsm_eMenuRight_sGmpMap(struct Game *sota, i32 c);
 
-void fsm_eMenuRight_sGmpMap_ssMenu(   struct Game *sota, int32_t c);
-void fsm_eMenuRight_sGmpMap_ssStby(struct Game *sota, int32_t c);
+void fsm_eMenuRight_sGmpMap_ssMenu(struct Game *sota, i32 c);
+void fsm_eMenuRight_sGmpMap_ssStby(struct Game *sota, i32 c);
 
 /* -- FSM: Input_menuLeft EVENT -- */
-extern fsm_eMenuLeft_s_t  fsm_eMenuLeft_s[GAME_STATE_NUM];
+extern fsm_eMenuLeft_s_t fsm_eMenuLeft_s[GAME_STATE_NUM];
 extern fsm_eMenuLeft_sGmpMap_ss_t fsm_eMenuLeft_sGmpMap_ss[GAME_SUBSTATE_NUM];
 
-void fsm_eMenuLeft_sGmpMap(struct Game *sota, int32_t c);
+void fsm_eMenuLeft_sGmpMap(struct Game *sota, i32 c);
 
-void fsm_eMenuLeft_sGmpMap_ssMenu(   struct Game *sota, int32_t c);
-void fsm_eMenuLeft_sGmpMap_ssStby(struct Game *sota, int32_t c);
+void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 c);
+void fsm_eMenuLeft_sGmpMap_ssStby(struct Game *sota, i32 c);
 
 /* -- FSM: Unit_Danger EVENT -- */
 extern fsm_eUnitDng_s_t fsm_eUnitDng_s[GAME_STATE_NUM];
@@ -195,7 +195,7 @@ void fsm_eUnitSel_ssStby(struct Game *sota, tnecs_entity ent);
 extern fsm_eUnitDsel_s_t fsm_eUnitDsel_s[GAME_STATE_NUM];
 extern fsm_eUnitDsel_s_t fsm_eUnitDsel_ss[GAME_SUBSTATE_NUM];
 
-void fsm_eUnitDsel_ssMenu(          struct Game *sota, tnecs_entity ent);
+void fsm_eUnitDsel_ssMenu(    struct Game *sota, tnecs_entity ent);
 void fsm_eUnitDsel_sMapUnitMv(struct Game *sota, tnecs_entity ent);
 
 /* -- FSM: Input_globalRange EVENT -- */

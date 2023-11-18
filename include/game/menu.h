@@ -16,9 +16,10 @@
 #include "menu/growths.h"
 #include "menu/pre_combat.h"
 
+void Game_Switch_toCandidates(struct Game *sota, tnecs_entity *candidates);
+
 /* --- All Menus --- */
 bool Game_Menus_Init(struct Game *sota);
-void Game_Switch_toCandidates(struct Game *sota, tnecs_entity *candidates);
 
 /* --- Menu stack --- */
 tnecs_entity Game_menuStack_Pop(struct Game *sota, bool destroy);
@@ -64,16 +65,16 @@ void Game_PlayerSelectMenu_Disable_Entity(struct Game *sota, tnecs_entity in_men
 /* --- Game_preLoadout_... --- */
 /* These stop after finding only ONE target. For options in PSM_UNIT_ACTION.
 * Used before user chooses unit loadout. */
-void Game_preLoadout_Patients(  struct Game *sota,    tnecs_entity actor);
-void Game_preLoadout_Defendants(struct Game *sota,  tnecs_entity actor);
+void Game_preLoadout_Patients(  struct Game *sota, tnecs_entity actor);
+void Game_preLoadout_Defendants(struct Game *sota, tnecs_entity actor);
 /* --- Game_preUnitAction_Targets... --- */
 /* Does a bunch of pre-computation to find which options go in PSM_UNIT_ACTION. */
-void Game_preUnitAction_Targets(struct Game *sota,  tnecs_entity actor);
+void Game_preUnitAction_Targets(struct Game *sota, tnecs_entity actor);
 
 /* --- Game_postLoadout_... --- */
 /* These find ALL possible targets.
 * Used after user chooses unit loadout. */
-void Game_postLoadout_Patients(  struct Game *sota,   tnecs_entity actor);
+void Game_postLoadout_Patients(  struct Game *sota, tnecs_entity actor);
 void Game_postLoadout_Defendants(struct Game *sota, tnecs_entity actor);
 
 //  void Game_uniqueMenus_Draw(struct Game * sota);

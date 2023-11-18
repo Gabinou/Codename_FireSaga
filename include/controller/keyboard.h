@@ -70,6 +70,6 @@ extern struct controllerKeyboard controllerKeyboard_default;
 
 /* -- Pressed button -- */
 void Keyboard_Held(i8 *h, size_t *hn, i32 *t, i8 *p, size_t pn, i32 dt);
-bool Keyboard_isPressed(struct controllerKeyboard *k,  u8 *sa, int button);
+bool Keyboard_isPressed(struct controllerKeyboard *k, const u8 *sa, int button);
 
 #endif /* CONTROLLERKEYBOARD_H */

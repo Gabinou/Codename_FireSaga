@@ -66,9 +66,10 @@ extern struct Menu Menu_default;
 void Menu_Elem_Free(struct Menu *mc);
 
 /* --- Internals --- */
-int Periodic_Elem_Move(     struct Menu *mc, int d, int min, int max);
-void Menu_Elem_Set(struct Menu *mc, struct Game *sota, i8 d);
-int Menu_Elem_Move(struct Menu *mc, int d);
+int  Periodic_Elem_Move(struct Menu *mc, int d, int min, int max);
+
+void Menu_Elem_Set(        struct Menu *mc, struct Game *sota, i8 d);
+int  Menu_Elem_Move(       struct Menu *mc, int d);
 void Menu_Elem_Boxes_Check(struct Menu *mc);
 
 /* --- Debug --- */

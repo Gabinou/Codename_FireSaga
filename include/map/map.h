@@ -210,8 +210,9 @@ void Map_dArrays_Free(struct Map *map);
 void Map_dArrays_Init(struct Map *map,  struct Settings *settings);
 
 /* --- Tilemap --- */
-static void _Map_Tilemap_Shader_Init( struct Map *map);
-static void _Map_Tilemap_Shader_Free( struct Map *map);
+static void _Map_Tilemap_Shader_Init(struct Map *map);
+static void _Map_Tilemap_Shader_Free(struct Map *map);
+
 void Map_Tilemap_Surface_Init(struct Map *map);
 void Map_Tilemap_Surface_Free(struct Map *map);
 void Map_Tilemap_Texture_Init(struct Map *map);

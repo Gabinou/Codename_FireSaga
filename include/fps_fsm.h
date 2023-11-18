@@ -11,14 +11,15 @@
 /*  Array:      fsm_<trigger>_<combo_states>_<state prefix>
     - Array keys are states for last prefix
     - Ex: `fsm_eAcpt_sGmpMap_ssMenu_m`
+        - Prefixes: m for menu, s for state, ss for substate
 
 *   Type:       fsm_<trigger>_<combo_states>_<state prefix>_t
     - Ex: `fsm_eAcpt_sGmpMap_ssMenu_m_t`
 
-*   Function:   fsm_<trigger>_<state1>_<state2>...
+*   Function:   fsm_<trigger>_<combo_states>...
 
     - <trigger>  : r for render, c for control + Frame
-    - <stateN>      -> <prefix><Event>
+    - <combo_states> -> <state1>_<state2>_... -> <prefix><Event>_...
         - Prefixes: s for state, ss for substate
         - Example: `fsm_rFrame_sCmbt`
 

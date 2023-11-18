@@ -140,12 +140,8 @@ struct Game {
 
     SDL_Window  *window;
 
-    int  window_w;
-    int  window_h;
-
     struct Settings    settings;
     struct Convoy      convoy;
-    // struct Camp camp;
     u64 s_xoshiro256ss[4]; /* Only used to read s from RNG file */
 
     struct Point cursor_move;
@@ -184,7 +180,7 @@ struct Game {
     /* Button interpreted as which input?  */
     u32 inputs[SOTA_BUTTON_END];
 
-    u8    party_size;
+    u8     party_size;
     u64    runtime_ns; // -> millions of years
     bool  *shadow_area;  /* pixels */
     bool   ismouse          : 1;
@@ -198,18 +194,18 @@ extern struct Game Game_default;
 /* --- ructors/Destructors --- */
 struct Game *Game_Init();
 void Game_Free(   struct Game *sota);
-void Game_Startup(struct Game *sota, struct Input_Arguments in_args);
-
+void Game_Startup(struct Game *sota, struct Input_Arguments args);
 
 /* --- I/O --- */
 void Game_saveJSON(struct Game *sota, i16 save_ind);
 void Game_loadJSON(struct Game *sota, i16 save_ind);
-void Game_Save_Delete(i16 save_ind);
-void Game_Save_Copy(i16 from, i16 to);
+
+void Game_Save_Copy(  i16 from, i16 to);
+void Game_Save_Delete(i16 save);
 
 /* --- State --- */
-void Game_State_Set(   struct Game *sota, i8 ns,  char *r);
-void Game_subState_Set(struct Game *sota, i8 ns,  char *r);
+void Game_State_Set(   struct Game *sota, i8 ns, char *r);
+void Game_subState_Set(struct Game *sota, i8 ns, char *r);
 
 /* --- Camera --- */
 void Game_Camera_Scroll(struct Game *sota);
@@ -218,8 +214,8 @@ void Game_Camera_Scroll(struct Game *sota);
 void Game_Delay(struct Game *sota, i64 d, u64 c, u64 e);
 
 /* --- FPS --- */
-i64 Game_FPS_Delay(  struct Game *sota, u64 e);
 void Game_FPS_Free(  struct Game *sota);
+i64  Game_FPS_Delay( struct Game *sota, u64 e);
 void Game_FPS_Create(struct Game *sota, i64 ut);
 
 #endif /* GAME_STRUCT_H */
