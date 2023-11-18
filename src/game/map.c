@@ -6,7 +6,7 @@
 // #endif /* STB_SPRINTF_IMPLEMENTATION */
 
 /* --- Map utilities --- */
-void Game_Map_Load(struct Game *sota, const i16 in_map_index) {
+void Game_Map_Load(struct Game *sota,  i16 in_map_index) {
     SDL_assert((in_map_index > CHAPTER_START) && (in_map_index < CHAPTER_END));
     SDL_LogDebug(SOTA_LOG_SYSTEM, "%ld \n", in_map_index);
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Associated map filename     %s \n", mapFilenames[in_map_index]);

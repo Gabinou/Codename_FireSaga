@@ -9,9 +9,9 @@
 enum VALUES CANNOT be STRINGIZE'd
 only the enum NAMES gets STRINGIZE'd
     Example: define
-        #define MYCONSTANT 2
-        STRINGIFY(MYCONSTANT)   -> "MYCONSTANT"
-        STRINGIZE(MYCONSTANT)   -> "2"
+        #define MYANT 2
+        STRINGIFY(MYANT)   -> "MYANT"
+        STRINGIZE(MYANT)   -> "2"
     Example: enum
         enum foo {bar = 2};
         STRINGIFY(bar)          -> "bar"

@@ -17,7 +17,7 @@ struct PopUp_Map_Combat PopUp_Map_Combat_default = {
     .update                 = true,
 };
 
-/* --- Constructors/Destructors --- */
+/* --- ructors/Destructors --- */
 void PopUp_Map_Combat_Free(struct PopUp_Map_Combat *pmc) {
 
     if (pmc->texture_header_blue != NULL) {
@@ -79,7 +79,7 @@ void PopUp_Map_Combat_Load(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer,
     pmc->topoff_defendant.FG_dark   = palette_NES->colors[TOPOFF_BAR_FG_DARK];
     pmc->topoff_defendant.FG_light  = palette_NES->colors[TOPOFF_BAR_FG_LIGHT];
 
-    /* - bar constants - */
+    /* - bar ants - */
     pmc->topoff_aggressor.len   = POPUP_MAP_COMBAT_BLUE_TOPOFF_BAR_LEN;
     pmc->topoff_defendant.len   = POPUP_MAP_COMBAT_RED_TOPOFF_BAR_LEN;
     pmc->topoff_aggressor.pos.x = POPUP_MAP_COMBAT_BLUE_TOPOFF_BAR_X;
@@ -97,7 +97,7 @@ void PopUp_Map_Combat_Load(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer,
 
 void PopUp_Map_Combat_Units(struct PopUp_Map_Combat *pmc, struct Game *sota,
                             struct Unit *aggressor, struct Unit *defendant,
-                            const struct Point *agg_pos, const struct Point *dft_pos) {
+                            struct Point *agg_pos,  struct Point *dft_pos) {
 
     /* -- Preliminaries -- */
     // tnecs_entity popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
@@ -382,7 +382,7 @@ void PopUp_Map_Combat_Update(struct PopUp_Map_Combat *pmc, struct n9Patch *n9pat
     SDL_assert(pmc->pixelnours_tight        != NULL);
     SDL_assert(pmc->forecast                != NULL);
 
-    /* -- Variable declaration/ constants definition -- */
+    /* -- Variable declaration/ ants definition -- */
     struct n9Patch red_patch    = PopUp_Map_Combat_Compute_Patch(pmc, n9patch);
     struct n9Patch blue_patch   = PopUp_Map_Combat_Compute_Patch(pmc, n9patch);
 

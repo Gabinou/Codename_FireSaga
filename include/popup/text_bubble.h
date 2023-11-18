@@ -100,12 +100,12 @@ struct Text_Bubble {
 };
 extern struct Text_Bubble TextBubble_default;
 
-/* --- Constructor/Destructor --- */
+/* --- ructor/Destructor --- */
 void TextBubble_Free(struct Text_Bubble *b);
 void TextBubble_Load(struct Text_Bubble *b, SDL_Renderer *r, struct n9Patch *n9patch);
 
 /* --- Setters --- */
-void TextBubble_Set_Text(    struct Text_Bubble *b, const char *t, struct n9Patch *n9patch);
+void TextBubble_Set_Text(    struct Text_Bubble *b,  char *t, struct n9Patch *n9patch);
 void TextBubble_Set_Target(  struct Text_Bubble *b, struct Point t);
 void TextBubble_Compute_Size(struct Text_Bubble *b, struct n9Patch *n9patch);
 
@@ -116,7 +116,7 @@ void TextBubble_Tail_Flip(  struct Text_Bubble *b);
 void TextBubble_Tail_Angle( struct Text_Bubble *b);
 int  TextBubble_Tail_Octant(struct Text_Bubble *b);
 
-void TextBubble_Set_All(struct Text_Bubble *b, const char *t, struct Point ta,
+void TextBubble_Set_All(struct Text_Bubble *b,  char *t, struct Point ta,
                         struct n9Patch *n9patch);
 
 /* --- Scrolling --- */

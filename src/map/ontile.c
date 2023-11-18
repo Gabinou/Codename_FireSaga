@@ -87,7 +87,7 @@ void Map_Unit_Move(struct Map *map, u8 col, u8 row, u8 new_col, u8 new_row) {
 
 }
 
-tnecs_entity *Map_Units_Get(struct Map *map, tnecs_world *world, const u8 army) {
+tnecs_entity *Map_Units_Get(struct Map *map, tnecs_world *world,  u8 army) {
     tnecs_entity *unit_ents = NULL;
     unit_ents = DARR_INIT(unit_ents, tnecs_entity, 16);
     tnecs_entity current_unit_ent;
@@ -117,7 +117,7 @@ void Map_Door_onOpen(struct Map *map, tnecs_world *world, tnecs_entity door) {
 void Map_Chest_onOpen(struct Map *map, tnecs_world *world, tnecs_entity chest) {
 }
 
-void Map_addArmy(struct Map *map, const u8 army) {
+void Map_addArmy(struct Map *map,  u8 army) {
     /* -- Don't add army if found -- */
     for (u8 i = 0; i < DARR_NUM(map->army_onfield); i++)
         if (map->army_onfield[i] == army)
@@ -159,7 +159,7 @@ int entity_isIn(u64 *array, u64 to_find, size_t arr_len) {
     return (found);
 }
 
-void _Map_Unit_Remove_List(struct Map *map, const tnecs_entity entity) {
+void _Map_Unit_Remove_List(struct Map *map,  tnecs_entity entity) {
     int found = entity_isIn(map->friendlies_onfield, entity, DARR_NUM(map->friendlies_onfield));
     if (found > -1)
         DARR_DEL(map->friendlies_onfield, found);

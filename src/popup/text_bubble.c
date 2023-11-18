@@ -95,7 +95,7 @@ void TextBubble_Load(struct Text_Bubble *bubble, SDL_Renderer *renderer, struct 
 
 }
 
-void TextBubble_Set_Text(struct Text_Bubble *bubble, const char *text, struct n9Patch *n9patch) {
+void TextBubble_Set_Text(struct Text_Bubble *bubble,  char *text, struct n9Patch *n9patch) {
     /* -- Free before re-allocating -- */
     if (bubble->text != NULL) {
         SDL_free(bubble->text);
@@ -290,7 +290,7 @@ void TextBubble_Compute_Size(struct Text_Bubble *bu, struct n9Patch *n9patch) {
 
 }
 
-void TextBubble_Set_All(struct Text_Bubble *bubble, const char *text, struct Point target,
+void TextBubble_Set_All(struct Text_Bubble *bubble,  char *text, struct Point target,
                         struct n9Patch *n9patch) {
 
     TextBubble_Set_Text(bubble, text, n9patch);
@@ -420,7 +420,7 @@ void TextBubble_Update(struct Text_Bubble *bubble, struct n9Patch *n9patch,
     /* --- PRELIMINARIES --- */
     SDL_assert(bubble != NULL);
     SDL_assert(renderer != NULL);
-    /* - variable declaration/ constants definition - */
+    /* - variable declaration/ ants definition - */
     SDL_assert(bubble->width            > 0);
     SDL_assert(bubble->height           > 0);
     SDL_assert(n9patch->scale.x         > 0);

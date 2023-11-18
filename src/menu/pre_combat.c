@@ -399,8 +399,8 @@ void _PreCombatMenu_Draw_Stats_Math(  struct PreCombatMenu *pcm, SDL_Renderer *r
     SDL_Rect dstrect, srcrect;
 
     char numbuff[10];
-    const struct Point *agg_pos = &pcm->agg_pos->tilemap_pos;
-    const struct Point *dft_pos = &pcm->dft_pos->tilemap_pos;
+    struct Point *agg_pos = &pcm->agg_pos->tilemap_pos;
+    struct Point *dft_pos = &pcm->dft_pos->tilemap_pos;
 
     /* Distance between units */
     u8 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
@@ -542,8 +542,8 @@ void _PreCombatMenu_Draw_Stats_Total( struct PreCombatMenu *pcm, SDL_Renderer *r
     /* -- Preliminaries -- */
     SDL_Rect dstrect, srcrect;
 
-    const struct Point *agg_pos = &pcm->agg_pos->tilemap_pos;
-    const struct Point *dft_pos = &pcm->dft_pos->tilemap_pos;
+    struct Point *agg_pos = &pcm->agg_pos->tilemap_pos;
+    struct Point *dft_pos = &pcm->dft_pos->tilemap_pos;
 
     /* Distance between units */
     u8 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
@@ -637,8 +637,8 @@ void _PreCombatMenu_Draw_Stats_Simple(struct PreCombatMenu *pcm, SDL_Renderer *r
     char numbuff[10];
     /* -- Preliminaries -- */
     SDL_Rect dstrect, srcrect;
-    const struct Point *agg_pos = &pcm->agg_pos->tilemap_pos;
-    const struct Point *dft_pos = &pcm->dft_pos->tilemap_pos;
+    struct Point *agg_pos = &pcm->agg_pos->tilemap_pos;
+    struct Point *dft_pos = &pcm->dft_pos->tilemap_pos;
 
     /* Distance between units */
     u8 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
@@ -764,7 +764,7 @@ void PreCombatMenu_Update(struct PreCombatMenu *pcm, struct n9Patch *n9patch,
     SDL_assert(pcm->dft_pos         != NULL);
     SDL_assert(pcm->pixelnours      != NULL);
     SDL_assert(pcm->pixelnours_big  != NULL);
-    /* - variable declaration/constants definition - */
+    /* - variable declaration/ants definition - */
     SDL_assert(n9patch->size_pixels.x   > 0);
     SDL_assert(n9patch->size_pixels.y   > 0);
     SDL_assert(n9patch->scale.x         > 0);

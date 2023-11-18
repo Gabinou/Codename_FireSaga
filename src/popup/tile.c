@@ -13,7 +13,7 @@ struct PopUp_Tile PopUp_Tile_default = {
     .cursor_limit_max = {-1, -1},
 };
 
-/* --- Constructor/Destructor --- */
+/* --- ructor/Destructor --- */
 void PopUp_Tile_Free(struct PopUp_Tile *pt) {
     if (pt->texture_header != NULL) {
         SDL_DestroyTexture(pt->texture_header);
@@ -185,7 +185,7 @@ void PopUp_Tile_Update(struct PopUp_Tile *pt, struct n9Patch *n9patch,
     SDL_assert(pt != NULL);
     SDL_assert(renderer != NULL);
     SDL_assert(pt->tile != NULL);
-    /* - variable declaration/ constants definition - */
+    /* - variable declaration/ ants definition - */
     SDL_assert(n9patch->size_pixels.x > 0);
     SDL_assert(n9patch->size_pixels.y > 0);
     SDL_assert(n9patch->scale.x > 0);

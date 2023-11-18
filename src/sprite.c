@@ -81,7 +81,7 @@ void Spritesheet_Free(struct Spritesheet *spritesheet) {
     s8_free(&spritesheet->json_filename);
 }
 
-void Sprite_readJSON(void *input, const cJSON *const jsprite) {
+void Sprite_readJSON(void *input,  cJSON *jsprite) {
     struct Sprite *sprite = input;
     cJSON *jspritesheet = cJSON_GetObjectItem(jsprite, "Spritesheet");
     if (jspritesheet == NULL) {
@@ -94,7 +94,7 @@ void Sprite_readJSON(void *input, const cJSON *const jsprite) {
 }
 
 
-void Spritesheet_readJSON(void *input, const cJSON *const jspritesheet) {
+void Spritesheet_readJSON(void *input,  cJSON *jspritesheet) {
     struct Spritesheet *spritesheet = (struct Spritesheet *) input;
     SDL_assert(spritesheet);
     Spritesheet_Free(spritesheet);
@@ -167,7 +167,7 @@ void Spritesheet_Loop_Set(struct Spritesheet *spritesheet, int loop, SDL_Rendere
 }
 
 /* --- SPRITE --- */
-/* -- Constructor/Destructors -- */
+/* -- ructor/Destructors -- */
 void Sprite_Free(struct Sprite *sprite) {
     SDL_Log("Freeing shaders");
     if (sprite->shader_any != NULL) {
@@ -278,7 +278,7 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit, SDL_Renderer
 }
 
 // Load Sprite to spritesheet by default
-void Sprite_Load(struct Sprite *sprite, const char *asset_name, SDL_Renderer *renderer) {
+void Sprite_Load(struct Sprite *sprite,  char *asset_name, SDL_Renderer *renderer) {
     /* -- Saving asset name -- */
     s8_free(&sprite->asset_name);
     sprite->asset_name = s8_mut(asset_name);

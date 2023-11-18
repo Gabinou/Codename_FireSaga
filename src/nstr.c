@@ -4,7 +4,7 @@
 /* 3x-4x faster than null-terminated strings! */
 /* -- s8_mut ONLY, unless noted otherwise -- */
 
-s8 s8_mut(const char *string) {
+s8 s8_mut( char *string) {
     s8 s8_string;
     size_t len = strlen(string);
     s8_string.num  = len;
@@ -97,7 +97,7 @@ s8 s8_toUpper(s8 str8) {
     return (str8);
 }
 
-s8 s8_camelCase(s8 str8, const char separator, size_t minwordlen) {
+s8 s8_camelCase(s8 str8,  char separator, size_t minwordlen) {
     size_t wlen = 0;
     for (size_t i = 0; i <= str8.num; i++) {
         int word_end = (*(str8.data + i) == separator) || (i == str8.num);
@@ -115,7 +115,7 @@ s8 s8_camelCase(s8 str8, const char separator, size_t minwordlen) {
     return (str8);
 }
 
-s8 s8_Path_Remove_Top(s8 str8, const char separator) {
+s8 s8_Path_Remove_Top(s8 str8,  char separator) {
     char *folder        = strrchr(str8.data, separator) + 1;
     size_t len_folder   = strlen(folder);
     *(str8.data + (str8.num - (len_folder + 1))) = '\0';
@@ -124,7 +124,7 @@ s8 s8_Path_Remove_Top(s8 str8, const char separator) {
     return (str8);
 }
 
-s8 s8_replaceSingle(s8 str8, const char replace, const char with) {
+s8 s8_replaceSingle(s8 str8,  char replace,  char with) {
     for (size_t i = 0; i < str8.num; i++) {
         if (*(str8.data + i) == replace)
             *(str8.data + i) = with;
@@ -132,7 +132,7 @@ s8 s8_replaceSingle(s8 str8, const char replace, const char with) {
     return (str8);
 }
 
-s8 s8_Replace(s8 str8, const char *replace, const char *with) {
+s8 s8_Replace(s8 str8,  char *replace,  char *with) {
     /* find replace pos */
     char *found = strstr(str8.data, replace);
     if (found != NULL) {
@@ -185,7 +185,7 @@ char *nstr_toUpper(char *in_str) {
     return (in_str);
 }
 
-char *nstr_camelCase(char *in_str, const char separator, size_t minwordlen) {
+char *nstr_camelCase(char *in_str,  char separator, size_t minwordlen) {
     size_t wordlen = 0;
     for (size_t i = 0; i <= strlen(in_str) ; i++) {
         if ((*(in_str + i) == separator) || (i == strlen(in_str))) {
@@ -200,7 +200,7 @@ char *nstr_camelCase(char *in_str, const char separator, size_t minwordlen) {
     return (in_str);
 }
 
-char *nstr_replaceSingle(char *in_str, const char replace, const char with) {
+char *nstr_replaceSingle(char *in_str,  char replace,  char with) {
     for (size_t i = 0; i < strlen(in_str) ; i++) {
         if (*(in_str + i) == replace) {
             *(in_str + i) = with;
@@ -209,7 +209,7 @@ char *nstr_replaceSingle(char *in_str, const char replace, const char with) {
     return (in_str);
 }
 
-char *nstr_Path_Remove_Top(char *in_path, const char separator) {
+char *nstr_Path_Remove_Top(char *in_path,  char separator) {
     char *folder = strrchr(in_path, separator) + 1;
     *(in_path + (strlen(in_path) - strlen(folder) - 1)) = '\0';
     if (strlen(folder) == 0) {
@@ -219,7 +219,7 @@ char *nstr_Path_Remove_Top(char *in_path, const char separator) {
     return (in_path);
 }
 
-char *nstr_Path_Split_Top(char *in_path, const char separator) {
+char *nstr_Path_Split_Top(char *in_path,  char separator) {
     char *temp = (char *) malloc(strlen(in_path) + 1);
     strcpy(temp, in_path);
     * (temp + strlen(in_path)) = '\0';

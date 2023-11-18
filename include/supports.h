@@ -17,7 +17,7 @@ enum SUPPORT_TYPES {
 };
 #undef REGISTER_ENUM
 
-/* --- CONSTANTS --- */
+/* --- ANTS --- */
 enum SUPPORT_LEVELS {
     SUPPORT_LEVEL_NULL = 0,
     SUPPORT_LEVEL_ZERO = 0,

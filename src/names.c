@@ -300,7 +300,7 @@ void Names_Free() {
     }
 }
 
-void Names_Print_All(const char *foldername) {
+void Names_Print_All( char *foldername) {
     SDL_Log("foldername %s", foldername);
     FILE *fp = NULL;
     /* --- Army names --- */

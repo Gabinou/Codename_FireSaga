@@ -9,7 +9,7 @@
 
 typedef void (* onUpdate_t)(struct Game *, tnecs_entity, u32, i64, void *);
 
-enum SOTA_TEXT_CONSTANTS {
+enum SOTA_TEXT_ANTS {
     SOTA_FPS_BUFFER = 8,
 };
 

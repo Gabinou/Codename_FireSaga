@@ -95,7 +95,7 @@ u8 *Camp_Job_Get(struct Camp *in_camp, i16 job_id);
 void Camp_Jobs_Clear(struct Camp *in_camp);
 
 /* --- I/O --- */
-void Camp_readJSON(void         *input, const cJSON *const in_jcamp);
-void Camp_writeJSON(const  void *input,       cJSON       *in_jcamp);
+void Camp_readJSON(void         *input,  cJSON *in_jcamp);
+void Camp_writeJSON(  void *input,       cJSON       *in_jcamp);
 
 #endif /* CAMP_H */

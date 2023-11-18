@@ -13,7 +13,7 @@ struct Inventory_Item;
 /* --- TYPEDEFS --- */
 typedef void (*Active_Skill)(struct Unit *, void *);
 
-/* --- CONSTANTS --- */
+/* --- ANTS --- */
 extern Active_Skill global_active_skills[ACTIVE_SKILL_NUM];
 
 /* --- FUNCTIONS --- */

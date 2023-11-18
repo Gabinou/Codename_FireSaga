@@ -42,7 +42,7 @@ typedef struct Convoy {
 
 extern struct Convoy Convoy_default;
 
-/* --- (De)Constructors --- */
+/* --- (De)ructors --- */
 void Convoy_Clear(struct Convoy *in_convoy);
 
 /* --- Items --- */
@@ -76,7 +76,7 @@ void Convoy_Stats_Print(struct Convoy *c, i16 wpnType, i16 stattype);
 void Convoy_AllStats_Print(struct Convoy *in_convoy, i16 wpnType);
 
 /* --- I/O --- */
-void Convoy_readJSON(void        *input, const cJSON *const in_json);
-void Convoy_writeJSON(const void *input,       cJSON       *in_json);
+void Convoy_readJSON(void        *input,  cJSON *in_json);
+void Convoy_writeJSON( void *input,       cJSON       *in_json);
 
 #endif /* CONVOY_H */

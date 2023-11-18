@@ -1,21 +1,21 @@
 
 #include "enums.h"
 
-#define REGISTER_ENUM(x) const u64 UNIT_SKILL_##x = 1ULL << UNIT_SKILL_EXP_##x;
+#define REGISTER_ENUM(x)  u64 UNIT_SKILL_##x = 1ULL << UNIT_SKILL_EXP_##x;
 #include "names/skills_passive.h"
 #include "names/skills_active.h"
 #undef REGISTER_ENUM
 
-// #define REGISTER_ENUM(x,y) const u64 ITEM_EFFECT_##x = 1ULL << ITEM_EFFECT_EXP_##x;
-#define REGISTER_ENUM(x,y) const u64 ITEM_EFFECT_##x = ITEM_EFFECT_EXP_##x;
+// #define REGISTER_ENUM(x,y)  u64 ITEM_EFFECT_##x = 1ULL << ITEM_EFFECT_EXP_##x;
+#define REGISTER_ENUM(x,y)  u64 ITEM_EFFECT_##x = ITEM_EFFECT_EXP_##x;
 #include "names/items_effects.h"
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) const u64 UNIT_PC_ALIVE_##x = 1ULL << UNIT_ID_##x;
+#define REGISTER_ENUM(x, y)  u64 UNIT_PC_ALIVE_##x = 1ULL << UNIT_ID_##x;
 #include "names/units_PC.h"
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) const u64 UNIT_PC_RECRUITED_##x = 1ULL << UNIT_ID_##x;
+#define REGISTER_ENUM(x, y)  u64 UNIT_PC_RECRUITED_##x = 1ULL << UNIT_ID_##x;
 #include "names/units_PC.h"
 #undef REGISTER_ENUM
 
@@ -62,6 +62,6 @@ u8 army_control[ARMY_NUM] = {
 };
 
 
-// #define REGISTER_ENUM(x, y) const u64 UNIT_NPC_ALIVE_##x = 1ULL << (UNIT_ID_##x - UNIT_ID_NPC_START);
+// #define REGISTER_ENUM(x, y)  u64 UNIT_NPC_ALIVE_##x = 1ULL << (UNIT_ID_##x - UNIT_ID_NPC_START);
 // #include "names/units_NPC.h"
 // #undef REGISTER_ENUM

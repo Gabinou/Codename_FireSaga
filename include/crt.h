@@ -103,9 +103,9 @@ extern void Nearest_Scanline_Filter_2D(float *samples, float *filtered,
                                        uint_fast32_t size_filtered_y);
 
 /* GAUSSIAN BLUR */
-extern void blur(const float *input, float *output, float *temp, i32 w,
-                 i32 h,
-                 float sigma, i32 n_boxes);
+extern void blur( float *input, float *output, float *temp, i32 w,
+                  i32 h,
+                  float sigma, i32 n_boxes);
 
 extern void gaussBlur_4(float *scl, float *tcl, uint_fast32_t width,
                         uint_fast32_t height,

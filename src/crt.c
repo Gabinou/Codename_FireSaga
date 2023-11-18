@@ -406,9 +406,9 @@ void CRT_Clamping(float *R, float *G, float *B, uint_fast32_t width,
  *          Higher number = diminishingly better results, but linearly slower.
  * float: Type of elements. Should be integer type.
  */
-void blur(const float *input, float *output, float *temp, i32 w,
-          i32 h,
-          float sigma, i32 n_boxes) {
+void blur( float *input, float *output, float *temp, i32 w,
+           i32 h,
+           float sigma, i32 n_boxes) {
     float wIdeal = sqrtf((12.0f * sigma * sigma / n_boxes) +
                          1.0f); // Ideal averaging filter width
     uint_fast32_t wl = (i32)wIdeal;
@@ -418,13 +418,13 @@ void blur(const float *input, float *output, float *temp, i32 w,
     float mIdeal = (12 * sigma * sigma - n_boxes * wl * wl - 4 * n_boxes * wl - 3 * n_boxes) /
                    (-4.0f * wl - 4);
     i32 m = floorf(mIdeal);
-    const float *data = input;
+    float *data = input;
     for (i32 n = 0; n < n_boxes; ++n) {
         i32 r = ((n < m ? wl : wu) - 1) / 2; // IDK should this be float?
         // boxBlur_4:
         float iarr = 1.0f / (r + r + 1);
         // boxBlurH_4 (blur horizontally for each row):
-        const float *scl = data;
+        float *scl = data;
         float *tcl = temp;
         for (i32 i = 0; i < h; ++i) {
             i32 ti = i * w, li = ti, ri = ti + r;

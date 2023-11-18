@@ -7,7 +7,7 @@
 #include "macros.h"
 #include "SDL.h"
 
-/* --- CONSTANTS --- */
+/* --- ANTS --- */
 enum PIXELFONT {
     ASCII_CHARSET_ROW_LEN       = 16,
     ASCII_CHARSET_COL_LEN       = 16,
@@ -75,7 +75,7 @@ typedef struct PixelFont {
 extern struct PixelFont PixelFont_default;
 extern struct PixelFont TextureFont_default;
 
-/* --- Constructors/Destructors --- */
+/* --- ructors/Destructors --- */
 struct PixelFont *PixelFont_Alloc();
 struct PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len);
 
@@ -91,18 +91,18 @@ void TextLines_Free(   struct TextLines *tl);
 void TextLines_Realloc(struct TextLines *tl, size_t len);
 
 /* -- Splitting lines -- */
-struct TextLines PixelFont_Lines(    struct PixelFont *f, const char *t, size_t l, size_t ll);
-struct TextLines PixelFont_Lines_Len(struct PixelFont *f, const char *t, size_t ll);
+struct TextLines PixelFont_Lines(    struct PixelFont *f,  char *t, size_t l, size_t ll);
+struct TextLines PixelFont_Lines_Len(struct PixelFont *f,  char *t, size_t ll);
 
-int PixelFont_Lines_Num(     struct PixelFont *f, const char *t, size_t l, size_t ll);
-int PixelFont_Lines_Num_Len( struct PixelFont *f, const char *t, size_t ll);
+int PixelFont_Lines_Num(     struct PixelFont *f,  char *t, size_t l, size_t ll);
+int PixelFont_Lines_Num_Len( struct PixelFont *f,  char *t, size_t ll);
 
-int PixelFont_NextLine_Break(struct PixelFont *f, const char *t, int pb, size_t l, size_t ll);
-int NextLine_Start(const char *text, int pb, int cb, size_t l);
+int PixelFont_NextLine_Break(struct PixelFont *f,  char *t, int pb, size_t l, size_t ll);
+int NextLine_Start( char *text, int pb, int cb, size_t l);
 
 /* --- Width in [pixels] --- */
-int PixelFont_Width(       struct PixelFont *f, const char *t, size_t l);
-int PixelFont_Width_Len(   struct PixelFont *f, const char *t);
+int PixelFont_Width(       struct PixelFont *f,  char *t, size_t l);
+int PixelFont_Width_Len(   struct PixelFont *f,  char *t);
 
 /* - Glyph_BoundingBox: - */
 // Note: Detect bounding box of each glyph of the font by looking at pixel values

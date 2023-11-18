@@ -346,7 +346,7 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
 
     /* --- SENDING --- */
     tnecs_entity cursor = sota->entity_cursor;
-    const struct Position *position;
+    struct Position *position;
     position = TNECS_GET_COMPONENT(sota->world, cursor, Position);
     SDL_assert(position != NULL);
 

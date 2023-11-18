@@ -109,7 +109,7 @@ struct Map Map_default = {
     // .seized; // maybe unecessary if turn system.
 };
 
-/* --- Constructor/Destructors --- */
+/* --- ructor/Destructors --- */
 
 struct Map *Map_Init(struct Map *map, i32 width, i32 height) {
     if (map != NULL)
@@ -256,7 +256,7 @@ void Map_Free(struct Map *map) {
     Map_dArrays_Free(map);
 }
 
-void Map_dArrays_Init(struct Map *map, const struct Settings *settings) {
+void Map_dArrays_Init(struct Map *map,  struct Settings *settings) {
     SDL_assert(map->row_len > 0);
     SDL_assert(map->col_len > 0);
     SDL_assert(map->row_len < UCHAR_MAX);
@@ -488,7 +488,7 @@ void Map_Tilemap_Surface_Init(struct Map *map) {
 }
 
 /* --- I/O --- */
-void Map_writeJSON(const void *input, cJSON *jmap) {
+void Map_writeJSON( void *input, cJSON *jmap) {
     struct Map *map = (struct Map *) input;
     SDL_assert(jmap != NULL);
     /* -- Preliminaries -- */
@@ -573,7 +573,7 @@ void Map_writeJSON(const void *input, cJSON *jmap) {
     cJSON_AddItemToObject(jmap, "Tilemap", jtilemap);
 }
 
-void Map_readJSON(void *input, const cJSON *const jmap) {
+void Map_readJSON(void *input,  cJSON *jmap) {
     struct Map *map = (struct Map *) input;
     SDL_assert(jmap != NULL);
     cJSON *jchapter     = cJSON_GetObjectItem(jmap, "chapter");

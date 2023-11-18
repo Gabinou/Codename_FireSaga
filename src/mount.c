@@ -30,7 +30,7 @@ struct Mount Mount_default_salamander = {
     .promoted =         true,
     .owner =            0,
     .owner_lvlups =     0,
-    // .skill =            UNIT_SKILL_VENOMOUS_SPIT, // const int don't work
+    // .skill =            UNIT_SKILL_VENOMOUS_SPIT, //  int don't work
 };
 
 struct Mount Mount_default_pegasus = {

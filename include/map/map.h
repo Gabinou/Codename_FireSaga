@@ -197,7 +197,7 @@ struct Map {
 };
 extern struct Map Map_default;
 
-/* --- Constructor/Destructors --- */
+/* --- ructor/Destructors --- */
 void        Map_Free(      struct Map *map);
 struct Map *Map_Init(      struct Map *map, i32 width, i32 height);
 void        Map_Units_Free(struct Map *map);
@@ -207,7 +207,7 @@ void Map_Texture_Alloc(struct Map *map);
 
 /* -- Dynamic arrays -- */
 void Map_dArrays_Free(struct Map *map);
-void Map_dArrays_Init(struct Map *map, const struct Settings *settings);
+void Map_dArrays_Init(struct Map *map,  struct Settings *settings);
 
 /* --- Tilemap --- */
 static void _Map_Tilemap_Shader_Init( struct Map *map);
@@ -225,8 +225,8 @@ void Map_Tilesprites_Init(struct Map *map, size_t tiles_num);
 void Map_Tilesprites_Free(struct Map *map);
 
 /* --- I/O --- */
-void Map_readJSON(       void *input, const cJSON *const jmap);
-void Map_writeJSON(const void *input, cJSON             *jmap);
+void Map_readJSON(       void *input,  cJSON *jmap);
+void Map_writeJSON( void *input, cJSON             *jmap);
 
 /* --- Map events / Triggers --- */
 void Map_Turn_Increment(struct Map *map);

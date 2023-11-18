@@ -1274,7 +1274,7 @@ struct Range *Unit_Range_Item(struct Unit   *unit, int i) {
 */
 
 struct Range *_Unit_Range_Combine( struct Unit   *unit, struct Range *range,
-                                  bool equipped, int archetype) {
+                                   bool equipped, int archetype) {
     /* - Finds range of ANYTHING - */
     int num = equipped ? UNIT_HANDS_NUM : DEFAULT_EQUIPMENT_SIZE;
     bool stronghand = Unit_Hand_Strong(unit);
@@ -1793,7 +1793,7 @@ void Unit_Equipped_Shields_Deplete(struct Unit *unit) {
 }
 
 /* --- I/O --- */
-void Unit_readJSON(void *input,  cJSON * junit) {
+void Unit_readJSON(void *input,  cJSON *junit) {
     struct Unit *unit = (struct Unit *)input;
     SDL_assert(unit);
     SDL_Log("-- Get json objects --");

@@ -87,8 +87,8 @@ typedef struct PopUp_Map_Combat {
 
     struct Unit *aggressor;
     struct Unit *defendant;
-    const struct Point *agg_pos;
-    const struct Point *dft_pos;
+    struct Point *agg_pos;
+    struct Point *dft_pos;
     SDL_Texture *texture;
     struct PixelFont *pixelnours_big;
     struct PixelFont *pixelnours_tight;
@@ -113,14 +113,14 @@ typedef struct PopUp_Map_Combat {
 } PopUp_Map_Combat;
 extern struct PopUp_Map_Combat PopUp_Map_Combat_default;
 
-/* --- Constructors/Destructors --- */
+/* --- ructors/Destructors --- */
 void PopUp_Map_Combat_Load(struct PopUp_Map_Combat *pmc, SDL_Renderer *r, struct n9Patch *n);
 void PopUp_Map_Combat_Free(struct PopUp_Map_Combat *pmc);
 
 /* --- Setters --- */
 void PopUp_Map_Combat_Units(struct PopUp_Map_Combat *pmc, struct Game *sota,
-                            struct Unit *a, struct Unit *d, const struct Point *agg_pos,
-                            const struct Point *dft_pos);
+                            struct Unit *a, struct Unit *d,  struct Point *agg_pos,
+                            struct Point *dft_pos);
 
 struct n9Patch PopUp_Map_Combat_Compute_Patch( struct PopUp_Map_Combat *pmc,
                                                struct n9Patch *n9patch);

@@ -13,7 +13,7 @@
 // hexmap are stored as i16 * map[col_len*depth_len]
 // map[z*col_len + x] with y = - x - z
 
-enum HEXPOSITION_CONSTANTS {
+enum HEXPOSITION_ANTS {
     CUBE_DIRECTIONS_NUM = 6,
 };
 

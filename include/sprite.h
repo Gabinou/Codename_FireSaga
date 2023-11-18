@@ -11,7 +11,7 @@ struct Index_Shader;
 struct Position;
 
 /* --- Spritesheet --- */
-/* -- Constants -- */
+/* -- ants -- */
 #define MAP_SPRITE_FRAME_NUM 4
 
 enum SPRITESHEET {
@@ -63,17 +63,17 @@ struct Spritesheet {
 };
 extern struct Spritesheet Spritesheet_default;
 
-/* --- Constructor/Destructors --- */
+/* --- ructor/Destructors --- */
 void Spritesheet_Free(struct Spritesheet *ss);
 
 /* --- Animation --- */
 void Spritesheet_Loop_Set(struct Spritesheet *ss, int l, SDL_RendererFlip f);
 
 /* --- I/O --- */
-void Spritesheet_readJSON(void *ss, const cJSON *const jss);
+void Spritesheet_readJSON(void *ss,  cJSON *jss);
 
 /* --- Sprite --- */
-/* -- Constants -- */
+/* -- ants -- */
 enum SPRITE {
     DEFAULT_SPRITE_SRC_W = 32,
     DEFAULT_SPRITE_SRC_H = 32,
@@ -113,11 +113,11 @@ extern struct Sprite Sprite_default;
 typedef void (*dstrect_func_t)(struct Sprite *, struct Point *, struct Camera *);
 extern dstrect_func_t dstrect_funcs[TWO_D][2];
 
-/* --- Constructor/Destructors --- */
+/* --- ructor/Destructors --- */
 void Sprite_Free(struct Sprite *s);
 
 /* --- Initialization --- */
-void Sprite_Load(               struct Sprite *s, const char *n, SDL_Renderer *r);
+void Sprite_Load(               struct Sprite *s,  char *n, SDL_Renderer *r);
 void Sprite_Tilesize_Set(       struct Sprite *s, u16 *t);
 void Sprite_Map_Unit_Load(      struct Sprite *s, struct Unit *u, SDL_Renderer *r);
 void Sprite_defaultShaders_Load(struct Sprite *s);
@@ -143,6 +143,6 @@ void Sprite_Animation_Loop(   struct Sprite *s);
 void Sprite_Animation_Restart(struct Sprite *s, int loop);
 
 /* --- I/O --- */
-void Sprite_readJSON(void *s, const cJSON *const js);
+void Sprite_readJSON(void *s,  cJSON *js);
 
 #endif /* SPRITE_H */

@@ -107,7 +107,7 @@ struct Game Game_default = {
     .fast_forward       = false,
 };
 
-/* --- Constructors/Destructors --- */
+/* --- ructors/Destructors --- */
 void Game_Free(struct Game *sota) {
     Game_Cursor_Free(sota);
     Game_PopUp_Tile_Free(sota);
@@ -325,7 +325,7 @@ struct Game *Game_Init() {
     SDL_free(temp_base);
 
     path_mapping = s8_Path_Remove_Top(path_mapping, DIR_SEPARATOR[0]);
-    const char *separator = PHYSFS_getDirSeparator();
+    char *separator = PHYSFS_getDirSeparator();
     path_mapping = s8cat(path_mapping, s8_var(separator));
     path_mapping = s8cat(path_mapping, s8_literal(DIR_SEPARATOR"gamecontrollerdb.txt"));
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Path to gamecontrollerdb: %s\n", path_mapping.data);
@@ -477,7 +477,7 @@ void Game_Startup(struct Game *sota, struct Input_Arguments in_args) {
     SDL_assert(sota->substate   == GAME_SUBSTATE_MENU);
 }
 
-void Game_Save_Copy(const i16 from_ind, const i16 to_ind) {
+void Game_Save_Copy( i16 from_ind,  i16 to_ind) {
     SDL_assert(PHYSFS_exists(SAVE_FOLDER));
     s8 filenameto       = s8_mut(SAVE_FOLDER);
     s8 filenamefrom     = s8_mut(SAVE_FOLDER);
@@ -503,7 +503,7 @@ void Game_Save_Copy(const i16 from_ind, const i16 to_ind) {
     s8_free(&filenamefrom);
 }
 
-void Game_Save_Delete(const i16 save_ind) {
+void Game_Save_Delete( i16 save_ind) {
     SDL_assert(PHYSFS_exists(SAVE_FOLDER));
     s8 filename = s8_mut(SAVE_FOLDER);
     char temp[DEFAULT_BUFFER_SIZE];
@@ -514,7 +514,7 @@ void Game_Save_Delete(const i16 save_ind) {
     s8_free(&filename);
 }
 
-void Game_loadJSON(struct Game *sota, const i16 save_ind) {
+void Game_loadJSON(struct Game *sota,  i16 save_ind) {
     SDL_assert(PHYSFS_exists(SAVE_FOLDER));
     s8 filename = s8_mut(SAVE_FOLDER);
     char temp[DEFAULT_BUFFER_SIZE];
@@ -554,7 +554,7 @@ void Game_loadJSON(struct Game *sota, const i16 save_ind) {
     cJSON_Delete(json);
 }
 
-void Game_saveJSON(struct Game *sota, const i16 save_ind) {
+void Game_saveJSON(struct Game *sota,  i16 save_ind) {
     if (!PHYSFS_exists(SAVE_FOLDER))
         PHYSFS_mkdir(SAVE_FOLDER);
     s8 filename = s8_mut(SAVE_FOLDER);
@@ -602,7 +602,7 @@ void Game_saveJSON(struct Game *sota, const i16 save_ind) {
 }
 
 /* --- State --- */
-void Game_subState_Set(struct Game *sota, const i8 new_substate, const char *reason) {
+void Game_subState_Set(struct Game *sota,  i8 new_substate,  char *reason) {
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Substate set to %d because: %s", new_substate, reason);
     SDL_assert(new_substate > 0);
     SDL_assert(sota->substate != new_substate);
@@ -621,7 +621,7 @@ void Game_subState_Set(struct Game *sota, const i8 new_substate, const char *rea
         fsm_Input_sGmpMap_ss[sota->substate](sota);
 }
 
-void Game_State_Set(struct Game *sota, const i8 new_state, const char *reason) {
+void Game_State_Set(struct Game *sota,  i8 new_state,  char *reason) {
     SDL_LogDebug(SOTA_LOG_SYSTEM, "State set to %d, because: %s", new_state, reason);
     SDL_assert(new_state > 0);
     SDL_assert(sota->state != new_state);
@@ -645,7 +645,7 @@ void Game_Camera_Scroll(struct Game *sota) {
     if (!cursor_position->onTilemap)
         return;
 
-    const struct Sprite *cursor_sprite;
+    struct Sprite *cursor_sprite;
     cursor_sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
     SDL_assert(cursor_sprite != NULL);
 

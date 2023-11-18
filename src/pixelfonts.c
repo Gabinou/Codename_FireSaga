@@ -79,7 +79,7 @@ struct PixelFont TextureFont_default =  {
     .scroll_len         = 0,
 };
 
-/*--- Constructors/Destructors --- */
+/*--- ructors/Destructors --- */
 struct PixelFont *PixelFont_Alloc() {
     struct PixelFont *font  = malloc(sizeof(struct PixelFont));
     SDL_assert(font);
@@ -244,12 +244,12 @@ void TextLines_Free(struct TextLines *textlines) {
     }
 }
 
-struct TextLines PixelFont_Lines_Len(struct PixelFont *font, const char *text, size_t line_len_px) {
+struct TextLines PixelFont_Lines_Len(struct PixelFont *font,  char *text, size_t line_len_px) {
     size_t len_char = strlen(text);
     return (PixelFont_Lines(font, text, len_char, line_len_px));
 }
 
-struct TextLines PixelFont_Lines(struct PixelFont *font, const char *text, size_t len_char,
+struct TextLines PixelFont_Lines(struct PixelFont *font,  char *text, size_t len_char,
                                  size_t line_len_px) {
     SDL_assert(font != NULL);
     SDL_assert(font->glyph_bbox_width != NULL);
@@ -333,7 +333,7 @@ struct TextLines PixelFont_Lines(struct PixelFont *font, const char *text, size_
 
 /* Compute number of rows text occupies. */
 /* NOTE: len [char], line_len [px] */
-int PixelFont_Lines_Num(struct PixelFont *font, const char *text, size_t len_char,
+int PixelFont_Lines_Num(struct PixelFont *font,  char *text, size_t len_char,
                         size_t line_len_px) {
     SDL_assert(line_len_px > 0);
     SDL_assert(font != NULL);
@@ -371,7 +371,7 @@ int PixelFont_Lines_Num(struct PixelFont *font, const char *text, size_t len_cha
     return (rows);
 }
 
-int PixelFont_NextLine_Break(struct PixelFont *font, const char *text, int previous_break,
+int PixelFont_NextLine_Break(struct PixelFont *font,  char *text, int previous_break,
                              size_t len_char, size_t line_len_px) {
     /* -- Find char that exceeds line pixel length, from previous start. -- */
     int width_px = 0;
@@ -386,7 +386,7 @@ int PixelFont_NextLine_Break(struct PixelFont *font, const char *text, int previ
     return (current_break);
 }
 
-int NextLine_Start(const char *text, int previous_break, int current_break, size_t line_len_char) {
+int NextLine_Start( char *text, int previous_break, int current_break, size_t line_len_char) {
     /* -- Find char that starts a newline. -- */
     // Breaking a new line:
     //  1. If word > 4 char: Add "-" in middle of word. Send part after - to new line.
@@ -427,20 +427,20 @@ int NextLine_Start(const char *text, int previous_break, int current_break, size
     return (next_char);
 }
 
-int PixelFont_Lines_Num_Len(struct PixelFont *font, const char *text, size_t line_len_px) {
+int PixelFont_Lines_Num_Len(struct PixelFont *font,  char *text, size_t line_len_px) {
     SDL_assert(font != NULL);
     SDL_assert(line_len_px > 0);
     size_t len = strlen(text);
     return (PixelFont_Lines_Num(font, text, len, line_len_px));
 }
 
-int PixelFont_Width_Len(struct PixelFont *font, const char *text) {
+int PixelFont_Width_Len(struct PixelFont *font,  char *text) {
     size_t len = strlen(text);
     return (PixelFont_Width(font, text, len));
 }
 
 /* Compute exact width of text, including spaces */
-int PixelFont_Width(struct PixelFont *font, const char *text, size_t len) {
+int PixelFont_Width(struct PixelFont *font,  char *text, size_t len) {
     int width = 0;
     for (size_t i = 0; i < len; i++) {
         unsigned char ascii = (unsigned char)text[i];

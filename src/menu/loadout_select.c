@@ -52,7 +52,7 @@ struct LoadoutSelectMenu LoadoutSelectMenu_default = {
     .item_name              = {0},
 };
 
-/* --- Constructors/Destructors --- */
+/* --- ructors/Destructors --- */
 struct LoadoutSelectMenu *LoadoutSelectMenu_Alloc() {
     struct LoadoutSelectMenu *lsm = malloc(sizeof(struct LoadoutSelectMenu));
     SDL_assert(lsm != NULL);
@@ -448,7 +448,7 @@ void LoadoutSelectMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *
     Utilities_DrawColor_Reset(renderer);
 }
 
-void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm, const char *header) {
+void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm,  char *header) {
     s8_free(&lsm->header);
     lsm->header = s8_mut(header);
 }

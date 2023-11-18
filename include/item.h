@@ -14,7 +14,7 @@
 struct Unit;
 struct Item;
 
-/* --- CONSTANTS --- */
+/* --- ANTS --- */
 #define ITEM_NAME_INVALID " "
 
 // Note: How are Breakables categorized?
@@ -69,7 +69,7 @@ extern struct Item Item_default;
 /* --- Inventory Item --- */
 void Inventory_item_Swap(struct Inventory_item *items, u8 i1, u8 i2);
 
-/* --- Constructors/Destructors --- */
+/* --- ructors/Destructors --- */
 void Item_Free(struct Item *item);
 
 /* --- I/O --- */
@@ -92,7 +92,7 @@ bool Item_isShield( i16 id);
 bool Item_isWeapon( i16 id);
 bool Item_isOffhand(i16 id);
 
-bool Item_canUse(struct Item *item, const struct Unit *unit);
+bool Item_canUse(struct Item *item,  struct Unit *unit);
 
 /* --- Use --- */
 void Item_Use(              struct Item *i, struct Unit *u, struct Unit *t);
@@ -103,7 +103,7 @@ void Inventory_item_Deplete(struct Inventory_item *invitem, int uses);
 bool Item_ID_isValid(u16 id); /* NOT for weapons */
 
 /* --- Stat --- */
-int Item_Stat(const struct Item *item, i16 s);
+int Item_Stat( struct Item *item, i16 s);
 
 /* -- Effects -- */
 #define REGISTER_ENUM(x, y) ITEM_EFFECT_ID_##x = y,

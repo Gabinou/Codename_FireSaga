@@ -24,7 +24,7 @@ struct Weapon;
 struct Damage;
 struct RNG_Sequence;
 
-/* --- CONSTANTS--- */
+/* --- ANTS--- */
 enum STATUSES {
     STATUS_DEFAULT_TURNS = 5,
 };
@@ -151,7 +151,7 @@ typedef struct Unit {
 } Unit;
 extern struct Unit Unit_default;
 
-/* --- Constructors/Destructors --- */
+/* --- ructors/Destructors --- */
 void Unit_Init(        struct Unit *u);
 void Unit_Free(        struct Unit *u);
 void Unit_InitWweapons(struct Unit *u, struct dtab *weapons_dtab);
@@ -321,7 +321,7 @@ void Unit_writeJSON(void *u, cJSON *junit);
 
 /* --- Unit state --- */
 bool Unit_isdualWielding(struct Unit *u);
-// WrongHanding: using shield or offhand in strong hand and vice constvdrsa
+// WrongHanding: using shield or offhand in strong hand and vice vdrsa
 bool Unit_iswrongHanding(struct Unit *u);
 
 /* --- Unit Can --- */

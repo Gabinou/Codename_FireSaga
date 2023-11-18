@@ -181,7 +181,7 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     SDL_assert(pu       != NULL);
     SDL_assert(renderer != NULL);
     SDL_assert(pu->unit != NULL);
-    /* -- Variable declaration/ constants definition -- */
+    /* -- Variable declaration/ ants definition -- */
     SDL_assert(n9patch->size_pixels.x > 0);
     SDL_assert(n9patch->size_pixels.y > 0);
     SDL_assert(n9patch->scale.x > 0);

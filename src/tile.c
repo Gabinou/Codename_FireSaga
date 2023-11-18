@@ -136,7 +136,7 @@ void Tile_readJSON(void *input, cJSON *_jtile) {
 }
 
 void Tile_writeJSON(void *_input, cJSON *jtile) {
-    struct Tile *_tile = (struct Tile *)input;
+    struct Tile *_tile = (struct Tile *)_input;
     SDL_assert(jtile != NULL);
     cJSON *jtilestats   = cJSON_CreateObject();
     cJSON *jcost        = cJSON_CreateObject();
@@ -188,7 +188,7 @@ void Door_readJSON(void *input, cJSON *jdoor) {
     // Mobj_Link_readJSON(door->link, jmobj);
 }
 
-void Door_writeJSON(const void *input, cJSON *jdoor) {
+void Door_writeJSON( void *input, cJSON *jdoor) {
     struct Door *door = (struct Door *) input;
     SDL_assert(jdoor != NULL);
     cJSON *jchapter_open    = cJSON_CreateNumber(door->chapter_open);
@@ -212,7 +212,7 @@ void Chest_readJSON(void *input, cJSON *jchest) {
     cJSON *jmobj = cJSON_GetObjectItemCaseSensitive(jchest, "Map Object");
 }
 
-void Chest_writeJSON(const void *input, cJSON *jchest) {
+void Chest_writeJSON( void *input, cJSON *jchest) {
     struct Chest *chest = (struct Chest *) input;
     SDL_assert(jchest != NULL);
     cJSON *jgold = cJSON_CreateNumber(chest->gold);

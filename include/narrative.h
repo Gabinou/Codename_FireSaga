@@ -50,6 +50,6 @@ void Scene_Free_Read(struct Scene *scene);
 void Scene_Replace(struct Scene *scene);
 void Scene_Prune(struct Scene *scene);
 struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_concs,
-                                 i16 chapter, u16 scene_time);
+                          i16 chapter, u16 scene_time);
 
 #endif /* NARRATIVE_H */

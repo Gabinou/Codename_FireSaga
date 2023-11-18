@@ -73,7 +73,7 @@ struct Graph {
     i32 margin_right; /* [pixels] */
 
     /* length until writing another pixel, including pixel */
-    /* constant for x */
+    /* ant for x */
     u8 y_lenperpixel;
 
     u8 stat_num;

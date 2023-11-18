@@ -89,7 +89,7 @@ tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code) {
 }
 
 /* --- EVENT RECEIVERS --- */
-void Event_Emit(const char *emitter, u32 type, i32 code, void *data1, void *data2) {
+void Event_Emit( char *emitter, u32 type, i32 code, void *data1, void *data2) {
     SDL_assert(code > 0);
     s8 event_name = event_names[code - event_Start];
     SDL_Log("emitter -> %s, event -> %s", emitter, event_name.data);
@@ -356,7 +356,7 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
 }
 
 void Reload_Entities_Archetype(struct Game *sota, entity_reload_f reload_func,
-                               const char *component) {
+                               char *component) {
     tnecs_component component_flag;
     size_t flag_id;
 
@@ -375,7 +375,7 @@ void Reload_Entities_Archetype(struct Game *sota, entity_reload_f reload_func,
 }
 
 void Reload_Entities(struct Game *sota, entity_reload_f reload_func, size_t flag_id,
-                     const char *component) {
+                     char *component) {
     size_t num_entities = sota->world->num_entities_bytype[flag_id];
 
     for (size_t i = 0; i < num_entities; i++) {
@@ -865,9 +865,9 @@ void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {
     Events_Controllers_Check(sota, controller_type);
 
     /* -- Zoom in to sprite_atorigin -- */
-    const struct Sprite *sprite_atorigin;
-    const struct Sprite *cursor_sprite;
-    const struct Sprite *mouse_sprite;
+    struct Sprite *sprite_atorigin;
+    struct Sprite *cursor_sprite;
+    struct Sprite *mouse_sprite;
     cursor_sprite   = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
     mouse_sprite    = TNECS_GET_COMPONENT(sota->world, sota->entity_mouse, Sprite);
     SDL_assert(cursor_sprite != NULL);
@@ -908,9 +908,9 @@ void receive_event_Input_ZOOM_OUT(struct Game *sota, SDL_Event *userevent) {
     Events_Controllers_Check(sota, controller_type);
 
     /* -- Zoom out to sprite_atorigin -- */
-    const struct Sprite *cursor_sprite;
-    const struct Sprite *mouse_sprite;
-    const struct Sprite *sprite_atorigin;
+    struct Sprite *cursor_sprite;
+    struct Sprite *mouse_sprite;
+    struct Sprite *sprite_atorigin;
     cursor_sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
     mouse_sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_mouse, Sprite);
     SDL_assert(cursor_sprite != NULL);
@@ -1045,8 +1045,8 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     /* -- find attack direction -- */
     struct Position *agg_posc = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Position);
     struct Position *dft_posc = TNECS_GET_COMPONENT(sota->world, sota->defendant, Position);
-    const struct Point *agg_pos = &agg_posc->tilemap_pos;
-    const struct Point *dft_pos = &dft_posc->tilemap_pos;
+    struct Point *agg_pos = &agg_posc->tilemap_pos;
+    struct Point *dft_pos = &dft_posc->tilemap_pos;
 
     struct Point move = {dft_pos->x - agg_pos->x, dft_pos->y - agg_pos->y};
     move.x = move.x < -1 ? -1 : move.x;

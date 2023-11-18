@@ -53,18 +53,18 @@ int Filesystem_Free(void);
 void Filesystem_Mount(s8 folder);
 
 /* --- MISC. --- */
-bool Filesystem_fequal(const char *filename1, const char *filename2);
-void Filesystem_Load_Bytes(const char *name, u8 **mem, size_t *len);
+bool Filesystem_fequal( char *filename1,  char *filename2);
+void Filesystem_Load_Bytes( char *name, u8 **mem, size_t *len);
 
 /* --- SURFACES&TEXTURES --- */
 SDL_Surface *Filesystem_TexturetoSurface(SDL_Renderer *, SDL_Texture *, u32, SDL_Texture *);
-void Filesystem_Texture_Dump(const char *f, SDL_Renderer *, SDL_Texture *,
-                             u32 fo, SDL_Texture *rt);
-void Filesystem_Surface_Dump(const char *f, SDL_Surface *);
+void Filesystem_Texture_Dump( char *f, SDL_Renderer *, SDL_Texture *,
+                              u32 fo, SDL_Texture *rt);
+void Filesystem_Surface_Dump( char *f, SDL_Surface *);
 
 /* -- Loading -- */
-SDL_Surface *Filesystem_Surface_Load(const char *f, u32 in_format);
-SDL_Texture *Filesystem_Texture_Load(struct SDL_Renderer *, const char *f, u32);
+SDL_Surface *Filesystem_Surface_Load( char *f, u32 in_format);
+SDL_Texture *Filesystem_Texture_Load(struct SDL_Renderer *,  char *f, u32);
 
 /* -- Palettes & index shaders -- */
 SDL_Surface *Filesystem_indexedSurface_Init(size_t w, size_t h);

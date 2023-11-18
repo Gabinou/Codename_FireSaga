@@ -220,7 +220,7 @@ struct PreCombatMenu {
 };
 extern struct PreCombatMenu PreCombatMenu_default;
 
-/* --- Constructors/Destructors --- */
+/* --- ructors/Destructors --- */
 struct PreCombatMenu *PreCombatMenu_Alloc();
 void PreCombatMenu_Free(      struct PreCombatMenu *pcm);
 void PreCombatMenu_Free_Icons(struct PreCombatMenu *pcm);

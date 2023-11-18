@@ -14,7 +14,7 @@ struct Arrow Arrow_default = {
     .show           = false,
 };
 
-/* --- Constructors/Deconstructors --- */
+/* --- ructors/Deructors --- */
 struct Arrow *Arrow_Init(i32 tilesize[TWO_D]) {
     struct Arrow *arrow = malloc(sizeof(*arrow));
     *arrow = Arrow_default;
@@ -41,7 +41,7 @@ void Arrow_Free(struct Arrow *arrow) {
 }
 
 /* --- I/O --- */
-void Arrow_Textures_Load(struct Arrow *arrow, const char *filename, SDL_Renderer *renderer) {
+void Arrow_Textures_Load(struct Arrow *arrow,  char *filename, SDL_Renderer *renderer) {
     SDL_assert(renderer != NULL);
     arrow->textures = Filesystem_Texture_Load(renderer, filename, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(arrow->textures != NULL);
@@ -325,7 +325,7 @@ void Arrow_Draw(struct Arrow *arrow, SDL_Renderer *renderer, struct Camera *came
     SDL_assert(arrow->textures != NULL);
     SDL_assert(arrow->pathlist != NULL);
 
-    /* Define constants */
+    /* Define ants */
     i32 num             = DARR_NUM(arrow->pathlist) / TWO_D;
 
     SDL_Rect srcrect    = {0};

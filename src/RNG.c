@@ -40,15 +40,15 @@ See <http://creativecommons.org/publicdomain/zero/1.0/>. */
    output to fill s. */
 
 
-static inline u64 rotl(const u64 x, int k) {
+static inline u64 rotl( u64 x, int k) {
     return (x << k) | (x >> (64 - k));
 }
 
 static u64 s[4];
 
 u64 next_xoshiro256ss(void) {
-    const u64 result = rotl(s[1] * 5, 7) * 9;
-    const u64      t = s[1] << 17;
+    u64 result = rotl(s[1] * 5, 7) * 9;
+    u64      t = s[1] << 17;
 
     s[2] ^= s[0];
     s[3] ^= s[1];
@@ -109,7 +109,7 @@ bool RNG_double_roll(u8 RN1, u8 RN2, u8 rate) {
     return (((RN1 + RN2) / 2) < rate);
 }
 
-u8 *RNG_boxmuller(const u8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev) {
+u8 *RNG_boxmuller( u8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev) {
     // Box-Muller Transform.
     // 2 U distributed RNs -> 2 G distributed RNs
     // RN_G can be < 0 and > 100.

@@ -54,7 +54,7 @@ struct Unit_stats {
     u8 luck;
     u8 def;  /* defense        */
     u8 res;  /* resistance     */
-    u8 con;  /* constitution   */
+    u8 con;  /* itution   */
     u8 move; /* movement       */
     u8 prof; /* proficiency    */
 };

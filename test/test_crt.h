@@ -10,20 +10,20 @@ enum MAT_LENS {
 
 void test_crt() {
     SDL_Log("test_crt");
-    const int cell_width = 2;
-    const int cell_height = 5;
-    const int cell_blank_R = 1;
-    const int cell_blank_G = 1;
-    const int cell_blank_B = 2;
-    const int stagger = 3;
-    const int cell_Vblank = 1;
-    const int cell_Hblank = cell_blank_R + cell_blank_G + cell_blank_B + cell_width * 2;
-    const int x_offset_R = 0;
-    const int y_offset_R = 0;
-    const int x_offset_G = cell_width + cell_blank_R;
-    const int y_offset_G = 0;
-    const int x_offset_B = cell_width * 2 + cell_blank_R + cell_blank_G;
-    const int y_offset_B = 0;
+    int cell_width = 2;
+    int cell_height = 5;
+    int cell_blank_R = 1;
+    int cell_blank_G = 1;
+    int cell_blank_B = 2;
+    int stagger = 3;
+    int cell_Vblank = 1;
+    int cell_Hblank = cell_blank_R + cell_blank_G + cell_blank_B + cell_width * 2;
+    int x_offset_R = 0;
+    int y_offset_R = 0;
+    int x_offset_G = cell_width + cell_blank_R;
+    int y_offset_G = 0;
+    int x_offset_B = cell_width * 2 + cell_blank_R + cell_blank_G;
+    int y_offset_B = 0;
 
     /* --- LANCZOS --- */
 

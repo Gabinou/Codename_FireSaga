@@ -92,7 +92,7 @@ void _Index_Shade_Rect( u8 *to, SDL_Surface *unlocked_surface, SDL_Rect *rect) {
 }
 
 /* --- TILEMAP SHADER --- */
-void Tilemap_Shader_Load_Tilemap_JSON(struct Tilemap_Shader *shd, const cJSON *const jmap) {
+void Tilemap_Shader_Load_Tilemap_JSON(struct Tilemap_Shader *shd,  cJSON *jmap) {
     /* -- Preliminaries -- */
     SDL_assert(shd != NULL);
     SDL_assert(jmap != NULL);
@@ -177,7 +177,7 @@ void Tilemap_Shader_Alloc(struct Tilemap_Shader *shd, size_t tilenum) {
     shd->shadowtile_pixels_lists = calloc(tilenum, sizeof(*shd->shadowtile_pixels_lists));
 }
 
-void Tilemap_Shader_Load_Tileset_pixels(struct Tilemap_Shader *shd, const char *filename,
+void Tilemap_Shader_Load_Tileset_pixels(struct Tilemap_Shader *shd,  char *filename,
                                         size_t tilenum, i32 tilesize[TWO_D]) {
     /* -- Preliminaries -- */
     _Tilemap_Shader_Shadow_Free( shd);
@@ -208,7 +208,7 @@ void Tilemap_Shader_Load_Tileset_pixels(struct Tilemap_Shader *shd, const char *
 }
 
 void Tilemap_Shader_Load_Tileset_JSON(struct Tilemap_Shader *shd,
-                                      const cJSON *const jshadow_tileset) {
+                                      cJSON *jshadow_tileset) {
     /* -- Preliminaries -- */
     SDL_assert(shd != NULL);
     SDL_assert(jshadow_tileset != NULL);
@@ -252,8 +252,8 @@ void Tilemap_Shader_Load_Tileset_JSON(struct Tilemap_Shader *shd,
     }
 }
 
-void Tilemap_Shader_Load_JSON(struct Tilemap_Shader *shd, const cJSON *const jmap,
-                              const cJSON *const jshadow_tileset) {
+void Tilemap_Shader_Load_JSON(struct Tilemap_Shader *shd,  cJSON *jmap,
+                              cJSON *jshadow_tileset) {
     SDL_assert(shd);
     SDL_assert(jmap);
     SDL_assert(jshadow_tileset);
@@ -262,7 +262,7 @@ void Tilemap_Shader_Load_JSON(struct Tilemap_Shader *shd, const cJSON *const jma
 }
 
 SDL_Surface *Tilemap_Shade_Surface(struct Tilemap_Shader *shd, SDL_Surface *surf, u8 frame,
-                                   const struct Settings *settings, struct Camera *camera) {
+                                   struct Settings *settings, struct Camera *camera) {
     /* -- Preliminaries -- */
     SDL_assert(shd != NULL);
     SDL_assert(surf != NULL);

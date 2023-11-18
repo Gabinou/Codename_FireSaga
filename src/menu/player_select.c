@@ -237,7 +237,7 @@ void PlayerSelectMenu_Update(struct PlayerSelectMenu *psm, struct n9Patch *n9pat
     SDL_assert(psm->pixelnours != NULL);
     SDL_assert(psm->option_names != NULL);
 
-    /* - variable declaration/constants definition - */
+    /* - variable declaration/ants definition - */
     SDL_assert(n9patch->size_pixels.x > 0);
     SDL_assert(n9patch->size_pixels.y > 0);
     SDL_assert(n9patch->scale.x > 0);

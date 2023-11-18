@@ -120,7 +120,7 @@ int Filesystem_Free() {
 }
 
 /* --- UTILITIES --- */
-void Filesystem_Load_Bytes(const char *name, u8 **mem, size_t *len) {
+void Filesystem_Load_Bytes( char *name, u8 **mem, size_t *len) {
     /* Open file */
     PHYSFS_File *physfs_file = PHYSFS_openRead(name);
     SDL_assert(physfs_file != NULL);
@@ -139,7 +139,7 @@ void Filesystem_Load_Bytes(const char *name, u8 **mem, size_t *len) {
     PHYSFS_close(physfs_file);
 }
 
-bool Filesystem_fequal(const char *filename1, const char *filename2) {
+bool Filesystem_fequal( char *filename1,  char *filename2) {
     bool out = false;
     PHYSFS_file *fp1  = PHYSFS_openRead(filename1);
     PHYSFS_file *fp2  = PHYSFS_openRead(filename2);
@@ -159,7 +159,7 @@ bool Filesystem_fequal(const char *filename1, const char *filename2) {
 }
 
 /* --- SURFACES AND TEXTURES --- */
-SDL_Surface *Filesystem_Surface_Load(const char *filename, const u32 format) {
+SDL_Surface *Filesystem_Surface_Load( char *filename,  u32 format) {
     SDL_Log("%s\n", filename);
     SDL_Surface *loadedsurface  = NULL, *outsurface   = NULL;
     SDL_Surface *conv1surface   = NULL, *conv2surface = NULL;
@@ -240,7 +240,7 @@ SDL_Surface *Filesystem_Surface_Palette_Swap(SDL_Surface *surface, SDL_Palette *
     return (out_surface);
 }
 
-SDL_Texture *Filesystem_Texture_Load(struct SDL_Renderer *renderer, const char *file, u32 format) {
+SDL_Texture *Filesystem_Texture_Load(struct SDL_Renderer *renderer,  char *file, u32 format) {
     SDL_Log("%s\n", file);
     SDL_Surface *tempsurface = Filesystem_Surface_Load(file, format);
     // SDL_SaveBMP(tempsurface, "readsurface.png");
@@ -371,8 +371,8 @@ void Filesystem_Surface_Pixels2Indices(SDL_Surface *abgr_surf, SDL_Surface *inde
     SDL_UnlockSurface(index_surf);
 }
 
-void Filesystem_Texture_Dump(const char *filename, SDL_Renderer *renderer, SDL_Texture *texture,
-                             const u32 format, SDL_Texture *render_target) {
+void Filesystem_Texture_Dump( char *filename, SDL_Renderer *renderer, SDL_Texture *texture,
+                              u32 format, SDL_Texture *render_target) {
     if (!texture) {
         SDL_Log("Warning: Input texture is NULL");
     }

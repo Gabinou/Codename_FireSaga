@@ -195,7 +195,7 @@ struct Game {
 };
 extern struct Game Game_default;
 
-/* --- Constructors/Destructors --- */
+/* --- ructors/Destructors --- */
 struct Game *Game_Init();
 void Game_Free(   struct Game *sota);
 void Game_Startup(struct Game *sota, struct Input_Arguments in_args);
@@ -208,8 +208,8 @@ void Game_Save_Delete(i16 save_ind);
 void Game_Save_Copy(i16 from, i16 to);
 
 /* --- State --- */
-void Game_State_Set(   struct Game *sota, i8 ns, const char *r);
-void Game_subState_Set(struct Game *sota, i8 ns, const char *r);
+void Game_State_Set(   struct Game *sota, i8 ns,  char *r);
+void Game_subState_Set(struct Game *sota, i8 ns,  char *r);
 
 /* --- Camera --- */
 void Game_Camera_Scroll(struct Game *sota);

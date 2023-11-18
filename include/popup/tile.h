@@ -68,7 +68,7 @@ typedef struct PopUp_Tile {
 } PopUp_Tile;
 extern struct PopUp_Tile PopUp_Tile_default;
 
-/* --- Constructor/Destructor --- */
+/* --- ructor/Destructor --- */
 void PopUp_Tile_Free(struct PopUp_Tile *pt);
 void PopUp_Tile_Load(struct PopUp_Tile *pt, SDL_Renderer *r, struct n9Patch *n9);
 

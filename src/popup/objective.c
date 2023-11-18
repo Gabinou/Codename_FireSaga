@@ -10,7 +10,7 @@ struct PopUp_Objective PopUp_Objective_default =  {
     .update =          true,
 };
 
-/* --- Constructor/Destructor --- */
+/* --- ructor/Destructor --- */
 struct PopUp_Objective *PopUp_Objective_Alloc() {
     struct PopUp_Objective *po = SDL_malloc(sizeof(struct PopUp_Objective));
     *po = PopUp_Objective_default;
@@ -135,7 +135,7 @@ void PopUp_Objective_Update(struct PopUp_Objective *po,
     SDL_assert(renderer != NULL);
 
     PopUp_Objective_Compute_Size(po, n9patch);
-    /* - variable declaration/ constants definition - */
+    /* - variable declaration/ ants definition - */
     SDL_assert(n9patch->size_pixels.x > 0);
     SDL_assert(n9patch->size_pixels.y > 0);
     SDL_assert(n9patch->scale.x > 0);

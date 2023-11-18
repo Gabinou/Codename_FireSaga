@@ -9,7 +9,7 @@
 #include "popup/loadout_stats.h"
 #include "systems/render.h"
 
-/* --- Constructors/Destructors --- */
+/* --- ructors/Destructors --- */
 void Game_PopUps_Free(struct Game                *sota);
 
 /* --- PopUp_Loadout_Stats --- */

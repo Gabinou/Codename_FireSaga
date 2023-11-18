@@ -74,6 +74,6 @@ s8 *Names_unitstateNames(u32 statecode);
 void Names_Free();
 void Names_Load_All();
 void Names_Print(s8 filename);
-void Names_Print_All(const char *filename);
+void Names_Print_All( char *filename);
 
 #endif /* NAMES_H */

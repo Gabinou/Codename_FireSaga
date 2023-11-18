@@ -1,6 +1,6 @@
 #include "game/unit.h"
 
-/* --- Constructors/Destructors --- */
+/* --- ructors/Destructors --- */
 void Game_Items_Free(struct dtab **items_dtab) {
     if (*items_dtab == NULL) {
         return;

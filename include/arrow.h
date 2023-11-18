@@ -56,7 +56,7 @@ typedef struct Arrow {
 extern struct Arrow Arrow_default;
 
 /* --- PUBLIC --- */
-/* -- Constructors/Deconstructors -- */
+/* -- ructors/Deructors -- */
 struct Arrow *Arrow_Init(i32 tilesize[TWO_D]);
 void          Arrow_Free(struct Arrow *a);
 
@@ -65,7 +65,7 @@ void Arrow_Path_Add( struct Arrow *a, i32  x, i32 y);
 void Arrow_Path_Init(struct Arrow *a, i32 *c, i32 m, struct Point s);
 
 /* -- I/O -- */
-void Arrow_Textures_Load(struct Arrow *a, const char *f, SDL_Renderer *r);
+void Arrow_Textures_Load(struct Arrow *a,  char *f, SDL_Renderer *r);
 
 /* -- Draw -- */
 void Arrow_Draw(struct Arrow *a, SDL_Renderer *r, struct Camera *c);

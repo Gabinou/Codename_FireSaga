@@ -32,7 +32,7 @@ struct MenuElemDirections idm_links[IDM_ELEM_NUM] = {
     /* IDM_ELEM_NO */  {IDM_ELEM_NULL, IDM_ELEM_NO,  IDM_ELEM_NULL, IDM_ELEM_NO},
 };
 
-/* --- Constructors/Destructors --- */
+/* --- ructors/Destructors --- */
 struct ItemDropMenu *ItemDropMenu_Alloc() {
     struct ItemDropMenu *idm = malloc(sizeof(struct ItemDropMenu));
     SDL_assert(idm != NULL);
@@ -120,7 +120,7 @@ void ItemDropMenu_Update(struct  ItemDropMenu  *idm, struct n9Patch *n9patch,
     SDL_assert(idm->unit->items_dtab   != NULL);
     SDL_assert(idm->unit->weapons_dtab != NULL);
 
-    /* - variable declaration/ constants definition - */
+    /* - variable declaration/ ants definition - */
     SDL_assert(n9patch->size_pixels.y > 0);
     SDL_assert(n9patch->scale.x > 0);
     SDL_assert(n9patch->scale.y > 0);

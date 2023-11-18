@@ -24,7 +24,7 @@ float sota_slowpow(float base, int exponent);
 /* --- TYPEDEFS --- */
 typedef u8(*RNG_URN_ptr)();
 
-/* --- CONSTANTS --- */
+/* --- ANTS --- */
 /* FIRST OF MANY POSSIBLE GLOBAL DECLARATIONS */
 extern b32 rng_sequence_breaker_miss_growth;
 extern i16 URN_debug;
@@ -61,7 +61,7 @@ bool RNG_single_roll(u8 RN,  u8 hit);
 bool RNG_double_roll(u8 RN1, u8 RN2, u8 hit);
 
 /* - Gaussian - */
-u8 *RNG_boxmuller(const u8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev);
+u8 *RNG_boxmuller( u8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev);
 /* defaults: avg = 50, std_dev = 20 */
 
 /* --- RNG SEQUENCE BREAKER (SB) --- */
@@ -81,7 +81,7 @@ struct RNG_Sequence { /* Sequence of hits/misses in a row */
     bool hit; /* 0 if sequence of misses, 1 of hits */
 };
 
-/* -- Constants -- */
+/* -- ants -- */
 #define RNG_SB_BASE_NUM         10
 #define RNG_SB_GROWTH_OFFSET     0 /* hit/misses crits/nocrits to ignore */
 #define RNG_SB_SEQ_OFFSET        1 /* hit/misses crits/nocrits to ignore */

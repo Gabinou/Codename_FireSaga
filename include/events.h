@@ -30,15 +30,15 @@ extern tnecs_entity *data1_entity;
 extern tnecs_entity *data2_entity;
 
 /* --- CORE --- */
-void Event_Emit(const char *em, u32 et, i32 ec, void *d1, void *d2);
+void Event_Emit( char *em, u32 et, i32 ec, void *d1, void *d2);
 void Events_Manage(struct Game *sota);
 
 /* --- Reload --- */
 typedef void (* entity_reload_f)(void *struct_ptr);
 
 /* -- Reload all entities using specific reload function -- */
-void Reload_Entities(          struct Game *sota, entity_reload_f func, size_t flag, const char *c);
-void Reload_Entities_Archetype(struct Game *sota, entity_reload_f func, const char *c);
+void Reload_Entities(          struct Game *sota, entity_reload_f func, size_t flag,  char *c);
+void Reload_Entities_Archetype(struct Game *sota, entity_reload_f func,  char *c);
 
 /* -- Reload funcs -- */
 void Reload_JSON(       void *struct_ptr);
@@ -46,7 +46,7 @@ void Reload_Menu(       void *struct_ptr);
 void Reload_Popup(      void *struct_ptr);
 void Reload_MapHpBar(   void *struct_ptr);
 
-/* -- Constructor/Destructor -- */
+/* -- ructor/Destructor -- */
 void Events_Data_Malloc();
 void Events_Data_Free();
 
@@ -65,7 +65,7 @@ extern u32 event_Start;
 #undef REGISTER_ENUM
 extern u32 event_End;
 
-/* -- Constructor/Destructors -- */
+/* -- ructor/Destructors -- */
 extern s8 *event_names;
 void Events_Names_Declare();
 void Events_Names_Alloc();
@@ -84,7 +84,7 @@ void Events_Names_Free();
 typedef void (* receiver_t)(struct Game *, SDL_Event *);
 extern struct dtab *receivers_dtab;
 
-/* -- Constructor/Destructors -- */
+/* -- ructor/Destructors -- */
 void Events_Receivers_Free();
 void Events_Receivers_Declare();
 

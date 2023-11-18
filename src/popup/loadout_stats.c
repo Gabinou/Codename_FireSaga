@@ -691,7 +691,7 @@ void PopUp_Loadout_Stats_Update(struct PopUp_Loadout_Stats *pls, struct n9Patch 
     SDL_assert(pls != NULL);
     SDL_assert(pls->unit != NULL);
     SDL_assert(renderer != NULL);
-    /* - variable declaration/ constants definition - */
+    /* - variable declaration/ ants definition - */
     SDL_assert(n9patch->size_pixels.x > 0);
     SDL_assert(n9patch->size_pixels.y > 0);
     SDL_assert(n9patch->scale.x > 0);

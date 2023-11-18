@@ -1,7 +1,7 @@
 #include "menu/stats.h"
 
-const i8 stats_menu_cycle[STATS_MENU_CYCLE_NUM] = {MENU_TYPE_STATS, MENU_TYPE_GROWTHS};
-const i8 stats_menu_cycle_inv[MENU_TYPE_END] = {
+i8 stats_menu_cycle[STATS_MENU_CYCLE_NUM] = {MENU_TYPE_STATS, MENU_TYPE_GROWTHS};
+i8 stats_menu_cycle_inv[MENU_TYPE_END] = {
     /* NULL */          -1,
     /* PLAYER_SELECT */ -1,
     /* ISM */           -1,
@@ -69,7 +69,7 @@ char stats_menu_description[SM_ELEM_NUM][STATSMENU_BUFFER_LEN] = {
     /* SM_ELEM_DEX */ {"Dexterity: 1 point increases HIT by "STRINGIZE(HIT_DEX_FACTOR)"/0, " STRINGIZE(CRIT_DEX_FACTOR) " points -> CRIT up 1/0"},
     /* SM_ELEM_DEF */ {"Defense: 1 point -> PROT up 1/0"},
     /* SM_ELEM_FTH */ {"Faith: 1 point -> resists 1 regret, "STRINGIZE(DODGE_FTH_FACTOR)" points -> HIT up 0/1, " STRINGIZE(FAVOR_FTH_FACTOR)" points -> CRIT up 0/1 "},
-    /* SM_ELEM_CON */ {"Constitution: Units with lower con rescueable, "STRINGIZE(SPEED_CON_FACTOR)" points -> weapon weight down 1"},
+    /* SM_ELEM_CON */ {"itution: Units with lower con rescueable, "STRINGIZE(SPEED_CON_FACTOR)" points -> weapon weight down 1"},
     /* SM_ELEM_MAG */ {"Magic: 1 point -> ATK up 0/1/0 with magic weapon"},
     /* SM_ELEM_AGI */ {"Agility: 1 point -> SPEED up 1"},
     /* SM_ELEM_RES */ {"Resistance: 1 point -> DEF up 0/1"},
@@ -646,7 +646,7 @@ void _StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *renderer)
     int x, y;
     // TODO: BONUS/MALUS in GREEN/RED
 
-    /* - statbar constants - */
+    /* - statbar ants - */
     struct SimpleBar stat_bar = SimpleBar_default;
     stat_bar.scale.x = 1;
     stat_bar.scale.y = 1;
@@ -1162,7 +1162,7 @@ void StatsMenu_Update(struct StatsMenu *stats_menu, struct n9Patch *n9patch,
     SDL_assert(renderer         != NULL);
     SDL_assert(stats_menu       != NULL);
     SDL_assert(stats_menu->unit != NULL);
-    /* - variable declaration/ constants definition - */
+    /* - variable declaration/ ants definition - */
     SDL_assert(n9patch->size_pixels.x > 0);
     SDL_assert(n9patch->size_pixels.y > 0);
     SDL_assert(n9patch->scale.x       > 0);

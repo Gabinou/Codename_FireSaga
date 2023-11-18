@@ -28,7 +28,7 @@ typedef struct n9Patch {
 } n9Patch;
 extern struct n9Patch n9Patch_default;
 
-/* --- Constructor/Destructor --- */
+/* --- ructor/Destructor --- */
 void n9Patch_Free(struct n9Patch *n9);
 
 /* --- Fitting --- */

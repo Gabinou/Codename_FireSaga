@@ -163,7 +163,7 @@ enum SOTA_LIMITS {
     SOTA_MAX_LEVEL                          =   40,
 };
 
-enum SOTA_CONSTANTS {
+enum SOTA_ANTS {
     SOTA_100PERCENT                         =  100,
     INTERVAL_BOUNDS_NUM                     =    2,
     SOTA_COL_LEN                            =    8,
@@ -509,15 +509,15 @@ enum ITEM_STATS {
 };
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) extern const uint64_t UNIT_PC_ALIVE_##x;
+#define REGISTER_ENUM(x, y) extern  uint64_t UNIT_PC_ALIVE_##x;
 #include "names/units_PC.h"
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) extern const uint64_t UNIT_PC_RECRUITED_##x;
+#define REGISTER_ENUM(x, y) extern  uint64_t UNIT_PC_RECRUITED_##x;
 #include "names/units_PC.h"
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) extern const uint64_t UNIT_NPC_ALIVE_##x;
+#define REGISTER_ENUM(x, y) extern  uint64_t UNIT_NPC_ALIVE_##x;
 #include "names/units_NPC.h"
 #undef REGISTER_ENUM
 
@@ -532,7 +532,7 @@ enum ITEM_EFFECT_EXP {
 };
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) extern const uint64_t ITEM_EFFECT_##x;
+#define REGISTER_ENUM(x, y) extern  uint64_t ITEM_EFFECT_##x;
 #include "names/items_effects.h"
 #undef REGISTER_ENUM
 
@@ -647,7 +647,7 @@ enum ACTIVE_SKILLS {
 };
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x) extern const uint64_t UNIT_SKILL_##x;
+#define REGISTER_ENUM(x) extern  uint64_t UNIT_SKILL_##x;
 #include "names/skills_passive.h"
 #include "names/skills_active.h"
 enum UNIT_SKILL {

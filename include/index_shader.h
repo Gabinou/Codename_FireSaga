@@ -39,23 +39,23 @@ struct Tilemap_Shader {
 };
 extern struct Tilemap_Shader Tilemap_Shader_default;
 
-/* -- Constructor/Destructor -- */
+/* -- ructor/Destructor -- */
 void Tilemap_Shader_Free(       struct Tilemap_Shader *s);
 void Tilemap_Shader_Alloc(      struct Tilemap_Shader *s, size_t tilenum);
 
 static void _Tilemap_Shader_Shadow_Free( struct Tilemap_Shader *s);
 
 /* -- Loading -- */
-void Tilemap_Shader_Load_JSON(struct Tilemap_Shader *s, const cJSON *const jm,
-                              const cJSON *const st);
-void Tilemap_Shader_Load_Tileset_JSON(struct Tilemap_Shader *s, const cJSON *const st);
-void Tilemap_Shader_Load_Tilemap_JSON(struct Tilemap_Shader *s, const cJSON *const jmap);
-void Tilemap_Shader_Load_Tileset_pixels(struct Tilemap_Shader *s, const char *f,
+void Tilemap_Shader_Load_JSON(struct Tilemap_Shader *s,  cJSON *jm,
+                              cJSON *st);
+void Tilemap_Shader_Load_Tileset_JSON(struct Tilemap_Shader *s,  cJSON *st);
+void Tilemap_Shader_Load_Tilemap_JSON(struct Tilemap_Shader *s,  cJSON *jmap);
+void Tilemap_Shader_Load_Tileset_pixels(struct Tilemap_Shader *s,  char *f,
                                         size_t tnum, i32 tilesize[TWO_D]);
 
 /* -- Shading -- */
 SDL_Surface *Tilemap_Shade_Surface(struct Tilemap_Shader *ts, SDL_Surface *su,
-                                   u8 f, const struct Settings *st, struct Camera *cam);
+                                   u8 f,  struct Settings *st, struct Camera *cam);
 
 /* --- INDEX_SHADER --- */
 /* Shade specific regions of tiles using a mask.                         */
@@ -68,7 +68,7 @@ struct Index_Shader {
 };
 extern struct Index_Shader Index_Shader_default;
 
-/* -- Constructor/Destructor -- */
+/* -- ructor/Destructor -- */
 void Index_Shader_Free(struct Index_Shader *is);
 
 /* -- Loading -- */

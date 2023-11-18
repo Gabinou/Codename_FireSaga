@@ -28,7 +28,7 @@ enum STATBAR {
 extern u8 statbar_highlights[STATBAR_HIGHLIGHT_NUM]; /* < STATBAR_MAX_LEN */
 
 /* --- STAT BAR --- */
-/* -- Constructors/Destructors -- */
+/* -- ructors/Destructors -- */
 void StatBar_Init(struct SimpleBar *b, u8 s, u8 c, int x, int y);
 
 /* -- Internals -- */
@@ -39,7 +39,7 @@ void StatBar_Colors_NES(struct SimpleBar *b, int bd, int bl, int fd, int fl);
 void StatBar_Draw(struct SimpleBar *b, SDL_Renderer *r);
 
 /* --- HP BAR --- */
-/* -- Constructors/Destructors -- */
+/* -- ructors/Destructors -- */
 void HPBar_Init(struct SimpleBar *b, u8 s, u8 c, int x, int y);
 
 /* -- Drawing -- */

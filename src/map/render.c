@@ -1,7 +1,7 @@
 
 #include "map/render.h"
 
-void Map_Frame_Pauses(struct Map *map, const struct Settings *settings) {
+void Map_Frame_Pauses(struct Map *map,  struct Settings *settings) {
     SDL_assert(map);
     SDL_assert(map->tilemap_frame_factor > 0.0f);
     SDL_assert(map->tilemap_frame_factor < 1.0f);
@@ -157,7 +157,7 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
     SDL_SetRenderTarget(map->renderer, render_target); /* render to default again */
     return (map->tilemap_texture);
 }
-void Map_Visible_Tiles(struct Map *map, const struct Settings *settings, struct Camera *camera) {
+void Map_Visible_Tiles(struct Map *map,  struct Settings *settings, struct Camera *camera) {
     struct Point visiblemprev = map->visiblemin;
     struct Point visiblemax_prev = map->visiblemax;
     map->visiblemin.x = camera->offset.x > 0 ? 0 : SOTA_DEZOOM(
@@ -276,7 +276,7 @@ void Map_swappedTextures_All(struct Map *map) {
 /* Indices of tiles visible to player depending on zoom level */
 /* min is inclusive, max is exclusive */
 void Map_Visible_Bounds(u8 *min, u8 *max, size_t row_len, size_t col_len,
-                        i32 tilesize[TWO_D], const struct Point *res, struct Camera *camera) {
+                        i32 tilesize[TWO_D],  struct Point *res, struct Camera *camera) {
     i32 edge_min[TWO_D], edge_max[TWO_D];
     edge_max[0] = SOTA_PIXEL2TILEMAP(res->x, tilesize[0], camera->offset.x, camera->zoom) + 2;
     edge_max[1] = SOTA_PIXEL2TILEMAP(res->y, tilesize[1], camera->offset.y, camera->zoom) + 2;
@@ -288,7 +288,7 @@ void Map_Visible_Bounds(u8 *min, u8 *max, size_t row_len, size_t col_len,
     min[1]      = (edge_min[1] <    1   ) ?    0    : edge_min[1];
 }
 
-void Map_Grid_Draw(struct Map *map, const struct Settings *settings, struct Camera *camera) {
+void Map_Grid_Draw(struct Map *map,  struct Settings *settings, struct Camera *camera) {
     /* -- Preliminaries -- */
     if (!settings->map_settings.grid_show) {
         return;
@@ -348,7 +348,7 @@ bool Map_Tilemap_newFrame(struct Map *map) {
     return (tm_up);
 }
 
-void Map_Update(struct Map *map, const struct Settings *settings,
+void Map_Update(struct Map *map,  struct Settings *settings,
                 struct Camera *camera, struct SDL_Texture *render_target) {
     SDL_assert(map->tilemap_texture);
     if (map->tilemap_shader != NULL) {
@@ -370,7 +370,7 @@ void Map_Update(struct Map *map, const struct Settings *settings,
     map->update = false;
 }
 
-void Map_Draw(struct Map *map, const struct Settings *settings,
+void Map_Draw(struct Map *map,  struct Settings *settings,
               struct Camera *camera, struct SDL_Texture *render_target) {
     SDL_assert(map->renderer != NULL);
 

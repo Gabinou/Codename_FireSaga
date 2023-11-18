@@ -1,6 +1,6 @@
 #include "game/popup.h"
 
-/* --- Constructors/Destructors --- */
+/* --- ructors/Destructors --- */
 void Game_PopUps_Free(struct Game *sota) {
     // /* - Popup Loadout Stats - */
     // int popup_id = POPUP_TYPE_HUD_LOADOUT_STATS;
@@ -321,8 +321,8 @@ void Game_PopUp_Map_Combat_Create(struct Game *sota) {
 
     struct Position *agg_posc = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Position);
     struct Position *dft_posc = TNECS_GET_COMPONENT(sota->world, sota->defendant, Position);
-    const struct Point *agg_pos = &agg_posc->tilemap_pos;
-    const struct Point *dft_pos = &dft_posc->tilemap_pos;
+    struct Point *agg_pos = &agg_posc->tilemap_pos;
+    struct Point *dft_pos = &dft_posc->tilemap_pos;
 
     PopUp_Map_Combat_Units(pmc, sota, aggressor, defendant, agg_pos, dft_pos);
 

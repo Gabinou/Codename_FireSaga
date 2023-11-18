@@ -499,8 +499,8 @@ void fsm_eCncl_sGmpMap_ssStby(struct Game *sota, tnecs_entity canceller) {
     SDL_assert(sota->state == GAME_STATE_Gameplay_Map);
     /* -- Preliminaries -- */
     *data1_entity = canceller;
-    const struct Unit *unit_ontile;
-    const struct Position *pos = TNECS_GET_COMPONENT(sota->world, canceller, Position);
+    struct Unit *unit_ontile;
+    struct Position *pos = TNECS_GET_COMPONENT(sota->world, canceller, Position);
     struct Point cpos = pos->tilemap_pos;
     tnecs_entity ontile = sota->map->unitmap[cpos.y * sota->map->col_len + cpos.x];
 
@@ -1085,7 +1085,7 @@ void fsm_eMenuRight_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
 
     /* -- Create New menu -- */
     /* - Get unit ontile - */
-    const struct Position *cursor_pos;
+    struct Position *cursor_pos;
     cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     struct Point pos = cursor_pos->tilemap_pos;
     tnecs_entity ontile = sota->map->unitmap[pos.y * sota->map->col_len + pos.x];
@@ -1135,7 +1135,7 @@ void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
 
     /* -- Create New menu -- */
     /* - Get unit ontile - */
-    const struct Position *cursor_pos;
+    struct Position *cursor_pos;
     cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     struct Point pos = cursor_pos->tilemap_pos;
     tnecs_entity ontile = sota->map->unitmap[pos.y * sota->map->col_len + pos.x];

@@ -124,7 +124,7 @@ struct AI AI_default = {
 //                                  u8 num_defender) {
 //     SDL_Log("AI_Target_Silence");
 //     struct AI * temp_ai_ptr;
-//     // const struct Unit * temp_unit_ptr;
+//     //  struct Unit * temp_unit_ptr;
 //     temp_ai_ptr = TNECS_GET_COMPONENT(in_world, in_staffWielder, AI);
 //     tnecs_entity out_target = 0;
 //     if (num_defender > 0) {
