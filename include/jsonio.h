@@ -30,9 +30,6 @@ void          jsonio_writeJSON(s8 f, const void *ptr, bool a);
 struct cJSON *jsonio_parseJSON(s8 f);
 
 /* --- UTILITIES --- */
-
-/* --- JSON I/O --- */
-// TODO: move to jsonIO
 /* -- Read -- */
 void jsonio_Read_Array(    const struct cJSON *const j, i32 *arr);
 void jsonio_Read_2DArray(  const struct cJSON *const j, i32 *, u8 rl, u8 cl);

@@ -86,52 +86,52 @@ use_function_t item_effect_funcs[ITEM_EFFECT_NUM] = {
 };
 
 /* --- USE_EFFECTS --- */
-i8 useEffect_STAFF_HEAL(struct Item *restrict item,
-                        struct Unit *restrict user,
-                        struct Unit *restrict target) {
+i8 useEffect_STAFF_HEAL(struct Item * item,
+                        struct Unit * user,
+                        struct Unit * target) {
     // HEALING ITEMS CAN BE USED ON OTHER UNITS/PEGASUSES/ENEMIES.
     u8 healing = Equation_Staff_Healing(item->stats.AP, user->current_stats.mag);
     Unit_getsHealed(target, healing);
     return (-1);
 }
 
-i8 useEffect_USE_DIVINE_SHIELD(struct Item *restrict item,
-                               struct Unit *restrict user,
-                               struct Unit *restrict target) {
+i8 useEffect_USE_DIVINE_SHIELD(struct Item * item,
+                               struct Unit * user,
+                               struct Unit * target) {
     target->divine_shield = true;
     return (-1);
 }
 
-i8 useEffect_BLOW_HORN(struct Item *restrict item,
-                       struct Unit *restrict user,
-                       struct Unit *restrict target) {
+i8 useEffect_BLOW_HORN(struct Item * item,
+                       struct Unit * user,
+                       struct Unit * target) {
     return (-1);
 }
 
-i8 useEffect_USE_PROMOTE(struct Item *restrict item,
-                         struct Unit *restrict user,
-                         struct Unit *restrict target) {
+i8 useEffect_USE_PROMOTE(struct Item * item,
+                         struct Unit * user,
+                         struct Unit * target) {
     // Unit_Promote(unit, i8 new_class_index);
     return (-1);
 }
 
-i8 useEffect_USE_LVL_UP(struct Item *restrict item,
-                        struct Unit *restrict user,
-                        struct Unit *restrict target) {
+i8 useEffect_USE_LVL_UP(struct Item * item,
+                        struct Unit * user,
+                        struct Unit * target) {
     Unit_lvlUp(user);
     return (-1);
 }
 
-i8 useEffect_USE_GAIN_SKILL(struct Item *restrict item,
-                            struct Unit *restrict user,
-                            struct Unit *restrict target) {
+i8 useEffect_USE_GAIN_SKILL(struct Item * item,
+                            struct Unit * user,
+                            struct Unit * target) {
     target->skills += item->stats.AP;
     return (-1);
 }
 
-i8 useEffect_USE_GAIN_STATS(struct Item *restrict item,
-                            struct Unit *restrict user,
-                            struct Unit *restrict target) {
+i8 useEffect_USE_GAIN_STATS(struct Item * item,
+                            struct Unit * user,
+                            struct Unit * target) {
     switch (item->id) {
         case ITEM_ID_TALISMAN_HP:
             target->current_stats.hp += item->stats.AP;
@@ -173,33 +173,33 @@ i8 useEffect_USE_GAIN_STATS(struct Item *restrict item,
     return (-1);
 }
 
-i8 useEffect_CALL_PEGASUS(struct Item *restrict item,
-                          struct Unit *restrict user,
-                          struct Unit *restrict target) {
+i8 useEffect_CALL_PEGASUS(struct Item * item,
+                          struct Unit * user,
+                          struct Unit * target) {
     return (-1);
 }
 
-i8 useEffect_CALL_HORSE(struct Item *restrict item,
-                        struct Unit *restrict user,
-                        struct Unit *restrict target) {
+i8 useEffect_CALL_HORSE(struct Item * item,
+                        struct Unit * user,
+                        struct Unit * target) {
     return (-1);
 }
 
 /* --- ITEM --- */
-void Inventory_item_Swap(struct Inventory_item *restrict items, u8 i1, u8 i2) {
+void Inventory_item_Swap(struct Inventory_item * items, u8 i1, u8 i2) {
     struct Inventory_item buffer = items[i1];
     items[i1] = items[i2];
     items[i2] = buffer;
 }
 
-void Inventory_item_Deplete(struct Inventory_item *restrict inventory_item, int uses) {
+void Inventory_item_Deplete(struct Inventory_item * inventory_item, int uses) {
     /* Decrease Durability */
     inventory_item->used++;
     if (inventory_item->used >= uses)
         Inventory_item_Break(inventory_item);
 }
 
-void Inventory_item_Break(struct Inventory_item *restrict inventory_item) {
+void Inventory_item_Break(struct Inventory_item * inventory_item) {
     // TODO: Game animation/notification of some kind.
     *inventory_item = Inventory_item_broken;
 }
@@ -211,7 +211,7 @@ bool Item_ID_isValid(u16 id) {
     return (valid);
 }
 
-bool Item_canUse(struct Item *restrict item, const struct Unit *restrict unit) {
+bool Item_canUse(struct Item * item, const struct Unit * unit) {
     /* ITEM Checks if current unit can use item. GAME checks if target is in range */
     SDL_assert(item != NULL);
     SDL_assert(unit != NULL);
@@ -250,8 +250,8 @@ bool Item_canUse(struct Item *restrict item, const struct Unit *restrict unit) {
     return (item->canUse = (has_effect && is_user && is_class));
 }
 
-void Item_Use(struct Item *restrict item, struct Unit *restrict user,
-              struct Unit *restrict targets) {
+void Item_Use(struct Item * item, struct Unit * user,
+              struct Unit * targets) {
     /* Game takes charge of uses-- */
     SDL_assert(item != NULL);
     SDL_assert(item->active != NULL);
@@ -331,7 +331,7 @@ void Item_All_Reload(struct dtab *items_dtab) {
     }
 }
 
-void Item_writeJSON(const void *restrict input, cJSON *restrict jitem) {
+void Item_writeJSON(const void * input, cJSON * jitem) {
     /* - Preliminaries - */
     const struct Item *item = input;
     SDL_assert(jitem != NULL);
@@ -507,7 +507,7 @@ void Item_readJSON(void *input, const cJSON *jitem) {
         item->canRepair = cJSON_IsTrue(jcanRepair);
 }
 
-void Item_Free(struct Item *restrict item) {
+void Item_Free(struct Item * item) {
     if (item->users != NULL) {
         DARR_FREE(item->users);
         item->users = NULL;
