@@ -401,14 +401,14 @@ extern struct StatsMenu StatsMenu_default;
 
 /* --- ructors/Destructors --- */
 struct StatsMenu *StatsMenu_Alloc();
-void StatsMenu_Free(      struct StatsMenu *sm);
+void StatsMenu_Free(struct StatsMenu *sm);
 
 static void _StatsMenu_Free_Face( struct StatsMenu *sm);
 static void _StatsMenu_Free_Icons(struct StatsMenu *sm);
 
 /* --- Loading --- */
-void StatsMenu_Load(      struct StatsMenu *sm, struct Unit    *u,
-                          SDL_Renderer     *r,  struct n9Patch *n9);
+void StatsMenu_Load(struct StatsMenu *sm, struct Unit    *u,
+                    SDL_Renderer     *r,  struct n9Patch *n9);
 static void _StatsMenu_Load_Face( struct StatsMenu *sm);
 static void _StatsMenu_Load_Icons(struct StatsMenu *sm, SDL_Renderer   *r);
 

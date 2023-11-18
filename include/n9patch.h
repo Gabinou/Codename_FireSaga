@@ -32,7 +32,7 @@ extern struct n9Patch n9Patch_default;
 void n9Patch_Free(struct n9Patch *n9);
 
 /* --- Fitting --- */
-void n9Patch_Fit(        struct n9Patch *n9, struct Point c);
+void n9Patch_Fit( struct n9Patch *n9, struct Point c);
 
 /* --- Drawing --- */
 void n9Patch_Draw(struct n9Patch *n9, struct SDL_Renderer *r);

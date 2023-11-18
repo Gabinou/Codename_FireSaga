@@ -48,12 +48,12 @@ void Names_jsonElementnames();
 void Names_gamesubStatenames();
 
 /* - units - */
-void   Names_armyNames();
-void   Names_unitNames();
-void   Names_statNames();
-void   Names_classNames();
-void   Names_unitStatuses();
-void   Names_class_equippables();
+void Names_armyNames();
+void Names_unitNames();
+void Names_statNames();
+void Names_classNames();
+void Names_unitStatuses();
+void Names_class_equippables();
 
 /* - supports - */
 void Names_supportTypes();
