@@ -23,7 +23,7 @@ typedef struct Slider {
     i32     slide_num;           /* for SLIDETYPE_LINEAR, SLIDETYPE_GEOMETRIC */
     i32     update_wait_ns;
     i32     timer_ns;
-    u8     slidetype;
+    u8      slidetype;
 } Slider;
 extern struct Slider Slider_default;
 

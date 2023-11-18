@@ -3,19 +3,19 @@
 dstrect_func_t dstrect_funcs[TWO_D][TWO_D];
 
 int map_unit_offsets[MAP_UNIT_SPRITE_LOOP_NUM][TWO_D] = {
-    /* MAP_UNIT_SPRITE_LOOP_IDLE */         {0, 1},
-    /* MAP_UNIT_SPRITE_LOOP_TAUNT */        {0, 1},
-    /* MAP_UNIT_SPRITE_LOOP_ITEM */         {0, 1},
-    /* MAP_UNIT_SPRITE_LOOP_AGONY */        {0, 1},
-    /* MAP_UNIT_SPRITE_LOOP_ATTACKR */      {0, 1},
-    /* MAP_UNIT_SPRITE_LOOP_ATTACKT */      {0, 1},
-    /* MAP_UNIT_SPRITE_LOOP_ATTACKL */      {1, 1},
-    /* MAP_UNIT_SPRITE_LOOP_ATTACKB */      {1, 1},
-    /* MAP_UNIT_SPRITE_LOOP_MOVER */        {0, 1},
-    /* MAP_UNIT_SPRITE_LOOP_MOVET */        {1, 1},
-    /* MAP_UNIT_SPRITE_LOOP_MOVEL */        {0, 1},
-    /* MAP_UNIT_SPRITE_LOOP_MOVEB */        {0, 1},
-    /* MAP_UNIT_SPRITE_LOOP_STANCE */       {0, 1},
+    /* MAP_UNIT_SPRITE_LOOP_IDLE */     {0, 1},
+    /* MAP_UNIT_SPRITE_LOOP_TAUNT */    {0, 1},
+    /* MAP_UNIT_SPRITE_LOOP_ITEM */     {0, 1},
+    /* MAP_UNIT_SPRITE_LOOP_AGONY */    {0, 1},
+    /* MAP_UNIT_SPRITE_LOOP_ATTACKR */  {0, 1},
+    /* MAP_UNIT_SPRITE_LOOP_ATTACKT */  {0, 1},
+    /* MAP_UNIT_SPRITE_LOOP_ATTACKL */  {1, 1},
+    /* MAP_UNIT_SPRITE_LOOP_ATTACKB */  {1, 1},
+    /* MAP_UNIT_SPRITE_LOOP_MOVER */    {0, 1},
+    /* MAP_UNIT_SPRITE_LOOP_MOVET */    {1, 1},
+    /* MAP_UNIT_SPRITE_LOOP_MOVEL */    {0, 1},
+    /* MAP_UNIT_SPRITE_LOOP_MOVEB */    {0, 1},
+    /* MAP_UNIT_SPRITE_LOOP_STANCE */   {0, 1},
 };
 
 /* --- Defaults --- */
@@ -95,7 +95,7 @@ void Sprite_readJSON(void *input,  cJSON *jsprite) {
 
 
 void Spritesheet_readJSON(void *input,  cJSON *jspritesheet) {
-    struct Spritesheet *spritesheet = (struct Spritesheet *) input;
+    struct Spritesheet *spritesheet = (struct Spritesheet *)input;
     SDL_assert(spritesheet);
     Spritesheet_Free(spritesheet);
     cJSON *jframes      = cJSON_GetObjectItem(jspritesheet, "frames");
@@ -104,8 +104,8 @@ void Spritesheet_readJSON(void *input,  cJSON *jspritesheet) {
     cJSON *jloop_modes  = cJSON_GetObjectItem(jspritesheet, "loop_modes");
 
     if (cJSON_IsArray(jloops_pos)) {
-        spritesheet->loop_num = cJSON_GetArraySize(jloops_pos);
-        spritesheet->loops_pos = malloc(spritesheet->loop_num * sizeof(*spritesheet->loops_pos));
+        spritesheet->loop_num  = cJSON_GetArraySize(jloops_pos);
+        spritesheet->loops_pos = SDL_malloc(spritesheet->loop_num * sizeof(*spritesheet->loops_pos));
         for (int i = 0; i < spritesheet->loop_num; ++i) {
             cJSON *jpos = cJSON_GetArrayItem(jloops_pos, i);
             spritesheet->loops_pos[i] = cJSON_GetNumberValue(jpos);
@@ -114,7 +114,7 @@ void Spritesheet_readJSON(void *input,  cJSON *jspritesheet) {
 
     if (cJSON_IsArray(jframes)) {
         SDL_assert(spritesheet->loop_num == cJSON_GetArraySize(jframes));
-        spritesheet->frames = malloc(spritesheet->loop_num * sizeof(*spritesheet->frames));
+        spritesheet->frames = SDL_malloc(spritesheet->loop_num * sizeof(*spritesheet->frames));
         for (int i = 0; i < spritesheet->loop_num; ++i) {
             cJSON *jframe = cJSON_GetArrayItem(jframes, i);
             spritesheet->frames[i] = cJSON_GetNumberValue(jframe);
@@ -123,12 +123,12 @@ void Spritesheet_readJSON(void *input,  cJSON *jspritesheet) {
 
     if (cJSON_IsArray(jspeeds)) {
         SDL_assert(spritesheet->loop_num == cJSON_GetArraySize(jspeeds));
-        spritesheet->speeds = malloc(spritesheet->loop_num * sizeof(*spritesheet->speeds));
+        spritesheet->speeds = SDL_malloc(spritesheet->loop_num * sizeof(*spritesheet->speeds));
         for (int i = 0; i < spritesheet->loop_num; ++i) {
             cJSON *jspeed_arr = cJSON_GetArrayItem(jspeeds, i);
             SDL_assert(cJSON_IsArray(jspeed_arr));
             SDL_assert(spritesheet->frames[i] == cJSON_GetArraySize(jspeed_arr));
-            spritesheet->speeds[i] = malloc(spritesheet->frames[i] * sizeof(**spritesheet->speeds));
+            spritesheet->speeds[i] = SDL_malloc(spritesheet->frames[i] * sizeof(**spritesheet->speeds));
             for (int j = 0; j < spritesheet->frames[i]; ++j) {
                 cJSON *jspeed = cJSON_GetArrayItem(jspeed_arr, j);
                 spritesheet->speeds[i][j] = cJSON_GetNumberValue(jspeed);
@@ -138,7 +138,7 @@ void Spritesheet_readJSON(void *input,  cJSON *jspritesheet) {
 
     if (cJSON_IsArray(jloop_modes)) {
         SDL_assert(spritesheet->loop_num == cJSON_GetArraySize(jloop_modes));
-        spritesheet->loop_modes = malloc(spritesheet->loop_num * sizeof(*spritesheet->loop_modes));
+        spritesheet->loop_modes = SDL_malloc(spritesheet->loop_num * sizeof(*spritesheet->loop_modes));
         for (int i = 0; i < spritesheet->loop_num; ++i) {
             cJSON *jloop_mode = cJSON_GetArrayItem(jloop_modes, i);
             spritesheet->loop_modes[i] = cJSON_GetNumberValue(jloop_mode);
@@ -147,7 +147,8 @@ void Spritesheet_readJSON(void *input,  cJSON *jspritesheet) {
 
 }
 
-void Spritesheet_Loop_Set(struct Spritesheet *spritesheet, int loop, SDL_RendererFlip flip) {
+void Spritesheet_Loop_Set(struct Spritesheet *spritesheet, int loop,
+                          SDL_RendererFlip flip) {
     SDL_assert(loop < spritesheet->loop_num);
     SDL_assert(loop >= 0);
     spritesheet->current_loop = loop;
@@ -219,14 +220,14 @@ void Sprite_defaultShaders_Load(struct Sprite *sprite) {
     sprite->srcrect_shadow.h = sprite->spritesheet->surface->h;
 
     /* -- Darken shader -- */
-    sprite->shader_darken = (struct Index_Shader *)SDL_malloc(sizeof(struct Index_Shader));
+    sprite->shader_darken  = SDL_malloc(sizeof(struct Index_Shader));
     *sprite->shader_darken = Index_Shader_default;
     Index_Shader_Load(sprite->shader_darken, sprite->spritesheet->surface, &sprite->srcrect_shadow);
     SDL_assert(sprite->shader_darken != NULL);
     sprite->shader_darken->to = palette_table_NES_darken;
 
     /* -- Lighten shader -- */
-    sprite->shader_lighten = (struct Index_Shader *)SDL_malloc(sizeof(struct Index_Shader));
+    sprite->shader_lighten  = SDL_malloc(sizeof(struct Index_Shader));
     *sprite->shader_lighten = Index_Shader_default;
     Index_Shader_Load(sprite->shader_lighten, sprite->spritesheet->surface, &sprite->srcrect_shadow);
     SDL_assert(sprite->shader_lighten != NULL);
@@ -234,13 +235,13 @@ void Sprite_defaultShaders_Load(struct Sprite *sprite) {
 
 }
 
-void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit, SDL_Renderer *renderer) {
-
+void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit,
+                          SDL_Renderer *renderer) {
     /* -- Alloc Spritesheet -- */
     if (sprite->spritesheet != NULL) {
         Spritesheet_Free(sprite->spritesheet);
     } else {
-        sprite->spritesheet  = malloc(sizeof(*sprite->spritesheet));
+        sprite->spritesheet  = SDL_malloc(sizeof(*sprite->spritesheet));
         *sprite->spritesheet = Spritesheet_default;
     }
     SDL_assert(sprite->spritesheet->json_element == JSON_SPRITE);
@@ -278,14 +279,14 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit, SDL_Renderer
 }
 
 // Load Sprite to spritesheet by default
-void Sprite_Load(struct Sprite *sprite,  char *asset_name, SDL_Renderer *renderer) {
+void Sprite_Load(struct Sprite *sprite, char *asset_name, SDL_Renderer *renderer) {
     /* -- Saving asset name -- */
     s8_free(&sprite->asset_name);
     sprite->asset_name = s8_mut(asset_name);
 
     /* -- Putting surface in default spritesheet -- */
     if (sprite->spritesheet == NULL) {
-        sprite->spritesheet = malloc(sizeof(*sprite->spritesheet));
+        sprite->spritesheet  = SDL_malloc(sizeof(*sprite->spritesheet));
         *sprite->spritesheet = Spritesheet_default;
     }
     SDL_assert(sprite->spritesheet->json_element == JSON_SPRITE);
@@ -479,5 +480,4 @@ void Sprite_Draw(struct Sprite *sp, SDL_Renderer *renderer) {
         SDL_RenderCopyEx(renderer, sp->texture, &sp->srcrect, &sp->dstrect, 0.0f, NULL, sp->flip);
     else
         SDL_RenderCopy(renderer, sp->texture, &sp->srcrect, &sp->dstrect);
-
 }

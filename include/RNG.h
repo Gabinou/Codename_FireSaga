@@ -13,13 +13,13 @@
 float sota_slowpow(float base, int exponent);
 
 /* -- GLOSSARY: -- */
-/* RN:      Random number           */
-/* RNG:     Random number generator */
-/* SB:      sequence breaker        */
-/* U:       Uniform(ly)             */
-/* G:       Gaussian/Normal(ly)     */
-/* avg:     average                 */
-/* std_dev: standard deviation      */
+/* RN:      Random number                       */
+/* RNG:     (Pseudo-)Random number generator    */
+/* SB:      sequence breaker                    */
+/* U:       Uniform(ly)                         */
+/* G:       Gaussian/Normal(ly)                 */
+/* avg:     average                             */
+/* std_dev: standard deviation                  */
 
 /* --- TYPEDEFS --- */
 typedef u8(*RNG_URN_ptr)(void);

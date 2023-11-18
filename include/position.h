@@ -12,11 +12,6 @@
 #include "SDL.h"
 
 /* --- 2D POSITION ON A SQUARE GRID --- */
-/* NOTE. no UPDATABLE bool:
- *      1- unclear the reason why/who/where
- *      2- superfluous check every time
- * updating position or not is outside responsibility */
-
 typedef struct Position {
     struct Point pixel_pos;
     struct Point tilemap_pos;

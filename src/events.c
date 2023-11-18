@@ -624,8 +624,8 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     position  = TNECS_GET_COMPONENT(sota->world, turn_transition, Position);
     *position = Position_default;
     position->onTilemap = false;
-    position->scale[0] = 10;
-    position->scale[1] = 10;
+    position->scale[0] = 10.0f;
+    position->scale[1] = 10.0f;
     position->pixel_pos.x = sota->settings.res.x / 2 - text->rect.w / 2 * position->scale[0];
     position->pixel_pos.y = sota->settings.res.y / 2;
 
