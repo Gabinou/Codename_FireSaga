@@ -46,7 +46,7 @@ extern struct PopUp_Objective PopUp_Objective_default;
 /* --- ructor/Destructor --- */
 void PopUp_Objective_Free(struct PopUp_Objective *po);
 void PopUp_Objective_Load(struct PopUp_Objective *po, SDL_Renderer *r, struct n9Patch *n9);
-struct PopUp_Objective *PopUp_Objective_Alloc();
+struct PopUp_Objective *PopUp_Objective_Alloc(void);
 
 /* --- Setters --- */
 void PopUp_Objective_Set_Obj(   struct PopUp_Objective *po, char *obj);

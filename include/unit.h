@@ -151,7 +151,7 @@ typedef struct Unit {
 } Unit;
 extern struct Unit Unit_default;
 
-/* --- ructors/Destructors --- */
+/* --- Constructors/Destructors --- */
 void Unit_Init(        struct Unit *u);
 void Unit_Free(        struct Unit *u);
 void Unit_InitWweapons(struct Unit *u, struct dtab *weapons_dtab);

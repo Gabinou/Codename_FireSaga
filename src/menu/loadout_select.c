@@ -53,7 +53,7 @@ struct LoadoutSelectMenu LoadoutSelectMenu_default = {
 };
 
 /* --- ructors/Destructors --- */
-struct LoadoutSelectMenu *LoadoutSelectMenu_Alloc() {
+struct LoadoutSelectMenu *LoadoutSelectMenu_Alloc(void) {
     struct LoadoutSelectMenu *lsm = malloc(sizeof(struct LoadoutSelectMenu));
     SDL_assert(lsm != NULL);
     *lsm = LoadoutSelectMenu_default;

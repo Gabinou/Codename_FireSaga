@@ -226,7 +226,7 @@ void Game_Free(struct Game *sota) {
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Game cleaned.");
     SDL_free(sota);
 }
-struct Game *Game_Init() {
+struct Game *Game_Init(void) {
     struct Game *out_game;
     out_game    = SDL_malloc(sizeof(struct Game));
     *out_game   = Game_default;

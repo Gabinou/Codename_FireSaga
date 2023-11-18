@@ -8,7 +8,12 @@ int Ternary_Direction_Index(int x, int y) {
     return (x + 3 * y);
 }
 
-struct Point Ternary_Direction_Unbalanced( struct Point move) {
+int Ternary_Direction(struct Point move) {
+    struct Point point = Ternary_Direction_Unbalanced(move);
+    return (Ternary_Direction_Index(point.x, point.y));
+}
+
+struct Point Ternary_Direction_Unbalanced(struct Point move) {
     struct Point point;
     point.x = SOTA_TERNARY_ABOVE * (move.x > 0) + SOTA_TERNARY_BELOW * (move.x < 0);
     point.y = SOTA_TERNARY_ABOVE * (move.y < 0) + SOTA_TERNARY_BELOW * (move.y > 0);
@@ -62,9 +67,4 @@ int Ternary_Direction_Straight(int direction) {
             break;
     }
     return (out);
-}
-
-int Ternary_Direction(struct Point move) {
-    struct Point point = Ternary_Direction_Unbalanced(move);
-    return (Ternary_Direction_Index(point.x, point.y));
 }

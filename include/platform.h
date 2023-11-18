@@ -66,6 +66,6 @@ enum COMPILERS {
 #endif /* PLATFORM IDENTIFICATION */
 
 int sota_mkdir(char *name);
-u8 platform_fromSDL();
+u8 platform_fromSDL(void);
 
 #endif /* PLATFORM_H */

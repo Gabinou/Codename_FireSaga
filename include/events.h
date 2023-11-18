@@ -47,8 +47,8 @@ void Reload_Popup(   void *struct_ptr);
 void Reload_MapHpBar(void *struct_ptr);
 
 /* -- ructor/Destructor -- */
-void Events_Data_Malloc();
-void Events_Data_Free();
+void Events_Data_Malloc(void);
+void Events_Data_Free(void);
 
 /* -- Controller -- */
 tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code);
@@ -65,11 +65,11 @@ extern u32 event_Start;
 #undef REGISTER_ENUM
 extern u32 event_End;
 
-/* -- ructor/Destructors -- */
+/* -- Constructor/Destructors -- */
 extern s8 *event_names;
-void Events_Names_Declare();
-void Events_Names_Alloc();
-void Events_Names_Free();
+void Events_Names_Declare(void);
+void Events_Names_Alloc(void);
+void Events_Names_Free(void);
 
 /* --- HOMEMADE EVENT RECEIVERS --- */
 /* -- Function Declaration -- */
@@ -84,9 +84,9 @@ void Events_Names_Free();
 typedef void (* receiver_t)(struct Game *, SDL_Event *);
 extern struct dtab *receivers_dtab;
 
-/* -- ructor/Destructors -- */
-void Events_Receivers_Free();
-void Events_Receivers_Declare();
+/* -- Constructor/Destructors -- */
+void Events_Receivers_Free(void);
+void Events_Receivers_Declare(void);
 
 /* --- SDL_EVENT RECEIVERS --- */
 void receive_event_SDL_AUDIODEVICEADDED(       struct Game *sota, SDL_Event *event);

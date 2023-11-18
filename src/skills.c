@@ -74,7 +74,7 @@ void Skill_PICK(struct Unit *actor, void *tile_data) {
 }
 
 Active_Skill global_active_skills[ACTIVE_SKILL_NUM] = {0};
-void Make_Active_Skill_Array() {
+void Make_Active_Skill_Array(void) {
 #define REGISTER_ENUM(x) global_active_skills[ACTIVE_SKILL_##x] = Skill_##x;
 #include "names/skills_active.h"
 #undef REGISTER_ENUM

@@ -221,12 +221,19 @@ void PopUp_Loadout_Stats_Update(struct PopUp_Loadout_Stats *pls,
                                 SDL_Texture *rt, SDL_Renderer *r);
 
 /* -- Drawing elements -- */
-static void __PopUp_Loadout_Stats_Draw_Text(    struct PopUp_Loadout_Stats *pls, SDL_Renderer *r);
-static void __PopUp_Loadout_Stats_Draw_Hands(   struct PopUp_Loadout_Stats *pls, SDL_Renderer *r);
-static void __PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls, SDL_Renderer *r);
-static void __PopUp_Loadout_Stats_Draw_Equip(   struct PopUp_Loadout_Stats *pls, SDL_Renderer *r);
-static void __PopUp_Loadout_Stats_Draw_Arrows(  struct PopUp_Loadout_Stats *pls, SDL_Renderer *r);
-static void __PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls, SDL_Renderer *r);
-static void __PopUp_Loadout_Stats_Draw_WpnIcons(struct PopUp_Loadout_Stats *pls, SDL_Renderer *r);
+static void _PopUp_Loadout_Stats_Draw_Text(    struct PopUp_Loadout_Stats *pls,
+                                               SDL_Renderer *r);
+static void _PopUp_Loadout_Stats_Draw_Hands(   struct PopUp_Loadout_Stats *pls,
+                                               SDL_Renderer *r);
+static void _PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls,
+                                               SDL_Renderer *r);
+static void _PopUp_Loadout_Stats_Draw_Equip(   struct PopUp_Loadout_Stats *pls,
+                                               SDL_Renderer *r);
+static void _PopUp_Loadout_Stats_Draw_Arrows(  struct PopUp_Loadout_Stats *pls,
+                                               SDL_Renderer *r);
+static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
+                                               SDL_Renderer *r);
+static void _PopUp_Loadout_Stats_Draw_WpnIcons(struct PopUp_Loadout_Stats *pls,
+                                               SDL_Renderer *r);
 
 #endif /* PLS_H */

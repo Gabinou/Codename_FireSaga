@@ -63,7 +63,7 @@ struct Spritesheet {
 };
 extern struct Spritesheet Spritesheet_default;
 
-/* --- ructor/Destructors --- */
+/* --- Constructor/Destructors --- */
 void Spritesheet_Free(struct Spritesheet *ss);
 
 /* --- Animation --- */
@@ -113,7 +113,7 @@ extern struct Sprite Sprite_default;
 typedef void (*dstrect_func_t)(struct Sprite *, struct Point *, struct Camera *);
 extern dstrect_func_t dstrect_funcs[TWO_D][2];
 
-/* --- ructor/Destructors --- */
+/* --- Constructor/Destructors --- */
 void Sprite_Free(struct Sprite *s);
 
 /* --- Initialization --- */

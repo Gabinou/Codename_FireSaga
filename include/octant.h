@@ -6,21 +6,21 @@
 
 /* --- OCTANT GEOMETRY --- */
 
-//                                             _DIAGONAL_TL|
-// Around a point, you can define four quadrants like so:  -----|-----
-//                                                              |
+//                                                          TOPRIGHT | TOPLEFT
+// Around a point, you can define four quadrants like so:  ----------|----------
+//                                                          BOTRIGHT | BOTLEFT
 
 
 // Around an object with size, you can define eight octants like so:
 /*    X -> BELOW        X -> EQUAL         X -> ABOVE                   */
 /*                    |             |                                   */
-/*   ..._DIAGONAL_TL  |   ..._TOP   |  ..._DIAGONAL_TR      Y -> ABOVE  */
+/*     ..._TOPLEFT    |   ..._TOP   |    ..._TOPRIGHT       Y -> ABOVE  */
 /*                    |             |                                   */
 /*  ------------------o------------- ---------------------              */
-/*       ..._LEFT     |   object    | SOTA_DIRECTION_RIGHT  Y -> EQUAL  */
+/*       ..._LEFT     |   object    |     ..._RIGHT         Y -> EQUAL  */
 /*  ------------------ ------------- ---------------------              */
 /*                    |             |                                   */
-/*   ..._DIAGONAL_BL  | ..._BOTTOM  | ..._DIAGONAL_BR       Y -> BELOW  */
+/*     ..._BOTLEFT    | ..._BOTTOM  |    ..._BOTRIGHT       Y -> BELOW  */
 /*                    |             |                                   */
 // Note: actual position of all objects is in top left corner (o)
 // Note: ... is 'SOTA_DIRECTION'

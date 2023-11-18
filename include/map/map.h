@@ -197,7 +197,7 @@ struct Map {
 };
 extern struct Map Map_default;
 
-/* --- ructor/Destructors --- */
+/* --- Constructor/Destructors --- */
 void        Map_Free(      struct Map *map);
 struct Map *Map_Init(      struct Map *map, i32 width, i32 height);
 void        Map_Units_Free(struct Map *map);

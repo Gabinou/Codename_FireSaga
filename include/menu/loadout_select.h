@@ -164,8 +164,8 @@ struct LoadoutSelectMenu {
 };
 extern struct LoadoutSelectMenu LoadoutSelectMenu_default;
 
-/* --- ructors/Destructors --- */
-struct LoadoutSelectMenu *LoadoutSelectMenu_Alloc();
+/* --- Constructors/Destructors --- */
+struct LoadoutSelectMenu *LoadoutSelectMenu_Alloc(void);
 void LoadoutSelectMenu_Free(struct LoadoutSelectMenu *lsm);
 void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
                             tnecs_world *w, tnecs_entity ent, SDL_Renderer *r,
@@ -176,8 +176,9 @@ void _LoadoutSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Unit *u,
 
 void WeaponSelectMenu_Load_n9Patch(struct LoadoutSelectMenu *sm, SDL_Renderer *r,
                                    struct n9Patch *n9);
-void WeaponSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map, tnecs_world *w,
-                           tnecs_entity ent, SDL_Renderer *r, struct n9Patch *n9);
+void WeaponSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
+                           tnecs_world *w, tnecs_entity ent,
+                           SDL_Renderer *r, struct n9Patch *n9);
 
 void StaffSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
                           tnecs_world *w, tnecs_entity ent, SDL_Renderer *r,

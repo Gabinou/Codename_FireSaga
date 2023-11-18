@@ -139,7 +139,7 @@ struct Unit Unit_default = {
     .num_usable      =  0,
 };
 
-struct Unit Unit_Nibal_make() {
+struct Unit Unit_Nibal_make(void) {
     struct Unit Nibal_unit = {
         .json_element = JSON_UNIT,
         /*                  hp str mag agi dex fth luck def res con move prof */

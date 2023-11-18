@@ -39,28 +39,28 @@ extern struct dtab   *global_unitOrders; /* DTAB_GET(global_unitOrders, id) = or
 extern u16           *class_equippables;
 
 /* -- Name makers -- */
-void Names_sceneTimes();
-void Names_campjobNames();
-void Names_mapFilenames();
-void Menu_MakeOptionnames();
-void Names_gameStatenames();
-void Names_jsonElementnames();
-void Names_gamesubStatenames();
+void Names_sceneTimes(void);
+void Names_campjobNames(void);
+void Names_mapFilenames(void);
+void Menu_MakeOptionnames(void);
+void Names_gameStatenames(void);
+void Names_jsonElementnames(void);
+void Names_gamesubStatenames(void);
 
 /* - units - */
-void Names_armyNames();
-void Names_unitNames();
-void Names_statNames();
-void Names_classNames();
-void Names_unitStatuses();
-void Names_class_equippables();
+void Names_armyNames(void);
+void Names_unitNames(void);
+void Names_statNames(void);
+void Names_classNames(void);
+void Names_unitStatuses(void);
+void Names_class_equippables(void);
 
 /* - supports - */
-void Names_supportTypes();
+void Names_supportTypes(void);
 
 /* - items - */
-void Names_itemNames();
-void Names_tileNames();
+void Names_itemNames(void);
+void Names_tileNames(void);
 
 /* --- X macros generators --- */
 void Names_wpnType_Free(s8 *types);
@@ -72,8 +72,8 @@ s8 *Names_wpnEffects(    u64 effect);
 s8 *Names_unitstateNames(u32 statecode);
 
 /* -- API -- */
-void Names_Free();
-void Names_Load_All();
+void Names_Free(void);
+void Names_Load_All(void);
 void Names_Print(s8 filename);
 void Names_Print_All(char *filename);
 

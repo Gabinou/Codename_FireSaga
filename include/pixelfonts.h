@@ -75,8 +75,8 @@ typedef struct PixelFont {
 extern struct PixelFont PixelFont_default;
 extern struct PixelFont TextureFont_default;
 
-/* --- ructors/Destructors --- */
-struct PixelFont *PixelFont_Alloc();
+/* --- Constructors/Destructors --- */
+struct PixelFont *PixelFont_Alloc(void);
 struct PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len);
 
 void PixelFont_Free(struct PixelFont *f, bool free);
@@ -91,18 +91,18 @@ void TextLines_Free(   struct TextLines *tl);
 void TextLines_Realloc(struct TextLines *tl, size_t len);
 
 /* -- Splitting lines -- */
-struct TextLines PixelFont_Lines(    struct PixelFont *f,  char *t, size_t l, size_t ll);
-struct TextLines PixelFont_Lines_Len(struct PixelFont *f,  char *t, size_t ll);
+struct TextLines PixelFont_Lines(    struct PixelFont *f, char *t, size_t l, size_t ll);
+struct TextLines PixelFont_Lines_Len(struct PixelFont *f, char *t, size_t ll);
 
-int PixelFont_Lines_Num(     struct PixelFont *f,  char *t, size_t l, size_t ll);
-int PixelFont_Lines_Num_Len( struct PixelFont *f,  char *t, size_t ll);
+int PixelFont_Lines_Num(    struct PixelFont *f,  char *t, size_t l, size_t ll);
+int PixelFont_Lines_Num_Len(struct PixelFont *f,  char *t, size_t ll);
 
 int PixelFont_NextLine_Break(struct PixelFont *f,  char *t, int pb, size_t l, size_t ll);
-int NextLine_Start( char *text, int pb, int cb, size_t l);
+int NextLine_Start(char *text, int pb, int cb, size_t l);
 
 /* --- Width in [pixels] --- */
-int PixelFont_Width(       struct PixelFont *f,  char *t, size_t l);
-int PixelFont_Width_Len(   struct PixelFont *f,  char *t);
+int PixelFont_Width(    struct PixelFont *f,  char *t, size_t l);
+int PixelFont_Width_Len(struct PixelFont *f,  char *t);
 
 /* - Glyph_BoundingBox: - */
 // Note: Detect bounding box of each glyph of the font by looking at pixel values
@@ -117,9 +117,11 @@ int PixelFont_Scroll(struct PixelFont *f, u64 time_ns);
 // For PixelFont_Write be usable for Texturefont,
 // skip glyph 32, cause it is reserved for SPACE
 // col_len 16: 1st cell in 3rd row / col_len 8: 1st cell in 5rd row
-void PixelFont_Write(       struct PixelFont *f, SDL_Renderer *r, char *t, size_t len, u32 px,
-                            u32 py);
-void PixelFont_Write_Len(   struct PixelFont *f, SDL_Renderer *r, char *t, u32 px, u32 py);
-void PixelFont_Write_Scroll(struct PixelFont *f, SDL_Renderer *r, char *t, u32 px, u32 py);
+void PixelFont_Write(       struct PixelFont *f, SDL_Renderer *r, char *t,
+                            size_t len, u32 px, u32 py);
+void PixelFont_Write_Len(   struct PixelFont *f, SDL_Renderer *r, char *t,
+                            u32 px, u32 py);
+void PixelFont_Write_Scroll(struct PixelFont *f, SDL_Renderer *r, char *t,
+                            u32 px, u32 py);
 
 #endif /* PIXELFONTS_H */

@@ -17,7 +17,7 @@ static const char *SDL_priority_prefixes[SDL_NUM_LOG_PRIORITIES] = {
     "CRITICAL",
 };
 
-void Log_Init() {
+void Log_Init(void) {
     /* -- Clear logfile -- */
     fclose(fopen(LOGFILE, "w"));
 

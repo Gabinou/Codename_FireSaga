@@ -33,7 +33,7 @@ struct MenuElemDirections idm_links[IDM_ELEM_NUM] = {
 };
 
 /* --- ructors/Destructors --- */
-struct ItemDropMenu *ItemDropMenu_Alloc() {
+struct ItemDropMenu *ItemDropMenu_Alloc(void) {
     struct ItemDropMenu *idm = malloc(sizeof(struct ItemDropMenu));
     SDL_assert(idm != NULL);
     *idm = ItemDropMenu_default;

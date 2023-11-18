@@ -8,7 +8,7 @@ s8 sexNames[UNIT_SEX_NUM] = {
 
 
 s8 sceneTimes[SCENE_TIME_NUM] = {0};
-void Names_sceneTimes() {
+void Names_sceneTimes(void) {
 #define REGISTER_ENUM(x) sceneTimes[SCENE_TIME_##x] = s8cat(s8_camelCase(s8_toLower(s8_mut(#x)), '_', 2), s8_literal("_"));
 #include "names/scene_time.h"
 #undef REGISTER_ENUM
@@ -16,7 +16,7 @@ void Names_sceneTimes() {
 
 s8 global_unitNames[UNIT_NUM]   = {0};
 struct dtab *global_unitOrders  = NULL;
-void Names_unitNames() {
+void Names_unitNames(void) {
     DTAB_INIT(global_unitOrders, u16);
     SDL_assert(global_unitOrders != NULL);
     int order = 0;
@@ -33,7 +33,7 @@ void Names_unitNames() {
 
 
 s8 statNames[UNIT_STAT_NUM] = {0};
-void Names_statNames() {
+void Names_statNames(void) {
 #define REGISTER_ENUM(x) statNames[ITEM_STAT_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);
 #include "names/items_stats.h"
 #undef REGISTER_ENUM
@@ -41,14 +41,14 @@ void Names_statNames() {
 
 
 s8 armyNames[ARMY_NUM] = {0};
-void Names_armyNames() {
+void Names_armyNames(void) {
 #define REGISTER_ENUM(x, y) armyNames[ARMY_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2);
 #include "names/armies.h"
 #undef REGISTER_ENUM
 }
 
 s8 unitStatuses[UNIT_STATUS_END];
-void Names_unitStatuses() {
+void Names_unitStatuses(void) {
 #define REGISTER_ENUM(x) unitStatuses[UNIT_STATUS_##x] =  s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);
 #include "names/units_statuses.h"
 #undef REGISTER_ENUM
@@ -56,7 +56,7 @@ void Names_unitStatuses() {
 
 s8 global_itemNames[ITEM_NUM]   = {0};
 struct dtab *global_itemOrders  = NULL;
-void Names_itemNames() {
+void Names_itemNames(void) {
     DTAB_INIT(global_itemOrders, i32);
     SDL_assert(global_itemOrders != NULL);
     int order = 0;
@@ -70,11 +70,11 @@ void Names_itemNames() {
 }
 
 s8 support_types[SUPPORT_TYPE_NUM] = {0};
-void Names_supportTypes() {
+void Names_supportTypes(void) {
 }
 
 s8 global_tilenames[TILE_ID_MAX] = {0};
-void Names_tileNames() {
+void Names_tileNames(void) {
     uint64_t temp_id = 1; /* 0 is reserved for NULL*/
 #define REGISTER_ENUM(x) global_tilenames[temp_id++] = s8_camelCase(s8_toLower(s8_mut(#x)), ' ', 2);
 #include "names/tiles.h"
@@ -83,7 +83,7 @@ void Names_tileNames() {
 
 
 s8 campjobNames[CAMPJOB_END] = {0};
-void Names_campjobNames() {
+void Names_campjobNames(void) {
 #define REGISTER_ENUM(x) campjobNames[CAMPJOB_##x] = s8_camelCase(s8_toLower(s8_mut(#x)), ' ', 2);
 #include "names/camp_jobs.h"
 #undef REGISTER_ENUM
@@ -91,7 +91,7 @@ void Names_campjobNames() {
 
 
 s8 menuOptionnames[MENU_OPTION_END] = {0};
-void Menu_MakeOptionnames() {
+void Menu_MakeOptionnames(void) {
 #define REGISTER_ENUM(x, y) menuOptionnames[MENU_OPTION_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);
 #include "names/menu/options.h"
 #undef REGISTER_ENUM
@@ -99,7 +99,7 @@ void Menu_MakeOptionnames() {
 
 
 s8 gamesubStatenames[GAME_SUBSTATE_END] = {0};
-void Names_gamesubStatenames() {
+void Names_gamesubStatenames(void) {
 #define REGISTER_ENUM(x, y) gamesubStatenames[GAME_SUBSTATE_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);
 #include "names/game_substates.h"
 #undef REGISTER_ENUM
@@ -107,7 +107,7 @@ void Names_gamesubStatenames() {
 
 
 s8 gameStatenames[GAME_STATE_END] = {0};
-void Names_gameStatenames() {
+void Names_gameStatenames(void) {
 #define REGISTER_ENUM(x, y) gameStatenames[GAME_STATE_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);
 #include "names/game_states.h"
 #undef REGISTER_ENUM
@@ -115,7 +115,7 @@ void Names_gameStatenames() {
 
 
 s8 mapFilenames[CHAPTER_END] = {0};
-void Names_mapFilenames() {
+void Names_mapFilenames(void) {
 #define REGISTER_ENUM(x, y, z) mapFilenames[CHAPTER_##x] = s8cat(s8_mut("assets"PHYSFS_SEPARATOR"Maps"PHYSFS_SEPARATOR), s8_literal(#y));
 #include "names/chapters.h"
 #undef REGISTER_ENUM
@@ -123,7 +123,7 @@ void Names_mapFilenames() {
 
 
 s8 classNames[UNIT_CLASS_NUM] = {0};
-void Names_classNames() {
+void Names_classNames(void) {
 #define REGISTER_ENUM(name, id, x, y, z) classNames[UNIT_CLASS_##name] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#name), '_', ' ')),' ', 2);
 #include "names/classes.h"
 #undef  REGISTER_ENUM
@@ -152,7 +152,7 @@ s8 *Names_unitstateNames(uint32_t in_statecode) {
 }
 
 u16 *class_equippables = NULL;
-void Names_class_equippables() {
+void Names_class_equippables(void) {
     class_equippables = DARR_INIT(class_equippables, u16, UNIT_CLASS_END);
 #define REGISTER_ENUM(name, id, x, y, z) class_equippables[UNIT_CLASS_##name] = z;
 #include "names/classes.h"
@@ -181,7 +181,7 @@ s8 *Names_wpnEffects(u64 in_effect) {
 
 
 s8 jsonElementnames[JSON_END] = {0};
-void Names_jsonElementnames() {
+void Names_jsonElementnames(void) {
 #define REGISTER_ENUM(x) jsonElementnames[JSON_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2);
 #include "names/json_elements.h"
 #undef REGISTER_ENUM
@@ -207,7 +207,7 @@ void Names_wpnType_Free(s8 *type_names) {
 
 
 /* --- API --- */
-void Names_Load_All() {
+void Names_Load_All(void) {
     Names_unitNames();
     Names_sceneTimes();
     // Hashes_supportHashes();
@@ -228,7 +228,7 @@ void Names_Load_All() {
     Names_armyNames();
 }
 
-void Names_Free() {
+void Names_Free(void) {
 
     SDL_Log("menuOptionnames");
     for (size_t i = MENU_OPTION_START + 1; i < MENU_OPTION_END; i++) {

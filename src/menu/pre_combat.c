@@ -32,7 +32,7 @@ struct PreCombatMenu PreCombatMenu_default =  {
     .pixelnours_big         = NULL,
 };
 
-struct PreCombatMenu *PreCombatMenu_Alloc() {
+struct PreCombatMenu *PreCombatMenu_Alloc(void) {
     struct PreCombatMenu *pcm = malloc(sizeof(struct PreCombatMenu));
     SDL_assert(pcm);
     *pcm = PreCombatMenu_default;

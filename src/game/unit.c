@@ -24,7 +24,6 @@ void Game_Weapons_Free(struct dtab **weapons_dtab) {
     struct Weapon *cast_dtab = (*weapons_dtab)->values;
     SDL_assert(cast_dtab != NULL);
     for (size_t i = 0; i < (*weapons_dtab)->num; i++) {
-        SDL_Log("Weapon: %d", i);
         Weapon_Free((cast_dtab + i));
     }
 

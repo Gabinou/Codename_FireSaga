@@ -28,7 +28,7 @@ struct PlayerSelectMenu PlayerSelectMenu_default = {
     .pixelnours     = NULL,
 };
 
-struct PlayerSelectMenu *PlayerSelectMenu_Alloc() {
+struct PlayerSelectMenu *PlayerSelectMenu_Alloc(void) {
     struct PlayerSelectMenu *psm = SDL_malloc(sizeof(struct PlayerSelectMenu));
     *psm = PlayerSelectMenu_default;
     SDL_assert(psm);

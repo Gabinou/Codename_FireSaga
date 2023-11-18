@@ -26,7 +26,7 @@ enum SOTA_LOG {
     SOTA_LOG_FPS = SDL_LOG_CATEGORY_CUSTOM,
 };
 
-void Log_Init();
+void Log_Init(void);
 void Log2file(void *d, i32 c, SDL_LogPriority p, const char *m);
 
 #endif /* LOG_H */

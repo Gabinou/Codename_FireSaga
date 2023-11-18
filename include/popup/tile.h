@@ -27,7 +27,7 @@ enum POPUP_TILE {
     PT_HEADER_W         = 24,
     PT_HEADER_H         =  5,
 
-    PT_LINE_HEIGHT      = 8,
+    PT_LINE_HEIGHT      =  8,
 
     PT_NAME_X           = 24,
     PT_NAME_Y           =  7,

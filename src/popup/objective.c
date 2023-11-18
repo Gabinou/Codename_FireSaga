@@ -11,7 +11,7 @@ struct PopUp_Objective PopUp_Objective_default =  {
 };
 
 /* --- ructor/Destructor --- */
-struct PopUp_Objective *PopUp_Objective_Alloc() {
+struct PopUp_Objective *PopUp_Objective_Alloc(void) {
     struct PopUp_Objective *po = SDL_malloc(sizeof(struct PopUp_Objective));
     *po = PopUp_Objective_default;
     return (po);

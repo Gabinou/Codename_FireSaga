@@ -33,7 +33,7 @@ typedef struct MapAnimation {
     i64 time_ns;
 } MapAnimation;
 extern struct MapAnimation MapAnimation_default;
-/* --- ructors/Destructors --- */
+/* --- Constructors/Destructors --- */
 
 /* --- Play --- */
 // TODO put fps_fsm combat animation functionality here

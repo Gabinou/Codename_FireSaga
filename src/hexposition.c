@@ -46,7 +46,7 @@ extern void plotHex2DArray(i16 *in_array, size_t depth_len, size_t col_len,
 }
 
 struct nmath_hexpoint_int32_t *cube_directions = NULL;
-void HexPosition_makeDirections() {
+void HexPosition_makeDirections(void) {
     if (cube_directions != NULL)
         DARR_FREE(cube_directions);
     DARR_INIT(cube_directions, struct nmath_hexpoint_int32_t, CUBE_DIRECTIONS_NUM);

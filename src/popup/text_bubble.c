@@ -18,7 +18,6 @@ struct Text_Bubble TextBubble_default = {
     .lines              = {0},
     .line_len_px        = 64,
     .line_num_max       = -1,
-    .text               = NULL,
     .target             = {-100, -100},
     .pixelfont          = NULL,
     .texture            = NULL,
@@ -46,10 +45,7 @@ struct Text_Bubble TextBubble_default = {
 };
 
 void TextBubble_Free(struct Text_Bubble *bubble) {
-    if (bubble->text != NULL) {
-        SDL_free(bubble->text);
-        bubble->text = NULL;
-    }
+    s8_free(&bubble->text);
 
     if (bubble->texture != NULL) {
         SDL_DestroyTexture(bubble->texture);
@@ -95,24 +91,18 @@ void TextBubble_Load(struct Text_Bubble *bubble, SDL_Renderer *renderer, struct 
 
 }
 
-void TextBubble_Set_Text(struct Text_Bubble *bubble,  char *text, struct n9Patch *n9patch) {
+void TextBubble_Set_Text(struct Text_Bubble *bubble, char *text, struct n9Patch *n9patch) {
     /* -- Free before re-allocating -- */
-    if (bubble->text != NULL) {
-        SDL_free(bubble->text);
-        bubble->text = NULL;
-    }
+    s8_free(&bubble->text);
     /* -- Copying input text -- */
-    size_t len   = strlen(text);
-    bubble->text = calloc(len + 1, sizeof(*bubble->text));
-    memcpy(bubble->text, text, len);
+    bubble->text = s8_mut(text);
 
     /* -- Split text into n lines depending on bubble max line length -- */
     TextLines_Free(&bubble->lines);
-    bubble->lines = PixelFont_Lines_Len(bubble->pixelfont, bubble->text, bubble->line_len_px);
+    bubble->lines = PixelFont_Lines_Len(bubble->pixelfont, bubble->text.data, bubble->line_len_px);
 
     /* -- Compute bubble size from text lines -- */
     TextBubble_Compute_Size(bubble, n9patch);
-
 }
 
 void TextBubble_Set_Target(struct Text_Bubble *bubble, struct Point target) {
@@ -250,10 +240,7 @@ void TextBubble_Tail_Draw(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
 
 void TextBubble_Compute_Size(struct Text_Bubble *bu, struct n9Patch *n9patch) {
     /* -- Check -- */
-    if (bu->text == NULL) {
-        SDL_Log("bubble's text is NULL");
-        return;
-    }
+    SDL_assert(bu->text.data != NULL);
 
     /* -- Destroy old bubble texture. -- */
     if (bu->texture != NULL) {
@@ -266,14 +253,14 @@ void TextBubble_Compute_Size(struct Text_Bubble *bu, struct n9Patch *n9patch) {
     }
 
     /* -- Bubble text size -- */
-    int line_num = PixelFont_Lines_Num_Len(bu->pixelfont, bu->text, bu->line_len_px);
+    int line_num = PixelFont_Lines_Num_Len(bu->pixelfont, bu->text.data, bu->line_len_px);
     SDL_assert(line_num == bu->lines.line_num);
 
     /* -- Max line num -- */
     line_num = bu->line_num_max > 0 ? bu->line_num_max : line_num;
     bu->height = line_num * bu->row_height + bu->padding.top + bu->padding.bottom;
     if (line_num <= 1) {
-        int len = PixelFont_Width_Len(bu->pixelfont, bu->text);
+        int len = PixelFont_Width_Len(bu->pixelfont, bu->text.data);
         len = (len < TEXT_BUBBLE_MIN_WIDTH) ? (TEXT_BUBBLE_MIN_WIDTH) : len;
         bu->width = len + bu->padding.right * 2 + bu->padding.left;
     } else {
@@ -464,7 +451,6 @@ void TextBubble_Update(struct Text_Bubble *bubble, struct n9Patch *n9patch,
     TextBubble_Tail_Draw(bubble, renderer);
 
     SDL_SetRenderTarget(renderer, render_target);
-
 }
 
 void TextBubble_Draw(struct PopUp *popup, struct Point pos,
@@ -487,5 +473,4 @@ void TextBubble_Draw(struct PopUp *popup, struct Point pos,
     SDL_assert(bubble->texture != NULL);
     SDL_RenderCopy(renderer, bubble->texture, NULL, &dstrect);
     Utilities_DrawColor_Reset(renderer);
-
 }

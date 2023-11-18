@@ -81,8 +81,8 @@ struct ItemDropMenu {
 };
 extern struct ItemDropMenu ItemDropMenu_default;
 
-/* --- ructors/Destructors --- */
-struct ItemDropMenu *ItemDropMenu_Alloc();
+/* --- Constructors/Destructors --- */
+struct ItemDropMenu *ItemDropMenu_Alloc(void);
 void ItemDropMenu_Free(struct ItemDropMenu *idm);
 void ItemDropMenu_Load(struct ItemDropMenu *idm, SDL_Renderer *r, struct n9Patch *n9);
 
@@ -96,7 +96,7 @@ void ItemDropMenu_Select(struct ItemDropMenu *idm, i8 elem);
 /* --- Drawing --- */
 void ItemDropMenu_Draw(  struct Menu *mc,  SDL_Texture *rt, SDL_Renderer *r);
 
-void ItemDropMenu_Update(struct ItemDropMenu  *idm, struct n9Patch *n9, SDL_Texture *rt,
-                         SDL_Renderer *r);
+void ItemDropMenu_Update(struct ItemDropMenu  *idm, struct n9Patch *n9,
+                         SDL_Texture *rt, SDL_Renderer *r);
 
 #endif /* ITEM_DROP_MENU_H */

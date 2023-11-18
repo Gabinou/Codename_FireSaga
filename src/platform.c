@@ -1,7 +1,7 @@
 
 #include "platform.h"
 
-u8 platform_fromSDL() {
+u8 platform_fromSDL(void) {
     u8 out  = NO_PLATFORM;
     s8 name = s8_var(SDL_GetPlatform());
 

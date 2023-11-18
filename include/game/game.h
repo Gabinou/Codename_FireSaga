@@ -41,11 +41,11 @@
 struct Item;
 struct Game;
 
-void Events_Data_Malloc();
-void Events_Data_Free();
-void Events_Names_Strings();
-void Events_Names_Declare();
-void Events_Receivers_Declare();
+void Events_Data_Malloc(void);
+void Events_Data_Free(void);
+void Events_Names_Strings(void);
+void Events_Names_Declare(void);
+void Events_Receivers_Declare(void);
 
 /* --- Game Object --- */
 struct Game {
@@ -191,8 +191,8 @@ struct Game {
 };
 extern struct Game Game_default;
 
-/* --- ructors/Destructors --- */
-struct Game *Game_Init();
+/* --- Constructors/Destructors --- */
+struct Game *Game_Init(void);
 void Game_Free(   struct Game *sota);
 void Game_Startup(struct Game *sota, struct Input_Arguments args);
 

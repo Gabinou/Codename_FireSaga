@@ -76,7 +76,7 @@ struct Text_Bubble_Tail {
 
 struct Text_Bubble {
     b32 update;
-    char    *text;
+    s8       text;
     int      width;
     int      height;
     int      row_height;
@@ -105,12 +105,11 @@ void TextBubble_Free(struct Text_Bubble *b);
 void TextBubble_Load(struct Text_Bubble *b, SDL_Renderer *r, struct n9Patch *n9patch);
 
 /* --- Setters --- */
-void TextBubble_Set_Text(    struct Text_Bubble *b,  char *t, struct n9Patch *n9patch);
+void TextBubble_Set_Text(    struct Text_Bubble *b, char *t, struct n9Patch *n9patch);
 void TextBubble_Set_Target(  struct Text_Bubble *b, struct Point t);
 void TextBubble_Compute_Size(struct Text_Bubble *b, struct n9Patch *n9patch);
 
 /* --- Internals --- */
-
 void TextBubble_Tail_Pos(   struct Text_Bubble *b, struct n9Patch *n9patch);
 void TextBubble_Tail_Flip(  struct Text_Bubble *b);
 void TextBubble_Tail_Angle( struct Text_Bubble *b);

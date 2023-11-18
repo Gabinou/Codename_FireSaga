@@ -22,7 +22,7 @@ float sota_slowpow(float base, int exponent);
 /* std_dev: standard deviation      */
 
 /* --- TYPEDEFS --- */
-typedef u8(*RNG_URN_ptr)();
+typedef u8(*RNG_URN_ptr)(void);
 
 /* --- ANTS --- */
 /* FIRST OF MANY POSSIBLE GLOBAL DECLARATIONS */

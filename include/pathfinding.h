@@ -62,7 +62,7 @@ enum SIGHTMAP_CODES {
 
 /* --- Manhattan distance --- */
 i32 _Pathfinding_Manhattan(i32 x_0, i32 y_0, i32 x_1, i32 y_1);
-i32 Pathfinding_Manhattan(struct Point start, struct Point end);
+i32  Pathfinding_Manhattan(struct Point start, struct Point end);
 
 /* --- Taxicab Geometry --- */
 /* Taxicabs can't move diagonal so manhattan distance: abs(x1-x2) + abs(y1-ys2)
@@ -145,6 +145,6 @@ void Pathfinding_unitGradient_noM(i32 *gradmap, i32 *costmap,
 i32 *Pathfinding_Moveto_Hex(i32 *costmap, size_t row_len, size_t depth_len,
                             struct Pointf start, i32 move, int mode_output);
 i32 *Pathfinding_Visible_Hex(i32 *blockmap, size_t depth_len, size_t col_len,
-                             struct Pointf  start, i32 sight, int mode);
+                             struct Pointf start, i32 sight, int mode);
 
 #endif /* PATHFINDING_H */

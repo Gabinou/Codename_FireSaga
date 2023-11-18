@@ -128,7 +128,7 @@ i32 *list2matrix(i32 *list, size_t row_len, size_t col_len, size_t list_len) {
 
 
 /* --- Debug --- */
-void Utilities_stacktrace() {
+void Utilities_stacktrace(void) {
     /* Depends on glibc. Need '-rdynamic' linker options. */
     void *array[10];
     size_t size = backtrace(array, 10);
@@ -284,13 +284,13 @@ bool army_isPC[ARMY_END] = {
     /* ARMY_BANDITS                   */ false,
 };
 
-void Utilities_Load() {
+void Utilities_Load(void) {
     Names_Load_All();
     Palettes_Load();
     Palette_Tables_Load();
 }
 
-void Utilities_Free() {
+void Utilities_Free(void) {
     Palettes_Free();
     Names_Free();
     // Hashes_Free();

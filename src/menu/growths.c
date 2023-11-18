@@ -155,7 +155,7 @@ struct MenuElemDirections GM_links[GM_ELEM_NUM] = {
     /* GM_PROF */     {GM_GRAPH,     GM_LUCK,      GM_CON,       GM_ELEM_NULL},
 };
 
-struct GrowthsMenu *GrowthsMenu_Alloc() {
+struct GrowthsMenu *GrowthsMenu_Alloc(void) {
     struct GrowthsMenu *gm = malloc(sizeof(struct GrowthsMenu));
     SDL_assert(gm);
     *gm = GrowthsMenu_default;

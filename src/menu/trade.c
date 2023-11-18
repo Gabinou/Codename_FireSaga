@@ -62,7 +62,7 @@ struct MenuElemDirections trade_menu_links[TRADE_MENU_ELEMS_NUM] = {
     /* TM_ELEM_ITEM6_P */ {TM_ELEM_ITEM6_A, TM_ELEM_ITEM5_P, TM_ELEM_ITEM6_A, TM_ELEM_ITEM1_P},
 };
 
-struct TradeMenu *TradeMenu_Alloc() {
+struct TradeMenu *TradeMenu_Alloc(void) {
     struct TradeMenu *tm = malloc(sizeof(struct TradeMenu));
     tm->selected_item   = ITEM_NULL;
     tm->selected_trader = TRADER_NULL;

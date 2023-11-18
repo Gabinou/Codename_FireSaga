@@ -348,7 +348,7 @@ struct StatsMenu StatsMenu_default = {
     .tophand_stronghand = false,
 };
 
-struct StatsMenu *StatsMenu_Alloc() {
+struct StatsMenu *StatsMenu_Alloc(void) {
     struct StatsMenu *stats_menu = malloc(sizeof(struct StatsMenu));
     SDL_assert(stats_menu);
     *stats_menu = StatsMenu_default;

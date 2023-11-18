@@ -59,7 +59,7 @@ i32 *matrix_sub_noM(i32 *matrix1, i32 *matrix2, size_t arr_len);
 i32 *matrix_plus(i32 *matrix1, i32 *matrix2, size_t arr_len);
 
 /* --- Debug --- */
-void Utilities_stacktrace();
+void Utilities_stacktrace(void);
 
 /* --- Array --- */
 int int_inbounds(int pos, int boundmin, int boundmax);
@@ -93,8 +93,8 @@ char *Utilities_Print_itemStats(struct Item_stats   stats);
 size_t Util_SDL_Surface_Index(SDL_Surface *surf, int x, int y);
 
 /* -- Loading -- */
-void Utilities_Load();
-void Utilities_Free();
+void Utilities_Load(void);
+void Utilities_Free(void);
 
 void SOTA_Free_Surfaces(SDL_Surface **surfaces, int num);
 void SOTA_Free_Textures(SDL_Texture **textures, int num);

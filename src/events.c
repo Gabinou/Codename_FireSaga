@@ -16,12 +16,12 @@ u32 event_End;
 tnecs_entity *data1_entity;
 tnecs_entity *data2_entity;
 
-void Events_Data_Malloc() {
+void Events_Data_Malloc(void) {
     data1_entity = SDL_malloc(sizeof(tnecs_entity));
     data2_entity = SDL_malloc(sizeof(tnecs_entity));
 }
 
-void Events_Data_Free() {
+void Events_Data_Free(void) {
     SDL_free(data1_entity);
     SDL_free(data2_entity);
 }
@@ -1336,7 +1336,7 @@ void receive_event_SDL_WINDOWEVENT(struct Game *sota, SDL_Event *event) {
 
 }
 
-void Events_Names_Declare() {
+void Events_Names_Declare(void) {
     event_Start = SDL_RegisterEvents(1);
 #define REGISTER_ENUM(x, y) event_##x = SDL_RegisterEvents(1);
 #include "names/events.h"
@@ -1347,7 +1347,7 @@ void Events_Names_Declare() {
     event_End = SDL_RegisterEvents(1);
 }
 
-extern void Events_Names_Free() {
+void Events_Names_Free(void) {
     if (event_names == NULL)
         return;
 
@@ -1358,7 +1358,7 @@ extern void Events_Names_Free() {
 }
 
 s8 *event_names = NULL;
-extern void Events_Names_Alloc() {
+void Events_Names_Alloc(void) {
     SDL_Log("event_End event_Start %d %d", event_End, event_Start);
     SDL_Log("event_End - event_Start %d", event_End - event_Start);
     event_names = calloc((event_End - event_Start) + 1, sizeof(*event_names));
@@ -1374,12 +1374,12 @@ extern void Events_Names_Alloc() {
 
 }
 
-void Events_Receivers_Free() {
+void Events_Receivers_Free(void) {
     if (receivers_dtab != NULL)
         DTAB_FREE(receivers_dtab);
 }
 
-void Events_Receivers_Declare() {
+void Events_Receivers_Declare(void) {
     u32 temp_index;
     Events_Receivers_Free();
     receiver_t temp_receiver_p;
