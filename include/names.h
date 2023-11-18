@@ -63,7 +63,8 @@ void Names_itemNames();
 void Names_tileNames();
 
 /* --- X macros generators --- */
-void Names_wpnType_Free( s8 *types);
+void Names_wpnType_Free(s8 *types);
+
 s8 *Names_wpnType(       u16 typecode);
 s8 *Names_unitTypes(     u16 typecode);
 s8 *Names_skillNames(    u64 skillscode);
@@ -74,6 +75,6 @@ s8 *Names_unitstateNames(u32 statecode);
 void Names_Free();
 void Names_Load_All();
 void Names_Print(s8 filename);
-void Names_Print_All( char *filename);
+void Names_Print_All(char *filename);
 
 #endif /* NAMES_H */

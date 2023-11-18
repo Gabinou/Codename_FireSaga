@@ -57,11 +57,11 @@ void test_octant() {
     nourstest_true(ternary.x == SOTA_TERNARY_EQUAL);
     nourstest_true(ternary.y == SOTA_TERNARY_ABOVE);
 
-    ternary = Ternary_Direction_Ternary(SOTA_DIRECTION_DIAGONAL_TL);
+    ternary = Ternary_Direction_Ternary(SOTA_DIRECTION_TOPLEFT);
     nourstest_true(ternary.x == SOTA_TERNARY_BELOW);
     nourstest_true(ternary.y == SOTA_TERNARY_ABOVE);
 
-    ternary = Ternary_Direction_Ternary(SOTA_DIRECTION_DIAGONAL_TR);
+    ternary = Ternary_Direction_Ternary(SOTA_DIRECTION_TOPRIGHT);
     nourstest_true(ternary.x == SOTA_TERNARY_ABOVE);
     nourstest_true(ternary.y == SOTA_TERNARY_ABOVE);
 
@@ -69,11 +69,11 @@ void test_octant() {
     nourstest_true(ternary.x == SOTA_TERNARY_EQUAL);
     nourstest_true(ternary.y == SOTA_TERNARY_BELOW);
 
-    ternary = Ternary_Direction_Ternary(SOTA_DIRECTION_DIAGONAL_BL);
+    ternary = Ternary_Direction_Ternary(SOTA_DIRECTION_BOTLEFT);
     nourstest_true(ternary.x == SOTA_TERNARY_BELOW);
     nourstest_true(ternary.y == SOTA_TERNARY_BELOW);
 
-    ternary = Ternary_Direction_Ternary(SOTA_DIRECTION_DIAGONAL_BR);
+    ternary = Ternary_Direction_Ternary(SOTA_DIRECTION_BOTRIGHT);
     nourstest_true(ternary.x == SOTA_TERNARY_ABOVE);
     nourstest_true(ternary.y == SOTA_TERNARY_BELOW);
 
@@ -94,11 +94,11 @@ void test_octant() {
     nourstest_true(ternary.x ==  0);
     nourstest_true(ternary.y == -1);
 
-    ternary = Ternary_Moved(SOTA_DIRECTION_DIAGONAL_TL);
+    ternary = Ternary_Moved(SOTA_DIRECTION_TOPLEFT);
     nourstest_true(ternary.x == -1);
     nourstest_true(ternary.y == -1);
 
-    ternary = Ternary_Moved(SOTA_DIRECTION_DIAGONAL_TR);
+    ternary = Ternary_Moved(SOTA_DIRECTION_TOPRIGHT);
     nourstest_true(ternary.x ==  1);
     nourstest_true(ternary.y == -1);
 
@@ -106,11 +106,11 @@ void test_octant() {
     nourstest_true(ternary.x ==  0);
     nourstest_true(ternary.y ==  1);
 
-    ternary = Ternary_Moved(SOTA_DIRECTION_DIAGONAL_BL);
+    ternary = Ternary_Moved(SOTA_DIRECTION_BOTLEFT);
     nourstest_true(ternary.x == -1);
     nourstest_true(ternary.y ==  1);
 
-    ternary = Ternary_Moved(SOTA_DIRECTION_DIAGONAL_BR);
+    ternary = Ternary_Moved(SOTA_DIRECTION_BOTRIGHT);
     nourstest_true(ternary.x ==  1);
     nourstest_true(ternary.y ==  1);
 
@@ -118,7 +118,7 @@ void test_octant() {
     move.x = -1;
     move.y = -1;
     int direction = Ternary_Direction(move);
-    nourstest_true(direction == SOTA_DIRECTION_DIAGONAL_TL);
+    nourstest_true(direction == SOTA_DIRECTION_TOPLEFT);
 
     move.y = 0;
     direction = Ternary_Direction(move);
@@ -126,7 +126,7 @@ void test_octant() {
 
     move.y = 1;
     direction = Ternary_Direction(move);
-    nourstest_true(direction == SOTA_DIRECTION_DIAGONAL_BL);
+    nourstest_true(direction == SOTA_DIRECTION_BOTLEFT);
 
     move.x = 0;
     move.y = -1;
@@ -144,7 +144,7 @@ void test_octant() {
     move.x = 1;
     move.y = -1;
     direction = Ternary_Direction(move);
-    nourstest_true(direction == SOTA_DIRECTION_DIAGONAL_TR);
+    nourstest_true(direction == SOTA_DIRECTION_TOPRIGHT);
 
     move.y = 0;
     direction = Ternary_Direction(move);
@@ -152,5 +152,5 @@ void test_octant() {
 
     move.y = 1;
     direction = Ternary_Direction(move);
-    nourstest_true(direction == SOTA_DIRECTION_DIAGONAL_BR);
+    nourstest_true(direction == SOTA_DIRECTION_BOTRIGHT);
 }

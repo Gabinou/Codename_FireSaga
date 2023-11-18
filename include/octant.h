@@ -6,7 +6,11 @@
 
 /* --- OCTANT GEOMETRY --- */
 
-// Around a point, you can define four quadrants like so: +
+//                                             _DIAGONAL_TL|
+// Around a point, you can define four quadrants like so:  -----|-----
+//                                                              |
+
+
 // Around an object with size, you can define eight octants like so:
 /*    X -> BELOW        X -> EQUAL         X -> ABOVE                   */
 /*                    |             |                                   */
@@ -19,6 +23,7 @@
 /*   ..._DIAGONAL_BL  | ..._BOTTOM  | ..._DIAGONAL_BR       Y -> BELOW  */
 /*                    |             |                                   */
 // Note: actual position of all objects is in top left corner (o)
+// Note: ... is 'SOTA_DIRECTION'
 
 
 /* --- Ternary logic --- */

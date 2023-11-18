@@ -56,20 +56,20 @@ s8 s8cpy(s8 s1, s8 s2);
 
 s8 s8_camelCase(s8 str8,  char separator, size_t minwordlen);
 
-s8 s8_Replace(      s8 str8,  char *replace,  char *with);
-s8 s8_replaceSingle(s8 str8,  char  replace,  char  with);
+s8 s8_Replace(      s8 str8, char *replace, char *with);
+s8 s8_replaceSingle(s8 str8, char  replace, char  with);
 
-s8 s8_Path_Remove_Top(s8 path,  char separator);
+s8 s8_Path_Remove_Top(s8 path, char separator);
 
 /* --- Null-terminated strings --- */
 /* - Note: caller deals with memory - */
-char *nstr_toLower(        char *str);
-char *nstr_toUpper(        char *str);
-char *nstr_Replace(        char *line, char *replace, char *with);
-char *nstr_camelCase(      char *str,  char separator, size_t minwordlen);
-char *nstr_slicefromEnd(   char *str, size_t toslice);
-char *nstr_replaceSingle(  char *str,  char replace,  char with);
-char *nstr_slicefromStart( char *str, size_t toslice);
+char *nstr_toLower(       char *str);
+char *nstr_toUpper(       char *str);
+char *nstr_Replace(       char *line, char *replace, char *with);
+char *nstr_camelCase(     char *str,  char separator, size_t minwordlen);
+char *nstr_slicefromEnd(  char *str, size_t toslice);
+char *nstr_replaceSingle( char *str,  char replace,  char with);
+char *nstr_slicefromStart(char *str, size_t toslice);
 
 char *nstr_Path_Join(      char *path, char *top);
 char *nstr_Path_Extension( char *filename);

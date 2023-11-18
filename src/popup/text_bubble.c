@@ -169,19 +169,19 @@ void TextBubble_Tail_Pos(struct Text_Bubble *bubble, struct n9Patch *n9patch) {
                 bubble->tail.dstrect.y = bubble->target.y - TEXT_BUBBLE_RENDER_PAD / 2;
             }
             break;
-        case SOTA_DIRECTION_DIAGONAL_TR:
+        case SOTA_DIRECTION_TOPRIGHT:
             bubble->tail.dstrect.x = bubble->width - 6;
             bubble->tail.dstrect.y = -2;
             break;
-        case SOTA_DIRECTION_DIAGONAL_BR:
+        case SOTA_DIRECTION_BOTRIGHT:
             bubble->tail.dstrect.x = bubble->width  - 6;
             bubble->tail.dstrect.y = bubble->height - 6;
             break;
-        case SOTA_DIRECTION_DIAGONAL_BL:
+        case SOTA_DIRECTION_BOTLEFT:
             bubble->tail.dstrect.x = -2;
             bubble->tail.dstrect.y = bubble->height - 6;
             break;
-        case SOTA_DIRECTION_DIAGONAL_TL:
+        case SOTA_DIRECTION_TOPLEFT:
             bubble->tail.dstrect.x = -2;
             bubble->tail.dstrect.y = -2;
             break;
@@ -210,19 +210,19 @@ void TextBubble_Tail_Angle(struct Text_Bubble *bubble) {
             bubble->tail.angle = 90.0;
             bubble->tail.index = TEXT_BUBBLE_STRAIGHT;
             break;
-        case SOTA_DIRECTION_DIAGONAL_TR:
+        case SOTA_DIRECTION_TOPRIGHT:
             bubble->tail.angle = 270.0;
             bubble->tail.index = TEXT_BUBBLE_DIAGONAL;
             break;
-        case SOTA_DIRECTION_DIAGONAL_BR:
+        case SOTA_DIRECTION_BOTRIGHT:
             bubble->tail.angle = 0.0;
             bubble->tail.index = TEXT_BUBBLE_DIAGONAL;
             break;
-        case SOTA_DIRECTION_DIAGONAL_BL:
+        case SOTA_DIRECTION_BOTLEFT:
             bubble->tail.angle = 90.0;
             bubble->tail.index = TEXT_BUBBLE_DIAGONAL;
             break;
-        case SOTA_DIRECTION_DIAGONAL_TL:
+        case SOTA_DIRECTION_TOPLEFT:
             bubble->tail.angle = 180.0;
             bubble->tail.index = TEXT_BUBBLE_DIAGONAL;
             break;

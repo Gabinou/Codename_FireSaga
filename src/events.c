@@ -1058,8 +1058,8 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
 
     switch (direction) {
         case SOTA_DIRECTION_BOTTOM:
-        case SOTA_DIRECTION_DIAGONAL_BL:
-        case SOTA_DIRECTION_DIAGONAL_BR:
+        case SOTA_DIRECTION_BOTLEFT:
+        case SOTA_DIRECTION_BOTRIGHT:
             Sprite_Animation_Restart(agg_sprite, MAP_UNIT_SPRITE_LOOP_ATTACKB);
             Sprite_Animation_Restart(dft_sprite, MAP_UNIT_SPRITE_LOOP_ATTACKB);
             break;
@@ -1068,12 +1068,12 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
             Sprite_Animation_Restart(dft_sprite, MAP_UNIT_SPRITE_LOOP_ATTACKT);
             break;
         case SOTA_DIRECTION_RIGHT:
-        case SOTA_DIRECTION_DIAGONAL_TR:
+        case SOTA_DIRECTION_TOPRIGHT:
             Sprite_Animation_Restart(agg_sprite, MAP_UNIT_SPRITE_LOOP_ATTACKR);
             Sprite_Animation_Restart(dft_sprite, MAP_UNIT_SPRITE_LOOP_ATTACKL);
             break;
         case SOTA_DIRECTION_LEFT:
-        case SOTA_DIRECTION_DIAGONAL_TL:
+        case SOTA_DIRECTION_TOPLEFT:
             Sprite_Animation_Restart(agg_sprite, MAP_UNIT_SPRITE_LOOP_ATTACKL);
             Sprite_Animation_Restart(dft_sprite, MAP_UNIT_SPRITE_LOOP_ATTACKR);
             break;

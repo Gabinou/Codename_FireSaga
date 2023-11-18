@@ -180,7 +180,7 @@ void WeaponSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map, tnecs_
                            tnecs_entity ent, SDL_Renderer *r, struct n9Patch *n9);
 
 void StaffSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
-                          tnecs_world *w, tnecs_entity ent, SDL_Renderer *r, 
+                          tnecs_world *w, tnecs_entity ent, SDL_Renderer *r,
                           struct n9Patch *n9);
 
 void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm,  char *header);

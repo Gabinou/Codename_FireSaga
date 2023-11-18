@@ -25,7 +25,7 @@ void test_Text_Bubble_Tail() {
     TextBubble_Set_All(&bubble, "Hello, World!", bubble.target, &n9patch);
     SDL_assert(bubble.tail.index     == TEXT_BUBBLE_DIAGONAL);
     SDL_assert(bubble.tail.angle     == 180.0);
-    SDL_assert(bubble.tail.octant    == SOTA_DIRECTION_DIAGONAL_TL);
+    SDL_assert(bubble.tail.octant    == SOTA_DIRECTION_TOPLEFT);
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
@@ -369,7 +369,7 @@ void test_text_bubble_scroll() {
     TextBubble_Set_Target(&bubble, bubble.target);
     SDL_assert(bubble.tail.index     == TEXT_BUBBLE_DIAGONAL);
     SDL_assert(bubble.tail.angle     == 180.0);
-    SDL_assert(bubble.tail.octant    == SOTA_DIRECTION_DIAGONAL_TL);
+    SDL_assert(bubble.tail.octant    == SOTA_DIRECTION_TOPLEFT);
     TextBubble_Tail_Pos(&bubble, &n9patch);
     SDL_assert(bubble.width  > 0);
     SDL_assert(bubble.height > 0);
@@ -430,7 +430,7 @@ void test_text_bubble_scroll_vertical() {
     TextBubble_Set_Target(&bubble, bubble.target);
     SDL_assert(bubble.tail.index     == TEXT_BUBBLE_DIAGONAL);
     SDL_assert(bubble.tail.angle     == 180.0);
-    SDL_assert(bubble.tail.octant    == SOTA_DIRECTION_DIAGONAL_TL);
+    SDL_assert(bubble.tail.octant    == SOTA_DIRECTION_TOPLEFT);
     TextBubble_Tail_Pos(&bubble, &n9patch);
     SDL_assert(bubble.width  > 0);
     SDL_assert(bubble.height > 0);
@@ -489,7 +489,7 @@ void test_text_bubble_VScroll_Anim() {
     TextBubble_Set_Target(&bubble, bubble.target);
     SDL_assert(bubble.tail.index     == TEXT_BUBBLE_DIAGONAL);
     SDL_assert(bubble.tail.angle     == 180.0);
-    SDL_assert(bubble.tail.octant    == SOTA_DIRECTION_DIAGONAL_TL);
+    SDL_assert(bubble.tail.octant    == SOTA_DIRECTION_TOPLEFT);
     TextBubble_Tail_Pos(&bubble, &n9patch);
     SDL_assert(bubble.width  > 0);
     SDL_assert(bubble.height > 0);

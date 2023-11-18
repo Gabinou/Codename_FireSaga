@@ -900,7 +900,7 @@ enum CONTROLLERS {
     CONTROLLER_END,
 };
 
-enum CONTROLLER_DIRECTIONS { /* ternary -> octant */
+enum SOTA_DIRECTIONS { /* ternary -> octant */
     /* Intuitive screen direction */
     /* Unbalanced ternary, [x,y] -> [3^0,3^1] */
     /* Area split into octants around 2D area */
@@ -911,10 +911,10 @@ enum CONTROLLER_DIRECTIONS { /* ternary -> octant */
     SOTA_DIRECTION_TOP          =  6, /* Intuitive -> top of screen */
     SOTA_DIRECTION_LEFT         =  1,
     SOTA_DIRECTION_BOTTOM       =  3,
-    SOTA_DIRECTION_DIAGONAL_TR  =  8,
-    SOTA_DIRECTION_DIAGONAL_TL  =  7,
-    SOTA_DIRECTION_DIAGONAL_BR  =  5,
-    SOTA_DIRECTION_DIAGONAL_BL  =  4,
+    SOTA_DIRECTION_TOPRIGHT     =  8,
+    SOTA_DIRECTION_TOPLEFT      =  7,
+    SOTA_DIRECTION_BOTRIGHT     =  5,
+    SOTA_DIRECTION_BOTLEFT      =  4,
     SOTA_DIRECTIONS_MAIN_NUM    =  4,
     SOTA_DIRECTIONS_NUM         =  8, /* Including diagonals */
 };

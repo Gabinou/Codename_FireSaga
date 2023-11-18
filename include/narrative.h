@@ -40,15 +40,16 @@ struct Scene {
     // Better for replaces to be LONGER than withs
     char **replace;
     char **with;
-    u16 *speakers;
-    u16 *actors;
+    u16   *speakers;
+    u16   *actors;
 } extern Scene_default;
 
-
-void Scene_Free(struct Scene *scene);
+void Scene_Free(     struct Scene *scene);
 void Scene_Free_Read(struct Scene *scene);
+
+void Scene_Prune(  struct Scene *scene);
 void Scene_Replace(struct Scene *scene);
-void Scene_Prune(struct Scene *scene);
+
 struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_concs,
                           i16 chapter, u16 scene_time);
 

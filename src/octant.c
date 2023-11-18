@@ -31,8 +31,8 @@ struct Point Ternary_Moved(int ternary) {
     return (point);
 }
 
-struct Point Ternary_Direction_Octant(struct Point pos, struct Point target, int width,
-                                      int height) {
+struct Point Ternary_Direction_Octant(struct Point pos, struct Point target,
+                                      int width, int height) {
     struct Point out;
     int max = (pos.y + height);
     /* Invert y Above/Below to become more intuitive */
@@ -48,16 +48,16 @@ int Ternary_Direction_Straight(int direction) {
     SDL_assert(direction > SOTA_DIRECTION_NULL);
     SDL_assert(direction < SOTA_DIRECTIONS_NUM + 1); // cause ternary starts at 1
     switch (direction) {
-        case SOTA_DIRECTION_DIAGONAL_TR:
+        case SOTA_DIRECTION_TOPRIGHT:
             out = SOTA_DIRECTION_TOP;
             break;
-        case SOTA_DIRECTION_DIAGONAL_TL:
+        case SOTA_DIRECTION_TOPLEFT:
             out = SOTA_DIRECTION_TOP;
             break;
-        case SOTA_DIRECTION_DIAGONAL_BR:
+        case SOTA_DIRECTION_BOTRIGHT:
             out = SOTA_DIRECTION_BOTTOM;
             break;
-        case SOTA_DIRECTION_DIAGONAL_BL:
+        case SOTA_DIRECTION_BOTLEFT:
             out = SOTA_DIRECTION_BOTTOM;
             break;
     }

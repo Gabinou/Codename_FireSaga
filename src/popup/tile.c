@@ -7,7 +7,7 @@ struct PopUp_Tile PopUp_Tile_default = {
     .pixelnours       = NULL,
     .pixelnours_big   = NULL,
     .update           = true,
-    .corner           = SOTA_DIRECTION_DIAGONAL_BL,
+    .corner           = SOTA_DIRECTION_BOTLEFT,
     .offset           = { 0,  0},
     .cursor_limit_min = {-1, -1},
     .cursor_limit_max = {-1, -1},
@@ -66,28 +66,28 @@ struct Point PopUp_Tile_Position(struct PopUp *popup, struct PopUp_Tile *pt,
                                  struct Point *pixel_pos, i8 direction) {
     /* error checking: PopUp_TILE should NOT be on top*/
     switch (pt->corner) {
-        case SOTA_DIRECTION_DIAGONAL_TR:
-            pt->corner = SOTA_DIRECTION_DIAGONAL_BR;
+        case SOTA_DIRECTION_TOPRIGHT:
+            pt->corner = SOTA_DIRECTION_BOTRIGHT;
             break;
-        case SOTA_DIRECTION_DIAGONAL_TL:
-            pt->corner = SOTA_DIRECTION_DIAGONAL_BL;
+        case SOTA_DIRECTION_TOPLEFT:
+            pt->corner = SOTA_DIRECTION_BOTLEFT;
             break;
     }
     /* check if popup should move corner */
     bool x_greater = pixel_pos->x >= pt->cursor_limit_max.x;
     bool x_lower = pixel_pos->x <= pt->cursor_limit_min.x;
-    if ((x_greater) && (pt->corner == SOTA_DIRECTION_DIAGONAL_BR))
-        pt->corner = SOTA_DIRECTION_DIAGONAL_BL;
-    if ((x_lower) && (pt->corner == SOTA_DIRECTION_DIAGONAL_BL))
-        pt->corner = SOTA_DIRECTION_DIAGONAL_BR;
+    if ((x_greater) && (pt->corner == SOTA_DIRECTION_BOTRIGHT))
+        pt->corner = SOTA_DIRECTION_BOTLEFT;
+    if ((x_lower) && (pt->corner == SOTA_DIRECTION_BOTLEFT))
+        pt->corner = SOTA_DIRECTION_BOTRIGHT;
     /* Check if popup should move corner */
     struct Point out  = {-1, -1};
     struct Point sign = { 1, -1};
     switch (pt->corner) {
-        case SOTA_DIRECTION_DIAGONAL_BL:
+        case SOTA_DIRECTION_BOTLEFT:
             out.x = (-2) * n9patch->scale.x;
             break;
-        case SOTA_DIRECTION_DIAGONAL_BR:
+        case SOTA_DIRECTION_BOTRIGHT:
             out.x = settings->res.x - (n9patch->size_pixels.x - 1) * n9patch->scale.x;
             sign.x = -1;
             break;

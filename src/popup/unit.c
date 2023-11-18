@@ -7,7 +7,7 @@ struct PopUp_Unit PopUp_Unit_default = {
     .pixelnours       = NULL,
     .pixelnours_big   = NULL,
     .update           = true,
-    .corner           = SOTA_DIRECTION_DIAGONAL_TL,
+    .corner           = SOTA_DIRECTION_TOPLEFT,
     .offset           = {0, 0},
     .cursor_limit_min = {-1, -1},
     .cursor_limit_max = {-1, -1},
@@ -101,29 +101,29 @@ struct Point PopUp_Unit_Position(struct PopUp *popup, struct PopUp_Unit *pu,
                                  struct Point *pixel_pos) {
     /* error checking: PopUp_Unit should NOT be on bottom*/
     switch (pu->corner) {
-        case SOTA_DIRECTION_DIAGONAL_BR:
-            pu->corner = SOTA_DIRECTION_DIAGONAL_TR;
+        case SOTA_DIRECTION_BOTRIGHT:
+            pu->corner = SOTA_DIRECTION_TOPRIGHT;
             break;
-        case SOTA_DIRECTION_DIAGONAL_BL:
-            pu->corner = SOTA_DIRECTION_DIAGONAL_TL;
+        case SOTA_DIRECTION_BOTLEFT:
+            pu->corner = SOTA_DIRECTION_TOPLEFT;
             break;
     }
     /* Check if popup should move corner */
     bool x_lower   = pixel_pos->x <= pu->cursor_limit_min.x;
     bool x_greater = pixel_pos->x >= pu->cursor_limit_max.x;
-    if ((x_greater) && (pu->corner == SOTA_DIRECTION_DIAGONAL_TR))
-        pu->corner = SOTA_DIRECTION_DIAGONAL_TL;
-    if ((x_lower) && (pu->corner == SOTA_DIRECTION_DIAGONAL_TL))
-        pu->corner = SOTA_DIRECTION_DIAGONAL_TR;
+    if ((x_greater) && (pu->corner == SOTA_DIRECTION_TOPRIGHT))
+        pu->corner = SOTA_DIRECTION_TOPLEFT;
+    if ((x_lower) && (pu->corner == SOTA_DIRECTION_TOPLEFT))
+        pu->corner = SOTA_DIRECTION_TOPRIGHT;
     struct Point out = {-1, 0};
     struct Point sign = {1, 1};
     if (pu->unit == NULL) {
         /* - PopUpUnit goes offscreen and waits for another unit - */
         switch (pu->corner) {
-            case SOTA_DIRECTION_DIAGONAL_TL:
+            case SOTA_DIRECTION_TOPLEFT:
                 out.x  = -(n9patch->size_pixels.x + pu->offset.x) * n9patch->scale.x;
                 break;
-            case SOTA_DIRECTION_DIAGONAL_TR:
+            case SOTA_DIRECTION_TOPRIGHT:
                 out.x  = settings->res.x + pu->offset.x * n9patch->scale.x;
                 sign.x = -1;
                 break;
@@ -133,10 +133,10 @@ struct Point PopUp_Unit_Position(struct PopUp *popup, struct PopUp_Unit *pu,
     } else {
         /* - PopUpUnit shows itself - */
         switch (pu->corner) {
-            case SOTA_DIRECTION_DIAGONAL_TL:
+            case SOTA_DIRECTION_TOPLEFT:
                 out.x  = -2 * n9patch->scale.x;
                 break;
-            case SOTA_DIRECTION_DIAGONAL_TR:
+            case SOTA_DIRECTION_TOPRIGHT:
                 out.x  = settings->res.x - (n9patch->size_pixels.x - 1) * n9patch->scale.x;
                 sign.x = -1;
                 break;
