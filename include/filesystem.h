@@ -49,9 +49,9 @@ struct Mobj_Link;
 int Filesystem_Init(char *argv0);
 int Filesystem_Free(void);
 
+/* --- MOUNT --- */
 void Filesystem_Mount(s8 folder);
 
-// TODO: remove const in favor of "_<var>" convention
 /* --- MISC. --- */
 bool Filesystem_fequal(const char *filename1, const char *filename2);
 void Filesystem_Load_Bytes(const char *name, u8 **mem, size_t *len);
@@ -70,45 +70,6 @@ SDL_Texture *Filesystem_Texture_Load(struct SDL_Renderer *, const char *f, u32);
 SDL_Surface *Filesystem_indexedSurface_Init(size_t w, size_t h);
 SDL_Surface *Filesystem_Surface_Palette_Swap(SDL_Surface *s, SDL_Palette *p);
 void Filesystem_Surface_Pixels2Indices(SDL_Surface *r, SDL_Surface *i);
-
-/* --- JSON I/O --- */
-void Filesystem_readJSON_Shop(        const char *f, struct Shop         *s);
-void Filesystem_readJSON_Palette(     const char *f, struct SDL_Palette  *p);
-void Filesystem_readJSON_Promotion(   const char *f, struct Promotion    *p);
-void Filesystem_readJSON_PaletteTable(const char *f, u8                 *p);
-
-void Filesystem_readJSON_RNseed(   const struct cJSON *const j);
-
-void Filesystem_readJSON_Array(    const struct cJSON *const j, i32 *arr);
-void Filesystem_readJSON_2DArray(  const struct cJSON *const j, i32 *, u8 rl, u8 cl);
-
-void Filesystem_readJSON_Door(     const struct cJSON *const j, struct Door  *d);
-void Filesystem_readJSON_Chest(    const struct cJSON *const j, struct Chest *c);
-void Filesystem_readJSON_Item(     const struct cJSON *const j, struct Inventory_item *i);
-void Filesystem_readJSON_mvtcost(  const struct cJSON *const j, struct fMovement_cost *c);
-void Filesystem_readJSON_Wpnstats( const struct cJSON *const j, struct Weapon_stats   *s);
-void Filesystem_readJSON_Position( const struct cJSON *const j, struct Point          *p);
-void Filesystem_readJSON_Tilestats(const struct cJSON *const j, struct Tile_stats     *s);
-void Filesystem_readJSON_Unitstats(const struct cJSON *const j, struct Unit_stats     *s);
-void Filesystem_readJSON_MObj_Link(const struct cJSON *const j, struct Mobj_Link      *b);
-void Filesystem_readJSON_Breakable(const struct cJSON *const j, struct Breakable      *b);
-void Filesystem_readJSON_Itemstats(const struct cJSON *const j, struct Item_stats     *s);
-void Filesystem_readJSON_Reinforce(const struct cJSON *const j, struct Reinforcement  *a);
-
-void Filesystem_writeJSON_RNseed(   struct cJSON *j);
-
-void Filesystem_writeJSON_Array(    struct cJSON *j, const i32 *arr, size_t l);
-void Filesystem_writeJSON_2DArray(  struct cJSON *j, const i32 *arr, u8 rl, u8 cl);
-
-void Filesystem_writeJSON_item(     struct cJSON *j, const struct Inventory_item *i);
-void Filesystem_writeJSON_arrival(  struct cJSON *j, const struct Reinforcement  *a);
-void Filesystem_writeJSON_mvtcost(  struct cJSON *j, const struct fMovement_cost *c);
-void Filesystem_writeJSON_Wpnstats( struct cJSON *j, const struct Weapon_stats   *s);
-void Filesystem_writeJSON_Itemstats(struct cJSON *j, const struct Item_stats     *t);
-void Filesystem_writeJSON_Unitstats(struct cJSON *j, const struct Unit_stats     *t);
-void Filesystem_writeJSON_Tilestats(struct cJSON *j, const struct Tile_stats     *t);
-
-void Filesystem_printJSON(PHYSFS_file *fp, const struct cJSON *json);
 
 /* --- SCENE --- */
 s8 Filesystem_Scene_Chapter(s8 filename, int chapter);

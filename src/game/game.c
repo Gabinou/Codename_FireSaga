@@ -596,7 +596,7 @@ void Game_saveJSON(struct Game *sota, const i16 save_ind) {
     // cJSON_AddItemToObject(json, "Camp", jcamp);
     // Camp_writeJSON(&sota->camp, jcamp);
     cJSON_AddItemToObject(json, "Convoy", jconvoy);
-    Filesystem_printJSON(fp, json);
+    jsonio_Print(fp, json);
     PHYSFS_close(fp);
     cJSON_Delete(json);
 }

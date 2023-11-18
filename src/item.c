@@ -347,8 +347,8 @@ void Item_writeJSON(const void *restrict input, cJSON *restrict jitem) {
     cJSON *jclass_ids = cJSON_CreateArray();
     cJSON *jclass_id  = NULL;
 
-    Filesystem_writeJSON_Unitstats(jmalus, &(item->malus_stats));
-    Filesystem_writeJSON_Unitstats(jbonus, &(item->bonus_stats));
+    jsonio_Write_Unitstats(jmalus, &(item->malus_stats));
+    jsonio_Write_Unitstats(jbonus, &(item->bonus_stats));
 
     /* - Users - */
     if (item->users != NULL) {
@@ -410,7 +410,7 @@ void Item_writeJSON(const void *restrict input, cJSON *restrict jitem) {
     if (item->write_stats) {
         cJSON *jstats = cJSON_CreateObject();
         const struct Item_stats *stats = &(item->stats);
-        Filesystem_writeJSON_Itemstats(jstats, stats);
+        jsonio_Write_Itemstats(jstats, stats);
         cJSON_AddItemToObject(jitem, "Stats", jstats);
     }
 }
@@ -473,8 +473,8 @@ void Item_readJSON(void *input, const cJSON *jitem) {
     memcpy(item->description, string, strlen(string));
 
     /* - Bonus/Malus - */
-    Filesystem_readJSON_Unitstats(jbonus_stats, &(item->bonus_stats));
-    Filesystem_readJSON_Unitstats(jmalus_stats, &(item->malus_stats));
+    jsonio_Read_Unitstats(jbonus_stats, &(item->bonus_stats));
+    jsonio_Read_Unitstats(jmalus_stats, &(item->malus_stats));
 
     /* - Effects - */
     if (jpassive != NULL)
@@ -492,7 +492,7 @@ void Item_readJSON(void *input, const cJSON *jitem) {
     }
 
     /* - Stats - */
-    Filesystem_readJSON_Itemstats(jstats, &(item->stats));
+    jsonio_Read_Itemstats(jstats, &(item->stats));
 
     /* - Type - */
     if (jtypeid != NULL)

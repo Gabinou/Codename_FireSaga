@@ -26,7 +26,7 @@ u8 Equation_Unit_Crit( int wpn_crit,  int dex,       int luck, int support);
 i8 Equation_Unit_Speed(int wpn_wgt,   int agi,       int con,  int str);
 u8 Equation_Unit_Favor(int wpn_favor, int faith,     int support);
 i8 Equation_Unit_Dodge(int wpn_wgt,   int wpn_dodge, int luck, int faith,
-                       int agi,       int str,       int con,  int tile_dodge, 
+                       int agi,       int str,       int con,  int tile_dodge,
                        int support);
 
 /* -- Stat total with bonus and malus -- */

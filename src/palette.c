@@ -32,32 +32,32 @@ void Palettes_Load() {
     palette_NES_lightenmore =            SDL_AllocPalette(PALETTE_NES_COLOR_NUM);
     palette_NES_purple =                 SDL_AllocPalette(PALETTE_NES_COLOR_NUM);
 
-    Filesystem_readJSON_Palette(PATH_JOIN("assets", "Palettes", "palette_NES.json"),
-                                palette_NES);
-    Filesystem_readJSON_Palette(PATH_JOIN("assets", "Palettes",
-                                          "palette_NES_map_unit_enemy.json"), palette_NES_enemy);
-    Filesystem_readJSON_Palette(PATH_JOIN("assets", "Palettes",
-                                          STRINGIZE(palette_NES_filter_green)".json"), palette_NES_filter_green);
-    Filesystem_readJSON_Palette(PATH_JOIN("assets", "Palettes",
-                                          STRINGIZE(palette_NES_filter_darkredwshadow)".json"), palette_NES_filter_darkredwshadow);
-    Filesystem_readJSON_Palette(PATH_JOIN("assets", "Palettes",
-                                          STRINGIZE(palette_NES_filter_darkred)".json"), palette_NES_filter_darkred);
-    Filesystem_readJSON_Palette(PATH_JOIN("assets", "Palettes",
-                                          STRINGIZE(palette_NES_filter_blue)".json"), palette_NES_filter_blue);
-    Filesystem_readJSON_Palette(PATH_JOIN("assets", "Palettes",
-                                          STRINGIZE(palette_NES_filter_red)".json"), palette_NES_filter_red);
-    Filesystem_readJSON_Palette(PATH_JOIN("assets", "Palettes",
-                                          STRINGIZE(palette_NES_filter_purple)".json"), palette_NES_purple);
-    Filesystem_readJSON_Palette(PATH_JOIN("assets", "Palettes",
-                                          STRINGIZE(palette_NES_night)".json"), palette_NES_night);
-    Filesystem_readJSON_Palette(PATH_JOIN("assets", "Palettes",
-                                          STRINGIZE(palette_NES_shadow)".json"), palette_NES_shadow);
-    Filesystem_readJSON_Palette(PATH_JOIN("assets", "Palettes",
-                                          STRINGIZE(palette_NES_darken)".json"), palette_NES_darken);
-    Filesystem_readJSON_Palette(PATH_JOIN("assets", "Palettes",
-                                          STRINGIZE(palette_NES_lighten)".json"), palette_NES_lighten);
-    Filesystem_readJSON_Palette(PATH_JOIN("assets", "Palettes",
-                                          STRINGIZE(palette_NES_lightenmore)".json"), palette_NES_lightenmore);
+    jsonio_Read_Palette(PATH_JOIN("assets", "Palettes", "palette_NES.json"),
+                        palette_NES);
+    jsonio_Read_Palette(PATH_JOIN("assets", "Palettes",
+                                  "palette_NES_map_unit_enemy.json"), palette_NES_enemy);
+    jsonio_Read_Palette(PATH_JOIN("assets", "Palettes",
+                                  STRINGIZE(palette_NES_filter_green)".json"), palette_NES_filter_green);
+    jsonio_Read_Palette(PATH_JOIN("assets", "Palettes",
+                                  STRINGIZE(palette_NES_filter_darkredwshadow)".json"), palette_NES_filter_darkredwshadow);
+    jsonio_Read_Palette(PATH_JOIN("assets", "Palettes",
+                                  STRINGIZE(palette_NES_filter_darkred)".json"), palette_NES_filter_darkred);
+    jsonio_Read_Palette(PATH_JOIN("assets", "Palettes",
+                                  STRINGIZE(palette_NES_filter_blue)".json"), palette_NES_filter_blue);
+    jsonio_Read_Palette(PATH_JOIN("assets", "Palettes",
+                                  STRINGIZE(palette_NES_filter_red)".json"), palette_NES_filter_red);
+    jsonio_Read_Palette(PATH_JOIN("assets", "Palettes",
+                                  STRINGIZE(palette_NES_filter_purple)".json"), palette_NES_purple);
+    jsonio_Read_Palette(PATH_JOIN("assets", "Palettes",
+                                  STRINGIZE(palette_NES_night)".json"), palette_NES_night);
+    jsonio_Read_Palette(PATH_JOIN("assets", "Palettes",
+                                  STRINGIZE(palette_NES_shadow)".json"), palette_NES_shadow);
+    jsonio_Read_Palette(PATH_JOIN("assets", "Palettes",
+                                  STRINGIZE(palette_NES_darken)".json"), palette_NES_darken);
+    jsonio_Read_Palette(PATH_JOIN("assets", "Palettes",
+                                  STRINGIZE(palette_NES_lighten)".json"), palette_NES_lighten);
+    jsonio_Read_Palette(PATH_JOIN("assets", "Palettes",
+                                  STRINGIZE(palette_NES_lightenmore)".json"), palette_NES_lightenmore);
 
     Palettes_Free();
     sota_palettes = calloc(PALETTE_NUM, sizeof(*sota_palettes));
@@ -101,13 +101,13 @@ u8 palette_table_NES_lighten[PALETTE_NES_COLOR_NUM];
 u8 palette_table_NES_lightenmore[PALETTE_NES_COLOR_NUM];
 
 void Palette_Tables_Load() {
-    Filesystem_readJSON_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_shadow)".json",palette_table_NES_shadow);
-    Filesystem_readJSON_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_night)".json",palette_table_NES_night);
-    Filesystem_readJSON_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_filter_darkred)".json",palette_table_NES_filter_darkred);
-    Filesystem_readJSON_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_filter_red)".json",palette_table_NES_filter_red);
-    Filesystem_readJSON_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_filter_green)".json",palette_table_NES_filter_green);
-    Filesystem_readJSON_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_filter_blue)".json",palette_table_NES_filter_blue);
-    Filesystem_readJSON_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_darken)".json",palette_table_NES_darken);
-    Filesystem_readJSON_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_lighten)".json",palette_table_NES_lighten);
-    Filesystem_readJSON_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_lightenmore)".json",palette_table_NES_lightenmore);
+    jsonio_Read_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_shadow)".json",palette_table_NES_shadow);
+    jsonio_Read_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_night)".json",palette_table_NES_night);
+    jsonio_Read_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_filter_darkred)".json",palette_table_NES_filter_darkred);
+    jsonio_Read_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_filter_red)".json",palette_table_NES_filter_red);
+    jsonio_Read_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_filter_green)".json",palette_table_NES_filter_green);
+    jsonio_Read_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_filter_blue)".json",palette_table_NES_filter_blue);
+    jsonio_Read_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_darken)".json",palette_table_NES_darken);
+    jsonio_Read_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_lighten)".json",palette_table_NES_lighten);
+    jsonio_Read_PaletteTable("assets"PHYSFS_SEPARATOR"Palettes"PHYSFS_SEPARATOR STRINGIZE(palette_table_NES_lightenmore)".json",palette_table_NES_lightenmore);
 }

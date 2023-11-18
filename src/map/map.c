@@ -548,12 +548,12 @@ void Map_writeJSON(const void *input, cJSON *jmap) {
     for (u8 r = 0; r < DARR_NUM(map->reinforcements); r++) {
         jreinforcement = cJSON_CreateObject();
         jreinforcementeq = cJSON_CreateObject();
-        Filesystem_writeJSON_arrival(jreinforcement, &(map->reinforcements)[r]);
+        jsonio_Write_arrival(jreinforcement, &(map->reinforcements)[r]);
         temp_equip = map->reinf_equipments[r];
         for (u8 i = 0; i < DARR_NUM(temp_equip); i ++) {
             temp_item = temp_equip[i];
             if (temp_item.id > ITEM_NULL)
-                Filesystem_writeJSON_item(jreinforcementeq, &temp_item);
+                jsonio_Write_item(jreinforcementeq, &temp_item);
         }
         cJSON_AddItemToObject(jreinforcement, "Equipment", jreinforcementeq);
         cJSON_AddItemToObject(jreinforcements, "Reinforcement", jreinforcement);
@@ -569,7 +569,7 @@ void Map_writeJSON(const void *input, cJSON *jmap) {
     cJSON_AddItemToObject(jbounds, "col_max", jcol_max);
     cJSON_AddItemToObject(jmap, "Bounds", jbounds);
     cJSON *jtilemap = cJSON_CreateObject();
-    Filesystem_writeJSON_2DArray(jtilemap, map->tilemap, map->row_len, map->col_len);
+    jsonio_Write_2DArray(jtilemap, map->tilemap, map->row_len, map->col_len);
     cJSON_AddItemToObject(jmap, "Tilemap", jtilemap);
 }
 
@@ -601,7 +601,7 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
     cJSON *jstart_pos;
     struct Point pos;
     cJSON_ArrayForEach(jstart_pos, jstart_pos_arr) {
-        Filesystem_readJSON_Position(jstart_pos, (struct Point *)&pos);
+        jsonio_Read_Position(jstart_pos, (struct Point *)&pos);
         Map_startingPos_Add(map, pos.x, pos.y);
     }
 
@@ -642,7 +642,7 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
     for (int i = 0; i < cJSON_GetArraySize(jreinforcements); i++) {
         struct Reinforcement temp_rein;
         cJSON *jreinforcement = cJSON_GetArrayItem(jreinforcements, i);
-        Filesystem_readJSON_Reinforce(jreinforcement, &temp_rein);
+        jsonio_Read_Reinforce(jreinforcement, &temp_rein);
         DARR_PUT(map->reinforcements, temp_rein);
         jequipment = cJSON_GetObjectItem(jreinforcement, "Equipment");
         temp_equip = DARR_INIT(temp_equip, struct Inventory_item, DEFAULT_EQUIPMENT_SIZE);
@@ -650,7 +650,7 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
             DARR_PUT(map->items_num, cJSON_GetArraySize(jequipment));
             cJSON_ArrayForEach(jitem, jequipment) {
                 temp_item = Inventory_item_default;
-                Filesystem_readJSON_Item(jitem, &temp_item);
+                jsonio_Read_Item(jitem, &temp_item);
                 DARR_PUT(temp_equip, temp_item);
             }
         } else {
@@ -699,9 +699,9 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
             cJSON *jchest   = cJSON_GetArrayItem(jchests, i);
             cJSON *jpos     = cJSON_GetObjectItem(jchest, "position");
             if (jpos != NULL)
-                Filesystem_readJSON_Position(jpos, (struct Point *)&pos->tilemap_pos);
+                jsonio_Read_Position(jpos, (struct Point *)&pos->tilemap_pos);
             if (jchest != NULL)
-                Filesystem_readJSON_Chest(jchest, chest);
+                jsonio_Read_Chest(jchest, chest);
             map->chests_ent[i] = temp_ent;
         }
     } while (0);
@@ -728,9 +728,9 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
             cJSON *jdoor    = cJSON_GetArrayItem(jdoors, i);
             cJSON *jpos     = cJSON_GetObjectItem(jdoor, "position");
             if (jpos != NULL)
-                Filesystem_readJSON_Position(jpos, (struct Point *)&pos->tilemap_pos);
+                jsonio_Read_Position(jpos, (struct Point *)&pos->tilemap_pos);
             if (jdoor != NULL)
-                Filesystem_readJSON_Door(jdoor, door);
+                jsonio_Read_Door(jdoor, door);
             map->doors_ent[i] = temp_ent;
         }
     } while (0);
@@ -756,7 +756,7 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
             cJSON *jbreakable   = cJSON_GetArrayItem(jbreakables, i);
             cJSON *jpos         = cJSON_GetObjectItem(jbreakable, "position");
             if (jpos != NULL)
-                Filesystem_readJSON_Position(jpos, (struct Point *)&pos->tilemap_pos);
+                jsonio_Read_Position(jpos, (struct Point *)&pos->tilemap_pos);
             // if position of breakaable is already a Door/Chest
             // -> add Breakable component to Door/Chest instead
             // -> add Door/Chest + breakable entity to breakable list
@@ -772,7 +772,7 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
 
             struct Breakable *breaka = TNECS_GET_COMPONENT(map->world, temp_ent, Breakable);
             SDL_assert(breaka != NULL);
-            Filesystem_readJSON_Breakable(jbreakables, breaka);
+            jsonio_Read_Breakable(jbreakables, breaka);
             map->breakables_ent[i] = temp_ent;
         }
     } while (0);
@@ -789,7 +789,7 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
     cJSON_ArrayForEach(jframe, jframes) {
         map->tilemap = calloc(map->row_len * map->col_len, sizeof(*map->tilemap));
         jarray = cJSON_GetObjectItem(jframe, "array");
-        Filesystem_readJSON_2DArray(jarray, map->tilemap, map->row_len, map->col_len);
+        jsonio_Read_2DArray(jarray, map->tilemap, map->row_len, map->col_len);
         SDL_assert(map->tilemap);
     }
 

@@ -389,7 +389,7 @@ void Filesystem_Texture_Dump(const char *filename, SDL_Renderer *renderer, SDL_T
 
 /* --- JSON READ & WRITE --- */
 // TODO: rewrite with input cjson
-void Filesystem_readJSON_Shop(const char *filename, struct Shop *shop) {
+void jsonio_Read_Shop(const char *filename, struct Shop *shop) {
     SDL_Log("%s", filename);
     struct cJSON *jfile = jsonio_parseJSON(s8_var(filename));
     SDL_assert(jfile != NULL);
@@ -417,7 +417,7 @@ void Filesystem_readJSON_Shop(const char *filename, struct Shop *shop) {
         cJSON_Delete(jfile);
 }
 
-void Filesystem_readJSON_Promotion(const char *filename, struct Promotion *promotion) {
+void jsonio_Read_Promotion(const char *filename, struct Promotion *promotion) {
     SDL_Log("%s", filename);
     struct cJSON *jfile = jsonio_parseJSON(s8_var(filename));
     SDL_assert(jfile != NULL);
@@ -431,7 +431,7 @@ void Filesystem_readJSON_Promotion(const char *filename, struct Promotion *promo
         SDL_Log("No Stats element in promotion json");
         exit(ERROR_JSONParsingFailed);
     }
-    Filesystem_readJSON_Unitstats(jstats, &promotion->bonus);
+    jsonio_Read_Unitstats(jstats, &promotion->bonus);
     struct cJSON *jskill = cJSON_GetObjectItem(jpromotion, "Skill");
     if (jskill != NULL) {
         struct cJSON *jname = cJSON_GetObjectItem(jskill, "Name");
@@ -451,7 +451,7 @@ void Filesystem_readJSON_Promotion(const char *filename, struct Promotion *promo
 
 }
 
-void Filesystem_readJSON_Palette(const char *filename, struct SDL_Palette *palette) {
+void jsonio_Read_Palette(const char *filename, struct SDL_Palette *palette) {
     SDL_Log("%s", filename);
     struct cJSON *jfile = jsonio_parseJSON(s8_var(filename));
     SDL_assert(jfile != NULL);
@@ -484,7 +484,7 @@ void Filesystem_readJSON_Palette(const char *filename, struct SDL_Palette *palet
 
 }
 
-void Filesystem_readJSON_PaletteTable(const char *filename, u8   *table) {
+void jsonio_Read_PaletteTable(const char *filename, u8   *table) {
     SDL_Log("%s", filename);
     struct cJSON *jfile = jsonio_parseJSON(s8_var(filename));
     SDL_assert(jfile != NULL);
@@ -515,12 +515,12 @@ void Filesystem_readJSON_PaletteTable(const char *filename, u8   *table) {
 
 }
 
-void Filesystem_readJSON_MObj_Link(const struct cJSON *const j, struct Mobj_Link *restrict b) {
+void jsonio_Read_MObj_Link(const struct cJSON *const j, struct Mobj_Link *restrict b) {
 
 }
 
-void Filesystem_readJSON_Breakable(const struct cJSON *const jbreak,
-                                   struct Breakable *restrict breaka) {
+void jsonio_Read_Breakable(const struct cJSON *const jbreak,
+                           struct Breakable *restrict breaka) {
     struct cJSON *jhp  = cJSON_GetObjectItem(jbreak, "hp");
     struct cJSON *jdef = cJSON_GetObjectItem(jbreak, "def");
     struct cJSON *jres = cJSON_GetObjectItem(jbreak, "res");
@@ -533,7 +533,7 @@ void Filesystem_readJSON_Breakable(const struct cJSON *const jbreak,
         breaka->hp  = cJSON_GetNumberValue(jhp);
 }
 
-void Filesystem_readJSON_Door(const struct cJSON *const jdoor, struct Door *restrict door) {
+void jsonio_Read_Door(const struct cJSON *const jdoor, struct Door *restrict door) {
     struct cJSON *jtile          = cJSON_GetObjectItem(jdoor, "tile");
     struct cJSON *jevent         = cJSON_GetObjectItem(jdoor, "event");
     struct cJSON *jscene         = cJSON_GetObjectItem(jdoor, "scene");
@@ -552,7 +552,7 @@ void Filesystem_readJSON_Door(const struct cJSON *const jdoor, struct Door *rest
         door->tile          = cJSON_GetNumberValue(jtile);
 }
 
-void Filesystem_readJSON_Chest(const struct cJSON *const jchest, struct Chest *restrict chest) {
+void jsonio_Read_Chest(const struct cJSON *const jchest, struct Chest *restrict chest) {
     SDL_assert(jchest != NULL);
     SDL_assert(chest != NULL);
     struct cJSON *jgold = cJSON_GetObjectItem(jchest, "gold");
@@ -570,7 +570,7 @@ void Filesystem_readJSON_Chest(const struct cJSON *const jchest, struct Chest *r
     }
 }
 
-void Filesystem_readJSON_Position(const struct cJSON *const jpos, struct Point *pos) {
+void jsonio_Read_Position(const struct cJSON *const jpos, struct Point *pos) {
     SDL_assert(jpos != NULL);
     SDL_assert(pos != NULL);
     if (cJSON_IsArray(jpos)) {
@@ -586,8 +586,8 @@ void Filesystem_readJSON_Position(const struct cJSON *const jpos, struct Point *
     }
 }
 
-void Filesystem_readJSON_mvtcost(const struct cJSON          *const    jcost,
-                                 struct fMovement_cost *restrict cost) {
+void jsonio_Read_mvtcost(const struct cJSON          *const    jcost,
+                         struct fMovement_cost *restrict cost) {
     SDL_assert(cost != NULL);
     struct cJSON *jmages       = cJSON_GetObjectItem(jcost, "mages");
     struct cJSON *jfliers      = cJSON_GetObjectItem(jcost, "fliers");
@@ -609,7 +609,7 @@ void Filesystem_readJSON_mvtcost(const struct cJSON          *const    jcost,
     cost->riders_fast = cJSON_GetNumberValue(jriders_fast);
 }
 
-void Filesystem_readJSON_Array(const struct cJSON *const jarray, i32 *restrict array) {
+void jsonio_Read_Array(const struct cJSON *const jarray, i32 *restrict array) {
     SDL_assert(array != NULL);
     struct cJSON *jnum;
     size_t i = 0;
@@ -618,8 +618,8 @@ void Filesystem_readJSON_Array(const struct cJSON *const jarray, i32 *restrict a
     }
 }
 
-void Filesystem_readJSON_2DArray(const struct cJSON *const jarr, i32 *restrict arr2D,
-                                 u8 row_len, u8 col_len) {
+void jsonio_Read_2DArray(const struct cJSON *const jarr, i32 *restrict arr2D,
+                         u8 row_len, u8 col_len) {
     /* caller deals with memory */
     SDL_assert(jarr != NULL);
     SDL_assert(cJSON_IsArray(jarr));
@@ -634,7 +634,7 @@ void Filesystem_readJSON_2DArray(const struct cJSON *const jarr, i32 *restrict a
     }
 }
 
-void Filesystem_writeJSON_Array(struct cJSON *jarr, const i32 *restrict arr, size_t num) {
+void jsonio_Write_Array(struct cJSON *jarr, const i32 *restrict arr, size_t num) {
     SDL_Log("%zu", num);
     SDL_assert(arr != NULL);
     for (u8 i = 0; i < num; i++) {
@@ -643,8 +643,8 @@ void Filesystem_writeJSON_Array(struct cJSON *jarr, const i32 *restrict arr, siz
     }
 }
 
-void Filesystem_writeJSON_2DArray(struct cJSON *arr, const i32 *restrict arr2D, u8 row_len,
-                                  u8 col_len) {
+void jsonio_Write_2DArray(struct cJSON *arr, const i32 *restrict arr2D, u8 row_len,
+                          u8 col_len) {
     SDL_Log("%d %d", row_len, col_len);
     SDL_assert(arr != NULL);
     struct cJSON *jrow, *jnum;
@@ -660,7 +660,7 @@ void Filesystem_writeJSON_2DArray(struct cJSON *arr, const i32 *restrict arr2D, 
     }
 }
 
-void Filesystem_writeJSON_mvtcost(struct cJSON *jcost, const struct fMovement_cost *restrict cost) {
+void jsonio_Write_mvtcost(struct cJSON *jcost, const struct fMovement_cost *restrict cost) {
     SDL_assert(jcost != NULL);
     struct cJSON *jmages       = cJSON_CreateNumber(cost->mages);
     struct cJSON *jfliers      = cJSON_CreateNumber(cost->fliers);
@@ -682,8 +682,8 @@ void Filesystem_writeJSON_mvtcost(struct cJSON *jcost, const struct fMovement_co
     cJSON_AddItemToObject(jcost, "riders_fast", jriders_fast);
 }
 
-void Filesystem_readJSON_Tilestats(const struct cJSON      *const    jstats,
-                                   struct Tile_stats *restrict stats) {
+void jsonio_Read_Tilestats(const struct cJSON      *const    jstats,
+                           struct Tile_stats *restrict stats) {
     SDL_assert(jstats != NULL);
     struct cJSON *jdodge = cJSON_GetObjectItem(jstats, "Dodge");
     struct cJSON *jPprot = cJSON_GetObjectItem(jstats, "Pprot");
@@ -695,8 +695,8 @@ void Filesystem_readJSON_Tilestats(const struct cJSON      *const    jstats,
     stats->heal          = cJSON_GetNumberValue(jHeal);
 }
 
-void Filesystem_readJSON_Reinforce(const struct cJSON         *const jarrival,
-                                   struct Reinforcement *restrict arrival) {
+void jsonio_Read_Reinforce(const struct cJSON         *const jarrival,
+                           struct Reinforcement *restrict arrival) {
     SDL_assert(arrival  != NULL);
     SDL_assert(jarrival != NULL);
     struct cJSON *jid       = cJSON_GetObjectItem(jarrival,  "id");
@@ -716,8 +716,8 @@ void Filesystem_readJSON_Reinforce(const struct cJSON         *const jarrival,
     arrival->position.y = cJSON_GetNumberValue(jcol);
 }
 
-void Filesystem_writeJSON_arrival(      struct cJSON                  *jarrival,
-                                        const struct Reinforcement *restrict arrival) {
+void jsonio_Write_arrival(      struct cJSON                  *jarrival,
+                                const struct Reinforcement *restrict arrival) {
     SDL_assert(jarrival != NULL);
     struct cJSON *jid       = cJSON_CreateNumber(arrival->id);
     struct cJSON *jrow      = cJSON_CreateNumber(arrival->position.x);
@@ -735,8 +735,8 @@ void Filesystem_writeJSON_arrival(      struct cJSON                  *jarrival,
     cJSON_AddItemToObject(jarrival,  "Position", jposition);
 }
 
-void Filesystem_writeJSON_Tilestats(      struct cJSON      *restrict jstats,
-                                          const struct Tile_stats *restrict stats) {
+void jsonio_Write_Tilestats(      struct cJSON      *restrict jstats,
+                                  const struct Tile_stats *restrict stats) {
     SDL_assert(jstats != NULL);
     struct cJSON *jdodge = cJSON_CreateNumber(stats->dodge);
     struct cJSON *jPprot = cJSON_CreateNumber(stats->Pprot);
@@ -748,8 +748,8 @@ void Filesystem_writeJSON_Tilestats(      struct cJSON      *restrict jstats,
     cJSON_AddItemToObject(jstats, "Heal",  jheal);
 }
 
-void Filesystem_writeJSON_Unitstats(struct cJSON *restrict jstats,
-                                    const struct Unit_stats *restrict stats) {
+void jsonio_Write_Unitstats(struct cJSON *restrict jstats,
+                            const struct Unit_stats *restrict stats) {
     SDL_assert(jstats != NULL);
     struct cJSON *php   = cJSON_CreateNumber(stats->hp);
     struct cJSON *pstr  = cJSON_CreateNumber(stats->str);
@@ -775,8 +775,8 @@ void Filesystem_writeJSON_Unitstats(struct cJSON *restrict jstats,
     cJSON_AddItemToObject(jstats, "prof", pprof);
 }
 
-void Filesystem_writeJSON_Itemstats(struct cJSON *restrict jstats,
-                                    const struct Item_stats *restrict stats) {
+void jsonio_Write_Itemstats(struct cJSON *restrict jstats,
+                            const struct Item_stats *restrict stats) {
     SDL_assert(jstats != NULL);
     struct cJSON *jAP    = cJSON_CreateNumber(stats->AP);
     struct cJSON *juses  = cJSON_CreateNumber(stats->uses);
@@ -786,8 +786,8 @@ void Filesystem_writeJSON_Itemstats(struct cJSON *restrict jstats,
     cJSON_AddItemToObject(jstats, "AP", jAP);
 }
 
-void Filesystem_writeJSON_Wpnstats(      struct cJSON                *jstats,
-                                         const struct Weapon_stats *restrict stats) {
+void jsonio_Write_Wpnstats(      struct cJSON                *jstats,
+                                 const struct Weapon_stats *restrict stats) {
     SDL_assert(jstats != NULL);
     struct cJSON *pprot   = cJSON_CreateArray();
     struct cJSON *prange  = cJSON_CreateArray();
@@ -820,8 +820,8 @@ void Filesystem_writeJSON_Wpnstats(      struct cJSON                *jstats,
     // cJSON_AddItemToObject(jstats, "dmg_type", pdmg_type);
 }
 
-void Filesystem_readJSON_Item(const struct cJSON *const jitem,
-                              struct Inventory_item *restrict item) {
+void jsonio_Read_Item(const struct cJSON *const jitem,
+                      struct Inventory_item *restrict item) {
     SDL_assert(jitem != NULL);
     struct cJSON *jid       = cJSON_GetObjectItem(jitem, "id");
     struct cJSON *jused     = cJSON_GetObjectItem(jitem, "used");
@@ -831,7 +831,7 @@ void Filesystem_readJSON_Item(const struct cJSON *const jitem,
     item->infusion = cJSON_GetNumberValue(jinfusion);
 }
 
-void Filesystem_writeJSON_item(struct cJSON *jitem, const struct Inventory_item *restrict item) {
+void jsonio_Write_item(struct cJSON *jitem, const struct Inventory_item *restrict item) {
     SDL_assert(jitem != NULL);
     char buffer[DEFAULT_BUFFER_SIZE];
     cJSON *jid       = cJSON_CreateNumber(item->id);
@@ -842,8 +842,8 @@ void Filesystem_writeJSON_item(struct cJSON *jitem, const struct Inventory_item 
     cJSON_AddItemToObject(jitem, "infusion", jinfusion);
 }
 
-void Filesystem_readJSON_Itemstats(const struct cJSON *const jstats,
-                                   struct Item_stats *restrict stats) {
+void jsonio_Read_Itemstats(const struct cJSON *const jstats,
+                           struct Item_stats *restrict stats) {
     SDL_assert(jstats != NULL);
     struct cJSON *jAP    = cJSON_GetObjectItem(jstats, "AP");
     struct cJSON *juses  = cJSON_GetObjectItem(jstats, "uses");
@@ -853,8 +853,8 @@ void Filesystem_readJSON_Itemstats(const struct cJSON *const jstats,
     stats->price = cJSON_GetNumberValue(jprice);
 }
 
-void Filesystem_readJSON_Wpnstats(const struct cJSON        *const    jstats,
-                                  struct Weapon_stats *restrict  stats) {
+void jsonio_Read_Wpnstats(const struct cJSON        *const    jstats,
+                          struct Weapon_stats *restrict  stats) {
     SDL_assert(jstats != NULL);
     struct cJSON *jnum;
     size_t i;
@@ -890,8 +890,8 @@ void Filesystem_readJSON_Wpnstats(const struct cJSON        *const    jstats,
     // stats->hand = cJSON_GetNumberValue(jhand);
 }
 
-void Filesystem_readJSON_Unitstats(const struct cJSON      *const    jstats,
-                                   struct Unit_stats *restrict stats) {
+void jsonio_Read_Unitstats(const struct cJSON      *const    jstats,
+                           struct Unit_stats *restrict stats) {
     SDL_assert(stats != NULL);
     SDL_assert(jstats != NULL);
     struct cJSON *jhp   = cJSON_GetObjectItem(jstats, "hp");
@@ -920,7 +920,7 @@ void Filesystem_readJSON_Unitstats(const struct cJSON      *const    jstats,
     stats->prof = cJSON_GetNumberValue(jprof);
 }
 
-void Filesystem_printJSON(PHYSFS_file *fp, const struct cJSON *const json) {
+void jsonio_Print(PHYSFS_file *fp, const struct cJSON *const json) {
     /* Write json element bytes to buffer */
     char *buffer = cJSON_Print(json);
 

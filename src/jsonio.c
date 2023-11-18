@@ -146,7 +146,7 @@ void jsonio_writeJSON(s8 filename, const void *struct_ptr, bool append) {
 
     /* Actually write to the file */
     cJSON_AddItemToObject(json, elem_name.data, jelement);
-    Filesystem_printJSON(fp, json);
+    jsonio_Print(fp, json);
 
     /* Clean the file */
     PHYSFS_close(fp);

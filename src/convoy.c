@@ -190,7 +190,7 @@ void Convoy_readJSON(void *input, const cJSON *const in_jconvoy) {
     cJSON *jitem = NULL;
     cJSON_ArrayForEach(jitem, jitems) {
         struct Inventory_item tempitem = Inventory_item_default;
-        Filesystem_readJSON_Item(jitem, &tempitem);
+        jsonio_Read_Item(jitem, &tempitem);
         struct cJSON *jstored_type_exp = cJSON_GetObjectItem(jitem, "stored_type_exp");
         u16 stored_type_exp = cJSON_GetNumberValue(jstored_type_exp);
         Convoy_Deposit_byType(in_convoy, tempitem, stored_type_exp);
@@ -209,7 +209,7 @@ void Convoy_writeJSON(const void *input, cJSON *in_jconvoy) {
     cJSON_AddItemToObject(in_jconvoy, "bank", jbank);
     for (u8 i = 0; i < in_convoy->items_num; i++) {
         cJSON *jitem = cJSON_CreateObject();
-        Filesystem_writeJSON_item(jitem, &in_convoy->items[i]);
+        jsonio_Write_item(jitem, &in_convoy->items[i]);
         u16 stored_type_exp    = Convoy_Id2TypeExp(in_convoy, i);
         cJSON *jstored_type     = cJSON_CreateNumber(stored_type_exp);
         cJSON_AddItemToObject(jitem, "stored_type_exp", jstored_type);

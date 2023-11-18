@@ -1849,13 +1849,13 @@ void Unit_readJSON(void *input, const cJSON *const junit) {
     }
 
     SDL_Log("--set stats --");
-    Filesystem_readJSON_Unitstats(jcurrent_stats, &unit->current_stats);
+    jsonio_Read_Unitstats(jcurrent_stats, &unit->current_stats);
     SDL_assert(jcaps_stats);
-    Filesystem_readJSON_Unitstats(jcaps_stats, &unit->caps_stats);
+    jsonio_Read_Unitstats(jcaps_stats, &unit->caps_stats);
     SDL_assert(jbase_stats);
-    Filesystem_readJSON_Unitstats(jbase_stats, &unit->base_stats);
+    jsonio_Read_Unitstats(jbase_stats, &unit->base_stats);
     SDL_assert(jgrowths);
-    Filesystem_readJSON_Unitstats(jgrowths, &unit->growths);
+    jsonio_Read_Unitstats(jgrowths, &unit->growths);
     // DESIGN QUESTION: Check that current stats fit with bases + levelups?
     //  - No levelups mean NO GRAPHS
     //  => Check if it fits
@@ -1873,7 +1873,7 @@ void Unit_readJSON(void *input, const cJSON *const junit) {
 
     unit->grown_stats = DARR_INIT(unit->grown_stats, struct Unit_stats, SOTA_MAX_LEVEL / 8);
     while (jlevelup != NULL) {
-        Filesystem_readJSON_Unitstats(jlevelup, &temp_ustats);
+        jsonio_Read_Unitstats(jlevelup, &temp_ustats);
         DARR_PUT(unit->grown_stats, temp_ustats);
         jlevelup = jlevelup->next;
     };
@@ -1890,7 +1890,7 @@ void Unit_readJSON(void *input, const cJSON *const junit) {
     cJSON *jitem;
     cJSON_ArrayForEach(jitem, jitems) {
         struct Inventory_item temp_item;
-        Filesystem_readJSON_Item(jitem, &temp_item);
+        jsonio_Read_Item(jitem, &temp_item);
         if (temp_item.id > ITEM_NULL)
             Unit_Item_Take(unit, temp_item);
     }
@@ -1920,13 +1920,13 @@ void Unit_writeJSON(const void *input, cJSON *junit) {
     cJSON *jcurrent_hp    = cJSON_CreateNumber(unit->current_hp);
     cJSON *jclass_index   = cJSON_CreateNumber(unit->class);
     cJSON *jcurrent_stats = cJSON_CreateObject();
-    Filesystem_writeJSON_Unitstats(jcurrent_stats, &unit->current_stats);
+    jsonio_Write_Unitstats(jcurrent_stats, &unit->current_stats);
     cJSON *jcaps_stats    = cJSON_CreateObject();
-    Filesystem_writeJSON_Unitstats(jcaps_stats, &unit->caps_stats);
+    jsonio_Write_Unitstats(jcaps_stats, &unit->caps_stats);
     cJSON *jbase_stats    = cJSON_CreateObject();
-    Filesystem_writeJSON_Unitstats(jbase_stats, &unit->base_stats);
+    jsonio_Write_Unitstats(jbase_stats, &unit->base_stats);
     cJSON *jgrowths       = cJSON_CreateObject();
-    Filesystem_writeJSON_Unitstats(jgrowths, &unit->growths);
+    jsonio_Write_Unitstats(jgrowths, &unit->growths);
     cJSON *jgrown         = cJSON_CreateObject();
     cJSON *jlevel         = NULL;
     cJSON *jlevelup       = NULL;
@@ -1951,14 +1951,14 @@ void Unit_writeJSON(const void *input, cJSON *junit) {
         jlevelup = cJSON_CreateObject();
         jlevel = cJSON_CreateNumber(i - unit->base_exp / SOTA_100PERCENT + 2);
         cJSON_AddItemToObject(jlevelup, "level", jlevel);
-        Filesystem_writeJSON_Unitstats(jlevelup, &unit->grown_stats[i]);
+        jsonio_Write_Unitstats(jlevelup, &unit->grown_stats[i]);
         cJSON_AddItemToObject(jgrown, "Level-up", jlevelup);
         // +2 -> +1 start at lvl1, +1 cause you level to level 2
     }
     cJSON *jitems = cJSON_CreateArray();
     for (u8 item_num = 0; item_num < DEFAULT_EQUIPMENT_SIZE; item_num ++) {
         cJSON *jitem = cJSON_CreateObject();
-        Filesystem_writeJSON_item(jitem, &unit->_equipment[item_num]);
+        jsonio_Write_item(jitem, &unit->_equipment[item_num]);
         cJSON_AddItemToArray(jitems, jitem);
     }
     cJSON_AddItemToObject(junit, "Items", jitems);
