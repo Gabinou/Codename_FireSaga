@@ -48,7 +48,7 @@ void RNG_Get_xoroshiro256ss(u64 *s);
 void RNG_Init_tinymt(struct TINYMT32_T *tinymt);
 
 /* -- API -- */
-bool RNG_checkRate(i16 rate, i16 mode);
+b32 RNG_checkRate(i16 rate, i16 mode);
 
 /* -- Internals -- */
 /* - Uniform - */
@@ -57,8 +57,8 @@ u64 RNG_openBSD_u64(u64 max, u64 min);
 u32 RNG_openBSD_u32(struct TINYMT32_T *tinymt, u32 min, u32 max);
 
 /* - Checkers - */
-bool RNG_single_roll(u8 RN,  u8 hit);
-bool RNG_double_roll(u8 RN1, u8 RN2, u8 hit);
+b32 RNG_single_roll(u8 RN,  u8 hit);
+b32 RNG_double_roll(u8 RN1, u8 RN2, u8 hit);
 
 /* - Gaussian - */
 u8 *RNG_boxmuller( u8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev);
@@ -78,7 +78,7 @@ u8 *RNG_boxmuller( u8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev);
 struct RNG_Sequence { /* Sequence of hits/misses in a row */
     i8 len;
     i8 eff_rate;
-    bool hit; /* 0 if sequence of misses, 1 of hits */
+    b32 hit; /* 0 if sequence of misses, 1 of hits */
 };
 
 /* -- ants -- */
@@ -98,8 +98,8 @@ extern float sb_drop_table[RNG_SB_BASE_NUM];
 
 /* -- Functions -- */
 u16 SB_Rate_Drop(u16 rate, u16 n);
-void RNG_checkSequence_twoWay(struct RNG_Sequence *sequence, bool hit);
-void RNG_checkSequence_oneWay(struct RNG_Sequence *sequence, bool hit);
+void RNG_checkSequence_twoWay(struct RNG_Sequence *sequence, b32 hit);
+void RNG_checkSequence_oneWay(struct RNG_Sequence *sequence, b32 hit);
 
 /* REFERENCES */
 /* [1] Lemire, Daniel. "Fast random integer generation in an interval." ACM Transactions on Modeling and Computer Simulation (TOMACS) 29.1 (2019): 1-12. */

@@ -101,11 +101,11 @@ u8 RNG_URN(void) {
     return (URN_debug >= 0 ? URN_debug : out);
 }
 
-bool RNG_single_roll(u8 RN, u8 rate) {
+b32 RNG_single_roll(u8 RN, u8 rate) {
     return (RN < rate);
 }
 
-bool RNG_double_roll(u8 RN1, u8 RN2, u8 rate) {
+b32 RNG_double_roll(u8 RN1, u8 RN2, u8 rate) {
     return (((RN1 + RN2) / 2) < rate);
 }
 
@@ -162,15 +162,15 @@ u64 RNG_openBSD_u64(u64 min, u64 max) {
     return (out);
 }
 
-bool RNG_checkRate(i16 rate, i16 mode) {
-    bool hit = false;
+b32 RNG_checkRate(i16 rate, i16 mode) {
+    b32 hit = false;
     u8 RN1, RN2;
     switch (mode) {
-        case GAME_RN_SINGLE:
+        case SOTA_RN_SINGLE:
             RN1 = RNG_URN();
             hit = RNG_single_roll(RN1, rate);
             break;
-        case GAME_RN_DOUBLE:
+        case SOTA_RN_DOUBLE:
         default:
             RN1 = RNG_URN();
             RN2 = RNG_URN();
@@ -181,7 +181,7 @@ bool RNG_checkRate(i16 rate, i16 mode) {
 }
 
 /* --- RNG SEQUENCE BREAKER (SB) --- */
-void RNG_checkSequence_twoWay(struct RNG_Sequence *sequence, bool draw) {
+void RNG_checkSequence_twoWay(struct RNG_Sequence *sequence, b32 draw) {
     /* Two way Sequence Breaker. Saves sequence.len for both hit or miss sequences.
         When a sequence is broken, the sequence->hit value is updated.
         If the next draw value is equal to the new hit value, a new sequence begins.
@@ -194,7 +194,7 @@ void RNG_checkSequence_twoWay(struct RNG_Sequence *sequence, bool draw) {
     }
 }
 
-void RNG_checkSequence_oneWay(struct RNG_Sequence *sequence, bool draw) {
+void RNG_checkSequence_oneWay(struct RNG_Sequence *sequence, b32 draw) {
     /* One way Sequence Breaker. Input sequence->hit is never changed here.
         Only saves sequence->len for user sequence->hit.
     */

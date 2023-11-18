@@ -4,7 +4,7 @@
 #include "macros.h"
 
 /* -- Various defines -- */
-#define SOTA_RNG GAME_RN_DOUBLE
+#define SOTA_RNG SOTA_RN_DOUBLE
 
 #define RENDER2WINDOW /* VERY FAST */
 

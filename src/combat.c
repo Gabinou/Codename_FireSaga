@@ -330,7 +330,7 @@ void Compute_Combat_Attack(struct Combat_Phase  *phase,
     #endif /* RNG_SEQUENCE_BREAKER_MISS */
 
     /* -- checking hit or miss -- */
-    temp_attack.hit = RNG_checkRate(attacker->hit_sequence.eff_rate, SOTA_RNG);
+    temp_attack.hit = RNG_checkRate(attacker->hit_sequence.eff_rate, SOTA_RN_DOUBLE);
     /* -- checking sequence -- */
     #if defined(RNG_SEQUENCE_BREAKER_HIT) || defined(RNG_SEQUENCE_BREAKER_MISS)
     RNG_checkSequence_twoWay(&attacker->hit_sequence, temp_attack.hit);

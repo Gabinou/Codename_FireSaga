@@ -557,17 +557,20 @@ void test_combat_sequence() {
 
     struct Combat_Attack attack = {0};
     attack.hit = true;
-    u8 hit_rate = 50;
-    u8 crit_rate = 10;
+    u8 hit_rate     = 50;
+    u8 crit_rate    = 10;
 
     struct Damage damage = {0};
     damage.dmg[DMG_TYPE_PHYSICAL] = 8;
     damage.dmg_crit[DMG_TYPE_PHYSICAL] = 24;
 
     URN_debug = 11; /* HIT/NOCRIT */
+    SDL_assert(URN_debug == RNG_URN());
+    SDL_assert(RNG_double_roll(URN_debug, URN_debug, hit_rate) == true);
 
     Compute_Combat_Attack(&phase, darr_attacks, damage, &Silou, hit_rate, crit_rate);
     attack = darr_attacks[DARR_NUM(darr_attacks) - 1];
+    nourstest_true(attack.hit  == true);
     nourstest_true(attack.crit == false);
     nourstest_true(Silou.hit_sequence.hit == true);
     nourstest_true(Silou.hit_sequence.len == 1);
@@ -579,8 +582,8 @@ void test_combat_sequence() {
 
     Compute_Combat_Attack(&phase, darr_attacks, damage, &Silou, hit_rate, crit_rate);
     attack = darr_attacks[DARR_NUM(darr_attacks) - 1];
-    nourstest_true(attack.hit == true);
-    nourstest_true(attack.crit == false);
+    nourstest_true(attack.hit   == true);
+    nourstest_true(attack.crit  == false);
     nourstest_true(Silou.hit_sequence.hit == true);
     nourstest_true(Silou.hit_sequence.len == 2);
     nourstest_true(Silou.hit_sequence.eff_rate == hit_rate);
@@ -591,8 +594,8 @@ void test_combat_sequence() {
 
     Compute_Combat_Attack(&phase, darr_attacks, damage, &Silou, hit_rate, crit_rate);
     attack = darr_attacks[DARR_NUM(darr_attacks) - 1];
-    nourstest_true(attack.hit == true);
-    nourstest_true(attack.crit == false);
+    nourstest_true(attack.hit   == true);
+    nourstest_true(attack.crit  == false);
     nourstest_true(Silou.hit_sequence.hit == true);
     nourstest_true(Silou.hit_sequence.len == 3);
     nourstest_true(Silou.hit_sequence.eff_rate == hit_rate);
@@ -605,7 +608,7 @@ void test_combat_sequence() {
     Compute_Combat_Attack(&phase, darr_attacks, damage, &Silou, hit_rate, crit_rate);
     nourstest_true(DARR_NUM(darr_attacks) == 4);
     attack = darr_attacks[DARR_NUM(darr_attacks) - 1];
-    nourstest_true(attack.hit == true);
+    nourstest_true(attack.hit  == true);
     nourstest_true(attack.crit == false);
     nourstest_true(Silou.hit_sequence.hit == true);
     nourstest_true(Silou.hit_sequence.len == 4);

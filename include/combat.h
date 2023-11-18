@@ -54,15 +54,15 @@ struct Combat_Phase {
     // skill_multiplier: Applies to every higher priority attack in phase
     u8     skill_multiplier;
     u8     attack_num;
-    b32    attacker    : 1;
+    b32    attacker;
 } Combat_Phase_default;
 
 /* -- Combat_Attack -- */
 struct Combat_Attack {
     u8     total_damage; // total damage taken, depending on hit/crit
-    b32    hit         : 1;
-    b32    crit        : 1;
-    b32    attacker    : 1;
+    b32    hit;
+    b32    crit;
+    b32    attacker;
 } Combat_Attack_default;
 
 /* -- Combat_Flow -- */
