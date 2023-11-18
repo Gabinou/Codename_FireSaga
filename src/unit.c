@@ -180,7 +180,7 @@ struct Unit Unit_Nibal_make() {
     return (Nibal_unit);
 }
 
-/* --- Constructors/Destructors --- */
+/* --- ructors/Destructors --- */
 void Unit_Init(struct Unit *unit) {
     SDL_assert(unit != NULL);
     Unit_Free(unit);
@@ -248,7 +248,7 @@ struct Inventory_item *Unit_Item_Strong(struct Unit *unit, int strong_i) {
     return (&unit->_equipment[Unit_Id_Strong(unit, strong_i)]);
 }
 
-int Unit_Hand_Strong2Side(const struct Unit *unit, int strong_i) {
+int Unit_Hand_Strong2Side( struct Unit *unit, int strong_i) {
     /*  strong in out   strong    in    out
     *      0   0   0     left   strong  left    --> XOR
     *      0   1   1     left    weak   right   --> XOR
@@ -258,7 +258,7 @@ int Unit_Hand_Strong2Side(const struct Unit *unit, int strong_i) {
     return (Unit_Hand_Strong(unit) ^ strong_i);
 }
 
-int Unit_Hand_Side2Strong(const struct Unit *unit, int side_i) {
+int Unit_Hand_Side2Strong( struct Unit *unit, int side_i) {
     /*  strong in out   strong    in    out
     *      0   0   0     left    left  strong   --> XOR
     *      0   1   1     left    right  weak    --> XOR
@@ -269,7 +269,7 @@ int Unit_Hand_Side2Strong(const struct Unit *unit, int side_i) {
 }
 
 /* Note: weakhand = 1 - stronghand */
-int Unit_Hand_Strong(const struct Unit *unit) {
+int Unit_Hand_Strong( struct Unit *unit) {
     SDL_assert(unit != NULL);
     return (SotA_Hand_Strong(unit->handedness));
 }
@@ -343,7 +343,7 @@ struct Unit_stats Unit_getStats(struct Unit *unit) {
 }
 
 /* --- Second-order info --- */
-u8 Unit_mvtType(const struct Unit *unit) {
+u8 Unit_mvtType( struct Unit *unit) {
     return (class_mvt_types[unit->class]);
 }
 
@@ -387,13 +387,13 @@ bool Unit_All_Usable(struct Unit *unit) {
     return (all_usable);
 }
 
-bool Unit_Eq_Usable(const struct Unit *unit, int archetype, int i) {
+bool Unit_Eq_Usable( struct Unit *unit, int archetype, int i) {
     SDL_assert(i >= 0);
     SDL_assert(i < DEFAULT_EQUIPMENT_SIZE);
     return (Unit_Item_Usable(unit, archetype, unit->_equipment[i].id));
 }
 
-bool Unit_Item_Usable(const struct Unit *unit, int archetype, int id) {
+bool Unit_Item_Usable( struct Unit *unit, int archetype, int id) {
     bool usable = false;
     do {
         /* -- If item select, everything is usable --  */
@@ -421,7 +421,7 @@ bool Unit_Item_Usable(const struct Unit *unit, int archetype, int id) {
 }
 
 /* --- Skills --- */
-bool Unit_hasSkill(const struct Unit *unit, u64 skill) {
+bool Unit_hasSkill( struct Unit *unit, u64 skill) {
     return ((unit->skills & skill) > 0);
 }
 
@@ -814,7 +814,7 @@ void Unit_dies(struct Unit *unit) {
 }
 
 /* Can unit equip weapon input item? */
-bool Unit_canEquip(const struct Unit *unit, i16 id) {
+bool Unit_canEquip( struct Unit *unit, i16 id) {
     if (id <= ITEM_NULL) {
         return (false);
     }
@@ -827,14 +827,14 @@ bool Unit_canEquip(const struct Unit *unit, i16 id) {
 }
 
 /* Can unit equip weapon currently in hand? */
-bool Unit_canEquip_inHand(const struct Unit *unit, bool hand) {
+bool Unit_canEquip_inHand( struct Unit *unit, bool hand) {
     SDL_assert(unit->weapons_dtab != NULL);
     i16 hand_id = unit->_equipment[hand].id;
     return (Unit_canEquip_Hand(unit, hand_id, hand));
 }
 
 /* Can unit equip arbitrary weapon in its hand? */
-bool Unit_canEquip_Hand(const struct Unit *unit, i16 id, bool hand) {
+bool Unit_canEquip_Hand( struct Unit *unit, i16 id, bool hand) {
     if (id <= ITEM_NULL) {
         return (false);
     }
@@ -860,7 +860,7 @@ bool Unit_canEquip_Hand(const struct Unit *unit, i16 id, bool hand) {
 }
 
 /* Can unit equip arbitrary weapon with a certain type? */
-bool Unit_canEquip_Type(const struct Unit *unit, i16 id) {
+bool Unit_canEquip_Type( struct Unit *unit, i16 id) {
     /* Unequippable if ITEM_NULL */
     if (id <= ITEM_NULL) {
         return (false);
@@ -954,7 +954,7 @@ bool Unit_canDance(struct Unit *unit) {
 }
 
 /* - Unit has any usable staff in Equipment? - */
-int Unit_canStaff_Eq(const struct  Unit *unit) {
+int Unit_canStaff_Eq( struct  Unit *unit) {
 
     for (int i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
         struct Inventory_item item = unit->_equipment[i];
@@ -966,7 +966,7 @@ int Unit_canStaff_Eq(const struct  Unit *unit) {
 }
 
 /* - Can unit equip a staff in strong hand? - */
-int Unit_canStaff(const struct Unit *unit) {
+int Unit_canStaff( struct Unit *unit) {
 
     bool out = false, stronghand = Unit_Hand_Strong(unit);
 
@@ -979,7 +979,7 @@ int Unit_canStaff(const struct Unit *unit) {
 }
 
 /* - Can unit equip a staff with only one hand? - */
-int Unit_canStaff_oneHand(const struct Unit *unit) {
+int Unit_canStaff_oneHand( struct Unit *unit) {
     return (Unit_hasSkill(unit, PASSIVE_SKILL_STAFF_ONE_HAND));
 }
 
@@ -1035,7 +1035,7 @@ bool _Unit_canAttack(struct Unit *unit, bool hand) {
 
 
 
-struct Weapon *Unit_Get_Equipped_Weapon(const struct Unit *unit, bool hand) {
+struct Weapon *Unit_Get_Equipped_Weapon( struct Unit *unit, bool hand) {
     if (!unit->equipped[hand])
         return (NULL);
 
@@ -1273,7 +1273,7 @@ struct Range *Unit_Range_Item(struct Unit   *unit, int i) {
 *       - Menu Option checking
 */
 
-struct Range *_Unit_Range_Combine(const struct Unit   *unit, struct Range *range,
+struct Range *_Unit_Range_Combine( struct Unit   *unit, struct Range *range,
                                   bool equipped, int archetype) {
     /* - Finds range of ANYTHING - */
     int num = equipped ? UNIT_HANDS_NUM : DEFAULT_EQUIPMENT_SIZE;
@@ -1381,12 +1381,12 @@ void Ranges_Combine(struct Range *r1, struct Range r2) {
     r1->min = r1->min < r2.min ? r1->min : r2.min; /* Best min range is smallest */
 }
 
-bool Unit_Equipment_Full(const struct Unit *unit) {
+bool Unit_Equipment_Full( struct Unit *unit) {
     return (unit->num_equipment == DEFAULT_EQUIPMENT_SIZE);
 }
 
 
-void Unit_Equipment_Print(const struct Unit *unit) {
+void Unit_Equipment_Print( struct Unit *unit) {
     SDL_assert(unit != NULL);
     for (u8 i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
         if (unit->_equipment[i].id == ITEM_NULL) {
@@ -1793,7 +1793,7 @@ void Unit_Equipped_Shields_Deplete(struct Unit *unit) {
 }
 
 /* --- I/O --- */
-void Unit_readJSON(void *input, const cJSON *const junit) {
+void Unit_readJSON(void *input,  cJSON * junit) {
     struct Unit *unit = (struct Unit *)input;
     SDL_assert(unit);
     SDL_Log("-- Get json objects --");
@@ -1903,7 +1903,7 @@ void Unit_readJSON(void *input, const cJSON *const junit) {
 }
 
 
-void Unit_writeJSON(const void *input, cJSON *junit) {
+void Unit_writeJSON( void *input, cJSON *junit) {
     struct Unit *unit = (struct Unit *)input;
     SDL_assert(unit);
     SDL_assert(junit);
@@ -1975,8 +1975,7 @@ u8 Unit_computeEffectivefactor(struct Unit *attacker, struct Unit *defender) {
     Function computes the highest brave factor among equipped weapons.
     This means that -> Brave factor DOES NOT STACK <-
 */
-u8 Unit_Brave(const struct Unit *unit) {
-
+u8 Unit_Brave(struct Unit *unit) {
     SDL_assert(unit);
     u8 out_brave   = 1;
     u64 temp_effect = 0;

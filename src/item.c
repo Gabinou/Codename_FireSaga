@@ -331,15 +331,15 @@ void Item_All_Reload(struct dtab *items_dtab) {
     }
 }
 
-void Item_writeJSON(const void * input, cJSON * jitem) {
+void Item_writeJSON(void *_input, cJSON *jitem) {
     /* - Preliminaries - */
-    const struct Item *item = input;
+    struct Item *_item = _input;
     SDL_assert(jitem != NULL);
-    cJSON *jid        = cJSON_CreateNumber(item->id);
-    cJSON *jname      = cJSON_CreateString(item->name.data);
+    cJSON *jid        = cJSON_CreateNumber(_item->id);
+    cJSON *jname      = cJSON_CreateString(_item->name.data);
     cJSON *jbonus     = cJSON_CreateObject();
     cJSON *jmalus     = cJSON_CreateObject();
-    cJSON *jcanSell   = cJSON_CreateBool(item->canSell);
+    cJSON *jcanSell   = cJSON_CreateBool(_item->canSell);
     cJSON *jusers     = cJSON_CreateObject();
     cJSON *jusers_ids = cJSON_CreateArray();
     cJSON *jusers_id  = NULL;
@@ -347,22 +347,22 @@ void Item_writeJSON(const void * input, cJSON * jitem) {
     cJSON *jclass_ids = cJSON_CreateArray();
     cJSON *jclass_id  = NULL;
 
-    jsonio_Write_Unitstats(jmalus, &(item->malus_stats));
-    jsonio_Write_Unitstats(jbonus, &(item->bonus_stats));
+    jsonio_Write_Unitstats(jmalus, &(_item->malus_stats));
+    jsonio_Write_Unitstats(jbonus, &(_item->bonus_stats));
 
     /* - Users - */
-    if (item->users != NULL) {
-        for (i16 i = 0; i < DARR_NUM(item->users); i++) {
-            jusers_id = cJSON_CreateNumber(item->users[i]);
+    if (_item->users != NULL) {
+        for (i16 i = 0; i < DARR_NUM(_item->users); i++) {
+            jusers_id = cJSON_CreateNumber(_item->users[i]);
             cJSON_AddItemToArray(jusers_ids, jusers_id);
         }
     }
     cJSON_AddItemToObject(jusers, "id", jusers_ids);
 
     /* - Classes - */
-    if (item->classes != NULL) {
-        for (i16 i = 0; i < DARR_NUM(item->classes); i++) {
-            jclass_id = cJSON_CreateNumber(item->classes[i]);
+    if (_item->classes != NULL) {
+        for (i16 i = 0; i < DARR_NUM(_item->classes); i++) {
+            jclass_id = cJSON_CreateNumber(_item->classes[i]);
             cJSON_AddItemToArray(jclass_ids, jclass_id);
         }
     }
@@ -371,9 +371,9 @@ void Item_writeJSON(const void * input, cJSON * jitem) {
     /* - Passive effects - */
     cJSON *jpassives = cJSON_CreateObject();
     cJSON *jpassive = NULL;
-    jpassive = cJSON_CreateNumber(item->passive);
+    jpassive = cJSON_CreateNumber(_item->passive);
     cJSON_AddItemToObject(jpassives, "id", jpassive);
-    s8 *effects = Names_wpnEffects(item->passive);
+    s8 *effects = Names_wpnEffects(_item->passive);
     for (i16 i = 0; i < DARR_NUM(effects); i++) {
         jpassive = cJSON_CreateString(effects[i].data);
         cJSON_AddItemToObject(jpassives, "Effect", jpassive);
@@ -384,9 +384,9 @@ void Item_writeJSON(const void * input, cJSON * jitem) {
     /* - Types - */
     cJSON *jtypes = cJSON_CreateObject();
     cJSON *jtype2 = NULL;
-    jtype2 = cJSON_CreateNumber(item->type);
+    jtype2 = cJSON_CreateNumber(_item->type);
     cJSON_AddItemToObject(jtypes, "id", jtype2);
-    s8 *types = Names_wpnType(item->type);
+    s8 *types = Names_wpnType(_item->type);
     for (i16 i = 0; i < DARR_NUM(types); i++) {
         jtype2 = cJSON_CreateString(types[i].data);
         cJSON_AddItemToObject(jtypes, "Type", jtype2);
@@ -397,7 +397,7 @@ void Item_writeJSON(const void * input, cJSON * jitem) {
     /* -- Adding to JSON -- */
     cJSON_AddItemToObject(jitem,   "Name",        jname);
     cJSON_AddItemToObject(jitem,   "id",          jid);
-    cJSON_AddStringToObject(jitem, "Description", item->description);
+    cJSON_AddStringToObject(jitem, "Description", _item->description);
     cJSON_AddItemToObject(jitem,   "Bonus",       jbonus);
     cJSON_AddItemToObject(jitem,   "Users",       jusers);
     cJSON_AddItemToObject(jitem,   "Class",       jclass);
@@ -407,37 +407,36 @@ void Item_writeJSON(const void * input, cJSON * jitem) {
     cJSON_AddItemToObject(jitem,   "Types",       jtypes);
 
     /* - Writing stats - */
-    if (item->write_stats) {
+    if (_item->write_stats) {
         cJSON *jstats = cJSON_CreateObject();
-        const struct Item_stats *stats = &(item->stats);
-        jsonio_Write_Itemstats(jstats, stats);
+        struct Item_stats *_stats = &(_item->stats);
+        jsonio_Write_Itemstats(jstats, _stats);
         cJSON_AddItemToObject(jitem, "Stats", jstats);
     }
 }
 
-void Item_readJSON(void *input, const cJSON *jitem) {
-    SDL_assert(jitem != NULL);
+void Item_readJSON(void *input, cJSON *_jitem) {
+    SDL_assert(_jitem != NULL);
 
     /* - Preliminaries - */
     struct Item *item = (struct Item *)input;
     Item_Free(item);
-    cJSON *jname        = cJSON_GetObjectItemCaseSensitive(jitem,    "Name");
-    cJSON *jid          = cJSON_GetObjectItemCaseSensitive(jitem,    "id");
-    cJSON *jdescription = cJSON_GetObjectItemCaseSensitive(jitem,    "Description");
-    cJSON *jbonus_stats = cJSON_GetObjectItemCaseSensitive(jitem,    "Bonus");
-    cJSON *jmalus_stats = cJSON_GetObjectItemCaseSensitive(jitem,    "Malus");
-    cJSON *jcanSell     = cJSON_GetObjectItemCaseSensitive(jitem,    "canSell");
-    cJSON *jcanRepair   = cJSON_GetObjectItemCaseSensitive(jitem,    "canRepair");
-    cJSON *jusers       = cJSON_GetObjectItemCaseSensitive(jitem,    "Users");
-    cJSON *jstats       = cJSON_GetObjectItemCaseSensitive(jitem,    "Stats");
-    cJSON *jeffects     = cJSON_GetObjectItemCaseSensitive(jitem,    "Effects");
+    cJSON *jname        = cJSON_GetObjectItemCaseSensitive(_jitem,    "Name");
+    cJSON *jid          = cJSON_GetObjectItemCaseSensitive(_jitem,    "id");
+    cJSON *jdescription = cJSON_GetObjectItemCaseSensitive(_jitem,    "Description");
+    cJSON *jbonus_stats = cJSON_GetObjectItemCaseSensitive(_jitem,    "Bonus");
+    cJSON *jmalus_stats = cJSON_GetObjectItemCaseSensitive(_jitem,    "Malus");
+    cJSON *jcanSell     = cJSON_GetObjectItemCaseSensitive(_jitem,    "canSell");
+    cJSON *jcanRepair   = cJSON_GetObjectItemCaseSensitive(_jitem,    "canRepair");
+    cJSON *jusers       = cJSON_GetObjectItemCaseSensitive(_jitem,    "Users");
+    cJSON *jstats       = cJSON_GetObjectItemCaseSensitive(_jitem,    "Stats");
+    cJSON *jeffects     = cJSON_GetObjectItemCaseSensitive(_jitem,    "Effects");
     cJSON *jpassive     = cJSON_GetObjectItemCaseSensitive(jeffects, "id");
     cJSON *jactive      = cJSON_GetObjectItemCaseSensitive(jeffects, "active");
-    cJSON *jprice       = cJSON_GetObjectItemCaseSensitive(jitem,    "Price");
-    cJSON *jtypes       = cJSON_GetObjectItemCaseSensitive(jitem,    "Types");
+    cJSON *jprice       = cJSON_GetObjectItemCaseSensitive(_jitem,    "Price");
+    cJSON *jtypes       = cJSON_GetObjectItemCaseSensitive(_jitem,    "Types");
     cJSON *jtypeid      = cJSON_GetObjectItemCaseSensitive(jtypes,   "id");
     item->id            = cJSON_GetNumberValue(jid); /* returns 0 if junit is NULL */
-
 
     /* - Users - */
     cJSON *jusers_ids = cJSON_GetObjectItem(jusers, "id");

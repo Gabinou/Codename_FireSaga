@@ -90,15 +90,15 @@ void Mobj_Link_Free(struct Mobj_Link *mobj);
 
 /* --- I/O --- */
 /* -- Tile -- */
-void Tile_readJSON(       void *input, const  cJSON *const jtile);
-void Tile_writeJSON(const void *input,        cJSON *jtile);
+void Tile_readJSON( void *input, cJSON *jtile);
+void Tile_writeJSON(void *input, cJSON *jtile);
 
 /* -- Mobj -- */
-void Door_writeJSON(     const void *input,       cJSON *j);
-void Chest_writeJSON(    const void *input,       cJSON *j);
-void Mobj_Link_readJSON(       void *input, const cJSON *j);
-void Mobj_Link_writeJSON(const void *input,       cJSON *j);
-void Breakable_writeJSON(const void *input,       cJSON *j);
+void Door_writeJSON(     void *input, cJSON *j);
+void Chest_writeJSON(    void *input, cJSON *j);
+void Mobj_Link_readJSON( void *input, cJSON *j);
+void Mobj_Link_writeJSON(void *input, cJSON *j);
+void Breakable_writeJSON(void *input, cJSON *j);
 
 /* --- Internals --- */
 void Tile_makeMvtCostarray(struct Tile *tile);

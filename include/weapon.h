@@ -30,16 +30,16 @@ struct WpnorItem {
 };
 extern struct WpnorItem WpnorItem_default;
 
-/* --- Constructors/Destructors --- */
+/* --- ructors/Destructors --- */
 void Weapon_Free(struct Weapon *wpn);
 void Weapon_Init(struct Weapon *wpn);
 
 /* --- isCan? --- */
-u16 Weapon_TypeExp(          const struct Weapon *wpn);
-bool Weapon_canInfuse(        const struct Weapon *wpn, const struct Inventory_item *item);
-bool Weapon_canAttack(              struct Weapon *wpn);
-bool Weapon_canAttackfromID(  const struct Weapon *wpn);
-bool Weapon_canAttackfromType(const struct Weapon *wpn);
+u16 Weapon_TypeExp(           struct Weapon *wpn);
+bool Weapon_canInfuse(        struct Weapon *wpn,  struct Inventory_item *item);
+bool Weapon_canAttack(        struct Weapon *wpn);
+bool Weapon_canAttackfromID(  struct Weapon *wpn);
+bool Weapon_canAttackfromType(struct Weapon *wpn);
 
 bool Weapon_isStaff(   u16 id);
 bool Weapon_isShield(  u16 id);
@@ -47,8 +47,8 @@ bool Weapon_isOffhand( u16 id);
 bool Weapon_ID_isValid(u16 id);
 
 /* --- I/O --- */
-void Weapon_readJSON(       void *input, const cJSON *const json);
-void Weapon_writeJSON(const void *input,       cJSON       *json);
+void Weapon_readJSON( void *input, cJSON *json);
+void Weapon_writeJSON(void *input, cJSON *json);
 
 void Weapon_Load(     struct dtab *weapons_dtab, i16 id);
 void Weapon_Save(     struct dtab *weapons_dtab, i16 id);
@@ -62,8 +62,8 @@ void Weapons_All_Reload(struct dtab *weapons_dtab);
 s8 Weapon_Filename(s8 filename, i16 id);
 
 /* --- Stats --- */
-int Weapon_Stat(        const struct Weapon *wpn, i16 s);
-int Weapon_Stat_inRange(const struct Weapon *wpn, i16 s, int d);
+int Weapon_Stat(         struct Weapon *wpn, i16 s);
+int Weapon_Stat_inRange( struct Weapon *wpn, i16 s, int d);
 
 /* --- Repair --- */
 // Making weapons repairable through MAGIC only is baka.

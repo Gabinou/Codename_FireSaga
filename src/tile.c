@@ -49,21 +49,21 @@ void Mobj_Link_Free(struct Mobj_Link *mobj) {
         SDL_free(mobj->abspos_linked);
 }
 
-void Mobj_Link_writeJSON(const void *input, cJSON *jmobj) {
-    struct Mobj_Link *mobj = (struct Mobj_Link *) input;
+void Mobj_Link_writeJSON(void *_input, cJSON *jmobj) {
+    struct Mobj_Link *_mobj = (struct Mobj_Link *) _input;
     SDL_assert(jmobj != NULL);
     cJSON *jnum, *jrelpos, *jabspos;
     cJSON *jlinked = cJSON_CreateObject();
-    cJSON *jnum_linked = cJSON_CreateNumber(mobj->num_linked);
+    cJSON *jnum_linked = cJSON_CreateNumber(_mobj->num_linked);
     jrelpos = cJSON_CreateArray();
     jabspos = cJSON_CreateArray();
-    for (size_t i = 0; i < (mobj->num_linked * 2); i++) {
-        if (mobj->relpos_linked != NULL) {
-            jnum = cJSON_CreateNumber(mobj->relpos_linked[i]);
+    for (size_t i = 0; i < (_mobj->num_linked * 2); i++) {
+        if (_mobj->relpos_linked != NULL) {
+            jnum = cJSON_CreateNumber(_mobj->relpos_linked[i]);
             cJSON_AddItemToArray(jrelpos, jnum);
         }
-        if (mobj->abspos_linked != NULL) {
-            jnum = cJSON_CreateNumber(mobj->abspos_linked[i]);
+        if (_mobj->abspos_linked != NULL) {
+            jnum = cJSON_CreateNumber(_mobj->abspos_linked[i]);
             cJSON_AddItemToArray(jabspos, jnum);
         }
     }
@@ -72,25 +72,24 @@ void Mobj_Link_writeJSON(const void *input, cJSON *jmobj) {
     cJSON_AddItemToObject(jlinked, "num", jnum_linked);
     cJSON_AddItemToObject(jmobj, "linked", jlinked);
     cJSON *j2change = cJSON_CreateObject();
-    // cJSON * jnum2change = cJSON_CreateNumber(mobj->num2change);
+    // cJSON * jnum2change = cJSON_CreateNumber(_mobj->num2change);
     jrelpos = cJSON_CreateArray();
     jabspos = cJSON_CreateArray();
 }
 
-void Mobj_Link_readJSON(void *input, const cJSON *jmobj) {
+void Mobj_Link_readJSON(void *input, cJSON *_jmobj) {
     struct Mobj_Link *mobj = (struct Mobj_Link *)input;
-    cJSON *jlinked = cJSON_GetObjectItemCaseSensitive(jmobj, "linked");
-    cJSON *jlinked_num = cJSON_GetObjectItemCaseSensitive(jlinked, "num");
-    mobj->num_linked = cJSON_GetNumberValue(jlinked_num);
-    cJSON *jabspos;
-    cJSON *jrelpos;
+    cJSON *jlinked      = cJSON_GetObjectItemCaseSensitive(_jmobj, "linked");
+    cJSON *jlinked_num  = cJSON_GetObjectItemCaseSensitive(jlinked, "num");
+    mobj->num_linked    = cJSON_GetNumberValue(jlinked_num);
+    cJSON *jabspos, *jrelpos;
     jabspos = cJSON_GetObjectItemCaseSensitive(jlinked, "absolute position");
     Mobj_Link_Init(mobj);
     jrelpos = cJSON_GetObjectItemCaseSensitive(jlinked, "relative position");
     if (mobj->num_linked > 0) {
         jsonio_Read_Array(jrelpos, mobj->relpos_linked);
         jsonio_Read_Array(jabspos, mobj->abspos_linked);
-        cJSON *j2change = cJSON_GetObjectItemCaseSensitive(jmobj, "2change");
+        cJSON *j2change     = cJSON_GetObjectItemCaseSensitive(_jmobj,   "2change");
         cJSON *j2change_num = cJSON_GetObjectItemCaseSensitive(j2change, "num");
     }
 }
@@ -116,14 +115,14 @@ void Tile_Free(struct Tile *tile) {
     s8_free(&tile->json_filename);
 }
 
-void Tile_readJSON(void *input, const cJSON *const jtile) {
+void Tile_readJSON(void *input, cJSON *_jtile) {
     struct Tile *tile = (struct Tile *)input;
-    SDL_assert(jtile != NULL);
-    cJSON *jname    = cJSON_GetObjectItemCaseSensitive(jtile, "Name");
-    cJSON *jid      = cJSON_GetObjectItemCaseSensitive(jtile, "id");
-    cJSON *jinside  = cJSON_GetObjectItemCaseSensitive(jtile, "inside");
-    cJSON *jstats   = cJSON_GetObjectItemCaseSensitive(jtile, "Stats");
-    cJSON *jmvtcost = cJSON_GetObjectItemCaseSensitive(jtile, "MvtCost");
+    SDL_assert(_jtile != NULL);
+    cJSON *jname    = cJSON_GetObjectItemCaseSensitive(_jtile, "Name");
+    cJSON *jid      = cJSON_GetObjectItemCaseSensitive(_jtile, "id");
+    cJSON *jinside  = cJSON_GetObjectItemCaseSensitive(_jtile, "inside");
+    cJSON *jstats   = cJSON_GetObjectItemCaseSensitive(_jtile, "Stats");
+    cJSON *jmvtcost = cJSON_GetObjectItemCaseSensitive(_jtile, "MvtCost");
     tile->id = cJSON_GetNumberValue(jid);
     char *temp_str = cJSON_GetStringValue(jname);
     if (temp_str != NULL) {
@@ -136,40 +135,40 @@ void Tile_readJSON(void *input, const cJSON *const jtile) {
     Tile_makeMvtCostarray(tile);
 }
 
-void Tile_writeJSON(const void *input, cJSON *jtile) {
-    struct Tile *tile = (struct Tile *)input;
+void Tile_writeJSON(void *_input, cJSON *jtile) {
+    struct Tile *_tile = (struct Tile *)input;
     SDL_assert(jtile != NULL);
     cJSON *jtilestats   = cJSON_CreateObject();
     cJSON *jcost        = cJSON_CreateObject();
-    cJSON *jname        = cJSON_CreateString(tile->name);
-    cJSON *jid          = cJSON_CreateNumber(tile->id);
-    jsonio_Write_mvtcost(jcost, &(tile->cost_struct));
-    jsonio_Write_Tilestats(jtilestats, &(tile->stats));
+    cJSON *jname        = cJSON_CreateString(_tile->name);
+    cJSON *jid          = cJSON_CreateNumber(_tile->id);
+    jsonio_Write_mvtcost(jcost, &(_tile->cost_struct));
+    jsonio_Write_Tilestats(jtilestats, &(_tile->stats));
     cJSON_AddItemToObject(jtile, "Name",   jname);
     cJSON_AddItemToObject(jtile, "id",      jid);
-    cJSON_AddBoolToObject(jtile, "inside",  tile->inside);
+    cJSON_AddBoolToObject(jtile, "inside",  _tile->inside);
     cJSON_AddItemToObject(jtile, "Stats",   jtilestats);
     cJSON_AddItemToObject(jtile, "MvtCost", jcost);
 }
 
-void Breakable_readJSON(void *input, cJSON *jbreakable) {
+void Breakable_readJSON(void *input, cJSON *_jbreakable) {
     struct Breakable *breakable = (struct Breakable *) input;
-    cJSON *jhp      = cJSON_GetObjectItemCaseSensitive(jbreakable, "hp");
-    cJSON *jdef     = cJSON_GetObjectItemCaseSensitive(jbreakable, "def");
-    cJSON *jres     = cJSON_GetObjectItemCaseSensitive(jbreakable, "res");
-    cJSON *jmobj    = cJSON_GetObjectItemCaseSensitive(jbreakable, "Map Object");
+    cJSON *jhp      = cJSON_GetObjectItemCaseSensitive(_jbreakable, "hp");
+    cJSON *jdef     = cJSON_GetObjectItemCaseSensitive(_jbreakable, "def");
+    cJSON *jres     = cJSON_GetObjectItemCaseSensitive(_jbreakable, "res");
+    cJSON *jmobj    = cJSON_GetObjectItemCaseSensitive(_jbreakable, "Map Object");
     breakable->hp   = cJSON_GetNumberValue(jhp);
     breakable->def  = cJSON_GetNumberValue(jdef);
     breakable->res  = cJSON_GetNumberValue(jres);
     // Mobj_Link_readJSON(breakable->link, jmobj);
 }
 
-void Breakable_writeJSON(const void *input, cJSON *jbreakable) {
-    struct Breakable *breakable = (struct Breakable *) input;
+void Breakable_writeJSON(void *_input, cJSON *jbreakable) {
+    struct Breakable *_breakable = (struct Breakable *) _input;
     SDL_assert(jbreakable != NULL);
-    cJSON *jhp  = cJSON_CreateNumber(breakable->hp);
-    cJSON *jdef = cJSON_CreateNumber(breakable->def);
-    cJSON *jres = cJSON_CreateNumber(breakable->res);
+    cJSON *jhp  = cJSON_CreateNumber(_breakable->hp);
+    cJSON *jdef = cJSON_CreateNumber(_breakable->def);
+    cJSON *jres = cJSON_CreateNumber(_breakable->res);
     cJSON_AddItemToObject(jbreakable, "hp",  jhp);
     cJSON_AddItemToObject(jbreakable, "def", jdef);
     cJSON_AddItemToObject(jbreakable, "res", jres);

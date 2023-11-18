@@ -30,6 +30,6 @@ typedef int64_t  i64;
 /* -- Boolean types -- */
 /* - Why define my own boolean? - */
 //   - bool type size depends on architecture
-typedef int32_t       b32;
+typedef int32_t  b32;
 
 #endif /* TYPES_H */

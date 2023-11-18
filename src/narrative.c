@@ -184,7 +184,7 @@ struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_conds,
     return (sdarr);
 }
 
-void Scene_readJSON(void *input, const struct cJSON *const jscene) {
+void Scene_readJSON(void *input, struct cJSON *_jscene) {
     struct Scene *scene = (struct Scene *) input;
     Scene_Free_Read(scene);
     cJSON *jlines = cJSON_GetObjectItem(jscene, "Lines");

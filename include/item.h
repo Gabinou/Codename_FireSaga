@@ -80,8 +80,8 @@ void Item_All_Reload(struct dtab *items_dtab);
 
 s8 Item_Filename(s8 filename, i16 id);
 
-void Item_readJSON(       void *input, const cJSON *jitem);
-void Item_writeJSON(const void *input,       cJSON *jitem);
+void Item_readJSON( void *input, cJSON *jitem);
+void Item_writeJSON(void *input, cJSON *jitem);
 
 /* --- Type --- */
 int Item_Archetype(i16 id);

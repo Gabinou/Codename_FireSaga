@@ -44,18 +44,12 @@ struct Scene {
     u16 *actors;
 } extern Scene_default;
 
-// Note: Scenes don't get written, no writing
-extern bool Conditions_Read(struct Conditions *conditions, cJSON *jconditions);
-extern bool Condition_Read(u32 *bitfield, size_t bits, cJSON *jcondition);
 
-extern void Scene_Free(struct Scene *scene);
-extern void Scene_Free_Read(struct Scene *scene);
-extern void Scene_Replace(struct Scene *scene);
-extern void Scene_Prune(struct Scene *scene);
-extern struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_concs,
+void Scene_Free(struct Scene *scene);
+void Scene_Free_Read(struct Scene *scene);
+void Scene_Replace(struct Scene *scene);
+void Scene_Prune(struct Scene *scene);
+struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_concs,
                                  i16 chapter, u16 scene_time);
-
-/* --- I/O --- */
-extern void Scene_readJSON(void *input, const struct cJSON *const jnarr);
 
 #endif /* NARRATIVE_H */

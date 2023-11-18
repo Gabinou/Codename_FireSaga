@@ -168,11 +168,11 @@ struct WpnorItem Unit_WpnorItem(struct Unit *u, int i);         /*   side space 
 
 void Unit_Set_Item_Side(struct Unit *u, int i);                 /*   side space */
 
-int Unit_Hand_Strong(const struct Unit *u);
+int Unit_Hand_Strong(struct Unit *u);
 int SotA_Hand_Strong(i8 handedness);
 
-int Unit_Hand_Strong2Side(const struct Unit *unit, int i);
-int Unit_Hand_Side2Strong(const struct Unit *unit, int i);
+int Unit_Hand_Strong2Side(struct Unit *unit, int i);
+int Unit_Hand_Side2Strong(struct Unit *unit, int i);
 
 void Unit_setid(      struct Unit *u, i16 id);
 void Unit_setStats(   struct Unit *u, struct Unit_stats stats);
@@ -220,7 +220,7 @@ void Unit_supportUp(struct Unit *u, i16 id);
 bool SotA_isPC(          u8 a);
 u8  SotA_army2alignment(u8 a);
 
-u8  Unit_mvtType(const struct Unit *u);
+u8  Unit_mvtType(struct Unit *u);
 
 /* --- Unit status --- */
 void Unit_Status_Add(      struct Unit *u, struct Unit_status);
@@ -244,17 +244,17 @@ void Unit_Mount_Unmount( struct Unit *u, i16 id);
 void Unit_Mount_Deassign(struct Unit *u, i16 id);
 
 /* --- Debug --- */
-bool Unit_Equipment_Full( const struct Unit *u);
-void Unit_Equipment_Print(const struct Unit *u);
+bool Unit_Equipment_Full( struct Unit *u);
+void Unit_Equipment_Print(struct Unit *u);
 
 /* --- Usability --- */
-bool Unit_Eq_Usable(  const struct Unit *u, int a, int i);
-bool Unit_All_Usable(       struct Unit *u);
-void Unit_Find_Usable(      struct Unit *u, int a);
-bool Unit_Item_Usable(const struct Unit *u, int a, int i);
+bool Unit_Eq_Usable(  struct Unit *u, int a, int i);
+bool Unit_All_Usable( struct Unit *u);
+void Unit_Find_Usable(struct Unit *u, int a);
+bool Unit_Item_Usable(struct Unit *u, int a, int i);
 
 /* --- Skills --- */
-bool Unit_hasSkill(const struct Unit *u, u64 s);
+bool Unit_hasSkill(struct Unit *u, u64 s);
 
 /* --- Stat computation --- */
 /* Gives weapon stat if distance is in range.
@@ -262,9 +262,9 @@ bool Unit_hasSkill(const struct Unit *u, u64 s);
 */
 /* Distance-dependent stats */
 u8 Unit_computeHit(     struct Unit *u, int dist);
-i8 Unit_computeDodge(  struct Unit *u, int dist);
+i8 Unit_computeDodge(   struct Unit *u, int dist);
 u8 Unit_computeFavor(   struct Unit *u, int dist);
-i8 Unit_computeSpeed(  struct Unit *u, int dist);
+i8 Unit_computeSpeed(   struct Unit *u, int dist);
 u8 Unit_computeCritical(struct Unit *u, int dist);
 
 /* Distance-independent stats */
@@ -276,10 +276,10 @@ u8 Unit_computeEffectivefactor(struct Unit *a, struct Unit *d);
 u8 *Unit_computeAttack( struct Unit *u, int dist);
 u8 *Unit_computeDefense(struct Unit *u);
 
-struct Unit_stats Unit_effectiveStats(struct     Unit *u);
-struct Unit_stats Unit_effectiveGrowths(struct   Unit *u);
-struct Computed_Stats Unit_supportBonus(struct   Unit *u);
-struct Computed_Stats Unit_computedStats(struct  Unit *u, int dist);
+struct Unit_stats Unit_effectiveStats(   struct Unit *u);
+struct Unit_stats Unit_effectiveGrowths( struct Unit *u);
+struct Computed_Stats Unit_supportBonus( struct Unit *u);
+struct Computed_Stats Unit_computedStats(struct Unit *u, int dist);
 struct Computed_Stats Unit_computedStats_wLoadout(struct Unit *u, int lh, int rh, int dist);
 
 /* --- Bonus/Malus from items --- */
@@ -291,33 +291,33 @@ i8 Unit_computeBonus(struct Unit *u);
 bool Unit_Loadout_twoHanding(int lh, int rh);
 
 /* - Public: Chooses between _Unit_Loadout_Swap_Twohanding and _Unit_Loadout_Swap - */
-void Unit_Loadout_Swap(struct Unit *u, int lh, int rh);
+void Unit_Loadout_Swap(        struct Unit *u, int lh, int rh);
 void Unit_Loadout_Swap_Reverse(struct Unit *u, int lh, int rh);
 
 /* - Private: Only for not twohanding - */
+void _Unit_Loadout_Swap(        struct Unit *u, int lh, int rh);
 void _Unit_Loadout_Swap_Reverse(struct Unit *u, int lh, int rh);
-void _Unit_Loadout_Swap(struct Unit *u, int lh, int rh);
 
 /* - Private: Only for twohanding - */
 void _Unit_Loadout_Swap_Twohanding(        struct Unit *u, int i);
 void _Unit_Loadout_Swap_Reverse_Twohanding(struct Unit *u);
 
 /* --- Debug Utils --- */
-void Unit_Cap_Stats(struct       Unit *u);
-void Unit_HalfCap_Stats(struct   Unit *u);
+void Unit_Cap_Stats(    struct Unit *u);
+void Unit_HalfCap_Stats(struct Unit *u);
 
 /* --- Unit State change --- */
-void Unit_wait(struct        Unit *u);
-void Unit_dies(struct        Unit *u);
-void Unit_refresh(struct     Unit *u);
-void Unit_agonizes(struct    Unit *u);
+void Unit_wait(    struct Unit *u);
+void Unit_dies(    struct Unit *u);
+void Unit_refresh( struct Unit *u);
+void Unit_agonizes(struct Unit *u);
 
-void Unit_getsHealed(struct  Unit *u, u8 healing);
+void Unit_getsHealed( struct Unit *u, u8 healing);
 void Unit_takesDamage(struct Unit *u, u8 dmg, bool ct);
 
 /* --- I/O --- */
-void Unit_readJSON(void        *u, const cJSON *const junit);
-void Unit_writeJSON(const void *u,       cJSON       *junit);
+void Unit_readJSON( void *u, cJSON *junit);
+void Unit_writeJSON(void *u, cJSON *junit);
 
 /* --- Unit state --- */
 bool Unit_isdualWielding(struct Unit *u);
@@ -331,10 +331,10 @@ bool Unit_canDance(struct Unit *u);
 bool Unit_canCarry(struct Unit *u1, struct Unit *u2);
 
 /* -- Can Equip -- */
-bool Unit_canEquip(       const struct Unit *u, i16 id);
-bool Unit_canEquip_Type(  const struct Unit *u, i16 id);
-bool Unit_canEquip_Hand(  const struct Unit *u, i16 id, bool h);
-bool Unit_canEquip_inHand(const struct Unit *u, bool h);
+bool Unit_canEquip(       struct Unit *u, i16 id);
+bool Unit_canEquip_Type(  struct Unit *u, i16 id);
+bool Unit_canEquip_Hand(  struct Unit *u, i16 id, bool h);
+bool Unit_canEquip_inHand(struct Unit *u, bool h);
 
 /* -- Can Attack -- */
 bool _Unit_canAttack(   struct Unit *u, bool hand);  /* with weapon in hand       */
@@ -342,19 +342,19 @@ bool  Unit_canAttack(   struct Unit *u);             /* with equipped weapon    
 bool  Unit_canAttack_Eq(struct Unit *u);             /* with any wpn in equipment */
 
 /* -- Can Staff -- */
-int Unit_canStaff(        const struct Unit *u);
-int Unit_canStaff_Eq(     const struct Unit *u);
-int Unit_canStaff_oneHand(const struct Unit *u);
+int Unit_canStaff(        struct Unit *u);
+int Unit_canStaff_Eq(     struct Unit *u);
+int Unit_canStaff_oneHand(struct Unit *u);
 
-u8 Unit_Brave(const struct Unit *u);
+u8 Unit_Brave(struct Unit *u);
 
 /* --- Lvlup && Promotion --- */
 void Unit_lvlUp(  struct Unit *u);
 i16 Unit_getLvl(  struct Unit *u);
 void Unit_Promote(struct Unit *u, i8 new_class_i);
 
-bool Range_Valid(struct Range r1);
-void Ranges_Combine(struct Range *r1, struct Range r2);
+bool Range_Valid(    struct Range r1);
+void Ranges_Combine( struct Range *r1, struct Range r2);
 bool Range_toCombine(struct Unit *u, struct Weapon *w);
 
 
@@ -375,7 +375,7 @@ struct Range *Unit_Range_Combine_Staves(   struct Unit *u, bool eq);
 struct Range *Unit_Range_Combine_Weapons(  struct Unit *u, bool eq);
 struct Range *Unit_Range_Combine_Equipment(struct Unit *u);
 
-struct Range *_Unit_Range_Combine(const struct Unit  *u, struct Range *r, bool e, int a);
+struct Range *_Unit_Range_Combine(struct Unit  *u, struct Range *r, bool e, int a);
 
 /* -- Loadout Range -- */
 /* Compute range of loadout:

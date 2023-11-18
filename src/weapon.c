@@ -48,7 +48,7 @@ void Weapon_Free(struct Weapon *weapon) {
 }
 
 /* --- isCan? --- */
-bool Weapon_canInfuse(const struct Weapon *weapon, const struct Inventory_item *item) {
+bool Weapon_canInfuse(struct Weapon *weapon, struct Inventory_item *item) {
     SDL_assert(weapon);
     bool out = (item->infusion <= SOTA_INFUSEABLE) && !weapon->isMagic;
     return (out);
@@ -60,7 +60,7 @@ bool Weapon_canAttack(struct Weapon *weapon) {
     return (weapon->canAttack);
 }
 
-bool Weapon_canAttackfromType(const struct Weapon *weapon) {
+bool Weapon_canAttackfromType(struct Weapon *weapon) {
     SDL_Log("%ld", weapon->item->type);
     SDL_assert(weapon);
     SDL_assert(weapon->item != NULL);
@@ -68,14 +68,14 @@ bool Weapon_canAttackfromType(const struct Weapon *weapon) {
     return (iscan);
 }
 
-bool Weapon_canAttackfromID(const struct Weapon *weapon) {
+bool Weapon_canAttackfromID(struct Weapon *weapon) {
     SDL_assert(weapon);
     SDL_assert(weapon->item != NULL);
     return ((weapon->item->id == ITEM_NULL) || (weapon->item->id == ITEM_ID_BROKEN) ? 0 : 1);
 }
 
 /* --- I/O --- */
-void Weapon_readJSON(void *input, const cJSON *const jwpn) {
+void Weapon_readJSON(void *input, cJSON *jwpn) {
     struct Weapon *weapon = (struct Weapon *) input;
     SDL_assert(weapon != NULL);
     SDL_assert(jwpn != NULL);
@@ -98,7 +98,7 @@ void Weapon_readJSON(void *input, const cJSON *const jwpn) {
     weapon->canAttack       = Weapon_canAttack(weapon);
 }
 
-void Weapon_writeJSON(const void *input, cJSON *jwpn) {
+void Weapon_writeJSON(void *input, cJSON *jwpn) {
     struct Weapon *weapon = (struct Weapon *) input;
     SDL_assert(jwpn         != NULL);
     SDL_assert(weapon       != NULL);
@@ -250,7 +250,7 @@ void Weapons_All_Free(struct dtab *weapons_dtab) {
 
 }
 
-u16 Weapon_TypeExp(const struct Weapon *weapon) {
+u16 Weapon_TypeExp(struct Weapon *weapon) {
     u64 wpntypecode = weapon->item->type;
 
     SDL_assert(wpntypecode > ITEM_NULL);
@@ -330,7 +330,7 @@ void Weapon_Repair(struct Weapon *wpn, struct Inventory_item *item, u8 AP) {
 }
 
 /* --- Stats --- */
-int Weapon_Stat(const struct Weapon *weapon, i16 stattype) {
+int Weapon_Stat(struct Weapon *weapon, i16 stattype) {
     SDL_assert((stattype > ITEM_STAT_START) && (stattype < WEAPON_STAT_END));
 
     if ((stattype > ITEM_STAT_START) && (stattype < ITEM_STAT_END)) {
@@ -342,7 +342,7 @@ int Weapon_Stat(const struct Weapon *weapon, i16 stattype) {
     return (stat);
 }
 
-int Weapon_Stat_inRange(const struct Weapon *weapon, i16 stattype, int distance) {
+int Weapon_Stat_inRange(struct Weapon *weapon, i16 stattype, int distance) {
     /* Gives weapon stat if distance is in range.
     *  Shields and offhands are always in range.
     *    DEBUG: input -1 to always be in_range
