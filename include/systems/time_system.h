@@ -7,6 +7,6 @@
 #include "structs.h"
 #include "SDL.h"
 
-void timeSynchronize(tnecs_system_input *in_input);
+void Time_Synchronize(tnecs_system_input *input);
 
 #endif /* TIME_CONTROL_H */

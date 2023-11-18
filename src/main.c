@@ -141,7 +141,7 @@ int main(int argc, char *argv[]) {
         time_ns        = (elapsedTime_ns + delay_ms * SOTA_ns / SOTA_ms);
 
         Game_Cursor_movedTime_Compute(sota, time_ns);
-        tnecs_custom_system_run(sota->world, timeSynchronize, sota->timer_typeflag, time_ns, NULL);
+        tnecs_custom_system_run(sota->world, Time_Synchronize, sota->timer_typeflag, time_ns, NULL);
 
         /* -- Delay until next frame -- */
         Game_Delay(sota, delay_ms, currentTime_ns, elapsedTime_ns);

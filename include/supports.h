@@ -27,8 +27,8 @@ enum SUPPORT_LEVELS {
 };
 
 #define SUPPORT_DODGE_FACTOR 2
-#define SUPPORT_CRIT_FACTOR 2
-#define SUPPORT_HIT_FACTOR 5
+#define SUPPORT_CRIT_FACTOR  2
+#define SUPPORT_HIT_FACTOR   5
 
 /* --- STRUCTS --- */
 struct Support {

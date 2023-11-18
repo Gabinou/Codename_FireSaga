@@ -4,9 +4,9 @@ struct Text Text_default = {
     .texture        = NULL,
     .pixelfont      = NULL,
     .line           = {0},
-    .len            = 0,
+    .len            =  0,
     .rect           = {0},
-    .update_time_ns = 0,
+    .update_time_ns =  0,
     .onUpdate       = NULL,
     .visible        = true,
     .update         = true,
@@ -32,7 +32,7 @@ void Text_onUpdate_FPS(struct Game *sota, tnecs_entity entity_fps,
     struct Text *text   = TNECS_GET_COMPONENT(sota->world, entity_fps, Text);
     float ratio         = (float)SOTA_ns / (float)last_update_ns;
     float fps           = (frame_count * ratio);
-    sota->instant_fps = fps;
+    sota->instant_fps   = fps;
 
     if (sota->fast_forward) {
         int fps_cap     = sota->settings.FPS.cap;
@@ -42,7 +42,7 @@ void Text_onUpdate_FPS(struct Game *sota, tnecs_entity entity_fps,
         stbsp_snprintf(text->line, sizeof(char) * 5, "%.1f", fps);
     }
 
-    text->len       = strlen(text->line);
+    text->len = strlen(text->line);
     SDL_assert(text->len        >  0);
     int width = PixelFont_Width(text->pixelfont, text->line, text->len);
     if (width != text->rect.w) {
@@ -68,7 +68,8 @@ void Text_Update(struct Text *text, SDL_Renderer *renderer) {
 
     if (text->texture == NULL) {
         text->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-                                          SDL_TEXTUREACCESS_TARGET, text->rect.w, text->rect.h);
+                                          SDL_TEXTUREACCESS_TARGET,
+                                          text->rect.w, text->rect.h);
         SDL_SetTextureBlendMode(text->texture, SDL_BLENDMODE_BLEND);
         SDL_assert(text->texture != NULL);
     }
@@ -92,5 +93,4 @@ void Text_Draw(struct Text *text, SDL_Renderer *renderer, SDL_Rect *dstrect) {
     }
     SDL_RenderCopy(renderer, text->texture, NULL, dstrect);
     Utilities_DrawColor_Reset(renderer);
-
 }

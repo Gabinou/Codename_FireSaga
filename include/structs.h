@@ -80,11 +80,12 @@ struct Computed_Stats {
     struct Range range_loadout;
 };
 
-void Computed_Stats_Print(struct Computed_Stats *stats);
-void Computed_Stats_Compare(struct Computed_Stats *stats1, struct Computed_Stats *stats2);
+void Computed_Stats_Print(  struct Computed_Stats *stats);
+void Computed_Stats_Compare(struct Computed_Stats *stats1,
+                            struct Computed_Stats *stats2);
 
 struct Condition {
-    // Conversation condition?
+    /* Conversation condition? */
     i16 unitid;
     bool dead;
     bool recruited;
@@ -102,7 +103,7 @@ struct HP {
     u8 max;
     u8 current;
     u8 overheal;
-    bool divine; // what?
+    bool divine; /* divine shield */
 };
 extern struct HP HP_default;
 
@@ -161,8 +162,8 @@ extern struct Padding Padding_default;
 
 struct Item_stats {
     u16 price;
-    u8 uses;
-    u8 AP; // ability power: for heal (%), blowHorn, gainStats, gainSkill, Repair
+    u8  uses;
+    u8  AP; // ability power: for heal (%), blowHorn, gainStats, gainSkill, Repair
 };
 extern struct Item_stats Item_stats_default;
 

@@ -382,34 +382,34 @@ struct Game *Game_Init(void) {
     TNECS_REGISTER_SYSTEM_wEXCL(world, Control_Touchpad, 0, Position, Sprite, controllerTouchpad);
 
     /* -- Animating and sliding systems before drawing --  */
-    TNECS_REGISTER_SYSTEM_wEXCL(world, slideSprite,   0, Sprite, Position, Slider);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, slidePopUpOffscreen, 1, PopUp, Slider,
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Slide_Sprite,   0, Sprite, Position, Slider);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Slide_PopUp_Offscreen, 1, PopUp, Slider,
                                 SliderOffscreen, Position);
     /* - no sliders without offscreen yet -  */
     // TNECS_REGISTER_SYSTEM_wEXCL(out_game->world, slidePopUp, 0, PopUp, Slider, Position);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, hoverAny,      0, Hover,  Position);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, animateSprite, 0, Sprite, Position, Timer);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Hover_Any,      0, Hover,  Position);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Sprite, 0, Sprite, Position, Timer);
     // Remove animated flag. Animated sprites must have a timer! Still sprites dont!
 
     /* -- Scrolling Text -- */
-    TNECS_REGISTER_SYSTEM_wEXCL(world, scrollText,    0, PixelFont, Timer);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Scroll_Text,    0, PixelFont, Timer);
 
     /* -- Drawing -- */
     /* - for now only drawn sprites are map_units - */
-    TNECS_REGISTER_SYSTEM_wEXCL(world, drawMapUnit,   1, Unit, Position, Sprite, Timer);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, drawMapUnit,   1, Unit, Position, Sprite, Timer, MapHPBar);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, drawMapUnit,   1, Unit, Position, Sprite, MapHPBar);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, drawMapUnit,   1, Unit, Position, Sprite);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, drawMapUnit,   0, Unit, Position, Sprite, RenderTop);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, drawMap_HPBar, 0, Unit, Position, MapHPBar);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Unit,   1, Unit, Position, Sprite, Timer);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Unit,   1, Unit, Position, Sprite, Timer, MapHPBar);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Unit,   1, Unit, Position, Sprite, MapHPBar);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Unit,   1, Unit, Position, Sprite);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Unit,   0, Unit, Position, Sprite, RenderTop);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_HPBar, 0, Unit, Position, MapHPBar);
 
-    TNECS_REGISTER_SYSTEM_wEXCL(world, drawMenu,      0, Menu);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, drawText,      1, Text, Position);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, drawTextTimer, 0, Text, Position, Timer);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, drawPopUp,     0, PopUp, Position);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Menu,     0, Menu);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Text,     1, Text, Position);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Text_Timer, 0, Text, Position, Timer);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_PopUp,     0, PopUp, Position);
     /* - draw Cursor and Mouse last -> on top - */
-    TNECS_REGISTER_SYSTEM_wEXCL(world, drawCursor,    0, Sprite,          Position, CursorFlag);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, drawMouse,     1, controllerMouse, Position, Sprite, MouseFlag);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Cursor,    0, Sprite,          Position, CursorFlag);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Mouse,     1, controllerMouse, Position, Sprite, MouseFlag);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Combat_onMap, 1, CombatAnimation, Timer);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Turn_Transition, 1, MapAnimation, Position, Text, Timer);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration DONE\n");

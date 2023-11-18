@@ -11,26 +11,22 @@
 #include "map/animation.h"
 #include "SDL.h"
 
-// TODO: Check if that causes issue with Interactive Programming
-extern bool CursorFlag;
-extern bool MouseFlag;
-extern bool RenderTop;
+extern b32 CursorFlag;
+extern b32 MouseFlag;
+extern b32 RenderTop;
 
-void drawText(     tnecs_system_input *in_input);
-void drawMouse(    tnecs_system_input *in_input);
-void moveMouse(    tnecs_system_input *in_input);
-void drawMenu(     tnecs_system_input *in_input);
-void drawPopUp(    tnecs_system_input *in_input);
-void drawCursor(   tnecs_system_input *in_input);
-void scrollText(   tnecs_system_input *in_input);
-void drawMapUnit(  tnecs_system_input *in_input);
-void drawTextTimer(tnecs_system_input *in_input);
-void animateSprite(tnecs_system_input *in_input);
-void drawMap_HPBar(tnecs_system_input *in_input);
+void Draw_Text(      tnecs_system_input *input);
+void Draw_Menu(      tnecs_system_input *input);
+void Draw_PopUp(     tnecs_system_input *input);
+void Draw_Mouse(     tnecs_system_input *input);
+void Draw_Cursor(    tnecs_system_input *input);
+void Scroll_Text(    tnecs_system_input *input);
+void Draw_Map_Unit(  tnecs_system_input *input);
+void Animate_Sprite( tnecs_system_input *input);
+void Draw_Map_HPBar( tnecs_system_input *input);
+void Draw_Text_Timer(tnecs_system_input *input);
 
-
-void Animate_Combat_onMap(tnecs_system_input *in_input);
-void Animate_Turn_Transition(tnecs_system_input *in_input);
-
+void Animate_Combat_onMap(   tnecs_system_input *input);
+void Animate_Turn_Transition(tnecs_system_input *input);
 
 #endif /* SYSTEMRENDER_H */

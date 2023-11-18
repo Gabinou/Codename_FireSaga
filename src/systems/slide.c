@@ -18,7 +18,7 @@ void Sprite_Target(struct Slider *slider, struct Sprite *sprite, Position *posit
     slider->target.y = (i32)lround(position->tilemap_pos.y * position->scale[1]);
 }
 
-void hoverAny(tnecs_system_input *input) {
+void Hover_Any(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get components arrays -- */
     struct Hover    *hover_arr    = TNECS_COMPONENTS_LIST(input, Hover);
@@ -41,7 +41,7 @@ void hoverAny(tnecs_system_input *input) {
 
 /* Slide systems */
 /* Compute next Popup position according to target position */
-void slideSprite(tnecs_system_input *input) {
+void Slide_Sprite(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_assert(input->user_data != NULL);
     /* -- Get components arrays -- */
@@ -89,7 +89,7 @@ void slideSprite(tnecs_system_input *input) {
 }
 
 /* slidePopUp MAY RUN TWICE on popups WITH slidePopUpOffscreen */
-void slidePopUp(tnecs_system_input *input) {
+void Slide_PopUp(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_assert(input->user_data != NULL);
     /* -- Get components arrays -- */
@@ -111,7 +111,7 @@ void slidePopUp(tnecs_system_input *input) {
     }
 }
 
-void slidePopUpOffscreen(tnecs_system_input *input) {
+void Slide_PopUp_Offscreen(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_assert(input->user_data != NULL);
     /* -- Get components arrays -- */

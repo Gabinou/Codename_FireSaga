@@ -34,8 +34,8 @@ void Gamepad_Pressed(i8 sota_b, i8 *press, i8 *pressed_num, i32 *controller_type
     i32 min_held    = GAMEPAD_MINHELD_ns;
     bool butblk     = gp->block_buttons;
 
-    Control_Pressed(sota_b, press, pressed_num, butblk, theld,
-                    controller_type, event, min_held);
+    Control_Pressed(sota_b, press, pressed_num, controller_type,
+                    event, butblk, theld, min_held);
 }
 
 void Keyboard_Pressed(i8 sota_b, i8 *press, i8 *pressed_num, i32 *controller_type,
@@ -44,12 +44,12 @@ void Keyboard_Pressed(i8 sota_b, i8 *press, i8 *pressed_num, i32 *controller_typ
     i32 min_held    = KEYBOARD_MINHELD_ns;
     bool butblk     = kb->block_buttons;
 
-    Control_Pressed(sota_b, press, pressed_num, butblk, theld,
-                    controller_type, event, min_held);
+    Control_Pressed(sota_b, press, pressed_num, controller_type,
+                    event, butblk, theld, min_held);
 }
 
-void Control_Pressed(i8 sota_b, i8 *press, i8 *pressed_num, bool block, i32 t_held_ns,
-                     i32 *controller_type, u32 event, i32 t_min_ns) {
+void Control_Pressed(i8 sota_b, i8 *press, i8 *pressed_num, i32 *controller_type,
+                     u32 event, bool block, i32 t_held_ns, i32 t_min_ns) {
     press[(*pressed_num)++] = sota_b;
     if (block) {
         return;
