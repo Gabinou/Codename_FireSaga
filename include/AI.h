@@ -12,10 +12,47 @@
 #include "nmath.h"
 #include "cJSON.h"
 
-typedef tnecs_world world;
+typedef tnecs_world  world;
 typedef tnecs_entity entity;
 
-// --- FORWARD DECLARATIONS ---
+/* --- AI DESIGN --- */
+/* -- High-level design -- */
+//  1. Make a decision pair: Who does What?
+//  2. Send a command
+//      - Move friendly unit
+//      - Heal friendly unit
+//      - Attack enemy unit
+//      - Open chest
+//      - ...
+//  3. Wait for execution to animate
+//  4. If a friendly can still act, back to 1.
+//  5. Finish
+
+/* -- Implementation details -- */
+//  - Ai is a component for Unit entities
+//  1. Make a decision pair: Who does What?
+//     - How does AI decide what to do?
+//          1.1 Go through all units with certain priorities, for a priority order
+//              - Order is whatever brings GameOver faster
+//              - Example: Kill should be high on the list
+//              - A bit more predictable
+//              - Each map should have a priority order list?
+//          1.2 Go through units in random order
+//              - Simple
+//              - Unpredictable
+//          2. Use Unit master/slave AI_Priority to decide -> fsm
+//              - Outputs tile to move and action to take 
+//              
+//  - Every Unit has a different AI priority
+//      - Master and slave priorities
+//          - Use master priority AI_PRIORITY_KILL
+//          - If HP is below 50% use slave priority AI_PRIORITY_SURVIVE 
+//      - What are criteria to switch priorities?
+//          - low HP    AI_PRIORITY_KILL -> AI_PRIORITY_SURVIVE 
+//          - no chests AI_PRIORITY_LOOT -> AI_PRIORITY_FLEE 
+
+
+/* --- FORWARD DECLARATIONS --- */
 struct Game;
 
 struct AI_PushPull_Out {
@@ -23,23 +60,29 @@ struct AI_PushPull_Out {
     i8 rating;
 };
 
+struct AI_Action {
+    struct Point move;   /* {-1, -1} if none */
+    int action;
+    struct Point target; /* {-1, -1} if none */
+}
+
 enum AI_RATINGS {
     // Ratings for AI decision making in [-128, 128]
-    AI_RATING_AGGRESSOR_DEATH_CERTAIN  = 40,
-    AI_RATING_AGGRESSOR_DEATH_POSSIBLE = 20,
-    AI_RATING_DEFENDANT_DEATH_POSSIBLE = 10,
-    AI_RATING_DEFENDANT_DEATH_CERTAIN  = 30,
-    AI_RATING_AGGRESSOR_MULTIPLIER     =  2,
-    AI_RATING_aggressor_brave          = 10,
-    AI_RATING_aggressor_doubles        = 10,
-    AI_RATING_defendant_brave          = 10,
-    AI_RATING_defendant_doubles        = 10,
-    AI_RATING_defendant_retaliates     = 20,
+    AI_RATING_AGGRESSOR_DEATH_CERTAIN   = 40,
+    AI_RATING_AGGRESSOR_DEATH_POSSIBLE  = 20,
+    AI_RATING_DEFENDANT_DEATH_POSSIBLE  = 10,
+    AI_RATING_DEFENDANT_DEATH_CERTAIN   = 30,
+    AI_RATING_AGGRESSOR_MULTIPLIER      =  2,
+    AI_RATING_AGGRESSOR_BRAVE           = 10,
+    AI_RATING_AGGRESSOR_DOUBLES         = 10,
+    AI_RATING_DEFENDANT_BRAVE           = 10,
+    AI_RATING_DEFENDANT_DOUBLES         = 10,
+    AI_RATING_DEFENDANT_RETALIATES      = 20,
 
-    AI_RATING_STAFF_SILENCE = 50,
-    AI_RATING_STAFF_PUSH    = 20,
-    AI_RATING_STAFF_PULL    = 20,
-    AI_RATING_STAFF_HEAL    = 10,
+    AI_RATING_STAFF_SILENCE             = 50,
+    AI_RATING_STAFF_PUSH                = 20,
+    AI_RATING_STAFF_PULL                = 20,
+    AI_RATING_STAFF_HEAL                = 10,
 };
 
 enum AI_PRIORITIES {
@@ -48,14 +91,77 @@ enum AI_PRIORITIES {
     // staffWielders that have AI_PRIORITY_KILL should act first
     // staffWielders that have AI_PRIORITY_PROTECT should act last
     // -> pullers should act before healers
-    AI_PRIORITY_START   = 0,
-    AI_PRIORITY_KILL    = 1,       // Always attacks, ignores other actions.
-    AI_PRIORITY_PROTECT = 2,    // Rescues friendlies, heal friendlies. Otherwise attacks.
-    AI_PRIORITY_SEIZE   = 3,      // Runs to objective. Attacks only if it doesn't slow down or kills you.
-    AI_PRIORITY_LOOT    = 4,       // Goes for chests. Does not attack.
-    AI_PRIORITY_SURVIVE = 5,    // Attacks. Runs away when injured. Take healing items from friendlies to heal.
-    AI_PRIORITY_FLEE    = 6,       // Does not attack.
-    AI_PRIORITY_END     = 7,
+    
+    AI_PRIORITY_START = 0,
+    /* -- AI_PRIORITY_KILL -- */
+    // Always attacks, ignores other actions
+    // Goes aggressively towards enemy units
+    //  - Can specify target unit, or not
+    // 
+    // TWO BIRDS: Killing includes walls and snags,
+    // so they will naturally clear path to units
+    AI_PRIORITY_KILL,    
+
+    /* -- AI_PRIORITY_PROTECT -- */
+    /* Rescues friendlies, heal friendlies. Otherwise attacks. */
+    AI_PRIORITY_PROTECT,    
+    
+    /* -- AI_PRIORITY_SEIZE -- */
+    /* Runs to objective. Attacks only if it doesn't slow down or kills you. */
+    AI_PRIORITY_SEIZE,    
+    
+    /* -- AI_PRIORITY_LOOT -- */
+    /* Goes for chests. Does not attack. */
+    AI_PRIORITY_LOOT,    
+    
+    /* -- AI_PRIORITY_STAFF -- */
+    /* Tries to use staves. */
+    AI_PRIORITY_STAFF,    
+    
+    /* -- AI_PRIORITY_SURVIVE -- */
+    /* AAI switches  */
+    /* Runs away when injured. Take healing items from friendlies to heal. */
+    AI_PRIORITY_SURVIVE,    
+    
+    /* -- AI_PRIORITY_FLEE -- */
+    /* Runs away from PCs. Does not attack.*/
+    AI_PRIORITY_FLEE,    
+
+    /* -- AI_PRIORITY_STANDBY -- */
+    /* Waits for enemy to go in attackmap range to move. */
+    /* Range can be move, attack, or any random value */
+    /* DESIGN LIMIT: Don't make range SMALLER than attackmap! SUCKS */
+    AI_PRIORITY_STANDBY,
+    
+    /* -- AI_PRIORITY_TRIGGER -- */
+    /* Waits for condition to be met to do something. */
+    /* -> I don't like it that much, but it might be useful */
+    AI_PRIORITY_TRIGGER,
+
+    /* -- AI_PRIORITY_SKILL -- */
+    /* Unit tries to use active skill. */
+    /* Skill to use and target are stored elsewhere. */
+    /* Ex: Fortunée's telekinesis, Hamilcar's cleave. */
+    AI_PRIORITY_SKILL,
+    
+    /* -- AI_PRIORITY_IMMOBILE -- */
+    /* Does not move, but attacks enemies in attack range */
+    /* -> MUST be reflected in  attackmap/movemap */
+    AI_PRIORITY_IMMOBILE,
+    
+    /* -- AI_PRIORITY_DO_NOTHING -- */
+    /* Does not move, does not attack */
+    AI_PRIORITY_DO_NOTHING,
+    
+    /* -- AI_PRIORITY_MOVE_TO -- */
+    /* - Can specify target unit, tile */
+    AI_PRIORITY_MOVE_TO,
+
+    /* -- AI_PRIORITY_PATROL -- */
+    /* - Move between two tiles */
+    AI_PRIORITY_PATROL,
+
+    AI_PRIORITY_END,
 };
 
 enum AI_MOVEMENT_TYPE {

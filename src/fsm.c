@@ -913,7 +913,6 @@ void fsm_eAcpt_sGmpMap_ssPause(struct Game *sota, tnecs_entity accepter_entity) 
 }
 
 void fsm_eAcpt_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity accepter_entity) {
-
     /* - Unit should have been selected - */
     SDL_assert(sota->selected_unit_entity != TNECS_NULL);
     tnecs_entity unit_ent = sota->selected_unit_entity;
@@ -980,7 +979,6 @@ void fsm_eAcpt_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity accepter_entit
 
     /* - Focusing cursor on Menu - */
     Game_cursorFocus_onMenu(sota);
-
 }
 
 void fsm_eAcpt_sGmpMap_ssMapMini(struct Game *sota, tnecs_entity accepter_entity) {

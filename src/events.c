@@ -738,6 +738,7 @@ void receive_event_Unit_Icon_Return(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
+    /* Setup for MAP_UNIT_MOVES state */
     SDL_assert(userevent->user.data1 != NULL);
     SDL_assert(sota->entity_cursor          != TNECS_NULL);
     SDL_assert(sota->selected_unit_entity   != TNECS_NULL);
@@ -766,7 +767,6 @@ void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
         Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_SPRITE_LOOP_MOVER, sprite->flip);
     Sprite_Animation_Loop(sprite);
     Sprite_Draw(sprite, sota->renderer);
-
 }
 
 void receive_event_Cursor_Hovers_Unit(struct Game *sota, SDL_Event *userevent) {
