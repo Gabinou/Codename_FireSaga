@@ -100,6 +100,7 @@ void Game_Party_Load(struct Game *sota, i16 *unit_ids, size_t load_num) {
         temp_unit.items_dtab   = sota->items_dtab;
         temp_unit.weapons_dtab = sota->weapons_dtab;
         jsonio_readJSON(filename, &temp_unit);
+        temp_unit.army = ARMY_FRIENDLY;
         SDL_assert(temp_unit.name.data != NULL);
         SDL_assert((temp_unit.handedness > UNIT_HAND_NULL) && (temp_unit.handedness < UNIT_HAND_END));
 
