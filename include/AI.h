@@ -44,7 +44,9 @@ typedef tnecs_entity entity;
 //          - Needs: costmap, target pos, self pos
 //      - AI Act
 //          - Needs: target pos, self pos AFTER move
-//
+//      - Can Moving and Acting be split into two separate functions?
+//          - No. For killing, moving means deciding who to attack first.
+//      - then
 //
 //  1. Make a decision pair: Who does What?
 //     - How does AI decide what to do?
@@ -57,24 +59,15 @@ typedef tnecs_entity entity;
 //              - Simple
 //              - Unpredictable
 //          2. Use Unit master/slave AI_Priority to decide -> fsm
-//              - Outputs tile to move and action to take
+//              - action.target_action needs to be decided FIRST.
+//                  - Includes checking if in range or not.
+//              - action.target_move decided after what has been decided.
+//                  - movement is a sub-goal, in service of ultimate goal
 //
 
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
-
-struct AI_PushPull_Out {
-    struct Point pos;
-    i8 rating;
-};
-
-struct AI_Action {
-    struct Point move;          /* {-1, -1} if none */
-    struct Point target_move;   /* {-1, -1} if none */
-    struct Point target_action; /* {-1, -1} if none */
-    int action;
-};
 
 enum AI_RATINGS {
     // Ratings for AI decision making in [-128, 128]
@@ -108,54 +101,38 @@ enum AI_ACTIONS {
 /* -- AI_PRIORITIES -- */
 /* How does the AI decide what action to take, where to move */
 enum AI_PRIORITIES {
-    // staffWielders should prioritize using staffs
-    // -> UNLESS there is a killable target close by or something
-    // staffWielders that have AI_PRIORITY_KILL should act first
-    // staffWielders that have AI_PRIORITY_PROTECT should act last
-    // -> pullers should act before healers
-
     AI_PRIORITY_START = 0,
     /* -- AI_PRIORITY_KILL -- */
-    // Always attacks, ignores other actions
-    // Goes aggressively towards enemy units
-    //  - Can specify target unit, or not
+    // Attacks to kill
+    //  - PARAMETER: Target unit
     //
     // TWO BIRDS: Killing includes walls and snags,
     // so they will naturally clear path to units
     AI_PRIORITY_KILL,
 
-    /* -- AI_PRIORITY_PROTECT -- */
-    /* Rescues friendlies, heal friendlies. Otherwise attacks. */
-    AI_PRIORITY_PROTECT,
-
     /* -- AI_PRIORITY_SEIZE -- */
-    /* Runs to objective. Attacks only if it doesn't slow down or kills you. */
+    /* Runs to objective. */
+    //  - PARAMETER: To seize
     AI_PRIORITY_SEIZE,
 
     /* -- AI_PRIORITY_LOOT -- */
-    /* Goes for chests. Does not attack. */
+    /* Goes for chests. */
     AI_PRIORITY_LOOT,
 
     /* -- AI_PRIORITY_STAFF -- */
-    /* Tries to use staves. */
+    /* Use staves. */
     AI_PRIORITY_STAFF,
 
     /* -- AI_PRIORITY_SURVIVE -- */
-    /* AAI switches  */
     /* Runs away when injured. Take healing items from friendlies to heal. */
     AI_PRIORITY_SURVIVE,
 
     /* -- AI_PRIORITY_FLEE -- */
-    /* Runs away from PCs. Does not attack.*/
+    /* Runs away from PCs. */
     AI_PRIORITY_FLEE,
 
-    /* -- AI_PRIORITY_TRIGGER -- */
-    /* Waits for condition to be met to do something. */
-    /* -> I don't like it that much, but it might be useful */
-    AI_PRIORITY_TRIGGER,
-
     /* -- AI_PRIORITY_SKILL -- */
-    /* Unit tries to use active skill. */
+    /* Tries to use active skills. */
     /* Skill to use and target are stored elsewhere. */
     /* Ex: Fortunée's telekinesis, Hamilcar's cleave. */
     AI_PRIORITY_SKILL,
@@ -165,14 +142,15 @@ enum AI_PRIORITIES {
     AI_PRIORITY_DO_NOTHING,
 
     /* -- AI_PRIORITY_MOVE_TO -- */
-    /* - Can specify target unit, tile */
+    //  - PARAMETER: Target unit, target tile
     AI_PRIORITY_MOVE_TO,
 
     /* -- AI_PRIORITY_PATROL -- */
     /* - Move between two tiles */
+    //  - PARAMETER: Target unit, target tiles
     AI_PRIORITY_PATROL,
 
-    AI_PRIORITY_END,
+    AI_PRIORITY_NUM,
 };
 
 /* -- AI_MOVE -- */
@@ -188,11 +166,16 @@ enum AI_MOVE {
     /* Unit can't start moving until certain chapter. */
     AI_MOVE_ONCHAPTER,
 
-    /* -- AI_MOVE_STANDBY -- */
+    /* -- AI_MOVE_INRANGE -- */
     /* Waits for enemy to go in attackmap range to move. */
     /* Range can be move, attack, or any random value */
     /* DESIGN LIMIT: Don't make range SMALLER than attackmap! SUCKS */
-    AI_MOVE_STANDBY,
+    AI_MOVE_INRANGE,
+
+    /* -- AI_MOVE_TRIGGER -- */
+    /* Waits for something to happen to move. */
+    /* Extra parameters needed... */
+    AI_MOVE_TRIGGER,
 
     /* -- AI_MOVE_NEVER -- */
     /* Unit does not move. */
@@ -201,64 +184,36 @@ enum AI_MOVE {
     AI_MOVE_NUM,
 };
 
-#define AI_PULL_FRIENDLY_MISSINGHP 0.25f
-#define AI_PUSH_FRIENDLY_MISSINGHP 0.75f
+// Note: If target is not in range, don't do action
+struct AI_Action {
+    struct Point target_move;   /* {-1, -1} if none */
+    struct Point target_action; /* {-1, -1} if none */
+    int action;
+};
 
+
+/* AI COMPONENT */
 typedef struct AI {
-    entity target_protect;
-    entity target_kill;
-    struct Point target_seize;
-    struct Point target_open;
-    struct Point target_defend;
-    struct Point target_interim;
-    u8 priority;
-    u8 move_chapter;
-    u8 move_type;
+    int priority_master;
+    int priority_slave;
+    int move;
 } AI;
 struct AI AI_default;
 
-struct Point *Target_Assailable_Positions(entity att, entity dfd, i32 *movemap);
+typedef void (*AI_Decider)(struct AI_Action *action);
+extern AI_Decider AI_Decider_master[AI_PRIORITY_NUM];
+extern AI_Decider AI_Decider_slave[AI_ACTION_NUM];
 
-u8 AI_menuOption_Choose(world *world, entity att);
+/* --- PUBLIC DECIDERS --- */
+void AI_Decide_Action(struct AI_Action *action);
 
-entity AI_Target_Attack(world *world, entity att, entity *possibleDefenders,
-                        struct Combat_Forecast *forecasts, u8 num_defender);
-entity AI_Target_Heal(world *world, entity staffWielder,
-                      entity *possiblePatients, u8 num_patients);
-entity AI_Target_magicShield(world *world, entity staffWielder,
-                             entity *possiblePatients, u8 num_patients);
-entity AI_Target_Silence(world *world, entity staffWielder, u8 *hit_rates,
-                         entity *possibleDefenders, u8 num_defender);
-entity AI_Target_Pull(world *world, entity staffWielder, entity *friendlies,
-                      u8 num_friendly, entity *enemies, u8 num_enemy);
-entity AI_Target_Push(world *world, entity staffWielder, entity *friendlies,
-                      u8 num_friendly, entity *enemies, u8 num_enemy);
+/* AI decides where to move depending on ultimate target */
+void AI_Decide_Move(  struct AI_Action *action);
 
-entity AI_interimTarget_Compute(struct Map *map, entity actor);
-entity AI_MovetoTarget(struct Map *map, entity actor);
+/* --- PUBLIC DO'ERS --- */
+void AI_Move(struct AI_Action *action);
+void AI_Act( struct AI_Action *action);
 
-i8 AI_Forecast_Rating(struct Combat_Forecast forecast);
-i8 AI_Silence_Rating(world *world, u8 hit_rate, entity enemy_ent);
-
-struct AI_PushPull_Out AI_PushPull_bestPosition(i32 *gradientmap,
-                                                size_t row_len, size_t col_len,
-                                                i32 pushpull_distance,
-                                                struct Point victim_pos, i8 sign);
-
-struct AI_PushPull_Out AI_PushPull_Friendly_Offensively_Rating(
-        world *world, struct Map *map, entity friendly_ent);
-struct AI_PushPull_Out AI_PushPull_Friendly_Defensively_Rating(
-        world *world, struct Map *map, entity friendly_ent);
-
-struct AI_PushPull_Out AI_PushPull_Enemy_Offensively_Rating(
-        world *world, struct Map *map, entity enemy_ent);
-struct AI_PushPull_Out AI_PushPull_Enemy_Defensively_Rating(
-        world *world, struct Map *map, entity enemy_ent);
-
-struct Point AI_Boss_Arc3_Target_Leg_Right(entity *unitmap);
-struct Point AI_Boss_Arc3_Target_Leg_Left(entity *unitmap);
-struct Point AI_Boss_Arc3_Target_Arm_Right(entity *unitmap);
-struct Point AI_Boss_Arc3_Target_Arm_Left(entity *unitmap);
-
+// Call order: AI_Decide_Action -> AI_Decide_Move -> AI_Move -> AI_Act
 
 #endif /* AI_H */

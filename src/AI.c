@@ -2,14 +2,14 @@
 #include "AI.h"
 
 struct AI AI_default = {
-    .target_protect = 0,
-    .target_kill = 0,
-    .target_seize = {-1, -1},
-    .target_open = {-1, -1},
-    .target_defend = {-1, -1},
-    .move_chapter = 0,
-    .priority = AI_PRIORITY_KILL,
-    .move_type = 1,
+    // .target_protect = 0,
+    // .target_kill = 0,
+    // .target_seize = {-1, -1},
+    // .target_open = {-1, -1},
+    // .target_defend = {-1, -1},
+    // .move_chapter = 0,
+    // .priority = AI_PRIORITY_KILL,
+    // .move_type = 1,
 };
 
 // extern int_fast8_t AI_Forecast_Rating(struct Combat_Forecast in_forecast) {

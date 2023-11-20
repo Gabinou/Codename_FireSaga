@@ -20,6 +20,8 @@
 #define SOTA_VER_STRING        "0.7.7"
 #define SOTA_EXECUTABLE_STRING "CodenameFireSage_premake"
 
+#define SOTA_PI (355.0f / 113.0f)
+
 enum bOFFSET {
     // bOFFSET: offset in bytes
     // HOWTO: for a WHAT in a struct
