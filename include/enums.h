@@ -339,14 +339,14 @@ enum SHOPS {
 };
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) MENU_OPTION_##x,
 enum OPTIONS {
     MENU_OPTION_START = 0,
+#define REGISTER_ENUM(x, y) MENU_OPTION_##x,
 #include "names/menu/options.h"
+#undef REGISTER_ENUM
     MENU_OPTION_END,
     MENU_OPTION_NUM = MENU_OPTION_END,
 };
-#undef REGISTER_ENUM
 
 /* ITEM_ID is the explicit, human-friendly item index
 * EXAMPLE:

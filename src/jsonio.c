@@ -30,11 +30,9 @@ json_func json_write_funcs[JSON_END] = {
 };
 
 struct cJSON *jsonio_parseJSON(s8 filename) {
-
     /* Error if file doesn't exist */
     if (!PHYSFS_exists(filename.data)) {
         SDL_Log("File %s does not exist", filename.data);
-        SDL_assert(false);
         exit(ERROR_CannotOpenFile);
     }
 
@@ -108,7 +106,7 @@ void jsonio_readJSON(s8 filename, void *struct_ptr) {
         cJSON_Delete(jfile);
 }
 
-void jsonio_writeJSON(s8 filename,  void *struct_ptr, bool append) {
+void jsonio_writeJSON(s8 filename, void *struct_ptr, bool append) {
     SDL_Log("%s:", filename.data);
 
     /* Parse the json file */
@@ -159,7 +157,7 @@ void jsonio_writeJSON(s8 filename,  void *struct_ptr, bool append) {
 /* --- UTILITIES --- */
 /* -- Read -- */
 // TODO: rewrite with input cjson
-void jsonio_Read_Shop( char *filename, struct Shop *shop) {
+void jsonio_Read_Shop(char *filename, struct Shop *shop) {
     SDL_Log("%s", filename);
     struct cJSON *jfile = jsonio_parseJSON(s8_var(filename));
     SDL_assert(jfile != NULL);
@@ -187,7 +185,7 @@ void jsonio_Read_Shop( char *filename, struct Shop *shop) {
         cJSON_Delete(jfile);
 }
 
-void jsonio_Read_Promotion( char *filename, struct Promotion *promotion) {
+void jsonio_Read_Promotion(char *filename, struct Promotion *promotion) {
     SDL_Log("%s", filename);
     struct cJSON *jfile = jsonio_parseJSON(s8_var(filename));
     SDL_assert(jfile != NULL);
@@ -221,7 +219,7 @@ void jsonio_Read_Promotion( char *filename, struct Promotion *promotion) {
 
 }
 
-void jsonio_Read_Palette( char *filename, struct SDL_Palette *palette) {
+void jsonio_Read_Palette(char *filename, struct SDL_Palette *palette) {
     SDL_Log("%s", filename);
     struct cJSON *jfile = jsonio_parseJSON(s8_var(filename));
     SDL_assert(jfile != NULL);
@@ -254,7 +252,7 @@ void jsonio_Read_Palette( char *filename, struct SDL_Palette *palette) {
 
 }
 
-void jsonio_Read_PaletteTable( char *filename, u8   *table) {
+void jsonio_Read_PaletteTable(char *filename, u8 *table) {
     SDL_Log("%s", filename);
     struct cJSON *jfile = jsonio_parseJSON(s8_var(filename));
     SDL_assert(jfile != NULL);
@@ -404,7 +402,7 @@ void jsonio_Read_2DArray(struct cJSON *_jarr, i32 *arr2D,
 }
 
 /* -- Write -- */
-void jsonio_Write_Array(struct cJSON *_jarr,  i32 *arr, size_t num) {
+void jsonio_Write_Array(struct cJSON *_jarr, i32 *arr, size_t num) {
     SDL_Log("%zu", num);
     SDL_assert(arr != NULL);
     for (u8 i = 0; i < num; i++) {
@@ -413,8 +411,8 @@ void jsonio_Write_Array(struct cJSON *_jarr,  i32 *arr, size_t num) {
     }
 }
 
-void jsonio_Write_2DArray(struct cJSON *arr,  i32 *arr2D, u8 row_len,
-                          u8 col_len) {
+void jsonio_Write_2DArray(struct cJSON *arr, i32 *arr2D,
+                          u8 row_len, u8 col_len) {
     SDL_Log("%d %d", row_len, col_len);
     SDL_assert(arr != NULL);
     struct cJSON *jrow, *jnum;
@@ -693,12 +691,12 @@ void jsonio_Read_Unitstats(struct cJSON          *jstats,
 void Scene_readJSON(void *input, struct cJSON *_jscene) {
     struct Scene *scene = (struct Scene *) input;
     Scene_Free_Read(scene);
-    cJSON *jlines = cJSON_GetObjectItem(_jscene, "Lines");
-    i16 raw_line_num = cJSON_GetArraySize(jlines);
-    scene->line_num = scene->actors_num = 0;
-    scene->lines = SDL_malloc(raw_line_num * sizeof(*scene->lines));
-    scene->actors = SDL_malloc(raw_line_num * sizeof(*scene->actors));
-    scene->speakers = SDL_malloc(raw_line_num * sizeof(*scene->speakers));
+    cJSON *jlines       = cJSON_GetObjectItem(_jscene, "Lines");
+    i16 raw_line_num    = cJSON_GetArraySize(jlines);
+    scene->line_num     = scene->actors_num = 0;
+    scene->lines        = SDL_malloc(raw_line_num * sizeof(*scene->lines));
+    scene->actors       = SDL_malloc(raw_line_num * sizeof(*scene->actors));
+    scene->speakers     = SDL_malloc(raw_line_num * sizeof(*scene->speakers));
     for (size_t i = 0; i < raw_line_num; i++) {
         cJSON *jline = cJSON_GetArrayItem(jlines, i);
         /* - speaker - */
@@ -733,11 +731,11 @@ void Scene_readJSON(void *input, struct cJSON *_jscene) {
     }
     int bytesize = scene->line_num * sizeof(*scene->lines);
     scene->lines    = SDL_realloc(scene->lines,     bytesize);
-    
-    int bytesize = scene->line_num * sizeof(*scene->speakers);
+
+    bytesize = scene->line_num * sizeof(*scene->speakers);
     scene->speakers = SDL_realloc(scene->speakers,  bytesize);
 
-    int bytesize = scene->actors_num * sizeof(*scene->actors);
+    bytesize = scene->actors_num * sizeof(*scene->actors);
     scene->actors   = SDL_realloc(scene->actors,    bytesize);
 }
 

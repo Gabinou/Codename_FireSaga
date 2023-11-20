@@ -29,7 +29,7 @@ typedef tnecs_entity entity;
 //  5. Finish
 
 /* -- Implementation details -- */
-//  - Ai Component
+//  - AI Component
 //      - Master and slave priorities
 //          - Use master priority by default: AI_PRIORITY_KILL
 //          - Condition met to use slave condition
@@ -39,6 +39,12 @@ typedef tnecs_entity entity;
 //      - What are criteria to switch priorities?
 //          - low HP    AI_PRIORITY_KILL -> AI_PRIORITY_SURVIVE
 //          - no chests AI_PRIORITY_LOOT -> AI_PRIORITY_FLEE
+//  - AI Command: two parts
+//      - AI Move
+//          - Needs: costmap, target pos, self pos
+//      - AI Act
+//          - Needs: target pos, self pos AFTER move
+//
 //
 //  1. Make a decision pair: Who does What?
 //     - How does AI decide what to do?
@@ -89,6 +95,18 @@ enum AI_RATINGS {
     AI_RATING_STAFF_HEAL                = 10,
 };
 
+/* -- AI_ACTIONS -- */
+/* What action can the AI take. Mostly same as player, so menu_options */
+enum AI_ACTIONS {
+    AI_ACTION_START = 0,
+#define REGISTER_ENUM(x, y) AI_ACTION_##x,
+#include "names/menu/options.h"
+#undef REGISTER_ENUM
+    AI_ACTION_NUM,
+};
+
+/* -- AI_PRIORITIES -- */
+/* How does the AI decide what action to take, where to move */
 enum AI_PRIORITIES {
     // staffWielders should prioritize using staffs
     // -> UNLESS there is a killable target close by or something
@@ -131,12 +149,6 @@ enum AI_PRIORITIES {
     /* Runs away from PCs. Does not attack.*/
     AI_PRIORITY_FLEE,
 
-    /* -- AI_PRIORITY_STANDBY -- */
-    /* Waits for enemy to go in attackmap range to move. */
-    /* Range can be move, attack, or any random value */
-    /* DESIGN LIMIT: Don't make range SMALLER than attackmap! SUCKS */
-    AI_PRIORITY_STANDBY,
-
     /* -- AI_PRIORITY_TRIGGER -- */
     /* Waits for condition to be met to do something. */
     /* -> I don't like it that much, but it might be useful */
@@ -148,13 +160,8 @@ enum AI_PRIORITIES {
     /* Ex: Fortunée's telekinesis, Hamilcar's cleave. */
     AI_PRIORITY_SKILL,
 
-    /* -- AI_PRIORITY_IMMOBILE -- */
-    /* Does not move, but attacks enemies in attack range */
-    /* -> MUST be reflected in  attackmap/movemap */
-    AI_PRIORITY_IMMOBILE,
-
     /* -- AI_PRIORITY_DO_NOTHING -- */
-    /* Does not move, does not attack */
+    /* Does not attack */
     AI_PRIORITY_DO_NOTHING,
 
     /* -- AI_PRIORITY_MOVE_TO -- */
@@ -168,12 +175,30 @@ enum AI_PRIORITIES {
     AI_PRIORITY_END,
 };
 
-enum AI_MOVEMENT_TYPE {
-    AI_MOVE_START           = 0,
-    AI_MOVE_ONCHAPTER       = 1ULL << 0,
-    AI_MOVE_ENEMYINRANGE    = 1ULL << 1,
-    AI_MOVE_NEVER           = 1ULL << 2,
-    AI_MOVE_OPTIONS         = 3,
+/* -- AI_MOVE -- */
+/* When can the AI start moving */
+enum AI_MOVE {
+    AI_MOVE_START = 0,
+
+    /* -- AI_MOVE_ALWAYS -- */
+    /* Unit can always move. */
+    AI_MOVE_ALWAYS,
+
+    /* -- AI_MOVE_ONCHAPTER -- */
+    /* Unit can't start moving until certain chapter. */
+    AI_MOVE_ONCHAPTER,
+
+    /* -- AI_MOVE_STANDBY -- */
+    /* Waits for enemy to go in attackmap range to move. */
+    /* Range can be move, attack, or any random value */
+    /* DESIGN LIMIT: Don't make range SMALLER than attackmap! SUCKS */
+    AI_MOVE_STANDBY,
+
+    /* -- AI_MOVE_NEVER -- */
+    /* Unit does not move. */
+    AI_MOVE_NEVER,
+
+    AI_MOVE_NUM,
 };
 
 #define AI_PULL_FRIENDLY_MISSINGHP 0.25f
