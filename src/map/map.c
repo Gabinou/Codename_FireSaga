@@ -808,7 +808,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     Map_Texture_Alloc(map);
 
     /* --- Parsing shadow tileset --- */
-    s8 path = s8_var(PATH_JOIN("assets", "Tiles", "Tileset_Shadow.json"));
+    s8 path = s8_var(PATH_JOIN("assets", "tiles", "Tileset_Shadow.json"));
     struct cJSON *jshadow_tileset_file  = jsonio_parseJSON(path);
     struct cJSON *jshadow_tileset       = cJSON_GetObjectItem(jshadow_tileset_file, "shadow_tileset");
     Tilemap_Shader_Load_Tileset_JSON(map->tilemap_shader, jshadow_tileset);

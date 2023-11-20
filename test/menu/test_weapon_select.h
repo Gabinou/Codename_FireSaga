@@ -31,8 +31,8 @@ void test_menu_loadout_select() {
     wsm->pixelnours     = PixelFont_Alloc();
     wsm->pixelnours_big = PixelFont_Alloc();
     wsm->pixelnours_big->y_offset = pixelfont_big_y_offset;
-    PixelFont_Load(wsm->pixelnours,     renderer, PATH_JOIN("..", "assets", "Fonts", "pixelnours.png"));
-    PixelFont_Load(wsm->pixelnours_big, renderer, PATH_JOIN("..", "assets", "Fonts",
+    PixelFont_Load(wsm->pixelnours,     renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));
+    PixelFont_Load(wsm->pixelnours_big, renderer, PATH_JOIN("..", "assets", "fonts",
                                                             "pixelnours_Big.png"));
     SDL_assert(wsm->pixelnours);
     SDL_assert(wsm->pixelnours_big);

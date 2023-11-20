@@ -28,12 +28,12 @@ void test_menu_stats() {
 
     /* - loading fonts - */
     sm->pixelnours = PixelFont_Alloc();
-    PixelFont_Load(sm->pixelnours, renderer, PATH_JOIN("..", "assets", "Fonts", "pixelnours.png"));
+    PixelFont_Load(sm->pixelnours, renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));
     SDL_assert(sm->pixelnours);
     sm->pixelnours->y_offset = pixelfont_y_offset;
 
     sm->pixelnours_big = PixelFont_Alloc();
-    char *path = PATH_JOIN("..", "assets", "Fonts", "pixelnours_Big.png");
+    char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
     PixelFont_Load(sm->pixelnours_big, renderer, path);
     SDL_assert(sm->pixelnours_big);
     sm->pixelnours_big->y_offset = pixelfont_big_y_offset;

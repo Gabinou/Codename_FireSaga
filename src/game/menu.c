@@ -881,7 +881,7 @@ void Game_Title_Create(struct Game *sota) {
     text->pixelfont = PixelFont_Alloc();
     text->pixelfont->glyph_width  = 16;
     text->pixelfont->glyph_height = 16;
-    char *path = PATH_JOIN("..", "assets", "Fonts", "pixelnours_gothic.png");
+    char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours_gothic.png");
     PixelFont_Load(text->pixelfont, sota->renderer, path);
 
     /* - Set title - */

@@ -11,7 +11,7 @@ void test_pixelfonts_internals() {
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
 
     struct PixelFont *test_font = PixelFont_Alloc();
-    char *path = PATH_JOIN("..", "assets", "Fonts", "pixelnours_test.png");
+    char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours_test.png");
     PixelFont_Load(test_font, renderer, path);
 
     /* --- Test bounding boxes --- */
@@ -124,7 +124,7 @@ void test_pixelfonts_render() {
     bubble.pixelfont = PixelFont_Alloc();
     bubble.pixelfont->y_offset = pixelfont_y_offset;
     TextBubble_Load(&bubble, renderer, &n9patch);
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "Fonts", "pixelnours.png"));
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
 
     /* - setting - */
@@ -151,7 +151,7 @@ void test_pixelfonts_render() {
     PixelFont_Free(bubble.pixelfont, true);
     bubble.pixelfont = PixelFont_Alloc();
     TextBubble_Load(&bubble, renderer, &n9patch);
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "Fonts",
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_Big.png"));
     bubble.pixelfont->y_offset     = pixelfont_big_y_offset;
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
@@ -216,7 +216,7 @@ void test_pixelfonts_render() {
 
     PixelFont_Free(bubble.pixelfont, true);
     bubble.pixelfont = PixelFont_Alloc();
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "Fonts",
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_Big.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, -1, -1);
     bubble.pixelfont->y_offset     = pixelfont_big_y_offset;

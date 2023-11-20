@@ -16,7 +16,7 @@ void test_Text_Bubble_Tail() {
     bubble.pixelfont = PixelFont_Alloc();
     bubble.pixelfont->y_offset     = pixelfont_y_offset;
     TextBubble_Load(&bubble, renderer, &n9patch);
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "Fonts", "pixelnours.png"));
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
 
     /* - setting - */
@@ -139,7 +139,7 @@ void test_Text_Bubble_Tail() {
     PixelFont_Free(bubble.pixelfont, true);
     TextBubble_Load(&bubble, renderer, &n9patch);
     bubble.pixelfont = PixelFont_Alloc();
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "Fonts",
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_Big.png"));
     bubble.pixelfont->y_offset     = pixelfont_big_y_offset;
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
@@ -354,7 +354,7 @@ void test_text_bubble_scroll() {
     bubble.pixelfont = PixelFont_Alloc();
     bubble.pixelfont->y_offset     = pixelfont_big_y_offset;
     TextBubble_Load(&bubble, renderer, &n9patch);
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "Fonts",
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_Big.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
     bubble.pixelfont->scroll_speed = 0;
@@ -412,7 +412,7 @@ void test_text_bubble_scroll_vertical() {
     bubble.pixelfont = PixelFont_Alloc();
     bubble.pixelfont->y_offset     = pixelfont_big_y_offset;
     TextBubble_Load(&bubble, renderer, &n9patch);
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "Fonts",
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_Big.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
     bubble.pixelfont->scroll_speed = 0;
@@ -473,7 +473,7 @@ void test_text_bubble_VScroll_Anim() {
     bubble.pixelfont = PixelFont_Alloc();
     bubble.pixelfont->y_offset     = pixelfont_big_y_offset;
     TextBubble_Load(&bubble, renderer, &n9patch);
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "Fonts",
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_Big.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
     bubble.pixelfont->scroll_speed = 0;

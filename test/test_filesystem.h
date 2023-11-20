@@ -14,7 +14,7 @@ void test_leaks() {
     surf = NULL;
 
     /* Filesystem_Surface_Load leak */
-    path = PATH_JOIN("..", "assets", "Fonts", "pixelnours_test.png");
+    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_test.png");
     SDL_Surface *surf2 = Filesystem_Surface_Load(path, SDL_PIXELFORMAT_INDEX8);
     int success = SDL_SetSurfacePalette(surf2, palette_NES);
     SDL_assert(success == 0);
@@ -26,7 +26,7 @@ void test_leaks() {
     surf2 = NULL;
 
     /* Filesystem_Surface_Palette_Swap leak */
-    path = PATH_JOIN("..", "assets", "Fonts", "pixelnours_test.png");
+    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_test.png");
     SDL_Surface *surf3 = Filesystem_Surface_Load(path, SDL_PIXELFORMAT_INDEX8);
     success = SDL_SetSurfacePalette(surf3, palette_NES);
     SDL_assert(success == 0);
@@ -44,7 +44,7 @@ void test_leaks() {
 
     /* --- Filesystem_Surface_Pixels2Indices leak --- */
     /* -- Load abgr image -- */
-    path = PATH_JOIN("..", "assets", "Fonts", "pixelnours_test.png");
+    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_test.png");
     SDL_Surface *surf_raw  = IMG_Load(path);
     path = PATH_JOIN("filesystem", "pixelnours_raw.png");
     SDL_SaveBMP(surf_raw, path);

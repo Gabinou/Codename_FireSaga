@@ -39,12 +39,12 @@ void test_menu_pre_combat() {
 
     /* - loading fonts - */
     pcm->pixelnours = PixelFont_Alloc();
-    path = PATH_JOIN("..", "assets", "Fonts", "pixelnours.png");
+    path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
     PixelFont_Load(pcm->pixelnours, renderer, path);
     nourstest_true(pcm->pixelnours);
 
     pcm->pixelnours_big = PixelFont_Alloc();
-    path = PATH_JOIN("..", "assets", "Fonts", "pixelnours_Big.png");
+    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
     PixelFont_Load(pcm->pixelnours_big, renderer, path);
     nourstest_true(pcm->pixelnours_big);
 

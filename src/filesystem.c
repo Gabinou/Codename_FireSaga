@@ -76,7 +76,7 @@ int Filesystem_Init(char *argv0) {
 
     /* -- Mounting items directory -- */
     temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
-    temp = s8cat(temp, s8_literal(DIR_SEPARATOR"items"));
+    temp = s8cat(temp, s8_literal(DIR_SEPARATOR "items"));
     Filesystem_Mount(temp);
 
     /* -- Mounting units directory -- */
@@ -90,17 +90,17 @@ int Filesystem_Init(char *argv0) {
     Filesystem_Mount(temp);
 
     /* -- Mounting assets/Maps -- */
-    temp = s8cat(temp, s8_literal(DIR_SEPARATOR"Maps"));
+    temp = s8cat(temp, s8_literal(DIR_SEPARATOR"maps"));
     Filesystem_Mount(temp);
 
     /* -- Mounting assets/Tiles -- */
     temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
-    temp = s8cat(temp, s8_literal(DIR_SEPARATOR"Tiles"));
+    temp = s8cat(temp, s8_literal(DIR_SEPARATOR"tiles"));
     Filesystem_Mount(temp);
 
     /* -- Mounting assets/Map_Units -- */
     temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
-    temp = s8cat(temp, s8_literal(DIR_SEPARATOR"Map_Units"));
+    temp = s8cat(temp, s8_literal(DIR_SEPARATOR"map_units"));
     Filesystem_Mount(temp);
 
     /* -- Mount assets.binou -- */

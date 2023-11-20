@@ -26,7 +26,7 @@ void test_popup_objective() {
 
     /* - loading fonts - */
     po->pixelnours = PixelFont_Alloc();
-    PixelFont_Load(po->pixelnours, renderer, PATH_JOIN("..", "assets", "Fonts", "pixelnours.png"));
+    PixelFont_Load(po->pixelnours, renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));
 
     /* - Objective - */
     PopUp_Objective_Set_Obj(po, "Rout");

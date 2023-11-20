@@ -419,17 +419,17 @@ struct Game *Game_Init(void) {
     out_game->gamepadInputMap   = GamepadInputMap_gamecube;
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Loading pixelfonts\n");
     out_game->pixelnours = PixelFont_Alloc();
-    char *path = PATH_JOIN("..", "assets", "Fonts", "pixelnours.png");
+    char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
     PixelFont_Load(out_game->pixelnours, out_game->renderer, path);
     out_game->pixelnours->y_offset = pixelfont_y_offset;
 
     out_game->pixelnours_big = PixelFont_Alloc();
-    path = PATH_JOIN("..", "assets", "Fonts", "pixelnours_Big.png");
+    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
     PixelFont_Load(out_game->pixelnours_big, out_game->renderer, path);
     out_game->pixelnours_big->y_offset = pixelfont_big_y_offset;
 
     out_game->pixelnours_tight = PixelFont_Alloc();
-    path = PATH_JOIN("..", "assets", "Fonts", "pixelnours_tight.png");
+    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_tight.png");
     PixelFont_Load(out_game->pixelnours_tight, out_game->renderer, path);
 
     /* Sprite init */

@@ -34,11 +34,11 @@ typedef tnecs_entity entity;
 //          - Use master priority by default: AI_PRIORITY_KILL
 //          - Condition met to use slave condition
 //          - Condition depends on master
-//              - fsm_slave called by fsm_master 
-//          - If HP is below 50% use slave priority: AI_PRIORITY_SURVIVE 
+//              - fsm_slave called by fsm_master
+//          - If HP is below 50% use slave priority: AI_PRIORITY_SURVIVE
 //      - What are criteria to switch priorities?
-//          - low HP    AI_PRIORITY_KILL -> AI_PRIORITY_SURVIVE 
-//          - no chests AI_PRIORITY_LOOT -> AI_PRIORITY_FLEE 
+//          - low HP    AI_PRIORITY_KILL -> AI_PRIORITY_SURVIVE
+//          - no chests AI_PRIORITY_LOOT -> AI_PRIORITY_FLEE
 //
 //  1. Make a decision pair: Who does What?
 //     - How does AI decide what to do?
@@ -51,8 +51,8 @@ typedef tnecs_entity entity;
 //              - Simple
 //              - Unpredictable
 //          2. Use Unit master/slave AI_Priority to decide -> fsm
-//              - Outputs tile to move and action to take 
-//              
+//              - Outputs tile to move and action to take
+//
 
 
 /* --- FORWARD DECLARATIONS --- */
@@ -68,7 +68,7 @@ struct AI_Action {
     struct Point target_move;   /* {-1, -1} if none */
     struct Point target_action; /* {-1, -1} if none */
     int action;
-}
+};
 
 enum AI_RATINGS {
     // Ratings for AI decision making in [-128, 128]
@@ -95,48 +95,48 @@ enum AI_PRIORITIES {
     // staffWielders that have AI_PRIORITY_KILL should act first
     // staffWielders that have AI_PRIORITY_PROTECT should act last
     // -> pullers should act before healers
-    
+
     AI_PRIORITY_START = 0,
     /* -- AI_PRIORITY_KILL -- */
     // Always attacks, ignores other actions
     // Goes aggressively towards enemy units
     //  - Can specify target unit, or not
-    // 
+    //
     // TWO BIRDS: Killing includes walls and snags,
     // so they will naturally clear path to units
-    AI_PRIORITY_KILL,    
+    AI_PRIORITY_KILL,
 
     /* -- AI_PRIORITY_PROTECT -- */
     /* Rescues friendlies, heal friendlies. Otherwise attacks. */
-    AI_PRIORITY_PROTECT,    
-    
+    AI_PRIORITY_PROTECT,
+
     /* -- AI_PRIORITY_SEIZE -- */
     /* Runs to objective. Attacks only if it doesn't slow down or kills you. */
-    AI_PRIORITY_SEIZE,    
-    
+    AI_PRIORITY_SEIZE,
+
     /* -- AI_PRIORITY_LOOT -- */
     /* Goes for chests. Does not attack. */
-    AI_PRIORITY_LOOT,    
-    
+    AI_PRIORITY_LOOT,
+
     /* -- AI_PRIORITY_STAFF -- */
     /* Tries to use staves. */
-    AI_PRIORITY_STAFF,    
-    
+    AI_PRIORITY_STAFF,
+
     /* -- AI_PRIORITY_SURVIVE -- */
     /* AAI switches  */
     /* Runs away when injured. Take healing items from friendlies to heal. */
-    AI_PRIORITY_SURVIVE,    
-    
+    AI_PRIORITY_SURVIVE,
+
     /* -- AI_PRIORITY_FLEE -- */
     /* Runs away from PCs. Does not attack.*/
-    AI_PRIORITY_FLEE,    
+    AI_PRIORITY_FLEE,
 
     /* -- AI_PRIORITY_STANDBY -- */
     /* Waits for enemy to go in attackmap range to move. */
     /* Range can be move, attack, or any random value */
     /* DESIGN LIMIT: Don't make range SMALLER than attackmap! SUCKS */
     AI_PRIORITY_STANDBY,
-    
+
     /* -- AI_PRIORITY_TRIGGER -- */
     /* Waits for condition to be met to do something. */
     /* -> I don't like it that much, but it might be useful */
@@ -147,16 +147,16 @@ enum AI_PRIORITIES {
     /* Skill to use and target are stored elsewhere. */
     /* Ex: Fortunée's telekinesis, Hamilcar's cleave. */
     AI_PRIORITY_SKILL,
-    
+
     /* -- AI_PRIORITY_IMMOBILE -- */
     /* Does not move, but attacks enemies in attack range */
     /* -> MUST be reflected in  attackmap/movemap */
     AI_PRIORITY_IMMOBILE,
-    
+
     /* -- AI_PRIORITY_DO_NOTHING -- */
     /* Does not move, does not attack */
     AI_PRIORITY_DO_NOTHING,
-    
+
     /* -- AI_PRIORITY_MOVE_TO -- */
     /* - Can specify target unit, tile */
     AI_PRIORITY_MOVE_TO,

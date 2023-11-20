@@ -84,11 +84,11 @@ void test_popup_map_combat() {
 
     /* - loading fonts - */
     pmc.pixelnours_tight = PixelFont_Alloc();
-    char *path = PATH_JOIN("..", "assets", "Fonts", "pixelnours_tight.png");
+    char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours_tight.png");
     PixelFont_Load(pmc.pixelnours_tight, renderer, path);
 
     pmc.pixelnours_big = PixelFont_Alloc();
-    path = PATH_JOIN("..", "assets", "Fonts", "pixelnours_Big.png");
+    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
     PixelFont_Load(pmc.pixelnours_big, renderer, path);
     SDL_assert(pmc.pixelnours_big);
 

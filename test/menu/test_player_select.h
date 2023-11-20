@@ -37,7 +37,7 @@ void test_menu_player_select() {
     /* - loading fonts - */
     psm->pixelnours = PixelFont_Alloc();
 
-    PixelFont_Load(psm->pixelnours, renderer, PATH_JOIN("..", "assets", "Fonts", "pixelnours.png"));
+    PixelFont_Load(psm->pixelnours, renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));
     SDL_assert(psm->pixelnours);
 
     /* --- TEST OPTIONS RENDERING --- */

@@ -52,10 +52,10 @@ void test_popup_loadout_stats() {
 
     /* - loading fonts - */
     pls.pixelnours = PixelFont_Alloc();
-    PixelFont_Load(pls.pixelnours, renderer, PATH_JOIN("..", "assets", "Fonts", "pixelnours.png"));
+    PixelFont_Load(pls.pixelnours, renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));
 
     pls.pixelnours_big = PixelFont_Alloc();
-    PixelFont_Load(pls.pixelnours_big, renderer, PATH_JOIN("..", "assets", "Fonts",
+    PixelFont_Load(pls.pixelnours_big, renderer, PATH_JOIN("..", "assets", "fonts",
                                                            "pixelnours_Big.png"));
     SDL_assert(pls.pixelnours_big);
 

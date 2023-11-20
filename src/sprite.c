@@ -247,7 +247,7 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit,
     SDL_assert(sprite->spritesheet->json_element == JSON_SPRITE);
 
     /* -- Loading spritesheet metadata -- */
-    s8 filename = s8_mut(PATH_JOIN("assets", "Map_Units")PHYSFS_SEPARATOR);
+    s8 filename = s8_mut(PATH_JOIN("assets", "map_units")PHYSFS_SEPARATOR);
     SDL_Log("unit->id %lu",    unit->_id);
     SDL_Log("unit->name %s",   unit->name);
     SDL_Log("unit->class %ld", unit->class);
@@ -262,7 +262,7 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit,
     s8_free(&filename);
 
     s8_free(&sprite->asset_name);
-    sprite->asset_name = s8_mut(PATH_JOIN("..", "assets", "Map_Units")DIR_SEPARATOR);
+    sprite->asset_name = s8_mut(PATH_JOIN("..", "assets", "map_units")DIR_SEPARATOR);
     sprite->asset_name = s8cat(sprite->asset_name, s8_var(classNames[unit->class].data));
     sprite->asset_name = s8cat(sprite->asset_name, s8_literal(".png"));
 

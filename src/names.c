@@ -116,7 +116,7 @@ void Names_gameStatenames(void) {
 
 s8 mapFilenames[CHAPTER_END] = {0};
 void Names_mapFilenames(void) {
-#define REGISTER_ENUM(x, y, z) mapFilenames[CHAPTER_##x] = s8cat(s8_mut("assets"PHYSFS_SEPARATOR"Maps"PHYSFS_SEPARATOR), s8_literal(#y));
+#define REGISTER_ENUM(x, y, z) mapFilenames[CHAPTER_##x] = s8cat(s8_mut("assets"PHYSFS_SEPARATOR"maps"PHYSFS_SEPARATOR), s8_literal(#y));
 #include "names/chapters.h"
 #undef REGISTER_ENUM
 }
