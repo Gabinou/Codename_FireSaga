@@ -29,7 +29,17 @@ typedef tnecs_entity entity;
 //  5. Finish
 
 /* -- Implementation details -- */
-//  - Ai is a component for Unit entities
+//  - Ai Component
+//      - Master and slave priorities
+//          - Use master priority by default: AI_PRIORITY_KILL
+//          - Condition met to use slave condition
+//          - Condition depends on master
+//              - fsm_slave called by fsm_master 
+//          - If HP is below 50% use slave priority: AI_PRIORITY_SURVIVE 
+//      - What are criteria to switch priorities?
+//          - low HP    AI_PRIORITY_KILL -> AI_PRIORITY_SURVIVE 
+//          - no chests AI_PRIORITY_LOOT -> AI_PRIORITY_FLEE 
+//
 //  1. Make a decision pair: Who does What?
 //     - How does AI decide what to do?
 //          1.1 Go through all units with certain priorities, for a priority order
@@ -43,13 +53,6 @@ typedef tnecs_entity entity;
 //          2. Use Unit master/slave AI_Priority to decide -> fsm
 //              - Outputs tile to move and action to take 
 //              
-//  - Every Unit has a different AI priority
-//      - Master and slave priorities
-//          - Use master priority AI_PRIORITY_KILL
-//          - If HP is below 50% use slave priority AI_PRIORITY_SURVIVE 
-//      - What are criteria to switch priorities?
-//          - low HP    AI_PRIORITY_KILL -> AI_PRIORITY_SURVIVE 
-//          - no chests AI_PRIORITY_LOOT -> AI_PRIORITY_FLEE 
 
 
 /* --- FORWARD DECLARATIONS --- */
@@ -61,9 +64,10 @@ struct AI_PushPull_Out {
 };
 
 struct AI_Action {
-    struct Point move;   /* {-1, -1} if none */
+    struct Point move;          /* {-1, -1} if none */
+    struct Point target_move;   /* {-1, -1} if none */
+    struct Point target_action; /* {-1, -1} if none */
     int action;
-    struct Point target; /* {-1, -1} if none */
 }
 
 enum AI_RATINGS {
