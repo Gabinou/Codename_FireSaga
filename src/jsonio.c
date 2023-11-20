@@ -355,7 +355,7 @@ void jsonio_Read_Position(struct cJSON *_jpos, struct Point *pos) {
     }
 }
 
-void jsonio_Read_mvtcost(struct cJSON           *_jcost,
+void jsonio_Read_mvtcost(struct cJSON          *_jcost,
                          struct fMovement_cost *cost) {
     SDL_assert(cost != NULL);
     struct cJSON *jmages       = cJSON_GetObjectItem(_jcost, "mages");
@@ -731,10 +731,14 @@ void Scene_readJSON(void *input, struct cJSON *_jscene) {
                 scene->actors[scene->actors_num++] = id;
         }
     }
-    scene->lines = SDL_realloc(scene->lines, scene->line_num * sizeof(*scene->lines));
-    scene->speakers = SDL_realloc(scene->speakers,
-                                  scene->line_num * sizeof(*scene->speakers));
-    scene->actors = SDL_realloc(scene->actors, scene->actors_num * sizeof(*scene->actors));
+    int bytesize = scene->line_num * sizeof(*scene->lines);
+    scene->lines    = SDL_realloc(scene->lines,     bytesize);
+    
+    int bytesize = scene->line_num * sizeof(*scene->speakers);
+    scene->speakers = SDL_realloc(scene->speakers,  bytesize);
+
+    int bytesize = scene->actors_num * sizeof(*scene->actors);
+    scene->actors   = SDL_realloc(scene->actors,    bytesize);
 }
 
 

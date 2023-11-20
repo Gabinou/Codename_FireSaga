@@ -74,7 +74,7 @@ struct Map Map_default = {
 
     .boundsmin              = {  0,   0},
     .boundsmax              = {255, 255},
-    .turn                   = 0, /* Automatic loss if turn 255. */
+    .turn                   = 1, /* Automatic loss if turn 255. */
     .chapter                = 0,
 
     .reinforcements         = NULL,
