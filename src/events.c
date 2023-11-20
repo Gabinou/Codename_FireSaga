@@ -207,6 +207,7 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         /* -- Turn only increments at the start of player turn -- */
         Map_Turn_Increment(sota->map);
     } else {
+        Game_Map_Reinforcements_Load(sota);
         #ifndef SOTA_PLAYER_CONTROLS_ENEMY
         /* --- AI control for enemy turn --- */
         /* -- Timer for AI -- */

@@ -119,10 +119,13 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
     SDL_assert(sota->map != NULL);
     char filename[DEFAULT_BUFFER_SIZE];
     for (i16 i = 0; i < DARR_NUM(sota->map->reinforcements); i++) {
-        SDL_Log("-- turn: %d --", sota->map->reinforcements[i].turn);
 
-        if ((sota->map->reinforcements[i].turn |= sota->map->turn))
+        // Skip if reinforcement is not for THIS turn
+        if ((sota->map->reinforcements[i].turn != sota->map->turn))
             continue;
+        SDL_Log("-- Reinforcement turn: %d %d --", sota->map->reinforcements[i].turn, sota->map->turn);
+
+        // TODO: Skip if something blocks tile reinforcements come to
 
         SDL_Log("-- loading reinforcements %ld --", i);
         SDL_Log("-- create entity --");
