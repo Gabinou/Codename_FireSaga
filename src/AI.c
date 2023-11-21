@@ -2,15 +2,18 @@
 #include "AI.h"
 
 struct AI AI_default = {
-    // .target_protect = 0,
-    // .target_kill = 0,
-    // .target_seize = {-1, -1},
-    // .target_open = {-1, -1},
-    // .target_defend = {-1, -1},
-    // .move_chapter = 0,
-    // .priority = AI_PRIORITY_KILL,
-    // .move_type = 1,
+    .priority_master  = AI_PRIORITY_START,
+    .priority_slave   = AI_PRIORITY_START,
+    .move             = AI_MOVE_START,
 };
+
+void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+    struct Unit *npc = TNECS_GET_COMPONENT(sota->world, npc_ent, Unit);
+    struct AI *ai = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
+
+
+}
+
 
 // extern int_fast8_t AI_Forecast_Rating(struct Combat_Forecast in_forecast) {
 //     int_fast8_t rating = 0;

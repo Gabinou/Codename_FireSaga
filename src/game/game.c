@@ -371,6 +371,7 @@ struct Game *Game_Init(void) {
     TNECS_REGISTER_COMPONENT(out_game->world, MapAnimation);
     TNECS_REGISTER_COMPONENT(out_game->world, RenderTop);
     TNECS_REGISTER_COMPONENT(out_game->world, PixelFont);
+    TNECS_REGISTER_COMPONENT(out_game->world, AI);
     out_game->timer_typeflag = TNECS_COMPONENT_NAME2TYPE(out_game->world, Timer);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration\n");

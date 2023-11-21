@@ -191,7 +191,6 @@ struct AI_Action {
     int action;
 };
 
-
 /* AI COMPONENT */
 typedef struct AI {
     int priority_master;
@@ -202,10 +201,10 @@ struct AI AI_default;
 
 typedef void (*AI_Decider)(struct AI_Action *action);
 extern AI_Decider AI_Decider_master[AI_PRIORITY_NUM];
-extern AI_Decider AI_Decider_slave[AI_ACTION_NUM];
+extern AI_Decider AI_Decider_slave[AI_PRIORITY_NUM];
 
 /* --- PUBLIC DECIDERS --- */
-void AI_Decide_Action(struct AI_Action *action);
+void AI_Decide_Action(struct Game *s, tnecs_entity e, struct AI_Action *a);
 
 /* AI decides where to move depending on ultimate target */
 void AI_Decide_Move(  struct AI_Action *action);

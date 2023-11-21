@@ -15,6 +15,7 @@
 #include "slider.h"
 #include "tnecs.h"
 #include "events.h"
+#include "AI.h"
 #include "nmath.h"
 #include "macros.h"
 #include "hover.h"
