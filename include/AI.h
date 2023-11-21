@@ -6,11 +6,16 @@
 #include "SDL.h"
 #include "types.h"
 #include "enums.h"
+#include "game/game.h"
 #include "unit.h"
 #include "narrative.h"
 #include "equations.h"
 #include "nmath.h"
 #include "cJSON.h"
+
+/* --- FORWARD DECLARATIONS --- */
+struct Item;
+struct Game;
 
 typedef tnecs_world  world;
 typedef tnecs_entity entity;
@@ -101,7 +106,7 @@ enum AI_ACTIONS {
 /* -- AI_PRIORITIES -- */
 /* How does the AI decide what action to take, where to move */
 enum AI_PRIORITIES {
-    AI_PRIORITY_START = 0,
+    AI_PRIORITY_START = -1,
     /* -- AI_PRIORITY_KILL -- */
     // Attacks to kill
     //  - PARAMETER: Target unit
@@ -156,7 +161,7 @@ enum AI_PRIORITIES {
 /* -- AI_MOVE -- */
 /* When can the AI start moving */
 enum AI_MOVE {
-    AI_MOVE_START = 0,
+    AI_MOVE_START = -1,
 
     /* -- AI_MOVE_ALWAYS -- */
     /* Unit can always move. */
@@ -199,19 +204,23 @@ typedef struct AI {
 } AI;
 struct AI AI_default;
 
-typedef void (*AI_Decider)(struct AI_Action *action);
+/* --- DECIDER FSM --- */
+typedef void (*AI_Decider)(struct Game *s, tnecs_entity e, struct AI_Action *a);
 extern AI_Decider AI_Decider_master[AI_PRIORITY_NUM];
 extern AI_Decider AI_Decider_slave[AI_PRIORITY_NUM];
+void AI_Do_Nothing(struct Game *s, tnecs_entity e, struct AI_Action *a);
+
+
 
 /* --- PUBLIC DECIDERS --- */
 void AI_Decide_Action(struct Game *s, tnecs_entity e, struct AI_Action *a);
 
 /* AI decides where to move depending on ultimate target */
-void AI_Decide_Move(  struct AI_Action *action);
+void AI_Decide_Move(  struct Game *s, tnecs_entity e, struct AI_Action *a);
 
-/* --- PUBLIC DO'ERS --- */
-void AI_Move(struct AI_Action *action);
-void AI_Act( struct AI_Action *action);
+/* --- PUBLIC DOERS --- */
+void AI_Move(struct Game *s, tnecs_entity e, struct AI_Action *a);
+void AI_Act( struct Game *s, tnecs_entity e, struct AI_Action *a);
 
 // Call order: AI_Decide_Action -> AI_Decide_Move -> AI_Move -> AI_Act
 
