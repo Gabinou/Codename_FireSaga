@@ -28,5 +28,6 @@ void Draw_Text_Timer(tnecs_system_input *input);
 
 void Animate_Combat_onMap(   tnecs_system_input *input);
 void Animate_Turn_Transition(tnecs_system_input *input);
+void Animate_Unit_Move_onMap(tnecs_system_input *input);
 
 #endif /* SYSTEMRENDER_H */

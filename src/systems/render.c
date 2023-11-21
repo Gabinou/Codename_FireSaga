@@ -301,3 +301,29 @@ void Animate_Turn_Transition(tnecs_system_input *input) {
         Map_TurnTransition_Animate(sota, entity, map_anim, timer);
     }
 }
+
+void Animate_Unit_Move_onMap(tnecs_system_input *input) {
+    /* --- PRELIMINARIES --- */
+    /* -- Get game -- */
+    struct Game *sota = (struct Game *)input->user_data;
+    SDL_assert(sota != NULL);
+
+    /* -- Get components arrays -- */
+    struct Timer        *timer_arr = TNECS_COMPONENTS_LIST(input, Timer);
+    struct Unit         *unit_arr  = TNECS_COMPONENTS_LIST(input, Unit);
+    struct UnitMoveAnimation *unitmove_arr;
+    unitmove_arr = TNECS_COMPONENTS_LIST(input, UnitMoveAnimation);
+
+    /* --- DRAWING TEXT ENTITIES --- */
+    for (u16 order = 0; order < input->num_entities; order++) {
+        struct UnitMoveAnimation *unit_anim  = &unitmove_arr[order];
+        struct Timer             *timer      = &timer_arr[order];
+        struct Unit              *unit       = &unit_arr[order];
+
+        tnecs_world   *world       = input->world;
+        size_t         typeflag_id = input->entity_typeflag_id;
+        tnecs_entity   entity      = world->entities_bytype[typeflag_id][order];
+
+        Unit_Move_onMap_Animate(sota, entity, timer, unit_anim);
+    }
+}

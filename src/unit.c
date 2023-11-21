@@ -48,6 +48,11 @@ int  class_mvt_types[UNIT_CLASS_END] = {
     /* TWINBORN          */ UNIT_MVT_MAGES,
 };
 
+struct UnitMoveAnimation UnitMoveAnimation_default = {
+    .time_ns         = SOTA_ns,
+};
+
+
 /* --- UNIT --- */
 struct Unit_status Unit_status_default = {.status = 0, .turns = 3};
 

@@ -33,6 +33,15 @@ enum STATUSES {
 extern u8  army_alignment[ARMY_END];
 extern bool army_isPC[ARMY_END];
 
+/* --- UnitMoveAnimation --- */
+typedef struct UnitMoveAnimation {
+    i64 time_ns;
+    struct Point target;
+    tnecs_entity unit;
+} UnitMoveAnimation;
+extern struct UnitMoveAnimation UnitMoveAnimation_default;
+
+
 /* --- UNIT STATUS --- */
 struct Unit_status {
     /* Number of turns to be in this state. *

@@ -369,6 +369,7 @@ struct Game *Game_Init(void) {
     TNECS_REGISTER_COMPONENT(out_game->world, MapHPBar);
     TNECS_REGISTER_COMPONENT(out_game->world, CombatAnimation);
     TNECS_REGISTER_COMPONENT(out_game->world, MapAnimation);
+    TNECS_REGISTER_COMPONENT(out_game->world, UnitMoveAnimation);
     TNECS_REGISTER_COMPONENT(out_game->world, RenderTop);
     TNECS_REGISTER_COMPONENT(out_game->world, PixelFont);
     TNECS_REGISTER_COMPONENT(out_game->world, AI);

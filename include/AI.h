@@ -8,6 +8,7 @@
 #include "enums.h"
 #include "game/game.h"
 #include "unit.h"
+#include "structs.h"
 #include "narrative.h"
 #include "equations.h"
 #include "nmath.h"
@@ -16,6 +17,7 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
 struct Game;
+struct Timer;
 
 typedef tnecs_world  world;
 typedef tnecs_entity entity;
@@ -215,7 +217,8 @@ void AI_Decider_Do_Nothing(struct Game *s, tnecs_entity e, struct AI_Action *a);
 extern AI_Doer AI_Act_action[AI_ACTION_NUM];
 void AI_Doer_Wait(struct Game *s, tnecs_entity e, struct AI_Action *a);
 
-
+void Unit_Move_onMap_Animate(struct Game *sota, tnecs_entity entity,
+                             struct Timer *timer, struct UnitMoveAnimation *anim);
 
 /* --- PUBLIC DECIDERS --- */
 void AI_Decide_Action(struct Game *s, tnecs_entity e, struct AI_Action *a);

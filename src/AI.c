@@ -125,11 +125,12 @@ AI_Doer AI_Act_action[AI_ACTION_NUM] = {
     /* OPTIONS        */ NULL,
     /* EXTRAS         */ NULL,
     /* DEBUG_MAP      */ NULL,
-}
+};
 
 
 void AI_Doer_Wait(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     Game_Unit_Wait(sota, npc_ent);
+
 }
 
 void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
@@ -558,3 +559,15 @@ void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
 //     }
 //     return (out);
 // }
+
+void Unit_Move_onMap_Animate(struct Game *sota, tnecs_entity entity,
+                             struct Timer *timer, struct UnitMoveAnimation *anim) {
+    /* - Animation is complete, begin a turn - */
+    if (timer->time_ns >= anim->time_ns) {
+        SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "Unit Animation Finished");
+        TNECS_REMOVE_COMPONENTS(sota->world, entity, UnitMoveAnimation);
+        TNECS_REMOVE_COMPONENTS(sota->world, entity, Timer);
+        return;
+    }
+
+}
