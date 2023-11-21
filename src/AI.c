@@ -130,7 +130,16 @@ AI_Doer AI_Act_action[AI_ACTION_NUM] = {
 
 void AI_Doer_Wait(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     Game_Unit_Wait(sota, npc_ent);
+    TNECS_ADD_COMPONENT(sota->world, npc_ent, Timer);
+    struct Timer *timer = TNECS_GET_COMPONENT(sota->world, npc_ent, Timer);
+    SDL_assert(timer != NULL);
+    *timer = Timer_default;
 
+    TNECS_ADD_COMPONENT(sota->world, npc_ent, UnitMoveAnimation);
+    struct UnitMoveAnimation *anim;
+    anim = TNECS_GET_COMPONENT(sota->world, npc_ent, UnitMoveAnimation);
+    SDL_assert(anim != NULL);
+    *anim = UnitMoveAnimation_default;
 }
 
 void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {

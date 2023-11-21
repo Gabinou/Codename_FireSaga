@@ -295,7 +295,7 @@ void Animate_Turn_Transition(tnecs_system_input *input) {
         struct Text         *text       = &text_arr[order];
 
         tnecs_world   *world       = input->world;
-        size_t           typeflag_id = input->entity_typeflag_id;
+        size_t         typeflag_id = input->entity_typeflag_id;
         tnecs_entity   entity      = world->entities_bytype[typeflag_id][order];
 
         Map_TurnTransition_Animate(sota, entity, map_anim, timer);
