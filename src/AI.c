@@ -8,9 +8,9 @@ struct AI AI_default = {
 };
 
 struct AI_Action AI_Action_default =  {
-    target_move     = {-1, -1},
-    target_action   = {-1, -1},
-    action          = AI_ACTION_START,
+    .target_move     = {-1, -1},
+    .target_action   = {-1, -1},
+    .action          = AI_ACTION_START,
 };
 
 
@@ -41,8 +41,8 @@ AI_Decider AI_Decider_slave[AI_PRIORITY_NUM] = {
 
 void AI_Do_Nothing(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     struct Position *pos    = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
-    action->target_action.x = pos->tilemap_pos.x; 
-    action->target_action.y = pos->tilemap_pos.y; 
+    action->target_action.x = pos->tilemap_pos.x;
+    action->target_action.y = pos->tilemap_pos.y;
     action->action          = AI_ACTION_WAIT;
 }
 
@@ -53,7 +53,7 @@ void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action 
     SDL_assert(ai->priority_master > AI_PRIORITY_START);
     SDL_assert(ai->priority_master < AI_PRIORITY_NUM);
     if (AI_Decider_master[ai->priority_master] != NULL)
-        AI_Decider_master[ai->priority_master]();
+        AI_Decider_master[ai->priority_master](sota, npc_ent, action);
 }
 
 void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
@@ -64,7 +64,7 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
     b32 same_y = (action->target_action.y == pos->tilemap_pos.y);
     if (same_x && same_y)
         return;
-    
+
     /* -- Skip movement if target adjacent to current position -- */
     b32 adjacent_x   = (action->target_action.x == pos->tilemap_pos.x - 1);
     adjacent_x      |= (action->target_action.x == pos->tilemap_pos.x + 1);
@@ -73,21 +73,27 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
     if (adjacent_y && adjacent_y)
         return;
 
-
 }
 
 void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     /* -- Skip no movement -- */
+    struct AI   *ai     = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
+
+    if (ai->move == AI_MOVE_NEVER)
+        return;
+
+    /* -- Skip no movement -- */
     b32 null_x   = (action->target_move.x < 0);
-    null_x      |= (action->target_move.x >= col_len);
+    null_x      |= (action->target_move.x >= sota->map->col_len);
     b32 null_y   = (action->target_move.y < 0);
-    null_y      |= (action->target_move.y >= row_len);
+    null_y      |= (action->target_move.y >= sota->map->row_len);
     if (null_x && null_y)
         return;
 
 }
 
 void AI_Act( struct Game *s, tnecs_entity e, struct AI_Action *a) {
+    /* -- Skip if no action -- */
 
 }
 
