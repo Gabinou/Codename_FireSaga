@@ -206,9 +206,14 @@ struct AI AI_default;
 
 /* --- DECIDER FSM --- */
 typedef void (*AI_Decider)(struct Game *s, tnecs_entity e, struct AI_Action *a);
+typedef AI_Decider AI_Doer;
 extern AI_Decider AI_Decider_master[AI_PRIORITY_NUM];
 extern AI_Decider AI_Decider_slave[AI_PRIORITY_NUM];
-void AI_Do_Nothing(struct Game *s, tnecs_entity e, struct AI_Action *a);
+void AI_Decider_Do_Nothing(struct Game *s, tnecs_entity e, struct AI_Action *a);
+
+/* --- Doer FSM --- */
+extern AI_Doer AI_Act_action[AI_ACTION_NUM];
+void AI_Doer_Wait(struct Game *s, tnecs_entity e, struct AI_Action *a);
 
 
 

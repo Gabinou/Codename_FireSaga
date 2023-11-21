@@ -22,10 +22,11 @@ AI_Decider AI_Decider_master[AI_PRIORITY_NUM] = {
     /* AI_PRIORITY_SURVIVE      */ NULL,
     /* AI_PRIORITY_FLEE         */ NULL,
     /* AI_PRIORITY_SKILL        */ NULL,
-    /* AI_PRIORITY_DO_NOTHING   */ &AI_Do_Nothing,
+    /* AI_PRIORITY_DO_NOTHING   */ &AI_Decider_Do_Nothing,
     /* AI_PRIORITY_MOVE_TO      */ NULL,
     /* AI_PRIORITY_PATROL       */ NULL,
 };
+
 AI_Decider AI_Decider_slave[AI_PRIORITY_NUM] = {
     /* AI_PRIORITY_KILL         */ NULL,
     /* AI_PRIORITY_SEIZE        */ NULL,
@@ -34,12 +35,12 @@ AI_Decider AI_Decider_slave[AI_PRIORITY_NUM] = {
     /* AI_PRIORITY_SURVIVE      */ NULL,
     /* AI_PRIORITY_FLEE         */ NULL,
     /* AI_PRIORITY_SKILL        */ NULL,
-    /* AI_PRIORITY_DO_NOTHING   */ &AI_Do_Nothing,
+    /* AI_PRIORITY_DO_NOTHING   */ &AI_Decider_Do_Nothing,
     /* AI_PRIORITY_MOVE_TO      */ NULL,
     /* AI_PRIORITY_PATROL       */ NULL,
 };
 
-void AI_Do_Nothing(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+void AI_Decider_Do_Nothing(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     struct Position *pos    = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
     action->target_action.x = pos->tilemap_pos.x;
     action->target_action.y = pos->tilemap_pos.y;
@@ -72,7 +73,6 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
     adjacent_y      |= (action->target_action.y == pos->tilemap_pos.y + 1);
     if (adjacent_y && adjacent_y)
         return;
-
 }
 
 void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
@@ -90,11 +90,52 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
     if (null_x && null_y)
         return;
 
+    struct Position *pos = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
+
+    // TODO: Movement Animation
+    struct Point old = pos->tilemap_pos;
+    struct Point new = action->target_move;
+    Map_Unit_Move(sota->map, old.x, old.y, new.x, new.y);
 }
 
-void AI_Act( struct Game *s, tnecs_entity e, struct AI_Action *a) {
-    /* -- Skip if no action -- */
 
+AI_Doer AI_Act_action[AI_ACTION_NUM] = {
+    /* ITEMS          */ NULL,
+    /* TALK           */ NULL,
+    /* STAFF          */ NULL,
+    /* DANCE          */ NULL,
+    /* RESCUE         */ NULL,
+    /* SEIZE          */ NULL,
+    /* ESCAPE         */ NULL,
+    /* ATTACK         */ NULL,
+    /* VILLAGE        */ NULL,
+    /* TRADE          */ NULL,
+    /* MAP            */ NULL,
+    /* WAIT           */ &AI_Doer_Wait,
+    /* OPEN           */ NULL,
+    /* QUIT           */ NULL,
+    /* END_TURN       */ NULL,
+    /* UNITS          */ NULL,
+    /* CONVOY         */ NULL,
+    /* GLOBAL_RANGE   */ NULL,
+    /* NEW_GAME       */ NULL,
+    /* LOAD           */ NULL,
+    /* ERASE          */ NULL,
+    /* COPY           */ NULL,
+    /* OPTIONS        */ NULL,
+    /* EXTRAS         */ NULL,
+    /* DEBUG_MAP      */ NULL,
+}
+
+
+void AI_Doer_Wait(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+    Game_Unit_Wait(sota, npc_ent);
+}
+
+void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+    /* -- Skip if no action -- */
+    if (AI_Act_action[action->action] != NULL)
+        AI_Act_action[action->action](sota, npc_ent, action);
 }
 
 // extern int_fast8_t AI_Forecast_Rating(struct Combat_Forecast in_forecast) {
