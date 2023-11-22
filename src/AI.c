@@ -13,7 +13,6 @@ struct AI_Action AI_Action_default =  {
     .action          = AI_ACTION_START,
 };
 
-
 AI_Decider AI_Decider_master[AI_PRIORITY_NUM] = {
     /* AI_PRIORITY_KILL         */ NULL,
     /* AI_PRIORITY_SEIZE        */ NULL,
@@ -46,6 +45,11 @@ void AI_Decider_Do_Nothing(struct Game *sota, tnecs_entity npc_ent, struct AI_Ac
     action->target_action.y = pos->tilemap_pos.y;
     action->action          = AI_ACTION_WAIT;
 }
+
+entity AI_Decide_Next(struct Game *sota) {
+    return(TNECS_NULL);
+}
+
 
 void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     *action = AI_Action_default;
@@ -569,7 +573,7 @@ void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
 //     return (out);
 // }
 
-void Unit_Move_onMap_Animate(struct Game *sota, tnecs_entity entity,
+void Unit_Move_onMap_Animate(struct Game  *sota,  tnecs_entity entity,
                              struct Timer *timer, struct UnitMoveAnimation *anim) {
     /* - Animation is complete, begin a turn - */
     if (timer->time_ns >= anim->time_ns) {
@@ -578,5 +582,4 @@ void Unit_Move_onMap_Animate(struct Game *sota, tnecs_entity entity,
         TNECS_REMOVE_COMPONENTS(sota->world, entity, Timer);
         return;
     }
-
 }

@@ -220,6 +220,8 @@ void AI_Doer_Wait(struct Game *s, tnecs_entity e, struct AI_Action *a);
 void Unit_Move_onMap_Animate(struct Game *sota, tnecs_entity entity,
                              struct Timer *timer, struct UnitMoveAnimation *anim);
 
+entity AI_Decide_Next(struct Game *s);
+
 /* --- PUBLIC DECIDERS --- */
 void AI_Decide_Action(struct Game *s, tnecs_entity e, struct AI_Action *a);
 

@@ -75,14 +75,11 @@ void fsm_cFrame_sGmpMap_ssMapCmbt(struct Game *sota) {
 }
 
 void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
-    // TODO: AI stuff
-    //      - Check if remaining unit in army can move
-    //      - Move army unit
-    //      - Wait a couple frames I guess
 
-    /* Placeholder for AI control: timer to turn end */
+    #ifdef SOTA_NPC_TURN_TIMER_ONLY
+    /* No AI control: timer to turn end */
     if (sota->ai_timer == TNECS_NULL)
-        return;
+    return;
 
     SDL_assert(sota->world->entities[sota->ai_timer] == sota->ai_timer);
     struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->ai_timer, Timer);
@@ -91,11 +88,37 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     if (timer->time_ns >= (1ULL * SOTA_ns)) { /* 1s until AI turn finishes */
         // SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "AI Turn Finished");
         SDL_Log("AI Turn Finished");
-        tnecs_entity_destroy(sota->world, sota->ai_timer);
-        sota->ai_timer = TNECS_NULL;
         Event_Emit(__func__, SDL_USEREVENT, event_Turn_End, NULL, NULL);
         return;
+    } 
+    #else
+    /* --- Find next NPC to decide --- */
+    tnecs_entity npc_ent    = AI_Decide_Next(sota);
+    b32 decided             = false; /* Did AI decide for npc_ent?*/
+
+    b32 move_anim           = false; /* Was move animation done for npc_ent */
+    b32 act_anim            = false; /* Was act  animation done for npc_ent */
+
+    /* --- AI decides what to do with unit --- */
+    // If not previously decided for npc_ent, decide
+    if (!decided && (npc_ent != TNECS_NULL)) {
+        AI_Decide_Action(sota, npc_ent, action);
+        AI_Decide_Move(  sota, npc_ent, action);
     }
+
+    /* --- AI moves unit --- */
+    if (decided && !move_anim && (npc_ent != TNECS_NULL)) {
+        SDL_assert(!act_anim);
+        AI_Move(sota, npc_ent, action);
+    }
+
+    /* --- AI acts unit --- */
+    if (decided && move_anim && (npc_ent != TNECS_NULL)) {
+        AI_Act( sota, npc_ent, action);
+    }
+
+
+    #endif /* SOTA_NPC_TURN_TIMER_ONLY */
 }
 
 void fsm_cFrame_sGmpMap_ssSave(struct Game *sota) {

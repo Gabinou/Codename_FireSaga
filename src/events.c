@@ -208,20 +208,23 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         Map_Turn_Increment(sota->map);
     } else {
         Game_Map_Reinforcements_Load(sota);
-        #ifndef SOTA_PLAYER_CONTROLS_ENEMY
-        /* --- AI control for enemy turn --- */
-        /* -- Timer for AI -- */
-        sota->ai_timer      = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer);
-        struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->ai_timer, Timer);
-        *timer = Timer_default;
+        #ifdef SOTA_PLAYER_CONTROLS_ENEMY
+        /* --- Player control for enemy turn --- */
+        Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
 
+        #else /* SOTA_PLAYER_CONTROLS_ENEMY */
+        /* --- AI control for enemy turn --- */
         /* -- Setting game substate -- */
         memcpy(sota->reason, "Ai control turn", sizeof(sota->reason));
         Game_subState_Set(sota, GAME_SUBSTATE_MAP_NPCTURN, sota->reason);
 
-        #else /* SOTA_PLAYER_CONTROLS_ENEMY */
-        /* --- Player control for enemy turn --- */
-        Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
+        #ifdef SOTA_NPC_TURN_TIMER_ONLY
+        /* -- Timer for AI -- */
+        sota->ai_timer      = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer);
+        struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->ai_timer, Timer);
+        *timer = Timer_default;
+        #endif /*SOTA_NPC_TURN_TIMER_ONLY*/
+
         #endif /* SOTA_PLAYER_CONTROLS_ENEMY */
     }
 }
@@ -646,6 +649,13 @@ void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
 
     /* - focus cursor on tilemap - */
     Game_cursorFocus_onMap(sota);
+    #ifndef SOTA_PLAYER_CONTROLS_ENEMY
+
+    if (sota->ai_timer != TNECS_NULL) {
+        tnecs_entity_destroy(sota->world, sota->ai_timer);
+        sota->ai_timer = TNECS_NULL;
+    }
+
 
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
 }
