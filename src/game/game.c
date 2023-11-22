@@ -99,6 +99,8 @@ struct Game Game_default = {
 
     .inputs = {0},
 
+    .ai_internals = {0},
+
     .chapter            = -1,
     .state              = GAME_STATE_Title_Screen,
     .substate           = GAME_SUBSTATE_MENU,

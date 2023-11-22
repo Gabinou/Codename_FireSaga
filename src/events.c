@@ -649,13 +649,11 @@ void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
 
     /* - focus cursor on tilemap - */
     Game_cursorFocus_onMap(sota);
-    #ifndef SOTA_PLAYER_CONTROLS_ENEMY
 
     if (sota->ai_timer != TNECS_NULL) {
         tnecs_entity_destroy(sota->world, sota->ai_timer);
         sota->ai_timer = TNECS_NULL;
     }
-
 
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
 }

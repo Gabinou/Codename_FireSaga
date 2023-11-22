@@ -6,13 +6,23 @@
 #include "SDL.h"
 #include "types.h"
 #include "enums.h"
-#include "game/game.h"
 #include "unit.h"
 #include "structs.h"
 #include "narrative.h"
 #include "equations.h"
 #include "nmath.h"
 #include "cJSON.h"
+
+/* AI Internals for SOTA */
+struct AI_Internals {
+    tnecs_entity *npcs; /* DARR, list of npcs to control */
+    int npc_i;          /* index of latext entity */
+    b32 decided;        /* Did AI decide for latest entity*/
+    b32 move_anim;      /* Was move animation done for latest entity */
+    b32 act_anim;       /* Was act  animation done for latest entity */
+};
+
+#include "game/game.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
@@ -206,6 +216,7 @@ typedef struct AI {
 } AI;
 struct AI AI_default;
 
+
 /* --- DECIDER FSM --- */
 typedef void (*AI_Decider)(struct Game *s, tnecs_entity e, struct AI_Action *a);
 typedef AI_Decider AI_Doer;
@@ -232,6 +243,9 @@ void AI_Decide_Move(  struct Game *s, tnecs_entity e, struct AI_Action *a);
 void AI_Move(struct Game *s, tnecs_entity e, struct AI_Action *a);
 void AI_Act( struct Game *s, tnecs_entity e, struct AI_Action *a);
 
+/* --- AI_INTERNALS --- */
+void AI_Internals_Build(struct AI_Internals *internals);
+void AI_Internals_Pop(  struct AI_Internals *internals);
 // Call order: AI_Decide_Action -> AI_Decide_Move -> AI_Move -> AI_Act
 
 #endif /* AI_H */

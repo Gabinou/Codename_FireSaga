@@ -47,7 +47,7 @@ void AI_Decider_Do_Nothing(struct Game *sota, tnecs_entity npc_ent, struct AI_Ac
 }
 
 entity AI_Decide_Next(struct Game *sota) {
-    return(TNECS_NULL);
+    return (TNECS_NULL);
 }
 
 
@@ -151,6 +151,19 @@ void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     if (AI_Act_action[action->action] != NULL)
         AI_Act_action[action->action](sota, npc_ent, action);
 }
+
+void AI_Internals_Build(struct AI_Internals *internals) {
+
+}
+void AI_Internals_Pop(  struct AI_Internals *internals) {
+    SDL_assert(internals        != NULL);
+    SDL_assert(internals->npcs  != NULL);
+    DARR_DEL(internals->npcs, internals->npc_i);
+    internals->decided      = false;
+    internals->move_anim    = false;
+    internals->act_anim     = false;
+}
+
 
 // extern int_fast8_t AI_Forecast_Rating(struct Combat_Forecast in_forecast) {
 //     int_fast8_t rating = 0;

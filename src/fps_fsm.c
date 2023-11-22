@@ -79,7 +79,7 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     #ifdef SOTA_NPC_TURN_TIMER_ONLY
     /* No AI control: timer to turn end */
     if (sota->ai_timer == TNECS_NULL)
-    return;
+        return;
 
     SDL_assert(sota->world->entities[sota->ai_timer] == sota->ai_timer);
     struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->ai_timer, Timer);
@@ -90,14 +90,20 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
         SDL_Log("AI Turn Finished");
         Event_Emit(__func__, SDL_USEREVENT, event_Turn_End, NULL, NULL);
         return;
-    } 
+    }
     #else
-    /* --- Find next NPC to decide --- */
-    tnecs_entity npc_ent    = AI_Decide_Next(sota);
-    b32 decided             = false; /* Did AI decide for npc_ent?*/
 
-    b32 move_anim           = false; /* Was move animation done for npc_ent */
-    b32 act_anim            = false; /* Was act  animation done for npc_ent */
+    /* --- Build list of npcs to control --- */
+    if (sota->ai_internals.npcs == NULL) {
+        AI_Internals_Build(&sota->ai_internals);
+    }
+    SDL_assert(sota->ai_internals.npcs != NULL);
+
+    /* --- Decide next NPC to act --- */
+    tnecs_entity npc_ent    = AI_Decide_Next(sota);
+    b32 decided     = sota->ai_internals.decided;
+    b32 act_anim    = sota->ai_internals.act_anim;
+    b32 move_anim   = sota->ai_internals.move_anim;
 
     /* --- AI decides what to do with unit --- */
     // If not previously decided for npc_ent, decide
@@ -117,6 +123,11 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
         AI_Act( sota, npc_ent, action);
     }
 
+    /* --- Pop unit from list in AI_internals --- */
+    if (act_anim) {
+        AI_Internals_Pop(&sota->ai_internals);
+        // TODO: if not more units, end NPC turn.
+    }
 
     #endif /* SOTA_NPC_TURN_TIMER_ONLY */
 }

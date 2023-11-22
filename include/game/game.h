@@ -41,6 +41,7 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
 struct Game;
+struct AI_Internals;
 
 void Events_Data_Malloc(void);
 void Events_Data_Free(void);
@@ -175,6 +176,8 @@ struct Game {
     tnecs_entity *auditors;       // talk
     tnecs_entity *passives;       // trade
     tnecs_entity *openables;      // doors and chests
+
+    struct AI_Internals ai_internals;
 
     i32   controller_code;
 
