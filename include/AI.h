@@ -244,7 +244,7 @@ void AI_Move(struct Game *s, tnecs_entity e, struct AI_Action *a);
 void AI_Act( struct Game *s, tnecs_entity e, struct AI_Action *a);
 
 /* --- AI_INTERNALS --- */
-void AI_Internals_Build(struct Game * sota);
+void AI_Internals_Build(struct Game *sota);
 void AI_Internals_Pop(  struct AI_Internals *internals);
 // Call order: AI_Decide_Action -> AI_Decide_Move -> AI_Move -> AI_Act
 

@@ -46,6 +46,7 @@ void AI_Decider_Do_Nothing(struct Game *sota, tnecs_entity npc_ent, struct AI_Ac
     action->action          = AI_ACTION_WAIT;
 }
 
+
 entity AI_Decide_Next(struct Game *sota) {
     struct AI_Internals *internals = &sota->ai_internals;
     internals->npc_i = 0;
@@ -153,21 +154,24 @@ void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
         AI_Act_action[action->action](sota, npc_ent, action);
 }
 
-void AI_Internals_Build(struct Game * sota) {
+void AI_Internals_Build(struct Game *sota) {
     struct AI_Internals *internals = &sota->ai_internals;
 
     /* -- Init internals->npc --  */
     SDL_assert(internals->npcs == NULL);
-    internals->npcs = DARR_INIT(internals->npcs, entity, 16);
+    internals->npcs  = DARR_INIT(internals->npcs, entity, 16);
+    internals->npc_i = -1;
 
     /* -- Find all units in current army -- */
     i8 army = sota->map->army_onfield[sota->map->army_i];
-    for (int i = 0; i < DARR_NUM(map->units_onfield); i++) {
-        entity npc_ent = map->units_onfield[i];
+    for (int i = 0; i < DARR_NUM(sota->map->units_onfield); i++) {
+        entity npc_ent = sota->map->units_onfield[i];
         struct Unit *unit = TNECS_GET_COMPONENT(sota->world, npc_ent, Unit);
         if (unit->army == army)
             DARR_PUT(internals->npcs, npc_ent);
     }
+    SDL_Log("%d", DARR_NUM(internals->npcs));
+    getchar();
 }
 
 void AI_Internals_Pop(  struct AI_Internals *internals) {

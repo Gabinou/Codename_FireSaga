@@ -101,8 +101,12 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     SDL_assert(sota->ai_internals.npcs != NULL);
 
     /* -- Decide next NPC to act -- */
-    tnecs_entity npc_ent    = AI_Decide_Next(sota);
-    b32 decided     = sota->ai_internals.decided;
+    if (sota->ai_internal.npc_i < 0) {
+        AI_Decide_Next(sota);
+
+    }
+    tnecs_entity npc_ent = sota->ai_internal->npcs[sota->ai_internal->npc_i];
+    b32 decided          = sota->ai_internals.decided;
 
     /* -- AI decides what to do with unit -- */
     // If not previously decided for npc_ent, decide
