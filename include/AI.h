@@ -13,6 +13,13 @@
 #include "nmath.h"
 #include "cJSON.h"
 
+// Note: If target is not in range, don't do action
+struct AI_Action {
+    struct Point target_move;   /* {-1, -1} if none */
+    struct Point target_action; /* {-1, -1} if none */
+    int action;
+};
+
 /* AI Internals for SOTA */
 struct AI_Internals {
     tnecs_entity *npcs; /* DARR, list of npcs to control */
@@ -20,6 +27,7 @@ struct AI_Internals {
     b32 decided;        /* Did AI decide for latest entity*/
     b32 move_anim;      /* Was move animation done for latest entity */
     b32 act_anim;       /* Was act  animation done for latest entity */
+    struct AI_Action action;
 };
 
 #include "game/game.h"
@@ -201,13 +209,6 @@ enum AI_MOVE {
     AI_MOVE_NUM,
 };
 
-// Note: If target is not in range, don't do action
-struct AI_Action {
-    struct Point target_move;   /* {-1, -1} if none */
-    struct Point target_action; /* {-1, -1} if none */
-    int action;
-};
-
 /* AI COMPONENT */
 typedef struct AI {
     int priority_master;
@@ -245,7 +246,7 @@ void AI_Act( struct Game *s, tnecs_entity e, struct AI_Action *a);
 
 /* --- AI_INTERNALS --- */
 void AI_Internals_Build(struct Game *sota);
-void AI_Internals_Pop(  struct AI_Internals *internals);
+void AI_Internals_Pop(  struct Game *sota);
 // Call order: AI_Decide_Action -> AI_Decide_Move -> AI_Move -> AI_Act
 
 #endif /* AI_H */

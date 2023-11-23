@@ -46,7 +46,6 @@ void AI_Decider_Do_Nothing(struct Game *sota, tnecs_entity npc_ent, struct AI_Ac
     action->action          = AI_ACTION_WAIT;
 }
 
-
 entity AI_Decide_Next(struct Game *sota) {
     struct AI_Internals *internals = &sota->ai_internals;
     internals->npc_i = 0;
@@ -56,7 +55,12 @@ entity AI_Decide_Next(struct Game *sota) {
 void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     *action = AI_Action_default;
     struct Unit *npc    = TNECS_GET_COMPONENT(sota->world, npc_ent, Unit);
+    SDL_assert(npc != NULL);
     struct AI   *ai     = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
+    SDL_assert(ai == NULL);
+    TNECS_ADD_COMPONENT(sota->world, npc_ent, AI);
+    ai = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
+
     SDL_assert(ai->priority_master > AI_PRIORITY_START);
     SDL_assert(ai->priority_master < AI_PRIORITY_NUM);
     if (AI_Decider_master[ai->priority_master] != NULL)
@@ -170,17 +174,16 @@ void AI_Internals_Build(struct Game *sota) {
         if (unit->army == army)
             DARR_PUT(internals->npcs, npc_ent);
     }
-    SDL_Log("%d", DARR_NUM(internals->npcs));
+    SDL_Log("NPC num: %d %d", DARR_NUM(internals->npcs), DARR_NUM(sota->map->units_onfield));
     getchar();
 }
 
-void AI_Internals_Pop(  struct AI_Internals *internals) {
-    SDL_assert(internals        != NULL);
-    SDL_assert(internals->npcs  != NULL);
-    DARR_DEL(internals->npcs, internals->npc_i);
-    internals->decided      = false;
-    internals->move_anim    = false;
-    internals->act_anim     = false;
+void AI_Internals_Pop(struct Game *sota) {
+    entity npc_ent = DARR_DEL(sota->internals.npcs, sota->internals.npc_i);
+    TNECS_REMOVE_COMPONENTS(sota->world, npc_ent, AI);
+    sota->internals.decided      = false;
+    sota->internals.move_anim    = false;
+    sota->internals.act_anim     = false;
 }
 
 

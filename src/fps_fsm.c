@@ -101,32 +101,38 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     SDL_assert(sota->ai_internals.npcs != NULL);
 
     /* -- Decide next NPC to act -- */
-    if (sota->ai_internal.npc_i < 0) {
+    if (sota->ai_internals.npc_i < 0) {
         AI_Decide_Next(sota);
 
     }
-    tnecs_entity npc_ent = sota->ai_internal->npcs[sota->ai_internal->npc_i];
-    b32 decided          = sota->ai_internals.decided;
+    tnecs_entity npc_ent = sota->ai_internals.npcs[sota->ai_internals.npc_i];
 
     /* -- AI decides what to do with unit -- */
     // If not previously decided for npc_ent, decide
+    b32 decided     = sota->ai_internals.decided;
     if (!decided && (npc_ent != TNECS_NULL)) {
-        AI_Decide_Action(sota, npc_ent, action);
-        AI_Decide_Move(  sota, npc_ent, action);
+        AI_Decide_Action(sota, npc_ent, &sota->ai_internals.action);
+        AI_Decide_Move(  sota, npc_ent, &sota->ai_internals.action);
+        sota->ai_internals.decided = true;
     }
 
+    decided         = sota->ai_internals.decided;
     b32 act_anim    = sota->ai_internals.act_anim;
     b32 move_anim   = sota->ai_internals.move_anim;
 
     /* -- AI moves unit -- */
     if (decided && !move_anim && (npc_ent != TNECS_NULL)) {
         SDL_assert(!act_anim);
-        AI_Move(sota, npc_ent, action);
+        AI_Move(sota, npc_ent, &sota->ai_internals.action);
+        // TODO: Move animation
+        sota->ai_internals.move_anim = true;
     }
 
     /* -- AI acts unit -- */
     if (decided && move_anim && (npc_ent != TNECS_NULL)) {
-        AI_Act( sota, npc_ent, action);
+        AI_Act( sota, npc_ent, &sota->ai_internals.action);
+        // TODO: Act animation
+        sota->ai_internals.act_anim = true;
     }
 
     /* -- Pop unit from list in AI_internals -- */
