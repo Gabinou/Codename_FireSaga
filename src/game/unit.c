@@ -66,14 +66,13 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
     Sprite_Unveil(sprite, sota->renderer);
 
     /* restart animation */
-    SDL_assert(!TNECS_ENTITY_HASCOMPONENT(sota->world, ent, Timer));
     Sprite_Animation_Restart(sprite, MAP_UNIT_SPRITE_LOOP_IDLE);
-    TNECS_ADD_COMPONENT(sota->world, ent, Timer);
+    if (!TNECS_ENTITY_HASCOMPONENT(sota->world, ent, Timer))
+        TNECS_ADD_COMPONENT(sota->world, ent, Timer);
     struct Timer *timer = TNECS_GET_COMPONENT(sota->world, ent, Timer);
     SDL_assert(timer != NULL);
-    * timer = Timer_default;
+    *timer = Timer_default;
     Sprite_Draw(sprite, sota->renderer);
-
 }
 
 /* --- Party utilities --- */

@@ -743,7 +743,6 @@ void receive_event_Unit_Icon_Return(struct Game *sota, SDL_Event *userevent) {
     pos_ptr->tilemap_pos = initial;
     pos_ptr->pixel_pos.x = initial.x * pos_ptr->scale[0];
     pos_ptr->pixel_pos.y = initial.y * pos_ptr->scale[1];
-
 }
 
 void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {

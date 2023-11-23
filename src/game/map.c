@@ -123,6 +123,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         // Skip if reinforcement is not for THIS turn
         if ((sota->map->reinforcements[i].turn != sota->map->turn))
             continue;
+
         SDL_Log("-- Reinforcement turn: %d %d --", sota->map->reinforcements[i].turn, sota->map->turn);
 
         // TODO: Skip if something blocks tile reinforcements come to
@@ -166,6 +167,8 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(unit != NULL);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         Unit_Init(unit);
+        /* DESIGN: Reinforcements wait! */
+        unit->waits = true;
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         unit->weapons_dtab = sota->weapons_dtab;
         size_t order = *(u16 *)DTAB_GET(global_unitOrders, sota->map->reinforcements[i].id);

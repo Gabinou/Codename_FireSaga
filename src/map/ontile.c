@@ -84,7 +84,8 @@ void Map_Unit_Move(struct Map *map, u8 col, u8 row, u8 new_col, u8 new_row) {
     struct Position *pos = TNECS_GET_COMPONENT(map->world, unit, Position);
     pos->tilemap_pos.x   = new_col;
     pos->tilemap_pos.y   = new_row;
-
+    pos->pixel_pos.x     = pos->tilemap_pos.x * pos->scale[0];
+    pos->pixel_pos.y     = pos->tilemap_pos.y * pos->scale[1];
 }
 
 tnecs_entity *Map_Units_Get(struct Map *map, tnecs_world *world,  u8 army) {

@@ -86,6 +86,11 @@ void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action 
 void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     struct Position *pos    = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
 
+    if (npc_ent == 18) {
+        action->target_move.x = pos->tilemap_pos.x + 1;
+        action->target_move.y = pos->tilemap_pos.y + 1;
+    }
+
     /* -- Skip movement if target is at current position -- */
     b32 same_x = (action->target_action.x == pos->tilemap_pos.x);
     b32 same_y = (action->target_action.y == pos->tilemap_pos.y);
@@ -99,6 +104,13 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
     adjacent_y      |= (action->target_action.y == pos->tilemap_pos.y + 1);
     if (adjacent_y && adjacent_y)
         return;
+
+    /* -- If target is in movement range, go there -- */
+
+    /* -- If target is in movement not in range, go to tile on the way -- */
+    // Note: AI_Decide_Action should do the job of taking small actions
+    // on the way to a higher objective
+
 }
 
 void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
@@ -190,7 +202,8 @@ void AI_Internals_Build(struct Game *sota) {
         if (unit->army == army)
             DARR_PUT(internals->npcs, npc_ent);
     }
-    SDL_LogDebug(SOTA_LOG_AI, "NPC num: %d %d", DARR_NUM(internals->npcs), DARR_NUM(sota->map->units_onfield));
+    SDL_LogDebug(SOTA_LOG_AI, "NPC num: %d %d", DARR_NUM(internals->npcs),
+                 DARR_NUM(sota->map->units_onfield));
 }
 
 void AI_Internals_Pop(struct Game *sota) {
