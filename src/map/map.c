@@ -817,7 +817,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
 
 /* --- Map events / Triggers --- */
 /* Ouputs index of army in army_onfield*/
-u8 Map_Army_Next(struct Map *map) {
+i8 Map_Army_Next(struct Map *map) {
     /* Get next army in line for control */
     SDL_assert(map->army_onfield != NULL);
 

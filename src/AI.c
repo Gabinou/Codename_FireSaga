@@ -155,10 +155,19 @@ void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
 
 void AI_Internals_Build(struct Game * sota) {
     struct AI_Internals *internals = &sota->ai_internals;
-    SDL_assert(internals->npcs == NULL);
 
+    /* -- Init internals->npc --  */
+    SDL_assert(internals->npcs == NULL);
     internals->npcs = DARR_INIT(internals->npcs, entity, 16);
 
+    /* -- Find all units in current army -- */
+    i8 army = sota->map->army_onfield[sota->map->army_i];
+    for (int i = 0; i < DARR_NUM(map->units_onfield); i++) {
+        entity npc_ent = map->units_onfield[i];
+        struct Unit *unit = TNECS_GET_COMPONENT(sota->world, npc_ent, Unit);
+        if (unit->army == army)
+            DARR_PUT(internals->npcs, npc_ent);
+    }
 }
 
 void AI_Internals_Pop(  struct AI_Internals *internals) {

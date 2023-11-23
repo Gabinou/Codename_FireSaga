@@ -69,7 +69,7 @@ struct Map {
     i8 chapter;
     i32 tilesize[TWO_D];
     struct Arrow    *arrow;
-    tnecs_world   *world;
+    tnecs_world     *world;
     SDL_Renderer    *renderer;
 
     /* --- SHADERS --- */
@@ -136,7 +136,7 @@ struct Map {
 
     /* --- ARMIES --- */
     int army_i; /* Current army in control */
-    tnecs_entity *units_onfield; // TODO: get rid of this?
+    tnecs_entity *units_onfield;
     tnecs_entity *friendlies_onfield;
     tnecs_entity *enemies_onfield;
 
@@ -146,7 +146,7 @@ struct Map {
     tnecs_entity *friendlies_killed;
     tnecs_entity *enemies_killed;
 
-    u8 *army_onfield;
+    i8 *army_onfield;
     struct Point *units_positions_list;  /* same order as unit_onfield */
     struct Point *start_pos;
 
@@ -231,6 +231,6 @@ void Map_writeJSON( void *input, cJSON             *jmap);
 
 /* --- Map events / Triggers --- */
 void Map_Turn_Increment(struct Map *map);
-u8 Map_Army_Next(struct Map *map);
+i8 Map_Army_Next(struct Map *map);
 
 #endif /* MAP_H */

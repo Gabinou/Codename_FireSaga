@@ -103,8 +103,6 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     /* -- Decide next NPC to act -- */
     tnecs_entity npc_ent    = AI_Decide_Next(sota);
     b32 decided     = sota->ai_internals.decided;
-    b32 act_anim    = sota->ai_internals.act_anim;
-    b32 move_anim   = sota->ai_internals.move_anim;
 
     /* -- AI decides what to do with unit -- */
     // If not previously decided for npc_ent, decide
@@ -112,6 +110,9 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
         AI_Decide_Action(sota, npc_ent, action);
         AI_Decide_Move(  sota, npc_ent, action);
     }
+
+    b32 act_anim    = sota->ai_internals.act_anim;
+    b32 move_anim   = sota->ai_internals.move_anim;
 
     /* -- AI moves unit -- */
     if (decided && !move_anim && (npc_ent != TNECS_NULL)) {
