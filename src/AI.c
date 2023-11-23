@@ -190,7 +190,7 @@ void AI_Internals_Build(struct Game *sota) {
         if (unit->army == army)
             DARR_PUT(internals->npcs, npc_ent);
     }
-    SDL_Log("NPC num: %d %d", DARR_NUM(internals->npcs), DARR_NUM(sota->map->units_onfield));
+    SDL_LogDebug(SOTA_LOG_AI, "NPC num: %d %d", DARR_NUM(internals->npcs), DARR_NUM(sota->map->units_onfield));
 }
 
 void AI_Internals_Pop(struct Game *sota) {

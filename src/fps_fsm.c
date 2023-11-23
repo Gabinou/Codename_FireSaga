@@ -102,15 +102,16 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
 
     /* -- Build list of npcs to control -- */
     if (sota->ai_internals.npcs == NULL) {
-        SDL_Log("Building NPC list");
+        SDL_LogDebug(SOTA_LOG_AI, "Building NPC list");
         AI_Internals_Build(sota);
     }
     SDL_assert(sota->ai_internals.npcs != NULL);
-    SDL_Log("Frame");
+
+    SDL_LogDebug(SOTA_LOG_AI, "Frame");
     /* -- Decide next NPC to act -- */
     if (sota->ai_internals.npc_i < 0) {
         entity debug = AI_Decide_Next(sota);
-        SDL_Log("Next npc entity: %d", debug);
+        SDL_LogDebug(SOTA_LOG_AI, "Next npc entity: %d", debug);
     }
     tnecs_entity npc_ent = sota->ai_internals.npcs[sota->ai_internals.npc_i];
 
@@ -118,7 +119,7 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     // If not previously decided for npc_ent, decide
     b32 decided     = sota->ai_internals.decided;
     if (!decided && (npc_ent != TNECS_NULL)) {
-        SDL_Log("AI_Decide");
+        SDL_LogDebug(SOTA_LOG_AI, "AI_Decide");
         AI_Decide_Action(sota, npc_ent, &sota->ai_internals.action);
         AI_Decide_Move(  sota, npc_ent, &sota->ai_internals.action);
         sota->ai_internals.decided = true;
@@ -130,7 +131,7 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
 
     /* -- AI moves unit -- */
     if (decided && !move_anim && (npc_ent != TNECS_NULL)) {
-        SDL_Log("AI_Move");
+        SDL_LogDebug(SOTA_LOG_AI, "AI_Move");
         SDL_assert(!act_anim);
         AI_Move(sota, npc_ent, &sota->ai_internals.action);
         // TODO: Move animation
@@ -143,7 +144,7 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
 
     /* -- AI acts unit -- */
     if (decided && move_anim && (npc_ent != TNECS_NULL)) {
-        SDL_Log("AI_Act");
+        SDL_LogDebug(SOTA_LOG_AI, "AI_Act");
         AI_Act( sota, npc_ent, &sota->ai_internals.action);
         // TODO: Act animation
         sota->ai_internals.act_anim = true;
@@ -154,7 +155,7 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
 
     /* -- Pop unit from list in AI_internals -- */
     if (act_anim) {
-        SDL_Log("AI_Pop");
+        SDL_LogDebug(SOTA_LOG_AI, "AI_Pop");
         AI_Internals_Pop(sota);
     }
 
