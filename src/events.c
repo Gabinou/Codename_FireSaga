@@ -208,6 +208,12 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         Map_Turn_Increment(sota->map);
     } else {
         Game_Map_Reinforcements_Load(sota);
+
+        /* -- Timer for reinforcements -- */
+        sota->ai_timer      = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer);
+        struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->ai_timer, Timer);
+        *timer = Timer_default;
+
         #ifdef SOTA_PLAYER_CONTROLS_ENEMY
         /* --- Player control for enemy turn --- */
         Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);

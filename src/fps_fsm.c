@@ -94,6 +94,19 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     }
     #else
 
+    /* Reinforcements timer: pause before moving units */
+    // TODO: Animate reinforcements
+    if (sota->ai_timer != TNECS_NULL) {
+        struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->ai_timer, Timer);
+        SDL_assert(timer != NULL);
+
+        if (timer->time_ns <= (1ULL * SOTA_ns / 2ULL))
+            return;
+
+        tnecs_entity_destroy(sota->world, sota->ai_timer);
+        sota->ai_timer = TNECS_NULL;
+    }
+
     /* --- AI CONTROL --- */
 
     /* -- Skip if turn is over -- */

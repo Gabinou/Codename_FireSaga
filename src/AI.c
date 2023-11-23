@@ -87,8 +87,8 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
     struct Position *pos    = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
 
     if (npc_ent == 18) {
-        action->target_move.x = pos->tilemap_pos.x + 1;
-        action->target_move.y = pos->tilemap_pos.y + 1;
+        action->target_move.x = pos->tilemap_pos.x + 2;
+        action->target_move.y = pos->tilemap_pos.y + 2;
     }
 
     /* -- Skip movement if target is at current position -- */
@@ -199,6 +199,10 @@ void AI_Internals_Build(struct Game *sota) {
     for (int i = 0; i < DARR_NUM(sota->map->units_onfield); i++) {
         entity npc_ent = sota->map->units_onfield[i];
         struct Unit *unit = TNECS_GET_COMPONENT(sota->world, npc_ent, Unit);
+        /* Skip if unit is waiting e.g. a reinforcement */
+        if (unit->waits)
+            continue;
+
         if (unit->army == army)
             DARR_PUT(internals->npcs, npc_ent);
     }
