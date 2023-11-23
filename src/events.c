@@ -210,6 +210,7 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         Game_Map_Reinforcements_Load(sota);
 
         /* -- Timer for reinforcements -- */
+        // TODO rename this timer
         sota->ai_timer      = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer);
         struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->ai_timer, Timer);
         *timer = Timer_default;
