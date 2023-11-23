@@ -7,6 +7,22 @@ struct AI AI_default = {
     .move             = AI_MOVE_START,
 };
 
+struct AI_Internals AI_Internals_default = {
+    .npcs       = NULL,  /* DARR, list of npcs to control */
+    .npc_i      = -1,    /* index of latext entity */
+    .decided    = false, /* Did AI decide for latest entity*/
+    .move_anim  = false, /* Was move animation done for latest entity */
+    .act_anim   = false, /* Was act  animation done for latest entity */
+    .turn_over  = false, /* Is turn over? */
+    .action = {
+        .target_move     = {-1, -1},
+        .target_action   = {-1, -1},
+        .action          = AI_ACTION_START,
+    },
+};
+extern struct AI_Internals AI_Internals_default;
+
+
 struct AI_Action AI_Action_default =  {
     .target_move     = {-1, -1},
     .target_action   = {-1, -1},
@@ -175,15 +191,16 @@ void AI_Internals_Build(struct Game *sota) {
             DARR_PUT(internals->npcs, npc_ent);
     }
     SDL_Log("NPC num: %d %d", DARR_NUM(internals->npcs), DARR_NUM(sota->map->units_onfield));
-    getchar();
 }
 
 void AI_Internals_Pop(struct Game *sota) {
-    entity npc_ent = DARR_DEL(sota->internals.npcs, sota->internals.npc_i);
+    entity npc_ent = sota->ai_internals.npcs[sota->ai_internals.npc_i];
+    DARR_DEL(sota->ai_internals.npcs, sota->ai_internals.npc_i);
     TNECS_REMOVE_COMPONENTS(sota->world, npc_ent, AI);
-    sota->internals.decided      = false;
-    sota->internals.move_anim    = false;
-    sota->internals.act_anim     = false;
+    sota->ai_internals.decided      = false;
+    sota->ai_internals.move_anim    = false;
+    sota->ai_internals.act_anim     = false;
+    sota->ai_internals.npc_i        = -1;
 }
 
 

@@ -27,8 +27,10 @@ struct AI_Internals {
     b32 decided;        /* Did AI decide for latest entity*/
     b32 move_anim;      /* Was move animation done for latest entity */
     b32 act_anim;       /* Was act  animation done for latest entity */
+    b32 turn_over;      /* Is turn over? */
     struct AI_Action action;
 };
+extern struct AI_Internals AI_Internals_default;
 
 #include "game/game.h"
 

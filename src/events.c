@@ -217,6 +217,7 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         /* -- Setting game substate -- */
         memcpy(sota->reason, "Ai control turn", sizeof(sota->reason));
         Game_subState_Set(sota, GAME_SUBSTATE_MAP_NPCTURN, sota->reason);
+        sota->ai_internals = AI_Internals_default;
 
         #ifdef SOTA_NPC_TURN_TIMER_ONLY
         /* -- Timer for AI -- */
@@ -571,7 +572,6 @@ void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
     struct Map *map = sota->map;
     SDL_assert(sota->state == GAME_STATE_Gameplay_Map);
 
-
     /* - Refresh all units - */
     // TODO: Move to turn end? Make units colored again
     for (int i = 0; i < DARR_NUM(map->units_onfield); i++) {
@@ -580,10 +580,9 @@ void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
         }
     }
 
-    /* If player turn came back, increment turn number5 */
+    /* Switch control to next army */
     u8 *army = &sota->map->army_onfield[sota->map->army_i];
     Event_Emit(__func__, SDL_USEREVENT, event_Game_Control_Switch, army, NULL);
-
 }
 
 void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
@@ -639,9 +638,10 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
     /* - Pop all menus - */
+
     while (DARR_NUM(sota->menu_stack) > 0) {
-        tnecs_entity menu_pop     = DARR_POP(sota->menu_stack);
-        struct Menu *mc    = TNECS_GET_COMPONENT(sota->world, menu_pop, Menu);
+        tnecs_entity menu_pop       = DARR_POP(sota->menu_stack);
+        struct Menu *mc             = TNECS_GET_COMPONENT(sota->world, menu_pop, Menu);
         SDL_assert(mc           != NULL);
         SDL_assert(mc->elem_pos != NULL);
         mc->visible = false;
