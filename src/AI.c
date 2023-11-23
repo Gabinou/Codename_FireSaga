@@ -47,9 +47,10 @@ void AI_Decider_Do_Nothing(struct Game *sota, tnecs_entity npc_ent, struct AI_Ac
 }
 
 entity AI_Decide_Next(struct Game *sota) {
-    return (TNECS_NULL);
+    struct AI_Internals *internals = &sota->ai_internals;
+    internals->npc_i = 0;
+    return (internals->npcs[internals->npc_i]);
 }
-
 
 void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     *action = AI_Action_default;
@@ -152,9 +153,14 @@ void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
         AI_Act_action[action->action](sota, npc_ent, action);
 }
 
-void AI_Internals_Build(struct AI_Internals *internals) {
+void AI_Internals_Build(struct Game * sota) {
+    struct AI_Internals *internals = &sota->ai_internals;
+    SDL_assert(internals->npcs == NULL);
+
+    internals->npcs = DARR_INIT(internals->npcs, entity, 16);
 
 }
+
 void AI_Internals_Pop(  struct AI_Internals *internals) {
     SDL_assert(internals        != NULL);
     SDL_assert(internals->npcs  != NULL);

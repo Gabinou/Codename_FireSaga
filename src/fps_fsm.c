@@ -92,38 +92,39 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
         return;
     }
     #else
+    /* --- AI CONTROL --- */
 
-    /* --- Build list of npcs to control --- */
+    /* -- Build list of npcs to control -- */
     if (sota->ai_internals.npcs == NULL) {
-        AI_Internals_Build(&sota->ai_internals);
+        AI_Internals_Build(sota);
     }
     SDL_assert(sota->ai_internals.npcs != NULL);
 
-    /* --- Decide next NPC to act --- */
+    /* -- Decide next NPC to act -- */
     tnecs_entity npc_ent    = AI_Decide_Next(sota);
     b32 decided     = sota->ai_internals.decided;
     b32 act_anim    = sota->ai_internals.act_anim;
     b32 move_anim   = sota->ai_internals.move_anim;
 
-    /* --- AI decides what to do with unit --- */
+    /* -- AI decides what to do with unit -- */
     // If not previously decided for npc_ent, decide
     if (!decided && (npc_ent != TNECS_NULL)) {
         AI_Decide_Action(sota, npc_ent, action);
         AI_Decide_Move(  sota, npc_ent, action);
     }
 
-    /* --- AI moves unit --- */
+    /* -- AI moves unit -- */
     if (decided && !move_anim && (npc_ent != TNECS_NULL)) {
         SDL_assert(!act_anim);
         AI_Move(sota, npc_ent, action);
     }
 
-    /* --- AI acts unit --- */
+    /* -- AI acts unit -- */
     if (decided && move_anim && (npc_ent != TNECS_NULL)) {
         AI_Act( sota, npc_ent, action);
     }
 
-    /* --- Pop unit from list in AI_internals --- */
+    /* -- Pop unit from list in AI_internals -- */
     if (act_anim) {
         AI_Internals_Pop(&sota->ai_internals);
         // TODO: if not more units, end NPC turn.
