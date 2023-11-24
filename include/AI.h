@@ -215,7 +215,7 @@ void Unit_Move_onMap_Animate(struct Game *s, tnecs_entity e,
                              struct Timer *t, struct UnitMoveAnimation *a);
 
 /* --- AI_State --- */
-void AI_State_Init(struct Game *sota);
+void AI_State_Init(struct AI_State *AI_state, tnecs_world *world, struct Map *map);
 void AI_State_Pop( struct Game *sota);
 
 /* --- AI Unit control --- */

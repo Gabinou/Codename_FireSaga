@@ -178,7 +178,7 @@ struct Game {
     tnecs_entity *passives;       // trade
     tnecs_entity *openables;      // doors and chests
 
-    struct AI_State AI_State;
+    struct AI_State ai_state;
 
     i32   controller_code;
 

@@ -92,7 +92,6 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
         sota->reinf_timer = TNECS_NULL;
     }
 
-
     /* -- Skip if turn is over -- */
     if (sota->AI_State.turn_over)
         return;
@@ -100,7 +99,7 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     /* -- Build list of npcs to control -- */
     if (sota->AI_State.npcs == NULL) {
         SDL_LogDebug(SOTA_LOG_AI, "Building NPC list");
-        AI_State_Init(sota);
+        AI_State_Init(&sota->ai_state, sota->world, sota->map);
     }
     SDL_assert(sota->AI_State.npcs != NULL);
 

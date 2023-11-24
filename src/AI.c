@@ -60,10 +60,10 @@ void _AI_Decider_Do_Nothing(struct Game *sota, tnecs_entity npc_ent, struct AI_A
 }
 
 entity AI_Decide_Next(struct Game *sota) {
-    struct AI_State *internals = &sota->AI_State;
+    struct AI_State *state = &sota->ai_state;
     // TODO: better function for next unit
-    internals->npc_i = 0;
-    return (internals->npcs[internals->npc_i]);
+    state->npc_i = 0;
+    return (state->npcs[state->npc_i]);
 }
 
 void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
@@ -187,38 +187,36 @@ void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
 }
 
 /* --- AI_State --- */
-void AI_State_Init(struct Game *sota) {
-    struct AI_State *internals = &sota->AI_State;
-
-    /* -- Init internals->npc --  */
-    SDL_assert(internals->npcs == NULL);
-    internals->npcs  = DARR_INIT(internals->npcs, entity, 16);
-    internals->npc_i = -1;
+void AI_State_Init(struct AI_State *state, tnecs_world *world, struct Map *map) {
+    /* -- Init state->npc --  */
+    SDL_assert(state->npcs == NULL);
+    state->npcs  = DARR_INIT(state->npcs, entity, 16);
+    state->npc_i = -1;
 
     /* -- Find all units in current army -- */
-    i8 army = sota->map->army_onfield[sota->map->army_i];
-    for (int i = 0; i < DARR_NUM(sota->map->units_onfield); i++) {
-        entity npc_ent = sota->map->units_onfield[i];
-        struct Unit *unit = TNECS_GET_COMPONENT(sota->world, npc_ent, Unit);
+    i8 army = map->army_onfield[map->army_i];
+    for (int i = 0; i < DARR_NUM(map->units_onfield); i++) {
+        entity npc_ent = map->units_onfield[i];
+        struct Unit *unit = TNECS_GET_COMPONENT(world, npc_ent, Unit);
         /* Skip if unit is waiting e.g. a reinforcement */
         if (unit->waits)
             continue;
 
         if (unit->army == army)
-            DARR_PUT(internals->npcs, npc_ent);
+            DARR_PUT(state->npcs, npc_ent);
     }
-    SDL_LogDebug(SOTA_LOG_AI, "NPC num: %d %d", DARR_NUM(internals->npcs),
-                 DARR_NUM(sota->map->units_onfield));
+    SDL_LogDebug(SOTA_LOG_AI, "NPC num: %d %d", DARR_NUM(state->npcs),
+                 DARR_NUM(map->units_onfield));
 }
 
 void AI_State_Pop(struct Game *sota) {
-    entity npc_ent = sota->AI_State.npcs[sota->AI_State.npc_i];
-    DARR_DEL(sota->AI_State.npcs, sota->AI_State.npc_i);
+    entity npc_ent = sota->ai_state.npcs[sota->ai_state.npc_i];
+    DARR_DEL(sota->ai_state.npcs, sota->ai_state.npc_i);
     TNECS_REMOVE_COMPONENTS(sota->world, npc_ent, AI);
-    sota->AI_State.decided      = false;
-    sota->AI_State.move_anim    = false;
-    sota->AI_State.act_anim     = false;
-    sota->AI_State.npc_i        = -1;
+    sota->ai_state.decided      = false;
+    sota->ai_state.move_anim    = false;
+    sota->ai_state.act_anim     = false;
+    sota->ai_state.npc_i        = -1;
 }
 
 
