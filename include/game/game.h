@@ -15,7 +15,6 @@
 #include "slider.h"
 #include "tnecs.h"
 #include "events.h"
-#include "AI.h"
 #include "nmath.h"
 #include "macros.h"
 #include "hover.h"
@@ -27,6 +26,7 @@
 #include "debug.h"
 #include "tile.h"
 #include "text.h"
+#include "AI.h"
 #include "unit.h"
 #include "nmath.h"
 #include "RNG.h"
@@ -41,7 +41,6 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
 struct Game;
-struct AI_State;
 
 void Events_Data_Malloc(void);
 void Events_Data_Free(void);

@@ -660,6 +660,33 @@ void AI_State_Turn_Finish(struct AI_State *ai_state) {
 //     return (out);
 // }
 
+/* --- I/O --- */
+void AI_readJSON(void *input,  cJSON *jai) {
+    struct AI *ai = (struct AI *)input;
+    SDL_assert(ai);
+    cJSON *jpriority_master     = cJSON_GetObjectItem(jai, "priority_master");
+    cJSON *jpriority_slave      = cJSON_GetObjectItem(jai, "priority_slave");
+    cJSON *jmove                = cJSON_GetObjectItem(jai, "move");
+
+    ai->priority_master = cJSON_GetNumberValue(jpriority_master);
+    ai->priority_slave  = cJSON_GetNumberValue(jpriority_slave);
+    ai->move            = cJSON_GetNumberValue(jmove);
+}
+
+void AI_writeJSON(void *input,  cJSON *jai) {
+    struct AI *ai = (struct AI *)input;
+    SDL_assert(ai);
+
+    cJSON *jpriority_master = cJSON_CreateNumber(ai->priority_master);
+    cJSON *jpriority_slave  = cJSON_CreateNumber(ai->priority_slave);
+    cJSON *jmove            = cJSON_CreateNumber(ai->move);
+
+    cJSON_AddItemToObject(jai, "priority_master",   jpriority_master);
+    cJSON_AddItemToObject(jai, "priority_slave",    jpriority_slave);
+    cJSON_AddItemToObject(jai, "move",              jmove);
+}
+
+
 void Unit_Move_onMap_Animate(struct Game  *sota,  tnecs_entity entity,
                              struct Timer *timer, struct UnitMoveAnimation *anim) {
     /* - Animation is complete, begin a turn - */

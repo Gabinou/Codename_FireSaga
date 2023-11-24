@@ -7,14 +7,15 @@
 #include "macros.h"
 #include "convoy.h"
 #include "physfs.h"
+#include "unit.h"
 #include "narrative.h"
 #include "camp.h"
 #include "sprite.h"
-#include "unit.h"
 #include "narrative.h"
 #include "utilities.h"
 #include "supports.h"
 #include "names.h"
+// #include "AI.h"
 #include "SDL.h"
 
 /* --- TYPEDEFS --- */
@@ -23,6 +24,9 @@ typedef void (*json_func)(void *, cJSON *);
 /* --- READERS & WRITERS --- */
 extern json_func json_read_funcs [JSON_END];
 extern json_func json_write_funcs[JSON_END];
+
+void AI_readJSON( void *ai, cJSON *jai);
+void AI_writeJSON(void *ai, cJSON *jai);
 
 /* --- API --- */
 void          jsonio_readJSON( s8 f, void *ptr);

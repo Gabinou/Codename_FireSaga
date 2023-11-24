@@ -1,12 +1,13 @@
 #ifndef COMBAT_H
 #define COMBAT_H
 
+#include "SDL.h"
 #include "types.h"
 #include "enums.h"
 #include "structs.h"
 #include "RNG.h"
 #include "nmath.h"
-#include "SDL.h"
+// #include "AI.h"
 #include "unit.h"
 
 /* --- FORWARD DECLARATIONS --- */

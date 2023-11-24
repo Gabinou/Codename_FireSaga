@@ -3,16 +3,16 @@
 #define AI_H
 
 #include <stdint.h>
-#include "SDL.h"
 #include "types.h"
 #include "enums.h"
-#include "unit.h"
 #include "structs.h"
+#include "unit.h"
 #include "narrative.h"
 #include "equations.h"
 #include "nmath.h"
 #include "cJSON.h"
 #include "game/game.h"
+#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
@@ -70,10 +70,6 @@ typedef tnecs_entity entity;
 //              - action.target_move decided after what has been decided.
 //                  - movement is a sub-goal, in service of ultimate goal
 //
-
-
-/* --- FORWARD DECLARATIONS --- */
-struct Game;
 
 enum AI_RATINGS {
     // Ratings for AI decision making in [-128, 128]
@@ -194,6 +190,9 @@ enum AI_MOVE {
 
 /* AI COMPONENT */
 typedef struct AI {
+    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
+    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
+
     int priority_master;
     int priority_slave;
     int move;
@@ -213,6 +212,10 @@ static void _AI_Doer_Wait(struct Game *s, tnecs_entity e, struct AI_Action *a);
 
 void Unit_Move_onMap_Animate(struct Game *s, tnecs_entity e,
                              struct Timer *t, struct UnitMoveAnimation *a);
+
+/* --- I/O --- */
+void AI_readJSON( void *ai, cJSON *jai);
+void AI_writeJSON(void *ai, cJSON *jai);
 
 /* --- AI_State --- */
 void AI_State_Pop( struct AI_State *ais, tnecs_world *world);

@@ -14,7 +14,6 @@
 #include "physfs.h"
 #include "equations.h"
 #include "platform.h"
-#include "RNG.h"
 #include "utilities.h"
 #include "combat.h"
 
@@ -30,7 +29,7 @@ enum STATUSES {
 };
 
 /* -- Unit second-order info -- */
-extern u8  army_alignment[ARMY_END];
+extern u8   army_alignment[ARMY_END];
 extern bool army_isPC[ARMY_END];
 
 /* --- UnitMoveAnimation --- */
