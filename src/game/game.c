@@ -32,6 +32,10 @@ struct Settings Settings_default = {
         .grid_show      = true,
         .stack_mode     = MAP_SETTING_STACK_DANGERMAP
     },
+    .enemy_turn_settings = {
+        .pause_post_reinforcement = 1ULL * SOTA_ns / 2ULL,
+    },
+
     .mouse              = {MOUSE_DEFAULT_ONHOLD, MOUSE_DEFAULT_MOVE},
     .cursor             = {DEFAULT_CURSOR_FRAMES, DEFAULT_CURSOR_SPEED},
 };

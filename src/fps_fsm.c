@@ -77,21 +77,6 @@ void fsm_cFrame_sGmpMap_ssMapCmbt(struct Game *sota) {
 /* --- AI CONTORL HAPPENS HERE --- */
 void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
 
-    #ifdef SOTA_NPC_TURN_TIMER_ONLY
-    /* --- No AI control: timer to turn end --- */
-    if (sota->ai_timer == TNECS_NULL)
-        return;
-
-    SDL_assert(sota->world->entities[sota->ai_timer] == sota->ai_timer);
-    struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->ai_timer, Timer);
-    SDL_assert(timer != NULL);
-
-    if (timer->time_ns >= (1ULL * SOTA_ns)) { /* 1s until AI turn finishes */
-        SDL_Log("AI Turn Finished");
-        Event_Emit(__func__, SDL_USEREVENT, event_Turn_End, NULL, NULL);
-        return;
-    }
-    #else /* SOTA_NPC_TURN_TIMER_ONLY */
     /* --- AI CONTROL --- */
 
     /* -- Reinforcements timer: pause before moving units -- */
@@ -99,8 +84,8 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     if (sota->ai_timer != TNECS_NULL) {
         struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->ai_timer, Timer);
         SDL_assert(timer != NULL);
-
-        if (timer->time_ns <= (1ULL * SOTA_ns / 2ULL))
+        u64 limit = sota->settings.enemy_turn_settings.pause_post_reinforcement;
+        if (timer->time_ns <= limit)
             return;
 
         tnecs_entity_destroy(sota->world, sota->ai_timer);
@@ -179,8 +164,6 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
         sota->AI_State.npcs = NULL;
         Event_Emit(__func__, SDL_USEREVENT, event_Turn_End, NULL, NULL);
     }
-
-    #endif /* SOTA_NPC_TURN_TIMER_ONLY */
 }
 
 void fsm_cFrame_sGmpMap_ssSave(struct Game *sota) {

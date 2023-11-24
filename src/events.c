@@ -210,7 +210,6 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         Game_Map_Reinforcements_Load(sota);
 
         /* -- Timer for reinforcements -- */
-        // TODO rename this timer
         sota->ai_timer      = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer);
         struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->ai_timer, Timer);
         *timer = Timer_default;
@@ -225,13 +224,6 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         memcpy(sota->reason, "Ai control turn", sizeof(sota->reason));
         Game_subState_Set(sota, GAME_SUBSTATE_MAP_NPCTURN, sota->reason);
         sota->AI_State = AI_State_default;
-
-        #ifdef SOTA_NPC_TURN_TIMER_ONLY
-        /* -- Timer for AI -- */
-        sota->ai_timer      = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer);
-        struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->ai_timer, Timer);
-        *timer = Timer_default;
-        #endif /*SOTA_NPC_TURN_TIMER_ONLY*/
 
         #endif /* SOTA_PLAYER_CONTROLS_ENEMY */
     }

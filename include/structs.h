@@ -264,10 +264,14 @@ struct Camera {
 };
 
 struct Map_settings {
-    u8         overlay_mode; /* tile paletteswap or opaque overlay */
-    u8         stack_mode;
+    u8          overlay_mode; /* tile paletteswap or opaque overlay */
+    u8          stack_mode;
     SDL_Color   color_grid;
     bool        grid_show;
+};
+
+struct Enemy_Turn_settings {
+    u64 pause_post_reinforcement;
 };
 
 struct Settings {
@@ -280,6 +284,7 @@ struct Settings {
     u8 fontsize;
 
     struct Map_settings map_settings;
+    struct Enemy_Turn_settings enemy_turn_settings;
 
     struct Mouse mouse; /* 16 bits */
     char title[DEFAULT_BUFFER_SIZE];
