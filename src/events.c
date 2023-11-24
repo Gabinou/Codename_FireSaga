@@ -224,7 +224,7 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         /* -- Setting game substate -- */
         memcpy(sota->reason, "Ai control turn", sizeof(sota->reason));
         Game_subState_Set(sota, GAME_SUBSTATE_MAP_NPCTURN, sota->reason);
-        sota->ai_state = AI_State_default;
+        AI_State_Turn_Start(&sota->ai_state);
 
         #endif /* SOTA_PLAYER_CONTROLS_ENEMY */
     }

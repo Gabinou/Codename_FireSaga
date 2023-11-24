@@ -60,10 +60,10 @@ void _AI_Decider_Do_Nothing(struct Game *sota, tnecs_entity npc_ent, struct AI_A
 }
 
 entity AI_Decide_Next(struct Game *sota) {
-    struct AI_State *state = &sota->ai_state;
+    struct AI_State *ai_state = &sota->ai_state;
     // TODO: better function for next unit
-    state->npc_i = 0;
-    return (state->npcs[state->npc_i]);
+    ai_state->npc_i = 0;
+    return (ai_state->npcs[ai_state->npc_i]);
 }
 
 void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
@@ -187,11 +187,12 @@ void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
 }
 
 /* --- AI_State --- */
-void AI_State_Init(struct AI_State *state, tnecs_world *world, struct Map *map) {
-    /* -- Init state->npc --  */
-    SDL_assert(state->npcs == NULL);
-    state->npcs  = DARR_INIT(state->npcs, entity, 16);
-    state->npc_i = -1;
+void AI_State_Init(struct AI_State *ai_state, tnecs_world *world, struct Map *map) {
+    /* -- Init ai_state->npc --  */
+    if (ai_state->npcs == NULL)
+        ai_state->npcs  = DARR_INIT(ai_state->npcs, entity, 16);
+
+    ai_state->init          = true;
 
     /* -- Find all units in current army -- */
     i8 army = map->army_onfield[map->army_i];
@@ -203,20 +204,40 @@ void AI_State_Init(struct AI_State *state, tnecs_world *world, struct Map *map) 
             continue;
 
         if (unit->army == army)
-            DARR_PUT(state->npcs, npc_ent);
+            DARR_PUT(ai_state->npcs, npc_ent);
     }
-    SDL_LogDebug(SOTA_LOG_AI, "NPC num: %d %d", DARR_NUM(state->npcs),
+    SDL_LogDebug(SOTA_LOG_AI, "NPC num: %d %d", DARR_NUM(ai_state->npcs),
                  DARR_NUM(map->units_onfield));
 }
 
-void AI_State_Pop(struct Game *sota) {
-    entity npc_ent = sota->ai_state.npcs[sota->ai_state.npc_i];
-    DARR_DEL(sota->ai_state.npcs, sota->ai_state.npc_i);
-    TNECS_REMOVE_COMPONENTS(sota->world, npc_ent, AI);
-    sota->ai_state.decided      = false;
-    sota->ai_state.move_anim    = false;
-    sota->ai_state.act_anim     = false;
-    sota->ai_state.npc_i        = -1;
+void AI_State_Pop(struct AI_State *ai_state, tnecs_world *world) {
+    entity npc_ent = ai_state->npcs[ai_state->npc_i];
+    DARR_DEL(ai_state->npcs, ai_state->npc_i);
+    TNECS_REMOVE_COMPONENTS(world, npc_ent, AI);
+    ai_state->init          = false;
+    ai_state->decided       = false;
+    ai_state->move_anim     = false;
+    ai_state->act_anim      = false;
+    ai_state->npc_i         = -1;
+}
+
+void AI_State_Turn_Start( struct AI_State *ai_state) {
+    ai_state->turn_over     = false;
+    ai_state->init          = false;
+    ai_state->decided       = false;
+    ai_state->move_anim     = false;
+    ai_state->act_anim      = false;
+    ai_state->npc_i         = -1;
+
+}
+
+void AI_State_Turn_Finish(struct AI_State *ai_state) {
+    ai_state->turn_over     = true;
+    ai_state->init          = false;
+    ai_state->decided       = false;
+    ai_state->move_anim     = false;
+    ai_state->act_anim      = false;
+    ai_state->npc_i         = -1;
 }
 
 

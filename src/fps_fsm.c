@@ -93,74 +93,72 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     }
 
     /* -- Skip if turn is over -- */
-    if (sota->AI_State.turn_over)
+    if (sota->ai_state.turn_over)
         return;
 
     /* -- Build list of npcs to control -- */
-    if (sota->AI_State.npcs == NULL) {
+    if (sota->ai_state.init == false) {
         SDL_LogDebug(SOTA_LOG_AI, "Building NPC list");
         AI_State_Init(&sota->ai_state, sota->world, sota->map);
     }
-    SDL_assert(sota->AI_State.npcs != NULL);
+    SDL_assert(sota->ai_state.npcs != NULL);
 
     SDL_LogDebug(SOTA_LOG_AI, "Frame");
     /* -- Decide next NPC to act -- */
-    if (sota->AI_State.npc_i < 0) {
+    if (sota->ai_state.npc_i < 0) {
         entity debug = AI_Decide_Next(sota);
         SDL_LogDebug(SOTA_LOG_AI, "Next npc entity: %d", debug);
     }
-    tnecs_entity npc_ent = sota->AI_State.npcs[sota->AI_State.npc_i];
+    tnecs_entity npc_ent = sota->ai_state.npcs[sota->ai_state.npc_i];
 
     /* -- AI decides what to do with unit -- */
     // If not previously decided for npc_ent, decide
-    b32 decided     = sota->AI_State.decided;
+    b32 decided     = sota->ai_state.decided;
     if (!decided && (npc_ent != TNECS_NULL)) {
         SDL_LogDebug(SOTA_LOG_AI, "AI_Decide");
-        AI_Decide_Action(sota, npc_ent, &sota->AI_State.action);
-        AI_Decide_Move(  sota, npc_ent, &sota->AI_State.action);
-        sota->AI_State.decided = true;
+        AI_Decide_Action(sota, npc_ent, &sota->ai_state.action);
+        AI_Decide_Move(  sota, npc_ent, &sota->ai_state.action);
+        sota->ai_state.decided = true;
     }
 
-    decided         = sota->AI_State.decided;
-    b32 act_anim    = sota->AI_State.act_anim;
-    b32 move_anim   = sota->AI_State.move_anim;
+    decided         = sota->ai_state.decided;
+    b32 act_anim    = sota->ai_state.act_anim;
+    b32 move_anim   = sota->ai_state.move_anim;
 
     /* -- AI moves unit -- */
     if (decided && !move_anim && (npc_ent != TNECS_NULL)) {
         SDL_LogDebug(SOTA_LOG_AI, "AI_Move");
         SDL_assert(!act_anim);
-        AI_Move(sota, npc_ent, &sota->AI_State.action);
+        AI_Move(sota, npc_ent, &sota->ai_state.action);
         // TODO: Move animation
-        sota->AI_State.move_anim = true;
+        sota->ai_state.move_anim = true;
     }
 
     /* Check if move_anim updated during frame */
-    move_anim   = sota->AI_State.move_anim;
-    act_anim    = sota->AI_State.act_anim;
+    move_anim   = sota->ai_state.move_anim;
+    act_anim    = sota->ai_state.act_anim;
 
     /* -- AI acts unit -- */
     if (decided && move_anim && (npc_ent != TNECS_NULL)) {
         SDL_LogDebug(SOTA_LOG_AI, "AI_Act");
-        AI_Act( sota, npc_ent, &sota->AI_State.action);
+        AI_Act( sota, npc_ent, &sota->ai_state.action);
         // TODO: Act animation
-        sota->AI_State.act_anim = true;
+        sota->ai_state.act_anim = true;
     }
 
     /* Check if act_anim updated during frame */
-    act_anim    = sota->AI_State.act_anim;
+    act_anim    = sota->ai_state.act_anim;
 
     /* -- Pop unit from list in AI_State -- */
     if (act_anim) {
         SDL_LogDebug(SOTA_LOG_AI, "AI_Pop");
-        AI_State_Pop(sota);
+        AI_State_Pop(&sota->ai_state, sota->world);
     }
 
     /* -- If no more NPCs, end NPC turn. -- */
-    if (DARR_NUM(sota->AI_State.npcs) < 1) {
+    if (DARR_NUM(sota->ai_state.npcs) < 1) {
         SDL_Log("AI Turn Finished");
-        DARR_FREE(sota->AI_State.npcs);
-        sota->AI_State.turn_over = true;
-        sota->AI_State.npcs = NULL;
+        AI_State_Turn_Finish(&sota->ai_state);
         Event_Emit(__func__, SDL_USEREVENT, event_Turn_End, NULL, NULL);
     }
 }

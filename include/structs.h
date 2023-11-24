@@ -316,7 +316,8 @@ struct AI_Action {
 struct AI_State {
     tnecs_entity *npcs; /* DARR, list of npcs to control */
     int npc_i;          /* index of latest entity */
-    b32 decided;        /* Did AI decide for latest entity*/
+    b32 init;           /* Did AI init? */
+    b32 decided;        /* Did AI decide for latest entity */
     b32 move_anim;      /* Was move animation done for latest entity */
     b32 act_anim;       /* Was act  animation done for latest entity */
     b32 turn_over;      /* Is turn over? */

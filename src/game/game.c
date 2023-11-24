@@ -103,7 +103,7 @@ struct Game Game_default = {
 
     .inputs = {0},
 
-    .AI_State = {0},
+    .ai_state = {0},
 
     .chapter            = -1,
     .state              = GAME_STATE_Title_Screen,
@@ -113,7 +113,8 @@ struct Game Game_default = {
     .fast_forward       = false,
 };
 
-/* --- ructors/Destructors --- */
+/* --- Constructors/Destructors --- */
+
 void Game_Free(struct Game *sota) {
     Game_Cursor_Free(sota);
     Game_PopUp_Tile_Free(sota);
@@ -232,6 +233,14 @@ void Game_Free(struct Game *sota) {
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Game cleaned.");
     SDL_free(sota);
 }
+
+void Game_AI_Free(sota) {
+    if (sota->ai_state.npcs != NULL) {
+        DARR_FREE(sota->ai_state.npcs);
+        sota->ai_state.npcs = NULL;
+    }
+}
+
 struct Game *Game_Init(void) {
     struct Game *out_game;
     out_game    = SDL_malloc(sizeof(struct Game));
