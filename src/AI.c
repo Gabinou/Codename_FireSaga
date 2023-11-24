@@ -37,7 +37,7 @@ AI_Decider AI_Decider_master[AI_PRIORITY_NUM] = {
     /* AI_PRIORITY_SURVIVE      */ NULL,
     /* AI_PRIORITY_FLEE         */ NULL,
     /* AI_PRIORITY_SKILL        */ NULL,
-    /* AI_PRIORITY_DO_NOTHING   */ &AI_Decider_Do_Nothing,
+    /* AI_PRIORITY_DO_NOTHING   */ &_AI_Decider_Do_Nothing,
     /* AI_PRIORITY_MOVE_TO      */ NULL,
     /* AI_PRIORITY_PATROL       */ NULL,
 };
@@ -50,12 +50,12 @@ AI_Decider AI_Decider_slave[AI_PRIORITY_NUM] = {
     /* AI_PRIORITY_SURVIVE      */ NULL,
     /* AI_PRIORITY_FLEE         */ NULL,
     /* AI_PRIORITY_SKILL        */ NULL,
-    /* AI_PRIORITY_DO_NOTHING   */ &AI_Decider_Do_Nothing,
+    /* AI_PRIORITY_DO_NOTHING   */ &_AI_Decider_Do_Nothing,
     /* AI_PRIORITY_MOVE_TO      */ NULL,
     /* AI_PRIORITY_PATROL       */ NULL,
 };
 
-void AI_Decider_Do_Nothing(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+void _AI_Decider_Do_Nothing(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     struct Position *pos    = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
     action->target_action.x = pos->tilemap_pos.x;
     action->target_action.y = pos->tilemap_pos.y;
@@ -149,7 +149,7 @@ AI_Doer AI_Act_action[AI_ACTION_NUM] = {
     /* VILLAGE        */ NULL,
     /* TRADE          */ NULL,
     /* MAP            */ NULL,
-    /* WAIT           */ &AI_Doer_Wait,
+    /* WAIT           */ &_AI_Doer_Wait,
     /* OPEN           */ NULL,
     /* QUIT           */ NULL,
     /* END_TURN       */ NULL,
@@ -166,7 +166,7 @@ AI_Doer AI_Act_action[AI_ACTION_NUM] = {
 };
 
 
-void AI_Doer_Wait(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+void _AI_Doer_Wait(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     Game_Unit_Wait(sota, npc_ent);
     TNECS_ADD_COMPONENT(sota->world, npc_ent, Timer);
     struct Timer *timer = TNECS_GET_COMPONENT(sota->world, npc_ent, Timer);
