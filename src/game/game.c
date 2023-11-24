@@ -234,7 +234,7 @@ void Game_Free(struct Game *sota) {
     SDL_free(sota);
 }
 
-void Game_AI_Free(sota) {
+void Game_AI_Free(struct Game *sota) {
     if (sota->ai_state.npcs != NULL) {
         DARR_FREE(sota->ai_state.npcs);
         sota->ai_state.npcs = NULL;
@@ -631,8 +631,8 @@ void Game_subState_Set(struct Game *sota,  i8 new_substate,  char *reason) {
     sota->substate = new_substate;
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Game substate changed %d->%d: %s->%s",
                  sota->substate_previous, sota->substate,
-                 gamesubStatenames[sota->substate_previous],
-                 gamesubStatenames[sota->substate]);
+                 gamesubStatenames[sota->substate_previous].data,
+                 gamesubStatenames[sota->substate].data);
     if (new_substate == GAME_SUBSTATE_STANDBY)
         sota->cursor_diagonal = true;
     else
@@ -652,10 +652,9 @@ void Game_State_Set(struct Game *sota,  i8 new_state,  char *reason) {
     /* --- Set default contextual inputs --- */
     if (fsm_Input_s[sota->state] != NULL)
         fsm_Input_s[sota->state](sota);
-
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Game state changed %d->%d: %s->%s",
                  sota->state_previous, sota->state,
-                 gameStatenames[sota->state_previous], gameStatenames[sota->state]);
+                 gameStatenames[sota->state_previous].data, gameStatenames[sota->state].data);
 }
 
 /* --- Camera --- */

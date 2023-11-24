@@ -214,7 +214,6 @@ void AI_State_Pop(struct AI_State *ai_state, tnecs_world *world) {
     entity npc_ent = ai_state->npcs[ai_state->npc_i];
     DARR_DEL(ai_state->npcs, ai_state->npc_i);
     TNECS_REMOVE_COMPONENTS(world, npc_ent, AI);
-    ai_state->init          = false;
     ai_state->decided       = false;
     ai_state->move_anim     = false;
     ai_state->act_anim      = false;
@@ -228,7 +227,6 @@ void AI_State_Turn_Start( struct AI_State *ai_state) {
     ai_state->move_anim     = false;
     ai_state->act_anim      = false;
     ai_state->npc_i         = -1;
-
 }
 
 void AI_State_Turn_Finish(struct AI_State *ai_state) {

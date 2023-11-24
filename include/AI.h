@@ -215,11 +215,11 @@ void Unit_Move_onMap_Animate(struct Game *s, tnecs_entity e,
                              struct Timer *t, struct UnitMoveAnimation *a);
 
 /* --- AI_State --- */
-void AI_State_Pop(   struct AI_State *AI_state, tnecs_world *world);
-void AI_State_Init(  struct AI_State *AI_state, tnecs_world *world, struct Map *map);
+void AI_State_Pop( struct AI_State *ais, tnecs_world *world);
+void AI_State_Init(struct AI_State *ais, tnecs_world *world, struct Map *map);
 
-void AI_State_Turn_Start( struct AI_State *AI_state);
-void AI_State_Turn_Finish(struct AI_State *AI_state);
+void AI_State_Turn_Start( struct AI_State *ais);
+void AI_State_Turn_Finish(struct AI_State *ais);
 
 /* --- AI Unit control --- */
 /* Call order: AI_Decide_Action -> AI_Decide_Move -> AI_Move -> AI_Act */

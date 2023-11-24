@@ -110,11 +110,11 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
         SDL_LogDebug(SOTA_LOG_AI, "Next npc entity: %d", debug);
     }
     tnecs_entity npc_ent = sota->ai_state.npcs[sota->ai_state.npc_i];
-
+    SDL_assert(npc_ent != TNECS_NULL);
     /* -- AI decides what to do with unit -- */
     // If not previously decided for npc_ent, decide
     b32 decided     = sota->ai_state.decided;
-    if (!decided && (npc_ent != TNECS_NULL)) {
+    if (!decided) {
         SDL_LogDebug(SOTA_LOG_AI, "AI_Decide");
         AI_Decide_Action(sota, npc_ent, &sota->ai_state.action);
         AI_Decide_Move(  sota, npc_ent, &sota->ai_state.action);
@@ -126,7 +126,7 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     b32 move_anim   = sota->ai_state.move_anim;
 
     /* -- AI moves unit -- */
-    if (decided && !move_anim && (npc_ent != TNECS_NULL)) {
+    if (decided && !move_anim) {
         SDL_LogDebug(SOTA_LOG_AI, "AI_Move");
         SDL_assert(!act_anim);
         AI_Move(sota, npc_ent, &sota->ai_state.action);
@@ -139,7 +139,7 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     act_anim    = sota->ai_state.act_anim;
 
     /* -- AI acts unit -- */
-    if (decided && move_anim && (npc_ent != TNECS_NULL)) {
+    if (decided && move_anim) {
         SDL_LogDebug(SOTA_LOG_AI, "AI_Act");
         AI_Act( sota, npc_ent, &sota->ai_state.action);
         // TODO: Act animation

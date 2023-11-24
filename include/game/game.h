@@ -200,6 +200,7 @@ extern struct Game Game_default;
 struct Game *Game_Init(void);
 void Game_Free(   struct Game *sota);
 void Game_Startup(struct Game *sota, struct Input_Arguments args);
+void Game_AI_Free(struct Game *sota);
 
 /* --- I/O --- */
 void Game_saveJSON(struct Game *sota, i16 save_ind);
