@@ -56,14 +56,12 @@ AI_Decider AI_Decider_slave[AI_PRIORITY_NUM] = {
 };
 
 void _AI_Decider_Do_Nothing(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
-    struct Position *pos    = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
-    action->target_action.x = pos->tilemap_pos.x;
-    action->target_action.y = pos->tilemap_pos.y;
-    action->action          = AI_ACTION_WAIT;
+    action->action = AI_ACTION_WAIT;
 }
 
 entity AI_Decide_Next(struct Game *sota) {
     struct AI_State *internals = &sota->AI_State;
+    // TODO: better function for next unit
     internals->npc_i = 0;
     return (internals->npcs[internals->npc_i]);
 }
@@ -86,6 +84,8 @@ void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action 
 void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     struct Position *pos    = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
 
+    /* -- DEBUG: move specific unit -- */
+    /* TODO: Remove */
     if (npc_ent == 18) {
         action->target_move.x = pos->tilemap_pos.x + 2;
         action->target_move.y = pos->tilemap_pos.y + 2;
@@ -114,9 +114,9 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
 }
 
 void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
-    /* -- Skip no movement -- */
     struct AI   *ai     = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
 
+    /* -- Skip no movement -- */
     if (ai->move == AI_MOVE_NEVER)
         return;
 
@@ -186,6 +186,7 @@ void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
         AI_Act_action[action->action](sota, npc_ent, action);
 }
 
+/* --- AI_State --- */
 void AI_State_Init(struct Game *sota) {
     struct AI_State *internals = &sota->AI_State;
 

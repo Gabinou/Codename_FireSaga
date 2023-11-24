@@ -244,9 +244,6 @@ void receive_event_Input_STATS(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(accepter_entity > 0);
     *data1_entity = accepter_entity;
     SDL_Log("sota->state %d", sota->state);
-    // if (fsm_Input_Stats_state[sota->state] != NULL) {
-    //     fsm_Input_Stats_state[sota->state](sota, accepter_entity);
-    // }
     if (fsm_eStats_ss[sota->substate] != NULL)
         fsm_eStats_ss[sota->substate](sota, accepter_entity);
 }
