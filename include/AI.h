@@ -12,26 +12,6 @@
 #include "equations.h"
 #include "nmath.h"
 #include "cJSON.h"
-
-// Note: If target is not in range, don't do action
-struct AI_Action {
-    struct Point target_move;   /* {-1, -1} if none */
-    struct Point target_action; /* {-1, -1} if none */
-    int action;
-};
-
-/* AI Internals for SOTA */
-struct AI_Internals {
-    tnecs_entity *npcs; /* DARR, list of npcs to control */
-    int npc_i;          /* index of latext entity */
-    b32 decided;        /* Did AI decide for latest entity*/
-    b32 move_anim;      /* Was move animation done for latest entity */
-    b32 act_anim;       /* Was act  animation done for latest entity */
-    b32 turn_over;      /* Is turn over? */
-    struct AI_Action action;
-};
-extern struct AI_Internals AI_Internals_default;
-
 #include "game/game.h"
 
 /* --- FORWARD DECLARATIONS --- */
@@ -56,24 +36,23 @@ typedef tnecs_entity entity;
 //  5. Finish
 
 /* -- Implementation details -- */
-//  - AI Component
-//      - Master and slave priorities
-//          - Use master priority by default: AI_PRIORITY_KILL
-//          - Condition met to use slave condition
-//          - Condition depends on master
-//              - fsm_slave called by fsm_master
-//          - If HP is below 50% use slave priority: AI_PRIORITY_SURVIVE
-//      - What are criteria to switch priorities?
-//          - low HP    AI_PRIORITY_KILL -> AI_PRIORITY_SURVIVE
-//          - no chests AI_PRIORITY_LOOT -> AI_PRIORITY_FLEE
 //  - AI Command: two parts
 //      - AI Move
+//          - Only moves unit.
 //          - Needs: costmap, target pos, self pos
 //      - AI Act
-//          - Needs: target pos, self pos AFTER move
-//      - Can Moving and Acting be split into two separate functions?
-//          - No. For killing, moving means deciding who to attack first.
-//      - then
+//          - Decides what action to take.
+//              - If ultimate target is not in range, go for attack on the way...
+//         - Master and slave priorities
+//              - Use master priority by default: AI_PRIORITY_KILL
+//              - Condition met to use slave condition
+//              - Condition depends on master
+//                  - fsm_slave called by fsm_master
+//              - Ex: If HP is below 50% use slave priority: AI_PRIORITY_SURVIVE
+//          - What are criteria to switch priorities?
+//              - low HP    AI_PRIORITY_KILL -> AI_PRIORITY_SURVIVE
+//              - no chests AI_PRIORITY_LOOT -> AI_PRIORITY_FLEE
+//              - Needs: target pos, self pos AFTER move
 //
 //  1. Make a decision pair: Who does What?
 //     - How does AI decide what to do?
@@ -130,7 +109,7 @@ enum AI_ACTIONS {
 enum AI_PRIORITIES {
     AI_PRIORITY_START = -1,
     /* -- AI_PRIORITY_KILL -- */
-    // Attacks to kill
+    // Attacks to kill.
     //  - PARAMETER: Target unit
     //
     // TWO BIRDS: Killing includes walls and snags,
@@ -138,12 +117,13 @@ enum AI_PRIORITIES {
     AI_PRIORITY_KILL,
 
     /* -- AI_PRIORITY_SEIZE -- */
-    /* Runs to objective. */
-    //  - PARAMETER: To seize
+    /* Runs to objective. May attack on the wayé */
+    //  - PARAMETER: Tile to seize
     AI_PRIORITY_SEIZE,
 
     /* -- AI_PRIORITY_LOOT -- */
     /* Goes for chests. */
+    //  - PARAMETER: List of chests?
     AI_PRIORITY_LOOT,
 
     /* -- AI_PRIORITY_STAFF -- */
@@ -152,6 +132,7 @@ enum AI_PRIORITIES {
 
     /* -- AI_PRIORITY_SURVIVE -- */
     /* Runs away when injured. Take healing items from friendlies to heal. */
+    /* Runs away if none left. */
     AI_PRIORITY_SURVIVE,
 
     /* -- AI_PRIORITY_FLEE -- */
@@ -165,7 +146,7 @@ enum AI_PRIORITIES {
     AI_PRIORITY_SKILL,
 
     /* -- AI_PRIORITY_DO_NOTHING -- */
-    /* Does not attack */
+    /* Does not attack. Does not move. */
     AI_PRIORITY_DO_NOTHING,
 
     /* -- AI_PRIORITY_MOVE_TO -- */
@@ -173,7 +154,7 @@ enum AI_PRIORITIES {
     AI_PRIORITY_MOVE_TO,
 
     /* -- AI_PRIORITY_PATROL -- */
-    /* - Move between two tiles */
+    //  - Move between two tiles
     //  - PARAMETER: Target unit, target tiles
     AI_PRIORITY_PATROL,
 
@@ -219,8 +200,7 @@ typedef struct AI {
 } AI;
 struct AI AI_default;
 
-
-/* --- DECIDER FSM --- */
+/* --- Decider FSM --- */
 typedef void (*AI_Decider)(struct Game *s, tnecs_entity e, struct AI_Action *a);
 typedef AI_Decider AI_Doer;
 extern AI_Decider AI_Decider_master[AI_PRIORITY_NUM];
@@ -231,24 +211,23 @@ void AI_Decider_Do_Nothing(struct Game *s, tnecs_entity e, struct AI_Action *a);
 extern AI_Doer AI_Act_action[AI_ACTION_NUM];
 void AI_Doer_Wait(struct Game *s, tnecs_entity e, struct AI_Action *a);
 
-void Unit_Move_onMap_Animate(struct Game *sota, tnecs_entity entity,
-                             struct Timer *timer, struct UnitMoveAnimation *anim);
+void Unit_Move_onMap_Animate(struct Game *s, tnecs_entity e,
+                             struct Timer *t, struct UnitMoveAnimation *a);
 
-entity AI_Decide_Next(struct Game *s);
 
 /* --- PUBLIC DECIDERS --- */
+entity AI_Decide_Next(struct Game *s);
 void AI_Decide_Action(struct Game *s, tnecs_entity e, struct AI_Action *a);
-
-/* AI decides where to move depending on ultimate target */
 void AI_Decide_Move(  struct Game *s, tnecs_entity e, struct AI_Action *a);
+
 
 /* --- PUBLIC DOERS --- */
 void AI_Move(struct Game *s, tnecs_entity e, struct AI_Action *a);
 void AI_Act( struct Game *s, tnecs_entity e, struct AI_Action *a);
-
-/* --- AI_INTERNALS --- */
-void AI_Internals_Build(struct Game *sota);
-void AI_Internals_Pop(  struct Game *sota);
 // Call order: AI_Decide_Action -> AI_Decide_Move -> AI_Move -> AI_Act
+
+/* --- AI_State --- */
+void AI_State_Init(struct Game *sota);
+void AI_State_Pop( struct Game *sota);
 
 #endif /* AI_H */

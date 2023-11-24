@@ -297,4 +297,28 @@ typedef struct Timer {
 } Timer;
 extern struct Timer Timer_default;
 
+/* Action to be taken by AI */
+// By principle AI_Decide_Action should take intermediary action if ultimate
+// objective is out of range.
+// Ex: attacking unit on the way to seizing a tile
+struct AI_Action {
+    struct Point target_move;   /* {-1, -1} if none */
+    struct Point target_action; /* {-1, -1} if none */
+    int action;
+};
+
+/* AI internal state for game SOTA */
+struct AI_State {
+    tnecs_entity *npcs; /* DARR, list of npcs to control */
+    int npc_i;          /* index of latest entity */
+    b32 decided;        /* Did AI decide for latest entity*/
+    b32 move_anim;      /* Was move animation done for latest entity */
+    b32 act_anim;       /* Was act  animation done for latest entity */
+    b32 turn_over;      /* Is turn over? */
+    struct AI_Action action;
+};
+extern struct AI_State AI_State_default;
+
+
+
 #endif /* STRUCTS_H */

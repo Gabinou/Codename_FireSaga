@@ -7,7 +7,7 @@ struct AI AI_default = {
     .move             = AI_MOVE_START,
 };
 
-struct AI_Internals AI_Internals_default = {
+struct AI_State AI_State_default = {
     .npcs       = NULL,  /* DARR, list of npcs to control */
     .npc_i      = -1,    /* index of latext entity */
     .decided    = false, /* Did AI decide for latest entity*/
@@ -20,7 +20,7 @@ struct AI_Internals AI_Internals_default = {
         .action          = AI_ACTION_START,
     },
 };
-extern struct AI_Internals AI_Internals_default;
+extern struct AI_State AI_State_default;
 
 
 struct AI_Action AI_Action_default =  {
@@ -63,7 +63,7 @@ void AI_Decider_Do_Nothing(struct Game *sota, tnecs_entity npc_ent, struct AI_Ac
 }
 
 entity AI_Decide_Next(struct Game *sota) {
-    struct AI_Internals *internals = &sota->ai_internals;
+    struct AI_State *internals = &sota->AI_State;
     internals->npc_i = 0;
     return (internals->npcs[internals->npc_i]);
 }
@@ -186,8 +186,8 @@ void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
         AI_Act_action[action->action](sota, npc_ent, action);
 }
 
-void AI_Internals_Build(struct Game *sota) {
-    struct AI_Internals *internals = &sota->ai_internals;
+void AI_State_Init(struct Game *sota) {
+    struct AI_State *internals = &sota->AI_State;
 
     /* -- Init internals->npc --  */
     SDL_assert(internals->npcs == NULL);
@@ -210,14 +210,14 @@ void AI_Internals_Build(struct Game *sota) {
                  DARR_NUM(sota->map->units_onfield));
 }
 
-void AI_Internals_Pop(struct Game *sota) {
-    entity npc_ent = sota->ai_internals.npcs[sota->ai_internals.npc_i];
-    DARR_DEL(sota->ai_internals.npcs, sota->ai_internals.npc_i);
+void AI_State_Pop(struct Game *sota) {
+    entity npc_ent = sota->AI_State.npcs[sota->AI_State.npc_i];
+    DARR_DEL(sota->AI_State.npcs, sota->AI_State.npc_i);
     TNECS_REMOVE_COMPONENTS(sota->world, npc_ent, AI);
-    sota->ai_internals.decided      = false;
-    sota->ai_internals.move_anim    = false;
-    sota->ai_internals.act_anim     = false;
-    sota->ai_internals.npc_i        = -1;
+    sota->AI_State.decided      = false;
+    sota->AI_State.move_anim    = false;
+    sota->AI_State.act_anim     = false;
+    sota->AI_State.npc_i        = -1;
 }
 
 
