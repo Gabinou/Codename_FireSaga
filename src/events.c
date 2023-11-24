@@ -207,11 +207,12 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         /* -- Turn only increments at the start of player turn -- */
         Map_Turn_Increment(sota->map);
     } else {
+        // TODO: Animate reinforcements
         Game_Map_Reinforcements_Load(sota);
 
         /* -- Timer for reinforcements -- */
-        sota->ai_timer      = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer);
-        struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->ai_timer, Timer);
+        sota->reinf_timer   = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer);
+        struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->reinf_timer, Timer);
         *timer = Timer_default;
 
         #ifdef SOTA_PLAYER_CONTROLS_ENEMY
@@ -646,9 +647,9 @@ void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
     /* - focus cursor on tilemap - */
     Game_cursorFocus_onMap(sota);
 
-    if (sota->ai_timer != TNECS_NULL) {
-        tnecs_entity_destroy(sota->world, sota->ai_timer);
-        sota->ai_timer = TNECS_NULL;
+    if (sota->reinf_timer != TNECS_NULL) {
+        tnecs_entity_destroy(sota->world, sota->reinf_timer);
+        sota->reinf_timer = TNECS_NULL;
     }
 
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);

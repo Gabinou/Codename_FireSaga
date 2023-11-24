@@ -72,7 +72,8 @@ struct Game {
     struct dtab *units_loaded_dtab;
     tnecs_entity *units_loaded;
 
-    tnecs_entity ai_timer; /* TODO: remove once AI works.*/
+    tnecs_entity ai_timer;
+    tnecs_entity reinf_timer;
 
     struct KeyboardInputMap  keyboardInputMap;
     struct GamepadInputMap   gamepadInputMap;

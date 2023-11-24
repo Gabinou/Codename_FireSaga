@@ -33,7 +33,7 @@ struct Settings Settings_default = {
         .stack_mode     = MAP_SETTING_STACK_DANGERMAP
     },
     .enemy_turn_settings = {
-        .pause_post_reinforcement = 1ULL * SOTA_ns / 2ULL,
+        .pause_post_reinforcement = 2ULL * SOTA_ns / 2ULL,
     },
 
     .mouse              = {MOUSE_DEFAULT_ONHOLD, MOUSE_DEFAULT_MOVE},
