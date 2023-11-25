@@ -1,9 +1,4 @@
 {
-	"AI":	{
-		"priority_master": 0,
-		"priority_slave": 4,	
-		"move": 0
-	},
 	"Unit":	{
 		"id":	2012,
 		"Name":	"Corsair",
@@ -13,6 +8,7 @@
 		"CurrentHP":	1,
 		"Class":	"Corsair",
 		"Class Index":	12,
+		"AI":	"aggressive.json",
 		"Bases":	{
 			"hp":	27,
 			"str":	4,

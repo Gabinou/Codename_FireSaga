@@ -69,11 +69,11 @@ entity AI_Decide_Next(struct Game *sota) {
 void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     *action = AI_Action_default;
     struct Unit *npc    = TNECS_GET_COMPONENT(sota->world, npc_ent, Unit);
-    SDL_assert(npc != NULL);
     struct AI   *ai     = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
-    SDL_assert(ai == NULL);
-    TNECS_ADD_COMPONENT(sota->world, npc_ent, AI);
-    ai = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
+    SDL_assert(npc != NULL);
+    SDL_assert(ai  != NULL);
+    // TNECS_ADD_COMPONENT(sota->world, npc_ent, AI);
+    // ai = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
 
     SDL_assert(ai->priority_master > AI_PRIORITY_START);
     SDL_assert(ai->priority_master < AI_PRIORITY_NUM);

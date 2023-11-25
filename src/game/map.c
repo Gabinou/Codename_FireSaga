@@ -131,9 +131,8 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_Log("-- loading reinforcements %ld --", i);
         SDL_Log("-- create entity --");
         tnecs_entity temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Unit, Position, Sprite,
-                                     Timer, MapHPBar);
+                                     Timer, MapHPBar, AI);
         DARR_PUT(sota->map_enemies, temp_unit_ent);
-        // tnecs_entity temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Unit, Position, Sprite, Timer, MapHPBar);
 
         SDL_Log("-- checks --");
         tnecs_component typeflag = TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Unit,
@@ -201,6 +200,10 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
             Unit_Equip_inHand(unit, UNIT_HAND_LEFT);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         SDL_assert(unit->status_queue != NULL);
+
+        SDL_Log("-- loading unit AI --");
+        struct AI *ai = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, AI);
+        jsonio_readJSON(unitname, ai);
 
         SDL_Log("-- loading map_hp_bar --");
         struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, MapHPBar);

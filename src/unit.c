@@ -138,6 +138,7 @@ struct Unit Unit_default = {
 
     .temp            = {0},
     .name            = {0},
+    .ai_filename     = {.data = "aggressive.json", .num = 15, .len = 15},
     .title           = {0},
     .num_equipment   =  0,
     .eq_usable       = {0},
@@ -1803,6 +1804,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     SDL_assert(unit);
     SDL_Log("-- Get json objects --");
     cJSON *jid              = cJSON_GetObjectItem(junit, "id");
+    cJSON *jai              = cJSON_GetObjectItem(junit, "AI");
     cJSON *jsex             = cJSON_GetObjectItem(junit, "Sex");
     cJSON *jexp             = cJSON_GetObjectItem(junit, "Exp");
     cJSON *jname            = cJSON_GetObjectItem(junit, "Name");
@@ -1822,7 +1824,9 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     SDL_Log("-- setting name from ID --");
     Unit_setid(unit, cJSON_GetNumberValue(jid));
     SDL_assert(unit->name.data != NULL);
-    char *json_name = cJSON_GetStringValue(jname);
+    char *json_name     = cJSON_GetStringValue(jname);
+    char *ai_filename   = cJSON_GetStringValue(jai);
+    unit->ai_filename   = s8_var(ai_filename);
 
     if (!s8equal(unit->name, s8_var(json_name))) {
         SDL_LogError(SOTA_LOG_SYSTEM,
@@ -1916,6 +1920,7 @@ void Unit_writeJSON( void *input, cJSON *junit) {
     cJSON *jexp           = cJSON_CreateNumber(unit->base_exp);
     cJSON *jsex           = cJSON_CreateBool(unit->sex);
     cJSON *jname          = cJSON_CreateString(unit->name.data);
+    cJSON *jai            = cJSON_CreateString(unit->ai_filename.data);
     cJSON *jtitle         = NULL;
     if (unit->title.data != NULL)
         jtitle            = cJSON_CreateString(unit->title.data);
@@ -1938,6 +1943,7 @@ void Unit_writeJSON( void *input, cJSON *junit) {
     cJSON_AddItemToObject(junit, "level",       jlevel);
     cJSON_AddItemToObject(junit, "id",          jid);
     cJSON_AddItemToObject(junit, "Name",        jname);
+    cJSON_AddItemToObject(junit, "AI",          jai);
     if (jtitle != NULL)
         cJSON_AddItemToObject(junit, "Title",   jtitle);
 

@@ -70,6 +70,8 @@ typedef struct Unit {
     // Status with least remaining turns on top.
     struct Unit_status *status_queue;
 
+    s8 ai_filename;
+
     struct Support supports[SOTA_MAX_SUPPORTS];
     u16 support_type;
     u16 support_num;
@@ -125,6 +127,7 @@ typedef struct Unit {
 
     struct dtab *weapons_dtab;
     struct dtab *items_dtab;
+
 
     /* _equipment is in side space: [left, right, 2, 3, 4, 5]   */
     /* Most functions are in side space unless stated otherwise */
