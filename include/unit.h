@@ -70,7 +70,8 @@ typedef struct Unit {
     // Status with least remaining turns on top.
     struct Unit_status *status_queue;
 
-    s8 ai_filename;
+    // TODO: change into ID for AI?
+    s8 ai_filename; /* Default AI for unit */
 
     struct Support supports[SOTA_MAX_SUPPORTS];
     u16 support_type;
