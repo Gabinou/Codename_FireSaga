@@ -2,6 +2,9 @@
 #include "AI.h"
 
 struct AI AI_default = {
+    .json_element   = JSON_AI,
+    .json_filename  = {0},
+
     .priority_master  = AI_PRIORITY_START,
     .priority_slave   = AI_PRIORITY_START,
     .move             = AI_MOVE_START,

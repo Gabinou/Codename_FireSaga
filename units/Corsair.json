@@ -8,7 +8,7 @@
 		"CurrentHP":	1,
 		"Class":	"Corsair",
 		"Class Index":	12,
-		"AI":	"aggressive.json",
+		"AI": "aggressive.json",
 		"Bases":	{
 			"hp":	27,
 			"str":	4,

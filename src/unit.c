@@ -215,6 +215,7 @@ void Unit_Free(struct Unit *unit) {
     s8_free(&unit->json_filename);
     s8_free(&unit->name);
     s8_free(&unit->title);
+    s8_free(&unit->ai_filename);
 }
 
 void Unit_InitWweapons(struct Unit *unit, struct dtab *weapons_dtab) {
@@ -1826,7 +1827,10 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     SDL_assert(unit->name.data != NULL);
     char *json_name     = cJSON_GetStringValue(jname);
     char *ai_filename   = cJSON_GetStringValue(jai);
-    unit->ai_filename   = s8_var(ai_filename);
+    if (ai_filename != NULL) {
+        SDL_Log("ai_filename '%s'", ai_filename);
+        unit->ai_filename   = s8_mut(ai_filename);
+    }
 
     if (!s8equal(unit->name, s8_var(json_name))) {
         SDL_LogError(SOTA_LOG_SYSTEM,
