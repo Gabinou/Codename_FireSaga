@@ -1,4 +1,9 @@
 {
+	"AI":	{
+		"priority_master": 0,
+		"priority_slave": 4,	
+		"move": 0
+	},
 	"Unit":	{
 		"id":	2012,
 		"Name":	"Corsair",

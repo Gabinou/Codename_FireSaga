@@ -110,49 +110,49 @@ enum AI_PRIORITIES {
     //
     // TWO BIRDS: Killing includes walls and snags,
     // so they will naturally clear path to units
-    AI_PRIORITY_KILL,
+    AI_PRIORITY_KILL = 0,
 
     /* -- AI_PRIORITY_SEIZE -- */
     /* Runs to objective. May attack on the wayé */
     //  - PARAMETER: Tile to seize
-    AI_PRIORITY_SEIZE,
+    AI_PRIORITY_SEIZE = 1,
 
     /* -- AI_PRIORITY_LOOT -- */
     /* Goes for chests. */
     //  - PARAMETER: List of chests?
-    AI_PRIORITY_LOOT,
+    AI_PRIORITY_LOOT = 2,
 
     /* -- AI_PRIORITY_STAFF -- */
     /* Use staves. */
-    AI_PRIORITY_STAFF,
+    AI_PRIORITY_STAFF = 3,
 
     /* -- AI_PRIORITY_SURVIVE -- */
     /* Runs away when injured. Take healing items from friendlies to heal. */
     /* Runs away if none left. */
-    AI_PRIORITY_SURVIVE,
+    AI_PRIORITY_SURVIVE = 4,
 
     /* -- AI_PRIORITY_FLEE -- */
     /* Runs away from PCs. */
-    AI_PRIORITY_FLEE,
+    AI_PRIORITY_FLEE = 5,
 
     /* -- AI_PRIORITY_SKILL -- */
     /* Tries to use active skills. */
     /* Skill to use and target are stored elsewhere. */
     /* Ex: Fortunée's telekinesis, Hamilcar's cleave. */
-    AI_PRIORITY_SKILL,
+    AI_PRIORITY_SKILL = 6,
 
     /* -- AI_PRIORITY_DO_NOTHING -- */
     /* Does not attack. Does not move. */
-    AI_PRIORITY_DO_NOTHING,
+    AI_PRIORITY_DO_NOTHING = 7,
 
     /* -- AI_PRIORITY_MOVE_TO -- */
     //  - PARAMETER: Target unit, target tile
-    AI_PRIORITY_MOVE_TO,
+    AI_PRIORITY_MOVE_TO = 8,
 
     /* -- AI_PRIORITY_PATROL -- */
     //  - Move between two tiles
     //  - PARAMETER: Target unit, target tiles
-    AI_PRIORITY_PATROL,
+    AI_PRIORITY_PATROL = 9,
 
     AI_PRIORITY_NUM,
 };
@@ -164,26 +164,26 @@ enum AI_MOVE {
 
     /* -- AI_MOVE_ALWAYS -- */
     /* Unit can always move. */
-    AI_MOVE_ALWAYS,
+    AI_MOVE_ALWAYS = 0,
 
     /* -- AI_MOVE_ONCHAPTER -- */
     /* Unit can't start moving until certain chapter. */
-    AI_MOVE_ONCHAPTER,
+    AI_MOVE_ONCHAPTER = 1,
 
     /* -- AI_MOVE_INRANGE -- */
     /* Waits for enemy to go in attackmap range to move. */
     /* Range can be move, attack, or any random value */
     /* DESIGN LIMIT: Don't make range SMALLER than attackmap! SUCKS */
-    AI_MOVE_INRANGE,
+    AI_MOVE_INRANGE = 2,
 
     /* -- AI_MOVE_TRIGGER -- */
     /* Waits for something to happen to move. */
     /* Extra parameters needed... */
-    AI_MOVE_TRIGGER,
+    AI_MOVE_TRIGGER = 3,
 
     /* -- AI_MOVE_NEVER -- */
     /* Unit does not move. */
-    AI_MOVE_NEVER,
+    AI_MOVE_NEVER = 4,
 
     AI_MOVE_NUM,
 };

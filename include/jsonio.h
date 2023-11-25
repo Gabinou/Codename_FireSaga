@@ -15,7 +15,6 @@
 #include "utilities.h"
 #include "supports.h"
 #include "names.h"
-// #include "AI.h"
 #include "SDL.h"
 
 /* --- TYPEDEFS --- */
@@ -25,6 +24,7 @@ typedef void (*json_func)(void *, cJSON *);
 extern json_func json_read_funcs [JSON_END];
 extern json_func json_write_funcs[JSON_END];
 
+/* --- AI definitions --- */
 void AI_readJSON( void *ai, cJSON *jai);
 void AI_writeJSON(void *ai, cJSON *jai);
 
