@@ -327,9 +327,7 @@ void test_pathfinding_Astar_end_blocked() {
 
     for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
         nourstest_true(movemapp[i] == expected_movemapp[i]);
-
     // matrix_print(movemapp, ROW_LEN, COL_LEN);
-
 
     /* -- Test computing a path -- */
     int *path_list = DARR_INIT(path_list, int, 32);
