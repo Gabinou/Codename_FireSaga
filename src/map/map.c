@@ -256,6 +256,14 @@ void Map_Free(struct Map *map) {
     }
     Map_dArrays_Free(map);
 }
+void _Map_Reinforcements_Free(struct Map *map) {
+    if (map->reinforcements == NULL)
+        return;
+
+    for (u8 r = 0; r < DARR_NUM(map->reinforcements); r++) {
+        Reinforcement_Free(&map->reinforcements[r]);
+    }
+}
 
 void Map_dArrays_Init(struct Map *map,  struct Settings *settings) {
     SDL_assert(map->row_len > 0);
@@ -547,7 +555,7 @@ void Map_writeJSON( void *input, cJSON *jmap) {
     cJSON *jreinforcements = cJSON_CreateObject();
     cJSON_AddItemToObject(jmap, "Reinforcements", jreinforcements);
     for (u8 r = 0; r < DARR_NUM(map->reinforcements); r++) {
-        jreinforcement = cJSON_CreateObject();
+        jreinforcement   = cJSON_CreateObject();
         jreinforcementeq = cJSON_CreateObject();
         jsonio_Write_Reinforcement(jreinforcement, &(map->reinforcements)[r]);
         temp_equip = map->reinf_equipments[r];

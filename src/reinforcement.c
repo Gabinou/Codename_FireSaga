@@ -2,15 +2,15 @@
 #include "reinforcement.h"
 
 struct Reinforcement Reinforcement_default = {
-    .ai_filename    =  {0},
-    .filename      =  {0},
+    .ai_filename    = {0},
+    .filename       = {0},
     .turn           =  0,
     .levelups       =  0,
     .army           = -1,
     .position       = {0, 0},
 };
 
-void Reinforcement_Free(struct Reinforcement  *reinf) {
+void Reinforcement_Free(struct Reinforcement *reinf) {
     s8_free(&reinf->filename);
     s8_free(&reinf->ai_filename);
 }
@@ -28,7 +28,7 @@ void jsonio_Read_Reinforcement(struct cJSON         *_jreinf,
 
     struct cJSON *jrow      = cJSON_GetObjectItem(jposition,    "row");
     struct cJSON *jcol      = cJSON_GetObjectItem(jposition,    "col");
-    
+
     reinf->filename     = s8_mut(cJSON_GetStringValue(jfilename));
     reinf->ai_filename  = s8_mut(cJSON_GetStringValue(jai));
     reinf->army         = cJSON_GetNumberValue(jarmy);
@@ -38,7 +38,7 @@ void jsonio_Read_Reinforcement(struct cJSON         *_jreinf,
     reinf->position.y   = cJSON_GetNumberValue(jcol);
 }
 
-void jsonio_Write_Reinforcement(      struct cJSON                  *jreinf,
+void jsonio_Write_Reinforcement(struct cJSON         *jreinf,
                                 struct Reinforcement *reinf) {
     SDL_assert(jreinf != NULL);
     struct cJSON *jai       = cJSON_CreateString(reinf->ai_filename.data);

@@ -170,22 +170,12 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         unit->waits = true;
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         unit->weapons_dtab = sota->weapons_dtab;
-        size_t order = *(u16 *)DTAB_GET(global_unitOrders, sota->map->reinforcements[i].id);
-        s8 unitname = s8_mut(global_unitNames[order].data);
-        s8 json_literal = s8_literal(".json");
-        SDL_assert(json_literal.num == 5);
-        SDL_assert(json_literal.num == strlen(json_literal.data));
-        unitname    = s8cat(unitname, json_literal);
+        s8 unit_path  = s8_mut("units"PHYSFS_SEPARATOR);
+        unit_path     = s8cat(unit_path, sota->map->reinforcements[i].filename);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
-        jsonio_readJSON(unitname, unit);
+        jsonio_readJSON(unit_path, unit);
+        s8_free(&unit_path);
         SDL_assert(unit->name.data != NULL);
-        s8_free(&unitname);
-        if (!Unit_ID_Valid(unit->_id)) {
-            SDL_Log("Unit %s.json has wrong ID. Should be %d.", unit->name, sota->map->reinforcements[i].id);
-            exit(ERROR_Generic);
-        }
-        SDL_assert(unit->name.data != NULL);
-
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         unit->army = sota->map->reinforcements[i].army;
 
@@ -201,6 +191,8 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         SDL_assert(unit->status_queue != NULL);
 
+        s8_free(&unit_path);
+
         SDL_Log("-- loading unit AI --");
         struct AI *ai = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, AI);
         *ai = AI_default;
@@ -210,6 +202,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         ai_path     = s8cat(ai_path, unit->ai_filename);
 
         jsonio_readJSON(ai_path, ai);
+        s8_free(&ai_path);
 
         SDL_Log("-- loading map_hp_bar --");
         struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, MapHPBar);

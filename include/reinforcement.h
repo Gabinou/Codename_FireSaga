@@ -12,7 +12,7 @@ struct Reinforcement {
     s8 ai_filename; /* Overrides ai_filename in unit */
     u8 turn;
     u8 levelups;
-    // TODO: 1 or 2 
+    // TODO: 1 or 2
     // 1- Use unit filename instead of id
     //      - Gets rid of name from file vs name from id conflict
     //      - Gets rid of name id in file vs id in reinforcement issue
