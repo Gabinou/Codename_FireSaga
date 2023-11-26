@@ -285,9 +285,8 @@ i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_world *world,
     SDL_assert(map->costmap != NULL);
 
     /* - Skip if previously computed - */
-    if (map->costmap_ent == unit_ent) {
+    if (map->costmap_ent == unit_ent)
         return (map->costmap);
-    }
 
     /* - Preliminaries - */
     map->costmap_ent = unit_ent;

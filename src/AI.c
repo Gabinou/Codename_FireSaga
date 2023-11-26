@@ -41,7 +41,7 @@ AI_Decider AI_Decider_master[AI_PRIORITY_NUM] = {
     /* AI_PRIORITY_FLEE         */ NULL,
     /* AI_PRIORITY_SKILL        */ NULL,
     /* AI_PRIORITY_DO_NOTHING   */ &_AI_Decider_Do_Nothing,
-    /* AI_PRIORITY_MOVE_TO      */ NULL,
+    /* AI_PRIORITY_MOVE_TO      */ &_AI_Decider_Do_Move_To,
     /* AI_PRIORITY_PATROL       */ NULL,
 };
 
@@ -53,13 +53,97 @@ AI_Decider AI_Decider_slave[AI_PRIORITY_NUM] = {
     /* AI_PRIORITY_SURVIVE      */ NULL,
     /* AI_PRIORITY_FLEE         */ NULL,
     /* AI_PRIORITY_SKILL        */ NULL,
-    /* AI_PRIORITY_DO_NOTHING   */ &_AI_Decider_Do_Nothing,
+    /* AI_PRIORITY_DO_NOTHING   */ NULL,
     /* AI_PRIORITY_MOVE_TO      */ NULL,
     /* AI_PRIORITY_PATROL       */ NULL,
 };
 
-void _AI_Decider_Do_Nothing(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+AI_Decider AI_Decider_AfterMove[AI_PRIORITY_NUM] = {
+    /* AI_PRIORITY_KILL         */ _AI_Decider_Kill_AfterMove,
+    /* AI_PRIORITY_SEIZE        */ NULL,
+    /* AI_PRIORITY_LOOT         */ NULL,
+    /* AI_PRIORITY_STAFF        */ _AI_Decider_Staff_AfterMove,
+    /* AI_PRIORITY_SURVIVE      */ NULL,
+    /* AI_PRIORITY_FLEE         */ NULL,
+    /* AI_PRIORITY_SKILL        */ NULL,
+    /* AI_PRIORITY_DO_NOTHING   */ NULL,
+    /* AI_PRIORITY_MOVE_TO      */ NULL,
+    /* AI_PRIORITY_PATROL       */ NULL,
+};
+
+
+void _AI_Decider_Do_Nothing(struct Game *sota, tnecs_entity npc_ent,
+                            struct AI_Action *action) {
     action->action = AI_ACTION_WAIT;
+}
+
+/* Tries to staff unit after moving to target tile */
+void _AI_Decider_Staff_AfterMove(struct Game *sota, tnecs_entity npc_ent,
+                                 struct AI_Action *action) {
+    // TODO
+    action->action  = AI_ACTION_WAIT;
+}
+
+/* Tries to attack unit after moving to target tile */
+void _AI_Decider_Kill_AfterMove(struct Game *sota, tnecs_entity npc_ent,
+                                struct AI_Action *action) {
+
+    /* - Compute attacktolist - */
+    Map_Attacktomap_Compute(sota->map, sota->world, npc_ent, false, false);
+    Map_Attacktolist_Compute(sota->map);
+    tnecs_entity *defendants = DARR_INIT(defendants, tnecs_entity, 4);
+    defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist, defendants, npc_ent, false);
+
+    /* No attackable units tiles */
+    if (DARR_NUM(defendants) < 1) {
+        action->action = AI_ACTION_WAIT;
+        DARR_FREE(defendants);
+        return;
+    }
+
+    /* - TODO: Find easiest unit to kill - */
+    action->patient = defendants[0];
+    action->action  = AI_ACTION_ATTACK;
+}
+
+void _AI_Decider_Do_Move_To(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+    //  - Prioritizes moving to target, if possible AfterMove
+    //      - Much simpler to implement
+    //      - AI is "Dumb" and doesn't go for attacks sometimes
+    /* --- PRELIMINARIES --- */
+    struct AI   *ai     = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
+    SDL_assert(ai  != NULL);
+
+    /* -- Check if tile is in range -- */
+    Map_Movemap_Compute(sota->map, sota->world, npc_ent);
+    struct Point target = ai->target_move;
+    i32 *movemap    = sota->map->movemap;
+    i32 *costmap    = sota->map->costmap;
+    i16 row_len     = sota->map->col_len;
+    i16 col_len     = sota->map->col_len;
+
+    b32 canmove = movemap[target.y * col_len + target.x] >= MOVEMAP_MOVEABLEMIN;
+
+    if (canmove) {
+        /* -- Move to target tile -- */
+        action->target_move = target;
+    } else {
+        /* Move */
+        /* What if ai->target_move is not a moveable tile? */
+        int *path_list = DARR_INIT(path_list, int, 32);
+        // path_list = Pathfinding_Astar(path_list, costmap, row_len, col_len, start, end);
+
+        // i32 target_movecost = movemap[target.y * col_len + target.x]
+        /* -- Move to tile closest to target tile -- */
+
+    }
+
+    /* AfterMove action according to slave priority */
+    if (AI_Decider_AfterMove[ai->priority_slave] != NULL)
+        AI_Decider_AfterMove[ai->priority_slave](sota, npc_ent, action);
+    else {
+        action->action  = AI_ACTION_WAIT;
+    }
 }
 
 entity AI_Decide_Next(struct Game *sota) {
@@ -70,6 +154,7 @@ entity AI_Decide_Next(struct Game *sota) {
 }
 
 void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+    /* --- PRELIMINARIES --- */
     *action = AI_Action_default;
     struct Unit *npc    = TNECS_GET_COMPONENT(sota->world, npc_ent, Unit);
     struct AI   *ai     = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
@@ -141,31 +226,31 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
 
 
 AI_Doer AI_Act_action[AI_ACTION_NUM] = {
-    /* ITEMS          */ NULL,
-    /* TALK           */ NULL,
-    /* STAFF          */ NULL,
-    /* DANCE          */ NULL,
-    /* RESCUE         */ NULL,
-    /* SEIZE          */ NULL,
-    /* ESCAPE         */ NULL,
-    /* ATTACK         */ NULL,
-    /* VILLAGE        */ NULL,
-    /* TRADE          */ NULL,
-    /* MAP            */ NULL,
-    /* WAIT           */ &_AI_Doer_Wait,
-    /* OPEN           */ NULL,
-    /* QUIT           */ NULL,
-    /* END_TURN       */ NULL,
-    /* UNITS          */ NULL,
-    /* CONVOY         */ NULL,
-    /* GLOBAL_RANGE   */ NULL,
-    /* NEW_GAME       */ NULL,
-    /* LOAD           */ NULL,
-    /* ERASE          */ NULL,
-    /* COPY           */ NULL,
-    /* OPTIONS        */ NULL,
-    /* EXTRAS         */ NULL,
-    /* DEBUG_MAP      */ NULL,
+    /* ITEMS            */ NULL,
+    /* TALK             */ NULL,
+    /* STAFF            */ NULL,
+    /* DANCE            */ NULL,
+    /* RESCUE           */ NULL,
+    /* SEIZE            */ NULL,
+    /* ESCAPE           */ NULL,
+    /* ATTACK           */ NULL,
+    /* VILLAGE          */ NULL,
+    /* TRADE            */ NULL,
+    /* MAP              */ NULL,
+    /* WAIT             */ &_AI_Doer_Wait,
+    /* OPEN             */ NULL,
+    /* QUIT             */ NULL,
+    /* END_TURN         */ NULL,
+    /* UNITS            */ NULL,
+    /* CONVOY           */ NULL,
+    /* GLOBAL_RANGE     */ NULL,
+    /* NEW_GAME         */ NULL,
+    /* LOAD             */ NULL,
+    /* ERASE            */ NULL,
+    /* COPY             */ NULL,
+    /* OPTIONS          */ NULL,
+    /* EXTRAS           */ NULL,
+    /* DEBUG_MAP        */ NULL,
 };
 
 

@@ -32,6 +32,7 @@ i32   *Map_Costmap_Movement_Compute( struct Map *map, tnecs_world *w, tnecs_enti
 i32   *Map_Costmap_PushPull_Compute( struct Map *map, tnecs_world *w, tnecs_entity u);
 float *Map_fCostmap_Movement_Compute(struct Map *map, tnecs_world *w, tnecs_entity u);
 
+
 /* --- Movemap --- */
 // Map_Movemap_Compute also computes REQUIRED costmap
 i32   *Map_Movemap_Compute( struct Map *map, tnecs_world *w, tnecs_entity u);

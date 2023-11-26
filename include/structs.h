@@ -318,6 +318,7 @@ extern struct Timer Timer_default;
 struct AI_Action {
     struct Point target_move;   /* {-1, -1} if none */
     struct Point target_action; /* {-1, -1} if none */
+    tnecs_entity patient;       /* as in opposite of agent */
     int action;
 };
 

@@ -240,9 +240,14 @@ void test_pathfinding_sight() {
     SDL_free(sightmap);
 }
 
+void test_pathfinding_Astar_edge_cases() {
+
+}
+
 void test_pathfinding() {
     test_pathfinding_sight();
     test_pathfinding_Astar();
+    test_pathfinding_Astar_edge_cases();
 }
 
 #undef ROW_LEN

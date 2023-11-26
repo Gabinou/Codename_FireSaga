@@ -8,6 +8,7 @@ void Map_Find_Usable(struct Map *map, tnecs_world *world, tnecs_entity unit_ent,
     Map_Costmap_Movement_Compute(map, world, unit_ent);
     struct Unit     *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     struct Position *pos  = TNECS_GET_COMPONENT(world, unit_ent, Position);
+
     /* Compute movemap */
     struct Point start = pos->tilemap_pos;
     i32 move_stat = move ? Unit_getStats(unit).move : 0;
@@ -60,12 +61,12 @@ tnecs_entity *Map_Find_Defendants(struct Map *map, i32 *attacktolist,
         if (unitontile <= TNECS_NULL)
             continue;
 
-        /* - Found unit, checking alignmentt - */
+        /* - Found unit, checking alignment - */
         // SDL_Log("Found unit on %lu %lu ", x_at, y_at);
         struct Unit *agg    = TNECS_GET_COMPONENT(map->world, aggressor, Unit);
         struct Unit *unit   = TNECS_GET_COMPONENT(map->world, unitontile, Unit);
-        u8 align_t         = SotA_army2alignment(unit->army);
-        u8 align_a         = SotA_army2alignment(agg->army);
+        u8 align_t          = SotA_army2alignment(unit->army);
+        u8 align_a          = SotA_army2alignment(agg->army);
         if (align_a != align_t)
             DARR_PUT(defendants, unitontile);
     }
