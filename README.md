@@ -8,22 +8,6 @@ Everything is hancrafted: code, music, pixel art...
 
 [Development blog](https://averagebear.game.blog/).
 
-<!-- The game is available for sale at... -->
-
-Note: The repo does not include game assets!
-
-## Features
-- Free! \*If you can compile from source
-	- If I ever sell this game, users would pay for convenience.
-- Emulator-inspired quality-of-life improvements
-	- Fast-forward button! Up to 300x faster on my machine (30000%).
-	- TBD: Save state button. Not so sure.
-- Handcrafted pixel-art
-	- NES color palette only
-- Developper features
-	- Interactive reloading for units, weapons, tiles, maps! Press a button to reload edited .json files. 
-
-## Installation
 The game will be free to play, if compiled from source.
 Source code is free to own and distribute, see the [licence](https://gitlab.com/Gabinou/firesagamaker/-/blob/master/LICENCE_SRC.md).
 
@@ -32,17 +16,30 @@ Source code is free to own and distribute, see the [licence](https://gitlab.com/
 
 Game assets (graphics, music) to be distributed separately.
 
+<!-- The game is available for sale at... -->
+
+## Features
+- TODO: Sold **here**.
+	- Or, play for free! Just compile the source code.
+- Emulator-inspired quality-of-life improvements
+	- Fast-forward button! Up to 300x faster on my machine (30000%).
+	- TBD: Save state button. Not so sure.
+- Handcrafted pixel-art
+	- NES color palette only
+- Developer features
+	- Press button to reload .json files for units, weapons, tiles, maps! 
+
+## Installation
+
 ### Pre-requisites
 - [Simple Direct Media Layer (SDL)](https://www.libsdl.org/download-2.0.php) development library
 	- [SDL_image](https://github.com/libsdl-org/SDL_image)
-	- [SDL_ttf](https://github.com/libsdl-org/SDL_ttf)
 - [GCC](https://gcc.gnu.org/install/binaries.html) compiler suite
 	- or [tcc](https://repo.or.cz/w/tinycc.git) compiler
 - [Windows only: MSYS2](https://www.msys2.org/) Linux terminal for windows + many packages
-- [mace](https://github.com/Gabinou/mace) my homemade C-only build system
-
-#### Optional: Building with premake and make
 - [Premake](https://premake.github.io/) makefile-generator
+	- or [mace](https://github.com/Gabinou/mace) my homemade C-only build system
+
 
 ### Basic compilation instructions
 0. Install all pre-requisites
@@ -50,18 +47,18 @@ Game assets (graphics, music) to be distributed separately.
 1. Get the source code (with `git clone`)
 2. Run:
 ```
+premake5 gmake
+make
+```
+
+Or, with my homemade build system `mace`:
+```
 mace
 ```
-Or, without the `mace` convenience executable:
+Without the `mace` convenience executable:
 ```
 gcc macefile.c -o builder
 ./builder
-```
-
-Or, with `premake5` and `make`:
-```
-premake5 gmake
-make
 ```
 
 This should successfully create an executable file after a couple minutes of compilation.
@@ -96,7 +93,6 @@ Third-Party software libraries are distributed according to their respective lic
 All contributions are welcome. 
 Any and all inclusions will be credited.
 
-Code you write should contain the least amount of comments possible.
 Code formatting is automated with [astyle](http://astyle.sourceforge.net/). 
 Style options are in the `utils/style.txt` file.
 
