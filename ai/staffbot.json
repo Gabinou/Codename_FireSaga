@@ -1,0 +1,7 @@
+subl{
+    "AI":   {
+        "priority_master": 3,
+        "priority_slave": 4,    
+        "move": 0
+    }
+}

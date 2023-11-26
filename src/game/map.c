@@ -197,10 +197,11 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         struct AI *ai = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, AI);
         *ai = AI_default;
         s8 ai_path  = s8_mut("ai"PHYSFS_SEPARATOR);
-        SDL_Log("%d '%s'", ai_path.num, ai_path.data);
-        SDL_Log("%d '%s'", unit->ai_filename.num, unit->ai_filename.data);
-        ai_path     = s8cat(ai_path, unit->ai_filename);
+        /* - Default ai - */
+        if (unit->ai_filename.data == NULL)
+            unit->ai_filename = s8_mut("aggressive.json");
 
+        ai_path = s8cat(ai_path, unit->ai_filename);
         jsonio_readJSON(ai_path, ai);
         s8_free(&ai_path);
 

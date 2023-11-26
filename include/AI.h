@@ -132,7 +132,7 @@ enum AI_PRIORITIES {
     AI_PRIORITY_SURVIVE = 4,
 
     /* -- AI_PRIORITY_FLEE -- */
-    /* Runs away from PCs. */
+    /* Runs away from s. */
     AI_PRIORITY_FLEE = 5,
 
     /* -- AI_PRIORITY_SKILL -- */
