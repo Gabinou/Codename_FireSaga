@@ -138,7 +138,7 @@ struct Unit Unit_default = {
 
     .temp            = {0},
     .name            = {0},
-    .ai_filename     = {.data = "aggressive.json", .num = 15, .len = 15},
+    .ai_filename     = {0},
     .title           = {0},
     .num_equipment   =  0,
     .eq_usable       = {0},
