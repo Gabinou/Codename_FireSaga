@@ -207,7 +207,8 @@ extern struct Inventory_item Inventory_item_broken;
 struct Reinforcement {
     struct Point position;
     i16 army;
-    i16 id; 
+    // i16 id; 
+    s8 filename;
     // TODO: 1 or 2 
     // 1- Use unit filename instead of id
     //      - Gets rid of name from file vs name from id conflict

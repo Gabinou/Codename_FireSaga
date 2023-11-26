@@ -469,7 +469,8 @@ void jsonio_Read_Reinforce(struct cJSON         *_jarrival,
                            struct Reinforcement *arrival) {
     SDL_assert(arrival  != NULL);
     SDL_assert(_jarrival != NULL);
-    struct cJSON *jid       = cJSON_GetObjectItem(_jarrival,  "id");
+    struct cJSON *jfilename = cJSON_GetObjectItem(_jarrival,  "filename");
+    struct cJSON *jai       = cJSON_GetObjectItem(_jarrival,  "AI");
     struct cJSON *jarmy     = cJSON_GetObjectItem(_jarrival,  "army");
     struct cJSON *jturn     = cJSON_GetObjectItem(_jarrival,  "turn");
     struct cJSON *jlevelups = cJSON_GetObjectItem(_jarrival,  "levelups");
