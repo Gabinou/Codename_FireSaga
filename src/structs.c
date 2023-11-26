@@ -112,14 +112,6 @@ struct Condition Condition_default = {
     .recruited   = true,
 };
 
-struct Reinforcement Reinforcement_default = {
-    .turn        =  0,
-    .levelups    =  0,
-    .army        = -1,
-    .id          = -1,
-    .position    = {0, 0},
-};
-
 struct Fps Fps_default = {
     .pos         = {FPS_DEFAULT_POSX,        FPS_DEFAULT_POSY},
     .show        =  FPS_DEFAULT_SHOW,

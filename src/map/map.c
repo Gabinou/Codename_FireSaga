@@ -241,6 +241,7 @@ void Map_Free(struct Map *map) {
     }
     Map_Tilemap_Surface_Free(map);
     _Map_Tilesindex_Free(map);
+    _Map_Reinforcements_Free(map);
     SDL_Log("Arrow");
     Arrow_Free(map->arrow);
     SDL_Log("tilemap_shader");
@@ -548,7 +549,7 @@ void Map_writeJSON( void *input, cJSON *jmap) {
     for (u8 r = 0; r < DARR_NUM(map->reinforcements); r++) {
         jreinforcement = cJSON_CreateObject();
         jreinforcementeq = cJSON_CreateObject();
-        jsonio_Write_arrival(jreinforcement, &(map->reinforcements)[r]);
+        jsonio_Write_Reinforcement(jreinforcement, &(map->reinforcements)[r]);
         temp_equip = map->reinf_equipments[r];
         for (u8 i = 0; i < DARR_NUM(temp_equip); i ++) {
             temp_item = temp_equip[i];
@@ -642,7 +643,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     for (int i = 0; i < cJSON_GetArraySize(jreinforcements); i++) {
         struct Reinforcement temp_rein;
         cJSON *jreinforcement = cJSON_GetArrayItem(jreinforcements, i);
-        jsonio_Read_Reinforce(jreinforcement, &temp_rein);
+        jsonio_Read_Reinforcement(jreinforcement, &temp_rein);
         DARR_PUT(map->reinforcements, temp_rein);
         jequipment = cJSON_GetObjectItem(jreinforcement, "Equipment");
         temp_equip = DARR_INIT(temp_equip, struct Inventory_item, DEFAULT_EQUIPMENT_SIZE);

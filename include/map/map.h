@@ -10,6 +10,7 @@
 #include "map/path.h"
 #include "index_shader.h"
 #include "arrow.h"
+#include "reinforcement.h"
 #include "nmath.h"
 #include "unit.h"
 #include "position.h"
@@ -220,6 +221,8 @@ void Map_Tilemap_Texture_Free(struct Map *map);
 
 static void _Map_Tilesindex_Init(struct Map  *map);
 static void _Map_Tilesindex_Free(struct Map  *map);
+
+static void _Map_Reinforcements_Free(struct Map  *map);
 
 /* --- Tilesprites --- */
 void Map_Tilesprites_Init(struct Map *map, size_t tiles_num);

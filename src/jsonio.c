@@ -465,47 +465,6 @@ void jsonio_Read_Tilestats(struct cJSON      *_jstats,
     stats->heal          = cJSON_GetNumberValue(jHeal);
 }
 
-void jsonio_Read_Reinforce(struct cJSON         *_jarrival,
-                           struct Reinforcement *arrival) {
-    SDL_assert(arrival  != NULL);
-    SDL_assert(_jarrival != NULL);
-    struct cJSON *jfilename = cJSON_GetObjectItem(_jarrival,  "filename");
-    struct cJSON *jai       = cJSON_GetObjectItem(_jarrival,  "AI");
-    struct cJSON *jarmy     = cJSON_GetObjectItem(_jarrival,  "army");
-    struct cJSON *jturn     = cJSON_GetObjectItem(_jarrival,  "turn");
-    struct cJSON *jlevelups = cJSON_GetObjectItem(_jarrival,  "levelups");
-    struct cJSON *jposition = cJSON_GetObjectItem(_jarrival,  "Position");
-
-    struct cJSON *jrow      = cJSON_GetObjectItem(jposition, "row");
-    struct cJSON *jcol      = cJSON_GetObjectItem(jposition, "col");
-
-    arrival->id         = cJSON_GetNumberValue(jid);
-    arrival->army       = cJSON_GetNumberValue(jarmy);
-    arrival->turn       = cJSON_GetNumberValue(jturn);
-    arrival->levelups   = cJSON_GetNumberValue(jlevelups);
-    arrival->position.x = cJSON_GetNumberValue(jrow);
-    arrival->position.y = cJSON_GetNumberValue(jcol);
-}
-
-void jsonio_Write_arrival(      struct cJSON                  *jarrival,
-                                struct Reinforcement *arrival) {
-    SDL_assert(jarrival != NULL);
-    struct cJSON *jid       = cJSON_CreateNumber(arrival->id);
-    struct cJSON *jrow      = cJSON_CreateNumber(arrival->position.x);
-    struct cJSON *jcol      = cJSON_CreateNumber(arrival->position.y);
-    struct cJSON *jturn     = cJSON_CreateNumber(arrival->turn);
-    struct cJSON *jarmy     = cJSON_CreateNumber(arrival->army);
-    struct cJSON *jlevelups = cJSON_CreateNumber(arrival->levelups);
-    struct cJSON *jposition = cJSON_CreateObject();
-    cJSON_AddItemToObject(jposition, "row",      jrow);
-    cJSON_AddItemToObject(jposition, "col",      jcol);
-    cJSON_AddItemToObject(jarrival,  "id",       jid);
-    cJSON_AddItemToObject(jarrival,  "army",     jarmy);
-    cJSON_AddItemToObject(jarrival,  "levelups", jlevelups);
-    cJSON_AddItemToObject(jarrival,  "turn",     jturn);
-    cJSON_AddItemToObject(jarrival,  "Position", jposition);
-}
-
 void jsonio_Write_Tilestats(      struct cJSON       *jstats,
                                   struct Tile_stats *stats) {
     SDL_assert(jstats != NULL);

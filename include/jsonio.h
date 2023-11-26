@@ -1,6 +1,7 @@
 #ifndef JSONIO_H
 #define JSONIO_H
 
+#include "cJSON.h"
 #include "tile.h"
 #include "weapon.h"
 #include "item.h"
@@ -56,7 +57,6 @@ void jsonio_Read_Unitstats(struct cJSON *j, struct Unit_stats     *s);
 void jsonio_Read_MObj_Link(struct cJSON *j, struct Mobj_Link      *b);
 void jsonio_Read_Breakable(struct cJSON *j, struct Breakable      *b);
 void jsonio_Read_Itemstats(struct cJSON *j, struct Item_stats     *s);
-void jsonio_Read_Reinforce(struct cJSON *j, struct Reinforcement  *a);
 
 /* - Narrative - */
 void Scene_readJSON(void *input, struct cJSON *_jnarr);
@@ -71,7 +71,6 @@ void jsonio_Write_Array(    struct cJSON *j, i32 *arr, size_t l);
 void jsonio_Write_2DArray(  struct cJSON *j, i32 *arr, u8 rl, u8 cl);
 
 void jsonio_Write_item(     struct cJSON *j, struct Inventory_item *i);
-void jsonio_Write_arrival(  struct cJSON *j, struct Reinforcement  *a);
 void jsonio_Write_mvtcost(  struct cJSON *j, struct fMovement_cost *c);
 void jsonio_Write_Wpnstats( struct cJSON *j, struct Weapon_stats   *s);
 void jsonio_Write_Itemstats(struct cJSON *j, struct Item_stats     *t);
