@@ -109,49 +109,45 @@ void _AI_Decider_Kill_AfterMove(struct Game *sota, tnecs_entity npc_ent,
 void _AI_Decider_Do_Move_To(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     //  - Prioritizes moving to target, if possible AfterMove
     //      - Much simpler to implement
-    //      - AI is "Dumb" and doesn't go for attacks sometimes
+    //      - AI is "Dumb" and doesn't go for obvious attacks on way to target
     /* --- PRELIMINARIES --- */
     struct Unit     *npc = TNECS_GET_COMPONENT(sota->world, npc_ent, Unit);
     struct Position *pos = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
     struct AI       *ai  = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
     SDL_assert(ai  != NULL);
 
-    /* -- Check if tile is in range -- */
-    Map_Movemap_Compute(sota->map, sota->world, npc_ent);
+    /* Skip: Unit is on target tile */
     struct Point target = ai->target_move;
     struct Point start  = pos->tilemap_pos;
-    i32 *movemap    = sota->map->movemap;
+    if ((target.x == start.x) && (target.y == start.y))
+        return;
+
+    /* -- Compute costmap for pathfinding -- */
+    Map_Costmap_Movement_Compute(sota->map, sota->world, npc_ent);
     i32 *costmap    = sota->map->costmap;
     i16 row_len     = sota->map->col_len;
     i16 col_len     = sota->map->col_len;
 
-    b32 canmove = movemap[target.y * col_len + target.x] >= MOVEMAP_MOVEABLEMIN;
+    /* -- Pathfinding --  */
+    int *path_list  = DARR_INIT(path_list, int, 16);
+    path_list       = Pathfinding_Astar(path_list, costmap, row_len, col_len,
+                                        start, target, true);
+    int point_num   = DARR_NUM(path_list) / TWO_D;
 
-    if (canmove) {
-        /* -- Move to target tile -- */
-        action->target_move = target;
-    } else {
-        /* Move */
-        int *path_list  = DARR_INIT(path_list, int, 32);
-        path_list       = Pathfinding_Astar(path_list, costmap, row_len, col_len,
-                                            start, target, true);
-        int point_num   = DARR_NUM(path_list) / TWO_D;
-        int move        = Unit_computeMove(npc);
-        int minimum     = point_num < move ? point_num : move;
-        if (minimum > 1) {
-            action->target_move.x = path_list[(minimum - 1) * TWO_D];
-            action->target_move.y = path_list[(minimum - 1) * TWO_D + 1];
-        }
-
-        // i32 target_movecost = movemap[target.y * col_len + target.x]
-        /* -- Move to tile closest to target tile -- */
-
+    /* -- target_move is furthest point along path unit can move to -- */
+    int move        = Unit_computeMove(npc);
+    SDL_assert(move > 0);
+    int minimum     = point_num < move ? point_num : move;
+    if (minimum > 1) {
+        action->target_move.x = path_list[(minimum - 1) * TWO_D];
+        action->target_move.y = path_list[(minimum - 1) * TWO_D + 1];
     }
+    DARR_FREE(path_list);
 
     /* AfterMove action according to slave priority */
-    if (AI_Decider_AfterMove[ai->priority_slave] != NULL)
+    if (AI_Decider_AfterMove[ai->priority_slave] != NULL) {
         AI_Decider_AfterMove[ai->priority_slave](sota, npc_ent, action);
-    else {
+    } else {
         action->action  = AI_ACTION_WAIT;
     }
 }
