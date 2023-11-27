@@ -126,7 +126,6 @@ void _AI_Decider_Do_Move_To(struct Game *sota, tnecs_entity npc_ent, struct AI_A
     Map_Costmap_Movement_Compute(sota->map, sota->world, npc_ent);
     i32 *costmap    = sota->map->costmap;
     SDL_assert(costmap != NULL);
-    SDL_Log("target %d %d", target.x, target.y);
     SDL_assert((target.x >= 0) && (target.x < sota->map->col_len));
     SDL_assert((target.y >= 0) && (target.y < sota->map->row_len));
     SDL_assert((start.x >= 0) && (start.x < sota->map->col_len));
@@ -144,11 +143,12 @@ void _AI_Decider_Do_Move_To(struct Game *sota, tnecs_entity npc_ent, struct AI_A
     /* -- target_move is furthest point along path unit can move to -- */
     int move        = Unit_computeMove(npc);
     SDL_assert(move > 0);
-    int minimum     = point_num < move ? point_num : move;
+    int minimum     = (point_num - 1) < move ? (point_num - 1) : move;
     if (minimum > 1) {
         action->target_move.x = path_list[minimum * TWO_D];
         action->target_move.y = path_list[minimum * TWO_D + 1];
     }
+
     DARR_FREE(path_list);
 
     /* AfterMove action according to slave priority */
@@ -313,7 +313,6 @@ void AI_State_Init(struct AI_State *ai_state, tnecs_world *world, struct Map *ma
 void AI_State_Pop(struct AI_State *ai_state, tnecs_world *world) {
     entity npc_ent = ai_state->npcs[ai_state->npc_i];
     DARR_DEL(ai_state->npcs, ai_state->npc_i);
-    // TNECS_REMOVE_COMPONENTS(world, npc_ent, AI);
     ai_state->decided       = false;
     ai_state->move_anim     = false;
     ai_state->act_anim      = false;
