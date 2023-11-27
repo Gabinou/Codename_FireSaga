@@ -78,7 +78,7 @@ void Pathfinding_Neighbour(struct Node *o, struct Node *c, struct Node ne);
 
 /* -- Astar -- */
 i32 *Pathfinding_Astar(i32 *path, i32 *cost, size_t rowl, size_t coll,
-                       struct Point start, struct Point end);
+                       struct Point start, struct Point end, b32 forward);
 i32 Pathfinding_Manhattan(struct Point start, struct Point end);
 
 /* -- Moveto -- */
@@ -125,8 +125,12 @@ i32 *Pathfinding_Attackfrom_noM(i32 *attackfrom, i32 *movemap,
                                 struct Point target, u8 range[2]);
 
 /* -- Utils -- */
-i32 *Pathfinding_CameFrom_List(i32 *path, i32 *came_from, size_t col_len,
-                               struct Point start, struct Point end);
+typedef i32 *(*PathList_f)(i32 *, i32 *, size_t, struct Point, struct Point );
+
+i32 *Pathfinding_PathList_Forward(i32 *path, i32 *came_from, size_t col_len,
+                                  struct Point start, struct Point end);
+i32 *Pathfinding_PathList_Backward(i32 *path, i32 *came_from, size_t col_len,
+                                   struct Point start, struct Point end);
 
 /* --- Pushing and pulling --- */
 i32 *Pathfinding_Pushto(i32 *movemap, size_t row_len, size_t col_len,

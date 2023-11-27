@@ -99,7 +99,7 @@ void test_pathfinding_Astar() {
 
     /* -- Test computing a path -- */
     int *path_list = DARR_INIT(path_list, int, 32);
-    path_list = Pathfinding_Astar(path_list, costmapp, ROW_LEN, COL_LEN, start, end);
+    path_list = Pathfinding_Astar(path_list, costmapp, ROW_LEN, COL_LEN, start, end, true);
 
     int point_num       = DARR_NUM(path_list) / TWO_D;
     int *computed_path  = list2matrix(path_list, ROW_LEN, COL_LEN, point_num);
@@ -331,11 +331,12 @@ void test_pathfinding_Astar_end_blocked() {
 
     /* -- Test computing a path -- */
     int *path_list = DARR_INIT(path_list, int, 32);
-    path_list = Pathfinding_Astar(path_list, costmapp, ROW_LEN, COL_LEN, start, end);
+    path_list = Pathfinding_Astar(path_list, costmapp, ROW_LEN, COL_LEN, start, end, true);
     int point_num       = DARR_NUM(path_list) / TWO_D;
     int *computed_path  = list2matrix(path_list, ROW_LEN, COL_LEN, point_num);
     // matrix_print(computed_path, ROW_LEN, COL_LEN);
-
+    nourstest_true(path_list[0] == start.x);
+    nourstest_true(path_list[1] == start.y);
     for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
         nourstest_true(computed_path[i] == expected_path[i]);
 

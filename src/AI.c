@@ -111,12 +111,15 @@ void _AI_Decider_Do_Move_To(struct Game *sota, tnecs_entity npc_ent, struct AI_A
     //      - Much simpler to implement
     //      - AI is "Dumb" and doesn't go for attacks sometimes
     /* --- PRELIMINARIES --- */
-    struct AI   *ai     = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
+    struct Unit     *npc = TNECS_GET_COMPONENT(sota->world, npc_ent, Unit);
+    struct Position *pos = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
+    struct AI       *ai  = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
     SDL_assert(ai  != NULL);
 
     /* -- Check if tile is in range -- */
     Map_Movemap_Compute(sota->map, sota->world, npc_ent);
     struct Point target = ai->target_move;
+    struct Point start  = pos->tilemap_pos;
     i32 *movemap    = sota->map->movemap;
     i32 *costmap    = sota->map->costmap;
     i16 row_len     = sota->map->col_len;
@@ -129,9 +132,16 @@ void _AI_Decider_Do_Move_To(struct Game *sota, tnecs_entity npc_ent, struct AI_A
         action->target_move = target;
     } else {
         /* Move */
-        /* What if ai->target_move is not a moveable tile? */
-        int *path_list = DARR_INIT(path_list, int, 32);
-        // path_list = Pathfinding_Astar(path_list, costmap, row_len, col_len, start, end);
+        int *path_list  = DARR_INIT(path_list, int, 32);
+        path_list       = Pathfinding_Astar(path_list, costmap, row_len, col_len,
+                                            start, target, true);
+        int point_num   = DARR_NUM(path_list) / TWO_D;
+        int move        = Unit_computeMove(npc);
+        int minimum     = point_num < move ? point_num : move;
+        if (minimum > 1) {
+            action->target_move.x = path_list[(minimum - 1) * TWO_D];
+            action->target_move.y = path_list[(minimum - 1) * TWO_D + 1];
+        }
 
         // i32 target_movecost = movemap[target.y * col_len + target.x]
         /* -- Move to tile closest to target tile -- */

@@ -176,8 +176,26 @@ struct SquareNeighbours pathfinding_Direction_Block(i32 *costmap_pushpull, size_
 }
 
 /* --- AStar --- */
-i32 *Pathfinding_CameFrom_List(i32 *path, i32 *came_from, size_t col_len,
-                               struct Point start, struct Point end) {
+/* path_list -> end at 0, start at num */
+i32 *Pathfinding_PathList_Forward(i32 *path, i32 *came_from, size_t col_len,
+                                  struct Point start, struct Point end) {
+    struct Point current = end;
+    struct Point move;
+    DARR_NUM(path) = 0;
+    for (size_t i = 0; i < SOTA_ITERATIONS_LIMIT; i++) {
+        DARR_INSERT(path, current.y, 0);
+        DARR_INSERT(path, current.x, 0);
+        if ((current.x == start.x) && (current.y == start.y))
+            break;
+        move = Ternary_Moved(came_from[current.y * col_len + current.x]);
+        current.x -= move.x;
+        current.y -= move.y;
+    }
+    return (path);
+}
+/* path_list -> start at 0, end at num */
+i32 *Pathfinding_PathList_Backward(i32 *path, i32 *came_from, size_t col_len,
+                                   struct Point start, struct Point end) {
     struct Point current = end;
     struct Point move;
     DARR_NUM(path) = 0;
@@ -190,12 +208,11 @@ i32 *Pathfinding_CameFrom_List(i32 *path, i32 *came_from, size_t col_len,
         current.x -= move.x;
         current.y -= move.y;
     }
-
     return (path);
 }
 
-i32 *Pathfinding_Astar(i32 *path_list, i32 *costmap, size_t row_len,
-                       size_t col_len, struct Point start, struct Point end) {
+i32 *Pathfinding_Astar(i32 *path_list, i32 *costmap, size_t row_len, size_t col_len,
+                       struct Point start, struct Point end, b32 forward) {
     /* Assumes square grid, path_list is a DARR */
     /* [1]: http://www.redblobgames.com/pathfinding/a-star/introduction.html */
     /* Checks */
@@ -270,15 +287,17 @@ i32 *Pathfinding_Astar(i32 *path_list, i32 *costmap, size_t row_len,
             came_from[current_n] = Ternary_Direction(move);
         }
     }
-
+    PathList_f forward_f    = &Pathfinding_PathList_Forward;
+    PathList_f backward_f   = &Pathfinding_PathList_Backward;
+    PathList_f pathlist_f   = forward ? forward_f : backward_f;
     /* Resetting path_list */
     DARR_NUM(path_list) = 0;
     if ((current.x == end.x) && (current.y == end.y))
         /* End reached, get path to it*/
-        path_list = Pathfinding_CameFrom_List(path_list, came_from, col_len, start, end);
+        path_list = pathlist_f(path_list, came_from, col_len, start, end);
     else
         /* End NOT reached, get path to closest tile */
-        path_list = Pathfinding_CameFrom_List(path_list, came_from, col_len, start, closest);
+        path_list = pathlist_f(path_list, came_from, col_len, start, closest);
 
     SDL_free(cost);
     SDL_free(came_from);
