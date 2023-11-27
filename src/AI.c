@@ -313,7 +313,7 @@ void AI_State_Init(struct AI_State *ai_state, tnecs_world *world, struct Map *ma
 void AI_State_Pop(struct AI_State *ai_state, tnecs_world *world) {
     entity npc_ent = ai_state->npcs[ai_state->npc_i];
     DARR_DEL(ai_state->npcs, ai_state->npc_i);
-    TNECS_REMOVE_COMPONENTS(world, npc_ent, AI);
+    // TNECS_REMOVE_COMPONENTS(world, npc_ent, AI);
     ai_state->decided       = false;
     ai_state->move_anim     = false;
     ai_state->act_anim      = false;
