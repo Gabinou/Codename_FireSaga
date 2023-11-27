@@ -2,7 +2,6 @@
     "AI":   {
         "priority_master": 0,
         "priority_slave": 4,    
-        "move": 0,
-        "target_move": [20, 5]
+        "move": 0
     }
 }

@@ -125,6 +125,13 @@ void _AI_Decider_Do_Move_To(struct Game *sota, tnecs_entity npc_ent, struct AI_A
     /* -- Compute costmap for pathfinding -- */
     Map_Costmap_Movement_Compute(sota->map, sota->world, npc_ent);
     i32 *costmap    = sota->map->costmap;
+    SDL_assert(costmap != NULL);
+    SDL_Log("target %d %d", target.x, target.y);
+    SDL_assert((target.x >= 0) && (target.x < sota->map->col_len));
+    SDL_assert((target.y >= 0) && (target.y < sota->map->row_len));
+    SDL_assert((start.x >= 0) && (start.x < sota->map->col_len));
+    SDL_assert((start.y >= 0) && (start.y < sota->map->row_len));
+
     i16 row_len     = sota->map->col_len;
     i16 col_len     = sota->map->col_len;
 
@@ -139,8 +146,8 @@ void _AI_Decider_Do_Move_To(struct Game *sota, tnecs_entity npc_ent, struct AI_A
     SDL_assert(move > 0);
     int minimum     = point_num < move ? point_num : move;
     if (minimum > 1) {
-        action->target_move.x = path_list[(minimum - 1) * TWO_D];
-        action->target_move.y = path_list[(minimum - 1) * TWO_D + 1];
+        action->target_move.x = path_list[minimum * TWO_D];
+        action->target_move.y = path_list[minimum * TWO_D + 1];
     }
     DARR_FREE(path_list);
 
@@ -161,13 +168,12 @@ entity AI_Decide_Next(struct Game *sota) {
 
 void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     /* --- PRELIMINARIES --- */
+
     *action = AI_Action_default;
     struct Unit *npc    = TNECS_GET_COMPONENT(sota->world, npc_ent, Unit);
     struct AI   *ai     = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
     SDL_assert(npc != NULL);
     SDL_assert(ai  != NULL);
-    // TNECS_ADD_COMPONENT(sota->world, npc_ent, AI);
-    // ai = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
 
     SDL_assert(ai->priority_master > AI_PRIORITY_START);
     SDL_assert(ai->priority_master < AI_PRIORITY_NUM);
@@ -180,10 +186,10 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
 
     /* -- DEBUG: move specific unit -- */
     /* TODO: Remove */
-    if (npc_ent == 18) {
-        action->target_move.x = pos->tilemap_pos.x + 2;
-        action->target_move.y = pos->tilemap_pos.y + 2;
-    }
+    // if (npc_ent == 18) {
+    //     action->target_move.x = pos->tilemap_pos.x + 2;
+    //     action->target_move.y = pos->tilemap_pos.y + 2;
+    // }
 
     /* -- Skip movement if target is at current position -- */
     b32 same_x = (action->target_action.x == pos->tilemap_pos.x);
@@ -762,14 +768,18 @@ void AI_readJSON(void *input,  cJSON *jai) {
     cJSON *jpriority_slave      = cJSON_GetObjectItem(jai, "priority_slave");
     cJSON *jmove                = cJSON_GetObjectItem(jai, "move");
     cJSON *jtarget_move         = cJSON_GetObjectItem(jai, "target_move");
-    cJSON *jtarget_move_x       = cJSON_GetArrayItem(jtarget_move, 0);
-    cJSON *jtarget_move_y       = cJSON_GetArrayItem(jtarget_move, 1);
+    if (jtarget_move != NULL) {
+        SDL_assert(cJSON_IsArray(jtarget_move));
+        SDL_assert(cJSON_GetArraySize(jtarget_move) == 2);
+        cJSON *jtarget_move_x       = cJSON_GetArrayItem(jtarget_move, 0);
+        cJSON *jtarget_move_y       = cJSON_GetArrayItem(jtarget_move, 1);
+        ai->target_move.x   = cJSON_GetNumberValue(jtarget_move_x);
+        ai->target_move.y   = cJSON_GetNumberValue(jtarget_move_y);
+    }
 
     ai->priority_master = cJSON_GetNumberValue(jpriority_master);
     ai->priority_slave  = cJSON_GetNumberValue(jpriority_slave);
     ai->move            = cJSON_GetNumberValue(jmove);
-    ai->target_move.x   = cJSON_GetNumberValue(jtarget_move_x);
-    ai->target_move.y   = cJSON_GetNumberValue(jtarget_move_y);
 }
 
 void AI_writeJSON(void *input,  cJSON *jai) {

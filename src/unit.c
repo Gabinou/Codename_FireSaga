@@ -706,7 +706,6 @@ void Unit_takesDamage(struct Unit *unit, u8 damage, bool crit) {
     SDL_Log("unit->current_hp %d", unit->current_hp);
     SDL_Log("unit->agonizes %d", unit->agony);
     SDL_Log("unit->alive %d", unit->alive);
-    // getchar();
 }
 
 void Unit_getsHealed(struct Unit *unit, u8 healing) {
