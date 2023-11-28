@@ -73,9 +73,12 @@ void Map_Unit_Move(struct Map *map, u8 col, u8 row, u8 new_col, u8 new_row) {
     SDL_assert(new_col  < map->col_len);
     SDL_assert(new_row  < map->row_len);
 
-    /* -- Update unitmap -- */
+    /* New position of unit should always be empty */
     size_t old_i = row * map->col_len + col;
     size_t new_i = new_row * map->col_len + new_col;
+    SDL_assert(map->unitmap[new_i] == TNECS_NULL);
+
+    /* -- Move unit on unitmap -- */
     tnecs_entity unit = map->unitmap[old_i];
     map->unitmap[new_i] = unit;
     map->unitmap[old_i] = TNECS_NULL;

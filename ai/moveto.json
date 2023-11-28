@@ -3,6 +3,6 @@
         "priority_master": 8,
         "priority_slave": 0,    
         "move": 0,
-        "target_move": [14, 14]
+        "target_move": [13, 13]
     }
 }
