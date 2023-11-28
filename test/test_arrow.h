@@ -37,8 +37,8 @@ void test_arrow() {
     /* -- Preliminaries -- */
     sota_mkdir("arrow");
 
-    /* -- Costmap -- */
-    i32 costmap[ROW_LEN * COL_LEN] = {
+    /* -- Traversemap -- */
+    i32 traversemap[ROW_LEN * COL_LEN] = {
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -100,7 +100,7 @@ void test_arrow() {
     /* -- Start arrow -- */
     start.x = 4;
     start.y = 4;
-    Arrow_Path_Init(arrow, costmap, move, start);
+    Arrow_Path_Init(arrow, traversemap, move, start);
     /* -- Add 1 path down -- */
     Arrow_Path_Add(arrow, 4, 5);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 2);

@@ -11,7 +11,7 @@ void test_pathfinding_Astar() {
     struct Point end          = {15, 1};
     int *position;
     int move = 30;
-    i32 costmapp[ROW_LEN * COL_LEN] = {
+    i32 traversemapp[ROW_LEN * COL_LEN] = {
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -81,15 +81,15 @@ void test_pathfinding_Astar() {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     };
-    /* -- Test computing a movemap from a costmap -- */
+    /* -- Test computing a movemap from a traversemap -- */
     /* - Computing a movemap matrix - */
-    i32 *movemapp = Pathfinding_Moveto(costmapp, ROW_LEN, COL_LEN, start, move);
+    i32 *movemapp = Pathfinding_Moveto(traversemapp, ROW_LEN, COL_LEN, start, move);
     // matrix_print(movemapp, ROW_LEN, COL_LEN);
 
     for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
         nourstest_true(movemapp[i] == expected_movemapp[i]);
 
-    Pathfinding_Moveto_noM(movemapp, costmapp, ROW_LEN, COL_LEN, start, move);
+    Pathfinding_Moveto_noM(movemapp, traversemapp, ROW_LEN, COL_LEN, start, move);
 
     for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
         nourstest_true(movemapp[i] == expected_movemapp[i]);
@@ -99,7 +99,7 @@ void test_pathfinding_Astar() {
 
     /* -- Test computing a path -- */
     int *path_list = DARR_INIT(path_list, int, 32);
-    path_list = Pathfinding_Astar(path_list, costmapp, ROW_LEN, COL_LEN, start, end, true);
+    path_list = Pathfinding_Astar(path_list, traversemapp, ROW_LEN, COL_LEN, start, end, true);
 
     int point_num       = DARR_NUM(path_list) / TWO_D;
     int *computed_path  = list2matrix(path_list, ROW_LEN, COL_LEN, point_num);
@@ -115,7 +115,7 @@ void test_pathfinding_Astar() {
 
 
 void test_pathfinding_sight() {
-    // Note: Blockmap doubles as a costmap for movemap
+    // Note: Blockmap doubles as a traversemap for movemap
     // Walls are 0, everything else is visible
 
     /* --- PRELIMINARIES --- */
@@ -245,7 +245,7 @@ void test_pathfinding_Astar_end_blocked() {
     struct Point end          = {15, 1};
     int *position;
     int move = 30;
-    i32 costmapp[ROW_LEN * COL_LEN] = {
+    i32 traversemapp[ROW_LEN * COL_LEN] = {
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -316,14 +316,14 @@ void test_pathfinding_Astar_end_blocked() {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     };
-    /* -- Test computing a movemap from a costmap -- */
+    /* -- Test computing a movemap from a traversemap -- */
     /* - Computing a movemap matrix - */
-    i32 *movemapp = Pathfinding_Moveto(costmapp, ROW_LEN, COL_LEN, start, move);
+    i32 *movemapp = Pathfinding_Moveto(traversemapp, ROW_LEN, COL_LEN, start, move);
     // matrix_print(movemapp, ROW_LEN, COL_LEN);
     for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
         nourstest_true(movemapp[i] == expected_movemapp[i]);
 
-    Pathfinding_Moveto_noM(movemapp, costmapp, ROW_LEN, COL_LEN, start, move);
+    Pathfinding_Moveto_noM(movemapp, traversemapp, ROW_LEN, COL_LEN, start, move);
 
     for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
         nourstest_true(movemapp[i] == expected_movemapp[i]);
@@ -331,7 +331,7 @@ void test_pathfinding_Astar_end_blocked() {
 
     /* -- Test computing a path -- */
     int *path_list = DARR_INIT(path_list, int, 32);
-    path_list = Pathfinding_Astar(path_list, costmapp, ROW_LEN, COL_LEN, start, end, true);
+    path_list = Pathfinding_Astar(path_list, traversemapp, ROW_LEN, COL_LEN, start, end, true);
     int point_num       = DARR_NUM(path_list) / TWO_D;
     int *computed_path  = list2matrix(path_list, ROW_LEN, COL_LEN, point_num);
     // matrix_print(computed_path, ROW_LEN, COL_LEN);

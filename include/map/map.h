@@ -105,9 +105,9 @@ struct Map {
     float shadow_frame_factor;  /* framerate * factor = pause */
     float tilemap_frame_factor; /* framerate * factor = pause */
 
-    /* --- COSTMAP, MOVEMAP, ATTACKMAP... --- */
+    /* --- traversemap, MOVEMAP, ATTACKMAP... --- */
     i32 *temp;                  /* 2D dynamic array */
-    i32 *costmap;               /* 2D dynamic array */
+    i32 *traversemap;               /* 2D dynamic array */
     i32 *movemap;               /* 2D dynamic array */
     i32 *tilemap;               /* 2D dynamic array [row * col_len + col] */
     i32 *healtomap;             /* 2D dynamic array */
@@ -121,7 +121,7 @@ struct Map {
     i32 *attacktolist;          /* 2D dynamic array */
     i32 *attackfrommap;         /* 2D dynamic array */
     i32 *global_rangemap;       /* 2D dynamic array */
-    float *fcostmap;            /* 2D dynamic array */
+    float *ftraversemap;            /* 2D dynamic array */
     float *fmovemap;            /* 2D dynamic array */
     tnecs_entity *unitmap;    /* [row * col_len + col] */
 
@@ -133,7 +133,7 @@ struct Map {
     /* --- AGONY --- */
     struct Agony_timer *agony_stack;
     u8 num_agonizing;
-    tnecs_entity costmap_ent;
+    tnecs_entity traversemap_ent;
 
     /* --- ARMIES --- */
     int army_i; /* Current army in control */

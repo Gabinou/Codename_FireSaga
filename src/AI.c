@@ -122,10 +122,10 @@ void _AI_Decider_Do_Move_To(struct Game *sota, tnecs_entity npc_ent, struct AI_A
     if ((target.x == start.x) && (target.y == start.y))
         return;
 
-    /* -- Compute costmap for pathfinding -- */
-    Map_Costmap_Movement_Compute(sota->map, sota->world, npc_ent);
-    i32 *costmap    = sota->map->costmap;
-    SDL_assert(costmap != NULL);
+    /* -- Compute traversemap for pathfinding -- */
+    Map_Traversemap_Movement_Compute(sota->map, sota->world, npc_ent);
+    i32 *traversemap    = sota->map->traversemap;
+    SDL_assert(traversemap != NULL);
     SDL_assert((target.x >= 0) && (target.x < sota->map->col_len));
     SDL_assert((target.y >= 0) && (target.y < sota->map->row_len));
     SDL_assert((start.x >= 0) && (start.x < sota->map->col_len));
@@ -136,7 +136,7 @@ void _AI_Decider_Do_Move_To(struct Game *sota, tnecs_entity npc_ent, struct AI_A
 
     /* -- Pathfinding --  */
     int *path_list  = DARR_INIT(path_list, int, 16);
-    path_list       = Pathfinding_Astar(path_list, costmap, row_len, col_len,
+    path_list       = Pathfinding_Astar(path_list, traversemap, row_len, col_len,
                                         start, target, true);
     int point_num   = DARR_NUM(path_list) / TWO_D;
 
@@ -590,9 +590,9 @@ void AI_State_Turn_Finish(struct AI_State *ai_state) {
 //     rating_buffer = Equation_AI_Rating_Stats(friendly_ptr->effective_stats.dex);
 //     rating = rating > (INT8_MAX - rating_buffer) ? INT8_MAX : rating + rating_buffer;
 //     // UNTIL MAP IS NOT TNECSED
-//     // i32 * costmapp_pushpull = Map_Costmap_PushPull_Compute(in_map, in_world, in_friendly_ent);
-//     // i32 * costmapp_move = Map_Costmap_Movement_Compute(in_map, in_world, in_friendly_ent);
-//     // i32 * movemapp = Map_Pathfinding_Moveto(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(friendly_mptr), POINTS_MATRIX);
+//     // i32 * traversemapp_pushpull = Map_Traversemap_PushPull_Compute(in_map, in_world, in_friendly_ent);
+//     // i32 * traversemapp_move = Map_Traversemap_Movement_Compute(in_map, in_world, in_friendly_ent);
+//     // i32 * movemapp = Map_Pathfinding_Moveto(traversemapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(friendly_mptr), POINTS_MATRIX);
 //     // struct Position * temp_pos;
 //     // struct Point * enemy_points = NULL;
 //     // for (u8 i = 0; i < in_DARR_NUM(map->friendlies_onfield); i++) {
@@ -604,7 +604,7 @@ void AI_State_Turn_Finish(struct AI_State *ai_state) {
 //     //     }
 //     // }
 //     // i32 * unit_range = Unit_Range_Combine_Equipment(friendly_mptr);
-//     // i32 * gradientmapp_enemy = pathfinding_Map_unitGradient_int32_t(costmapp_pushpull, in_map->row_len, in_map->col_len, enemy_points, in_DARR_NUM(map->friendlies_onfield));
+//     // i32 * gradientmapp_enemy = pathfinding_Map_unitGradient_int32_t(traversemapp_pushpull, in_map->row_len, in_map->col_len, enemy_points, in_DARR_NUM(map->friendlies_onfield));
 //     // i32 * attacktomapp = pathfinding_Map_Attackto_int32_t(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
 //     // i32 * gradientmapp_enemy_masked = linalg_mask_i16(gradientmapp_enemy, attacktomapp, in_map->row_len, in_map->col_len);
 //     // struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_enemy_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, 1);
@@ -627,9 +627,9 @@ void AI_State_Turn_Finish(struct AI_State *ai_state) {
 //     rating = rating < (INT8_MIN + rating_buffer) ? INT8_MIN : rating - rating_buffer;
 //     rating_buffer = Equation_AI_Rating_Stats(friendly_ptr->effective_stats.def);
 //     rating = rating < (INT8_MIN + rating_buffer) ? INT8_MIN : rating - rating_buffer;
-//     // i32 * costmapp_pushpull = Map_Costmap_PushPull_Compute(in_map, in_world, in_friendly_ent);
-//     // i32 * costmapp_move = Map_Costmap_Movement_Compute(in_map, in_world, in_friendly_ent);
-//     // i32 * movemapp = Map_Pathfinding_Moveto(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(friendly_mptr), POINTS_MATRIX);
+//     // i32 * traversemapp_pushpull = Map_Traversemap_PushPull_Compute(in_map, in_world, in_friendly_ent);
+//     // i32 * traversemapp_move = Map_Traversemap_Movement_Compute(in_map, in_world, in_friendly_ent);
+//     // i32 * movemapp = Map_Pathfinding_Moveto(traversemapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(friendly_mptr), POINTS_MATRIX);
 //     // struct Position * temp_pos;
 //     // struct Point * friendly_points = NULL;
 //     // for (u8 i = 0; i < in_DARR_NUM(map->friendlies_onfield); i++) {
@@ -641,7 +641,7 @@ void AI_State_Turn_Finish(struct AI_State *ai_state) {
 //     //     }
 //     // }
 //     // i32 * unit_range = Unit_Range_Combine_Equipment(friendly_mptr);
-//     // i32 * gradientmapp_friendly = pathfinding_Map_unitGradient_int32_t(costmapp_pushpull, in_map->row_len, in_map->col_len, friendly_points, in_DARR_NUM(map->friendlies_onfield));
+//     // i32 * gradientmapp_friendly = pathfinding_Map_unitGradient_int32_t(traversemapp_pushpull, in_map->row_len, in_map->col_len, friendly_points, in_DARR_NUM(map->friendlies_onfield));
 //     // i32 * attacktomapp = pathfinding_Map_Attackto_int32_t(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
 //     // i32 * gradientmapp_friendly_masked = linalg_mask_i16(gradientmapp_friendly, attacktomapp, in_map->row_len, in_map->col_len);
 //     // struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_friendly_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, -1);
@@ -665,9 +665,9 @@ void AI_State_Turn_Finish(struct AI_State *ai_state) {
 //     rating = rating > (INT8_MAX - rating_buffer) ? INT8_MAX : rating + rating_buffer;
 //     rating_buffer = Equation_AI_Rating_Stats(enemy_ptr->effective_stats.mag);
 //     rating = rating > (INT8_MAX - rating_buffer) ? INT8_MAX : rating + rating_buffer;
-//     // i32 * costmapp_pushpull = Map_Costmap_PushPull_Compute(in_map, in_world, in_enemy_ent);
-//     // i32 * costmapp_move = Map_Costmap_Movement_Compute(in_map, in_world, in_enemy_ent);
-//     // i32 * movemapp = Map_Pathfinding_Moveto(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(enemy_mptr), POINTS_MATRIX);
+//     // i32 * traversemapp_pushpull = Map_Traversemap_PushPull_Compute(in_map, in_world, in_enemy_ent);
+//     // i32 * traversemapp_move = Map_Traversemap_Movement_Compute(in_map, in_world, in_enemy_ent);
+//     // i32 * movemapp = Map_Pathfinding_Moveto(traversemapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(enemy_mptr), POINTS_MATRIX);
 //     // struct Position * temp_pos;
 //     // struct Point * enemy_points = NULL;
 //     // for (u8 i = 0; i < in_DARR_NUM(map->friendlies_onfield); i++) {
@@ -679,7 +679,7 @@ void AI_State_Turn_Finish(struct AI_State *ai_state) {
 //     //     }
 //     // }
 //     // i32 * unit_range = Unit_Range_Combine_Equipment(enemy_mptr);
-//     // i32 * gradientmapp_enemy = pathfinding_Map_unitGradient_int32_t(costmapp_pushpull, in_map->row_len, in_map->col_len, enemy_points, in_DARR_NUM(map->friendlies_onfield));
+//     // i32 * gradientmapp_enemy = pathfinding_Map_unitGradient_int32_t(traversemapp_pushpull, in_map->row_len, in_map->col_len, enemy_points, in_DARR_NUM(map->friendlies_onfield));
 //     // i32 * attacktomapp = pathfinding_Map_Attackto_int32_t(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
 //     // i32 * gradientmapp_enemy_masked = linalg_mask_i16(gradientmapp_enemy, attacktomapp, in_map->row_len, in_map->col_len);
 //     // struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_enemy_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, 1);
@@ -702,9 +702,9 @@ void AI_State_Turn_Finish(struct AI_State *ai_state) {
 //     rating = rating > (INT8_MAX - rating_buffer) ? INT8_MAX : rating + rating_buffer;
 //     rating_buffer = Equation_AI_Rating_Stats(enemy_ptr->effective_stats.def);
 //     rating = rating > (INT8_MAX - rating_buffer) ? INT8_MAX : rating + rating_buffer;
-//     // i32 * costmapp_pushpull = Map_Costmap_PushPull_Compute(in_map, in_world, in_enemy_ent);
-//     // i32 * costmapp_move = Map_Costmap_Movement_Compute(in_map, in_world, in_enemy_ent);
-//     // i32 * movemapp = Map_Pathfinding_Moveto(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(enemy_mptr), POINTS_MATRIX);
+//     // i32 * traversemapp_pushpull = Map_Traversemap_PushPull_Compute(in_map, in_world, in_enemy_ent);
+//     // i32 * traversemapp_move = Map_Traversemap_Movement_Compute(in_map, in_world, in_enemy_ent);
+//     // i32 * movemapp = Map_Pathfinding_Moveto(traversemapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(enemy_mptr), POINTS_MATRIX);
 //     // struct Position * temp_pos;
 //     // struct Point * friendly_points = NULL;
 //     // for (u8 i = 0; i < in_DARR_NUM(map->friendlies_onfield); i++) {
@@ -716,7 +716,7 @@ void AI_State_Turn_Finish(struct AI_State *ai_state) {
 //     //     }
 //     // }
 //     // i32 * unit_range = Unit_Range_Combine_Equipment(enemy_mptr);
-//     // i32 * gradientmapp_friendly = pathfinding_Map_unitGradient_int32_t(costmapp_pushpull, in_map->row_len, in_map->col_len, friendly_points, in_DARR_NUM(map->friendlies_onfield));
+//     // i32 * gradientmapp_friendly = pathfinding_Map_unitGradient_int32_t(traversemapp_pushpull, in_map->row_len, in_map->col_len, friendly_points, in_DARR_NUM(map->friendlies_onfield));
 //     // i32 * attacktomapp = pathfinding_Map_Attackto_int32_t(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
 //     // i32 * gradientmapp_friendly_masked = linalg_mask_i16(gradientmapp_friendly, attacktomapp, in_map->row_len, in_map->col_len);
 //     // struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_friendly_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, -1);

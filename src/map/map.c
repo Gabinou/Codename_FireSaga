@@ -37,10 +37,10 @@ struct Map Map_default = {
     .tileset_surfaces       = NULL,
     .tileset_textures       = NULL,
     .texture                = NULL,
-    .fcostmap               = NULL,
+    .ftraversemap               = NULL,
     .fmovemap               = NULL,
-    .costmap                = NULL,
-    .costmap_ent            = TNECS_NULL,
+    .traversemap                = NULL,
+    .traversemap_ent            = TNECS_NULL,
     .movemap                = NULL,
     .attackfrommap          = NULL,
     .attacktomap            = NULL,
@@ -279,12 +279,12 @@ void Map_dArrays_Init(struct Map *map,  struct Settings *settings) {
         map->temp               = calloc(len,  sizeof(*map->temp));
     if (map->unitmap == NULL)
         map->unitmap            = calloc(len,  sizeof(*map->unitmap));
-    if (map->costmap == NULL)
-        map->costmap            = calloc(len,  sizeof(*map->costmap));
+    if (map->traversemap == NULL)
+        map->traversemap            = calloc(len,  sizeof(*map->traversemap));
     if (map->movemap == NULL)
         map->movemap            = calloc(len,  sizeof(*map->movemap));
-    if (map->fcostmap == NULL)
-        map->fcostmap           = calloc(len,  sizeof(*map->fcostmap));
+    if (map->ftraversemap == NULL)
+        map->ftraversemap           = calloc(len,  sizeof(*map->ftraversemap));
     if (map->fmovemap == NULL)
         map->fmovemap           = calloc(len,  sizeof(*map->fmovemap));
 
@@ -321,17 +321,17 @@ void Map_dArrays_Free(struct Map *map) {
         SDL_free(map->unitmap);
         map->unitmap = NULL;
     }
-    if (map->costmap != NULL) {
-        SDL_free(map->costmap);
-        map->costmap = NULL;
+    if (map->traversemap != NULL) {
+        SDL_free(map->traversemap);
+        map->traversemap = NULL;
     }
     if (map->movemap != NULL) {
         SDL_free(map->movemap);
         map->movemap = NULL;
     }
-    if (map->fcostmap != NULL) {
-        SDL_free(map->fcostmap);
-        map->fcostmap = NULL;
+    if (map->ftraversemap != NULL) {
+        SDL_free(map->ftraversemap);
+        map->ftraversemap = NULL;
     }
     if (map->fmovemap != NULL) {
         SDL_free(map->fmovemap);
