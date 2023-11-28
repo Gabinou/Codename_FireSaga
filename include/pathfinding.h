@@ -30,9 +30,9 @@ enum PATHFINDING_TRAVERSEMAP {
     TRAVERSEMAP_MIN         = 1,
 };
 
+// NOTE: unitmap is occupymap
 enum PATHFINDING_OCCUPYMAP {
-    OCCUPYMAP_BLOCKED   = 0,
-    OCCUPYMAP_MIN       = 1,
+    OCCUPYMAP_UNBLOCKED   = TNECS_NULL,
 };
 
 #define TRAVERSEMAP_fBLOCKED 0.0f
@@ -84,6 +84,11 @@ void Pathfinding_Neighbour(struct Node *o, struct Node *c, struct Node ne);
 /* -- Astar -- */
 i32 *Pathfinding_Astar(i32 *path, i32 *cost, size_t rowl, size_t coll,
                        struct Point start, struct Point end, b32 forward);
+
+i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *traversemap, tnecs_entity *occupymap,
+                            size_t row_len, size_t col_len, int move,
+                            struct Point start, struct Point end, b32 forward);
+
 i32 Pathfinding_Manhattan(struct Point start, struct Point end);
 
 /* -- Moveto -- */

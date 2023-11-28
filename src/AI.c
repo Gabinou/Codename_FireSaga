@@ -124,7 +124,9 @@ void _AI_Decider_Do_Move_To(struct Game *sota, tnecs_entity npc_ent, struct AI_A
 
     /* -- Compute traversemap for pathfinding -- */
     Map_Traversemap_Movement_Compute(sota->map, sota->world, npc_ent);
-    i32 *traversemap    = sota->map->traversemap;
+    i32 *traversemap        = sota->map->traversemap;
+    tnecs_entity *unitmap   = sota->map->unitmap;
+    int move                = Unit_computeMove(npc);
     SDL_assert(traversemap != NULL);
     SDL_assert((target.x >= 0) && (target.x < sota->map->col_len));
     SDL_assert((target.y >= 0) && (target.y < sota->map->row_len));
@@ -136,12 +138,15 @@ void _AI_Decider_Do_Move_To(struct Game *sota, tnecs_entity npc_ent, struct AI_A
 
     /* -- Pathfinding --  */
     int *path_list  = DARR_INIT(path_list, int, 16);
-    path_list       = Pathfinding_Astar(path_list, traversemap, row_len, col_len,
-                                        start, target, true);
+    // i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *traversemap, i32* occupymap,
+    //                         size_t row_len, size_t col_len, int move,
+    //                         struct Point start, struct Point end, b32 forward)
+    path_list       = Pathfinding_Astar_plus(path_list, traversemap, unitmap,
+                                             row_len, col_len, move,
+                                             start, target, true);
     int point_num   = DARR_NUM(path_list) / TWO_D;
 
     /* -- target_move is furthest point along path unit can move to -- */
-    int move        = Unit_computeMove(npc);
     SDL_assert(move > 0);
     int minimum     = (point_num - 1) < move ? (point_num - 1) : move;
     if (minimum > 1) {

@@ -281,7 +281,7 @@ float *Map_fTraversemap_Movement_Compute(struct Map *map, tnecs_world *world,
 
 i32 *Map_Traversemap_Movement_Compute(struct Map *map, tnecs_world *world,
                                       tnecs_entity unit_ent) {
-    SDL_assert(map->unitmap != NULL);
+    SDL_assert(map->unitmap     != NULL);
     SDL_assert(map->traversemap != NULL);
 
     /* - Skip if previously computed - */
@@ -300,7 +300,11 @@ i32 *Map_Traversemap_Movement_Compute(struct Map *map, tnecs_world *world,
     /* - Compute cost of each tile - */
     SDL_assert(unit_movetype > UNIT_MVT_START);
     for (size_t i = 0; i < (map->col_len * map->row_len); i++) {
-        #ifndef UNITS_IGNORE_TERRAIN
+        #ifdef UNITS_IGNORE_TERRAIN
+        /* - Everything flies - */
+        map->traversemap[i] = TRAVERSEMAP_MIN;
+
+        #else /* UNITS_IGNORE_TERRAIN */
         /* - Compute cost from tile - */
         tile_ind = map->tilemap[i] / TILE_DIVISOR;
         SDL_assert(tile_ind > 0);
@@ -321,8 +325,6 @@ i32 *Map_Traversemap_Movement_Compute(struct Map *map, tnecs_world *world,
         if (SotA_army2alignment(ontile_army) != SotA_army2alignment(army))
             map->traversemap[i] = TRAVERSEMAP_BLOCKED;
 
-        #else /* UNITS_DONOTIGNORE_TERRAIN */
-        map->traversemap[i] = TRAVERSEMAP_MIN;
         #endif /* UNITS_IGNORE_TERRAIN */
     }
     return (map->traversemap);
