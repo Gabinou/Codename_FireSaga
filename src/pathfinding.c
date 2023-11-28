@@ -212,18 +212,13 @@ i32 *Pathfinding_PathList_Backward(i32 *path, i32 *came_from, size_t col_len,
     return (path);
 }
 
-/* Astar pathfinding + occupyable tiles, moving n tiles accross a path*/
+/* Astar pathfinding + occupiable tiles, moving n tiles accross path to target */
 i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *traversemap, tnecs_entity *occupymap,
                             size_t row_len, size_t col_len, int move,
                             struct Point start, struct Point end, b32 forward) {
-    // What to do with occupymap and move num?
-    //   - If frontier tile cost is EQUAL to move AND NOT OCCUPYABLE,
-    //   - If frontier tile cost is GREATER THAN MOVE,
-    //      -> remove from frontier.
-
     /* Assumes square grid, path_list is a DARR */
     /* [1]: http://www.redblobgames.com/pathfinding/a-star/introduction.html */
-    /* Checks */
+    /* -- Checks -- */
     SDL_assert((start.x != end.x) || (start.y != end.y));
     SDL_assert(traversemap[start.y * col_len + start.x] >= MOVEMAP_MOVEABLEMIN);
     SDL_assert(traversemap[end.y   * col_len + end.x]   >= MOVEMAP_MOVEABLEMIN);
@@ -275,7 +270,8 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *traversemap, tnecs_entity *occu
                 continue;
 
             /* Skip neighbour if: tile is occupied */
-            if (occupymap[current_n] != TNECS_NULL)
+            // short-circuit on NULL occupymap  
+            if ((occupymap != NULL) && (occupymap[current_n] != TNECS_NULL))
                 continue;
 
             /* Skip neighbour if: already visited AND higher cost */
@@ -306,6 +302,7 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *traversemap, tnecs_entity *occu
     PathList_f forward_f    = &Pathfinding_PathList_Forward;
     PathList_f backward_f   = &Pathfinding_PathList_Backward;
     PathList_f pathlist_f   = forward ? forward_f : backward_f;
+
     /* Resetting path_list */
     DARR_NUM(path_list) = 0;
     if ((current.x == end.x) && (current.y == end.y))
@@ -324,96 +321,9 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *traversemap, tnecs_entity *occu
 
 i32 *Pathfinding_Astar(i32 *path_list, i32 *traversemap, size_t row_len, size_t col_len,
                        struct Point start, struct Point end, b32 forward) {
-    /* Assumes square grid, path_list is a DARR */
-    /* [1]: http://www.redblobgames.com/pathfinding/a-star/introduction.html */
-    /* Checks */
-    SDL_assert((start.x != end.x) || (start.y != end.y));
-    SDL_assert(traversemap[start.y * col_len + start.x] >= MOVEMAP_MOVEABLEMIN);
-    SDL_assert(traversemap[end.y   * col_len + end.x]   >= MOVEMAP_MOVEABLEMIN);
-
-    /* Alloc variables */
-    i32 *cost       = calloc(row_len * col_len, sizeof(*cost));
-    i32 *came_from  = calloc(row_len * col_len, sizeof(*came_from));
-    struct Nodeq current = {.x = start.x, .y = start.y, .cost = 0};
-    struct Nodeq neighbour;
-    struct Point closest = start; /* In case target is blocked*/
-
-    /* Frontier points queue, by priority. */
-    /* Lowest priority (movcost + distance) is top priority, at low index. */
-    struct Nodeq *frontier_queue = DARR_INIT(frontier_queue, struct Nodeq, row_len * col_len);
-    DARR_PUT(frontier_queue, current);
-
-    /* -- Run algorithm until no points in frontier -- */
-    while (DARR_NUM(frontier_queue) > 0) {
-        current = DARR_POP(frontier_queue);
-        /* - End loop when end point is reached - */
-        if ((current.x == end.x) && (current.y == end.y))
-            break;
-
-        /* -- Find closest tile to end in case we can't reach -- */
-        // Note: Use Manhnattan distance to find closest tile,
-        //       cause tiles close to end might be blocked
-        int current_dist = _Pathfinding_Manhattan(end.x, end.y, current.x, current.y);
-        int closest_dist = _Pathfinding_Manhattan(end.x, end.y, closest.x, closest.y);
-        if (current_dist < closest_dist) {
-            closest.x = current.x;
-            closest.y = current.y;
-        }
-
-        /* -- Visit all square neighbours -- */
-        for (size_t n = 0; n < SQUARE_NEIGHBOURS; n++) {
-            /* Get next neighbour movement cost */
-            neighbour.x = int_inbounds(q_cycle4_mzpz(n) + current.x, 0, col_len - 1);
-            neighbour.y = int_inbounds(q_cycle4_zmzp(n) + current.y, 0, row_len - 1);
-            int current_n = neighbour.y * col_len + neighbour.x;
-            neighbour.cost = current.cost + traversemap[current_n];
-
-            /* Compute conditions for adding neighbour to frontier */
-            /* Skip neighbour if: blocked */
-            if (traversemap[current_n] < MOVEMAP_MOVEABLEMIN)
-                continue;
-
-            /* Skip neighbour if:  already visited AND higher cost */
-            bool higher_cost  = (neighbour.cost >= cost[current_n]);
-            bool visited      = (cost[   current_n] > 0);
-            if (visited && higher_cost)
-                continue;
-
-            /* distance is heuristic for closeness to goal */
-            size_t distance = _Pathfinding_Manhattan(end.x, end.y, neighbour.x, neighbour.y);
-            cost[current_n] = neighbour.cost;
-
-            /* Djikstra algo only has cost in this step */
-            neighbour.priority = neighbour.cost + distance;
-
-            /* Find index to insert neighbour into priority queue. */
-            size_t index = DARR_NUM(frontier_queue);
-            while ((index > 0) && (neighbour.priority > frontier_queue[index - 1].priority))
-                index--;
-
-            DARR_INSERT(frontier_queue, neighbour, index);
-            struct Point move = {neighbour.x - current.x, neighbour.y - current.y};
-
-            /* Update came_from, to build better path */
-            came_from[current_n] = Ternary_Direction(move);
-        }
-    }
-    PathList_f forward_f    = &Pathfinding_PathList_Forward;
-    PathList_f backward_f   = &Pathfinding_PathList_Backward;
-    PathList_f pathlist_f   = forward ? forward_f : backward_f;
-    /* Resetting path_list */
-    DARR_NUM(path_list) = 0;
-    if ((current.x == end.x) && (current.y == end.y))
-        /* End reached, get path to it*/
-        path_list = pathlist_f(path_list, came_from, col_len, start, end);
-    else
-        /* End NOT reached, get path to closest tile */
-        path_list = pathlist_f(path_list, came_from, col_len, start, closest);
-
-    SDL_free(cost);
-    SDL_free(came_from);
-    DARR_FREE(frontier_queue);
-
+    path_list = Pathfinding_Astar_plus(path_list, traversemap, NULL,
+                                       row_len, col_len, INT_MAX,
+                                       start, end, forward);
     return (path_list);
 }
 
