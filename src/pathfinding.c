@@ -270,7 +270,7 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *traversemap, tnecs_entity *occu
                 continue;
 
             /* Skip neighbour if: tile is occupied */
-            // short-circuit on NULL occupymap  
+            // short-circuit on NULL occupymap
             if ((occupymap != NULL) && (occupymap[current_n] != TNECS_NULL))
                 continue;
 
