@@ -70,6 +70,7 @@ void fsm_cFrame_sGmpMap_ssMapUnitMv(struct Game *sota) {
     Game_CursorfollowsMouse_onMap(sota);  /* CONTROL */
     Game_Cursor_Moves_onMap(sota); /* CONTROL */
 }
+
 void fsm_cFrame_sGmpMap_ssMapCmbt(struct Game *sota) {
 
 }
