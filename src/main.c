@@ -122,14 +122,14 @@ int main(int argc, char *argv[]) {
 
         fsm_rFrame_s[sota->state](sota); /* RENDER */
         tnecs_world_step_wdata(sota->world, updateTime_ns, sota); /* CONTROL+RENDER */
-        fsm_cFrame_s[sota->state](sota); /* CONTROl */
+        fsm_cFrame_s[sota->state](sota); /* CONTROL */
         /* -- Events -- */
         Events_Manage(sota); /* CONTROL */
 
         /* -- Render to screen -- */
         #ifndef RENDER2WINDOW
         SDL_SetRenderTarget(sota->renderer, NULL); /* RENDER */
-        SDL_RenderCopy(sota->renderer,      sota->render_target, NULL, NULL);
+        SDL_RenderCopy(     sota->renderer, sota->render_target, NULL, NULL);
         SDL_SetRenderTarget(sota->renderer, sota->render_target);
         #endif
         SDL_RenderPresent(sota->renderer);
@@ -141,7 +141,8 @@ int main(int argc, char *argv[]) {
         time_ns        = (elapsedTime_ns + delay_ms * SOTA_ns / SOTA_ms);
 
         Game_Cursor_movedTime_Compute(sota, time_ns);
-        tnecs_custom_system_run(sota->world, Time_Synchronize, sota->timer_typeflag, time_ns, NULL);
+        tnecs_custom_system_run(sota->world, Time_Synchronize,
+                                sota->timer_typeflag, time_ns, NULL);
 
         /* -- Delay until next frame -- */
         Game_Delay(sota, delay_ms, currentTime_ns, elapsedTime_ns);

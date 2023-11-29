@@ -225,12 +225,12 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         position->onTilemap = true;
         Position_Bounds_Set(position, sota->map->boundsmin.x, sota->map->boundsmax.x,
                             sota->map->boundsmin.y, sota->map->boundsmax.y);
-        position->scale[0] = (float)sota->map->tilesize[0];
-        position->scale[1] = (float)sota->map->tilesize[0];
+        position->scale[0]      = (float)sota->map->tilesize[0];
+        position->scale[1]      = (float)sota->map->tilesize[0];
         position->tilemap_pos.x = sota->map->reinforcements[i].position.x;
         position->tilemap_pos.y = sota->map->reinforcements[i].position.y;
-        position->pixel_pos.x = (i32)lround(position->tilemap_pos.x * position->scale[0]);
-        position->pixel_pos.y = (i32)lround(position->tilemap_pos.y * position->scale[1]);
+        position->pixel_pos.x   = (i32)lround(position->tilemap_pos.x * position->scale[0]);
+        position->pixel_pos.y   = (i32)lround(position->tilemap_pos.y * position->scale[1]);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
 
         SDL_Log("-- loading sprite --");
@@ -252,6 +252,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
         Sprite_Tilesize_Set(sprite, sota->settings.tilesize);
         Sprite_Rects_Init(sprite);
+        Sprite_defaultShaders_Load(sprite);
 
         SDL_Log("-- put on map --");
         SDL_assert(sota->world->entity_typeflags[temp_unit_ent] == typeflag);

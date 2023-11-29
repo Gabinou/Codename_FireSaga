@@ -76,7 +76,6 @@ void fsm_cFrame_sGmpMap_ssMapCmbt(struct Game *sota) {
 
 /* --- AI CONTORL HAPPENS HERE --- */
 void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
-
     /* --- AI CONTROL --- */
 
     /* -- Reinforcements timer: pause before moving units -- */
@@ -103,13 +102,13 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     }
     SDL_assert(sota->ai_state.npcs != NULL);
 
-    SDL_LogDebug(SOTA_LOG_AI, "Frame");
     /* -- Decide next NPC to act -- */
     if (sota->ai_state.npc_i < 0) {
         entity debug = AI_Decide_Next(sota);
         SDL_LogDebug(SOTA_LOG_AI, "Next npc entity: %d", debug);
     }
     tnecs_entity npc_ent = sota->ai_state.npcs[sota->ai_state.npc_i];
+
     SDL_assert(npc_ent != TNECS_NULL);
     /* -- AI decides what to do with unit -- */
     // If not previously decided for npc_ent, decide
@@ -143,7 +142,6 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
         SDL_LogDebug(SOTA_LOG_AI, "AI_Act");
         AI_Act( sota, npc_ent, &sota->ai_state.action);
         // TODO: Act animation
-        sota->ai_state.act_anim = true;
     }
 
     /* Check if act_anim updated during frame */

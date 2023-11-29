@@ -232,7 +232,6 @@ void Sprite_defaultShaders_Load(struct Sprite *sprite) {
     Index_Shader_Load(sprite->shader_lighten, sprite->spritesheet->surface, &sprite->srcrect_shadow);
     SDL_assert(sprite->shader_lighten != NULL);
     sprite->shader_lighten->to = palette_table_NES_lighten;
-
 }
 
 void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit,

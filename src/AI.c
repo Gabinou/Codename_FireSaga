@@ -189,13 +189,6 @@ void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action 
 void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     struct Position *pos    = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
 
-    /* -- DEBUG: move specific unit -- */
-    /* TODO: Remove */
-    // if (npc_ent == 18) {
-    //     action->target_move.x = pos->tilemap_pos.x + 2;
-    //     action->target_move.y = pos->tilemap_pos.y + 2;
-    // }
-
     /* -- Skip movement if target is at current position -- */
     b32 same_x = (action->target_action.x == pos->tilemap_pos.x);
     b32 same_y = (action->target_action.y == pos->tilemap_pos.y);
@@ -240,7 +233,6 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
     struct Point new = action->target_move;
     Map_Unit_Move(sota->map, old.x, old.y, new.x, new.y);
 }
-
 
 AI_Doer AI_Act_action[AI_ACTION_NUM] = {
     /* ITEMS            */ NULL,
@@ -297,7 +289,7 @@ void AI_State_Init(struct AI_State *ai_state, tnecs_world *world, struct Map *ma
     if (ai_state->npcs == NULL)
         ai_state->npcs  = DARR_INIT(ai_state->npcs, entity, 16);
 
-    ai_state->init          = true;
+    ai_state->init = true;
 
     /* -- Find all units in current army -- */
     i8 army = map->army_onfield[map->army_i];
@@ -813,6 +805,7 @@ void Unit_Move_onMap_Animate(struct Game  *sota,  tnecs_entity entity,
         SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "Unit Animation Finished");
         TNECS_REMOVE_COMPONENTS(sota->world, entity, UnitMoveAnimation);
         TNECS_REMOVE_COMPONENTS(sota->world, entity, Timer);
+        sota->ai_state.act_anim = true;
         return;
     }
 }
