@@ -202,11 +202,12 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
     u8 army = * (u8 *) userevent->user.data1;
 
     if (army == ARMY_FRIENDLY) {
-        /* --- Control goes back to player --- */
+        /* --- Control goes to player --- */
         Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
         /* -- Turn only increments at the start of player turn -- */
         Map_Turn_Increment(sota->map);
     } else {
+        /* --- Control goes to AI --- */
         // TODO: Animate reinforcements
         Game_Map_Reinforcements_Load(sota);
 
@@ -305,7 +306,6 @@ void receive_event_Input_GLOBALRANGE(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Input_ACCEPT(struct Game *sota, SDL_Event *userevent) {
-
     SDL_assert(sota);
     i32 controller_type = * (i32 *) userevent->user.data1;
     tnecs_entity accepter_entity = Events_Controllers_Check(sota, controller_type);

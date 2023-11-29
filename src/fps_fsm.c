@@ -138,10 +138,11 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     act_anim    = sota->ai_state.act_anim;
 
     /* -- AI acts unit -- */
-    if (decided && move_anim) {
+    if (decided && move_anim && !act_anim) {
         SDL_LogDebug(SOTA_LOG_AI, "AI_Act");
-        AI_Act( sota, npc_ent, &sota->ai_state.action);
+        AI_Act(sota, npc_ent, &sota->ai_state.action);
         // TODO: Act animation
+        sota->ai_state.act_anim = true;
     }
 
     /* Check if act_anim updated during frame */

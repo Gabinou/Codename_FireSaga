@@ -34,7 +34,7 @@ extern bool army_isPC[ARMY_END];
 
 /* --- UnitMoveAnimation --- */
 typedef struct UnitMoveAnimation {
-    i64 time_ns;
+    u64 time_ns;
     struct Point target;
     tnecs_entity unit;
 } UnitMoveAnimation;

@@ -237,7 +237,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         struct Timer *timer;
         timer = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Timer);
         SDL_assert(timer != NULL);
-        * timer = Timer_default;
+        *timer = Timer_default;
 
         struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Sprite);
         SDL_assert(sprite != NULL);

@@ -265,16 +265,15 @@ AI_Doer AI_Act_action[AI_ACTION_NUM] = {
 
 void _AI_Doer_Wait(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     Game_Unit_Wait(sota, npc_ent);
-    TNECS_ADD_COMPONENT(sota->world, npc_ent, Timer);
-    struct Timer *timer = TNECS_GET_COMPONENT(sota->world, npc_ent, Timer);
-    SDL_assert(timer != NULL);
+    sota->reinf_timer   = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer);
+    struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->reinf_timer, Timer);
     *timer = Timer_default;
 
-    TNECS_ADD_COMPONENT(sota->world, npc_ent, UnitMoveAnimation);
-    struct UnitMoveAnimation *anim;
-    anim = TNECS_GET_COMPONENT(sota->world, npc_ent, UnitMoveAnimation);
-    SDL_assert(anim != NULL);
-    *anim = UnitMoveAnimation_default;
+    // TNECS_ADD_COMPONENT(sota->world, npc_ent, UnitMoveAnimation);
+    // struct UnitMoveAnimation *anim;
+    // anim = TNECS_GET_COMPONENT(sota->world, npc_ent, UnitMoveAnimation);
+    // SDL_assert(anim != NULL);
+    // *anim = UnitMoveAnimation_default;
 }
 
 void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
@@ -318,7 +317,7 @@ void AI_State_Pop(struct AI_State *ai_state, tnecs_world *world) {
 
 void AI_State_Turn_Start( struct AI_State *ai_state) {
     ai_state->turn_over     = false;
-    ai_state->init          = false;
+    // ai_state->init          = false;
     ai_state->decided       = false;
     ai_state->move_anim     = false;
     ai_state->act_anim      = false;
@@ -797,15 +796,12 @@ void AI_writeJSON(void *input,  cJSON *jai) {
     cJSON_AddItemToObject(jai, "target_move",       jtarget_move);
 }
 
-
 void Unit_Move_onMap_Animate(struct Game  *sota,  tnecs_entity entity,
                              struct Timer *timer, struct UnitMoveAnimation *anim) {
-    /* - Animation is complete, begin a turn - */
+    SDL_Log("%d %d", timer->time_ns / 1000000, anim->time_ns / 1000000);
     if (timer->time_ns >= anim->time_ns) {
         SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "Unit Animation Finished");
         TNECS_REMOVE_COMPONENTS(sota->world, entity, UnitMoveAnimation);
-        TNECS_REMOVE_COMPONENTS(sota->world, entity, Timer);
-        sota->ai_state.act_anim = true;
         return;
     }
 }

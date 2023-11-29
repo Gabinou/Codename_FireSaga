@@ -304,9 +304,9 @@ struct Settings {
 extern struct Settings Settings_default;
 
 typedef struct Timer {
-    i64 time_ns;
-    i64 frame_count;
-    bool reset;
+    u64 time_ns;
+    u64 frame_count;
+    bool reset; /* reset if above time. */
     bool paused;
 } Timer;
 extern struct Timer Timer_default;
