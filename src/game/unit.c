@@ -45,8 +45,8 @@ void Game_Unit_Wait(struct Game *sota, tnecs_entity ent) {
 
     /* stop animation */
     Sprite_Animation_Restart(sprite, MAP_UNIT_SPRITE_LOOP_IDLE);
-    if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, Timer));
-    TNECS_REMOVE_COMPONENTS(sota->world, ent, Timer);
+    if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, Timer))
+        TNECS_REMOVE_COMPONENTS(sota->world, ent, Timer);
     Sprite_Draw(sprite, sota->renderer);
 }
 

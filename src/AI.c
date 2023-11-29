@@ -138,9 +138,6 @@ void _AI_Decider_Do_Move_To(struct Game *sota, tnecs_entity npc_ent, struct AI_A
 
     /* -- Pathfinding --  */
     int *path_list  = DARR_INIT(path_list, int, 16);
-    // i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *traversemap, i32* occupymap,
-    //                         size_t row_len, size_t col_len, int move,
-    //                         struct Point start, struct Point end, b32 forward)
     path_list       = Pathfinding_Astar_plus(path_list, traversemap, unitmap,
                                              row_len, col_len, move,
                                              start, target, true);
@@ -213,6 +210,7 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
 
 void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     struct AI   *ai     = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
+    SDL_Log("AI_Move");
 
     /* -- Skip no movement -- */
     if (ai->move == AI_MOVE_NEVER)
@@ -226,7 +224,10 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
     if (null_x && null_y)
         return;
 
-    struct Position *pos = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
+    struct Position *pos    = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
+    struct Sprite   *sprite = TNECS_GET_COMPONENT(sota->world, npc_ent, Sprite);
+    SDL_assert(pos      != NULL);
+    SDL_assert(sprite   != NULL);
 
     // TODO: Movement Animation
     struct Point old = pos->tilemap_pos;
@@ -265,15 +266,6 @@ AI_Doer AI_Act_action[AI_ACTION_NUM] = {
 
 void _AI_Doer_Wait(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     Game_Unit_Wait(sota, npc_ent);
-    sota->reinf_timer   = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer);
-    struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->reinf_timer, Timer);
-    *timer = Timer_default;
-
-    // TNECS_ADD_COMPONENT(sota->world, npc_ent, UnitMoveAnimation);
-    // struct UnitMoveAnimation *anim;
-    // anim = TNECS_GET_COMPONENT(sota->world, npc_ent, UnitMoveAnimation);
-    // SDL_assert(anim != NULL);
-    // *anim = UnitMoveAnimation_default;
 }
 
 void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {

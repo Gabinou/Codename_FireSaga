@@ -85,8 +85,9 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
         struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->reinf_timer, Timer);
         SDL_assert(timer != NULL);
         u64 limit = sota->settings.enemy_turn_settings.pause_post_reinforcement;
-        if (timer->time_ns <= limit)
+        if (timer->time_ns <= limit) {
             return;
+        }
 
         tnecs_entity_destroy(sota->world, sota->reinf_timer);
         sota->reinf_timer = TNECS_NULL;
@@ -95,6 +96,13 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     /* -- Skip if turn is over -- */
     if (sota->ai_state.turn_over)
         return;
+
+    /* -- If no more NPCs, end NPC turn. -- */
+    if (sota->ai_state.npcs && (DARR_NUM(sota->ai_state.npcs) < 1)) {
+        SDL_Log("AI Turn Finished");
+        AI_State_Turn_Finish(&sota->ai_state);
+        Event_Emit(__func__, SDL_USEREVENT, event_Turn_End, NULL, NULL);
+    }
 
     /* -- Build list of npcs to control -- */
     if (sota->ai_state.init == false) {
@@ -111,6 +119,7 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     tnecs_entity npc_ent = sota->ai_state.npcs[sota->ai_state.npc_i];
 
     SDL_assert(npc_ent != TNECS_NULL);
+
     /* -- AI decides what to do with unit -- */
     // If not previously decided for npc_ent, decide
     b32 decided     = sota->ai_state.decided;
@@ -139,7 +148,7 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     act_anim    = sota->ai_state.act_anim;
 
     /* -- AI acts unit -- */
-    if (decided && move_anim && !act_anim) {
+    if (decided && move_anim && (!act_anim)) {
         SDL_LogDebug(SOTA_LOG_AI, "AI_Act");
         AI_Act(sota, npc_ent, &sota->ai_state.action);
         // TODO: Act animation
@@ -150,16 +159,15 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     act_anim    = sota->ai_state.act_anim;
 
     /* -- Pop unit from list in AI_State -- */
-    if (act_anim) {
+    if ((act_anim) && ((DARR_NUM(sota->ai_state.npcs) > 0))) {
         SDL_LogDebug(SOTA_LOG_AI, "AI_Pop");
         AI_State_Pop(&sota->ai_state, sota->world);
-    }
 
-    /* -- If no more NPCs, end NPC turn. -- */
-    if (DARR_NUM(sota->ai_state.npcs) < 1) {
-        SDL_Log("AI Turn Finished");
-        AI_State_Turn_Finish(&sota->ai_state);
-        Event_Emit(__func__, SDL_USEREVENT, event_Turn_End, NULL, NULL);
+        SDL_Log("Pause AFTER AI action");
+        /* Pause AFTER AI action */
+        sota->reinf_timer   = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer);
+        struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->reinf_timer, Timer);
+        *timer = Timer_default;
     }
 }
 
