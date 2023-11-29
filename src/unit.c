@@ -49,7 +49,7 @@ int  class_mvt_types[UNIT_CLASS_END] = {
 };
 
 struct UnitMoveAnimation UnitMoveAnimation_default = {
-    .time_ns         = SOTA_ns,
+    .time_ns         = SOTA_ns / 2ULL,
 };
 
 

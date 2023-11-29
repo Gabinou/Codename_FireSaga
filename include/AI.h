@@ -93,7 +93,7 @@ enum AI_RATINGS {
 /* -- AI_ACTIONS -- */
 /* What action can the AI take. Mostly same as player, so menu_options */
 enum AI_ACTIONS {
-    AI_ACTION_START = 0,
+    AI_ACTION_START = -1,
 #define REGISTER_ENUM(x, y) AI_ACTION_##x,
 #include "names/menu/options.h"
 #undef REGISTER_ENUM

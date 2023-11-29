@@ -160,7 +160,7 @@ void _AI_Decider_Do_Move_To(struct Game *sota, tnecs_entity npc_ent, struct AI_A
     if (AI_Decider_AfterMove[ai->priority_slave] != NULL) {
         AI_Decider_AfterMove[ai->priority_slave](sota, npc_ent, action);
     } else {
-        action->action  = AI_ACTION_WAIT;
+        action->action = AI_ACTION_WAIT;
     }
 }
 
