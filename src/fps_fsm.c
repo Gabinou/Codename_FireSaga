@@ -125,8 +125,9 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     b32 decided     = sota->ai_state.decided;
     if (!decided) {
         SDL_LogDebug(SOTA_LOG_AI, "AI_Decide");
-        AI_Decide_Action(sota, npc_ent, &sota->ai_state.action);
+        AI_Decide_Action_PreMove(sota, npc_ent, &sota->ai_state.action);
         AI_Decide_Move(  sota, npc_ent, &sota->ai_state.action);
+        AI_Decide_Action_AfterMove(sota, npc_ent, &sota->ai_state.action);
         sota->ai_state.decided = true;
     }
 

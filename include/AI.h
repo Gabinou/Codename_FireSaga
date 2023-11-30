@@ -133,7 +133,7 @@ enum AI_PRIORITIES {
 
     /* -- AI_PRIORITY_FLEE -- */
     /* Runs away from opposing army units. */
-    AI_PRIORITY_FLEE = 5, // Needs AfterMove decider
+    AI_PRIORITY_FLEE = 5,
 
     /* -- AI_PRIORITY_SKILL -- */
     /* Tries to use active skills. */
@@ -237,8 +237,11 @@ void AI_State_Turn_Finish(struct AI_State *ais);
 
 /* -- AI Deciders -- */
 entity AI_Decide_Next(struct Game *s);
-void AI_Decide_Action(struct Game *s, tnecs_entity e, struct AI_Action *a);
-void AI_Decide_Move(  struct Game *s, tnecs_entity e, struct AI_Action *a);
+
+void AI_Decide_Move(struct Game *s, tnecs_entity e, struct AI_Action *a);
+
+void AI_Decide_Action_PreMove(  struct Game *s, tnecs_entity e, struct AI_Action *a);
+void AI_Decide_Action_AfterMove(struct Game *s, tnecs_entity e, struct AI_Action *a);
 
 /* -- AI Doers -- */
 void AI_Move(struct Game *s, tnecs_entity e, struct AI_Action *a);

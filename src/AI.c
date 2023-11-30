@@ -54,6 +54,7 @@ AI_Decider AI_Decider_slave[AI_PRIORITY_NUM] = {
     /* AI_PRIORITY_MOVE_TO      */ NULL,
 };
 
+/* AfterMove is slave to AI_PRIORITY_MOVE_TO master priority */
 AI_Decider AI_Decider_AfterMove[AI_PRIORITY_NUM] = {
     /* AI_PRIORITY_KILL         */ &_AI_Decider_Kill_AfterMove,
     /* AI_PRIORITY_PATROL       */ NULL,
@@ -159,7 +160,7 @@ entity AI_Decide_Next(struct Game *sota) {
     return (ai_state->npcs[ai_state->npc_i]);
 }
 
-void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+void AI_Decide_Action_PreMove(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     /* --- PRELIMINARIES --- */
     *action = AI_Action_default;
     struct Unit *npc    = TNECS_GET_COMPONENT(sota->world, npc_ent, Unit);
@@ -226,13 +227,22 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
     }
 
     DARR_FREE(path_list);
+}
+
+void AI_Decide_Action_AfterMove(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+    struct AI *ai = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
+
+    /* If no action decided yet, wait */
+    if (action->action == AI_ACTION_START)
+        action->action = AI_ACTION_WAIT;
+
+    /* If priority is AI_PRIORITY_MOVE_TO, need to check for AfterMove action */
+    if (ai->priority_master != AI_PRIORITY_MOVE_TO)
+        return;
 
     /* AfterMove action according to slave priority */
-    if (AI_Decider_AfterMove[ai->priority_slave] != NULL) {
+    if (AI_Decider_AfterMove[ai->priority_slave] != NULL)
         AI_Decider_AfterMove[ai->priority_slave](sota, npc_ent, action);
-    } else {
-        action->action = AI_ACTION_WAIT;
-    }
 }
 
 /* --- Move unit to target_move --- */
