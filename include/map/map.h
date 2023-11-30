@@ -115,10 +115,11 @@ struct Map {
     i32 *healtolist;            /* 2D dynamic array */
     i32 *healfrommap;           /* 2D dynamic array */
     i32 *global_dangermap;      /* 2D dynamic array */
-    /* attacktomap: Tiles where unit can attack, 2D map  */
+    /* attacktomap: Tiles where unit can attack enemy, 2D map  */
     i32 *attacktomap;           /* 2D dynamic array */
-    /* attacktolist: List of tiles where unit can attack */
+    /* attacktolist: List of tiles where unit can attack enemy */
     i32 *attacktolist;          /* 2D dynamic array */
+    /* attackfrommap: Tiles where unit can attack enemy from*/
     i32 *attackfrommap;         /* 2D dynamic array */
     i32 *global_rangemap;       /* 2D dynamic array */
     float *ftraversemap;            /* 2D dynamic array */
