@@ -206,8 +206,8 @@ extern AI_Decider AI_Decider_master[AI_PRIORITY_NUM];
 extern AI_Decider AI_Decider_slave[AI_PRIORITY_NUM];
 static void _AI_Decider_Do_Kill(   struct Game *s, tnecs_entity e, struct AI_Action *a);
 static void _AI_Decider_Do_Kill(   struct Game *s, tnecs_entity e, struct AI_Action *a);
-static void _AI_Decider_Do_Nothing(struct Game *s, tnecs_entity e, struct AI_Action *a);
-static void _AI_Decider_Do_Move_To(struct Game *s, tnecs_entity e, struct AI_Action *a);
+static void _AI_Decider_Action_Nothing(struct Game *s, tnecs_entity e, struct AI_Action *a);
+static void _AI_Decider_Action_Move_To(struct Game *s, tnecs_entity e, struct AI_Action *a);
 
 /* Dedider Utilities after moving */
 extern AI_Decider AI_Decider_AfterMove[AI_PRIORITY_NUM];
