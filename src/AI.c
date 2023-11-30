@@ -32,7 +32,7 @@ struct AI_Action AI_Action_default =  {
 
 AI_Decider AI_Decider_master[AI_PRIORITY_NUM] = {
     /* AI_PRIORITY_KILL         */ NULL,
-    /* AI_PRIORITY_SEIZE        */ NULL,
+    /* AI_PRIORITY_PATROL       */ NULL,
     /* AI_PRIORITY_LOOT         */ NULL,
     /* AI_PRIORITY_STAFF        */ NULL,
     /* AI_PRIORITY_SURVIVE      */ NULL,
@@ -40,12 +40,11 @@ AI_Decider AI_Decider_master[AI_PRIORITY_NUM] = {
     /* AI_PRIORITY_SKILL        */ NULL,
     /* AI_PRIORITY_DO_NOTHING   */ &_AI_Decider_Action_Nothing,
     /* AI_PRIORITY_MOVE_TO      */ &_AI_Decider_Action_Move_To,
-    /* AI_PRIORITY_PATROL       */ NULL,
 };
 
 AI_Decider AI_Decider_slave[AI_PRIORITY_NUM] = {
     /* AI_PRIORITY_KILL         */ NULL,
-    /* AI_PRIORITY_SEIZE        */ NULL,
+    /* AI_PRIORITY_PATROL       */ NULL,
     /* AI_PRIORITY_LOOT         */ NULL,
     /* AI_PRIORITY_STAFF        */ NULL,
     /* AI_PRIORITY_SURVIVE      */ NULL,
@@ -53,12 +52,11 @@ AI_Decider AI_Decider_slave[AI_PRIORITY_NUM] = {
     /* AI_PRIORITY_SKILL        */ NULL,
     /* AI_PRIORITY_DO_NOTHING   */ NULL,
     /* AI_PRIORITY_MOVE_TO      */ NULL,
-    /* AI_PRIORITY_PATROL       */ NULL,
 };
 
 AI_Decider AI_Decider_AfterMove[AI_PRIORITY_NUM] = {
     /* AI_PRIORITY_KILL         */ &_AI_Decider_Kill_AfterMove,
-    /* AI_PRIORITY_SEIZE        */ NULL,
+    /* AI_PRIORITY_PATROL       */ NULL,
     /* AI_PRIORITY_LOOT         */ NULL,
     /* AI_PRIORITY_STAFF        */ &_AI_Decider_Staff_AfterMove,
     /* AI_PRIORITY_SURVIVE      */ NULL,
@@ -66,7 +64,6 @@ AI_Decider AI_Decider_AfterMove[AI_PRIORITY_NUM] = {
     /* AI_PRIORITY_SKILL        */ NULL,
     /* AI_PRIORITY_DO_NOTHING   */ NULL,
     /* AI_PRIORITY_MOVE_TO      */ NULL,
-    /* AI_PRIORITY_PATROL       */ NULL,
 };
 
 AI_Doer AI_Act_action[AI_ACTION_NUM] = {
@@ -164,7 +161,6 @@ entity AI_Decide_Next(struct Game *sota) {
 
 void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     /* --- PRELIMINARIES --- */
-
     *action = AI_Action_default;
     struct Unit *npc    = TNECS_GET_COMPONENT(sota->world, npc_ent, Unit);
     struct AI   *ai     = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);

@@ -112,10 +112,10 @@ enum AI_PRIORITIES {
     // so they will naturally clear path to units
     AI_PRIORITY_KILL = 0,
 
-    /* -- AI_PRIORITY_SEIZE -- */
-    /* Runs to objective. May attack on the wayé */
-    //  - PARAMETER: Tile to seize
-    AI_PRIORITY_SEIZE = 1,
+    /* -- AI_PRIORITY_PATROL -- */
+    //  - Move between two tiles
+    //  - PARAMETER: Target tiles
+    AI_PRIORITY_PATROL = 1,
 
     /* -- AI_PRIORITY_LOOT -- */
     /* Goes for chests. */
@@ -132,8 +132,8 @@ enum AI_PRIORITIES {
     AI_PRIORITY_SURVIVE = 4,
 
     /* -- AI_PRIORITY_FLEE -- */
-    /* Runs away from s. */
-    AI_PRIORITY_FLEE = 5,
+    /* Runs away from opposing army units. */
+    AI_PRIORITY_FLEE = 5, // Needs AfterMove decider
 
     /* -- AI_PRIORITY_SKILL -- */
     /* Tries to use active skills. */
@@ -147,12 +147,8 @@ enum AI_PRIORITIES {
 
     /* -- AI_PRIORITY_MOVE_TO -- */
     //  - PARAMETER: Target unit, target tile
-    AI_PRIORITY_MOVE_TO = 8,
-
-    /* -- AI_PRIORITY_PATROL -- */
-    //  - Move between two tiles
-    //  - PARAMETER: Target unit, target tiles
-    AI_PRIORITY_PATROL = 9,
+    //  - PARAMETER: Action to take
+    AI_PRIORITY_MOVE_TO = 8, // Needs AfterMove decider
 
     AI_PRIORITY_NUM,
 };
@@ -234,7 +230,10 @@ void AI_State_Turn_Start( struct AI_State *ais);
 void AI_State_Turn_Finish(struct AI_State *ais);
 
 /* --- AI Unit control --- */
-/* Call order: AI_Decide_Action -> AI_Decide_Move -> AI_Move -> AI_Act */
+/* Call order:
+*       AI_Decide_PreMove_Action -> AI_Decide_Move -> AI_Decide_PreAfterMove_Action ->
+*       AI_Move -> AI_Act
+*/
 
 /* -- AI Deciders -- */
 entity AI_Decide_Next(struct Game *s);
