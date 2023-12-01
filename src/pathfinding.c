@@ -15,17 +15,18 @@ i32 _Pathfinding_Manhattan(i32 x_0, i32 y_0, i32 x_1, i32 y_1) {
 }
 
 /* --- Taxicab Geometry --- */
-i32 *Taxicab_Circle_List(i32 *darr_list, i32 *matrix, i32 x, i32 y,
+i32 *Taxicab_Circle_List(i32 *darr_list, i32 *matrix, i32 value, i32 x, i32 y,
                          size_t row_len, size_t col_len, struct Range *range) {
     // Taxicabs can't move diagonal so manhattan distance: abs(x1-x2) + abs(y1-ys2)
     // Manhattan (distance) used to trace 'circles' on square tilemap
     // Returns: List points at distance [range_min, range_max] dist from [x, y]
-    matrix    = Taxicab_Circle(matrix, x, y, row_len, col_len, range);
+    Taxicab_Circle(matrix, value, x, y, row_len, col_len, range);
     darr_list = matrix2list_noM(matrix, darr_list, row_len, col_len);
     return (darr_list);
 }
 
-i32 *Taxicab_Circle(i32 *matrix, i32 x, i32 y, size_t row_len, size_t col_len,
+/* Draw values in taxicab circle between min and max range, centered on [x, y] */
+void Taxicab_Circle(i32 *matrix, i32 value, i32 x, i32 y, size_t row_len, size_t col_len,
                     struct Range *range) {
     i32 subrangey_min, subrangey_max;
     for (i32 rangex = 0; rangex <= range->max; rangex++) {
@@ -35,11 +36,10 @@ i32 *Taxicab_Circle(i32 *matrix, i32 x, i32 y, size_t row_len, size_t col_len,
             for (i32 n = 0; n < SQUARE_NEIGHBOURS; n++) {
                 i32 tempx = int_inbounds(x + q_cycle4_pmmp(n) * rangex, 0, col_len - 1);
                 i32 tempy = int_inbounds(y + q_cycle4_ppmm(n) * rangey, 0, row_len - 1);
-                matrix[tempx * col_len + tempy] = 1;
+                matrix[tempx * col_len + tempy] = value;
             }
         }
     }
-    return (matrix);
 }
 
 /* --- Pushing and pulling --- */
@@ -421,6 +421,24 @@ void Pathfinding_Neighbour(struct Node *open, struct Node *closed, struct Node n
 
 }
 
+/* -- Attackfrom -- */
+void Pathfinding_Attackfrom_noM(i32 *attackmap, i32 *movemap,
+                                size_t row_len, size_t col_len,
+                                struct Point target, u8 range[2]) {
+    /* -- Wipe attackmap -- */
+    for (i32 i = 0; i < row_len * col_len; i++)
+        attackmap[i] = ATTACKMAP_BLOCKED;
+
+    /* -- Trace range around target position -- */
+    struct Range Srange = {range[0], range[1]};
+    Taxicab_Circle(attackmap, 1, target.x, target.y,
+                   row_len, col_len, &Srange);
+
+    /* -- Remove non-traversable tiles -- */
+    for (size_t i = 0; i < col_len * row_len; i++)
+        attackmap[i] *= movemap[i];
+}
+
 /* -- Attackto -- */
 void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
                               size_t row_len, size_t col_len,
@@ -442,7 +460,6 @@ void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
                                         col_len, range, mode_movetile);
     }
     DARR_FREE(move_list);
-
 }
 
 i32 *Pathfinding_Attackto(i32 *move_matrix, size_t row_len, size_t col_len,

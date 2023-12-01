@@ -75,8 +75,8 @@ i32  Pathfinding_Manhattan(struct Point start, struct Point end);
  * Returns: Find points at distance [range_min, range_max] dist from [x, y]
  * Returns: Find points at distance [range_min, range_max] dist from [x, y]
  */
-i32 *Taxicab_Circle(             i32 *m, i32 x, i32 y, size_t r, size_t c, struct Range *R);
-i32 *Taxicab_Circle_List(i32 *d, i32 *m, i32 x, i32 y, size_t r, size_t c, struct Range *R);
+void Taxicab_Circle(             i32 *m, i32 v, i32 x, i32 y, size_t r, size_t c, struct Range *R);
+i32 *Taxicab_Circle_List(i32 *d, i32 *m, i32 v, i32 x, i32 y, size_t r, size_t c, struct Range *R);
 
 /* --- Pathfinding --- */
 void Pathfinding_Neighbour(struct Node *o, struct Node *c, struct Node ne);
@@ -126,11 +126,9 @@ void Pathfinding_Attackto_Neighbours(i32 x, i32 y, i32 *attackmap, i32 *movemat,
                                      u8 range[2], i32 mode_movetile);
 
 /* -- Attackfrom -- */
-// NOMENCLATURE: attackfrom alternatives
-// -
 i32 *Pathfinding_Attackfrom(i32 *movemap, size_t row_len, size_t col_len,
                             struct Point target, u8 range[2], int mode_output);
-i32 *Pathfinding_Attackfrom_noM(i32 *attackfrom, i32 *movemap,
+void Pathfinding_Attackfrom_noM(i32 *attackfrom, i32 *movemap,
                                 size_t row_len, size_t col_len,
                                 struct Point target, u8 range[2]);
 

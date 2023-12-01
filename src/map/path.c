@@ -201,11 +201,19 @@ i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_world *world, tnecs_entity
                                tnecs_entity dft, bool move, bool equipped) {
     Map_Costmap_Movement_Compute(map, world, agg);
     struct Unit *agg_unit = TNECS_GET_COMPONENT(world, agg, Unit);
-    // Get dft position
-    // Get agg range
-    // Trace range around dft position
-    // Remove non-traversable tiles tiles
+    /* Get dft position */
+    struct Position *dft_pos = TNECS_GET_COMPONENT(world, dft, Position);
+    /* Get agg range */
+    struct Range range = {.min = UINT8_MAX, .max = 0};
+    _Unit_Range_Combine(agg_unit, &range, equipped, ITEM_ARCHETYPE_WEAPON);
+
+    /* Compute movemap */
     i32 move_stat = move ? Unit_getStats(agg_unit).move : 0;
+    _Map_Movemap_Compute(map, dft_pos->tilemap_pos, move);
+
+    Pathfinding_Attackfrom_noM(map->attacktomap, map->movemap, map->row_len,
+                               map->col_len, dft_pos->tilemap_pos, (u8 *)&range);
+
     return (map->attackfrommap);
 }
 
