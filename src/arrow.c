@@ -2,7 +2,7 @@
 #include "arrow.h"
 
 struct Arrow Arrow_default = {
-    .traversemap        = NULL,
+    .costmap        = NULL,
     .col_len        = 21,
     .row_len        = 25,
     .move           =  0,
@@ -48,11 +48,11 @@ void Arrow_Textures_Load(struct Arrow *arrow,  char *filename, SDL_Renderer *ren
 }
 
 /* --- Internals --- */
-void Arrow_Path_Init(struct Arrow *arrow, i32 *traversemap, i32 move,
+void Arrow_Path_Init(struct Arrow *arrow, i32 *costmap, i32 move,
                      struct Point start) {
-    SDL_assert(traversemap != NULL);
+    SDL_assert(costmap != NULL);
     arrow->move                 = move;
-    arrow->traversemap              = traversemap;
+    arrow->costmap              = costmap;
     DARR_NUM(arrow->pathlist)   = 0;
     DARR_PUT(arrow->pathlist, start.x);
     DARR_PUT(arrow->pathlist, start.y);
@@ -63,7 +63,7 @@ void Arrow_Path_Init(struct Arrow *arrow, i32 *traversemap, i32 move,
 void Arrow_Path_Add(struct Arrow *arrow, i32 x_next, i32 y_next) {
     /* -- Preliminaries -- */
     SDL_assert(arrow->textures != NULL);
-    SDL_assert(arrow->traversemap != NULL);
+    SDL_assert(arrow->costmap != NULL);
     size_t num_current      = DARR_NUM(arrow->pathlist) / TWO_D;
     size_t point_current    = num_current - 1;
     size_t index            = (point_current  - 1) * TWO_D;
@@ -108,7 +108,7 @@ void Arrow_Path_Add(struct Arrow *arrow, i32 x_next, i32 y_next) {
 /* - Retracing path using A* (A_star) algorithm - */
 void _Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in) {
     SDL_assert(arrow->textures      != NULL);
-    SDL_assert(arrow->traversemap   != NULL);
+    SDL_assert(arrow->costmap   != NULL);
     struct Point end   = {end_in.x, end_in.y};
     struct Point start = {arrow->pathlist[0], arrow->pathlist[1]};
 
@@ -116,7 +116,7 @@ void _Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in) {
     if ((start.x != end.x) || (start.y != end.y)) {
         /* A* implemented here. Goes backwards for some reason. */
         /* IMPORTANT NOTE: Switching start and end CRASHES MY COMPUTER. */
-        arrow->pathlist = Pathfinding_Astar(arrow->pathlist, arrow->traversemap, arrow->row_len,
+        arrow->pathlist = Pathfinding_Astar(arrow->pathlist, arrow->costmap, arrow->row_len,
                                             arrow->col_len, end, start, false);
         /* Flipping path. */
         i32 pointnum    = DARR_NUM(arrow->pathlist) / TWO_D;

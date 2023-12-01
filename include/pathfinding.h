@@ -23,11 +23,11 @@ enum PATHFINDING_MODE_MOVETILE {
 /* --- About blocking --- */
 // 1. Everything BLOCKED    is == 0
 // 2. Everything DOABLE     is  > 0 ex: move to, visible, attack to
-//     - A traversemap for movement can ALSO be used as a blockmap for vision
+//     - A costmap for movement can ALSO be used as a blockmap for vision
 //          -> Only if units cannot block vision.
-enum PATHFINDING_TRAVERSEMAP {
-    TRAVERSEMAP_BLOCKED     = 0,
-    TRAVERSEMAP_MIN         = 1,
+enum PATHFINDING_costmap {
+    costmap_BLOCKED     = 0,
+    costmap_MIN         = 1,
 };
 
 // NOTE: unitmap is occupymap
@@ -35,7 +35,7 @@ enum PATHFINDING_OCCUPYMAP {
     OCCUPYMAP_UNBLOCKED   = TNECS_NULL,
 };
 
-#define TRAVERSEMAP_fBLOCKED 0.0f
+#define costmap_fBLOCKED 0.0f
 
 enum PATHFINDING_ATTACKMAP {
     ATTACKMAP_BLOCKED       = 0,
@@ -85,7 +85,7 @@ void Pathfinding_Neighbour(struct Node *o, struct Node *c, struct Node ne);
 i32 *Pathfinding_Astar(i32 *path, i32 *cost, size_t rowl, size_t coll,
                        struct Point start, struct Point end, b32 forward);
 
-i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *traversemap, tnecs_entity *occupymap,
+i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupymap,
                             size_t row_len, size_t col_len, int move,
                             struct Point start, struct Point end, b32 forward);
 
@@ -96,7 +96,7 @@ i32 Pathfinding_Manhattan(struct Point start, struct Point end);
 // - traversable, accessible, travelable (long...)
 // - crossable  (Maybe)
 // - passable (used more to mean "Okay")
-i32 *Pathfinding_Moveto(i32 *traversemap, size_t row_len, size_t col_len,
+i32 *Pathfinding_Moveto(i32 *costmap, size_t row_len, size_t col_len,
                         struct Point start, i32 move);
 void Pathfinding_Moveto_noM(i32 *move_matrix, i32 *cost_matrix,
                             size_t row_len, size_t col_len,
@@ -149,14 +149,14 @@ i32 *Pathfinding_Pullto(i32 *movemap, size_t row_len, size_t col_len,
                         struct Point target, int mode_output);
 
 /* -- Unit Gradient -- */
-i32 *Pathfinding_unitGradient(i32 *traversemap, size_t row_len, size_t col_len,
+i32 *Pathfinding_unitGradient(i32 *costmap, size_t row_len, size_t col_len,
                               struct Point  *targets, size_t unit_num);
-void Pathfinding_unitGradient_noM(i32 *gradmap, i32 *traversemap,
+void Pathfinding_unitGradient_noM(i32 *gradmap, i32 *costmap,
                                   size_t row_len, size_t col_len,
                                   struct Point *targets, size_t unit_num);
 
 /* -- Hex -- */
-i32 *Pathfinding_Moveto_Hex(i32 *traversemap, size_t row_len, size_t depth_len,
+i32 *Pathfinding_Moveto_Hex(i32 *costmap, size_t row_len, size_t depth_len,
                             struct Pointf start, i32 move, int mode_output);
 i32 *Pathfinding_Visible_Hex(i32 *blockmap, size_t depth_len, size_t col_len,
                              struct Pointf start, i32 sight, int mode);

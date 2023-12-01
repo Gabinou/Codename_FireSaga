@@ -39,7 +39,7 @@ typedef tnecs_entity entity;
 //  - AI Command: two parts
 //      - AI Move
 //          - Only moves unit.
-//          - Needs: traversemap, target pos, self pos
+//          - Needs: costmap, target pos, self pos
 //      - AI Act
 //          - Decides what action to take.
 //              - If ultimate target is not in range, go for attack on the way...

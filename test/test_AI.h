@@ -50,7 +50,7 @@ void test_AI() {
     // ecs_add(world_test_ai, enemy_ent_2, Position);
     // ecs_add(world_test_ai, enemy_ent_3, Position);
 
-    // i32 temp_traversemapp[TEST_AI_ROW_LEN * TEST_AI_COL_LEN] = {
+    // i32 temp_costmapp[TEST_AI_ROW_LEN * TEST_AI_COL_LEN] = {
     //     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     //     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     //     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,

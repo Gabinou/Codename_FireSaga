@@ -145,7 +145,7 @@ i32 *Pathfinding_PushPullto(struct SquareNeighbours direction_block,
     return (pushpulltomap);
 }
 
-struct SquareNeighbours pathfinding_Direction_Block(i32 *traversemap_pushpull, size_t row_len,
+struct SquareNeighbours pathfinding_Direction_Block(i32 *costmap_pushpull, size_t row_len,
                                                     size_t col_len, struct Point start) {
     struct SquareNeighbours  distance_block = {0, 0, 0, 0};
     i32 *distance_ptr = (i32 *)&distance_block;
@@ -157,7 +157,7 @@ struct SquareNeighbours pathfinding_Direction_Block(i32 *traversemap_pushpull, s
         for (i32  i = 0; i < NMATH_SQUARE_NEIGHBOURS; i++) {
             neighbour.x = int_inbounds((start.x + q_cycle4_pzmz(i) * distance), 0, col_len - 1);
             neighbour.y = int_inbounds((start.y + q_cycle4_zpzm(i) * distance), 0, row_len - 1);
-            if ((traversemap_pushpull[neighbour.y * col_len + neighbour.x] == 0)
+            if ((costmap_pushpull[neighbour.y * col_len + neighbour.x] == 0)
                 && (*(distance_ptr + i) == 0)) {
                 *(distance_ptr + i) = distance;
             }
@@ -213,15 +213,15 @@ i32 *Pathfinding_PathList_Backward(i32 *path, i32 *came_from, size_t col_len,
 }
 
 /* Astar pathfinding + occupiable tiles, moving n tiles accross path to target */
-i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *traversemap, tnecs_entity *occupymap,
+i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupymap,
                             size_t row_len, size_t col_len, int move,
                             struct Point start, struct Point end, b32 forward) {
     /* Assumes square grid, path_list is a DARR */
     /* [1]: http://www.redblobgames.com/pathfinding/a-star/introduction.html */
     /* -- Checks -- */
     SDL_assert((start.x != end.x) || (start.y != end.y));
-    SDL_assert(traversemap[start.y * col_len + start.x] >= MOVEMAP_MOVEABLEMIN);
-    SDL_assert(traversemap[end.y   * col_len + end.x]   >= MOVEMAP_MOVEABLEMIN);
+    SDL_assert(costmap[start.y * col_len + start.x] >= MOVEMAP_MOVEABLEMIN);
+    SDL_assert(costmap[end.y   * col_len + end.x]   >= MOVEMAP_MOVEABLEMIN);
 
     /* Alloc variables */
     i32 *cost       = calloc(row_len * col_len, sizeof(*cost));
@@ -258,11 +258,11 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *traversemap, tnecs_entity *occu
             neighbour.x     = int_inbounds(q_cycle4_mzpz(n) + current.x, 0, col_len - 1);
             neighbour.y     = int_inbounds(q_cycle4_zmzp(n) + current.y, 0, row_len - 1);
             int current_n   = neighbour.y * col_len + neighbour.x;
-            neighbour.cost  = current.cost + traversemap[current_n];
+            neighbour.cost  = current.cost + costmap[current_n];
 
             /* Compute conditions for adding neighbour to frontier */
             /* Skip neighbour if: blocked */
-            if (traversemap[current_n] < MOVEMAP_MOVEABLEMIN)
+            if (costmap[current_n] < MOVEMAP_MOVEABLEMIN)
                 continue;
 
             /* Skip neighbour if: cost greater than move */
@@ -319,9 +319,9 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *traversemap, tnecs_entity *occu
     return (path_list);
 }
 
-i32 *Pathfinding_Astar(i32 *path_list, i32 *traversemap, size_t row_len, size_t col_len,
+i32 *Pathfinding_Astar(i32 *path_list, i32 *costmap, size_t row_len, size_t col_len,
                        struct Point start, struct Point end, b32 forward) {
-    path_list = Pathfinding_Astar_plus(path_list, traversemap, NULL,
+    path_list = Pathfinding_Astar_plus(path_list, costmap, NULL,
                                        row_len, col_len, INT_MAX,
                                        start, end, forward);
     return (path_list);
@@ -487,12 +487,12 @@ void Pathfinding_Attackto_Neighbours(i32 x, i32 y, i32 *attackmap, i32 *move_mat
 }
 
 /* -- Unit Gradient -- */
-void Pathfinding_unitGradient_noM(i32 *gradmap, i32 *traversemap,
+void Pathfinding_unitGradient_noM(i32 *gradmap, i32 *costmap,
                                   size_t row_len, size_t col_len,
                                   struct Point *targets, size_t unit_num) {
     /* -- Wipe gradmap -- */
     for (i32 i = 0; i < col_len * row_len; i++) {
-        if (traversemap[i] < NMATH_PUSHPULLMAP_BLOCKED)
+        if (costmap[i] < NMATH_PUSHPULLMAP_BLOCKED)
             gradmap[i] = NMATH_GRADIENTMAP_BLOCKED;
         else
             gradmap[i] = row_len + col_len;
@@ -527,7 +527,7 @@ void Pathfinding_unitGradient_noM(i32 *gradmap, i32 *traversemap,
             int current_n = neighbour.y * col_len + neighbour.x;
 
             /* Skip neighbour if: blocked */
-            if (traversemap[current_n] < TRAVERSEMAP_MIN)
+            if (costmap[current_n] < costmap_MIN)
                 continue;
 
             /* Skip neighbour if:  already visited AND higher cost */
@@ -543,10 +543,10 @@ void Pathfinding_unitGradient_noM(i32 *gradmap, i32 *traversemap,
 
 }
 
-i32 *Pathfinding_unitGradient(i32 *traversemap, size_t row_len, size_t col_len,
+i32 *Pathfinding_unitGradient(i32 *costmap, size_t row_len, size_t col_len,
                               struct Point *targets, size_t unit_num) {
     i32 *gradmap = calloc(row_len * col_len, sizeof(i32));
-    Pathfinding_unitGradient_noM(gradmap, traversemap, row_len, col_len, targets, unit_num);
+    Pathfinding_unitGradient_noM(gradmap, costmap, row_len, col_len, targets, unit_num);
 
     return (gradmap);
 }

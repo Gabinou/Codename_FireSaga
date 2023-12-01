@@ -27,27 +27,29 @@ void Map_Global_Danger_Reset(     struct Map *map);
 void Map_Global_Dangermap_Reset(  struct Map *map);
 void Map_Global_Dangermap_Compute(struct Map *map);
 
-/* --- Traversemap --- */
-i32   *Map_Traversemap_Movement_Compute( struct Map *map, tnecs_world *w, tnecs_entity u);
-i32   *Map_Traversemap_PushPull_Compute( struct Map *map, tnecs_world *w, tnecs_entity u);
-float *Map_fTraversemap_Movement_Compute(struct Map *map, tnecs_world *w, tnecs_entity u);
-
+/* --- costmap --- */
+i32   *Map_Costmap_Movement_Compute( struct Map *map, tnecs_world *w, tnecs_entity u);
+i32   *Map_Costmap_PushPull_Compute( struct Map *map, tnecs_world *w, tnecs_entity u);
+float *Map_fCostmap_Movement_Compute(struct Map *map, tnecs_world *w, tnecs_entity u);
 
 /* --- Movemap --- */
-// Map_Movemap_Compute also computes REQUIRED traversemap
+// Map_Movemap_Compute also computes REQUIRED costmap
 i32   *Map_Movemap_Compute( struct Map *map, tnecs_world *w, tnecs_entity u);
 i32   *_Map_Movemap_Compute(struct Map *map, struct Point   s, i32 mv);
 float *Map_fMovemap_Compute(struct Map *map, tnecs_world *w, tnecs_entity u);
 
 /* --- Attackmap --- */
-/* Map_Attacktomap_Compute also computes REQUIRED traversemap, movemap */
-i32 *Map_Healtolist_Compute(  struct Map *map);
-i32 *Map_Attacktolist_Compute(struct Map *map)
-;
-i32 *Map_Healtomap_Compute(  struct Map *map, tnecs_world *w,
-                             tnecs_entity u, bool m, bool e);
-i32 *Map_Attacktomap_Compute(struct Map *map, tnecs_world *w,
-                             tnecs_entity u, bool m, bool e);
+/* Map_Attacktomap_Compute also computes REQUIRED costmap, movemap */
+i32 *Map_Healtolist_Compute(    struct Map *map);
+i32 *Map_Attacktolist_Compute(  struct Map *map);
+i32 *Map_Attackfromlist_Compute(struct Map *map);
+
+i32 *Map_Healtomap_Compute(    struct Map *map, tnecs_world *w,
+                               tnecs_entity u, bool m, bool e);
+i32 *Map_Attacktomap_Compute(  struct Map *map, tnecs_world *w,
+                               tnecs_entity u, bool m, bool e);
+i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_world *w, tnecs_entity a,
+                               tnecs_entity d, bool m, bool e);
 
 i32 *Map_Healtomap_Compute_wLoadout(  struct Map *map, tnecs_world *w,
                                       tnecs_entity u, bool m, int lh, int rh);

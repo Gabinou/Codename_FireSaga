@@ -132,9 +132,9 @@ void _AI_Decider_Action_Kill(struct Game *sota, tnecs_entity npc_ent, struct AI_
     tnecs_entity defendant = defendants[0];
 
     /* - TODO: Decide which loadout to attack with - */
-    
+
     /* - Set target_move to unoccupied tile in range (attackfrom) - */
-    Map_Attackfrommap_Compute(sota->map, sota->world, npc_ent, true, true); 
+    // Map_Attackfrommap_Compute(sota->map, sota->world, npc_ent, true, true);
     i32 *attackfromlist = Map_Attackfromlist_Compute(sota->map);
     // TODO: find good tile to attack from
     action->target_move.x = attackfromlist[0];
@@ -144,7 +144,7 @@ void _AI_Decider_Action_Kill(struct Game *sota, tnecs_entity npc_ent, struct AI_
     struct Position *pos = TNECS_GET_COMPONENT(sota->world, defendant, Position);
     SDL_assert(pos);
     action->target_action = pos->tilemap_pos;
-    
+
     action->action = AI_ACTION_ATTACK;
     DARR_FREE(defendants);
 }
@@ -245,12 +245,12 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
     struct AI       *ai  = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
     SDL_assert(ai  != NULL);
 
-    /* -- Compute traversemap for pathfinding -- */
-    Map_Traversemap_Movement_Compute(sota->map, sota->world, npc_ent);
-    i32 *traversemap        = sota->map->traversemap;
+    /* -- Compute costmap for pathfinding -- */
+    Map_Costmap_Movement_Compute(sota->map, sota->world, npc_ent);
+    i32 *costmap        = sota->map->costmap;
     tnecs_entity *unitmap   = sota->map->unitmap;
     int move                = Unit_computeMove(npc);
-    SDL_assert(traversemap != NULL);
+    SDL_assert(costmap != NULL);
     SDL_assert((target.x >= 0) && (target.x < sota->map->col_len));
     SDL_assert((target.y >= 0) && (target.y < sota->map->row_len));
     SDL_assert((start.x  >= 0) && (start.x  < sota->map->col_len));
@@ -261,7 +261,7 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
 
     /* -- Pathfinding --  */
     int *path_list  = DARR_INIT(path_list, int, 16);
-    path_list       = Pathfinding_Astar_plus(path_list, traversemap, unitmap,
+    path_list       = Pathfinding_Astar_plus(path_list, costmap, unitmap,
                                              row_len, col_len, move,
                                              start, target, true);
     int point_num   = DARR_NUM(path_list) / TWO_D;

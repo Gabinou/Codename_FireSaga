@@ -40,7 +40,7 @@ enum ARROW_17PATCHES {
 };
 
 typedef struct Arrow {
-    i32 *traversemap;
+    i32 *costmap;
     i32 *movemap;
     i32 move;
     i32 col_len;

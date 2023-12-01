@@ -80,13 +80,13 @@ void Map_Stacked_Global_Dangermap_Reset(struct Map *map) {
 }
 
 float *_Map_fMovemap_Compute(struct Map *map, struct Pointf start, float move) {
-    // map->fmovemap = pathfinding_Map_Moveto_noM_float(map->fmovemap, map->ftraversemap,
+    // map->fmovemap = pathfinding_Map_Moveto_noM_float(map->fmovemap, map->fcostmap,
     // map->row_len, map->col_len, start, move);
     return (map->fmovemap);
 }
 
 float *Map_fMovemap_Compute(struct Map *map, tnecs_world *world, tnecs_entity unit_ent) {
-    Map_fTraversemap_Movement_Compute(map, world, unit_ent);
+    Map_fCostmap_Movement_Compute(map, world, unit_ent);
     struct Unit *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     struct Position *pos = TNECS_GET_COMPONENT(world, unit_ent, Position);
     i32 move = Unit_getStats(unit).move;
@@ -98,7 +98,7 @@ float *Map_fMovemap_Compute(struct Map *map, tnecs_world *world, tnecs_entity un
 
 i32 *_Map_Movemap_Compute(struct Map *map, struct Point start_in, i32 move) {
     struct Point start = {start_in.x, start_in.y};
-    Pathfinding_Moveto_noM(map->movemap, map->traversemap,
+    Pathfinding_Moveto_noM(map->movemap, map->costmap,
                            map->row_len, map->col_len, start, move);
     // matrix_print(map->movemap, map->row_len, map->col_len);
 
@@ -106,7 +106,7 @@ i32 *_Map_Movemap_Compute(struct Map *map, struct Point start_in, i32 move) {
 }
 
 i32 *Map_Movemap_Compute(struct Map *map, tnecs_world *world, tnecs_entity unit_ent) {
-    Map_Traversemap_Movement_Compute(map, world, unit_ent);
+    Map_Costmap_Movement_Compute(map, world, unit_ent);
     struct Unit     *unit   = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     struct Position *pos    = TNECS_GET_COMPONENT(world, unit_ent, Position);
     i32              move   = Unit_getStats(unit).move;
@@ -141,7 +141,7 @@ i32 *Map_Healtomap_Compute_wLoadout(struct Map *map, tnecs_world *world, tnecs_e
 
 i32 *Map_Healtomap_Compute(struct Map *map, tnecs_world *world, tnecs_entity unit_ent,
                            bool move, bool equipped) {
-    Map_Traversemap_Movement_Compute(map, world, unit_ent);
+    Map_Costmap_Movement_Compute(map, world, unit_ent);
     struct Unit     *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     struct Position *pos  = TNECS_GET_COMPONENT(world, unit_ent, Position);
     struct Point start = pos->tilemap_pos;
@@ -158,10 +158,16 @@ i32 *Map_Healtomap_Compute(struct Map *map, tnecs_world *world, tnecs_entity uni
     return (map->healtomap);
 }
 
-i32 *Map_Attacktolist_Compute(struct Map   *map) {
+i32 *Map_Attacktolist_Compute(struct Map *map) {
     map->attacktolist = matrix2list_noM(map->attacktomap, map->attacktolist,
                                         map->row_len, map->col_len);
     return (map->attacktolist);
+}
+
+i32 *Map_Attackfromlist_Compute(struct Map *map) {
+    map->attackfromlist = matrix2list_noM(map->attackfrommap, map->attackfromlist,
+                                          map->row_len, map->col_len);
+    return (map->attackfromlist);
 }
 
 i32 *Map_Attacktomap_Compute_wLoadout(struct Map *map, tnecs_world *world, tnecs_entity ent,
@@ -174,9 +180,9 @@ i32 *Map_Attacktomap_Compute_wLoadout(struct Map *map, tnecs_world *world, tnecs
     return (out);
 }
 
-i32 *Map_Attacktomap_Compute(struct Map *map, tnecs_world *world, tnecs_entity unit_ent,
-                             bool move, bool equipped) {
-    Map_Traversemap_Movement_Compute(map, world, unit_ent);
+i32 *Map_Attacktomap_Compute(struct Map *map, tnecs_world *world,
+                             tnecs_entity unit_ent, bool move, bool equipped) {
+    Map_Costmap_Movement_Compute(map, world, unit_ent);
     struct Unit     *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     struct Position *pos  = TNECS_GET_COMPONENT(world, unit_ent, Position);
     struct Point start = pos->tilemap_pos;
@@ -185,16 +191,29 @@ i32 *Map_Attacktomap_Compute(struct Map *map, tnecs_world *world, tnecs_entity u
     struct Range range = {.min = UINT8_MAX, .max = 0 };
     _Unit_Range_Combine(unit, &range, equipped, ITEM_ARCHETYPE_WEAPON);
     map->update = true;
-    map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap, map->row_len, map->col_len,
-                                          move_stat, &range, MOVETILE_INCLUDE);
+    map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap, map->row_len,
+                                          map->col_len, move_stat, &range, MOVETILE_INCLUDE);
     // matrix_print(map->attacktomap, map->row_len, map->col_len);
     return (map->attacktomap);
 }
 
+i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_world *world, tnecs_entity agg,
+                               tnecs_entity dft, bool move, bool equipped) {
+    Map_Costmap_Movement_Compute(map, world, agg);
+    struct Unit *agg_unit = TNECS_GET_COMPONENT(world, agg, Unit);
+    // Get dft position
+    // Get agg range
+    // Trace range around dft position
+    // Remove non-traversable tiles tiles
+    i32 move_stat = move ? Unit_getStats(agg_unit).move : 0;
+    return (map->attackfrommap);
+}
+
+
 i32 *Map_Danger_Compute(struct Map *map, tnecs_world *world, tnecs_entity unit_ent) {
-    Map_Traversemap_Movement_Compute(map, world, unit_ent);
-    struct Position *position = TNECS_GET_COMPONENT(world, unit_ent, Position);
-    struct Unit *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
+    Map_Costmap_Movement_Compute(map, world, unit_ent);
+    struct Position *position   = TNECS_GET_COMPONENT(world, unit_ent, Position);
+    struct Unit *unit           = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     SDL_assert(position != NULL);
     SDL_assert(unit != NULL);
     i32 move = Unit_getStats(unit).move;
@@ -210,11 +229,11 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_world *world, tnecs_entity unit_e
     return (map->temp);
 }
 
-i32 *Map_Traversemap_PushPull_Compute(struct Map *map, tnecs_world *world,
-                                      tnecs_entity unit_ent) {
+i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_world *world,
+                                  tnecs_entity unit_ent) {
     SDL_assert(unit_ent != 0);
-    SDL_assert(map->traversemap != NULL);
-    memset(map->traversemap, 0, sizeof(*map->traversemap) * map->col_len * map->row_len);
+    SDL_assert(map->costmap != NULL);
+    memset(map->costmap, 0, sizeof(*map->costmap) * map->col_len * map->row_len);
     struct Unit *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     struct Tile *temp_tile;
     i32 tile_ind = 0;
@@ -229,24 +248,24 @@ i32 *Map_Traversemap_PushPull_Compute(struct Map *map, tnecs_world *world,
         SDL_assert(tile_ind > 0);
         size_t tile_order = Map_Tile_Order(map, tile_ind);
         temp_tile = map->tiles + tile_order;
-        map->traversemap[i] = temp_tile->cost_array[unit_movetype];
+        map->costmap[i] = temp_tile->cost_array[unit_movetype];
         if (ontile_unit_ent <= TNECS_NULL)
             continue;
         struct Unit *ontile_unit = TNECS_GET_COMPONENT(world, ontile_unit_ent, Unit);
         if (ontile_unit != NULL)
-            map->traversemap[i] = TRAVERSEMAP_BLOCKED;
+            map->costmap[i] = costmap_BLOCKED;
     }
-    return (map->traversemap);
+    return (map->costmap);
 }
 
-float *Map_fTraversemap_Movement_Compute(struct Map *map, tnecs_world *world,
-                                         tnecs_entity unit_ent) {
+float *Map_fCostmap_Movement_Compute(struct Map *map, tnecs_world *world,
+                                     tnecs_entity unit_ent) {
     SDL_assert(map->unitmap != NULL);
-    SDL_assert(map->traversemap != NULL);
+    SDL_assert(map->costmap != NULL);
     SDL_assert(((unit_ent > 0) && (unit_ent < UNIT_ID_NPC_END)));
 
     /* Preliminaries*/
-    memset(map->ftraversemap, 0, sizeof(*map->ftraversemap) * map->col_len * map->row_len);
+    memset(map->fcostmap, 0, sizeof(*map->fcostmap) * map->col_len * map->row_len);
     struct Unit *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     struct Tile *temp_tile;
     i32 tile_ind = 0;
@@ -261,7 +280,7 @@ float *Map_fTraversemap_Movement_Compute(struct Map *map, tnecs_world *world,
         SDL_assert(tile_ind > 0);
         size_t tile_order = Map_Tile_Order(map, tile_ind);
         temp_tile = map->tiles + tile_order;
-        map->ftraversemap[i] = temp_tile->cost_array[unit_movetype];
+        map->fcostmap[i] = temp_tile->cost_array[unit_movetype];
 
         /* - Check if tile is blocked from opposing army - */
         tnecs_entity ontile_unit_ent = map->unitmap[i];
@@ -274,23 +293,23 @@ float *Map_fTraversemap_Movement_Compute(struct Map *map, tnecs_world *world,
         SDL_assert((ontile_army < ARMY_END) && (ontile_army > ARMY_START));
 
         if (SotA_army2alignment(ontile_army) != SotA_army2alignment(army))
-            map->ftraversemap[i] = TRAVERSEMAP_fBLOCKED;
+            map->fcostmap[i] = costmap_fBLOCKED;
     }
-    return (map->ftraversemap);
+    return (map->fcostmap);
 }
 
-i32 *Map_Traversemap_Movement_Compute(struct Map *map, tnecs_world *world,
-                                      tnecs_entity unit_ent) {
+i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_world *world,
+                                  tnecs_entity unit_ent) {
     SDL_assert(map->unitmap     != NULL);
-    SDL_assert(map->traversemap != NULL);
+    SDL_assert(map->costmap != NULL);
 
     /* - Skip if previously computed - */
-    if (map->traversemap_ent == unit_ent)
-        return (map->traversemap);
+    if (map->costmap_ent == unit_ent)
+        return (map->costmap);
 
     /* - Preliminaries - */
-    map->traversemap_ent = unit_ent;
-    memset(map->traversemap, 0, sizeof(*map->traversemap) * map->col_len * map->row_len);
+    map->costmap_ent = unit_ent;
+    memset(map->costmap, 0, sizeof(*map->costmap) * map->col_len * map->row_len);
     struct Unit *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     struct Tile *temp_tile;
     i32 tile_ind = 0;
@@ -302,7 +321,7 @@ i32 *Map_Traversemap_Movement_Compute(struct Map *map, tnecs_world *world,
     for (size_t i = 0; i < (map->col_len * map->row_len); i++) {
         #ifdef UNITS_IGNORE_TERRAIN
         /* - Everything flies - */
-        map->traversemap[i] = TRAVERSEMAP_MIN;
+        map->costmap[i] = costmap_MIN;
 
         #else /* UNITS_IGNORE_TERRAIN */
         /* - Compute cost from tile - */
@@ -310,7 +329,7 @@ i32 *Map_Traversemap_Movement_Compute(struct Map *map, tnecs_world *world,
         SDL_assert(tile_ind > 0);
         size_t tile_order = Map_Tile_Order(map, tile_ind);
         temp_tile = map->tiles + tile_order;
-        map->traversemap[i] = temp_tile->cost_array[unit_movetype];
+        map->costmap[i] = temp_tile->cost_array[unit_movetype];
 
         /* - Check if tile is blocked from opposing army - */
         tnecs_entity ontile_unit_ent = map->unitmap[i];
@@ -323,11 +342,11 @@ i32 *Map_Traversemap_Movement_Compute(struct Map *map, tnecs_world *world,
         SDL_assert((ontile_army < ARMY_END) && (ontile_army > ARMY_START));
 
         if (SotA_army2alignment(ontile_army) != SotA_army2alignment(army))
-            map->traversemap[i] = TRAVERSEMAP_BLOCKED;
+            map->costmap[i] = costmap_BLOCKED;
 
         #endif /* UNITS_IGNORE_TERRAIN */
     }
-    return (map->traversemap);
+    return (map->costmap);
 }
 
 
@@ -358,8 +377,8 @@ void Map_globalRange(struct Map *map, tnecs_world *world, u8 alignment) {
         struct Unit_stats temp_effective_stats = Unit_effectiveStats(temp_unit);
         u8 move = temp_effective_stats.move;
         struct Point start = {temp_pos->tilemap_pos.x, temp_pos->tilemap_pos.y};
-        Map_Traversemap_Movement_Compute(map, world, unit_entities[i]);
-        Pathfinding_Moveto_noM(map->movemap, map->traversemap, map->row_len,
+        Map_Costmap_Movement_Compute(map, world, unit_entities[i]);
+        Pathfinding_Moveto_noM(map->movemap, map->costmap, map->row_len,
                                map->col_len, start, move);
         Pathfinding_Attackto_noM(map->attacktomap, map->movemap, map->row_len,
                                  map->col_len, (u8 *)range, MOVETILE_INCLUDE);
