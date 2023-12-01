@@ -36,7 +36,7 @@ void Taxicab_Circle(i32 *matrix, i32 value, i32 x, i32 y, size_t row_len, size_t
             for (i32 n = 0; n < SQUARE_NEIGHBOURS; n++) {
                 i32 tempx = int_inbounds(x + q_cycle4_pmmp(n) * rangex, 0, col_len - 1);
                 i32 tempy = int_inbounds(y + q_cycle4_ppmm(n) * rangey, 0, row_len - 1);
-                matrix[tempx * col_len + tempy] = value;
+                matrix[tempy * col_len + tempx] = value;
             }
         }
     }
