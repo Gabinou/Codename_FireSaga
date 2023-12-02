@@ -327,6 +327,7 @@ i32 *Pathfinding_Astar(i32 *path_list, i32 *costmap, size_t row_len, size_t col_
     return (path_list);
 }
 
+// Note: Pathfinding_Moveto finds traversable tiles only, without checking for occupied tiles
 i32 *Pathfinding_Moveto(i32 *cost_matrix, size_t row_len, size_t col_len,
                         struct Point start, i32 move) {
     /* -- Setup output move_matrix -- */
@@ -544,7 +545,7 @@ void Pathfinding_unitGradient_noM(i32 *gradmap, i32 *costmap,
             int current_n = neighbour.y * col_len + neighbour.x;
 
             /* Skip neighbour if: blocked */
-            if (costmap[current_n] < costmap_MIN)
+            if (costmap[current_n] < COSTMAP_MIN)
                 continue;
 
             /* Skip neighbour if:  already visited AND higher cost */

@@ -114,6 +114,7 @@ i32 *Map_Movemap_Compute(struct Map *map, tnecs_world *world, tnecs_entity unit_
     return (_Map_Movemap_Compute(map, start, move));
 }
 
+// TODO: get rid of this useless interface
 i32 *_Map_tomap_Compute(i32 *tomap, i32 *movemap, u8 row_len, u8 col_len,
                         i32 move, struct Range *range, u8 mode_movetile) {
     Pathfinding_Attackto_noM(tomap, movemap, row_len, col_len, (u8 *)range,
@@ -261,7 +262,7 @@ i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_world *world,
             continue;
         struct Unit *ontile_unit = TNECS_GET_COMPONENT(world, ontile_unit_ent, Unit);
         if (ontile_unit != NULL)
-            map->costmap[i] = costmap_BLOCKED;
+            map->costmap[i] = COSTMAP_BLOCKED;
     }
     return (map->costmap);
 }
@@ -329,9 +330,10 @@ i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_world *world,
     for (size_t i = 0; i < (map->col_len * map->row_len); i++) {
         #ifdef UNITS_IGNORE_TERRAIN
         /* - Everything flies - */
-        map->costmap[i] = costmap_MIN;
+        map->costmap[i] = COSTMAP_MIN;
 
-        #else /* UNITS_IGNORE_TERRAIN */
+        #else /* not UNITS_IGNORE_TERRAIN */
+
         /* - Compute cost from tile - */
         tile_ind = map->tilemap[i] / TILE_DIVISOR;
         SDL_assert(tile_ind > 0);
@@ -339,7 +341,7 @@ i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_world *world,
         temp_tile = map->tiles + tile_order;
         map->costmap[i] = temp_tile->cost_array[unit_movetype];
 
-        /* - Check if tile is blocked from opposing army - */
+        /* - Check if tile is occupied by enemy unit - */
         tnecs_entity ontile_unit_ent = map->unitmap[i];
         if ((ontile_unit_ent <= UNIT_ID_START) || (ontile_unit_ent >= UNIT_ID_NPC_END))
             continue;
@@ -350,7 +352,7 @@ i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_world *world,
         SDL_assert((ontile_army < ARMY_END) && (ontile_army > ARMY_START));
 
         if (SotA_army2alignment(ontile_army) != SotA_army2alignment(army))
-            map->costmap[i] = costmap_BLOCKED;
+            map->costmap[i] = COSTMAP_BLOCKED;
 
         #endif /* UNITS_IGNORE_TERRAIN */
     }

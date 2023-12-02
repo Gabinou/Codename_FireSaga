@@ -26,8 +26,8 @@ enum PATHFINDING_MODE_MOVETILE {
 //     - A costmap for movement can ALSO be used as a blockmap for vision
 //          -> Only if units cannot block vision.
 enum PATHFINDING_costmap {
-    costmap_BLOCKED     = 0,
-    costmap_MIN         = 1,
+    COSTMAP_BLOCKED     = 0,
+    COSTMAP_MIN         = 1,
 };
 
 // NOTE: unitmap is occupymap
