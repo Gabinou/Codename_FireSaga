@@ -246,7 +246,7 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
     adjacent_x      |= (action->target_action.x == pos->tilemap_pos.x + 1);
     b32 adjacent_y   = (action->target_action.y == pos->tilemap_pos.y - 1);
     adjacent_y      |= (action->target_action.y == pos->tilemap_pos.y + 1);
-    if (adjacent_y && adjacent_y)
+    if (adjacent_x && adjacent_y)
         return;
 
     /* -- Move to closest tile on way to target_action -- */

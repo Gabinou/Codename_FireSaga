@@ -97,13 +97,6 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     if (sota->ai_state.turn_over)
         return;
 
-    /* -- If no more NPCs, end NPC turn. -- */
-    if (sota->ai_state.npcs && (DARR_NUM(sota->ai_state.npcs) < 1)) {
-        SDL_Log("AI Turn Finished");
-        AI_State_Turn_Finish(&sota->ai_state);
-        Event_Emit(__func__, SDL_USEREVENT, event_Turn_End, NULL, NULL);
-        return;
-    }
 
     /* -- Build list of npcs to control -- */
     if (sota->ai_state.init == false) {
@@ -111,6 +104,14 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
         AI_State_Init(&sota->ai_state, sota->world, sota->map);
     }
     SDL_assert(sota->ai_state.npcs != NULL);
+
+    /* -- If no more NPCs, end NPC turn. -- */
+    if (sota->ai_state.npcs && (DARR_NUM(sota->ai_state.npcs) < 1)) {
+        SDL_Log("AI Turn Finished");
+        AI_State_Turn_Finish(&sota->ai_state);
+        Event_Emit(__func__, SDL_USEREVENT, event_Turn_End, NULL, NULL);
+        return;
+    }
 
     /* -- Decide next NPC to act -- */
     if (sota->ai_state.npc_i < 0) {
