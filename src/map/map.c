@@ -274,6 +274,8 @@ void Map_dArrays_Init(struct Map *map,  struct Settings *settings) {
         map->healtolist   = DARR_INIT(map->healtolist,   i32, 32);
     if (map->attacktolist == NULL)
         map->attacktolist = DARR_INIT(map->attacktolist, i32, 32);
+    if (map->attackfromlist == NULL)
+        map->attackfromlist = DARR_INIT(map->attackfromlist, i32, 32);
     int len = map->row_len * map->col_len;
     if (map->temp == NULL)
         map->temp               = calloc(len,  sizeof(*map->temp));
@@ -393,11 +395,15 @@ void Map_dArrays_Free(struct Map *map) {
         DARR_FREE(map->attacktolist);
         map->attacktolist = NULL;
     }
+    if (map->attackfromlist != NULL) {
+        DARR_FREE(map->attackfromlist);
+        map->attackfromlist = NULL;
+    }
+
     if (map->healtolist != NULL) {
         DARR_FREE(map->healtolist);
         map->healtolist = NULL;
     }
-
 }
 
 void Map_Texture_Alloc(struct Map *map) {

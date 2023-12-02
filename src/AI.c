@@ -141,6 +141,9 @@ void _AI_Decider_Action_Kill(struct Game *sota, tnecs_entity npc_ent, struct AI_
 
     /* - Set target_move to unoccupied tile in range (attackfrom) - */
     Map_Attackfrommap_Compute(sota->map, sota->world, npc_ent, defendant, true, true);
+    // SDL_Log("ATTACKFROMMAP");
+    // matrix_print(sota->map->attackfrommap, sota->map->row_len, sota->map->col_len);
+
     i32 *attackfromlist = Map_Attackfromlist_Compute(sota->map);
     /* Should be at least on tile to attack from. */
     SDL_assert(DARR_NUM(attackfromlist) > 0);

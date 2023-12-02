@@ -221,7 +221,7 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
     /* -- Checks -- */
     SDL_assert((start.x != end.x) || (start.y != end.y));
     SDL_assert(costmap[start.y * col_len + start.x] >= MOVEMAP_MOVEABLEMIN);
-    SDL_assert(costmap[end.y   * col_len + end.x]   >= MOVEMAP_MOVEABLEMIN);
+    // SDL_assert(costmap[end.y   * col_len + end.x]   >= MOVEMAP_MOVEABLEMIN);
 
     /* Alloc variables */
     i32 *cost       = calloc(row_len * col_len, sizeof(*cost));

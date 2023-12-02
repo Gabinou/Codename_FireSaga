@@ -201,8 +201,12 @@ i32 *Map_Attacktomap_Compute(struct Map *map, tnecs_world *world,
 i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_world *world, tnecs_entity agg,
                                tnecs_entity dft, bool move, bool equipped) {
     Map_Costmap_Movement_Compute(map, world, agg);
+    // SDL_Log("COSTMAP");
+    // matrix_print(map->costmap, map->row_len, map->col_len);
+
     struct Unit *agg_unit = TNECS_GET_COMPONENT(world, agg, Unit);
     /* Get dft position */
+    struct Position *agg_pos = TNECS_GET_COMPONENT(world, agg, Position);
     struct Position *dft_pos = TNECS_GET_COMPONENT(world, dft, Position);
     /* Get agg range */
     struct Range range = {.min = UINT8_MAX, .max = 0};
@@ -210,9 +214,11 @@ i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_world *world, tnecs_entity
 
     /* Compute movemap */
     i32 move_stat = move ? Unit_getStats(agg_unit).move : 0;
-    _Map_Movemap_Compute(map, dft_pos->tilemap_pos, move);
+    _Map_Movemap_Compute(map, agg_pos->tilemap_pos, move_stat);
+    // SDL_Log("MOVEMAP");
+    // matrix_print(map->movemap, map->row_len, map->col_len);
 
-    Pathfinding_Attackfrom_noM(map->attacktomap, map->movemap, map->row_len,
+    Pathfinding_Attackfrom_noM(map->attackfrommap, map->movemap, map->row_len,
                                map->col_len, dft_pos->tilemap_pos, (u8 *)&range);
 
     return (map->attackfrommap);
@@ -341,6 +347,8 @@ i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_world *world,
         temp_tile = map->tiles + tile_order;
         map->costmap[i] = temp_tile->cost_array[unit_movetype];
 
+        #endif /* UNITS_IGNORE_TERRAIN */
+
         /* - Check if tile is occupied by enemy unit - */
         tnecs_entity ontile_unit_ent = map->unitmap[i];
         if ((ontile_unit_ent <= UNIT_ID_START) || (ontile_unit_ent >= UNIT_ID_NPC_END))
@@ -354,7 +362,6 @@ i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_world *world,
         if (SotA_army2alignment(ontile_army) != SotA_army2alignment(army))
             map->costmap[i] = COSTMAP_BLOCKED;
 
-        #endif /* UNITS_IGNORE_TERRAIN */
     }
     return (map->costmap);
 }
