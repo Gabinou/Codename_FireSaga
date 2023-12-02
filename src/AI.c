@@ -108,7 +108,6 @@ void _AI_Decider_Action_Move_To(struct Game *sota, tnecs_entity npc_ent, struct 
 
 
 void _AI_Decider_Action_Kill(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
-
     /* -- Get list of defendants in range -- */
     Map_Attacktomap_Compute(sota->map, sota->world, npc_ent, true, false);
     Map_Attacktolist_Compute(sota->map);
@@ -119,7 +118,7 @@ void _AI_Decider_Action_Kill(struct Game *sota, tnecs_entity npc_ent, struct AI_
         /* -- BRANCH 1- No enemies in range -- */
         /* - Find closest enemy - */
 
-        /* - Set target_move to closest enemy position - */
+        /* - TODO: Set target_move to closest enemy position - */
         action->target_move.x = 0;
         action->target_move.y = 0;
         action->action = AI_ACTION_WAIT;
@@ -134,8 +133,11 @@ void _AI_Decider_Action_Kill(struct Game *sota, tnecs_entity npc_ent, struct AI_
     /* - TODO: Decide which loadout to attack with - */
 
     /* - Set target_move to unoccupied tile in range (attackfrom) - */
-    // Map_Attackfrommap_Compute(sota->map, sota->world, npc_ent, true, true);
+    Map_Attackfrommap_Compute(sota->map, sota->world, npc_ent, defendant, true, true);
     i32 *attackfromlist = Map_Attackfromlist_Compute(sota->map);
+    /* Should be at least on tile to attack from. */
+    SDL_assert(DARR_NUM(attackfromlist) > 0);
+
     // TODO: find good tile to attack from
     action->target_move.x = attackfromlist[0];
     action->target_move.y = attackfromlist[1];
