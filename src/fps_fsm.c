@@ -102,6 +102,7 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
         SDL_Log("AI Turn Finished");
         AI_State_Turn_Finish(&sota->ai_state);
         Event_Emit(__func__, SDL_USEREVENT, event_Turn_End, NULL, NULL);
+        return;
     }
 
     /* -- Build list of npcs to control -- */

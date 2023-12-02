@@ -34,4 +34,9 @@ tnecs_entity *Map_Find_Spectators(struct Map *map, tnecs_entity *a, i32 x, i32 y
 tnecs_entity *Map_Find_Doors( struct Map *map, tnecs_entity *, i32 x, i32 y);
 tnecs_entity *Map_Find_Chests(struct Map *map, tnecs_entity *, i32 x, i32 y);
 
+/* - Closest - */
+tnecs_entity _Map_Find_Unit_Closest(struct Map *map, u8 army, i32 x, i32 y);
+tnecs_entity Map_Find_Enemy_Closest(struct Map *map, i32 x, i32 y);
+tnecs_entity Map_Find_Friendly_Closest(struct Map *map, i32 x, i32 y);
+
 #endif /* MAP_FIND_H */

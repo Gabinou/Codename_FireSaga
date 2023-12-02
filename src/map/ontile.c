@@ -44,7 +44,6 @@ void Map_Unit_Put(struct Map *map, tnecs_world *world, u8 col, u8 row,
             SDL_assert(order > 0);
             SDL_assert(order < UNIT_NUM);
             DARR_PUT(map->friendlies_onfield, entity);
-            DARR_NUM(map->friendlies_onfield)++;
             break;
         }
         case ALIGNMENT_ENEMY: {
@@ -55,7 +54,6 @@ void Map_Unit_Put(struct Map *map, tnecs_world *world, u8 col, u8 row,
             SDL_assert(order > 0);
             SDL_assert(order < UNIT_NUM);
             DARR_PUT(map->enemies_onfield, entity);
-            DARR_NUM(map->enemies_onfield)++;
             break;
         }
     }

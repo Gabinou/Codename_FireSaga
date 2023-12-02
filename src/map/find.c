@@ -286,3 +286,48 @@ tnecs_entity *Map_Find_Chests(struct Map *map, tnecs_entity *openable, i32 x, i3
     }
     return (openable);
 }
+
+/* - Closest - */
+tnecs_entity Map_Find_Enemy_Closest(struct Map *map, i32 x, i32 y) {
+    int num             = DARR_NUM(map->enemies_onfield);
+    i32 dist, min_dist  = INT32_MAX;
+    tnecs_entity out    = TNECS_NULL;
+
+    for (size_t i = 0; i < num; i++) {
+        tnecs_entity enemy = map->enemies_onfield[i];
+        SDL_assert(enemy != TNECS_NULL);
+        struct Position *pos = TNECS_GET_COMPONENT(map->world, enemy, Position);
+        SDL_assert(pos != NULL);
+        dist = _Pathfinding_Manhattan(x, y, pos->tilemap_pos.x, pos->tilemap_pos.y);
+        if (dist < min_dist) {
+            min_dist    = dist;
+            out         = enemy;
+        }
+    }
+    return (out);
+}
+
+tnecs_entity Map_Find_Friendly_Closest(struct Map *map, i32 x, i32 y) {
+    int num             = DARR_NUM(map->friendlies_onfield);
+    i32 dist, min_dist  = INT32_MAX;
+    tnecs_entity out    = TNECS_NULL;
+
+    for (size_t i = 0; i < num; i++) {
+        tnecs_entity friendly = map->friendlies_onfield[i];
+        SDL_assert(friendly != TNECS_NULL);
+        struct Position *pos = TNECS_GET_COMPONENT(map->world, friendly, Position);
+        SDL_assert(pos != NULL);
+        dist = _Pathfinding_Manhattan(x, y, pos->tilemap_pos.x, pos->tilemap_pos.y);
+        if (dist < min_dist) {
+            min_dist    = dist;
+            out         = friendly;
+        }
+    }
+    return (out);
+}
+
+tnecs_entity Map_Find_Unit_Closest(struct Map *map, u8 army, i32 x, i32 y) {
+    tnecs_entity out    = TNECS_NULL;
+
+    return (out);
+}

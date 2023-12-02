@@ -114,13 +114,22 @@ void _AI_Decider_Action_Kill(struct Game *sota, tnecs_entity npc_ent, struct AI_
     tnecs_entity *defendants = DARR_INIT(defendants, tnecs_entity, 4);
     defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist, defendants, npc_ent, false);
 
+    /* - TODO: Decide which loadout to attack with - */
+
     if (DARR_NUM(defendants) < 1) {
         /* -- BRANCH 1- No enemies in range -- */
         /* - Find closest enemy - */
+        struct Position *posc = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
+        SDL_assert(posc != NULL);
+        struct Point pos = posc->tilemap_pos;
+        tnecs_entity closest =  Map_Find_Friendly_Closest(sota->map, pos.x, pos.y);
+        SDL_assert(closest != TNECS_NULL);
+        struct Position *pos_closest = TNECS_GET_COMPONENT(sota->world, closest, Position);
+        SDL_assert(pos_closest != NULL);
 
-        /* - TODO: Set target_move to closest enemy position - */
-        action->target_move.x = 0;
-        action->target_move.y = 0;
+        /* - Set target_move to closest enemy position - */
+        action->target_action.x = pos_closest->tilemap_pos.x;
+        action->target_action.y = pos_closest->tilemap_pos.y;
         action->action = AI_ACTION_WAIT;
         DARR_FREE(defendants);
         return;
@@ -130,8 +139,6 @@ void _AI_Decider_Action_Kill(struct Game *sota, tnecs_entity npc_ent, struct AI_
     /* -- TODO: Find easiest enemy to kill -- */
     tnecs_entity defendant = defendants[0];
 
-    /* - TODO: Decide which loadout to attack with - */
-
     /* - Set target_move to unoccupied tile in range (attackfrom) - */
     Map_Attackfrommap_Compute(sota->map, sota->world, npc_ent, defendant, true, true);
     i32 *attackfromlist = Map_Attackfromlist_Compute(sota->map);
@@ -139,6 +146,7 @@ void _AI_Decider_Action_Kill(struct Game *sota, tnecs_entity npc_ent, struct AI_
     SDL_assert(DARR_NUM(attackfromlist) > 0);
 
     // TODO: find good tile to attack from
+    // TODO: move to decider move?
     action->target_move.x = attackfromlist[0];
     action->target_move.y = attackfromlist[1];
 
