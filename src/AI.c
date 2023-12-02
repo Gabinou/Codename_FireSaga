@@ -75,7 +75,7 @@ AI_Doer AI_Act_action[AI_ACTION_NUM] = {
     /* RESCUE           */ NULL,
     /* SEIZE            */ NULL,
     /* ESCAPE           */ NULL,
-    /* ATTACK           */ NULL,
+    /* ATTACK           */ &_AI_Doer_Attack,
     /* VILLAGE          */ NULL,
     /* TRADE            */ NULL,
     /* MAP              */ NULL,
@@ -100,14 +100,16 @@ void _AI_Decider_Action_Nothing(struct Game *sota, tnecs_entity npc_ent,
     action->action = AI_ACTION_WAIT;
 }
 
-void _AI_Decider_Action_Move_To(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+void _AI_Decider_Action_Move_To(struct Game *sota, tnecs_entity npc_ent,
+                                struct AI_Action *action) {
     /* Set target move to ultimate move_to target*/
     struct AI   *ai     = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
     action->target_action = ai->target_move;
 }
 
 
-void _AI_Decider_Action_Kill(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+void _AI_Decider_Action_Kill(struct Game *sota, tnecs_entity npc_ent,
+                             struct AI_Action *action) {
     /* -- Get list of defendants in range -- */
     Map_Attacktomap_Compute(sota->map, sota->world, npc_ent, true, false);
     Map_Attacktolist_Compute(sota->map);
@@ -335,6 +337,22 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
 
 void _AI_Doer_Wait(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     Game_Unit_Wait(sota, npc_ent);
+}
+
+void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+    /* -- Set aggressor for combat -- */
+    sota->aggressor = npc_ent;
+
+    /* -- Set defendant for combat -- */
+    struct Point pos = action->target_action;
+    tnecs_entity friendly = Map_Unit_Get(sota->map, pos.x, pos.y);
+    SDL_assert(friendly != TNECS_NULL);
+    sota->defendant = friendly;
+
+    /* -- Set npc_ent for waiting after combat -- */
+    sota->selected_unit_entity = npc_ent;
+
+    Event_Emit(__func__, SDL_USEREVENT, event_Combat_Start, data1_entity, data2_entity);
 }
 
 void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {

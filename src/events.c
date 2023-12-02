@@ -1050,8 +1050,8 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     /* -- find attack direction -- */
     struct Position *agg_posc = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Position);
     struct Position *dft_posc = TNECS_GET_COMPONENT(sota->world, sota->defendant, Position);
-    struct Point *agg_pos = &agg_posc->tilemap_pos;
-    struct Point *dft_pos = &dft_posc->tilemap_pos;
+    struct Point *agg_pos     = &agg_posc->tilemap_pos;
+    struct Point *dft_pos     = &dft_posc->tilemap_pos;
 
     struct Point move = {dft_pos->x - agg_pos->x, dft_pos->y - agg_pos->y};
     move.x = move.x < -1 ? -1 : move.x;
@@ -1098,10 +1098,11 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     map_anim  = TNECS_GET_COMPONENT(sota->world, map_animation, CombatAnimation);
     *map_anim = CombatAnimation_default;
 
-    /* - Hide pre combat popup - */
+    /* - Hide pre combat popup, if it exists - */
     struct Menu *mc;
     mc = TNECS_GET_COMPONENT(sota->world, sota->pre_combat_menu, Menu);
-    mc->visible = false;
+    if (mc != NULL)
+        mc->visible = false;
 
     /* - Show map combat popup - */
     if (sota->popups[POPUP_TYPE_MAP_COMBAT] == TNECS_NULL)
@@ -1116,14 +1117,15 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
 
     PopUp_Map_Combat_Units(pmc, sota, aggressor, defendant, agg_pos, dft_pos);
 
-    /* - Deselect weapons in LoadoutSelectMenu - */
+    /* - Deselect weapons in LoadoutSelectMenu, if it exists - */
     mc = TNECS_GET_COMPONENT(sota->world, sota->weapon_select_menu, Menu);
-    struct LoadoutSelectMenu *wsm = mc->data;
-    LoadoutSelectMenu_Select_Reset(wsm);
+    if (mc != NULL) {
+        struct LoadoutSelectMenu *wsm = mc->data;
+        LoadoutSelectMenu_Select_Reset(wsm);
+    }
 
     /* - Set previous candidate to NULL - */
     sota->previous_candidate = -1;
-
 }
 
 void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {

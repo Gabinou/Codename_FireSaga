@@ -213,7 +213,8 @@ static void _AI_Decider_Staff_AfterMove(struct Game *s, tnecs_entity e, struct A
 /* --- Doer FSM --- */
 typedef AI_Decider AI_Doer;
 extern AI_Doer AI_Act_action[AI_ACTION_NUM];
-static void _AI_Doer_Wait(struct Game *s, tnecs_entity e, struct AI_Action *a);
+static void _AI_Doer_Wait(  struct Game *s, tnecs_entity e, struct AI_Action *a);
+static void _AI_Doer_Attack(struct Game *s, tnecs_entity e, struct AI_Action *a);
 
 void Unit_Move_onMap_Animate(struct Game  *s, tnecs_entity e,
                              struct Timer *t, struct UnitMoveAnimation *a);

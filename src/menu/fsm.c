@@ -692,8 +692,10 @@ void fsm_eAcpt_sGmpMap_ssMenu_mTM(struct Game *sota, struct Menu *mc) {
 void fsm_eAcpt_sGmpMap_ssMenu_mPCM(struct Game *sota, struct Menu *mc) {
 
     /* Start Combat */
+    // Necessary criteria:
+    //  - sota->aggressor
+    //  - sota->defendant
     Event_Emit(__func__, SDL_USEREVENT, event_Combat_Start, data1_entity, data2_entity);
-
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mSM(struct Game *sota, struct Menu *mc) {

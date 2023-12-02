@@ -133,11 +133,10 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 in_unit,
     SDL_Log("-- create entity for unit %ld --", in_unit);
     char filename[DEFAULT_BUFFER_SIZE];
     SDL_Log("-- create entity --");
-    tnecs_entity temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position, Sprite,
-                                 Timer, MapHPBar);
-    tnecs_component typeflag = TNECS_COMPONENT_NAMES2TYPEFLAG(world, Unit,
-                                                              Position, Sprite,
-                                                              Timer, MapHPBar);
+    tnecs_entity temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position,
+                                 Sprite, Timer, MapHPBar);
+    tnecs_component typeflag   = TNECS_COMPONENT_NAMES2TYPEFLAG(world, Unit, Position,
+                                                                Sprite, Timer, MapHPBar);
     size_t typeflag_id1 = tnecs_typeflagid(world, typeflag);
     size_t typeflag_id2 = tnecs_typeflagid(world, world->entity_typeflags[temp_unit_ent]);
     SDL_Log("temp_unit_ent %ld", temp_unit_ent);
@@ -153,7 +152,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 in_unit,
 
     memcpy(unit, &sota->party[in_unit], sizeof(struct Unit));
     SDL_assert((sota->party[in_unit].handedness > UNIT_HAND_NULL)
-               && (sota->party[in_unit].handedness    < UNIT_HAND_END));
+               && (sota->party[in_unit].handedness < UNIT_HAND_END));
     SDL_assert((unit->handedness > UNIT_HAND_NULL) && (unit->handedness < UNIT_HAND_END));
 
     Unit_setid(unit, in_unit);
