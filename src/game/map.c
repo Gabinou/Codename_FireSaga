@@ -66,22 +66,21 @@ void Game_debugMap_Load(struct Game *sota) {
     DARR_PUT(unit_inds, UNIT_ID_SILOU);
     DARR_PUT(positions_list, temp_point);
 
-    /* - Kiara.json (Cleric) - */
-    DARR_PUT(unit_inds, UNIT_ID_KIARA);
-    temp_point.x = 3;
-    temp_point.y = 4;
-    DARR_PUT(positions_list, temp_point);
+    // /* - Kiara.json (Cleric) - */
+    // DARR_PUT(unit_inds, UNIT_ID_KIARA);
+    // temp_point.x = 3;
+    // temp_point.y = 4;
+    // DARR_PUT(positions_list, temp_point);
 
-    /* - Rayan.json (Dancer) - */
-    DARR_PUT(unit_inds, UNIT_ID_RAYAN);
-    temp_point.x = 3;
-    temp_point.y = 3;
+    // /* - Rayan.json (Dancer) - */
+    // DARR_PUT(unit_inds, UNIT_ID_RAYAN);
+    // temp_point.x = 3;
+    // temp_point.y = 3;
 
     /* -- Putting party on map -- */
     Game_Party_Load(sota, unit_inds, DARR_NUM(unit_inds));
     DARR_PUT(positions_list, temp_point);
 
-    SDL_assert(DARR_NUM(unit_inds) == DARR_NUM(positions_list));
     Game_putPConMap(sota, unit_inds, positions_list, DARR_NUM(unit_inds));
     DARR_FREE(unit_inds);
     DARR_FREE(positions_list);

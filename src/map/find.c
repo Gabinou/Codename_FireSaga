@@ -178,7 +178,10 @@ tnecs_entity *Map_Find_Spectators(struct Map *map, tnecs_entity *spectators, i32
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
         int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, map->col_len);
         int y_at = int_inbounds(y + q_cycle4_zmzp(i), 0, map->row_len);
-        SDL_assert((x_at == (x + 1)) || (x_at == (x - 1)) || (y_at == (y + 1)) || (y_at == (y - 1)));
+
+        /* Skip if tile is same as current tile */
+        if ((x_at == x) && (y_at == y))
+            continue;
 
         tnecs_entity spectator = map->unitmap[y_at * map->col_len + x_at];
         if (spectator == TNECS_NULL)
@@ -198,7 +201,10 @@ tnecs_entity *Map_Find_Auditors(struct Map *map, tnecs_entity *auditors, i32 x, 
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
         int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, map->col_len);
         int y_at = int_inbounds(y + q_cycle4_zmzp(i), 0, map->row_len);
-        SDL_assert((x_at == (x + 1)) || (x_at == (x - 1)) || (y_at == (y + 1)) || (y_at == (y - 1)));
+
+        /* Skip if tile is same as current tile */
+        if ((x_at == x) && (y_at == y))
+            continue;
 
         tnecs_entity auditor_ent = map->unitmap[y_at * map->col_len + x_at];
         if (auditor_ent <= TNECS_NULL)
@@ -217,7 +223,10 @@ tnecs_entity *Map_Find_Traders(struct Map *map, tnecs_entity *passives, i32 x, i
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
         int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, map->col_len);
         int y_at = int_inbounds(y + q_cycle4_zmzp(i), 0, map->row_len);
-        SDL_assert((x_at == (x + 1)) || (x_at == (x - 1)) || (y_at == (y + 1)) || (y_at == (y - 1)));
+
+        /* Skip if tile is same as current tile */
+        if ((x_at == x) && (y_at == y))
+            continue;
 
         tnecs_entity passive = map->unitmap[y_at * map->col_len + x_at];
         if (passive <= TNECS_NULL)
@@ -232,12 +241,16 @@ tnecs_entity *Map_Find_Traders(struct Map *map, tnecs_entity *passives, i32 x, i
 
 tnecs_entity *Map_Find_Victims(struct Map *map, tnecs_entity *victims_ent,
                                i32 x, i32 y, tnecs_entity savior_ent) {
-    // Find victims on neighbours (to rescue)
+    /* Find victims on neighbours (to rescue) */
+    // TODO: map edges!
 
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
         int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, map->col_len);
         int y_at = int_inbounds(y + q_cycle4_zmzp(i), 0, map->row_len);
-        SDL_assert((x_at == (x + 1)) || (x_at == (x - 1)) || (y_at == (y + 1)) || (y_at == (y - 1)));
+
+        /* Skip if tile is same as current tile */
+        if ((x_at == x) && (y_at == y))
+            continue;
 
         tnecs_entity victim_ent = map->unitmap[y_at * map->col_len + x_at];
         if (victim_ent <= TNECS_NULL)

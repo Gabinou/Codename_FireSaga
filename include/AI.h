@@ -202,6 +202,7 @@ extern AI_Decider AI_Decider_master[AI_PRIORITY_NUM];
 extern AI_Decider AI_Decider_slave[AI_PRIORITY_NUM];
 static void _AI_Decider_Action_Kill(   struct Game *s, tnecs_entity e, struct AI_Action *a);
 static void _AI_Decider_Action_Staff(  struct Game *s, tnecs_entity e, struct AI_Action *a);
+static void _AI_Decider_Action_Staff(  struct Game *s, tnecs_entity e, struct AI_Action *a);
 static void _AI_Decider_Action_Nothing(struct Game *s, tnecs_entity e, struct AI_Action *a);
 static void _AI_Decider_Action_Move_To(struct Game *s, tnecs_entity e, struct AI_Action *a);
 
@@ -209,6 +210,16 @@ static void _AI_Decider_Action_Move_To(struct Game *s, tnecs_entity e, struct AI
 extern AI_Decider AI_Decider_AfterMove[AI_PRIORITY_NUM];
 static void _AI_Decider_Kill_AfterMove( struct Game *s, tnecs_entity e, struct AI_Action *a);
 static void _AI_Decider_Staff_AfterMove(struct Game *s, tnecs_entity e, struct AI_Action *a);
+
+/* -- Decider Move FSM -- */
+// Note: These functions return whether character moves or not
+typedef b32  (*AI_Decider_Move)(struct Game *s, tnecs_entity e);
+extern AI_Decider_Move AI_Decider_move[AI_MOVE_NUM];
+static b32 _AI_Decider_Move_Never(    struct Game *s, tnecs_entity e);
+static b32 _AI_Decider_Move_Always(   struct Game *s, tnecs_entity e);
+static b32 _AI_Decider_Move_inRange(  struct Game *s, tnecs_entity e);
+static b32 _AI_Decider_Move_Trigger(  struct Game *s, tnecs_entity e);
+static b32 _AI_Decider_Move_onChapter(struct Game *s, tnecs_entity e);
 
 /* --- Doer FSM --- */
 typedef AI_Decider AI_Doer;

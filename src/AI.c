@@ -95,6 +95,38 @@ AI_Doer AI_Act_action[AI_ACTION_NUM] = {
     /* DEBUG_MAP        */ NULL,
 };
 
+AI_Decider_Move AI_Decider_move[AI_MOVE_NUM] = {
+    /* AI_MOVE_ALWAYS       */ _AI_Decider_Move_Always,
+    /* AI_MOVE_ONCHAPTER    */ _AI_Decider_Move_onChapter,
+    /* AI_MOVE_INRANGE      */ _AI_Decider_Move_inRange,
+    /* AI_MOVE_TRIGGER      */ _AI_Decider_Move_Trigger,
+    /* AI_MOVE_NEVER        */ _AI_Decider_Move_Never,
+
+};
+
+b32 _AI_Decider_Move_Never(struct Game *sota, tnecs_entity npc_ent) {
+    return (false);
+}
+
+b32 _AI_Decider_Move_Always(struct Game *sota, tnecs_entity npc_ent) {
+    return (true);
+}
+
+b32 _AI_Decider_Move_inRange(  struct Game *sota, tnecs_entity npc_ent) {
+    return (false);
+}
+
+b32 _AI_Decider_Move_Trigger(  struct Game *sota, tnecs_entity npc_ent) {
+    // TODO: input trigger condition
+    return (false);
+}
+
+b32 _AI_Decider_Move_onChapter(struct Game *sota, tnecs_entity npc_ent) {
+    // TODO: input number of chapters
+    return (false);
+}
+
+
 void _AI_Decider_Action_Nothing(struct Game *sota, tnecs_entity npc_ent,
                                 struct AI_Action *action) {
     action->action = AI_ACTION_WAIT;
@@ -254,12 +286,18 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
     if (adjacent_x && adjacent_y)
         return;
 
-    /* -- Move to closest tile on way to target_action -- */
-    /* --- PRELIMINARIES --- */
+
+    /* --- Skip depending on movement priority --- */
     struct Unit     *npc = TNECS_GET_COMPONENT(sota->world, npc_ent, Unit);
     struct AI       *ai  = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
     SDL_assert(ai  != NULL);
 
+    // if (AI_Decider_move[ai->move] != NULL)
+    // AI_Decider_move[ai->move](sota, npc_ent) ? 0 : return;
+    if (!AI_Decider_move[ai->move](sota, npc_ent))
+        return;
+
+    /* -- Move to closest tile on way to target_action -- */
     /* -- Compute costmap for pathfinding -- */
     Map_Costmap_Movement_Compute(sota->map, sota->world, npc_ent);
     i32 *costmap        = sota->map->costmap;
