@@ -112,8 +112,18 @@ b32 _AI_Decider_Move_Always(struct Game *sota, tnecs_entity npc_ent) {
     return (true);
 }
 
-b32 _AI_Decider_Move_inRange(  struct Game *sota, tnecs_entity npc_ent) {
-    return (false);
+b32 _AI_Decider_Move_inRange(struct Game *sota, tnecs_entity npc_ent) {
+    /* -- Get list of defendants in range -- */
+    struct Map *map = sota->map;
+    Map_Attacktomap_Compute(map, sota->world, npc_ent, true, false);
+    Map_Attacktolist_Compute(map);
+    tnecs_entity *dfts = DARR_INIT(dfts, tnecs_entity, 1);
+    dfts = Map_Find_Defendants(map, map->attacktolist, dfts, npc_ent, true);
+
+    /* --- Move if enemy in range --- */
+    b32 out = DARR_NUM(dfts) > 0;
+    DARR_FREE(dfts);
+    return (out);
 }
 
 b32 _AI_Decider_Move_Trigger(  struct Game *sota, tnecs_entity npc_ent) {
