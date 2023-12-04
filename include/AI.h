@@ -193,6 +193,7 @@ typedef struct AI {
     int priority_slave;
     int move;
     struct Point target_move;
+    int turn_move;
 } AI;
 struct AI AI_default;
 

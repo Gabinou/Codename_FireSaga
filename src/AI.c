@@ -132,8 +132,10 @@ b32 _AI_Decider_Move_Trigger(  struct Game *sota, tnecs_entity npc_ent) {
 }
 
 b32 _AI_Decider_Move_onChapter(struct Game *sota, tnecs_entity npc_ent) {
-    // TODO: input number of chapters
-    return (false);
+    struct AI *ai = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
+    SDL_assert(ai != NULL);
+    SDL_Log("sota->map->turn > ai->turn_move %d %d", sota->map->turn, ai->turn_move);
+    return (sota->map->turn > ai->turn_move);
 }
 
 
@@ -467,14 +469,19 @@ void AI_readJSON(void *input,  cJSON *jai) {
     cJSON *jpriority_master     = cJSON_GetObjectItem(jai, "priority_master");
     cJSON *jpriority_slave      = cJSON_GetObjectItem(jai, "priority_slave");
     cJSON *jmove                = cJSON_GetObjectItem(jai, "move");
+    cJSON *jturn_move        = cJSON_GetObjectItem(jai, "turn_move");
     cJSON *jtarget_move         = cJSON_GetObjectItem(jai, "target_move");
+
+    if (jturn_move != NULL)
+        ai->turn_move = cJSON_GetNumberValue(jturn_move);
+
     if (jtarget_move != NULL) {
         SDL_assert(cJSON_IsArray(jtarget_move));
         SDL_assert(cJSON_GetArraySize(jtarget_move) == 2);
-        cJSON *jtarget_move_x       = cJSON_GetArrayItem(jtarget_move, 0);
-        cJSON *jtarget_move_y       = cJSON_GetArrayItem(jtarget_move, 1);
-        ai->target_move.x   = cJSON_GetNumberValue(jtarget_move_x);
-        ai->target_move.y   = cJSON_GetNumberValue(jtarget_move_y);
+        cJSON *jtarget_move_x   = cJSON_GetArrayItem(jtarget_move, 0);
+        cJSON *jtarget_move_y   = cJSON_GetArrayItem(jtarget_move, 1);
+        ai->target_move.x       = cJSON_GetNumberValue(jtarget_move_x);
+        ai->target_move.y       = cJSON_GetNumberValue(jtarget_move_y);
     }
 
     ai->priority_master = cJSON_GetNumberValue(jpriority_master);
@@ -492,6 +499,7 @@ void AI_writeJSON(void *input,  cJSON *jai) {
     cJSON *jtarget_move     = cJSON_CreateArray();
     cJSON *jtarget_move_x   = cJSON_CreateNumber(ai->target_move.x);
     cJSON *jtarget_move_y   = cJSON_CreateNumber(ai->target_move.y);
+    cJSON *jturn_move    = cJSON_CreateNumber(ai->turn_move);
 
     cJSON_AddItemToArray(jtarget_move, jtarget_move_x);
     cJSON_AddItemToArray(jtarget_move, jtarget_move_y);
@@ -499,6 +507,7 @@ void AI_writeJSON(void *input,  cJSON *jai) {
     cJSON_AddItemToObject(jai, "priority_slave",    jpriority_slave);
     cJSON_AddItemToObject(jai, "move",              jmove);
     cJSON_AddItemToObject(jai, "target_move",       jtarget_move);
+    cJSON_AddItemToObject(jai, "turn_move",      jturn_move);
 }
 
 void Unit_Move_onMap_Animate(struct Game  *sota,  tnecs_entity entity,
