@@ -68,31 +68,31 @@ AI_Decider AI_Decider_AfterMove[AI_PRIORITY_NUM] = {
 };
 
 AI_Doer AI_Act_action[AI_ACTION_NUM] = {
-    /* ITEMS            */ NULL,
-    /* TALK             */ NULL,
-    /* STAFF            */ NULL,
-    /* DANCE            */ NULL,
-    /* RESCUE           */ NULL,
-    /* SEIZE            */ NULL,
-    /* ESCAPE           */ NULL,
+    /* ITEMS            */ NULL, // TODO
+    /* TALK             */ NULL, // TODO
+    /* STAFF            */ NULL, // TODO
+    /* DANCE            */ NULL, // TODO
+    /* RESCUE           */ NULL, // TODO
+    /* SEIZE            */ NULL, // TODO
+    /* ESCAPE           */ NULL, // TODO
     /* ATTACK           */ &_AI_Doer_Attack,
-    /* VILLAGE          */ NULL,
-    /* TRADE            */ NULL,
-    /* MAP              */ NULL,
+    /* VILLAGE          */ NULL, // TODO
+    /* TRADE            */ NULL, // TODO
+    /* MAP              */ NULL, /* PC only */
     /* WAIT             */ &_AI_Doer_Wait,
-    /* OPEN             */ NULL,
-    /* QUIT             */ NULL,
-    /* END_TURN         */ NULL,
-    /* UNITS            */ NULL,
-    /* CONVOY           */ NULL,
-    /* GLOBAL_RANGE     */ NULL,
-    /* NEW_GAME         */ NULL,
-    /* LOAD             */ NULL,
-    /* ERASE            */ NULL,
-    /* COPY             */ NULL,
-    /* OPTIONS          */ NULL,
-    /* EXTRAS           */ NULL,
-    /* DEBUG_MAP        */ NULL,
+    /* OPEN             */ NULL, // TODO
+    /* QUIT             */ NULL, /* PC only */
+    /* END_TURN         */ NULL, /* PC only */
+    /* UNITS            */ NULL, /* PC only */
+    /* CONVOY           */ NULL, /* PC only */
+    /* GLOBAL_RANGE     */ NULL, /* PC only */
+    /* NEW_GAME         */ NULL, /* PC only */
+    /* LOAD             */ NULL, /* PC only */
+    /* ERASE            */ NULL, /* PC only */
+    /* COPY             */ NULL, /* PC only */
+    /* OPTIONS          */ NULL, /* PC only */
+    /* EXTRAS           */ NULL, /* PC only */
+    /* DEBUG_MAP        */ NULL, /* PC only */
 };
 
 AI_Decider_Move AI_Decider_move[AI_MOVE_NUM] = {
@@ -401,6 +401,9 @@ void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
     /* -- Set npc_ent for waiting after combat -- */
     sota->selected_unit_entity = npc_ent;
 
+    /* -- Compute Combat outcome -- */
+    Game_Combat_Outcome(sota);
+
     Event_Emit(__func__, SDL_USEREVENT, event_Combat_Start, data1_entity, data2_entity);
 }
 
@@ -506,7 +509,7 @@ void AI_writeJSON(void *input,  cJSON *jai) {
     cJSON_AddItemToObject(jai, "priority_slave",    jpriority_slave);
     cJSON_AddItemToObject(jai, "move",              jmove);
     cJSON_AddItemToObject(jai, "target_move",       jtarget_move);
-    cJSON_AddItemToObject(jai, "turn_move",      jturn_move);
+    cJSON_AddItemToObject(jai, "turn_move",         jturn_move);
 }
 
 void Unit_Move_onMap_Animate(struct Game  *sota,  tnecs_entity entity,

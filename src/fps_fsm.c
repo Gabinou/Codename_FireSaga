@@ -85,9 +85,8 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
         struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->reinf_timer, Timer);
         SDL_assert(timer != NULL);
         u64 limit = sota->settings.enemy_turn_settings.pause_post_reinforcement;
-        if (timer->time_ns <= limit) {
+        if (timer->time_ns <= limit)
             return;
-        }
 
         tnecs_entity_destroy(sota->world, sota->reinf_timer);
         sota->reinf_timer = TNECS_NULL;
