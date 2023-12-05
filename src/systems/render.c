@@ -267,7 +267,7 @@ void Animate_Combat_onMap(tnecs_system_input *input) {
         struct Timer           *combat_timer    = &timer_arr[order];
 
         tnecs_world   *world       = input->world;
-        size_t           typeflag_id = input->entity_typeflag_id;
+        size_t         typeflag_id = input->entity_typeflag_id;
         tnecs_entity   entity      = world->entities_bytype[typeflag_id][order];
 
         Map_Combat_Animate(sota, entity, map_anim, combat_timer);

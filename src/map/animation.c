@@ -16,11 +16,10 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
                         struct CombatAnimation *map_anim, struct Timer *combat_timer) {
     SDL_assert(map_anim     != NULL);
     SDL_assert(combat_timer != NULL);
-
     b32 no_more_attacks = (map_anim->attack_ind >= sota->combat_forecast.attack_num);
     if (no_more_attacks || sota->combat_outcome.ended) {
         /* - Check for remaining attack, ending combat after pause - */
-        bool paused = ((combat_timer->time_ns / SOTA_ms) < map_anim->pause_after_ms);
+        bool paused = ((combat_timer->time_ns / SOTA_us) < map_anim->pause_after_ms);
         if (!paused) {
             tnecs_entity_destroy(sota->world, entity);
             Event_Emit(__func__, SDL_USEREVENT, event_Combat_End, NULL, NULL);
@@ -36,8 +35,9 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
     struct Timer *att_timer = TNECS_GET_COMPONENT(sota->world, attacker, Timer);
     SDL_assert(att_timer != NULL);
     att_timer->paused = ((combat_timer->time_ns / SOTA_us) < map_anim->pause_before_ms);
-    if (att_timer->paused)
+    if (att_timer->paused) {
         return;
+    }
 
     /* - Add RenderTop component to attacker - */
     if (!TNECS_ENTITY_HASCOMPONENT(sota->world, attacker, RenderTop)) {

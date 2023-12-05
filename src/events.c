@@ -1098,6 +1098,10 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     map_anim  = TNECS_GET_COMPONENT(sota->world, map_animation, CombatAnimation);
     *map_anim = CombatAnimation_default;
 
+    struct Timer *timer = TNECS_GET_COMPONENT(sota->world, map_animation, Timer);
+    *timer = Timer_default;
+    timer->time_ns = 0;
+
     /* - Hide pre combat popup, if it exists - */
     struct Menu *mc;
     mc = TNECS_GET_COMPONENT(sota->world, sota->pre_combat_menu, Menu);
@@ -1110,7 +1114,6 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
 
     struct Unit *aggressor = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Unit);
     struct Unit *defendant = TNECS_GET_COMPONENT(sota->world, sota->defendant, Unit);
-
     struct PopUp *popup    = TNECS_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_MAP_COMBAT],
                                                  PopUp);
     struct PopUp_Map_Combat *pmc = popup->data;
