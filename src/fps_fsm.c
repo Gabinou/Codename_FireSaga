@@ -97,7 +97,6 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     if (sota->ai_state.turn_over)
         return;
 
-
     /* -- Build list of npcs to control -- */
     if (sota->ai_state.init == false) {
         SDL_LogDebug(SOTA_LOG_AI, "Building NPC list");
