@@ -335,7 +335,7 @@ i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_world *world,
     SDL_assert(unit_movetype > UNIT_MVT_START);
     for (size_t i = 0; i < (map->col_len * map->row_len); i++) {
         #ifdef UNITS_IGNORE_TERRAIN
-        /* - Everything flies - */
+        /* - All units fly - */
         map->costmap[i] = COSTMAP_MIN;
 
         #else /* not UNITS_IGNORE_TERRAIN */

@@ -64,7 +64,7 @@
 #define INSTANT_DEATH_FRIENDLY /* FRIENDLIES dies instantly */
 #define INSTANT_DEATH_ENEMY /* ENEMIES dies instantly */
 
-#define UNITS_IGNORE_TERRAIN /* effectively makes costmap all ones */
+// #define UNITS_IGNORE_TERRAIN /* effectively makes costmap all ones */
 
 /* Puts all usable ultimate weapons in equipment of units*/
 #define ULTIMATE_WEAPONS_ALL
