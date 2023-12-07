@@ -34,16 +34,16 @@ void jsonio_Read_Reinforcement(struct cJSON         *_jreinf,
     reinf->army         = cJSON_GetNumberValue(jarmy);
     reinf->turn         = cJSON_GetNumberValue(jturn);
     reinf->levelups     = cJSON_GetNumberValue(jlevelups);
-    reinf->position.x   = cJSON_GetNumberValue(jrow);
-    reinf->position.y   = cJSON_GetNumberValue(jcol);
+    reinf->position.x   = cJSON_GetNumberValue(jcol);
+    reinf->position.y   = cJSON_GetNumberValue(jrow);
 }
 
 void jsonio_Write_Reinforcement(struct cJSON         *jreinf,
                                 struct Reinforcement *reinf) {
     SDL_assert(jreinf != NULL);
     struct cJSON *jai       = cJSON_CreateString(reinf->ai_filename.data);
-    struct cJSON *jrow      = cJSON_CreateNumber(reinf->position.x);
-    struct cJSON *jcol      = cJSON_CreateNumber(reinf->position.y);
+    struct cJSON *jcol      = cJSON_CreateNumber(reinf->position.x);
+    struct cJSON *jrow      = cJSON_CreateNumber(reinf->position.y);
     struct cJSON *jturn     = cJSON_CreateNumber(reinf->turn);
     struct cJSON *jarmy     = cJSON_CreateNumber(reinf->army);
     struct cJSON *jfilename = cJSON_CreateString(reinf->filename.data);

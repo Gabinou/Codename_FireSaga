@@ -679,8 +679,8 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     cJSON *jrow_max     = cJSON_GetObjectItem(jbounds, "row_max");
     cJSON *jcol_min     = cJSON_GetObjectItem(jbounds, "col_min");
     cJSON *jcol_max     = cJSON_GetObjectItem(jbounds, "col_max");
-    map->boundsmin.x    = cJSON_GetNumberValue(jrow_min);
-    map->boundsmax.x    = cJSON_GetNumberValue(jrow_max);
+    map->boundsmin.x    = cJSON_GetNumberValue(jcol_min);
+    map->boundsmax.x    = cJSON_GetNumberValue(jcol_max);
     map->boundsmin.y    = cJSON_GetNumberValue(jcol_min);
     map->boundsmax.y    = cJSON_GetNumberValue(jcol_max);
 
