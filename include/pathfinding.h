@@ -81,6 +81,10 @@ i32 *Taxicab_Circle_List(i32 *d, i32 *m, i32 v, i32 x, i32 y, size_t r, size_t c
 /* --- Pathfinding --- */
 void Pathfinding_Neighbour(struct Node *o, struct Node *c, struct Node ne);
 
+/* --- Distance --- */
+void Pathfinding_Distance(i32 *dist, i32 *cost, size_t rowl, size_t coll,
+                          struct Point target, struct Point stop);
+
 /* -- Astar -- */
 i32 *Pathfinding_Astar(i32 *path, i32 *cost, size_t rowl, size_t coll,
                        struct Point start, struct Point end, b32 forward);

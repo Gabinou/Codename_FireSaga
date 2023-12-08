@@ -212,6 +212,66 @@ i32 *Pathfinding_PathList_Backward(i32 *path, i32 *came_from, size_t col_len,
     return (path);
 }
 
+void Pathfinding_Distance(i32 *distmap, i32 *costmap, size_t row_len, size_t col_len,
+                          struct Point target, struct Point stop) {
+    size_t bytesize = row_len * col_len * sizeof(*distmap);
+    memset(distmap, 0, bytesize);
+
+    /* Frontier points queue, by priority. */
+    /* Lowest priority (movcost + distance) is top priority, at low index. */
+    struct Nodeq *frontier_queue = DARR_INIT(frontier_queue, struct Nodeq, row_len * col_len);
+    struct Nodeq current = {.x = target.x, .y = target.y};
+    struct Nodeq neighbour;
+    DARR_PUT(frontier_queue, current);
+
+    while (DARR_NUM(frontier_queue) > 0) {
+        current = DARR_POP(frontier_queue);
+        if ((current.x == stop.x) && (current.y == stop.y))
+            break;
+        int current_n = current.y * col_len + current.x;
+
+        /* -- Visit all square neighbours -- */
+        for (size_t n = 0; n < SQUARE_NEIGHBOURS; n++) {
+            /* Get next neighbour movement cost */
+            neighbour.x     = int_inbounds(q_cycle4_mzpz(n) + current.x, 0, col_len - 1);
+            neighbour.y     = int_inbounds(q_cycle4_zmzp(n) + current.y, 0, row_len - 1);
+
+            /* Skip neighbour if: is target */
+            bool istarget = ((target.x == neighbour.x) && (target.y == neighbour.y));
+            if (istarget)
+                continue;
+
+            int neighbour_n = neighbour.y * col_len + neighbour.x;
+
+            /* Compute conditions for adding neighbour to frontier */
+            /* Skip neighbour if: blocked */
+            if (costmap[neighbour_n] < MOVEMAP_MOVEABLEMIN)
+                continue;
+
+            int dist = distmap[current_n] + costmap[neighbour_n];
+
+            /* Skip neighbour if: already visited AND higher cost */
+            bool higher_cost  = (dist >= distmap[neighbour_n]);
+            bool visited      = (distmap[neighbour_n] > 0);
+            if (visited && higher_cost)
+                continue;
+
+            /* Find index to insert neighbour into priority queue. */
+            distmap[neighbour_n] = dist;
+
+            /* Djikstra algo only has cost in this step */
+            neighbour.priority = dist;
+
+            /* Find index to insert neighbour into priority queue. */
+            size_t index = DARR_NUM(frontier_queue);
+            while ((index > 0) && (neighbour.priority > frontier_queue[index - 1].priority))
+                index--;
+
+            DARR_INSERT(frontier_queue, neighbour, index);
+        }
+    }
+}
+
 /* Astar pathfinding + occupiable tiles, moving n tiles accross path to target */
 i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupymap,
                             size_t row_len, size_t col_len, int move,
@@ -243,8 +303,8 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
             break;
 
         /* -- Find closest tile to end in case we can't reach -- */
-        // Note: Use Manhnattan distance to find closest tile,
-        //       cause tiles close to end might be blocked
+        // Note:    Use Manhnattan distance to find closest tile,
+        //          cause tiles close to end might be blocked
         int current_dist = _Pathfinding_Manhattan(end.x, end.y, current.x, current.y);
         int closest_dist = _Pathfinding_Manhattan(end.x, end.y, closest.x, closest.y);
         if (current_dist < closest_dist) {
@@ -257,7 +317,7 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
             /* Get next neighbour movement cost */
             neighbour.x     = int_inbounds(q_cycle4_mzpz(n) + current.x, 0, col_len - 1);
             neighbour.y     = int_inbounds(q_cycle4_zmzp(n) + current.y, 0, row_len - 1);
-            int current_n   = neighbour.y * col_len + neighbour.x;
+            int current_n = neighbour.y * col_len + neighbour.x;
             neighbour.cost  = current.cost + costmap[current_n];
 
             /* Compute conditions for adding neighbour to frontier */
@@ -266,7 +326,7 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
                 continue;
 
             /* Skip neighbour if: cost greater than move */
-            if (neighbour.cost > move)
+            if ((neighbour.cost > move) && (move >= 0))
                 continue;
 
             /* Skip neighbour if: tile is occupied */
@@ -303,14 +363,19 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
     PathList_f backward_f   = &Pathfinding_PathList_Backward;
     PathList_f pathlist_f   = forward ? forward_f : backward_f;
 
+    /* End should be attained, even if not occupyable */
+    SDL_assert((current.x == end.x) && (current.y == end.y));
+
     /* Resetting path_list */
-    DARR_NUM(path_list) = 0;
-    if ((current.x == end.x) && (current.y == end.y))
-        /* End reached, get path to it*/
-        path_list = pathlist_f(path_list, came_from, col_len, start, end);
-    else
-        /* End NOT reached, get path to closest tile */
-        path_list = pathlist_f(path_list, came_from, col_len, start, closest);
+    // DARR_NUM(path_list) = 0;
+    /* End reached, get path to it*/
+    // If end if blocked
+    path_list = pathlist_f(path_list, came_from, col_len, start, end);
+    // If end is not blocked
+
+    // else
+    /* End NOT reached, get path to closest tile */
+    // path_list = pathlist_f(path_list, came_from, col_len, start, closest);
 
     SDL_free(cost);
     SDL_free(came_from);

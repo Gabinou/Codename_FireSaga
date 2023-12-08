@@ -328,6 +328,7 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
     path_list       = Pathfinding_Astar_plus(path_list, costmap, unitmap,
                                              row_len, col_len, move,
                                              start, target, true);
+    // TODO: FIX THIS! Number of tiles =/= movement cost!!!
     int point_num   = DARR_NUM(path_list) / TWO_D;
 
     /* -- target_move is furthest point along path unit can move to -- */
