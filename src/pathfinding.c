@@ -212,6 +212,36 @@ i32 *Pathfinding_PathList_Backward(i32 *path, i32 *came_from, size_t col_len,
     return (path);
 }
 
+/* --- Closest --- */
+struct Point Pathfinding_Closest_Unblocked(i32 *costmap, size_t row_len, size_t col_len,
+                                           struct Point target) {
+    SDL_assert(target.x >= 0);
+    SDL_assert(target.x < col_len);
+    SDL_assert(target.y >= 0);
+    SDL_assert(target.y < row_len);
+
+    /* Return target if unblocked */
+    if (costmap[target.y * col_len + target.x])
+        return (target);
+
+    /* Target is blocked */
+    struct Point out = {-1, -1};
+    size_t min_dist = row_len + col_len + 1;
+    for (u32 i = 0; i < row_len * col_len; i++) {
+        struct Point pnt = {i % col_len, i / col_len};
+        i32 dist = _Pathfinding_Manhattan(target.x, target.y, pnt.x, pnt.y);
+        if (dist < min_dist)
+            out = pnt;
+    }
+    return (out);
+}
+
+/* --- Distance --- */
+// Computes distance to walk to tile using costmap
+// - What should happen if target is blocked?
+//      - Find tile with closest manhattan distance
+//      - Use it as new target1
+
 void Pathfinding_Distance(i32 *distmap, i32 *costmap, size_t row_len, size_t col_len,
                           struct Point target, struct Point stop) {
     size_t bytesize = row_len * col_len * sizeof(*distmap);
@@ -228,6 +258,7 @@ void Pathfinding_Distance(i32 *distmap, i32 *costmap, size_t row_len, size_t col
         current = DARR_POP(frontier_queue);
         if ((current.x == stop.x) && (current.y == stop.y))
             break;
+
         int current_n = current.y * col_len + current.x;
 
         /* -- Visit all square neighbours -- */

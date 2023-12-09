@@ -26,8 +26,16 @@ only the enum NAMES gets STRINGIZE'd
 
 /* --- Flattened array indices --- */
 /* Note: [x -> col, y -> row, z ->depth] */
-#define sota_2D_index(x, y, x_len) (y * x_len + x)
+#define sota_2D_index(x, y, col_len) (y * col_len + x)
+// Revert 2D_index (y * col_len + x) to [x, y]:
+//  x: (index % col_len) removes the whole y part
+//  y: (index / col_len) truncates the not whole x part
 #define sota_3D_index(x, y, z, x_len, y_len) (z * x_len * y_len + y * x_len + x)
+// Revert 3D_index (z * col_len * row_len + y * col_len + x) to [x, y, z]:
+//  x: (index % col_len)                removes the whole z and y part
+//  y: ((index / col_len) % row_len)    removes the whole z part, truncates the x
+//  y: (index / (col_len * row_len))    truncates the not whole x, y parts
+
 
 /* --- Spritesheet index --- */
 /* Spritesheet example, 8 cols: */
@@ -37,8 +45,7 @@ only the enum NAMES gets STRINGIZE'd
 /*          |  --------         */
 /*          v  --------         */
 /*             --------         */
-/* Also used to place tiles on a tilemap */
-/* Note: [x -> col, y -> row] (y goes down) */
+
 #define sota_ss_x(ind, col_len) (ind % col_len)
 #define sota_ss_y(ind, col_len) (ind / col_len)
 

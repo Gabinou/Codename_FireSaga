@@ -324,6 +324,7 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
     i16 col_len     = sota->map->col_len;
 
     /* -- Pathfinding --  */
+    // Should target_move be used here instead of target_action?
     int *path_list  = DARR_INIT(path_list, int, 16);
     path_list       = Pathfinding_Astar_plus(path_list, costmap, unitmap,
                                              row_len, col_len, move,
