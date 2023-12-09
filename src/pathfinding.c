@@ -213,8 +213,67 @@ i32 *Pathfinding_PathList_Backward(i32 *path, i32 *came_from, size_t col_len,
 }
 
 /* --- Closest --- */
-struct Point Pathfinding_Closest_Unblocked(i32 *costmap, size_t row_len, size_t col_len,
-                                           struct Point target) {
+// Find tile with the lowest distance next to a blocked tile, EXCLUDING target
+//  - ALSO should be connected to blocked target
+struct Point Pathfinding_Closest_Unblocked(i32 *distmap, size_t row_len, size_t col_len,
+                                           struct Point start, struct Point target) {
+    SDL_assert((target.x >= 0) && (target.x < col_len));
+    SDL_assert((target.y >= 0) && (target.y < row_len));
+    SDL_assert((start.x  >= 0) && (start.x  < col_len));
+    SDL_assert((start.y  >= 0) && (start.y  < row_len));
+
+    int min_dist = row_len + col_len + 2;
+    /* Frontier points queue, by priority. */
+    /* Lowest priority (movcost + distance) is top priority, at low index. */
+    struct Nodeq *frontier_queue = DARR_INIT(frontier_queue, struct Nodeq, row_len * col_len);
+    struct Nodeq current = {.x = target.x, .y = target.y, .cost = 0, .priority = 0};
+    struct Nodeq neighbour;
+    DARR_PUT(frontier_queue, current);
+    struct Point out = {-1, -1};
+
+    while (DARR_NUM(frontier_queue) > 0) {
+        current = DARR_POP(frontier_queue);
+
+        /* - End loop when target point is reached - */
+        // SHOULD NOT HAPPEND -> target is blocked
+        if ((current.x == target.x) && (current.y == target.y))
+            break;
+
+        /* -- Visit all square neighbours -- */
+        for (size_t n = 0; n < SQUARE_NEIGHBOURS; n++) {
+            /* Get next neighbour movement cost */
+            neighbour.x     = int_inbounds(q_cycle4_mzpz(n) + current.x, 0, col_len - 1);
+            neighbour.y     = int_inbounds(q_cycle4_zmzp(n) + current.y, 0, row_len - 1);
+            int current_n = neighbour.y * col_len + neighbour.x;
+
+            /* Compute conditions for adding neighbour to frontier */
+            /* Skip neighbour if: not blocked */
+            if (costmap[current_n] >= MOVEMAP_MOVEABLEMIN) {
+                int dist = distmap[current_n];
+                if (dist < min_dist) {
+                    dist = min_dist;
+                    out.x = neighbour.x; 
+                    out.y = neighbour.y;
+                }
+                continue;
+            }
+
+            /* Skip neighbour if: already visited AND higher cost */
+            bool visited = neighbour.priority;
+            if (visited)
+                continue;
+
+            neighbour.priority = 1;
+            DARR_INSERT(frontier_queue, neighbour, 0);
+        }
+    }
+    
+    DARR_FREE(frontier_queue);
+    return(out);
+}
+
+struct Point Pathfinding_Closest_Unblocked_Manhattan(i32 *costmap, size_t row_len, size_t col_len,
+                                                     struct Point target) {
     SDL_assert(target.x >= 0);
     SDL_assert(target.x < col_len);
     SDL_assert(target.y >= 0);
@@ -241,7 +300,6 @@ struct Point Pathfinding_Closest_Unblocked(i32 *costmap, size_t row_len, size_t 
 // - What should happen if target is blocked?
 //      - Find tile with closest manhattan distance
 //      - Use it as new target1
-
 void Pathfinding_Distance(i32 *distmap, i32 *costmap, size_t row_len, size_t col_len,
                           struct Point target, struct Point stop) {
     size_t bytesize = row_len * col_len * sizeof(*distmap);
@@ -276,8 +334,9 @@ void Pathfinding_Distance(i32 *distmap, i32 *costmap, size_t row_len, size_t col
 
             /* Compute conditions for adding neighbour to frontier */
             /* Skip neighbour if: blocked */
-            if (costmap[neighbour_n] < MOVEMAP_MOVEABLEMIN)
+            if (costmap[neighbour_n] < MOVEMAP_MOVEABLEMIN) {
                 continue;
+            }
 
             int dist = distmap[current_n] + costmap[neighbour_n];
 
@@ -301,6 +360,7 @@ void Pathfinding_Distance(i32 *distmap, i32 *costmap, size_t row_len, size_t col
             DARR_INSERT(frontier_queue, neighbour, index);
         }
     }
+    DARR_FREE(frontier_queue);
 }
 
 /* Astar pathfinding + occupiable tiles, moving n tiles accross path to target */

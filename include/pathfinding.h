@@ -86,8 +86,14 @@ void Pathfinding_Neighbour(struct Node *o, struct Node *c, struct Node ne);
 void Pathfinding_Distance(i32 *dist, i32 *cost, size_t rowl, size_t coll,
                           struct Point target, struct Point stop);
 /* --- Closest --- */
-struct Point Pathfinding_Closest_Unblocked(i32 *cost, size_t rowl, size_t coll,
+// target and surrounding tiles should be blocked.
+//  -> NOT for unblocked tiles on the other side of a blocking wall!!!
+struct Point Pathfinding_Closest_Unblocked_Manhattan(i32 *cost, size_t rowl, size_t coll,
                                            struct Point target);
+
+// start and surrounding tiles should be blocked.
+struct Point Pathfinding_Closest_Unblocked(i32 *distmap, size_t rowl, size_t coll,
+                                           struct Point start, struct Point target);
 
 /* -- Astar -- */
 i32 *Pathfinding_Astar(i32 *path, i32 *cost, size_t rowl, size_t coll,
