@@ -64,6 +64,12 @@ enum SIGHTMAP_CODES {
     SIGHTMAP_FRIENDLY       = 4,
     SIGHTMAP_BLOCKED        = 5,
 };
+enum DISTMAP {
+    DISTMAP_BLOCKED = 1000,
+};
+
+/* -- Utilities -- */
+struct Nodeq *Pathfinding_Frontier_Insert(struct Nodeq *fq, struct Nodeq i);
 
 /* --- Manhattan distance --- */
 i32 _Pathfinding_Manhattan(i32 x_0, i32 y_0, i32 x_1, i32 y_1);
@@ -82,14 +88,15 @@ i32 *Taxicab_Circle_List(i32 *d, i32 *m, i32 v, i32 x, i32 y, size_t r, size_t c
 void Pathfinding_Neighbour(struct Node *o, struct Node *c, struct Node ne);
 
 /* --- Distance --- */
-// How close is tile to target in movement cost
+// How close is tile to target in movement cost.
+//      - Finds the closest distance through walls
 void Pathfinding_Distance(i32 *dist, i32 *cost, size_t rowl, size_t coll,
                           struct Point target, struct Point stop);
 /* --- Closest --- */
 // target and surrounding tiles should be blocked.
 //  -> NOT for unblocked tiles on the other side of a blocking wall!!!
 struct Point Pathfinding_Closest_Unblocked_Manhattan(i32 *cost, size_t rowl, size_t coll,
-                                           struct Point target);
+                                                     struct Point target);
 
 // start and surrounding tiles should be blocked.
 struct Point Pathfinding_Closest_Unblocked(i32 *distmap, size_t rowl, size_t coll,
@@ -172,5 +179,7 @@ i32 *Pathfinding_Moveto_Hex(i32 *costmap, size_t row_len, size_t depth_len,
                             struct Pointf start, i32 move, int mode_output);
 i32 *Pathfinding_Visible_Hex(i32 *blockmap, size_t depth_len, size_t col_len,
                              struct Pointf start, i32 sight, int mode);
+
+
 
 #endif /* PATHFINDING_H */

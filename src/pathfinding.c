@@ -248,11 +248,11 @@ struct Point Pathfinding_Closest_Unblocked(i32 *distmap, size_t row_len, size_t 
 
             /* Compute conditions for adding neighbour to frontier */
             /* Skip neighbour if: not blocked */
-            if (costmap[current_n] >= MOVEMAP_MOVEABLEMIN) {
+            if (distmap[current_n] >= MOVEMAP_MOVEABLEMIN) {
                 int dist = distmap[current_n];
                 if (dist < min_dist) {
                     dist = min_dist;
-                    out.x = neighbour.x; 
+                    out.x = neighbour.x;
                     out.y = neighbour.y;
                 }
                 continue;
@@ -267,9 +267,9 @@ struct Point Pathfinding_Closest_Unblocked(i32 *distmap, size_t row_len, size_t 
             DARR_INSERT(frontier_queue, neighbour, 0);
         }
     }
-    
+
     DARR_FREE(frontier_queue);
-    return(out);
+    return (out);
 }
 
 struct Point Pathfinding_Closest_Unblocked_Manhattan(i32 *costmap, size_t row_len, size_t col_len,
@@ -302,6 +302,8 @@ struct Point Pathfinding_Closest_Unblocked_Manhattan(i32 *costmap, size_t row_le
 //      - Use it as new target1
 void Pathfinding_Distance(i32 *distmap, i32 *costmap, size_t row_len, size_t col_len,
                           struct Point target, struct Point stop) {
+    SDL_assert((target.x >= 0) && (target.x < col_len));
+    printf("Pathfinding_Distance\n");
     size_t bytesize = row_len * col_len * sizeof(*distmap);
     memset(distmap, 0, bytesize);
 
@@ -330,19 +332,28 @@ void Pathfinding_Distance(i32 *distmap, i32 *costmap, size_t row_len, size_t col
             if (istarget)
                 continue;
 
-            int neighbour_n = neighbour.y * col_len + neighbour.x;
+            i32 neighbour_n = neighbour.y * col_len + neighbour.x;
 
             /* Compute conditions for adding neighbour to frontier */
-            /* Skip neighbour if: blocked */
+            i32 dist;
             if (costmap[neighbour_n] < MOVEMAP_MOVEABLEMIN) {
-                continue;
+                // DISTMAP_BLOCKED bigger than any distance travelled
+                //  -> Always know which tiles are blocked
+                //  -> Still can be used to compute distance through walls
+                //  -> Very low priority. If any open region exists beyond the wall,
+                //     only the closest trajectory will be opened
+                dist = distmap[current_n] + DISTMAP_BLOCKED + 1;
+            } else {
+                //  If tile is unblocked, compute distance by removing blocked component
+                //  -> Compute distance even through walls
+                dist = (distmap[current_n] % DISTMAP_BLOCKED) + costmap[neighbour_n];
             }
 
-            int dist = distmap[current_n] + costmap[neighbour_n];
+            /* Skip neighbour if: already visited AND higher cost AN */
+            bool current_blocked    = (dist >= distmap[neighbour_n]);
 
-            /* Skip neighbour if: already visited AND higher cost */
-            bool higher_cost  = (dist >= distmap[neighbour_n]);
-            bool visited      = (distmap[neighbour_n] > 0);
+            bool higher_cost        = (dist >= distmap[neighbour_n]);
+            bool visited            = (distmap[neighbour_n] > 0);
             if (visited && higher_cost)
                 continue;
 
@@ -353,14 +364,26 @@ void Pathfinding_Distance(i32 *distmap, i32 *costmap, size_t row_len, size_t col
             neighbour.priority = dist;
 
             /* Find index to insert neighbour into priority queue. */
-            size_t index = DARR_NUM(frontier_queue);
-            while ((index > 0) && (neighbour.priority > frontier_queue[index - 1].priority))
-                index--;
-
-            DARR_INSERT(frontier_queue, neighbour, index);
+            frontier_queue = Pathfinding_Frontier_Insert(frontier_queue, neighbour);
         }
+        // matrix_print(distmap, row_len, col_len);
+        // printf("\n");
+        // getchar();
     }
+    // for (int i = 0; i < row_len * col_len; i++) {
+    //     if (distmap[i] > DISTMAP_BLOCKED)
+    //         distmap[i] = 0;
+    // }
     DARR_FREE(frontier_queue);
+}
+
+struct Nodeq *Pathfinding_Frontier_Insert(struct Nodeq *frontier_queue, struct Nodeq insert) {
+    size_t index = DARR_NUM(frontier_queue);
+    while ((index > 0) && (insert.priority > frontier_queue[index - 1].priority))
+        index--;
+
+    DARR_INSERT(frontier_queue, insert, index);
+    return (frontier_queue);
 }
 
 /* Astar pathfinding + occupiable tiles, moving n tiles accross path to target */
@@ -439,15 +462,17 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
             neighbour.priority = neighbour.cost + distance;
 
             /* Find index to insert neighbour into priority queue. */
-            size_t index = DARR_NUM(frontier_queue);
-            while ((index > 0) && (neighbour.priority > frontier_queue[index - 1].priority))
-                index--;
+            frontier_queue = Pathfinding_Frontier_Insert(frontier_queue, neighbour);
 
-            DARR_INSERT(frontier_queue, neighbour, index);
-            struct Point move = {neighbour.x - current.x, neighbour.y - current.y};
+            // size_t index = DARR_NUM(frontier_queue);
+            // while ((index > 0) && (neighbour.priority > frontier_queue[index - 1].priority))
+            //     index--;
+
+            // DARR_INSERT(frontier_queue, neighbour, index);
+            struct Point movep = {neighbour.x - current.x, neighbour.y - current.y};
 
             /* Update came_from, to build better path */
-            came_from[current_n] = Ternary_Direction(move);
+            came_from[current_n] = Ternary_Direction(movep);
         }
     }
     PathList_f forward_f    = &Pathfinding_PathList_Forward;
