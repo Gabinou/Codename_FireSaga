@@ -600,12 +600,10 @@ void test_pathfinding_distance() {
             0,  0,  0,  0,  0, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
             0,  0,  0,  0,  0,  0, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
         };
-        printf("Pathfinding_Distance in \n");
         Pathfinding_Distance(distmap, costmap, ROW_LEN, COL_LEN, end, start);
-        printf("Pathfinding_Distance out \n");
         // matrix_print(distmap, ROW_LEN, COL_LEN);
-        // for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
-        //     nourstest_true(distmap[i] == expected_distmap[i]);
+        for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
+            nourstest_true(distmap[i] == expected_distmap[i]);
     }
 
     {

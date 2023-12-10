@@ -330,15 +330,15 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
                                              row_len, col_len, move,
                                              start, target, true);
     // TODO: FIX THIS! Number of tiles =/= movement cost!!!
-    int point_num   = DARR_NUM(path_list) / TWO_D;
 
-    /* -- target_move is furthest point along path unit can move to -- */
-    SDL_assert((move > 0) && (move < SOTA_MAX_MOVEMENT));
-    int minimum     = (point_num - 1) < move ? (point_num - 1) : move;
-    if (minimum > 1) {
-        action->target_move.x = path_list[minimum * TWO_D];
-        action->target_move.y = path_list[minimum * TWO_D + 1];
-    }
+    // /* -- target_move is furthest point along path unit can move to -- */
+    // SDL_assert((move > 0) && (move < SOTA_MAX_MOVEMENT));
+    // if (minimum > 1) {
+    int point_num   = DARR_NUM(path_list) / TWO_D - 1;
+    // int num     = (point_num - 1) < move ? (point_num - 1) : move;
+    action->target_move.x = path_list[point_num * TWO_D];
+    action->target_move.y = path_list[point_num * TWO_D + 1];
+    // }
 
     DARR_FREE(path_list);
 }
