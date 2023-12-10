@@ -308,7 +308,6 @@ void Pathfinding_Distance_Plus(i32 *distmap, i32 *costmap, tnecs_entity *enemy_o
                                size_t row_len, size_t col_len,
                                struct Point target, struct Point stop) {
     SDL_assert((target.x >= 0) && (target.x < col_len));
-    printf("Pathfinding_Distance\n");
     size_t bytesize = row_len * col_len * sizeof(*distmap);
     memset(distmap, 0, bytesize);
 
@@ -357,7 +356,7 @@ void Pathfinding_Distance_Plus(i32 *distmap, i32 *costmap, tnecs_entity *enemy_o
 
             /* Compute distance from occupymap */
             // short-circuit on NULL occupymap
-            // Overwrites distmap
+            // Overwrites distmap, higher priority than walls
             if ((enemy_occupymap != NULL) && (enemy_occupymap[neighbour_n] != TNECS_NULL))
                 dist = distmap[current_n] + DISTMAP_OCCUPIED + 1;
 
@@ -406,19 +405,13 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
     /* -- Checks -- */
     SDL_assert((start.x != end.x) || (start.y != end.y));
     SDL_assert(costmap[start.y * col_len + start.x] >= MOVEMAP_MOVEABLEMIN);
-    // SDL_assert(costmap[end.y   * col_len + end.x]   >= MOVEMAP_MOVEABLEMIN);
 
     /* Alloc variables */
     i32 *cost       = calloc(row_len * col_len, sizeof(*cost));
     i32 *came_from  = calloc(row_len * col_len, sizeof(*came_from));
     i32 *distmap    = calloc(row_len * col_len, sizeof(*distmap));
     Pathfinding_Distance(distmap, costmap, row_len, col_len, end, start);
-    struct Point closest = start; /* In case target is blocked*/
-    // SDL_Log("start %d %d", start.x, start.y);
-    // SDL_Log("end %d %d", end.x, end.y);
-    // matrix_print(distmap, row_len, col_len);
-    // SDL_Log("dist %d", distmap[closest.y * col_len + closest.x]);
-    // getchar();
+    struct Point closest = start; /* In case target is blocked */
     struct Nodeq current = {.x = start.x, .y = start.y, .cost = 0};
     struct Nodeq neighbour;
 
@@ -496,12 +489,6 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
     PathList_f backward_f   = &Pathfinding_PathList_Backward;
     PathList_f pathlist_f   = forward ? forward_f : backward_f;
 
-    /* End should be attained, even if not occupyable */
-
-    /* Resetting path_list */
-    // DARR_NUM(path_list) = 0;
-    SDL_Log("closest %d %d", closest.x, closest.y);
-    // getchar();
     if ((current.x == end.x) && (current.y == end.y)) {
         /* End reached, get path to it*/
         path_list = pathlist_f(path_list, came_from, col_len, start, end);

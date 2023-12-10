@@ -311,7 +311,7 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
     /* -- Move to closest tile on way to target_action -- */
     /* -- Compute costmap for pathfinding -- */
     Map_Costmap_Movement_Compute(sota->map, sota->world, npc_ent);
-    i32 *costmap        = sota->map->costmap;
+    i32 *costmap            = sota->map->costmap;
     tnecs_entity *unitmap   = sota->map->unitmap;
     int move                = Unit_computeMove(npc);
     SDL_assert(costmap != NULL);
@@ -324,21 +324,15 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
     i16 col_len     = sota->map->col_len;
 
     /* -- Pathfinding --  */
-    // Should target_move be used here instead of target_action?
+    // QUESTION: Should target_move be used here instead of target_action?
     int *path_list  = DARR_INIT(path_list, int, 16);
     path_list       = Pathfinding_Astar_plus(path_list, costmap, unitmap,
                                              row_len, col_len, move,
                                              start, target, true);
-    // TODO: FIX THIS! Number of tiles =/= movement cost!!!
 
-    // /* -- target_move is furthest point along path unit can move to -- */
-    // SDL_assert((move > 0) && (move < SOTA_MAX_MOVEMENT));
-    // if (minimum > 1) {
     int point_num   = DARR_NUM(path_list) / TWO_D - 1;
-    // int num     = (point_num - 1) < move ? (point_num - 1) : move;
     action->target_move.x = path_list[point_num * TWO_D];
     action->target_move.y = path_list[point_num * TWO_D + 1];
-    // }
 
     DARR_FREE(path_list);
 }
