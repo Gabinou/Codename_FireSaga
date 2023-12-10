@@ -64,6 +64,7 @@ enum SIGHTMAP_CODES {
     SIGHTMAP_FRIENDLY       = 4,
     SIGHTMAP_BLOCKED        = 5,
 };
+
 enum DISTMAP {
     DISTMAP_BLOCKED = 1000,
 };
@@ -89,7 +90,8 @@ void Pathfinding_Neighbour(struct Node *o, struct Node *c, struct Node ne);
 
 /* --- Distance --- */
 // How close is tile to target in movement cost.
-//      - Finds the closest distance through walls
+//  - No consideration for occupied tiles -> TODO higher priority than walls
+//  - No consideration for breakable tiles
 void Pathfinding_Distance(i32 *dist, i32 *cost, size_t rowl, size_t coll,
                           struct Point target, struct Point stop);
 /* --- Closest --- */

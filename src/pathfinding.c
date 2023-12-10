@@ -370,10 +370,10 @@ void Pathfinding_Distance(i32 *distmap, i32 *costmap, size_t row_len, size_t col
         // printf("\n");
         // getchar();
     }
-    // for (int i = 0; i < row_len * col_len; i++) {
-    //     if (distmap[i] > DISTMAP_BLOCKED)
-    //         distmap[i] = 0;
-    // }
+    for (int i = 0; i < row_len * col_len; i++) {
+        if (distmap[i] > DISTMAP_BLOCKED)
+            distmap[i] = 0;
+    }
     DARR_FREE(frontier_queue);
 }
 
