@@ -66,7 +66,8 @@ enum SIGHTMAP_CODES {
 };
 
 enum DISTMAP {
-    DISTMAP_BLOCKED = 1000,
+    DISTMAP_BLOCKED     = 10000,
+    DISTMAP_OCCUPIED    =  1000,
 };
 
 /* -- Utilities -- */
@@ -80,7 +81,6 @@ i32  Pathfinding_Manhattan(struct Point start, struct Point end);
 /* Taxicabs can't move diagonal so manhattan distance: abs(x1-x2) + abs(y1-ys2)
  * Manhattan (distance) used to trace 'circles' on square tilemap
  * Returns: Find points at distance [range_min, range_max] dist from [x, y]
- * Returns: Find points at distance [range_min, range_max] dist from [x, y]
  */
 void Taxicab_Circle(             i32 *m, i32 v, i32 x, i32 y, size_t r, size_t c, struct Range *R);
 i32 *Taxicab_Circle_List(i32 *d, i32 *m, i32 v, i32 x, i32 y, size_t r, size_t c, struct Range *R);
@@ -90,8 +90,8 @@ void Pathfinding_Neighbour(struct Node *o, struct Node *c, struct Node ne);
 
 /* --- Distance --- */
 // How close is tile to target in movement cost.
-//  - No consideration for occupied tiles -> TODO higher priority than walls
-//  - No consideration for breakable tiles
+//  - No consideration for occupied tiles   -> TODO higher priority than walls
+//  - No consideration for breakable tiles  -> Okay
 void Pathfinding_Distance(i32 *dist, i32 *cost, size_t rowl, size_t coll,
                           struct Point target, struct Point stop);
 /* --- Closest --- */
