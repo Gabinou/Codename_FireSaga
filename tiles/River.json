@@ -10,15 +10,15 @@
 			"Heal":	0
 		},
 		"MvtCost":	{
-			"foot_slow":	5,
-			"foot_fast":	4,
-			"mages":	5,
+			"foot_slow":	0,
+			"foot_fast":	0,
+			"mages":	0,
 			"fliers":	1,
 			"riders_slow":	0,
 			"riders_fast":	0,
 			"armors":	0,
-			"pirates":	2,
-			"bandits":	4
+			"pirates":	0,
+			"bandits":	0
 		}
 	}
 }

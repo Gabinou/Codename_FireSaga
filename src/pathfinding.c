@@ -411,9 +411,16 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
     /* Alloc variables */
     i32 *cost       = calloc(row_len * col_len, sizeof(*cost));
     i32 *came_from  = calloc(row_len * col_len, sizeof(*came_from));
+    i32 *distmap    = calloc(row_len * col_len, sizeof(*distmap));
+    Pathfinding_Distance(distmap, costmap, row_len, col_len, end, start);
+    struct Point closest = start; /* In case target is blocked*/
+    // SDL_Log("start %d %d", start.x, start.y);
+    // SDL_Log("end %d %d", end.x, end.y);
+    // matrix_print(distmap, row_len, col_len);
+    // SDL_Log("dist %d", distmap[closest.y * col_len + closest.x]);
+    // getchar();
     struct Nodeq current = {.x = start.x, .y = start.y, .cost = 0};
     struct Nodeq neighbour;
-    struct Point closest = start; /* In case target is blocked*/
 
     /* Frontier points queue, by priority. */
     /* Lowest priority (movcost + distance) is top priority, at low index. */
@@ -430,9 +437,9 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
         /* -- Find closest tile to end in case we can't reach -- */
         // Note:    Use Manhnattan distance to find closest tile,
         //          cause tiles close to end might be blocked
-        int current_dist = _Pathfinding_Manhattan(end.x, end.y, current.x, current.y);
-        int closest_dist = _Pathfinding_Manhattan(end.x, end.y, closest.x, closest.y);
-        if (current_dist < closest_dist) {
+        int current_dist = distmap[current.y * col_len + current.x];
+        int closest_dist = distmap[closest.y * col_len + closest.x];
+        if ((closest_dist != 0) && (current_dist < closest_dist)) {
             closest.x = current.x;
             closest.y = current.y;
         }
@@ -448,6 +455,10 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
             /* Compute conditions for adding neighbour to frontier */
             /* Skip neighbour if: blocked */
             if (costmap[current_n] < MOVEMAP_MOVEABLEMIN)
+                continue;
+
+            /* Skip neighbour if: blocked */
+            if (distmap[current_n] < MOVEMAP_MOVEABLEMIN)
                 continue;
 
             /* Skip neighbour if: cost greater than move */
@@ -466,18 +477,13 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
                 continue;
 
             /* distance is heuristic for closeness to goal */
-            size_t distance = _Pathfinding_Manhattan(end.x, end.y, neighbour.x, neighbour.y);
             cost[current_n] = neighbour.cost;
 
             /* Djikstra algo only has cost in this step */
-            neighbour.priority = neighbour.cost + distance;
+            neighbour.priority = neighbour.cost + distmap[current_n];
 
             /* Find index to insert neighbour into priority queue. */
             frontier_queue = Pathfinding_Frontier_Insert(frontier_queue, neighbour);
-
-            // size_t index = DARR_NUM(frontier_queue);
-            // while ((index > 0) && (neighbour.priority > frontier_queue[index - 1].priority))
-            //     index--;
 
             // DARR_INSERT(frontier_queue, neighbour, index);
             struct Point movep = {neighbour.x - current.x, neighbour.y - current.y};
@@ -491,21 +497,22 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
     PathList_f pathlist_f   = forward ? forward_f : backward_f;
 
     /* End should be attained, even if not occupyable */
-    SDL_assert((current.x == end.x) && (current.y == end.y));
 
     /* Resetting path_list */
     // DARR_NUM(path_list) = 0;
-    /* End reached, get path to it*/
-    // If end if blocked
-    path_list = pathlist_f(path_list, came_from, col_len, start, end);
-    // If end is not blocked
-
-    // else
-    /* End NOT reached, get path to closest tile */
-    // path_list = pathlist_f(path_list, came_from, col_len, start, closest);
+    SDL_Log("closest %d %d", closest.x, closest.y);
+    // getchar();
+    if ((current.x == end.x) && (current.y == end.y)) {
+        /* End reached, get path to it*/
+        path_list = pathlist_f(path_list, came_from, col_len, start, end);
+    } else {
+        /* End NOT reached, get path to closest tile */
+        path_list = pathlist_f(path_list, came_from, col_len, start, closest);
+    }
 
     SDL_free(cost);
     SDL_free(came_from);
+    SDL_free(distmap);
     DARR_FREE(frontier_queue);
 
     return (path_list);

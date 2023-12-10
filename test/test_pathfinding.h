@@ -844,8 +844,8 @@ void test_pathfinding_distance() {
 void test_pathfinding() {
     // test_pathfinding_sight();
     // test_pathfinding_Astar();
-    // test_pathfinding_Astar_end_blocked();
-    test_pathfinding_distance();
+    test_pathfinding_Astar_end_blocked();
+    // test_pathfinding_distance();
     // test_pathfinding_attackfrom();
 }
 
