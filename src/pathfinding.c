@@ -297,11 +297,16 @@ struct Point Pathfinding_Closest_Unblocked_Manhattan(i32 *costmap, size_t row_le
 
 /* --- Distance --- */
 // Computes distance to walk to tile using costmap
-// - What should happen if target is blocked?
-//      - Find tile with closest manhattan distance
-//      - Use it as new target1
+// - Special rules to copmpute distance through walls
+//      - Find tiles next to closest/thinnest walls
 void Pathfinding_Distance(i32 *distmap, i32 *costmap, size_t row_len, size_t col_len,
                           struct Point target, struct Point stop) {
+    Pathfinding_Distance_Plus(distmap, costmap, NULL, row_len, col_len, target, stop);
+}
+
+void Pathfinding_Distance_Plus(i32 *distmap, i32 *costmap, tnecs_entity *enemy_occupymap,
+                               size_t row_len, size_t col_len,
+                               struct Point target, struct Point stop) {
     SDL_assert((target.x >= 0) && (target.x < col_len));
     printf("Pathfinding_Distance\n");
     size_t bytesize = row_len * col_len * sizeof(*distmap);
@@ -335,6 +340,7 @@ void Pathfinding_Distance(i32 *distmap, i32 *costmap, size_t row_len, size_t col
             i32 neighbour_n = neighbour.y * col_len + neighbour.x;
 
             /* Compute conditions for adding neighbour to frontier */
+            /* Compute distance from costmap */
             i32 dist;
             if (costmap[neighbour_n] < MOVEMAP_MOVEABLEMIN) {
                 // DISTMAP_BLOCKED bigger than any distance travelled
@@ -346,12 +352,16 @@ void Pathfinding_Distance(i32 *distmap, i32 *costmap, size_t row_len, size_t col
             } else {
                 //  If tile is unblocked, compute distance by removing blocked component
                 //  -> Compute distance even through walls
-                dist = (distmap[current_n] % DISTMAP_BLOCKED) + costmap[neighbour_n];
+                dist = (distmap[current_n] % DISTMAP_OCCUPIED) + costmap[neighbour_n];
             }
 
-            /* Skip neighbour if: already visited AND higher cost AN */
-            bool current_blocked    = (dist >= distmap[neighbour_n]);
+            /* Compute distance from occupymap */
+            // short-circuit on NULL occupymap
+            // Overwrites distmap
+            if ((enemy_occupymap != NULL) && (enemy_occupymap[neighbour_n] != TNECS_NULL))
+                dist = distmap[current_n] + DISTMAP_OCCUPIED + 1;
 
+            /* Skip neighbour if: already visited AND higher cost AN */
             bool higher_cost        = (dist >= distmap[neighbour_n]);
             bool visited            = (distmap[neighbour_n] > 0);
             if (visited && higher_cost)
@@ -370,12 +380,14 @@ void Pathfinding_Distance(i32 *distmap, i32 *costmap, size_t row_len, size_t col
         // printf("\n");
         // getchar();
     }
-    for (int i = 0; i < row_len * col_len; i++) {
-        if (distmap[i] > DISTMAP_BLOCKED)
-            distmap[i] = 0;
-    }
+    // for (int i = 0; i < row_len * col_len; i++) {
+    //     if (distmap[i] > DISTMAP_BLOCKED)
+    //         distmap[i] = 0;
+    // }
     DARR_FREE(frontier_queue);
 }
+
+
 
 struct Nodeq *Pathfinding_Frontier_Insert(struct Nodeq *frontier_queue, struct Nodeq insert) {
     size_t index = DARR_NUM(frontier_queue);

@@ -133,6 +133,7 @@ struct Map {
     float *fcostmap;            /* 2D dynamic array */
     float *fmovemap;            /* 2D dynamic array */
     tnecs_entity *unitmap;      /* [row * col_len + col], occupymap */
+    tnecs_entity *occupymap;    /* [row * col_len + col], friendlies only, enemies only... */
 
     /* --- PALETTES --- */
     SDL_Palette *palette_default;

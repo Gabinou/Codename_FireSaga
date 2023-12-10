@@ -90,10 +90,19 @@ void Pathfinding_Neighbour(struct Node *o, struct Node *c, struct Node ne);
 
 /* --- Distance --- */
 // How close is tile to target in movement cost.
-//  - No consideration for occupied tiles   -> TODO higher priority than walls
-//  - No consideration for breakable tiles  -> Okay
-void Pathfinding_Distance(i32 *dist, i32 *cost, size_t rowl, size_t coll,
-                          struct Point target, struct Point stop);
+//  - Computes distance through walls 
+//      - Walls have very low priority.
+//      - Weird distances through walls if no early stop conditions
+//  - Lower distances through occupied tiles than through walls. 
+//  - No consideration for breakable tiles -> Okay
+void Pathfinding_Distance(i32         *dist,    i32         *cost,
+                          size_t       rowl,    size_t       coll,
+                          struct Point target,  struct Point stop);
+
+void Pathfinding_Distance_Plus(i32         *dist,   i32         *cost, tnecs_entity *enoc,
+                               size_t       rowl,   size_t       coll,
+                               struct Point target, struct Point stop);
+
 /* --- Closest --- */
 // target and surrounding tiles should be blocked.
 //  -> NOT for unblocked tiles on the other side of a blocking wall!!!
