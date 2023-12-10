@@ -25,7 +25,7 @@ enum PATHFINDING_MODE_MOVETILE {
 // 2. Everything DOABLE     is  > 0 ex: move to, visible, attack to
 //     - A costmap for movement can ALSO be used as a blockmap for vision
 //          -> Only if units cannot block vision.
-enum PATHFINDING_costmap {
+enum PATHFINDING_COSTMAP {
     COSTMAP_BLOCKED     = 0,
     COSTMAP_MIN         = 1,
 };
@@ -66,6 +66,7 @@ enum SIGHTMAP_CODES {
 };
 
 enum DISTMAP {
+    /* Special blocked values, to find distances through walls and occupied tiles */
     DISTMAP_BLOCKED     = 10000,
     DISTMAP_OCCUPIED    =  1000,
 };
@@ -90,10 +91,10 @@ void Pathfinding_Neighbour(struct Node *o, struct Node *c, struct Node ne);
 
 /* --- Distance --- */
 // How close is tile to target in movement cost.
-//  - Computes distance through walls 
+//  - Computes distance through walls
 //      - Walls have very low priority.
 //      - Weird distances through walls if no early stop conditions
-//  - Lower distances through occupied tiles than through walls. 
+//  - Lower distances through occupied tiles than through walls.
 //  - No consideration for breakable tiles -> Okay
 void Pathfinding_Distance(i32         *dist,    i32         *cost,
                           size_t       rowl,    size_t       coll,

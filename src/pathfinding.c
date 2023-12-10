@@ -376,14 +376,13 @@ void Pathfinding_Distance_Plus(i32 *distmap, i32 *costmap, tnecs_entity *enemy_o
             /* Find index to insert neighbour into priority queue. */
             frontier_queue = Pathfinding_Frontier_Insert(frontier_queue, neighbour);
         }
-        // matrix_print(distmap, row_len, col_len);
-        // printf("\n");
-        // getchar();
     }
-    // for (int i = 0; i < row_len * col_len; i++) {
-    //     if (distmap[i] > DISTMAP_BLOCKED)
-    //         distmap[i] = 0;
-    // }
+
+    /* Reset occupied and blocked tiles to 0 (blocked) */
+    for (int i = 0; i < row_len * col_len; i++) {
+        if (distmap[i] > DISTMAP_OCCUPIED)
+            distmap[i] = COSTMAP_BLOCKED;
+    }
     DARR_FREE(frontier_queue);
 }
 
