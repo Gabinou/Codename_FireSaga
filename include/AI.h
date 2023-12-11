@@ -24,15 +24,15 @@ typedef tnecs_entity entity;
 
 /* --- AI DESIGN --- */
 /* -- High-level design -- */
-//  1. Make a decision pair: Who does What?
-//  2. Send a command
-//      - Move friendly unit
+//  1. Make a decision: 
+//      - Do what? 
+//      - Go where? 
+//  2. Move, then Act:
 //      - Heal friendly unit
 //      - Attack enemy unit
 //      - Open chest
-//      - ...
-//  3. Wait for execution to animate
-//  4. If a friendly can still act, back to 1.
+//  3. Animate
+//  4. Back to 1, if enemy unit remains
 //  5. Finish
 
 /* -- Implementation details -- */
@@ -43,32 +43,7 @@ typedef tnecs_entity entity;
 //      - AI Act
 //          - Decides what action to take.
 //              - If ultimate target is not in range, go for attack on the way...
-//         - Master and slave priorities
-//              - Use master priority by default: AI_PRIORITY_KILL
-//              - Condition met to use slave condition
-//              - Condition depends on master
-//                  - fsm_slave called by fsm_master
-//              - Ex: If HP is below 50% use slave priority: AI_PRIORITY_SURVIVE
-//          - What are criteria to switch priorities?
-//              - low HP    AI_PRIORITY_KILL -> AI_PRIORITY_SURVIVE
-//              - no chests AI_PRIORITY_LOOT -> AI_PRIORITY_FLEE
-//              - Needs: target pos, self pos AFTER move
-//
-//  1. Make a decision pair: Who does What?
-//     - How does AI decide what to do?
-//          1.1 Go through all units with certain priorities, for a priority order
-//              - Order is whatever brings GameOver faster
-//              - Example: Kill should be high on the list
-//              - A bit more predictable
-//              - Each map should have a priority order list?
-//          1.2 Go through units in random order
-//              - Simple
-//              - Unpredictable
-//          2. Use Unit master/slave AI_Priority to decide -> fsm
-//              - action.target_action needs to be decided FIRST.
-//                  - Includes checking if in range or not.
-//              - action.target_move decided after what has been decided.
-//                  - movement is a sub-goal, in service of ultimate goal
+//          - Overrides AI Move in some conditions.
 //
 
 enum AI_RATINGS {
@@ -243,8 +218,7 @@ void AI_State_Turn_Finish(struct AI_State *ais);
 
 /* --- AI Unit control --- */
 /* Call order:
-*       AI_Decide_PreMove_Action -> AI_Decide_Move -> AI_Decide_PreAfterMove_Action ->
-*       AI_Move -> AI_Act
+*       AI_Decide_Action -> AI_Decide_Move -> AI_Move -> AI_Act
 */
 
 /* -- AI Deciders -- */
