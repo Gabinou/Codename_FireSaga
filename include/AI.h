@@ -199,18 +199,17 @@ struct AI AI_default;
 
 /* --- Decider FSM --- */
 typedef void (*AI_Decider)(struct Game *s, tnecs_entity e, struct AI_Action *a);
+/* -- Master Deciders -- */
 extern AI_Decider AI_Decider_master[AI_PRIORITY_NUM];
-extern AI_Decider AI_Decider_slave[AI_PRIORITY_NUM];
-static void _AI_Decider_Action_Kill(   struct Game *s, tnecs_entity e, struct AI_Action *a);
-static void _AI_Decider_Action_Staff(  struct Game *s, tnecs_entity e, struct AI_Action *a);
-static void _AI_Decider_Action_Staff(  struct Game *s, tnecs_entity e, struct AI_Action *a);
-static void _AI_Decider_Action_Nothing(struct Game *s, tnecs_entity e, struct AI_Action *a);
-static void _AI_Decider_Action_Move_To(struct Game *s, tnecs_entity e, struct AI_Action *a);
+static void _AI_Decider_Master_Kill(   struct Game *s, tnecs_entity e, struct AI_Action *a);
+static void _AI_Decider_Master_Staff(  struct Game *s, tnecs_entity e, struct AI_Action *a);
+static void _AI_Decider_Master_Staff(  struct Game *s, tnecs_entity e, struct AI_Action *a);
+static void _AI_Decider_Master_Nothing(struct Game *s, tnecs_entity e, struct AI_Action *a);
+static void _AI_Decider_Master_Move_To(struct Game *s, tnecs_entity e, struct AI_Action *a);
 
-/* Dedider Utilities after moving */
-extern AI_Decider AI_Decider_AfterMove[AI_PRIORITY_NUM];
-static void _AI_Decider_Kill_AfterMove( struct Game *s, tnecs_entity e, struct AI_Action *a);
-static void _AI_Decider_Staff_AfterMove(struct Game *s, tnecs_entity e, struct AI_Action *a);
+/* -- Slave Deciders -- */
+extern AI_Decider AI_Decider_slave[AI_PRIORITY_NUM];
+static void _AI_Decider_Slave_Kill(struct Game *s, tnecs_entity e, struct AI_Action *a);
 
 /* -- Decider Move FSM -- */
 // Note: These functions return whether character moves or not
@@ -251,10 +250,10 @@ void AI_State_Turn_Finish(struct AI_State *ais);
 /* -- AI Deciders -- */
 entity AI_Decide_Next(struct Game *s);
 
-void AI_Decide_Move(struct Game *s, tnecs_entity e, struct AI_Action *a);
+void  AI_Decide_Move(struct Game *s, tnecs_entity e, struct AI_Action *a);
+void _AI_Decide_Move(struct Game *s, tnecs_entity e, struct AI_Action *a);
 
-void AI_Decide_Action_PreMove(  struct Game *s, tnecs_entity e, struct AI_Action *a);
-void AI_Decide_Action_AfterMove(struct Game *s, tnecs_entity e, struct AI_Action *a);
+void AI_Decide_Action(struct Game *s, tnecs_entity e, struct AI_Action *a);
 
 /* -- AI Doers -- */
 void AI_Move(struct Game *s, tnecs_entity e, struct AI_Action *a);

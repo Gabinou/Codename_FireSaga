@@ -31,19 +31,19 @@ struct AI_Action AI_Action_default =  {
 };
 
 AI_Decider AI_Decider_master[AI_PRIORITY_NUM] = {
-    /* AI_PRIORITY_KILL         */ &_AI_Decider_Action_Kill,
+    /* AI_PRIORITY_KILL         */ &_AI_Decider_Master_Kill,
     /* AI_PRIORITY_PATROL       */ NULL,
     /* AI_PRIORITY_LOOT         */ NULL,
-    /* AI_PRIORITY_STAFF        */ &_AI_Decider_Action_Staff,
+    /* AI_PRIORITY_STAFF        */ &_AI_Decider_Master_Staff,
     /* AI_PRIORITY_SURVIVE      */ NULL,
     /* AI_PRIORITY_FLEE         */ NULL,
     /* AI_PRIORITY_SKILL        */ NULL,
-    /* AI_PRIORITY_DO_NOTHING   */ &_AI_Decider_Action_Nothing,
-    /* AI_PRIORITY_MOVE_TO      */ &_AI_Decider_Action_Move_To,
+    /* AI_PRIORITY_DO_NOTHING   */ &_AI_Decider_Master_Nothing,
+    /* AI_PRIORITY_MOVE_TO      */ &_AI_Decider_Master_Move_To,
 };
 
 AI_Decider AI_Decider_slave[AI_PRIORITY_NUM] = {
-    /* AI_PRIORITY_KILL         */ NULL,
+    /* AI_PRIORITY_KILL         */ &_AI_Decider_Slave_Kill,
     /* AI_PRIORITY_PATROL       */ NULL,
     /* AI_PRIORITY_LOOT         */ NULL,
     /* AI_PRIORITY_STAFF        */ NULL,
@@ -54,18 +54,18 @@ AI_Decider AI_Decider_slave[AI_PRIORITY_NUM] = {
     /* AI_PRIORITY_MOVE_TO      */ NULL,
 };
 
-/* AfterMove is slave to AI_PRIORITY_MOVE_TO master priority */
-AI_Decider AI_Decider_AfterMove[AI_PRIORITY_NUM] = {
-    /* AI_PRIORITY_KILL         */ &_AI_Decider_Kill_AfterMove,
-    /* AI_PRIORITY_PATROL       */ NULL,
-    /* AI_PRIORITY_LOOT         */ NULL,
-    /* AI_PRIORITY_STAFF        */ &_AI_Decider_Staff_AfterMove,
-    /* AI_PRIORITY_SURVIVE      */ NULL,
-    /* AI_PRIORITY_FLEE         */ NULL,
-    /* AI_PRIORITY_SKILL        */ NULL,
-    /* AI_PRIORITY_DO_NOTHING   */ NULL,
-    /* AI_PRIORITY_MOVE_TO      */ NULL,
-};
+// /* AfterMove is slave to AI_PRIORITY_MOVE_TO master priority */
+// AI_Decider AI_Decider_AfterMove[AI_PRIORITY_NUM] = {
+//     /* AI_PRIORITY_KILL         */ &_AI_Decider_Kill_AfterMove,
+//     /* AI_PRIORITY_PATROL       */ NULL,
+//     /* AI_PRIORITY_LOOT         */ NULL,
+//     /* AI_PRIORITY_STAFF        */ &_AI_Decider_Staff_AfterMove,
+//     /* AI_PRIORITY_SURVIVE      */ NULL,
+//     /* AI_PRIORITY_FLEE         */ NULL,
+//     /* AI_PRIORITY_SKILL        */ NULL,
+//     /* AI_PRIORITY_DO_NOTHING   */ NULL,
+//     /* AI_PRIORITY_MOVE_TO      */ NULL,
+// };
 
 AI_Doer AI_Act_action[AI_ACTION_NUM] = {
     /* ITEMS            */ NULL, // TODO
@@ -105,10 +105,12 @@ AI_Decider_Move AI_Decider_move[AI_MOVE_NUM] = {
 };
 
 b32 _AI_Decider_Move_Never(struct Game *sota, tnecs_entity npc_ent) {
+    SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: AI_MOVE_NEVER set, skipping");
     return (false);
 }
 
 b32 _AI_Decider_Move_Always(struct Game *sota, tnecs_entity npc_ent) {
+    SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: AI_MOVE_ALWAYS set, moving");
     return (true);
 }
 
@@ -121,7 +123,8 @@ b32 _AI_Decider_Move_inRange(struct Game *sota, tnecs_entity npc_ent) {
     dfts = Map_Find_Defendants(map, map->attacktolist, dfts, npc_ent, true);
 
     /* --- Move if enemy in range --- */
-    b32 out = DARR_NUM(dfts) > 0;
+    b32 out = (DARR_NUM(dfts) > 0);
+    SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: AI_MOVE_INRANGE set, %d enemies", DARR_NUM(dfts));
     DARR_FREE(dfts);
     return (out);
 }
@@ -134,25 +137,68 @@ b32 _AI_Decider_Move_Trigger(  struct Game *sota, tnecs_entity npc_ent) {
 b32 _AI_Decider_Move_onChapter(struct Game *sota, tnecs_entity npc_ent) {
     struct AI *ai = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
     SDL_assert(ai != NULL);
-    SDL_Log("sota->map->turn > ai->turn_move %d %d", sota->map->turn, ai->turn_move);
+    SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: AI_MOVE_onChapter set, (%d > %d)",
+                 sota->map->turn, ai->turn_move);
     return (sota->map->turn > ai->turn_move);
 }
 
 
-void _AI_Decider_Action_Nothing(struct Game *sota, tnecs_entity npc_ent,
+void _AI_Decider_Master_Nothing(struct Game *sota, tnecs_entity npc_ent,
                                 struct AI_Action *action) {
+    SDL_LogDebug(SOTA_LOG_AI, "AI Decider: AI_PRIORITY_DO_NOTHING set.");
     action->action = AI_ACTION_WAIT;
 }
 
-void _AI_Decider_Action_Move_To(struct Game *sota, tnecs_entity npc_ent,
+void _AI_Decider_Master_Move_To(struct Game *sota, tnecs_entity npc_ent,
                                 struct AI_Action *action) {
     /* Set target move to ultimate move_to target*/
-    struct AI   *ai     = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
+    struct AI *ai = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
     action->target_action = ai->target_move;
+
+    /* -- Set target_move to closest tile on way to target_action -- */
+    _AI_Decide_Move(sota, npc_ent, action);
+
+    SDL_assert(ai->priority_slave >= AI_PRIORITY_START);
+    SDL_assert(ai->priority_slave < AI_PRIORITY_NUM);
+    if (AI_Decider_slave[ai->priority_slave] != NULL)
+        AI_Decider_slave[ai->priority_slave](sota, npc_ent, action);
 }
 
+void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
+                            struct AI_Action *action) {
+    SDL_assert((action->target_move.x >= 0) && (action->target_move.x < sota->map->col_len));
+    SDL_assert((action->target_move.y >= 0) && (action->target_move.y < sota->map->row_len));
 
-void _AI_Decider_Action_Kill(struct Game *sota, tnecs_entity npc_ent,
+    /* -- Find targets to attack after target_move was set -- */
+    struct Position *pos = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
+    struct Point oldpos = pos->tilemap_pos;
+    struct Point newpos = action->target_move;
+
+    /* -- Find defendants at target_move -- */
+    pos->tilemap_pos = newpos;
+    Map_Attacktomap_Compute(sota->map, sota->world, npc_ent, false, false);
+    Map_Attacktolist_Compute(sota->map);
+    tnecs_entity *defendants = DARR_INIT(defendants, tnecs_entity, 4);
+    defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist, defendants, npc_ent, false);
+
+    /* -- Revert position to previous -- */
+    pos->tilemap_pos = oldpos;
+
+    /* No attackable units tiles */
+    if (DARR_NUM(defendants) < 1) {
+        SDL_LogDebug(SOTA_LOG_AI, "AI Decider Slave Kill: No tiles to attack enemy from.");
+        action->action = AI_ACTION_WAIT;
+        DARR_FREE(defendants);
+        return;
+    }
+
+    /* - TODO: Find easiest unit to kill - */
+    action->patient = defendants[0];
+    action->action  = AI_ACTION_ATTACK;
+    DARR_FREE(defendants);
+}
+
+void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
                              struct AI_Action *action) {
     /* -- Get list of defendants in range -- */
     Map_Attacktomap_Compute(sota->map, sota->world, npc_ent, true, false);
@@ -164,6 +210,8 @@ void _AI_Decider_Action_Kill(struct Game *sota, tnecs_entity npc_ent,
 
     if (DARR_NUM(defendants) < 1) {
         /* -- BRANCH 1- No enemies in range -- */
+        SDL_LogDebug(SOTA_LOG_AI, "AI Decider Master Kill: No enemies in range.");
+
         /* - Find closest enemy - */
         struct Position *posc = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
         SDL_assert(posc != NULL);
@@ -182,6 +230,7 @@ void _AI_Decider_Action_Kill(struct Game *sota, tnecs_entity npc_ent,
     }
 
     /* -- BRANCH 2- Enemies in range -- */
+    SDL_LogDebug(SOTA_LOG_AI, "AI Decider master Kill: Enemies in range.");
     /* -- TODO: Find easiest enemy to kill -- */
     tnecs_entity defendant = defendants[0];
 
@@ -208,57 +257,57 @@ void _AI_Decider_Action_Kill(struct Game *sota, tnecs_entity npc_ent,
     DARR_FREE(defendants);
 }
 
-void _AI_Decider_Action_Staff(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+void _AI_Decider_Master_Staff(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
 
 }
 
 /* Tries to staff unit after moving to target tile */
-void _AI_Decider_Staff_AfterMove(struct Game *sota, tnecs_entity npc_ent,
-                                 struct AI_Action *action) {
-    // TODO
-    action->action  = AI_ACTION_WAIT;
-}
+// void _AI_Decider_Staff_AfterMove(struct Game *sota, tnecs_entity npc_ent,
+//                                  struct AI_Action *action) {
+//     // TODO
+//     action->action  = AI_ACTION_WAIT;
+// }
 
 /* Tries to attack unit after moving to target tile */
-void _AI_Decider_Kill_AfterMove(struct Game *sota, tnecs_entity npc_ent,
-                                struct AI_Action *action) {
-    struct Position *pos = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
-    struct Point oldpos = pos->tilemap_pos;
-    struct Point newpos;
-    /* - Compute attacktolist - */
+// void _AI_Decider_Kill_AfterMove(struct Game *sota, tnecs_entity npc_ent,
+//                                 struct AI_Action *action) {
+// struct Position *pos = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
+// struct Point oldpos = pos->tilemap_pos;
+// struct Point newpos;
+// /* - Compute attacktolist - */
 
-    /* -- If no movement, use current position as newpos -- */
-    b32 null_x   = (action->target_move.x < 0);
-    null_x      |= (action->target_move.x >= sota->map->col_len);
-    b32 null_y   = (action->target_move.y < 0);
-    null_y      |= (action->target_move.y >= sota->map->row_len);
-    if (null_x || null_y)
-        newpos = pos->tilemap_pos;
-    else
-        newpos = action->target_move;
+// /* -- If no movement, use current position as newpos -- */
+// b32 null_x   = (action->target_move.x < 0);
+// null_x      |= (action->target_move.x >= sota->map->col_len);
+// b32 null_y   = (action->target_move.y < 0);
+// null_y      |= (action->target_move.y >= sota->map->row_len);
+// if (null_x || null_y)
+//     newpos = pos->tilemap_pos;
+// else
+//     newpos = action->target_move;
 
-    /* -- Find defendants at target_move -- */
-    pos->tilemap_pos = newpos;
-    Map_Attacktomap_Compute(sota->map, sota->world, npc_ent, false, false);
-    Map_Attacktolist_Compute(sota->map);
-    tnecs_entity *defendants = DARR_INIT(defendants, tnecs_entity, 4);
-    defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist, defendants, npc_ent, false);
+// /* -- Find defendants at target_move -- */
+// pos->tilemap_pos = newpos;
+// Map_Attacktomap_Compute(sota->map, sota->world, npc_ent, false, false);
+// Map_Attacktolist_Compute(sota->map);
+// tnecs_entity *defendants = DARR_INIT(defendants, tnecs_entity, 4);
+// defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist, defendants, npc_ent, false);
 
-    /* -- Revert position to previous -- */
-    pos->tilemap_pos = oldpos;
+// /* -- Revert position to previous -- */
+// pos->tilemap_pos = oldpos;
 
-    /* No attackable units tiles */
-    if (DARR_NUM(defendants) < 1) {
-        action->action = AI_ACTION_WAIT;
-        DARR_FREE(defendants);
-        return;
-    }
+// /* No attackable units tiles */
+// if (DARR_NUM(defendants) < 1) {
+//     action->action = AI_ACTION_WAIT;
+//     DARR_FREE(defendants);
+//     return;
+// }
 
-    /* - TODO: Find easiest unit to kill - */
-    action->patient = defendants[0];
-    action->action  = AI_ACTION_ATTACK;
-    DARR_FREE(defendants);
-}
+// /* - TODO: Find easiest unit to kill - */
+// action->patient = defendants[0];
+// action->action  = AI_ACTION_ATTACK;
+// DARR_FREE(defendants);
+// }
 
 entity AI_Decide_Next(struct Game *sota) {
     struct AI_State *ai_state = &sota->ai_state;
@@ -267,7 +316,7 @@ entity AI_Decide_Next(struct Game *sota) {
     return (ai_state->npcs[ai_state->npc_i]);
 }
 
-void AI_Decide_Action_PreMove(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     /* --- PRELIMINARIES --- */
     *action = AI_Action_default;
     struct Unit *npc    = TNECS_GET_COMPONENT(sota->world, npc_ent, Unit);
@@ -277,38 +326,58 @@ void AI_Decide_Action_PreMove(struct Game *sota, tnecs_entity npc_ent, struct AI
 
     SDL_assert(ai->priority_master > AI_PRIORITY_START);
     SDL_assert(ai->priority_master < AI_PRIORITY_NUM);
+
     if (AI_Decider_master[ai->priority_master] != NULL)
         AI_Decider_master[ai->priority_master](sota, npc_ent, action);
 }
 
 void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
-    struct Position *pos    = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
+    /* --- Skip depending on movement priority --- */
+    struct AI       *ai  = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
+    SDL_assert(ai  != NULL);
+
+    /* AI_Decider_move function decides if AI unit moves or not */
+    if (!AI_Decider_move[ai->move](sota, npc_ent))
+        return;
+
+    b32 set_x   = (action->target_move.x >= 0);
+    set_x      &= (action->target_move.x < sota->map->col_len);
+    b32 set_y   = (action->target_move.y >= 0);
+    set_y      &= (action->target_move.y < sota->map->row_len);
+
+    /* Skip if target_move was set previously by action decider */
+    if (set_y && set_x) {
+        SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: target_move set, skipping");
+        return;
+    }
+
+    /* -- Set target_move to closest tile on way to target_action -- */
+    _AI_Decide_Move(sota, npc_ent, action);
+}
+
+void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+    /* -- Set target_move to closest tile on way to target_action -- */
 
     /* -- Skip movement if target is at current position -- */
+    struct Unit     *npc    = TNECS_GET_COMPONENT(sota->world, npc_ent, Unit);
+    struct Position *pos    = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
     struct Point target = action->target_action;
     struct Point start  = pos->tilemap_pos;
-    if ((target.x == start.x) && (target.y == start.y))
+    if ((target.x == start.x) && (target.y == start.y)) {
+        SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: target is current position. Skipping.");
         return;
+    }
 
     /* -- Skip movement if target adjacent to current position -- */
     b32 adjacent_x   = (action->target_action.x == pos->tilemap_pos.x - 1);
     adjacent_x      |= (action->target_action.x == pos->tilemap_pos.x + 1);
     b32 adjacent_y   = (action->target_action.y == pos->tilemap_pos.y - 1);
     adjacent_y      |= (action->target_action.y == pos->tilemap_pos.y + 1);
-    if (adjacent_x && adjacent_y)
+    if (adjacent_x && adjacent_y) {
+        SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: target is adjacent. Skipping.");
         return;
+    }
 
-    /* --- Skip depending on movement priority --- */
-    struct Unit     *npc = TNECS_GET_COMPONENT(sota->world, npc_ent, Unit);
-    struct AI       *ai  = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
-    SDL_assert(ai  != NULL);
-
-    // if (AI_Decider_move[ai->move] != NULL)
-    // AI_Decider_move[ai->move](sota, npc_ent) ? 0 : return;
-    if (!AI_Decider_move[ai->move](sota, npc_ent))
-        return;
-
-    /* -- Move to closest tile on way to target_action -- */
     /* -- Compute costmap for pathfinding -- */
     Map_Costmap_Movement_Compute(sota->map, sota->world, npc_ent);
     i32 *costmap            = sota->map->costmap;
@@ -324,7 +393,6 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
     i16 col_len     = sota->map->col_len;
 
     /* -- Pathfinding --  */
-    // QUESTION: Should target_move be used here instead of target_action?
     int *path_list  = DARR_INIT(path_list, int, 16);
     path_list       = Pathfinding_Astar_plus(path_list, costmap, unitmap,
                                              row_len, col_len, move,
@@ -337,37 +405,43 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
     DARR_FREE(path_list);
 }
 
-void AI_Decide_Action_AfterMove(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
-    struct AI *ai = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
 
-    /* If no action decided yet, wait */
-    if (action->action == AI_ACTION_START)
-        action->action = AI_ACTION_WAIT;
+// void AI_Decide_Action_AfterMove(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+//     struct AI *ai = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
 
-    /* If priority is AI_PRIORITY_MOVE_TO, need to check for AfterMove action */
-    if (ai->priority_master != AI_PRIORITY_MOVE_TO)
-        return;
+//     /* If no action decided yet, wait */
+//     if (action->action == AI_ACTION_START)
+//         action->action = AI_ACTION_WAIT;
 
-    /* AfterMove action according to slave priority */
-    if (AI_Decider_AfterMove[ai->priority_slave] != NULL)
-        AI_Decider_AfterMove[ai->priority_slave](sota, npc_ent, action);
-}
+//     /* If priority is AI_PRIORITY_MOVE_TO, need to check for AfterMove action */
+//     if (ai->priority_master != AI_PRIORITY_MOVE_TO)
+//         return;
+
+//     /* AfterMove action according to slave priority */
+//     if (AI_Decider_AfterMove[ai->priority_slave] != NULL)
+//         AI_Decider_AfterMove[ai->priority_slave](sota, npc_ent, action);
+// }
 
 /* --- Move unit to target_move --- */
 void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     struct AI   *ai     = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
 
     /* -- Skip no movement -- */
-    if (ai->move == AI_MOVE_NEVER)
+    if (ai->move == AI_MOVE_NEVER) {
+        SDL_LogDebug(SOTA_LOG_AI, "AI Move: AI_MOVE_NEVER set. Skipping.");
         return;
+    }
+
 
     /* -- Skip no movement -- */
     b32 null_x   = (action->target_move.x < 0);
     null_x      |= (action->target_move.x >= sota->map->col_len);
     b32 null_y   = (action->target_move.y < 0);
     null_y      |= (action->target_move.y >= sota->map->row_len);
-    if (null_x || null_y)
+    if (null_x || null_y) {
+        SDL_LogWarning(SOTA_LOG_AI, "AI Move: target_move is outside bounds. Skipping");
         return;
+    }
 
     struct Position *pos    = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
     struct Sprite   *sprite = TNECS_GET_COMPONENT(sota->world, npc_ent, Sprite);

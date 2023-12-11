@@ -378,7 +378,7 @@ void Pathfinding_Distance_Plus(i32 *distmap, i32 *costmap, tnecs_entity *enemy_o
     }
 
     /* Reset occupied and blocked tiles to 0 (blocked) */
-    for (int i = 0; i < row_len * col_len; i++) {
+    for (size_t i = 0; i < row_len * col_len; i++) {
         if (distmap[i] > DISTMAP_OCCUPIED)
             distmap[i] = COSTMAP_BLOCKED;
     }
