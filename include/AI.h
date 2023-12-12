@@ -24,9 +24,9 @@ typedef tnecs_entity entity;
 
 /* --- AI DESIGN --- */
 /* -- High-level design -- */
-//  1. Make a decision: 
-//      - Do what? 
-//      - Go where? 
+//  1. Make a decision:
+//      - Do what?
+//      - Go where?
 //  2. Move, then Act:
 //      - Heal friendly unit
 //      - Attack enemy unit
@@ -150,7 +150,7 @@ enum AI_MOVE {
     /* -- AI_MOVE_TRIGGER -- */
     /* Waits for something to happen to move. */
     /* Extra parameters needed... */
-    AI_MOVE_TRIGGER = 3,
+    AI_MOVE_TRIGGER = 3,  /* TODO */
 
     /* -- AI_MOVE_NEVER -- */
     /* Unit does not move. */

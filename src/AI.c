@@ -218,7 +218,7 @@ void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
 
     /* -- BRANCH 2- Enemies in range -- */
     SDL_LogDebug(SOTA_LOG_AI, "AI Decider master Kill: Enemies in range.");
-   
+
     /* -- TODO: Find easiest enemy to kill -- */
     tnecs_entity defendant = defendants[0];
 
@@ -358,14 +358,13 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
         return;
     }
 
-
     /* -- Skip no movement -- */
     b32 null_x   = (action->target_move.x < 0);
     null_x      |= (action->target_move.x >= sota->map->col_len);
     b32 null_y   = (action->target_move.y < 0);
     null_y      |= (action->target_move.y >= sota->map->row_len);
     if (null_x || null_y) {
-        SDL_LogWarning(SOTA_LOG_AI, "AI Move: target_move is outside bounds. Skipping");
+        SDL_LogWarn(SOTA_LOG_AI, "AI Move: target_move is outside bounds. Skipping");
         return;
     }
 
