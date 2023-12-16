@@ -690,6 +690,18 @@ void test_wpn_or_item() {
     Unit_Free(&Silou);
 }
 
+void test_reinforcements() {
+    struct Unit Corsair = Unit_default;
+    struct Reinforcement reinf = Reinforcement_default;
+    reinf.levelups = 2;
+    Unit_Init(&Corsair);
+
+    Unit_Reinforcement_Levelups(&Corsair, &reinf);
+    nourstest_true(DARR_NUM(Corsair.grown_stats) == reinf.levelups);
+    Unit_Reinforcement_Levelups(&Corsair, &reinf);
+    nourstest_true(DARR_NUM(Corsair.grown_stats) == reinf.levelups);
+}
+
 void test_unit() {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
 
@@ -699,6 +711,7 @@ void test_unit() {
     test_wpn_or_item();
     // test_io();
     test_growth();
+    test_reinforcements();
 
     URN_debug = -1;
 }

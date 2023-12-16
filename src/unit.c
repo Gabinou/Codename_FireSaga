@@ -763,6 +763,8 @@ void Unit_supportUp(struct Unit *unit, i16 id) {
 // This function is ugly as sin. TODO: Refactor this. Make more understandable.
 void Unit_lvlUp(struct Unit *unit) {
     SDL_assert(unit != NULL);
+    SDL_assert(unit->grown_stats != NULL);
+
     struct Unit_stats grows = Unit_stats_default;
     u8 temp_growth;
     struct Unit_stats temp_stats = {0};
@@ -2271,8 +2273,16 @@ struct Unit_stats Unit_stats_minus(struct Unit_stats in_stats1, struct Unit_stat
 }
 
 /* -- Reinforcements -- */
-void Unit_Reinforcement_Levelups(struct Unit *u, struct Reinforcement *r) {
-    
+/* AI/NPC units only */
+void Unit_Reinforcement_Levelups(struct Unit *unit, struct Reinforcement *reinf) {
+    SDL_assert(unit->grown_stats != NULL);
+
+    /* Skip if unit was already leveled */
+    if (DARR_NUM(unit->grown_stats) == reinf->levelups)
+        return;
+
+    for (int i = 0; i < reinf->levelups; i++)
+        Unit_lvlUp(unit);
 }
 
 /* -- Unit_id -- */
