@@ -24,10 +24,15 @@
 // NOTE: Conditions are naturally AND
 
 struct Conditions {
-    u16 bits;
     u32 *alive;
     u32 *recruited;
     u32 *dead;
+};
+
+struct RawLine {
+    struct Conditions conditions;
+    s8 speaker;
+    s8 rawline;
 };
 
 /* A scene is a conversation.
@@ -43,6 +48,9 @@ struct Scene {
     s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
     u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
 
+    struct Conditions conditions;
+    struct RawLine * rawlines;
+
     u16 id;
     u16 line_num;
     u16 line_len;
@@ -51,29 +59,42 @@ struct Scene {
     struct Conditions *line_conds;
     // TODO: Didascalies
 
-    char **lines;
+    // char **lines;
+
     // All to_replace are *between stars*
-    // Better for replaces to be LONGER than withs
-    char **replace;
-    char **with;
+    // Better for replaces to be LONGER than widths
+    // char **replace;
+    // TODO:
+    // char **with;
     u16   *speakers;
-    u16   *actors;
+    // u16   *actors;
 } extern Scene_default;
 
+/* --- Conditions --- */
+void Conditions_Read(   struct Conditions *conds, cJSON *jconds);
+bool Conditions_Compare(struct Conditions *conds1, struct Conditions *conds2);
+
+/* --- Constructors/Destructors --- */
 void Scene_Free(     struct Scene *scene);
-void Scene_Free_Read(struct Scene *scene);
 
-void Scene_Prune(  struct Scene *scene);
+/* --- Replace --- */
+// TODO: replace text dynamically
 void Scene_Replace(struct Scene *scene);
+void Scene_Replace_Add(struct Scene *scene, s8 replace, s8 with);
 
+/* --- I/O --- */
+void Scene_readJSON( void *u, cJSON *junit);
+void Scene_writeJSON(void *u, cJSON *junit);
+
+/* -- Load all scenes with conditions -- */
 struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_concs,
                           i16 chapter, u16 scene_time);
 
-/* --- Rendering Scene --- */
+/* --- Rendering --- */
 /* Read game condition and render text lines */
 void Scene_Render(struct Scene *scene);
 
 /* Output scene to text file */
-void Scene_Render_output(struct Scene *scene);
+void Scene_Render_Output(struct Scene *scene);
 
 #endif /* NARRATIVE_H */

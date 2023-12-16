@@ -36,7 +36,7 @@
                     }
                 }
             },
-            {"Sebastian": "I am a dynamic line spoken by *biggestbaka*."}
+            {"Sebastian": "I am a dynamic line spoken by REPLACE_TOKEN_1."}
         ]
     }
 }
