@@ -397,6 +397,9 @@ struct Range *_Unit_Range_Combine(struct Unit  *u, struct Range *r, bool e, int 
 struct Range *Unit_Range_Item(   struct Unit *u, int i);
 struct Range *Unit_Range_Loadout(struct Unit *u);
 
+/* -- Reinforcements -- */
+void Unit_Reinforcement_Levelups(struct Unit *u, struct Reinforcement *r);
+
 /* -- Unit_id -- */
 bool Unit_ID_Valid(u16 id);
 

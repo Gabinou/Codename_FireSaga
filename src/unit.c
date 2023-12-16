@@ -2270,7 +2270,12 @@ struct Unit_stats Unit_stats_minus(struct Unit_stats in_stats1, struct Unit_stat
     return (out_stats);
 }
 
+/* -- Reinforcements -- */
+void Unit_Reinforcement_Levelups(struct Unit *u, struct Reinforcement *r) {
+    
+}
 
+/* -- Unit_id -- */
 bool Unit_ID_Valid(u16 id) {
     SDL_Log("Unit ID valid: %d", id);
     bool out = (id > UNIT_ID_PC_START)      && (id < UNIT_ID_PC_END);
