@@ -20,7 +20,7 @@
 #include "test_pathfinding.h"
 #include "test_position.h"
 #include "test_pixelfonts.h"
-#include "test_scene.h"
+#include "test_narrative.h"
 #include "test_sprite.h"
 #include "test_octant.h"
 #include "test_text.h"
@@ -74,6 +74,7 @@ void unit_tests() {
     nourstest_run("Game ",          test_game);
     nourstest_run("Item",           test_item);
     nourstest_run("Map ",           test_map);
+    nourstest_run("Narrative ",     test_narrative);
     nourstest_run("Pathfinding ",   test_pathfinding);
     nourstest_run("Menu ",          test_menu);
     nourstest_run("nstr ",          test_nstr);
@@ -81,7 +82,6 @@ void unit_tests() {
     nourstest_run("Position ",      test_position);
     nourstest_run("Pixelfonts ",    test_pixelfonts);
     nourstest_run("RNG ",           test_RNG);
-    // nourstest_run("Scene ",      test_scene);
     nourstest_run("Sprite ",        test_sprite);
     nourstest_run("Text ",          test_text);
     nourstest_run("Tile ",          test_tile);
