@@ -22,6 +22,7 @@ struct Item;
 struct Weapon;
 struct Damage;
 struct RNG_Sequence;
+struct Reinforcement;
 
 /* --- ANTS--- */
 enum STATUSES {

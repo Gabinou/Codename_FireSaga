@@ -438,7 +438,7 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     Item_All_Reload(sota->items_dtab);
 
     /* --- Reload Unit --- */
-    Reload_Entities_Archetype(sota, Reload_JSON,  "Unit");
+    Reload_Entities_Archetype(sota, Reload_JSON, "Unit");
 
     /* --- Reload Unit entity's Sprite component --- */
     tnecs_component component_flag;

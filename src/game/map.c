@@ -118,12 +118,12 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
     SDL_assert(sota->map != NULL);
     char filename[DEFAULT_BUFFER_SIZE];
     for (i16 i = 0; i < DARR_NUM(sota->map->reinforcements); i++) {
-
+        struct Reinforcement *reinf = &(sota->map->reinforcements[i]);
         // Skip if reinforcement is not for THIS turn
-        if ((sota->map->reinforcements[i].turn != sota->map->turn))
+        if ((reinf->turn != sota->map->turn))
             continue;
 
-        SDL_Log("-- Reinforcement turn: %d %d --", sota->map->reinforcements[i].turn, sota->map->turn);
+        SDL_Log("-- Reinforcement turn: %d %d --", reinf->turn, sota->map->turn);
 
         // TODO: Skip if something blocks tile reinforcements come to
 
@@ -165,18 +165,22 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(unit != NULL);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         Unit_Init(unit);
+
         /* DESIGN: Reinforcements wait! */
         unit->waits = true;
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         unit->weapons_dtab = sota->weapons_dtab;
         s8 unit_path  = s8_mut("units"PHYSFS_SEPARATOR);
-        unit_path     = s8cat(unit_path, sota->map->reinforcements[i].filename);
+        unit_path     = s8cat(unit_path, reinf->filename);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         jsonio_readJSON(unit_path, unit);
         s8_free(&unit_path);
         SDL_assert(unit->name.data != NULL);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
-        unit->army = sota->map->reinforcements[i].army;
+        unit->army = reinf->army;
+
+        /* Make AI reinforcements levelup */
+        Unit_Reinforcement_Levelups(unit, reinf);
 
         SDL_Log("-- loading unit equipment --");
         for (int j = 0; j < DARR_NUM(sota->map->reinf_equipments[i]); j++) {
@@ -200,8 +204,8 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         if (unit->ai_filename.data == NULL)
             unit->ai_filename = s8_mut("aggressive.json");
 
-        if (sota->map->reinforcements[i].ai_filename.data != NULL) {
-            ai_path = s8cat(ai_path, sota->map->reinforcements[i].ai_filename);
+        if (reinf->ai_filename.data != NULL) {
+            ai_path = s8cat(ai_path, reinf->ai_filename);
         } else {
             ai_path = s8cat(ai_path, unit->ai_filename);
         }
@@ -226,8 +230,8 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
                             sota->map->boundsmin.y, sota->map->boundsmax.y);
         position->scale[0]      = (float)sota->map->tilesize[0];
         position->scale[1]      = (float)sota->map->tilesize[0];
-        position->tilemap_pos.x = sota->map->reinforcements[i].position.x;
-        position->tilemap_pos.y = sota->map->reinforcements[i].position.y;
+        position->tilemap_pos.x = reinf->position.x;
+        position->tilemap_pos.y = reinf->position.y;
         position->pixel_pos.x   = (i32)lround(position->tilemap_pos.x * position->scale[0]);
         position->pixel_pos.y   = (i32)lround(position->tilemap_pos.y * position->scale[1]);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);

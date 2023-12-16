@@ -2281,8 +2281,10 @@ void Unit_Reinforcement_Levelups(struct Unit *unit, struct Reinforcement *reinf)
     if (DARR_NUM(unit->grown_stats) == reinf->levelups)
         return;
 
-    for (int i = 0; i < reinf->levelups; i++)
+    for (int i = 0; i < reinf->levelups; i++) {
+        unit->exp += SOTA_100PERCENT;
         Unit_lvlUp(unit);
+    }
 }
 
 /* -- Unit_id -- */
