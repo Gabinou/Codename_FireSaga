@@ -156,9 +156,9 @@ void Condition_Array_Read(u32 *array, cJSON *jarray) {
     for (int i = 0; i < num; i++) {
         cJSON *jname = cJSON_GetArrayItem(jarray, i);
         char  *name  = cJSON_GetStringValue(jname);
-
+        int order    = Unit_Name2Order(s8_var(name));
+        Bitfield_On(array, order);
     }
-
 }
 
 void Conditions_readJSON( void *input, cJSON *jconds) {
@@ -173,8 +173,7 @@ void Conditions_readJSON( void *input, cJSON *jconds) {
             SDL_Log("Dead object should be a JSON array.");
             exit(ERROR_Generic);
         }
-
-
+        Condition_Array_Read(conds->dead, jdead);
     }
 
     if (jalive != NULL) {
@@ -182,7 +181,7 @@ void Conditions_readJSON( void *input, cJSON *jconds) {
             SDL_Log("Alive object should be a JSON array.");
             exit(ERROR_Generic);
         }
-
+        Condition_Array_Read(conds->alive, jalive);
     }
 
     if (jrecruited != NULL) {
@@ -190,7 +189,7 @@ void Conditions_readJSON( void *input, cJSON *jconds) {
             SDL_Log("Recruited object should be a JSON array.");
             exit(ERROR_Generic);
         }
-
+        Condition_Array_Read(conds->recruited, jrecruited);
     }
 }
 

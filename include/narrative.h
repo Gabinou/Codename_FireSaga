@@ -117,6 +117,7 @@ void Scene_Replace_Add(struct Scene *scene, s8 replace, s8 with);
 void Scene_readJSON( void *s, cJSON *js);
 void Scene_writeJSON(void *s, cJSON *js);
 
+// TODO: Split into non human readable conditions/hashes for game saves
 void Conditions_readJSON( void *c, cJSON *jc);
 void Conditions_writeJSON(void *c, cJSON *jc);
 
