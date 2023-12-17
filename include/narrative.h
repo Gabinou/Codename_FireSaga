@@ -86,7 +86,9 @@ struct Scene {
 extern struct Scene Scene_default;
 
 /* --- Conditions --- */
-b32 Conditions_Compare(struct Conditions *conds1, struct Conditions *conds2);
+b32 Conditions_Compare(struct Conditions *line_cond, struct Conditions *game_cond);
+void Conditions_Death(      struct Conditions *cond, size_t uo);
+void Conditions_Recruitment(struct Conditions *cond, size_t uo);
 
 /* --- Constructors/Destructors --- */
 void Scene_Free(     struct Scene *scene);

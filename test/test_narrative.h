@@ -17,9 +17,7 @@ void test_scene() {
     Scene_readJSON(&scene, jscene);
     nourstest_true(scene.lines_raw_num == 6);
     Scene_Raw_Print(&scene);
-    getchar();
-
-
+    // getchar();
 
     /* --- Render scene --- */
 
@@ -28,7 +26,14 @@ void test_scene() {
 }
 
 void test_conditions() {
+    struct Conditions game_cond = Conditions_default;
+    struct Conditions line_cond = Conditions_default;
 
+    nourstest_true(Conditions_Compare(&game_cond, &line_cond));
+    nourstest_true(Conditions_Compare(&line_cond, &game_cond));
+
+    Conditions_Death(&line_cond, UNIT_ORDER_SILOU);
+    nourstest_true(!Conditions_Compare(&line_cond, &game_cond));
 }
 
 void test_narrative() {
