@@ -29,7 +29,6 @@ void test_conditions() {
     struct Conditions game_cond = Conditions_Game_default;
     struct Conditions line_cond = Conditions_Line_default;
 
-    nourstest_true(Conditions_Compare(&game_cond, &line_cond));
     nourstest_true(Conditions_Compare(&line_cond, &game_cond));
 
     /* Line should play if Silou is dead, but she is alive: False*/
@@ -44,6 +43,7 @@ void test_conditions() {
     line_cond = Conditions_Line_default;
 
     /* Line should play if Silou is alive, but she is dead: False*/
+    Conditions_Alive(&line_cond, UNIT_ORDER_SILOU);
     Conditions_Death(&game_cond, UNIT_ORDER_SILOU);
     nourstest_true(!Conditions_Compare(&line_cond, &game_cond));
 

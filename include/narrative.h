@@ -101,8 +101,8 @@ extern struct Scene Scene_default;
 
 b32 Conditions_Compare(struct Conditions *line_cond, struct Conditions *game_cond);
 
-
-void Conditions_Death(      struct Conditions *cond, size_t uo);
+void Conditions_Alive( struct Conditions *cond, size_t uo);
+void Conditions_Death( struct Conditions *cond, size_t uo);
 void Conditions_Recruitment(struct Conditions *cond, size_t uo);
 
 /* --- Constructors/Destructors --- */
