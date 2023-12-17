@@ -23,6 +23,7 @@ typedef int8_t   i8;
 typedef int16_t  i16;
 typedef int32_t  i32;
 typedef int64_t  i64;
+typedef char     byte;
 /* - Why no fast types? - */
 //   - Variable size type make byte-alignment more difficult
 //   - int should be the fastest

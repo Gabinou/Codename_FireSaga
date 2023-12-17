@@ -9,7 +9,9 @@
 
 /* BITFIELDS */
 /* Array of bits */
-enum BITFIELD {BITFIELD_BITSPERLEN = 32};
+enum BITFIELD {
+    BITFIELD_BITSPERLEN = 32
+};
 
 #define BITFIELD_LEN(bits) ((bits)/BITFIELD_BITSPERLEN + 1 * ((bits % BITFIELD_BITSPERLEN) > 0))
 #define BITFIELD_INIT_BITS(bits) BITFIELD_INIT_BITS_(bits)

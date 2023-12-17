@@ -35,8 +35,14 @@ void Scene_Free(struct Scene *scene) {
     }
 }
 
-bool Conditions_Compare(struct Conditions *conds1, struct Conditions *conds2) {
+b32 Conditions_Compare(struct Conditions *conds1, struct Conditions *conds2) {
+    size_t len_alive    = BITFIELD_LEN(UNIT_ORDER_NPC_END);
+    size_t len_rec      = BITFIELD_LEN(UNIT_ORDER_PC_END);
 
+    // Are all conditions met?
+    b32 isalive = Bitfield_isIn(conds1->alive, conds2->alive, len_alive);
+    b32 isrec   = Bitfield_isIn(conds1->recruited, conds2->recruited, len_rec);
+    return(isalive && isrec);
 }
 
 /* --- Replace --- */
@@ -146,7 +152,7 @@ struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_conds,
         SDL_assert(jfile);
         jscene = cJSON_GetObjectItem(jfile, "Scene");
         SDL_assert(jscene);
-        bool add_scene = true;
+        b32 add_scene = true;
         cJSON *jconditions = cJSON_GetObjectItem(jscene, "Conditions");
 
         // if (jconditions != NULL)
@@ -195,7 +201,7 @@ void Scene_Render_Print(struct Scene *scene) {
     /* Print text lines in columns */
     for (size_t i = 0; i < scene->lines_raw_num; i++) {
         struct Line line = lines[i];
-        SDL_Log("%-*s : %s", max_name, line.speaker.data, line.rawline.data);
+        SDL_Log("%-*s : %s", max_name, line.speaker.data, line.line.data);
     }
 }
 

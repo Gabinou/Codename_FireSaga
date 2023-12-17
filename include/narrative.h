@@ -24,9 +24,8 @@
 // NOTE: Conditions are naturally AND
 
 struct Conditions {
-    u32 *alive;
-    u32 *recruited;
-    u32 *dead;
+    u32 alive    [BITFIELD_LEN(UNIT_ORDER_NPC_END)];
+    u32 recruited[BITFIELD_LEN(UNIT_ORDER_PC_END)];
 };
 
 struct RawLine {
@@ -83,7 +82,7 @@ struct Scene {
 } extern Scene_default;
 
 /* --- Conditions --- */
-bool Conditions_Compare(struct Conditions *conds1, struct Conditions *conds2);
+b32 Conditions_Compare(struct Conditions *conds1, struct Conditions *conds2);
 
 /* --- Constructors/Destructors --- */
 void Scene_Free(     struct Scene *scene);
@@ -113,7 +112,7 @@ void Scene_Raw_Output(      struct Scene *scene, s8 path);
 void Scene_Render_Output(   struct Scene *scene, s8 path);
 
 /* --- Print --- */
-void Scene_Raw_Print(      struct Scene *scene);
-void Scene_Render_Print(   struct Scene *scene);
+void Scene_Raw_Print(   struct Scene *scene);
+void Scene_Render_Print(struct Scene *scene);
 
 #endif /* NARRATIVE_H */
