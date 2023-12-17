@@ -14,6 +14,12 @@ void Bitfield_Off(u32 *bf, size_t bit) {
     bf[len] &= ~(1UL << (bit - (len * BITFIELD_BITSPERLEN)));
 }
 
+b32 Bitfield_Get(u32 *bf, size_t bit) {
+    size_t len = bit / BITFIELD_BITSPERLEN;
+    b32 out = (bf[len] & (1UL << (bit - (len * BITFIELD_BITSPERLEN))));
+    return (out);
+}
+
 /* -- Boolean Operations -- */
 void Bitfield_And(u32 *bf1, u32 *bf2, u32 *out, size_t len) {
     for (u32 i = 0; i < len; i++)

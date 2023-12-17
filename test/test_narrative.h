@@ -20,6 +20,9 @@ void test_scene() {
     Scene_Raw_Print(&scene);
     // getchar();
 
+    Bitfield_Get(&scene.lines_raw[0].conditions.alive, UNIT_ORDER_ERWIN);
+    // nourstest_true(Bitfield_Get(&scene->lines_raw[0].conds.alive, UNIT_ORDER_ERWIN));
+
     /* --- Render scene --- */
 
     /* --- Output Render --- */

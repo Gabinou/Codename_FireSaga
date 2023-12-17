@@ -23,6 +23,7 @@ enum BITFIELD {
 // For nth bit in bitfield
 void Bitfield_On( u32 *bf, size_t bit);
 void Bitfield_Off(u32 *bf, size_t bit);
+b32  Bitfield_Get(u32 *bf, size_t bit);
 
 /* -- Boolean Operations -- */
 void Bitfield_And( u32 *bf1, u32 *bf2, u32 *out, size_t len);
