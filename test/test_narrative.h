@@ -4,7 +4,8 @@
 #include "types.h"
 #include "jsonio.h"
 
-void test_narrative() {
+
+void test_scene() {
     s8 path = s8_literal(PATH_JOIN("scenes", "example.json"));
 
     /* --- Read scene file --- */
@@ -24,4 +25,13 @@ void test_narrative() {
 
     /* --- Output Render --- */
 
+}
+
+void test_conditions() {
+
+}
+
+void test_narrative() {
+    test_scene();
+    test_conditions();
 }

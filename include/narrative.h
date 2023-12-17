@@ -27,17 +27,20 @@ struct Conditions {
     u32 alive    [BITFIELD_LEN(UNIT_ORDER_NPC_END)];
     u32 recruited[BITFIELD_LEN(UNIT_ORDER_PC_END)];
 };
+extern struct Conditions Conditions_default;
 
 struct RawLine {
     struct Conditions conditions;
     s8 speaker;
     s8 rawline;
 };
+extern struct RawLine RawLine_default;
 
 struct Line {
     s8 speaker;
     s8 line;
 };
+extern struct Line Line_default;
 
 /* A scene is a conversation.
 *   - Up to 4 characters sprites on screen at once
@@ -79,7 +82,8 @@ struct Scene {
     // char **with;
     u16   *speakers;
     // u16   *actors;
-} extern Scene_default;
+};
+extern struct Scene Scene_default;
 
 /* --- Conditions --- */
 b32 Conditions_Compare(struct Conditions *conds1, struct Conditions *conds2);

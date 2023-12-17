@@ -19,6 +19,22 @@ struct Scene Scene_default =  {
     .actors_num     = 0,
 };
 
+struct Conditions Conditions_default = {
+    .alive      = {0},
+    .recruited  = {0},
+};
+
+struct RawLine RawLine_default = {
+    .conditions = {0},
+    .speaker    = {0},
+    .rawline    = {0},
+};
+
+struct Line Line_default = {
+    .line    = {0},
+    .speaker = {0},
+};
+
 void Scene_Free(struct Scene *scene) {
     SDL_assert(scene != NULL);
     if (scene->lines_raw != NULL) {
@@ -39,10 +55,10 @@ b32 Conditions_Compare(struct Conditions *conds1, struct Conditions *conds2) {
     size_t len_alive    = BITFIELD_LEN(UNIT_ORDER_NPC_END);
     size_t len_rec      = BITFIELD_LEN(UNIT_ORDER_PC_END);
 
-    // Are all conditions met?
+    /* --  Are all conditions met? -- */
     b32 isalive = Bitfield_isIn(conds1->alive, conds2->alive, len_alive);
     b32 isrec   = Bitfield_isIn(conds1->recruited, conds2->recruited, len_rec);
-    return(isalive && isrec);
+    return (isalive && isrec);
 }
 
 /* --- Replace --- */
@@ -117,12 +133,10 @@ void Conditions_writeJSON(void *input, cJSON *jconds) {
     struct Conditions *conds = (struct Conditions *)input;
     SDL_assert(conds    != NULL);
     SDL_assert(jconds   != NULL);
-    SDL_assert(conds->dead      != NULL);
     SDL_assert(conds->alive     != NULL);
     SDL_assert(conds->recruited != NULL);
 
     cJSON *jalive       = cJSON_GetObjectItem(jconds, "Alive");
-    cJSON *jdead        = cJSON_GetObjectItem(jconds, "Dead");
     cJSON *jrecruited   = cJSON_GetObjectItem(jconds, "Recruited");
 }
 
