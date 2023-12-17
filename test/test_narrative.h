@@ -32,11 +32,11 @@ void test_conditions() {
     nourstest_true(Conditions_Compare(&line_cond, &game_cond));
 
     /* Line should play if Silou is dead, but she is alive: False*/
-    Conditions_Death(&line_cond, UNIT_ORDER_SILOU);
+    Conditions_Dead(&line_cond, UNIT_ORDER_SILOU);
     nourstest_true(!Conditions_Compare(&line_cond, &game_cond));
 
     /* Line should play if Silou is dead, and she is dead: True*/
-    Conditions_Death(&game_cond, UNIT_ORDER_SILOU);
+    Conditions_Dead(&game_cond, UNIT_ORDER_SILOU);
     nourstest_true(Conditions_Compare(&line_cond, &game_cond));
 
     game_cond = Conditions_Game_default;
@@ -44,24 +44,43 @@ void test_conditions() {
 
     /* Line should play if Silou is alive, but she is dead: False*/
     Conditions_Alive(&line_cond, UNIT_ORDER_SILOU);
-    Conditions_Death(&game_cond, UNIT_ORDER_SILOU);
+    Conditions_Dead(&game_cond, UNIT_ORDER_SILOU);
     nourstest_true(!Conditions_Compare(&line_cond, &game_cond));
 
     game_cond = Conditions_Game_default;
     line_cond = Conditions_Line_default;
 
     /* Line should play if Silou is dead, but she is alive: False*/
-    Conditions_Death(&line_cond, UNIT_ORDER_SILOU);
+    Conditions_Dead(&line_cond, UNIT_ORDER_SILOU);
     nourstest_true(!Conditions_Compare(&line_cond, &game_cond));
 
     /* Line should play if Silou is dead, but she is alive: False*/
-    Conditions_Death(&game_cond, UNIT_ORDER_NICOLE);
-    Conditions_Death(&game_cond, UNIT_ORDER_OTTO);
+    Conditions_Dead(&game_cond, UNIT_ORDER_NICOLE);
+    Conditions_Dead(&game_cond, UNIT_ORDER_OTTO);
     nourstest_true(!Conditions_Compare(&line_cond, &game_cond));
 
     /* Line should play if Silou is dead, and she is dead: True*/
-    Conditions_Death(&game_cond, UNIT_ORDER_SILOU);
+    Conditions_Dead(&game_cond, UNIT_ORDER_SILOU);
     nourstest_true(Conditions_Compare(&line_cond, &game_cond));
+
+    game_cond = Conditions_Game_default;
+    line_cond = Conditions_Line_default;
+
+    /* Line should play if Silou was recruited, but she wasn't: False*/
+    Conditions_Recruited(&line_cond, UNIT_ORDER_SILOU);
+    nourstest_true(!Conditions_Compare(&line_cond, &game_cond));
+
+    /* Line should play if Silou was recruited, and she was: True*/
+    Conditions_Recruited(&game_cond, UNIT_ORDER_SILOU);
+    nourstest_true(Conditions_Compare(&line_cond, &game_cond));
+
+    /* Line doesn't care if Silou died: True*/
+    Conditions_Dead(&game_cond, UNIT_ORDER_SILOU);
+    nourstest_true(Conditions_Compare(&line_cond, &game_cond));
+
+    /* Line cares if Silou died: False*/
+    Conditions_Alive(&line_cond, UNIT_ORDER_SILOU);
+    nourstest_true(!Conditions_Compare(&line_cond, &game_cond));
 }
 
 void test_narrative() {

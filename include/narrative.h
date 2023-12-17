@@ -28,10 +28,10 @@ struct Conditions {
     u32 recruited[BITFIELD_LEN(UNIT_ORDER_PC_END)];
 };
 // NOTE: Alive and dead are separate for those conditions:
-//      - line REQUIRES unit to be alive -> set bit to alive
-//      - line does not care if unit is alive  -> not set bit to alive
-//      - line REQUIRES unit to be dead -> set bit to dead
-//      - line does not care if unit is dead  -> not set bit to alive
+//      - line REQUIRES unit to be alive        -> alive bit 1
+//      - line does not care if unit is alive   -> alive bit 0
+//      - line REQUIRES unit to be dead         -> dead bit  1
+//      - line does not care if unit is dead    -> dead bit  0
 extern struct Conditions Conditions_Game_default;
 extern struct Conditions Conditions_Line_default;
 
@@ -102,8 +102,8 @@ extern struct Scene Scene_default;
 b32 Conditions_Compare(struct Conditions *line_cond, struct Conditions *game_cond);
 
 void Conditions_Alive( struct Conditions *cond, size_t uo);
-void Conditions_Death( struct Conditions *cond, size_t uo);
-void Conditions_Recruitment(struct Conditions *cond, size_t uo);
+void Conditions_Dead( struct Conditions *cond, size_t uo);
+void Conditions_Recruited(struct Conditions *cond, size_t uo);
 
 /* --- Constructors/Destructors --- */
 void Scene_Free(     struct Scene *scene);

@@ -58,7 +58,7 @@ void Scene_Free(struct Scene *scene) {
     }
 }
 
-void Conditions_Death(struct Conditions *cond, size_t unit_order) {
+void Conditions_Dead(struct Conditions *cond, size_t unit_order) {
     Bitfield_On( cond->dead, unit_order);
     Bitfield_Off(cond->alive, unit_order);
 }
@@ -68,7 +68,7 @@ void Conditions_Alive(struct Conditions *cond, size_t unit_order) {
     Bitfield_Off(cond->dead, unit_order);
 }
 
-void Conditions_Recruitment(struct Conditions *cond, size_t unit_order) {
+void Conditions_Recruited(struct Conditions *cond, size_t unit_order) {
     Bitfield_On(cond->recruited, unit_order);
 }
 
@@ -106,9 +106,7 @@ void Scene_Render(struct Scene *scene) {
             scene->lines[rdr].speaker = scene->lines_raw[i].speaker;
             rdr++;
         }
-
     }
-
     // Replace all tokens
 }
 
