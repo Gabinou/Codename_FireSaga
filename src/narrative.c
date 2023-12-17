@@ -28,6 +28,11 @@ void Scene_Free(struct Scene *scene) {
         SDL_free(scene->lines_raw);
         scene->lines_raw = NULL;
     }
+    
+    if (scene->lines != NULL) {
+        SDL_free(scene->lines);
+        scene->lines = NULL;
+    }
 }
 
 bool Conditions_Compare(struct Conditions *conds1, struct Conditions *conds2) {
@@ -46,8 +51,17 @@ void Scene_Replace(struct Scene *scene) {
 /* --- Rendering --- */
 /* Read game condition and render text lines */
 void Scene_Render(struct Scene *scene) {
-    // Check lines conditions
-    
+  scene->lines = SDL_calloc(scene->lines_raw_num, sizeof(*scene->lines));
+    int rdr = 0;
+    /* Check lines conditions */
+    for (size_t i = 0; i < scene->lines_raw_num; i++) {
+        if (Conditions_Compare(scene->game_cond, scene->lines_raw[i].conditions)) {
+            scene->lines[rdr].line = scene->lines_raw[i].rawline;
+            scene->lines[rdr].speaker = scene->lines_raw[i].speaker;
+            rdr++;
+    }
+        
+    }
     
     // Replace all tokens
 }
