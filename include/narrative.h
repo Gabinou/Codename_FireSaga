@@ -23,8 +23,8 @@
 // 2- To choose between lines in a Scene dynamically
 // NOTE: Conditions are naturally AND
 struct Conditions {
-    u32 dead     [BITFIELD_LEN(UNIT_ORDER_NPC_END)];
-    u32 alive    [BITFIELD_LEN(UNIT_ORDER_NPC_END)];
+    u32 dead     [BITFIELD_LEN(UNIT_NUM)];
+    u32 alive    [BITFIELD_LEN(UNIT_NUM)];
     u32 recruited[BITFIELD_LEN(UNIT_ORDER_PC_END)];
 };
 // NOTE: Alive and dead are separate for those conditions:
@@ -129,8 +129,8 @@ struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_concs,
 void Scene_Render(struct Scene *scene);
 
 /* --- Output --- */
-void Scene_Raw_Output(      struct Scene *scene, s8 path);
-void Scene_Render_Output(   struct Scene *scene, s8 path);
+void Scene_Raw_Output(   struct Scene *scene, s8 path);
+void Scene_Render_Output(struct Scene *scene, s8 path);
 
 /* --- Print --- */
 void Scene_Raw_Print(   struct Scene *scene);

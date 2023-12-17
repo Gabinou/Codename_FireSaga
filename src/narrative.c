@@ -118,6 +118,10 @@ void Scene_readJSON(void *input, cJSON *jscene) {
     cJSON *jscene_conds = cJSON_GetObjectItem(jscene, "Conditions");
     cJSON *jrawlines    = cJSON_GetObjectItem(jscene, "Lines");
     SDL_assert(jrawlines != NULL);
+    if (!cJSON_IsArray(jrawlines)) {
+        SDL_Log("Lines object should be a JSON array.");
+        exit(ERROR_Generic);
+    }
 
     /* -- Read Scene conditions -- */
     if (jscene_conds)
@@ -146,9 +150,48 @@ void Scene_writeJSON(void *scene, cJSON *jscene) {
 
 }
 
+void Condition_Array_Read(u32 *array, cJSON *jarray) {
+    size_t num = cJSON_GetArraySize(jarray);
+
+    for (int i = 0; i < num; i++) {
+        cJSON *jname = cJSON_GetArrayItem(jarray, i);
+        char  *name  = cJSON_GetStringValue(jname);
+
+    }
+
+}
+
 void Conditions_readJSON( void *input, cJSON *jconds) {
     struct Conditions *conds = (struct Conditions *)input;
 
+    cJSON *jdead        = cJSON_GetObjectItem(jconds, "Dead");
+    cJSON *jalive       = cJSON_GetObjectItem(jconds, "Alive");
+    cJSON *jrecruited   = cJSON_GetObjectItem(jconds, "Recruited");
+
+    if (jdead != NULL) {
+        if (!cJSON_IsArray(jdead)) {
+            SDL_Log("Dead object should be a JSON array.");
+            exit(ERROR_Generic);
+        }
+
+
+    }
+
+    if (jalive != NULL) {
+        if (!cJSON_IsArray(jalive)) {
+            SDL_Log("Alive object should be a JSON array.");
+            exit(ERROR_Generic);
+        }
+
+    }
+
+    if (jrecruited != NULL) {
+        if (!cJSON_IsArray(jrecruited)) {
+            SDL_Log("Recruited object should be a JSON array.");
+            exit(ERROR_Generic);
+        }
+
+    }
 }
 
 void Conditions_writeJSON(void *input, cJSON *jconds) {
@@ -158,8 +201,6 @@ void Conditions_writeJSON(void *input, cJSON *jconds) {
     SDL_assert(conds->alive     != NULL);
     SDL_assert(conds->recruited != NULL);
 
-    cJSON *jalive       = cJSON_GetObjectItem(jconds, "Alive");
-    cJSON *jrecruited   = cJSON_GetObjectItem(jconds, "Recruited");
 }
 
 

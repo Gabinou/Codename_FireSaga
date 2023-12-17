@@ -1,7 +1,7 @@
 {
     "Scene": {
         "Conditions": {
-            "Alive": "Erwin",
+            "Alive": ["Erwin"],
             "Recruited": ["Silou"],
             "Dead": ["Hamilcar", "ZIDINE"]
         },
@@ -10,7 +10,7 @@
                 "Speaker": "Erwin", 
                 "Line": "I am a line with conditions. I only show up if all conditions are met.", 
                 "Conditions": {
-                    "Alive": "Erwin",
+                    "Alive": ["Erwin"],
                     "Recruited": ["Silou"],
                     "Dead": ["Hamilcar", "ZIDINE"]
                 }
@@ -27,7 +27,7 @@
                 "Speaker": "Silou", 
                 "Line": "I am a also line with conditions. I only show up if all conditions are met.", 
                 "Conditions": {
-                    "Alive": "Erwin",
+                    "Alive": ["Erwin"],
                     "Recruited": ["Silou"],
                     "Dead": ["Hamilcar"]
                 }
@@ -36,12 +36,8 @@
                 "Speaker": "Kiara", 
                 "Line": "I should show up.", 
                 "Conditions": {
-                    "Alive": "Silou",
-                    "Recruited": ["Otto"],
-                    "Dead": {
-                        "Or": "Sebastian",
-                        "Or": "Hamilcar"
-                    }
+                    "Alive": ["Silou"],
+                    "Recruited": ["Otto"]
                 }
             },
             {

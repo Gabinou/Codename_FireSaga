@@ -14,7 +14,8 @@ void Names_sceneTimes(void) {
 #undef REGISTER_ENUM
 }
 
-s8 global_unitNames[UNIT_NUM]   = {0};
+s8  global_unitNames[UNIT_NUM]  = {0};
+u64 unitHashes[UNIT_NUM]        = {0};
 struct dtab *global_unitOrders  = NULL;
 void Names_unitNames(void) {
     DTAB_INIT(global_unitOrders, u16);
@@ -25,7 +26,8 @@ void Names_unitNames(void) {
 #define REGISTER_ENUM(x, y) dtab_add(global_unitOrders, &order, UNIT_ID_##x);\
     SDL_Log("%d %d", *(u16 *)dtab_get(global_unitOrders, UNIT_ID_##x), order);\
     SDL_assert(*(u16 *)dtab_get(global_unitOrders, UNIT_ID_##x) == order++);\
-    global_unitNames[UNIT_ORDER_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);
+    global_unitNames[UNIT_ORDER_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);\
+    unitHashes[UNIT_ORDER_##x] = sota_hash_djb2(global_unitNames[UNIT_ORDER_##x]);
 #include "names/units_PC.h"
 #include "names/units_NPC.h"
 }
@@ -454,3 +456,19 @@ void Names_Print_All( char *foldername) {
     fclose(fp);
     s8_free(&filename);
 }
+
+u64 sota_hash_djb2(s8 str) {
+    /* djb2 hashing algorithm by Dan Bernstein.
+                                                        * Description: This algorithm (k=33) was first reported by dan bernstein many
+                                                        * years ago in comp.lang.c. Another version of this algorithm (now favored by bernstein)
+                                                        * uses xor: hash(i) = hash(i - 1) * 33 ^ str[i]; the magic of number 33
+                                                        * (why it works better than many other constants, prime or not) has never been adequately explained.
+                                                        * [1] https://stackoverflow.com/questions/7666509/hash-function-for-string
+                                                        * [2] http://www.cse.yorku.ca/~oz/hash.html */
+    u64 hash     = 5381;
+    i32 str_char =    0;
+    while ((str_char = *str.data++))
+        hash = ((hash << 5) + hash) + str_char; /* hash * 33 + c */
+    return (hash);
+}
+

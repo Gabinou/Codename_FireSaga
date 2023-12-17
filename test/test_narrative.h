@@ -6,6 +6,7 @@
 
 
 void test_scene() {
+    SDL_Log("test_scene");
     s8 path = s8_literal(PATH_JOIN("scenes", "example.json"));
 
     /* --- Read scene file --- */
@@ -26,6 +27,7 @@ void test_scene() {
 }
 
 void test_conditions() {
+    SDL_Log("test_conditions");
     struct Conditions game_cond = Conditions_Game_default;
     struct Conditions line_cond = Conditions_Line_default;
 
