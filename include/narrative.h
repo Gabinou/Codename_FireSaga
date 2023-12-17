@@ -16,7 +16,7 @@
 
 /* -- Glossary -- */
 // - Didascalie (theater vocabulary)
-//      - Note to actors of a scene about what to *do* during a scene 
+//      - Note to actors of a scene about what to *do* during a scene
 
 /* -- Game Narrative Conditions -- */
 // 1- To load and play Scenes,
@@ -38,7 +38,7 @@ struct RawLine {
 /* A scene is a conversation.
 *   - Up to 4 characters sprites on screen at once
 *   - Characters can move around screen
-*       - Limited animation 
+*       - Limited animation
 *            - Lip sync
 *            - blinking
 *            - doing a flip

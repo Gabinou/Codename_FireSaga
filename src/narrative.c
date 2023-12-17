@@ -7,34 +7,23 @@
 struct Scene Scene_default =  {
     .json_element =  JSON_SCENE,
     .id =            0,
-    .line_conds =    NULL,
-    .lines =         NULL,
-    .replace =       NULL,
-    .with =          NULL,
+    // .line_conds =    NULL,
+    // .lines =         NULL,
+    // .replace =       NULL,
+    // .with =          NULL,
     .speakers =      NULL,
-    .actors =        NULL,
-    .line_num =      0,
-    .line_len =      DEFAULT_BUFFER_SIZE,
+    // .actors =        NULL,
+    // .line_num =      0,
+    // .line_len =      DEFAULT_BUFFER_SIZE,
     .actors_num =    0,
 };
 
 void Scene_Free(struct Scene *scene) {
+
 }
 
 bool Conditions_Compare(struct Conditions *conds1, struct Conditions *conds2) {
 
-}
-
-void Conditions_Read(struct Conditions *conds, cJSON *jconds) {
-    SDL_assert(conds    != NULL);
-    SDL_assert(jconds   != NULL);
-    SDL_assert(conds->dead      != NULL);
-    SDL_assert(conds->alive     != NULL);
-    SDL_assert(conds->recruited != NULL);
-
-    cJSON *jalive       = cJSON_GetObjectItem(jconds, "Alive");
-    cJSON *jdead        = cJSON_GetObjectItem(jconds, "Dead");
-    cJSON *jrecruited   = cJSON_GetObjectItem(jconds, "Recruited");
 }
 
 /* --- Replace --- */
@@ -58,15 +47,20 @@ void Scene_readJSON(void *input, cJSON *jscene) {
 
     /* -- Read Scene conditions -- */
     if (jscene_conds)
-        Conditions_readJSON(&scene->conditions, jscene_conds)
+        Conditions_readJSON(&scene->conditions, jscene_conds);
 
     /* -- Read raw lines -- */
     scene->lines_raw_num = cJSON_GetArraySize(jrawlines);
     for (size_t i = 0; i < scene->lines_raw_num; i++) {
-        struct cJSON *jrawline  = cJSON_GetArrayItem(jrawlines, i);
-        char *name              = cJSON_GetStringValue(jrawline);
-
+        cJSON *jrawline  = cJSON_GetArrayItem(jrawlines, i);
+        cJSON *jspeaker  = cJSON_GetObjectItem(jrawline, "Speaker");
+        char *speaker    = cJSON_GetStringValue(jspeaker);
+        SDL_Log("%s", speaker);
+        cJSON *jline     = cJSON_GetObjectItem(jrawline, "Line");
+        char *line       = cJSON_GetStringValue(jline);
+        SDL_Log("%s", line);
     }
+    getchar();
 }
 
 void Scene_writeJSON(void *scene, cJSON *jscene) {
@@ -80,7 +74,15 @@ void Conditions_readJSON( void *input, cJSON *jconds) {
 
 void Conditions_writeJSON(void *input, cJSON *jconds) {
     struct Conditions *conds = (struct Conditions *)input;
+    SDL_assert(conds    != NULL);
+    SDL_assert(jconds   != NULL);
+    SDL_assert(conds->dead      != NULL);
+    SDL_assert(conds->alive     != NULL);
+    SDL_assert(conds->recruited != NULL);
 
+    cJSON *jalive       = cJSON_GetObjectItem(jconds, "Alive");
+    cJSON *jdead        = cJSON_GetObjectItem(jconds, "Dead");
+    cJSON *jrecruited   = cJSON_GetObjectItem(jconds, "Recruited");
 }
 
 
