@@ -22,6 +22,9 @@ struct Scene Scene_default =  {
 void Scene_Free(struct Scene *scene) {
     SDL_assert(scene != NULL);
     if (scene->lines_raw != NULL) {
+        for (size_t i = 0; i < scene->lines_raw_num; i++) {
+            s8_free(&scene->lines_raw[i].rawline);
+        }
         SDL_free(scene->lines_raw);
         scene->lines_raw = NULL;
     }
@@ -44,6 +47,7 @@ void Scene_Replace(struct Scene *scene) {
 void Scene_readJSON(void *input, cJSON *jscene) {
     SDL_assert(jscene != NULL);
     struct Scene *scene = (struct Scene *)input;
+    Scene_Free(scene);
     cJSON *jscene_conds = cJSON_GetObjectItem(jscene, "Conditions");
     cJSON *jrawlines    = cJSON_GetObjectItem(jscene, "Lines");
     SDL_assert(jrawlines != NULL);
@@ -53,25 +57,22 @@ void Scene_readJSON(void *input, cJSON *jscene) {
         Conditions_readJSON(&scene->conditions, jscene_conds);
 
     /* -- Read raw lines -- */
-    if (scene->lines_raw != NULL) {
-        SDL_free(scene->lines_raw);
-        scene->lines_raw = NULL
-    }
     scene->lines_raw_num = cJSON_GetArraySize(jrawlines);
     scene->lines_raw = SDL_calloc(scene->lines_raw_num, sizeof(*scene->lines_raw));
     for (size_t i = 0; i < scene->lines_raw_num; i++) {
-        cJSON *jrawline     = cJSON_GetArrayItem(jrawlines, i);
-        cJSON *jspeaker     = cJSON_GetObjectItem(jrawline, "Speaker");
-        char  *speaker      = cJSON_GetStringValue(jspeaker);
-        SDL_Log("%s", speaker);
+        cJSON *jrawline         = cJSON_GetArrayItem(jrawlines, i);
 
-        cJSON *jline        = cJSON_GetObjectItem(jrawline, "Line");
-        char  *line         = cJSON_GetStringValue(jline);
-        SDL_Log("%s", line);
+        cJSON *jspeaker         = cJSON_GetObjectItem(jrawline, "Speaker");
+        char  *speaker          = cJSON_GetStringValue(jspeaker);
+        scene->lines_raw[i].speaker    = s8_var(speaker);
 
-        cJSON *jline_cond   = cJSON_GetObjectItem(jrawline, "Conditions");
+        cJSON *jline            = cJSON_GetObjectItem(jrawline, "Line");
+        char  *line             = cJSON_GetStringValue(jline);
+        scene->lines_raw[i].rawline    = s8_mut(line);
+
+        cJSON *jline_cond       = cJSON_GetObjectItem(jrawline, "Conditions");
+        Conditions_readJSON(&scene->lines_raw[i].conditions, jline_cond);
     }
-    getchar();
 }
 
 void Scene_writeJSON(void *scene, cJSON *jscene) {

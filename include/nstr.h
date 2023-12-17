@@ -41,7 +41,7 @@ typedef struct s8 {
 //  - bar(s8  str8) -> bar can only change *str8.data,
 //                     ie what str8.data points to
 s8   s8_mut( char *string);
-void s8_free(s8  *str8);
+void s8_free(s8   *str8);
 
 s8 s8_slicefromEnd(  s8 str8, size_t toslice);
 s8 s8_slicefromStart(s8 str8, size_t toslice);
