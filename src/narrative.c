@@ -43,6 +43,17 @@ void Scene_Replace(struct Scene *scene) {
 
 }
 
+/* --- Rendering --- */
+/* Read game condition and render text lines */
+void Scene_Render(struct Scene *scene) {
+    // Check lines conditions
+    
+    
+    // Replace all tokens
+}
+
+
+
 /* --- I/O --- */
 void Scene_readJSON(void *input, cJSON *jscene) {
     SDL_assert(jscene != NULL);

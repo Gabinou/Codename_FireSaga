@@ -35,6 +35,11 @@ struct RawLine {
     s8 rawline;
 };
 
+struct Line {
+    s8 speaker;
+    s8 line;
+};
+
 /* A scene is a conversation.
 *   - Up to 4 characters sprites on screen at once
 *   - Characters can move around screen
@@ -48,11 +53,18 @@ struct Scene {
     s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
     u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
 
-    struct Conditions    conditions;
+    // Current game condition
+    struct Conditions    game_cond;
+    
+    // Condition to play scene
+    struct Conditions    cond;
+    
     struct RawLine      *lines_raw;
+    struct Line         *lines;
 
     u16 id;
     u16 lines_raw_num;
+    u16 lines_num;
     // u16 line_len;
     u16 replace_num;
     u16 actors_num;
