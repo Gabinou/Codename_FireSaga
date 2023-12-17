@@ -142,12 +142,19 @@ struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_conds,
     return (sdarr);
 }
 
-
 /* --- Print --- */
 void Scene_Raw_Print(struct Scene *scene) {
     SDL_Log("Raw scene: ");
+    /* Find max length of name to print cols */
+    int max_name = 0;
     for (size_t i = 0; i < scene->lines_raw_num; i++) {
-        SDL_Log("%9.9s: %9.9s", scene->lines_raw[i].speaker.data, scene->lines_raw[i].rawline.data);
+        if (max_name < scene->lines_raw[i].speaker.num )
+            max_name = scene->lines_raw[i].speaker.num;
+    }
+    
+    /* Print text lines in columns */
+    for (size_t i = 0; i < scene->lines_raw_num; i++) {
+        SDL_Log("%.*s: %s", max_name, scene->lines_raw[i].speaker.data, scene->lines_raw[i].rawline.data);
     }
 }
 
