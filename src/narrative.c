@@ -47,13 +47,42 @@ void Scene_Replace(struct Scene *scene) {
 }
 
 /* --- I/O --- */
-void Scene_readJSON(void *scene, cJSON *jscene) {
+void Scene_readJSON(void *input, cJSON *jscene) {
+    SDL_assert(jscene != NULL);
+    struct Scene *scene = (struct Scene *)input;
+
+    cJSON *jscene_conds = cJSON_GetObjectItem(jscene, "Conditions");
+    cJSON *jrawlines    = cJSON_GetObjectItem(jscene, "Lines");
+    SDL_assert(jrawlines != NULL);
+
+
+    /* -- Read Scene conditions -- */
+    if (jscene_conds)
+        Conditions_readJSON(&scene->conditions, jscene_conds)
+
+    /* -- Read raw lines -- */
+    scene->lines_raw_num = cJSON_GetArraySize(jrawlines);
+    for (size_t i = 0; i < scene->lines_raw_num; i++) {
+        struct cJSON *jrawline  = cJSON_GetArrayItem(jrawlines, i);
+        char *name              = cJSON_GetStringValue(jrawline);
+
+    }
+}
+
+void Scene_writeJSON(void *scene, cJSON *jscene) {
 
 }
 
-void Scene_writeJSON(void *u, cJSON *junit) {
+void Conditions_readJSON( void *input, cJSON *jconds) {
+    struct Conditions *conds = (struct Conditions *)input;
 
 }
+
+void Conditions_writeJSON(void *input, cJSON *jconds) {
+    struct Conditions *conds = (struct Conditions *)input;
+
+}
+
 
 struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_conds,
                           i16 chapter, u16 scene_time) {

@@ -48,13 +48,13 @@ struct Scene {
     s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
     u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
 
-    struct Conditions conditions;
+    struct Conditions   conditions;
     struct RawLine      *lines_raw;
     struct Conditions   *lines_conds;
 
     u16 id;
-    u16 line_num;
-    u16 line_len;
+    u16 lines_raw_num;
+    // u16 line_len;
     u16 replace_num;
     u16 actors_num;
     u64 path_hash;
@@ -72,7 +72,6 @@ struct Scene {
 } extern Scene_default;
 
 /* --- Conditions --- */
-void Conditions_Read(   struct Conditions *conds, cJSON *jconds);
 bool Conditions_Compare(struct Conditions *conds1, struct Conditions *conds2);
 
 /* --- Constructors/Destructors --- */
@@ -84,8 +83,11 @@ void Scene_Replace(struct Scene *scene);
 void Scene_Replace_Add(struct Scene *scene, s8 replace, s8 with);
 
 /* --- I/O --- */
-void Scene_readJSON( void *u, cJSON *junit);
-void Scene_writeJSON(void *u, cJSON *junit);
+void Scene_readJSON( void *s, cJSON *js);
+void Scene_writeJSON(void *s, cJSON *js);
+
+void Conditions_readJSON( void *c, cJSON *jc);
+void Conditions_writeJSON(void *c, cJSON *jc);
 
 /* -- Load all scenes with conditions -- */
 struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_concs,

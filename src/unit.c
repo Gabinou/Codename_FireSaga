@@ -1849,17 +1849,18 @@ void Unit_readJSON(void *input,  cJSON *junit) {
 
     SDL_Log("-- Supports --");
     unit->support_type = cJSON_GetNumberValue(jsupport_type);
-    if (cJSON_IsArray(jsupports)) {
-        unit->support_num = cJSON_GetArraySize(jsupports);
-        for (int i = 0; i < unit->support_num; ++i) {
-            struct cJSON *jsupport = cJSON_GetArrayItem(jsupports, i);
-            char *name = cJSON_GetStringValue(jsupport);
-            // unit->supports[i].other_id = Hashes_supportName2ID(name);
-            unit->supports[i].level = 0;
-            unit->supports[i].other_type = 0;
-        }
-    } else {
-        SDL_Log("Supports is not an array");
+    if (!cJSON_IsArray(jsupports)) {
+        SDL_LogError(SOTA_LOG_SYSTEM, "'%s' supports is not an array", json_name);
+        exit(ERROR_Generic);
+    }
+
+    unit->support_num = cJSON_GetArraySize(jsupports);
+    for (int i = 0; i < unit->support_num; ++i) {
+        struct cJSON *jsupport = cJSON_GetArrayItem(jsupports, i);
+        char *name = cJSON_GetStringValue(jsupport);
+        // unit->supports[i].other_id = Hashes_supportName2ID(name);
+        unit->supports[i].level = 0;
+        unit->supports[i].other_type = 0;
     }
 
     SDL_Log("--set stats --");
