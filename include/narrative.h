@@ -49,14 +49,15 @@ struct Scene {
     u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
 
     struct Conditions conditions;
-    struct RawLine * rawlines;
+    struct RawLine      *lines_raw;
+    struct Conditions   *lines_conds;
 
     u16 id;
     u16 line_num;
     u16 line_len;
     u16 replace_num;
     u16 actors_num;
-    struct Conditions *line_conds;
+    u64 path_hash;
     // TODO: Didascalies
 
     // char **lines;

@@ -19,29 +19,6 @@ struct Scene Scene_default =  {
 };
 
 void Scene_Free(struct Scene *scene) {
-    Scene_Free_Read(scene);
-    s8_free(&scene->json_filename);
-    if (scene->replace != NULL) {
-        for (size_t i = 0; i < scene->replace_num; i++) {
-            if (scene->replace[i] != NULL) {
-                SDL_free(scene->replace[i]);
-                scene->replace[i] = NULL;
-            }
-        }
-        SDL_free(scene->replace);
-        scene->replace = NULL;
-    }
-    if (scene->with != NULL) {
-        for (size_t i = 0; i < scene->replace_num; i++) {
-            if (scene->with[i] != NULL) {
-                SDL_free(scene->with[i]);
-                scene->with[i] = NULL;
-            }
-        }
-        SDL_free(scene->with);
-        scene->with = NULL;
-    }
-    scene->replace_num = 0;
 }
 
 bool Conditions_Compare(struct Conditions *conds1, struct Conditions *conds2) {
@@ -49,23 +26,15 @@ bool Conditions_Compare(struct Conditions *conds1, struct Conditions *conds2) {
 }
 
 void Conditions_Read(struct Conditions *conds, cJSON *jconds) {
-    SDL_assert(jconds != NULL);
-    SDL_assert(conds != NULL);
-    SDL_assert(conds->alive != NULL);
-    SDL_assert(conds->dead != NULL);
+    SDL_assert(conds    != NULL);
+    SDL_assert(jconds   != NULL);
+    SDL_assert(conds->dead      != NULL);
+    SDL_assert(conds->alive     != NULL);
     SDL_assert(conds->recruited != NULL);
-    SDL_assert(conds->bits > 0);
-    cJSON *jalive = cJSON_GetObjectItem(jconds, "Alive");
-    cJSON *jdead = cJSON_GetObjectItem(jconds, "Dead");
-    cJSON *jrecruited = cJSON_GetObjectItem(jconds, "Recruited");
-    // bool out = true;
-    // if (jalive)
-    //     out &= Condition_Read(conds->alive, conds->bits, jalive);
-    // if (jdead)
-    //     out &= Condition_Read(conds->dead, conds->bits, jdead);
-    // if (jrecruited)
-    //     out &= Condition_Read(conds->recruited, conds->bits, jrecruited);
-    // return (out);
+
+    cJSON *jalive       = cJSON_GetObjectItem(jconds, "Alive");
+    cJSON *jdead        = cJSON_GetObjectItem(jconds, "Dead");
+    cJSON *jrecruited   = cJSON_GetObjectItem(jconds, "Recruited");
 }
 
 /* --- Replace --- */

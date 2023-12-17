@@ -1,6 +1,5 @@
 {
     "Scene": {
-        "id" : 1,
         "Conditions": {
             "Alive": "Erwin",
             "Recruited": ["Silou"],
