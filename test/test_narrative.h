@@ -20,8 +20,17 @@ void test_scene() {
     Scene_Raw_Print(&scene);
     // getchar();
 
-    Bitfield_Get(&scene.lines_raw[0].conditions.alive, UNIT_ORDER_ERWIN);
-    // nourstest_true(Bitfield_Get(&scene->lines_raw[0].conds.alive, UNIT_ORDER_ERWIN));
+    ;
+    nourstest_true(Bitfield_Get(scene.lines_raw[0].conditions.alive, UNIT_ORDER_ERWIN));
+    nourstest_true(!Bitfield_Get(scene.lines_raw[0].conditions.alive, UNIT_ORDER_SILOU));
+
+    nourstest_true(Bitfield_Get(scene.lines_raw[0].conditions.recruited, UNIT_ORDER_SILOU));
+    nourstest_true(!Bitfield_Get(scene.lines_raw[0].conditions.recruited, UNIT_ORDER_ERWIN));
+
+    nourstest_true(Bitfield_Get(scene.lines_raw[0].conditions.dead, UNIT_ORDER_HAMILCAR));
+    nourstest_true(Bitfield_Get(scene.lines_raw[0].conditions.dead, UNIT_ORDER_ZIDINE));
+    nourstest_true(!Bitfield_Get(scene.lines_raw[0].conditions.dead, UNIT_ORDER_ERWIN));
+    nourstest_true(!Bitfield_Get(scene.lines_raw[0].conditions.dead, UNIT_ORDER_SILOU));
 
     /* --- Render scene --- */
 

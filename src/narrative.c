@@ -156,7 +156,12 @@ void Condition_Array_Read(u32 *array, cJSON *jarray) {
     for (int i = 0; i < num; i++) {
         cJSON *jname = cJSON_GetArrayItem(jarray, i);
         char  *name  = cJSON_GetStringValue(jname);
-        int order    = Unit_Name2Order(s8_var(name));
+        SDL_Log("'%s'", name);
+        SDL_Log("'%s'", global_unitNames[UNIT_ORDER_ERWIN].data);
+        s8 namestr = s8_camelCase(s8_toLower(s8_mut(name)), ' ', 2);
+        int order  = Unit_Name2Order(namestr);
+        s8_free(&namestr);
+        SDL_assert(order >= 0);
         Bitfield_On(array, order);
     }
 }
