@@ -19,13 +19,20 @@ struct Scene Scene_default =  {
     .actors_num     = 0,
 };
 
-struct Conditions Conditions_default = {
+struct Conditions Conditions_Line_default = {
+    .alive      = {0},
+    .dead       = {0},
+    .recruited  = {0},
+};
+
+struct Conditions Conditions_Game_default = {
     .alive      = {0xFFFFFFFF},
+    .dead       = {0},
     .recruited  = {0},
 };
 
 struct RawLine RawLine_default = {
-    .conditions = {.alive = {0xFFFFFFFF}, .recruited = {0}},
+    .conditions = {0},
     .speaker    = {0},
     .rawline    = {0},
 };
@@ -62,10 +69,12 @@ void Conditions_Recruitment(struct Conditions *cond, size_t unit_order) {
 /* --  Are all conditions in conds1 satisfied in conds2? -- */
 b32 Conditions_Compare(struct Conditions *line_cond, struct Conditions *game_cond) {
     size_t len_alive    = BITFIELD_LEN(UNIT_ORDER_NPC_END);
+    size_t len_dead     = BITFIELD_LEN(UNIT_ORDER_NPC_END);
     size_t len_rec      = BITFIELD_LEN(UNIT_ORDER_PC_END);
 
     /* --  Are all conditions  met? -- */
     b32 isalive = Bitfield_isIn(game_cond->alive,     line_cond->alive,     len_alive);
+    b32 isdead  = Bitfield_isIn(game_cond->dead,      line_cond->dead,      len_dead);
     b32 isrec   = Bitfield_isIn(game_cond->recruited, line_cond->recruited, len_rec);
     return (isalive && isrec);
 }

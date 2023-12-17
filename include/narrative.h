@@ -22,12 +22,18 @@
 // 1- To load and play Scenes,
 // 2- To choose between lines in a Scene dynamically
 // NOTE: Conditions are naturally AND
-
 struct Conditions {
+    u32 dead     [BITFIELD_LEN(UNIT_ORDER_NPC_END)];
     u32 alive    [BITFIELD_LEN(UNIT_ORDER_NPC_END)];
     u32 recruited[BITFIELD_LEN(UNIT_ORDER_PC_END)];
 };
-extern struct Conditions Conditions_default;
+// NOTE: Alive and dead are separate for those conditions:
+//      - line REQUIRES unit to be alive -> set bit to alive
+//      - line does not care if unit is alive  -> not set bit to alive
+//      - line REQUIRES unit to be dead -> set bit to dead
+//      - line does not care if unit is dead  -> not set bit to alive
+extern struct Conditions Conditions_Game_default;
+extern struct Conditions Conditions_Line_default;
 
 struct RawLine {
     struct Conditions conditions;
@@ -86,7 +92,16 @@ struct Scene {
 extern struct Scene Scene_default;
 
 /* --- Conditions --- */
+
+// Comparisons examples: more deaths then expected
+// Example 1:
+//  - Line: 0b1011, Game: 0b1111 -> False
+//  - Line: 0b1011, Game: 0b1100 -> False
+//  - Line: 0b1011, Game: 0b1000 -> True
+
 b32 Conditions_Compare(struct Conditions *line_cond, struct Conditions *game_cond);
+
+
 void Conditions_Death(      struct Conditions *cond, size_t uo);
 void Conditions_Recruitment(struct Conditions *cond, size_t uo);
 
