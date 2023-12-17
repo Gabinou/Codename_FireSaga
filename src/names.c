@@ -302,6 +302,8 @@ void Names_Free(void) {
 
 void Names_Print_All( char *foldername) {
     SDL_Log("foldername %s", foldername);
+    /* TODO: Use PHYSFS_writeBytes, PHYSFS_openWrite */
+
     FILE *fp = NULL;
     /* --- Army names --- */
     s8 filename = s8_mut(foldername);

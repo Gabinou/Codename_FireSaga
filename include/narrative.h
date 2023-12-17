@@ -55,10 +55,10 @@ struct Scene {
 
     // Current game condition
     struct Conditions    game_cond;
-    
+
     // Condition to play scene
     struct Conditions    cond;
-    
+
     struct RawLine      *lines_raw;
     struct Line         *lines;
 
