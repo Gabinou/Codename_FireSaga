@@ -15,11 +15,7 @@ void test_narrative() {
     struct Scene scene = Scene_default;
     Scene_readJSON(&scene, jscene);
     nourstest_true(scene.lines_raw_num == 6);
-
-    for (size_t i = 0; i < scene.lines_raw_num; i++) {
-        SDL_Log("%s: %s", scene.lines_raw[i].speaker.data, scene.lines_raw[i].rawline.data);
-    }
-
+    Scene_Raw_Print(&scene);
     getchar();
 
 

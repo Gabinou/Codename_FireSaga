@@ -96,7 +96,12 @@ struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_concs,
 /* Read game condition and render text lines */
 void Scene_Render(struct Scene *scene);
 
-/* Output scene to text file */
-void Scene_Render_Output(struct Scene *scene);
+/* --- Output --- */
+void Scene_Raw_Output(      struct Scene *scene, s8 path);
+void Scene_Render_Output(   struct Scene *scene, s8 path);
+
+/* --- Print --- */
+void Scene_Raw_Print(      struct Scene *scene);
+void Scene_Render_Print(   struct Scene *scene);
 
 #endif /* NARRATIVE_H */

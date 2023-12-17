@@ -141,3 +141,17 @@ struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_conds,
     s8_free(&base);
     return (sdarr);
 }
+
+
+/* --- Print --- */
+void Scene_Raw_Print(struct Scene *scene) {
+    SDL_Log("Raw scene: ");
+    for (size_t i = 0; i < scene->lines_raw_num; i++) {
+        SDL_Log("%9.9s: %9.9s", scene->lines_raw[i].speaker.data, scene->lines_raw[i].rawline.data);
+    }
+}
+
+void Scene_Render_Print(struct Scene *scene) {
+
+}
+
