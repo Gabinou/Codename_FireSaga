@@ -61,14 +61,76 @@ void test_scene() {
     scene.game_cond = Conditions_Game_default;
     Scene_Render(&scene);
     nourstest_true(scene.lines_num == 3);
-    Scene_Render_Print(&scene);
-    getchar();
+    nourstest_true(scene.rendered[0] == 1);
+    nourstest_true(scene.rendered[1] == 2);
+    nourstest_true(scene.rendered[2] == 5);
 
-    /* -- Scene 2 -- */
-    Conditions_Recruited(&scene.game_cond, UNIT_ORDER_SILOU); /* Line 0, 3 */
+    nourstest_true(scene.lines_raw_num == 6);
 
-    /* --- Output Render --- */
+    /* -- Scene 2: Otto Recruited -- */
+    Conditions_Recruited(&(scene.game_cond), UNIT_ORDER_OTTO); /* Line 4 */
 
+    // nourstest_true(!Conditions_Compare(&line_cond, &scene.game_cond));
+    nourstest_true(Conditions_Compare(&(scene.lines_raw[4].conditions), &scene.game_cond));
+    nourstest_true(Bitfield_Get(scene.lines_raw[4].conditions.recruited, UNIT_ORDER_OTTO));
+    nourstest_true(Bitfield_Get(scene.lines_raw[4].conditions.recruited, UNIT_ORDER_OTTO));
+    nourstest_true(Bitfield_Get(scene.game_cond.recruited, UNIT_ORDER_OTTO) > 0);
+    nourstest_true(!Bitfield_Get(scene.game_cond.recruited, UNIT_ORDER_SILOU));
+
+    Scene_Render(&scene);
+    nourstest_true(Conditions_Compare(&(scene.lines_raw[4].conditions), &scene.game_cond));
+    nourstest_true(scene.lines_raw_num == 6);
+    nourstest_true(scene.lines_num == 4);
+    nourstest_true(scene.rendered[0] == 1);
+    nourstest_true(scene.rendered[1] == 2);
+    nourstest_true(scene.rendered[2] == 4);
+    nourstest_true(scene.rendered[3] == 5);
+
+
+    /* -- Scene 3: Silou Recruited, Hamilcar Dead -- */
+    scene.game_cond = Conditions_Game_default;
+    Conditions_Recruited(&(scene.game_cond), UNIT_ORDER_SILOU);
+    Conditions_Dead(&(scene.game_cond), UNIT_ORDER_HAMILCAR);
+
+
+    Scene_Render(&scene);
+    nourstest_true(scene.lines_num == 4);
+    nourstest_true(scene.rendered[0] == 1);
+    nourstest_true(scene.rendered[1] == 2);
+    nourstest_true(scene.rendered[2] == 3);
+    nourstest_true(scene.rendered[3] == 5);
+
+    /* -- Scene 4: Silou Recruited, Hamilcar Dead, Zidine Dead -- */
+    scene.game_cond = Conditions_Game_default;
+    Conditions_Recruited(&(scene.game_cond), UNIT_ORDER_SILOU);
+    Conditions_Dead(&(scene.game_cond), UNIT_ORDER_HAMILCAR);
+    Conditions_Dead(&(scene.game_cond), UNIT_ORDER_ZIDINE);
+    Scene_Render(&scene);
+    nourstest_true(scene.lines_num == 5);
+    nourstest_true(scene.rendered[0] == 0);
+    nourstest_true(scene.rendered[1] == 1);
+    nourstest_true(scene.rendered[2] == 2);
+    nourstest_true(scene.rendered[3] == 3);
+    nourstest_true(scene.rendered[4] == 5);
+
+    /* -- Scene 5: All -- */
+    scene.game_cond = Conditions_Game_default;
+    Conditions_Recruited(&(scene.game_cond), UNIT_ORDER_SILOU);
+    Conditions_Recruited(&(scene.game_cond), UNIT_ORDER_OTTO);
+    Conditions_Dead(&(scene.game_cond), UNIT_ORDER_HAMILCAR);
+    Conditions_Dead(&(scene.game_cond), UNIT_ORDER_ZIDINE);
+    Scene_Render(&scene);
+    nourstest_true(scene.lines_num == 6);
+    nourstest_true(scene.rendered[0] == 0);
+    nourstest_true(scene.rendered[1] == 1);
+    nourstest_true(scene.rendered[2] == 2);
+    nourstest_true(scene.rendered[3] == 3);
+    nourstest_true(scene.rendered[4] == 4);
+    nourstest_true(scene.rendered[5] == 5);
+
+    /* -- Output Render -- */
+    // Scene_Render_Print(&scene);
+    // getchar();
 }
 
 void test_conditions() {

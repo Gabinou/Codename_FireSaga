@@ -70,6 +70,8 @@ struct Scene {
     struct RawLine      *lines_raw;
     struct Line         *lines;
 
+    int *rendered;
+
     u16 id;
     u16 lines_raw_num;
     u16 lines_num;

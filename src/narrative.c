@@ -56,6 +56,10 @@ void Scene_Free(struct Scene *scene) {
         SDL_free(scene->lines);
         scene->lines = NULL;
     }
+    if (scene->rendered != NULL) {
+        SDL_free(scene->rendered);
+        scene->rendered = NULL;
+    }
 }
 
 
@@ -126,14 +130,21 @@ void Scene_Render(struct Scene *scene) {
         SDL_free(scene->lines);
         scene->lines = NULL;
     }
+    if (scene->rendered != NULL) {
+        SDL_free(scene->rendered);
+        scene->rendered = NULL;
+    }
 
-    scene->lines = SDL_calloc(scene->lines_raw_num, sizeof(*scene->lines));
+    scene->lines    = SDL_calloc(scene->lines_raw_num, sizeof(*scene->lines));
+    scene->rendered = SDL_calloc(scene->lines_raw_num, sizeof(*scene->rendered));
     scene->lines_num = 0;
     /* Check lines conditions */
     for (size_t i = 0; i < scene->lines_raw_num; i++) {
         if (Conditions_Compare(&scene->lines_raw[i].conditions, &scene->game_cond)) {
-            scene->lines[scene->lines_num].line = scene->lines_raw[i].rawline;
-            scene->lines[scene->lines_num].speaker = scene->lines_raw[i].speaker;
+            scene->lines[scene->lines_num].line     = scene->lines_raw[i].rawline;
+            scene->lines[scene->lines_num].speaker  = scene->lines_raw[i].speaker;
+            scene->rendered[scene->lines_num]       = i;
+
             scene->lines_num++;
         }
     }
