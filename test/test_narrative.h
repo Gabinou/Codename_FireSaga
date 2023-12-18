@@ -17,7 +17,7 @@ void test_scene() {
     struct Scene scene = Scene_default;
     Scene_readJSON(&scene, jscene);
     nourstest_true(scene.lines_raw_num == 6);
-    Scene_Raw_Print(&scene);
+    // Scene_Raw_Print(&scene);
     // getchar();
 
     /* - Line 0 - */
@@ -43,10 +43,13 @@ void test_scene() {
     /* - Line 3 - */
     nourstest_true(Bitfield_Get(scene.lines_raw[3].conditions.alive, UNIT_ORDER_ERWIN));
     nourstest_true(Bitfield_Get(scene.lines_raw[3].conditions.alive, UNIT_ORDER_SILOU));
+    nourstest_true(Bitfield_Get(scene.lines_raw[3].conditions.recruited, UNIT_ORDER_SILOU));
+    nourstest_true(Bitfield_Get(scene.lines_raw[3].conditions.dead, UNIT_ORDER_HAMILCAR));
 
     /* - Line 4 - */
     nourstest_true(Bitfield_Get(scene.lines_raw[4].conditions.alive, UNIT_ORDER_KIARA));
     nourstest_true(Bitfield_Get(scene.lines_raw[4].conditions.alive, UNIT_ORDER_SILOU));
+    nourstest_true(Bitfield_Get(scene.lines_raw[4].conditions.recruited, UNIT_ORDER_OTTO));
 
     /* - Line 5 - */
     nourstest_true(Bitfield_Get(scene.lines_raw[5].conditions.alive, UNIT_ORDER_SEBASTIAN));

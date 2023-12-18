@@ -58,6 +58,31 @@ void Scene_Free(struct Scene *scene) {
     }
 }
 
+
+void Conditions_Dead_char(struct Conditions *cond, char *name) {
+    s8 namestr = s8_camelCase(s8_toLower(s8_mut(name)), ' ', 2);
+    int order  = Unit_Name2Order(namestr);
+    s8_free(&namestr);
+    SDL_assert(order >= 0);
+    Conditions_Dead(cond, order);
+}
+
+void Conditions_Alive_char(struct Conditions *cond, char *name) {
+    s8 namestr = s8_camelCase(s8_toLower(s8_mut(name)), ' ', 2);
+    int order  = Unit_Name2Order(namestr);
+    s8_free(&namestr);
+    SDL_assert(order >= 0);
+    Conditions_Alive(cond, order);
+}
+
+void Conditions_Recruited_char(struct Conditions *cond, char *name) {
+    s8 namestr = s8_camelCase(s8_toLower(s8_mut(name)), ' ', 2);
+    int order  = Unit_Name2Order(namestr);
+    s8_free(&namestr);
+    SDL_assert(order >= 0);
+    Conditions_Recruited(cond, order);
+}
+
 void Conditions_Dead(struct Conditions *cond, size_t unit_order) {
     Bitfield_On( cond->dead, unit_order);
     Bitfield_Off(cond->alive, unit_order);
