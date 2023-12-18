@@ -134,21 +134,31 @@ s8 s8_replaceSingle(s8 str8,  char replace,  char with) {
 
 s8 s8_Replace(s8 str8,  char *replace,  char *with) {
     /* find replace pos */
-    char *found = strstr(str8.data, replace);
+    u8 *found = strstr(str8.data, replace);
     if (found != NULL) {
-        // size_t len_f  = found - str8.data;
-        // size_t len_r  = strlen(replace);
-        // size_t len_w  = strlen(with);
-        // size_t len_l  = strlen(str8.data);
-        // size_t len_nl = len_l + len_w - len_r;
-        // /* accomodate new str len */
-        // memmove(str8.data + len_f + len_w,
-        //         str8.data + len_f + len_r,
-        //         len_l - (len_f + len_r));
-        // /* overwrite replace with */
-        // strncpy(str8.data + len_f, with, len_w);
-        // str8.data[len_nl] = '\0';
-        // str8.num          = len_nl;
+        size_t len_f  = found - str8.data;
+        size_t len_r  = strlen(replace);
+        size_t len_w  = strlen(with);
+        size_t len_l  = strlen(str8.data);
+        size_t len_nl = len_l + len_w - len_r;
+
+        /* accomodate new str len */
+        while (len_nl > str8.len) {
+            size_t newlen = str8.len * 2;
+            str8.data = realloc(str8.data, newlen * sizeof(*str8.data));
+            memset(str8.data + str8.num, 0, newlen - str8.num);
+            str8.len = newlen;
+        }
+
+        /* move text after replace to after with */
+        memmove(str8.data + len_f + len_w,
+                str8.data + len_f + len_r,
+                len_l - (len_f + len_r));
+
+        /* overwrite replace with */
+        strncpy(str8.data + len_f, with, len_w);
+        str8.data[len_nl] = '\0';
+        str8.num          = len_nl;
     }
     return (str8);
 }
