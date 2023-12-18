@@ -75,32 +75,18 @@ struct Scene {
     u16 id;
     u16 lines_raw_num;
     u16 lines_num;
-    // u16 line_len;
-    u16 replace_num;
     u16 actors_num;
     u64 path_hash;
     // TODO: Didascalies
 
-    // char **lines;
+    char **with;
+    u16 replace_num;
 
-    // All to_replace are *between stars*
-    // Better for replaces to be LONGER than widths
-    // char **replace;
-    // TODO:
-    // char **with;
     u16   *speakers;
-    // u16   *actors;
 };
 extern struct Scene Scene_default;
 
 /* --- Conditions --- */
-
-// Comparisons examples: more deaths then expected
-// Example 1:
-//  - Line: 0b1011, Game: 0b1111 -> False
-//  - Line: 0b1011, Game: 0b1100 -> False
-//  - Line: 0b1011, Game: 0b1000 -> True
-
 b32 Conditions_Compare(struct Conditions *line_cond, struct Conditions *game_cond);
 
 void Conditions_Dead_char(     struct Conditions *cond, char *u);

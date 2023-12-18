@@ -148,7 +148,7 @@ void Scene_Render(struct Scene *scene) {
             scene->lines_num++;
         }
     }
-    // Replace all tokens
+    /* Replace all tokens */
 }
 
 /* --- I/O --- */
@@ -195,7 +195,7 @@ void Scene_readJSON(void *input, cJSON *jscene) {
 }
 
 void Scene_writeJSON(void *scene, cJSON *jscene) {
-
+    // If necessary...
 }
 
 void Condition_Array_Read(u32 *array, cJSON *jarray) {
@@ -270,6 +270,7 @@ struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_conds,
     /* Reading scene files */
     struct cJSON *jscene, *jfile;
     for (i16 i = 1; i < DEFAULT_BUFFER_SIZE; i++) {
+        // TODO: remake batch scene function
         stbsp_sprintf(extension, "%d.json", i);
         s8cpy(filename, base);
         s8cat(filename, s8_var(extension));
@@ -279,18 +280,9 @@ struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_conds,
         SDL_assert(jfile);
         jscene = cJSON_GetObjectItem(jfile, "Scene");
         SDL_assert(jscene);
-        b32 add_scene = true;
-        cJSON *jconditions = cJSON_GetObjectItem(jscene, "Conditions");
-
-        // if (jconditions != NULL)
-        //     add_scene &= Conditions_Read(scene_conds, jconditions);
-        // if (add_scene) {
-        //     struct Scene temp = Scene_default;
-        //     Scene_readJSON(&temp, jscene);
-        //     DARR_PUT(sdarr, temp);
-        // }
-        // if (jfile != NULL)
-        //     cJSON_Delete(jfile);
+        struct Scene scene;
+        Scene_readJSON(&scene, &jscene);
+        DARR_PUT(sdarr, scene);
     }
 
     s8_free(&filename);
