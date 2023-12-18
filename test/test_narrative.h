@@ -57,6 +57,16 @@ void test_scene() {
 
     /* --- Render scene --- */
 
+    /* -- Scene 1: nothing -- */
+    scene.game_cond = Conditions_Game_default;
+    Scene_Render(&scene);
+    nourstest_true(scene.lines_num == 3);
+    Scene_Render_Print(&scene);
+    getchar();
+
+    /* -- Scene 2 -- */
+    Conditions_Recruited(&scene.game_cond, UNIT_ORDER_SILOU); /* Line 0, 3 */
+
     /* --- Output Render --- */
 
 }

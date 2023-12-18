@@ -122,14 +122,19 @@ void Scene_Replace(struct Scene *scene) {
 /* --- Rendering --- */
 /* Read game condition and render text lines */
 void Scene_Render(struct Scene *scene) {
+    if (scene->lines != NULL) {
+        SDL_free(scene->lines);
+        scene->lines = NULL;
+    }
+
     scene->lines = SDL_calloc(scene->lines_raw_num, sizeof(*scene->lines));
-    int rdr = 0;
+    scene->lines_num = 0;
     /* Check lines conditions */
     for (size_t i = 0; i < scene->lines_raw_num; i++) {
-        if (Conditions_Compare(&scene->game_cond, &scene->lines_raw[i].conditions)) {
-            scene->lines[rdr].line = scene->lines_raw[i].rawline;
-            scene->lines[rdr].speaker = scene->lines_raw[i].speaker;
-            rdr++;
+        if (Conditions_Compare(&scene->lines_raw[i].conditions, &scene->game_cond)) {
+            scene->lines[scene->lines_num].line = scene->lines_raw[i].rawline;
+            scene->lines[scene->lines_num].speaker = scene->lines_raw[i].speaker;
+            scene->lines_num++;
         }
     }
     // Replace all tokens
@@ -188,8 +193,6 @@ void Condition_Array_Read(u32 *array, cJSON *jarray) {
     for (int i = 0; i < num; i++) {
         cJSON *jname = cJSON_GetArrayItem(jarray, i);
         char  *name  = cJSON_GetStringValue(jname);
-        SDL_Log("'%s'", name);
-        SDL_Log("'%s'", global_unitNames[UNIT_ORDER_ERWIN].data);
         s8 namestr = s8_camelCase(s8_toLower(s8_mut(name)), ' ', 2);
         int order  = Unit_Name2Order(namestr);
         s8_free(&namestr);
@@ -312,7 +315,7 @@ void Scene_Render_Print(struct Scene *scene) {
     }
 
     /* Print text lines in columns */
-    for (size_t i = 0; i < scene->lines_raw_num; i++) {
+    for (size_t i = 0; i < scene->lines_num; i++) {
         struct Line line = lines[i];
         SDL_Log("%-*s : %s", max_name, line.speaker.data, line.line.data);
     }
