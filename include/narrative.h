@@ -79,8 +79,7 @@ struct Scene {
     u64 path_hash;
     // TODO: Didascalies
 
-    char **with;
-    u16 replace_num;
+    s8 *with;
 
     u16   *speakers;
 };
@@ -102,8 +101,7 @@ void Scene_Free(     struct Scene *scene);
 
 /* --- Replace --- */
 // TODO: replace text dynamically
-void Scene_Replace(struct Scene *scene);
-void Scene_Replace_Add(struct Scene *scene, s8 replace, s8 with);
+void Scene_Replace_Add(struct Scene *scene, s8 with);
 
 /* --- I/O --- */
 void Scene_readJSON( void *s, cJSON *js);

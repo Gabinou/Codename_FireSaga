@@ -7,15 +7,9 @@
 struct Scene Scene_default =  {
     .json_element   = JSON_SCENE,
     .id             = 0,
-    // .line_conds =    NULL,
-    // .lines =         NULL,
     .lines_raw      = NULL,
-    // .replace =       NULL,
-    // .with =          NULL,
+    .with           = NULL,
     .speakers       = NULL,
-    // .actors =        NULL,
-    // .line_num =      0,
-    // .line_len =      DEFAULT_BUFFER_SIZE,
     .actors_num     = 0,
 };
 
@@ -59,6 +53,11 @@ void Scene_Free(struct Scene *scene) {
     if (scene->rendered != NULL) {
         SDL_free(scene->rendered);
         scene->rendered = NULL;
+    }
+
+    if (scene->with != NULL) {
+        DARR_FREE(scene->with);
+        scene->with = NULL;
     }
 }
 
@@ -115,8 +114,11 @@ b32 Conditions_Compare(struct Conditions *line_cond, struct Conditions *game_con
 }
 
 /* --- Replace --- */
-void Scene_Replace_Add(struct Scene *scene, s8 replace, s8 with) {
-
+void Scene_Replace_Add(struct Scene *scene, s8 with) {
+    if (scene->with == NULL) {
+        scene->with = DARR_INIT(scene->with, s8, 4);
+    }
+    DARR_PUT(scene->with, with);
 }
 
 void Scene_Replace(struct Scene *scene) {
@@ -144,11 +146,24 @@ void Scene_Render(struct Scene *scene) {
             scene->lines[scene->lines_num].line     = scene->lines_raw[i].rawline;
             scene->lines[scene->lines_num].speaker  = scene->lines_raw[i].speaker;
             scene->rendered[scene->lines_num]       = i;
-
             scene->lines_num++;
         }
     }
     /* Replace all tokens */
+    if (scene->with == NULL)
+        return;
+
+    char replace[DEFAULT_BUFFER_SIZE];
+    struct Line *lines = scene->lines;
+    for (size_t i = 0; i < scene->lines_num; i++) {
+        for (size_t j = 0; j < DARR_NUM(scene->with); j++) {
+            memset(replace, 0, DEFAULT_BUFFER_SIZE);
+            stbsp_snprintf(replace,   DEFAULT_BUFFER_SIZE, "REPLACE_TOKEN_%d", j + 1);
+            SDL_Log("replace '%s'", replace);
+            SDL_Log("with '%s'", scene->with[j].data);
+            lines[i].line = s8_Replace(lines[i].line, replace, scene->with[j].data);
+        }
+    }
 }
 
 /* --- I/O --- */
@@ -281,7 +296,7 @@ struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_conds,
         jscene = cJSON_GetObjectItem(jfile, "Scene");
         SDL_assert(jscene);
         struct Scene scene;
-        Scene_readJSON(&scene, &jscene);
+        Scene_readJSON(&scene,  jscene);
         DARR_PUT(sdarr, scene);
     }
 

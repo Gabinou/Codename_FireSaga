@@ -129,8 +129,10 @@ void test_scene() {
     nourstest_true(scene.rendered[5] == 5);
 
     /* -- Output Render -- */
-    // Scene_Render_Print(&scene);
-    // getchar();
+    Scene_Replace_Add(&scene, s8_literal("baka"));
+    Scene_Render(&scene);
+    Scene_Render_Print(&scene);
+    getchar();
 }
 
 void test_conditions() {
