@@ -20,7 +20,7 @@ void test_scene() {
     Scene_Raw_Print(&scene);
     // getchar();
 
-    ;
+    /* - Line 0 - */
     nourstest_true(Bitfield_Get(scene.lines_raw[0].conditions.alive, UNIT_ORDER_ERWIN));
     nourstest_true(!Bitfield_Get(scene.lines_raw[0].conditions.alive, UNIT_ORDER_SILOU));
 
@@ -31,6 +31,26 @@ void test_scene() {
     nourstest_true(Bitfield_Get(scene.lines_raw[0].conditions.dead, UNIT_ORDER_ZIDINE));
     nourstest_true(!Bitfield_Get(scene.lines_raw[0].conditions.dead, UNIT_ORDER_ERWIN));
     nourstest_true(!Bitfield_Get(scene.lines_raw[0].conditions.dead, UNIT_ORDER_SILOU));
+
+    /* - Line 1 - */
+    nourstest_true(Bitfield_Get(scene.lines_raw[1].conditions.alive, UNIT_ORDER_OTTO));
+    nourstest_true(!Bitfield_Get(scene.lines_raw[1].conditions.alive, UNIT_ORDER_SILOU));
+
+    /* - Line 2 - */
+    nourstest_true(Bitfield_Get(scene.lines_raw[2].conditions.alive, UNIT_ORDER_SEBASTIAN));
+    nourstest_true(!Bitfield_Get(scene.lines_raw[2].conditions.alive, UNIT_ORDER_SILOU));
+
+    /* - Line 3 - */
+    nourstest_true(Bitfield_Get(scene.lines_raw[3].conditions.alive, UNIT_ORDER_ERWIN));
+    nourstest_true(Bitfield_Get(scene.lines_raw[3].conditions.alive, UNIT_ORDER_SILOU));
+
+    /* - Line 4 - */
+    nourstest_true(Bitfield_Get(scene.lines_raw[4].conditions.alive, UNIT_ORDER_KIARA));
+    nourstest_true(Bitfield_Get(scene.lines_raw[4].conditions.alive, UNIT_ORDER_SILOU));
+
+    /* - Line 5 - */
+    nourstest_true(Bitfield_Get(scene.lines_raw[5].conditions.alive, UNIT_ORDER_SEBASTIAN));
+    nourstest_true(!Bitfield_Get(scene.lines_raw[5].conditions.alive, UNIT_ORDER_SILOU));
 
     /* --- Render scene --- */
 

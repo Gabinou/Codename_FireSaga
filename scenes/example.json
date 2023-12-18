@@ -10,7 +10,6 @@
                 "Speaker": "Erwin", 
                 "Line": "I am a line with conditions. I only show up if all conditions are met.", 
                 "Conditions": {
-                    "Alive": ["Erwin"],
                     "Recruited": ["Silou"],
                     "Dead": ["Hamilcar", "ZIDINE"]
                 }
