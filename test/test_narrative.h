@@ -128,11 +128,14 @@ void test_scene() {
     nourstest_true(scene.rendered[4] == 4);
     nourstest_true(scene.rendered[5] == 5);
 
-    /* -- Output Render -- */
+    /* -- Render replace -- */
     Scene_Replace_Add(&scene, s8_literal("baka"));
     Scene_Render(&scene);
-    Scene_Render_Print(&scene);
-    getchar();
+    nourstest_true(strcmp(scene.lines[5].line.data, "I am a dynamic line spoken by baka.") == 0);
+
+    /* -- Output replace -- */
+    // Scene_Render_Print(&scene);
+    // getchar();
 }
 
 void test_conditions() {
