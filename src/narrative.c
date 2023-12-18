@@ -143,6 +143,13 @@ void Scene_readJSON(void *input, cJSON *jscene) {
 
         cJSON *jline_cond       = cJSON_GetObjectItem(jrawline, "Conditions");
         Conditions_readJSON(&scene->lines_raw[i].conditions, jline_cond);
+
+        /* -- Speaker should always be alive -- */
+        s8 speakerstr = s8_camelCase(s8_toLower(s8_mut(speaker)), ' ', 2);
+        int order  = Unit_Name2Order(speakerstr);
+        s8_free(&speakerstr);
+        SDL_assert(order >= 0);
+        Bitfield_On(scene->lines_raw[i].conditions.alive, order);
     }
 }
 
