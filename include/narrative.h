@@ -17,6 +17,26 @@
 /* -- Didascalie (theater vocabulary) -- */
 // - Note to actors of a scene about what to *do* during a scene
 // TODO
+// Example instructions:
+//  - Face direction
+//  - Left, right
+//  - Stand 
+//    - Out of frame (OoF): left, right,
+//    - In frame: Left, Left-Mid, mid, Right-Mid, Right,,
+//    - Pixel precise
+//  - Move to 
+//    - From OoF left to IF Mid
+//    - Fast/Slow  
+//  - Slapstick
+//    - Do a flip
+//    - Magic?
+//    - Swords?
+//  - Shake screen
+//  - Shake Actor
+//    - Do a flip
+//  - Emphasis nod
+//    - Sprite moves down a bit.
+
 struct Didascalie {
 };
 
