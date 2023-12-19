@@ -6,10 +6,9 @@
 
 struct Scene Scene_default =  {
     .json_element   = JSON_SCENE,
-    .id             = 0,
     .lines_raw      = NULL,
     .with           = NULL,
-    .speakers       = NULL,
+    .speakers = NULL,
     .actors_num     = 0,
 };
 
@@ -20,20 +19,21 @@ struct Conditions Conditions_Line_default = {
 };
 
 struct Conditions Conditions_Game_default = {
-    .alive      = {0xFFFFFFFF},
-    .dead       = {0},
-    .recruited  = {0},
+    .alive      = {0xFFFFFFFF}, /* Everyone alive at start      */
+    .dead       = {0},          /* No one dead at start         */
+    .recruited  = {0},          /* No one recruited at start    */
 };
 
 struct RawLine RawLine_default = {
-    .conditions = {0},
-    .speaker    = {0},
-    .rawline    = {0},
+    .conditions     = {0},
+    .speaker        = {0},
+    .rawline        = {0},
+    .speaker_order  = {0},
 };
 
 struct Line Line_default = {
-    .line    = {0},
-    .speaker = {0},
+    .line           = {0},
+    .speaker        = {0},
 };
 
 void Scene_Free(struct Scene *scene) {
@@ -53,6 +53,10 @@ void Scene_Free(struct Scene *scene) {
     if (scene->rendered != NULL) {
         SDL_free(scene->rendered);
         scene->rendered = NULL;
+    }
+    if (scene->speakers != NULL) {
+        SDL_free(scene->speakers);
+        scene->speakers = NULL;
     }
 
     if (scene->with != NULL) {
@@ -136,15 +140,26 @@ void Scene_Render(struct Scene *scene) {
         SDL_free(scene->rendered);
         scene->rendered = NULL;
     }
+    if (scene->rendered != NULL) {
+        SDL_free(scene->rendered);
+        scene->rendered = NULL;
+    }
+    if (scene->speakers != NULL) {
+        SDL_free(scene->speakers);
+        scene->speakers = NULL;
+    }
 
     scene->lines    = SDL_calloc(scene->lines_raw_num, sizeof(*scene->lines));
     scene->rendered = SDL_calloc(scene->lines_raw_num, sizeof(*scene->rendered));
+    scene->speakers = SDL_calloc(scene->lines_raw_num, sizeof(*scene->rendered));
     scene->lines_num = 0;
     /* Check lines conditions */
     for (size_t i = 0; i < scene->lines_raw_num; i++) {
         if (Conditions_Compare(&scene->lines_raw[i].conditions, &scene->game_cond)) {
             scene->lines[scene->lines_num].line     = scene->lines_raw[i].rawline;
             scene->lines[scene->lines_num].speaker  = scene->lines_raw[i].speaker;
+            Scene_Speaker_Add(scene, scene->lines_raw[i].speaker_order);
+
             scene->rendered[scene->lines_num]       = i;
             scene->lines_num++;
         }
@@ -158,9 +173,7 @@ void Scene_Render(struct Scene *scene) {
     for (size_t i = 0; i < scene->lines_num; i++) {
         for (size_t j = 0; j < DARR_NUM(scene->with); j++) {
             memset(replace, 0, DEFAULT_BUFFER_SIZE);
-            stbsp_snprintf(replace,   DEFAULT_BUFFER_SIZE, "REPLACE_TOKEN_%d", j + 1);
-            SDL_Log("replace '%s'", replace);
-            SDL_Log("with '%s'", scene->with[j].data);
+            stbsp_snprintf(replace,   DEFAULT_BUFFER_SIZE, "REPLACE_TOKEN_%d", j);
             lines[i].line = s8_Replace(lines[i].line, replace, scene->with[j].data);
         }
     }
@@ -200,11 +213,14 @@ void Scene_readJSON(void *input, cJSON *jscene) {
         cJSON *jline_cond       = cJSON_GetObjectItem(jrawline, "Conditions");
         Conditions_readJSON(&scene->lines_raw[i].conditions, jline_cond);
 
-        /* -- Speaker should always be alive -- */
+        /* -- Get speaker unit order -- */
         s8 speakerstr = s8_camelCase(s8_toLower(s8_mut(speaker)), ' ', 2);
-        int order  = Unit_Name2Order(speakerstr);
-        s8_free(&speakerstr);
+        u16 order = Unit_Name2Order(speakerstr);
         SDL_assert(order >= 0);
+        scene->lines_raw[i].speaker_order = order;
+        s8_free(&speakerstr);
+
+        /* -- Speaker should always be alive -- */
         Bitfield_On(scene->lines_raw[i].conditions.alive, order);
     }
 }
@@ -304,6 +320,25 @@ struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_conds,
     s8_free(&base);
     return (sdarr);
 }
+
+/* --- Speakers --- */
+void Scene_Speaker_Add(struct Scene *scene, u16 order) {
+    int index = 0;
+    for (int i = 0; i < scene->lines_raw_num; i++) {
+
+        /* Skip if order found in speakers */
+        if (order == scene->speakers[i])
+            return;
+
+        /* Set index to greatest free spot in speakers array */
+        if ((scene->speakers[i] > 0) && (index < 1))
+            index = i;
+    }
+    SDL_assert(index >= 0);
+    SDL_assert(index < scene->lines_raw_num);
+    scene->speakers[index] = order;
+}
+
 
 /* --- Print --- */
 void Scene_Raw_Print(struct Scene *scene) {

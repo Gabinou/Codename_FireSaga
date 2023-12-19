@@ -14,9 +14,12 @@
 #include "bitfields.h"
 #include "SDL.h"
 
-/* -- Glossary -- */
-// - Didascalie (theater vocabulary)
-//      - Note to actors of a scene about what to *do* during a scene
+/* -- Didascalie (theater vocabulary) -- */
+// - Note to actors of a scene about what to *do* during a scene
+// TODO
+struct Didascalie {
+};
+
 
 /* -- Game Narrative Conditions -- */
 // 1- To load and play Scenes,
@@ -37,8 +40,9 @@ extern struct Conditions Conditions_Line_default;
 
 struct RawLine {
     struct Conditions conditions;
-    s8 speaker;
-    s8 rawline;
+    s8  speaker;
+    s8  rawline;
+    u16 speaker_order;
 };
 extern struct RawLine RawLine_default;
 
@@ -61,27 +65,35 @@ struct Scene {
     s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
     u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
 
-    // Current game condition
+    /* -- Current game condition -- */
     struct Conditions    game_cond;
 
-    // Condition to play scene
+    /* -- Condition to play scene -- */
     struct Conditions    cond;
 
+    /* -- Raw text tiles -- */
     struct RawLine      *lines_raw;
+
+    /* -- Rendered text tiles -- */
     struct Line         *lines;
+    int *rendered; /* indices of rendered lines */
 
-    int *rendered;
-
+    /* -- Speakers -- */
     u16 id;
     u16 lines_raw_num;
     u16 lines_num;
     u16 actors_num;
-    u64 path_hash;
-    // TODO: Didascalies
+    /* -- Didascalies -- */
+    // TODO
+    struct Didascalie   *didascalies;
 
+    /* -- Dynamic lines -- */
+    // Tokens are replaced with
+    // Tokens: REPLACE_TOKEN_X, X is int from 0
     s8 *with;
 
-    u16   *speakers;
+    /* -- Speakers -- */
+    u16 *speakers; /* Unit_order */
 };
 extern struct Scene Scene_default;
 
@@ -114,6 +126,9 @@ void Conditions_writeJSON(void *c, cJSON *jc);
 /* -- Load all scenes with conditions -- */
 struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_concs,
                           i16 chapter, u16 scene_time);
+
+/* --- Speakers --- */
+void Scene_Speaker_Add(struct Scene *scene, u16 order);
 
 /* --- Rendering --- */
 /* Read game condition and render text lines */
