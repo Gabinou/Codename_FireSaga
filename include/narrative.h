@@ -40,7 +40,6 @@
 struct Didascalie {
 };
 
-
 /* -- Game Narrative Conditions -- */
 // 1- To load and play Scenes,
 // 2- To choose between lines in a Scene dynamically
