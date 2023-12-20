@@ -1108,7 +1108,7 @@ enum MOUSE_DEFAULTS { // this extern struct is dumb
 };
 
 enum BOSS_ICONS {
-    BOSS_ICON_ORIFLAMME = 1; /* Frankish battle standard */
-}
+    BOSS_ICON_ORIFLAMME = 1, /* Frankish battle standard */
+};
 
 #endif /* ENUMS_H */

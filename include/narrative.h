@@ -20,13 +20,13 @@
 // Example instructions:
 //  - Face direction
 //  - Left, right
-//  - Stand 
+//  - Stand
 //    - Out of frame (OoF): left, right,
 //    - In frame: Left, Left-Mid, mid, Right-Mid, Right,,
 //    - Pixel precise
-//  - Move to 
+//  - Move to
 //    - From OoF left to IF Mid
-//    - Fast/Slow  
+//    - Fast/Slow
 //  - Slapstick
 //    - Do a flip
 //    - Magic?
