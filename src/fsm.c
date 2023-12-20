@@ -360,9 +360,17 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     }
 
     /* -- Compute attackmap and movemap -- */
-    sota->map->update = true;
-    Map_Healtomap_Compute(  sota->map, sota->world, hov_ent, true, false);
-    Map_Attacktomap_Compute(sota->map, sota->world, hov_ent, true, false);
+    sota->map->update   = true;
+    b32 move            = true;
+    b32 equipped        = false;
+
+    /* Don't show movemap if AI never moves */
+    struct AI *ai = TNECS_GET_COMPONENT(sota->world, hov_ent, AI);
+    if (ai != NULL)
+        move = (ai->move != AI_MOVE_NEVER);
+
+    Map_Healtomap_Compute(  sota->map, sota->world, hov_ent, move, equipped);
+    Map_Attacktomap_Compute(sota->map, sota->world, hov_ent, move, equipped);
     int rangemap = Unit_Rangemap_Get(unit_ontile);
 
     /* - Compute new stackmap with recomputed attacktomap - */
