@@ -635,7 +635,6 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
     /* - Pop all menus - */
-
     while (DARR_NUM(sota->menu_stack) > 0) {
         tnecs_entity menu_pop       = DARR_POP(sota->menu_stack);
         struct Menu *mc             = TNECS_GET_COMPONENT(sota->world, menu_pop, Menu);
@@ -644,13 +643,19 @@ void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
         mc->visible = false;
     }
 
-    /* - focus cursor on tilemap - */
+    /* - Focus cursor on tilemap - */
     Game_cursorFocus_onMap(sota);
 
+    /* - Destroy reinforcement timer - */
     if (sota->reinf_timer != TNECS_NULL) {
         tnecs_entity_destroy(sota->world, sota->reinf_timer);
         sota->reinf_timer = TNECS_NULL;
     }
+
+    /* - Reset dangermap - */
+    Map_Stacked_Dangermap_Reset(sota->map);
+    Map_Danger_Reset(sota->map);
+    Map_Palettemap_Reset(sota->map);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
 }

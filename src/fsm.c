@@ -481,6 +481,7 @@ void fsm_eUnitDng_ssStby(struct Game *sota, tnecs_entity selector_entity) {
 
     /* -- Skip if enemy can't attack -- */
     if (!Unit_canAttack(unit)) {
+        SDL_Log("Enemy unit can't attack");
         return;
     }
 
