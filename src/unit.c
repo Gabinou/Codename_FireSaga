@@ -355,18 +355,12 @@ u8 Unit_mvtType( struct Unit *unit) {
 }
 
 u8 SotA_army2alignment(u8 army) {
-    if ((army <= ARMY_START) || (army >= ARMY_END)) {
-        SDL_Log("Army out of bounds");
-        exit(ERROR_OutofBounds);
-    }
+    SDL_assert((army > ARMY_START) && (army < ARMY_END));
     return (army_alignment[army]);
 }
 
 bool SotA_isPC(u8 army) {
-    if ((army <= ARMY_START) || (army >= ARMY_END)) {
-        SDL_Log("Army is not PC");
-        exit(ERROR_OutofBounds);
-    }
+    SDL_assert((army > ARMY_START) && (army < ARMY_END));
     return (army_isPC[army]);
 }
 

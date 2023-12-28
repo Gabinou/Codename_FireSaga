@@ -1032,8 +1032,9 @@ void fsm_eUnitSel_ssStby(struct Game *sota, tnecs_entity selector_entity) {
         return;
     }
 
+    /* - Friendly unit was selected - */
     if (!selected_unit->waits) {
-        /* - Friendly unit was selected and can move - */
+        /* - Friendly unit can move - */
         sota->aggressor             = sota->selected_unit_entity;
 
         /* Make popup_unit invisible */
