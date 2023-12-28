@@ -206,6 +206,19 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
         /* -- Turn only increments at the start of player turn -- */
         Map_Turn_Increment(sota->map);
+
+        // Only if unit on tile
+        struct Position *cursor_pos;
+        cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+        struct Point pos = cursor_pos->tilemap_pos;
+        int current_i  = pos.y * sota->map->col_len + pos.x;
+        tnecs_entity ontile = sota->map->unitmap[current_i];
+
+        /* unit hovering */
+        if (ontile != TNECS_NULL) {
+            *data2_entity = ontile;
+            Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Hovers_Unit, NULL, data2_entity);
+        }
     } else {
         /* --- Control goes to AI --- */
         // TODO: Animate reinforcements
@@ -577,8 +590,9 @@ void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
         }
     }
 
-    /* Switch control to next army */
     u8 *army = &sota->map->army_onfield[sota->map->army_i];
+
+    /* Switch control to next army */
     Event_Emit(__func__, SDL_USEREVENT, event_Game_Control_Switch, army, NULL);
 }
 
