@@ -525,7 +525,6 @@ void receive_event_SDL_CONTROLLERDEVICEADDED(struct Game *sota, SDL_Event *event
         Gamepad_addController(gamepad_ptr, event->cdevice.which);
     else
         SDL_Log("entity_cursor has no controllerGamepad component");
-
 }
 
 void receive_event_SDL_MOUSEMOTION(struct Game *sota, SDL_Event *event) {

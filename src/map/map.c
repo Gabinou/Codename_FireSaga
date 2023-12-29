@@ -53,12 +53,12 @@ struct Map Map_default = {
     .tilesindex             = NULL,
     .tilemap_surface        = NULL,
 
-    .show_move              = false,
-    .show_attack            = false,
-    .show_heal              = false,
+    // .show_move              = false,
+    // .show_attack            = false,
+    // .show_heal              = false,
     .show_danger            = false,
     .show_globalRange       = false,
-    .show_grid              = false,
+    // .show_grid              = false,
 
     .camera_moved           = false,
     .visible_changed        = false,

@@ -71,7 +71,6 @@ struct Map {
 
     /* --- BASICS --- */
     u8 turn; /* Automatic loss if turn 255. */
-    i32 boss;
     u8 row_len;
     u8 col_len;
     i8 chapter;
@@ -194,11 +193,11 @@ struct Map {
     bool update             : 1;
     bool seized             : 1; /* maybe unnecessary if turn system. */
     bool bossdied           : 1;
-    bool show_move          : 1;
-    bool show_heal          : 1;
-    bool show_grid          : 1;
+    // bool show_move          : 1;
+    // bool show_heal          : 1;
+    // bool show_grid          : 1;
     bool show_icons         : 1;
-    bool show_attack        : 1;
+    // bool show_attack        : 1;
     bool show_danger        : 1;
     bool show_overlay       : 1;
     bool camera_moved       : 1;
