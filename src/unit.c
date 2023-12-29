@@ -52,6 +52,25 @@ struct UnitMoveAnimation UnitMoveAnimation_default = {
     .time_ns         = SOTA_ns / 2ULL,
 };
 
+/* --- Boss --- */
+struct Boss Boss_default = {
+    .icon = BOSS_ICON_STGEORGE;
+};
+int army_icons[ARMY_NUM] = {
+    /* FRIENDLY                  */ BOSS_ICON_STGEORGE,
+    /* ENEMY                     */ BOSS_ICON_STGEORGE,
+    /* ERWIN                     */ BOSS_ICON_STGEORGE,
+    /* FREE_MILITIA              */ BOSS_ICON_STGEORGE,
+    /* NEUTRAL                   */ BOSS_ICON_STGEORGE,
+    /* IMPERIAL                  */ BOSS_ICON_VOLDAN,
+    /* HAMILCAR                  */ BOSS_ICON_HAMILCAR,
+    /* FIRST_EXPEDITIONARY_FORCE */ BOSS_ICON_HAMILCAR,
+    /* THEOCRACY                 */ BOSS_ICON_STGEORGE,
+    /* VOLDAN                    */ BOSS_ICON_VOLDAN,
+    /* KEWAC                     */ BOSS_ICON_KEWAC,
+    /* KESIRU                    */ BOSS_ICON_KESIRU,
+    /* BANDITS                   */ BOSS_ICON_STGEORGE,
+}
 
 /* --- UNIT --- */
 struct Unit_status Unit_status_default = {.status = 0, .turns = 3};
