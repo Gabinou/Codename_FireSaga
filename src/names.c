@@ -54,7 +54,6 @@ void Names_statNames(void) {
 #undef REGISTER_ENUM
 }
 
-
 s8 armyNames[ARMY_NUM] = {0};
 void Names_armyNames(void) {
 #define REGISTER_ENUM(x, y) armyNames[ARMY_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2);

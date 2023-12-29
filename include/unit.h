@@ -41,20 +41,18 @@ typedef struct UnitMoveAnimation {
 } UnitMoveAnimation;
 extern struct UnitMoveAnimation UnitMoveAnimation_default;
 
-/* --- UNIT STATUS --- */
-struct Unit_status {
-    /* Number of turns to be in this state. *
-    /* <0 means forever. */
-    i8 status;
-    i8 turns;
-};
-extern struct Unit_status Unit_status_default;
-
 /* --- Boss --- */
-struct Boss {
+typedef struct Boss {
     i8 icon; 
-};
+
+    SDL_Rect srcrect; /* x,y,w,h */
+    SDL_Rect dstrect; /* x,y,w,h */
+    SDL_Texture *texture;  /* pixels */
+} Boss;
 extern struct Boss Boss_default;
+
+void Boss_Load_Icon(struct Boss *boss);
+void Boss_Draw(struct Boss *boss, struct Position *pos, SDL_Renderer *r);
 
 /* -- Get default boss icon from army -- */
 extern int army_icons[ARMY_NUM];

@@ -54,8 +54,22 @@ struct UnitMoveAnimation UnitMoveAnimation_default = {
 
 /* --- Boss --- */
 struct Boss Boss_default = {
-    .icon = BOSS_ICON_STGEORGE;
+    .icon       = BOSS_ICON_STGEORGE,
+    .dstrect    = {0},
+    .srcrect    = {0},
+    .texture    = NULL,
 };
+
+void Boss_Load_Icon(struct Boss *boss) {
+
+}
+
+void Boss_Draw(struct Boss *boss, struct Position *pos, SDL_Renderer *renderer) {
+    SDL_assert(pos->onTilemap);
+
+    SDL_RenderCopy(renderer, boss->texture, &boss->srcrect, &boss->dstrect);
+}
+
 int army_icons[ARMY_NUM] = {
     /* FRIENDLY                  */ BOSS_ICON_STGEORGE,
     /* ENEMY                     */ BOSS_ICON_STGEORGE,
@@ -70,7 +84,7 @@ int army_icons[ARMY_NUM] = {
     /* KEWAC                     */ BOSS_ICON_KEWAC,
     /* KESIRU                    */ BOSS_ICON_KESIRU,
     /* BANDITS                   */ BOSS_ICON_STGEORGE,
-}
+};
 
 /* --- UNIT --- */
 struct Unit_status Unit_status_default = {.status = 0, .turns = 3};
