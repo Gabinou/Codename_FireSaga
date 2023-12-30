@@ -1108,13 +1108,17 @@ enum MOUSE_DEFAULTS { // this extern struct is dumb
 };
 
 enum BOSS_ICONS {
-    BOSS_ICON_NULL      = 0,
-    BOSS_ICON_STGEORGE  = 1,
-    BOSS_ICON_ORIFLAMME = 2, /* Frankish battle standard */
-    BOSS_ICON_KEWAC     = 3,
-    BOSS_ICON_KESIRU    = 4,
-    BOSS_ICON_VOLDAN    = 5,
-    BOSS_ICON_HAMILCAR  = 5,
+    BOSS_ICON_WIDTH     =  8,
+    BOSS_ICON_HEIGHT    = 16,
+    BOSS_ICON_OFFSET_X  =  8,
+    BOSS_ICON_OFFSET_Y  = 16,
+    BOSS_ICON_NULL      =  0,
+    BOSS_ICON_STGEORGE  =  1,
+    BOSS_ICON_ORIFLAMME =  2, /* Frankish battle standard */
+    BOSS_ICON_KEWAC     =  3,
+    BOSS_ICON_KESIRU    =  4,
+    BOSS_ICON_VOLDAN    =  5,
+    BOSS_ICON_HAMILCAR  =  5,
 };
 
 #endif /* ENUMS_H */
