@@ -129,25 +129,25 @@ void Draw_Map_Boss_Icon(tnecs_system_input *input) {
 
     for (u16 order = 0; order < input->num_entities; order++) {
         struct Boss     *boss       = (boss_arr     + order);
-        struct Sprite   *sprite     = (sprite_arr + order);
+        struct Sprite   *sprite     = (sprite_arr   + order);
         struct Position *position   = (position_arr + order);
 
         if (!sprite->visible)
             continue;
-    
+
         boss->srcrect.x = 0;
         boss->srcrect.y = 0;
         boss->srcrect.w = BOSS_ICON_WIDTH;
-        boss->srcrect.h = BOSS_ICON_HEIGHT; 
+        boss->srcrect.h = BOSS_ICON_HEIGHT;
         int offset_x = BOSS_ICON_OFFSET_X;
         int offset_y = BOSS_ICON_OFFSET_Y;
 
         struct Point pixel_pos = position->pixel_pos;
-        boss->dstrect.x = SOTA_ZOOM((pixel_pos->x - offset_x), zoom) + sota->camera->offset.x;
-        boss->dstrect.y = SOTA_ZOOM((pixel_pos->y - offset_y), zoom) + sota->camera->offset.y;
+        float zoom = sota->camera.zoom;
+        boss->dstrect.x = SOTA_ZOOM((pixel_pos.x - offset_x), zoom) + sota->camera.offset.x;
+        boss->dstrect.y = SOTA_ZOOM((pixel_pos.y - offset_y), zoom) + sota->camera.offset.y;
         boss->dstrect.w = SOTA_ZOOM((sota->map->tilesize[0]), zoom);
         boss->dstrect.h = SOTA_ZOOM((sota->map->tilesize[1]), zoom);
-
         Boss_Draw(boss, position, sota->renderer);
     }
 }

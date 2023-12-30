@@ -64,7 +64,9 @@ void Boss_Load_Icon(struct Boss *boss) {
 
 }
 
-void Boss_Draw(struct Boss *boss, struct Position *pos, SDL_Renderer *renderer) {
+void Boss_Draw(struct Boss *boss,
+               struct Position *pos,
+               SDL_Renderer *renderer) {
     SDL_assert(pos->onTilemap);
 
     SDL_RenderCopy(renderer, boss->texture, &boss->srcrect, &boss->dstrect);

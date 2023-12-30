@@ -21,6 +21,7 @@
 struct Item;
 struct Weapon;
 struct Damage;
+struct Position;
 struct RNG_Sequence;
 struct Reinforcement;
 
@@ -43,7 +44,7 @@ extern struct UnitMoveAnimation UnitMoveAnimation_default;
 
 /* --- Boss --- */
 typedef struct Boss {
-    i8 icon; 
+    i8 icon;
 
     SDL_Rect srcrect; /* x,y,w,h */
     SDL_Rect dstrect; /* x,y,w,h */
@@ -52,7 +53,9 @@ typedef struct Boss {
 extern struct Boss Boss_default;
 
 void Boss_Load_Icon(struct Boss *boss);
-void Boss_Draw(struct Boss *boss, struct Position *pos, SDL_Renderer *r);
+void Boss_Draw(struct Boss      *boss,
+               struct Position  *pos,
+               SDL_Renderer *r);
 
 /* -- Get default boss icon from army -- */
 extern int army_icons[ARMY_NUM];
