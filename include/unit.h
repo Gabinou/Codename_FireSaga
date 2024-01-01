@@ -22,6 +22,7 @@ struct Item;
 struct Weapon;
 struct Damage;
 struct Position;
+struct Map;
 struct RNG_Sequence;
 struct Reinforcement;
 
@@ -52,9 +53,10 @@ typedef struct Boss {
 } Boss;
 extern struct Boss Boss_default;
 
+void Boss_Pos(struct Boss *boss, struct Camera *camera,
+              struct Position  *pos, struct Map *map);
 void Boss_Load_Icon(struct Boss *boss);
-void Boss_Draw(struct Boss      *boss,
-               struct Position  *pos,
+void Boss_Draw(struct Boss      *boss, struct Position  *pos,
                SDL_Renderer *r);
 
 /* -- Get default boss icon from army -- */

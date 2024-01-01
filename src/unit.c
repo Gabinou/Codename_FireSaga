@@ -64,8 +64,26 @@ void Boss_Load_Icon(struct Boss *boss) {
 
 }
 
-void Boss_Draw(struct Boss *boss,
-               struct Position *pos,
+void Boss_Pos(struct Boss *boss, struct Camera *camera,
+              struct Position *pos, struct Map *map) {
+    boss->srcrect.x = 0;
+    boss->srcrect.y = 0;
+    boss->srcrect.w = BOSS_ICON_WIDTH;
+    boss->srcrect.h = BOSS_ICON_HEIGHT;
+
+    int offset_x = BOSS_ICON_OFFSET_X;
+    int offset_y = BOSS_ICON_OFFSET_Y;
+
+    struct Point pixel_pos = pos->pixel_pos;
+    float zoom = camera->zoom;
+    boss->dstrect.x = SOTA_ZOOM((pixel_pos.x - offset_x), zoom) + camera->offset.x;
+    boss->dstrect.y = SOTA_ZOOM((pixel_pos.y - offset_y), zoom) + camera->offset.y;
+    boss->dstrect.w = SOTA_ZOOM((map->tilesize[0]), zoom);
+    boss->dstrect.h = SOTA_ZOOM((map->tilesize[1]), zoom);
+}
+
+
+void Boss_Draw(struct Boss  *boss, struct Position *pos,
                SDL_Renderer *renderer) {
     SDL_assert(pos->onTilemap);
 
