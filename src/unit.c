@@ -52,20 +52,20 @@ struct UnitMoveAnimation UnitMoveAnimation_default = {
     .time_ns         = SOTA_ns / 2ULL,
 };
 
-/* --- Boss --- */
-struct Boss Boss_default = {
+/* --- BossIcon --- */
+struct BossIcon BossIcon_default = {
     .icon       = BOSS_ICON_STGEORGE,
     .dstrect    = {0},
     .srcrect    = {0},
     .texture    = NULL,
 };
 
-void Boss_Load_Icon(struct Boss *boss) {
+void BossIcon_Load_Icon(struct BossIcon *boss) {
 
 }
 
-void Boss_Pos(struct Boss *boss, struct Camera *camera,
-              struct Position *pos, struct Map *map) {
+void BossIcon_Pos(struct BossIcon *boss, struct Camera *camera,
+                  struct Position *pos, struct Map *map) {
     boss->srcrect.x = 0;
     boss->srcrect.y = 0;
     boss->srcrect.w = BOSS_ICON_WIDTH;
@@ -83,8 +83,8 @@ void Boss_Pos(struct Boss *boss, struct Camera *camera,
 }
 
 
-void Boss_Draw(struct Boss  *boss, struct Position *pos,
-               SDL_Renderer *renderer) {
+void BossIcon_Draw(struct BossIcon  *boss, struct Position *pos,
+                   SDL_Renderer *renderer) {
     SDL_assert(pos->onTilemap);
 
     SDL_RenderCopy(renderer, boss->texture, &boss->srcrect, &boss->dstrect);

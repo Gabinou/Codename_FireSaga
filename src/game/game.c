@@ -364,7 +364,7 @@ struct Game *Game_Init(void) {
     TNECS_REGISTER_COMPONENT(out_game->world, Position);
     TNECS_REGISTER_COMPONENT(out_game->world, Sprite);
     TNECS_REGISTER_COMPONENT(out_game->world, Unit);
-    TNECS_REGISTER_COMPONENT(out_game->world, Boss);
+    TNECS_REGISTER_COMPONENT(out_game->world, BossIcon);
     TNECS_REGISTER_COMPONENT(out_game->world, Menu);
     TNECS_REGISTER_COMPONENT(out_game->world, controllerGamepad);
     TNECS_REGISTER_COMPONENT(out_game->world, controllerMouse);
@@ -423,7 +423,7 @@ struct Game *Game_Init(void) {
     TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Unit,   1, Unit, Position, Sprite, MapHPBar);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Unit,   1, Unit, Position, Sprite);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Unit,   0, Unit, Position, Sprite, RenderTop);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Boss_Icon,   0, Unit, Position, Sprite, Boss);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Boss_Icon,   0, Unit, Position, Sprite, BossIcon);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_HPBar, 0, Unit, Position, MapHPBar);
 
     TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Menu,     0, Menu);
