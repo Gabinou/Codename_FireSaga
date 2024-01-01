@@ -3,6 +3,9 @@
 
 #include "macros.h"
 
+/* -- Release switches -- */
+// #define SOTA_NO_LOGS
+
 /* -- Various defines -- */
 #define SOTA_RNG SOTA_RN_DOUBLE
 

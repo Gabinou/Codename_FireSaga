@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include "types.h"
+#include "debug.h"
 #include "enums.h"
 #include "SDL.h"
 
@@ -29,5 +30,18 @@ enum SOTA_LOG {
 
 void Log_Init(void);
 void Log2file(void *d, i32 c, SDL_LogPriority p, const char *m);
+
+/* -- Remove all logs, for release? -- */
+
+#ifdef SOTA_NO_LOGS
+    #define SDL_LogCritical(...) do {} while (0)
+    #define SDL_LogDebug(...) do {} while (0)
+    #define SDL_LogError(...) do {} while (0)
+    #define SDL_LogInfo(...) do {} while (0)
+    #define SDL_LogVerbose(...) do {} while (0)
+    #define SDL_LogWarn(...) do {} while (0)
+    #define SDL_Log(...) do {} while (0)
+#endif /* SOTA_NO_LOGS */
+
 
 #endif /* LOG_H */
