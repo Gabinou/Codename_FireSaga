@@ -53,9 +53,13 @@ typedef struct BossIcon {
 } BossIcon;
 extern struct BossIcon BossIcon_default;
 
+void BossIcon_Free(struct BossIcon *boss);
+
 void BossIcon_Pos(struct BossIcon *boss, struct Camera *camera,
                   struct Position  *pos, struct Map *map);
-void BossIcon_Load(struct BossIcon *boss);
+
+void BossIcon_Load(struct BossIcon *boss, SDL_Renderer * renderer);
+
 void BossIcon_Draw(struct BossIcon      *boss, struct Position  *pos,
                    SDL_Renderer *r);
 

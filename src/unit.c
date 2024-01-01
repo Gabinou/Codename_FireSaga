@@ -56,21 +56,39 @@ struct UnitMoveAnimation UnitMoveAnimation_default = {
 struct BossIcon BossIcon_default = {
     .icon       = BOSS_ICON_STGEORGE,
     .dstrect    = {0},
-    .srcrect    = {0},
+    .srcrect    = {.x = 0, .y = 0, .w = BOSS_ICON_WIDTH, .h = BOSS_ICON_HEIGHT},
     .texture    = NULL,
 };
 
-void BossIcon_Load_Icon(struct BossIcon *boss) {
+void BossIcon_Free(struct BossIcon *boss) {
+    if (boss->texture != NULL) {
+        SDL_DestroyTexture(boss->texture);
+    }
+}
 
+void BossIcon_Load_Icon(struct BossIcon *boss, SDL_Renderer * renderer) {
+
+    if (boss->texture != NULL)
+        SDL_DestroyTexture(boss->texture);
+
+    /* --- Create icon texture by blitting ---  */
+    // boss->texture has SDL_TEXTUREACCESS_STATIC 
+
+    /* Read png with all boss icons */
+    SDL_Surface *icons = Filesystem_Surface_Load(PATH_JOIN("assets", "GUI", "Icon", "Icon_Boss.png"), SDL_PIXELFORMAT_INDEX8);
+    
+    /* Copy icon with id to texture */
+    SDL_Surface *icon = Filesystem_indexedSurface_Init(BOSS_ICON_WIDTH, BOSS_ICON_HEIGHT);
+    int success = SDL_BlitSurface(icons, &boss->srcrect, icon, NULL);
+    boss->texture = SDL_CreateTextureFromSurface(renderer, icon);
+    SDL_FreeSurface(icons);
+    SDL_FreeSurface(icon);
 }
 
 void BossIcon_Pos(struct BossIcon *boss, struct Camera *camera,
                   struct Position *pos, struct Map *map) {
-    boss->srcrect.x = 0;
-    boss->srcrect.y = 0;
-    boss->srcrect.w = BOSS_ICON_WIDTH;
-    boss->srcrect.h = BOSS_ICON_HEIGHT;
 
+    /* Compute dstrect from position component */
     int offset_x = BOSS_ICON_OFFSET_X;
     int offset_y = BOSS_ICON_OFFSET_Y;
 
