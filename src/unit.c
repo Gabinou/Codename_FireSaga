@@ -104,10 +104,14 @@ void Boss_Icon_Pos(struct Boss *boss, struct Camera *camera,
 
     struct Point pixel_pos = pos->pixel_pos;
     float zoom = camera->zoom;
-    boss->dstrect.x = SOTA_ZOOM((pixel_pos.x - offset_x), zoom) + camera->offset.x;
-    boss->dstrect.y = SOTA_ZOOM((pixel_pos.y - offset_y), zoom) + camera->offset.y;
+    boss->dstrect.x = SOTA_ZOOM((pixel_pos.x + offset_x), zoom) + camera->offset.x;
+    boss->dstrect.y = SOTA_ZOOM((pixel_pos.y + offset_y), zoom) + camera->offset.y;
     boss->dstrect.w = SOTA_ZOOM((map->tilesize[0]), zoom);
     boss->dstrect.h = SOTA_ZOOM((map->tilesize[1]), zoom);
+
+    SDL_Log("boss->srcrect %d %d %d %d", boss->srcrect.x, boss->srcrect.y, boss->srcrect.w,
+            boss->srcrect.h);
+    // SDL_Log("boss->dstrect %d %d %d %d", boss->dstrect.x, boss->dstrect.y, boss->dstrect.w, boss->dstrect.h);
 }
 
 

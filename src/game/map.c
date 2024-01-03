@@ -146,6 +146,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
             SDL_assert(temp_unit_ent == TNECS_ADD_COMPONENT(sota->world, temp_unit_ent, Boss));
             struct Boss *boss = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Boss);
             SDL_assert(boss != NULL);
+            *boss = Boss_default;
             boss->icon = reinf->boss_icon;
             Boss_Icon_Load(boss, sota->renderer);
             typeflag += TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Boss);
