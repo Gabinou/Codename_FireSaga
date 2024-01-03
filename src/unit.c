@@ -56,7 +56,11 @@ struct UnitMoveAnimation UnitMoveAnimation_default = {
 struct Boss Boss_default = {
     .icon       = BOSS_ICON_STGEORGE,
     .dstrect    = {0},
-    .srcrect    = {.x = 0, .y = 0, .w = BOSS_ICON_WIDTH, .h = BOSS_ICON_HEIGHT},
+    .srcrect    = {
+        .x = 0, .y = 0,
+        .w = BOSS_ICON_WIDTH,
+        .h = BOSS_ICON_HEIGHT
+    },
     .texture    = NULL,
 };
 
@@ -1873,6 +1877,9 @@ void Unit_Equipped_Shields_Deplete(struct Unit *unit) {
 }
 
 /* --- I/O --- */
+
+
+
 void Unit_readJSON(void *input,  cJSON *junit) {
     struct Unit *unit = (struct Unit *)input;
     SDL_assert(unit);
@@ -1896,6 +1903,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     cJSON *jcurrent_stats   = cJSON_GetObjectItem(junit, "Stats");
 
     SDL_Log("-- setting name from ID --");
+    SDL_assert(jid);
     Unit_setid(unit, cJSON_GetNumberValue(jid));
     SDL_assert(unit->name.data != NULL);
     char *json_name     = cJSON_GetStringValue(jname);
@@ -2053,6 +2061,31 @@ void Unit_writeJSON( void *input, cJSON *junit) {
         cJSON_AddItemToArray(jitems, jitem);
     }
     cJSON_AddItemToObject(junit, "Items", jitems);
+}
+
+
+/* -- Boss -- */
+void Boss_readJSON(void *input, cJSON *jboss) {
+    struct Boss *boss = input;
+    SDL_assert(boss);
+
+    /* Compute icon index from army */
+    cJSON *jarmy = cJSON_GetObjectItem(jboss, "army");
+    if (jarmy != NULL) {
+        int army = cJSON_GetNumberValue(jarmy);
+        SDL_assert(army > ARMY_START);
+        SDL_assert(army < ARMY_END);
+        boss->icon = army_icons[army];
+    }
+
+    /* Override icon index with icon tag */
+    cJSON *jicon = cJSON_GetObjectItem(jboss, "icon");
+    if (jicon != NULL)
+        boss->icon = cJSON_GetNumberValue(jicon);
+}
+
+void Boss_writeJSON(void *boss, cJSON *jboss) {
+
 }
 
 u8 Unit_computeEffectivefactor(struct Unit *attacker, struct Unit *defender) {
