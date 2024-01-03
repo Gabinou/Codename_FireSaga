@@ -7,6 +7,7 @@ struct Reinforcement Reinforcement_default = {
     .turn           =  0,
     .levelups       =  0,
     .army           = -1,
+    .boss_icon      = -1,
     .position       = {0, 0},
 };
 
@@ -20,22 +21,41 @@ void jsonio_Read_Reinforcement(struct cJSON         *_jreinf,
     SDL_assert(reinf  != NULL);
     SDL_assert(_jreinf != NULL);
     struct cJSON *jai       = cJSON_GetObjectItem(_jreinf,      "AI");
+    struct cJSON *jboss     = cJSON_GetObjectItem(_jreinf,      "Boss");
     struct cJSON *jarmy     = cJSON_GetObjectItem(_jreinf,      "army");
     struct cJSON *jturn     = cJSON_GetObjectItem(_jreinf,      "turn");
     struct cJSON *jlevelups = cJSON_GetObjectItem(_jreinf,      "levelups");
     struct cJSON *jposition = cJSON_GetObjectItem(_jreinf,      "Position");
     struct cJSON *jfilename = cJSON_GetObjectItem(_jreinf,      "filename");
 
+    SDL_assert(jposition != NULL);
     struct cJSON *jrow      = cJSON_GetObjectItem(jposition,    "row");
     struct cJSON *jcol      = cJSON_GetObjectItem(jposition,    "col");
 
     reinf->filename     = s8_mut(cJSON_GetStringValue(jfilename));
     reinf->ai_filename  = s8_mut(cJSON_GetStringValue(jai));
     reinf->army         = cJSON_GetNumberValue(jarmy);
+    SDL_assert(reinf->army > ARMY_START);
+    SDL_assert(reinf->army < ARMY_END);
     reinf->turn         = cJSON_GetNumberValue(jturn);
     reinf->levelups     = cJSON_GetNumberValue(jlevelups);
     reinf->position.x   = cJSON_GetNumberValue(jcol);
     reinf->position.y   = cJSON_GetNumberValue(jrow);
+    reinf->position.y   = cJSON_GetNumberValue(jrow);
+
+    /* Is reinf a boss? */
+    if (jboss == NULL)
+        return;
+
+    /* Read boss icon from army */
+    reinf->boss_icon = army_icons[reinf->army];
+
+    struct cJSON *jicon = cJSON_GetObjectItem(jboss, "icon");
+    if (jicon == NULL)
+        return;
+
+    /* Override army icon with icon tag in boss object */
+    reinf->boss_icon = cJSON_GetNumberValue(jicon);
 }
 
 void jsonio_Write_Reinforcement(struct cJSON         *jreinf,

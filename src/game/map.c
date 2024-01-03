@@ -203,11 +203,11 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         if (unit->ai_filename.data == NULL)
             unit->ai_filename = s8_mut("aggressive.json");
 
-        if (reinf->ai_filename.data != NULL) {
+        if (reinf->ai_filename.data != NULL)
             ai_path = s8cat(ai_path, reinf->ai_filename);
-        } else {
+        else
             ai_path = s8cat(ai_path, unit->ai_filename);
-        }
+
         jsonio_readJSON(ai_path, ai);
 
         s8_free(&ai_path);

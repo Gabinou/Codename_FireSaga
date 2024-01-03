@@ -355,10 +355,6 @@ void Unit_takesDamage(struct Unit *u, u8 dmg, bool ct);
 void Unit_readJSON( void *u, cJSON *junit);
 void Unit_writeJSON(void *u, cJSON *junit);
 
-/* -- Boss -- */
-void Boss_readJSON( void *boss, cJSON *jboss);
-void Boss_writeJSON(void *boss, cJSON *jboss);
-
 /* --- Unit state --- */
 bool Unit_isdualWielding(struct Unit *u);
 // WrongHanding: using shield or offhand in strong hand and vice vdrsa

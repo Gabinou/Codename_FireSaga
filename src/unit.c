@@ -2063,34 +2063,6 @@ void Unit_writeJSON( void *input, cJSON *junit) {
     cJSON_AddItemToObject(junit, "Items", jitems);
 }
 
-
-/* -- Boss -- */
-void Boss_readJSON(void *input, cJSON *jboss) {
-    struct Boss *boss = input;
-    SDL_assert(boss);
-
-    /* Compute icon index from army */
-    cJSON *jarmy = cJSON_GetObjectItem(jboss, "army");
-    if (jarmy != NULL) {
-        int army = cJSON_GetNumberValue(jarmy);
-        SDL_assert(army > ARMY_START);
-        SDL_assert(army < ARMY_END);
-        boss->icon = army_icons[army];
-    }
-
-    /* Override icon index with icon tag */
-    cJSON *jicon = cJSON_GetObjectItem(jboss, "icon");
-    if (jicon != NULL)
-        boss->icon = cJSON_GetNumberValue(jicon);
-}
-
-void Boss_writeJSON(void *input, cJSON *jboss) {
-    struct Boss *boss = input;
-    SDL_assert(boss);
-    cJSON *jicon = cJSON_CreateNumber(boss->icon);
-    cJSON_AddItemToObject(jboss, "icon", jicon);
-}
-
 u8 Unit_computeEffectivefactor(struct Unit *attacker, struct Unit *defender) {
     SDL_assert(attacker);
     SDL_assert(defender);
