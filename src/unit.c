@@ -80,7 +80,10 @@ void Boss_Icon_Load(struct Boss *boss, SDL_Renderer *renderer) {
 
     /* Copy icon with id to texture */
     SDL_Surface *icon = Filesystem_indexedSurface_Init(BOSS_ICON_WIDTH, BOSS_ICON_HEIGHT);
-    int success = SDL_BlitSurface(icons, &boss->srcrect, icon, NULL);
+    SDL_Rect srcrect = boss->srcrect;
+    srcrect.x = boss->icon % SOTA_COL_LEN * srcrect.w;
+    srcrect.y = boss->icon / SOTA_COL_LEN * srcrect.h;
+    int success = SDL_BlitSurface(icons, &srcrect, icon, NULL);
     boss->texture = SDL_CreateTextureFromSurface(renderer, icon);
     SDL_FreeSurface(icons);
     SDL_FreeSurface(icon);
