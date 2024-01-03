@@ -91,8 +91,9 @@ void Boss_Icon_Load(struct Boss *boss, SDL_Renderer *renderer) {
 
 void Boss_Icon_Pos(struct Boss *boss, struct Camera *camera,
                    struct Position *pos, struct Map *map) {
+    /* Position of boss icon drawn on map,
+     * computed from position component */
 
-    /* Compute dstrect from position component */
     int offset_x = BOSS_ICON_OFFSET_X;
     int offset_y = BOSS_ICON_OFFSET_Y;
 
