@@ -1119,6 +1119,7 @@ enum BOSS_ICONS {
     BOSS_ICON_KESIRU    =  4,
     BOSS_ICON_VOLDAN    =  5,
     BOSS_ICON_HAMILCAR  =  5,
+    BOSS_ICON_NUM       =  6,
 };
 
 #endif /* ENUMS_H */

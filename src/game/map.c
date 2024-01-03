@@ -213,7 +213,13 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         s8_free(&ai_path);
 
         SDL_Log("-- loading unit Boss --");
-        // TODO
+        if ((reinf->boss_icon > BOSS_ICON_NULL) && (reinf->boss_icon < BOSS_ICON_NUM)) {
+            TNECS_ADD_COMPONENT(sota->world, temp_unit_ent, Boss);
+            struct Boss *boss = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Boss);
+            SDL_assert(boss != NULL);
+            boss->icon = reinf->boss_icon;
+            Boss_Icon_Load(boss, sota->renderer);
+        }
 
         SDL_Log("-- loading map_hp_bar --");
         struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, MapHPBar);
