@@ -1110,8 +1110,8 @@ enum MOUSE_DEFAULTS { // this extern struct is dumb
 enum BOSS_ICONS {
     BOSS_ICON_WIDTH     =  8,
     BOSS_ICON_HEIGHT    = 16,
-    BOSS_ICON_OFFSET_X  =  8,
-    BOSS_ICON_OFFSET_Y  = 16,
+    BOSS_ICON_OFFSET_X  =  9,
+    BOSS_ICON_OFFSET_Y  =  6,
     BOSS_ICON_NULL      =  0,
     BOSS_ICON_STGEORGE  =  1,
     BOSS_ICON_ORIFLAMME =  2, /* Frankish battle standard */
