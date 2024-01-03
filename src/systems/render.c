@@ -123,20 +123,20 @@ void Draw_Map_Boss_Icon(tnecs_system_input *input) {
     SDL_assert(sota != NULL);
 
     /* -- Get components arrays -- */
+    struct Boss *boss_arr = TNECS_COMPONENTS_LIST(input, Boss);
     struct Sprite *sprite_arr = TNECS_COMPONENTS_LIST(input, Sprite);
-    struct BossIcon *boss_arr = TNECS_COMPONENTS_LIST(input, Boss);
     struct Position *position_arr = TNECS_COMPONENTS_LIST(input, Position);
 
     for (u16 order = 0; order < input->num_entities; order++) {
-        struct BossIcon *boss       = (boss_arr     + order);
+        struct Boss     *boss       = (boss_arr     + order);
         struct Sprite   *sprite     = (sprite_arr   + order);
         struct Position *position   = (position_arr + order);
 
         if (!sprite->visible)
             continue;
 
-        BossIcon_Pos(boss, &sota->camera, position, sota->map);
-        BossIcon_Draw(boss, position, sota->renderer);
+        Boss_Icon_Pos(boss, &sota->camera, position, sota->map);
+        Boss_Icon_Draw(boss, position, sota->renderer);
     }
 }
 

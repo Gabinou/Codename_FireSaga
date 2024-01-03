@@ -52,31 +52,32 @@ struct UnitMoveAnimation UnitMoveAnimation_default = {
     .time_ns         = SOTA_ns / 2ULL,
 };
 
-/* --- BossIcon --- */
-struct BossIcon BossIcon_default = {
+/* --- Boss --- */
+struct Boss Boss_default = {
     .icon       = BOSS_ICON_STGEORGE,
     .dstrect    = {0},
     .srcrect    = {.x = 0, .y = 0, .w = BOSS_ICON_WIDTH, .h = BOSS_ICON_HEIGHT},
     .texture    = NULL,
 };
 
-void BossIcon_Free(struct BossIcon *boss) {
+void Boss_Free(struct Boss *boss) {
     if (boss->texture != NULL) {
         SDL_DestroyTexture(boss->texture);
     }
 }
 
-void BossIcon_Load_Icon(struct BossIcon *boss, SDL_Renderer * renderer) {
+void Boss_Icon_Load(struct Boss *boss, SDL_Renderer *renderer) {
 
     if (boss->texture != NULL)
         SDL_DestroyTexture(boss->texture);
 
     /* --- Create icon texture by blitting ---  */
-    // boss->texture has SDL_TEXTUREACCESS_STATIC 
+    /* To give boss->texture SDL_TEXTUREACCESS_STATIC */
 
     /* Read png with all boss icons */
-    SDL_Surface *icons = Filesystem_Surface_Load(PATH_JOIN("assets", "GUI", "Icon", "Icon_Boss.png"), SDL_PIXELFORMAT_INDEX8);
-    
+    SDL_Surface *icons = Filesystem_Surface_Load(PATH_JOIN("assets", "GUI", "Icon", "Icon_Boss.png"),
+                                                 SDL_PIXELFORMAT_INDEX8);
+
     /* Copy icon with id to texture */
     SDL_Surface *icon = Filesystem_indexedSurface_Init(BOSS_ICON_WIDTH, BOSS_ICON_HEIGHT);
     int success = SDL_BlitSurface(icons, &boss->srcrect, icon, NULL);
@@ -85,8 +86,8 @@ void BossIcon_Load_Icon(struct BossIcon *boss, SDL_Renderer * renderer) {
     SDL_FreeSurface(icon);
 }
 
-void BossIcon_Pos(struct BossIcon *boss, struct Camera *camera,
-                  struct Position *pos, struct Map *map) {
+void Boss_Icon_Pos(struct Boss *boss, struct Camera *camera,
+                   struct Position *pos, struct Map *map) {
 
     /* Compute dstrect from position component */
     int offset_x = BOSS_ICON_OFFSET_X;
@@ -101,8 +102,8 @@ void BossIcon_Pos(struct BossIcon *boss, struct Camera *camera,
 }
 
 
-void BossIcon_Draw(struct BossIcon  *boss, struct Position *pos,
-                   SDL_Renderer *renderer) {
+void Boss_Icon_Draw(struct Boss  *boss, struct Position *pos,
+                    SDL_Renderer *renderer) {
     SDL_assert(pos->onTilemap);
 
     SDL_RenderCopy(renderer, boss->texture, &boss->srcrect, &boss->dstrect);

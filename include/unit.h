@@ -43,25 +43,24 @@ typedef struct UnitMoveAnimation {
 } UnitMoveAnimation;
 extern struct UnitMoveAnimation UnitMoveAnimation_default;
 
-/* --- BossIcon --- */
-typedef struct BossIcon {
+/* --- Boss --- */
+typedef struct Boss {
     i8 icon;
-
     SDL_Rect srcrect; /* x,y,w,h */
     SDL_Rect dstrect; /* x,y,w,h */
     SDL_Texture *texture;  /* pixels */
-} BossIcon;
-extern struct BossIcon BossIcon_default;
+} Boss;
+extern struct Boss Boss_default;
 
-void BossIcon_Free(struct BossIcon *boss);
+void Boss_Free(struct Boss *boss);
 
-void BossIcon_Pos(struct BossIcon *boss, struct Camera *camera,
-                  struct Position  *pos, struct Map *map);
+void Boss_Icon_Pos(struct Boss *boss, struct Camera *camera,
+                   struct Position  *pos, struct Map *map);
 
-void BossIcon_Load(struct BossIcon *boss, SDL_Renderer * renderer);
+void Boss_Icon_Load(struct Boss *boss, SDL_Renderer *renderer);
 
-void BossIcon_Draw(struct BossIcon      *boss, struct Position  *pos,
-                   SDL_Renderer *r);
+void Boss_Icon_Draw(struct Boss      *boss, struct Position  *pos,
+                    SDL_Renderer *r);
 
 /* -- Get default boss icon from army -- */
 extern int army_icons[ARMY_NUM];
