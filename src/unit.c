@@ -2084,8 +2084,11 @@ void Boss_readJSON(void *input, cJSON *jboss) {
         boss->icon = cJSON_GetNumberValue(jicon);
 }
 
-void Boss_writeJSON(void *boss, cJSON *jboss) {
-
+void Boss_writeJSON(void *input, cJSON *jboss) {
+    struct Boss *boss = input;
+    SDL_assert(boss);
+    cJSON *jicon = cJSON_CreateNumber(boss->icon);
+    cJSON_AddItemToObject(jboss, "icon", jicon);
 }
 
 u8 Unit_computeEffectivefactor(struct Unit *attacker, struct Unit *defender) {
