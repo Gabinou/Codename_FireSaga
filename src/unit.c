@@ -75,23 +75,49 @@ void Boss_Icon_Load(struct Boss *boss, SDL_Renderer *renderer) {
     if (boss->texture != NULL)
         SDL_DestroyTexture(boss->texture);
 
-    /* --- Create icon texture by blitting ---  */
-    /* To give boss->texture SDL_TEXTUREACCESS_STATIC */
-
-    /* Read png with all boss icons */
-    SDL_Surface *icons = Filesystem_Surface_Load(PATH_JOIN("..", "assets", "GUI", "Icon",
-                                                           "Icon_Boss.png"),
+    /* --- Create icon texture by rendering to target texture ---  */
+    SDL_Texture *icons = Filesystem_Texture_Load(renderer, PATH_JOIN("..", "assets", "GUI", "Icon",
+                                                 "Icon_Boss.png"),
                                                  SDL_PIXELFORMAT_INDEX8);
+    Filesystem_Texture_Dump("Boss_icons.png", renderer, icons, SDL_PIXELFORMAT_ARGB8888, NULL);
 
-    /* Copy icon with id to texture */
-    SDL_Surface *icon = Filesystem_indexedSurface_Init(BOSS_ICON_WIDTH, BOSS_ICON_HEIGHT);
+    if (boss->texture != NULL) {
+        SDL_DestroyTexture(boss->texture);
+    }
+
+
+    boss->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
+                                      SDL_TEXTUREACCESS_TARGET, BOSS_ICON_WIDTH, BOSS_ICON_HEIGHT);
+
+    SDL_assert(boss->texture != NULL);
+
     SDL_Rect srcrect = boss->srcrect;
     srcrect.x = boss->icon % SOTA_COL_LEN * srcrect.w;
     srcrect.y = boss->icon / SOTA_COL_LEN * srcrect.h;
-    int success = SDL_BlitSurface(icons, &srcrect, icon, NULL);
-    boss->texture = SDL_CreateTextureFromSurface(renderer, icon);
-    SDL_FreeSurface(icons);
-    SDL_FreeSurface(icon);
+
+    SDL_SetRenderTarget(renderer, boss->texture);
+    SDL_RenderCopy(renderer, icons, &srcrect, NULL);
+    SDL_SetRenderTarget(renderer, NULL);
+
+    Filesystem_Texture_Dump("Boss_icon.png", renderer, boss->texture, SDL_PIXELFORMAT_ARGB8888, NULL);
+
+    /* --- Create icon texture by blitting ---  */
+    /* To give boss->texture SDL_TEXTUREACCESS_STATIC */
+
+    // /* Read png with all boss icons */
+    // SDL_Surface *icons = Filesystem_Surface_Load(PATH_JOIN("..", "assets", "GUI", "Icon",
+    //                                                        "Icon_Boss.png"),
+    //                                              SDL_PIXELFORMAT_INDEX8);
+
+    // /* Copy icon with id to texture */
+    // SDL_Surface *icon = Filesystem_indexedSurface_Init(BOSS_ICON_WIDTH, BOSS_ICON_HEIGHT);
+    // SDL_Rect srcrect = boss->srcrect;
+    // srcrect.x = boss->icon % SOTA_COL_LEN * srcrect.w;
+    // srcrect.y = boss->icon / SOTA_COL_LEN * srcrect.h;
+    // int success = SDL_BlitSurface(icons, &srcrect, icon, NULL);
+    // boss->texture = SDL_CreateTextureFromSurface(renderer, icon);
+    // SDL_FreeSurface(icons);
+    // SDL_FreeSurface(icon);
 }
 
 void Boss_Icon_Pos(struct Boss *boss, struct Camera *camera,
