@@ -134,8 +134,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         DARR_PUT(sota->map_enemies, temp_unit_ent);
 
         SDL_Log("-- checks --");
-        tnecs_component typeflag = TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Unit,
-                                                                  Position, Sprite,
+        tnecs_component typeflag = TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Unit, Position, Sprite,
                                                                   Timer, MapHPBar, AI);
 
         SDL_Log("- 1 -");
@@ -212,6 +211,9 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         jsonio_readJSON(ai_path, ai);
 
         s8_free(&ai_path);
+
+        SDL_Log("-- loading unit Boss --");
+        // TODO
 
         SDL_Log("-- loading map_hp_bar --");
         struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, MapHPBar);
