@@ -132,7 +132,6 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         tnecs_entity temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Unit, Position, Sprite,
                                      Timer, MapHPBar, AI);
         DARR_PUT(sota->map_enemies, temp_unit_ent);
-
         SDL_Log("-- checks --");
         tnecs_component typeflag = TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Unit, Position, Sprite,
                                                                   Timer, MapHPBar, AI);
@@ -141,6 +140,17 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         size_t typeflag_id1 = tnecs_typeflagid(sota->world, typeflag);
         SDL_Log("- 2 -");
         size_t typeflag_id2 = tnecs_typeflagid(sota->world, sota->world->entity_typeflags[temp_unit_ent]);
+
+        SDL_Log("-- loading unit Boss --");
+        if ((reinf->boss_icon > BOSS_ICON_NULL) && (reinf->boss_icon < BOSS_ICON_NUM)) {
+            SDL_assert(temp_unit_ent == TNECS_ADD_COMPONENT(sota->world, temp_unit_ent, Boss));
+            struct Boss *boss = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Boss);
+            SDL_assert(boss != NULL);
+            boss->icon = reinf->boss_icon;
+            Boss_Icon_Load(boss, sota->renderer);
+            typeflag += TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Boss);
+            typeflag_id1 = tnecs_typeflagid(sota->world, typeflag);
+        }
         int num_typeflag1 = sota->world->num_entities_bytype[typeflag_id1];
         int num_typeflag2 = sota->world->num_entities_bytype[typeflag_id2];
 
@@ -212,14 +222,6 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
         s8_free(&ai_path);
 
-        SDL_Log("-- loading unit Boss --");
-        if ((reinf->boss_icon > BOSS_ICON_NULL) && (reinf->boss_icon < BOSS_ICON_NUM)) {
-            TNECS_ADD_COMPONENT(sota->world, temp_unit_ent, Boss);
-            struct Boss *boss = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Boss);
-            SDL_assert(boss != NULL);
-            boss->icon = reinf->boss_icon;
-            Boss_Icon_Load(boss, sota->renderer);
-        }
 
         SDL_Log("-- loading map_hp_bar --");
         struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, MapHPBar);

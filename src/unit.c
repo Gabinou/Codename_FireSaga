@@ -79,7 +79,8 @@ void Boss_Icon_Load(struct Boss *boss, SDL_Renderer *renderer) {
     /* To give boss->texture SDL_TEXTUREACCESS_STATIC */
 
     /* Read png with all boss icons */
-    SDL_Surface *icons = Filesystem_Surface_Load(PATH_JOIN("assets", "GUI", "Icon", "Icon_Boss.png"),
+    SDL_Surface *icons = Filesystem_Surface_Load(PATH_JOIN("..", "assets", "GUI", "Icon",
+                                                           "Icon_Boss.png"),
                                                  SDL_PIXELFORMAT_INDEX8);
 
     /* Copy icon with id to texture */
