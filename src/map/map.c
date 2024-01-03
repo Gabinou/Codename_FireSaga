@@ -655,7 +655,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     struct Inventory_item temp_item, *temp_equip;
 
     for (int i = 0; i < cJSON_GetArraySize(jreinforcements); i++) {
-        struct Reinforcement temp_rein;
+        struct Reinforcement temp_rein = Reinforcement_default;
         cJSON *jreinforcement = cJSON_GetArrayItem(jreinforcements, i);
         jsonio_Read_Reinforcement(jreinforcement, &temp_rein);
         DARR_PUT(map->reinforcements, temp_rein);
