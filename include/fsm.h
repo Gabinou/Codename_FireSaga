@@ -10,7 +10,7 @@
 #include "game/unit.h"
 #include "menu/fsm.h"
 #include "tnecs.h"
-#include "unit.h"
+#include "unit/unit.h"
 #include "slider.h"
 #include "nmath.h"
 #include "popup/loadout_stats.h"

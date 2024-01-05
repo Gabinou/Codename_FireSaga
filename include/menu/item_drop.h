@@ -5,7 +5,7 @@
 #include "game/game.h"
 #include "pixelfonts.h"
 #include "menu.h"
-#include "unit.h"
+#include "unit/unit.h"
 #include "item.h"
 #include "n9patch.h"
 #include "nstr.h"

@@ -1,7 +1,7 @@
 #include "AI.h"
 #include "nmath.h"
 #include "enums.h"
-#include "unit.h"
+#include "unit/unit.h"
 #include "position.h"
 
 enum ENUM_TEST_AI {

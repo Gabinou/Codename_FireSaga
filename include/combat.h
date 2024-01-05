@@ -8,7 +8,7 @@
 #include "RNG.h"
 #include "nmath.h"
 // #include "AI.h"
-#include "unit.h"
+#include "unit/unit.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;

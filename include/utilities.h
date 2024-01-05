@@ -11,7 +11,7 @@
 #include "palette.h"
 #include "types.h"
 #include "octant.h"
-#include "unit.h"
+#include "unit/unit.h"
 #include "enums.h"
 #include "macros.h"
 #include "debug.h"

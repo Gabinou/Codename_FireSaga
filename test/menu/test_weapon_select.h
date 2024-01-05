@@ -1,7 +1,7 @@
 #include "nourstest.h"
 #include "platform.h"
 #include "menu/loadout_select.h"
-#include "unit.h"
+#include "unit/unit.h"
 #include "RNG.h"
 
 void test_menu_loadout_select() {

@@ -1,5 +1,5 @@
 
-#include "unit.h"
+#include "unit/unit.h"
 
 int  class_mvt_types[UNIT_CLASS_END] = {
     /* NULL              */ UNIT_MVT_FOOT_SLOW,
@@ -2353,21 +2353,6 @@ struct Unit_stats Unit_stats_minus(struct Unit_stats in_stats1, struct Unit_stat
     out_stats.move  = nmath_bminus(in_stats1.move,  in_stats2.move, 0);
     out_stats.prof  = nmath_bminus(in_stats1.prof,  in_stats2.prof, 0);
     return (out_stats);
-}
-
-/* -- Reinforcements -- */
-/* AI/NPC units only */
-void Unit_Reinforcement_Levelups(struct Unit *unit, struct Reinforcement *reinf) {
-    SDL_assert(unit->grown_stats != NULL);
-
-    /* Skip if unit was already leveled */
-    if (DARR_NUM(unit->grown_stats) == reinf->levelups)
-        return;
-
-    for (int i = 0; i < reinf->levelups; i++) {
-        unit->exp += SOTA_100PERCENT;
-        Unit_lvlUp(unit);
-    }
 }
 
 /* -- Unit_id -- */

@@ -2,9 +2,13 @@
 #define REINFORCEMENT_H
 
 #include "cJSON.h"
-#include "unit.h"
+#include "unit/unit.h"
 #include "position.h"
 #include "nstr.h"
+
+
+/* --- FORWARD DECLARATIONS --- */
+struct Unit;
 
 struct Reinforcement {
     struct Point position;
@@ -20,5 +24,8 @@ extern struct Reinforcement Reinforcement_default;
 void Reinforcement_Free(struct Reinforcement  *a);
 void jsonio_Read_Reinforcement( struct cJSON *j, struct Reinforcement  *a);
 void jsonio_Write_Reinforcement(struct cJSON *j, struct Reinforcement  *a);
+
+/* -- Reinforcements -- */
+void Unit_Reinforcement_Levelups(struct Unit *u, struct Reinforcement *r);
 
 #endif /* Filesystem_H */

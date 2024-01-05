@@ -1,7 +1,7 @@
 #include "nourstest.h"
 #include "platform.h"
 #include "popup/loadout_stats.h"
-#include "unit.h"
+#include "unit/unit.h"
 
 void test_popup_loadout_stats() {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);

@@ -8,7 +8,7 @@
 #include "macros.h"
 #include "convoy.h"
 #include "physfs.h"
-#include "unit.h"
+#include "unit/unit.h"
 #include "narrative.h"
 #include "camp.h"
 #include "sprite.h"

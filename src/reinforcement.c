@@ -78,3 +78,18 @@ void jsonio_Write_Reinforcement(struct cJSON         *jreinf,
     cJSON_AddItemToObject(jreinf,       "turn",     jturn);
     cJSON_AddItemToObject(jreinf,       "Position", jposition);
 }
+
+/* AI/NPC units only */
+void Unit_Reinforcement_Levelups(struct Unit *unit, struct Reinforcement *reinf) {
+    SDL_assert(unit->grown_stats != NULL);
+
+    /* Skip if unit was already leveled */
+    if (DARR_NUM(unit->grown_stats) == reinf->levelups)
+        return;
+
+    for (int i = 0; i < reinf->levelups; i++) {
+        unit->exp += SOTA_100PERCENT;
+        Unit_lvlUp(unit);
+    }
+}
+

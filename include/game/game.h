@@ -27,7 +27,7 @@
 #include "tile.h"
 #include "text.h"
 #include "AI.h"
-#include "unit.h"
+#include "unit/unit.h"
 #include "nmath.h"
 #include "RNG.h"
 #include "position.h"

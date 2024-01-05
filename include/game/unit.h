@@ -5,7 +5,7 @@
 #include "enums.h"
 #include "bitfields.h"
 #include "weapon.h"
-#include "unit.h"
+#include "unit/unit.h"
 #include "position.h"
 #include "sprite.h"
 

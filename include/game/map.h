@@ -6,7 +6,7 @@
 #include "map/render.h"
 #include "utilities.h"
 #include "tile.h"
-#include "unit.h"
+#include "unit/unit.h"
 
 /* --- Map utilities --- */
 void Game_Map_Free(  struct Game *sota);

@@ -12,7 +12,7 @@
 #include "arrow.h"
 #include "reinforcement.h"
 #include "nmath.h"
-#include "unit.h"
+#include "unit/unit.h"
 #include "position.h"
 #include "sprite.h"
 #include "SDL.h"

@@ -6,7 +6,7 @@
 #include "types.h"
 #include "enums.h"
 #include "structs.h"
-#include "unit.h"
+#include "unit/unit.h"
 #include "narrative.h"
 #include "equations.h"
 #include "nmath.h"

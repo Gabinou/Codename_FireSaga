@@ -1,7 +1,7 @@
 #include "nourstest.h"
 #include "platform.h"
 #include "menu/pre_combat.h"
-#include "unit.h"
+#include "unit/unit.h"
 #include "RNG.h"
 
 void test_menu_pre_combat() {

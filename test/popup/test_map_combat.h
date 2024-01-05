@@ -1,7 +1,7 @@
 #include "nourstest.h"
 #include "platform.h"
 #include "combat.h"
-#include "unit.h"
+#include "unit/unit.h"
 #include "RNG.h"
 
 void test_popup_map_combat() {

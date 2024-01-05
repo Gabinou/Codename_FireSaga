@@ -4,7 +4,7 @@
 #include "game/game.h"
 #include "game/combat.h"
 #include "game/unit.h"
-#include "unit.h"
+#include "unit/unit.h"
 #include "RNG.h"
 
 void test_combat_stats() {

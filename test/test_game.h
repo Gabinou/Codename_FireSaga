@@ -2,7 +2,7 @@
 
 #include "game/game.h"
 #include "game/unit.h"
-#include "unit.h"
+#include "unit/unit.h"
 #include "combat.h"
 #include "equations.h"
 

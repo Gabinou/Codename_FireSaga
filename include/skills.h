@@ -3,7 +3,7 @@
 
 #include "structs.h"
 #include "nmath.h"
-#include "unit.h"
+#include "unit/unit.h"
 #include "RNG.h"
 #include "item.h"
 

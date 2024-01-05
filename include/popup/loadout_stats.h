@@ -5,7 +5,7 @@
 #include "n9patch.h"
 #include "popup/popup.h"
 #include "slider.h"
-#include "unit.h"
+#include "unit/unit.h"
 #include "tnecs.h"
 #include "pixelfonts.h"
 #include "SDL.h"

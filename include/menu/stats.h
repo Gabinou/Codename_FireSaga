@@ -6,7 +6,7 @@
 #include "bars/stat.h"
 #include "pixelfonts.h"
 #include "menu.h"
-#include "unit.h"
+#include "unit/unit.h"
 #include "nmath.h"
 #include "n9patch.h"
 #include "events.h"

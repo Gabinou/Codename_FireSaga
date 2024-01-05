@@ -330,9 +330,6 @@ void Unit_lvlUp(  struct Unit *u);
 i16 Unit_getLvl(  struct Unit *u);
 void Unit_Promote(struct Unit *u, i8 new_class_i);
 
-/* -- Reinforcements -- */
-void Unit_Reinforcement_Levelups(struct Unit *u, struct Reinforcement *r);
-
 /* -- Unit_id -- */
 bool Unit_ID_Valid(u16 id);
 

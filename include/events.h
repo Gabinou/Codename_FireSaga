@@ -12,7 +12,7 @@
 #include "game/cursor.h"
 #include "fsm.h"
 #include "tnecs.h"
-#include "unit.h"
+#include "unit/unit.h"
 #include "narrative.h"
 #include "enums.h"
 #include "arrow.h"
