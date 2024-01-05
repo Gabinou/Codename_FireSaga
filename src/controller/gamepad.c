@@ -32,8 +32,35 @@ struct GamepadInputMap GamepadInputMap_gamecube = {
     .trigger_right      = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
 };
 
-/* Other gamepad */
+/* Switch Pro controller */
+struct GamepadInputMap GamepadInputMap_switch_pro = {
+    /*<sota_button>     = <mapped_button> */
+    .axis_left_x        = SDL_CONTROLLER_AXIS_LEFTX,
+    .axis_left_y        = SDL_CONTROLLER_AXIS_LEFTY,
+    .axis_right_x       = SDL_CONTROLLER_AXIS_RIGHTX,
+    .axis_right_y       = SDL_CONTROLLER_AXIS_RIGHTY,
+
+    .dpad_right         = SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
+    .dpad_up            = SDL_CONTROLLER_BUTTON_DPAD_UP,
+    .dpad_down          = SDL_CONTROLLER_BUTTON_DPAD_DOWN,
+    .dpad_left          = SDL_CONTROLLER_BUTTON_DPAD_LEFT,
+
+    /* Switch pro controller should flip a/b and x/y... */
+    .a                  = SDL_CONTROLLER_BUTTON_B,
+    .b                  = SDL_CONTROLLER_BUTTON_A,
+    .x                  = SDL_CONTROLLER_BUTTON_Y,
+    .y                  = SDL_CONTROLLER_BUTTON_X,
+    .start              = SDL_CONTROLLER_BUTTON_START,
+    .shoulder_left      = SDL_CONTROLLER_BUTTON_INVALID,
+    .shoulder_right     = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,
+
+    .trigger_left       = SDL_CONTROLLER_AXIS_TRIGGERLEFT,
+    .trigger_right      = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
+};
+
+/* Generic gamepad */
 struct GamepadInputMap GamepadInputMap_default = {
+    /*<sota_button>     = <mapped_button> */
     .axis_left_x        = SDL_CONTROLLER_AXIS_LEFTX,
     .axis_left_y        = SDL_CONTROLLER_AXIS_LEFTY,
     .axis_right_x       = SDL_CONTROLLER_AXIS_RIGHTX,
@@ -152,7 +179,8 @@ void Gamepad_Free(struct controllerGamepad *gp) {
     }
 }
 
-bool Gamepad_ButtonorAxis(struct controllerGamepad *gp, int sdl_button, int i, bool isbutton) {
+bool Gamepad_ButtonorAxis(struct controllerGamepad *gp, SDL_GameControllerButton sdl_button, int i,
+                          bool isbutton) {
     SDL_GameController *controller  = gp->controllers[i];
     bool out;
     if (isbutton) {
@@ -170,8 +198,8 @@ bool Gamepad_ButtonorAxis(struct controllerGamepad *gp, int sdl_button, int i, b
 // Note: input button index in GamepadInputMap
 bool Gamepad_isPressed(struct controllerGamepad *gp, int sota_button) {
     /* -- Preliminaries -- */
-    struct GamepadInputMap *map = gp->inputmap;
-    int sdl_button = sdl_buttons[sota_button];
+    SDL_GameControllerButton *map = &gp->inputmap->dpad_right;
+    SDL_GameControllerButton sdl_button = map[sota_button];
 
     /* -- Check if button/axis is pressed, -- */
     bool isbutton = (sdl_button != SDL_CONTROLLER_AXIS_TRIGGERLEFT);
@@ -272,7 +300,6 @@ void Gamepad_addController(struct controllerGamepad *gp, i32 joystick_device) {
     SDL_Joystick *joystick                      = SDL_GameControllerGetJoystick(controllers);
     gp->joystick_instances[gp->controllers_num] = SDL_JoystickInstanceID(joystick);
     gp->controllers_num++;
-
 }
 
 void Gamepad_Held(i8 *held, size_t *h_num, i32 *held_ns, i8 *pressed, size_t p_num, i32 dt_ns) {

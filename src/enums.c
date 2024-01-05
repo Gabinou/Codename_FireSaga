@@ -28,15 +28,15 @@ int dtabs_id[ITEM_ARCHETYPE_NUM] = {
 
 /* Direction array index from ternary index */
 int direction_arr_i[SOTA_DIRECTIONS_NUM + 1] = {
-    /* SOTA_DIRECTION_NULL */        -1,
-    /* SOTA_DIRECTION_LEFT */         2,
-    /* SOTA_DIRECTION_RIGHT */        0,
-    /* SOTA_DIRECTION_BOTTOM */       3,
-    /* SOTA_DIRECTION_BOTLEFT */  7,
-    /* SOTA_DIRECTION_BOTRIGHT */  6,
-    /* SOTA_DIRECTION_TOP */          1,
-    /* SOTA_DIRECTION_TOPLEFT */  5,
-    /* SOTA_DIRECTION_TOPRIGHT */  4,
+    /* SOTA_DIRECTION_NULL */          -1,
+    /* SOTA_DIRECTION_LEFT */           2,
+    /* SOTA_DIRECTION_RIGHT */          0,
+    /* SOTA_DIRECTION_BOTTOM */         3,
+    /* SOTA_DIRECTION_BOTLEFT */        7,
+    /* SOTA_DIRECTION_BOTRIGHT */       6,
+    /* SOTA_DIRECTION_TOP */            1,
+    /* SOTA_DIRECTION_TOPLEFT */        5,
+    /* SOTA_DIRECTION_TOPRIGHT */       4,
 };
 
 char sdl_buttons[SOTA_BUTTON_END] = {

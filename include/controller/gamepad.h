@@ -44,6 +44,7 @@ struct GamepadInputMap {
 
 extern struct GamepadInputMap GamepadInputMap_default;
 extern struct GamepadInputMap GamepadInputMap_gamecube;
+extern struct GamepadInputMap GamepadInputMap_switch_pro;
 
 typedef struct controllerGamepad {
     SDL_GameController     **controllers;
@@ -96,7 +97,7 @@ void Gamepad_removeController(struct controllerGamepad *g, i32 i);
 /* -- Pressed button -- */
 void Gamepad_Held(i8 *h, size_t *hn, i32 *t, i8 *p, size_t pn, i32 dt);
 bool Gamepad_isPressed(   struct controllerGamepad *g,  int sb);
-bool Gamepad_ButtonorAxis(struct controllerGamepad *g,  int b, int i, bool is);
+bool Gamepad_ButtonorAxis(struct controllerGamepad *g,  SDL_GameControllerButton b, int i, bool is);
 struct Point Gamepad_Joystick_Direction(struct controllerGamepad *g);
 
 #endif /* CONTROLLERGAMEPAD_H */

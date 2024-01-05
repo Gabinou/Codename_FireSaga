@@ -446,7 +446,7 @@ struct Game *Game_Init(void) {
 
     out_game->isrunning = true;
     out_game->keyboardInputMap  = KeyboardInputMap_default;
-    out_game->gamepadInputMap   = GamepadInputMap_gamecube;
+    out_game->gamepadInputMap   = GamepadInputMap_switch_pro;
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Loading pixelfonts\n");
     out_game->pixelnours = PixelFont_Alloc();
     char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
