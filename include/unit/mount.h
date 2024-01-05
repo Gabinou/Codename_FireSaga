@@ -5,6 +5,7 @@
 #include "enums.h"
 #include "nstr.h"
 #include "structs.h"
+#include "unit/unit.h"
 
 /* -- Mount -- */
 struct Mount {
