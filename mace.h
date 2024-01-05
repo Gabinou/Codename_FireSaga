@@ -139,10 +139,10 @@ struct Target {
     const char *dependencies;      /* targets                                 */
     const char *flags;             /* passed as is to compiler                */
 
-    const char *command_pre_build; /* command ran before building target      */
-    const char *command_post_build;/* command ran after  building target      */
-    const char *message_pre_build; /* message printed before building target  */
-    const char *message_post_build;/* message printed after  building target  */
+    const char *cmd_pre; /* command ran before building target      */
+    const char *cmd_post;/* command ran after  building target      */
+    const char *msg_pre; /* message printed before building target  */
+    const char *msg_post;/* message printed after  building target  */
 
     int kind;                      /* MACE_TARGET_KIND                        */
     /* allatonce: Compile all .o objects at once (calls gcc one time).        */
@@ -5361,11 +5361,11 @@ void mace_build_targets() {
         /* -- config argv -- */
         mace_argv_add_config(target, &target->_argv, &target->_argc, &target->_arg_len);
 
-        mace_run_commands(target->command_pre_build);
-        mace_print_message(target->message_pre_build);
+        mace_run_commands(target->cmd_pre);
+        mace_print_message(target->msg_pre);
         mace_build_target(target);
-        mace_print_message(target->message_post_build);
-        mace_run_commands(target->command_post_build);
+        mace_print_message(target->msg_post);
+        mace_run_commands(target->cmd_post);
     }
 }
 
