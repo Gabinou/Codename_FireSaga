@@ -19,6 +19,7 @@
 #include "unit/anim.h"
 #include "unit/status.h"
 #include "unit/boss.h"
+#include "unit/range.h"
 #include "unit/stats.h"
 #include "unit/mount.h"
 
@@ -391,37 +392,36 @@ void Unit_lvlUp(  struct Unit *u);
 i16 Unit_getLvl(  struct Unit *u);
 void Unit_Promote(struct Unit *u, i8 new_class_i);
 
-bool Range_Valid(    struct Range r1);
-void Ranges_Combine( struct Range *r1, struct Range r2);
-bool Range_toCombine(struct Unit *u, struct Weapon *w);
+// /* --- Rangemap --- */
+// int  Unit_Rangemap_Get(      struct Unit *u);
+// void Unit_Rangemap_Toggle(   struct Unit *u);
+// void Unit_Rangemap_Default(  struct Unit *u);
+// void Unit_Rangemap_Equipment(struct Unit *u);
 
+// bool Range_Valid(    struct Range r1);
+// void Ranges_Combine( struct Range *r1, struct Range r2);
+// bool Range_toCombine(struct Unit *u, struct Weapon *w);
 
-/* --- Rangemap --- */
-int  Unit_Rangemap_Get(      struct Unit *u);
-void Unit_Rangemap_Toggle(   struct Unit *u);
-void Unit_Rangemap_Default(  struct Unit *u);
-void Unit_Rangemap_Equipment(struct Unit *u);
+// /* -- Equipment Range Combiners -- */
+// /* Compute range of equipment or equipped by combining ranges
+// *   Usage:
+// *       - Dangermap
+// *       - Menu Option checking
+// */
+// struct Range *Unit_Range_Combine(          struct Unit *u, bool eq);
+// struct Range *Unit_Range_Combine_Staves(   struct Unit *u, bool eq);
+// struct Range *Unit_Range_Combine_Weapons(  struct Unit *u, bool eq);
+// struct Range *Unit_Range_Combine_Equipment(struct Unit *u);
 
-/* -- Equipment Range Combiners -- */
-/* Compute range of equipment or equipped by combining ranges
-*   Usage:
-*       - Dangermap
-*       - Menu Option checking
-*/
-struct Range *Unit_Range_Combine(          struct Unit *u, bool eq);
-struct Range *Unit_Range_Combine_Staves(   struct Unit *u, bool eq);
-struct Range *Unit_Range_Combine_Weapons(  struct Unit *u, bool eq);
-struct Range *Unit_Range_Combine_Equipment(struct Unit *u);
+// struct Range *_Unit_Range_Combine(struct Unit  *u, struct Range *r, bool e, int a);
 
-struct Range *_Unit_Range_Combine(struct Unit  *u, struct Range *r, bool e, int a);
-
-/* -- Loadout Range -- */
-/* Compute range of loadout:
-*  - Range of weapon in strong hand
-*   - UNLESS dual-wielding. Ranges combine, BUT only add stats if in range.
-*/
-struct Range *Unit_Range_Item(   struct Unit *u, int i);
-struct Range *Unit_Range_Loadout(struct Unit *u);
+// /* -- Loadout Range -- */
+// /* Compute range of loadout:
+// *  - Range of weapon in strong hand
+// *   - UNLESS dual-wielding. Ranges combine, BUT only add stats if in range.
+// */
+// struct Range *Unit_Range_Item(   struct Unit *u, int i);
+// struct Range *Unit_Range_Loadout(struct Unit *u);
 
 /* -- Reinforcements -- */
 void Unit_Reinforcement_Levelups(struct Unit *u, struct Reinforcement *r);
