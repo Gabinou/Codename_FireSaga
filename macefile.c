@@ -36,26 +36,26 @@ struct Target noursmath = {
     .kind      = MACE_STATIC_LIBRARY,
 };
 
-struct Target parg = {
+struct Target parg      = {
     .base_dir  = "second_party/parg",
     .sources   = ".",
     .kind      = MACE_STATIC_LIBRARY,
 };
 
-struct Target tnecs = {
+struct Target tnecs     = {
     .base_dir  = "second_party/tnecs",
     .sources   = ".",
     .kind      = MACE_STATIC_LIBRARY,
 };
 
 /* - third_party - */
-struct Target cjson = {
+struct Target cjson     = {
     .base_dir  = "third_party/cJson",
     .sources   = ".",
     .kind      = MACE_STATIC_LIBRARY,
 };
 
-struct Target physfs = {
+struct Target physfs    = {
     .sources   = ".",
     /* Disable all archives except .zip */
     /* Note: tcc can't compile 7z -> __cpuid missing */
@@ -74,7 +74,7 @@ struct Target physfs = {
     .kind      = MACE_STATIC_LIBRARY,
 };
 
-struct Target tinymt = {
+struct Target tinymt    = {
     .sources   = ".",
     .base_dir  = "third_party/tinymt",
     .kind      = MACE_STATIC_LIBRARY,
