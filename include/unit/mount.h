@@ -42,4 +42,11 @@ struct Mount Mount_default_salamander;
 struct Mount Mount_default_pegasus;
 struct Mount Mount_default_eagle;
 
+/* --- Mount --- */
+void Unit_Mount_Mount(   struct Unit *u, i16 id);
+void Unit_Mount_Bonus(   struct Unit *u, i16 id);
+void Unit_Mount_Assign(  struct Unit *u, i16 id);
+void Unit_Mount_Unmount( struct Unit *u, i16 id);
+void Unit_Mount_Deassign(struct Unit *u, i16 id);
+
 #endif /* MOUNT_H */

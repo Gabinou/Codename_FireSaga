@@ -19,6 +19,8 @@
 #include "unit/anim.h"
 #include "unit/status.h"
 #include "unit/boss.h"
+#include "unit/stats.h"
+#include "unit/mount.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
@@ -265,19 +267,19 @@ u8  Unit_mvtType(struct Unit *u);
 // void Unit_Status_Decrement(struct Unit *u);
 // i16 Unit_Status_Find_Turns(struct Unit *unit, i16 turns);
 
-/* --- Unit stats --- */
-struct Unit_stats Unit_stats_plus(     struct Unit_stats stats1, struct Unit_stats stats2);
-struct Unit_stats Unit_stats_minus(    struct Unit_stats stats1, struct Unit_stats stats2);
-struct Unit_stats Unit_stats_div_cst(  struct Unit_stats stats,  int cst);
-struct Unit_stats Unit_stats_plus_cst( struct Unit_stats stats1, int cst);
-struct Unit_stats Unit_stats_minus_cst(struct Unit_stats stats,  int cst);
+// /* --- Unit stats --- */
+// struct Unit_stats Unit_stats_plus(     struct Unit_stats stats1, struct Unit_stats stats2);
+// struct Unit_stats Unit_stats_minus(    struct Unit_stats stats1, struct Unit_stats stats2);
+// struct Unit_stats Unit_stats_div_cst(  struct Unit_stats stats,  int cst);
+// struct Unit_stats Unit_stats_plus_cst( struct Unit_stats stats1, int cst);
+// struct Unit_stats Unit_stats_minus_cst(struct Unit_stats stats,  int cst);
 
-/* --- Mount --- */
-void Unit_Mount_Mount(   struct Unit *u, i16 id);
-void Unit_Mount_Bonus(   struct Unit *u, i16 id);
-void Unit_Mount_Assign(  struct Unit *u, i16 id);
-void Unit_Mount_Unmount( struct Unit *u, i16 id);
-void Unit_Mount_Deassign(struct Unit *u, i16 id);
+// /* --- Mount --- */
+// void Unit_Mount_Mount(   struct Unit *u, i16 id);
+// void Unit_Mount_Bonus(   struct Unit *u, i16 id);
+// void Unit_Mount_Assign(  struct Unit *u, i16 id);
+// void Unit_Mount_Unmount( struct Unit *u, i16 id);
+// void Unit_Mount_Deassign(struct Unit *u, i16 id);
 
 /* --- Debug --- */
 bool Unit_Equipment_Full( struct Unit *u);
