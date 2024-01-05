@@ -16,6 +16,9 @@
 #include "platform.h"
 #include "utilities.h"
 #include "combat.h"
+#include "unit/anim.h"
+#include "unit/status.h"
+#include "unit/boss.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
@@ -26,53 +29,50 @@ struct Map;
 struct RNG_Sequence;
 struct Reinforcement;
 
-/* --- Enums --- */
-enum STATUSES {
-    STATUS_DEFAULT_TURNS = 5,
-};
+// /* --- Enums --- */
+// enum STATUSES {
+//     STATUS_DEFAULT_TURNS = 5,
+// };
 
 /* -- Unit second-order info -- */
 extern u8   army_alignment[ARMY_END];
 extern bool army_isPC[ARMY_END];
 
-/* --- UnitMoveAnimation --- */
-typedef struct UnitMoveAnimation {
-    u64 time_ns;
-    struct Point target;
-    tnecs_entity unit;
-} UnitMoveAnimation;
-extern struct UnitMoveAnimation UnitMoveAnimation_default;
+// /* --- UnitMoveAnimation --- */
+// typedef struct UnitMoveAnimation {
+//     u64 time_ns;
+//     struct Point target;
+//     tnecs_entity unit;
+// } UnitMoveAnimation;
+// extern struct UnitMoveAnimation UnitMoveAnimation_default;
 
-/* --- Boss --- */
-typedef struct Boss {
-    i8 icon;
-    SDL_Rect srcrect; /* x,y,w,h */
-    SDL_Rect dstrect; /* x,y,w,h */
-    SDL_Texture *texture;  /* pixels */
-} Boss;
-extern struct Boss Boss_default;
+// /* --- Boss --- */
+// typedef struct Boss {
+//     i8 icon;
+//     SDL_Rect srcrect; /* x,y,w,h */
+//     SDL_Rect dstrect; /* x,y,w,h */
+//     SDL_Texture *texture;  /* pixels */
+// } Boss;
+// extern struct Boss Boss_default;
 
-void Boss_Free(struct Boss *boss);
+// void Boss_Free(     struct Boss     *boss);
+// void Boss_Icon_Pos( struct Boss     *boss, struct Camera    *camera,
+//                     struct Position *pos,  struct Map       *map);
+// void Boss_Icon_Load(struct Boss     *boss, SDL_Renderer     *renderer);
+// void Boss_Icon_Draw(struct Boss     *boss, struct Position  *pos,
+//                     SDL_Renderer *r);
 
-void Boss_Icon_Pos(struct Boss *boss, struct Camera *camera,
-                   struct Position  *pos, struct Map *map);
+// /* -- Get default boss icon from army -- */
+// extern int army_icons[ARMY_NUM];
 
-void Boss_Icon_Load(struct Boss *boss, SDL_Renderer *renderer);
-
-void Boss_Icon_Draw(struct Boss      *boss, struct Position  *pos,
-                    SDL_Renderer *r);
-
-/* -- Get default boss icon from army -- */
-extern int army_icons[ARMY_NUM];
-
-/* --- UNIT STATUS --- */
-struct Unit_status {
-    /* Number of turns to be in this state. *
-    /* <0 means forever. */
-    i8 status;
-    i8 turns;
-};
-extern struct Unit_status Unit_status_default;
+// /* --- UNIT STATUS --- */
+// struct Unit_status {
+//     /* Number of turns to be in this state. *
+//     /* <0 means forever. */
+//     i8 status;
+//     i8 turns;
+// };
+// extern struct Unit_status Unit_status_default;
 
 /* --- UNIT STATS --- */
 
@@ -258,12 +258,12 @@ u8  SotA_army2alignment(u8 a);
 
 u8  Unit_mvtType(struct Unit *u);
 
-/* --- Unit status --- */
-void Unit_Status_Add(      struct Unit *u, struct Unit_status);
-i16 Unit_Status_Find(      struct Unit *u, i16 status);
-void Unit_Status_Remove(   struct Unit *u, i16 i);
-void Unit_Status_Decrement(struct Unit *u);
-i16 Unit_Status_Find_Turns(struct Unit *unit, i16 turns);
+// /* --- Unit status --- */
+// void Unit_Status_Add(      struct Unit *u, struct Unit_status);
+// i16 Unit_Status_Find(      struct Unit *u, i16 status);
+// void Unit_Status_Remove(   struct Unit *u, i16 i);
+// void Unit_Status_Decrement(struct Unit *u);
+// i16 Unit_Status_Find_Turns(struct Unit *unit, i16 turns);
 
 /* --- Unit stats --- */
 struct Unit_stats Unit_stats_plus(     struct Unit_stats stats1, struct Unit_stats stats2);
