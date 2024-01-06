@@ -1798,7 +1798,6 @@ void Unit_HalfCap_Stats(struct Unit *unit) {
     unit->current_stats.res  = unit->caps_stats.res  / 2;
     unit->current_stats.con  = unit->caps_stats.con  / 2;
     unit->current_stats.prof = unit->caps_stats.prof / 2;
-
 }
 
 struct Unit_stats Unit_effectiveGrowths(struct Unit *unit) {

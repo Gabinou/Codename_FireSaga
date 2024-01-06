@@ -3974,10 +3974,8 @@ void mace_Target_sources_grow(struct Target *target) {
     if (target->_len_sources >= target->_argc_objects_hash) {
         bytesize = target->_len_sources * sizeof(*target->_argv_objects_hash);
         target->_argv_objects_hash = realloc(target->_argv_objects_hash, bytesize);
-        // memset(target->_argv_objects_hash + target->_len_sources/2, 0, bytesize/2);
         bytesize = target->_len_sources * sizeof(*target->_argv_objects_cnt);
         target->_argv_objects_cnt = realloc(target->_argv_objects_cnt, bytesize);
-        memset(target->_argv_objects_cnt + target->_len_sources / 2, 0, bytesize / 2);
     }
 }
 
@@ -4626,11 +4624,10 @@ void mace_Target_Recompiles_Add(struct Target *target, bool add) {
     target->_recompiles[target->_argc_sources - 1] = add;
 }
 
-bool mace_Target_Object_Add(struct Target * target, char * token) {
+bool mace_Target_Object_Add(struct Target *target, char *token) {
     /* token is object path */
     if (token == NULL)
         return (false);
-
     uint64_t hash = mace_hash(token);
     int hash_id = Target_hasObjectHash(target, hash);
 
@@ -4662,7 +4659,7 @@ bool mace_Target_Object_Add(struct Target * target, char * token) {
         *(pos + 2) = 'o';
     }
 
-    /* -- Actualling adding object here -- */
+    /* -- Actually adding object here -- */
     uint64_t hash_nocoll = mace_hash(arg + flag_len);
     Target_Object_Hash_Add_nocoll(target, hash_nocoll);
 
@@ -4786,7 +4783,7 @@ bool mace_Source_Checksum(struct Target *target, char *source_path, char *obj_pa
     return (changed);
 }
 
-bool mace_Target_Source_Add(struct Target * target, char * token) {
+bool mace_Target_Source_Add(struct Target *target, char *token) {
     if (token == NULL)
         return (true);
 
@@ -4821,7 +4818,7 @@ bool mace_Target_Source_Add(struct Target * target, char * token) {
     return (false);
 }
 
-void mace_Target_Parse_Source(struct Target * target, char *path, char *src) {
+void mace_Target_Parse_Source(struct Target *target, char *path, char *src) {
     bool excluded = mace_Target_Source_Add(target, path);
     if (!excluded) {
         mace_object_path(src);

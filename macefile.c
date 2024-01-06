@@ -92,7 +92,7 @@ struct Target win_sota = {
                 "third_party/stb,third_party/cJson,"
                 "/usr/include/SDL2",
     .sources  = "src/*.c,src/bars/,src/menu/,src/popup/,"
-                "src/systems/,src/game/,src/map,src/unit,"
+                "src/systems/,src/game/,src/map,j,"
                 "src/controller",
     .links    = "SDL2,SDL2_image,SDL2_ttf,m,cjson,"
                 "noursmath,physfs,tinymt,tnecs,parg",
@@ -115,9 +115,9 @@ struct Target sota = {
                 "third_party/physfs,third_party/tinymt," 
                 "third_party/stb,third_party/cJson,"
                 "/usr/include/SDL2",
-    .sources  = "src/*.c,src/bars/,src/menu/,src/popup/,"
-                "src/systems/,src/game/,src/map,src/unit,"
-                "src/controller",
+    .sources  = "src,src/bars/,src/menu/,src/popup/,"
+                "src/systems/,src/game/,src/map/,src/unit/,"
+                "src/controller/",
     .links    = "SDL2,SDL2_image,SDL2_ttf,m,GLEW,cjson,"
                 "noursmath,physfs,tinymt,tnecs,parg",
     .flags    = "-fno-strict-overflow,-fno-strict-aliasing,"
