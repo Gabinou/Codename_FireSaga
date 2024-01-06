@@ -136,20 +136,20 @@ int  class_mvt_types[UNIT_CLASS_END] = {
 /* --- UNIT --- */
 // struct Unit_status Unit_status_default = {.status = 0, .turns = 3};
 
-struct Unit_stats Unit_stats_default = {
-    .hp =    0,
-    .str =   0,
-    .mag =   0,
-    .dex =   0,
-    .agi =   0,
-    .fth =   0,
-    .luck =  0,
-    .def =   0,
-    .res =   0,
-    .move =  0,
-    .con =   0,
-    .prof =  0
-};
+// struct Unit_stats Unit_stats_default = {
+//     .hp =    0,
+//     .str =   0,
+//     .mag =   0,
+//     .dex =   0,
+//     .agi =   0,
+//     .fth =   0,
+//     .luck =  0,
+//     .def =   0,
+//     .res =   0,
+//     .move =  0,
+//     .con =   0,
+//     .prof =  0
+// };
 
 struct Unit Unit_default = {
     .json_element   = JSON_UNIT,
@@ -506,57 +506,57 @@ bool Unit_hasSkill( struct Unit *unit, u64 skill) {
     return ((unit->skills & skill) > 0);
 }
 
-/* --- Statuses --- */
-void Unit_Status_Add(struct Unit *unit, struct Unit_status status) {
-    i16 i = Unit_Status_Find(unit, status.status);
-    if (unit->status_queue == NULL)
-        unit->status_queue = DARR_INIT(unit->status_queue, struct Unit_status, 2);
+// /* --- Statuses --- */
+// void Unit_Status_Add(struct Unit *unit, struct Unit_status status) {
+//     i16 i = Unit_Status_Find(unit, status.status);
+//     if (unit->status_queue == NULL)
+//         unit->status_queue = DARR_INIT(unit->status_queue, struct Unit_status, 2);
 
-    if (i < 0)
-        DARR_PUT(unit->status_queue, status);
-    else {
-        unit->status_queue[i].turns = STATUS_DEFAULT_TURNS;
-        i = Unit_Status_Find_Turns(unit, unit->status_queue[i].turns);
-        DARR_INSERT(unit->status_queue, status, i);
-    }
-}
+//     if (i < 0)
+//         DARR_PUT(unit->status_queue, status);
+//     else {
+//         unit->status_queue[i].turns = STATUS_DEFAULT_TURNS;
+//         i = Unit_Status_Find_Turns(unit, unit->status_queue[i].turns);
+//         DARR_INSERT(unit->status_queue, status, i);
+//     }
+// }
 
-void Unit_Status_Decrement(struct Unit *unit) {
-    if (unit->status_queue == NULL) {
-        return;
-    }
-    for (size_t i = 0; i < DARR_NUM(unit->status_queue); i++) {
-        unit->status_queue[i].turns--;
-        if (unit->status_queue[i].turns <= 0)
-            DARR_DEL(unit->status_queue, i);
-    }
+// void Unit_Status_Decrement(struct Unit *unit) {
+//     if (unit->status_queue == NULL) {
+//         return;
+//     }
+//     for (size_t i = 0; i < DARR_NUM(unit->status_queue); i++) {
+//         unit->status_queue[i].turns--;
+//         if (unit->status_queue[i].turns <= 0)
+//             DARR_DEL(unit->status_queue, i);
+//     }
 
-}
+// }
 
-i16 Unit_Status_Find(struct Unit *unit, i16 status) {
-    SDL_assert(unit->status_queue != NULL);
-    for (size_t i = 0; i < DARR_NUM(unit->status_queue); i++) {
-        if (unit->status_queue[i].status == status) {
-            return (i);
-        }
-    }
+// i16 Unit_Status_Find(struct Unit *unit, i16 status) {
+//     SDL_assert(unit->status_queue != NULL);
+//     for (size_t i = 0; i < DARR_NUM(unit->status_queue); i++) {
+//         if (unit->status_queue[i].status == status) {
+//             return (i);
+//         }
+//     }
 
-    return (-1);
-}
+//     return (-1);
+// }
 
-// What is that for?
-i16 Unit_Status_Find_Turns(struct Unit *unit, i16 turns) {
-    i16 out = -1;
-    SDL_assert(unit->status_queue != NULL);
-    for (size_t i = 0; i < DARR_NUM(unit->status_queue); i++) {
-        if (unit->status_queue[i].turns == turns) {
-            out = i;
-            break;
-        }
-    }
+// // What is that for?
+// i16 Unit_Status_Find_Turns(struct Unit *unit, i16 turns) {
+//     i16 out = -1;
+//     SDL_assert(unit->status_queue != NULL);
+//     for (size_t i = 0; i < DARR_NUM(unit->status_queue); i++) {
+//         if (unit->status_queue[i].turns == turns) {
+//             out = i;
+//             break;
+//         }
+//     }
 
-    return (out);
-}
+//     return (out);
+// }
 
 /* --- Items --- */
 /* Private item atker at specific spot. Does no checks
@@ -1287,183 +1287,184 @@ u8 *Unit_computeAttack(struct Unit *unit, int distance) {
 
     return (unit->computed_stats.attack);
 }
-/* -- Loadout Range -- */
-/* Compute range of loadout:
-*  - Range of weapon in dominant hand
-*   - UNLESS dual-wielding. Ranges combine, BUT only add stats if in range.
-*/
-struct Range *Unit_Range_Loadout(struct Unit   *unit) {
 
-    struct Range *range = &unit->computed_stats.range_loadout;
-    range->min = UINT8_MAX;
-    range->max = 0;
-    Unit_isdualWielding(unit);
+// /* -- Loadout Range -- */
+// /* Compute range of loadout:
+// *  - Range of weapon in dominant hand
+// *   - UNLESS dual-wielding. Ranges combine, BUT only add stats if in range.
+// */
+// struct Range *Unit_Range_Loadout(struct Unit   *unit) {
 
-    bool stronghand = Unit_Hand_Strong(unit);
-    do {
-        /* If dual wielding, range_loadout is combined. */
-        if (unit->isDualWielding) {
-            SDL_Log("IS dual wielding,");
-            _Unit_Range_Combine(unit, range, true, ITEM_ARCHETYPE_WEAPON);
-            break;
-        }
+//     struct Range *range = &unit->computed_stats.range_loadout;
+//     range->min = UINT8_MAX;
+//     range->max = 0;
+//     Unit_isdualWielding(unit);
 
-        /* If not dual wielding, compute range of weapon in stronghand. */
-        if (!unit->equipped[stronghand]) {
-            SDL_Log("If not dual wielding,");
-            break;
-        }
+//     bool stronghand = Unit_Hand_Strong(unit);
+//     do {
+//         /* If dual wielding, range_loadout is combined. */
+//         if (unit->isDualWielding) {
+//             SDL_Log("IS dual wielding,");
+//             _Unit_Range_Combine(unit, range, true, ITEM_ARCHETYPE_WEAPON);
+//             break;
+//         }
 
-        if (!Unit_Eq_Usable(unit, ITEM_ARCHETYPE_WEAPON, stronghand)) {
-            SDL_Log("If not usable,");
-            break;
-        }
+//         /* If not dual wielding, compute range of weapon in stronghand. */
+//         if (!unit->equipped[stronghand]) {
+//             SDL_Log("If not dual wielding,");
+//             break;
+//         }
 
-        Weapon_Load(unit->weapons_dtab, unit->_equipment[stronghand].id);
-        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[stronghand].id);
-        if (wpn == NULL) {
-            SDL_Log("wpn null,");
-            break;
-        }
-        Ranges_Combine(range, wpn->stats.range);
-    } while (false);
+//         if (!Unit_Eq_Usable(unit, ITEM_ARCHETYPE_WEAPON, stronghand)) {
+//             SDL_Log("If not usable,");
+//             break;
+//         }
 
-    return (range);
-}
+//         Weapon_Load(unit->weapons_dtab, unit->_equipment[stronghand].id);
+//         struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[stronghand].id);
+//         if (wpn == NULL) {
+//             SDL_Log("wpn null,");
+//             break;
+//         }
+//         Ranges_Combine(range, wpn->stats.range);
+//     } while (false);
 
-struct Range *Unit_Range_Item(struct Unit   *unit, int i) {
-    struct Range *range = &unit->computed_stats.range_combined;
-    range->min = UINT8_MAX;
-    range->max = 0;
+//     return (range);
+// }
 
-    do {
-        /* If dual wielding, range_loadout is combined. */
-        Weapon_Load(unit->weapons_dtab, unit->_equipment[i].id);
-        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[i].id);
-        if (wpn == NULL)
-            break;
+// struct Range *Unit_Range_Item(struct Unit   *unit, int i) {
+//     struct Range *range = &unit->computed_stats.range_combined;
+//     range->min = UINT8_MAX;
+//     range->max = 0;
 
-        Ranges_Combine(range, wpn->stats.range);
-    } while (false);
+//     do {
+//         /* If dual wielding, range_loadout is combined. */
+//         Weapon_Load(unit->weapons_dtab, unit->_equipment[i].id);
+//         struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[i].id);
+//         if (wpn == NULL)
+//             break;
 
-    return (range);
-}
+//         Ranges_Combine(range, wpn->stats.range);
+//     } while (false);
 
-
-/* -- Range Combiners -- */
-/* Compute range of equipment or equipped by combining ranges
-*   Usage:
-*       - Dangermap
-*       - Menu Option checking
-*/
-
-struct Range *_Unit_Range_Combine( struct Unit   *unit, struct Range *range,
-                                   bool equipped, int archetype) {
-    /* - Finds range of ANYTHING - */
-    int num = equipped ? UNIT_HANDS_NUM : DEFAULT_EQUIPMENT_SIZE;
-    bool stronghand = Unit_Hand_Strong(unit);
-    for (int i = 0; i < num; i++) {
-        /* Skip if no item */
-        if (unit->_equipment[i].id == ITEM_NULL)
-            continue;
-
-        /* Equipped only: Skip if unequipped */
-        if (equipped && !unit->equipped[i])
-            continue;
-
-        /* Skip if unusable */
-        if (!Unit_Eq_Usable(unit, archetype, i))
-            continue;
-
-        /* Skip if wrong archetype*/
-        if ((archetype == ITEM_ARCHETYPE_STAFF)  && !Item_isStaff(unit->_equipment[i].id))
-            continue;
-
-        /* Skip if weakhand for staff */
-        if ((archetype == ITEM_ARCHETYPE_STAFF)  && (i != stronghand) && (equipped))
-            continue;
-
-        if ((archetype == ITEM_ARCHETYPE_WEAPON) && !Item_isWeapon(unit->_equipment[i].id))
-            continue;
-
-        /* Combine ranges */
-        Weapon_Load(unit->weapons_dtab, unit->_equipment[i].id);
-        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[i].id);
-        Ranges_Combine(range, wpn->stats.range);
-    }
-
-    return (range);
-}
-
-struct Range *Unit_Range_Combine_Equipment(struct Unit *unit) {
-    /* Compute range of equipment, using unit rangemap */
-    /* Used to find if any */
-    return (Unit_Range_Combine(unit, false));
-}
-
-struct Range *Unit_Range_Combine(struct Unit *unit, bool equipped) {
-    /* Compute range using unit rangemap */
-    int archetype = ITEM_ARCHETYPE_WEAPON;
-    int rangemap = unit->user_rangemap > RANGEMAP_NULL ? unit->user_rangemap : unit->rangemap;
-
-    if (rangemap == RANGEMAP_HEALMAP) {
-        archetype = ITEM_ARCHETYPE_STAFF;
-    } else if (rangemap == RANGEMAP_ATTACKMAP) {
-        archetype = ITEM_ARCHETYPE_WEAPON;
-    }
-
-    struct Range *range = &unit->computed_stats.range_combined;
-    range->min = UINT8_MAX;
-    range->max = 0;
-    return (_Unit_Range_Combine(unit, range, equipped, archetype));
-}
-
-struct Range *Unit_Range_Combine_Staves(struct Unit *unit, bool equipped) {
-    /* - Finds range only for same weapon type as DECIDED BY INPUT - */
-
-    struct Range *range = &unit->computed_stats.range_combined;
-    range->min = UINT8_MAX;
-    range->max = 0;
-    _Unit_Range_Combine(unit, range, equipped, ITEM_ARCHETYPE_STAFF);
-
-    return (range);
-}
+//     return (range);
+// }
 
 
-struct Range *Unit_Range_Combine_Weapons(struct Unit *unit, bool equipped) {
-    /* - Finds range only for same weapon type as DECIDED BY INPUT - */
+// /* -- Range Combiners -- */
+// /* Compute range of equipment or equipped by combining ranges
+// *   Usage:
+// *       - Dangermap
+// *       - Menu Option checking
+// */
 
-    struct Range *range = &unit->computed_stats.range_combined;
-    range->min = UINT8_MAX;
-    range->max = 0;
-    _Unit_Range_Combine(unit, range, equipped, ITEM_ARCHETYPE_WEAPON);
+// struct Range *_Unit_Range_Combine( struct Unit   *unit, struct Range *range,
+//                                    bool equipped, int archetype) {
+//     /* - Finds range of ANYTHING - */
+//     int num = equipped ? UNIT_HANDS_NUM : DEFAULT_EQUIPMENT_SIZE;
+//     bool stronghand = Unit_Hand_Strong(unit);
+//     for (int i = 0; i < num; i++) {
+//         /* Skip if no item */
+//         if (unit->_equipment[i].id == ITEM_NULL)
+//             continue;
 
-    return (range);
-}
+//         /* Equipped only: Skip if unequipped */
+//         if (equipped && !unit->equipped[i])
+//             continue;
 
-bool Range_Valid(struct Range range) {
-    return ((range.max > 0) && (range.min > 0) && (range.min <= SOTA_MAX_RANGE)
-            && (range.max <= SOTA_MAX_RANGE));
-}
+//         /* Skip if unusable */
+//         if (!Unit_Eq_Usable(unit, archetype, i))
+//             continue;
 
-void Ranges_Combine(struct Range *r1, struct Range r2) {
-    // Gap example:    1  2  3  4  5
-    // r1: [1,1]      |-|             (gap with    r2)
-    // r1: [1,2]      |----|          (no gap with r2)
-    // r2: [3,5]            |-------|
-    bool r1_valid = Range_Valid(*r1);
-    bool r2_valid = Range_Valid(r2);
+//         /* Skip if wrong archetype*/
+//         if ((archetype == ITEM_ARCHETYPE_STAFF)  && !Item_isStaff(unit->_equipment[i].id))
+//             continue;
 
-    bool gap  = (r1->max < (r2.min  - 1)) || (r1->min > (r2.max  + 1));
+//         /* Skip if weakhand for staff */
+//         if ((archetype == ITEM_ARCHETYPE_STAFF)  && (i != stronghand) && (equipped))
+//             continue;
 
-    if (gap && r1_valid && r2_valid) {
-        SDL_Log("Gap in combined ranges. Should never happen.");
-        exit(ERROR_OutofBounds);
-    }
+//         if ((archetype == ITEM_ARCHETYPE_WEAPON) && !Item_isWeapon(unit->_equipment[i].id))
+//             continue;
 
-    r1->max = r1->max > r2.max ? r1->max : r2.max; /* Best max range is biggest  */
-    r1->min = r1->min < r2.min ? r1->min : r2.min; /* Best min range is smallest */
-}
+//         /* Combine ranges */
+//         Weapon_Load(unit->weapons_dtab, unit->_equipment[i].id);
+//         struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[i].id);
+//         Ranges_Combine(range, wpn->stats.range);
+//     }
+
+//     return (range);
+// }
+
+// struct Range *Unit_Range_Combine_Equipment(struct Unit *unit) {
+//     /* Compute range of equipment, using unit rangemap */
+//     /* Used to find if any */
+//     return (Unit_Range_Combine(unit, false));
+// }
+
+// struct Range *Unit_Range_Combine(struct Unit *unit, bool equipped) {
+//     /* Compute range using unit rangemap */
+//     int archetype = ITEM_ARCHETYPE_WEAPON;
+//     int rangemap = unit->user_rangemap > RANGEMAP_NULL ? unit->user_rangemap : unit->rangemap;
+
+//     if (rangemap == RANGEMAP_HEALMAP) {
+//         archetype = ITEM_ARCHETYPE_STAFF;
+//     } else if (rangemap == RANGEMAP_ATTACKMAP) {
+//         archetype = ITEM_ARCHETYPE_WEAPON;
+//     }
+
+//     struct Range *range = &unit->computed_stats.range_combined;
+//     range->min = UINT8_MAX;
+//     range->max = 0;
+//     return (_Unit_Range_Combine(unit, range, equipped, archetype));
+// }
+
+// struct Range *Unit_Range_Combine_Staves(struct Unit *unit, bool equipped) {
+//     /* - Finds range only for same weapon type as DECIDED BY INPUT - */
+
+//     struct Range *range = &unit->computed_stats.range_combined;
+//     range->min = UINT8_MAX;
+//     range->max = 0;
+//     _Unit_Range_Combine(unit, range, equipped, ITEM_ARCHETYPE_STAFF);
+
+//     return (range);
+// }
+
+
+// struct Range *Unit_Range_Combine_Weapons(struct Unit *unit, bool equipped) {
+//     /* - Finds range only for same weapon type as DECIDED BY INPUT - */
+
+//     struct Range *range = &unit->computed_stats.range_combined;
+//     range->min = UINT8_MAX;
+//     range->max = 0;
+//     _Unit_Range_Combine(unit, range, equipped, ITEM_ARCHETYPE_WEAPON);
+
+//     return (range);
+// }
+
+// bool Range_Valid(struct Range range) {
+//     return ((range.max > 0) && (range.min > 0) && (range.min <= SOTA_MAX_RANGE)
+//             && (range.max <= SOTA_MAX_RANGE));
+// }
+
+// void Ranges_Combine(struct Range *r1, struct Range r2) {
+//     // Gap example:    1  2  3  4  5
+//     // r1: [1,1]      |-|             (gap with    r2)
+//     // r1: [1,2]      |----|          (no gap with r2)
+//     // r2: [3,5]            |-------|
+//     bool r1_valid = Range_Valid(*r1);
+//     bool r2_valid = Range_Valid(r2);
+
+//     bool gap  = (r1->max < (r2.min  - 1)) || (r1->min > (r2.max  + 1));
+
+//     if (gap && r1_valid && r2_valid) {
+//         SDL_Log("Gap in combined ranges. Should never happen.");
+//         exit(ERROR_OutofBounds);
+//     }
+
+//     r1->max = r1->max > r2.max ? r1->max : r2.max; /* Best max range is biggest  */
+//     r1->min = r1->min < r2.min ? r1->min : r2.min; /* Best min range is smallest */
+// }
 
 bool Unit_Equipment_Full( struct Unit *unit) {
     return (unit->num_equipment == DEFAULT_EQUIPMENT_SIZE);
@@ -2199,161 +2200,161 @@ void Unit_Promote(struct Unit *unit, i8 new_class_index) {
     // unit->class = new_class_index;
 }
 
-/* --- Rangemap --- */
-int Unit_Rangemap_Get(struct Unit *unit) {
-    int rangemap = unit->user_rangemap > RANGEMAP_NULL ? unit->user_rangemap : unit->rangemap;
-    return (rangemap);
-}
+// /* --- Rangemap --- */
+// int Unit_Rangemap_Get(struct Unit *unit) {
+//     int rangemap = unit->user_rangemap > RANGEMAP_NULL ? unit->user_rangemap : unit->rangemap;
+//     return (rangemap);
+// }
 
-void Unit_Rangemap_Toggle(struct Unit *unit) {
-    SDL_assert((unit->rangemap > RANGEMAP_NULL) && (unit->rangemap < RANGEMAP_NUM));
+// void Unit_Rangemap_Toggle(struct Unit *unit) {
+//     SDL_assert((unit->rangemap > RANGEMAP_NULL) && (unit->rangemap < RANGEMAP_NUM));
 
-    /* Set user_rangemap to default */
-    if (unit->user_rangemap == RANGEMAP_NULL)
-        unit->user_rangemap = unit->rangemap;
+//     /* Set user_rangemap to default */
+//     if (unit->user_rangemap == RANGEMAP_NULL)
+//         unit->user_rangemap = unit->rangemap;
 
-    /* Toggle only if hasStaff or canAttack with equipment*/
-    bool toggle = false;
-    toggle |= Unit_canAttack_Eq(unit) && (unit->user_rangemap == RANGEMAP_HEALMAP);
-    toggle |= Unit_canStaff_Eq(unit)  && (unit->user_rangemap == RANGEMAP_ATTACKMAP);
+//     /* Toggle only if hasStaff or canAttack with equipment*/
+//     bool toggle = false;
+//     toggle |= Unit_canAttack_Eq(unit) && (unit->user_rangemap == RANGEMAP_HEALMAP);
+//     toggle |= Unit_canStaff_Eq(unit)  && (unit->user_rangemap == RANGEMAP_ATTACKMAP);
 
-    /* user_rangemap not set previously, reverse rangemap */
-    // RANGEMAP_NUM - RANGEMAP_ATTACKMAP == RANGEMAP_HEALMAP and vice versa!
-    //      3       -         2          ==        1
-    //      3       -         1          ==        2
-    if (toggle)
-        unit->user_rangemap = RANGEMAP_NUM - unit->user_rangemap;
+//     /* user_rangemap not set previously, reverse rangemap */
+//     // RANGEMAP_NUM - RANGEMAP_ATTACKMAP == RANGEMAP_HEALMAP and vice versa!
+//     //      3       -         2          ==        1
+//     //      3       -         1          ==        2
+//     if (toggle)
+//         unit->user_rangemap = RANGEMAP_NUM - unit->user_rangemap;
 
-}
+// }
 
-void Unit_Rangemap_Equipment(struct Unit *unit) {
-    /* 1- Weapon equipped in strong hand */
-    bool stronghand = Unit_Hand_Strong(unit);
-    if (unit->equipped[stronghand]) {
-        Weapon_Load(unit->weapons_dtab, unit->_equipment[stronghand].id);
-        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[stronghand].id);
-        u16 type = wpn->item->type;
+// void Unit_Rangemap_Equipment(struct Unit *unit) {
+//     /* 1- Weapon equipped in strong hand */
+//     bool stronghand = Unit_Hand_Strong(unit);
+//     if (unit->equipped[stronghand]) {
+//         Weapon_Load(unit->weapons_dtab, unit->_equipment[stronghand].id);
+//         struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[stronghand].id);
+//         u16 type = wpn->item->type;
 
-        if (flagsum_isIn(type, ITEM_TYPE_STAFF) || flagsum_isIn(type, ITEM_TYPE_ITEM)) {
-            unit->rangemap = RANGEMAP_HEALMAP;
-        } else {
-            unit->rangemap = RANGEMAP_ATTACKMAP;
-        }
-        return;
-    }
+//         if (flagsum_isIn(type, ITEM_TYPE_STAFF) || flagsum_isIn(type, ITEM_TYPE_ITEM)) {
+//             unit->rangemap = RANGEMAP_HEALMAP;
+//         } else {
+//             unit->rangemap = RANGEMAP_ATTACKMAP;
+//         }
+//         return;
+//     }
 
-    /* 2- Weapon equipped in weak hand */
-    bool weakhand = 1 - stronghand;
-    if (unit->equipped[weakhand] && unit->hands[weakhand]) {
-        Weapon_Load(unit->weapons_dtab, unit->_equipment[weakhand].id);
-        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[weakhand].id);
-        u16 type = wpn->item->type;
+//     /* 2- Weapon equipped in weak hand */
+//     bool weakhand = 1 - stronghand;
+//     if (unit->equipped[weakhand] && unit->hands[weakhand]) {
+//         Weapon_Load(unit->weapons_dtab, unit->_equipment[weakhand].id);
+//         struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[weakhand].id);
+//         u16 type = wpn->item->type;
 
-        if (flagsum_isIn(type, ITEM_TYPE_STAFF) || flagsum_isIn(type, ITEM_TYPE_ITEM)) {
-            unit->rangemap = RANGEMAP_HEALMAP;
-        } else {
-            unit->rangemap = RANGEMAP_ATTACKMAP;
-        }
+//         if (flagsum_isIn(type, ITEM_TYPE_STAFF) || flagsum_isIn(type, ITEM_TYPE_ITEM)) {
+//             unit->rangemap = RANGEMAP_HEALMAP;
+//         } else {
+//             unit->rangemap = RANGEMAP_ATTACKMAP;
+//         }
 
-        return;
-    }
-}
+//         return;
+//     }
+// }
 
-void Unit_Rangemap_Default(struct Unit *unit) {
-    int rangemap = unit->user_rangemap > RANGEMAP_NULL ? unit->user_rangemap : unit->rangemap;
-    // Compute default rangemap priority
+// void Unit_Rangemap_Default(struct Unit *unit) {
+//     int rangemap = unit->user_rangemap > RANGEMAP_NULL ? unit->user_rangemap : unit->rangemap;
+//     // Compute default rangemap priority
 
-    /* Sota default for class (healer staff) */
-    if ((unit->class == UNIT_CLASS_PRIEST) || (unit->class == UNIT_CLASS_BISHOP) ||
-        (unit->class == UNIT_CLASS_CLERIC) || (unit->class == UNIT_CLASS_ORACLE)) {
-        unit->rangemap = RANGEMAP_HEALMAP;
-    } else {
-        unit->rangemap = RANGEMAP_ATTACKMAP;
-    }
+//     /* Sota default for class (healer staff) */
+//     if ((unit->class == UNIT_CLASS_PRIEST) || (unit->class == UNIT_CLASS_BISHOP) ||
+//         (unit->class == UNIT_CLASS_CLERIC) || (unit->class == UNIT_CLASS_ORACLE)) {
+//         unit->rangemap = RANGEMAP_HEALMAP;
+//     } else {
+//         unit->rangemap = RANGEMAP_ATTACKMAP;
+//     }
 
-}
+// }
 
-/* --- Unit stats --- */
-struct Unit_stats Unit_stats_plus_cst(struct Unit_stats in_stats1, int cst) {
-    struct Unit_stats out_stats = Unit_stats_default;
-    out_stats.hp    = nmath_bplus(in_stats1.hp,   cst, UINT8_MAX);
-    out_stats.str   = nmath_bplus(in_stats1.str,  cst, UINT8_MAX);
-    out_stats.mag   = nmath_bplus(in_stats1.mag,  cst, UINT8_MAX);
-    out_stats.agi   = nmath_bplus(in_stats1.agi,  cst, UINT8_MAX);
-    out_stats.dex   = nmath_bplus(in_stats1.dex,  cst, UINT8_MAX);
-    out_stats.luck  = nmath_bplus(in_stats1.luck, cst, UINT8_MAX);
-    out_stats.def   = nmath_bplus(in_stats1.def,  cst, UINT8_MAX);
-    out_stats.res   = nmath_bplus(in_stats1.res,  cst, UINT8_MAX);
-    out_stats.con   = nmath_bplus(in_stats1.con,  cst, UINT8_MAX);
-    out_stats.move  = nmath_bplus(in_stats1.move, cst, UINT8_MAX);
-    out_stats.prof  = nmath_bplus(in_stats1.prof, cst, UINT8_MAX);
-    return (out_stats);
-}
+// /* --- Unit stats --- */
+// struct Unit_stats Unit_stats_plus_cst(struct Unit_stats in_stats1, int cst) {
+//     struct Unit_stats out_stats = Unit_stats_default;
+//     out_stats.hp    = nmath_bplus(in_stats1.hp,   cst, UINT8_MAX);
+//     out_stats.str   = nmath_bplus(in_stats1.str,  cst, UINT8_MAX);
+//     out_stats.mag   = nmath_bplus(in_stats1.mag,  cst, UINT8_MAX);
+//     out_stats.agi   = nmath_bplus(in_stats1.agi,  cst, UINT8_MAX);
+//     out_stats.dex   = nmath_bplus(in_stats1.dex,  cst, UINT8_MAX);
+//     out_stats.luck  = nmath_bplus(in_stats1.luck, cst, UINT8_MAX);
+//     out_stats.def   = nmath_bplus(in_stats1.def,  cst, UINT8_MAX);
+//     out_stats.res   = nmath_bplus(in_stats1.res,  cst, UINT8_MAX);
+//     out_stats.con   = nmath_bplus(in_stats1.con,  cst, UINT8_MAX);
+//     out_stats.move  = nmath_bplus(in_stats1.move, cst, UINT8_MAX);
+//     out_stats.prof  = nmath_bplus(in_stats1.prof, cst, UINT8_MAX);
+//     return (out_stats);
+// }
 
-struct Unit_stats Unit_stats_plus(struct Unit_stats in_stats1,
-                                  struct Unit_stats in_stats2) {
-    struct Unit_stats out_stats = Unit_stats_default;
-    out_stats.hp    = nmath_bplus(in_stats1.hp,    in_stats2.hp,   UINT8_MAX);
-    out_stats.str   = nmath_bplus(in_stats1.str,   in_stats2.str,  UINT8_MAX);
-    out_stats.mag   = nmath_bplus(in_stats1.mag,   in_stats2.mag,  UINT8_MAX);
-    out_stats.agi   = nmath_bplus(in_stats1.agi,   in_stats2.agi,  UINT8_MAX);
-    out_stats.dex   = nmath_bplus(in_stats1.dex,   in_stats2.dex,  UINT8_MAX);
-    out_stats.luck  = nmath_bplus(in_stats1.luck,  in_stats2.luck, UINT8_MAX);
-    out_stats.def   = nmath_bplus(in_stats1.def,   in_stats2.def,  UINT8_MAX);
-    out_stats.res   = nmath_bplus(in_stats1.res,   in_stats2.res,  UINT8_MAX);
-    out_stats.con   = nmath_bplus(in_stats1.con,   in_stats2.con,  UINT8_MAX);
-    out_stats.move  = nmath_bplus(in_stats1.move,  in_stats2.move, UINT8_MAX);
-    out_stats.prof  = nmath_bplus(in_stats1.prof,  in_stats2.prof, UINT8_MAX);
-    return (out_stats);
-}
+// struct Unit_stats Unit_stats_plus(struct Unit_stats in_stats1,
+//                                   struct Unit_stats in_stats2) {
+//     struct Unit_stats out_stats = Unit_stats_default;
+//     out_stats.hp    = nmath_bplus(in_stats1.hp,    in_stats2.hp,   UINT8_MAX);
+//     out_stats.str   = nmath_bplus(in_stats1.str,   in_stats2.str,  UINT8_MAX);
+//     out_stats.mag   = nmath_bplus(in_stats1.mag,   in_stats2.mag,  UINT8_MAX);
+//     out_stats.agi   = nmath_bplus(in_stats1.agi,   in_stats2.agi,  UINT8_MAX);
+//     out_stats.dex   = nmath_bplus(in_stats1.dex,   in_stats2.dex,  UINT8_MAX);
+//     out_stats.luck  = nmath_bplus(in_stats1.luck,  in_stats2.luck, UINT8_MAX);
+//     out_stats.def   = nmath_bplus(in_stats1.def,   in_stats2.def,  UINT8_MAX);
+//     out_stats.res   = nmath_bplus(in_stats1.res,   in_stats2.res,  UINT8_MAX);
+//     out_stats.con   = nmath_bplus(in_stats1.con,   in_stats2.con,  UINT8_MAX);
+//     out_stats.move  = nmath_bplus(in_stats1.move,  in_stats2.move, UINT8_MAX);
+//     out_stats.prof  = nmath_bplus(in_stats1.prof,  in_stats2.prof, UINT8_MAX);
+//     return (out_stats);
+// }
 
-struct Unit_stats Unit_stats_minus_cst(struct Unit_stats in_stats1, int cst) {
-    struct Unit_stats out_stats = Unit_stats_default;
-    out_stats.hp    = nmath_bminus(in_stats1.hp,   cst, 0);
-    out_stats.str   = nmath_bminus(in_stats1.str,  cst, 0);
-    out_stats.mag   = nmath_bminus(in_stats1.mag,  cst, 0);
-    out_stats.agi   = nmath_bminus(in_stats1.agi,  cst, 0);
-    out_stats.dex   = nmath_bminus(in_stats1.dex,  cst, 0);
-    out_stats.luck  = nmath_bminus(in_stats1.luck, cst, 0);
-    out_stats.def   = nmath_bminus(in_stats1.def,  cst, 0);
-    out_stats.res   = nmath_bminus(in_stats1.res,  cst, 0);
-    out_stats.con   = nmath_bminus(in_stats1.con,  cst, 0);
-    out_stats.move  = nmath_bminus(in_stats1.move, cst, 0);
-    out_stats.prof  = nmath_bminus(in_stats1.prof, cst, 0);
-    return (out_stats);
-}
+// struct Unit_stats Unit_stats_minus_cst(struct Unit_stats in_stats1, int cst) {
+//     struct Unit_stats out_stats = Unit_stats_default;
+//     out_stats.hp    = nmath_bminus(in_stats1.hp,   cst, 0);
+//     out_stats.str   = nmath_bminus(in_stats1.str,  cst, 0);
+//     out_stats.mag   = nmath_bminus(in_stats1.mag,  cst, 0);
+//     out_stats.agi   = nmath_bminus(in_stats1.agi,  cst, 0);
+//     out_stats.dex   = nmath_bminus(in_stats1.dex,  cst, 0);
+//     out_stats.luck  = nmath_bminus(in_stats1.luck, cst, 0);
+//     out_stats.def   = nmath_bminus(in_stats1.def,  cst, 0);
+//     out_stats.res   = nmath_bminus(in_stats1.res,  cst, 0);
+//     out_stats.con   = nmath_bminus(in_stats1.con,  cst, 0);
+//     out_stats.move  = nmath_bminus(in_stats1.move, cst, 0);
+//     out_stats.prof  = nmath_bminus(in_stats1.prof, cst, 0);
+//     return (out_stats);
+// }
 
-struct Unit_stats Unit_stats_div_cst(struct Unit_stats in_stats1, int cst) {
-    struct Unit_stats out_stats = Unit_stats_default;
-    out_stats.hp    = in_stats1.hp    / cst;
-    out_stats.str   = in_stats1.str   / cst;
-    out_stats.mag   = in_stats1.mag   / cst;
-    out_stats.agi   = in_stats1.agi   / cst;
-    out_stats.dex   = in_stats1.dex   / cst;
-    out_stats.luck  = in_stats1.luck  / cst;
-    out_stats.def   = in_stats1.def   / cst;
-    out_stats.res   = in_stats1.res   / cst;
-    out_stats.con   = in_stats1.con   / cst;
-    out_stats.move  = in_stats1.move  / cst;
-    out_stats.prof  = in_stats1.prof  / cst;
-    return (out_stats);
-}
+// struct Unit_stats Unit_stats_div_cst(struct Unit_stats in_stats1, int cst) {
+//     struct Unit_stats out_stats = Unit_stats_default;
+//     out_stats.hp    = in_stats1.hp    / cst;
+//     out_stats.str   = in_stats1.str   / cst;
+//     out_stats.mag   = in_stats1.mag   / cst;
+//     out_stats.agi   = in_stats1.agi   / cst;
+//     out_stats.dex   = in_stats1.dex   / cst;
+//     out_stats.luck  = in_stats1.luck  / cst;
+//     out_stats.def   = in_stats1.def   / cst;
+//     out_stats.res   = in_stats1.res   / cst;
+//     out_stats.con   = in_stats1.con   / cst;
+//     out_stats.move  = in_stats1.move  / cst;
+//     out_stats.prof  = in_stats1.prof  / cst;
+//     return (out_stats);
+// }
 
-struct Unit_stats Unit_stats_minus(struct Unit_stats in_stats1, struct Unit_stats in_stats2) {
-    struct Unit_stats out_stats = Unit_stats_default;
-    out_stats.hp    = nmath_bminus(in_stats1.hp,    in_stats2.hp,   0);
-    out_stats.str   = nmath_bminus(in_stats1.str,   in_stats2.str,  0);
-    out_stats.mag   = nmath_bminus(in_stats1.mag,   in_stats2.mag,  0);
-    out_stats.agi   = nmath_bminus(in_stats1.agi,   in_stats2.agi,  0);
-    out_stats.dex   = nmath_bminus(in_stats1.dex,   in_stats2.dex,  0);
-    out_stats.luck  = nmath_bminus(in_stats1.luck,  in_stats2.luck, 0);
-    out_stats.def   = nmath_bminus(in_stats1.def,   in_stats2.def,  0);
-    out_stats.res   = nmath_bminus(in_stats1.res,   in_stats2.res,  0);
-    out_stats.con   = nmath_bminus(in_stats1.con,   in_stats2.con,  0);
-    out_stats.move  = nmath_bminus(in_stats1.move,  in_stats2.move, 0);
-    out_stats.prof  = nmath_bminus(in_stats1.prof,  in_stats2.prof, 0);
-    return (out_stats);
-}
+// struct Unit_stats Unit_stats_minus(struct Unit_stats in_stats1, struct Unit_stats in_stats2) {
+//     struct Unit_stats out_stats = Unit_stats_default;
+//     out_stats.hp    = nmath_bminus(in_stats1.hp,    in_stats2.hp,   0);
+//     out_stats.str   = nmath_bminus(in_stats1.str,   in_stats2.str,  0);
+//     out_stats.mag   = nmath_bminus(in_stats1.mag,   in_stats2.mag,  0);
+//     out_stats.agi   = nmath_bminus(in_stats1.agi,   in_stats2.agi,  0);
+//     out_stats.dex   = nmath_bminus(in_stats1.dex,   in_stats2.dex,  0);
+//     out_stats.luck  = nmath_bminus(in_stats1.luck,  in_stats2.luck, 0);
+//     out_stats.def   = nmath_bminus(in_stats1.def,   in_stats2.def,  0);
+//     out_stats.res   = nmath_bminus(in_stats1.res,   in_stats2.res,  0);
+//     out_stats.con   = nmath_bminus(in_stats1.con,   in_stats2.con,  0);
+//     out_stats.move  = nmath_bminus(in_stats1.move,  in_stats2.move, 0);
+//     out_stats.prof  = nmath_bminus(in_stats1.prof,  in_stats2.prof, 0);
+//     return (out_stats);
+// }
 
 /* -- Unit_id -- */
 bool Unit_ID_Valid(u16 id) {

@@ -179,27 +179,76 @@ void Ranges_Combine(struct Range *r1, struct Range r2) {
     r1->min = r1->min < r2.min ? r1->min : r2.min; /* Best min range is smallest */
 }
 
-bool Unit_Equipment_Full( struct Unit *unit) {
-    return (unit->num_equipment == DEFAULT_EQUIPMENT_SIZE);
+/* --- Rangemap --- */
+int Unit_Rangemap_Get(struct Unit *unit) {
+    int rangemap = unit->user_rangemap > RANGEMAP_NULL ? unit->user_rangemap : unit->rangemap;
+    return (rangemap);
 }
 
+void Unit_Rangemap_Toggle(struct Unit *unit) {
+    SDL_assert((unit->rangemap > RANGEMAP_NULL) && (unit->rangemap < RANGEMAP_NUM));
 
-void Unit_Equipment_Print( struct Unit *unit) {
-    SDL_assert(unit != NULL);
-    for (u8 i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
-        if (unit->_equipment[i].id == ITEM_NULL) {
-            SDL_Log("%d ITEM_NULL", i);
-            continue;
+    /* Set user_rangemap to default */
+    if (unit->user_rangemap == RANGEMAP_NULL)
+        unit->user_rangemap = unit->rangemap;
+
+    /* Toggle only if hasStaff or canAttack with equipment*/
+    bool toggle = false;
+    toggle |= Unit_canAttack_Eq(unit) && (unit->user_rangemap == RANGEMAP_HEALMAP);
+    toggle |= Unit_canStaff_Eq(unit)  && (unit->user_rangemap == RANGEMAP_ATTACKMAP);
+
+    /* user_rangemap not set previously, reverse rangemap */
+    // RANGEMAP_NUM - RANGEMAP_ATTACKMAP == RANGEMAP_HEALMAP and vice versa!
+    //      3       -         2          ==        1
+    //      3       -         1          ==        2
+    if (toggle)
+        unit->user_rangemap = RANGEMAP_NUM - unit->user_rangemap;
+
+}
+
+void Unit_Rangemap_Equipment(struct Unit *unit) {
+    /* 1- Weapon equipped in strong hand */
+    bool stronghand = Unit_Hand_Strong(unit);
+    if (unit->equipped[stronghand]) {
+        Weapon_Load(unit->weapons_dtab, unit->_equipment[stronghand].id);
+        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[stronghand].id);
+        u16 type = wpn->item->type;
+
+        if (flagsum_isIn(type, ITEM_TYPE_STAFF) || flagsum_isIn(type, ITEM_TYPE_ITEM)) {
+            unit->rangemap = RANGEMAP_HEALMAP;
+        } else {
+            unit->rangemap = RANGEMAP_ATTACKMAP;
+        }
+        return;
+    }
+
+    /* 2- Weapon equipped in weak hand */
+    bool weakhand = 1 - stronghand;
+    if (unit->equipped[weakhand] && unit->hands[weakhand]) {
+        Weapon_Load(unit->weapons_dtab, unit->_equipment[weakhand].id);
+        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[weakhand].id);
+        u16 type = wpn->item->type;
+
+        if (flagsum_isIn(type, ITEM_TYPE_STAFF) || flagsum_isIn(type, ITEM_TYPE_ITEM)) {
+            unit->rangemap = RANGEMAP_HEALMAP;
+        } else {
+            unit->rangemap = RANGEMAP_ATTACKMAP;
         }
 
-        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[i].id);
-        if (wpn == NULL) {
-            SDL_Log("%d Unloaded", i);
-            continue;
-        }
+        return;
+    }
+}
 
-        SDL_Log("%d %s", i, wpn->item->name);
+void Unit_Rangemap_Default(struct Unit *unit) {
+    int rangemap = unit->user_rangemap > RANGEMAP_NULL ? unit->user_rangemap : unit->rangemap;
+    // Compute default rangemap priority
+
+    /* Sota default for class (healer staff) */
+    if ((unit->class == UNIT_CLASS_PRIEST) || (unit->class == UNIT_CLASS_BISHOP) ||
+        (unit->class == UNIT_CLASS_CLERIC) || (unit->class == UNIT_CLASS_ORACLE)) {
+        unit->rangemap = RANGEMAP_HEALMAP;
+    } else {
+        unit->rangemap = RANGEMAP_ATTACKMAP;
     }
 
 }
-
