@@ -134,7 +134,7 @@ int  class_mvt_types[UNIT_CLASS_END] = {
 // };
 
 /* --- UNIT --- */
-struct Unit_status Unit_status_default = {.status = 0, .turns = 3};
+// struct Unit_status Unit_status_default = {.status = 0, .turns = 3};
 
 struct Unit_stats Unit_stats_default = {
     .hp =    0,
