@@ -702,6 +702,12 @@ enum TILE_ICON_INDICES {
     TILE_ICON_ATTACKTO  = 1,
     TILE_ICON_MOVETO    = 2,
     TILE_ICON_DANGER    = 3,
+    TILE_ICON_UNKNOWN   = 4,
+    TILE_ICON_REINF     = 5,
+    TILE_ICON_DANGERW   = 6, /* whiter danger */
+    TILE_ICON_DANGERB   = 7, /* darker danger */
+    TILE_ICON_LOOT1     = 8,
+    TILE_ICON_LOOT2     = 9,
 };
 
 enum GAME_STATES {

@@ -405,8 +405,8 @@ void Map_globalRange(struct Map *map, tnecs_world *world, u8 alignment) {
 
 }
 
-void Map_Perimiter(i32 *map, i32 row_len, i32 col_len) {
-    /* Find all perimiter edges of a tilemap */
+void Map_Perimeter(i32 *map, i32 row_len, i32 col_len) {
+    /* Find all perimeter edges of a tilemap */
     // Every tile has one Padding array difining the 4 edges
     // Every edge that needs to be draw is set to 1
 
