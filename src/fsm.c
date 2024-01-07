@@ -493,10 +493,14 @@ void fsm_eUnitDng_ssStby(struct Game *sota, tnecs_entity selector_entity) {
         Map_Danger_Sub(sota->map, temp_danger);
         Map_Palettemap_Autoset(sota->map,
                                MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
+        Map_Danger_Perimeter_Compute(sota->map);
+
         unit->show_danger = false;
     } else {
         Map_Danger_Add(sota->map, temp_danger);
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_DANGER);
+        Map_Danger_Perimeter_Compute(sota->map);
+
         unit->show_danger = true;
     }
 

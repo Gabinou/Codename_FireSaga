@@ -409,7 +409,7 @@ void Map_Danger_Perimeter_Compute(struct Map *map) {
         size_t bytesize = sizeof(struct Padding);
         map->edges_danger = calloc(map->row_len * map->col_len, bytesize);
     }
-    Map_Perimeter(map->edges_danger, map->stacked_dangermap, map->row_len, map->col_len);
+    Map_Perimeter(map->edges_danger, map->dangermap, map->row_len, map->col_len);
 }
 
 struct Padding *Map_PerimeterM(i32 *map, i32 row_len, i32 col_len) {

@@ -302,6 +302,7 @@ void fsm_rFrame_sGmpMap(struct Game *sota) {
     /* RENDER only one map -> no entity */
     Map_Draw(sota->map, &sota->settings, &sota->camera, sota->render_target);
     Map_Grid_Draw(sota->map, &sota->settings, &sota->camera);
+    Map_Danger_Perimeter_Draw(sota->map, &sota->settings, &sota->camera);
     fsm_rFrame_sGmpMap_ss[sota->substate](sota);
 }
 

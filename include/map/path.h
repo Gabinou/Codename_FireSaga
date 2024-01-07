@@ -14,7 +14,7 @@ void Map_Bounds_Compute(struct Map *map);
 i32 *Map_Danger_Compute(struct Map *map, tnecs_world *w, tnecs_entity u);
 
 /* --- Dangermap --- */
-// todo: Document dangermap vs global dangermap
+// Dangermap: Player chooses enemies to add
 void Map_Danger_Add(               struct Map *map, i32 *danger);
 void Map_Danger_Sub(               struct Map *map, i32 *danger);
 void Map_Danger_Reset(             struct Map *map);
@@ -23,7 +23,9 @@ void Map_Stacked_Dangermap_Compute(struct Map *map);
 
 void Map_Danger_Perimeter_Compute(struct Map *map);
 
+
 /* --- Global_Dangermap --- */
+// Global_Dangermap: All enemies added to dangermap upon toggle by Player
 void Map_Global_Danger_Add(       struct Map *map, i32 *danger);
 void Map_Global_Danger_Sub(       struct Map *map, i32 *danger);
 void Map_Global_Danger_Reset(     struct Map *map);
