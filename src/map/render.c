@@ -289,14 +289,63 @@ void Map_Visible_Bounds(u8 *min, u8 *max, size_t row_len, size_t col_len,
 }
 
 void Map_Danger_Perimeter_Draw(struct Map *map, struct Settings    *s, struct Camera *c) {
+    int thick = settings->map_settings.perim_thickness;
+    i32 outside = 0;
     
+    /* -- Draw Lines -- */
+    for (i32 i = 0; i < row_len * col_len; i++) {
+      
+        /* - Skip if tile is outside - */
+        if (map->stacked_dangermap[i] == outside) 
+            continue;
+        i32 x = i % col_len;
+        i32 y = i / col_len;
+        
+        for (i32 ii = 0; ii < SQUARE_NEIGHBOURS; ii++) {
+            /* ii = 0: SOTA_PADDING_RIGHT   +x  */
+            /* ii = 1: SOTA_PADDING_TOP     -y  */
+            /* ii = 2: SOTA_PADDING_LEFT    -x  */
+            /* ii = 3: SOTA_PADDING_BOTTOM  +y  */
+            
+            // Note: top left is origin. m in cycle ignored
+            i32 *pad_arr = (i32 *)&edges[i];
+            /* - Skip if not perimeter - */
+            if (!pad_arr[ii])
+                 continue;
+                 
+            i32 plusx_1 = q_cycle4_pmmp(ii) > 0;
+            i32 plusy_1 = q_cycle4_pmmp(ii) > 0;
+            
+            i32 plusx_2 = q_cycle4_ppmm(ii) > 0;
+            i32 plusy_2 = q_cycle4_mmpp(ii) > 0;
+           
+            i32 x_1 = x + plusx_1;
+            i32 y_1 = y + plusy_1;
+            
+            i32 x_2 = x + plusx_2;
+            i32 y_2 = y + plusy_2;
+            
+            i32 line1_x = SOTA_ZOOM(map->tilesize[0] * x_1, camera->zoom) + camera->offset.x;
+            i32 line1_y = SOTA_ZOOM(map->tilesize[1] * y_1, camera->zoom) + camera->offset.y;
+            
+            i32 line2_x = SOTA_ZOOM(map->tilesize[0] * x_2, camera->zoom) + camera->offset.x;
+            i32 line2_y = SOTA_ZOOM(map->tilesize[1] * y_2, camera->zoom) + camera->offset.y;
+        
+            /* - Skip if line not on screen - */
+            
+                 
+         //   for (int t = -(thick / 2); t < thick; t++) {
+            
+       //     }
+        }
+    }
 }
 
 void Map_Grid_Draw(struct Map *map,  struct Settings *settings, struct Camera *camera) {
     /* -- Preliminaries -- */
-    if (!settings->map_settings.grid_show) {
+    if (!settings->map_settings.grid_show)
         return;
-    }
+    
     int thick = settings->map_settings.grid_thickness;
     SDL_assert(thick > 0);
     struct Point line;
