@@ -2,12 +2,12 @@
 #include "platform.h"
 #include "pathfinding.h"
 
-#define TEST_MAP_ROW_LEN 10
-#define TEST_MAP_COL_LEN 10
+#define TEST_ROW_LEN 10
+#define TEST_COL_LEN 10
 
 void test_map_simple() {
     i32 x = 6, y = 6;
-    size_t row_len = TEST_MAP_ROW_LEN, col_len = TEST_MAP_COL_LEN;
+    size_t row_len = TEST_ROW_LEN, col_len = TEST_COL_LEN;
     struct Range range = {2, 4};
     i32 *list           = DARR_INIT(list, i32, 16);
     i32 *test_matrix    = calloc(row_len * col_len, sizeof(*test_matrix));
@@ -16,7 +16,7 @@ void test_map_simple() {
     memset(test_matrix, 0, row_len * col_len * sizeof(*test_matrix));
     Taxicab_Circle(test_matrix, 1, x, y, row_len, col_len, &range);
 
-    i32 matrix[TEST_MAP_COL_LEN * TEST_MAP_ROW_LEN] = {
+    i32 matrix[TEST_COL_LEN * TEST_ROW_LEN] = {
         00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
         00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
         00, 00, 00, 00, 00, 00, 01, 00, 00, 00,
@@ -39,8 +39,32 @@ void test_map_simple() {
     SDL_free(test_matrix);
 }
 
-#undef TEST_MAP_ROW_LEN
-#undef TEST_MAP_COL_LEN
+#undef TEST_ROW_LEN
+#undef TEST_COL_LEN
+
+#define TEST_ROW_LEN 11
+#define TEST_COL_LEN 10
+void test_map_simple() {
+    i32 dangermap[TEST_COL_LEN * TEST_ROW_LEN] = {
+        00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
+        00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
+        00, 00, 00, 00, 00, 00, 01, 00, 00, 00,
+        00, 00, 00, 00, 00, 01, 01, 01, 00, 00,
+        00, 00, 00, 00, 01, 01, 01, 01, 01, 00,
+        00, 00, 00, 01, 01, 01, 00, 01, 01, 01,
+        00, 00, 01, 01, 01, 00, 00, 00, 01, 01,
+        00, 00, 00, 01, 01, 01, 00, 01, 01, 01,
+        00, 00, 00, 00, 01, 01, 01, 01, 01, 00,
+        00, 00, 00, 00, 00, 01, 01, 01, 00, 00
+        00, 00, 00, 00, 00, 00, 01, 00, 00, 00
+    };
+
+    struct Padding *perimeter_edges;
+    perimeter_edges = Map_PerimeterM(dangermap, TEST_ROW_LEN, TEST_COL_LEN);
+}
+
+#undef TEST_ROW_LEN
+#undef TEST_COL_LEN
 
 void test_map() {
 

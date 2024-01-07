@@ -283,6 +283,7 @@ struct Map_settings {
     u8          overlay_mode; /* tile paletteswap or opaque overlay */
     u8          stack_mode;
     u8          grid_thickness; /* Number of lines to draw (mirrored) */
+    u8          perim_thickness; /* Number of lines to draw (mirrored) */
     SDL_Color   color_grid;
     bool        grid_show;
 };

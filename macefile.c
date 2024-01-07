@@ -140,7 +140,7 @@ struct Target test = {
                 "third_party/stb,third_party/cJson,"
                 "/usr/include/SDL2,"
                 "test,test/menu,test/popup",
-    .sources  = "test/*.c,src/*.c,src/bars/,src/menu/,src/unit"
+    .sources  = "test/*.c,src/*.c,src/bars/,src/menu/,src/unit,"
                 "src/popup/,src/systems/,src/game/,src/map,"
                 "src/controller",
     .excludes = "src/main.c",

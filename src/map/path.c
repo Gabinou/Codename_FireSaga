@@ -366,7 +366,6 @@ i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_world *world,
     return (map->costmap);
 }
 
-
 void Map_globalRange(struct Map *map, tnecs_world *world, u8 alignment) {
     tnecs_entity *unit_entities = NULL;
     u8 num_unit_entities = 0;
@@ -417,7 +416,7 @@ struct Padding *Map_PerimeterM(i32 *map, i32 row_len, i32 col_len) {
     size_t bytesize = sizeof(struct Padding);
     struct Padding *edges = calloc(row_len * col_len, bytesize);
     Map_Perimeter(edges, map, row_len, col_len);
-    return(edges);
+    return (edges);
 }
 
 void Map_Perimeter(struct Padding *edges, i32 *map, i32 row_len, i32 col_len) {

@@ -27,11 +27,12 @@ struct Settings Settings_default = {
         .ff_cap         = FF_DEFAULT_CAP,
     },
     .map_settings = {
-        .overlay_mode   = MAP_OVERLAY_MODE_PALETTESWAP,
-        .color_grid     = {0, 0, 0, SDL_ALPHA_OPAQUE},
-        .grid_thickness = 1,
-        .grid_show      = true,
-        .stack_mode     = MAP_SETTING_STACK_DANGERMAP
+        .overlay_mode       = MAP_OVERLAY_MODE_PALETTESWAP,
+        .color_grid         = {0, 0, 0, SDL_ALPHA_OPAQUE},
+        .grid_thickness     = 1,
+        .perim_thickness    = 2,
+        .grid_show          = true,
+        .stack_mode         = MAP_SETTING_STACK_DANGERMAP
     },
     .enemy_turn_settings = {
         .pause_post_reinforcement = 2ULL * SOTA_ns / 2ULL,
