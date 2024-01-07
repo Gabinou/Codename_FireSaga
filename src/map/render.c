@@ -332,8 +332,14 @@ void Map_Danger_Perimeter_Draw(struct Map *map, struct Settings    *s, struct Ca
             i32 line2_y = SOTA_ZOOM(map->tilesize[1] * y_2, camera->zoom) + camera->offset.y;
         
             /* - Skip if line not on screen - */
+            if ((line1_x <= 0) || (line1_x > settings->res.x))
+                continue;
+            
+            if ((line1_y <= 0) || (line1_y > settings->res.y))
+                continue;
             
                  
+            /* - Render the thickness - */
          //   for (int t = -(thick / 2); t < thick; t++) {
             
        //     }
