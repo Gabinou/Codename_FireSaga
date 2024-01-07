@@ -282,9 +282,12 @@ struct Camera {
 struct Map_settings {
     u8          overlay_mode; /* tile paletteswap or opaque overlay */
     u8          stack_mode;
+    u8          grid_thickness; /* Number of lines to draw (mirrored) */
     SDL_Color   color_grid;
     bool        grid_show;
 };
+// grid_thickness 1 ->  |   (center line only)
+// grid_thickness 2 -> |||  (center line, +/- 1 lines)
 
 struct Enemy_Turn_settings {
     u64 pause_post_reinforcement;

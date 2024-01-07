@@ -29,6 +29,7 @@ struct Settings Settings_default = {
     .map_settings = {
         .overlay_mode   = MAP_OVERLAY_MODE_PALETTESWAP,
         .color_grid     = {0, 0, 0, SDL_ALPHA_OPAQUE},
+        .grid_thickness = 1,
         .grid_show      = true,
         .stack_mode     = MAP_SETTING_STACK_DANGERMAP
     },

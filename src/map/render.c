@@ -293,6 +293,8 @@ void Map_Grid_Draw(struct Map *map,  struct Settings *settings, struct Camera *c
     if (!settings->map_settings.grid_show) {
         return;
     }
+    int thick = settings->map_settings.grid_thickness;
+    SDL_assert(thick > 0);
     struct Point line;
     int success, edge1, edge2;
     SDL_Color map_bg = settings->map_settings.color_grid;
@@ -304,23 +306,31 @@ void Map_Grid_Draw(struct Map *map,  struct Settings *settings, struct Camera *c
     /* - Draw Vertical lines - */
     for (size_t col = 1; col < map->col_len; col++) {
         line.x = SOTA_ZOOM(map->tilesize[0] * col, camera->zoom) + camera->offset.x;
+        /* if line.x is outside the screen, skip it */
+        if ((line.x <= 0) || (line.x > settings->res.x))
+            continue;
+
         line.y = SOTA_ZOOM(map->tilesize[1] * map->row_len, camera->zoom) + camera->offset.y;
         edge1 = camera->offset.y < 0 ? 0 : camera->offset.y;
         edge2 = line.y > settings->res.y ? settings->res.y : line.y;
-        /* if line.x is inside the screen, draw it */
-        if ((line.x > 0) || (line.x <= settings->res.x))
-            SDL_RenderDrawLine(map->renderer, line.x, edge1, line.x, edge2);
+        for (int t = -(thick / 2); t < thick; t++) {
+            SDL_RenderDrawLine(map->renderer, line.x + t, edge1, line.x + t, edge2);
+        }
     }
 
     /* - Draw Horizontal lines - */
     for (size_t row = 1; row < map->row_len; row++) {
-        line.x = SOTA_ZOOM(map->tilesize[0] * map->col_len, camera->zoom) + camera->offset.x;
         line.y = SOTA_ZOOM(map->tilesize[1] * row, camera->zoom) + camera->offset.y;
+        /* if line.y is outside the screen, draw it */
+        if ((line.y <= 0) || (line.y > settings->res.y))
+            continue;
+
+        line.x = SOTA_ZOOM(map->tilesize[0] * map->col_len, camera->zoom) + camera->offset.x;
         edge1 = camera->offset.x < 0 ? 0 : camera->offset.x;
         edge2 = line.x > settings->res.x ? settings->res.x : line.x;
-        /* if line.x is inside the screen, draw it */
-        if ((line.y > 0) || (line.y <= settings->res.y))
-            SDL_RenderDrawLine(map->renderer, edge1, line.y, edge2, line.y);
+        for (int t = -(thick / 2); t < thick; t++) {
+            SDL_RenderDrawLine(map->renderer, edge1, line.y + t, edge2, line.y + t);
+        }
     }
     Utilities_DrawColor_Reset(map->renderer);
 
