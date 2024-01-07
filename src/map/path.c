@@ -425,7 +425,7 @@ void Map_Perimeter(struct Padding *edges, i32 *map, i32 row_len, i32 col_len) {
     // only for inside tile
 
     i32 outside = 0;
-    size_t bytesize = row_len * col_len * sizeof(edges);
+    size_t bytesize = row_len * col_len * sizeof(*edges);
     memset(edges, 0, bytesize);
 
     /* Iterate over all tiles */
