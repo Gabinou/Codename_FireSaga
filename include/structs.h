@@ -152,6 +152,13 @@ struct Nodeq {
     i32 cost;
 };
 
+enum SOTA_PADDING_DIRECTION {
+    SOTA_PADDING_RIGHT  = 0,
+    SOTA_PADDING_TOP    = 1,
+    SOTA_PADDING_LEFT   = 2,
+    SOTA_PADDING_BOTTOM = 3
+};
+
 struct Padding {
     i32 right;
     i32 top;

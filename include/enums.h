@@ -902,7 +902,7 @@ enum CONTROLLERS {
     CONTROLLER_END,
 };
 
-enum SOTA_DIRECTIONS { /* ternary -> octant */
+enum SOTA_OCTANT_DIRECTIONS { /* ternary -> octant */
     /* Intuitive screen direction */
     /* Unbalanced ternary, [x,y] -> [3^0,3^1] */
     /* Area split into octants around 2D area */

@@ -404,3 +404,23 @@ void Map_globalRange(struct Map *map, tnecs_world *world, u8 alignment) {
     }
 
 }
+
+void Map_Perimiter(i32 *map, i32 row_len, i32 col_len) {
+    /* Find all perimiter edges of a tilemap */
+    // Every tile has one Padding array difining the 4 edges
+    // Every edge that needs to be draw is set to 1
+
+    /* Make array of padding of same size as map */
+    // struct Padding
+
+    /* Iterate over all tiles */
+    /* Only set edge if one tile is in, and other outside */
+    /* Only set edge to be drawn for inside tiles */
+    for (int i = 0; i < SQUARE_NEIGHBOURS; i++) {
+        // Order:
+        // SOTA_PADDING_RIGHT   +x
+        // SOTA_PADDING_TOP     -y
+        // SOTA_PADDING_LEFT    -x
+        // SOTA_PADDING_BOTTOM  +y
+    }
+}
