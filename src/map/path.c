@@ -405,22 +405,45 @@ void Map_globalRange(struct Map *map, tnecs_world *world, u8 alignment) {
 
 }
 
-void Map_Perimeter(i32 *map, i32 row_len, i32 col_len) {
+void Map_Perimeter(struct Padding *edges, i32 *map, i32 row_len, i32 col_len) {
     /* Find all perimeter edges of a tilemap */
     // Every tile has one Padding array difining the 4 edges
     // Every edge that needs to be draw is set to 1
 
-    /* Make array of padding of same size as map */
-    // struct Padding
+    i32 outside = 0;
+    size_t bytesize = row_len * col_len * sizeof(edges);
+    memset(edges, 0, bytesize);
 
     /* Iterate over all tiles */
     /* Only set edge if one tile is in, and other outside */
     /* Only set edge to be drawn for inside tiles */
-    for (int i = 0; i < SQUARE_NEIGHBOURS; i++) {
-        // Order:
-        // SOTA_PADDING_RIGHT   +x
-        // SOTA_PADDING_TOP     -y
-        // SOTA_PADDING_LEFT    -x
-        // SOTA_PADDING_BOTTOM  +y
+    for (i32 i = 0; i < row_len * col_len; i++) {
+        i32 x = i % col_len;
+        i32 y = i / col_len;
+        for (i32 ii = 0; ii < SQUARE_NEIGHBOURS; ii++) {
+            /* ii = 0: SOTA_PADDING_RIGHT   +x  */
+            /* ii = 1: SOTA_PADDING_TOP     -y  */
+            /* ii = 2: SOTA_PADDING_LEFT    -x  */
+            /* ii = 3: SOTA_PADDING_BOTTOM  +y  */
+            i32 plusx = q_cycle4_pzmz(ii);
+            i32 plusy = q_cycle4_zmzp(ii);
+            i32 nx = int_inbounds(x + plusx, 0, col_len - 1);
+            i32 ny = int_inbounds(y + plusy, 0, row_len - 1);
+
+            i32 neighbor = nx + col_len * ny;
+
+            /* Skip if neighbor is the same as current tile */
+            if (neighbor == i)
+                continue;
+
+            /* Skip if tiles are both inside, or both outside */
+            if (map[i] == map[neighbor])
+                continue;
+
+            /* Setting perimeter tile to inside tile only */
+            i32 inside = (map[i] == outside) ? neighbor : i;
+            i32 *pad_arr = (i32 *)&edges[inside];
+            pad_arr[ii] = true;
+        }
     }
 }
