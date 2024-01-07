@@ -88,6 +88,9 @@ struct Map {
     /* - Actual stackmaps - */
     i32 *stacked_dangermap;         /* 2D dynamic array */
     i32 *stacked_global_dangermap;  /* 2D dynamic array */
+    
+    /* - Perimeter - */
+    struct Padding *edges_danger;
 
     /* --- ICONS --- */
     struct SDL_Texture *stack_move;

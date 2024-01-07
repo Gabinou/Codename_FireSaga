@@ -170,6 +170,10 @@ void Map_Units_Hide(struct Map *map) {
 
 void Map_Free(struct Map *map) {
     SDL_assert(map);
+    if (map->edges_danger != NULL) {
+        SDL_free(map->edges_danger);
+        map->edges_danger = NULL;
+    }
     if (map->breakables_ent != NULL) {
         SDL_free(map->breakables_ent);
         map->breakables_ent = NULL;

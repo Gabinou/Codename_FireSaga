@@ -33,12 +33,12 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map);
 SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *rt);
 
 /* --- Rendering --- */
-
 void Map_Draw(     struct Map    *map,  struct Settings    *s,
                    struct Camera *c,         struct SDL_Texture *rt);
 void Map_Update(   struct Map    *map,  struct Settings    *s,
                    struct Camera *c,         struct SDL_Texture *rt);
 void Map_Grid_Draw(struct Map    *map,  struct Settings    *s, struct Camera *c);
+void Map_Danger_Perimeter_Draw(struct Map *map, struct Settings    *s, struct Camera *c);
 
 bool Map_Tilemap_newFrame(  struct Map *map);
 bool Map_Shadowmap_newFrame(struct Map *map);

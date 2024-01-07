@@ -405,10 +405,26 @@ void Map_globalRange(struct Map *map, tnecs_world *world, u8 alignment) {
 
 }
 
+void Map_Danger_Perimeter_Compute(struct Map *map) {
+    if (map->edges_danger == NULL) {
+        size_t bytesize = sizeof(struct Padding);
+        map->edges_danger = calloc(map->row_len * map->col_len, bytesize);
+    }
+    Map_Perimeter(map->edges_danger, map->stacked_dangermap, map->row_len, map->col_len);
+}
+
+struct Padding *Map_PerimeterM(i32 *map, i32 row_len, i32 col_len) {
+    size_t bytesize = sizeof(struct Padding);
+    struct Padding *edges = calloc(row_len * col_len, bytesize);
+    Map_Perimeter(edges, map, row_len, col_len);
+    return(edges);
+}
+
 void Map_Perimeter(struct Padding *edges, i32 *map, i32 row_len, i32 col_len) {
     /* Find all perimeter edges of a tilemap */
-    // Every tile has one Padding array difining the 4 edges
-    // Every edge that needs to be draw is set to 1
+    // Every tile has one Padding array defining the 4 edges
+    // Every edge that needs to be drawn is set to 1,
+    // only for inside tile
 
     i32 outside = 0;
     size_t bytesize = row_len * col_len * sizeof(edges);
@@ -429,7 +445,6 @@ void Map_Perimeter(struct Padding *edges, i32 *map, i32 row_len, i32 col_len) {
             i32 plusy = q_cycle4_zmzp(ii);
             i32 nx = int_inbounds(x + plusx, 0, col_len - 1);
             i32 ny = int_inbounds(y + plusy, 0, row_len - 1);
-
             i32 neighbor = nx + col_len * ny;
 
             /* Skip if neighbor is the same as current tile */
@@ -441,8 +456,8 @@ void Map_Perimeter(struct Padding *edges, i32 *map, i32 row_len, i32 col_len) {
                 continue;
 
             /* Setting perimeter tile to inside tile only */
-            i32 inside = (map[i] == outside) ? neighbor : i;
-            i32 *pad_arr = (i32 *)&edges[inside];
+            i32 inside_i = (map[i] == outside) ? neighbor : i;
+            i32 *pad_arr = (i32 *)&edges[inside_i];
             pad_arr[ii] = true;
         }
     }

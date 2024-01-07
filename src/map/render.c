@@ -288,6 +288,10 @@ void Map_Visible_Bounds(u8 *min, u8 *max, size_t row_len, size_t col_len,
     min[1]      = (edge_min[1] <    1   ) ?    0    : edge_min[1];
 }
 
+void Map_Danger_Perimeter_Draw(struct Map *map, struct Settings    *s, struct Camera *c) {
+    
+}
+
 void Map_Grid_Draw(struct Map *map,  struct Settings *settings, struct Camera *camera) {
     /* -- Preliminaries -- */
     if (!settings->map_settings.grid_show) {
