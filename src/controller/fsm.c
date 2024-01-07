@@ -59,6 +59,7 @@ void fsm_Input_sGmpMap_ssMenu(struct Game *sota) {
     sota->inputs[SOTA_BUTTON_TRIGGER_RIGHT]   = event_Input_MENURIGHT;
 }
 
+// TODO: button global range
 void fsm_Input_sGmpMap_ssStby(struct Game *sota) {
     sota->inputs[SOTA_BUTTON_DPAD_RIGHT]      = 0;
     sota->inputs[SOTA_BUTTON_DPAD_UP]         = 0;

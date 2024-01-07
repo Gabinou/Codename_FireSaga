@@ -401,7 +401,6 @@ void Map_globalRange(struct Map *map, tnecs_world *world, u8 alignment) {
         map->global_rangemap = matrix_plus_noM(map->global_rangemap, map->attacktomap,
                                                map->row_len * map->col_len);
     }
-
 }
 
 void Map_Danger_Perimeter_Compute(struct Map *map) {

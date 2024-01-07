@@ -42,8 +42,8 @@ struct GamepadInputMap GamepadInputMap_switch_pro = {
 
     .dpad_right         = SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
     .dpad_up            = SDL_CONTROLLER_BUTTON_DPAD_UP,
-    .dpad_down          = SDL_CONTROLLER_BUTTON_DPAD_DOWN,
-    .dpad_left          = SDL_CONTROLLER_BUTTON_DPAD_LEFT,
+    .dpad_down          = SDL_CONTROLLER_BUTTON_DPAD_LEFT,
+    .dpad_left          = SDL_CONTROLLER_BUTTON_DPAD_DOWN,
 
     /* Switch pro controller should flip a/b and x/y... */
     .a                  = SDL_CONTROLLER_BUTTON_B,

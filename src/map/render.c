@@ -291,13 +291,19 @@ void Map_Visible_Bounds(u8 *min, u8 *max, size_t row_len, size_t col_len,
 void Map_Danger_Perimeter_Draw(struct Map *map, struct Settings *settings, struct Camera *camera) {
     int thick = settings->map_settings.perim_thickness;
     i32 outside = 0;
+
+    SDL_Color red = palette_NES->colors[PALETTE_NES_RED_COLOR];
+    int success = SDL_SetRenderDrawColor(map->renderer, red.r, red.g, red.b, red.a);
+    SDL_assert(success == 0);
+
     size_t row_len = map->row_len, col_len = map->col_len;
     /* -- Draw Lines -- */
     for (i32 i = 0; i < row_len * col_len; i++) {
 
         /* - Skip if tile is outside - */
-        if (map->stacked_dangermap[i] == outside)
+        if (map->dangermap[i] == outside)
             continue;
+
         i32 x = i % col_len;
         i32 y = i / col_len;
 
@@ -339,8 +345,11 @@ void Map_Danger_Perimeter_Draw(struct Map *map, struct Settings *settings, struc
                 continue;
 
             /* - Render the thickness - */
+            i32 thickx = q_cycle2_pz(ii);
+            i32 thicky = q_cycle2_zp(ii);
             for (int t = -(thick / 2); t < thick; t++) {
-                SDL_RenderDrawLine(map->renderer, line1_x, line1_y, line2_x, line2_y);
+                SDL_RenderDrawLine(map->renderer, line1_x + thickx * t, line1_y + thicky * t, line2_x + thickx * t,
+                                   line2_y + thicky * t);
             }
         }
     }

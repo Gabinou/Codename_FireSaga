@@ -233,6 +233,7 @@ enum PALETTES {
     PALETTE_NES_COLOR_GROUPSIZE         =  4,
     /* Color RGB 000001 is transparent */
     PALETTE_COLORKEY                    =  0, /* indexed image, transparent color index*/
+    PALETTE_NES_RED_COLOR               =  32,
 };
 #define SOTA_COLORKEY 0x00, 0x00, 0x01
 
