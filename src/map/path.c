@@ -450,14 +450,20 @@ void Map_Perimeter(struct Padding *edges, i32 *map, i32 row_len, i32 col_len) {
             if (neighbor == i)
                 continue;
 
+            /* Skip if tile is outside */
+            // Prevents setting perimeter tile from neighbor
+            b32 i_outside = (map[i]         == outside);
+            if (i_outside)
+                continue;
+
             /* Skip if tiles are both inside, or both outside */
-            if (map[i] == map[neighbor])
+            b32 n_outside = (map[neighbor]  == outside);
+            if (i_outside == n_outside)
                 continue;
 
             /* Setting perimeter tile to inside tile only */
-            i32 inside_i = (map[i] == outside) ? neighbor : i;
-            i32 *pad_arr = (i32 *)&edges[inside_i];
-            pad_arr[ii] = true;
+            i32 *pad_arr = (i32 *) & (edges[i]);
+            pad_arr[ii]  = 1;
         }
     }
 }

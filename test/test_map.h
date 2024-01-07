@@ -44,7 +44,8 @@ void test_map_simple() {
 
 #define TEST_ROW_LEN 11
 #define TEST_COL_LEN 10
-void test_map_simple() {
+
+void test_map_perimeter() {
     i32 dangermap[TEST_COL_LEN * TEST_ROW_LEN] = {
         00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
         00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
@@ -55,12 +56,63 @@ void test_map_simple() {
         00, 00, 01, 01, 01, 00, 00, 00, 01, 01,
         00, 00, 00, 01, 01, 01, 00, 01, 01, 01,
         00, 00, 00, 00, 01, 01, 01, 01, 01, 00,
-        00, 00, 00, 00, 00, 01, 01, 01, 00, 00
+        00, 00, 00, 00, 00, 01, 01, 01, 00, 00,
         00, 00, 00, 00, 00, 00, 01, 00, 00, 00
     };
 
     struct Padding *perimeter_edges;
     perimeter_edges = Map_PerimeterM(dangermap, TEST_ROW_LEN, TEST_COL_LEN);
+
+    nourstest_true(perimeter_edges[0 * TEST_COL_LEN + 0].right  == 0);
+    nourstest_true(perimeter_edges[0 * TEST_COL_LEN + 0].top    == 0);
+    nourstest_true(perimeter_edges[0 * TEST_COL_LEN + 0].left   == 0);
+    nourstest_true(perimeter_edges[0 * TEST_COL_LEN + 0].bottom == 0);
+    nourstest_true(perimeter_edges[0 * TEST_COL_LEN + 1].right  == 0);
+    nourstest_true(perimeter_edges[0 * TEST_COL_LEN + 1].top    == 0);
+    nourstest_true(perimeter_edges[0 * TEST_COL_LEN + 1].left   == 0);
+    nourstest_true(perimeter_edges[0 * TEST_COL_LEN + 1].bottom == 0);
+    nourstest_true(perimeter_edges[0 * TEST_COL_LEN + 2].right  == 0);
+    nourstest_true(perimeter_edges[0 * TEST_COL_LEN + 2].top    == 0);
+    nourstest_true(perimeter_edges[0 * TEST_COL_LEN + 2].left   == 0);
+    nourstest_true(perimeter_edges[0 * TEST_COL_LEN + 2].bottom == 0);
+    nourstest_true(perimeter_edges[0 * TEST_COL_LEN + 3].right  == 0);
+    nourstest_true(perimeter_edges[0 * TEST_COL_LEN + 3].top    == 0);
+    nourstest_true(perimeter_edges[0 * TEST_COL_LEN + 3].left   == 0);
+    nourstest_true(perimeter_edges[0 * TEST_COL_LEN + 3].bottom == 0);
+
+    /* Leftward point */
+    nourstest_true(perimeter_edges[6 * TEST_COL_LEN + 2].right  == 0);
+    nourstest_true(perimeter_edges[6 * TEST_COL_LEN + 2].top    == 1);
+    nourstest_true(perimeter_edges[6 * TEST_COL_LEN + 2].left   == 1);
+    nourstest_true(perimeter_edges[6 * TEST_COL_LEN + 2].bottom == 1);
+    nourstest_true(perimeter_edges[5 * TEST_COL_LEN + 3].right  == 0);
+    nourstest_true(perimeter_edges[5 * TEST_COL_LEN + 3].top    == 1);
+    nourstest_true(perimeter_edges[5 * TEST_COL_LEN + 3].left   == 1);
+    nourstest_true(perimeter_edges[5 * TEST_COL_LEN + 3].bottom == 0);
+    nourstest_true(perimeter_edges[4 * TEST_COL_LEN + 4].right  == 0);
+    nourstest_true(perimeter_edges[4 * TEST_COL_LEN + 4].top    == 1);
+    nourstest_true(perimeter_edges[4 * TEST_COL_LEN + 4].left   == 1);
+    nourstest_true(perimeter_edges[4 * TEST_COL_LEN + 4].bottom == 0);
+    nourstest_true(perimeter_edges[3 * TEST_COL_LEN + 5].right  == 0);
+    nourstest_true(perimeter_edges[3 * TEST_COL_LEN + 5].top    == 1);
+    nourstest_true(perimeter_edges[3 * TEST_COL_LEN + 5].left   == 1);
+    nourstest_true(perimeter_edges[3 * TEST_COL_LEN + 5].bottom == 0);
+    nourstest_true(perimeter_edges[2 * TEST_COL_LEN + 6].right  == 1);
+    nourstest_true(perimeter_edges[2 * TEST_COL_LEN + 6].top    == 1);
+    nourstest_true(perimeter_edges[2 * TEST_COL_LEN + 6].left   == 1);
+    nourstest_true(perimeter_edges[2 * TEST_COL_LEN + 6].bottom == 0);
+
+    nourstest_true(perimeter_edges[6 * TEST_COL_LEN + 3].right  == 0);
+    nourstest_true(perimeter_edges[6 * TEST_COL_LEN + 3].top    == 0);
+    nourstest_true(perimeter_edges[6 * TEST_COL_LEN + 3].left   == 0);
+    nourstest_true(perimeter_edges[6 * TEST_COL_LEN + 3].bottom == 0);
+
+    nourstest_true(perimeter_edges[6 * TEST_COL_LEN + 4].right  == 1);
+    nourstest_true(perimeter_edges[6 * TEST_COL_LEN + 4].top    == 0);
+    nourstest_true(perimeter_edges[6 * TEST_COL_LEN + 4].left   == 0);
+    nourstest_true(perimeter_edges[6 * TEST_COL_LEN + 4].bottom == 0);
+
+
 }
 
 #undef TEST_ROW_LEN
@@ -69,4 +121,5 @@ void test_map_simple() {
 void test_map() {
 
     test_map_simple();
+    test_map_perimeter();
 }
