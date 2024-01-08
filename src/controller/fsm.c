@@ -70,7 +70,7 @@ void fsm_Input_sGmpMap_ssStby(struct Game *sota) {
     sota->inputs[SOTA_BUTTON_X]               = event_Input_MINIMAP;
     sota->inputs[SOTA_BUTTON_Y]               = event_Input_STATS;
     sota->inputs[SOTA_BUTTON_START]           = event_Input_PAUSE;
-    sota->inputs[SOTA_BUTTON_SHOULDER_LEFT]   = 0;
+    sota->inputs[SOTA_BUTTON_SHOULDER_LEFT]   = event_Input_GLOBALRANGE;
     sota->inputs[SOTA_BUTTON_SHOULDER_RIGHT]  = event_Input_FASTER;
     sota->inputs[SOTA_BUTTON_TRIGGER_LEFT]    = event_Input_ZOOM_IN;
     sota->inputs[SOTA_BUTTON_TRIGGER_RIGHT]   = event_Input_ZOOM_OUT;
