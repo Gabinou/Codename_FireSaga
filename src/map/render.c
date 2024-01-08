@@ -54,12 +54,6 @@ void Map_Palettemap_Autoset(struct Map *map, u16 flagsum) {
         Map_Palettemap_addMap(map, palette, PALETTE_NES_FILTER_PURPLE);
     }
     memset(palette, 0, bytesize);
-    if (flagsum_isIn(MAP_OVERLAY_ATTACK, flagsum)) {
-        SDL_assert(palette);
-        palette = matrix_sgreater_noM(palette, map->attacktomap, 0, size);
-        Map_Palettemap_addMap(map, palette, PALETTE_NES_FILTER_RED);
-    }
-    memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_DANGER, flagsum)) {
         SDL_assert(palette);
         palette = matrix_sgreater_noM(palette, map->dangermap, 0, size);
@@ -67,6 +61,12 @@ void Map_Palettemap_Autoset(struct Map *map, u16 flagsum) {
         palette = matrix_and_noM(palette, temp_palette2, palette, size);
         SDL_free(temp_palette2);
         Map_Palettemap_addMap(map, palette, PALETTE_NES_FILTER_DARKREDwSHADOW);
+    }
+    memset(palette, 0, bytesize);
+    if (flagsum_isIn(MAP_OVERLAY_ATTACK, flagsum)) {
+        SDL_assert(palette);
+        palette = matrix_sgreater_noM(palette, map->attacktomap, 0, size);
+        Map_Palettemap_addMap(map, palette, PALETTE_NES_FILTER_RED);
     }
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_HEAL, flagsum)) {
