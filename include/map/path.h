@@ -21,7 +21,7 @@ void Map_Danger_Reset(             struct Map *map);
 void Map_Stacked_Dangermap_Reset(  struct Map *map);
 void Map_Stacked_Dangermap_Compute(struct Map *map);
 
-void Map_Danger_Perimeter_Compute(struct Map *map);
+void Map_Danger_Perimeter_Compute(struct Map *map, i32 *danger);
 
 
 /* --- Global_Dangermap --- */

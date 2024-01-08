@@ -47,11 +47,13 @@ void Map_Stacked_Dangermap_Compute(struct Map *map) {
 
     int size = map->row_len * map->col_len;
     i32 *temp_map = matrix_ssmaller(map->dangermap, DANGERMAP_UNIT_DIVISOR, size);
-    map->stacked_dangermap = matrix_and_noM(map->stacked_dangermap, map->dangermap, temp_map,
+    map->stacked_dangermap = matrix_and_noM(map->stacked_dangermap,
+                                            map->dangermap, temp_map,
                                             map->row_len * map->col_len);
-    map->stacked_dangermap = matrix_and_noM(map->stacked_dangermap, map->stacked_dangermap,
-                                            map->movemap, map->row_len * map->col_len);
-
+    map->stacked_dangermap = matrix_and_noM(map->stacked_dangermap,
+                                            map->stacked_dangermap,
+                                            map->movemap,
+                                            map->row_len * map->col_len);
     SDL_free(temp_map);
     map->shading_changed = true;
 }
@@ -403,12 +405,12 @@ void Map_globalRange(struct Map *map, tnecs_world *world, u8 alignment) {
     }
 }
 
-void Map_Danger_Perimeter_Compute(struct Map *map) {
+void Map_Danger_Perimeter_Compute(struct Map *map, i32 *danger) {
     if (map->edges_danger == NULL) {
         size_t bytesize = sizeof(struct Padding);
         map->edges_danger = calloc(map->row_len * map->col_len, bytesize);
     }
-    Map_Perimeter(map->edges_danger, map->dangermap, map->row_len, map->col_len);
+    Map_Perimeter(map->edges_danger, danger, map->row_len, map->col_len);
 }
 
 struct Padding *Map_PerimeterM(i32 *map, i32 row_len, i32 col_len) {

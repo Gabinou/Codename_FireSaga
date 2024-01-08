@@ -289,6 +289,9 @@ void Map_Visible_Bounds(u8 *min, u8 *max, size_t row_len, size_t col_len,
 }
 
 void Map_Danger_Perimeter_Draw(struct Map *map, struct Settings *settings, struct Camera *camera) {
+    if (map->rendered_dangermap == NULL)
+        return;
+
     int thick = settings->map_settings.perim_thickness;
     i32 outside = 0;
 
@@ -301,7 +304,7 @@ void Map_Danger_Perimeter_Draw(struct Map *map, struct Settings *settings, struc
     for (i32 i = 0; i < row_len * col_len; i++) {
 
         /* - Skip if tile is outside - */
-        if (map->dangermap[i] == outside)
+        if (map->rendered_dangermap[i] == outside)
             continue;
 
         i32 x = i % col_len;

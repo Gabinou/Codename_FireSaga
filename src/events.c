@@ -315,7 +315,6 @@ void receive_event_Input_GLOBALRANGE(struct Game *sota, SDL_Event *userevent) {
 
     if (fsm_eGlbRng_ss[sota->substate] != NULL)
         fsm_eGlbRng_ss[sota->substate](sota);
-
 }
 
 void receive_event_Input_ACCEPT(struct Game *sota, SDL_Event *userevent) {

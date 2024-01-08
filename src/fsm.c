@@ -288,46 +288,37 @@ fsm_eGlbRng_s_t fsm_eGlbRng_ss[GAME_SUBSTATE_NUM] = {
 
 /* -- FSM: Input_globalRange EVENT -- */
 void fsm_eGlbRng_ssStby(struct Game *sota) {
-    /* - if a unit is hovered or selected toggle rangemap - */
-    tnecs_entity entity = TNECS_NULL;
-    if (sota->selected_unit_entity != TNECS_NULL) {
-        entity = sota->selected_unit_entity;
-    } else if (sota->hovered_unit_entity != TNECS_NULL) {
-        entity = sota->hovered_unit_entity;
-    }
 
-    if (entity != TNECS_NULL) {
-        /* - Toggle rangemap - */
-        struct Unit *unit = TNECS_GET_COMPONENT(sota->world, entity, Unit);
-        Unit_Rangemap_Toggle(unit);
-        int rangemap = Unit_Rangemap_Get(unit);
+    for (int i = 0; i < DARR_NUM(sota->map->enemies_onfield); i++) {
+        tnecs_entity entity = sota->map->enemies_onfield[i];
 
-        /* - Compute new stackmap with recomputed attacktomap - */
-        Map_Healtomap_Compute(sota->map,   sota->world, entity, true, false);
-        Map_Attacktomap_Compute(sota->map, sota->world, entity, true, false);
-        if (rangemap        == RANGEMAP_HEALMAP) {
-            Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL);
-        } else if (rangemap == RANGEMAP_ATTACKMAP) {
-            Map_Palettemap_Autoset(sota->map,
-                                   MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
+        /* - Compute new dangermap  - */
+        i32 *temp_danger = Map_Danger_Compute(sota->map, sota->world, entity);
+
+        if (sota->map->show_globalRange) {
+            /* Currently showing global map, removing */
+            Map_Global_Danger_Sub(sota->map, temp_danger);
+        } else {
+            /* Currently not showing global map, adding */
+            Map_Global_Danger_Add(sota->map, temp_danger);
         }
-        Map_Stacked_Dangermap_Compute(sota->map);
-        return;
     }
 
     if (sota->map->show_globalRange) {
-        sota->map->show_globalRange = false;
-        Map_Global_Danger_Sub(sota->map, sota->map->global_rangemap);
+        /* Currently showing global map, removing */
+        /* Plus, adding back player dangermap */
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_DANGER);
-
+        Map_Danger_Perimeter_Compute(sota->map, sota->map->dangermap);
+        sota->map->rendered_dangermap = sota->map->dangermap;
     } else {
-        sota->map->show_globalRange = true;
-        Map_globalRange(sota->map, sota->world, ALIGNMENT_ENEMY);
-        Map_Global_Danger_Add(sota->map, sota->map->global_rangemap);
-
-        /* Stack all overlay maps */
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_DANGER + MAP_OVERLAY_GLOBAL_DANGER);
+        /* Currently not showing global map, adding */
+        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER);
+        Map_Danger_Perimeter_Compute(sota->map, sota->map->global_dangermap);
+        sota->map->rendered_dangermap = sota->map->global_dangermap;
     }
+
+    /* Switching show_globalRange to new mode */
+    sota->map->show_globalRange = !sota->map->show_globalRange;
 
 }
 
@@ -485,6 +476,11 @@ void fsm_eUnitDng_ssStby(struct Game *sota, tnecs_entity selector_entity) {
         return;
     }
 
+    if (sota->map->show_globalRange) {
+        SDL_Log("Global range/danger shown. Do nothing for Unit dangermap.");
+        return;
+    }
+
     /* -- Computing new dangermap -- */
     struct Position *pos    = TNECS_GET_COMPONENT(sota->world, selector_entity, Position);
     i32 *temp_danger        = Map_Danger_Compute(sota->map, sota->world, selected);
@@ -493,14 +489,16 @@ void fsm_eUnitDng_ssStby(struct Game *sota, tnecs_entity selector_entity) {
         Map_Danger_Sub(sota->map, temp_danger);
         Map_Palettemap_Autoset(sota->map,
                                MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
-        Map_Danger_Perimeter_Compute(sota->map);
+        Map_Danger_Perimeter_Compute(sota->map, sota->map->dangermap);
+        sota->map->rendered_dangermap = sota->map->dangermap;
+
 
         unit->show_danger = false;
     } else {
         Map_Danger_Add(sota->map, temp_danger);
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_DANGER);
-        Map_Danger_Perimeter_Compute(sota->map);
-
+        Map_Danger_Perimeter_Compute(sota->map, sota->map->dangermap);
+        sota->map->rendered_dangermap = sota->map->dangermap;
         unit->show_danger = true;
     }
 

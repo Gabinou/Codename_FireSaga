@@ -49,6 +49,7 @@ struct Map Map_default = {
     .healfrommap            = NULL,
     .dangermap              = NULL,
     .global_dangermap       = NULL,
+    .rendered_dangermap     = NULL,
     .global_rangemap        = NULL,
     .tilesindex             = NULL,
     .tilemap_surface        = NULL,
