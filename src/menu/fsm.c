@@ -400,7 +400,7 @@ void fsm_eCrsMvs_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
     }
-    Map_Stacked_Dangermap_Compute(sota->map);
+    Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
     PopUp_Loadout_Stats_New(pls);
 
@@ -536,7 +536,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mPCM(struct Game *sota, struct Menu *mc) {
     // 4. Attacktomap: recompute for aggressor
     Map_Attacktomap_Compute(sota->map, sota->world, sota->aggressor, false, true);
     Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
-    Map_Stacked_Dangermap_Compute(sota->map);
+    Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
     SDL_assert(wsm->selected[UNIT_HAND_LEFT]    > -1);
     SDL_assert(wsm->selected[UNIT_HAND_RIGHT]   > -1);
@@ -622,7 +622,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
     }
-    Map_Stacked_Dangermap_Compute(sota->map);
+    Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
 }
 
@@ -723,7 +723,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
     }
-    Map_Stacked_Dangermap_Compute(sota->map);
+    Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
     // TODO: Change to if other item in invetory
     if (WeaponSelectMenu_Usable_Remains(wsm)) {
@@ -864,7 +864,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff(struct Game *sota, struct Menu *mc) {
     // TODO: save rangemap previous state? how to go back
     unit->rangemap = RANGEMAP_HEALMAP;
     Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL);
-    Map_Stacked_Dangermap_Compute(sota->map);
+    Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
     /* -- Create PopUp_Loadout_Stats -- */
     // TODO: only if selecting weapon?
@@ -924,13 +924,13 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
     }
-    Map_Stacked_Dangermap_Compute(sota->map);
+    Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
     /* -- Enable attack rangemap to choose defendants -- */
     // TODO: save rangemap previous state? how to go back
     unit->rangemap = RANGEMAP_ATTACKMAP;
     Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
-    Map_Stacked_Dangermap_Compute(sota->map);
+    Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
     /* -- TODO: Render Face -- */
 
@@ -1008,7 +1008,7 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
                               MAP_OVERLAY_DANGER;
                 Map_Palettemap_Autoset(sota->map, overlay);
             }
-            Map_Stacked_Dangermap_Compute(sota->map);
+            Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
             // 4. Revert Unit animation state to move
             struct Sprite *sprite;

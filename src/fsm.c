@@ -317,6 +317,7 @@ void fsm_eGlbRng_ssStby(struct Game *sota) {
         sota->map->rendered_dangermap = sota->map->global_dangermap;
     }
 
+    Map_Stacked_Dangermap_Compute(sota->map, sota->map->global_dangermap);
     /* Switching show_globalRange to new mode */
     sota->map->show_globalRange = !sota->map->show_globalRange;
 
@@ -374,7 +375,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     }
 
     /* Stack all overlay maps */
-    Map_Stacked_Dangermap_Compute(sota->map);
+    Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
     sota->map->show_icons = SotA_isPC(unit_ontile->army);
 
     /* -- Changing animation loop to Taunt -- */
@@ -980,7 +981,7 @@ void fsm_eAcpt_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity accepter_entit
         Map_Palettemap_Autoset(sota->map,
                                MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
     }
-    Map_Stacked_Dangermap_Compute(sota->map);
+    Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
     /* - Pre-menu update computation for content - */
     Game_preUnitAction_Targets(sota, unit_ent);

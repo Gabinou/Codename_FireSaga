@@ -42,13 +42,11 @@ void Map_Danger_Sub(struct Map *map, i32 *danger) {
     map->shading_changed = true;
 }
 
-void Map_Stacked_Dangermap_Compute(struct Map *map) {
-    /* assumes movemap, attacktomap, dangermap are computed */
-
+void Map_Stacked_Dangermap_Compute(struct Map *map, i32 *dangermap) {
     int size = map->row_len * map->col_len;
-    i32 *temp_map = matrix_ssmaller(map->dangermap, DANGERMAP_UNIT_DIVISOR, size);
+    i32 *temp_map = matrix_ssmaller(dangermap, DANGERMAP_UNIT_DIVISOR, size);
     map->stacked_dangermap = matrix_and_noM(map->stacked_dangermap,
-                                            map->dangermap, temp_map,
+                                            dangermap, temp_map,
                                             map->row_len * map->col_len);
     map->stacked_dangermap = matrix_and_noM(map->stacked_dangermap,
                                             map->stacked_dangermap,
