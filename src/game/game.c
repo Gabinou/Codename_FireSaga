@@ -105,7 +105,10 @@ struct Game Game_default = {
 
     .inputs = {0},
 
-    .ai_state = {0},
+    .ai_state   = {0},
+    .music      = NULL,
+    .soundfx_1  = NULL,
+    .soundfx_2  = NULL,
 
     .chapter            = -1,
     .state              = GAME_STATE_Title_Screen,
@@ -279,15 +282,26 @@ struct Game *Game_Init(void) {
 
     #ifndef SOTA_OPENGL
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Firesaga: Window Initialization");
-    int success = SDL_Init(SDL_INIT_EVERYTHING);
-    /*  NOTE: --- SDL_INIT LEAKS A LOT OF MEMORY --- */
-    //  Ex:     reachable 224,425 bytes in 1,445 blocks
-    //          suppressed 16 bytes in 1 blocks
-    //          It may be cause of X11.
-    //      Someone on Stack overflow said his NVIDIA drivers leak 10Mb.
-    SDL_assert(success == 0);
+    if (SDL_Init(SDL_INIT_EVERYTHING));
+        /*  NOTE: --- SDL_INIT LEAKS A LOT OF MEMORY --- */
+        //  Ex:     reachable 224,425 bytes in 1,445 blocks
+        //          suppressed 16 bytes in 1 blocks
+        //          It may be cause of X11.
+        //      Someone on Stack overflow said his NVIDIA drivers leak 10Mb.
+        SDL_LogCritical(SOTA_LOG_SYSTEM, "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
+        exit(1);
+    }
+    
+    //Initialize SDL_mixer
+    if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+    {
+        SDL_LogCritical(SOTA_LOG_SYSTEM, "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+        exit(1);
+    }
+
     out_game->window = SDL_CreateWindow(out_game->settings.title, out_game->settings.pos.x,
                                         out_game->settings.pos.y, out_game->settings.res.x, out_game->settings.res.y, flags);
+    SDL_assert(out_game->window);
     // SDL_assert(SDL_ISPIXELFORMAT_INDEXED(SDL_GetWindowPixelFormat(out_game->window)));
     int window_w;
     int window_h;
@@ -329,12 +343,14 @@ struct Game *Game_Init(void) {
     // glewExperimental = GL_TRUE;
     GLenum glewError = glewInit();
     // Use Vsync
-    if (SDL_GL_SetSwapInterval(1) < 0)
+    if (SDL_GL_SetSwapInterval(1) < 0) {
         SDL_LogCritical(0, "Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
+        exit(1);
+    }
     // Initialize OpenGL
     if (!initGL()) {
         SDL_LogCritical(0, "Unable to initialize OpenGL!\n");
-        success = false;
+        exit(1);        
     }
     #endif /* SOTA_OPENGL */
     // char *path_mapping = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);

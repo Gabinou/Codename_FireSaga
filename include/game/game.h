@@ -37,6 +37,7 @@
 #include "systems/slide.h"
 #include "combat.h"
 #include "SDL.h"
+#include "SDL_mixer.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
@@ -180,10 +181,14 @@ struct Game {
     struct AI_State ai_state;
 
     i32   controller_code;
-
     /* Button interpreted as which input?  */
     u32 inputs[SOTA_BUTTON_END];
 
+    /* The music that will be played. */
+    Mix_Music *music;
+    Mix_Chunk *soundfx_1;
+    Mix_Chunk *soundfx_2;
+    
     u8     party_size;
     u64    runtime_ns; // -> millions of years
     bool  *shadow_area;  /* pixels */
