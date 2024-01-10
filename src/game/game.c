@@ -34,6 +34,13 @@ struct Settings Settings_default = {
         .grid_show          = true,
         .stack_mode         = MAP_SETTING_STACK_DANGERMAP
     },
+    .music = {
+        .frequency         = 44100,                /* [Hz] */
+        .sample_size        =  2048,                /* [byte] */
+        .channels  =     2,
+        .format             = MIX_DEFAULT_FORMAT,  /* [byte] */
+
+    },
     .enemy_turn_settings = {
         .pause_post_reinforcement = 2ULL * SOTA_ns / 2ULL,
     },
@@ -292,8 +299,9 @@ struct Game *Game_Init(void) {
         exit(1);
     }
     
-    //Initialize SDL_mixer
-    if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+    /* Initialize SDL_mixer */
+    struct Music_settings music = out_game->music;
+    if( Mix_OpenAudio(music.frequency, music.format, music.channels, music.sample_size) < 0 )
     {
         SDL_LogCritical(SOTA_LOG_SYSTEM, "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
         exit(1);

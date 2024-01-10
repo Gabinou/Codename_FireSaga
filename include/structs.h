@@ -279,6 +279,13 @@ struct Camera {
     float        zoom;
 };
 
+struct Music_settings {
+    i32 frequency;          /* [Hz] */
+    i32 sample_size;        /* [byte] */
+    u16 format;             /* AUDIO_* */
+    i32 channels;
+};
+
 struct Map_settings {
     u8          overlay_mode; /* tile paletteswap or opaque overlay */
     u8          stack_mode;
@@ -304,6 +311,7 @@ struct Settings {
     u8 fontsize;
 
     struct Map_settings map_settings;
+    struct Music_settings music_settings;
     struct Enemy_Turn_settings enemy_turn_settings;
 
     struct Mouse mouse; /* 16 bits */
