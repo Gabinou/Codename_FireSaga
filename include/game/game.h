@@ -16,6 +16,7 @@
 #include "tnecs.h"
 #include "events.h"
 #include "nmath.h"
+#include "music.h"
 #include "macros.h"
 #include "hover.h"
 #include "utilities.h"
@@ -227,5 +228,8 @@ void Game_Delay(struct Game *sota, i64 d, u64 c, u64 e);
 void Game_FPS_Free(  struct Game *sota);
 i64  Game_FPS_Delay( struct Game *sota, u64 e);
 void Game_FPS_Create(struct Game *sota, i64 ut);
+
+/* --- Music --- */
+void Game_Music_Play(struct Game *sota);
 
 #endif /* GAME_STRUCT_H */

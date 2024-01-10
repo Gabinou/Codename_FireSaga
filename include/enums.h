@@ -881,6 +881,7 @@ enum CHAPTERS {
 #include "names/chapters.h"
     CHAPTER_FOLDER_TEST,
     CHAPTER_END,
+    CHAPTER_NUM = CHAPTER_END,
 };
 #undef REGISTER_ENUM
 

@@ -522,6 +522,8 @@ void Game_Init(struct Game *sota) {
 
     /* --- Set default contextual inputs --- */
     fsm_Input_s[sota->state](sota);
+
+    sota->music = Music_Load_Debug();
 }
 
 // TODO: Rename
@@ -827,4 +829,9 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
 
     SDL_assert(sota->world->entity_typeflags[sota->entity_fps] ==
                TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Timer, Position, Text));
+}
+
+void Game_Music_Play(struct Game *sota) {
+    if (Mix_PlayingMusic() == 0)
+        Mix_PlayMusic(sota->music, -1);
 }
