@@ -174,6 +174,18 @@ void Game_Free(struct Game *sota) {
         SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Control");
         // controlSDL_free();
     }
+    if (sota->music != NULL) {
+        Mix_FreeMusic(sota->music);
+        sota->music = NULL;
+    }
+    if (sota->soundfx_1 != NULL) {
+        Mix_FreeChunk(sota->soundfx_1);
+        sota->soundfx_1 = NULL;
+    }
+    if (sota->soundfx_2 != NULL) {
+        Mix_FreeChunk(sota->soundfx_2);
+        sota->soundfx_2 = NULL;
+    }
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Map");
     Game_UnitsonMap_Free(sota);
@@ -197,6 +209,7 @@ void Game_Free(struct Game *sota) {
     if (sota->window != NULL)
         SDL_DestroyWindow(sota->window);
     SDL_QuitSubSystem(SDL_INIT_EVERYTHING);
+    Mix_Quit();
     SDL_Quit();
     #else /* SOTA_OPENGL */
     #endif /* SOTA_OPENGL */
