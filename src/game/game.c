@@ -34,7 +34,7 @@ struct Settings Settings_default = {
         .grid_show          = true,
         .stack_mode         = MAP_SETTING_STACK_DANGERMAP
     },
-    .music = {
+    .music_settings = {
         .frequency         = 44100,                /* [Hz] */
         .sample_size        =  2048,                /* [byte] */
         .channels  =     2,
@@ -253,43 +253,41 @@ void Game_AI_Free(struct Game *sota) {
     }
 }
 
-struct Game *Game_Init(void) {
-    struct Game *out_game;
-    out_game    = SDL_malloc(sizeof(struct Game));
-    *out_game   = Game_default;
-    out_game->settings = Settings_default;
-    SDL_assert(out_game->settings.FPS.cap > 0);
+void Game_Init(struct Game *sota) {
+    *sota = Game_default;
+    sota->settings = Settings_default;
+    SDL_assert(sota->settings.FPS.cap > 0);
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Init game");
     i16 flags = 0;
-    out_game->filename_menu = s8_literal(PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png"));
+    sota->filename_menu = s8_literal(PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png"));
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Init game");
     /* init weapons_dtab */
-    if (out_game->weapons_dtab != NULL) {
-        DTAB_FREE(out_game->weapons_dtab);
-        out_game->weapons_dtab = NULL;
+    if (sota->weapons_dtab != NULL) {
+        DTAB_FREE(sota->weapons_dtab);
+        sota->weapons_dtab = NULL;
     }
-    DTAB_INIT(out_game->weapons_dtab, struct Weapon);
+    DTAB_INIT(sota->weapons_dtab, struct Weapon);
 
     /* init items_dtab */
-    if (out_game->items_dtab != NULL) {
-        DTAB_FREE(out_game->items_dtab);
-        out_game->items_dtab = NULL;
+    if (sota->items_dtab != NULL) {
+        DTAB_FREE(sota->items_dtab);
+        sota->items_dtab = NULL;
     }
-    DTAB_INIT(out_game->items_dtab, struct Item);
+    DTAB_INIT(sota->items_dtab, struct Item);
 
-    out_game->map_enemies = DARR_INIT(out_game->map_enemies, tnecs_entity, 16);
-    if (out_game->settings.fullscreen)
+    sota->map_enemies = DARR_INIT(sota->map_enemies, tnecs_entity, 16);
+    if (sota->settings.fullscreen)
         flags = SDL_WINDOW_FULLSCREEN;
-    out_game->units_loaded = SDL_calloc(UNIT_ID_END, sizeof(* out_game->units_loaded));
+    sota->units_loaded = SDL_calloc(UNIT_ID_END, sizeof(* sota->units_loaded));
 
-    out_game->camera.offset.x = DEFAULT_CAMERA_XOFFSET;
-    out_game->camera.offset.y = DEFAULT_CAMERA_YOFFSET;
-    out_game->camera.zoom     = DEFAULT_CAMERA_ZOOM;
+    sota->camera.offset.x = DEFAULT_CAMERA_XOFFSET;
+    sota->camera.offset.y = DEFAULT_CAMERA_YOFFSET;
+    sota->camera.zoom     = DEFAULT_CAMERA_ZOOM;
 
     #ifndef SOTA_OPENGL
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Firesaga: Window Initialization");
-    if (SDL_Init(SDL_INIT_EVERYTHING));
+    if (SDL_Init(SDL_INIT_EVERYTHING)) {
         /*  NOTE: --- SDL_INIT LEAKS A LOT OF MEMORY --- */
         //  Ex:     reachable 224,425 bytes in 1,445 blocks
         //          suppressed 16 bytes in 1 blocks
@@ -298,40 +296,40 @@ struct Game *Game_Init(void) {
         SDL_LogCritical(SOTA_LOG_SYSTEM, "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
         exit(1);
     }
-    
+
     /* Initialize SDL_mixer */
-    struct Music_settings music = out_game->music;
-    if( Mix_OpenAudio(music.frequency, music.format, music.channels, music.sample_size) < 0 )
-    {
-        SDL_LogCritical(SOTA_LOG_SYSTEM, "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+    struct Music_settings music = sota->settings.music_settings;
+    if (Mix_OpenAudio(music.frequency, music.format, music.channels, music.sample_size) < 0) {
+        SDL_LogCritical(SOTA_LOG_SYSTEM, "SDL_mixer could not initialize! SDL_mixer Error: %s\n",
+                        Mix_GetError());
         exit(1);
     }
 
-    out_game->window = SDL_CreateWindow(out_game->settings.title, out_game->settings.pos.x,
-                                        out_game->settings.pos.y, out_game->settings.res.x, out_game->settings.res.y, flags);
-    SDL_assert(out_game->window);
-    // SDL_assert(SDL_ISPIXELFORMAT_INDEXED(SDL_GetWindowPixelFormat(out_game->window)));
+    sota->window = SDL_CreateWindow(sota->settings.title, sota->settings.pos.x,
+                                    sota->settings.pos.y, sota->settings.res.x, sota->settings.res.y, flags);
+    SDL_assert(sota->window);
+    // SDL_assert(SDL_ISPIXELFORMAT_INDEXED(SDL_GetWindowPixelFormat(sota->window)));
     int window_w;
     int window_h;
-    SDL_GetWindowSize(out_game->window, &window_w, &window_h);
-    SDL_assert(window_w == out_game->settings.res.x);
-    SDL_assert(window_h == out_game->settings.res.y);
-    if (out_game->window) {
+    SDL_GetWindowSize(sota->window, &window_w, &window_h);
+    SDL_assert(window_w == sota->settings.res.x);
+    SDL_assert(window_h == sota->settings.res.y);
+    if (sota->window) {
         SDL_LogVerbose(SOTA_LOG_SYSTEM, "Window created\n");
-        out_game->renderer = SDL_CreateRenderer(out_game->window, -1, SDL_RENDERER_TARGETTEXTURE);
-        SDL_assert(out_game->renderer);
-        if (out_game->renderer) {
-            Utilities_DrawColor_Reset(out_game->renderer);
+        sota->renderer = SDL_CreateRenderer(sota->window, -1, SDL_RENDERER_TARGETTEXTURE);
+        SDL_assert(sota->renderer);
+        if (sota->renderer) {
+            Utilities_DrawColor_Reset(sota->renderer);
             SDL_LogVerbose(SOTA_LOG_SYSTEM, "Renderer created\n");
         }
     }
     #ifndef RENDER2WINDOW
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Rendering to sota->render_target\n");
-    SDL_assert(out_game->settings.res.x > 0);
-    SDL_assert(out_game->settings.res.y > 0);
+    SDL_assert(sota->settings.res.x > 0);
+    SDL_assert(sota->settings.res.y > 0);
     SDL_assert(sota->renderer != NULL);
     sota->render_target = SDL_CreateTexture(sota->renderer, SDL_PIXELFORMAT_ARGB8888,
-                                            SDL_TEXTUREACCESS_TARGET, out_game->settings.res.x, out_game->settings.res.y);
+                                            SDL_TEXTUREACCESS_TARGET, sota->settings.res.x, sota->settings.res.y);
     SDL_assert(sota->render_target != NULL);
     SDL_SetTextureBlendMode(sota->render_target, SDL_BLENDMODE_BLEND);
     SDL_SetRenderTarget(sota->renderer, sota->render_target);
@@ -343,11 +341,11 @@ struct Game *Game_Init(void) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     // TODO: set better window flags
-    out_game->gl_window = SDL_CreateWindow(out_game->settings.title, out_game->settings.pos.x,
-                                           out_game->settings.pos.y, out_game->settings.res.x, out_game->settings.res.y,
-                                           flags | SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
-    SDL_assert(out_game->gl_window);
-    out_game->gl_context = SDL_GL_CreateContext(out_game->gl_window);
+    sota->gl_window = SDL_CreateWindow(sota->settings.title, sota->settings.pos.x,
+                                       sota->settings.pos.y, sota->settings.res.x, sota->settings.res.y,
+                                       flags | SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+    SDL_assert(sota->gl_window);
+    sota->gl_context = SDL_GL_CreateContext(sota->gl_window);
     // glewExperimental = GL_TRUE;
     GLenum glewError = glewInit();
     // Use Vsync
@@ -358,7 +356,7 @@ struct Game *Game_Init(void) {
     // Initialize OpenGL
     if (!initGL()) {
         SDL_LogCritical(0, "Unable to initialize OpenGL!\n");
-        exit(1);        
+        exit(1);
     }
     #endif /* SOTA_OPENGL */
     // char *path_mapping = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);
@@ -383,42 +381,42 @@ struct Game *Game_Init(void) {
     Events_Names_Alloc();
     Events_Receivers_Declare();
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Initializing Menus\n");
-    Game_Menus_Init(out_game);
+    Game_Menus_Init(sota);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Genesis of tnecs\n");
-    out_game->world = tnecs_world_genesis();
+    sota->world = tnecs_world_genesis();
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Components Registration\n");
-    TNECS_REGISTER_COMPONENT(out_game->world, Position);
-    TNECS_REGISTER_COMPONENT(out_game->world, Sprite);
-    TNECS_REGISTER_COMPONENT(out_game->world, Unit);
-    TNECS_REGISTER_COMPONENT(out_game->world, Boss);
-    TNECS_REGISTER_COMPONENT(out_game->world, Menu);
-    TNECS_REGISTER_COMPONENT(out_game->world, controllerGamepad);
-    TNECS_REGISTER_COMPONENT(out_game->world, controllerMouse);
-    TNECS_REGISTER_COMPONENT(out_game->world, controllerKeyboard);
-    TNECS_REGISTER_COMPONENT(out_game->world, controllerTouchpad);
-    TNECS_REGISTER_COMPONENT(out_game->world, Timer);
-    TNECS_REGISTER_COMPONENT(out_game->world, PopUp);
-    TNECS_REGISTER_COMPONENT(out_game->world, Slider);
-    TNECS_REGISTER_COMPONENT(out_game->world, Hover);
-    TNECS_REGISTER_COMPONENT(out_game->world, SliderOffscreen);
-    TNECS_REGISTER_COMPONENT(out_game->world, CursorFlag);
-    TNECS_REGISTER_COMPONENT(out_game->world, MouseFlag);
-    TNECS_REGISTER_COMPONENT(out_game->world, Text);
-    TNECS_REGISTER_COMPONENT(out_game->world, Breakable);
-    TNECS_REGISTER_COMPONENT(out_game->world, Door);
-    TNECS_REGISTER_COMPONENT(out_game->world, Chest);
-    TNECS_REGISTER_COMPONENT(out_game->world, Mobj_Link);
-    TNECS_REGISTER_COMPONENT(out_game->world, MapHPBar);
-    TNECS_REGISTER_COMPONENT(out_game->world, CombatAnimation);
-    TNECS_REGISTER_COMPONENT(out_game->world, MapAnimation);
-    TNECS_REGISTER_COMPONENT(out_game->world, UnitMoveAnimation);
-    TNECS_REGISTER_COMPONENT(out_game->world, RenderTop);
-    TNECS_REGISTER_COMPONENT(out_game->world, PixelFont);
-    TNECS_REGISTER_COMPONENT(out_game->world, AI);
-    out_game->timer_typeflag = TNECS_COMPONENT_NAME2TYPE(out_game->world, Timer);
+    TNECS_REGISTER_COMPONENT(sota->world, Position);
+    TNECS_REGISTER_COMPONENT(sota->world, Sprite);
+    TNECS_REGISTER_COMPONENT(sota->world, Unit);
+    TNECS_REGISTER_COMPONENT(sota->world, Boss);
+    TNECS_REGISTER_COMPONENT(sota->world, Menu);
+    TNECS_REGISTER_COMPONENT(sota->world, controllerGamepad);
+    TNECS_REGISTER_COMPONENT(sota->world, controllerMouse);
+    TNECS_REGISTER_COMPONENT(sota->world, controllerKeyboard);
+    TNECS_REGISTER_COMPONENT(sota->world, controllerTouchpad);
+    TNECS_REGISTER_COMPONENT(sota->world, Timer);
+    TNECS_REGISTER_COMPONENT(sota->world, PopUp);
+    TNECS_REGISTER_COMPONENT(sota->world, Slider);
+    TNECS_REGISTER_COMPONENT(sota->world, Hover);
+    TNECS_REGISTER_COMPONENT(sota->world, SliderOffscreen);
+    TNECS_REGISTER_COMPONENT(sota->world, CursorFlag);
+    TNECS_REGISTER_COMPONENT(sota->world, MouseFlag);
+    TNECS_REGISTER_COMPONENT(sota->world, Text);
+    TNECS_REGISTER_COMPONENT(sota->world, Breakable);
+    TNECS_REGISTER_COMPONENT(sota->world, Door);
+    TNECS_REGISTER_COMPONENT(sota->world, Chest);
+    TNECS_REGISTER_COMPONENT(sota->world, Mobj_Link);
+    TNECS_REGISTER_COMPONENT(sota->world, MapHPBar);
+    TNECS_REGISTER_COMPONENT(sota->world, CombatAnimation);
+    TNECS_REGISTER_COMPONENT(sota->world, MapAnimation);
+    TNECS_REGISTER_COMPONENT(sota->world, UnitMoveAnimation);
+    TNECS_REGISTER_COMPONENT(sota->world, RenderTop);
+    TNECS_REGISTER_COMPONENT(sota->world, PixelFont);
+    TNECS_REGISTER_COMPONENT(sota->world, AI);
+    sota->timer_typeflag = TNECS_COMPONENT_NAME2TYPE(sota->world, Timer);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration\n");
-    tnecs_world *world = out_game->world;
+    tnecs_world *world = sota->world;
     /* --- SYSTEM REGISTERING: FIRST COME FIRST SERVED ---*/
     /* -- Control systems ran first --  */
     TNECS_REGISTER_SYSTEM_wEXCL(world, Control_Keyboard, 0, Position, Sprite, controllerKeyboard);
@@ -430,7 +428,7 @@ struct Game *Game_Init(void) {
     TNECS_REGISTER_SYSTEM_wEXCL(world, Slide_PopUp_Offscreen, 1, PopUp, Slider,
                                 SliderOffscreen, Position);
     /* - no sliders without offscreen yet -  */
-    // TNECS_REGISTER_SYSTEM_wEXCL(out_game->world, slidePopUp, 0, PopUp, Slider, Position);
+    // TNECS_REGISTER_SYSTEM_wEXCL(sota->world, slidePopUp, 0, PopUp, Slider, Position);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Hover_Any,      0, Hover,  Position);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Sprite, 0, Sprite, Position, Timer);
     // Remove animated flag. Animated sprites must have a timer! Still sprites dont!
@@ -470,23 +468,23 @@ struct Game *Game_Init(void) {
                                 Unit);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration DONE\n");
 
-    out_game->isrunning = true;
-    out_game->keyboardInputMap  = KeyboardInputMap_default;
-    out_game->gamepadInputMap   = GamepadInputMap_switch_pro;
+    sota->isrunning = true;
+    sota->keyboardInputMap  = KeyboardInputMap_default;
+    sota->gamepadInputMap   = GamepadInputMap_switch_pro;
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Loading pixelfonts\n");
-    out_game->pixelnours = PixelFont_Alloc();
+    sota->pixelnours = PixelFont_Alloc();
     char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
-    PixelFont_Load(out_game->pixelnours, out_game->renderer, path);
-    out_game->pixelnours->y_offset = pixelfont_y_offset;
+    PixelFont_Load(sota->pixelnours, sota->renderer, path);
+    sota->pixelnours->y_offset = pixelfont_y_offset;
 
-    out_game->pixelnours_big = PixelFont_Alloc();
+    sota->pixelnours_big = PixelFont_Alloc();
     path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
-    PixelFont_Load(out_game->pixelnours_big, out_game->renderer, path);
-    out_game->pixelnours_big->y_offset = pixelfont_big_y_offset;
+    PixelFont_Load(sota->pixelnours_big, sota->renderer, path);
+    sota->pixelnours_big->y_offset = pixelfont_big_y_offset;
 
-    out_game->pixelnours_tight = PixelFont_Alloc();
+    sota->pixelnours_tight = PixelFont_Alloc();
     path = PATH_JOIN("..", "assets", "fonts", "pixelnours_tight.png");
-    PixelFont_Load(out_game->pixelnours_tight, out_game->renderer, path);
+    PixelFont_Load(sota->pixelnours_tight, sota->renderer, path);
 
     /* Sprite init */
     bool absolute = false;
@@ -497,22 +495,20 @@ struct Game *Game_Init(void) {
     dstrect_funcs[absolute][isCursor = false]       = &Sprite_Dstrect_Absolute;
 
     /* --- Alloc arrays of entities --- */
-    out_game->defendants   = DARR_INIT(out_game->defendants, tnecs_entity, 4);
-    out_game->patients     = DARR_INIT(out_game->patients,   tnecs_entity, 4);
-    out_game->victims      = DARR_INIT(out_game->victims,    tnecs_entity, 4);
-    out_game->spectators   = DARR_INIT(out_game->spectators, tnecs_entity, 4);
-    out_game->auditors     = DARR_INIT(out_game->auditors,   tnecs_entity, 4);
-    out_game->passives     = DARR_INIT(out_game->passives,   tnecs_entity, 4);
-    out_game->openables    = DARR_INIT(out_game->openables,  tnecs_entity, 4);
+    sota->defendants   = DARR_INIT(sota->defendants, tnecs_entity, 4);
+    sota->patients     = DARR_INIT(sota->patients,   tnecs_entity, 4);
+    sota->victims      = DARR_INIT(sota->victims,    tnecs_entity, 4);
+    sota->spectators   = DARR_INIT(sota->spectators, tnecs_entity, 4);
+    sota->auditors     = DARR_INIT(sota->auditors,   tnecs_entity, 4);
+    sota->passives     = DARR_INIT(sota->passives,   tnecs_entity, 4);
+    sota->openables    = DARR_INIT(sota->openables,  tnecs_entity, 4);
 
     /* --- Alloc combat arrays --- */
-    out_game->combat_outcome.attacks = DARR_INIT(out_game->combat_outcome.attacks, struct Combat_Attack,
-                                                 SOTA_COMBAT_MAX_ATTACKS);
+    sota->combat_outcome.attacks = DARR_INIT(sota->combat_outcome.attacks, struct Combat_Attack,
+                                             SOTA_COMBAT_MAX_ATTACKS);
 
     /* --- Set default contextual inputs --- */
-    fsm_Input_s[out_game->state](out_game);
-
-    return (out_game);
+    fsm_Input_s[sota->state](sota);
 }
 
 // TODO: Rename

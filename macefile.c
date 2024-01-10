@@ -94,7 +94,7 @@ struct Target win_sota = {
     .sources  = "src/*.c,src/bars/,src/menu/,src/popup/,"
                 "src/systems/,src/game/,src/map,j,"
                 "src/controller",
-    .links    = "SDL2,SDL2_image,SDL2_ttf,m,cjson,"
+    .links    = "SDL2,SDL2_image,SDL2_ttf,SDL2_mixer,m,cjson,"
                 "noursmath,physfs,tinymt,tnecs,parg",
                 /* TODO: Remove flags given by sdl2-config */
     .flags    = "-lmingw32,-lSDL2main,"
@@ -118,8 +118,8 @@ struct Target sota = {
     .sources  = "src,src/bars/,src/menu/,src/popup/,"
                 "src/systems/,src/game/,src/map/,src/unit/,"
                 "src/controller/",
-    .links    = "SDL2,SDL2_image,SDL2_ttf,m,GLEW,cjson,"
-                "noursmath,physfs,tinymt,tnecs,parg",
+    .links    = "SDL2,SDL2_image,SDL2_ttf,SDL2_mixer,m,GLEW,"
+                "cjson,noursmath,physfs,tinymt,tnecs,parg",
     .flags    = "-fno-strict-overflow,-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
                 "-DSDL_DISABLE_IMMINTRIN_H,"
@@ -144,8 +144,8 @@ struct Target test = {
                 "src/popup/,src/systems/,src/game/,src/map,"
                 "src/controller",
     .excludes = "src/main.c",
-    .links    = "SDL2,SDL2_image,SDL2_ttf,m,GLEW,cjson,"
-                "noursmath,physfs,tinymt,tnecs,parg",
+    .links    = "SDL2,SDL2_image,SDL2_ttf,SDL2_mixer,m,GLEW,"
+                "cjson,noursmath,physfs,tinymt,tnecs,parg",
     .flags    = "-L/usr/lib,-fno-strict-overflow,"
                 "-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"

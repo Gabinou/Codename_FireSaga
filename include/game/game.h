@@ -188,7 +188,7 @@ struct Game {
     Mix_Music *music;
     Mix_Chunk *soundfx_1;
     Mix_Chunk *soundfx_2;
-    
+
     u8     party_size;
     u64    runtime_ns; // -> millions of years
     bool  *shadow_area;  /* pixels */
@@ -201,7 +201,7 @@ struct Game {
 extern struct Game Game_default;
 
 /* --- Constructors/Destructors --- */
-struct Game *Game_Init(void);
+void Game_Init(   struct Game *sota);
 void Game_Free(   struct Game *sota);
 void Game_Startup(struct Game *sota, struct Input_Arguments args);
 void Game_AI_Free(struct Game *sota);

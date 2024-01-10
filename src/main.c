@@ -90,7 +90,8 @@ int main(int argc, char *argv[]) {
     #endif /* __SOTA_RELEASE__ */
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
-    struct Game *sota = Game_Init();
+    struct Game *sota = SDL_malloc(sizeof(struct Game));
+    Game_Init(sota);
     Utilities_DrawColor_Reset(sota->renderer);
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Initializing RNG\n");
