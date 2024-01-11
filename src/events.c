@@ -443,15 +443,24 @@ void Reload_MapHpBar(void *struct_ptr) {
 
 void receive_event_Music_Toggle(struct Game *sota, SDL_Event *event) {
     /* --- Toggle music --- */
-    SDL_Log("receive_event_Music_Toggle");
     if (Mix_PlayingMusic() && !Mix_PausedMusic()) {
         Game_Music_Pause(sota);
     } else {
         Game_Music_Play(sota);
     }
+
+    /* --- Blocking keyboard --- */
+    struct controllerKeyboard *keyboard_ptr;
+    keyboard_ptr = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, controllerKeyboard);
+    keyboard_ptr->block_buttons = true;
 }
 
 void receive_event_Reload(struct Game *sota, SDL_Event *event) {
+    /* --- Blocking keyboard --- */
+    struct controllerKeyboard *keyboard_ptr;
+    keyboard_ptr = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, controllerKeyboard);
+    keyboard_ptr->block_buttons = true;
+
     /* --- Benchmarking reload time --- */
     u64 before_ns = tnecs_get_ns();
 

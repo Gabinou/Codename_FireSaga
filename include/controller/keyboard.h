@@ -34,8 +34,8 @@ extern struct KeyboardInputMap {
 
     /* Physical triggers -> Keyboard equivalent */
     /* Triggers  [0, INT_FAST16_MAX] -> [0, 32767] */
-    SDL_Scancode    trigger_right[SOTA_MAPPABLE_BUTTONS_NUM];
     SDL_Scancode    trigger_left[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    trigger_right[SOTA_MAPPABLE_BUTTONS_NUM];
     SDL_Scancode    m[SOTA_MAPPABLE_BUTTONS_NUM];
     SDL_Scancode    space[SOTA_MAPPABLE_BUTTONS_NUM];
 
@@ -52,6 +52,8 @@ extern struct KeyboardInputMap {
     u8  shoulder_right_len;
     u8  trigger_right_len;
     u8  trigger_left_len;
+    u8  m_len;
+    u8  space_len;
 
 } KeyboardInputMap_default;
 

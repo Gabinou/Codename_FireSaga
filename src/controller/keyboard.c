@@ -31,6 +31,8 @@ struct KeyboardInputMap KeyboardInputMap_default = {
     .shoulder_right_len = 1,
     .trigger_right_len  = 1,
     .trigger_left_len   = 1,
+    .m_len              = 1,
+    .space_len          = 1,
 };
 
 struct controllerKeyboard controllerKeyboard_default = {
@@ -42,7 +44,7 @@ struct controllerKeyboard controllerKeyboard_default = {
     .inputmap           = NULL,
 };
 
-void Keyboard_Held(i8 *held, size_t *h_num, i32 *timeheld, i8 *pressed, size_t p_num, i32 dt) {
+void Keyboard_Held(i8 *held, size_t *h_num, i32 *timeheld, i8 *pressed, size_t p_num, i32 dt_ns) {
     SDL_assert(p_num < SOTA_INPUT_END);
     SDL_assert(p_num >= 0);
     bool arrequal = false;
@@ -51,11 +53,13 @@ void Keyboard_Held(i8 *held, size_t *h_num, i32 *timeheld, i8 *pressed, size_t p
 
     if (arrequal) {
         /* - Keep pressing same buttons - */
-        *timeheld += dt / SOTA_ns;
-    } else {
+        *timeheld += dt_ns;
+    } else if (p_num > 0) {
         /* - Keep pressing different buttons or press no buttons - */
         memcpy(held, pressed, p_num * sizeof(*held));
         *h_num = p_num;
+        *timeheld += dt_ns;
+    } else if (p_num == 0) {
         *timeheld = 0.0f;
     }
 }

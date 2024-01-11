@@ -106,7 +106,6 @@ void Control_Keyboard(tnecs_system_input *input) {
         }
 
         Keyboard_Held(kb->held_button, bheld, theld, press, pnum, input->deltat);
-
         /* - Unblock keyboard - */
         if ((*theld) == 0)
             kb->block_buttons = false;
