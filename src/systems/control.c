@@ -136,19 +136,6 @@ void Control_Keyboard(tnecs_system_input *input) {
 
         Keyboard_Held(kb->held_move, mheld, theld_ns, press, pnum, input->deltat);
 
-        // #ifdef SOTA_MUSIC_TOGGLE
-        // if (kb_state[SOTA_MUSIC_TOGGLE]) {
-        //     i32 held_ns = kb->timeheld_button_ns;
-        //     if (held_ns < 1000)
-        //         Event_Emit(__func__, SDL_USEREVENT, event_Music_Toggle, NULL, NULL);
-        // }
-        // #endif /* SOTA_MUSIC_TOGGLE */
-
-        // #ifdef SOTA_INTERACTIVE_RELOAD
-        // if (kb_state[SOTA_INTERACTIVE_RELOAD])
-        //     Event_Emit(__func__, SDL_USEREVENT, event_Reload, NULL, NULL);
-        // #endif /* SOTA_INTERACTIVE_RELOAD */
-
         struct Point target    = sld_arr[order].target;
         struct Point pixel_pos = pos_arr[order].pixel_pos;
         Control_Cursor_Moves(sota, cursor_move, target, pixel_pos, *ct);
