@@ -17,9 +17,10 @@ void Control_Cursor_Moves(struct Game *sota,    struct Point cursor_move,
     }
 
     /* - Pause cursor after moving - */
-    int min = 0;
-    int max = CURSOR_FIRSTMOVE_PAUSE_ms;
-    if ((sota->cursor_moved_time_ms > min) && (sota->cursor_moved_time_ms < max)) {
+    i32 min     = 0;
+    i32 max     = CURSOR_FIRSTMOVE_PAUSE_ms;
+    i32 moved   = sota->cursor_moved_time_ms;
+    if ((moved > min) && (moved < max)) {
         return;
     }
 
@@ -99,7 +100,7 @@ void Control_Keyboard(tnecs_system_input *input) {
         i32    *theld_ns = &kb->timeheld_move_ns;
         size_t *bheld    = &kb->held_button_num;
 
-        for (int sota_b = SOTA_BUTTON_A; sota_b <= SOTA_BUTTON_TRIGGER_RIGHT; sota_b++) {
+        for (int sota_b = SOTA_BUTTON_A; sota_b < SOTA_BUTTON_END; sota_b++) {
             if (Keyboard_isPressed(kb, kb_state, sota_b))
                 Keyboard_Pressed(sota_b, press, &pnum, ct, sota->inputs[sota_b], kb);
         }
@@ -118,16 +119,6 @@ void Control_Keyboard(tnecs_system_input *input) {
         bool left  = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_LEFT);
         bool down  = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_DOWN);
 
-        #ifdef SOTA_MUSIC_TOGGLE
-        if (kb_state[SOTA_MUSIC_TOGGLE])
-            Event_Emit(__func__, SDL_USEREVENT, event_Music_Toggle, NULL, NULL);
-        #endif /* SOTA_MUSIC_TOGGLE */
-
-        #ifdef SOTA_INTERACTIVE_RELOAD
-        if (kb_state[SOTA_INTERACTIVE_RELOAD])
-            Event_Emit(__func__, SDL_USEREVENT, event_Reload, NULL, NULL);
-        #endif /* SOTA_INTERACTIVE_RELOAD */
-
         /* - Collapse diagonals to one of 4 main directions - */
         if (up && !down) {
             cursor_move.y       = -1;
@@ -145,6 +136,19 @@ void Control_Keyboard(tnecs_system_input *input) {
         }
 
         Keyboard_Held(kb->held_move, mheld, theld_ns, press, pnum, input->deltat);
+
+        // #ifdef SOTA_MUSIC_TOGGLE
+        // if (kb_state[SOTA_MUSIC_TOGGLE]) {
+        //     i32 held_ns = kb->timeheld_button_ns;
+        //     if (held_ns < 1000)
+        //         Event_Emit(__func__, SDL_USEREVENT, event_Music_Toggle, NULL, NULL);
+        // }
+        // #endif /* SOTA_MUSIC_TOGGLE */
+
+        // #ifdef SOTA_INTERACTIVE_RELOAD
+        // if (kb_state[SOTA_INTERACTIVE_RELOAD])
+        //     Event_Emit(__func__, SDL_USEREVENT, event_Reload, NULL, NULL);
+        // #endif /* SOTA_INTERACTIVE_RELOAD */
 
         struct Point target    = sld_arr[order].target;
         struct Point pixel_pos = pos_arr[order].pixel_pos;
@@ -179,8 +183,7 @@ void Control_Gamepad(tnecs_system_input *input) {
         size_t  *bheld    = &gp->held_button_num;
 
         /* -- Gamepad button checking -- */
-        // TODO: use controller buttons
-        for (int sota_b = SOTA_BUTTON_A; sota_b < SOTA_BUTTON_END; sota_b++) {
+        for (int sota_b = SOTA_BUTTON_A; sota_b <= SOTA_BUTTON_TRIGGER_RIGHT; sota_b++) {
             if (Gamepad_isPressed(gp, sota_b))
                 Gamepad_Pressed(sota_b, press, &pnum, &gp->controller_type, sota->inputs[sota_b], gp);
         }

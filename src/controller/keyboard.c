@@ -15,6 +15,8 @@ struct KeyboardInputMap KeyboardInputMap_default = {
     .y                  = {SDL_SCANCODE_C},
     .shoulder_left      = {SDL_SCANCODE_P},
     .shoulder_right     = {SDL_SCANCODE_TAB},
+    .m                  = {SDL_SCANCODE_M},
+    .space              = {SDL_SCANCODE_SPACE},
 
     .dpad_right_len     = 2,
     .dpad_up_len        = 2,

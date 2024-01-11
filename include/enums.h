@@ -778,6 +778,8 @@ enum SOTA_BUTTONS {
     SOTA_BUTTON_SHOULDER_RIGHT,
     SOTA_BUTTON_TRIGGER_LEFT,
     SOTA_BUTTON_TRIGGER_RIGHT,
+    SOTA_BUTTON_KEYBOARD_M,     /* Debug: toggle */
+    SOTA_BUTTON_KEYBOARD_SPACE, /* Debug: reload */
     SOTA_BUTTON_END,
 };
 extern char sdl_buttons[SOTA_BUTTON_END];

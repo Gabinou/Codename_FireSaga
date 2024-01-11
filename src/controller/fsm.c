@@ -57,6 +57,8 @@ void fsm_Input_sGmpMap_ssMenu(struct Game *sota) {
     sota->inputs[SOTA_BUTTON_SHOULDER_RIGHT]  = event_Input_FASTER;
     sota->inputs[SOTA_BUTTON_TRIGGER_LEFT]    = event_Input_MENULEFT;
     sota->inputs[SOTA_BUTTON_TRIGGER_RIGHT]   = event_Input_MENURIGHT;
+    sota->inputs[SOTA_BUTTON_KEYBOARD_M]      = event_Music_Toggle;
+    sota->inputs[SOTA_BUTTON_KEYBOARD_SPACE]  = event_Reload;
 }
 
 // TODO: button global range
@@ -74,4 +76,7 @@ void fsm_Input_sGmpMap_ssStby(struct Game *sota) {
     sota->inputs[SOTA_BUTTON_SHOULDER_RIGHT]  = event_Input_FASTER;
     sota->inputs[SOTA_BUTTON_TRIGGER_LEFT]    = event_Input_ZOOM_IN;
     sota->inputs[SOTA_BUTTON_TRIGGER_RIGHT]   = event_Input_ZOOM_OUT;
+    sota->inputs[SOTA_BUTTON_KEYBOARD_M]      = event_Music_Toggle;
+    sota->inputs[SOTA_BUTTON_KEYBOARD_SPACE]  = event_Reload;
+
 }
