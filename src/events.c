@@ -444,7 +444,7 @@ void Reload_MapHpBar(void *struct_ptr) {
 void receive_event_Music_Toggle(struct Game *sota, SDL_Event *event) {
     /* --- Toggle music --- */
     SDL_Log("receive_event_Music_Toggle");
-    if (Mix_PlayingMusic()) {
+    if (Mix_PlayingMusic() && !Mix_PausedMusic()) {
         Game_Music_Pause(sota);
     } else {
         Game_Music_Play(sota);
