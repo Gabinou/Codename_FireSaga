@@ -118,6 +118,11 @@ void Control_Keyboard(tnecs_system_input *input) {
         bool left  = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_LEFT);
         bool down  = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_DOWN);
 
+        #ifdef SOTA_MUSIC_DEBUG
+        if (kb_state[SOTA_MUSIC_DEBUG])
+            Event_Emit(__func__, SDL_USEREVENT, event_Music_Toggle, NULL, NULL);
+        #endif /* SOTA_MUSIC_DEBUG */
+
         #ifdef SOTA_INTERACTIVE_RELOAD
         if (kb_state[SOTA_INTERACTIVE_RELOAD])
             Event_Emit(__func__, SDL_USEREVENT, event_Reload, NULL, NULL);

@@ -832,6 +832,18 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
 }
 
 void Game_Music_Play(struct Game *sota) {
-    if (Mix_PlayingMusic() == 0)
-        Mix_PlayMusic(sota->music, -1);
+    if (!Mix_PlayingMusic()) {
+        if (Mix_PausedMusic())
+            Mix_ResumeMusic();
+        else
+            Mix_PlayMusic(sota->music, -1);
+    }
+}
+
+void Game_Music_Stop(struct Game *sota) {
+    Mix_HaltMusic();
+}
+
+void Game_Music_Pause(struct Game *sota) {
+    Mix_PauseMusic();
 }

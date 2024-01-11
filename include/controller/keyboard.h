@@ -12,6 +12,10 @@
 #include "controller/gamepad.h"
 #include "SDL.h"
 
+#define SOTA_INTERACTIVE_RELOAD SDL_SCANCODE_SPACE
+
+#define SOTA_MUSIC_TOGGLE SDL_SCANCODE_M
+
 extern struct KeyboardInputMap {
     /* Physical dpad -> Keyboard equivalent */
     SDL_Scancode    dpad_right[SOTA_MAPPABLE_BUTTONS_NUM];

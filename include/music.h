@@ -5,7 +5,7 @@
 #include "filesystem.h"
 #include "SDL_mixer.h"
 
-enum MUSIC_CAMP{
+enum MUSIC_CAMP {
     CAMP_MUSIC_NUM      = 4, /* Same as number of story arcs maybe? */
     COMBAT_MUSIC_NUM    = 4, /* Same as number of story arcs maybe? */
 };

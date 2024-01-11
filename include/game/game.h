@@ -231,5 +231,7 @@ void Game_FPS_Create(struct Game *sota, i64 ut);
 
 /* --- Music --- */
 void Game_Music_Play(struct Game *sota);
+void Game_Music_Stop(struct Game *sota);
+void Game_Music_Pause(struct Game *sota);
 
 #endif /* GAME_STRUCT_H */

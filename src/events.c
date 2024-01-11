@@ -441,6 +441,16 @@ void Reload_MapHpBar(void *struct_ptr) {
     map_hp_bar->update = true;
 }
 
+void receive_event_Music_Toggle(struct Game *sota, SDL_Event *event) {
+    /* --- Toggle music --- */
+    SDL_Log("receive_event_Music_Toggle");
+    if (Mix_PlayingMusic()) {
+        Game_Music_Pause(sota);
+    } else {
+        Game_Music_Play(sota);
+    }
+}
+
 void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     /* --- Benchmarking reload time --- */
     u64 before_ns = tnecs_get_ns();
