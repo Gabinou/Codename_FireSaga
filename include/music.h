@@ -22,9 +22,9 @@ extern Mix_Music *combat[COMBAT_MUSIC_NUM];
 
 
 #define SOTA_CURSOR_SOUNDFX PATH_JOIN("assets", "soundfx", "GBA_FE8_Other", "Select 5.wav")
-#define SOTA_CURSOR_SOUNDFX_DURATION 13 /* [ms] */ 
+#define SOTA_CURSOR_SOUNDFX_DURATION 130 /* [ms] */ 
 #define SOTA_TURN_SOUNDFX PATH_JOIN("assets", "soundfx", "GBA_FE8_Other", "Next Turn.wav")
-#define SOTA_TURN_SOUNDFX_DURATION 135 /* [ms] */ 
+#define SOTA_TURN_SOUNDFX_DURATION 1350 /* [ms] */ 
 
 Mix_Music *Music_Load_Debug(void);
 
