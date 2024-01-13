@@ -413,8 +413,8 @@ void Game_Cursor_Create(struct Game *sota) {
     slider = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Slider);
     SDL_assert(slider != NULL);
     *slider = Slider_default;
-    slider->slidefactors[DIMENSION_X] = 1.20f;
-    slider->slidefactors[DIMENSION_Y] = 1.20f;
+    slider->slidefactors[DIMENSION_X] = 1.30f;
+    slider->slidefactors[DIMENSION_Y] = 1.30f;
     slider->update_wait_ns = CURSOR_SLIDEWAIT_ns;
     slider->slidetype = SLIDETYPE_GEOMETRIC;
 

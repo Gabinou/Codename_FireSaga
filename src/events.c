@@ -137,7 +137,7 @@ void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
 
     /* Play Cursor Soundfx */
     if (sota->soundfx_cursor)
-        Mix_PlayChannel(0, sota->soundfx_cursor, 0);
+        Mix_PlayChannel(SOTA_SOUNDFX_CURSOR_CHANNEL, sota->soundfx_cursor, 0);
 
     // if moving more than one tile, ignore movement.
     if (fsm_eCrsMvs_ss[sota->substate] != NULL)
