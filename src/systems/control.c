@@ -21,12 +21,12 @@ void Control_Cursor_Moves(struct Game *sota,    struct Point cursor_move,
     i32 max     = CURSOR_FIRSTMOVE_PAUSE_ms;
     i32 moved   = sota->cursor_moved_time_ms;
     if ((moved > min) && (moved < max)) {
+        SDL_Log("Cursor FIRSTPAUSE");
         return;
     }
 
     sota->cursor_move     = cursor_move;
     sota->controller_code = controller_type;
-
 }
 
 void Gamepad_Pressed(i8 sota_b, i8 *press, i8 *pressed_num, i32 *controller_type,

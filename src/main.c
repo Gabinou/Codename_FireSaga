@@ -143,6 +143,7 @@ int main(int argc, char *argv[]) {
         time_ns        = (elapsedTime_ns + delay_ms * SOTA_ns / SOTA_ms);
 
         Game_Cursor_movedTime_Compute(sota, time_ns);
+        // printf("sota->cursor_moved_time_ms %d\n", sota->cursor_moved_time_ms);
         tnecs_custom_system_run(sota->world, Time_Synchronize,
                                 sota->timer_typeflag, time_ns, NULL);
 
