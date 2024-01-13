@@ -90,7 +90,6 @@ void Game_debugMap_Load(struct Game *sota) {
 
     SDL_Log("Loading Music\n");
     Map_Music_Load(sota->map);
-    sota->music = sota->map->music_friendly;
 }
 
 /* --- Reinforcements --- */
