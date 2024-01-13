@@ -116,7 +116,7 @@ struct Game Game_default = {
     /* --- Music --- */
     .music              = NULL,
     .soundfx_cursor     = NULL,
-    .soundfx_2          = NULL,
+    .soundfx_next_turn  = NULL,
 
     .chapter            = -1,
     .state              = GAME_STATE_Title_Screen,
@@ -180,9 +180,9 @@ void Game_Free(struct Game *sota) {
         Mix_FreeChunk(sota->soundfx_cursor);
         sota->soundfx_cursor = NULL;
     }
-    if (sota->soundfx_2 != NULL) {
-        Mix_FreeChunk(sota->soundfx_2);
-        sota->soundfx_2 = NULL;
+    if (sota->soundfx_next_turn != NULL) {
+        Mix_FreeChunk(sota->soundfx_next_turn);
+        sota->soundfx_next_turn = NULL;
     }
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Map");

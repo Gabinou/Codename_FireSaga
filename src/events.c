@@ -656,7 +656,7 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
         sota->music = sota->map->music_enemy;
     }
     Game_Music_Play(sota);
-    
+
     /* -- Play Turn Transition -- */
     if (sota->soundfx_next_turn) {
         Mix_PlayChannel(-1, sota->soundfx_next_turn, 0);
