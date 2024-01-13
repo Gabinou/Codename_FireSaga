@@ -8,6 +8,9 @@
 #include "controller/touchpad.h"
 #include "systems/control.h"
 
+/* Need to be just a bit above 1.0 for cursor to sound good */
+#define SOTA_CURSOR_SLIDEFACTOR 1.05f
+
 /* --- Cursor --- */
 void Game_Cursor_Free(   struct Game *sota);
 void Game_Cursor_Create( struct Game *sota);

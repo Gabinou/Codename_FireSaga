@@ -137,7 +137,6 @@ void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
 
     /* Play Cursor Soundfx */
     if (sota->soundfx_cursor) {
-        SDL_Log("Play cursor fx %d\n", sota->cursor_moved_time_ms);
         Mix_PlayChannel(SOTA_SOUNDFX_CURSOR_CHANNEL, sota->soundfx_cursor, 0);
     }
 
