@@ -135,13 +135,16 @@ void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
     if (sota->moved_direction < 0)
         return;
 
+    /* Play Cursor Soundfx */
+    if (sota->soundfx_cursor)
+        Mix_PlayChannel(0, sota->soundfx_cursor, 0);
+
     // if moving more than one tile, ignore movement.
     if (fsm_eCrsMvs_ss[sota->substate] != NULL)
         fsm_eCrsMvs_ss[sota->substate](sota, mover_entity, &sota->cursor_move);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moved, &sota->cursor_move,
                userevent->user.data2);
-
 }
 
 void receive_event_Cursor_Moved(struct Game *sota, SDL_Event *userevent) {

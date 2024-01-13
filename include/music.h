@@ -13,8 +13,10 @@ enum MUSIC_CAMP {
 };
 
 enum SOTA_MUSIC {
-    SOTA_MUSIC_NULL         = -1,
-    SOTA_MUSIC_DEBUG        =  0,
+    SOTA_MUSIC_FADEIN       = 250, /* [ms] */
+    SOTA_MUSIC_FADEOUT      = 150, /* [ms] */
+    SOTA_MUSIC_NULL         =  -1,
+    SOTA_MUSIC_DEBUG        =   0,
     SOTA_MUSIC_NUM,
 };
 
@@ -40,8 +42,7 @@ enum SOTA_SOUNDFX_DURATION {
 
 extern struct s8 soundfx_path[SOTA_SOUNDFX_NUM];
 
-#define SOTA_CURSOR_SOUNDFX PATH_JOIN("assets", "soundfx", "GBA_FE8_Other", "Select 5.wav")
-#define SOTA_TURN_SOUNDFX PATH_JOIN("assets", "soundfx", "GBA_FE8_Other", "Next Turn.wav")
-
+Mix_Chunk *Soundfx_Load(int i);
+Mix_Chunk *Soundfx_Load_Cursor(void);
 
 #endif /* MUSIC_H */

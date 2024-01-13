@@ -113,9 +113,10 @@ struct Game Game_default = {
     .inputs = {0},
 
     .ai_state   = {0},
-    .music      = NULL,
-    .soundfx_1  = NULL,
-    .soundfx_2  = NULL,
+    /* --- Music --- */
+    .music              = NULL,
+    .soundfx_cursor     = NULL,
+    .soundfx_2          = NULL,
 
     .chapter            = -1,
     .state              = GAME_STATE_Title_Screen,
@@ -133,6 +134,7 @@ void Game_Free(struct Game *sota) {
     Game_Mouse_Free(sota);
     Game_menuStack_Free(sota);
     Game_PlayerSelectMenus_Free(sota);
+
     if (sota->map_enemies != NULL) {
         DARR_FREE(sota->map_enemies);
         sota->map_enemies = NULL;
@@ -174,9 +176,9 @@ void Game_Free(struct Game *sota) {
         SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Control");
         // controlSDL_free();
     }
-    if (sota->soundfx_1 != NULL) {
-        Mix_FreeChunk(sota->soundfx_1);
-        sota->soundfx_1 = NULL;
+    if (sota->soundfx_cursor != NULL) {
+        Mix_FreeChunk(sota->soundfx_cursor);
+        sota->soundfx_cursor = NULL;
     }
     if (sota->soundfx_2 != NULL) {
         Mix_FreeChunk(sota->soundfx_2);
@@ -518,6 +520,9 @@ void Game_Init(struct Game *sota) {
 
     /* --- Set default contextual inputs --- */
     fsm_Input_s[sota->state](sota);
+
+    /* --- Soundfx --- */
+    sota->soundfx_cursor = Soundfx_Load_Cursor();
 }
 
 // TODO: Rename
@@ -827,18 +832,18 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
 
 void Game_Music_Play(struct Game *sota) {
     if (sota->music == NULL) {
-        SDL_LogWarning(SOTA_LOG_AUDIO, "Sota has no song to play.")
+        SDL_LogWarn(SOTA_LOG_AUDIO, "Sota has no song to play.");
         return;
     }
 
     if (!Mix_PlayingMusic())
-        Mix_PlayMusic(sota->music, -1);
+        Mix_FadeInMusic(sota->music, -1, SOTA_MUSIC_FADEIN);
     else if (Mix_PausedMusic())
         Mix_ResumeMusic();
 }
 
 void Game_Music_Stop(struct Game *sota) {
-    Mix_HaltMusic();
+    Mix_FadeOutMusic(SOTA_MUSIC_FADEOUT);
 }
 
 void Game_Music_Pause(struct Game *sota) {

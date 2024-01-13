@@ -187,7 +187,7 @@ struct Game {
 
     /* The music that will be played. */
     Mix_Music *music;
-    Mix_Chunk *soundfx_1;
+    Mix_Chunk *soundfx_cursor;
     Mix_Chunk *soundfx_2;
 
     u8     party_size;
