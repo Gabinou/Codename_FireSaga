@@ -7,7 +7,6 @@
 #include "structs.h"
 #include "RNG.h"
 #include "nmath.h"
-// #include "AI.h"
 #include "unit/unit.h"
 
 /* --- FORWARD DECLARATIONS --- */
