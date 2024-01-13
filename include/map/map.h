@@ -15,6 +15,7 @@
 #include "unit/unit.h"
 #include "position.h"
 #include "sprite.h"
+#include "music.h"
 #include "SDL.h"
 #include "SDL_render.h"
 #include "SDL_mixer.h"

@@ -12,6 +12,10 @@ struct s8 music_path[SOTA_MUSIC_NUM] = {
 
 
 Mix_Music *Music_Load(int i) {
+    if ((i <= SOTA_MUSIC_NULL) || (i >= SOTA_MUSIC_NUM)) {
+        SDL_LogDebug(SOTA_LOG_AUDIO, "Music index %i is invalid", i);
+        return (NULL);
+    }
     Mix_Music *music = Mix_LoadMUS(music_path[i].data);
     SDL_assert(music);
     return (music);

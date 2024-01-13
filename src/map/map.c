@@ -165,7 +165,6 @@ void Map_Units_Free(struct Map *map) {
 }
 
 void Map_Units_Hide(struct Map *map) {
-
     for (size_t i = 0; i < (map->col_len * map->row_len); i++) {
         tnecs_entity uent = map->unitmap[i];
         if (uent == TNECS_NULL)
@@ -174,7 +173,6 @@ void Map_Units_Hide(struct Map *map) {
         if (sprite != NULL)
             sprite->visible = false;
     }
-
 }
 
 void Map_Free(struct Map *map) {
@@ -874,4 +872,10 @@ i8 Map_Army_Next(struct Map *map) {
 
 void Map_Turn_Increment(struct Map *map) {
     map->turn++;
+}
+
+/* --- Music --- */
+void Map_Music_Load(struct Map *map) {
+    sota->music_enemy       = Music_Load(sota->music_i_enemy);
+    sota->music_friendly    = Music_Load(sota->music_i_friendly);
 }
