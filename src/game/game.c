@@ -832,15 +832,18 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
 }
 
 void Game_Music_Play(struct Game *sota) {
+
     if (sota->music == NULL) {
         SDL_LogWarn(SOTA_LOG_AUDIO, "Sota has no song to play.");
         return;
     }
 
+    #ifndef DEBUG_NO_MUSIC
     if (!Mix_PlayingMusic())
         Mix_FadeInMusic(sota->music, -1, SOTA_MUSIC_FADEIN_ms);
     else if (Mix_PausedMusic())
         Mix_ResumeMusic();
+    #endif /* DEBUG_NO_MUSIC */
 }
 
 void Game_Music_Stop(struct Game *sota) {
