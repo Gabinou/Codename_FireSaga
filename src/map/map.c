@@ -876,6 +876,6 @@ void Map_Turn_Increment(struct Map *map) {
 
 /* --- Music --- */
 void Map_Music_Load(struct Map *map) {
-    sota->music_enemy       = Music_Load(sota->music_i_enemy);
-    sota->music_friendly    = Music_Load(sota->music_i_friendly);
+    map->music_enemy       = Music_Load(map->music_i_enemy);
+    map->music_friendly    = Music_Load(map->music_i_friendly);
 }

@@ -641,6 +641,15 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(army < ARMY_NUM);
     s8 army_name = armyNames[army];
 
+    /* -- Change music -- */
+    Game_Music_Stop(sota);
+    if (SotA_isPC(army)) {
+        sota->music = sota->map->music_friendly;
+    } else {
+        sota->music = sota->map->music_enemy;
+    }
+    Game_Music_Play(sota);
+
     struct Text *text;
     text  = TNECS_GET_COMPONENT(sota->world, turn_transition, Text);
     *text = Text_default;
