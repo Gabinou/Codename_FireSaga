@@ -87,6 +87,9 @@ void Game_debugMap_Load(struct Game *sota) {
 
     SDL_Log("Loading in reinforcements\n");
     Game_Map_Reinforcements_Load(sota);
+
+    SDL_Log("Loading Music\n");
+    sota->music = Music_Load_Debug();
 }
 
 /* --- Reinforcements --- */

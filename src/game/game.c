@@ -522,8 +522,6 @@ void Game_Init(struct Game *sota) {
 
     /* --- Set default contextual inputs --- */
     fsm_Input_s[sota->state](sota);
-
-    sota->music = Music_Load_Debug();
 }
 
 // TODO: Rename

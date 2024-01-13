@@ -105,6 +105,14 @@ struct Map Map_default = {
     .attacktolist   = NULL,
     .temp   = NULL,
 
+    // .show_move              = false,
+
+    /* --- MUSIC --- */
+    .music_i_friendly           = SOTA_MUSIC_DEBUG,
+    .music_i_enemy              = -1,
+    .music_friendly             = NULL,
+    .music_enemy                = NULL,
+
     // .boss;
     // .bossdied;
     // .seized; // maybe unecessary if turn system.
@@ -171,6 +179,17 @@ void Map_Units_Hide(struct Map *map) {
 
 void Map_Free(struct Map *map) {
     SDL_assert(map);
+    /* - Music -*/
+    if (map->music_enemy != NULL) {
+        Mix_FreeMusic(map->music_enemy);
+        map->music_enemy = NULL;
+    }
+    if (map->music_friendly != NULL) {
+        Mix_FreeMusic(map->music_friendly);
+        map->music_friendly = NULL;
+    }
+
+    /* - Edges - */
     if (map->edges_danger != NULL) {
         SDL_free(map->edges_danger);
         map->edges_danger = NULL;

@@ -16,7 +16,8 @@
 #include "position.h"
 #include "sprite.h"
 #include "SDL.h"
-#include "SDL2/SDL_render.h"
+#include "SDL_render.h"
+#include "SDL_mixer.h"
 
 /* --- GLOSSARY --- */
 // Traversing and occupying tiles
@@ -197,6 +198,12 @@ struct Map {
     u16 chest_num;
     u16 breakable_num;
 
+    /* --- MUSIC --- */
+    i32 music_i_friendly;
+    i32 music_i_enemy;
+    Mix_Music *music_friendly;
+    Mix_Music *music_enemy;
+
     /* --- MAP SWITCHES --- */
     bool update             : 1;
     bool seized             : 1; /* maybe unnecessary if turn system. */
@@ -252,5 +259,8 @@ void Map_writeJSON( void *input, cJSON             *jmap);
 /* --- Map events / Triggers --- */
 void Map_Turn_Increment(struct Map *map);
 i8 Map_Army_Next(struct Map *map);
+
+/* --- Music --- */
+void Map_Music_Load(struct Map *map);
 
 #endif /* MAP_H */

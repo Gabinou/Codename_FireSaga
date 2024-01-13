@@ -49,10 +49,6 @@ int main(int argc, char *argv[]) {
     /* --- LOGGING --- */
     Log_Init();
 
-    printf("%s\n", music_path[0].data);
-    printf("%s\n", soundfx_path[0].data);
-    printf("%s\n", soundfx_path[1].data);
-    getchar();
     #ifdef SDL_ASSERT_LEVEL
     SDL_LogDebug(SOTA_LOG_SYSTEM, "SDL_ASSERT_LEVEL %d\n", SDL_ASSERT_LEVEL);
     #endif /* SDL_ASSERT_LEVEL */
