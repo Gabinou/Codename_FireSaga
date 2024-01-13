@@ -174,10 +174,6 @@ void Game_Free(struct Game *sota) {
         SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Control");
         // controlSDL_free();
     }
-    if (sota->music != NULL) {
-        Mix_FreeMusic(sota->music);
-        sota->music = NULL;
-    }
     if (sota->soundfx_1 != NULL) {
         Mix_FreeChunk(sota->soundfx_1);
         sota->soundfx_1 = NULL;
