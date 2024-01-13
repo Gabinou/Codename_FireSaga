@@ -32,7 +32,7 @@ tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code) {
     struct controllerKeyboard *keyboard_ptr;
     switch (code) {
         case CONTROLLER_MOUSE:
-            SDL_Log("CONTROLLER_MOUSE");
+            // SDL_Log("CONTROLLER_MOUSE");
             if (!sota->ismouse) {
                 Event_Emit(__func__, SDL_USEREVENT, event_Mouse_Enable, NULL, NULL);
                 // Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Disable, NULL, NULL);
@@ -40,7 +40,7 @@ tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code) {
             out_accepter_entity = sota->entity_mouse;
             break;
         case CONTROLLER_GAMEPAD:
-            SDL_Log("CONTROLLER_GAMEPAD");
+            // SDL_Log("CONTROLLER_GAMEPAD");
             if (!sota->iscursor) {
                 Event_Emit(__func__, SDL_USEREVENT, event_Mouse_Disable, NULL, NULL);
                 Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Enable, NULL, NULL);
@@ -54,7 +54,7 @@ tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code) {
             keyboard_ptr->timeheld_button_ns  = SOTA_ns / sota->settings.FPS.cap;
             break;
         case CONTROLLER_KEYBOARD:
-            SDL_Log("CONTROLLER_KEYBOARD");
+            // SDL_Log("CONTROLLER_KEYBOARD");
             if (!sota->iscursor) {
                 Event_Emit(__func__, SDL_USEREVENT, event_Mouse_Disable, NULL, NULL);
                 Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Enable, NULL, NULL);
@@ -136,8 +136,10 @@ void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
         return;
 
     /* Play Cursor Soundfx */
-    if (sota->soundfx_cursor)
+    if (sota->soundfx_cursor) {
+        SDL_Log("Play cursor fx %d\n", sota->cursor_moved_time_ms);
         Mix_PlayChannel(SOTA_SOUNDFX_CURSOR_CHANNEL, sota->soundfx_cursor, 0);
+    }
 
     // if moving more than one tile, ignore movement.
     if (fsm_eCrsMvs_ss[sota->substate] != NULL)

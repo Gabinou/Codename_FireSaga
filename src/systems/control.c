@@ -16,7 +16,6 @@ void Control_Cursor_Moves(struct Game *sota,    struct Point cursor_move,
     i32 max     = CURSOR_FIRSTMOVE_PAUSE_ms;
     i32 moved   = sota->cursor_moved_time_ms;
     if ((moved > min) && (moved < max)) {
-        SDL_Log("Cursor FIRSTPAUSE");
         return;
     }
 
@@ -133,7 +132,6 @@ void Control_Keyboard(tnecs_system_input *input) {
 
         struct Point target    = sld_arr[order].target;
         struct Point pixel_pos = pos_arr[order].pixel_pos;
-        printf("cursor_move %d %d\n", cursor_move.x, cursor_move.y);
         Control_Cursor_Moves(sota, cursor_move, target, pixel_pos, *ct);
     }
 }
