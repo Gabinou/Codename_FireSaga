@@ -176,6 +176,7 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
     if (!(slidex || slidey)) {
         return;
     }
+
     /* -- Menu type -- */
     /* - menu pos - */
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, menu, Menu);
@@ -209,7 +210,6 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
 
 /* -- Moves -- */
 void Game_Cursor_movedTime_Compute(struct Game *sota, uint64_t time_ns) {
-
     // Compute time that cursor has been moving
     if (sota->cursor_frame_moved)
         sota->cursor_moved_time_ms += time_ns / SOTA_us;
@@ -220,8 +220,6 @@ void Game_Cursor_movedTime_Compute(struct Game *sota, uint64_t time_ns) {
 }
 
 bool Game_isCursoronTilemap(struct Game *sota) {
-
-
     bool out = false;
     if (sota->ismouse) {
         tnecs_entity mouse = sota->entity_mouse;
@@ -354,6 +352,19 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
     bool canSend = true;
     //    1- cursor is in sliding animation.
     //       Game_CursorfollowsMouse_onMap TAKES CHARGE
+
+    /* - Skip if cursor is sliding - */
+    struct Position *cursor_position = TNECS_GET_COMPONENT(sota->world, cursor, Position);
+    SDL_assert(cursor_position != NULL);
+    struct Slider *cursor_slider = TNECS_GET_COMPONENT(sota->world, cursor, Slider);
+    SDL_assert(cursor_slider != NULL);
+
+    bool slidex = (cursor_slider->target.x != cursor_position->pixel_pos.x);
+    bool slidey = (cursor_slider->target.y != cursor_position->pixel_pos.y);
+    if (slidex || slidey) {
+        return;
+    }
+
     //    2- cursor is blocked by CURSOR_FIRSTMOVE_PAUSE.
     //       Game_CursorfollowsMouse_onMap TAKES CHARGE
     //    3- cursor is stuck on the edges of the map.

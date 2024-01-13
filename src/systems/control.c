@@ -11,11 +11,6 @@ void Control_Cursor_Moves(struct Game *sota,    struct Point cursor_move,
 
     sota->cursor_frame_moved = true;
 
-    /* - Block sliding cursor - */
-    if ((target.x != px_pos.x) || (target.y != px_pos.y)) {
-        return;
-    }
-
     /* - Pause cursor after moving - */
     i32 min     = 0;
     i32 max     = CURSOR_FIRSTMOVE_PAUSE_ms;
@@ -138,6 +133,7 @@ void Control_Keyboard(tnecs_system_input *input) {
 
         struct Point target    = sld_arr[order].target;
         struct Point pixel_pos = pos_arr[order].pixel_pos;
+        printf("cursor_move %d %d\n", cursor_move.x, cursor_move.y);
         Control_Cursor_Moves(sota, cursor_move, target, pixel_pos, *ct);
     }
 }
