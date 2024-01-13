@@ -128,9 +128,9 @@ void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity mover_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(mover_entity > 0);
     SDL_assert(userevent->user.data1 != NULL);
-    // struct Point * cursor_move = (struct Point *)
-    // userevent->user.data1;
-    // Get movement direction
+
+
+    /* Ignore event if cursor_move direction is wrong */
     sota->moved_direction = Ternary_Direction(sota->cursor_move);
     if (sota->moved_direction < 0)
         return;
@@ -140,7 +140,6 @@ void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
         Mix_PlayChannel(SOTA_SOUNDFX_CURSOR_CHANNEL, sota->soundfx_cursor, 0);
     }
 
-    // if moving more than one tile, ignore movement.
     if (fsm_eCrsMvs_ss[sota->substate] != NULL)
         fsm_eCrsMvs_ss[sota->substate](sota, mover_entity, &sota->cursor_move);
 
@@ -635,7 +634,7 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     struct MapAnimation *map_anim;
     map_anim  = TNECS_GET_COMPONENT(sota->world, turn_transition, MapAnimation);
     *map_anim = MapAnimation_default;
-    map_anim->time_ns = SOTA_ns;
+    map_anim->time_ns = SOTA_SOUNDFX_NEXT_TURN_DURATION_ms * SOTA_us;
 
     /* Get Army name */
     SDL_assert(DARR_NUM(sota->map->army_onfield) > 0);
@@ -657,6 +656,11 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
         sota->music = sota->map->music_enemy;
     }
     Game_Music_Play(sota);
+    
+    /* -- Play Turn Transition -- */
+    if (sota->soundfx_next_turn) {
+        Mix_PlayChannel(-1, sota->soundfx_next_turn, 0);
+    }
 
     struct Text *text;
     text  = TNECS_GET_COMPONENT(sota->world, turn_transition, Text);

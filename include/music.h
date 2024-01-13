@@ -13,8 +13,8 @@ enum MUSIC_CAMP {
 };
 
 enum SOTA_MUSIC {
-    SOTA_MUSIC_FADEIN       = 250, /* [ms] */
-    SOTA_MUSIC_FADEOUT      = 150, /* [ms] */
+    SOTA_MUSIC_FADEIN_ms    = 250, /* [ms] */
+    SOTA_MUSIC_FADEOUT_ms   = 150, /* [ms] */
     SOTA_MUSIC_NULL         =  -1,
     SOTA_MUSIC_DEBUG        =   0,
     SOTA_MUSIC_NUM,
@@ -39,13 +39,14 @@ enum SOTA_SOUNDFX_CHANNEL {
 };
 
 enum SOTA_SOUNDFX_DURATION {
-    SOTA_SOUNDFX_CURSOR_DURATION    =  130, /* [ms] */
-    SOTA_SOUNDFX_NEXT_TURN_DURATION = 1350  /* [ms] */
+    SOTA_SOUNDFX_CURSOR_DURATION_ms     =  130, /* [ms] */
+    SOTA_SOUNDFX_NEXT_TURN_DURATION_ms  = 1350  /* [ms] */
 };
 
 extern struct s8 soundfx_path[SOTA_SOUNDFX_NUM];
 
 Mix_Chunk *Soundfx_Load(int i);
 Mix_Chunk *Soundfx_Load_Cursor(void);
+Mix_Chunk *Soundfx_Load_Next_Turn(void);
 
 #endif /* MUSIC_H */

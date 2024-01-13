@@ -522,7 +522,8 @@ void Game_Init(struct Game *sota) {
     fsm_Input_s[sota->state](sota);
 
     /* --- Soundfx --- */
-    sota->soundfx_cursor = Soundfx_Load_Cursor();
+    sota->soundfx_cursor    = Soundfx_Load_Cursor();
+    sota->soundfx_next_turn = Soundfx_Load_Next_Turn();
 }
 
 // TODO: Rename
@@ -837,13 +838,13 @@ void Game_Music_Play(struct Game *sota) {
     }
 
     if (!Mix_PlayingMusic())
-        Mix_FadeInMusic(sota->music, -1, SOTA_MUSIC_FADEIN);
+        Mix_FadeInMusic(sota->music, -1, SOTA_MUSIC_FADEIN_ms);
     else if (Mix_PausedMusic())
         Mix_ResumeMusic();
 }
 
 void Game_Music_Stop(struct Game *sota) {
-    Mix_FadeOutMusic(SOTA_MUSIC_FADEOUT);
+    Mix_FadeOutMusic(SOTA_MUSIC_FADEOUT_ms);
 }
 
 void Game_Music_Pause(struct Game *sota) {

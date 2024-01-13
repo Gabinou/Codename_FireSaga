@@ -188,7 +188,7 @@ struct Game {
     /* The music that will be played. */
     Mix_Music *music;
     Mix_Chunk *soundfx_cursor;
-    Mix_Chunk *soundfx_2;
+    Mix_Chunk *soundfx_next_turn;
 
     u8     party_size;
     u64    runtime_ns; // -> millions of years

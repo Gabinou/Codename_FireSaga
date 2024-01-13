@@ -54,6 +54,9 @@ Mix_Chunk *Soundfx_Load(int i) {
 
 Mix_Chunk *Soundfx_Load_Cursor(void) {
     return (Soundfx_Load(SOTA_SOUNDFX_CURSOR));
+}
 
+Mix_Chunk *Soundfx_Load_Next_Turn(void) {
+    return (Soundfx_Load(SOTA_SOUNDFX_NEXT_TURN));
 }
 
