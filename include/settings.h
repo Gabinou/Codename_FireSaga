@@ -8,6 +8,7 @@
 #include "SDL.h"
 #include "SDL_mixer.h"
 
+/* --- Enums --- */
 enum PLAYER_SETTINGS {
     SOTA_SETTINGS_NULL              = -1,
     SOTA_SETTINGS_ANIMATION         =  0,
@@ -16,9 +17,53 @@ enum PLAYER_SETTINGS {
     SOTA_SETTINGS_AUTOEND_TURNS     =  3,
     SOTA_SETTINGS_MUSIC             =  4,
     SOTA_SETTINGS_SOUNDFX           =  5,
+    SOTA_SETTINGS_VOLUME            =  6,
     SOTA_SETTINGS_NUM,
 };
 
+enum ANIMATION_SETTINGS {
+    ANIMATION_SETTINGS_NULL         = -1,
+    ANIMATION_SETTINGS_ON           =  0,
+    ANIMATION_SETTINGS_FRIENDLY     =  1,
+    ANIMATION_SETTINGS_ENEMY        =  2,
+    ANIMATION_SETTINGS_OFF          =  3,
+    ANIMATION_SETTINGS_NUM,
+};
+
+enum TEXT_SPEED_SETTINGS {
+    TEXT_SPEED_SETTINGS_NULL        = -1,
+    TEXT_SPEED_SETTINGS_SLOW        =  0,
+    TEXT_SPEED_SETTINGS_MID         =  1,
+    TEXT_SPEED_SETTINGS_FAST        =  2,
+    TEXT_SPEED_SETTINGS_MAX         =  3,
+    TEXT_SPEED_SETTINGS_NUM,
+};
+
+enum AUTOCURSOR_SETTINGS {
+    AUTOCURSOR_SETTINGS_NULL        = -1,
+    AUTOCURSOR_SETTINGS_OFF         =  0,
+    AUTOCURSOR_SETTINGS_ON          =  1,
+};
+
+enum AUTOEND_TURNS_SETTINGS {
+    AUTOEND_TURNS_SETTINGS_NULL     = -1,
+    AUTOEND_TURNS_SETTINGS_OFF      =  0,
+    AUTOEND_TURNS_SETTINGS_ON       =  1,
+};
+
+enum MUSIC_SETTINGS {
+    MUSIC_SETTINGS_NULL             = -1,
+    MUSIC_SETTINGS_OFF              =  0,
+    MUSIC_SETTINGS_ON               =  1,
+};
+
+enum SOUNDFX_SETTINGS {
+    SOUNDFX_SETTINGS_NULL           = -1,
+    SOUNDFX_SETTINGS_OFF            =  0,
+    SOUNDFX_SETTINGS_ON             =  1,
+};
+
+/* --- Structs definition --- */
 struct Music_settings {
     i32 frequency;          /* [Hz] */
     i32 sample_size;        /* [byte] */
