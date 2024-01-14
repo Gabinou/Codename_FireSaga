@@ -74,7 +74,7 @@ fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_LOAD */          NULL,
     /* MENU_OPTION_ERASE */         NULL,
     /* MENU_OPTION_COPY */          NULL,
-    /* MENU_OPTION_OPTIONS */       NULL,
+    /* MENU_OPTION_SETTINGS */       NULL,
     /* MENU_OPTION_EXTRAS */        NULL,
     /* MENU_OPTION_DEBUG_MAP */     &fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDbgMap,
 };
@@ -104,7 +104,7 @@ fsm_menu_t fsm_eCncl_sGmpMap_ssMapCndt_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_LOAD */          NULL,
     /* MENU_OPTION_ERASE */         NULL,
     /* MENU_OPTION_COPY */          NULL,
-    /* MENU_OPTION_OPTIONS */       NULL,
+    /* MENU_OPTION_SETTINGS */       NULL,
     /* MENU_OPTION_EXTRAS */        NULL,
     /* MENU_OPTION_DEBUG_MAP */     NULL,
 };
@@ -134,7 +134,7 @@ fsm_menu_t fsm_eAcpt_sGmpMap_ssMapCndt_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_LOAD */          NULL,
     /* MENU_OPTION_ERASE */         NULL,
     /* MENU_OPTION_COPY */          NULL,
-    /* MENU_OPTION_OPTIONS */       NULL,
+    /* MENU_OPTION_SETTINGS */       NULL,
     /* MENU_OPTION_EXTRAS */        NULL,
     /* MENU_OPTION_DEBUG_MAP */     NULL,
 };

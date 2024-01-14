@@ -348,6 +348,7 @@ void makeContent_PSM_MAP_ACTION(struct Game *sota, void *data1, void *data2) {
     psm->option_num = 0;
     PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_UNITS);
     PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_CONVOY);
+    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_SETTINGS);
     PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_QUIT);
     PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_END_TURN);
     PlayerSelectMenu_Compute_Size(psm, &mc_ptr->n9patch);
@@ -364,7 +365,7 @@ void makeContent_FirstMenu(struct Game *sota) {
     psm->option_num = 0;
     PlayerSelectMenu_Option_Add(psm, MENU_OPTION_DEBUG_MAP);
     PlayerSelectMenu_Option_Add(psm, MENU_OPTION_NEW_GAME);
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_OPTIONS);
+    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_SETTINGS);
     PlayerSelectMenu_Compute_Size(psm, &mc_ptr->n9patch);
 }
 
