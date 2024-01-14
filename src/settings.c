@@ -31,9 +31,9 @@ struct Settings Settings_default = {
         .stack_mode         = MAP_SETTING_STACK_DANGERMAP
     },
     .music_settings = {
-        .frequency         = 44100,                /* [Hz] */
-        .sample_size        =  2048,                /* [byte] */
-        .channels  =     2,
+        .channels           =     2,
+        .frequency          = 44100,               /*  [Hz]  */
+        .sample_size        =  2048,               /* [byte] */
         .format             = MIX_DEFAULT_FORMAT,  /* [byte] */
 
     },

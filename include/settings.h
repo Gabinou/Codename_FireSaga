@@ -65,9 +65,9 @@ enum SOUNDFX_SETTINGS {
 
 /* --- Structs definition --- */
 struct Music_settings {
-    i32 frequency;          /* [Hz] */
-    i32 sample_size;        /* [byte] */
-    u16 format;             /* AUDIO_* */
+    i32 frequency;          /*  [Hz]    */
+    i32 sample_size;        /* [byte]   */
+    u16 format;             /* AUDIO_*  */
     i32 channels;
 };
 
@@ -79,8 +79,9 @@ struct Map_settings {
     SDL_Color   color_grid;
     bool        grid_show;
 };
-// grid_thickness 1 ->  |   (center line only)
-// grid_thickness 2 -> |||  (center line, +/- 1 lines)
+/* grid_thickness 1 ->  |   (center line only)          */
+/* grid_thickness 2 -> |||  (center line, +/- 1 lines)  */
+/*                  and so on...                        */
 
 struct Enemy_Turn_settings {
     u64 pause_post_reinforcement;
