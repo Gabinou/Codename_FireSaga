@@ -4,6 +4,7 @@
 #include "SDL.h"
 #include "structs.h"
 #include "utilities.h"
+#include "settings.h"
 #include "enums.h"
 #include "types.h"
 #include "nmath.h"
