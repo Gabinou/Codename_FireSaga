@@ -796,6 +796,10 @@ void Game_Brightness_Set(struct Game *sota, float bright) {
     SDL_SetWindowBrightness(sota->window, bright);
 }
 
+float Game_Brightness_Get(struct Game *sota) {
+    return(SDL_GetWindowBrightness(sota->window));
+}
+
 /* --- AUDIO --- */
 
 /* -- Music -- */
@@ -842,3 +846,10 @@ void Game_Volume_SoundFX_Set(struct Game *sota, int volume) {
     Mix_MasterVolume(volume); /* - Only for chunks - */
 }
 
+int Game_Volume_Music_Get(  struct Game *sota) {
+    return(Mix_VolumeMusic(-1));
+}
+
+int Game_Volume_SoundFX_Get(struct Game *sota) {
+    return(Mix_MasterVolume(-1));
+}

@@ -233,6 +233,7 @@ void Game_FPS_Create(struct Game *sota, i64 ut);
 
 /* --- SETTINGS --- */
 void Game_Brightness_Set(struct Game *sota, float bright);
+float Game_Brightness_Get(struct Game *sota);
 
 /* --- AUDIO --- */
 /* -- Music -- */
@@ -243,6 +244,8 @@ void Game_Music_Pause(struct Game *sota);
 /* -- Volume -- */
 void Game_Volume_Set(        struct Game *sota, int volume);
 void Game_Volume_Music_Set(  struct Game *sota, int volume);
+int  Game_Volume_Music_Get(  struct Game *sota);
 void Game_Volume_SoundFX_Set(struct Game *sota, int volume);
+int  Game_Volume_SoundFX_Get(struct Game *sota);
 
 #endif /* GAME_STRUCT_H */
