@@ -18,11 +18,9 @@ enum PLAYER_SETTINGS {
     SOTA_SETTINGS_TEXT_SPEED        =  1,
     SOTA_SETTINGS_AUTOCURSOR        =  2,
     SOTA_SETTINGS_AUTOEND_TURNS     =  3,
-    SOTA_SETTINGS_MUSIC             =  4,
-    SOTA_SETTINGS_SOUNDFX           =  5,
-    SOTA_SETTINGS_VOLUME_MASTER     =  6,
-    SOTA_SETTINGS_VOLUME_MUSIC      =  7,
-    SOTA_SETTINGS_VOLUME_SOUNDFX    =  8,
+    SOTA_SETTINGS_VOLUME_MUSIC      =  4,
+    SOTA_SETTINGS_VOLUME_SOUNDFX    =  5,
+    SOTA_SETTINGS_BRIGHTNESS        =  6,
     SOTA_SETTINGS_NUM,
 };
 
@@ -54,18 +52,6 @@ enum AUTOEND_TURNS_SETTINGS {
     AUTOEND_TURNS_SETTINGS_NULL     = -1,
     AUTOEND_TURNS_SETTINGS_OFF      =  0,
     AUTOEND_TURNS_SETTINGS_ON       =  1,
-};
-
-enum MUSIC_SETTINGS {
-    MUSIC_SETTINGS_NULL             = -1,
-    MUSIC_SETTINGS_OFF              =  0,
-    MUSIC_SETTINGS_ON               =  1,
-};
-
-enum SOUNDFX_SETTINGS {
-    SOUNDFX_SETTINGS_NULL           = -1,
-    SOUNDFX_SETTINGS_OFF            =  0,
-    SOUNDFX_SETTINGS_ON             =  1,
 };
 
 /* --- Structs definition --- */
