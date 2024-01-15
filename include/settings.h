@@ -9,6 +9,9 @@
 #include "SDL_mixer.h"
 
 /* --- Enums --- */
+#define SOTA_BRIGHTNESS_MAX 1.0f
+#define SOTA_BRIGHTNESS_MIN 0.0f
+
 enum PLAYER_SETTINGS {
     SOTA_SETTINGS_NULL              = -1,
     SOTA_SETTINGS_ANIMATION         =  0,
@@ -104,6 +107,10 @@ struct Settings {
 
     struct Mouse mouse; /* 16 bits */
     char title[DEFAULT_BUFFER_SIZE];
+
+    int music_volume;
+    int soundfx_volume;
+    float brightness;
 
     bool fullscreen         : 1;
     bool tophand_stronghand : 1;

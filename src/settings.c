@@ -41,6 +41,10 @@ struct Settings Settings_default = {
         .pause_post_reinforcement = 2ULL * SOTA_ns / 2ULL,
     },
 
+    .music_volume   = MIX_MAX_VOLUME / 2,
+    .soundfx_volume = MIX_MAX_VOLUME / 2,
+    .brightness     = SOTA_BRIGHTNESS_MAX,
+
     .mouse              = {MOUSE_DEFAULT_ONHOLD, MOUSE_DEFAULT_MOVE},
     .cursor             = {DEFAULT_CURSOR_FRAMES, DEFAULT_CURSOR_SPEED},
 };

@@ -237,8 +237,8 @@ float Game_Brightness_Get(struct Game *sota);
 
 /* --- AUDIO --- */
 /* -- Music -- */
-void Game_Music_Play(struct Game *sota);
-void Game_Music_Stop(struct Game *sota);
+void Game_Music_Play( struct Game *sota);
+void Game_Music_Stop( struct Game *sota);
 void Game_Music_Pause(struct Game *sota);
 
 /* -- Volume -- */

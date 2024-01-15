@@ -787,9 +787,6 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
 }
 
 /* --- SETTINGS --- */
-
-#define SOTA_BRIGHTNESS_MAX 1.0f
-#define SOTA_BRIGHTNESS_MIN 0.0f
 void Game_Brightness_Set(struct Game *sota, float bright) {
     bright = bright < SOTA_BRIGHTNESS_MIN ? SOTA_BRIGHTNESS_MIN : bright;
     bright = bright > SOTA_BRIGHTNESS_MAX ? SOTA_BRIGHTNESS_MAX : bright;
@@ -797,7 +794,7 @@ void Game_Brightness_Set(struct Game *sota, float bright) {
 }
 
 float Game_Brightness_Get(struct Game *sota) {
-    return(SDL_GetWindowBrightness(sota->window));
+    return (SDL_GetWindowBrightness(sota->window));
 }
 
 /* --- AUDIO --- */
@@ -847,9 +844,9 @@ void Game_Volume_SoundFX_Set(struct Game *sota, int volume) {
 }
 
 int Game_Volume_Music_Get(  struct Game *sota) {
-    return(Mix_VolumeMusic(-1));
+    return (Mix_VolumeMusic(-1));
 }
 
 int Game_Volume_SoundFX_Get(struct Game *sota) {
-    return(Mix_MasterVolume(-1));
+    return (Mix_MasterVolume(-1));
 }
