@@ -786,6 +786,20 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
                TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Timer, Position, Text));
 }
 
+/* --- SETTINGS --- */
+
+#define SOTA_BRIGHTNESS_MAX 1.0f
+#define SOTA_BRIGHTNESS_MIN 0.0f
+void Game_Brightness_Set(struct Game *sota, float bright) {
+    bright = bright < SOTA_BRIGHTNESS_MIN ? SOTA_BRIGHTNESS_MIN : bright;
+    bright = bright > SOTA_BRIGHTNESS_MAX ? SOTA_BRIGHTNESS_MAX : bright;
+    SDL_SetWindowBrightness(sota->window, bright);
+}
+
+/* --- AUDIO --- */
+
+/* -- Music -- */
+
 void Game_Music_Play(struct Game *sota) {
 
     if (sota->music == NULL) {
@@ -801,6 +815,7 @@ void Game_Music_Play(struct Game *sota) {
     #endif /* DEBUG_NO_MUSIC */
 }
 
+
 void Game_Music_Stop(struct Game *sota) {
     Mix_FadeOutMusic(SOTA_MUSIC_FADEOUT_ms);
 }
@@ -808,3 +823,22 @@ void Game_Music_Stop(struct Game *sota) {
 void Game_Music_Pause(struct Game *sota) {
     Mix_PauseMusic();
 }
+
+/* -- Volume -- */
+void Game_Volume_Set(struct Game *sota, int volume) {
+    Game_Volume_Music_Set(  sota, volume);
+    Game_Volume_SoundFX_Set(sota, volume);
+}
+
+void Game_Volume_Music_Set(struct Game *sota, int volume) {
+    volume = volume <        0       ?        0       : volume;
+    volume = volume > MIX_MAX_VOLUME ? MIX_MAX_VOLUME : volume;
+    Mix_VolumeMusic(volume);
+}
+
+void Game_Volume_SoundFX_Set(struct Game *sota, int volume) {
+    volume = volume <        0       ?        0       : volume;
+    volume = volume > MIX_MAX_VOLUME ? MIX_MAX_VOLUME : volume;
+    Mix_MasterVolume(volume); /* - Only for chunks - */
+}
+
