@@ -1032,10 +1032,10 @@ void receive_event_Input_MINIMAP(struct Game *sota, SDL_Event *userevent) {
 
 }
 
-void receive_event_Input_FASTER(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Input_FAST_FORWARD(struct Game *sota, SDL_Event *userevent) {
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
-
+    sota->fast_forward = !sota->fast_forward;
 }
 
 void receive_event_Input_PAUSE(struct Game *sota, SDL_Event *userevent) {
