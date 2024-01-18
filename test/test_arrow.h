@@ -165,7 +165,7 @@ void test_arrow() {
 
     /* -- Add 1 path up -- */
     Arrow_Path_Add(arrow, 5, 6);
-    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 4);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 6);
     end.x = 5;
     end.y = 6;
     test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
@@ -186,7 +186,7 @@ void test_arrow() {
 
     /* -- Add 1 path up -- */
     Arrow_Path_Add(arrow, 5, 4);
-    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 2);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 4);
     end.x = 5;
     end.y = 4;
     test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
@@ -197,7 +197,7 @@ void test_arrow() {
 
     /* -- Add 1 path up -- */
     Arrow_Path_Add(arrow, 5, 3);
-    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 3);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 5);
     end.x = 5;
     end.y = 3;
     test_arrow_draw_start_end(&camera, arrow, renderer, start, end);
@@ -207,7 +207,7 @@ void test_arrow() {
 
     /* -- Add 1 path up -- */
     Arrow_Path_Add(arrow, 5, 2);
-    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 4);
+    SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 6);
     end.x = 5;
     end.y = 2;
     test_arrow_draw_start_end(&camera, arrow, renderer, start, end);

@@ -111,14 +111,18 @@ void _Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in) {
     SDL_assert(arrow->costmap   != NULL);
     struct Point end   = {end_in.x, end_in.y};
     struct Point start = {arrow->pathlist[0], arrow->pathlist[1]};
-
     DARR_NUM(arrow->pathlist) = 0;
     if ((start.x != end.x) || (start.y != end.y)) {
         /* A* implemented here. Goes backwards for some reason. */
         /* IMPORTANT NOTE: Switching start and end CRASHES MY COMPUTER. */
-        arrow->pathlist = Pathfinding_Astar(arrow->pathlist, arrow->costmap, arrow->row_len,
-                                            arrow->col_len, end, start, false);
-        /* Flipping path. */
+        arrow->pathlist = Pathfinding_Astar(arrow->pathlist, arrow->costmap,
+                                            arrow->row_len, arrow->col_len,
+                                            start, end, true);
+        /* Endpoint not included in Astar */
+        DARR_PUT(arrow->pathlist, end.x);
+        DARR_PUT(arrow->pathlist, end.y);
+
+        /* Deciding path. */
         i32 pointnum    = DARR_NUM(arrow->pathlist) / TWO_D;
         for (i32 i = 0; i < (pointnum - 1); i++)
             _Arrow_Decider(arrow, i);
