@@ -98,7 +98,8 @@ void PopUp_Objective_Compute_Size(struct PopUp_Objective *po, struct n9Patch *n9
     }
 
     n9patch->size_pixels.x = po->text_width;
-    n9patch->size_pixels.y = po->padding.top + po->padding.bottom + ASCII_GLYPH_HEIGHT * PO_ROW_NUM;
+    n9patch->size_pixels.y = po->padding.top + po->padding.bottom + po->pixelnours->glyph_height *
+                             PO_ROW_NUM;
     n9patch->size_patches.x = n9patch->size_pixels.x / n9patch->patch_pixels.x + 1;
     n9patch->size_patches.y = n9patch->size_pixels.y / n9patch->patch_pixels.y;
 
@@ -170,7 +171,8 @@ void PopUp_Objective_Update(struct PopUp_Objective *po,
     n9patch->scale.y = scale_y;
 
     /* -- Writing preliminaries -- */
-    int total_text_height = PO_ROW_NUM * ASCII_GLYPH_HEIGHT + n9patch->pos.y + po->padding.top;
+    int total_text_height = PO_ROW_NUM * po->pixelnours->glyph_height + n9patch->pos.y +
+                            po->padding.top;
     int posx = n9patch->pos.x + po->padding.left, posy;
     int shift_y = (n9patch->size_patches.y * n9patch->patch_pixels.y) - total_text_height;
     shift_y /= 2;
@@ -183,7 +185,7 @@ void PopUp_Objective_Update(struct PopUp_Objective *po,
 
     /* -- SUB-OBJECTIVE -- */
     if (po->sub_objective != NULL) {
-        posy = shift_y + n9patch->pos.y + po->padding.top + ASCII_GLYPH_HEIGHT;
+        posy = shift_y + n9patch->pos.y + po->padding.top + po->pixelnours->glyph_height;
         PixelFont_Write(po->pixelnours, renderer, po->sub_objective, strlen(po->sub_objective), posx, posy);
     }
 

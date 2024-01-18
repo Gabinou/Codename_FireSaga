@@ -528,7 +528,7 @@ void PixelFont_Write(struct PixelFont *font, SDL_Renderer *renderer, char *text,
                 continue;
             case  '\n': /* - newline - */
                 dstrect.x = pos_x;
-                dstrect.y = pos_y + ASCII_GLYPH_HEIGHT + font->linespace;
+                dstrect.y = pos_y + font->glyph_height + font->linespace;
                 continue;
         }
 

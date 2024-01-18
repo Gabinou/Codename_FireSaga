@@ -920,7 +920,7 @@ void Game_FirstMenu_Create(struct Game *sota) {
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
 
-    psm->row_height = ASCII_GLYPH_HEIGHT + 2; /* pixel fonts have python8 pixels*/
+    psm->row_height = sota->pixelnours->glyph_height + 2; /* pixel fonts have python8 pixels*/
     psm->pixelnours = sota->pixelnours;
     SDL_assert(sota->pixelnours != NULL);
     psm->id = sota->first_menu;
