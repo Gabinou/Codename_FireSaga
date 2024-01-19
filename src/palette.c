@@ -125,10 +125,6 @@ void Palette_Tables_Load(void) {
 }
 
 SDL_Surface *Palette_Colors_Swap(SDL_Surface *surface, i8 Oldw, i8 Oldb, i8 NEWw, i8 NEWb) {
-    SDL_assert(Oldw > 0);
-    SDL_assert(Oldb > 0);
-    SDL_assert(NEWw > 0);
-    SDL_assert(NEWb > 0);
     SDL_assert(Oldw < PALETTE_NES_COLOR_NUM);
     SDL_assert(Oldb < PALETTE_NES_COLOR_NUM);
     SDL_assert(NEWw < PALETTE_NES_COLOR_NUM);
@@ -161,7 +157,7 @@ SDL_Surface *Palette_Colors_Swap(SDL_Surface *surface, i8 Oldw, i8 Oldb, i8 NEWw
 
     /* Swap palette of font surface, texture */
     SDL_Surface *buffer = Filesystem_Surface_Palette_Swap(surface, palette_NES);
-    SDL_FreeSurface(buffer);
+    SDL_FreeSurface(surface);
 
     /* Revert colors in palette_NES */
     if (NEWw > -1) {

@@ -184,7 +184,7 @@ void test_pixelfonts_render() {
     SDL_DestroyTexture(n9patch.texture);
     n9patch.texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(n9patch.texture != NULL);
-    PixelFont_Swap_Palette(bubble.pixelfont, renderer, -1, -1);
+    PixelFont_Swap_Palette(bubble.pixelfont, renderer, NES_WHITE, -1);
 
     /* - setting - */
     bubble.target.x = -100;
