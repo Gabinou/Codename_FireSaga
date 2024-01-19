@@ -146,53 +146,58 @@ struct PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len) {
 
 /*--- Internals --- */
 void PixelFont_Swap_Palette(struct PixelFont *font, SDL_Renderer *renderer, i8 NEWw, i8 NEWb) {
-    SDL_assert(NEWw < PALETTE_NES_COLOR_NUM);
-    SDL_assert(NEWb < PALETTE_NES_COLOR_NUM);
-    SDL_assert(palette_NES->ncolors == PALETTE_NES_COLOR_NUM);
-
-    /* Save old colors fropm palette_NES, */
-    /* before changing anything */
-    i8 NESb = 1, NESw = PALETTE_NES_COLOR_NUM - 1;
-    SDL_Color old_white, old_black, new_white, new_black;
-    if (NEWw > -1) {
-        old_white = palette_NES->colors[NESw];
-        new_white = palette_NES->colors[NEWw];
+    i8 Oldb = 1, Oldw = PALETTE_NES_COLOR_NUM - 1;
+    font->surface = Palette_Colors_Swap(font->surface, Oldw, Oldw, NEWw, NEWb);
+    if (font->texture != NULL) {
+        SDL_DestroyTexture(font->texture);
     }
-    if (NEWb > -1) {
-        old_black = palette_NES->colors[NESb];
-        new_black = palette_NES->colors[NEWb];
-    }
-
-    /* Swap colors in palette_NES */
-    if (NEWw > -1) {
-        palette_NES->colors[NESw].r = new_white.r;
-        palette_NES->colors[NESw].g = new_white.g;
-        palette_NES->colors[NESw].b = new_white.b;
-    }
-    if (NEWb > -1) {
-        palette_NES->colors[NESb].r = new_black.r;
-        palette_NES->colors[NESb].g = new_black.g;
-        palette_NES->colors[NESb].b = new_black.b;
-    }
-
-    /* Swap palette of font surface, texture */
-    SDL_Surface *buffer = Filesystem_Surface_Palette_Swap(font->surface, palette_NES);
-    SDL_FreeSurface(font->surface);
-    font->surface = buffer;
     font->texture = SDL_CreateTextureFromSurface(renderer, font->surface);
 
-    /* Revert colors in palette_NES */
-    if (NEWw > -1) {
-        palette_NES->colors[NESw].g = old_white.g;
-        palette_NES->colors[NESw].r = old_white.r;
-        palette_NES->colors[NESw].b = old_white.b;
-    }
-    if (NEWb > -1) {
-        palette_NES->colors[NESb].r = old_black.r;
-        palette_NES->colors[NESb].g = old_black.g;
-        palette_NES->colors[NESb].b = old_black.b;
-    }
+    // SDL_assert(NEWw < PALETTE_NES_COLOR_NUM);
+    // SDL_assert(NEWb < PALETTE_NES_COLOR_NUM);
+    // SDL_assert(palette_NES->ncolors == PALETTE_NES_COLOR_NUM);
 
+    // /* Save old colors from palette_NES, */
+    // /* before changing anything */
+    // SDL_Color old_white, old_black, new_white, new_black;
+    // if (NEWw > -1) {
+    //     old_white = palette_NES->colors[NESw];
+    //     new_white = palette_NES->colors[NEWw];
+    // }
+    // if (NEWb > -1) {
+    //     old_black = palette_NES->colors[NESb];
+    //     new_black = palette_NES->colors[NEWb];
+    // }
+
+    // /* Swap colors in palette_NES */
+    // if (NEWw > -1) {
+    //     palette_NES->colors[NESw].r = new_white.r;
+    //     palette_NES->colors[NESw].g = new_white.g;
+    //     palette_NES->colors[NESw].b = new_white.b;
+    // }
+    // if (NEWb > -1) {
+    //     palette_NES->colors[NESb].r = new_black.r;
+    //     palette_NES->colors[NESb].g = new_black.g;
+    //     palette_NES->colors[NESb].b = new_black.b;
+    // }
+
+    // /* Swap palette of font surface, texture */
+    // SDL_Surface *buffer = Filesystem_Surface_Palette_Swap(font->surface, palette_NES);
+    // SDL_FreeSurface(font->surface);
+    // font->surface = buffer;
+    // font->texture = SDL_CreateTextureFromSurface(renderer, font->surface);
+
+    // /* Revert colors in palette_NES */
+    // if (NEWw > -1) {
+    //     palette_NES->colors[NESw].g = old_white.g;
+    //     palette_NES->colors[NESw].r = old_white.r;
+    //     palette_NES->colors[NESw].b = old_white.b;
+    // }
+    // if (NEWb > -1) {
+    //     palette_NES->colors[NESb].r = old_black.r;
+    //     palette_NES->colors[NESb].g = old_black.g;
+    //     palette_NES->colors[NESb].b = old_black.b;
+    // }
 }
 
 void TextLines_Realloc(struct TextLines *textlines, size_t len) {

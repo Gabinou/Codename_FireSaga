@@ -35,12 +35,15 @@
 /* --- FORWARD DECLARATIONS --- */
 
 enum SOTA_TEXT_BUBBLE {
-    TEXT_BUBBLE_TEXTURE_PATCH_WIDTH = 4,
-    TEXT_BUBBLE_TEXTURE_CORNER      = 3,
-    TEXT_BUBBLE_TEXTURE_MID         = 7,
-    TEXT_BUBBLE_PATCH_PIXELS        = 8,
-    TEXT_BUBBLE_SCALE               = 4,
+    TEXT_BUBBLE_TEXTURE_PATCH_WIDTH =  4,
+    TEXT_BUBBLE_TEXTURE_CORNER      =  3,
+    TEXT_BUBBLE_TEXTURE_MID         =  7,
+    TEXT_BUBBLE_PATCH_PIXELS        =  8,
+    TEXT_BUBBLE_SCALE               =  4,
+    TEXT_BUBBLE_DEFAULT_BG_COLOR    = 55, /* White */
+    TEXT_BUBBLE_DEFAULT_LINE_COLOR  =  1, /* Black */
 };
+
 enum SOTA_TEXT_BUBBLE_N9PATCH {
     TEXT_BUBBLE_PADDING_LEFT        = 7,
     TEXT_BUBBLE_PADDING_TOP         = 4,
@@ -92,6 +95,8 @@ struct Text_Bubble {
     SDL_Texture                *texture;
     SDL_Texture                *texture_vscroll;
     struct PixelFont           *pixelfont;
+
+    i8 bg_color;
 
     bool scroll         : 1;
     bool animating      : 1;

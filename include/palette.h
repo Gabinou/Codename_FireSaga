@@ -45,4 +45,9 @@ void Palettes_Free(void);
 
 void Palette_Tables_Load(void);
 
+/* --- Colors Swap --- */
+SDL_Surface *Palette_Colors_Swap(SDL_Surface *surface,
+                                 i8 Ow, i8 Ob, i8 Nw, i8 Nb);
+
+
 #endif /* PALETTE_H */

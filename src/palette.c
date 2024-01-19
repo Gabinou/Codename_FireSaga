@@ -123,3 +123,56 @@ void Palette_Tables_Load(void) {
     path = PATH_JOIN("assets", "palettes",  STRINGIZE(palette_table_NES_lightenmore)".json");
     jsonio_Read_PaletteTable(path, palette_table_NES_lightenmore);
 }
+
+SDL_Surface *Palette_Colors_Swap(SDL_Surface *surface, i8 Oldw, i8 Oldb, i8 NEWw, i8 NEWb) {
+    SDL_assert(Oldw > 0);
+    SDL_assert(Oldb > 0);
+    SDL_assert(NEWw > 0);
+    SDL_assert(NEWb > 0);
+    SDL_assert(Oldw < PALETTE_NES_COLOR_NUM);
+    SDL_assert(Oldb < PALETTE_NES_COLOR_NUM);
+    SDL_assert(NEWw < PALETTE_NES_COLOR_NUM);
+    SDL_assert(NEWb < PALETTE_NES_COLOR_NUM);
+    SDL_assert(palette_NES->ncolors == PALETTE_NES_COLOR_NUM);
+
+    /* Save old colors from palette_NES */
+    /* before changing anything */
+    SDL_Color old_white, old_black, new_white, new_black;
+    if (NEWw > -1) {
+        old_white = palette_NES->colors[Oldw];
+        new_white = palette_NES->colors[NEWw];
+    }
+    if (NEWb > -1) {
+        old_black = palette_NES->colors[Oldb];
+        new_black = palette_NES->colors[NEWb];
+    }
+
+    /* Swap colors in palette_NES */
+    if (NEWw > -1) {
+        palette_NES->colors[Oldw].r = new_white.r;
+        palette_NES->colors[Oldw].g = new_white.g;
+        palette_NES->colors[Oldw].b = new_white.b;
+    }
+    if (NEWb > -1) {
+        palette_NES->colors[Oldb].r = new_black.r;
+        palette_NES->colors[Oldb].g = new_black.g;
+        palette_NES->colors[Oldb].b = new_black.b;
+    }
+
+    /* Swap palette of font surface, texture */
+    SDL_Surface *buffer = Filesystem_Surface_Palette_Swap(surface, palette_NES);
+    SDL_FreeSurface(buffer);
+
+    /* Revert colors in palette_NES */
+    if (NEWw > -1) {
+        palette_NES->colors[Oldw].g = old_white.g;
+        palette_NES->colors[Oldw].r = old_white.r;
+        palette_NES->colors[Oldw].b = old_white.b;
+    }
+    if (NEWb > -1) {
+        palette_NES->colors[Oldb].r = old_black.r;
+        palette_NES->colors[Oldb].g = old_black.g;
+        palette_NES->colors[Oldb].b = old_black.b;
+    }
+    return (buffer);
+}

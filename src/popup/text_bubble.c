@@ -34,6 +34,8 @@ struct Text_Bubble TextBubble_default = {
         .right      = TEXT_BUBBLE_PADDING_RIGHT,
     },
 
+    .bg_color = NES_WHITE,
+
     .tail     = {
         .pos            = {0, 0},
         .flip           = SDL_FLIP_NONE,
@@ -88,6 +90,11 @@ void TextBubble_Load(struct Text_Bubble *bubble, SDL_Renderer *renderer, struct 
     path = PATH_JOIN("..", "assets", "GUI", "Popup", "Popup_TextBubble_Tail.png");
     bubble->tail.texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(bubble->tail.texture != NULL);
+
+    /* -- Switch  color -- */
+    if (bubble->bg_color == NES_BLACK) {
+
+    }
 
 }
 
