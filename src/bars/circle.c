@@ -163,5 +163,4 @@ void CircleBar_Draw(struct CircleBar *circlebar, SDL_Renderer *renderer) {
     }
 
     Utilities_DrawColor_Reset(renderer);
-
 }
