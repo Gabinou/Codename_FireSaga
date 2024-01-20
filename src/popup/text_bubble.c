@@ -34,6 +34,8 @@ struct Text_Bubble TextBubble_default = {
         .right      = TEXT_BUBBLE_PADDING_RIGHT,
     },
 
+    .old_bg_color   = NES_WHITE,
+    .old_line_color = NES_BLACK,
     .bg_color   = NES_WHITE,
     .line_color = NES_BLACK,
 
@@ -137,8 +139,10 @@ void TextBubble_Set_Target(struct Text_Bubble *bubble, struct Point target) {
 
 /* --- Colors --- */
 void TextBubble_Colors_Set(struct Text_Bubble *bubble, i8 bg, i8 line) {
-    bubble->bg_color    = bg;
-    bubble->line_color  = line;
+    bubble->old_bg_color    = bubble->bg_color;
+    bubble->old_line_color  = bubble->line_color;
+    bubble->line_color      = line;
+    bubble->bg_color        = bg;
 }
 
 void TextBubble_Colors_Swap(struct Text_Bubble *bubble, SDL_Renderer *renderer,
@@ -146,11 +150,11 @@ void TextBubble_Colors_Swap(struct Text_Bubble *bubble, SDL_Renderer *renderer,
     /* -- Switch color & create textures -- */
     Palette_Colors_Swap(renderer,
                         &bubble->surface,       &n9patch->texture,
-                        NES_WHITE,              NES_BLACK,
+                        bubble->old_bg_color,   bubble->old_line_color,
                         bubble->bg_color,       bubble->line_color);
     Palette_Colors_Swap(renderer,
                         &bubble->tail.surface,  &bubble->tail.texture,
-                        NES_WHITE,              NES_BLACK,
+                        bubble->old_bg_color,   bubble->old_line_color,
                         bubble->bg_color,       bubble->line_color);
 
     SDL_assert(n9patch->texture     != NULL);

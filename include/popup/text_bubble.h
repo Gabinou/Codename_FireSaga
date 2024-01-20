@@ -98,6 +98,8 @@ struct Text_Bubble {
     SDL_Texture                *texture_vscroll;
     struct PixelFont           *pixelfont;
 
+    i8 old_bg_color;
+    i8 old_line_color;
     i8 bg_color;
     i8 line_color;
 
