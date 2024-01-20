@@ -13,6 +13,7 @@ void _SliderBar_Draw_Bar(SliderBar *sliderbar, SDL_Renderer *renderer) {
 
     SDL_Rect rect = {0};
 
+    int eff_fill = sliderbar->fill > sliderbar->len ? sliderbar->len : sliderbar->fill; 
     /* -- Draw shadow -- */
     SDL_Color blk = palette_NES->colors[SLIDER_BAR_BLACK];
     SDL_SetRenderDrawColor(renderer, blk.r, blk.g, blk.b, SDL_ALPHA_OPAQUE);
@@ -27,16 +28,16 @@ void _SliderBar_Draw_Bar(SliderBar *sliderbar, SDL_Renderer *renderer) {
     SDL_SetRenderDrawColor(renderer, wht.r, wht.g, wht.b, SDL_ALPHA_OPAQUE);
     rect.x = sliderbar->pos.x;
     rect.y = sliderbar->pos.y;
-    rect.w = sliderbar->fill;
+    rect.w = eff_fill - 1;
     rect.h = 1;
     SDL_RenderDrawRect(renderer, &rect);
 
     /* -- Draw bar second half -- */
     SDL_Color dark = palette_NES->colors[SLIDER_BAR_DARK];
     SDL_SetRenderDrawColor(renderer, dark.r, dark.g, dark.b, SDL_ALPHA_OPAQUE);
-    rect.x = sliderbar->pos.x + sliderbar->fill;
+    rect.x = sliderbar->pos.x + eff_fill;
     rect.y = sliderbar->pos.y;
-    rect.w = sliderbar->len - sliderbar->fill;
+    rect.w = sliderbar->len - eff_fill - 1;
     rect.h = 1;
     SDL_RenderDrawRect(renderer, &rect);
 }
@@ -45,25 +46,36 @@ void _SliderBar_Draw_Slider(SliderBar *sliderbar, SDL_Renderer *renderer) {
 
     SDL_Rect rect = {0};
 
+    int eff_fill = sliderbar->fill > sliderbar->len ? sliderbar->len : sliderbar->fill; 
+
+    /* 1 pixel lost from left, 2 from right side */
+    eff_fill = (eff_fill - 3) > 1 ? eff_fill - 3 : 1;
+
     /* -- Draw slider shadow -- */
     SDL_Color blk = palette_NES->colors[SLIDER_BAR_BLACK];
     SDL_SetRenderDrawColor(renderer, blk.r, blk.g, blk.b, SDL_ALPHA_OPAQUE);
 
-    rect.x = sliderbar->pos.x + sliderbar->fill + 2;
-    rect.y = sliderbar->pos.y + 2;
+    rect.x = sliderbar->pos.x + eff_fill + 2;
+    rect.y = sliderbar->pos.y - 2;
+    rect.w = 1;
+    rect.h = 6;
+    SDL_RenderDrawRect(renderer, &rect);
+
+    rect.x = sliderbar->pos.x + eff_fill + 1;
+    rect.y = sliderbar->pos.y - 3;
+    rect.w = 1;
+    rect.h = 8;
+    SDL_RenderDrawRect(renderer, &rect);
+
+    rect.x = sliderbar->pos.x + eff_fill;
+    rect.y = sliderbar->pos.y + 4;
     rect.w = 1;
     rect.h = 1;
     SDL_RenderDrawRect(renderer, &rect);
 
-    rect.x = sliderbar->pos.x + sliderbar->fill - 1;
+    rect.x = sliderbar->pos.x + eff_fill - 1;
     rect.y = sliderbar->pos.y + 3;
-    rect.w = 4;
-    rect.h = 1;
-    SDL_RenderDrawRect(renderer, &rect);
-
-    rect.x = sliderbar->pos.x + sliderbar->fill;
-    rect.y = sliderbar->pos.y + 4;
-    rect.w = 2;
+    rect.w = 1;
     rect.h = 1;
     SDL_RenderDrawRect(renderer, &rect);
 
@@ -71,13 +83,13 @@ void _SliderBar_Draw_Slider(SliderBar *sliderbar, SDL_Renderer *renderer) {
     SDL_Color lgt = palette_NES->colors[SLIDER_BAR_LIGHT];
     SDL_SetRenderDrawColor(renderer, lgt.r, lgt.g, lgt.b, SDL_ALPHA_OPAQUE);
 
-    rect.x = sliderbar->pos.x + sliderbar->fill;
+    rect.x = sliderbar->pos.x + eff_fill;
     rect.y = sliderbar->pos.y - 3;
     rect.w = 1;
     rect.h = 7;
     SDL_RenderDrawRect(renderer, &rect);
 
-    rect.x = sliderbar->pos.x + sliderbar->fill - 1;
+    rect.x = sliderbar->pos.x + eff_fill - 1;
     rect.y = sliderbar->pos.y - 2;
     rect.w = 3;
     rect.h = 5;
@@ -87,7 +99,7 @@ void _SliderBar_Draw_Slider(SliderBar *sliderbar, SDL_Renderer *renderer) {
     SDL_Color wht = palette_NES->colors[SLIDER_BAR_WHITE];
     SDL_SetRenderDrawColor(renderer, wht.r, wht.g, wht.b, SDL_ALPHA_OPAQUE);
 
-    rect.x = sliderbar->pos.x + sliderbar->fill;
+    rect.x = sliderbar->pos.x + eff_fill;
     rect.y = sliderbar->pos.y - 1;
     rect.w = 1;
     rect.h = 3;

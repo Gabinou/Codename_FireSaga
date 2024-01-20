@@ -6,6 +6,7 @@
 
 /* --- SLIDER_BAR --- */
 /* Used by user to control settings over a range e.g. volume */
+/* Slider never goes out of sliderbar.len */
 
 enum SLIDER_BAR {
     SLIDER_BAR_MIN_LEN  =  2,
