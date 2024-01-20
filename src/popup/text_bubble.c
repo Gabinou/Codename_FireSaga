@@ -62,6 +62,15 @@ void TextBubble_Free(struct Text_Bubble *bubble) {
         bubble->tail.texture = NULL;
     }
 
+    if (bubble->tail.surface != NULL) {
+        SDL_FreeSurface(bubble->tail.surface);
+        bubble->tail.surface = NULL;
+    }
+
+    if (bubble->surface != NULL) {
+        SDL_FreeSurface(bubble->surface);
+        bubble->surface = NULL;
+    }
 }
 
 void TextBubble_Load(struct Text_Bubble *bubble, SDL_Renderer *renderer, struct n9Patch *n9patch) {
@@ -85,10 +94,15 @@ void TextBubble_Load(struct Text_Bubble *bubble, SDL_Renderer *renderer, struct 
 
     /* -- Loading Surfaces -- */
     char *path = PATH_JOIN("..", "assets", "GUI", "Popup", "Popup_TextBubble_n9patch.png");
+
+    if (bubble->surface != NULL)
+        SDL_FreeSurface(bubble->surface);
     bubble->surface = Filesystem_Surface_Load(path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(bubble->surface != NULL);
 
     path = PATH_JOIN("..", "assets", "GUI", "Popup", "Popup_TextBubble_Tail.png");
+    if (bubble->tail.surface != NULL)
+        SDL_FreeSurface(bubble->tail.surface);
     bubble->tail.surface = Filesystem_Surface_Load(path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(bubble->tail.surface != NULL);
 

@@ -590,6 +590,9 @@ void test_Text_Bubble_pixelfont16() {
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_pixelnours_16_majus.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    
+    TextBubble_Colors_Set(bubble,  NEW_MENU_BLUE, NEW_WHITE);
+    TextBubble_Colors_Swap(bubble, renderer, &n9patch);
 
 
 }
