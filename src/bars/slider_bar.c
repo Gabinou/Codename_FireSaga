@@ -15,7 +15,7 @@ void _SliderBar_Draw_Bar(SliderBar *sliderbar, SDL_Renderer *renderer) {
 
     /* -- Draw shadow -- */
     SDL_Color blk = palette_NES->colors[SLIDER_BAR_BLACK];
-    SDL_SetRenderDrawColor(renderer, blk.r, blk.g, blk.b, blk.a);
+    SDL_SetRenderDrawColor(renderer, blk.r, blk.g, blk.b, SDL_ALPHA_OPAQUE);
     rect.x = sliderbar->pos.x;
     rect.y = sliderbar->pos.y;
     rect.w = sliderbar->len + 1;
@@ -24,7 +24,7 @@ void _SliderBar_Draw_Bar(SliderBar *sliderbar, SDL_Renderer *renderer) {
 
     /* -- Draw bar first half -- */
     SDL_Color wht = palette_NES->colors[SLIDER_BAR_WHITE];
-    SDL_SetRenderDrawColor(renderer, wht.r, wht.g, wht.b, wht.a);
+    SDL_SetRenderDrawColor(renderer, wht.r, wht.g, wht.b, SDL_ALPHA_OPAQUE);
     rect.x = sliderbar->pos.x;
     rect.y = sliderbar->pos.y;
     rect.w = sliderbar->fill;
@@ -33,7 +33,7 @@ void _SliderBar_Draw_Bar(SliderBar *sliderbar, SDL_Renderer *renderer) {
 
     /* -- Draw bar second half -- */
     SDL_Color dark = palette_NES->colors[SLIDER_BAR_DARK];
-    SDL_SetRenderDrawColor(renderer, dark.r, dark.g, dark.b, dark.a);
+    SDL_SetRenderDrawColor(renderer, dark.r, dark.g, dark.b, SDL_ALPHA_OPAQUE);
     rect.x = sliderbar->pos.x + sliderbar->fill;
     rect.y = sliderbar->pos.y;
     rect.w = sliderbar->len - sliderbar->fill;
@@ -47,7 +47,7 @@ void _SliderBar_Draw_Slider(SliderBar *sliderbar, SDL_Renderer *renderer) {
 
     /* -- Draw slider shadow -- */
     SDL_Color blk = palette_NES->colors[SLIDER_BAR_BLACK];
-    SDL_SetRenderDrawColor(renderer, blk.r, blk.g, blk.b, blk.a);
+    SDL_SetRenderDrawColor(renderer, blk.r, blk.g, blk.b, SDL_ALPHA_OPAQUE);
 
     rect.x = sliderbar->pos.x + sliderbar->fill + 2;
     rect.y = sliderbar->pos.y + 2;
@@ -69,26 +69,26 @@ void _SliderBar_Draw_Slider(SliderBar *sliderbar, SDL_Renderer *renderer) {
 
     /* -- Draw slider light -- */
     SDL_Color lgt = palette_NES->colors[SLIDER_BAR_LIGHT];
-    SDL_SetRenderDrawColor(renderer, lgt.r, lgt.g, lgt.b, lgt.a);
+    SDL_SetRenderDrawColor(renderer, lgt.r, lgt.g, lgt.b, SDL_ALPHA_OPAQUE);
 
     rect.x = sliderbar->pos.x + sliderbar->fill;
-    rect.y = sliderbar->pos.y + 3;
+    rect.y = sliderbar->pos.y - 3;
     rect.w = 1;
     rect.h = 7;
     SDL_RenderDrawRect(renderer, &rect);
 
     rect.x = sliderbar->pos.x + sliderbar->fill - 1;
-    rect.y = sliderbar->pos.y + 2;
+    rect.y = sliderbar->pos.y - 2;
     rect.w = 3;
     rect.h = 5;
     SDL_RenderDrawRect(renderer, &rect);
 
     /* -- Draw slider white -- */
     SDL_Color wht = palette_NES->colors[SLIDER_BAR_WHITE];
-    SDL_SetRenderDrawColor(renderer, wht.r, wht.g, wht.b, wht.a);
+    SDL_SetRenderDrawColor(renderer, wht.r, wht.g, wht.b, SDL_ALPHA_OPAQUE);
 
     rect.x = sliderbar->pos.x + sliderbar->fill;
-    rect.y = sliderbar->pos.y + 1;
+    rect.y = sliderbar->pos.y - 1;
     rect.w = 1;
     rect.h = 3;
     SDL_RenderDrawRect(renderer, &rect);
