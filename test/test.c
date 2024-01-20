@@ -29,6 +29,8 @@
 #include "test_utilities.h"
 #include "test_weapon.h"
 
+#include "bars/test_slider_bar.h"
+
 #include "menu/test_growths.h"
 #include "menu/test_item_drop.h"
 #include "menu/test_player_select.h"
@@ -56,6 +58,7 @@ void render_tests() {
     test_popup_map_combat();
     test_popup_objective();
     test_popup_unit();
+    test_bars_slider_bar();
     test_text_bubble();
 }
 
