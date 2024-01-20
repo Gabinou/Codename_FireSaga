@@ -371,7 +371,15 @@ void Filesystem_Surface_Pixels2Indices(SDL_Surface *abgr_surf, SDL_Surface *inde
     SDL_UnlockSurface(index_surf);
 }
 
-void Filesystem_Texture_Dump( char *filename, SDL_Renderer *renderer, SDL_Texture *texture,
+void Filesystem_Surface_Dump( char *filename, SDL_Surface *surface) {
+    if (IMG_SavePNG(surface, filename) != 0) {
+        SDL_Log("PHYSFS_setBuffer failed");
+        exit(ERROR_CannotWriteFile);
+    }
+}
+
+void Filesystem_Texture_Dump( char *filename, SDL_Renderer *renderer,
+                              SDL_Texture *texture,
                               u32 format, SDL_Texture *render_target) {
     if (!texture) {
         SDL_Log("Warning: Input texture is NULL");

@@ -1,6 +1,12 @@
 
 #include "bars/slider_bar.h"
 
+SliderBar SliderBar_default = {
+    .fill   = 0,
+    .len    = SLIDER_BAR_MIN_LEN,
+    .pos    = {0},
+};
+
 /* --- Drawing --- */
 
 void _SliderBar_Draw_Bar(SliderBar *sliderbar, SDL_Renderer *renderer) {

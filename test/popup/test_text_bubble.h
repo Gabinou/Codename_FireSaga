@@ -706,6 +706,11 @@ void test_Text_Bubble_pixelfont16() {
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_pixelnours_16_majus_Black.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    /* FREE */
+    PixelFont_Free(bubble.pixelfont, true);
+    TextBubble_Free(&bubble);
+    SDL_DestroyRenderer(renderer);
+    SDL_FreeSurface(surface);
 }
 
 
@@ -889,6 +894,11 @@ void test_Text_Bubble_pixelfont16_tight() {
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble",
                                       "TextBubble_pixelnours_16_tight_majus_Black.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    /* FREE */
+    PixelFont_Free(bubble.pixelfont, true);
+    TextBubble_Free(&bubble);
+    SDL_DestroyRenderer(renderer);
+    SDL_FreeSurface(surface);
 }
 
 
