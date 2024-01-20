@@ -136,7 +136,7 @@ void TextBubble_Set_Target(struct Text_Bubble *bubble, struct Point target) {
 }
 
 /* --- Colors --- */
-void TextBubble_Colors(struct Text_Bubble *bubble, i8 bg, i8 line) {
+void TextBubble_Colors_Set(struct Text_Bubble *bubble, i8 bg, i8 line) {
     bubble->bg_color    = bg;
     bubble->line_color  = line;
 }
