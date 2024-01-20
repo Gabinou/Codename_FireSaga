@@ -34,7 +34,8 @@ struct Text_Bubble TextBubble_default = {
         .right      = TEXT_BUBBLE_PADDING_RIGHT,
     },
 
-    .bg_color = NES_WHITE,
+    .bg_color   = NES_WHITE,
+    .line_color = NES_BLACK,
 
     .tail     = {
         .pos            = {0, 0},
@@ -82,20 +83,32 @@ void TextBubble_Load(struct Text_Bubble *bubble, SDL_Renderer *renderer, struct 
     n9patch->pos.x            = 0;
     n9patch->pos.y            = 0;
 
-    /* -- Loading textures -- */
+    /* -- Loading Surfaces -- */
+    SDL_Surface *n9patch_surf, *tail_surf;
+
     char *path = PATH_JOIN("..", "assets", "GUI", "Popup", "Popup_TextBubble_n9patch.png");
-    n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
-    SDL_assert(n9patch->texture != NULL);
+    n9patch_surf = Filesystem_Surface_Load(path, SDL_PIXELFORMAT_INDEX8);
+    SDL_assert(n9patch_surf != NULL);
 
     path = PATH_JOIN("..", "assets", "GUI", "Popup", "Popup_TextBubble_Tail.png");
-    bubble->tail.texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+    tail_surf = Filesystem_Surface_Load(path, SDL_PIXELFORMAT_INDEX8);
+    SDL_assert(tail_surf != NULL);
+
+    /* -- Switch color & create textures -- */
+    Palette_Colors_Swap(renderer,
+                        &n9patch_surf,      &n9patch->texture,
+                        NES_WHITE,          NES_BLACK,
+                        bubble->bg_color,   bubble->line_color);
+    Palette_Colors_Swap(renderer,
+                        &tail_surf,         &bubble->tail.texture,
+                        NES_WHITE,          NES_BLACK,
+                        bubble->bg_color,   bubble->line_color);
+
+    SDL_FreeSurface(n9patch_surf);
+    SDL_FreeSurface(n9patch_surf);
+
+    SDL_assert(n9patch->texture     != NULL);
     SDL_assert(bubble->tail.texture != NULL);
-
-    /* -- Switch  color -- */
-    if (bubble->bg_color == NES_BLACK) {
-
-    }
-
 }
 
 void TextBubble_Set_Text(struct Text_Bubble *bubble, char *text, struct n9Patch *n9patch) {

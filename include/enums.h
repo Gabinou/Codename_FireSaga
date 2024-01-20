@@ -253,6 +253,7 @@ enum FPS_DEFAULTS {
 enum NES_COLORS {
     NES_COLORKEY        = 0,
     NES_TRANSPARENT     = 0,
+    NES_MENU_BLUE       = 48,
     NES_BLACK           = 1,
     NES_WHITE           = PALETTE_NES_COLOR_NUM - 1,
 };

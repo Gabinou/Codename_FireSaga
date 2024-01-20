@@ -97,6 +97,7 @@ struct Text_Bubble {
     struct PixelFont           *pixelfont;
 
     i8 bg_color;
+    i8 line_color;
 
     bool scroll         : 1;
     bool animating      : 1;
