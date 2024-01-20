@@ -2,19 +2,20 @@
 #include "bars/slider_bar.h"
 
 SliderBar SliderBar_default = {
-    .fill   = 0,
-    .len    = SLIDER_BAR_MIN_LEN,
-    .pos    = {0},
+    .fill       = 0,
+    .len        = SLIDER_BAR_MIN_LEN,
+    .increment  = SLIDER_BAR_INCREMENTS,
+    .pos        = {0},
 };
 
 /* --- Moving Cursor --- */
 void SliderBar_Increment(SliderBar *sb) {
-    sb->fill += sb->len / SLIDER_BAR_INCREMENTS;
+    sb->fill += sb->len / sb->increment;
     sb->fill = sb->fill > sb->len ? sb->len : sb->fill;
 }
 
 void SliderBar_Decrement(SliderBar *sb) {
-    sb->fill -= sb->len / SLIDER_BAR_INCREMENTS;
+    sb->fill -= sb->len / sb->increment;
     sb->fill = sb->fill < 0 ? 0 : sb->fill;
 }
 
@@ -23,7 +24,7 @@ void _SliderBar_Draw_Bar(SliderBar *sb, SDL_Renderer *renderer) {
 
     SDL_Rect rect = {0};
 
-    int eff_fill = sb->fill > sb->len ? sb->len : sb->fill; 
+    int eff_fill = sb->fill > sb->len ? sb->len : sb->fill;
     /* -- Draw shadow -- */
     SDL_Color blk = palette_NES->colors[SLIDER_BAR_BLACK];
     SDL_SetRenderDrawColor(renderer, blk.r, blk.g, blk.b, SDL_ALPHA_OPAQUE);
@@ -56,7 +57,7 @@ void _SliderBar_Draw_Slider(SliderBar *sb, SDL_Renderer *renderer) {
 
     SDL_Rect rect = {0};
 
-    int eff_fill = sb->fill > sb->len ? sb->len : sb->fill; 
+    int eff_fill = sb->fill > sb->len ? sb->len : sb->fill;
 
     /* 1 pixel lost from left, 2 from right side */
     eff_fill = (eff_fill - 3) > 1 ? eff_fill - 3 : 1;
