@@ -70,6 +70,7 @@ struct Text_Bubble_Tail {
     int                 index;
 
     SDL_RendererFlip    flip;
+    SDL_Surface         *surface;
     SDL_Texture         *texture;
     SDL_Rect            dstrect;
     struct Point        pos;
@@ -92,6 +93,7 @@ struct Text_Bubble {
     struct Padding              padding;
     struct Point                target; /* Where to point at */
     struct Text_Bubble_Tail     tail;
+    SDL_Surface                *surface;
     SDL_Texture                *texture;
     SDL_Texture                *texture_vscroll;
     struct PixelFont           *pixelfont;
@@ -121,8 +123,12 @@ void TextBubble_Tail_Flip(  struct Text_Bubble *b);
 void TextBubble_Tail_Angle( struct Text_Bubble *b);
 int  TextBubble_Tail_Octant(struct Text_Bubble *b);
 
-void TextBubble_Set_All(struct Text_Bubble *b,  char *t, struct Point ta,
+void TextBubble_Set_All(struct Text_Bubble *b, char *t, struct Point ta,
                         struct n9Patch *n9patch);
+
+/* --- Colors --- */
+void TextBubble_Colors_Set(struct Text_Bubble *b,   i8 bg, i8 line);
+void TextBubble_Colors_Swap(struct Text_Bubble *b, SDL_Renderer *r, struct n9Patch *n9);
 
 /* --- Scrolling --- */
 void TextBubble_VScroll(     struct Text_Bubble *b, SDL_Renderer *r);

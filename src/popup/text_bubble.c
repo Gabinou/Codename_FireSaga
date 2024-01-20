@@ -84,28 +84,16 @@ void TextBubble_Load(struct Text_Bubble *bubble, SDL_Renderer *renderer, struct 
     n9patch->pos.y            = 0;
 
     /* -- Loading Surfaces -- */
-    SDL_Surface *n9patch_surf, *tail_surf;
-
     char *path = PATH_JOIN("..", "assets", "GUI", "Popup", "Popup_TextBubble_n9patch.png");
-    n9patch_surf = Filesystem_Surface_Load(path, SDL_PIXELFORMAT_INDEX8);
-    SDL_assert(n9patch_surf != NULL);
+    bubble->surface = Filesystem_Surface_Load(path, SDL_PIXELFORMAT_INDEX8);
+    SDL_assert(bubble->surface != NULL);
 
     path = PATH_JOIN("..", "assets", "GUI", "Popup", "Popup_TextBubble_Tail.png");
-    tail_surf = Filesystem_Surface_Load(path, SDL_PIXELFORMAT_INDEX8);
-    SDL_assert(tail_surf != NULL);
+    bubble->tail.surface = Filesystem_Surface_Load(path, SDL_PIXELFORMAT_INDEX8);
+    SDL_assert(bubble->tail.surface != NULL);
 
     /* -- Switch color & create textures -- */
-    Palette_Colors_Swap(renderer,
-                        &n9patch_surf,      &n9patch->texture,
-                        NES_WHITE,          NES_BLACK,
-                        bubble->bg_color,   bubble->line_color);
-    Palette_Colors_Swap(renderer,
-                        &tail_surf,         &bubble->tail.texture,
-                        NES_WHITE,          NES_BLACK,
-                        bubble->bg_color,   bubble->line_color);
-
-    SDL_FreeSurface(n9patch_surf);
-    SDL_FreeSurface(n9patch_surf);
+    TextBubble_Colors_Swap(bubble, renderer, n9patch);
 
     SDL_assert(n9patch->texture     != NULL);
     SDL_assert(bubble->tail.texture != NULL);
@@ -133,6 +121,29 @@ void TextBubble_Set_Target(struct Text_Bubble *bubble, struct Point target) {
     TextBubble_Tail_Angle( bubble);
 }
 
+/* --- Colors --- */
+void TextBubble_Colors(struct Text_Bubble *bubble, i8 bg, i8 line) {
+    bubble->bg_color    = bg;
+    bubble->line_color  = line;
+}
+
+void TextBubble_Colors_Swap(struct Text_Bubble *bubble, SDL_Renderer *renderer,
+                            struct n9Patch *n9patch) {
+    /* -- Switch color & create textures -- */
+    Palette_Colors_Swap(renderer,
+                        &bubble->surface,       &n9patch->texture,
+                        NES_WHITE,              NES_BLACK,
+                        bubble->bg_color,       bubble->line_color);
+    Palette_Colors_Swap(renderer,
+                        &bubble->tail.surface,  &bubble->tail.texture,
+                        NES_WHITE,              NES_BLACK,
+                        bubble->bg_color,       bubble->line_color);
+
+    SDL_assert(n9patch->texture     != NULL);
+    SDL_assert(bubble->tail.texture != NULL);
+}
+
+
 int TextBubble_Tail_Octant(struct Text_Bubble *bubble) {
     /* -- Find octant around text bubble target is in -- */
     struct Point pos = {TEXT_BUBBLE_RENDER_PAD, TEXT_BUBBLE_RENDER_PAD};
@@ -144,6 +155,8 @@ int TextBubble_Tail_Octant(struct Text_Bubble *bubble) {
 
     return (bubble->tail.octant);
 }
+
+
 
 void TextBubble_Tail_Pos(struct Text_Bubble *bubble, struct n9Patch *n9patch) {
     /* Decide tail position. */
