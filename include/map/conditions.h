@@ -38,7 +38,7 @@ struct Map_condition {
     i16    army;            /* -1 for anyone    */
     b32    boss;            /* true for boss    */
     b32    all;             /* true for rout    */
-    // i16    unit;         /* -1 for anyone    */
+    i16    unit;         /* -1 for anyone    */
     // i8     unit_class;   /* -1 for anyone    */
     // /* -- WHERE -- */
     // i16    col_min;    /* -1 for anywhere  */
@@ -63,6 +63,9 @@ struct Map_condition {
     b32    lose;
 };
 
-void Map_Condition_Check_Death(struct Map *map, struct Unit *unit, struct Boss *boss);
+b32 Map_Condition_Check_Death(struct Map_condition *condition,
+                              struct Map           *map,
+                              struct Unit          *unit,
+                              struct Boss          *boss);
 
 #endif /* MAP_H */

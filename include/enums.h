@@ -602,6 +602,7 @@ enum UNIT_IDS {
 #include "names/units_PC.h"
 #include "names/units_NPC.h"
     UNIT_ID_END,
+    UNIT_ID_NUM = UNIT_ID_END,
 };
 #undef REGISTER_ENUM
 

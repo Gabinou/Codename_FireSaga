@@ -870,3 +870,9 @@ void Map_Music_Load(struct Map *map) {
     map->music_enemy       = Music_Load(map->music_i_enemy);
     map->music_friendly    = Music_Load(map->music_i_friendly);
 }
+
+/* --- Boss --- */
+b32 Map_Boss_Alive(struct Map *map, i16 army) {
+    // TODO:
+    return(true);
+}

@@ -182,7 +182,6 @@ struct Map {
     /* --- MAP SWITCHES --- */
     bool update             : 1;
     bool seized             : 1; /* maybe unnecessary if turn system. */
-    bool bossdied           : 1;
     // bool show_move          : 1;
     // bool show_heal          : 1;
     // bool show_grid          : 1;
@@ -237,5 +236,8 @@ i8 Map_Army_Next(struct Map *map);
 
 /* --- Music --- */
 void Map_Music_Load(struct Map *map);
+
+/* --- Boss --- */
+b32 Map_Boss_Alive(struct Map *map, i16 army);
 
 #endif /* MAP_H */
