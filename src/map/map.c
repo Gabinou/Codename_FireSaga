@@ -4,15 +4,6 @@
 #include "stb_sprintf.h"
 //#endif /* STB_SPRINTF_IMPLEMENTATION */
 
-struct Map_condition Map_condition_default = {
-    .unit       = -1,
-    .army       = -1,
-    .row_min    = -1,
-    .row_max    = -1,
-    .col_min    = -1,
-    .col_max    = -1
-};
-
 struct Map Map_default = {
     .json_element           = JSON_MAP,
     .json_filename          = {0},

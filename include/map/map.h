@@ -173,6 +173,12 @@ struct Map {
     Mix_Music *music_friendly;
     Mix_Music *music_enemy;
 
+    /* --- CONDITIONS --- */
+    struct Map_condition *death_enemy;
+    struct Map_condition *death_friendly;
+    struct Map_condition *turn_end;
+    struct Map_condition *waits_friendly;
+
     /* --- MAP SWITCHES --- */
     bool update             : 1;
     bool seized             : 1; /* maybe unnecessary if turn system. */
