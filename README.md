@@ -22,12 +22,13 @@ Game assets (graphics, music) to be distributed separately.
 - TODO: Sold **here**.
 	- Or, play for free! Just compile the source code.
 - Emulator-inspired quality-of-life improvements
-	- Fast-forward button! Up to 300x faster on my machine (30000%).
+	- Fast-forward button! Does **not** distort sounds!
 	- TBD: Save state button. Not so sure.
 - Handcrafted pixel-art
 	- NES color palette only
 - Developer features
 	- Press button to reload .json files for units, weapons, tiles, maps! 
+- Gamecube controller support
 
 ## Installation
 

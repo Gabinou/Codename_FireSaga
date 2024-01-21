@@ -75,8 +75,8 @@ Playable on
 In no particular order:
 
 - Turn system
-	1. AI for enemy attacks		(0.0)
-	2. Switching between armies (0.1)
+	1. AI for enemy attacks		(0.1)
+	2. Switching between armies (0.2)
 - Design
 	1. Weapons 	(1.0)
 	* Types 	(1.0)
@@ -114,10 +114,11 @@ In no particular order:
 	4. Touch Controller
 	5. Contextual inputs 		(0.2)
 	6. Mouse clickable buttons 	(0.2)
-- Sound
-	1. Sound system
-	2. Sounds
-	3. Songs
+- Music and Sounds
+	1. Music 			(1.0)
+	1. Sound effects 	(1.0)
+	2. Scene sounds
+	3. Songs			
 - Art
 	1. Art style 		(0.2)
 	2. Unit concepts
@@ -138,9 +139,6 @@ In no particular order:
 	4. Camp Events
 	5. Relationship Events
 	6. Supports
-
-## Features
-- Gamecube controller support!
 
 ## Credits
 :copyright: Average Bear Games, made by Gabriel Taillon
