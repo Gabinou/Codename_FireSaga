@@ -713,7 +713,6 @@ void test_Text_Bubble_pixelfont16() {
     SDL_FreeSurface(surface);
 }
 
-
 void test_Text_Bubble_pixelfont16_tight() {
     /* -- Create renderer -- */
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
@@ -902,6 +901,196 @@ void test_Text_Bubble_pixelfont16_tight() {
 }
 
 
+
+void test_Text_Bubble_pixelfont16_minus() {
+    /* -- Create renderer -- */
+    SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
+    SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
+
+    struct Text_Bubble bubble = TextBubble_default;
+
+    /* -- Create n9patch -- */
+    // render_target is NULL cause there is render_target!
+    struct n9Patch n9patch = n9Patch_default;
+    SDL_Texture *render_target = NULL;
+
+    /* - Pixelnours 16 - */
+    bubble.pixelfont = PixelFont_Alloc();
+    bubble.pixelfont->glyph_height  = 16;
+    bubble.pixelfont->glyph_width   = 16;
+    TextBubble_Load(&bubble, renderer, &n9patch);
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
+                                                         "pixelnours_16.png"));
+    PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
+    bubble.pixelfont->scroll_speed = 0;
+    bubble.pixelfont->glyph_space  = -1;
+    bubble.line_len_px      = 128;
+    bubble.row_height       = bubble.pixelfont->glyph_height;
+    bubble.padding.top      = TEXT_BUBBLE_PADDING_TOP;
+    bubble.padding.bottom   = 0;
+    bubble.line_num_max     = 0;
+
+    /* --- RENDERING BUBBLES --- */
+    /* - setting - */
+    bubble.target.x = -100;
+    bubble.target.y = -100;
+    TextBubble_Set_All(&bubble, "Hello, World!", bubble.target, &n9patch);
+    SDL_assert(bubble.tail.index     == TEXT_BUBBLE_DIAGONAL);
+    SDL_assert(bubble.tail.angle     == 180.0);
+    SDL_assert(bubble.tail.octant    == SOTA_DIRECTION_TOPLEFT);
+
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_16_minus_HelloWorld.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    /* - setting - */
+    bubble.target.x = -bubble.width;
+    bubble.target.y = bubble.height / 2;
+    bubble.padding.bottom   = 1;
+    TextBubble_Set_All(&bubble, "portez ce vieux whisky au juge blond qui fume.", bubble.target,
+                       &n9patch);
+
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_pixelnours_16_minus_minus.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    /* - setting - */
+    bubble.target.x = -bubble.width;
+    bubble.target.y = bubble.height / 2;
+    bubble.line_len_px = 164;
+    TextBubble_Set_All(&bubble, "PORTEZ CE VIEUX WHISKY AU JUGE BLOND QUI FUME.", bubble.target,
+                       &n9patch);
+
+
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_pixelnours_16_minus_majus.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+
+    /* --- Setting BLUE bg for text bubble --- */
+    TextBubble_Colors_Set(&bubble, NES_MENU_BLUE, NES_WHITE);
+    TextBubble_Colors_Swap(&bubble, renderer, &n9patch);
+
+    /* - Pixelnours 16 for BLUE - */
+    PixelFont_Free(bubble.pixelfont, true);
+    bubble.pixelfont = PixelFont_Alloc();
+    bubble.pixelfont->glyph_height  = 16;
+    bubble.pixelfont->glyph_width   = 16;
+    TextBubble_Load(&bubble, renderer, &n9patch);
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
+                                                         "pixelnours_16.png"));
+    bubble.pixelfont->scroll_speed = 0;
+    bubble.line_len_px      = 128;
+    bubble.row_height       = bubble.pixelfont->glyph_height;
+    bubble.padding.top      = TEXT_BUBBLE_PADDING_TOP + 2;
+    bubble.padding.bottom   = 1;
+    bubble.line_num_max     = 0;
+
+    /* --- RENDERING BUBBLES --- */
+    /* - setting - */
+    bubble.target.x = -100;
+    bubble.target.y = -100;
+    TextBubble_Set_All(&bubble, "Hello, World!", bubble.target, &n9patch);
+    SDL_assert(bubble.tail.index     == TEXT_BUBBLE_DIAGONAL);
+    SDL_assert(bubble.tail.angle     == 180.0);
+    SDL_assert(bubble.tail.octant    == SOTA_DIRECTION_TOPLEFT);
+
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_16_minus_HelloWorld_Blue.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    /* - setting - */
+    bubble.target.x = -bubble.width;
+    bubble.target.y = bubble.height / 2;
+    bubble.padding.bottom   = 3;
+    bubble.line_len_px = 128;
+    TextBubble_Set_All(&bubble, "portez ce vieux whisky au juge blond qui fume.", bubble.target,
+                       &n9patch);
+
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble",
+                                      "TextBubble_pixelnours_16_minus_minus_Blue.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    /* - setting - */
+    bubble.target.x = -bubble.width;
+    bubble.target.y = bubble.height / 2;
+    bubble.padding.bottom = 0;
+    bubble.line_len_px = 164;
+    TextBubble_Set_All(&bubble, "PORTEZ CE VIEUX WHISKY AU JUGE BLOND QUI FUME.", bubble.target,
+                       &n9patch);
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble",
+                                      "TextBubble_pixelnours_16_minus_majus_Blue.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    /* --- Setting BLUE bg for text bubble --- */
+    TextBubble_Colors_Set(&bubble, NES_WHITE, NES_BLACK);
+    TextBubble_Colors_Swap(&bubble, renderer, &n9patch);
+    TextBubble_Colors_Set(&bubble, NES_BLACK, NES_WHITE);
+    TextBubble_Colors_Swap(&bubble, renderer, &n9patch);
+
+    bubble.pixelfont->scroll_speed  = 0;
+    bubble.line_len_px              = 128;
+    bubble.row_height               = bubble.pixelfont->glyph_height;
+    bubble.padding.top              = TEXT_BUBBLE_PADDING_TOP + 2;
+    bubble.padding.bottom           = 1;
+    bubble.line_num_max             = 0;
+
+    /* --- RENDERING BUBBLES --- */
+    /* - setting - */
+    bubble.target.x = -100;
+    bubble.target.y = -100;
+    TextBubble_Set_All(&bubble, "Hello, World!", bubble.target, &n9patch);
+    SDL_assert(bubble.tail.index     == TEXT_BUBBLE_DIAGONAL);
+    SDL_assert(bubble.tail.angle     == 180.0);
+    SDL_assert(bubble.tail.octant    == SOTA_DIRECTION_TOPLEFT);
+
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_16_minus_HelloWorld_Black.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    /* - setting - */
+    bubble.target.x = -bubble.width;
+    bubble.target.y = bubble.height / 2;
+    bubble.padding.bottom   = 3;
+    bubble.line_len_px = 128;
+    TextBubble_Set_All(&bubble, "portez ce vieux whisky au juge blond qui fume.", bubble.target,
+                       &n9patch);
+
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble",
+                                      "TextBubble_pixelnours_16_minus_minus_Black.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    /* - setting - */
+    bubble.target.x = -bubble.width;
+    bubble.target.y = bubble.height / 2;
+    bubble.padding.bottom = 0;
+    bubble.line_len_px = 164;
+    TextBubble_Set_All(&bubble, "PORTEZ CE VIEUX WHISKY AU JUGE BLOND QUI FUME.", bubble.target,
+                       &n9patch);
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble",
+                                      "TextBubble_pixelnours_16_minus_majus_Black.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    /* FREE */
+    PixelFont_Free(bubble.pixelfont, true);
+    TextBubble_Free(&bubble);
+    SDL_DestroyRenderer(renderer);
+    SDL_FreeSurface(surface);
+}
+
+
 void test_text_bubble() {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     sota_mkdir("popup_text_bubble");
@@ -911,4 +1100,5 @@ void test_text_bubble() {
     test_text_bubble_scroll_vertical();
     test_Text_Bubble_pixelfont16();
     test_Text_Bubble_pixelfont16_tight();
+    test_Text_Bubble_pixelfont16_minus();
 }

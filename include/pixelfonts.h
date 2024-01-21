@@ -57,7 +57,7 @@ typedef struct PixelFont {
     SDL_Texture *texture;  /* ASCII order */
     SDL_Surface *surface;  /* ASCII order */
     SDL_Texture *write_texture;
-    u8  glyph_space;    /* [pixels] */
+    i8  glyph_space;    /* [pixels] */
     u8  word_space;     /* [pixels] */
     u8  glyph_width;
     u8  glyph_height;
@@ -67,7 +67,7 @@ typedef struct PixelFont {
     u16 charset_num;
     u8 *glyph_bbox_width;
     u8 *glyph_bbox_height;
-    u8 *y_offset;
+    u8 *y_offset; /* for each glyph */
     /* Text Scrolling */
     int  scroll_speed;   /* [ms] time until new character is rendered */
     int  scroll_len;   /* [pixels/char] to render */
