@@ -2,13 +2,36 @@
 #include "map/conditions.h"
 
 struct Map_condition Map_condition_default = {
-    // .unit       = -1,
-    .army       = -1,
-    // .row_min    = -1,
-    // .row_max    = -1,
-    // .col_min    = -1,
-    // .col_max    = -1
 };
+struct Map_condition Map_condition_main_char_loss = {
+    army    =   -1,
+    boss    =   false,
+    all     =   false,
+    unit    =   UNIT_ID_ERWIN,
+    min     =   -1,
+    at      =   -1,
+    max     =   -1,
+    gold    =    0,
+    item    =   ITEM_NULL,
+    scene   =    0,
+    win     =   false,
+    lose    =   true,
+}
+
+struct Map_condition Map_condition_main_char_loss = {
+    army    =   UNIT_ARMY_ENEMY,
+    boss    =   true,
+    all     =   false,
+    unit    =   false,
+    min     =   -1,
+    at      =   -1,
+    max     =   -1,
+    gold    =    0,
+    item    =   ITEM_NULL,
+    scene   =    0,
+    win     =   true,
+    lose    =   false,
+}
 
 b32 Map_Condition_Check_Death(struct Map_condition *condition,
                               struct Map           *map,

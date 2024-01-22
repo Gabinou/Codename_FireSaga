@@ -32,7 +32,6 @@
 /* --- STRUCTS --- */
 struct Map_condition {
     /* --- CRITERIA --- */
-
     // /* -- WHO -- */
     // i8     lvl;          /* -1 for anyone    */
     // i8     sex;          /* -1 for anyone    */
@@ -63,6 +62,9 @@ struct Map_condition {
     b32    win;
     b32    lose;
 };
+extern struct Map_condition Map_condition_default;
+extern struct Map_condition Map_condition_main_char_loss;
+extern struct Map_condition Map_condition_boss_win;
 
 b32 Map_Condition_Check_Death(struct Map_condition *condition,
                               struct Map           *map,
