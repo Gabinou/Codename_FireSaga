@@ -11,7 +11,7 @@ struct Map_condition Map_condition_default = {
 };
 
 b32 Map_Condition_Check_Death(struct Map_condition *condition,
-                              struct map           *map,
+                              struct Map           *map,
                               struct Unit          *unit,
                               struct Boss          *boss) {
     /* Checking for matching army */
@@ -32,16 +32,22 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
     if (!match_unit) 
         return(false);
 
+    /* Match: Rout */
+    // TODO: check remaining units of enemy army
+    if (!condition->boss && condition->all && (DARR_NUM(map->enemies_onfield) == 0)) 
+        return(true);
+
     /* Checking for boss death */
     b32 died_boss = (boss != NULL);
 
-    /* Any boss of matching army died */
+    /* Match: Any boss */
     if (condition->boss && !condition->all && died_boss)
         return(true);
 
-    /* All bosses of matching army died*/
+    /* Match: All boss */
     if (condition->boss && condition->all && died_boss && !Map_Boss_Alive(struct Map *map, i16 army))
         return(true);
 
+    /* -- No match -- */
     return(false);
 }

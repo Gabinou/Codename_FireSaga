@@ -124,6 +124,7 @@ struct Map {
 
     /* --- ARMIES --- */
     int army_i; /* Current army in control */
+    // TODO: Split by army
     tnecs_entity *units_onfield;
     tnecs_entity *friendlies_onfield;
     tnecs_entity *enemies_onfield;
