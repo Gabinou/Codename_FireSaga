@@ -8,6 +8,7 @@
 #include "enums.h"
 #include "nmath.h"
 #include "structs.h"
+#include "unit/unit.h"
 #include "physfs.h"
 #include "jsonio.h"
 #include "debug.h"

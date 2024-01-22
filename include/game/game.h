@@ -2,6 +2,7 @@
 #define GAME_STRUCT_H
 
 #include <stdio.h>
+#include "unit/unit.h"
 #include "index_shader.h"
 #include "narrative.h"
 #include "enums.h"
@@ -30,7 +31,6 @@
 #include "tile.h"
 #include "text.h"
 #include "AI.h"
-#include "unit/unit.h"
 #include "nmath.h"
 #include "RNG.h"
 #include "position.h"
@@ -45,6 +45,7 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
 struct Unit;
+struct Convoy;
 struct Game;
 
 void Events_Data_Malloc(void);

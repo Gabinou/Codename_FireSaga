@@ -1,6 +1,7 @@
 #ifndef MAP_CONDITIONS_H
 #define MAP_CONDITIONS_H
 
+#include "enums.h"
 #include "events.h"
 #include "map/map.h"
 #include "unit/unit.h"
@@ -9,7 +10,6 @@
 struct Item;
 struct Unit;
 struct Game;
-
 
 /* Conditions */
 // When condition is satisfied, something happens:

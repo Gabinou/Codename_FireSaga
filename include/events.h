@@ -2,15 +2,9 @@
 #define EVENTS_H
 
 #include "bars/map_hp.h"
-#include "game/game.h"
+#include "unit/unit.h"
 #include "map/conditions.h"
 #include "log.h"
-#include "game/cursor.h"
-#include "game/popup.h"
-#include "game/combat.h"
-#include "game/menu.h"
-#include "game/map.h"
-#include "game/cursor.h"
 #include "fsm.h"
 #include "tnecs.h"
 #include "unit/unit.h"
@@ -21,12 +15,19 @@
 #include "menu/menu.h"
 #include "macros.h"
 #include "nmath.h"
+#include "game/game.h"
+#include "game/popup.h"
+#include "game/combat.h"
+#include "game/menu.h"
+#include "game/map.h"
+#include "game/cursor.h"
 #include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
 struct Unit;
 struct Game;
+struct Convoy;
 
 /* --- EVENT DATA ENTITIES --- */
 extern tnecs_entity *data1_entity;

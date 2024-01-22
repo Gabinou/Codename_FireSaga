@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include "enums.h"
+#include "unit/unit.h"
 #include "game/game.h"
 #include "game/popup.h"
 #include "game/cursor.h"
@@ -23,6 +24,7 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
+struct Unit;
 struct PlayerSelectMenu;
 struct LoadoutSelectMenu;
 struct PopUp_Loadout_Stats;

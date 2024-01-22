@@ -11,7 +11,7 @@
 #include "index_shader.h"
 #include "arrow.h"
 #include "reinforcement.h"
-#include "map/conditions.h"
+// #include "map/conditions.h"
 #include "nmath.h"
 #include "unit/unit.h"
 #include "position.h"
@@ -31,6 +31,7 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
 struct Unit;
+struct Map_condition;
 
 /* --- ENUMS --- */
 #define ARROW_FILENAME ARROW_FILENAME_

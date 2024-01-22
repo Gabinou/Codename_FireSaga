@@ -892,5 +892,5 @@ void Map_Music_Load(struct Map *map) {
 /* --- Boss --- */
 b32 Map_Boss_Alive(struct Map *map, i16 army) {
     // TODO:
-    return(true);
+    return (true);
 }
