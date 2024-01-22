@@ -178,6 +178,24 @@ void Map_Free(struct Map *map) {
         map->music_friendly = NULL;
     }
 
+    /* - Conditions - */
+    if (map->death_enemy != NULL) {
+        DARR_FREE(map->death_enemy);
+        map->death_enemy = NULL;
+    }
+    if (map->death_friendly != NULL) {
+        DARR_FREE(map->death_friendly);
+        map->death_friendly = NULL;
+    }
+    if (map->turn_end != NULL) {
+        DARR_FREE(map->turn_end);
+        map->turn_end = NULL;
+    }
+    if (map->waits_friendly != NULL) {
+        DARR_FREE(map->waits_friendly);
+        map->waits_friendly = NULL;
+    }
+
     /* - Edges - */
     if (map->edges_danger != NULL) {
         SDL_free(map->edges_danger);
