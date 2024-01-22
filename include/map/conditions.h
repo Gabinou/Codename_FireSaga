@@ -1,6 +1,7 @@
 #ifndef MAP_CONDITIONS_H
 #define MAP_CONDITIONS_H
 
+#include "events.h"
 #include "map/map.h"
 #include "unit/unit.h"
 
@@ -67,5 +68,7 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
                               struct Map           *map,
                               struct Unit          *unit,
                               struct Boss          *boss);
+
+void Map_Condition_Trigger(struct Map_condition *condition);
 
 #endif /* MAP_H */

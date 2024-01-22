@@ -182,9 +182,11 @@ void receive_event_Input_CANCEL(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Map_Win(struct Game *sota, SDL_Event *Map_Win) {
+
 }
 
 void receive_event_Map_Lose(struct Game *sota, SDL_Event *Map_Lose) {
+
 }
 
 void receive_event_Item_Get(struct Game *sota, SDL_Event *Map_Lose) {
@@ -1319,6 +1321,7 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity killer_entity = *(tnecs_entity *) userevent->user.data2;
     struct Unit *killer = TNECS_GET_COMPONENT(sota->world, killer_entity, Unit);
     struct Unit *victim = TNECS_GET_COMPONENT(sota->world, victim_entity, Unit);
+    struct Boss *boss   = TNECS_GET_COMPONENT(sota->world, victim_entity, Boss);
 
     /* --- Increasing Killer's regrets --- */
     int regrets = killer->regrets;
@@ -1338,6 +1341,17 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     // - Delete now useless components of entity
     //      HPbar, sprite
     // - Put unit entity in list of killed units
+    /* --- Check Map conditions --- */
+
+    int enemy_conds = DARR_NUM(sota->map->death_enemy);
+    for (int i = 0; i < enemy_conds; i++) {
+        struct *Map_Condition condition = sota->map->death_enemy[i];
+        if (!Map_Condition_Check_Death(condition, sota->map, victim, boss))
+            continue;
+        /* Condition satisfied, doing it */
+        DARR_DEL(sota->map->death_enemy, i);
+    }
+
 }
 
 void receive_event_Unit_Loots(struct Game *sota, SDL_Event *userevent) {
@@ -1374,6 +1388,8 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     if (dft_death) {
         Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &sota->defendant, &sota->aggressor);
     }
+    /* Only one of combatants can die */
+    SDL_assert(!(dft_death && agg_death));
 
     sota->combat_outcome.ended = (agg_death || dft_death);
 
