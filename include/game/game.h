@@ -44,6 +44,7 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
+struct Unit;
 struct Game;
 
 void Events_Data_Malloc(void);

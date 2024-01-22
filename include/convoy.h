@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include "enums.h"
 #include "nmath.h"
+#include "structs.h"
 #include "physfs.h"
 #include "jsonio.h"
 #include "debug.h"
@@ -14,6 +15,10 @@
 #include "cJSON.h"
 #include "utilities.h"
 #include "platform.h"
+
+/* --- FORWARD DECLARATINOS --- */
+struct Unit;
+struct Inventory_item;
 
 enum SOTA_CONVOY {
     SOTA_CONVOY_SIZE_MAX = 200,

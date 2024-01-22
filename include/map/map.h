@@ -30,6 +30,7 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
+struct Unit;
 
 /* --- ENUMS --- */
 #define ARROW_FILENAME ARROW_FILENAME_

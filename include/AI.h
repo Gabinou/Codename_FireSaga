@@ -17,6 +17,7 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
 struct Game;
+struct Unit;
 struct Timer;
 
 typedef tnecs_world  world;

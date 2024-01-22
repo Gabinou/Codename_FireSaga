@@ -5,6 +5,12 @@
 #include "map/map.h"
 #include "unit/unit.h"
 
+/* --- FORWARD DECLARATIONS --- */
+struct Item;
+struct Unit;
+struct Game;
+
+
 /* Conditions */
 // When condition is satisfied, something happens:
 //  - Win map

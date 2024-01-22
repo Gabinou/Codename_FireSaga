@@ -18,6 +18,7 @@
 /* --- FORWARD DECLARATINOS --- */
 struct Breakable;
 struct Door;
+struct Unit;
 struct Chest;
 struct Mobj_Link;
 

@@ -1345,7 +1345,7 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
 
     int enemy_conds = DARR_NUM(sota->map->death_enemy);
     for (int i = 0; i < enemy_conds; i++) {
-        struct *Map_Condition condition = sota->map->death_enemy[i];
+        struct Map_condition *condition = sota->map->death_enemy + i;
         if (!Map_Condition_Check_Death(condition, sota->map, victim, boss))
             continue;
         /* Condition satisfied, doing it */

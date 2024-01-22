@@ -3,6 +3,7 @@
 
 #include "bars/map_hp.h"
 #include "game/game.h"
+#include "map/conditions.h"
 #include "log.h"
 #include "game/cursor.h"
 #include "game/popup.h"
@@ -14,6 +15,7 @@
 #include "tnecs.h"
 #include "unit/unit.h"
 #include "narrative.h"
+#include "convoy.h"
 #include "enums.h"
 #include "arrow.h"
 #include "menu/menu.h"
@@ -23,6 +25,7 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
+struct Unit;
 struct Game;
 
 /* --- EVENT DATA ENTITIES --- */
