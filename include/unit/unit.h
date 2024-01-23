@@ -153,6 +153,7 @@ extern struct Unit Unit_default;
 void Unit_Init(        struct Unit *u);
 void Unit_Free(        struct Unit *u);
 void Unit_InitWweapons(struct Unit *u, struct dtab *weapons_dtab);
+void Unit_Reinforcement_Load(struct Unit *u, struct Reinforcement *r);
 
 /* --- Setters/Getters --- */
 int Unit_Id_Strong(struct Unit *u, int i);

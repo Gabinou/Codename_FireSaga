@@ -37,14 +37,21 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
                               struct Map           *map,
                               struct Unit          *unit,
                               struct Boss          *boss) {
+    SDL_Log("Map_Condition_Check_Death");
+    // getchar();
     /* Checking for matching army */
     b32 match_army = true;
-    if ((condition->army > ARMY_START) && (condition->army < ARMY_NUM))
+    if ((condition->army > ARMY_START) && (condition->army < ARMY_NUM)) {
+
+        SDL_Log("army %d %d", unit->army, condition->army);
         match_army = (unit->army == condition->army);
+    }
 
     /* -- No match: army -- */
-    if (!match_army)
+    if (!match_army) {
+        SDL_Log("No match: army");
         return (false);
+    }
 
     /* Checking for matching unit ID */
     b32 match_unit = true;
@@ -52,30 +59,41 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
         match_unit = (unit->_id == condition->unit);
 
     /* -- No match: unit -- */
-    if (!match_unit)
+    if (!match_unit) {
+        SDL_Log("No match: unit");
         return (false);
+    }
 
     /* Match: Rout */
     // TODO: check remaining units of enemy army
-    if (!condition->boss && condition->all && (DARR_NUM(map->enemies_onfield) == 0))
+    if (!condition->boss && condition->all && (DARR_NUM(map->enemies_onfield) == 0)) {
+        SDL_Log("Match: Rout");
         return (true);
+    }
 
     /* Checking for boss death */
     b32 died_boss = (boss != NULL);
 
     /* Match: Any boss */
-    if (condition->boss && !condition->all && died_boss)
+    if (condition->boss && !condition->all && died_boss) {
+        SDL_Log("Match: Any boss");
         return (true);
+    }
 
     /* Match: All boss */
-    if (condition->boss && condition->all && died_boss && !Map_Boss_Alive(map, ARMY_ENEMY))
+    if (condition->boss && condition->all && died_boss && !Map_Boss_Alive(map, ARMY_ENEMY)) {
+        SDL_Log("Match: All bosses");
         return (true);
+    }
 
     /* -- No match -- */
+    SDL_Log("No match");
     return (false);
 }
 
 void Map_Condition_Trigger(struct Map_condition *condition) {
+    SDL_Log("Map_Condition_Trigger");
+    getchar();
     /* XOR win and lose */
     SDL_assert(!(condition->win && condition->lose));
 

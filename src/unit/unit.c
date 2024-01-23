@@ -200,6 +200,11 @@ void Unit_InitWweapons(struct Unit *unit, struct dtab *weapons_dtab) {
     unit->weapons_dtab = weapons_dtab;
 }
 
+void Unit_Reinforcement_Load(struct Unit *unit, struct Reinforcement *reinf) {
+    unit->army = reinf->army;
+}
+    
+
 /* --- Setters/Getters --- */
 struct WpnorItem Unit_WpnorItem(struct Unit *unit, int i) {
     SDL_assert(unit->weapons_dtab != NULL);
@@ -1542,15 +1547,13 @@ void Unit_Equipped_Shields_Deplete(struct Unit *unit) {
 }
 
 /* --- I/O --- */
-
-
-
 void Unit_readJSON(void *input,  cJSON *junit) {
     struct Unit *unit = (struct Unit *)input;
     SDL_assert(unit);
     SDL_Log("-- Get json objects --");
     cJSON *jid              = cJSON_GetObjectItem(junit, "id");
     cJSON *jai              = cJSON_GetObjectItem(junit, "AI");
+    cJSON *jarmy            = cJSON_GetObjectItem(junit, "army");
     cJSON *jsex             = cJSON_GetObjectItem(junit, "Sex");
     cJSON *jexp             = cJSON_GetObjectItem(junit, "Exp");
     cJSON *jname            = cJSON_GetObjectItem(junit, "Name");
@@ -1587,6 +1590,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
 
     SDL_Log("-- startup misc --");
     unit->sex               = cJSON_IsTrue(jsex);
+    unit->army              = cJSON_GetNumberValue(jarmy);
     unit->exp               = cJSON_GetNumberValue(jexp);
     unit->base_exp          = cJSON_GetNumberValue(jbase_exp);
     Unit_setClassind(unit, cJSON_GetNumberValue(jclass_index));

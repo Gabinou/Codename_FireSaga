@@ -184,6 +184,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(unit != NULL);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         Unit_Init(unit);
+        Unit_Reinforcement_Load(unit, reinf);
 
         /* DESIGN: Reinforcements wait! */
         unit->waits = true;

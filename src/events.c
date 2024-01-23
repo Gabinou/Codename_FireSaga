@@ -182,7 +182,10 @@ void receive_event_Input_CANCEL(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Map_Win(struct Game *sota, SDL_Event *Map_Win) {
+    SDL_Log("Map was won!");
 
+    /* Go back to title screen */
+    Event_Emit(__func__, SDL_USEREVENT, event_Quit, data1_entity, data2_entity);
 }
 
 void receive_event_Map_Lose(struct Game *sota, SDL_Event *Map_Lose) {
@@ -1346,10 +1349,14 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     int enemy_conds = DARR_NUM(sota->map->death_enemy);
     for (int i = 0; i < enemy_conds; i++) {
         struct Map_condition *condition = sota->map->death_enemy + i;
-        if (!Map_Condition_Check_Death(condition, sota->map, victim, boss))
+        if (!Map_Condition_Check_Death(condition, sota->map, victim, boss)) {
+            getchar();
             continue;
+        }
+
         /* Condition satisfied, doing it */
         DARR_DEL(sota->map->death_enemy, i);
+        Map_Condition_Trigger(condition);
     }
 
 }
