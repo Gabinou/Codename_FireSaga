@@ -372,6 +372,7 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
     }
     /* -- Hiding popups -- */
     Game_PopUp_Tile_Hide(sota);
+    Game_PopUp_Unit_Hide(sota);
 
     /* -- Map_Free -- */
     Game_Map_Free(sota);
@@ -1234,7 +1235,7 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
     dft_timer->paused = false;
 
     // 5. Hide PopUp_Map_Combat
-    // Game_PopUp_Map_Combat_Hide(sota);
+    Game_PopUp_Map_Combat_Hide(sota);
 
     // 6. Revert hovered entity to aggressor
     sota->hovered_unit_entity = sota->aggressor;
