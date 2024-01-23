@@ -37,15 +37,11 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
                               struct Map           *map,
                               struct Unit          *unit,
                               struct Boss          *boss) {
-    SDL_Log("Map_Condition_Check_Death");
-    // getchar();
+    SDL_Log("Map_Condition: Check_Death");
     /* Checking for matching army */
     b32 match_army = true;
-    if ((condition->army > ARMY_START) && (condition->army < ARMY_NUM)) {
-
-        SDL_Log("army %d %d", unit->army, condition->army);
+    if ((condition->army > ARMY_START) && (condition->army < ARMY_NUM))
         match_army = (unit->army == condition->army);
-    }
 
     /* -- No match: army -- */
     if (!match_army) {
@@ -92,8 +88,6 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
 }
 
 void Map_Condition_Trigger(struct Map_condition *condition) {
-    SDL_Log("Map_Condition_Trigger");
-    getchar();
     /* XOR win and lose */
     SDL_assert(!(condition->win && condition->lose));
 

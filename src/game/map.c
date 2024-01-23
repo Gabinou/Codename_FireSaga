@@ -184,7 +184,6 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(unit != NULL);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         Unit_Init(unit);
-        Unit_Reinforcement_Load(unit, reinf);
 
         /* DESIGN: Reinforcements wait! */
         unit->waits = true;
@@ -194,10 +193,10 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         unit_path     = s8cat(unit_path, reinf->filename);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         jsonio_readJSON(unit_path, unit);
+        Unit_Reinforcement_Load(unit, reinf);
         s8_free(&unit_path);
         SDL_assert(unit->name.data != NULL);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
-        unit->army = reinf->army;
 
         /* Make AI reinforcements levelup */
         Unit_Reinforcement_Levelups(unit, reinf);
@@ -285,6 +284,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
                      position->tilemap_pos.y, temp_unit_ent);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
 
+        SDL_assert(unit->army == reinf->army);
         SDL_assert(unit->name.data != NULL);
     }
 }

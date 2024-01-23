@@ -203,7 +203,7 @@ void Unit_InitWweapons(struct Unit *unit, struct dtab *weapons_dtab) {
 void Unit_Reinforcement_Load(struct Unit *unit, struct Reinforcement *reinf) {
     unit->army = reinf->army;
 }
-    
+
 
 /* --- Setters/Getters --- */
 struct WpnorItem Unit_WpnorItem(struct Unit *unit, int i) {

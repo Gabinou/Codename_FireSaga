@@ -1339,10 +1339,11 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
 
     /* --- Remove MapHPbar --- */
     TNECS_REMOVE_COMPONENTS(sota->world, victim_entity, MapHPBar);
+    /* Components changed place, need to reload */
+    victim = TNECS_GET_COMPONENT(sota->world, victim_entity, Unit);
+    boss   = TNECS_GET_COMPONENT(sota->world, victim_entity, Boss);
 
     /* --- Deleting entity? --- */
-    // - Delete now useless components of entity
-    //      HPbar, sprite
     // - Put unit entity in list of killed units
     /* --- Check Map conditions --- */
 
@@ -1350,7 +1351,6 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     for (int i = 0; i < enemy_conds; i++) {
         struct Map_condition *condition = sota->map->death_enemy + i;
         if (!Map_Condition_Check_Death(condition, sota->map, victim, boss)) {
-            getchar();
             continue;
         }
 
