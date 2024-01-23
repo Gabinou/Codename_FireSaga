@@ -11,7 +11,6 @@
 #include "index_shader.h"
 #include "arrow.h"
 #include "reinforcement.h"
-// #include "map/conditions.h"
 #include "nmath.h"
 #include "unit/unit.h"
 #include "position.h"
@@ -183,6 +182,8 @@ struct Map {
     struct Map_condition *waits_friendly;
 
     /* --- MAP SWITCHES --- */
+    bool win                : 1;
+    bool loss               : 1;
     bool update             : 1;
     bool seized             : 1; /* maybe unnecessary if turn system. */
     // bool show_move          : 1;

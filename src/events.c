@@ -183,13 +183,11 @@ void receive_event_Input_CANCEL(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Map_Win(struct Game *sota, SDL_Event *Map_Win) {
     SDL_Log("Map was won!");
-
-    /* Go back to title screen */
-    Event_Emit(__func__, SDL_USEREVENT, event_Quit, data1_entity, data2_entity);
+    sota->map->win = true;
 }
 
 void receive_event_Map_Lose(struct Game *sota, SDL_Event *Map_Lose) {
-
+    sota->map->loss = true;
 }
 
 void receive_event_Item_Get(struct Game *sota, SDL_Event *Map_Lose) {
@@ -269,14 +267,12 @@ void receive_event_Input_STATS(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *userevent) {
-
     /* -- Popping all menus -- */
     bool destroy = false;
     while (DARR_NUM(sota->menu_stack) > 0)
         Game_menuStack_Pop(sota, destroy);
     SDL_assert(DARR_NUM(sota->menu_stack) == 0);
 
-    // BUG WITH MAP HERE
     Game_cursorFocus_onMap(sota);
 
     /* --- Visible Popups --- */
@@ -320,6 +316,9 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
         Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
     }
 
+    /* If map is won or loss, quit */
+    if (sota->map->win || sota->map->loss)
+        Event_Emit(__func__, SDL_USEREVENT, event_Quit, NULL, NULL);
 }
 
 void receive_event_Input_GLOBALRANGE(struct Game *sota, SDL_Event *userevent) {
@@ -1357,6 +1356,10 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
         /* Condition satisfied, doing it */
         DARR_DEL(sota->map->death_enemy, i);
         Map_Condition_Trigger(condition);
+
+        // TODO: Even if the condition was triggered need to:
+        //   - Wait for combat animation to finish
+        //   - Wait for agony/death animation to finish
     }
 
 }
