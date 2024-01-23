@@ -35,6 +35,7 @@ Game assets (graphics, music) to be distributed separately.
 ### Pre-requisites
 - [Simple Direct Media Layer (SDL)](https://www.libsdl.org/download-2.0.php) development library
 	- [SDL_image](https://github.com/libsdl-org/SDL_image)
+	- [SDL_mixer](https://github.com/libsdl-org/SDL_mixer)
 - [GCC](https://gcc.gnu.org/install/binaries.html) compiler suite
 	- or [tcc](https://repo.or.cz/w/tinycc.git) compiler
 - [Windows only: MSYS2](https://www.msys2.org/) Linux terminal for windows + many packages
