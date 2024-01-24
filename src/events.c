@@ -375,9 +375,21 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
     Game_PopUp_Tile_Hide(sota);
     Game_PopUp_Unit_Hide(sota);
 
-    /* -- Unload all map hpbars -- */
+    /* -- Remove unused components -- */
     for (int i = 0; i < DARR_NUM(sota->map->units_onfield); i++) {
-        TNECS_REMOVE_COMPONENTS(sota->world, sota->map->units_onfield[i], MapHPBar);
+        tnecs_entity ent = sota->map->units_onfield[i];
+        TNECS_REMOVE_COMPONENTS(sota->world, ent, MapHPBar);
+        if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, RenderTop)) {
+            TNECS_REMOVE_COMPONENTS(sota->world, ent, RenderTop);
+        }
+
+        if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, UnitMoveAnimation)) {
+            TNECS_REMOVE_COMPONENTS(sota->world, ent, UnitMoveAnimation);
+        }
+
+        if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, Boss)) {
+            TNECS_REMOVE_COMPONENTS(sota->world, ent, Boss);
+        }
     }
 
     /* -- Map_Free -- */
