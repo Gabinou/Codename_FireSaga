@@ -183,6 +183,7 @@ void receive_event_Input_CANCEL(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Map_Win(struct Game *sota, SDL_Event *Map_Win) {
     SDL_Log("Map was won!");
+
     sota->map->win = true;
 }
 
@@ -374,9 +375,14 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
     Game_PopUp_Tile_Hide(sota);
     Game_PopUp_Unit_Hide(sota);
 
+    /* -- Unload all map hpbars -- */
+    for (int i = 0; i < DARR_NUM(sota->map->units_onfield); i++) {
+        TNECS_REMOVE_COMPONENTS(sota->world, sota->map->units_onfield[i], MapHPBar);
+    }
+
     /* -- Map_Free -- */
     Game_Map_Free(sota);
-    
+
     /* -- Load TitleScreen -- */
     struct Input_Arguments args = Input_Arguments_default;
     Game_titleScreen_Load(sota, args);
