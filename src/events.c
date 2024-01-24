@@ -376,6 +376,7 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
 
     /* -- Map_Free -- */
     Game_Map_Free(sota);
+    
     /* -- Load TitleScreen -- */
     struct Input_Arguments args = Input_Arguments_default;
     Game_titleScreen_Load(sota, args);
@@ -1325,6 +1326,8 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     struct Unit *killer = TNECS_GET_COMPONENT(sota->world, killer_entity, Unit);
     struct Unit *victim = TNECS_GET_COMPONENT(sota->world, victim_entity, Unit);
     struct Boss *boss   = TNECS_GET_COMPONENT(sota->world, victim_entity, Boss);
+
+    SDL_Log("Killer entity %d", killer_entity);
 
     /* --- Increasing Killer's regrets --- */
     int regrets = killer->regrets;
