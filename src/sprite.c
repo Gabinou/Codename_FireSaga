@@ -423,8 +423,8 @@ void Sprite_Animation_Restart(struct Sprite *sprite, int loop) {
     struct Spritesheet *spritesheet = sprite->spritesheet;
     Spritesheet_Loop_Set(spritesheet, loop, sprite->flip);
 
-    spritesheet->current_frame = 0;
-    spritesheet->frame_i = 0;
+    spritesheet->current_frame  = 0;
+    spritesheet->frame_i        = 0;
 
     int pos     = spritesheet->loops_pos[spritesheet->current_loop];
     int frame_x = pos % SPRITESHEET_COL_LEN;
@@ -432,7 +432,6 @@ void Sprite_Animation_Restart(struct Sprite *sprite, int loop) {
 
     sprite->srcrect.x = sprite->srcrect.w * frame_x;
     sprite->srcrect.y = sprite->srcrect.h * frame_y;
-
 }
 
 void Sprite_Animation_Loop(struct Sprite *sprite) {

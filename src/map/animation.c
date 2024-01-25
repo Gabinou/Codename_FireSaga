@@ -13,13 +13,13 @@ struct MapAnimation MapAnimation_default = {
 };
 
 void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
-                        struct CombatAnimation *map_anim, struct Timer *combat_timer) {
-    SDL_assert(map_anim     != NULL);
+                        struct CombatAnimation *combat_anim, struct Timer *combat_timer) {
+    SDL_assert(combat_anim     != NULL);
     SDL_assert(combat_timer != NULL);
-    b32 no_more_attacks = (map_anim->attack_ind >= sota->combat_forecast.attack_num);
+    b32 no_more_attacks = (combat_anim->attack_ind >= sota->combat_forecast.attack_num);
     if (no_more_attacks || sota->combat_outcome.ended) {
         /* - Check for remaining attack, ending combat after pause - */
-        bool paused = ((combat_timer->time_ns / SOTA_us) < map_anim->pause_after_ms);
+        bool paused = ((combat_timer->time_ns / SOTA_us) < combat_anim->pause_after_ms);
         if (!paused) {
             tnecs_entity_destroy(sota->world, entity);
             Event_Emit(__func__, SDL_USEREVENT, event_Combat_End, NULL, NULL);
@@ -29,12 +29,12 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
     }
 
     /* - pausing attacker - */
-    int attacker_i = sota->combat_outcome.phases[map_anim->attack_ind].attacker;
+    int attacker_i = sota->combat_outcome.phases[combat_anim->attack_ind].attacker;
     tnecs_entity attacker = attacker_i ? sota->aggressor : sota->defendant;
 
     struct Timer *att_timer = TNECS_GET_COMPONENT(sota->world, attacker, Timer);
     SDL_assert(att_timer != NULL);
-    att_timer->paused = ((combat_timer->time_ns / SOTA_us) < map_anim->pause_before_ms);
+    att_timer->paused = ((combat_timer->time_ns / SOTA_us) < combat_anim->pause_before_ms);
     if (att_timer->paused) {
         return;
     }
@@ -44,25 +44,25 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
         TNECS_ADD_COMPONENT(sota->world, attacker, RenderTop);
     }
 
-    /* - map_anim's frame count only grows - */
+    /* - combat_anim's frame count only grows - */
     struct Sprite *att_sprite = TNECS_GET_COMPONENT(sota->world, attacker, Sprite);
     SDL_assert(att_sprite != NULL);
     int current_frame   = att_sprite->spritesheet->current_frame;
-    int frame_count     = map_anim->frame_count;
-    map_anim->frame_count = current_frame > frame_count ? current_frame : frame_count;
+    int frame_count     = combat_anim->frame_count;
+    combat_anim->frame_count = current_frame > frame_count ? current_frame : frame_count;
 
-    /* - Checking if map_anim->attack_ind should be incremented - */
-    if (att_timer->paused || (map_anim->frame_count == 0) || (current_frame > 0)) {
+    /* - Checking if combat_anim->attack_ind should be incremented - */
+    if (att_timer->paused || (combat_anim->frame_count == 0) || (current_frame > 0)) {
         return;
     }
 
-    map_anim->attack_ind++;
+    combat_anim->attack_ind++;
     Event_Emit(__func__, SDL_USEREVENT, event_Increment_Attack, NULL, NULL);
 
     /* - reset combat timer for next attack - */
     combat_timer->time_ns = 0;
     /* - reset frame_count for next attack - */
-    map_anim->frame_count = 0;
+    combat_anim->frame_count = 0;
     att_timer->paused = true;
 
     /* - pause defender - */

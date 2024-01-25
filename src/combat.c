@@ -270,7 +270,9 @@ void Compute_Combat_Outcome(struct Combat_Outcome   *outcome,
         Compute_Combat_Phase(&temp_phase, darr_attacks, damage, defendant, hit, crit, brave);
         phases[forecast->phase_num++] = temp_phase;
     }
-    forecast->attack_num = DARR_NUM(darr_attacks);
+    forecast->attack_num        = DARR_NUM(darr_attacks);
+    outcome->ended              = false;
+
 }
 
 /* -- Combat Attacks -- */

@@ -1176,16 +1176,16 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
 
     /* -- Create combat animation entity -- */
     // TODO change to MapAnimation component
-    tnecs_entity map_animation;
-    map_animation = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer, CombatAnimation);
+    tnecs_entity combat_animation;
+    combat_animation = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer, CombatAnimation);
 
-    struct CombatAnimation *map_anim;
-    map_anim  = TNECS_GET_COMPONENT(sota->world, map_animation, CombatAnimation);
-    SDL_assert(map_anim != NULL);
-    *map_anim = CombatAnimation_default;
+    struct CombatAnimation *combat_anim;
+    combat_anim  = TNECS_GET_COMPONENT(sota->world, combat_animation, CombatAnimation);
+    SDL_assert(combat_anim != NULL);
+    *combat_anim = CombatAnimation_default;
 
-    struct Timer *timer = TNECS_GET_COMPONENT(sota->world, map_animation, Timer);
-    SDL_assert(map_anim != NULL);
+    struct Timer *timer = TNECS_GET_COMPONENT(sota->world, combat_animation, Timer);
+    SDL_assert(combat_anim != NULL);
     *timer = Timer_default;
     timer->time_ns = 0;
 
