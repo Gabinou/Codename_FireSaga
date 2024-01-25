@@ -21,6 +21,7 @@ void Game_PopUp_Loadout_Stats_Create(struct Game *sota);
 void Game_PopUp_Map_Combat_Hide(     struct Game *sota);
 void Game_PopUp_Map_Combat_Free(     struct Game *sota);
 void Game_PopUp_Map_Combat_Create(   struct Game *sota);
+void Game_PopUp_Map_Combat_Update(   struct Game *sota);
 
 /* --- PopUp_Tile --- */
 void Game_PopUp_Tile_Hide(           struct Game *sota);

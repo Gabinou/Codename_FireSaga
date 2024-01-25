@@ -301,18 +301,26 @@ void Game_PopUp_Map_Combat_Create(struct Game *sota) {
 
     tnecs_entity ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position, PopUp);
     sota->popups[POPUP_TYPE_MAP_COMBAT] = ent;
-    struct Position *position   = TNECS_GET_COMPONENT(sota->world, ent, Position);
-    struct PopUp *popup         = TNECS_GET_COMPONENT(sota->world, ent, PopUp);
-    SDL_assert(position != NULL);
+    struct PopUp    *popup      = TNECS_GET_COMPONENT(sota->world, ent, PopUp);
+    popup->draw                 = &PopUp_Map_Combat_Draw;
     SDL_assert(popup    != NULL);
 
-    popup->visible      = true;
-    popup->draw         = &PopUp_Map_Combat_Draw;
 
     /* - Making PopUp_Map_Combat - */
     if (popup->data != NULL)
         SDL_free(popup->data);
     popup->data = malloc(sizeof(struct PopUp_Map_Combat));
+}
+
+void Game_PopUp_Map_Combat_Update(   struct Game *sota) {
+    tnecs_entity ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
+    struct Position *position   = TNECS_GET_COMPONENT(sota->world, ent, Position);
+    struct PopUp    *popup      = TNECS_GET_COMPONENT(sota->world, ent, PopUp);
+    SDL_assert(position != NULL);
+    SDL_assert(popup    != NULL);
+
+    popup->visible      = true;
+
     struct PopUp_Map_Combat *pmc = popup->data;
     *pmc = PopUp_Map_Combat_default;
 
@@ -335,8 +343,8 @@ void Game_PopUp_Map_Combat_Create(struct Game *sota) {
     /* - position - */
     position->pixel_pos.x   = sota->settings.res.x / 2;
     position->pixel_pos.y   = sota->settings.res.y / 2;
-
 }
+
 
 void Game_PopUp_Map_Combat_Hide(struct Game *sota) {
     tnecs_entity popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];

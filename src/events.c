@@ -1181,9 +1181,11 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
 
     struct CombatAnimation *map_anim;
     map_anim  = TNECS_GET_COMPONENT(sota->world, map_animation, CombatAnimation);
+    SDL_assert(map_anim != NULL);
     *map_anim = CombatAnimation_default;
 
     struct Timer *timer = TNECS_GET_COMPONENT(sota->world, map_animation, Timer);
+    SDL_assert(map_anim != NULL);
     *timer = Timer_default;
     timer->time_ns = 0;
 
@@ -1196,6 +1198,7 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     /* - Show map combat popup - */
     if (sota->popups[POPUP_TYPE_MAP_COMBAT] == TNECS_NULL)
         Game_PopUp_Map_Combat_Create(sota);
+    Game_PopUp_Map_Combat_Update(sota);
 
     struct Unit *aggressor = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Unit);
     struct Unit *defendant = TNECS_GET_COMPONENT(sota->world, sota->defendant, Unit);
@@ -1204,7 +1207,7 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     struct PopUp_Map_Combat *pmc = popup->data;
 
     PopUp_Map_Combat_Units(pmc, sota, aggressor, defendant, agg_pos, dft_pos);
-
+    popup->visible = true;
     /* - Deselect weapons in LoadoutSelectMenu, if it exists - */
     mc = TNECS_GET_COMPONENT(sota->world, sota->weapon_select_menu, Menu);
     if (mc != NULL) {
@@ -1265,7 +1268,6 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Defendant_Select(struct Game *sota, SDL_Event *userevent) {
-
     // 1. Compute Combat stuff
     Game_Combat_Outcome(sota);
 
