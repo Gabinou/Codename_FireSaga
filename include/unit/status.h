@@ -25,7 +25,7 @@ enum STATUSES {
 
 /* --- UNIT STATUS --- */
 struct Unit_status {
-    /* Number of turns to be in this state. *
+    /* Number of turns to be in this state. */
     /* <0 means forever. */
     i8 status;
     i8 turns;
