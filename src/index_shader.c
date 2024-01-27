@@ -17,8 +17,38 @@ struct Tilemap_Shader Tilemap_Shader_default = {
 };
 
 /* --- STATIC FUNCTIONS --- */
-static void _Index_Shade_Rect(  u8 *to, SDL_Surface *us, SDL_Rect *r);
-static void _Index_Shade_Pixels(u8 *to, SDL_Surface *us, u8 *pl, size_t pn, size_t x, size_t y);
+static void _Index_Shade_Rect(u8 *to, SDL_Surface *unlocked_surface,
+                              SDL_Rect *rect) {
+    u8 *pixels = unlocked_surface->pixels;
+    SDL_assert(SDL_ISPIXELFORMAT_INDEXED(unlocked_surface->format->format));
+    for (size_t x = rect->x; x < rect->x + rect->w; x++) {
+        for (size_t y = rect->y; y < rect->y + rect->h; y++) {
+            size_t index = Util_SDL_Surface_Index(unlocked_surface, x, y);
+            pixels[index] = to[pixels[index]];
+        }
+    }
+}
+
+static void _Index_Shade_Pixels(u8 *to, SDL_Surface *unlocked_surface,
+                                u8 *pixels_list, size_t pixels_num,
+                                size_t offset_x, size_t offset_y) {
+    SDL_assert(SDL_ISPIXELFORMAT_INDEXED(unlocked_surface->format->format));
+    SDL_assert(pixels_num > 0);
+    u8 *pixels = unlocked_surface->pixels;
+
+    for (size_t i = 0; i < pixels_num; i++) {
+        size_t y = pixels_list[TWO_D * i + 1];
+        size_t x = pixels_list[TWO_D * i];
+        SDL_assert(x < unlocked_surface->w);
+        SDL_assert(y < unlocked_surface->h);
+        SDL_assert((x + offset_x) < unlocked_surface->w);
+        SDL_assert((y + offset_y) < unlocked_surface->h);
+        size_t pos = Util_SDL_Surface_Index(unlocked_surface, (x + offset_x), (y + offset_y));
+        pixels[pos] = to[pixels[pos]];
+    }
+}
+
+
 
 /* --- GLOBAL FUNCTIONS --- */
 i32 *matrix_circ_noise(i32 *matrix, i32 origx, i32 origy,
@@ -64,36 +94,6 @@ u8 *pixels_and_noM(u8 *out, u8 *matrix1, u8 *matrix2, size_t arr_len) {
 u8 *pixels_and(u8 *matrix1, u8 *matrix2, size_t arr_len) {
     u8 *out = calloc(arr_len, sizeof(*out));
     return (pixels_and_noM(out, matrix1, matrix2, arr_len));
-}
-
-
-void _Index_Shade_Pixels(u8 *to, SDL_Surface *unlocked_surface, u8 *pixels_list,
-                         size_t pixels_num, size_t offset_x, size_t offset_y) {
-    SDL_assert(SDL_ISPIXELFORMAT_INDEXED(unlocked_surface->format->format));
-    SDL_assert(pixels_num > 0);
-    u8 *pixels = unlocked_surface->pixels;
-
-    for (size_t i = 0; i < pixels_num; i++) {
-        size_t y = pixels_list[TWO_D * i + 1];
-        size_t x = pixels_list[TWO_D * i];
-        SDL_assert(x < unlocked_surface->w);
-        SDL_assert(y < unlocked_surface->h);
-        SDL_assert((x + offset_x) < unlocked_surface->w);
-        SDL_assert((y + offset_y) < unlocked_surface->h);
-        size_t pos = Util_SDL_Surface_Index(unlocked_surface, (x + offset_x), (y + offset_y));
-        pixels[pos] = to[pixels[pos]];
-    }
-}
-
-void _Index_Shade_Rect( u8 *to, SDL_Surface *unlocked_surface, SDL_Rect *rect) {
-    u8 *pixels = unlocked_surface->pixels;
-    SDL_assert(SDL_ISPIXELFORMAT_INDEXED(unlocked_surface->format->format));
-    for (size_t x = rect->x; x < rect->x + rect->w; x++) {
-        for (size_t y = rect->y; y < rect->y + rect->h; y++) {
-            size_t index = Util_SDL_Surface_Index(unlocked_surface, x, y);
-            pixels[index] = to[pixels[index]];
-        }
-    }
 }
 
 /* --- TILEMAP SHADER --- */

@@ -195,7 +195,7 @@ typedef struct PopUp_Loadout_Stats {
 
 extern struct PopUp_Loadout_Stats PopUp_Loadout_Stats_default;
 
-/* --- ructor/Destructor --- */
+/* --- Constructor/Destructor --- */
 void PopUp_Loadout_Stats_Free(struct PopUp_Loadout_Stats *pls);
 void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls, SDL_Renderer *r,
                               struct n9Patch *n9);

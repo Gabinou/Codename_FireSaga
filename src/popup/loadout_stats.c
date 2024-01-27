@@ -25,7 +25,8 @@ struct PopUp_Loadout_Stats PopUp_Loadout_Stats_default = {
 
 /* --- STATIC FUNCTIONS --- */
 /* -- Drawing elements -- */
-static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
+static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
+                                             SDL_Renderer *renderer) {
     /* - ARROWS - */
     int arrow_index;
     SDL_Rect dstrect, srcrect;
@@ -219,7 +220,8 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls, SD
 
 }
 
-static void _PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
+static void _PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls,
+                                               SDL_Renderer *renderer) {
     /* -- COMPUTED STATS -- */
     int width;
     char numbuff[10];
@@ -285,7 +287,6 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls, 
 
 }
 
-
 static void _PopUp_Loadout_Stats_Draw_Hands(struct PopUp_Loadout_Stats *pls,
                                             SDL_Renderer *renderer) {
     SDL_Rect dstrect, srcrect;
@@ -342,7 +343,8 @@ static void _PopUp_Loadout_Stats_Draw_Hands(struct PopUp_Loadout_Stats *pls,
     }
 }
 
-static void _PopUp_Loadout_Stats_Draw_WpnIcons(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
+static void _PopUp_Loadout_Stats_Draw_WpnIcons(struct PopUp_Loadout_Stats *pls,
+                                               SDL_Renderer *renderer) {
     /* - WEAPON ICONS - */
     int stronghand = Unit_Hand_Strong(pls->unit);
     SDL_Rect dstrect, srcrect;
@@ -382,7 +384,8 @@ static void _PopUp_Loadout_Stats_Draw_WpnIcons(struct PopUp_Loadout_Stats *pls, 
     }
 }
 
-static void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
+static void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls,
+                                            SDL_Renderer *renderer) {
     /* - EQUIP ICONS - */
     SDL_Rect dstrect, srcrect;
     srcrect.x = 0;
@@ -415,7 +418,8 @@ static void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls, SDL
     }
 }
 
-static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
+static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
+                                               SDL_Renderer *renderer) {
     /* - EQUIPPED WEAPONS NAMES - */
     /* Left hand */
     do {

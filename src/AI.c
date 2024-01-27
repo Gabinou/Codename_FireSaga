@@ -30,6 +30,207 @@ struct AI_Action AI_Action_default =  {
     .action          = AI_ACTION_START,
 };
 
+/* --- STATIC FUNCTIONS --- */
+/* --- Doer FSM --- */
+static void _AI_Doer_Wait(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+    Game_Unit_Wait(sota, npc_ent);
+}
+
+static void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+    /* -- Set aggressor for combat -- */
+    sota->aggressor = npc_ent;
+
+    /* -- Set defendant for combat -- */
+    struct Point pos = action->target_action;
+    tnecs_entity friendly = Map_Unit_Get(sota->map, pos.x, pos.y);
+    SDL_assert(friendly != TNECS_NULL);
+    sota->defendant = friendly;
+
+    /* -- Set npc_ent for waiting after combat -- */
+    sota->selected_unit_entity = npc_ent;
+
+    /* -- Compute Combat outcome -- */
+    Game_Combat_Outcome(sota);
+
+    Event_Emit(__func__, SDL_USEREVENT, event_Combat_Start, data1_entity, data2_entity);
+}
+
+
+/* -- Decider Move FSM -- */
+static b32 _AI_Decider_Move_Never(struct Game *sota, tnecs_entity npc_ent) {
+    SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: AI_MOVE_NEVER set, skipping");
+    return (false);
+}
+
+static b32 _AI_Decider_Move_Always(struct Game *sota, tnecs_entity npc_ent) {
+    SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: AI_MOVE_ALWAYS set, moving");
+    return (true);
+}
+
+static b32 _AI_Decider_Move_inRange(struct Game *sota, tnecs_entity npc_ent) {
+    /* -- Get list of defendants in range -- */
+    struct Map *map = sota->map;
+    Map_Attacktomap_Compute(map, sota->world, npc_ent, true, false);
+    Map_Attacktolist_Compute(map);
+    tnecs_entity *dfts = DARR_INIT(dfts, tnecs_entity, 1);
+    dfts = Map_Find_Defendants(map, map->attacktolist, dfts, npc_ent, true);
+
+    /* --- Move if enemy in range --- */
+    b32 out = (DARR_NUM(dfts) > 0);
+    SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: AI_MOVE_INRANGE set, %d enemies", DARR_NUM(dfts));
+    DARR_FREE(dfts);
+    return (out);
+}
+
+static b32 _AI_Decider_Move_Trigger(  struct Game *sota, tnecs_entity npc_ent) {
+    // TODO: input trigger condition
+    return (false);
+}
+
+static b32 _AI_Decider_Move_onChapter(struct Game *sota, tnecs_entity npc_ent) {
+    struct AI *ai = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
+    SDL_assert(ai != NULL);
+    SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: AI_MOVE_onChapter set, (%d > %d)",
+                 sota->map->turn, ai->turn_move);
+    return (sota->map->turn > ai->turn_move);
+}
+
+
+/* -- Master Deciders -- */
+static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
+                                    struct AI_Action *action) {
+    /* -- Get list of defendants in range -- */
+    Map_Attacktomap_Compute(sota->map, sota->world, npc_ent, true, false);
+    Map_Attacktolist_Compute(sota->map);
+    tnecs_entity *defendants = DARR_INIT(defendants, tnecs_entity, 4);
+    defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist, defendants, npc_ent, false);
+
+    /* - TODO: Decide which loadout to attack with - */
+
+    if (DARR_NUM(defendants) < 1) {
+        /* -- BRANCH 1- No enemies in range -- */
+        SDL_LogDebug(SOTA_LOG_AI, "AI Decider Master Kill: No enemies in range.");
+
+        /* - Find closest enemy - */
+        struct Position *posc = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
+        SDL_assert(posc != NULL);
+        struct Point pos = posc->tilemap_pos;
+        tnecs_entity closest =  Map_Find_Friendly_Closest(sota->map, pos.x, pos.y);
+        SDL_assert(closest != TNECS_NULL);
+        struct Position *pos_closest = TNECS_GET_COMPONENT(sota->world, closest, Position);
+        SDL_assert(pos_closest != NULL);
+
+        /* - Set target_move to closest enemy position - */
+        action->target_action.x = pos_closest->tilemap_pos.x;
+        action->target_action.y = pos_closest->tilemap_pos.y;
+        action->action = AI_ACTION_WAIT;
+        DARR_FREE(defendants);
+        return;
+    }
+
+    /* -- BRANCH 2- Enemies in range -- */
+    SDL_LogDebug(SOTA_LOG_AI, "AI Decider master Kill: Enemies in range.");
+
+    /* -- TODO: Find easiest enemy to kill -- */
+    tnecs_entity defendant = defendants[0];
+
+    /* - Set target_move to unoccupied tile in range (attackfrom) - */
+    Map_Attackfrommap_Compute(sota->map, sota->world, npc_ent, defendant, true, true);
+
+    i32 *attackfromlist = Map_Attackfromlist_Compute(sota->map);
+    /* Should be at least on tile to attack from. */
+    SDL_assert(DARR_NUM(attackfromlist) > 0);
+
+    // TODO: find good tile to attack from
+    action->target_move.x = attackfromlist[0];
+    action->target_move.y = attackfromlist[1];
+
+    /* - Set target_action to enemy-occupied tile - */
+    struct Position *pos = TNECS_GET_COMPONENT(sota->world, defendant, Position);
+    SDL_assert(pos);
+    action->target_action = pos->tilemap_pos;
+
+    action->action = AI_ACTION_ATTACK;
+    DARR_FREE(defendants);
+}
+
+static void _AI_Decider_Master_Staff(struct Game *sota, tnecs_entity npc_ent,
+                                     struct AI_Action *action) {
+
+}
+
+static void _AI_Decider_Master_Nothing(struct Game *sota, tnecs_entity npc_ent,
+                                       struct AI_Action *action) {
+    SDL_LogDebug(SOTA_LOG_AI, "AI Decider: AI_PRIORITY_DO_NOTHING set.");
+    action->action = AI_ACTION_WAIT;
+}
+
+static void _AI_Decider_Master_Move_To(struct Game *sota, tnecs_entity npc_ent,
+                                       struct AI_Action *action) {
+    /* Set target move to ultimate move_to target*/
+    struct AI *ai = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
+    action->target_action = ai->target_move;
+
+    /* -- Set target_move to closest tile on way to target_action -- */
+    _AI_Decide_Move(sota, npc_ent, action);
+
+    SDL_assert(ai->priority_slave >= AI_PRIORITY_START);
+    SDL_assert(ai->priority_slave < AI_PRIORITY_NUM);
+    if (AI_Decider_slave[ai->priority_slave] != NULL)
+        AI_Decider_slave[ai->priority_slave](sota, npc_ent, action);
+}
+
+/* -- Slave Deciders -- */
+static void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
+                                   struct AI_Action *action) {
+    SDL_assert((action->target_move.x >= 0) && (action->target_move.x < sota->map->col_len));
+    SDL_assert((action->target_move.y >= 0) && (action->target_move.y < sota->map->row_len));
+
+    /* -- Find targets to attack after target_move was set -- */
+    struct Position *pos = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
+    struct Point oldpos  = pos->tilemap_pos;
+    struct Point newpos  = action->target_move;
+
+    /* -- Find defendants at target_move -- */
+    pos->tilemap_pos = newpos;
+    Map_Attacktomap_Compute(sota->map, sota->world, npc_ent, false, false);
+    Map_Attacktolist_Compute(sota->map);
+    tnecs_entity *defendants = DARR_INIT(defendants, tnecs_entity, 4);
+    defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist, defendants, npc_ent, false);
+
+    /* -- Revert position to previous -- */
+    pos->tilemap_pos = oldpos;
+
+    /* No attackable units tiles */
+    if (DARR_NUM(defendants) < 1) {
+        SDL_LogDebug(SOTA_LOG_AI, "AI Decider Slave Kill: No tiles to attack enemy from.");
+        action->action = AI_ACTION_WAIT;
+        DARR_FREE(defendants);
+        return;
+    }
+
+    /* - TODO: Find easiest unit to kill - */
+    action->patient = defendants[0];
+    action->action  = AI_ACTION_ATTACK;
+    DARR_FREE(defendants);
+}
+
+
+entity AI_Decide_Next(struct Game *sota) {
+    struct AI_State *ai_state = &sota->ai_state;
+    // TODO: better function for next unit
+    //  - How does AI decide Who goes next??
+    //      - Go through all units with certain priorities, for a priority order
+    //      - Go through units always in same order in enemies_onmap
+    //      - Go through units in random order
+    //      - Use Unit master/slave AI_Priority to decide
+
+    ai_state->npc_i = 0;
+    return (ai_state->npcs[ai_state->npc_i]);
+}
+
+
+/* --- FSM --- */
 AI_Decider AI_Decider_master[AI_PRIORITY_NUM] = {
     /* AI_PRIORITY_KILL         */ &_AI_Decider_Master_Kill,
     /* AI_PRIORITY_PATROL       */ NULL,
@@ -91,174 +292,7 @@ AI_Decider_Move AI_Decider_move[AI_MOVE_NUM] = {
 
 };
 
-b32 _AI_Decider_Move_Never(struct Game *sota, tnecs_entity npc_ent) {
-    SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: AI_MOVE_NEVER set, skipping");
-    return (false);
-}
-
-b32 _AI_Decider_Move_Always(struct Game *sota, tnecs_entity npc_ent) {
-    SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: AI_MOVE_ALWAYS set, moving");
-    return (true);
-}
-
-b32 _AI_Decider_Move_inRange(struct Game *sota, tnecs_entity npc_ent) {
-    /* -- Get list of defendants in range -- */
-    struct Map *map = sota->map;
-    Map_Attacktomap_Compute(map, sota->world, npc_ent, true, false);
-    Map_Attacktolist_Compute(map);
-    tnecs_entity *dfts = DARR_INIT(dfts, tnecs_entity, 1);
-    dfts = Map_Find_Defendants(map, map->attacktolist, dfts, npc_ent, true);
-
-    /* --- Move if enemy in range --- */
-    b32 out = (DARR_NUM(dfts) > 0);
-    SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: AI_MOVE_INRANGE set, %d enemies", DARR_NUM(dfts));
-    DARR_FREE(dfts);
-    return (out);
-}
-
-b32 _AI_Decider_Move_Trigger(  struct Game *sota, tnecs_entity npc_ent) {
-    // TODO: input trigger condition
-    return (false);
-}
-
-b32 _AI_Decider_Move_onChapter(struct Game *sota, tnecs_entity npc_ent) {
-    struct AI *ai = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
-    SDL_assert(ai != NULL);
-    SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: AI_MOVE_onChapter set, (%d > %d)",
-                 sota->map->turn, ai->turn_move);
-    return (sota->map->turn > ai->turn_move);
-}
-
-
-void _AI_Decider_Master_Nothing(struct Game *sota, tnecs_entity npc_ent,
-                                struct AI_Action *action) {
-    SDL_LogDebug(SOTA_LOG_AI, "AI Decider: AI_PRIORITY_DO_NOTHING set.");
-    action->action = AI_ACTION_WAIT;
-}
-
-void _AI_Decider_Master_Move_To(struct Game *sota, tnecs_entity npc_ent,
-                                struct AI_Action *action) {
-    /* Set target move to ultimate move_to target*/
-    struct AI *ai = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
-    action->target_action = ai->target_move;
-
-    /* -- Set target_move to closest tile on way to target_action -- */
-    _AI_Decide_Move(sota, npc_ent, action);
-
-    SDL_assert(ai->priority_slave >= AI_PRIORITY_START);
-    SDL_assert(ai->priority_slave < AI_PRIORITY_NUM);
-    if (AI_Decider_slave[ai->priority_slave] != NULL)
-        AI_Decider_slave[ai->priority_slave](sota, npc_ent, action);
-}
-
-void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
-                            struct AI_Action *action) {
-    SDL_assert((action->target_move.x >= 0) && (action->target_move.x < sota->map->col_len));
-    SDL_assert((action->target_move.y >= 0) && (action->target_move.y < sota->map->row_len));
-
-    /* -- Find targets to attack after target_move was set -- */
-    struct Position *pos = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
-    struct Point oldpos  = pos->tilemap_pos;
-    struct Point newpos  = action->target_move;
-
-    /* -- Find defendants at target_move -- */
-    pos->tilemap_pos = newpos;
-    Map_Attacktomap_Compute(sota->map, sota->world, npc_ent, false, false);
-    Map_Attacktolist_Compute(sota->map);
-    tnecs_entity *defendants = DARR_INIT(defendants, tnecs_entity, 4);
-    defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist, defendants, npc_ent, false);
-
-    /* -- Revert position to previous -- */
-    pos->tilemap_pos = oldpos;
-
-    /* No attackable units tiles */
-    if (DARR_NUM(defendants) < 1) {
-        SDL_LogDebug(SOTA_LOG_AI, "AI Decider Slave Kill: No tiles to attack enemy from.");
-        action->action = AI_ACTION_WAIT;
-        DARR_FREE(defendants);
-        return;
-    }
-
-    /* - TODO: Find easiest unit to kill - */
-    action->patient = defendants[0];
-    action->action  = AI_ACTION_ATTACK;
-    DARR_FREE(defendants);
-}
-
-void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
-                             struct AI_Action *action) {
-    /* -- Get list of defendants in range -- */
-    Map_Attacktomap_Compute(sota->map, sota->world, npc_ent, true, false);
-    Map_Attacktolist_Compute(sota->map);
-    tnecs_entity *defendants = DARR_INIT(defendants, tnecs_entity, 4);
-    defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist, defendants, npc_ent, false);
-
-    /* - TODO: Decide which loadout to attack with - */
-
-    if (DARR_NUM(defendants) < 1) {
-        /* -- BRANCH 1- No enemies in range -- */
-        SDL_LogDebug(SOTA_LOG_AI, "AI Decider Master Kill: No enemies in range.");
-
-        /* - Find closest enemy - */
-        struct Position *posc = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
-        SDL_assert(posc != NULL);
-        struct Point pos = posc->tilemap_pos;
-        tnecs_entity closest =  Map_Find_Friendly_Closest(sota->map, pos.x, pos.y);
-        SDL_assert(closest != TNECS_NULL);
-        struct Position *pos_closest = TNECS_GET_COMPONENT(sota->world, closest, Position);
-        SDL_assert(pos_closest != NULL);
-
-        /* - Set target_move to closest enemy position - */
-        action->target_action.x = pos_closest->tilemap_pos.x;
-        action->target_action.y = pos_closest->tilemap_pos.y;
-        action->action = AI_ACTION_WAIT;
-        DARR_FREE(defendants);
-        return;
-    }
-
-    /* -- BRANCH 2- Enemies in range -- */
-    SDL_LogDebug(SOTA_LOG_AI, "AI Decider master Kill: Enemies in range.");
-
-    /* -- TODO: Find easiest enemy to kill -- */
-    tnecs_entity defendant = defendants[0];
-
-    /* - Set target_move to unoccupied tile in range (attackfrom) - */
-    Map_Attackfrommap_Compute(sota->map, sota->world, npc_ent, defendant, true, true);
-
-    i32 *attackfromlist = Map_Attackfromlist_Compute(sota->map);
-    /* Should be at least on tile to attack from. */
-    SDL_assert(DARR_NUM(attackfromlist) > 0);
-
-    // TODO: find good tile to attack from
-    action->target_move.x = attackfromlist[0];
-    action->target_move.y = attackfromlist[1];
-
-    /* - Set target_action to enemy-occupied tile - */
-    struct Position *pos = TNECS_GET_COMPONENT(sota->world, defendant, Position);
-    SDL_assert(pos);
-    action->target_action = pos->tilemap_pos;
-
-    action->action = AI_ACTION_ATTACK;
-    DARR_FREE(defendants);
-}
-
-void _AI_Decider_Master_Staff(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
-
-}
-
-entity AI_Decide_Next(struct Game *sota) {
-    struct AI_State *ai_state = &sota->ai_state;
-    // TODO: better function for next unit
-    //  - How does AI decide Who goes next??
-    //      - Go through all units with certain priorities, for a priority order
-    //      - Go through units always in same order in enemies_onmap
-    //      - Go through units in random order
-    //      - Use Unit master/slave AI_Priority to decide
-
-    ai_state->npc_i = 0;
-    return (ai_state->npcs[ai_state->npc_i]);
-}
-
+/* --- GLOBAL FUNCTIONS --- */
 void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     /* --- PRELIMINARIES --- */
     *action = AI_Action_default;
@@ -377,29 +411,6 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
     struct Point old = pos->tilemap_pos;
     struct Point new = action->target_move;
     Map_Unit_Move(sota->map, old.x, old.y, new.x, new.y);
-}
-
-void _AI_Doer_Wait(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
-    Game_Unit_Wait(sota, npc_ent);
-}
-
-void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
-    /* -- Set aggressor for combat -- */
-    sota->aggressor = npc_ent;
-
-    /* -- Set defendant for combat -- */
-    struct Point pos = action->target_action;
-    tnecs_entity friendly = Map_Unit_Get(sota->map, pos.x, pos.y);
-    SDL_assert(friendly != TNECS_NULL);
-    sota->defendant = friendly;
-
-    /* -- Set npc_ent for waiting after combat -- */
-    sota->selected_unit_entity = npc_ent;
-
-    /* -- Compute Combat outcome -- */
-    Game_Combat_Outcome(sota);
-
-    Event_Emit(__func__, SDL_USEREVENT, event_Combat_Start, data1_entity, data2_entity);
 }
 
 void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
