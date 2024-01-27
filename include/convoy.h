@@ -12,7 +12,7 @@
 #include "physfs.h"
 #include "jsonio.h"
 #include "debug.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 #include "cJSON.h"
 #include "utilities.h"
 #include "platform.h"

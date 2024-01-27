@@ -8,7 +8,7 @@
 #include "filesystem.h"
 #include "debug.h"
 #include "macros.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
 /* --- DEFINITIONS --- */
 /* -- Color Palettes -- */

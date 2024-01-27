@@ -30,32 +30,34 @@ workspace "HelloPremake"
 		files{
 			"src/*.c",
 			"src/bars/*.c",
+			"src/controller/*.c",
+			"src/game/*.c",
 			"src/map/*.c",
 			"src/menu/*.c",
 			"src/popup/*.c",
-			"src/controller/*.c",
 			"src/systems/*.c",
-			"src/game/*.c",
+			"src/unit/*.c",
 		}
 		includedirs{
 			".",
 			"include",
 			"include/bars",
+			"include/controller",
+			"include/game",
 			"include/map",
 			"include/menu",
 			"include/popup",
 			"include/systems",
-			"include/controller",
-			"include/game",
+			"include/unit",
 			"names",
 			"scenes",
 			"second_party/**",
 			"third_party/**",
 		}
 	filter {"kind:ConsoleApp", "system:Windows"}
-		links { "mingw32", "SDL2main", "SDL2", "SDL2_image", "SDL2_ttf", "glew32", "opengl32","cJSON", "nmath", "physfs", "tinymt", "tnecs", "nstr", "parg"}
+		links { "mingw32", "SDL2main", "SDL2", "SDL2_mixer", "SDL2_image", "SDL2_ttf", "glew32", "opengl32","cJSON", "nmath", "physfs", "tinymt", "tnecs", "nstr", "parg"}
  	filter {"kind:ConsoleApp", "system:Linux"}
-		links { "SDL2", "SDL2_image", "SDL2_ttf", "m", "GLEW", "cJSON", "nmath", "physfs", "tinymt", "tnecs", "nstr", "parg"}
+		links { "SDL2", "SDL2_image", "SDL2_mixer", "SDL2_ttf", "m", "GLEW", "cJSON", "nmath", "physfs", "tinymt", "tnecs", "nstr", "parg"}
 
 project "cJSON"
 	kind "StaticLib"

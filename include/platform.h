@@ -5,7 +5,7 @@
 #include <string.h>
 #include "types.h"
 #include "nstr.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
 /* --- IDs --- */
 enum PLATFORMS {

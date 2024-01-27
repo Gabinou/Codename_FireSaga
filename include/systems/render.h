@@ -9,7 +9,7 @@
 #include "slider.h"
 #include "popup/tile.h"
 #include "map/animation.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
 extern b32 CursorFlag;
 extern b32 MouseFlag;

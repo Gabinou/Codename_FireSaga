@@ -7,7 +7,7 @@
 #include "macros.h"
 #include "types.h"
 #include "tinymt32.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 float sota_slowpow(float base, int exponent);

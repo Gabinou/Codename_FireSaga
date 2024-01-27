@@ -92,7 +92,7 @@ struct Target win_sota = {
                 "third_party/stb,third_party/cJson,"
                 "/usr/include/SDL2",
     .sources  = "src/*.c,src/bars/,src/menu/,src/popup/,"
-                "src/systems/,src/game/,src/map,j,"
+                "src/systems/,src/game/,src/map,"
                 "src/controller",
     .links    = "SDL2,SDL2_image,SDL2_ttf,SDL2_mixer,m,cjson,"
                 "noursmath,physfs,tinymt,tnecs,parg",

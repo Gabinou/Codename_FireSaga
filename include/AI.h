@@ -12,7 +12,7 @@
 #include "nmath.h"
 #include "cJSON.h"
 #include "game/game.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;

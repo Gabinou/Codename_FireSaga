@@ -1,7 +1,7 @@
 #ifndef COMBAT_H
 #define COMBAT_H
 
-#include "SDL.h"
+#include "SDL2/SDL.h"
 #include "types.h"
 #include "enums.h"
 #include "structs.h"

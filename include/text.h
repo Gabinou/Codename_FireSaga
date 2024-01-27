@@ -4,7 +4,7 @@
 #include "game/game.h"
 #include "filesystem.h"
 #include "pixelfonts.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 #include "nmath.h"
 
 typedef void (* onUpdate_t)(struct Game *, tnecs_entity, u32, i64, void *);

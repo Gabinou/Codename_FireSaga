@@ -21,7 +21,7 @@
 #include "game/menu.h"
 #include "game/map.h"
 #include "game/cursor.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;

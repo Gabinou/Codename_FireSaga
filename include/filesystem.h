@@ -12,7 +12,7 @@
 #include "nmath.h"
 #include "jsonio.h"
 #include "tile.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 #include "stb_sprintf.h"
 
 /* --- FORWARD DECLARATINOS --- */

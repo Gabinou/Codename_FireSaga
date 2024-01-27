@@ -16,7 +16,7 @@
 #include "utilities.h"
 #include "supports.h"
 #include "names.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
 /* --- TYPEDEFS --- */
 typedef void (*json_func)(void *, cJSON *);

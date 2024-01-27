@@ -7,7 +7,7 @@
 #include "structs.h"
 #include "types.h"
 #include "nmath.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
 /* NOTE: HOVER BREAKS SLIDER */
 

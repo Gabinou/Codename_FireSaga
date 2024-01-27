@@ -4,7 +4,7 @@
 #include "nmath.h"
 #include "index_shader.h"
 #include "nstr.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Index_Shader;

@@ -3,7 +3,7 @@
 
 #include <math.h>
 #include "utilities.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
 /* --- TextureBar --- */
 // Bar drawn with textures. Essentially an improved n3patch.

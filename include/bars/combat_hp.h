@@ -2,7 +2,7 @@
 #define COMBAT_HP_BAR_H
 
 #include "structs.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
 /* --- COMBAT_HPBAR --- */
 // Bar drawn using repeated textures, representing different types of health.

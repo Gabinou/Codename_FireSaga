@@ -9,7 +9,7 @@
 #include "slider.h"
 #include "unit/unit.h"
 #include "pixelfonts.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 #include "stb_sprintf.h"
 
 /* --- FORWARD DECLARATIONS --- */

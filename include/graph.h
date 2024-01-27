@@ -1,7 +1,7 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include "SDL.h"
+#include "SDL2/SDL.h"
 #include "debug.h"
 #include "tnecs.h"
 #include "nmath.h"

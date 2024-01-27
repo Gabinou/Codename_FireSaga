@@ -5,8 +5,8 @@
 #include "debug.h"
 #include "structs.h"
 #include "enums.h"
-#include "SDL.h"
-#include "SDL_mixer.h"
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_mixer.h"
 
 /* --- Enums --- */
 #define SOTA_BRIGHTNESS_MAX 1.0f

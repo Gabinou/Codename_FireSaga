@@ -2,7 +2,7 @@
 #define MAP_HP_BAR_H
 
 #include "utilities.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
 #define MAP_HPBAR_THRESHOLD_LOW 0.35f
 #define MAP_HPBAR_THRESHOLD_MID 0.7f

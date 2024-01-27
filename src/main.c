@@ -23,7 +23,7 @@
 #include "log.h"
 #include "convoy.h"
 #include "filesystem.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 #ifdef SOTA_OPENGL
     #include <GL/glew.h>
     #include <SDL_opengl.h>

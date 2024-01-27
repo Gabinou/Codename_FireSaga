@@ -16,9 +16,9 @@
 #include "position.h"
 #include "sprite.h"
 #include "music.h"
-#include "SDL.h"
-#include "SDL_render.h"
-#include "SDL_mixer.h"
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_render.h"
+#include "SDL2/SDL_mixer.h"
 
 /* --- GLOSSARY --- */
 // Traversing and occupying tiles

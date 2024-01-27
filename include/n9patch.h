@@ -6,7 +6,7 @@
 #include "macros.h"
 #include "debug.h"
 #include "types.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
 /* --- ENUMS --- */
 enum N9PATCH {

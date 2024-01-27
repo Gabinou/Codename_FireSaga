@@ -12,7 +12,7 @@
 #include "nmath.h"
 #include "cJSON.h"
 #include "bitfields.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
 /* -- Didascalie (theater vocabulary) -- */
 // - Note to actors of a scene about what to *do* during a scene

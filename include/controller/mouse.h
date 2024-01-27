@@ -9,7 +9,7 @@
 #include "enums.h"
 // #include "nmath.h"
 #include "events.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
 struct MouseInputMap {
     u8 accept;

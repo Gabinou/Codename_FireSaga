@@ -3,7 +3,7 @@
 
 // #include <math.h>
 #include "types.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
 typedef struct controllerTouchpad {
     SDL_TouchID touchID;

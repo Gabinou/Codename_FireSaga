@@ -5,7 +5,7 @@
 #include "tnecs.h"
 #include "debug.h"
 #include "structs.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
 void Time_Synchronize(tnecs_system_input *input);
 

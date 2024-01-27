@@ -10,7 +10,7 @@
 #include "nmath.h"
 #include "utilities.h"
 #include "controller/gamepad.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
 #define SOTA_INTERACTIVE_RELOAD SDL_SCANCODE_SPACE
 

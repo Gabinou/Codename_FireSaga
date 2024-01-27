@@ -10,7 +10,7 @@
 #include "structs.h"
 #include "nstr.h"
 #include "stb_sprintf.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Menu;

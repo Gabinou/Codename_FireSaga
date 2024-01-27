@@ -39,8 +39,8 @@
 #include "systems/render.h"
 #include "systems/slide.h"
 #include "combat.h"
-#include "SDL.h"
-#include "SDL_mixer.h"
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_mixer.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;

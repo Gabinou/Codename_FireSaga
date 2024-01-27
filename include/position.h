@@ -9,7 +9,7 @@
 #include "structs.h"
 #include "macros.h"
 #include "nmath.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
 /* --- 2D POSITION ON A SQUARE GRID --- */
 typedef struct Position {
