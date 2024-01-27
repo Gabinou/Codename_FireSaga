@@ -19,7 +19,7 @@ struct Arrow Arrow_default = {
     .tilesize       = {ARROW_TILESIZE,  ARROW_TILESIZE},
     .map_tilesize   = {SOTA_TILESIZE,   SOTA_TILESIZE},
     .textures       = NULL,     /* [patch_id] */
-    .rendereds      = {0},    /* [patch_id] */
+    .rendereds      = {{0}},    /* [patch_id] */
     .show           = false,
 };
 

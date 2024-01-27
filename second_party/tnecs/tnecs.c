@@ -221,7 +221,7 @@ bool _tnecs_world_breath_systems(struct tnecs_World *world) {
     world->num_phases = TNECS_NULLSHIFT;
 
     /* Allocs */
-    int syslen = TNECS_INITIAL_SYSTEM_LEN, namelen = 5;
+    int namelen = 5;
     world->phases =                   calloc(world->len_phases, sizeof(*world->phases));
     world->system_names =             calloc(world->len_systems, sizeof(*world->system_names));
     world->systems_torun =            calloc(world->len_systems_torun, sizeof(tnecs_system_ptr));
@@ -769,7 +769,7 @@ size_t tnecs_entitiesbytype_del(struct tnecs_World *world, tnecs_entity entity,
     world->entity_orders[entity]    = TNECS_NULL;
     world->entity_typeflags[entity] = TNECS_NULL;
 
-    size_t new_num = --world->num_entities_bytype[typeflag_old_id];
+    --world->num_entities_bytype[typeflag_old_id];
     return (true);
 }
 
@@ -962,7 +962,7 @@ bool tnecs_system_order_switch(struct tnecs_World *world, tnecs_phase phase_id,
     world->systems_byphase[phase_id][order2] = systems_temp;
     bool out1 = (world->systems_byphase[phase_id][order1] != NULL);
     bool out2 = (world->systems_byphase[phase_id][order2] != NULL);
-    return (order1 && order2);
+    return (out1 && out2);
 }
 
 /************************ UTILITY FUNCTIONS/MACROS ***************************/
