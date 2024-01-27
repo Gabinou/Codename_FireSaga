@@ -36,12 +36,12 @@ struct Mount {
 };
 
 /* --- WALKING MOUNTS --- */
-struct Mount Mount_default_horse;
-struct Mount Mount_default_salamander;
+extern struct Mount Mount_default_horse;
+extern struct Mount Mount_default_salamander;
 
 /* --- FLYING MOUNTS --- */
-struct Mount Mount_default_pegasus;
-struct Mount Mount_default_eagle;
+extern struct Mount Mount_default_pegasus;
+extern struct Mount Mount_default_eagle;
 
 /* --- Mount --- */
 void Unit_Mount_Mount(   struct Unit *u, i16 id);

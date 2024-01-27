@@ -171,7 +171,7 @@ typedef struct AI {
     struct Point target_move;
     int turn_move;
 } AI;
-struct AI AI_default;
+extern struct AI AI_default;
 
 /* --- Decider FSM --- */
 typedef void (*AI_Decider)(struct Game *s, tnecs_entity e, struct AI_Action *a);

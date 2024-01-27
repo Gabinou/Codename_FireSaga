@@ -55,7 +55,8 @@ struct Combat_Phase {
     u8     skill_multiplier;
     u8     attack_num;
     b32    attacker;
-} Combat_Phase_default;
+};
+extern struct Combat_Phase Combat_Phase_default;
 
 /* -- Combat_Attack -- */
 struct Combat_Attack {
@@ -63,7 +64,8 @@ struct Combat_Attack {
     b32    hit;
     b32    crit;
     b32    attacker;
-} Combat_Attack_default;
+};
+extern struct Combat_Attack Combat_Attack_default;
 
 /* -- Combat_Flow -- */
 // Number of combat phases initiated by each combatants
@@ -75,7 +77,8 @@ struct Combat_Flow {
     u8     aggressor_phases;
     u8     aggressor_brave;
     u8     defendant_brave;
-} Combat_Flow_default;
+};
+extern struct Combat_Flow Combat_Flow_default;
 
 /* -- Combat_Death -- */
 // Can combatants die?
@@ -85,13 +88,15 @@ struct Combat_Death {
     b32 defendant_certain;
     b32 aggressor_possible;
     b32 defendant_possible;
-} Combat_Death_default;
+};
+extern struct Combat_Death Combat_Death_default;
 
 /* -- Combat_Rates -- */
 struct Combat_Rates {
     u8 hit;
     u8 crit;
-} Combat_Rates_default;
+} ;
+extern struct Combat_Rates Combat_Rates_default;
 
 /* -- Combat_Stats -- */
 // All combatant stats related to combats
@@ -104,7 +109,8 @@ struct Combat_Stats {
     struct Computed_Stats   dft_stats;
     i8                      agg_equipment[UNIT_HANDS_NUM];
     i8                      dft_equipment[UNIT_HANDS_NUM];
-} Combat_Stats_default;
+};
+extern struct Combat_Stats Combat_Stats_default;
 
 /* -- Combat_Forecast -- */
 // All stats required to predict how combat will go,
@@ -116,6 +122,7 @@ struct Combat_Forecast {
     u8                      phase_num;
     u8                      attack_num;
 };
+extern struct Combat_Forecast Combat_Forecast_default;
 
 /* -- Combat_Outcome -- */
 // Actual phases and attacks that happen during combat
@@ -125,6 +132,7 @@ struct Combat_Outcome {
     struct Combat_Attack *attacks;
     b32                   ended; /* death before all attacks */
 };
+extern struct Combat_Outcome Combat_Outcome_default;
 
 /* -- isCan -- */
 b32 Combat_canDouble(struct Unit *_a, struct Unit *_d);

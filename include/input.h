@@ -17,7 +17,8 @@ struct Input_Arguments {
     u8    startup_mode;
     bool  print_help;       /* If help requested anywhere, print help and exit  */
     char *save_filename;    /* debug saves are outside normal save integers     */
-} Input_Arguments_default;
+};
+extern struct Input_Arguments Input_Arguments_default;
 
 struct Input_Arguments Input_parseInputs(int argc, char *argv[]);
 
