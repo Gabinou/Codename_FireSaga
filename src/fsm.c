@@ -548,7 +548,7 @@ void fsm_eCncl_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity canceller) {
     fsm_eCrsDeHvUnit_ssMapCndt(sota, ontile);
 
     /* 2. set state to Menu */
-    memcpy(sota->reason, "Cancel Selection of candidates", sizeof(sota->reason));
+    strncpy(sota->reason, "Cancel Selection of candidates", sizeof(sota->reason));
     Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
 
     if (fsm_eCncl_sGmpMap_ssMapCndt_mo[sota->selected_menu_option] != NULL)
@@ -902,7 +902,7 @@ void fsm_eAcpt_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
         SDL_assert(sota->player_select_menus[MENU_PLAYER_SELECT_MAP_ACTION] > TNECS_NULL);
         Game_PlayerSelectMenu_Update(sota, MENU_PLAYER_SELECT_MAP_ACTION);
         Game_cursorFocus_onMenu(sota);
-        memcpy(sota->reason, "no unit was selected", sizeof(sota->reason));
+        strncpy(sota->reason, "no unit was selected", sizeof(sota->reason));
         Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
         Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->stats_menu, NULL);
     }
@@ -957,7 +957,7 @@ void fsm_eAcpt_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity accepter_entit
     Game_menuStack_Push(sota, *menu);
 
     /* - Send event_Menu_Created Event to set substate - */
-    memcpy(sota->reason, "friendly unit has moved, time to choose action", sizeof(sota->reason));
+    strncpy(sota->reason, "friendly unit has moved, time to choose action", sizeof(sota->reason));
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, menu, NULL);
     sota->cursor_lastpos.x = accepter_position->tilemap_pos.x;
     sota->cursor_lastpos.y = accepter_position->tilemap_pos.y;
@@ -1055,7 +1055,7 @@ void fsm_eUnitSel_ssStby(struct Game *sota, tnecs_entity selector_entity) {
 
 // -- FSM: UNIT_DESELECT EVENT --
 void fsm_eUnitDsel_ssMenu(struct Game *sota, tnecs_entity selector) {
-    memcpy(sota->reason, "Unit was deselected during menu (unit waits?)", sizeof(sota->reason));
+    strncpy(sota->reason, "Unit was deselected during menu (unit waits?)", sizeof(sota->reason));
     Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
 }
 
@@ -1076,7 +1076,7 @@ void fsm_eUnitDsel_sMapUnitMv(struct Game *sota, tnecs_entity selector) {
         Map_Stacked_Dangermap_Reset(sota->map);
     }
 
-    memcpy(sota->reason, "Unit was deselected during movement", sizeof(sota->reason));
+    strncpy(sota->reason, "Unit was deselected during movement", sizeof(sota->reason));
     Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
 }
 

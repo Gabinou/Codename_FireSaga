@@ -484,7 +484,7 @@ void Game_Init(struct Game *sota) {
 
 // TODO: Rename
 void Game_Startup(struct Game *sota, struct Input_Arguments in_args) {
-    memcpy(sota->reason, "Initial sota startup", sizeof(sota->reason));
+    strncpy(sota->reason, "Initial sota startup", sizeof(sota->reason));
 
     /* -- Load Cursor and mouse -- */
     SDL_ShowCursor(SDL_DISABLE); // for default cursor.

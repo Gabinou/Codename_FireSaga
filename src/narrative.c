@@ -8,7 +8,7 @@ struct Scene Scene_default =  {
     .json_element   = JSON_SCENE,
     .lines_raw      = NULL,
     .with           = NULL,
-    .speakers = NULL,
+    .speakers       = NULL,
     .actors_num     = 0,
 };
 
@@ -28,7 +28,7 @@ struct RawLine RawLine_default = {
     .conditions     = {0},
     .speaker        = {0},
     .rawline        = {0},
-    .speaker_order  = {0},
+    .speaker_order  = 0,
 };
 
 struct Line Line_default = {

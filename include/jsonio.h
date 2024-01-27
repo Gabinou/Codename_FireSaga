@@ -18,6 +18,13 @@
 #include "names.h"
 #include "SDL2/SDL.h"
 
+/* --- FORWARD DECLARATIONS --- */
+struct Door;
+struct Chest;
+struct Mobj_Link;
+struct Breakable;
+struct Conditions;
+
 /* --- TYPEDEFS --- */
 typedef void (*json_func)(void *, cJSON *);
 

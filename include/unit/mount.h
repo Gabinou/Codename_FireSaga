@@ -7,6 +7,9 @@
 #include "structs.h"
 #include "unit/unit.h"
 
+/* --- FORWARD DECLARATIONS --- */
+struct Unit;
+
 /* -- Mount -- */
 struct Mount {
     s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
@@ -24,7 +27,7 @@ struct Mount {
     i16    price;
 
     char *name;
-    /* TOO BUFF TO RIDE */
+    /* --- TOO BUFF TO RIDE --- */
     /* con only? con + weapon weight? */
     /* ridable_classes: only if necessary: */
     /* i8 * ridable_classes; // 0 means all classes. */

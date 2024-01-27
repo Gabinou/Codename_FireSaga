@@ -30,11 +30,12 @@ struct Game;
 struct Convoy;
 
 /* --- EVENT DATA ENTITIES --- */
+// todo: put those globals in game
 extern tnecs_entity *data1_entity;
 extern tnecs_entity *data2_entity;
 
 /* --- CORE --- */
-void Event_Emit( char *em, u32 et, i32 ec, void *d1, void *d2);
+void Event_Emit(   const char *em, u32 et, i32 ec, void *d1, void *d2);
 void Events_Manage(struct Game *sota);
 
 /* --- Reload --- */
