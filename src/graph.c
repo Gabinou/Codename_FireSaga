@@ -1,6 +1,12 @@
 
 #include "graph.h"
 
+/* --- STATIC FUNCTIONS DECLARATIONS --- */
+static void _Graph_Draw_Axes(struct Graph *g, struct n9Patch *n9patch,
+                             struct PixelFont *pb, SDL_Renderer *r, SDL_Texture *rt);
+static void _Graph_Draw_Stat(struct Graph *g, u8 stat, struct n9Patch *n9patch,
+                             struct PixelFont *pb, SDL_Renderer *r, SDL_Texture *rt);
+
 /*hp str mag agi dex fth luck def res con move prof */
 
 struct Unit_stats test_grown_stats[10] = {
@@ -107,9 +113,9 @@ void Graph_Draw(struct Graph *graph, struct n9Patch *n9patch, struct PixelFont *
     SDL_SetRenderTarget(renderer, render_target);
 }
 
-void _Graph_Draw_Axes(struct Graph *graph, struct n9Patch *n9patch,
-                      struct PixelFont *pixelnours_big,
-                      SDL_Renderer *renderer, SDL_Texture *render_target) {
+static void _Graph_Draw_Axes(struct Graph *graph, struct n9Patch *n9patch,
+                             struct PixelFont *pixelnours_big,
+                             SDL_Renderer *renderer, SDL_Texture *render_target) {
     /* -- Clear graph -- */
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_TRANSPARENT);
     SDL_RenderFillRect(renderer, NULL);
@@ -224,9 +230,9 @@ void _Graph_Draw_Axes(struct Graph *graph, struct n9Patch *n9patch,
     }
 }
 
-void _Graph_Draw_Stat(struct Graph *graph, u8 stat_id, struct n9Patch *n9patch,
-                      struct PixelFont *pixelnours_big,
-                      SDL_Renderer *renderer, SDL_Texture *render_target) {
+static void _Graph_Draw_Stat(struct Graph *graph, u8 stat_id, struct n9Patch *n9patch,
+                             struct PixelFont *pixelnours_big,
+                             SDL_Renderer *renderer, SDL_Texture *render_target) {
     /* -- Preliminaries -- */
     struct GraphStat graph_stat = graph->graph_stats[stat_id];
     SDL_Rect axes = {

@@ -1,5 +1,13 @@
 #include "menu/growths.h"
 
+/* --- STATIC FUNCTIONS DECLARATIONS --- */
+static void _GrowthsMenu_Draw_Talk(    struct GrowthsMenu *g, SDL_Renderer *r);
+static void _GrowthsMenu_Draw_Graph(   struct GrowthsMenu *g, struct n9Patch *n9patch,
+                                       SDL_Texture *render_target, SDL_Renderer *r);
+static void _GrowthsMenu_Draw_Growths( struct GrowthsMenu *g, SDL_Renderer *r);
+static void _GrowthsMenu_Draw_Supports(struct GrowthsMenu *g, SDL_Renderer *r);
+
+
 struct GrowthsMenu GrowthsMenu_default = {
     .texture        = NULL,
     .update         = true,
@@ -276,7 +284,7 @@ void GrowthsMenu_Draw(struct Menu *mc, SDL_Texture *render_target,
     SDL_RenderCopy(renderer, gm->texture, NULL, &dstrect);
 }
 
-void _GrowthsMenu_Draw_Talk(struct GrowthsMenu *gm, SDL_Renderer *renderer) {
+static void _GrowthsMenu_Draw_Talk(struct GrowthsMenu *gm, SDL_Renderer *renderer) {
     /* -- TALK -- */
     SDL_Rect facerect;
 
@@ -290,8 +298,8 @@ void _GrowthsMenu_Draw_Talk(struct GrowthsMenu *gm, SDL_Renderer *renderer) {
     SDL_RenderFillRect(renderer, &facerect);
 }
 
-void _GrowthsMenu_Draw_Graph(struct GrowthsMenu *gm, struct n9Patch *n9patch,
-                             SDL_Texture *render_target, SDL_Renderer *renderer) {
+static void _GrowthsMenu_Draw_Graph(struct GrowthsMenu *gm, struct n9Patch *n9patch,
+                                    SDL_Texture *render_target, SDL_Renderer *renderer) {
     /* -- Graph -- */
     SDL_Rect dstrect;
     Graph_Draw(&gm->graph, n9patch, gm->pixelnours_big, renderer, render_target);
@@ -306,7 +314,7 @@ void _GrowthsMenu_Draw_Graph(struct GrowthsMenu *gm, struct n9Patch *n9patch,
     SDL_assert(gm->texture);
 }
 
-void _GrowthsMenu_Draw_Growths( struct GrowthsMenu *gm, SDL_Renderer *renderer) {
+static void _GrowthsMenu_Draw_Growths( struct GrowthsMenu *gm, SDL_Renderer *renderer) {
     /* -- STATS GROWTHS -- */
     int width;
     char numbuff[10];
@@ -406,7 +414,7 @@ void _GrowthsMenu_Draw_Growths( struct GrowthsMenu *gm, SDL_Renderer *renderer) 
     PixelFont_Write_Len(gm->pixelnours_big, renderer, numbuff, x, y);
 }
 
-void _GrowthsMenu_Draw_Supports(struct GrowthsMenu *gm, SDL_Renderer *renderer) {
+static void _GrowthsMenu_Draw_Supports(struct GrowthsMenu *gm, SDL_Renderer *renderer) {
     /* -- SUPPORTS -- */
     SDL_Rect facerect;
     char numbuff[10];

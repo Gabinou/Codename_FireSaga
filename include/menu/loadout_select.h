@@ -203,20 +203,9 @@ void LoadoutSelectMenu_Elem_Pos_Revert(struct LoadoutSelectMenu *lsm,
 
 /* --- Drawing --- */
 void LoadoutSelectMenu_Size(struct LoadoutSelectMenu  *lsm, struct n9Patch *n9);
-
-static void _LoadoutSelectMenu_Draw_Hands(    struct LoadoutSelectMenu  *lsm,
-                                              SDL_Renderer *r);
-static void _LoadoutSelectMenu_Draw_Items(    struct LoadoutSelectMenu  *lsm,
-                                              SDL_Renderer *r);
-static void _LoadoutSelectMenu_Draw_Header(   struct LoadoutSelectMenu  *lsm,
-                                              SDL_Renderer *r);
-static void _LoadoutSelectMenu_Draw_Patches(  struct LoadoutSelectMenu  *lsm,
-                                              SDL_Renderer *r);
-static void _LoadoutSelectMenu_Draw_Highlight(struct LoadoutSelectMenu  *lsm,
-                                              SDL_Renderer *r);
-
 void LoadoutSelectMenu_Draw(  struct  Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
 void LoadoutSelectMenu_Update(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9,
                               SDL_Texture *rt, SDL_Renderer *r);
+
 
 #endif /* WSM_H */

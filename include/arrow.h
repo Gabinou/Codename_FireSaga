@@ -70,16 +70,4 @@ void Arrow_Textures_Load(struct Arrow *a,  char *f, SDL_Renderer *r);
 /* -- Draw -- */
 void Arrow_Draw(struct Arrow *a, SDL_Renderer *r, struct Camera *c);
 
-/* --- PRIVATE --- */
-/* -- Path -- */
-static void _Arrow_Path_Trace(struct Arrow *a, struct Point end);
-
-/* -- Decider -- */
-static void _Arrow_Decider(struct Arrow *a, i32 point);
-
-static struct Rendered _Arrow_Decider_End(     i32 x0, i32 y0, i32 x1, i32 y1, i32 x2, i32 y2);
-static struct Rendered _Arrow_Decider_Start(   i32 x0, i32 y0, i32 x1, i32 y1);
-static struct Rendered _Arrow_Decider_Middle(  i32 x0, i32 y0, i32 x1, i32 y1, i32 x2, i32 y2);
-static struct Rendered _Arrow_Decider_Startend(i32 x0, i32 y0, i32 x1, i32 y1);
-
 #endif /* ARROW_H */

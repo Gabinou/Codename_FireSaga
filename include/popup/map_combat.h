@@ -132,16 +132,4 @@ void PopUp_Map_Combat_Draw(struct PopUp *popup, struct Point pos,
 void PopUp_Map_Combat_Update(struct PopUp_Map_Combat *pmc, struct n9Patch *n9patch,
                              SDL_Texture *rt, SDL_Renderer *r);
 
-static void _PopUp_Map_Combat_Draw_HP(        struct PopUp_Map_Combat *pmc,
-                                              SDL_Renderer *r);
-static void _PopUp_Map_Combat_Draw_Names(     struct PopUp_Map_Combat *pmc,
-                                              SDL_Renderer *r);
-static void _PopUp_Map_Combat_Draw_Stats(     struct PopUp_Map_Combat *pmc,
-                                              SDL_Renderer *r);
-static void _PopUp_Map_Combat_Draw_Headers(   struct PopUp_Map_Combat *pmc,
-                                              SDL_Renderer *r);
-static void _PopUp_Map_Combat_Draw_CircleBars(struct PopUp_Map_Combat *pmc,
-                                              SDL_Renderer *r);
-
-
 #endif /* POPUP_MAP_COMBAT_H */

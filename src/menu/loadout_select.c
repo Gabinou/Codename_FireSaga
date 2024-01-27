@@ -454,7 +454,7 @@ void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm,  char *header) 
 }
 
 
-void _LoadoutSelectMenu_Draw_Header(struct LoadoutSelectMenu  *lsm, SDL_Renderer *renderer) {
+static void _LoadoutSelectMenu_Draw_Header(struct LoadoutSelectMenu  *lsm, SDL_Renderer *renderer) {
     /* Skip if no header to draw */
     if (lsm->header.data == NULL)
         return;
@@ -465,7 +465,8 @@ void _LoadoutSelectMenu_Draw_Header(struct LoadoutSelectMenu  *lsm, SDL_Renderer
                     WSM_HEADER_LEFT,  WSM_TOP_OF_TEXT);
 }
 
-void _LoadoutSelectMenu_Draw_Highlight(struct LoadoutSelectMenu  *lsm, SDL_Renderer *renderer) {
+static void _LoadoutSelectMenu_Draw_Highlight(struct LoadoutSelectMenu  *lsm,
+                                              SDL_Renderer *renderer) {
     /* - Skip if no highlight - */
     bool highlight = (lsm->selected[UNIT_HAND_LEFT] >= 0);
     if (!highlight)
@@ -512,7 +513,7 @@ void _LoadoutSelectMenu_Draw_Highlight(struct LoadoutSelectMenu  *lsm, SDL_Rende
     SDL_RenderFillRect(renderer, &srcrect);
 }
 
-void _LoadoutSelectMenu_Draw_Hands(struct LoadoutSelectMenu  *lsm, SDL_Renderer *renderer) {
+static void _LoadoutSelectMenu_Draw_Hands(struct LoadoutSelectMenu  *lsm, SDL_Renderer *renderer) {
     /* -- Preliminaries -- */
     int num_items       = LoadoutSelectMenu_num_items(lsm);
     int stronghand      = Unit_Hand_Strong(lsm->unit);
@@ -578,7 +579,7 @@ void _LoadoutSelectMenu_Draw_Hands(struct LoadoutSelectMenu  *lsm, SDL_Renderer 
     }
 }
 
-void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm, SDL_Renderer *renderer) {
+static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm, SDL_Renderer *renderer) {
     /* -- Preliminaries -- */
     bool header_drawn = (lsm->header.data != NULL);
     SDL_Rect srcrect, dstrect;

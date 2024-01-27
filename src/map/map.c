@@ -147,7 +147,7 @@ static void _Map_Tilesindex_Init(struct Map *map) {
     map->tilesindex = DARR_INIT(map->tilesindex, i32, DEFAULT_TILESPRITE_BUFFER);
 }
 
-
+/* --- GLOBAL FUNCTIONS --- */
 /* --- Constructor/Destructors --- */
 struct Map *Map_Init(struct Map *map, i32 width, i32 height) {
     if (map != NULL)

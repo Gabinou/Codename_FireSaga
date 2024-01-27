@@ -232,8 +232,8 @@ void PreCombatMenu_Load(struct PreCombatMenu *pcm, tnecs_entity a,
 void _PreCombatMenu_Load(struct PreCombatMenu *pcm, struct Unit *a, struct Unit *d,
                          struct Position *ap, struct Position *dp, SDL_Renderer *r);
 
-static void _PreCombatMenu_Load_Icons(struct PreCombatMenu *pcm, SDL_Renderer *r);
-static void _PreCombatMenu_Load_Faces(struct PreCombatMenu *pcm, SDL_Renderer *r);
+// void _PreCombatMenu_Load_Icons(struct PreCombatMenu *pcm, SDL_Renderer *r);
+// void _PreCombatMenu_Load_Faces(struct PreCombatMenu *pcm, SDL_Renderer *r);
 
 /* --- Setters --- */
 void PreCombatMenu_Set(struct PreCombatMenu *pcm, struct Game *sota);
@@ -246,19 +246,9 @@ void PreCombatMenu_Draw(  struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
 void PreCombatMenu_Update(struct PreCombatMenu *pcm, struct n9Patch *n9patch,
                           SDL_Texture *rt, SDL_Renderer *r);
 
-/* -- Drawing Utilities -- */
-static void _PreCombatMenu_Draw_Names(   struct PreCombatMenu *pcm, SDL_Renderer *r);
-static void _PreCombatMenu_Draw_Stats(   struct PreCombatMenu *pcm, SDL_Renderer *r);
-static void _PreCombatMenu_Draw_Faces(   struct PreCombatMenu *pcm, SDL_Renderer *r);
-static void _PreCombatMenu_Draw_WpnIcons(struct PreCombatMenu *pcm, SDL_Renderer *r);
-static void _PreCombatMenu_Draw_Doubling(struct PreCombatMenu *pcm, SDL_Renderer *r);
-
 /* -- Drawing Stats mode FSM -- */
 typedef void (*pcm_draw_stats_t)(struct PreCombatMenu *, SDL_Renderer *r);
 extern pcm_draw_stats_t pcm_draw_stats[PCM_MODE_NUM];
 
-static void _PreCombatMenu_Draw_Stats_Math(  struct PreCombatMenu *pcm, SDL_Renderer *r);
-static void _PreCombatMenu_Draw_Stats_Total( struct PreCombatMenu *pcm, SDL_Renderer *r);
-static void _PreCombatMenu_Draw_Stats_Simple(struct PreCombatMenu *pcm, SDL_Renderer *r);
 
 #endif /* PRE_COMBAT_MENU_H */

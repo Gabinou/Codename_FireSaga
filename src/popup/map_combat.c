@@ -1,5 +1,17 @@
 #include "popup/map_combat.h"
 
+/* --- STATIC FUNCTIONS DECLARATIONS --- */
+static void _PopUp_Map_Combat_Draw_HP(        struct PopUp_Map_Combat *pmc,
+                                              SDL_Renderer *r);
+static void _PopUp_Map_Combat_Draw_Names(     struct PopUp_Map_Combat *pmc,
+                                              SDL_Renderer *r);
+static void _PopUp_Map_Combat_Draw_Stats(     struct PopUp_Map_Combat *pmc,
+                                              SDL_Renderer *r);
+static void _PopUp_Map_Combat_Draw_Headers(   struct PopUp_Map_Combat *pmc,
+                                              SDL_Renderer *r);
+static void _PopUp_Map_Combat_Draw_CircleBars(struct PopUp_Map_Combat *pmc,
+                                              SDL_Renderer *r);
+
 struct PopUp_Map_Combat PopUp_Map_Combat_default = {
     .aggressor              = NULL,
     .defendant              = NULL,
@@ -147,7 +159,7 @@ void PopUp_Map_Combat_Draw(struct PopUp *popup, struct Point pos,
     SDL_RenderCopy(renderer, pmc->texture, NULL, &dstrect);
 }
 
-void _PopUp_Map_Combat_Draw_HP(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer) {
+static void _PopUp_Map_Combat_Draw_HP(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer) {
     /* --- HP --- */
     char numbuff[10];
     int width;
@@ -181,7 +193,8 @@ void _PopUp_Map_Combat_Draw_HP(struct PopUp_Map_Combat *pmc, SDL_Renderer *rende
     TopoffBar_Draw(&pmc->topoff_defendant, renderer);
 
 }
-void _PopUp_Map_Combat_Draw_Names(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer) {
+
+static void _PopUp_Map_Combat_Draw_Names(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer) {
     /* --- Names --- */
     struct Point temp_pos;
     s8 name = pmc->aggressor->name;
@@ -198,7 +211,8 @@ void _PopUp_Map_Combat_Draw_Names(struct PopUp_Map_Combat *pmc, SDL_Renderer *re
     PixelFont_Write(pmc->pixelnours_big, renderer, name.data, name.num,
                     temp_pos.x, temp_pos.y);
 }
-void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer) {
+
+static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer) {
     /* --- DMGs --- */
     struct Damage damage_a      = pmc->forecast->stats.agg_damage;
     struct Damage damage_d      = pmc->forecast->stats.dft_damage;
@@ -279,7 +293,8 @@ void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Renderer *re
                     temp_pos.x, temp_pos.y);
 }
 
-void _PopUp_Map_Combat_Draw_CircleBars(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer) {
+static void _PopUp_Map_Combat_Draw_CircleBars(struct PopUp_Map_Combat *pmc,
+                                              SDL_Renderer *renderer) {
     /* --- Attack CircleBars --- */
     int phases_agg = 1, phases_dft = 0;
 
@@ -329,7 +344,7 @@ void _PopUp_Map_Combat_Draw_CircleBars(struct PopUp_Map_Combat *pmc, SDL_Rendere
     SDL_assert(phases_dft == dft_p);
 }
 
-void _PopUp_Map_Combat_Draw_Headers(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer) {
+static void _PopUp_Map_Combat_Draw_Headers(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer) {
     /* --- Menu Headers --- */
     SDL_Rect dstrect;
     dstrect.x = POPUP_MAP_COMBAT_HEADER_RED_X;

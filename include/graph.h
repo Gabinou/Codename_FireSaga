@@ -97,9 +97,4 @@ void Graph_Stat_Add(struct Graph *g, struct Unit_stats *base_stats,
 void Graph_Draw(struct Graph *g, struct n9Patch *n9, struct PixelFont *pb,
                 SDL_Renderer *r, SDL_Texture *rt);
 
-static void _Graph_Draw_Axes(struct Graph *g, struct n9Patch *n9patch,
-                             struct PixelFont *pb, SDL_Renderer *r, SDL_Texture *rt);
-static void _Graph_Draw_Stat(struct Graph *g, u8 stat, struct n9Patch *n9patch,
-                             struct PixelFont *pb, SDL_Renderer *r, SDL_Texture *rt);
-
 #endif /* GRAPH_H */

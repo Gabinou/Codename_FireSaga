@@ -1,6 +1,15 @@
 
 #include "arrow.h"
 
+/* --- STATIC FUNCTIONS DECLARATIONS --- */
+static struct Rendered _Arrow_Decider_Startend(i32 x_0, i32 y_0, i32 x_1, i32 y_1);
+static struct Rendered _Arrow_Decider_Start(i32 x_0, i32 y_0, i32 x_1, i32 y_1);
+static struct Rendered _Arrow_Decider_Middle(i32 x_0, i32 y_0, i32 x_1, i32 y_1, i32 x_2, i32 y_2);
+static struct Rendered _Arrow_Decider_End(i32 x_0, i32 y_0, i32 x_1, i32 y_1, i32 x_2, i32 y_2);
+static void _Arrow_Decider(struct Arrow *arrow, i32 point);
+static void _Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in);
+
+
 struct Arrow Arrow_default = {
     .costmap        = NULL,
     .col_len        = 21,
@@ -14,7 +23,231 @@ struct Arrow Arrow_default = {
     .show           = false,
 };
 
-/* --- ructors/Deructors --- */
+/* --- STATIC FUNCTIONS --- */
+/* Short arrow, start and end point in one tile. */
+static struct Rendered _Arrow_Decider_Startend(i32 x_0, i32 y_0, i32 x_1, i32 y_1) {
+    struct Rendered out = Rendered_default;
+    struct Point move   = {x_1 - x_0, y_1 - y_0};
+    int direction_01    = Ternary_Direction(move);
+
+    switch (direction_01) {
+        case SOTA_DIRECTION_LEFT:
+            out.graphics.index = ARROW_STARTEND_HORIZONTAL;
+            out.flip = SDL_FLIP_HORIZONTAL;
+            break;
+        case SOTA_DIRECTION_RIGHT:
+            out.graphics.index = ARROW_STARTEND_HORIZONTAL;
+            break;
+        case SOTA_DIRECTION_TOP:
+            out.graphics.index = ARROW_STARTEND_DOWN;
+            break;
+        case SOTA_DIRECTION_BOTTOM:
+            out.graphics.index = ARROW_STARTEND_UP;
+            break;
+    }
+    return (out);
+}
+
+/* Start tile of arrow, if longer than one tile. */
+static struct Rendered _Arrow_Decider_Start(i32 x_0, i32 y_0, i32 x_1, i32 y_1) {
+    struct Rendered out = Rendered_default;
+    struct Point move   = {x_1 - x_0, y_1 - y_0};
+    int direction_01    = Ternary_Direction(move);
+
+    switch (direction_01) {
+        case SOTA_DIRECTION_LEFT:
+            out.graphics.index = ARROW_START_HORIZONTAL;
+            out.flip = SDL_FLIP_HORIZONTAL;
+            break;
+        case SOTA_DIRECTION_RIGHT:
+            out.graphics.index = ARROW_START_HORIZONTAL;
+            break;
+        case SOTA_DIRECTION_TOP:
+            out.graphics.index = ARROW_START_DOWN;
+            break;
+        case SOTA_DIRECTION_BOTTOM:
+            out.graphics.index = ARROW_START_UP;
+            break;
+    }
+    return (out);
+}
+
+/* Middle tile of arrow, if longer than one tile. */
+static struct Rendered _Arrow_Decider_Middle(i32 x_0, i32 y_0, i32 x_1, i32 y_1, i32 x_2, i32 y_2) {
+    SDL_assert(((x_0 != x_2) || (y_0 != y_2)));
+    struct Rendered out  = Rendered_default;
+    struct Point move_01 = {x_1 - x_0, y_1 - y_0};
+    int direction_01     = Ternary_Direction(move_01);
+    struct Point move_12 = {x_2 - x_1, y_2 - y_1};
+    int direction_12     = Ternary_Direction(move_12);
+
+    out.flip = (direction_01 == SOTA_DIRECTION_LEFT)
+               || (direction_12 == SOTA_DIRECTION_RIGHT) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+    switch (direction_01) {
+        case SOTA_DIRECTION_LEFT:
+        case SOTA_DIRECTION_RIGHT:
+            switch (direction_12) {
+                case SOTA_DIRECTION_LEFT:
+                case SOTA_DIRECTION_RIGHT:
+                    out.graphics.index = ARROW_STRAIGHT_HORIZONTAL;
+                    break;
+                case SOTA_DIRECTION_BOTTOM:
+                    out.graphics.index = ARROW_CORNER_UP;
+                    break;
+                case SOTA_DIRECTION_TOP:
+                    out.graphics.index = ARROW_CORNER_DOWN;
+                    break;
+            }
+            break;
+        case SOTA_DIRECTION_TOP:
+            switch (direction_12) {
+                case SOTA_DIRECTION_TOP:
+                    out.graphics.index = ARROW_STRAIGHT_VERTICAL;
+                    break;
+                case SOTA_DIRECTION_RIGHT:
+                case SOTA_DIRECTION_LEFT:
+                    out.graphics.index = ARROW_CORNER_UP;
+                    break;
+            }
+            break;
+        case SOTA_DIRECTION_BOTTOM:
+            switch (direction_12) {
+                case SOTA_DIRECTION_BOTTOM:
+                    out.graphics.index = ARROW_STRAIGHT_VERTICAL;
+                    break;
+                case SOTA_DIRECTION_RIGHT:
+                case SOTA_DIRECTION_LEFT:
+                    out.graphics.index = ARROW_CORNER_DOWN;
+                    break;
+            }
+            break;
+    }
+    return (out);
+}
+
+/* End tile of arrow, if longer than one tile. */
+static struct Rendered _Arrow_Decider_End(i32 x_0, i32 y_0, i32 x_1, i32 y_1, i32 x_2, i32 y_2) {
+    struct Rendered out  = Rendered_default;
+
+    struct Point move_01 = {x_1 - x_0, y_1 - y_0};
+    int direction_01     = Ternary_Direction(move_01);
+    struct Point move_12 = {x_2 - x_1, y_2 - y_1};
+    int direction_12     = Ternary_Direction(move_12);
+
+    bool left_01 = (direction_01 == SOTA_DIRECTION_LEFT);
+    bool left_12 = (direction_12 == SOTA_DIRECTION_LEFT);
+
+    out.flip = (left_01 || left_12) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+    switch (direction_01) {
+        case SOTA_DIRECTION_LEFT:
+        case SOTA_DIRECTION_RIGHT:
+            switch (direction_12) {
+                case SOTA_DIRECTION_LEFT:
+                case SOTA_DIRECTION_RIGHT:
+                    out.graphics.index = ARROW_STOP_HORIZONTAL;
+                    break;
+                case SOTA_DIRECTION_BOTTOM:
+                    out.graphics.index = ARROW_STOP_CORNER_RUP;
+                    break;
+                case SOTA_DIRECTION_TOP:
+                    out.graphics.index = ARROW_STOP_CORNER_RDOWN;
+                    break;
+            }
+            break;
+        case SOTA_DIRECTION_TOP:
+            switch (direction_12) {
+                case SOTA_DIRECTION_TOP:
+                    out.graphics.index = ARROW_STOP_DOWN;
+                    break;
+                case SOTA_DIRECTION_RIGHT:
+                case SOTA_DIRECTION_LEFT:
+                    out.graphics.index = ARROW_STOP_CORNER_DRIGHT;
+                    break;
+            }
+            break;
+        case SOTA_DIRECTION_BOTTOM:
+            switch (direction_12) {
+                case SOTA_DIRECTION_BOTTOM:
+                    out.graphics.index = ARROW_STOP_UP;
+                    break;
+                case SOTA_DIRECTION_RIGHT:
+                case SOTA_DIRECTION_LEFT:
+                    out.graphics.index = ARROW_STOP_CORNER_URIGHT;
+                    break;
+            }
+            break;
+    }
+    return (out);
+}
+
+/* - Texture decider: for current point - */
+static void _Arrow_Decider(struct Arrow *arrow, i32 point) {
+    /* -- Preliminaries -- */
+    SDL_assert(arrow->textures != NULL);
+    SDL_assert(point >= 0);
+    u8 pointnum = DARR_NUM(arrow->pathlist) / TWO_D;
+    i32 endpoint = (pointnum - 2);
+    SDL_assert(point <= endpoint);
+
+    #ifndef INFINITE_MOVE_ALL
+    pointnum = pointnum < (arrow->move + 1) ? pointnum : (arrow->move + 1) ;
+    #endif /* INFINITE_MOVE_ALL */
+
+    /* - tiles around point - */
+    /* 0,1,2 tiles -> 0 = behind, 1 = current, 2 = next */
+    i32 x_0 = 0, x_1 = 0, x_2 = 0, y_0 = 0, y_1 = 0, y_2 = 0;
+    if (point > 0) {
+        x_0 = arrow->pathlist[(point - 1) * TWO_D];
+        y_0 = arrow->pathlist[(point - 1) * TWO_D + 1];
+    }
+    x_1     = arrow->pathlist[   point    * TWO_D];
+    y_1     = arrow->pathlist[   point    * TWO_D + 1];
+    x_2     = arrow->pathlist[(point + 1) * TWO_D];
+    y_2     = arrow->pathlist[(point + 1) * TWO_D + 1];
+
+    /* -- Deciding texture -- */
+    if (point == 0) {
+        if (pointnum == 2)
+            arrow->rendereds[point] = _Arrow_Decider_Startend(x_1, y_1, x_2, y_2);
+        else
+            arrow->rendereds[point] = _Arrow_Decider_Start(x_1, y_1, x_2, y_2);
+    } else if (point == endpoint) {
+        arrow->rendereds[point] = _Arrow_Decider_End(x_0, y_0, x_1, y_1, x_2, y_2);
+    } else {
+        arrow->rendereds[point] = _Arrow_Decider_Middle(x_0, y_0, x_1, y_1, x_2, y_2);
+    }
+    SDL_assert(arrow->textures != NULL);
+}
+
+
+/* - Retracing path using A* (A_star) algorithm - */
+static void _Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in) {
+    SDL_assert(arrow->textures      != NULL);
+    SDL_assert(arrow->costmap   != NULL);
+    struct Point end   = {end_in.x, end_in.y};
+    struct Point start = {arrow->pathlist[0], arrow->pathlist[1]};
+    DARR_NUM(arrow->pathlist) = 0;
+    if ((start.x != end.x) || (start.y != end.y)) {
+        /* A* implemented here. Goes backwards for some reason. */
+        /* IMPORTANT NOTE: Switching start and end CRASHES MY COMPUTER. */
+        arrow->pathlist = Pathfinding_Astar(arrow->pathlist, arrow->costmap,
+                                            arrow->row_len, arrow->col_len,
+                                            start, end, true);
+        /* Endpoint not included in Astar */
+        DARR_PUT(arrow->pathlist, end.x);
+        DARR_PUT(arrow->pathlist, end.y);
+
+        /* Deciding path. */
+        i32 pointnum    = DARR_NUM(arrow->pathlist) / TWO_D;
+        for (i32 i = 0; i < (pointnum - 1); i++)
+            _Arrow_Decider(arrow, i);
+    } else
+        DARR_NUM(arrow->pathlist) = TWO_D;
+}
+
+
+/* --- GLOBAL FUNCTIONS --- */
+/* --- Constructor/Destructors --- */
 struct Arrow *Arrow_Init(i32 tilesize[TWO_D]) {
     struct Arrow *arrow = malloc(sizeof(*arrow));
     *arrow = Arrow_default;
@@ -105,225 +338,6 @@ void Arrow_Path_Add(struct Arrow *arrow, i32 x_next, i32 y_next) {
     }
 }
 
-/* - Retracing path using A* (A_star) algorithm - */
-void _Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in) {
-    SDL_assert(arrow->textures      != NULL);
-    SDL_assert(arrow->costmap   != NULL);
-    struct Point end   = {end_in.x, end_in.y};
-    struct Point start = {arrow->pathlist[0], arrow->pathlist[1]};
-    DARR_NUM(arrow->pathlist) = 0;
-    if ((start.x != end.x) || (start.y != end.y)) {
-        /* A* implemented here. Goes backwards for some reason. */
-        /* IMPORTANT NOTE: Switching start and end CRASHES MY COMPUTER. */
-        arrow->pathlist = Pathfinding_Astar(arrow->pathlist, arrow->costmap,
-                                            arrow->row_len, arrow->col_len,
-                                            start, end, true);
-        /* Endpoint not included in Astar */
-        DARR_PUT(arrow->pathlist, end.x);
-        DARR_PUT(arrow->pathlist, end.y);
-
-        /* Deciding path. */
-        i32 pointnum    = DARR_NUM(arrow->pathlist) / TWO_D;
-        for (i32 i = 0; i < (pointnum - 1); i++)
-            _Arrow_Decider(arrow, i);
-    } else
-        DARR_NUM(arrow->pathlist) = TWO_D;
-}
-
-/* - Texture decider: for current point - */
-void _Arrow_Decider(struct Arrow *arrow, i32 point) {
-    /* -- Preliminaries -- */
-    SDL_assert(arrow->textures != NULL);
-    SDL_assert(point >= 0);
-    u8 pointnum = DARR_NUM(arrow->pathlist) / TWO_D;
-    i32 endpoint = (pointnum - 2);
-    SDL_assert(point <= endpoint);
-
-    #ifndef INFINITE_MOVE_ALL
-    pointnum = pointnum < (arrow->move + 1) ? pointnum : (arrow->move + 1) ;
-    #endif /* INFINITE_MOVE_ALL */
-
-    /* - tiles around point - */
-    /* 0,1,2 tiles -> 0 = behind, 1 = current, 2 = next */
-    i32 x_0 = 0, x_1 = 0, x_2 = 0, y_0 = 0, y_1 = 0, y_2 = 0;
-    if (point > 0) {
-        x_0 = arrow->pathlist[(point - 1) * TWO_D];
-        y_0 = arrow->pathlist[(point - 1) * TWO_D + 1];
-    }
-    x_1     = arrow->pathlist[   point    * TWO_D];
-    y_1     = arrow->pathlist[   point    * TWO_D + 1];
-    x_2     = arrow->pathlist[(point + 1) * TWO_D];
-    y_2     = arrow->pathlist[(point + 1) * TWO_D + 1];
-
-    /* -- Deciding texture -- */
-    if (point == 0) {
-        if (pointnum == 2)
-            arrow->rendereds[point] = _Arrow_Decider_Startend(x_1, y_1, x_2, y_2);
-        else
-            arrow->rendereds[point] = _Arrow_Decider_Start(x_1, y_1, x_2, y_2);
-    } else if (point == endpoint) {
-        arrow->rendereds[point] = _Arrow_Decider_End(x_0, y_0, x_1, y_1, x_2, y_2);
-    } else {
-        arrow->rendereds[point] = _Arrow_Decider_Middle(x_0, y_0, x_1, y_1, x_2, y_2);
-    }
-    SDL_assert(arrow->textures != NULL);
-}
-
-/* Short arrow, start and end point in one tile. */
-struct Rendered _Arrow_Decider_Startend(i32 x_0, i32 y_0, i32 x_1, i32 y_1) {
-    struct Rendered out = Rendered_default;
-    struct Point move   = {x_1 - x_0, y_1 - y_0};
-    int direction_01    = Ternary_Direction(move);
-
-    switch (direction_01) {
-        case SOTA_DIRECTION_LEFT:
-            out.graphics.index = ARROW_STARTEND_HORIZONTAL;
-            out.flip = SDL_FLIP_HORIZONTAL;
-            break;
-        case SOTA_DIRECTION_RIGHT:
-            out.graphics.index = ARROW_STARTEND_HORIZONTAL;
-            break;
-        case SOTA_DIRECTION_TOP:
-            out.graphics.index = ARROW_STARTEND_DOWN;
-            break;
-        case SOTA_DIRECTION_BOTTOM:
-            out.graphics.index = ARROW_STARTEND_UP;
-            break;
-    }
-    return (out);
-}
-
-/* Start tile of arrow, if longer than one tile. */
-struct Rendered _Arrow_Decider_Start(i32 x_0, i32 y_0, i32 x_1, i32 y_1) {
-    struct Rendered out = Rendered_default;
-    struct Point move   = {x_1 - x_0, y_1 - y_0};
-    int direction_01    = Ternary_Direction(move);
-
-    switch (direction_01) {
-        case SOTA_DIRECTION_LEFT:
-            out.graphics.index = ARROW_START_HORIZONTAL;
-            out.flip = SDL_FLIP_HORIZONTAL;
-            break;
-        case SOTA_DIRECTION_RIGHT:
-            out.graphics.index = ARROW_START_HORIZONTAL;
-            break;
-        case SOTA_DIRECTION_TOP:
-            out.graphics.index = ARROW_START_DOWN;
-            break;
-        case SOTA_DIRECTION_BOTTOM:
-            out.graphics.index = ARROW_START_UP;
-            break;
-    }
-    return (out);
-}
-
-/* Middle tile of arrow, if longer than one tile. */
-struct Rendered _Arrow_Decider_Middle(i32 x_0, i32 y_0, i32 x_1, i32 y_1, i32 x_2, i32 y_2) {
-    SDL_assert(((x_0 != x_2) || (y_0 != y_2)));
-    struct Rendered out  = Rendered_default;
-    struct Point move_01 = {x_1 - x_0, y_1 - y_0};
-    int direction_01     = Ternary_Direction(move_01);
-    struct Point move_12 = {x_2 - x_1, y_2 - y_1};
-    int direction_12     = Ternary_Direction(move_12);
-
-    out.flip = (direction_01 == SOTA_DIRECTION_LEFT)
-               || (direction_12 == SOTA_DIRECTION_RIGHT) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
-    switch (direction_01) {
-        case SOTA_DIRECTION_LEFT:
-        case SOTA_DIRECTION_RIGHT:
-            switch (direction_12) {
-                case SOTA_DIRECTION_LEFT:
-                case SOTA_DIRECTION_RIGHT:
-                    out.graphics.index = ARROW_STRAIGHT_HORIZONTAL;
-                    break;
-                case SOTA_DIRECTION_BOTTOM:
-                    out.graphics.index = ARROW_CORNER_UP;
-                    break;
-                case SOTA_DIRECTION_TOP:
-                    out.graphics.index = ARROW_CORNER_DOWN;
-                    break;
-            }
-            break;
-        case SOTA_DIRECTION_TOP:
-            switch (direction_12) {
-                case SOTA_DIRECTION_TOP:
-                    out.graphics.index = ARROW_STRAIGHT_VERTICAL;
-                    break;
-                case SOTA_DIRECTION_RIGHT:
-                case SOTA_DIRECTION_LEFT:
-                    out.graphics.index = ARROW_CORNER_UP;
-                    break;
-            }
-            break;
-        case SOTA_DIRECTION_BOTTOM:
-            switch (direction_12) {
-                case SOTA_DIRECTION_BOTTOM:
-                    out.graphics.index = ARROW_STRAIGHT_VERTICAL;
-                    break;
-                case SOTA_DIRECTION_RIGHT:
-                case SOTA_DIRECTION_LEFT:
-                    out.graphics.index = ARROW_CORNER_DOWN;
-                    break;
-            }
-            break;
-    }
-    return (out);
-}
-
-/* End tile of arrow, if longer than one tile. */
-struct Rendered _Arrow_Decider_End(i32 x_0, i32 y_0, i32 x_1, i32 y_1, i32 x_2, i32 y_2) {
-    struct Rendered out  = Rendered_default;
-
-    struct Point move_01 = {x_1 - x_0, y_1 - y_0};
-    int direction_01     = Ternary_Direction(move_01);
-    struct Point move_12 = {x_2 - x_1, y_2 - y_1};
-    int direction_12     = Ternary_Direction(move_12);
-
-    bool left_01 = (direction_01 == SOTA_DIRECTION_LEFT);
-    bool left_12 = (direction_12 == SOTA_DIRECTION_LEFT);
-
-    out.flip = (left_01 || left_12) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
-    switch (direction_01) {
-        case SOTA_DIRECTION_LEFT:
-        case SOTA_DIRECTION_RIGHT:
-            switch (direction_12) {
-                case SOTA_DIRECTION_LEFT:
-                case SOTA_DIRECTION_RIGHT:
-                    out.graphics.index = ARROW_STOP_HORIZONTAL;
-                    break;
-                case SOTA_DIRECTION_BOTTOM:
-                    out.graphics.index = ARROW_STOP_CORNER_RUP;
-                    break;
-                case SOTA_DIRECTION_TOP:
-                    out.graphics.index = ARROW_STOP_CORNER_RDOWN;
-                    break;
-            }
-            break;
-        case SOTA_DIRECTION_TOP:
-            switch (direction_12) {
-                case SOTA_DIRECTION_TOP:
-                    out.graphics.index = ARROW_STOP_DOWN;
-                    break;
-                case SOTA_DIRECTION_RIGHT:
-                case SOTA_DIRECTION_LEFT:
-                    out.graphics.index = ARROW_STOP_CORNER_DRIGHT;
-                    break;
-            }
-            break;
-        case SOTA_DIRECTION_BOTTOM:
-            switch (direction_12) {
-                case SOTA_DIRECTION_BOTTOM:
-                    out.graphics.index = ARROW_STOP_UP;
-                    break;
-                case SOTA_DIRECTION_RIGHT:
-                case SOTA_DIRECTION_LEFT:
-                    out.graphics.index = ARROW_STOP_CORNER_URIGHT;
-                    break;
-            }
-            break;
-    }
-    return (out);
-}
 
 void Arrow_Draw(struct Arrow *arrow, SDL_Renderer *renderer, struct Camera *camera) {
     SDL_assert(arrow->textures != NULL);

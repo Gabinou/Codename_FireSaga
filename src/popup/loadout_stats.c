@@ -1,5 +1,19 @@
 #include "popup/loadout_stats.h"
 
+/* --- STATIC FUNCTIONS DECLARATIONS --- */
+static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
+                                             SDL_Renderer *renderer);
+static void _PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls,
+                                               SDL_Renderer *renderer);
+static void _PopUp_Loadout_Stats_Draw_Hands(struct PopUp_Loadout_Stats *pls,
+                                            SDL_Renderer *renderer);
+static void _PopUp_Loadout_Stats_Draw_WpnIcons(struct PopUp_Loadout_Stats *pls,
+                                               SDL_Renderer *renderer);
+static void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls,
+                                            SDL_Renderer *renderer);
+static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
+                                               SDL_Renderer *renderer);
+
 struct PopUp_Loadout_Stats PopUp_Loadout_Stats_default = {
     .unit                    = NULL,
     .texture                 = NULL,

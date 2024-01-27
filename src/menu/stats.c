@@ -1,5 +1,28 @@
 #include "menu/stats.h"
 
+/* --- STATIC FUNCTIONS DECLARATIONS --- */
+/* --- Constructors/Destructors --- */
+static void _StatsMenu_Free_Face( struct StatsMenu *sm);
+static void _StatsMenu_Free_Icons(struct StatsMenu *sm);
+
+/* --- Loading --- */
+static void _StatsMenu_Load_Face( struct StatsMenu *sm);
+static void _StatsMenu_Load_Icons(struct StatsMenu *sm, SDL_Renderer   *r);
+
+/* --- Drawing --- */
+/* -- Drawing elements -- */
+static void _StatsMenu_Draw_Item(         struct StatsMenu *sm, SDL_Renderer *r, int i);
+static void _StatsMenu_Draw_Name(         struct StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Mount(        struct StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Stats(        struct StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Hands(        struct StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Rescue(       struct StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Skills(       struct StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Statuses(     struct StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_WpnTypes(     struct StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Equipment(    struct StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *sm, SDL_Renderer *r);
+
 i8 stats_menu_cycle[STATS_MENU_CYCLE_NUM] = {MENU_TYPE_STATS, MENU_TYPE_GROWTHS};
 i8 stats_menu_cycle_inv[MENU_TYPE_END] = {
     /* NULL */          -1,
@@ -401,20 +424,20 @@ void StatsMenu_Load(struct StatsMenu *stats_menu, struct Unit *unit,
 
 }
 
-void _StatsMenu_Free_Face(struct StatsMenu *stats_menu) {
+static void _StatsMenu_Free_Face(struct StatsMenu *stats_menu) {
     if (stats_menu->texture_face != NULL) {
         SDL_DestroyTexture(stats_menu->texture_face);
         stats_menu->texture_face = NULL;
     }
 }
 
-void _StatsMenu_Load_Face(struct StatsMenu *stats_menu) {
+static void _StatsMenu_Load_Face(struct StatsMenu *stats_menu) {
     SDL_assert(stats_menu);
     SDL_assert(stats_menu->unit);
     // TODO: find face file from unit name
 }
 
-void _StatsMenu_Free_Icons(struct StatsMenu *stats_menu) {
+static void _StatsMenu_Free_Icons(struct StatsMenu *stats_menu) {
     if (stats_menu->texture_sex != NULL) {
         SDL_DestroyTexture(stats_menu->texture_sex);
         stats_menu->texture_sex = NULL;
@@ -433,7 +456,7 @@ void _StatsMenu_Free_Icons(struct StatsMenu *stats_menu) {
     }
 }
 
-void _StatsMenu_Load_Icons(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+static void _StatsMenu_Load_Icons(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     SDL_assert(stats_menu);
     SDL_assert(renderer != NULL);
 
@@ -508,7 +531,7 @@ void StatsMenu_Elem_Pos_Revert(struct StatsMenu *sm, struct Menu *mc) {
 }
 
 /* --- Drawing --- */
-void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+static void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* -- HEADER WRITING -- */
     SDL_Rect dstrect, srcrect;
     struct Unit_stats     *effective_stats  = &stats_menu->unit->effective_stats;
@@ -592,7 +615,7 @@ void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *renderer) 
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 }
 
-void _StatsMenu_Draw_Mount(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+static void _StatsMenu_Draw_Mount(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* -- MOUNT -- */
     /* - preliminaries - */
     SDL_Rect dstrect, srcrect;
@@ -637,7 +660,7 @@ void _StatsMenu_Draw_Mount(struct StatsMenu *stats_menu, SDL_Renderer *renderer)
     SDL_RenderCopy(renderer, stats_menu->texture_mount, &srcrect, &dstrect);
 }
 
-void _StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+static void _StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* -- STATS -- */
     SDL_Rect dstrect, srcrect;
     struct Unit_stats *effective_stats  = &stats_menu->unit->effective_stats;
@@ -757,7 +780,7 @@ void _StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *renderer)
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 }
 
-void _StatsMenu_Draw_Hands(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+static void _StatsMenu_Draw_Hands(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     SDL_Rect dstrect, srcrect;
     /* - HANDS - */
     int stronghand = Unit_Hand_Strong(stats_menu->unit);
@@ -814,7 +837,7 @@ void _StatsMenu_Draw_Hands(struct StatsMenu *stats_menu, SDL_Renderer *renderer)
     SDL_RenderCopy(renderer, stats_menu->texture_hands, &srcrect, &dstrect);
 }
 
-void _StatsMenu_Draw_Rescue(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+static void _StatsMenu_Draw_Rescue(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     SDL_Rect dstrect, srcrect;
     struct Unit *unit = stats_menu->unit;
     int x, y;
@@ -839,7 +862,8 @@ void _StatsMenu_Draw_Rescue(struct StatsMenu *stats_menu, SDL_Renderer *renderer
     PixelFont_Write(stats_menu->pixelnours, renderer, "STATUS", 6, x, y);
 
 }
-void _StatsMenu_Draw_Skills(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+
+static void _StatsMenu_Draw_Skills(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     SDL_Rect dstrect, srcrect;
     struct Unit *unit = stats_menu->unit;
 
@@ -867,7 +891,7 @@ void _StatsMenu_Draw_Skills(struct StatsMenu *stats_menu, SDL_Renderer *renderer
     SDL_RenderFillRect(renderer, &srcrect);
 }
 
-void _StatsMenu_Draw_Statuses(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+static void _StatsMenu_Draw_Statuses(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     SDL_Rect dstrect, srcrect;
     struct Unit *unit = stats_menu->unit;
 
@@ -892,7 +916,7 @@ void _StatsMenu_Draw_Statuses(struct StatsMenu *stats_menu, SDL_Renderer *render
     SDL_RenderCopy(renderer, stats_menu->texture_statuses, &srcrect, &dstrect);
 }
 
-void _StatsMenu_Draw_WpnTypes(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+static void _StatsMenu_Draw_WpnTypes(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     struct Unit *unit = stats_menu->unit;
     SDL_Rect dstrect, srcrect;
 
@@ -931,7 +955,7 @@ void _StatsMenu_Draw_WpnTypes(struct StatsMenu *stats_menu, SDL_Renderer *render
     }
 }
 
-void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *renderer, int i) {
+static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *renderer, int i) {
     /* -- Preliminaries -- */
     SDL_Rect dstrect, srcrect;
     char numbuff[10];
@@ -1029,14 +1053,15 @@ void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *renderer, 
     s8_free(&item_name);
 }
 
-void _StatsMenu_Draw_Equipment(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+static void _StatsMenu_Draw_Equipment(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* --- Equipment --- */
     for (u8 i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
         _StatsMenu_Draw_Item(stats_menu, renderer, i);
     }
 
 }
-void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+
+static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* -- COMPUTED STATS -- */
     struct Computed_Stats *computed_stats = &stats_menu->unit->computed_stats;
     struct Unit *unit = stats_menu->unit;

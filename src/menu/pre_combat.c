@@ -1,5 +1,18 @@
 #include "menu/pre_combat.h"
 
+/* --- STATIC FUNCTIONS DECLARATIONS --- */
+/* -- Drawing Utilities -- */
+void static _PreCombatMenu_Draw_Names(   struct PreCombatMenu *pcm, SDL_Renderer *r);
+void static _PreCombatMenu_Draw_Stats(   struct PreCombatMenu *pcm, SDL_Renderer *r);
+void static _PreCombatMenu_Draw_Faces(   struct PreCombatMenu *pcm, SDL_Renderer *r);
+void static _PreCombatMenu_Draw_WpnIcons(struct PreCombatMenu *pcm, SDL_Renderer *r);
+void static _PreCombatMenu_Draw_Doubling(struct PreCombatMenu *pcm, SDL_Renderer *r);
+
+/* -- Drawing Stats mode FSM -- */
+static void _PreCombatMenu_Draw_Stats_Math(  struct PreCombatMenu *pcm, SDL_Renderer *r);
+static void _PreCombatMenu_Draw_Stats_Total( struct PreCombatMenu *pcm, SDL_Renderer *r);
+static void _PreCombatMenu_Draw_Stats_Simple(struct PreCombatMenu *pcm, SDL_Renderer *r);
+
 struct Point pcm_elem_pos[PRE_COMBAT_MENU_ELEM_NUM] = {
     /* PRE_COMBAT_MENU_ELEM */ {0, 0},
 };
@@ -32,105 +45,16 @@ struct PreCombatMenu PreCombatMenu_default =  {
     .pixelnours_big         = NULL,
 };
 
-struct PreCombatMenu *PreCombatMenu_Alloc(void) {
-    struct PreCombatMenu *pcm = malloc(sizeof(struct PreCombatMenu));
-    SDL_assert(pcm);
-    *pcm = PreCombatMenu_default;
-    SDL_assert(pcm->texture == NULL);
-    return (pcm);
-}
-
-void PreCombatMenu_Free(struct PreCombatMenu *pcm) {
-    SDL_assert(pcm != NULL);
-    if (pcm->texture != NULL) {
-        SDL_DestroyTexture(pcm->texture);
-        pcm->texture = NULL;
-    }
-    if (pcm->texture_doubling != NULL) {
-        SDL_DestroyTexture(pcm->texture_doubling);
-        pcm->texture_doubling = NULL;
-    }
-    PreCombatMenu_Free_Faces(pcm);
-    PreCombatMenu_Free_Icons(pcm);
-    if (pcm != NULL) {
-        SDL_free(pcm);
-        pcm = NULL;
-    }
-}
-
-void PreCombatMenu_Load(struct PreCombatMenu *pcm, tnecs_entity aggressor,
-                        tnecs_entity defendant, SDL_Renderer *renderer, struct n9Patch *n9patch) {
-    SDL_assert(pcm       != NULL);
-    SDL_assert(pcm->sota != NULL);
-    SDL_assert(aggressor > TNECS_NULL);
-    SDL_assert(defendant > TNECS_NULL);
-
-    /* - n9patch - */
-    *n9patch                = n9Patch_default;
-    n9patch->patch_pixels.x = PCM_PATCH_PIXELS;
-    n9patch->patch_pixels.y = PCM_PATCH_PIXELS;
-    n9patch->scale.x        = PCM_N9PATCH_SCALE_X;
-    n9patch->scale.y        = PCM_N9PATCH_SCALE_Y;
-    n9patch->size_pixels.x  = (PCM_PATCH_PIXELS * PCM_PATCH_X_SIZE);
-    n9patch->size_pixels.y  = (PCM_PATCH_PIXELS * PCM_PATCH_Y_SIZE);
-    n9patch->size_patches.x = PCM_PATCH_X_SIZE;
-    n9patch->size_patches.y = PCM_PATCH_Y_SIZE;
-    n9patch->pos.x          = 0;
-    n9patch->pos.y          = 0;
-    SDL_assert(n9patch->patch_pixels.x > 0);
-    SDL_assert(n9patch->patch_pixels.y > 0);
-    if (n9patch->texture == NULL) {
-        n9patch->texture = Filesystem_Texture_Load(renderer, pcm->sota->filename_menu.data,
-                                                   SDL_PIXELFORMAT_INDEX8);
-    }
-
-    pcm->defendant = defendant;
-    pcm->aggressor = aggressor;
-    struct Unit *agg_unit    = TNECS_GET_COMPONENT(pcm->sota->world, pcm->aggressor, Unit);
-    struct Unit *dft_unit    = TNECS_GET_COMPONENT(pcm->sota->world, pcm->defendant, Unit);
-    /* Getting unit positions */
-    struct Position *agg_pos = TNECS_GET_COMPONENT(pcm->sota->world, pcm->aggressor, Position);
-    struct Position *dft_pos = TNECS_GET_COMPONENT(pcm->sota->world, pcm->defendant, Position);
-    _PreCombatMenu_Load(pcm, agg_unit, dft_unit, agg_pos, dft_pos, renderer);
-}
-
-void _PreCombatMenu_Load(struct PreCombatMenu *pcm, struct Unit *agg_unit, struct Unit *dft_unit,
-                         struct Position *agg_pos, struct Position *dft_pos, SDL_Renderer *renderer) {
-    pcm->agg_pos  = agg_pos;
-    pcm->dft_pos  = dft_pos;
-    pcm->agg_unit = agg_unit;
-    pcm->dft_unit = dft_unit;
-
-    pcm->update = true;
-    _PreCombatMenu_Load_Faces(pcm, renderer);
-    _PreCombatMenu_Load_Icons(pcm, renderer);
-}
-void PreCombatMenu_Free_Faces(struct PreCombatMenu *pcm) {
-    if (pcm->texture_face_defendant != NULL) {
-        SDL_DestroyTexture(pcm->texture_face_defendant);
-        pcm->texture_face_defendant = NULL;
-    }
-    if (pcm->texture_face_aggressor != NULL) {
-        SDL_DestroyTexture(pcm->texture_face_aggressor);
-        pcm->texture_face_aggressor = NULL;
-    }
-}
-
-void _PreCombatMenu_Load_Faces(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
+/* --- STATIC FUNCTIONS --- */
+/* --- Loading --- */
+static void _PreCombatMenu_Load_Faces(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
     SDL_assert(pcm);
     SDL_assert(pcm->agg_unit > TNECS_NULL);
     SDL_assert(pcm->dft_unit > TNECS_NULL);
     // TODO: find face file from unit name
 }
 
-void PreCombatMenu_Free_Icons(struct PreCombatMenu *pcm) {
-    if (pcm->texture_weapons != NULL) {
-        SDL_DestroyTexture(pcm->texture_weapons);
-        pcm->texture_weapons = NULL;
-    }
-}
-
-void _PreCombatMenu_Load_Icons(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
+static void _PreCombatMenu_Load_Icons(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
     SDL_assert(pcm);
     SDL_assert(renderer != NULL);
     char *path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Weapons.png");
@@ -138,107 +62,8 @@ void _PreCombatMenu_Load_Icons(struct PreCombatMenu *pcm, SDL_Renderer *renderer
     SDL_assert(pcm->texture_weapons);
 }
 
-/* --- Setters --- */
-void PreCombatMenu_Set(struct PreCombatMenu *pcm, struct Game *sota) {
-    SDL_assert(sota != NULL);
-    /* -- give aggressor and defendant units to Pre_Combat -- */
-    pcm->sota     = sota;
-    pcm->update   = true;
-    pcm->forecast = &sota->combat_forecast;
 
-}
-
-/* --- Drawing --- */
-/* Draw the doubling/tripling/quadrupling symbol */
-void _PreCombatMenu_Draw_Doubling(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
-    /* -- Preliminaries -- */
-    /* - Checking number of phases to draw - */
-    int phases_agg = pcm->forecast->flow.aggressor_phases;
-    int phases_dft = pcm->forecast->flow.defendant_phases;
-
-    SDL_assert(((phases_agg >= 0) && (phases_agg <= 1)) || ((phases_dft >= 0) && (phases_dft <= 1)));
-    int max_phase = phases_agg > phases_dft ? phases_agg : phases_dft;
-    SDL_assert(max_phase <= SOTA_UNIT_MAX_COMBAT_PHASES);
-
-    if (max_phase <= 1) {
-        SDL_Log("Number of phases too low. Exiting.");
-        return;
-    }
-
-    /* - Misc. variables - */
-    SDL_Rect rect;
-    char numbuff[2];
-    i16 menu_w = PCM_DOUBLING_SIMPLE_TEXT_W;
-    i16 menu_h = PCM_DOUBLING_SIMPLE_TEXT_H;
-
-    /* - create render target texture - */
-    if (pcm->texture_doubling == NULL) {
-        pcm->texture_doubling = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-                                                  SDL_TEXTUREACCESS_TARGET, menu_w, menu_h);
-        SDL_assert(pcm->texture_doubling != NULL);
-        SDL_SetTextureBlendMode(pcm->texture_doubling, SDL_BLENDMODE_BLEND);
-    }
-    SDL_SetRenderTarget(renderer, pcm->texture_doubling);
-
-    stbsp_sprintf(numbuff, "%01d", max_phase);
-
-    /* -- draw rects -- */
-    /* - ligt rect - */
-    SDL_Color color = palette_NES->colors[PCM_DOUBLING_LIGHT];
-    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
-    rect.x = 0, rect.y = 1;
-    rect.w = menu_w, rect.h = menu_h - 2;
-    SDL_RenderDrawRect(renderer, &rect);
-
-    SDL_RenderDrawLine(renderer, 1,          0, menu_w - 2,          0);
-    SDL_RenderDrawLine(renderer, 1, menu_h - 1, menu_w - 2, menu_h - 1);
-
-    /* - dark rect - */
-    color = palette_NES->colors[PCM_DOUBLING_DARK];
-    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
-    rect.x = 1,          rect.y = 1;
-    rect.w = menu_w - 2, rect.h = menu_h - 2;
-    SDL_RenderFillRect(renderer, &rect);
-
-    /* - Write text - */
-    int x, y;
-
-    x = PCM_DOUBLING_SIMPLE_MULT_X, y = PCM_DOUBLING_SIMPLE_MULT_Y;
-    PixelFont_Write(pcm->pixelnours_big, renderer, "*", strlen(numbuff), x, y);
-
-    x = PCM_DOUBLING_SIMPLE_TEXT_X, y = PCM_DOUBLING_SIMPLE_TEXT_Y;
-    PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
-
-    /* - Finish - */
-    SDL_SetRenderTarget(renderer, pcm->texture);
-    Utilities_DrawColor_Reset(renderer);
-}
-
-void PreCombatMenu_Draw(struct Menu *mc, SDL_Texture *render_target,
-                        SDL_Renderer *renderer) {
-    struct PreCombatMenu *pcm = (struct PreCombatMenu *)mc->data;
-    struct n9Patch *n9patch   = &mc->n9patch;
-
-    SDL_assert(pcm != NULL);
-    if (pcm->update) {
-        PreCombatMenu_Update(pcm, n9patch, render_target, renderer);
-        pcm->update = false;
-    }
-    /* - Unit equipement decided by player with LoadoutSelectMenu - */
-
-    /* TODO: set position of statsmenu */
-    SDL_Rect dstrect = {
-        .w = n9patch->size_pixels.x * n9patch->scale.x,
-        .h = n9patch->size_pixels.y * n9patch->scale.y,
-        .x = pcm->pos.x,
-        .y = pcm->pos.y,
-    };
-    SDL_assert(pcm->texture != NULL);
-    SDL_RenderCopy(renderer, pcm->texture, NULL, &dstrect);
-    Utilities_DrawColor_Reset(renderer);
-}
-
-void _PreCombatMenu_Draw_Names(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
+static void _PreCombatMenu_Draw_Names(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
     /* - Name - */
     s8 name = pcm->agg_unit->name;
     int x = PCM_SIMPLE_ANAME_X, y = PCM_SIMPLE_ANAME_Y;
@@ -248,7 +73,7 @@ void _PreCombatMenu_Draw_Names(struct PreCombatMenu *pcm, SDL_Renderer *renderer
     PixelFont_Write_Len(pcm->pixelnours_big, renderer, name.data, x, y);
 }
 
-void _PreCombatMenu_Draw_Faces(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
+static void _PreCombatMenu_Draw_Faces(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
     /* - Portrait/Face - */
     SDL_Rect srcrect;
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
@@ -264,7 +89,7 @@ void _PreCombatMenu_Draw_Faces(struct PreCombatMenu *pcm, SDL_Renderer *renderer
     SDL_RenderFillRect(renderer, &srcrect);
 }
 
-void _PreCombatMenu_Draw_WpnIcons(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
+static void _PreCombatMenu_Draw_WpnIcons(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
     struct Inventory_item *item;
     SDL_Rect dstrect, srcrect;
     /* - Weapon icons - */
@@ -387,14 +212,14 @@ void _PreCombatMenu_Draw_WpnIcons(struct PreCombatMenu *pcm, SDL_Renderer *rende
     }
 }
 
-pcm_draw_stats_t pcm_draw_stats[PCM_MODE_NUM] = {
-    /* NULL     */ NULL,
-    /* TOTAL    */ _PreCombatMenu_Draw_Stats_Total,
-    /* SIMPLE   */ _PreCombatMenu_Draw_Stats_Simple,
-    /* MATH     */ _PreCombatMenu_Draw_Stats_Math,
-};
+static void _PreCombatMenu_Draw_Stats(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
+    SDL_assert(pcm->mode >= PCM_MODE_NULL && pcm->mode < PCM_MODE_NUM);
 
-void _PreCombatMenu_Draw_Stats_Math(  struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
+    if (pcm_draw_stats[pcm->mode] != NULL)
+        pcm_draw_stats[pcm->mode](pcm, renderer);
+}
+
+static void _PreCombatMenu_Draw_Stats_Math(  struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
     /* -- Preliminaries -- */
     SDL_Rect dstrect, srcrect;
 
@@ -537,7 +362,7 @@ void _PreCombatMenu_Draw_Stats_Math(  struct PreCombatMenu *pcm, SDL_Renderer *r
     }
 }
 
-void _PreCombatMenu_Draw_Stats_Total( struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
+static void _PreCombatMenu_Draw_Stats_Total( struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
     char numbuff[10];
     /* -- Preliminaries -- */
     SDL_Rect dstrect, srcrect;
@@ -633,7 +458,7 @@ void _PreCombatMenu_Draw_Stats_Total( struct PreCombatMenu *pcm, SDL_Renderer *r
     }
 }
 
-void _PreCombatMenu_Draw_Stats_Simple(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
+static void _PreCombatMenu_Draw_Stats_Simple(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
     char numbuff[10];
     /* -- Preliminaries -- */
     SDL_Rect dstrect, srcrect;
@@ -745,11 +570,207 @@ void _PreCombatMenu_Draw_Stats_Simple(struct PreCombatMenu *pcm, SDL_Renderer *r
     }
 }
 
-void _PreCombatMenu_Draw_Stats(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
-    SDL_assert(pcm->mode >= PCM_MODE_NULL && pcm->mode < PCM_MODE_NUM);
+/* --- Drawing --- */
+/* Draw the doubling/tripling/quadrupling symbol */
+static void _PreCombatMenu_Draw_Doubling(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
+    /* -- Preliminaries -- */
+    /* - Checking number of phases to draw - */
+    int phases_agg = pcm->forecast->flow.aggressor_phases;
+    int phases_dft = pcm->forecast->flow.defendant_phases;
 
-    if (pcm_draw_stats[pcm->mode] != NULL)
-        pcm_draw_stats[pcm->mode](pcm, renderer);
+    SDL_assert(((phases_agg >= 0) && (phases_agg <= 1)) || ((phases_dft >= 0) && (phases_dft <= 1)));
+    int max_phase = phases_agg > phases_dft ? phases_agg : phases_dft;
+    SDL_assert(max_phase <= SOTA_UNIT_MAX_COMBAT_PHASES);
+
+    if (max_phase <= 1) {
+        SDL_Log("Number of phases too low. Exiting.");
+        return;
+    }
+
+    /* - Misc. variables - */
+    SDL_Rect rect;
+    char numbuff[2];
+    i16 menu_w = PCM_DOUBLING_SIMPLE_TEXT_W;
+    i16 menu_h = PCM_DOUBLING_SIMPLE_TEXT_H;
+
+    /* - create render target texture - */
+    if (pcm->texture_doubling == NULL) {
+        pcm->texture_doubling = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
+                                                  SDL_TEXTUREACCESS_TARGET, menu_w, menu_h);
+        SDL_assert(pcm->texture_doubling != NULL);
+        SDL_SetTextureBlendMode(pcm->texture_doubling, SDL_BLENDMODE_BLEND);
+    }
+    SDL_SetRenderTarget(renderer, pcm->texture_doubling);
+
+    stbsp_sprintf(numbuff, "%01d", max_phase);
+
+    /* -- draw rects -- */
+    /* - ligt rect - */
+    SDL_Color color = palette_NES->colors[PCM_DOUBLING_LIGHT];
+    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
+    rect.x = 0, rect.y = 1;
+    rect.w = menu_w, rect.h = menu_h - 2;
+    SDL_RenderDrawRect(renderer, &rect);
+
+    SDL_RenderDrawLine(renderer, 1,          0, menu_w - 2,          0);
+    SDL_RenderDrawLine(renderer, 1, menu_h - 1, menu_w - 2, menu_h - 1);
+
+    /* - dark rect - */
+    color = palette_NES->colors[PCM_DOUBLING_DARK];
+    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
+    rect.x = 1,          rect.y = 1;
+    rect.w = menu_w - 2, rect.h = menu_h - 2;
+    SDL_RenderFillRect(renderer, &rect);
+
+    /* - Write text - */
+    int x, y;
+
+    x = PCM_DOUBLING_SIMPLE_MULT_X, y = PCM_DOUBLING_SIMPLE_MULT_Y;
+    PixelFont_Write(pcm->pixelnours_big, renderer, "*", strlen(numbuff), x, y);
+
+    x = PCM_DOUBLING_SIMPLE_TEXT_X, y = PCM_DOUBLING_SIMPLE_TEXT_Y;
+    PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
+
+    /* - Finish - */
+    SDL_SetRenderTarget(renderer, pcm->texture);
+    Utilities_DrawColor_Reset(renderer);
+}
+
+pcm_draw_stats_t pcm_draw_stats[PCM_MODE_NUM] = {
+    /* NULL     */ NULL,
+    /* TOTAL    */ _PreCombatMenu_Draw_Stats_Total,
+    /* SIMPLE   */ _PreCombatMenu_Draw_Stats_Simple,
+    /* MATH     */ _PreCombatMenu_Draw_Stats_Math,
+};
+
+
+/* --- GLOBAL FUNCTIONS --- */
+/* --- Setters --- */
+void PreCombatMenu_Set(struct PreCombatMenu *pcm, struct Game *sota) {
+    SDL_assert(sota != NULL);
+    /* -- give aggressor and defendant units to Pre_Combat -- */
+    pcm->sota     = sota;
+    pcm->update   = true;
+    pcm->forecast = &sota->combat_forecast;
+
+}
+
+
+struct PreCombatMenu *PreCombatMenu_Alloc(void) {
+    struct PreCombatMenu *pcm = malloc(sizeof(struct PreCombatMenu));
+    SDL_assert(pcm);
+    *pcm = PreCombatMenu_default;
+    SDL_assert(pcm->texture == NULL);
+    return (pcm);
+}
+
+void PreCombatMenu_Free(struct PreCombatMenu *pcm) {
+    SDL_assert(pcm != NULL);
+    if (pcm->texture != NULL) {
+        SDL_DestroyTexture(pcm->texture);
+        pcm->texture = NULL;
+    }
+    if (pcm->texture_doubling != NULL) {
+        SDL_DestroyTexture(pcm->texture_doubling);
+        pcm->texture_doubling = NULL;
+    }
+    PreCombatMenu_Free_Faces(pcm);
+    PreCombatMenu_Free_Icons(pcm);
+    if (pcm != NULL) {
+        SDL_free(pcm);
+        pcm = NULL;
+    }
+}
+
+void PreCombatMenu_Load(struct PreCombatMenu *pcm, tnecs_entity aggressor,
+                        tnecs_entity defendant, SDL_Renderer *renderer, struct n9Patch *n9patch) {
+    SDL_assert(pcm       != NULL);
+    SDL_assert(pcm->sota != NULL);
+    SDL_assert(aggressor > TNECS_NULL);
+    SDL_assert(defendant > TNECS_NULL);
+
+    /* - n9patch - */
+    *n9patch                = n9Patch_default;
+    n9patch->patch_pixels.x = PCM_PATCH_PIXELS;
+    n9patch->patch_pixels.y = PCM_PATCH_PIXELS;
+    n9patch->scale.x        = PCM_N9PATCH_SCALE_X;
+    n9patch->scale.y        = PCM_N9PATCH_SCALE_Y;
+    n9patch->size_pixels.x  = (PCM_PATCH_PIXELS * PCM_PATCH_X_SIZE);
+    n9patch->size_pixels.y  = (PCM_PATCH_PIXELS * PCM_PATCH_Y_SIZE);
+    n9patch->size_patches.x = PCM_PATCH_X_SIZE;
+    n9patch->size_patches.y = PCM_PATCH_Y_SIZE;
+    n9patch->pos.x          = 0;
+    n9patch->pos.y          = 0;
+    SDL_assert(n9patch->patch_pixels.x > 0);
+    SDL_assert(n9patch->patch_pixels.y > 0);
+    if (n9patch->texture == NULL) {
+        n9patch->texture = Filesystem_Texture_Load(renderer, pcm->sota->filename_menu.data,
+                                                   SDL_PIXELFORMAT_INDEX8);
+    }
+
+    pcm->defendant = defendant;
+    pcm->aggressor = aggressor;
+    struct Unit *agg_unit    = TNECS_GET_COMPONENT(pcm->sota->world, pcm->aggressor, Unit);
+    struct Unit *dft_unit    = TNECS_GET_COMPONENT(pcm->sota->world, pcm->defendant, Unit);
+    /* Getting unit positions */
+    struct Position *agg_pos = TNECS_GET_COMPONENT(pcm->sota->world, pcm->aggressor, Position);
+    struct Position *dft_pos = TNECS_GET_COMPONENT(pcm->sota->world, pcm->defendant, Position);
+    _PreCombatMenu_Load(pcm, agg_unit, dft_unit, agg_pos, dft_pos, renderer);
+}
+
+void _PreCombatMenu_Load(struct PreCombatMenu *pcm, struct Unit *agg_unit, struct Unit *dft_unit,
+                         struct Position *agg_pos, struct Position *dft_pos, SDL_Renderer *renderer) {
+    pcm->agg_pos  = agg_pos;
+    pcm->dft_pos  = dft_pos;
+    pcm->agg_unit = agg_unit;
+    pcm->dft_unit = dft_unit;
+
+    pcm->update = true;
+    _PreCombatMenu_Load_Faces(pcm, renderer);
+    _PreCombatMenu_Load_Icons(pcm, renderer);
+}
+void PreCombatMenu_Free_Faces(struct PreCombatMenu *pcm) {
+    if (pcm->texture_face_defendant != NULL) {
+        SDL_DestroyTexture(pcm->texture_face_defendant);
+        pcm->texture_face_defendant = NULL;
+    }
+    if (pcm->texture_face_aggressor != NULL) {
+        SDL_DestroyTexture(pcm->texture_face_aggressor);
+        pcm->texture_face_aggressor = NULL;
+    }
+}
+
+
+void PreCombatMenu_Free_Icons(struct PreCombatMenu *pcm) {
+    if (pcm->texture_weapons != NULL) {
+        SDL_DestroyTexture(pcm->texture_weapons);
+        pcm->texture_weapons = NULL;
+    }
+}
+
+/* --- Drawing --- */
+void PreCombatMenu_Draw(struct Menu *mc, SDL_Texture *render_target,
+                        SDL_Renderer *renderer) {
+    struct PreCombatMenu *pcm = (struct PreCombatMenu *)mc->data;
+    struct n9Patch *n9patch   = &mc->n9patch;
+
+    SDL_assert(pcm != NULL);
+    if (pcm->update) {
+        PreCombatMenu_Update(pcm, n9patch, render_target, renderer);
+        pcm->update = false;
+    }
+    /* - Unit equipement decided by player with LoadoutSelectMenu - */
+
+    /* TODO: set position of statsmenu */
+    SDL_Rect dstrect = {
+        .w = n9patch->size_pixels.x * n9patch->scale.x,
+        .h = n9patch->size_pixels.y * n9patch->scale.y,
+        .x = pcm->pos.x,
+        .y = pcm->pos.y,
+    };
+    SDL_assert(pcm->texture != NULL);
+    SDL_RenderCopy(renderer, pcm->texture, NULL, &dstrect);
+    Utilities_DrawColor_Reset(renderer);
 }
 
 void PreCombatMenu_Update(struct PreCombatMenu *pcm, struct n9Patch *n9patch,
