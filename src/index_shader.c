@@ -169,7 +169,7 @@ void Tilemap_Shader_Free(struct Tilemap_Shader *shd) {
     }
 }
 
-void _Tilemap_Shader_Shadow_Free( struct Tilemap_Shader *shd) {
+static void _Tilemap_Shader_Shadow_Free( struct Tilemap_Shader *shd) {
     if (shd->shadowtile_pixels_num != NULL)
         SDL_free(shd->shadowtile_pixels_num);
     if (shd->shadowtile_pixels_lists != NULL)

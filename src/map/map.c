@@ -111,8 +111,44 @@ struct Map Map_default = {
     // .seized; // maybe unecessary if turn system.
 };
 
-/* --- ructor/Destructors --- */
+/* --- STATIC FUNCTIONS --- */
+static void _Map_Reinforcements_Free(struct Map *map) {
+    if (map->reinforcements == NULL)
+        return;
 
+    for (u8 r = 0; r < DARR_NUM(map->reinforcements); r++) {
+        Reinforcement_Free(&map->reinforcements[r]);
+    }
+}
+
+
+static void _Map_Tilemap_Shader_Free(struct Map *map) {
+    Tilemap_Shader_Free(map->tilemap_shader);
+    if (map->tilemap_shader != NULL) {
+        SDL_free(map->tilemap_shader);
+        map->tilemap_shader = NULL;
+    }
+}
+
+static void _Map_Tilemap_Shader_Init(struct Map *map) {
+    map->tilemap_shader         = SDL_malloc(sizeof(struct Tilemap_Shader));
+    *map->tilemap_shader        = Tilemap_Shader_default;
+    map->tilemap_shader->map    = map;
+    map->tilemap_shader->to     = palette_table_NES_shadow;
+}
+
+static void _Map_Tilesindex_Free(struct Map *map) {
+    if (map->tilesindex != NULL)
+        DARR_FREE(map->tilesindex);
+}
+
+static void _Map_Tilesindex_Init(struct Map *map) {
+    _Map_Tilesindex_Free(map);
+    map->tilesindex = DARR_INIT(map->tilesindex, i32, DEFAULT_TILESPRITE_BUFFER);
+}
+
+
+/* --- Constructor/Destructors --- */
 struct Map *Map_Init(struct Map *map, i32 width, i32 height) {
     if (map != NULL)
         Map_Free(map);
@@ -289,14 +325,7 @@ void Map_Free(struct Map *map) {
     }
     Map_dArrays_Free(map);
 }
-void _Map_Reinforcements_Free(struct Map *map) {
-    if (map->reinforcements == NULL)
-        return;
 
-    for (u8 r = 0; r < DARR_NUM(map->reinforcements); r++) {
-        Reinforcement_Free(&map->reinforcements[r]);
-    }
-}
 
 void Map_dArrays_Init(struct Map *map,  struct Settings *settings) {
     SDL_assert(map->row_len > 0);
@@ -449,32 +478,6 @@ void Map_Texture_Alloc(struct Map *map) {
     SDL_SetTextureBlendMode(map->texture, SDL_BLENDMODE_BLEND);
 
 }
-
-void _Map_Tilemap_Shader_Free(struct Map *map) {
-    Tilemap_Shader_Free(map->tilemap_shader);
-    if (map->tilemap_shader != NULL) {
-        SDL_free(map->tilemap_shader);
-        map->tilemap_shader = NULL;
-    }
-}
-
-void _Map_Tilemap_Shader_Init(struct Map *map) {
-    map->tilemap_shader         = SDL_malloc(sizeof(struct Tilemap_Shader));
-    *map->tilemap_shader        = Tilemap_Shader_default;
-    map->tilemap_shader->map    = map;
-    map->tilemap_shader->to     = palette_table_NES_shadow;
-}
-
-void _Map_Tilesindex_Free(struct Map *map) {
-    if (map->tilesindex != NULL)
-        DARR_FREE(map->tilesindex);
-}
-
-void _Map_Tilesindex_Init(struct Map *map) {
-    _Map_Tilesindex_Free(map);
-    map->tilesindex = DARR_INIT(map->tilesindex, i32, DEFAULT_TILESPRITE_BUFFER);
-}
-
 
 void Map_Tilesprites_Free(struct Map *map) {
     if (map->tilesprites_ind == NULL)  {

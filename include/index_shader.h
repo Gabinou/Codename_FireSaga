@@ -44,11 +44,8 @@ extern struct Tilemap_Shader Tilemap_Shader_default;
 void Tilemap_Shader_Free(       struct Tilemap_Shader *s);
 void Tilemap_Shader_Alloc(      struct Tilemap_Shader *s, size_t tilenum);
 
-static void _Tilemap_Shader_Shadow_Free( struct Tilemap_Shader *s);
-
 /* -- Loading -- */
-void Tilemap_Shader_Load_JSON(struct Tilemap_Shader *s,  cJSON *jm,
-                              cJSON *st);
+void Tilemap_Shader_Load_JSON(struct Tilemap_Shader *s,  cJSON *jm, cJSON *st);
 void Tilemap_Shader_Load_Tileset_JSON(struct Tilemap_Shader *s,  cJSON *st);
 void Tilemap_Shader_Load_Tilemap_JSON(struct Tilemap_Shader *s,  cJSON *jmap);
 void Tilemap_Shader_Load_Tileset_pixels(struct Tilemap_Shader *s,  char *f,
