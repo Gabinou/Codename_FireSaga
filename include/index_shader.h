@@ -76,9 +76,6 @@ void Index_Shader_Free(struct Index_Shader *is);
 void Index_Shader_Load(struct Index_Shader *is, SDL_Surface *s, SDL_Rect *r);
 
 /* -- Shading -- */
-static void _Index_Shade_Rect(  u8 *to, SDL_Surface *us, SDL_Rect *r);
-static void _Index_Shade_Pixels(u8 *to, SDL_Surface *us, u8 *pl, size_t pn, size_t x, size_t y);
-
 SDL_Surface *Index_Shade_Surface(struct Index_Shader *is, SDL_Surface *s, SDL_Rect *r);
 
 #endif /* INDEX_SHADER_H */

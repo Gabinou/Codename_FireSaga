@@ -23,169 +23,9 @@ struct PopUp_Loadout_Stats PopUp_Loadout_Stats_default = {
     .update                  = false,
 };
 
-void PopUp_Loadout_Stats_Free(struct PopUp_Loadout_Stats *pls) {
-    if (pls->texture != NULL) {
-        SDL_DestroyTexture(pls->texture);
-        pls->texture = NULL;
-    }
-    if (pls->texture_arrows != NULL) {
-        SDL_DestroyTexture(pls->texture_arrows);
-        pls->texture_arrows = NULL;
-    }
-    if (pls->texture_hands != NULL) {
-        SDL_DestroyTexture(pls->texture_hands);
-        pls->texture_hands = NULL;
-    }
-    if (pls->texture_weapon_icons != NULL) {
-        SDL_DestroyTexture(pls->texture_weapon_icons);
-        pls->texture_weapon_icons = NULL;
-    }
-
-}
-
-void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer,
-                              struct n9Patch *n9patch) {
-    SDL_assert(pls != NULL);
-    PopUp_Loadout_Stats_Free(pls);
-    n9Patch_Free(n9patch);
-
-    pls->update = true;
-
-    /* -- Popup position, scale, n9Patch -- */
-    *n9patch                  = n9Patch_default;
-    n9patch->patch_pixels.x   = PLS_PATCH_PIXELS;
-    n9patch->patch_pixels.y   = PLS_PATCH_PIXELS;
-    n9patch->scale.x          = PLS_N9PATCH_SCALE_X;
-    n9patch->scale.y          = PLS_N9PATCH_SCALE_Y;
-    n9patch->size_pixels.x    = PLS_PATCH_PIXELS * PLS_PATCH_X_SIZE;
-    n9patch->size_pixels.y    = PLS_PATCH_PIXELS * PLS_PATCH_Y_SIZE;
-    n9patch->size_patches.x   = PLS_PATCH_X_SIZE;
-    n9patch->size_patches.y   = PLS_PATCH_Y_SIZE;
-    n9patch->pos.x            = 0;
-    n9patch->pos.y            = 0;
-    SDL_assert(n9patch->patch_pixels.x > 0);
-    SDL_assert(n9patch->patch_pixels.y > 0);
-
-    char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px_fancycorner.png");
-    n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
-
-    path  = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Arrows.png");
-    pls->texture_arrows = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
-    SDL_assert(pls->texture_arrows);
-
-    path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Weapons.png");
-    pls->texture_weapon_icons = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
-    SDL_assert(pls->texture_weapon_icons);
-
-    path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Hands.png");
-    pls->texture_hands = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
-    SDL_assert(pls->texture_hands);
-
-    path = PATH_JOIN("..", "assets", "GUI", "Popup", "PopUp_Tile_Header.png");
-    pls->texture_header = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
-    SDL_assert(pls->texture_header);
-
-    path = PATH_JOIN("..", "assets", "GUI", "Icon", "Icon_Equipped.png");
-    pls->texture_equip = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
-    SDL_assert(pls->texture_equip);
-
-}
-
-void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
-    // Get item type of each waepon in hand to draw icons.
-    SDL_assert(pls->unit != NULL);
-    SDL_assert(pls->unit->weapons_dtab != NULL);
-
-    /* Left hand item type */
-    struct Inventory_item *item = Unit_Item_Side(pls->unit, pls->item_left);
-    if (Weapon_ID_isValid(item->id)) {
-        Weapon_Load(pls->unit->weapons_dtab, item->id);
-        pls->type_left = Weapon_TypeExp(DTAB_GET(pls->unit->weapons_dtab, item->id));
-    } else {
-        pls->type_left = ITEM_TYPE_ITEM;
-    }
-
-    /* Right hand item type */
-    item = Unit_Item_Side(pls->unit, pls->item_right);
-    if (Weapon_ID_isValid(item->id)) {
-        Weapon_Load(pls->unit->weapons_dtab, item->id);
-        pls->type_right = Weapon_TypeExp(DTAB_GET(pls->unit->weapons_dtab, item->id));
-    } else {
-        pls->type_right = ITEM_TYPE_ITEM;
-    }
-
-}
-
-/* --- Setters --- */
-void PopUp_Loadout_Stats_Unit(struct PopUp_Loadout_Stats *pls, struct Unit *unit) {
-    SDL_assert(unit != NULL);
-    pls->unit = unit;
-    int stronghand = Unit_Hand_Strong(pls->unit);
-    pls->item_left  = (stronghand == UNIT_HAND_LEFT)  ? unit->eq_usable[UNIT_HAND_LEFT]  : -1;
-    pls->item_right = (stronghand == UNIT_HAND_RIGHT) ? unit->eq_usable[UNIT_HAND_RIGHT] : -1;
-
-    Unit_Unequip(unit, UNIT_HAND_LEFT);
-    Unit_Unequip(unit, UNIT_HAND_RIGHT);
-
-    PopUp_Loadout_Stats_ItemTypes(pls);
-    PopUp_Loadout_Stats_Previous(pls);
-}
-
-void PopUp_Loadout_Stats_Previous(struct PopUp_Loadout_Stats *pls) {
-    PopUp_Loadout_Stats_ItemTypes(pls);
-
-    pls->previous_cs = Unit_computedStats_wLoadout(pls->unit, pls->item_left, pls->item_right,
-                                                   pls->distance);
-    pls->new_cs      = pls->previous_cs;
-    pls->update      = true;
-}
-
-void PopUp_Loadout_Stats_New(struct PopUp_Loadout_Stats *pls) {
-    PopUp_Loadout_Stats_ItemTypes(pls);
-    pls->new_cs     = Unit_computedStats_wLoadout(pls->unit, pls->item_left, pls->item_right,
-                                                  pls->distance);
-    pls->update     = true;
-    pls->twoHanding = Unit_Loadout_twoHanding(pls->item_left, pls->item_right);
-}
-
-/* --- Select --- */
-void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls, struct LoadoutSelectMenu *wsm,
-                               int elem) {
-    SDL_assert(pls       != NULL);
-    SDL_assert(wsm       != NULL);
-    SDL_assert(wsm->unit != NULL);
-    SDL_assert(pls->unit != NULL);
-    SDL_assert(wsm->unit == pls->unit);
-
-    /* - Select item - */
-    int stronghand = Unit_Hand_Strong(pls->unit);
-    int weakhand   = 1 - stronghand;
-    if (wsm->selected[stronghand] > -1) {
-        /* strong hand item was previously switched */
-        int new_weak_side_i = Unit_Id_Strong(pls->unit, elem);
-
-        if (weakhand == UNIT_HAND_LEFT) {
-            pls->item_left  = new_weak_side_i;
-        } else {
-            pls->item_right = new_weak_side_i;
-        }
-
-    } else {
-        int new_strong_side_i = wsm->unit->eq_usable[Unit_Id_Strong(pls->unit, elem)];
-
-        if (stronghand == UNIT_HAND_LEFT) {
-            pls->item_left  = new_strong_side_i;
-            pls->item_right = -1;
-        } else {
-            pls->item_left  = -1;
-            pls->item_right = new_strong_side_i;
-        }
-    }
-}
-
-
-/* --- Rendering --- */
-void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
+/* --- STATIC FUNCTIONS --- */
+/* -- Drawing elements -- */
+static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
     /* - ARROWS - */
     int arrow_index;
     SDL_Rect dstrect, srcrect;
@@ -379,7 +219,7 @@ void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls, SDL_Rende
 
 }
 
-void _PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
+static void _PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
     /* -- COMPUTED STATS -- */
     int width;
     char numbuff[10];
@@ -445,26 +285,9 @@ void _PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls, SDL_Ren
 
 }
 
-void PopUp_Loadout_Stats_Weakhand_Offset(struct PopUp_Loadout_Stats *pls) {
-    int stronghand = Unit_Hand_Strong(pls->unit);
-    pls->ry_offset = 0;
-    pls->ly_offset = 0;
 
-    /* Weakhand offsets */
-    if (pls->twoHanding)
-        pls->ly_offset = PLS_TWOHAND_Y_OFFSET;
-    else if ((pls->tophand_stronghand) && (stronghand == UNIT_HAND_RIGHT)) {
-        pls->ly_offset = PLS_WEAKHAND_Y_OFFSET;
-    }
-    if (pls->twoHanding) {
-        pls->ry_offset = PLS_TWOHAND_Y_OFFSET;
-    } else if ((!pls->tophand_stronghand) || (stronghand == UNIT_HAND_LEFT)) {
-        pls->ry_offset = PLS_WEAKHAND_Y_OFFSET;
-    }
-}
-
-/* --- Draw --- */
-void _PopUp_Loadout_Stats_Draw_Hands(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
+static void _PopUp_Loadout_Stats_Draw_Hands(struct PopUp_Loadout_Stats *pls,
+                                            SDL_Renderer *renderer) {
     SDL_Rect dstrect, srcrect;
     int stronghand = Unit_Hand_Strong(pls->unit);
 
@@ -519,7 +342,7 @@ void _PopUp_Loadout_Stats_Draw_Hands(struct PopUp_Loadout_Stats *pls, SDL_Render
     }
 }
 
-void _PopUp_Loadout_Stats_Draw_WpnIcons(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
+static void _PopUp_Loadout_Stats_Draw_WpnIcons(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
     /* - WEAPON ICONS - */
     int stronghand = Unit_Hand_Strong(pls->unit);
     SDL_Rect dstrect, srcrect;
@@ -559,7 +382,7 @@ void _PopUp_Loadout_Stats_Draw_WpnIcons(struct PopUp_Loadout_Stats *pls, SDL_Ren
     }
 }
 
-void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
+static void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
     /* - EQUIP ICONS - */
     SDL_Rect dstrect, srcrect;
     srcrect.x = 0;
@@ -592,7 +415,7 @@ void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls, SDL_Render
     }
 }
 
-void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
+static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
     /* - EQUIPPED WEAPONS NAMES - */
     /* Left hand */
     do {
@@ -660,6 +483,188 @@ void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls, SDL_Ren
 
         s8_free(&buffer);
     } while (false);
+}
+
+
+/* --- GLOBAL FUNCTIONS --- */
+void PopUp_Loadout_Stats_Free(struct PopUp_Loadout_Stats *pls) {
+    if (pls->texture != NULL) {
+        SDL_DestroyTexture(pls->texture);
+        pls->texture = NULL;
+    }
+    if (pls->texture_arrows != NULL) {
+        SDL_DestroyTexture(pls->texture_arrows);
+        pls->texture_arrows = NULL;
+    }
+    if (pls->texture_hands != NULL) {
+        SDL_DestroyTexture(pls->texture_hands);
+        pls->texture_hands = NULL;
+    }
+    if (pls->texture_weapon_icons != NULL) {
+        SDL_DestroyTexture(pls->texture_weapon_icons);
+        pls->texture_weapon_icons = NULL;
+    }
+
+}
+
+void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer,
+                              struct n9Patch *n9patch) {
+    SDL_assert(pls != NULL);
+    PopUp_Loadout_Stats_Free(pls);
+    n9Patch_Free(n9patch);
+
+    pls->update = true;
+
+    /* -- Popup position, scale, n9Patch -- */
+    *n9patch                  = n9Patch_default;
+    n9patch->patch_pixels.x   = PLS_PATCH_PIXELS;
+    n9patch->patch_pixels.y   = PLS_PATCH_PIXELS;
+    n9patch->scale.x          = PLS_N9PATCH_SCALE_X;
+    n9patch->scale.y          = PLS_N9PATCH_SCALE_Y;
+    n9patch->size_pixels.x    = PLS_PATCH_PIXELS * PLS_PATCH_X_SIZE;
+    n9patch->size_pixels.y    = PLS_PATCH_PIXELS * PLS_PATCH_Y_SIZE;
+    n9patch->size_patches.x   = PLS_PATCH_X_SIZE;
+    n9patch->size_patches.y   = PLS_PATCH_Y_SIZE;
+    n9patch->pos.x            = 0;
+    n9patch->pos.y            = 0;
+    SDL_assert(n9patch->patch_pixels.x > 0);
+    SDL_assert(n9patch->patch_pixels.y > 0);
+
+    char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px_fancycorner.png");
+    n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+
+    path  = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Arrows.png");
+    pls->texture_arrows = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+    SDL_assert(pls->texture_arrows);
+
+    path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Weapons.png");
+    pls->texture_weapon_icons = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+    SDL_assert(pls->texture_weapon_icons);
+
+    path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Hands.png");
+    pls->texture_hands = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+    SDL_assert(pls->texture_hands);
+
+    path = PATH_JOIN("..", "assets", "GUI", "Popup", "PopUp_Tile_Header.png");
+    pls->texture_header = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+    SDL_assert(pls->texture_header);
+
+    path = PATH_JOIN("..", "assets", "GUI", "Icon", "Icon_Equipped.png");
+    pls->texture_equip = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+    SDL_assert(pls->texture_equip);
+
+}
+
+void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
+    // Get item type of each waepon in hand to draw icons.
+    SDL_assert(pls->unit != NULL);
+    SDL_assert(pls->unit->weapons_dtab != NULL);
+
+    /* Left hand item type */
+    struct Inventory_item *item = Unit_Item_Side(pls->unit, pls->item_left);
+    if (Weapon_ID_isValid(item->id)) {
+        Weapon_Load(pls->unit->weapons_dtab, item->id);
+        pls->type_left = Weapon_TypeExp(DTAB_GET(pls->unit->weapons_dtab, item->id));
+    } else {
+        pls->type_left = ITEM_TYPE_ITEM;
+    }
+
+    /* Right hand item type */
+    item = Unit_Item_Side(pls->unit, pls->item_right);
+    if (Weapon_ID_isValid(item->id)) {
+        Weapon_Load(pls->unit->weapons_dtab, item->id);
+        pls->type_right = Weapon_TypeExp(DTAB_GET(pls->unit->weapons_dtab, item->id));
+    } else {
+        pls->type_right = ITEM_TYPE_ITEM;
+    }
+
+}
+
+/* --- Setters --- */
+void PopUp_Loadout_Stats_Unit(struct PopUp_Loadout_Stats *pls, struct Unit *unit) {
+    SDL_assert(unit != NULL);
+    pls->unit = unit;
+    int stronghand = Unit_Hand_Strong(pls->unit);
+    pls->item_left  = (stronghand == UNIT_HAND_LEFT)  ? unit->eq_usable[UNIT_HAND_LEFT]  : -1;
+    pls->item_right = (stronghand == UNIT_HAND_RIGHT) ? unit->eq_usable[UNIT_HAND_RIGHT] : -1;
+
+    Unit_Unequip(unit, UNIT_HAND_LEFT);
+    Unit_Unequip(unit, UNIT_HAND_RIGHT);
+
+    PopUp_Loadout_Stats_ItemTypes(pls);
+    PopUp_Loadout_Stats_Previous(pls);
+}
+
+void PopUp_Loadout_Stats_Previous(struct PopUp_Loadout_Stats *pls) {
+    PopUp_Loadout_Stats_ItemTypes(pls);
+
+    pls->previous_cs = Unit_computedStats_wLoadout(pls->unit, pls->item_left, pls->item_right,
+                                                   pls->distance);
+    pls->new_cs      = pls->previous_cs;
+    pls->update      = true;
+}
+
+void PopUp_Loadout_Stats_New(struct PopUp_Loadout_Stats *pls) {
+    PopUp_Loadout_Stats_ItemTypes(pls);
+    pls->new_cs     = Unit_computedStats_wLoadout(pls->unit, pls->item_left, pls->item_right,
+                                                  pls->distance);
+    pls->update     = true;
+    pls->twoHanding = Unit_Loadout_twoHanding(pls->item_left, pls->item_right);
+}
+
+/* --- Select --- */
+void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls, struct LoadoutSelectMenu *wsm,
+                               int elem) {
+    SDL_assert(pls       != NULL);
+    SDL_assert(wsm       != NULL);
+    SDL_assert(wsm->unit != NULL);
+    SDL_assert(pls->unit != NULL);
+    SDL_assert(wsm->unit == pls->unit);
+
+    /* - Select item - */
+    int stronghand = Unit_Hand_Strong(pls->unit);
+    int weakhand   = 1 - stronghand;
+    if (wsm->selected[stronghand] > -1) {
+        /* strong hand item was previously switched */
+        int new_weak_side_i = Unit_Id_Strong(pls->unit, elem);
+
+        if (weakhand == UNIT_HAND_LEFT) {
+            pls->item_left  = new_weak_side_i;
+        } else {
+            pls->item_right = new_weak_side_i;
+        }
+
+    } else {
+        int new_strong_side_i = wsm->unit->eq_usable[Unit_Id_Strong(pls->unit, elem)];
+
+        if (stronghand == UNIT_HAND_LEFT) {
+            pls->item_left  = new_strong_side_i;
+            pls->item_right = -1;
+        } else {
+            pls->item_left  = -1;
+            pls->item_right = new_strong_side_i;
+        }
+    }
+}
+
+
+/* --- Rendering --- */
+void PopUp_Loadout_Stats_Weakhand_Offset(struct PopUp_Loadout_Stats *pls) {
+    int stronghand = Unit_Hand_Strong(pls->unit);
+    pls->ry_offset = 0;
+    pls->ly_offset = 0;
+
+    /* Weakhand offsets */
+    if (pls->twoHanding)
+        pls->ly_offset = PLS_TWOHAND_Y_OFFSET;
+    else if ((pls->tophand_stronghand) && (stronghand == UNIT_HAND_RIGHT)) {
+        pls->ly_offset = PLS_WEAKHAND_Y_OFFSET;
+    }
+    if (pls->twoHanding) {
+        pls->ry_offset = PLS_TWOHAND_Y_OFFSET;
+    } else if ((!pls->tophand_stronghand) || (stronghand == UNIT_HAND_LEFT)) {
+        pls->ry_offset = PLS_WEAKHAND_Y_OFFSET;
+    }
 }
 
 void PopUp_Loadout_Stats_Draw(struct PopUp *popup, struct Point pos,

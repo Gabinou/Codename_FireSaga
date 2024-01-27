@@ -16,6 +16,11 @@ struct Tilemap_Shader Tilemap_Shader_default = {
     .map                     = NULL,
 };
 
+/* --- STATIC FUNCTIONS --- */
+static void _Index_Shade_Rect(  u8 *to, SDL_Surface *us, SDL_Rect *r);
+static void _Index_Shade_Pixels(u8 *to, SDL_Surface *us, u8 *pl, size_t pn, size_t x, size_t y);
+
+/* --- GLOBAL FUNCTIONS --- */
 i32 *matrix_circ_noise(i32 *matrix, i32 origx, i32 origy,
                        size_t width, size_t height, size_t row_len, size_t col_len) {
     return (NULL);
