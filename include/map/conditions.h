@@ -69,13 +69,18 @@ struct Map_condition {
     b32    lose;
 };
 extern struct Map_condition Map_condition_default;
-extern struct Map_condition Map_condition_main_char_loss;
 extern struct Map_condition Map_condition_boss_win;
+extern struct Map_condition Map_condition_main_char_loss;
+extern struct Map_condition Map_condition_debug_map_loss;
 
-b32 Map_Condition_Check_Death(struct Map_condition *condition,
-                              struct Map           *map,
-                              struct Unit          *unit,
-                              struct Boss          *boss);
+void Map_Conditions_Check_Death(struct Map_condition *cdarr,
+                                struct Map           *map,
+                                struct Unit          *victim,
+                                struct Boss          *boss);
+b32  Map_Condition_Check_Death( struct Map_condition *condition,
+                                struct Map           *map,
+                                struct Unit          *unit,
+                                struct Boss          *boss);
 
 void Map_Condition_Trigger(struct Map_condition *condition);
 

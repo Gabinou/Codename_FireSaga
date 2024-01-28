@@ -93,9 +93,10 @@ void Game_debugMap_Load(struct Game *sota) {
 
     SDL_Log("Loading Conditions\n");
     sota->map->death_enemy = DARR_INIT(sota->map->death_enemy, struct Map_condition, 1);
-    sota->map->death_friendly = DARR_INIT(sota->map->death_friendly, struct Map_condition, 1);
+    sota->map->death_friendly = DARR_INIT(sota->map->death_friendly, struct Map_condition, 2);
     DARR_PUT(sota->map->death_enemy, Map_condition_boss_win);
     DARR_PUT(sota->map->death_friendly, Map_condition_main_char_loss);
+    DARR_PUT(sota->map->death_friendly, Map_condition_debug_map_loss);
 }
 
 /* --- Reinforcements --- */

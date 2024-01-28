@@ -1371,22 +1371,26 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     /* --- Deleting entity? --- */
     // - Put unit entity in list of killed units
     /* --- Check Map conditions --- */
+    Map_Conditions_Check_Death(sota->map->death_enemy,      sota->map,
+                               victim,                      boss);
+    Map_Conditions_Check_Death(sota->map->death_friendly,   sota->map,
+                               victim,                      boss);
 
-    int enemy_conds = DARR_NUM(sota->map->death_enemy);
-    for (int i = 0; i < enemy_conds; i++) {
-        struct Map_condition *condition = sota->map->death_enemy + i;
-        if (!Map_Condition_Check_Death(condition, sota->map, victim, boss)) {
-            continue;
-        }
+    // int friendly_conds = DARR_NUM(sota->map->death_enemy);
+    // for (int i = 0; i < enemy_conds; i++) {
+    //     struct Map_condition *condition = sota->map->death_enemy + i;
+    //     if (!Map_Condition_Check_Death(condition, sota->map, victim, boss)) {
+    //         continue;
+    //     }
 
-        /* Condition satisfied, doing it */
-        DARR_DEL(sota->map->death_enemy, i);
-        Map_Condition_Trigger(condition);
+    //     /* Condition satisfied, doing it */
+    //     DARR_DEL(sota->map->death_enemy, i);
+    //     Map_Condition_Trigger(condition);
 
-        // TODO: Even if the condition was triggered need to:
-        //   - Wait for combat animation to finish
-        //   - Wait for agony/death animation to finish
-    }
+    //     // TODO: Even if the condition was triggered need to:
+    //     //   - Wait for combat animation to finish
+    //     //   - Wait for agony/death animation to finish
+    // }
 
 }
 

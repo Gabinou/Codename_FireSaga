@@ -18,6 +18,21 @@ struct Map_condition Map_condition_main_char_loss = {
     .lose    =   true,
 };
 
+struct Map_condition Map_condition_debug_map_loss = {
+    .army    =   -1,
+    .boss    =   false,
+    .all     =   false,
+    .unit    =   UNIT_ID_SILOU,
+    .min     =   -1,
+    .at      =   -1,
+    .max     =   -1,
+    .gold    =    0,
+    .item    =   ITEM_NULL,
+    .scene   =    0,
+    .win     =   false,
+    .lose    =   true,
+};
+
 struct Map_condition Map_condition_boss_win = {
     .army    =   ARMY_ENEMY,
     .boss    =   true,
@@ -33,6 +48,25 @@ struct Map_condition Map_condition_boss_win = {
     .lose    =   false,
 };
 
+void Map_Conditions_Check_Death(struct Map_condition *conditions_darr,
+                                struct Map           *map,
+                                struct Unit          *victim,
+                                struct Boss          *boss) {
+    int conds = DARR_NUM(conditions_darr);
+    for (int i = 0; i < conds; i++) {
+        struct Map_condition *condition = conditions_darr + i;
+
+        if (!Map_Condition_Check_Death(condition, map, victim, boss))
+            continue;
+
+        /* Condition satisfied, doing it */
+        DARR_DEL(conditions_darr, i);
+        Map_Condition_Trigger(condition);
+    }
+
+}
+
+
 b32 Map_Condition_Check_Death(struct Map_condition *condition,
                               struct Map           *map,
                               struct Unit          *unit,
@@ -40,6 +74,8 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
     SDL_Log("Map_Condition: Check_Death");
     /* Checking for matching army */
     b32 match_army = true;
+    SDL_Log("");
+    getchar();
     if ((condition->army > ARMY_START) && (condition->army < ARMY_NUM))
         match_army = (unit->army == condition->army);
 
