@@ -1,8 +1,8 @@
 
 #include "map/conditions.h"
 
-struct Map_condition Map_condition_default = {
-};
+struct Map_condition Map_condition_default = {0};
+
 struct Map_condition Map_condition_main_char_loss = {
     .army    =   -1,
     .boss    =   false,

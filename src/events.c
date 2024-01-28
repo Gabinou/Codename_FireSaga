@@ -188,6 +188,8 @@ void receive_event_Map_Win(struct Game *sota, SDL_Event *Map_Win) {
 }
 
 void receive_event_Map_Lose(struct Game *sota, SDL_Event *Map_Lose) {
+    SDL_Log("Map was lost!");
+
     sota->map->loss = true;
 }
 
