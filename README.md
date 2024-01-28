@@ -38,9 +38,9 @@ Game assets (graphics, music) to be distributed separately.
 	- [sdl2_mixer](https://github.com/libsdl-org/SDL_mixer)
 - [GCC](https://gcc.gnu.org/install/binaries.html) compiler suite
 	- or [tcc](https://repo.or.cz/w/tinycc.git) compiler
-- [Windows only: MSYS2](https://www.msys2.org/) Linux terminal for windows + many packages
 - [Premake](https://premake.github.io/) makefile-generator
 	- or [mace](https://github.com/Gabinou/mace) my homemade C-only build system
+- [Windows only: MSYS2](https://www.msys2.org/) Linux terminal for windows + many packages
 
 
 ### Basic compilation instructions
