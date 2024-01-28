@@ -374,8 +374,12 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
         /* -- Hiding menus -- */
     }
     /* -- Hiding popups -- */
-    Game_PopUp_Tile_Hide(sota);
-    Game_PopUp_Unit_Hide(sota);
+    if (sota->popups[POPUP_TYPE_HUD_TILE] != TNECS_NULL) {
+        Game_PopUp_Tile_Hide(sota);
+    }
+    if (sota->popups[POPUP_TYPE_HUD_UNIT] != TNECS_NULL) {
+        Game_PopUp_Unit_Hide(sota);
+    }
 
     /* -- Remove unused components -- */
     for (int i = 0; i < DARR_NUM(sota->map->units_onfield); i++) {
@@ -1349,8 +1353,6 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     struct Unit *victim = TNECS_GET_COMPONENT(sota->world, victim_entity, Unit);
     struct Boss *boss   = TNECS_GET_COMPONENT(sota->world, victim_entity, Boss);
 
-    SDL_Log("Killer entity %d", killer_entity);
-
     /* --- Increasing Killer's regrets --- */
     int regrets = killer->regrets;
     killer->regrets = regrets > UINT8_MAX - REGRET_KILL ? UINT8_MAX : regrets + REGRET_KILL;
@@ -1375,23 +1377,6 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
                                victim,                      boss);
     Map_Conditions_Check_Death(sota->map->death_friendly,   sota->map,
                                victim,                      boss);
-
-    // int friendly_conds = DARR_NUM(sota->map->death_enemy);
-    // for (int i = 0; i < enemy_conds; i++) {
-    //     struct Map_condition *condition = sota->map->death_enemy + i;
-    //     if (!Map_Condition_Check_Death(condition, sota->map, victim, boss)) {
-    //         continue;
-    //     }
-
-    //     /* Condition satisfied, doing it */
-    //     DARR_DEL(sota->map->death_enemy, i);
-    //     Map_Condition_Trigger(condition);
-
-    //     // TODO: Even if the condition was triggered need to:
-    //     //   - Wait for combat animation to finish
-    //     //   - Wait for agony/death animation to finish
-    // }
-
 }
 
 void receive_event_Unit_Loots(struct Game *sota, SDL_Event *userevent) {

@@ -74,8 +74,6 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
     SDL_Log("Map_Condition: Check_Death");
     /* Checking for matching army */
     b32 match_army = true;
-    SDL_Log("");
-    getchar();
     if ((condition->army > ARMY_START) && (condition->army < ARMY_NUM))
         match_army = (unit->army == condition->army);
 
@@ -87,6 +85,7 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
 
     /* Checking for matching unit ID */
     b32 match_unit = true;
+    SDL_Log("UNIT_ID_SILOU %d %d %d", UNIT_ID_SILOU, unit->_id, condition->unit);
     if ((condition->unit > UNIT_ID_NULL) && (condition->unit < UNIT_ID_NUM))
         match_unit = (unit->_id == condition->unit);
 
@@ -94,10 +93,12 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
     if (!match_unit) {
         SDL_Log("No match: unit");
         return (false);
+    } else {
+        SDL_Log("Match: unit");
+        return (true);
     }
 
     /* Match: Rout */
-    // TODO: check remaining units of enemy army
     if (!condition->boss && condition->all && (DARR_NUM(map->enemies_onfield) == 0)) {
         SDL_Log("Match: Rout");
         return (true);
