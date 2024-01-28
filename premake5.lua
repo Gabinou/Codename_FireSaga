@@ -55,9 +55,9 @@ workspace "HelloPremake"
 			"third_party/**",
 		}
 	filter {"kind:ConsoleApp", "system:Windows"}
-		links { "mingw32", "SDL2main", "SDL2", "SDL2_mixer", "SDL2_image", "SDL2_ttf", "glew32", "opengl32","cJSON", "nmath", "physfs", "tinymt", "tnecs", "nstr", "parg"}
+		links { "mingw32", "SDL2main", "SDL2", "SDL2_mixer", "SDL2_image", "glew32", "opengl32","cJSON", "nmath", "physfs", "tinymt", "tnecs", "nstr", "parg"}
  	filter {"kind:ConsoleApp", "system:Linux"}
-		links { "SDL2", "SDL2_image", "SDL2_mixer", "SDL2_ttf", "m", "GLEW", "cJSON", "nmath", "physfs", "tinymt", "tnecs", "nstr", "parg"}
+		links { "SDL2", "SDL2_image", "SDL2_mixer", "m", "GLEW", "cJSON", "nmath", "physfs", "tinymt", "tnecs", "nstr", "parg"}
 
 project "cJSON"
 	kind "StaticLib"
