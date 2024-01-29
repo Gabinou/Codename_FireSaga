@@ -37,8 +37,6 @@ void Game_Map_Free(struct Game *sota) {
 }
 
 void Game_debugMap_Free(struct Game *sota) {
-    // Game_Map_Load(sota, CHAPTER_TEST_V6);
-
 }
 
 void Game_debugMap_Load(struct Game *sota) {
@@ -49,7 +47,8 @@ void Game_debugMap_Load(struct Game *sota) {
     strncpy(sota->reason, "on Init state to GAME_STATE_Gameplay_Map substate is idle",
             sizeof(sota->reason));
     Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
-    Game_Map_Load(sota, CHAPTER_TEST_V6);
+    // Game_Map_Load(sota, CHAPTER_TEST_V6);
+    Game_Map_Load(sota, CHAPTER_TEST_V7);
     Game_PopUp_Tile_Create(sota);
     Game_cursorFocus_onMap(sota);
 
