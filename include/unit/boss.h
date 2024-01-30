@@ -23,6 +23,10 @@ struct Camera;
 struct Position;
 
 /* --- Boss --- */
+// For friendlies: Friendly is a main character
+//      - Dieing leads to loss
+// For enemies: Enemy is a boss
+//      - Killing may lead to win
 typedef struct Boss {
     i8 icon;
     SDL_Rect srcrect; /* x,y,w,h */

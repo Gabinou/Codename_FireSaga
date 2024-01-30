@@ -78,6 +78,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moItem(  struct Game *s, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moEndT(  struct Game *s, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff( struct Game *s, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDance( struct Game *s, struct Menu *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moSeize( struct Game *s, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moTrade( struct Game *s, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDbgMap(struct Game *s, struct Menu *mc);
 

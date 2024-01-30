@@ -303,12 +303,20 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
     PlayerSelectMenu_Option_Add(psm, MENU_OPTION_ITEMS);
     if (DARR_NUM(sota->passives) > 0)
         PlayerSelectMenu_Option_Add(psm, MENU_OPTION_TRADE);
-    /* TODO: seizeable
-        - Is tile a throne?
-        - Is unit ontile a main character?
-        */
-    bool seizeable = false;
-    if (seizeable)
+
+    /* --- Check if unit can SEIZE --- */
+    /* -- Seizable: Check if tile is a throne --  */
+    tnecs_entity unit_ent = sota->selected_unit_entity;
+    struct Position *pos = TNECS_GET_COMPONENT(sota->world, unit_ent, Position);
+    SDL_assert(pos != NULL);
+    struct Tile *tile = Map_Tile_Get(sota->map, pos->tilemap_pos.x, pos->tilemap_pos.y);
+    b32 isthrone = (tile->id == TILE_THRONE);
+
+    /* -- Seizable: Check if unit is a main character --  */
+    struct Boss *boss = TNECS_GET_COMPONENT(sota->world, unit_ent, Boss);
+    b32 ismainchar = (boss != NULL);
+
+    if (isthrone && ismainchar)
         PlayerSelectMenu_Option_Add(psm, MENU_OPTION_SEIZE);
     if (DARR_NUM(sota->auditors) > 0)
         PlayerSelectMenu_Option_Add(psm, MENU_OPTION_TALK);

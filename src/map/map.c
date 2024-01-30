@@ -899,3 +899,13 @@ b32 Map_Boss_Alive(struct Map *map, i16 army) {
     // TODO:
     return (true);
 }
+
+/* --- Tile --- */
+struct Tile *Map_Tile_Get(struct Map *map, i32 x, i32 y) {
+    SDL_assert(map          != NULL);
+    SDL_assert(map->tiles   != NULL);
+    i32 index = sota_2D_index(x, y, map->col_len);
+    i32 tile_ind = map->tilemap[index] / TILE_DIVISOR;
+    size_t tile_order = Map_Tile_Order(map, tile_ind);
+    return (map->tiles + tile_order);
+}

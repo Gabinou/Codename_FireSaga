@@ -57,7 +57,7 @@ fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_STAFF */         &fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff,
     /* MENU_OPTION_DANCE */         &fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDance,
     /* MENU_OPTION_RESCUE */        NULL,
-    /* MENU_OPTION_SEIZE */         NULL,
+    /* MENU_OPTION_SEIZE */         &fsm_eAcpt_sGmpMap_ssMenu_mPSM_moSeize,
     /* MENU_OPTION_ESCAPE */        NULL,
     /* MENU_OPTION_ATTACK */        &fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk,
     /* MENU_OPTION_VILLAGE */       NULL,
@@ -198,7 +198,6 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moDance(struct Game *sota, struct Menu *in_mc) 
 
     /* - Go back to standby - */
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, data1_entity, NULL);
-
 }
 
 void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *in_mc) {
@@ -835,6 +834,15 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moEndT(struct Game *sota, struct Menu *mc) {
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_End, data1_entity, data2_entity);
 }
 
+void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moSeize( struct Game *sota, struct Menu *mc) {
+    SDL_Log("Throne was seized: Map was won!");
+    sota->map->win = true;
+
+    /* - Go back to standby - */
+    Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, data1_entity, NULL);
+
+}
+
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDance(struct Game *sota, struct Menu *mc) {
     SDL_assert(DARR_NUM(sota->spectators) > 0);
 
@@ -846,7 +854,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDance(struct Game *sota, struct Menu *mc) {
     SDL_assert(sota->substate   == GAME_SUBSTATE_MENU);
     strncpy(sota->reason, "dance was selected, time to select spectator", sizeof(sota->reason));
     Game_Switch_toCandidates(sota, sota->spectators);
-
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff(struct Game *sota, struct Menu *mc) {

@@ -89,6 +89,7 @@ struct Map {
     i32 *temp;                  /* 2D dynamic array */
     i32 *costmap;               /* 2D dynamic array */
     i32 *movemap;               /* 2D dynamic array */
+    // Tile index = map->tilemap[i] / TILE_DIVISOR;
     i32 *tilemap;               /* 2D dynamic array [row * col_len + col] */
     i32 *healtomap;             /* 2D dynamic array */
 
@@ -235,5 +236,9 @@ void Map_Music_Load(struct Map *map);
 
 /* --- Boss --- */
 b32 Map_Boss_Alive(struct Map *map, i16 army);
+
+/* --- Tile --- */
+struct Tile *Map_Tile_Get(struct Map *map, i32 x, i32 y);
+
 
 #endif /* MAP_H */
