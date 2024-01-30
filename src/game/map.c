@@ -57,7 +57,7 @@ void Game_debugMap_Load(struct Game *sota) {
     /* - Preliminaries - */
     i16 *unit_inds;
     unit_inds = DARR_INIT(unit_inds, i16, 16);
-    struct Point temp_point = {.x = 4, .y = 4};
+    struct Point temp_point = {.x = 21, .y = 7};
     struct Point *positions_list;
     positions_list = DARR_INIT(positions_list, struct Point, 16);
 

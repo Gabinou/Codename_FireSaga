@@ -18,6 +18,9 @@
 
 #define DEBUG_CURSOR_SHOW_wDISABLED
 
+/* -- SEIZE -- */
+#define DEBUG_SEIZE_ANYONE
+
 /* -- MUSIC & SOUNDS -- */
 // #define DEBUG_NO_MUSIC
 // #define DEBUG_NO_SOUNDFX

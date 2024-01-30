@@ -313,8 +313,13 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
     b32 isthrone = (tile->id == TILE_THRONE);
 
     /* -- Seizable: Check if unit is a main character --  */
-    struct Boss *boss = TNECS_GET_COMPONENT(sota->world, unit_ent, Boss);
-    b32 ismainchar = (boss != NULL);
+    struct Unit *unit = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
+    SDL_assert(unit != NULL);
+    #ifdef DEBUG_SEIZE_ANYONE
+    b32 ismainchar = true;
+    #else
+    b32 ismainchar = (unit->_id == UNIT_ID_ERWIN);
+    #endif /*DEBUG_SEIZE_ANYONE*/
 
     if (isthrone && ismainchar)
         PlayerSelectMenu_Option_Add(psm, MENU_OPTION_SEIZE);
