@@ -194,6 +194,9 @@ void Map_Units_Free(struct Map *map) {
 }
 
 void Map_Units_Hide(struct Map *map) {
+    if (map->unitmap == NULL)
+        return;
+
     for (size_t i = 0; i < (map->col_len * map->row_len); i++) {
         tnecs_entity uent = map->unitmap[i];
         if (uent == TNECS_NULL)
@@ -252,7 +255,9 @@ void Map_Free(struct Map *map) {
         map->doors_ent = NULL;
     }
 
-    // Map_Units_Free(map);
+    if (map->unitmap != NULL)
+        Map_Units_Free(map);
+
     Map_Tilesets_Free(map);
     Map_Tilesprites_Free(map);
     Map_Tilemap_Texture_Free(map);

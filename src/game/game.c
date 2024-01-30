@@ -141,10 +141,13 @@ void Game_Free(struct Game *sota) {
     }
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Map");
-    Game_UnitsonMap_Free(sota);
+
     Game_Map_Reinforcements_Free(sota);
+    if ((sota->map != NULL) && (sota->map->unitmap != NULL))
+        Map_Units_Free(sota->map);
     Game_Map_Free(sota);
-    Map_Units_Free(sota->map);
+
+
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Camera");
     // if (sota->camera != NULL)
     // SDL_free(sota->camera);

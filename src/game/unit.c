@@ -252,25 +252,6 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 in_unit,
     return (sota->units_loaded[in_unit]);
 }
 /* --- Unitmap --- */
-void Game_UnitsonMap_Free(struct Game *sota) {
-    tnecs_entity unit_ent;
-    if (sota->map == NULL) {
-        return;
-    }
-    for (size_t i = 0; i < sota->map->col_len * sota->map->row_len; i++) {
-        unit_ent = sota->map->unitmap[i];
-        if (unit_ent == TNECS_NULL)
-            continue;
-
-        struct Unit *unit = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
-        if (unit)
-            Unit_Free(unit);
-
-        struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, unit_ent, Sprite);
-        if (sprite)
-            Sprite_Free(sprite);
-    }
-}
 void Game_putPConMap(struct Game *sota, i16 *unit_ids,
                      struct Point *posarr, size_t load_num) {
     SDL_assert(sota->map != NULL);
