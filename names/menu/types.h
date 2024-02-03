@@ -6,6 +6,5 @@ REGISTER_ENUM(STATS,             SM)    /* and equipment */
 REGISTER_ENUM(RESCUE,            RM)    /* show Con during rescue choose */
 REGISTER_ENUM(SUPPORTS,          SupM)   /* and talkable people portraits */
 REGISTER_ENUM(GROWTHS,           GM)    /* and grown stats */
-REGISTER_ENUM(PRE_COMBAT,        PCM)   /* Computed stats information */
 REGISTER_ENUM(TRADE,             TM)    /* Trade: two ISM side to side */
 REGISTER_ENUM(ITEM_DROP,         IDM)   /* User drops items */

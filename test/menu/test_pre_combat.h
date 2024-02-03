@@ -1,6 +1,6 @@
 #include "nourstest.h"
 #include "platform.h"
-#include "menu/pre_combat.h"
+#include "popup/pre_combat.h"
 #include "unit/unit.h"
 #include "RNG.h"
 
@@ -22,31 +22,31 @@ void test_menu_pre_combat() {
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
 
     n9patch                 = n9Patch_default;
-    n9patch.patch_pixels.x  = PCM_PATCH_PIXELS;
-    n9patch.patch_pixels.y  = PCM_PATCH_PIXELS;
-    n9patch.scale.x         = PCM_N9PATCH_SCALE_X;
-    n9patch.scale.y         = PCM_N9PATCH_SCALE_Y;
-    n9patch.size_pixels.x   = (PCM_PATCH_PIXELS * PCM_PATCH_X_SIZE);
-    n9patch.size_pixels.y   = (PCM_PATCH_PIXELS * PCM_PATCH_Y_SIZE);
-    n9patch.size_patches.x  = PCM_PATCH_X_SIZE;
-    n9patch.size_patches.y  = PCM_PATCH_Y_SIZE;
+    n9patch.patch_pixels.x  = PCP_PATCH_PIXELS;
+    n9patch.patch_pixels.y  = PCP_PATCH_PIXELS;
+    n9patch.scale.x         = PCP_N9PATCH_SCALE_X;
+    n9patch.scale.y         = PCP_N9PATCH_SCALE_Y;
+    n9patch.size_pixels.x   = (PCP_PATCH_PIXELS * PCP_PATCH_X_SIZE);
+    n9patch.size_pixels.y   = (PCP_PATCH_PIXELS * PCP_PATCH_Y_SIZE);
+    n9patch.size_patches.x  = PCP_PATCH_X_SIZE;
+    n9patch.size_patches.y  = PCP_PATCH_Y_SIZE;
     n9patch.pos.x           = 0;
     n9patch.pos.y           = 0;
     char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
     n9patch.texture         = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     /* -- Stats Menu -- */
-    struct PreCombatMenu *pcm = PreCombatMenu_Alloc();
+    struct PreCombatPopup *pcp = PreCombatPopup_Alloc();
 
     /* - loading fonts - */
-    pcm->pixelnours = PixelFont_Alloc();
+    pcp->pixelnours = PixelFont_Alloc();
     path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
-    PixelFont_Load(pcm->pixelnours, renderer, path);
-    nourstest_true(pcm->pixelnours);
+    PixelFont_Load(pcp->pixelnours, renderer, path);
+    nourstest_true(pcp->pixelnours);
 
-    pcm->pixelnours_big = PixelFont_Alloc();
+    pcp->pixelnours_big = PixelFont_Alloc();
     path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
-    PixelFont_Load(pcm->pixelnours_big, renderer, path);
-    nourstest_true(pcm->pixelnours_big);
+    PixelFont_Load(pcp->pixelnours_big, renderer, path);
+    nourstest_true(pcp->pixelnours_big);
 
     /* -- Create Combatants -- */
     struct Unit Silou = Unit_default;
@@ -96,8 +96,8 @@ void test_menu_pre_combat() {
     struct Combat_Forecast combat_forecast;
     combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    pcm->forecast  = &combat_forecast;
-    _PreCombatMenu_Load(pcm, &Silou, &Hamilcar, &silou_pos, &hamilcar_pos, renderer);
+    pcp->forecast  = &combat_forecast;
+    _PreCombatPopup_Load(pcp, &Silou, &Hamilcar, &silou_pos, &hamilcar_pos, renderer);
 
     /* --- RENDERS --- */
     Silou.update_stats      = false;
@@ -134,56 +134,58 @@ void test_menu_pre_combat() {
     Hamilcar.computed_stats.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
-    pcm->mode = PCM_MODE_TOTAL;
+    pcp->mode = PCP_MODE_TOTAL;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_Doubling_Agg_Digit1.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Doubling_Agg_Digit1.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- SIMPLE SPLIT MODE -- */
-    pcm->mode = PCM_MODE_SIMPLE;
+    pcp->mode = PCP_MODE_SIMPLE;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_Split_Doubling_Agg_Digit1.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
+                                      "PreCombatPopup_Split_Doubling_Agg_Digit1.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- MATH MODE -- */
-    pcm->mode = PCM_MODE_MATH;
+    pcp->mode = PCP_MODE_MATH;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_Math_Doubling_Agg_Digit1.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Math_Doubling_Agg_Digit1.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Doubling Dft -- */
     Hamilcar.computed_stats.speed = SOTA_DOUBLING_SPEED + 2;
     Silou.computed_stats.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
-    pcm->mode = PCM_MODE_TOTAL;
+    pcp->mode = PCP_MODE_TOTAL;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_Doubling_Dft_Digit1.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Doubling_Dft_Digit1.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- SIMPLE SPLIT MODE -- */
-    pcm->mode = PCM_MODE_SIMPLE;
+    pcp->mode = PCP_MODE_SIMPLE;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_Split_Doubling_Dft_Digit1.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
+                                      "PreCombatPopup_Split_Doubling_Dft_Digit1.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- MATH MODE -- */
-    pcm->mode = PCM_MODE_MATH;
+    pcp->mode = PCP_MODE_MATH;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_Math_Doubling_Dft_Digit1.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Math_Doubling_Dft_Digit1.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Double Digits -- */
     Silou.computed_stats.hit = 10;
@@ -216,56 +218,58 @@ void test_menu_pre_combat() {
     Hamilcar.computed_stats.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
-    pcm->mode = PCM_MODE_TOTAL;
+    pcp->mode = PCP_MODE_TOTAL;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_Doubling_Agg_Digit2.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Doubling_Agg_Digit2.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- SIMPLE SPLIT MODE -- */
-    pcm->mode = PCM_MODE_SIMPLE;
+    pcp->mode = PCP_MODE_SIMPLE;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_Split_Doubling_Agg_Digit2.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
+                                      "PreCombatPopup_Split_Doubling_Agg_Digit2.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- MATH MODE -- */
-    pcm->mode = PCM_MODE_MATH;
+    pcp->mode = PCP_MODE_MATH;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_Math_Doubling_Agg_Digit2.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Math_Doubling_Agg_Digit2.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Doubling Dft -- */
     Hamilcar.computed_stats.speed = SOTA_DOUBLING_SPEED + 12;
     Silou.computed_stats.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
-    pcm->mode = PCM_MODE_TOTAL;
+    pcp->mode = PCP_MODE_TOTAL;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_Doubling_Dft_Digit2.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Doubling_Dft_Digit2.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- SIMPLE SPLIT MODE -- */
-    pcm->mode = PCM_MODE_SIMPLE;
+    pcp->mode = PCP_MODE_SIMPLE;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_Split_Doubling_Dft_Digit2.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
+                                      "PreCombatPopup_Split_Doubling_Dft_Digit2.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- MATH MODE -- */
-    pcm->mode = PCM_MODE_MATH;
+    pcp->mode = PCP_MODE_MATH;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_Math_Doubling_Dft_Digit2.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Math_Doubling_Dft_Digit2.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Triple Digits -- */
     Silou.computed_stats.hit = 100;
@@ -288,59 +292,61 @@ void test_menu_pre_combat() {
     Hamilcar.computed_stats.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
-    pcm->mode = PCM_MODE_TOTAL;
+    pcp->mode = PCP_MODE_TOTAL;
 
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_Doubling_Agg_Digit3.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Doubling_Agg_Digit3.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- SIMPLE SPLIT MODE -- */
-    pcm->mode = PCM_MODE_SIMPLE;
+    pcp->mode = PCP_MODE_SIMPLE;
 
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_Split_Doubling_Agg_Digit3.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
+                                      "PreCombatPopup_Split_Doubling_Agg_Digit3.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- MATH MODE -- */
-    pcm->mode = PCM_MODE_MATH;
+    pcp->mode = PCP_MODE_MATH;
 
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_Math_Doubling_Agg_Digit3.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Math_Doubling_Agg_Digit3.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Doubling Dft -- */
     Hamilcar.computed_stats.speed = SOTA_DOUBLING_SPEED + 12;
     Silou.computed_stats.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
-    pcm->mode = PCM_MODE_TOTAL;
+    pcp->mode = PCP_MODE_TOTAL;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_Doubling_Dft_Digit3.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Doubling_Dft_Digit3.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- SIMPLE SPLIT MODE -- */
-    pcm->mode = PCM_MODE_SIMPLE;
+    pcp->mode = PCP_MODE_SIMPLE;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_Split_Doubling_Dft_Digit3.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
+                                      "PreCombatPopup_Split_Doubling_Dft_Digit3.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- MATH MODE -- */
-    pcm->mode = PCM_MODE_MATH;
+    pcp->mode = PCP_MODE_MATH;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_Math_Doubling_Dft_Digit3.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Math_Doubling_Dft_Digit3.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- TRUE DAMAGE -- */
 
@@ -356,60 +362,60 @@ void test_menu_pre_combat() {
     Hamilcar.computed_stats.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
-    pcm->mode = PCM_MODE_TOTAL;
+    pcp->mode = PCP_MODE_TOTAL;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_True_Damage_Agg_Digit2.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_True_Damage_Agg_Digit2.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- SIMPLE SPLIT MODE -- */
-    pcm->mode = PCM_MODE_SIMPLE;
+    pcp->mode = PCP_MODE_SIMPLE;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
-                                      "PreCombatMenu_Split_True_Damage_Agg_Digit2.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+                                      "PreCombatPopup_Split_True_Damage_Agg_Digit2.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- MATH MODE -- */
-    pcm->mode = PCM_MODE_MATH;
+    pcp->mode = PCP_MODE_MATH;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
-                                      "PreCombatMenu_Math_True_Damage_Agg_Digit2.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+                                      "PreCombatPopup_Math_True_Damage_Agg_Digit2.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Doubling Dft -- */
     Hamilcar.computed_stats.speed = SOTA_DOUBLING_SPEED + 12;
     Silou.computed_stats.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
-    pcm->mode = PCM_MODE_TOTAL;
+    pcp->mode = PCP_MODE_TOTAL;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_True_Damage_Dft_Digit2.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_True_Damage_Dft_Digit2.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- SIMPLE SPLIT MODE -- */
-    pcm->mode = PCM_MODE_SIMPLE;
+    pcp->mode = PCP_MODE_SIMPLE;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
-                                      "PreCombatMenu_Split_True_Dft_Damage_Digit2.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+                                      "PreCombatPopup_Split_True_Dft_Damage_Digit2.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- MATH MODE -- */
-    pcm->mode = PCM_MODE_MATH;
+    pcp->mode = PCP_MODE_MATH;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
-                                      "PreCombatMenu_Math_True_Dft_Damage_Digit2.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+                                      "PreCombatPopup_Math_True_Dft_Damage_Digit2.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     Silou.computed_stats.attack[DMG_TYPE_PHYSICAL]      = 50;
     Silou.computed_stats.attack[DMG_TYPE_MAGICAL]       = 10;
@@ -423,60 +429,60 @@ void test_menu_pre_combat() {
     Hamilcar.computed_stats.speed   = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
-    pcm->mode = PCM_MODE_TOTAL;
+    pcp->mode = PCP_MODE_TOTAL;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_True_Damage_Agg_Digit1.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_True_Damage_Agg_Digit1.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- SIMPLE SPLIT MODE -- */
-    pcm->mode = PCM_MODE_SIMPLE;
+    pcp->mode = PCP_MODE_SIMPLE;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
-                                      "PreCombatMenu_Split_True_Damage_Agg_Digit1.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+                                      "PreCombatPopup_Split_True_Damage_Agg_Digit1.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- MATH MODE -- */
-    pcm->mode = PCM_MODE_MATH;
+    pcp->mode = PCP_MODE_MATH;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
-                                      "PreCombatMenu_Math_True_Damage_Agg_Digit1.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+                                      "PreCombatPopup_Math_True_Damage_Agg_Digit1.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Doubling Dft -- */
     Hamilcar.computed_stats.speed = SOTA_DOUBLING_SPEED + 12;
     Silou.computed_stats.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
-    pcm->mode = PCM_MODE_TOTAL;
+    pcp->mode = PCP_MODE_TOTAL;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_True_Damage_Dft_Digit1.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_True_Damage_Dft_Digit1.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- SIMPLE SPLIT MODE -- */
-    pcm->mode = PCM_MODE_SIMPLE;
+    pcp->mode = PCP_MODE_SIMPLE;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
-                                      "PreCombatMenu_Split_True_Damage_Dft_Digit1.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+                                      "PreCombatPopup_Split_True_Damage_Dft_Digit1.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- MATH MODE -- */
-    pcm->mode = PCM_MODE_MATH;
+    pcp->mode = PCP_MODE_MATH;
     combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
-                                      "PreCombatMenu_Math_True_Damage_Dft_Digit1.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+                                      "PreCombatPopup_Math_True_Damage_Dft_Digit1.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Weapon icons -- */
 
@@ -488,10 +494,10 @@ void test_menu_pre_combat() {
     Unit_Unequip(&Hamilcar, UNIT_HAND_STRONG);
     nourstest_true(!Hamilcar.equipped[UNIT_HAND_STRONG]);
 
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
-                                      "PreCombatMenu_Unequip_Left_Hand.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+                                      "PreCombatPopup_Unequip_Left_Hand.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Unequip Right -- */
     Unit_Equip_inHand(&Silou, UNIT_HAND_STRONG);
@@ -499,9 +505,9 @@ void test_menu_pre_combat() {
     Unit_Equip_inHand(&Hamilcar, UNIT_HAND_STRONG);
     Unit_Unequip(&Hamilcar, UNIT_HAND_WEAK);
 
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_Unequip_Right_Hand.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Unequip_Right_Hand.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Two handing -- */
     nourstest_true(!Silou.isTwoHanding);
@@ -517,19 +523,19 @@ void test_menu_pre_combat() {
     nourstest_true(Silou.isTwoHanding);
     nourstest_true(Hamilcar.isTwoHanding);
 
-    PreCombatMenu_Update(pcm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatMenu_Two_Handing.png"),
-                            renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Two_Handing.png"),
+                            renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* --- FREE --- */
     Unit_Free(&Silou);
     Unit_Free(&Hamilcar);
-    PixelFont_Free(pcm->pixelnours, true);
-    PixelFont_Free(pcm->pixelnours_big, true);
+    PixelFont_Free(pcp->pixelnours, true);
+    PixelFont_Free(pcp->pixelnours_big, true);
 
     Game_Weapons_Free(&weapons_dtab);
     SDL_FreeSurface(surface);
-    PreCombatMenu_Free(pcm);
+    PreCombatPopup_Free(pcp);
 
     if (n9patch.texture != NULL)
         SDL_DestroyTexture(n9patch.texture);

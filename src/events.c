@@ -1197,7 +1197,7 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
 
     /* - Hide pre combat popup, if it exists - */
     struct Menu *mc;
-    mc = TNECS_GET_COMPONENT(sota->world, sota->pre_combat_menu, Menu);
+    mc = TNECS_GET_COMPONENT(sota->world, sota->PRE_COMBAT_POPUP, Menu);
     if (mc != NULL)
         mc->visible = false;
 
@@ -1274,27 +1274,35 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Defendant_Select(struct Game *sota, SDL_Event *userevent) {
-    // 1. Compute Combat stuff
+
+    /* --- TODO: Start Combat --- */
+    // Necessary criteria:
+    //  - sota->aggressor
+    //  - sota->defendant
+    // Event_Emit(__func__, SDL_USEREVENT, event_Combat_Start, data1_entity, data2_entity);
+
+    /* --- OLD STUFF --- */
+    // 1. Compute Combat stuff -> Move to cursor hovers new defendant
     Game_Combat_Outcome(sota);
 
-    // 2. Enable Pre-combat menu
+    // 2. Enable Pre-combat menu -> Move to cursor hovers new defendant
     Game_PopUp_Pre_Combat_Enable(sota);
 
     struct Menu *mc;
-    mc = TNECS_GET_COMPONENT(sota->world, sota->pre_combat_menu, Menu);
+    mc = TNECS_GET_COMPONENT(sota->world, sota->PRE_COMBAT_POPUP, Menu);
     mc->visible = true;
 
-    // 3. Hide other popups
+    // 3. Hide other popups -> Remove
     // TODO: place at appropriate places.
 
-    // 4. Switch substate to Menu
+    // 4. Switch substate to Menu -> Remove
     strncpy(sota->reason, "defendant was selected, need to select combat", sizeof(sota->reason));
     Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
 
-    // 5. Focus on Menu
+    // 5. Focus on Menu -> Remove
     Game_cursorFocus_onMenu(sota);
 
-    // 6. Attackmap only defendant.
+    // 6. Attackmap only defendant. -> Move to cursor hovers new defendant
     struct Map *map = sota->map;
     struct Position *pos  = TNECS_GET_COMPONENT(sota->world, sota->defendant, Position);
     memset(map->attacktomap, 0, map->row_len * map->col_len * sizeof(*map->attacktomap));

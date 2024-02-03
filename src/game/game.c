@@ -22,7 +22,7 @@ struct Game Game_default = {
     .combat_forecast        = {0},
     .popups                 = {TNECS_NULL},
     .stats_menu             = TNECS_NULL,
-    .pre_combat_menu        = TNECS_NULL,
+    .PRE_COMBAT_POPUP        = TNECS_NULL,
     .GM_menu                = TNECS_NULL,
 
     .cursor_move            = {0},

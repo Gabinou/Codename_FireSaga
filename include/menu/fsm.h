@@ -47,7 +47,7 @@ extern fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END];
 /* event_Input_Accept */
 void fsm_eAcpt_sGmpMap_ssMenu_mTM( struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mSM( struct Game *sota, struct Menu *mc);
-void fsm_eAcpt_sGmpMap_ssMenu_mPCM(struct Game *sota, struct Menu *mc);
+// void fsm_eAcpt_sGmpMap_ssMenu_mPCP(struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc);
@@ -56,7 +56,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc);
 /* event_Input_Cancel */
 void fsm_eCncl_sGmpMap_ssMenu_mSM( struct Game *sota, struct Menu *mc);
 void fsm_eCncl_sGmpMap_ssMenu_mTM( struct Game *sota, struct Menu *mc);
-void fsm_eCncl_sGmpMap_ssMenu_mPCM(struct Game *sota, struct Menu *mc);
+// void fsm_eCncl_sGmpMap_ssMenu_mPCP(struct Game *sota, struct Menu *mc);
 void fsm_eCncl_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc);
 void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc);
 void fsm_eCncl_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc);

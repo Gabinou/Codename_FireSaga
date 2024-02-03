@@ -69,53 +69,53 @@ void Game_PopUp_Loadout_Stats_Hide(struct Game *sota) {
 
 /* --- POPUP_PRE_COMBAT --- */
 void Game_PopUp_Pre_Combat_Create(struct Game *sota) {
-    if (sota->pre_combat_menu == TNECS_NULL)
-        sota->pre_combat_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
+    if (sota->PRE_COMBAT_POPUP == TNECS_NULL)
+        sota->PRE_COMBAT_POPUP = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
     else {
         // TODO: destroy menu?
     }
-    struct Menu *mc;
-    mc = TNECS_GET_COMPONENT(sota->world, sota->pre_combat_menu, Menu);
-    mc->type        = MENU_TYPE_PRE_COMBAT;
-    mc->draw        = &PreCombatMenu_Draw;
+    // struct Menu *mc;
+    // mc = TNECS_GET_COMPONENT(sota->world, sota->PRE_COMBAT_POPUP, Menu);
+    // mc->type        = MENU_TYPE_PRE_COMBAT;
+    // mc->draw        = &PreCombatPopup_Draw;
 
-    /* - stats_menu struct init - */
-    struct PreCombatMenu *pcm = PreCombatMenu_Alloc();
-    SDL_assert(pcm != NULL);
-    pcm->pos.x      = sota->settings.res.x / 3;
-    pcm->pos.y      = sota->settings.res.y / 3;
-    mc->data        = pcm;
-    mc->visible     = true;
-    mc->elem_links  = pcm_links;
-    mc->elem_pos    = pcm_elem_pos;
-    mc->elem_box    = pcm_elem_box;
-    mc->elem_num    = PRE_COMBAT_MENU_ELEM_NUM;
-    SDL_assert(sota->pixelnours != NULL);
-    pcm->pixelnours = sota->pixelnours;
-    SDL_assert(sota->pixelnours_big != NULL);
-    pcm->pixelnours_big = sota->pixelnours_big;
-    pcm->update = true;
+    // /* - stats_menu struct init - */
+    // struct PreCombatPopup *pcp = PreCombatPopup_Alloc();
+    // SDL_assert(pcp != NULL);
+    // pcp->pos.x      = sota->settings.res.x / 3;
+    // pcp->pos.y      = sota->settings.res.y / 3;
+    // mc->data        = pcp;
+    // mc->visible     = true;
+    // mc->elem_links  = pcp_links;
+    // mc->elem_pos    = pcp_elem_pos;
+    // mc->elem_box    = pcp_elem_box;
+    // mc->elem_num    = PRE_COMBAT_POPUP_ELEM_NUM;
+    // SDL_assert(sota->pixelnours != NULL);
+    // pcp->pixelnours = sota->pixelnours;
+    // SDL_assert(sota->pixelnours_big != NULL);
+    // pcp->pixelnours_big = sota->pixelnours_big;
+    // pcp->update = true;
 
-    /* - scaling elem_pos: put it last cause dependencies - */
-    Menu_Elem_Boxes_Check(mc);
+    // /* - scaling elem_pos: put it last cause dependencies - */
+    // Menu_Elem_Boxes_Check(mc);
 
 }
 
 void Game_PopUp_Pre_Combat_Enable(struct Game *sota) {
-    if (sota->pre_combat_menu == 0)
-        Game_PopUp_Pre_Combat_Create(sota);
-    Game_menuStack_Push(sota, sota->pre_combat_menu);
-    SDL_assert(sota->pre_combat_menu > 0);
-    struct Menu *mc;
-    mc = TNECS_GET_COMPONENT(sota->world, sota->pre_combat_menu, Menu);
-    struct PreCombatMenu *pcm = (struct PreCombatMenu *)mc->data;
+    // if (sota->PRE_COMBAT_POPUP == 0)
+    //     Game_PopUp_Pre_Combat_Create(sota);
+    // Game_menuStack_Push(sota, sota->PRE_COMBAT_POPUP);
+    // SDL_assert(sota->PRE_COMBAT_POPUP > 0);
+    // struct Menu *mc;
+    // mc = TNECS_GET_COMPONENT(sota->world, sota->PRE_COMBAT_POPUP, Menu);
+    // struct PreCombatPopup *pcp = (struct PreCombatPopup *)mc->data;
 
-    PreCombatMenu_Set(pcm, sota);
-    PreCombatMenu_Load(pcm, sota->aggressor, sota->defendant, sota->renderer, &mc->n9patch);
+    // PreCombatPopup_Set(pcp, sota);
+    // PreCombatPopup_Load(pcp, sota->aggressor, sota->defendant, sota->renderer, &mc->n9patch);
 
-    strncpy(sota->reason, "PreCombat Menu was created", sizeof(sota->reason));
-    Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->stats_menu, NULL);
-    Game_cursorFocus_onMenu(sota);
+    // strncpy(sota->reason, "PreCombat Menu was created", sizeof(sota->reason));
+    // Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->stats_menu, NULL);
+    // Game_cursorFocus_onMenu(sota);
 }
 
 void Game_PopUp_Pre_Combat_Free(struct Game *sota) {

@@ -14,7 +14,7 @@
 #include "menu/stats.h"
 #include "title_screen.h"
 #include "menu/growths.h"
-#include "menu/pre_combat.h"
+#include "popup/pre_combat.h"
 
 void Game_Switch_toCandidates(struct Game *sota, tnecs_entity *candidates);
 

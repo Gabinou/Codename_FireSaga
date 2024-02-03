@@ -18,7 +18,7 @@ fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_RESCUE */          NULL,
     /* MENU_TYPE_SUPPORTS */        NULL,
     /* MENU_TYPE_GROWTHS */         NULL,
-    /* MENU_TYPE_PRE_COMBAT */      &fsm_eAcpt_sGmpMap_ssMenu_mPCM,
+    // /* MENU_TYPE_PRE_COMBAT */      &fsm_eAcpt_sGmpMap_ssMenu_mPCP,
     /* MENU_TYPE_TRADE */           &fsm_eAcpt_sGmpMap_ssMenu_mTM,
 };
 
@@ -32,7 +32,8 @@ fsm_menu_t fsm_eCncl_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_RESCUE */          NULL,
     /* MENU_TYPE_SUPPORTS */        NULL,
     /* MENU_TYPE_GROWTHS */         &fsm_eCncl_sGmpMap_ssMenu_mSM,
-    /* MENU_TYPE_PRE_COMBAT */      &fsm_eCncl_sGmpMap_ssMenu_mPCM
+    // /* MENU_TYPE_PRE_COMBAT */      &fsm_eCncl_sGmpMap_ssMenu_mPCP
+    /* MENU_TYPE_TRADE */           NULL,
 };
 
 fsm_menu_t fsm_eCrsMvs_ssMenu_m[MENU_TYPE_END] = {
@@ -45,7 +46,7 @@ fsm_menu_t fsm_eCrsMvs_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_RESCUE */          NULL,
     /* MENU_TYPE_SUPPORTS */        NULL,
     /* MENU_TYPE_GROWTHS */         NULL,
-    /* MENU_TYPE_PRE_COMBAT */      NULL,
+    // /* MENU_TYPE_PRE_COMBAT */      NULL,
     /* MENU_TYPE_TRADE */           NULL,
 };
 
@@ -150,7 +151,7 @@ fsm_menu_t fsm_Pop_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_RESCUE */          NULL,
     /* MENU_TYPE_SUPPORTS */        NULL,
     /* MENU_TYPE_GROWTHS */         NULL,
-    /* MENU_TYPE_PRE_COMBAT */      NULL,
+    // /* MENU_TYPE_PRE_COMBAT */      NULL,
     /* MENU_TYPE_TRADE */           NULL,
 };
 
@@ -402,7 +403,6 @@ void fsm_eCrsMvs_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
     PopUp_Loadout_Stats_New(pls);
-
 }
 
 void fsm_eCrsMvs_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
@@ -512,35 +512,34 @@ void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
     }
 }
 
-void fsm_eCncl_sGmpMap_ssMenu_mPCM(struct Game *sota, struct Menu *mc) {
-    struct Menu *menu;
-    menu = TNECS_GET_COMPONENT(sota->world, sota->weapon_select_menu, Menu);
-    struct LoadoutSelectMenu *wsm = menu->data;
-    SDL_assert(wsm->selected[UNIT_HAND_LEFT]    > -1);
-    SDL_assert(wsm->selected[UNIT_HAND_RIGHT]   > -1);
+// void fsm_eCncl_sGmpMap_ssMenu_mPCP(struct Game *sota, struct Menu *mc) {
+//     struct Menu *menu;
+//     menu = TNECS_GET_COMPONENT(sota->world, sota->weapon_select_menu, Menu);
+//     struct LoadoutSelectMenu *wsm = menu->data;
+//     SDL_assert(wsm->selected[UNIT_HAND_LEFT]    > -1);
+//     SDL_assert(wsm->selected[UNIT_HAND_RIGHT]   > -1);
 
-    // 1. Destroy pre_combat menu
-    SDL_assert(DARR_NUM(sota->menu_stack) > 0);
-    bool destroy = false;
-    tnecs_entity menu_popped_entity = Game_menuStack_Pop(sota, destroy);
-    SDL_assert(menu_popped_entity > 0);
+//     // 1. Destroy pre_combat menu -> Move to input cancel defendant select
+//     SDL_assert(DARR_NUM(sota->menu_stack) > 0);
+//     bool destroy = false;
+//     tnecs_entity menu_popped_entity = Game_menuStack_Pop(sota, destroy);
+//     SDL_assert(menu_popped_entity > 0);
 
-    // 2. Make cursor visible
-    struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
-    sprite->visible = true;
+//     // 2. Make cursor visible -> Remove
+//     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
+//     sprite->visible = true;
 
-    // 3. Go back to selecting defendant
-    Event_Emit(__func__, SDL_USEREVENT, event_Loadout_Selected, data1_entity, data2_entity);
+//     // 3. Go back to selecting defendant -> Go back to loadout select instead
+//     Event_Emit(__func__, SDL_USEREVENT, event_Loadout_Selected, data1_entity, data2_entity);
 
-    // 4. Attacktomap: recompute for aggressor
-    Map_Attacktomap_Compute(sota->map, sota->world, sota->aggressor, false, true);
-    Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
-    Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
+//     // 4. Attacktomap: recompute for aggressor
+//     Map_Attacktomap_Compute(sota->map, sota->world, sota->aggressor, false, true);
+//     Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
+//     Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
-    SDL_assert(wsm->selected[UNIT_HAND_LEFT]    > -1);
-    SDL_assert(wsm->selected[UNIT_HAND_RIGHT]   > -1);
-
-}
+//     SDL_assert(wsm->selected[UNIT_HAND_LEFT]    > -1);
+//     SDL_assert(wsm->selected[UNIT_HAND_RIGHT]   > -1);
+// }
 
 void fsm_eCncl_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
     SDL_assert(DARR_NUM(sota->menu_stack) > 0);
@@ -688,14 +687,13 @@ void fsm_eAcpt_sGmpMap_ssMenu_mTM(struct Game *sota, struct Menu *mc) {
     // TradeMenu_Select(tm, mc->elem);
 }
 
-void fsm_eAcpt_sGmpMap_ssMenu_mPCM(struct Game *sota, struct Menu *mc) {
-
-    /* Start Combat */
-    // Necessary criteria:
-    //  - sota->aggressor
-    //  - sota->defendant
-    Event_Emit(__func__, SDL_USEREVENT, event_Combat_Start, data1_entity, data2_entity);
-}
+// void fsm_eAcpt_sGmpMap_ssMenu_mPCP(struct Game *sota, struct Menu *mc) {
+/* Start Combat */
+// Necessary criteria:
+//  - sota->aggressor
+//  - sota->defendant
+// Event_Emit(__func__, SDL_USEREVENT, event_Combat_Start, data1_entity, data2_entity);
+// }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mSM(struct Game *sota, struct Menu *mc) {
 
