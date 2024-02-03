@@ -246,9 +246,7 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *in_mc) 
 }
 
 void fsm_eAcpt_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
-
     /* - Set Defendant to selected unit - */
-    // ONLY FOR ATTACK! HOW TO SWITCH FOR SPECTATOR/PATIENTS?
     SDL_assert(sota->candidates != NULL);
     SDL_assert(sota->candidates[sota->candidate] > TNECS_NULL);
     sota->defendant = sota->candidates[sota->candidate];

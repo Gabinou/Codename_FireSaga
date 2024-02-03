@@ -396,12 +396,30 @@ void fsm_eCrsHvUnit_ssMapCndt(struct Game *sota, tnecs_entity hov_ent) {
     SDL_assert(hov_ent > TNECS_NULL);
 
     /* -- Start unit combat stance loop -- */
-    // ONLY FOR ATTACK
+    // NOTE: ONLY FOR ATTACK
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, hov_ent, Sprite);
     Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_SPRITE_LOOP_STANCE, sprite->flip);
     Sprite_Animation_Loop(sprite);
     Sprite_Draw(sprite, sota->renderer);
 
+    /* OLD event_Defendant_Select */
+    // 1. Compute Combat stuff -> Move to cursor hovers new defendant
+    Game_Combat_Outcome(sota);
+
+    // 2. Enable Pre-combat menu -> Move to cursor hovers new defendant
+    Game_PopUp_Pre_Combat_Enable(sota);
+
+    struct Menu *mc;
+    mc = TNECS_GET_COMPONENT(sota->world, sota->PRE_COMBAT_POPUP, Menu);
+    mc->visible = true;
+
+    // 6. Attackmap only defendant. -> Move to cursor hovers new defendant
+    struct Map *map = sota->map;
+    struct Position *pos  = TNECS_GET_COMPONENT(sota->world, sota->defendant, Position);
+    memset(map->attacktomap, 0, map->row_len * map->col_len * sizeof(*map->attacktomap));
+    map->attacktomap[(pos->tilemap_pos.y * map->col_len + pos->tilemap_pos.x)] = 1;
+    Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_ATTACK);
+    Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 }
 
 // -- FSM: Cursor_Dehovers_Unit --
@@ -681,9 +699,11 @@ void fsm_eCrsMvs_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
 
     Game_Cursor_Move_toCandidate(sota);
 
-    // Reset cursor;
+    /* Reset cursor_move */
     sota->cursor_move.x = 0;
     sota->cursor_move.y = 0;
+
+    /* TODO: Update pre_combat_popup */
 
 }
 
