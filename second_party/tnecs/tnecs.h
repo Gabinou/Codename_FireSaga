@@ -46,6 +46,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 /****************************** DEBUGGING ************************************/
 #define TNECS_DEBUG_A // TNECS_DEBUG_ASSERT are ignored if undefined
 #ifdef TNECS_DEBUG_A
