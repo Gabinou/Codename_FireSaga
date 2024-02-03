@@ -3741,19 +3741,6 @@ void argv_free(int argc, char **argv) {
     }
     argv = NULL;
 }
-// char **argv_grows(int * len, int * argc, char ** argv) {
-//     if ((*argc) >= (*len)) {
-//         /* Actual realloc */
-//         size_t new_len = (*len) * 2;
-//         argv = realloc(argv, new_len * sizeof(*argv));
-
-//         /* Set new memory to 0 */
-//         size_t bytesize = (new_len - (*len)) * sizeof(*argv);
-//         memset(argv + (*len), 0, bytesize);
-//         (*len) = new_len;
-//     }
-//     return (argv);
-// }
 
 void mace_argv_free(char **argv, int argc) {
     for (int i = 0; i < argc; i++) {
@@ -4182,18 +4169,18 @@ char* mace_args2line(char *const arguments[]) {
         i++;
     }
 
-    if ((num + 1) > len) {
+    while ((num + 1) > len) {
         argline = realloc(argline, len * 2 * sizeof(*argline));
         memset(argline + len, 0, len);
         len *= 2;
     }
     argline[num++] = ' ';
+    argline[num] = '\0';
     return(argline);
 }
 
 pid_t mace_exec_wbash(const char *exec, char *const arguments[]) {
     char *argline = mace_args2line(arguments);
-    printf("argline %s\n", argline);
     pid_t pid = fork();
     if (pid < 0) {
         fprintf(stderr, "Error: forking issue.\n");
@@ -4496,7 +4483,6 @@ void mace_Target_precompile(struct Target *target) {
             assert(target->_argv[target->_argc] == NULL);
             target->_argv[target->_argc] = NULL;
             mace_exec_print(target->_argv, target->_argc);
-            printf("DEBUG %s\n", target->_argv[0]);
             pid_t pid = MACE_EXEC(target->_argv[0], target->_argv);
             mace_pqueue_put(pid);
 
