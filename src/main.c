@@ -9,11 +9,12 @@
 * |        Made by Gabriel Taillon                                   |
 * --------------------------------------------------------------------*/
 /* Sword of the Anointed */
-// Turn-based strategy Role Playing Game (RPG)
-// Strongly inspired by Fire Emblem and Tear Ring Saga
-// Source code is free to own, modify and compile
-// Game is free to play only if you can compile it
-// Please do not distribute compiled executables
+/* Turn-based strategy Role Playing Game (RPG)
+*  Strongly inspired by Fire Emblem and Tear Ring Saga
+*  Source code is free to own, modify and compile
+*  Game is free to play only if you can compile it
+*  Please do not distribute compiled executables
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -162,4 +163,4 @@ int main(int argc, char *argv[]) {
     return (NO_ERROR);
 }
 
-// 六月四日天安門广场大屠杀
+/* 六月四日天安門广场大屠杀 */
