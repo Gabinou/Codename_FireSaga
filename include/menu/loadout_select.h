@@ -1,5 +1,5 @@
-#ifndef WSM_H
-#define WSM_H
+#ifndef LSM_H
+#define LSM_H
 
 #include "enums.h"
 #include "pixelfonts.h"
@@ -51,93 +51,93 @@ struct MenuElemDirections;
 *       - Make second hand show TWO HANDING or something.
 */
 
-enum WSM_MENU {
-    WSM_PATCH_X_PIXELS          =  8,
-    WSM_PATCH_Y_PIXELS          =  8,
+enum LSM_MENU {
+    LSM_PATCH_X_PIXELS          =  8,
+    LSM_PATCH_Y_PIXELS          =  8,
     ISM_PATCH_X_SIZE            = 23,
-    WSM_PATCH_X_SIZE            = 23,
-    WSM_PATCH_Y_SIZE            = 12,
+    LSM_PATCH_X_SIZE            = 23,
+    LSM_PATCH_Y_SIZE            = 12,
     ISM_PATCH_Y_SIZE            = 12,
-    WSM_N9PATCH_SCALE_X         =  4,
-    WSM_N9PATCH_SCALE_Y         =  4,
+    LSM_N9PATCH_SCALE_X         =  4,
+    LSM_N9PATCH_SCALE_Y         =  4,
     ISM_N9PATCH_SCALE_X         =  4,
     ISM_N9PATCH_SCALE_Y         =  4,
 
-    WSM_ROW_HEIGHT              = ASCII_GLYPH_HEIGHT + 6,
+    LSM_ROW_HEIGHT              = ASCII_GLYPH_HEIGHT + 6,
 
-    WSM_ITEM_MIN_WIDTH          = 60,
-    WSM_HEADER_LEFT             = 12,
-    WSM_HEADER_RIGHT            = 12,
-    WSM_LEFT_OF_TEXT            = 38,
-    WSM_RIGHT_OF_TEXT           = 48,
-    WSM_BOTTOM_OF_TEXT          =  8,
-    WSM_TOP_OF_TEXT             =  8,
-    WSM_HAND_RIGHT_OFFSET       = 42,
-    WSM_HAND_RIGHT_OFFSET_SMALL = 38,
+    LSM_ITEM_MIN_WIDTH          = 60,
+    LSM_HEADER_LEFT             = 12,
+    LSM_HEADER_RIGHT            = 12,
+    LSM_LEFT_OF_TEXT            = 38,
+    LSM_RIGHT_OF_TEXT           = 48,
+    LSM_BOTTOM_OF_TEXT          =  8,
+    LSM_TOP_OF_TEXT             =  8,
+    LSM_HAND_RIGHT_OFFSET       = 42,
+    LSM_HAND_RIGHT_OFFSET_SMALL = 38,
 
-    WSM_ICONTOTEXT_W            = 15,
-    WSM_HIGHLIGHT_EXTRA_W       =  3,
+    LSM_ICONTOTEXT_W            = 15,
+    LSM_HIGHLIGHT_EXTRA_W       =  3,
 
-    WSM_ICON_W                  = 12,
-    WSM_ICON_H                  = 12,
-    WSM1_X_OFFSET               =  9,
-    WSM1_Y_OFFSET               =  7,
+    LSM_ICON_W                  = 12,
+    LSM_ICON_H                  = 12,
+    LSM1_X_OFFSET               =  9,
+    LSM1_Y_OFFSET               =  7,
 
-    WSM1_DURA_X_OFFSET          = WSM1_X_OFFSET + WSM_ICON_W + 7,
-    WSM1_DURA_Y_OFFSET          = WSM1_Y_OFFSET + 2,
+    LSM1_DURA_X_OFFSET          = LSM1_X_OFFSET + LSM_ICON_W + 7,
+    LSM1_DURA_Y_OFFSET          = LSM1_Y_OFFSET + 2,
 
-    WSM1_NAME_X_OFFSET          = WSM1_DURA_X_OFFSET + 8,
-    WSM1_NAME_Y_OFFSET          = WSM1_Y_OFFSET + 2,
+    LSM1_NAME_X_OFFSET          = LSM1_DURA_X_OFFSET + 8,
+    LSM1_NAME_Y_OFFSET          = LSM1_Y_OFFSET + 2,
 
-    WSM2_X_OFFSET               = WSM1_X_OFFSET,
-    WSM3_X_OFFSET               = WSM1_X_OFFSET,
-    WSM4_X_OFFSET               = WSM1_X_OFFSET,
-    WSM5_X_OFFSET               = WSM1_X_OFFSET,
-    WSM6_X_OFFSET               = WSM1_X_OFFSET,
-    WSM2_Y_OFFSET               = WSM1_Y_OFFSET + WSM_ICON_H + 2,
-    WSM3_Y_OFFSET               = WSM2_Y_OFFSET + WSM_ICON_H + 2,
-    WSM4_Y_OFFSET               = WSM3_Y_OFFSET + WSM_ICON_H + 2,
-    WSM5_Y_OFFSET               = WSM4_Y_OFFSET + WSM_ICON_H + 2,
-    WSM6_Y_OFFSET               = WSM5_Y_OFFSET + WSM_ICON_H + 2,
+    LSM2_X_OFFSET               = LSM1_X_OFFSET,
+    LSM3_X_OFFSET               = LSM1_X_OFFSET,
+    LSM4_X_OFFSET               = LSM1_X_OFFSET,
+    LSM5_X_OFFSET               = LSM1_X_OFFSET,
+    LSM6_X_OFFSET               = LSM1_X_OFFSET,
+    LSM2_Y_OFFSET               = LSM1_Y_OFFSET + LSM_ICON_H + 2,
+    LSM3_Y_OFFSET               = LSM2_Y_OFFSET + LSM_ICON_H + 2,
+    LSM4_Y_OFFSET               = LSM3_Y_OFFSET + LSM_ICON_H + 2,
+    LSM5_Y_OFFSET               = LSM4_Y_OFFSET + LSM_ICON_H + 2,
+    LSM6_Y_OFFSET               = LSM5_Y_OFFSET + LSM_ICON_H + 2,
 };
 
-enum WSM_HANDS {
-    WSM_HANDS_TILESIZE          =  16,
-    WSM_HANDS_NONE              =  -1,
-    WSM_HANDS_BIG_L             =   0,
-    WSM_HANDS_SMALL_L           =   1,
-    WSM_HANDS_SMALL_R           =   2,
-    WSM_HANDS_BIG_R             =   3,
-    WSM_HANDL_X                 =  10,
-    WSM_HANDL_Y                 =   6,
-    WSM_HANDR_X                 = 100,
-    WSM_HANDR_Y                 =   6,
-    WSM_HAND_SMALLX_OFFSET      =   2,
-    WSM_HAND_SMALLY_OFFSET      =   3,
-    WSM_WEAKHAND_Y_OFFSET       =  14,
-    WSM_TWOHAND_Y_OFFSET        =   2,
+enum LSM_HANDS {
+    LSM_HANDS_TILESIZE          =  16,
+    LSM_HANDS_NONE              =  -1,
+    LSM_HANDS_BIG_L             =   0,
+    LSM_HANDS_SMALL_L           =   1,
+    LSM_HANDS_SMALL_R           =   2,
+    LSM_HANDS_BIG_R             =   3,
+    LSM_HANDL_X                 =  10,
+    LSM_HANDL_Y                 =   6,
+    LSM_HANDR_X                 = 100,
+    LSM_HANDR_Y                 =   6,
+    LSM_HAND_SMALLX_OFFSET      =   2,
+    LSM_HAND_SMALLY_OFFSET      =   3,
+    LSM_WEAKHAND_Y_OFFSET       =  14,
+    LSM_TWOHAND_Y_OFFSET        =   2,
 };
 
-enum WSM_ELEMS {
-    WSM_ELEM_NULL   = -1,
-    WSM_ELEM_ITEM1  =  0,
-    WSM_ELEM_ITEM2,
-    WSM_ELEM_ITEM3,
-    WSM_ELEM_ITEM4,
-    WSM_ELEM_ITEM5,
-    WSM_ELEM_ITEM6,
-    WSM_ELEMS_NUM,
+enum LSM_ELEMS {
+    LSM_ELEM_NULL   = -1,
+    LSM_ELEM_ITEM1  =  0,
+    LSM_ELEM_ITEM2,
+    LSM_ELEM_ITEM3,
+    LSM_ELEM_ITEM4,
+    LSM_ELEM_ITEM5,
+    LSM_ELEM_ITEM6,
+    LSM_ELEMS_NUM,
 };
 
-#define WSM_BUFFER_LEN 128
-extern char WSM_menu_description[WSM_ELEMS_NUM][WSM_BUFFER_LEN];
+#define LSM_BUFFER_LEN 128
+extern char LSM_menu_description[LSM_ELEMS_NUM][LSM_BUFFER_LEN];
 // TODO: reduce memory usage.
 
-extern struct MenuElemDirections    wsm_links[WSM_ELEMS_NUM];
-extern struct Point   wsm_elem_pos[WSM_ELEMS_NUM];
-extern struct Point   wsm_elem_box[WSM_ELEMS_NUM];
-extern struct Point   wsm_cursor_pos[WSM_ELEMS_NUM];
-extern struct Point   wsm_cursor_box[WSM_ELEMS_NUM];
+extern struct MenuElemDirections    wsm_links[LSM_ELEMS_NUM];
+extern struct Point   wsm_elem_pos[LSM_ELEMS_NUM];
+extern struct Point   wsm_elem_box[LSM_ELEMS_NUM];
+extern struct Point   wsm_cursor_pos[LSM_ELEMS_NUM];
+extern struct Point   wsm_cursor_box[LSM_ELEMS_NUM];
 
 struct LoadoutSelectMenu {
     b32 update;
@@ -208,4 +208,4 @@ void LoadoutSelectMenu_Update(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n
                               SDL_Texture *rt, SDL_Renderer *r);
 
 
-#endif /* WSM_H */
+#endif /* LSM_H */

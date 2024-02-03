@@ -1,40 +1,40 @@
 #include "menu/loadout_select.h"
 
-struct Point wsm_cursor_pos[WSM_ELEMS_NUM] = {
-    /* WSM_ELEM_ITEM2 */ {WSM1_X_OFFSET, WSM1_Y_OFFSET},
-    /* WSM_ELEM_ITEM2 */ {WSM2_X_OFFSET, WSM2_Y_OFFSET},
-    /* WSM_ELEM_ITEM3 */ {WSM3_X_OFFSET, WSM3_Y_OFFSET},
-    /* WSM_ELEM_ITEM4 */ {WSM4_X_OFFSET, WSM4_Y_OFFSET},
-    /* WSM_ELEM_ITEM5 */ {WSM5_X_OFFSET, WSM5_Y_OFFSET},
-    /* WSM_ELEM_ITEM6 */ {WSM6_X_OFFSET, WSM6_Y_OFFSET},
+struct Point wsm_cursor_pos[LSM_ELEMS_NUM] = {
+    /* LSM_ELEM_ITEM2 */ {LSM1_X_OFFSET, LSM1_Y_OFFSET},
+    /* LSM_ELEM_ITEM2 */ {LSM2_X_OFFSET, LSM2_Y_OFFSET},
+    /* LSM_ELEM_ITEM3 */ {LSM3_X_OFFSET, LSM3_Y_OFFSET},
+    /* LSM_ELEM_ITEM4 */ {LSM4_X_OFFSET, LSM4_Y_OFFSET},
+    /* LSM_ELEM_ITEM5 */ {LSM5_X_OFFSET, LSM5_Y_OFFSET},
+    /* LSM_ELEM_ITEM6 */ {LSM6_X_OFFSET, LSM6_Y_OFFSET},
 };
 
-struct Point wsm_elem_box[WSM_ELEMS_NUM] = {
-    /* WSM_ELEM_ITEM1 */ {SOTA_TILESIZE, SOTA_TILESIZE},
-    /* WSM_ELEM_ITEM2 */ {SOTA_TILESIZE, SOTA_TILESIZE},
-    /* WSM_ELEM_ITEM3 */ {SOTA_TILESIZE, SOTA_TILESIZE},
-    /* WSM_ELEM_ITEM4 */ {SOTA_TILESIZE, SOTA_TILESIZE},
-    /* WSM_ELEM_ITEM5 */ {SOTA_TILESIZE, SOTA_TILESIZE},
-    /* WSM_ELEM_ITEM6 */ {SOTA_TILESIZE, SOTA_TILESIZE},
+struct Point wsm_elem_box[LSM_ELEMS_NUM] = {
+    /* LSM_ELEM_ITEM1 */ {SOTA_TILESIZE, SOTA_TILESIZE},
+    /* LSM_ELEM_ITEM2 */ {SOTA_TILESIZE, SOTA_TILESIZE},
+    /* LSM_ELEM_ITEM3 */ {SOTA_TILESIZE, SOTA_TILESIZE},
+    /* LSM_ELEM_ITEM4 */ {SOTA_TILESIZE, SOTA_TILESIZE},
+    /* LSM_ELEM_ITEM5 */ {SOTA_TILESIZE, SOTA_TILESIZE},
+    /* LSM_ELEM_ITEM6 */ {SOTA_TILESIZE, SOTA_TILESIZE},
 };
 
-struct Point  wsm_elem_pos[WSM_ELEMS_NUM] = {
-    /* WSM_ELEM_ITEM1 */ {WSM1_X_OFFSET, WSM1_Y_OFFSET},
-    /* WSM_ELEM_ITEM2 */ {WSM2_X_OFFSET, WSM2_Y_OFFSET},
-    /* WSM_ELEM_ITEM3 */ {WSM3_X_OFFSET, WSM3_Y_OFFSET},
-    /* WSM_ELEM_ITEM4 */ {WSM4_X_OFFSET, WSM4_Y_OFFSET},
-    /* WSM_ELEM_ITEM5 */ {WSM5_X_OFFSET, WSM5_Y_OFFSET},
-    /* WSM_ELEM_ITEM6 */ {WSM6_X_OFFSET, WSM6_Y_OFFSET},
+struct Point  wsm_elem_pos[LSM_ELEMS_NUM] = {
+    /* LSM_ELEM_ITEM1 */ {LSM1_X_OFFSET, LSM1_Y_OFFSET},
+    /* LSM_ELEM_ITEM2 */ {LSM2_X_OFFSET, LSM2_Y_OFFSET},
+    /* LSM_ELEM_ITEM3 */ {LSM3_X_OFFSET, LSM3_Y_OFFSET},
+    /* LSM_ELEM_ITEM4 */ {LSM4_X_OFFSET, LSM4_Y_OFFSET},
+    /* LSM_ELEM_ITEM5 */ {LSM5_X_OFFSET, LSM5_Y_OFFSET},
+    /* LSM_ELEM_ITEM6 */ {LSM6_X_OFFSET, LSM6_Y_OFFSET},
 };
 
-struct MenuElemDirections wsm_links[WSM_ELEMS_NUM] = {
+struct MenuElemDirections wsm_links[LSM_ELEMS_NUM] = {
     /*right, top, left, bottom */
-    /* WSM_ELEM_ITEM1 */ {WSM_ELEM_NULL, WSM_ELEM_NULL,  WSM_ELEM_NULL, WSM_ELEM_ITEM2},
-    /* WSM_ELEM_ITEM2 */ {WSM_ELEM_NULL, WSM_ELEM_ITEM1, WSM_ELEM_NULL, WSM_ELEM_ITEM3},
-    /* WSM_ELEM_ITEM3 */ {WSM_ELEM_NULL, WSM_ELEM_ITEM2, WSM_ELEM_NULL, WSM_ELEM_ITEM4},
-    /* WSM_ELEM_ITEM4 */ {WSM_ELEM_NULL, WSM_ELEM_ITEM3, WSM_ELEM_NULL, WSM_ELEM_ITEM5},
-    /* WSM_ELEM_ITEM5 */ {WSM_ELEM_NULL, WSM_ELEM_ITEM4, WSM_ELEM_NULL, WSM_ELEM_ITEM6},
-    /* WSM_ELEM_ITEM6 */ {WSM_ELEM_NULL, WSM_ELEM_ITEM5, WSM_ELEM_NULL, WSM_ELEM_NULL},
+    /* LSM_ELEM_ITEM1 */ {LSM_ELEM_NULL, LSM_ELEM_NULL,  LSM_ELEM_NULL, LSM_ELEM_ITEM2},
+    /* LSM_ELEM_ITEM2 */ {LSM_ELEM_NULL, LSM_ELEM_ITEM1, LSM_ELEM_NULL, LSM_ELEM_ITEM3},
+    /* LSM_ELEM_ITEM3 */ {LSM_ELEM_NULL, LSM_ELEM_ITEM2, LSM_ELEM_NULL, LSM_ELEM_ITEM4},
+    /* LSM_ELEM_ITEM4 */ {LSM_ELEM_NULL, LSM_ELEM_ITEM3, LSM_ELEM_NULL, LSM_ELEM_ITEM5},
+    /* LSM_ELEM_ITEM5 */ {LSM_ELEM_NULL, LSM_ELEM_ITEM4, LSM_ELEM_NULL, LSM_ELEM_ITEM6},
+    /* LSM_ELEM_ITEM6 */ {LSM_ELEM_NULL, LSM_ELEM_ITEM5, LSM_ELEM_NULL, LSM_ELEM_NULL},
 };
 
 struct LoadoutSelectMenu LoadoutSelectMenu_default = {
@@ -99,12 +99,12 @@ void WeaponSelectMenu_Load_n9Patch(struct LoadoutSelectMenu *lsm, SDL_Renderer *
     SDL_assert(n9patch != NULL);
     n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;
     n9patch->patch_pixels.y  = MENU_PATCH_PIXELS;
-    n9patch->size_patches.x  = WSM_PATCH_X_SIZE;
-    n9patch->size_patches.y  = WSM_PATCH_X_SIZE;
-    n9patch->scale.x         = WSM_N9PATCH_SCALE_X;
-    n9patch->scale.y         = WSM_N9PATCH_SCALE_Y;
-    n9patch->size_pixels.x   = MENU_PATCH_PIXELS * WSM_PATCH_X_SIZE;
-    n9patch->size_pixels.y   = MENU_PATCH_PIXELS * WSM_PATCH_Y_SIZE;
+    n9patch->size_patches.x  = LSM_PATCH_X_SIZE;
+    n9patch->size_patches.y  = LSM_PATCH_X_SIZE;
+    n9patch->scale.x         = LSM_N9PATCH_SCALE_X;
+    n9patch->scale.y         = LSM_N9PATCH_SCALE_Y;
+    n9patch->size_pixels.x   = MENU_PATCH_PIXELS * LSM_PATCH_X_SIZE;
+    n9patch->size_pixels.y   = MENU_PATCH_PIXELS * LSM_PATCH_Y_SIZE;
 }
 
 void WeaponSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map,
@@ -121,12 +121,12 @@ void StaffSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, tnecs_
     SDL_assert(n9patch != NULL);
     n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;
     n9patch->patch_pixels.y  = MENU_PATCH_PIXELS;
-    n9patch->size_patches.x  = WSM_PATCH_X_SIZE;
-    n9patch->size_patches.y  = WSM_PATCH_Y_SIZE;
-    n9patch->scale.x         = WSM_N9PATCH_SCALE_X;
-    n9patch->scale.y         = WSM_N9PATCH_SCALE_Y;
-    n9patch->size_pixels.x   = (MENU_PATCH_PIXELS * WSM_PATCH_X_SIZE);
-    n9patch->size_pixels.y   = (MENU_PATCH_PIXELS * WSM_PATCH_Y_SIZE);
+    n9patch->size_patches.x  = LSM_PATCH_X_SIZE;
+    n9patch->size_patches.y  = LSM_PATCH_Y_SIZE;
+    n9patch->scale.x         = LSM_N9PATCH_SCALE_X;
+    n9patch->scale.y         = LSM_N9PATCH_SCALE_Y;
+    n9patch->size_pixels.x   = (MENU_PATCH_PIXELS * LSM_PATCH_X_SIZE);
+    n9patch->size_pixels.y   = (MENU_PATCH_PIXELS * LSM_PATCH_Y_SIZE);
 
     lsm->archetype_stronghand = ITEM_ARCHETYPE_STAFF;
     LoadoutSelectMenu_Load(lsm, map, world, unit_ent, renderer, n9patch, lsm->archetype_stronghand);
@@ -177,8 +177,8 @@ void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct Menu *mc
     mc->elem_links = wsm_links;
 
     for (int i = mc->elem_num - 1; i < DEFAULT_EQUIPMENT_SIZE; i++) {
-        mc->elem_links[i].top    = WSM_ELEM_NULL;
-        mc->elem_links[i].bottom = WSM_ELEM_NULL;
+        mc->elem_links[i].top    = LSM_ELEM_NULL;
+        mc->elem_links[i].bottom = LSM_ELEM_NULL;
     }
 
 }
@@ -200,7 +200,7 @@ void LoadoutSelectMenu_Elem_Pos(struct LoadoutSelectMenu *lsm, struct Menu *mc) 
         int scale_x = mc->n9patch.scale.x;
         int scale_y = mc->n9patch.scale.y;
         int x       = lsm->pos.x + mc->n9patch.pos.x;
-        int y       = lsm->pos.y + header_drawn * WSM_ROW_HEIGHT;
+        int y       = lsm->pos.y + header_drawn * LSM_ROW_HEIGHT;
         int elem_x  = mc->elem_pos[i].x;
         int elem_y  = mc->elem_pos[i].y;
         mc->elem_pos[i].x = x + elem_x * scale_x;
@@ -225,7 +225,7 @@ void LoadoutSelectMenu_Elem_Pos_Revert(struct LoadoutSelectMenu *lsm, struct Men
         int scale_x = mc->n9patch.scale.x;
         int scale_y = mc->n9patch.scale.y;
         int x       = lsm->pos.x + mc->n9patch.pos.x;
-        int y       = lsm->pos.y + header_drawn * WSM_ROW_HEIGHT;
+        int y       = lsm->pos.y + header_drawn * LSM_ROW_HEIGHT;
         int elem_x  = mc->elem_pos[i].x;
         int elem_y  = mc->elem_pos[i].y;
         mc->elem_pos[i].x = (elem_x - x) / scale_x;
@@ -367,7 +367,7 @@ void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
 /* --- Drawing --- */
 void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9patch) {
     /* - Compute new menu width and height - */
-    int width, max_width = WSM_ITEM_MIN_WIDTH;
+    int width, max_width = LSM_ITEM_MIN_WIDTH;
     /* -- HANDS --  */
     /* Icons, text drawn on stronghand's side */
     int stronghand = Unit_Hand_Strong(lsm->unit);
@@ -410,16 +410,16 @@ void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9p
     bool header_drawn = (lsm->header.data != NULL);
     if (header_drawn) {
         header_w = PixelFont_Width(lsm->pixelnours_big, lsm->header.data,
-                                   lsm->header.num) + WSM_HEADER_LEFT + WSM_HEADER_RIGHT;
+                                   lsm->header.num) + LSM_HEADER_LEFT + LSM_HEADER_RIGHT;
     }
 
-    int size_raw_x    = max_width + WSM_LEFT_OF_TEXT + WSM_RIGHT_OF_TEXT;
+    int size_raw_x    = max_width + LSM_LEFT_OF_TEXT + LSM_RIGHT_OF_TEXT;
     size_raw_x = header_w > size_raw_x ? header_w : size_raw_x;
     int patch_size_x  = size_raw_x   / n9patch->patch_pixels.x;
     lsm->menu_w       = patch_size_x * n9patch->patch_pixels.x;
 
-    int size_raw_y    = num_items * WSM_ROW_HEIGHT + WSM_TOP_OF_TEXT + WSM_BOTTOM_OF_TEXT + header_drawn
-                        * WSM_ROW_HEIGHT;
+    int size_raw_y    = num_items * LSM_ROW_HEIGHT + LSM_TOP_OF_TEXT + LSM_BOTTOM_OF_TEXT + header_drawn
+                        * LSM_ROW_HEIGHT;
     int patch_size_y  = size_raw_y   / n9patch->patch_pixels.y;
     lsm->menu_h       = patch_size_y * n9patch->patch_pixels.y;
 
@@ -473,7 +473,7 @@ static void _LoadoutSelectMenu_Draw_Header(struct LoadoutSelectMenu *lsm,
     /* Draw textual header: information to the player */
     int dura_w = PixelFont_Width(lsm->pixelnours_big, lsm->header.data, lsm->header.num);
     PixelFont_Write(lsm->pixelnours_big, renderer, lsm->header.data, lsm->header.num,
-                    WSM_HEADER_LEFT,  WSM_TOP_OF_TEXT);
+                    LSM_HEADER_LEFT,  LSM_TOP_OF_TEXT);
 }
 
 static void _LoadoutSelectMenu_Draw_Highlight(struct LoadoutSelectMenu  *lsm,
@@ -502,12 +502,12 @@ static void _LoadoutSelectMenu_Draw_Highlight(struct LoadoutSelectMenu  *lsm,
     int dura_w = PixelFont_Width(lsm->pixelnours_big, numbuff, strlen(numbuff));
 
     if (stronghand == UNIT_HAND_LEFT) {
-        srcrect.x = WSM1_X_OFFSET + WSM_HANDS_TILESIZE - 3;
+        srcrect.x = LSM1_X_OFFSET + LSM_HANDS_TILESIZE - 3;
     } else if (stronghand == UNIT_HAND_RIGHT) {
-        srcrect.x = lsm->menu_w - WSM_HANDS_TILESIZE - WSM_ICON_W * 2 - dura_w - srcrect.w;
+        srcrect.x = lsm->menu_w - LSM_HANDS_TILESIZE - LSM_ICON_W * 2 - dura_w - srcrect.w;
     }
-    srcrect.y = WSM1_Y_OFFSET + (header_drawn * WSM_ROW_HEIGHT);
-    srcrect.w += ITEM_ICON_W + WSM_ICONTOTEXT_W + WSM_HIGHLIGHT_EXTRA_W;
+    srcrect.y = LSM1_Y_OFFSET + (header_drawn * LSM_ROW_HEIGHT);
+    srcrect.w += ITEM_ICON_W + LSM_ICONTOTEXT_W + LSM_HIGHLIGHT_EXTRA_W;
     srcrect.h  = ITEM_ICON_H;
     srcrect.y += 2 ;
     srcrect.h -= 4;
@@ -535,18 +535,18 @@ static void _LoadoutSelectMenu_Draw_Hands(struct LoadoutSelectMenu *lsm,
     /* Computing y offset for weak hand, or twohanding icon placement */
     int ly_offset = 0, ry_offset = 0;
     if (stronghand == UNIT_HAND_RIGHT) {
-        ly_offset = WSM_WEAKHAND_Y_OFFSET;
+        ly_offset = LSM_WEAKHAND_Y_OFFSET;
     } else if (stronghand == UNIT_HAND_LEFT) {
-        ry_offset = WSM_WEAKHAND_Y_OFFSET;
+        ry_offset = LSM_WEAKHAND_Y_OFFSET;
     }
 
-    srcrect.w = WSM_HANDS_TILESIZE;
-    srcrect.h = WSM_HANDS_TILESIZE;
+    srcrect.w = LSM_HANDS_TILESIZE;
+    srcrect.h = LSM_HANDS_TILESIZE;
     dstrect.w = srcrect.w;
     dstrect.h = srcrect.h;
 
     /* -- Left hand icon -- */
-    int hand_i = (stronghand != UNIT_HAND_LEFT) ? WSM_HANDS_SMALL_L : WSM_HANDS_BIG_L;
+    int hand_i = (stronghand != UNIT_HAND_LEFT) ? LSM_HANDS_SMALL_L : LSM_HANDS_BIG_L;
     /* - Skip if hand lower outside of menu - */
     int limit = (stronghand == UNIT_HAND_LEFT) ? 1 : 2;
     if (num_items >= limit) {
@@ -554,24 +554,24 @@ static void _LoadoutSelectMenu_Draw_Hands(struct LoadoutSelectMenu *lsm,
         srcrect.y = 0;
 
         /* Moving hand if two handing or weak hand */
-        dstrect.x = WSM_HANDL_X;
-        dstrect.y = WSM_HANDL_Y + ly_offset + (header_drawn * WSM_ROW_HEIGHT);
+        dstrect.x = LSM_HANDL_X;
+        dstrect.y = LSM_HANDL_Y + ly_offset + (header_drawn * LSM_ROW_HEIGHT);
 
         /* Moving hand if small */
         if (stronghand != UNIT_HAND_LEFT) {
-            dstrect.x += WSM_HAND_SMALLX_OFFSET;
-            dstrect.y += WSM_HAND_SMALLY_OFFSET;
+            dstrect.x += LSM_HAND_SMALLX_OFFSET;
+            dstrect.y += LSM_HAND_SMALLY_OFFSET;
         }
         SDL_RenderCopy(renderer, lsm->texture_hands, &srcrect, &dstrect);
     }
 
     /* -- Right hand icon -- */
-    srcrect.w = WSM_HANDS_TILESIZE;
-    srcrect.h = WSM_HANDS_TILESIZE;
+    srcrect.w = LSM_HANDS_TILESIZE;
+    srcrect.h = LSM_HANDS_TILESIZE;
     dstrect.w = srcrect.w;
     dstrect.h = srcrect.h;
 
-    hand_i = (stronghand == UNIT_HAND_LEFT) ? WSM_HANDS_SMALL_R : WSM_HANDS_BIG_R;
+    hand_i = (stronghand == UNIT_HAND_LEFT) ? LSM_HANDS_SMALL_R : LSM_HANDS_BIG_R;
     /* - Skip if hand lower outside of menu - */
     limit = (stronghand == UNIT_HAND_RIGHT) ? 1 : 2;
     if (num_items >= limit) {
@@ -579,13 +579,13 @@ static void _LoadoutSelectMenu_Draw_Hands(struct LoadoutSelectMenu *lsm,
         srcrect.y = 0;
 
         /* Moving hand if two handing or weak hand */
-        dstrect.x = lsm->menu_w - WSM_HANDS_TILESIZE;
-        dstrect.y = WSM_HANDR_Y + ry_offset + (header_drawn * WSM_ROW_HEIGHT);
+        dstrect.x = lsm->menu_w - LSM_HANDS_TILESIZE;
+        dstrect.y = LSM_HANDR_Y + ry_offset + (header_drawn * LSM_ROW_HEIGHT);
 
         /* Moving hand if small */
         if (stronghand == UNIT_HAND_LEFT) {
-            dstrect.x += WSM_HAND_SMALLX_OFFSET;
-            dstrect.y += WSM_HAND_SMALLY_OFFSET;
+            dstrect.x += LSM_HAND_SMALLX_OFFSET;
+            dstrect.y += LSM_HAND_SMALLY_OFFSET;
         }
         SDL_RenderCopy(renderer, lsm->texture_hands, &srcrect, &dstrect);
     }
@@ -633,22 +633,22 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
         item         = Unit_Item_Side(unit, side_i);
 
         /* -- Weapon icon -- */
-        srcrect.x = WSM1_X_OFFSET;
-        srcrect.y = WSM1_Y_OFFSET + strong_i * (WSM_ICON_H + 2) + (header_drawn * WSM_ROW_HEIGHT);
+        srcrect.x = LSM1_X_OFFSET;
+        srcrect.y = LSM1_Y_OFFSET + strong_i * (LSM_ICON_H + 2) + (header_drawn * LSM_ROW_HEIGHT);
 
         if (strong_i == UNIT_HAND_LEFT) {
             if (stronghand == UNIT_HAND_LEFT) {
-                srcrect.x = WSM1_X_OFFSET + WSM_HANDS_TILESIZE - 3;
+                srcrect.x = LSM1_X_OFFSET + LSM_HANDS_TILESIZE - 3;
             } else if (stronghand == UNIT_HAND_RIGHT) {
-                srcrect.x = lsm->menu_w - WSM_HANDS_TILESIZE - WSM_ICON_W - 3;
+                srcrect.x = lsm->menu_w - LSM_HANDS_TILESIZE - LSM_ICON_W - 3;
             }
         }
 
         if (strong_i == UNIT_HAND_RIGHT) {
             if (weakhand == UNIT_HAND_LEFT) {
-                srcrect.x = WSM1_X_OFFSET + WSM_HANDS_TILESIZE - 3;
+                srcrect.x = LSM1_X_OFFSET + LSM_HANDS_TILESIZE - 3;
             } else if (weakhand == UNIT_HAND_RIGHT) {
-                srcrect.x = lsm->menu_w - WSM_HANDS_TILESIZE - WSM_ICON_W - 3;
+                srcrect.x = lsm->menu_w - LSM_HANDS_TILESIZE - LSM_ICON_W - 3;
             }
         }
 
@@ -666,9 +666,9 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
         }
 
         /* - Write '-' if no weapon - */
-        int item_x_offset = WSM1_NAME_X_OFFSET;
-        int item_y_offset = WSM1_NAME_Y_OFFSET + strong_i * (ITEM_ICON_H + 2) +
-                            (header_drawn * WSM_ROW_HEIGHT);
+        int item_x_offset = LSM1_NAME_X_OFFSET;
+        int item_y_offset = LSM1_NAME_Y_OFFSET + strong_i * (ITEM_ICON_H + 2) +
+                            (header_drawn * LSM_ROW_HEIGHT);
 
         if (item->id == ITEM_NULL) {
             PixelFont_Write(lsm->pixelnours, renderer, "-", 1, item_x_offset, item_y_offset);
@@ -678,23 +678,23 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
         struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, item->id);
 
         /* - Write uses left - */
-        int item_dura_x_offset = WSM1_DURA_X_OFFSET;
-        int item_dura_y_offset = WSM1_DURA_Y_OFFSET + strong_i * (ITEM_ICON_H + 2) +
-                                 (header_drawn * WSM_ROW_HEIGHT);
+        int item_dura_x_offset = LSM1_DURA_X_OFFSET;
+        int item_dura_y_offset = LSM1_DURA_Y_OFFSET + strong_i * (ITEM_ICON_H + 2) +
+                                 (header_drawn * LSM_ROW_HEIGHT);
 
         if (strong_i == UNIT_HAND_LEFT) {
             if (stronghand == UNIT_HAND_LEFT) {
-                item_dura_x_offset = srcrect.x + WSM_HANDS_TILESIZE + 3;
+                item_dura_x_offset = srcrect.x + LSM_HANDS_TILESIZE + 3;
             } else if (stronghand == UNIT_HAND_RIGHT) {
-                item_dura_x_offset = srcrect.x - WSM_ICON_W / 2 - 1;
+                item_dura_x_offset = srcrect.x - LSM_ICON_W / 2 - 1;
             }
         }
 
         if (strong_i == UNIT_HAND_RIGHT) {
             if (weakhand == UNIT_HAND_LEFT) {
-                item_dura_x_offset = srcrect.x + WSM_HANDS_TILESIZE + 3;
+                item_dura_x_offset = srcrect.x + LSM_HANDS_TILESIZE + 3;
             } else if (weakhand == UNIT_HAND_RIGHT) {
-                item_dura_x_offset = srcrect.x - WSM_ICON_W / 2 - 1;
+                item_dura_x_offset = srcrect.x - LSM_ICON_W / 2 - 1;
             }
         }
 

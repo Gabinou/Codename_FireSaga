@@ -105,7 +105,7 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
     switch (mc->type) {
         /* RESET */
         case MENU_TYPE_WEAPON_SELECT:
-            mc->elem = WSM_ELEM_ITEM1;
+            mc->elem = LSM_ELEM_ITEM1;
             break;
         case MENU_TYPE_TRADE:
         case MENU_TYPE_ITEM_SELECT:

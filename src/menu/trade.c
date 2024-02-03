@@ -2,18 +2,18 @@
 #include "menu/trade.h"
 
 struct Point trade_menu_cursor_pos[TRADE_MENU_ELEMS_NUM] = {
-    /* TM_ELEM_ITEM1_A */   {WSM1_X_OFFSET, WSM1_Y_OFFSET},
-    /* TM_ELEM_ITEM2_A */   {WSM2_X_OFFSET, WSM2_Y_OFFSET},
-    /* TM_ELEM_ITEM3_A */   {WSM3_X_OFFSET, WSM3_Y_OFFSET},
-    /* TM_ELEM_ITEM4_A */   {WSM4_X_OFFSET, WSM4_Y_OFFSET},
-    /* TM_ELEM_ITEM5_A */   {WSM5_X_OFFSET, WSM5_Y_OFFSET},
-    /* TM_ELEM_ITEM6_A */   {WSM6_X_OFFSET, WSM6_Y_OFFSET},
-    /* TM_ELEM_ITEM1_P */   {WSM1_X_OFFSET, WSM1_Y_OFFSET},
-    /* TM_ELEM_ITEM2_P */   {WSM2_X_OFFSET, WSM2_Y_OFFSET},
-    /* TM_ELEM_ITEM3_P */   {WSM3_X_OFFSET, WSM3_Y_OFFSET},
-    /* TM_ELEM_ITEM4_P */   {WSM4_X_OFFSET, WSM4_Y_OFFSET},
-    /* TM_ELEM_ITEM5_P */   {WSM5_X_OFFSET, WSM5_Y_OFFSET},
-    /* TM_ELEM_ITEM6_P */   {WSM6_X_OFFSET, WSM6_Y_OFFSET},
+    /* TM_ELEM_ITEM1_A */   {LSM1_X_OFFSET, LSM1_Y_OFFSET},
+    /* TM_ELEM_ITEM2_A */   {LSM2_X_OFFSET, LSM2_Y_OFFSET},
+    /* TM_ELEM_ITEM3_A */   {LSM3_X_OFFSET, LSM3_Y_OFFSET},
+    /* TM_ELEM_ITEM4_A */   {LSM4_X_OFFSET, LSM4_Y_OFFSET},
+    /* TM_ELEM_ITEM5_A */   {LSM5_X_OFFSET, LSM5_Y_OFFSET},
+    /* TM_ELEM_ITEM6_A */   {LSM6_X_OFFSET, LSM6_Y_OFFSET},
+    /* TM_ELEM_ITEM1_P */   {LSM1_X_OFFSET, LSM1_Y_OFFSET},
+    /* TM_ELEM_ITEM2_P */   {LSM2_X_OFFSET, LSM2_Y_OFFSET},
+    /* TM_ELEM_ITEM3_P */   {LSM3_X_OFFSET, LSM3_Y_OFFSET},
+    /* TM_ELEM_ITEM4_P */   {LSM4_X_OFFSET, LSM4_Y_OFFSET},
+    /* TM_ELEM_ITEM5_P */   {LSM5_X_OFFSET, LSM5_Y_OFFSET},
+    /* TM_ELEM_ITEM6_P */   {LSM6_X_OFFSET, LSM6_Y_OFFSET},
 };
 
 struct Point trade_menu_elem_box[TRADE_MENU_ELEMS_NUM] = {
@@ -32,18 +32,18 @@ struct Point trade_menu_elem_box[TRADE_MENU_ELEMS_NUM] = {
 };
 
 struct Point trade_menu_elem_pos[TRADE_MENU_ELEMS_NUM] = {
-    /* TM_ELEM_ITEM1_A */   {WSM1_X_OFFSET, WSM1_Y_OFFSET},
-    /* TM_ELEM_ITEM2_A */   {WSM2_X_OFFSET, WSM2_Y_OFFSET},
-    /* TM_ELEM_ITEM3_A */   {WSM3_X_OFFSET, WSM3_Y_OFFSET},
-    /* TM_ELEM_ITEM4_A */   {WSM4_X_OFFSET, WSM4_Y_OFFSET},
-    /* TM_ELEM_ITEM5_A */   {WSM5_X_OFFSET, WSM5_Y_OFFSET},
-    /* TM_ELEM_ITEM6_A */   {WSM6_X_OFFSET, WSM6_Y_OFFSET},
-    /* TM_ELEM_ITEM1_P */   {WSM1_X_OFFSET, WSM1_Y_OFFSET},
-    /* TM_ELEM_ITEM2_P */   {WSM2_X_OFFSET, WSM2_Y_OFFSET},
-    /* TM_ELEM_ITEM3_P */   {WSM3_X_OFFSET, WSM3_Y_OFFSET},
-    /* TM_ELEM_ITEM4_P */   {WSM4_X_OFFSET, WSM4_Y_OFFSET},
-    /* TM_ELEM_ITEM5_P */   {WSM5_X_OFFSET, WSM5_Y_OFFSET},
-    /* TM_ELEM_ITEM6_P */   {WSM6_X_OFFSET, WSM6_Y_OFFSET},
+    /* TM_ELEM_ITEM1_A */   {LSM1_X_OFFSET, LSM1_Y_OFFSET},
+    /* TM_ELEM_ITEM2_A */   {LSM2_X_OFFSET, LSM2_Y_OFFSET},
+    /* TM_ELEM_ITEM3_A */   {LSM3_X_OFFSET, LSM3_Y_OFFSET},
+    /* TM_ELEM_ITEM4_A */   {LSM4_X_OFFSET, LSM4_Y_OFFSET},
+    /* TM_ELEM_ITEM5_A */   {LSM5_X_OFFSET, LSM5_Y_OFFSET},
+    /* TM_ELEM_ITEM6_A */   {LSM6_X_OFFSET, LSM6_Y_OFFSET},
+    /* TM_ELEM_ITEM1_P */   {LSM1_X_OFFSET, LSM1_Y_OFFSET},
+    /* TM_ELEM_ITEM2_P */   {LSM2_X_OFFSET, LSM2_Y_OFFSET},
+    /* TM_ELEM_ITEM3_P */   {LSM3_X_OFFSET, LSM3_Y_OFFSET},
+    /* TM_ELEM_ITEM4_P */   {LSM4_X_OFFSET, LSM4_Y_OFFSET},
+    /* TM_ELEM_ITEM5_P */   {LSM5_X_OFFSET, LSM5_Y_OFFSET},
+    /* TM_ELEM_ITEM6_P */   {LSM6_X_OFFSET, LSM6_Y_OFFSET},
 };
 
 struct MenuElemDirections trade_menu_links[TRADE_MENU_ELEMS_NUM] = {
@@ -176,7 +176,7 @@ void TradeMenu_Elem_Pos(struct TradeMenu *tm, struct Menu *mc) {
     // Scales elem_pos to menu size
     SDL_assert(tm != NULL);
     SDL_assert(mc != NULL);
-    SDL_assert(mc->n9patch.scale.y == WSM_N9PATCH_SCALE_Y);
+    SDL_assert(mc->n9patch.scale.y == LSM_N9PATCH_SCALE_Y);
     for (size_t i = 0; i < mc->elem_num; i++) {
         if (i < TM_ELEM_ITEM1_P) {
             mc->elem_pos[i].x = tm->active->pos.x + mc->n9patch.pos.x + trade_menu_elem_pos[i].x *

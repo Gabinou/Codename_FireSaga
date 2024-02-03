@@ -11,7 +11,7 @@
 fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_START */           NULL,
     /* MENU_TYPE_PLAYER_SELECT */   &fsm_eAcpt_sGmpMap_ssMenu_mPSM,
-    /* MENU_TYPE_WEAPON_SELECT  */  &fsm_eAcpt_sGmpMap_ssMenu_mWSM,
+    /* MENU_TYPE_WEAPON_SELECT  */  &fsm_eAcpt_sGmpMap_ssMenu_mLSM,
     /* MENU_TYPE_STAFF_SELECT  */   &fsm_eAcpt_sGmpMap_ssMenu_mSSM,
     /* MENU_TYPE_ITEM_SELECT  */    &fsm_eAcpt_sGmpMap_ssMenu_mISM,
     /* MENU_TYPE_STATS */           &fsm_eAcpt_sGmpMap_ssMenu_mSM,
@@ -25,7 +25,7 @@ fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
 fsm_menu_t fsm_eCncl_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_START */           NULL,
     /* MENU_TYPE_PLAYER_SELECT */   &fsm_eCncl_sGmpMap_ssMenu_mPSM,
-    /* MENU_TYPE_WEAPON_SELECT */   &fsm_eCncl_sGmpMap_ssMenu_mWSM,
+    /* MENU_TYPE_WEAPON_SELECT */   &fsm_eCncl_sGmpMap_ssMenu_mLSM,
     /* MENU_TYPE_STAFF_SELECT  */   &fsm_eCncl_sGmpMap_ssMenu_mSSM,
     /* MENU_TYPE_ITEM_SELECT  */    &fsm_eCncl_sGmpMap_ssMenu_mISM,
     /* MENU_TYPE_STATS */           &fsm_eCncl_sGmpMap_ssMenu_mSM,
@@ -38,7 +38,7 @@ fsm_menu_t fsm_eCncl_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
 fsm_menu_t fsm_eCrsMvs_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_START */           NULL,
     /* MENU_TYPE_PLAYER_SELECT */   NULL,
-    /* MENU_TYPE_WEAPON_SELECT */   &fsm_eCrsMvs_ssMenu_mWSM,
+    /* MENU_TYPE_WEAPON_SELECT */   &fsm_eCrsMvs_ssMenu_mLSM,
     /* MENU_TYPE_STAFF_SELECT  */   &fsm_eCrsMvs_ssMenu_mSSM,
     /* MENU_TYPE_ITEM_SELECT  */    &fsm_eCrsMvs_ssMenu_mISM,
     /* MENU_TYPE_STATS */           NULL,
@@ -373,7 +373,7 @@ void fsm_eCrsMvs_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
     // TODO: update healmap when STAFF CHANGES
 }
 
-void fsm_eCrsMvs_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
+void fsm_eCrsMvs_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     SDL_assert(mc->elem < DEFAULT_EQUIPMENT_SIZE);
     /* -- Update Popup_Loadout_Stats to potential loadout -- */
     struct LoadoutSelectMenu *wsm = mc->data;
@@ -481,7 +481,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
 
     if ((ssm->selected[tophand] > -1) && (StaffSelectMenu_canEqItem(ssm))) {
         /* move cursor to first hand */
-        int new_elem = WSM_ELEM_ITEM1;
+        int new_elem = LSM_ELEM_ITEM1;
         tnecs_entity cursor = sota->entity_cursor;
         Menu_Elem_Set(mc, sota, new_elem);
 
@@ -555,7 +555,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
 
 }
 
-void fsm_eCncl_sGmpMap_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
+void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     SDL_assert(mc->type == MENU_TYPE_WEAPON_SELECT);
     struct LoadoutSelectMenu *wsm = mc->data;
 
@@ -564,7 +564,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
 
     if (wsm->selected[tophand] > -1) {
         /* move cursor to first hand */
-        int new_elem = WSM_ELEM_ITEM1;
+        int new_elem = LSM_ELEM_ITEM1;
         tnecs_entity cursor = sota->entity_cursor;
         Menu_Elem_Set(mc, sota, new_elem);
 
@@ -705,7 +705,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
 
 }
 
-void fsm_eAcpt_sGmpMap_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
+void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     /* Swap weapons */
     struct LoadoutSelectMenu *wsm = mc->data;
     SDL_assert(mc->elem >= 0);
@@ -729,7 +729,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mWSM(struct Game *sota, struct Menu *mc) {
         SDL_assert(mc->n9patch.scale.x > 0);
         SDL_assert(mc->n9patch.scale.y > 0);
         /* move cursor to second hand */
-        int new_elem            = WSM_ELEM_ITEM2;
+        int new_elem            = LSM_ELEM_ITEM2;
         tnecs_entity cursor   = sota->entity_cursor;
         Menu_Elem_Set(mc, sota, new_elem);
 
@@ -787,7 +787,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
 
     if (StaffSelectMenu_canEqItem(ssm)) {
         /* move cursor to second hand */
-        int new_elem            = WSM_ELEM_ITEM2;
+        int new_elem            = LSM_ELEM_ITEM2;
         tnecs_entity cursor   = sota->entity_cursor;
         Menu_Elem_Set(mc, sota, new_elem);
         StaffSelectMenu_Switch_Items(ssm);

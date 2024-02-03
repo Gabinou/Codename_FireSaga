@@ -51,7 +51,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPCM(struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc);
-void fsm_eAcpt_sGmpMap_ssMenu_mWSM(struct Game *sota, struct Menu *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc);
 
 /* event_Input_Cancel */
 void fsm_eCncl_sGmpMap_ssMenu_mSM( struct Game *sota, struct Menu *mc);
@@ -60,12 +60,12 @@ void fsm_eCncl_sGmpMap_ssMenu_mPCM(struct Game *sota, struct Menu *mc);
 void fsm_eCncl_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc);
 void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc);
 void fsm_eCncl_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc);
-void fsm_eCncl_sGmpMap_ssMenu_mWSM(struct Game *sota, struct Menu *mc);
+void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc);
 
 /* event_Cursor_Moves */
 void fsm_eCrsMvs_ssMenu_mISM(struct Game *sota, struct Menu *mc);
 void fsm_eCrsMvs_ssMenu_mSSM(struct Game *sota, struct Menu *mc);
-void fsm_eCrsMvs_ssMenu_mWSM(struct Game *sota, struct Menu *mc);
+void fsm_eCrsMvs_ssMenu_mLSM(struct Game *sota, struct Menu *mc);
 
 /* -- PSM menu-option FSMs -- */
 // Only posible state pair [Gameplay_Map, MENU]

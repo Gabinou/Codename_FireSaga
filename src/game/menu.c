@@ -447,7 +447,7 @@ void Game_WeaponSelectMenu_Create(struct Game *sota) {
     mc->elem_links                  = wsm_links;
     mc->elem_pos                    = wsm_elem_pos;
     mc->elem_box                    = wsm_elem_box;
-    mc->elem_num                    = WSM_ELEMS_NUM;
+    mc->elem_num                    = LSM_ELEMS_NUM;
 
     // TODO: copy descriptions
     // mc->elem_description = stats_menu_description;
@@ -507,10 +507,10 @@ void Game_TradeMenu_Create(struct Game *sota) {
     /* n9patch init */
     mc->n9patch.patch_pixels.x =    MENU_PATCH_PIXELS;
     mc->n9patch.patch_pixels.y =    MENU_PATCH_PIXELS;
-    mc->n9patch.size_patches.x =    WSM_PATCH_X_SIZE * 2;
-    mc->n9patch.size_patches.y =    WSM_PATCH_Y_SIZE;
-    mc->n9patch.scale.x =           WSM_N9PATCH_SCALE_X;
-    mc->n9patch.scale.y =           WSM_N9PATCH_SCALE_Y;
+    mc->n9patch.size_patches.x =    LSM_PATCH_X_SIZE * 2;
+    mc->n9patch.size_patches.y =    LSM_PATCH_Y_SIZE;
+    mc->n9patch.scale.x =           LSM_N9PATCH_SCALE_X;
+    mc->n9patch.scale.y =           LSM_N9PATCH_SCALE_Y;
     mc->n9patch.size_pixels.x =     MENU_PATCH_PIXELS * mc->n9patch.size_patches.x;
     mc->n9patch.size_pixels.y =     MENU_PATCH_PIXELS * mc->n9patch.size_patches.y;
     mc->n9patch.texture =           Filesystem_Texture_Load(sota->renderer,
@@ -726,8 +726,8 @@ void Game_StaffSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_ont
 
     mc->elem_num = ssm->unit->num_usable;
     for (int i = mc->elem_num - 1; i < DEFAULT_EQUIPMENT_SIZE; i++) {
-        mc->elem_links[i].top    = WSM_ELEM_NULL;
-        mc->elem_links[i].bottom = WSM_ELEM_NULL;
+        mc->elem_links[i].top    = LSM_ELEM_NULL;
+        mc->elem_links[i].bottom = LSM_ELEM_NULL;
     }
 
     Menu_Elem_Boxes_Check(mc);
