@@ -2,7 +2,7 @@
 #include "mace.h"
 
 #ifndef CC
-    #define CC "gcc"
+    #define CC "tcc"
 #endif
 #ifndef AR
     #define AR "ar"
@@ -47,7 +47,7 @@ struct Target parg      = {
 struct Target tnecs     = {
     /* TODO: C99 compliance */
     .base_dir  = "second_party/tnecs",
-    // .flags     = "-std=iso9899:1999",
+    .flags     = "-std=iso9899:1999",
     .sources   = ".",
     .kind      = MACE_STATIC_LIBRARY,
 };
