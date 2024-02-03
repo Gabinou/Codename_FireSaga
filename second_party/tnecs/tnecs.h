@@ -250,7 +250,7 @@ void tnecs_custom_system_run(struct tnecs_World *w, tnecs_system_ptr c,
 
 /***************************** REGISTRATION **********************************/
 tnecs_component tnecs_register_component(struct tnecs_World *w,
-                                           const char *name, size_t b);
+                                         const char *name, size_t b);
 
 size_t tnecs_register_system(struct tnecs_World *w, const char *name,
                              void (* system)(struct tnecs_System_Input *), tnecs_phase run_phase,
@@ -272,7 +272,7 @@ tnecs_entity tnecs_entity_create(struct tnecs_World *w);
 tnecs_entity tnecs_entity_create_wID(struct tnecs_World *w, tnecs_entity entity);
 tnecs_entity tnecs_entities_create(struct tnecs_World *w, size_t num);
 tnecs_entity tnecs_entities_create_wID(struct tnecs_World *w, size_t num,
-                                         tnecs_entity *ents);
+                                       tnecs_entity *ents);
 tnecs_entity tnecs_entity_create_wcomponents(struct tnecs_World *w, size_t argnum, ...);
 
 tnecs_entity tnecs_entity_destroy(struct tnecs_World *w, tnecs_entity entity);
@@ -308,7 +308,7 @@ tnecs_entity tnecs_entity_destroy(struct tnecs_World *w, tnecs_entity entity);
 /***************************** TNECS INTERNALS *******************************/
 /*****************************************************************************/
 tnecs_entity tnecs_entity_add_components(struct tnecs_World *w, tnecs_entity entity,
-                                           size_t num_components, tnecs_component typeflag, bool isNew);
+                                         size_t num_components, tnecs_component typeflag, bool isNew);
 void tnecs_entity_remove_components(struct tnecs_World *w,
                                     tnecs_entity entity, size_t num_components, tnecs_component typeflag);
 void *tnecs_entity_get_component(struct tnecs_World *w, tnecs_entity entity,
@@ -353,7 +353,7 @@ size_t tnecs_system_name2id(struct tnecs_World *w,
                             const char *name);
 size_t tnecs_system_hash2id(struct tnecs_World *w, tnecs_hash hash);
 tnecs_component tnecs_system_name2typeflag(struct tnecs_World *w,
-                                             const char *name);
+                                           const char *name);
 
 size_t tnecs_typeflagid(struct tnecs_World *w, tnecs_component typeflag);
 

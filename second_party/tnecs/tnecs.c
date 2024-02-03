@@ -439,8 +439,8 @@ size_t tnecs_register_system(struct tnecs_World *world, const char *name,
 }
 
 tnecs_component tnecs_register_component(struct tnecs_World *world,
-                                           const char *name,
-                                           size_t bytesize) {
+                                         const char *name,
+                                         size_t bytesize) {
     TNECS_DEBUG_PRINTF("%s\n", __func__);
     /* Checks */
     TNECS_DEBUG_ASSERT(world->num_components < TNECS_COMPONENT_CAP);
@@ -585,7 +585,7 @@ tnecs_entity tnecs_entities_create(struct tnecs_World *world, size_t num) {
 }
 
 tnecs_entity tnecs_entities_create_wID(struct tnecs_World *world, size_t num,
-                                         tnecs_entity *ents) {
+                                       tnecs_entity *ents) {
     TNECS_DEBUG_PRINTF("%s\n", __func__);
     for (int i = 0; i < num; i++)
         TNECS_DEBUG_ASSERT(tnecs_entity_create_wID(world, ents[i]) > 0);
@@ -658,7 +658,7 @@ tnecs_entity tnecs_entity_destroy(struct tnecs_World *world, tnecs_entity entity
 /***************************** TNECS INTERNALS *******************************/
 /*****************************************************************************/
 tnecs_entity tnecs_entity_add_components(struct tnecs_World *world, tnecs_entity entity,
-                                           size_t num_components_toadd, tnecs_component typeflag_toadd, bool isNew) {
+                                         size_t num_components_toadd, tnecs_component typeflag_toadd, bool isNew) {
     TNECS_DEBUG_PRINTF("%s\n", __func__);
 
     TNECS_DEBUG_ASSERT(num_components_toadd > 0);
@@ -1044,7 +1044,7 @@ size_t tnecs_system_name2id(struct tnecs_World *world, const char *name) {
 }
 
 tnecs_component tnecs_system_name2typeflag(struct tnecs_World *world,
-                                             const char *name) {
+                                           const char *name) {
     TNECS_DEBUG_PRINTF("%s\n", __func__);
     size_t id = tnecs_system_name2id(world, name);
     return (world->system_typeflags[id]);
