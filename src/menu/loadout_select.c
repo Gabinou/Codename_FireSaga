@@ -52,6 +52,16 @@ struct LoadoutSelectMenu LoadoutSelectMenu_default = {
     .item_name              = {0},
 };
 
+/* --- STATIC FUNCTIONS DECLARATIONS --- */
+static void _LoadoutSelectMenu_Draw_Items(      struct    LoadoutSelectMenu *l,
+                                                SDL_Renderer                *r);
+static void _LoadoutSelectMenu_Draw_Hands(      struct  LoadoutSelectMenu   *l,
+                                                SDL_Renderer                *r);
+static void _LoadoutSelectMenu_Draw_Header(     struct  LoadoutSelectMenu   *l,
+                                                SDL_Renderer                *r);
+static void _LoadoutSelectMenu_Draw_Highlight(  struct  LoadoutSelectMenu   *l,
+                                                SDL_Renderer                *r);
+
 /* --- Constructors/Destructors --- */
 struct LoadoutSelectMenu *LoadoutSelectMenu_Alloc(void) {
     struct LoadoutSelectMenu *lsm = malloc(sizeof(struct LoadoutSelectMenu));
@@ -454,7 +464,8 @@ void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm,  char *header) 
 }
 
 
-static void _LoadoutSelectMenu_Draw_Header(struct LoadoutSelectMenu  *lsm, SDL_Renderer *renderer) {
+static void _LoadoutSelectMenu_Draw_Header(struct LoadoutSelectMenu *lsm,
+                                           SDL_Renderer      *renderer) {
     /* Skip if no header to draw */
     if (lsm->header.data == NULL)
         return;
@@ -466,7 +477,7 @@ static void _LoadoutSelectMenu_Draw_Header(struct LoadoutSelectMenu  *lsm, SDL_R
 }
 
 static void _LoadoutSelectMenu_Draw_Highlight(struct LoadoutSelectMenu  *lsm,
-                                              SDL_Renderer *renderer) {
+                                              SDL_Renderer       *renderer) {
     /* - Skip if no highlight - */
     bool highlight = (lsm->selected[UNIT_HAND_LEFT] >= 0);
     if (!highlight)
@@ -513,7 +524,8 @@ static void _LoadoutSelectMenu_Draw_Highlight(struct LoadoutSelectMenu  *lsm,
     SDL_RenderFillRect(renderer, &srcrect);
 }
 
-static void _LoadoutSelectMenu_Draw_Hands(struct LoadoutSelectMenu  *lsm, SDL_Renderer *renderer) {
+static void _LoadoutSelectMenu_Draw_Hands(struct LoadoutSelectMenu *lsm,
+                                          SDL_Renderer      *renderer) {
     /* -- Preliminaries -- */
     int num_items       = LoadoutSelectMenu_num_items(lsm);
     int stronghand      = Unit_Hand_Strong(lsm->unit);
@@ -579,7 +591,8 @@ static void _LoadoutSelectMenu_Draw_Hands(struct LoadoutSelectMenu  *lsm, SDL_Re
     }
 }
 
-static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm, SDL_Renderer *renderer) {
+static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
+                                          SDL_Renderer       *renderer) {
     /* -- Preliminaries -- */
     bool header_drawn = (lsm->header.data != NULL);
     SDL_Rect srcrect, dstrect;
