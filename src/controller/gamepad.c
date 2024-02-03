@@ -158,7 +158,7 @@ struct controllerGamepad controllerGamepad_default = {
     .block_move         =    0,
 };
 
-/* --- ructors/Destructors --- */
+/* --- Constructors/Destructors --- */
 void Gamepad_Init(struct controllerGamepad *gp) {
     Gamepad_Free(gp);
     gp->controllers_num     = controllerGamepad_default.controllers_num;

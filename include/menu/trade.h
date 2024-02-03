@@ -51,7 +51,7 @@ struct TradeMenu {
     i8 target_item;
 };
 
-/* --- Constructors/Destructors --- */
+/* --- ConstConstructors/Destructors --- */
 struct TradeMenu *TradeMenu_Alloc(void);
 void TradeMenu_Free(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
 

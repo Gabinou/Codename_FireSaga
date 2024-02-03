@@ -20,7 +20,7 @@ struct WpnorItem WpnorItem_default = {
     .item   = NULL,
 };
 
-/* --- ructors/Destructors --- */
+/* --- Constructors/Destructors --- */
 void Weapon_Init(struct Weapon *weapon) {
     *weapon = Weapon_default;
 

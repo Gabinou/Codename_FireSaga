@@ -30,7 +30,7 @@ struct WpnorItem {
 };
 extern struct WpnorItem WpnorItem_default;
 
-/* --- Constructors/Destructors --- */
+/* --- ConstConstructors/Destructors --- */
 void Weapon_Free(struct Weapon *wpn);
 void Weapon_Init(struct Weapon *wpn);
 

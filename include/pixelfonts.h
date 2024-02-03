@@ -75,7 +75,7 @@ typedef struct PixelFont {
 extern struct PixelFont PixelFont_default;
 extern struct PixelFont TextureFont_default;
 
-/* --- Constructors/Destructors --- */
+/* --- ConstConstructors/Destructors --- */
 struct PixelFont *PixelFont_Alloc(void);
 struct PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len);
 

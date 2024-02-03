@@ -81,7 +81,7 @@ struct ItemDropMenu {
 };
 extern struct ItemDropMenu ItemDropMenu_default;
 
-/* --- Constructors/Destructors --- */
+/* --- ConstConstructors/Destructors --- */
 struct ItemDropMenu *ItemDropMenu_Alloc(void);
 void ItemDropMenu_Free(struct ItemDropMenu *idm);
 void ItemDropMenu_Load(struct ItemDropMenu *idm, SDL_Renderer *r, struct n9Patch *n9);

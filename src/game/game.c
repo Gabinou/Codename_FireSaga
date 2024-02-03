@@ -81,7 +81,7 @@ struct Game Game_default = {
     .fast_forward       = false,
 };
 
-/* --- Constructors/Destructors --- */
+/* --- ConstConstructors/Destructors --- */
 
 void Game_Free(struct Game *sota) {
     Game_Cursor_Free(sota);

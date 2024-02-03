@@ -113,7 +113,7 @@ typedef struct PopUp_Map_Combat {
 } PopUp_Map_Combat;
 extern struct PopUp_Map_Combat PopUp_Map_Combat_default;
 
-/* --- Constructors/Destructors --- */
+/* --- ConstConstructors/Destructors --- */
 void PopUp_Map_Combat_Load(struct PopUp_Map_Combat *pmc, SDL_Renderer *r,
                            struct n9Patch *n);
 void PopUp_Map_Combat_Free(struct PopUp_Map_Combat *pmc);

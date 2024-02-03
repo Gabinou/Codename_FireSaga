@@ -29,7 +29,7 @@ struct PopUp_Map_Combat PopUp_Map_Combat_default = {
     .update                 = true,
 };
 
-/* --- ructors/Destructors --- */
+/* --- Constructors/Destructors --- */
 void PopUp_Map_Combat_Free(struct PopUp_Map_Combat *pmc) {
 
     if (pmc->texture_header_blue != NULL) {

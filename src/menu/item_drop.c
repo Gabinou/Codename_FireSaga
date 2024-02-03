@@ -32,7 +32,7 @@ struct MenuElemDirections idm_links[IDM_ELEM_NUM] = {
     /* IDM_ELEM_NO */  {IDM_ELEM_NULL, IDM_ELEM_NO,  IDM_ELEM_NULL, IDM_ELEM_NO},
 };
 
-/* --- ructors/Destructors --- */
+/* --- Constructors/Destructors --- */
 struct ItemDropMenu *ItemDropMenu_Alloc(void) {
     struct ItemDropMenu *idm = malloc(sizeof(struct ItemDropMenu));
     SDL_assert(idm != NULL);

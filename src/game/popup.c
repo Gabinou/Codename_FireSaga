@@ -1,6 +1,6 @@
 #include "game/popup.h"
 
-/* --- ructors/Destructors --- */
+/* --- Constructors/Destructors --- */
 void Game_PopUps_Free(struct Game *sota) {
     // /* - Popup Loadout Stats - */
     // int popup_id = POPUP_TYPE_HUD_LOADOUT_STATS;

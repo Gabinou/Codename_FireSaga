@@ -12,7 +12,7 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
 
-/* --- Constructors/Destructors --- */
+/* --- ConstConstructors/Destructors --- */
 void Game_Items_Free(  struct dtab **items_dtab);
 void Game_Weapons_Free(struct dtab **weapons_dtab);
 

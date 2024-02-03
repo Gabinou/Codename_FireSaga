@@ -163,7 +163,7 @@ struct Unit Unit_Nibal_make(void) {
     return (Nibal_unit);
 }
 
-/* --- ructors/Destructors --- */
+/* --- Constructors/Destructors --- */
 void Unit_Init(struct Unit *unit) {
     SDL_assert(unit != NULL);
     Unit_Free(unit);

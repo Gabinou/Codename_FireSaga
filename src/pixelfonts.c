@@ -79,7 +79,7 @@ struct PixelFont TextureFont_default =  {
     .scroll_len         = 0,
 };
 
-/*--- ructors/Destructors --- */
+/*--- Constructors/Destructors --- */
 struct PixelFont *PixelFont_Alloc(void) {
     struct PixelFont *font  = malloc(sizeof(struct PixelFont));
     SDL_assert(font);

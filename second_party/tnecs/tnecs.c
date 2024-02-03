@@ -1,9 +1,10 @@
 /********************************* C99 ***************************************/
 /* Clock is POSIX, not C99 */
-#define _POSIX_C_SOURCE 199309L
+#ifndef _POSIX_C_SOURCE
+    #define _POSIX_C_SOURCE 199309L
+#endif /* _POSIX_C_SOURCE */
 
 #include "tnecs.h"
-
 
 /************************* PRIVATE DECLARATIONS ******************************/
 /* --- WORLD FUNCTIONS --- */
