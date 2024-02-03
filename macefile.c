@@ -2,28 +2,28 @@
 #include "mace.h"
 
 #ifndef CC
-    #define CC "tcc"
+    #define CC "gcc"
 #endif
 #ifndef AR
     #define AR "ar"
 #endif
 
 struct Config debug         = {
-    .flags = "-g3 -rdynamic -O0 -DSDL_ASSERT_LEVEL=2 -std=iso9899:1999"
+    .flags = "-g3 -rdynamic -O0 -DSDL_ASSERT_LEVEL=2"
 };
 struct Config release       = {
-    .flags = "-O2 -DSDL_ASSERT_LEVEL=1 -std=iso9899:1999"
+    .flags = "-O2 -DSDL_ASSERT_LEVEL=1"
 };
 
 struct Config win_debug     = {
-    .flags  = "-g3 -rdynamic -O0 -std=iso9899:1999",              
+    .flags  = "-g3 -rdynamic -O0",              
     .target = "win_sota",
     .cc     = "x86_64-w64-mingw32-gcc",
     .ar     = "x86_64-w64-mingw32-ar"
 };
 
 struct Config win_release   = {
-    .flags  = "-O2 -std=iso9899:1999",                
+    .flags  = "-O2",                
     .target = "win_sota", 
     .cc     = "x86_64-w64-mingw32-gcc",
     .ar     = "x86_64-w64-mingw32-ar"
@@ -32,18 +32,22 @@ struct Config win_release   = {
 /* - second_party - */
 struct Target noursmath = {
     .base_dir  = "second_party/noursmath",
+    .flags     = "-std=iso9899:1999",
     .sources   = ".",
     .kind      = MACE_STATIC_LIBRARY,
 };
 
 struct Target parg      = {
     .base_dir  = "second_party/parg",
+    .flags     = "-std=iso9899:1999",
     .sources   = ".",
     .kind      = MACE_STATIC_LIBRARY,
 };
 
 struct Target tnecs     = {
+    /* TODO: C99 compliance */
     .base_dir  = "second_party/tnecs",
+    // .flags     = "-std=iso9899:1999",
     .sources   = ".",
     .kind      = MACE_STATIC_LIBRARY,
 };
@@ -51,6 +55,7 @@ struct Target tnecs     = {
 /* - third_party - */
 struct Target cjson     = {
     .base_dir  = "third_party/cJson",
+    .flags     = "-std=iso9899:1999",
     .sources   = ".",
     .kind      = MACE_STATIC_LIBRARY,
 };
@@ -59,6 +64,7 @@ struct Target physfs    = {
     .sources   = ".",
     /* Disable all archives except .zip */
     /* Note: tcc can't compile 7z -> __cpuid missing */
+    /* Cannot be compiled with -std=iso9899:1999/-std=c99 */
     .flags     = "-DPHYSFS_SUPPORTS_7Z=0,"
                  "-DPHYSFS_SUPPORTS_GRP=0,"
                  "-DPHYSFS_SUPPORTS_WAD=0,"
@@ -76,6 +82,7 @@ struct Target physfs    = {
 
 struct Target tinymt    = {
     .sources   = ".",
+    .flags     = "-std=iso9899:1999",
     .base_dir  = "third_party/tinymt",
     .kind      = MACE_STATIC_LIBRARY,
 };
@@ -97,7 +104,7 @@ struct Target win_sota = {
     .links    = "SDL2,SDL2_image,SDL2_mixer,m,cjson,"
                 "noursmath,physfs,tinymt,tnecs,parg",
                 /* TODO: Remove flags given by sdl2-config */
-    .flags    = "-lmingw32,-lSDL2main,"
+    .flags    = "-lmingw32,-lSDL2main,-std=iso9899:1999,"
                 "-fno-strict-overflow,-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
                 "$(sdl2-config --cflags)",
@@ -122,7 +129,7 @@ struct Target sota = {
                 "cjson,noursmath,physfs,tinymt,tnecs,parg",
     .flags    = "-fno-strict-overflow,-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
-                "-DSDL_DISABLE_IMMINTRIN_H,"
+                "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
                 "$(sdl2-config --cflags)",
     .cmd_pre  = "astyle --options=utils/style.txt --verbose "
                 "--recursive src/* include/* test/* names/*",
@@ -147,7 +154,7 @@ struct Target test = {
     .links    = "SDL2,SDL2_image,SDL2_mixer,m,GLEW,"
                 "cjson,noursmath,physfs,tinymt,tnecs,parg",
     .flags    = "-L/usr/lib,-fno-strict-overflow,"
-                "-fno-strict-aliasing,"
+                "-fno-strict-aliasing,-std=iso9899:1999,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
                 "-DSDL_DISABLE_IMMINTRIN_H,"
                 "$(sdl2-config --cflags)",
