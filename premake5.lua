@@ -5,7 +5,7 @@ workspace "HelloPremake"
 	gccprefix ""
 	language "C"
 	staticruntime "on"
-	-- cdialect "C99" -- BORKED BY STB
+	-- cdialect "C99" -- 
 
 	targetdir "build"
 	os.mkdir("build")
@@ -62,35 +62,40 @@ workspace "HelloPremake"
 project "cJSON"
 	kind "StaticLib"
 	files{"third_party/cJson/**.c"}
-	includedirs{ "third_party/cJson"}
+	includedirs{"third_party/cJson"}
+	buildoptions{"-std=iso9899:1999"}
 
 project "physfs"
 	kind "StaticLib"
 	files{"third_party/physfs/**.c"}
-	includedirs{ "third_party/physfs"}
+	includedirs{"third_party/physfs"}
 
 project "tinymt"
 	kind "StaticLib"
 	files{"third_party/tinymt/**.c"}
 	includedirs{ "third_party/tinymt"}
+	buildoptions{"-std=iso9899:1999"}
 
 project "nmath"
 	kind "StaticLib"
 	basedir("second_party/noursmath")
 	files{"second_party/noursmath/**.c"}
 	includedirs{ "second_party/noursmath"}
+	buildoptions{"-std=iso9899:1999"}
 
 project "tnecs"
 	kind "StaticLib"
 	basedir("second_party/tnecs")
 	files{"second_party/tnecs/**.c"}
 	includedirs{ "second_party/tnecs"}
+	-- buildoptions{"-std=iso9899:1999"}
 
 project "nstr"
 	kind "StaticLib"
 	basedir("second_party/nstr")
 	files{"second_party/nstr/**.c"}
 	includedirs{ "second_party/nstr"}
+	buildoptions{"-std=iso9899:1999"}
 
 project "parg"
 	kind "StaticLib"
