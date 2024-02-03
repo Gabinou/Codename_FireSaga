@@ -81,11 +81,10 @@ void Game_menuStack_Push(struct Game *sota, tnecs_entity in_menu_entity) {
 tnecs_entity Game_menuStack_Pop(struct Game *sota, bool destroy) {
     tnecs_entity menu_stack_top_entity = DARR_POP(sota->menu_stack);
     SDL_assert(menu_stack_top_entity > 0);
-    struct Menu *mc = TNECS_GET_COMPONENT(sota->world,
-                                          menu_stack_top_entity,
-                                          Menu);
+    struct Menu *mc;
+    mc = TNECS_GET_COMPONENT(sota->world, menu_stack_top_entity, Menu);
     mc->visible = false;
-    // mc->elem = 0;
+
     if (destroy) {
     }
     return (menu_stack_top_entity);
