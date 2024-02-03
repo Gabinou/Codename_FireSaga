@@ -9,21 +9,21 @@
 #endif
 
 struct Config debug         = {
-    .flags = "-g3 -rdynamic -O0 -DSDL_ASSERT_LEVEL=2"
+    .flags = "-g3 -rdynamic -O0 -DSDL_ASSERT_LEVEL=2 -std=iso9899:1999"
 };
 struct Config release       = {
-    .flags = "-O2 -DSDL_ASSERT_LEVEL=1"
+    .flags = "-O2 -DSDL_ASSERT_LEVEL=1 -std=iso9899:1999"
 };
 
 struct Config win_debug     = {
-    .flags  = "-g -O0",              
+    .flags  = "-g3 -rdynamic -O0 -std=iso9899:1999",              
     .target = "win_sota",
     .cc     = "x86_64-w64-mingw32-gcc",
     .ar     = "x86_64-w64-mingw32-ar"
 };
 
 struct Config win_release   = {
-    .flags  = "-O2",                
+    .flags  = "-O2 -std=iso9899:1999",                
     .target = "win_sota", 
     .cc     = "x86_64-w64-mingw32-gcc",
     .ar     = "x86_64-w64-mingw32-ar"
