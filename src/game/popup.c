@@ -123,6 +123,16 @@ void Game_PopUp_Pre_Combat_Enable(struct Game *sota) {
     PreCombatPopup_Load(pcp, sota->aggressor, sota->defendant, sota->renderer, &popup->n9patch);
 }
 
+void Game_PopUp_Pre_Combat_Hide(struct Game *sota) {
+    if (sota->popups[POPUP_TYPE_PRE_COMBAT] == TNECS_NULL)
+        return;
+
+    tnecs_entity ent = sota->popups[POPUP_TYPE_PRE_COMBAT];
+    struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, ent, PopUp);
+    popup->visible = false;
+}
+
+
 void Game_PopUp_Pre_Combat_Free(struct Game *sota) {
 
 }
