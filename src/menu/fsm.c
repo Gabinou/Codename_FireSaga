@@ -398,7 +398,7 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
 /* event_Cursor_Moves */
 void fsm_eCrsMvs_sGmpMap_moAtk(struct Game *sota, struct Menu *mc) {
     /* Set defendant to current candidate */
-    SDL_assert(sota->candidate != TNECS_NULL);
+    SDL_assert(sota->candidates[sota->candidate] != TNECS_NULL);
     sota->defendant = sota->candidates[sota->candidate];
     SDL_assert(sota->defendant != TNECS_NULL);
 }
