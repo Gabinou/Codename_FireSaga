@@ -139,12 +139,14 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
         SDL_Log("-- loading reinforcements %ld --", i);
         SDL_Log("-- create entity --");
-        tnecs_entity temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Unit, Position, Sprite,
-                                     Timer, MapHPBar, AI);
+        tnecs_entity temp_unit_ent;
+        temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Unit, Position,
+                                                        Sprite, Timer, MapHPBar, AI);
         DARR_PUT(sota->map_enemies, temp_unit_ent);
         SDL_Log("-- checks --");
-        tnecs_component typeflag = TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Unit, Position, Sprite,
-                                                                  Timer, MapHPBar, AI);
+        tnecs_component typeflag;
+        typeflag = TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Unit, Position,
+                                                  Sprite, Timer, MapHPBar, AI);
 
         SDL_Log("- 1 -");
         size_t typeflag_id1 = tnecs_typeflagid(sota->world, typeflag);
@@ -171,6 +173,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         tnecs_entity **entities_bytype = sota->world->entities_bytype;
         SDL_assert(entities_bytype != NULL);
 
+        // TODO: Walking around on the map
         // SDL_Log("-- loading slider --");
         // struct Slider * slider = TNECS_GET_COMPONENT(sota->world,  temp./_unit_ent, Slider);
         // SDL_assert(slider != NULL);

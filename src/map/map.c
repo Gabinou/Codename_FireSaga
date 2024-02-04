@@ -702,15 +702,19 @@ void Map_readJSON(void *input,  cJSON *jmap) {
         DARR_PUT(map->reinforcements, temp_rein);
         jequipment = cJSON_GetObjectItem(jreinforcement, "Equipment");
         temp_equip = DARR_INIT(temp_equip, struct Inventory_item, DEFAULT_EQUIPMENT_SIZE);
-        if (cJSON_IsArray(jequipment)) {
-            DARR_PUT(map->items_num, cJSON_GetArraySize(jequipment));
-            cJSON_ArrayForEach(jitem, jequipment) {
-                temp_item = Inventory_item_default;
-                jsonio_Read_Item(jitem, &temp_item);
-                DARR_PUT(temp_equip, temp_item);
-            }
-        } else {
+
+        if (!cJSON_IsArray(jequipment)) {
             SDL_Log("Missing Equipment array in Reinforcement %d", i);
+            continue;
+        }
+
+        DARR_PUT(map->items_num, cJSON_GetArraySize(jequipment));
+        cJSON_ArrayForEach(jitem, jequipment) {
+            temp_item = Inventory_item_default;
+            jsonio_Read_Item(jitem, &temp_item);
+            // NOTE:    Do not ignore empty items. 
+            //          To be able to put weapons in right hand. 
+            DARR_PUT(temp_equip, temp_item);
         }
         DARR_PUT(map->reinf_equipments, temp_equip);
     }

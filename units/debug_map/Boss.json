@@ -65,9 +65,9 @@
 		},
 		"Items":	{
 			"Item":	{
-				"name":	"Damas Axe",
+				"name":	"Empty",
 				"Infused":	-1,
-				"id":	203,
+				"id":	-1,
 				"used":	0
 			},
 			"Item":	{
