@@ -712,8 +712,8 @@ void Map_readJSON(void *input,  cJSON *jmap) {
         cJSON_ArrayForEach(jitem, jequipment) {
             temp_item = Inventory_item_default;
             jsonio_Read_Item(jitem, &temp_item);
-            // NOTE:    Do not ignore empty items. 
-            //          To be able to put weapons in right hand. 
+            // NOTE:    Do not ignore empty items.
+            //          To be able to put weapons in right hand.
             DARR_PUT(temp_equip, temp_item);
         }
         DARR_PUT(map->reinf_equipments, temp_equip);

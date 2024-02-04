@@ -35,8 +35,10 @@ b32 Combat_canDouble(struct Unit *_att, struct Unit *_dfd) {
 
 b32 Combat_canAttack_Equipped(struct Unit *attacker, struct Unit *defender,
                               struct Point *att_pos, struct Point *dfd_pos) {
-    SDL_assert(attacker && defender);
-    SDL_assert(att_pos  && dfd_pos);
+    SDL_assert(attacker);
+    SDL_assert(defender);
+    SDL_assert(att_pos);
+    SDL_assert(dfd_pos);
     /* Get range of current loadout */
     struct Range *att_range = Unit_Range_Loadout(attacker);
     /* Is enemy in range? */
@@ -47,8 +49,10 @@ b32 Combat_canAttack_Equipped(struct Unit *attacker, struct Unit *defender,
 
 struct Combat_Flow Compute_Combat_Flow(struct Unit *agg, struct Unit *dft,
                                        struct Point *agg_pos, struct Point *dft_pos) {
-    SDL_assert(agg     && dft);
-    SDL_assert(agg_pos && dft_pos);
+    SDL_assert(dft);
+    SDL_assert(agg);
+    SDL_assert(agg_pos);
+    SDL_assert(dft_pos);
     struct Combat_Flow out_flow;
     out_flow.aggressor_phases = 1;
     out_flow.defendant_phases = 0;
@@ -176,14 +180,14 @@ struct Combat_Rates Compute_Combat_Rates(struct Unit *attacker,
     return (out_rates);
 }
 
-// *INDENT-OFF*
-struct Combat_Forecast Compute_Combat_Forecast(struct Unit * agg, 
-                                               struct Unit * dft,
-                                               struct Point * agg_pos,
-                                               struct Point * dft_pos) {
-// *INDENT-ON*
-    SDL_assert(agg        &&dft);
-    SDL_assert(agg_pos    &&dft_pos);
+struct Combat_Forecast Compute_Combat_Forecast(struct Unit  *agg,
+                                               struct Unit  *dft,
+                                               struct Point *agg_pos,
+                                               struct Point *dft_pos) {
+    SDL_assert(agg);
+    SDL_assert(dft);
+    SDL_assert(agg_pos);
+    SDL_assert(dft_pos);
     struct Combat_Forecast out = {0};
     u8 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
     Unit_effectiveStats(agg);
