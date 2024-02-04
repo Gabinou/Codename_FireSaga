@@ -161,14 +161,14 @@ enum TNECS {
 
 /***************************** STRUCTS DEFINITIONS ***************************/
 struct tnecs_World {
-    tnecs_entity     *entities; // (entities[entity_id] == entity_id) unless deleted
+    tnecs_entity    *entities; // (entities[entity_id] == entity_id) unless deleted
     tnecs_component *typeflags;                       // [typeflag_id]
     tnecs_component *entity_typeflags;                // [entity_id]
     tnecs_component *system_typeflags;                // [system_id]
-    tnecs_phase      *system_phases;                  // [system_id]
-    bool               *system_exclusive;               // [system_id]
-    tnecs_phase      *phases;                         // [phase_id]
-    size_t             *system_orders;                  // [system_id]
+    tnecs_phase     *system_phases;                   // [system_id]
+    bool            *system_exclusive;                // [system_id]
+    tnecs_phase     *phases;                          // [phase_id]
+    size_t          *system_orders;                   // [system_id]
     size_t            component_bytesizes[TNECS_COMPONENT_CAP]; // [component_id]
     tnecs_hash      component_hashes[TNECS_COMPONENT_CAP];    // [component_id]
     char *component_names[TNECS_COMPONENT_CAP];         // [component_id]
@@ -293,6 +293,7 @@ tnecs_entity tnecs_entity_destroy(struct tnecs_World *w, tnecs_entity entity);
 #define TNECS_ENTITY_CREATE_wCOMPONENTS(world, ...) tnecs_entity_create_wcomponents(world, TNECS_VAR_EACH_ARGN(__VA_ARGS__), TNECS_VARMACRO_FOREACH_SCOMMA(TNECS_HASH, __VA_ARGS__))
 #define TNECS_ENTITY_TYPEFLAG(world, entity) world->entity_typeflags[entity]
 #define TNECS_ENTITY_HASCOMPONENT(world, entity, name) ((world->entity_typeflags[entity] &tnecs_component_names2typeflag(world, 1, #name)) > 0)
+#define TNECS_ENTITY_HASCOMPONENT(world, entity, name) ((world->entity_typeflags[entity] &tnecs_component_names2typeflag(world, 1, #name)) > 0)
 
 #define TNECS_ADD_COMPONENT(...) TNECS_CHOOSE_ADD_COMPONENT(__VA_ARGS__, TNECS_ADD_COMPONENT4, TNECS_ADD_COMPONENT3)(__VA_ARGS__)
 #define TNECS_CHOOSE_ADD_COMPONENT(_1,_2,_3,_4,NAME,...) NAME
@@ -339,8 +340,7 @@ bool tnecs_system_order_switch(struct tnecs_World *w, tnecs_phase phase_id,
                                size_t order1, size_t order2);
 
 /************************ UTILITY FUNCTIONS/MACROS ***************************/
-size_t tnecs_component_name2id(struct tnecs_World *w,
-                               const char *name);
+size_t tnecs_component_name2id(struct tnecs_World *w, const char *name);
 size_t tnecs_component_hash2id(struct tnecs_World *w, tnecs_hash hash);
 size_t tnecs_component_order_bytype(struct tnecs_World *w, size_t component_id,
                                     tnecs_component typeflag);
@@ -349,6 +349,8 @@ size_t tnecs_component_order_bytypeid(struct tnecs_World *w, size_t component_id
 tnecs_component tnecs_component_names2typeflag(struct tnecs_World *w, size_t argnum, ...);
 tnecs_component tnecs_component_ids2typeflag(size_t argnum, ...);
 tnecs_component tnecs_component_hash2type(struct tnecs_World *w, tnecs_hash hash);
+
+void tnecs_component_names_print(struct tnecs_World *w, tnecs_entity ent);
 
 size_t tnecs_system_name2id(struct tnecs_World *w,
                             const char *name);

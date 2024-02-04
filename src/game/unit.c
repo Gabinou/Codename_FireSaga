@@ -140,6 +140,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 in_unit,
         unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position, Sprite, Timer, MapHPBar);
     }
 
+    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, unit_ent, Unit));
     if (!TNECS_ENTITY_HASCOMPONENT(sota->world, unit_ent, MapHPBar)) {
         TNECS_ADD_COMPONENT(sota->world, unit_ent, MapHPBar);
     }
@@ -163,6 +164,8 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 in_unit,
     SDL_Log("unit_ent %ld", unit_ent);
     SDL_Log("typeflag %llx", world->entity_typeflags[unit_ent]);
     SDL_Log("typeflag %llx", typeflag);
+    tnecs_component_names_print(sota->world, unit_ent);
+
     SDL_assert(world->entities[unit_ent] == unit_ent);
     SDL_assert(unit_ent);
     SDL_assert(sota->world->entity_typeflags[unit_ent] == typeflag);
@@ -170,6 +173,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 in_unit,
     SDL_Log("-- loading unit --");
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
     SDL_assert(unit != NULL);
+    getchar();
     SDL_assert(sota->party_loaded[in_unit]);
 
     memcpy(unit, &sota->party[in_unit], sizeof(struct Unit));
