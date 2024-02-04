@@ -65,9 +65,9 @@
 		},
 		"Items":	{
 			"Item":	{
-				"name":	"Empty",
+				"name":	"Steel Axe",
 				"Infused":	-1,
-				"id":	-1,
+				"id":	202,
 				"used":	0
 			},
 			"Item":	{

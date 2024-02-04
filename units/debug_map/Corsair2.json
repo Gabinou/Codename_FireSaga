@@ -65,15 +65,15 @@
 		},
 		"Items":	{
 			"Item":	{
-				"name":	"Empty",
+				"name":	"Iron Axe",
 				"Infused":	-1,
-				"id":	-1,
+				"id":	201,
 				"used":	0
 			},
 			"Item":	{
-				"name":	"Empty",
+				"name":	"Wooden Shield",
 				"Infused":	-1,
-				"id":	-1,
+				"id":	402,
 				"used":	0
 			},
 			"Item":	{
