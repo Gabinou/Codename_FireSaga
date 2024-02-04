@@ -738,10 +738,10 @@ void PreCombatPopup_Free_Icons(struct PreCombatPopup *pcp) {
 }
 
 /* --- Drawing --- */
-void PreCombatPopup_Draw(struct Menu *mc, SDL_Texture *render_target,
-                         SDL_Renderer *renderer) {
-    struct PreCombatPopup *pcp = (struct PreCombatPopup *)mc->data;
-    struct n9Patch *n9patch   = &mc->n9patch;
+void PreCombatPopup_Draw(  struct PopUp *popup, struct Point pos,
+                           SDL_Texture *render_target, SDL_Renderer *renderer) {
+    struct PreCombatPopup *pcp = (struct PreCombatPopup *)popup->data;
+    struct n9Patch *n9patch   = &popup->n9patch;
 
     SDL_assert(pcp != NULL);
     if (pcp->update) {
@@ -754,8 +754,8 @@ void PreCombatPopup_Draw(struct Menu *mc, SDL_Texture *render_target,
     SDL_Rect dstrect = {
         .w = n9patch->size_pixels.x * n9patch->scale.x,
         .h = n9patch->size_pixels.y * n9patch->scale.y,
-        .x = pcp->pos.x,
-        .y = pcp->pos.y,
+        .x = pos.x,
+        .y = pos.y,
     };
     SDL_assert(pcp->texture != NULL);
     SDL_RenderCopy(renderer, pcp->texture, NULL, &dstrect);

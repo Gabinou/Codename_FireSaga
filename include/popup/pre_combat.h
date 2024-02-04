@@ -4,7 +4,6 @@
 #include "enums.h"
 #include "game/game.h"
 #include "pixelfonts.h"
-#include "menu.h"
 #include "unit/unit.h"
 #include "nmath.h"
 #include "popup/popup.h"
@@ -234,11 +233,9 @@ void _PreCombatPopup_Load(struct PreCombatPopup *pcp, struct Unit *a, struct Uni
 /* --- Setters --- */
 void PreCombatPopup_Set(struct PreCombatPopup *pcp, struct Game *sota);
 
-/* --- Positioning --- */
-void PreCombatPopup_Elem_Pos(struct PreCombatPopup *pcp, struct Menu *mc);
-
 /* --- Drawing --- */
-void PreCombatPopup_Draw(  struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
+void PreCombatPopup_Draw(  struct PopUp *p, struct Point pos, SDL_Texture *rt,
+                           SDL_Renderer *r);
 void PreCombatPopup_Update(struct PreCombatPopup *pcp, struct n9Patch *n9patch,
                            SDL_Texture *rt, SDL_Renderer *r);
 

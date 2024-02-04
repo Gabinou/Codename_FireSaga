@@ -77,9 +77,8 @@ fsm_menu_t fsm_eCrsMvs_sGmpMap_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_COPY */          NULL,
     /* MENU_OPTION_SETTINGS */      NULL,
     /* MENU_OPTION_EXTRAS */        NULL,
-    /* MENU_OPTION_DEBUG_MAP */     NULL,    
-}
-
+    /* MENU_OPTION_DEBUG_MAP */     NULL,
+};
 
 fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_START */         NULL,
