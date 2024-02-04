@@ -72,6 +72,8 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
                               struct Unit          *unit,
                               struct Boss          *boss) {
     SDL_Log("Map_Condition: Check_Death");
+    SDL_Log("Unit id Silou:%d Died:%d condition:%d", UNIT_ID_SILOU, unit->_id, condition->unit);
+
     /* Checking for matching army */
     b32 match_army = true;
     if ((condition->army > ARMY_START) && (condition->army < ARMY_NUM))
@@ -85,7 +87,6 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
 
     /* Checking for matching unit ID */
     b32 match_unit = true;
-    SDL_Log("UNIT_ID_SILOU %d %d %d", UNIT_ID_SILOU, unit->_id, condition->unit);
     if ((condition->unit > UNIT_ID_NULL) && (condition->unit < UNIT_ID_NUM))
         match_unit = (unit->_id == condition->unit);
 

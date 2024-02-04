@@ -1384,6 +1384,7 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
                                victim,                      boss);
     Map_Conditions_Check_Death(sota->map->death_friendly,   sota->map,
                                victim,                      boss);
+    getchar();
 }
 
 void receive_event_Unit_Loots(struct Game *sota, SDL_Event *userevent) {
