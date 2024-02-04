@@ -255,9 +255,6 @@ void Map_Free(struct Map *map) {
         map->doors_ent = NULL;
     }
 
-    if (map->unitmap != NULL)
-        Map_Units_Free(map);
-
     Map_Tilesets_Free(map);
     Map_Tilesprites_Free(map);
     Map_Tilemap_Texture_Free(map);
