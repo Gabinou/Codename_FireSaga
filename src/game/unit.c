@@ -124,17 +124,17 @@ void Game_Party_Unload(struct Game *sota, i16 *to_unload_ids, size_t unload_num)
     }
 }
 
-tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 in_unit,
+tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
                                       struct Point in_pos) {
     /* Create Unit entity from previously loaded party unit. */
     tnecs_world *world = sota->world;
     tnecs_entity unit_ent;
-    if (sota->units_loaded[in_unit] != TNECS_NULL) {
-        unit_ent = sota->units_loaded[in_unit];
-        SDL_Log("Unit %d (%s, entity %d) is already loaded", in_unit,
-                global_unitNames[in_unit].data, unit_ent);
+    if (sota->units_loaded[unit_id] != TNECS_NULL) {
+        unit_ent = sota->units_loaded[unit_id];
+        SDL_Log("Unit %d (%s, entity %d) is already loaded", unit_id,
+                global_unitNames[unit_id].data, unit_ent);
     } else {
-        SDL_Log("-- create entity for unit %ld --", in_unit);
+        SDL_Log("-- create entity for unit %ld --", unit_id);
         char filename[DEFAULT_BUFFER_SIZE];
         SDL_Log("-- create entity --");
         unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position,
@@ -174,14 +174,14 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 in_unit,
     SDL_Log("-- loading unit --");
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
     SDL_assert(unit != NULL);
-    SDL_assert(sota->party_loaded[in_unit]);
+    SDL_assert(sota->party_loaded[unit_id]);
 
-    memcpy(unit, &sota->party[in_unit], sizeof(struct Unit));
-    SDL_assert((sota->party[in_unit].handedness > UNIT_HAND_NULL)
-               && (sota->party[in_unit].handedness < UNIT_HAND_END));
+    memcpy(unit, &sota->party[unit_id], sizeof(struct Unit));
+    SDL_assert((sota->party[unit_id].handedness > UNIT_HAND_NULL)
+               && (sota->party[unit_id].handedness < UNIT_HAND_END));
     SDL_assert((unit->handedness > UNIT_HAND_NULL) && (unit->handedness < UNIT_HAND_END));
 
-    Unit_setid(unit, in_unit);
+    Unit_setid(unit, unit_id);
     SDL_assert(unit->name.data != NULL);
 
     unit->items_dtab   = sota->items_dtab;
@@ -250,10 +250,10 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 in_unit,
     SDL_assert(typeflag_id1 == typeflag_id2);
     size_t current_num = world->num_entities_bytype[typeflag_id1];
     SDL_assert(world->entities_bytype[typeflag_id1][current_num - 1] == unit_ent);
-    sota->units_loaded[in_unit] = unit_ent;
+    sota->units_loaded[unit_id] = unit_ent;
     SDL_assert(unit->name.data != NULL);
 
-    return (sota->units_loaded[in_unit]);
+    return (sota->units_loaded[unit_id]);
 }
 /* --- Unitmap --- */
 void Game_putPConMap(struct Game *sota, i16 *unit_ids,
