@@ -404,16 +404,13 @@ void fsm_eCrsHvUnit_ssMapCndt(struct Game *sota, tnecs_entity hov_ent) {
 
     /* OLD event_Defendant_Select */
     // 1. Compute Combat stuff -> Move to cursor hovers new defendant
+    sota->defendant = sota->candidates[sota->candidate];
     Game_Combat_Outcome(sota);
 
     // 2. Enable Pre-combat menu -> Move to cursor hovers new defendant
     Game_PopUp_Pre_Combat_Enable(sota);
 
-    struct Menu *mc;
-    mc = TNECS_GET_COMPONENT(sota->world, sota->PRE_COMBAT_POPUP, Menu);
-    mc->visible = true;
-
-    // 6. Attackmap only defendant. -> Move to cursor hovers new defendant
+    // 3. Attackmap only defendant. -> Move to cursor hovers new defendant
     struct Map *map = sota->map;
     struct Position *pos  = TNECS_GET_COMPONENT(sota->world, sota->defendant, Position);
     memset(map->attacktomap, 0, map->row_len * map->col_len * sizeof(*map->attacktomap));
@@ -697,15 +694,16 @@ void fsm_eCrsMvs_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
         sota->candidate = (sota->candidate - 1 + num) % num;
     }
 
+    /* Action depending on previously selected menu option */
+    if (fsm_eCrsMvs_sGmpMap_mo[sota->selected_menu_option] != NULL)
+        fsm_eCrsMvs_sGmpMap_mo[sota->selected_menu_option](sota, NULL);
+
     Game_Cursor_Move_toCandidate(sota);
 
     /* Reset cursor_move */
     sota->cursor_move.x = 0;
     sota->cursor_move.y = 0;
 
-    /* Action depending on previously selected menu option */
-    if (fsm_eCrsMvs_sGmpMap_mo[sota->selected_menu_option] != NULL)
-        fsm_eCrsMvs_sGmpMap_mo[sota->selected_menu_option](sota, NULL);
 
     /* Update pre_combat_popup */
     Game_PopUp_Pre_Combat_Enable(sota);

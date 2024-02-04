@@ -945,7 +945,6 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->substate == GAME_SUBSTATE_MENU);
     strncpy(sota->reason, "loadout was selected, time to select defendant", sizeof(sota->reason));
     Game_Switch_toCandidates(sota, sota->defendants);
-
 }
 
 void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {
