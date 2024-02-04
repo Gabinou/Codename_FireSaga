@@ -51,6 +51,36 @@ fsm_menu_t fsm_eCrsMvs_ssMenu_m[MENU_TYPE_END] = {
 };
 
 /* -- Menu-option FSMs -- */
+fsm_menu_t fsm_eCrsMvs_sGmpMap_mo[MENU_OPTION_NUM] = {
+    /* MENU_OPTION_START */         NULL,
+    /* MENU_OPTION_ITEMS */         NULL,
+    /* MENU_OPTION_TALK */          NULL,
+    /* MENU_OPTION_STAFF */         NULL,
+    /* MENU_OPTION_DANCE */         NULL,
+    /* MENU_OPTION_RESCUE */        NULL,
+    /* MENU_OPTION_SEIZE */         NULL,
+    /* MENU_OPTION_ESCAPE */        NULL,
+    /* MENU_OPTION_ATTACK */        &fsm_eCrsMvs_sGmpMap_moAtk,
+    /* MENU_OPTION_VILLAGE */       NULL,
+    /* MENU_OPTION_TRADE */         NULL,
+    /* MENU_OPTION_MAP */           NULL,
+    /* MENU_OPTION_WAIT */          NULL,
+    /* MENU_OPTION_OPEN */          NULL,
+    /* MENU_OPTION_QUIT */          NULL,
+    /* MENU_OPTION_END_TURN */      NULL,
+    /* MENU_OPTION_UNITS */         NULL,
+    /* MENU_OPTION_CONVOY */        NULL,
+    /* MENU_OPTION_GLOBAL_RANGE */  NULL,
+    /* MENU_OPTION_NEW_GAME */      NULL,
+    /* MENU_OPTION_LOAD */          NULL,
+    /* MENU_OPTION_ERASE */         NULL,
+    /* MENU_OPTION_COPY */          NULL,
+    /* MENU_OPTION_SETTINGS */      NULL,
+    /* MENU_OPTION_EXTRAS */        NULL,
+    /* MENU_OPTION_DEBUG_MAP */     NULL,    
+}
+
+
 fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_START */         NULL,
     /* MENU_OPTION_ITEMS */         &fsm_eAcpt_sGmpMap_ssMenu_mPSM_moItem,
@@ -259,7 +289,6 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
     sprite->visible = false;
 
     /* - Send Defendant_Select event - */
-    // ONLY FOR ATTACK! HOW TO SWITCH FOR SPECTATOR/PATIENTS?
     Event_Emit(__func__, SDL_USEREVENT, event_Defendant_Select, data1_entity, data2_entity);
 
 }
@@ -367,10 +396,19 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
 
 }
 
+/* event_Cursor_Moves */
+void fsm_eCrsMvs_sGmpMap_moAtk(struct Game *sota, struct Menu *mc) {
+    /* Set defendant to current candidate */
+    SDL_assert(sota->candidate != TNECS_NULL);
+    sota->defendant = sota->candidate;
+    SDL_assert(sota->defendant != TNECS_NULL);
+}
+
 /* --- fsm_eCncl_sGmpMap_ssMenu_m --- */
 void fsm_eCrsMvs_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
     // TODO: update healmap when STAFF CHANGES
 }
+
 
 void fsm_eCrsMvs_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     SDL_assert(mc->elem < DEFAULT_EQUIPMENT_SIZE);

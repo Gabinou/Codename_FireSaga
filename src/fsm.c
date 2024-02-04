@@ -703,8 +703,12 @@ void fsm_eCrsMvs_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
     sota->cursor_move.x = 0;
     sota->cursor_move.y = 0;
 
-    /* TODO: Update pre_combat_popup */
+    /* Action depending on previously selected menu option */
+    if (fsm_eCrsMvs_sGmpMap_mo[sota->selected_menu_option] != NULL)
+        fsm_eCrsMvs_sGmpMap_mo[sota->selected_menu_option](sota, NULL);
 
+    /* Update pre_combat_popup */
+    Game_PopUp_Pre_Combat_Enable(sota);
 }
 
 void fsm_eCrsMvs_sMapUnitMv(struct Game *sota,
