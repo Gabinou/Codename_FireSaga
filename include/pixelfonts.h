@@ -112,16 +112,20 @@ void PixelFont_Compute_Glyph_BBox(struct PixelFont *font);
 /* Outputs true if the text scrolled this frame */
 int PixelFont_Scroll(struct PixelFont *f, u64 time_ns);
 
-/*--- Writing --- */
+/* --- Writing --- */
 // TEXTURE FONT NOTE:
 // For PixelFont_Write be usable for Texturefont,
 // skip glyph 32, cause it is reserved for SPACE
 // col_len 16: 1st cell in 3rd row / col_len 8: 1st cell in 5rd row
-void PixelFont_Write(       struct PixelFont *f, SDL_Renderer *r, char *t,
-                            size_t len, u32 px, u32 py);
-void PixelFont_Write_Len(   struct PixelFont *f, SDL_Renderer *r, char *t,
-                            u32 px, u32 py);
-void PixelFont_Write_Scroll(struct PixelFont *f, SDL_Renderer *r, char *t,
-                            u32 px, u32 py);
+void PixelFont_Write(             struct PixelFont *f, SDL_Renderer *r, char *t,
+                                  size_t len, u32 px, u32 py);
+void PixelFont_Write_Len(         struct PixelFont *f, SDL_Renderer *r, char *t,
+                                  u32 px, u32 py);
+void PixelFont_Write_Scroll(      struct PixelFont *f, SDL_Renderer *r, char *t,
+                                  u32 px, u32 py);
+void PixelFont_Write_Centered(    struct PixelFont *f, SDL_Renderer *r, char *t,
+                                  size_t len, u32 px, u32 py);
+void PixelFont_Write_Centered_Len(struct PixelFont *f, SDL_Renderer *r, char *t,
+                                  u32 px, u32 py);
 
 #endif /* PIXELFONTS_H */
