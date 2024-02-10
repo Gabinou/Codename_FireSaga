@@ -17,7 +17,31 @@ struct Game;
 struct MenuElemDirections;
 
 enum DM_MENU {
-    DM_ELEM_START       = -1,
+
+    DM_PATCH_X_SIZE     =  29,
+    DM_PATCH_Y_SIZE     =  21,
+
+    DM_PAGE_NUM         =   4,
+    DM_LINE_CONTENT_H   =  16,
+    DM_LINE_SPACE_H     =   2, 
+    DM_SCROLL_ADD       =  DM_LINE_H * 2,
+    DM_LINE_H           =  DM_LINE_CONTENT_H + DM_LINE_SPACE_H,
+    DM_LINE_NUM         =   8,
+
+
+    /* --- Unit frame ---  */
+    /* Relative to menu frame */
+    DM_UNIT_FRAME_X     =   8,
+    DM_UNIT_FRAME_Y     =  24,
+    DM_UNIT_FRAME_W     = 208,
+    DM_UNIT_FRAME_H     = DM_LINE_H * DM_LINE_NUM,
+
+    /* --- Page frame ---  */
+    /* Relative to unit frame */
+    DM_PAGE_FRAME_X     =  78,
+    DM_PAGE_FRAME_Y     =   0,
+    DM_PAGE_FRAME_W     = 128,
+    DM_PAGE_FRAME_H     = DM_UNIT_FRAME_H,
 
 };
 
@@ -41,18 +65,19 @@ enum DM_MENU {
 //      - Weapon icons
 //      - Mount icons
 
-
 struct DeploymentMenu {
     b32 update;
     u8  party_size;
+    i8  page;
 
-    struct Unit *party;
-    struct Map  *map;
-    struct PixelFont *font_wpns; /* wpn icons as font to write them easily */
-    struct PixelFont *pixelnours;
-    struct PixelFont *pixelnours_16;
-    struct PixelFont *pixelnours_big;
+    struct Unit         *party;
+    struct Map          *map;
+    struct PixelFont    *font_wpns; /* wpn icons as font to write them easily */
+    struct PixelFont    *pixelnours;
+    struct PixelFont    *pixelnours_16;
+    struct PixelFont    *pixelnours_big;
 
+    SDL_Texture *texture;
     SDL_Texture *texture_mount;
 };
 extern struct DeploymentMenu DeploymentMenu_default;
@@ -65,6 +90,5 @@ void DeploymentMenu_Free(struct DeploymentMenu *gm);
 void DeploymentMenu_Draw(  struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
 void DeploymentMenu_Update(struct DeploymentMenu *g, struct n9Patch      *n,
                                   SDL_Texture    *t,        SDL_Renderer *r);
-
 
 #endif /* DEPLOYMENT_MENU_H */
