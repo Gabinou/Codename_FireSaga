@@ -21,6 +21,27 @@ enum DM_MENU {
 
 };
 
+/* --- DeploymentMenu Design --- */
+// 3 Different frames
+//  -> Menu Frame
+//      - Parent of Units Frame
+//      - Headers
+//      - Scroll bar
+//  -> Units Frame
+//      - Parent of Page frame
+//      - +X +Y transform
+//      - Cutoff content outside bounds
+//      - Scrolls up and down
+//      - Names
+//      - Map Units
+//  -> Page Frame
+//      - +Y transform
+//      - Scrolls Left and right
+//      - Stats
+//      - Weapon icons
+//      - Mount icons
+
+
 struct DeploymentMenu {
     b32 update;
     u8  party_size;

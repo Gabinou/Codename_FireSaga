@@ -11,7 +11,6 @@ static void _StatsMenu_Load_Face( struct StatsMenu *sm);
 static void _StatsMenu_Load_Icons(struct StatsMenu *sm, SDL_Renderer   *r);
 
 /* --- Drawing --- */
-/* -- Drawing elements -- */
 static void _StatsMenu_Draw_Item(         struct StatsMenu *sm, SDL_Renderer *r, int i);
 static void _StatsMenu_Draw_Name(         struct StatsMenu *sm, SDL_Renderer *r);
 static void _StatsMenu_Draw_Mount(        struct StatsMenu *sm, SDL_Renderer *r);

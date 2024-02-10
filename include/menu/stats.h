@@ -413,6 +413,7 @@ void StatsMenu_Draw(  struct Menu *mc, SDL_Texture *rt,
 
 void StatsMenu_Update(struct StatsMenu     *s,  struct n9Patch *n9,
                       SDL_Texture          *rt, SDL_Renderer   *r);
+
 /* --- Positioning --- */
 void StatsMenu_Elem_Pos(       struct StatsMenu *sm, struct Menu *mc);
 void StatsMenu_Elem_Pos_Revert(struct StatsMenu *sm, struct Menu *mc);
