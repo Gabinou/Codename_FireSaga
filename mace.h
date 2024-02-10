@@ -3633,7 +3633,7 @@ void mace_default_target_order() {
         }
     }
 
-    fprintf(stderr, "Default target not found. Exiting");
+    fprintf(stderr, "Default target not found. Exiting\n");
     exit(1);
 }
 
@@ -3722,7 +3722,7 @@ void mace_set_compiler(char *compiler) {
         cc_depflag = "-MM";
         ar = "llvm-ar";
     } else {
-        fprintf(stderr, "mace error: unknown compiler '%s'. \n", compiler);
+        fprintf(stderr, "Error: unknown compiler '%s'. \n", compiler);
         exit(1);
     }
 }
@@ -3832,7 +3832,7 @@ void mace_Target_excludes(struct Target *target) {
         rpath = realloc(rpath, (strlen(rpath) + 1) * sizeof(*rpath));
 
         if (mace_isDir(rpath)) {
-            fprintf(stderr, "Error dir '%s' in excludes: files only!\n", rpath);
+            fprintf(stderr, "Error: dir '%s' in excludes: files only!\n", rpath);
         } else {
             target->_excludes[target->_excludes_num++] = mace_hash(rpath);
             free(rpath);
@@ -4129,7 +4129,7 @@ glob_t mace_glob_sources(const char *path) {
                 (ret == GLOB_ABORTED ? "filesystem problem" :
                  ret == GLOB_NOMATCH ? "no match of pattern" :
                  ret == GLOB_NOSPACE ? "no dynamic memory" :
-                 "unknown problem"));
+                 "unknown problem\n"));
         exit(1);
     }
 
@@ -4720,7 +4720,7 @@ void mace_Headers_Checksums(struct Target *target) {
         if (changed) {
             fd = fopen(checksum_path, "w");
             if (fd == NULL) {
-                fprintf(stderr, "Could not open file %s", checksum_path);
+                fprintf(stderr, "Could not open file %s\n", checksum_path);
                 exit(1);
             }
             fwrite(hash_current, 1, SHA1_LEN, fd); // SHA1_LEN
@@ -4762,7 +4762,7 @@ bool mace_Source_Checksum(struct Target *target, char *source_path, char *obj_pa
     if (changed) {
         fd = fopen(checksum_path, "w");
         if (fd == NULL) {
-            fprintf(stderr, "Could not open file %s", checksum_path);
+            fprintf(stderr, "Could not open file %s\n", checksum_path);
             exit(1);
         }
         fwrite(hash_current, 1, SHA1_LEN, fd); // SHA1_LEN
@@ -4790,7 +4790,7 @@ bool mace_Target_Source_Add(struct Target *target, char *token) {
     /* - Expand path - */
     char *rpath = calloc(PATH_MAX, sizeof(*rpath));
     if (realpath(arg, rpath) == NULL) {
-        printf("Warning! realpath error : %s\n", rpath);
+        printf("Warning! realpath issue: %s\n", rpath);
         free(rpath);
         rpath = arg;
     } else {
@@ -5108,7 +5108,7 @@ void mace_build_target(struct Target *target) {
 
     /* --- Linking --- */
     if ((target->kind <= MACE_TARGET_NULL) || (target->kind >= MACE_TARGET_NUM)) {
-        fprintf(stderr, "Wrong target type.");
+        fprintf(stderr, "Wrong target type.\n");
         exit(1);
     }
     mace_link[target->kind - 1](target);
@@ -5146,7 +5146,7 @@ void mace_build_order_add(size_t order) {
     assert(build_order != NULL);
     assert(build_order_num < target_num);
     if (mace_in_build_order(order, build_order, build_order_num)) {
-        fprintf(stderr, "Target ID is already in build_order. Exiting.");
+        fprintf(stderr, "Target ID is already in build_order. Exiting.\n");
         exit(1);
     }
     build_order[build_order_num++] = order;
@@ -5185,7 +5185,7 @@ void mace_build_order_recursive(struct Target target, size_t *o_cnt) {
 
     /* All dependencies of target were built, add it to build order */
     if (target._d_cnt != target._deps_links_num) {
-        fprintf(stderr, "Error: Not all target dependencies before target in build order.");
+        fprintf(stderr, "Error: Not all target dependencies before target in build order.\n");
         exit(1);
     }
 
@@ -5250,7 +5250,7 @@ void mace_make_dirs() {
 void mace_parse_config(struct Config *config) {
     mace_Config_Free(config);
     if (config->flags == NULL) {
-        fprintf(stderr, "Config has no flags.");
+        fprintf(stderr, "Config has no flags.\n");
         exit(1);
     }
 
@@ -5716,7 +5716,7 @@ char *mace_Target_Read_d(struct Target *target, int source_i) {
     /* obj_file_flag should start with "-o" */
     if ((obj_file_flag[0] != '-') || (obj_file_flag[1] != 'o')) {
         /* error? */
-        fprintf(stderr, "obj_file_flag '%s' missing the -o flag.");
+        fprintf(stderr, "obj_file_flag '%s' missing the -o flag.\n");
         exit(1);
     }
     int oflagl = 2;
@@ -5830,7 +5830,7 @@ void mace_Target_Read_ho(struct Target *target, int source_i) {
     /* obj_file_flag should start with "-o" */
     if ((obj_file_flag[0] != '-') || (obj_file_flag[1] != 'o')) {
         /* error? */
-        fprintf(stderr, "obj_file_flag '%s' missing the -o flag.");
+        fprintf(stderr, "obj_file_flag '%s' missing the -o flag.\n");
         exit(1);
     }
     int oflagl = 2;
@@ -6136,7 +6136,7 @@ char *mace_checksum_filename(char *file, int mode) {
     char *dot        = strchr(file,  '.'); // last dot in path
     char *slash      = strrchr(file, '/'); // last slash in path
     if (dot == NULL) {
-        fprintf(stderr, "Could not find extension in filename");
+        fprintf(stderr, "Error: Could not find extension in filename.\n");
         exit(1);
     }
 
@@ -6194,7 +6194,7 @@ void mace_sha1dc(char *file, uint8_t hash[SHA1_LEN]) {
     /* - open file - */
     FILE *fd = fopen(file, "rb");
     if (fd == NULL) {
-        fprintf(stderr, "cannot open file: %s\n", file);
+        fprintf(stderr, "Error: cannot open file: %s\n", file);
         exit(1);
     }
 
@@ -6209,11 +6209,11 @@ void mace_sha1dc(char *file, uint8_t hash[SHA1_LEN]) {
             break;
     }
     if (ferror(fd)) {
-        fprintf(stderr, " file read error: %s\n", file);
+        fprintf(stderr, "file read error: %s\n", file);
         exit(1);
     }
     if (!feof(fd)) {
-        fprintf(stderr, "not end of file?: %s\n", file);
+        fprintf(stderr, "Error: not end of file?: %s\n", file);
         exit(1);
     }
 
@@ -6379,7 +6379,7 @@ struct Mace_Arguments mace_parse_args(int argc, char *argv[]) {
             case 'j':
                 out_args.jobs = atoi(ps.optarg);
                 if (out_args.jobs < 1) {
-                    fprintf(stderr, "Error: Set number of jobs above 1.");
+                    fprintf(stderr, "Error: Set number of jobs above 1.\n");
                 }
                 break;
             case 'n':
@@ -6408,7 +6408,7 @@ struct Mace_Arguments mace_parse_args(int argc, char *argv[]) {
                 exit(1);
                 break;
             default:
-                printf("error: unhandled option -%c\n", c);
+                printf("Error: unhandled option -%c\n", c);
                 exit(1);
                 break;
         }
