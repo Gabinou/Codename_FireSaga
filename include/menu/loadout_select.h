@@ -164,7 +164,7 @@ struct LoadoutSelectMenu {
 };
 extern struct LoadoutSelectMenu LoadoutSelectMenu_default;
 
-/* --- ConstConstructors/Destructors --- */
+/* --- Constructors/Destructors --- */
 struct LoadoutSelectMenu *LoadoutSelectMenu_Alloc(void);
 void LoadoutSelectMenu_Free(struct LoadoutSelectMenu *lsm);
 void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,

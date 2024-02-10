@@ -44,7 +44,7 @@ struct PlayerSelectMenu {
 };
 extern struct PlayerSelectMenu PlayerSelectMenu_default;
 
-/* --- ConstConstructors/Destructors --- */
+/* --- Constructors/Destructors --- */
 struct PlayerSelectMenu *PlayerSelectMenu_Alloc(void);
 void FirstMenu_Load(       struct PlayerSelectMenu *m, SDL_Renderer *r, struct n9Patch *n9);
 void PlayerSelectMenu_Free(struct PlayerSelectMenu *m, struct Menu *mc);

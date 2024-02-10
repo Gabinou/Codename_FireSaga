@@ -127,7 +127,7 @@ void Conditions_Dead(     struct Conditions *cond, size_t uo);
 void Conditions_Alive(    struct Conditions *cond, size_t uo);
 void Conditions_Recruited(struct Conditions *cond, size_t uo);
 
-/* --- ConstConstructors/Destructors --- */
+/* --- Constructors/Destructors --- */
 void Scene_Free(     struct Scene *scene);
 
 /* --- Replace --- */

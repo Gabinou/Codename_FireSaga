@@ -183,7 +183,7 @@ struct GrowthsMenu {
 };
 extern struct GrowthsMenu GrowthsMenu_default;
 
-/* --- ConstConstructors/Destructors --- */
+/* --- Constructors/Destructors --- */
 struct GrowthsMenu *GrowthsMenu_Alloc(void);
 void GrowthsMenu_Free(struct GrowthsMenu *gm);
 

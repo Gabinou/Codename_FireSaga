@@ -205,7 +205,7 @@ struct Game {
 };
 extern struct Game Game_default;
 
-/* --- ConstConstructors/Destructors --- */
+/* --- Constructors/Destructors --- */
 void Game_Init(   struct Game *sota);
 void Game_Free(   struct Game *sota);
 void Game_Startup(struct Game *sota, struct Input_Arguments args);

@@ -84,7 +84,7 @@ extern char sdl_axis_names[SDL_CONTROLLER_AXIS_MAX][AXIS_NAME_MAX_LEN];
 extern char sota_button_names[SOTA_BUTTON_END][SOTA_BUTTON_NAME_MAX_LEN];
 extern char sota_input_names[SOTA_INPUT_END][SOTA_INPUT_NAME_MAX_LEN];
 
-/* --- ConstConstructors/Destructors --- */
+/* --- Constructors/Destructors --- */
 void Gamepad_Init(   struct controllerGamepad *g);
 void Gamepad_Free(   struct controllerGamepad *g);
 

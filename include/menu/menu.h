@@ -62,7 +62,7 @@ struct Menu {
 };
 extern struct Menu Menu_default;
 
-/* --- ConstConstructors/Destructors --- */
+/* --- Constructors/Destructors --- */
 void Menu_Elem_Free(struct Menu *mc);
 
 /* --- Internals --- */

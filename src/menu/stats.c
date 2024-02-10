@@ -1,7 +1,8 @@
+
 #include "menu/stats.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
-/* --- ConstConstructors/Destructors --- */
+/* --- Constructors/Destructors --- */
 static void _StatsMenu_Free_Face( struct StatsMenu *sm);
 static void _StatsMenu_Free_Icons(struct StatsMenu *sm);
 

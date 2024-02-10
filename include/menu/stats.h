@@ -399,7 +399,7 @@ struct StatsMenu {
 };
 extern struct StatsMenu StatsMenu_default;
 
-/* --- ConstConstructors/Destructors --- */
+/* --- Constructors/Destructors --- */
 struct StatsMenu *StatsMenu_Alloc(void);
 void StatsMenu_Free(struct StatsMenu *sm);
 

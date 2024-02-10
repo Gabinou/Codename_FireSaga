@@ -36,14 +36,14 @@ struct DeploymentMenu {
 };
 extern struct DeploymentMenu DeploymentMenu_default;
 
-/* --- ConstConstructors/Destructors --- */
+/* --- Constructors/Destructors --- */
 struct DeploymentMenu *DeploymentMenu_Alloc(void);
 void DeploymentMenu_Free(struct DeploymentMenu *gm);
 
 /* --- Drawing --- */
 void DeploymentMenu_Draw(  struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
-void DeploymentMenu_Update(struct DeploymentMenu *g, struct n9Patch *n9, SDL_Texture *rt,
-                        SDL_Renderer *r);
+void DeploymentMenu_Update(struct DeploymentMenu *g, struct n9Patch      *n,
+                                  SDL_Texture    *t,        SDL_Renderer *r);
 
 
 #endif /* DEPLOYMENT_MENU_H */

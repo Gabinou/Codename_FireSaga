@@ -79,7 +79,7 @@ typedef struct Door {
 } Door;
 extern struct Door Door_default;
 
-/* --- ConstConstructors/Destructors --- */
+/* --- Constructors/Destructors --- */
 /* -- Tile -- */
 void Tile_Free(struct Tile *tile);
 

@@ -215,7 +215,7 @@ struct PreCombatPopup {
 };
 extern struct PreCombatPopup PreCombatPopup_default;
 
-/* --- ConstConstructors/Destructors --- */
+/* --- Constructors/Destructors --- */
 struct PreCombatPopup *PreCombatPopup_Alloc();
 void PreCombatPopup_Free(      struct PreCombatPopup *pcp);
 void PreCombatPopup_Free_Icons(struct PreCombatPopup *pcp);
