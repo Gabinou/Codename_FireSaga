@@ -82,7 +82,7 @@ void DeploymentMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *rendere
 
 
 void DeploymentMenu_Update(struct DeploymentMenu *dm, struct n9Patch *n9patch,
-                      SDL_Texture *rt, SDL_Renderer *renderer) {
+                           SDL_Texture *rt, SDL_Renderer *renderer) {
     /* --- PRELIMINARIES --- */
     SDL_assert(renderer != NULL);
     SDL_assert(dm       != NULL);
@@ -96,7 +96,7 @@ void DeploymentMenu_Update(struct DeploymentMenu *dm, struct n9Patch *n9patch,
     if (dm->texture == NULL) {
         int x  = n9patch->size_pixels.x, y = n9patch->size_pixels.y;
         dm->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-                                                SDL_TEXTUREACCESS_TARGET, x, y);
+                                        SDL_TEXTUREACCESS_TARGET, x, y);
         SDL_assert(dm->texture != NULL);
         SDL_SetTextureBlendMode(dm->texture, SDL_BLENDMODE_BLEND);
     }

@@ -4,7 +4,8 @@
 #include "enums.h"
 #include "pixelfonts.h"
 #include "menu.h"
-#include "map.h"
+#include "unit.h"
+#include "map/map.h"
 #include "graph.h"
 #include "n9patch.h"
 #include "stb_sprintf.h"
@@ -24,7 +25,7 @@ enum DM_MENU {
 
     DM_PAGE_NUM         =   4,
     DM_LINE_CONTENT_H   =  16,
-    DM_LINE_SPACE_H     =   2, 
+    DM_LINE_SPACE_H     =   2,
     DM_SCROLL_UP_ADD    =   2, /* Number of units to scroll up/down*/
     DM_LINE_H           =  DM_LINE_CONTENT_H + DM_LINE_SPACE_H,
     DM_LINE_NUM         =   8,
@@ -91,6 +92,6 @@ void DeploymentMenu_Free(struct DeploymentMenu *gm);
 /* --- Drawing --- */
 void DeploymentMenu_Draw(  struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
 void DeploymentMenu_Update(struct DeploymentMenu *g, struct n9Patch      *n,
-                                  SDL_Texture    *t,        SDL_Renderer *r);
+                           SDL_Texture    *t,        SDL_Renderer *r);
 
 #endif /* DEPLOYMENT_MENU_H */
