@@ -67,7 +67,7 @@ extern struct Point               idm_cursor_box    [IDM_ELEM_NUM];
 
 struct ItemDropMenu {
     b32 update;
-    struct Point pos; /* [pixels], MENU_POS_bOFFSET = 0 */
+    struct Point pos; /* [pixels] */
 
     SDL_Texture *texture;
 

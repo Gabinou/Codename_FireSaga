@@ -173,7 +173,7 @@ extern struct Point GM_cursor_box[GM_ELEM_NUM];
 
 struct GrowthsMenu {
     b32 update;
-    struct Point pos; /* [pixels], MENU_POS_bOFFSET = 0 */
+    struct Point pos; /* [pixels] */
     SDL_Texture      *texture;
     struct Unit      *unit;
     struct PixelFont *pixelnours;

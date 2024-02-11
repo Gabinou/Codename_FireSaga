@@ -190,7 +190,7 @@ enum PRE_COMBAT_POPUP_ELEMS {
 
 struct PreCombatPopup {
     b32 update;
-    struct Point pos; // [pixels], MENU_POS_bOFFSET = 0
+    struct Point pos; // [pixels]
     int mode;
     SDL_Texture *texture;
     SDL_Texture *texture_weapons;
