@@ -190,6 +190,9 @@ extern AI_Decider_Move AI_Decider_move[AI_MOVE_NUM];
 typedef AI_Decider AI_Doer;
 extern AI_Doer AI_Act_action[AI_ACTION_NUM];
 
+void _AI_Doer_Wait(  struct Game *s, tnecs_entity e, struct AI_Action *a);
+void _AI_Doer_Attack(struct Game *s, tnecs_entity e, struct AI_Action *a);
+
 void Unit_Move_onMap_Animate(struct Game  *s, tnecs_entity e,
                              struct Timer *t, struct UnitMoveAnimation *a);
 

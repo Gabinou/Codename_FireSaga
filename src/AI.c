@@ -30,13 +30,12 @@ struct AI_Action AI_Action_default =  {
     .action          = AI_ACTION_START,
 };
 
-/* --- STATIC FUNCTIONS --- */
 /* --- Doer FSM --- */
-static void _AI_Doer_Wait(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+void _AI_Doer_Wait(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     Game_Unit_Wait(sota, npc_ent);
 }
 
-static void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     /* -- Set aggressor for combat -- */
     sota->aggressor = npc_ent;
 
