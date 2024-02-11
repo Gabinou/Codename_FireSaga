@@ -22,6 +22,8 @@ enum DM_MENU {
 
     DM_PATCH_X_SIZE     =  29,
     DM_PATCH_Y_SIZE     =  21,
+    DM_N9PATCH_SCALE_X  =   3,
+    DM_N9PATCH_SCALE_Y  =   3,
 
     DM_PAGE_NUM         =   4,
     DM_LINE_CONTENT_H   =  16,
@@ -88,11 +90,13 @@ extern struct DeploymentMenu DeploymentMenu_default;
 
 /* --- Constructors/Destructors --- */
 struct DeploymentMenu *DeploymentMenu_Alloc(void);
-void DeploymentMenu_Free(struct DeploymentMenu *gm);
+void DeploymentMenu_Free(struct DeploymentMenu *dm);
+void DeploymentMenu_Load(struct DeploymentMenu *dm, SDL_Renderer *renderer,
+                         struct n9Patch *n9patch);
 
 /* --- Drawing --- */
 void DeploymentMenu_Draw(  struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
-void DeploymentMenu_Update(struct DeploymentMenu *g, struct n9Patch      *n,
-                           SDL_Texture    *t,        SDL_Renderer *r);
+void DeploymentMenu_Update(struct DeploymentMenu *dm, struct n9Patch      *n,
+                           SDL_Texture    *t,         SDL_Renderer *r);
 
 #endif /* DEPLOYMENT_MENU_H */

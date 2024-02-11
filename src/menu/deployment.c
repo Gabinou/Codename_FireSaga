@@ -35,7 +35,6 @@ struct DeploymentMenu DeploymentMenu_default = {
     .texture_mount  = NULL,
 };
 
-
 struct DeploymentMenu *DeploymentMenu_Alloc(void) {
     struct DeploymentMenu *dm = SDL_malloc(sizeof(struct DeploymentMenu));
     SDL_assert(dm);
@@ -73,6 +72,24 @@ void DeploymentMenu_Free(struct DeploymentMenu *dm) {
     if (dm != NULL) {
         SDL_free(dm);
         dm = NULL;
+    }
+}
+
+void DeploymentMenu_Load(struct DeploymentMenu *dm, SDL_Renderer *renderer,
+                         struct n9Patch *n9patch) {
+    n9Patch_Free(n9patch);
+    n9patch->patch_pixels.x = MENU_PATCH_PIXELS;
+    n9patch->patch_pixels.y = MENU_PATCH_PIXELS;
+    n9patch->size_patches.x = DM_PATCH_X_SIZE;
+    n9patch->size_patches.y = DM_PATCH_Y_SIZE;
+    n9patch->scale.x        = DM_N9PATCH_SCALE_X;
+    n9patch->scale.y        = DM_N9PATCH_SCALE_Y;
+    n9patch->size_pixels.x  = (MENU_PATCH_PIXELS * DM_PATCH_X_SIZE);
+    n9patch->size_pixels.y  = (MENU_PATCH_PIXELS * DM_PATCH_Y_SIZE);
+
+    if (n9patch->texture == NULL) {
+        char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
+        n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     }
 }
 

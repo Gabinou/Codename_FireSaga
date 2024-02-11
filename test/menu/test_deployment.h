@@ -21,9 +21,6 @@ void test_menu_deployment() {
     /* -- Deployment Menu -- */
     struct DeploymentMenu *dm = DeploymentMenu_Alloc();
     DeploymentMenu_Load(dm, renderer, &n9patch);
-    dm->update_stats = false;
-    i16 stat_toplot = 1;
-
 
     /* - loading fonts - */
     char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
@@ -42,12 +39,12 @@ void test_menu_deployment() {
 
     /* --- RENDERS --- */
     /* -- test nothing -- */
-    DeploymentMenu_Update(gm, &n9patch, render_target, renderer);
+    DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_Test.png"),
-                            renderer, gm->texture, SDL_PIXELFORMAT_ARGB8888,
+                            renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
                             render_target);
     /* --- FREE --- */
-    DeploymentMenu_Free(gm);
+    DeploymentMenu_Free(dm);
     SDL_FreeSurface(surface);
 
     if (n9patch.texture != NULL)

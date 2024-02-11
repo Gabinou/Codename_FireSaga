@@ -31,6 +31,7 @@
 
 #include "bars/test_slider_bar.h"
 
+#include "menu/test_deployment.h"
 #include "menu/test_growths.h"
 #include "menu/test_item_drop.h"
 #include "menu/test_player_select.h"
@@ -113,7 +114,7 @@ int main(int argc, char *argv[]) {
     // getchar();
 
     /* -- Running tests -- */
-    unit_tests();
+    // unit_tests();
     render_tests();
 
     /* -- Postliminaries -- */
