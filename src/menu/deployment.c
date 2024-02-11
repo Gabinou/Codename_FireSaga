@@ -35,6 +35,47 @@ struct DeploymentMenu DeploymentMenu_default = {
     .texture_mount  = NULL,
 };
 
+/* --- STATIC FUNCTIONS --- */
+/* --- Constructors/Destructors --- */
+static void _DeploymentMenu_Free_Icons(struct DeploymentMenu *dm) {
+
+}
+
+/* --- Loading --- */
+static void _DeploymentMenu_Load_Icons(struct DeploymentMenu *dm,
+                                       SDL_Renderer *renderer) {
+
+}
+
+/* --- Drawing --- */
+static void _DeploymentMenu_Draw_Headers(struct DeploymentMenu *dm,
+                                         SDL_Renderer *renderer) {
+    int x = DM_NAME_X, y = DM_NAME_Y;
+    PixelFont_Write_Centered(dm->pixelnours_16, renderer, "Name", 4, x, y);
+}
+
+static void _DeploymentMenu_Draw_Unit(struct DeploymentMenu *dm,
+                                      SDL_Renderer *renderer) {
+
+}
+static void _DeploymentMenu_Draw_Mount(struct DeploymentMenu *dm,
+                                       SDL_Renderer *renderer) {
+
+}
+static void _DeploymentMenu_Draw_Weapons(struct DeploymentMenu *dm,
+                                         SDL_Renderer *renderer) {
+
+}
+static void _DeploymentMenu_Draw_Content(struct DeploymentMenu *dm,
+                                         SDL_Renderer *renderer) {
+
+}
+static void _DeploymentMenu_Draw_Scroll_Bar(struct DeploymentMenu *dm,
+                                            SDL_Renderer *renderer) {
+
+}
+
+/* --- EXTERN FUNCTIONS --- */
 struct DeploymentMenu *DeploymentMenu_Alloc(void) {
     struct DeploymentMenu *dm = SDL_malloc(sizeof(struct DeploymentMenu));
     SDL_assert(dm);
@@ -42,6 +83,9 @@ struct DeploymentMenu *DeploymentMenu_Alloc(void) {
 
     dm->pixelnours     = PixelFont_Alloc();
     dm->pixelnours_16  = PixelFont_Alloc();
+    dm->pixelnours_16->glyph_height  = 16;
+    dm->pixelnours_16->glyph_width   = 16;
+
     dm->pixelnours_big = PixelFont_Alloc();
     SDL_assert(dm->pixelnours     != NULL);
     SDL_assert(dm->pixelnours_16  != NULL);
@@ -152,7 +196,15 @@ void DeploymentMenu_Update(struct DeploymentMenu *dm, struct n9Patch *n9patch,
     n9patch->scale.x    = scale_x;
     n9patch->scale.y    = scale_y;
 
-    SDL_SetRenderTarget(renderer, rt);
+    _DeploymentMenu_Draw_Headers(   dm, renderer);
+    _DeploymentMenu_Draw_Unit(      dm, renderer);
+    _DeploymentMenu_Draw_Mount(     dm, renderer);
+    _DeploymentMenu_Draw_Weapons(   dm, renderer);
+    _DeploymentMenu_Draw_Content(   dm, renderer);
+    _DeploymentMenu_Draw_Scroll_Bar(dm, renderer);
 
+
+    /* -- Finish -- */
+    SDL_SetRenderTarget(renderer, rt);
     SDL_assert(dm->texture);
 }

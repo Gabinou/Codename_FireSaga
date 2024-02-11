@@ -32,14 +32,21 @@ enum DM_MENU {
     DM_LINE_H           =  DM_LINE_CONTENT_H + DM_LINE_SPACE_H,
     DM_LINE_NUM         =   8,
 
-    /* --- Unit frame ---  */
+    /* --- Menu frame --- */
+    DM_NAME_X     =   59,
+    DM_NAME_Y     =   5,
+
+    DM_CLASS_X    =   DM_NAME_X + 1,
+    DM_CLASS_Y    =   DM_NAME_Y,
+
+    /* --- Unit frame --- */
     /* Relative to menu frame */
     DM_UNIT_FRAME_X     =   8,
     DM_UNIT_FRAME_Y     =  24,
     DM_UNIT_FRAME_W     = 208,
     DM_UNIT_FRAME_H     = DM_LINE_H * DM_LINE_NUM,
 
-    /* --- Page frame ---  */
+    /* --- Page frame --- */
     /* Relative to unit frame */
     DM_PAGE_FRAME_X     =  78,
     DM_PAGE_FRAME_Y     =   0,

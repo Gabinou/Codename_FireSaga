@@ -527,5 +527,4 @@ void GrowthsMenu_Update(struct GrowthsMenu *gm, struct n9Patch *n9patch,
 
     /* -- Finish -- */
     SDL_SetRenderTarget(renderer, render_target);
-
 }

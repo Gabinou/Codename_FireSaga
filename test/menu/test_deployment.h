@@ -32,7 +32,7 @@ void test_menu_deployment() {
     PixelFont_Load(dm->pixelnours_big, renderer, path);
     SDL_assert(dm->pixelnours_big);
 
-    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_16.png");
+    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_16_tight.png");
     PixelFont_Load(dm->pixelnours_16, renderer, path);
     SDL_assert(dm->pixelnours_big);
 
