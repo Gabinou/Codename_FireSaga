@@ -16,6 +16,47 @@ static void _DeploymentMenu_Draw_Headers(   struct DeploymentMenu *dm, SDL_Rende
 static void _DeploymentMenu_Draw_Content(   struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Scroll_Bar(struct DeploymentMenu *dm, SDL_Renderer *r);
 
+struct DeploymentMenu *DeploymentMenu_Alloc(void) {
+    struct DeploymentMenu *dm = SDL_malloc(sizeof(struct DeploymentMenu));
+    SDL_assert(dm);
+    *dm = DeploymentMenu_default;
+
+    dm->pixelnours     = PixelFont_Alloc();
+    dm->pixelnours_16  = PixelFont_Alloc();
+    dm->pixelnours_big = PixelFont_Alloc();
+    SDL_assert(dm->pixelnours     != NULL);
+    SDL_assert(dm->pixelnours_16  != NULL);
+    SDL_assert(dm->pixelnours_big != NULL);
+    return (dm);
+}
+
+void DeploymentMenu_Free(struct DeploymentMenu *dm) {
+    SDL_assert(dm != NULL);
+    if (dm->texture != NULL) {
+        SDL_DestroyTexture(dm->texture);
+        dm->texture = NULL;
+    }
+    if (dm->pixelnours != NULL) {
+        PixelFont_Free(dm->pixelnours, true);
+        dm->pixelnours = NULL;
+    }
+    if (dm->pixelnours_16 != NULL) {
+        PixelFont_Free(dm->pixelnours_16, true);
+        dm->pixelnours_16 = NULL;
+    }
+
+    if (dm->pixelnours_big != NULL) {
+        PixelFont_Free(dm->pixelnours_big, true);
+        dm->pixelnours_big = NULL;
+    }
+
+    if (dm != NULL) {
+        SDL_free(dm);
+        dm = NULL;
+    }
+}
+
+
 void DeploymentMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *renderer) {
     struct DeploymentMenu   *dm         = (struct DeploymentMenu *)mc->data;
     struct n9Patch          *n9patch    = &mc->n9patch;

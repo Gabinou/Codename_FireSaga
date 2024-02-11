@@ -24,7 +24,7 @@ enum DM_MENU {
     DM_PAGE_NUM         =   4,
     DM_LINE_CONTENT_H   =  16,
     DM_LINE_SPACE_H     =   2, 
-    DM_SCROLL_ADD       =  DM_LINE_H * 2,
+    DM_SCROLL_UP_ADD    =   2, /* Number of units to scroll up/down*/
     DM_LINE_H           =  DM_LINE_CONTENT_H + DM_LINE_SPACE_H,
     DM_LINE_NUM         =   8,
 
@@ -67,8 +67,9 @@ enum DM_MENU {
 
 struct DeploymentMenu {
     b32 update;
-    u8  party_size;
-    i8  page;
+    i32 party_size;
+    i32 top_unit;   /* Up   - Down  scrolling [0, party_size] */
+    i32 page;       /* Left - Right scrolling [0, DM_PAGE_NUM]*/
 
     struct Unit         *party;
     struct Map          *map;

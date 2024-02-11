@@ -9,4 +9,49 @@ void test_menu_deployment() {
     /* --- Preliminaries --- */
     sota_mkdir("menu_deployment");
 
+    /* -- Create n9patch -- */
+    struct n9Patch n9patch = n9Patch_default;
+    // NULL cause no target!
+    SDL_Texture *render_target = NULL;
+
+    /* -- Create renderer -- */
+    SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
+    SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
+
+    /* -- Deployment Menu -- */
+    struct DeploymentMenu *dm = DeploymentMenu_Alloc();
+    DeploymentMenu_Load(dm, renderer, &n9patch);
+    dm->update_stats = false;
+    i16 stat_toplot = 1;
+
+
+    /* - loading fonts - */
+    char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
+
+    PixelFont_Load(dm->pixelnours, renderer, path);
+    SDL_assert(dm->pixelnours);
+
+    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
+    PixelFont_Load(dm->pixelnours_big, renderer, path);
+    SDL_assert(dm->pixelnours_big);
+
+    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_16.png");
+    PixelFont_Load(dm->pixelnours_16, renderer, path);
+    SDL_assert(dm->pixelnours_big);
+
+
+    /* --- RENDERS --- */
+    /* -- test nothing -- */
+    DeploymentMenu_Update(gm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_Test.png"),
+                            renderer, gm->texture, SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+    /* --- FREE --- */
+    DeploymentMenu_Free(gm);
+    SDL_FreeSurface(surface);
+
+    if (n9patch.texture != NULL)
+        SDL_DestroyTexture(n9patch.texture);
+
+    SDL_DestroyRenderer(renderer);
 }
