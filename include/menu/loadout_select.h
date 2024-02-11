@@ -141,7 +141,6 @@ extern struct Point   wsm_cursor_box[LSM_ELEMS_NUM];
 
 struct LoadoutSelectMenu {
     b32 update;
-
     struct Point pos; /* [pixels], MENU_POS_bOFFSET = 0 */
 
     SDL_Texture *texture;

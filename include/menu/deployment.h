@@ -30,7 +30,6 @@ enum DM_MENU {
     DM_LINE_H           =  DM_LINE_CONTENT_H + DM_LINE_SPACE_H,
     DM_LINE_NUM         =   8,
 
-
     /* --- Unit frame ---  */
     /* Relative to menu frame */
     DM_UNIT_FRAME_X     =   8,
@@ -69,6 +68,8 @@ enum DM_MENU {
 
 struct DeploymentMenu {
     b32 update;
+    struct Point pos; /* [pixels] */
+
     i32 party_size;
     i32 top_unit;   /* Up   - Down  scrolling [0, party_size] */
     i32 page;       /* Left - Right scrolling [0, DM_PAGE_NUM]*/

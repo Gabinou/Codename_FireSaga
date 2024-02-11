@@ -16,6 +16,26 @@ static void _DeploymentMenu_Draw_Headers(   struct DeploymentMenu *dm, SDL_Rende
 static void _DeploymentMenu_Draw_Content(   struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Scroll_Bar(struct DeploymentMenu *dm, SDL_Renderer *r);
 
+struct DeploymentMenu DeploymentMenu_default = {
+    .update         = true,
+    .pos            = {-1, -1},
+
+    .party_size     =   0,
+    .top_unit       =   0,   /* Up   - Down  scrolling [0, party_size] */
+    .page           =   0,   /* Left - Right scrolling [0, DM_PAGE_NUM]*/
+
+    .party          = NULL,
+    .map            = NULL,
+    .font_wpns      = NULL,
+    .pixelnours     = NULL,
+    .pixelnours_16  = NULL,
+    .pixelnours_big = NULL,
+
+    .texture        = NULL,
+    .texture_mount  = NULL,
+};
+
+
 struct DeploymentMenu *DeploymentMenu_Alloc(void) {
     struct DeploymentMenu *dm = SDL_malloc(sizeof(struct DeploymentMenu));
     SDL_assert(dm);
