@@ -127,5 +127,7 @@ void PixelFont_Write_Centered(    struct PixelFont *f, SDL_Renderer *r, char *t,
                                   size_t len, u32 px, u32 py);
 void PixelFont_Write_Centered_Len(struct PixelFont *f, SDL_Renderer *r, char *t,
                                   u32 px, u32 py);
+void PixelFont_Write_Centered(struct PixelFont *font, SDL_Renderer *rdr,
+                              size_t len, char *text, u32 x, u32 y) {
 
 #endif /* PIXELFONTS_H */

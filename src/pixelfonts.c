@@ -465,9 +465,9 @@ void PixelFont_Write_Len(struct PixelFont *font, SDL_Renderer *rdr, char *text,
 }
 
 void PixelFont_Write_Centered(struct PixelFont *font, SDL_Renderer *rdr,
-                              size_t len, char *text, u32 x, u32 y) {
+                              char *text, size_t len, u32 x, u32 y) {
     int width = PixelFont_Width(font, text, len);
-    PixelFont_Write_Len(font, rdr, text, len, x - (width / 2), y);
+    PixelFont_Write(font, rdr, text, len, x - (width / 2), y);
 }
 
 void PixelFont_Write_Centered_Len(struct PixelFont *font, SDL_Renderer *rdr,
