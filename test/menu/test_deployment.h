@@ -38,11 +38,42 @@ void test_menu_deployment() {
 
 
     /* --- RENDERS --- */
-    /* -- test nothing -- */
+    /* -- Test page 1 -- */
+    dm->page = 0;
     DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_Test.png"),
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_P1.png"),
                             renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
                             render_target);
+    /* -- Test page 2 -- */
+    dm->page = 1;
+    DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_P2.png"),
+                            renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+
+    /* -- Test page 3 -- */
+    dm->page = 2;
+    DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_P3.png"),
+                            renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+
+    /* -- Test page 4 -- */
+    dm->page = 3;
+    DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_P4.png"),
+                            renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+
+
+
+
+
+
+
+
+
+
     /* --- FREE --- */
     DeploymentMenu_Free(dm);
     SDL_FreeSurface(surface);

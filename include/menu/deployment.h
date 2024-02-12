@@ -33,8 +33,11 @@ enum DM_MENU {
     DM_LINE_NUM         =   8,
 
     /* --- Menu frame --- */
-    DM_NAME_X       = 59,
-    DM_NAME_Y       =  5,
+    DM_NAME_X       =  59,
+    DM_NAME_Y       =   5,
+
+    DM_PAGE_NUM_X   = 216,
+    DM_PAGE_NUM_Y   =   8,
 
     /* -- Page 1 -- */
     DM_CLASS_X      = DM_NAME_X + 56,
@@ -53,8 +56,46 @@ enum DM_MENU {
     DM_MOVE_Y       = DM_LVL_Y,
 
     /* -- Page 2 -- */
+    DM_STR_X        = DM_NAME_X + 52,
+    DM_STR_Y        = DM_NAME_Y + 5,
+
+    DM_MAG_X        = DM_STR_X + 52,
+    DM_MAG_Y        = DM_STR_Y,
+
+    DM_DEX_X        = DM_STR_X + 52,
+    DM_DEX_Y        = DM_STR_Y,
+
+    DM_AGI_X        = DM_STR_X + 52,
+    DM_AGI_Y        = DM_STR_Y,
+
+    DM_CON_X        = DM_STR_X + 52,
+    DM_CON_Y        = DM_STR_Y,
+
     /* -- Page 3 -- */
+    DM_DEF_X        = DM_NAME_X + 52,
+    DM_DEF_Y        = DM_NAME_Y + 5,
+
+    DM_RES_X        = DM_DEF_X + 52,
+    DM_RES_Y        = DM_DEF_Y,
+
+    DM_FTH_X        = DM_DEF_X + 52,
+    DM_FTH_Y        = DM_DEF_Y,
+
+    DM_LUCK_X       = DM_DEF_X + 52,
+    DM_LUCK_Y       = DM_DEF_Y,
+
+    DM_PROF_X       = DM_DEF_X + 52,
+    DM_PROF_Y       = DM_DEF_Y,
+
     /* -- Page 4 -- */
+    DM_WPN_TYPE_X   = DM_NAME_X + 52,
+    DM_WPN_TYPE_Y   = DM_NAME_Y + 5,
+
+    DM_REGRETS_X    = DM_NAME_X + 52,
+    DM_REGRETS_Y    = DM_WPN_TYPE_Y,
+
+    DM_MOUNT_X      = DM_NAME_X + 52,
+    DM_MOUNT_Y      = DM_WPN_TYPE_Y,
 
     /* --- Unit frame --- */
     /* Relative to menu frame */
