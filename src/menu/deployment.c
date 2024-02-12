@@ -103,19 +103,37 @@ static void _DeploymentMenu_Draw_Headers_P2(struct DeploymentMenu *dm,
 
     x = DM_CON_X, y = DM_CON_Y;
     PixelFont_Write_Centered(dm->pixelnours, renderer, "CON", 3, x, y);
-
 }
 
 static void _DeploymentMenu_Draw_Headers_P3(struct DeploymentMenu *dm,
                                             SDL_Renderer *renderer) {
     int x = DM_NAME_X, y = DM_NAME_Y;
     PixelFont_Write_Centered(dm->pixelnours_16, renderer, "Name", 4, x, y);
+    
+    x = DM_DEF_X, y = DM_DEF_Y;
+    PixelFont_Write_Centered(dm->pixelnours, renderer, "DEF", 3, x, y);
+
+    x = DM_RES_X, y = DM_RES_Y;
+    PixelFont_Write_Centered(dm->pixelnours, renderer, "RES", 3, x, y);
+
+    x = DM_FTH_X, y = DM_FTH_Y;
+    PixelFont_Write_Centered(dm->pixelnours, renderer, "FTH", 3, x, y);
+
+    x = DM_LUCK_X, y = DM_LUCK_Y;
+    PixelFont_Write_Centered(dm->pixelnours, renderer, "LUCK", 4, x, y);
+
+    x = DM_PROF_X, y = DM_PROF_Y;
+    PixelFont_Write_Centered(dm->pixelnours, renderer, "PROF", 4, x, y);
+
+}
 }
 
 static void _DeploymentMenu_Draw_Headers_P4(struct DeploymentMenu *dm,
                                             SDL_Renderer *renderer) {
     int x = DM_NAME_X, y = DM_NAME_Y;
     PixelFont_Write_Centered(dm->pixelnours_16, renderer, "Name", 4, x, y);
+    
+    
 }
 
 static void _DeploymentMenu_Draw_Unit(struct DeploymentMenu *dm,
