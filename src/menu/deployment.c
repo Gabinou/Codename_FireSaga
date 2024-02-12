@@ -2,8 +2,9 @@
 #include "menu/deployment.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
-/* --- Constructors/Destructors --- */
-static void _DeploymentMenu_Free_Icons(struct DeploymentMenu *dm);
+/* --- Frame transforms --- */
+static struct Point _Unit_Frame(i32 x, i32 y);
+static struct Point _Page_Frame(i32 x, i32 y);
 
 /* --- Loading --- */
 static void _DeploymentMenu_Load_Icons(struct DeploymentMenu *dm, SDL_Renderer   *r);
@@ -50,6 +51,21 @@ struct DeploymentMenu DeploymentMenu_default = {
 };
 
 /* --- STATIC FUNCTIONS --- */
+/* --- Frame transforms --- */
+static struct Point _Unit_Frame(i32 x_menu, i32 y_menu) {
+    /* Relative to menu frame */
+    struct Point out = {.x = x + DM_UNIT_FRAME_X,
+                        .y = y + DM_UNIT_FRAME_Y};
+    return(out);
+}
+
+static struct Point _Page_Frame(i32 x_unit, i32 y_unit) {
+    /* Relative to unit frame */
+    struct Point out = {.x = x + DM_PAGE_FRAME_X,
+                        .y = y + DM_PAGE_FRAME_Y};
+    return(out);
+}
+
 /* --- Constructors/Destructors --- */
 static void _DeploymentMenu_Free_Icons(struct DeploymentMenu *dm) {
 
