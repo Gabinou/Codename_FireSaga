@@ -9,12 +9,26 @@ static void _DeploymentMenu_Free_Icons(struct DeploymentMenu *dm);
 static void _DeploymentMenu_Load_Icons(struct DeploymentMenu *dm, SDL_Renderer   *r);
 
 /* --- Drawing --- */
+typedef void (*fsm_DeploymentMenu_Draw)(struct DeploymentMenu *, SDL_Renderer *);
+
+static void _DeploymentMenu_Draw_PageNum(      struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Unit(      struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Mount(     struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Weapons(   struct DeploymentMenu *dm, SDL_Renderer *r);
-static void _DeploymentMenu_Draw_Headers(   struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Content(   struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Scroll_Bar(struct DeploymentMenu *dm, SDL_Renderer *r);
+
+static void _DeploymentMenu_Draw_Headers_P1(struct DeploymentMenu *dm, SDL_Renderer *r);
+static void _DeploymentMenu_Draw_Headers_P2(struct DeploymentMenu *dm, SDL_Renderer *r);
+static void _DeploymentMenu_Draw_Headers_P3(struct DeploymentMenu *dm, SDL_Renderer *r);
+static void _DeploymentMenu_Draw_Headers_P4(struct DeploymentMenu *dm, SDL_Renderer *r);
+
+fsm_DeploymentMenu_Draw fsm_DeploymentMenu_Draw_Headers[DM_PAGE_NUM] = {
+    &_DeploymentMenu_Draw_Headers_P1,
+    &_DeploymentMenu_Draw_Headers_P2,
+    &_DeploymentMenu_Draw_Headers_P3,
+    &_DeploymentMenu_Draw_Headers_P4,
+};
 
 struct DeploymentMenu DeploymentMenu_default = {
     .update         = true,
@@ -48,8 +62,42 @@ static void _DeploymentMenu_Load_Icons(struct DeploymentMenu *dm,
 }
 
 /* --- Drawing --- */
-static void _DeploymentMenu_Draw_Headers(struct DeploymentMenu *dm,
-                                         SDL_Renderer *renderer) {
+/* -- Headers -- */
+static void _DeploymentMenu_Draw_Headers_P1(struct DeploymentMenu *dm,
+                                            SDL_Renderer *renderer) {
+    int x = DM_NAME_X, y = DM_NAME_Y;
+    PixelFont_Write_Centered(dm->pixelnours_16, renderer, "Name", 4, x, y);
+
+    x = DM_CLASS_X, y = DM_CLASS_Y;
+    PixelFont_Write_Centered(dm->pixelnours_16, renderer, "Class", 5, x, y);
+
+    x = DM_LVL_X, y = DM_LVL_Y;
+    PixelFont_Write_Centered(dm->pixelnours_big, renderer, "Lvl", 3, x, y);
+
+    x = DM_EXP_X, y = DM_EXP_Y;
+    PixelFont_Write_Centered(dm->pixelnours_big, renderer, "EXP", 3, x, y);
+
+    x = DM_HP_X, y = DM_HP_Y;
+    PixelFont_Write_Centered(dm->pixelnours_big, renderer, "HP", 2, x, y);
+
+    x = DM_MOVE_X, y = DM_MOVE_Y;
+    PixelFont_Write_Centered(dm->pixelnours_big, renderer, "Mv", 2, x, y);
+}
+
+static void _DeploymentMenu_Draw_Headers_P2(struct DeploymentMenu *dm,
+                                            SDL_Renderer *renderer) {
+    int x = DM_NAME_X, y = DM_NAME_Y;
+    PixelFont_Write_Centered(dm->pixelnours_16, renderer, "Name", 4, x, y);
+}
+
+static void _DeploymentMenu_Draw_Headers_P3(struct DeploymentMenu *dm,
+                                            SDL_Renderer *renderer) {
+    int x = DM_NAME_X, y = DM_NAME_Y;
+    PixelFont_Write_Centered(dm->pixelnours_16, renderer, "Name", 4, x, y);
+}
+
+static void _DeploymentMenu_Draw_Headers_P4(struct DeploymentMenu *dm,
+                                            SDL_Renderer *renderer) {
     int x = DM_NAME_X, y = DM_NAME_Y;
     PixelFont_Write_Centered(dm->pixelnours_16, renderer, "Name", 4, x, y);
 }
@@ -196,7 +244,8 @@ void DeploymentMenu_Update(struct DeploymentMenu *dm, struct n9Patch *n9patch,
     n9patch->scale.x    = scale_x;
     n9patch->scale.y    = scale_y;
 
-    _DeploymentMenu_Draw_Headers(   dm, renderer);
+    fsm_DeploymentMenu_Draw_Headers[dm->page](dm, renderer);
+
     _DeploymentMenu_Draw_Unit(      dm, renderer);
     _DeploymentMenu_Draw_Mount(     dm, renderer);
     _DeploymentMenu_Draw_Weapons(   dm, renderer);

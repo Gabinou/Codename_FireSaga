@@ -33,11 +33,28 @@ enum DM_MENU {
     DM_LINE_NUM         =   8,
 
     /* --- Menu frame --- */
-    DM_NAME_X     =   59,
-    DM_NAME_Y     =   5,
+    DM_NAME_X       = 59,
+    DM_NAME_Y       =  5,
 
-    DM_CLASS_X    =   DM_NAME_X + 1,
-    DM_CLASS_Y    =   DM_NAME_Y,
+    /* -- Page 1 -- */
+    DM_CLASS_X      = DM_NAME_X + 56,
+    DM_CLASS_Y      = DM_NAME_Y,
+
+    DM_LVL_X        = DM_CLASS_X + 45,
+    DM_LVL_Y        = DM_CLASS_Y + 2,
+
+    DM_EXP_X        = DM_LVL_X + 18,
+    DM_EXP_Y        = DM_LVL_Y,
+
+    DM_HP_X         = DM_EXP_X + 16,
+    DM_HP_Y         = DM_LVL_Y,
+
+    DM_MOVE_X       = DM_HP_X + 13,
+    DM_MOVE_Y       = DM_LVL_Y,
+
+    /* -- Page 2 -- */
+    /* -- Page 3 -- */
+    /* -- Page 4 -- */
 
     /* --- Unit frame --- */
     /* Relative to menu frame */
