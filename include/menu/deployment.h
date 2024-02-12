@@ -57,7 +57,7 @@ enum DM_MENU {
 
     /* -- Page 2 -- */
     DM_STR_X        = DM_NAME_X + 52,
-    DM_STR_Y        = DM_NAME_Y +  5,
+    DM_STR_Y        = DM_NAME_Y +  3,
 
     DM_MAG_X        = DM_STR_X  + 26,
     DM_MAG_Y        = DM_STR_Y,

@@ -88,6 +88,22 @@ static void _DeploymentMenu_Draw_Headers_P2(struct DeploymentMenu *dm,
                                             SDL_Renderer *renderer) {
     int x = DM_NAME_X, y = DM_NAME_Y;
     PixelFont_Write_Centered(dm->pixelnours_16, renderer, "Name", 4, x, y);
+
+    x = DM_STR_X, y = DM_STR_Y;
+    PixelFont_Write_Centered(dm->pixelnours, renderer, "STR", 3, x, y);
+
+    x = DM_MAG_X, y = DM_MAG_Y;
+    PixelFont_Write_Centered(dm->pixelnours, renderer, "MAG", 3, x, y);
+
+    x = DM_DEX_X, y = DM_DEX_Y;
+    PixelFont_Write_Centered(dm->pixelnours, renderer, "DEX", 3, x, y);
+
+    x = DM_AGI_X, y = DM_AGI_Y;
+    PixelFont_Write_Centered(dm->pixelnours, renderer, "AGI", 3, x, y);
+
+    x = DM_CON_X, y = DM_CON_Y;
+    PixelFont_Write_Centered(dm->pixelnours, renderer, "CON", 3, x, y);
+
 }
 
 static void _DeploymentMenu_Draw_Headers_P3(struct DeploymentMenu *dm,
