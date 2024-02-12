@@ -1,4 +1,4 @@
-
+hi
 #include "menu/deployment.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
@@ -124,8 +124,6 @@ static void _DeploymentMenu_Draw_Headers_P3(struct DeploymentMenu *dm,
 
     x = DM_PROF_X, y = DM_PROF_Y;
     PixelFont_Write_Centered(dm->pixelnours, renderer, "PROF", 4, x, y);
-
-}
 }
 
 static void _DeploymentMenu_Draw_Headers_P4(struct DeploymentMenu *dm,
@@ -133,7 +131,14 @@ static void _DeploymentMenu_Draw_Headers_P4(struct DeploymentMenu *dm,
     int x = DM_NAME_X, y = DM_NAME_Y;
     PixelFont_Write_Centered(dm->pixelnours_16, renderer, "Name", 4, x, y);
     
+    x = DM_PROF_X, y = DM_PROF_Y;
+    PixelFont_Write_Centered(dm->pixelnours, renderer, "PROF", 4, x, y);
     
+    x = DM_PROF_X, y = DM_PROF_Y;
+    PixelFont_Write_Centered(dm->pixelnours, renderer, "PROF", 4, x, y);
+    
+    x = DM_PROF_X, y = DM_PROF_Y;
+    PixelFont_Write_Centered(dm->pixelnours, renderer, "PROF", 4, x, y);
 }
 
 static void _DeploymentMenu_Draw_Unit(struct DeploymentMenu *dm,
