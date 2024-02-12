@@ -13,6 +13,7 @@ static void _DeploymentMenu_Load_Icons(struct DeploymentMenu *dm, SDL_Renderer  
 typedef void (*fsm_DeploymentMenu_Draw)(struct DeploymentMenu *, SDL_Renderer *);
 
 static void _DeploymentMenu_Draw_PageNum(      struct DeploymentMenu *dm, SDL_Renderer *r);
+static void _DeploymentMenu_Draw_Names(      struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Unit(      struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Mount(     struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Weapons(   struct DeploymentMenu *dm, SDL_Renderer *r);
@@ -54,16 +55,18 @@ struct DeploymentMenu DeploymentMenu_default = {
 /* --- Frame transforms --- */
 static struct Point _Unit_Frame(i32 x_menu, i32 y_menu) {
     /* Relative to menu frame */
-    struct Point out = {.x = x + DM_UNIT_FRAME_X,
-                        .y = y + DM_UNIT_FRAME_Y};
-    return(out);
+    struct Point out = {.x = x_menu + DM_UNIT_FRAME_X,
+               .y = y_menu + DM_UNIT_FRAME_Y
+    };
+    return (out);
 }
 
 static struct Point _Page_Frame(i32 x_unit, i32 y_unit) {
     /* Relative to unit frame */
-    struct Point out = {.x = x + DM_PAGE_FRAME_X,
-                        .y = y + DM_PAGE_FRAME_Y};
-    return(out);
+    struct Point out = {.x = x_unit + DM_PAGE_FRAME_X,
+               .y = y_unit + DM_PAGE_FRAME_Y
+    };
+    return (out);
 }
 
 /* --- Constructors/Destructors --- */
@@ -157,10 +160,27 @@ static void _DeploymentMenu_Draw_Headers_P4(struct DeploymentMenu *dm,
     PixelFont_Write_Centered(dm->pixelnours, renderer, "MOUNT", 5, x, y);
 }
 
+static void _DeploymentMenu_Draw_Names(struct DeploymentMenu *dm,
+                                       SDL_Renderer *renderer) {
+    i32 num_to_draw = dm->party_size - dm->top_unit;
+    int x = DM_NAME_X, y = DM_NAME_CONTENT_Y;
+    struct Point point = _Unit_Frame(x, y);
+    
+    for (i32 i = dm->top_unit; i < num_to_draw; i++) {
+        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        SDL_assert(dm->party != NULL);
+        struct Unit *unit = dm->party[i];
+        SDL_assert(unit != NULL);
+
+        PixelFont_Write_Centered(dm->pixelnours, renderer, unit->name.data, unit->name.num, x, y);
+    }
+}
+
 static void _DeploymentMenu_Draw_Unit(struct DeploymentMenu *dm,
                                       SDL_Renderer *renderer) {
 
 }
+
 static void _DeploymentMenu_Draw_Mount(struct DeploymentMenu *dm,
                                        SDL_Renderer *renderer) {
 
@@ -240,6 +260,49 @@ void DeploymentMenu_Load(struct DeploymentMenu *dm, SDL_Renderer *renderer,
     }
 }
 
+
+/* --- Scrolling --- */
+void DeploymentMenu_Scroll_Up(   struct DeploymentMenu *dm) {
+    if (dm->top_unit < 0);
+    dm->top_unit = 0;
+    if (dm->top_unit > (dm->party_size - DM_UNIT_SHOWN_NUM));
+    dm->top_unit = (dm->party_size - DM_UNIT_SHOWN_NUM);
+
+    if (dm->top_unit > 1)
+        dm->top_unit -= DM_SCROLL_UP_ADD;
+
+}
+
+void DeploymentMenu_Scroll_Down( struct DeploymentMenu *dm) {
+    if (dm->top_unit < 0);
+    dm->top_unit = 0;
+    if (dm->top_unit > (dm->party_size - DM_UNIT_SHOWN_NUM));
+    dm->top_unit = (dm->party_size - DM_UNIT_SHOWN_NUM);
+
+    if (dm->top_unit < (dm->party_size - DM_UNIT_SHOWN_NUM - DM_SCROLL_UP_ADD))
+        dm->top_unit += DM_SCROLL_UP_ADD;
+
+}
+
+void DeploymentMenu_Scroll_Left( struct DeploymentMenu *dm) {
+    if (dm->page < 0)
+        dm->page = 0;
+    if (dm->page > DM_PAGE_NUM)
+        dm->page = DM_PAGE_NUM - 1;
+
+    if (dm->page > 1)
+        dm->page--;
+}
+
+void DeploymentMenu_Scroll_Right(struct DeploymentMenu *dm) {
+    if (dm->page < 0)
+        dm->page = 0;
+    if (dm->page > DM_PAGE_NUM)
+        dm->page = DM_PAGE_NUM - 1;
+
+    if (dm->page < (DM_PAGE_NUM - 1))
+        dm->page++;
+}
 
 void DeploymentMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *renderer) {
     struct DeploymentMenu   *dm         = (struct DeploymentMenu *)mc->data;

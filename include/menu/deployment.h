@@ -25,6 +25,8 @@ enum DM_MENU {
     DM_N9PATCH_SCALE_X  =   3,
     DM_N9PATCH_SCALE_Y  =   3,
 
+    DM_UNIT_SHOWN_NUM   =   8,
+
     DM_PAGE_NUM         =   4,
     DM_LINE_CONTENT_H   =  16,
     DM_LINE_SPACE_H     =   2,
@@ -104,6 +106,8 @@ enum DM_MENU {
     DM_UNIT_FRAME_W     = 208,
     DM_UNIT_FRAME_H     = DM_LINE_H * DM_LINE_NUM,
 
+    DM_NAME_CONTENT_Y =   3,
+
     /* --- Page frame --- */
     /* Relative to unit frame */
     DM_PAGE_FRAME_X     =  78,
@@ -158,6 +162,12 @@ struct DeploymentMenu *DeploymentMenu_Alloc(void);
 void DeploymentMenu_Free(struct DeploymentMenu *dm);
 void DeploymentMenu_Load(struct DeploymentMenu *dm, SDL_Renderer *renderer,
                          struct n9Patch *n9patch);
+
+/* --- Scrolling --- */
+void DeploymentMenu_Scroll_Up(   struct DeploymentMenu *dm);
+void DeploymentMenu_Scroll_Down( struct DeploymentMenu *dm);
+void DeploymentMenu_Scroll_Left( struct DeploymentMenu *dm);
+void DeploymentMenu_Scroll_Right(struct DeploymentMenu *dm);
 
 /* --- Drawing --- */
 void DeploymentMenu_Draw(  struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
