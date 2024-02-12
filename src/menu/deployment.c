@@ -1,4 +1,4 @@
-hi
+
 #include "menu/deployment.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
@@ -109,7 +109,7 @@ static void _DeploymentMenu_Draw_Headers_P3(struct DeploymentMenu *dm,
                                             SDL_Renderer *renderer) {
     int x = DM_NAME_X, y = DM_NAME_Y;
     PixelFont_Write_Centered(dm->pixelnours_16, renderer, "Name", 4, x, y);
-    
+
     x = DM_DEF_X, y = DM_DEF_Y;
     PixelFont_Write_Centered(dm->pixelnours, renderer, "DEF", 3, x, y);
 
@@ -130,15 +130,15 @@ static void _DeploymentMenu_Draw_Headers_P4(struct DeploymentMenu *dm,
                                             SDL_Renderer *renderer) {
     int x = DM_NAME_X, y = DM_NAME_Y;
     PixelFont_Write_Centered(dm->pixelnours_16, renderer, "Name", 4, x, y);
-    
-    x = DM_PROF_X, y = DM_PROF_Y;
-    PixelFont_Write_Centered(dm->pixelnours, renderer, "PROF", 4, x, y);
-    
-    x = DM_PROF_X, y = DM_PROF_Y;
-    PixelFont_Write_Centered(dm->pixelnours, renderer, "PROF", 4, x, y);
-    
-    x = DM_PROF_X, y = DM_PROF_Y;
-    PixelFont_Write_Centered(dm->pixelnours, renderer, "PROF", 4, x, y);
+
+    x = DM_WPN_TYPE_X, y = DM_WPN_TYPE_Y;
+    PixelFont_Write_Centered(dm->pixelnours, renderer, "WPN TYPE", 8, x, y);
+
+    x = DM_REGRETS_X, y = DM_REGRETS_Y;
+    PixelFont_Write_Centered(dm->pixelnours, renderer, "REGRETS", 7, x, y);
+
+    x = DM_MOUNT_X, y = DM_MOUNT_Y;
+    PixelFont_Write_Centered(dm->pixelnours, renderer, "MOUNT", 5, x, y);
 }
 
 static void _DeploymentMenu_Draw_Unit(struct DeploymentMenu *dm,

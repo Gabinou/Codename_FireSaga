@@ -56,45 +56,45 @@ enum DM_MENU {
     DM_MOVE_Y       = DM_LVL_Y,
 
     /* -- Page 2 -- */
-    DM_STR_X        = DM_NAME_X + 52,
-    DM_STR_Y        = DM_NAME_Y +  3,
+    DM_STR_X        = DM_NAME_X + 41,
+    DM_STR_Y        = DM_NAME_Y +  4,
 
-    DM_MAG_X        = DM_STR_X  + 26,
+    DM_MAG_X        = DM_STR_X  + 25,
     DM_MAG_Y        = DM_STR_Y,
 
     DM_DEX_X        = DM_MAG_X  + 26,
     DM_DEX_Y        = DM_STR_Y,
 
-    DM_AGI_X        = DM_DEX_X  + 26,
+    DM_AGI_X        = DM_DEX_X  + 24,
     DM_AGI_Y        = DM_STR_Y,
 
-    DM_CON_X        = DM_AGI_X  + 26,
+    DM_CON_X        = DM_AGI_X  + 24,
     DM_CON_Y        = DM_STR_Y,
 
     /* -- Page 3 -- */
-    DM_DEF_X        = DM_NAME_X + 52,
-    DM_DEF_Y        = DM_NAME_Y +  5,
+    DM_DEF_X        = DM_NAME_X + 41,
+    DM_DEF_Y        = DM_NAME_Y +  4,
 
-    DM_RES_X        = DM_DEF_X  + 26,
+    DM_RES_X        = DM_DEF_X  + 24,
     DM_RES_Y        = DM_DEF_Y,
 
-    DM_FTH_X        = DM_DEF_X  + 26,
+    DM_FTH_X        = DM_RES_X  + 26,
     DM_FTH_Y        = DM_DEF_Y,
 
-    DM_LUCK_X       = DM_DEF_X  + 26,
+    DM_LUCK_X       = DM_FTH_X  + 26,
     DM_LUCK_Y       = DM_DEF_Y,
 
-    DM_PROF_X       = DM_DEF_X  + 26,
+    DM_PROF_X       = DM_LUCK_X + 25,
     DM_PROF_Y       = DM_DEF_Y,
 
     /* -- Page 4 -- */
-    DM_WPN_TYPE_X   = DM_NAME_X + 60,
-    DM_WPN_TYPE_Y   = DM_NAME_Y + 5,
+    DM_WPN_TYPE_X   = DM_NAME_X + 56,
+    DM_WPN_TYPE_Y   = DM_NAME_Y + 4,
 
-    DM_REGRETS_X    = DM_WPN_TYPE_X + 43,
+    DM_REGRETS_X    = DM_WPN_TYPE_X + 47,
     DM_REGRETS_Y    = DM_WPN_TYPE_Y,
 
-    DM_MOUNT_X      = DM_REGRETS_X  + 38,
+    DM_MOUNT_X      = DM_REGRETS_X  + 36,
     DM_MOUNT_Y      = DM_WPN_TYPE_Y,
 
     /* --- Unit frame --- */
