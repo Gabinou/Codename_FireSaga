@@ -76,6 +76,7 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
 }
 
 /* --- Party utilities --- */
+// TODO: Make utility to load Party without game struct
 void Game_Party_Load(struct Game *sota, i16 *unit_ids, size_t load_num) {
     /* Read unit data from filename */
     struct Unit temp_unit;

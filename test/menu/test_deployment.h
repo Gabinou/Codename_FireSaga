@@ -4,6 +4,26 @@
 #include "unit/unit.h"
 #include "RNG.h"
 
+struct Unit * test_menu_deployment_party() {
+    /* -- Party -- */
+    /* - Preliminaries - */
+    i16 *unit_inds;
+    unit_inds = DARR_INIT(unit_inds, i16, 16);
+
+    /* -- Adding units to Party -- */
+    /* - Silou.json (Mage) - */
+    DARR_PUT(unit_inds, UNIT_ID_SILOU);
+
+    // /* - Kiara.json (Cleric) - */
+    // DARR_PUT(unit_inds, UNIT_ID_KIARA);
+
+    // /* - Rayan.json (Dancer) - */
+    // DARR_PUT(unit_inds, UNIT_ID_RAYAN);
+
+    /* -- Putting party on map -- */
+    return(Party_Load(unit_inds, DARR_NUM(unit_inds)));
+}
+
 void test_menu_deployment() {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     /* --- Preliminaries --- */

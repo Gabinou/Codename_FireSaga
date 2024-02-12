@@ -165,11 +165,11 @@ static void _DeploymentMenu_Draw_Names(struct DeploymentMenu *dm,
     i32 num_to_draw = dm->party_size - dm->top_unit;
     int x = DM_NAME_X, y = DM_NAME_CONTENT_Y;
     struct Point point = _Unit_Frame(x, y);
-    
+
     for (i32 i = dm->top_unit; i < num_to_draw; i++) {
         y = (i - dm->top_unit) * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        struct Unit *unit = dm->party[i];
+        struct Unit *unit = &dm->party[i];
         SDL_assert(unit != NULL);
 
         PixelFont_Write_Centered(dm->pixelnours, renderer, unit->name.data, unit->name.num, x, y);
@@ -364,11 +364,7 @@ void DeploymentMenu_Update(struct DeploymentMenu *dm, struct n9Patch *n9patch,
 
     fsm_DeploymentMenu_Draw_Headers[dm->page](dm, renderer);
 
-    _DeploymentMenu_Draw_Unit(      dm, renderer);
-    _DeploymentMenu_Draw_Mount(     dm, renderer);
-    _DeploymentMenu_Draw_Weapons(   dm, renderer);
-    _DeploymentMenu_Draw_Content(   dm, renderer);
-    _DeploymentMenu_Draw_Scroll_Bar(dm, renderer);
+    _DeploymentMenu_Draw_Names(      dm, renderer);
 
 
     /* -- Finish -- */
