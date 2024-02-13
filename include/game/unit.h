@@ -17,6 +17,9 @@ void Game_Items_Free(  struct dtab **items_dtab);
 void Game_Weapons_Free(struct dtab **weapons_dtab);
 
 /* --- Party utilities --- */
+void Party_Load(struct Unit *party, struct dtab *weapons_dtab,
+                struct dtab *items_dtab, i16 *unit_ids, size_t load_num);
+
 void Game_Party_Load(  struct Game *s, i16 *to_load_ids, size_t load_num);
 void Game_Party_Clear( struct Game *s);
 void Game_Party_Unload(struct Game *s, i16 *to_unload,   size_t unload_num);

@@ -4,30 +4,35 @@
 #include "unit/unit.h"
 #include "RNG.h"
 
+int units_num = 0;
+
 struct Unit *test_menu_deployment_party() {
     /* -- Party -- */
     /* - Preliminaries - */
-    i16 *unit_inds;
-    unit_inds = DARR_INIT(unit_inds, i16, 16);
+    i16 *unit_ids = DARR_INIT(unit_ids, i16, 16);
+    struct Unit party[SOTA_MAX_PARTY_SIZE];
+    struct dtab *weapons_dtab   = DTAB_INIT(weapons_dtab,   struct Weapon);
+    struct dtab *items_dtab     = DTAB_INIT(items_dtab,     struct Item);
 
     /* -- Adding units to Party -- */
-    /* - Silou.json (Mage) - */
-    DARR_PUT(unit_inds, UNIT_ID_SILOU);
+    DARR_PUT(unit_ids, UNIT_ID_SILOU);
+    DARR_PUT(unit_ids, UNIT_ID_KIARA);
+    DARR_PUT(unit_ids, UNIT_ID_RAYAN);
 
-    // /* - Kiara.json (Cleric) - */
-    // DARR_PUT(unit_inds, UNIT_ID_KIARA);
-
-    // /* - Rayan.json (Dancer) - */
-    // DARR_PUT(unit_inds, UNIT_ID_RAYAN);
+    units_num = DARR_NUM(unit_ids);
+    Party_Load(party, weapons_dtab, items_dtab, unit_ids, units_num);
 
     /* -- Putting party on map -- */
-    return (Party_Load(unit_inds, DARR_NUM(unit_inds)));
+    return (party);
 }
 
 void test_menu_deployment() {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     /* --- Preliminaries --- */
     sota_mkdir("menu_deployment");
+
+    /* -- Party -- */
+    struct Unit *party = test_menu_deployment_party();
 
     /* -- Create n9patch -- */
     struct n9Patch n9patch = n9Patch_default;
@@ -55,6 +60,10 @@ void test_menu_deployment() {
     path = PATH_JOIN("..", "assets", "fonts", "pixelnours_16_tight.png");
     PixelFont_Load(dm->pixelnours_16, renderer, path);
     SDL_assert(dm->pixelnours_big);
+
+    /* - loading party - */
+    dm->party       = party;
+    dm->party_size  = party;
 
 
     /* --- RENDERS --- */
