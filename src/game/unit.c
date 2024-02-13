@@ -76,11 +76,9 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
 }
 
 /* --- Party utilities --- */
-// TODO: Make utility to load Party without game struct
-void Game_Party_Load(struct Game *sota, i16 *unit_ids, size_t load_num) {
-    /* Read unit data from filename */
+void Party_Load(struct Unit *party, struct dtab *weapons_dtab,
+                struct dtab *items_dtab, i16 *unit_ids, size_t load_num) {
     struct Unit temp_unit;
-    Game_Party_Clear(sota);
     for (size_t i = 0; i < load_num; i++) {
         // TODO: Read base party unit when recruiting
         // TODO: Read savefile party units otherwise
@@ -97,18 +95,22 @@ void Game_Party_Load(struct Game *sota, i16 *unit_ids, size_t load_num) {
         filename        = s8cat(filename, s8_literal(".json"));
 
         /* Reading unit from json file */
-        temp_unit.items_dtab   = sota->items_dtab;
-        temp_unit.weapons_dtab = sota->weapons_dtab;
+        temp_unit.items_dtab   = items_dtab;
+        temp_unit.weapons_dtab = weapons_dtab;
         jsonio_readJSON(filename, &temp_unit);
         temp_unit.army = ARMY_FRIENDLY;
         SDL_assert(temp_unit.name.data != NULL);
         SDL_assert((temp_unit.handedness > UNIT_HAND_NULL) && (temp_unit.handedness < UNIT_HAND_END));
 
-        sota->party[unit_ids[i]]        = temp_unit;
-        sota->party_loaded[unit_ids[i]] = true;
+        party[unit_ids[i]]        = temp_unit;
         s8_free(&filename);
-
     }
+}
+
+void Game_Party_Load(struct Game *sota, i16 *unit_ids, size_t load_num) {
+    /* Read unit data from filename */
+    Game_Party_Clear(sota);
+    Party_Load(sota->party, sota->weapons_dtab, sota->items_dtab, unit_ids, load_num);
 }
 
 void Game_Party_Clear(struct Game *sota) {
@@ -175,7 +177,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     SDL_Log("-- loading unit --");
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
     SDL_assert(unit != NULL);
-    SDL_assert(sota->party_loaded[unit_id]);
+    SDL_assert(sota->party[unit_id]._id != 0);
 
     memcpy(unit, &sota->party[unit_id], sizeof(struct Unit));
     SDL_assert((sota->party[unit_id].handedness > UNIT_HAND_NULL)

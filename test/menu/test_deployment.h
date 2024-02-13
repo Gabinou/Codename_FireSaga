@@ -4,7 +4,7 @@
 #include "unit/unit.h"
 #include "RNG.h"
 
-struct Unit * test_menu_deployment_party() {
+struct Unit *test_menu_deployment_party() {
     /* -- Party -- */
     /* - Preliminaries - */
     i16 *unit_inds;
@@ -21,7 +21,7 @@ struct Unit * test_menu_deployment_party() {
     // DARR_PUT(unit_inds, UNIT_ID_RAYAN);
 
     /* -- Putting party on map -- */
-    return(Party_Load(unit_inds, DARR_NUM(unit_inds)));
+    return (Party_Load(unit_inds, DARR_NUM(unit_inds)));
 }
 
 void test_menu_deployment() {

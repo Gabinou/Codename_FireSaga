@@ -128,7 +128,6 @@ struct Game {
 
     tnecs_entity *map_enemies;
     struct Unit party[SOTA_MAX_PARTY_SIZE];
-    b32 party_loaded[SOTA_MAX_PARTY_SIZE];
 
     tnecs_entity *ent_unit_loaded;
 

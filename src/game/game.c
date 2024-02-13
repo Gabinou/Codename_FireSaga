@@ -40,7 +40,6 @@ struct Game Game_default = {
     .ai_timer = TNECS_NULL,
 
     .party          = {0},
-    .party_loaded   = {0},
 
     // .menu_font       = NULL,
     .menu_pixelfont     = NULL,
