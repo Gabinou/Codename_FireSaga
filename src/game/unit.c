@@ -102,7 +102,7 @@ void Party_Load(struct Unit *party, struct dtab *weapons_dtab,
         SDL_assert(temp_unit.name.data != NULL);
         SDL_assert((temp_unit.handedness > UNIT_HAND_NULL) && (temp_unit.handedness < UNIT_HAND_END));
 
-        party[unit_ids[i]]        = temp_unit;
+        party[unit_ids[i]]  = temp_unit;
         s8_free(&filename);
     }
 }
@@ -110,6 +110,10 @@ void Party_Load(struct Unit *party, struct dtab *weapons_dtab,
 void Game_Party_Load(struct Game *sota, i16 *unit_ids, size_t load_num) {
     /* Read unit data from filename */
     Game_Party_Clear(sota);
+    sota->party_size = load_num;
+    for (size_t i = 0; i < load_num; i++) {
+        sota->party_stack[i] = unit_ids[i];
+    }
     Party_Load(sota->party, sota->weapons_dtab, sota->items_dtab, unit_ids, load_num);
 }
 

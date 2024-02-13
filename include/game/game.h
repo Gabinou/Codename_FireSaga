@@ -128,6 +128,8 @@ struct Game {
 
     tnecs_entity *map_enemies;
     struct Unit party[SOTA_MAX_PARTY_SIZE];
+    i16 party_stack[SOTA_MAX_PARTY_SIZE];
+    u8  party_size;
 
     tnecs_entity *ent_unit_loaded;
 
@@ -193,7 +195,6 @@ struct Game {
     Mix_Chunk *soundfx_cursor;
     Mix_Chunk *soundfx_next_turn;
 
-    u8     party_size;
     u64    runtime_ns; // -> millions of years
     bool  *shadow_area;  /* pixels */
     bool   ismouse          : 1;

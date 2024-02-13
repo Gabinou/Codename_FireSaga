@@ -169,11 +169,15 @@ static void _DeploymentMenu_Draw_Names(struct DeploymentMenu *dm,
     for (i32 i = dm->top_unit; i < num_to_draw; i++) {
         y = (i - dm->top_unit) * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        struct Unit *unit = &dm->party[i];
+        int unit_id = dm->party_stack[i];
+        struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
 
-        PixelFont_Write_Centered(dm->pixelnours, renderer, unit->name.data, unit->name.num, x, y);
+        SDL_Log("%s", unit->name.data);
+        PixelFont_Write_Centered(dm->pixelnours_big, renderer, unit->name.data,
+                                 unit->name.num, x, y);
     }
+    getchar();
 }
 
 static void _DeploymentMenu_Draw_Unit(struct DeploymentMenu *dm,

@@ -4,35 +4,33 @@
 #include "unit/unit.h"
 #include "RNG.h"
 
-int units_num = 0;
+struct Unit party[SOTA_MAX_PARTY_SIZE];
+i16 party_stack[SOTA_MAX_PARTY_SIZE];
 
-struct Unit *test_menu_deployment_party() {
+void test_menu_deployment_party(struct DeploymentMenu *dm) {
     /* -- Party -- */
     /* - Preliminaries - */
-    i16 *unit_ids = DARR_INIT(unit_ids, i16, 16);
     struct Unit party[SOTA_MAX_PARTY_SIZE];
     struct dtab *weapons_dtab   = DTAB_INIT(weapons_dtab,   struct Weapon);
     struct dtab *items_dtab     = DTAB_INIT(items_dtab,     struct Item);
-
     /* -- Adding units to Party -- */
-    DARR_PUT(unit_ids, UNIT_ID_SILOU);
-    DARR_PUT(unit_ids, UNIT_ID_KIARA);
-    DARR_PUT(unit_ids, UNIT_ID_RAYAN);
+    dm->party_stack = party_stack;
+    dm->party = party;
 
-    units_num = DARR_NUM(unit_ids);
-    Party_Load(party, weapons_dtab, items_dtab, unit_ids, units_num);
+    dm->party_size = 0;
+    dm->party_stack[dm->party_size++] = UNIT_ID_SILOU;
+    dm->party_stack[dm->party_size++] = UNIT_ID_KIARA;
+    dm->party_stack[dm->party_size++] = UNIT_ID_RAYAN;
+
+    Party_Load(dm->party, weapons_dtab, items_dtab, dm->party_stack, dm->party_size);
 
     /* -- Putting party on map -- */
-    return (party);
 }
 
 void test_menu_deployment() {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     /* --- Preliminaries --- */
     sota_mkdir("menu_deployment");
-
-    /* -- Party -- */
-    struct Unit *party = test_menu_deployment_party();
 
     /* -- Create n9patch -- */
     struct n9Patch n9patch = n9Patch_default;
@@ -62,9 +60,7 @@ void test_menu_deployment() {
     SDL_assert(dm->pixelnours_big);
 
     /* - loading party - */
-    dm->party       = party;
-    dm->party_size  = party;
-
+    test_menu_deployment_party(dm);
 
     /* --- RENDERS --- */
     /* -- Test page 1 -- */
