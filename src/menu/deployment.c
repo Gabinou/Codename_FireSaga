@@ -12,12 +12,13 @@ static void _DeploymentMenu_Load_Icons(struct DeploymentMenu *dm, SDL_Renderer  
 /* --- Drawing --- */
 typedef void (*fsm_DeploymentMenu_Draw)(struct DeploymentMenu *, SDL_Renderer *);
 
-static void _DeploymentMenu_Draw_PageNum(      struct DeploymentMenu *dm, SDL_Renderer *r);
-static void _DeploymentMenu_Draw_Names(      struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Unit(      struct DeploymentMenu *dm, SDL_Renderer *r);
+static void _DeploymentMenu_Draw_Names(     struct DeploymentMenu *dm, SDL_Renderer *r);
+static void _DeploymentMenu_Draw_Icons(     struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Mount(     struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Weapons(   struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Content(   struct DeploymentMenu *dm, SDL_Renderer *r);
+static void _DeploymentMenu_Draw_PageNum(   struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Scroll_Bar(struct DeploymentMenu *dm, SDL_Renderer *r);
 
 static void _DeploymentMenu_Draw_Headers_P1(struct DeploymentMenu *dm, SDL_Renderer *r);
@@ -173,12 +174,25 @@ static void _DeploymentMenu_Draw_Names(struct DeploymentMenu *dm,
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
 
-        SDL_Log("%s", unit->name.data);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, unit->name.data,
                                  unit->name.num, x, y);
     }
-    getchar();
 }
+
+static void _DeploymentMenu_Draw_Icons(struct DeploymentMenu *dm,
+                                       SDL_Renderer *renderer) {
+    i32 num_to_draw = dm->party_size - dm->top_unit;
+    int x = DM_ICON_X, y = DM_ICON_Y;
+    struct Point point = _Unit_Frame(x, y);
+    SDL_Rect rect = {.x = 0, .y = 0, .w = DM_ICON_W, .h = DM_ICON_H};
+    rect.x = point.x;
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
+    for (i32 i = dm->top_unit; i < num_to_draw; i++) {
+        rect.y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        SDL_RenderFillRect(renderer, &rect);
+    }
+}
+
 
 static void _DeploymentMenu_Draw_Unit(struct DeploymentMenu *dm,
                                       SDL_Renderer *renderer) {
@@ -369,8 +383,9 @@ void DeploymentMenu_Update(struct DeploymentMenu *dm, struct n9Patch *n9patch,
     fsm_DeploymentMenu_Draw_Headers[dm->page](dm, renderer);
 
     _DeploymentMenu_Draw_Names(      dm, renderer);
+    _DeploymentMenu_Draw_Icons(      dm, renderer);
 
-
+    Utilities_DrawColor_Reset(renderer);
     /* -- Finish -- */
     SDL_SetRenderTarget(renderer, rt);
     SDL_assert(dm->texture);

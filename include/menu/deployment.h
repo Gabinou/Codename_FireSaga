@@ -38,6 +38,7 @@ enum DM_MENU {
     DM_NAME_X       =  59,
     DM_NAME_Y       =   5,
 
+
     DM_PAGE_NUM_X   = 216,
     DM_PAGE_NUM_Y   =   8,
 
@@ -106,7 +107,11 @@ enum DM_MENU {
     DM_UNIT_FRAME_W     = 208,
     DM_UNIT_FRAME_H     = DM_LINE_H * DM_LINE_NUM,
 
-    DM_NAME_CONTENT_Y =   3,
+    DM_NAME_CONTENT_Y =  3,
+    DM_ICON_X       =    0,
+    DM_ICON_Y       =    0,
+    DM_ICON_W       =   16,
+    DM_ICON_H       =   16,
 
     /* --- Page frame --- */
     /* Relative to unit frame */
