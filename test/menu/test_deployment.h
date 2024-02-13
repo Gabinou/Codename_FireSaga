@@ -45,22 +45,6 @@ void test_menu_deployment() {
     struct DeploymentMenu *dm = DeploymentMenu_Alloc();
     DeploymentMenu_Load(dm, renderer, &n9patch);
 
-    /* - loading fonts - */
-    char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
-
-    PixelFont_Load(dm->pixelnours, renderer, path);
-    dm->pixelnours->y_offset = pixelfont_y_offset;
-    SDL_assert(dm->pixelnours);
-
-    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
-    PixelFont_Load(dm->pixelnours_big, renderer, path);
-    dm->pixelnours_big->y_offset = pixelfont_big_y_offset;
-    SDL_assert(dm->pixelnours_big);
-
-    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_16_tight.png");
-    PixelFont_Load(dm->pixelnours_16, renderer, path);
-    SDL_assert(dm->pixelnours_big);
-
     /* - loading party - */
     test_menu_deployment_party(dm);
 

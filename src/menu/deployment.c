@@ -14,6 +14,7 @@ typedef void (*fsm_DeploymentMenu_Draw)(struct DeploymentMenu *, SDL_Renderer *)
 
 static void _DeploymentMenu_Draw_Unit(      struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Names(     struct DeploymentMenu *dm, SDL_Renderer *r);
+static void _DeploymentMenu_Draw_Class(     struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Icons(     struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Mount(     struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Weapons(   struct DeploymentMenu *dm, SDL_Renderer *r);
@@ -21,16 +22,20 @@ static void _DeploymentMenu_Draw_Content(   struct DeploymentMenu *dm, SDL_Rende
 static void _DeploymentMenu_Draw_PageNum(   struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Scroll_Bar(struct DeploymentMenu *dm, SDL_Renderer *r);
 
+static void _DeploymentMenu_Draw_P1(struct DeploymentMenu *dm, SDL_Renderer *r);
+static void _DeploymentMenu_Draw_P2(struct DeploymentMenu *dm, SDL_Renderer *r);
+static void _DeploymentMenu_Draw_P3(struct DeploymentMenu *dm, SDL_Renderer *r);
+static void _DeploymentMenu_Draw_P4(struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Headers_P1(struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Headers_P2(struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Headers_P3(struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Headers_P4(struct DeploymentMenu *dm, SDL_Renderer *r);
 
-fsm_DeploymentMenu_Draw fsm_DeploymentMenu_Draw_Headers[DM_PAGE_NUM] = {
-    &_DeploymentMenu_Draw_Headers_P1,
-    &_DeploymentMenu_Draw_Headers_P2,
-    &_DeploymentMenu_Draw_Headers_P3,
-    &_DeploymentMenu_Draw_Headers_P4,
+fsm_DeploymentMenu_Draw fsm_DeploymentMenu_Draw_Pages[DM_PAGE_NUM] = {
+    &_DeploymentMenu_Draw_P1,
+    &_DeploymentMenu_Draw_P2,
+    &_DeploymentMenu_Draw_P3,
+    &_DeploymentMenu_Draw_P4
 };
 
 struct DeploymentMenu DeploymentMenu_default = {
@@ -56,17 +61,19 @@ struct DeploymentMenu DeploymentMenu_default = {
 /* --- Frame transforms --- */
 static struct Point _Unit_Frame(i32 x_menu, i32 y_menu) {
     /* Relative to menu frame */
-    struct Point out = {.x = x_menu + DM_UNIT_FRAME_X,
-               .y = y_menu + DM_UNIT_FRAME_Y
-    };
+    struct Point out;
+    out.x = x_menu + DM_UNIT_FRAME_X;
+    out.y = y_menu + DM_UNIT_FRAME_Y;
+
     return (out);
 }
 
 static struct Point _Page_Frame(i32 x_unit, i32 y_unit) {
-    /* Relative to unit frame */
-    struct Point out = {.x = x_unit + DM_PAGE_FRAME_X,
-               .y = y_unit + DM_PAGE_FRAME_Y
-    };
+    /* Relative to menu frame */
+    struct Point out;
+    out.x = x_unit + DM_UNIT_FRAME_X + DM_PAGE_FRAME_X;
+    out.y = y_unit + DM_UNIT_FRAME_Y + DM_PAGE_FRAME_Y;
+
     return (out);
 }
 
@@ -82,7 +89,29 @@ static void _DeploymentMenu_Load_Icons(struct DeploymentMenu *dm,
 }
 
 /* --- Drawing --- */
+static void _DeploymentMenu_Draw_P1(struct DeploymentMenu *dm,
+                                    SDL_Renderer *renderer) {
+    _DeploymentMenu_Draw_Headers_P1(dm, renderer);
+    _DeploymentMenu_Draw_Class(dm, renderer);
+}
+
+static void _DeploymentMenu_Draw_P2(struct DeploymentMenu *dm,
+                                    SDL_Renderer *renderer) {
+    _DeploymentMenu_Draw_Headers_P2(dm, renderer);
+}
+
+static void _DeploymentMenu_Draw_P3(struct DeploymentMenu *dm,
+                                    SDL_Renderer *renderer) {
+    _DeploymentMenu_Draw_Headers_P3(dm, renderer);
+}
+
+static void _DeploymentMenu_Draw_P4(struct DeploymentMenu *dm,
+                                    SDL_Renderer *renderer) {
+    _DeploymentMenu_Draw_Headers_P4(dm, renderer);
+}
+
 /* -- Headers -- */
+
 static void _DeploymentMenu_Draw_Headers_P1(struct DeploymentMenu *dm,
                                             SDL_Renderer *renderer) {
     int x = DM_NAME_X, y = DM_NAME_Y;
@@ -192,7 +221,23 @@ static void _DeploymentMenu_Draw_Icons(struct DeploymentMenu *dm,
         SDL_RenderFillRect(renderer, &rect);
     }
 }
+static void _DeploymentMenu_Draw_Class(struct DeploymentMenu *dm,
+                                       SDL_Renderer *renderer) {
+    i32 num_to_draw = dm->party_size - dm->top_unit;
+    int x = DM_CLASS_X, y = DM_CLASS_CONTENT_Y;
+    struct Point point = _Page_Frame(x, y);
 
+    for (i32 i = dm->top_unit; i < num_to_draw; i++) {
+        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        SDL_assert(dm->party != NULL);
+        int unit_id = dm->party_stack[i];
+        struct Unit *unit = &dm->party[unit_id];
+        SDL_assert(unit != NULL);
+        s8 class = classNames[unit->class];
+        PixelFont_Write_Centered(dm->pixelnours_big, renderer, class.data,
+                                 class.num, x, y);
+    }
+}
 
 static void _DeploymentMenu_Draw_Unit(struct DeploymentMenu *dm,
                                       SDL_Renderer *renderer) {
@@ -276,6 +321,22 @@ void DeploymentMenu_Load(struct DeploymentMenu *dm, SDL_Renderer *renderer,
         char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
         n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     }
+
+    /* - loading fonts - */
+    char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
+
+    PixelFont_Load(dm->pixelnours, renderer, path);
+    dm->pixelnours->y_offset = pixelfont_y_offset;
+    SDL_assert(dm->pixelnours);
+
+    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
+    PixelFont_Load(dm->pixelnours_big, renderer, path);
+    dm->pixelnours_big->y_offset = pixelfont_big_y_offset;
+    SDL_assert(dm->pixelnours_big);
+
+    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_16_tight.png");
+    PixelFont_Load(dm->pixelnours_16, renderer, path);
+    SDL_assert(dm->pixelnours_big);
 }
 
 
@@ -380,10 +441,10 @@ void DeploymentMenu_Update(struct DeploymentMenu *dm, struct n9Patch *n9patch,
     n9patch->scale.x    = scale_x;
     n9patch->scale.y    = scale_y;
 
-    fsm_DeploymentMenu_Draw_Headers[dm->page](dm, renderer);
+    fsm_DeploymentMenu_Draw_Pages[dm->page](dm, renderer);
 
-    _DeploymentMenu_Draw_Names(      dm, renderer);
-    _DeploymentMenu_Draw_Icons(      dm, renderer);
+    _DeploymentMenu_Draw_Names(dm, renderer);
+    _DeploymentMenu_Draw_Icons(dm, renderer);
 
     Utilities_DrawColor_Reset(renderer);
     /* -- Finish -- */

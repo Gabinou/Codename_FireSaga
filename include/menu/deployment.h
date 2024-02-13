@@ -120,6 +120,7 @@ enum DM_MENU {
     DM_PAGE_FRAME_W     = 128,
     DM_PAGE_FRAME_H     = DM_UNIT_FRAME_H,
 
+    DM_CLASS_CONTENT_Y  =   3,
 };
 
 /* --- DeploymentMenu Design --- */
