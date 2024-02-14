@@ -125,8 +125,11 @@ enum DM_MENU {
     DM_PAGE_FRAME_W     = 128,
     DM_PAGE_FRAME_H     = DM_UNIT_FRAME_H,
 
-    DM_CLASS_CONTENT_Y  =   3,
+    DM_HP_CONTENT_Y     =   3,
     DM_LVL_CONTENT_Y    =   3,
+    DM_EXP_CONTENT_Y    =   3,
+    DM_MOVE_CONTENT_Y   =   3,
+    DM_CLASS_CONTENT_Y  =   3,
 
 };
 
