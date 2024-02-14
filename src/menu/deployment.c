@@ -12,10 +12,10 @@ static void _DeploymentMenu_Load_Icons(struct DeploymentMenu *dm, SDL_Renderer  
 /* --- Drawing --- */
 typedef void (*fsm_DeploymentMenu_Draw)(struct DeploymentMenu *, SDL_Renderer *);
 
-static void _DeploymentMenu_Draw_Mv(      struct DeploymentMenu *dm, SDL_Renderer *r);
-static void _DeploymentMenu_Draw_HP(      struct DeploymentMenu *dm, SDL_Renderer *r);
-static void _DeploymentMenu_Draw_EXP(      struct DeploymentMenu *dm, SDL_Renderer *r);
-static void _DeploymentMenu_Draw_Lvl(      struct DeploymentMenu *dm, SDL_Renderer *r);
+static void _DeploymentMenu_Draw_Mv(        struct DeploymentMenu *dm, SDL_Renderer *r);
+static void _DeploymentMenu_Draw_HP(        struct DeploymentMenu *dm, SDL_Renderer *r);
+static void _DeploymentMenu_Draw_EXP(       struct DeploymentMenu *dm, SDL_Renderer *r);
+static void _DeploymentMenu_Draw_Lvl(       struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Unit(      struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Names(     struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Class(     struct DeploymentMenu *dm, SDL_Renderer *r);
@@ -97,10 +97,10 @@ static void _DeploymentMenu_Draw_P1(struct DeploymentMenu *dm,
                                     SDL_Renderer *renderer) {
     _DeploymentMenu_Draw_Headers_P1(dm, renderer);
     _DeploymentMenu_Draw_Class(dm, renderer);
-    // _DeploymentMenu_Draw_Lvl(dm, renderer);
-    // _DeploymentMenu_Draw_EXP(dm, renderer);
-    // _DeploymentMenu_Draw_HP(dm, renderer);
-    // _DeploymentMenu_Draw_Mv(dm, renderer);
+    _DeploymentMenu_Draw_Lvl(dm, renderer);
+    _DeploymentMenu_Draw_EXP(dm, renderer);
+    _DeploymentMenu_Draw_HP(dm, renderer);
+    _DeploymentMenu_Draw_Mv(dm, renderer);
 }
 
 static void _DeploymentMenu_Draw_P2(struct DeploymentMenu *dm,
@@ -227,6 +227,41 @@ static void _DeploymentMenu_Draw_Names(struct DeploymentMenu *dm,
 
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, unit->name.data,
                                  unit->name.num, x, y);
+    }
+}
+
+/* -- Page 1 -- */
+static void _DeploymentMenu_Draw_Mv(struct DeploymentMenu *dm,
+                                    SDL_Renderer *renderer) {
+
+}
+
+static void _DeploymentMenu_Draw_HP(struct DeploymentMenu *dm,
+                                    SDL_Renderer *renderer) {
+
+}
+
+static void _DeploymentMenu_Draw_EXP(struct DeploymentMenu *dm,
+                                     SDL_Renderer *renderer) {
+
+}
+
+static void _DeploymentMenu_Draw_Lvl(struct DeploymentMenu *dm,
+                                     SDL_Renderer *renderer) {
+    char array[3] = {0};
+    int x = DM_LVL_X, y = DM_LVL_CONTENT_Y;
+    struct Point point = _Page_Frame(x, y);
+
+    i32 num_to_draw = dm->party_size - dm->top_unit;
+    for (i32 i = dm->top_unit; i < num_to_draw; i++) {
+        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        SDL_assert(dm->party != NULL);
+        int unit_id = dm->party_stack[i];
+        struct Unit *unit = &dm->party[unit_id];
+        SDL_assert(unit != NULL);
+        i16 lvl = Unit_getLvl(unit);
+        stbsp_snprintf(array, 3, "%02d\0", lvl);
+        PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
     }
 }
 

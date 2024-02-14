@@ -38,7 +38,6 @@ enum DM_MENU {
     DM_NAME_X       =  59,
     DM_NAME_Y       =   5,
 
-
     DM_PAGE_NUM_NUMER_X   = 217,
     DM_PAGE_NUM_NUMER_Y   =   8,
 
@@ -127,6 +126,8 @@ enum DM_MENU {
     DM_PAGE_FRAME_H     = DM_UNIT_FRAME_H,
 
     DM_CLASS_CONTENT_Y  =   3,
+    DM_LVL_CONTENT_Y    =   3,
+
 };
 
 /* --- DeploymentMenu Design --- */
