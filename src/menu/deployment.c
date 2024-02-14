@@ -12,6 +12,10 @@ static void _DeploymentMenu_Load_Icons(struct DeploymentMenu *dm, SDL_Renderer  
 /* --- Drawing --- */
 typedef void (*fsm_DeploymentMenu_Draw)(struct DeploymentMenu *, SDL_Renderer *);
 
+static void _DeploymentMenu_Draw_Mv(      struct DeploymentMenu *dm, SDL_Renderer *r);
+static void _DeploymentMenu_Draw_HP(      struct DeploymentMenu *dm, SDL_Renderer *r);
+static void _DeploymentMenu_Draw_EXP(      struct DeploymentMenu *dm, SDL_Renderer *r);
+static void _DeploymentMenu_Draw_Lvl(      struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Unit(      struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Names(     struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Class(     struct DeploymentMenu *dm, SDL_Renderer *r);
@@ -93,6 +97,10 @@ static void _DeploymentMenu_Draw_P1(struct DeploymentMenu *dm,
                                     SDL_Renderer *renderer) {
     _DeploymentMenu_Draw_Headers_P1(dm, renderer);
     _DeploymentMenu_Draw_Class(dm, renderer);
+    // _DeploymentMenu_Draw_Lvl(dm, renderer);
+    // _DeploymentMenu_Draw_EXP(dm, renderer);
+    // _DeploymentMenu_Draw_HP(dm, renderer);
+    // _DeploymentMenu_Draw_Mv(dm, renderer);
 }
 
 static void _DeploymentMenu_Draw_P2(struct DeploymentMenu *dm,
@@ -111,6 +119,20 @@ static void _DeploymentMenu_Draw_P4(struct DeploymentMenu *dm,
 }
 
 /* -- Headers -- */
+static void _DeploymentMenu_Draw_PageNum(struct DeploymentMenu *dm,
+                                         SDL_Renderer *renderer) {
+    char array[2] = {0};
+    int x = DM_PAGE_NUM_NUMER_X, y = DM_PAGE_NUM_NUMER_Y;
+    stbsp_snprintf(array, 2, "%d\0", dm->page + 1);
+    PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 1, x, y);
+
+    x = DM_PAGE_NUM_SLASH_X, y = DM_PAGE_NUM_SLASH_Y;
+    PixelFont_Write_Centered(dm->pixelnours_big, renderer, "/", 1, x, y);
+
+    x = DM_PAGE_NUM_DENOM_X, y = DM_PAGE_NUM_DENOM_Y;
+    stbsp_snprintf(array, 2, "%d\0", DM_PAGE_NUM);
+    PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 1, x, y);
+}
 
 static void _DeploymentMenu_Draw_Headers_P1(struct DeploymentMenu *dm,
                                             SDL_Renderer *renderer) {
@@ -443,6 +465,7 @@ void DeploymentMenu_Update(struct DeploymentMenu *dm, struct n9Patch *n9patch,
 
     fsm_DeploymentMenu_Draw_Pages[dm->page](dm, renderer);
 
+    _DeploymentMenu_Draw_PageNum(dm, renderer);
     _DeploymentMenu_Draw_Names(dm, renderer);
     _DeploymentMenu_Draw_Icons(dm, renderer);
 

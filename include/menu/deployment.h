@@ -39,8 +39,14 @@ enum DM_MENU {
     DM_NAME_Y       =   5,
 
 
-    DM_PAGE_NUM_X   = 216,
-    DM_PAGE_NUM_Y   =   8,
+    DM_PAGE_NUM_NUMER_X   = 217,
+    DM_PAGE_NUM_NUMER_Y   =   8,
+
+    DM_PAGE_NUM_SLASH_X   = DM_PAGE_NUM_NUMER_X + 5,
+    DM_PAGE_NUM_SLASH_Y   = DM_PAGE_NUM_NUMER_Y + 4,
+
+    DM_PAGE_NUM_DENOM_X   = DM_PAGE_NUM_NUMER_X + 8,
+    DM_PAGE_NUM_DENOM_Y   = DM_PAGE_NUM_NUMER_Y + 8,
 
     /* -- Page 1 -- */
     DM_CLASS_X      = DM_NAME_X + 56,
