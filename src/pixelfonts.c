@@ -75,6 +75,7 @@ struct PixelFont TextureFont_default =  {
     .glyph_bbox_width   = NULL,
     .glyph_bbox_height  = NULL,
     .y_offset           = NULL,
+    .istexturefont      = false,
     .scroll_speed       = SCROLL_TIME_FAST,
     .scroll_len         = 0,
 };
@@ -132,7 +133,7 @@ struct PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len) {
     struct PixelFont *font = malloc(sizeof(struct PixelFont));
     SDL_assert(font);
     *font = TextureFont_default;
-
+    font->istexturefont = true;
     font->charset_num = row_len * col_len;
     font->row_len     = row_len;
     font->col_len     = col_len;
@@ -493,7 +494,8 @@ void PixelFont_Write(struct PixelFont *font, SDL_Renderer *renderer, char *text,
     /* Write text to write_texture */
     for (size_t i = 0; i < len; i++) {
         unsigned char ascii = (unsigned char)text[i];
-        switch (ascii) {
+
+        switch (ascii * !font->istexturefont) {
             case  ' ': /* - space - */
                 dstrect.x += font->word_space;
                 continue;

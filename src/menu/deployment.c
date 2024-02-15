@@ -435,13 +435,13 @@ static void _DeploymentMenu_Draw_Stats_P4(struct DeploymentMenu *dm,
         SDL_assert(unit != NULL);
 
         /* REGRETS */
-        u8 equippables[SM_WEAPON_TYPES_MAX];
+        u8 equippables[SM_WEAPON_TYPES_MAX] = {0};
         u8 equippable_num = Unit_Equippables(unit, equippables);
         x = DM_WPN_TYPE_X;
         y = DM_WPN_TYPE_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = (i - dm->top_unit) * DM_LINE_H + point.y;
-        PixelFont_Write_Centered(dm->pixelnours_big, renderer, equippables,
+        PixelFont_Write_Centered(dm->font_wpns, renderer, equippables,
                                  equippable_num, x, y);
 
         /* REGRETS */
@@ -451,8 +451,6 @@ static void _DeploymentMenu_Draw_Stats_P4(struct DeploymentMenu *dm,
         y = (i - dm->top_unit) * DM_LINE_H + point.y;
         stbsp_snprintf(array, 4, "%d\0", unit->regrets);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 3, x, y);
-
-
     }
 }
 
@@ -547,6 +545,11 @@ void DeploymentMenu_Free(struct DeploymentMenu *dm) {
         dm->pixelnours_big = NULL;
     }
 
+    if (dm->font_wpns != NULL) {
+        PixelFont_Free(dm->font_wpns, true);
+        dm->font_wpns = NULL;
+    }
+
     if (dm != NULL) {
         SDL_free(dm);
         dm = NULL;
@@ -585,6 +588,10 @@ void DeploymentMenu_Load(struct DeploymentMenu *dm, SDL_Renderer *renderer,
     path = PATH_JOIN("..", "assets", "fonts", "pixelnours_16_tight.png");
     PixelFont_Load(dm->pixelnours_16, renderer, path);
     SDL_assert(dm->pixelnours_big);
+
+    path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Weapons.png");
+    dm->font_wpns = TextureFont_Alloc(2, 8);
+    PixelFont_Load(dm->font_wpns, renderer, path);
 }
 
 

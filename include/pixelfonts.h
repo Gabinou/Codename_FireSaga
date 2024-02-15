@@ -68,6 +68,7 @@ typedef struct PixelFont {
     u8 *glyph_bbox_width;
     u8 *glyph_bbox_height;
     u8 *y_offset; /* for each glyph */
+    b32 istexturefont;
     /* Text Scrolling */
     int  scroll_speed;   /* [ms] time until new character is rendered */
     int  scroll_len;   /* [pixels/char] to render */
