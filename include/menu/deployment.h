@@ -137,7 +137,7 @@ enum DM_MENU {
     DM_MAG_CONTENT_Y    =   3,
     DM_DEX_CONTENT_Y    =   3,
     DM_AGI_CONTENT_Y    =   3,
-    DM_CON_CONTENT_Y   =   3,
+    DM_CON_CONTENT_Y    =   3,
 
     /* -- Page 3 -- */
     DM_DEF_CONTENT_Y    =   3,
@@ -149,7 +149,7 @@ enum DM_MENU {
     /* -- Page 4 -- */
     DM_WPN_TYPE_CONTENT_Y   = 3,
     DM_REGRETS_CONTENT_Y    = 3,
-    DM_MOUNT_CONTENT_Y      = 3,
+    DM_MOUNT_CONTENT_Y      = 0,
 };
 
 /* --- DeploymentMenu Design --- */

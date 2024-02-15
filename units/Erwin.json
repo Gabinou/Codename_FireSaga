@@ -21,6 +21,21 @@
 			"move":	5,
 			"prof":	4
 		},
+		"Bases":	{
+			"hp":	13,
+			"str":	8,
+			"mag":	0,
+			"agi":	5,
+			"dex":	6,
+			"luck":	8,
+			"fth":	12,
+			"def":	6,
+			"res":	1,
+			"con":	6,
+			"move":	6,
+			"prof":	3
+		},
+
 		"Caps":	{
 			"hp":	48,
 			"str":	14,

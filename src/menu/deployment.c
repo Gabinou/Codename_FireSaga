@@ -122,6 +122,7 @@ static void _DeploymentMenu_Draw_P4(struct DeploymentMenu *dm,
                                     SDL_Renderer *renderer) {
     _DeploymentMenu_Draw_Headers_P4(dm, renderer);
     _DeploymentMenu_Draw_Stats_P4(dm, renderer);
+    _DeploymentMenu_Draw_Mount(dm, renderer);
 }
 
 /* -- Headers -- */
@@ -434,7 +435,7 @@ static void _DeploymentMenu_Draw_Stats_P4(struct DeploymentMenu *dm,
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
 
-        /* REGRETS */
+        /* WPN_TYPES */
         u8 equippables[SM_WEAPON_TYPES_MAX] = {0};
         u8 equippable_num = Unit_Equippables(unit, equippables);
         x = DM_WPN_TYPE_X;
@@ -451,6 +452,8 @@ static void _DeploymentMenu_Draw_Stats_P4(struct DeploymentMenu *dm,
         y = (i - dm->top_unit) * DM_LINE_H + point.y;
         stbsp_snprintf(array, 4, "%d\0", unit->regrets);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 3, x, y);
+
+        /* MOUNTS */
     }
 }
 
@@ -492,8 +495,59 @@ static void _DeploymentMenu_Draw_Unit(struct DeploymentMenu *dm,
 
 static void _DeploymentMenu_Draw_Mount(struct DeploymentMenu *dm,
                                        SDL_Renderer *renderer) {
+    /* - preliminaries - */
+    i32 num_to_draw = dm->party_size - dm->top_unit;
+    SDL_Rect dstrect, srcrect;
+    int mount_offset_x, mount_offset_y;
+    int x = DM_MOUNT_X - SM_MOUNTS_TILESIZE / 2, y = DM_MOUNT_CONTENT_Y;
+    struct Point point = _Page_Frame(x, y);
 
+    for (i32 i = dm->top_unit; i < num_to_draw; i++) {
+        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        SDL_assert(dm->party != NULL);
+        int unit_id = dm->party_stack[i];
+        struct Unit *unit = &dm->party[unit_id];
+        SDL_assert(unit != NULL);
+
+        /* - Get mount type - */
+        if (unit->mount == NULL)
+            continue;
+        i8 mount_type = unit->mount->type;
+        // SDL_Log("mount_type %d", mount_type);
+        // getchar();
+        // if (mount_type == MOUNT_TYPE_NULL) {
+        //     x = MOUNT_NONE_X_OFFSET, y = MOUNT_NONE_Y_OFFSET;
+        //     PixelFont_Write(dm->pixelnours, renderer, "-", 1, x, y);
+        //     return;
+        // }
+
+        switch (mount_type) {
+            case MOUNT_TYPE_HORSE:
+            case MOUNT_TYPE_SALAMANDER:
+                mount_offset_x = 6;
+                mount_offset_y = 2;
+                break;
+            case MOUNT_TYPE_PEGASUS:
+            case MOUNT_TYPE_EAGLE:
+                mount_offset_x =  0;
+                mount_offset_y = -4;
+                break;
+        }
+
+        srcrect.w = SM_MOUNTS_TILESIZE;
+        srcrect.h = SM_MOUNTS_TILESIZE;
+        srcrect.x = mount_type % SOTA_COL_LEN * srcrect.w;
+        srcrect.y = mount_type / SOTA_COL_LEN * srcrect.h;
+        dstrect.w = srcrect.w;
+        dstrect.h = srcrect.h;
+        // dstrect.x = 0;
+        // dstrect.y = 0;
+        dstrect.x = (x + mount_offset_x);
+        dstrect.y = (y + mount_offset_y);
+        SDL_RenderCopy(renderer, dm->texture_mount, &srcrect, &dstrect);
+    }
 }
+
 static void _DeploymentMenu_Draw_Weapons(struct DeploymentMenu *dm,
                                          SDL_Renderer *renderer) {
 
@@ -550,6 +604,11 @@ void DeploymentMenu_Free(struct DeploymentMenu *dm) {
         dm->font_wpns = NULL;
     }
 
+    if (dm->texture_mount != NULL) {
+        SDL_DestroyTexture(dm->texture_mount);
+        dm->texture_mount = NULL;
+    }
+
     if (dm != NULL) {
         SDL_free(dm);
         dm = NULL;
@@ -592,6 +651,11 @@ void DeploymentMenu_Load(struct DeploymentMenu *dm, SDL_Renderer *renderer,
     path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Weapons.png");
     dm->font_wpns = TextureFont_Alloc(2, 8);
     PixelFont_Load(dm->font_wpns, renderer, path);
+
+    /* - loading mounts - */
+    path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Mount.png");
+    dm->texture_mount = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+    SDL_assert(dm->texture_mount);
 }
 
 

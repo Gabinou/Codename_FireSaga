@@ -6,6 +6,10 @@
 
 struct Unit party[SOTA_MAX_PARTY_SIZE];
 i16 party_stack[SOTA_MAX_PARTY_SIZE];
+struct Mount mount1;
+struct Mount mount2;
+struct Mount mount3;
+struct Mount mount4;
 
 void test_menu_deployment_party(struct DeploymentMenu *dm) {
     /* -- Party -- */
@@ -21,8 +25,18 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
     dm->party_stack[dm->party_size++] = UNIT_ID_SILOU;
     dm->party_stack[dm->party_size++] = UNIT_ID_KIARA;
     dm->party_stack[dm->party_size++] = UNIT_ID_RAYAN;
+    dm->party_stack[dm->party_size++] = UNIT_ID_ERWIN;
 
     Party_Load(dm->party, weapons_dtab, items_dtab, dm->party_stack, dm->party_size);
+
+    mount1 = Mount_default_horse;
+    dm->party[UNIT_ID_SILOU].mount = &mount1;
+    mount2 = Mount_default_pegasus;
+    dm->party[UNIT_ID_KIARA].mount = &mount2;
+    mount3 = Mount_default_salamander;
+    dm->party[UNIT_ID_RAYAN].mount = &mount3;
+    mount4 = Mount_default_eagle;
+    dm->party[UNIT_ID_ERWIN].mount = &mount4;
 
     /* -- Putting party on map -- */
 }
