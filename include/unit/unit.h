@@ -310,6 +310,7 @@ bool Unit_canCarry(struct Unit *u1, struct Unit *u2);
 
 /* -- Can Equip -- */
 bool Unit_canEquip(       struct Unit *u, i16 id);
+u8   Unit_Equippables(    struct Unit *u, u8 *eq);
 bool Unit_canEquip_Type(  struct Unit *u, i16 id);
 bool Unit_canEquip_Hand(  struct Unit *u, i16 id, bool h);
 bool Unit_canEquip_inHand(struct Unit *u, bool h);

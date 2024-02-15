@@ -119,11 +119,11 @@ enum SOTA_OVERHEAL {
 };
 
 enum SOTA_REGRETS {
-    REGRET_FAITH_FACTOR     =  4,
-    REGRET_KILL             =  2,
-    REGRET_AGONY            =  1,
-    REGRET_LOOT             =  1,
-    REGRET_MAX              =  1,
+    REGRET_FAITH_FACTOR     =    4,
+    REGRET_KILL             =    2,
+    REGRET_AGONY            =    1,
+    REGRET_LOOT             =    1,
+    REGRET_MAX              =  500,
 };
 
 enum SOTA_MATH {

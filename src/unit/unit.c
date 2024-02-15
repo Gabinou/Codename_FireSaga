@@ -793,6 +793,19 @@ bool Unit_canEquip_Hand( struct Unit *unit, i16 id, bool hand) {
     return (false);
 }
 
+/* Find all equippable types, put them in equippables array */
+u8 Unit_Equippables(struct Unit *unit, u8 *equippables) {
+    u8 type = 1, equippable_num = 0;
+    uint64_t wpntypecode = 1;
+    while ((wpntypecode < ITEM_TYPE_END) & (type < ITEM_TYPE_EXP_END)) {
+        if ((unit->equippable & wpntypecode) > 0)
+            equippables[equippable_num++] = type;
+        type++;
+        wpntypecode *= 2;
+    }
+    return (equippable_num);
+}
+
 /* Can unit equip arbitrary weapon with a certain type? */
 bool Unit_canEquip_Type( struct Unit *unit, i16 id) {
     /* Unequippable if ITEM_NULL */

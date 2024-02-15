@@ -923,35 +923,20 @@ static void _StatsMenu_Draw_WpnTypes(struct StatsMenu *stats_menu, SDL_Renderer 
     /* -- WEAPON TYPES -- */
     int x = WEAPONS_X_OFFSET, y = WEAPONS_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "WPN TYPE", 8, x, y);
-    u8 type = 1, equippable_num = 0, equippables[SM_WEAPON_TYPES_MAX];
-    uint64_t wpntypecode = 1;
+    // uint64_t wpntypecode = 1;
     srcrect.h = SM_WEAPONS_TILESIZE;
     srcrect.w = SM_WEAPONS_TILESIZE;
 
-    /* find equippable types */
-    while ((wpntypecode < ITEM_TYPE_END) & (type < ITEM_TYPE_EXP_END)) {
-        if ((unit->equippable & wpntypecode) > 0)
-            equippables[equippable_num++] = type;
-        type++;
-        wpntypecode *= 2;
-    }
+    u8 equippables[SM_WEAPON_TYPES_MAX];
+    u8 equippable_num  = Unit_Equippables(unit, equippables);
 
     /* render equippable type icons, centering */
-    // TODO: Render weapon icons in special order (offhand on the left)
-    char wpn_icons[DEFAULT_BUFFER_SIZE];
-    for (int i = 0; i < equippable_num; i++) {
-        wpn_icons[i] = equippables[i];
-    }
-
     if (equippable_num == 0) {
         x = WEAPONS_NONE_X_OFFSET, y = WEAPONS_NONE_Y_OFFSET;
         PixelFont_Write(stats_menu->pixelnours, renderer, "-", 1, x, y);
     } else {
-
-        int width = PixelFont_Width(stats_menu->font_wpns, wpn_icons, equippable_num);
-        x = WEAPONS_ICON_X_OFFSET - width / 2,
-        y = WEAPONS_ICON_Y_OFFSET;
-        PixelFont_Write(stats_menu->font_wpns, renderer, wpn_icons, equippable_num, x, y);
+        x = WEAPONS_ICON_X_OFFSET, y = WEAPONS_ICON_Y_OFFSET;
+        PixelFont_Write_Centered(stats_menu->font_wpns, renderer, equippables, equippable_num, x, y);
     }
 }
 

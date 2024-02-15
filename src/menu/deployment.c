@@ -423,7 +423,37 @@ static void _DeploymentMenu_Draw_Stats_P3(struct DeploymentMenu *dm,
 /* -- Page 4 -- */
 static void _DeploymentMenu_Draw_Stats_P4(struct DeploymentMenu *dm,
                                           SDL_Renderer *renderer) {
+    char array[4] = {0};
+    int x = 0, y = 0;
+    struct Point point;
 
+    i32 num_to_draw = dm->party_size - dm->top_unit;
+    for (i32 i = dm->top_unit; i < num_to_draw; i++) {
+        SDL_assert(dm->party != NULL);
+        int unit_id = dm->party_stack[i];
+        struct Unit *unit = &dm->party[unit_id];
+        SDL_assert(unit != NULL);
+
+        /* REGRETS */
+        u8 equippables[SM_WEAPON_TYPES_MAX];
+        u8 equippable_num = Unit_Equippables(unit, equippables);
+        x = DM_WPN_TYPE_X;
+        y = DM_WPN_TYPE_CONTENT_Y;
+        point = _Page_Frame(x, y);
+        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        PixelFont_Write_Centered(dm->pixelnours_big, renderer, equippables,
+                                 equippable_num, x, y);
+
+        /* REGRETS */
+        x = DM_REGRETS_X;
+        y = DM_REGRETS_CONTENT_Y;
+        point = _Page_Frame(x, y);
+        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        stbsp_snprintf(array, 4, "%d\0", unit->regrets);
+        PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 3, x, y);
+
+
+    }
 }
 
 static void _DeploymentMenu_Draw_Icons(struct DeploymentMenu *dm,
