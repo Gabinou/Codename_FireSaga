@@ -34,6 +34,9 @@ static void _DeploymentMenu_Draw_Headers_P1(struct DeploymentMenu *dm, SDL_Rende
 static void _DeploymentMenu_Draw_Headers_P2(struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Headers_P3(struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Headers_P4(struct DeploymentMenu *dm, SDL_Renderer *r);
+static void _DeploymentMenu_Draw_Stats_P2(struct DeploymentMenu *dm, SDL_Renderer *r);
+static void _DeploymentMenu_Draw_Stats_P3(struct DeploymentMenu *dm, SDL_Renderer *r);
+static void _DeploymentMenu_Draw_Stats_P4(struct DeploymentMenu *dm, SDL_Renderer *r);
 
 fsm_DeploymentMenu_Draw fsm_DeploymentMenu_Draw_Pages[DM_PAGE_NUM] = {
     &_DeploymentMenu_Draw_P1,
@@ -106,16 +109,19 @@ static void _DeploymentMenu_Draw_P1(struct DeploymentMenu *dm,
 static void _DeploymentMenu_Draw_P2(struct DeploymentMenu *dm,
                                     SDL_Renderer *renderer) {
     _DeploymentMenu_Draw_Headers_P2(dm, renderer);
+    _DeploymentMenu_Draw_Stats_P2(dm, renderer);
 }
 
 static void _DeploymentMenu_Draw_P3(struct DeploymentMenu *dm,
                                     SDL_Renderer *renderer) {
     _DeploymentMenu_Draw_Headers_P3(dm, renderer);
+    _DeploymentMenu_Draw_Stats_P3(dm, renderer);
 }
 
 static void _DeploymentMenu_Draw_P4(struct DeploymentMenu *dm,
                                     SDL_Renderer *renderer) {
     _DeploymentMenu_Draw_Headers_P4(dm, renderer);
+    _DeploymentMenu_Draw_Stats_P4(dm, renderer);
 }
 
 /* -- Headers -- */
@@ -302,6 +308,122 @@ static void _DeploymentMenu_Draw_Lvl(struct DeploymentMenu *dm,
         stbsp_snprintf(array, 3, "%02d\0", lvl);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
     }
+}
+
+/* -- Page 2 -- */
+static void _DeploymentMenu_Draw_Stats_P2(struct DeploymentMenu *dm,
+                                          SDL_Renderer *renderer) {
+    char array[3] = {0};
+    int x = 0, y = 0;
+    struct Point point;
+
+    i32 num_to_draw = dm->party_size - dm->top_unit;
+    for (i32 i = dm->top_unit; i < num_to_draw; i++) {
+        SDL_assert(dm->party != NULL);
+        int unit_id = dm->party_stack[i];
+        struct Unit *unit = &dm->party[unit_id];
+        SDL_assert(unit != NULL);
+        /* STR */
+        x = DM_STR_X;
+        y = DM_STR_CONTENT_Y;
+        point = _Page_Frame(x, y);
+        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        stbsp_snprintf(array, 3, "%d\0", unit->current_stats.str);
+        PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
+
+        /* MAG */
+        x = DM_MAG_X;
+        y = DM_MAG_CONTENT_Y;
+        point = _Page_Frame(x, y);
+        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        stbsp_snprintf(array, 3, "%d\0", unit->current_stats.mag);
+        PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
+
+        /* DEX */
+        x = DM_DEX_X;
+        y = DM_DEX_CONTENT_Y;
+        point = _Page_Frame(x, y);
+        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        stbsp_snprintf(array, 3, "%d\0", unit->current_stats.dex);
+        PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
+
+        /* AGI */
+        x = DM_AGI_X;
+        y = DM_AGI_CONTENT_Y;
+        point = _Page_Frame(x, y);
+        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        stbsp_snprintf(array, 3, "%d\0", unit->current_stats.agi);
+        PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
+
+        /* CON */
+        x = DM_CON_X;
+        y = DM_CON_CONTENT_Y;
+        point = _Page_Frame(x, y);
+        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        stbsp_snprintf(array, 3, "%d\0", unit->current_stats.con);
+        PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
+    }
+}
+
+/* -- Page 3 -- */
+static void _DeploymentMenu_Draw_Stats_P3(struct DeploymentMenu *dm,
+                                          SDL_Renderer *renderer) {
+    char array[3] = {0};
+    int x = 0, y = 0;
+    struct Point point;
+
+    i32 num_to_draw = dm->party_size - dm->top_unit;
+    for (i32 i = dm->top_unit; i < num_to_draw; i++) {
+        SDL_assert(dm->party != NULL);
+        int unit_id = dm->party_stack[i];
+        struct Unit *unit = &dm->party[unit_id];
+        SDL_assert(unit != NULL);
+        /* DEF */
+        x = DM_DEF_X;
+        y = DM_DEF_CONTENT_Y;
+        point = _Page_Frame(x, y);
+        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        stbsp_snprintf(array, 3, "%d\0", unit->current_stats.def);
+        PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
+
+        /* RES */
+        x = DM_RES_X;
+        y = DM_RES_CONTENT_Y;
+        point = _Page_Frame(x, y);
+        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        stbsp_snprintf(array, 3, "%d\0", unit->current_stats.res);
+        PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
+
+        /* FTH */
+        x = DM_FTH_X;
+        y = DM_FTH_CONTENT_Y;
+        point = _Page_Frame(x, y);
+        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        stbsp_snprintf(array, 3, "%d\0", unit->current_stats.fth);
+        PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
+
+        /* LUCK */
+        x = DM_LUCK_X;
+        y = DM_LUCK_CONTENT_Y;
+        point = _Page_Frame(x, y);
+        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        stbsp_snprintf(array, 3, "%d\0", unit->current_stats.luck);
+        PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
+
+        /* PROF */
+        x = DM_PROF_X;
+        y = DM_PROF_CONTENT_Y;
+        point = _Page_Frame(x, y);
+        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        stbsp_snprintf(array, 3, "%d\0", unit->current_stats.prof);
+        PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
+    }
+}
+
+/* -- Page 4 -- */
+static void _DeploymentMenu_Draw_Stats_P4(struct DeploymentMenu *dm,
+                                          SDL_Renderer *renderer) {
+
 }
 
 static void _DeploymentMenu_Draw_Icons(struct DeploymentMenu *dm,

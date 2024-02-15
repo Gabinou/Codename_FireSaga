@@ -125,12 +125,31 @@ enum DM_MENU {
     DM_PAGE_FRAME_W     = 128,
     DM_PAGE_FRAME_H     = DM_UNIT_FRAME_H,
 
+    /* -- Page 1 -- */
     DM_HP_CONTENT_Y     =   3,
     DM_LVL_CONTENT_Y    =   3,
     DM_EXP_CONTENT_Y    =   3,
     DM_MOVE_CONTENT_Y   =   3,
     DM_CLASS_CONTENT_Y  =   3,
 
+    /* -- Page 2 -- */
+    DM_STR_CONTENT_Y    =   3,
+    DM_MAG_CONTENT_Y    =   3,
+    DM_DEX_CONTENT_Y    =   3,
+    DM_AGI_CONTENT_Y    =   3,
+    DM_CON_CONTENT_Y   =   3,
+
+    /* -- Page 3 -- */
+    DM_DEF_CONTENT_Y    =   3,
+    DM_RES_CONTENT_Y    =   3,
+    DM_FTH_CONTENT_Y    =   3,
+    DM_LUCK_CONTENT_Y   =   3,
+    DM_PROF_CONTENT_Y   =   3,
+
+    /* -- Page 4 -- */
+    DM_WPN_TYPE_CONTENT_Y   = 3,
+    DM_REGRETS_CONTENT_Y    = 3,
+    DM_MOUNT_CONTENT_Y      = 3,
 };
 
 /* --- DeploymentMenu Design --- */
