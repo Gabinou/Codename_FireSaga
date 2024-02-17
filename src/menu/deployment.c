@@ -9,9 +9,6 @@ static struct Point _Page_Frame(i32 x, i32 y);
 /* --- Loading --- */
 static void _DeploymentMenu_Load_Icons(struct DeploymentMenu *dm, SDL_Renderer   *r);
 
-/* --- Utility --- */
-static i32 _DeploymentMenu_Num(struct DeploymentMenu *dm);
-
 /* --- Drawing --- */
 typedef void (*fsm_DeploymentMenu_Draw)(struct DeploymentMenu *, SDL_Renderer *);
 
@@ -98,7 +95,7 @@ static void _DeploymentMenu_Load_Icons(struct DeploymentMenu *dm,
 
 }
 
-static i32 _DeploymentMenu_Num(struct DeploymentMenu *dm) {
+i32 _DeploymentMenu_Num(struct DeploymentMenu *dm) {
     SDL_assert(dm->top_unit < dm->party_size);
     i32 num_to_draw  = dm->party_size - dm->top_unit;
     return (num_to_draw < DM_UNIT_SHOWN_NUM ? num_to_draw : DM_UNIT_SHOWN_NUM);
@@ -234,10 +231,10 @@ static void _DeploymentMenu_Draw_Names(struct DeploymentMenu *dm,
     int x = DM_NAME_X, y = DM_NAME_CONTENT_Y;
     struct Point point = _Unit_Frame(x, y);
 
-    for (i32 i = dm->top_unit; i < num_to_draw; i++) {
-        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+    for (i32 i = 0; i < num_to_draw; i++) {
+        y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_stack[i];
+        int unit_id = dm->party_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
 
@@ -254,10 +251,10 @@ static void _DeploymentMenu_Draw_Mv(struct DeploymentMenu *dm,
     struct Point point = _Page_Frame(x, y);
 
     i32 num_to_draw = _DeploymentMenu_Num(dm);
-    for (i32 i = dm->top_unit; i < num_to_draw; i++) {
-        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+    for (i32 i = 0; i < num_to_draw; i++) {
+        y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_stack[i];
+        int unit_id = dm->party_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         stbsp_snprintf(array, 2, "%01d\0", unit->current_stats.move);
@@ -272,10 +269,10 @@ static void _DeploymentMenu_Draw_HP(struct DeploymentMenu *dm,
     struct Point point = _Page_Frame(x, y);
 
     i32 num_to_draw = _DeploymentMenu_Num(dm);
-    for (i32 i = dm->top_unit; i < num_to_draw; i++) {
-        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+    for (i32 i = 0; i < num_to_draw; i++) {
+        y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_stack[i];
+        int unit_id = dm->party_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         stbsp_snprintf(array, 3, "%02d\0", unit->current_stats.hp);
@@ -290,10 +287,10 @@ static void _DeploymentMenu_Draw_EXP(struct DeploymentMenu *dm,
     struct Point point = _Page_Frame(x, y);
 
     i32 num_to_draw = _DeploymentMenu_Num(dm);
-    for (i32 i = dm->top_unit; i < num_to_draw; i++) {
-        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+    for (i32 i = 0; i < num_to_draw; i++) {
+        y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_stack[i];
+        int unit_id = dm->party_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         stbsp_snprintf(array, 3, "%02d\0", (unit->exp % SOTA_EXP_PER_LEVEL));
@@ -308,10 +305,10 @@ static void _DeploymentMenu_Draw_Lvl(struct DeploymentMenu *dm,
     struct Point point = _Page_Frame(x, y);
 
     i32 num_to_draw = _DeploymentMenu_Num(dm);
-    for (i32 i = dm->top_unit; i < num_to_draw; i++) {
-        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+    for (i32 i = 0; i < num_to_draw; i++) {
+        y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_stack[i];
+        int unit_id = dm->party_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         i16 lvl = Unit_getLvl(unit);
@@ -328,16 +325,16 @@ static void _DeploymentMenu_Draw_Stats_P2(struct DeploymentMenu *dm,
     struct Point point;
 
     i32 num_to_draw = _DeploymentMenu_Num(dm);
-    for (i32 i = dm->top_unit; i < num_to_draw; i++) {
+    for (i32 i = 0; i < num_to_draw; i++) {
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_stack[i];
+        int unit_id = dm->party_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         /* STR */
         x = DM_STR_X;
         y = DM_STR_CONTENT_Y;
         point = _Page_Frame(x, y);
-        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        y = i * DM_LINE_H + point.y;
         stbsp_snprintf(array, 3, "%d\0", unit->current_stats.str);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
@@ -345,7 +342,7 @@ static void _DeploymentMenu_Draw_Stats_P2(struct DeploymentMenu *dm,
         x = DM_MAG_X;
         y = DM_MAG_CONTENT_Y;
         point = _Page_Frame(x, y);
-        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        y = i * DM_LINE_H + point.y;
         stbsp_snprintf(array, 3, "%d\0", unit->current_stats.mag);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
@@ -353,7 +350,7 @@ static void _DeploymentMenu_Draw_Stats_P2(struct DeploymentMenu *dm,
         x = DM_DEX_X;
         y = DM_DEX_CONTENT_Y;
         point = _Page_Frame(x, y);
-        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        y = i * DM_LINE_H + point.y;
         stbsp_snprintf(array, 3, "%d\0", unit->current_stats.dex);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
@@ -361,7 +358,7 @@ static void _DeploymentMenu_Draw_Stats_P2(struct DeploymentMenu *dm,
         x = DM_AGI_X;
         y = DM_AGI_CONTENT_Y;
         point = _Page_Frame(x, y);
-        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        y = i * DM_LINE_H + point.y;
         stbsp_snprintf(array, 3, "%d\0", unit->current_stats.agi);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
@@ -369,7 +366,7 @@ static void _DeploymentMenu_Draw_Stats_P2(struct DeploymentMenu *dm,
         x = DM_CON_X;
         y = DM_CON_CONTENT_Y;
         point = _Page_Frame(x, y);
-        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        y = i * DM_LINE_H + point.y;
         stbsp_snprintf(array, 3, "%d\0", unit->current_stats.con);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
     }
@@ -383,16 +380,16 @@ static void _DeploymentMenu_Draw_Stats_P3(struct DeploymentMenu *dm,
     struct Point point;
 
     i32 num_to_draw = _DeploymentMenu_Num(dm);
-    for (i32 i = dm->top_unit; i < num_to_draw; i++) {
+    for (i32 i = 0; i < num_to_draw; i++) {
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_stack[i];
+        int unit_id = dm->party_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         /* DEF */
         x = DM_DEF_X;
         y = DM_DEF_CONTENT_Y;
         point = _Page_Frame(x, y);
-        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        y = i * DM_LINE_H + point.y;
         stbsp_snprintf(array, 3, "%d\0", unit->current_stats.def);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
@@ -400,7 +397,7 @@ static void _DeploymentMenu_Draw_Stats_P3(struct DeploymentMenu *dm,
         x = DM_RES_X;
         y = DM_RES_CONTENT_Y;
         point = _Page_Frame(x, y);
-        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        y = i * DM_LINE_H + point.y;
         stbsp_snprintf(array, 3, "%d\0", unit->current_stats.res);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
@@ -408,7 +405,7 @@ static void _DeploymentMenu_Draw_Stats_P3(struct DeploymentMenu *dm,
         x = DM_FTH_X;
         y = DM_FTH_CONTENT_Y;
         point = _Page_Frame(x, y);
-        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        y = i * DM_LINE_H + point.y;
         stbsp_snprintf(array, 3, "%d\0", unit->current_stats.fth);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
@@ -416,7 +413,7 @@ static void _DeploymentMenu_Draw_Stats_P3(struct DeploymentMenu *dm,
         x = DM_LUCK_X;
         y = DM_LUCK_CONTENT_Y;
         point = _Page_Frame(x, y);
-        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        y = i * DM_LINE_H + point.y;
         stbsp_snprintf(array, 3, "%d\0", unit->current_stats.luck);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
@@ -424,7 +421,7 @@ static void _DeploymentMenu_Draw_Stats_P3(struct DeploymentMenu *dm,
         x = DM_PROF_X;
         y = DM_PROF_CONTENT_Y;
         point = _Page_Frame(x, y);
-        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        y = i * DM_LINE_H + point.y;
         stbsp_snprintf(array, 3, "%d\0", unit->current_stats.prof);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
     }
@@ -438,9 +435,9 @@ static void _DeploymentMenu_Draw_Stats_P4(struct DeploymentMenu *dm,
     struct Point point;
 
     i32 num_to_draw = _DeploymentMenu_Num(dm);
-    for (i32 i = dm->top_unit; i < num_to_draw; i++) {
+    for (i32 i = 0; i < num_to_draw; i++) {
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_stack[i];
+        int unit_id = dm->party_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
 
@@ -450,7 +447,7 @@ static void _DeploymentMenu_Draw_Stats_P4(struct DeploymentMenu *dm,
         x = DM_WPN_TYPE_X;
         y = DM_WPN_TYPE_CONTENT_Y;
         point = _Page_Frame(x, y);
-        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        y = i * DM_LINE_H + point.y;
         PixelFont_Write_Centered(dm->font_wpns, renderer, equippables,
                                  equippable_num, x, y);
 
@@ -458,7 +455,7 @@ static void _DeploymentMenu_Draw_Stats_P4(struct DeploymentMenu *dm,
         x = DM_REGRETS_X;
         y = DM_REGRETS_CONTENT_Y;
         point = _Page_Frame(x, y);
-        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+        y = i * DM_LINE_H + point.y;
         stbsp_snprintf(array, 4, "%d\0", unit->regrets);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 3, x, y);
 
@@ -474,8 +471,8 @@ static void _DeploymentMenu_Draw_Icons(struct DeploymentMenu *dm,
     SDL_Rect rect = {.x = 0, .y = 0, .w = DM_ICON_W, .h = DM_ICON_H};
     rect.x = point.x;
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
-    for (i32 i = dm->top_unit; i < num_to_draw; i++) {
-        rect.y = (i - dm->top_unit) * DM_LINE_H + point.y;
+    for (i32 i = 0; i < num_to_draw; i++) {
+        rect.y = i * DM_LINE_H + point.y;
         SDL_RenderFillRect(renderer, &rect);
     }
 }
@@ -485,10 +482,10 @@ static void _DeploymentMenu_Draw_Class(struct DeploymentMenu *dm,
     int x = DM_CLASS_X, y = DM_CLASS_CONTENT_Y;
     struct Point point = _Page_Frame(x, y);
 
-    for (i32 i = dm->top_unit; i < num_to_draw; i++) {
-        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+    for (i32 i = 0; i < num_to_draw; i++) {
+        y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_stack[i];
+        int unit_id = dm->party_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         s8 class = classNames[unit->class];
@@ -511,10 +508,10 @@ static void _DeploymentMenu_Draw_Mount(struct DeploymentMenu *dm,
     int x = DM_MOUNT_X - SM_MOUNTS_TILESIZE / 2, y = DM_MOUNT_CONTENT_Y;
     struct Point point = _Page_Frame(x, y);
 
-    for (i32 i = dm->top_unit; i < num_to_draw; i++) {
-        y = (i - dm->top_unit) * DM_LINE_H + point.y;
+    for (i32 i = 0; i < num_to_draw; i++) {
+        y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_stack[i];
+        int unit_id = dm->party_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
 

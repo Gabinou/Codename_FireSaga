@@ -198,6 +198,9 @@ void DeploymentMenu_Free(struct DeploymentMenu *dm);
 void DeploymentMenu_Load(struct DeploymentMenu *dm, SDL_Renderer *renderer,
                          struct n9Patch *n9patch);
 
+/* --- Utility --- */
+i32 _DeploymentMenu_Num(struct DeploymentMenu *dm);
+
 /* --- Scrolling --- */
 void DeploymentMenu_Scroll_Up(   struct DeploymentMenu *dm);
 void DeploymentMenu_Scroll_Down( struct DeploymentMenu *dm);

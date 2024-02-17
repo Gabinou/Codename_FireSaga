@@ -127,6 +127,7 @@ void test_menu_deployment() {
 
     /* -- Top unit 0 -- */
     dm->top_unit = 0;
+    SDL_assert(_DeploymentMenu_Num(dm) == DM_UNIT_SHOWN_NUM);
 
     /* -- Test page 1 -- */
     dm->page = 0;
@@ -157,6 +158,7 @@ void test_menu_deployment() {
 
     /* -- Top unit 0 -- */
     dm->top_unit = 1;
+    SDL_assert(_DeploymentMenu_Num(dm) == DM_UNIT_SHOWN_NUM);
 
     /* -- Test page 1 -- */
     dm->page = 0;
@@ -188,6 +190,8 @@ void test_menu_deployment() {
 
     /* -- Top unit 0 -- */
     dm->top_unit = 4;
+    SDL_assert(_DeploymentMenu_Num(dm) == (dm->party_size - dm->top_unit));
+    SDL_assert(_DeploymentMenu_Num(dm) == 7);
 
     /* -- Test page 1 -- */
     dm->page = 0;
@@ -218,6 +222,8 @@ void test_menu_deployment() {
 
     /* -- Top unit 0 -- */
     dm->top_unit = 7;
+    SDL_assert(_DeploymentMenu_Num(dm) == (dm->party_size - dm->top_unit));
+    SDL_assert(_DeploymentMenu_Num(dm) == 4);
 
     /* -- Test page 1 -- */
     dm->page = 0;
