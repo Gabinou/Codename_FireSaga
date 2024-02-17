@@ -164,6 +164,17 @@ void _LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Unit *unit,
 
 }
 
+/* --- Elem Move --- */
+i32 ItemSelectMenu_Elem_Move( struct Menu *mc, i32 direction) {
+    return(Periodic_Elem_Move(mc, direction, 0, DEFAULT_EQUIPMENT_SIZE));
+}
+
+i32 WeaponSelectMenu_Elem_Move(struct Menu *mc, i32 direction) {
+    struct LoadoutSelectMenu *wsm = mc->data;
+    int min = (wsm->selected[UNIT_HAND_STRONG] > -1) ? 1 : 0;
+    return(Periodic_Elem_Move(mc, direction, min, mc->elem_num));
+}
+
 
 /* --- Elements --- */
 void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct Menu *mc) {

@@ -8,16 +8,16 @@
 // -> MAKE COHERENT
 /* menu_elem_move */
 menu_elem_move_t menu_elem_move[MENU_TYPE_END] = {
-    /* MENU_TYPE_START */           NULL,
-    /* MENU_TYPE_PLAYER_SELECT */   NULL,
-    /* MENU_TYPE_WEAPON_SELECT  */  NULL,
-    /* MENU_TYPE_STAFF_SELECT  */   NULL,
-    /* MENU_TYPE_ITEM_SELECT  */    NULL,
-    /* MENU_TYPE_STATS */           NULL,
-    /* MENU_TYPE_RESCUE */          NULL,
-    /* MENU_TYPE_SUPPORTS */        NULL,
-    /* MENU_TYPE_GROWTHS */         NULL,
-    /* MENU_TYPE_TRADE */           NULL,
+    /* MENU_TYPE_START */           &Menu_Elem_Move,
+    /* MENU_TYPE_PLAYER_SELECT */   &PlayerSelectMenu_Elem_Move,
+    /* MENU_TYPE_WEAPON_SELECT  */  &WeaponSelectMenu_Elem_Move,
+    /* MENU_TYPE_STAFF_SELECT  */   &Menu_Elem_Move,
+    /* MENU_TYPE_ITEM_SELECT  */    &Menu_Elem_Move,
+    /* MENU_TYPE_STATS */           &Menu_Elem_Move,
+    /* MENU_TYPE_RESCUE */          &Menu_Elem_Move,
+    /* MENU_TYPE_SUPPORTS */        &Menu_Elem_Move,
+    /* MENU_TYPE_GROWTHS */         &Menu_Elem_Move,
+    /* MENU_TYPE_TRADE */           &Menu_Elem_Move,
     /* MENU_TYPE_DEPLOYMENT */      &DeploymentMenu_Elem_Move,
 };
 

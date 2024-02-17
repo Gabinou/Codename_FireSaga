@@ -650,17 +650,20 @@ void fsm_eCrsMvs_ssMenu(struct Game *sota, tnecs_entity mover_entity,
     /* Find menu elem in direction */
     tnecs_entity menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, menu, Menu);
+
+    // i8 new_elem; = menu_elem_move[mc->type](mc, sota->moved_direction);
+    
     i8 new_elem;
     switch (mc->type) {
-        case MENU_TYPE_PLAYER_SELECT:
-            new_elem = Periodic_Elem_Move(mc, sota->moved_direction, 0, mc->elem_num);
-            break;
-        case MENU_TYPE_WEAPON_SELECT: {
-            struct LoadoutSelectMenu *wsm = mc->data;
-            int min = (wsm->selected[UNIT_HAND_STRONG] > -1) ? 1 : 0;
-            new_elem = Periodic_Elem_Move(mc, sota->moved_direction, min, mc->elem_num);
-            break;
-        }
+        // case MENU_TYPE_PLAYER_SELECT:
+        //     new_elem = Periodic_Elem_Move(mc, sota->moved_direction, 0, mc->elem_num);
+        //     break;
+        // case MENU_TYPE_WEAPON_SELECT: {
+        //     struct LoadoutSelectMenu *wsm = mc->data;
+        //     int min = (wsm->selected[UNIT_HAND_STRONG] > -1) ? 1 : 0;
+        //     new_elem = Periodic_Elem_Move(mc, sota->moved_direction, min, mc->elem_num);
+        //     break;
+        // }
         case MENU_TYPE_ITEM_SELECT:
             new_elem = Periodic_Elem_Move(mc, sota->moved_direction, 0, DEFAULT_EQUIPMENT_SIZE);
             break;

@@ -6,6 +6,7 @@
 #include "n9patch.h"
 #include "events.h"
 #include "nstr.h"
+#include "types.h"
 #include "stb_sprintf.h"
 #include "SDL2/SDL.h"
 
@@ -51,6 +52,10 @@ void PlayerSelectMenu_Free(struct PlayerSelectMenu *m, struct Menu *mc);
 void PlayerSelectMenu_Load(struct PlayerSelectMenu *m, SDL_Renderer *r, struct n9Patch *n9);
 
 /* --- Menu Elem properties --- */
+
+/* --- Elem Move --- */
+i32 PlayerSelectMenu_Elem_Move(struct Menu *mc, i32 direction);
+
 /* -- Options -- */
 void PlayerSelectMenu_Option_Add(   struct PlayerSelectMenu *m, u32 op);
 int  PlayerSelectMenu_Option_Index( struct PlayerSelectMenu *m, u32 op);
