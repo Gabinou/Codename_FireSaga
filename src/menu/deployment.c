@@ -758,6 +758,27 @@ void DeploymentMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *rendere
     Utilities_DrawColor_Reset(renderer);
 }
 
+int DeploymentMenu_Elem_Move(struct Menu *menu, int direction) {
+    /* -- Scrolling menu -- */
+    direction = Ternary_Direction_Straight(direction);
+    struct DeploymentMenu *dm = menu->data;
+    int previous_top_unit  = dm->top_unit;
+    /* Scrolling up:    if unit1 and up */
+    if ((menu->elem == DM_ELEM_UNIT1) && (direction == SOTA_DIRECTION_TOP)) {
+        if (dm->top_unit > 0)
+            dm->top_unit--;
+    }
+    /* Scrolling down:  if unit8 and down */
+    if ((menu->elem == DM_ELEM_UNIT8) && (direction == SOTA_DIRECTION_BOTTOM)) {
+        if (dm->top_unit < (dm->party_size - DM_UNIT_SHOWN_NUM))
+            dm->top_unit++;
+    }
+
+    /* If top_unit change update menu */
+    dm->update = (previous_top_unit != dm->top_unit);
+
+    return (Menu_Elem_Move(menu, direction));
+}
 
 void DeploymentMenu_Update(struct DeploymentMenu *dm, struct n9Patch *n9patch,
                            SDL_Texture *rt, SDL_Renderer *renderer) {

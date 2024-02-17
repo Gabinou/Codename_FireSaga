@@ -45,20 +45,20 @@ void Menu_Elem_Free(struct Menu *mc) {
     }
 }
 
-int Periodic_Elem_Move(struct Menu *in_menu, int direction, int min, int max) {
+int Periodic_Elem_Move(struct Menu *menu, int direction, int min, int max) {
     // Cursor can only move in 2 directions between elems
     // Cursor movement is periodid
     direction = Ternary_Direction_Straight(direction);
-    SDL_assert(sizeof(*in_menu->elem_links) == MENU_ELEM_DIRECTIONS_PACKED_BYTESIZE);
+    SDL_assert(sizeof(*menu->elem_links) == MENU_ELEM_DIRECTIONS_PACKED_BYTESIZE);
 
     /* Find next elem using direction and array of links */
     i8 out = -1;
     if        (direction == SOTA_DIRECTION_BOTTOM) {
-        out = in_menu->elem == (max - 1) ? min : in_menu->elem + 1;
+        out = menu->elem == (max - 1) ? min : menu->elem + 1;
     } else if (direction == SOTA_DIRECTION_TOP) {
-        out = in_menu->elem == min ? max - 1 : in_menu->elem - 1;
+        out = menu->elem == min ? max - 1 : menu->elem - 1;
     } else {
-        out = in_menu->elem;
+        out = menu->elem;
     }
 
     return (out);
@@ -77,20 +77,20 @@ void Menu_Elem_Set(struct Menu *mc, struct Game *sota, i8 new_elem) {
 
 }
 
-int Menu_Elem_Move(struct Menu *in_menu, int direction) {
-    // Cursor can only move in 4 directions between elems
+int Menu_Elem_Move(struct Menu *menu, int direction) {
+    /* Cursor can only move in 4 directions between elems */
     direction = Ternary_Direction_Straight(direction);
-    SDL_assert(sizeof(*in_menu->elem_links) == MENU_ELEM_DIRECTIONS_PACKED_BYTESIZE);
+    SDL_assert(sizeof(*menu->elem_links) == MENU_ELEM_DIRECTIONS_PACKED_BYTESIZE);
 
     /* Cast packed struct of i8 to array */
-    SDL_assert(in_menu->elem_links != NULL);
-    i8 *links = (i8 *) &in_menu->elem_links[in_menu->elem];
+    SDL_assert(menu->elem_links != NULL);
+    i8 *links = (i8 *) &menu->elem_links[menu->elem];
 
-    // Find next elem using direction and array of links
-    i8 out = in_menu->elem;
+    /* Find next elem using direction and array of links */
+    i8 out = menu->elem;
     int direction_i = direction_arr_i[direction];
-    if (links[direction_i] < in_menu->elem_num)
-        out = links[direction_i] > MENU_ELEM_NULL ? links[direction_i] : in_menu->elem;
+    if (links[direction_i] < menu->elem_num)
+        out = links[direction_i] > MENU_ELEM_NULL ? links[direction_i] : menu->elem;
     return (out);
 }
 
