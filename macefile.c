@@ -16,7 +16,7 @@ struct Config release       = {
 };
 
 struct Config win_debug     = {
-    .flags  = "-g3 -rdynamic -O0",              
+    .flags  = "-g3 -rdynamic -O0",
     .target = "win_sota",
     .cc     = "x86_64-w64-mingw32-gcc",
     .ar     = "x86_64-w64-mingw32-ar"
