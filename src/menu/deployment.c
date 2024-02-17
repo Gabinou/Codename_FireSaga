@@ -9,6 +9,9 @@ static struct Point _Page_Frame(i32 x, i32 y);
 /* --- Loading --- */
 static void _DeploymentMenu_Load_Icons(struct DeploymentMenu *dm, SDL_Renderer   *r);
 
+/* --- Utility --- */
+static i32 _DeploymentMenu_Num(struct DeploymentMenu *dm);
+
 /* --- Drawing --- */
 typedef void (*fsm_DeploymentMenu_Draw)(struct DeploymentMenu *, SDL_Renderer *);
 
@@ -93,6 +96,12 @@ static void _DeploymentMenu_Free_Icons(struct DeploymentMenu *dm) {
 static void _DeploymentMenu_Load_Icons(struct DeploymentMenu *dm,
                                        SDL_Renderer *renderer) {
 
+}
+
+static i32 _DeploymentMenu_Num(struct DeploymentMenu *dm) {
+    SDL_assert(dm->top_unit < dm->party_size);
+    i32 num_to_draw  = dm->party_size - dm->top_unit;
+    return (num_to_draw < DM_UNIT_SHOWN_NUM ? num_to_draw : DM_UNIT_SHOWN_NUM);
 }
 
 /* --- Drawing --- */
@@ -221,7 +230,7 @@ static void _DeploymentMenu_Draw_Headers_P4(struct DeploymentMenu *dm,
 
 static void _DeploymentMenu_Draw_Names(struct DeploymentMenu *dm,
                                        SDL_Renderer *renderer) {
-    i32 num_to_draw = dm->party_size - dm->top_unit;
+    i32 num_to_draw = _DeploymentMenu_Num(dm);
     int x = DM_NAME_X, y = DM_NAME_CONTENT_Y;
     struct Point point = _Unit_Frame(x, y);
 
@@ -244,7 +253,7 @@ static void _DeploymentMenu_Draw_Mv(struct DeploymentMenu *dm,
     int x = DM_MOVE_X, y = DM_MOVE_CONTENT_Y;
     struct Point point = _Page_Frame(x, y);
 
-    i32 num_to_draw = dm->party_size - dm->top_unit;
+    i32 num_to_draw = _DeploymentMenu_Num(dm);
     for (i32 i = dm->top_unit; i < num_to_draw; i++) {
         y = (i - dm->top_unit) * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
@@ -262,7 +271,7 @@ static void _DeploymentMenu_Draw_HP(struct DeploymentMenu *dm,
     int x = DM_HP_X, y = DM_HP_CONTENT_Y;
     struct Point point = _Page_Frame(x, y);
 
-    i32 num_to_draw = dm->party_size - dm->top_unit;
+    i32 num_to_draw = _DeploymentMenu_Num(dm);
     for (i32 i = dm->top_unit; i < num_to_draw; i++) {
         y = (i - dm->top_unit) * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
@@ -280,7 +289,7 @@ static void _DeploymentMenu_Draw_EXP(struct DeploymentMenu *dm,
     int x = DM_EXP_X, y = DM_EXP_CONTENT_Y;
     struct Point point = _Page_Frame(x, y);
 
-    i32 num_to_draw = dm->party_size - dm->top_unit;
+    i32 num_to_draw = _DeploymentMenu_Num(dm);
     for (i32 i = dm->top_unit; i < num_to_draw; i++) {
         y = (i - dm->top_unit) * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
@@ -298,7 +307,7 @@ static void _DeploymentMenu_Draw_Lvl(struct DeploymentMenu *dm,
     int x = DM_LVL_X, y = DM_LVL_CONTENT_Y;
     struct Point point = _Page_Frame(x, y);
 
-    i32 num_to_draw = dm->party_size - dm->top_unit;
+    i32 num_to_draw = _DeploymentMenu_Num(dm);
     for (i32 i = dm->top_unit; i < num_to_draw; i++) {
         y = (i - dm->top_unit) * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
@@ -318,7 +327,7 @@ static void _DeploymentMenu_Draw_Stats_P2(struct DeploymentMenu *dm,
     int x = 0, y = 0;
     struct Point point;
 
-    i32 num_to_draw = dm->party_size - dm->top_unit;
+    i32 num_to_draw = _DeploymentMenu_Num(dm);
     for (i32 i = dm->top_unit; i < num_to_draw; i++) {
         SDL_assert(dm->party != NULL);
         int unit_id = dm->party_stack[i];
@@ -373,7 +382,7 @@ static void _DeploymentMenu_Draw_Stats_P3(struct DeploymentMenu *dm,
     int x = 0, y = 0;
     struct Point point;
 
-    i32 num_to_draw = dm->party_size - dm->top_unit;
+    i32 num_to_draw = _DeploymentMenu_Num(dm);
     for (i32 i = dm->top_unit; i < num_to_draw; i++) {
         SDL_assert(dm->party != NULL);
         int unit_id = dm->party_stack[i];
@@ -428,7 +437,7 @@ static void _DeploymentMenu_Draw_Stats_P4(struct DeploymentMenu *dm,
     int x = 0, y = 0;
     struct Point point;
 
-    i32 num_to_draw = dm->party_size - dm->top_unit;
+    i32 num_to_draw = _DeploymentMenu_Num(dm);
     for (i32 i = dm->top_unit; i < num_to_draw; i++) {
         SDL_assert(dm->party != NULL);
         int unit_id = dm->party_stack[i];
@@ -459,7 +468,7 @@ static void _DeploymentMenu_Draw_Stats_P4(struct DeploymentMenu *dm,
 
 static void _DeploymentMenu_Draw_Icons(struct DeploymentMenu *dm,
                                        SDL_Renderer *renderer) {
-    i32 num_to_draw = dm->party_size - dm->top_unit;
+    i32 num_to_draw = _DeploymentMenu_Num(dm);
     int x = DM_ICON_X, y = DM_ICON_Y;
     struct Point point = _Unit_Frame(x, y);
     SDL_Rect rect = {.x = 0, .y = 0, .w = DM_ICON_W, .h = DM_ICON_H};
@@ -472,7 +481,7 @@ static void _DeploymentMenu_Draw_Icons(struct DeploymentMenu *dm,
 }
 static void _DeploymentMenu_Draw_Class(struct DeploymentMenu *dm,
                                        SDL_Renderer *renderer) {
-    i32 num_to_draw = dm->party_size - dm->top_unit;
+    i32 num_to_draw = _DeploymentMenu_Num(dm);
     int x = DM_CLASS_X, y = DM_CLASS_CONTENT_Y;
     struct Point point = _Page_Frame(x, y);
 
@@ -496,7 +505,7 @@ static void _DeploymentMenu_Draw_Unit(struct DeploymentMenu *dm,
 static void _DeploymentMenu_Draw_Mount(struct DeploymentMenu *dm,
                                        SDL_Renderer *renderer) {
     /* - preliminaries - */
-    i32 num_to_draw = dm->party_size - dm->top_unit;
+    i32 num_to_draw = _DeploymentMenu_Num(dm);
     SDL_Rect dstrect, srcrect;
     int mount_offset_x, mount_offset_y;
     int x = DM_MOUNT_X - SM_MOUNTS_TILESIZE / 2, y = DM_MOUNT_CONTENT_Y;

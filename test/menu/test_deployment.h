@@ -46,14 +46,14 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
     dm->party       = party;
 
     dm->party_size = 0;
-    dm->party_stack[dm->party_size++] = UNIT_ID_SILOU;
     dm->party_stack[dm->party_size++] = UNIT_ID_KIARA;
-    dm->party_stack[dm->party_size++] = UNIT_ID_ERWIN;
     dm->party_stack[dm->party_size++] = UNIT_ID_PERIGNON;
     dm->party_stack[dm->party_size++] = UNIT_ID_KAKWI;
     dm->party_stack[dm->party_size++] = UNIT_ID_NICOLE;
     dm->party_stack[dm->party_size++] = UNIT_ID_CHASSE;
+    dm->party_stack[dm->party_size++] = UNIT_ID_SILOU;
     dm->party_stack[dm->party_size++] = UNIT_ID_LUCRECE;
+    dm->party_stack[dm->party_size++] = UNIT_ID_ERWIN;
     dm->party_stack[dm->party_size++] = UNIT_ID_RAYAN;
     dm->party_stack[dm->party_size++] = UNIT_ID_MELLY;
     dm->party_stack[dm->party_size++] = UNIT_ID_TEHARON;
@@ -124,36 +124,127 @@ void test_menu_deployment() {
 
     /* - Overfull party - */
     test_menu_deployment_party_overfull(dm);
+
+    /* -- Top unit 0 -- */
+    dm->top_unit = 0;
+
     /* -- Test page 1 -- */
     dm->page = 0;
     DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_Overfull_P1.png"),
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_P1_Overfull1.png"),
                             renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
                             render_target);
     /* -- Test page 2 -- */
     dm->page = 1;
     DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_Overfull_P2.png"),
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_P2_Overfull1.png"),
                             renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
                             render_target);
 
     /* -- Test page 3 -- */
     dm->page = 2;
     DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_Overfull_P3.png"),
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_P3_Overfull1.png"),
                             renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
                             render_target);
 
     /* -- Test page 4 -- */
     dm->page = 3;
     DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_Overfull_P4.png"),
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_P4_Overfull1.png"),
+                            renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+
+    /* -- Top unit 0 -- */
+    dm->top_unit = 1;
+
+    /* -- Test page 1 -- */
+    dm->page = 0;
+    DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_P1_Overfull2.png"),
+                            renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+    /* -- Test page 2 -- */
+    dm->page = 1;
+    DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_P2_Overfull2.png"),
+                            renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+
+    /* -- Test page 3 -- */
+    dm->page = 2;
+    DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_P3_Overfull2.png"),
+                            renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+
+    /* -- Test page 4 -- */
+    dm->page = 3;
+    DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_P4_Overfull2.png"),
                             renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
                             render_target);
 
 
+    /* -- Top unit 0 -- */
+    dm->top_unit = 4;
 
+    /* -- Test page 1 -- */
+    dm->page = 0;
+    DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_P1_Overfull3.png"),
+                            renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+    /* -- Test page 2 -- */
+    dm->page = 1;
+    DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_P2_Overfull3.png"),
+                            renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
 
+    /* -- Test page 3 -- */
+    dm->page = 2;
+    DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_P3_Overfull3.png"),
+                            renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+
+    /* -- Test page 4 -- */
+    dm->page = 3;
+    DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_P4_Overfull3.png"),
+                            renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+
+    /* -- Top unit 0 -- */
+    dm->top_unit = 7;
+
+    /* -- Test page 1 -- */
+    dm->page = 0;
+    DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_P1_Overfull4.png"),
+                            renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+    /* -- Test page 2 -- */
+    dm->page = 1;
+    DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_P2_Overfull4.png"),
+                            renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+
+    /* -- Test page 3 -- */
+    dm->page = 2;
+    DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_P3_Overfull4.png"),
+                            renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+
+    /* -- Test page 4 -- */
+    dm->page = 3;
+    DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_P4_Overfull4.png"),
+                            renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
 
 
     /* --- FREE --- */

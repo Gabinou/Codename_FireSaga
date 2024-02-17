@@ -108,7 +108,7 @@ enum DM_MENU {
     /* --- Unit frame --- */
     /* Relative to menu frame */
     DM_UNIT_FRAME_X     =   8,
-    DM_UNIT_FRAME_Y     =  24,
+    DM_UNIT_FRAME_Y     =  21,
     DM_UNIT_FRAME_W     = 208,
     DM_UNIT_FRAME_H     = DM_LINE_H * DM_LINE_NUM,
 
