@@ -652,7 +652,7 @@ void fsm_eCrsMvs_ssMenu(struct Game *sota, tnecs_entity mover_entity,
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, menu, Menu);
 
     // i8 new_elem; = menu_elem_move[mc->type](mc, sota->moved_direction);
-    
+
     i8 new_elem;
     switch (mc->type) {
         // case MENU_TYPE_PLAYER_SELECT:

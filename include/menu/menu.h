@@ -38,14 +38,14 @@ typedef void (* menu_set_update_f)(Menu *mc);
 struct Menu {
     struct n9Patch n9patch;
     /* -- Cursor position when on elem -- */
-    struct Poi32 *cursor_pos;               /* [elem] absolute pos on texture */
+    struct Point *cursor_pos;               /* [elem] absolute pos on texture */
 
     /* -- Top left corner of elem box -- */
-    struct Poi32 *elem_pos;                 /* [elem] absolute pos on texture */
+    struct Point *elem_pos;                 /* [elem] absolute pos on texture */
     i32 elem_pos_frame;                     /* elem_pos reference frame */
 
     /* -- Width/height of elem box -- */
-    struct Poi32 *elem_box;                 /* [elem] width, height of box in [pixel] */
+    struct Point *elem_box;                 /* [elem] width, height of box in [pixel] */
     char **elem_description;                /* [elem] */
     struct MenuElemDirections *elem_links;  /* [elem] */
     void *data;

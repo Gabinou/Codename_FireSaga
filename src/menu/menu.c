@@ -98,10 +98,10 @@ void Menu_Elem_Boxes_Check(struct Menu *mc) {
     /* Fit elem_box to linked elems snuggly */
     for (u32 i = 0; i < mc->elem_num; i++) {
         /* Get elem pos and initial box */
-        struct Poi32 *elem_box = &(mc->elem_box[i]);
+        struct Point *elem_box = &(mc->elem_box[i]);
         SDL_assert(elem_box->x == mc->elem_box[i].x);
         SDL_assert(elem_box->y == mc->elem_box[i].y);
-        struct Poi32 *elem_pos = &(mc->elem_pos[i]);
+        struct Point *elem_pos = &(mc->elem_pos[i]);
         SDL_assert(elem_pos->x == mc->elem_pos[i].x);
         SDL_assert(elem_pos->y == mc->elem_pos[i].y);
         /* - cast link struct to array - */
@@ -113,7 +113,7 @@ void Menu_Elem_Boxes_Check(struct Menu *mc) {
         i8 link = links[direction_i];
         SDL_assert(link < mc->elem_num);
         if (link != MENU_ELEM_NULL) {
-            struct Poi32 *link_pos = &(mc->elem_pos[link]);
+            struct Point *link_pos = &(mc->elem_pos[link]);
             if (elem_pos->x < link_pos->x) {
                 /* - shorten elem x - */
                 elem_box->x = link_pos->x - elem_pos->x - 1;
@@ -125,8 +125,8 @@ void Menu_Elem_Boxes_Check(struct Menu *mc) {
         link = links[direction_i];
         SDL_assert(link < mc->elem_num);
         if (link != MENU_ELEM_NULL) {
-            struct Poi32 *link_box = &(mc->elem_box[link]);
-            struct Poi32 *link_pos = &(mc->elem_pos[link]);
+            struct Point *link_box = &(mc->elem_box[link]);
+            struct Point *link_pos = &(mc->elem_pos[link]);
             if (link_pos->y < elem_pos->y) {
                 /* - shorten link y - */
                 link_box->y = elem_pos->y - link_pos->y - 1;
@@ -138,8 +138,8 @@ void Menu_Elem_Boxes_Check(struct Menu *mc) {
         link = links[SOTA_DIRECTION_LEFT];
         SDL_assert(link < mc->elem_num);
         if (link != MENU_ELEM_NULL) {
-            struct Poi32 *link_box = &(mc->elem_box[link]);
-            struct Poi32 *link_pos = &(mc->elem_pos[link]);
+            struct Point *link_box = &(mc->elem_box[link]);
+            struct Point *link_pos = &(mc->elem_pos[link]);
             if (link_pos->x < elem_pos->x) {
                 /* - shorten link x - */
                 link_box->x = elem_pos->x - link_pos->x - 1;
@@ -151,7 +151,7 @@ void Menu_Elem_Boxes_Check(struct Menu *mc) {
         link = links[direction_i];
         SDL_assert(link < mc->elem_num);
         if (link != MENU_ELEM_NULL) {
-            struct Poi32 *link_pos = &(mc->elem_pos[link]);
+            struct Point *link_pos = &(mc->elem_pos[link]);
             if (elem_pos->y < link_pos->y) {
                 /* - shorten elem y - */
                 elem_box->y = link_pos->y - elem_pos->y - 1;
@@ -169,8 +169,8 @@ void Menu_Elem_Boxes_Draw(struct Menu *mc, struct SDL_Renderer *renderer) {
         u8 g = palette_NES->colors[color].g;
         u8 b = palette_NES->colors[color].b;
         SDL_SetRenderDrawColor(renderer, r, g, b, SDL_ALPHA_OPAQUE);
-        struct Poi32 pos = mc->elem_pos[i];
-        struct Poi32 box = mc->elem_box[i];
+        struct Point pos = mc->elem_pos[i];
+        struct Point box = mc->elem_box[i];
         SDL_Rect rect = {pos.x, pos.y, box.x, box.y};
         SDL_RenderDrawRect(renderer, &rect);
     }
