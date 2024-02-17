@@ -10,16 +10,15 @@ struct Mount mount1;
 struct Mount mount2;
 struct Mount mount3;
 struct Mount mount4;
+struct dtab *weapons_dtab;
+struct dtab *items_dtab;
+
 
 void test_menu_deployment_party(struct DeploymentMenu *dm) {
     /* -- Party -- */
     /* - Preliminaries - */
-    struct Unit party[SOTA_MAX_PARTY_SIZE];
-    struct dtab *weapons_dtab   = DTAB_INIT(weapons_dtab,   struct Weapon);
-    struct dtab *items_dtab     = DTAB_INIT(items_dtab,     struct Item);
-    /* -- Adding units to Party -- */
     dm->party_stack = party_stack;
-    dm->party = party;
+    dm->party       = party;
 
     dm->party_size = 0;
     dm->party_stack[dm->party_size++] = UNIT_ID_SILOU;
@@ -37,14 +36,47 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
     dm->party[UNIT_ID_RAYAN].mount = &mount3;
     mount4 = Mount_default_eagle;
     dm->party[UNIT_ID_ERWIN].mount = &mount4;
+}
 
-    /* -- Putting party on map -- */
+void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
+    /* -- Party -- */
+    /* - Preliminaries - */
+    /* -- Adding units to Party -- */
+    dm->party_stack = party_stack;
+    dm->party       = party;
+
+    dm->party_size = 0;
+    dm->party_stack[dm->party_size++] = UNIT_ID_SILOU;
+    dm->party_stack[dm->party_size++] = UNIT_ID_KIARA;
+    dm->party_stack[dm->party_size++] = UNIT_ID_ERWIN;
+    dm->party_stack[dm->party_size++] = UNIT_ID_PERIGNON;
+    dm->party_stack[dm->party_size++] = UNIT_ID_KAKWI;
+    dm->party_stack[dm->party_size++] = UNIT_ID_NICOLE;
+    dm->party_stack[dm->party_size++] = UNIT_ID_CHASSE;
+    dm->party_stack[dm->party_size++] = UNIT_ID_LUCRECE;
+    dm->party_stack[dm->party_size++] = UNIT_ID_RAYAN;
+    dm->party_stack[dm->party_size++] = UNIT_ID_MELLY;
+    dm->party_stack[dm->party_size++] = UNIT_ID_TEHARON;
+
+    Party_Load(dm->party, weapons_dtab, items_dtab, dm->party_stack, dm->party_size);
+
+    mount1 = Mount_default_horse;
+    dm->party[UNIT_ID_SILOU].mount = &mount1;
+    mount2 = Mount_default_pegasus;
+    dm->party[UNIT_ID_KIARA].mount = &mount2;
+    mount3 = Mount_default_salamander;
+    dm->party[UNIT_ID_RAYAN].mount = &mount3;
+    mount4 = Mount_default_eagle;
+    dm->party[UNIT_ID_ERWIN].mount = &mount4;
 }
 
 void test_menu_deployment() {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     /* --- Preliminaries --- */
     sota_mkdir("menu_deployment");
+
+    weapons_dtab   = DTAB_INIT(weapons_dtab,   struct Weapon);
+    items_dtab     = DTAB_INIT(items_dtab,     struct Item);
 
     /* -- Create n9patch -- */
     struct n9Patch n9patch = n9Patch_default;
@@ -59,7 +91,7 @@ void test_menu_deployment() {
     struct DeploymentMenu *dm = DeploymentMenu_Alloc();
     DeploymentMenu_Load(dm, renderer, &n9patch);
 
-    /* - loading party - */
+    /* - Underfull party - */
     test_menu_deployment_party(dm);
 
     /* --- RENDERS --- */
@@ -90,9 +122,34 @@ void test_menu_deployment() {
                             renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
                             render_target);
 
+    /* - Overfull party - */
+    test_menu_deployment_party_overfull(dm);
+    /* -- Test page 1 -- */
+    dm->page = 0;
+    DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_Overfull_P1.png"),
+                            renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+    /* -- Test page 2 -- */
+    dm->page = 1;
+    DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_Overfull_P2.png"),
+                            renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
 
+    /* -- Test page 3 -- */
+    dm->page = 2;
+    DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_Overfull_P3.png"),
+                            renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
 
-
+    /* -- Test page 4 -- */
+    dm->page = 3;
+    DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_Overfull_P4.png"),
+                            renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
 
 
 
@@ -100,6 +157,8 @@ void test_menu_deployment() {
 
 
     /* --- FREE --- */
+    DTAB_FREE(weapons_dtab);
+    DTAB_FREE(items_dtab);
     DeploymentMenu_Free(dm);
     SDL_FreeSurface(surface);
 

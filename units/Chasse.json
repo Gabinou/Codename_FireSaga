@@ -1,6 +1,6 @@
 {
 	"Unit":	{
-		"id":	9,
+		"id":	12,
 		"Name":	"Chasse",
 		"Sex":	true,
 		"BaseExp":	2200,
@@ -9,6 +9,19 @@
 		"Class":	"Duelist",
 		"Class Index": 9,
 		"Stats":	{
+			"hp":	30,
+			"str":	16,
+			"mag":	2,
+			"agi":	17,
+			"dex":	17,
+			"luck":	17,
+			"def":	14,
+			"res":	15,
+			"con":	16,
+			"move":	16,
+			"prof":	20
+		},		
+		"Bases":	{
 			"hp":	20,
 			"str":	6,
 			"mag":	2,
@@ -21,6 +34,7 @@
 			"move":	6,
 			"prof":	0
 		},
+		
 		"Caps":	{
 			"hp":	48,
 			"str":	14,
