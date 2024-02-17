@@ -12,7 +12,7 @@ menu_elem_move_t menu_elem_move[MENU_TYPE_END] = {
     /* MENU_TYPE_PLAYER_SELECT */   &PlayerSelectMenu_Elem_Move,
     /* MENU_TYPE_WEAPON_SELECT  */  &WeaponSelectMenu_Elem_Move,
     /* MENU_TYPE_STAFF_SELECT  */   &Menu_Elem_Move,
-    /* MENU_TYPE_ITEM_SELECT  */    &Menu_Elem_Move,
+    /* MENU_TYPE_ITEM_SELECT  */    &ItemSelectMenu_Elem_Move,
     /* MENU_TYPE_STATS */           &Menu_Elem_Move,
     /* MENU_TYPE_RESCUE */          &Menu_Elem_Move,
     /* MENU_TYPE_SUPPORTS */        &Menu_Elem_Move,

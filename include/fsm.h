@@ -9,6 +9,7 @@
 #include "game/cursor.h"
 #include "game/menu.h"
 #include "game/unit.h"
+#include "menu/menu.h"
 #include "menu/fsm.h"
 #include "tnecs.h"
 #include "unit/unit.h"
