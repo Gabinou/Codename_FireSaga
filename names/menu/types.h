@@ -8,3 +8,4 @@ REGISTER_ENUM(SUPPORTS,          SupM)   /* and talkable people portraits */
 REGISTER_ENUM(GROWTHS,           GM)    /* and grown stats */
 REGISTER_ENUM(TRADE,             TM)    /* Trade: two ISM side to side */
 REGISTER_ENUM(ITEM_DROP,         IDM)   /* User drops items */
+REGISTER_ENUM(DEPLOYMENT,        DM)    /* Player chooses unit to deploy */

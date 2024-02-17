@@ -71,6 +71,7 @@ int  Periodic_Elem_Move(struct Menu *mc, int d, int min, int max);
 void Menu_Elem_Set(        struct Menu *mc, struct Game *sota, i8 d);
 int  Menu_Elem_Move(       struct Menu *mc, int d);
 void Menu_Elem_Boxes_Check(struct Menu *mc);
+int  Menu_Elem_Move(struct Menu *mc, int d);
 
 /* --- Debug --- */
 void Menu_Elem_Boxes_Draw(struct Menu *mc, struct SDL_Renderer *r);

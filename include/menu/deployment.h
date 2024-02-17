@@ -227,7 +227,7 @@ void DeploymentMenu_Scroll_Left( struct DeploymentMenu *dm);
 void DeploymentMenu_Scroll_Right(struct DeploymentMenu *dm);
 
 /* --- Elem Move --- */
-int DeploymentMenu_Elem_Move(struct Menu *menu, int direction);
+i32 DeploymentMenu_Elem_Move(struct Menu *menu, i32 direction);
 
 /* --- Drawing --- */
 void DeploymentMenu_Draw(  struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);

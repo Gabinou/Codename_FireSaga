@@ -28,7 +28,7 @@ int dtabs_id[ITEM_ARCHETYPE_NUM] = {
 
 /* Direction array index from ternary index */
 // Array order: Right,    Top,     Left,     Bottom,
-//              TopRight, TopLeft, BotRight, BotLeft 
+//              TopRight, TopLeft, BotRight, BotLeft
 int direction_arr_i[SOTA_DIRECTIONS_NUM + 1] = {
     /* SOTA_DIRECTION_NULL */          -1,
     /* SOTA_DIRECTION_LEFT */           2,

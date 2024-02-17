@@ -12,6 +12,7 @@ struct Game;
 
 /* --- TYPEDEFS --- */
 typedef void (*fsm_menu_t)(struct Game *, struct Menu *);
+typedef i32 (* menu_elem_move_t)(struct Menu *, i32);
 
 /* --- FINITE-STATE MACHINE FOR EVENTS --- */
 /* -- NAMING CONVENTION -- */
@@ -40,6 +41,9 @@ typedef void (*fsm_menu_t)(struct Game *, struct Menu *);
 */
 
 /* -- Menu-type FSMs -- */
+/* menu_elem_move */
+extern menu_elem_move_t menu_elem_move[MENU_TYPE_END];
+i32 DeploymentMenu_Elem_Move(struct Menu *mc, i32 d);
 
 /* event_Input_Accept */
 extern fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END];

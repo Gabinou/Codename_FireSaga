@@ -6,6 +6,20 @@
 // - player_select_menu -> player is SELECTING
 // - staff_select_menu -> staff is BEING SELECTED
 // -> MAKE COHERENT
+/* menu_elem_move */
+menu_elem_move_t menu_elem_move[MENU_TYPE_END] = {
+    /* MENU_TYPE_START */           NULL,
+    /* MENU_TYPE_PLAYER_SELECT */   NULL,
+    /* MENU_TYPE_WEAPON_SELECT  */  NULL,
+    /* MENU_TYPE_STAFF_SELECT  */   NULL,
+    /* MENU_TYPE_ITEM_SELECT  */    NULL,
+    /* MENU_TYPE_STATS */           NULL,
+    /* MENU_TYPE_RESCUE */          NULL,
+    /* MENU_TYPE_SUPPORTS */        NULL,
+    /* MENU_TYPE_GROWTHS */         NULL,
+    /* MENU_TYPE_TRADE */           NULL,
+    /* MENU_TYPE_DEPLOYMENT */      &DeploymentMenu_Elem_Move,
+};
 
 /* -- Menu-type FSMs -- */
 fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
@@ -18,8 +32,8 @@ fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_RESCUE */          NULL,
     /* MENU_TYPE_SUPPORTS */        NULL,
     /* MENU_TYPE_GROWTHS */         NULL,
-    // /* MENU_TYPE_PRE_COMBAT */      &fsm_eAcpt_sGmpMap_ssMenu_mPCP,
     /* MENU_TYPE_TRADE */           &fsm_eAcpt_sGmpMap_ssMenu_mTM,
+    /* MENU_TYPE_DEPLOYMENT */      NULL,
 };
 
 fsm_menu_t fsm_eCncl_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
@@ -32,8 +46,8 @@ fsm_menu_t fsm_eCncl_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_RESCUE */          NULL,
     /* MENU_TYPE_SUPPORTS */        NULL,
     /* MENU_TYPE_GROWTHS */         &fsm_eCncl_sGmpMap_ssMenu_mSM,
-    // /* MENU_TYPE_PRE_COMBAT */      &fsm_eCncl_sGmpMap_ssMenu_mPCP
     /* MENU_TYPE_TRADE */           NULL,
+    /* MENU_TYPE_DEPLOYMENT */      NULL,
 };
 
 fsm_menu_t fsm_eCrsMvs_ssMenu_m[MENU_TYPE_END] = {
@@ -46,8 +60,8 @@ fsm_menu_t fsm_eCrsMvs_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_RESCUE */          NULL,
     /* MENU_TYPE_SUPPORTS */        NULL,
     /* MENU_TYPE_GROWTHS */         NULL,
-    // /* MENU_TYPE_PRE_COMBAT */      NULL,
     /* MENU_TYPE_TRADE */           NULL,
+    /* MENU_TYPE_DEPLOYMENT */      NULL,
 };
 
 /* -- Menu-option FSMs -- */
@@ -180,8 +194,8 @@ fsm_menu_t fsm_Pop_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_RESCUE */          NULL,
     /* MENU_TYPE_SUPPORTS */        NULL,
     /* MENU_TYPE_GROWTHS */         NULL,
-    // /* MENU_TYPE_PRE_COMBAT */      NULL,
     /* MENU_TYPE_TRADE */           NULL,
+    /* MENU_TYPE_DEPLOYMENT */      NULL,
 };
 
 

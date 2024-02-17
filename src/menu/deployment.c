@@ -758,12 +758,12 @@ void DeploymentMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *rendere
     Utilities_DrawColor_Reset(renderer);
 }
 
-int DeploymentMenu_Elem_Move(struct Menu *menu, int direction) {
+i32 DeploymentMenu_Elem_Move(struct Menu *menu, i32 direction) {
     /* -- Scrolling menu -- */
     direction = Ternary_Direction_Straight(direction);
     struct DeploymentMenu *dm = menu->data;
     int previous_top_unit = dm->top_unit;
-    
+
     /* Scrolling up:    if unit1 and up */
     if ((menu->elem == DM_ELEM_UNIT1) && (direction == SOTA_DIRECTION_TOP)) {
         if (dm->top_unit > 0)
