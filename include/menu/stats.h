@@ -16,7 +16,7 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Menu;
 
-/* --- ANTS --- */
+/* --- ELEMENTS --- */
 extern  i8 stats_menu_cycle[STATS_MENU_CYCLE_NUM];
 extern  i8 stats_menu_cycle_inv[MENU_TYPE_END];
 
@@ -366,7 +366,8 @@ enum STATS_MENU_COLOR {
     STATS_MENU_STATBAR_FL = 3,
 
 };
-/* --- ANTS --- */
+
+/* --- ELEMENTS --- */
 #define STATSMENU_BUFFER_LEN 128
 
 extern struct MenuElemDirections stats_menu_links[STATS_MENU_ELEMS_NUM];

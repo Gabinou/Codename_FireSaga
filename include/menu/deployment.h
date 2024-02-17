@@ -18,6 +18,20 @@ struct Menu;
 struct Game;
 struct MenuElemDirections;
 
+enum DM_MENU_ELEMENTS {
+    DM_ELEM_NULL  = -1,
+    DM_ELEM_START = -1,
+    DM_ELEM_UNIT1 =  0,
+    DM_ELEM_UNIT2 =  1,
+    DM_ELEM_UNIT3 =  2,
+    DM_ELEM_UNIT4 =  3,
+    DM_ELEM_UNIT5 =  4,
+    DM_ELEM_UNIT6 =  5,
+    DM_ELEM_UNIT7 =  6,
+    DM_ELEM_UNIT8 =  7,
+    DM_ELEM_NUM   =  8
+};
+
 enum DM_MENU {
 
     DM_PATCH_X_SIZE     =  29,
@@ -191,6 +205,11 @@ struct DeploymentMenu {
     SDL_Texture *texture_mount;
 };
 extern struct DeploymentMenu DeploymentMenu_default;
+
+/* --- ELEMENTS --- */
+extern struct MenuElemDirections dm_links[DM_ELEM_NUM];
+extern struct Point dm_elem_pos[DM_ELEM_NUM];
+extern struct Point dm_elem_box[DM_ELEM_NUM];
 
 /* --- Constructors/Destructors --- */
 struct DeploymentMenu *DeploymentMenu_Alloc(void);

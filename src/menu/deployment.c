@@ -1,6 +1,42 @@
 
 #include "menu/deployment.h"
 
+/* --- ELEMENTS --- */
+struct MenuElemDirections dm_links[DM_ELEM_NUM] = {
+    /*right, top, left, bottom */
+    /* DM_ELEM_UNIT1 */ {DM_ELEM_NULL, DM_ELEM_NULL,  DM_ELEM_NULL, DM_ELEM_UNIT2},
+    /* DM_ELEM_UNIT2 */ {DM_ELEM_NULL, DM_ELEM_UNIT1, DM_ELEM_NULL, DM_ELEM_UNIT3},
+    /* DM_ELEM_UNIT3 */ {DM_ELEM_NULL, DM_ELEM_UNIT2, DM_ELEM_NULL, DM_ELEM_UNIT4},
+    /* DM_ELEM_UNIT4 */ {DM_ELEM_NULL, DM_ELEM_UNIT3, DM_ELEM_NULL, DM_ELEM_UNIT5},
+    /* DM_ELEM_UNIT5 */ {DM_ELEM_NULL, DM_ELEM_UNIT4, DM_ELEM_NULL, DM_ELEM_UNIT6},
+    /* DM_ELEM_UNIT6 */ {DM_ELEM_NULL, DM_ELEM_UNIT5, DM_ELEM_NULL, DM_ELEM_UNIT7},
+    /* DM_ELEM_UNIT7 */ {DM_ELEM_NULL, DM_ELEM_UNIT6, DM_ELEM_NULL, DM_ELEM_UNIT8},
+    /* DM_ELEM_UNIT8 */ {DM_ELEM_NULL, DM_ELEM_UNIT7, DM_ELEM_NULL, DM_ELEM_NULL},
+};
+
+struct Point dm_elem_pos[DM_ELEM_NUM] = {
+    /* DM_ELEM_UNIT1 */  {8,  21},
+    /* DM_ELEM_UNIT2 */  {8,  39},
+    /* DM_ELEM_UNIT3 */  {8,  57},
+    /* DM_ELEM_UNIT4 */  {8,  75},
+    /* DM_ELEM_UNIT5 */  {8,  93},
+    /* DM_ELEM_UNIT6 */  {8, 111},
+    /* DM_ELEM_UNIT7 */  {8, 129},
+    /* DM_ELEM_UNIT8 */  {8, 147},
+};
+
+struct Point dm_elem_box[DM_ELEM_NUM] = {
+    /* DM_ELEM_UNIT1 */  {SOTA_TILESIZE, SOTA_TILESIZE},
+    /* DM_ELEM_UNIT2 */  {SOTA_TILESIZE, SOTA_TILESIZE},
+    /* DM_ELEM_UNIT3 */  {SOTA_TILESIZE, SOTA_TILESIZE},
+    /* DM_ELEM_UNIT4 */  {SOTA_TILESIZE, SOTA_TILESIZE},
+    /* DM_ELEM_UNIT5 */  {SOTA_TILESIZE, SOTA_TILESIZE},
+    /* DM_ELEM_UNIT6 */  {SOTA_TILESIZE, SOTA_TILESIZE},
+    /* DM_ELEM_UNIT7 */  {SOTA_TILESIZE, SOTA_TILESIZE},
+    /* DM_ELEM_UNIT8 */  {SOTA_TILESIZE, SOTA_TILESIZE},
+};
+
+
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
 /* --- Frame transforms --- */
 static struct Point _Unit_Frame(i32 x, i32 y);
@@ -21,8 +57,6 @@ static void _DeploymentMenu_Draw_Names(     struct DeploymentMenu *dm, SDL_Rende
 static void _DeploymentMenu_Draw_Class(     struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Icons(     struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Mount(     struct DeploymentMenu *dm, SDL_Renderer *r);
-static void _DeploymentMenu_Draw_Weapons(   struct DeploymentMenu *dm, SDL_Renderer *r);
-static void _DeploymentMenu_Draw_Content(   struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_PageNum(   struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Scroll_Bar(struct DeploymentMenu *dm, SDL_Renderer *r);
 
@@ -92,6 +126,7 @@ static void _DeploymentMenu_Free_Icons(struct DeploymentMenu *dm) {
 /* --- Loading --- */
 static void _DeploymentMenu_Load_Icons(struct DeploymentMenu *dm,
                                        SDL_Renderer *renderer) {
+    // Load map units to put as side-icons
 
 }
 
@@ -496,7 +531,7 @@ static void _DeploymentMenu_Draw_Class(struct DeploymentMenu *dm,
 
 static void _DeploymentMenu_Draw_Unit(struct DeploymentMenu *dm,
                                       SDL_Renderer *renderer) {
-
+    /* Draw map unit as side icon */
 }
 
 static void _DeploymentMenu_Draw_Mount(struct DeploymentMenu *dm,
@@ -554,14 +589,6 @@ static void _DeploymentMenu_Draw_Mount(struct DeploymentMenu *dm,
     }
 }
 
-static void _DeploymentMenu_Draw_Weapons(struct DeploymentMenu *dm,
-                                         SDL_Renderer *renderer) {
-
-}
-static void _DeploymentMenu_Draw_Content(struct DeploymentMenu *dm,
-                                         SDL_Renderer *renderer) {
-
-}
 static void _DeploymentMenu_Draw_Scroll_Bar(struct DeploymentMenu *dm,
                                             SDL_Renderer *renderer) {
 
@@ -768,11 +795,13 @@ void DeploymentMenu_Update(struct DeploymentMenu *dm, struct n9Patch *n9patch,
 
     fsm_DeploymentMenu_Draw_Pages[dm->page](dm, renderer);
 
+    _DeploymentMenu_Draw_Scroll_Bar(dm, renderer);
     _DeploymentMenu_Draw_PageNum(dm, renderer);
     _DeploymentMenu_Draw_Names(dm, renderer);
     _DeploymentMenu_Draw_Icons(dm, renderer);
 
     Utilities_DrawColor_Reset(renderer);
+
     /* -- Finish -- */
     SDL_SetRenderTarget(renderer, rt);
     SDL_assert(dm->texture);
