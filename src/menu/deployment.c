@@ -131,6 +131,22 @@ static void _DeploymentMenu_Load_Icons(struct DeploymentMenu *dm,
     // Load map units to put as side-icons
 
 }
+/* --- Utility --- */
+void _DeploymentMenu_Swap_Unit(struct DeploymentMenu *dm, SDL_Renderer *renderer,
+                               i16 unit) {
+    if (dm->_selected[unit]) {
+        _DeploymentMenu_Swap(dm, renderer, NES_WHITE, NES_BLACK);
+    } else {
+        _DeploymentMenu_Swap(dm, renderer, NES_DARK_GRAY, NES_BLACK);
+    }
+}
+
+void _DeploymentMenu_Swap(struct DeploymentMenu *dm, SDL_Renderer *renderer,
+                          i8 white, i8 black) {
+    PixelFont_Swap_Palette(dm->pixelnours,      renderer, white, black);
+    PixelFont_Swap_Palette(dm->pixelnours_16,   renderer, white, black);
+    PixelFont_Swap_Palette(dm->pixelnours_big,  renderer, white, black);
+}
 
 i32 _DeploymentMenu_Num(struct DeploymentMenu *dm) {
     SDL_Log("%d %d", dm->top_unit, dm->_party_size);
@@ -295,10 +311,12 @@ static void _DeploymentMenu_Draw_Names(struct DeploymentMenu *dm,
         int unit_id = dm->_party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
+        _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
 
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, unit->name.data,
                                  unit->name.num, x, y);
     }
+    _DeploymentMenu_Swap(dm, renderer, NES_WHITE, NES_BLACK);
 }
 
 /* -- Page 1 -- */
@@ -310,14 +328,16 @@ static void _DeploymentMenu_Draw_Stats_P1(struct DeploymentMenu *dm,
     int unit_id, x, y;
     struct Unit *unit;
     for (i32 i = 0; i < num_to_draw; i++) {
-        /* - HP - */
-        x = DM_HP_X, y = DM_HP_CONTENT_Y;
-        point = _Page_Frame(x, y);
-        y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
         unit_id = dm->_party_id_stack[i + dm->top_unit];
         unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
+        _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
+
+        /* - HP - */
+        x = DM_HP_X, y = DM_HP_CONTENT_Y;
+        point = _Page_Frame(x, y);
+        y = i * DM_LINE_H + point.y;
         stbsp_snprintf(array, 3, "%02d\0", unit->current_stats.hp);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
@@ -325,10 +345,6 @@ static void _DeploymentMenu_Draw_Stats_P1(struct DeploymentMenu *dm,
         x = DM_MOVE_X, y = DM_MOVE_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
-        SDL_assert(dm->party != NULL);
-        unit_id = dm->_party_id_stack[i + dm->top_unit];
-        unit = &dm->party[unit_id];
-        SDL_assert(unit != NULL);
         stbsp_snprintf(array, 2, "%01d\0", unit->current_stats.move);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
@@ -336,10 +352,6 @@ static void _DeploymentMenu_Draw_Stats_P1(struct DeploymentMenu *dm,
         x = DM_LVL_X, y = DM_LVL_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
-        SDL_assert(dm->party != NULL);
-        unit_id = dm->_party_id_stack[i + dm->top_unit];
-        unit = &dm->party[unit_id];
-        SDL_assert(unit != NULL);
         i16 lvl = Unit_getLvl(unit);
         stbsp_snprintf(array, 3, "%02d\0", lvl);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
@@ -348,10 +360,6 @@ static void _DeploymentMenu_Draw_Stats_P1(struct DeploymentMenu *dm,
         x = DM_EXP_X, y = DM_EXP_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
-        SDL_assert(dm->party != NULL);
-        unit_id = dm->_party_id_stack[i + dm->top_unit];
-        unit = &dm->party[unit_id];
-        SDL_assert(unit != NULL);
         stbsp_snprintf(array, 3, "%02d\0", (unit->exp % SOTA_EXP_PER_LEVEL));
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
@@ -359,15 +367,11 @@ static void _DeploymentMenu_Draw_Stats_P1(struct DeploymentMenu *dm,
         x = DM_CLASS_X, y = DM_CLASS_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
-        SDL_assert(dm->party != NULL);
-        unit_id = dm->_party_id_stack[i + dm->top_unit];
-        unit = &dm->party[unit_id];
-        SDL_assert(unit != NULL);
         s8 class = classNames[unit->class];
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, class.data,
                                  class.num, x, y);
-
     }
+    _DeploymentMenu_Swap(dm, renderer, NES_WHITE, NES_BLACK);
 }
 
 /* -- Page 2 -- */
@@ -383,6 +387,9 @@ static void _DeploymentMenu_Draw_Stats_P2(struct DeploymentMenu *dm,
         int unit_id = dm->_party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
+        _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
+
+
         /* STR */
         x = DM_STR_X;
         y = DM_STR_CONTENT_Y;
@@ -423,6 +430,7 @@ static void _DeploymentMenu_Draw_Stats_P2(struct DeploymentMenu *dm,
         stbsp_snprintf(array, 3, "%d\0", unit->current_stats.con);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
     }
+    _DeploymentMenu_Swap(dm, renderer, NES_WHITE, NES_BLACK);
 }
 
 /* -- Page 3 -- */
@@ -438,6 +446,8 @@ static void _DeploymentMenu_Draw_Stats_P3(struct DeploymentMenu *dm,
         int unit_id = dm->_party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
+        _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
+
         /* DEF */
         x = DM_DEF_X;
         y = DM_DEF_CONTENT_Y;
@@ -478,6 +488,7 @@ static void _DeploymentMenu_Draw_Stats_P3(struct DeploymentMenu *dm,
         stbsp_snprintf(array, 3, "%d\0", unit->current_stats.prof);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
     }
+    _DeploymentMenu_Swap(dm, renderer, NES_WHITE, NES_BLACK);
 }
 
 /* -- Page 4 -- */
@@ -493,6 +504,7 @@ static void _DeploymentMenu_Draw_Stats_P4(struct DeploymentMenu *dm,
         int unit_id = dm->_party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
+        _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
 
         /* WPN_TYPES */
         u8 equippables[SM_WEAPON_TYPES_MAX] = {0};
@@ -514,6 +526,7 @@ static void _DeploymentMenu_Draw_Stats_P4(struct DeploymentMenu *dm,
 
         /* MOUNTS */
     }
+    _DeploymentMenu_Swap(dm, renderer, NES_WHITE, NES_BLACK);
 }
 
 static void _DeploymentMenu_Draw_Icons(struct DeploymentMenu *dm,
