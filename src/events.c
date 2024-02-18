@@ -110,9 +110,11 @@ void receive_event_End(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Load_Debug_Map(struct Game *sota, SDL_Event *userevent) {
+    
     /* -- UNLOAD FirstMenu -- */
     Game_FirstMenu_Destroy(sota);
     Game_Title_Destroy(sota);
+
     /* -- LOAD Debug map -- */
     Game_debugMap_Load(sota);
     Utilities_DrawColor_Reset(sota->renderer);
@@ -120,6 +122,7 @@ void receive_event_Load_Debug_Map(struct Game *sota, SDL_Event *userevent) {
     /* -- Music check -- */
     SDL_assert(sota->map->music_friendly != NULL);
 
+    // TODO: Move event_Turn_Transition to after deployment menu accept
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
 }
 

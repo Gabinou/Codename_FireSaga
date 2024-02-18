@@ -1018,8 +1018,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moItem(struct Game *sota, struct Menu *mc) {
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDbgMap(struct Game *sota, struct Menu *mc) {
-    SDL_assert(sota->state == GAME_STATE_Title_Screen);
-    SDL_assert(sota->substate == GAME_SUBSTATE_MENU);
+    SDL_assert(sota->state      == GAME_STATE_Title_Screen);
+    SDL_assert(sota->substate   == GAME_SUBSTATE_MENU);
     Event_Emit(__func__, SDL_USEREVENT, event_Load_Debug_Map, data1_entity, data2_entity);
 }
 

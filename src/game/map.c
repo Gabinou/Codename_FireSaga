@@ -46,13 +46,17 @@ void Game_debugMap_Load(struct Game *sota) {
     Game_State_Set(sota, GAME_STATE_Gameplay_Map, sota->reason);
     strncpy(sota->reason, "on Init state to GAME_STATE_Gameplay_Map substate is idle",
             sizeof(sota->reason));
+    
+    // TODO: Change substate to Menu
     Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
-    // Game_Map_Load(sota, CHAPTER_TEST_V6);
+    // TODO: Change Load deployment menu
+
     Game_Map_Load(sota, CHAPTER_TEST_V7);
     Game_PopUp_Tile_Create(sota);
     Game_cursorFocus_onMap(sota);
 
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Loading in test party\n");
+
     /* -- Party -- */
     /* - Preliminaries - */
     i16 *unit_inds;
@@ -97,6 +101,8 @@ void Game_debugMap_Load(struct Game *sota) {
     DARR_PUT(sota->map->death_enemy, Map_condition_boss_win);
     DARR_PUT(sota->map->death_friendly, Map_condition_main_char_loss);
     DARR_PUT(sota->map->death_friendly, Map_condition_debug_map_loss);
+
+
 }
 
 /* --- Reinforcements --- */
