@@ -212,8 +212,9 @@ struct DeploymentMenu {
     struct PixelFont    *pixelnours_big;
 
     SDL_Texture *texture;
-    SDL_Texture *texture_mount;
     SDL_Texture *texture_dude;
+    SDL_Texture *texture_mount;
+    SDL_Surface *surface_mount;
 };
 extern struct DeploymentMenu DeploymentMenu_default;
 
