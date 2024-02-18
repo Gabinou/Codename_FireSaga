@@ -46,7 +46,7 @@ void Game_debugMap_Load(struct Game *sota) {
     Game_State_Set(sota, GAME_STATE_Gameplay_Map, sota->reason);
     strncpy(sota->reason, "on Init state to GAME_STATE_Gameplay_Map substate is idle",
             sizeof(sota->reason));
-    
+
     // TODO: Change substate to Menu
     Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
     // TODO: Change Load deployment menu

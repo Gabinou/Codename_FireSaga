@@ -110,7 +110,7 @@ void receive_event_End(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Load_Debug_Map(struct Game *sota, SDL_Event *userevent) {
-    
+
     /* -- UNLOAD FirstMenu -- */
     Game_FirstMenu_Destroy(sota);
     Game_Title_Destroy(sota);

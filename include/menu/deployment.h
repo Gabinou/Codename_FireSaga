@@ -189,7 +189,9 @@ enum DM_MENU {
 struct DeploymentMenu {
     b32 update;
     struct Point pos; /* [pixels] */
-    i16 *party_stack;
+    i16 *party_id_stack;
+    b32 *selected;  /* Same size as party */
+    i32  num_selected;
     i32  party_size;
     i32 top_unit;   /* Up   - Down  scrolling [0, party_size] */
     i32 page;       /* Left - Right scrolling [0, DM_PAGE_NUM]*/

@@ -83,7 +83,9 @@ struct DeploymentMenu DeploymentMenu_default = {
     .update         = true,
     .pos            = {-1, -1},
 
+    .party_id_stack    =   0,
     .party_size     =   0,
+    .num_selected   =   0,
     .top_unit       =   0,   /* Up   - Down  scrolling [0, party_size] */
     .page           =   0,   /* Left - Right scrolling [0, DM_PAGE_NUM]*/
 
@@ -269,7 +271,7 @@ static void _DeploymentMenu_Draw_Names(struct DeploymentMenu *dm,
     for (i32 i = 0; i < num_to_draw; i++) {
         y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_stack[i + dm->top_unit];
+        int unit_id = dm->party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
 
@@ -289,7 +291,7 @@ static void _DeploymentMenu_Draw_Mv(struct DeploymentMenu *dm,
     for (i32 i = 0; i < num_to_draw; i++) {
         y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_stack[i + dm->top_unit];
+        int unit_id = dm->party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         stbsp_snprintf(array, 2, "%01d\0", unit->current_stats.move);
@@ -307,7 +309,7 @@ static void _DeploymentMenu_Draw_HP(struct DeploymentMenu *dm,
     for (i32 i = 0; i < num_to_draw; i++) {
         y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_stack[i + dm->top_unit];
+        int unit_id = dm->party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         stbsp_snprintf(array, 3, "%02d\0", unit->current_stats.hp);
@@ -325,7 +327,7 @@ static void _DeploymentMenu_Draw_EXP(struct DeploymentMenu *dm,
     for (i32 i = 0; i < num_to_draw; i++) {
         y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_stack[i + dm->top_unit];
+        int unit_id = dm->party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         stbsp_snprintf(array, 3, "%02d\0", (unit->exp % SOTA_EXP_PER_LEVEL));
@@ -343,7 +345,7 @@ static void _DeploymentMenu_Draw_Lvl(struct DeploymentMenu *dm,
     for (i32 i = 0; i < num_to_draw; i++) {
         y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_stack[i + dm->top_unit];
+        int unit_id = dm->party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         i16 lvl = Unit_getLvl(unit);
@@ -362,7 +364,7 @@ static void _DeploymentMenu_Draw_Stats_P2(struct DeploymentMenu *dm,
     i32 num_to_draw = _DeploymentMenu_Num(dm);
     for (i32 i = 0; i < num_to_draw; i++) {
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_stack[i + dm->top_unit];
+        int unit_id = dm->party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         /* STR */
@@ -417,7 +419,7 @@ static void _DeploymentMenu_Draw_Stats_P3(struct DeploymentMenu *dm,
     i32 num_to_draw = _DeploymentMenu_Num(dm);
     for (i32 i = 0; i < num_to_draw; i++) {
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_stack[i + dm->top_unit];
+        int unit_id = dm->party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         /* DEF */
@@ -472,7 +474,7 @@ static void _DeploymentMenu_Draw_Stats_P4(struct DeploymentMenu *dm,
     i32 num_to_draw = _DeploymentMenu_Num(dm);
     for (i32 i = 0; i < num_to_draw; i++) {
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_stack[i + dm->top_unit];
+        int unit_id = dm->party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
 
@@ -520,7 +522,7 @@ static void _DeploymentMenu_Draw_Class(struct DeploymentMenu *dm,
     for (i32 i = 0; i < num_to_draw; i++) {
         y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_stack[i + dm->top_unit];
+        int unit_id = dm->party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         s8 class = classNames[unit->class];
@@ -546,7 +548,7 @@ static void _DeploymentMenu_Draw_Mount(struct DeploymentMenu *dm,
     for (i32 i = 0; i < num_to_draw; i++) {
         y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_stack[i + dm->top_unit];
+        int unit_id = dm->party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
 

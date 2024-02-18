@@ -112,7 +112,7 @@ void Game_Party_Load(struct Game *sota, i16 *unit_ids, size_t load_num) {
     Game_Party_Clear(sota);
     sota->party_size = load_num;
     for (size_t i = 0; i < load_num; i++) {
-        sota->party_stack[i] = unit_ids[i];
+        sota->party_id_stack[i] = unit_ids[i];
     }
     Party_Load(sota->party, sota->weapons_dtab, sota->items_dtab, unit_ids, load_num);
 }

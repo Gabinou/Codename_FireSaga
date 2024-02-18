@@ -5,7 +5,7 @@
 #include "RNG.h"
 
 struct Unit party[SOTA_MAX_PARTY_SIZE];
-i16 party_stack[SOTA_MAX_PARTY_SIZE];
+i16 party_id_stack[SOTA_MAX_PARTY_SIZE];
 struct Mount mount1;
 struct Mount mount2;
 struct Mount mount3;
@@ -17,16 +17,16 @@ struct dtab *items_dtab;
 void test_menu_deployment_party(struct DeploymentMenu *dm) {
     /* -- Party -- */
     /* - Preliminaries - */
-    dm->party_stack = party_stack;
+    dm->party_id_stack = party_id_stack;
     dm->party       = party;
 
     dm->party_size = 0;
-    dm->party_stack[dm->party_size++] = UNIT_ID_SILOU;
-    dm->party_stack[dm->party_size++] = UNIT_ID_KIARA;
-    dm->party_stack[dm->party_size++] = UNIT_ID_RAYAN;
-    dm->party_stack[dm->party_size++] = UNIT_ID_ERWIN;
+    dm->party_id_stack[dm->party_size++] = UNIT_ID_SILOU;
+    dm->party_id_stack[dm->party_size++] = UNIT_ID_KIARA;
+    dm->party_id_stack[dm->party_size++] = UNIT_ID_RAYAN;
+    dm->party_id_stack[dm->party_size++] = UNIT_ID_ERWIN;
 
-    Party_Load(dm->party, weapons_dtab, items_dtab, dm->party_stack, dm->party_size);
+    Party_Load(dm->party, weapons_dtab, items_dtab, dm->party_id_stack, dm->party_size);
 
     mount1 = Mount_default_horse;
     dm->party[UNIT_ID_SILOU].mount = &mount1;
@@ -42,23 +42,23 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
     /* -- Party -- */
     /* - Preliminaries - */
     /* -- Adding units to Party -- */
-    dm->party_stack = party_stack;
+    dm->party_id_stack = party_id_stack;
     dm->party       = party;
 
     dm->party_size = 0;
-    dm->party_stack[dm->party_size++] = UNIT_ID_KIARA;
-    dm->party_stack[dm->party_size++] = UNIT_ID_PERIGNON;
-    dm->party_stack[dm->party_size++] = UNIT_ID_KAKWI;
-    dm->party_stack[dm->party_size++] = UNIT_ID_NICOLE;
-    dm->party_stack[dm->party_size++] = UNIT_ID_CHASSE;
-    dm->party_stack[dm->party_size++] = UNIT_ID_SILOU;
-    dm->party_stack[dm->party_size++] = UNIT_ID_LUCRECE;
-    dm->party_stack[dm->party_size++] = UNIT_ID_ERWIN;
-    dm->party_stack[dm->party_size++] = UNIT_ID_RAYAN;
-    dm->party_stack[dm->party_size++] = UNIT_ID_MELLY;
-    dm->party_stack[dm->party_size++] = UNIT_ID_TEHARON;
+    dm->party_id_stack[dm->party_size++] = UNIT_ID_KIARA;
+    dm->party_id_stack[dm->party_size++] = UNIT_ID_PERIGNON;
+    dm->party_id_stack[dm->party_size++] = UNIT_ID_KAKWI;
+    dm->party_id_stack[dm->party_size++] = UNIT_ID_NICOLE;
+    dm->party_id_stack[dm->party_size++] = UNIT_ID_CHASSE;
+    dm->party_id_stack[dm->party_size++] = UNIT_ID_SILOU;
+    dm->party_id_stack[dm->party_size++] = UNIT_ID_LUCRECE;
+    dm->party_id_stack[dm->party_size++] = UNIT_ID_ERWIN;
+    dm->party_id_stack[dm->party_size++] = UNIT_ID_RAYAN;
+    dm->party_id_stack[dm->party_size++] = UNIT_ID_MELLY;
+    dm->party_id_stack[dm->party_size++] = UNIT_ID_TEHARON;
 
-    Party_Load(dm->party, weapons_dtab, items_dtab, dm->party_stack, dm->party_size);
+    Party_Load(dm->party, weapons_dtab, items_dtab, dm->party_id_stack, dm->party_size);
 
     mount1 = Mount_default_horse;
     dm->party[UNIT_ID_SILOU].mount = &mount1;
