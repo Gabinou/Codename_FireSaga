@@ -5,7 +5,7 @@
 #include "RNG.h"
 
 struct Unit party[SOTA_MAX_PARTY_SIZE];
-i16 party_id_stack[SOTA_MAX_PARTY_SIZE];
+i16 *party_id_stack;
 struct Mount mount1;
 struct Mount mount2;
 struct Mount mount3;
@@ -17,13 +17,13 @@ struct dtab *items_dtab;
 void test_menu_deployment_party(struct DeploymentMenu *dm) {
     /* -- Party -- */
     /* - Preliminaries - */
-    i32 party_size = 0;
-    party_id_stack[party_size++] = UNIT_ID_SILOU;
-    party_id_stack[party_size++] = UNIT_ID_KIARA;
-    party_id_stack[party_size++] = UNIT_ID_RAYAN;
-    party_id_stack[party_size++] = UNIT_ID_ERWIN;
+    DARR_NUM(party_id_stack) = 0;
+    DARR_PUT(party_id_stack, UNIT_ID_SILOU);
+    DARR_PUT(party_id_stack, UNIT_ID_KIARA);
+    DARR_PUT(party_id_stack, UNIT_ID_RAYAN);
+    DARR_PUT(party_id_stack, UNIT_ID_ERWIN);
 
-    Party_Load(party, weapons_dtab, items_dtab, party_id_stack, party_size);
+    Party_Load(party, weapons_dtab, items_dtab, party_id_stack, DARR_NUM(party_id_stack));
 
     mount1 = Mount_default_horse;
     party[UNIT_ID_SILOU].mount = &mount1;
@@ -35,27 +35,27 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
     party[UNIT_ID_ERWIN].mount = &mount4;
 
     DeploymentMenu_Party_Set(dm, party, party_id_stack);
+    SDL_assert(dm->_party_size > 0);
 }
 
 void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
     /* -- Party -- */
     /* - Preliminaries - */
     /* -- Adding units to Party -- */
+    DARR_NUM(party_id_stack) = 0;
+    DARR_PUT(party_id_stack, UNIT_ID_KIARA);
+    DARR_PUT(party_id_stack, UNIT_ID_PERIGNON);
+    DARR_PUT(party_id_stack, UNIT_ID_KAKWI);
+    DARR_PUT(party_id_stack, UNIT_ID_NICOLE);
+    DARR_PUT(party_id_stack, UNIT_ID_CHASSE);
+    DARR_PUT(party_id_stack, UNIT_ID_SILOU);
+    DARR_PUT(party_id_stack, UNIT_ID_LUCRECE);
+    DARR_PUT(party_id_stack, UNIT_ID_ERWIN);
+    DARR_PUT(party_id_stack, UNIT_ID_RAYAN);
+    DARR_PUT(party_id_stack, UNIT_ID_MELLY);
+    DARR_PUT(party_id_stack, UNIT_ID_TEHARON);
 
-    i32 party_size = 0;
-    party_id_stack[party_size++] = UNIT_ID_KIARA;
-    party_id_stack[party_size++] = UNIT_ID_PERIGNON;
-    party_id_stack[party_size++] = UNIT_ID_KAKWI;
-    party_id_stack[party_size++] = UNIT_ID_NICOLE;
-    party_id_stack[party_size++] = UNIT_ID_CHASSE;
-    party_id_stack[party_size++] = UNIT_ID_SILOU;
-    party_id_stack[party_size++] = UNIT_ID_LUCRECE;
-    party_id_stack[party_size++] = UNIT_ID_ERWIN;
-    party_id_stack[party_size++] = UNIT_ID_RAYAN;
-    party_id_stack[party_size++] = UNIT_ID_MELLY;
-    party_id_stack[party_size++] = UNIT_ID_TEHARON;
-
-    Party_Load(party, weapons_dtab, items_dtab, party_id_stack, party_size);
+    Party_Load(party, weapons_dtab, items_dtab, party_id_stack, DARR_NUM(party_id_stack));
 
     mount1 = Mount_default_horse;
     party[UNIT_ID_SILOU].mount = &mount1;
@@ -65,12 +65,16 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
     party[UNIT_ID_RAYAN].mount = &mount3;
     mount4 = Mount_default_eagle;
     party[UNIT_ID_ERWIN].mount = &mount4;
+
+    DeploymentMenu_Party_Set(dm, party, party_id_stack);
+    SDL_assert(dm->_party_size > 0);
 }
 
 void test_menu_deployment() {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     /* --- Preliminaries --- */
     sota_mkdir("menu_deployment");
+    party_id_stack = DARR_INIT(party_id_stack, i16, 4);
 
     weapons_dtab   = DTAB_INIT(weapons_dtab,   struct Weapon);
     items_dtab     = DTAB_INIT(items_dtab,     struct Item);
