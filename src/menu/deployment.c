@@ -270,14 +270,6 @@ static void _DeploymentMenu_Draw_Headers_P4(struct DeploymentMenu *dm,
 static void _DeploymentMenu_Draw_Unit_Num(struct DeploymentMenu *dm,
                                           SDL_Renderer *renderer) {
 
-    SDL_Rect dstrect = {
-        .x = DM_DUDE_X,
-        .y = DM_DUDE_Y,
-        .w = DM_DUDE_W,
-        .h = DM_DUDE_H,
-    };
-
-    SDL_RenderCopy(renderer, dm->texture_dude, NULL, &dstrect);
 
     int x = DM_UNIT_NUM_X, y = DM_UNIT_NUM_Y;
     char array[6] = {0};
@@ -285,8 +277,18 @@ static void _DeploymentMenu_Draw_Unit_Num(struct DeploymentMenu *dm,
     SDL_assert(dm->_selected_num < 99);
     SDL_assert(dm->select_max > 0);
     SDL_assert(dm->select_max < 99);
-    stbsp_snprintf(array, 5, "%d/%d\0", dm->_selected_num, dm->select_max);
+    stbsp_snprintf(array, 6, "%02d/%02d\0", dm->_selected_num, dm->select_max);
     PixelFont_Write_Centered(dm->pixelnours_16, renderer, array, 5, x, y);
+    int width = PixelFont_Width(dm->pixelnours_16,  array, 5);
+
+    SDL_Rect dstrect = {
+        .x = DM_UNIT_NUM_X + width / 2 + 1,
+        .y = DM_DUDE_Y,
+        .w = DM_DUDE_W,
+        .h = DM_DUDE_H,
+    };
+
+    SDL_RenderCopy(renderer, dm->texture_dude, NULL, &dstrect);
 }
 
 static void _DeploymentMenu_Draw_Names(struct DeploymentMenu *dm,

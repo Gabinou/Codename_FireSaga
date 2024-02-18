@@ -52,10 +52,9 @@ enum DM_MENU {
     DM_NAME_X       =  69,
     DM_NAME_Y       =   5,
 
-    DM_UNIT_NUM_X   =  26,
+    DM_UNIT_NUM_X   =  27,
     DM_UNIT_NUM_Y   =   7,
 
-    DM_DUDE_X       =  41,
     DM_DUDE_Y       =   4,
     DM_DUDE_W       =   8,
     DM_DUDE_H       =  16,
