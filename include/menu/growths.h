@@ -40,7 +40,7 @@ enum GM_ELEMS {
     GM_ELEM_NUM,
 };
 
-enum GM_MENU {
+enum growths_menu {
     GM_ELEM_START       = -1,
 
     GM_PATCH_X_SIZE     = 31,

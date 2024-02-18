@@ -7,7 +7,7 @@
 #include "map/find.h"
 #include "map/path.h"
 #include "menu/player_select.h"
-// #include "menu/item_select.h"
+#include "menu/deployment.h"
 #include "menu/loadout_select.h"
 #include "menu/staff_select.h"
 #include "menu/trade.h"
@@ -25,6 +25,11 @@ bool Game_Menus_Init(struct Game *sota);
 tnecs_entity Game_menuStack_Pop(struct Game *sota, bool destroy);
 void Game_menuStack_Push(struct Game *sota, tnecs_entity in_menu_entity);
 void Game_menuStack_Free(struct Game *sota);
+
+/* --- Deployment --- */
+void Game_DeploymentMenu_Create(struct Game *sota);
+void Game_DeploymentMenu_Update(struct Game *sota, tnecs_entity ent);
+void Game_DeploymentMenu_Enable(struct Game *sota, tnecs_entity ent);
 
 /* --- GrowthsMenu --- */
 void Game_GrowthsMenu_Create(struct Game *sota);

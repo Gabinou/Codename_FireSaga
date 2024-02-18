@@ -90,25 +90,38 @@ tnecs_entity Game_menuStack_Pop(struct Game *sota, bool destroy) {
     return (menu_stack_top_entity);
 }
 
+/* --- Deployment --- */
+void Game_DeploymentMenu_Create(struct Game *sota) {
+
+}
+
+void Game_DeploymentMenu_Update(struct Game *sota, tnecs_entity ent) {
+
+}
+
+void Game_DeploymentMenu_Enable(struct Game *sota, tnecs_entity ent) {
+
+}
+
 /* --- GrowthsMenu --- */
 void Game_GrowthsMenu_Enable(struct Game *sota, tnecs_entity unit_entity_ontile) {
-    if (sota->GM_menu == 0)
+    if (sota->growths_menu == 0)
         Game_GrowthsMenu_Create(sota);
-    Game_menuStack_Push(sota, sota->GM_menu);
-    SDL_assert(sota->GM_menu > 0);
+    Game_menuStack_Push(sota, sota->growths_menu);
+    SDL_assert(sota->growths_menu > 0);
     Game_GrowthsMenu_Update(sota, unit_entity_ontile);
-    strncpy(sota->reason, "GM_MENU was created", sizeof(sota->reason));
+    strncpy(sota->reason, "growths_menu was created", sizeof(sota->reason));
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->stats_menu, NULL);
     Game_cursorFocus_onMenu(sota);
 }
 
 void Game_GrowthsMenu_Create(struct Game *sota) {
-    if (sota->GM_menu == TNECS_NULL)
-        sota->GM_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
+    if (sota->growths_menu == TNECS_NULL)
+        sota->growths_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
     else {
         // TODO: destroy menu?
     }
-    struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->GM_menu, Menu);
+    struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->growths_menu, Menu);
     SDL_assert(mc != NULL);
     mc->type        = MENU_TYPE_GROWTHS;
     mc->draw        = &GrowthsMenu_Draw;
@@ -142,7 +155,6 @@ void Game_GrowthsMenu_Create(struct Game *sota) {
     GrowthsMenu_Elem_Pos(GM, mc);
     Menu_Elem_Boxes_Check(mc);
     mc->elem_box[GM_GROWTHS].x *= 2;
-
 }
 
 void Game_GrowthsMenu_Update(struct Game *sota, tnecs_entity unit_entity_ontile) {
@@ -150,12 +162,12 @@ void Game_GrowthsMenu_Update(struct Game *sota, tnecs_entity unit_entity_ontile)
     struct Unit *unit_ontile = TNECS_GET_COMPONENT(sota->world, unit_entity_ontile, Unit);
     SDL_assert(unit_ontile != NULL);
     SDL_assert(unit_ontile->weapons_dtab != NULL);
-    struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->GM_menu, Menu);
+    struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->growths_menu, Menu);
     mc->visible = true;
     SDL_assert(unit_ontile->weapons_dtab != NULL);
-    struct GrowthsMenu *GM_menu = (struct GrowthsMenu *)mc->data;
+    struct GrowthsMenu *growths_menu = (struct GrowthsMenu *)mc->data;
     SDL_assert(unit_ontile->weapons_dtab != NULL);
-    GrowthsMenu_Unit_Set(GM_menu, unit_ontile);
+    GrowthsMenu_Unit_Set(growths_menu, unit_ontile);
 }
 
 /* --- StatsMenu --- */

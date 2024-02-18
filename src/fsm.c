@@ -1125,7 +1125,7 @@ void fsm_eMenuRight_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
         case MENU_TYPE_GROWTHS:
             SDL_Log("NEW MENU_TYPE_GROWTHS");
             Game_GrowthsMenu_Enable(sota, ontile);
-            new_menu_comp = TNECS_GET_COMPONENT(sota->world, sota->GM_menu, Menu);
+            new_menu_comp = TNECS_GET_COMPONENT(sota->world, sota->growths_menu, Menu);
             new_menu_comp->visible = true;
             break;
         default:
@@ -1175,7 +1175,7 @@ void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
         case MENU_TYPE_GROWTHS:
             SDL_Log("NEW MENU_TYPE_GROWTHS");
             Game_GrowthsMenu_Enable(sota, ontile);
-            new_menu_comp = TNECS_GET_COMPONENT(sota->world, sota->GM_menu, Menu);
+            new_menu_comp = TNECS_GET_COMPONENT(sota->world, sota->growths_menu, Menu);
             new_menu_comp->visible = true;
             break;
         default:

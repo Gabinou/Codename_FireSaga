@@ -106,7 +106,7 @@ struct Game {
     tnecs_entity PRE_COMBAT_POPUP;
     tnecs_entity first_menu;
     tnecs_entity title;
-    tnecs_entity GM_menu;
+    tnecs_entity growths_menu;
 
     s8 filename_menu;
     char reason[DEFAULT_BUFFER_SIZE];
