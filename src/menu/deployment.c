@@ -80,24 +80,25 @@ fsm_DeploymentMenu_Draw fsm_DeploymentMenu_Draw_Pages[DM_PAGE_NUM] = {
 };
 
 struct DeploymentMenu DeploymentMenu_default = {
-    .update         = true,
-    .pos            = {-1, -1},
+    .update             = true,
+    .pos                = {-1, -1},
 
-    .party_id_stack    =   0,
-    .party_size     =   0,
-    .num_selected   =   0,
-    .top_unit       =   0,   /* Up   - Down  scrolling [0, party_size] */
-    .page           =   0,   /* Left - Right scrolling [0, DM_PAGE_NUM]*/
+    ._party_size        =   0,
+    ._selected_num      =   0,
+    .top_unit           =   0,   /* Up   - Down  scrolling [0, _party_size] */
+    .page               =   0,   /* Left - Right scrolling [0, DM_PAGE_NUM]*/
 
-    .party          = NULL,
-    .map            = NULL,
-    .font_wpns      = NULL,
-    .pixelnours     = NULL,
-    .pixelnours_16  = NULL,
-    .pixelnours_big = NULL,
+    .party              = NULL,
+    ._party_id_stack    = NULL,
+    ._selected          = NULL,
+    .map                = NULL,
+    .font_wpns          = NULL,
+    .pixelnours         = NULL,
+    .pixelnours_16      = NULL,
+    .pixelnours_big     = NULL,
 
-    .texture        = NULL,
-    .texture_mount  = NULL,
+    .texture            = NULL,
+    .texture_mount      = NULL,
 };
 
 /* --- STATIC FUNCTIONS --- */
@@ -133,8 +134,8 @@ static void _DeploymentMenu_Load_Icons(struct DeploymentMenu *dm,
 }
 
 i32 _DeploymentMenu_Num(struct DeploymentMenu *dm) {
-    SDL_assert(dm->top_unit < dm->party_size);
-    i32 num_to_draw  = dm->party_size - dm->top_unit;
+    SDL_assert(dm->top_unit < dm->_party_size);
+    i32 num_to_draw  = dm->_party_size - dm->top_unit;
     return (num_to_draw < DM_UNIT_SHOWN_NUM ? num_to_draw : DM_UNIT_SHOWN_NUM);
 }
 
@@ -271,7 +272,7 @@ static void _DeploymentMenu_Draw_Names(struct DeploymentMenu *dm,
     for (i32 i = 0; i < num_to_draw; i++) {
         y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_id_stack[i + dm->top_unit];
+        int unit_id = dm->_party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
 
@@ -291,7 +292,7 @@ static void _DeploymentMenu_Draw_Mv(struct DeploymentMenu *dm,
     for (i32 i = 0; i < num_to_draw; i++) {
         y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_id_stack[i + dm->top_unit];
+        int unit_id = dm->_party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         stbsp_snprintf(array, 2, "%01d\0", unit->current_stats.move);
@@ -309,7 +310,7 @@ static void _DeploymentMenu_Draw_HP(struct DeploymentMenu *dm,
     for (i32 i = 0; i < num_to_draw; i++) {
         y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_id_stack[i + dm->top_unit];
+        int unit_id = dm->_party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         stbsp_snprintf(array, 3, "%02d\0", unit->current_stats.hp);
@@ -327,7 +328,7 @@ static void _DeploymentMenu_Draw_EXP(struct DeploymentMenu *dm,
     for (i32 i = 0; i < num_to_draw; i++) {
         y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_id_stack[i + dm->top_unit];
+        int unit_id = dm->_party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         stbsp_snprintf(array, 3, "%02d\0", (unit->exp % SOTA_EXP_PER_LEVEL));
@@ -345,7 +346,7 @@ static void _DeploymentMenu_Draw_Lvl(struct DeploymentMenu *dm,
     for (i32 i = 0; i < num_to_draw; i++) {
         y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_id_stack[i + dm->top_unit];
+        int unit_id = dm->_party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         i16 lvl = Unit_getLvl(unit);
@@ -364,7 +365,7 @@ static void _DeploymentMenu_Draw_Stats_P2(struct DeploymentMenu *dm,
     i32 num_to_draw = _DeploymentMenu_Num(dm);
     for (i32 i = 0; i < num_to_draw; i++) {
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_id_stack[i + dm->top_unit];
+        int unit_id = dm->_party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         /* STR */
@@ -419,7 +420,7 @@ static void _DeploymentMenu_Draw_Stats_P3(struct DeploymentMenu *dm,
     i32 num_to_draw = _DeploymentMenu_Num(dm);
     for (i32 i = 0; i < num_to_draw; i++) {
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_id_stack[i + dm->top_unit];
+        int unit_id = dm->_party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         /* DEF */
@@ -474,7 +475,7 @@ static void _DeploymentMenu_Draw_Stats_P4(struct DeploymentMenu *dm,
     i32 num_to_draw = _DeploymentMenu_Num(dm);
     for (i32 i = 0; i < num_to_draw; i++) {
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_id_stack[i + dm->top_unit];
+        int unit_id = dm->_party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
 
@@ -522,7 +523,7 @@ static void _DeploymentMenu_Draw_Class(struct DeploymentMenu *dm,
     for (i32 i = 0; i < num_to_draw; i++) {
         y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_id_stack[i + dm->top_unit];
+        int unit_id = dm->_party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         s8 class = classNames[unit->class];
@@ -548,7 +549,7 @@ static void _DeploymentMenu_Draw_Mount(struct DeploymentMenu *dm,
     for (i32 i = 0; i < num_to_draw; i++) {
         y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->party_id_stack[i + dm->top_unit];
+        int unit_id = dm->_party_id_stack[i + dm->top_unit];
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
 
@@ -644,6 +645,11 @@ void DeploymentMenu_Free(struct DeploymentMenu *dm) {
         dm->texture_mount = NULL;
     }
 
+    if (dm->_selected != NULL) {
+        SDL_free(dm->_selected);
+        dm->_selected = NULL;
+    }
+
     if (dm != NULL) {
         SDL_free(dm);
         dm = NULL;
@@ -693,13 +699,26 @@ void DeploymentMenu_Load(struct DeploymentMenu *dm, SDL_Renderer *renderer,
     SDL_assert(dm->texture_mount);
 }
 
+void DeploymentMenu_Party_Set(struct DeploymentMenu *dm,
+                              struct Unit *party, i16 *party_id_stack) {
+    if (dm->_selected != NULL) {
+        SDL_free(dm->_selected);
+        dm->_selected = NULL;
+    }
+    dm->party           = party;
+    dm->_party_size     = DARR_NUM(party_id_stack);
+    dm->_party_id_stack = party_id_stack;
+    dm->_selected_num   = 0;
+    dm->_selected       = SDL_calloc(dm->_party_size, sizeof(*dm->_selected));
+}
+
 
 /* --- Scrolling --- */
 void DeploymentMenu_Scroll_Up(   struct DeploymentMenu *dm) {
     if (dm->top_unit < 0);
     dm->top_unit = 0;
-    if (dm->top_unit > (dm->party_size - DM_UNIT_SHOWN_NUM));
-    dm->top_unit = (dm->party_size - DM_UNIT_SHOWN_NUM);
+    if (dm->top_unit > (dm->_party_size - DM_UNIT_SHOWN_NUM));
+    dm->top_unit = (dm->_party_size - DM_UNIT_SHOWN_NUM);
 
     if (dm->top_unit > 1)
         dm->top_unit -= DM_SCROLL_UP_ADD;
@@ -709,10 +728,10 @@ void DeploymentMenu_Scroll_Up(   struct DeploymentMenu *dm) {
 void DeploymentMenu_Scroll_Down( struct DeploymentMenu *dm) {
     if (dm->top_unit < 0);
     dm->top_unit = 0;
-    if (dm->top_unit > (dm->party_size - DM_UNIT_SHOWN_NUM));
-    dm->top_unit = (dm->party_size - DM_UNIT_SHOWN_NUM);
+    if (dm->top_unit > (dm->_party_size - DM_UNIT_SHOWN_NUM));
+    dm->top_unit = (dm->_party_size - DM_UNIT_SHOWN_NUM);
 
-    if (dm->top_unit < (dm->party_size - DM_UNIT_SHOWN_NUM - DM_SCROLL_UP_ADD))
+    if (dm->top_unit < (dm->_party_size - DM_UNIT_SHOWN_NUM - DM_SCROLL_UP_ADD))
         dm->top_unit += DM_SCROLL_UP_ADD;
 
 }
@@ -773,7 +792,7 @@ i32 DeploymentMenu_Elem_Move(struct Menu *menu, i32 direction) {
     }
     /* Scrolling down:  if unit8 and down */
     if ((menu->elem == DM_ELEM_UNIT8) && (direction == SOTA_DIRECTION_BOTTOM)) {
-        if (dm->top_unit < (dm->party_size - DM_UNIT_SHOWN_NUM))
+        if (dm->top_unit < (dm->_party_size - DM_UNIT_SHOWN_NUM))
             dm->top_unit++;
     }
 

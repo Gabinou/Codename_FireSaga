@@ -17,57 +17,54 @@ struct dtab *items_dtab;
 void test_menu_deployment_party(struct DeploymentMenu *dm) {
     /* -- Party -- */
     /* - Preliminaries - */
-    dm->party_id_stack = party_id_stack;
-    dm->party       = party;
+    i32 party_size = 0;
+    party_id_stack[party_size++] = UNIT_ID_SILOU;
+    party_id_stack[party_size++] = UNIT_ID_KIARA;
+    party_id_stack[party_size++] = UNIT_ID_RAYAN;
+    party_id_stack[party_size++] = UNIT_ID_ERWIN;
 
-    dm->party_size = 0;
-    dm->party_id_stack[dm->party_size++] = UNIT_ID_SILOU;
-    dm->party_id_stack[dm->party_size++] = UNIT_ID_KIARA;
-    dm->party_id_stack[dm->party_size++] = UNIT_ID_RAYAN;
-    dm->party_id_stack[dm->party_size++] = UNIT_ID_ERWIN;
-
-    Party_Load(dm->party, weapons_dtab, items_dtab, dm->party_id_stack, dm->party_size);
+    Party_Load(party, weapons_dtab, items_dtab, party_id_stack, party_size);
 
     mount1 = Mount_default_horse;
-    dm->party[UNIT_ID_SILOU].mount = &mount1;
+    party[UNIT_ID_SILOU].mount = &mount1;
     mount2 = Mount_default_pegasus;
-    dm->party[UNIT_ID_KIARA].mount = &mount2;
+    party[UNIT_ID_KIARA].mount = &mount2;
     mount3 = Mount_default_salamander;
-    dm->party[UNIT_ID_RAYAN].mount = &mount3;
+    party[UNIT_ID_RAYAN].mount = &mount3;
     mount4 = Mount_default_eagle;
-    dm->party[UNIT_ID_ERWIN].mount = &mount4;
+    party[UNIT_ID_ERWIN].mount = &mount4;
+
+    DeploymentMenu_Party_Set(dm, party, party_id_stack);
 }
 
 void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
     /* -- Party -- */
     /* - Preliminaries - */
     /* -- Adding units to Party -- */
-    dm->party_id_stack = party_id_stack;
-    dm->party       = party;
 
-    dm->party_size = 0;
-    dm->party_id_stack[dm->party_size++] = UNIT_ID_KIARA;
-    dm->party_id_stack[dm->party_size++] = UNIT_ID_PERIGNON;
-    dm->party_id_stack[dm->party_size++] = UNIT_ID_KAKWI;
-    dm->party_id_stack[dm->party_size++] = UNIT_ID_NICOLE;
-    dm->party_id_stack[dm->party_size++] = UNIT_ID_CHASSE;
-    dm->party_id_stack[dm->party_size++] = UNIT_ID_SILOU;
-    dm->party_id_stack[dm->party_size++] = UNIT_ID_LUCRECE;
-    dm->party_id_stack[dm->party_size++] = UNIT_ID_ERWIN;
-    dm->party_id_stack[dm->party_size++] = UNIT_ID_RAYAN;
-    dm->party_id_stack[dm->party_size++] = UNIT_ID_MELLY;
-    dm->party_id_stack[dm->party_size++] = UNIT_ID_TEHARON;
+    i32 party_size = 0;
+    party_id_stack[party_size++] = UNIT_ID_KIARA;
+    party_id_stack[party_size++] = UNIT_ID_PERIGNON;
+    party_id_stack[party_size++] = UNIT_ID_KAKWI;
+    party_id_stack[party_size++] = UNIT_ID_NICOLE;
+    party_id_stack[party_size++] = UNIT_ID_CHASSE;
+    party_id_stack[party_size++] = UNIT_ID_SILOU;
+    party_id_stack[party_size++] = UNIT_ID_LUCRECE;
+    party_id_stack[party_size++] = UNIT_ID_ERWIN;
+    party_id_stack[party_size++] = UNIT_ID_RAYAN;
+    party_id_stack[party_size++] = UNIT_ID_MELLY;
+    party_id_stack[party_size++] = UNIT_ID_TEHARON;
 
-    Party_Load(dm->party, weapons_dtab, items_dtab, dm->party_id_stack, dm->party_size);
+    Party_Load(party, weapons_dtab, items_dtab, party_id_stack, party_size);
 
     mount1 = Mount_default_horse;
-    dm->party[UNIT_ID_SILOU].mount = &mount1;
+    party[UNIT_ID_SILOU].mount = &mount1;
     mount2 = Mount_default_pegasus;
-    dm->party[UNIT_ID_KIARA].mount = &mount2;
+    party[UNIT_ID_KIARA].mount = &mount2;
     mount3 = Mount_default_salamander;
-    dm->party[UNIT_ID_RAYAN].mount = &mount3;
+    party[UNIT_ID_RAYAN].mount = &mount3;
     mount4 = Mount_default_eagle;
-    dm->party[UNIT_ID_ERWIN].mount = &mount4;
+    party[UNIT_ID_ERWIN].mount = &mount4;
 }
 
 void test_menu_deployment() {
@@ -190,7 +187,7 @@ void test_menu_deployment() {
 
     /* -- Top unit 0 -- */
     dm->top_unit = 4;
-    SDL_assert(_DeploymentMenu_Num(dm) == (dm->party_size - dm->top_unit));
+    SDL_assert(_DeploymentMenu_Num(dm) == (dm->_party_size - dm->top_unit));
     SDL_assert(_DeploymentMenu_Num(dm) == 7);
 
     /* -- Test page 1 -- */
@@ -222,7 +219,7 @@ void test_menu_deployment() {
 
     /* -- Top unit 0 -- */
     dm->top_unit = 7;
-    SDL_assert(_DeploymentMenu_Num(dm) == (dm->party_size - dm->top_unit));
+    SDL_assert(_DeploymentMenu_Num(dm) == (dm->_party_size - dm->top_unit));
     SDL_assert(_DeploymentMenu_Num(dm) == 4);
 
     /* -- Test page 1 -- */

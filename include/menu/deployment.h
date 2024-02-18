@@ -188,13 +188,13 @@ enum DM_MENU {
 
 struct DeploymentMenu {
     b32 update;
-    struct Point pos; /* [pixels] */
-    i16 *party_id_stack;
-    b32 *selected;  /* Same size as party */
-    i32  num_selected;
-    i32  party_size;
-    i32 top_unit;   /* Up   - Down  scrolling [0, party_size] */
-    i32 page;       /* Left - Right scrolling [0, DM_PAGE_NUM]*/
+    struct Point pos;       /* [pixels] */
+    i16 *_party_id_stack;    /* Same size as party */
+    b32 *_selected;          /* Same size as party */
+    i32  _selected_num;
+    i32  _party_size;
+    i32 top_unit;           /* Up   - Down  scrolling [0, _party_size] */
+    i32 page;               /* Left - Right scrolling [0, DM_PAGE_NUM]*/
 
     struct Unit         *party;
     struct Map          *map;
@@ -218,6 +218,8 @@ struct DeploymentMenu *DeploymentMenu_Alloc(void);
 void DeploymentMenu_Free(struct DeploymentMenu *dm);
 void DeploymentMenu_Load(struct DeploymentMenu *dm, SDL_Renderer *renderer,
                          struct n9Patch *n9patch);
+
+void DeploymentMenu_Party_Set(struct DeploymentMenu *dm, struct Unit *p, i16 *pi);
 
 /* --- Utility --- */
 i32 _DeploymentMenu_Num(struct DeploymentMenu *dm);
