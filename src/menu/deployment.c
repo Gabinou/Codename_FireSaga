@@ -133,6 +133,13 @@ static void _DeploymentMenu_Load_Icons(struct DeploymentMenu *dm,
 
 }
 /* --- Utility --- */
+void _DeploymentMenu_Selected_Num(struct DeploymentMenu *dm) {
+    dm->_selected_num = 0;
+    for (i32 i = 0; i < dm->_party_size; i++) {
+        dm->_selected_num += dm->_selected[i];
+    }
+}
+
 void _DeploymentMenu_Swap_Unit(struct DeploymentMenu *dm, SDL_Renderer *renderer,
                                i16 unit) {
     if (dm->_selected[unit]) {
@@ -869,6 +876,7 @@ void DeploymentMenu_Update(struct DeploymentMenu *dm, struct n9Patch *n9patch,
     n9patch->scale.x    = scale_x;
     n9patch->scale.y    = scale_y;
 
+    _DeploymentMenu_Selected_Num(dm);
     fsm_DeploymentMenu_Draw_Pages[dm->page](dm, renderer);
 
     _DeploymentMenu_Draw_Scroll_Bar(dm, renderer);

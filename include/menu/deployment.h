@@ -232,6 +232,7 @@ void DeploymentMenu_Load(struct DeploymentMenu *dm, SDL_Renderer *renderer,
 void DeploymentMenu_Party_Set(struct DeploymentMenu *dm, struct Unit *p, i16 *pi);
 
 /* --- Utility --- */
+void _DeploymentMenu_Selected_Num(struct DeploymentMenu *dm);
 i32  _DeploymentMenu_Num(struct DeploymentMenu *dm);
 void _DeploymentMenu_Swap_Unit(struct DeploymentMenu *dm, SDL_Renderer *r, i16 u);
 void _DeploymentMenu_Swap(struct DeploymentMenu *dm, SDL_Renderer *r, i8 w, i8 b);
