@@ -523,8 +523,6 @@ static void _DeploymentMenu_Draw_Stats_P4(struct DeploymentMenu *dm,
         y = i * DM_LINE_H + point.y;
         stbsp_snprintf(array, 4, "%d\0", unit->regrets);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 3, x, y);
-
-        /* MOUNTS */
     }
     _DeploymentMenu_Swap(dm, renderer, NES_WHITE, NES_BLACK);
 }
@@ -568,13 +566,6 @@ static void _DeploymentMenu_Draw_Mount(struct DeploymentMenu *dm,
         if (unit->mount == NULL)
             continue;
         i8 mount_type = unit->mount->type;
-        // SDL_Log("mount_type %d", mount_type);
-        // getchar();
-        // if (mount_type == MOUNT_TYPE_NULL) {
-        //     x = MOUNT_NONE_X_OFFSET, y = MOUNT_NONE_Y_OFFSET;
-        //     PixelFont_Write(dm->pixelnours, renderer, "-", 1, x, y);
-        //     return;
-        // }
 
         switch (mount_type) {
             case MOUNT_TYPE_HORSE:
@@ -595,8 +586,6 @@ static void _DeploymentMenu_Draw_Mount(struct DeploymentMenu *dm,
         srcrect.y = mount_type / SOTA_COL_LEN * srcrect.h;
         dstrect.w = srcrect.w;
         dstrect.h = srcrect.h;
-        // dstrect.x = 0;
-        // dstrect.y = 0;
         dstrect.x = (x + mount_offset_x);
         dstrect.y = (y + mount_offset_y);
         SDL_RenderCopy(renderer, dm->texture_mount, &srcrect, &dstrect);
