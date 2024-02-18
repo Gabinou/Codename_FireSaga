@@ -74,8 +74,8 @@ void test_menu_deployment() {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     /* --- Preliminaries --- */
     sota_mkdir("menu_deployment");
-    party_id_stack = DARR_INIT(party_id_stack, i16, 4);
 
+    party_id_stack = DARR_INIT(party_id_stack, i16, 4);
     weapons_dtab   = DTAB_INIT(weapons_dtab,   struct Weapon);
     items_dtab     = DTAB_INIT(items_dtab,     struct Item);
 

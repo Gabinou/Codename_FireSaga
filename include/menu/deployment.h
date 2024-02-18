@@ -34,7 +34,7 @@ enum DM_MENU_ELEMENTS {
 
 enum DM_MENU {
 
-    DM_PATCH_X_SIZE     =  29,
+    DM_PATCH_X_SIZE     =  30,
     DM_PATCH_Y_SIZE     =  21,
     DM_N9PATCH_SCALE_X  =   3,
     DM_N9PATCH_SCALE_Y  =   3,
@@ -49,10 +49,13 @@ enum DM_MENU {
     DM_LINE_NUM         =   8,
 
     /* --- Menu frame --- */
-    DM_NAME_X       =  59,
+    DM_NAME_X       =  69,
     DM_NAME_Y       =   5,
 
-    DM_PAGE_NUM_NUMER_X   = 217,
+    DM_UNIT_NUM_X   =  24,
+    DM_UNIT_NUM_Y   =  10,
+
+    DM_PAGE_NUM_NUMER_X   = 225,
     DM_PAGE_NUM_NUMER_Y   =   8,
 
     DM_PAGE_NUM_SLASH_X   = DM_PAGE_NUM_NUMER_X + 5,
@@ -65,7 +68,7 @@ enum DM_MENU {
     DM_CLASS_X      = DM_NAME_X + 56,
     DM_CLASS_Y      = DM_NAME_Y,
 
-    DM_LVL_X        = DM_CLASS_X + 45,
+    DM_LVL_X        = DM_CLASS_X + 43,
     DM_LVL_Y        = DM_CLASS_Y + 2,
 
     DM_EXP_X        = DM_LVL_X + 18,
@@ -113,7 +116,7 @@ enum DM_MENU {
     DM_WPN_TYPE_X   = DM_NAME_X + 56,
     DM_WPN_TYPE_Y   = DM_NAME_Y + 4,
 
-    DM_REGRETS_X    = DM_WPN_TYPE_X + 47,
+    DM_REGRETS_X    = DM_WPN_TYPE_X + 45,
     DM_REGRETS_Y    = DM_WPN_TYPE_Y,
 
     DM_MOUNT_X      = DM_REGRETS_X  + 36,
@@ -121,7 +124,7 @@ enum DM_MENU {
 
     /* --- Unit frame --- */
     /* Relative to menu frame */
-    DM_UNIT_FRAME_X     =   8,
+    DM_UNIT_FRAME_X     =  18,
     DM_UNIT_FRAME_Y     =  21,
     DM_UNIT_FRAME_W     = 208,
     DM_UNIT_FRAME_H     = DM_LINE_H * DM_LINE_NUM,
