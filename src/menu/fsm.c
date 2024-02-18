@@ -6,7 +6,10 @@
 // - player_select_menu -> player is SELECTING
 // - staff_select_menu -> staff is BEING SELECTED
 // -> MAKE COHERENT
-/* menu_elem_move */
+
+/* -- Menu-type FSMs -- */
+
+/* - menu_elem_move - */
 menu_elem_move_t menu_elem_move[MENU_TYPE_END] = {
     /* MENU_TYPE_START */           &Menu_Elem_Move,
     /* MENU_TYPE_PLAYER_SELECT */   &PlayerSelectMenu_Elem_Move,
@@ -21,7 +24,7 @@ menu_elem_move_t menu_elem_move[MENU_TYPE_END] = {
     /* MENU_TYPE_DEPLOYMENT */      &DeploymentMenu_Elem_Move,
 };
 
-/* -- Menu-type FSMs -- */
+/* - Menu substate FSMs - */
 fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_START */           NULL,
     /* MENU_TYPE_PLAYER_SELECT */   &fsm_eAcpt_sGmpMap_ssMenu_mPSM,
@@ -64,7 +67,7 @@ fsm_menu_t fsm_eCrsMvs_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_DEPLOYMENT */      NULL,
 };
 
-/* -- Menu-option FSMs -- */
+/* - Menu option FSMs - */
 fsm_menu_t fsm_eCrsMvs_sGmpMap_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_START */         NULL,
     /* MENU_OPTION_ITEMS */         NULL,
@@ -118,7 +121,7 @@ fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_LOAD */          NULL,
     /* MENU_OPTION_ERASE */         NULL,
     /* MENU_OPTION_COPY */          NULL,
-    /* MENU_OPTION_SETTINGS */       NULL,
+    /* MENU_OPTION_SETTINGS */      NULL,
     /* MENU_OPTION_EXTRAS */        NULL,
     /* MENU_OPTION_DEBUG_MAP */     &fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDbgMap,
 };
@@ -148,7 +151,7 @@ fsm_menu_t fsm_eCncl_sGmpMap_ssMapCndt_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_LOAD */          NULL,
     /* MENU_OPTION_ERASE */         NULL,
     /* MENU_OPTION_COPY */          NULL,
-    /* MENU_OPTION_SETTINGS */       NULL,
+    /* MENU_OPTION_SETTINGS */      NULL,
     /* MENU_OPTION_EXTRAS */        NULL,
     /* MENU_OPTION_DEBUG_MAP */     NULL,
 };
@@ -178,7 +181,7 @@ fsm_menu_t fsm_eAcpt_sGmpMap_ssMapCndt_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_LOAD */          NULL,
     /* MENU_OPTION_ERASE */         NULL,
     /* MENU_OPTION_COPY */          NULL,
-    /* MENU_OPTION_SETTINGS */       NULL,
+    /* MENU_OPTION_SETTINGS */      NULL,
     /* MENU_OPTION_EXTRAS */        NULL,
     /* MENU_OPTION_DEBUG_MAP */     NULL,
 };
