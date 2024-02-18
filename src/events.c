@@ -1199,7 +1199,7 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
 
     /* - Hide pre combat popup, if it exists - */
     struct Menu *mc;
-    mc = TNECS_GET_COMPONENT(sota->world, sota->PRE_COMBAT_POPUP, Menu);
+    mc = TNECS_GET_COMPONENT(sota->world, sota->pre_combat_popup, Menu);
     if (mc != NULL)
         mc->visible = false;
 

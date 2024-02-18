@@ -103,10 +103,11 @@ struct Game {
     tnecs_entity staff_select_menu;
     tnecs_entity weapon_select_menu;
     tnecs_entity stats_menu;
-    tnecs_entity PRE_COMBAT_POPUP;
+    tnecs_entity pre_combat_popup;
     tnecs_entity first_menu;
     tnecs_entity title;
     tnecs_entity growths_menu;
+    tnecs_entity deployment_menu;
 
     s8 filename_menu;
     char reason[DEFAULT_BUFFER_SIZE];

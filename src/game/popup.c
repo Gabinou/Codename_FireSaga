@@ -69,8 +69,8 @@ void Game_PopUp_Loadout_Stats_Hide(struct Game *sota) {
 
 /* --- POPUP_PRE_COMBAT --- */
 void Game_PopUp_Pre_Combat_Create(struct Game *sota) {
-    if (sota->PRE_COMBAT_POPUP == TNECS_NULL)
-        sota->PRE_COMBAT_POPUP = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
+    if (sota->pre_combat_popup == TNECS_NULL)
+        sota->pre_combat_popup = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
     else {
         return;
     }
