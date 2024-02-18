@@ -91,6 +91,7 @@ void test_menu_deployment() {
     /* -- Deployment Menu -- */
     struct DeploymentMenu *dm = DeploymentMenu_Alloc();
     DeploymentMenu_Load(dm, renderer, &n9patch);
+    dm->select_max = 12;
 
     /* - Underfull party - */
     test_menu_deployment_party(dm);

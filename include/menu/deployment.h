@@ -52,8 +52,13 @@ enum DM_MENU {
     DM_NAME_X       =  69,
     DM_NAME_Y       =   5,
 
-    DM_UNIT_NUM_X   =  24,
-    DM_UNIT_NUM_Y   =  10,
+    DM_UNIT_NUM_X   =  26,
+    DM_UNIT_NUM_Y   =   7,
+
+    DM_DUDE_X       =  41,
+    DM_DUDE_Y       =   4,
+    DM_DUDE_W       =   8,
+    DM_DUDE_H       =  16,
 
     DM_PAGE_NUM_NUMER_X   = 225,
     DM_PAGE_NUM_NUMER_Y   =   8,
@@ -196,6 +201,7 @@ struct DeploymentMenu {
     b32 *_selected;          /* Same size as party */
     i32  _selected_num;
     i32  _party_size;
+    i32  select_max;
     i32 top_unit;           /* Up   - Down  scrolling [0, _party_size] */
     i32 page;               /* Left - Right scrolling [0, DM_PAGE_NUM]*/
 
@@ -208,6 +214,7 @@ struct DeploymentMenu {
 
     SDL_Texture *texture;
     SDL_Texture *texture_mount;
+    SDL_Texture *texture_dude;
 };
 extern struct DeploymentMenu DeploymentMenu_default;
 

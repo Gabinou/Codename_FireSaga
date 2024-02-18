@@ -42,6 +42,7 @@ struct Point dm_elem_box[DM_ELEM_NUM] = {
 static struct Point _Unit_Frame(i32 x, i32 y);
 static struct Point _Page_Frame(i32 x, i32 y);
 
+
 /* --- Loading --- */
 static void _DeploymentMenu_Load_Icons(struct DeploymentMenu *dm, SDL_Renderer   *r);
 
@@ -85,6 +86,7 @@ struct DeploymentMenu DeploymentMenu_default = {
 
     ._party_size        =   0,
     ._selected_num      =   0,
+    .select_max         =   0,
     .top_unit           =   0,   /* Up   - Down  scrolling [0, _party_size] */
     .page               =   0,   /* Left - Right scrolling [0, DM_PAGE_NUM]*/
 
@@ -98,6 +100,7 @@ struct DeploymentMenu DeploymentMenu_default = {
     .pixelnours_big     = NULL,
 
     .texture            = NULL,
+    .texture_dude       = NULL,
     .texture_mount      = NULL,
 };
 
@@ -262,6 +265,28 @@ static void _DeploymentMenu_Draw_Headers_P4(struct DeploymentMenu *dm,
 
     x = DM_MOUNT_X, y = DM_MOUNT_Y;
     PixelFont_Write_Centered(dm->pixelnours, renderer, "MOUNT", 5, x, y);
+}
+
+static void _DeploymentMenu_Draw_Unit_Num(struct DeploymentMenu *dm,
+                                          SDL_Renderer *renderer) {
+
+    SDL_Rect dstrect = {
+        .x = DM_DUDE_X,
+        .y = DM_DUDE_Y,
+        .w = DM_DUDE_W,
+        .h = DM_DUDE_H,
+    };
+
+    SDL_RenderCopy(renderer, dm->texture_dude, NULL, &dstrect);
+
+    int x = DM_UNIT_NUM_X, y = DM_UNIT_NUM_Y;
+    char array[6] = {0};
+    SDL_assert(dm->_selected_num >= 0);
+    SDL_assert(dm->_selected_num < 99);
+    SDL_assert(dm->select_max > 0);
+    SDL_assert(dm->select_max < 99);
+    stbsp_snprintf(array, 5, "%d/%d\0", dm->_selected_num, dm->select_max);
+    PixelFont_Write_Centered(dm->pixelnours_16, renderer, array, 5, x, y);
 }
 
 static void _DeploymentMenu_Draw_Names(struct DeploymentMenu *dm,
@@ -646,6 +671,11 @@ void DeploymentMenu_Free(struct DeploymentMenu *dm) {
         dm->texture_mount = NULL;
     }
 
+    if (dm->texture_dude != NULL) {
+        SDL_DestroyTexture(dm->texture_dude);
+        dm->texture_dude = NULL;
+    }
+
     if (dm->_selected != NULL) {
         SDL_free(dm->_selected);
         dm->_selected = NULL;
@@ -698,6 +728,11 @@ void DeploymentMenu_Load(struct DeploymentMenu *dm, SDL_Renderer *renderer,
     path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Mount.png");
     dm->texture_mount = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(dm->texture_mount);
+
+    /* - loading dude - */
+    path = PATH_JOIN("..", "assets", "GUI", "Icon", "Icon_Dude.png");
+    dm->texture_dude = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+    SDL_assert(dm->texture_dude);
 }
 
 void DeploymentMenu_Party_Set(struct DeploymentMenu *dm,
@@ -842,6 +877,7 @@ void DeploymentMenu_Update(struct DeploymentMenu *dm, struct n9Patch *n9patch,
     _DeploymentMenu_Draw_Scroll_Bar(dm, renderer);
     _DeploymentMenu_Draw_PageNum(dm, renderer);
     _DeploymentMenu_Draw_Names(dm, renderer);
+    _DeploymentMenu_Draw_Unit_Num(dm, renderer);
     _DeploymentMenu_Draw_Icons(dm, renderer);
 
     Utilities_DrawColor_Reset(renderer);
