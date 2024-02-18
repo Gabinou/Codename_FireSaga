@@ -95,6 +95,7 @@ void test_menu_deployment() {
 
     /* - Underfull party - */
     test_menu_deployment_party(dm);
+    dm->_selected[1] = true;
 
     /* --- RENDERS --- */
     /* -- Test page 1 -- */
@@ -126,6 +127,7 @@ void test_menu_deployment() {
 
     /* - Overfull party - */
     test_menu_deployment_party_overfull(dm);
+    dm->_selected[3] = true;
 
     /* -- Top unit 0 -- */
     dm->top_unit = 0;
