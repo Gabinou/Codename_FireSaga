@@ -195,7 +195,7 @@ enum DM_MENU {
 
 struct DeploymentMenu {
     b32 update;
-    struct Point pos;       /* [pixels] */
+    struct Point pos;        /* [pixels] */
     i16 *_party_id_stack;    /* Same size as party */
     b32 *_selected;          /* Same size as party */
     i32  _selected_num;

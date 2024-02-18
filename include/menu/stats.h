@@ -370,7 +370,7 @@ enum STATS_MENU_COLOR {
 /* --- ELEMENTS --- */
 #define STATSMENU_BUFFER_LEN 128
 
-extern struct MenuElemDirections stats_menu_links[STATS_MENU_ELEMS_NUM];
+extern struct MenuElemDirections sm_links[STATS_MENU_ELEMS_NUM];
 extern char stats_menu_description[STATS_MENU_ELEMS_NUM][STATSMENU_BUFFER_LEN];
 
 extern struct Point sm_elem_pos[STATS_MENU_ELEMS_NUM];

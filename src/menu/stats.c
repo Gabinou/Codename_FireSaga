@@ -304,7 +304,7 @@ struct Point sm_elem_pos[SM_ELEM_NUM] = {
     /* SM_ELEM_SPEED */     {SPEED_X_OFFSET,     SPEED_Y_OFFSET},
 };
 
-struct MenuElemDirections stats_menu_links[SM_ELEM_NUM] = {
+struct MenuElemDirections sm_links[SM_ELEM_NUM] = {
     /*right, top, left, bottom */
     /* SM_ELEM_SEX */        {SM_ELEM_NAME,     SM_ELEM_NULL,     SM_ELEM_NULL,    SM_ELEM_TITLE},
     /* SM_ELEM_TITLE */      {SM_ELEM_PORTRAIT, SM_ELEM_SEX,      SM_ELEM_NULL,    SM_ELEM_CLASS},

@@ -92,7 +92,30 @@ tnecs_entity Game_menuStack_Pop(struct Game *sota, bool destroy) {
 
 /* --- Deployment --- */
 void Game_DeploymentMenu_Create(struct Game *sota) {
+    if (sota->deployment_menu == TNECS_NULL)
+        sota->deployment_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
+    else {
+        // TODO: destroy menu?
+    }
+    struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
+    SDL_assert(mc != NULL);
+    mc->type        = MENU_TYPE_DEPLOYMENT;
+    mc->draw        = &DeploymentMenu_Draw;
 
+    struct DeploymentMenu *dm = DeploymentMenu_Alloc();
+    SDL_assert(dm != NULL);
+    mc->data = dm;
+
+    dm->pos.x       = sota->settings.res.x / 3;
+    dm->pos.y       = sota->settings.res.y / 3;
+    mc->visible     = true;
+    mc->elem_links  = dm_links;
+    mc->elem_pos    = dm_elem_pos;
+    mc->elem_box    = dm_elem_box;
+    mc->elem_num    = DM_ELEM_NUM;
+
+    SDL_assert(mc->elem_pos != NULL);
+    DeploymentMenu_Load(dm, sota->renderer, &mc->n9patch);
 }
 
 void Game_DeploymentMenu_Update(struct Game *sota, tnecs_entity ent) {
@@ -139,9 +162,9 @@ void Game_GrowthsMenu_Create(struct Game *sota) {
     GM->pos.x       = sota->settings.res.x / 3;
     GM->pos.y       = sota->settings.res.y / 3;
     mc->visible     = true;
-    mc->elem_links  = GM_links;
-    mc->elem_pos    = GM_elem_pos;
-    mc->elem_box    = GM_elem_box;
+    mc->elem_links  = gm_links;
+    mc->elem_pos    = gm_elem_pos;
+    mc->elem_box    = gm_elem_box;
     mc->elem_num    = GM_ELEM_NUM;
 
     SDL_assert(mc->elem_pos != NULL);
@@ -190,7 +213,7 @@ void Game_StatsMenu_Create(struct Game *sota) {
     stats_menu->pos.y = sota->settings.res.y / 3;
     mc->data          = stats_menu;
     mc->visible       = true;
-    mc->elem_links    = stats_menu_links;
+    mc->elem_links    = sm_links;
     mc->elem_pos      = sm_elem_pos;
     mc->elem_box      = stats_menu_elem_box;
     mc->elem_num      = STATS_MENU_ELEMS_NUM;

@@ -90,7 +90,7 @@ struct Point GM_cursor_pos[GM_ELEM_NUM] = {
     /* GM_PROF */     {GM_PROF_X_OFFSET,       GM_PROF_Y_OFFSET},
 };
 
-struct Point GM_elem_box[GM_ELEM_NUM] = {
+struct Point gm_elem_box[GM_ELEM_NUM] = {
     /* GM_TALK */     {GM_TALK_X_OFFSET,    GM_TALK_Y_OFFSET},
     /* GM_SUPPORTS */ {GM_SUPPORTS_X,       GM_SUPPORTS_Y},
     /* GM_SUPPORT */  {GM_BONUS_X,          GM_BONUS_Y},
@@ -114,7 +114,7 @@ struct Point GM_elem_box[GM_ELEM_NUM] = {
     /* GM_PROF */     {GM_PROF_X_OFFSET,    GM_PROF_Y_OFFSET},
 };
 
-struct Point GM_elem_pos[GM_ELEM_NUM] = {
+struct Point gm_elem_pos[GM_ELEM_NUM] = {
     /* GM_TALK */     {GM_TALK_X_OFFSET - 20,  GM_TALK_Y_OFFSET},
     /* GM_SUPPORTS */ {GM_SUPPORTS_X    - 15,  GM_SUPPORTS_Y},
     /* GM_SUPPORT */  {GM_BONUS_X       - 13,  GM_BONUS_Y},
@@ -138,7 +138,7 @@ struct Point GM_elem_pos[GM_ELEM_NUM] = {
     /* GM_PROF */     {GM_PROF_X_OFFSET,       GM_PROF_Y_OFFSET},
 };
 
-struct MenuElemDirections GM_links[GM_ELEM_NUM] = {
+struct MenuElemDirections gm_links[GM_ELEM_NUM] = {
     /*right, top, left, bottom */
     /* GM_TALK */     {GM_SUPPORTS,  GM_ELEM_NULL, GM_ELEM_NULL, GM_GROWTHS},
     /* GM_SUPPORTS */ {GM_SUPPORT,   GM_ELEM_NULL, GM_TALK,      GM_GROWTHS},
