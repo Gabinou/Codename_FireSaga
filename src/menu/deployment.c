@@ -49,13 +49,8 @@ static void _DeploymentMenu_Load_Icons(struct DeploymentMenu *dm, SDL_Renderer  
 /* --- Drawing --- */
 typedef void (*fsm_DeploymentMenu_Draw)(struct DeploymentMenu *, SDL_Renderer *);
 
-static void _DeploymentMenu_Draw_Mv(        struct DeploymentMenu *dm, SDL_Renderer *r);
-static void _DeploymentMenu_Draw_HP(        struct DeploymentMenu *dm, SDL_Renderer *r);
-static void _DeploymentMenu_Draw_EXP(       struct DeploymentMenu *dm, SDL_Renderer *r);
-static void _DeploymentMenu_Draw_Lvl(       struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Unit(      struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Names(     struct DeploymentMenu *dm, SDL_Renderer *r);
-static void _DeploymentMenu_Draw_Class(     struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Icons(     struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Mount(     struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_PageNum(   struct DeploymentMenu *dm, SDL_Renderer *r);
@@ -69,6 +64,7 @@ static void _DeploymentMenu_Draw_Headers_P1(struct DeploymentMenu *dm, SDL_Rende
 static void _DeploymentMenu_Draw_Headers_P2(struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Headers_P3(struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Headers_P4(struct DeploymentMenu *dm, SDL_Renderer *r);
+static void _DeploymentMenu_Draw_Stats_P1(struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Stats_P2(struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Stats_P3(struct DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Stats_P4(struct DeploymentMenu *dm, SDL_Renderer *r);
@@ -147,11 +143,7 @@ i32 _DeploymentMenu_Num(struct DeploymentMenu *dm) {
 static void _DeploymentMenu_Draw_P1(struct DeploymentMenu *dm,
                                     SDL_Renderer *renderer) {
     _DeploymentMenu_Draw_Headers_P1(dm, renderer);
-    _DeploymentMenu_Draw_Class(dm, renderer);
-    _DeploymentMenu_Draw_Lvl(dm, renderer);
-    _DeploymentMenu_Draw_EXP(dm, renderer);
-    _DeploymentMenu_Draw_HP(dm, renderer);
-    _DeploymentMenu_Draw_Mv(dm, renderer);
+    _DeploymentMenu_Draw_Stats_P1(dm, renderer);
 }
 
 static void _DeploymentMenu_Draw_P2(struct DeploymentMenu *dm,
@@ -310,76 +302,71 @@ static void _DeploymentMenu_Draw_Names(struct DeploymentMenu *dm,
 }
 
 /* -- Page 1 -- */
-static void _DeploymentMenu_Draw_Mv(struct DeploymentMenu *dm,
-                                    SDL_Renderer *renderer) {
-    char array[2] = {0};
-    int x = DM_MOVE_X, y = DM_MOVE_CONTENT_Y;
-    struct Point point = _Page_Frame(x, y);
-
-    i32 num_to_draw = _DeploymentMenu_Num(dm);
-    for (i32 i = 0; i < num_to_draw; i++) {
-        y = i * DM_LINE_H + point.y;
-        SDL_assert(dm->party != NULL);
-        int unit_id = dm->_party_id_stack[i + dm->top_unit];
-        struct Unit *unit = &dm->party[unit_id];
-        SDL_assert(unit != NULL);
-        stbsp_snprintf(array, 2, "%01d\0", unit->current_stats.move);
-        PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
-    }
-}
-
-static void _DeploymentMenu_Draw_HP(struct DeploymentMenu *dm,
-                                    SDL_Renderer *renderer) {
+static void _DeploymentMenu_Draw_Stats_P1(struct DeploymentMenu *dm,
+                                          SDL_Renderer *renderer) {
     char array[3] = {0};
-    int x = DM_HP_X, y = DM_HP_CONTENT_Y;
-    struct Point point = _Page_Frame(x, y);
-
     i32 num_to_draw = _DeploymentMenu_Num(dm);
+    struct Point point;
+    int unit_id, x, y;
+    struct Unit *unit;
     for (i32 i = 0; i < num_to_draw; i++) {
+        /* - HP - */
+        x = DM_HP_X, y = DM_HP_CONTENT_Y;
+        point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->_party_id_stack[i + dm->top_unit];
-        struct Unit *unit = &dm->party[unit_id];
+        unit_id = dm->_party_id_stack[i + dm->top_unit];
+        unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         stbsp_snprintf(array, 3, "%02d\0", unit->current_stats.hp);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
-    }
-}
 
-static void _DeploymentMenu_Draw_EXP(struct DeploymentMenu *dm,
-                                     SDL_Renderer *renderer) {
-    char array[3] = {0};
-    int x = DM_EXP_X, y = DM_EXP_CONTENT_Y;
-    struct Point point = _Page_Frame(x, y);
-
-    i32 num_to_draw = _DeploymentMenu_Num(dm);
-    for (i32 i = 0; i < num_to_draw; i++) {
+        /* - Move - */
+        x = DM_MOVE_X, y = DM_MOVE_CONTENT_Y;
+        point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->_party_id_stack[i + dm->top_unit];
-        struct Unit *unit = &dm->party[unit_id];
+        unit_id = dm->_party_id_stack[i + dm->top_unit];
+        unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
-        stbsp_snprintf(array, 3, "%02d\0", (unit->exp % SOTA_EXP_PER_LEVEL));
+        stbsp_snprintf(array, 2, "%01d\0", unit->current_stats.move);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
-    }
-}
 
-static void _DeploymentMenu_Draw_Lvl(struct DeploymentMenu *dm,
-                                     SDL_Renderer *renderer) {
-    char array[3] = {0};
-    int x = DM_LVL_X, y = DM_LVL_CONTENT_Y;
-    struct Point point = _Page_Frame(x, y);
-
-    i32 num_to_draw = _DeploymentMenu_Num(dm);
-    for (i32 i = 0; i < num_to_draw; i++) {
+        /* - Lvl - */
+        x = DM_LVL_X, y = DM_LVL_CONTENT_Y;
+        point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->_party_id_stack[i + dm->top_unit];
-        struct Unit *unit = &dm->party[unit_id];
+        unit_id = dm->_party_id_stack[i + dm->top_unit];
+        unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         i16 lvl = Unit_getLvl(unit);
         stbsp_snprintf(array, 3, "%02d\0", lvl);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
+
+        /* - EXP - */
+        x = DM_EXP_X, y = DM_EXP_CONTENT_Y;
+        point = _Page_Frame(x, y);
+        y = i * DM_LINE_H + point.y;
+        SDL_assert(dm->party != NULL);
+        unit_id = dm->_party_id_stack[i + dm->top_unit];
+        unit = &dm->party[unit_id];
+        SDL_assert(unit != NULL);
+        stbsp_snprintf(array, 3, "%02d\0", (unit->exp % SOTA_EXP_PER_LEVEL));
+        PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
+
+        /* - Class - */
+        x = DM_CLASS_X, y = DM_CLASS_CONTENT_Y;
+        point = _Page_Frame(x, y);
+        y = i * DM_LINE_H + point.y;
+        SDL_assert(dm->party != NULL);
+        unit_id = dm->_party_id_stack[i + dm->top_unit];
+        unit = &dm->party[unit_id];
+        SDL_assert(unit != NULL);
+        s8 class = classNames[unit->class];
+        PixelFont_Write_Centered(dm->pixelnours_big, renderer, class.data,
+                                 class.num, x, y);
+
     }
 }
 
@@ -540,23 +527,6 @@ static void _DeploymentMenu_Draw_Icons(struct DeploymentMenu *dm,
     for (i32 i = 0; i < num_to_draw; i++) {
         rect.y = i * DM_LINE_H + point.y;
         SDL_RenderFillRect(renderer, &rect);
-    }
-}
-static void _DeploymentMenu_Draw_Class(struct DeploymentMenu *dm,
-                                       SDL_Renderer *renderer) {
-    i32 num_to_draw = _DeploymentMenu_Num(dm);
-    int x = DM_CLASS_X, y = DM_CLASS_CONTENT_Y;
-    struct Point point = _Page_Frame(x, y);
-
-    for (i32 i = 0; i < num_to_draw; i++) {
-        y = i * DM_LINE_H + point.y;
-        SDL_assert(dm->party != NULL);
-        int unit_id = dm->_party_id_stack[i + dm->top_unit];
-        struct Unit *unit = &dm->party[unit_id];
-        SDL_assert(unit != NULL);
-        s8 class = classNames[unit->class];
-        PixelFont_Write_Centered(dm->pixelnours_big, renderer, class.data,
-                                 class.num, x, y);
     }
 }
 
