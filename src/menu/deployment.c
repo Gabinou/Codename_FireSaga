@@ -146,6 +146,7 @@ void _DeploymentMenu_Swap(struct DeploymentMenu *dm, SDL_Renderer *renderer,
     PixelFont_Swap_Palette(dm->pixelnours,      renderer, white, black);
     PixelFont_Swap_Palette(dm->pixelnours_16,   renderer, white, black);
     PixelFont_Swap_Palette(dm->pixelnours_big,  renderer, white, black);
+    PixelFont_Swap_Palette(dm->font_wpns,       renderer, white, black);
 }
 
 i32 _DeploymentMenu_Num(struct DeploymentMenu *dm) {
@@ -694,7 +695,7 @@ void DeploymentMenu_Load(struct DeploymentMenu *dm, SDL_Renderer *renderer,
     PixelFont_Load(dm->pixelnours_16, renderer, path);
     SDL_assert(dm->pixelnours_big);
 
-    path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Weapons.png");
+    path = PATH_JOIN("..", "assets", "GUI", "Icon", "StatsMenu_Icons_Weapons.png");
     dm->font_wpns = TextureFont_Alloc(2, 8);
     PixelFont_Load(dm->font_wpns, renderer, path);
 
@@ -702,6 +703,12 @@ void DeploymentMenu_Load(struct DeploymentMenu *dm, SDL_Renderer *renderer,
     path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Mount.png");
     dm->texture_mount = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(dm->texture_mount);
+
+    // sprite->spritesheet->surface = Filesystem_Surface_Load(sprite->asset_name.data,
+    //                                                        SDL_PIXELFORMAT_INDEX8);
+    // SDL_assert(sprite->spritesheet->surface != NULL);
+    // sprite->texture = SDL_CreateTextureFromSurface(renderer, sprite->spritesheet->surface);
+
 
     /* - loading dude - */
     path = PATH_JOIN("..", "assets", "GUI", "Icon", "Icon_Dude.png");

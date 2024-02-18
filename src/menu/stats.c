@@ -469,7 +469,7 @@ static void _StatsMenu_Load_Icons(struct StatsMenu *stats_menu, SDL_Renderer *re
     SDL_assert(stats_menu->texture_mount);
 
     /* Load weapon icons as a pixelfont to write them with spacing easily. */
-    path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Weapons.png");
+    path = PATH_JOIN("..", "assets", "GUI", "Icon", "StatsMenu_Icons_Weapons.png");
     stats_menu->font_wpns = TextureFont_Alloc(2, 8);
     PixelFont_Load(stats_menu->font_wpns, renderer, path);
 
