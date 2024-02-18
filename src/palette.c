@@ -124,8 +124,9 @@ void Palette_Tables_Load(void) {
     jsonio_Read_PaletteTable(path, palette_table_NES_lightenmore);
 }
 
-SDL_Surface *Palette_Colors_Swap(SDL_Renderer *renderer, SDL_Surface **surface,
-                                 SDL_Texture **texture, i8 Oldw, i8 Oldb, i8 NEWw, i8 NEWb) {
+void Palette_Colors_Swap(SDL_Renderer *renderer,
+                         SDL_Surface **surface, SDL_Texture **texture,
+                         i8 Oldw, i8 Oldb, i8 NEWw, i8 NEWb) {
     SDL_assert(Oldw < PALETTE_NES_COLOR_NUM);
     SDL_assert(Oldb < PALETTE_NES_COLOR_NUM);
     SDL_assert(NEWw < PALETTE_NES_COLOR_NUM);
@@ -165,7 +166,6 @@ SDL_Surface *Palette_Colors_Swap(SDL_Renderer *renderer, SDL_Surface **surface,
 
     *texture = SDL_CreateTextureFromSurface(renderer, *surface);
 
-
     if (NEWw > -1) {
         palette_NES->colors[Oldw].g = old_white.g;
         palette_NES->colors[Oldw].r = old_white.r;
@@ -176,5 +176,4 @@ SDL_Surface *Palette_Colors_Swap(SDL_Renderer *renderer, SDL_Surface **surface,
         palette_NES->colors[Oldb].g = old_black.g;
         palette_NES->colors[Oldb].b = old_black.b;
     }
-    return (buffer);
 }

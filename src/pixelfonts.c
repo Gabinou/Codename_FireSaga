@@ -148,9 +148,8 @@ struct PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len) {
 /*--- Internals --- */
 void PixelFont_Swap_Palette(struct PixelFont *font, SDL_Renderer *renderer, i8 NEWw, i8 NEWb) {
     i8 Oldb = 1, Oldw = PALETTE_NES_COLOR_NUM - 1;
-    font->surface = Palette_Colors_Swap(renderer,
-                                        &font->surface, &font->texture,
-                                        Oldw, Oldb, NEWw, NEWb);
+    Palette_Colors_Swap(renderer, &font->surface, &font->texture,
+                        Oldw, Oldb, NEWw, NEWb);
 }
 
 void TextLines_Realloc(struct TextLines *textlines, size_t len) {
