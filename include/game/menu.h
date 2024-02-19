@@ -28,8 +28,8 @@ void Game_menuStack_Free(struct Game *sota);
 
 /* --- Deployment --- */
 void Game_DeploymentMenu_Create(struct Game *sota);
-void Game_DeploymentMenu_Update(struct Game *sota, tnecs_entity ent);
-void Game_DeploymentMenu_Enable(struct Game *sota, tnecs_entity ent);
+void Game_DeploymentMenu_Update(struct Game *sota);
+void Game_DeploymentMenu_Enable(struct Game *sota);
 
 /* --- GrowthsMenu --- */
 void Game_GrowthsMenu_Create(struct Game *sota);

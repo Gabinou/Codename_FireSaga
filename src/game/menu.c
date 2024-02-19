@@ -121,17 +121,17 @@ void Game_DeploymentMenu_Create(struct Game *sota) {
 void Game_DeploymentMenu_Update(struct Game *sota) {
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
     mc->visible = true;
-    struct deploymentMenu *dm = mc->data;    
+    struct DeploymentMenu *dm = mc->data;
     DeploymentMenu_Party_Set(dm, sota->party, sota->party_id_stack);
     dm->update = true;
 }
 
-void Game_DeploymentMenu_Enable(struct Game *sota, tnecs_entity ent) {
+void Game_DeploymentMenu_Enable(struct Game *sota) {
     if (sota->growths_menu == 0)
         Game_DeploymentMenu_Create(sota);
     SDL_assert(sota->deployment_menu > 0);
     Game_menuStack_Push(sota, sota->deployment_menu);
-    Game_DeploymentMenu_Update(sota, unit_entity_ontile);
+    Game_DeploymentMenu_Update(sota);
     strncpy(sota->reason, "deployment_menu was created", sizeof(sota->reason));
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->stats_menu, NULL);
     Game_cursorFocus_onMenu(sota);
