@@ -47,50 +47,42 @@ void Game_debugMap_Load(struct Game *sota) {
     strncpy(sota->reason, "on Init state to GAME_STATE_Gameplay_Map substate is idle",
             sizeof(sota->reason));
 
-    // TODO: Change substate to Menu
-    Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
-    // TODO: Change Load deployment menu
-
     Game_Map_Load(sota, CHAPTER_TEST_V7);
-    Game_PopUp_Tile_Create(sota);
-    Game_cursorFocus_onMap(sota);
+
+    Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
+    Game_DeploymentMenu_Enable(sota);
+    Game_cursorFocus_onMenu(sota);
+
+    // TODO: move to after deployment menu is chosen
+    // Game_PopUp_Tile_Create(sota);
+    // Game_cursorFocus_onMap(sota);
 
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Loading in test party\n");
 
-    /* -- Party -- */
+    /* -- Loading Party -- */
     /* - Preliminaries - */
-    i16 *unit_inds;
-    unit_inds = DARR_INIT(unit_inds, i16, 16);
-    struct Point temp_point = {.x = 1, .y = 1}; /* Cursor */
-    // struct Point temp_point = {.x = 21, .y = 7}; /* Throne */
-    struct Point *positions_list;
-    positions_list = DARR_INIT(positions_list, struct Point, 16);
+    i16 *unit_inds = DARR_INIT(unit_inds, i16, 16);
 
     /* - Silou.json (Mage) - */
     DARR_PUT(unit_inds, UNIT_ID_SILOU);
-    DARR_PUT(positions_list, temp_point);
-
-    // /* - Kiara.json (Cleric) - */
+    /* - Kiara.json (Cleric) - */
     // DARR_PUT(unit_inds, UNIT_ID_KIARA);
-    // temp_point.x = 3;
-    // temp_point.y = 4;
+    /* - Rayan.json (Dancer) - */
+    // DARR_PUT(unit_inds, UNIT_ID_RAYAN);
+
+
+    // TODO: Move to after units have been deployed
+    // /* -- Putting party on map -- */
+    // Game_Party_Load(sota, unit_inds, DARR_NUM(unit_inds));
     // DARR_PUT(positions_list, temp_point);
 
-    // /* - Rayan.json (Dancer) - */
-    // DARR_PUT(unit_inds, UNIT_ID_RAYAN);
-    // temp_point.x = 3;
-    // temp_point.y = 3;
+    // Game_putPConMap(sota, unit_inds, positions_list, DARR_NUM(unit_inds));
+    // DARR_FREE(unit_inds);
+    // DARR_FREE(positions_list);
 
-    /* -- Putting party on map -- */
-    Game_Party_Load(sota, unit_inds, DARR_NUM(unit_inds));
-    DARR_PUT(positions_list, temp_point);
-
-    Game_putPConMap(sota, unit_inds, positions_list, DARR_NUM(unit_inds));
-    DARR_FREE(unit_inds);
-    DARR_FREE(positions_list);
-
-    SDL_Log("Loading in reinforcements\n");
-    Game_Map_Reinforcements_Load(sota);
+    // TODO: Move to after turns have started
+    // SDL_Log("Loading in reinforcements\n");
+    // Game_Map_Reinforcements_Load(sota);
 
     SDL_Log("Loading Music\n");
     Map_Music_Load(sota->map);
@@ -101,8 +93,6 @@ void Game_debugMap_Load(struct Game *sota) {
     DARR_PUT(sota->map->death_enemy, Map_condition_boss_win);
     DARR_PUT(sota->map->death_friendly, Map_condition_main_char_loss);
     DARR_PUT(sota->map->death_friendly, Map_condition_debug_map_loss);
-
-
 }
 
 /* --- Reinforcements --- */
