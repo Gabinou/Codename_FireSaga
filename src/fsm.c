@@ -652,6 +652,11 @@ void fsm_eCrsMvs_ssMenu(struct Game *sota, tnecs_entity mover_entity,
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, menu, Menu);
 
     /* menu elem move FSM to find next elem depending on menu type */
+    SDL_assert(mc->type > MENU_TYPE_START);
+    SDL_assert(mc->type < MENU_TYPE_END);
+    SDL_Log("MENU_TYPE_DEPLOYMENT %d %d", MENU_TYPE_DEPLOYMENT, mc->type);
+    SDL_assert(menu_elem_move[mc->type] != NULL);
+    getchar();
     i8 new_elem = menu_elem_move[mc->type](mc, sota->moved_direction);
 
     /* - TODO: MAKE FUNCTION - */

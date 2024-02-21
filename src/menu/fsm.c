@@ -11,7 +11,7 @@
 
 /* - menu_elem_move - */
 menu_elem_move_t menu_elem_move[MENU_TYPE_END] = {
-    /* MENU_TYPE_START */           &Menu_Elem_Move,
+    /* MENU_TYPE_START */           NULL,
     /* MENU_TYPE_PLAYER_SELECT */   &PlayerSelectMenu_Elem_Move,
     /* MENU_TYPE_WEAPON_SELECT  */  &WeaponSelectMenu_Elem_Move,
     /* MENU_TYPE_STAFF_SELECT  */   &Menu_Elem_Move,
@@ -21,6 +21,7 @@ menu_elem_move_t menu_elem_move[MENU_TYPE_END] = {
     /* MENU_TYPE_SUPPORTS */        &Menu_Elem_Move,
     /* MENU_TYPE_GROWTHS */         &Menu_Elem_Move,
     /* MENU_TYPE_TRADE */           &Menu_Elem_Move,
+    /* MENU_TYPE_ITEM_DROP */       &Menu_Elem_Move,
     /* MENU_TYPE_DEPLOYMENT */      &DeploymentMenu_Elem_Move,
 };
 
@@ -36,6 +37,7 @@ fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_SUPPORTS */        NULL,
     /* MENU_TYPE_GROWTHS */         NULL,
     /* MENU_TYPE_TRADE */           &fsm_eAcpt_sGmpMap_ssMenu_mTM,
+    /* MENU_TYPE_ITEM_DROP */       NULL,
     /* MENU_TYPE_DEPLOYMENT */      NULL,
 };
 
@@ -50,6 +52,7 @@ fsm_menu_t fsm_eCncl_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_SUPPORTS */        NULL,
     /* MENU_TYPE_GROWTHS */         &fsm_eCncl_sGmpMap_ssMenu_mSM,
     /* MENU_TYPE_TRADE */           NULL,
+    /* MENU_TYPE_ITEM_DROP */       NULL,
     /* MENU_TYPE_DEPLOYMENT */      NULL,
 };
 
@@ -64,6 +67,7 @@ fsm_menu_t fsm_eCrsMvs_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_SUPPORTS */        NULL,
     /* MENU_TYPE_GROWTHS */         NULL,
     /* MENU_TYPE_TRADE */           NULL,
+    /* MENU_TYPE_ITEM_DROP */       NULL,
     /* MENU_TYPE_DEPLOYMENT */      NULL,
 };
 
@@ -198,6 +202,7 @@ fsm_menu_t fsm_Pop_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_SUPPORTS */        NULL,
     /* MENU_TYPE_GROWTHS */         NULL,
     /* MENU_TYPE_TRADE */           NULL,
+    /* MENU_TYPE_ITEW_DROP */       NULL,
     /* MENU_TYPE_DEPLOYMENT */      NULL,
 };
 

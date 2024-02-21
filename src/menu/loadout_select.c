@@ -203,9 +203,8 @@ void LoadoutSelectMenu_Elem_Pos(struct LoadoutSelectMenu *lsm, struct Menu *mc) 
 
     bool header_drawn = (lsm->header.data != NULL);
     /* - Skip if already in screen frame - */
-    if (mc->elem_pos_frame == ELEM_POS_SCREEN_FRAME) {
+    if (mc->elem_pos_frame == ELEM_POS_SCREEN_FRAME)
         return;
-    }
 
     for (size_t i = 0; i < mc->elem_num; i++) {
         i32 scale_x = mc->n9patch.scale.x;

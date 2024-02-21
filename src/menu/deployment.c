@@ -173,8 +173,6 @@ i32 _DeploymentMenu_Num(struct DeploymentMenu *dm) {
     SDL_assert(dm->_party_size > 0);
     SDL_assert(dm->top_unit < dm->_party_size);
     i32 num_to_draw  = dm->_party_size - dm->top_unit;
-    SDL_Log("%d", num_to_draw);
-    getchar();
     return (num_to_draw < DM_UNIT_SHOWN_NUM ? num_to_draw : DM_UNIT_SHOWN_NUM);
 }
 
@@ -808,6 +806,77 @@ void DeploymentMenu_Scroll_Right(struct DeploymentMenu *dm) {
         dm->page++;
 }
 
+// /* --- Elements --- */
+// void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct Menu *mc) {
+//     /* Get number of elements for the menu */
+//     i32 stronghand       = Unit_Hand_Strong(lsm->unit);
+//     bool strong_selected = (lsm->selected[stronghand] > -1);
+//     i32 num_eq     = lsm->unit->num_equipment;
+//     i32 num_eq_wsm = num_eq < DEFAULT_EQUIPMENT_SIZE ? num_eq + 1 : DEFAULT_EQUIPMENT_SIZE;
+
+//     mc->elem_num   = strong_selected ? num_eq_wsm : lsm->unit->num_usable;
+//     mc->elem_links = wsm_links;
+
+//     for (i32 i = mc->elem_num - 1; i < DEFAULT_EQUIPMENT_SIZE; i++) {
+//         mc->elem_links[i].top    = LSM_ELEM_NULL;
+//         mc->elem_links[i].bottom = LSM_ELEM_NULL;
+//     }
+
+// }
+
+// void LoadoutSelectMenu_Elem_Pos(struct LoadoutSelectMenu *lsm, struct Menu *mc) {
+//     /* Scales elem_pos to menu size. */
+//     /* 1. Makes the cursor focus on right place on the Screen       */
+//     /* 2. Box lined are drawn in menu frame, making thinner lines   */
+//     SDL_assert(mc->n9patch.scale.x > 0);
+//     SDL_assert(mc->n9patch.scale.y > 0);
+
+//     bool header_drawn = (lsm->header.data != NULL);
+//     /* - Skip if already in screen frame - */
+//     if (mc->elem_pos_frame == ELEM_POS_SCREEN_FRAME)
+//         return;
+
+//     for (size_t i = 0; i < mc->elem_num; i++) {
+//         i32 scale_x = mc->n9patch.scale.x;
+//         i32 scale_y = mc->n9patch.scale.y;
+//         i32 x       = lsm->pos.x + mc->n9patch.pos.x;
+//         i32 y       = lsm->pos.y + header_drawn * LSM_ROW_HEIGHT;
+//         i32 elem_x  = mc->elem_pos[i].x;
+//         i32 elem_y  = mc->elem_pos[i].y;
+//         mc->elem_pos[i].x = x + elem_x * scale_x;
+//         mc->elem_pos[i].y = y + elem_y * scale_y;
+//     }
+
+//     mc->elem_pos_frame = ELEM_POS_SCREEN_FRAME;
+// }
+
+// void LoadoutSelectMenu_Elem_Pos_Revert(struct LoadoutSelectMenu *lsm, struct Menu *mc) {
+//     /* Scales elem_pos to menu size. */
+//     /* 1. Makes the cursor focus on right place on the Screen       */
+//     /* 2. Box lined are drawn in menu frame, making thinner lines   */
+
+//     bool header_drawn = (lsm->header.data != NULL);
+//     /* - Skip if already in screen frame - */
+//     if (mc->elem_pos_frame == ELEM_POS_MENU_FRAME) {
+//         return;
+//     }
+
+//     for (size_t i = 0; i < mc->elem_num; i++) {
+//         i32 scale_x = mc->n9patch.scale.x;
+//         i32 scale_y = mc->n9patch.scale.y;
+//         i32 x       = lsm->pos.x + mc->n9patch.pos.x;
+//         i32 y       = lsm->pos.y + header_drawn * LSM_ROW_HEIGHT;
+//         i32 elem_x  = mc->elem_pos[i].x;
+//         i32 elem_y  = mc->elem_pos[i].y;
+//         mc->elem_pos[i].x = (elem_x - x) / scale_x;
+//         mc->elem_pos[i].y = (elem_y - y) / scale_y;
+//     }
+
+//     mc->elem_pos_frame = ELEM_POS_MENU_FRAME;
+// }
+
+
+/* --- Drawing --- */
 void DeploymentMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *renderer) {
     struct DeploymentMenu   *dm         = (struct DeploymentMenu *)mc->data;
     struct n9Patch          *n9patch    = &mc->n9patch;
@@ -832,6 +901,7 @@ void DeploymentMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *rendere
 }
 
 i32 DeploymentMenu_Elem_Move(struct Menu *menu, i32 direction) {
+    getchar();
     /* -- Scrolling menu -- */
     direction = Ternary_Direction_Straight(direction);
     struct DeploymentMenu *dm = menu->data;

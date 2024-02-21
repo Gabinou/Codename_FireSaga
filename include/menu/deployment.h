@@ -244,6 +244,12 @@ void DeploymentMenu_Scroll_Down( struct DeploymentMenu *dm);
 void DeploymentMenu_Scroll_Left( struct DeploymentMenu *dm);
 void DeploymentMenu_Scroll_Right(struct DeploymentMenu *dm);
 
+/* --- Elements --- */
+void DeploymentMenu_Elem_Pos(       struct DeploymentMenu *lsm, struct Menu *mc);
+void DeploymentMenu_Elem_Reset(     struct DeploymentMenu *lsm, struct Menu *mc);
+void DeploymentMenu_Elem_Pos_Revert(struct DeploymentMenu *lsm, struct Menu *mc);
+
+
 /* --- Elem Move --- */
 i32 DeploymentMenu_Elem_Move(struct Menu *menu, i32 direction);
 
