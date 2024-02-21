@@ -173,6 +173,8 @@ i32 _DeploymentMenu_Num(struct DeploymentMenu *dm) {
     SDL_assert(dm->_party_size > 0);
     SDL_assert(dm->top_unit < dm->_party_size);
     i32 num_to_draw  = dm->_party_size - dm->top_unit;
+    SDL_Log("%d", num_to_draw);
+    getchar();
     return (num_to_draw < DM_UNIT_SHOWN_NUM ? num_to_draw : DM_UNIT_SHOWN_NUM);
 }
 

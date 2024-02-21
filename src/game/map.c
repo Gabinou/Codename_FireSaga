@@ -84,6 +84,9 @@ void Game_debugMap_Load(struct Game *sota) {
     // Game_Map_Reinforcements_Load(sota);
 
     Game_DeploymentMenu_Enable(sota);
+    struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
+    struct DeploymentMenu *dm = mc->data;
+    dm->_party_size == DARR_NUM(unit_inds);
     Game_cursorFocus_onMenu(sota);
 
     SDL_Log("Loading Music\n");
