@@ -34,7 +34,7 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
     mount4 = Mount_default_eagle;
     party[UNIT_ID_ERWIN].mount = &mount4;
 
-    DeploymentMenu_Party_Set(dm, party, party_id_stack);
+    DeploymentMenu_Party_Set(dm, party, party_id_stack, DARR_NUM(party_id_stack));
     SDL_assert(dm->_party_size > 0);
 }
 
@@ -66,7 +66,7 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
     mount4 = Mount_default_eagle;
     party[UNIT_ID_ERWIN].mount = &mount4;
 
-    DeploymentMenu_Party_Set(dm, party, party_id_stack);
+    DeploymentMenu_Party_Set(dm, party, party_id_stack, DARR_NUM(party_id_stack));
     SDL_assert(dm->_party_size > 0);
 }
 

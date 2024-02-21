@@ -122,7 +122,7 @@ void Game_DeploymentMenu_Update(struct Game *sota) {
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
     mc->visible = true;
     struct DeploymentMenu *dm = mc->data;
-    DeploymentMenu_Party_Set(dm, sota->party, sota->party_id_stack);
+    DeploymentMenu_Party_Set(dm, sota->party, sota->party_id_stack, sota->party_size);
     dm->update = true;
     DeploymentMenu_Map_Set(dm, sota->map);
 }

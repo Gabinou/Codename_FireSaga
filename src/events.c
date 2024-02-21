@@ -123,7 +123,7 @@ void receive_event_Load_Debug_Map(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->map->music_friendly != NULL);
 
     // TODO: Move event_Turn_Transition to after deployment menu accept
-    Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
+    // Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
 }
 
 void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
@@ -131,7 +131,6 @@ void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity mover_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(mover_entity > 0);
     SDL_assert(userevent->user.data1 != NULL);
-
 
     /* Ignore event if cursor_move direction is wrong */
     sota->moved_direction = Ternary_Direction(sota->cursor_move);

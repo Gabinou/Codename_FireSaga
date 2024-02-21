@@ -746,15 +746,16 @@ void DeploymentMenu_Map_Set(struct DeploymentMenu *dm, struct Map *map) {
     SDL_assert(dm->select_max > 0);
 }
 
-void DeploymentMenu_Party_Set(struct DeploymentMenu *dm,
-                              struct Unit *party, i16 *party_id_stack) {
+void DeploymentMenu_Party_Set(struct DeploymentMenu *dm, struct Unit *party,
+                              i16 *party_id_stack, i32 num) {
     if (dm->_selected != NULL) {
         SDL_free(dm->_selected);
         dm->_selected = NULL;
     }
     dm->party           = party;
-    dm->_party_size     = DARR_NUM(party_id_stack);
+    dm->_party_size     = num;
     SDL_assert(dm->_party_size > 0);
+    SDL_assert(dm->_party_size < SOTA_MAX_PARTY_SIZE);
     dm->_party_id_stack = party_id_stack;
     dm->_selected_num   = 0;
     dm->top_unit        = 0;

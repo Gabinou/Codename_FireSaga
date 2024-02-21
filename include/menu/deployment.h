@@ -229,7 +229,7 @@ void DeploymentMenu_Free(struct DeploymentMenu *dm);
 void DeploymentMenu_Load(struct DeploymentMenu *dm, SDL_Renderer *renderer,
                          struct n9Patch *n9patch);
 
-void DeploymentMenu_Party_Set(struct DeploymentMenu *dm, struct Unit *p, i16 *pi);
+void DeploymentMenu_Party_Set(struct DeploymentMenu *dm, struct Unit *p, i16 *pi, i32 n);
 void DeploymentMenu_Map_Set(struct DeploymentMenu *dm, struct Map *map);
 
 /* --- Utility --- */
