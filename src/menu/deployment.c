@@ -901,7 +901,6 @@ void DeploymentMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *rendere
 }
 
 i32 DeploymentMenu_Elem_Move(struct Menu *menu, i32 direction) {
-    getchar();
     /* -- Scrolling menu -- */
     direction = Ternary_Direction_Straight(direction);
     struct DeploymentMenu *dm = menu->data;
