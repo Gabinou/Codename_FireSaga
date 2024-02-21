@@ -124,10 +124,11 @@ void Game_DeploymentMenu_Update(struct Game *sota) {
     struct DeploymentMenu *dm = mc->data;
     DeploymentMenu_Party_Set(dm, sota->party, sota->party_id_stack);
     dm->update = true;
+    DeploymentMenu_Map_Set(dm, sota->map);
 }
 
 void Game_DeploymentMenu_Enable(struct Game *sota) {
-    if (sota->growths_menu == 0)
+    if (sota->deployment_menu == 0)
         Game_DeploymentMenu_Create(sota);
     SDL_assert(sota->deployment_menu > 0);
     Game_menuStack_Push(sota, sota->deployment_menu);

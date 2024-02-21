@@ -47,13 +47,11 @@ void Game_debugMap_Load(struct Game *sota) {
     Game_State_Set(sota, GAME_STATE_Gameplay_Map, sota->reason);
     strncpy(sota->reason, "on Init state to GAME_STATE_Gameplay_Map substate is idle",
             sizeof(sota->reason));
-    if (game->substate != GAME_SUBSTATE_MENU)
+    if (sota->substate != GAME_SUBSTATE_MENU)
         Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
 
 
     Game_Map_Load(sota, CHAPTER_TEST_V7);
-    Game_DeploymentMenu_Enable(sota);
-    Game_cursorFocus_onMenu(sota);
 
     // TODO: move to after deployment menu is chosen
     // Game_PopUp_Tile_Create(sota);
@@ -72,10 +70,9 @@ void Game_debugMap_Load(struct Game *sota) {
     /* - Rayan.json (Dancer) - */
     // DARR_PUT(unit_inds, UNIT_ID_RAYAN);
 
-
     // TODO: Move to after units have been deployed
     // /* -- Putting party on map -- */
-    // Game_Party_Load(sota, unit_inds, DARR_NUM(unit_inds));
+    Game_Party_Load(sota, unit_inds, DARR_NUM(unit_inds));
     // DARR_PUT(positions_list, temp_point);
 
     // Game_putPConMap(sota, unit_inds, positions_list, DARR_NUM(unit_inds));
@@ -85,6 +82,9 @@ void Game_debugMap_Load(struct Game *sota) {
     // TODO: Move to after turns have started
     // SDL_Log("Loading in reinforcements\n");
     // Game_Map_Reinforcements_Load(sota);
+
+    Game_DeploymentMenu_Enable(sota);
+    Game_cursorFocus_onMenu(sota);
 
     SDL_Log("Loading Music\n");
     Map_Music_Load(sota->map);

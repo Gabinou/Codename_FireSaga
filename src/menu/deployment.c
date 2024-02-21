@@ -170,6 +170,7 @@ void _DeploymentMenu_Swap(struct DeploymentMenu *dm, SDL_Renderer *renderer,
 
 i32 _DeploymentMenu_Num(struct DeploymentMenu *dm) {
     SDL_Log("%d %d", dm->top_unit, dm->_party_size);
+    SDL_assert(dm->_party_size > 0);
     SDL_assert(dm->top_unit < dm->_party_size);
     i32 num_to_draw  = dm->_party_size - dm->top_unit;
     return (num_to_draw < DM_UNIT_SHOWN_NUM ? num_to_draw : DM_UNIT_SHOWN_NUM);
@@ -297,7 +298,6 @@ static void _DeploymentMenu_Draw_Headers_P4(struct DeploymentMenu *dm,
 
 static void _DeploymentMenu_Draw_Unit_Num(struct DeploymentMenu *dm,
                                           SDL_Renderer *renderer) {
-
 
     int x = DM_UNIT_NUM_X, y = DM_UNIT_NUM_Y;
     char array[6] = {0};
@@ -739,6 +739,13 @@ void DeploymentMenu_Load(struct DeploymentMenu *dm, SDL_Renderer *renderer,
     SDL_assert(dm->texture_dude);
 }
 
+void DeploymentMenu_Map_Set(struct DeploymentMenu *dm, struct Map *map) {
+    SDL_assert(map              != NULL);
+    SDL_assert(map->start_pos   != NULL);
+    dm->select_max = DARR_NUM(map->start_pos);
+    SDL_assert(dm->select_max > 0);
+}
+
 void DeploymentMenu_Party_Set(struct DeploymentMenu *dm,
                               struct Unit *party, i16 *party_id_stack) {
     if (dm->_selected != NULL) {
@@ -747,8 +754,10 @@ void DeploymentMenu_Party_Set(struct DeploymentMenu *dm,
     }
     dm->party           = party;
     dm->_party_size     = DARR_NUM(party_id_stack);
+    SDL_assert(dm->_party_size > 0);
     dm->_party_id_stack = party_id_stack;
     dm->_selected_num   = 0;
+    dm->top_unit        = 0;
     dm->_selected       = SDL_calloc(dm->_party_size, sizeof(*dm->_selected));
 }
 

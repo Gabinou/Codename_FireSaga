@@ -22,8 +22,9 @@ struct Game Game_default = {
     .combat_forecast        = {0},
     .popups                 = {TNECS_NULL},
     .stats_menu             = TNECS_NULL,
-    .pre_combat_popup        = TNECS_NULL,
-    .growths_menu                = TNECS_NULL,
+    .pre_combat_popup       = TNECS_NULL,
+    .growths_menu           = TNECS_NULL,
+    .deployment_menu        = TNECS_NULL,
 
     .cursor_move            = {0},
     .entity_mouse           = TNECS_NULL,
