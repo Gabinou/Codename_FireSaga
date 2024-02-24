@@ -890,8 +890,8 @@ void fsm_eStart_sGmpMap_ssMenu(struct Game *sota, tnecs_entity ent) {
     SDL_assert(top_menu > TNECS_NULL);
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, top_menu, Menu);
 
-    if (fsm_eStart_sGmpMap_ssMenu_m[sota->substate] != NULL)
-        fsm_eStart_sGmpMap_ssMenu_m[sota->substate](sota, mc);
+    if (fsm_eStart_sGmpMap_ssMenu_m[mc->type] != NULL)
+        fsm_eStart_sGmpMap_ssMenu_m[mc->type](sota, mc);
 }
 
 /* -- FSM: Input_Accept EVENT -- */
