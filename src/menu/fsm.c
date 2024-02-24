@@ -26,6 +26,21 @@ menu_elem_move_t menu_elem_move[MENU_TYPE_END] = {
 };
 
 /* - Menu substate FSMs - */
+fsm_menu_t fsm_eStart_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
+    /* MENU_TYPE_START */           NULL,
+    /* MENU_TYPE_PLAYER_SELECT */   NULL,
+    /* MENU_TYPE_WEAPON_SELECT  */  NULL,
+    /* MENU_TYPE_STAFF_SELECT  */   NULL,
+    /* MENU_TYPE_ITEM_SELECT  */    NULL,
+    /* MENU_TYPE_STATS */           NULL,
+    /* MENU_TYPE_RESCUE */          NULL,
+    /* MENU_TYPE_SUPPORTS */        NULL,
+    /* MENU_TYPE_GROWTHS */         NULL,
+    /* MENU_TYPE_TRADE */           NULL,
+    /* MENU_TYPE_ITEM_DROP */       NULL,
+    /* MENU_TYPE_DEPLOYMENT */      &fsm_eStart_sGmpMap_ssMenu_mDM,
+};
+
 fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_START */           NULL,
     /* MENU_TYPE_PLAYER_SELECT */   &fsm_eAcpt_sGmpMap_ssMenu_mPSM,
@@ -1105,3 +1120,16 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
 
 }
 
+/* event_Input_Start */
+void fsm_eStart_sGmpMap_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
+    /* --- Start battle --- */
+
+    /* -- Destroy Deployment Menu -- */
+
+    /* -- Game substate to on Map -- */
+
+    /* -- Place units in deployment slots on map -- */
+
+    /* -- Start turn transition -- */
+    Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
+}

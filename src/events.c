@@ -1070,10 +1070,19 @@ void receive_event_Input_FAST_FORWARD(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Input_PAUSE(struct Game *sota, SDL_Event *userevent) {
-    /* Pausing opens options */
+    /* TODO: Change to Start/Enter button */
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
 
+    if (fsm_eStart_s[sota->state] != NULL)
+        fsm_eStart_s[sota->state](sota, controller_type);
+
+
+
+
+    // if (fsm_eStart_sGmpMap_ssMenu_m[sota->substate] != NULL) {
+    //     fsm_eStart_sGmpMap_ssMenu_m[sota->substate](sota, mc);
+    // }
 }
 
 void receive_event_Unit_Seize(struct Game *sota, SDL_Event *userevent) {
