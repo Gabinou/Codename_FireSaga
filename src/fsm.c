@@ -1164,7 +1164,9 @@ void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     tnecs_entity ontile = sota->map->unitmap[pos.y * sota->map->col_len + pos.x];
 
     /* - Determine which menu is the next one - */
-    SDL_assert((mc_popped->type == MENU_TYPE_STATS) || (mc_popped->type == MENU_TYPE_GROWTHS));
+    SDL_assert((mc_popped->type == MENU_TYPE_STATS)         ||
+               (mc_popped->type == MENU_TYPE_GROWTHS)       ||
+               (mc_popped->type == MENU_TYPE_DEPLOYMENT));
     i32 current_id = stats_menu_cycle_inv[mc_popped->type];
     i32 new_id = (current_id <= 0) ? (STATS_MENU_CYCLE_NUM - 1) : --current_id;
     struct Menu *new_menu_comp;

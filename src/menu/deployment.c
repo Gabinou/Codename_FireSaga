@@ -169,7 +169,6 @@ void _DeploymentMenu_Swap(struct DeploymentMenu *dm, SDL_Renderer *renderer,
 }
 
 i32 _DeploymentMenu_Num(struct DeploymentMenu *dm) {
-    SDL_Log("%d %d", dm->top_unit, dm->_party_size);
     SDL_assert(dm->_party_size > 0);
     SDL_assert(dm->top_unit < dm->_party_size);
     i32 out = dm->_party_size - dm->top_unit;
@@ -935,7 +934,7 @@ i32 DeploymentMenu_Elem_Move(struct Menu *menu, i32 direction) {
         dm->update = true;
     }
     if (direction == SOTA_DIRECTION_RIGHT) {
-        dm->page = dm->page < (DM_PAGE_NUM - 1) ? dm->page + 1 : DM_PAGE_NUM;
+        dm->page = dm->page < (DM_PAGE_NUM - 1) ? dm->page + 1 : DM_PAGE_NUM - 1;
         dm->update = true;
     }
 
