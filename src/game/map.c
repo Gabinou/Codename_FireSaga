@@ -25,6 +25,8 @@ void Game_Map_Load(struct Game *sota,  i16 in_map_index) {
     jsonio_readJSON(mapFilenames[in_map_index], sota->map);
     // read_json sets the row_len and col_len necessary for dArrays_Init
     // Game_Tilesets_Dump(sota);
+
+    sota->map->update = true;
 }
 
 void Game_Map_Free(struct Game *sota) {
@@ -49,7 +51,6 @@ void Game_debugMap_Load(struct Game *sota) {
             sizeof(sota->reason));
     if (sota->substate != GAME_SUBSTATE_MENU)
         Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
-
 
     Game_Map_Load(sota, CHAPTER_TEST_V7);
 
