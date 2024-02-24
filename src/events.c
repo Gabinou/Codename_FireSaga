@@ -1074,9 +1074,9 @@ void receive_event_Input_PAUSE(struct Game *sota, SDL_Event *userevent) {
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
 
+    SDL_Log("fsm_eStart_s[sota->state] %d", fsm_eStart_s[sota->state] != NULL);
     if (fsm_eStart_s[sota->state] != NULL)
         fsm_eStart_s[sota->state](sota, controller_type);
-
 }
 
 void receive_event_Unit_Seize(struct Game *sota, SDL_Event *userevent) {
