@@ -38,7 +38,7 @@ fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_GROWTHS */         NULL,
     /* MENU_TYPE_TRADE */           &fsm_eAcpt_sGmpMap_ssMenu_mTM,
     /* MENU_TYPE_ITEM_DROP */       NULL,
-    /* MENU_TYPE_DEPLOYMENT */      NULL,
+    /* MENU_TYPE_DEPLOYMENT */      &fsm_eAcpt_sGmpMap_ssMenu_mDM,
 };
 
 fsm_menu_t fsm_eCncl_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
@@ -727,6 +727,13 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moTrade(struct Game *sota, struct Menu *mc) {
     //  - Deselect item
     // - IF no item selected
     //  - Destroy staff_select menu
+}
+
+void fsm_eAcpt_sGmpMap_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
+    /* Select or deselect unit */
+    struct DeploymentMenu *dm = mc->data;
+    DeploymentMenu_Select(dm, mc->elem);
+
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mTM(struct Game *sota, struct Menu *mc) {

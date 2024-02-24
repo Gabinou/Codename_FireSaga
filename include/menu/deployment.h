@@ -250,6 +250,9 @@ void DeploymentMenu_Elem_Links(     struct DeploymentMenu *dm, struct Menu *mc);
 void DeploymentMenu_Elem_Reset(     struct DeploymentMenu *dm, struct Menu *mc);
 void DeploymentMenu_Elem_Pos_Revert(struct DeploymentMenu *dm, struct Menu *mc);
 
+/* --- Selection --- */
+void DeploymentMenu_Select(struct DeploymentMenu *dm, i8 elem);
+
 /* --- Elem Move --- */
 i32 DeploymentMenu_Elem_Move(struct Menu *menu, i32 direction);
 

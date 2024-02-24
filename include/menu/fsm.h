@@ -47,6 +47,7 @@ i32 DeploymentMenu_Elem_Move(struct Menu *mc, i32 d);
 
 /* event_Input_Accept */
 extern fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END];
+void fsm_eAcpt_sGmpMap_ssMenu_mDM( struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mTM( struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mSM( struct Game *sota, struct Menu *mc);
 // void fsm_eAcpt_sGmpMap_ssMenu_mPCP(struct Game *sota, struct Menu *mc);

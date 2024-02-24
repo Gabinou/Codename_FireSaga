@@ -879,6 +879,13 @@ void DeploymentMenu_Elem_Pos_Revert(struct DeploymentMenu *dm, struct Menu *mc) 
     mc->elem_pos_frame = ELEM_POS_MENU_FRAME;
 }
 
+/* --- Selection --- */
+void DeploymentMenu_Select(struct DeploymentMenu *dm, i8 elem) {
+    /* Get unit order from elem */
+    i32 unit_order = dm->top_unit + elem;
+    dm->_selected[unit_order] = !dm->_selected[unit_order];
+    dm->update = true;
+}
 
 /* --- Drawing --- */
 void DeploymentMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *renderer) {

@@ -67,9 +67,9 @@ void Game_debugMap_Load(struct Game *sota) {
     /* - Silou.json (Mage) - */
     DARR_PUT(unit_inds, UNIT_ID_SILOU);
     /* - Kiara.json (Cleric) - */
-    // DARR_PUT(unit_inds, UNIT_ID_KIARA);
+    DARR_PUT(unit_inds, UNIT_ID_KIARA);
     /* - Rayan.json (Dancer) - */
-    // DARR_PUT(unit_inds, UNIT_ID_RAYAN);
+    DARR_PUT(unit_inds, UNIT_ID_RAYAN);
 
     // TODO: Move to after units have been deployed
     // /* -- Putting party on map -- */
