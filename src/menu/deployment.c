@@ -927,9 +927,21 @@ i32 DeploymentMenu_Elem_Move(struct Menu *menu, i32 direction) {
         if (dm->top_unit < (dm->_party_size - DM_UNIT_SHOWN_NUM))
             dm->top_unit++;
     }
+    dm->update = (previous_top_unit != dm->top_unit);
+
+    /* Left:  Previous Page */
+    if (direction == SOTA_DIRECTION_LEFT) {
+        dm->page = dm->page > 1 ? dm->page - 1 : 0;
+        dm->update = true;
+    }
+    if (direction == SOTA_DIRECTION_RIGHT) {
+        dm->page = dm->page < (DM_PAGE_NUM - 1) ? dm->page + 1 : DM_PAGE_NUM;
+        dm->update = true;
+    }
+
+    /* Right: Next Page */
 
     /* If top_unit change update menu */
-    dm->update = (previous_top_unit != dm->top_unit);
 
     return (Menu_Elem_Move(menu, direction));
 }
