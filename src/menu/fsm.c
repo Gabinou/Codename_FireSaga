@@ -1130,8 +1130,18 @@ void fsm_eStart_sGmpMap_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
     SDL_assert(menu_popped_entity == sota->deployment_menu);
 
     /* -- Game substate to on Map -- */
+    if (sota->substate != GAME_SUBSTATE_STANDBY)
+        Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
 
     /* -- Place units in deployment slots on map -- */
+    // Game_putPConMap(sota, unit_inds, positions_list, DARR_NUM(unit_inds));
+    // DARR_FREE(unit_inds);
+    // DARR_FREE(positions_list);
+
+    Game_Map_Reinforcements_Load(sota);
+
+    Game_PopUp_Tile_Create(sota);
+    Game_cursorFocus_onMap(sota);
 
     /* -- Start turn transition -- */
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
