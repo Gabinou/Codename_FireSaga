@@ -886,6 +886,14 @@ void DeploymentMenu_Select(struct DeploymentMenu *dm, i8 elem) {
     dm->update = true;
 }
 
+void DeploymentMenu_Selection(struct DeploymentMenu *dm, i16 *stack) {
+    for (i32 i = 0; i < dm->_party_size; i++) {
+        if (dm->_selected[i])
+            DARR_PUT(stack, dm->_party_id_stack[i]);
+    }
+}
+
+
 /* --- Drawing --- */
 void DeploymentMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *renderer) {
     struct DeploymentMenu   *dm         = (struct DeploymentMenu *)mc->data;

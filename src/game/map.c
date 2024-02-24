@@ -77,7 +77,6 @@ void Game_debugMap_Load(struct Game *sota) {
     // DARR_PUT(positions_list, temp_point);
 
     // Game_putPConMap(sota, unit_inds, positions_list, DARR_NUM(unit_inds));
-    // DARR_FREE(unit_inds);
     // DARR_FREE(positions_list);
 
     // TODO: Move to after turns have started
@@ -99,6 +98,9 @@ void Game_debugMap_Load(struct Game *sota) {
     DARR_PUT(sota->map->death_enemy, Map_condition_boss_win);
     DARR_PUT(sota->map->death_friendly, Map_condition_main_char_loss);
     DARR_PUT(sota->map->death_friendly, Map_condition_debug_map_loss);
+
+
+    DARR_FREE(unit_inds);
 }
 
 /* --- Reinforcements --- */
