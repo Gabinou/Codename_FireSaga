@@ -26,6 +26,18 @@ fsm_eAcpt_s_t fsm_eAcpt_s[GAME_STATE_NUM] = {
     /* Animation */      NULL,
 };
 
+fsm_eStart_s_t fsm_eStart_s[GAME_STATE_NUM] = {
+    /* NULL */           NULL,
+    /* Combat */         NULL,
+    /* Scene_Talk */     NULL,
+    /* Scene_FMV */      NULL,
+    /* Gameplay_Map */   &fsm_eStart_sGmpMap,
+    /* Gameplay_Camp */  NULL,
+    /* Preparation */    NULL,
+    /* Title_Screen */   NULL,
+    /* Animation */      NULL,
+};
+
 fsm_eCncl_s_t fsm_eCncl_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
@@ -116,6 +128,21 @@ fsm_eCrsMvd_s_t fsm_eCrsMvd_ss[GAME_SUBSTATE_NUM] = {
     /* STANDBY */         &fsm_eCrsMvd_ssStby,
     /* PAUSED */          NULL,
     /* MAP_CANDIDATES */  &fsm_eCrsMvd_ssMapCndt,
+    /* CUTSCENE */        NULL,
+    /* MAP_ANIMATION */   NULL,
+};
+
+fsm_eAcpt_s_t fsm_eStart_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
+    /* NULL */            NULL,
+    /* MAP_MINIMAP */     NULL,
+    /* MENU */            &fsm_eStart_sGmpMap_ssMenu,
+    /* MAP_UNIT_MOVES */  NULL,
+    /* MAP_COMBAT */      NULL,
+    /* MAP_NPCTURN */     NULL,
+    /* SAVING */          NULL,
+    /* STANDBY */         NULL,
+    /* PAUSED */          NULL,
+    /* MAP_CANDIDATES */  NULL,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
 };
@@ -850,7 +877,24 @@ void fsm_eGmp2Stby_sGmpMap(struct Game *sota, tnecs_entity controller_entity) {
     sota->map->show_overlay = false;
 }
 
-// -- FSM: INPUT_ACCEPT EVENT --
+/* -- FSM: Input_Start EVENT -- */
+// e.g. PAUSE -> Remove later
+void fsm_eStart_sGmpMap(struct Game *sota, tnecs_entity accepter) {
+    if (fsm_eStart_sGmpMap_ss[sota->substate] != NULL)
+        fsm_eStart_sGmpMap_ss[sota->substate](sota, accepter);
+}
+
+void fsm_eStart_sGmpMap_ssMenu(struct Game *sota, tnecs_entity ent) {
+    SDL_assert(DARR_NUM(sota->menu_stack) > 0);
+    tnecs_entity top_menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
+    SDL_assert(top_menu > TNECS_NULL);
+    struct Menu *mc = TNECS_GET_COMPONENT(sota->world, top_menu, Menu);
+
+    if (fsm_eStart_sGmpMap_ssMenu_m[sota->substate] != NULL)
+        fsm_eStart_sGmpMap_ssMenu_m[sota->substate](sota, mc);
+}
+
+/* -- FSM: Input_Accept EVENT -- */
 void fsm_eAcpt_sGmpMap(struct Game *sota, tnecs_entity accepter) {
     if (fsm_eAcpt_sGmpMap_ss[sota->substate] != NULL)
         fsm_eAcpt_sGmpMap_ss[sota->substate](sota, accepter);

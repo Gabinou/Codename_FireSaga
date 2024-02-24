@@ -1125,6 +1125,9 @@ void fsm_eStart_sGmpMap_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
     /* --- Start battle --- */
 
     /* -- Destroy Deployment Menu -- */
+    bool destroy = true;
+    tnecs_entity menu_popped_entity = Game_menuStack_Pop(sota, destroy);
+    SDL_assert(menu_popped_entity == sota->deployment_menu);
 
     /* -- Game substate to on Map -- */
 

@@ -65,6 +65,7 @@ typedef void (*fsm_eGlbRng_s_t)(   struct Game *);
 typedef void (*fsm_eCrsMvd_s_t)(   struct Game *, tnecs_entity, struct Point *);
 typedef void (*fsm_eGmp2Stby_s_t)( struct Game *, tnecs_entity);
 typedef void (*fsm_eMenuRight_s_t)(struct Game *, i32);
+typedef fsm_eCncl_s_t       fsm_eStart_s_t;
 typedef fsm_eCncl_s_t       fsm_eAcpt_s_t;
 typedef fsm_eCncl_s_t       fsm_eStats_s_t;
 typedef fsm_eCncl_s_t       fsm_eCncl_sGmpMap_ss_t;
@@ -120,6 +121,14 @@ void fsm_eCrsDeHvUnit_ssStby(    struct Game *sota, tnecs_entity ent);
 void fsm_eCrsDeHvUnit_ssMapCndt( struct Game *sota, tnecs_entity ent);
 void fsm_eCrsDeHvUnit_sMapUnitMv(struct Game *sota, tnecs_entity ent);
 
+/* -- FSM: Input_Start EVENT -- */
+// e.g. PAUSE -> Remove later
+extern fsm_eStart_s_t fsm_eStart_s[GAME_STATE_NUM];
+extern fsm_eStart_s_t fsm_eStart_sGmpMap_ss[GAME_SUBSTATE_NUM];
+void fsm_eStart_sGmpMap(struct Game *sota, tnecs_entity ent);
+
+void fsm_eStart_sGmpMap_ssMenu(struct Game *sota, tnecs_entity ent);
+
 /* -- FSM: Input_Accept EVENT -- */
 extern fsm_eAcpt_s_t fsm_eAcpt_s[GAME_STATE_NUM];
 extern fsm_eAcpt_s_t fsm_eAcpt_sGmpMap_ss[GAME_SUBSTATE_NUM];
@@ -128,9 +137,9 @@ void fsm_eAcpt_sGmpMap( struct Game *sota, tnecs_entity ent);
 void fsm_eAcpt_sTtlScrn(struct Game *sota, tnecs_entity ent);
 
 void fsm_eAcpt_sGmpMap_ssMenu(    struct Game *sota, tnecs_entity ent);
-void fsm_eAcpt_sGmpMap_ssPause(   struct Game *sota, tnecs_entity ent);
 void fsm_eAcpt_sGmpMap_ssStby(    struct Game *sota, tnecs_entity ent);
 void fsm_eAcpt_sGmpMap_ssAnim(    struct Game *sota, tnecs_entity ent);
+void fsm_eAcpt_sGmpMap_ssPause(   struct Game *sota, tnecs_entity ent);
 void fsm_eAcpt_sGmpMap_ssMapNPC(  struct Game *sota, tnecs_entity ent);
 void fsm_eAcpt_sGmpMap_ssMapMini( struct Game *sota, tnecs_entity ent);
 void fsm_eAcpt_sGmpMap_ssMapCndt( struct Game *sota, tnecs_entity ent);
