@@ -139,7 +139,6 @@ void fsm_eAcpt_sTtlScrn(struct Game *sota, tnecs_entity ent);
 void fsm_eAcpt_sGmpMap_ssMenu(    struct Game *sota, tnecs_entity ent);
 void fsm_eAcpt_sGmpMap_ssStby(    struct Game *sota, tnecs_entity ent);
 void fsm_eAcpt_sGmpMap_ssAnim(    struct Game *sota, tnecs_entity ent);
-void fsm_eAcpt_sGmpMap_ssPause(   struct Game *sota, tnecs_entity ent);
 void fsm_eAcpt_sGmpMap_ssMapNPC(  struct Game *sota, tnecs_entity ent);
 void fsm_eAcpt_sGmpMap_ssMapMini( struct Game *sota, tnecs_entity ent);
 void fsm_eAcpt_sGmpMap_ssMapCndt( struct Game *sota, tnecs_entity ent);

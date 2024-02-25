@@ -34,10 +34,10 @@ fsm_main_t fsm_cFrame_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* GAME_SUBSTATE_MAP_NPCTURN    */ &fsm_cFrame_sGmpMap_ssMapNPC,
     /* GAME_SUBSTATE_SAVING         */ &fsm_cFrame_sGmpMap_ssSave,
     /* GAME_SUBSTATE_STANDBY        */ &fsm_cFrame_sGmpMap_ssStby,
-    /* GAME_SUBSTATE_PAUSED         */ &fsm_cFrame_sGmpMap_ssPause,
     /* GAME_SUBSTATE_MAP_CANDIDATES */ &fsm_cFrame_sGmpMap_ssMapCndt,
     /* GAME_SUBSTATE_CUTSCENE       */ NULL,
     /* GAME_SUBSTATE_MAP_ANIMATION  */ &fsm_cFrame_sGmpMap_ssMapAnim,
+    /* GAME_SUBSTATE_PREPARATION    */ NULL,
 };
 
 fsm_main_t fsm_rFrame_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
@@ -49,10 +49,10 @@ fsm_main_t fsm_rFrame_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* GAME_SUBSTATE_MAP_NPCTURN */     &fsm_rFrame_sGmpMap_ssMapNPC,
     /* GAME_SUBSTATE_SAVING */          &fsm_rFrame_sGmpMap_ssSave,
     /* GAME_SUBSTATE_STANDBY */         &fsm_rFrame_sGmpMap_ssStby,
-    /* GAME_SUBSTATE_PAUSED */          &fsm_rFrame_sGmpMap_ssPause,
     /* GAME_SUBSTATE_MAP_CANDIDATES */  &fsm_rFrame_sGmpMap_ssMapCndt,
     /* GAME_SUBSTATE_CUTSCENE */        NULL,
     /* GAME_SUBSTATE_MAP_ANIMATION */   &fsm_rFrame_sGmpMap_ssMapAnim,
+    /* GAME_SUBSTATE_PREPARATION    */ NULL,
 };
 
 /* --- CONTROL ---*/
@@ -180,10 +180,6 @@ void fsm_cFrame_sGmpMap_ssStby(struct Game *sota) {
     Game_Cursor_Moves_onMap(sota); /* CONTROL */
 }
 
-void fsm_cFrame_sGmpMap_ssPause(struct Game *sota) {
-
-}
-
 void fsm_cFrame_sGmpMap_ssMapCndt(struct Game *sota) {
     Game_Cursor_Next_Candidate(sota);
 }
@@ -266,10 +262,6 @@ void fsm_rFrame_sGmpMap_ssSave(struct Game *sota) {
 }
 
 void fsm_rFrame_sGmpMap_ssStby(struct Game *sota) {
-
-}
-
-void fsm_rFrame_sGmpMap_ssPause(struct Game *sota) {
 
 }
 
