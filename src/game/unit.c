@@ -102,7 +102,7 @@ void Party_Load(struct Unit *party, struct dtab *weapons_dtab,
         SDL_assert(temp_unit.name.data != NULL);
         SDL_assert((temp_unit.handedness > UNIT_HAND_NULL) && (temp_unit.handedness < UNIT_HAND_END));
 
-        party[unit_ids[i]]  = temp_unit;
+        party[unit_ids[i]] = temp_unit;
         s8_free(&filename);
     }
 }
@@ -169,13 +169,8 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
                                                                 Sprite, Timer, MapHPBar);
     size_t typeflag_id1 = tnecs_typeflagid(world, typeflag);
     size_t typeflag_id2 = tnecs_typeflagid(world, world->entity_typeflags[unit_ent]);
-    SDL_Log("unit_ent %ld", unit_ent);
-    SDL_Log("typeflag %llx", world->entity_typeflags[unit_ent]);
-    SDL_Log("typeflag %llx", typeflag);
-    tnecs_component_names_print(sota->world, unit_ent);
-
     SDL_assert(world->entities[unit_ent] == unit_ent);
-    SDL_assert(unit_ent);
+    SDL_assert(unit_ent > TNECS_NULL);
     SDL_assert(sota->world->entity_typeflags[unit_ent] == typeflag);
 
     SDL_Log("-- loading unit --");
@@ -190,6 +185,9 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
 
     Unit_setid(unit, unit_id);
     SDL_assert(unit->name.data != NULL);
+
+    sota->party[unit_id] = *unit;
+
 
     unit->items_dtab   = sota->items_dtab;
     unit->weapons_dtab = sota->weapons_dtab;
@@ -271,9 +269,10 @@ void Game_putPConMap(struct Game *sota, i16 *unit_ids,
     for (i16 i = 0; i < load_num; i++) {
         SDL_assert(Unit_ID_Valid(unit_ids[i]));
         size_t order = *(u16 *)DTAB_GET(global_unitOrders, unit_ids[i]);
-        tnecs_entity unit_ent = Game_Party_Entity_Create(sota, unit_ids[i], posarr[i]);
-        SDL_Log("entity %d", unit_ent);
-        SDL_assert(unit_ent);
+        if (sota->units_loaded[unit_ids[i]] <= TNECS_NULL)
+            Game_Party_Entity_Create(sota, unit_ids[i], posarr[i]);
+        tnecs_entity unit_ent = sota->units_loaded[unit_ids[i]];
+        SDL_assert(unit_ent > TNECS_NULL);
         struct Unit *temp = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
         SDL_assert(temp != NULL);
         SDL_assert(temp->name.data != NULL);
