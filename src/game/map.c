@@ -90,6 +90,10 @@ void Game_debugMap_Load(struct Game *sota) {
     DARR_PUT(sota->map->death_friendly, Map_condition_debug_map_loss);
 
     DARR_FREE(unit_inds);
+
+    /* -- Load reinforcements -- */
+    // TODO: Move to debug_map_load
+    Game_Map_Reinforcements_Load(sota);
 }
 
 /* --- Reinforcements --- */

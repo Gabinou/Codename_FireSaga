@@ -1136,11 +1136,9 @@ void fsm_eStart_sPrep_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
 
     i16 *unit_inds = DARR_INIT(unit_inds, i16, 16);
     DeploymentMenu_Selection(dm, unit_inds);
+    // TODO: to everytime a selection is made
     Game_putPConMap(sota, unit_inds, sota->map->start_pos, dm->_selected_num);
     DARR_FREE(unit_inds);
-
-    /* -- Load reinforcements -- */
-    Game_Map_Reinforcements_Load(sota);
 
     /* -- Load map -- */
     Game_PopUp_Tile_Create(sota);

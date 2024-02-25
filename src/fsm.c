@@ -1213,4 +1213,5 @@ void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
 }
 
 void fsm_eMenuLeft_sGmpMap_ssStby(struct Game *sota, i32 controller_type) {
+
 }
