@@ -895,6 +895,8 @@ void fsm_eStart_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
 
 /* -- FSM: Input_Accept EVENT -- */
 void fsm_eAcpt_sGmpMap(struct Game *sota, tnecs_entity accepter) {
+    SDL_assert((sota->state == GAME_STATE_Gameplay_Map)
+               || (sota->state == GAME_STATE_Preparation));
     if (fsm_eAcpt_sGmpMap_ss[sota->substate] != NULL)
         fsm_eAcpt_sGmpMap_ss[sota->substate](sota, accepter);
 }
@@ -910,26 +912,8 @@ void fsm_eAcpt_sTtlScrn(struct Game *sota, tnecs_entity accepter) {
 
 /* -- Input_Accept -- */
 void fsm_eAcpt_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity canceller) {
-
-    // /* - Set Defendant to selected unit - */
-    // // ONLY FOR ATTACK! HOW TO SWITCH FOR SPECTATOR/PATIENTS?
-    // SDL_assert(sota->candidates != NULL);
-    // SDL_assert(sota->candidates[sota->candidate] > TNECS_NULL);
-    // sota->defendant = sota->candidates[sota->candidate];
-    // SDL_assert(sota->defendant > TNECS_NULL);
-    // SDL_assert(sota->aggressor > TNECS_NULL);
-
-    // /* - Make cursor invisible - */
-    // struct Sprite * sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
-    // sprite->visible = false;
-
-    // /* - Send Defendant_Select event - */
-    // // ONLY FOR ATTACK! HOW TO SWITCH FOR SPECTATOR/PATIENTS?
-    // Event_Emit(__func__, SDL_USEREVENT, event_Defendant_Select, data1_entity, data2_entity);
-
     if (fsm_eAcpt_sGmpMap_ssMapCndt_mo[sota->selected_menu_option] != NULL)
         fsm_eAcpt_sGmpMap_ssMapCndt_mo[sota->selected_menu_option](sota, NULL);
-
 }
 
 void fsm_eAcpt_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
