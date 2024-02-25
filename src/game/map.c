@@ -45,18 +45,14 @@ void Game_debugMap_Load(struct Game *sota) {
     /* -- Preliminaries -- */
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Loading in test Map\n");
     /* - Updating game states - */
-    strncpy(sota->reason, "for testing", sizeof(sota->reason));
+    strncpy(sota->reason, "Debug map preparation", sizeof(sota->reason));
+    // if (sota->substate != GAME_STATE_Preparation)
+    // Game_State_Set(sota, GAME_STATE_Preparation, sota->reason);
     Game_State_Set(sota, GAME_STATE_Gameplay_Map, sota->reason);
-    strncpy(sota->reason, "on Init state to GAME_STATE_Gameplay_Map substate is idle",
-            sizeof(sota->reason));
     if (sota->substate != GAME_SUBSTATE_MENU)
         Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
 
     Game_Map_Load(sota, CHAPTER_TEST_V7);
-
-    // TODO: move to after deployment menu is chosen
-    // Game_PopUp_Tile_Create(sota);
-    // Game_cursorFocus_onMap(sota);
 
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Loading in test party\n");
 
@@ -74,14 +70,6 @@ void Game_debugMap_Load(struct Game *sota) {
     // TODO: Move to after units have been deployed
     // /* -- Putting party on map -- */
     Game_Party_Load(sota, unit_inds, DARR_NUM(unit_inds));
-    // DARR_PUT(positions_list, temp_point);
-
-    // Game_putPConMap(sota, unit_inds, positions_list, DARR_NUM(unit_inds));
-    // DARR_FREE(positions_list);
-
-    // TODO: Move to after turns have started
-    // SDL_Log("Loading in reinforcements\n");
-    // Game_Map_Reinforcements_Load(sota);
 
     Game_DeploymentMenu_Enable(sota);
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
@@ -93,12 +81,13 @@ void Game_debugMap_Load(struct Game *sota) {
     Map_Music_Load(sota->map);
 
     SDL_Log("Loading Conditions\n");
-    sota->map->death_enemy = DARR_INIT(sota->map->death_enemy, struct Map_condition, 1);
-    sota->map->death_friendly = DARR_INIT(sota->map->death_friendly, struct Map_condition, 2);
-    DARR_PUT(sota->map->death_enemy, Map_condition_boss_win);
+    sota->map->death_enemy      = DARR_INIT(sota->map->death_enemy,
+                                            struct Map_condition, 1);
+    sota->map->death_friendly   = DARR_INIT(sota->map->death_friendly,
+                                            struct Map_condition, 2);
+    DARR_PUT(sota->map->death_enemy,    Map_condition_boss_win);
     DARR_PUT(sota->map->death_friendly, Map_condition_main_char_loss);
     DARR_PUT(sota->map->death_friendly, Map_condition_debug_map_loss);
-
 
     DARR_FREE(unit_inds);
 }

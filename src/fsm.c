@@ -96,10 +96,10 @@ fsm_eGmp2Stby_s_t fsm_eGmp2Stby_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
     /* STANDBY */         NULL,
-    /* PAUSED */          NULL,
     /* MAP_CANDIDATES */  NULL,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
+    /* MAP_DEPLOYMENT */  NULL,
 };
 
 fsm_eCrsMvs_s_t fsm_eCrsMvs_ss[GAME_SUBSTATE_NUM] = {
@@ -111,10 +111,10 @@ fsm_eCrsMvs_s_t fsm_eCrsMvs_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
     /* STANDBY */         &fsm_eCrsMvs_ssStby,
-    /* PAUSED */          NULL,
     /* MAP_CANDIDATES */  &fsm_eCrsMvs_ssMapCndt,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
+    /* MAP_DEPLOYMENT */  NULL,
 };
 
 fsm_eCrsMvd_s_t fsm_eCrsMvd_ss[GAME_SUBSTATE_NUM] = {
@@ -126,10 +126,10 @@ fsm_eCrsMvd_s_t fsm_eCrsMvd_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
     /* STANDBY */         &fsm_eCrsMvd_ssStby,
-    /* PAUSED */          NULL,
     /* MAP_CANDIDATES */  &fsm_eCrsMvd_ssMapCndt,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
+    /* MAP_DEPLOYMENT */  NULL,
 };
 
 fsm_eAcpt_s_t fsm_eStart_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
@@ -141,10 +141,10 @@ fsm_eAcpt_s_t fsm_eStart_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
     /* STANDBY */         NULL,
-    /* PAUSED */          NULL,
     /* MAP_CANDIDATES */  NULL,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
+    /* MAP_DEPLOYMENT */  NULL,
 };
 
 fsm_eAcpt_s_t fsm_eAcpt_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
@@ -156,10 +156,10 @@ fsm_eAcpt_s_t fsm_eAcpt_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_NPCTURN */     &fsm_eAcpt_sGmpMap_ssMapNPC,
     /* SAVING */          NULL,
     /* STANDBY */         &fsm_eAcpt_sGmpMap_ssStby,
-    /* PAUSED */          &fsm_eAcpt_sGmpMap_ssPause,
     /* MAP_CANDIDATES */  &fsm_eAcpt_sGmpMap_ssMapCndt,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
+    /* MAP_DEPLOYMENT */  NULL,
 };
 
 fsm_eCncl_s_t fsm_eCncl_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
@@ -171,10 +171,10 @@ fsm_eCncl_s_t fsm_eCncl_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_NPCTURN */     &fsm_eCncl_sGmpMap_ssMapNPC,
     /* SAVING */          NULL,
     /* STANDBY */         &fsm_eCncl_sGmpMap_ssStby,
-    /* PAUSED */          NULL,
     /* MAP_CANDIDATES */  &fsm_eCncl_sGmpMap_ssMapCndt,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
+    /* MAP_DEPLOYMENT */  NULL,
 };
 
 fsm_eStats_s_t fsm_eStats_ss[GAME_SUBSTATE_NUM] = {
@@ -186,10 +186,10 @@ fsm_eStats_s_t fsm_eStats_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
     /* STANDBY */         &fsm_eStats_ssStby,
-    /* PAUSED */          NULL,
     /* MAP_CANDIDATES */  NULL,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
+    /* MAP_DEPLOYMENT */  NULL,
 };
 
 fsm_eUnitDsel_s_t fsm_eUnitDsel_ss[GAME_SUBSTATE_NUM] = {
@@ -201,10 +201,10 @@ fsm_eUnitDsel_s_t fsm_eUnitDsel_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
     /* STANDBY */         NULL,
-    /* PAUSED */          NULL,
     /* MAP_CANDIDATES */  NULL,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
+    /* MAP_DEPLOYMENT */  NULL,
 };
 
 fsm_eUnitSel_s_t fsm_eUnitSel_ss[GAME_SUBSTATE_NUM] = {
@@ -216,10 +216,10 @@ fsm_eUnitSel_s_t fsm_eUnitSel_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
     /* STANDBY */         &fsm_eUnitSel_ssStby,
-    /* PAUSED */          NULL,
     /* MAP_CANDIDATES */  NULL,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
+    /* MAP_DEPLOYMENT */  NULL,
 };
 
 fsm_eUnitDng_s_t fsm_eUnitDng_ss[GAME_SUBSTATE_NUM] = {
@@ -231,10 +231,10 @@ fsm_eUnitDng_s_t fsm_eUnitDng_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
     /* STANDBY */         &fsm_eUnitDng_ssStby,
-    /* PAUSED */          NULL,
     /* MAP_CANDIDATES */  NULL,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
+    /* MAP_DEPLOYMENT */  NULL,
 };
 
 fsm_eMenuRight_s_t fsm_eMenuRight_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
@@ -246,10 +246,10 @@ fsm_eMenuRight_s_t fsm_eMenuRight_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
     /* STANDBY */         &fsm_eMenuRight_sGmpMap_ssStby,
-    /* PAUSED */          NULL,
     /* MAP_CANDIDATES */  NULL,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
+    /* MAP_DEPLOYMENT */  NULL,
 };
 
 fsm_eMenuLeft_s_t fsm_eMenuLeft_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
@@ -261,10 +261,10 @@ fsm_eMenuLeft_s_t fsm_eMenuLeft_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
     /* STANDBY */         &fsm_eMenuLeft_sGmpMap_ssStby,
-    /* PAUSED */          NULL,
     /* MAP_CANDIDATES */  NULL,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
+    /* MAP_DEPLOYMENT */  NULL,
 };
 
 fsm_eCrsHvUnit_s_t fsm_eCrsHvUnit_ss[GAME_SUBSTATE_NUM] = {
@@ -276,10 +276,10 @@ fsm_eCrsHvUnit_s_t fsm_eCrsHvUnit_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
     /* STANDBY */         &fsm_eCrsHvUnit_ssStby,
-    /* PAUSED */          NULL,
     /* MAP_CANDIDATES */  &fsm_eCrsHvUnit_ssMapCndt,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
+    /* MAP_DEPLOYMENT */  NULL,
 };
 
 fsm_eCrsDeHvUnit_s_t fsm_eCrsDeHvUnit_ss[GAME_SUBSTATE_NUM] = {
@@ -291,10 +291,10 @@ fsm_eCrsDeHvUnit_s_t fsm_eCrsDeHvUnit_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
     /* STANDBY */         &fsm_eCrsDeHvUnit_ssStby,
-    /* PAUSED */          NULL,
     /* MAP_CANDIDATES */  &fsm_eCrsDeHvUnit_ssMapCndt,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
+    /* MAP_DEPLOYMENT */  NULL,
 };
 
 /* -- FSM: Input_globalRange EVENT -- */
@@ -307,10 +307,10 @@ fsm_eGlbRng_s_t fsm_eGlbRng_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
     /* STANDBY */         &fsm_eGlbRng_ssStby,
-    /* PAUSED */          NULL,
     /* MAP_CANDIDATES */  NULL,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
+    /* MAP_DEPLOYMENT */  NULL,
 };
 
 /* -- FSM: Input_globalRange EVENT -- */
@@ -878,7 +878,6 @@ void fsm_eGmp2Stby_sGmpMap(struct Game *sota, tnecs_entity controller_entity) {
 }
 
 /* -- FSM: Input_Start EVENT -- */
-// e.g. PAUSE -> Remove later
 void fsm_eStart_sGmpMap(struct Game *sota, tnecs_entity accepter) {
     if (fsm_eStart_sGmpMap_ss[sota->substate] != NULL)
         fsm_eStart_sGmpMap_ss[sota->substate](sota, accepter);
@@ -974,10 +973,6 @@ void fsm_eAcpt_sGmpMap_ssMenu(struct Game *sota, tnecs_entity accepter_entity) {
         fsm_eAcpt_sGmpMap_ssMenu_m[mc_topop->type](sota, mc_topop);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Select, NULL, NULL);
-}
-
-void fsm_eAcpt_sGmpMap_ssPause(struct Game *sota, tnecs_entity accepter_entity) {
-    Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, data1_entity, NULL);
 }
 
 void fsm_eAcpt_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity accepter_entity) {
