@@ -21,7 +21,7 @@ fsm_eAcpt_s_t fsm_eAcpt_s[GAME_STATE_NUM] = {
     /* Scene_FMV */      NULL,
     /* Gameplay_Map */   &fsm_eAcpt_sGmpMap,
     /* Gameplay_Camp */  NULL,
-    /* Preparation */    NULL,
+    /* Preparation */    &fsm_eAcpt_sGmpMap,
     /* Title_Screen */   &fsm_eAcpt_sTtlScrn,
     /* Animation */      NULL,
 };

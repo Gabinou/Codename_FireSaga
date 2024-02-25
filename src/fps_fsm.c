@@ -8,7 +8,7 @@ fsm_main_t fsm_cFrame_s[GAME_STATE_NUM] = {
     /* GAME_STATE_Scene_FMV     */ &fsm_cFrame_sScnFMV,
     /* GAME_STATE_Gameplay_Map  */ &fsm_cFrame_sGmpMap,
     /* GAME_STATE_Gameplay_Camp */ &fsm_cFrame_sGmpCamp,
-    /* GAME_STATE_Preparation   */ &fsm_cFrame_sGmpCamp,
+    /* GAME_STATE_Preparation   */ &fsm_cFrame_sGmpMap,
     /* GAME_STATE_Title_Screen  */ &fsm_cFrame_sTtlScrn,
     /* GAME_STATE_Animation     */ NULL
 };
@@ -20,7 +20,7 @@ fsm_main_t fsm_rFrame_s[GAME_STATE_NUM] = {
     /* GAME_STATE_Scene_FMV     */ &fsm_rFrame_sScnFMV,
     /* GAME_STATE_Gameplay_Map  */ &fsm_rFrame_sGmpMap,
     /* GAME_STATE_Gameplay_Camp */ &fsm_rFrame_sGmpCamp,
-    /* GAME_STATE_Preparation   */ &fsm_rFrame_sGmpCamp,
+    /* GAME_STATE_Preparation   */ &fsm_rFrame_sGmpMap,
     /* GAME_STATE_Title_Screen  */ &fsm_rFrame_sTtlScrn,
     /* GAME_STATE_Animation     */ NULL,
 };
