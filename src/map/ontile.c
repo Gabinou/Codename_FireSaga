@@ -23,6 +23,15 @@ void Map_Unit_Put(struct Map *map, tnecs_world *world, u8 col, u8 row,
     map->unitmap[row * map->col_len + col] = entity;
     DARR_PUT(map->units_onfield, entity);
 
+    /* -- Adding MapHPBar -- */
+    if (!TNECS_ENTITY_HASCOMPONENT(world, entity, MapHPBar)) {
+        TNECS_ADD_COMPONENT(world, entity, MapHPBar);
+        struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(world, entity, MapHPBar);
+        *map_hp_bar = MapHPBar_default;
+        map_hp_bar->unit_ent = entity;
+        map_hp_bar->len = map->tilesize[0];
+    }
+
     /* -- Updating unit pos -- */
     struct Position *pos         = TNECS_GET_COMPONENT(world, entity, Position);
     struct Unit     *temp_unit   = TNECS_GET_COMPONENT(world, entity, Unit);
@@ -189,7 +198,14 @@ void Map_Unit_Remove(struct Map *map, tnecs_world *world, tnecs_entity entity) {
     tnecs_entity ontile_ent = map->unitmap[index];
     SDL_assert(ontile_ent == entity);
 
+    struct Sprite *sprite = TNECS_GET_COMPONENT(world, entity, Sprite);
+    if (sprite != NULL)
+        sprite->visible = false;
+
+    if (TNECS_ENTITY_HASCOMPONENT(world, entity, MapHPBar))
+        TNECS_REMOVE_COMPONENTS(world, entity, MapHPBar);
+
     /* --- Check that entity is really on map --- */
-    _Map_Unit_Remove_Map(map, pos->tilemap_pos.x, pos->tilemap_pos.y);
+    map->unitmap[index] = 0;
     _Map_Unit_Remove_List(map, entity);
 }
