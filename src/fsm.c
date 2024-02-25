@@ -895,13 +895,12 @@ void fsm_eStart_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
 
 /* -- FSM: Input_Accept EVENT -- */
 void fsm_eAcpt_sGmpMap(struct Game *sota, tnecs_entity accepter) {
-    SDL_assert((sota->state == GAME_STATE_Gameplay_Map)
-               || (sota->state == GAME_STATE_Preparation));
+    SDL_assert((sota->state == GAME_STATE_Gameplay_Map) ||
+               (sota->state == GAME_STATE_Preparation));
     if (fsm_eAcpt_sGmpMap_ss[sota->substate] != NULL)
         fsm_eAcpt_sGmpMap_ss[sota->substate](sota, accepter);
 }
 
-// Only fsm_eAcpt_sGmpMap_ssMenu called for other states
 void fsm_eAcpt_sTtlScrn(struct Game *sota, tnecs_entity accepter) {
     if (sota->substate != GAME_SUBSTATE_MENU) {
         SDL_Log("Wrong substate %d on Title_Screen state", sota->substate);

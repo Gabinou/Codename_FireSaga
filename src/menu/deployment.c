@@ -879,11 +879,12 @@ void DeploymentMenu_Elem_Pos_Revert(struct DeploymentMenu *dm, struct Menu *mc) 
 }
 
 /* --- Selection --- */
-void DeploymentMenu_Select(struct DeploymentMenu *dm, i8 elem) {
+i32 DeploymentMenu_Select(struct DeploymentMenu *dm, i8 elem) {
     /* Get unit order from elem */
     i32 unit_order = dm->top_unit + elem;
     dm->_selected[unit_order] = !dm->_selected[unit_order];
     dm->update = true;
+    return(unit_order);
 }
 
 void DeploymentMenu_Selection(struct DeploymentMenu *dm, i16 *stack) {
