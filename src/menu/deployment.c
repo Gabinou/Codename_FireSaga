@@ -884,7 +884,7 @@ i32 DeploymentMenu_Select(struct DeploymentMenu *dm, i8 elem) {
     i32 unit_order = dm->top_unit + elem;
     dm->_selected[unit_order] = !dm->_selected[unit_order];
     dm->update = true;
-    return(unit_order);
+    return (unit_order);
 }
 
 void DeploymentMenu_Selection(struct DeploymentMenu *dm, i16 *stack) {
