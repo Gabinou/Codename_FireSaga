@@ -31,9 +31,9 @@ fsm_eStart_s_t fsm_eStart_s[GAME_STATE_NUM] = {
     /* Combat */         NULL,
     /* Scene_Talk */     NULL,
     /* Scene_FMV */      NULL,
-    /* Gameplay_Map */   &fsm_eStart_sGmpMap,
+    /* Gameplay_Map */   NULL,
     /* Gameplay_Camp */  NULL,
-    /* Preparation */    NULL,
+    /* Preparation */    &fsm_eStart_sPrep,
     /* Title_Screen */   NULL,
     /* Animation */      NULL,
 };
@@ -132,10 +132,10 @@ fsm_eCrsMvd_s_t fsm_eCrsMvd_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_DEPLOYMENT */  NULL,
 };
 
-fsm_eAcpt_s_t fsm_eStart_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
+fsm_eAcpt_s_t fsm_eStart_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
-    /* MENU */            &fsm_eStart_sGmpMap_ssMenu,
+    /* MENU */            &fsm_eStart_sPrep_ssMenu,
     /* MAP_UNIT_MOVES */  NULL,
     /* MAP_COMBAT */      NULL,
     /* MAP_NPCTURN */     NULL,
@@ -878,19 +878,19 @@ void fsm_eGmp2Stby_sGmpMap(struct Game *sota, tnecs_entity controller_entity) {
 }
 
 /* -- FSM: Input_Start EVENT -- */
-void fsm_eStart_sGmpMap(struct Game *sota, tnecs_entity accepter) {
-    if (fsm_eStart_sGmpMap_ss[sota->substate] != NULL)
-        fsm_eStart_sGmpMap_ss[sota->substate](sota, accepter);
+void fsm_eStart_sPrep(struct Game *sota, tnecs_entity accepter) {
+    if (fsm_eStart_sPrep_ss[sota->substate] != NULL)
+        fsm_eStart_sPrep_ss[sota->substate](sota, accepter);
 }
 
-void fsm_eStart_sGmpMap_ssMenu(struct Game *sota, tnecs_entity ent) {
+void fsm_eStart_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
     SDL_assert(DARR_NUM(sota->menu_stack) > 0);
     tnecs_entity top_menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     SDL_assert(top_menu > TNECS_NULL);
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, top_menu, Menu);
 
-    if (fsm_eStart_sGmpMap_ssMenu_m[mc->type] != NULL)
-        fsm_eStart_sGmpMap_ssMenu_m[mc->type](sota, mc);
+    if (fsm_eStart_sPrep_ssMenu_m[mc->type] != NULL)
+        fsm_eStart_sPrep_ssMenu_m[mc->type](sota, mc);
 }
 
 /* -- FSM: Input_Accept EVENT -- */

@@ -108,8 +108,8 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *mc);
 void fsm_eCncl_sGmpMap_ssMapCndt_moTrade(struct Game *sota, struct Menu *mc);
 
 /* event_Input_Start */
-extern fsm_menu_t fsm_eStart_sGmpMap_ssMenu_m[MENU_TYPE_END];
-void fsm_eStart_sGmpMap_ssMenu_mDM(struct Game *sota, struct Menu *mc);
+extern fsm_menu_t fsm_eStart_sPrep_ssMenu_m[MENU_TYPE_END];
+void fsm_eStart_sPrep_ssMenu_mDM(struct Game *sota, struct Menu *mc);
 
 /* -- Menu Pop FSM -- */
 /* Need Popped Last / Any popped menu fsm ? */

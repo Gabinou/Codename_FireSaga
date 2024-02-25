@@ -39,6 +39,7 @@ void Game_Map_Free(struct Game *sota) {
 }
 
 void Game_debugMap_Free(struct Game *sota) {
+
 }
 
 void Game_debugMap_Load(struct Game *sota) {
@@ -46,9 +47,8 @@ void Game_debugMap_Load(struct Game *sota) {
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Loading in test Map\n");
     /* - Updating game states - */
     strncpy(sota->reason, "Debug map preparation", sizeof(sota->reason));
-    // if (sota->substate != GAME_STATE_Preparation)
-    // Game_State_Set(sota, GAME_STATE_Preparation, sota->reason);
-    Game_State_Set(sota, GAME_STATE_Gameplay_Map, sota->reason);
+    if (sota->substate != GAME_STATE_Preparation)
+        Game_State_Set(sota, GAME_STATE_Preparation, sota->reason);
     if (sota->substate != GAME_SUBSTATE_MENU)
         Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
 

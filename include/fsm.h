@@ -125,9 +125,9 @@ void fsm_eCrsDeHvUnit_sMapUnitMv(struct Game *sota, tnecs_entity ent);
 // e.g. PAUSE -> Remove later
 extern fsm_eStart_s_t fsm_eStart_s[GAME_STATE_NUM];
 extern fsm_eStart_s_t fsm_eStart_sGmpMap_ss[GAME_SUBSTATE_NUM];
-void fsm_eStart_sGmpMap(struct Game *sota, tnecs_entity ent);
+void fsm_eStart_sPrep(struct Game *sota, tnecs_entity ent);
 
-void fsm_eStart_sGmpMap_ssMenu(struct Game *sota, tnecs_entity ent);
+void fsm_eStart_sPrep_ssMenu(struct Game *sota, tnecs_entity ent);
 
 /* -- FSM: Input_Accept EVENT -- */
 extern fsm_eAcpt_s_t fsm_eAcpt_s[GAME_STATE_NUM];

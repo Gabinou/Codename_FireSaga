@@ -41,17 +41,17 @@ fsm_main_t fsm_cFrame_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
 };
 
 fsm_main_t fsm_rFrame_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
-    /* GAME_SUBSTATE_START */           NULL,
-    /* GAME_SUBSTATE_MAP_MINIMAP */     &fsm_rFrame_sGmpMap_ssMapMini,
-    /* GAME_SUBSTATE_MENU */            &fsm_rFrame_sGmpMap_ssMenu,
-    /* GAME_SUBSTATE_MAP_UNIT_MOVES */  &fsm_rFrame_sGmpMap_ssMapUnitMv,
-    /* GAME_SUBSTATE_MAP_COMBAT */      &fsm_rFrame_sGmpMap_ssMapCmbt,
-    /* GAME_SUBSTATE_MAP_NPCTURN */     &fsm_rFrame_sGmpMap_ssMapNPC,
-    /* GAME_SUBSTATE_SAVING */          &fsm_rFrame_sGmpMap_ssSave,
-    /* GAME_SUBSTATE_STANDBY */         &fsm_rFrame_sGmpMap_ssStby,
-    /* GAME_SUBSTATE_MAP_CANDIDATES */  &fsm_rFrame_sGmpMap_ssMapCndt,
-    /* GAME_SUBSTATE_CUTSCENE */        NULL,
-    /* GAME_SUBSTATE_MAP_ANIMATION */   &fsm_rFrame_sGmpMap_ssMapAnim,
+    /* GAME_SUBSTATE_START          */ NULL,
+    /* GAME_SUBSTATE_MAP_MINIMAP    */ &fsm_rFrame_sGmpMap_ssMapMini,
+    /* GAME_SUBSTATE_MENU           */ &fsm_rFrame_sGmpMap_ssMenu,
+    /* GAME_SUBSTATE_MAP_UNIT_MOVES */ &fsm_rFrame_sGmpMap_ssMapUnitMv,
+    /* GAME_SUBSTATE_MAP_COMBAT     */ &fsm_rFrame_sGmpMap_ssMapCmbt,
+    /* GAME_SUBSTATE_MAP_NPCTURN    */ &fsm_rFrame_sGmpMap_ssMapNPC,
+    /* GAME_SUBSTATE_SAVING         */ &fsm_rFrame_sGmpMap_ssSave,
+    /* GAME_SUBSTATE_STANDBY        */ &fsm_rFrame_sGmpMap_ssStby,
+    /* GAME_SUBSTATE_MAP_CANDIDATES */ &fsm_rFrame_sGmpMap_ssMapCndt,
+    /* GAME_SUBSTATE_CUTSCENE       */ NULL,
+    /* GAME_SUBSTATE_MAP_ANIMATION  */ &fsm_rFrame_sGmpMap_ssMapAnim,
     /* GAME_SUBSTATE_PREPARATION    */ NULL,
 };
 
@@ -62,8 +62,8 @@ void fsm_cFrame_sGmpMap_ssMapMini(struct Game *sota) {
 }
 
 void fsm_cFrame_sGmpMap_ssMenu(struct Game *sota) {
-    Game_CursorfollowsMouse_onMenu(sota); /* CONTROL */
-    Game_Cursor_Moves_onMenu(sota); /* CONTROL */
+    Game_CursorfollowsMouse_onMenu(sota);   /* CONTROL */
+    Game_Cursor_Moves_onMenu(sota);         /* CONTROL */
 }
 
 void fsm_cFrame_sGmpMap_ssMapUnitMv(struct Game *sota) {

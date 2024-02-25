@@ -26,7 +26,7 @@ menu_elem_move_t menu_elem_move[MENU_TYPE_END] = {
 };
 
 /* - Menu substate FSMs - */
-fsm_menu_t fsm_eStart_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
+fsm_menu_t fsm_eStart_sPrep_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_START */           NULL,
     /* MENU_TYPE_PLAYER_SELECT */   NULL,
     /* MENU_TYPE_WEAPON_SELECT  */  NULL,
@@ -38,7 +38,7 @@ fsm_menu_t fsm_eStart_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_GROWTHS */         NULL,
     /* MENU_TYPE_TRADE */           NULL,
     /* MENU_TYPE_ITEM_DROP */       NULL,
-    /* MENU_TYPE_DEPLOYMENT */      &fsm_eStart_sGmpMap_ssMenu_mDM,
+    /* MENU_TYPE_DEPLOYMENT */      &fsm_eStart_sPrep_ssMenu_mDM,
 };
 
 fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
@@ -1121,10 +1121,13 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
 }
 
 /* event_Input_Start */
-void fsm_eStart_sGmpMap_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
+void fsm_eStart_sPrep_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
     /* --- Start battle --- */
 
     /* -- Game substate to on Map -- */
+    strncpy(sota->reason, "Preparation done. March!", sizeof(sota->reason));
+    if (sota->state != GAME_STATE_Gameplay_Map)
+        Game_State_Set(sota, GAME_STATE_Gameplay_Map, sota->reason);
     if (sota->substate != GAME_SUBSTATE_STANDBY)
         Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
 
