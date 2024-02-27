@@ -37,22 +37,6 @@ fsm_main_t fsm_cFrame_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* GAME_SUBSTATE_MAP_CANDIDATES */ &fsm_cFrame_sGmpMap_ssMapCndt,
     /* GAME_SUBSTATE_CUTSCENE       */ NULL,
     /* GAME_SUBSTATE_MAP_ANIMATION  */ &fsm_cFrame_sGmpMap_ssMapAnim,
-    /* GAME_SUBSTATE_PREPARATION    */ &fsm_cFrame_sGmpMap_ssMapCndt,
-};
-
-fsm_main_t fsm_rFrame_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
-    /* GAME_SUBSTATE_START          */ NULL,
-    /* GAME_SUBSTATE_MAP_MINIMAP    */ &fsm_rFrame_sGmpMap_ssMapMini,
-    /* GAME_SUBSTATE_MENU           */ &fsm_rFrame_sGmpMap_ssMenu,
-    /* GAME_SUBSTATE_MAP_UNIT_MOVES */ &fsm_rFrame_sGmpMap_ssMapUnitMv,
-    /* GAME_SUBSTATE_MAP_COMBAT     */ &fsm_rFrame_sGmpMap_ssMapCmbt,
-    /* GAME_SUBSTATE_MAP_NPCTURN    */ &fsm_rFrame_sGmpMap_ssMapNPC,
-    /* GAME_SUBSTATE_SAVING         */ &fsm_rFrame_sGmpMap_ssSave,
-    /* GAME_SUBSTATE_STANDBY        */ &fsm_rFrame_sGmpMap_ssStby,
-    /* GAME_SUBSTATE_MAP_CANDIDATES */ &fsm_rFrame_sGmpMap_ssMapCndt,
-    /* GAME_SUBSTATE_CUTSCENE       */ NULL,
-    /* GAME_SUBSTATE_MAP_ANIMATION  */ &fsm_rFrame_sGmpMap_ssMapAnim,
-    /* GAME_SUBSTATE_PREPARATION    */ NULL,
 };
 
 /* --- CONTROL ---*/
@@ -237,42 +221,6 @@ void fsm_cFrame_sAnimation(struct Game *sota) {
 }
 
 /* --- RENDER ---*/
-/* -- substates --*/
-void fsm_rFrame_sGmpMap_ssMapMini(struct Game *sota) {
-
-}
-
-void fsm_rFrame_sGmpMap_ssMenu(struct Game *sota) {
-
-}
-
-void fsm_rFrame_sGmpMap_ssMapUnitMv(struct Game *sota) {
-
-}
-void fsm_rFrame_sGmpMap_ssMapCmbt(struct Game *sota) {
-
-}
-
-void fsm_rFrame_sGmpMap_ssMapNPC(struct Game *sota) {
-
-}
-
-void fsm_rFrame_sGmpMap_ssSave(struct Game *sota) {
-
-}
-
-void fsm_rFrame_sGmpMap_ssStby(struct Game *sota) {
-
-}
-
-void fsm_rFrame_sGmpMap_ssMapCndt(struct Game *sota) {
-
-}
-
-void fsm_rFrame_sGmpMap_ssMapAnim(struct Game *sota) {
-
-}
-
 /* -- states --*/
 void fsm_rFrame_sAnimation(struct Game *sota) {
 
@@ -291,13 +239,10 @@ void fsm_rFrame_sScnFMV(struct Game *sota) {
 }
 
 void fsm_rFrame_sGmpMap(struct Game *sota) {
-    /* RENDER only one map -> no entity */
-    // SDL_Log("fsm_rFrame_sGmpMap");
-    // getchar();
+    /* --- Render Map: only one map -> no entity --- */
     Map_Draw(sota->map, &sota->settings, &sota->camera, sota->render_target);
     Map_Grid_Draw(sota->map, &sota->settings, &sota->camera);
     Map_Danger_Perimeter_Draw(sota->map, &sota->settings, &sota->camera);
-    fsm_rFrame_sGmpMap_ss[sota->substate](sota);
 }
 
 void fsm_rFrame_sGmpCamp(struct Game *sota) {
