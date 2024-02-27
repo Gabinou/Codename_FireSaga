@@ -73,6 +73,7 @@ typedef fsm_eMenuRight_s_t  fsm_eMenuLeft_s_t;
 typedef fsm_eMenuRight_s_t  fsm_eMenuLeft_sGmpMap_ss_t;
 typedef fsm_eMenuRight_s_t  fsm_eMenuRight_sGmpMap_ss_t;
 typedef fsm_eCrsMvd_s_t     fsm_eCrsMvs_s_t;
+typedef fsm_eGmp2Stby_s_t   fsm_eMenuLeft_sPrep_ss_t;
 typedef fsm_eGmp2Stby_s_t   fsm_eUnitDsel_s_t;
 typedef fsm_eGmp2Stby_s_t   fsm_eUnitSel_s_t ;
 typedef fsm_eGmp2Stby_s_t   fsm_eUnitDng_s_t;
@@ -124,7 +125,7 @@ void fsm_eCrsDeHvUnit_sMapUnitMv(struct Game *sota, tnecs_entity ent);
 /* -- FSM: Input_Start EVENT -- */
 // e.g. PAUSE -> Remove later
 extern fsm_eStart_s_t fsm_eStart_s[GAME_STATE_NUM];
-extern fsm_eStart_s_t fsm_eStart_sGmpMap_ss[GAME_SUBSTATE_NUM];
+extern fsm_eAcpt_s_t  fsm_eStart_sPrep_ss[GAME_SUBSTATE_NUM];
 void fsm_eStart_sPrep(struct Game *sota, tnecs_entity ent);
 
 void fsm_eStart_sPrep_ssMenu(struct Game *sota, tnecs_entity ent);
@@ -176,9 +177,14 @@ void fsm_eMenuRight_sGmpMap_ssStby(struct Game *sota, i32 c);
 
 /* -- FSM: Input_menuLeft EVENT -- */
 extern fsm_eMenuLeft_s_t fsm_eMenuLeft_s[GAME_STATE_NUM];
-extern fsm_eMenuLeft_sGmpMap_ss_t fsm_eMenuLeft_sGmpMap_ss[GAME_SUBSTATE_NUM];
+extern fsm_eMenuLeft_sPrep_ss_t     fsm_eMenuLeft_sPrep_ss[GAME_SUBSTATE_NUM];
+extern fsm_eMenuLeft_sGmpMap_ss_t   fsm_eMenuLeft_sGmpMap_ss[GAME_SUBSTATE_NUM];
 
-void fsm_eMenuLeft_sGmpMap(struct Game *sota, i32 c);
+void fsm_eMenuLeft_sPrep(   struct Game *sota, i32 c);
+void fsm_eMenuLeft_sGmpMap( struct Game *sota, i32 c);
+
+void fsm_eMenuLeft_sPrep_ssMenu(    struct Game *sota, tnecs_entity ent);
+void fsm_eMenuLeft_sPrep_ssMapCndt( struct Game *sota, tnecs_entity ent);
 
 void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 c);
 void fsm_eMenuLeft_sGmpMap_ssStby(struct Game *sota, i32 c);

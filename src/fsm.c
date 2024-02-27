@@ -69,7 +69,7 @@ fsm_eMenuLeft_s_t fsm_eMenuLeft_s[GAME_STATE_NUM] = {
     /* Scene_FMV */      NULL,
     /* Gameplay_Map */   &fsm_eMenuLeft_sGmpMap,
     /* Gameplay_Camp */  NULL,
-    /* Preparation */    NULL,
+    /* Preparation */    &fsm_eMenuLeft_sPrep,
     /* Title_Screen */   NULL,
     /* Animation */      NULL,
 };
@@ -142,6 +142,21 @@ fsm_eAcpt_s_t fsm_eStart_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* SAVING */          NULL,
     /* STANDBY */         NULL,
     /* MAP_CANDIDATES */  NULL,
+    /* CUTSCENE */        NULL,
+    /* MAP_ANIMATION */   NULL,
+    /* MAP_DEPLOYMENT */  NULL,
+};
+
+fsm_eAcpt_s_t fsm_eMenuLeft_sPrep_ss[GAME_SUBSTATE_NUM] = {
+    /* NULL */            NULL,
+    /* MAP_MINIMAP */     NULL,
+    /* MENU */            &fsm_eMenuLeft_sPrep_ssMenu,
+    /* MAP_UNIT_MOVES */  NULL,
+    /* MAP_COMBAT */      NULL,
+    /* MAP_NPCTURN */     NULL,
+    /* SAVING */          NULL,
+    /* STANDBY */         NULL,
+    /* MAP_CANDIDATES */  &fsm_eMenuLeft_sPrep_ssMapCndt,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
     /* MAP_DEPLOYMENT */  NULL,
@@ -315,6 +330,7 @@ fsm_eGlbRng_s_t fsm_eGlbRng_ss[GAME_SUBSTATE_NUM] = {
 
 /* -- FSM: Input_globalRange EVENT -- */
 void fsm_eGlbRng_ssStby(struct Game *sota) {
+    /* --- Toggle global range --- */
 
     for (int i = 0; i < DARR_NUM(sota->map->enemies_onfield); i++) {
         tnecs_entity entity = sota->map->enemies_onfield[i];
@@ -352,8 +368,8 @@ void fsm_eGlbRng_ssStby(struct Game *sota) {
 
 // -- FSM: Cursor_Hovers_Unit --
 void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
+    /* --- Show popup_unit --- */
     SDL_assert(hov_ent > TNECS_NULL);
-    /* -- Show popup_unit -- */
     // TODO: put unit popup Loading into Map/Gameplay loading functions
     tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_UNIT];
     if (popup_ent == TNECS_NULL)
@@ -420,6 +436,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
 }
 
 void fsm_eCrsHvUnit_ssMapCndt(struct Game *sota, tnecs_entity hov_ent) {
+    /* --- Select new candidate for action --- */
     SDL_assert(hov_ent > TNECS_NULL);
 
     /* -- Start unit combat stance loop -- */
@@ -508,6 +525,7 @@ void fsm_eCncl_sGmpMap(struct Game *sota, tnecs_entity canceller) {
 }
 
 void fsm_eUnitDng_ssStby(struct Game *sota, tnecs_entity selector_entity) {
+    /* --- Show dangermap for selected unit --- */
     /* -- Preliminaries -- */
     tnecs_entity selected = sota->selected_unit_entity;
     SDL_assert(selector_entity > TNECS_NULL);
@@ -613,6 +631,7 @@ void fsm_eCncl_sGmpMap_ssMenu(struct Game *sota, tnecs_entity canceller) {
 }
 
 void fsm_eCncl_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity canceller) {
+    /* --- Hide movemap, return unit to starting pos --- */
     sota->map->arrow->show = false;
 
     /* Return unit to initial pos, deselect */
@@ -635,8 +654,6 @@ void fsm_eCncl_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity canceller) {
     cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     sota->cursor_lastpos.x = cursor_pos->tilemap_pos.x;
     sota->cursor_lastpos.y = cursor_pos->tilemap_pos.y;
-
-
 }
 
 void fsm_eCncl_sGmpMap_ssAnim(struct Game *sota, tnecs_entity canceller) {
@@ -879,11 +896,14 @@ void fsm_eGmp2Stby_sGmpMap(struct Game *sota, tnecs_entity controller_entity) {
 
 /* -- FSM: Input_Start EVENT -- */
 void fsm_eStart_sPrep(struct Game *sota, tnecs_entity accepter) {
+    /* --- Preparation done: Start Map gameplay --- */
+    // TODO: check that in prep stat, menu is deployment
     if (fsm_eStart_sPrep_ss[sota->substate] != NULL)
         fsm_eStart_sPrep_ss[sota->substate](sota, accepter);
 }
 
 void fsm_eStart_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
+    /* --- Preparation done: Start Map gameplay --- */
     SDL_assert(DARR_NUM(sota->menu_stack) > 0);
     tnecs_entity top_menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     SDL_assert(top_menu > TNECS_NULL);
@@ -891,6 +911,11 @@ void fsm_eStart_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
 
     if (fsm_eStart_sPrep_ssMenu_m[mc->type] != NULL)
         fsm_eStart_sPrep_ssMenu_m[mc->type](sota, mc);
+}
+
+void fsm_eMenuLeft_sPrep_ssMapCndt(struct Game *sota, tnecs_entity ent) {
+    /* --- Preparation done: Start Map gameplay --- */
+
 }
 
 /* -- FSM: Input_Accept EVENT -- */
@@ -1168,6 +1193,10 @@ void fsm_eMenuLeft_sGmpMap(struct Game *sota, i32 controller_type) {
         fsm_eMenuLeft_sGmpMap_ss[sota->substate](sota, controller_type);
 }
 
+void fsm_eMenuLeft_sPrep(struct Game *sota, i32 controller_type) {
+
+}
+
 void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     /* -- Pop previous menu -- */
     bool destroy = false;
@@ -1214,3 +1243,12 @@ void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
 void fsm_eMenuLeft_sGmpMap_ssStby(struct Game *sota, i32 controller_type) {
 
 }
+
+void fsm_eMenuLeft_sPrep_ssMenu(    struct Game *sota, tnecs_entity ent) {
+
+}
+
+void fsm_eMenuLeft_sPrep_ssMapCndt( struct Game *sota, tnecs_entity ent) {
+
+}
+
