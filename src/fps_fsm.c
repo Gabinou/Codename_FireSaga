@@ -37,7 +37,7 @@ fsm_main_t fsm_cFrame_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* GAME_SUBSTATE_MAP_CANDIDATES */ &fsm_cFrame_sGmpMap_ssMapCndt,
     /* GAME_SUBSTATE_CUTSCENE       */ NULL,
     /* GAME_SUBSTATE_MAP_ANIMATION  */ &fsm_cFrame_sGmpMap_ssMapAnim,
-    /* GAME_SUBSTATE_PREPARATION    */ NULL,
+    /* GAME_SUBSTATE_PREPARATION    */ &fsm_cFrame_sGmpMap_ssMapCndt,
 };
 
 fsm_main_t fsm_rFrame_sGmpMap_ss[GAME_SUBSTATE_NUM] = {

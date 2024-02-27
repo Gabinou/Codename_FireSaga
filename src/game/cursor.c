@@ -312,16 +312,15 @@ void Game_Cursor_Moves_Straight(struct Game *sota) {
 }
 
 void Game_Cursor_Move_toCandidate(struct Game *sota) {
-    // Set cursor to new candidate position
+    /* Set cursor to new candidate position */
     tnecs_entity candidate = sota->candidates[sota->candidate];
     struct Position *candidate_pos, *cursor_pos;
     candidate_pos = TNECS_GET_COMPONENT(sota->world, candidate, Position);
     cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     cursor_pos->tilemap_pos.x = candidate_pos->tilemap_pos.x;
     cursor_pos->tilemap_pos.y = candidate_pos->tilemap_pos.y;
-    SDL_Log("tilemap_pos.x %d %d", cursor_pos->tilemap_pos.x, cursor_pos->tilemap_pos.y);
-
 }
+
 void Game_Cursor_Next_Candidate(struct Game *sota) {
     tnecs_entity menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     Game_Cursor_Moves_Straight(sota);

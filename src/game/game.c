@@ -36,12 +36,12 @@ struct Game Game_default = {
     .entity_fps             = 0,
     .selected_unit_entity   = 0,
 
-    .isShadow = false,
+    .isShadow               = false,
 
-    .ai_timer = TNECS_NULL,
+    .ai_timer               = TNECS_NULL,
 
-    .party          = {0},
-    .party_id_stack    = {0},
+    .party                  = {0},
+    .party_id_stack         = {0},
 
     // .menu_font       = NULL,
     .menu_pixelfont     = NULL,
@@ -59,6 +59,7 @@ struct Game Game_default = {
     .defendants = NULL,       // combat
     .patients   = NULL,       // staff
     .victims    = NULL,       // rescue
+    .deployed   = NULL,       // rescue
     .spectators = NULL,       // dance
     .auditors   = NULL,       // talk
     .passives   = NULL,       // trade
@@ -195,6 +196,10 @@ void Game_Free(struct Game *sota) {
     if (sota->victims != NULL) {
         DARR_FREE(sota->victims);
         sota->victims = NULL;
+    }
+    if (sota->deployed != NULL) {
+        DARR_FREE(sota->deployed);
+        sota->deployed = NULL;
     }
     if (sota->spectators != NULL) {
         DARR_FREE(sota->spectators);
@@ -469,6 +474,7 @@ void Game_Init(struct Game *sota) {
     sota->defendants   = DARR_INIT(sota->defendants, tnecs_entity, 4);
     sota->patients     = DARR_INIT(sota->patients,   tnecs_entity, 4);
     sota->victims      = DARR_INIT(sota->victims,    tnecs_entity, 4);
+    sota->deployed     = DARR_INIT(sota->deployed,   tnecs_entity, 4);
     sota->spectators   = DARR_INIT(sota->spectators, tnecs_entity, 4);
     sota->auditors     = DARR_INIT(sota->auditors,   tnecs_entity, 4);
     sota->passives     = DARR_INIT(sota->passives,   tnecs_entity, 4);

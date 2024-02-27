@@ -99,7 +99,6 @@ fsm_eGmp2Stby_s_t fsm_eGmp2Stby_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_CANDIDATES */  NULL,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
-    /* MAP_DEPLOYMENT */  NULL,
 };
 
 fsm_eCrsMvs_s_t fsm_eCrsMvs_ss[GAME_SUBSTATE_NUM] = {
@@ -113,8 +112,7 @@ fsm_eCrsMvs_s_t fsm_eCrsMvs_ss[GAME_SUBSTATE_NUM] = {
     /* STANDBY */         &fsm_eCrsMvs_ssStby,
     /* MAP_CANDIDATES */  &fsm_eCrsMvs_ssMapCndt,
     /* CUTSCENE */        NULL,
-    /* MAP_ANIMATION */   NULL,
-    /* MAP_DEPLOYMENT */  NULL,
+    /* MAP_ANIMATION */   NULL
 };
 
 fsm_eCrsMvd_s_t fsm_eCrsMvd_ss[GAME_SUBSTATE_NUM] = {
@@ -128,8 +126,7 @@ fsm_eCrsMvd_s_t fsm_eCrsMvd_ss[GAME_SUBSTATE_NUM] = {
     /* STANDBY */         &fsm_eCrsMvd_ssStby,
     /* MAP_CANDIDATES */  &fsm_eCrsMvd_ssMapCndt,
     /* CUTSCENE */        NULL,
-    /* MAP_ANIMATION */   NULL,
-    /* MAP_DEPLOYMENT */  NULL,
+    /* MAP_ANIMATION */   NULL
 };
 
 fsm_eAcpt_s_t fsm_eStart_sPrep_ss[GAME_SUBSTATE_NUM] = {
@@ -143,8 +140,7 @@ fsm_eAcpt_s_t fsm_eStart_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* STANDBY */         NULL,
     /* MAP_CANDIDATES */  NULL,
     /* CUTSCENE */        NULL,
-    /* MAP_ANIMATION */   NULL,
-    /* MAP_DEPLOYMENT */  NULL,
+    /* MAP_ANIMATION */   NULL
 };
 
 fsm_eAcpt_s_t fsm_eMenuLeft_sPrep_ss[GAME_SUBSTATE_NUM] = {
@@ -158,8 +154,7 @@ fsm_eAcpt_s_t fsm_eMenuLeft_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* STANDBY */         NULL,
     /* MAP_CANDIDATES */  &fsm_eMenuLeft_sPrep_ssMapCndt,
     /* CUTSCENE */        NULL,
-    /* MAP_ANIMATION */   NULL,
-    /* MAP_DEPLOYMENT */  NULL,
+    /* MAP_ANIMATION */   NULL
 };
 
 fsm_eAcpt_s_t fsm_eAcpt_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
@@ -173,8 +168,7 @@ fsm_eAcpt_s_t fsm_eAcpt_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* STANDBY */         &fsm_eAcpt_sGmpMap_ssStby,
     /* MAP_CANDIDATES */  &fsm_eAcpt_sGmpMap_ssMapCndt,
     /* CUTSCENE */        NULL,
-    /* MAP_ANIMATION */   NULL,
-    /* MAP_DEPLOYMENT */  NULL,
+    /* MAP_ANIMATION */   NULL
 };
 
 fsm_eCncl_s_t fsm_eCncl_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
@@ -188,8 +182,7 @@ fsm_eCncl_s_t fsm_eCncl_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* STANDBY */         &fsm_eCncl_sGmpMap_ssStby,
     /* MAP_CANDIDATES */  &fsm_eCncl_sGmpMap_ssMapCndt,
     /* CUTSCENE */        NULL,
-    /* MAP_ANIMATION */   NULL,
-    /* MAP_DEPLOYMENT */  NULL,
+    /* MAP_ANIMATION */   NULL
 };
 
 fsm_eStats_s_t fsm_eStats_ss[GAME_SUBSTATE_NUM] = {
@@ -203,8 +196,7 @@ fsm_eStats_s_t fsm_eStats_ss[GAME_SUBSTATE_NUM] = {
     /* STANDBY */         &fsm_eStats_ssStby,
     /* MAP_CANDIDATES */  NULL,
     /* CUTSCENE */        NULL,
-    /* MAP_ANIMATION */   NULL,
-    /* MAP_DEPLOYMENT */  NULL,
+    /* MAP_ANIMATION */   NULL
 };
 
 fsm_eUnitDsel_s_t fsm_eUnitDsel_ss[GAME_SUBSTATE_NUM] = {
@@ -218,8 +210,7 @@ fsm_eUnitDsel_s_t fsm_eUnitDsel_ss[GAME_SUBSTATE_NUM] = {
     /* STANDBY */         NULL,
     /* MAP_CANDIDATES */  NULL,
     /* CUTSCENE */        NULL,
-    /* MAP_ANIMATION */   NULL,
-    /* MAP_DEPLOYMENT */  NULL,
+    /* MAP_ANIMATION */   NULL
 };
 
 fsm_eUnitSel_s_t fsm_eUnitSel_ss[GAME_SUBSTATE_NUM] = {
@@ -233,8 +224,7 @@ fsm_eUnitSel_s_t fsm_eUnitSel_ss[GAME_SUBSTATE_NUM] = {
     /* STANDBY */         &fsm_eUnitSel_ssStby,
     /* MAP_CANDIDATES */  NULL,
     /* CUTSCENE */        NULL,
-    /* MAP_ANIMATION */   NULL,
-    /* MAP_DEPLOYMENT */  NULL,
+    /* MAP_ANIMATION */   NULL
 };
 
 fsm_eUnitDng_s_t fsm_eUnitDng_ss[GAME_SUBSTATE_NUM] = {
@@ -248,8 +238,7 @@ fsm_eUnitDng_s_t fsm_eUnitDng_ss[GAME_SUBSTATE_NUM] = {
     /* STANDBY */         &fsm_eUnitDng_ssStby,
     /* MAP_CANDIDATES */  NULL,
     /* CUTSCENE */        NULL,
-    /* MAP_ANIMATION */   NULL,
-    /* MAP_DEPLOYMENT */  NULL,
+    /* MAP_ANIMATION */   NULL
 };
 
 fsm_eMenuRight_s_t fsm_eMenuRight_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
@@ -263,8 +252,7 @@ fsm_eMenuRight_s_t fsm_eMenuRight_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* STANDBY */         &fsm_eMenuRight_sGmpMap_ssStby,
     /* MAP_CANDIDATES */  NULL,
     /* CUTSCENE */        NULL,
-    /* MAP_ANIMATION */   NULL,
-    /* MAP_DEPLOYMENT */  NULL,
+    /* MAP_ANIMATION */   NULL
 };
 
 fsm_eMenuLeft_s_t fsm_eMenuLeft_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
@@ -278,8 +266,7 @@ fsm_eMenuLeft_s_t fsm_eMenuLeft_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* STANDBY */         &fsm_eMenuLeft_sGmpMap_ssStby,
     /* MAP_CANDIDATES */  NULL,
     /* CUTSCENE */        NULL,
-    /* MAP_ANIMATION */   NULL,
-    /* MAP_DEPLOYMENT */  NULL,
+    /* MAP_ANIMATION */   NULL
 };
 
 fsm_eCrsHvUnit_s_t fsm_eCrsHvUnit_ss[GAME_SUBSTATE_NUM] = {
@@ -293,8 +280,7 @@ fsm_eCrsHvUnit_s_t fsm_eCrsHvUnit_ss[GAME_SUBSTATE_NUM] = {
     /* STANDBY */         &fsm_eCrsHvUnit_ssStby,
     /* MAP_CANDIDATES */  &fsm_eCrsHvUnit_ssMapCndt,
     /* CUTSCENE */        NULL,
-    /* MAP_ANIMATION */   NULL,
-    /* MAP_DEPLOYMENT */  NULL,
+    /* MAP_ANIMATION */   NULL
 };
 
 fsm_eCrsDeHvUnit_s_t fsm_eCrsDeHvUnit_ss[GAME_SUBSTATE_NUM] = {
@@ -308,8 +294,7 @@ fsm_eCrsDeHvUnit_s_t fsm_eCrsDeHvUnit_ss[GAME_SUBSTATE_NUM] = {
     /* STANDBY */         &fsm_eCrsDeHvUnit_ssStby,
     /* MAP_CANDIDATES */  &fsm_eCrsDeHvUnit_ssMapCndt,
     /* CUTSCENE */        NULL,
-    /* MAP_ANIMATION */   NULL,
-    /* MAP_DEPLOYMENT */  NULL,
+    /* MAP_ANIMATION */   NULL
 };
 
 /* -- FSM: Input_globalRange EVENT -- */
@@ -324,8 +309,7 @@ fsm_eGlbRng_s_t fsm_eGlbRng_ss[GAME_SUBSTATE_NUM] = {
     /* STANDBY */         &fsm_eGlbRng_ssStby,
     /* MAP_CANDIDATES */  NULL,
     /* CUTSCENE */        NULL,
-    /* MAP_ANIMATION */   NULL,
-    /* MAP_DEPLOYMENT */  NULL,
+    /* MAP_ANIMATION */   NULL
 };
 
 /* -- FSM: Input_globalRange EVENT -- */
@@ -989,8 +973,8 @@ void fsm_eAcpt_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity accepter_entit
     tnecs_entity unit_ent = sota->selected_unit_entity;
 
     /* - Reset potential candidates - */
-    sota->candidate = 0;
-    sota->candidates = NULL;
+    sota->candidate     = 0;
+    sota->candidates    = NULL;
 
     /* - Make popup_tile invisible - */
     tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_TILE];
@@ -1245,10 +1229,61 @@ void fsm_eMenuLeft_sGmpMap_ssStby(struct Game *sota, i32 controller_type) {
 }
 
 void fsm_eMenuLeft_sPrep_ssMenu(    struct Game *sota, tnecs_entity ent) {
+    /* --- Deployment Menu -> Starting Position --- */
+    SDL_assert(sota->deployment_menu > TNECS_NULL);
+    SDL_assert(sota->menu_stack == sota->deployment_menu);
 
+    /* - Reset potential candidates - */
+    sota->candidate     = 0;
+    sota->candidates    = NULL;
+
+    /* - Focus on map - */
+    struct MenuComponent *mc;
+    mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, MenuComponent);
+    mc->visible = false;
+
+    Game_cursorFocus_onMap(sota);
+    
+    /* - Set candidates to dm - */
+    struct DeploymentMenu *dm = mc->data;
+    i16 *unit_inds = DARR_INIT(unit_inds, i16, 16);
+    DeploymentMenu_Selection(dm, unit_inds);
+    SDL_assert(sota->deployed != NULL);
+
+    DARR_NUM(sota->deployed);
+    for (int i = 0; i < DARR_NUM(unit_inds), i++) {
+        SDL_assert(sota->units_loaded[unit_inds[i]] > TNECS_NULL);
+        DARR_PUT(sota->deployed, sota->units_loaded[unit_inds[i]]);
+    }
+    SDL_assert(DARR_NUM(unit_inds) == DARR_NUM(sota->deployed));
+    sota->candidates = sota->deployed;
+
+    Game_Cursor_Move_toCandidate(sota);
+
+    /* - Place cursor on candidate == dm->elem - */
+    DARR_FREE(unit_inds);
 }
 
 void fsm_eMenuLeft_sPrep_ssMapCndt( struct Game *sota, tnecs_entity ent) {
+    /* --- Starting Position -> Deployment Menu --- */
+    SDL_assert(sota->deployment_menu > TNECS_NULL);
+    SDL_assert(sota->menu_stack == sota->deployment_menu);
+
+    /* - Reset potential candidates - */
+    sota->candidate     = 0;
+    sota->candidates    = NULL;
+
+    /* - Focus on menu - */
+    struct MenuComponent *mc;
+    mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, MenuComponent);
+    mc->visible = true;
+
+    // struct DeploymentMenu *dm = mc->data;
+    // dm->visible = false;
+
+    Game_cursorFocus_onMenu(sota);
+
+    /* - Place cursor on dm->elem == map candidate - */
 
 }
 

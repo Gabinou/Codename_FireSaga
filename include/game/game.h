@@ -184,6 +184,7 @@ struct Game {
     tnecs_entity *auditors;       // talk
     tnecs_entity *passives;       // trade
     tnecs_entity *openables;      // doors and chests
+    tnecs_entity *deployed;       // deployment unit placement
 
     struct AI_State ai_state;
 
