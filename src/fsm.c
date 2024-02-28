@@ -74,6 +74,18 @@ fsm_eMenuLeft_s_t fsm_eMenuLeft_s[GAME_STATE_NUM] = {
     /* Animation */      NULL,
 };
 
+fsm_eCrsMvs_s_t fsm_eCrsMvs_s[GAME_STATE_NUM] = {
+    /* NULL */           NULL,
+    /* Combat */         NULL,
+    /* Scene_Talk */     NULL,
+    /* Scene_FMV */      NULL,
+    /* Gameplay_Map */   &fsm_eCrsMvs_sGmpMap,
+    /* Gameplay_Camp */  NULL,
+    /* Preparation */    NULL,
+    /* Title_Screen */   NULL,
+    /* Animation */      NULL,
+};
+
 fsm_eCrsMvd_s_t fsm_eCrsMvd_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
@@ -105,7 +117,7 @@ fsm_eCrsMvs_s_t fsm_eCrsMvs_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            &fsm_eCrsMvs_ssMenu,
-    /* MAP_UNIT_MOVES */  &fsm_eCrsMvs_sMapUnitMv,
+    /* MAP_UNIT_MOVES */  &fsm_eCrsMvs_ssMapUnitMv,
     /* MAP_COMBAT */      NULL,
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
@@ -115,16 +127,16 @@ fsm_eCrsMvs_s_t fsm_eCrsMvs_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL
 };
 
-fsm_eCrsMvd_s_t fsm_eCrsMvd_ss[GAME_SUBSTATE_NUM] = {
+fsm_eCrsMvd_s_t fsm_eCrsMvd_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            NULL,
-    /* MAP_UNIT_MOVES */  &fsm_eCrsMvd_ssMapUnitMv,
+    /* MAP_UNIT_MOVES */  &fsm_eCrsMvd_sGmpMap_ssMapUnitMv,
     /* MAP_COMBAT */      NULL,
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
-    /* STANDBY */         &fsm_eCrsMvd_ssStby,
-    /* MAP_CANDIDATES */  &fsm_eCrsMvd_ssMapCndt,
+    /* STANDBY */         &fsm_eCrsMvd_sGmpMap_ssStby,
+    /* MAP_CANDIDATES */  &fsm_eCrsMvd_sGmpMap_ssMapCndt,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL
 };
@@ -651,6 +663,13 @@ void fsm_eCncl_sGmpMap_ssMapNPC(struct Game *sota, tnecs_entity canceller) {
 }
 
 // -- FSM: CURSOR_MOVES EVENT --
+void fsm_eCrsMvs_sGmpMap(struct Game *sota, tnecs_entity mover_entity,
+                         struct Point *cursor_move) {
+    if (fsm_eCrsMvd_sGmpMap_ss[sota->state] != NULL)
+        fsm_eCrsMvd_sGmpMap_ss[sota->state](sota, mover_entity, cursor_move);
+}
+
+
 void fsm_eCrsMvs_ssStby(struct Game *sota, tnecs_entity mover_entity,
                         struct Point *cursor_move) {
     tnecs_entity cursor = sota->entity_cursor;
@@ -720,13 +739,12 @@ void fsm_eCrsMvs_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
     sota->cursor_move.x = 0;
     sota->cursor_move.y = 0;
 
-
     /* Update pre_combat_popup */
     Game_PopUp_Pre_Combat_Enable(sota);
 }
 
-void fsm_eCrsMvs_sMapUnitMv(struct Game *sota,
-                            tnecs_entity mover_entity, struct Point *cursor_move) {
+void fsm_eCrsMvs_ssMapUnitMv(struct Game *sota,
+                             tnecs_entity mover_entity, struct Point *cursor_move) {
 
     /* -- Move cursor -- */
     tnecs_entity cursor       = sota->entity_cursor;
@@ -752,16 +770,20 @@ void fsm_eCrsMvs_sMapUnitMv(struct Game *sota,
 void fsm_eCrsMvd_sGmpMap(struct Game *sota, tnecs_entity mover_entity,
                          struct Point *cursor_move) {
     SDL_assert(sota->entity_cursor != TNECS_NULL);
+
     struct Position *cursor_pos;
     cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
-    struct Point pos = cursor_pos->tilemap_pos;
+    struct Point *pos = &cursor_pos->tilemap_pos;
 
-    Game_PopUp_Unit_Place(sota, pos);
-    Game_PopUp_Tile_Place(sota, pos);
+    if (fsm_eCrsMvd_sGmpMap_ss[sota->substate] != NULL)
+        fsm_eCrsMvd_sGmpMap_ss[sota->substate](sota, mover_entity, pos);
+
+    Game_PopUp_Unit_Place(sota, *pos);
+    Game_PopUp_Tile_Place(sota, *pos);
 }
 
-void fsm_eCrsMvd_ssStby(struct Game *sota, tnecs_entity mover_entity,
-                        struct Point *cursor_move) {
+void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
+                                struct Point *cursor_move) {
 
     // SDL_assert(sota->moved_direction > -1);
     SDL_assert(sota->entity_cursor != TNECS_NULL);
@@ -790,8 +812,8 @@ void fsm_eCrsMvd_ssStby(struct Game *sota, tnecs_entity mover_entity,
     sota->cursor_lastpos.y = pos.y;
 }
 
-void fsm_eCrsMvd_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
-                           struct Point *cursor_move) {
+void fsm_eCrsMvd_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
+                                   struct Point *cursor_move) {
 
     struct Position *cursor_pos;
     cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
@@ -820,8 +842,8 @@ void fsm_eCrsMvd_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
 
 }
 
-void fsm_eCrsMvd_ssMapUnitMv(struct Game *sota, tnecs_entity mover_entity,
-                             struct Point *cursor_pos) {
+void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity mover_entity,
+                                     struct Point *cursor_pos) {
 
     /* -- Unit follows cursor movement  -- */
     struct Position *selected_pos;
@@ -1240,24 +1262,10 @@ void fsm_eMenuLeft_sPrep_ssMenu(struct Game *sota) {
 
     Game_cursorFocus_onMap(sota);
 
-    /* - Set candidates to dm - */
-    struct DeploymentMenu *dm = mc->data;
-    i16 *unit_inds = DARR_INIT(unit_inds, i16, 16);
-    DeploymentMenu_Selection(dm, unit_inds);
-    SDL_assert(sota->deployed != NULL);
-
-    DARR_NUM(sota->deployed);
-    for (int i = 0; i < DARR_NUM(unit_inds); i++) {
-        SDL_assert(sota->units_loaded[unit_inds[i]] > TNECS_NULL);
-        DARR_PUT(sota->deployed, sota->units_loaded[unit_inds[i]]);
-    }
-    SDL_assert(DARR_NUM(unit_inds) == DARR_NUM(sota->deployed));
-    sota->candidates = sota->deployed;
+    /* - Set candidates starting positions to dm - */
 
     Game_Cursor_Move_toCandidate(sota);
 
-    /* - Place cursor on candidate == dm->elem - */
-    DARR_FREE(unit_inds);
 }
 
 void fsm_eMenuLeft_sPrep_ssMapCndt(struct Game *sota) {

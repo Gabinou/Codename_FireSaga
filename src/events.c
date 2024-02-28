@@ -160,12 +160,6 @@ void receive_event_Cursor_Moved(struct Game *sota, SDL_Event *userevent) {
     struct Point *cursor_move = userevent->user.data1;
 
     SDL_assert(sota->entity_cursor != TNECS_NULL);
-    struct Position *cursor_pos;
-    cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
-    struct Point pos = cursor_pos->tilemap_pos;
-
-    if (fsm_eCrsMvd_ss[sota->substate] != NULL)
-        fsm_eCrsMvd_ss[sota->substate](sota, mover_entity, &pos);
 
     if (fsm_eCrsMvd_s[sota->state] != NULL)
         fsm_eCrsMvd_s[sota->state](sota, mover_entity, cursor_move);
