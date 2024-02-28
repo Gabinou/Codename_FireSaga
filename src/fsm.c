@@ -143,7 +143,7 @@ fsm_eAcpt_s_t fsm_eStart_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL
 };
 
-fsm_eAcpt_s_t fsm_eMenuLeft_sPrep_ss[GAME_SUBSTATE_NUM] = {
+fsm_eMenuLeft_sPrep_ss_t fsm_eMenuLeft_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            &fsm_eMenuLeft_sPrep_ssMenu,
@@ -1173,7 +1173,8 @@ void fsm_eMenuLeft_sGmpMap(struct Game *sota, i32 controller_type) {
 }
 
 void fsm_eMenuLeft_sPrep(struct Game *sota, i32 controller_type) {
-
+    if (fsm_eMenuLeft_sPrep_ss[sota->substate] != NULL)
+        fsm_eMenuLeft_sPrep_ss[sota->substate](sota);
 }
 
 void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
@@ -1223,7 +1224,7 @@ void fsm_eMenuLeft_sGmpMap_ssStby(struct Game *sota, i32 controller_type) {
 
 }
 
-void fsm_eMenuLeft_sPrep_ssMenu(    struct Game *sota, tnecs_entity ent) {
+void fsm_eMenuLeft_sPrep_ssMenu(struct Game *sota) {
     /* --- Deployment Menu -> Starting Position --- */
     SDL_assert(sota->deployment_menu > TNECS_NULL);
     SDL_assert(sota->menu_stack[0] == sota->deployment_menu);
@@ -1259,7 +1260,7 @@ void fsm_eMenuLeft_sPrep_ssMenu(    struct Game *sota, tnecs_entity ent) {
     DARR_FREE(unit_inds);
 }
 
-void fsm_eMenuLeft_sPrep_ssMapCndt( struct Game *sota, tnecs_entity ent) {
+void fsm_eMenuLeft_sPrep_ssMapCndt(struct Game *sota) {
     /* --- Starting Position -> Deployment Menu --- */
     SDL_assert(sota->deployment_menu > TNECS_NULL);
     SDL_assert(sota->menu_stack[0] == sota->deployment_menu);
