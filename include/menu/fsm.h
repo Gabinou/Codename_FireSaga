@@ -67,10 +67,10 @@ void fsm_eCncl_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc);
 void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc);
 
 /* event_Cursor_Moves */
-extern fsm_menu_t fsm_eCrsMvs_ssMenu_m      [MENU_TYPE_END];
-void fsm_eCrsMvs_ssMenu_mISM(struct Game *sota, struct Menu *mc);
-void fsm_eCrsMvs_ssMenu_mSSM(struct Game *sota, struct Menu *mc);
-void fsm_eCrsMvs_ssMenu_mLSM(struct Game *sota, struct Menu *mc);
+extern fsm_menu_t fsm_eCrsMvs_sGmpMap_ssMenu_m      [MENU_TYPE_END];
+void fsm_eCrsMvs_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc);
+void fsm_eCrsMvs_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc);
+void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc);
 
 extern fsm_menu_t fsm_eCrsMvs_sGmpMap_mo[MENU_OPTION_NUM];
 void fsm_eCrsMvs_sGmpMap_moAtk(struct Game *sota, struct Menu *mc);

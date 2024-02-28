@@ -141,8 +141,8 @@ void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
     }
     #endif /* DEBUG_NO_SOUNDFX */
 
-    if (fsm_eCrsMvs_ss[sota->substate] != NULL)
-        fsm_eCrsMvs_ss[sota->substate](sota, mover_entity, &sota->cursor_move);
+    if (fsm_eCrsMvs_s[sota->substate] != NULL)
+        fsm_eCrsMvs_s[sota->substate](sota, mover_entity, &sota->cursor_move);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moved, &sota->cursor_move,
                userevent->user.data2);

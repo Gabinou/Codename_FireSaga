@@ -84,17 +84,18 @@ typedef fsm_eGmp2Stby_s_t   fsm_eUnitDsel_s_t;
 
 /* -- FSM: Cursor_Moves EVENT --  */
 extern fsm_eCrsMvs_s_t fsm_eCrsMvs_s[GAME_STATE_NUM];
-extern fsm_eCrsMvs_s_t fsm_eCrsMvs_ss[GAME_SUBSTATE_NUM];
+extern fsm_eCrsMvs_s_t fsm_eCrsMvs_sGmpMap_ss[GAME_SUBSTATE_NUM];
 
 void fsm_eCrsMvs_sGmpMap(struct Game *s, tnecs_entity t, struct Point *);
 
-void fsm_eCrsMvs_ssMenu(    struct Game *sota, tnecs_entity t, struct Point *);
-void fsm_eCrsMvs_ssStby(    struct Game *sota, tnecs_entity t, struct Point *);
-void fsm_eCrsMvs_ssMapCndt( struct Game *sota, tnecs_entity t, struct Point *);
-void fsm_eCrsMvs_ssMapUnitMv(struct Game *sota, tnecs_entity t, struct Point *);
+void fsm_eCrsMvs_sGmpMap_ssMenu(    struct Game *sota, tnecs_entity t, struct Point *);
+void fsm_eCrsMvs_sGmpMap_ssStby(    struct Game *sota, tnecs_entity t, struct Point *);
+void fsm_eCrsMvs_sGmpMap_ssMapCndt( struct Game *sota, tnecs_entity t, struct Point *);
+void fsm_eCrsMvs_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity t, struct Point *);
 
 /* -- FSM: Cursor_Moved EVENT -- */
 extern fsm_eCrsMvd_s_t fsm_eCrsMvd_s[GAME_STATE_NUM];
+extern fsm_eCrsMvd_s_t fsm_eCrsMvd_sPrep_ss[GAME_SUBSTATE_NUM];
 extern fsm_eCrsMvd_s_t fsm_eCrsMvd_sGmpMap_ss[GAME_SUBSTATE_NUM];
 
 void fsm_eCrsMvd_sGmpMap(struct Game *, tnecs_entity t, struct Point *);
@@ -102,6 +103,8 @@ void fsm_eCrsMvd_sGmpMap(struct Game *, tnecs_entity t, struct Point *);
 void fsm_eCrsMvd_sGmpMap_ssStby(     struct Game *sota, tnecs_entity t, struct Point *);
 void fsm_eCrsMvd_sGmpMap_ssMapCndt(  struct Game *sota, tnecs_entity t, struct Point *);
 void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity t, struct Point *);
+
+void fsm_eCrsMvd_sPrep_ssMapCndt(  struct Game *sota, tnecs_entity t, struct Point *);
 
 /* -- FSM: Cursor_Hovers_Unit EVENT -- */
 extern fsm_eCrsHvUnit_s_t fsm_eCrsHvUnit_s[GAME_STATE_NUM];
