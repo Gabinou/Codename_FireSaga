@@ -83,7 +83,7 @@ struct Map Map_default = {
     .door_num               = 0,
 
     .start_pos              = NULL,
-    .army_i                 = 0,
+    .army_i                 = -1,
     .army_onfield           = NULL,
     .units_onfield          = NULL,
     .friendlies_onfield     = NULL,
@@ -161,7 +161,7 @@ struct Map *Map_Init(struct Map *map, i32 width, i32 height) {
     map->friendlies_onfield = DARR_INIT(map->friendlies_onfield, tnecs_entity, 20);
     map->units_onfield      = DARR_INIT(map->units_onfield, tnecs_entity, 20);
     map->reinf_equipments   = DARR_INIT(map->reinf_equipments, struct Inventory_item *, 30);
-    map->army_onfield     = DARR_INIT(map->army_onfield, u8, 5);
+    map->army_onfield       = DARR_INIT(map->army_onfield, u8, 5);
     Map_Tilesize_Set(map, width, height);
     if (map->arrow != NULL)
         Arrow_Free(map->arrow);

@@ -121,9 +121,6 @@ void receive_event_Load_Debug_Map(struct Game *sota, SDL_Event *userevent) {
 
     /* -- Music check -- */
     SDL_assert(sota->map->music_friendly != NULL);
-
-    // TODO: Move event_Turn_Transition to after deployment menu accept
-    // Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
 }
 
 void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
@@ -667,11 +664,12 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     map_anim->time_ns = SOTA_SOUNDFX_NEXT_TURN_DURATION_ms * SOTA_us;
 
     /* Get Army name */
-    SDL_assert(DARR_NUM(sota->map->army_onfield) > 0);
+    SDL_assert(DARR_NUM(sota->map->army_onfield) > 1);
+    SDL_assert(sota->map->army_onfield[0] == ARMY_FRIENDLY);
+
     Map_Army_Next(sota->map);
     SDL_assert(sota->map->army_i >= 0);
     SDL_assert(sota->map->army_i < DARR_NUM(sota->map->army_onfield));
-
     i8 army      = sota->map->army_onfield[sota->map->army_i];
     SDL_assert(army >= 0);
     SDL_assert(army < ARMY_NUM);

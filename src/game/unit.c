@@ -274,8 +274,8 @@ void Game_putPConMap(struct Game *sota, i16 *unit_ids,
         tnecs_entity unit_ent = sota->units_loaded[unit_ids[i]];
         SDL_assert(unit_ent > TNECS_NULL);
         struct Unit *temp = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
-        SDL_assert(temp != NULL);
-        SDL_assert(temp->name.data != NULL);
+        SDL_assert(temp             != NULL);
+        SDL_assert(temp->name.data  != NULL);
 
         Map_Unit_Put(sota->map, sota->world, posarr[i].x, posarr[i].y, unit_ent);
     }

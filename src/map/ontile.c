@@ -126,7 +126,7 @@ void Map_Door_onOpen(struct Map *map, tnecs_world *world, tnecs_entity door) {
 void Map_Chest_onOpen(struct Map *map, tnecs_world *world, tnecs_entity chest) {
 }
 
-void Map_addArmy(struct Map *map,  u8 army) {
+void Map_addArmy(struct Map *map, u8 army) {
     /* -- Don't add army if found -- */
     for (u8 i = 0; i < DARR_NUM(map->army_onfield); i++)
         if (map->army_onfield[i] == army)
