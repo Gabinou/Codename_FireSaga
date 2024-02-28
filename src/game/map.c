@@ -288,6 +288,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(unit->army == reinf->army);
         SDL_assert(unit->name.data != NULL);
     }
+    sota->map->reinf_loaded = sota->map->turn;
 }
 
 /* --- Tiles & tilesets  --- */

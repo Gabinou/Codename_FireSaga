@@ -232,7 +232,10 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
     } else {
         /* --- Control goes to AI --- */
         // TODO: Animate reinforcements
-        Game_Map_Reinforcements_Load(sota);
+        if (sota->map->reinf_loaded < sota->map->turn) {
+            Game_Map_Reinforcements_Load(sota);
+            sota->map->reinf_loaded = sota->map->turn;
+        }
 
         /* -- Timer for reinforcements -- */
         sota->reinf_timer   = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer);

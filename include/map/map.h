@@ -42,9 +42,10 @@ struct Map {
 
     /* --- BASICS --- */
     u8 turn; /* Automatic loss if turn 255. */
+    u8 reinf_loaded;
     u8 row_len;
     u8 col_len;
-    i8 chapter;
+    i32 chapter;
     i32 tilesize[TWO_D];
     struct Arrow    *arrow;
     tnecs_world     *world;

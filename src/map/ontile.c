@@ -16,10 +16,8 @@ void Map_Unit_Put(struct Map *map, tnecs_world *world, u8 col, u8 row,
 
     /* -- Preliminaries -- */
     tnecs_entity current = map->unitmap[row * map->col_len + col];
-    if (current != TNECS_NULL) {
-        SDL_Log("Unit already on map");
-        exit(ERROR_Generic);
-    }
+    SDL_assert(current == TNECS_NULL);
+
     map->unitmap[row * map->col_len + col] = entity;
     DARR_PUT(map->units_onfield, entity);
 
