@@ -133,7 +133,6 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_Log("-- Reinforcement turn: %d %d --", reinf->turn, sota->map->turn);
 
         // TODO: Skip if something blocks tile reinforcements come to
-
         SDL_Log("-- loading reinforcements %ld --", i);
         SDL_Log("-- create entity --");
         tnecs_entity temp_unit_ent;

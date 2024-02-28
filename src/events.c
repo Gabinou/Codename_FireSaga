@@ -234,7 +234,6 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         // TODO: Animate reinforcements
         if (sota->map->reinf_loaded < sota->map->turn) {
             Game_Map_Reinforcements_Load(sota);
-            sota->map->reinf_loaded = sota->map->turn;
         }
 
         /* -- Timer for reinforcements -- */
