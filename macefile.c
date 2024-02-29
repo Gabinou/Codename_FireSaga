@@ -5,7 +5,7 @@
     #define CC "tcc"
 #endif
 #ifndef AR
-    #define AR "ar"
+    #define AR "tcc -ar"
 #endif
 
 struct Config debug         = {
@@ -29,14 +29,29 @@ struct Config win_release   = {
     .ar     = "x86_64-w64-mingw32-ar"
 };
 
-struct Config l2w_debug     = {
+/* BORKED: physfs can't compile cause no userenv.h in tcc includes */
+struct Config l2w_tcc_debug     = {
+    .flags  = "-g3 -O0",
+    .target = "l2w_sota",
+    .cc     = "x86_64-win32-tcc",
+    .ar     = "x86_64-win32-tcc -ar"
+};
+
+struct Config l2w_tcc_release   = {
+    .flags  = "-O2",                
+    .target = "l2w_sota", 
+    .cc     = "x86_64-win32-tcc",
+    .ar     = "x86_64-win32-tcc -ar"
+};
+
+struct Config l2w_gcc_debug     = {
     .flags  = "-g3 -O0",
     .target = "l2w_sota",
     .cc     = "x86_64-w64-mingw32-gcc",
     .ar     = "x86_64-w64-mingw32-ar"
 };
 
-struct Config l2w_release   = {
+struct Config l2w_gcc_release   = {
     .flags  = "-O2",                
     .target = "l2w_sota", 
     .cc     = "x86_64-w64-mingw32-gcc",
@@ -160,13 +175,14 @@ struct Target l2w_sota = {
                 "second_party/parg,second_party/nourstest,"
                 "third_party/physfs,third_party/tinymt," 
                 "third_party/stb,third_party/cJson,"
-                "/usr/local/x86_64-w64-mingw32/include",
+                "/usr/local/x86_64-w64-mingw32/include,",
+                "/usr/local/lib/tcc/win32/include",
     .sources  = "src,src/bars/,src/menu/,src/popup/,"
                 "src/systems/,src/game/,src/map/,src/unit/,"
                 "src/controller/",
     .links    = "mingw32,SDL2main,SDL2,SDL2_image,SDL2_mixer,"
                 "cjson,noursmath,physfs,tinymt,tnecs,parg",
-    .flags    = "-L/usr/local/x86_64-w64-mingw32/lib,"
+    .flags    = "-L/usr/local/x86_64-w64-mingw32/lib,-B/usr/local/lib/tcc/win32"
                 "-fno-strict-overflow,-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
                 "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
@@ -215,8 +231,10 @@ int mace(int argc, char *argv[]) {
     MACE_ADD_CONFIG(release);
     MACE_ADD_CONFIG(win_debug);
     MACE_ADD_CONFIG(win_release);
-    MACE_ADD_CONFIG(l2w_debug);
-    MACE_ADD_CONFIG(l2w_release);
+    MACE_ADD_CONFIG(l2w_tcc_debug);
+    MACE_ADD_CONFIG(l2w_tcc_debug);
+    MACE_ADD_CONFIG(l2w_gcc_release);
+    MACE_ADD_CONFIG(l2w_gcc_release);
     
     /* -- Targets -- */
     /* - second_party - */
