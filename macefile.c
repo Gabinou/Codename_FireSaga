@@ -164,7 +164,7 @@ struct Target l2w_sota = {
     .sources  = "src,src/bars/,src/menu/,src/popup/,"
                 "src/systems/,src/game/,src/map/,src/unit/,"
                 "src/controller/",
-    .links    = "mingw32,SDL2main,SDL2,SDL2_image,SDL2_mixer,m,"
+    .links    = "mingw32,SDL2main,SDL2,SDL2_image,SDL2_mixer,"
                 "cjson,noursmath,physfs,tinymt,tnecs,parg",
     .flags    = "-L/usr/local/x86_64-w64-mingw32/lib,-fno-strict-overflow,-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"

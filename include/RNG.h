@@ -2,6 +2,7 @@
 #define RNG_H
 
 #include <stdint.h>
+#include <math.h>
 #include "enums.h"
 #include "debug.h"
 #include "macros.h"
