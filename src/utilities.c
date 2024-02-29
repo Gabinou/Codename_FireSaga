@@ -126,14 +126,6 @@ i32 *list2matrix(i32 *list, size_t row_len, size_t col_len, size_t list_len) {
     return (out);
 }
 
-
-/* --- Debug --- */
-void Utilities_stacktrace(void) {
-    /* Depends on glibc. Need '-rdynamic' linker options. */
-    void *array[10];
-    size_t size = backtrace(array, 10);
-    backtrace_symbols_fd(array, size, STDERR_FILENO);
-}
 #endif  /* __clang__ */
 
 /* --- Array --- */

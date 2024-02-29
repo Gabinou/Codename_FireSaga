@@ -29,6 +29,20 @@ struct Config win_release   = {
     .ar     = "x86_64-w64-mingw32-ar"
 };
 
+struct Config l2w_debug     = {
+    .flags  = "-g3 -O0",
+    .target = "l2w_sota",
+    .cc     = "x86_64-w64-mingw32-gcc",
+    .ar     = "x86_64-w64-mingw32-ar"
+};
+
+struct Config l2w_release   = {
+    .flags  = "-O2",                
+    .target = "l2w_sota", 
+    .cc     = "x86_64-w64-mingw32-gcc",
+    .ar     = "x86_64-w64-mingw32-ar"
+};
+
 /* - second_party - */
 struct Target noursmath = {
     .base_dir  = "second_party/noursmath",
@@ -86,8 +100,9 @@ struct Target tinymt    = {
     .kind      = MACE_STATIC_LIBRARY,
 };
 
-/* - SotA - */
-// TODO: Test sota target on windows
+/* --- SotA --- */
+/* -- Native Windows -- */
+/* TODO: Test sota target on windows */
 struct Target win_sota = {
     .includes = ".,include,include/bars,include/menu,"
                 "include/popup,include/unit,"
@@ -112,6 +127,7 @@ struct Target win_sota = {
     .kind     = MACE_EXECUTABLE,
 };
 
+/* -- Native Linux -- */
 struct Target sota = {
     .includes = ".,include,include/bars,include/menu,"
                 "include/popup,include/unit,"
@@ -135,7 +151,31 @@ struct Target sota = {
     .kind     = MACE_EXECUTABLE,
 };
 
-/* - Testing - */
+/* -- Linux to Windows cross compilation -- */
+struct Target l2w_sota = {
+    .includes = ".,include,include/bars,include/menu,"
+                "include/popup,include/unit,"
+                "include/systems,names,names/popup,names/menu,"
+                "second_party/noursmath,second_party/tnecs,"
+                "second_party/parg,second_party/nourstest,"
+                "third_party/physfs,third_party/tinymt," 
+                "third_party/stb,third_party/cJson,"
+                "/usr/local/x86_64-w64-mingw32/include",
+    .sources  = "src,src/bars/,src/menu/,src/popup/,"
+                "src/systems/,src/game/,src/map/,src/unit/,"
+                "src/controller/",
+    .links    = "SDL2,SDL2_image,SDL2_mixer,m,"
+                "cjson,noursmath,physfs,tinymt,tnecs,parg",
+    .flags    = "-L/usr/local/x86_64-w64-mingw32/lib,-fno-strict-overflow,-fno-strict-aliasing,"
+                "-fwrapv,-fno-delete-null-pointer-checks,"
+                "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
+                "$(sdl2-config --cflags)",
+    .cmd_pre  = "astyle --options=utils/style.txt --verbose "
+                "--recursive src/* include/* test/* names/*",
+    .kind     = MACE_EXECUTABLE,
+};
+
+/* -- Testing -- */
 struct Target test = {
     .includes = ".,include,include/bars,include/menu,"
                 "include/popup,include/unit,include/systems,"
@@ -174,6 +214,8 @@ int mace(int argc, char *argv[]) {
     MACE_ADD_CONFIG(release);
     MACE_ADD_CONFIG(win_debug);
     MACE_ADD_CONFIG(win_release);
+    MACE_ADD_CONFIG(l2w_debug);
+    MACE_ADD_CONFIG(l2w_release);
     
     /* -- Targets -- */
     /* - second_party - */
@@ -189,6 +231,7 @@ int mace(int argc, char *argv[]) {
     /* - SotA - */
     MACE_ADD_TARGET(sota);
     MACE_ADD_TARGET(win_sota);
+    MACE_ADD_TARGET(l2w_sota);
     MACE_SET_DEFAULT_TARGET(sota);
 
     /* - Testing - */

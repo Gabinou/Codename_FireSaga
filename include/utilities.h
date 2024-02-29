@@ -3,7 +3,6 @@
 
 #include <math.h>
 #include <stdio.h>
-#include <execinfo.h>
 #include <signal.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -57,9 +56,6 @@ i32 *matrix_and_noM(i32 *out, i32 *matrix1, i32 *matrix2, size_t arr_len);
 i32 *matrix_and(i32 *matrix1, i32 *matrix2, size_t arr_len);
 i32 *matrix_sub_noM(i32 *matrix1, i32 *matrix2, size_t arr_len);
 i32 *matrix_plus(i32 *matrix1, i32 *matrix2, size_t arr_len);
-
-/* --- Debug --- */
-void Utilities_stacktrace(void);
 
 /* --- Array --- */
 int int_inbounds(int pos, int boundmin, int boundmax);

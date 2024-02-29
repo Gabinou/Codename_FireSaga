@@ -6453,8 +6453,8 @@ void Mace_Arguments_Free(struct Mace_Arguments *args) {
 #ifndef MACE_OVERRIDE_MAIN
 int main(int argc, char *argv[]) {
     /* --- Parse user arguments --- */
-    struct Mace_Arguments args = mace_parse_args(argc, argv);
-    struct Mace_Arguments args_env = mace_parse_env();
+    struct Mace_Arguments args      = mace_parse_args(argc, argv);
+    struct Mace_Arguments args_env  = mace_parse_env();
     args = mace_combine_args_env(args, args_env);
 
     /* --- Pre-user ops: Get cwd, alloc memory, set defaults. --- */
