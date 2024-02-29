@@ -82,7 +82,7 @@ fsm_eCrsMvs_s_t fsm_eCrsMvs_s[GAME_STATE_NUM] = {
     /* Gameplay_Map */   &fsm_eCrsMvs_sGmpMap,
     /* Gameplay_Camp */  NULL,
     /* Preparation */    NULL,
-    /* Title_Screen */   &fsm_eCrsMvs_sGmpMap,
+    /* Title_Screen */   NULL,
     /* Animation */      NULL,
 };
 
@@ -94,7 +94,7 @@ fsm_eCrsMvd_s_t fsm_eCrsMvd_s[GAME_STATE_NUM] = {
     /* Gameplay_Map */   &fsm_eCrsMvd_sGmpMap,
     /* Gameplay_Camp */  NULL,
     /* Preparation */    NULL,
-    /* Title_Screen */   &fsm_eCrsMvd_sGmpMap,
+    /* Title_Screen */   NULL,
     /* Animation */      NULL,
 };
 
@@ -113,10 +113,25 @@ fsm_eGmp2Stby_s_t fsm_eGmp2Stby_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL,
 };
 
+/* Substate only, don't care about state*/
+fsm_eCrsMvs_s_t fsm_eCrsMvs_ss[GAME_SUBSTATE_NUM] = {
+    /* NULL */            NULL,
+    /* MAP_MINIMAP */     NULL,
+    /* MENU */            &fsm_eCrsMvs_ssMenu,
+    /* MAP_UNIT_MOVES */  NULL,
+    /* MAP_COMBAT */      NULL,
+    /* MAP_NPCTURN */     NULL,
+    /* SAVING */          NULL,
+    /* STANDBY */         NULL,
+    /* MAP_CANDIDATES */  NULL,
+    /* CUTSCENE */        NULL,
+    /* MAP_ANIMATION */   NULL
+};
+
 fsm_eCrsMvs_s_t fsm_eCrsMvs_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
-    /* MENU */            &fsm_eCrsMvs_sGmpMap_ssMenu,
+    /* MENU */            NULL,
     /* MAP_UNIT_MOVES */  &fsm_eCrsMvs_sGmpMap_ssMapUnitMv,
     /* MAP_COMBAT */      NULL,
     /* MAP_NPCTURN */     NULL,
@@ -706,10 +721,8 @@ void fsm_eCrsMvs_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
 
 }
 
-void fsm_eCrsMvs_sGmpMap_ssMenu(struct Game *sota, tnecs_entity mover_entity,
-                                struct Point *cursor_move) {
-    SDL_Log("fsm_eCrsMvs_sGmpMap_ssMenu");
-    getchar();
+void fsm_eCrsMvs_ssMenu(struct Game *sota, tnecs_entity mover_entity,
+                        struct Point *cursor_move) {
     /* Find menu elem in direction */
     tnecs_entity menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, menu, Menu);

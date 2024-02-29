@@ -85,13 +85,16 @@ typedef fsm_eGmp2Stby_s_t   fsm_eUnitDsel_s_t;
 /* -- FSM: Cursor_Moves EVENT --  */
 extern fsm_eCrsMvs_s_t fsm_eCrsMvs_s[GAME_STATE_NUM];
 extern fsm_eCrsMvs_s_t fsm_eCrsMvs_sGmpMap_ss[GAME_SUBSTATE_NUM];
+extern fsm_eCrsMvs_s_t fsm_eCrsMvs_ss[GAME_SUBSTATE_NUM];
 
 void fsm_eCrsMvs_sGmpMap(struct Game *s, tnecs_entity t, struct Point *);
 
-void fsm_eCrsMvs_sGmpMap_ssMenu(    struct Game *sota, tnecs_entity t, struct Point *);
 void fsm_eCrsMvs_sGmpMap_ssStby(    struct Game *sota, tnecs_entity t, struct Point *);
 void fsm_eCrsMvs_sGmpMap_ssMapCndt( struct Game *sota, tnecs_entity t, struct Point *);
 void fsm_eCrsMvs_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity t, struct Point *);
+
+/* -- Substate only -> don't care about state -- */
+void fsm_eCrsMvs_ssMenu(    struct Game *sota, tnecs_entity t, struct Point *);
 
 /* -- FSM: Cursor_Moved EVENT -- */
 extern fsm_eCrsMvd_s_t fsm_eCrsMvd_s[GAME_STATE_NUM];
