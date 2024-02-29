@@ -16,7 +16,7 @@ struct Config release       = {
 };
 
 struct Config win_debug     = {
-    .flags  = "-g3 -rdynamic -O0",
+    .flags  = "-g3 -O0",
     .target = "win_sota",
     .cc     = "x86_64-w64-mingw32-gcc",
     .ar     = "x86_64-w64-mingw32-ar"
@@ -102,7 +102,7 @@ struct Target tinymt    = {
 
 /* --- SotA --- */
 /* -- Native Windows -- */
-/* TODO: Test sota target on windows */
+/* TODO: Test native windows target */
 struct Target win_sota = {
     .includes = ".,include,include/bars,include/menu,"
                 "include/popup,include/unit,"
@@ -166,7 +166,8 @@ struct Target l2w_sota = {
                 "src/controller/",
     .links    = "mingw32,SDL2main,SDL2,SDL2_image,SDL2_mixer,"
                 "cjson,noursmath,physfs,tinymt,tnecs,parg",
-    .flags    = "-L/usr/local/x86_64-w64-mingw32/lib,-fno-strict-overflow,-fno-strict-aliasing,"
+    .flags    = "-L/usr/local/x86_64-w64-mingw32/lib,"
+                "-fno-strict-overflow,-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
                 "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
                 "$(sdl2-config --cflags)",
