@@ -82,7 +82,7 @@ fsm_eCrsMvs_s_t fsm_eCrsMvs_s[GAME_STATE_NUM] = {
     /* Gameplay_Map */   &fsm_eCrsMvs_sGmpMap,
     /* Gameplay_Camp */  NULL,
     /* Preparation */    NULL,
-    /* Title_Screen */   NULL,
+    /* Title_Screen */   &fsm_eCrsMvs_sGmpMap,
     /* Animation */      NULL,
 };
 
@@ -94,7 +94,7 @@ fsm_eCrsMvd_s_t fsm_eCrsMvd_s[GAME_STATE_NUM] = {
     /* Gameplay_Map */   &fsm_eCrsMvd_sGmpMap,
     /* Gameplay_Camp */  NULL,
     /* Preparation */    NULL,
-    /* Title_Screen */   NULL,
+    /* Title_Screen */   &fsm_eCrsMvd_sGmpMap,
     /* Animation */      NULL,
 };
 
@@ -679,8 +679,8 @@ void fsm_eCncl_sGmpMap_ssMapNPC(struct Game *sota, tnecs_entity canceller) {
 // -- FSM: CURSOR_MOVES EVENT --
 void fsm_eCrsMvs_sGmpMap(struct Game *sota, tnecs_entity mover_entity,
                          struct Point *cursor_move) {
-    if (fsm_eCrsMvd_sGmpMap_ss[sota->state] != NULL)
-        fsm_eCrsMvd_sGmpMap_ss[sota->state](sota, mover_entity, cursor_move);
+    if (fsm_eCrsMvs_sGmpMap_ss[sota->state] != NULL)
+        fsm_eCrsMvs_sGmpMap_ss[sota->state](sota, mover_entity, cursor_move);
 }
 
 
@@ -708,6 +708,8 @@ void fsm_eCrsMvs_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
 
 void fsm_eCrsMvs_sGmpMap_ssMenu(struct Game *sota, tnecs_entity mover_entity,
                                 struct Point *cursor_move) {
+    SDL_Log("fsm_eCrsMvs_sGmpMap_ssMenu");
+    getchar();
     /* Find menu elem in direction */
     tnecs_entity menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, menu, Menu);
