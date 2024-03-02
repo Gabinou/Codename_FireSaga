@@ -17,14 +17,12 @@ struct Config release       = {
 
 struct Config win_debug     = {
     .flags  = "-g3 -O0",
-    .target = "win_sota",
     .cc     = "x86_64-w64-mingw32-gcc",
     .ar     = "x86_64-w64-mingw32-ar"
 };
 
 struct Config win_release   = {
     .flags  = "-O2",                
-    .target = "win_sota", 
     .cc     = "x86_64-w64-mingw32-gcc",
     .ar     = "x86_64-w64-mingw32-ar"
 };
@@ -32,28 +30,24 @@ struct Config win_release   = {
 /* BORKED: physfs can't compile cause no userenv.h in tcc includes */
 struct Config l2w_tcc_debug     = {
     .flags  = "-g3 -O0",
-    .target = "l2w_sota",
     .cc     = "x86_64-win32-tcc",
     .ar     = "x86_64-win32-tcc -ar"
 };
 
 struct Config l2w_tcc_release   = {
     .flags  = "-O2",                
-    .target = "l2w_sota", 
     .cc     = "x86_64-win32-tcc",
     .ar     = "x86_64-win32-tcc -ar"
 };
 
 struct Config l2w_gcc_debug     = {
     .flags  = "-g3 -O0",
-    .target = "l2w_sota",
     .cc     = "x86_64-w64-mingw32-gcc",
     .ar     = "x86_64-w64-mingw32-ar"
 };
 
 struct Config l2w_gcc_release   = {
     .flags  = "-O2",                
-    .target = "l2w_sota", 
     .cc     = "x86_64-w64-mingw32-gcc",
     .ar     = "x86_64-w64-mingw32-ar"
 };
