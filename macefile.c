@@ -258,5 +258,8 @@ int mace(int argc, char *argv[]) {
 
     /* - Target configs - */
     MACE_TARGET_CONFIG(l2w_sota, l2w_gcc_debug);
+    MACE_TARGET_CONFIG(sota, debug);
+    MACE_TARGET_CONFIG(test, debug);
+
     return(0);
 }
