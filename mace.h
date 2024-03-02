@@ -574,6 +574,7 @@ char *mace_command_separator = "&&";
     int mace_default_target = MACE_ALL_ORDER;       /* order */
     /* Target input by user */
     int mace_user_target    = MACE_NULL_ORDER;      /* order */
+    int mace_config_target  = MACE_NULL_ORDER;      /* order */
     /* Target to compile */
     int mace_target         = MACE_NULL_ORDER;      /* order */
 
@@ -3709,8 +3710,9 @@ void mace_user_config_set(uint64_t hash, char *name) {
 
 void mace_target_resolve() {
     /* Target priority: */
-    //  - user      config
-    //  - default   config
+    //  - user      target
+    //  - config    target
+    //  - default   target
     if ((mace_user_target >= MACE_ORDER_START) && (mace_user_target < target_num)) {
         /* Using user config */
         mace_target = mace_user_target;
@@ -6088,21 +6090,23 @@ void mace_post_user(struct Mace_Arguments *args) {
     mace_default_target_order();
     mace_default_config_order();
 
-    /* 6. Check which target user wants to compile */
+    /* 6. Check which target should be compiled */
     mace_user_target_set(args->user_target_hash, args->user_target);
 
-    /* 6. Check config wants to use, default, target or input */
+    /* 7. Check which config should be compiled */
     mace_user_config_set(args->user_config_hash, args->user_config);
-    /* Get current target */
-    int target = (mace_user_target == MACE_NULL_ORDER) ? mace_default_target : mace_user_target;
-    mace_config_resolve(&targets[target]);
+    mace_config_resolve(&targets[mace_target]);
     
+
     struct Config *config = &configs[mace_config];
+    //
     if (config->target != NULL)
         mace_user_target_set(mace_hash(config->target), config->target);
+    
+    mace_target_resolve();
 
 
-    /* 7. Process queue alloc */
+    /* 8. Process queue alloc */
     assert(args->jobs >= 1);
     assert(pqueue == NULL);
     plen = args->jobs;
