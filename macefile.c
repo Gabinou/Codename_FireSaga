@@ -233,7 +233,7 @@ int mace(int argc, char *argv[]) {
     MACE_ADD_CONFIG(win_release);
     MACE_ADD_CONFIG(l2w_tcc_debug);
     MACE_ADD_CONFIG(l2w_tcc_debug);
-    MACE_ADD_CONFIG(l2w_gcc_release);
+    MACE_ADD_CONFIG(l2w_gcc_debug);
     MACE_ADD_CONFIG(l2w_gcc_release);
     
     /* -- Targets -- */
@@ -255,6 +255,8 @@ int mace(int argc, char *argv[]) {
 
     /* - Testing - */
     MACE_ADD_TARGET(test);
-    
+
+    /* - Target configs - */
+    MACE_TARGET_CONFIG(l2w_sota, l2w_gcc_debug);
     return(0);
 }

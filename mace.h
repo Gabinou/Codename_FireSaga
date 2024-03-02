@@ -111,6 +111,9 @@ struct Config;
 void    mace_add_config(struct Config *config, char *name);
 #define MACE_ADD_CONFIG(config)     mace_add_config(&config, #config)
 
+#define MACE_TARGET_CONFIG(target, config)  mace_target_config(#target, #config)
+void    mace_target_config(char *ntarget, char *nconfig);
+
 // When set by user, mace builds all only default target and its dependencies.
 // If no default target is set, mace builds all targets.
 void    mace_set_default_target(char *name);
@@ -145,10 +148,13 @@ struct Target {
     const char *msg_post;/* message printed after  building target  */
 
     int kind;                      /* MACE_TARGET_KIND                        */
+    int config;                    /* [order]                        */
+
     /* allatonce: Compile all .o objects at once (calls gcc one time).        */
     /* Compiles slightly faster: gcc is called once per .c file when false.   */
     /* WARNING: Broken when multiple sources have the same filename.          */
     bool allatonce;
+
 
     /*--------------------------------------------------------------------*/
     /*                              EXAMPLE                                /
@@ -302,8 +308,13 @@ enum MACE {
 #define MACE_CLEAN "clean"
 #define MACE_ALL "all"
 
+enum MACE_CONFIG {
+    MACE_NULL_CONFIG            =   -1,
+    MACE_DEFAULT_CONFIG         =   0,
+};
+
 enum MACE_RESERVED_TARGETS {
-    MACE_ALL_ORDER              =   -1,
+    MACE_ALL_ORDER              =   -1, /* Order of ALL target */
     MACE_CLEAN_ORDER            =   -2,
     MACE_NULL_ORDER             =   -3,
     MACE_RESERVED_TARGETS_NUM   =    2,
@@ -351,50 +362,53 @@ char **mace_argv_flags(int *len, int *argc, char **argv,
                        const char *includes, const char *flag, bool path, const char *separator);
 #ifndef MACE_CONVENIENCE_EXECUTABLE
 /* --- mace_setters --- */
-char *mace_set_obj_dir(char *obj);
-void mace_set_compiler(char *cc);
-void mace_set_archiver(char *ar);
+char *mace_set_obj_dir(  char *obj);
+void  mace_set_compiler( char *cc);
+void  mace_set_archiver( char *ar);
 char *mace_set_build_dir(char *build);
 
 /* --- mace add --- */
 void mace_add_target(struct Target *target, char *name);
 void mace_add_config(struct Config *config, char *name);
 
+/* --- mace target config --- */
+void mace_target_config(char *ntarget, char *nconfig);
+
 /* -- Config struct OOP -- */
-void mace_Config_Free(struct Config     *config);
+void mace_Config_Free(    struct Config *config);
 int mace_Config_hasTarget(struct Config *config, int target_order);
 
 /* -- Target struct OOP -- */
 /* - Free - */
-void mace_Target_Free(struct Target *target);
-void mace_Target_Free_argv(struct Target *target);
-void mace_Target_Free_notargv(struct Target *target);
-void mace_Target_Free_excludes(struct Target *target);
-void mace_Target_Free_deps_headers(struct Target *target);
+void mace_Target_Free(              struct Target *target);
+void mace_Target_Free_argv(         struct Target *target);
+void mace_Target_Free_notargv(      struct Target *target);
+void mace_Target_Free_excludes(     struct Target *target);
+void mace_Target_Free_deps_headers( struct Target *target);
 
 /* - Grow - */
-void mace_Target_Grow_Headers(struct Target *target);
-void mace_Target_Grow_deps_headers(struct Target *target, int obj_hash_id);
+void mace_Target_Grow_Headers(      struct Target *target);
+void mace_Target_Grow_deps_headers( struct Target *target, int obj_hash_id);
 
 /* - hash - */
-int  Target_hasObjectHash(struct Target *target, uint64_t hash);
-int  Target_hasObjectHash_nocoll(struct Target *target, uint64_t hash);
-void Target_Object_Hash_Add(struct Target *target, uint64_t hash);
+int  Target_hasObjectHash(         struct Target *target, uint64_t hash);
+int  Target_hasObjectHash_nocoll(  struct Target *target, uint64_t hash);
+void Target_Object_Hash_Add(       struct Target *target, uint64_t hash);
 void Target_Object_Hash_Add_nocoll(struct Target *target, uint64_t hash);
 
 /* - obj_deps - */
-char *mace_Target_Read_d(struct Target *target, int source_i);
-void mace_Target_Read_ho(struct Target *target, int source_i);
-void mace_Target_Read_Objdeps(struct Target *target, char *deps, int source_i);
-void mace_Target_Parse_Objdep(struct Target *target, int source_i);
-int  mace_Target_header_order(struct Target *target, uint64_t hash);
-void mace_Target_Parse_Objdeps(struct Target *target);
+char *mace_Target_Read_d(       struct Target *target, int source_i);
+void mace_Target_Read_ho(       struct Target *target, int source_i);
+void mace_Target_Read_Objdeps(  struct Target *target, char *deps, int source_i);
+void mace_Target_Parse_Objdep(  struct Target *target, int source_i);
+int  mace_Target_header_order(  struct Target *target, uint64_t hash);
+void mace_Target_Parse_Objdeps( struct Target *target);
 
 /* - target dependencies - */
-bool mace_Target_hasDep(struct Target *target, uint64_t hash);
-void mace_Target_Deps_Add(struct Target *target, uint64_t hash);
-void mace_Target_Deps_Hash(struct Target *target);
-void mace_Target_Deps_Grow(struct Target *target);
+bool mace_Target_hasDep(    struct Target *target, uint64_t hash);
+void mace_Target_Deps_Add(  struct Target *target, uint64_t hash);
+void mace_Target_Deps_Hash( struct Target *target);
+void mace_Target_Deps_Grow( struct Target *target);
 
 /* - Adding Files - */
 bool     mace_Target_Source_Add(struct Target *target, char *token);
@@ -425,9 +439,9 @@ void   mace_argv_free(char **argv, int argc);
 void mace_Target_Recompiles_Add(struct Target *target, bool add);
 
 /* - compilation - */
-void mace_Target_compile(struct Target *target);
-void mace_Target_precompile(struct Target *target);
-void mace_Target_compile_allatonce(struct Target *target);
+void mace_Target_compile(           struct Target *target);
+void mace_Target_precompile(        struct Target *target);
+void mace_Target_compile_allatonce( struct Target *target);
 
 /* --- mace_glob --- */
 int     mace_globerr(const char *path, int eerrno);
@@ -467,9 +481,9 @@ b32 s8equal(s8 *s1, s8 *s2) {
 
 /* --- mace_build --- */
 /* -- linking -- */
-void mace_link_executable(struct Target          *target);
-void mace_link_static_library(struct Target      *target);
-void mace_link_dynamic_library(struct Target     *target);
+void mace_link_executable(      struct Target *target);
+void mace_link_static_library(  struct Target *target);
+void mace_link_dynamic_library( struct Target *target);
 
 typedef void (*mace_link_t)(struct Target *);
 mace_link_t mace_link[MACE_TARGET_NUM - 1] = {mace_link_executable, mace_link_static_library, mace_link_dynamic_library};
@@ -491,6 +505,7 @@ void mace_print_message(const char *message);
 bool mace_in_build_order(size_t order, int *build_order, int num);
 void mace_user_target_set(uint64_t hash, char *name);
 void mace_user_config_set(uint64_t hash, char *name);
+void mace_config_set(     struct Target *target);
 void mace_default_target_order();
 
 /* -- configs -- */
@@ -551,9 +566,10 @@ char *mace_command_separator = "&&";
     /* -- Reserved targets hashes -- */
     uint64_t mace_reserved_targets[MACE_RESERVED_TARGETS_NUM];
     uint64_t mace_default_target_hash = 0;
-    int mace_default_target = MACE_ALL_ORDER;   /* order */
-    int mace_user_target    = MACE_NULL_ORDER;  /* order */
-    int mace_user_config    = 0;                /* order */
+    int mace_default_target = MACE_ALL_ORDER;       /* order */
+    int mace_user_target    = MACE_NULL_ORDER;      /* order */
+    int mace_user_config    = MACE_NULL_CONFIG;     /* order */
+    int mace_config         = MACE_DEFAULT_CONFIG;     /* order */
 
     /* -- build order for user target -- */
     int *build_order     = NULL;
@@ -3582,6 +3598,7 @@ void mace_add_config(struct Config *config, char *name) {
     configs[config_num]._name  = name;
     configs[config_num]._hash  = hash;
     configs[config_num]._order = target_num;
+    configs[config_num]._order = target_num;
     if (++config_num >= config_len) {
         config_len *= 2;
         configs     = realloc(configs,     config_len * sizeof(*targets));
@@ -3652,6 +3669,27 @@ void mace_user_config_set(uint64_t hash, char *name) {
     exit(1);
 }
 
+void mace_config_set(struct Target *target) {
+    /* Config priority: */
+    //  - user      config
+    //  - target    config
+    //  - default   config
+    
+    if ((mace_user_config >= MACE_DEFAULT_CONFIG) && (mace_user_config < config_num)) {
+        /* Using user config */
+        mace_config = mace_user_config;
+        return;
+    }
+
+    if ((target->config >= MACE_DEFAULT_CONFIG) && (target->config < config_num)) {
+        /* Using target config */
+        mace_config = target->config;
+        return;
+    }
+    
+    mace_config = MACE_DEFAULT_CONFIG;
+}
+
 void mace_user_target_set(uint64_t hash, char *name) {
     if (hash == 0)
         return;
@@ -3671,6 +3709,34 @@ void mace_user_target_set(uint64_t hash, char *name) {
     fprintf(stderr, "User target '%s' not found. Exiting.\n", name);
     exit(1);
 }
+
+void mace_target_config(char *target_name, char *config_name) {
+    /* Set default config for target */
+    uint64_t target_hash = mace_hash(target_name);
+    uint64_t config_hash = mace_hash(config_name);
+    int target_order = -1;
+    for (int i = 0; i < target_num; i++) {
+        if (target_hash == targets[i]._hash) {
+            target_order = i;
+            break;
+        }
+    }
+    if (target_order < 0)
+        return;
+
+    int config_order = -1;
+    for (int i = 0; i < target_num; i++) {
+        if (config_hash == configs[i]._hash) {
+            config_order = i;
+            break;
+        }
+    }
+
+    if (config_order < 0)
+        return;
+    targets[target_order].config = config_order;
+}
+
 
 #endif /* MACE_CONVENIENCE_EXECUTABLE */
 /********************************* mace_hash **********************************/
@@ -4071,16 +4137,16 @@ void mace_Target_argv_compile(struct Target *target) {
     target->_argv[target->_argc] = NULL;
 }
 
-void mace_argv_add_config(struct Target *target, char ** *argv, int *argc,
-                              int *arg_len) {
+void mace_argv_add_config(struct Target *target, 
+                          char ** *argv, int *argc, int *arg_len) {
     if (config_num <= 0)
         return;
 
-    for (int i = 0; i < configs[mace_user_config]._flag_num; ++i) {
+    for (int i = 0; i < configs[mace_config]._flag_num; ++i) {
         *argv = mace_argv_grow(*argv, argc, arg_len);
-        size_t len = strlen(configs[mace_user_config]._flags[i]);
+        size_t len = strlen(configs[mace_config]._flags[i]);
         char *flag = calloc(len, sizeof(*flag));
-        strncpy(flag, configs[mace_user_config]._flags[i],  len);
+        strncpy(flag, configs[mace_config]._flags[i],  len);
         (*argv)[(*argc)++] = flag;
     }
 }
@@ -5307,16 +5373,11 @@ void mace_build_order_targets() {
         /* Build dependencies of default target, and itself only */
         o_cnt = mace_user_target > MACE_ALL_ORDER ? mace_user_target : mace_default_target;
         mace_build_order_recursive(targets[o_cnt], &o_cnt);
-
-        // int user_order = mace_target_order(targets[o_cnt]);
-        // if (mace_in_build_order(user_order, build_order, build_order_num)) {
-
-        // }
         return;
     }
     // If user_target is all, or default_target is all and no user_target
     bool cond;
-    cond = (mace_user_target == MACE_NULL_ORDER) && (mace_default_target == MACE_ALL_ORDER);
+    cond  = (mace_user_target == MACE_NULL_ORDER) && (mace_default_target == MACE_ALL_ORDER);
     cond |= (mace_user_target == MACE_ALL_ORDER);
     assert(cond);
 
@@ -5914,7 +5975,7 @@ void mace_pre_user(struct Mace_Arguments *args) {
     build_order_num = 0;
 
     mace_user_target = MACE_NULL_ORDER;
-    mace_user_config = 0;
+    mace_user_config = -1;
 
     object      = calloc(object_len, sizeof(*object));
     targets     = calloc(target_len, sizeof(*targets));
@@ -5971,9 +6032,11 @@ void mace_post_user(struct Mace_Arguments *args) {
 
     /* 5. Check which target user wants to compile */
     mace_user_target_set(args->user_target_hash, args->user_target);
-
+    /* */
     mace_user_config_set(args->user_config_hash, args->user_config);
-    struct Config *config = &configs[mace_user_config];
+    mace_config_set(&targets[mace_user_target]);
+    
+    struct Config *config = &configs[mace_config];
     if (config->target != NULL)
         mace_user_target_set(mace_hash(config->target), config->target);
 
