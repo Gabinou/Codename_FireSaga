@@ -3706,6 +3706,7 @@ void mace_target_resolve() {
     /* Target priority: */
     //  - user      target
     //  - default   target
+    
     if ((mace_user_target >= MACE_ORDER_START) && (mace_user_target < target_num)) {
         /* Using user target */
         mace_target = mace_user_target;
