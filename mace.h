@@ -574,8 +574,6 @@ char *mace_command_separator = "&&";
     int mace_default_target = MACE_ALL_ORDER;       /* order */
     /* Target input by user */
     int mace_user_target    = MACE_NULL_ORDER;      /* order */
-     // Target in current config 
-    // int mace_config_target  = MACE_NULL_ORDER;      /* order */
     /* Target to compile */
     int mace_target         = MACE_NULL_ORDER;      /* order */
 
@@ -3655,9 +3653,6 @@ void mace_default_target_order() {
     if (mace_default_target_hash == 0)
         return;
 
-    // if (mace_user_target == MACE_CLEAN_ORDER)
-    //     return;
-
     for (int i = 0; i < target_num; i++) {
         if (mace_default_target_hash == targets[i]._hash) {
             mace_default_target = i;
@@ -3692,12 +3687,6 @@ void mace_default_config_order() {
     exit(1);
 }
 
-// void mace_target_config_set(struct Config *config) {
-//     /* Set target to compile according to config */
-//     if ((config->target >= MACE_ORDER_START) && (config->target < target_num))
-//         mace_config_target = config->target;
-// }
-
 void mace_user_config_set(uint64_t hash, char *name) {
     if (hash == 0)
         return;
@@ -3722,12 +3711,6 @@ void mace_target_resolve() {
         mace_target = mace_user_target;
         return;
     }
-
-    // if ((mace_config_target >= MACE_ORDER_START) && (mace_config_target < target_num)) {
-    //     /* Using config target */
-    //     mace_target = mace_config_target;
-    //     return;
-    // }
 
     /* Using default target (may be set by user) */
     mace_target = mace_default_target;
@@ -5386,9 +5369,6 @@ void mace_parse_config(struct Config *config) {
         exit(1);
     }
 
-    // if (config->target != NULL)
-        // config->_target_order = mace_hash_order(mace_hash(config->target));
-
     /* -- Split flags string into target orders -- */
     int len = 8, i = 0;
     config->_flags    = malloc(len * sizeof(*config->_flags));
@@ -6108,11 +6088,6 @@ void mace_post_user(struct Mace_Arguments *args) {
     mace_user_config_set(args->user_config_hash, args->user_config);
     mace_config_resolve(&targets[mace_target]);
     struct Config *config = &configs[mace_config];
-    // mace_config_target_set(config);
-
-    //
-    // if (config->target != NULL)
-        // mace_user_target_set(mace_hash(config->target), config->target);
 
     /* 8. Process queue alloc */
     assert(args->jobs >= 1);
