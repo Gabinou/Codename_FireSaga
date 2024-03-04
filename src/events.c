@@ -630,7 +630,6 @@ void receive_event_SDL_MOUSEBUTTON(struct Game *sota, SDL_Event *event) {
     }
 }
 
-
 void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
     struct Map *map = sota->map;
     SDL_assert(sota->state == GAME_STATE_Gameplay_Map);
@@ -986,7 +985,6 @@ void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {
     cam->offset.y = SOTA_ZOOMTOPOINT(cam->zoom / previous_zoom, cam->offset.y, dstrect.y);
     sota->map->camera_moved = true;
 
-
 }
 
 void receive_event_Input_ZOOM_OUT(struct Game *sota, SDL_Event *userevent) {
@@ -1029,7 +1027,6 @@ void receive_event_Input_ZOOM_OUT(struct Game *sota, SDL_Event *userevent) {
     cam->offset.y = SOTA_ZOOMTOPOINT(cam->zoom / previous_zoom, cam->offset.y, dstrect.y);
     sota->map->camera_moved = true;
 
-
 }
 
 void receive_event_Input_UP(    struct Game *sota, SDL_Event *userevent) {}
@@ -1044,7 +1041,6 @@ void receive_event_Input_MENURIGHT(struct Game *sota, SDL_Event *userevent) {
     if (fsm_eMenuRight_s[sota->state] != NULL)
         fsm_eMenuRight_s[sota->state](sota, controller_type);
 }
-
 
 void receive_event_Input_MENULEFT(struct Game *sota, SDL_Event *userevent) {
     i32 controller_type = *(i32 *)userevent->user.data1;

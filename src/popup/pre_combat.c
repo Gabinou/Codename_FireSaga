@@ -13,7 +13,6 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
 static void _PreCombatPopup_Draw_Stats_Total( struct PreCombatPopup *pcp, SDL_Renderer *r);
 static void _PreCombatPopup_Draw_Stats_Simple(struct PreCombatPopup *pcp, SDL_Renderer *r);
 
-
 struct PreCombatPopup PreCombatPopup_default =  {
     .pos = {0},
     .texture                = NULL,
@@ -50,7 +49,6 @@ static void _PreCombatPopup_Load_Icons(struct PreCombatPopup *pcp, SDL_Renderer 
     pcp->texture_weapons = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(pcp->texture_weapons);
 }
-
 
 static void _PreCombatPopup_Draw_Names(struct PreCombatPopup *pcp, SDL_Renderer *renderer) {
     /* - Name - */
@@ -371,7 +369,6 @@ static void _PreCombatPopup_Draw_Stats_Total( struct PreCombatPopup *pcp, SDL_Re
     struct Unit_stats effective_stats_a    = pcp->agg_unit->effective_stats;
     struct Unit_stats effective_stats_d    = pcp->dft_unit->effective_stats;
 
-
     /* - Names - */
     int x = PCP_SIMPLE_HP_X,   y   = PCP_SIMPLE_HP_Y;
     PixelFont_Write(pcp->pixelnours, renderer, "HP",    2, x, y);
@@ -632,7 +629,6 @@ pcp_draw_stats_t pcp_draw_stats[PCP_MODE_NUM] = {
     /* MATH     */ _PreCombatPopup_Draw_Stats_Math,
 };
 
-
 /* --- GLOBAL FUNCTIONS --- */
 /* --- Setters --- */
 void PreCombatPopup_Set(struct PreCombatPopup *pcp, struct Game *sota) {
@@ -643,7 +639,6 @@ void PreCombatPopup_Set(struct PreCombatPopup *pcp, struct Game *sota) {
     pcp->forecast = &sota->combat_forecast;
 
 }
-
 
 struct PreCombatPopup *PreCombatPopup_Alloc(void) {
     struct PreCombatPopup *pcp = malloc(sizeof(struct PreCombatPopup));
@@ -728,7 +723,6 @@ void PreCombatPopup_Free_Faces(struct PreCombatPopup *pcp) {
         pcp->texture_face_aggressor = NULL;
     }
 }
-
 
 void PreCombatPopup_Free_Icons(struct PreCombatPopup *pcp) {
     if (pcp->texture_weapons != NULL) {

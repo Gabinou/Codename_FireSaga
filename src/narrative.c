@@ -65,7 +65,6 @@ void Scene_Free(struct Scene *scene) {
     }
 }
 
-
 void Conditions_Dead_char(struct Conditions *cond, char *name) {
     s8 namestr = s8_camelCase(s8_toLower(s8_mut(name)), ' ', 2);
     int order  = Unit_Name2Order(namestr);
@@ -284,7 +283,6 @@ void Conditions_writeJSON(void *input, cJSON *jconds) {
 
 }
 
-
 struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_conds,
                           i16 chapter, u16 scene_time) {
     /* scenes darr */
@@ -339,7 +337,6 @@ void Scene_Speaker_Add(struct Scene *scene, u16 order) {
     scene->speakers[index] = order;
 }
 
-
 /* --- Print --- */
 void Scene_Raw_Print(struct Scene *scene) {
     SDL_Log("Raw scene: ");
@@ -373,4 +370,3 @@ void Scene_Render_Print(struct Scene *scene) {
         SDL_Log("%-*s : %s", max_name, line.speaker.data, line.line.data);
     }
 }
-

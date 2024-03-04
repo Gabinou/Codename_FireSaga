@@ -1,7 +1,6 @@
 
 #include "octant.h"
 
-
 /* --- Ternary --- */
 /* Return unique index from two ternary values. Balanced or not. */
 int Ternary_Direction_Index(int x, int y) {

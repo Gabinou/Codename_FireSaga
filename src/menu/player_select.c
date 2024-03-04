@@ -106,7 +106,6 @@ void PlayerSelectMenu_Load(struct PlayerSelectMenu *psm, SDL_Renderer *renderer,
 
 }
 
-
 /* --- Elem Move --- */
 i32 PlayerSelectMenu_Elem_Move(struct Menu *mc, i32 direction) {
     return (Periodic_Elem_Move(mc, direction, 0, mc->elem_num));

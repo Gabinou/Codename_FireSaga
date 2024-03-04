@@ -144,7 +144,6 @@ struct PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len) {
     return (font);
 }
 
-
 /*--- Internals --- */
 void PixelFont_Swap_Palette(struct PixelFont *font, SDL_Renderer *renderer, i8 NEWw, i8 NEWb) {
     i8 Oldb = 1, Oldw = PALETTE_NES_COLOR_NUM - 1;
@@ -475,7 +474,6 @@ void PixelFont_Write_Centered_Len(struct PixelFont *font, SDL_Renderer *rdr,
     int width = PixelFont_Width_Len(font, text);
     PixelFont_Write_Len(font, rdr, text, x - (width / 2), y);
 }
-
 
 void PixelFont_Write_Scroll(struct PixelFont *font, SDL_Renderer *rdr, char *text, u32 x, u32 y) {
     size_t len = strlen(text);

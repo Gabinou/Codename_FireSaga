@@ -4,7 +4,6 @@
 #include "types.h"
 #include "jsonio.h"
 
-
 void test_scene() {
     SDL_Log("test_scene");
     s8 path = s8_literal(PATH_JOIN("scenes", "example.json"));
@@ -86,12 +85,10 @@ void test_scene() {
     nourstest_true(scene.rendered[2] == 4);
     nourstest_true(scene.rendered[3] == 5);
 
-
     /* -- Scene 3: Silou Recruited, Hamilcar Dead -- */
     scene.game_cond = Conditions_Game_default;
     Conditions_Recruited(&(scene.game_cond), UNIT_ORDER_SILOU);
     Conditions_Dead(&(scene.game_cond), UNIT_ORDER_HAMILCAR);
-
 
     Scene_Render(&scene);
     nourstest_true(scene.lines_num == 4);

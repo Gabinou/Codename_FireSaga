@@ -132,7 +132,6 @@ void Game_PopUp_Pre_Combat_Hide(struct Game *sota) {
     popup->visible = false;
 }
 
-
 void Game_PopUp_Pre_Combat_Free(struct Game *sota) {
 
 }
@@ -320,7 +319,6 @@ void Game_PopUp_Map_Combat_Create(struct Game *sota) {
     popup->draw                 = &PopUp_Map_Combat_Draw;
     SDL_assert(popup    != NULL);
 
-
     /* - Making PopUp_Map_Combat - */
     if (popup->data != NULL)
         SDL_free(popup->data);
@@ -359,7 +357,6 @@ void Game_PopUp_Map_Combat_Update(   struct Game *sota) {
     position->pixel_pos.x   = sota->settings.res.x / 2;
     position->pixel_pos.y   = sota->settings.res.y / 2;
 }
-
 
 void Game_PopUp_Map_Combat_Hide(struct Game *sota) {
     tnecs_entity popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];

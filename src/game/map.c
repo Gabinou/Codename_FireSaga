@@ -232,7 +232,6 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
         s8_free(&ai_path);
 
-
         SDL_Log("-- loading map_hp_bar --");
         struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, MapHPBar);
         // *map_hp_bar = MapHPBar_default;

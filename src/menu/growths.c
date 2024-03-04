@@ -7,7 +7,6 @@ static void _GrowthsMenu_Draw_Graph(   struct GrowthsMenu *g, struct n9Patch *n9
 static void _GrowthsMenu_Draw_Growths( struct GrowthsMenu *g, SDL_Renderer *r);
 static void _GrowthsMenu_Draw_Supports(struct GrowthsMenu *g, SDL_Renderer *r);
 
-
 struct GrowthsMenu GrowthsMenu_default = {
     .texture        = NULL,
     .update         = true,

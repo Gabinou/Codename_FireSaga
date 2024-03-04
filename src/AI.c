@@ -54,7 +54,6 @@ void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
     Event_Emit(__func__, SDL_USEREVENT, event_Combat_Start, data1_entity, data2_entity);
 }
 
-
 /* -- Decider Move FSM -- */
 static b32 _AI_Decider_Move_Never(struct Game *sota, tnecs_entity npc_ent) {
     SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: AI_MOVE_NEVER set, skipping");
@@ -93,7 +92,6 @@ static b32 _AI_Decider_Move_onChapter(struct Game *sota, tnecs_entity npc_ent) {
                  sota->map->turn, ai->turn_move);
     return (sota->map->turn > ai->turn_move);
 }
-
 
 /* -- Master Deciders -- */
 static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
@@ -214,7 +212,6 @@ static void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
     DARR_FREE(defendants);
 }
 
-
 entity AI_Decide_Next(struct Game *sota) {
     struct AI_State *ai_state = &sota->ai_state;
     // TODO: better function for next unit
@@ -227,7 +224,6 @@ entity AI_Decide_Next(struct Game *sota) {
     ai_state->npc_i = 0;
     return (ai_state->npcs[ai_state->npc_i]);
 }
-
 
 /* --- FSM --- */
 AI_Decider AI_Decider_master[AI_PRIORITY_NUM] = {

@@ -213,7 +213,6 @@ void test_pixelfonts_render() {
     n9patch.texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(n9patch.texture != NULL);
 
-
     PixelFont_Free(bubble.pixelfont, true);
     bubble.pixelfont = PixelFont_Alloc();
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",

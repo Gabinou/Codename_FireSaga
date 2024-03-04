@@ -48,8 +48,6 @@ static void _Index_Shade_Pixels(u8 *to, SDL_Surface *unlocked_surface,
     }
 }
 
-
-
 /* --- GLOBAL FUNCTIONS --- */
 i32 *matrix_circ_noise(i32 *matrix, i32 origx, i32 origy,
                        size_t width, size_t height, size_t row_len, size_t col_len) {

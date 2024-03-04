@@ -243,5 +243,4 @@ void PreCombatPopup_Update(struct PreCombatPopup *pcp, struct n9Patch *n9patch,
 typedef void (*pcp_draw_stats_t)(struct PreCombatPopup *, SDL_Renderer *r);
 extern pcp_draw_stats_t pcp_draw_stats[PCP_MODE_NUM];
 
-
 #endif /* PRE_COMBAT_POPUP_H */

@@ -161,7 +161,6 @@ void test_popup_loadout_stats() {
     pls.type_right  = ITEM_TYPE_EXP_CLAW;
     pls.type_left   = ITEM_TYPE_EXP_OFFHAND;
 
-
     pls.previous_cs = low_cs;
     pls.new_cs = low_cs;
     PopUp_Loadout_Stats_Update(&pls, &n9patch, render_target, renderer);

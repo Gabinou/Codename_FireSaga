@@ -93,7 +93,6 @@ void Sprite_readJSON(void *input,  cJSON *jsprite) {
     Spritesheet_readJSON(sprite->spritesheet, jspritesheet);
 }
 
-
 void Spritesheet_readJSON(void *input,  cJSON *jspritesheet) {
     struct Spritesheet *spritesheet = (struct Spritesheet *)input;
     SDL_assert(spritesheet);

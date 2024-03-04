@@ -73,11 +73,9 @@ void Boss_Icon_Pos(struct Boss *boss, struct Camera *camera,
     boss->dstrect.h = SOTA_ZOOM((boss->srcrect.h), zoom);
 }
 
-
 void Boss_Icon_Draw(struct Boss  *boss, struct Position *pos,
                     SDL_Renderer *renderer) {
     SDL_assert(pos->onTilemap);
 
     SDL_RenderCopy(renderer, boss->texture, &boss->srcrect, &boss->dstrect);
 }
-

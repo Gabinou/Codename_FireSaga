@@ -107,7 +107,6 @@ void test_Text_Bubble_Tail() {
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_pixelnours_majus.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-
     /* - setting - */
     TextBubble_Set_Text(&bubble, "I am a 2 line long speech. Brief.", &n9patch);
     bubble.target.x = bubble.width * 2;
@@ -205,7 +204,6 @@ void test_Text_Bubble_Tail() {
     TextBubble_Set_All(&bubble, "A quick brown fox jumps over the lazy dog.", bubble.target,
                        &n9patch);
 
-
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_3lines_tailR3.png"),
@@ -290,7 +288,6 @@ void test_Text_Bubble_Tail() {
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_tailB1.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-
     /* - setting - */
     bubble.target.x = bubble.width / 2;
     bubble.target.y = bubble.height * 2;
@@ -310,7 +307,6 @@ void test_Text_Bubble_Tail() {
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_tailB2.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
-
 
     /* - setting - */
     bubble.target.x = bubble.width * 2 / 3;
@@ -590,12 +586,10 @@ void test_Text_Bubble_pixelfont16() {
     TextBubble_Set_All(&bubble, "PORTEZ CE VIEUX WHISKY AU JUGE BLOND QUI FUME.", bubble.target,
                        &n9patch);
 
-
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_pixelnours_16_majus.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
-
 
     /* --- Setting BLUE bg for text bubble --- */
     TextBubble_Colors_Set(&bubble, NES_MENU_BLUE, NES_WHITE);
@@ -773,12 +767,10 @@ void test_Text_Bubble_pixelfont16_tight() {
     TextBubble_Set_All(&bubble, "PORTEZ CE VIEUX WHISKY AU JUGE BLOND QUI FUME.", bubble.target,
                        &n9patch);
 
-
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_pixelnours_16_tight_majus.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
-
 
     /* --- Setting BLUE bg for text bubble --- */
     TextBubble_Colors_Set(&bubble, NES_MENU_BLUE, NES_WHITE);
@@ -900,8 +892,6 @@ void test_Text_Bubble_pixelfont16_tight() {
     SDL_FreeSurface(surface);
 }
 
-
-
 void test_Text_Bubble_pixelfont16_minus() {
     /* -- Create renderer -- */
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
@@ -963,12 +953,10 @@ void test_Text_Bubble_pixelfont16_minus() {
     TextBubble_Set_All(&bubble, "PORTEZ CE VIEUX WHISKY AU JUGE BLOND QUI FUME.", bubble.target,
                        &n9patch);
 
-
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_pixelnours_16_minus_majus.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
-
 
     /* --- Setting BLUE bg for text bubble --- */
     TextBubble_Colors_Set(&bubble, NES_MENU_BLUE, NES_WHITE);
@@ -1089,7 +1077,6 @@ void test_Text_Bubble_pixelfont16_minus() {
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
 }
-
 
 void test_text_bubble() {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);

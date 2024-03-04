@@ -23,7 +23,6 @@ void test_popup_objective() {
     struct PopUp_Objective *po = PopUp_Objective_Alloc();
     PopUp_Objective_Load(po, renderer, &n9patch);
 
-
     /* - loading fonts - */
     po->pixelnours = PixelFont_Alloc();
     PixelFont_Load(po->pixelnours, renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));

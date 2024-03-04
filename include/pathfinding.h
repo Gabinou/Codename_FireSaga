@@ -192,6 +192,4 @@ i32 *Pathfinding_Moveto_Hex(i32 *costmap, size_t row_len, size_t depth_len,
 i32 *Pathfinding_Visible_Hex(i32 *blockmap, size_t depth_len, size_t col_len,
                              struct Pointf start, i32 sight, int mode);
 
-
-
 #endif /* PATHFINDING_H */

@@ -1,7 +1,6 @@
 
 #include "music.h"
 
-
 /* --- MUSIC --- */
 #define MUSIC_PREXIF "../", "assets", "music"
 #define MUSIC_DEBUG_FILE "FE6_FortheCommanders_NESRemix.wav"
@@ -59,4 +58,3 @@ Mix_Chunk *Soundfx_Load_Cursor(void) {
 Mix_Chunk *Soundfx_Load_Next_Turn(void) {
     return (Soundfx_Load(SOTA_SOUNDFX_NEXT_TURN));
 }
-

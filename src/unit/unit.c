@@ -204,7 +204,6 @@ void Unit_Reinforcement_Load(struct Unit *unit, struct Reinforcement *reinf) {
     unit->army = reinf->army;
 }
 
-
 /* --- Setters/Getters --- */
 struct WpnorItem Unit_WpnorItem(struct Unit *unit, int i) {
     SDL_assert(unit->weapons_dtab != NULL);
@@ -214,7 +213,6 @@ struct WpnorItem Unit_WpnorItem(struct Unit *unit, int i) {
 
     return (Utilities_WpnorItem(inv_item->id, unit->weapons_dtab, unit->items_dtab));
 }
-
 
 /* Unit_Item_Strong works both ways:
     - Get id in strong space from side space [0, eq_size]
@@ -930,7 +928,6 @@ int Unit_canStaff_oneHand( struct Unit *unit) {
     return (Unit_hasSkill(unit, PASSIVE_SKILL_STAFF_ONE_HAND));
 }
 
-
 /* - Any Weapon to attack with in equipment - */
 bool Unit_canAttack_Eq(struct Unit *unit) {
     SDL_assert(unit != NULL);
@@ -1171,7 +1168,6 @@ void Unit_Equipment_Print( struct Unit *unit) {
     }
 
 }
-
 
 struct Computed_Stats Unit_supportBonus(struct Unit *unit) {
     return (unit->support_bonus);
@@ -1680,7 +1676,6 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     if (unit->_equipment[UNIT_HAND_LEFT].id != ITEM_NULL )
         Unit_Equip_inHand(unit, UNIT_HAND_LEFT);
 }
-
 
 void Unit_writeJSON( void *input, cJSON *junit) {
     struct Unit *unit = (struct Unit *)input;

@@ -54,7 +54,6 @@ void PopUp_Unit_Load(struct PopUp_Unit *pu, SDL_Renderer *renderer, struct n9Pat
     path = PATH_JOIN("..", "assets", "GUI", "Popup", "PopUp_Tile_Header.png");
     pu->texture_header = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
 
-
 }
 
 /* --- Setters --- */
@@ -70,7 +69,6 @@ void _PopUp_Unit_Set(struct PopUp_Unit *pu, struct Unit *unit) {
     pu->update = true;
     SDL_assert(pu->unit->name.data != NULL);
 }
-
 
 /* --- Positioning --- */
 struct Point PopUp_Unit_Offset(struct PopUp_Unit *pu, struct Settings *settings) {
@@ -275,7 +273,6 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
         // Face in popup unit may confuse item sides
         // -> Face right is Player left and vice versa
         // - Which is best? Left/Right in player POV of face POV?
-
 
         /* left hand */
         dstrect.x = PU_ICONL_X + 1;

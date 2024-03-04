@@ -115,7 +115,6 @@ typedef struct Unit {
     struct dtab *weapons_dtab;
     struct dtab *items_dtab;
 
-
     /* _equipment is in side space: [left, right, 2, 3, 4, 5]   */
     /* Most functions are in side space unless stated otherwise */
     struct Inventory_item _equipment[DEFAULT_EQUIPMENT_SIZE];

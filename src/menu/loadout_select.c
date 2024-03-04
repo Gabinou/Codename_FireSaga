@@ -161,7 +161,6 @@ void _LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Unit *unit,
     }
     SDL_assert(n9patch->texture != NULL);
 
-
 }
 
 /* --- Elem Move --- */
@@ -174,7 +173,6 @@ i32 WeaponSelectMenu_Elem_Move(struct Menu *mc, i32 direction) {
     i32 min = (wsm->selected[UNIT_HAND_STRONG] > -1) ? 1 : 0;
     return (Periodic_Elem_Move(mc, direction, min, mc->elem_num));
 }
-
 
 /* --- Elements --- */
 void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct Menu *mc) {
@@ -244,7 +242,6 @@ void LoadoutSelectMenu_Elem_Pos_Revert(struct LoadoutSelectMenu *lsm, struct Men
 
     mc->elem_pos_frame = ELEM_POS_MENU_FRAME;
 }
-
 
 /* --- Checking --- */
 bool WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm) {
@@ -338,7 +335,6 @@ void ItemSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 s) {
     // TODO: return i32 that says if selection remains?
 
 }
-
 
 void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
     /* -- Revert selected item, only for second hand -- */
@@ -472,7 +468,6 @@ void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm,  char *header) 
     s8_free(&lsm->header);
     lsm->header = s8_mut(header);
 }
-
 
 static void _LoadoutSelectMenu_Draw_Header(struct LoadoutSelectMenu *lsm,
                                            SDL_Renderer      *renderer) {

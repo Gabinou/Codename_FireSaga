@@ -153,7 +153,6 @@ size_t Util_SDL_Surface_Index(SDL_Surface *surf, int x, int y) {
     return (y * surf->pitch + x * surf->format->BytesPerPixel);
 }
 
-
 bool Utilities_charArr_Equal(char *arr1, char *arr2, size_t len) {
     bool arrequal = true;
     for (int i = 0; i < len; i++) {
@@ -189,7 +188,6 @@ int Utilities_Loop(int direction, int flip) {
 
     return (loop);
 }
-
 
 /* --- Maths --- */
 float sota_slowpow(float base, int exponent) {

@@ -580,7 +580,6 @@ void fsm_eUnitDng_ssStby(struct Game *sota, tnecs_entity selector_entity) {
         Map_Danger_Perimeter_Compute(sota->map, sota->map->dangermap);
         sota->map->rendered_dangermap = sota->map->dangermap;
 
-
         unit->show_danger = false;
     } else {
         Map_Danger_Add(sota->map, temp_danger);
@@ -697,7 +696,6 @@ void fsm_eCrsMvs_sGmpMap(struct Game *sota, tnecs_entity mover_entity,
     if (fsm_eCrsMvs_sGmpMap_ss[sota->state] != NULL)
         fsm_eCrsMvs_sGmpMap_ss[sota->state](sota, mover_entity, cursor_move);
 }
-
 
 void fsm_eCrsMvs_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
                                 struct Point *cursor_move) {
@@ -1324,4 +1322,3 @@ void fsm_eMenuLeft_sPrep_ssMapCndt(struct Game *sota) {
     /* - Place cursor on dm->elem == map candidate - */
 
 }
-

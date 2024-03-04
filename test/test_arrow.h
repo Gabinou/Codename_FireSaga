@@ -142,7 +142,6 @@ void test_arrow() {
     Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_03.png"), renderer,
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
-
     /* -- Add 1 path right -- */
     Arrow_Path_Add(arrow, 5, 8);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 6);
@@ -183,7 +182,6 @@ void test_arrow() {
     Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_07.png"), renderer,
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
-
     /* -- Add 1 path up -- */
     Arrow_Path_Add(arrow, 5, 4);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 4);
@@ -193,7 +191,6 @@ void test_arrow() {
     Arrow_Draw(arrow, renderer, &camera);
     Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_08.png"), renderer,
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
-
 
     /* -- Add 1 path up -- */
     Arrow_Path_Add(arrow, 5, 3);
@@ -224,7 +221,6 @@ void test_arrow() {
     Arrow_Draw(arrow, renderer, &camera);
     Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_11.png"), renderer,
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
-
 
     /* -- Add 1 path up -- */
     Arrow_Path_Add(arrow, 5, 0);
@@ -286,7 +282,6 @@ void test_arrow() {
     Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_17.png"), renderer,
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
-
     /* -- Add 1 path left -- */
     Arrow_Path_Add(arrow, 0, 1);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 8);
@@ -307,7 +302,6 @@ void test_arrow() {
     Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_19.png"), renderer,
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
-
     /* -- Add 1 path left -- */
     Arrow_Path_Add(arrow, 0, 3);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 6);
@@ -317,7 +311,6 @@ void test_arrow() {
     Arrow_Draw(arrow, renderer, &camera);
     Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_20.png"), renderer,
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
-
 
     // /* -- Add 1 path left -- */
     Arrow_Path_Add(arrow, 0, 4);

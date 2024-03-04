@@ -40,7 +40,6 @@ enum SOTA_RN {
     RN_TABLE_SIZE   = 100,
 };
 
-
 /* --- xoshiro256** --- */
 /* 2x faster than tinymt */
 u64  next_xoshiro256ss(void);

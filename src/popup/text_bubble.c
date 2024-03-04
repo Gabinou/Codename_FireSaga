@@ -161,7 +161,6 @@ void TextBubble_Colors_Swap(struct Text_Bubble *bubble, SDL_Renderer *renderer,
     SDL_assert(bubble->tail.texture != NULL);
 }
 
-
 int TextBubble_Tail_Octant(struct Text_Bubble *bubble) {
     /* -- Find octant around text bubble target is in -- */
     struct Point pos = {TEXT_BUBBLE_RENDER_PAD, TEXT_BUBBLE_RENDER_PAD};
@@ -173,8 +172,6 @@ int TextBubble_Tail_Octant(struct Text_Bubble *bubble) {
 
     return (bubble->tail.octant);
 }
-
-
 
 void TextBubble_Tail_Pos(struct Text_Bubble *bubble, struct n9Patch *n9patch) {
     /* Decide tail position. */
@@ -269,7 +266,6 @@ void TextBubble_Tail_Angle(struct Text_Bubble *bubble) {
             break;
     }
 }
-
 
 void TextBubble_Tail_Draw(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
     SDL_Rect srcrect;
@@ -398,7 +394,6 @@ void TextBubble_VScroll_Draw(struct Text_Bubble *bubble, SDL_Renderer *renderer)
     SDL_assert(bubble->texture_vscroll != NULL);
     SDL_RenderCopy(renderer, bubble->texture_vscroll, &srcrect, &dstrect);
 }
-
 
 /* --- Scrolling --- */
 void TextBubble_Write(struct Text_Bubble *bubble, SDL_Renderer *renderer) {

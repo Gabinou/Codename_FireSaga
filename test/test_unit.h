@@ -616,7 +616,6 @@ void test_growth() {
     nourstest_true(Silou.grown_stats[2].move    == temp_growths.move);
     nourstest_true(Silou.grown_stats[2].prof    == temp_growths.prof);
 
-
     nourstest_true(Silou.res_sequence.len  == 0);
     nourstest_true(Silou.con_sequence.len  == 0);
     nourstest_true(Silou.move_sequence.len == 0);

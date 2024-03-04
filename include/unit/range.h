@@ -31,7 +31,6 @@ struct Map;
 struct RNG_Sequence;
 struct Reinforcement;
 
-
 /* --- Rangemap --- */
 int  Unit_Rangemap_Get(      struct Unit *u);
 void Unit_Rangemap_Toggle(   struct Unit *u);

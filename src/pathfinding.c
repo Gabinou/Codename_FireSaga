@@ -72,7 +72,6 @@ i32 *Pathfinding_PushPullto_noM(i32 *pushpulltomap,
     return (pushpulltomap);
 }
 
-
 struct SquareNeighbours pathfinding_Direction_Pushto(i32 *attackfrommap, size_t row_len,
                                                      size_t col_len, u8 range[2], struct Point target) {
     struct SquareNeighbours Pushto = {0, 0, 0, 0};
@@ -384,8 +383,6 @@ void Pathfinding_Distance_Plus(i32 *distmap, i32 *costmap, tnecs_entity *enemy_o
     }
     DARR_FREE(frontier_queue);
 }
-
-
 
 struct Nodeq *Pathfinding_Frontier_Insert(struct Nodeq *frontier_queue, struct Nodeq insert) {
     size_t index = DARR_NUM(frontier_queue);

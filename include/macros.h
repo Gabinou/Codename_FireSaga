@@ -36,7 +36,6 @@ only the enum NAMES gets STRINGIZE'd
 //  y: ((index / col_len) % row_len)    removes the whole z part, truncates the x
 //  y: (index / (col_len * row_len))    truncates the not whole x, y parts
 
-
 /* --- Spritesheet index --- */
 /* Spritesheet example, 8 cols: */
 /*          0   x -->           */

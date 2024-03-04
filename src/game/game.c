@@ -149,7 +149,6 @@ void Game_Free(struct Game *sota) {
         Map_Units_Free(sota->map);
     Game_Map_Free(sota);
 
-
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Camera");
     // if (sota->camera != NULL)
     // SDL_free(sota->camera);
@@ -758,7 +757,6 @@ i64 Game_FPS_Delay(struct Game *sota, u64 elapsedTime_ns) {
     return (delay);
 }
 
-
 void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
     if (sota->entity_fps != 0)
         tnecs_entity_destroy(sota->world, sota->entity_fps);
@@ -826,7 +824,6 @@ void Game_Music_Play(struct Game *sota) {
         Mix_ResumeMusic();
     #endif /* DEBUG_NO_MUSIC */
 }
-
 
 void Game_Music_Stop(struct Game *sota) {
     Mix_FadeOutMusic(SOTA_MUSIC_FADEOUT_ms);

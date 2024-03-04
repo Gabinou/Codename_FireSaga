@@ -188,7 +188,6 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
 
     sota->party[unit_id] = *unit;
 
-
     unit->items_dtab   = sota->items_dtab;
     unit->weapons_dtab = sota->weapons_dtab;
     struct Inventory_item *item = Unit_Item_Strong(unit, UNIT_HAND_WEAK);

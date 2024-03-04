@@ -102,5 +102,4 @@ void _Graph_Draw_Axes(struct Graph *g, struct n9Patch *n9patch,
 void _Graph_Draw_Stat(struct Graph *g, u8 stat, struct n9Patch *n9patch,
                       struct PixelFont *pb, SDL_Renderer *r, SDL_Texture *rt);
 
-
 #endif /* GRAPH_H */

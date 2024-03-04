@@ -21,7 +21,6 @@ u8 *pixels2list_noM(u8 *matrix, u8 *list, size_t row_len, size_t col_len);
 u8 *pixels_and(              u8 *matrix1, u8 *matrix2, size_t arr_len);
 u8 *pixels_and_noM(u8 *out, u8 *matrix1, u8 *matrix2, size_t arr_len);
 
-
 /* --- SHADING NOISE --- */
 int *matrix_circ_noise(int *m, int ox, int oy, size_t w, size_t h,  size_t rl, size_t cl);
 int *matrix_rect_noise(int *m, int ox, int oy, size_t d, size_t rl, size_t cl);

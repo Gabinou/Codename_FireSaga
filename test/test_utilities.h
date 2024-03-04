@@ -5,7 +5,6 @@
 
 void test_utilities() {
 
-
     SDL_Log("test_Unit_army2alignment");
     nourstest_true(SotA_army2alignment(ARMY_FRIENDLY) == ALIGNMENT_FRIENDLY);
     nourstest_true(SotA_army2alignment(ARMY_ERWIN) == ALIGNMENT_FRIENDLY);

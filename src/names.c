@@ -6,7 +6,6 @@ s8 sexNames[UNIT_SEX_NUM] = {
     s8_literal("M")
 };
 
-
 s8 sceneTimes[SCENE_TIME_NUM] = {0};
 void Names_sceneTimes(void) {
 #define REGISTER_ENUM(x) sceneTimes[SCENE_TIME_##x] = s8cat(s8_camelCase(s8_toLower(s8_mut(#x)), '_', 2), s8_literal("_"));
@@ -33,7 +32,6 @@ void Names_unitNames(void) {
 }
 #undef REGISTER_ENUM
 
-
 int Unit_Name2Order(s8 name) {
     int order = -1;
     u64 hash = sota_hash_djb2(name);
@@ -45,7 +43,6 @@ int Unit_Name2Order(s8 name) {
     }
     return (order);
 }
-
 
 s8 statNames[UNIT_STAT_NUM] = {0};
 void Names_statNames(void) {
@@ -95,14 +92,12 @@ void Names_tileNames(void) {
 }
 #undef REGISTER_ENUM
 
-
 s8 campjobNames[CAMPJOB_END] = {0};
 void Names_campjobNames(void) {
 #define REGISTER_ENUM(x) campjobNames[CAMPJOB_##x] = s8_camelCase(s8_toLower(s8_mut(#x)), ' ', 2);
 #include "names/camp_jobs.h"
 #undef REGISTER_ENUM
 }
-
 
 s8 menuOptionnames[MENU_OPTION_END] = {0};
 void Menu_MakeOptionnames(void) {
@@ -111,7 +106,6 @@ void Menu_MakeOptionnames(void) {
 #undef REGISTER_ENUM
 }
 
-
 s8 gamesubStatenames[GAME_SUBSTATE_END] = {0};
 void Names_gamesubStatenames(void) {
 #define REGISTER_ENUM(x, y) gamesubStatenames[GAME_SUBSTATE_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);
@@ -119,14 +113,12 @@ void Names_gamesubStatenames(void) {
 #undef REGISTER_ENUM
 }
 
-
 s8 gameStatenames[GAME_STATE_END] = {0};
 void Names_gameStatenames(void) {
 #define REGISTER_ENUM(x, y) gameStatenames[GAME_STATE_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);
 #include "names/game_states.h"
 #undef REGISTER_ENUM
 }
-
 
 s8 mapFilenames[CHAPTER_END] = {0};
 void Names_mapFilenames(void) {

@@ -122,7 +122,6 @@ static void _Map_Reinforcements_Free(struct Map *map) {
     }
 }
 
-
 static void _Map_Tilemap_Shader_Free(struct Map *map) {
     Tilemap_Shader_Free(map->tilemap_shader);
     if (map->tilemap_shader != NULL) {
@@ -329,7 +328,6 @@ void Map_Free(struct Map *map) {
     Map_dArrays_Free(map);
 }
 
-
 void Map_dArrays_Init(struct Map *map,  struct Settings *settings) {
     SDL_assert(map->row_len > 0);
     SDL_assert(map->col_len > 0);
@@ -506,7 +504,6 @@ void Map_Tilesprites_Init(struct Map *map, size_t tiles_num) {
         map->tilesprites_ind[i] = DARR_INIT(map->tilesprites_ind[i], u16, DEFAULT_TILESPRITE_BUFFER);
     }
 }
-
 
 void Map_Tilemap_Texture_Free(struct Map *map) {
     if (map->tilemap_texture != NULL) {

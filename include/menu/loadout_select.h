@@ -199,7 +199,6 @@ void ItemSelectMenu_Select(          struct LoadoutSelectMenu *lsm, int s);
 i32 ItemSelectMenu_Elem_Move(  struct Menu *mc, i32 direction);
 i32 WeaponSelectMenu_Elem_Move(struct Menu *mc, i32 direction);
 
-
 /* --- Elements --- */
 void LoadoutSelectMenu_Elem_Pos(  struct LoadoutSelectMenu *lsm, struct Menu *mc);
 void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct Menu *mc);
@@ -211,6 +210,5 @@ void LoadoutSelectMenu_Size(struct LoadoutSelectMenu  *lsm, struct n9Patch *n9);
 void LoadoutSelectMenu_Draw(  struct  Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
 void LoadoutSelectMenu_Update(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9,
                               SDL_Texture *rt, SDL_Renderer *r);
-
 
 #endif /* LSM_H */

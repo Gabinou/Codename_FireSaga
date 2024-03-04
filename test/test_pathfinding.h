@@ -112,7 +112,6 @@ void test_pathfinding_Astar() {
     SDL_free(computed_path);
 }
 
-
 void test_pathfinding_sight() {
     // Note: Blockmap doubles as a costmap for movemap
     // Walls are 0, everything else is visible

@@ -39,7 +39,6 @@ See <http://creativecommons.org/publicdomain/zero/1.0/>. */
    a 64-bit seed, we suggest to seed a splitmix64 generator and use its
    output to fill s. */
 
-
 static inline u64 rotl( u64 x, int k) {
     return (x << k) | (x >> (64 - k));
 }
@@ -204,7 +203,6 @@ void RNG_checkSequence_oneWay(struct RNG_Sequence *sequence, b32 draw) {
         sequence->len = 0;
     }
 }
-
 
 u16 SB_Rate_Drop(u16 rate, u16 n) {
     float fout = rate, base = sb_drop_table[rate / RNG_SB_BASE_NUM];

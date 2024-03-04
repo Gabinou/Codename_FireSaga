@@ -34,7 +34,6 @@ struct Game;
 //      - Function: Recruit unit, Spawn unit, gives player an item, etc.
 //
 
-
 /* --- STRUCTS --- */
 struct Map_condition {
     /* --- CRITERIA --- */

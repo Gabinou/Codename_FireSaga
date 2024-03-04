@@ -503,7 +503,6 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
     } while (false);
 }
 
-
 /* --- GLOBAL FUNCTIONS --- */
 void PopUp_Loadout_Stats_Free(struct PopUp_Loadout_Stats *pls) {
     if (pls->texture != NULL) {
@@ -664,7 +663,6 @@ void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls, struct LoadoutSe
         }
     }
 }
-
 
 /* --- Rendering --- */
 void PopUp_Loadout_Stats_Weakhand_Offset(struct PopUp_Loadout_Stats *pls) {

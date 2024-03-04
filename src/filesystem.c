@@ -3,7 +3,6 @@
 
 /* --- INIT --- */
 
-
 void Filesystem_Mount(s8 folder) {
     SDL_Log("Mounting build dir: '%s'", folder.data);
     if (!PHYSFS_mount(folder.data, NULL, 1)) {

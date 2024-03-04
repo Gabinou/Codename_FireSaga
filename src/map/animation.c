@@ -78,7 +78,6 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
         TNECS_REMOVE_COMPONENTS(sota->world, defender, RenderTop);
 }
 
-
 void Map_TurnTransition_Animate(struct Game *sota, tnecs_entity entity,
                                 struct MapAnimation *map_anim, struct Timer *timer) {
     /* - Animation is complete, begin a turn - */

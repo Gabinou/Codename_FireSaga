@@ -112,7 +112,6 @@ void test_map_perimeter() {
     nourstest_true(perimeter_edges[6 * TEST_COL_LEN + 4].left   == 0);
     nourstest_true(perimeter_edges[6 * TEST_COL_LEN + 4].bottom == 0);
 
-
 }
 
 #undef TEST_ROW_LEN

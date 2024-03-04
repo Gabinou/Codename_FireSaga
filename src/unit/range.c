@@ -63,7 +63,6 @@ struct Range *Unit_Range_Item(struct Unit   *unit, int i) {
     return (range);
 }
 
-
 /* -- Range Combiners -- */
 /* Compute range of equipment or equipped by combining ranges
 *   Usage:
@@ -142,7 +141,6 @@ struct Range *Unit_Range_Combine_Staves(struct Unit *unit, bool equipped) {
 
     return (range);
 }
-
 
 struct Range *Unit_Range_Combine_Weapons(struct Unit *unit, bool equipped) {
     /* - Finds range only for same weapon type as DECIDED BY INPUT - */

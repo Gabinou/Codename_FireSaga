@@ -31,7 +31,6 @@ struct Map;
 struct RNG_Sequence;
 struct Reinforcement;
 
-
 /* --- Unit stats --- */
 struct Unit_stats Unit_stats_plus(     struct Unit_stats stats1, struct Unit_stats stats2);
 struct Unit_stats Unit_stats_minus(    struct Unit_stats stats1, struct Unit_stats stats2);

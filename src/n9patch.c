@@ -10,7 +10,6 @@ struct n9Patch n9Patch_default =  {
     .fit =           {0, 0},
 };
 
-
 void n9Patch_Free(struct n9Patch *n9patch) {
     if (n9patch->texture != NULL) {
         SDL_DestroyTexture(n9patch->texture);

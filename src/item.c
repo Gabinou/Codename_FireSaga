@@ -288,7 +288,6 @@ void Item_Reload(struct dtab *items_dtab, i16 id) {
     }
 }
 
-
 /* Loads only pure items */
 void Item_Load(struct dtab *items_dtab, i16 id) {
     SDL_assert(Item_ID_isValid(id));
@@ -554,5 +553,3 @@ int Item_Stat( struct Item *item, i16 stattype)  {
     int stat = item_stats_arr[stattype - 1];
     return (stat);
 }
-
-

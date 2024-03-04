@@ -26,7 +26,6 @@
 //  - Units can *occupy/move to*  *unoccupied*  tiles
 //      - Note: costmap is movement cost to *traverse* to tile
 
-
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
 struct Unit;
@@ -100,7 +99,6 @@ struct Map {
     i32 *global_dangermap;      /* 2D dynamic array */
     // Pointer to global_dangermap OR dangermap
     i32 *rendered_dangermap;    /* 2D dynamic array */
-
 
     /* attacktomap: Tiles where unit can attack enemy, 2D map  */
     i32 *attacktomap;           /* 2D dynamic array */
@@ -240,6 +238,5 @@ b32 Map_Boss_Alive(struct Map *map, i16 army);
 
 /* --- Tile --- */
 struct Tile *Map_Tile_Get(struct Map *map, i32 x, i32 y);
-
 
 #endif /* MAP_H */

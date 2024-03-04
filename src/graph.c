@@ -247,9 +247,9 @@ void _Graph_Draw_Stat(struct Graph *graph, u8 stat_id, struct n9Patch *n9patch,
     SDL_SetRenderDrawColor(renderer, 0xB2, 0x10, 0x30, SDL_ALPHA_OPAQUE);
     SDL_Rect level = {
         .x = axes.x + graph_stat.level * axes.w / (graph->plot_max.x - graph->plot_min.x),
-        .y = GRAPH_LVL_Y_OFFSET + PIXELFONT_HEIGHT,
-        .w = 1,
-        .h = graph->rect.h - graph->header - PIXELFONT_HEIGHT - GRAPH_TICK_MINOR_LEN + 2,
+                 .y = GRAPH_LVL_Y_OFFSET + PIXELFONT_HEIGHT,
+                 .w = 1,
+                 .h = graph->rect.h - graph->header - PIXELFONT_HEIGHT - GRAPH_TICK_MINOR_LEN + 2,
     };
     SDL_RenderFillRect(renderer, &level);
     char numbuff[4];

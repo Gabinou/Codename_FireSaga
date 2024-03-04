@@ -23,7 +23,6 @@ void Map_Stacked_Dangermap_Compute(struct Map *map, i32 *danger);
 
 void Map_Danger_Perimeter_Compute(struct Map *map, i32 *danger);
 
-
 /* --- Global_Dangermap --- */
 // Global_Dangermap: All enemies added to dangermap upon toggle by Player
 void Map_Global_Danger_Add(       struct Map *map, i32 *danger);
@@ -69,7 +68,5 @@ i32 *_Map_tomap_Compute(i32 *tomap, i32 *mvtmat, u8 row_len, u8 col_len,
                         i32 mv, struct Range *r, u8 mode);
 
 void Map_globalRange(struct Map *map, tnecs_world *w, u8 alignment);
-
-
 
 #endif /* MAP_PATH_H */

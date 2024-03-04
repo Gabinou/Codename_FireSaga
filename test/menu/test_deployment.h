@@ -13,7 +13,6 @@ struct Mount mount4;
 struct dtab *weapons_dtab;
 struct dtab *items_dtab;
 
-
 void test_menu_deployment_party(struct DeploymentMenu *dm) {
     /* -- Party -- */
     /* - Preliminaries - */
@@ -191,7 +190,6 @@ void test_menu_deployment() {
                             renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
                             render_target);
 
-
     /* -- Top unit 0 -- */
     dm->top_unit = 4;
     SDL_assert(_DeploymentMenu_Num(dm) == (dm->_party_size - dm->top_unit));
@@ -255,7 +253,6 @@ void test_menu_deployment() {
     Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_P4_Overfull4.png"),
                             renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
                             render_target);
-
 
     /* --- FREE --- */
     DTAB_FREE(weapons_dtab);

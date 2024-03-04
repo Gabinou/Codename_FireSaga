@@ -137,7 +137,6 @@ struct SquareNeighbours {
     i32 bottom;
 };
 
-
 struct Node {
     i32 x;
     i32 y;
@@ -279,7 +278,6 @@ struct Camera {
     float        zoom;
 };
 
-
 typedef struct Timer {
     u64 time_ns;
     u64 frame_count;
@@ -311,7 +309,5 @@ struct AI_State {
     struct AI_Action action;
 };
 extern struct AI_State AI_State_default;
-
-
 
 #endif /* STRUCTS_H */

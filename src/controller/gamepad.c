@@ -250,7 +250,6 @@ struct Point Gamepad_Joystick_Direction(struct controllerGamepad *gp) {
     return (cursor_move);
 }
 
-
 void Gamepad_removeController(struct controllerGamepad *gp, i32 joystick_instance) {
     SDL_Log("remove joystick %ld", joystick_instance);
     for (int i = 0; i < gp->controllers_num; i++) {

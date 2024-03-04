@@ -797,7 +797,6 @@ void Game_StaffSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_ont
     // LoadoutSelectMenu_Load(ssm, unit_ontile, sota->renderer);
     // /* scaling elem_pos: put it last cause dependences */
 
-
 }
 
 void Game_StaffSelectMenu_Enable(struct Game *sota, tnecs_entity unit_entity_ontile) {

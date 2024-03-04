@@ -43,5 +43,4 @@ void Log2file(void *d, i32 c, SDL_LogPriority p, const char *m);
     #define SDL_Log(...) do {} while (0)
 #endif /* SOTA_NO_LOGS */
 
-
 #endif /* LOG_H */

@@ -199,5 +199,4 @@ void GrowthsMenu_Draw(  struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
 void GrowthsMenu_Update(struct GrowthsMenu *g, struct n9Patch *n9, SDL_Texture *rt,
                         SDL_Renderer *r);
 
-
 #endif /* GM_H */

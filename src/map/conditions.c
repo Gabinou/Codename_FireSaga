@@ -66,7 +66,6 @@ void Map_Conditions_Check_Death(struct Map_condition *conditions_darr,
 
 }
 
-
 b32 Map_Condition_Check_Death(struct Map_condition *condition,
                               struct Map           *map,
                               struct Unit          *unit,

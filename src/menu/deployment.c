@@ -36,12 +36,10 @@ struct Point dm_elem_box[DM_ELEM_NUM] = {
     /* DM_ELEM_UNIT8 */  {SOTA_TILESIZE, SOTA_TILESIZE},
 };
 
-
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
 /* --- Frame transforms --- */
 static struct Point _Unit_Frame(i32 x, i32 y);
 static struct Point _Page_Frame(i32 x, i32 y);
-
 
 /* --- Loading --- */
 static void _DeploymentMenu_Load_Icons(struct DeploymentMenu *dm, SDL_Renderer   *r);
@@ -408,7 +406,6 @@ static void _DeploymentMenu_Draw_Stats_P2(struct DeploymentMenu *dm,
         SDL_assert(unit != NULL);
         _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
 
-
         /* STR */
         x = DM_STR_X;
         y = DM_STR_CONTENT_Y;
@@ -731,7 +728,6 @@ void DeploymentMenu_Load(struct DeploymentMenu *dm, SDL_Renderer *renderer,
     dm->texture_mount = SDL_CreateTextureFromSurface(renderer, dm->surface_mount);
     SDL_assert(dm->texture_mount != NULL);
 
-
     /* - loading dude - */
     path = PATH_JOIN("..", "assets", "GUI", "Icon", "Icon_Dude.png");
     dm->texture_dude = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
@@ -760,7 +756,6 @@ void DeploymentMenu_Party_Set(struct DeploymentMenu *dm, struct Unit *party,
     dm->top_unit        = 0;
     dm->_selected       = SDL_calloc(dm->_party_size, sizeof(*dm->_selected));
 }
-
 
 /* --- Scrolling --- */
 void DeploymentMenu_Scroll_Up(   struct DeploymentMenu *dm) {
@@ -893,7 +888,6 @@ void DeploymentMenu_Selection(struct DeploymentMenu *dm, i16 *stack) {
             DARR_PUT(stack, dm->_party_id_stack[i]);
     }
 }
-
 
 /* --- Drawing --- */
 void DeploymentMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *renderer) {

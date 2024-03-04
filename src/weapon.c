@@ -187,7 +187,6 @@ s8 Weapon_Filename(s8 filename, i16 id) {
     return (filename);
 }
 
-
 void Weapon_Save(struct dtab *weapons_dtab, i16 id) {
     SDL_assert(Weapon_ID_isValid(id));
     SDL_assert(weapons_dtab != NULL);

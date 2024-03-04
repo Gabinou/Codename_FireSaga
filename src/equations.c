@@ -305,7 +305,6 @@ u8 Equation_Combat_Damage(int att, int defender_block,
     return (damage);
 }
 
-
 /* --  Equation_Attack_Damage -- */
 /* Basic attack damage equation with no effective, no crit */
 u8 Equation_Attack_Damage(int attacker_dmg, int defender_def) {

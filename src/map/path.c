@@ -67,7 +67,6 @@ void Map_Stacked_Dangermap_Reset(struct Map *map) {
     map->shading_changed = true;
 }
 
-
 void Map_Stacked_Global_Dangermap_Reset(struct Map *map) {
     int len = map->row_len * map->col_len;
 
@@ -223,7 +222,6 @@ i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_world *world, tnecs_entity
 
     return (map->attackfrommap);
 }
-
 
 i32 *Map_Danger_Compute(struct Map *map, tnecs_world *world, tnecs_entity unit_ent) {
     Map_Costmap_Movement_Compute(map, world, unit_ent);

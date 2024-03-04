@@ -103,6 +103,4 @@ struct Settings {
 };
 extern struct Settings Settings_default;
 
-
-
 #endif /* SETTINGS_H */

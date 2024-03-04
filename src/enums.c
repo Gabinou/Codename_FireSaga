@@ -63,7 +63,6 @@ u8 army_control[ARMY_NUM] = {
 #undef REGISTER_ENUM
 };
 
-
 // #define REGISTER_ENUM(x, y)  u64 UNIT_NPC_ALIVE_##x = 1ULL << (UNIT_ID_##x - UNIT_ID_NPC_START);
 // #include "names/units_NPC.h"
 // #undef REGISTER_ENUM

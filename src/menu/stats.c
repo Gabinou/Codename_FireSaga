@@ -1165,7 +1165,6 @@ void StatsMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *renderer) {
     Utilities_DrawColor_Reset(renderer);
 }
 
-
 void StatsMenu_Update(struct StatsMenu *stats_menu, struct n9Patch *n9patch,
                       SDL_Texture *rt, SDL_Renderer *renderer) {
     /* --- PRELIMINARIES --- */

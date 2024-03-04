@@ -26,7 +26,6 @@ typedef struct CombatAnimation { /* on Map */
 } CombatAnimation;
 extern struct CombatAnimation CombatAnimation_default;
 
-
 /* --- MapAnimation --- */
 // Blocks control (except to go faster)
 typedef struct MapAnimation {

@@ -154,7 +154,6 @@ void jsonio_writeJSON(s8 filename, void *struct_ptr, bool append) {
 
 }
 
-
 /* --- UTILITIES --- */
 /* -- Read -- */
 // TODO: rewrite with input cjson
@@ -666,6 +665,3 @@ void jsonio_Print(PHYSFS_file *fp, struct cJSON *_json) {
     /* Free buffer */
     cJSON_free(buffer);
 }
-
-
-

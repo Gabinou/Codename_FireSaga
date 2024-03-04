@@ -17,7 +17,6 @@
 #include "utilities.h"
 #include "combat.h"
 
-
 /* --- Enums --- */
 enum STATUSES {
     STATUS_DEFAULT_TURNS = 5,
@@ -38,6 +37,5 @@ i16  Unit_Status_Find(      struct Unit *u, i16 status);
 void Unit_Status_Remove(   struct Unit *u, i16 i);
 void Unit_Status_Decrement(struct Unit *u);
 i16  Unit_Status_Find_Turns(struct Unit *unit, i16 turns);
-
 
 #endif /* UNIT_STATUS_H */

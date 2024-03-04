@@ -10,7 +10,6 @@
 // Around a point, you can define four quadrants like so:  ----------|----------
 //                                                          BOTRIGHT | BOTLEFT
 
-
 // Around an object with size, you can define eight octants like so:
 /*    X -> BELOW        X -> EQUAL         X -> ABOVE                   */
 /*                    |             |                                   */
@@ -24,7 +23,6 @@
 /*                    |             |                                   */
 // Note: actual position of all objects is in top left corner (o)
 // Note: ... is 'SOTA_DIRECTION'
-
 
 /* --- Ternary logic --- */
 /* - Applications:                                                                      */

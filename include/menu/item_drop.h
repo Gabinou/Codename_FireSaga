@@ -10,7 +10,6 @@
 #include "n9patch.h"
 #include "nstr.h"
 
-
 /* Dropping backpack full when twohanding */
 // 1- Player gets choice of what to equip
 //      a- Player chooses to twohand a weapon
@@ -63,7 +62,6 @@ extern struct Point               idm_elem_pos      [IDM_ELEM_NUM];
 extern struct Point               idm_elem_box      [IDM_ELEM_NUM];
 extern struct Point               idm_cursor_pos    [IDM_ELEM_NUM];
 extern struct Point               idm_cursor_box    [IDM_ELEM_NUM];
-
 
 struct ItemDropMenu {
     b32 update;

@@ -39,7 +39,6 @@ void test_menu_loadout_select() {
 
     WeaponSelectMenu_Load_n9Patch(wsm, renderer, &n9patch);
 
-
     /* -- Create Unit -- */
     struct Unit Silou = Unit_default;
     Unit_Init(&Silou);
@@ -215,14 +214,12 @@ void test_menu_loadout_select() {
                                       "WeaponSelectMenu_RTopStrongNot_Usable1.png"), renderer,
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-
     /* --- Testing header drawing --- */
     wsm->unit->num_usable   = 4;
     LoadoutSelectMenu_Header_Set(wsm, "Drop 1 item for two-handing");
     LoadoutSelectMenu_Update(wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_Header.png"), renderer,
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
-
 
     /* --- FREE --- */
     PixelFont_Free(wsm->pixelnours,     true);

@@ -6,7 +6,6 @@
 #include "position.h"
 #include "nstr.h"
 
-
 /* --- FORWARD DECLARATIONS --- */
 struct Unit;
 
