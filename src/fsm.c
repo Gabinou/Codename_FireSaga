@@ -713,6 +713,8 @@ void fsm_eCrsMvs_sGmpMap(struct Game *sota, tnecs_entity mover_entity,
 
 void fsm_eCrsMvs_sPrep(struct Game *sota, tnecs_entity mover_entity,
                        struct Point *cursor_move) {
+    SDL_Log("fsm_eCrsMvs_sPrep");
+
     if (fsm_eCrsMvs_sPrep_ss[sota->substate] != NULL)
         fsm_eCrsMvs_sPrep_ss[sota->substate](sota, mover_entity, cursor_move);
 }
@@ -829,8 +831,7 @@ void fsm_eCrsMvd_sGmpMap(struct Game *sota, tnecs_entity mover_entity,
 
 void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
                                 struct Point *cursor_move) {
-    SDL_Log("fsm_eCrsMvd_sGmpMap_ssStby");
-    // getchar();
+
     // SDL_assert(sota->moved_direction > -1);
     SDL_assert(sota->entity_cursor != TNECS_NULL);
     struct Position *cursor_pos;
@@ -892,8 +893,7 @@ void fsm_eCrsMvd_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
 void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
                                  struct Point *cursor_pos) {
     /* --- Move cursor to next starting position on map --- */
-    SDL_Log("fsm_eCrsMvs_sPrep_ssMapCndt");
-    getchar();
+
 }
 
 void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity mover_entity,
@@ -1293,6 +1293,7 @@ void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
         default:
             SDL_assert(false);
             break;
+            break;
     }
 }
 
@@ -1304,6 +1305,9 @@ void fsm_eMenuLeft_sPrep_ssMenu(struct Game *sota) {
     /* --- Deployment Menu -> Starting Position --- */
     SDL_assert(sota->deployment_menu > TNECS_NULL);
     SDL_assert(sota->menu_stack[0] == sota->deployment_menu);
+
+    strncpy(sota->reason, "Change to map candidates", sizeof(sota->reason));
+    Game_subState_Set(sota, GAME_SUBSTATE_MAP_CANDIDATES, sota->reason);
 
     /* - Reset potential candidates - */
     sota->candidate     = 0;
@@ -1328,6 +1332,9 @@ void fsm_eMenuLeft_sPrep_ssMapCndt(struct Game *sota) {
     /* - Reset potential candidates - */
     sota->candidate     = 0;
     sota->candidates    = NULL;
+
+    strncpy(sota->reason, "Change to menu", sizeof(sota->reason));
+    Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
 
     /* - Focus on menu - */
     struct Menu *mc;
