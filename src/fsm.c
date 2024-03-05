@@ -21,7 +21,7 @@ fsm_eAcpt_s_t fsm_eAcpt_s[GAME_STATE_NUM] = {
     /* Scene_FMV */      NULL,
     /* Gameplay_Map */   &fsm_eAcpt_sGmpMap,
     /* Gameplay_Camp */  NULL,
-    /* Preparation */    &fsm_eAcpt_sGmpMap,
+    /* Preparation */    &fsm_eAcpt_sPrep,
     /* Title_Screen */   &fsm_eAcpt_sTtlScrn,
     /* Animation */      NULL,
 };
@@ -222,6 +222,20 @@ fsm_eAcpt_s_t fsm_eAcpt_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* SAVING */          NULL,
     /* STANDBY */         &fsm_eAcpt_sGmpMap_ssStby,
     /* MAP_CANDIDATES */  &fsm_eAcpt_sGmpMap_ssMapCndt,
+    /* CUTSCENE */        NULL,
+    /* MAP_ANIMATION */   NULL
+};
+
+fsm_eAcpt_s_t fsm_eAcpt_sPrep_ss[GAME_SUBSTATE_NUM] = {
+    /* NULL */            NULL,
+    /* MAP_MINIMAP */     NULL,
+    /* MENU */            &fsm_eAcpt_sGmpMap_ssMenu,
+    /* MAP_UNIT_MOVES */  NULL,
+    /* MAP_COMBAT */      NULL,
+    /* MAP_NPCTURN */     NULL,
+    /* SAVING */          NULL,
+    /* STANDBY */         NULL,
+    /* MAP_CANDIDATES */  &fsm_eAcpt_sPrep_ssMapCndt,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL
 };
@@ -713,7 +727,6 @@ void fsm_eCrsMvs_sGmpMap(struct Game *sota, tnecs_entity mover_entity,
 
 void fsm_eCrsMvs_sPrep(struct Game *sota, tnecs_entity mover_entity,
                        struct Point *cursor_move) {
-    SDL_Log("fsm_eCrsMvs_sPrep");
 
     if (fsm_eCrsMvs_sPrep_ss[sota->substate] != NULL)
         fsm_eCrsMvs_sPrep_ss[sota->substate](sota, mover_entity, cursor_move);
@@ -891,9 +904,31 @@ void fsm_eCrsMvd_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
 }
 
 void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
-                                 struct Point *cursor_pos) {
+                                 struct Point *nop) {
     /* --- Move cursor to next starting position on map --- */
+    // TODO: stop cursor moving so fast
 
+    tnecs_entity cursor = sota->entity_cursor;
+    struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, cursor, Position);
+    struct Slider *cursor_sl    = TNECS_GET_COMPONENT(sota->world, cursor, Slider);
+    struct Sprite *cursor_sp    = TNECS_GET_COMPONENT(sota->world, cursor, Sprite);
+
+    /* Actually move the cursor from cursor_move_data set by systemControl */
+    // Note: always on tilemap
+    int num_pos = DARR_NUM(sota->map->start_pos);
+    if ((sota->cursor_move.x > 0) || (sota->cursor_move.y > 0)) {
+        sota->candidate = sota->candidate <= 0 ? num_pos - 1 : sota->candidate - 1;
+    } else if ((sota->cursor_move.x < 0) || (sota->cursor_move.y < 0)) {
+        sota->candidate = sota->candidate >= (num_pos - 1) ? 0 : sota->candidate + 1;
+    }
+
+    struct Point next_pos = sota->map->start_pos[sota->candidate];
+    Position_Pos_Set(cursor_pos, next_pos.x, next_pos.y);
+
+    // Always on tilemap
+    Cursor_Target(cursor_sl, cursor_sp, cursor_pos);
+    sota->cursor_move.x = 0;
+    sota->cursor_move.y = 0;
 }
 
 void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity mover_entity,
@@ -975,10 +1010,13 @@ void fsm_eStart_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
 
 /* -- FSM: Input_Accept EVENT -- */
 void fsm_eAcpt_sGmpMap(struct Game *sota, tnecs_entity accepter) {
-    SDL_assert((sota->state == GAME_STATE_Gameplay_Map) ||
-               (sota->state == GAME_STATE_Preparation));
     if (fsm_eAcpt_sGmpMap_ss[sota->substate] != NULL)
         fsm_eAcpt_sGmpMap_ss[sota->substate](sota, accepter);
+}
+
+void fsm_eAcpt_sPrep(struct Game *sota, tnecs_entity accepter) {
+    if (fsm_eAcpt_sPrep_ss[sota->substate] != NULL)
+        fsm_eAcpt_sPrep_ss[sota->substate](sota, accepter);
 }
 
 void fsm_eAcpt_sTtlScrn(struct Game *sota, tnecs_entity accepter) {
@@ -1022,6 +1060,27 @@ void fsm_eAcpt_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
         Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
         Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->stats_menu, NULL);
     }
+}
+
+void fsm_eAcpt_sPrep_ssMapCndt(struct Game *sota, tnecs_entity accepter_entity) {
+    /* Select a unit on starting position, or move it */
+    if (sota->selected_unit_entity == TNECS_NULL) {
+        /* Unit was selected previously, exchange with currently selected tile */
+        struct Point newpos    = sota->map->start_pos[sota->candidate];
+
+        struct Position *old_position;
+        old_position = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Position);
+        struct Point oldpos = old_position->tilemap_pos;
+        Map_Unit_Swap(sota->map, oldpos.x, oldpos.y, newpos.x, newpos.y);
+
+        sota->selected_unit_entity = TNECS_NULL;
+    } else {
+        /* No unit was selected previously selecting */
+        struct Point pos = sota->map->start_pos[sota->candidate];
+        sota->selected_unit_entity = Map_Unit_Get(sota->map, pos.x, pos.y);
+
+    }
+
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu(struct Game *sota, tnecs_entity accepter_entity) {
@@ -1311,7 +1370,6 @@ void fsm_eMenuLeft_sPrep_ssMenu(struct Game *sota) {
 
     /* - Reset potential candidates - */
     sota->candidate     = 0;
-    sota->candidates    = NULL;
 
     /* - Focus on map - */
     struct Menu *mc;
@@ -1328,10 +1386,6 @@ void fsm_eMenuLeft_sPrep_ssMapCndt(struct Game *sota) {
     /* --- Starting Position -> Deployment Menu --- */
     SDL_assert(sota->deployment_menu > TNECS_NULL);
     SDL_assert(sota->menu_stack[0] == sota->deployment_menu);
-
-    /* - Reset potential candidates - */
-    sota->candidate     = 0;
-    sota->candidates    = NULL;
 
     strncpy(sota->reason, "Change to menu", sizeof(sota->reason));
     Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);

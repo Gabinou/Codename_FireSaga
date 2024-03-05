@@ -140,10 +140,14 @@ void fsm_eStart_sPrep_ssMenu(struct Game *sota, tnecs_entity ent);
 
 /* -- FSM: Input_Accept EVENT -- */
 extern fsm_eAcpt_s_t fsm_eAcpt_s[GAME_STATE_NUM];
+extern fsm_eAcpt_s_t fsm_eAcpt_sPrep_ss[GAME_SUBSTATE_NUM];
 extern fsm_eAcpt_s_t fsm_eAcpt_sGmpMap_ss[GAME_SUBSTATE_NUM];
 
+void fsm_eAcpt_sPrep(   struct Game *sota, tnecs_entity ent);
 void fsm_eAcpt_sGmpMap( struct Game *sota, tnecs_entity ent);
 void fsm_eAcpt_sTtlScrn(struct Game *sota, tnecs_entity ent);
+
+void fsm_eAcpt_sPrep_ssMapCndt( struct Game *sota, tnecs_entity ent);
 
 void fsm_eAcpt_sGmpMap_ssMenu(    struct Game *sota, tnecs_entity ent);
 void fsm_eAcpt_sGmpMap_ssStby(    struct Game *sota, tnecs_entity ent);

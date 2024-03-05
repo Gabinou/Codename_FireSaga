@@ -1332,7 +1332,8 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     killer->regrets = regrets > UINT8_MAX - REGRET_KILL ? UINT8_MAX : regrets + REGRET_KILL;
 
     /* --- Removing unit from map --- */
-    Map_Unit_Remove(sota->map, sota->world, victim_entity);
+    SDL_assert(sota->map->world == sota->world);
+    Map_Unit_Remove(sota->map, victim_entity);
 
     /* --- Making unit sprite invisible --- */
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, victim_entity, Sprite);

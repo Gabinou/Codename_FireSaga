@@ -279,8 +279,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_Log("-- put on map --");
         SDL_assert(sota->world->entity_typeflags[temp_unit_ent] == typeflag);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
-        Map_Unit_Put(sota->map, sota->world, position->tilemap_pos.x,
-                     position->tilemap_pos.y, temp_unit_ent);
+        Map_Unit_Put(sota->map, position->tilemap_pos.x, position->tilemap_pos.y, temp_unit_ent);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
 
         SDL_assert(unit->army == reinf->army);

@@ -276,7 +276,8 @@ void Game_putPConMap(struct Game *sota, i16 *unit_ids,
         SDL_assert(temp             != NULL);
         SDL_assert(temp->name.data  != NULL);
 
-        Map_Unit_Put(sota->map, sota->world, posarr[i].x, posarr[i].y, unit_ent);
+        SDL_assert(sota->map->world == sota->world);
+        Map_Unit_Put(sota->map,  posarr[i].x, posarr[i].y, unit_ent);
     }
 }
 

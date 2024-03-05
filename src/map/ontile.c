@@ -7,9 +7,21 @@ void Map_startingPos_Add(struct Map *map, i32 col, i32 row) {
     DARR_PUT(map->start_pos, pos);
 }
 
-void Map_Unit_Put(struct Map *map, tnecs_world *world, u8 col, u8 row,
-                  tnecs_entity entity) {
+void _Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
+    size_t index = row * map->col_len + col;
+
+    /* -- Updating unit pos -- */
+    struct Position *pos = TNECS_GET_COMPONENT(map->world, entity, Position);
+    pos->tilemap_pos.x   = col;
+    pos->tilemap_pos.y   = row;
+    pos->pixel_pos.x     = pos->tilemap_pos.x * pos->scale[0];
+    pos->pixel_pos.y     = pos->tilemap_pos.y * pos->scale[1];
+    map->unitmap[index]  = entity;
+}
+
+void Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
     SDL_Log("%lu", entity);
+    SDL_assert(map->world != NULL);
     SDL_assert(map->unitmap != NULL);
     SDL_assert((row < map->row_len) && (col < map->col_len));
     SDL_assert(entity);
@@ -17,25 +29,21 @@ void Map_Unit_Put(struct Map *map, tnecs_world *world, u8 col, u8 row,
     /* -- Preliminaries -- */
     tnecs_entity current = map->unitmap[row * map->col_len + col];
     SDL_assert(current == TNECS_NULL);
-
-    map->unitmap[row * map->col_len + col] = entity;
+    _Map_Unit_Put(map, col, row, entity);
     DARR_PUT(map->units_onfield, entity);
 
     /* -- Adding MapHPBar -- */
-    if (!TNECS_ENTITY_HASCOMPONENT(world, entity, MapHPBar)) {
-        TNECS_ADD_COMPONENT(world, entity, MapHPBar);
-        struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(world, entity, MapHPBar);
+    if (!TNECS_ENTITY_HASCOMPONENT(map->world, entity, MapHPBar)) {
+        TNECS_ADD_COMPONENT(map->world, entity, MapHPBar);
+        struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(map->world, entity, MapHPBar);
         *map_hp_bar = MapHPBar_default;
         map_hp_bar->unit_ent = entity;
         map_hp_bar->len = map->tilesize[0];
     }
 
     /* -- Updating unit pos -- */
-    struct Position *pos         = TNECS_GET_COMPONENT(world, entity, Position);
-    struct Unit     *temp_unit   = TNECS_GET_COMPONENT(world, entity, Unit);
-    struct Sprite   *temp_sprite = TNECS_GET_COMPONENT(world, entity, Sprite);
-    pos->tilemap_pos.x = col;
-    pos->tilemap_pos.y = row;
+    struct Unit     *temp_unit   = TNECS_GET_COMPONENT(map->world, entity, Unit);
+    struct Sprite   *temp_sprite = TNECS_GET_COMPONENT(map->world, entity, Sprite);
 
     if (temp_sprite != NULL)
         temp_sprite->visible = true;
@@ -70,8 +78,19 @@ void Map_Unit_Put(struct Map *map, tnecs_world *world, u8 col, u8 row,
     Map_addArmy(map, temp_unit->army);
 }
 
+void Map_Unit_Swap(struct Map *map, u8 old_col, u8 old_row, u8 new_col, u8 new_row) {
+    /* New position of unit should always be empty */
+    size_t old_i = old_row * map->col_len + old_col;
+    size_t new_i = new_row * map->col_len + new_col;
+    tnecs_entity unit_old = map->unitmap[old_i];
+    tnecs_entity unit_new = map->unitmap[new_i];
+
+    _Map_Unit_Put(map, new_col, new_row, unit_old);
+    _Map_Unit_Put(map, old_col, old_row, unit_new);
+}
+
 void Map_Unit_Move(struct Map *map, u8 col, u8 row, u8 new_col, u8 new_row) {
-    // Note: Does NOT check if [new_x, new_y] is empty.
+    /* Note: Does NOT check if [new_x, new_y] is empty. */
     SDL_assert(map->unitmap != NULL);
     SDL_assert(col      < map->col_len);
     SDL_assert(row      < map->row_len);
@@ -81,29 +100,20 @@ void Map_Unit_Move(struct Map *map, u8 col, u8 row, u8 new_col, u8 new_row) {
     /* New position of unit should always be empty */
     size_t old_i = row * map->col_len + col;
     size_t new_i = new_row * map->col_len + new_col;
-    SDL_assert(map->unitmap[new_i] == TNECS_NULL);
 
     /* -- Move unit on unitmap -- */
-    tnecs_entity unit = map->unitmap[old_i];
-    map->unitmap[new_i] = unit;
+    _Map_Unit_Put(map, new_col, new_row, map->unitmap[old_i]);
     map->unitmap[old_i] = TNECS_NULL;
-
-    /* -- Updating unit pos -- */
-    struct Position *pos = TNECS_GET_COMPONENT(map->world, unit, Position);
-    pos->tilemap_pos.x   = new_col;
-    pos->tilemap_pos.y   = new_row;
-    pos->pixel_pos.x     = pos->tilemap_pos.x * pos->scale[0];
-    pos->pixel_pos.y     = pos->tilemap_pos.y * pos->scale[1];
 }
 
-tnecs_entity *Map_Units_Get(struct Map *map, tnecs_world *world,  u8 army) {
+tnecs_entity *Map_Units_Get(struct Map *map, u8 army) {
     tnecs_entity *unit_ents = NULL;
     unit_ents = DARR_INIT(unit_ents, tnecs_entity, 16);
     tnecs_entity current_unit_ent;
     struct Unit *current_unit;
     for (u8 i = 0; i < DARR_NUM(map->units_onfield); i++) {
         current_unit_ent = map->units_onfield[i];
-        current_unit = TNECS_GET_COMPONENT(world, current_unit_ent, Unit);
+        current_unit = TNECS_GET_COMPONENT(map->world, current_unit_ent, Unit);
         if (current_unit->army == army)
             DARR_PUT(unit_ents, current_unit_ent);
     }
@@ -117,13 +127,13 @@ tnecs_entity Map_Unit_Get(struct Map *map, u8 col, u8 row) {
     return (map->unitmap[row * map->col_len + col]);
 }
 
-void Map_Breakable_onBroken(struct Map *map, tnecs_world *world, tnecs_entity breakable) {
+void Map_Breakable_onBroken(struct Map *map, tnecs_entity breakable) {
 }
 
-void Map_Door_onOpen(struct Map *map, tnecs_world *world, tnecs_entity door) {
+void Map_Door_onOpen(struct Map *map, tnecs_entity door) {
 }
 
-void Map_Chest_onOpen(struct Map *map, tnecs_world *world, tnecs_entity chest) {
+void Map_Chest_onOpen(struct Map *map, tnecs_entity chest) {
 }
 
 void Map_addArmy(struct Map *map, u8 army) {
@@ -187,21 +197,23 @@ void _Map_Unit_Remove_Map(struct Map *map, u8 col, u8 row) {
     map->unitmap[row * map->col_len + col] = 0;
 }
 
-void Map_Unit_Remove(struct Map *map, tnecs_world *world, tnecs_entity entity) {
+void Map_Unit_Remove(struct Map *map, tnecs_entity entity) {
+    SDL_assert(map->world   != NULL);
     SDL_assert(map->unitmap != NULL);
+
     /* --- Check that entity is really on map --- */
-    struct Position *pos = TNECS_GET_COMPONENT(world, entity, Position);
+    struct Position *pos = TNECS_GET_COMPONENT(map->world, entity, Position);
     SDL_assert(pos->onTilemap);
     int index = pos->tilemap_pos.y * map->col_len + pos->tilemap_pos.x;
     tnecs_entity ontile_ent = map->unitmap[index];
     SDL_assert(ontile_ent == entity);
 
-    struct Sprite *sprite = TNECS_GET_COMPONENT(world, entity, Sprite);
+    struct Sprite *sprite = TNECS_GET_COMPONENT(map->world, entity, Sprite);
     if (sprite != NULL)
         sprite->visible = false;
 
-    if (TNECS_ENTITY_HASCOMPONENT(world, entity, MapHPBar))
-        TNECS_REMOVE_COMPONENTS(world, entity, MapHPBar);
+    if (TNECS_ENTITY_HASCOMPONENT(map->world, entity, MapHPBar))
+        TNECS_REMOVE_COMPONENTS(map->world, entity, MapHPBar);
 
     /* --- Check that entity is really on map --- */
     map->unitmap[index] = 0;
