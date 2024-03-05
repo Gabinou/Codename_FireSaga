@@ -693,8 +693,8 @@ void fsm_eCncl_sGmpMap_ssMapNPC(struct Game *sota, tnecs_entity canceller) {
 // -- FSM: CURSOR_MOVES EVENT --
 void fsm_eCrsMvs_sGmpMap(struct Game *sota, tnecs_entity mover_entity,
                          struct Point *cursor_move) {
-    if (fsm_eCrsMvs_sGmpMap_ss[sota->state] != NULL)
-        fsm_eCrsMvs_sGmpMap_ss[sota->state](sota, mover_entity, cursor_move);
+    if (fsm_eCrsMvs_sGmpMap_ss[sota->substate] != NULL)
+        fsm_eCrsMvs_sGmpMap_ss[sota->substate](sota, mover_entity, cursor_move);
 }
 
 void fsm_eCrsMvs_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
@@ -810,7 +810,8 @@ void fsm_eCrsMvd_sGmpMap(struct Game *sota, tnecs_entity mover_entity,
 
 void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
                                 struct Point *cursor_move) {
-
+    SDL_Log("fsm_eCrsMvd_sGmpMap_ssStby");
+    // getchar();
     // SDL_assert(sota->moved_direction > -1);
     SDL_assert(sota->entity_cursor != TNECS_NULL);
     struct Position *cursor_pos;
@@ -824,6 +825,7 @@ void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
     // NOTE: unit_entity_previoustile might be different than selected_unit_entity
     //     because
     tnecs_entity ontile = sota->map->unitmap[current_i];
+
     /* unit hovering/dehovering */
     if (unit_entity_previoustile != TNECS_NULL) {
         *data1_entity = unit_entity_previoustile;
