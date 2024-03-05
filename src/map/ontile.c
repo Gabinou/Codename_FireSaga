@@ -85,8 +85,10 @@ void Map_Unit_Swap(struct Map *map, u8 old_col, u8 old_row, u8 new_col, u8 new_r
     tnecs_entity unit_old = map->unitmap[old_i];
     tnecs_entity unit_new = map->unitmap[new_i];
 
-    _Map_Unit_Put(map, new_col, new_row, unit_old);
-    _Map_Unit_Put(map, old_col, old_row, unit_new);
+    if (unit_old != TNECS_NULL)
+        _Map_Unit_Put(map, new_col, new_row, unit_old);
+    if (unit_new != TNECS_NULL)
+        _Map_Unit_Put(map, old_col, old_row, unit_new);
 }
 
 void Map_Unit_Move(struct Map *map, u8 col, u8 row, u8 new_col, u8 new_row) {

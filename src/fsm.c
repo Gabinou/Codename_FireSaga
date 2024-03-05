@@ -1064,21 +1064,23 @@ void fsm_eAcpt_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
 
 void fsm_eAcpt_sPrep_ssMapCndt(struct Game *sota, tnecs_entity accepter_entity) {
     /* Select a unit on starting position, or move it */
-    if (sota->selected_unit_entity == TNECS_NULL) {
+    if (sota->selected_unit_entity != TNECS_NULL) {
         /* Unit was selected previously, exchange with currently selected tile */
         struct Point newpos    = sota->map->start_pos[sota->candidate];
 
         struct Position *old_position;
         old_position = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Position);
+        SDL_assert(old_position != NULL);
         struct Point oldpos = old_position->tilemap_pos;
         Map_Unit_Swap(sota->map, oldpos.x, oldpos.y, newpos.x, newpos.y);
 
         sota->selected_unit_entity = TNECS_NULL;
+        // TODO deal with menu
+
     } else {
         /* No unit was selected previously selecting */
         struct Point pos = sota->map->start_pos[sota->candidate];
         sota->selected_unit_entity = Map_Unit_Get(sota->map, pos.x, pos.y);
-
     }
 
 }
