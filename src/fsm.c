@@ -1073,7 +1073,6 @@ void fsm_eAcpt_sPrep_ssMapCndt(struct Game *sota, tnecs_entity accepter_entity) 
     struct Menu *mc;
     mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
     SDL_assert(mc != NULL);
-    mc->visible = true;
     struct DeploymentMenu *dm = mc->data;
     SDL_assert(dm != NULL);
 
@@ -1093,15 +1092,14 @@ void fsm_eAcpt_sPrep_ssMapCndt(struct Game *sota, tnecs_entity accepter_entity) 
         size_t new_index = newpos.y * sota->map->col_len + newpos.x;
         Map_Unit_Swap(sota->map, oldpos.x, oldpos.y, newpos.x, newpos.y);
         i32 old_pos_i = DeploymentMenu_Map_Find_Pos(dm, sota->map, oldpos.x, oldpos.y);
-        DeploymentMenu_Map_Swap(dm, new_pos_i, old_pos_i);
 
-        // TODO: Swap DM indices too
+        if (new_pos_i != old_pos_i)
+            DeploymentMenu_Map_Swap(dm, new_pos_i, old_pos_i);
 
         SDL_assert(sota->map->unitmap[new_index] == old_ent);
         SDL_assert(sota->map->unitmap[old_index] == new_ent);
 
         sota->selected_unit_entity = TNECS_NULL;
-        // TODO deal with menu
 
     } else {
         /* No unit was selected previously selecting */

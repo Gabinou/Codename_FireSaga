@@ -753,6 +753,7 @@ i32 DeploymentMenu_Map_Find_Pos(struct DeploymentMenu *dm, struct Map *map,
 }
 
 void DeploymentMenu_Map_Swap(struct DeploymentMenu *dm, i32 i1, i32 i2) {
+    SDL_assert(dm->_start_pos_i != NULL);
     i32 pos1 = dm->_start_pos_i[i1];
     i32 pos2 = dm->_start_pos_i[i2];
     dm->_start_pos_i[i1] = pos2;

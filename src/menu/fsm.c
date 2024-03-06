@@ -748,7 +748,9 @@ void fsm_eAcpt_sGmpMap_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
     i16 unit_id = dm->_party_id_stack[dm_order];
     SDL_assert(Unit_ID_Valid(unit_id));
     // TODO: get start_pos_order from dm_order with list in map
-    struct Point pos = sota->map->start_pos[dm_order];
+
+    i32 start_pos_i = DeploymentMenu_Map_StartPos(dm, dm_order);
+    struct Point pos = sota->map->start_pos[start_pos_i];
 
     if (sota->units_loaded[unit_id] <= TNECS_NULL)
         Game_Party_Entity_Create(sota, unit_id, pos);
@@ -1147,12 +1149,6 @@ void fsm_eStart_sPrep_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
 
     /* -- Place units in deployment slots on map -- */
     struct DeploymentMenu *dm = mc->data;
-
-    // i16 *unit_inds = DARR_INIT(unit_inds, i16, 16);
-    // DeploymentMenu_Selection(dm, unit_inds);
-    // // TODO: to everytime a selection is made
-    // Game_putPConMap(sota, unit_inds, sota->map->start_pos, dm->_selected_num);
-    // DARR_FREE(unit_inds);
 
     /* -- Load map -- */
     Game_PopUp_Tile_Create(sota);
