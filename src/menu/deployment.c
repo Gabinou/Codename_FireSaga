@@ -749,7 +749,7 @@ i32 DeploymentMenu_Map_Find_Pos(struct DeploymentMenu *dm, struct Map *map,
         }
     }
     SDL_assert((out >= 0) && (out < dm->select_max));
-    return (out);
+    return (DeploymentMenu_Map_StartPos(dm, out));
 }
 
 void DeploymentMenu_Map_Swap(struct DeploymentMenu *dm, i32 i1, i32 i2) {

@@ -30,7 +30,6 @@ void Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
 
     /* -- Preliminaries -- */
     tnecs_entity current = map->unitmap[row * map->col_len + col];
-    SDL_assert(current == TNECS_NULL);
     _Map_Unit_Put(map, col, row, entity);
     DARR_PUT(map->units_onfield, entity);
 
