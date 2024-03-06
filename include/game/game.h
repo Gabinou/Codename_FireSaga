@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include "unit/unit.h"
+#include "credits.h"
 #include "index_shader.h"
 #include "narrative.h"
 #include "enums.h"
