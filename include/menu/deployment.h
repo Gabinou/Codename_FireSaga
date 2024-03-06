@@ -197,6 +197,7 @@ struct DeploymentMenu {
     b32 update;
     struct Point pos;        /* [pixels] */
     i16 *_party_id_stack;    /* Same size as party */
+    i16 *_start_pos_i;       /* Same size as map start_pos */
     b32 *_selected;          /* Same size as party */
     i32  _selected_num;
     i32  _party_size;
@@ -229,8 +230,11 @@ void DeploymentMenu_Free(struct DeploymentMenu *dm);
 void DeploymentMenu_Load(struct DeploymentMenu *dm, SDL_Renderer *renderer,
                          struct n9Patch *n9patch);
 
-void DeploymentMenu_Party_Set(struct DeploymentMenu *dm, struct Unit *p, i16 *pi, i32 n);
-void DeploymentMenu_Map_Set(struct DeploymentMenu *dm, struct Map *map);
+void DeploymentMenu_Map_Set(     struct DeploymentMenu *dm, struct Map *map);
+void DeploymentMenu_Map_Swap(    struct DeploymentMenu *dm, i32 i1, i32 i2);
+void DeploymentMenu_Party_Set(   struct DeploymentMenu *dm, struct Unit *p, i16 *pi, i32 n);
+i32  DeploymentMenu_Map_StartPos(struct DeploymentMenu *dm, i32 candidate);
+i32  DeploymentMenu_Map_Find_Pos(struct DeploymentMenu *dm, struct Map *map, u8 c, u8 r);
 
 /* --- Utility --- */
 void _DeploymentMenu_Selected_Num(struct DeploymentMenu *dm);

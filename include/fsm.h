@@ -11,6 +11,7 @@
 #include "game/unit.h"
 #include "menu/menu.h"
 #include "menu/fsm.h"
+#include "types.h"
 #include "tnecs.h"
 #include "unit/unit.h"
 #include "slider.h"

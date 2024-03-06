@@ -910,8 +910,8 @@ void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
 
     tnecs_entity cursor = sota->entity_cursor;
     struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, cursor, Position);
-    struct Slider *cursor_sl    = TNECS_GET_COMPONENT(sota->world, cursor, Slider);
-    struct Sprite *cursor_sp    = TNECS_GET_COMPONENT(sota->world, cursor, Sprite);
+    struct Slider   *cursor_sl  = TNECS_GET_COMPONENT(sota->world, cursor, Slider);
+    struct Sprite   *cursor_sp  = TNECS_GET_COMPONENT(sota->world, cursor, Sprite);
 
     /* Actually move the cursor from cursor_move_data set by systemControl */
     // Note: always on tilemap
@@ -922,7 +922,12 @@ void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
         sota->candidate = sota->candidate >= (num_pos - 1) ? 0 : sota->candidate + 1;
     }
 
-    struct Point next_pos = sota->map->start_pos[sota->candidate];
+    struct Menu *mc;
+    mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
+    struct DeploymentMenu *dm = mc->data;
+    SDL_assert(dm != NULL);
+    i32 start_pos_i = DeploymentMenu_Map_StartPos(dm, sota->candidate);
+    struct Point next_pos = sota->map->start_pos[start_pos_i];
     Position_Pos_Set(cursor_pos, next_pos.x, next_pos.y);
 
     // Always on tilemap
@@ -1064,22 +1069,44 @@ void fsm_eAcpt_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
 
 void fsm_eAcpt_sPrep_ssMapCndt(struct Game *sota, tnecs_entity accepter_entity) {
     /* Select a unit on starting position, or move it */
+    SDL_assert(sota->deployment_menu > TNECS_NULL);
+    struct Menu *mc;
+    mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
+    SDL_assert(mc != NULL);
+    mc->visible = true;
+    struct DeploymentMenu *dm = mc->data;
+    SDL_assert(dm != NULL);
+
     if (sota->selected_unit_entity != TNECS_NULL) {
         /* Unit was selected previously, exchange with currently selected tile */
-        struct Point newpos    = sota->map->start_pos[sota->candidate];
+        i32 new_pos_i = DeploymentMenu_Map_StartPos(dm, sota->candidate);
+        struct Point newpos    = sota->map->start_pos[new_pos_i];
 
         struct Position *old_position;
         old_position = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Position);
         SDL_assert(old_position != NULL);
-        struct Point oldpos = old_position->tilemap_pos;
+        struct Point oldpos  = old_position->tilemap_pos;
+        tnecs_entity old_ent = Map_Unit_Get(sota->map, oldpos.x, oldpos.y);
+        tnecs_entity new_ent = Map_Unit_Get(sota->map, newpos.x, newpos.y);
+
+        size_t old_index = oldpos.y * sota->map->col_len + oldpos.x;
+        size_t new_index = newpos.y * sota->map->col_len + newpos.x;
         Map_Unit_Swap(sota->map, oldpos.x, oldpos.y, newpos.x, newpos.y);
+        i32 old_pos_i = DeploymentMenu_Map_Find_Pos(dm, sota->map, oldpos.x, oldpos.y);
+        DeploymentMenu_Map_Swap(dm, new_pos_i, old_pos_i);
+
+        // TODO: Swap DM indices too
+
+        SDL_assert(sota->map->unitmap[new_index] == old_ent);
+        SDL_assert(sota->map->unitmap[old_index] == new_ent);
 
         sota->selected_unit_entity = TNECS_NULL;
         // TODO deal with menu
 
     } else {
         /* No unit was selected previously selecting */
-        struct Point pos = sota->map->start_pos[sota->candidate];
+        i32 start_pos_i = DeploymentMenu_Map_StartPos(dm, sota->candidate);
+        struct Point pos = sota->map->start_pos[start_pos_i];
         sota->selected_unit_entity = Map_Unit_Get(sota->map, pos.x, pos.y);
     }
 
@@ -1397,11 +1424,7 @@ void fsm_eMenuLeft_sPrep_ssMapCndt(struct Game *sota) {
     mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
     mc->visible = true;
 
-    // struct DeploymentMenu *dm = mc->data;
-    // dm->visible = false;
-
     Game_cursorFocus_onMenu(sota);
 
     /* - Place cursor on dm->elem == map candidate - */
-
 }

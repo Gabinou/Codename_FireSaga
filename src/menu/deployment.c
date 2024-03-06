@@ -86,6 +86,7 @@ struct DeploymentMenu DeploymentMenu_default = {
 
     .party              = NULL,
     ._party_id_stack    = NULL,
+    ._start_pos_i       = NULL,
     ._selected          = NULL,
     .map                = NULL,
     .font_wpns          = NULL,
@@ -677,6 +678,10 @@ void DeploymentMenu_Free(struct DeploymentMenu *dm) {
         SDL_free(dm->_selected);
         dm->_selected = NULL;
     }
+    if (dm->_start_pos_i != NULL) {
+        SDL_free(dm->_start_pos_i);
+        dm->_start_pos_i = NULL;
+    }
 
     if (dm != NULL) {
         SDL_free(dm);
@@ -734,11 +739,44 @@ void DeploymentMenu_Load(struct DeploymentMenu *dm, SDL_Renderer *renderer,
     SDL_assert(dm->texture_dude);
 }
 
+i32 DeploymentMenu_Map_Find_Pos(struct DeploymentMenu *dm, struct Map *map,
+                                u8 col, u8 row) {
+    i32 out = -1;
+    for (int i = 0; i < dm->select_max; i++) {
+        if ((col == map->start_pos[i].x) && (row == map->start_pos[i].y)) {
+            out = i;
+            break;
+        }
+    }
+    SDL_assert((out >= 0) && (out < dm->select_max));
+    return (out);
+}
+
+void DeploymentMenu_Map_Swap(struct DeploymentMenu *dm, i32 i1, i32 i2) {
+    i32 pos1 = dm->_start_pos_i[i1];
+    i32 pos2 = dm->_start_pos_i[i2];
+    dm->_start_pos_i[i1] = pos2;
+    dm->_start_pos_i[i2] = pos1;
+}
+
+i32  DeploymentMenu_Map_StartPos(struct DeploymentMenu *dm, i32 candidate) {
+    SDL_assert(dm->_start_pos_i != NULL);
+    SDL_assert(candidate < dm->select_max);
+    return (dm->_start_pos_i[candidate]);
+}
+
 void DeploymentMenu_Map_Set(struct DeploymentMenu *dm, struct Map *map) {
     SDL_assert(map              != NULL);
     SDL_assert(map->start_pos   != NULL);
     dm->select_max = DARR_NUM(map->start_pos);
     SDL_assert(dm->select_max > 0);
+
+    if (dm->_start_pos_i != NULL)
+        SDL_free(dm->_start_pos_i);
+
+    dm->_start_pos_i = SDL_malloc(dm->select_max * sizeof(*dm->_start_pos_i));
+    for (int i = 0; i < dm->select_max; i++)
+        dm->_start_pos_i[i] = i;
 }
 
 void DeploymentMenu_Party_Set(struct DeploymentMenu *dm, struct Unit *party,
