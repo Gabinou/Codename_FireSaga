@@ -712,18 +712,6 @@ void fsm_eCncl_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
 
 }
 
-void fsm_eCncl_sPrep_ssMenu_mSM(struct Game *sota, struct Menu *mc) {
-    /* -- Destroy stats menu and go back to selecting map candidates -- */
-    /*  candidates get switched between maps starting positions */
-    bool destroy = false;
-    tnecs_entity menu_popped_entity = Game_menuStack_Pop(sota, destroy);
-    SDL_assert(menu_popped_entity > 0);
-
-    i8 new_substate = GAME_SUBSTATE_MAP_CANDIDATES;
-    strncpy(sota->reason, "Stop showing stats menu during prep", sizeof(sota->reason));
-    Game_subState_Set(sota, new_substate, sota->reason);
-}
-
 void fsm_eCncl_sGmpMap_ssMenu_mSM(struct Game *sota, struct Menu *mc) {
     /* -- Destroy stats menu and go back to standby -- */
     bool destroy = false;
@@ -733,7 +721,6 @@ void fsm_eCncl_sGmpMap_ssMenu_mSM(struct Game *sota, struct Menu *mc) {
     i8 new_substate = GAME_SUBSTATE_STANDBY;
     strncpy(sota->reason, "Stops showing stats menu during gameplay", sizeof(sota->reason));
     Game_subState_Set(sota, new_substate, sota->reason);
-
 }
 
 /* --- fsm_eAcpt_sGmpMap_ssMenu_m --- */

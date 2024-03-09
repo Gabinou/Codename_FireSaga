@@ -617,7 +617,8 @@ void fsm_eCncl_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
 }
 
 void fsm_eCncl_sPrep_ssMapCndt( struct Game *sota, tnecs_entity ent) {
-    /* Go back to DM (deployment menu) */
+    /* --- Starting Position -> Deployment Menu --- */
+    fsm_eMenuLeft_sPrep_ssMapCndt(sota);
 }
 
 void fsm_eCncl_sPrep(struct Game *sota, tnecs_entity canceller) {
@@ -1474,11 +1475,10 @@ void fsm_eMenuLeft_sPrep_ssMapCndt(struct Game *sota) {
     Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
 
     /* - Focus on menu - */
+    Game_DeploymentMenu_Enable(sota);
     struct Menu *mc;
     mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
     mc->visible = true;
-
-    Game_DeploymentMenu_Enable(sota);
     Game_cursorFocus_onMenu(sota);
 
     /* - Place cursor on dm->elem == map candidate - */
