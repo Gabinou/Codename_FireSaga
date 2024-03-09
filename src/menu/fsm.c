@@ -32,7 +32,7 @@ fsm_menu_t fsm_eStart_sPrep_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_WEAPON_SELECT  */  NULL,
     /* MENU_TYPE_STAFF_SELECT  */   NULL,
     /* MENU_TYPE_ITEM_SELECT  */    NULL,
-    /* MENU_TYPE_STATS */           NULL,
+    /* MENU_TYPE_STATS */           &fsm_eStart_sPrep_ssMenu_mSM,
     /* MENU_TYPE_RESCUE */          NULL,
     /* MENU_TYPE_SUPPORTS */        NULL,
     /* MENU_TYPE_GROWTHS */         NULL,
@@ -1137,6 +1137,11 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
 }
 
 /* event_Input_Start */
+void fsm_eStart_sPrep_ssMenu_mSM(struct Game *sota, struct Menu *mc) {
+    /* --- Start battle? --- */
+
+}
+
 void fsm_eStart_sPrep_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
     /* --- Start battle --- */
 

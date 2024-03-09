@@ -45,7 +45,7 @@ fsm_eCncl_s_t fsm_eCncl_s[GAME_STATE_NUM] = {
     /* Scene_FMV */      NULL,
     /* Gameplay_Map */   &fsm_eCncl_sGmpMap,
     /* Gameplay_Camp */  NULL,
-    /* Preparation */    NULL,
+    /* Preparation */    &fsm_eCncl_sPrep,
     /* Title_Screen */   NULL,
     /* Animation */      NULL,
 };
@@ -572,6 +572,10 @@ void fsm_eCrsDeHvUnit_ssMapCndt(struct Game *sota, tnecs_entity dehov_ent) {
 }
 
 // -- FSM: INPUT_CANCEL EVENT --
+void fsm_eCncl_sPrep(struct Game *sota, tnecs_entity canceller) {
+
+}
+
 void fsm_eCncl_sGmpMap(struct Game *sota, tnecs_entity canceller) {
     if (fsm_eCncl_sGmpMap_ss[sota->substate] != NULL)
         fsm_eCncl_sGmpMap_ss[sota->substate](sota, canceller);
@@ -1207,7 +1211,6 @@ void fsm_eAcpt_sGmpMap_ssMapNPC(struct Game *sota, tnecs_entity accepter_entity)
 
 /* Input_Stats */
 void fsm_eStats_ssStby(struct Game *sota, tnecs_entity accepter) {
-
     SDL_assert(sota->entity_cursor);
     struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     SDL_assert(cursor_pos != NULL);

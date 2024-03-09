@@ -164,6 +164,7 @@ extern fsm_eCncl_s_t  fsm_eCncl_s[GAME_STATE_NUM];
 extern fsm_eCncl_sGmpMap_ss_t fsm_eCncl_sGmpMap_ss[GAME_SUBSTATE_NUM];
 
 void fsm_eCncl_sGmpMap(struct Game *sota, tnecs_entity ent);
+void fsm_eCncl_sPrep(struct Game *sota, tnecs_entity ent);
 
 void fsm_eCncl_sGmpMap_ssMenu(    struct Game *sota, tnecs_entity ent);
 void fsm_eCncl_sGmpMap_ssStby(    struct Game *sota, tnecs_entity ent);
