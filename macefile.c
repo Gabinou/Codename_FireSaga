@@ -169,8 +169,7 @@ struct Target l2w_sota = {
                 "second_party/parg,second_party/nourstest,"
                 "third_party/physfs,third_party/tinymt," 
                 "third_party/stb,third_party/cJson,"
-                "/usr/local/x86_64-w64-mingw32/include,"
-                "/usr/local/lib/tcc/win32/include,",
+                "/usr/local/x86_64-w64-mingw32/include",
     .sources  = "src,src/bars/,src/menu/,src/popup/,"
                 "src/systems/,src/game/,src/map/,src/unit/,"
                 "src/controller/",
