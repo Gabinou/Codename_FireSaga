@@ -184,7 +184,6 @@ void fsm_cFrame_sGmpMap_ssMapCndt(struct Game *sota) {
 
 void fsm_cFrame_sPrep_ssMapCndt(struct Game *sota) {
     SDL_Log("fsm_cFrame_sPrep_ssMapCndt");
-    getchar();
     Game_Cursor_Next_Candidate(sota);
 }
 
@@ -215,8 +214,8 @@ void fsm_cFrame_sGmpCamp(struct Game *sota) {
 }
 
 void fsm_cFrame_sPrep(struct Game *sota) {
-
-    fsm_cFrame_sPrep_ss[sota->substate](sota);
+    if (fsm_cFrame_sPrep_ss[sota->substate] != NULL)
+        fsm_cFrame_sPrep_ss[sota->substate](sota);
 }
 
 void fsm_cFrame_sTtlScrn(struct Game *sota) {

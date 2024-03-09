@@ -322,15 +322,14 @@ void Game_Cursor_Move_toCandidate(struct Game *sota) {
 }
 
 void Game_Cursor_Next_Candidate(struct Game *sota) {
-    tnecs_entity menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     Game_Cursor_Moves_Straight(sota);
     bool skip = ((sota->cursor_move.x == 0) && (sota->cursor_move.y == 0));
-    skip |= (menu == TNECS_NULL);
-    // TODO: move functionality to event?
-    if (!skip)
-        Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moves, &sota->cursor_move,
-                   &sota->controller_code);
 
+    if (skip)
+        return;
+
+    Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moves, &sota->cursor_move,
+               &sota->controller_code);
 }
 
 void Game_Cursor_Moves_onMap(struct Game *sota) {
