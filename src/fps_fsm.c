@@ -42,7 +42,7 @@ fsm_main_t fsm_cFrame_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
 fsm_main_t fsm_cFrame_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* GAME_SUBSTATE_START          */ NULL,
     /* GAME_SUBSTATE_MAP_MINIMAP    */ NULL,
-    /* GAME_SUBSTATE_MENU           */ NULL,
+    /* GAME_SUBSTATE_MENU           */ &fsm_cFrame_sGmpMap_ssMenu,
     /* GAME_SUBSTATE_MAP_UNIT_MOVES */ NULL,
     /* GAME_SUBSTATE_MAP_COMBAT     */ NULL,
     /* GAME_SUBSTATE_MAP_NPCTURN    */ NULL,
@@ -183,7 +183,6 @@ void fsm_cFrame_sGmpMap_ssMapCndt(struct Game *sota) {
 }
 
 void fsm_cFrame_sPrep_ssMapCndt(struct Game *sota) {
-    SDL_Log("fsm_cFrame_sPrep_ssMapCndt");
     Game_Cursor_Next_Candidate(sota);
 }
 

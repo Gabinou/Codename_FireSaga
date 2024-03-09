@@ -780,9 +780,6 @@ void fsm_eCrsMvs_sGmpMap(struct Game *sota, tnecs_entity mover_entity,
 
 void fsm_eCrsMvs_sPrep(struct Game *sota, tnecs_entity mover_entity,
                        struct Point *cursor_move) {
-    SDL_Log("fsm_eCrsMvs_sPrep");
-    SDL_Log("sota->substate %d %d", sota->substate, GAME_SUBSTATE_MAP_CANDIDATES);
-    getchar();
     if (fsm_eCrsMvs_sPrep_ss[sota->substate] != NULL)
         fsm_eCrsMvs_sPrep_ss[sota->substate](sota, mover_entity, cursor_move);
 }
@@ -962,8 +959,6 @@ void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game  *sota, tnecs_entity mover_entity,
                                  struct Point *nope) {
     /* --- Move cursor to next starting position on map --- */
     // TODO: stop cursor moving so fast
-    SDL_Log("fsm_eCrsMvs_sPrep_ssMapCndt");
-    getchar();
 
     tnecs_entity cursor = sota->entity_cursor;
     struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, cursor, Position);
