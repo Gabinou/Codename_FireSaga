@@ -780,7 +780,9 @@ void fsm_eCrsMvs_sGmpMap(struct Game *sota, tnecs_entity mover_entity,
 
 void fsm_eCrsMvs_sPrep(struct Game *sota, tnecs_entity mover_entity,
                        struct Point *cursor_move) {
-
+    SDL_Log("fsm_eCrsMvs_sPrep");
+    SDL_Log("sota->substate %d %d", sota->substate, GAME_SUBSTATE_MAP_CANDIDATES);
+    getchar();
     if (fsm_eCrsMvs_sPrep_ss[sota->substate] != NULL)
         fsm_eCrsMvs_sPrep_ss[sota->substate](sota, mover_entity, cursor_move);
 }
@@ -956,10 +958,12 @@ void fsm_eCrsMvd_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
 
 }
 
-void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
-                                 struct Point *nop) {
+void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game  *sota, tnecs_entity mover_entity,
+                                 struct Point *nope) {
     /* --- Move cursor to next starting position on map --- */
     // TODO: stop cursor moving so fast
+    SDL_Log("fsm_eCrsMvs_sPrep_ssMapCndt");
+    getchar();
 
     tnecs_entity cursor = sota->entity_cursor;
     struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, cursor, Position);
@@ -1462,8 +1466,8 @@ void fsm_eMenuLeft_sPrep_ssMenu(struct Game *sota) {
     mc->visible = false;
 
     Game_cursorFocus_onMap(sota);
-
     /* - Set candidates starting positions to dm - */
+    SDL_assert(sota->state == GAME_STATE_Preparation);
 }
 
 void fsm_eMenuLeft_sPrep_ssMapCndt(struct Game *sota) {
@@ -1483,4 +1487,5 @@ void fsm_eMenuLeft_sPrep_ssMapCndt(struct Game *sota) {
     Game_cursorFocus_onMenu(sota);
 
     /* - Place cursor on dm->elem == map candidate - */
+    SDL_assert(sota->state == GAME_STATE_Preparation);
 }

@@ -295,7 +295,7 @@ void Game_CursorfollowsMouse_onMap(struct Game *sota) {
 
 }
 void Game_Cursor_Moves_onMenu(struct Game *sota) {
-    // For basically all states except Gameplay_map.standby
+    /* For basically all states except Gameplay_map.standby */
     tnecs_entity menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     Game_Cursor_Moves_Straight(sota);
     bool skip = ((sota->cursor_move.x == 0) && (sota->cursor_move.y == 0));

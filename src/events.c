@@ -128,6 +128,8 @@ void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity mover_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(mover_entity > 0);
     SDL_assert(userevent->user.data1 != NULL);
+    SDL_Log("receive_event_Cursor_Moves");
+    getchar();
 
     /* Ignore event if cursor_move direction is wrong */
     sota->moved_direction = Ternary_Direction(sota->cursor_move);

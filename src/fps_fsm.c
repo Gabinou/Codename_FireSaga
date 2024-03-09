@@ -8,7 +8,7 @@ fsm_main_t fsm_cFrame_s[GAME_STATE_NUM] = {
     /* GAME_STATE_Scene_FMV     */ &fsm_cFrame_sScnFMV,
     /* GAME_STATE_Gameplay_Map  */ &fsm_cFrame_sGmpMap,
     /* GAME_STATE_Gameplay_Camp */ &fsm_cFrame_sGmpCamp,
-    /* GAME_STATE_Preparation   */ &fsm_cFrame_sGmpMap,
+    /* GAME_STATE_Preparation   */ &fsm_cFrame_sPrep,
     /* GAME_STATE_Title_Screen  */ &fsm_cFrame_sTtlScrn,
     /* GAME_STATE_Animation     */ NULL
 };
@@ -37,6 +37,20 @@ fsm_main_t fsm_cFrame_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* GAME_SUBSTATE_MAP_CANDIDATES */ &fsm_cFrame_sGmpMap_ssMapCndt,
     /* GAME_SUBSTATE_CUTSCENE       */ NULL,
     /* GAME_SUBSTATE_MAP_ANIMATION  */ &fsm_cFrame_sGmpMap_ssMapAnim,
+};
+
+fsm_main_t fsm_cFrame_sPrep_ss[GAME_SUBSTATE_NUM] = {
+    /* GAME_SUBSTATE_START          */ NULL,
+    /* GAME_SUBSTATE_MAP_MINIMAP    */ NULL,
+    /* GAME_SUBSTATE_MENU           */ NULL,
+    /* GAME_SUBSTATE_MAP_UNIT_MOVES */ NULL,
+    /* GAME_SUBSTATE_MAP_COMBAT     */ NULL,
+    /* GAME_SUBSTATE_MAP_NPCTURN    */ NULL,
+    /* GAME_SUBSTATE_SAVING         */ NULL,
+    /* GAME_SUBSTATE_STANDBY        */ NULL,
+    /* GAME_SUBSTATE_MAP_CANDIDATES */ &fsm_cFrame_sPrep_ssMapCndt,
+    /* GAME_SUBSTATE_CUTSCENE       */ NULL,
+    /* GAME_SUBSTATE_MAP_ANIMATION  */ NULL,
 };
 
 /* --- CONTROL ---*/
@@ -168,6 +182,12 @@ void fsm_cFrame_sGmpMap_ssMapCndt(struct Game *sota) {
     Game_Cursor_Next_Candidate(sota);
 }
 
+void fsm_cFrame_sPrep_ssMapCndt(struct Game *sota) {
+    SDL_Log("fsm_cFrame_sPrep_ssMapCndt");
+    getchar();
+    Game_Cursor_Next_Candidate(sota);
+}
+
 /* Map animation for units fighting on map */
 void fsm_cFrame_sGmpMap_ssMapAnim(struct Game *sota) {
     // Should do nothing, animation is a system
@@ -191,9 +211,12 @@ void fsm_cFrame_sGmpMap(struct Game *sota) {
 }
 
 void fsm_cFrame_sGmpCamp(struct Game *sota) {
+
 }
 
 void fsm_cFrame_sPrep(struct Game *sota) {
+
+    fsm_cFrame_sPrep_ss[sota->substate](sota);
 }
 
 void fsm_cFrame_sTtlScrn(struct Game *sota) {

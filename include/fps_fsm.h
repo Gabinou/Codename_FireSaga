@@ -59,6 +59,9 @@ void fsm_cFrame_sGmpMap_ssMapAnim(  struct Game *sota);
 void fsm_cFrame_sGmpMap_ssMapCndt(  struct Game *sota);
 void fsm_cFrame_sGmpMap_ssMapUnitMv(struct Game *sota);
 
+/* - Control FSM combo Prep state + substate - */
+void fsm_cFrame_sPrep_ssMapCndt(    struct Game *sota);
+
 /* --- render FSM --- */
 /* - Render FSM standalone state - */
 void fsm_rFrame_sCmbt(   struct Game *sota);
