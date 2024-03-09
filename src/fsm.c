@@ -240,6 +240,20 @@ fsm_eAcpt_s_t fsm_eAcpt_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL
 };
 
+fsm_eCncl_s_t fsm_eCncl_sPrep_ss[GAME_SUBSTATE_NUM] = {
+    /* NULL */            NULL,
+    /* MAP_MINIMAP */     NULL,
+    /* MENU */            &fsm_eCncl_sPrep_ssMenu,
+    /* MAP_UNIT_MOVES */  NULL,
+    /* MAP_COMBAT */      NULL,
+    /* MAP_NPCTURN */     NULL,
+    /* SAVING */          NULL,
+    /* STANDBY */         NULL,
+    /* MAP_CANDIDATES */  &fsm_eCncl_sPrep_ssMapCndt,
+    /* CUTSCENE */        NULL,
+    /* MAP_ANIMATION */   NULL
+};
+
 fsm_eCncl_s_t fsm_eCncl_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
@@ -263,7 +277,7 @@ fsm_eStats_s_t fsm_eStats_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
     /* STANDBY */         &fsm_eStats_ssStby,
-    /* MAP_CANDIDATES */  NULL,
+    /* MAP_CANDIDATES */  &fsm_eStats_ssStby,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL
 };
@@ -571,9 +585,44 @@ void fsm_eCrsDeHvUnit_ssMapCndt(struct Game *sota, tnecs_entity dehov_ent) {
 
 }
 
-// -- FSM: INPUT_CANCEL EVENT --
-void fsm_eCncl_sPrep(struct Game *sota, tnecs_entity canceller) {
+/* -- FSM: INPUT_CANCEL EVENT -- */
+void fsm_eCncl_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
+    /* Go back to map candidate selection */
+    /* Candidates get switched around map starting positions */
+    SDL_assert(sota->menu_stack[0] != NULL);
+    SDL_assert(DARR_NUM(sota->menu_stack) == 1);
+    DARR_POP(sota->menu_stack);
+    SDL_assert(DARR_NUM(sota->menu_stack) == 0);
 
+    strncpy(sota->reason, "Change to map candidates", sizeof(sota->reason));
+    Game_subState_Set(sota, GAME_SUBSTATE_MAP_CANDIDATES, sota->reason);
+
+    /* - Reset potential candidates - */
+    sota->candidate     = 0;
+
+    /* - Focus on map - */
+    struct Menu *mc;
+    if (sota->deployment_menu != TNECS_NULL) {
+        mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
+        if (mc)
+            mc->visible = false;
+    }
+    if (sota->deployment_menu != TNECS_NULL) {
+        mc = TNECS_GET_COMPONENT(sota->world, sota->stats_menu, Menu);
+        if (mc)
+            mc->visible = false;
+    }
+
+    Game_cursorFocus_onMap(sota);
+}
+
+void fsm_eCncl_sPrep_ssMapCndt( struct Game *sota, tnecs_entity ent) {
+    /* Go back to DM (deployment menu) */
+}
+
+void fsm_eCncl_sPrep(struct Game *sota, tnecs_entity canceller) {
+    if (fsm_eCncl_sPrep_ss[sota->substate] != NULL)
+        fsm_eCncl_sPrep_ss[sota->substate](sota, canceller);
 }
 
 void fsm_eCncl_sGmpMap(struct Game *sota, tnecs_entity canceller) {
@@ -1211,6 +1260,10 @@ void fsm_eAcpt_sGmpMap_ssMapNPC(struct Game *sota, tnecs_entity accepter_entity)
 
 /* Input_Stats */
 void fsm_eStats_ssStby(struct Game *sota, tnecs_entity accepter) {
+    SDL_assert((sota->state == GAME_STATE_Gameplay_Map) ||
+               (sota->state == GAME_STATE_Preparation)
+              );
+
     SDL_assert(sota->entity_cursor);
     struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     SDL_assert(cursor_pos != NULL);
@@ -1394,6 +1447,8 @@ void fsm_eMenuLeft_sPrep_ssMenu(struct Game *sota) {
     /* --- Deployment Menu -> Starting Position --- */
     SDL_assert(sota->deployment_menu > TNECS_NULL);
     SDL_assert(sota->menu_stack[0] == sota->deployment_menu);
+    SDL_assert(DARR_NUM(sota->menu_stack) == 1);
+    DARR_POP(sota->menu_stack);
 
     strncpy(sota->reason, "Change to map candidates", sizeof(sota->reason));
     Game_subState_Set(sota, GAME_SUBSTATE_MAP_CANDIDATES, sota->reason);
@@ -1409,13 +1464,12 @@ void fsm_eMenuLeft_sPrep_ssMenu(struct Game *sota) {
     Game_cursorFocus_onMap(sota);
 
     /* - Set candidates starting positions to dm - */
-
 }
 
 void fsm_eMenuLeft_sPrep_ssMapCndt(struct Game *sota) {
     /* --- Starting Position -> Deployment Menu --- */
     SDL_assert(sota->deployment_menu > TNECS_NULL);
-    SDL_assert(sota->menu_stack[0] == sota->deployment_menu);
+    SDL_assert(DARR_NUM(sota->menu_stack) == 0);
 
     strncpy(sota->reason, "Change to menu", sizeof(sota->reason));
     Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
@@ -1425,6 +1479,7 @@ void fsm_eMenuLeft_sPrep_ssMapCndt(struct Game *sota) {
     mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
     mc->visible = true;
 
+    Game_DeploymentMenu_Enable(sota);
     Game_cursorFocus_onMenu(sota);
 
     /* - Place cursor on dm->elem == map candidate - */

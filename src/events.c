@@ -174,7 +174,6 @@ void receive_event_Input_CANCEL(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(canceller_entity > 0);
     if (fsm_eCncl_s[sota->state] != NULL)
         fsm_eCncl_s[sota->state](sota, canceller_entity);
-
 }
 
 void receive_event_Map_Win(struct Game *sota, SDL_Event *Map_Win) {
@@ -262,7 +261,6 @@ void receive_event_Input_STATS(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity accepter_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(accepter_entity > 0);
     *data1_entity = accepter_entity;
-    SDL_Log("sota->state %d", sota->state);
     if (fsm_eStats_ss[sota->substate] != NULL)
         fsm_eStats_ss[sota->substate](sota, accepter_entity);
 }
