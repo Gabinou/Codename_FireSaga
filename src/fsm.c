@@ -1475,7 +1475,8 @@ void fsm_eMenuLeft_sPrep_ssMapCndt(struct Game *sota) {
     Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
 
     /* - Focus on menu - */
-    Game_DeploymentMenu_Enable(sota);
+    DARR_PUT(sota->menu_stack, sota->deployment_menu);
+
     struct Menu *mc;
     mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
     mc->visible = true;
