@@ -194,6 +194,8 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         unit_path     = s8cat(unit_path, reinf->filename);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         jsonio_readJSON(unit_path, unit);
+        SDL_Log("unit name %s", unit->name.data);
+        getchar();
         Unit_Reinforcement_Load(unit, reinf);
         s8_free(&unit_path);
         SDL_assert(unit->name.data != NULL);

@@ -1590,6 +1590,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
         unit->ai_filename   = s8_mut(ai_filename);
     }
 
+    s8 idname = 
     if (!s8equal(unit->name, s8_var(json_name))) {
         SDL_LogError(SOTA_LOG_SYSTEM,
                      "Name in unit filename '%s' does not match id name %d->'%s'",
