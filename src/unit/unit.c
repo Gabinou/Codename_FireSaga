@@ -1589,12 +1589,12 @@ void Unit_readJSON(void *input,  cJSON *junit) {
         SDL_Log("ai_filename '%s'", ai_filename);
         unit->ai_filename   = s8_mut(ai_filename);
     }
-
-    s8 idname = 
+    u16 order = *(u16 *)DTAB_GET(global_unitOrders, unit->_id);
+    s8 idname = global_unitNames[order];
     if (!s8equal(unit->name, s8_var(json_name))) {
         SDL_LogError(SOTA_LOG_SYSTEM,
                      "Name in unit filename '%s' does not match id name %d->'%s'",
-                     json_name, unit->_id, unit->name.data);
+                     json_name, unit->_id, idname.data);
         exit(ERROR_Generic);
     }
 
@@ -1619,8 +1619,8 @@ void Unit_readJSON(void *input,  cJSON *junit) {
             struct cJSON *jsupport = cJSON_GetArrayItem(jsupports, i);
             char *name = cJSON_GetStringValue(jsupport);
             // unit->supports[i].other_id = Hashes_supportName2ID(name);
-            unit->supports[i].level = 0;
-            unit->supports[i].other_type = 0;
+            unit->supports[i].level         = 0;
+            unit->supports[i].other_type    = 0;
         }
     }
 
