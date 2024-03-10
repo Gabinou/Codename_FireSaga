@@ -589,7 +589,7 @@ void fsm_eCrsDeHvUnit_ssMapCndt(struct Game *sota, tnecs_entity dehov_ent) {
 void fsm_eCncl_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
     /* Go back to map candidate selection */
     /* Candidates get switched around map starting positions */
-    SDL_assert(sota->menu_stack[0] != NULL);
+    SDL_assert(sota->menu_stack[0] != TNECS_NULL);
     SDL_assert(DARR_NUM(sota->menu_stack) == 1);
     DARR_POP(sota->menu_stack);
     SDL_assert(DARR_NUM(sota->menu_stack) == 0);
