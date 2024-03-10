@@ -32,10 +32,12 @@ struct AI_Action AI_Action_default =  {
 
 /* --- Doer FSM --- */
 void _AI_Doer_Wait(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+    /* --- AI Unit Waits --- */
     Game_Unit_Wait(sota, npc_ent);
 }
 
 void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+    /* --- AI Unit Attacks the selected defendant --- */
     /* -- Set aggressor for combat -- */
     sota->aggressor = npc_ent;
 
@@ -66,7 +68,8 @@ static b32 _AI_Decider_Move_Always(struct Game *sota, tnecs_entity npc_ent) {
 }
 
 static b32 _AI_Decider_Move_inRange(struct Game *sota, tnecs_entity npc_ent) {
-    /* -- Get list of defendants in range -- */
+    /* --- Move to enemy in range --- */
+    /* --- Get list of defendants in range --- */
     struct Map *map = sota->map;
     Map_Attacktomap_Compute(map, sota->world, npc_ent, true, false);
     Map_Attacktolist_Compute(map);
@@ -86,6 +89,7 @@ static b32 _AI_Decider_Move_Trigger(  struct Game *sota, tnecs_entity npc_ent) {
 }
 
 static b32 _AI_Decider_Move_onChapter(struct Game *sota, tnecs_entity npc_ent) {
+    /* --- Move only after turn_move turns elapsed --- */
     struct AI *ai = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
     SDL_assert(ai != NULL);
     SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: AI_MOVE_onChapter set, (%d > %d)",
@@ -96,6 +100,7 @@ static b32 _AI_Decider_Move_onChapter(struct Game *sota, tnecs_entity npc_ent) {
 /* -- Master Deciders -- */
 static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
                                     struct AI_Action *action) {
+    /* --- AI Unit tries to kill enemy --- */
     /* -- Get list of defendants in range -- */
     Map_Attacktomap_Compute(sota->map, sota->world, npc_ent, true, false);
     Map_Attacktolist_Compute(sota->map);
@@ -153,6 +158,7 @@ static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
 
 static void _AI_Decider_Master_Staff(struct Game *sota, tnecs_entity npc_ent,
                                      struct AI_Action *action) {
+    /* --- AI Unit tries to use staff --- */
 
 }
 
@@ -164,7 +170,7 @@ static void _AI_Decider_Master_Nothing(struct Game *sota, tnecs_entity npc_ent,
 
 static void _AI_Decider_Master_Move_To(struct Game *sota, tnecs_entity npc_ent,
                                        struct AI_Action *action) {
-    /* Set target move to ultimate move_to target*/
+    /* --- Set target move to ultimate move_to target --- */
     struct AI *ai = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
     action->target_action = ai->target_move;
 
@@ -180,6 +186,7 @@ static void _AI_Decider_Master_Move_To(struct Game *sota, tnecs_entity npc_ent,
 /* -- Slave Deciders -- */
 static void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
                                    struct AI_Action *action) {
+    /* --- AI unit tries to kill enemy on way to primary target --- */
     SDL_assert((action->target_move.x >= 0) && (action->target_move.x < sota->map->col_len));
     SDL_assert((action->target_move.y >= 0) && (action->target_move.y < sota->map->row_len));
 
@@ -213,6 +220,7 @@ static void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
 }
 
 entity AI_Decide_Next(struct Game *sota) {
+    /* --- AI finds next unit to act --- */
     struct AI_State *ai_state = &sota->ai_state;
     // TODO: better function for next unit
     //  - How does AI decide Who goes next??
@@ -289,6 +297,7 @@ AI_Decider_Move AI_Decider_move[AI_MOVE_NUM] = {
 
 /* --- GLOBAL FUNCTIONS --- */
 void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+    /* --- AI decides which action to take with current unit --- */
     /* --- PRELIMINARIES --- */
     *action = AI_Action_default;
     struct Unit *npc    = TNECS_GET_COMPONENT(sota->world, npc_ent, Unit);
@@ -304,6 +313,7 @@ void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action 
 }
 
 void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+    /* --- AI decides where to move unit depending on action to take --- */
     /* --- Skip depending on movement priority --- */
     struct AI       *ai  = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
     SDL_assert(ai  != NULL);
@@ -379,6 +389,7 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
 
 /* --- Move unit to target_move --- */
 void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+    /* -- AI moves, after taking the decision -- */
     struct AI   *ai     = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
 
     /* -- Skip no movement -- */
@@ -409,8 +420,9 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
 }
 
 void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
-    /* -- Skip if no action -- */
+    /* -- AI acts, after taking the decision -- */
     if (AI_Act_action[action->action] != NULL)
+        /* -- Skip if no action -- */
         AI_Act_action[action->action](sota, npc_ent, action);
 }
 
@@ -518,6 +530,7 @@ void Unit_Move_onMap_Animate(struct Game  *sota,  tnecs_entity entity,
     SDL_Log("%d %d", timer->time_ns / 1000000, anim->time_ns / 1000000);
     if (timer->time_ns >= anim->time_ns) {
         SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "Unit Animation Finished");
+        /* Remove component to stop calling __func__ */
         TNECS_REMOVE_COMPONENTS(sota->world, entity, UnitMoveAnimation);
         return;
     }
