@@ -24,28 +24,23 @@ typedef tnecs_world  world;
 typedef tnecs_entity entity;
 
 /* --- AI DESIGN --- */
-/* -- High-level design -- */
-//  1. Make a decision:
-//      - Do what?
-//      - Go where?
-//  2. Move, then Act:
-//      - Heal friendly unit
-//      - Attack enemy unit
-//      - Open chest
-//  3. Animate
-//  4. Back to 1, if enemy unit remains
-//  5. Finish
-
-/* -- Implementation details -- */
-//  - AI Command: two parts
-//      - AI Move
-//          - Only moves unit.
-//          - Needs: costmap, target pos, self pos
-//      - AI Act
-//          - Decides what action to take.
-//              - If ultimate target is not in range, go for attack on the way...
-//          - Overrides AI Move in some conditions.
+// AI has two parts
+//  - AI Act
+//      - Decides what action to take depending on AI_PRIORITY.
+//  - AI Move
+//      - Decides when to move depending on AI_MOVE, where depending on AI act.
+//      - Needs: costmap, target pos, self pos
 //
+// Decision-making:
+//  - AI Act: Decides WHAT to do 
+//      - Master priority decides action/move target
+//      - Slave  priority decides if not in the way of master action/target
+//  - AI Move:
+//      - Move to target chosen in AI Act
+//      - Move when AI_MOVE lets you
+//
+// Call order:
+//      AI_Decide_Action -> AI_Decide_Move -> AI_Move -> AI_Act
 
 enum AI_RATINGS {
     // Ratings for AI decision making in [-128, 128]
