@@ -8,6 +8,14 @@ struct Position Position_default = {
     .scale          = {1.0f, 1.0f},
 };
 
+b32 Point_isIn(struct Point pos, struct Point *arr, size_t len) {
+    for (int i = 0; i < len; i++) {
+        if ((pos.x == arr[i].x) && (pos.y == arr[i].y))
+            return (true);
+    }
+    return (false);
+}
+
 void Position_replaceInbounds(struct Position *spos) {
     SDL_assert(spos != NULL);
     struct Point *pos = spos->onTilemap ? &(spos->tilemap_pos) : &(spos->pixel_pos);

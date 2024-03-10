@@ -4,6 +4,12 @@
 /* --- Entity finders --- */
 void Map_startingPos_Add(struct Map *map, i32 col, i32 row) {
     struct Point pos = {col, row};
+
+    if (Point_isIn(pos, map->start_pos, DARR_NUM(map->start_pos))) {
+        SDL_LogError(SOTA_LOG_SYSTEM, "Start position %d %d not unique", col, row);
+        exit(ERROR_Generic);
+    }
+
     DARR_PUT(map->start_pos, pos);
 }
 
