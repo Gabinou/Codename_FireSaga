@@ -9,6 +9,7 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct CombatAnimation;
+struct MapAnimation;
 
 // Map_animation Systems:
 //     - Unit movement: entity with Unit, MapAnimation components
@@ -27,9 +28,13 @@ typedef struct CombatAnimation { /* on Map */
 extern struct CombatAnimation CombatAnimation_default;
 
 /* --- MapAnimation --- */
-// Blocks control (except to go faster)
+/* Blocks control (except to go faster) */
+typedef void (*anim_func_t) (struct Game *, tnecs_entity,
+                             struct MapAnimation *, struct Timer *);
+
 typedef struct MapAnimation {
     i64 time_ns;
+    anim_func_t anim;
 } MapAnimation;
 extern struct MapAnimation MapAnimation_default;
 
@@ -38,8 +43,10 @@ extern struct MapAnimation MapAnimation_default;
 /* --- Play --- */
 // TODO put fps_fsm combat animation functionality here
 void Map_UnitMove_Animate(struct Game *s, tnecs_entity, struct Timer *);
-void Map_TurnTransition_Animate(struct Game *, tnecs_entity,
-                                struct MapAnimation *, struct Timer *);
+void Map_GameOver_Animate(struct Game *s, tnecs_entity e,
+                          struct MapAnimation *m, struct Timer *t);
+void Map_TurnTransition_Animate(struct Game *s, tnecs_entity e,
+                                struct MapAnimation *m, struct Timer *t);
 
 void Map_Combat_Animate(struct Game *s, tnecs_entity,
                         struct CombatAnimation *, struct Timer *);

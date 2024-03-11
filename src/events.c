@@ -315,9 +315,13 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
         Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
     }
 
-    /* If map is won or loss, quit */
-    if (sota->map->win || sota->map->loss)
+    /* -- If map is won or loss, quit -- */
+    if (sota->map->win)
+        // TODO: Start map Win Scene
         Event_Emit(__func__, SDL_USEREVENT, event_Quit, NULL, NULL);
+    if (sota->map->loss)
+        // Event_Emit(__func__, SDL_USEREVENT, event_Quit, NULL, NULL);
+        Event_Emit(__func__, SDL_USEREVENT, event_Game_Over, NULL, NULL);
 }
 
 void receive_event_Input_GLOBALRANGE(struct Game *sota, SDL_Event *userevent) {
@@ -357,7 +361,7 @@ void receive_event_SDL_KEYDOWN(struct Game *sota, SDL_Event *event) {
 }
 
 void receive_event_Quit(struct Game *sota, SDL_Event *event) {
-    // Quit gameplay, go back to start menu
+    /* --- Quit gameplay, go back to start menu --- */
     strncpy(sota->reason, "Quitting gameplay", sizeof(sota->reason));
     Game_State_Set(sota, GAME_STATE_Title_Screen, sota->reason);
     if (sota->substate != GAME_SUBSTATE_MENU)
@@ -662,6 +666,7 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     map_anim  = TNECS_GET_COMPONENT(sota->world, turn_transition, MapAnimation);
     *map_anim = MapAnimation_default;
     map_anim->time_ns = SOTA_SOUNDFX_NEXT_TURN_DURATION_ms * SOTA_us;
+    map_anim->anim = &Map_TurnTransition_Animate;
 
     /* Get Army name */
     SDL_assert(DARR_NUM(sota->map->army_onfield) > 1);
@@ -1070,12 +1075,83 @@ void receive_event_Input_PAUSE(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Unit_Seize(struct Game *sota, SDL_Event *userevent) {
+
 }
 
-void receive_event_Game_Defeat(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
+    /* --- TODO: Start map Game over animation --- */
+    tnecs_entity turn_transition;
+    turn_transition = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, MapAnimation, Position, Text, Timer);
+
+    struct Timer *timer;
+    timer  = TNECS_GET_COMPONENT(sota->world, turn_transition, Timer);
+    *timer = Timer_default;
+
+    // TODO: How to do a fancy animation?
+    // 1- draw animation pixel art
+    // 2- Modify MapAnimation component
+    // 3- Implement animation checker in Map_TurnTransition_Animate
+    struct MapAnimation *map_anim;
+    map_anim  = TNECS_GET_COMPONENT(sota->world, turn_transition, MapAnimation);
+    *map_anim = MapAnimation_default;
+    map_anim->time_ns = SOTA_SOUNDFX_NEXT_TURN_DURATION_ms * SOTA_us;
+    map_anim->anim = &Map_GameOver_Animate;
+
+    /* Get Army name */
+    SDL_assert(DARR_NUM(sota->map->army_onfield) > 1);
+    SDL_assert(sota->map->army_onfield[0] == ARMY_FRIENDLY);
+
+    Map_Army_Next(sota->map);
+    SDL_assert(sota->map->army_i >= 0);
+    SDL_assert(sota->map->army_i < DARR_NUM(sota->map->army_onfield));
+    i8 army      = sota->map->army_onfield[sota->map->army_i];
+    SDL_assert(army >= 0);
+    SDL_assert(army < ARMY_NUM);
+    s8 army_name = armyNames[army];
+
+    /* -- Change music -- */
+    Game_Music_Stop(sota);
+    if (SotA_isPC(army)) {
+        sota->music = sota->map->music_friendly;
+        SDL_assert(sota->music != NULL);
+    } else {
+        sota->music = sota->map->music_enemy;
+    }
+    Game_Music_Play(sota);
+
+    /* -- Play Turn Transition -- */
+    #ifndef DEBUG_NO_SOUNDFX
+    if (sota->soundfx_next_turn) {
+        Mix_PlayChannel(-1, sota->soundfx_next_turn, 0);
+    }
+    #endif /* DEBUG_NO_SOUNDFX */
+
+    struct Text *text;
+    text  = TNECS_GET_COMPONENT(sota->world, turn_transition, Text);
+    *text = Text_default;
+    text->pixelfont         = sota->pixelnours_big;
+    s8 line = s8_mut(army_name.data);
+    line = s8cat(line, s8_literal(" Turn"));
+    Text_Set(text, line.data, PIXELNOURS_BIG_Y_OFFSET);
+    SDL_assert((text->rect.w > 0) && (text->rect.h > 0));
+    s8_free(&line);
+
+    struct Position *position;
+    position  = TNECS_GET_COMPONENT(sota->world, turn_transition, Position);
+    *position = Position_default;
+    position->onTilemap = false;
+    position->scale[0] = 10.0f;
+    position->scale[1] = 10.0f;
+    position->pixel_pos.x = sota->settings.res.x / 2 - text->rect.w / 2 * position->scale[0];
+    position->pixel_pos.y = sota->settings.res.y / 2;
+
+    strncpy(sota->reason, "Turn transition is an animation", sizeof(sota->reason));
+    Game_subState_Set(sota, GAME_SUBSTATE_MAP_ANIMATION, sota->reason);
+
 }
 
 void receive_event_Unit_Refresh(struct Game *sota, SDL_Event *userevent) {
+
 }
 
 void receive_event_Unit_Wait(struct Game *sota, SDL_Event *userevent) {

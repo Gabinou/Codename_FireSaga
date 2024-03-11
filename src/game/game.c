@@ -438,7 +438,7 @@ void Game_Init(struct Game *sota) {
     TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Cursor,    0, Sprite,          Position, CursorFlag);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Mouse,     1, controllerMouse, Position, Sprite, MouseFlag);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Combat_onMap, 1, CombatAnimation, Timer);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Turn_Transition, 1, MapAnimation, Position, Text, Timer);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Map_Animation, 1, MapAnimation, Position, Text, Timer);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Unit_Move_onMap, 0, UnitMoveAnimation, Position, Timer,
                                 Unit);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration DONE\n");

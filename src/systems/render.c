@@ -298,7 +298,7 @@ void Animate_Combat_onMap(tnecs_system_input *input) {
     }
 }
 
-void Animate_Turn_Transition(tnecs_system_input *input) {
+void Animate_Map_Animation(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     struct Game *sota = (struct Game *)input->user_data;
@@ -322,7 +322,8 @@ void Animate_Turn_Transition(tnecs_system_input *input) {
         size_t         typeflag_id = input->entity_typeflag_id;
         tnecs_entity   entity      = world->entities_bytype[typeflag_id][order];
 
-        Map_TurnTransition_Animate(sota, entity, map_anim, timer);
+        // Map_TurnTransition_Animate(sota, entity, map_anim, timer);
+        map_anim->anim(sota, entity, map_anim, timer);
     }
 }
 

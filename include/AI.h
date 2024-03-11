@@ -32,7 +32,7 @@ typedef tnecs_entity entity;
 //      - Needs: costmap, target pos, self pos
 //
 // Decision-making:
-//  - AI Act: Decides WHAT to do 
+//  - AI Act: Decides WHAT to do
 //      - Master priority decides action/move target
 //      - Slave  priority decides if not in the way of master action/target
 //  - AI Move:

@@ -14,6 +14,7 @@ struct MapAnimation MapAnimation_default = {
 
 void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
                         struct CombatAnimation *combat_anim, struct Timer *combat_timer) {
+    /* --- Animate fight on the map: Units take turn hitting each other --- */
     SDL_assert(combat_anim     != NULL);
     SDL_assert(combat_timer != NULL);
     b32 no_more_attacks = (combat_anim->attack_ind >= sota->combat_forecast.attack_num);
@@ -80,11 +81,21 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
 
 void Map_TurnTransition_Animate(struct Game *sota, tnecs_entity entity,
                                 struct MapAnimation *map_anim, struct Timer *timer) {
-    /* - Animation is complete, begin a turn - */
     if (timer->time_ns >= map_anim->time_ns) {
+        /* - Animation is complete, begin a turn - */
         SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "Turn Transition Finished");
         tnecs_entity_destroy(sota->world, entity);
         Event_Emit(__func__, SDL_USEREVENT, event_Turn_Begin, NULL, NULL);
-        return;
     }
+}
+
+void Map_GameOver_Animate(struct Game *sota, tnecs_entity entity,
+                          struct MapAnimation *map_anim, struct Timer *timer) {
+    if (timer->time_ns >= map_anim->time_ns) {
+        /* - Animation is complete, quit to start menu - */
+        SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "Game Over Animation Finished");
+        tnecs_entity_destroy(sota->world, entity);
+        Event_Emit(__func__, SDL_USEREVENT, event_Quit, NULL, NULL);
+    }
+
 }
