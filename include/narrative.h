@@ -161,4 +161,8 @@ void Scene_Render_Output(struct Scene *scene, s8 path);
 void Scene_Raw_Print(   struct Scene *scene);
 void Scene_Render_Print(struct Scene *scene);
 
+/* --- Play --- */
+void Scene_Animate(struct Game  *sota,  tnecs_entity entity,
+                   struct Scene *scene, struct Timer *timer);
+
 #endif /* NARRATIVE_H */

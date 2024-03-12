@@ -97,5 +97,4 @@ void Map_GameOver_Animate(struct Game *sota, tnecs_entity entity,
         tnecs_entity_destroy(sota->world, entity);
         Event_Emit(__func__, SDL_USEREVENT, event_Quit, NULL, NULL);
     }
-
 }

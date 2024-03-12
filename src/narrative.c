@@ -370,3 +370,6 @@ void Scene_Render_Print(struct Scene *scene) {
         SDL_Log("%-*s : %s", max_name, line.speaker.data, line.line.data);
     }
 }
+
+/* --- Play --- */
+
