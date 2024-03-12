@@ -165,4 +165,7 @@ void Scene_Render_Print(struct Scene *scene);
 void Scene_Animate(struct Game  *sota,  tnecs_entity entity,
                    struct Scene *scene, struct Timer *timer);
 
+void Scene_Draw(struct Scene *scene, struct Settings *settings, struct SDL_Texture *rt, SDL_Renderer *renderer);
+
+
 #endif /* NARRATIVE_H */

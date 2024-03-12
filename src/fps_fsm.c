@@ -252,6 +252,8 @@ void fsm_rFrame_sCmbt(struct Game *sota) {
 }
 
 void fsm_rFrame_sScnTalk(struct Game *sota) {
+    /* TODO: Draw scene */
+    Scene_Draw(sota->map, &sota->settings, &sota->camera, sota->render_target);
 
 }
 
