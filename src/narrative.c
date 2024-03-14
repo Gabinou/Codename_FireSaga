@@ -388,7 +388,14 @@ void Scene_Animate(struct Scene *scene, struct Settings *settings, struct SDL_Te
     _Scene_Draw_Background(scene, renderer);
     _Scene_Draw_Actors(scene, renderer);
     _Scene_Draw_Text_Bubbles(scene, renderer);
-
+    
+    if (timer->time_ns >= scene->time_ns) {
+        /* - Animation is complete, quit to start menu - */
+        SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "Scene Animation Finished");
+        SDL_assert((scene->event > EVENT_START) && (scene->event > EVENT_END));
+        Event_Emit(__func__, SDL_USEREVENT, scene->event, NULL, NULL);
+        tnecs_entity_destroy(sota->world, entity);
+    }
 }
 
 /* --- Draw --- */
