@@ -326,7 +326,6 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
 void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     /* - Play scene - */
 
-
     /* - TODO: start playing scene - */
     tnecs_entity scene;
     scene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Scene, Position, Text, Timer);

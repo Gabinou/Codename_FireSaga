@@ -388,6 +388,7 @@ void Game_Init(struct Game *sota) {
     TNECS_REGISTER_COMPONENT(sota->world, RenderTop);
     TNECS_REGISTER_COMPONENT(sota->world, PixelFont);
     TNECS_REGISTER_COMPONENT(sota->world, AI);
+    TNECS_REGISTER_COMPONENT(sota->world, Scene);
     sota->timer_typeflag = TNECS_COMPONENT_NAME2TYPE(sota->world, Timer);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration\n");
@@ -399,6 +400,7 @@ void Game_Init(struct Game *sota) {
     TNECS_REGISTER_SYSTEM_wEXCL(world, Control_Touchpad, 0, Position, Sprite, controllerTouchpad);
 
     /* -- Animating and sliding systems before drawing --  */
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Scene,  1, Scene, Position, Text, Timer);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Slide_Sprite,   0, Sprite, Position, Slider);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Slide_PopUp_Offscreen, 1, PopUp, Slider,
                                 SliderOffscreen, Position);
