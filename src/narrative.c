@@ -381,7 +381,8 @@ void _Scene_Animate_Text_Bubbles(  struct Scene *scene, SDL_Renderer *renderer) 
 
 }
 
-void Scene_Animate(struct Scene *scene, struct Settings *settings, struct SDL_Texture *rt, SDL_Renderer *renderer) {
+void Scene_Animate(struct Scene *scene, struct Settings *settings, struct SDL_Texture *rt,
+                   SDL_Renderer *renderer) {
     /* - Change frame to be drawn each frame - */
 
     _Scene_Draw_Background(scene, renderer);
@@ -391,21 +392,21 @@ void Scene_Animate(struct Scene *scene, struct Settings *settings, struct SDL_Te
 }
 
 /* --- Draw --- */
-void _Scene_Draw_Actors(        struct Scene *scene, SDL_Renderer *renderer){
+void _Scene_Draw_Actors(        struct Scene *scene, SDL_Renderer *renderer) {
 
 }
-void _Scene_Draw_Background(    struct Scene *scene, SDL_Renderer *renderer){
+void _Scene_Draw_Background(    struct Scene *scene, SDL_Renderer *renderer) {
 
 }
-void _Scene_Draw_Text_Bubbles(  struct Scene *scene, SDL_Renderer *renderer){
+void _Scene_Draw_Text_Bubbles(  struct Scene *scene, SDL_Renderer *renderer) {
 
 }
 
-void Scene_Draw(struct Scene *scene, struct Settings *settings, struct SDL_Texture *rt, SDL_Renderer *renderer) {
+void Scene_Draw(struct Scene *scene, struct Settings *settings, struct SDL_Texture *rt,
+                SDL_Renderer *renderer) {
     /* - Draw the scene frame - */
-    
+
     _Scene_Draw_Background(scene, renderer);
     _Scene_Draw_Actors(scene, renderer);
     _Scene_Draw_Text_Bubbles(scene, renderer);
 }
-

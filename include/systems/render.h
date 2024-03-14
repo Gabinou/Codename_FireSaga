@@ -27,9 +27,10 @@ void Draw_Map_HPBar(    tnecs_system_input *input);
 void Draw_Text_Timer(   tnecs_system_input *input);
 void Draw_Map_Boss_Icon(tnecs_system_input *input);
 
+void Animate_Scene(             tnecs_system_input *input);
 void Animate_Game_Over(         tnecs_system_input *input);
 void Animate_Combat_onMap(      tnecs_system_input *input);
-void Animate_Map_Animation(   tnecs_system_input *input);
+void Animate_Map_Animation(     tnecs_system_input *input);
 void Animate_Unit_Move_onMap(   tnecs_system_input *input);
 
 #endif /* SYSTEMRENDER_H */

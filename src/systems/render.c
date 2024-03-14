@@ -352,3 +352,26 @@ void Animate_Unit_Move_onMap(tnecs_system_input *input) {
         Unit_Move_onMap_Animate(sota, entity, timer, unit_anim);
     }
 }
+
+void Animate_Scene(tnecs_system_input *input) {
+    /* --- PRELIMINARIES --- */
+    /* -- Get game -- */
+    struct Game *sota = (struct Game *)input->user_data;
+    SDL_assert(sota != NULL);
+
+    /* -- Get components arrays -- */
+    struct Timer    *timer_arr = TNECS_COMPONENTS_LIST(input, Timer);
+    struct Scene    *scene_arr = TNECS_COMPONENTS_LIST(input, Scene);
+
+    /* --- DRAWING TEXT ENTITIES --- */
+    for (u16 order = 0; order < input->num_entities; order++) {
+        struct Timer    *timer = &timer_arr[order];
+        struct Unit     *scene = &scene_arr[order];
+
+        tnecs_world     *world       = input->world;
+        size_t           typeflag_id = input->entity_typeflag_id;
+        tnecs_entity     entity      = world->entities_bytype[typeflag_id][order];
+
+        Scene_Animate(sota,  entity, scene, timer)
+    }
+}

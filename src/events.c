@@ -331,10 +331,9 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     /* - Set state to scene - */
     strncpy(sota->reason, "Game plays scene", sizeof(sota->reason));
     Game_subState_Set(sota, GAME_STATE_Scene_Talk, sota->reason);
-    
+
     /* - TODO: start playing scene - */
 
-    
 }
 
 void receive_event_Input_GLOBALRANGE(struct Game *sota, SDL_Event *userevent) {

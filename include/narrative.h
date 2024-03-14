@@ -14,6 +14,10 @@
 #include "bitfields.h"
 #include "SDL2/SDL.h"
 
+/* --- FORWARD DECLARATIONS --- */
+struct Game;
+struct Settings;
+
 /* -- Didascalie (theater vocabulary) -- */
 // - Note to actors of a scene about what to *do* during a scene
 // TODO
@@ -165,7 +169,7 @@ void Scene_Render_Print(struct Scene *scene);
 void Scene_Animate(struct Game  *sota,  tnecs_entity entity,
                    struct Scene *scene, struct Timer *timer);
 
-void Scene_Draw(struct Scene *scene, struct Settings *settings, struct SDL_Texture *rt, SDL_Renderer *renderer);
-
+void Scene_Draw(struct Scene *scene, struct Settings *settings, struct SDL_Texture *rt,
+                SDL_Renderer *renderer);
 
 #endif /* NARRATIVE_H */
