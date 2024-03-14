@@ -366,12 +366,14 @@ void Animate_Scene(tnecs_system_input *input) {
     /* --- DRAWING TEXT ENTITIES --- */
     for (u16 order = 0; order < input->num_entities; order++) {
         struct Timer    *timer = &timer_arr[order];
-        struct Unit     *scene = &scene_arr[order];
+        struct Scene    *scene = &scene_arr[order];
 
         tnecs_world     *world       = input->world;
         size_t           typeflag_id = input->entity_typeflag_id;
         tnecs_entity     entity      = world->entities_bytype[typeflag_id][order];
 
-        Scene_Animate(sota,  entity, scene, timer)
+        // Scene_Animate(sota,  entity, scene, timer)
+        // void Scene_Animate(scene, sota->settings, struct SDL_Texture *rt,
+        // SDL_Renderer *renderer) {
     }
 }
