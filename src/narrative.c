@@ -285,7 +285,7 @@ void Conditions_writeJSON(void *input, cJSON *jconds) {
 
 struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_conds,
                           i16 chapter, u16 scene_time) {
-    /* scenes darr */
+    /* Scenes darr */
     if (sdarr != NULL)
         DARR_FREE(sdarr);
     sdarr = DARR_INIT(sdarr, struct Scene, 4);
@@ -323,7 +323,6 @@ struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_conds,
 void Scene_Speaker_Add(struct Scene *scene, u16 order) {
     int index = 0;
     for (int i = 0; i < scene->lines_raw_num; i++) {
-
         /* Skip if order found in speakers */
         if (order == scene->speakers[i])
             return;
@@ -372,7 +371,6 @@ void Scene_Render_Print(struct Scene *scene) {
 }
 
 /* --- Animate --- */
-
 void _Scene_Animate_Actors(        struct Scene *scene, SDL_Renderer *renderer) {
 
 }

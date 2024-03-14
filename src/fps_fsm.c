@@ -253,7 +253,10 @@ void fsm_rFrame_sCmbt(struct Game *sota) {
 
 void fsm_rFrame_sScnTalk(struct Game *sota) {
     /* TODO: Draw scene */
-    Scene_Draw(sota->map, &sota->settings, &sota->camera, sota->render_target);
+
+    SDL_assert(sota->scene > TNECS_NULL)
+    struct Scene *scene = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
+    Scene_Draw(scene, &sota->settings, &sota->camera, sota->render_target);
 
 }
 
