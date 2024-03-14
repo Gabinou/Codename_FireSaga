@@ -326,12 +326,26 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
 void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     /* - Play scene - */
 
+
+    /* - TODO: start playing scene - */
+    tnecs_entity scene;
+    scene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Scene, Position, Text, Timer);
+
+    struct Scene *scene_ptr;
+    scene_ptr  = TNECS_GET_COMPONENT(sota->world, turn_transition, Scene);
+    *scene_ptr = Scene_default;
+    scene_ptr->time_ns = 5 * SOTA_ns;
+
+    struct Timer *timer;
+    timer  = TNECS_GET_COMPONENT(sota->world, scene, Timer);
+    *timer = Timer_default;
+
     /* - Set state to scene - */
     strncpy(sota->reason, "Game plays scene", sizeof(sota->reason));
     Game_subState_Set(sota, GAME_STATE_Scene_Talk, sota->reason);
 
-    /* - TODO: start playing scene - */
-
+    strncpy(sota->reason, "Scene is playing", sizeof(sota->reason));
+    Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
 }
 
 void receive_event_Input_GLOBALRANGE(struct Game *sota, SDL_Event *userevent) {
