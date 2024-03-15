@@ -1123,7 +1123,7 @@ void receive_event_Input_FAST_FORWARD(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Input_PAUSE(struct Game *sota, SDL_Event *userevent) {
-    /* TODO: Change to Start/Enter button */
+    /* TODO: REMOVE -> NO NEED FOR PAUSE */
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
 

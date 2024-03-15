@@ -14,6 +14,7 @@ fsm_eGmp2Stby_s_t fsm_eGmp2Stby_s[GAME_STATE_NUM] = {
     /* Animation */      NULL,
 };
 
+/* --- Input events --- */
 fsm_eAcpt_s_t fsm_eAcpt_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
@@ -29,7 +30,7 @@ fsm_eAcpt_s_t fsm_eAcpt_s[GAME_STATE_NUM] = {
 fsm_eStart_s_t fsm_eStart_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
-    /* Scene_Talk */     &fsm_eAcpt_sScnTalk,
+    /* Scene_Talk */     &fsm_eStart_sScnTalk,
     /* Scene_FMV */      NULL,
     /* Gameplay_Map */   NULL,
     /* Gameplay_Camp */  NULL,
@@ -41,7 +42,7 @@ fsm_eStart_s_t fsm_eStart_s[GAME_STATE_NUM] = {
 fsm_eCncl_s_t fsm_eCncl_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
-    /* Scene_Talk */     NULL,
+    /* Scene_Talk */     &fsm_eAcpt_sScnTalk,
     /* Scene_FMV */      NULL,
     /* Gameplay_Map */   &fsm_eCncl_sGmpMap,
     /* Gameplay_Camp */  NULL,
@@ -53,7 +54,7 @@ fsm_eCncl_s_t fsm_eCncl_s[GAME_STATE_NUM] = {
 fsm_eMenuRight_s_t fsm_eMenuRight_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
-    /* Scene_Talk */     NULL,
+    /* Scene_Talk */     &fsm_eMenuRight_sScnTalk,
     /* Scene_FMV */      NULL,
     /* Gameplay_Map */   &fsm_eMenuRight_sGmpMap,
     /* Gameplay_Camp */  NULL,
@@ -65,7 +66,7 @@ fsm_eMenuRight_s_t fsm_eMenuRight_s[GAME_STATE_NUM] = {
 fsm_eMenuLeft_s_t fsm_eMenuLeft_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
-    /* Scene_Talk */     NULL,
+    /* Scene_Talk */     &fsm_eMenuRight_sScnTalk,
     /* Scene_FMV */      NULL,
     /* Gameplay_Map */   &fsm_eMenuLeft_sGmpMap,
     /* Gameplay_Camp */  NULL,
@@ -1048,6 +1049,13 @@ void fsm_eGmp2Stby_sGmpMap(struct Game *sota, tnecs_entity controller_entity) {
 }
 
 /* -- FSM: Input_Start EVENT -- */
+void fsm_eStart_sScnTalk(struct Game *sota, tnecs_entity accepter) {
+    /* --- Skip scene --- */
+    SDL_assert(sota->scene > TNECS_NULL);
+    struct Scene *scene = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
+    Scene_Finish(scene, sota);
+}
+
 void fsm_eStart_sPrep(struct Game *sota, tnecs_entity accepter) {
     /* --- Preparation done: Start Map gameplay --- */
     // TODO: check that in prep stat, menu is deployment
@@ -1067,10 +1075,11 @@ void fsm_eStart_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
 }
 
 /* -- FSM: Input_Accept EVENT -- */
-void fsm_eAcpt_sScnTalk(struct Game *sota, tnecs_entity accepter) {
+void fsm_eAcpt_sScnTalk(struct Game *sota, tnecs_entity nope) {
+    /* --- Get next line at normal speed --- */
     SDL_assert(sota->scene > TNECS_NULL);
     struct Scene *scene = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
-    Scene_Next_Line(scene);
+    Scene_Next_Line(scene, sota);
 }
 
 void fsm_eAcpt_sGmpMap(struct Game *sota, tnecs_entity accepter) {
@@ -1344,6 +1353,10 @@ void fsm_eUnitDsel_sMapUnitMv(struct Game *sota, tnecs_entity selector) {
 void fsm_eMenuRight_sGmpMap(struct Game *sota, i32 controller_type) {
     if (fsm_eMenuRight_sGmpMap_ss[sota->substate] != NULL)
         fsm_eMenuRight_sGmpMap_ss[sota->substate](sota, controller_type);
+}
+
+void fsm_eMenuRight_sScnTalk(struct Game *sota, i32 controller_type) {
+    fsm_eAcpt_sScnTalk(sota, TNECS_NULL);
 }
 
 void fsm_eMenuRight_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {

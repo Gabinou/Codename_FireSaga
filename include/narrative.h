@@ -172,7 +172,8 @@ void Scene_Raw_Print(   struct Scene *scene);
 void Scene_Render_Print(struct Scene *scene);
 
 /* --- Player Interaction --- */
-void Scene_Next_Line(struct Scene *scene);
+void Scene_Next_Line(struct Scene *scene, struct Game *sota);
+void Scene_Finish(struct Scene *scene, struct Game *sota);
 
 /* --- Play --- */
 void _Scene_Animate_Actors(        struct Scene *scene);

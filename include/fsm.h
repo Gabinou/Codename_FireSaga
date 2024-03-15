@@ -135,7 +135,8 @@ void fsm_eCrsDeHvUnit_sMapUnitMv(struct Game *sota, tnecs_entity ent);
 // e.g. PAUSE -> Remove later
 extern fsm_eStart_s_t fsm_eStart_s[GAME_STATE_NUM];
 extern fsm_eAcpt_s_t  fsm_eStart_sPrep_ss[GAME_SUBSTATE_NUM];
-void fsm_eStart_sPrep(struct Game *sota, tnecs_entity ent);
+void fsm_eStart_sPrep(      struct Game *sota, tnecs_entity ent);
+void fsm_eStart_sScnTalk(   struct Game *sota, tnecs_entity ent);
 
 void fsm_eStart_sPrep_ssMenu(struct Game *sota, tnecs_entity ent);
 
@@ -167,6 +168,7 @@ extern fsm_eCncl_sGmpMap_ss_t fsm_eCncl_sGmpMap_ss[GAME_SUBSTATE_NUM];
 
 void fsm_eCncl_sPrep(   struct Game *sota, tnecs_entity ent);
 void fsm_eCncl_sGmpMap( struct Game *sota, tnecs_entity ent);
+void fsm_eCncl_sScnTalk(struct Game *sota, tnecs_entity ent);
 
 void fsm_eCncl_sPrep_ssMenu(    struct Game *sota, tnecs_entity ent);
 void fsm_eCncl_sPrep_ssMapCndt( struct Game *sota, tnecs_entity ent);
@@ -189,7 +191,8 @@ void fsm_eStats_ssStby(struct Game *sota, tnecs_entity ent);
 extern fsm_eMenuRight_s_t  fsm_eMenuRight_s[GAME_STATE_NUM];
 extern fsm_eMenuRight_sGmpMap_ss_t fsm_eMenuRight_sGmpMap_ss[GAME_SUBSTATE_NUM];
 
-void fsm_eMenuRight_sGmpMap(struct Game *sota, i32 c);
+void fsm_eMenuRight_sGmpMap(    struct Game *sota, i32 c);
+void fsm_eMenuRight_sScnTalk(   struct Game *sota, i32 c);
 
 void fsm_eMenuRight_sGmpMap_ssMenu(struct Game *sota, i32 c);
 void fsm_eMenuRight_sGmpMap_ssStby(struct Game *sota, i32 c);

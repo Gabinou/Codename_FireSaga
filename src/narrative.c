@@ -371,13 +371,22 @@ void Scene_Render_Print(struct Scene *scene) {
 }
 
 /* --- Player interaction --- */
-
-void Scene_Next_Line(struct Scene *scene) {
-    // TODO: get next line if more to go
-    /* - No more lines - */
+void Scene_Finish(struct Scene *scene, struct Game *sota) {
+    /* - Finish scene - */
     SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "Scene Animation Finished");
     SDL_assert((scene->event > event_Start) && (scene->event > event_End));
     Event_Emit(__func__, SDL_USEREVENT, scene->event, NULL, NULL);
+
+    tnecs_entity_destroy(sota->world, sota->scene);
+    sota->scene = TNECS_NULL;
+}
+
+void Scene_Next_Line(struct Scene *scene, struct Game *sota) {
+    // TODO: get next line if more to go
+    /* - Skip current line if in the middle fo rendering - */
+
+    /* - No more lines - */
+    Scene_Finish(scene, sota);
 }
 
 /* --- Animate --- */
