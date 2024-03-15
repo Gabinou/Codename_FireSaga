@@ -86,7 +86,7 @@ extern struct Line Line_default;
 *            - doing a flip
 *   - Text bubbles with scrollling text
 */
-struct Scene {
+typedef struct Scene {
     s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
     u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
 
@@ -123,7 +123,7 @@ struct Scene {
 
     /* -- Speakers -- */
     u16 *speakers; /* Unit_order */
-};
+} Scene;
 extern struct Scene Scene_default;
 
 /* --- Conditions --- */
