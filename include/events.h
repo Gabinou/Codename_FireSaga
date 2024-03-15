@@ -2,7 +2,6 @@
 #define EVENTS_H
 
 #include "bars/map_hp.h"
-#include "unit/unit.h"
 #include "map/conditions.h"
 #include "log.h"
 #include "fsm.h"

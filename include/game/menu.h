@@ -16,6 +16,9 @@
 #include "menu/growths.h"
 #include "popup/pre_combat.h"
 
+/* --- FORWARD DECLARATIONS --- */
+struct Input_Arguments;
+
 void Game_Switch_toCandidates(struct Game *sota, tnecs_entity *candidates);
 
 /* --- All Menus --- */

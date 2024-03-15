@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include "enums.h"
 #include "unit/unit.h"
-#include "game/game.h"
+// #include "game/game.h"
 #include "game/popup.h"
 #include "game/cursor.h"
 #include "game/menu.h"
@@ -27,6 +27,7 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
 struct Unit;
+struct Input_Arguments;
 struct PlayerSelectMenu;
 struct LoadoutSelectMenu;
 struct PopUp_Loadout_Stats;

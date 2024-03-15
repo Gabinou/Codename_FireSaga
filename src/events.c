@@ -324,16 +324,49 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
 }
 
 void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
-    /* - Play scene - */
+    /* --- Play scene --- */
 
-    /* - TODO: start playing scene - */
+    /* -- Removing unused stuff: menus, popups, map -- */
+    /* - Hiding menus - */
+    b32 destroy = false;
+    while (DARR_NUM(sota->menu_stack) > 0)
+        Game_menuStack_Pop(sota, destroy);
+
+    /* - Hiding popups - */
+    if (sota->popups[POPUP_TYPE_HUD_TILE] != TNECS_NULL) {
+        Game_PopUp_Tile_Hide(sota);
+    }
+    if (sota->popups[POPUP_TYPE_HUD_UNIT] != TNECS_NULL) {
+        Game_PopUp_Unit_Hide(sota);
+    }
+
+    /* - Remove unused components - */
+    for (int i = 0; i < DARR_NUM(sota->map->units_onfield); i++) {
+        tnecs_entity ent = sota->map->units_onfield[i];
+        TNECS_REMOVE_COMPONENTS(sota->world, ent, MapHPBar);
+        if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, RenderTop)) {
+            TNECS_REMOVE_COMPONENTS(sota->world, ent, RenderTop);
+        }
+
+        if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, UnitMoveAnimation)) {
+            TNECS_REMOVE_COMPONENTS(sota->world, ent, UnitMoveAnimation);
+        }
+
+        if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, Boss)) {
+            TNECS_REMOVE_COMPONENTS(sota->world, ent, Boss);
+        }
+    }
+
+    /* - Map_Free - */
+    Game_Map_Free(sota);
+
+    /* -- Creating scene to play -- */
     tnecs_entity scene;
     scene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Scene, Position, Text, Timer);
 
     struct Scene *scene_ptr;
-    scene_ptr  = TNECS_GET_COMPONENT(sota->world, turn_transition, Scene);
+    scene_ptr  = TNECS_GET_COMPONENT(sota->world, scene, Scene);
     *scene_ptr = Scene_default;
-    scene_ptr->time_ns = 5 * SOTA_ns;
 
     struct Timer *timer;
     timer  = TNECS_GET_COMPONENT(sota->world, scene, Timer);
@@ -392,10 +425,11 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
 
     /* -- Removing menus -- */
     bool destroy = false;
-    while (DARR_NUM(sota->menu_stack) > 0) {
+
+    /* -- Hiding menus -- */
+    while (DARR_NUM(sota->menu_stack) > 0)
         Game_menuStack_Pop(sota, destroy);
-        /* -- Hiding menus -- */
-    }
+
     /* -- Hiding popups -- */
     if (sota->popups[POPUP_TYPE_HUD_TILE] != TNECS_NULL) {
         Game_PopUp_Tile_Hide(sota);

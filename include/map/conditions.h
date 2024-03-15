@@ -8,6 +8,7 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
+struct Boss;
 struct Unit;
 struct Game;
 

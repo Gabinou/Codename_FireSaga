@@ -19,6 +19,7 @@ struct Item;
 struct Game;
 struct Unit;
 struct Timer;
+struct UnitMoveAnimation;
 
 typedef tnecs_world  world;
 typedef tnecs_entity entity;

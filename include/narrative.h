@@ -2,6 +2,7 @@
 #define NARRATIVE_H
 
 #include <string.h>
+#include "events.h"
 #include "types.h"
 #include "utilities.h"
 #include "filesystem.h"
@@ -15,6 +16,7 @@
 #include "SDL2/SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
+struct Boss;
 struct Game;
 struct Settings;
 
@@ -106,6 +108,10 @@ struct Scene {
     u16 lines_raw_num;
     u16 lines_num;
     u16 actors_num;
+
+    /* -- Event to start after end -- */
+    tnecs_entity event;
+
     /* -- Didascalies -- */
     // TODO
     struct Didascalie   *didascalies;
@@ -165,13 +171,16 @@ void Scene_Render_Output(struct Scene *scene, s8 path);
 void Scene_Raw_Print(   struct Scene *scene);
 void Scene_Render_Print(struct Scene *scene);
 
-/* --- Play --- */
-void _Scene_Animate_Actors(        struct Scene *scene, SDL_Renderer *renderer);
-void _Scene_Animate_Background(    struct Scene *scene, SDL_Renderer *renderer);
-void _Scene_Animate_Text_Bubbles(  struct Scene *scene, SDL_Renderer *renderer);
+/* --- Player Interaction --- */
+void Scene_Next_Line(struct Scene *scene);
 
-void Scene_Animate(struct Scene *scene, struct Settings *settings,
-                   struct SDL_Texture *rt, SDL_Renderer *renderer);
+/* --- Play --- */
+void _Scene_Animate_Actors(        struct Scene *scene);
+void _Scene_Animate_Background(    struct Scene *scene);
+void _Scene_Animate_Text_Bubbles(  struct Scene *scene);
+
+void Scene_Animate(struct Game  *sota, tnecs_entity entity,
+                   struct Scene *scene, struct Timer *timer);
 
 /* --- Draw --- */
 void _Scene_Draw_Actors(        struct Scene *scene, SDL_Renderer *renderer);

@@ -14,7 +14,7 @@
 #include "controller/keyboard.h"
 #include "controller/gamepad.h"
 #include "controller/fsm.h"
-#include "controller/fsm.h"
+#include "fsm.h"
 #include "weapon.h"
 #include "slider.h"
 #include "tnecs.h"

@@ -370,32 +370,35 @@ void Scene_Render_Print(struct Scene *scene) {
     }
 }
 
+/* --- Player interaction --- */
+
+void Scene_Next_Line(struct Scene *scene) {
+    // TODO: get next line if more to go
+    /* - No more lines - */
+    SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "Scene Animation Finished");
+    SDL_assert((scene->event > EVENT_START) && (scene->event > EVENT_END));
+    Event_Emit(__func__, SDL_USEREVENT, scene->event, NULL, NULL);
+    tnecs_entity_destroy(sota->world, entity);
+}
+
 /* --- Animate --- */
-void _Scene_Animate_Actors(        struct Scene *scene, SDL_Renderer *renderer) {
+void _Scene_Animate_Actors(        struct Scene *scene) {
 
 }
-void _Scene_Animate_Background(    struct Scene *scene, SDL_Renderer *renderer) {
+void _Scene_Animate_Background(    struct Scene *scene) {
 
 }
-void _Scene_Animate_Text_Bubbles(  struct Scene *scene, SDL_Renderer *renderer) {
+void _Scene_Animate_Text_Bubbles(  struct Scene *scene) {
 
 }
 
-void Scene_Animate(struct Scene *scene, struct Settings *settings, struct SDL_Texture *rt,
-                   SDL_Renderer *renderer) {
+void Scene_Animate(struct Game  *sota, tnecs_entity entity,
+                   struct Scene *scene, struct Timer *timer) {
     /* - Change frame to be drawn each frame - */
 
-    _Scene_Draw_Background(scene, renderer);
-    _Scene_Draw_Actors(scene, renderer);
-    _Scene_Draw_Text_Bubbles(scene, renderer);
-    
-    if (timer->time_ns >= scene->time_ns) {
-        /* - Animation is complete, quit to start menu - */
-        SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "Scene Animation Finished");
-        SDL_assert((scene->event > EVENT_START) && (scene->event > EVENT_END));
-        Event_Emit(__func__, SDL_USEREVENT, scene->event, NULL, NULL);
-        tnecs_entity_destroy(sota->world, entity);
-    }
+    _Scene_Animate_Background(scene);
+    _Scene_Animate_Actors(scene);
+    _Scene_Animate_Text_Bubbles(scene);
 }
 
 /* --- Draw --- */
