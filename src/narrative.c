@@ -376,9 +376,8 @@ void Scene_Next_Line(struct Scene *scene) {
     // TODO: get next line if more to go
     /* - No more lines - */
     SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "Scene Animation Finished");
-    SDL_assert((scene->event > EVENT_START) && (scene->event > EVENT_END));
+    SDL_assert((scene->event > event_Start) && (scene->event > event_End));
     Event_Emit(__func__, SDL_USEREVENT, scene->event, NULL, NULL);
-    tnecs_entity_destroy(sota->world, entity);
 }
 
 /* --- Animate --- */

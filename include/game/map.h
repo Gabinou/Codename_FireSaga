@@ -6,6 +6,7 @@
 #include "utilities.h"
 #include "tile.h"
 #include "unit/unit.h"
+#include "game/game.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;

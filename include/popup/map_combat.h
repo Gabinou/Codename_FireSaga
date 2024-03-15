@@ -6,6 +6,7 @@
 #include "popup/popup.h"
 #include "bars/circle.h"
 #include "bars/topoff.h"
+#include "game/game.h"
 #include "unit/unit.h"
 #include "pixelfonts.h"
 #include "SDL2/SDL.h"

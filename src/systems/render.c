@@ -372,6 +372,6 @@ void Animate_Scene(tnecs_system_input *input) {
         size_t           typeflag_id = input->entity_typeflag_id;
         tnecs_entity     entity      = world->entities_bytype[typeflag_id][order];
 
-        Scene_Animate(scene, sota->settings, sota->render_target, sota->renderer);
+        // Scene_Animate(scene, sota->settings, sota->render_target, sota->renderer);
     }
 }

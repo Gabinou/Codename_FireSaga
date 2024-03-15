@@ -10,9 +10,9 @@
 #include "types.h"
 #include "combat.h"
 #include "structs.h"
-#include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */
+struct Unit;
 struct Damage;
 
 /* --- MACROS --- */

@@ -9,10 +9,8 @@
 #include "convoy.h"
 #include "physfs.h"
 #include "unit/unit.h"
-#include "narrative.h"
 #include "camp.h"
 #include "sprite.h"
-#include "narrative.h"
 #include "utilities.h"
 #include "supports.h"
 #include "names.h"
@@ -21,6 +19,7 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Door;
 struct Chest;
+struct Scene;
 struct Mobj_Link;
 struct Breakable;
 struct Conditions;

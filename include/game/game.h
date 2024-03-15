@@ -20,6 +20,7 @@
 #include "tnecs.h"
 #include "events.h"
 #include "nmath.h"
+#include "narrative.h"
 #include "music.h"
 #include "macros.h"
 #include "hover.h"

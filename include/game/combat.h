@@ -2,6 +2,8 @@
 #define GAME_COMBAT_H
 
 #include "combat.h"
+#include "game/game.h"
+#include "tnecs.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;

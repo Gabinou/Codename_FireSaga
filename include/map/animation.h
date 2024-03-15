@@ -3,6 +3,7 @@
 
 #include "structs.h"
 #include "enums.h"
+#include "game/game.h"
 #include "n9patch.h"
 #include "stb_sprintf.h"
 

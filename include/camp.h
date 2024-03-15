@@ -2,7 +2,6 @@
 #define CAMP_H
 
 #include <math.h>
-#include "narrative.h"
 #include "enums.h"
 #include "utilities.h"
 #include "jsonio.h"
@@ -10,7 +9,7 @@
 #include "nstr.h"
 #include "RNG.h"
 
-// --- FORWARD DECLARATIONS ---
+/* --- FORWARD DECLARATIONS --- */
 struct Item;
 
 enum SOTA_CAMP {

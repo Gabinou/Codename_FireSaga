@@ -8,16 +8,16 @@
 #include "enums.h"
 #include "nmath.h"
 #include "structs.h"
-#include "unit/unit.h"
 #include "physfs.h"
 #include "jsonio.h"
 #include "debug.h"
-#include "SDL2/SDL.h"
 #include "cJSON.h"
 #include "utilities.h"
 #include "platform.h"
+#include "SDL2/SDL.h"
 
 /* --- FORWARD DECLARATINOS --- */
+struct Game;
 struct Unit;
 struct Inventory_item;
 

@@ -388,7 +388,6 @@ void Game_Init(struct Game *sota) {
     TNECS_REGISTER_COMPONENT(sota->world, RenderTop);
     TNECS_REGISTER_COMPONENT(sota->world, PixelFont);
     TNECS_REGISTER_COMPONENT(sota->world, AI);
-    TNECS_REGISTER_COMPONENT(sota->world, Scene);
     sota->timer_typeflag = TNECS_COMPONENT_NAME2TYPE(sota->world, Timer);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration\n");

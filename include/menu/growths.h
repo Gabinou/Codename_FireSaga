@@ -13,6 +13,7 @@ struct Unit;
 struct MenuElemDirections;
 struct Menu;
 struct Game;
+struct Graph;
 
 enum GM_ELEMS {
     GM_ELEM_NULL = -1,
