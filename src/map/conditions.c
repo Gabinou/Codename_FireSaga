@@ -63,7 +63,6 @@ void Map_Conditions_Check_Death(struct Map_condition *conditions_darr,
         DARR_DEL(conditions_darr, i);
         Map_Condition_Trigger(condition);
     }
-
 }
 
 b32 Map_Condition_Check_Death(struct Map_condition *condition,
@@ -85,15 +84,12 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
     }
 
     /* Checking for matching unit ID */
-    b32 match_unit = true;
+    b32 match_unit = false;
     if ((condition->unit > UNIT_ID_NULL) && (condition->unit < UNIT_ID_NUM))
         match_unit = (unit->_id == condition->unit);
 
     /* -- No match: unit -- */
-    if (!match_unit) {
-        SDL_Log("No match: unit");
-        return (false);
-    } else {
+    if (match_unit) {
         SDL_Log("Match: unit");
         return (true);
     }

@@ -5,7 +5,7 @@
 		"Sex":	true,
 		"BaseExp":	0,
 		"Exp":	0,
-		"CurrentHP":	7,
+		"CurrentHP":	1,
 		"Class":	"Corsair",
 		"Class Index":	12,
 		"AI": "aggressive.json",
