@@ -17,7 +17,7 @@ fsm_eGmp2Stby_s_t fsm_eGmp2Stby_s[GAME_STATE_NUM] = {
 fsm_eAcpt_s_t fsm_eAcpt_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
-    /* Scene_Talk */     NULL,
+    /* Scene_Talk */     &fsm_eAcpt_sScnTalk,
     /* Scene_FMV */      NULL,
     /* Gameplay_Map */   &fsm_eAcpt_sGmpMap,
     /* Gameplay_Camp */  NULL,
@@ -29,7 +29,7 @@ fsm_eAcpt_s_t fsm_eAcpt_s[GAME_STATE_NUM] = {
 fsm_eStart_s_t fsm_eStart_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
-    /* Scene_Talk */     NULL,
+    /* Scene_Talk */     &fsm_eAcpt_sScnTalk,
     /* Scene_FMV */      NULL,
     /* Gameplay_Map */   NULL,
     /* Gameplay_Camp */  NULL,
@@ -1067,6 +1067,12 @@ void fsm_eStart_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
 }
 
 /* -- FSM: Input_Accept EVENT -- */
+void fsm_eAcpt_sScnTalk(struct Game *sota, tnecs_entity accepter) {
+    SDL_assert(sota->scene > TNECS_NULL);
+    struct Scene *scene = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
+    Scene_Next_Line(scene);
+}
+
 void fsm_eAcpt_sGmpMap(struct Game *sota, tnecs_entity accepter) {
     if (fsm_eAcpt_sGmpMap_ss[sota->substate] != NULL)
         fsm_eAcpt_sGmpMap_ss[sota->substate](sota, accepter);

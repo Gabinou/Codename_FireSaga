@@ -4,7 +4,6 @@
 #include <stdint.h>
 #include "enums.h"
 #include "unit/unit.h"
-// #include "game/game.h"
 #include "game/popup.h"
 #include "game/cursor.h"
 #include "game/menu.h"
@@ -147,6 +146,7 @@ extern fsm_eAcpt_s_t fsm_eAcpt_sGmpMap_ss[GAME_SUBSTATE_NUM];
 
 void fsm_eAcpt_sPrep(   struct Game *sota, tnecs_entity ent);
 void fsm_eAcpt_sGmpMap( struct Game *sota, tnecs_entity ent);
+void fsm_eAcpt_sScnTalk(struct Game *sota, tnecs_entity ent);
 void fsm_eAcpt_sTtlScrn(struct Game *sota, tnecs_entity ent);
 
 void fsm_eAcpt_sPrep_ssMapCndt( struct Game *sota, tnecs_entity ent);

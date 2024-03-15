@@ -361,15 +361,15 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     Game_Map_Free(sota);
 
     /* -- Creating scene to play -- */
-    tnecs_entity scene;
-    scene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Scene, Position, Text, Timer);
+    sota->scene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Scene, Position,
+                                                  Text, Timer);
 
-    struct Scene *scene_ptr;
-    scene_ptr  = TNECS_GET_COMPONENT(sota->world, scene, Scene);
-    *scene_ptr = Scene_default;
+    struct Scene *scene;
+    scene  = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
+    *scene = Scene_default;
 
     struct Timer *timer;
-    timer  = TNECS_GET_COMPONENT(sota->world, scene, Timer);
+    timer  = TNECS_GET_COMPONENT(sota->world, sota->scene, Timer);
     *timer = Timer_default;
 
     /* - Set state to scene - */
