@@ -366,6 +366,7 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     struct Scene *scene;
     scene  = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
     *scene = Scene_default;
+    scene->event = event_Quit();
 
     struct Timer *timer;
     timer  = TNECS_GET_COMPONENT(sota->world, sota->scene, Timer);
@@ -379,7 +380,6 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     s8 line = s8_literal("Scene");
     Text_Set(text, line.data, PIXELNOURS_BIG_Y_OFFSET);
     SDL_assert((text->rect.w > 0) && (text->rect.h > 0));
-    s8_free(&line);
 
     struct Position *position;
     position  = TNECS_GET_COMPONENT(sota->world, sota->scene, Position);
@@ -392,10 +392,12 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
 
     /* - Set state to scene - */
     strncpy(sota->reason, "Game plays scene", sizeof(sota->reason));
-    Game_subState_Set(sota, GAME_STATE_Scene_Talk, sota->reason);
+    Game_State_Set(sota, GAME_STATE_Scene_Talk, sota->reason);
 
-    strncpy(sota->reason, "Scene is playing", sizeof(sota->reason));
-    Game_State_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
+    if (sota->substate != GAME_SUBSTATE_STANDBY) {
+        strncpy(sota->reason, "Scene is playing", sizeof(sota->reason));
+        Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
+    }
 }
 
 void receive_event_Input_GLOBALRANGE(struct Game *sota, SDL_Event *userevent) {
