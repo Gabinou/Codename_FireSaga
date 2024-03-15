@@ -1050,8 +1050,6 @@ void fsm_eGmp2Stby_sGmpMap(struct Game *sota, tnecs_entity controller_entity) {
 /* -- FSM: Input_Start EVENT -- */
 void fsm_eStart_sScnTalk(struct Game *sota, tnecs_entity accepter) {
     /* --- Skip scene --- */
-    // SDL_Log("fsm_eStart_sScnTalk");
-    // getchar();
     SDL_assert(sota->scene > TNECS_NULL);
     struct Scene *scene = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
     Scene_Finish(scene, sota);

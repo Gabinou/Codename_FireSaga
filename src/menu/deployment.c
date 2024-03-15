@@ -858,9 +858,7 @@ void DeploymentMenu_Elem_Links(struct DeploymentMenu *dm, struct Menu *mc) {
             mc->elem_links[i].bottom    = i + 1;
         else
             mc->elem_links[i].bottom    = DM_ELEM_NULL;
-
     }
-
 }
 
 void DeploymentMenu_Elem_Pos(struct DeploymentMenu *dm, struct Menu *mc) {

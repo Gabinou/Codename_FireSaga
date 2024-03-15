@@ -759,6 +759,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
 
     /* Add or remove unit from map */
     SDL_assert(sota->map->world == sota->world);
+    Game_Unit_Refresh(sota, unit_ent);
     if (dm->_selected[dm_order]) {
         Map_Unit_Put(sota->map, pos.x, pos.y, unit_ent);
     } else {

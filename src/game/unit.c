@@ -52,17 +52,18 @@ void Game_Unit_Wait(struct Game *sota, tnecs_entity ent) {
 }
 
 void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
+    /* --- Refresh unit on map --- */
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, ent, Unit);
     SDL_assert(unit != NULL);
+    /* --- Skip if unit is not waiting --- */
+    if (!unit->waits)
+        return;
+
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, ent, Sprite);
     SDL_assert(sprite != NULL);
-    /* refresh unit */
-    if (!unit->waits) {
-        return;
-    }
 
     Unit_refresh(unit);
-    /* set palette back to nes */
+    /* -- set palette back to nes --  */
     Sprite_Unveil(sprite, sota->renderer);
 
     /* restart animation */
@@ -271,6 +272,7 @@ void Game_putPConMap(struct Game *sota, i16 *unit_ids,
         if (sota->units_loaded[unit_ids[i]] <= TNECS_NULL)
             Game_Party_Entity_Create(sota, unit_ids[i], posarr[i]);
         tnecs_entity unit_ent = sota->units_loaded[unit_ids[i]];
+
         SDL_assert(unit_ent > TNECS_NULL);
         struct Unit *temp = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
         SDL_assert(temp             != NULL);

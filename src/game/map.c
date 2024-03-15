@@ -68,7 +68,7 @@ void Game_debugMap_Load(struct Game *sota) {
     DARR_PUT(unit_inds, UNIT_ID_RAYAN);
 
     // TODO: Move to after units have been deployed
-    // /* -- Putting party on map -- */
+    /* -- Putting party on map -- */
     Game_Party_Load(sota, unit_inds, DARR_NUM(unit_inds));
 
     Game_DeploymentMenu_Enable(sota);

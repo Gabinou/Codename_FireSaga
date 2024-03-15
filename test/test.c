@@ -114,7 +114,7 @@ int main(int argc, char *argv[]) {
     // getchar();
 
     /* -- Running tests -- */
-    // unit_tests();
+    unit_tests();
     render_tests();
 
     /* -- Postliminaries -- */

@@ -110,7 +110,6 @@ void receive_event_End(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Load_Debug_Map(struct Game *sota, SDL_Event *userevent) {
-
     /* -- UNLOAD FirstMenu -- */
     Game_FirstMenu_Destroy(sota);
     Game_Title_Destroy(sota);
@@ -331,6 +330,11 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     while (DARR_NUM(sota->menu_stack) > 0)
         Game_menuStack_Pop(sota, destroy);
 
+    /* - Hide Cursor - */
+    struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
+    SDL_assert(sprite != NULL);
+    sprite->visible = false;
+
     /* - Hiding popups - */
     if (sota->popups[POPUP_TYPE_HUD_TILE] != TNECS_NULL) {
         Game_PopUp_Tile_Hide(sota);
@@ -377,7 +381,7 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     text  = TNECS_GET_COMPONENT(sota->world, sota->scene, Text);
     *text = Text_default;
     text->pixelfont         = sota->pixelnours_big;
-    s8 line = s8_literal("Scene");
+    s8 line = s8_literal("You win!");
     Text_Set(text, line.data, PIXELNOURS_BIG_Y_OFFSET);
     SDL_assert((text->rect.w > 0) && (text->rect.h > 0));
 
@@ -442,6 +446,11 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
     Game_State_Set(sota, GAME_STATE_Title_Screen, sota->reason);
     if (sota->substate != GAME_SUBSTATE_MENU)
         Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
+
+    /* - Show Cursor - */
+    struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
+    SDL_assert(sprite != NULL);
+    sprite->visible = true;
 
     /* -- Destroying Scene -- */
     if (sota->scene != NULL) {

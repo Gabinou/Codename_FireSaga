@@ -433,7 +433,7 @@ void Game_Cursor_Create(struct Game *sota) {
     struct Timer *timer;
     timer = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Timer);
     SDL_assert(timer != NULL);
-    * timer = Timer_default;
+    *timer = Timer_default;
 
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
     SDL_assert(sprite != NULL);

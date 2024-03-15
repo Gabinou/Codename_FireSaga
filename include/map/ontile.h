@@ -6,6 +6,7 @@
 #include "include/bars/map_hp.h"
 
 /* --- FORWARD DECLARATIONS --- */
+struct Game;
 struct Map;
 
 // How to check for events, objects?
