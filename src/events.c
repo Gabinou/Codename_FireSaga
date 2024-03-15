@@ -366,7 +366,7 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     struct Scene *scene;
     scene  = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
     *scene = Scene_default;
-    scene->event = event_Quit();
+    scene->event = event_Quit;
 
     struct Timer *timer;
     timer  = TNECS_GET_COMPONENT(sota->world, sota->scene, Timer);
@@ -443,6 +443,14 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
     if (sota->substate != GAME_SUBSTATE_MENU)
         Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
 
+    /* -- Destroying Scene -- */
+    if (sota->scene != NULL) {
+        struct Scene *scene  = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
+        Scene_Free(scene);
+        tnecs_entity_destroy(sota->world, sota->scene);
+        sota->scene = TNECS_NULL;
+    }
+
     /* -- Removing menus -- */
     bool destroy = false;
 
@@ -459,24 +467,26 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
     }
 
     /* -- Remove unused components -- */
-    for (int i = 0; i < DARR_NUM(sota->map->units_onfield); i++) {
-        tnecs_entity ent = sota->map->units_onfield[i];
-        TNECS_REMOVE_COMPONENTS(sota->world, ent, MapHPBar);
-        if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, RenderTop)) {
-            TNECS_REMOVE_COMPONENTS(sota->world, ent, RenderTop);
+    if (sota->map != NULL) {
+        for (int i = 0; i < DARR_NUM(sota->map->units_onfield); i++) {
+            tnecs_entity ent = sota->map->units_onfield[i];
+            TNECS_REMOVE_COMPONENTS(sota->world, ent, MapHPBar);
+            if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, RenderTop)) {
+                TNECS_REMOVE_COMPONENTS(sota->world, ent, RenderTop);
+            }
+
+            if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, UnitMoveAnimation)) {
+                TNECS_REMOVE_COMPONENTS(sota->world, ent, UnitMoveAnimation);
+            }
+
+            if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, Boss)) {
+                TNECS_REMOVE_COMPONENTS(sota->world, ent, Boss);
+            }
         }
 
-        if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, UnitMoveAnimation)) {
-            TNECS_REMOVE_COMPONENTS(sota->world, ent, UnitMoveAnimation);
-        }
-
-        if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, Boss)) {
-            TNECS_REMOVE_COMPONENTS(sota->world, ent, Boss);
-        }
+        /* -- Map_Free -- */
+        Game_Map_Free(sota);
     }
-
-    /* -- Map_Free -- */
-    Game_Map_Free(sota);
 
     /* -- Load TitleScreen -- */
     struct Input_Arguments args = Input_Arguments_default;

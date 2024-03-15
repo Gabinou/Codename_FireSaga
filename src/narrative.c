@@ -374,11 +374,8 @@ void Scene_Render_Print(struct Scene *scene) {
 void Scene_Finish(struct Scene *scene, struct Game *sota) {
     /* - Finish scene - */
     SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "Scene Animation Finished");
-    SDL_assert((scene->event > event_Start) && (scene->event > event_End));
+    SDL_assert((scene->event > event_Start) && (scene->event < event_End));
     Event_Emit(__func__, SDL_USEREVENT, scene->event, NULL, NULL);
-
-    tnecs_entity_destroy(sota->world, sota->scene);
-    sota->scene = TNECS_NULL;
 }
 
 void Scene_Next_Line(struct Scene *scene, struct Game *sota) {
