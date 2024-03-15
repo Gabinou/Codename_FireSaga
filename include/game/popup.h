@@ -1,13 +1,15 @@
 #ifndef GAME_POPUP_H
 #define GAME_POPUP_H
 
-#include "game/game.h"
 #include "popup/popup.h"
 #include "popup/tile.h"
 #include "popup/unit.h"
 #include "popup/map_combat.h"
 #include "popup/loadout_stats.h"
 #include "systems/render.h"
+
+/* --- FORWARD DECLARATIONS --- */
+struct Game;
 
 /* --- Constructors/Destructors --- */
 void Game_PopUps_Free(struct Game                *sota);

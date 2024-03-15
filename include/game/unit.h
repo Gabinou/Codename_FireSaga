@@ -1,7 +1,6 @@
 #ifndef GAME_UNIT_H
 #define GAME_UNIT_H
 
-#include "game/game.h"
 #include "enums.h"
 #include "bitfields.h"
 #include "weapon.h"
@@ -11,6 +10,7 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
+struct Game;
 
 /* --- Constructors/Destructors --- */
 void Game_Items_Free(  struct dtab **items_dtab);

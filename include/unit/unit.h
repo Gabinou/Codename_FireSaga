@@ -27,6 +27,7 @@
 struct Item;
 struct Weapon;
 struct Damage;
+struct Game;
 struct Position;
 struct Map;
 struct RNG_Sequence;

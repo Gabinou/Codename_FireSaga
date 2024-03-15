@@ -5,12 +5,14 @@
 #include "sprite.h"
 #include "structs.h"
 #include "narrative.h"
-#include "game/game.h"
 #include "position.h"
 #include "slider.h"
 #include "popup/tile.h"
 #include "map/animation.h"
 #include "SDL2/SDL.h"
+
+/* --- FORWARD DECLARATIONS --- */
+struct Game;
 
 extern b32 CursorFlag;
 extern b32 MouseFlag;

@@ -1,7 +1,6 @@
 #ifndef GAME_MENU_H
 #define GAME_MENU_H
 
-#include "game/game.h"
 #include "game/popup.h"
 #include "menu.h"
 #include "map/find.h"
@@ -17,6 +16,8 @@
 #include "popup/pre_combat.h"
 
 /* --- FORWARD DECLARATIONS --- */
+struct Game;
+struct Graph;
 struct Input_Arguments;
 
 void Game_Switch_toCandidates(struct Game *sota, tnecs_entity *candidates);

@@ -2,7 +2,6 @@
 #define PRE_COMBAT_POPUP_H
 
 #include "enums.h"
-#include "game/game.h"
 #include "pixelfonts.h"
 #include "unit/unit.h"
 #include "nmath.h"
@@ -11,6 +10,9 @@
 #include "events.h"
 #include "nstr.h"
 #include "stb_sprintf.h"
+
+/* --- FORWARD DECLARATIONS --- */
+struct Game;
 
 // A:Aggressor
 // D:Defendant

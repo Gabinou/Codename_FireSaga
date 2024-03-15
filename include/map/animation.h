@@ -4,12 +4,12 @@
 #include "structs.h"
 #include "enums.h"
 #include "n9patch.h"
-#include "game/game.h"
 #include "stb_sprintf.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct CombatAnimation;
 struct MapAnimation;
+struct Graph;
 
 // Map_animation Systems:
 //     - Unit movement: entity with Unit, MapAnimation components

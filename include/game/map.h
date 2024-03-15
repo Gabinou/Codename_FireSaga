@@ -1,12 +1,14 @@
 #ifndef GAME_MAP_H
 #define GAME_MAP_H
 
-#include "game/game.h"
 #include "enums.h"
 #include "map/render.h"
 #include "utilities.h"
 #include "tile.h"
 #include "unit/unit.h"
+
+/* --- FORWARD DECLARATIONS --- */
+struct Game;
 
 /* --- Map utilities --- */
 void Game_Map_Free(  struct Game *sota);

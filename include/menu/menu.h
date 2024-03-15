@@ -3,7 +3,6 @@
 
 #include "enums.h"
 #include "n9patch.h"
-#include "game/game.h"
 #include "game/menu.h"
 #include "game/popup.h"
 #include "game/cursor.h"

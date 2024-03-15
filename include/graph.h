@@ -9,9 +9,10 @@
 #include "pixelfonts.h"
 #include "stb_sprintf.h"
 
-// --- FORWARD DECLARATIONS ---
+/* --- FORWARD DECLARATIONS --- */
 struct Item;
 struct Unit;
+struct Game;
 
 #define GRAPH_POS(xory, offset) (offset * n9patch->scale.xory)
 

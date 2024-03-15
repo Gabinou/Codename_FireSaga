@@ -3,7 +3,6 @@
 
 #include "enums.h"
 #include "n9patch.h"
-#include "game/game.h"
 #include "popup/popup.h"
 #include "bars/stat.h"
 #include "slider.h"
@@ -13,6 +12,7 @@
 #include "stb_sprintf.h"
 
 /* --- FORWARD DECLARATIONS --- */
+struct Game;
 struct Settings;
 struct SliderOffscreen;
 struct cJSON;

@@ -3,7 +3,6 @@
 
 #include "enums.h"
 #include "n9patch.h"
-#include "game/game.h"
 #include "map/tiles.h"
 #include "popup/popup.h"
 #include "pixelfonts.h"
@@ -11,6 +10,7 @@
 #include "stb_sprintf.h"
 
 /* --- FORWARD DECLARATIONS --- */
+struct Game;
 struct Settings;
 struct cJSON;
 

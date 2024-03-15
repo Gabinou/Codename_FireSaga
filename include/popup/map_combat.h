@@ -2,7 +2,6 @@
 #define POPUP_MAP_COMBAT_H
 
 #include "enums.h"
-#include "game/game.h"
 #include "n9patch.h"
 #include "popup/popup.h"
 #include "bars/circle.h"
@@ -13,6 +12,7 @@
 #include "stb_sprintf.h"
 
 /* --- FORWARD DECLARATIONS --- */
+struct Game;
 struct Settings;
 struct cJSON;
 

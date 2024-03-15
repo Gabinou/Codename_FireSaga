@@ -1,8 +1,10 @@
 #ifndef GAME_COMBAT_H
 #define GAME_COMBAT_H
 
-#include "game/game.h"
 #include "combat.h"
+
+/* --- FORWARD DECLARATIONS --- */
+struct Game;
 
 /* --- Combat --- */
 void Game_Combat_Outcome( struct Game *sota);
