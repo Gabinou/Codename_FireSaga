@@ -175,15 +175,15 @@ int Utilities_Loop(int direction, int flip) {
     /* Get sprite loop from direction and flip */
     int loop;
     if (direction == SOTA_DIRECTION_BOTTOM)
-        loop = MAP_UNIT_SPRITE_LOOP_MOVEB;
+        loop = MAP_UNIT_LOOP_MOVEB;
     else if (direction == SOTA_DIRECTION_TOP)
-        loop = MAP_UNIT_SPRITE_LOOP_MOVET;
+        loop = MAP_UNIT_LOOP_MOVET;
     else if (direction == SOTA_DIRECTION_LEFT) {
         bool isflip = (flip == SDL_FLIP_HORIZONTAL);
-        loop = isflip * MAP_UNIT_SPRITE_LOOP_MOVER + (1 - isflip) * MAP_UNIT_SPRITE_LOOP_MOVEL;
+        loop = isflip * MAP_UNIT_LOOP_MOVER + (1 - isflip) * MAP_UNIT_LOOP_MOVEL;
     } else if (direction == SOTA_DIRECTION_RIGHT) {
         bool isflip = (flip == SDL_FLIP_HORIZONTAL);
-        loop = isflip * MAP_UNIT_SPRITE_LOOP_MOVEL + (1 - isflip) * MAP_UNIT_SPRITE_LOOP_MOVER;
+        loop = isflip * MAP_UNIT_LOOP_MOVEL + (1 - isflip) * MAP_UNIT_LOOP_MOVER;
     }
 
     return (loop);

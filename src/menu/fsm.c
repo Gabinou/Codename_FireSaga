@@ -1115,8 +1115,8 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
             sprite = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Sprite);
             // TODO: REMOVE IF WHEN ALL MAP_UNITS HAVE SPRITESHEETS.
             if (sprite->spritesheet != NULL) {
-                SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_SPRITE_LOOP_NUM);
-                Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_SPRITE_LOOP_MOVER, sprite->flip);
+                SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM);
+                Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_MOVER, sprite->flip);
                 Sprite_Animation_Loop(sprite);
                 Sprite_Draw(sprite, sota->renderer);
             }

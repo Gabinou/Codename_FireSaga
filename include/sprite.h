@@ -24,24 +24,24 @@ enum MAP_UNIT_TILESIZE {
     MAP_UNIT_TILESIZE_Y = 2,
 };
 
-enum MAP_UNIT_SPRITE_LOOPS {
-    MAP_UNIT_SPRITE_LOOP_IDLE = 0,
-    MAP_UNIT_SPRITE_LOOP_TAUNT,
-    MAP_UNIT_SPRITE_LOOP_ITEM,
-    MAP_UNIT_SPRITE_LOOP_AGONY,
-    MAP_UNIT_SPRITE_LOOP_ATTACKR,
-    MAP_UNIT_SPRITE_LOOP_ATTACKT,
-    MAP_UNIT_SPRITE_LOOP_ATTACKL,
-    MAP_UNIT_SPRITE_LOOP_ATTACKB,
-    MAP_UNIT_SPRITE_LOOP_MOVER,
-    MAP_UNIT_SPRITE_LOOP_MOVET,
-    MAP_UNIT_SPRITE_LOOP_MOVEL,
-    MAP_UNIT_SPRITE_LOOP_MOVEB,
-    MAP_UNIT_SPRITE_LOOP_STANCE,
-    MAP_UNIT_SPRITE_LOOP_NUM,
+enum MAP_UNIT_LOOPS {
+    MAP_UNIT_LOOP_IDLE      =  0,
+    MAP_UNIT_LOOP_TAUNT     =  1,
+    MAP_UNIT_LOOP_ITEM      =  2,
+    MAP_UNIT_LOOP_AGONY     =  3,
+    MAP_UNIT_LOOP_ATTACKR   =  4,
+    MAP_UNIT_LOOP_ATTACKT   =  5,
+    MAP_UNIT_LOOP_ATTACKL   =  6,
+    MAP_UNIT_LOOP_ATTACKB   =  7,
+    MAP_UNIT_LOOP_MOVER     =  8,
+    MAP_UNIT_LOOP_MOVET     =  9,
+    MAP_UNIT_LOOP_MOVEL     = 10,
+    MAP_UNIT_LOOP_MOVEB     = 11,
+    MAP_UNIT_LOOP_STANCE    = 12,
+    MAP_UNIT_LOOP_NUM       = 13,
 };
 
-extern int map_unit_offsets[MAP_UNIT_SPRITE_LOOP_NUM][TWO_D];
+extern int map_unit_offsets[MAP_UNIT_LOOP_NUM][TWO_D];
 
 struct Spritesheet {
     s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
@@ -52,11 +52,12 @@ struct Spritesheet {
     SDL_Surface *surface_shaded;    /* shaded pixels to be shown on screen  */
     SDL_Palette *palette;
 
-    i16  *loops_pos;   /* [loop] flattened index for 8 cols, starting top left */
-    i8   *frames;      /* [loop], number of frames */
-    i16 **speeds;      /* [loop][frame], ms */
-    i8   *loop_modes;  /* [loop] */
-    i8    loop_num;    /* mostly for debugging, checking spritesheet size */
+    i16  *loops_pos;    /* [loop] flattened index for 8 cols, starting top left */
+    i8   *frames;       /* [loop], number of frames */
+    i16 **speeds;       /* [loop][frame], ms */
+    i8   *loop_modes;   /* [loop] */
+    i32  *loops;        /* [loop] */
+    i8    loop_num;     /* mostly for debugging, checking spritesheet size */
     i8    current_loop;
     i8    current_frame;
     i8    frame_i;

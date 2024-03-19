@@ -495,8 +495,8 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, hov_ent, Sprite);
     bool animated = TNECS_ENTITY_HASCOMPONENT(sota->world, hov_ent, Timer);
     if ((sprite->spritesheet != NULL) && (animated) && (!unit_ontile->waits)) {
-        SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_SPRITE_LOOP_NUM);
-        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_SPRITE_LOOP_TAUNT, sprite->flip);
+        SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM);
+        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_TAUNT, sprite->flip);
         Sprite_Animation_Loop(sprite);
         Sprite_Draw(sprite, sota->renderer);
     }
@@ -510,7 +510,7 @@ void fsm_eCrsHvUnit_ssMapCndt(struct Game *sota, tnecs_entity hov_ent) {
     /* -- Start unit combat stance loop -- */
     // NOTE: ONLY FOR ATTACK
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, hov_ent, Sprite);
-    Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_SPRITE_LOOP_STANCE, sprite->flip);
+    Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_STANCE, sprite->flip);
     Sprite_Animation_Loop(sprite);
     Sprite_Draw(sprite, sota->renderer);
 
@@ -563,8 +563,8 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
 
     /* Only if unit doesn't wait */
     if ((sprite->spritesheet != NULL) && (animated) && (!unit->waits)) {
-        SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_SPRITE_LOOP_NUM);
-        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_SPRITE_LOOP_IDLE, sprite->flip);
+        SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM);
+        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_IDLE, sprite->flip);
         Sprite_Animation_Loop(sprite);
         Sprite_Draw(sprite, sota->renderer);
     }
@@ -580,7 +580,7 @@ void fsm_eCrsDeHvUnit_ssMapCndt(struct Game *sota, tnecs_entity dehov_ent) {
     /* -- Reset unit loop to Idle --  */
     // ONLY FOR ATTACK
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, dehov_ent, Sprite);
-    Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_SPRITE_LOOP_IDLE, sprite->flip);
+    Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_IDLE, sprite->flip);
     Sprite_Animation_Loop(sprite);
     Sprite_Draw(sprite, sota->renderer);
 }
@@ -1014,7 +1014,7 @@ void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity mover_entit
     if ((path_num > 0) && (sprite->spritesheet != NULL)) {
         i32 previous_x = arrow->pathlist[(path_num - 2) * TWO_D];
         i32 previous_y = arrow->pathlist[((path_num - 2) * TWO_D) + 1];
-        SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_SPRITE_LOOP_NUM);
+        SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM);
 
         struct Point move = {cursor_pos->x - previous_x, cursor_pos->y - previous_y};
         int direction = Ternary_Direction(move);

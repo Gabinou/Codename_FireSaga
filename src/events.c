@@ -916,11 +916,11 @@ void receive_event_Unit_Icon_Return(struct Game *sota, SDL_Event *userevent) {
     /* - Resetting map animation loop - */
     struct Point initial = sota->selected_unit_initial_position;
     SDL_assert(sprite->spritesheet != NULL);
-    SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_SPRITE_LOOP_NUM);
+    SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM);
     if ((initial.x == pos_ptr->tilemap_pos.x) && (initial.y == pos_ptr->tilemap_pos.y))
-        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_SPRITE_LOOP_TAUNT, sprite->flip);
+        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_TAUNT, sprite->flip);
     else
-        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_SPRITE_LOOP_IDLE, sprite->flip);
+        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_IDLE, sprite->flip);
     Sprite_Animation_Loop(sprite);
     Sprite_Draw(sprite, sota->renderer);
 
@@ -952,12 +952,12 @@ void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
     /* -- Sprite walking animation -- */
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Sprite);
     SDL_assert(sprite->spritesheet != NULL);
-    SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_SPRITE_LOOP_NUM);
+    SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM);
     // TODO: check if arrow exists and is long, revert to correct orientation
     if (sprite->flip == SDL_FLIP_HORIZONTAL)
-        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_SPRITE_LOOP_MOVEL, sprite->flip);
+        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_MOVEL, sprite->flip);
     else
-        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_SPRITE_LOOP_MOVER, sprite->flip);
+        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_MOVER, sprite->flip);
     Sprite_Animation_Loop(sprite);
     Sprite_Draw(sprite, sota->renderer);
 }
@@ -1008,8 +1008,8 @@ void receive_event_Menu_Created(struct Game *sota, SDL_Event *userevent) {
         sprite = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Sprite);
 
         SDL_assert(sprite->spritesheet != NULL);
-        SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_SPRITE_LOOP_NUM);
-        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_SPRITE_LOOP_STANCE, sprite->flip);
+        SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM);
+        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_STANCE, sprite->flip);
         Sprite_Animation_Loop(sprite);
         Sprite_Draw(sprite, sota->renderer);
     }
@@ -1293,22 +1293,22 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
         case SOTA_DIRECTION_BOTTOM:
         case SOTA_DIRECTION_BOTLEFT:
         case SOTA_DIRECTION_BOTRIGHT:
-            Sprite_Animation_Restart(agg_sprite, MAP_UNIT_SPRITE_LOOP_ATTACKB);
-            Sprite_Animation_Restart(dft_sprite, MAP_UNIT_SPRITE_LOOP_ATTACKB);
+            Sprite_Animation_Restart(agg_sprite, MAP_UNIT_LOOP_ATTACKB);
+            Sprite_Animation_Restart(dft_sprite, MAP_UNIT_LOOP_ATTACKB);
             break;
         case SOTA_DIRECTION_TOP:
-            Sprite_Animation_Restart(agg_sprite, MAP_UNIT_SPRITE_LOOP_ATTACKT);
-            Sprite_Animation_Restart(dft_sprite, MAP_UNIT_SPRITE_LOOP_ATTACKT);
+            Sprite_Animation_Restart(agg_sprite, MAP_UNIT_LOOP_ATTACKT);
+            Sprite_Animation_Restart(dft_sprite, MAP_UNIT_LOOP_ATTACKT);
             break;
         case SOTA_DIRECTION_RIGHT:
         case SOTA_DIRECTION_TOPRIGHT:
-            Sprite_Animation_Restart(agg_sprite, MAP_UNIT_SPRITE_LOOP_ATTACKR);
-            Sprite_Animation_Restart(dft_sprite, MAP_UNIT_SPRITE_LOOP_ATTACKL);
+            Sprite_Animation_Restart(agg_sprite, MAP_UNIT_LOOP_ATTACKR);
+            Sprite_Animation_Restart(dft_sprite, MAP_UNIT_LOOP_ATTACKL);
             break;
         case SOTA_DIRECTION_LEFT:
         case SOTA_DIRECTION_TOPLEFT:
-            Sprite_Animation_Restart(agg_sprite, MAP_UNIT_SPRITE_LOOP_ATTACKL);
-            Sprite_Animation_Restart(dft_sprite, MAP_UNIT_SPRITE_LOOP_ATTACKR);
+            Sprite_Animation_Restart(agg_sprite, MAP_UNIT_LOOP_ATTACKL);
+            Sprite_Animation_Restart(dft_sprite, MAP_UNIT_LOOP_ATTACKR);
             break;
     }
 
@@ -1392,8 +1392,8 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
     // 3. reset animation states
     struct Sprite *dft_sprite = TNECS_GET_COMPONENT(sota->world, sota->defendant, Sprite);
     struct Sprite *agg_sprite = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Sprite);
-    Sprite_Animation_Restart(agg_sprite, MAP_UNIT_SPRITE_LOOP_IDLE);
-    Sprite_Animation_Restart(dft_sprite, MAP_UNIT_SPRITE_LOOP_IDLE);
+    Sprite_Animation_Restart(agg_sprite, MAP_UNIT_LOOP_IDLE);
+    Sprite_Animation_Restart(dft_sprite, MAP_UNIT_LOOP_IDLE);
 
     // 4. Restart Defendant animation
     struct Timer *dft_timer = TNECS_GET_COMPONENT(sota->world, sota->defendant, Timer);
