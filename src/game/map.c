@@ -272,7 +272,6 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         sprite->visible = true;
         SDL_assert(sprite->spritesheet != NULL);
         SDL_assert(sprite->spritesheet->current_loop == MAP_UNIT_LOOP_IDLE);
-        SDL_assert(sprite->spritesheet->frames[0] == 4);
 
         Sprite_Tilesize_Set(sprite, sota->settings.tilesize);
         Sprite_Rects_Init(sprite);
