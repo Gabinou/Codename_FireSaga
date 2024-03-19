@@ -181,7 +181,7 @@ void Spritesheet_Loop_Set(struct Spritesheet *spritesheet, int loop,
     /* Check if next loop is in loops of spritesheet */
     for (int i = 0; i < spritesheet->loop_num; i++) {
         if (next_loop == spritesheet->loops[i]) {
-            spritesheet->loop           = next_loop;
+            spritesheet->current_loop   = next_loop;
             spritesheet->current_frame  = 0;
             spritesheet->frame_i        = 0;
             break;
