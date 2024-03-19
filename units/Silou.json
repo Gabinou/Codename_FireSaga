@@ -7,8 +7,8 @@
 		"Exp":	400,
 		"Handedness":	 1,
 		"CurrentHP": 	1,
-		"Class":	"Mage",
-		"Class Index":	20,
+		"Class":	"Wolfspeaker",
+		"Class Index":	34,
 		"Supports": ["Erwin", "Perygnon"], 
 		"Support Type": "Wild", 
 		"Stats":	{
