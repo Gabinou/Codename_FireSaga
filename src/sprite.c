@@ -456,9 +456,13 @@ void Sprite_Animation_Restart(struct Sprite *sprite, int loop) {
 void Sprite_Animation_Loop(struct Sprite *sprite) {
     SDL_assert(sprite != NULL);
     struct Spritesheet *spritesheet = sprite->spritesheet;
+    /* Skip if no animation to do. */
+    i16 frames = spritesheet->frames[spritesheet->current_loop];
+    if (frames <= 1)
+        return;
+
     i16 next_frame_i = ++spritesheet->frame_i;
     i16 next_frame = 0;
-    i16 frames = spritesheet->frames[spritesheet->current_loop];
 
     /*  - Compute next frame depending on loop mode - */
     switch (spritesheet->loop_modes[spritesheet->current_loop]) {
