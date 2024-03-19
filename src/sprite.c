@@ -107,7 +107,7 @@ void Spritesheet_readJSON(void *input,  cJSON *jspritesheet) {
     cJSON *jloops_pos   = cJSON_GetObjectItem(jspritesheet, "loops_pos");
     cJSON *jloop_modes  = cJSON_GetObjectItem(jspritesheet, "loop_modes");
 
-    if (cJSON_IsArray(jloops_pos)) {
+    if (cJSON_IsArray(jloops)) {
         spritesheet->loop_num = cJSON_GetArraySize(jloops);
         spritesheet->loops = SDL_malloc(spritesheet->loop_num * sizeof(*spritesheet->loops));
         for (int i = 0; i < spritesheet->loop_num; i++) {
@@ -164,7 +164,7 @@ void Spritesheet_Loop_Set(struct Spritesheet *spritesheet, int loop,
                           SDL_RendererFlip flip) {
     SDL_assert(loop < spritesheet->loop_num);
     SDL_assert(loop >= 0);
-    i32 next_loop = -1;
+    i32 next_loop = loop;
     if (flip == SDL_FLIP_HORIZONTAL) {
         switch (loop) {
             case MAP_UNIT_LOOP_ATTACKR:
@@ -172,9 +172,6 @@ void Spritesheet_Loop_Set(struct Spritesheet *spritesheet, int loop,
                 break;
             case MAP_UNIT_LOOP_ATTACKL:
                 next_loop = MAP_UNIT_LOOP_ATTACKR;
-                break;
-            default:
-                next_loop = loop;
                 break;
         }
     }
