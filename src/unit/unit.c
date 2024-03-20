@@ -426,6 +426,7 @@ void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, size_t i) {
 
     if ((i < 0) || (i >= DEFAULT_EQUIPMENT_SIZE)) {
         SDL_Log("Item i out of bounds");
+        // TODO: many errors are asserts
         exit(ERROR_OutofBounds);
     }
     if (unit->_equipment[i].id != ITEM_NULL) {
@@ -1595,7 +1596,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
         SDL_LogError(SOTA_LOG_SYSTEM,
                      "Name in unit filename '%s' does not match id name %d->'%s'",
                      json_name, unit->_id, idname.data);
-        exit(ERROR_Generic);
+        exit(ERROR_JSONParsingFailed);
     }
 
     SDL_Log("-- startup misc --");
@@ -1611,7 +1612,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     if (jsupports != NULL) {
         if (!cJSON_IsArray(jsupports)) {
             SDL_LogError(SOTA_LOG_SYSTEM, "'%s' supports is not an array", json_name);
-            exit(ERROR_Generic);
+            exit(ERROR_JSONParsingFailed);
         }
 
         unit->support_num = cJSON_GetArraySize(jsupports);
