@@ -3,6 +3,7 @@
 
 #include "types.h"
 #include "unit.h"
+#include "nstr.h"
 #include "jsonio.h"
 
 /* --- Party --- */
@@ -10,13 +11,13 @@
 struct Party {
     s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
     u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
-    
+
     s8   party_folder;
     s8  *unit_names;
     s8  *filenames;
     i16 *ids;
-    // struct Unit *party;
-}
+    struct Unit *party;
+};
 
 void Party_Free(struct Party *party);
 
