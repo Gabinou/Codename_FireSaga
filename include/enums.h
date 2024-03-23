@@ -600,6 +600,7 @@ enum UNIT_IDS {
     UNIT_ID_START       = 0,
     UNIT_ID_PC_START    = 0,
 #include "names/units_PC.h"
+    UNIT_ID_PC_END,
 #include "names/units_NPC.h"
     UNIT_ID_END,
     UNIT_ID_NUM = UNIT_ID_END,
@@ -614,6 +615,7 @@ enum UNIT_IDS {
 enum UNIT_ORDER {
     UNIT_ORDER_START = 0,
 #include "names/units_PC.h"
+    UNIT_ORDER_PC_END,
 #include "names/units_NPC.h"
     UNIT_NUM,
 };

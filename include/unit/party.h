@@ -30,9 +30,9 @@ void Party_Names2Filenames( struct Party *ps);
 
 /* --- JSONIO --- */
 /* -- Load party units from party structs -- */
-void Party_Load_Units(  struct Party *ps,    struct Unit *pu,
+void Party_Load_Units(  struct Party *ps,
                         struct dtab  *wdtab, struct dtab *idtab);
-void _Party_Load_Units( struct Party *party, struct Unit *pu);
+void _Party_Load_Units( struct Party *party);
 
 /* -- Load party struct -- */
 void Party_readJSON(void *input, cJSON *jparty);
