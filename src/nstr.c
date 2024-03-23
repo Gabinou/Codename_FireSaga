@@ -6,10 +6,10 @@
 
 s8 s8_mut( char *string) {
     s8 s8_string;
-    size_t len = strlen(string);
-    s8_string.num  = len;
+    size_t len = strlen(string) + 1;
+    s8_string.num  = len - 1;
     s8_string.len  = len < NSTR_MIN_LEN ? NSTR_MIN_LEN : len;
-    s8_string.data = calloc(1, s8_string.len);
+    s8_string.data = SDL_calloc(1, s8_string.len);
     memcpy(s8_string.data, string, s8_string.num);
     return (s8_string);
 }
@@ -17,7 +17,7 @@ s8 s8_mut( char *string) {
 void s8_free(s8 *str8) {
     /* str8 is a pointer to modify to member variables */
     if (str8->data != NULL) {
-        free(str8->data);
+        SDL_free(str8->data);
         str8->data = NULL;
     }
     str8->num = 0;
@@ -40,7 +40,7 @@ s8 s8cat(s8 s1, s8 s2) {
     /* Grow buffer */
     while ((s1.num + s2.num) >= (s1.len - 1)) {
         size_t newlen = s1.len * 2;
-        s1.data = realloc(s1.data, newlen * sizeof(*s1.data));
+        s1.data = SDL_realloc(s1.data, newlen * sizeof(*s1.data));
         memset(s1.data + s1.num, 0, newlen - s1.num);
         s1.len = newlen;
     }
@@ -60,7 +60,7 @@ s8 s8cpy(s8 s1, s8 s2) {
     /* Increase buffer size for string to copy */
     while (s2.num >= (s1.len - 1)) {
         size_t newlen = s1.len < NSTR_MIN_LEN ? NSTR_MIN_LEN * 2 : s1.len * 2;
-        s1.data = realloc(s1.data, newlen * sizeof(*s1.data));
+        s1.data = SDL_realloc(s1.data, newlen * sizeof(*s1.data));
         memset(s1.data + s1.num, 0, newlen - s1.num);
         s1.len = newlen;
     }
@@ -115,11 +115,16 @@ s8 s8_camelCase(s8 str8,  char separator, size_t minwordlen) {
     return (str8);
 }
 
-s8 s8_Path_Remove_Top(s8 str8,  char separator) {
-    char *folder        = strrchr(str8.data, separator) + 1;
+s8 s8_Path_Remove_Top(s8 str8, char separator) {
+    char *folder = strrchr(str8.data, separator);
+   
+    /* Skip if no separator found */
+    if (folder == NULL)
+        return (str8);
+
+    /* Set all bytes to 0 after top separator */
     size_t len_folder   = strlen(folder);
-    *(str8.data + (str8.num - (len_folder + 1))) = '\0';
-    str8.num -= (len_folder + 1);
+    str8.num -= len_folder;
     memset(str8.data + str8.num, 0, str8.len - str8.num);
     return (str8);
 }
@@ -145,7 +150,7 @@ s8 s8_Replace(s8 str8,  char *replace,  char *with) {
         /* accomodate new str len */
         while (len_nl > str8.len) {
             size_t newlen = str8.len * 2;
-            str8.data = realloc(str8.data, newlen * sizeof(*str8.data));
+            str8.data = SDL_realloc(str8.data, newlen * sizeof(*str8.data));
             memset(str8.data + str8.num, 0, newlen - str8.num);
             str8.len = newlen;
         }
@@ -230,7 +235,7 @@ char *nstr_Path_Remove_Top(char *in_path,  char separator) {
 }
 
 char *nstr_Path_Split_Top(char *in_path,  char separator) {
-    char *temp = (char *) malloc(strlen(in_path) + 1);
+    char *temp = (char *) SDL_malloc(strlen(in_path) + 1);
     strcpy(temp, in_path);
     * (temp + strlen(in_path)) = '\0';
     char *folder = strrchr(temp, separator) + 1;
@@ -239,7 +244,7 @@ char *nstr_Path_Split_Top(char *in_path,  char separator) {
         folder = strrchr(temp, separator) + 1;
     }
     strcpy(in_path, temp + strlen(temp) - strlen(folder));
-    free(temp);
+    SDL_free(temp);
     return (in_path);
 }
 
