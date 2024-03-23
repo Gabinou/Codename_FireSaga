@@ -1,6 +1,17 @@
 
 #include "unit/party.h"
 
+struct Party Party_default =  {
+    .json_element   = JSON_UNIT,
+    .json_filename  = {0},
+    .party_folder   = {0},
+    .unit_names     = NULL,
+    .filenames      = NULL,
+    .ids            = NULL,
+    .party          = NULL,
+};
+
+
 /* --- Party --- */
 void Party_Free(struct Party *party) {
     SDL_assert(party != NULL);
@@ -66,8 +77,7 @@ void _Party_Load_Units(struct Party *party_struct, struct Unit *party) {
 
 }
 
-
-void Party_readJSON(void *input,  cJSON *jparty) {
+void Party_readJSON(void *input, cJSON *jparty) {
     struct Party *party_struct = (struct Party *)input;
     SDL_assert(party_struct != NULL);
     struct Unit *party = party_struct->party;

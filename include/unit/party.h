@@ -18,6 +18,7 @@ struct Party {
     i16 *ids;
     struct Unit *party;
 };
+extern struct Party party_default;
 
 /* --- Constructor/Destructors --- */
 void Party_Free(struct Party *party);
@@ -30,7 +31,7 @@ void Party_Names2Filenames( struct Party *ps);
 /* -- Load party units from party structs -- */
 void Party_Load_Units(  struct Party *ps,    struct Unit *pu,
                         struct dtab  *wdtab, struct dtab *idtab);
-void _Party_Load_Units( struct Party *party, struct Unit *pu)
+void _Party_Load_Units( struct Party *party, struct Unit *pu);
 
 /* -- Load party struct -- */
 void Party_readJSON(void *input, cJSON *jparty);

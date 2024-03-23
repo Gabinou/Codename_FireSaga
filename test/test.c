@@ -9,6 +9,7 @@
 #include "test_convoy.h"
 #include "test_crt.h"
 #include "test_equations.h"
+#include "test_party.h"
 #include "test_enums.h"
 #include "test_filesystem.h"
 #include "test_game.h"
@@ -84,6 +85,7 @@ void unit_tests() {
     nourstest_run("Menu ",          test_menu);
     nourstest_run("nstr ",          test_nstr);
     nourstest_run("Octant ",        test_octant);
+    nourstest_run("Party ",         test_party);
     nourstest_run("Position ",      test_position);
     nourstest_run("Pixelfonts ",    test_pixelfonts);
     nourstest_run("RNG ",           test_RNG);
