@@ -117,7 +117,7 @@ s8 s8_camelCase(s8 str8,  char separator, size_t minwordlen) {
 
 s8 s8_Path_Remove_Top(s8 str8, char separator) {
     char *folder = strrchr(str8.data, separator);
-   
+
     /* Skip if no separator found */
     if (folder == NULL)
         return (str8);
