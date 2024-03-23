@@ -82,7 +82,7 @@ void Party_Load_Units(struct Party *party_struct,
     struct Unit *party = party_struct->party;
     SDL_assert(party != NULL);
 
-    _Party_Load_Units(party_struct); 
+    _Party_Load_Units(party_struct);
 
     /* Reading unit from json file */
     for (size_t i = 0; i < SOTA_MAX_PARTY_SIZE; i++) {

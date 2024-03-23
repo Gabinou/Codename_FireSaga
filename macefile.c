@@ -9,7 +9,7 @@
 #endif
 
 struct Config debug         = {
-    .flags = "-g3 -rdynamic -O0 -DSDL_ASSERT_LEVEL=2"
+    .flags = "-g3 -b -rdynamic -O0 -DSDL_ASSERT_LEVEL=2"
 };
 struct Config release       = {
     .flags = "-O2 -DSDL_ASSERT_LEVEL=1"
