@@ -96,20 +96,20 @@ void test_utilities() {
     s8 temp = s8_mut("test_utilities");
     nourstest_true(s8equal(s8_literal("test utilities"), s8_replaceSingle(temp, '_', ' ')));
 
-    memcpy(temp.data, "test_utilities", temp.len);
+    memcpy(temp.data, "test_utilities", temp.num);
     nourstest_true(s8equal(s8_literal("Test_Utilities"), s8_camelCase(temp, '_', 2)));
 
-    memcpy(temp.data, "test_utilities", temp.len);
+    memcpy(temp.data, "test_utilities", temp.num);
     nourstest_true(s8equal(s8_literal("Test Utilities"), s8_camelCase(temp, ' ', 2)));
 
     s8_free(&temp);
     temp = s8_mut("vial of light");
     nourstest_true(s8equal(s8_literal("Vial of Light"), s8_camelCase(temp, ' ', 2)));
 
-    memcpy(temp.data, "vial of light", temp.len);
+    memcpy(temp.data, "vial of light", temp.num);
     nourstest_true(s8equal(s8_literal("Vial Of Light"), s8_camelCase(temp, ' ', 1)));
 
-    memcpy(temp.data, "Vial Of Light", temp.len);
+    memcpy(temp.data, "Vial Of Light", temp.num);
     nourstest_true(s8equal(s8_literal("vial of light"), s8_toLower(temp)));
     s8_free(&temp);
 
@@ -169,8 +169,7 @@ void test_utilities() {
     u16 wpn_typecode;
     uint64_t temp_item_id;
     wpn_typecode = ITEM_TYPE_SWORD + ITEM_TYPE_LANCE;
-    s8 *wpn_names;
-    wpn_names = Names_wpnType(wpn_typecode);
+    s8 *wpn_names = Names_wpnType(wpn_typecode);
     nourstest_true(s8equal(wpn_names[0], s8_literal("Sword")));
     nourstest_true(s8equal(wpn_names[1], s8_literal("Lance")));
     nourstest_true(DARR_NUM(wpn_names) == 2);

@@ -136,15 +136,16 @@ void test_RNG_SequenceBreaker() {
 #define ITERATIONS 1000000
 void test_RNG() {
     SDL_Log("test_RNG");
-    PHYSFS_file *fp = PHYSFS_openWrite(PATH_JOIN("build", "RNG.csv"));
-    char buffer[6] = {0};
+    PHYSFS_file *fp = PHYSFS_openWrite(PATH_JOIN("build", "RNG.txt"));
+    char buffer[8] = {0};
     URN_debug = -1;
 
     for (size_t i = 0; i < ITERATIONS; i++) {
         i16 out = RNG_URN();
         nourstest_true((out < 100) && (out >= 0));
-        stbsp_sprintf(buffer, "%d\n\0", out);
+        sprintf(buffer, "%d", out);
         PHYSFS_writeBytes(fp, buffer, strlen(buffer));
+        PHYSFS_writeBytes(fp, "\n", strlen("\n"));
     }
     PHYSFS_close(fp);
 
