@@ -14,6 +14,7 @@ json_func json_read_funcs [JSON_END] = {
     /* JSON_CAMP        */  Camp_readJSON,
     /* JSON_SPRITE      */  Sprite_readJSON,
     /* JSON_AI          */  AI_readJSON,
+    /* JSON_PARTY       */  Party_readJSON,
 };
 
 json_func json_write_funcs[JSON_END] = {
@@ -28,7 +29,8 @@ json_func json_write_funcs[JSON_END] = {
     /* JSON_NARRATIVE   */  NULL,
     /* JSON_CAMP        */  Camp_writeJSON,
     /* JSON_SPRITESHEET */  NULL,
-    /* JSON_AI */           AI_writeJSON,
+    /* JSON_AI          */  AI_writeJSON,
+    /* JSON_PARTY       */  NULL,
 };
 
 struct cJSON *jsonio_parseJSON(s8 filename) {
@@ -92,8 +94,8 @@ void jsonio_readJSON(s8 filename, void *struct_ptr) {
     }
 
     /* Actually read the json file */
-    if (json_read_funcs[jelem_id] != NULL)
-        json_read_funcs[jelem_id](struct_ptr, jelement);
+    SDL_assert(json_read_funcs[jelem_id] != NULL);
+    json_read_funcs[jelem_id](struct_ptr, jelement);
 
     /* Set json_filename in struct to input filename */
     byte_ptr            = (u8 *)struct_ptr;
@@ -140,8 +142,8 @@ void jsonio_writeJSON(s8 filename, void *struct_ptr, bool append) {
     }
 
     /* Write to the json element */
-    if (json_write_funcs[jelem_id] != NULL)
-        json_write_funcs[jelem_id](struct_ptr, jelement);
+    SDL_assert(json_write_funcs[jelem_id] != NULL);
+    json_write_funcs[jelem_id](struct_ptr, jelement);
 
     /* Actually write to the file */
     cJSON_AddItemToObject(json, elem_name.data, jelement);

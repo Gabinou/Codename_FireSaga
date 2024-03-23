@@ -13,7 +13,7 @@ struct Party {
     u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
 
     s8   folder;
-    s8  *unit_names;
+    s8  *names;
     s8  *filenames;
     i16 *ids;
     struct Unit *party;

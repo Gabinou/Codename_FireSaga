@@ -9,6 +9,7 @@
 #include "convoy.h"
 #include "physfs.h"
 #include "unit/unit.h"
+#include "unit/party.h"
 #include "camp.h"
 #include "sprite.h"
 #include "utilities.h"
