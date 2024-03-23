@@ -19,14 +19,26 @@ struct Party {
     struct Unit *party;
 };
 
+/* --- Constructor/Destructors --- */
 void Party_Free(struct Party *party);
 
+/* --- Utilities --- */
+void Party_Ids2Filenames(   struct Party *ps);
+void Party_Names2Filenames( struct Party *ps);
+
+/* --- JSONIO --- */
+/* -- Load party units from party structs -- */
+void Party_Load_Units(  struct Party *ps,    struct Unit *pu,
+                        struct dtab  *wdtab, struct dtab *idtab);
+void _Party_Load_Units( struct Party *party, struct Unit *pu)
+
+/* -- Load party struct -- */
 void Party_readJSON(void *input, cJSON *jparty);
 
-/* --- Write file with list of units --- */
+/* -- Write file with list of units -- */
 void Party_writeJSON(void *input, cJSON *jparty);
 
-/* --- Each individual unit as a separate json file --- */
+/* -- Each individual unit as a separate json file -- */
 void Party_Units_writeJSON(void *input, cJSON *jparty);
 
 #endif /* UNIT_PARTY_H */
