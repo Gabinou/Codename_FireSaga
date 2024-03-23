@@ -4,13 +4,12 @@
 struct Party Party_default =  {
     .json_element   = JSON_UNIT,
     .json_filename  = {0},
-    .party_folder   = {0},
+    .folder         = {0},
     .unit_names     = NULL,
     .filenames      = NULL,
     .ids            = NULL,
     .party          = NULL,
 };
-
 
 /* --- Party --- */
 void Party_Free(struct Party *party) {
@@ -34,16 +33,25 @@ void Party_Free(struct Party *party) {
         DARR_FREE(party->ids);
         party->ids = NULL;
     }
+
+    s8_free(&party->folder);
 }
 
 /* --- Utilities --- */
+void Party_Folder(struct Party *party_struct, char *folder) {
+    s8_free(&party_struct->folder);
+    party_struct->folder = s8_mut(folder);
+}
+
 void Party_Ids2Filenames(struct Party *party_struct) {
     SDL_assert(party_struct != NULL);
     SDL_assert(party_struct->ids);
     SDL_assert(party_struct->filenames);
+    SDL_assert(party_struct->folder.data != NULL);
 
     for (int i = 0; i < DARR_NUM(party_struct->ids); i++) {
-        s8 filename     = s8_mut("units"PHYSFS_SEPARATOR);
+        s8 filename     = s8_mut(party_struct->folder.data);
+        filename        = s8cat(filename, s8_literal(PHYSFS_SEPARATOR));
         size_t order    = *(u16 *)DTAB_GET(global_unitOrders, party_struct->ids[i]);
         filename        = s8cat(filename, global_unitNames[order]);
         filename        = s8cat(filename, s8_literal(".json"));
@@ -55,9 +63,11 @@ void Party_Names2Filenames(struct Party *party_struct) {
     SDL_assert(party_struct != NULL);
     SDL_assert(party_struct->unit_names);
     SDL_assert(party_struct->filenames);
-    
+    SDL_assert(party_struct->folder.data != NULL);
+
     for (int i = 0; i < DARR_NUM(party_struct->unit_names); i++) {
-        s8 filename     = s8_mut("units"PHYSFS_SEPARATOR);
+        s8 filename     = s8_mut(party_struct->folder.data);
+        filename        = s8cat(filename, s8_literal(PHYSFS_SEPARATOR));
         filename        = s8cat(filename, party_struct->unit_names[i]);
         filename        = s8cat(filename, s8_literal(".json"));
         DARR_PUT(party_struct->filenames, filename);
@@ -73,7 +83,6 @@ void Party_Load_Units(struct Party *party_struct, struct Unit *party,
 
 void _Party_Load_Units(struct Party *party_struct, struct Unit *party) {
     /* Read only units with party->filenames*/
-
 
 }
 
