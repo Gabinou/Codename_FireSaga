@@ -86,6 +86,7 @@ void Game_debugMap_Load(struct Game *sota) {
     _Party_Load(sota->party, sota->weapons_dtab, sota->items_dtab,
                 sota->party_struct.filenames, DARR_NUM(sota->party_struct.filenames));
     sota->party_struct.size = _Party_Size(sota->party);
+    SDL_assert(sota->party_struct.size > 0);
 
     Game_DeploymentMenu_Enable(sota);
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
