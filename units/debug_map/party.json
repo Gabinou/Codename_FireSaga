@@ -1,11 +1,5 @@
 {
     "Party": {
-        "ids":[   
-            2012
-        ],
-        "names":   [
-            "Erwin"
-        ],
         "filenames":  [
             "units/debug_map/Boss.json"   
         ]

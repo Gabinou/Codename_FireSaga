@@ -7,6 +7,7 @@
 struct Map Map_default = {
     .json_element           = JSON_MAP,
     .json_filename          = {0},
+    .party_filename         = {0},
 
     .world                  = NULL,
     .renderer               = NULL,
@@ -627,12 +628,17 @@ void Map_writeJSON( void *input, cJSON *jmap) {
 void Map_readJSON(void *input,  cJSON *jmap) {
     struct Map *map = (struct Map *) input;
     SDL_assert(jmap != NULL);
+    /* -- Read party filename (for debug) -- */
+    cJSON *jparty = cJSON_GetObjectItem(jmap, "party");
+    if (jparty != NULL)
+        map->party_filename = s8_var(cJSON_GetStringValue(jparty));
+
+    /* -- Read map info -- */
     cJSON *jchapter     = cJSON_GetObjectItem(jmap, "chapter");
     cJSON *jmap_size    = cJSON_GetObjectItem(jmap, "Map size");
     cJSON *jrow_len     = cJSON_GetObjectItem(jmap_size, "row_len");
     cJSON *jcol_len     = cJSON_GetObjectItem(jmap_size, "col_len");
 
-    /* -- Read map info -- */
     map->chapter = cJSON_GetNumberValue(jchapter);
     map->row_len = cJSON_GetNumberValue(jrow_len);
     map->col_len = cJSON_GetNumberValue(jcol_len);
