@@ -71,7 +71,11 @@ void Game_debugMap_Load(struct Game *sota) {
     // // TODO: Move to after units have been deployed
     // /* -- Putting party on map -- */
     // Game_Party_Load(sota, unit_inds, DARR_NUM(unit_inds));
-
+    Game_Party_Clear(sota);
+    SDL_assert(sota->map->party_filename != NULL);
+    _Party_Load(sota->party, sota->weapons_dtab, sota->items_dtab,
+                sota->map->party_filename, DARR_NUM(sota->map->party_filename));
+    
     Game_DeploymentMenu_Enable(sota);
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
     struct DeploymentMenu *dm = mc->data;

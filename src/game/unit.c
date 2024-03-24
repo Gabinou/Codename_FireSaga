@@ -80,11 +80,11 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
 
 void Game_Party_Load(struct Game *sota, i16 *unit_ids, size_t load_num) {
     /* Read unit data from filename */
-    Game_Party_Clear(sota);
-    sota->party_size = load_num;
-    for (size_t i = 0; i < load_num; i++) {
-        sota->party_id_stack[i] = unit_ids[i];
-    }
+    // Game_Party_Clear(sota);
+    // sota->party_size = load_num;
+    // for (size_t i = 0; i < load_num; i++) {
+    //     sota->party_id_stack[i] = unit_ids[i];
+    // }
     // _Party_Load(sota->party, sota->weapons_dtab, sota->items_dtab, unit_ids, load_num);
 }
 
