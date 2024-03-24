@@ -1,7 +1,11 @@
 {
     "Party": {
         "filenames":  [
-            "units/debug_map/Boss.json"   
+            "units/debug_map/Erwin.json",   
+            "units/debug_map/Silou.json",   
+            "units/debug_map/Rayan.json",   
+            "units/debug_map/Kiara.json"   
         ]
     }
+}
 }

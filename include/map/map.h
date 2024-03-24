@@ -38,7 +38,7 @@ struct Map_condition;
 struct Map {
     s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
     u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
-    
+
     s8 party_filename;
 
     /* --- BASICS --- */
