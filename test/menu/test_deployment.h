@@ -12,17 +12,22 @@ struct Mount mount3;
 struct Mount mount4;
 struct dtab *weapons_dtab;
 struct dtab *items_dtab;
+struct Party party_struct;
 
 void test_menu_deployment_party(struct DeploymentMenu *dm) {
     /* -- Party -- */
     /* - Preliminaries - */
+    Party_Reset(&party_struct);
+    party_struct.ids = party_id_stack;
+    party_struct.party = party;
     DARR_NUM(party_id_stack) = 0;
     DARR_PUT(party_id_stack, UNIT_ID_SILOU);
     DARR_PUT(party_id_stack, UNIT_ID_KIARA);
     DARR_PUT(party_id_stack, UNIT_ID_RAYAN);
     DARR_PUT(party_id_stack, UNIT_ID_ERWIN);
 
-    Party_Load(party, weapons_dtab, items_dtab, party_id_stack, DARR_NUM(party_id_stack));
+    Party_Ids2Filenames(&party_struct);
+    Party_Load(&party_struct, weapons_dtab, items_dtab);
 
     mount1 = Mount_default_horse;
     party[UNIT_ID_SILOU].mount = &mount1;
@@ -41,6 +46,10 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
     /* -- Party -- */
     /* - Preliminaries - */
     /* -- Adding units to Party -- */
+    Party_Reset(&party_struct);
+    party_struct.ids = party_id_stack;
+    party_struct.party = party;
+
     DARR_NUM(party_id_stack) = 0;
     DARR_PUT(party_id_stack, UNIT_ID_KIARA);
     DARR_PUT(party_id_stack, UNIT_ID_PERIGNON);
@@ -54,7 +63,8 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
     DARR_PUT(party_id_stack, UNIT_ID_MELLY);
     DARR_PUT(party_id_stack, UNIT_ID_TEHARON);
 
-    Party_Load(party, weapons_dtab, items_dtab, party_id_stack, DARR_NUM(party_id_stack));
+    Party_Ids2Filenames(&party_struct);
+    Party_Load(&party_struct, weapons_dtab, items_dtab);
 
     mount1 = Mount_default_horse;
     party[UNIT_ID_SILOU].mount = &mount1;

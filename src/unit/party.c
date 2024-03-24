@@ -37,7 +37,33 @@ void Party_Free(struct Party *party) {
     s8_free(&party->folder);
 }
 
+void Party_Reset(struct Party *party) {
+    /* Remove all filenames + all units to 0 */
+    if (party->filenames != NULL) {
+        for (int i = 0; i < DARR_NUM(party->filenames); i++)
+            s8_free(&party->filenames[i]);
+        DARR_NUM(party->filenames) = 0;
+    }
+    if (party->party != NULL) {
+        memset(party->party, 0, sizeof(party->party) * SOTA_MAX_PARTY_SIZE);
+    }
+}
+
 /* --- Utilities --- */
+i32 Party_Size(struct Party *ps)  {
+    SDL_assert(ps           != NULL);
+    SDL_assert(ps->party    != NULL);
+    return (_Party_Size(ps->party));
+}
+
+i32 _Party_Size(struct Unit *party)  {
+    i32 num = 0;
+    for (size_t i = 0; i < SOTA_MAX_PARTY_SIZE; i++) {
+        num += party[i]._id > UNIT_ID_PC_START && party[i]._id > UNIT_ID_PC_START;
+    }
+    return (num);
+}
+
 void Party_Folder(struct Party *party_struct, char *folder) {
     s8_free(&party_struct->folder);
     party_struct->folder = s8_mut(folder);
@@ -81,8 +107,8 @@ void _Party_Load(struct Unit *party, struct dtab *weapons_dtab,
     _Party_Load_No_Items(party, filenames, load_num);
 
     for (size_t i = 0; i < SOTA_MAX_PARTY_SIZE; i++) {
-        party[i].items_dtab     = idtab;
-        party[i].weapons_dtab   = wdtab;
+        party[i].items_dtab     = items_dtab;
+        party[i].weapons_dtab   = weapons_dtab;
     }
 }
 
@@ -195,5 +221,4 @@ void Party_Units_writeJSON(void *input, cJSON *jparty) {
     SDL_assert(party_struct != NULL);
     struct Unit *party = party_struct->party;
     SDL_assert(party != NULL);
-
 }

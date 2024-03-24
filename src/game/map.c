@@ -75,7 +75,8 @@ void Game_debugMap_Load(struct Game *sota) {
     Game_DeploymentMenu_Enable(sota);
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
     struct DeploymentMenu *dm = mc->data;
-    dm->_party_size == DARR_NUM(unit_inds);
+
+    dm->_party_size == _Party_Size(sota->party);
     Game_cursorFocus_onMenu(sota);
 
     SDL_Log("Loading Music\n");
@@ -90,7 +91,7 @@ void Game_debugMap_Load(struct Game *sota) {
     DARR_PUT(sota->map->death_friendly, Map_condition_main_char_loss);
     DARR_PUT(sota->map->death_friendly, Map_condition_debug_map_loss);
 
-    DARR_FREE(unit_inds);
+    // DARR_FREE(unit_inds);
 
     /* -- Load reinforcements -- */
     // TODO: Move to debug_map_load
