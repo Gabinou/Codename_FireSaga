@@ -72,7 +72,16 @@ void Game_debugMap_Load(struct Game *sota) {
     // /* -- Putting party on map -- */
     // Game_Party_Load(sota, unit_inds, DARR_NUM(unit_inds));
     Game_Party_Clear(sota);
+
+    /* - Reading party json - */
     SDL_assert(sota->map->party_filename.data != NULL);
+    SDL_Log("sota->map->party_filename %s", sota->map->party_filename.data);
+
+    sota->party_struct = Party_default;
+    jsonio_readJSON(sota->map->party_filename, &sota->party_struct);
+    SDL_assert(sota->party_struct.filenames != NULL);
+
+    /* - Loading party units json - */
     _Party_Load(sota->party, sota->weapons_dtab, sota->items_dtab,
                 &sota->map->party_filename, DARR_NUM(sota->party_struct.filenames));
 
