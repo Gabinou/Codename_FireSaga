@@ -17,6 +17,7 @@ struct Party {
     s8  *filenames;
     i16 *ids;
     struct Unit *party;
+    i32 size;
 };
 extern struct Party Party_default;
 

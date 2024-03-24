@@ -85,13 +85,13 @@ void Game_debugMap_Load(struct Game *sota) {
     /* - Loading party units json - */
     _Party_Load(sota->party, sota->weapons_dtab, sota->items_dtab,
                 sota->party_struct.filenames, DARR_NUM(sota->party_struct.filenames));
-    getchar();
+    sota->party_struct.size = _Party_Size(sota->party);
 
     Game_DeploymentMenu_Enable(sota);
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
     struct DeploymentMenu *dm = mc->data;
+    SDL_assert(dm->_party_size > 0);
 
-    dm->_party_size == _Party_Size(sota->party);
     Game_cursorFocus_onMenu(sota);
 
     SDL_Log("Loading Music\n");

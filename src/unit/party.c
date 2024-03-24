@@ -5,6 +5,7 @@ struct Party Party_default =  {
     .json_element   = JSON_PARTY,
     .json_filename  = {0},
     .folder         = {0},
+    .size           = 0,
     .names          = NULL,
     .filenames      = NULL,
     .ids            = NULL,
@@ -53,7 +54,8 @@ void Party_Reset(struct Party *party) {
 i32 Party_Size(struct Party *ps)  {
     SDL_assert(ps           != NULL);
     SDL_assert(ps->party    != NULL);
-    return (_Party_Size(ps->party));
+    ps->size = _Party_Size(ps->party);
+    return (ps->size);
 }
 
 i32 _Party_Size(struct Unit *party)  {
