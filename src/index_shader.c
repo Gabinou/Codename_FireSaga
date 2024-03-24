@@ -244,7 +244,7 @@ void Tilemap_Shader_Load_Tileset_JSON(struct Tilemap_Shader *shd,
 
         /* - Get tile in json - */
         char tilename[TILENAME_MAX_LEN];
-        stbsp_sprintf(tilename, "tile%d", i);
+        stbsp_sprintf(tilename, "tile%d\0", i);
         struct cJSON *jtile = cJSON_GetObjectItem(jshadow_tileset, tilename);
 
         /* - Read pixels in shadow tile - */
