@@ -80,17 +80,17 @@ s8 s8_slicefromStart(s8 str8, size_t toslice) {
 
 s8 s8_slicefromEnd(s8 str8, size_t toslice) {
     for (size_t i = 0; i < (str8.num - toslice) ; i++)
-        *(str8.data + i) = (u8) * (str8.data + i);
+        *(str8.data + i) =  *(str8.data + i);
     str8.num -= toslice;
     return (str8);
 }
 
 s8 s8_toLower(s8 str8) {
     SDL_assert(str8.num < str8.len);
-    SDL_Log("%s", str8.data);
+    SDL_Log("%s %d %d", str8.data, str8.num, str8.len);
     for (size_t i = 0; i < str8.num; i++)
         *(str8.data + i) = (u8)tolower(*(str8.data + i));
-    SDL_Log("%s", str8.data);
+    SDL_Log("%s %d %d", str8.data, str8.num, str8.len);
     return (str8);
 }
 
@@ -134,6 +134,7 @@ s8 s8_Path_Remove_Top(s8 str8, char separator) {
 }
 
 s8 s8_replaceSingle(s8 str8,  char replace,  char with) {
+    SDL_assert(str8.num < str8.len);
     for (size_t i = 0; i < str8.num; i++) {
         if (*(str8.data + i) == replace)
             *(str8.data + i) = with;

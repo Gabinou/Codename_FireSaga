@@ -196,8 +196,10 @@ void Names_jsonElementnames(void) {
 
 s8 *Names_wpnType(u16 in_typecode) {
     s8 *type_names = DARR_INIT(type_names, s8, ITEM_TYPE_END);
+    s8 type_name;
 #define REGISTER_ENUM(x) if flagsum_isIn(in_typecode, ITEM_TYPE_##x) {\
-        DARR_PUT(type_names, s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2));\
+        type_name = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2);\
+        DARR_PUT(type_names, type_name);\
     }
 #include "names/items_types.h"
 #undef REGISTER_ENUM
