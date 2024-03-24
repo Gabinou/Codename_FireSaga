@@ -18,6 +18,8 @@ struct Party {
     i16 *ids;
     struct Unit *party;
     i32 size;
+    i16 *party_id_stack;
+
 };
 extern struct Party Party_default;
 
@@ -30,7 +32,7 @@ void Party_Folder(          struct Party *ps, char *folder);
 void Party_Ids2Filenames(   struct Party *ps);
 void Party_Names2Filenames( struct Party *ps);
 i32 Party_Size( struct Party *ps);
-i32 _Party_Size(struct Unit *party);
+i32 _Party_Size(struct Unit *party, i16 *id);
 
 /* --- JSONIO --- */
 /* -- Load party units from party structs -- */

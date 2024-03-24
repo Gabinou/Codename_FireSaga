@@ -57,20 +57,6 @@ void Game_debugMap_Load(struct Game *sota) {
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Loading in test party\n");
 
     /* -- Loading Party -- */
-    /* - Preliminaries - */
-
-    // i16 *unit_inds = DARR_INIT(unit_inds, i16, 16);
-
-    // /* - Silou.json (Mage) - */
-    // DARR_PUT(unit_inds, UNIT_ID_SILOU);
-    // /* - Kiara.json (Cleric) - */
-    // DARR_PUT(unit_inds, UNIT_ID_KIARA);
-    // /* - Rayan.json (Dancer) - */
-    // DARR_PUT(unit_inds, UNIT_ID_RAYAN);
-
-    // // TODO: Move to after units have been deployed
-    // /* -- Putting party on map -- */
-    // Game_Party_Load(sota, unit_inds, DARR_NUM(unit_inds));
     Game_Party_Clear(sota);
 
     /* - Reading party json - */
@@ -85,13 +71,15 @@ void Game_debugMap_Load(struct Game *sota) {
     /* - Loading party units json - */
     _Party_Load(sota->party, sota->weapons_dtab, sota->items_dtab,
                 sota->party_struct.filenames, DARR_NUM(sota->party_struct.filenames));
-    sota->party_struct.size = _Party_Size(sota->party);
+    sota->party_struct.party_id_stack = sota->party_id_stack;
+    Party_Size(&sota->party_struct);
     SDL_assert(sota->party_struct.size > 0);
 
     Game_DeploymentMenu_Enable(sota);
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
     struct DeploymentMenu *dm = mc->data;
     SDL_assert(dm->_party_size > 0);
+    DeploymentMenu_Party_Set(dm, sota->party, sota->party_id_stack, sota->party_struct.size);
 
     Game_cursorFocus_onMenu(sota);
 

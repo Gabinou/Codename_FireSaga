@@ -580,14 +580,14 @@ void Game_loadJSON(struct Game *sota,  i16 save_ind) {
     // Camp_readJSON(&sota->camp, jcamp);
     cJSON *junit = cJSON_GetObjectItem(jparty, "Unit");
     struct Unit temp_unit;
-    sota->party_size = 0;
-    while (junit != NULL) {
-        temp_unit = Unit_default;
-        Unit_readJSON(&temp_unit, junit);
-        sota->party[sota->party_size] = temp_unit;
-        sota->party_size++;
-        junit = junit->next;
-    }
+    /* TODO: use party_struct */
+    // while (junit != NULL) {
+    //     temp_unit = Unit_default;
+    //     Unit_readJSON(&temp_unit, junit);
+    //     sota->party[sota->party_size] = temp_unit;
+    //     sota->party_size++;
+    //     junit = junit->next;
+    // }
     cJSON_Delete(json);
 }
 
@@ -618,11 +618,12 @@ void Game_saveJSON(struct Game *sota,  i16 save_ind) {
     cJSON *jRN_s3     = cJSON_CreateNumber(sota->s_xoshiro256ss[0]);
     cJSON *jRN_s4     = cJSON_CreateNumber(sota->s_xoshiro256ss[0]);
 
-    for (u8 i = 0; i < sota->party_size; i++) {
-        junit = cJSON_CreateObject();
-        Unit_writeJSON(&sota->party[i], junit);
-        cJSON_AddItemToObject(jparty, "Unit", junit);
-    }
+    /* TODO: use party_struct */
+    // for (u8 i = 0; i < sota->party_size; i++) {
+    //     junit = cJSON_CreateObject();
+    //     Unit_writeJSON(&sota->party[i], junit);
+    //     cJSON_AddItemToObject(jparty, "Unit", junit);
+    // }
     cJSON_AddItemToObject(jRN,  "s1",       jRN_s1);
     cJSON_AddItemToObject(jRN,  "s2",       jRN_s2);
     cJSON_AddItemToObject(jRN,  "s3",       jRN_s3);

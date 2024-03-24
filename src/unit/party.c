@@ -10,6 +10,7 @@ struct Party Party_default =  {
     .filenames      = NULL,
     .ids            = NULL,
     .party          = NULL,
+    .party_id_stack = NULL,
 };
 
 /* --- Party --- */
@@ -52,16 +53,19 @@ void Party_Reset(struct Party *party) {
 
 /* --- Utilities --- */
 i32 Party_Size(struct Party *ps)  {
-    SDL_assert(ps           != NULL);
-    SDL_assert(ps->party    != NULL);
-    ps->size = _Party_Size(ps->party);
+    SDL_assert(ps                   != NULL);
+    SDL_assert(ps->party            != NULL);
+    SDL_assert(ps->party_id_stack   != NULL);
+    ps->size = _Party_Size(ps->party, ps->party_id_stack);
     return (ps->size);
 }
 
-i32 _Party_Size(struct Unit *party)  {
+i32 _Party_Size(struct Unit *party, i16 *party_id_stack)  {
     i32 num = 0;
     for (size_t i = 0; i < SOTA_MAX_PARTY_SIZE; i++) {
-        num += party[i]._id > UNIT_ID_PC_START && party[i]._id > UNIT_ID_PC_START;
+        if (party[i]._id > UNIT_ID_PC_START && party[i]._id > UNIT_ID_PC_START) {
+            party_id_stack[num++] = party[i]._id;
+        }
     }
     return (num);
 }

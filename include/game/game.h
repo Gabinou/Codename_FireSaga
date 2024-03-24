@@ -134,7 +134,6 @@ struct Game {
     struct Party party_struct;
     struct Unit party[SOTA_MAX_PARTY_SIZE];
     i16 party_id_stack[SOTA_MAX_PARTY_SIZE];
-    u8  party_size;
 
     tnecs_entity *ent_unit_loaded;
 
