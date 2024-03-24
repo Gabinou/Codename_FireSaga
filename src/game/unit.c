@@ -77,36 +77,6 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
 }
 
 /* --- Party utilities --- */
-void Party_Load(struct Unit *party, struct dtab *weapons_dtab,
-                struct dtab *items_dtab, i16 *unit_ids, size_t load_num) {
-    struct Unit temp_unit;
-    for (size_t i = 0; i < load_num; i++) {
-        // TODO: Read base party unit when recruiting
-        // TODO: Read savefile party units otherwise
-        /* Check id */
-        SDL_assert((unit_ids[i] > 0) && (unit_ids[i] < UNIT_ID_PC_END));
-
-        /* Getting party unit filename */
-        // TODO: party unit filename builder utility
-        memset(&temp_unit, 0, sizeof(temp_unit));
-        Unit_Init(&temp_unit);
-        s8 filename     = s8_mut("units"PHYSFS_SEPARATOR);
-        size_t order    = *(u16 *)DTAB_GET(global_unitOrders, unit_ids[i]);
-        filename        = s8cat(filename, global_unitNames[order]);
-        filename        = s8cat(filename, s8_literal(".json"));
-
-        /* Reading unit from json file */
-        temp_unit.items_dtab   = items_dtab;
-        temp_unit.weapons_dtab = weapons_dtab;
-        jsonio_readJSON(filename, &temp_unit);
-        temp_unit.army = ARMY_FRIENDLY;
-        SDL_assert(temp_unit.name.data != NULL);
-        SDL_assert((temp_unit.handedness > UNIT_HAND_NULL) && (temp_unit.handedness < UNIT_HAND_END));
-
-        party[unit_ids[i]] = temp_unit;
-        s8_free(&filename);
-    }
-}
 
 void Game_Party_Load(struct Game *sota, i16 *unit_ids, size_t load_num) {
     /* Read unit data from filename */

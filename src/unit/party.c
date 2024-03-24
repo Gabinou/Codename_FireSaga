@@ -75,30 +75,21 @@ void Party_Names2Filenames(struct Party *party_struct) {
 }
 
 /* --- JSONIO --- */
-
-void Party_Load_Units(struct Party *party_struct,
-                      struct dtab *wdtab, struct dtab *idtab) {
-    /* Load units in party)_struct->party, also add dtabs */
-    struct Unit *party = party_struct->party;
-    SDL_assert(party != NULL);
-
-    _Party_Load_Units(party_struct);
-
+void _Party_Load(struct Unit *party, struct dtab *weapons_dtab,
+                 struct dtab *items_dtab, s8 *filenames, size_t load_num) {
     /* Reading unit from json file */
+    _Party_Load_No_Items(party, filenames, load_num);
+
     for (size_t i = 0; i < SOTA_MAX_PARTY_SIZE; i++) {
         party[i].items_dtab     = idtab;
         party[i].weapons_dtab   = wdtab;
     }
 }
 
-void _Party_Load_Units(struct Party *party_struct) {
-    /* Read only units with party->filenames */
-    struct Unit *party = party_struct->party;
-    SDL_assert(party != NULL);
-
+void _Party_Load_No_Items(struct Unit *party, s8 *filenames, size_t load_num) {
     struct Unit temp_unit;
-    for (size_t i = 0; i < DARR_NUM(party_struct->filenames); i++) {
-        s8 filename = party_struct->filenames[i];
+    for (size_t i = 0; i < load_num; i++) {
+        s8 filename = filenames[i];
         jsonio_readJSON(filename, &temp_unit);
         temp_unit.army = ARMY_FRIENDLY;
         SDL_assert(temp_unit.name.data != NULL);
@@ -108,6 +99,27 @@ void _Party_Load_Units(struct Party *party_struct) {
         SDL_assert(temp_unit._id < UNIT_ID_PC_END);
         party[temp_unit._id] = temp_unit;
     }
+}
+
+void Party_Load(struct Party *party_struct,
+                struct dtab *wdtab, struct dtab *idtab) {
+    /* Load units in party)_struct->party, also add dtabs */
+    struct Unit *party = party_struct->party;
+    SDL_assert(party != NULL);
+    s8 *filenames = party_struct->filenames;
+    SDL_assert(filenames != NULL);
+
+    _Party_Load(party, wdtab, idtab, filenames, DARR_NUM(filenames));
+}
+
+void Party_Load_No_Items(struct Party *party_struct) {
+    /* Read only units with party->filenames */
+    struct Unit *party = party_struct->party;
+    SDL_assert(party != NULL);
+    s8 *filenames = party_struct->filenames;
+    SDL_assert(filenames != NULL);
+
+    _Party_Load_No_Items(party, filenames, DARR_NUM(filenames));
 }
 
 void Party_readJSON(void *input, cJSON *jparty) {
