@@ -340,7 +340,7 @@ static void _DeploymentMenu_Draw_Names(struct DeploymentMenu *dm,
 /* -- Page 1 -- */
 static void _DeploymentMenu_Draw_Stats_P1(struct DeploymentMenu *dm,
                                           SDL_Renderer *renderer) {
-    char array[3] = {0};
+    unsigned char array[8] = {0};
     i32 num_to_draw = _DeploymentMenu_Num(dm);
     struct Point point;
     int unit_id, x, y;
@@ -356,14 +356,16 @@ static void _DeploymentMenu_Draw_Stats_P1(struct DeploymentMenu *dm,
         x = DM_HP_X, y = DM_HP_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
-        stbsp_snprintf(array, 3, "%02d\0", unit->current_stats.hp);
+        memset(array, 0, 8);
+        stbsp_snprintf(array, 4, "%02d\0\0\0\0", unit->current_stats.hp);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
         /* - Move - */
         x = DM_MOVE_X, y = DM_MOVE_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
-        stbsp_snprintf(array, 2, "%01d\0", unit->current_stats.move);
+        memset(array, 0, 8);
+        stbsp_snprintf(array, 3, "%01d\0\0\0\0", unit->current_stats.move);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
         /* - Lvl - */
@@ -371,14 +373,16 @@ static void _DeploymentMenu_Draw_Stats_P1(struct DeploymentMenu *dm,
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
         i16 lvl = Unit_getLvl(unit);
-        stbsp_snprintf(array, 3, "%02d\0", lvl);
+        memset(array, 0, 8);
+        stbsp_snprintf(array, 4, "%02d\0\0\0\0", lvl);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
         /* - EXP - */
         x = DM_EXP_X, y = DM_EXP_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
-        stbsp_snprintf(array, 3, "%02d\0", (unit->exp % SOTA_EXP_PER_LEVEL));
+        memset(array, 0, 8);
+        stbsp_snprintf(array, 4, "%02d\0\0\0\0", (unit->exp % SOTA_EXP_PER_LEVEL));
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
         /* - Class - */
