@@ -69,9 +69,9 @@ void Game_debugMap_Load(struct Game *sota) {
     SDL_assert(sota->party_struct.filenames != NULL);
 
     /* - Loading party units json - */
-    _Party_Load(sota->party, sota->weapons_dtab, sota->items_dtab,
-                sota->party_struct.filenames, DARR_NUM(sota->party_struct.filenames));
-    sota->party_struct.party_id_stack = sota->party_id_stack;
+    sota->party_struct.party            = sota->party;
+    sota->party_struct.party_id_stack   = sota->party_id_stack;
+    Party_Load(&sota->party_struct, sota->weapons_dtab, sota->items_dtab);
     Party_Size(&sota->party_struct);
     SDL_assert(sota->party_struct.size > 0);
 
