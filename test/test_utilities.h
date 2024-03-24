@@ -6,19 +6,19 @@
 void test_utilities() {
 
     SDL_Log("test_Unit_army2alignment");
-    nourstest_true(SotA_army2alignment(ARMY_FRIENDLY) == ALIGNMENT_FRIENDLY);
-    nourstest_true(SotA_army2alignment(ARMY_ERWIN) == ALIGNMENT_FRIENDLY);
-    nourstest_true(SotA_army2alignment(ARMY_FREE_MILITIA) == ALIGNMENT_FRIENDLY);
-    nourstest_true(SotA_army2alignment(ARMY_NEUTRAL) == ALIGNMENT_FRIENDLY);
-    nourstest_true(SotA_army2alignment(ARMY_IMPERIAL) == ALIGNMENT_FRIENDLY);
-    nourstest_true(SotA_army2alignment(ARMY_HAMILCAR) == ALIGNMENT_ENEMY);
-    nourstest_true(SotA_army2alignment(ARMY_FIRST_EXPEDITIONARY_FORCE) == ALIGNMENT_ENEMY);
-    nourstest_true(SotA_army2alignment(ARMY_THEOCRACY) == ALIGNMENT_FRIENDLY);
-    nourstest_true(SotA_army2alignment(ARMY_VOLDAN) == ALIGNMENT_FRIENDLY);
-    nourstest_true(SotA_army2alignment(ARMY_KEWAC) == ALIGNMENT_ENEMY);
-    nourstest_true(SotA_army2alignment(ARMY_KESIRU) == ALIGNMENT_FRIENDLY);
-    nourstest_true(SotA_army2alignment(ARMY_ENEMY) == ALIGNMENT_ENEMY);
-    nourstest_true(SotA_army2alignment(ARMY_BANDITS) == ALIGNMENT_ENEMY);
+    nourstest_true(SotA_army2alignment(ARMY_FRIENDLY)                   == ALIGNMENT_FRIENDLY);
+    nourstest_true(SotA_army2alignment(ARMY_ERWIN)                      == ALIGNMENT_FRIENDLY);
+    nourstest_true(SotA_army2alignment(ARMY_FREE_MILITIA)               == ALIGNMENT_FRIENDLY);
+    nourstest_true(SotA_army2alignment(ARMY_NEUTRAL)                    == ALIGNMENT_FRIENDLY);
+    nourstest_true(SotA_army2alignment(ARMY_IMPERIAL)                   == ALIGNMENT_FRIENDLY);
+    nourstest_true(SotA_army2alignment(ARMY_HAMILCAR)                   == ALIGNMENT_ENEMY);
+    nourstest_true(SotA_army2alignment(ARMY_FIRST_EXPEDITIONARY_FORCE)  == ALIGNMENT_ENEMY);
+    nourstest_true(SotA_army2alignment(ARMY_THEOCRACY)                  == ALIGNMENT_FRIENDLY);
+    nourstest_true(SotA_army2alignment(ARMY_VOLDAN)                     == ALIGNMENT_FRIENDLY);
+    nourstest_true(SotA_army2alignment(ARMY_KEWAC)                      == ALIGNMENT_ENEMY);
+    nourstest_true(SotA_army2alignment(ARMY_KESIRU)                     == ALIGNMENT_FRIENDLY);
+    nourstest_true(SotA_army2alignment(ARMY_ENEMY)                      == ALIGNMENT_ENEMY);
+    nourstest_true(SotA_army2alignment(ARMY_BANDITS)                    == ALIGNMENT_ENEMY);
 
     SDL_Log("test_unitNames");
     size_t order;
