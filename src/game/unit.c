@@ -77,17 +77,6 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
 }
 
 /* --- Party utilities --- */
-
-void Game_Party_Load(struct Game *sota, i16 *unit_ids, size_t load_num) {
-    /* Read unit data from filename */
-    // Game_Party_Clear(sota);
-    // sota->party_size = load_num;
-    // for (size_t i = 0; i < load_num; i++) {
-    //     sota->party_id_stack[i] = unit_ids[i];
-    // }
-    // _Party_Load(sota->party, sota->weapons_dtab, sota->items_dtab, unit_ids, load_num);
-}
-
 void Game_Party_Clear(struct Game *sota) {
     for (size_t i = 0; i < SOTA_MAX_PARTY_SIZE; i++)
         sota->party[i] = Unit_default;
@@ -157,8 +146,6 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     Unit_setid(unit, unit_id);
     SDL_assert(unit->name.data != NULL);
 
-    sota->party[unit_id] = *unit;
-
     unit->items_dtab   = sota->items_dtab;
     unit->weapons_dtab = sota->weapons_dtab;
     struct Inventory_item *item = Unit_Item_Strong(unit, UNIT_HAND_WEAK);
@@ -202,7 +189,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     struct Timer *timer;
     timer = TNECS_GET_COMPONENT(sota->world, unit_ent, Timer);
     SDL_assert(timer != NULL);
-    * timer = Timer_default;
+    *timer = Timer_default;
 
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, unit_ent, Sprite);
     SDL_assert(sprite != NULL);

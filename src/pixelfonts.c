@@ -502,10 +502,10 @@ void PixelFont_Write(struct PixelFont *font, SDL_Renderer *renderer, char *text,
                 continue;
         }
 
-        srcrect.x = text[i] % font->col_len * font->glyph_width;
-        srcrect.y = text[i] / font->col_len * font->glyph_height;
-        srcrect.w = dstrect.w = font->glyph_bbox_width[text[i]];
-        srcrect.h = dstrect.h = font->glyph_bbox_height[text[i]];
+        srcrect.x = ascii % font->col_len * font->glyph_width;
+        srcrect.y = ascii / font->col_len * font->glyph_height;
+        srcrect.w = dstrect.w = font->glyph_bbox_width[ascii];
+        srcrect.h = dstrect.h = font->glyph_bbox_height[ascii];
         if (font->y_offset != NULL)
             dstrect.y += font->y_offset[ascii];
         SDL_RenderCopy(renderer, font->texture, &srcrect, &dstrect); /* slow */
@@ -513,6 +513,6 @@ void PixelFont_Write(struct PixelFont *font, SDL_Renderer *renderer, char *text,
             dstrect.y -= font->y_offset[ascii];
 
         /* - move to next letter - */
-        dstrect.x += (font->glyph_bbox_width[text[i]] + font->glyph_space);
+        dstrect.x += (font->glyph_bbox_width[ascii] + font->glyph_space);
     }
 }

@@ -745,6 +745,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
     struct DeploymentMenu *dm = mc->data;
     i32 dm_order = DeploymentMenu_Select(dm, mc->elem);
     i16 unit_id = dm->_party_id_stack[dm_order];
+
     SDL_assert(Unit_ID_Valid(unit_id));
     // TODO: get start_pos_order from dm_order with list in map
 
