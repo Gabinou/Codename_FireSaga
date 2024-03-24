@@ -34,11 +34,8 @@ i32 _Party_Size(struct Unit *party);
 /* --- JSONIO --- */
 /* -- Load party units from party structs -- */
 void Party_Load(struct Party *ps, struct dtab  *wdtab, struct dtab *idtab);
-void Party_Load_No_Items( struct Party *party);
-
 void _Party_Load(struct Unit *party, struct dtab *wdtab, struct dtab *idtab,
                  s8 *farr, size_t load_num);
-void _Party_Load_No_Items(struct Unit *party, s8 *farr, size_t load_num);
 
 /* -- Load party struct -- */
 void Party_readJSON(void *input, cJSON *jparty);

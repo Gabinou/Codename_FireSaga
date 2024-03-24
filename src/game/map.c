@@ -84,7 +84,8 @@ void Game_debugMap_Load(struct Game *sota) {
 
     /* - Loading party units json - */
     _Party_Load(sota->party, sota->weapons_dtab, sota->items_dtab,
-                &sota->map->party_filename, DARR_NUM(sota->party_struct.filenames));
+                sota->party_struct.filenames, DARR_NUM(sota->party_struct.filenames));
+    getchar();
 
     Game_DeploymentMenu_Enable(sota);
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);

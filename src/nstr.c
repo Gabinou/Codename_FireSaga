@@ -87,10 +87,8 @@ s8 s8_slicefromEnd(s8 str8, size_t toslice) {
 
 s8 s8_toLower(s8 str8) {
     SDL_assert(str8.num < str8.len);
-    SDL_Log("%s %d %d", str8.data, str8.num, str8.len);
     for (size_t i = 0; i < str8.num; i++)
         *(str8.data + i) = (u8)tolower(*(str8.data + i));
-    SDL_Log("%s %d %d", str8.data, str8.num, str8.len);
     return (str8);
 }
 
