@@ -151,6 +151,7 @@ void Party_Load_No_Items(struct Party *party_struct) {
 void Party_readJSON(void *input, cJSON *jparty) {
     struct Party *party_struct = (struct Party *)input;
     SDL_assert(party_struct != NULL);
+    SDL_assert(party_struct->folder.data != NULL);
 
     s8 folder = {0};
     folder = s8cpy(folder, party_struct->folder);

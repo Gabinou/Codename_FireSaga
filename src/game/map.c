@@ -78,6 +78,7 @@ void Game_debugMap_Load(struct Game *sota) {
     SDL_Log("sota->map->party_filename %s", sota->map->party_filename.data);
 
     sota->party_struct = Party_default;
+    Party_Folder(&sota->party_struct, "units/debug_map");
     jsonio_readJSON(sota->map->party_filename, &sota->party_struct);
     SDL_assert(sota->party_struct.filenames != NULL);
 
