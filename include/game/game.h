@@ -131,6 +131,7 @@ struct Game {
     struct Point selected_unit_moved_position;
 
     tnecs_entity *map_enemies;
+    struct Party party_struct;
     struct Unit party[SOTA_MAX_PARTY_SIZE];
     i16 party_id_stack[SOTA_MAX_PARTY_SIZE];
     u8  party_size;

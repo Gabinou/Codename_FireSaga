@@ -40,6 +40,7 @@ struct Game Game_default = {
 
     .ai_timer               = TNECS_NULL,
 
+    .party_struct           = {0},
     .party                  = {0},
     .party_id_stack         = {0},
 
