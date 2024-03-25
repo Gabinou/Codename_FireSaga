@@ -272,8 +272,12 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit,
 
     filename = s8cat(filename, s8_var(classNames[unit->class].data));
     filename = s8cat(filename, s8_literal(".json"));
-    SDL_Log("FILE %s", filename.data);
-    SDL_assert(PHYSFS_exists(filename.data));
+    filename = s8_replaceSingle(filename, ' ', '_');
+    if (!PHYSFS_exists(filename.data)) {
+        SDL_LogError(SOTA_LOG_SYSTEM, "FILE '%s' does not exist", filename.data);
+        exit(ERROR_CannotOpenFile);
+    }
+
     jsonio_readJSON(filename, sprite);
 
     /* -- Loading spritesheet surface -- */
@@ -283,10 +287,10 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit,
     sprite->asset_name = s8_mut(PATH_JOIN("..", "assets", "map_units")DIR_SEPARATOR);
     sprite->asset_name = s8cat(sprite->asset_name, s8_var(classNames[unit->class].data));
     sprite->asset_name = s8cat(sprite->asset_name, s8_literal(".png"));
+    sprite->asset_name = s8_replaceSingle(sprite->asset_name, ' ', '_');
 
     /* -- Loading Surface, creating Texture -- */
     SDL_assert(sprite->spritesheet->surface == NULL);
-    SDL_Log("FILE %s", sprite->asset_name.data);
     sprite->spritesheet->surface = Filesystem_Surface_Load(sprite->asset_name.data,
                                                            SDL_PIXELFORMAT_INDEX8);
     SDL_assert(sprite->spritesheet->surface != NULL);

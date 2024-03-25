@@ -165,6 +165,10 @@ SDL_Surface *Filesystem_Surface_Load( char *filename,  u32 format) {
     SDL_Surface *indexedsurface = NULL;
     /* IMG_Load leaves some pixels non-init -> SDL_ConvertSurfaceFormat */
     loadedsurface = IMG_Load(filename);
+    if (loadedsurface == NULL) {
+        SDL_LogError(SOTA_LOG_SYSTEM, "FILE '%s' does not exist", filename);
+        exit(ERROR_CannotOpenFile);
+    }
     SDL_SaveBMP(loadedsurface, "loadedsurface.png");
 
     SDL_assert(loadedsurface != NULL);

@@ -770,6 +770,8 @@ void DeploymentMenu_Map_Swap(struct DeploymentMenu *dm, i32 i1, i32 i2) {
 i32  DeploymentMenu_Map_StartPos(struct DeploymentMenu *dm, i32 candidate) {
     SDL_assert(dm->_start_pos_i != NULL);
     SDL_assert(candidate < dm->select_max);
+    // TODO: move candidate above dm->select_max to open slot IF available
+
     return (dm->_start_pos_i[candidate]);
 }
 
