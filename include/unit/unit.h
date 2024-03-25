@@ -130,7 +130,7 @@ typedef struct Unit {
     struct Mount *mount;
     bool mounted;
 
-    // s8 name;
+    s8 name; /* TODO: get rid of it. Use global_unitNames */
     s8 title;    /* Lord, Duke, etc. */
     struct Computed_Stats computed_stats;   /* Computed from Unit_Stats */
     struct Computed_Stats support_bonuses[SOTA_MAX_SUPPORTS];

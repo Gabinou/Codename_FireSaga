@@ -1592,6 +1592,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     }
     u16 order = *(u16 *)DTAB_GET(global_unitOrders, unit->_id);
     s8 idname = global_unitNames[order];
+
     if (!s8equal(unit->name, s8_var(json_name))) {
         SDL_LogError(SOTA_LOG_SYSTEM,
                      "Name in unit filename '%s' does not match id name %d->'%s'",
