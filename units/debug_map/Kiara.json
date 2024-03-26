@@ -7,8 +7,8 @@
 		"Exp":	400,
 		"Handedness":	1,
 		"CurrentHP":	15,
-		"Class":	"Kiara",
-		"Class Index":	24,
+		"Class":	"Vestal",
+		"Class Index":	50,
 		"Supports": ["Erwin"], 
 		"Support Type": "Wild", 
 		"Stats":	{

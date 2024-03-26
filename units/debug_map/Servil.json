@@ -1,14 +1,14 @@
 {
 	"Unit":	{
-		"id":	16,
-		"Name":	"Rayan",
+		"id":	5,
+		"Name":	"Servil",
 		"Sex":	false,
 		"BaseExp":	100,
 		"Exp":	100,
 		"Handedness":	1,
 		"CurrentHP":	21,
-		"Class":	"Dancer",
-		"Class Index":	18,
+		"Class":	"Hoplite",
+		"Class Index":	17,
 		"Supports": [], 
 		"Support Type": 0, 
 		"Stats":	{
