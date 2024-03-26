@@ -748,11 +748,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
     /* Skip if no empty tile to put unit on */
     if (unit_order < 0)
         return;
-    SDL_Log("unit_order %d", unit_order);
     i32 dm_order = dm->_selected[unit_order];
-    SDL_Log("dm_order %d", dm_order);
-    getchar();
-    i16 unit_id = dm->_party_id_stack[dm_order];
+    i16 unit_id = dm->_party_id_stack[unit_order];
 
     SDL_assert(Unit_ID_Valid(unit_id));
     // TODO: get start_pos_order from dm_order with list in map
@@ -769,7 +766,12 @@ void fsm_eAcpt_sGmpMap_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
     /* Add or remove unit from map */
     SDL_assert(sota->map->world == sota->world);
     Game_Unit_Refresh(sota, unit_ent);
-    if (dm->_selected[dm_order]) {
+
+    // SDL_Log("dm_order %d", dm_order);
+    // SDL_Log("unit_order %d", unit_order);
+    // SDL_Log("dm->_selected[unit_order] %d", dm->_selected[unit_order]);
+    // getchar();
+    if (dm->_selected[unit_order] >= 0) {
         Map_Unit_Put(sota->map, pos.x, pos.y, unit_ent);
     } else {
         Map_Unit_Remove(sota->map, unit_ent);

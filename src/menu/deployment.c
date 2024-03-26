@@ -135,16 +135,18 @@ static void _DeploymentMenu_Load_Icons(struct DeploymentMenu *dm,
 void _DeploymentMenu_Selected_Num(struct DeploymentMenu *dm) {
     dm->_selected_num = 0;
     for (i32 i = 0; i < dm->_party_size; i++) {
-        dm->_selected_num += (dm->_selected[i] > 0);
+        dm->_selected_num += (dm->_selected[i] >= 0);
     }
 }
 
 i32 _DeploymentMenu_Unselected(struct DeploymentMenu *dm) {
-    i32 out = -1;
+    i32 out = 0;
     for (i32 i = 0; i < dm->_party_size; i++) {
-        if (dm->_selected[i] <= 0) {
-            out = i;
-            break;
+        if (dm->_selected[i] == out) {
+            /* Check if other order is unselected */
+            out++;
+            /* Restart loop */
+            i = 0;
         }
     }
     return (out);
@@ -152,7 +154,7 @@ i32 _DeploymentMenu_Unselected(struct DeploymentMenu *dm) {
 
 void _DeploymentMenu_Swap_Unit(struct DeploymentMenu *dm, SDL_Renderer *renderer,
                                i16 unit) {
-    if (dm->_selected[unit]) {
+    if (dm->_selected[unit] >= 0) {
         _DeploymentMenu_Swap(dm, renderer, NES_WHITE, NES_BLACK);
     } else {
         _DeploymentMenu_Swap(dm, renderer, NES_DARK_GRAY, NES_BLACK);
@@ -817,6 +819,9 @@ void DeploymentMenu_Party_Set(struct DeploymentMenu *dm, struct Unit *party,
     dm->_selected_num   = 0;
     dm->top_unit        = 0;
     dm->_selected       = SDL_calloc(dm->_party_size, sizeof(*dm->_selected));
+    for (int i = 0; i < dm->_party_size; i++) {
+        dm->_selected[i] = -1;
+    }
 }
 
 /* --- Scrolling --- */
@@ -937,13 +942,22 @@ void DeploymentMenu_Elem_Pos_Revert(struct DeploymentMenu *dm, struct Menu *mc) 
 i32 DeploymentMenu_Select(struct DeploymentMenu *dm, i8 elem) {
     /* Get unit order from elem */
     i32 unit_order = dm->top_unit + elem;
-    if (unit_order >= dm->select_max) {
+
+    if (dm->_selected[unit_order] < 0) {
+        /* Skip if deployment slots are full */
+        _DeploymentMenu_Selected_Num(dm);
+        if (dm->_selected_num >= dm->select_max)
+            return (-1);
+        /* Set previously unselected unit to selected */
         i32 unselected = _DeploymentMenu_Unselected(dm);
+        SDL_assert(unselected < dm->select_max);
+        SDL_assert(unselected >= 0);
         dm->_selected[unit_order] = unselected;
-        dm->update = true;
     } else {
-        unit_order = -1;
+        /* Revert previously selected unit to unselected*/
+        dm->_selected[unit_order] = -1;
     }
+    dm->update = true;
 
     return (unit_order);
 }
