@@ -320,15 +320,15 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
 
     /* -- EXP/Level -- */
     PixelFont_Write(pu->pixelnours, renderer, "EXP", 3, PU_EXP_X, PU_EXP_Y);
-    stbsp_sprintf(numbuff, "%02d", (pu->unit->exp % SOTA_100PERCENT));
+    stbsp_sprintf(numbuff, "%02d\0\0\0\0", (pu->unit->exp % SOTA_100PERCENT));
     PixelFont_Write(pu->pixelnours, renderer, numbuff, strlen(numbuff), PU_EXP_STAT_X, PU_EXP_STAT_Y);
     PixelFont_Write(pu->pixelnours, renderer, "Lv", 2, PU_LV_X, PU_LV_Y);
-    stbsp_sprintf(numbuff, "%d", (pu->unit->exp / SOTA_100PERCENT));
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", (pu->unit->exp / SOTA_100PERCENT));
     PixelFont_Write(pu->pixelnours, renderer, numbuff, strlen(numbuff), PU_LV_STAT_X, PU_LV_STAT_Y);
     /* -- HP -- */
     PixelFont_Write(pu->pixelnours, renderer, "HP", 2,
                     PU_HP_X, PU_HP_Y);
-    stbsp_sprintf(numbuff, "%02d/%02d", pu->unit->current_hp, eff_s.hp);
+    stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", pu->unit->current_hp, eff_s.hp);
     PixelFont_Write(pu->pixelnours, renderer, numbuff, strlen(numbuff), PU_HP_STAT_X, PU_HP_STAT_Y);
     struct SimpleBar hp_bar = SimpleBar_default;
     hp_bar.scale.x = 1, hp_bar.scale.y = 1;
@@ -342,26 +342,26 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     SDL_assert(pu->pixelnours_big != NULL);
     PixelFont_Write(pu->pixelnours, renderer, "ATK", 3, PU_ATK_X, PU_ATK_Y);
     if (comp_s.attack[DMG_TYPE_TRUE] > 0) {
-        stbsp_sprintf(numbuff, "%02d/%02d/%01d", comp_s.attack[DMG_TYPE_PHYSICAL],
+        stbsp_sprintf(numbuff, "%02d/%02d/%01d\0\0\0\0", comp_s.attack[DMG_TYPE_PHYSICAL],
                       comp_s.attack[DMG_TYPE_MAGICAL], comp_s.attack[DMG_TYPE_TRUE]);
         PixelFont_Write(pu->pixelnours, renderer, numbuff, 7, PU_ATK_X_STAT1, PU_ATK_Y_STAT1);
     } else {
-        stbsp_sprintf(numbuff, "%02d/%02d", comp_s.attack[DMG_TYPE_PHYSICAL],
+        stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", comp_s.attack[DMG_TYPE_PHYSICAL],
                       comp_s.attack[DMG_TYPE_MAGICAL], comp_s.attack[DMG_TYPE_TRUE]);
         PixelFont_Write(pu->pixelnours, renderer, numbuff, 5, PU_ATK_X_STAT1, PU_ATK_Y_STAT1);
     }
     PixelFont_Write(pu->pixelnours, renderer, "DEF", 3, PU_PROT_X, PU_PROT_Y);
-    stbsp_sprintf(numbuff, "%02d/%02d", comp_s.protection[DMG_TYPE_PHYSICAL],
+    stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", comp_s.protection[DMG_TYPE_PHYSICAL],
                   comp_s.protection[DMG_TYPE_MAGICAL]);
     PixelFont_Write(pu->pixelnours, renderer, numbuff, 5, PU_PROT_X_STAT1, PU_PROT_Y_STAT1);
     PixelFont_Write(pu->pixelnours, renderer, "HIT", 3, PU_HIT_X, PU_HIT_Y);
-    stbsp_sprintf(numbuff, "%03d/%02d", comp_s.hit, comp_s.dodge);
+    stbsp_sprintf(numbuff, "%03d/%02d\0\0\0\0", comp_s.hit, comp_s.dodge);
     PixelFont_Write(pu->pixelnours, renderer, numbuff, strlen(numbuff), PU_HIT_X_STAT, PU_HIT_Y_STAT);
     PixelFont_Write(pu->pixelnours, renderer, "CRIT", 4, PU_CRIT_X, PU_CRIT_Y);
-    stbsp_sprintf(numbuff, "%02d/%02d", comp_s.crit, comp_s.favor);
+    stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", comp_s.crit, comp_s.favor);
     PixelFont_Write(pu->pixelnours, renderer, numbuff, strlen(numbuff), PU_CRIT_X_STAT, PU_CRIT_Y_STAT);
     PixelFont_Write(pu->pixelnours, renderer, "SPEED", 5, PU_SPEED_X, PU_SPEED_Y);
-    stbsp_sprintf(numbuff, "%2d", comp_s.speed);
+    stbsp_sprintf(numbuff, "%2d\0\0\0\0", comp_s.speed);
     PixelFont_Write(pu->pixelnours, renderer, numbuff, strlen(numbuff), PU_SPEED_X_STAT,
                     PU_SPEED_Y_STAT);
     /* -- Finish -- */

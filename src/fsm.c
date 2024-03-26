@@ -495,12 +495,12 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, hov_ent, Sprite);
     bool animated = TNECS_ENTITY_HASCOMPONENT(sota->world, hov_ent, Timer);
     if ((sprite->spritesheet != NULL) && (animated) && (!unit_ontile->waits)) {
-        SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM);
-        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_TAUNT, sprite->flip);
-        Sprite_Animation_Loop(sprite);
-        Sprite_Draw(sprite, sota->renderer);
+        if (sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM) {
+            Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_TAUNT, sprite->flip);
+            Sprite_Animation_Loop(sprite);
+            Sprite_Draw(sprite, sota->renderer);
+        }
     }
-
 }
 
 void fsm_eCrsHvUnit_ssMapCndt(struct Game *sota, tnecs_entity hov_ent) {
@@ -563,10 +563,11 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
 
     /* Only if unit doesn't wait */
     if ((sprite->spritesheet != NULL) && (animated) && (!unit->waits)) {
-        SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM);
-        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_IDLE, sprite->flip);
-        Sprite_Animation_Loop(sprite);
-        Sprite_Draw(sprite, sota->renderer);
+        if (sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM) {
+            Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_IDLE, sprite->flip);
+            Sprite_Animation_Loop(sprite);
+            Sprite_Draw(sprite, sota->renderer);
+        }
     }
 
     // In case an enemy unit was selected.
