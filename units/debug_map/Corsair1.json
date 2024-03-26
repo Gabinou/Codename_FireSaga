@@ -6,8 +6,8 @@
 		"BaseExp":	0,
 		"Exp":	0,
 		"CurrentHP":	1,
-		"Class":	"Corsair",
-		"Class Index":	12,
+		"Class":	"Kewac Runner",
+		"Class Index":	30,
 		"AI": "aggressive.json",
 		"Bases":	{
 			"hp":	27,
