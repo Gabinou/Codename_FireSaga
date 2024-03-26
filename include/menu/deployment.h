@@ -33,7 +33,7 @@ enum DM_MENU_ELEMENTS {
 };
 
 enum DM_MENU {
-
+    DM_UNSELECTED       =  -1,
     DM_PATCH_X_SIZE     =  30,
     DM_PATCH_Y_SIZE     =  21,
     DM_N9PATCH_SCALE_X  =   3,

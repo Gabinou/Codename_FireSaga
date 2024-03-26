@@ -820,7 +820,7 @@ void DeploymentMenu_Party_Set(struct DeploymentMenu *dm, struct Unit *party,
     dm->top_unit        = 0;
     dm->_selected       = SDL_calloc(dm->_party_size, sizeof(*dm->_selected));
     for (int i = 0; i < dm->_party_size; i++) {
-        dm->_selected[i] = -1;
+        dm->_selected[i] = DM_UNSELECTED;
     }
 }
 
@@ -943,11 +943,11 @@ i32 DeploymentMenu_Select(struct DeploymentMenu *dm, i8 elem) {
     /* Get unit order from elem */
     i32 unit_order = dm->top_unit + elem;
 
-    if (dm->_selected[unit_order] < 0) {
+    if (dm->_selected[unit_order] <= DM_UNSELECTED) {
         /* Skip if deployment slots are full */
         _DeploymentMenu_Selected_Num(dm);
         if (dm->_selected_num >= dm->select_max)
-            return (-1);
+            return (DM_UNSELECTED);
         /* Set previously unselected unit to selected */
         i32 unselected = _DeploymentMenu_Unselected(dm);
         SDL_assert(unselected < dm->select_max);
@@ -955,7 +955,7 @@ i32 DeploymentMenu_Select(struct DeploymentMenu *dm, i8 elem) {
         dm->_selected[unit_order] = unselected;
     } else {
         /* Revert previously selected unit to unselected*/
-        dm->_selected[unit_order] = -1;
+        dm->_selected[unit_order] = DM_UNSELECTED;
     }
     dm->update = true;
 
