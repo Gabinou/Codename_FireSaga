@@ -371,7 +371,7 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
     SDL_assert((start.x  >= 0) && (start.x  < sota->map->col_len));
     SDL_assert((start.y  >= 0) && (start.y  < sota->map->row_len));
 
-    i16 row_len     = sota->map->col_len;
+    i16 row_len     = sota->map->row_len;
     i16 col_len     = sota->map->col_len;
 
     /* -- Pathfinding --  */
