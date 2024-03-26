@@ -241,19 +241,19 @@ void PopUp_Tile_Update(struct PopUp_Tile *pt, struct n9Patch *n9patch,
 
     /* - prot - */
     PixelFont_Write(pt->pixelnours, renderer, "DEF", 3, PT_PROT_X, PT_PROT_Y);
-    stbsp_sprintf(numbuff, "%01d/%01d", pt->tile->stats.Pprot, pt->tile->stats.Mprot);
+    stbsp_sprintf(numbuff, "%01d/%01d\0\0\0\0", pt->tile->stats.Pprot, pt->tile->stats.Mprot);
     pos = PopUp_Tile_Center_Prot(pt, numbuff);
     PixelFont_Write(pt->pixelnours_big, renderer, numbuff, 3, pos.x, pos.y);
 
     /* - avoid - */
     PixelFont_Write(pt->pixelnours, renderer, "AVOID", 5, PT_AVOID_X, PT_AVOID_Y);
-    stbsp_sprintf(numbuff, "%02d", pt->tile->stats.dodge);
+    stbsp_sprintf(numbuff, "%02d\0\0\0\0", pt->tile->stats.dodge);
     pos = PopUp_Tile_Center_Avoid(pt, numbuff);
     PixelFont_Write(pt->pixelnours_big, renderer, numbuff, 2, pos.x, pos.y);
 
     /* - heal- */
     PixelFont_Write(pt->pixelnours, renderer, "HEAL", 4, PT_HEAL_X, PT_HEAL_Y);
-    stbsp_sprintf(numbuff, "%02d", pt->tile->stats.heal);
+    stbsp_sprintf(numbuff, "%02d\0\0\0\0", pt->tile->stats.heal);
     pos = PopUp_Tile_Center_Heal(pt, numbuff);
     PixelFont_Write(pt->pixelnours_big, renderer, numbuff, 2, pos.x, pos.y);
 
