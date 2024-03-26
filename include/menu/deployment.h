@@ -198,7 +198,7 @@ struct DeploymentMenu {
     struct Point pos;        /* [pixels] */
     i16 *_party_id_stack;    /* Same size as party */
     i16 *_start_pos_i;       /* Same size as map start_pos */
-    b32 *_selected;          /* Same size as party */
+    i32 *_selected;          /* Same size as party */
     i32  _selected_num;
     i32  _party_size;
     i32  select_max;

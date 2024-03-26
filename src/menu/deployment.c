@@ -135,8 +135,19 @@ static void _DeploymentMenu_Load_Icons(struct DeploymentMenu *dm,
 void _DeploymentMenu_Selected_Num(struct DeploymentMenu *dm) {
     dm->_selected_num = 0;
     for (i32 i = 0; i < dm->_party_size; i++) {
-        dm->_selected_num += dm->_selected[i];
+        dm->_selected_num += (dm->_selected[i] > 0);
     }
+}
+
+i32 _DeploymentMenu_Unselected(struct DeploymentMenu *dm) {
+    i32 out = -1;
+    for (i32 i = 0; i < dm->_party_size; i++) {
+        if (dm->_selected[i] <= 0) {
+            out = i;
+            break;
+        }
+    }
+    return (out);
 }
 
 void _DeploymentMenu_Swap_Unit(struct DeploymentMenu *dm, SDL_Renderer *renderer,
@@ -761,16 +772,19 @@ i32 DeploymentMenu_Map_Find_Pos(struct DeploymentMenu *dm, struct Map *map,
 
 void DeploymentMenu_Map_Swap(struct DeploymentMenu *dm, i32 i1, i32 i2) {
     SDL_assert(dm->_start_pos_i != NULL);
+    SDL_assert(i1 >= 0);
+    SDL_assert(i2 >= 0);
+    SDL_assert(i1 < dm->_party_size);
+    SDL_assert(i2 < dm->_party_size);
     i32 pos1 = dm->_start_pos_i[i1];
     i32 pos2 = dm->_start_pos_i[i2];
     dm->_start_pos_i[i1] = pos2;
     dm->_start_pos_i[i2] = pos1;
 }
 
-i32  DeploymentMenu_Map_StartPos(struct DeploymentMenu *dm, i32 candidate) {
+i32 DeploymentMenu_Map_StartPos(struct DeploymentMenu *dm, i32 candidate) {
     SDL_assert(dm->_start_pos_i != NULL);
     SDL_assert(candidate < dm->select_max);
-    // TODO: move candidate above dm->select_max to open slot IF available
 
     return (dm->_start_pos_i[candidate]);
 }
@@ -923,8 +937,14 @@ void DeploymentMenu_Elem_Pos_Revert(struct DeploymentMenu *dm, struct Menu *mc) 
 i32 DeploymentMenu_Select(struct DeploymentMenu *dm, i8 elem) {
     /* Get unit order from elem */
     i32 unit_order = dm->top_unit + elem;
-    dm->_selected[unit_order] = !dm->_selected[unit_order];
-    dm->update = true;
+    if (unit_order >= dm->select_max) {
+        i32 unselected = _DeploymentMenu_Unselected(dm);
+        dm->_selected[unit_order] = unselected;
+        dm->update = true;
+    } else {
+        unit_order = -1;
+    }
+
     return (unit_order);
 }
 

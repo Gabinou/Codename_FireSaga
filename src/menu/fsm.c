@@ -743,7 +743,15 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moTrade(struct Game *sota, struct Menu *mc) {
 void fsm_eAcpt_sGmpMap_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
     /* Select or deselect unit */
     struct DeploymentMenu *dm = mc->data;
-    i32 dm_order = DeploymentMenu_Select(dm, mc->elem);
+
+    i32 unit_order = DeploymentMenu_Select(dm, mc->elem);
+    /* Skip if no empty tile to put unit on */
+    if (unit_order < 0)
+        return;
+    SDL_Log("unit_order %d", unit_order);
+    i32 dm_order = dm->_selected[unit_order];
+    SDL_Log("dm_order %d", dm_order);
+    getchar();
     i16 unit_id = dm->_party_id_stack[dm_order];
 
     SDL_assert(Unit_ID_Valid(unit_id));
