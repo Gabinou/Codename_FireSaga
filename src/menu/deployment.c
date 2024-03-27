@@ -773,16 +773,22 @@ i32 DeploymentMenu_Map_Find_Pos(struct DeploymentMenu *dm, struct Map *map,
     return (DeploymentMenu_Map_StartPos(dm, out));
 }
 
-void DeploymentMenu_Map_Swap(struct DeploymentMenu *dm, i32 i1, i32 i2) {
+void DeploymentMenu_Map_Swap(struct DeploymentMenu *dm,
+                             i32 start_order1, i32 start_order2) {
     SDL_assert(dm->_start_pos_i != NULL);
     SDL_assert(i1 >= 0);
     SDL_assert(i2 >= 0);
     SDL_assert(i1 < dm->_party_size);
     SDL_assert(i2 < dm->_party_size);
-    i32 pos1 = dm->_start_pos_i[i1];
-    i32 pos2 = dm->_start_pos_i[i2];
-    dm->_start_pos_i[i1] = pos2;
-    dm->_start_pos_i[i2] = pos1;
+    i32 unit_order1 = dm->_start_pos_i[start_order1];
+    i32 unit_order2 = dm->_start_pos_i[start_order2];
+    dm->_start_pos_i[start_order1] = unit_order2;
+    dm->_start_pos_i[start_order2] = unit_order1;
+
+    SDL_assert(dm->_selected[unit_order1] == start_order1);
+    SDL_assert(dm->_selected[unit_order2] == start_order2);
+    dm->_selected[unit_order1] = start_order2;        
+    dm->_selected[unit_order2] = start_order1;        
 }
 
 i32 DeploymentMenu_Map_StartPos(struct DeploymentMenu *dm, i32 candidate) {
