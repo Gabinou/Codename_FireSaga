@@ -260,7 +260,6 @@ void DeploymentMenu_Elem_Pos_Revert(struct DeploymentMenu *dm, struct Menu *mc);
 
 /* --- Selection --- */
 i32  DeploymentMenu_Select(     struct DeploymentMenu *dm, i8 elem);
-void DeploymentMenu_Selection(  struct DeploymentMenu *dm, i16 *stack);
 
 /* --- Elem Move --- */
 i32 DeploymentMenu_Elem_Move(struct Menu *menu, i32 direction);
