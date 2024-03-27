@@ -196,9 +196,13 @@ enum DM_MENU {
 struct DeploymentMenu {
     b32 update;
     struct Point pos;        /* [pixels] */
-    i16 *_party_id_stack;    /* Same size as party */
-    i16 *_start_pos_i;       /* Same size as map start_pos */
-    i32 *_selected;          /* Same size as party */
+    /* two spaces:
+    - party_space: unit_order in _party_id_stack and _selected
+    - start_space: start_order in _start_pos_i     */
+
+    i16 *_party_id_stack;    /* [unit_order] -> unit_id */
+    i16 *_start_pos_i;       /* [start_order] -> unit_order */
+    i32 *_selected;          /* [unit_order] -> start_order */
     i32  _selected_num;
     i32  _party_size;
     i32  select_max;

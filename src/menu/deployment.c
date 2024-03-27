@@ -788,6 +788,7 @@ void DeploymentMenu_Map_Swap(struct DeploymentMenu *dm, i32 i1, i32 i2) {
 i32 DeploymentMenu_Map_StartPos(struct DeploymentMenu *dm, i32 candidate) {
     SDL_assert(dm->_start_pos_i != NULL);
     SDL_assert(candidate < dm->select_max);
+    /* candidate in start_pos space */
 
     return (dm->_start_pos_i[candidate]);
 }
@@ -954,7 +955,8 @@ i32 DeploymentMenu_Select(struct DeploymentMenu *dm, i8 elem) {
         SDL_Log("unselected %d", unselected);
         SDL_assert(unselected < dm->select_max);
         SDL_assert(unselected >= 0);
-        dm->_selected[unit_order] = unselected;
+        dm->_selected[unit_order]       = unselected;
+        dm->_start_pos_i[unselected]    = unit_order;
     } else {
         /* Revert previously selected unit to unselected*/
         dm->_selected[unit_order] = DM_UNSELECTED;
