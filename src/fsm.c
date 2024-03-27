@@ -1504,6 +1504,9 @@ void fsm_eMenuLeft_sPrep_ssMapCndt(struct Game *sota) {
     mc->visible = true;
     Game_cursorFocus_onMenu(sota);
 
+    struct DeploymentMenu *dm = mc->data;
+    DeploymentMenu_UnitOrder_Reset(dm);
+
     /* - Place cursor on dm->elem == map candidate - */
     SDL_assert(sota->state == GAME_STATE_Preparation);
 }

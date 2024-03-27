@@ -246,6 +246,8 @@ i32  _DeploymentMenu_Num(struct DeploymentMenu *dm);
 void _DeploymentMenu_Swap_Unit(struct DeploymentMenu *dm, SDL_Renderer *r, i16 u);
 void _DeploymentMenu_Swap(struct DeploymentMenu *dm, SDL_Renderer *r, i8 w, i8 b);
 
+void DeploymentMenu_UnitOrder_Reset(struct DeploymentMenu *dm);
+
 /* --- Scrolling --- */
 void DeploymentMenu_Scroll_Up(   struct DeploymentMenu *dm);
 void DeploymentMenu_Scroll_Down( struct DeploymentMenu *dm);

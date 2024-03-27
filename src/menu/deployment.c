@@ -773,6 +773,32 @@ i32 DeploymentMenu_Map_Find_Pos(struct DeploymentMenu *dm, struct Map *map,
     return (DeploymentMenu_Map_StartPos(dm, out));
 }
 
+void DeploymentMenu_UnitOrder_Reset(struct DeploymentMenu *dm) {
+    _DeploymentMenu_Selected_Num(dm);
+    for (i32 start_order1 = 0; start_order1 < dm->_selected_num; start_order1++) {
+        /* Check which unit is on start_order1 */
+        i16 unit_order1 = dm->_start_pos_i[start_order1];
+        /* Skip if both orders match */
+        if (unit_order1 == start_order1)
+            continue;
+
+        /* unit2 is on order unit1 wants -> unit_order2 == start_order1 */
+        i16 unit_order2 = start_order1;
+        i32 start_order2 = dm->_selected[unit_order2];
+
+        i16 unit_id1 = dm->_party_id_stack[unit_order1];
+        i16 unit_id2 = dm->_party_id_stack[unit_order2];
+
+        dm->_party_id_stack[unit_order2] = unit_id1;
+        dm->_party_id_stack[unit_order1] = unit_id2;
+        dm->_selected[unit_order1] = start_order2;
+        dm->_selected[unit_order2] = start_order1;
+        dm->_start_pos_i[start_order1] = unit_order2;
+        dm->_start_pos_i[start_order2] = unit_order1;
+    }
+    dm->update = true;
+}
+
 void DeploymentMenu_Map_Swap(struct DeploymentMenu *dm,
                              i32 start_order1, i32 start_order2) {
     SDL_assert(dm->_start_pos_i != NULL);
