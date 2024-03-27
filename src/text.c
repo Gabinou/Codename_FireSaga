@@ -37,9 +37,9 @@ void Text_onUpdate_FPS(struct Game *sota, tnecs_entity entity_fps,
     if (sota->fast_forward) {
         int fps_cap     = sota->settings.FPS.cap;
         int fps_ratio   = fps / fps_cap * SOTA_100PERCENT;
-        stbsp_snprintf(text->line, sizeof(char) * 8, "%d%%", fps_ratio);
+        stbsp_snprintf(text->line, sizeof(char) * 8, "%d%%\0\0\0\0", fps_ratio);
     } else {
-        stbsp_snprintf(text->line, sizeof(char) * 5, "%.1f", fps);
+        stbsp_snprintf(text->line, sizeof(char) * 5, "%.1f\0\0\0\0", fps);
     }
 
     text->len = strlen(text->line);

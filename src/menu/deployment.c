@@ -796,7 +796,7 @@ i32 DeploymentMenu_Map_StartPos(struct DeploymentMenu *dm, i32 candidate) {
     SDL_assert(candidate < dm->select_max);
     /* candidate in start_pos space */
 
-    return (dm->_start_pos_i[candidate]);
+    return (candidate);
 }
 
 void DeploymentMenu_Map_Set(struct DeploymentMenu *dm, struct Map *map) {
