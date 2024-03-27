@@ -1,5 +1,5 @@
 // Class, equippable, Utilities_mvtType, promotion bonus skill
-// these are defaults
+// these are defaults. Todo remove foot
 // Promoted classes are NOT divisible by 2?
 REGISTER_ENUM(VILLAGER,     1, FOOT_SLOW,     START,          ITEM_TYPE_LANCE)
 

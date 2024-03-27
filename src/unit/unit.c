@@ -20,8 +20,8 @@ int  class_mvt_types[UNIT_CLASS_END] = {
     /* RAVAGER           */ UNIT_MVT_BANDITS,
     /* PIKEMAN           */ UNIT_MVT_FOOT_SLOW,
     /* HOPLITE           */ UNIT_MVT_FOOT_SLOW,
+    /* STANDARD_BEARER   */ UNIT_MVT_FOOT_SLOW,
     /* DANCER            */ UNIT_MVT_FOOT_SLOW,
-    /* NULL              */ UNIT_MVT_FOOT_SLOW,
     /* MAGE              */ UNIT_MVT_MAGES,
     /* BATTLEMAGE        */ UNIT_MVT_MAGES,
     /* PRIEST            */ UNIT_MVT_MAGES,
@@ -46,6 +46,14 @@ int  class_mvt_types[UNIT_CLASS_END] = {
     /* GOD               */ UNIT_MVT_MAGES,
     /* GODDESS           */ UNIT_MVT_MAGES,
     /* TWINBORN          */ UNIT_MVT_MAGES,
+    /* NULL              */ UNIT_MVT_MAGES,
+    /* NULL              */ UNIT_MVT_MAGES,
+    /* NULL              */ UNIT_MVT_MAGES,
+    /* NULL              */ UNIT_MVT_MAGES,
+    /* NULL              */ UNIT_MVT_MAGES,
+    /* NULL              */ UNIT_MVT_MAGES,
+    /* VESTAL            */ UNIT_MVT_MAGES,
+    /* WOLF              */ UNIT_MVT_FOOT_FAST,
 };
 
 struct Unit Unit_default = {
