@@ -140,15 +140,16 @@ void _DeploymentMenu_Selected_Num(struct DeploymentMenu *dm) {
 }
 
 i32 _DeploymentMenu_Unselected(struct DeploymentMenu *dm) {
-    i32 out = 0;
-    for (i32 i = 0; i < dm->_party_size; i++) {
+    i32 out = 0, i = 0;
+    while (i < dm->_party_size) {
         if (dm->_selected[i] == out) {
-            /* Check if other order is unselected */
             out++;
-            /* Restart loop */
             i = 0;
+        } else {
+            i++;
         }
     }
+
     return (out);
 }
 
@@ -950,6 +951,7 @@ i32 DeploymentMenu_Select(struct DeploymentMenu *dm, i8 elem) {
             return (DM_UNSELECTED);
         /* Set previously unselected unit to selected */
         i32 unselected = _DeploymentMenu_Unselected(dm);
+        SDL_Log("unselected %d", unselected);
         SDL_assert(unselected < dm->select_max);
         SDL_assert(unselected >= 0);
         dm->_selected[unit_order] = unselected;
