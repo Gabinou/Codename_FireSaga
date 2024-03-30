@@ -916,12 +916,13 @@ void receive_event_Unit_Icon_Return(struct Game *sota, SDL_Event *userevent) {
     /* - Resetting map animation loop - */
     struct Point initial = sota->selected_unit_initial_position;
     SDL_assert(sprite->spritesheet != NULL);
-    SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM);
-    if ((initial.x == pos_ptr->tilemap_pos.x) && (initial.y == pos_ptr->tilemap_pos.y))
-        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_TAUNT, sprite->flip);
-    else
-        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_IDLE, sprite->flip);
-    Sprite_Animation_Loop(sprite);
+    if (sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM) {
+        if ((initial.x == pos_ptr->tilemap_pos.x) && (initial.y == pos_ptr->tilemap_pos.y))
+            Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_TAUNT, sprite->flip);
+        else
+            Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_IDLE, sprite->flip);
+        Sprite_Animation_Loop(sprite);
+    }
     Sprite_Draw(sprite, sota->renderer);
 
     /* - Returning to initial position - */
@@ -952,12 +953,13 @@ void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
     /* -- Sprite walking animation -- */
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Sprite);
     SDL_assert(sprite->spritesheet != NULL);
-    SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM);
-    // TODO: check if arrow exists and is long, revert to correct orientation
-    if (sprite->flip == SDL_FLIP_HORIZONTAL)
-        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_MOVEL, sprite->flip);
-    else
-        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_MOVER, sprite->flip);
+    if (sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM) {
+        // TODO: check if arrow exists and is long, revert to correct orientation
+        if (sprite->flip == SDL_FLIP_HORIZONTAL)
+            Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_MOVEL, sprite->flip);
+        else
+            Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_MOVER, sprite->flip);
+    }
     Sprite_Animation_Loop(sprite);
     Sprite_Draw(sprite, sota->renderer);
 }

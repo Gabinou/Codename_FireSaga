@@ -1018,14 +1018,14 @@ void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity mover_entit
     if ((path_num > 0) && (sprite->spritesheet != NULL)) {
         i32 previous_x = arrow->pathlist[(path_num - 2) * TWO_D];
         i32 previous_y = arrow->pathlist[((path_num - 2) * TWO_D) + 1];
-        SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM);
-
-        struct Point move = {cursor_pos->x - previous_x, cursor_pos->y - previous_y};
-        int direction = Ternary_Direction(move);
-        int loop      = Utilities_Loop(direction, sprite->flip);
-        Spritesheet_Loop_Set(sprite->spritesheet, loop, sprite->flip);
-        Sprite_Dstrect_Relative(sprite, &selected_pos->pixel_pos, &sota->camera);
-        Sprite_Animation_Loop(sprite);
+        if (sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM) {
+            struct Point move = {cursor_pos->x - previous_x, cursor_pos->y - previous_y};
+            int direction = Ternary_Direction(move);
+            int loop      = Utilities_Loop(direction, sprite->flip);
+            Spritesheet_Loop_Set(sprite->spritesheet, loop, sprite->flip);
+            Sprite_Dstrect_Relative(sprite, &selected_pos->pixel_pos, &sota->camera);
+            Sprite_Animation_Loop(sprite);
+        }
         Sprite_Draw(sprite, sota->renderer);
     }
 
