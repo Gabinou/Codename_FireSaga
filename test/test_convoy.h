@@ -374,6 +374,9 @@ void testConvoyWriteRead() {
     nourstest_true(Filesystem_fequal(PATH_JOIN("saves", "convoy_rewrite.json"),
                                      PATH_JOIN("saves", "convoy_test.json")));
     Game_Weapons_Free(&weapons_dtab);
+
+    Convoy_Free(&convoy);
+    Convoy_Free(&convoy2);
 }
 
 void testConvoyExp() {

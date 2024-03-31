@@ -40,4 +40,7 @@ void test_camp() {
     nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "camp_rewrite.json")));
     nourstest_true(Filesystem_fequal(PATH_JOIN("saves", "camp_rewrite.json"),
                                      PATH_JOIN("saves", "camp_test.json")));
+
+    Camp_Free(&camp);
+    Camp_Free(&camp2);
 }

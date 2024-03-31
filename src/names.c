@@ -191,6 +191,7 @@ void Names_jsonElementnames(void) {
 #define REGISTER_ENUM(x) jsonElementnames[JSON_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2);
 #include "names/json_elements.h"
 #undef REGISTER_ENUM
+    s8_free(&jsonElementnames[JSON_WEAPON]);
     jsonElementnames[JSON_WEAPON] = s8_mut("Item");
 }
 

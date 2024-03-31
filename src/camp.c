@@ -31,6 +31,10 @@ struct Camp Camp_default = {
     .forbidden_jobs = {CAMP_JOB_NULL},
 };
 
+void Camp_Free(struct Camp *camp) {
+    s8_free(&camp->json_filename);
+}
+
 void Camp_Job_Hire(struct Camp *in_camp, i16 unit_id, i16 job_id) {
     SDL_assert(in_camp->workers[job_id] < (max_jobs[job_id]));
     SDL_assert(in_camp->forbidden_jobs[unit_id] != job_id);

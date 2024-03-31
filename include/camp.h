@@ -81,6 +81,8 @@ typedef struct Camp {
 } Camp;
 extern struct Camp Camp_default;
 
+void Camp_Free(struct Camp *camp);
+
 /* --- API --- */
 void Camp_Job_Hire(struct Camp *c, i16 u, i16 j);
 void Camp_Job_Fire(struct Camp *c, i16 u, i16 j);

@@ -16,6 +16,10 @@ struct Convoy Convoy_default = {
     .sort_direction = SOTA_CONVOY_SORT_HIGH2LOW,
 };
 
+void Convoy_Free( struct Convoy *convoy) {
+    s8_free(&convoy->json_filename);
+}
+
 void Convoy_Clear(struct Convoy *in_convoy) {
     in_convoy->items_num = in_convoy->books_num = 0;
 }

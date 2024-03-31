@@ -122,6 +122,7 @@ int main(int argc, char *argv[]) {
     /* -- Postliminaries -- */
     Utilities_Free();
     Filesystem_Free();
+    Names_Free();
     SDL_Quit();
     fclose(stdout);
     return (0);

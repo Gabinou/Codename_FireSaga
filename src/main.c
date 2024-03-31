@@ -159,6 +159,7 @@ int main(int argc, char *argv[]) {
     Game_Free(sota);
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Filesystem\n");
     Filesystem_Free();
+    Names_Free();
     SDL_Log("SotA quit.\n");
     return (NO_ERROR);
 }
