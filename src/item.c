@@ -511,6 +511,7 @@ void Item_Free(struct Item *item) {
         item->users = NULL;
     }
     s8_free(&item->json_filename);
+    s8_free(&item->name);
 }
 
 /* --- Is --- */

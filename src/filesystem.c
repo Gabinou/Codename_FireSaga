@@ -19,6 +19,7 @@ int Filesystem_Init(char *argv0) {
     char *temp_base = SDL_GetBasePath();
     s8 srcDir       = s8_mut(temp_base);
     s8 assetsDir    = s8_mut(temp_base);
+    SDL_free(temp_base);
 
     /* -- Finalize paths -- */
     if (srcDir.data[srcDir.num - 1] == DIR_SEPARATOR[0])

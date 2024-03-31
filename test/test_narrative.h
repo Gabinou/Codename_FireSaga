@@ -135,6 +135,7 @@ void test_scene() {
     // getchar();
 
     /* Clean the jfile */
+    Scene_Free(&scene);
     if (jfile != NULL)
         cJSON_Delete(jfile);
 }

@@ -138,7 +138,7 @@ void Conditions_Alive(    struct Conditions *cond, size_t uo);
 void Conditions_Recruited(struct Conditions *cond, size_t uo);
 
 /* --- Constructors/Destructors --- */
-void Scene_Free(     struct Scene *scene);
+void Scene_Free(struct Scene *scene);
 
 /* --- Replace --- */
 // TODO: replace text dynamically
