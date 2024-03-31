@@ -37,6 +37,7 @@ void Party_Free(struct Party *party) {
     }
 
     s8_free(&party->folder);
+    s8_free(&party->json_filename);
 }
 
 void Party_Reset(struct Party *party) {

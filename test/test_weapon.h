@@ -13,10 +13,10 @@ void test_weapon1() {
     struct Item item3   = Item_default;
     wpn1.item   = malloc(sizeof(struct Item));
     wpn2.item   = malloc(sizeof(struct Item));
-    wpn3.item   = malloc(sizeof(struct Item));
+    // wpn3.item   = malloc(sizeof(struct Item));
     *wpn1.item  = Item_default;
     *wpn2.item  = Item_default;
-    *wpn3.item  = Item_default;
+    // *wpn3.item  = Item_default;
     struct Weapon_stats in_wpn_stats = {
         .attack[DAMAGE_TYPE_PHYSICAL]   = 3,
         .attack[DAMAGE_TYPE_MAGICAL]    = 0,
@@ -190,8 +190,11 @@ void test_weapon1() {
                                      PATH_JOIN("saves", "weapon_rewrite.json")));
 
     Weapon_Free(&wpn1);
+    free(wpn1.item);
     Weapon_Free(&wpn2);
+    free(wpn2.item);
     Weapon_Free(&wpn3);
+    free(wpn3.item);
 }
 
 void test_weapon_stats() {

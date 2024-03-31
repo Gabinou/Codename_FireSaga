@@ -699,6 +699,8 @@ void test_reinforcements() {
     nourstest_true(DARR_NUM(Corsair.grown_stats) == reinf.levelups);
     Unit_Reinforcement_Levelups(&Corsair, &reinf);
     nourstest_true(DARR_NUM(Corsair.grown_stats) == reinf.levelups);
+
+    Unit_Free(&Corsair);
 }
 
 void test_unit() {

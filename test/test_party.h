@@ -43,6 +43,8 @@ void test_party() {
     nourstest_true(s8equal(path, party.filenames[1]));
     path = s8_literal(PATH_JOIN(PARTY_FOLDER, "Erwin.json"));
     nourstest_true(s8equal(path, party.filenames[2]));
+
+    Party_Free(&party);
 }
 
 #undef PARTY_FOLDER

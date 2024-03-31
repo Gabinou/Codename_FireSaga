@@ -238,7 +238,6 @@ void Names_Load_All(void) {
 }
 
 void Names_Free(void) {
-
     SDL_Log("menuOptionnames");
     for (size_t i = MENU_OPTION_START + 1; i < MENU_OPTION_END; i++) {
         s8_free(&menuOptionnames[i]);
@@ -297,6 +296,10 @@ void Names_Free(void) {
     SDL_Log("unitStatuses");
     for (size_t i = 0; i < UNIT_STATUS_END; i++) {
         s8_free(&unitStatuses[i]);
+    }
+    if (global_itemOrders!= NULL) {
+        DTAB_FREE(global_itemOrders);
+        global_itemOrders = NULL;
     }
 
     SDL_Log("classNames");
