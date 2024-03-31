@@ -18,16 +18,16 @@ void Party_Free(struct Party *party) {
     SDL_assert(party != NULL);
 
     if (party->names != NULL) {
-        DARR_FREE(party->names);
         for (int i = 0; i < DARR_NUM(party->names); i++)
             s8_free(&party->names[i]);
+        DARR_FREE(party->names);
         party->names = NULL;
     }
 
     if (party->filenames != NULL) {
-        DARR_FREE(party->filenames);
         for (int i = 0; i < DARR_NUM(party->filenames); i++)
             s8_free(&party->filenames[i]);
+        DARR_FREE(party->filenames);
         party->filenames = NULL;
     }
 
@@ -64,7 +64,7 @@ i32 Party_Size(struct Party *ps)  {
 i32 _Party_Size(struct Unit *party, i16 *party_id_stack)  {
     i32 num = 0;
     for (size_t i = 0; i < SOTA_MAX_PARTY_SIZE; i++) {
-        if (party[i]._id > UNIT_ID_PC_START && party[i]._id > UNIT_ID_PC_START) {
+        if (party[i]._id > UNIT_ID_PC_START && party[i]._id < UNIT_ID_PC_END) {
             party_id_stack[num++] = party[i]._id;
         }
     }
@@ -81,10 +81,14 @@ void Party_Ids2Filenames(struct Party *party_struct) {
     SDL_assert(party_struct->ids);
     SDL_assert(party_struct->filenames);
     SDL_assert(party_struct->folder.data != NULL);
+    SDL_assert(global_unitOrders != NULL);
+    SDL_assert(global_unitNames != NULL);
 
     for (int i = 0; i < DARR_NUM(party_struct->ids); i++) {
         s8 filename     = s8_mut(party_struct->folder.data);
         filename        = s8cat(filename, s8_literal(PHYSFS_SEPARATOR));
+        SDL_assert(party_struct->ids[i] > UNIT_ID_PC_START);
+        SDL_assert(party_struct->ids[i] < UNIT_ID_PC_END);
         size_t order    = *(u16 *)DTAB_GET(global_unitOrders, party_struct->ids[i]);
         filename        = s8cat(filename, global_unitNames[order]);
         filename        = s8cat(filename, s8_literal(".json"));

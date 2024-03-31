@@ -4,7 +4,11 @@
 #include "unit/unit.h"
 #include "RNG.h"
 
+#define PARTY_FOLDER "units"
+#define DEBUG_MAP_FOLDER "units", "debug_map"
+
 struct Unit party[SOTA_MAX_PARTY_SIZE];
+s8 filenames[SOTA_MAX_PARTY_SIZE];
 i16 *party_id_stack;
 struct Mount mount1;
 struct Mount mount2;
@@ -18,8 +22,10 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
     /* -- Party -- */
     /* - Preliminaries - */
     Party_Reset(&party_struct);
-    party_struct.ids = party_id_stack;
-    party_struct.party = party;
+    party_struct.ids        = party_id_stack;
+    party_struct.party      = party;
+    party_struct.filenames  = DARR_INIT(party_struct.filenames, s8, 8);
+    Party_Folder(&party_struct, PATH_JOIN(PARTY_FOLDER));
     DARR_NUM(party_id_stack) = 0;
     DARR_PUT(party_id_stack, UNIT_ID_SILOU);
     DARR_PUT(party_id_stack, UNIT_ID_KIARA);
@@ -40,6 +46,7 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
 
     DeploymentMenu_Party_Set(dm, party, party_id_stack, DARR_NUM(party_id_stack));
     SDL_assert(dm->_party_size > 0);
+    DARR_FREE(party_struct.filenames);
 }
 
 void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
@@ -47,8 +54,10 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
     /* - Preliminaries - */
     /* -- Adding units to Party -- */
     Party_Reset(&party_struct);
-    party_struct.ids = party_id_stack;
-    party_struct.party = party;
+    party_struct.ids        = party_id_stack;
+    party_struct.party      = party;
+    party_struct.filenames  = DARR_INIT(party_struct.filenames, s8, 8);
+    Party_Folder(&party_struct, PATH_JOIN(PARTY_FOLDER));
 
     DARR_NUM(party_id_stack) = 0;
     DARR_PUT(party_id_stack, UNIT_ID_KIARA);
@@ -77,6 +86,7 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
 
     DeploymentMenu_Party_Set(dm, party, party_id_stack, DARR_NUM(party_id_stack));
     SDL_assert(dm->_party_size > 0);
+    DARR_FREE(party_struct.filenames);
 }
 
 void test_menu_deployment() {
@@ -275,3 +285,6 @@ void test_menu_deployment() {
 
     SDL_DestroyRenderer(renderer);
 }
+
+#undef PARTY_FOLDER
+#undef DEBUG_MAP_FOLDER

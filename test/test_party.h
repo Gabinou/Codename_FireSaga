@@ -48,3 +48,4 @@ void test_party() {
 }
 
 #undef PARTY_FOLDER
+#undef DEBUG_MAP_FOLDER
