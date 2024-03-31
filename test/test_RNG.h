@@ -6,11 +6,11 @@ void test_RNG_SequenceBreaker() {
     size_t seq_len = 2;
     nourstest_true(SB_RATE_RISE(rate,
                                 seq_len + RNG_SB_SEQ_OFFSET) == (u16)(rate * sb_rise_table[rate /
-                                    RNG_SB_BASE_NUM]*sb_rise_table[rate / RNG_SB_BASE_NUM]));
+                                        RNG_SB_BASE_NUM]*sb_rise_table[rate / RNG_SB_BASE_NUM]));
     nourstest_true(SB_RATE_RISE(rate, seq_len + RNG_SB_SEQ_OFFSET) == 5);
     nourstest_true(SB_RATE_DROP(rate,
                                 seq_len + RNG_SB_SEQ_OFFSET) == (u16)(rate / sb_drop_table[rate / RNG_SB_BASE_NUM] /
-                                    sb_drop_table[rate / RNG_SB_BASE_NUM]));
+                                        sb_drop_table[rate / RNG_SB_BASE_NUM]));
     nourstest_true(SB_RATE_DROP(rate, seq_len + RNG_SB_SEQ_OFFSET) == 3);
     nourstest_true(SB_Rate_Drop(rate, 1) == rate);
     nourstest_true(SB_RATE_DROP(rate, 1) == rate);
