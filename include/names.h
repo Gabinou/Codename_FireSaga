@@ -37,7 +37,7 @@ extern u64 unitHashes[UNIT_NUM];  /* unitHashes[order] = unit_name hash */
 extern struct dtab   *global_itemOrders; /* DTAB_GET(global_unitOrders, id) = order */
 extern struct dtab   *global_unitOrders; /* DTAB_GET(global_unitOrders, id) = order */
 
-extern u16           *class_equippables;
+extern u64           *class_equippables;
 
 /* -- Name makers -- */
 void Names_sceneTimes(void);

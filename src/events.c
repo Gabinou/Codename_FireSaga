@@ -453,8 +453,8 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
     sprite->visible = true;
 
     /* -- Destroying Scene -- */
-    if (sota->scene != NULL) {
-        struct Scene *scene  = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
+    struct Scene *scene  = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
+    if (scene != NULL) {
         Scene_Free(scene);
         tnecs_entity_destroy(sota->world, sota->scene);
         sota->scene = TNECS_NULL;

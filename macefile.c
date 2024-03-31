@@ -2,21 +2,21 @@
 #include "mace.h"
 
 #ifndef CC
-    #define CC "tcc"
+    #define CC "gcc"
 #endif
 #ifndef AR
     #define AR "tcc -ar"
 #endif
 
 struct Config debug         = {
-    .flags = "-g3 -b -rdynamic -O0 -DSDL_ASSERT_LEVEL=2"
+    .flags = "-g -rdynamic -O0 -DSDL_ASSERT_LEVEL=2"
 };
 struct Config release       = {
     .flags = "-O2 -DSDL_ASSERT_LEVEL=1"
 };
 
 struct Config win_debug     = {
-    .flags  = "-g3 -O0",
+    .flags  = "-g -O0",
     .cc     = "x86_64-w64-mingw32-gcc",
     .ar     = "x86_64-w64-mingw32-ar"
 };
@@ -29,7 +29,7 @@ struct Config win_release   = {
 
 /* BORKED: physfs can't compile cause no userenv.h in tcc includes */
 struct Config l2w_tcc_debug     = {
-    .flags  = "-g3 -O0",
+    .flags  = "-g -O0",
     .cc     = "x86_64-win32-tcc",
     .ar     = "x86_64-win32-tcc -ar"
 };
@@ -41,7 +41,7 @@ struct Config l2w_tcc_release   = {
 };
 
 struct Config l2w_gcc_debug     = {
-    .flags  = "-g3 -O0",
+    .flags  = "-g -O0",
     .cc     = "x86_64-w64-mingw32-gcc",
     .ar     = "x86_64-w64-mingw32-ar"
 };

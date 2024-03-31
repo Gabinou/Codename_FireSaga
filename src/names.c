@@ -157,9 +157,9 @@ s8 *Names_unitstateNames(uint32_t in_statecode) {
     return (state_names);
 }
 
-u16 *class_equippables = NULL;
+u64 *class_equippables = NULL;
 void Names_class_equippables(void) {
-    class_equippables = DARR_INIT(class_equippables, u16, UNIT_CLASS_END);
+    class_equippables = DARR_INIT(class_equippables, u64, UNIT_CLASS_END);
 #define REGISTER_ENUM(name, id, x, y, z) class_equippables[UNIT_CLASS_##name] = z;
 #include "names/classes.h"
 #undef  REGISTER_ENUM
