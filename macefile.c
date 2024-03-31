@@ -2,15 +2,20 @@
 #include "mace.h"
 
 #ifndef CC
-    #define CC "gcc"
+    #define CC "tcc"
 #endif
 #ifndef AR
     #define AR "tcc -ar"
 #endif
 
 struct Config debug         = {
-    .flags = "-g -rdynamic -O0 -DSDL_ASSERT_LEVEL=2"
+    .flags = "-g -gdwarf -rdynamic -O0 -DSDL_ASSERT_LEVEL=2"
 };
+
+struct Config tcc_bounds    = {
+    .flags = "-b -g -gdwarf -rdynamic -O0 -DSDL_ASSERT_LEVEL=2"
+};
+
 struct Config release       = {
     .flags = "-O2 -DSDL_ASSERT_LEVEL=1"
 };
@@ -228,6 +233,7 @@ int mace(int argc, char *argv[]) {
     MACE_ADD_CONFIG(l2w_tcc_debug);
     MACE_ADD_CONFIG(l2w_gcc_debug);
     MACE_ADD_CONFIG(l2w_gcc_release);
+    MACE_ADD_CONFIG(tcc_bounds);
     
     /* -- Targets -- */
     /* - second_party - */

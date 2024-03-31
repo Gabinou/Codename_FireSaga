@@ -133,6 +133,10 @@ void test_scene() {
     /* -- Output replace -- */
     // Scene_Render_Print(&scene);
     // getchar();
+
+    /* Clean the jfile */
+    if (jfile != NULL)
+        cJSON_Delete(jfile);
 }
 
 void test_conditions() {
