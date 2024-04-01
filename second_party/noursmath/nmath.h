@@ -139,10 +139,11 @@ dtab_ptr->bytesize = sizeof(type);
 
 #define DTAB_GROW(dtab_ptr) do {\
     size_t new_len   = dtab_ptr->len * DTAB_GROWTH_FACTOR;\
-    dtab_ptr->keys   = realloc(dtab_ptr->keys,   new_len * sizeof(*dtab_ptr->keys));\
-    memset((dtab_ptr->keys + dtab_ptr->len), 0, (new_len - dtab_ptr->len));\
+    dtab_ptr->keys   = realloc(dtab_ptr->keys, new_len * sizeof(*dtab_ptr->keys));\
+    memset((dtab_ptr->keys + dtab_ptr->len), 0, sizeof(*dtab_ptr->keys) * (new_len - dtab_ptr->len));\
     dtab_ptr->values = realloc(dtab_ptr->values, new_len * dtab_ptr->bytesize);\
-    memset(((dtab_byte_t*)dtab_ptr->values + (dtab_ptr->len * dtab_ptr->bytesize)), 0, ((new_len - dtab_ptr->len)* dtab_ptr->bytesize));\
+    dtab_byte_t* bytes_val = dtab_ptr->values;\
+    memset(bytes_val + (dtab_ptr->len * dtab_ptr->bytesize), 0, ((new_len - dtab_ptr->len) * dtab_ptr->bytesize));\
     dtab_ptr->len = new_len;} while(0)
 
 #define DTAB_FREE(dtab_ptr) do {free(dtab_ptr->keys) ;\

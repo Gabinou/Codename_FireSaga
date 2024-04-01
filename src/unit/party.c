@@ -90,8 +90,11 @@ void Party_Ids2Filenames(struct Party *party_struct) {
         SDL_Log("i %d, id %d", i, party_struct->ids[i]);
         SDL_assert(party_struct->ids[i] > UNIT_ID_PC_START);
         SDL_assert(party_struct->ids[i] < UNIT_ID_END);
-        size_t order    = *(u64 *)DTAB_GET(global_unitOrders, party_struct->ids[i]);
-        filename        = s8cat(filename, global_unitNames[order]);
+        u64 *order    = DTAB_GET(global_unitOrders, party_struct->ids[i]);
+        SDL_assert(order != NULL);
+        SDL_assert(*order > 0);
+        SDL_assert(*order < UNIT_NUM);
+        filename        = s8cat(filename, global_unitNames[*order]);
         filename        = s8cat(filename, s8_literal(".json"));
         DARR_PUT(party_struct->filenames, filename);
     }
