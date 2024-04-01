@@ -52,7 +52,6 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
     /* -- Adding units to Party -- */
     Game_Party_Free(party);
     Party_Reset(&party_struct);
-    Party_Folder(&party_struct, PATH_JOIN(PARTY_FOLDER));
 
     DARR_NUM(party_struct.ids) = 0;
     DARR_PUT(party_struct.ids, UNIT_ID_KIARA);
@@ -272,6 +271,7 @@ void test_menu_deployment() {
                             render_target);
 
     /* --- FREE --- */
+    s8_free(&party_struct.folder);
     Game_Party_Free(party);
     Party_Reset(&party_struct);
     Game_Weapons_Free(&weapons_dtab);
