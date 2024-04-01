@@ -344,8 +344,9 @@ static void _DeploymentMenu_Draw_Names(struct DeploymentMenu *dm,
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
-
-        u16 order = *(u16 *)DTAB_GET(global_unitOrders, unit->_id);
+        SDL_assert(unit->_id > UNIT_ID_PC_START);
+        SDL_assert(unit->_id < UNIT_ID_END);
+        u64 order = *(u64 *)DTAB_GET(global_unitOrders, unit->_id);
         s8 idname = global_unitNames[order];
 
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, idname.data,

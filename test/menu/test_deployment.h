@@ -16,14 +16,12 @@ struct Mount mount3;
 struct Mount mount4;
 struct dtab *weapons_dtab;
 struct dtab *items_dtab;
+struct Party party_struct;
 
 void test_menu_deployment_party(struct DeploymentMenu *dm) {
     /* -- Party -- */
     /* - Preliminaries - */
-    struct Party party_struct = Party_default;
-    party_struct.ids        = DARR_INIT(party_struct.ids, i16, 8);
     party_struct.party      = party;
-    party_struct.filenames  = DARR_INIT(party_struct.filenames, s8, 8);
     Party_Folder(&party_struct, PATH_JOIN(PARTY_FOLDER));
     DARR_NUM(party_struct.ids) = 0;
     DARR_PUT(party_struct.ids, UNIT_ID_SILOU);
@@ -45,18 +43,13 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
 
     DeploymentMenu_Party_Set(dm, party, party_struct.ids, DARR_NUM(party_struct.ids));
     SDL_assert(dm->_party_size > 0);
-    DARR_FREE(party_struct.filenames);
-    DARR_FREE(party_struct.ids);
 }
 
 void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
     /* -- Party -- */
     /* - Preliminaries - */
     /* -- Adding units to Party -- */
-    struct Party party_struct = Party_default;
-    party_struct.ids        = DARR_INIT(party_struct.ids, i16, 8);
     party_struct.party      = party;
-    party_struct.filenames  = DARR_INIT(party_struct.filenames, s8, 8);
     Party_Folder(&party_struct, PATH_JOIN(PARTY_FOLDER));
 
     DARR_NUM(party_struct.ids) = 0;
@@ -86,8 +79,6 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
 
     DeploymentMenu_Party_Set(dm, party, party_struct.ids, DARR_NUM(party_struct.ids));
     SDL_assert(dm->_party_size > 0);
-    DARR_FREE(party_struct.filenames);
-    DARR_FREE(party_struct.ids);
 }
 
 void test_menu_deployment() {
@@ -95,9 +86,11 @@ void test_menu_deployment() {
     /* --- Preliminaries --- */
     sota_mkdir("menu_deployment");
 
-    party_id_stack = DARR_INIT(party_id_stack, i16, 4);
+    party_struct = Party_default;
     weapons_dtab   = DTAB_INIT(weapons_dtab,   struct Weapon);
     items_dtab     = DTAB_INIT(items_dtab,     struct Item);
+    party_struct.ids        = DARR_INIT(party_struct.ids, i16, 8);
+    party_struct.filenames  = DARR_INIT(party_struct.filenames, s8, 8);
 
     /* -- Create n9patch -- */
     struct n9Patch n9patch = n9Patch_default;
@@ -285,6 +278,9 @@ void test_menu_deployment() {
         SDL_DestroyTexture(n9patch.texture);
 
     SDL_DestroyRenderer(renderer);
+    DARR_FREE(party_struct.ids);
+    DARR_FREE(party_struct.filenames);
+
 }
 
 #undef PARTY_FOLDER
