@@ -1012,6 +1012,7 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
         y = item_y_offset;
         item_name = s8_toUpper(item_name);
         PixelFont_Write_Len(stats_menu->pixelnours, renderer, item_name.data, x, y);
+        s8_free(&item_name);
         return;
     }
 

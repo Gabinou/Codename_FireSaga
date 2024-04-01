@@ -91,6 +91,13 @@ void Game_Party_Unload(struct Game *sota, i16 *to_unload_ids, size_t unload_num)
     }
 }
 
+void Game_Party_Free(struct Unit *party) {
+    for (size_t j = 0; j < SOTA_MAX_PARTY_SIZE; j++) {
+        Unit_Free(&party[j]);
+        party[j] = Unit_default;
+    }
+}
+
 tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
                                       struct Point in_pos) {
     /* Create Unit entity from previously loaded party unit. */

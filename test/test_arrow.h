@@ -4,8 +4,9 @@
 #define ROW_LEN 21
 #define COL_LEN 25
 
-void test_arrow_draw_start_end(struct Camera *camera, struct Arrow *arrow,
-                               SDL_Renderer *renderer, struct Point start, struct Point end) {
+void test_arrow_draw_start_end(struct Camera *camera,  struct Arrow *arrow,
+                               SDL_Renderer *renderer, struct Point start,
+                               struct Point end) {
     /* -- Fill canvas with white -- */
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
     SDL_assert(SDL_RenderFillRect(renderer, NULL) == 0);
@@ -376,6 +377,7 @@ void test_arrow() {
     Arrow_Free(arrow);
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(render_target);
+    SDL_DestroyRenderer(renderer);
 }
 
 #undef ROW_LEN

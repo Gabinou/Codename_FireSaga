@@ -7,7 +7,7 @@
 #define PARTY_FOLDER "units"
 #define DEBUG_MAP_FOLDER "units", "debug_map"
 
-struct Unit party[SOTA_MAX_PARTY_SIZE];
+struct Unit party[SOTA_MAX_PARTY_SIZE] = {0};
 s8 filenames[SOTA_MAX_PARTY_SIZE];
 i16 *party_id_stack;
 struct Mount mount1;
@@ -22,6 +22,7 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
     /* -- Party -- */
     /* - Preliminaries - */
     party_struct.party      = party;
+    Party_Reset(&party_struct);
     Party_Folder(&party_struct, PATH_JOIN(PARTY_FOLDER));
     DARR_NUM(party_struct.ids) = 0;
     DARR_PUT(party_struct.ids, UNIT_ID_SILOU);
@@ -49,7 +50,8 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
     /* -- Party -- */
     /* - Preliminaries - */
     /* -- Adding units to Party -- */
-    party_struct.party      = party;
+    Game_Party_Free(party);
+    Party_Reset(&party_struct);
     Party_Folder(&party_struct, PATH_JOIN(PARTY_FOLDER));
 
     DARR_NUM(party_struct.ids) = 0;
@@ -79,6 +81,7 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
 
     DeploymentMenu_Party_Set(dm, party, party_struct.ids, DARR_NUM(party_struct.ids));
     SDL_assert(dm->_party_size > 0);
+    SDL_assert(dm->_party_size == 11);
 }
 
 void test_menu_deployment() {
@@ -269,6 +272,8 @@ void test_menu_deployment() {
                             render_target);
 
     /* --- FREE --- */
+    Game_Party_Free(party);
+    Party_Reset(&party_struct);
     Game_Weapons_Free(&weapons_dtab);
     Game_Items_Free(&items_dtab);
     DeploymentMenu_Free(dm);
@@ -280,7 +285,6 @@ void test_menu_deployment() {
     SDL_DestroyRenderer(renderer);
     DARR_FREE(party_struct.ids);
     DARR_FREE(party_struct.filenames);
-
 }
 
 #undef PARTY_FOLDER
