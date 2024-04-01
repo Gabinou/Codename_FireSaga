@@ -269,8 +269,8 @@ void test_menu_deployment() {
                             render_target);
 
     /* --- FREE --- */
-    DTAB_FREE(weapons_dtab);
-    DTAB_FREE(items_dtab);
+    Game_Weapons_Free(&weapons_dtab);
+    Game_Items_Free(&items_dtab);
     DeploymentMenu_Free(dm);
     SDL_FreeSurface(surface);
 
