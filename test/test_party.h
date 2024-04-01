@@ -20,6 +20,7 @@ void test_party() {
     nourstest_true(party.ids != NULL);
     nourstest_true(DARR_NUM(party.ids) == 1);
     nourstest_true(party.ids[0] == 2012);
+    SDL_assert(party.ids[0] == 2012);
 
     nourstest_true(party.filenames != NULL);
     nourstest_true(DARR_NUM(party.filenames) == 1);
@@ -27,6 +28,7 @@ void test_party() {
     nourstest_true(s8equal(path, party.filenames[0]));
 
     /* --- Creating filenames for ids --- */
+    SDL_assert(party.ids[0] == 2012);
     Party_Ids2Filenames(&party);
     nourstest_true(DARR_NUM(party.filenames) == 2);
     path = s8_literal(PATH_JOIN(DEBUG_MAP_FOLDER, "Boss.json"));

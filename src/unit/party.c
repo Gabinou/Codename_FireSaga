@@ -87,9 +87,10 @@ void Party_Ids2Filenames(struct Party *party_struct) {
     for (int i = 0; i < DARR_NUM(party_struct->ids); i++) {
         s8 filename     = s8_mut(party_struct->folder.data);
         filename        = s8cat(filename, s8_literal(PHYSFS_SEPARATOR));
+        SDL_Log("i %d, id %d", i, party_struct->ids[i]);
         SDL_assert(party_struct->ids[i] > UNIT_ID_PC_START);
-        SDL_assert(party_struct->ids[i] < UNIT_ID_PC_END);
-        size_t order    = *(u16 *)DTAB_GET(global_unitOrders, party_struct->ids[i]);
+        SDL_assert(party_struct->ids[i] < UNIT_ID_END);
+        size_t order    = *(u64 *)DTAB_GET(global_unitOrders, party_struct->ids[i]);
         filename        = s8cat(filename, global_unitNames[order]);
         filename        = s8cat(filename, s8_literal(".json"));
         DARR_PUT(party_struct->filenames, filename);

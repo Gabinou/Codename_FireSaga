@@ -16,21 +16,20 @@ struct Mount mount3;
 struct Mount mount4;
 struct dtab *weapons_dtab;
 struct dtab *items_dtab;
-struct Party party_struct;
 
 void test_menu_deployment_party(struct DeploymentMenu *dm) {
     /* -- Party -- */
     /* - Preliminaries - */
-    Party_Reset(&party_struct);
-    party_struct.ids        = party_id_stack;
+    struct Party party_struct = Party_default;
+    party_struct.ids        = DARR_INIT(party_struct.ids, i16, 8);
     party_struct.party      = party;
     party_struct.filenames  = DARR_INIT(party_struct.filenames, s8, 8);
     Party_Folder(&party_struct, PATH_JOIN(PARTY_FOLDER));
-    DARR_NUM(party_id_stack) = 0;
-    DARR_PUT(party_id_stack, UNIT_ID_SILOU);
-    DARR_PUT(party_id_stack, UNIT_ID_KIARA);
-    DARR_PUT(party_id_stack, UNIT_ID_RAYAN);
-    DARR_PUT(party_id_stack, UNIT_ID_ERWIN);
+    DARR_NUM(party_struct.ids) = 0;
+    DARR_PUT(party_struct.ids, UNIT_ID_SILOU);
+    DARR_PUT(party_struct.ids, UNIT_ID_KIARA);
+    DARR_PUT(party_struct.ids, UNIT_ID_RAYAN);
+    DARR_PUT(party_struct.ids, UNIT_ID_ERWIN);
 
     Party_Ids2Filenames(&party_struct);
     Party_Load(&party_struct, weapons_dtab, items_dtab);
@@ -44,33 +43,34 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
     mount4 = Mount_default_eagle;
     party[UNIT_ID_ERWIN].mount = &mount4;
 
-    DeploymentMenu_Party_Set(dm, party, party_id_stack, DARR_NUM(party_id_stack));
+    DeploymentMenu_Party_Set(dm, party, party_struct.ids, DARR_NUM(party_struct.ids));
     SDL_assert(dm->_party_size > 0);
     DARR_FREE(party_struct.filenames);
+    DARR_FREE(party_struct.ids);
 }
 
 void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
     /* -- Party -- */
     /* - Preliminaries - */
     /* -- Adding units to Party -- */
-    Party_Reset(&party_struct);
-    party_struct.ids        = party_id_stack;
+    struct Party party_struct = Party_default;
+    party_struct.ids        = DARR_INIT(party_struct.ids, i16, 8);
     party_struct.party      = party;
     party_struct.filenames  = DARR_INIT(party_struct.filenames, s8, 8);
     Party_Folder(&party_struct, PATH_JOIN(PARTY_FOLDER));
 
-    DARR_NUM(party_id_stack) = 0;
-    DARR_PUT(party_id_stack, UNIT_ID_KIARA);
-    DARR_PUT(party_id_stack, UNIT_ID_PERIGNON);
-    DARR_PUT(party_id_stack, UNIT_ID_KAKWI);
-    DARR_PUT(party_id_stack, UNIT_ID_NICOLE);
-    DARR_PUT(party_id_stack, UNIT_ID_CHASSE);
-    DARR_PUT(party_id_stack, UNIT_ID_SILOU);
-    DARR_PUT(party_id_stack, UNIT_ID_LUCRECE);
-    DARR_PUT(party_id_stack, UNIT_ID_ERWIN);
-    DARR_PUT(party_id_stack, UNIT_ID_RAYAN);
-    DARR_PUT(party_id_stack, UNIT_ID_MELLY);
-    DARR_PUT(party_id_stack, UNIT_ID_TEHARON);
+    DARR_NUM(party_struct.ids) = 0;
+    DARR_PUT(party_struct.ids, UNIT_ID_KIARA);
+    DARR_PUT(party_struct.ids, UNIT_ID_PERIGNON);
+    DARR_PUT(party_struct.ids, UNIT_ID_KAKWI);
+    DARR_PUT(party_struct.ids, UNIT_ID_NICOLE);
+    DARR_PUT(party_struct.ids, UNIT_ID_CHASSE);
+    DARR_PUT(party_struct.ids, UNIT_ID_SILOU);
+    DARR_PUT(party_struct.ids, UNIT_ID_LUCRECE);
+    DARR_PUT(party_struct.ids, UNIT_ID_ERWIN);
+    DARR_PUT(party_struct.ids, UNIT_ID_RAYAN);
+    DARR_PUT(party_struct.ids, UNIT_ID_MELLY);
+    DARR_PUT(party_struct.ids, UNIT_ID_TEHARON);
 
     Party_Ids2Filenames(&party_struct);
     Party_Load(&party_struct, weapons_dtab, items_dtab);
@@ -84,9 +84,10 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
     mount4 = Mount_default_eagle;
     party[UNIT_ID_ERWIN].mount = &mount4;
 
-    DeploymentMenu_Party_Set(dm, party, party_id_stack, DARR_NUM(party_id_stack));
+    DeploymentMenu_Party_Set(dm, party, party_struct.ids, DARR_NUM(party_struct.ids));
     SDL_assert(dm->_party_size > 0);
     DARR_FREE(party_struct.filenames);
+    DARR_FREE(party_struct.ids);
 }
 
 void test_menu_deployment() {

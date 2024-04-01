@@ -2,7 +2,7 @@
 #include "mace.h"
 
 #ifndef CC
-    #define CC "tcc"
+    #define CC "gcc"
 #endif
 #ifndef AR
     #define AR "tcc -ar"

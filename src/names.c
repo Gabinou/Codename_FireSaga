@@ -17,14 +17,14 @@ s8  global_unitNames[UNIT_NUM]  = {0};
 u64 unitHashes[UNIT_NUM]        = {0};
 struct dtab *global_unitOrders  = NULL;
 void Names_unitNames(void) {
-    DTAB_INIT(global_unitOrders, u16);
+    DTAB_INIT(global_unitOrders, u64);
     SDL_assert(global_unitOrders != NULL);
     int order = 0;
     dtab_add(global_unitOrders, &order, UNIT_ID_NULL);
     order++;
 #define REGISTER_ENUM(x, y) dtab_add(global_unitOrders, &order, UNIT_ID_##x);\
-    SDL_Log("%d %d", *(u16 *)dtab_get(global_unitOrders, UNIT_ID_##x), order);\
-    SDL_assert(*(u16 *)dtab_get(global_unitOrders, UNIT_ID_##x) == order++);\
+    SDL_Log("%d %d", *(u64 *)dtab_get(global_unitOrders, UNIT_ID_##x), order);\
+    SDL_assert(*(u64 *)dtab_get(global_unitOrders, UNIT_ID_##x) == order++);\
     global_unitNames[UNIT_ORDER_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);\
     unitHashes[UNIT_ORDER_##x] = sota_hash_djb2(global_unitNames[UNIT_ORDER_##x]);
 #include "names/units_PC.h"
