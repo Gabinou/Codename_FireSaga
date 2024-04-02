@@ -87,7 +87,6 @@ void Party_Ids2Filenames(struct Party *party_struct) {
     for (int i = 0; i < DARR_NUM(party_struct->ids); i++) {
         s8 filename     = s8_mut(party_struct->folder.data);
         filename        = s8cat(filename, s8_literal(PHYSFS_SEPARATOR));
-        SDL_Log("i %d, id %d", i, party_struct->ids[i]);
         SDL_assert(party_struct->ids[i] > UNIT_ID_PC_START);
         SDL_assert(party_struct->ids[i] < UNIT_ID_END);
         u64 *order    = DTAB_GET(global_unitOrders, party_struct->ids[i]);

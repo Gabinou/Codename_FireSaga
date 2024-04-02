@@ -68,7 +68,6 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
 
     Party_Ids2Filenames(&party_struct);
     Party_Load(&party_struct, weapons_dtab, items_dtab);
-
     mount1 = Mount_default_horse;
     party[UNIT_ID_SILOU].mount = &mount1;
     mount2 = Mount_default_pegasus;

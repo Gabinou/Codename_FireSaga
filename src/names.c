@@ -19,7 +19,7 @@ struct dtab *global_unitOrders  = NULL;
 void Names_unitNames(void) {
     DTAB_INIT(global_unitOrders, u64);
     SDL_assert(global_unitOrders != NULL);
-    int order = 0;
+    u64 order = 0;
     dtab_add(global_unitOrders, &order, UNIT_ID_NULL);
     order++;
 #define REGISTER_ENUM(x, y) dtab_add(global_unitOrders, &order, UNIT_ID_##x);\
@@ -29,6 +29,7 @@ void Names_unitNames(void) {
     unitHashes[UNIT_ORDER_##x] = sota_hash_djb2(global_unitNames[UNIT_ORDER_##x]);
 #include "names/units_PC.h"
 #include "names/units_NPC.h"
+    SDL_assert(global_unitOrders->num == order + 1);
 }
 #undef REGISTER_ENUM
 
@@ -297,7 +298,7 @@ void Names_Free(void) {
     for (size_t i = 0; i < UNIT_STATUS_END; i++) {
         s8_free(&unitStatuses[i]);
     }
-    if (global_itemOrders!= NULL) {
+    if (global_itemOrders != NULL) {
         DTAB_FREE(global_itemOrders);
         global_itemOrders = NULL;
     }

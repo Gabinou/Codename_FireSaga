@@ -68,31 +68,30 @@ size_t dtab_found(struct dtab * dtab_ptr, uint64_t in_hash) {
 }
 
 void *dtab_get(struct dtab * dtab_ptr, uint64_t in_hash) {
-    void * out = NULL;
+    void *out = NULL;
     size_t pos = dtab_found(dtab_ptr, in_hash);
     if (pos) {
-        dtab_byte_t * values_bytesptr = (dtab_byte_t *)(dtab_ptr->values);
-        out = (void *)(values_bytesptr + (dtab_ptr->bytesize * pos));
+        dtab_byte_t * values_bytes = (dtab_byte_t *)(dtab_ptr->values);
+        out = (void *)(values_bytes + (dtab_ptr->bytesize * pos));
     }
     return (out);
 }
 
-void dtab_add(struct dtab * dtab_ptr, void * value, uint64_t in_hash) {
-    dtab_byte_t * values_bytesptr, * newvalue_bytesptr;
+void dtab_add(struct dtab *dtab_ptr, void *value, uint64_t in_hash) {
+    dtab_byte_t *values_bytes, *newvalue_bytes;
     size_t pos = dtab_found(dtab_ptr, in_hash);
     if (!pos) {
         dtab_ptr->keys[dtab_ptr->num] = in_hash;
-        values_bytesptr = (dtab_byte_t *)(dtab_ptr->values);
-        newvalue_bytesptr = values_bytesptr + (dtab_ptr->bytesize * dtab_ptr->num);
+        values_bytes = (dtab_byte_t *)(dtab_ptr->values);
+        newvalue_bytes = values_bytes + (dtab_ptr->bytesize * dtab_ptr->num);
         dtab_ptr->num++;
     } else {
-        values_bytesptr = (dtab_byte_t *)(dtab_ptr->values);
-        newvalue_bytesptr = values_bytesptr + (dtab_ptr->bytesize * pos);
+        values_bytes = (dtab_byte_t *)(dtab_ptr->values);
+        newvalue_bytes = values_bytes + (dtab_ptr->bytesize * pos);
     }
-    memcpy(newvalue_bytesptr, value, dtab_ptr->bytesize);
-    if (dtab_ptr->num == dtab_ptr->len) {
+    memcpy(newvalue_bytes, value, dtab_ptr->bytesize);
+    if (dtab_ptr->num == dtab_ptr->len)
         DTAB_GROW(dtab_ptr);
-    }
 
 }
 
@@ -100,8 +99,8 @@ void dtab_del(struct dtab * dtab_ptr, uint64_t in_hash) {
     size_t pos = dtab_found(dtab_ptr, in_hash);
     if ((pos) && (pos < dtab_ptr->num)) {
         memmove(dtab_ptr->keys + pos, dtab_ptr->keys + pos + 1, (dtab_ptr->num - pos - 1)*sizeof(uint64_t)) ;
-        dtab_byte_t * values_bytesptr = (dtab_byte_t *)(dtab_ptr->values);
-        memmove(values_bytesptr + pos * dtab_ptr->bytesize, values_bytesptr + (pos + 1)*dtab_ptr->bytesize, (dtab_ptr->num - pos - 1)*dtab_ptr->bytesize);
+        dtab_byte_t * values_bytes = (dtab_byte_t *)(dtab_ptr->values);
+        memmove(values_bytes + pos * dtab_ptr->bytesize, values_bytes + (pos + 1)*dtab_ptr->bytesize, (dtab_ptr->num - pos - 1)*dtab_ptr->bytesize);
         dtab_ptr->num--;
     }
 
@@ -111,8 +110,8 @@ void dtab_del_scramble(struct dtab * dtab_ptr, uint64_t in_hash) {
     size_t pos = dtab_found(dtab_ptr, in_hash);
     if ((pos) && (pos < dtab_ptr->num))  {
         memmove(dtab_ptr->keys + pos, dtab_ptr->keys + dtab_ptr->num - 1, sizeof(uint64_t));
-        dtab_byte_t * values_bytesptr = (dtab_byte_t *)(dtab_ptr->values);
-        memmove(values_bytesptr + pos * dtab_ptr->bytesize, values_bytesptr + dtab_ptr->num * dtab_ptr->bytesize, dtab_ptr->bytesize);
+        dtab_byte_t * values_bytes = (dtab_byte_t *)(dtab_ptr->values);
+        memmove(values_bytes + pos * dtab_ptr->bytesize, values_bytes + dtab_ptr->num * dtab_ptr->bytesize, dtab_ptr->bytesize);
         dtab_ptr->num--;
     }
 }
