@@ -13,7 +13,7 @@ struct Config debug         = {
 };
 
 struct Config tcc_bounds    = {
-    .flags = "-b -g -gdwarf -rdynamic -O0 -DSDL_ASSERT_LEVEL=2"
+    .flags = "-g -gdwarf -b -rdynamic -O0 -DSDL_ASSERT_LEVEL=2"
 };
 
 struct Config release       = {

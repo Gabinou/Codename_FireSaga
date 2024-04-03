@@ -397,9 +397,13 @@ int PixelFont_Width_Len(struct PixelFont *font,  char *text) {
 
 /* Compute exact width of text, including spaces */
 int PixelFont_Width(struct PixelFont *font,  char *text, size_t len) {
+    SDL_assert(font                     != NULL);
+    SDL_assert(text                     != NULL);
+    SDL_assert(font->glyph_bbox_width   != NULL);
     int width = 0;
     for (size_t i = 0; i < len; i++) {
         unsigned char ascii = (unsigned char)text[i];
+        SDL_assert(ascii < font->charset_num);
         width += font->glyph_bbox_width[ascii];
     }
     return (width);
