@@ -41,6 +41,10 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
     party[UNIT_ID_RAYAN].mount = &mount3;
     mount4 = Mount_default_eagle;
     party[UNIT_ID_ERWIN].mount = &mount4;
+    SDL_assert(party[0].regrets == 0);
+    SDL_assert(party[1].regrets == 0);
+    SDL_assert(party[2].regrets == 0);
+    SDL_assert(party[3].regrets == 0);
 
     DeploymentMenu_Party_Set(dm, party, party_struct.ids, DARR_NUM(party_struct.ids));
     SDL_assert(dm->_party_size > 0);
@@ -65,6 +69,17 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
     DARR_PUT(party_struct.ids, UNIT_ID_RAYAN);
     DARR_PUT(party_struct.ids, UNIT_ID_MELLY);
     DARR_PUT(party_struct.ids, UNIT_ID_TEHARON);
+    SDL_assert(party[0].regrets == 0);
+    SDL_assert(party[1].regrets == 0);
+    SDL_assert(party[2].regrets == 0);
+    SDL_assert(party[3].regrets == 0);
+    SDL_assert(party[4].regrets == 0);
+    SDL_assert(party[5].regrets == 0);
+    SDL_assert(party[6].regrets == 0);
+    SDL_assert(party[7].regrets == 0);
+    SDL_assert(party[8].regrets == 0);
+    SDL_assert(party[9].regrets == 0);
+    SDL_assert(party[10].regrets == 0);
 
     Party_Ids2Filenames(&party_struct);
     Party_Load(&party_struct, weapons_dtab, items_dtab);

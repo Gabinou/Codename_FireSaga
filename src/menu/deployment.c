@@ -544,9 +544,10 @@ static void _DeploymentMenu_Draw_Stats_P4(struct DeploymentMenu *dm,
         struct Unit *unit = &dm->party[unit_id];
         SDL_assert(unit != NULL);
         _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
+        SDL_assert(unit != NULL);
 
         /* WPN_TYPES */
-        u8 equippables[SM_WEAPON_TYPES_MAX] = {0};
+        u8 equippables[ITEM_TYPE_EXP_END] = {0};
         u8 equippable_num = Unit_Equippables(unit, equippables);
         x = DM_WPN_TYPE_X;
         y = DM_WPN_TYPE_CONTENT_Y;
@@ -554,12 +555,15 @@ static void _DeploymentMenu_Draw_Stats_P4(struct DeploymentMenu *dm,
         y = i * DM_LINE_H + point.y;
         PixelFont_Write_Centered(dm->font_wpns, renderer, equippables,
                                  equippable_num, x, y);
+        SDL_assert(unit != NULL);
 
         /* REGRETS */
         x = DM_REGRETS_X;
         y = DM_REGRETS_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
+        SDL_assert(unit != NULL);
+        SDL_assert(unit->regrets < REGRET_MAX);
         stbsp_snprintf(array, 4, "%d\0\0\0\0", unit->regrets);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 3, x, y);
     }
