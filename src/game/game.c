@@ -12,6 +12,7 @@ struct Game Game_default = {
     .iscursor               = true,
     .isrunning              = false,
     .items_dtab             = NULL,
+    .map_enemies            = NULL,
     .weapons_dtab           = NULL,
     .runtime_ns             = 0,
     .combat_outcome         = {0},
@@ -87,16 +88,12 @@ struct Game Game_default = {
 /* --- Constructors/Destructors --- */
 
 void Game_Free(struct Game *sota) {
+    Game_Map_Reinforcements_Free(sota);
     Game_Cursor_Free(sota);
     Game_PopUp_Tile_Free(sota);
     Game_Mouse_Free(sota);
     Game_menuStack_Free(sota);
     Game_PlayerSelectMenus_Free(sota);
-
-    if (sota->map_enemies != NULL) {
-        DARR_FREE(sota->map_enemies);
-        sota->map_enemies = NULL;
-    }
 
     if (sota->combat_outcome.attacks != NULL) {
         DARR_FREE(sota->combat_outcome.attacks);
@@ -145,7 +142,6 @@ void Game_Free(struct Game *sota) {
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Map");
 
-    Game_Map_Reinforcements_Free(sota);
     if ((sota->map != NULL) && (sota->map->unitmap != NULL))
         Map_Units_Free(sota->map);
     Game_Map_Free(sota);
@@ -252,7 +248,12 @@ void Game_Init(struct Game *sota) {
     }
     DTAB_INIT(sota->items_dtab, struct Item);
 
+    if (sota->map_enemies != NULL) {
+        DARR_FREE(sota->map_enemies);
+        sota->map_enemies = NULL;
+    }
     sota->map_enemies = DARR_INIT(sota->map_enemies, tnecs_entity, 16);
+
     if (sota->settings.fullscreen)
         flags = SDL_WINDOW_FULLSCREEN;
     sota->units_loaded = SDL_calloc(UNIT_ID_END, sizeof(* sota->units_loaded));

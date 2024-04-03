@@ -104,16 +104,18 @@ void Game_debugMap_Load(struct Game *sota) {
 
 /* --- Reinforcements --- */
 void Game_Map_Reinforcements_Free(struct Game *sota) {
-    SDL_assert(sota                 != NULL);
+    SDL_assert(sota != NULL);
     if (sota->map_enemies == NULL) {
+        SDL_Log("Map enemies uninitialized");
         return;
     }
     if (DARR_NUM(sota->map_enemies) == 0) {
+        SDL_Log("No map enemies");
         return;
     }
 
     char filename[DEFAULT_BUFFER_SIZE];
-    for (i16 i = 0; i < DARR_NUM(sota->map_enemies); i++) {
+    while (DARR_NUM(sota->map_enemies) > 0) {
         tnecs_entity temp_unit_ent =  DARR_POP(sota->map_enemies);
 
         struct Unit *unit = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
@@ -124,7 +126,11 @@ void Game_Map_Reinforcements_Free(struct Game *sota) {
         if (sprite)
             Sprite_Free(sprite);
     }
-    DARR_NUM(sota->map_enemies) = 0;
+
+    if (sota->map_enemies != NULL) {
+        DARR_FREE(sota->map_enemies);
+        sota->map_enemies = NULL;
+    }
 }
 
 void Game_Map_Reinforcements_Load(struct Game *sota) {
@@ -145,6 +151,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Unit, Position,
                                                         Sprite, Timer, MapHPBar, AI);
         DARR_PUT(sota->map_enemies, temp_unit_ent);
+
         SDL_Log("-- checks --");
         tnecs_component typeflag;
         typeflag = TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Unit, Position,
@@ -293,6 +300,8 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(unit->name.data != NULL);
     }
     sota->map->reinf_loaded = sota->map->turn;
+    SDL_assert(DARR_NUM(sota->map_enemies) == DARR_NUM(sota->map->reinforcements));
+
 }
 
 /* --- Tiles & tilesets  --- */

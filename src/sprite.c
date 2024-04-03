@@ -405,6 +405,8 @@ void Sprite_Palette_Swap(struct Sprite *sprite, SDL_Palette *palette, SDL_Render
     sprite->spritesheet->palette = palette;
     SDL_Surface *surface = sprite->spritesheet->surface;
     sprite->spritesheet->surface = Filesystem_Surface_Palette_Swap(surface, palette);
+    if (sprite->texture != NULL)
+        SDL_DestroyTexture(sprite->texture);
     sprite->texture = SDL_CreateTextureFromSurface(renderer, sprite->spritesheet->surface);
 }
 
