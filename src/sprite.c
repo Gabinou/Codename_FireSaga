@@ -403,8 +403,10 @@ void Cursor_Dstrect_Absolute(struct Sprite *sprite, struct Point *pixel_pos,
 /* --- Shading --- */
 void Sprite_Palette_Swap(struct Sprite *sprite, SDL_Palette *palette, SDL_Renderer *renderer) {
     sprite->spritesheet->palette = palette;
-    SDL_Surface *surface = sprite->spritesheet->surface;
-    sprite->spritesheet->surface = Filesystem_Surface_Palette_Swap(surface, palette);
+    SDL_Surface *old_surface = sprite->spritesheet->surface;
+
+    sprite->spritesheet->surface = Filesystem_Surface_Palette_Swap(old_surface, palette);
+    SDL_FreeSurface(old_surface);
     if (sprite->texture != NULL)
         SDL_DestroyTexture(sprite->texture);
     sprite->texture = SDL_CreateTextureFromSurface(renderer, sprite->spritesheet->surface);
