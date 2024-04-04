@@ -36,8 +36,20 @@ void Game_Switch_toCandidates(struct Game *sota, tnecs_entity *candidates) {
 }
 
 /* --- Menu stack --- */
-void Game_menuStack_Free(struct Game *sota) {
+void Game_DeploymentMenu_Free(struct Game *sota) {
+    if (sota->deployment_menu == TNECS_NULL)
+        return;
 
+    struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
+    SDL_assert(mc);
+
+    struct DeploymentMenu *dm = mc->data;
+    DeploymentMenu_Free(dm);
+    mc->data = NULL;
+    sota->deployment_menu = TNECS_NULL;
+}
+
+void Game_menuStack_Free(struct Game *sota) {
     struct StatsMenu *stats_menu;
     struct PlayerSelectMenu *psm_menu;
     SDL_assert(sota->menu_stack != NULL);
@@ -68,7 +80,6 @@ void Game_menuStack_Free(struct Game *sota) {
 
     DARR_FREE(sota->menu_stack);
     sota->menu_stack = NULL;
-
 }
 
 void Game_menuStack_Push(struct Game *sota, tnecs_entity in_menu_entity) {

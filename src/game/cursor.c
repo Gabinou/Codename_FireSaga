@@ -519,16 +519,14 @@ void Game_Mouse_Create(struct Game *sota) {
     SDL_assert(position != NULL);
     Position_Bounds_Set(position, -1000, 2000, -1000, 2000);
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_mouse, Sprite);
-    *sprite = Sprite_default;
     SDL_assert(sprite != NULL);
+    *sprite = Sprite_default;
     Sprite_Load(sprite, PATH_JOIN("..", "assets", "GUI", "Cursor", "mousecursor.png"), sota->renderer);
     SDL_assert(sprite->spritesheet != NULL);
     SDL_assert(sprite->spritesheet->surface != NULL);
     SDL_assert(sprite->texture != NULL);
     sprite->visible = false;
     sprite->flip = SDL_FLIP_NONE;
-
-    *sprite->spritesheet = Spritesheet_default;
 
     struct Spritesheet *ss = sprite->spritesheet;
     ss->loop_num      = 1;
@@ -576,10 +574,12 @@ void Game_Mouse_Disable(struct Game *sota) {
 }
 
 void Game_Mouse_Free(struct Game *sota) {
-    if (sota->entity_mouse > 0) {
-        struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_mouse, Sprite);
-        if (sprite != NULL)
-            Sprite_Free(sprite);
-        tnecs_entity_destroy(sota->world, sota->entity_mouse);
-    }
+    if (sota->entity_mouse == TNECS_NULL)
+        return;
+
+    struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_mouse, Sprite);
+    SDL_assert(sprite != NULL);
+    Sprite_Free(sprite);
+    tnecs_entity_destroy(sota->world, sota->entity_mouse);
+    sota->entity_mouse = TNECS_NULL;
 }

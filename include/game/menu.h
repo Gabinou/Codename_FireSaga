@@ -31,6 +31,7 @@ void Game_menuStack_Push(struct Game *sota, tnecs_entity in_menu_entity);
 void Game_menuStack_Free(struct Game *sota);
 
 /* --- Deployment --- */
+void Game_DeploymentMenu_Free(struct Game *sota);
 void Game_DeploymentMenu_Create(struct Game *sota);
 void Game_DeploymentMenu_Update(struct Game *sota);
 void Game_DeploymentMenu_Enable(struct Game *sota);

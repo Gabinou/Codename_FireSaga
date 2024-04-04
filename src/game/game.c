@@ -89,6 +89,7 @@ struct Game Game_default = {
 
 void Game_Free(struct Game *sota) {
     Game_Map_Reinforcements_Free(sota);
+    Game_DeploymentMenu_Free(sota);
     Game_Cursor_Free(sota);
     Game_PopUp_Tile_Free(sota);
     Game_Mouse_Free(sota);
