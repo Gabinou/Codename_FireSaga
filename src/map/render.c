@@ -295,7 +295,7 @@ void Map_Danger_Perimeter_Draw(struct Map *map, struct Settings *settings, struc
     int thick = settings->map_settings.perim_thickness;
     i32 outside = 0;
 
-    SDL_Color red = palette_NES->colors[PALETTE_NES_RED_COLOR];
+    SDL_Color red = palette_NES->colors[map->perimiter_color];
     int success = SDL_SetRenderDrawColor(map->renderer, red.r, red.g, red.b, red.a);
     SDL_assert(success == 0);
 

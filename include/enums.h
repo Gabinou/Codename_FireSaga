@@ -203,7 +203,7 @@ enum SOTA_DIMENSIONS {
 
 #define PALETTE_DEFAULT palette_NES
 enum PALETTES {
-    PALETTE_NES_COLOR_NUM               = 56,
+    COLORKEY                            =  0,
     PALETTE_BLACK                       =  0,
     PALETTE_NULL                        =  0,
     PALETTE_START                       =  0,
@@ -228,13 +228,12 @@ enum PALETTES {
     PALETTE_NES_FILTER_PURPLE           = 12,
     PALETTE_NES_PURPLE                  = 12,
     PALETTE_NES_ENEMY                   = 13,
-    PALETTE_NUM                         = 14,
+    PALETTE_SOTA                        = 14,
+    PALETTE_NUM                         = 15,
     PALETTE_NES_COLOR_GROUPSIZE         =  4,
     /* Color RGB 000001 is transparent */
     PALETTE_COLORKEY                    =  0, /* indexed image, transparent color index*/
-    PALETTE_NES_RED_COLOR               =  32,
 };
-#define SOTA_COLORKEY 0x00, 0x00, 0x01
 
 enum FPS_DEFAULTS {
     FPS_DEFAULT_POSX            =  850,
@@ -246,16 +245,29 @@ enum FPS_DEFAULTS {
     FPS_DEFAULT_COLORG          =    0,
     FPS_DEFAULT_COLORB          =    0,
     FPS_DEFAULT_COLORA          =  255,
-    FPS_SCALE                   =    5,
+    FPS_SCALE                   =    5
+};
+
+#define SOTA_COLORKEY 0x00, 0x00, 0x01 /* RBG */
+enum SOTA_COLORS {
+    SOTA_COLORKEY_ID        =  0,
+    SOTA_MENU_BLUE          = 28,
+    SOTA_BLACK              =  1,
+    SOTA_RED                =  9,
+    SOTA_DARK_GRAY          =  4,
+    SOTA_WHITE              = 40,
+    PALETTE_SOTA_COLOR_NUM  = 41
 };
 
 enum NES_COLORS {
-    NES_COLORKEY        =  0,
-    NES_TRANSPARENT     =  0,
-    NES_MENU_BLUE       = 48,
-    NES_BLACK           =  1,
-    NES_DARK_GRAY       = 52,
-    NES_WHITE           = PALETTE_NES_COLOR_NUM - 1,
+    NES_COLORKEY            =  COLORKEY,
+    NES_TRANSPARENT         =  0,
+    NES_MENU_BLUE           = 48,
+    NES_BLACK               =  1,
+    NES_RED                 = 32,
+    NES_DARK_GRAY           = 52,
+    NES_WHITE               = 55,
+    PALETTE_NES_COLOR_NUM   = 56,
 };
 
 enum FRAME_PAUSE_MODE {

@@ -19,6 +19,8 @@ struct Map Map_default = {
     .speed                  = 50,
     .tilesize               = {0, 0},
 
+    .perimiter_color        = NES_RED,
+
     .items_num              = NULL,
     .shadow_frame_pause     = 3,
     .tilemap_frame_pause    = 6,
