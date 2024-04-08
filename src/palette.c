@@ -32,6 +32,21 @@ void Palettes_Load(void) {
     palette_NES_lightenmore            = SDL_AllocPalette(PALETTE_NES_COLOR_NUM);
     palette_NES_purple                 = SDL_AllocPalette(PALETTE_NES_COLOR_NUM);
 
+    // palette_SOTA                        = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
+    // palette_SOTA_enemy                  = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
+    // palette_SOTA_filter_green           = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
+    // palette_SOTA_filter_darkredwshadow  = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
+    // palette_SOTA_filter_darkred         = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
+    // palette_SOTA_filter_blue            = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
+    // palette_SOTA_filter_red             = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
+    // palette_SOTA_night                  = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
+    // palette_SOTA_shadow                 = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
+    // palette_SOTA_darken                 = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
+    // palette_SOTA_lighten                = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
+    // palette_SOTA_lightenmore            = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
+    // palette_SOTA_purple                 = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
+
+
     char *path;
     path = PATH_JOIN("assets", "palettes", "palette_NES.json");
     jsonio_Read_Palette(path, palette_NES);
@@ -60,6 +75,33 @@ void Palettes_Load(void) {
     path = PATH_JOIN("assets", "palettes", STRINGIZE(palette_NES_lightenmore)".json");
     jsonio_Read_Palette(path, palette_NES_lightenmore);
 
+    // path = PATH_JOIN("assets", "palettes", "palette_NES.json");
+    // jsonio_Read_Palette(path, palette_SOTA);
+    // path = PATH_JOIN("assets", "palettes", "palette_SOTA_map_unit_enemy.json");
+    // jsonio_Read_Palette(path, palette_SOTA_enemy);
+    // path = PATH_JOIN("assets", "palettes", STRINGIZE(palette_SOTA_filter_green)".json");
+    // jsonio_Read_Palette(path, palette_SOTA_filter_green);
+    // path = PATH_JOIN("assets", "palettes", STRINGIZE(palette_SOTA_filter_darkredwshadow)".json");
+    // jsonio_Read_Palette(path, palette_SOTA_filter_darkredwshadow);
+    // path = PATH_JOIN("assets", "palettes", STRINGIZE(palette_SOTA_filter_darkred)".json");
+    // jsonio_Read_Palette(path, palette_SOTA_filter_darkred);
+    // path = PATH_JOIN("assets", "palettes", STRINGIZE(palette_SOTA_filter_blue)".json");
+    // jsonio_Read_Palette(path, palette_SOTA_filter_blue);
+    // path = PATH_JOIN("assets", "palettes", STRINGIZE(palette_SOTA_filter_red)".json");
+    // jsonio_Read_Palette(path, palette_SOTA_filter_red);
+    // path = PATH_JOIN("assets", "palettes", STRINGIZE(palette_SOTA_filter_purple)".json");
+    // jsonio_Read_Palette(path, palette_SOTA_purple);
+    // path = PATH_JOIN("assets", "palettes", STRINGIZE(palette_SOTA_night)".json");
+    // jsonio_Read_Palette(path, palette_SOTA_night);
+    // path = PATH_JOIN("assets", "palettes", STRINGIZE(palette_SOTA_shadow)".json");
+    // jsonio_Read_Palette(path, palette_SOTA_shadow);
+    // path = PATH_JOIN("assets", "palettes", STRINGIZE(palette_SOTA_darken)".json");
+    // jsonio_Read_Palette(path, palette_SOTA_darken);
+    // path = PATH_JOIN("assets", "palettes", STRINGIZE(palette_SOTA_lighten)".json");
+    // jsonio_Read_Palette(path, palette_SOTA_lighten);
+    // path = PATH_JOIN("assets", "palettes", STRINGIZE(palette_SOTA_lightenmore)".json");
+    // jsonio_Read_Palette(path, palette_SOTA_lightenmore);
+
     Palettes_Free();
     sota_palettes = calloc(PALETTE_NUM, sizeof(*sota_palettes));
     sota_palettes[PALETTE_NULL]               = NULL;
@@ -76,6 +118,22 @@ void Palettes_Load(void) {
     sota_palettes[PALETTE_NES_LIGHTEN]        = palette_NES_lighten;
     sota_palettes[PALETTE_NES_LIGHTENMORE]    = palette_NES_lightenmore;
     sota_palettes[PALETTE_NES_PURPLE]         = palette_NES_purple;
+
+    // sota_palettes[PALETTE_SOTA]                = palette_SOTA;
+    // sota_palettes[PALETTE_SOTA_ENEMY]          = palette_SOTA_enemy;
+    // sota_palettes[PALETTE_SOTA_RED]            = palette_SOTA_filter_red;
+    // sota_palettes[PALETTE_SOTA_GREEN]          = palette_SOTA_filter_green;
+    // sota_palettes[PALETTE_SOTA_BLUE]           = palette_SOTA_filter_blue;
+    // sota_palettes[PALETTE_SOTA_DARKRED]        = palette_SOTA_filter_darkred;
+    // sota_palettes[PALETTE_SOTA_DARKREDwSHADOW] = palette_SOTA_filter_darkredwshadow;
+    // sota_palettes[PALETTE_SOTA_SHADOW]         = palette_SOTA_shadow;
+    // sota_palettes[PALETTE_SOTA_NIGHT]          = palette_SOTA_night;
+    // sota_palettes[PALETTE_SOTA_DARKEN]         = palette_SOTA_darken;
+    // sota_palettes[PALETTE_SOTA_LIGHTEN]        = palette_SOTA_lighten;
+    // sota_palettes[PALETTE_SOTA_LIGHTENMORE]    = palette_SOTA_lightenmore;
+    // sota_palettes[PALETTE_SOTA_PURPLE]         = palette_SOTA_purple;
+
+
     SDL_assert(palette_NES != NULL);
 
 }
@@ -101,6 +159,18 @@ u8 palette_table_NES_filter_blue[PALETTE_NES_COLOR_NUM];
 u8 palette_table_NES_darken[PALETTE_NES_COLOR_NUM];
 u8 palette_table_NES_lighten[PALETTE_NES_COLOR_NUM];
 u8 palette_table_NES_lightenmore[PALETTE_NES_COLOR_NUM];
+u8 palette_table_SOTA_shadow[PALETTE_NES_COLOR_NUM];
+u8 palette_table_SOTA_night[PALETTE_NES_COLOR_NUM];
+u8 palette_table_SOTA_filter_darkred[PALETTE_NES_COLOR_NUM];
+u8 palette_table_SOTA_filter_red[PALETTE_NES_COLOR_NUM];
+u8 palette_table_SOTA_filter_green[PALETTE_NES_COLOR_NUM];
+u8 palette_table_SOTA_filter_blue[PALETTE_NES_COLOR_NUM];
+u8 palette_table_SOTA_darken[PALETTE_NES_COLOR_NUM];
+u8 palette_table_SOTA_lighten[PALETTE_NES_COLOR_NUM];
+u8 palette_table_SOTA_filter_lightenmore[PALETTE_NES_COLOR_NUM];
+u8 palette_table_SOTA_filter_purple[PALETTE_NES_COLOR_NUM];
+
+
 
 void Palette_Tables_Load(void) {
     char *path;

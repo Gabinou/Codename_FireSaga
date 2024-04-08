@@ -49,6 +49,16 @@ extern u8 palette_table_NES_darken[PALETTE_NES_COLOR_NUM];
 extern u8 palette_table_NES_lighten[PALETTE_NES_COLOR_NUM];
 extern u8 palette_table_NES_filter_lightenmore[PALETTE_NES_COLOR_NUM];
 extern u8 palette_table_NES_filter_purple[PALETTE_NES_COLOR_NUM];
+extern u8 palette_table_SOTA_shadow[PALETTE_NES_COLOR_NUM];
+extern u8 palette_table_SOTA_night[PALETTE_NES_COLOR_NUM];
+extern u8 palette_table_SOTA_filter_darkred[PALETTE_NES_COLOR_NUM];
+extern u8 palette_table_SOTA_filter_red[PALETTE_NES_COLOR_NUM];
+extern u8 palette_table_SOTA_filter_green[PALETTE_NES_COLOR_NUM];
+extern u8 palette_table_SOTA_filter_blue[PALETTE_NES_COLOR_NUM];
+extern u8 palette_table_SOTA_darken[PALETTE_NES_COLOR_NUM];
+extern u8 palette_table_SOTA_lighten[PALETTE_NES_COLOR_NUM];
+extern u8 palette_table_SOTA_filter_lightenmore[PALETTE_NES_COLOR_NUM];
+extern u8 palette_table_SOTA_filter_purple[PALETTE_NES_COLOR_NUM];
 
 /* --- API --- */
 void Palettes_Load(void);

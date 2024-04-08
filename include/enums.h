@@ -229,7 +229,20 @@ enum PALETTES {
     PALETTE_NES_PURPLE                  = 12,
     PALETTE_NES_ENEMY                   = 13,
     PALETTE_SOTA                        = 14,
-    PALETTE_NUM                         = 15,
+
+    PALETTE_SOTA_FILTER_RED             = 15,
+    PALETTE_SOTA_FILTER_GREEN           = 16,
+    PALETTE_SOTA_FILTER_BLUE            = 17,
+    PALETTE_SOTA_FILTER_DARKRED         = 18,
+    PALETTE_SOTA_FILTER_SHADOW          = 19,
+    PALETTE_SOTA_FILTER_NIGHT           = 20,
+    PALETTE_SOTA_DARKEN                 = 21,
+    PALETTE_SOTA_LIGHTEN                = 22,
+    PALETTE_SOTA_LIGHTENMORE            = 23,
+    PALETTE_SOTA_FILTER_PURPLE          = 24,
+    PALETTE_SOTA_ENEMY                  = 25,
+
+    PALETTE_NUM                         = 26,
     PALETTE_NES_COLOR_GROUPSIZE         =  4,
     /* Color RGB 000001 is transparent */
     PALETTE_COLORKEY                    =  0, /* indexed image, transparent color index*/
