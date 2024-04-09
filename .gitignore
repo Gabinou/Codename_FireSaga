@@ -9,6 +9,8 @@
 !*.py
 !*.bat
 !*.sh
+!*.bash
+!*.sh
 !*.json
 !*.hex
 !*.lua
