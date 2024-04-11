@@ -113,10 +113,11 @@ void Palettes_Load(void) {
     sota_palettes[PALETTE_NES_LIGHTENMORE]    = palette_NES_lightenmore;
     sota_palettes[PALETTE_NES_PURPLE]         = palette_NES_purple;
 
-    sota_palettes[PALETTE_SOTA_FILTER_RED]    = palette_SOTA_filter_red;
-    sota_palettes[PALETTE_SOTA_FILTER_GREEN]  = palette_SOTA_filter_green;
-    sota_palettes[PALETTE_SOTA_FILTER_BLUE]   = palette_SOTA_filter_blue;
-    sota_palettes[PALETTE_SOTA_FILTER_PURPLE] = palette_SOTA_purple;
+    sota_palettes[PALETTE_SOTA]                 = palette_SOTA;
+    sota_palettes[PALETTE_SOTA_FILTER_RED]      = palette_SOTA_filter_red;
+    sota_palettes[PALETTE_SOTA_FILTER_GREEN]    = palette_SOTA_filter_green;
+    sota_palettes[PALETTE_SOTA_FILTER_BLUE]     = palette_SOTA_filter_blue;
+    sota_palettes[PALETTE_SOTA_FILTER_PURPLE]   = palette_SOTA_purple;
     sota_palettes[PALETTE_SOTA_FILTER_DARKREDwSHADOW] = palette_SOTA_filter_darkredwshadow;
 
     SDL_assert(palette_NES != NULL);

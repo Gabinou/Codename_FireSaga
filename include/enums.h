@@ -228,8 +228,8 @@ enum PALETTES {
     PALETTE_NES_FILTER_PURPLE           = 12,
     PALETTE_NES_PURPLE                  = 12,
     PALETTE_NES_ENEMY                   = 13,
-    PALETTE_SOTA                        = 14,
 
+    PALETTE_SOTA                        = 14,
     PALETTE_SOTA_FILTER_RED             = 15,
     PALETTE_SOTA_FILTER_GREEN           = 16,
     PALETTE_SOTA_FILTER_BLUE            = 17,
