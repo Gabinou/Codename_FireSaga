@@ -14,7 +14,7 @@ fi
 stripped=$(echo $1 | sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]//g")
 
 # Strip extension from filename
-noext=$(echo $stripped | cut -f 1 -d ".")
+noext=$(basename "$stripped" .aseprite)
 
 # Export tileset with aseprite
 echo "Exporting $stripped tileset to $noext.png"
