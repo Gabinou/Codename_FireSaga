@@ -1,6 +1,8 @@
 #!/usr/bin/bash
 
-# Example: ls *.aseprite -1 | xargs -n1 ./palette_switch.bash
+# Example: 
+# - ls *.aseprite -1 | xargs -n1 ./palette_switch.bash
+# - find -type f -name "*.aseprite" | xargs -n1 ./palette_switch.bash
 
 if [ -z "$1" ]
     then

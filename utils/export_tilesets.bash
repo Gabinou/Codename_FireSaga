@@ -1,6 +1,8 @@
 #!/usr/bin/bash
 
-# Example: ls *.aseprite -1 | xargs -n1 ./export_tilesets.bash
+# Example: 
+# - ls *.aseprite -1 | xargs -n1 ./export_tilesets.bash
+# - find -type f -name "*.aseprite" | xargs -n1 ./export_tilesets.bash
 
 if [ -z "$1" ]
     then
