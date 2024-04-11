@@ -237,7 +237,7 @@ void jsonio_Read_Palette(char *filename, struct SDL_Palette *palette) {
     }
 
     size_t colors_num = cJSON_GetArraySize(jrgbs);
-    if (colors_num != PALETTE_NES_COLOR_NUM) {
+    if (colors_num != palette->ncolors) {
         SDL_Log("Invalid number of colors in Palette");
         exit(ERROR_JSONParsingFailed);
     }

@@ -42,19 +42,18 @@ void Palettes_Load(void) {
     palette_NES_purple                 = SDL_AllocPalette(PALETTE_NES_COLOR_NUM);
 
     palette_SOTA                       = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
-    // palette_SOTA_enemy                 = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
     palette_SOTA_filter_green          = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
     palette_SOTA_filter_darkredwshadow = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
-    // palette_SOTA_filter_darkred        = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
     palette_SOTA_filter_blue           = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
     palette_SOTA_purple                = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
     palette_SOTA_filter_red            = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
+    // palette_SOTA_enemy                 = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
+    // palette_SOTA_filter_darkred        = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
     // palette_SOTA_night                 = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
     // palette_SOTA_shadow                = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
     // palette_SOTA_darken                = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
     // palette_SOTA_lighten               = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
     // palette_SOTA_lightenmore           = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
-
 
     char *path;
     path = PATH_JOIN("assets", "palettes", "palette_NES.json");
