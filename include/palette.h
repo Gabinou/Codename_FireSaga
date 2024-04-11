@@ -30,12 +30,13 @@ extern SDL_Palette  *palette_SOTA;
 extern SDL_Palette  *palette_SOTA_shadow;
 extern SDL_Palette  *palette_SOTA_enemy;
 extern SDL_Palette  *palette_SOTA_filter_darkred;
-extern SDL_Palette  *palette_SOTA_filter_red;
-extern SDL_Palette  *palette_SOTA_filter_blue;
-extern SDL_Palette  *palette_SOTA_filter_green;
+extern SDL_Palette  *palette_SOTA_filter_darkredwshadow;  /* Actually used */
+extern SDL_Palette  *palette_SOTA_filter_red; /* Actually used */
+extern SDL_Palette  *palette_SOTA_filter_blue; /* Actually used */
+extern SDL_Palette  *palette_SOTA_filter_green; /* Actually used */
 extern SDL_Palette  *palette_SOTA_lighten;
 extern SDL_Palette  *palette_SOTA_darken;
-extern SDL_Palette  *palette_SOTA_filter_purple;
+extern SDL_Palette  *palette_SOTA_filter_purple; /* Actually used */
 
 
 /* -- Palette tables (for index shaders) -- */
@@ -49,16 +50,17 @@ extern u8 palette_table_NES_darken[PALETTE_NES_COLOR_NUM];
 extern u8 palette_table_NES_lighten[PALETTE_NES_COLOR_NUM];
 extern u8 palette_table_NES_filter_lightenmore[PALETTE_NES_COLOR_NUM];
 extern u8 palette_table_NES_filter_purple[PALETTE_NES_COLOR_NUM];
-extern u8 palette_table_SOTA_shadow[PALETTE_NES_COLOR_NUM];
-extern u8 palette_table_SOTA_night[PALETTE_NES_COLOR_NUM];
-extern u8 palette_table_SOTA_filter_darkred[PALETTE_NES_COLOR_NUM];
-extern u8 palette_table_SOTA_filter_red[PALETTE_NES_COLOR_NUM];
-extern u8 palette_table_SOTA_filter_green[PALETTE_NES_COLOR_NUM];
-extern u8 palette_table_SOTA_filter_blue[PALETTE_NES_COLOR_NUM];
-extern u8 palette_table_SOTA_darken[PALETTE_NES_COLOR_NUM];
-extern u8 palette_table_SOTA_lighten[PALETTE_NES_COLOR_NUM];
-extern u8 palette_table_SOTA_filter_lightenmore[PALETTE_NES_COLOR_NUM];
-extern u8 palette_table_SOTA_filter_purple[PALETTE_NES_COLOR_NUM];
+// extern u8 palette_table_SOTA_shadow[PALETTE_SOTA_COLOR_NUM];
+// extern u8 palette_table_SOTA_night[PALETTE_SOTA_COLOR_NUM];
+// extern u8 palette_table_SOTA_filter_darkred[PALETTE_SOTA_COLOR_NUM];
+extern u8 palette_table_SOTA_filter_darkredwshadow[PALETTE_SOTA_COLOR_NUM];
+extern u8 palette_table_SOTA_filter_red[PALETTE_SOTA_COLOR_NUM];
+extern u8 palette_table_SOTA_filter_green[PALETTE_SOTA_COLOR_NUM];
+extern u8 palette_table_SOTA_filter_blue[PALETTE_SOTA_COLOR_NUM];
+extern u8 palette_table_SOTA_filter_purple[PALETTE_SOTA_COLOR_NUM];
+// extern u8 palette_table_SOTA_darken[PALETTE_SOTA_COLOR_NUM];
+// extern u8 palette_table_SOTA_lighten[PALETTE_SOTA_COLOR_NUM];
+// extern u8 palette_table_SOTA_filter_lightenmore[PALETTE_SOTA_COLOR_NUM];
 
 /* --- API --- */
 void Palettes_Load(void);
