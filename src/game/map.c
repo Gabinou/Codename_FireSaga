@@ -52,7 +52,7 @@ void Game_debugMap_Load(struct Game *sota) {
     if (sota->substate != GAME_SUBSTATE_MENU)
         Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
 
-    Game_Map_Load(sota, CHAPTER_TEST_V7);
+    Game_Map_Load(sota, CHAPTER_TEST_V8);
 
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Loading in test party\n");
 
