@@ -120,8 +120,17 @@ struct Map {
 
     /* --- PALETTES --- */
     SDL_Palette *palette_default;
-    u8 *palettemap;    // [row * col_len + col]
-    i32 *temp_palette;  // [row * col_len + col]
+    u8 *palettemap;     /* [row * col_len + col] */
+    i32 *temp_palette;  /* [row * col_len + col] */
+
+    /* -- Map palette indices -- */
+    u8 ipalette_base;
+    u8 ipalette_red;
+    u8 ipalette_blue;
+    u8 ipalette_green;
+    u8 ipalette_purple;
+    u8 ipalette_darkred;
+    u8 ipalette_shadow;
 
     /* --- AGONY --- */
     struct Agony_timer *agony_stack;

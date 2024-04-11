@@ -69,6 +69,15 @@ struct Map Map_default = {
     .tilemap                = NULL,
     .palettemap             = NULL,
 
+    .ipalette_base          = PALETTE_NULL,
+    .ipalette_red           = PALETTE_NULL,
+    .ipalette_blue          = PALETTE_NULL,
+    .ipalette_green         = PALETTE_NULL,
+    .ipalette_purple        = PALETTE_NULL,
+    .ipalette_darkred       = PALETTE_NULL,
+    .ipalette_shadow        = PALETTE_NULL,
+
+
     .boundsmin              = {  0,   0},
     .boundsmax              = {255, 255},
     .turn                   = 1, /* Automatic loss if turn 255. */

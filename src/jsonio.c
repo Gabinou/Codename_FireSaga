@@ -271,10 +271,11 @@ void jsonio_Read_PaletteTable(char *filename, u8 *table) {
     }
 
     size_t colors_num = cJSON_GetArraySize(jfrom_tos);
-    if (colors_num != PALETTE_NES_COLOR_NUM) {
-        SDL_Log("Invalid number of colors in Palette Table");
-        exit(ERROR_JSONParsingFailed);
-    }
+    // TODO: Check number of colors
+    // if (colors_num != PALETTE_NES_COLOR_NUM) {
+    //     SDL_Log("Invalid number of colors in Palette Table");
+    //     exit(ERROR_JSONParsingFailed);
+    // }
 
     for (int i = 0; i < colors_num; i++) {
         struct cJSON *jfrom_to =  cJSON_GetArrayItem(jfrom_tos, i);
@@ -282,7 +283,6 @@ void jsonio_Read_PaletteTable(char *filename, u8 *table) {
     }
     if (jfile != NULL)
         cJSON_Delete(jfile);
-
 }
 
 void jsonio_Read_MObj_Link(struct cJSON *j, struct Mobj_Link *b) {
