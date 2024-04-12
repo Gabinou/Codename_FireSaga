@@ -226,6 +226,11 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
         srcrect.x = (texture_ind % TILESET_COL_LEN) * map->tilesize[0];
         srcrect.y = (texture_ind / TILESET_COL_LEN) * map->tilesize[1];
 
+        // SDL_Log("texture_ind %d %d", texture_ind, TILESET_COL_LEN);
+        // SDL_Log("map->tilemap[i] %d", map->tilemap[i]);
+        // SDL_Log("srcrect.x srcrect.y %d %d", srcrect.x, srcrect.y);
+        // getchar();
+
         /* tile position in tilemap */
         dstrect.x = (i % map->col_len) * map->tilesize[0];
         dstrect.y = (i / map->col_len) * map->tilesize[1];
