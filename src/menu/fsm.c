@@ -767,10 +767,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
     SDL_assert(sota->map->world == sota->world);
     Game_Unit_Refresh(sota, unit_ent);
 
-    // SDL_Log("dm_order %d", dm_order);
-    // SDL_Log("unit_order %d", unit_order);
-    // SDL_Log("dm->_selected[unit_order] %d", dm->_selected[unit_order]);
-    // getchar();
     if (dm->_selected[unit_order] >= 0) {
         Map_Unit_Put(sota->map, pos.x, pos.y, unit_ent);
     } else {

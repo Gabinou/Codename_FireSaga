@@ -100,6 +100,7 @@ void Map_Tilesets_Load(struct Map *map) {
     Map_Tilesets_Free(map);
 
     /* -- Alloc tilesets -- */
+    // TODO: Alloc only used palettes
     map->tileset_surfaces = calloc(PALETTE_NUM, sizeof(*map->tileset_surfaces));
     map->tileset_textures = calloc(PALETTE_NUM, sizeof(*map->tileset_textures));
     for (size_t i = 0; i < PALETTE_NUM; i++) {
@@ -125,7 +126,6 @@ void Map_Tilesets_Load(struct Map *map) {
         tilesetname = s8cat(tilesetname, s8_literal(".png"));
         if (map->tileset_surfaces[map->ipalette_base][i] != NULL)
             SDL_FreeSurface(map->tileset_surfaces[map->ipalette_base][i]);
-
         SDL_Surface *surf = Filesystem_Surface_Load(tilesetname.data, SDL_PIXELFORMAT_INDEX8);
         SDL_assert(surf != NULL);
         SDL_assert(SDL_ISPIXELFORMAT_INDEXED(surf->format->format));

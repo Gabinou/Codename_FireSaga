@@ -201,7 +201,7 @@ enum SOTA_DIMENSIONS {
     DIMENSION_Z     = 2,
 };
 
-#define PALETTE_DEFAULT palette_NES
+#define PALETTE_DEFAULT palette_SOTA
 enum PALETTES {
     COLORKEY                            =  0,
     PALETTE_BLACK                       =  0,

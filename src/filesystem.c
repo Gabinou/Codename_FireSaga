@@ -159,6 +159,7 @@ bool Filesystem_fequal( char *filename1,  char *filename2) {
 }
 
 /* --- SURFACES AND TEXTURES --- */
+// TODO: Input palette to load indexed surface
 SDL_Surface *Filesystem_Surface_Load( char *filename,  u32 format) {
     SDL_Log("%s\n", filename);
     SDL_Surface *loadedsurface  = NULL, *outsurface   = NULL;
@@ -170,6 +171,7 @@ SDL_Surface *Filesystem_Surface_Load( char *filename,  u32 format) {
         SDL_LogError(SOTA_LOG_SYSTEM, "FILE '%s' does not exist", filename);
         exit(ERROR_CannotOpenFile);
     }
+    // TODO: debug switch for debug surfaces
     SDL_SaveBMP(loadedsurface, "loadedsurface.png");
 
     SDL_assert(loadedsurface != NULL);

@@ -10,6 +10,7 @@ void Game_Map_Load(struct Game *sota,  i16 in_map_index) {
     SDL_assert((in_map_index > CHAPTER_START) && (in_map_index < CHAPTER_END));
     SDL_LogDebug(SOTA_LOG_SYSTEM, "%ld \n", in_map_index);
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Associated map filename     %s \n", mapFilenames[in_map_index].data);
+
     /* --- PRELIMINARIES --- */
     Game_Map_Free(sota);
 
