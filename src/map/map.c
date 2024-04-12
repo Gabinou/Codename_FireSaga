@@ -878,12 +878,12 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     Map_swappedTextures_All(map);
     _Map_Tilemap_Shader_Init(map);
     map->tilemap_shader->frames = map->frames;
-    Tilemap_Shader_Load_Tilemap_JSON(map->tilemap_shader, jmap);
+        Tilemap_JSON(map->tilemap_shader, jmap);
     // SDL_assert(map->tilemap_shader->shadow_tilemaps);
     Map_Tilemap_Texture_Init(map);
     Map_Texture_Alloc(map);
 
-    /* --- Parsubl ..sing shadow tileset --- */
+    /* --- Parsing shadow tileset --- */
     if (map->tilemap_shader->shadow_tilemaps) {
         s8 path = s8_var(PATH_JOIN("assets", "tiles", "Tileset_Shadow.json"));
         struct cJSON *jshadow_tileset_file  = jsonio_parseJSON(path);

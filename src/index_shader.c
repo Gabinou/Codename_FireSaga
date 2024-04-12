@@ -67,10 +67,12 @@ u8 *pixels2list_noM(u8 *matrix, u8 *list, size_t row_len, size_t col_len) {
     for (size_t col = 0; col < col_len; col++) {
         for (size_t row = 0; row < row_len; row++) {
             if (matrix[row * col_len + col] > 0) {
+                printf("%d,", matrix[row * col_len + col]);
                 DARR_PUT(list, col);
                 DARR_PUT(list, row);
             }
         }
+        printf("\n");
     }
     return (list);
 }
@@ -178,8 +180,8 @@ static void _Tilemap_Shader_Shadow_Free( struct Tilemap_Shader *shd) {
 
 void Tilemap_Shader_Alloc(struct Tilemap_Shader *shd, size_t tilenum) {
     shd->shadowtile_num = tilenum;
-    shd->shadowtile_pixels_num = calloc(tilenum, sizeof(*shd->shadowtile_pixels_num));
-    shd->shadowtile_pixels_lists = calloc(tilenum, sizeof(*shd->shadowtile_pixels_lists));
+    shd->shadowtile_pixels_num      = calloc(tilenum, sizeof(*shd->shadowtile_pixels_num));
+    shd->shadowtile_pixels_lists    = calloc(tilenum, sizeof(*shd->shadowtile_pixels_lists));
 }
 
 void Tilemap_Shader_Load_Tileset_pixels(struct Tilemap_Shader *shd,  char *filename,
@@ -197,7 +199,8 @@ void Tilemap_Shader_Load_Tileset_pixels(struct Tilemap_Shader *shd,  char *filen
         x = (i % TILESET_COL_LEN) * tilesize[0];
         y = (i / TILESET_COL_LEN) * tilesize[1];
         offset = Util_SDL_Surface_Index(surf, x, y);
-
+        SDL_Log("Read shadow tilemaps from file surface");
+        // getchar();
         /* - read shaded pixels - */
         temp_arr = pixels2list(surf->pixels + offset, tilesize[1], tilesize[0]);
         /* - alloc shadowtile pixels - */
@@ -288,10 +291,12 @@ SDL_Surface *Tilemap_Shade_Surface(struct Tilemap_Shader *shd, SDL_Surface *surf
             st_index = shd->shadow_tilemaps[frame][index] - TILE_DIVISOR * TILE_SHADOW;
             u8 *list = shd->shadowtile_pixels_lists[st_index];
             size_t num = shd->shadowtile_pixels_num[st_index];
+            SDL_Log("st_index %d %d", st_index, shd->shadowtile_num);
             if ((st_index > 0) && (st_index < shd->shadowtile_num))
                 _Index_Shade_Pixels(shd->to, surf, list, num, col * tsize[1], row * tsize[0]);
         }
     }
+    getchar();
     SDL_UnlockSurface(surf);
     return (surf);
 }
@@ -356,7 +361,7 @@ SDL_Surface *Index_Shade_Surface(struct Index_Shader *shd, SDL_Surface *surf, SD
     int success = SDL_SetColorKey(out, SDL_TRUE, PALETTE_COLORKEY);
     SDL_assert(success == 0);
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(out->format->format));
-    success = SDL_SetSurfacePalette(out, palette_NES);
+    success = SDL_SetSurfacePalette(out, palette_SOTA);
     SDL_assert(success == 0);
 
     /* -- Shade surf -- */
