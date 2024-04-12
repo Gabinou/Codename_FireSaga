@@ -16,7 +16,7 @@ void Map_Palettemap_Reset(struct Map *map) {
     SDL_assert(map->col_len > 0);
     size_t bytesize = map->col_len * map->row_len * sizeof(*map->palettemap);
     SDL_assert(map->palettemap != NULL);
-    memset(map->palettemap, PALETTE_NES, bytesize);
+    memset(map->palettemap, map->ipalette_base, bytesize);
 }
 
 void Map_Palettemap_addMap(struct Map *map, i32 *palettemap, u8 palette) {
@@ -28,7 +28,7 @@ void Map_Palettemap_addMap(struct Map *map, i32 *palettemap, u8 palette) {
 
 void Map_Palettemap_addList(struct Map *map, i32 *list, u8 palette) {
     size_t bytesize = map->row_len * map->col_len * sizeof(*map->palettemap);
-    memset(map->palettemap, PALETTE_NES, bytesize);
+    memset(map->palettemap, map->ipalette_base, bytesize);
     for (size_t i = 0; i < DARR_NUM(list) / TWO_D; i++)
         map->palettemap[list[TWO_D * i] * map->col_len + list[TWO_D * i + 1]] = palette;
 }
@@ -51,7 +51,7 @@ void Map_Palettemap_Autoset(struct Map *map, u16 flagsum) {
     if (flagsum_isIn(MAP_OVERLAY_GLOBAL_DANGER, flagsum)) {
         SDL_assert(palette);
         palette = matrix_sgreater_noM(palette, map->global_dangermap, 0, size);
-        Map_Palettemap_addMap(map, palette, PALETTE_NES_FILTER_PURPLE);
+        Map_Palettemap_addMap(map, palette, map->ipalette_purple);
     }
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_DANGER, flagsum)) {
@@ -60,25 +60,25 @@ void Map_Palettemap_Autoset(struct Map *map, u16 flagsum) {
         i32 *temp_palette2 = matrix_ssmaller(map->dangermap, DANGERMAP_UNIT_DIVISOR, size);
         palette = matrix_and_noM(palette, temp_palette2, palette, size);
         SDL_free(temp_palette2);
-        Map_Palettemap_addMap(map, palette, PALETTE_NES_FILTER_DARKREDwSHADOW);
+        Map_Palettemap_addMap(map, palette, map->ipalette_darkred);
     }
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_ATTACK, flagsum)) {
         SDL_assert(palette);
         palette = matrix_sgreater_noM(palette, map->attacktomap, 0, size);
-        Map_Palettemap_addMap(map, palette, PALETTE_NES_FILTER_RED);
+        Map_Palettemap_addMap(map, palette, map->ipalette_red);
     }
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_HEAL, flagsum)) {
         SDL_assert(palette);
         palette = matrix_sgreater_noM(palette, map->healtomap, 0, size);
-        Map_Palettemap_addMap(map, palette, PALETTE_NES_FILTER_GREEN);
+        Map_Palettemap_addMap(map, palette, map->ipalette_green);
     }
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_MOVE, flagsum)) {
         SDL_assert(palette);
         palette = matrix_sgreater_noM(palette, map->movemap, 0, size);
-        Map_Palettemap_addMap(map, palette, PALETTE_NES_FILTER_BLUE);
+        Map_Palettemap_addMap(map, palette, map->ipalette_blue);
     }
     memset(palette, 0, bytesize);
 
@@ -142,7 +142,7 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
             continue;
 
         tile_order = Map_Tile_Order(map, TILE_ICONS);
-        texture = map->tileset_textures[PALETTE_NES][tile_order];
+        texture = map->tileset_textures[map->ipalette_base][tile_order];
         srcrect.y = 0;
         switch (map->stack_mode) {
             case MAP_SETTING_STACK_DANGERMAP:
@@ -251,7 +251,7 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
             continue;
 
         tile_order = Map_Tile_Order(map, TILE_ICONS);
-        surf = map->tileset_surfaces[PALETTE_NES][tile_order];
+        surf = map->tileset_surfaces[map->ipalette_base][tile_order];
         srcrect.y = 0;
         switch (map->stack_mode) {
             case MAP_SETTING_STACK_DANGERMAP:
@@ -295,7 +295,8 @@ void Map_Danger_Perimeter_Draw(struct Map *map, struct Settings *settings, struc
     int thick = settings->map_settings.perim_thickness;
     i32 outside = 0;
 
-    SDL_Color red = palette_NES->colors[map->perimiter_color];
+    SDL_Palette *palette_base = sota_palettes[map->ipalette_base];
+    SDL_Color red = palette_base->colors[map->perimiter_color];
     int success = SDL_SetRenderDrawColor(map->renderer, red.r, red.g, red.b, red.a);
     SDL_assert(success == 0);
 
