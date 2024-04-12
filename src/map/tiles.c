@@ -144,7 +144,7 @@ void Map_Tilemap_MapObjects(struct Map *map) {
 void Map_Tilemap_Chests(struct Map *map) {
     SDL_assert(map->chest_num > 0);
     for (size_t i = 0; i < map->chest_num; i++) {
-        struct Chest *chest     = TNECS_GET_COMPONENT(map->world, map->chests_ent[i], Chest);
+        struct Chest    *chest  = TNECS_GET_COMPONENT(map->world, map->chests_ent[i], Chest);
         struct Position *pos    = TNECS_GET_COMPONENT(map->world, map->chests_ent[i], Position);
         if (chest->tile == 0)
             continue;

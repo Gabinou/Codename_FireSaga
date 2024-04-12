@@ -25,8 +25,6 @@ void Game_Map_Load(struct Game *sota,  i16 in_map_index) {
     // Map_dArrays_Init(sota->map, &sota->settings);
     jsonio_readJSON(mapFilenames[in_map_index], sota->map);
     // read_json sets the row_len and col_len necessary for dArrays_Init
-    // Game_Tilesets_Dump(sota);
-
     sota->map->update = true;
 }
 
@@ -320,8 +318,8 @@ void Game_Tilesets_Dump(struct Game *sota) {
         dumpname = s8cat(dumpname, s8_var(temp_tile->name));
         dumpname = s8cat(dumpname, s8_literal(".png"));
         SDL_Log("%s", dumpname);
-        // SDL_Texture * temptexture = DTAB_GET(sota->map->textures, (sota->map->tilesindex[i]));
-        // Filesystem_Texture_Dump(dumpname, sota->renderer, temptexture, SDL_PIXELFORMAT_ARGB8888);
+        SDL_Texture *temptexture = DTAB_GET(sota->map->textures, (sota->map->tilesindex[i]));
+        Filesystem_Texture_Dump(dumpname, sota->renderer, temptexture, SDL_PIXELFORMAT_ARGB8888);
         // memset(&dumpname, 0, DEFAULT_BUFFER_SIZE);
         s8_free(&dumpname);
     }

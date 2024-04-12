@@ -135,7 +135,7 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
             Map_Tileset_newPalette(map, tile_order, palette_ind);
 
         /* Stitching map */
-        Filesystem_Texture_Dump("dump.png", map->renderer, texture, SDL_PIXELFORMAT_ARGB8888, NULL);
+        // Filesystem_Texture_Dump("dump.png", map->renderer, texture, SDL_PIXELFORMAT_ARGB8888, NULL);
         success = SDL_RenderCopy(map->renderer, texture, &srcrect, &dstrect);
         /* Stitch icon depending on stack mode */
         if (!success) {
@@ -225,11 +225,6 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
         /* tile position in tileset */
         srcrect.x = (texture_ind % TILESET_COL_LEN) * map->tilesize[0];
         srcrect.y = (texture_ind / TILESET_COL_LEN) * map->tilesize[1];
-
-        // SDL_Log("texture_ind %d %d", texture_ind, TILESET_COL_LEN);
-        // SDL_Log("map->tilemap[i] %d", map->tilemap[i]);
-        // SDL_Log("srcrect.x srcrect.y %d %d", srcrect.x, srcrect.y);
-        // getchar();
 
         /* tile position in tilemap */
         dstrect.x = (i % map->col_len) * map->tilesize[0];
