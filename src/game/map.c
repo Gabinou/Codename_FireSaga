@@ -281,7 +281,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(sprite != NULL);
         memcpy(sprite, &Sprite_default, sizeof(Sprite_default));
         Sprite_Map_Unit_Load(sprite, unit, sota->renderer);
-        Sprite_Palette_Swap(sprite, palette_NES_enemy, sota->renderer);
+        Sprite_Palette_Swap(sprite, sota_palettes[sota->map->ipalette_enemy], sota->renderer);
 
         sprite->visible = true;
         SDL_assert(sprite->spritesheet != NULL);

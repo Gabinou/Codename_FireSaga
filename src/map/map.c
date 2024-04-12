@@ -76,6 +76,7 @@ struct Map Map_default = {
     .ipalette_purple        = PALETTE_SOTA_FILTER_PURPLE,
     .ipalette_darkred       = PALETTE_SOTA_FILTER_DARKREDwSHADOW,
     .ipalette_shadow        = PALETTE_SOTA_SHADOW,
+    .ipalette_enemy         = PALETTE_SOTA,
 
 
     .boundsmin              = {  0,   0},
@@ -878,16 +879,20 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     _Map_Tilemap_Shader_Init(map);
     map->tilemap_shader->frames = map->frames;
     Tilemap_Shader_Load_Tilemap_JSON(map->tilemap_shader, jmap);
-    SDL_assert(map->tilemap_shader->shadow_tilemaps);
+    // SDL_assert(map->tilemap_shader->shadow_tilemaps);
     Map_Tilemap_Texture_Init(map);
     Map_Texture_Alloc(map);
 
-    /* --- Parsing shadow tileset --- */
-    s8 path = s8_var(PATH_JOIN("assets", "tiles", "Tileset_Shadow.json"));
-    struct cJSON *jshadow_tileset_file  = jsonio_parseJSON(path);
-    struct cJSON *jshadow_tileset       = cJSON_GetObjectItem(jshadow_tileset_file, "shadow_tileset");
-    Tilemap_Shader_Load_Tileset_JSON(map->tilemap_shader, jshadow_tileset);
-    cJSON_Delete(jshadow_tileset_file);
+    /* --- Parsubl ..sing shadow tileset --- */
+    if (map->tilemap_shader->shadow_tilemaps) {
+        s8 path = s8_var(PATH_JOIN("assets", "tiles", "Tileset_Shadow.json"));
+        struct cJSON *jshadow_tileset_file  = jsonio_parseJSON(path);
+        struct cJSON *jshadow_tileset       = cJSON_GetObjectItem(jshadow_tileset_file, "shadow_tileset");
+        SDL_assert(jshadow_tileset);
+        Tilemap_Shader_Load_Tileset_JSON(map->tilemap_shader, jshadow_tileset);
+        cJSON_Delete(jshadow_tileset_file);
+    }
+
 }
 
 /* --- Map events / Triggers --- */

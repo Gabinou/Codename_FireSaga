@@ -131,6 +131,7 @@ struct Map {
     u8 ipalette_purple;
     u8 ipalette_darkred;
     u8 ipalette_shadow;
+    u8 ipalette_enemy;
 
     /* --- AGONY --- */
     struct Agony_timer *agony_stack;

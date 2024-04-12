@@ -128,16 +128,20 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
 
         /* Get tile texture to stitch map into */
         SDL_Texture *texture = map->tileset_textures[palette_ind][tile_order];
+        SDL_assert(texture != NULL);
         SDL_assert(tile_ind > 0);
         tile_order = Map_Tile_Order(map, tile_ind);
         if (map->tileset_textures[palette_ind][tile_order] == NULL)
             Map_Tileset_newPalette(map, tile_order, palette_ind);
 
         /* Stitching map */
+        Filesystem_Texture_Dump("dump.png", map->renderer, texture, SDL_PIXELFORMAT_ARGB8888, NULL);
         success = SDL_RenderCopy(map->renderer, texture, &srcrect, &dstrect);
-
         /* Stitch icon depending on stack mode */
-        SDL_assert(success);
+        if (!success) {
+            SDL_Log("SDL_Error: %s", SDL_GetError());
+            SDL_assert(false);
+        }
         if ((!map->stack_mode) || (!map->show_icons))
             continue;
 
@@ -432,11 +436,13 @@ bool Map_Tilemap_newFrame(struct Map *map) {
 void Map_Update(struct Map *map,  struct Settings *settings,
                 struct Camera *camera, struct SDL_Texture *render_target) {
     SDL_assert(map->tilemap_texture);
-    if (map->tilemap_shader != NULL) {
+    if ((map->tilemap_shader != NULL)) {
         Map_Tilemap_Surface_Stitch(map);
         SDL_assert(map->tilemap_surface);
-        map->tilemap_surface = Tilemap_Shade_Surface(map->tilemap_shader,
-                                                     map->tilemap_surface, 0, settings, camera);
+        if (map->tilemap_shader->shadow_tilemaps != NULL) {
+            map->tilemap_surface = Tilemap_Shade_Surface(map->tilemap_shader,
+                                                         map->tilemap_surface, 0, settings, camera);
+        }
         SDL_assert(map->tilemap_surface);
         SDL_DestroyTexture(map->tilemap_texture);
         map->tilemap_texture = SDL_CreateTextureFromSurface(map->renderer, map->tilemap_surface);
@@ -444,6 +450,7 @@ void Map_Update(struct Map *map,  struct Settings *settings,
         SDL_assert(map->tilemap_texture);
         SDL_DestroyTexture(map->tilemap_texture);
         map->tilemap_texture = NULL;
+        // BROKEN
         Map_Tilemap_Texture_Stitch(map, render_target);
     }
     map->camera_moved = false;

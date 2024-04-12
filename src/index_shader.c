@@ -105,7 +105,9 @@ void Tilemap_Shader_Load_Tilemap_JSON(struct Tilemap_Shader *shd,  cJSON *jmap) 
 
     /* - Frames from shadow tilemap - */
     cJSON *jtilemap_shadow = cJSON_GetObjectItem(jmap, "tilemap_shadow");
-    SDL_assert(jtilemap_shadow);
+    if (!jtilemap_shadow)
+        return;
+
     cJSON *jframes = cJSON_GetObjectItem(jtilemap_shadow, "frames");
     SDL_assert(jframes);
     SDL_assert(cJSON_IsArray(jframes));
