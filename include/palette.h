@@ -27,7 +27,7 @@ extern SDL_Palette  *palette_NES_lighten;
 extern SDL_Palette  *palette_NES_lightenmore;
 extern SDL_Palette  *palette_NES_purple; /* Actually used */
 extern SDL_Palette  *palette_SOTA;
-extern SDL_Palette  *palette_SOTA_shadow;
+extern SDL_Palette  *palette_SOTA_shadow; /* Actually used */
 extern SDL_Palette  *palette_SOTA_enemy; /* Actually used */
 extern SDL_Palette  *palette_SOTA_filter_darkred;
 extern SDL_Palette  *palette_SOTA_filter_darkredwshadow; /* Actually used */

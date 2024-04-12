@@ -24,6 +24,7 @@ SDL_Palette *palette_SOTA_filter_red           = NULL;
 SDL_Palette *palette_SOTA_filter_green         = NULL;
 SDL_Palette *palette_SOTA_filter_blue          = NULL;
 SDL_Palette *palette_SOTA_filter_darkredwshadow = NULL;
+SDL_Palette *palette_SOTA_shadow               = NULL;
 
 
 void Palettes_Load(void) {
@@ -47,6 +48,7 @@ void Palettes_Load(void) {
     palette_SOTA_filter_blue           = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
     palette_SOTA_purple                = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
     palette_SOTA_filter_red            = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
+    palette_SOTA_shadow                = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
     // palette_SOTA_enemy                 = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
     // palette_SOTA_filter_darkred        = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
     // palette_SOTA_night                 = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
@@ -95,6 +97,8 @@ void Palettes_Load(void) {
     jsonio_Read_Palette(path, palette_SOTA_purple);
     path = PATH_JOIN("assets", "palettes", "palette_sota_filter_darkredwshadow.json");
     jsonio_Read_Palette(path, palette_SOTA_filter_darkredwshadow);
+    path = PATH_JOIN("assets", "palettes", "palette_sota_shadow.json");
+    jsonio_Read_Palette(path, palette_SOTA_shadow);
 
     Palettes_Free();
     sota_palettes = calloc(PALETTE_NUM, sizeof(*sota_palettes));
@@ -119,6 +123,7 @@ void Palettes_Load(void) {
     sota_palettes[PALETTE_SOTA_FILTER_BLUE]     = palette_SOTA_filter_blue;
     sota_palettes[PALETTE_SOTA_FILTER_PURPLE]   = palette_SOTA_purple;
     sota_palettes[PALETTE_SOTA_FILTER_DARKREDwSHADOW] = palette_SOTA_filter_darkredwshadow;
+    sota_palettes[PALETTE_SOTA_SHADOW]          = palette_SOTA_shadow;
 
     SDL_assert(palette_NES != NULL);
 }

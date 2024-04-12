@@ -69,13 +69,13 @@ struct Map Map_default = {
     .tilemap                = NULL,
     .palettemap             = NULL,
 
-    .ipalette_base          = PALETTE_NULL,
-    .ipalette_red           = PALETTE_NULL,
-    .ipalette_blue          = PALETTE_NULL,
-    .ipalette_green         = PALETTE_NULL,
-    .ipalette_purple        = PALETTE_NULL,
-    .ipalette_darkred       = PALETTE_NULL,
-    .ipalette_shadow        = PALETTE_NULL,
+    .ipalette_base          = PALETTE_SOTA,
+    .ipalette_red           = PALETTE_SOTA_FILTER_RED,
+    .ipalette_blue          = PALETTE_SOTA_FILTER_BLUE,
+    .ipalette_green         = PALETTE_SOTA_FILTER_GREEN,
+    .ipalette_purple        = PALETTE_SOTA_FILTER_PURPLE,
+    .ipalette_darkred       = PALETTE_SOTA_FILTER_DARKREDwSHADOW,
+    .ipalette_shadow        = PALETTE_SOTA_SHADOW,
 
 
     .boundsmin              = {  0,   0},

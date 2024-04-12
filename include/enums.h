@@ -234,8 +234,10 @@ enum PALETTES {
     PALETTE_SOTA_FILTER_GREEN           = 16,
     PALETTE_SOTA_FILTER_BLUE            = 17,
     PALETTE_SOTA_FILTER_PURPLE          = 18,
-    PALETTE_SOTA_FILTER_DARKREDwSHADOW   = 19,
-    PALETTE_NUM                         = 20,
+    PALETTE_SOTA_FILTER_DARKREDwSHADOW  = 19,
+    PALETTE_SOTA_SHADOW                 = 20,
+    PALETTE_NUM                         = 21,
+
     // PALETTE_SOTA_FILTER_DARKRED         = 18,
     // PALETTE_SOTA_FILTER_SHADOW          = 19,
     // PALETTE_SOTA_FILTER_NIGHT           = 20,
