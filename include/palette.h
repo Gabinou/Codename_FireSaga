@@ -59,8 +59,8 @@ extern u8 palette_table_SOTA_filter_red[PALETTE_SOTA_COLOR_NUM];
 extern u8 palette_table_SOTA_filter_green[PALETTE_SOTA_COLOR_NUM];
 extern u8 palette_table_SOTA_filter_blue[PALETTE_SOTA_COLOR_NUM];
 extern u8 palette_table_SOTA_filter_purple[PALETTE_SOTA_COLOR_NUM];
-// extern u8 palette_table_SOTA_darken[PALETTE_SOTA_COLOR_NUM];
-// extern u8 palette_table_SOTA_lighten[PALETTE_SOTA_COLOR_NUM];
+extern u8 palette_table_SOTA_darken[PALETTE_SOTA_COLOR_NUM];
+extern u8 palette_table_SOTA_lighten[PALETTE_SOTA_COLOR_NUM];
 // extern u8 palette_table_SOTA_filter_lightenmore[PALETTE_SOTA_COLOR_NUM];
 
 /* --- API --- */
