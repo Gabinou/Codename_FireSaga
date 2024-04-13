@@ -98,6 +98,10 @@ struct DeploymentMenu DeploymentMenu_default = {
     .texture_dude       = NULL,
     .texture_mount      = NULL,
     .surface_mount      = NULL,
+
+    .black              = SOTA_BLACK,
+    .white              = SOTA_WHITE,
+    .dark_gray          = SOTA_DARK_GRAY,
 };
 
 /* --- STATIC FUNCTIONS --- */
@@ -107,7 +111,6 @@ static struct Point _Unit_Frame(i32 x_menu, i32 y_menu) {
     struct Point out;
     out.x = x_menu + DM_UNIT_FRAME_X;
     out.y = y_menu + DM_UNIT_FRAME_Y;
-
     return (out);
 }
 
@@ -156,9 +159,9 @@ i32 _DeploymentMenu_Unselected(struct DeploymentMenu *dm) {
 void _DeploymentMenu_Swap_Unit(struct DeploymentMenu *dm, SDL_Renderer *renderer,
                                i16 unit) {
     if (dm->_selected[unit] >= 0) {
-        _DeploymentMenu_Swap(dm, renderer, NES_WHITE, NES_BLACK);
+        _DeploymentMenu_Swap(dm, renderer, dm->white, dm->black);
     } else {
-        _DeploymentMenu_Swap(dm, renderer, NES_DARK_GRAY, NES_BLACK);
+        _DeploymentMenu_Swap(dm, renderer, dm->dark_gray, dm->black);
     }
 }
 
@@ -168,16 +171,16 @@ void _DeploymentMenu_Swap(struct DeploymentMenu *dm, SDL_Renderer *renderer,
     PixelFont_Swap_Palette(dm->pixelnours_16,   renderer, white, black);
     PixelFont_Swap_Palette(dm->pixelnours_big,  renderer, white, black);
     PixelFont_Swap_Palette(dm->font_wpns,       renderer, white, black);
-    if (white == NES_DARK_GRAY) {
+    if (white == dm->dark_gray) {
         Palette_Colors_Swap(renderer,
                             &dm->surface_mount, &dm->texture_mount,
-                            NES_WHITE,          NES_BLACK,
-                            NES_DARK_GRAY,      NES_BLACK);
-    } else if (white == NES_WHITE) {
+                            dm->white,          dm->black,
+                            dm->dark_gray,      dm->black);
+    } else if (white == dm->white) {
         Palette_Colors_Swap(renderer,
                             &dm->surface_mount, &dm->texture_mount,
-                            NES_DARK_GRAY,      NES_BLACK,
-                            NES_WHITE,          NES_BLACK);
+                            dm->dark_gray,      dm->black,
+                            dm->white,          dm->black);
     }
 }
 
@@ -352,7 +355,7 @@ static void _DeploymentMenu_Draw_Names(struct DeploymentMenu *dm,
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, idname.data,
                                  idname.num, x, y);
     }
-    _DeploymentMenu_Swap(dm, renderer, NES_WHITE, NES_BLACK);
+    _DeploymentMenu_Swap(dm, renderer, dm->white, dm->black);
 }
 
 /* -- Page 1 -- */
@@ -411,7 +414,7 @@ static void _DeploymentMenu_Draw_Stats_P1(struct DeploymentMenu *dm,
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, class.data,
                                  class.num, x, y);
     }
-    _DeploymentMenu_Swap(dm, renderer, NES_WHITE, NES_BLACK);
+    _DeploymentMenu_Swap(dm, renderer, dm->white, dm->black);
 }
 
 /* -- Page 2 -- */
@@ -469,7 +472,7 @@ static void _DeploymentMenu_Draw_Stats_P2(struct DeploymentMenu *dm,
         stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->current_stats.con);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
     }
-    _DeploymentMenu_Swap(dm, renderer, NES_WHITE, NES_BLACK);
+    _DeploymentMenu_Swap(dm, renderer, dm->white, dm->black);
 }
 
 /* -- Page 3 -- */
@@ -527,7 +530,7 @@ static void _DeploymentMenu_Draw_Stats_P3(struct DeploymentMenu *dm,
         stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->current_stats.prof);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
     }
-    _DeploymentMenu_Swap(dm, renderer, NES_WHITE, NES_BLACK);
+    _DeploymentMenu_Swap(dm, renderer, dm->white, dm->black);
 }
 
 /* -- Page 4 -- */
@@ -567,7 +570,7 @@ static void _DeploymentMenu_Draw_Stats_P4(struct DeploymentMenu *dm,
         stbsp_snprintf(array, 4, "%d\0\0\0\0", unit->regrets);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 3, x, y);
     }
-    _DeploymentMenu_Swap(dm, renderer, NES_WHITE, NES_BLACK);
+    _DeploymentMenu_Swap(dm, renderer, dm->white, dm->black);
 }
 
 static void _DeploymentMenu_Draw_Icons(struct DeploymentMenu *dm,
@@ -634,7 +637,7 @@ static void _DeploymentMenu_Draw_Mount(struct DeploymentMenu *dm,
         dstrect.y = (y + mount_offset_y);
         SDL_RenderCopy(renderer, dm->texture_mount, &srcrect, &dstrect);
     }
-    _DeploymentMenu_Swap(dm, renderer, NES_WHITE, NES_BLACK);
+    _DeploymentMenu_Swap(dm, renderer, dm->white, dm->black);
 }
 
 static void _DeploymentMenu_Draw_Scroll_Bar(struct DeploymentMenu *dm,

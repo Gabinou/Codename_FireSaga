@@ -220,6 +220,10 @@ struct DeploymentMenu {
     SDL_Texture *texture_dude;
     SDL_Texture *texture_mount;
     SDL_Surface *surface_mount;
+
+    u8 black;
+    u8 white;
+    u8 dark_gray;
 };
 extern struct DeploymentMenu DeploymentMenu_default;
 
