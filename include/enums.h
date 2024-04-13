@@ -270,14 +270,14 @@ enum SOTA_COLORS {
     SOTA_MENU_BLUE          = 28,
     SOTA_BLACK              =  1,
     SOTA_RED                =  9,
-    SOTA_DARK_GRAY          =  4,
+    SOTA_DARK_GRAY          =  3,
     SOTA_WHITE              = 40,
     PALETTE_SOTA_COLOR_NUM  = 41
 };
 
 enum NES_COLORS {
     NES_COLORKEY            =  COLORKEY,
-    NES_TRANSPARENT         =  0,
+    NES_TRANSPARENT         =  COLORKEY,
     NES_MENU_BLUE           = 48,
     NES_BLACK               =  1,
     NES_RED                 = 32,

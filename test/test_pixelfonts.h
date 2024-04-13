@@ -179,6 +179,7 @@ void test_pixelfonts_render() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Bubble with blue 9patch -- */
+    TextBubble_Colors_Swap(&bubble, renderer, &n9patch);
     char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
     SDL_DestroyTexture(n9patch.texture);
     n9patch.texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
@@ -223,6 +224,9 @@ void test_pixelfonts_render() {
     bubble.padding.top  = TEXT_BUBBLE_PADDING_TOP + 2;
 
     /* - setting - */
+    TextBubble_Colors_Set(&bubble, SOTA_MENU_BLUE, SOTA_WHITE);
+    TextBubble_Colors_Swap(&bubble, renderer, &n9patch);
+
     bubble.target.x = -100;
     bubble.target.y = -100;
     TextBubble_Set_All(&bubble, "a quick brown fox jumps over the lazy dog. ?!", bubble.target,
