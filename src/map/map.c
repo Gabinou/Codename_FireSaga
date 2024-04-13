@@ -147,7 +147,7 @@ static void _Map_Tilemap_Shader_Init(struct Map *map) {
     map->tilemap_shader         = SDL_malloc(sizeof(struct Tilemap_Shader));
     *map->tilemap_shader        = Tilemap_Shader_default;
     map->tilemap_shader->map    = map;
-    map->tilemap_shader->to     = palette_table_NES_shadow;
+    map->tilemap_shader->to     = palette_table_SOTA_shadow;
 }
 
 static void _Map_Tilesindex_Free(struct Map *map) {
