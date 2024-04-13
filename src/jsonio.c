@@ -277,11 +277,9 @@ void jsonio_Read_PaletteTable(char *filename, u8 *table) {
     //     exit(ERROR_JSONParsingFailed);
     // }
 
-    SDL_Log("colors_num %d", colors_num);
     for (int i = 0; i < colors_num; i++) {
         struct cJSON *jfrom_to =  cJSON_GetArrayItem(jfrom_tos, i);
         table[i] = cJSON_GetNumberValue(jfrom_to);
-        SDL_Log("table[i] %d %d", i, table[i]);
     }
     if (jfile != NULL)
         cJSON_Delete(jfile);
