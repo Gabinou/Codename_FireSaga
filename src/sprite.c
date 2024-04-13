@@ -243,14 +243,14 @@ void Sprite_defaultShaders_Load(struct Sprite *sprite) {
     *sprite->shader_darken = Index_Shader_default;
     Index_Shader_Load(sprite->shader_darken, sprite->spritesheet->surface, &sprite->srcrect_shadow);
     SDL_assert(sprite->shader_darken != NULL);
-    sprite->shader_darken->to = palette_table_NES_darken;
+    sprite->shader_darken->to = palette_table_SOTA_darken;
 
     /* -- Lighten shader -- */
     sprite->shader_lighten  = SDL_malloc(sizeof(struct Index_Shader));
     *sprite->shader_lighten = Index_Shader_default;
     Index_Shader_Load(sprite->shader_lighten, sprite->spritesheet->surface, &sprite->srcrect_shadow);
     SDL_assert(sprite->shader_lighten != NULL);
-    sprite->shader_lighten->to = palette_table_NES_lighten;
+    sprite->shader_lighten->to = palette_table_SOTA_lighten;
 }
 
 void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit,

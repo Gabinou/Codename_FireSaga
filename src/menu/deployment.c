@@ -996,7 +996,6 @@ i32 DeploymentMenu_Select(struct DeploymentMenu *dm, i8 elem) {
             return (DM_UNSELECTED);
         /* Set previously unselected unit to selected */
         i32 unselected = _DeploymentMenu_Unselected(dm);
-        SDL_Log("unselected %d", unselected);
         SDL_assert(unselected < dm->select_max);
         SDL_assert(unselected >= 0);
         dm->_selected[unit_order]       = unselected;
