@@ -78,6 +78,8 @@ struct PixelFont TextureFont_default =  {
     .istexturefont      = false,
     .scroll_speed       = SCROLL_TIME_FAST,
     .scroll_len         = 0,
+    .black              = SOTA_BLACK,
+    .white              = SOTA_WHITE,
 };
 
 /*--- Constructors/Destructors --- */
@@ -148,7 +150,7 @@ struct PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len) {
 /*--- Internals --- */
 void PixelFont_Swap_Palette(struct PixelFont *font, SDL_Renderer *renderer, i8 NEWw, i8 NEWb) {
     // TODO: generalize
-    i8 Oldb = SOTA_BLACK, Oldw = SOTA_WHITE;
+    i8 Oldb = font->black, Oldw = font->white;
     Palette_Colors_Swap(renderer, &font->surface, &font->texture,
                         Oldw, Oldb, NEWw, NEWb);
 }
