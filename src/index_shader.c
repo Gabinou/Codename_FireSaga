@@ -199,8 +199,6 @@ void Tilemap_Shader_Load_Tileset_pixels(struct Tilemap_Shader *shd,  char *filen
         x = (i % TILESET_COL_LEN) * tilesize[0];
         y = (i / TILESET_COL_LEN) * tilesize[1];
         offset = Util_SDL_Surface_Index(surf, x, y);
-        SDL_Log("Read shadow tilemaps from file surface");
-        // getchar();
         /* - read shaded pixels - */
         temp_arr = pixels2list(surf->pixels + offset, tilesize[1], tilesize[0]);
         /* - alloc shadowtile pixels - */
@@ -291,12 +289,10 @@ SDL_Surface *Tilemap_Shade_Surface(struct Tilemap_Shader *shd, SDL_Surface *surf
             st_index = shd->shadow_tilemaps[frame][index] - TILE_DIVISOR * TILE_SHADOW;
             u8 *list = shd->shadowtile_pixels_lists[st_index];
             size_t num = shd->shadowtile_pixels_num[st_index];
-            SDL_Log("st_index %d %d", st_index, shd->shadowtile_num);
             if ((st_index > 0) && (st_index < shd->shadowtile_num))
                 _Index_Shade_Pixels(shd->to, surf, list, num, col * tsize[1], row * tsize[0]);
         }
     }
-    getchar();
     SDL_UnlockSurface(surf);
     return (surf);
 }

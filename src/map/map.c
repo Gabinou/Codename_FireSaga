@@ -878,7 +878,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     Map_swappedTextures_All(map);
     _Map_Tilemap_Shader_Init(map);
     map->tilemap_shader->frames = map->frames;
-        Tilemap_JSON(map->tilemap_shader, jmap);
+    Tilemap_Shader_Load_Tilemap_JSON(map->tilemap_shader, jmap);
     // SDL_assert(map->tilemap_shader->shadow_tilemaps);
     Map_Tilemap_Texture_Init(map);
     Map_Texture_Alloc(map);
