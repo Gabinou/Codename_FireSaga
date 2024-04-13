@@ -111,6 +111,8 @@ typedef struct PopUp_Map_Combat {
     u8 dft_current_hp;
 
     int current_attack;
+
+    SDL_Palette *palette;
 } PopUp_Map_Combat;
 extern struct PopUp_Map_Combat PopUp_Map_Combat_default;
 

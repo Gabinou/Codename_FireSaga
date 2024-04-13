@@ -184,9 +184,9 @@ void Palette_Colors_Swap(SDL_Renderer *renderer,
                          i8 Oldw, i8 Oldb, i8 NEWw, i8 NEWb) {
     // SDL_assert(SDL_ISPIXELFORMAT_INDEXED(*surface));
     SDL_Surface *surfptr = *surface;
-    // SDL_ISPIXELFORMAT_INDEXED(surfptr->format->format);
+    SDL_ISPIXELFORMAT_INDEXED(surfptr->format->format);
 
-    SDL_Palette *palette = surfptr->format->palette;
+    SDL_Palette *palette = palette_SOTA;
     SDL_assert(Oldw < palette->ncolors);
     SDL_assert(Oldb < palette->ncolors);
     SDL_assert(NEWw < palette->ncolors);
@@ -217,9 +217,9 @@ void Palette_Colors_Swap(SDL_Renderer *renderer,
     }
 
     /* Swap palette of font surface, texture */
-    // SDL_Surface *buffer = Filesystem_Surface_Palette_Swap(*surface, palette);
-    // SDL_FreeSurface(*surface);
-    // *surface = buffer;
+    SDL_Surface *buffer = Filesystem_Surface_Palette_Swap(*surface, palette_SOTA);
+    SDL_FreeSurface(*surface);
+    *surface = buffer;
     if (*texture != NULL)
         SDL_DestroyTexture(*texture);
 

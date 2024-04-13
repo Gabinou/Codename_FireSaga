@@ -103,8 +103,8 @@ void test_menu_deployment() {
     sota_mkdir("menu_deployment");
 
     party_struct = Party_default;
-    weapons_dtab   = DTAB_INIT(weapons_dtab,   struct Weapon);
-    items_dtab     = DTAB_INIT(items_dtab,     struct Item);
+    weapons_dtab            = DTAB_INIT(weapons_dtab,   struct Weapon);
+    items_dtab              = DTAB_INIT(items_dtab,     struct Item);
     party_struct.ids        = DARR_INIT(party_struct.ids, i16, 8);
     party_struct.filenames  = DARR_INIT(party_struct.filenames, s8, 8);
 

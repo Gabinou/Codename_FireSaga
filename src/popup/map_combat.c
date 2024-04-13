@@ -82,14 +82,15 @@ void PopUp_Map_Combat_Load(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer,
     pmc->texture_n9patch_blue = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
 
     /* - bar colors - */
-    pmc->topoff_aggressor.BG_dark   = palette_NES->colors[TOPOFF_BAR_BG_DARK];
-    pmc->topoff_aggressor.BG_light  = palette_NES->colors[TOPOFF_BAR_BG_LIGHT];
-    pmc->topoff_aggressor.FG_dark   = palette_NES->colors[TOPOFF_BAR_FG_DARK];
-    pmc->topoff_aggressor.FG_light  = palette_NES->colors[TOPOFF_BAR_FG_LIGHT];
-    pmc->topoff_defendant.BG_dark   = palette_NES->colors[TOPOFF_BAR_BG_DARK];
-    pmc->topoff_defendant.BG_light  = palette_NES->colors[TOPOFF_BAR_BG_LIGHT];
-    pmc->topoff_defendant.FG_dark   = palette_NES->colors[TOPOFF_BAR_FG_DARK];
-    pmc->topoff_defendant.FG_light  = palette_NES->colors[TOPOFF_BAR_FG_LIGHT];
+    pmc->palette = palette_SOTA;
+    pmc->topoff_aggressor.BG_dark   = pmc->palette->colors[TOPOFF_BAR_BG_DARK];
+    pmc->topoff_aggressor.BG_light  = pmc->palette->colors[TOPOFF_BAR_BG_LIGHT];
+    pmc->topoff_aggressor.FG_dark   = pmc->palette->colors[TOPOFF_BAR_FG_DARK];
+    pmc->topoff_aggressor.FG_light  = pmc->palette->colors[TOPOFF_BAR_FG_LIGHT];
+    pmc->topoff_defendant.BG_dark   = pmc->palette->colors[TOPOFF_BAR_BG_DARK];
+    pmc->topoff_defendant.BG_light  = pmc->palette->colors[TOPOFF_BAR_BG_LIGHT];
+    pmc->topoff_defendant.FG_dark   = pmc->palette->colors[TOPOFF_BAR_FG_DARK];
+    pmc->topoff_defendant.FG_light  = pmc->palette->colors[TOPOFF_BAR_FG_LIGHT];
 
     /* - bar ants - */
     pmc->topoff_aggressor.len   = POPUP_MAP_COMBAT_BLUE_TOPOFF_BAR_LEN;
