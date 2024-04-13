@@ -161,7 +161,10 @@ struct LoadoutSelectMenu {
 
     int archetype_stronghand;
     int archetype_weakhand;
+    u8 black;
+    u8 white;
 };
+
 extern struct LoadoutSelectMenu LoadoutSelectMenu_default;
 
 /* --- Constructors/Destructors --- */

@@ -224,7 +224,6 @@ SDL_Surface *Filesystem_Surface_Load( char *filename,  u32 format) {
 SDL_Surface *Filesystem_Surface_Palette_Swap(SDL_Surface *surface, SDL_Palette *palette) {
     /* allocates memory for new surface with switched palette */
     /* Caller deals with memory */
-
     SDL_assert(surface);
     SDL_assert(surface->w > 0);
     SDL_assert(surface->h > 0);

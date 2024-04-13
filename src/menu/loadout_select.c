@@ -50,6 +50,8 @@ struct LoadoutSelectMenu LoadoutSelectMenu_default = {
     .pixelnours_big         = NULL,
     .header                 = {0},
     .item_name              = {0},
+    .black                  = SOTA_BLACK,
+    .white                  = SOTA_WHITE,
 };
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
@@ -666,8 +668,9 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
             PixelFont_Swap_Palette(lsm->pixelnours_big, renderer, -1, 2);
         } else {
             /* Reset black and white */
-            PixelFont_Swap_Palette(lsm->pixelnours,     renderer, NES_WHITE, NES_BLACK);
-            PixelFont_Swap_Palette(lsm->pixelnours_big, renderer, NES_WHITE, NES_BLACK);
+            // TODO: generalize colors
+            PixelFont_Swap_Palette(lsm->pixelnours,     renderer, lsm->white, lsm->black);
+            PixelFont_Swap_Palette(lsm->pixelnours_big, renderer, lsm->white, lsm->black);
         }
 
         /* - Write '-' if no weapon - */

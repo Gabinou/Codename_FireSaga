@@ -4,7 +4,7 @@
 
 void test_pixelfonts_internals() {
 
-    SDL_assert(palette_NES != NULL);
+    SDL_assert(palette_SOTA != NULL);
 
     /* -- Create renderer -- */
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
@@ -125,7 +125,7 @@ void test_pixelfonts_render() {
     bubble.pixelfont->y_offset = pixelfont_y_offset;
     TextBubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));
-    PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
+    PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
 
     /* - setting - */
     bubble.target.x = -100;
@@ -154,7 +154,7 @@ void test_pixelfonts_render() {
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_Big.png"));
     bubble.pixelfont->y_offset     = pixelfont_big_y_offset;
-    PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
+    PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
     bubble.line_len_px  = 96;
     bubble.row_height   = ASCII_GLYPH_HEIGHT + 2;
     bubble.padding.top  = TEXT_BUBBLE_PADDING_TOP + 2;
@@ -184,7 +184,7 @@ void test_pixelfonts_render() {
     SDL_DestroyTexture(n9patch.texture);
     n9patch.texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(n9patch.texture != NULL);
-    PixelFont_Swap_Palette(bubble.pixelfont, renderer, NES_WHITE, -1);
+    PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_WHITE, -1);
 
     /* - setting - */
     bubble.target.x = -100;

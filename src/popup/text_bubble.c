@@ -34,10 +34,10 @@ struct Text_Bubble TextBubble_default = {
         .right      = TEXT_BUBBLE_PADDING_RIGHT,
     },
 
-    .old_bg_color   = NES_WHITE,
-    .old_line_color = NES_BLACK,
-    .bg_color   = NES_WHITE,
-    .line_color = NES_BLACK,
+    .old_bg_color   = SOTA_WHITE,
+    .old_line_color = SOTA_BLACK,
+    .bg_color       = SOTA_WHITE,
+    .line_color     = SOTA_BLACK,
 
     .tail     = {
         .pos            = {0, 0},
@@ -101,12 +101,14 @@ void TextBubble_Load(struct Text_Bubble *bubble, SDL_Renderer *renderer, struct 
         SDL_FreeSurface(bubble->surface);
     bubble->surface = Filesystem_Surface_Load(path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(bubble->surface != NULL);
+    SDL_assert(bubble->surface->format->palette == palette_SOTA);
 
     path = PATH_JOIN("..", "assets", "GUI", "Popup", "Popup_TextBubble_Tail.png");
     if (bubble->tail.surface != NULL)
         SDL_FreeSurface(bubble->tail.surface);
     bubble->tail.surface = Filesystem_Surface_Load(path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(bubble->tail.surface != NULL);
+    SDL_assert(bubble->tail.surface->format->palette == palette_SOTA);
 
     /* -- Switch color & create textures -- */
     TextBubble_Colors_Swap(bubble, renderer, n9patch);

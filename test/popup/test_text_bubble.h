@@ -17,7 +17,7 @@ void test_Text_Bubble_Tail() {
     bubble.pixelfont->y_offset     = pixelfont_y_offset;
     TextBubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));
-    PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
+    PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
 
     /* - setting - */
     bubble.target.x = -100;
@@ -141,7 +141,7 @@ void test_Text_Bubble_Tail() {
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_Big.png"));
     bubble.pixelfont->y_offset     = pixelfont_big_y_offset;
-    PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
+    PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
     bubble.line_len_px  = 96;
     bubble.row_height   = bubble.pixelfont->glyph_height + 2;
     bubble.padding.top  = TEXT_BUBBLE_PADDING_TOP + 2;
@@ -352,7 +352,7 @@ void test_text_bubble_scroll() {
     TextBubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_Big.png"));
-    PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
+    PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
     bubble.pixelfont->scroll_speed = 0;
     bubble.line_len_px  = 96;
     bubble.row_height   = bubble.pixelfont->glyph_height + 2;
@@ -410,7 +410,7 @@ void test_text_bubble_scroll_vertical() {
     TextBubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_Big.png"));
-    PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
+    PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
     bubble.pixelfont->scroll_speed = 0;
     bubble.line_len_px  = 96;
     bubble.row_height   = bubble.pixelfont->glyph_height + 2;
@@ -471,7 +471,7 @@ void test_text_bubble_VScroll_Anim() {
     TextBubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_Big.png"));
-    PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
+    PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
     bubble.pixelfont->scroll_speed = 0;
     bubble.line_len_px  = 72;
     bubble.row_height   = bubble.pixelfont->glyph_height + 2;
@@ -545,7 +545,7 @@ void test_Text_Bubble_pixelfont16() {
     TextBubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_16.png"));
-    PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
+    PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
     bubble.pixelfont->scroll_speed = 0;
     bubble.line_len_px      = 128;
     bubble.row_height       = bubble.pixelfont->glyph_height;
@@ -592,7 +592,7 @@ void test_Text_Bubble_pixelfont16() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* --- Setting BLUE bg for text bubble --- */
-    TextBubble_Colors_Set(&bubble, NES_MENU_BLUE, NES_WHITE);
+    TextBubble_Colors_Set(&bubble, SOTA_MENU_BLUE, SOTA_WHITE);
     TextBubble_Colors_Swap(&bubble, renderer, &n9patch);
 
     /* - Pixelnours 16 for BLUE - */
@@ -650,9 +650,9 @@ void test_Text_Bubble_pixelfont16() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* --- Setting BLUE bg for text bubble --- */
-    TextBubble_Colors_Set(&bubble, NES_WHITE, NES_BLACK);
+    TextBubble_Colors_Set(&bubble, SOTA_WHITE, SOTA_BLACK);
     TextBubble_Colors_Swap(&bubble, renderer, &n9patch);
-    TextBubble_Colors_Set(&bubble, NES_BLACK, NES_WHITE);
+    TextBubble_Colors_Set(&bubble, SOTA_BLACK, SOTA_WHITE);
     TextBubble_Colors_Swap(&bubble, renderer, &n9patch);
 
     bubble.pixelfont->scroll_speed  = 0;
@@ -726,7 +726,7 @@ void test_Text_Bubble_pixelfont16_tight() {
     TextBubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_16_tight.png"));
-    PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
+    PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
     bubble.pixelfont->scroll_speed = 0;
     bubble.line_len_px      = 128;
     bubble.row_height       = bubble.pixelfont->glyph_height;
@@ -773,7 +773,7 @@ void test_Text_Bubble_pixelfont16_tight() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* --- Setting BLUE bg for text bubble --- */
-    TextBubble_Colors_Set(&bubble, NES_MENU_BLUE, NES_WHITE);
+    TextBubble_Colors_Set(&bubble, SOTA_MENU_BLUE, SOTA_WHITE);
     TextBubble_Colors_Swap(&bubble, renderer, &n9patch);
 
     /* - Pixelnours 16 for BLUE - */
@@ -833,9 +833,9 @@ void test_Text_Bubble_pixelfont16_tight() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* --- Setting BLUE bg for text bubble --- */
-    TextBubble_Colors_Set(&bubble, NES_WHITE, NES_BLACK);
+    TextBubble_Colors_Set(&bubble, SOTA_WHITE, SOTA_BLACK);
     TextBubble_Colors_Swap(&bubble, renderer, &n9patch);
-    TextBubble_Colors_Set(&bubble, NES_BLACK, NES_WHITE);
+    TextBubble_Colors_Set(&bubble, SOTA_BLACK, SOTA_WHITE);
     TextBubble_Colors_Swap(&bubble, renderer, &n9patch);
 
     bubble.pixelfont->scroll_speed  = 0;
@@ -911,7 +911,7 @@ void test_Text_Bubble_pixelfont16_minus() {
     TextBubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_16.png"));
-    PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
+    PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
     bubble.pixelfont->scroll_speed = 0;
     bubble.pixelfont->glyph_space  = -1;
     bubble.line_len_px      = 128;
@@ -959,7 +959,7 @@ void test_Text_Bubble_pixelfont16_minus() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* --- Setting BLUE bg for text bubble --- */
-    TextBubble_Colors_Set(&bubble, NES_MENU_BLUE, NES_WHITE);
+    TextBubble_Colors_Set(&bubble, SOTA_MENU_BLUE, SOTA_WHITE);
     TextBubble_Colors_Swap(&bubble, renderer, &n9patch);
 
     /* - Pixelnours 16 for BLUE - */
@@ -1019,9 +1019,9 @@ void test_Text_Bubble_pixelfont16_minus() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* --- Setting BLUE bg for text bubble --- */
-    TextBubble_Colors_Set(&bubble, NES_WHITE, NES_BLACK);
+    TextBubble_Colors_Set(&bubble, SOTA_WHITE, SOTA_BLACK);
     TextBubble_Colors_Swap(&bubble, renderer, &n9patch);
-    TextBubble_Colors_Set(&bubble, NES_BLACK, NES_WHITE);
+    TextBubble_Colors_Set(&bubble, SOTA_BLACK, SOTA_WHITE);
     TextBubble_Colors_Swap(&bubble, renderer, &n9patch);
 
     bubble.pixelfont->scroll_speed  = 0;

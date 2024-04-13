@@ -123,7 +123,7 @@ void test_menu_loadout_select() {
     LoadoutSelectMenu_Update(wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_Grey1.png"), renderer,
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
-    PixelFont_Swap_Palette(wsm->pixelnours, renderer, NES_WHITE, NES_BLACK);
+    PixelFont_Swap_Palette(wsm->pixelnours, renderer, SOTA_WHITE, SOTA_BLACK);
 
     LoadoutSelectMenu_Update(wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_Grey2.png"), renderer,
