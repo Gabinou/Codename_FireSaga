@@ -203,10 +203,10 @@ void Palette_Tables_Load(void) {
     // jsonio_Read_PaletteTable(path, palette_table_SOTA_filter_blue);
     path = PATH_JOIN("assets", "palettes",  "palette_table_sota_shadow.json");
     jsonio_Read_PaletteTable(path, palette_table_SOTA_shadow);
-    for (int i = 0; i < PALETTE_SOTA_COLOR_NUM; i++) {
-        SDL_Log("from to %d->%d ", i, palette_table_SOTA_shadow[i]);
-    }
-    getchar();
+    // for (int i = 0; i < PALETTE_SOTA_COLOR_NUM; i++) {
+    //     SDL_Log("from to %d->%d ", i, palette_table_SOTA_shadow[i]);
+    // }
+    // getchar();
     path = PATH_JOIN("assets", "palettes",  "palette_table_sota_darken.json");
     jsonio_Read_PaletteTable(path, palette_table_SOTA_darken);
     path = PATH_JOIN("assets", "palettes",  "palette_table_sota_lighten.json");

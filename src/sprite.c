@@ -414,7 +414,7 @@ void Sprite_Palette_Swap(struct Sprite *sprite, SDL_Palette *palette, SDL_Render
 
 void Sprite_Shade(struct Sprite *sprite, SDL_Renderer *renderer, struct Index_Shader *is) {
     /* -- Preliminaries -- */
-    SDL_Surface *surface = sprite->spritesheet->surface;
+    SDL_Surface *surface        = sprite->spritesheet->surface;
     SDL_Surface *surface_shaded = sprite->spritesheet->surface_shaded;
     SDL_assert(surface);
     SDL_assert(is);
