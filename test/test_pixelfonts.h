@@ -168,7 +168,6 @@ void test_pixelfonts_render() {
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("pixelfont", "Pixelnours_Big_BoW_english.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
-    // getchar();
 
     /* - setting - */
     TextBubble_Set_All(&bubble, "A QUICK BROWN FOX JUMPS OVER THE LAZY DOG. ?! ", bubble.target,

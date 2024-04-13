@@ -107,6 +107,7 @@ struct Text_Bubble {
     bool animating      : 1;
     bool vscroll_dir    : 1;
     bool vscroll_anim   : 1;
+    SDL_Palette *palette;
 };
 extern struct Text_Bubble TextBubble_default;
 

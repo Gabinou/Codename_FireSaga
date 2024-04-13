@@ -70,7 +70,7 @@ void Palettes_Free(void);
 void Palette_Tables_Load(void);
 
 /* --- Colors Swap --- */
-void Palette_Colors_Swap(SDL_Renderer  *renderer,
+void Palette_Colors_Swap(SDL_Palette *palette, SDL_Renderer  *renderer,
                          SDL_Surface  **surface, SDL_Texture **texture,
                          i8 Ow, i8 Ob, i8 Nw, i8 Nb);
 

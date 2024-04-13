@@ -72,6 +72,7 @@ typedef struct PixelFont {
     /* Text Scrolling */
     int  scroll_speed;   /* [ms] time until new character is rendered */
     int  scroll_len;   /* [pixels/char] to render */
+    SDL_Palette *palette;
     i8 black;
     i8 white;
 } PixelFont;

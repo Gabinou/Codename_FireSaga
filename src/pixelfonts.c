@@ -127,8 +127,8 @@ void PixelFont_Load(struct PixelFont *font, SDL_Renderer *renderer, char *fontna
     SDL_assert(font->surface != NULL);
     SDL_assert(font->surface->format->palette == palette_SOTA);
     // SDL_SaveBMP(font->surface, "outsurface.bmp");
-
     SDL_assert(renderer != NULL);
+    font->palette = palette_SOTA;
     font->texture = SDL_CreateTextureFromSurface(renderer, font->surface);
     SDL_assert(font->texture);
     PixelFont_Compute_Glyph_BBox(font);
@@ -138,6 +138,7 @@ struct PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len) {
     struct PixelFont *font = malloc(sizeof(struct PixelFont));
     SDL_assert(font);
     *font = TextureFont_default;
+    font->palette = palette_SOTA;
     font->istexturefont = true;
     font->charset_num = row_len * col_len;
     font->row_len     = row_len;
@@ -152,10 +153,7 @@ struct PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len) {
 /*--- Internals --- */
 void PixelFont_Swap_Palette(struct PixelFont *font, SDL_Renderer *renderer, i8 NEWw, i8 NEWb) {
     i8 Oldb = font->black, Oldw = font->white;
-
-    SDL_Log("NEWw %d %d", NEWw, NEWb);
-    SDL_Log("font->black %d %d", font->black, font->white);
-    Palette_Colors_Swap(renderer, &font->surface, &font->texture,
+    Palette_Colors_Swap(font->palette, renderer, &font->surface, &font->texture,
                         Oldw, Oldb, NEWw, NEWb);
 }
 

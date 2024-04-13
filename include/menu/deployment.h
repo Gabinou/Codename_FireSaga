@@ -224,6 +224,7 @@ struct DeploymentMenu {
     u8 black;
     u8 white;
     u8 dark_gray;
+    SDL_Palette *palette;
 };
 extern struct DeploymentMenu DeploymentMenu_default;
 

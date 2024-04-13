@@ -20,6 +20,7 @@ struct Text_Bubble TextBubble_default = {
     .line_num_max       = -1,
     .target             = {-100, -100},
     .pixelfont          = NULL,
+    .palette            = NULL,
     .texture            = NULL,
     .texture_vscroll    = NULL,
     .update             = false,
@@ -83,7 +84,8 @@ void TextBubble_Load(struct Text_Bubble *bubble, SDL_Renderer *renderer, struct 
     n9Patch_Free(n9patch);
 
     /* -- Bubble defaults -- */
-    bubble->update = true;
+    bubble->update  = true;
+    bubble->palette = palette_SOTA;
 
     /* -- n9patch defaults -- */
     *n9patch                  = n9Patch_default;
@@ -150,11 +152,11 @@ void TextBubble_Colors_Set(struct Text_Bubble *bubble, i8 bg, i8 line) {
 void TextBubble_Colors_Swap(struct Text_Bubble *bubble, SDL_Renderer *renderer,
                             struct n9Patch *n9patch) {
     /* -- Switch color & create textures -- */
-    Palette_Colors_Swap(renderer,
+    Palette_Colors_Swap(bubble->palette,        renderer,
                         &bubble->surface,       &n9patch->texture,
                         bubble->old_bg_color,   bubble->old_line_color,
                         bubble->bg_color,       bubble->line_color);
-    Palette_Colors_Swap(renderer,
+    Palette_Colors_Swap(bubble->palette,        renderer,
                         &bubble->tail.surface,  &bubble->tail.texture,
                         bubble->old_bg_color,   bubble->old_line_color,
                         bubble->bg_color,       bubble->line_color);

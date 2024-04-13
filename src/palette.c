@@ -179,14 +179,12 @@ void Palette_Tables_Load(void) {
     jsonio_Read_PaletteTable(path, palette_table_NES_lightenmore);
 }
 
-void Palette_Colors_Swap(SDL_Renderer *renderer,
+void Palette_Colors_Swap(SDL_Palette *palette, SDL_Renderer *renderer,
                          SDL_Surface **surface, SDL_Texture **texture,
                          i8 Oldw, i8 Oldb, i8 NEWw, i8 NEWb) {
-    // SDL_assert(SDL_ISPIXELFORMAT_INDEXED(*surface));
-    SDL_Surface *surfptr = *surface;
-    SDL_assert(SDL_ISPIXELFORMAT_INDEXED(surfptr->format->format));
+    SDL_assert(palette != NULL);
+    SDL_assert(SDL_ISPIXELFORMAT_INDEXED((*surface)->format->format));
 
-    SDL_Palette *palette = palette_SOTA;
     SDL_assert(Oldw < palette->ncolors);
     SDL_assert(Oldb < palette->ncolors);
     SDL_assert(NEWw < palette->ncolors);
@@ -195,7 +193,7 @@ void Palette_Colors_Swap(SDL_Renderer *renderer,
     /* Save old colors from palette_NES */
     /* before changing anything */
     SDL_Color old_white, old_black, new_white, new_black;
-    SDL_Log("indices %d %d %d %d", Oldw, Oldb, NEWw, NEWb);
+
     if (NEWw > -1) {
         old_white = palette->colors[Oldw];
         new_white = palette->colors[NEWw];
@@ -217,10 +215,6 @@ void Palette_Colors_Swap(SDL_Renderer *renderer,
         palette->colors[Oldb].b = new_black.b;
     }
 
-    SDL_Log("white %d %d %d", palette->colors[SOTA_WHITE].r, palette->colors[SOTA_WHITE].g,
-            palette->colors[SOTA_WHITE].b);
-    SDL_Log("black %d %d %d", palette->colors[SOTA_BLACK].r, palette->colors[SOTA_BLACK].g,
-            palette->colors[SOTA_BLACK].b);
     /* Swap palette of font surface, texture */
     SDL_Surface *buffer = Filesystem_Surface_Palette_Swap(*surface, palette_SOTA);
     SDL_FreeSurface(*surface);

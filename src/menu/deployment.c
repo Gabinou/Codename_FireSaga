@@ -102,6 +102,7 @@ struct DeploymentMenu DeploymentMenu_default = {
     .black              = SOTA_BLACK,
     .white              = SOTA_WHITE,
     .dark_gray          = SOTA_DARK_GRAY,
+    .palette            = NULL,
 };
 
 /* --- STATIC FUNCTIONS --- */
@@ -172,12 +173,12 @@ void _DeploymentMenu_Swap(struct DeploymentMenu *dm, SDL_Renderer *renderer,
     PixelFont_Swap_Palette(dm->pixelnours_big,  renderer, white, black);
     PixelFont_Swap_Palette(dm->font_wpns,       renderer, white, black);
     if (white == dm->dark_gray) {
-        Palette_Colors_Swap(renderer,
+        Palette_Colors_Swap(dm->palette,        renderer,
                             &dm->surface_mount, &dm->texture_mount,
                             dm->white,          dm->black,
                             dm->dark_gray,      dm->black);
     } else if (white == dm->white) {
-        Palette_Colors_Swap(renderer,
+        Palette_Colors_Swap(dm->palette,        renderer,
                             &dm->surface_mount, &dm->texture_mount,
                             dm->dark_gray,      dm->black,
                             dm->white,          dm->black);
@@ -720,6 +721,8 @@ void DeploymentMenu_Free(struct DeploymentMenu *dm) {
 
 void DeploymentMenu_Load(struct DeploymentMenu *dm, SDL_Renderer *renderer,
                          struct n9Patch *n9patch) {
+    dm->palette = palette_SOTA;
+
     n9Patch_Free(n9patch);
     n9patch->patch_pixels.x = MENU_PATCH_PIXELS;
     n9patch->patch_pixels.y = MENU_PATCH_PIXELS;
@@ -729,6 +732,7 @@ void DeploymentMenu_Load(struct DeploymentMenu *dm, SDL_Renderer *renderer,
     n9patch->scale.y        = DM_N9PATCH_SCALE_Y;
     n9patch->size_pixels.x  = (MENU_PATCH_PIXELS * DM_PATCH_X_SIZE);
     n9patch->size_pixels.y  = (MENU_PATCH_PIXELS * DM_PATCH_Y_SIZE);
+
 
     if (n9patch->texture == NULL) {
         char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
