@@ -211,6 +211,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
 
     Sprite_Tilesize_Set(sprite, sota->settings.tilesize);
     Sprite_Rects_Init(sprite);
+    getchar();
     Sprite_defaultShaders_Load(sprite);
 
     SDL_Log("-- checks --");

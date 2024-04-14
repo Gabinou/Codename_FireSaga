@@ -23,7 +23,6 @@ void Names_unitNames(void) {
     dtab_add(global_unitOrders, &order, UNIT_ID_NULL);
     order++;
 #define REGISTER_ENUM(x, y) dtab_add(global_unitOrders, &order, UNIT_ID_##x);\
-    SDL_Log("%d %d", *(u64 *)dtab_get(global_unitOrders, UNIT_ID_##x), order);\
     SDL_assert(*(u64 *)dtab_get(global_unitOrders, UNIT_ID_##x) == order++);\
     global_unitNames[UNIT_ORDER_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);\
     unitHashes[UNIT_ORDER_##x] = sota_hash_djb2(global_unitNames[UNIT_ORDER_##x]);

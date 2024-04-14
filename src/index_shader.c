@@ -67,12 +67,10 @@ u8 *pixels2list_noM(u8 *matrix, u8 *list, size_t row_len, size_t col_len) {
     for (size_t col = 0; col < col_len; col++) {
         for (size_t row = 0; row < row_len; row++) {
             if (matrix[row * col_len + col] > 0) {
-                printf("%d,", matrix[row * col_len + col]);
                 DARR_PUT(list, col);
                 DARR_PUT(list, row);
             }
         }
-        printf("\n");
     }
     return (list);
 }
