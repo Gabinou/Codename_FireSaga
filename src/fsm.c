@@ -1110,7 +1110,6 @@ void fsm_eAcpt_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity canceller) {
 }
 
 void fsm_eAcpt_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
-    // for state == GAME_STATE_GAMEPLAY
     SDL_assert(sota->entity_cursor);
     struct Position *cursor_pos;
     cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);

@@ -259,19 +259,19 @@ u8 army_alignment[ARMY_END] = {
 
 bool army_isPC[ARMY_END] = {
     /* ARMY_START                     */ false,
-    /* ARMY_FRIENDLY                  */ true,
-    /* ARMY_ERWIN                     */ true,
-    /* ARMY_FREE_MILITIA              */ true,
-    /* ARMY_NEUTRAL                   */ false,
-    /* ARMY_IMPERIAL                  */ false,
-    /* ARMY_HAMILCAR                  */ false,
-    /* ARMY_FIRST_EXPEDITIONARY_FORCE */ false,
-    /* ARMY_THEOCRACY                 */ false,
-    /* ARMY_VOLDAN                    */ false,
-    /* ARMY_KEWAC                     */ false,
-    /* ARMY_KESIRU                    */ false,
-    /* ARMY_ENEMY                     */ false,
-    /* ARMY_BANDITS                   */ false,
+    /* FRIENDLY                       */ true,
+    /* ENEMY                          */ false,
+    /* ERWIN                          */ true,
+    /* FREE_MILITIA                   */ true,
+    /* NEUTRAL                        */ false,
+    /* IMPERIAL                       */ false,
+    /* HAMILCAR                       */ false,
+    /* FIRST_EXPEDITIONARY_FORCE      */ false,
+    /* THEOCRACY                      */ false,
+    /* VOLDAN                         */ false,
+    /* KEWAC                          */ false,
+    /* KESIRU                         */ false,
+    /* BANDITS                        */ false,
 };
 
 void Utilities_Load(void) {
