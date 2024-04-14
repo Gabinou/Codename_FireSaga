@@ -94,6 +94,7 @@ struct Map {
     i32 *temp;                  /* 2D dynamic array */
     i32 *costmap;               /* 2D dynamic array */
     i32 *movemap;               /* 2D dynamic array */
+    i32 *start_posmap;          /* 2D dynamic array */
     // Tile index = map->tilemap[i] / TILE_DIVISOR;
     i32 *tilemap;               /* 2D dynamic array [row * col_len + col] */
     i32 *healtomap;             /* 2D dynamic array */

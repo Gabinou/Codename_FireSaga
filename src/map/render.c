@@ -81,7 +81,13 @@ void Map_Palettemap_Autoset(struct Map *map, u16 flagsum) {
         Map_Palettemap_addMap(map, palette, map->ipalette_blue);
     }
     memset(palette, 0, bytesize);
-
+    if (flagsum_isIn(MAP_OVERLAY_START_POS, flagsum)) {
+        SDL_assert(palette);
+        SDL_assert(map->start_pos);
+        palette = matrix_sgreater_noM(palette, map->, 0, size);
+        Map_Palettemap_addMap(map, palette, map->ipalette_purple);
+    }    
+    memset(palette, 0, bytesize);
 }
 
 void Map_Palettemap_SetwMap(struct Map *map, u8 *palettemap) {

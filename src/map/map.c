@@ -78,7 +78,6 @@ struct Map Map_default = {
     .ipalette_shadow        = PALETTE_SOTA_SHADOW,
     .ipalette_enemy         = PALETTE_SOTA,
 
-
     .boundsmin              = {  0,   0},
     .boundsmax              = {255, 255},
     .turn                   = 1, /* Automatic loss if turn 255. */

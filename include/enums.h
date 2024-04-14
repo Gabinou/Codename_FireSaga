@@ -1057,6 +1057,7 @@ enum OVERLAYS {
     MAP_OVERLAY_ATTACK          = 1 << 2,
     MAP_OVERLAY_DANGER          = 1 << 3,
     MAP_OVERLAY_GLOBAL_DANGER   = 1 << 4,
+    MAP_OVERLAY_START_POS       = 1 << 5,
 };
 
 enum LOOPINGS {
