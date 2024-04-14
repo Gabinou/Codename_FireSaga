@@ -287,7 +287,7 @@ SDL_Surface *Tilemap_Shade_Surface(struct Tilemap_Shader *shd, SDL_Surface *surf
             st_index = shd->shadow_tilemaps[frame][index] - TILE_DIVISOR * TILE_SHADOW;
             u8 *list = shd->shadowtile_pixels_lists[st_index];
             size_t num = shd->shadowtile_pixels_num[st_index];
-            if ((st_index > 0) && (st_index < shd->shadowtile_num))
+            if ((st_index > 0) && (st_index < shd->shadowtile_num) && (num > 0))
                 _Index_Shade_Pixels(shd->to, surf, list, num, col * tsize[1], row * tsize[0]);
         }
     }
