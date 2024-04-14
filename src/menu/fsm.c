@@ -1171,6 +1171,10 @@ void fsm_eStart_sPrep_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
     tnecs_entity menu_popped_entity = Game_menuStack_Pop(sota, destroy);
     SDL_assert(menu_popped_entity == sota->deployment_menu);
 
+    /* -- Disable palette map during turn transition -- */
+    Map_Palettemap_Autoset(sota->map, 0);
+
     /* -- Start turn transition -- */
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
 }
+

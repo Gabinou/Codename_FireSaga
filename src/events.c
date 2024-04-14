@@ -754,6 +754,7 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     timer  = TNECS_GET_COMPONENT(sota->world, turn_transition, Timer);
     *timer = Timer_default;
 
+
     // TODO: How to do a fancy animation?
     // 1- draw animation pixel art
     // 2- Modify MapAnimation component

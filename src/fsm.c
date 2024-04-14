@@ -194,7 +194,7 @@ fsm_eAcpt_s_t fsm_eStart_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
     /* STANDBY */         NULL,
-    /* MAP_CANDIDATES */  NULL,
+    /* MAP_CANDIDATES */  &fsm_eStart_sPrep_ssMapCndt,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL
 };
@@ -1064,6 +1064,10 @@ void fsm_eStart_sPrep(struct Game *sota, tnecs_entity accepter) {
     // TODO: check that in prep stat, menu is deployment
     if (fsm_eStart_sPrep_ss[sota->substate] != NULL)
         fsm_eStart_sPrep_ss[sota->substate](sota, accepter);
+}
+
+void fsm_eStart_sPrep_ssMapCndt(struct Game *sota, tnecs_entity ent) {
+    /* Start combat? */
 }
 
 void fsm_eStart_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
