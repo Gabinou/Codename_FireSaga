@@ -1150,36 +1150,35 @@ void fsm_eAcpt_sPrep_ssMapCndt(struct Game *sota, tnecs_entity accepter_entity) 
     struct DeploymentMenu *dm = mc->data;
     SDL_assert(dm != NULL);
 
-    if (sota->selected_unit_entity != TNECS_NULL) {
+    // TODO: move unit even if empty pos selected
+    if (dm->start_pos_order1 >= 0) {
         /* Unit was selected previously, exchange with currently selected tile */
-        i32 new_pos_i = DeploymentMenu_Map_StartPos(dm, sota->candidate);
-        struct Point newpos    = sota->map->start_pos[new_pos_i];
+        DeploymentMenu_Map_StartPos_Select(dm, sota->candidate);
+        SDL_assert(dm->start_pos_order1 >= 0);
+        SDL_assert(dm->start_pos_order2 >= 0);
+        if (dm->start_pos_order1 == dm->start_pos_order2) {
+            dm->start_pos_order1 = -1;
+            dm->start_pos_order2 = -1;
+            return;
+        }
 
-        struct Position *old_position;
-        old_position = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Position);
-        SDL_assert(old_position != NULL);
-        struct Point oldpos  = old_position->tilemap_pos;
-        tnecs_entity old_ent = Map_Unit_Get(sota->map, oldpos.x, oldpos.y);
-        tnecs_entity new_ent = Map_Unit_Get(sota->map, newpos.x, newpos.y);
+        struct Point pos1 = sota->map->start_pos[dm->start_pos_order1];
+        struct Point pos2 = sota->map->start_pos[dm->start_pos_order2];
 
-        size_t old_index = oldpos.y * sota->map->col_len + oldpos.x;
-        size_t new_index = newpos.y * sota->map->col_len + newpos.x;
-        Map_Unit_Swap(sota->map, oldpos.x, oldpos.y, newpos.x, newpos.y);
-        i32 old_pos_i = DeploymentMenu_Map_Find_Pos(dm, sota->map, oldpos.x, oldpos.y);
+        tnecs_entity old_ent = Map_Unit_Get(sota->map, pos1.x, pos1.y);
+        tnecs_entity new_ent = Map_Unit_Get(sota->map, pos2.x, pos2.y);
 
-        if (new_pos_i != old_pos_i)
-            DeploymentMenu_Map_Swap(dm, new_pos_i, old_pos_i);
+        size_t index1 = pos1.y * sota->map->col_len + pos1.x;
+        size_t index2 = pos2.y * sota->map->col_len + pos2.x;
+        Map_Unit_Swap(sota->map, pos1.x, pos1.y, pos2.x, pos2.y);
+        i32 pos1_i = DeploymentMenu_Map_Find_Pos(dm, sota->map, pos1.x, pos1.y);
+        i32 pos2_i = DeploymentMenu_Map_Find_Pos(dm, sota->map, pos2.x, pos2.y);
 
-        SDL_assert(sota->map->unitmap[new_index] == old_ent);
-        SDL_assert(sota->map->unitmap[old_index] == new_ent);
-
-        sota->selected_unit_entity = TNECS_NULL;
-
+        if (pos1_i != pos2_i)
+            DeploymentMenu_Map_Swap(dm);
     } else {
         /* No unit was selected previously selecting */
-        i32 start_pos_i = DeploymentMenu_Map_StartPos(dm, sota->candidate);
-        struct Point pos = sota->map->start_pos[start_pos_i];
-        sota->selected_unit_entity = Map_Unit_Get(sota->map, pos.x, pos.y);
+        DeploymentMenu_Map_StartPos_Select(dm, sota->candidate);
     }
 
 }

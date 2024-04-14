@@ -103,6 +103,8 @@ struct DeploymentMenu DeploymentMenu_default = {
     .white              = SOTA_WHITE,
     .dark_gray          = SOTA_DARK_GRAY,
     .palette            = NULL,
+    .start_pos_order1   = -1,
+    .start_pos_order2   = -1,
 };
 
 /* --- STATIC FUNCTIONS --- */
@@ -811,30 +813,45 @@ void DeploymentMenu_UnitOrder_Reset(struct DeploymentMenu *dm) {
     dm->update = true;
 }
 
-void DeploymentMenu_Map_Swap(struct DeploymentMenu *dm,
-                             i32 start_order1, i32 start_order2) {
+void DeploymentMenu_Map_Swap(struct DeploymentMenu *dm) {
     SDL_assert(dm->_start_pos_i != NULL);
-    SDL_assert(start_order1 >= 0);
-    SDL_assert(start_order2 >= 0);
-    SDL_assert(start_order1 < dm->select_max);
-    SDL_assert(start_order2 < dm->select_max);
-    i32 unit_order1 = dm->_start_pos_i[start_order1];
-    i32 unit_order2 = dm->_start_pos_i[start_order2];
-    dm->_start_pos_i[start_order1] = unit_order2;
-    dm->_start_pos_i[start_order2] = unit_order1;
+    SDL_assert(dm->start_pos_order1 >= 0);
+    SDL_assert(dm->start_pos_order2 >= 0);
+    if (dm->start_pos_order1 == dm->start_pos_order2) {
+        dm->start_pos_order1 = -1;
+        dm->start_pos_order2 = -1;
+        return;
+    }
+    SDL_assert(dm->start_pos_order1 < dm->select_max);
+    SDL_assert(dm->start_pos_order2 < dm->select_max);
+    i32 unit_order1 = dm->_start_pos_i[dm->start_pos_order1];
+    i32 unit_order2 = dm->_start_pos_i[dm->start_pos_order2];
+    dm->_start_pos_i[dm->start_pos_order1] = unit_order2;
+    dm->_start_pos_i[dm->start_pos_order2] = unit_order1;
 
-    SDL_assert(dm->_selected[unit_order1] == start_order1);
-    SDL_assert(dm->_selected[unit_order2] == start_order2);
-    dm->_selected[unit_order1] = start_order2;
-    dm->_selected[unit_order2] = start_order1;
+    // SDL_assert(dm->_selected[unit_order1] == start_order1);
+    // SDL_assert(dm->_selected[unit_order2] == start_order2);
+    dm->_selected[unit_order1] = dm->start_pos_order2;
+    dm->_selected[unit_order2] = dm->start_pos_order1;
+    dm->start_pos_order1 = -1;
+    dm->start_pos_order2 = -1;
 }
 
 i32 DeploymentMenu_Map_StartPos(struct DeploymentMenu *dm, i32 candidate) {
     SDL_assert(dm->_start_pos_i != NULL);
     SDL_assert(candidate < dm->select_max);
     /* candidate in start_pos space */
-
     return (candidate);
+}
+
+void DeploymentMenu_Map_StartPos_Select(struct DeploymentMenu *dm, i32 candidate) {
+    if (dm->start_pos_order1 < 0) {
+        dm->start_pos_order1 = candidate;
+    } else if (dm->start_pos_order2 < 0) {
+        dm->start_pos_order2 = candidate;
+    } else {
+        SDL_assert(false);
+    }
 }
 
 void DeploymentMenu_Map_Set(struct DeploymentMenu *dm, struct Map *map) {

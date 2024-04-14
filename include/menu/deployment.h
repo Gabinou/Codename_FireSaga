@@ -225,6 +225,9 @@ struct DeploymentMenu {
     u8 white;
     u8 dark_gray;
     SDL_Palette *palette;
+
+    i32 start_pos_order1;
+    i32 start_pos_order2;
 };
 extern struct DeploymentMenu DeploymentMenu_default;
 
@@ -240,10 +243,11 @@ void DeploymentMenu_Load(struct DeploymentMenu *dm, SDL_Renderer *renderer,
                          struct n9Patch *n9patch);
 
 void DeploymentMenu_Map_Set(     struct DeploymentMenu *dm, struct Map *map);
-void DeploymentMenu_Map_Swap(    struct DeploymentMenu *dm, i32 i1, i32 i2);
+void DeploymentMenu_Map_Swap(    struct DeploymentMenu *dm);
 void DeploymentMenu_Party_Set(   struct DeploymentMenu *dm, struct Unit *p, i16 *pi, i32 n);
 i32  DeploymentMenu_Map_StartPos(struct DeploymentMenu *dm, i32 candidate);
 i32  DeploymentMenu_Map_Find_Pos(struct DeploymentMenu *dm, struct Map *map, u8 c, u8 r);
+void DeploymentMenu_Map_StartPos_Select(struct DeploymentMenu *dm, i32 candidate);
 
 /* --- Utility --- */
 void _DeploymentMenu_Selected_Num(struct DeploymentMenu *dm);
