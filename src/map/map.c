@@ -38,6 +38,7 @@ struct Map Map_default = {
     .costmap                = NULL,
     .costmap_ent            = TNECS_NULL,
     .movemap                = NULL,
+    .start_posmap           = NULL,
     .attackfrommap          = NULL,
     .attacktomap            = NULL,
     .attacktolist           = NULL,
@@ -363,11 +364,12 @@ void Map_dArrays_Init(struct Map *map,  struct Settings *settings) {
         map->costmap            = calloc(len,  sizeof(*map->costmap));
     if (map->movemap == NULL)
         map->movemap            = calloc(len,  sizeof(*map->movemap));
+    if (map->start_posmap == NULL)
+        map->start_posmap       = calloc(len,  sizeof(*map->start_posmap));
     if (map->fcostmap == NULL)
         map->fcostmap           = calloc(len,  sizeof(*map->fcostmap));
     if (map->fmovemap == NULL)
         map->fmovemap           = calloc(len,  sizeof(*map->fmovemap));
-
     if (map->dangermap == NULL)
         map->dangermap          = calloc(len,  sizeof(*map->dangermap));
     if (map->palettemap == NULL)
@@ -409,6 +411,11 @@ void Map_dArrays_Free(struct Map *map) {
         SDL_free(map->movemap);
         map->movemap = NULL;
     }
+    if (map->start_posmap != NULL) {
+        SDL_free(map->start_posmap);
+        map->start_posmap = NULL;
+    }
+
     if (map->fcostmap != NULL) {
         SDL_free(map->fcostmap);
         map->fcostmap = NULL;

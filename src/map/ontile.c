@@ -9,7 +9,7 @@ void Map_startingPos_Add(struct Map *map, i32 col, i32 row) {
         SDL_LogError(SOTA_LOG_SYSTEM, "Start position %d %d not unique", col, row);
         exit(ERROR_Generic);
     }
-
+    map->start_posmap[row * map->col_len + col] = 1;
     DARR_PUT(map->start_pos, pos);
 }
 
