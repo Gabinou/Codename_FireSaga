@@ -42,6 +42,7 @@ void Game_debugMap_Free(struct Game *sota) {
 }
 
 void Game_debugMap_Load(struct Game *sota) {
+    // TODO: Split off debugmap specific stuff from ALL MAPS loading stuff
     /* -- Preliminaries -- */
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Loading in test Map\n");
     /* - Updating game states - */
@@ -99,6 +100,9 @@ void Game_debugMap_Load(struct Game *sota) {
     /* -- Load reinforcements -- */
     // TODO: Move to debug_map_load
     Game_Map_Reinforcements_Load(sota);
+
+    /* -- Show starting positions -- */
+    Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_START_POS);
 }
 
 /* --- Reinforcements --- */
