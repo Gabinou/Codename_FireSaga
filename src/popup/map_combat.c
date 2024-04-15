@@ -170,7 +170,7 @@ static void _PopUp_Map_Combat_Draw_HP(struct PopUp_Map_Combat *pmc, SDL_Renderer
 
     /* -- HP number -- */
     int toprint = int_inbounds(pmc->agg_current_hp, 0, SOTA_100PERCENT);
-    stbsp_sprintf(numbuff, "%d", toprint);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
     width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
     temp_pos.x = POPUP_MAP_COMBAT_BLUE_HP_X - width / 2;
     temp_pos.y = POPUP_MAP_COMBAT_BLUE_HP_Y;
@@ -178,7 +178,7 @@ static void _PopUp_Map_Combat_Draw_HP(struct PopUp_Map_Combat *pmc, SDL_Renderer
     PixelFont_Write(pmc->pixelnours_tight, renderer, numbuff, strlen(numbuff), temp_pos.x, temp_pos.y);
 
     toprint = int_inbounds(pmc->dft_current_hp, 0, SOTA_100PERCENT);
-    stbsp_sprintf(numbuff, "%d", toprint);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
     width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
     temp_pos.x = POPUP_MAP_COMBAT_RED_HP_X - width / 2;
     temp_pos.y = POPUP_MAP_COMBAT_RED_HP_Y;
@@ -228,7 +228,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
                     POPUP_MAP_COMBAT_RED_DMG_X, POPUP_MAP_COMBAT_RED_DMG_Y);
 
     int toprint = int_inbounds(damage_a.dmg[DMG_TYPE_TOTAL], 0, 99);
-    stbsp_sprintf(numbuff, "%d", toprint);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
     int width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
     temp_pos.x = POPUP_MAP_COMBAT_BLUE_DMG_STAT_X - width / 2;
     temp_pos.y = POPUP_MAP_COMBAT_BLUE_DMG_Y;
@@ -237,7 +237,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
                     temp_pos.x, temp_pos.y);
 
     toprint = int_inbounds(damage_d.dmg[DMG_TYPE_TOTAL], 0, 99);
-    stbsp_sprintf(numbuff, "%d", toprint);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
     width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
     temp_pos.x = POPUP_MAP_COMBAT_RED_DMG_STAT_X - width / 2;
     temp_pos.y = POPUP_MAP_COMBAT_RED_DMG_Y;
@@ -252,7 +252,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
                     POPUP_MAP_COMBAT_RED_HIT_X, POPUP_MAP_COMBAT_RED_HIT_Y);
 
     toprint = int_inbounds(rates_a.hit, 0, SOTA_100PERCENT);
-    stbsp_sprintf(numbuff, "%d", toprint);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
     width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
     temp_pos.x = POPUP_MAP_COMBAT_BLUE_HIT_STAT_X - width; // right-align
     temp_pos.y = POPUP_MAP_COMBAT_BLUE_HIT_Y;
@@ -261,7 +261,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
                     temp_pos.x, temp_pos.y);
 
     toprint = int_inbounds(rates_d.hit, 0, SOTA_100PERCENT);
-    stbsp_sprintf(numbuff, "%d", toprint);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
     width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
     temp_pos.x = POPUP_MAP_COMBAT_RED_HIT_STAT_X - width;  // right-align
     temp_pos.y = POPUP_MAP_COMBAT_RED_HIT_Y;
@@ -276,7 +276,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
                     POPUP_MAP_COMBAT_BLUE_CRIT_X, POPUP_MAP_COMBAT_BLUE_CRIT_Y);
 
     toprint = int_inbounds(rates_a.crit, 0, SOTA_100PERCENT);
-    stbsp_sprintf(numbuff, "%d", toprint);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
     width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
     temp_pos.x = POPUP_MAP_COMBAT_BLUE_CRIT_STAT_X - width;  // right-align
     temp_pos.y = POPUP_MAP_COMBAT_BLUE_CRIT_Y;
@@ -285,7 +285,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
                     temp_pos.x, temp_pos.y);
 
     toprint = int_inbounds(rates_d.crit, 0, SOTA_100PERCENT);
-    stbsp_sprintf(numbuff, "%d", toprint);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
     width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
     temp_pos.x = POPUP_MAP_COMBAT_RED_CRIT_STAT_X - width;
     temp_pos.y = POPUP_MAP_COMBAT_RED_CRIT_Y;

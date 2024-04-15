@@ -410,8 +410,8 @@ s8 Filesystem_Scene_Chapter(s8 filename, int chapter) {
         filename = s8cat(filename, s8_literal("Epilogue"));
     } else {
         filename = s8cat(filename, s8_literal("Chapter_"));
-        char chapter_num[2];
-        stbsp_sprintf(chapter_num, "%d", chapter);
+        char chapter_num[8];
+        stbsp_sprintf(chapter_num, "%d\0\0\0\0", chapter);
         filename = s8cat(filename, s8_literal(chapter_num));
     }
     filename = s8cat(filename, s8_literal(DIR_SEPARATOR));

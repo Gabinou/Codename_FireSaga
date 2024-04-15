@@ -242,9 +242,9 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls,
     /* - ATK - */
     PixelFont_Write(pls->pixelnours, renderer, "ATK", 3, PLS_ATK_X, PLS_ATK_Y);
     if (pls->new_cs.attack[DMG_TYPE_TRUE] > 0) {
-        stbsp_sprintf(numbuff, "%d", pls->new_cs.attack[DMG_TYPE_PHYSICAL]);
+        stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->new_cs.attack[DMG_TYPE_PHYSICAL]);
 
-        stbsp_sprintf(numbuff, "%d/%d/%d",
+        stbsp_sprintf(numbuff, "%d/%d/%d\0",
                       pls->new_cs.attack[DMG_TYPE_PHYSICAL],
                       pls->new_cs.attack[DMG_TYPE_MAGICAL],
                       pls->new_cs.attack[DMG_TYPE_TRUE]);
@@ -252,18 +252,18 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls,
         PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
                         PLS_ATK_X_STAT - width / 2 + 2, PLS_ATK_Y_STAT);
     } else {
-        stbsp_sprintf(numbuff, "%d", pls->new_cs.attack[DMG_TYPE_PHYSICAL]);
+        stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->new_cs.attack[DMG_TYPE_PHYSICAL]);
         width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
-        stbsp_sprintf(numbuff, "%d/%d",
+        stbsp_sprintf(numbuff, "%d/%d\0\0\0\0",
                       pls->new_cs.attack[DMG_TYPE_PHYSICAL], pls->new_cs.attack[DMG_TYPE_MAGICAL]);
         PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
                         PLS_ATK_X_STAT - width, PLS_ATK_Y_STAT);
     }
     /* - PROT - */
     PixelFont_Write(pls->pixelnours, renderer, "DEF", 3, PLS_PROT_X, PLS_PROT_Y);
-    stbsp_sprintf(numbuff, "%d", pls->new_cs.protection[DMG_TYPE_PHYSICAL]);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->new_cs.protection[DMG_TYPE_PHYSICAL]);
     width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
-    stbsp_sprintf(numbuff, "%d/%d", pls->new_cs.protection[DMG_TYPE_PHYSICAL],
+    stbsp_sprintf(numbuff, "%d/%d\0\0\0\0", pls->new_cs.protection[DMG_TYPE_PHYSICAL],
                   pls->new_cs.protection[DMG_TYPE_MAGICAL]);
     PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
                     PLS_PROT_X_STAT - width, PLS_PROT_Y_STAT);
@@ -271,30 +271,30 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls,
     PixelFont_Write(pls->pixelnours, renderer, "HIT", 3,
                     PLS_HIT_X,
                     PLS_HIT_Y);
-    stbsp_sprintf(numbuff, "%d", pls->new_cs.hit);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->new_cs.hit);
     width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
-    stbsp_sprintf(numbuff, "%d/%d", pls->new_cs.hit, pls->new_cs.dodge);
+    stbsp_sprintf(numbuff, "%d/%d\0\0\0\0", pls->new_cs.hit, pls->new_cs.dodge);
     PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
                     PLS_HIT_X_STAT - width, PLS_HIT_Y_STAT);
     /* - CRIT - */
     PixelFont_Write(pls->pixelnours, renderer, "CRIT", 4,
                     PLS_CRIT_X, PLS_CRIT_Y);
-    stbsp_sprintf(numbuff, "%d", pls->new_cs.crit);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->new_cs.crit);
     width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
-    stbsp_sprintf(numbuff, "%d/%d", pls->new_cs.crit, pls->new_cs.favor);
+    stbsp_sprintf(numbuff, "%d/%d\0\0\0\0", pls->new_cs.crit, pls->new_cs.favor);
     PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
                     PLS_CRIT_X_STAT - width, PLS_CRIT_Y_STAT);
     /* - RANGE - */
     PixelFont_Write(pls->pixelnours, renderer, "RANGE", 5,
                     PLS_RANGE_X, PLS_RANGE_Y);
-    stbsp_sprintf(numbuff, "%d - %d", pls->new_cs.range_loadout.min,
+    stbsp_sprintf(numbuff, "%d - %d\0", pls->new_cs.range_loadout.min,
                   pls->new_cs.range_loadout.max);
     PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
                     PLS_RANGE_X_STAT, PLS_RANGE_Y_STAT);
     /* - SPEED - */
     PixelFont_Write(pls->pixelnours, renderer, "SPEED", 5,
                     PLS_SPEED_X, PLS_SPEED_Y);
-    stbsp_sprintf(numbuff, "%d", pls->new_cs.speed);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->new_cs.speed);
     width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
     PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
                     PLS_SPEED_X_STAT - width / 2,  PLS_SPEED_Y_STAT);

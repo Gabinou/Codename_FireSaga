@@ -503,8 +503,8 @@ static void _LoadoutSelectMenu_Draw_Highlight(struct LoadoutSelectMenu  *lsm,
     s8 name = weapon->item->name;
     srcrect.w  = PixelFont_Width(lsm->pixelnours, s8_toUpper(name).data, name.num);
     i32 uses_left = weapon->item->stats.uses - item->used;
-    char numbuff[2];
-    stbsp_sprintf(numbuff, "%d", uses_left);
+    char numbuff[8];
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", uses_left);
 
     i32 dura_w = PixelFont_Width(lsm->pixelnours_big, numbuff, strlen(numbuff));
 
@@ -709,7 +709,7 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
         SDL_assert(weapon != NULL);
         SDL_assert((side_i >= 0) && (side_i <= DEFAULT_EQUIPMENT_SIZE));
         i32 uses_left = weapon->item->stats.uses - item->used;
-        stbsp_sprintf(numbuff, "%d", uses_left);
+        stbsp_sprintf(numbuff, "%d\0\0\0\0", uses_left);
 
         i32 dura_w = PixelFont_Width(lsm->pixelnours_big, numbuff, strlen(numbuff));
         item_dura_x_offset -= dura_w / 2;

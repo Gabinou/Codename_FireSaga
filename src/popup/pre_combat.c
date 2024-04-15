@@ -243,7 +243,7 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
     // TODO: Text alignment: Centered? -> left align left column, right align right column
 
     /* HP */
-    stbsp_sprintf(numbuff, "%02d/%02d", pcp->dft_unit->current_hp, effective_stats_d.hp);
+    stbsp_sprintf(numbuff, "%02d/%02d\0\0", pcp->dft_unit->current_hp, effective_stats_d.hp);
     x = PCP_MATH_HP_DSTAT_X,     y = PCP_MATH_HP_DSTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
@@ -252,9 +252,9 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
     int toprint2 = int_inbounds(computed_stats_d.attack[DMG_TYPE_MAGICAL],  0, 0xFF);
     int toprint3 = int_inbounds(computed_stats_d.attack[DMG_TYPE_TRUE],     0, 0xFF);
     if (toprint3 > 0)
-        stbsp_sprintf(numbuff, "%d/%d/%d", toprint, toprint2, toprint3);
+        stbsp_sprintf(numbuff, "%d/%d/%d\0\0", toprint, toprint2, toprint3);
     else
-        stbsp_sprintf(numbuff, "%d/%d",    toprint, toprint2);
+        stbsp_sprintf(numbuff, "%d/%d\0\0",    toprint, toprint2);
     int width = PixelFont_Width(pcp->pixelnours_big, numbuff, strlen(numbuff));
     width += (toprint3 > 0) * PCP_TRUE_DMG_OFFSET_X    * 2;
     width += (toprint3 > 9) * PCP_TRUE_DMG_OFFSET_10_X * 2;
@@ -265,30 +265,30 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
     /* prot */
     toprint = int_inbounds(computed_stats_d.protection[DMG_TYPE_PHYSICAL], 0, 0xFF);
     toprint2 = int_inbounds(computed_stats_d.protection[DMG_TYPE_MAGICAL], 0, 0xFF);
-    stbsp_sprintf(numbuff, "%d/%d", toprint, toprint2);
+    stbsp_sprintf(numbuff, "%d/%d\0\0", toprint, toprint2);
     x = PCP_MATH_PROT_DSTAT_X,   y = PCP_MATH_PROT_DSTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
     /* hit */
     toprint = int_inbounds(rates_d.hit, 0, SOTA_100PERCENT);
-    stbsp_sprintf(numbuff, "%3d", toprint);
+    stbsp_sprintf(numbuff, "%3d\0\0\0", toprint);
     x = PCP_MATH_HIT_DSTAT_X,   y = PCP_MATH_HIT_DSTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
 
     /* crit */
     toprint = int_inbounds(rates_d.crit, 0, SOTA_100PERCENT);
-    stbsp_sprintf(numbuff, "%3d", toprint);
+    stbsp_sprintf(numbuff, "%3d\0\0\0", toprint);
     x = PCP_MATH_CRIT_DSTAT_X,   y = PCP_MATH_CRIT_DSTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
     /* speed */
     toprint = int_inbounds(computed_stats_d.speed, 0, SOTA_100PERCENT);
-    stbsp_sprintf(numbuff, "%2d", toprint);
+    stbsp_sprintf(numbuff, "%2d\0\0\0", toprint);
     x = PCP_MATH_SPEED_DSTAT_X,   y = PCP_MATH_SPEED_DSTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
 
     /* - Aggressor - */
     /* HP */
-    stbsp_sprintf(numbuff, "%02d/%02d", pcp->agg_unit->current_hp, effective_stats_a.hp);
+    stbsp_sprintf(numbuff, "%02d/%02d\0\0", pcp->agg_unit->current_hp, effective_stats_a.hp);
     x = PCP_MATH_HP_ASTAT_X,   y = PCP_MATH_HP_ASTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
@@ -297,9 +297,9 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
     toprint2 = int_inbounds(computed_stats_a.attack[DMG_TYPE_MAGICAL],    0, 0xFF);
     toprint3 = int_inbounds(computed_stats_a.attack[DMG_TYPE_TRUE],       0, 0xFF);
     if (toprint3 > 0)
-        stbsp_sprintf(numbuff, "%d/%d/%d", toprint, toprint2, toprint3);
+        stbsp_sprintf(numbuff, "%d/%d/%d\0\0", toprint, toprint2, toprint3);
     else
-        stbsp_sprintf(numbuff, "%d/%d", toprint, toprint2);
+        stbsp_sprintf(numbuff, "%d/%d\0\0\0", toprint, toprint2);
     width = PixelFont_Width(pcp->pixelnours_big, numbuff, strlen(numbuff));
     width -= (toprint3 > 0) * PCP_TRUE_DMG_OFFSET_X    * 2;
     width += (toprint3 > 9) * PCP_TRUE_DMG_OFFSET_10_X * 2;
@@ -309,25 +309,25 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
     /* prot */
     toprint  = int_inbounds(computed_stats_a.protection[DMG_TYPE_PHYSICAL], 0, 0xFF);
     toprint2 = int_inbounds(computed_stats_a.protection[DMG_TYPE_MAGICAL],  0, 0xFF);
-    stbsp_sprintf(numbuff, "%d/%d", toprint, toprint2);
+    stbsp_sprintf(numbuff, "%d/%d\0\0\0", toprint, toprint2);
     x = PCP_MATH_PROT_ASTAT_X,   y = PCP_MATH_PROT_ASTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
     /* hit */
     toprint = int_inbounds(rates_a.hit, 0, SOTA_100PERCENT);
-    stbsp_sprintf(numbuff, "%3d", toprint);
+    stbsp_sprintf(numbuff, "%3d\0\0\0", toprint);
     x = PCP_MATH_HIT_ASTAT_X,   y = PCP_MATH_HIT_ASTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
 
     /* crit */
     toprint = int_inbounds(rates_a.crit, 0, SOTA_100PERCENT);
-    stbsp_sprintf(numbuff, "%3d", toprint);
+    stbsp_sprintf(numbuff, "%3d\0\0\0", toprint);
     x = PCP_MATH_CRIT_ASTAT_X,   y = PCP_MATH_CRIT_ASTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
 
     /* speed */
     toprint = int_inbounds(computed_stats_a.speed, 0, SOTA_100PERCENT);
-    stbsp_sprintf(numbuff, "%2d", toprint);
+    stbsp_sprintf(numbuff, "%2d\0\0\0", toprint);
     x = PCP_MATH_SPEED_ASTAT_X,   y = PCP_MATH_SPEED_ASTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
 
@@ -383,49 +383,49 @@ static void _PreCombatPopup_Draw_Stats_Total( struct PreCombatPopup *pcp, SDL_Re
     // TODO: Text alignment: Centered? -> left align left column, right align right column
 
     /* HP */
-    stbsp_sprintf(numbuff, "%02d/%02d", pcp->dft_unit->current_hp, effective_stats_d.hp);
+    stbsp_sprintf(numbuff, "%02d/%02d\0\0", pcp->dft_unit->current_hp, effective_stats_d.hp);
     x = PCP_SIMPLE_HP_DSTAT_X,   y = PCP_SIMPLE_HP_DSTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
     /* dmg */
     int toprint = int_inbounds(damage_d.dmg[DMG_TYPE_TOTAL], 0, 0xFF);
-    stbsp_sprintf(numbuff, "%2d", toprint);
+    stbsp_sprintf(numbuff, "%2d\0\0\0", toprint);
     x = PCP_SIMPLE_DMG_DSTAT_X,   y = PCP_SIMPLE_DMG_DSTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
 
     /* hit */
     toprint = int_inbounds(rates_d.hit, 0, SOTA_100PERCENT);
-    stbsp_sprintf(numbuff, "%3d", toprint);
+    stbsp_sprintf(numbuff, "%3d\0\0\0", toprint);
     x = PCP_SIMPLE_HIT_DSTAT_X,   y = PCP_SIMPLE_HIT_DSTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
 
     /* crit */
     toprint = int_inbounds(rates_d.crit, 0, SOTA_100PERCENT);
-    stbsp_sprintf(numbuff, "%3d", toprint);
+    stbsp_sprintf(numbuff, "%3d\0\0\0", toprint);
     x = PCP_SIMPLE_CRIT_DSTAT_X,   y = PCP_SIMPLE_CRIT_DSTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
 
     /* - Aggressor - */
     /* HP */
-    stbsp_sprintf(numbuff, "%02d/%02d", pcp->agg_unit->current_hp, effective_stats_a.hp);
+    stbsp_sprintf(numbuff, "%02d/%02d\0\0", pcp->agg_unit->current_hp, effective_stats_a.hp);
     x = PCP_SIMPLE_HP_ASTAT_X,   y = PCP_SIMPLE_HP_ASTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
     /* dmg */
     toprint = int_inbounds(damage_a.dmg[DMG_TYPE_TOTAL], 0, 0xFF);
-    stbsp_sprintf(numbuff, "%2d", toprint);
+    stbsp_sprintf(numbuff, "%2d\0\0\0", toprint);
     x = PCP_SIMPLE_DMG_ASTAT_X,   y = PCP_SIMPLE_DMG_ASTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
 
     /* hit */
     toprint = int_inbounds(rates_a.hit, 0, SOTA_100PERCENT);
-    stbsp_sprintf(numbuff, "%3d", toprint);
+    stbsp_sprintf(numbuff, "%3d\0\0\0", toprint);
     x = PCP_SIMPLE_HIT_ASTAT_X,   y = PCP_SIMPLE_HIT_ASTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
 
     /* crit */
     toprint = int_inbounds(rates_a.crit, 0, SOTA_100PERCENT);
-    stbsp_sprintf(numbuff, "%3d", toprint);
+    stbsp_sprintf(numbuff, "%3d\0\0\0", toprint);
     x = PCP_SIMPLE_CRIT_ASTAT_X,   y = PCP_SIMPLE_CRIT_ASTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
 
@@ -485,9 +485,9 @@ static void _PreCombatPopup_Draw_Stats_Simple(struct PreCombatPopup *pcp, SDL_Re
     int toprint2 = int_inbounds(damage_d.dmg[DMG_TYPE_MAGICAL],   0, 0xFF);
     int toprint3 = int_inbounds(damage_d.dmg[DMG_TYPE_TRUE],      0, 0xFF);
     if (toprint3 > 0)
-        stbsp_sprintf(numbuff, "%d/%d/%d", toprint, toprint2, toprint3);
+        stbsp_sprintf(numbuff, "%d/%d/%d\0", toprint, toprint2, toprint3);
     else
-        stbsp_sprintf(numbuff, "%d/%d",    toprint, toprint2);
+        stbsp_sprintf(numbuff, "%d/%d\0\0\0",    toprint, toprint2);
     int width = PixelFont_Width(pcp->pixelnours_big, numbuff, strlen(numbuff));
     width += (toprint3 > 0) * PCP_TRUE_DMG_OFFSET_X    * 2;
     width += (toprint3 > 9) * PCP_TRUE_DMG_OFFSET_10_X * 2;
@@ -496,13 +496,13 @@ static void _PreCombatPopup_Draw_Stats_Simple(struct PreCombatPopup *pcp, SDL_Re
 
     /* hit */
     toprint = int_inbounds(rates_d.hit, 0, SOTA_100PERCENT);
-    stbsp_sprintf(numbuff, "%3d", toprint);
+    stbsp_sprintf(numbuff, "%3d\0\0\0", toprint);
     x = PCP_SIMPLE_SPLIT_DMG_DSTAT_X,      y = PCP_SIMPLE_SPLIT_DMG_DSTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
 
     /* crit */
     toprint = int_inbounds(rates_d.crit, 0, SOTA_100PERCENT);
-    stbsp_sprintf(numbuff, "%3d", toprint);
+    stbsp_sprintf(numbuff, "%3d\0\0\0", toprint);
     x = PCP_SIMPLE_CRIT_DSTAT_X,      y = PCP_SIMPLE_CRIT_DSTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
 
@@ -517,9 +517,9 @@ static void _PreCombatPopup_Draw_Stats_Simple(struct PreCombatPopup *pcp, SDL_Re
     toprint2 = int_inbounds(damage_a.dmg[DMG_TYPE_MAGICAL],  0, 0xFF);
     toprint3 = int_inbounds(damage_a.dmg[DMG_TYPE_TRUE],     0, 0xFF);
     if (toprint3 > 0)
-        stbsp_sprintf(numbuff, "%d/%d/%d", toprint, toprint2, toprint3);
+        stbsp_sprintf(numbuff, "%d/%d/%d\0", toprint, toprint2, toprint3);
     else
-        stbsp_sprintf(numbuff, "%d/%d", toprint, toprint2);
+        stbsp_sprintf(numbuff, "%d/%d\0\0\0", toprint, toprint2);
     width = PixelFont_Width(pcp->pixelnours_big, numbuff, strlen(numbuff));
     width -= (toprint3 > 0) * PCP_TRUE_DMG_OFFSET_X    * 2;
     width += (toprint3 > 9) * PCP_TRUE_DMG_OFFSET_10_X * 2;
@@ -528,13 +528,13 @@ static void _PreCombatPopup_Draw_Stats_Simple(struct PreCombatPopup *pcp, SDL_Re
 
     /* hit */
     toprint = int_inbounds(rates_a.hit, 0, SOTA_100PERCENT);
-    stbsp_sprintf(numbuff, "%3d", toprint);
+    stbsp_sprintf(numbuff, "%3d\0\0\0", toprint);
     x = PCP_SIMPLE_HIT_ASTAT_X,      y = PCP_SIMPLE_HIT_ASTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
 
     /* crit */
     toprint = int_inbounds(rates_a.crit, 0, SOTA_100PERCENT);
-    stbsp_sprintf(numbuff, "%3d", toprint);
+    stbsp_sprintf(numbuff, "%3d\0\0\0", toprint);
     x = PCP_SIMPLE_CRIT_ASTAT_X,      y = PCP_SIMPLE_CRIT_ASTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
 
@@ -588,7 +588,7 @@ static void _PreCombatPopup_Draw_Doubling(struct PreCombatPopup *pcp, SDL_Render
     }
     SDL_SetRenderTarget(renderer, pcp->texture_doubling);
 
-    stbsp_sprintf(numbuff, "%01d", max_phase);
+    stbsp_sprintf(numbuff, "%01d\0\0\0\0", max_phase);
 
     /* -- draw rects -- */
     /* - ligt rect - */

@@ -326,7 +326,7 @@ static void _GrowthsMenu_Draw_Growths( struct GrowthsMenu *gm, SDL_Renderer *ren
     /* - str - */
     x = GM_STR_X_OFFSET, y = GM_STR_Y_OFFSET;
     PixelFont_Write(gm->pixelnours, renderer, "STR", 3, x, y);
-    stbsp_sprintf(numbuff, "%d", effective_growths.str);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_growths.str);
     width = PixelFont_Width_Len(gm->pixelnours_big, numbuff);
     x = GM_STR_STAT_X_OFFSET - width / 2, y = GM_STR_STAT_Y_OFFSET;
     PixelFont_Write_Len(gm->pixelnours_big, renderer, numbuff, x, y);
@@ -334,7 +334,7 @@ static void _GrowthsMenu_Draw_Growths( struct GrowthsMenu *gm, SDL_Renderer *ren
     /* - mag - */
     x = GM_MAG_X_OFFSET, y = GM_MAG_Y_OFFSET;
     PixelFont_Write(gm->pixelnours, renderer, "MAG", 3, x, y);
-    stbsp_sprintf(numbuff, "%d", effective_growths.mag);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_growths.mag);
     width = PixelFont_Width_Len(gm->pixelnours_big, numbuff);
     x = GM_MAG_STAT_X_OFFSET - width / 2, y = GM_MAG_STAT_Y_OFFSET;
     PixelFont_Write_Len(gm->pixelnours_big, renderer, numbuff, x, y);
@@ -342,7 +342,7 @@ static void _GrowthsMenu_Draw_Growths( struct GrowthsMenu *gm, SDL_Renderer *ren
     /* - dex - */
     x = GM_DEX_X_OFFSET, y = GM_DEX_Y_OFFSET;
     PixelFont_Write(gm->pixelnours, renderer, "DEX", 3, x, y);
-    stbsp_sprintf(numbuff, "%d", effective_growths.dex);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_growths.dex);
     width = PixelFont_Width_Len(gm->pixelnours_big, numbuff);
     x = GM_DEX_STAT_X_OFFSET - width / 2, y = GM_DEX_STAT_Y_OFFSET;
     PixelFont_Write_Len(gm->pixelnours_big, renderer, numbuff, x, y);
@@ -350,7 +350,7 @@ static void _GrowthsMenu_Draw_Growths( struct GrowthsMenu *gm, SDL_Renderer *ren
     /* - agi - */
     x = GM_AGI_X_OFFSET, y = GM_AGI_Y_OFFSET;
     PixelFont_Write(gm->pixelnours, renderer, "AGI", 3, x, y);
-    stbsp_sprintf(numbuff, "%d", effective_growths.agi);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_growths.agi);
     width = PixelFont_Width_Len(gm->pixelnours_big, numbuff);
     x = GM_AGI_STAT_X_OFFSET - width / 2, y = GM_AGI_STAT_Y_OFFSET;
     PixelFont_Write_Len(gm->pixelnours_big, renderer, numbuff, x, y);
@@ -358,7 +358,7 @@ static void _GrowthsMenu_Draw_Growths( struct GrowthsMenu *gm, SDL_Renderer *ren
     /* - luck - */
     x = GM_LUCK_X_OFFSET, y = GM_LUCK_Y_OFFSET;
     PixelFont_Write(gm->pixelnours, renderer, "LUCK", 4, x, y);
-    stbsp_sprintf(numbuff, "%d", effective_growths.luck);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_growths.luck);
     width = PixelFont_Width_Len(gm->pixelnours_big, numbuff);
     x = GM_LUCK_STAT_X_OFFSET - width / 2, y = GM_LUCK_STAT_Y_OFFSET;
     PixelFont_Write_Len(gm->pixelnours_big, renderer, numbuff, x, y);
@@ -366,7 +366,7 @@ static void _GrowthsMenu_Draw_Growths( struct GrowthsMenu *gm, SDL_Renderer *ren
     /* - faith - */
     x = GM_FTH_X_OFFSET, y = GM_FTH_Y_OFFSET;
     PixelFont_Write(gm->pixelnours, renderer, "FTH", 3, x, y);
-    stbsp_sprintf(numbuff, "%d", effective_growths.fth);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_growths.fth);
     width = PixelFont_Width_Len(gm->pixelnours_big, numbuff);
     x = GM_FTH_STAT_X_OFFSET - width / 2, y = GM_FTH_STAT_Y_OFFSET;
     PixelFont_Write_Len(gm->pixelnours_big, renderer, numbuff, x, y);
@@ -374,7 +374,7 @@ static void _GrowthsMenu_Draw_Growths( struct GrowthsMenu *gm, SDL_Renderer *ren
     /* - def - */
     x = GM_DEF_X_OFFSET, y = GM_DEF_Y_OFFSET;
     PixelFont_Write(gm->pixelnours, renderer, "DEF", 3, x, y);
-    stbsp_sprintf(numbuff, "%d", effective_growths.def);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_growths.def);
     width = PixelFont_Width_Len(gm->pixelnours_big, numbuff);
     x = GM_DEF_STAT_X_OFFSET - width / 2, y = GM_DEF_STAT_Y_OFFSET;
     PixelFont_Write_Len(gm->pixelnours_big, renderer, numbuff, x, y);
@@ -382,7 +382,7 @@ static void _GrowthsMenu_Draw_Growths( struct GrowthsMenu *gm, SDL_Renderer *ren
     /* - res - */
     x = GM_RES_X_OFFSET, y = GM_RES_Y_OFFSET;
     PixelFont_Write(gm->pixelnours, renderer, "RES", 3, x, y);
-    stbsp_sprintf(numbuff, "%d", effective_growths.res);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_growths.res);
     width = PixelFont_Width_Len(gm->pixelnours_big, numbuff);
     x = GM_RES_STAT_X_OFFSET - width / 2, y = GM_RES_STAT_Y_OFFSET;
     PixelFont_Write_Len(gm->pixelnours_big, renderer, numbuff, x, y);
@@ -390,7 +390,7 @@ static void _GrowthsMenu_Draw_Growths( struct GrowthsMenu *gm, SDL_Renderer *ren
     /* - con - */
     x = GM_CON_X_OFFSET, y = GM_CON_Y_OFFSET;
     PixelFont_Write(gm->pixelnours, renderer, "CON", 3, x, y);
-    stbsp_sprintf(numbuff, "%d", effective_growths.con);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_growths.con);
     width = PixelFont_Width_Len(gm->pixelnours_big, numbuff);
     x = GM_CON_STAT_X_OFFSET - width / 2, y = GM_CON_STAT_Y_OFFSET;
     PixelFont_Write_Len(gm->pixelnours_big, renderer, numbuff, x, y);
@@ -398,7 +398,7 @@ static void _GrowthsMenu_Draw_Growths( struct GrowthsMenu *gm, SDL_Renderer *ren
     /* - prof - */
     x = GM_PROF_X_OFFSET, y = GM_PROF_Y_OFFSET;
     PixelFont_Write(gm->pixelnours, renderer, "PROF", 4, x, y);
-    stbsp_sprintf(numbuff, "%d", effective_growths.prof);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_growths.prof);
     width = PixelFont_Width_Len(gm->pixelnours_big, numbuff);
     x = GM_PROF_STAT_X_OFFSET - width / 2, y = GM_PROF_STAT_Y_OFFSET;
     PixelFont_Write_Len(gm->pixelnours_big, renderer, numbuff, x, y);
@@ -406,7 +406,7 @@ static void _GrowthsMenu_Draw_Growths( struct GrowthsMenu *gm, SDL_Renderer *ren
     /* - mv - */
     x = GM_MOVE_X_OFFSET, y = GM_MOVE_Y_OFFSET;
     PixelFont_Write(gm->pixelnours_big, renderer, "Mv", 2, x, y);
-    stbsp_sprintf(numbuff, "%d", effective_growths.move);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_growths.move);
     width = PixelFont_Width_Len(gm->pixelnours_big, numbuff);
     x = GM_MOVE_STAT_X_OFFSET - width / 2, y = GM_MOVE_STAT_Y_OFFSET;
     PixelFont_Write_Len(gm->pixelnours_big, renderer, numbuff, x, y);
@@ -434,9 +434,9 @@ static void _GrowthsMenu_Draw_Supports(struct GrowthsMenu *gm, SDL_Renderer *ren
     /* - ATK - */
     x = GM_ATK_X_OFFSET,  y = GM_ATK_Y_OFFSET;
     PixelFont_Write(gm->pixelnours, renderer, "ATK", 3, x, y);
-    stbsp_sprintf(numbuff, "%d", support_stats.attack[DMG_TYPE_PHYSICAL]);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", support_stats.attack[DMG_TYPE_PHYSICAL]);
     int width = PixelFont_Width_Len(gm->pixelnours_big, numbuff);
-    stbsp_sprintf(numbuff, "%d/%d", support_stats.attack[DMG_TYPE_PHYSICAL],
+    stbsp_sprintf(numbuff, "%d/%d\0\0", support_stats.attack[DMG_TYPE_PHYSICAL],
                   support_stats.attack[DMG_TYPE_MAGICAL]);
     x = (GM_ATK_X_OFFSET_STAT1 - width),  y = GM_ATK_Y_OFFSET_STAT1;
     PixelFont_Write_Len(gm->pixelnours_big, renderer, numbuff, x, y);
@@ -444,9 +444,9 @@ static void _GrowthsMenu_Draw_Supports(struct GrowthsMenu *gm, SDL_Renderer *ren
     /* - PROT - */
     x = GM_PROT_X_OFFSET,  y = GM_PROT_Y_OFFSET;
     PixelFont_Write(gm->pixelnours, renderer, "DEF", 3, x, y);
-    stbsp_sprintf(numbuff, "%d", support_stats.protection[DMG_TYPE_PHYSICAL]);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", support_stats.protection[DMG_TYPE_PHYSICAL]);
     width = PixelFont_Width_Len(gm->pixelnours_big, numbuff);
-    stbsp_sprintf(numbuff, "%d/%d", support_stats.protection[DMG_TYPE_PHYSICAL],
+    stbsp_sprintf(numbuff, "%d/%d\0\0", support_stats.protection[DMG_TYPE_PHYSICAL],
                   support_stats.protection[DMG_TYPE_MAGICAL]);
     x = (GM_PROT_X_OFFSET_STAT1 - width),  y = GM_PROT_Y_OFFSET_STAT1;
     PixelFont_Write_Len(gm->pixelnours_big, renderer, numbuff, x, y);
@@ -454,25 +454,25 @@ static void _GrowthsMenu_Draw_Supports(struct GrowthsMenu *gm, SDL_Renderer *ren
     /* - HIT - */
     x = GM_HIT_X_OFFSET,  y = GM_HIT_Y_OFFSET;
     PixelFont_Write(gm->pixelnours, renderer, "HIT", 3, x, y);
-    stbsp_sprintf(numbuff, "%d", support_stats.hit);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", support_stats.hit);
     width = PixelFont_Width_Len(gm->pixelnours_big, numbuff);
-    stbsp_sprintf(numbuff, "%d/%d", support_stats.hit, support_stats.dodge);
+    stbsp_sprintf(numbuff, "%d/%d\0\0", support_stats.hit, support_stats.dodge);
     x = (GM_HIT_X_OFFSET_STAT - width),  y = GM_HIT_Y_OFFSET_STAT;
     PixelFont_Write_Len(gm->pixelnours_big, renderer, numbuff, x, y);
 
     /* - CRIT - */
     x = GM_CRIT_X_OFFSET,  y = GM_CRIT_Y_OFFSET;
     PixelFont_Write(gm->pixelnours, renderer, "CRIT", 4, x, y);
-    stbsp_sprintf(numbuff, "%d", support_stats.crit);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", support_stats.crit);
     width = PixelFont_Width_Len(gm->pixelnours_big, numbuff);
-    stbsp_sprintf(numbuff, "%d/%d", support_stats.crit, support_stats.favor);
+    stbsp_sprintf(numbuff, "%d/%d\0\0", support_stats.crit, support_stats.favor);
     x = (GM_CRIT_X_OFFSET_STAT - width),  y = GM_CRIT_Y_OFFSET_STAT;
     PixelFont_Write_Len(gm->pixelnours_big, renderer, numbuff, x, y);
 
     /* - SPEED - */
     x = GM_SPEED_X_OFFSET,  y = GM_SPEED_Y_OFFSET;
     PixelFont_Write(gm->pixelnours, renderer, "SPEED", 5, x, y);
-    stbsp_sprintf(numbuff, "%d", support_stats.speed);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", support_stats.speed);
     width = PixelFont_Width_Len(gm->pixelnours_big, numbuff);
     x = (GM_SPEED_X_OFFSET_STAT - width / 2),  y = GM_SPEED_Y_OFFSET_STAT;
     PixelFont_Write_Len(gm->pixelnours_big, renderer, numbuff, x, y);

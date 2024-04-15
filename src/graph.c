@@ -122,7 +122,7 @@ void _Graph_Draw_Axes(struct Graph *graph, struct n9Patch *n9patch,
 
     /* -- Draw graph -- */
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
-    char numbuff[4];
+    char numbuff[8];
     SDL_Rect yrect = {graph->margin_left, graph->header, 1, graph->rect.h - graph->header - graph->footer};
     SDL_Rect xrect = {yrect.x, graph->rect.h - graph->footer, graph->rect.w - graph->margin_left - graph->margin_right - 10, 1};
     i32 data_width = GRAPH_DATA_WIDTH;
@@ -216,7 +216,7 @@ void _Graph_Draw_Axes(struct Graph *graph, struct n9Patch *n9patch,
         label.h = (i % 2) == 0 ? GRAPH_TICK_MAJOR_LEN : GRAPH_TICK_MINOR_LEN;
         label.x = xrect.x + i * x_dist + GRAPH_XAXIS_OFFSET - GRAPH_YLABEL_X_OFFSET;
         label.y = xrect.y + GRAPH_YLABEL_Y_OFFSET;
-        stbsp_sprintf(numbuff, "%02d", i * x_tick_num);
+        stbsp_sprintf(numbuff, "%02d\0\0\0\0", i * x_tick_num);
         PixelFont_Write(pixelnours_big, renderer, numbuff, strlen(numbuff), label.x, label.y);
     }
     i32 y_tick_num = (graph->plot_max.y - graph->plot_min.y) / y_lvl_dist;
@@ -225,7 +225,7 @@ void _Graph_Draw_Axes(struct Graph *graph, struct n9Patch *n9patch,
         label.w = (i % 2) == 0 ? GRAPH_TICK_MAJOR_LEN : GRAPH_TICK_MINOR_LEN;
         label.x = xrect.x - GRAPH_XLABEL_X_OFFSET;
         label.y = xrect.y - i * y_dist - GRAPH_YAXIS_OFFSET - GRAPH_XLABEL_Y_OFFSET;
-        stbsp_sprintf(numbuff, "%02d", i * y_lvl_dist);
+        stbsp_sprintf(numbuff, "%02d\0\0\0\0", i * y_lvl_dist);
         PixelFont_Write(pixelnours_big, renderer, numbuff, strlen(numbuff), label.x, label.y);
     }
 }
@@ -252,8 +252,8 @@ void _Graph_Draw_Stat(struct Graph *graph, u8 stat_id, struct n9Patch *n9patch,
         .h = graph->rect.h - graph->header - PIXELFONT_HEIGHT - GRAPH_TICK_MINOR_LEN + 2,
     };
     SDL_RenderFillRect(renderer, &level);
-    char numbuff[4];
-    stbsp_sprintf(numbuff, "%02d", graph_stat.level);
+    char numbuff[8];
+    stbsp_sprintf(numbuff, "%02d\0\0\0\0", graph_stat.level);
     int height = level.y - PIXELFONT_HEIGHT;
     PixelFont_Write(pixelnours_big, renderer, "Lv", 2, level.x - GRAPH_LVL_X_OFFSET, height);
     PixelFont_Write(pixelnours_big, renderer, numbuff, strlen(numbuff), level.x + 2, height);
