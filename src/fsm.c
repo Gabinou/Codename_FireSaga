@@ -510,9 +510,11 @@ void fsm_eCrsHvUnit_ssMapCndt(struct Game *sota, tnecs_entity hov_ent) {
     /* -- Start unit combat stance loop -- */
     // NOTE: ONLY FOR ATTACK
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, hov_ent, Sprite);
-    Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_STANCE, sprite->flip);
-    Sprite_Animation_Loop(sprite);
-    Sprite_Draw(sprite, sota->renderer);
+    if (MAP_UNIT_LOOP_STANCE < sprite->spritesheet->loop_num) {
+        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_STANCE, sprite->flip);
+        Sprite_Animation_Loop(sprite);
+        Sprite_Draw(sprite, sota->renderer);
+    }
 
     /* OLD event_Defendant_Select */
     // 1. Compute Combat stuff -> Move to cursor hovers new defendant

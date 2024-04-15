@@ -448,6 +448,9 @@ void Sprite_Lighten(struct Sprite *sprite, SDL_Renderer *renderer) {
 void Sprite_Animation_Restart(struct Sprite *sprite, int loop) {
     SDL_assert(sprite != NULL);
     struct Spritesheet *spritesheet = sprite->spritesheet;
+    if (loop >= spritesheet->loop_num) {
+        return;
+    }
     Spritesheet_Loop_Set(spritesheet, loop, sprite->flip);
 
     spritesheet->current_frame  = 0;

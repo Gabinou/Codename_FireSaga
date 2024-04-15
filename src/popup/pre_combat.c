@@ -243,7 +243,7 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
     // TODO: Text alignment: Centered? -> left align left column, right align right column
 
     /* HP */
-    stbsp_sprintf(numbuff, "%02d/%02d\0\0", pcp->dft_unit->current_hp, effective_stats_d.hp);
+    stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", pcp->dft_unit->current_hp, effective_stats_d.hp);
     x = PCP_MATH_HP_DSTAT_X,     y = PCP_MATH_HP_DSTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
@@ -288,7 +288,7 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
 
     /* - Aggressor - */
     /* HP */
-    stbsp_sprintf(numbuff, "%02d/%02d\0\0", pcp->agg_unit->current_hp, effective_stats_a.hp);
+    stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", pcp->agg_unit->current_hp, effective_stats_a.hp);
     x = PCP_MATH_HP_ASTAT_X,   y = PCP_MATH_HP_ASTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
@@ -383,7 +383,7 @@ static void _PreCombatPopup_Draw_Stats_Total( struct PreCombatPopup *pcp, SDL_Re
     // TODO: Text alignment: Centered? -> left align left column, right align right column
 
     /* HP */
-    stbsp_sprintf(numbuff, "%02d/%02d\0\0", pcp->dft_unit->current_hp, effective_stats_d.hp);
+    stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", pcp->dft_unit->current_hp, effective_stats_d.hp);
     x = PCP_SIMPLE_HP_DSTAT_X,   y = PCP_SIMPLE_HP_DSTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
@@ -407,7 +407,7 @@ static void _PreCombatPopup_Draw_Stats_Total( struct PreCombatPopup *pcp, SDL_Re
 
     /* - Aggressor - */
     /* HP */
-    stbsp_sprintf(numbuff, "%02d/%02d\0\0", pcp->agg_unit->current_hp, effective_stats_a.hp);
+    stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", pcp->agg_unit->current_hp, effective_stats_a.hp);
     x = PCP_SIMPLE_HP_ASTAT_X,   y = PCP_SIMPLE_HP_ASTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
