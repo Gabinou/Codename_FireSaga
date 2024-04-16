@@ -29,13 +29,14 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
         return;
     }
 
-    /* - pausing attacker - */
+    /* - pausing attacker for constant time - */
     int attacker_i = sota->combat_outcome.phases[combat_anim->attack_ind].attacker;
     tnecs_entity attacker = attacker_i ? sota->aggressor : sota->defendant;
 
     struct Timer *att_timer = TNECS_GET_COMPONENT(sota->world, attacker, Timer);
     SDL_assert(att_timer != NULL);
     att_timer->paused = ((combat_timer->time_ns / SOTA_us) < combat_anim->pause_before_ms);
+
     if (att_timer->paused) {
         return;
     }
@@ -49,11 +50,17 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
     struct Sprite *att_sprite = TNECS_GET_COMPONENT(sota->world, attacker, Sprite);
     SDL_assert(att_sprite != NULL);
     int current_frame   = att_sprite->spritesheet->current_frame;
+    int current_loop    = att_sprite->spritesheet->current_loop;
+    int frame_num       = att_sprite->spritesheet->frames[current_loop];
     int frame_count     = combat_anim->frame_count;
     combat_anim->frame_count = current_frame > frame_count ? current_frame : frame_count;
 
+    b32 attack_anim_done    = (combat_anim->frame_count >= (frame_num - 1));
+    b32 paused              = att_timer->paused;
+
     /* - Checking if combat_anim->attack_ind should be incremented - */
-    if (att_timer->paused || (combat_anim->frame_count == 0) || (current_frame > 0)) {
+    if (paused || !attack_anim_done) {
+        /* Don't increment, keep animating */
         return;
     }
 
@@ -61,10 +68,10 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
     Event_Emit(__func__, SDL_USEREVENT, event_Increment_Attack, NULL, NULL);
 
     /* - reset combat timer for next attack - */
-    combat_timer->time_ns = 0;
+    combat_timer->time_ns       = 0;
     /* - reset frame_count for next attack - */
-    combat_anim->frame_count = 0;
-    att_timer->paused = true;
+    combat_anim->frame_count    = 0;
+    att_timer->paused           = true;
 
     /* - pause defender - */
     tnecs_entity defender = attacker_i ? sota->defendant : sota->aggressor;
