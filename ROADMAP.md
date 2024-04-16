@@ -16,9 +16,11 @@ More details on my thoughts are available in the [development blog] (https://ave
 	8. No Digital Rights Management (DRM) software or anti-piracy measures
 
 - Narrative is king.
-	* Everything in the game, mechanics, gameplay, items, etc. tell a story.
+	* Everything in the game, mechanics, gameplay, items, etc. tells a story.
 	* Themes
-		- Tragedy of War & Death
+		- Death
+			- Of Empires & People
+			- Tragedy and Glory of War
 		- Slavery to Gods & Kings
 		- Fighting Demons within & without
 
