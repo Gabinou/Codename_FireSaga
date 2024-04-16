@@ -16,7 +16,7 @@ More details on my thoughts are available in the [development blog] (https://ave
 	8. No Digital Rights Management (DRM) software or anti-piracy measures
 
 - Narrative is king.
-	* Everything in the game, mechanics, gameplay, items, etc. tells a story.
+	* Everything in the game, mechanics, gameplay, items, etc. tell a story.
 	* Themes
 		- Tragedy of War & Death
 		- Slavery to Gods & Kings
@@ -57,7 +57,7 @@ More details on my thoughts are available in the [development blog] (https://ave
 	* Forcible IronMan Mode
 		Force player into IronMan mode. The game always saves, no retries. 
 	* No Achievements
-		I do not care for them and I think they are generally harmful.
+		No. Harmful .
 	* Cities are visitable like camps?
 
 ## Under the hood:
@@ -72,30 +72,28 @@ Playable on
 2. Consoles?
 
 # Roadmap
-In no particular order:
-
 - Turn system
 	1. AI for enemy attacks		(0.1)
 	2. Switching between armies (0.2)
 - Design
-	1. Weapons 	(1.0)
-	* Types 	(1.0)
+	1. Weapons 	(1.1)
+		* Types 	(1.1)
 	2. Tiles 	(0.3)
 	3. Maps
-	* Test chapter 	(1.0)
-	* Other chapters
+		* Test chapter 	(1.0)
+		* Other chapters
 	4. Units 		(0.2)
-	* Names 		(0.2)
-	* Bases 		(0.1)
-	* Caps 			(0.1)
-	* Promotions 	(0.1)
+		* Names 		(0.2)
+		* Bases 		(0.1)
+		* Caps 			(0.1)
+		* Promotions 	(0.1)
 - Animations
 	1. Cursor idle 		(1.0) 
 	2. Cursor slide 	(1.0) 
 	3. Unit walking 	(0.1)
 	4. Unit idle 		(0.1)
 	5. Unit portraits
-	6. Turn transition
+	6. Turn transition 	(1.0)
 - Menus
 	1. Dynamic Unit Actions (1.0)
 	2. Unit Statistics 		(0.3)
@@ -120,10 +118,10 @@ In no particular order:
 	2. Scene sounds
 	3. Songs			
 - Art
-	1. Art style 		(0.2)
+	1. Art style 		(0.3)
 	2. Unit concepts
 	3. Unit portraits
-	4. Map units 		(0.2)
+	4. Map units 		(0.3)
 	5. Tiles 			(0.2)
 	6. Custom Mouse 	(0.2)
 	7. Title Screen 	(0.2)
@@ -133,7 +131,7 @@ In no particular order:
 	2. Camp  	(0.2)
 	3. Combat 	(2.0)
 - Story
-	1. Main thrust 				(0.2)
+	1. Main thrust 				(0.3)
 	2. Chapter introductions
 	3. Side-chapters
 	4. Camp Events
