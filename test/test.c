@@ -46,6 +46,8 @@
 #include "popup/test_text_bubble.h"
 #include "popup/test_unit.h"
 
+#include "integration/test_basic.h"
+
 void render_tests() {
     SDL_Log("Running rendering tests\n");
     printf("Running rendering tests\n");
@@ -66,8 +68,8 @@ void render_tests() {
 }
 
 void unit_tests() {
-    SDL_Log("Running nourstests\n");
-    printf("Running nourstests\n");
+    SDL_Log("Running unit tests\n");
+    printf("Running unit tests\n");
     nourstest_run("AI ",            test_AI);
     nourstest_run("Bitfields ",     test_bitfields);
     nourstest_run("Camp ",          test_camp);
@@ -95,7 +97,13 @@ void unit_tests() {
     nourstest_run("Unit ",          test_unit);
     nourstest_run("Utilities ",     test_utilities);
     nourstest_run("Weapon ",        test_weapon);
-    nourstest_results();
+}
+
+void integration_tests() {
+    SDL_Log("Running integration tests\n");
+    printf("Running integration tests\n");
+
+    nourstest_run("Basic ",        test_basic);
 }
 
 int main(int argc, char *argv[]) {
@@ -118,6 +126,8 @@ int main(int argc, char *argv[]) {
     /* -- Running tests -- */
     unit_tests();
     render_tests();
+    integration_tests();
+    nourstest_results();
 
     /* -- Postliminaries -- */
     Utilities_Free();
