@@ -5,12 +5,14 @@
 #include "types.h"
 #include "enums.h"
 #include "structs.h"
+#include "jsonio.h"
 #include "RNG.h"
 #include "nmath.h"
 #include "unit/unit.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
+struct RNG_Sequence;
 struct Unit;
 
 /* --- GLOSSARY ---

@@ -6,7 +6,6 @@
 #include "enums.h"
 #include "debug.h"
 #include "macros.h"
-#include "jsonio.h"
 #include "types.h"
 #include "tinymt32.h"
 #include "SDL2/SDL.h"
@@ -16,6 +15,13 @@
 #endif /* M_PI */
 
 /* --- FORWARD DECLARATIONS --- */
+struct cJSON;
+typedef struct cJSON cJSON;
+typedef int cJSON_bool;
+cJSON *cJSON_GetObjectItem(const cJSON *const object, const char *const string);
+cJSON *cJSON_CreateNumber(double num);
+cJSON_bool cJSON_AddItemToObject(cJSON *object, const char *string, cJSON *item);
+double cJSON_GetNumberValue(cJSON *item);
 float sota_slowpow(float base, int exponent);
 
 /* -- GLOSSARY: -- */

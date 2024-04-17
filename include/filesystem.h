@@ -17,6 +17,7 @@
 
 /* --- FORWARD DECLARATINOS --- */
 struct Breakable;
+struct RNG_Sequence;
 struct Door;
 struct Unit;
 struct Chest;

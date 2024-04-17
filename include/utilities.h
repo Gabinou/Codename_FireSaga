@@ -8,11 +8,13 @@
 #include <unistd.h>
 #include "platform.h"
 #include "palette.h"
+#include "jsonio.h"
 #include "types.h"
 #include "octant.h"
 #include "unit/unit.h"
 #include "enums.h"
 #include "macros.h"
+#include "debug.h"
 #include "debug.h"
 #include "item.h"
 #include "weapon.h"
@@ -21,6 +23,9 @@
 #include "nmath.h"
 #include "nstr.h"
 #include "SDL2/SDL.h"
+
+/* --- FORWARD DECLARATIONS --- */
+struct RNG_Sequence;
 
 /* #if SDL_BYTEORDER == SDL_BIG_ENDIAN */
 /* rmask = 0xff000000;                 */

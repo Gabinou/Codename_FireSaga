@@ -5,6 +5,7 @@
 #include "types.h"
 #include "structs.h"
 #include "nmath.h"
+#include "jsonio.h"
 #include "filesystem.h"
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"

@@ -565,7 +565,7 @@ void Game_loadJSON(struct Game *sota,  i16 save_ind) {
 
     cJSON *jRNG          = cJSON_GetObjectItem(json, "RNG");
     RNG_readJSON(sota->s_xoshiro256ss, jRNG);
-    RNG_Set_xoroshiro256ss(sota->s_xoshiro256ss[0], 
+    RNG_Set_xoroshiro256ss(sota->s_xoshiro256ss[0],
                            sota->s_xoshiro256ss[1],
                            sota->s_xoshiro256ss[2],
                            sota->s_xoshiro256ss[3]);
