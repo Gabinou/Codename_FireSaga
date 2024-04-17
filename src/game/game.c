@@ -558,19 +558,17 @@ void Game_loadJSON(struct Game *sota,  i16 save_ind) {
     s8 filename = s8_mut(SAVE_FOLDER);
     char temp[DEFAULT_BUFFER_SIZE];
     stbsp_snprintf(temp, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", save_ind);
+    // TODO jsonio
     filename = s8cat(filename, s8_var(temp));
     cJSON *json         = jsonio_parseJSON(filename);
     // readJSON_narrative(json, &sota->narrative);
-    cJSON *jRN          = cJSON_GetObjectItem(json, "RN");
-    cJSON *jRN_s1       = cJSON_GetObjectItem(jRN, "s1");
-    cJSON *jRN_s2       = cJSON_GetObjectItem(jRN, "s2");
-    cJSON *jRN_s3       = cJSON_GetObjectItem(jRN, "s3");
-    cJSON *jRN_s4       = cJSON_GetObjectItem(jRN, "s4");
-    u64 s1              = cJSON_GetNumberValue(jRN_s1);
-    u64 s2              = cJSON_GetNumberValue(jRN_s2);
-    u64 s3              = cJSON_GetNumberValue(jRN_s3);
-    u64 s4              = cJSON_GetNumberValue(jRN_s4);
-    RNG_Set_xoroshiro256ss(s1, s2, s3, s4);
+
+    cJSON *jRNG          = cJSON_GetObjectItem(json, "RNG");
+    RNG_readJSON(sota->s_xoshiro256ss, jRNG);
+    RNG_Set_xoroshiro256ss(sota->s_xoshiro256ss[0], 
+                           sota->s_xoshiro256ss[1],
+                           sota->s_xoshiro256ss[2],
+                           sota->s_xoshiro256ss[3]);
 
     cJSON *jconvoy = cJSON_GetObjectItem(json, "Convoy");
     Convoy_Clear(&sota->convoy);
@@ -610,27 +608,14 @@ void Game_saveJSON(struct Game *sota,  i16 save_ind) {
     cJSON *jconvoy      = cJSON_CreateObject();
     // cJSON * jcamp = cJSON_CreateObject();
     cJSON *junit;
-    cJSON *jRN          = cJSON_CreateObject();
-    cJSON *jRN_status   = cJSON_CreateArray();
 
     // TODO: save xoshiro256ss state
     RNG_Get_xoroshiro256ss(sota->s_xoshiro256ss);
-    cJSON *jRN_s1     = cJSON_CreateNumber(sota->s_xoshiro256ss[0]);
-    cJSON *jRN_s2     = cJSON_CreateNumber(sota->s_xoshiro256ss[0]);
-    cJSON *jRN_s3     = cJSON_CreateNumber(sota->s_xoshiro256ss[0]);
-    cJSON *jRN_s4     = cJSON_CreateNumber(sota->s_xoshiro256ss[0]);
 
-    /* TODO: use party_struct */
-    // for (u8 i = 0; i < sota->party_size; i++) {
-    //     junit = cJSON_CreateObject();
-    //     Unit_writeJSON(&sota->party[i], junit);
-    //     cJSON_AddItemToObject(jparty, "Unit", junit);
-    // }
-    cJSON_AddItemToObject(jRN,  "s1",       jRN_s1);
-    cJSON_AddItemToObject(jRN,  "s2",       jRN_s2);
-    cJSON_AddItemToObject(jRN,  "s3",       jRN_s3);
-    cJSON_AddItemToObject(jRN,  "s4",       jRN_s4);
-    cJSON_AddItemToObject(json, "RN",       jRN);
+    cJSON *jRNG         = cJSON_CreateObject();
+    RNG_writeJSON(sota->s_xoshiro256ss, jRNG);
+
+    cJSON_AddItemToObject(json, "RNG",       jRNG);
     cJSON_AddItemToObject(json, "Party",    jparty);
     Convoy_writeJSON(&sota->convoy, jconvoy);
     // cJSON_AddItemToObject(json, "Camp", jcamp);

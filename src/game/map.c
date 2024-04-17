@@ -43,6 +43,7 @@ void Game_debugMap_Free(struct Game *sota) {
 
 void Game_debugMap_Load(struct Game *sota) {
     // TODO: Split off debugmap specific stuff from ALL MAPS loading stuff
+    // Rename to Game_Gameplay_Start or something
     /* -- Preliminaries -- */
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Loading in test Map\n");
     /* - Updating game states - */
@@ -75,6 +76,8 @@ void Game_debugMap_Load(struct Game *sota) {
     Party_Size(&sota->party_struct);
     SDL_assert(sota->party_struct.size > 0);
 
+    /* -- Deployment Menu -- */
+    // TODO: move to start deployment event or something
     Game_DeploymentMenu_Enable(sota);
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
     struct DeploymentMenu *dm = mc->data;
@@ -95,13 +98,11 @@ void Game_debugMap_Load(struct Game *sota) {
     DARR_PUT(sota->map->death_friendly, Map_condition_main_char_loss);
     DARR_PUT(sota->map->death_friendly, Map_condition_debug_map_loss);
 
-    // DARR_FREE(unit_inds);
-
     /* -- Load reinforcements -- */
-    // TODO: Move to debug_map_load
     Game_Map_Reinforcements_Load(sota);
 
-    /* -- Show starting positions -- */
+    /* -- Show starting positions -> for deployment -- */
+    // TODO: move to start deployment event or something
     Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_START_POS);
 }
 

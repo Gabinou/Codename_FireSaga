@@ -178,6 +178,34 @@ b32 RNG_checkRate(i16 rate, i16 mode) {
     }
     return (hit);
 }
+/* --- I/O --- */
+void RNG_readJSON(void *input, cJSON *jRNG) {
+    u64 *array = (u64 *)input;
+
+    cJSON *jRNG     = cJSON_GetObjectItem(json, "RN");
+    cJSON *jRNG_s1  = cJSON_GetObjectItem(jRNG, "s1");
+    cJSON *jRNG_s2  = cJSON_GetObjectItem(jRNG, "s2");
+    cJSON *jRNG_s3  = cJSON_GetObjectItem(jRNG, "s3");
+    cJSON *jRNG_s4  = cJSON_GetObjectItem(jRNG, "s4");
+    array[0]        = cJSON_GetNumberValue(jRNG_s1);
+    array[1]        = cJSON_GetNumberValue(jRNG_s2);
+    array[2]        = cJSON_GetNumberValue(jRNG_s3);
+    array[3]        = cJSON_GetNumberValue(jRNG_s4);
+}
+
+void RNG_writeJSON(void *input, cJSON *jRNG) {
+    u64 *array = (u64 *)input;
+
+    cJSON *jRN_s1     = cJSON_CreateNumber(array[0]);
+    cJSON *jRN_s2     = cJSON_CreateNumber(array[1]);
+    cJSON *jRN_s3     = cJSON_CreateNumber(array[2]);
+    cJSON *jRN_s4     = cJSON_CreateNumber(array[3]);
+
+    cJSON_AddItemToObject(jRN,  "s1",       jRN_s1);
+    cJSON_AddItemToObject(jRN,  "s2",       jRN_s2);
+    cJSON_AddItemToObject(jRN,  "s3",       jRN_s3);
+    cJSON_AddItemToObject(jRN,  "s4",       jRN_s4);
+}
 
 /* --- RNG SEQUENCE BREAKER (SB) --- */
 void RNG_checkSequence_twoWay(struct RNG_Sequence *sequence, b32 draw) {

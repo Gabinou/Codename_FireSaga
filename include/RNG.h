@@ -6,6 +6,7 @@
 #include "enums.h"
 #include "debug.h"
 #include "macros.h"
+#include "jsonio.h"
 #include "types.h"
 #include "tinymt32.h"
 #include "SDL2/SDL.h"
@@ -104,6 +105,10 @@ extern float sb_drop_table[RNG_SB_BASE_NUM];
 u16 SB_Rate_Drop(u16 rate, u16 n);
 void RNG_checkSequence_twoWay(struct RNG_Sequence *sequence, b32 hit);
 void RNG_checkSequence_oneWay(struct RNG_Sequence *sequence, b32 hit);
+
+/* --- I/O --- */
+void RNG_readJSON( void *input, cJSON *jRNG);
+void RNG_writeJSON(void *input, cJSON *jRNG);
 
 /* REFERENCES */
 /* [1] Lemire, Daniel. "Fast random integer generation in an interval." ACM Transactions on Modeling and Computer Simulation (TOMACS) 29.1 (2019): 1-12. */
