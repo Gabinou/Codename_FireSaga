@@ -580,14 +580,6 @@ void Game_loadJSON(struct Game *sota,  i16 save_ind) {
     // Camp_readJSON(&sota->camp, jcamp);
     cJSON *junit = cJSON_GetObjectItem(jparty, "Unit");
     struct Unit temp_unit;
-    /* TODO: use party_struct */
-    // while (junit != NULL) {
-    //     temp_unit = Unit_default;
-    //     Unit_readJSON(&temp_unit, junit);
-    //     sota->party[sota->party_size] = temp_unit;
-    //     sota->party_size++;
-    //     junit = junit->next;
-    // }
     cJSON_Delete(json);
 }
 

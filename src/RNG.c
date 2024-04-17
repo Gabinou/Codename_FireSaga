@@ -186,6 +186,7 @@ void RNG_readJSON(void *input, cJSON *jRNG) {
     cJSON *jRNG_s2  = cJSON_GetObjectItem(jRNG, "s2");
     cJSON *jRNG_s3  = cJSON_GetObjectItem(jRNG, "s3");
     cJSON *jRNG_s4  = cJSON_GetObjectItem(jRNG, "s4");
+    
     array[0]        = cJSON_GetNumberValue(jRNG_s1);
     array[1]        = cJSON_GetNumberValue(jRNG_s2);
     array[2]        = cJSON_GetNumberValue(jRNG_s3);
