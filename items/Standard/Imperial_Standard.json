@@ -9,9 +9,10 @@
             "hp": 0,
             "str": 0,
             "mag": 0,
-            "agi": 0,
-            "dex": 0,
-            "luck": 0,
+            "agi": 1,
+            "dex": 2,
+            "luck": 1,
+            "fth": 1,
             "def": 0,
             "res": 0,
             "con": 0,
@@ -20,7 +21,7 @@
         },
         "Users":
         {
-            "id": []
+            "id": [1]
         },
         "Malus":
         {
@@ -30,6 +31,7 @@
             "agi": 0,
             "dex": 0,
             "luck": 0,
+            "fth": 0,
             "def": 0,
             "res": 0,
             "con": 0,
@@ -39,30 +41,30 @@
         "canSell": false,
         "Effects":
         {
-            "active": 101,
-            "passive": 0
-        },
+            "passive": 54,
+            "active": 55
+           },
         "Types":
         {
-            "id": 512,
-            "Type": "Staff"
+            "id": 262144,
+            "Type": "Standard"
         },
         "Subtype": 0,
         "Handedness": 0,
         "Stats":
         {
-            "Attack": [0,0,0],
-            "Protection": [0,0],
+            "Attack": [4,0,0],
+            "Protection": [1,1],
             "hit": 0,
             "dodge": 0,
             "crit": 0,
             "favor": 0,
-            "wgt": 5,
+            "wgt": 8,
             "prof": 4,
-            "Range": [1,1],
-            "uses": 40,
-            "price": 700,
-            "AP": 10
+            "Range": [0,4],
+            "uses": 10,
+            "price": 0,
+            "AP": 0
         },
         "Effective": 0
     }

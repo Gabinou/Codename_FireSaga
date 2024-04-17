@@ -4,14 +4,15 @@
         "Name": "Labarum",
         "id": 1604,
         "Description": "Elean monogram mounted on top of an imperial tassel.",
-        "Bonus":
+     "Bonus":
         {
             "hp": 0,
             "str": 0,
             "mag": 0,
             "agi": 0,
-            "dex": 0,
-            "luck": 0,
+            "dex": 1,
+            "luck": 3,
+            "fth": 3,
             "def": 0,
             "res": 0,
             "con": 0,
@@ -20,7 +21,7 @@
         },
         "Users":
         {
-            "id": []
+            "id": [1]
         },
         "Malus":
         {
@@ -30,6 +31,7 @@
             "agi": 0,
             "dex": 0,
             "luck": 0,
+            "fth": 0,
             "def": 0,
             "res": 0,
             "con": 0,
@@ -39,31 +41,31 @@
         "canSell": false,
         "Effects":
         {
-            "active": 101,
-            "passive": 0
+            "passive": 54,
+            "active": 58
         },
         "Types":
         {
-            "id": 512,
-            "Type": "Staff"
+            "id": 262144,
+            "Type": "Standard"
         },
         "Subtype": 0,
         "Handedness": 0,
         "Stats":
         {
-            "Attack": [0,0,0],
-            "Protection": [0,0],
+            "Attack": [7,0,0],
+            "Protection": [1,1],
             "hit": 0,
             "dodge": 0,
             "crit": 0,
-            "favor": 0,
-            "wgt": 5,
-            "prof": 4,
-            "Range": [1,1],
-            "uses": 40,
-            "price": 700,
-            "AP": 10
+            "favor": 10,
+            "wgt": 7,
+            "prof": 7,
+            "Range": [0,4],
+            "uses": 10,
+            "price": 0,
+            "AP": 0
         },
         "Effective": 0
     }
-}
+} 
