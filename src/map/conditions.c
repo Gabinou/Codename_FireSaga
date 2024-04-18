@@ -134,14 +134,65 @@ void Map_Condition_Trigger(struct Map_condition *condition) {
         /* Win and Loss condition both */
         // Error?
     }
-
 }
 
 /* --- I/O --- */
-void Map_Condition_saveJSON(void *input, cJSON *jmap_cond) {
+void Map_Condition_writeJSON(void *input, cJSON *jmap_cond) {
+    struct Map_condition *map_cond = (struct Map_condition *)input;
 
+    cJSON *jarmy    = cJSON_CreateNumber(map_cond->army);
+    cJSON *jboss    = cJSON_CreateBool(map_cond->boss);
+    cJSON *jall     = cJSON_CreateBool(map_cond->all);
+    cJSON *junit    = cJSON_CreateNumber(map_cond->unit);
+    cJSON *jmin     = cJSON_CreateNumber(map_cond->min);
+    cJSON *jmax     = cJSON_CreateNumber(map_cond->max);
+    cJSON *jat      = cJSON_CreateNumber(map_cond->at);
+    cJSON *jgold    = cJSON_CreateNumber(map_cond->gold);
+    cJSON *jitem    = cJSON_CreateNumber(map_cond->item);
+    cJSON *jscene   = cJSON_CreateNumber(map_cond->scene);
+    cJSON *jwin     = cJSON_CreateBool(map_cond->win);
+    cJSON *jlose    = cJSON_CreateBool(map_cond->lose);
+
+    cJSON_AddItemToObject(jmap_cond, "army", jarmy);
+    cJSON_AddItemToObject(jmap_cond, "boss", jboss);
+    cJSON_AddItemToObject(jmap_cond, "all", jall);
+    cJSON_AddItemToObject(jmap_cond, "unit", junit);
+    cJSON_AddItemToObject(jmap_cond, "min", jmin);
+    cJSON_AddItemToObject(jmap_cond, "max", jmax);
+    cJSON_AddItemToObject(jmap_cond, "at", jat);
+    cJSON_AddItemToObject(jmap_cond, "gold", jgold);
+    cJSON_AddItemToObject(jmap_cond, "item", jitem);
+    cJSON_AddItemToObject(jmap_cond, "scene", jscene);
+    cJSON_AddItemToObject(jmap_cond, "win", jwin);
+    cJSON_AddItemToObject(jmap_cond, "lose", jlose);
 }
 
-void Map_Condition_loadJSON(void *input, cJSON *jmap_cond) {
+void Map_Condition_readJSON(void *input, cJSON *jmap_cond) {
+    struct Map_condition *map_cond = (struct Map_condition *)input;
 
+    cJSON *jarmy    = cJSON_GetObjectItem(jmap_cond, "army");
+    cJSON *jboss    = cJSON_GetObjectItem(jmap_cond, "boss");
+    cJSON *jall     = cJSON_GetObjectItem(jmap_cond, "all");
+    cJSON *junit    = cJSON_GetObjectItem(jmap_cond, "unit");
+    cJSON *jmin     = cJSON_GetObjectItem(jmap_cond, "min");
+    cJSON *jmax     = cJSON_GetObjectItem(jmap_cond, "max");
+    cJSON *jat      = cJSON_GetObjectItem(jmap_cond, "at");
+    cJSON *jgold    = cJSON_GetObjectItem(jmap_cond, "gold");
+    cJSON *jitem    = cJSON_GetObjectItem(jmap_cond, "item");
+    cJSON *jscene   = cJSON_GetObjectItem(jmap_cond, "scene");
+    cJSON *jwin     = cJSON_GetObjectItem(jmap_cond, "win");
+    cJSON *jlose    = cJSON_GetObjectItem(jmap_cond, "lose");
+
+    map_cond->army  = cJSON_GetNumberValue(jarmy);
+    map_cond->boss  = cJSON_IsTrue(jboss);
+    map_cond->all   = cJSON_IsTrue(jall);
+    map_cond->unit  = cJSON_GetNumberValue(junit);
+    map_cond->min   = cJSON_GetNumberValue(jmin);
+    map_cond->max   = cJSON_GetNumberValue(jmax);
+    map_cond->at    = cJSON_GetNumberValue(jat);
+    map_cond->gold  = cJSON_GetNumberValue(jgold);
+    map_cond->item  = cJSON_GetNumberValue(jitem);
+    map_cond->scene = cJSON_GetNumberValue(jscene);
+    map_cond->win   = cJSON_IsTrue(jwin);
+    map_cond->lose  = cJSON_IsTrue(jlose);
 }

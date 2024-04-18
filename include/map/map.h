@@ -6,6 +6,7 @@
 #include "tnecs.h"
 #include "map/tiles.h"
 #include "map/ontile.h"
+#include "map/conditions.h"
 #include "map/find.h"
 #include "map/path.h"
 #include "index_shader.h"

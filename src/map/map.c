@@ -899,6 +899,31 @@ void Map_readJSON(void *input,  cJSON *jmap) {
         cJSON_Delete(jshadow_tileset_file);
     }
 
+    /* --- Parsing conditions --- */
+    if (map->death_enemy != NULL)
+        DARR_FREE(map->death_enemy);
+    if (map->death_friendly != NULL)
+        DARR_FREE(map->death_friendly);
+
+    map->death_enemy      = DARR_INIT(map->death_enemy,     struct Map_condition, 2);
+    map->death_friendly   = DARR_INIT(map->death_friendly,  struct Map_condition, 2);
+    
+    cJSON *jmap_conditions  = cJSON_GetObjectItem(jmap, "Conditions");
+    cJSON *jdeath_enemy     = cJSON_GetObjectItem(jmap, "death_enemy");
+    cJSON *jdeath_friendly  = cJSON_GetObjectItem(jmap, "death_friendly");
+    cJSON *jmap_condition;
+
+    cJSON_ArrayForEach(jmap_condition, jdeath_enemy) {
+        struct Map_condition map_cond;
+        Map_Condition_readJSON(&map_cond, jmap_condition)
+        DARR_PUT(map->death_enemy, map_cond);
+    }
+
+    cJSON_ArrayForEach(jmap_condition, jdeath_friendly) {
+        struct Map_condition map_cond;
+        Map_Condition_readJSON(&map_cond, jmap_condition)
+        DARR_PUT(map->death_friendly, map_cond);
+    }
 }
 
 /* --- Map events / Triggers --- */
