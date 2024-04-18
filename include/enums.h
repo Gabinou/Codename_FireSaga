@@ -22,6 +22,18 @@
 
 #define SOTA_PI (355.0f / 113.0f)
 
+enum PIXELFONT {
+    ASCII_CHARSET_ROW_LEN       = 16,
+    ASCII_CHARSET_COL_LEN       = 16,
+    ASCII_GLYPH_HEIGHT          =  8,
+    ASCII_GLYPH_WIDTH           =  8,
+    ASCII_CHARSET_NUM           = ASCII_CHARSET_ROW_LEN * ASCII_CHARSET_COL_LEN,
+    PIXELFONT_WORD_SPACE        =  2,
+    PIXELFONT_GLYPH_SPACE       =  0,
+    PIXELFONT_HEIGHT            =  8,
+    ASCII_GLYPH_NUM             = 0x0100
+};
+
 enum bOFFSET {
     // bOFFSET: offset in bytes
     // HOWTO: for a WHAT in a struct
@@ -1141,7 +1153,7 @@ enum ALIGNMENT {
     ALIGNMENT_NUM,
 };
 
-enum MOUSE_DEFAULTS { // this extern struct is dumb
+enum MOUSE_DEFAULTS {
     MOUSE_DEFAULT_ONHOLD    = MOUSE_ACCEPT,
     MOUSE_DEFAULT_MOVE      = MOUSE_FOLLOW,
     MOUSE_DEFAULT_SRCRECT_H = 32,
@@ -1164,5 +1176,14 @@ enum BOSS_ICONS {
     BOSS_ICON_HAMILCAR  =  5,
     BOSS_ICON_NUM       =  6,
 };
+
+enum SOTA_CONVOY {
+    SOTA_CONVOY_SIZE_MAX = 200,
+    SOTA_CONVOY_NULL = 0,
+    SOTA_CONVOY_SIZE_START = 50,
+    SOTA_CONVOY_SORT_HIGH2LOW = 0,
+    SOTA_CONVOY_SORT_LOW2HIGH = 1,
+};
+
 
 #endif /* ENUMS_H */

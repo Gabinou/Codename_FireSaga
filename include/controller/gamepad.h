@@ -13,35 +13,6 @@
 /* -- How to present controller remapping to players? -- */
 // -> Use gameplay.standby sota_inputs as labels
 
-struct GamepadInputMap {
-    /* Physical joysticks -> no user change */
-    /* Joysticks: [INT_FAST16_MIN, INT_FAST16_MAX] -> [-32768, 32767] */
-    SDL_GameControllerAxis    axis_left_x;
-    SDL_GameControllerAxis    axis_left_y;
-    SDL_GameControllerAxis    axis_right_x;
-    SDL_GameControllerAxis    axis_right_y;
-
-    /* Physical dpad -> no user change */
-    SDL_GameControllerButton  dpad_right;
-    SDL_GameControllerButton  dpad_up;
-    SDL_GameControllerButton  dpad_left;
-    SDL_GameControllerButton  dpad_down;
-
-    /* Physical buttons -> user can change */
-    SDL_GameControllerButton  a;
-    SDL_GameControllerButton  b;
-    SDL_GameControllerButton  x;
-    SDL_GameControllerButton  y;
-    SDL_GameControllerButton  start;
-    SDL_GameControllerButton  shoulder_left;
-    SDL_GameControllerButton  shoulder_right;
-
-    /* Physical triggers -> user can change */
-    /* Triggers  [0, INT_FAST16_MAX] -> [0, 32767] */
-    SDL_GameControllerButton  trigger_left;
-    SDL_GameControllerButton  trigger_right;
-};
-
 extern struct GamepadInputMap GamepadInputMap_default;
 extern struct GamepadInputMap GamepadInputMap_gamecube;
 extern struct GamepadInputMap GamepadInputMap_switch_pro;

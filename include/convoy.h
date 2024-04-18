@@ -10,8 +10,10 @@
 #include "structs.h"
 #include "physfs.h"
 #include "jsonio.h"
+#include "structs.h"
 #include "debug.h"
 #include "cJSON.h"
+#include "combat.h"
 #include "utilities.h"
 #include "platform.h"
 #include "SDL2/SDL.h"
@@ -20,33 +22,6 @@
 struct Game;
 struct Unit;
 struct Inventory_item;
-
-enum SOTA_CONVOY {
-    SOTA_CONVOY_SIZE_MAX = 200,
-    SOTA_CONVOY_NULL = 0,
-    SOTA_CONVOY_SIZE_START = 50,
-    SOTA_CONVOY_SORT_HIGH2LOW = 0,
-    SOTA_CONVOY_SORT_LOW2HIGH = 1,
-};
-
-typedef struct Convoy {
-    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
-    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
-
-    struct dtab *weapons_dtab;
-
-    struct Inventory_item books[SOTA_BOOKS_NUM];
-    struct Inventory_item items[SOTA_CONVOY_SIZE_MAX];
-    u8 cumnum[ITEM_TYPE_NUM + 1]; // items are [cumnum1, cumnum2)
-
-    i16 bank; // [gold]
-    u8 books_num;
-    u8 items_num;
-    u8 size;
-    bool sort_direction;
-} Convoy;
-
-extern struct Convoy Convoy_default;
 
 /* --- Destructors --- */
 void Convoy_Free( struct Convoy *conv);

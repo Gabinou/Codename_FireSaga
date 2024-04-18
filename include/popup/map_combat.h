@@ -2,12 +2,14 @@
 #define POPUP_MAP_COMBAT_H
 
 #include "enums.h"
+#include "structs.h"
 #include "n9patch.h"
 #include "popup/popup.h"
 #include "bars/circle.h"
+#include "bars/simple.h"
 #include "bars/topoff.h"
-#include "game/game.h"
 #include "unit/unit.h"
+#include "game/game.h"
 #include "pixelfonts.h"
 #include "SDL2/SDL.h"
 #include "stb_sprintf.h"

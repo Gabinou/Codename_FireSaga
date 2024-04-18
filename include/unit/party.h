@@ -6,23 +6,6 @@
 #include "nstr.h"
 #include "jsonio.h"
 
-/* --- Party --- */
-/* Just for Json loading */
-struct Party {
-    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
-    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
-
-    s8   folder;
-    s8  *names;
-    s8  *filenames;
-    i16 *ids;
-    struct Unit *party;
-    i32 size;
-    i16 *party_id_stack;
-
-};
-extern struct Party Party_default;
-
 /* --- Constructor/Destructors --- */
 void Party_Free( struct Party *party);
 void Party_Reset(struct Party *party);

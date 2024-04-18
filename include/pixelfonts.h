@@ -8,18 +8,6 @@
 #include "SDL2/SDL.h"
 
 /* --- ANTS --- */
-enum PIXELFONT {
-    ASCII_CHARSET_ROW_LEN       = 16,
-    ASCII_CHARSET_COL_LEN       = 16,
-    ASCII_GLYPH_HEIGHT          =  8,
-    ASCII_GLYPH_WIDTH           =  8,
-    ASCII_CHARSET_NUM           = ASCII_CHARSET_ROW_LEN * ASCII_CHARSET_COL_LEN,
-    PIXELFONT_WORD_SPACE        =  2,
-    PIXELFONT_GLYPH_SPACE       =  0,
-    PIXELFONT_HEIGHT            =  8,
-    ASCII_GLYPH_NUM             = 0x0100
-};
-
 enum TEXTUREFONT {
     TEXTURE_CHARSET_COL_LEN     =  8,
     TEXTURE_CHARSET_ROW_LEN     =  8,

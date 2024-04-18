@@ -5,6 +5,7 @@
 #include "combat.h"
 #include "n9patch.h"
 #include "map/tiles.h"
+#include "game/game.h"
 #include "popup/popup.h"
 #include "pixelfonts.h"
 #include "SDL2/SDL.h"

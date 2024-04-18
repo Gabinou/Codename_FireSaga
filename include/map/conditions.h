@@ -86,7 +86,7 @@ b32  Map_Condition_Check_Death( struct Map_condition *condition,
 void Map_Condition_Trigger(struct Map_condition *condition);
 
 /* --- I/O --- */
-void Map_Condition_saveJSON(void *input, cJSON *jmap_cond);
-void Map_Condition_loadJSON(void *input, cJSON *jmap_cond);
+void Map_Condition_readJSON(void *input, cJSON *jmap_cond);
+void Map_Condition_writeJSON(void *input, cJSON *jmap_cond);
 
 #endif /* MAP_H */

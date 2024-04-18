@@ -5,8 +5,112 @@
 #include "debug.h"
 #include "enums.h"
 #include "nmath.h"
+#include "nstr.h"
 #include "tnecs.h"
 #include "SDL2/SDL.h"
+#include "SDL2/SDL_mixer.h"
+
+struct Cursor {
+    i16 frames;
+    i16 speed;
+};
+
+struct Mouse {
+    u8 onhold;
+    u8 move;
+};
+
+struct Point {
+    i32 x;
+    i32 y;
+};
+
+struct Pointf {
+    float x;
+    float y;
+};
+
+struct SquareNeighbours {
+    i32 right;
+    i32 top;
+    i32 left;
+    i32 bottom;
+};
+
+struct Node {
+    i32 x;
+    i32 y;
+    i32 distance;
+    i32 cost;
+};
+
+struct Nodeq {
+    i32 x;
+    i32 y;
+    i32 priority;
+    i32 cost;
+};
+
+
+struct Fps {
+    struct Point pos;
+    SDL_Color textcolor;
+    float sizefactor[TWO_D];
+    bool show;
+    int cap;    /* [Hz] [s^-1] */
+    int ff_cap; /* [%] Fast forward cap above FPS */
+};
+
+
+/* --- Settings --- */
+struct Music_settings {
+    i32 frequency;          /*  [Hz]    */
+    i32 sample_size;        /* [byte]   */
+    u16 format;             /* AUDIO_*  */
+    i32 channels;
+};
+
+struct Map_settings {
+    u8          overlay_mode; /* tile paletteswap or opaque overlay */
+    u8          stack_mode;
+    u8          grid_thickness; /* Number of lines to draw (mirrored) */
+    u8          perim_thickness; /* Number of lines to draw (mirrored) */
+    SDL_Color   color_grid;
+    bool        grid_show;
+};
+/* grid_thickness 1 ->  |   (center line only)          */
+/* grid_thickness 2 -> |||  (center line, +/- 1 lines)  */
+/*                  and so on...                        */
+
+struct Enemy_Turn_settings {
+    u64 pause_post_reinforcement;
+};
+
+struct Settings {
+    struct Point res; /* resolution */
+    struct Point pos;
+    struct Fps   FPS;
+
+    struct Cursor cursor; /* 32 bits */
+    u16 tilesize[TWO_D];
+    u8 fontsize;
+
+    struct Map_settings map_settings;
+    struct Music_settings music_settings;
+    struct Enemy_Turn_settings enemy_turn_settings;
+
+    struct Mouse mouse; /* 16 bits */
+    char title[DEFAULT_BUFFER_SIZE];
+
+    int music_volume;
+    int soundfx_volume;
+    float brightness;
+
+    bool fullscreen         : 1;
+    bool tophand_stronghand : 1;
+};
+extern struct Settings Settings_default;
+
 
 struct MenuElemDirections {
     i8 right;
@@ -120,36 +224,6 @@ extern struct nmath_hexpoint_int32_t Cube_Diagonal_ym;
 extern struct nmath_hexpoint_int32_t Cube_Diagonal_zp;
 extern struct nmath_hexpoint_int32_t Cube_Diagonal_zm;
 
-struct Point {
-    i32 x;
-    i32 y;
-};
-
-struct Pointf {
-    float x;
-    float y;
-};
-
-struct SquareNeighbours {
-    i32 right;
-    i32 top;
-    i32 left;
-    i32 bottom;
-};
-
-struct Node {
-    i32 x;
-    i32 y;
-    i32 distance;
-    i32 cost;
-};
-
-struct Nodeq {
-    i32 x;
-    i32 y;
-    i32 priority;
-    i32 cost;
-};
 
 enum SOTA_PADDING_DIRECTION {
     SOTA_PADDING_RIGHT  = 0,
@@ -254,25 +328,6 @@ struct fMovement_cost {
 };
 extern struct fMovement_cost fMovement_cost_default;
 
-struct Fps {
-    struct Point pos;
-    SDL_Color textcolor;
-    float sizefactor[TWO_D];
-    bool show;
-    int cap;    /* [Hz] [s^-1] */
-    int ff_cap; /* [%] Fast forward cap above FPS */
-};
-
-struct Mouse {
-    u8 onhold;
-    u8 move;
-};
-
-struct Cursor {
-    i16 frames;
-    i16 speed;
-};
-
 struct Camera {
     struct Point offset; /* pixels */
     float        zoom;
@@ -309,5 +364,539 @@ struct AI_State {
     struct AI_Action action;
 };
 extern struct AI_State AI_State_default;
+
+typedef struct Convoy {
+    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
+    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
+
+    struct dtab *weapons_dtab;
+
+    struct Inventory_item books[SOTA_BOOKS_NUM];
+    struct Inventory_item items[SOTA_CONVOY_SIZE_MAX];
+    u8 cumnum[ITEM_TYPE_NUM + 1]; // items are [cumnum1, cumnum2)
+
+    i16 bank; // [gold]
+    u8 books_num;
+    u8 items_num;
+    u8 size;
+    bool sort_direction;
+} Convoy;
+
+extern struct Convoy Convoy_default;
+
+/* -- Combat_Phase -- */
+// Total attack num in phase = for i < brave_factor -> SUM(skillp_multipliers[i]) * skill_multiplier
+// skill_multiplier and skillp_multipliers stack, BUT -> no skills should use both.
+struct Combat_Phase {
+    // skillp_multipliers: Different multiplier for every brave applies to every attack in phase
+    u8     skillp_multipliers[SOTA_BRAVE_MAX];
+    // skill_multiplier: Applies to every higher priority attack in phase
+    u8     skill_multiplier;
+    u8     attack_num;
+    b32    attacker;
+};
+extern struct Combat_Phase Combat_Phase_default;
+
+/* -- Combat_Attack -- */
+struct Combat_Attack {
+    u8     total_damage; // total damage taken, depending on hit/crit
+    b32    hit;
+    b32    crit;
+    b32    attacker;
+};
+extern struct Combat_Attack Combat_Attack_default;
+
+/* -- Combat_Flow -- */
+// Number of combat phases initiated by each combatants
+// (aggressor_phases > 1) -> (defendant_phases <= 1) and vice versa
+// Brave: attack multiplier combat for all phases
+struct Combat_Flow {
+    b32    defendant_retaliates;
+    u8     defendant_phases;
+    u8     aggressor_phases;
+    u8     aggressor_brave;
+    u8     defendant_brave;
+};
+extern struct Combat_Flow Combat_Flow_default;
+
+/* -- Combat_Death -- */
+// Can combatants die?
+// WILL combatants die?
+struct Combat_Death {
+    b32 aggressor_certain;
+    b32 defendant_certain;
+    b32 aggressor_possible;
+    b32 defendant_possible;
+};
+extern struct Combat_Death Combat_Death_default;
+
+/* -- Combat_Rates -- */
+struct Combat_Rates {
+    u8 hit;
+    u8 crit;
+} ;
+extern struct Combat_Rates Combat_Rates_default;
+
+/* -- Combat_Stats -- */
+// All combatant stats related to combats
+struct Combat_Stats {
+    struct Combat_Rates     agg_rates;
+    struct Combat_Rates     dft_rates;
+    struct Damage           agg_damage;
+    struct Damage           dft_damage;
+    struct Computed_Stats   agg_stats;
+    struct Computed_Stats   dft_stats;
+    i8                      agg_equipment[UNIT_HANDS_NUM];
+    i8                      dft_equipment[UNIT_HANDS_NUM];
+};
+extern struct Combat_Stats Combat_Stats_default;
+
+/* -- Combat_Forecast -- */
+// All stats required to predict how combat will go,
+// before actually doing the RNG check.
+struct Combat_Forecast {
+    struct Combat_Flow      flow;
+    struct Combat_Death     death;
+    struct Combat_Stats     stats;
+    u8                      phase_num;
+    u8                      attack_num;
+};
+extern struct Combat_Forecast Combat_Forecast_default;
+
+/* -- Combat_Outcome -- */
+// Actual phases and attacks that happen during combat
+/* RNG CHECK HAPPENS HERE. */
+struct Combat_Outcome {
+    struct Combat_Phase   phases[SOTA_COMBAT_MAX_PHASES];
+    struct Combat_Attack *attacks;
+    b32                   ended; /* death before all attacks */
+};
+extern struct Combat_Outcome Combat_Outcome_default;
+
+/* --- RNG SEQUENCE BREAKER (SB) --- */
+struct RNG_Sequence { /* Sequence of hits/misses in a row */
+    i8 len;
+    i8 eff_rate;
+    b32 hit; /* 0 if sequence of misses, 1 of hits */
+};
+
+
+/* --- UNIT --- */
+struct Support {
+    u16 other_id;
+    u16 other_type;
+    i8 level;
+};
+
+typedef struct Unit {
+    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
+    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
+
+    i16 class;
+    i8  mvt_type;
+    i8  army;
+    u8  current_hp;
+    i8  handedness;
+    u16 talkable;
+    u8  current_agony;
+    i8  agony; /* turns left before death (-1 not agonizing) */
+    u8  regrets;
+
+    // Status with least remaining turns on top.
+    struct Unit_status *status_queue;
+
+    // TODO: change into ID for AI?
+    s8 ai_filename; /* Default AI for unit */
+
+    struct Support supports[SOTA_MAX_SUPPORTS];
+    u16 support_type;
+    u16 support_num;
+    struct Damage damage;
+
+    struct Unit_stats base_stats;
+    struct Unit_stats bonus_stats;
+    struct Unit_stats malus_stats;
+    struct Unit_stats caps_stats;
+    struct Unit_stats current_stats;    /* base_stats + all growths */
+    struct Unit_stats effective_stats;  /* current_stats + bonuses/maluses */
+    struct Unit_stats growths;
+    struct Unit_stats bonus_growths;
+    struct Unit_stats effective_growths;
+    struct Unit_stats *grown_stats;
+
+    u64 skills;
+
+    struct RNG_Sequence hit_sequence;
+    struct RNG_Sequence crit_sequence;
+
+    struct RNG_Sequence hp_sequence;
+    struct RNG_Sequence str_sequence;
+    struct RNG_Sequence mag_sequence;
+    struct RNG_Sequence dex_sequence;
+    struct RNG_Sequence agi_sequence;
+    struct RNG_Sequence fth_sequence;
+    struct RNG_Sequence luck_sequence;
+    struct RNG_Sequence def_sequence;
+    struct RNG_Sequence res_sequence;
+    struct RNG_Sequence con_sequence;
+    struct RNG_Sequence move_sequence;
+    struct RNG_Sequence prof_sequence;
+
+    u16 equippable;
+    u16 base_exp;
+    u16 exp;
+    u16 _id;
+    u16 rescuee;
+
+    i8 rangemap;
+    i8 user_rangemap; /* reset to NULL when equipment changes */
+
+    bitflag16_t job_talent;
+
+    /* Defendant position (self is Aggressor.) */
+    struct Point dft_pos; /* Used to compute stats in case of dual wielding */
+
+    bool hands   [UNIT_HANDS_NUM];      /* Does unit have hands?     */
+    bool equipped[UNIT_HANDS_NUM];      /* Is Item in hand equipped? */
+
+    s8 *skill_names;
+
+    struct dtab *weapons_dtab;
+    struct dtab *items_dtab;
+
+    /* _equipment is in side space: [left, right, 2, 3, 4, 5]   */
+    /* Most functions are in side space unless stated otherwise */
+    struct Inventory_item _equipment[DEFAULT_EQUIPMENT_SIZE];
+
+    /* For twohanding when computing computedstats */
+    struct Inventory_item temp;
+
+    i8 eq_usable[DEFAULT_EQUIPMENT_SIZE];
+    i8 num_equipment;
+    i8 num_usable;
+
+    struct Mount *mount;
+    bool mounted;
+
+    s8 name; /* TODO: get rid of it. Use global_unitNames */
+    s8 title;    /* Lord, Duke, etc. */
+    struct Computed_Stats computed_stats;   /* Computed from Unit_Stats */
+    struct Computed_Stats support_bonuses[SOTA_MAX_SUPPORTS];
+    struct Computed_Stats support_bonus;
+
+    bool sex            : 1; /* 0:F, 1:M. eg. hasPenis. */
+    bool waits          : 1;
+    bool alive          : 1;
+    bool literate       : 1; /* Reading/writing for scribe job. */
+    bool courageous     : 1; /* For reaction to story events    */
+    bool show_danger    : 1;
+    bool update_stats   : 1;
+    bool isTwoHanding   : 1; /* If true, one Inventory_Item in hands is a copy */
+    bool divine_shield  : 1;
+    bool isDualWielding : 1;
+} Unit;
+extern struct Unit Unit_default;
+
+
+struct GraphStat {
+    i16 level;
+    i16 base_level;
+    i8 cumul_stat[SOTA_MAX_LEVEL];
+    i8 stat_id;
+};
+extern struct GraphStat GraphStat_default;
+
+struct Graph {
+    SDL_Rect rect; // x,y,w,h
+    SDL_Texture *texture;
+
+    struct GraphStat graph_stats[UNIT_STAT_NUM];
+
+    struct Point plot_min; /* [XY units] */
+    struct Point plot_max; /* [XY units] */
+
+    i32 header; /* [pixels] */
+    i32 footer; /* [pixels] */
+    i32 margin_left;  /* [pixels] */
+    i32 margin_right; /* [pixels] */
+
+    /* length until writing another pixel, including pixel */
+    /* ant for x */
+    u8 y_lenperpixel;
+
+    u8 stat_num;
+    u8 linestyle;
+    bool x_ticks : 1;
+    bool y_ticks : 1;
+};
+extern struct Graph Graph_default;
+
+
+/* --- Bars --- */
+struct CircleBar {
+    int fill;
+    SDL_RendererFlip flip;
+    struct Point pos;
+};
+extern struct CircleBar CircleBar_default;
+
+
+struct SimpleBar {
+    float fill;
+    size_t len; /* [pixels] as overfilled */
+    size_t height; /* [pixels] */
+    struct Point pos;
+    struct Point scale;
+    SDL_Color BG_dark;
+    SDL_Color BG_light;
+    SDL_Color FG_dark;
+    SDL_Color FG_light;
+    SDL_RendererFlip flip;
+};
+extern struct SimpleBar SimpleBar_default;
+
+struct GamepadInputMap {
+    /* Physical joysticks -> no user change */
+    /* Joysticks: [INT_FAST16_MIN, INT_FAST16_MAX] -> [-32768, 32767] */
+    SDL_GameControllerAxis    axis_left_x;
+    SDL_GameControllerAxis    axis_left_y;
+    SDL_GameControllerAxis    axis_right_x;
+    SDL_GameControllerAxis    axis_right_y;
+
+    /* Physical dpad -> no user change */
+    SDL_GameControllerButton  dpad_right;
+    SDL_GameControllerButton  dpad_up;
+    SDL_GameControllerButton  dpad_left;
+    SDL_GameControllerButton  dpad_down;
+
+    /* Physical buttons -> user can change */
+    SDL_GameControllerButton  a;
+    SDL_GameControllerButton  b;
+    SDL_GameControllerButton  x;
+    SDL_GameControllerButton  y;
+    SDL_GameControllerButton  start;
+    SDL_GameControllerButton  shoulder_left;
+    SDL_GameControllerButton  shoulder_right;
+
+    /* Physical triggers -> user can change */
+    /* Triggers  [0, INT_FAST16_MAX] -> [0, 32767] */
+    SDL_GameControllerButton  trigger_left;
+    SDL_GameControllerButton  trigger_right;
+};
+
+struct KeyboardInputMap {
+    /* Physical dpad -> Keyboard equivalent */
+    SDL_Scancode    dpad_right[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    dpad_up[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    dpad_left[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    dpad_down[SOTA_MAPPABLE_BUTTONS_NUM];
+
+    /* Physical buttons -> Keyboard equivalent */
+    SDL_Scancode    a[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    b[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    y[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    x[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    start[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    shoulder_left[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    shoulder_right[SOTA_MAPPABLE_BUTTONS_NUM];
+
+    /* Physical triggers -> Keyboard equivalent */
+    /* Triggers  [0, INT_FAST16_MAX] -> [0, 32767] */
+    SDL_Scancode    trigger_left[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    trigger_right[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    m[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    space[SOTA_MAPPABLE_BUTTONS_NUM];
+
+    u8  dpad_right_len;
+    u8  dpad_up_len;
+    u8  dpad_left_len;
+    u8  dpad_down_len;
+    u8  a_len;
+    u8  b_len;
+    u8  x_len;
+    u8  y_len;
+    u8  start_len;
+    u8  shoulder_left_len;
+    u8  shoulder_right_len;
+    u8  trigger_right_len;
+    u8  trigger_left_len;
+    u8  m_len;
+    u8  space_len;
+};
+extern struct KeyboardInputMap KeyboardInputMap_default;
+
+
+/* --- Party --- */
+/* Just for Json loading */
+struct Party {
+    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
+    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
+
+    s8   folder;
+    s8  *names;
+    s8  *filenames;
+    i16 *ids;
+    struct Unit *party;
+    i32 size;
+    i16 *party_id_stack;
+
+};
+extern struct Party Party_default;
+
+
+/* --- Game Object --- */
+struct Game {
+    SDL_Renderer    *renderer;
+    SDL_Texture     *render_target;
+    #ifdef SOTA_OPENGL
+    GLuint         gl_programid;
+    SDL_GLContext  gl_context;
+    SDL_Window     *gl_window;
+    #endif /* SOTA_OPENGL */
+    tnecs_world  *world;
+
+    tnecs_component           timer_typeflag;
+    struct Point  cursor_lastpos;
+
+    struct dtab *menu_options_dtab;
+    struct dtab *defaultstates_dtab;
+
+    struct dtab *items_dtab;
+    struct dtab *weapons_dtab;
+    struct dtab *tiles_loaded_dtab;
+    struct dtab *units_loaded_dtab;
+    tnecs_entity *units_loaded;
+
+    tnecs_entity ai_timer;
+    tnecs_entity reinf_timer;
+
+    struct KeyboardInputMap  keyboardInputMap;
+    struct GamepadInputMap   gamepadInputMap;
+    // struct MouseInputMap  mouseInputMap;
+
+    struct Camera camera;
+
+    struct PixelFont *pixelnours;
+    struct PixelFont *pixelnours_tight;
+    struct PixelFont *pixelnours_big;
+    struct PixelFont *menu_pixelfont;
+    struct Map *map;
+
+    /* gameplay state bitfields, narrative conditions */
+    struct Conditions *conditions;
+
+    tnecs_entity *menu_stack;
+    tnecs_entity player_select_menus[MENU_PLAYER_SELECT_NUM]; /* [PLAYER_SELECT_MENU_...] */
+    tnecs_entity popups[POPUP_TYPE_NUM]; /* [POPUP_TYPE_...] */
+    tnecs_entity item_select_menu;
+    tnecs_entity trade_menu;
+    tnecs_entity staff_select_menu;
+    tnecs_entity weapon_select_menu;
+    tnecs_entity stats_menu;
+    tnecs_entity scene;
+    tnecs_entity pre_combat_popup;
+    tnecs_entity first_menu;
+    tnecs_entity title;
+    tnecs_entity growths_menu;
+    tnecs_entity deployment_menu;
+
+    s8 filename_menu;
+    char reason[DEFAULT_BUFFER_SIZE];
+
+    tnecs_entity entity_cursor;
+    tnecs_entity entity_mouse;
+    tnecs_entity entity_transition;
+    tnecs_entity entity_highlighted;
+    tnecs_entity entity_shadowed;
+    tnecs_entity entity_fps;
+    tnecs_entity selected_unit_entity;
+    tnecs_entity hovered_unit_entity;
+
+    i8 moved_direction;
+    i8 selected_menu_option;
+
+    struct Point selected_unit_initial_position;
+    struct Point selected_unit_moved_position;
+
+    tnecs_entity *map_enemies;
+    struct Party party_struct;
+    struct Unit party[SOTA_MAX_PARTY_SIZE];
+    i16 party_id_stack[SOTA_MAX_PARTY_SIZE];
+
+    tnecs_entity *ent_unit_loaded;
+
+    i32  cursor_moved_time_ms;
+
+    struct Combat_Outcome    combat_outcome;
+    struct Combat_Forecast   combat_forecast;
+    struct Combat_Flow       combat_flow;
+    struct Combat_Forecast  *AI_forecasts;
+
+    i8 animation_attack;
+    i8 chapter;
+    i8 state;
+    i8 substate;
+    i8 state_previous;
+    i8 substate_previous;
+
+    SDL_Window  *window;
+
+    struct Settings    settings;
+    struct Convoy      convoy;
+    u64 s_xoshiro256ss[4]; /* Only used to read s from RNG file */
+
+    struct Point cursor_move;
+    bool cursor_frame_moved;
+    bool cursor_diagonal;
+
+    /* --- FPS --- */
+    float instant_fps; /* frames/time after fps_text->update_time_ns */
+    float rolling_fps; /* rolling average of fps */
+
+    /* --- COMBAT --- */
+    int candidate;          // potential candidate
+    int previous_candidate; // previously selected candidate
+    /* -- Chosen by player -- */
+    // Also use for non-combat: staff, item use...
+    tnecs_entity aggressor; // combat -> player unit
+    tnecs_entity defendant; // combat -> player chose
+
+    /* -- Choices list for player -- */
+
+    /* --- UNIT ACTION CANDIDATES --- */
+    // copy of one other psm list, used by choosecandidates
+    tnecs_entity *candidates;
+    /* on attackmap */
+    tnecs_entity *defendants;     // combat
+    tnecs_entity *patients;       // staff
+    /* on neighbouring tiles */
+    tnecs_entity *victims;        // rescue
+    tnecs_entity *spectators;     // dance
+    tnecs_entity *auditors;       // talk
+    tnecs_entity *passives;       // trade
+    tnecs_entity *openables;      // doors and chests
+    tnecs_entity *deployed;       // deployment unit placement
+
+    struct AI_State ai_state;
+
+    i32   controller_code;
+    /* Button interpreted as which input?  */
+    u32 inputs[SOTA_BUTTON_END];
+
+    /* The music that will be played. */
+    Mix_Music *music;
+    Mix_Chunk *soundfx_cursor;
+    Mix_Chunk *soundfx_next_turn;
+
+    u64    runtime_ns; // -> millions of years
+    bool  *shadow_area;  /* pixels */
+    bool   ismouse          : 1;
+    bool   iscursor         : 1;
+    bool   isrunning        : 1;
+    bool   isShadow         : 1;
+    bool   fast_forward     : 1;
+};
+extern struct Game Game_default;
+
 
 #endif /* STRUCTS_H */

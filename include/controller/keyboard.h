@@ -16,47 +16,6 @@
 
 #define SOTA_MUSIC_TOGGLE SDL_SCANCODE_M
 
-extern struct KeyboardInputMap {
-    /* Physical dpad -> Keyboard equivalent */
-    SDL_Scancode    dpad_right[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    dpad_up[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    dpad_left[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    dpad_down[SOTA_MAPPABLE_BUTTONS_NUM];
-
-    /* Physical buttons -> Keyboard equivalent */
-    SDL_Scancode    a[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    b[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    y[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    x[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    start[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    shoulder_left[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    shoulder_right[SOTA_MAPPABLE_BUTTONS_NUM];
-
-    /* Physical triggers -> Keyboard equivalent */
-    /* Triggers  [0, INT_FAST16_MAX] -> [0, 32767] */
-    SDL_Scancode    trigger_left[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    trigger_right[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    m[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    space[SOTA_MAPPABLE_BUTTONS_NUM];
-
-    u8  dpad_right_len;
-    u8  dpad_up_len;
-    u8  dpad_left_len;
-    u8  dpad_down_len;
-    u8  a_len;
-    u8  b_len;
-    u8  x_len;
-    u8  y_len;
-    u8  start_len;
-    u8  shoulder_left_len;
-    u8  shoulder_right_len;
-    u8  trigger_right_len;
-    u8  trigger_left_len;
-    u8  m_len;
-    u8  space_len;
-
-} KeyboardInputMap_default;
-
 typedef struct controllerKeyboard {
     struct KeyboardInputMap *inputmap;
 

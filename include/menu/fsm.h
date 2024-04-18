@@ -9,6 +9,7 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
 struct Game;
+struct Menu;
 
 /* --- TYPEDEFS --- */
 typedef void (*fsm_menu_t)(struct Game *, struct Menu *);

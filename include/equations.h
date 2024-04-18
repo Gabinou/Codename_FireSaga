@@ -8,7 +8,7 @@
 #include "macros.h"
 #include "debug.h"
 #include "types.h"
-#include "combat.h"
+// #include "combat.h"
 #include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */

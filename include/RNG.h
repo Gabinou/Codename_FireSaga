@@ -5,6 +5,7 @@
 #include <math.h>
 #include "enums.h"
 #include "debug.h"
+#include "structs.h"
 #include "macros.h"
 #include "types.h"
 #include "tinymt32.h"
@@ -86,11 +87,6 @@ u8 *RNG_boxmuller( u8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev);
 *   sequence breaking for crit is probably useless? -> implement anyway, easy to remove later
 *   sequence breaking should be GLOBAL? maybe. if so make global sequence of HIT/CRITS
 */
-struct RNG_Sequence { /* Sequence of hits/misses in a row */
-    i8 len;
-    i8 eff_rate;
-    b32 hit; /* 0 if sequence of misses, 1 of hits */
-};
 
 /* -- ants -- */
 #define RNG_SB_BASE_NUM         10

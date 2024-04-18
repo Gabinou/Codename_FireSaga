@@ -3,11 +3,12 @@
 
 #include "structs.h"
 #include "enums.h"
-#include "game/game.h"
+#include "events.h"
 #include "n9patch.h"
 #include "stb_sprintf.h"
 
 /* --- FORWARD DECLARATIONS --- */
+struct game;
 struct CombatAnimation;
 struct MapAnimation;
 struct Graph;

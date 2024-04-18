@@ -21,13 +21,6 @@ enum CIRCLE_BAR {
     CIRCLE_BAR_SHADOW        =  1,
 };
 
-struct CircleBar {
-    int fill;
-    SDL_RendererFlip flip;
-    struct Point pos;
-};
-extern struct CircleBar CircleBar_default;
-
 /* --- Drawing --- */
 void CircleBar_Draw(struct CircleBar *cb, SDL_Renderer *r);
 void CircleBar_Fill(struct CircleBar *cb, int attack_i, int attack_num);

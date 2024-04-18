@@ -52,39 +52,6 @@ enum GRAPH_LINESTYLE { /* palette_NES, offset by 1 for NULL == 0 */
     GRAPH_LINESTYLE_LINE  = 2,
 };
 
-struct GraphStat {
-    i16 level;
-    i16 base_level;
-    i8 cumul_stat[SOTA_MAX_LEVEL];
-    i8 stat_id;
-};
-extern struct GraphStat GraphStat_default;
-
-struct Graph {
-    SDL_Rect rect; // x,y,w,h
-    SDL_Texture *texture;
-
-    struct GraphStat graph_stats[UNIT_STAT_NUM];
-
-    struct Point plot_min; /* [XY units] */
-    struct Point plot_max; /* [XY units] */
-
-    i32 header; /* [pixels] */
-    i32 footer; /* [pixels] */
-    i32 margin_left;  /* [pixels] */
-    i32 margin_right; /* [pixels] */
-
-    /* length until writing another pixel, including pixel */
-    /* ant for x */
-    u8 y_lenperpixel;
-
-    u8 stat_num;
-    u8 linestyle;
-    bool x_ticks : 1;
-    bool y_ticks : 1;
-};
-extern struct Graph Graph_default;
-
 extern struct Unit_stats test_grown_stats[10];
 extern struct Unit_stats test_base_stats;
 

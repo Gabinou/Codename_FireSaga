@@ -30,13 +30,6 @@ enum SUPPORT_LEVELS {
 #define SUPPORT_CRIT_FACTOR  2
 #define SUPPORT_HIT_FACTOR   5
 
-/* --- STRUCTS --- */
-struct Support {
-    u16 other_id;
-    u16 other_type;
-    i8 level;
-};
-
 /* --- Support Object --- */
 struct Computed_Stats Support_Bonus(  struct Support  s, u16 st);
 struct Computed_Stats Support_Bonuses(struct Support *s, u16 sn, u16 st);
