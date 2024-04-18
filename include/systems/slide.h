@@ -4,6 +4,7 @@
 #include "tnecs.h"
 #include "sprite.h"
 #include "slider.h"
+#include "sprite.h"
 #include "hover.h"
 #include "game/game.h"
 #include "position.h"
@@ -14,6 +15,7 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
+struct Sprite;
 
 void Sprite_Target(struct Slider *sl, struct Sprite *sp, struct Position *pos);
 void Cursor_Target(struct Slider *sl, struct Sprite *sp, struct Position *pos);

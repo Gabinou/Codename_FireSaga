@@ -907,7 +907,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
 
     map->death_enemy      = DARR_INIT(map->death_enemy,     struct Map_condition, 2);
     map->death_friendly   = DARR_INIT(map->death_friendly,  struct Map_condition, 2);
-    
+
     cJSON *jmap_conditions  = cJSON_GetObjectItem(jmap, "Conditions");
     cJSON *jdeath_enemy     = cJSON_GetObjectItem(jmap, "death_enemy");
     cJSON *jdeath_friendly  = cJSON_GetObjectItem(jmap, "death_friendly");
