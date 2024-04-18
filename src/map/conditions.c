@@ -122,13 +122,19 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
 
 void Map_Condition_Trigger(struct Map_condition *condition) {
     /* XOR win and lose */
-    SDL_assert(!(condition->win && condition->lose));
+    // SDL_assert(!(condition->win && condition->lose));
 
-    if (condition->win)
+    if (condition->win && !condition->lose) {
         Event_Emit(__func__, SDL_USEREVENT, event_Map_Win, NULL, NULL);
-
-    if (condition->lose)
+    } else if (condition->lose && !condition->win) {
         Event_Emit(__func__, SDL_USEREVENT, event_Map_Lose, NULL, NULL);
+    } else if (!condition->lose && !condition->win) {
+        /* Neither win nor loss. Triggers something to happen */ 
+    } else {
+        /* Win and Loss condition both */
+        // Error? 
+    }
+
 }
 
 /* --- I/O --- */

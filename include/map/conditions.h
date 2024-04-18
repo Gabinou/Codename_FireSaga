@@ -39,7 +39,7 @@ struct Game;
 /* --- STRUCTS --- */
 struct Map_condition {
     /* --- CRITERIA --- */
-    // /* -- WHO -- */
+    /* -- WHO -- */
     // i8     lvl;          /* -1 for anyone    */
     // i8     sex;          /* -1 for anyone    */
     i16    army;            /* -1 for anyone    */
@@ -47,12 +47,12 @@ struct Map_condition {
     b32    all;             /* true for rout    */
     i16    unit;         /* -1 for anyone    */
     // i8     unit_class;   /* -1 for anyone    */
-    // /* -- WHERE -- */
+    /* -- WHERE -- */
     // i16    col_min;    /* -1 for anywhere  */
     // i16    col_max;    /* -1 for anywhere  */
     // i16    row_min;    /* -1 for anywhere  */
     // i16    row_max;    /* -1 for anywhere  */
-    // /* -- WHAT -- */
+    /* -- WHAT -- */
     // i16    equippedL;  /* -1 for anything  */
     // i16    equippedR;  /* -1 for anything  */
     /* -- WHEN --  */
