@@ -6,7 +6,7 @@
 // #endif /* STB_SPRINTF_IMPLEMENTATION */
 
 /* --- Map utilities --- */
-void Game_Map_Load(struct Game *sota,  i16 in_map_index) {
+void Game_Map_Load(struct Game *sota, i16 in_map_index) {
     SDL_assert((in_map_index > CHAPTER_START) && (in_map_index < CHAPTER_END));
     SDL_LogDebug(SOTA_LOG_SYSTEM, "%ld \n", in_map_index);
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Associated map filename     %s \n", mapFilenames[in_map_index].data);
@@ -41,19 +41,66 @@ void Game_debugMap_Free(struct Game *sota) {
 
 }
 
+/* Game_Gameplay_Start */
+// Pre-requisites:
+//  - Map loaded
+//  - Party loaded
+//  - Convoy loaded
+// TODO: Check pre-requisites
+void Game_Gameplay_Start(struct Game *sota, i32 state, i32 substate) {
+    SDL_LogDebug(SOTA_LOG_SYSTEM, "Starting Gameplay\n");
+    /* -- Preliminaries -- */
+    /* - Updating game states - */
+    if (state == GAME_STATE_Preparation)
+        strncpy(sota->reason, "Debug map preparation", sizeof(sota->reason));
+    if (sota->state != state)
+        Game_State_Set(sota, state, sota->reason);
+    if (sota->substate != substate)
+        Game_State_Set(sota, substate, sota->reason);
+
+    if (sota->state == GAME_STATE_Preparation) {
+        /* -- Deployment Menu -- */
+        // TODO: move to start deployment event or something
+        Game_DeploymentMenu_Enable(sota);
+        struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
+        struct DeploymentMenu *dm = mc->data;
+        SDL_assert(dm->_party_size > 0);
+        DeploymentMenu_Party_Set(dm, sota->party, sota->party_id_stack, sota->party_struct.size);
+
+        Game_cursorFocus_onMenu(sota);
+
+        /* -- Show starting positions -> for deployment -- */
+        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_START_POS);
+    } else if (sota->state == GAME_STATE_Standby) {
+        Game_cursorFocus_onMap(sota);
+    }
+
+    // TODO: move music start to when game inits.
+    SDL_Log("Loading Music\n");
+    Map_Music_Load(sota->map);
+
+    /* -- Load reinforcements -- */
+    Game_Map_Reinforcements_Load(sota);
+}
+
 void Game_debugMap_Load(struct Game *sota) {
     // TODO: Split off debugmap specific stuff from ALL MAPS loading stuff
     // Rename to Game_Gameplay_Start or something
     /* -- Preliminaries -- */
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Loading in test Map\n");
     /* - Updating game states - */
-    strncpy(sota->reason, "Debug map preparation", sizeof(sota->reason));
-    if (sota->substate != GAME_STATE_Preparation)
-        Game_State_Set(sota, GAME_STATE_Preparation, sota->reason);
-    if (sota->substate != GAME_SUBSTATE_MENU)
-        Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
 
     Game_Map_Load(sota, CHAPTER_TEST_V8);
+
+    // TODO: load from json file
+    SDL_Log("Loading Conditions\n");
+    sota->map->death_enemy      = DARR_INIT(sota->map->death_enemy,
+                                            struct Map_condition, 1);
+    sota->map->death_friendly   = DARR_INIT(sota->map->death_friendly,
+                                            struct Map_condition, 2);
+    DARR_PUT(sota->map->death_enemy,    Map_condition_boss_win);
+    DARR_PUT(sota->map->death_friendly, Map_condition_main_char_loss);
+    DARR_PUT(sota->map->death_friendly, Map_condition_debug_map_loss);
 
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Loading in test party\n");
 
@@ -76,34 +123,8 @@ void Game_debugMap_Load(struct Game *sota) {
     Party_Size(&sota->party_struct);
     SDL_assert(sota->party_struct.size > 0);
 
-    /* -- Deployment Menu -- */
-    // TODO: move to start deployment event or something
-    Game_DeploymentMenu_Enable(sota);
-    struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
-    struct DeploymentMenu *dm = mc->data;
-    SDL_assert(dm->_party_size > 0);
-    DeploymentMenu_Party_Set(dm, sota->party, sota->party_id_stack, sota->party_struct.size);
-
-    Game_cursorFocus_onMenu(sota);
-
-    SDL_Log("Loading Music\n");
-    Map_Music_Load(sota->map);
-
-    SDL_Log("Loading Conditions\n");
-    sota->map->death_enemy      = DARR_INIT(sota->map->death_enemy,
-                                            struct Map_condition, 1);
-    sota->map->death_friendly   = DARR_INIT(sota->map->death_friendly,
-                                            struct Map_condition, 2);
-    DARR_PUT(sota->map->death_enemy,    Map_condition_boss_win);
-    DARR_PUT(sota->map->death_friendly, Map_condition_main_char_loss);
-    DARR_PUT(sota->map->death_friendly, Map_condition_debug_map_loss);
-
-    /* -- Load reinforcements -- */
-    Game_Map_Reinforcements_Load(sota);
-
-    /* -- Show starting positions -> for deployment -- */
-    // TODO: move to start deployment event or something
-    Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_START_POS);
+    // TODO: movo to game init somewhere
+    Game_Gameplay_Start(sota, GAME_STATE_Preparation, GAME_SUBSTATE_MENU);
 }
 
 /* --- Reinforcements --- */

@@ -130,3 +130,12 @@ void Map_Condition_Trigger(struct Map_condition *condition) {
     if (condition->lose)
         Event_Emit(__func__, SDL_USEREVENT, event_Map_Lose, NULL, NULL);
 }
+
+/* --- I/O --- */
+void Map_Condition_saveJSON(void *input, cJSON *jmap_cond) {
+
+}
+
+void Map_Condition_loadJSON(void *input, cJSON *jmap_cond) {
+
+}

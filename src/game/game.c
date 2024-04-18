@@ -45,44 +45,44 @@ struct Game Game_default = {
     .party                  = {0},
     .party_id_stack         = {0},
 
-    // .menu_font       = NULL,
-    .menu_pixelfont     = NULL,
+    // .menu_font              = NULL,
+    .menu_pixelfont         = NULL,
 
-    .map           = NULL,
-    .window        = NULL,
-    .units_loaded  = NULL,
+    .map                    = NULL,
+    .window                 = NULL,
+    .units_loaded           = NULL,
     .selected_unit_moved_position   = {-1, -1},
     .selected_unit_initial_position = {-1, -1},
     // .convoy = Convoy_default,
     // .camp = Camp_default,
 
-    .aggressor  = TNECS_NULL, // combat
-    .defendant  = TNECS_NULL, // combat
-    .defendants = NULL,       // combat
-    .patients   = NULL,       // staff
-    .victims    = NULL,       // rescue
-    .deployed   = NULL,       // rescue
-    .spectators = NULL,       // dance
-    .auditors   = NULL,       // talk
-    .passives   = NULL,       // trade
-    .openables  = NULL,       // doors and chests
+    .aggressor              = TNECS_NULL, // combat
+    .defendant              = TNECS_NULL, // combat
+    .defendants             = NULL,       // combat
+    .patients               = NULL,       // staff
+    .victims                = NULL,       // rescue
+    .deployed               = NULL,       // rescue
+    .spectators             = NULL,       // dance
+    .auditors               = NULL,       // talk
+    .passives               = NULL,       // trade
+    .openables              = NULL,       // doors and chests
 
-    .cursor_diagonal    = false,
+    .cursor_diagonal        = false,
 
-    .inputs = {0},
+    .inputs                 = {0},
 
-    .ai_state   = {0},
+    .ai_state               = {0},
     /* --- Music --- */
-    .music              = NULL,
-    .soundfx_cursor     = NULL,
-    .soundfx_next_turn  = NULL,
+    .music                  = NULL,
+    .soundfx_cursor         = NULL,
+    .soundfx_next_turn      = NULL,
 
-    .chapter            = -1,
-    .state              = GAME_STATE_Title_Screen,
-    .substate           = GAME_SUBSTATE_MENU,
-    .state_previous     = GAME_STATE_START,
-    .substate_previous  = GAME_SUBSTATE_START,
-    .fast_forward       = false,
+    .chapter                = -1,
+    .state                  = GAME_STATE_Title_Screen,
+    .substate               = GAME_SUBSTATE_MENU,
+    .state_previous         = GAME_STATE_START,
+    .substate_previous      = GAME_SUBSTATE_START,
+    .fast_forward           = false,
 };
 
 /* --- Constructors/Destructors --- */

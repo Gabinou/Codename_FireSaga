@@ -239,8 +239,8 @@ void Map_Tilesprites_Init(struct Map *map, size_t tiles_num);
 void Map_Tilesprites_Free(struct Map *map);
 
 /* --- I/O --- */
-void Map_readJSON(       void *input,  cJSON *jmap);
-void Map_writeJSON( void *input, cJSON             *jmap);
+void Map_readJSON(  void *input, cJSON *jmap);
+void Map_writeJSON( void *input, cJSON *jmap);
 
 /* --- Map events / Triggers --- */
 void Map_Turn_Increment(struct Map *map);
