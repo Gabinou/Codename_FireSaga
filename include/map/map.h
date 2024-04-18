@@ -41,6 +41,7 @@ struct Map {
     s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
     u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
 
+    // TODO: remove. should be in savefile
     s8 party_filename;
 
     /* --- BASICS --- */

@@ -570,16 +570,42 @@ void Game_loadJSON(struct Game *sota,  i16 save_ind) {
                            sota->s_xoshiro256ss[2],
                            sota->s_xoshiro256ss[3]);
 
+    // cJSON * jcamp = cJSON_GetObjectItem(json, "Camp");
+    // Camp_readJSON(&sota->camp, jcamp);
+
     cJSON *jconvoy = cJSON_GetObjectItem(json, "Convoy");
     Convoy_Clear(&sota->convoy);
     Convoy_readJSON(&sota->convoy, jconvoy);
     //     convoy.setWeapons(&weapons);
-    cJSON *jparty = cJSON_GetObjectItem(json, "Party");
+
+    /* -- Loading Party -- */
     Game_Party_Clear(sota);
-    // cJSON * jcamp = cJSON_GetObjectItem(json, "Camp");
-    // Camp_readJSON(&sota->camp, jcamp);
-    cJSON *junit = cJSON_GetObjectItem(jparty, "Unit");
-    struct Unit temp_unit;
+    cJSON *jparty = cJSON_GetObjectItem(json, "Party");
+
+    /* - Party filename may or may not be the current file - */
+    cJSON *jparty_filename = cJSON_GetObjectItem(json, "filename");
+    char *party_filename =  cJSON_GetStringValue(jparty_filename);
+
+    /* - If no filename in Party, assume the Party is in the current file - */
+    if (party_filename == NULL);
+        party_filename = filename.data;
+
+    /* - Reading party json - */
+    SDL_assert(party_filename != NULL);
+    SDL_Log("party_filename %s", party_filename);
+
+    sota->party_struct = Party_default;
+    Party_Folder(&sota->party_struct, "");
+    jsonio_readJSON(party_filename, &sota->party_struct);
+
+    /* - Loading party units json - */
+    sota->party_struct.party            = sota->party;
+    sota->party_struct.party_id_stack   = sota->party_id_stack;
+    Party_Load(&sota->party_struct, sota->weapons_dtab, sota->items_dtab);
+    Party_Size(&sota->party_struct);
+    SDL_assert(sota->party_struct.size > 0);
+
+    /* - Free stuff - */
     cJSON_Delete(json);
 }
 
