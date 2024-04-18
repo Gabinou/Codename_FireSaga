@@ -2,6 +2,7 @@
 #define GAME_STRUCT_H
 
 #include <stdio.h>
+#include "combat.h"
 #include "unit/unit.h"
 #include "credits.h"
 #include "index_shader.h"
@@ -40,7 +41,6 @@
 #include "title_screen.h"
 #include "systems/render.h"
 #include "systems/slide.h"
-#include "combat.h"
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_mixer.h"
 

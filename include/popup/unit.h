@@ -5,7 +5,6 @@
 #include "n9patch.h"
 #include "popup/popup.h"
 #include "bars/stat.h"
-#include "game/game.h"
 #include "slider.h"
 #include "unit/unit.h"
 #include "pixelfonts.h"

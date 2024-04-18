@@ -7,6 +7,7 @@
 #include "popup/map_combat.h"
 #include "popup/loadout_stats.h"
 #include "systems/render.h"
+#include "combat.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;

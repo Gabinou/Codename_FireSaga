@@ -2,6 +2,7 @@
 #define GAME_MENU_H
 
 #include "game/popup.h"
+#include "graph.h"
 #include "menu.h"
 #include "map/find.h"
 #include "map/path.h"
@@ -12,6 +13,7 @@
 #include "menu/trade.h"
 #include "menu/stats.h"
 #include "title_screen.h"
+#include "pixelfonts.h"
 #include "menu/growths.h"
 #include "popup/pre_combat.h"
 
