@@ -129,10 +129,10 @@ void Map_Condition_Trigger(struct Map_condition *condition) {
     } else if (condition->lose && !condition->win) {
         Event_Emit(__func__, SDL_USEREVENT, event_Map_Lose, NULL, NULL);
     } else if (!condition->lose && !condition->win) {
-        /* Neither win nor loss. Triggers something to happen */ 
+        /* Neither win nor loss. Triggers something to happen */
     } else {
         /* Win and Loss condition both */
-        // Error? 
+        // Error?
     }
 
 }
