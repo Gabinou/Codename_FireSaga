@@ -8,7 +8,7 @@
 * |          '-._.-'         |   |                                   |
 * |        Made by Gabriel Taillon                                   |
 * --------------------------------------------------------------------*/
-/* Eagle Standard */
+/* Imperial Eagle Bearer */
 /* Turn-based strategy Role Playing Game (RPG)
 *  Strongly inspired by Fire Emblem and Tear Ring Saga
 *  Source code is free to own, modify and compile
