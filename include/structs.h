@@ -753,11 +753,13 @@ struct Game {
     SDL_GLContext  gl_context;
     SDL_Window     *gl_window;
 #endif /* SOTA_OPENGL */
+    // world is mostly world_render
+    // only entity in world_control is cursor
     tnecs_world  *world;
     tnecs_world  *world_render;
     tnecs_world  *world_control;
 
-    tnecs_component           timer_typeflag;
+    tnecs_component timer_typeflag;
     struct Point  cursor_lastpos;
 
     struct dtab *menu_options_dtab;
