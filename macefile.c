@@ -217,6 +217,32 @@ struct Target test = {
     .kind     = MACE_EXECUTABLE,
 };
 
+struct Target bench = {
+    .includes = ".,include,include/bars,include/menu,"
+                "include/popup,include/unit,include/systems,"
+                "names,names/popup,names/menu,"
+                "second_party/noursmath,second_party/tnecs,"
+                "second_party/parg,second_party/nourstest,"
+                "third_party/physfs,third_party/tinymt,"
+                "third_party/stb,third_party/cJson,"
+                "/usr/include/SDL2,"
+                "test,test/menu,test/popup",
+    .sources  = "bench/*.c,src/*.c,src/bars/,src/menu/,src/unit,"
+                "src/popup/,src/systems/,src/game/,src/map,"
+                "src/controller",
+    .excludes = "src/main.c",
+    .links    = "SDL2,SDL2_image,SDL2_mixer,m,GLEW,"
+                "cjson,noursmath,physfs,tinymt,tnecs,parg",
+    .flags    = "-L/usr/lib,-fno-strict-overflow,"
+                "-fno-strict-aliasing,-std=iso9899:1999,"
+                "-fwrapv,-fno-delete-null-pointer-checks,"
+                "-DSDL_DISABLE_IMMINTRIN_H,"
+                "$(sdl2-config --cflags)",
+    .cmd_pre  = "astyle --options=utils/style.txt --verbose "
+                "--recursive src/* include/* test/* names/*",
+    .kind     = MACE_EXECUTABLE,
+};
+
 int mace(int argc, char *argv[]) {
     /* -- Setting compiler, directories -- */
     mace_set_compiler(CC);
@@ -254,6 +280,7 @@ int mace(int argc, char *argv[]) {
 
     /* - Testing - */
     MACE_ADD_TARGET(test);
+    MACE_ADD_TARGET(bench);
 
     /* - Target configs - */
     MACE_TARGET_CONFIG(l2w_sota, l2w_gcc_debug);
