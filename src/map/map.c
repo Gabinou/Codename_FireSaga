@@ -914,15 +914,13 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     cJSON *jmap_condition;
 
     cJSON_ArrayForEach(jmap_condition, jdeath_enemy) {
-        SDL_Log("jdeath_enemy");
-        struct Map_condition map_cond;
+        struct Map_condition map_cond = Map_condition_default;
         Map_Condition_readJSON(&map_cond, jmap_condition);
         DARR_PUT(map->death_enemy, map_cond);
     }
-    getchar();
 
     cJSON_ArrayForEach(jmap_condition, jdeath_friendly) {
-        struct Map_condition map_cond;
+        struct Map_condition map_cond = Map_condition_default;
         Map_Condition_readJSON(&map_cond, jmap_condition);
         DARR_PUT(map->death_friendly, map_cond);
     }

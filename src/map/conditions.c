@@ -1,7 +1,20 @@
 
 #include "map/conditions.h"
 
-struct Map_condition Map_condition_default = {0};
+struct Map_condition Map_condition_default = {
+    .army    =   -1,
+    .boss    =   false,
+    .all     =   false,
+    .unit    =   UNIT_ID_NULL,
+    .min     =   -1,
+    .at      =   -1,
+    .max     =   -1,
+    .gold    =    0,
+    .item    =   ITEM_NULL,
+    .scene   =    0,
+    .win     =   false,
+    .lose    =   false,
+};
 
 struct Map_condition Map_condition_main_char_loss = {
     .army    =   -1,
@@ -183,16 +196,28 @@ void Map_Condition_readJSON(void *input, cJSON *jmap_cond) {
     cJSON *jwin     = cJSON_GetObjectItem(jmap_cond, "win");
     cJSON *jlose    = cJSON_GetObjectItem(jmap_cond, "lose");
 
-    map_cond->army  = cJSON_GetNumberValue(jarmy);
-    map_cond->boss  = cJSON_IsTrue(jboss);
-    map_cond->all   = cJSON_IsTrue(jall);
-    map_cond->unit  = cJSON_GetNumberValue(junit);
-    map_cond->min   = cJSON_GetNumberValue(jmin);
-    map_cond->max   = cJSON_GetNumberValue(jmax);
-    map_cond->at    = cJSON_GetNumberValue(jat);
-    map_cond->gold  = cJSON_GetNumberValue(jgold);
-    map_cond->item  = cJSON_GetNumberValue(jitem);
-    map_cond->scene = cJSON_GetNumberValue(jscene);
-    map_cond->win   = cJSON_IsTrue(jwin);
-    map_cond->lose  = cJSON_IsTrue(jlose);
+    if (jarmy != NULL)
+        map_cond->army  = cJSON_GetNumberValue(jarmy);
+    if (jboss != NULL)
+        map_cond->boss  = cJSON_IsTrue(jboss);
+    if (jall != NULL)
+        map_cond->all   = cJSON_IsTrue(jall);
+    if (junit != NULL)
+        map_cond->unit  = cJSON_GetNumberValue(junit);
+    if (jmin != NULL)
+        map_cond->min   = cJSON_GetNumberValue(jmin);
+    if (jmax != NULL)
+        map_cond->max   = cJSON_GetNumberValue(jmax);
+    if (jat != NULL)
+        map_cond->at    = cJSON_GetNumberValue(jat);
+    if (jgold != NULL)
+        map_cond->gold  = cJSON_GetNumberValue(jgold);
+    if (jitem != NULL)
+        map_cond->item  = cJSON_GetNumberValue(jitem);
+    if (jscene != NULL)
+        map_cond->scene = cJSON_GetNumberValue(jscene);
+    if (jwin != NULL)
+        map_cond->win   = cJSON_IsTrue(jwin);
+    if (jlose != NULL)
+        map_cond->lose  = cJSON_IsTrue(jlose);
 }
