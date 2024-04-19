@@ -22,12 +22,12 @@ void Log_Init(void) {
     fclose(fopen(LOGFILE, "w"));
 
     /* -- SOTA_LOG_FPS -- */
-    #ifdef SOTA_VERBOSE
+#ifdef SOTA_VERBOSE
     /* Note: Makes a bunch of SDL errors show up */
     SDL_LogSetAllPriority(SDL_LOG_PRIORITY_VERBOSE);
-    #else /* SOTA_VERBOSE */
+#else /* SOTA_VERBOSE */
     SDL_LogSetAllPriority(SDL_LOG_PRIORITY_INFO);
-    #endif /* SOTA_VERBOSE */
+#endif /* SOTA_VERBOSE */
 
     /* -- SOTA_LOG_FPS -- */
     /* Change to SDL_LOG_PRIORITY_VERBOSE to see system logs */
@@ -37,9 +37,9 @@ void Log_Init(void) {
     /* Change to SDL_LOG_PRIORITY_VERBOSE to see FPS */
     SDL_LogSetPriority(SOTA_LOG_FPS, SDL_LOG_PRIORITY_CRITICAL);
 
-    #if HAVE_STDIO_H
+#if HAVE_STDIO_H
     SDL_LogSetOutputFunction(Log2file, NULL);
-    #endif
+#endif
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Logfile set\n");
 }
 

@@ -58,9 +58,8 @@ void Events_Names_Declare(void);
 void Events_Receivers_Declare(void);
 
 /* --- Constructors/Destructors --- */
-void Game_Init(   struct Game *sota);
+void Game_Init(   struct Game *sota, int argc, char *argv[]);
 void Game_Free(   struct Game *sota);
-void Game_Startup(struct Game *sota, struct Input_Arguments args);
 void Game_AI_Free(struct Game *sota);
 
 /* --- I/O --- */

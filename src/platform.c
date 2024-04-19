@@ -19,14 +19,14 @@ u8 platform_fromSDL(void) {
 }
 
 int sota_mkdir(char *name) {
-    #if defined(__unix__)     || defined(__linux__)
+#if defined(__unix__)     || defined(__linux__)
     mkdir(name, 0777);
-    #elif defined(__APPLE__)  || defined(__MACH__)
+#elif defined(__APPLE__)  || defined(__MACH__)
     mkdir(name, 0777);
-    #elif defined(_WIN32)     || defined(WIN32)
+#elif defined(_WIN32)     || defined(WIN32)
     _mkdir(name);
-    #elif defined(_WIN64)     || defined(WIN64)
+#elif defined(_WIN64)     || defined(WIN64)
     _mkdir(name);
-    #endif
+#endif
     return (1);
 }

@@ -210,8 +210,8 @@ int Utilities_Mirror(int room_diameter, int pos, int object_width) {
     return (mirrored_pos);
 }
 
+/* Reset Drawing color to black */
 void Utilities_DrawColor_Reset(SDL_Renderer *renderer) {
-    // SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
 }
 

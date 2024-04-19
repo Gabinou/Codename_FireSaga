@@ -46,62 +46,41 @@
 #include "macros.h"
 #include "music.h"
 
-int main(int argc, char *argv[]) {
+void Pre_Game_Startup(int argc, char *argv[]) {
     /* --- LOGGING --- */
     Log_Init();
-
-    #ifdef SDL_ASSERT_LEVEL
+#ifdef SDL_ASSERT_LEVEL
     SDL_LogDebug(SOTA_LOG_SYSTEM, "SDL_ASSERT_LEVEL %d\n", SDL_ASSERT_LEVEL);
-    #endif /* SDL_ASSERT_LEVEL */
+#endif /* SDL_ASSERT_LEVEL */
+    
+    SDL_LogDebug(SOTA_LOG_SYSTEM, "Starting IES\n");
 
-    /* --- STARTUP --- */
-    SDL_LogDebug(SOTA_LOG_SYSTEM, "Starting SOTA\n");
-    /* -- Platform detection -- */
+    /* -- atexit -- */
     atexit(SDL_Quit);
+
+    /* -- Platform detection -- */
     if (PLATFORM != platform_fromSDL()) {
         SDL_LogCritical(0, "C Platform not the same as SDL platform");
         exit(ERROR_PlatformMismatch);
     }
-    SDL_LogDebug(SOTA_LOG_SYSTEM, "Running on "PLATFORM_NAME);
-    SDL_LogDebug(SOTA_LOG_SYSTEM, "SDL version  %d %d %d ", SDL_MAJOR_VERSION,  SDL_MINOR_VERSION,
-                 SDL_PATCHLEVEL);
-    SDL_LogDebug(SOTA_LOG_SYSTEM, "SotA version %d %d %d ", SOTA_VER_MAJOR,    SOTA_VER_MINOR,
-                 SOTA_VER_PATCH);
-    if (SDL_BYTEORDER == SDL_LIL_ENDIAN)
-        SDL_LogDebug(SOTA_LOG_SYSTEM, "SDL endianness is SDL_LIL_ENDIAN");
-    else
-        SDL_LogDebug(SOTA_LOG_SYSTEM, "SDL endianness is SDL_BIG_ENDIAN");
 
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "Checking input arguments\n");
-    /* -- Input parsing -- */
-    struct Input_Arguments args = Input_parseInputs(argc, argv);
-
-    /* -- Actual startup -- */
+    /* -- IES startup -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Initializing filesystem \n");
     Filesystem_Init(argv[0]);
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Initializing utilities\n");
     Utilities_Load();
-    #ifndef __SOTA_RELEASE__
-    #if HAVE_STDIO_H
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "Printing all names\n");
-    Names_Print_All("");
-    #else
-    SDL_LogError(SOTA_LOG_SYSTEM, "Could not print all names, no stdio\n");
-    #endif /* HAVE_STDIO_H */
-    #endif /* __SOTA_RELEASE__ */
-
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
-    struct Game *sota = SDL_malloc(sizeof(struct Game));
-    Game_Init(sota);
-    Utilities_DrawColor_Reset(sota->renderer);
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Initializing RNG\n");
     RNG_Init_xoroshiro256ss();
+}
 
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "Game startup, according to user inputs\n");
-    Game_Startup(sota, args);
-    SDL_assert(sota->entity_mouse);
+int main(int argc, char *argv[]) {
+    Pre_Game_Startup(argc, argv);
+
+    SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
+    struct Game *sota = SDL_malloc(sizeof(struct Game));
+    Game_Init(sota, argc, argv);
 
     /* -- Starting master loop -- */
     u64 currentTime_ns      = 0;
@@ -130,11 +109,11 @@ int main(int argc, char *argv[]) {
         Events_Manage(sota); /* CONTROL */
 
         /* -- Render to screen -- */
-        #ifndef RENDER2WINDOW
+#ifndef RENDER2WINDOW
         SDL_SetRenderTarget(sota->renderer, NULL); /* RENDER */
         SDL_RenderCopy(     sota->renderer, sota->render_target, NULL, NULL);
         SDL_SetRenderTarget(sota->renderer, sota->render_target);
-        #endif
+#endif
         SDL_RenderPresent(sota->renderer);
 
         /* --- POST-FRAME --- */

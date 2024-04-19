@@ -205,9 +205,9 @@ void Draw_Menu(tnecs_system_input *input) {
 
         mc->draw(mc, sota->render_target, sota->renderer);
 
-        #ifdef SOTA_DEBUG_MENU_BOXES
+#ifdef SOTA_DEBUG_MENU_BOXES
         Menu_Elem_Boxes_Draw(mc, sota->renderer);
-        #endif
+#endif
     }
 }
 

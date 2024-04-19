@@ -188,9 +188,9 @@ static void _Arrow_Decider(struct Arrow *arrow, i32 point) {
     i32 endpoint = (pointnum - 2);
     SDL_assert(point <= endpoint);
 
-    #ifndef INFINITE_MOVE_ALL
+#ifndef INFINITE_MOVE_ALL
     pointnum = pointnum < (arrow->move + 1) ? pointnum : (arrow->move + 1) ;
-    #endif /* INFINITE_MOVE_ALL */
+#endif /* INFINITE_MOVE_ALL */
 
     /* - tiles around point - */
     /* 0,1,2 tiles -> 0 = behind, 1 = current, 2 = next */
@@ -305,11 +305,11 @@ void Arrow_Path_Add(struct Arrow *arrow, i32 x_next, i32 y_next) {
     bool isin_list  = list_isIn_2D(arrow->pathlist, point_current, x_next, y_next);
 
     /* - Arrow can be infinitely long or not - */
-    #ifdef INFINITE_MOVE_ALL
+#ifdef INFINITE_MOVE_ALL
     bool istoolong = (num_current > ARROW_MAX_LEN);
-    #else
+#else
     bool istoolong = (num_current > arrow->move);
-    #endif /* INFINITE_MOVE_ALL */
+#endif /* INFINITE_MOVE_ALL */
 
     /* - Point decider - */
     if (isprevious) {

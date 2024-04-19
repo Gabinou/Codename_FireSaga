@@ -382,7 +382,7 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
     canSend &= !((cx == -1)  && (cy == 1) && (tx == 0) && (ty == (rl - 1))); /* x-y+ */
     canSend &= !((cx == 1)  && (cy == -1) && (tx == (cl - 1)) && (ty == 0)); /* x+y- */
     canSend &= !((cx == -1) && (cy == -1) && (tx == 0) && (ty == 0)); /* x-y- */
-    #ifndef INFINITE_MOVE_ALL
+#ifndef INFINITE_MOVE_ALL
     //    5- cursor is NOT in movemap IN map_unit move SUBSTATE
     if (sota->substate == GAME_SUBSTATE_MAP_UNIT_MOVES) {
         // SDL_Log("sota->cursor_move %d %d", sota->cursor_move.x, sota->cursor_move.y);
@@ -390,7 +390,7 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
         int ny = int_inbounds(ty + cy, 0, sota->map->row_len - 1);
         canSend &= (sota->map->movemap[ny * cl + nx] >= NMATH_MOVEMAP_MOVEABLEMIN);
     }
-    #endif /* INFINITE_MOVE_ALL */
+#endif /* INFINITE_MOVE_ALL */
     if (canSend)
         Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moves, &sota->cursor_move,
                    &sota->controller_code);
@@ -499,9 +499,9 @@ void Game_Cursor_Disable(struct Game *sota) {
     SDL_assert(sota->entity_cursor != 0);
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
     SDL_assert(sprite != NULL);
-    #ifndef DEBUG_CURSOR_SHOW_wDISABLED
+#ifndef DEBUG_CURSOR_SHOW_wDISABLED
     sprite->visible = false;
-    #endif
+#endif
 }
 
 /* --- Mouse --- */

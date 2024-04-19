@@ -135,11 +135,11 @@ void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
         return;
 
     /* Play Cursor Soundfx */
-    #ifndef DEBUG_NO_SOUNDFX
+#ifndef DEBUG_NO_SOUNDFX
     if (sota->soundfx_cursor) {
         Mix_PlayChannel(SOTA_SOUNDFX_CURSOR_CHANNEL, sota->soundfx_cursor, 0);
     }
-    #endif /* DEBUG_NO_SOUNDFX */
+#endif /* DEBUG_NO_SOUNDFX */
 
     if (fsm_eCrsMvs_s[sota->state] != NULL)
         fsm_eCrsMvs_s[sota->state](sota, mover_entity, &sota->cursor_move);
@@ -240,18 +240,18 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->reinf_timer, Timer);
         *timer = Timer_default;
 
-        #ifdef SOTA_PLAYER_CONTROLS_ENEMY
+#ifdef SOTA_PLAYER_CONTROLS_ENEMY
         /* --- Player control for enemy turn --- */
         Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
 
-        #else /* SOTA_PLAYER_CONTROLS_ENEMY */
+#else /* SOTA_PLAYER_CONTROLS_ENEMY */
         /* --- AI control for enemy turn --- */
         /* -- Setting game substate -- */
         strncpy(sota->reason, "Ai control turn", sizeof(sota->reason));
         Game_subState_Set(sota, GAME_SUBSTATE_MAP_NPCTURN, sota->reason);
         AI_State_Turn_Start(&sota->ai_state);
 
-        #endif /* SOTA_PLAYER_CONTROLS_ENEMY */
+#endif /* SOTA_PLAYER_CONTROLS_ENEMY */
     }
 }
 
@@ -788,11 +788,11 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     Game_Music_Play(sota);
 
     /* -- Play Turn Transition -- */
-    #ifndef DEBUG_NO_SOUNDFX
+#ifndef DEBUG_NO_SOUNDFX
     if (sota->soundfx_next_turn) {
         Mix_PlayChannel(-1, sota->soundfx_next_turn, 0);
     }
-    #endif /* DEBUG_NO_SOUNDFX */
+#endif /* DEBUG_NO_SOUNDFX */
 
     struct Text *text;
     text  = TNECS_GET_COMPONENT(sota->world, turn_transition, Text);

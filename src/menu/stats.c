@@ -1143,7 +1143,7 @@ void StatsMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *renderer) {
         StatsMenu_Update(stats_menu, n9patch, rt, renderer);
         stats_menu->update = false;
     }
-    #ifndef __SOTA_RELEASE__
+#ifndef __SOTA_RELEASE__
     /* if unit has nothing equipped, but item in hand is equippable, equip it. */
     SDL_assert(stats_menu->unit);
     bool can_equip = stats_menu->unit->equipped[UNIT_HAND_LEFT]  == 0;
@@ -1154,7 +1154,7 @@ void StatsMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *renderer) {
         stats_menu->update = true;
         Unit_Equip_inHand(stats_menu->unit, UNIT_HAND_LEFT);
     }
-    #endif
+#endif
     /* TODO: set position of statsmenu */
     SDL_Rect dstrect = {
         .w = n9patch->size_pixels.x * n9patch->scale.x,

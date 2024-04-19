@@ -132,11 +132,11 @@ void Slide_PopUp_Offscreen(tnecs_system_input *input) {
             continue;
 
         /* offscreen slide / onscreen slide switch */
-        #ifdef DEBUG_POPUP_TILE_OFFSCREEN
+#ifdef DEBUG_POPUP_TILE_OFFSCREEN
         SliderOffscreen_Compute_Next(slider, offscreen_ptr, &position->pixel_pos);
-        #else
+#else
         Slider_Compute_Next(slider, &position->pixel_pos, &slider->target, false);
-        #endif
+#endif
         slider->timer_ns = 0;
     }
 }

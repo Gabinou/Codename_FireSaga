@@ -37,12 +37,12 @@ void Game_Unit_Wait(struct Game *sota, tnecs_entity ent) {
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, ent, Unit);
     SDL_assert(unit != NULL);
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, ent, Sprite);
-    #ifndef DEBUG_UNIT_MOVEAFTERWAIT
+#ifndef DEBUG_UNIT_MOVEAFTERWAIT
     /* unit waits */
     Unit_wait(unit);
     /* set palette to dark */
     Sprite_Darken(sprite, sota->renderer);
-    #endif /*DEBUG_UNIT_MOVEAFTERWAIT*/
+#endif /*DEBUG_UNIT_MOVEAFTERWAIT*/
 
     /* stop animation */
     Sprite_Animation_Restart(sprite, MAP_UNIT_LOOP_IDLE);

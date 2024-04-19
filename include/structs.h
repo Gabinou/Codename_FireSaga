@@ -748,11 +748,11 @@ extern struct Party Party_default;
 struct Game {
     SDL_Renderer    *renderer;
     SDL_Texture     *render_target;
-    #ifdef SOTA_OPENGL
+#ifdef SOTA_OPENGL
     GLuint         gl_programid;
     SDL_GLContext  gl_context;
     SDL_Window     *gl_window;
-    #endif /* SOTA_OPENGL */
+#endif /* SOTA_OPENGL */
     tnecs_world  *world;
 
     tnecs_component           timer_typeflag;

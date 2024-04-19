@@ -320,49 +320,49 @@ void Compute_Combat_Attack(struct Combat_Phase  *phase,
     attacker->hit_sequence.eff_rate = hit_rate;
     /* --- CHECKING HIT --- */
     /* -- computing effective rate -- */
-    #ifdef RNG_SEQUENCE_BREAKER_HIT
+#ifdef RNG_SEQUENCE_BREAKER_HIT
     if (!SotA_isPC(attacker->army)) { /* rate drops if hit sequence for NPC ONLY */
         if ((attacker->hit_sequence.hit) && (attacker->hit_sequence.len > 0)) {
             attacker->hit_sequence.eff_rate = SB_RATE_DROP(hit_rate, attacker->hit_sequence.len);
         }
     }
-    #endif /* RNG_SEQUENCE_BREAKER_HIT */
-    #ifdef RNG_SEQUENCE_BREAKER_MISS
+#endif /* RNG_SEQUENCE_BREAKER_HIT */
+#ifdef RNG_SEQUENCE_BREAKER_MISS
     if (SotA_isPC(attacker->army)) { /* rate rises if miss sequence for PC ONLY */
         if ((!attacker->hit_sequence.hit) && (attacker->hit_sequence.len > 0)) {
             attacker->hit_sequence.eff_rate = SB_RATE_RISE(hit_rate, attacker->hit_sequence.len);
         }
     }
-    #endif /* RNG_SEQUENCE_BREAKER_MISS */
+#endif /* RNG_SEQUENCE_BREAKER_MISS */
 
     /* -- checking hit or miss -- */
     temp_attack.hit = RNG_checkRate(attacker->hit_sequence.eff_rate, SOTA_RN_DOUBLE);
     /* -- checking sequence -- */
-    #if defined(RNG_SEQUENCE_BREAKER_HIT) || defined(RNG_SEQUENCE_BREAKER_MISS)
+#if defined(RNG_SEQUENCE_BREAKER_HIT) || defined(RNG_SEQUENCE_BREAKER_MISS)
     RNG_checkSequence_twoWay(&attacker->hit_sequence, temp_attack.hit);
-    #endif /* RNG_SEQUENCE_BREAKER_HIT */
+#endif /* RNG_SEQUENCE_BREAKER_HIT */
 
     /* --- CHECKING CRIT --- */
     /* -- computing effective rate -- */
     attacker->crit_sequence.eff_rate = crit_rate;
-    #ifdef RNG_SEQUENCE_BREAKER_CRIT
+#ifdef RNG_SEQUENCE_BREAKER_CRIT
     if (!SotA_isPC(attacker->army)) { /* rate drops if crit sequence for PC ONLY */
         if ((attacker->crit_sequence.hit) && (attacker->crit_sequence.len > 0))
             attacker->crit_sequence.eff_rate = SB_RATE_DROP(crit_rate, attacker->crit_sequence.len);
     }
-    #endif /* RNG_SEQUENCE_BREAKER_HIT */
-    #ifdef RNG_SEQUENCE_BREAKER_NOCRIT
+#endif /* RNG_SEQUENCE_BREAKER_HIT */
+#ifdef RNG_SEQUENCE_BREAKER_NOCRIT
     if (SotA_isPC(attacker->army)) { /* rate rises if nocrit sequence for PC ONLY */
         if ((!attacker->crit_sequence.hit) && (attacker->crit_sequence.len > 0))
             attacker->crit_sequence.eff_rate = SB_RATE_RISE(crit_rate, attacker->crit_sequence.len);
     }
-    #endif /* RNG_SEQUENCE_BREAKER_MISS */
+#endif /* RNG_SEQUENCE_BREAKER_MISS */
     /* -- checking crit or nocrit -- */
     temp_attack.crit = RNG_checkRate(crit_rate, SOTA_RNG);
     /* -- checking sequence -- */
-    #if defined(RNG_SEQUENCE_BREAKER_CRIT) || defined(RNG_SEQUENCE_BREAKER_NOCRIT)
+#if defined(RNG_SEQUENCE_BREAKER_CRIT) || defined(RNG_SEQUENCE_BREAKER_NOCRIT)
     RNG_checkSequence_twoWay(&attacker->crit_sequence, temp_attack.crit);
-    #endif /* RNG_SEQUENCE_BREAKER_CRIT */
+#endif /* RNG_SEQUENCE_BREAKER_CRIT */
 
     /* --- COMPUTING TOTAL ATTACK DAMAGE --- */
     Combat_totalDamage(&temp_attack, &damage);

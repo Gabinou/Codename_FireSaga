@@ -249,16 +249,16 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
     /* - Update the slider target - */
     struct Point popup_pos = position->pixel_pos;
     slider->target = new_target;
-    #ifdef DEBUG_POPUP_UNIT_OFFSCREEN
+#ifdef DEBUG_POPUP_UNIT_OFFSCREEN
     i32 midpoint = sota->settings.res.x / 2;
     bool screen_side_changed = (((new_target.x > midpoint) && (popup_pos.x < midpoint))
                                 || ((new_target.x < midpoint) && (popup_pos.x > midpoint)));
     if (screen_side_changed)
         Slider_Target_Offscreen(slider, offscreen, &position->pixel_pos);
     Slider_Start(slider, &position->pixel_pos, &offscreen->target);
-    #else
+#else
     Slider_Start(slider, &position->pixel_pos, &slider->target);
-    #endif
+#endif
 }
 
 void Game_PopUp_Tile_Place(struct Game *sota, struct Point cursor_pos) {
@@ -297,12 +297,12 @@ void Game_PopUp_Tile_Place(struct Game *sota, struct Point cursor_pos) {
 
     /* - Update the slider target - */
     slider->target = new_target;
-    #ifdef DEBUG_POPUP_TILE_OFFSCREEN
+#ifdef DEBUG_POPUP_TILE_OFFSCREEN
     Slider_Target_Offscreen(slider, offscreen, &position->pixel_pos);
     Slider_Start(slider, &position->pixel_pos, &offscreen->target);
-    #else
+#else
     Slider_Start(slider, &position->pixel_pos, &slider->target);
-    #endif
+#endif
 
 }
 

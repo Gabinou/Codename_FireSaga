@@ -154,7 +154,7 @@ void Game_Free(struct Game *sota) {
     Events_Data_Free();
     Events_Names_Free();
     Events_Receivers_Free();
-    #ifndef SOTA_OPENGL
+#ifndef SOTA_OPENGL
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Renderer");
     if (sota->render_target != NULL)
         SDL_DestroyTexture(sota->render_target);
@@ -167,8 +167,8 @@ void Game_Free(struct Game *sota) {
     SDL_QuitSubSystem(SDL_INIT_EVERYTHING);
     Mix_Quit();
     SDL_Quit();
-    #else /* SOTA_OPENGL */
-    #endif /* SOTA_OPENGL */
+#else /* SOTA_OPENGL */
+#endif /* SOTA_OPENGL */
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free tnecs world");
     if (sota->world != NULL) {
         tnecs_world_destroy(sota->world); /* crashes */
@@ -226,7 +226,11 @@ void Game_AI_Free(struct Game *sota) {
     }
 }
 
-void Game_Init(struct Game *sota) {
+void Game_Init(struct Game *sota, int argc, char *argv[]) {
+    /* -- Input parsing -- */
+    SDL_LogInfo(SOTA_LOG_SYSTEM, "Checking input arguments\n");
+    struct Input_Arguments args = Input_parseInputs(argc, argv);
+
     *sota = Game_default;
     sota->settings = Settings_default;
     SDL_assert(sota->settings.FPS.cap > 0);
@@ -263,7 +267,7 @@ void Game_Init(struct Game *sota) {
     sota->camera.offset.y = DEFAULT_CAMERA_YOFFSET;
     sota->camera.zoom     = DEFAULT_CAMERA_ZOOM;
 
-    #ifndef SOTA_OPENGL
+#ifndef SOTA_OPENGL
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Firesaga: Window Initialization");
     if (SDL_Init(SDL_INIT_EVERYTHING)) {
         /*  NOTE: --- SDL_INIT LEAKS A LOT OF MEMORY --- */
@@ -301,7 +305,7 @@ void Game_Init(struct Game *sota) {
             SDL_LogVerbose(SOTA_LOG_SYSTEM, "Renderer created\n");
         }
     }
-    #ifndef RENDER2WINDOW
+#ifndef RENDER2WINDOW
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Rendering to sota->render_target\n");
     SDL_assert(sota->settings.res.x > 0);
     SDL_assert(sota->settings.res.y > 0);
@@ -312,8 +316,8 @@ void Game_Init(struct Game *sota) {
     SDL_SetTextureBlendMode(sota->render_target, SDL_BLENDMODE_BLEND);
     SDL_SetRenderTarget(sota->renderer, sota->render_target);
     SDL_assert(sota->render_target != NULL);
-    #endif
-    #else
+#endif
+#else
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Firesaga: OpenGL Window Initialization");
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
@@ -336,7 +340,7 @@ void Game_Init(struct Game *sota) {
         SDL_LogCritical(0, "Unable to initialize OpenGL!\n");
         exit(1);
     }
-    #endif /* SOTA_OPENGL */
+#endif /* SOTA_OPENGL */
     // char *path_mapping = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);
     char *temp_base = SDL_GetBasePath();
     SDL_assert(DEFAULT_BUFFER_SIZE >= strlen(temp_base));
@@ -494,26 +498,25 @@ void Game_Init(struct Game *sota) {
     /* --- Soundfx --- */
     sota->soundfx_cursor    = Soundfx_Load_Cursor();
     sota->soundfx_next_turn = Soundfx_Load_Next_Turn();
-}
-
-// TODO: Rename
-void Game_Startup(struct Game *sota, struct Input_Arguments in_args) {
-    strncpy(sota->reason, "Initial sota startup", sizeof(sota->reason));
 
     /* -- Load Cursor and mouse -- */
-    SDL_ShowCursor(SDL_DISABLE); // for default cursor.
+    SDL_ShowCursor(SDL_DISABLE); /* for default cursor */
     Game_FPS_Create(sota, SOTA_FPS_UPDATE_ns);
     Game_Cursor_Create(sota);
     Game_Mouse_Create(sota);
 
     /* -- Load Title -- */
-    Game_titleScreen_Load(sota, in_args);
+    Game_titleScreen_Load(sota, args);
     Game_Mouse_Disable(sota);
     Game_cursorFocus_onMenu(sota);
 
-    /* -- Load Background -- */
+    /* -- Set color -- */
+    Utilities_DrawColor_Reset(sota->renderer);
+
+    /* -- Checks -- */
     SDL_assert(sota->state      == GAME_STATE_Title_Screen);
     SDL_assert(sota->substate   == GAME_SUBSTATE_MENU);
+    SDL_assert(sota->entity_mouse);
 }
 
 void Game_Save_Copy( i16 from_ind,  i16 to_ind) {
@@ -826,12 +829,12 @@ void Game_Music_Play(struct Game *sota) {
         return;
     }
 
-    #ifndef DEBUG_NO_MUSIC
+#ifndef DEBUG_NO_MUSIC
     if (!Mix_PlayingMusic())
         Mix_FadeInMusic(sota->music, -1, SOTA_MUSIC_FADEIN_ms);
     else if (Mix_PausedMusic())
         Mix_ResumeMusic();
-    #endif /* DEBUG_NO_MUSIC */
+#endif /* DEBUG_NO_MUSIC */
 }
 
 void Game_Music_Stop(struct Game *sota) {

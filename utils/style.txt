@@ -13,7 +13,6 @@
 --indent-continuation=2
 --indent-preproc-block
 --indent-preproc-define
---indent-preproc-cond
 --indent-col1-comments
 --min-conditional-indent=0
 --max-continuation-indent=60

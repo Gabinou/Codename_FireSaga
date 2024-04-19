@@ -419,23 +419,23 @@ void Map_Grid_Draw(struct Map *map,  struct Settings *settings, struct Camera *c
 
 bool Map_Shadowmap_newFrame(struct Map *map) {
     bool shadow_updates = false;
-    #if !defined(MAP_NO_ANIMATION) || !defined(MAP_SHADOW_NO_ANIMATION)
+#if !defined(MAP_NO_ANIMATION) || !defined(MAP_SHADOW_NO_ANIMATION)
     if (map->shadow_frame_counter++ > map->shadow_frame_pause) {
         shadow_updates = true;
         map->shadow_frame_counter = 0;
     }
-    #endif /* !defined(MAP_NO_ANIMATION) || !defined(MAP_SHADOW_NO_ANIMATION) */
+#endif /* !defined(MAP_NO_ANIMATION) || !defined(MAP_SHADOW_NO_ANIMATION) */
     return (shadow_updates);
 }
 
 bool Map_Tilemap_newFrame(struct Map *map) {
     bool tm_up = false ;
-    #if !defined(MAP_NO_ANIMATION) || !defined(MAP_TILEMAP_NO_ANIMATION)
+#if !defined(MAP_NO_ANIMATION) || !defined(MAP_TILEMAP_NO_ANIMATION)
     if (map->tilemap_frame_counter++ > map->tilemap_frame_pause) {
         tm_up = true;
         map->tilemap_frame_counter = 0;
     }
-    #endif /* !defined(MAP_NO_ANIMATION) || !defined(MAP_TILEMAP_NO_ANIMATION) */
+#endif /* !defined(MAP_NO_ANIMATION) || !defined(MAP_TILEMAP_NO_ANIMATION) */
     return (tm_up);
 }
 

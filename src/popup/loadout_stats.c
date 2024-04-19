@@ -58,10 +58,10 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
              pls->previous_cs.attack[DMG_TYPE_PHYSICAL])
         arrow_index = STAT_ARROW_DOWN;
 
-    #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
+#ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
     if (arrow_index == STAT_ARROW_NULL)
         arrow_index = STAT_ARROW_UP;
-    #endif
+#endif
     srcrect.x = arrow_index * PLS_ARROW_W;
     dstrect.x = PLS_ATK_LARROW_X;
     dstrect.y = PLS_ATK_LARROW_Y;
@@ -75,10 +75,10 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
              pls->previous_cs.attack[DMG_TYPE_MAGICAL])
         arrow_index = STAT_ARROW_DOWN;
 
-    #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
+#ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
     if (arrow_index == STAT_ARROW_NULL)
         arrow_index = STAT_ARROW_UP;
-    #endif
+#endif
     srcrect.x = arrow_index * PLS_ARROW_W;
     dstrect.x = PLS_ATK_RARROW_X;
     dstrect.y = PLS_ATK_RARROW_Y;
@@ -91,10 +91,10 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
     else if (pls->new_cs.hit < pls->previous_cs.hit)
         arrow_index = STAT_ARROW_DOWN;
 
-    #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
+#ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
     if (arrow_index == STAT_ARROW_NULL)
         arrow_index = STAT_ARROW_UP;
-    #endif
+#endif
     srcrect.x = arrow_index * PLS_ARROW_W;
     dstrect.x = PLS_HIT_LARROW_X;
     dstrect.y = PLS_HIT_LARROW_Y;
@@ -107,10 +107,10 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
     else if (pls->new_cs.dodge < pls->previous_cs.dodge)
         arrow_index = STAT_ARROW_DOWN;
 
-    #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
+#ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
     if (arrow_index == STAT_ARROW_NULL)
         arrow_index = STAT_ARROW_UP;
-    #endif
+#endif
     srcrect.x = arrow_index * PLS_ARROW_W;
     dstrect.x = PLS_HIT_RARROW_X;
     dstrect.y = PLS_HIT_RARROW_Y;
@@ -123,10 +123,10 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
     else if (pls->new_cs.crit < pls->previous_cs.crit)
         arrow_index = STAT_ARROW_DOWN;
 
-    #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
+#ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
     if (arrow_index == STAT_ARROW_NULL)
         arrow_index = STAT_ARROW_UP;
-    #endif
+#endif
     srcrect.x = arrow_index * PLS_ARROW_W;
     dstrect.x = PLS_CRIT_LARROW_X;
     dstrect.y = PLS_CRIT_LARROW_Y;
@@ -139,10 +139,10 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
     else if (pls->new_cs.favor < pls->previous_cs.favor)
         arrow_index = STAT_ARROW_DOWN;
 
-    #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
+#ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
     if (arrow_index == STAT_ARROW_NULL)
         arrow_index = STAT_ARROW_UP;
-    #endif
+#endif
     srcrect.x = arrow_index * PLS_ARROW_W;
     dstrect.x = PLS_CRIT_RARROW_X;
     dstrect.y = PLS_CRIT_RARROW_Y;
@@ -157,10 +157,10 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
              pls->previous_cs.protection[DMG_TYPE_PHYSICAL])
         arrow_index = STAT_ARROW_DOWN;
 
-    #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
+#ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
     if (arrow_index == STAT_ARROW_NULL)
         arrow_index = STAT_ARROW_UP;
-    #endif
+#endif
     srcrect.x = arrow_index * PLS_ARROW_W;
     dstrect.x = PLS_PROT_LARROW_X;
     dstrect.y = PLS_PROT_LARROW_Y;
@@ -175,10 +175,10 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
              pls->previous_cs.protection[DMG_TYPE_MAGICAL])
         arrow_index = STAT_ARROW_DOWN;
 
-    #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
+#ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
     if (arrow_index == STAT_ARROW_NULL)
         arrow_index = STAT_ARROW_UP;
-    #endif
+#endif
     srcrect.x = arrow_index * PLS_ARROW_W;
     dstrect.x = PLS_PROT_RARROW_X;
     dstrect.y = PLS_PROT_RARROW_Y;
@@ -191,10 +191,10 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
     else if (pls->new_cs.range_loadout.min < pls->previous_cs.range_loadout.min)
         arrow_index = STAT_ARROW_UP;
 
-    #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
+#ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
     if (arrow_index == STAT_ARROW_NULL)
         arrow_index = STAT_ARROW_UP;
-    #endif
+#endif
     srcrect.x = arrow_index * PLS_ARROW_W;
     dstrect.x = PLS_RANGE_LARROW_X;
     dstrect.y = PLS_RANGE_LARROW_Y;
@@ -207,10 +207,10 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
     else if (pls->new_cs.range_loadout.max < pls->previous_cs.range_loadout.max)
         arrow_index = STAT_ARROW_DOWN;
 
-    #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
+#ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
     if (arrow_index == STAT_ARROW_NULL)
         arrow_index = STAT_ARROW_UP;
-    #endif
+#endif
     srcrect.x = arrow_index * PLS_ARROW_W;
     dstrect.x = PLS_RANGE_RARROW_X;
     dstrect.y = PLS_RANGE_RARROW_Y;
@@ -223,10 +223,10 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
     else if (pls->new_cs.speed < pls->previous_cs.speed)
         arrow_index = STAT_ARROW_DOWN;
 
-    #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
+#ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
     if (arrow_index == STAT_ARROW_NULL)
         arrow_index = STAT_ARROW_UP;
-    #endif
+#endif
     srcrect.x = arrow_index * PLS_ARROW_W;
     dstrect.x = PLS_SPEED_ARROW_X;
     dstrect.y = PLS_SPEED_ARROW_Y;

@@ -910,9 +910,9 @@ enum MENU_PLAYER_SELECT {
 
 #define REGISTER_ENUM(x) ERROR_##x,
 enum ERRORS {
-    #ifndef NO_ERROR
+#ifndef NO_ERROR
     NO_ERROR = 0,
-    #endif
+#endif
     ERROR_START = 0,
 #include "names/errors.h"
     ERROR_END

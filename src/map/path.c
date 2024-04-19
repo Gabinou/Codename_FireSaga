@@ -332,11 +332,11 @@ i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_world *world,
     /* - Compute cost of each tile - */
     SDL_assert(unit_movetype > UNIT_MVT_START);
     for (size_t i = 0; i < (map->col_len * map->row_len); i++) {
-        #ifdef UNITS_IGNORE_TERRAIN
+#ifdef UNITS_IGNORE_TERRAIN
         /* - All units fly - */
         map->costmap[i] = COSTMAP_MIN;
 
-        #else /* not UNITS_IGNORE_TERRAIN */
+#else /* not UNITS_IGNORE_TERRAIN */
 
         /* - Compute cost from tile - */
         tile_ind = map->tilemap[i] / TILE_DIVISOR;
@@ -345,7 +345,7 @@ i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_world *world,
         temp_tile = map->tiles + tile_order;
         map->costmap[i] = temp_tile->cost_array[unit_movetype];
 
-        #endif /* UNITS_IGNORE_TERRAIN */
+#endif /* UNITS_IGNORE_TERRAIN */
 
         /* - Check if tile is occupied by enemy unit - */
         tnecs_entity ontile_unit_ent = map->unitmap[i];
