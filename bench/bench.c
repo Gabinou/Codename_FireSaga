@@ -1,4 +1,3 @@
-
 #include "filesystem.h"
 #include "nourstest.h"
 #include "test_AI.h"
@@ -106,27 +105,7 @@ void integration_tests() {
     nourstest_run("Basic ",        test_basic);
 }
 
-void random_checks() {
-#if HAVE_STDIO_H
-    SDL_Log("Printing all names\n");
-    Names_Print_All("");
-#endif /* HAVE_STDIO_H */
-
-    SDL_LogDebug(SOTA_LOG_SYSTEM, "Running on "PLATFORM_NAME);
-    SDL_LogDebug(SOTA_LOG_SYSTEM, "SDL version  %d %d %d ", SDL_MAJOR_VERSION,  SDL_MINOR_VERSION,
-                 SDL_PATCHLEVEL);
-    SDL_LogDebug(SOTA_LOG_SYSTEM, "SotA version %d %d %d ", SOTA_VER_MAJOR,    SOTA_VER_MINOR,
-                 SOTA_VER_PATCH);
-    if (SDL_BYTEORDER == SDL_LIL_ENDIAN)
-        SDL_LogDebug(SOTA_LOG_SYSTEM, "SDL endianness is SDL_LIL_ENDIAN");
-    else
-        SDL_LogDebug(SOTA_LOG_SYSTEM, "SDL endianness is SDL_BIG_ENDIAN");
-}
-
 int main(int argc, char *argv[]) {
-    /* -- Checks -- */
-    random_checks();
-
     /* -- Preliminaries -- */
     Log_Init();
     freopen("test_results.txt", "w+", stdout);
@@ -137,11 +116,10 @@ int main(int argc, char *argv[]) {
     SDL_Log("Initializing RNG\n");
     RNG_Init_xoroshiro256ss();
 
-    /* -- Running tests -- */
-    unit_tests();
-    render_tests();
-    integration_tests();
-    nourstest_results();
+    /* -- Running benchmarks -- */
+    bench_nstr();
+    bench_RNG();
+    getchar();
 
     /* -- Postliminaries -- */
     Pre_Game_Free();
