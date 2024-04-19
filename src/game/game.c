@@ -261,35 +261,15 @@ void Pre_Game_Startup(int argc, char *argv[]) {
     RNG_Init_xoroshiro256ss();
 }
 
-void Game_Step(struct Game *sota) {
-    /* --- PRE-FRAME --- */
+u64 _Game_Step_PreFrame(struct Game *sota) {
     sota->cursor_frame_moved = false;
-    u64 currentTime_ns = tnecs_get_ns();
     SDL_RenderClear(sota->renderer); /* RENDER clears the backbuffer */
 
-    /* --- FRAME --- */
-    /* -- fps_fsm -- */
-    SDL_assert(fsm_rFrame_s[sota->state] != NULL);
-    SDL_assert(fsm_cFrame_s[sota->state] != NULL);
+    return (tnecs_get_ns());
+}
 
-    fsm_rFrame_s[sota->state](sota); /* RENDER */
-    u64 updateTime_ns = SOTA_ns / sota->settings.FPS.cap;
-    tnecs_world_step_wdata(sota->world, updateTime_ns, sota); /* CONTROL+RENDER */
-    fsm_cFrame_s[sota->state](sota); /* CONTROL */
-    /* -- Events -- */
-    Events_Manage(sota); /* CONTROL */
-
-    /* -- Render to screen -- */
-#ifndef RENDER2WINDOW
-    SDL_SetRenderTarget(sota->renderer, NULL); /* RENDER */
-    SDL_RenderCopy(     sota->renderer, sota->render_target, NULL, NULL);
-    SDL_SetRenderTarget(sota->renderer, sota->render_target);
-#endif
-    SDL_RenderPresent(sota->renderer);
-
-    /* --- POST-FRAME --- */
+void _Game_Step_PostFrame(struct Game *sota, u64 currentTime_ns) {
     /* -- Synchronize timers -- */
-
     u64 elapsedTime_ns = tnecs_get_ns() - currentTime_ns;
     i64 delay_ms       = Game_FPS_Delay(sota, elapsedTime_ns);
     tnecs_ns time_ns   = (elapsedTime_ns + delay_ms * SOTA_ns / SOTA_ms);
@@ -301,6 +281,41 @@ void Game_Step(struct Game *sota) {
 
     /* -- Delay until next frame -- */
     Game_Delay(sota, delay_ms, currentTime_ns, elapsedTime_ns);
+
+}
+
+void _Game_Step(struct Game *sota) {
+    // TODO: Change to _Game_Step_Control
+    /* --- Step world, manage events --- */
+    /* -- fps_fsm -- */
+    SDL_assert(fsm_rFrame_s[sota->state] != NULL);
+    SDL_assert(fsm_cFrame_s[sota->state] != NULL);
+
+    // TODO: move all render stuff, tnecs included to _Game_Step_Render
+    fsm_rFrame_s[sota->state](sota); /* RENDER */
+    u64 updateTime_ns = SOTA_ns / sota->settings.FPS.cap;
+    tnecs_world_step_wdata(sota->world, updateTime_ns, sota); /* CONTROL+RENDER */
+    fsm_cFrame_s[sota->state](sota); /* CONTROL */
+
+    /* -- Events -- */
+    Events_Manage(sota); /* CONTROL */
+}
+
+void _Game_Step_Render(struct Game *sota) {
+    /* -- Render to screen -- */
+#ifndef RENDER2WINDOW
+    SDL_SetRenderTarget(sota->renderer, NULL); /* RENDER */
+    SDL_RenderCopy(     sota->renderer, sota->render_target, NULL, NULL);
+    SDL_SetRenderTarget(sota->renderer, sota->render_target);
+#endif
+    SDL_RenderPresent(sota->renderer);
+}
+
+void Game_Step(struct Game *sota) {
+    u64 currentTime_ns = _Game_Step_PreFrame(sota);
+    _Game_Step(sota);
+    _Game_Step_Render(sota);
+    _Game_Step_PostFrame(sota, currentTime_ns);
 }
 
 void Game_Init(struct Game *sota, int argc, char *argv[]) {
