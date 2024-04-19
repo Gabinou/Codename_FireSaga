@@ -46,35 +46,6 @@
 #include "macros.h"
 #include "music.h"
 
-void Pre_Game_Startup(int argc, char *argv[]) {
-    /* --- LOGGING --- */
-    Log_Init();
-#ifdef SDL_ASSERT_LEVEL
-    SDL_LogDebug(SOTA_LOG_SYSTEM, "SDL_ASSERT_LEVEL %d\n", SDL_ASSERT_LEVEL);
-#endif /* SDL_ASSERT_LEVEL */
-    
-    SDL_LogDebug(SOTA_LOG_SYSTEM, "Starting IES\n");
-
-    /* -- atexit -- */
-    atexit(SDL_Quit);
-
-    /* -- Platform detection -- */
-    if (PLATFORM != platform_fromSDL()) {
-        SDL_LogCritical(0, "C Platform not the same as SDL platform");
-        exit(ERROR_PlatformMismatch);
-    }
-
-    /* -- IES startup -- */
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "Initializing filesystem \n");
-    Filesystem_Init(argv[0]);
-
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "Initializing utilities\n");
-    Utilities_Load();
-
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "Initializing RNG\n");
-    RNG_Init_xoroshiro256ss();
-}
-
 int main(int argc, char *argv[]) {
     Pre_Game_Startup(argc, argv);
 

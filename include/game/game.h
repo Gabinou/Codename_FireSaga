@@ -57,6 +57,9 @@ void Events_Names_Strings(void);
 void Events_Names_Declare(void);
 void Events_Receivers_Declare(void);
 
+/* --- Pre game startup --- */
+void Pre_Game_Startup(int argc, char *argv[]);
+
 /* --- Constructors/Destructors --- */
 void Game_Init(   struct Game *sota, int argc, char *argv[]);
 void Game_Free(   struct Game *sota);
