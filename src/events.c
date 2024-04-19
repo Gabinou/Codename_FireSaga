@@ -116,6 +116,7 @@ void receive_event_Load_Debug_Map(struct Game *sota, SDL_Event *userevent) {
 
     /* -- LOAD Debug map -- */
     Game_debugMap_Load(sota);
+    Game_Gameplay_Start(sota, GAME_STATE_Preparation, GAME_SUBSTATE_MENU);
     Utilities_DrawColor_Reset(sota->renderer);
 
     /* -- Music check -- */

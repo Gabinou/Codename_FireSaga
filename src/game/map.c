@@ -84,8 +84,6 @@ void Game_Gameplay_Start(struct Game *sota, i32 state, i32 substate) {
 }
 
 void Game_debugMap_Load(struct Game *sota) {
-    // TODO: Split off debugmap specific stuff from ALL MAPS loading stuff
-    // Rename to Game_Gameplay_Start or something
     /* -- Preliminaries -- */
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Loading in test Map\n");
     /* - Updating game states - */
@@ -117,9 +115,6 @@ void Game_debugMap_Load(struct Game *sota) {
     Party_Load(&sota->party_struct, sota->weapons_dtab, sota->items_dtab);
     Party_Size(&sota->party_struct);
     SDL_assert(sota->party_struct.size > 0);
-
-    // TODO: movo to game init somewhere
-    Game_Gameplay_Start(sota, GAME_STATE_Preparation, GAME_SUBSTATE_MENU);
 }
 
 /* --- Reinforcements --- */
