@@ -14,7 +14,5 @@ int main(int argc, char *argv[]) {
     bench_RNG();
 
     /* -- Postliminaries -- */
-    SDL_Quit();
-    fclose(stdout);
     return (0);
 }
