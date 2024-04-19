@@ -1,4 +1,5 @@
 #include "game/game.h"
+#include "game/game.h"
 
 #define STB_SPRINTF_IMPLEMENTATION
 #ifndef STB_SPRINTF_IMPLEMENTATION
@@ -38,6 +39,9 @@ struct Game Game_default = {
     .selected_unit_entity   = 0,
 
     .isShadow               = false,
+    .world                  = NULL,
+    .world_render           = NULL,
+    .world_control          = NULL,
 
     .ai_timer               = TNECS_NULL,
 
@@ -170,9 +174,20 @@ void Game_Free(struct Game *sota) {
 #else /* SOTA_OPENGL */
 #endif /* SOTA_OPENGL */
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free tnecs world");
+
     if (sota->world != NULL) {
-        tnecs_world_destroy(sota->world); /* crashes */
+        tnecs_world_destroy(sota->world);
+        sota->world = NULL;
     }
+    if (sota->world_render != NULL) {
+        tnecs_world_destroy(sota->world_render);
+        sota->world_render = NULL;
+    }
+    if (sota->world_control != NULL) {
+        tnecs_world_destroy(sota->world_control);
+        sota->world_control = NULL;
+    }
+
     Game_Items_Free(  &sota->items_dtab);
     Game_Weapons_Free(&sota->weapons_dtab);
     if (sota->units_loaded != NULL) {
@@ -268,24 +283,7 @@ u64 _Game_Step_PreFrame(struct Game *sota) {
     return (tnecs_get_ns());
 }
 
-void _Game_Step_PostFrame(struct Game *sota, u64 currentTime_ns) {
-    /* -- Synchronize timers -- */
-    u64 elapsedTime_ns = tnecs_get_ns() - currentTime_ns;
-    i64 delay_ms       = Game_FPS_Delay(sota, elapsedTime_ns);
-    tnecs_ns time_ns   = (elapsedTime_ns + delay_ms * SOTA_ns / SOTA_ms);
-
-    Game_Cursor_movedTime_Compute(sota, time_ns);
-    // SDL_Log("sota->cursor_moved_time_ms %d\n", sota->cursor_moved_time_ms);
-    tnecs_custom_system_run(sota->world, Time_Synchronize,
-                            sota->timer_typeflag, time_ns, NULL);
-
-    /* -- Delay until next frame -- */
-    Game_Delay(sota, delay_ms, currentTime_ns, elapsedTime_ns);
-
-}
-
-void _Game_Step(struct Game *sota) {
-    // TODO: Change to _Game_Step_Control
+void _Game_Step_Control(struct Game *sota) {
     /* --- Step world, manage events --- */
     /* -- fps_fsm -- */
     SDL_assert(fsm_rFrame_s[sota->state] != NULL);
@@ -311,9 +309,24 @@ void _Game_Step_Render(struct Game *sota) {
     SDL_RenderPresent(sota->renderer);
 }
 
+void _Game_Step_PostFrame(struct Game *sota, u64 currentTime_ns) {
+    /* -- Synchronize timers -- */
+    u64 elapsedTime_ns = tnecs_get_ns() - currentTime_ns;
+    i64 delay_ms       = Game_FPS_Delay(sota, elapsedTime_ns);
+    tnecs_ns time_ns   = (elapsedTime_ns + delay_ms * SOTA_ns / SOTA_ms);
+
+    Game_Cursor_movedTime_Compute(sota, time_ns);
+    // SDL_Log("sota->cursor_moved_time_ms %d\n", sota->cursor_moved_time_ms);
+    tnecs_custom_system_run(sota->world, Time_Synchronize,
+                            sota->timer_typeflag, time_ns, NULL);
+
+    /* -- Delay until next frame -- */
+    Game_Delay(sota, delay_ms, currentTime_ns, elapsedTime_ns);
+}
+
 void Game_Step(struct Game *sota) {
     u64 currentTime_ns = _Game_Step_PreFrame(sota);
-    _Game_Step(sota);
+    _Game_Step_Control(sota);
     _Game_Step_Render(sota);
     _Game_Step_PostFrame(sota, currentTime_ns);
 }

@@ -754,6 +754,8 @@ struct Game {
     SDL_Window     *gl_window;
 #endif /* SOTA_OPENGL */
     tnecs_world  *world;
+    tnecs_world  *world_render;
+    tnecs_world  *world_control;
 
     tnecs_component           timer_typeflag;
     struct Point  cursor_lastpos;

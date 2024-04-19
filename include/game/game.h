@@ -68,8 +68,8 @@ void Game_AI_Free(struct Game *sota);
 
 /* --- Stepping --- */
 void  Game_Step(            struct Game *sota);
-void _Game_Step(            struct Game *sota);
 void _Game_Step_Render(     struct Game *sota);
+void _Game_Step_Control(    struct Game *sota);
 u64  _Game_Step_PreFrame(   struct Game *sota);
 void _Game_Step_PostFrame(  struct Game *sota, u64 time);
 
