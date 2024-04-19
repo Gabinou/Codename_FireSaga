@@ -909,15 +909,17 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     map->death_friendly   = DARR_INIT(map->death_friendly,  struct Map_condition, 2);
 
     cJSON *jmap_conditions  = cJSON_GetObjectItem(jmap, "Conditions");
-    cJSON *jdeath_enemy     = cJSON_GetObjectItem(jmap, "death_enemy");
-    cJSON *jdeath_friendly  = cJSON_GetObjectItem(jmap, "death_friendly");
+    cJSON *jdeath_enemy     = cJSON_GetObjectItem(jmap_conditions, "death_enemy");
+    cJSON *jdeath_friendly  = cJSON_GetObjectItem(jmap_conditions, "death_friendly");
     cJSON *jmap_condition;
 
     cJSON_ArrayForEach(jmap_condition, jdeath_enemy) {
+        SDL_Log("jdeath_enemy");
         struct Map_condition map_cond;
         Map_Condition_readJSON(&map_cond, jmap_condition);
         DARR_PUT(map->death_enemy, map_cond);
     }
+    getchar();
 
     cJSON_ArrayForEach(jmap_condition, jdeath_friendly) {
         struct Map_condition map_cond;
