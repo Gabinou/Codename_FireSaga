@@ -226,6 +226,15 @@ void Game_AI_Free(struct Game *sota) {
     }
 }
 
+void Pre_Game_Free(void) {
+    SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Utilities\n");
+    Utilities_Free();
+    SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Filesystem\n");
+    Filesystem_Free();
+    SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Names\n");
+    Names_Free();
+}
+
 void Pre_Game_Startup(int argc, char *argv[]) {
     /* --- LOGGING --- */
     Log_Init();
@@ -234,9 +243,6 @@ void Pre_Game_Startup(int argc, char *argv[]) {
 #endif /* SDL_ASSERT_LEVEL */
 
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Starting IES\n");
-
-    /* -- atexit -- */
-    atexit(SDL_Quit);
 
     /* -- Platform detection -- */
     if (PLATFORM != platform_fromSDL()) {
@@ -255,6 +261,47 @@ void Pre_Game_Startup(int argc, char *argv[]) {
     RNG_Init_xoroshiro256ss();
 }
 
+void Game_Step(struct Game *sota) {
+    /* --- PRE-FRAME --- */
+    sota->cursor_frame_moved = false;
+    u64 currentTime_ns = tnecs_get_ns();
+    SDL_RenderClear(sota->renderer); /* RENDER clears the backbuffer */
+
+    /* --- FRAME --- */
+    /* -- fps_fsm -- */
+    SDL_assert(fsm_rFrame_s[sota->state] != NULL);
+    SDL_assert(fsm_cFrame_s[sota->state] != NULL);
+
+    fsm_rFrame_s[sota->state](sota); /* RENDER */
+    u64 updateTime_ns = SOTA_ns / sota->settings.FPS.cap;
+    tnecs_world_step_wdata(sota->world, updateTime_ns, sota); /* CONTROL+RENDER */
+    fsm_cFrame_s[sota->state](sota); /* CONTROL */
+    /* -- Events -- */
+    Events_Manage(sota); /* CONTROL */
+
+    /* -- Render to screen -- */
+#ifndef RENDER2WINDOW
+    SDL_SetRenderTarget(sota->renderer, NULL); /* RENDER */
+    SDL_RenderCopy(     sota->renderer, sota->render_target, NULL, NULL);
+    SDL_SetRenderTarget(sota->renderer, sota->render_target);
+#endif
+    SDL_RenderPresent(sota->renderer);
+
+    /* --- POST-FRAME --- */
+    /* -- Synchronize timers -- */
+
+    u64 elapsedTime_ns = tnecs_get_ns() - currentTime_ns;
+    i64 delay_ms       = Game_FPS_Delay(sota, elapsedTime_ns);
+    tnecs_ns time_ns   = (elapsedTime_ns + delay_ms * SOTA_ns / SOTA_ms);
+
+    Game_Cursor_movedTime_Compute(sota, time_ns);
+    // SDL_Log("sota->cursor_moved_time_ms %d\n", sota->cursor_moved_time_ms);
+    tnecs_custom_system_run(sota->world, Time_Synchronize,
+                            sota->timer_typeflag, time_ns, NULL);
+
+    /* -- Delay until next frame -- */
+    Game_Delay(sota, delay_ms, currentTime_ns, elapsedTime_ns);
+}
 
 void Game_Init(struct Game *sota, int argc, char *argv[]) {
     /* -- Input parsing -- */

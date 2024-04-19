@@ -36,7 +36,6 @@
 #include "fps_fsm.h"
 #include "systems/render.h"
 #include "systems/control.h"
-#include "systems/time_system.h"
 #include "position.h"
 #include "utilities.h"
 #include "input.h"
@@ -47,69 +46,24 @@
 #include "music.h"
 
 int main(int argc, char *argv[]) {
+    /* -- atexit -- */
+    atexit(SDL_Quit);
+
+    /* -- Startup -- */
     Pre_Game_Startup(argc, argv);
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     struct Game *sota = SDL_malloc(sizeof(struct Game));
     Game_Init(sota, argc, argv);
 
-    /* -- Starting master loop -- */
-    u64 currentTime_ns      = 0;
-    u64 elapsedTime_ns      = 0;
-    i64 delay_ms            = 0;
-    tnecs_ns time_ns        = 0;
-    SDL_LogDebug(SOTA_LOG_SYSTEM, "FPS cap %d \n", sota->settings.FPS.cap);
-
+    /* -- Master loop -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Starting main game loop\n");
-    u64 updateTime_ns = SOTA_ns / sota->settings.FPS.cap;
-    while (sota->isrunning) {
-        /* --- PRE-FRAME --- */
-        sota->cursor_frame_moved = false;
-        currentTime_ns = tnecs_get_ns();
-        SDL_RenderClear(sota->renderer); /* RENDER clears the backbuffer */
-
-        /* --- FRAME --- */
-        /* -- fps_fsm -- */
-        SDL_assert(fsm_rFrame_s[sota->state] != NULL);
-        SDL_assert(fsm_cFrame_s[sota->state] != NULL);
-
-        fsm_rFrame_s[sota->state](sota); /* RENDER */
-        tnecs_world_step_wdata(sota->world, updateTime_ns, sota); /* CONTROL+RENDER */
-        fsm_cFrame_s[sota->state](sota); /* CONTROL */
-        /* -- Events -- */
-        Events_Manage(sota); /* CONTROL */
-
-        /* -- Render to screen -- */
-#ifndef RENDER2WINDOW
-        SDL_SetRenderTarget(sota->renderer, NULL); /* RENDER */
-        SDL_RenderCopy(     sota->renderer, sota->render_target, NULL, NULL);
-        SDL_SetRenderTarget(sota->renderer, sota->render_target);
-#endif
-        SDL_RenderPresent(sota->renderer);
-
-        /* --- POST-FRAME --- */
-        /* -- Synchronize timers -- */
-        elapsedTime_ns = tnecs_get_ns() - currentTime_ns;
-        delay_ms       = Game_FPS_Delay(sota, elapsedTime_ns);
-        time_ns        = (elapsedTime_ns + delay_ms * SOTA_ns / SOTA_ms);
-
-        Game_Cursor_movedTime_Compute(sota, time_ns);
-        // SDL_Log("sota->cursor_moved_time_ms %d\n", sota->cursor_moved_time_ms);
-        tnecs_custom_system_run(sota->world, Time_Synchronize,
-                                sota->timer_typeflag, time_ns, NULL);
-
-        /* -- Delay until next frame -- */
-        Game_Delay(sota, delay_ms, currentTime_ns, elapsedTime_ns);
-    }
+    while (sota->isrunning)
+        Game_Step(sota);
 
     /* -- Cleaning & Quitting -- */
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Utilities\n");
-    Utilities_Free();
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Game\n");
+    Pre_Game_Free();
     Game_Free(sota);
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Filesystem\n");
-    Filesystem_Free();
-    Names_Free();
     SDL_Log("SotA quit.\n");
     return (NO_ERROR);
 }

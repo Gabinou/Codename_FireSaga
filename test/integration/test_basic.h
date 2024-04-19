@@ -1,7 +1,7 @@
 #include "game/game.h"
 
 void test_basic() {
-    /* Startup stuff */
+    /* Startup Game */
 
     /* Load Save file test/debug_map.json */
 

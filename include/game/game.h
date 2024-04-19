@@ -20,12 +20,12 @@
 #include "input.h"
 #include "controller/gamepad.h"
 #include "controller/fsm.h"
-// #include "fsm.h"
+#include "fps_fsm.h"
 #include "weapon.h"
 #include "slider.h"
 #include "events.h"
 #include "nmath.h"
-// #include "narrative.h"
+#include "systems/time_system.h"
 #include "music.h"
 #include "macros.h"
 #include "hover.h"
@@ -57,13 +57,17 @@ void Events_Names_Strings(void);
 void Events_Names_Declare(void);
 void Events_Receivers_Declare(void);
 
-/* --- Pre game startup --- */
+/* --- Pre game --- */
 void Pre_Game_Startup(int argc, char *argv[]);
+void Pre_Game_Free(void);
 
 /* --- Constructors/Destructors --- */
 void Game_Init(   struct Game *sota, int argc, char *argv[]);
 void Game_Free(   struct Game *sota);
 void Game_AI_Free(struct Game *sota);
+
+/* --- Stepping --- */
+void Game_Step(struct Game *sotaf);
 
 /* --- I/O --- */
 void Game_saveJSON(struct Game *sota, i16 save_ind);
