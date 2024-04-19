@@ -588,7 +588,7 @@ void Game_loadJSON(struct Game *sota,  i16 save_ind) {
 
     /* - If no filename in Party, assume the Party is in the current file - */
     if (party_filename == NULL);
-        party_filename = filename.data;
+    party_filename = filename.data;
 
     /* - Reading party json - */
     SDL_assert(party_filename != NULL);
@@ -596,7 +596,7 @@ void Game_loadJSON(struct Game *sota,  i16 save_ind) {
 
     sota->party_struct = Party_default;
     Party_Folder(&sota->party_struct, "");
-    jsonio_readJSON(party_filename, &sota->party_struct);
+    jsonio_readJSON(s8_var(party_filename), &sota->party_struct);
 
     /* - Loading party units json - */
     sota->party_struct.party            = sota->party;
