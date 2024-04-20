@@ -73,7 +73,7 @@ void fsm_cFrame_sGmpMap_ssMapCmbt(struct Game *sota) {
 
 }
 
-/* --- AI CONTORL HAPPENS HERE --- */
+/* --- AI CONTROL HAPPENS HERE --- */
 void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     /* --- AI CONTROL --- */
 
