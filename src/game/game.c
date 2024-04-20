@@ -288,7 +288,7 @@ void _Game_Step_Control(struct Game *sota) {
     Game_Control_Gamepad( sota);
     Game_Control_Keyboard(sota);
     Game_Control_Touchpad(sota);
-    
+
     /* -- fps_fsm -- */
     SDL_assert(fsm_cFrame_s[sota->state] != NULL);
     fsm_cFrame_s[sota->state](sota); /* CONTROL */
@@ -341,11 +341,8 @@ void Game_Init(struct Game *sota, int argc, char *argv[]) {
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Checking input arguments\n");
     struct Input_Arguments args = Input_parseInputs(argc, argv);
 
-    *sota = Game_default;
-    sota->settings = Settings_default;
     SDL_assert(sota->settings.FPS.cap > 0);
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Init game");
-    i16 flags = 0;
     sota->filename_menu = s8_literal(PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png"));
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Init game");
@@ -369,13 +366,19 @@ void Game_Init(struct Game *sota, int argc, char *argv[]) {
     }
     sota->map_enemies = DARR_INIT(sota->map_enemies, tnecs_entity, 16);
 
-    if (sota->settings.fullscreen)
-        flags = SDL_WINDOW_FULLSCREEN;
+
     sota->units_loaded = SDL_calloc(UNIT_ID_END, sizeof(* sota->units_loaded));
 
     sota->camera.offset.x = DEFAULT_CAMERA_XOFFSET;
     sota->camera.offset.y = DEFAULT_CAMERA_YOFFSET;
     sota->camera.zoom     = DEFAULT_CAMERA_ZOOM;
+
+    /* Window flags */
+    i16 flags = SDL_WINDOW_RESIZABLE;
+    if (sota->settings.fullscreen)
+        flags |= SDL_WINDOW_FULLSCREEN;
+    if (!sota->settings.window)
+        flags |= SDL_WINDOW_HIDDEN;
 
 #ifndef SOTA_OPENGL
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Firesaga: Window Initialization");
@@ -426,8 +429,8 @@ void Game_Init(struct Game *sota, int argc, char *argv[]) {
     SDL_SetTextureBlendMode(sota->render_target, SDL_BLENDMODE_BLEND);
     SDL_SetRenderTarget(sota->renderer, sota->render_target);
     SDL_assert(sota->render_target != NULL);
-#endif
-#else
+#endif /* RENDER2WINDOW */
+#else /* SOTA_OPENGL */
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Firesaga: OpenGL Window Initialization");
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
@@ -451,7 +454,7 @@ void Game_Init(struct Game *sota, int argc, char *argv[]) {
         exit(1);
     }
 #endif /* SOTA_OPENGL */
-    // char *path_mapping = (char *) SDL_malloc(DEFAULT_BUFFER_SIZE);
+
     char *temp_base = SDL_GetBasePath();
     SDL_assert(DEFAULT_BUFFER_SIZE >= strlen(temp_base));
     s8 path_mapping =  s8_mut(temp_base);
@@ -474,7 +477,8 @@ void Game_Init(struct Game *sota, int argc, char *argv[]) {
     Events_Receivers_Declare();
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Initializing Menus\n");
     Game_Menus_Init(sota);
-    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Genesis of tnecs\n");
+
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Tnecs: Genesis\n");
     sota->world = tnecs_world_genesis();
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Components Registration\n");
     TNECS_REGISTER_COMPONENT(sota->world, Position);
@@ -629,7 +633,7 @@ void Game_Init(struct Game *sota, int argc, char *argv[]) {
     SDL_assert(sota->entity_mouse);
 }
 
-void Game_Save_Copy( i16 from_ind,  i16 to_ind) {
+void Game_Save_Copy(i16 from_ind,  i16 to_ind) {
     SDL_assert(PHYSFS_exists(SAVE_FOLDER));
     s8 filenameto       = s8_mut(SAVE_FOLDER);
     s8 filenamefrom     = s8_mut(SAVE_FOLDER);

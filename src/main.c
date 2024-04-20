@@ -33,6 +33,8 @@ int main(int argc, char *argv[]) {
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     struct Game *sota = SDL_malloc(sizeof(struct Game));
+    *sota = Game_default;
+    sota->settings = Settings_default;
     Game_Init(sota, argc, argv);
 
     /* -- Master loop -- */

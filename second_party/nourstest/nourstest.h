@@ -18,7 +18,7 @@ static void nourstest_results() {
         printf("\n %s:%d error #%d", __FILE__, __LINE__, ++fail_num); \
 } while (0)
 
-static void nourstest_run(char * name, void (*test)()) {
+static void nourstest_run(char *name, void (*test)()) {
     const int ts = test_num, fs = fail_num;
     const clock_t t0 = clock();
     printf("\t%-14s", name), test();
@@ -26,4 +26,14 @@ static void nourstest_run(char * name, void (*test)()) {
            (test_num - ts) - (fail_num - fs), fail_num - fs,
            (int)((clock() - t0) * 1000 / CLOCKS_PER_SEC));
 }
+
+static void nourstest_run_args(char *name, void (*test)(int argc, char *argv[]), int argc, char *argv[]) {
+    const int ts = test_num, fs = fail_num;
+    const clock_t t0 = clock();
+    printf("\t%-14s", name), test(argc, argv);
+    printf("\t pass: %5d \t fail: %2d \t %4dms\n",
+           (test_num - ts) - (fail_num - fs), fail_num - fs,
+           (int)((clock() - t0) * 1000 / CLOCKS_PER_SEC));
+}
+
 #endif /* __NOURSTEST_H__ */

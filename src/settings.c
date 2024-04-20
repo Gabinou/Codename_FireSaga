@@ -7,8 +7,6 @@ struct Settings Settings_default = {
     .res                = {DEFAULT_RESOLUTION_X, DEFAULT_RESOLUTION_Y},
     .pos                = {SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED},
     .fontsize           = 28,
-    .fullscreen         = false,
-    .tophand_stronghand = true, // TODO: REMOVE
     .tilesize           = {SOTA_TILESIZE, SOTA_TILESIZE},
 
     .FPS = {
@@ -47,4 +45,8 @@ struct Settings Settings_default = {
 
     .mouse              = {MOUSE_DEFAULT_ONHOLD, MOUSE_DEFAULT_MOVE},
     .cursor             = {DEFAULT_CURSOR_FRAMES, DEFAULT_CURSOR_SPEED},
+
+    .fullscreen         = false,
+    .window             = true,
+    .tophand_stronghand = true, // TODO: REMOVE
 };

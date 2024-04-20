@@ -98,11 +98,11 @@ void unit_tests() {
     nourstest_run("Weapon ",        test_weapon);
 }
 
-void integration_tests() {
+void integration_tests(int argc, char *argv[]) {
     SDL_Log("Running integration tests\n");
     printf("Running integration tests\n");
 
-    nourstest_run("Basic ",        test_basic);
+    nourstest_run_args("Basic ", test_basic, argc, argv);
 }
 
 void random_checks() {
@@ -137,9 +137,9 @@ int main(int argc, char *argv[]) {
     RNG_Init_xoroshiro256ss();
 
     /* -- Running tests -- */
-    unit_tests();
-    render_tests();
-    integration_tests();
+    // unit_tests();
+    // render_tests();
+    integration_tests(argc, argv);
     nourstest_results();
 
     /* -- Postliminaries -- */

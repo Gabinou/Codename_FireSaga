@@ -106,8 +106,10 @@ struct Settings {
     int soundfx_volume;
     float brightness;
 
-    bool fullscreen         : 1;
-    bool tophand_stronghand : 1;
+
+    b32 fullscreen          : 1;
+    b32 window              : 1;
+    b32 tophand_stronghand  : 1;
 };
 extern struct Settings Settings_default;
 
