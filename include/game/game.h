@@ -112,4 +112,20 @@ int  Game_Volume_Music_Get(  struct Game *sota);
 void Game_Volume_SoundFX_Set(struct Game *sota, int volume);
 int  Game_Volume_SoundFX_Get(struct Game *sota);
 
+/* -- Systems -- */
+void Game_Control_Gamepad( struct Game *sota);
+void Game_Control_Keyboard(struct Game *sota);
+void Game_Control_Touchpad(struct Game *sota);
+
+/* -- Utilities -- */
+void Control_Cursor_Moves(struct Game *s, struct Point cm, struct Point t,
+                          struct Point px, i32 ct);
+
+void Control_Pressed( i8 b, i8 *l, i8 *p, i32 *ct, u32 e,
+                      bool o, i32 t, i32 m);
+void Gamepad_Pressed( i8 b, i8 *l, i8 *p, i32 *ct, u32 e,
+                      struct controllerGamepad  *gp);
+void Keyboard_Pressed(i8 b, i8 *l, i8 *p, i32 *ct, u32 e,
+                      struct controllerKeyboard *kb);
+
 #endif /* GAME_STRUCT_H */
