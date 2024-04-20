@@ -102,7 +102,8 @@ void integration_tests(int argc, char *argv[]) {
     SDL_Log("Running integration tests\n");
     printf("Running integration tests\n");
 
-    nourstest_run_args("Basic ", test_basic, argc, argv);
+    nourstest_run_args("Minimal ",      test_minimal,   argc, argv);
+    nourstest_run_args("Save/Load ",    test_save_load, argc, argv);
 }
 
 void random_checks() {

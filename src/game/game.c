@@ -292,9 +292,6 @@ void _Game_Step_Control(struct Game *sota) {
     /* -- fps_fsm -- */
     SDL_assert(fsm_cFrame_s[sota->state] != NULL);
     fsm_cFrame_s[sota->state](sota); /* CONTROL */
-
-    /* -- Events -- */
-    Events_Manage(sota); /* CONTROL */
 }
 
 void _Game_Step_Render(struct Game *sota) {
@@ -332,6 +329,7 @@ void _Game_Step_PostFrame(struct Game *sota, u64 currentTime_ns) {
 void Game_Step(struct Game *sota) {
     u64 currentTime_ns = _Game_Step_PreFrame(sota);
     _Game_Step_Control(sota);
+    Events_Manage(sota); /* CONTROL */
     _Game_Step_Render(sota);
     _Game_Step_PostFrame(sota, currentTime_ns);
 }
@@ -374,7 +372,8 @@ void Game_Init(struct Game *sota, int argc, char *argv[]) {
     sota->camera.zoom     = DEFAULT_CAMERA_ZOOM;
 
     /* Window flags */
-    i16 flags = SDL_WINDOW_RESIZABLE;
+    i16 flags = 0;
+    // i16 flags = SDL_WINDOW_RESIZABLE; /* ? */
     if (sota->settings.fullscreen)
         flags |= SDL_WINDOW_FULLSCREEN;
     if (!sota->settings.window)
