@@ -1608,8 +1608,10 @@ void Events_Names_Alloc(void) {
 }
 
 void Events_Receivers_Free(void) {
-    if (receivers_dtab != NULL)
+    if (receivers_dtab != NULL) {
         DTAB_FREE(receivers_dtab);
+        receivers_dtab = NULL;
+    }
 }
 
 void Events_Receivers_Declare(void) {

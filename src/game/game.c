@@ -240,7 +240,7 @@ void Game_AI_Free(struct Game *sota) {
     }
 }
 
-void Pre_Game_Free(void) {
+void Post_Game_Free(void) {
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Utilities\n");
     Utilities_Free();
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Filesystem\n");

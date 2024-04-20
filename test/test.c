@@ -1,4 +1,5 @@
 #include "filesystem.h"
+#include "filesystem.h"
 #include "nourstest.h"
 #include "test_AI.h"
 #include "test_arrow.h"
@@ -46,6 +47,7 @@
 #include "popup/test_unit.h"
 
 #include "integration/test_basic.h"
+#include "integration/test_conditions.h"
 
 void render_tests() {
     SDL_Log("Running rendering tests\n");
@@ -102,8 +104,11 @@ void integration_tests(int argc, char *argv[]) {
     SDL_Log("Running integration tests\n");
     printf("Running integration tests\n");
 
-    nourstest_run_args("Minimal ",      test_minimal,   argc, argv);
-    nourstest_run_args("Save/Load ",    test_save_load, argc, argv);
+    nourstest_run_args("Minimal",       test_minimal,               argc, argv);
+    nourstest_run_args("Load/Save",     test_load_save,             argc, argv);
+    nourstest_run_args("Loss Death 1",  test_main_char_death_loss,  argc, argv);
+    nourstest_run_args("Loss Death 2",  test_silou_death_loss,      argc, argv);
+    nourstest_run_args("Win Boss",      test_boss_death_win,        argc, argv);
 }
 
 void random_checks() {
@@ -144,7 +149,7 @@ int main(int argc, char *argv[]) {
     nourstest_results();
 
     /* -- Postliminaries -- */
-    Pre_Game_Free();
+    Post_Game_Free();
     SDL_Quit();
     fclose(stdout);
     return (0);

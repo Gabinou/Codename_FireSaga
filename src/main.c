@@ -43,8 +43,8 @@ int main(int argc, char *argv[]) {
         Game_Step(sota);
 
     /* -- Cleaning & Quitting -- */
-    Pre_Game_Free();
     Game_Free(sota);
+    Post_Game_Free();
     SDL_Log("SotA quit.\n");
     return (NO_ERROR);
 }
