@@ -16,14 +16,6 @@
 *  Please do not distribute compiled executables
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stddef.h>
-#include <math.h>
-#include "physfs.h"
-#include "log.h"
-#include "convoy.h"
-#include "filesystem.h"
 #include "SDL2/SDL.h"
 #ifdef SOTA_OPENGL
     #include <GL/glew.h>
@@ -31,19 +23,6 @@
     #include <GL/glu.h>
 #endif
 #include "game/game.h"
-#include "game/cursor.h"
-#include "nstr.h"
-#include "fps_fsm.h"
-#include "systems/render.h"
-#include "systems/control.h"
-#include "position.h"
-#include "utilities.h"
-#include "input.h"
-#include "text.h"
-#include "events.h"
-#include "platform.h"
-#include "macros.h"
-#include "music.h"
 
 int main(int argc, char *argv[]) {
     /* -- atexit -- */

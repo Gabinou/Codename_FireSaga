@@ -5,7 +5,6 @@
 #include "controller/gamepad.h"
 #include "controller/mouse.h"
 #include "controller/touchpad.h"
-#include "systems/control.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
