@@ -181,30 +181,22 @@ b32 RNG_checkRate(i16 rate, i16 mode) {
 /* --- I/O --- */
 void RNG_readJSON(void *input, cJSON *jRNG) {
     u64 *array = (u64 *)input;
+    SDL_assert(cJSON_IsArray(jRNG));
 
-    cJSON *jRNG_s1  = cJSON_GetObjectItem(jRNG, "s1");
-    cJSON *jRNG_s2  = cJSON_GetObjectItem(jRNG, "s2");
-    cJSON *jRNG_s3  = cJSON_GetObjectItem(jRNG, "s3");
-    cJSON *jRNG_s4  = cJSON_GetObjectItem(jRNG, "s4");
-
-    array[0]        = cJSON_GetNumberValue(jRNG_s1);
-    array[1]        = cJSON_GetNumberValue(jRNG_s2);
-    array[2]        = cJSON_GetNumberValue(jRNG_s3);
-    array[3]        = cJSON_GetNumberValue(jRNG_s4);
+    int i = 0;
+    cJSON_ArrayForEach(jnum, jRNG) {
+        array[i++] = cJSON_GetNumberValue(jnum);
+    }
 }
 
 void RNG_writeJSON(void *input, cJSON *jRNG) {
     u64 *array = (u64 *)input;
-
-    cJSON *jRNG_s1     = cJSON_CreateNumber(array[0]);
-    cJSON *jRNG_s2     = cJSON_CreateNumber(array[1]);
-    cJSON *jRNG_s3     = cJSON_CreateNumber(array[2]);
-    cJSON *jRNG_s4     = cJSON_CreateNumber(array[3]);
-
-    cJSON_AddItemToObject(jRNG,  "s1",   jRNG_s1);
-    cJSON_AddItemToObject(jRNG,  "s2",   jRNG_s2);
-    cJSON_AddItemToObject(jRNG,  "s3",   jRNG_s3);
-    cJSON_AddItemToObject(jRNG,  "s4",   jRNG_s4);
+    SDL_assert(cJSON_IsArray(jRNG));
+    
+    for (int i = 0; i < RN_SET_NUM; i++) {
+        cJSON *jnum = cJSON_CreateNumber(array[i]);
+        cJSON_AddItemToArray(jRNG, jnum);
+    }
 }
 
 /* --- RNG SEQUENCE BREAKER (SB) --- */

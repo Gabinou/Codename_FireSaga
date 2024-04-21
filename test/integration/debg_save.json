@@ -1,0 +1,22 @@
+{
+"Save":
+    {
+        "map_id":   13,
+    "Party":
+        {
+        "filenames":
+            [
+                    "units/debug_map/Erwin.json",
+                    "units/debug_map/Silou.json",
+                    "units/debug_map/Servil.json",
+                    "units/debug_map/Kiara.json"
+            ]
+        },
+    "RNG":
+        {
+        },
+    "Convoy":
+        {
+        },
+    }
+}

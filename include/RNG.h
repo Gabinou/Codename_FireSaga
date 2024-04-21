@@ -46,6 +46,7 @@ enum SOTA_RN {
     RN_5050         =  50,  /* < for 50/50  */
     RN_MIN          =   0,
     RN_TABLE_SIZE   = 100,
+    RN_SET_NUM      =   4,
 };
 
 /* --- xoshiro256** --- */
