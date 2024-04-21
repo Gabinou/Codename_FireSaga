@@ -105,6 +105,7 @@ void integration_tests(int argc, char *argv[]) {
     printf("Running integration tests\n");
 
     nourstest_run_args("Minimal",       test_minimal,               argc, argv);
+    nourstest_run_args("Step",          test_step,                  argc, argv);
     nourstest_run_args("Load/Save",     test_load_save,             argc, argv);
     nourstest_run_args("Loss Death 1",  test_main_char_death_loss,  argc, argv);
     nourstest_run_args("Loss Death 2",  test_silou_death_loss,      argc, argv);
