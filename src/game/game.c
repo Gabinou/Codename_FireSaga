@@ -705,7 +705,7 @@ void _Game_loadJSON(struct Game *sota, s8  filename) {
 
     if (party_filename == NULL) {
         /* - If no filename in Party, Party is in the current file - */
-        Party_readJSON(sota->party_struct, jparty);
+        Party_readJSON(&sota->party_struct, jparty);
     } else {
         /* - Reading party json - */
         SDL_assert(party_filename != NULL);
@@ -714,7 +714,7 @@ void _Game_loadJSON(struct Game *sota, s8  filename) {
         /* party filename should include folder */
         Party_Folder(&sota->party_struct, "");
         jsonio_readJSON(s8_var(party_filename), &sota->party_struct);
-    } 
+    }
 
     /* - Loading party units json - */
     sota->party_struct.party            = sota->party;
@@ -732,7 +732,7 @@ void _Game_saveJSON(struct Game *sota, s8  filename) {
     PHYSFS_delete(filename.data);
     PHYSFS_file *fp = PHYSFS_openWrite(filename.data);
     SDL_assert(fp);
-    
+
     /* --- Create json object file --- */
     cJSON *json         = cJSON_CreateObject();
 
@@ -754,7 +754,7 @@ void _Game_saveJSON(struct Game *sota, s8  filename) {
 
     /* --- Party --- */
     cJSON *jparty       = cJSON_CreateObject();
-    Party_writeJSON(sota->party_struct, jparty);
+    Party_writeJSON(&sota->party_struct, jparty);
 
     /* --- Adding to parent JSON object --- */
     cJSON_AddItemToObject(json, "RNG",          jRNG);
