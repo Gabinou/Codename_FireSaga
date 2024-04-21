@@ -66,8 +66,12 @@ void test_load_save(int argc, char *argv[]) {
     nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
 
     /* Load Save file test/debug_map.json */
+    char *path = PATH_JOIN("test", "integration", "debug_save.json");
+    s8 filename = s8_var(path);
+    _Game_loadJSON(sota, filename);
 
     /* Save game to test/debug_map_2.json */
+    // _Game_saveJSON(sota, filename);
 
     /* Quit game */
     Game_Free(sota);

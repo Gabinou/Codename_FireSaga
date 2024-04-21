@@ -9,6 +9,7 @@
 #include "macros.h"
 #include "types.h"
 #include "tinymt32.h"
+#include "cJSON.h"
 #include "SDL2/SDL.h"
 
 #ifndef M_PI

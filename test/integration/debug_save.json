@@ -1,23 +1,24 @@
 {
-    "Party":
-        {
-        "filenames":
-            [
-                    "units/debug_map/Erwin.json",
-                    "units/debug_map/Silou.json",
-                    "units/debug_map/Servil.json",
-                    "units/debug_map/Kiara.json"
-            ]
-        },
-    "Camp":
-        {
-        },
-    "Narrative":
-        {
-        },
-    "RNG":[0,1,2,3],
-    "Convoy":
-        {
-        }
+"Party":
+    {
+    "filenames":
+        [
+                "units/debug_map/Erwin.json",
+                "units/debug_map/Silou.json",
+                "units/debug_map/Servil.json",
+                "units/debug_map/Kiara.json"
+        ]
+    },
+"Camp":
+    {
+    },
+"Narrative":
+    {
+    },
+"RNG":
+    [0, 1, 2, 3],
+"Convoy":
+    {
+    }
 
 }

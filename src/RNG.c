@@ -184,6 +184,7 @@ void RNG_readJSON(void *input, cJSON *jRNG) {
     SDL_assert(cJSON_IsArray(jRNG));
 
     int i = 0;
+    cJSON *jnum;
     cJSON_ArrayForEach(jnum, jRNG) {
         array[i++] = cJSON_GetNumberValue(jnum);
     }
@@ -192,7 +193,7 @@ void RNG_readJSON(void *input, cJSON *jRNG) {
 void RNG_writeJSON(void *input, cJSON *jRNG) {
     u64 *array = (u64 *)input;
     SDL_assert(cJSON_IsArray(jRNG));
-    
+
     for (int i = 0; i < RN_SET_NUM; i++) {
         cJSON *jnum = cJSON_CreateNumber(array[i]);
         cJSON_AddItemToArray(jRNG, jnum);
