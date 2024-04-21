@@ -50,11 +50,6 @@ void test_load_save(int argc, char *argv[]) {
     /* Load Save file test/debug_map.json */
     Game_Map_Load(sota, CHAPTER_TEST_V8);
 
-    /* Send some kind of event */
-    Events_Manage(sota);
-
-    /* Check something happened */
-
     /* Save game to test/debug_map_2.json */
 
     /* Quit game */

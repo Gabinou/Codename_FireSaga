@@ -76,8 +76,10 @@ u64  _Game_Step_PreFrame(   struct Game *sota);
 void _Game_Step_PostFrame(  struct Game *sota, u64 time);
 
 /* --- I/O --- */
-void Game_saveJSON(struct Game *sota, i16 save_ind);
-void Game_loadJSON(struct Game *sota, i16 save_ind);
+void  Game_saveJSON(struct Game *sota, i16 save_ind);
+void  Game_loadJSON(struct Game *sota, i16 save_ind);
+void _Game_saveJSON(struct Game *sota, s8  filename);
+void _Game_loadJSON(struct Game *sota, s8  filename);
 
 void Game_Save_Copy(  i16 from, i16 to);
 void Game_Save_Delete(i16 save);

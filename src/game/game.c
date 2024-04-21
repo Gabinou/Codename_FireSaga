@@ -669,50 +669,52 @@ void Game_Save_Delete( i16 save_ind) {
     s8_free(&filename);
 }
 
-void Game_loadJSON(struct Game *sota,  i16 save_ind) {
-    SDL_assert(PHYSFS_exists(SAVE_FOLDER));
-    s8 filename = s8_mut(SAVE_FOLDER);
-    char temp[DEFAULT_BUFFER_SIZE];
-    stbsp_snprintf(temp, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", save_ind);
-    // TODO jsonio
-    filename = s8cat(filename, s8_var(temp));
-    cJSON *json         = jsonio_parseJSON(filename);
+void _Game_loadJSON(struct Game *sota, s8  filename) {
+    cJSON *json = jsonio_parseJSON(filename);
+
+    /* --- Narrative --- */
     // readJSON_narrative(json, &sota->narrative);
 
-    cJSON *jRNG          = cJSON_GetObjectItem(json, "RNG");
+    /* --- Camp --- */
+    // cJSON * jcamp = cJSON_GetObjectItem(json, "Camp");
+    // Camp_readJSON(&sota->camp, jcamp);
+
+    /* --- RNG --- */
+    cJSON *jRNG = cJSON_GetObjectItem(json, "RNG");
     RNG_readJSON(sota->s_xoshiro256ss, jRNG);
     RNG_Set_xoroshiro256ss(sota->s_xoshiro256ss[0],
                            sota->s_xoshiro256ss[1],
                            sota->s_xoshiro256ss[2],
                            sota->s_xoshiro256ss[3]);
 
-    // cJSON * jcamp = cJSON_GetObjectItem(json, "Camp");
-    // Camp_readJSON(&sota->camp, jcamp);
 
+    /* --- Convoy --- */
     cJSON *jconvoy = cJSON_GetObjectItem(json, "Convoy");
     Convoy_Clear(&sota->convoy);
     Convoy_readJSON(&sota->convoy, jconvoy);
     //     convoy.setWeapons(&weapons);
 
-    /* -- Loading Party -- */
+    /* --- Party --- */
     Game_Party_Clear(sota);
     cJSON *jparty = cJSON_GetObjectItem(json, "Party");
 
     /* - Party filename may or may not be the current file - */
     cJSON *jparty_filename = cJSON_GetObjectItem(json, "filename");
     char *party_filename =  cJSON_GetStringValue(jparty_filename);
-
-    /* - If no filename in Party, assume the Party is in the current file - */
-    if (party_filename == NULL);
-    party_filename = filename.data;
-
-    /* - Reading party json - */
-    SDL_assert(party_filename != NULL);
-    SDL_Log("party_filename %s", party_filename);
-
     sota->party_struct = Party_default;
-    Party_Folder(&sota->party_struct, "");
-    jsonio_readJSON(s8_var(party_filename), &sota->party_struct);
+
+    if (party_filename == NULL) {
+        /* - If no filename in Party, Party is in the current file - */
+        Party_readJSON(sota->party_struct, jparty);
+    } else {
+        /* - Reading party json - */
+        SDL_assert(party_filename != NULL);
+        SDL_Log("party_filename %s", party_filename);
+
+        /* party filename should include folder */
+        Party_Folder(&sota->party_struct, "");
+        jsonio_readJSON(s8_var(party_filename), &sota->party_struct);
+    } 
 
     /* - Loading party units json - */
     sota->party_struct.party            = sota->party;
@@ -721,43 +723,81 @@ void Game_loadJSON(struct Game *sota,  i16 save_ind) {
     Party_Size(&sota->party_struct);
     SDL_assert(sota->party_struct.size > 0);
 
-    /* - Free stuff - */
+    /* - Free - */
     cJSON_Delete(json);
 }
 
-void Game_saveJSON(struct Game *sota,  i16 save_ind) {
-    if (!PHYSFS_exists(SAVE_FOLDER))
-        PHYSFS_mkdir(SAVE_FOLDER);
+void _Game_saveJSON(struct Game *sota, s8  filename) {
+    /* --- Open file --- */
+    PHYSFS_delete(filename.data);
+    PHYSFS_file *fp = PHYSFS_openWrite(filename.data);
+    SDL_assert(fp);
+    
+    /* --- Create json object file --- */
+    cJSON *json         = cJSON_CreateObject();
+
+    /* --- Narrative --- */
+    // writeJSON_narrative(json, &sota->narrative);
+
+    /* --- Camp --- */
+    // cJSON * jcamp = cJSON_CreateObject();
+    // Camp_writeJSON(&sota->camp, jcamp);
+
+    /* --- RNG --- */
+    cJSON *jRNG         = cJSON_CreateObject();
+    RNG_Get_xoroshiro256ss(sota->s_xoshiro256ss);
+    RNG_writeJSON(sota->s_xoshiro256ss, jRNG);
+
+    /* --- Convoy --- */
+    cJSON *jconvoy      = cJSON_CreateObject();
+    Convoy_writeJSON(&sota->convoy, jconvoy);
+
+    /* --- Party --- */
+    cJSON *jparty       = cJSON_CreateObject();
+    Party_writeJSON(sota->party_struct, jparty);
+
+    /* --- Adding to parent JSON object --- */
+    cJSON_AddItemToObject(json, "RNG",          jRNG);
+    cJSON_AddItemToObject(json, "Party",        jparty);
+    cJSON_AddItemToObject(json, "Convoy",       jconvoy);
+    // cJSON_AddItemToObject(json, "Camp",         jcamp);
+    // cJSON_AddItemToObject(json, "Narrative",    jnarrative);
+
+    /* --- Print to file --- */
+    jsonio_Print(fp, json);
+
+    /* - Free - */
+    PHYSFS_close(fp);
+    cJSON_Delete(json);
+}
+
+void Game_loadJSON(struct Game *sota, i16 save_ind) {
+    /* Checking save folder */
+    SDL_assert(PHYSFS_exists(SAVE_FOLDER));
+
+    /* Creating load path */
     s8 filename = s8_mut(SAVE_FOLDER);
     char temp[DEFAULT_BUFFER_SIZE];
     stbsp_snprintf(temp, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", save_ind);
     filename = s8cat(filename, s8_var(temp));
-    SDL_LogDebug(SOTA_LOG_APP, "saveJSON Game to: %s\n", filename.data);
-    PHYSFS_delete(filename.data);
-    PHYSFS_file *fp = PHYSFS_openWrite(filename.data);
-    SDL_assert(fp);
-    cJSON *json         = cJSON_CreateObject();
-    // writeJSON_narrative(json, &sota->narrative);
-    cJSON *jparty       = cJSON_CreateObject();
-    cJSON *jconvoy      = cJSON_CreateObject();
-    // cJSON * jcamp = cJSON_CreateObject();
-    cJSON *junit;
 
-    // TODO: save xoshiro256ss state
-    RNG_Get_xoroshiro256ss(sota->s_xoshiro256ss);
+    /* Actual loading JSON save file */
+    _Game_loadJSON(sota, filename);
+}
 
-    cJSON *jRNG         = cJSON_CreateObject();
-    RNG_writeJSON(sota->s_xoshiro256ss, jRNG);
+void Game_saveJSON(struct Game *sota, i16 save_ind) {
+    /* Making save folder if it doesn't exist */
+    if (!PHYSFS_exists(SAVE_FOLDER))
+        PHYSFS_mkdir(SAVE_FOLDER);
 
-    cJSON_AddItemToObject(json, "RNG",       jRNG);
-    cJSON_AddItemToObject(json, "Party",    jparty);
-    Convoy_writeJSON(&sota->convoy, jconvoy);
-    // cJSON_AddItemToObject(json, "Camp", jcamp);
-    // Camp_writeJSON(&sota->camp, jcamp);
-    cJSON_AddItemToObject(json, "Convoy", jconvoy);
-    jsonio_Print(fp, json);
-    PHYSFS_close(fp);
-    cJSON_Delete(json);
+    /* Creating save path */
+    s8 filename = s8_mut(SAVE_FOLDER);
+    char temp[DEFAULT_BUFFER_SIZE];
+    stbsp_snprintf(temp, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", save_ind);
+    filename = s8cat(filename, s8_var(temp));
+
+    /* Actual saving game to JSON file */
+    _Game_saveJSON(sota, filename);
 }
 
 /* --- State --- */
