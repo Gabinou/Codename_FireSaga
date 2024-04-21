@@ -153,7 +153,6 @@ void jsonio_writeJSON(s8 filename, void *struct_ptr, bool append) {
     PHYSFS_close(fp);
     if (json != NULL)
         cJSON_Delete(json);
-
 }
 
 /* --- UTILITIES --- */
@@ -636,18 +635,31 @@ void jsonio_Read_Unitstats(struct cJSON          *jstats,
     struct cJSON *jcon  = cJSON_GetObjectItem(jstats, "con");
     struct cJSON *jmove = cJSON_GetObjectItem(jstats, "move");
     struct cJSON *jprof = cJSON_GetObjectItem(jstats, "prof");
-    stats->hp   = cJSON_GetNumberValue(jhp);
-    stats->str  = cJSON_GetNumberValue(jstr);
-    stats->mag  = cJSON_GetNumberValue(jmag);
-    stats->agi  = cJSON_GetNumberValue(jagi);
-    stats->dex  = cJSON_GetNumberValue(jdex);
-    stats->fth  = cJSON_GetNumberValue(jfth);
-    stats->luck = cJSON_GetNumberValue(jluck);
-    stats->def  = cJSON_GetNumberValue(jdef);
-    stats->res  = cJSON_GetNumberValue(jres);
-    stats->con  = cJSON_GetNumberValue(jcon);
-    stats->move = cJSON_GetNumberValue(jmove);
-    stats->prof = cJSON_GetNumberValue(jprof);
+
+    if (jhp != NULL)
+        stats->hp   = cJSON_GetNumberValue(jhp);
+    if (jstr != NULL)
+        stats->str  = cJSON_GetNumberValue(jstr);
+    if (jmag != NULL)
+        stats->mag  = cJSON_GetNumberValue(jmag);
+    if (jagi != NULL)
+        stats->agi  = cJSON_GetNumberValue(jagi);
+    if (jdex != NULL)
+        stats->dex  = cJSON_GetNumberValue(jdex);
+    if (jfth != NULL)
+        stats->fth  = cJSON_GetNumberValue(jfth);
+    if (jluck != NULL)
+        stats->luck = cJSON_GetNumberValue(jluck);
+    if (jdef != NULL)
+        stats->def  = cJSON_GetNumberValue(jdef);
+    if (jres != NULL)
+        stats->res  = cJSON_GetNumberValue(jres);
+    if (jcon != NULL)
+        stats->con  = cJSON_GetNumberValue(jcon);
+    if (jmove != NULL)
+        stats->move = cJSON_GetNumberValue(jmove);
+    if (jprof != NULL)
+        stats->prof = cJSON_GetNumberValue(jprof);
 }
 
 void jsonio_Print(PHYSFS_file *fp, struct cJSON *_json) {

@@ -687,7 +687,6 @@ void _Game_loadJSON(struct Game *sota, s8  filename) {
                            sota->s_xoshiro256ss[2],
                            sota->s_xoshiro256ss[3]);
 
-
     /* --- Convoy --- */
     cJSON *jconvoy = cJSON_GetObjectItem(json, "Convoy");
     Convoy_Clear(&sota->convoy);
@@ -744,7 +743,7 @@ void _Game_saveJSON(struct Game *sota, s8  filename) {
     // Camp_writeJSON(&sota->camp, jcamp);
 
     /* --- RNG --- */
-    cJSON *jRNG         = cJSON_CreateObject();
+    cJSON *jRNG         = cJSON_CreateArray();
     RNG_Get_xoroshiro256ss(sota->s_xoshiro256ss);
     RNG_writeJSON(sota->s_xoshiro256ss, jRNG);
 
@@ -766,9 +765,10 @@ void _Game_saveJSON(struct Game *sota, s8  filename) {
     /* --- Print to file --- */
     jsonio_Print(fp, json);
 
-    /* - Free - */
+    /* Clean the file */
     PHYSFS_close(fp);
-    cJSON_Delete(json);
+    if (json != NULL)
+        cJSON_Delete(json);
 }
 
 void Game_loadJSON(struct Game *sota, i16 save_ind) {

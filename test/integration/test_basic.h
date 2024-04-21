@@ -65,15 +65,19 @@ void test_load_save(int argc, char *argv[]) {
     nourstest_true(sota->state      == GAME_STATE_Title_Screen);
     nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
 
-    /* Load Save file test/debug_map.json */
-    char *path = PATH_JOIN("test", "integration", "debug_save.json");
-    s8 filename = s8_var(path);
-    _Game_loadJSON(sota, filename);
+    /* Load Save test file */
+    char *path1 = PATH_JOIN("test", "integration", "debug_save.json");
+    s8 filename1 = s8_var(path1);
+    _Game_loadJSON(sota, filename1);
 
     /* Save game to test/debug_map_2.json */
-    // _Game_saveJSON(sota, filename);
+    char *path2 = PATH_JOIN("test", "integration", "debug_save2.json");
+    s8 filename2 = s8_var(path2);
+    _Game_saveJSON(sota, filename2);
+
+    nourstest_true(Filesystem_fequal(path1,  path2));
 
     /* Quit game */
     Game_Free(sota);
-    nourstest_true(false);
+    nourstest_true(true);
 }
