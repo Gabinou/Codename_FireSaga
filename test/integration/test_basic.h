@@ -66,12 +66,12 @@ void test_load_save(int argc, char *argv[]) {
     nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
 
     /* Load Save test file */
-    char *path1 = PATH_JOIN("test", "integration", "debug_save.json");
+    char *path1 = PATH_JOIN("saves", "debug_save.json");
     s8 filename1 = s8_var(path1);
     _Game_loadJSON(sota, filename1);
 
     /* Save game to test/debug_map_2.json */
-    char *path2 = PATH_JOIN("test", "integration", "debug_save2.json");
+    char *path2 = PATH_JOIN("saves", "debug_save2.json");
     s8 filename2 = s8_var(path2);
     _Game_saveJSON(sota, filename2);
 
