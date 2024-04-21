@@ -679,3 +679,22 @@ void jsonio_Print(PHYSFS_file *fp, struct cJSON *_json) {
     /* Free buffer */
     cJSON_free(buffer);
 }
+
+/* -- Comparisons -- */
+b32  jsonio_Equal(char *filename1, char *filename2, b32 case_sensitive) {
+    SDL_assert(filename1 != NULL);
+    SDL_assert(filename2 != NULL);
+
+    struct cJSON *jfile1 = jsonio_parseJSON(s8_var(filename1));
+    struct cJSON *jfile2 = jsonio_parseJSON(s8_var(filename2));
+
+    b32 out = cJSON_Compare(jfile1, jfile2, case_sensitive);
+
+    /* Clean the jfile */
+    if (jfile1 != NULL)
+        cJSON_Delete(jfile1);
+    if (jfile2 != NULL)
+        cJSON_Delete(jfile2);
+
+    return (out);
+}

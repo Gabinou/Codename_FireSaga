@@ -75,7 +75,8 @@ void test_load_save(int argc, char *argv[]) {
     s8 filename2 = s8_var(path2);
     _Game_saveJSON(sota, filename2);
 
-    nourstest_true(Filesystem_fequal(path1,  path2));
+    nourstest_true(jsonio_Equal(path1,  path2, true));
+    nourstest_true(jsonio_Equal(path1,  path2, false));
 
     /* Quit game */
     Game_Free(sota);

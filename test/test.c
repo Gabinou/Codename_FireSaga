@@ -142,6 +142,8 @@ int main(int argc, char *argv[]) {
     Utilities_Load();
     SDL_Log("Initializing RNG\n");
     RNG_Init_xoroshiro256ss();
+    if (SDL_Init(SDL_INIT_EVERYTHING))
+        exit(1);
 
     /* -- Running tests -- */
     // unit_tests();

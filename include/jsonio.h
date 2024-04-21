@@ -88,4 +88,7 @@ void jsonio_Write_Tilestats(struct cJSON *j, struct Tile_stats     *t);
 /* -- Print -- */
 void jsonio_Print(PHYSFS_file *fp, struct cJSON *json);
 
+/* -- Comparisons -- */
+b32  jsonio_Equal(char *f1, char *f2, b32 case_sensitive);
+
 #endif /* Filesystem_H */

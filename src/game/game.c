@@ -91,6 +91,7 @@ struct Game Game_default = {
 /* --- Constructors/Destructors --- */
 
 void Game_Free(struct Game *sota) {
+    Game_Title_Destroy(sota);
     Game_Map_Reinforcements_Free(sota);
     Game_DeploymentMenu_Free(sota);
     Game_Cursor_Free(sota);
@@ -102,6 +103,11 @@ void Game_Free(struct Game *sota) {
     if (sota->combat_outcome.attacks != NULL) {
         DARR_FREE(sota->combat_outcome.attacks);
         sota->combat_outcome.attacks = NULL;
+    }
+
+    if (sota->map_enemies != NULL) {
+        DARR_FREE(sota->map_enemies);
+        sota->map_enemies = NULL;
     }
 
     PixelFont_Free(sota->pixelnours,       true);
@@ -364,7 +370,6 @@ void Game_Init(struct Game *sota, int argc, char *argv[]) {
     }
     sota->map_enemies = DARR_INIT(sota->map_enemies, tnecs_entity, 16);
 
-
     sota->units_loaded = SDL_calloc(UNIT_ID_END, sizeof(* sota->units_loaded));
 
     sota->camera.offset.x = DEFAULT_CAMERA_XOFFSET;
@@ -381,6 +386,7 @@ void Game_Init(struct Game *sota, int argc, char *argv[]) {
 
 #ifndef SOTA_OPENGL
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Firesaga: Window Initialization");
+
     if (SDL_Init(SDL_INIT_EVERYTHING)) {
         /*  NOTE: --- SDL_INIT LEAKS A LOT OF MEMORY --- */
         //  Ex:     reachable 224,425 bytes in 1,445 blocks
