@@ -26,6 +26,7 @@ void test_boss_death_win(int argc, char *argv[]) {
     struct Point pos = {1, 1};
     Game_Party_Entity_Create(sota, UNIT_ID_SILOU, pos);
     tnecs_entity killer_entity = sota->units_loaded[UNIT_ID_SILOU];
+    Map_Unit_Put(sota->map, pos.x, pos.y, killer_entity);
     SDL_assert(sota->units_loaded[UNIT_ID_SILOU] > TNECS_NULL);
     SDL_assert(killer_entity > TNECS_NULL);
     SDL_assert(boss_entity != killer_entity);
@@ -66,18 +67,48 @@ void test_main_char_death_loss(int argc, char *argv[]) {
     nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
 
     /* Load Save file test/debug_map.json */
-    Game_Map_Load(sota, CHAPTER_TEST_V8);
+    // Game_Map_Load(sota, CHAPTER_TEST_V8);
+    Game_debugMap_Load(sota);
+    Game_Map_Reinforcements_Load(sota);
+    SDL_assert(DARR_NUM(sota->map->units_onfield) > 0);
 
-    /* Send some kind of event */
+    /* Get boss */
+    tnecs_entity boss_entity = Map_Unit_Get_Boss(sota->map, ARMY_ENEMY);
+    SDL_assert(boss_entity > TNECS_NULL);
+
+    /* Get Silou */
+    struct Point pos = {1, 1};
+    Game_Party_Entity_Create(sota, UNIT_ID_ERWIN, pos);
+    tnecs_entity main_char_entity = sota->units_loaded[UNIT_ID_ERWIN];
+    Map_Unit_Put(sota->map, pos.x, pos.y, main_char_entity);
+    SDL_assert(sota->units_loaded[UNIT_ID_ERWIN] > TNECS_NULL);
+    SDL_assert(main_char_entity > TNECS_NULL);
+    SDL_assert(boss_entity != main_char_entity);
+
+    /* Kill Silou */
+    struct Unit *unit = TNECS_GET_COMPONENT(sota->world, main_char_entity, Unit);
+    SDL_assert(unit != NULL);
+    unit->alive = false;
+    struct Position *posptr = TNECS_GET_COMPONENT(sota->world, main_char_entity, Position);
+    SDL_assert(posptr != NULL);
+    SDL_assert(posptr->tilemap_pos.x == 1);
+    SDL_assert(posptr->tilemap_pos.y == 1);
+
+    Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &main_char_entity, &boss_entity);
+    SDL_Event event;
+    SDL_assert(SDL_PollEvent(&event));
+
+    /* Events_Manage should trigger map win on boss death */
+    // receive_event_Unit_Dies->Map_Conditions_Check_Death->Receive_event_Map_Win
     Events_Manage(sota);
 
-    /* Check something happened */
-
-    /* Save game to test/debug_map_2.json */
+    /* Check Win */
+    nourstest_true(sota->map->loss);
+    nourstest_true(!sota->map->win);
 
     /* Quit game */
     Game_Free(sota);
-    nourstest_true(false);
+    nourstest_true(true);
 }
 
 void test_silou_death_loss(int argc, char *argv[]) {
@@ -105,6 +136,7 @@ void test_silou_death_loss(int argc, char *argv[]) {
     struct Point pos = {1, 1};
     Game_Party_Entity_Create(sota, UNIT_ID_SILOU, pos);
     tnecs_entity silou_entity = sota->units_loaded[UNIT_ID_SILOU];
+    Map_Unit_Put(sota->map, pos.x, pos.y, silou_entity);
     SDL_assert(sota->units_loaded[UNIT_ID_SILOU] > TNECS_NULL);
     SDL_assert(silou_entity > TNECS_NULL);
     SDL_assert(boss_entity != silou_entity);
@@ -113,6 +145,10 @@ void test_silou_death_loss(int argc, char *argv[]) {
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, silou_entity, Unit);
     SDL_assert(unit != NULL);
     unit->alive = false;
+    struct Position *posptr = TNECS_GET_COMPONENT(sota->world, silou_entity, Position);
+    SDL_assert(posptr != NULL);
+    SDL_assert(posptr->tilemap_pos.x == 1);
+    SDL_assert(posptr->tilemap_pos.y == 1);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &silou_entity, &boss_entity);
     SDL_Event event;
