@@ -16,7 +16,6 @@ void test_boss_death_win(int argc, char *argv[]) {
     // Game_Map_Load(sota, CHAPTER_TEST_V8);
     Game_debugMap_Load(sota);
     Game_Map_Reinforcements_Load(sota);
-
     SDL_assert(DARR_NUM(sota->map->units_onfield) > 0);
 
     /* Get boss */
@@ -24,19 +23,34 @@ void test_boss_death_win(int argc, char *argv[]) {
     SDL_assert(boss_entity > TNECS_NULL);
 
     /* Get killer */
+    struct Point pos = {1, 1};
+    Game_Party_Entity_Create(sota, UNIT_ID_SILOU, pos);
     tnecs_entity killer_entity = sota->units_loaded[UNIT_ID_SILOU];
+    SDL_assert(sota->units_loaded[UNIT_ID_SILOU] > TNECS_NULL);
     SDL_assert(killer_entity > TNECS_NULL);
+    SDL_assert(boss_entity != killer_entity);
 
     /* Kill boss */
-    struct Unit *boss = TNECS_GET_COMPONENT(sota->world, boss_entity, Unit);
+    struct Unit *boss_unit = TNECS_GET_COMPONENT(sota->world, boss_entity, Unit);
+    SDL_assert(boss_unit != NULL);
+    boss_unit->alive = false;
+    struct Boss *boss = TNECS_GET_COMPONENT(sota->world, boss_entity, Boss);
     SDL_assert(boss != NULL);
-    boss->alive = false;
 
     Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &boss_entity, &killer_entity);
+    Event_Emit(__func__, SDL_USEREVENT, event_Unit_Enters_Armory, NULL, NULL);
+    Event_Emit(__func__, SDL_USEREVENT, event_Unit_Enters_Armory, NULL, NULL);
+    Event_Emit(__func__, SDL_USEREVENT, event_Unit_Enters_Armory, NULL, NULL);
+    Event_Emit(__func__, SDL_USEREVENT, event_Unit_Enters_Armory, NULL, NULL);
+    SDL_Event event;
+    SDL_assert(SDL_PollEvent(&event));
 
     /* Events_Manage should trigger map win on boss death */
     // receive_event_Unit_Dies->Map_Conditions_Check_Death->Event_Emit(event_Map_Win)
+
+
     Events_Manage(sota);
+    SDL_assert(!SDL_PollEvent(&event));
 
     /* Check Win */
     nourstest_true(sota->map->win);

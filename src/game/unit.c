@@ -224,8 +224,8 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     return (sota->units_loaded[unit_id]);
 }
 /* --- Unitmap --- */
-void Game_putPConMap(struct Game *sota, i16 *unit_ids,
-                     struct Point *posarr, size_t load_num) {
+void Game_putPConMap(struct Game    *sota,   i16    *unit_ids,
+                     struct Point   *posarr, size_t  load_num) {
     SDL_assert(sota->map != NULL);
     SDL_assert(posarr != NULL);
     SDL_assert(load_num > 0);

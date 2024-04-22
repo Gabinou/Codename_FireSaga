@@ -99,7 +99,7 @@ void Event_Emit( const char *emitter, u32 type, i32 code, void *data1, void *dat
     event.user.code     = code;
     event.user.data1    = data1;
     event.user.data2    = data2;
-    SDL_PushEvent(&event);
+    SDL_assert(SDL_PushEvent(&event));
 }
 
 void receive_event_Start(struct Game *sota, SDL_Event *userevent) {
@@ -1654,7 +1654,10 @@ void Events_Manage(struct Game *sota) {
     SDL_assert(sota != NULL);
     SDL_Event event;
 
+    /* Note: events emitted during SDL_PollEvent loop don't get polled! */
     while (SDL_PollEvent(&event)) {
+    loopagain:
+        ;
         /* -- Getting receiver -- */
         u32 receiver_key = (event.type == SDL_USEREVENT) ? event.user.code : event.type;
         receiver_t *receiver = dtab_get(receivers_dtab, receiver_key);
@@ -1663,4 +1666,10 @@ void Events_Manage(struct Game *sota) {
         if (receiver != NULL)
             (*receiver)(sota, &event);
     }
+
+    /* This goto is because events emitted while(SDL_PollEvent(&event)) don't get polled. */
+    // This goto ensures that the events get managed recursively until no more events emit events.
+    if (SDL_PollEvent(&event))
+        goto loopagain;
+
 }

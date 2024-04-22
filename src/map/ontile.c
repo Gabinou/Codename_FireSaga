@@ -130,12 +130,10 @@ tnecs_entity *Map_Unit_Gets(struct Map *map, u8 army) {
 tnecs_entity Map_Unit_Get_Boss(struct Map *map, u8 army) {
     tnecs_entity out = TNECS_NULL;
 
-    SDL_Log("num units_onfield  %d", DARR_NUM(map->units_onfield));
     for (int i = 0; i < DARR_NUM(map->units_onfield); i++) {
         tnecs_entity ent = map->units_onfield[i];
         struct Unit *unit = TNECS_GET_COMPONENT(map->world, ent, Unit);
         struct Unit *boss = TNECS_GET_COMPONENT(map->world, ent, Boss);
-        SDL_Log("army %d %d %d", unit->army, army, boss != NULL);
         if ((unit->army == army) && (boss != NULL)) {
             out = ent;
             break;
