@@ -58,8 +58,9 @@ void  Map_Unit_Remove(     struct Map *map, tnecs_entity entity);
 void _Map_Unit_Remove_Map( struct Map *map, u8 col, u8 row);
 void _Map_Unit_Remove_List(struct Map *map, tnecs_entity entity);
 
-tnecs_entity  Map_Unit_Get( struct Map *map, u8 col, u8 row);
-tnecs_entity *Map_Unit_Gets(struct Map *map, tnecs_world *w, u8 army);
+tnecs_entity  Map_Unit_Get(     struct Map *map, u8 col, u8 row);
+tnecs_entity *Map_Unit_Gets(    struct Map *map, u8 army);
+tnecs_entity  Map_Unit_Get_Boss(struct Map *map, u8 army);
 
 /* --- Map Objects --- */
 void Map_Door_onOpen(       struct Map *map, tnecs_entity d);

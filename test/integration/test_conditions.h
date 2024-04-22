@@ -1,4 +1,5 @@
 #include "game/game.h"
+#include "map/ontile.h"
 
 void test_boss_death_win(int argc, char *argv[]) {
     /* -- Startup -- */
@@ -14,14 +15,21 @@ void test_boss_death_win(int argc, char *argv[]) {
     /* Load Save file test/debug_map.json */
     // Game_Map_Load(sota, CHAPTER_TEST_V8);
     Game_debugMap_Load(sota);
+    Game_Map_Reinforcements_Load(sota);
+
+    SDL_assert(DARR_NUM(sota->map->units_onfield) > 0);
 
     /* Get boss */
-    tnecs_entity boss_entity = ;
+    tnecs_entity boss_entity = Map_Unit_Get_Boss(sota->map, ARMY_ENEMY);
+    SDL_assert(boss_entity > TNECS_NULL);
+
     /* Get killer */
-    tnecs_entity killer_entity = ;
+    tnecs_entity killer_entity = sota->units_loaded[UNIT_ID_SILOU];
+    SDL_assert(killer_entity > TNECS_NULL);
 
     /* Kill boss */
     struct Unit *boss = TNECS_GET_COMPONENT(sota->world, boss_entity, Unit);
+    SDL_assert(boss != NULL);
     boss->alive = false;
 
     Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &boss_entity, &killer_entity);
