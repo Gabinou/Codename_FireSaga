@@ -1465,11 +1465,15 @@ void receive_event_Convoy_Map(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     /* --- PRELIMINARIES --- */
+    SDL_assert(victim_entity > TNECS_NULL);
+    SDL_assert(killer_entity > TNECS_NULL);
     tnecs_entity victim_entity = *(tnecs_entity *) userevent->user.data1;
     tnecs_entity killer_entity = *(tnecs_entity *) userevent->user.data2;
     struct Unit *killer = TNECS_GET_COMPONENT(sota->world, killer_entity, Unit);
     struct Unit *victim = TNECS_GET_COMPONENT(sota->world, victim_entity, Unit);
     struct Boss *boss   = TNECS_GET_COMPONENT(sota->world, victim_entity, Boss);
+    SDL_assert(killer != NULL);
+    SDL_assert(victim != NULL);
 
     /* --- Increasing Killer's regrets --- */
     int regrets = killer->regrets;

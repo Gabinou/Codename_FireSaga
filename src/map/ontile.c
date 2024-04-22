@@ -113,7 +113,7 @@ void Map_Unit_Move(struct Map *map, u8 col, u8 row, u8 new_col, u8 new_row) {
     map->unitmap[old_i] = TNECS_NULL;
 }
 
-tnecs_entity *Map_Units_Get(struct Map *map, u8 army) {
+tnecs_entity *Map_Unit_Gets(struct Map *map, u8 army) {
     tnecs_entity *unit_ents = NULL;
     unit_ents = DARR_INIT(unit_ents, tnecs_entity, 16);
     tnecs_entity current_unit_ent;

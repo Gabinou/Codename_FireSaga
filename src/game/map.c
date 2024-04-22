@@ -88,6 +88,7 @@ void Game_debugMap_Load(struct Game *sota) {
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Loading in test Map\n");
     /* - Updating game states - */
 
+    // TODO read party from save json, not map
     Game_Map_Load(sota, CHAPTER_TEST_V8);
 
     SDL_assert(DARR_NUM(sota->map->death_enemy) == 1);
@@ -100,7 +101,6 @@ void Game_debugMap_Load(struct Game *sota) {
     Game_Party_Clear(sota);
 
     /* - Reading party json - */
-    // TODO read party from save json, not map
     SDL_assert(sota->map->party_filename.data != NULL);
     SDL_Log("sota->map->party_filename %s", sota->map->party_filename.data);
 

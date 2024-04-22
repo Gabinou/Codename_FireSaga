@@ -52,8 +52,8 @@ void Map_addArmy(struct Map *map,  u8 army);
 
 void  Map_Unit_Put(        struct Map *map, u8 c, u8 r, tnecs_entity u);
 void _Map_Unit_Put(        struct Map *map, u8 c, u8 r, tnecs_entity u);
-void Map_Unit_Move(        struct Map *map, u8 x, u8 y, u8 new_x, u8 new_y);
-void Map_Unit_Swap(        struct Map *map, u8 x, u8 y, u8 new_x, u8 new_y);
+void  Map_Unit_Move(       struct Map *map, u8 x, u8 y, u8 new_x, u8 new_y);
+void  Map_Unit_Swap(       struct Map *map, u8 x, u8 y, u8 new_x, u8 new_y);
 void  Map_Unit_Remove(     struct Map *map, tnecs_entity entity);
 void _Map_Unit_Remove_Map( struct Map *map, u8 col, u8 row);
 void _Map_Unit_Remove_List(struct Map *map, tnecs_entity entity);
