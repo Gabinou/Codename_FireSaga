@@ -77,13 +77,14 @@ extern struct Map_condition Map_condition_debug_map_loss;
 void Map_Conditions_Check_Death(struct Map_condition *cdarr,
                                 struct Map           *map,
                                 struct Unit          *victim,
-                                struct Boss          *boss);
+                                struct Boss          *boss,
+                                struct Game          *game);
 b32  Map_Condition_Check_Death( struct Map_condition *condition,
                                 struct Map           *map,
                                 struct Unit          *unit,
                                 struct Boss          *boss);
 
-void Map_Condition_Trigger(struct Map_condition *condition);
+void Map_Condition_Trigger(struct Map_condition *condition, struct Game *game);
 
 /* --- I/O --- */
 void Map_Condition_readJSON(void *input, cJSON *jmap_cond);

@@ -5,6 +5,7 @@
 #include "test_arrow.h"
 #include "test_bitfields.h"
 #include "test_camp.h"
+#include "test_events.h"
 #include "test_combat.h"
 #include "test_convoy.h"
 #include "test_crt.h"
@@ -146,6 +147,7 @@ int main(int argc, char *argv[]) {
         exit(1);
 
     /* -- Running tests -- */
+    // test_events();
     // unit_tests();
     // render_tests();
     integration_tests(argc, argv);

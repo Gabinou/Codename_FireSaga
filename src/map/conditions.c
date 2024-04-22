@@ -64,7 +64,8 @@ struct Map_condition Map_condition_boss_win = {
 void Map_Conditions_Check_Death(struct Map_condition *conditions_darr,
                                 struct Map           *map,
                                 struct Unit          *victim,
-                                struct Boss          *boss) {
+                                struct Boss          *boss,
+                                struct Game          *sota) {
     int conds = DARR_NUM(conditions_darr);
     for (int i = 0; i < conds; i++) {
         struct Map_condition *condition = conditions_darr + i;
@@ -74,7 +75,7 @@ void Map_Conditions_Check_Death(struct Map_condition *conditions_darr,
 
         /* Condition satisfied, doing it */
         DARR_DEL(conditions_darr, i);
-        Map_Condition_Trigger(condition);
+        Map_Condition_Trigger(condition, sota);
     }
 }
 
@@ -133,14 +134,16 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
     return (false);
 }
 
-void Map_Condition_Trigger(struct Map_condition *condition) {
+void Map_Condition_Trigger(struct Map_condition *condition, struct Game *sota) {
     /* XOR win and lose */
     // SDL_assert(!(condition->win && condition->lose));
 
     if (condition->win && !condition->lose) {
-        Event_Emit(__func__, SDL_USEREVENT, event_Map_Win, NULL, NULL);
+        /* Call Receive to not wait to SDL_PollEvent on next frame */
+        receive_event_Map_Win(sota, NULL);
     } else if (condition->lose && !condition->win) {
-        Event_Emit(__func__, SDL_USEREVENT, event_Map_Lose, NULL, NULL);
+        /* Call Receive to not wait to SDL_PollEvent on next frame */
+        receive_event_Map_Lose(sota, NULL);
     } else if (!condition->lose && !condition->win) {
         /* Neither win nor loss. Triggers something to happen */
     } else {

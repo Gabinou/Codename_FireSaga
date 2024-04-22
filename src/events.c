@@ -1499,9 +1499,9 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     // - Put unit entity in list of killed units
     /* --- Check Map conditions --- */
     Map_Conditions_Check_Death(sota->map->death_enemy,      sota->map,
-                               victim,                      boss);
+                               victim,                      boss, sota);
     Map_Conditions_Check_Death(sota->map->death_friendly,   sota->map,
-                               victim,                      boss);
+                               victim,                      boss, sota);
 }
 
 void receive_event_Unit_Loots(struct Game *sota, SDL_Event *userevent) {
@@ -1654,10 +1654,12 @@ void Events_Manage(struct Game *sota) {
     SDL_assert(sota != NULL);
     SDL_Event event;
 
-    /* Note: events emitted during SDL_PollEvent loop don't get polled! */
+    /* Note: events emitted during SDL_PollEvent loop don't get polled.
+        -> Prevents infinite event loops.
+    How to ensure events occur on same frame without triggering infinite loop?
+        -> Run receiver directly instead of emitting event.
+    */
     while (SDL_PollEvent(&event)) {
-    loopagain:
-        ;
         /* -- Getting receiver -- */
         u32 receiver_key = (event.type == SDL_USEREVENT) ? event.user.code : event.type;
         receiver_t *receiver = dtab_get(receivers_dtab, receiver_key);
@@ -1666,10 +1668,4 @@ void Events_Manage(struct Game *sota) {
         if (receiver != NULL)
             (*receiver)(sota, &event);
     }
-
-    /* This goto is because events emitted while(SDL_PollEvent(&event)) don't get polled. */
-    // This goto ensures that the events get managed recursively until no more events emit events.
-    if (SDL_PollEvent(&event))
-        goto loopagain;
-
 }

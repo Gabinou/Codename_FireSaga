@@ -38,19 +38,13 @@ void test_boss_death_win(int argc, char *argv[]) {
     SDL_assert(boss != NULL);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &boss_entity, &killer_entity);
-    Event_Emit(__func__, SDL_USEREVENT, event_Unit_Enters_Armory, NULL, NULL);
-    Event_Emit(__func__, SDL_USEREVENT, event_Unit_Enters_Armory, NULL, NULL);
-    Event_Emit(__func__, SDL_USEREVENT, event_Unit_Enters_Armory, NULL, NULL);
-    Event_Emit(__func__, SDL_USEREVENT, event_Unit_Enters_Armory, NULL, NULL);
     SDL_Event event;
     SDL_assert(SDL_PollEvent(&event));
 
     /* Events_Manage should trigger map win on boss death */
-    // receive_event_Unit_Dies->Map_Conditions_Check_Death->Event_Emit(event_Map_Win)
-
+    // receive_event_Unit_Dies->Map_Conditions_Check_Death->Receive_event_Map_Win)
 
     Events_Manage(sota);
-    SDL_assert(!SDL_PollEvent(&event));
 
     /* Check Win */
     nourstest_true(sota->map->win);
