@@ -543,8 +543,8 @@ typedef struct Unit {
 
     /* Stats */
     struct Unit_stats base_stats;
-    struct Bonus_stats *bonus_stack;
-    struct Bonus_stats *malus_stack;
+    struct Bonus_Stats *bonus_stack;
+    struct Bonus_Stats *malus_stack;
     struct Unit_stats bonus_stats; // TODO remove for new Bonus_Stat Struct
     struct Unit_stats malus_stats; // TODO remove for new Bonus_Stat Struct
     struct Unit_stats caps_stats;
