@@ -160,7 +160,7 @@ struct Unit_stats {
     u8 luck;
     u8 def;  /* defense        */
     u8 res;  /* resistance     */
-    u8 con;  /* itution   */
+    u8 con;  /* constitution   */
     u8 move; /* movement       */
     u8 prof; /* proficiency    */
 };
@@ -185,10 +185,36 @@ struct Computed_Stats {
     struct Range range_combined;
     struct Range range_loadout;
 };
+extern struct Computed_Stats Computed_Stats_default;
 
 void Computed_Stats_Print(  struct Computed_Stats *stats);
 void Computed_Stats_Compare(struct Computed_Stats *stats1,
                             struct Computed_Stats *stats2);
+
+struct Bonus_Stats {
+    struct Unit_stats       unit_stats;
+    struct Computed_Stats   computed_stats;
+    /* How to make sure bonus is still valid? */
+    // - If Passive aura,   source is unit holding a weapon in range
+        // 1. weapon held in unit hands &&
+        // 2. unit in range &&
+        // 3. unit is not self (IMPLICIT)
+    // - If Active buff,    source is weapon or skill
+        // 1. turns_left > 0
+        // 2. Using Skill/Weapon again REFRESHES timer
+    // - If Weapon bonus,   source is weapon currently held by self 
+        // 1. weapon held in unit hands &&
+        // 2. unit is self  (IMPLICIT)
+    // - If Support,   source is unit
+        // 1. unit in range
+        // 2. unit is not self (IMPLICIT)
+    tnecs_entity unit_ent;      
+    u16 weapon_id;              /* Should be equipped by unit_ent */
+    i32 turn_limit;
+    i32 turns_left;
+    struct Range range;
+};
+extern struct Bonus_Stats Bonus_Stats_default;
 
 struct Condition {
     /* Conversation condition? */
@@ -515,12 +541,15 @@ typedef struct Unit {
     u16 support_num;
     struct Damage damage;
 
+    /* Stats */
     struct Unit_stats base_stats;
-    struct Unit_stats bonus_stats;
-    struct Unit_stats malus_stats;
+    struct Unit_stats bonus_stats; // TODO remove for new Bonus_Stat Struct
+    struct Unit_stats malus_stats; // TODO remove for new Bonus_Stat Struct
     struct Unit_stats caps_stats;
     struct Unit_stats current_stats;    /* base_stats + all growths */
     struct Unit_stats effective_stats;  /* current_stats + bonuses/maluses */
+
+    /* Growths */
     struct Unit_stats growths;
     struct Unit_stats bonus_growths;
     struct Unit_stats effective_growths;
@@ -582,9 +611,12 @@ typedef struct Unit {
 
     s8 name; /* TODO: get rid of it. Use global_unitNames */
     s8 title;    /* Lord, Duke, etc. */
+
     struct Computed_Stats computed_stats;   /* Computed from Unit_Stats */
-    struct Computed_Stats support_bonuses[SOTA_MAX_SUPPORTS];
-    struct Computed_Stats support_bonus;
+    
+    // TODO: get rid of support_bonuses
+    // struct Computed_Stats support_bonuses[SOTA_MAX_SUPPORTS];
+    // struct Computed_Stats support_bonus;
 
     bool sex            : 1; /* 0:F, 1:M. eg. hasPenis. */
     bool waits          : 1;

@@ -18,6 +18,9 @@ struct Damage Damage_default = {{0, 0}, {0, 0}};
 
 struct HP HP_default = {0, 0, 0, 0};
 
+
+struct Computed_Stats Computed_Stats_default = {0};
+
 struct Timer Timer_default = {
     .time_ns      = 0,
     .frame_count  = 0,

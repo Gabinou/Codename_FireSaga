@@ -416,7 +416,9 @@ static void _GrowthsMenu_Draw_Supports(struct GrowthsMenu *gm, SDL_Renderer *ren
     /* -- SUPPORTS -- */
     SDL_Rect facerect;
     char numbuff[10];
-    struct Computed_Stats support_stats  = gm->unit->support_bonus;
+    /* TODO: */
+    // struct Computed_Stats support_stats  = gm->unit->support_bonus;
+    struct Computed_Stats support_stats  = Computed_Stats_default;
 
     int x = GM_SUPPORTS_X, y = GM_SUPPORTS_Y;
     PixelFont_Write(gm->pixelnours, renderer, "SUPPORTS", 8, x, y);

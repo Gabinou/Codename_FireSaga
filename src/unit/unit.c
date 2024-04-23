@@ -91,8 +91,8 @@ struct Unit Unit_default = {
     .rangemap        = RANGEMAP_ATTACKMAP,
     .user_rangemap   = RANGEMAP_NULL,
 
-    .support_bonuses =  {{{0}}},
-    .support_bonus   =   {{0}},
+    // .support_bonuses =  {{{0}}},
+    // .support_bonus   =   {{0}},
 
     .dft_pos   =   {-1, -1},
 
@@ -1180,7 +1180,8 @@ void Unit_Equipment_Print( struct Unit *unit) {
 }
 
 struct Computed_Stats Unit_supportBonus(struct Unit *unit) {
-    return (unit->support_bonus);
+    // TODO Find all bonuses from supports
+    return (Computed_Stats_default);
 }
 
 /* --- Loadout Manipulation --- */
