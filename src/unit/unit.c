@@ -60,13 +60,15 @@ struct Unit Unit_default = {
     .json_element   = JSON_UNIT,
     .json_filename  = {0},
 
-    /*                  hp str mag agi dex fth luck def res con move prof */
-    .base_stats      = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-    .bonus_stats     = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-    .caps_stats      = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-    .malus_stats     = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-    .current_stats   = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-    .growths         = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+    /*                    hp str mag agi dex fth luck def res con move prof */
+    .base_stats         = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+    .bonus_stats        = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+    .caps_stats         = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+    .malus_stats        = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+    .current_stats      = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+    .growths            = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+    .bonus_stack        = NULL; 
+    .malus_stack        = NULL; 
 
     .hit_sequence    = {0, 0},
     .crit_sequence   = {0, 0},
@@ -133,14 +135,16 @@ struct Unit Unit_default = {
 struct Unit Unit_Nibal_make(void) {
     struct Unit Nibal_unit = {
         .json_element = JSON_UNIT,
-        /*                  hp str mag agi dex fth luck def res con move prof */
-        .base_stats       = {35, 20, 20, 18, 25, 14, 12, 18, 22, 30, 06, 15},
-        .bonus_stats      = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-        .caps_stats       = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-        .malus_stats      = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-        .current_stats    = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-        .growths          = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-        .agony            = -1,
+        /*                    hp str mag agi dex fth luck def res con move prof */
+        .base_stats         = {35, 20, 20, 18, 25, 14, 12, 18, 22, 30, 06, 15},
+        .bonus_stats        = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+        .caps_stats         = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+        .malus_stats        = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+        .current_stats      = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+        .growths            = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+        .agony              = -1,
+        .bonus_stack        = NULL; 
+        .malus_stack        = NULL; 
 
         .skills         = UNIT_SKILL_VENOMOUS_SPIT,
         .exp            = 0,
@@ -176,16 +180,28 @@ void Unit_Init(struct Unit *unit) {
     SDL_assert(unit != NULL);
     Unit_Free(unit);
     *unit = Unit_default;
-    unit->grown_stats  = DARR_INIT(unit->grown_stats,  struct Unit_stats, SOTA_MAX_LEVEL / 8);
-    unit->status_queue = DARR_INIT(unit->status_queue, struct Unit_status, 2);
+    unit->grown_stats   = DARR_INIT(unit->grown_stats,  struct Unit_stats, SOTA_MAX_LEVEL / 8);
+    unit->status_queue  = DARR_INIT(unit->status_queue, struct Unit_status, 2);
+    unit->bonus_stack   = DARR_INIT(unit->bonus_stack,  struct Bonus_Stats, 2);
+    unit->malus_stack   = DARR_INIT(unit->malus_stack,  struct Bonus_Stats, 2);
 }
 
 void Unit_Free(struct Unit *unit) {
     SDL_assert(unit != NULL);
+    if (unit->malus_stack != NULL) {
+        DARR_FREE(unit->malus_stack);
+        unit->malus_stack = NULL;
+    }
+    if (unit->bonus_stack != NULL) {
+        DARR_FREE(unit->bonus_stack);
+        unit->bonus_stack = NULL;
+    }
+
     if (unit->grown_stats != NULL) {
         DARR_FREE(unit->grown_stats);
         unit->grown_stats = NULL;
     }
+
     if (unit->skill_names != NULL) {
         for (int i = 0; i < DARR_NUM(unit->skill_names); i++) {
             s8_free(&unit->skill_names[i]);

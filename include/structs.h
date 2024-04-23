@@ -543,6 +543,8 @@ typedef struct Unit {
 
     /* Stats */
     struct Unit_stats base_stats;
+    struct Bonus_stats *bonus_stack;
+    struct Bonus_stats *malus_stack;
     struct Unit_stats bonus_stats; // TODO remove for new Bonus_Stat Struct
     struct Unit_stats malus_stats; // TODO remove for new Bonus_Stat Struct
     struct Unit_stats caps_stats;
@@ -613,7 +615,7 @@ typedef struct Unit {
     s8 title;    /* Lord, Duke, etc. */
 
     struct Computed_Stats computed_stats;   /* Computed from Unit_Stats */
-    
+
     // TODO: get rid of support_bonuses
     // struct Computed_Stats support_bonuses[SOTA_MAX_SUPPORTS];
     // struct Computed_Stats support_bonus;
