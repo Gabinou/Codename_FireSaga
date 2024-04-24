@@ -268,8 +268,11 @@ void fsm_rFrame_sGmpMap(struct Game *sota) {
     Map_Grid_Draw(sota->map, &sota->settings, &sota->camera);
     Map_Perimeter_Draw_Danger(sota->map, &sota->settings, &sota->camera);
     // TODO: Draw aura for all characters that have auras.
-    // TODO: Draw 
-    // Map_Perimeter_Draw_Aura(sota->map, &sota->settings, &sota->camera);
+    // TODO: Draw
+    // void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
+    //                          struct Camera  *camera, struct Point pos,
+    //                          struct Range    range,  sota->map->perimiter_aura_color) {
+
 }
 
 void fsm_rFrame_sGmpCamp(struct Game *sota) {

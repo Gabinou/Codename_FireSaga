@@ -381,9 +381,9 @@ void Map_Perimeter_Draw_Danger(struct Map *map, struct Settings *settings, struc
     _Map_Perimeter_Draw(map, settings, camera, map->rendered_dangermap, red);
 }
 
-void Map_Perimeter_Draw_Aura(struct Map *map,    struct Settings *settings,
-                             struct Camera *camera,
-                             struct Point pos,   struct Range range) {
+void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
+                             struct Camera  *camera, struct Point pos,
+                             struct Range    range,  int colori) {
     u8 *rangearr = (u8 *)&range;
 
     i32 include = range.min == 1 ? MOVETILE_INCLUDE : MOVETILE_EXCLUDE;
@@ -393,7 +393,7 @@ void Map_Perimeter_Draw_Aura(struct Map *map,    struct Settings *settings,
                           rangearr, include);
 
     SDL_Palette *palette_base = sota_palettes[map->ipalette_base];
-    SDL_Color purple = palette_base->colors[map->perimiter_aura_color];
+    SDL_Color purple = palette_base->colors[colori];
 
     _Map_Perimeter_Draw(map, settings, camera, insidemap, purple);
     free(insidemap);
