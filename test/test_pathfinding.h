@@ -403,6 +403,8 @@ void test_pathfinding_attackto() {
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attacktomap[i] == expected_attackto[i]);
 
+        memset(attacktomap, 0, ROW_LEN * COL_LEN * sizeof(*attacktomap));
+
         range[0] = 2;
         range[1] = 3;
         i32 expected_attackto2[ROW_LEN * COL_LEN] = {
@@ -431,11 +433,47 @@ void test_pathfinding_attackto() {
 
         _Pathfinding_Attackto(start.x, start.y, attacktomap, NULL, ROW_LEN, COL_LEN, range,
                               MOVETILE_EXCLUDE);
-        matrix_print(attacktomap, ROW_LEN, COL_LEN);
+
+        // matrix_print(attacktomap, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attacktomap[i] == expected_attackto2[i]);
-    }
 
+        memset(attacktomap, 0, ROW_LEN * COL_LEN * sizeof(*attacktomap));
+
+        range[0] = 1;
+        range[1] = 3;
+        i32 expected_attackto3[ROW_LEN * COL_LEN] = {
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 3, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 3, 2, 1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 3, 2, 1, 1, 1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 3, 2, 1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 3, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        };
+
+        _Pathfinding_Attackto(start.x, start.y, attacktomap, NULL, ROW_LEN, COL_LEN, range,
+                              MOVETILE_INCLUDE);
+
+        matrix_print(attacktomap, ROW_LEN, COL_LEN);
+        for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
+            nourstest_true(attacktomap[i] == expected_attackto3[i]);
+
+    }
 }
 
 void test_pathfinding_attackfrom() {

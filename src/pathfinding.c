@@ -668,6 +668,8 @@ void _Pathfinding_Attackto(i32 x, i32 y, i32 *attackmap, i32 *move_matrix,
     /* -- Setup variables -- */
     struct Point point;
     bool add_point  = (mode_movetile != MOVETILE_EXCLUDE);
+    if (mode_movetile == MOVETILE_INCLUDE)
+        attackmap[y * col_len + x] = 1;
 
     /* -- Iterate over possible ranges in x -- */
     for (i32 rangex = 0; rangex <= range[1]; rangex++) {
@@ -676,11 +678,11 @@ void _Pathfinding_Attackto(i32 x, i32 y, i32 *attackmap, i32 *move_matrix,
         /* -- Iterate over possible ranges in y, knowing x range -- */
         for (i32 rangey = subrangey_min; rangey <= subrangey_max; rangey++) {
             /* -- Iterate over range 4 combinations: x+y+, x+y-, x-y+, x-y- */
-            for (i32 n = 0; n < NMATH_SQUARE_NEIGHBOURS; n++) {
+            for (i32 n = 0; n < SQUARE_NEIGHBOURS; n++) {
                 point.x = int_inbounds(x + q_cycle4_pmmp(n) * rangex, 0, col_len - 1);
                 point.y = int_inbounds(y + q_cycle4_ppmm(n) * rangey, 0, row_len - 1);
 
-                if (mode_movetile == NMATH_MOVETILE_EXCLUDE) {
+                if (mode_movetile == MOVETILE_EXCLUDE) {
                     if (move_matrix == NULL)
                         add_point = (point.y != y) || (point.x != x);
                     else
@@ -691,7 +693,8 @@ void _Pathfinding_Attackto(i32 x, i32 y, i32 *attackmap, i32 *move_matrix,
                 if (!add_point)
                     continue;
 
-                attackmap[point.y * col_len + point.x] = abs(point.x - x) + abs(point.y - y);
+                i32 val = abs(point.x - x) + abs(point.y - y);
+                attackmap[point.y * col_len + point.x] = val > 0 ? val : 1;
             }
         }
     }
