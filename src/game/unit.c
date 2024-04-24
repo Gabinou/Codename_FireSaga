@@ -144,8 +144,9 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
     SDL_assert(unit != NULL);
     SDL_assert(sota->party[unit_id]._id != 0);
-
     memcpy(unit, &sota->party[unit_id], sizeof(struct Unit));
+    Unit_Allocs(unit);
+
     SDL_assert((sota->party[unit_id].handedness > UNIT_HAND_NULL)
                && (sota->party[unit_id].handedness < UNIT_HAND_END));
     SDL_assert((unit->handedness > UNIT_HAND_NULL) && (unit->handedness < UNIT_HAND_END));

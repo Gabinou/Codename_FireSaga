@@ -180,6 +180,10 @@ void Unit_Init(struct Unit *unit) {
     SDL_assert(unit != NULL);
     Unit_Free(unit);
     *unit = Unit_default;
+    Unit_Allocs(unit);
+}
+
+void Unit_Allocs(struct Unit *unit) {
     unit->grown_stats   = DARR_INIT(unit->grown_stats,  struct Unit_stats, SOTA_MAX_LEVEL / 8);
     unit->status_queue  = DARR_INIT(unit->status_queue, struct Unit_status, 2);
     unit->bonus_stack   = DARR_INIT(unit->bonus_stack,  struct Bonus_Stats, 2);
