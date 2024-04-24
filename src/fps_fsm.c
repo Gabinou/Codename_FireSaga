@@ -266,7 +266,7 @@ void fsm_rFrame_sGmpMap(struct Game *sota) {
     /* --- Render Map: only one map -> no entity --- */
     Map_Draw(sota->map, &sota->settings, &sota->camera, sota->render_target);
     Map_Grid_Draw(sota->map, &sota->settings, &sota->camera);
-    Map_Danger_Perimeter_Draw(sota->map, &sota->settings, &sota->camera);
+    Map_Perimeter_Draw_Danger(sota->map, &sota->settings, &sota->camera);
 }
 
 void fsm_rFrame_sGmpCamp(struct Game *sota) {

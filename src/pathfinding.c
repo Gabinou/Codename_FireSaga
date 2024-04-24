@@ -624,6 +624,9 @@ void Pathfinding_Attackfrom_noM(i32 *attackmap, i32 *movemap,
 }
 
 /* -- Attackto -- */
+// Where can aggressor attack ?
+// - Does not use movement cost. Uses manhattan distance.
+//      - Useful for auras and supports as well
 void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
                               size_t row_len, size_t col_len,
                               u8 range[2], i32 mode_movetile) {

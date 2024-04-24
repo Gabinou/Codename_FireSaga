@@ -371,7 +371,7 @@ void _Map_Perimeter_Draw(struct Map *map, struct Settings *settings,
     }
 }
 
-void Map_Danger_Perimeter_Draw(struct Map *map, struct Settings *settings, struct Camera *camera) {
+void Map_Perimeter_Draw_Danger(struct Map *map, struct Settings *settings, struct Camera *camera) {
     if (map->rendered_dangermap == NULL)
         return;
 
@@ -380,6 +380,15 @@ void Map_Danger_Perimeter_Draw(struct Map *map, struct Settings *settings, struc
 
     _Map_Perimeter_Draw(map, settings, camera, map->rendered_dangermap, red);
 }
+
+void Map_Perimeter_Draw_inRange(struct Map *map,    struct Settings *s, struct Camera *c,
+                                struct Point pos,   struct Range range, SDL_Color color) {
+
+    
+    
+    _Map_Perimeter_Draw(map, settings, camera, insidemap, color);
+}
+
 
 void Map_Grid_Draw(struct Map *map,  struct Settings *settings, struct Camera *camera) {
     /* -- Preliminaries -- */
