@@ -643,8 +643,8 @@ void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
         i32 x = move_list[i * TWO_D + 0];
         i32 y = move_list[i * TWO_D + 1];
 
-        Pathfinding_Attackto_Neighbours(x, y, attackmap, move_matrix, row_len,
-                                        col_len, range, mode_movetile);
+        _Pathfinding_Attackto(x, y, attackmap, move_matrix, row_len,
+                              col_len, range, mode_movetile);
     }
     DARR_FREE(move_list);
 }
@@ -658,9 +658,13 @@ i32 *Pathfinding_Attackto(i32 *move_matrix, size_t row_len, size_t col_len,
     return (attackmap);
 }
 
-void Pathfinding_Attackto_Neighbours(i32 x, i32 y, i32 *attackmap, i32 *move_matrix,
-                                     size_t row_len, size_t col_len,
-                                     u8 range[2], i32 mode_movetile) {
+
+/* -- Pathfinding_Attackto_Neighbours -- */
+// If move_matrix is NULL, effectively attackto only from (x,y) point.
+// ->
+void _Pathfinding_Attackto(i32 x, i32 y, i32 *attackmap, i32 *move_matrix,
+                           size_t row_len, size_t col_len,
+                           u8 range[2], i32 mode_movetile) {
     /* -- Setup variables -- */
     struct Point point;
     bool add_point  = (mode_movetile != MOVETILE_EXCLUDE);
@@ -676,14 +680,18 @@ void Pathfinding_Attackto_Neighbours(i32 x, i32 y, i32 *attackmap, i32 *move_mat
                 point.x = int_inbounds(x + q_cycle4_pmmp(n) * rangex, 0, col_len - 1);
                 point.y = int_inbounds(y + q_cycle4_ppmm(n) * rangey, 0, row_len - 1);
 
-                if (mode_movetile == NMATH_MOVETILE_EXCLUDE)
-                    add_point = (move_matrix[point.y * col_len + point.x] == MOVEMAP_BLOCKED);
+                if (mode_movetile == NMATH_MOVETILE_EXCLUDE) {
+                    if (move_matrix == NULL)
+                        add_point = (point.y != y) || (point.x != x);
+                    else
+                        add_point = (move_matrix[point.y * col_len + point.x] == MOVEMAP_BLOCKED);
+                }
 
                 /* Skip if not adding point to attackmap */
                 if (!add_point)
                     continue;
 
-                attackmap[point.y * col_len + point.x] = NMATH_ATTACKMAP_MOVEABLEMIN;
+                attackmap[point.y * col_len + point.x] = abs(point.x - x) + abs(point.y - y);
             }
         }
     }

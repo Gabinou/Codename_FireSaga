@@ -381,12 +381,17 @@ void Map_Perimeter_Draw_Danger(struct Map *map, struct Settings *settings, struc
     _Map_Perimeter_Draw(map, settings, camera, map->rendered_dangermap, red);
 }
 
-void Map_Perimeter_Draw_inRange(struct Map *map,    struct Settings *s, struct Camera *c,
+void Map_Perimeter_Draw_inRange(struct Map *map,    struct Settings *settings,
+                                struct Camera *camera,
                                 struct Point pos,   struct Range range, SDL_Color color) {
+    u8 *rangearr = (u8 *)&range;
 
-    
-    
+    i32 *insidemap = Pathfinding_Attackto(NULL, map->row_len, map->col_len, rangearr, MOVETILE_INCLUDE);
+
+
     _Map_Perimeter_Draw(map, settings, camera, insidemap, color);
+    free(insidemap);
+
 }
 
 

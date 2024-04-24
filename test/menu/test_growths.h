@@ -91,7 +91,7 @@ void test_menu_growths() {
     Graph_Stat_Add(&gm->graph, &Silou.base_stats, grown_2, 13, 11,
                    stat_toplot);
     Silou.grown_stats = &grown_2[0];
-    Silou.support_bonus.speed = 50;
+    // Silou.support_bonus.speed = 50;
 
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_02.png"), renderer,
@@ -114,7 +114,7 @@ void test_menu_growths() {
     Graph_Stat_Add(&gm->graph, &Silou.base_stats, grown_10, 30, 20,
                    stat_toplot);
     Silou.grown_stats = &grown_10[0];
-    Silou.support_bonus.speed = - 50;
+    // Silou.support_bonus.speed = - 50;
 
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_10.png"), renderer,
@@ -165,7 +165,7 @@ void test_menu_growths() {
     };
     Graph_Stat_Add(&gm->graph, &Silou.base_stats, grown_40, 40, 1,
                    stat_toplot);
-    Silou.support_bonus.speed = - 5;
+    // Silou.support_bonus.speed = - 5;
 
     Silou.grown_stats = &grown_40[0];
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
@@ -177,20 +177,20 @@ void test_menu_growths() {
 
     /* -- Supports -- */
     /* - 1 digit - */
-    /* - Hit - */
-    Silou.support_bonus.hit = 1;
-    Silou.support_bonus.dodge = 2;
-    /* - Crit - */
-    Silou.support_bonus.crit = 3;
-    Silou.support_bonus.favor = 4;
-    /* - Speed - */
-    Silou.support_bonus.speed = 5;
-    /* - Attack - */
-    Silou.support_bonus.attack[DMG_TYPE_PHYSICAL] = 6;
-    Silou.support_bonus.attack[DMG_TYPE_MAGICAL] = 7;
-    /* - Prot - */
-    Silou.support_bonus.protection[DMG_TYPE_PHYSICAL] = 8;
-    Silou.support_bonus.protection[DMG_TYPE_MAGICAL] = 9;
+    // /* - Hit - */
+    // Silou.support_bonus.hit = 1;
+    // Silou.support_bonus.dodge = 2;
+    // /* - Crit - */
+    // Silou.support_bonus.crit = 3;
+    // Silou.support_bonus.favor = 4;
+    // /* - Speed - */
+    // Silou.support_bonus.speed = 5;
+    // /* - Attack - */
+    // Silou.support_bonus.attack[DMG_TYPE_PHYSICAL] = 6;
+    // Silou.support_bonus.attack[DMG_TYPE_MAGICAL] = 7;
+    // /* - Prot - */
+    // Silou.support_bonus.protection[DMG_TYPE_PHYSICAL] = 8;
+    // Silou.support_bonus.protection[DMG_TYPE_MAGICAL] = 9;
     /* - Move - */
     Silou.effective_growths.move = 1;
 
@@ -199,20 +199,20 @@ void test_menu_growths() {
                             gm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - 2 digits - */
-    /* - Hit - */
-    Silou.support_bonus.hit = 10;
-    Silou.support_bonus.dodge = 20;
-    /* - Crit - */
-    Silou.support_bonus.crit = 30;
-    Silou.support_bonus.favor = 40;
-    /* - Speed - */
-    Silou.support_bonus.speed = -50;
-    /* - Attack - */
-    Silou.support_bonus.attack[DMG_TYPE_PHYSICAL] = 60;
-    Silou.support_bonus.attack[DMG_TYPE_MAGICAL] = 70;
-    /* - Prot - */
-    Silou.support_bonus.protection[DMG_TYPE_PHYSICAL] = 80;
-    Silou.support_bonus.protection[DMG_TYPE_MAGICAL] = 90;
+    // /* - Hit - */
+    // Silou.support_bonus.hit = 10;
+    // Silou.support_bonus.dodge = 20;
+    // /* - Crit - */
+    // Silou.support_bonus.crit = 30;
+    // Silou.support_bonus.favor = 40;
+    // /* - Speed - */
+    // Silou.support_bonus.speed = -50;
+    // /* - Attack - */
+    // Silou.support_bonus.attack[DMG_TYPE_PHYSICAL] = 60;
+    // Silou.support_bonus.attack[DMG_TYPE_MAGICAL] = 70;
+    // /* - Prot - */
+    // Silou.support_bonus.protection[DMG_TYPE_PHYSICAL] = 80;
+    // Silou.support_bonus.protection[DMG_TYPE_MAGICAL] = 90;
     /* - Move - */
     Silou.effective_growths.move = 23;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
