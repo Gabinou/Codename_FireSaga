@@ -150,7 +150,7 @@ int main(int argc, char *argv[]) {
     // test_events();
     unit_tests();
     render_tests();
-    // integration_tests(argc, argv);
+    integration_tests(argc, argv);
     nourstest_results();
 
     /* -- Postliminaries -- */
