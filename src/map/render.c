@@ -383,21 +383,20 @@ void Map_Perimeter_Draw_Danger(struct Map *map, struct Settings *settings, struc
 
 void Map_Perimeter_Draw_Aura(struct Map *map,    struct Settings *settings,
                              struct Camera *camera,
-                             struct Point pos,   struct Range range, SDL_Color color) {
+                             struct Point pos,   struct Range range) {
     u8 *rangearr = (u8 *)&range;
 
     i32 include = range.min == 1 ? MOVETILE_INCLUDE : MOVETILE_EXCLUDE;
     i32 *insidemap = calloc(map->row_len * map->col_len, sizeof(*insidemap));
 
-    _Pathfinding_Attackto(pos.x, pos.y, insidemap, NULL, map->row_len, map->col_len, &range, include);
+    _Pathfinding_Attackto(pos.x, pos.y, insidemap, NULL, map->row_len, map->col_len,
+                          rangearr, include);
 
     SDL_Palette *palette_base = sota_palettes[map->ipalette_base];
     SDL_Color purple = palette_base->colors[map->perimiter_aura_color];
 
-    _Map_Perimeter_Draw(map, settings, camera, insidemap, color);
+    _Map_Perimeter_Draw(map, settings, camera, insidemap, purple);
     free(insidemap);
-
-
 }
 
 
@@ -446,7 +445,6 @@ void Map_Grid_Draw(struct Map *map,  struct Settings *settings, struct Camera *c
         }
     }
     Utilities_DrawColor_Reset(map->renderer);
-
 }
 
 bool Map_Shadowmap_newFrame(struct Map *map) {
