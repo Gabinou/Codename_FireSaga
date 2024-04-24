@@ -418,9 +418,9 @@ struct Padding *Map_PerimeterM(i32 *map, i32 row_len, i32 col_len) {
 
 void Map_Perimeter(struct Padding *edges, i32 *map, i32 row_len, i32 col_len) {
     /* Find all perimeter edges of a tilemap */
-    // Every tile has one Padding array defining the 4 edges
+    // Every tile has one Padding array defining the 4 edges.
     // Every edge that needs to be drawn is set to 1,
-    // only for inside tile
+    // only for inside tile.
 
     i32 outside = 0;
     size_t bytesize = row_len * col_len * sizeof(*edges);

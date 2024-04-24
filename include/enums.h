@@ -282,6 +282,7 @@ enum SOTA_COLORS {
     SOTA_MENU_BLUE          = 28,
     SOTA_BLACK              =  1,
     SOTA_RED                =  9,
+    SOTA_PURPLE             = 13,
     SOTA_DARK_GRAY          =  3,
     SOTA_WHITE              = 40,
     PALETTE_SOTA_COLOR_NUM  = 41

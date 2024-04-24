@@ -19,7 +19,8 @@ struct Map Map_default = {
     .speed                  = 50,
     .tilesize               = {0, 0},
 
-    .perimiter_color        = SOTA_RED,
+    .perimiter_danger_color = SOTA_RED,
+    .perimiter_aura_color   = SOTA_PURPLE,
 
     .items_num              = NULL,
     .shadow_frame_pause     = 3,

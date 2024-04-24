@@ -45,7 +45,8 @@ struct Map {
     s8 party_filename;
 
     /* --- BASICS --- */
-    u8 perimiter_color;
+    u8 perimiter_danger_color;
+    u8 perimiter_aura_color;
 
     /* --- BASICS --- */
     u8 turn; /* Automatic loss if turn 255. */

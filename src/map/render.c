@@ -376,21 +376,27 @@ void Map_Perimeter_Draw_Danger(struct Map *map, struct Settings *settings, struc
         return;
 
     SDL_Palette *palette_base = sota_palettes[map->ipalette_base];
-    SDL_Color red = palette_base->colors[map->perimiter_color];
+    SDL_Color red = palette_base->colors[map->perimiter_danger_color];
 
     _Map_Perimeter_Draw(map, settings, camera, map->rendered_dangermap, red);
 }
 
-void Map_Perimeter_Draw_inRange(struct Map *map,    struct Settings *settings,
-                                struct Camera *camera,
-                                struct Point pos,   struct Range range, SDL_Color color) {
+void Map_Perimeter_Draw_Aura(struct Map *map,    struct Settings *settings,
+                             struct Camera *camera,
+                             struct Point pos,   struct Range range, SDL_Color color) {
     u8 *rangearr = (u8 *)&range;
 
-    i32 *insidemap = Pathfinding_Attackto(NULL, map->row_len, map->col_len, rangearr, MOVETILE_INCLUDE);
+    i32 include = range.min == 1 ? MOVETILE_INCLUDE : MOVETILE_EXCLUDE;
+    i32 *insidemap = calloc(map->row_len * map->col_len, sizeof(*insidemap));
 
+    _Pathfinding_Attackto(pos.x, pos.y, insidemap, NULL, map->row_len, map->col_len, &range, include);
+
+    SDL_Palette *palette_base = sota_palettes[map->ipalette_base];
+    SDL_Color purple = palette_base->colors[map->perimiter_aura_color];
 
     _Map_Perimeter_Draw(map, settings, camera, insidemap, color);
     free(insidemap);
+
 
 }
 
