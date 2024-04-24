@@ -175,6 +175,7 @@ struct Map *Map_Init(struct Map *map, i32 width, i32 height) {
     map->units_onfield      = DARR_INIT(map->units_onfield, tnecs_entity, 20);
     map->reinf_equipments   = DARR_INIT(map->reinf_equipments, struct Inventory_item *, 30);
     map->army_onfield       = DARR_INIT(map->army_onfield, u8, 5);
+
     Map_Tilesize_Set(map, width, height);
     if (map->arrow != NULL)
         Arrow_Free(map->arrow);
@@ -389,6 +390,8 @@ void Map_dArrays_Init(struct Map *map,  struct Settings *settings) {
         map->global_rangemap    = calloc(len,  sizeof(*map->global_rangemap));
     if (map->global_dangermap == NULL)
         map->global_dangermap   = calloc(len,  sizeof(*map->global_dangermap));
+    if (map->edges_danger == NULL)
+        map->edges_danger = calloc(len, sizeof(*map->edges_danger));
 
     if (map->stack_mode == MAP_SETTING_STACK_DANGERMAP) {
         if (map->stacked_dangermap == NULL)

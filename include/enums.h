@@ -167,6 +167,7 @@ enum SOTA_LIMITS {
     SOTA_MIN_HP                             =    9,
     SOTA_MAX_HP                             =   80,
     SOTA_MAX_SUPPORTS                       =    7,
+    SOTA_SUPPORT_RANGE                      =    3,
     SOTA_MAX_MOVEMENT                       =   16,
     SOTA_MAX_PARTY_SIZE                     =   40,
     SOTA_MAX_TRUE_DAMAGE                    =    4,

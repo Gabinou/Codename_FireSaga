@@ -39,8 +39,8 @@ void Map_Update(   struct Map    *map,  struct Settings    *s,
                    struct Camera *c,         struct SDL_Texture *rt);
 void Map_Grid_Draw(struct Map    *map,  struct Settings    *s, struct Camera *c);
 
-void _Map_Perimeter_Draw(struct Map *map, struct Settings *s, struct Camera *c, i32 *inside,
-                         SDL_Color color);
+void _Map_Perimeter_Draw(struct Map *map, struct Settings *s, struct Camera *c,
+                         i32 *inside, SDL_Color color, struct Padding *p);
 void Map_Perimeter_Draw_Danger(struct Map *map, struct Settings *s, struct Camera *c);
 void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
                              struct Camera  *camera, struct Point pos,

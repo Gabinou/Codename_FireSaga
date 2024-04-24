@@ -421,7 +421,7 @@ void Map_Perimeter(struct Padding *edges, i32 *map, i32 row_len, i32 col_len) {
     // Every tile has one Padding array defining the 4 edges.
     // Every edge that needs to be drawn is set to 1,
     // only for inside tile.
-
+    SDL_assert(edges != NULL);
     i32 outside = 0;
     size_t bytesize = row_len * col_len * sizeof(*edges);
     memset(edges, 0, bytesize);

@@ -267,11 +267,25 @@ void fsm_rFrame_sGmpMap(struct Game *sota) {
     Map_Draw(sota->map, &sota->settings, &sota->camera, sota->render_target);
     Map_Grid_Draw(sota->map, &sota->settings, &sota->camera);
     Map_Perimeter_Draw_Danger(sota->map, &sota->settings, &sota->camera);
-    // TODO: Draw aura for all characters that have auras.
-    // TODO: Draw
+    // TODO: Draw weapon auras.
+
     // void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
     //                          struct Camera  *camera, struct Point pos,
     //                          struct Range    range,  sota->map->perimiter_aura_color) {
+
+
+    /* Draw support auras perimiters for all friendlies */
+    SDL_Palette *palette_base = sota_palettes[sota->map->ipalette_base];
+    struct Range support_range = {0, SOTA_SUPPORT_RANGE};
+    size_t num = DARR_NUM(sota->map->friendlies_onfield);
+    for (int i = 0; i < num; i++) {
+        tnecs_entity entity = sota->map->friendlies_onfield[i];
+        struct Position *pos = TNECS_GET_COMPONENT(sota->world, entity, Position);
+        int colori = (i % (PALETTE_SOTA_COLOR_NUM - 1)) + 8;
+        Map_Perimeter_Draw_Aura(sota->map,    &sota->settings,
+                                &sota->camera, pos->tilemap_pos,
+                                support_range,  colori);
+    }
 
 }
 

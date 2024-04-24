@@ -299,7 +299,8 @@ void Map_Visible_Bounds(u8 *min, u8 *max, size_t row_len, size_t col_len,
 }
 
 void _Map_Perimeter_Draw(struct Map *map, struct Settings *settings,
-                         struct Camera *camera, i32 *insidemap, SDL_Color color) {
+                         struct Camera *camera, i32 *insidemap,
+                         SDL_Color color, struct Padding *edges) {
     SDL_assert(map          != NULL);
     SDL_assert(settings     != NULL);
     SDL_assert(camera       != NULL);
@@ -328,7 +329,8 @@ void _Map_Perimeter_Draw(struct Map *map, struct Settings *settings,
             /* ii = 3: SOTA_PADDING_BOTTOM  +y  */
 
             // Note: top left is origin. m in cycle ignored
-            i32 *pad_arr = (i32 *)&map->edges_danger[i];
+            i32 *pad_arr = (i32 *)&edges[i];
+
             /* - Skip if not perimeter - */
             if (!pad_arr[ii])
                 continue;
@@ -378,30 +380,34 @@ void Map_Perimeter_Draw_Danger(struct Map *map, struct Settings *settings, struc
     SDL_Palette *palette_base = sota_palettes[map->ipalette_base];
     SDL_Color red = palette_base->colors[map->perimiter_danger_color];
 
-    _Map_Perimeter_Draw(map, settings, camera, map->rendered_dangermap, red);
+    _Map_Perimeter_Draw(map, settings, camera, map->rendered_dangermap, red, map->edges_danger);
 }
 
 void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
                              struct Camera  *camera, struct Point pos,
                              struct Range    range,  int colori) {
     u8 *rangearr = (u8 *)&range;
-
     i32 include = range.min == 1 ? MOVETILE_INCLUDE : MOVETILE_EXCLUDE;
-    i32 *insidemap = calloc(map->row_len * map->col_len, sizeof(*insidemap));
-
-    _Pathfinding_Attackto(pos.x, pos.y, insidemap, NULL, map->row_len, map->col_len,
+    memset(map->temp, 0, map->row_len * map->col_len * sizeof(*map->temp));
+    _Pathfinding_Attackto(pos.x, pos.y, map->temp, NULL, map->row_len, map->col_len,
                           rangearr, include);
+
+    size_t bytesize = sizeof(struct Padding);
+    Map_Perimeter(map->edges_danger, map->temp, map->row_len, map->col_len);
 
     SDL_Palette *palette_base = sota_palettes[map->ipalette_base];
     SDL_Color purple = palette_base->colors[colori];
 
-    _Map_Perimeter_Draw(map, settings, camera, insidemap, purple);
-    free(insidemap);
+    _Map_Perimeter_Draw(map, settings, camera, map->temp, purple, map->edges_danger);
 }
 
 
 void Map_Grid_Draw(struct Map *map,  struct Settings *settings, struct Camera *camera) {
     /* -- Preliminaries -- */
+    SDL_assert(map      != NULL);
+    SDL_assert(camera   != NULL);
+    SDL_assert(settings != NULL);
+
     if (!settings->map_settings.grid_show)
         return;
 

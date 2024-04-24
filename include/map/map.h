@@ -70,7 +70,7 @@ struct Map {
     i32 *stacked_global_dangermap;  /* 2D dynamic array */
 
     /* - Perimeter - */
-    struct Padding *edges_danger;
+    struct Padding *edges_danger; /* Todo change to general purpose */
 
     /* --- ICONS --- */
     struct SDL_Texture *stack_move;
