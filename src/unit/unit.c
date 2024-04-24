@@ -157,7 +157,7 @@ struct Unit Unit_Nibal_make(void) {
         .weapons_dtab   = NULL,
 
         .current_hp     = 35,
-        .alive       = true,
+        .alive          = true,
         .talkable       = 0,
 
         .sex            = true,  /* 0:F, 1:M. eg. hasPenis. */

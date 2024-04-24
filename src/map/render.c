@@ -300,6 +300,10 @@ void Map_Visible_Bounds(u8 *min, u8 *max, size_t row_len, size_t col_len,
 
 void _Map_Perimeter_Draw(struct Map *map, struct Settings *settings,
                          struct Camera *camera, i32 *insidemap, SDL_Color color) {
+    SDL_assert(map          != NULL);
+    SDL_assert(settings     != NULL);
+    SDL_assert(camera       != NULL);
+    SDL_assert(insidemap    != NULL);
 
     int thick = settings->map_settings.perim_thickness;
 
