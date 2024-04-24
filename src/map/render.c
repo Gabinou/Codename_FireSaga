@@ -298,16 +298,12 @@ void Map_Visible_Bounds(u8 *min, u8 *max, size_t row_len, size_t col_len,
     min[1]      = (edge_min[1] <    1   ) ?    0    : edge_min[1];
 }
 
-void Map_Danger_Perimeter_Draw(struct Map *map, struct Settings *settings, struct Camera *camera) {
-    if (map->rendered_dangermap == NULL)
-        return;
+void _Map_Perimeter_Draw(struct Map *map, struct Settings *settings,
+                         struct Camera *camera, i32 *insidemap, SDL_Color color) {
 
     int thick = settings->map_settings.perim_thickness;
-    i32 outside = 0;
 
-    SDL_Palette *palette_base = sota_palettes[map->ipalette_base];
-    SDL_Color red = palette_base->colors[map->perimiter_color];
-    int success = SDL_SetRenderDrawColor(map->renderer, red.r, red.g, red.b, red.a);
+    int success = SDL_SetRenderDrawColor(map->renderer, color.r, color.g, color.b, color.a);
     SDL_assert(success == 0);
 
     size_t row_len = map->row_len, col_len = map->col_len;
@@ -315,7 +311,7 @@ void Map_Danger_Perimeter_Draw(struct Map *map, struct Settings *settings, struc
     for (i32 i = 0; i < row_len * col_len; i++) {
 
         /* - Skip if tile is outside - */
-        if (map->rendered_dangermap[i] == outside)
+        if (insidemap[i] == 0)
             continue;
 
         i32 x = i % col_len;
@@ -362,11 +358,23 @@ void Map_Danger_Perimeter_Draw(struct Map *map, struct Settings *settings, struc
             i32 thickx = q_cycle2_pz(ii);
             i32 thicky = q_cycle2_zp(ii);
             for (int t = -(thick / 2); t < thick; t++) {
-                SDL_RenderDrawLine(map->renderer, line1_x + thickx * t, line1_y + thicky * t, line2_x + thickx * t,
+                SDL_RenderDrawLine(map->renderer, line1_x + thickx * t,
+                                   line1_y + thicky * t,
+                                   line2_x + thickx * t,
                                    line2_y + thicky * t);
             }
         }
     }
+}
+
+void Map_Danger_Perimeter_Draw(struct Map *map, struct Settings *settings, struct Camera *camera) {
+    if (map->rendered_dangermap == NULL)
+        return;
+
+    SDL_Palette *palette_base = sota_palettes[map->ipalette_base];
+    SDL_Color red = palette_base->colors[map->perimiter_color];
+
+    _Map_Perimeter_Draw(map, settings, camera, map->rendered_dangermap, red);
 }
 
 void Map_Grid_Draw(struct Map *map,  struct Settings *settings, struct Camera *camera) {

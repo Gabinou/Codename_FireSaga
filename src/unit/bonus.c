@@ -14,13 +14,12 @@ void Unit_Bonus_Support_Add(struct Unit *unit, i16 _id) {
 
 }
 
-/* Check if Any bonus comes from weapon. 
+/* Check if Any bonus comes from weapon.
 If so, check if still in hand.
 If not in hand, remove bonus from bonus_Stack */
 void Unit_Bonus_Weapon_Refresh(struct Unit *unit, i16 _id) {
 
 }
-
 
 /* Iterate over every friendly:
     - Check if supporting friendly in range

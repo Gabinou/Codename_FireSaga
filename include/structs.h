@@ -196,19 +196,19 @@ struct Bonus_Stats {
     struct Computed_Stats   computed_stats;
     /* How to make sure bonus is still valid? */
     // - If Passive aura,   source is unit holding a weapon in range
-        // 1. weapon held in unit hands &&
-        // 2. unit in range &&
-        // 3. unit is not self (IMPLICIT)
+    // 1. weapon held in unit hands &&
+    // 2. unit in range &&
+    // 3. unit is not self (IMPLICIT)
     // - If Active buff,    source is weapon or skill
-        // 1. turns_left > 0
-        // 2. Using Skill/Weapon again REFRESHES timer
-    // - If Weapon bonus,   source is weapon currently held by self 
-        // 1. weapon held in unit hands &&
-        // 2. unit is self  (IMPLICIT)
+    // 1. turns_left > 0
+    // 2. Using Skill/Weapon again REFRESHES timer
+    // - If Weapon bonus,   source is weapon currently held by self
+    // 1. weapon held in unit hands &&
+    // 2. unit is self  (IMPLICIT)
     // - If Support,   source is unit
-        // 1. unit in range
-        // 2. unit is not self (IMPLICIT)
-    tnecs_entity unit_ent;      
+    // 1. unit in range
+    // 2. unit is not self (IMPLICIT)
+    tnecs_entity unit_ent;
     u16 weapon_id;              /* Should be equipped by unit_ent */
     i32 turn_limit;
     i32 turns_left;

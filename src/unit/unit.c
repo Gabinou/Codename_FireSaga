@@ -67,8 +67,8 @@ struct Unit Unit_default = {
     .malus_stats        = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
     .current_stats      = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
     .growths            = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-    .bonus_stack        = NULL; 
-    .malus_stack        = NULL; 
+    .bonus_stack        = NULL,
+    .malus_stack        = NULL,
 
     .hit_sequence    = {0, 0},
     .crit_sequence   = {0, 0},
@@ -143,8 +143,8 @@ struct Unit Unit_Nibal_make(void) {
         .current_stats      = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
         .growths            = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
         .agony              = -1,
-        .bonus_stack        = NULL; 
-        .malus_stack        = NULL; 
+        .bonus_stack        = NULL,
+        .malus_stack        = NULL,
 
         .skills         = UNIT_SKILL_VENOMOUS_SPIT,
         .exp            = 0,
