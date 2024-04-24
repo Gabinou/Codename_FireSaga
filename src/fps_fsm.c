@@ -267,14 +267,14 @@ void fsm_rFrame_sGmpMap(struct Game *sota) {
     Map_Draw(sota->map, &sota->settings, &sota->camera, sota->render_target);
     Map_Grid_Draw(sota->map, &sota->settings, &sota->camera);
     Map_Perimeter_Draw_Danger(sota->map, &sota->settings, &sota->camera);
-    // TODO: Draw weapon auras.
 
+    // TODO: Draw weapon auras.
     // void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
     //                          struct Camera  *camera, struct Point pos,
     //                          struct Range    range,  sota->map->perimiter_aura_color) {
 
-
     /* Draw support auras perimiters for all friendlies */
+#ifdef DEBUG_SUPPORT_PERIMITER
     SDL_Palette *palette_base = sota_palettes[sota->map->ipalette_base];
     struct Range support_range = {0, SOTA_SUPPORT_RANGE};
     size_t num = DARR_NUM(sota->map->friendlies_onfield);
@@ -286,6 +286,7 @@ void fsm_rFrame_sGmpMap(struct Game *sota) {
                                 &sota->camera, pos->tilemap_pos,
                                 support_range,  colori);
     }
+#endif /* DEBUG_SUPPORT_PERIMITER */
 
 }
 

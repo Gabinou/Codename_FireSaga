@@ -387,7 +387,7 @@ void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
                              struct Camera  *camera, struct Point pos,
                              struct Range    range,  int colori) {
     u8 *rangearr = (u8 *)&range;
-    i32 include = range.min == 1 ? MOVETILE_INCLUDE : MOVETILE_EXCLUDE;
+    i32 include = range.min == 0 ? MOVETILE_INCLUDE : MOVETILE_EXCLUDE;
     memset(map->temp, 0, map->row_len * map->col_len * sizeof(*map->temp));
     _Pathfinding_Attackto(pos.x, pos.y, map->temp, NULL, map->row_len, map->col_len,
                           rangearr, include);
