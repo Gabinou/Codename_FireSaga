@@ -625,12 +625,12 @@ void Map_writeJSON( void *input, cJSON *jmap) {
     for (u8 r = 0; r < DARR_NUM(map->reinforcements); r++) {
         jreinforcement   = cJSON_CreateObject();
         jreinforcementeq = cJSON_CreateObject();
-        jsonio_Write_Reinforcement(jreinforcement, &(map->reinforcements)[r]);
+        Reinforcement_writeJSON(jreinforcement, &(map->reinforcements)[r]);
         temp_equip = map->reinf_equipments[r];
         for (u8 i = 0; i < DARR_NUM(temp_equip); i ++) {
             temp_item = temp_equip[i];
             if (temp_item.id > ITEM_NULL)
-                jsonio_Write_item(jreinforcementeq, &temp_item);
+                item_writeJSON(jreinforcementeq, &temp_item);
         }
         cJSON_AddItemToObject(jreinforcement, "Equipment", jreinforcementeq);
         cJSON_AddItemToObject(jreinforcements, "Reinforcement", jreinforcement);
@@ -683,7 +683,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     cJSON *jstart_pos;
     struct Point pos;
     cJSON_ArrayForEach(jstart_pos, jstart_pos_arr) {
-        jsonio_Read_Position(jstart_pos, (struct Point *)&pos);
+        Point_readJSON(jstart_pos, (struct Point *)&pos);
         Map_startingPos_Add(map, pos.x, pos.y);
     }
 
@@ -724,7 +724,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     for (int i = 0; i < cJSON_GetArraySize(jreinforcements); i++) {
         struct Reinforcement temp_rein = Reinforcement_default;
         cJSON *jreinforcement = cJSON_GetArrayItem(jreinforcements, i);
-        jsonio_Read_Reinforcement(jreinforcement, &temp_rein);
+        Reinforcement_readJSON(jreinforcement, &temp_rein);
         DARR_PUT(map->reinforcements, temp_rein);
         jequipment = cJSON_GetObjectItem(jreinforcement, "Equipment");
         temp_equip = DARR_INIT(temp_equip, struct Inventory_item, DEFAULT_EQUIPMENT_SIZE);
@@ -737,7 +737,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
         DARR_PUT(map->items_num, cJSON_GetArraySize(jequipment));
         cJSON_ArrayForEach(jitem, jequipment) {
             temp_item = Inventory_item_default;
-            jsonio_Read_Item(jitem, &temp_item);
+            Item_readJSON(jitem, &temp_item);
             // NOTE:    Do not ignore empty items.
             //          To be able to put weapons in right hand.
             DARR_PUT(temp_equip, temp_item);
@@ -785,9 +785,9 @@ void Map_readJSON(void *input,  cJSON *jmap) {
             cJSON *jchest   = cJSON_GetArrayItem(jchests, i);
             cJSON *jpos     = cJSON_GetObjectItem(jchest, "position");
             if (jpos != NULL)
-                jsonio_Read_Position(jpos, (struct Point *)&pos->tilemap_pos);
+                Point_readJSON(jpos, (struct Point *)&pos->tilemap_pos);
             if (jchest != NULL)
-                jsonio_Read_Chest(jchest, chest);
+                Chest_readJSON(jchest, chest);
             map->chests_ent[i] = temp_ent;
         }
     } while (0);
@@ -814,9 +814,9 @@ void Map_readJSON(void *input,  cJSON *jmap) {
             cJSON *jdoor    = cJSON_GetArrayItem(jdoors, i);
             cJSON *jpos     = cJSON_GetObjectItem(jdoor, "position");
             if (jpos != NULL)
-                jsonio_Read_Position(jpos, (struct Point *)&pos->tilemap_pos);
+                Point_readJSON(jpos, (struct Point *)&pos->tilemap_pos);
             if (jdoor != NULL)
-                jsonio_Read_Door(jdoor, door);
+                Door_readJSON(jdoor, door);
             map->doors_ent[i] = temp_ent;
         }
     } while (0);
@@ -842,7 +842,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
             cJSON *jbreakable   = cJSON_GetArrayItem(jbreakables, i);
             cJSON *jpos         = cJSON_GetObjectItem(jbreakable, "position");
             if (jpos != NULL)
-                jsonio_Read_Position(jpos, (struct Point *)&pos->tilemap_pos);
+                Point_readJSON(jpos, (struct Point *)&pos->tilemap_pos);
             // if position of breakaable is already a Door/Chest
             // -> add Breakable component to Door/Chest instead
             // -> add Door/Chest + breakable entity to breakable list
@@ -858,7 +858,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
 
             struct Breakable *breaka = TNECS_GET_COMPONENT(map->world, temp_ent, Breakable);
             SDL_assert(breaka != NULL);
-            jsonio_Read_Breakable(jbreakables, breaka);
+            Breakable_readJSON(jbreakables, breaka);
             map->breakables_ent[i] = temp_ent;
         }
     } while (0);

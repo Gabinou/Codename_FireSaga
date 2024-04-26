@@ -39,10 +39,7 @@ typedef struct Item {
 
     u8 target;  /* units by which item is usable. */
     struct Range range;
-    struct Range aura;
-
-    struct Unit_stats bonus_stats;
-    struct Unit_stats malus_stats;
+    struct Aura aura; /* Aura with range [0, 0] to for wielder-only bonus */
 
     struct Item_stats stats;
     u16  id;           /* 0 is NULL */

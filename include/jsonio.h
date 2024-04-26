@@ -44,27 +44,26 @@ struct cJSON *jsonio_parseJSON(s8 f);
 
 /* --- UTILITIES --- */
 /* -- Read -- */
-void jsonio_Read_Array(  struct cJSON *j, i32 *arr);
+void Array_readJSON(  struct cJSON *j, i32 *arr);
 void jsonio_Read_2DArray(struct cJSON *j, i32 *, u8 rl, u8 cl);
 
-void jsonio_Read_RNseed( struct cJSON *_j);
+void RNseed_readJSON( struct cJSON *_j);
 
-void jsonio_Read_Shop(        char *f, struct Shop         *s);
-void jsonio_Read_Palette(     char *f, struct SDL_Palette  *p);
-void jsonio_Read_Promotion(   char *f, struct Promotion    *p);
-void jsonio_Read_PaletteTable(char *f, u8                 *p);
+void Shop_readJSON(        char *f, struct Shop         *s);
+void Palette_readJSON(     char *f, struct SDL_Palette  *p);
+void Promotion_readJSON(   char *f, struct Promotion    *p);
+void PaletteTable_readJSON(char *f, u8                  *p);
 
-void jsonio_Read_Door(     struct cJSON *j, struct Door  *d);
-void jsonio_Read_Chest(    struct cJSON *j, struct Chest *c);
-void jsonio_Read_Item(     struct cJSON *j, struct Inventory_item *i);
-void jsonio_Read_mvtcost(  struct cJSON *j, struct fMovement_cost *c);
-void jsonio_Read_Wpnstats( struct cJSON *j, struct Weapon_stats   *s);
-void jsonio_Read_Position( struct cJSON *j, struct Point          *p);
-void jsonio_Read_Tilestats(struct cJSON *j, struct Tile_stats     *s);
-void jsonio_Read_Unitstats(struct cJSON *j, struct Unit_stats     *s);
-void jsonio_Read_MObj_Link(struct cJSON *j, struct Mobj_Link      *b);
-void jsonio_Read_Breakable(struct cJSON *j, struct Breakable      *b);
-void jsonio_Read_Itemstats(struct cJSON *j, struct Item_stats     *s);
+// void Door_readJSON(             struct cJSON *j, struct Door             *d);
+// void Chest_readJSON(            struct cJSON *j, struct Chest            *c);
+void Inventory_item_readJSON(   struct cJSON *j, struct Inventory_item   *i);
+void fMovement_cost_readJSON(   struct cJSON *j, struct fMovement_cost   *c);
+void Weapon_stats_readJSON(     struct cJSON *j, struct Weapon_stats     *s);
+void Point_readJSON(            struct cJSON *j, struct Point            *p);
+void Tile_stats_readJSON(       struct cJSON *j, struct Tile_stats       *s);
+void Unit_stats_readJSON(       struct cJSON *j, struct Unit_stats       *s);
+void MObj_Link_readJSON(        struct cJSON *j, struct Mobj_Link        *b);
+void Item_stats_readJSON(       struct cJSON *j, struct Item_stats       *s);
 
 /* - Narrative - */
 void Scene_readJSON(void *input, struct cJSON *_jnarr);
@@ -73,17 +72,17 @@ bool Conditions_Read(struct Conditions *conditions, cJSON *jconditions);
 bool Condition_Read(u32 *bitfield, size_t bits, cJSON *jcondition);
 
 /* -- Write -- */
-void jsonio_Write_RNseed(   struct cJSON *j);
+void RNseed_writeJSON(   struct cJSON *j);
 
-void jsonio_Write_Array(    struct cJSON *j, i32 *arr, size_t l);
+void Array_writeJSON(    struct cJSON *j, i32 *arr, size_t l);
 void jsonio_Write_2DArray(  struct cJSON *j, i32 *arr, u8 rl, u8 cl);
 
-void jsonio_Write_item(     struct cJSON *j, struct Inventory_item *i);
-void jsonio_Write_mvtcost(  struct cJSON *j, struct fMovement_cost *c);
-void jsonio_Write_Wpnstats( struct cJSON *j, struct Weapon_stats   *s);
-void jsonio_Write_Itemstats(struct cJSON *j, struct Item_stats     *t);
-void jsonio_Write_Unitstats(struct cJSON *j, struct Unit_stats     *t);
-void jsonio_Write_Tilestats(struct cJSON *j, struct Tile_stats     *t);
+void item_writeJSON(     struct cJSON *j, struct Inventory_item *i);
+void mvtcost_writeJSON(  struct cJSON *j, struct fMovement_cost *c);
+void Wpnstats_writeJSON( struct cJSON *j, struct Weapon_stats   *s);
+void Itemstats_writeJSON(struct cJSON *j, struct Item_stats     *t);
+void Unitstats_writeJSON(struct cJSON *j, struct Unit_stats     *t);
+void Tilestats_writeJSON(struct cJSON *j, struct Tile_stats     *t);
 
 /* -- Print -- */
 void jsonio_Print(PHYSFS_file *fp, struct cJSON *json);

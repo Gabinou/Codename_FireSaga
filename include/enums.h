@@ -59,9 +59,6 @@ enum SOTA_RANGE {
     RANGE_NULL          = -1,
     RANGE_MIN_INDEX     =  0,
     RANGE_MAX_INDEX     =  1,
-    /* Range bounds */
-    SOTA_MIN_RANGE      =  0,
-    SOTA_MAX_RANGE      = 12,
 
 };
 
@@ -101,9 +98,6 @@ enum AGONY {
 enum SOTA_HIT {
     HIT_DEX_FACTOR          =  2,
     HIT_LUCK_FACTOR         =  2,
-    /* Bounds for computed stat */
-    HIT_MIN                =   0,
-    HIT_MAX                = 100,
 };
 
 enum SOTA_CRIT {
@@ -112,9 +106,6 @@ enum SOTA_CRIT {
     CRIT_FACTOR             = 150,
     CRIT_FACTOR_PROMOTED    = 200,
     CRIT_FACTOR_ASSASSIN    = 250,
-    /* Bounds for computed stat */
-    CRIT_MIN                =   0,
-    CRIT_MAX                = 100,
 };
 
 enum SOTA_DODGE {
@@ -124,18 +115,12 @@ enum SOTA_DODGE {
     DODGE_STR_FACTOR        =  4,
     DODGE_FTH_FACTOR        =  2,
     DODGE_WPN_WGT_FACTOR    =  1,
-    /* Bounds for computed stat */
-    DODGE_MIN               = -100, /* negative: Slowed by big weapons */
-    DODGE_MAX               =  100,
 
 };
 
 enum SOTA_SPEED {
     SPEED_STR_FACTOR        =  4,
     SPEED_CON_FACTOR        =  2,
-    /* Bounds for computed stat */
-    SPEED_MIN               = -50,
-    SPEED_MAX               =  50,
 };
 
 enum SOTA_FAVOR {
@@ -179,20 +164,67 @@ enum SOTA_SETTINGS {
 };
 
 enum SOTA_LIMITS {
-    SOTA_MAX_DAMAGE                         = 0xFF,
-    SOTA_MIN_HP                             =    9,
-    SOTA_MAX_HP                             =   80,
-    SOTA_MAX_SUPPORTS                       =    7,
-    SOTA_SUPPORT_RANGE                      =    3,
-    SOTA_MAX_MOVEMENT                       =   16,
-    SOTA_MAX_PARTY_SIZE                     =   40,
-    SOTA_MAX_TRUE_DAMAGE                    =    4,
 
-    SOTA_MIN_STAT                           =    0, /* absolute unit stat minimum */
-    SOTA_MAX_STAT                           =   50, /* absolute unit stat maximum */
+    /* Unit_stats limits*/
+    SOTA_MIN_HP         =    1,
+    SOTA_MAX_HP         =   80,
+    SOTA_MIN_STR        =    0,
+    SOTA_MAX_STR        =   60,
+    SOTA_MIN_MAG        =    0,
+    SOTA_MAX_MAG        =   60,
+    SOTA_MIN_AGI        =    0,
+    SOTA_MAX_AGI        =   60,
+    SOTA_MIN_DEX        =    0,
+    SOTA_MAX_DEX        =   60,
+    SOTA_MIN_FTH        =    0,
+    SOTA_MAX_FTH        =   80,
+    SOTA_MIN_LUCK       =    0,
+    SOTA_MAX_LUCK       =   80,
+    SOTA_MIN_DEF        =    0,
+    SOTA_MAX_DEF        =   60,
+    SOTA_MIN_RES        =    0,
+    SOTA_MAX_RES        =   60,
+    SOTA_MIN_CON        =    0,
+    SOTA_MAX_CON        =   60,
+    SOTA_MIN_MOVE       =    0,
+    SOTA_MAX_MOVE       =   20,
+    SOTA_MIN_PROF       =    0,
+    SOTA_MAX_PROF       =   60,
 
-    SOTA_MIN_LEVEL                          =   0,
-    SOTA_MAX_LEVEL                          =   40,
+    /* Computed_Stats limits*/
+    SOTA_MIN_DAMAGE     =    0,
+    SOTA_MAX_DAMAGE     = 0xFF,
+    SOTA_MIN_ATTACK     =    0,
+    SOTA_MAX_ATTACK     = 0xFF,
+    SOTA_MIN_PROT       =    0,
+    SOTA_MAX_PROT       = 0xFF,
+
+    SOTA_MIN_HIT        =  100,
+    SOTA_MAX_HIT        =    0,
+    SOTA_MIN_CRIT       =  100,
+    SOTA_MAX_CRIT       =    0,
+    SOTA_MIN_FAVOR      =  100,
+    SOTA_MAX_FAVOR      =    0,
+
+    SOTA_MAX_SPEED      =  -50,
+    SOTA_MIN_DODGE      =  100,
+    SOTA_MAX_DODGE      = -100, /* negative: Slowed by big weapons */
+    SOTA_MIN_AGONY      =    0,
+    SOTA_MAX_AGONY      =   10,
+    SOTA_MIN_RANGE      =    0,
+    SOTA_MAX_RANGE      =   12,
+
+    SOTA_MAX_SUPPORTS       =    7,
+    SOTA_SUPPORT_RANGE      =    3,
+    SOTA_MAX_MOVEMENT       =   16,
+    SOTA_MAX_PARTY_SIZE     =   40,
+    SOTA_MAX_TRUE_DAMAGE    =    4,
+
+    SOTA_MIN_STAT           =    0, /* absolute unit stat minimum */
+    SOTA_MAX_STAT           =   50, /* absolute unit stat maximum */
+
+    SOTA_MIN_LEVEL          =    0,
+    SOTA_MAX_LEVEL          =   40,
 };
 
 enum SOTA_ANTS {

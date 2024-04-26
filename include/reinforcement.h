@@ -21,8 +21,8 @@ struct Reinforcement {
 extern struct Reinforcement Reinforcement_default;
 
 void Reinforcement_Free(struct Reinforcement  *a);
-void jsonio_Read_Reinforcement( struct cJSON *j, struct Reinforcement  *a);
-void jsonio_Write_Reinforcement(struct cJSON *j, struct Reinforcement  *a);
+void Reinforcement_readJSON( struct cJSON *j, struct Reinforcement  *a);
+void Reinforcement_writeJSON(struct cJSON *j, struct Reinforcement  *a);
 
 /* -- Reinforcements -- */
 void Unit_Reinforcement_Levelups(struct Unit *u, struct Reinforcement *r);

@@ -62,9 +62,9 @@ struct Unit Unit_default = {
 
     /*                    hp str mag agi dex fth luck def res con move prof */
     .base_stats         = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-    .bonus_stats        = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+    // .aura.unit_stats        = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
     .caps_stats         = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-    .malus_stats        = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+    // .malus_stats        = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
     .current_stats      = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
     .growths            = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
     .bonus_stack        = NULL,
@@ -137,9 +137,9 @@ struct Unit Unit_Nibal_make(void) {
         .json_element = JSON_UNIT,
         /*                    hp str mag agi dex fth luck def res con move prof */
         .base_stats         = {35, 20, 20, 18, 25, 14, 12, 18, 22, 30, 06, 15},
-        .bonus_stats        = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+        // .aura.unit_stats        = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
         .caps_stats         = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-        .malus_stats        = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+        // .malus_stats        = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
         .current_stats      = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
         .growths            = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
         .agony              = -1,
@@ -187,7 +187,7 @@ void Unit_Allocs(struct Unit *unit) {
     unit->grown_stats   = DARR_INIT(unit->grown_stats,  struct Unit_stats, SOTA_MAX_LEVEL / 8);
     unit->status_queue  = DARR_INIT(unit->status_queue, struct Unit_status, 2);
     unit->bonus_stack   = DARR_INIT(unit->bonus_stack,  struct Bonus_Stats, 2);
-    unit->malus_stack   = DARR_INIT(unit->malus_stack,  struct Bonus_Stats, 2);
+    // unit->malus_stack   = DARR_INIT(unit->malus_stack,  struct Bonus_Stats, 2);
 }
 
 void Unit_Free(struct Unit *unit) {
@@ -352,8 +352,8 @@ struct Unit_stats Unit_getStats(struct Unit *unit) {
     struct Unit_stats out_stats = unit->current_stats;
     SDL_assert(unit);
     Unit_effectiveStats(unit);
-    Unit_stats_plus(out_stats,  unit->bonus_stats);
-    Unit_stats_minus(out_stats, unit->malus_stats);
+    // Unit_stats_plus(out_stats,  unit->aura.unit_stats);
+    // Unit_stats_minus(out_stats, unit->malus_stats);
     return (out_stats);
 }
 
@@ -1613,13 +1613,13 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     }
 
     SDL_Log("--set stats --");
-    jsonio_Read_Unitstats(jcurrent_stats, &unit->current_stats);
+    Unit_stats_readJSON(jcurrent_stats, &unit->current_stats);
     SDL_assert(jcaps_stats);
-    jsonio_Read_Unitstats(jcaps_stats, &unit->caps_stats);
+    Unit_stats_readJSON(jcaps_stats, &unit->caps_stats);
     SDL_assert(jbase_stats);
-    jsonio_Read_Unitstats(jbase_stats, &unit->base_stats);
+    Unit_stats_readJSON(jbase_stats, &unit->base_stats);
     SDL_assert(jgrowths);
-    jsonio_Read_Unitstats(jgrowths, &unit->growths);
+    Unit_stats_readJSON(jgrowths, &unit->growths);
     // DESIGN QUESTION: Check that current stats fit with bases + levelups?
     //  - No levelups mean NO GRAPHS
     //  => Check if it fits
@@ -1637,7 +1637,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
 
     unit->grown_stats = DARR_INIT(unit->grown_stats, struct Unit_stats, SOTA_MAX_LEVEL / 8);
     while (jlevelup != NULL) {
-        jsonio_Read_Unitstats(jlevelup, &temp_ustats);
+        Unit_stats_readJSON(jlevelup, &temp_ustats);
         DARR_PUT(unit->grown_stats, temp_ustats);
         jlevelup = jlevelup->next;
     };
@@ -1654,7 +1654,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     cJSON *jitem;
     cJSON_ArrayForEach(jitem, jitems) {
         struct Inventory_item temp_item;
-        jsonio_Read_Item(jitem, &temp_item);
+        Item_readJSON(jitem, &temp_item);
         if (temp_item.id > ITEM_NULL)
             Unit_Item_Take(unit, temp_item);
     }
@@ -1684,13 +1684,13 @@ void Unit_writeJSON( void *input, cJSON *junit) {
     cJSON *jcurrent_hp    = cJSON_CreateNumber(unit->current_hp);
     cJSON *jclass_index   = cJSON_CreateNumber(unit->class);
     cJSON *jcurrent_stats = cJSON_CreateObject();
-    jsonio_Write_Unitstats(jcurrent_stats, &unit->current_stats);
+    Unitstats_writeJSON(jcurrent_stats, &unit->current_stats);
     cJSON *jcaps_stats    = cJSON_CreateObject();
-    jsonio_Write_Unitstats(jcaps_stats, &unit->caps_stats);
+    Unitstats_writeJSON(jcaps_stats, &unit->caps_stats);
     cJSON *jbase_stats    = cJSON_CreateObject();
-    jsonio_Write_Unitstats(jbase_stats, &unit->base_stats);
+    Unitstats_writeJSON(jbase_stats, &unit->base_stats);
     cJSON *jgrowths       = cJSON_CreateObject();
-    jsonio_Write_Unitstats(jgrowths, &unit->growths);
+    Unitstats_writeJSON(jgrowths, &unit->growths);
     cJSON *jgrown         = cJSON_CreateObject();
     cJSON *jlevel         = NULL;
     cJSON *jlevelup       = NULL;
@@ -1716,14 +1716,14 @@ void Unit_writeJSON( void *input, cJSON *junit) {
         jlevelup = cJSON_CreateObject();
         jlevel = cJSON_CreateNumber(i - unit->base_exp / SOTA_100PERCENT + 2);
         cJSON_AddItemToObject(jlevelup, "level", jlevel);
-        jsonio_Write_Unitstats(jlevelup, &unit->grown_stats[i]);
+        Unitstats_writeJSON(jlevelup, &unit->grown_stats[i]);
         cJSON_AddItemToObject(jgrown, "Level-up", jlevelup);
         // +2 -> +1 start at lvl1, +1 cause you level to level 2
     }
     cJSON *jitems = cJSON_CreateArray();
     for (u8 item_num = 0; item_num < DEFAULT_EQUIPMENT_SIZE; item_num ++) {
         cJSON *jitem = cJSON_CreateObject();
-        jsonio_Write_item(jitem, &unit->_equipment[item_num]);
+        item_writeJSON(jitem, &unit->_equipment[item_num]);
         cJSON_AddItemToArray(jitems, jitem);
     }
     cJSON_AddItemToObject(junit, "Items", jitems);
@@ -1818,7 +1818,7 @@ struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
 
     /* Preparation */
     struct Unit_stats temp_ustats = Unit_stats_default;
-    unit->bonus_stats             = Unit_stats_default;
+    // unit->aura.unit_stats             = Unit_stats_default;
     unit->malus_stats             = Unit_stats_default;
     unit->effective_stats         = unit->current_stats;
     struct Weapon *weapon;
@@ -1828,8 +1828,8 @@ struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
     if (unit->equipped[UNIT_HAND_LEFT]) {
         SDL_assert(unit->_equipment[UNIT_HAND_LEFT].id != ITEM_NULL);
         weapon = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_LEFT].id);
-        Unit_stats_plus(unit->bonus_stats, weapon->item->bonus_stats);
-        Unit_stats_plus(unit->malus_stats, weapon->item->malus_stats);
+        // Unit_stats_plus(unit->aura.unit_stats, weapon->item->aura.unit_stats);
+        // Unit_stats_plus(unit->malus_stats, weapon->item->malus_stats);
     }
     /* Computing effective stats for right hand weapon */
     if (unit->equipped[UNIT_HAND_RIGHT]) {
@@ -1837,16 +1837,16 @@ struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
         weapon = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_RIGHT].id);
         SDL_assert(weapon != ITEM_NULL);
         SDL_assert(weapon->item != ITEM_NULL);
-        Unit_stats_plus(unit->bonus_stats, weapon->item->bonus_stats);
-        Unit_stats_plus(unit->malus_stats, weapon->item->malus_stats);
+        // Unit_stats_plus(unit->aura.unit_stats, weapon->item->aura.unit_stats);
+        // Unit_stats_plus(unit->malus_stats, weapon->item->malus_stats);
     }
 
     /* If unit is mounted, unit movement is mount movement */
     if (unit->mount != NULL)
         unit->effective_stats.move = MOVE_WITH_MOUNT;
 
-    Unit_stats_plus(unit->effective_stats,  unit->bonus_stats);
-    Unit_stats_minus(unit->effective_stats, unit->malus_stats);
+    // Unit_stats_plus(unit->effective_stats,  unit->aura.unit_stats);
+    // Unit_stats_minus(unit->effective_stats, unit->malus_stats);
 
     /* effective HP is total hp plus bonuses */
     unit->effective_stats.hp = unit->current_stats.hp;

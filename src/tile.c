@@ -87,8 +87,8 @@ void Mobj_Link_readJSON(void *input, cJSON *_jmobj) {
     Mobj_Link_Init(mobj);
     jrelpos = cJSON_GetObjectItemCaseSensitive(jlinked, "relative position");
     if (mobj->num_linked > 0) {
-        jsonio_Read_Array(jrelpos, mobj->relpos_linked);
-        jsonio_Read_Array(jabspos, mobj->abspos_linked);
+        Array_readJSON(jrelpos, mobj->relpos_linked);
+        Array_readJSON(jabspos, mobj->abspos_linked);
         cJSON *j2change     = cJSON_GetObjectItemCaseSensitive(_jmobj,   "2change");
         cJSON *j2change_num = cJSON_GetObjectItemCaseSensitive(j2change, "num");
     }
@@ -129,9 +129,9 @@ void Tile_readJSON(void *input, cJSON *_jtile) {
         tile->name = malloc(strlen(temp_str) + 1);
         memcpy(tile->name, temp_str, strlen(temp_str) + 1);
     }
-    jsonio_Read_Tilestats(jstats, &(tile->stats));
+    Tile_stats_readJSON(jstats, &(tile->stats));
     tile->inside = cJSON_IsTrue(jinside);
-    jsonio_Read_mvtcost(jmvtcost, &(tile->cost_struct));
+    fMovement_cost_readJSON(jmvtcost, &(tile->cost_struct));
     Tile_makeMvtCostarray(tile);
 }
 
@@ -142,8 +142,8 @@ void Tile_writeJSON(void *_input, cJSON *jtile) {
     cJSON *jcost        = cJSON_CreateObject();
     cJSON *jname        = cJSON_CreateString(_tile->name);
     cJSON *jid          = cJSON_CreateNumber(_tile->id);
-    jsonio_Write_mvtcost(jcost, &(_tile->cost_struct));
-    jsonio_Write_Tilestats(jtilestats, &(_tile->stats));
+    mvtcost_writeJSON(jcost, &(_tile->cost_struct));
+    Tilestats_writeJSON(jtilestats, &(_tile->stats));
     cJSON_AddItemToObject(jtile, "Name",   jname);
     cJSON_AddItemToObject(jtile, "id",      jid);
     cJSON_AddBoolToObject(jtile, "inside",  _tile->inside);

@@ -194,11 +194,11 @@ void Computed_Stats_Compare(struct Computed_Stats *stats1,
 struct Bonus_Stats {
     struct Unit_stats       unit_stats;
     struct Computed_Stats   computed_stats;
+    struct Range range;
     tnecs_entity unit_ent;
     u16 weapon_id;              /* Should be equipped by unit_ent */
     i32 turn_limit;
     i32 turns_left;
-    struct Range range;
 };
 extern struct Bonus_Stats Bonus_Stats_default;
 
@@ -267,24 +267,11 @@ struct Crit_Multiplier {
 };
 extern struct Crit_Multiplier Crit_Multiplier_default;
 
-// Stats issues
-// - Computed_Stats and Weapon_stats are very similar
-//      - Meh Okay
-// - Auras affect both Computed_Stats and Unit_stats
-//      - Put both structure in it? Okay.
-//      - Computed_Stats and Unit_stats are POSITIVE ONLY
-// - Bonus and malus stacks seem wasteful?
-//      - No its fine. Easy way to count numbers of buffs/debuffs
-//          - Why though?
-//      - Only one negative stat a malus? what about mixing stats?
-
-
 struct Aura {
     struct Range            range; /* [0]: min, [1]: max */
     struct Unit_stats       unit_stats;
     struct Computed_Stats   computed_stats;
 };
-
 
 struct Weapon_stats {
     i32 attack[ATTACK_TYPES_NO_TOTAL];

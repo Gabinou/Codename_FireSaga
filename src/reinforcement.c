@@ -16,8 +16,8 @@ void Reinforcement_Free(struct Reinforcement *reinf) {
     s8_free(&reinf->ai_filename);
 }
 
-void jsonio_Read_Reinforcement(struct cJSON         *_jreinf,
-                               struct Reinforcement *reinf) {
+void Reinforcement_readJSON(struct cJSON         *_jreinf,
+                            struct Reinforcement *reinf) {
     SDL_assert(reinf  != NULL);
     SDL_assert(_jreinf != NULL);
     struct cJSON *jai       = cJSON_GetObjectItem(_jreinf,      "AI");
@@ -58,8 +58,8 @@ void jsonio_Read_Reinforcement(struct cJSON         *_jreinf,
     reinf->boss_icon = cJSON_GetNumberValue(jicon);
 }
 
-void jsonio_Write_Reinforcement(struct cJSON         *jreinf,
-                                struct Reinforcement *reinf) {
+void Reinforcement_writeJSON(struct cJSON         *jreinf,
+                             struct Reinforcement *reinf) {
     SDL_assert(jreinf != NULL);
     struct cJSON *jai       = cJSON_CreateString(reinf->ai_filename.data);
     struct cJSON *jcol      = cJSON_CreateNumber(reinf->position.x);

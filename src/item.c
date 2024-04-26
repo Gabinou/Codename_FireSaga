@@ -5,21 +5,20 @@ struct Item Item_default = {
     .json_element   = JSON_ITEM,
     .json_filename  = {0},
 
-    .bonus_stats  = {0},
-    .malus_stats  = {0},
-    .id           = 0, // 0 means empty.
-    .type         = 0,
-    .stats        = {1000, 10, 10},
-    .target       = ITEM_TARGET_ENEMY,
-    .range        = {0, 1},
-    .aura         = {0, 0},
-    .passive      = 0,
-    .active       = NULL,
-    .users        = NULL, /* item only usable by users.   empty = everyone */
-    .classes      = NULL, /* item only usable by classes. empty = everyone */
-    .canUse       = true,
-    .canSell      = true,
-    .canRepair    = false,
+    .aura           = {0},
+    .id             = 0, // 0 means empty.
+    .type           = 0,
+    .stats          = {1000, 10, 10},
+    .target         = ITEM_TARGET_ENEMY,
+    .range          = {0, 1},
+    .aura           = {0, 0},
+    .passive        = 0,
+    .active         = NULL,
+    .users          = NULL, /* item only usable by users.   empty = everyone */
+    .classes        = NULL, /* item only usable by classes. empty = everyone */
+    .canUse         = true,
+    .canSell        = true,
+    .canRepair      = false,
 };
 
 #define REGISTER_ENUM(x, y) ITEM_EFFECT_ID_##x,
@@ -338,7 +337,6 @@ void Item_writeJSON(void *_input, cJSON *jitem) {
     cJSON *jid        = cJSON_CreateNumber(_item->id);
     cJSON *jname      = cJSON_CreateString(_item->name.data);
     cJSON *jbonus     = cJSON_CreateObject();
-    cJSON *jmalus     = cJSON_CreateObject();
     cJSON *jcanSell   = cJSON_CreateBool(_item->canSell);
     cJSON *jusers     = cJSON_CreateObject();
     cJSON *jusers_ids = cJSON_CreateArray();
@@ -347,8 +345,7 @@ void Item_writeJSON(void *_input, cJSON *jitem) {
     cJSON *jclass_ids = cJSON_CreateArray();
     cJSON *jclass_id  = NULL;
 
-    jsonio_Write_Unitstats(jmalus, &(_item->malus_stats));
-    jsonio_Write_Unitstats(jbonus, &(_item->bonus_stats));
+    Unitstats_writeJSON(jbonus, &(_item->aura.unit_stats));
 
     /* - Users - */
     if (_item->users != NULL) {
@@ -401,7 +398,6 @@ void Item_writeJSON(void *_input, cJSON *jitem) {
     cJSON_AddItemToObject(jitem,   "Bonus",       jbonus);
     cJSON_AddItemToObject(jitem,   "Users",       jusers);
     cJSON_AddItemToObject(jitem,   "Class",       jclass);
-    cJSON_AddItemToObject(jitem,   "Malus",       jmalus);
     cJSON_AddItemToObject(jitem,   "canSell",     jcanSell);
     cJSON_AddItemToObject(jitem,   "Effects",     jpassives);
     cJSON_AddItemToObject(jitem,   "Types",       jtypes);
@@ -410,7 +406,7 @@ void Item_writeJSON(void *_input, cJSON *jitem) {
     if (_item->write_stats) {
         cJSON *jstats = cJSON_CreateObject();
         struct Item_stats *_stats = &(_item->stats);
-        jsonio_Write_Itemstats(jstats, _stats);
+        Itemstats_writeJSON(jstats, _stats);
         cJSON_AddItemToObject(jitem, "Stats", jstats);
     }
 }
@@ -425,7 +421,6 @@ void Item_readJSON(void *input, cJSON *_jitem) {
     cJSON *jid          = cJSON_GetObjectItemCaseSensitive(_jitem,    "id");
     cJSON *jdescription = cJSON_GetObjectItemCaseSensitive(_jitem,    "Description");
     cJSON *jbonus_stats = cJSON_GetObjectItemCaseSensitive(_jitem,    "Bonus");
-    cJSON *jmalus_stats = cJSON_GetObjectItemCaseSensitive(_jitem,    "Malus");
     cJSON *jcanSell     = cJSON_GetObjectItemCaseSensitive(_jitem,    "canSell");
     cJSON *jcanRepair   = cJSON_GetObjectItemCaseSensitive(_jitem,    "canRepair");
     cJSON *jusers       = cJSON_GetObjectItemCaseSensitive(_jitem,    "Users");
@@ -472,8 +467,7 @@ void Item_readJSON(void *input, cJSON *_jitem) {
     memcpy(item->description, string, strlen(string));
 
     /* - Bonus/Malus - */
-    jsonio_Read_Unitstats(jbonus_stats, &(item->bonus_stats));
-    jsonio_Read_Unitstats(jmalus_stats, &(item->malus_stats));
+    // Unit_stats_readJSON(jbonus_stats, &(item->aura.unit_stats));
 
     /* - Effects - */
     if (jpassive != NULL)
@@ -491,7 +485,7 @@ void Item_readJSON(void *input, cJSON *_jitem) {
     }
 
     /* - Stats - */
-    jsonio_Read_Itemstats(jstats, &(item->stats));
+    Item_stats_readJSON(jstats, &(item->stats));
 
     /* - Type - */
     if (jtypeid != NULL)

@@ -4,39 +4,9 @@
         "Name": "Imperial Standard",
         "id": 1601,
         "Description": "The Empire's emblematic phrase sewn gold on red.",
-        "Bonus":
-        {
-            "hp": 0,
-            "str": 0,
-            "mag": 0,
-            "agi": 1,
-            "dex": 2,
-            "luck": 1,
-            "fth": 1,
-            "def": 0,
-            "res": 0,
-            "con": 0,
-            "move": 0,
-            "prof": 0
-        },
         "Users":
         {
             "id": [1]
-        },
-        "Malus":
-        {
-            "hp": 0,
-            "str": 0,
-            "mag": 0,
-            "agi": 0,
-            "dex": 0,
-            "luck": 0,
-            "fth": 0,
-            "def": 0,
-            "res": 0,
-            "con": 0,
-            "move": 0,
-            "prof": 0
         },
         "canSell": false,
         "Effects":
@@ -61,7 +31,7 @@
             "favor": 0,
             "wgt": 8,
             "prof": 4,
-            "Range": [0,4],
+            "Range": [0,1],
             "uses": 10,
             "price": 0,
             "AP": 0

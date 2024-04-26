@@ -90,7 +90,7 @@ void Weapon_readJSON(void *input, cJSON *jwpn) {
         weapon->handedness  = cJSON_GetNumberValue(jhandedness);
     if (jsubtype)
         weapon->subtype     = cJSON_GetNumberValue(jsubtype);
-    jsonio_Read_Wpnstats(jstats, &(weapon->stats));
+    Weapon_stats_readJSON(jstats, &(weapon->stats));
     /* Set item range to weapon */
     weapon->item->range.min = weapon->stats.range.min;
     weapon->item->range.max = weapon->stats.range.max;
@@ -107,8 +107,8 @@ void Weapon_writeJSON(void *input, cJSON *jwpn) {
     weapon->item->write_stats = false;
     Item_writeJSON(weapon->item, jwpn);
     cJSON *jitemstats   = cJSON_CreateObject();
-    jsonio_Write_Wpnstats(jitemstats,   &(weapon->stats));
-    jsonio_Write_Itemstats(jitemstats,  &(weapon->item->stats));
+    Wpnstats_writeJSON(jitemstats,   &(weapon->stats));
+    Itemstats_writeJSON(jitemstats,  &(weapon->item->stats));
     cJSON *jsubtype     = cJSON_CreateNumber(weapon->subtype);
     cJSON *jeffective   = cJSON_CreateNumber(weapon->effective);
     cJSON *jhandedness  = cJSON_CreateNumber(weapon->handedness);
