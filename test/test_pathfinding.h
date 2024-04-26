@@ -61,7 +61,7 @@ void test_pathfinding_Astar() {
     };
     int expected_path[ROW_LEN * COL_LEN] = {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -82,6 +82,7 @@ void test_pathfinding_Astar() {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     };
+
     /* -- Test computing a movemap from a costmap -- */
     /* - Computing a movemap matrix - */
     i32 *movemapp = Pathfinding_Moveto(costmapp, ROW_LEN, COL_LEN, start, move);
@@ -469,7 +470,7 @@ void test_pathfinding_attackto() {
         _Pathfinding_Attackto(start.x, start.y, attacktomap, NULL, ROW_LEN, COL_LEN, range,
                               MOVETILE_INCLUDE);
 
-        matrix_print(attacktomap, ROW_LEN, COL_LEN);
+        // matrix_print(attacktomap, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attacktomap[i] == expected_attackto3[i]);
 
