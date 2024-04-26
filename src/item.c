@@ -193,7 +193,7 @@ void Inventory_item_Swap(struct Inventory_item *items, u8 i1, u8 i2) {
     items[i2] = buffer;
 }
 
-void Inventory_item_Deplete(struct Inventory_item *inventory_item, int uses) {
+void Inventory_item_Deplete(struct Inventory_item *inventory_item, i32 uses) {
     /* Decrease Durability */
     inventory_item->used++;
     if (inventory_item->used >= uses)
@@ -480,8 +480,8 @@ void Item_readJSON(void *input, cJSON *_jitem) {
         item->passive = cJSON_GetNumberValue(jpassive);
 
     if (jactive != NULL) {
-        int active_order = 0, active_id = cJSON_GetNumberValue(jactive);
-        for (int i = 0; i < ITEM_EFFECT_NUM; i++) {
+        i32 active_order = 0, active_id = cJSON_GetNumberValue(jactive);
+        for (i32 i = 0; i < ITEM_EFFECT_NUM; i++) {
             if (item_effect_ids[i] == active_id) {
                 active_order = i;
                 break;
@@ -516,8 +516,8 @@ void Item_Free(struct Item *item) {
 }
 
 /* --- Is --- */
-int Item_Archetype(i16 id) {
-    int archetype = ITEM_ARCHETYPE_ITEM;
+i32 Item_Archetype(i16 id) {
+    i32 archetype = ITEM_ARCHETYPE_ITEM;
     if (Weapon_ID_isValid(id)) {
         if (Weapon_isStaff(id)) {
             archetype = ITEM_ARCHETYPE_STAFF;
@@ -549,9 +549,9 @@ bool Item_isWeapon(i16 id) {
     return (Item_Archetype(id) == ITEM_ARCHETYPE_WEAPON);
 }
 
-int Item_Stat( struct Item *item, i16 stattype)  {
+i32 Item_Stat( struct Item *item, i16 stattype)  {
     SDL_assert((stattype > ITEM_STAT_START) && (stattype < ITEM_STAT_END));
-    u8 *item_stats_arr = (u8 *)&item->stats;
-    int stat = item_stats_arr[stattype - 1];
+    i32 *item_stats_arr = &item->stats.price;
+    i32 stat = item_stats_arr[stattype - 1];
     return (stat);
 }

@@ -721,11 +721,11 @@ void Unit_lvlUp(struct Unit *unit) {
     struct Unit_stats grows = Unit_stats_default;
     u8 temp_growth;
     struct Unit_stats temp_stats = {0};
-    u8 *growths       = (u8 *)&unit->growths;
-    u8 *grows_arr     = (u8 *)&grows;
-    u8 *stats_arr     = (u8 *)&temp_stats;
-    u8 *caps_stats    = (u8 *)&unit->caps_stats;
-    u8 *current_stats = (u8 *)&unit->current_stats;
+    i32 *growths       = &unit->growths.hp;
+    i32 *grows_arr     = &grows.hp;
+    i32 *stats_arr     = &temp_stats.hp;
+    i32 *caps_stats    = &unit->caps_stats.hp;
+    i32 *current_stats = &unit->current_stats.hp;
     struct RNG_Sequence *sequences = (struct RNG_Sequence *)&unit->hp_sequence;
 
     for (int i = 0; i < UNIT_STAT_NUM; i++) {
@@ -1352,20 +1352,16 @@ i32 Unit_computeHit(struct Unit *unit, int distance) {
         SDL_assert(unit->_equipment[UNIT_HAND_LEFT].id > ITEM_NULL);
         weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_LEFT].id);
         hit_L   = Weapon_Stat_inRange(weapon, WEAPON_STAT_HIT, distance);
-        SDL_Log("hit_R: %d", hit_L);
     }
     if (unit->equipped[UNIT_HAND_RIGHT]) {
         SDL_assert(unit->_equipment[UNIT_HAND_RIGHT].id > ITEM_NULL);
         weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_RIGHT].id);
         hit_R    = Weapon_Stat_inRange(weapon, WEAPON_STAT_HIT, distance);
-        SDL_Log("hit_R: %d", hit_R);
     }
 
     wpn_hit = Equation_Weapon_Hit(hit_L, hit_R);
-    SDL_Log("hit_R: %d %d %d", hit_L, hit_R, wpn_hit);
 
     struct Unit_stats effstats = unit->effective_stats;
-    SDL_Log("Unit_computeHit: %d %d %d %d", wpn_hit, effstats.dex, effstats.luck, supports);
     unit->computed_stats.hit   = Equation_Unit_Hit(wpn_hit, effstats.dex, effstats.luck, supports);
     return (unit->computed_stats.hit);
 }

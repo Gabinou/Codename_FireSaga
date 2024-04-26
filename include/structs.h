@@ -255,9 +255,9 @@ struct Padding {
 extern struct Padding Padding_default;
 
 struct Item_stats {
-    u16 price;
-    u8  uses;
-    u8  AP; // ability power: for heal (%), blowHorn, gainStats, gainSkill, Repair
+    i32 price;
+    i32 uses;
+    i32 AP; /* ability power: for heal (%), blowHorn, gainStats, gainSkill, Repair */
 };
 extern struct Item_stats Item_stats_default;
 

@@ -51,8 +51,8 @@ i32 *Pathfinding_PushPullto_noM(i32 *pushpulltomap,
                                 struct Point start) {
     i32 temp_distance;
     struct Point pushpullto_tile;
-    i32 *block_ptr         = (i32 *)&direction_block;
-    i32 *pushpullto_ptr    = (i32 *)&pushpullto;
+    i32 *block_ptr         = &direction_block.right;
+    i32 *pushpullto_ptr    = &pushpullto.right;
     for (size_t i = 0; i < row_len; i++) {
         pushpulltomap[i] = PUSHPULLMAP_BLOCKED;
 
@@ -104,8 +104,8 @@ i32 *Pathfinding_PushPullto(struct SquareNeighbours direction_block,
     i32 *pushpulltomap = NULL;
     i32 temp_distance;
     struct Point pushpullto_tile;
-    i32 *block_ptr = (i32 *)&direction_block;
-    i32 *pushpullto_ptr = (i32 *)&pushpullto;
+    i32 *block_ptr = &direction_block.right;
+    i32 *pushpullto_ptr = &pushpullto.right;
     switch (mode_output) {
         case (NMATH_POINTS_MODE_LIST):
             pushpulltomap = DARR_INIT(pushpulltomap, i32, row_len * col_len * NMATH_TWO_D);
@@ -147,7 +147,7 @@ i32 *Pathfinding_PushPullto(struct SquareNeighbours direction_block,
 struct SquareNeighbours pathfinding_Direction_Block(i32 *costmap_pushpull, size_t row_len,
                                                     size_t col_len, struct Point start) {
     struct SquareNeighbours  distance_block = {0, 0, 0, 0};
-    i32 *distance_ptr = (i32 *)&distance_block;
+    i32 *distance_ptr = &distance_block.right;
     struct Point neighbour = {0, 0};
     i32  distance = 0;
     while ((distance_block.top == 0) || (distance_block.bottom == 0) || (distance_block.left == 0)

@@ -208,7 +208,7 @@ void test_weapon_stats() {
         .range  = {2, 1},
     };
     nourstest_true(wpn_stats_struct.dodge == -4);
-    u8 *wpn_stats_arr = (u8 *)&wpn_stats_struct;
+    i32 *wpn_stats_arr = &wpn_stats_struct;
     nourstest_true(wpn_stats_arr[WEAPON_STAT_HIT - WEAPON_STAT_START - 1] == 80);
     nourstest_true((int_fast8_t)wpn_stats_arr[WEAPON_STAT_DODGE - WEAPON_STAT_START - 1] == -4);
 }
