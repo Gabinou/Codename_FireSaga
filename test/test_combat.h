@@ -364,8 +364,8 @@ void test_combat_flow() {
 
     Unit_computeHit(&attacker, distance);
     Unit_computeHit(&defender, distance);
-    u8 attacker_hit;
-    u8 defender_hit;
+    i32 attacker_hit;
+    i32 defender_hit;
     struct Weapon attacker_weapon = Weapon_default;
     struct Weapon defender_weapon = Weapon_default;
 
@@ -386,13 +386,13 @@ void test_combat_flow() {
     nourstest_true(defender.computed_stats.hit == defender_hit);
     Unit_computedStats(&attacker, distance);
     Unit_computedStats(&defender, distance);
-    int_fast8_t attacker_speed = Equation_Unit_Speed(attacker_weapon.stats.wgt,
-                                                     attacker.effective_stats.agi, attacker.effective_stats.con, attacker.effective_stats.str);
+    i32 attacker_speed = Equation_Unit_Speed(attacker_weapon.stats.wgt,
+                                             attacker.effective_stats.agi, attacker.effective_stats.con, attacker.effective_stats.str);
     nourstest_true(Unit_computeSpeed(&attacker, distance) == attacker_speed);
     nourstest_true(attacker.computed_stats.speed == attacker_speed);
     nourstest_true(attacker.computed_stats.speed == 7);
-    int_fast8_t defender_speed = Equation_Unit_Speed(defender_weapon.stats.wgt,
-                                                     defender.effective_stats.agi, defender.effective_stats.con, defender.effective_stats.str);
+    i32 defender_speed = Equation_Unit_Speed(defender_weapon.stats.wgt,
+                                             defender.effective_stats.agi, defender.effective_stats.con, defender.effective_stats.str);
     nourstest_true(Unit_computeSpeed(&defender, distance) == defender_speed);
     nourstest_true(defender.computed_stats.speed == defender_speed);
     nourstest_true(defender.computed_stats.speed == 7);
@@ -557,8 +557,8 @@ void test_combat_sequence() {
 
     struct Combat_Attack attack = {0};
     attack.hit = true;
-    u8 hit_rate     = 50;
-    u8 crit_rate    = 10;
+    i32 hit_rate     = 50;
+    i32 crit_rate    = 10;
 
     struct Damage damage = {0};
     damage.dmg[DMG_TYPE_PHYSICAL] = 8;
