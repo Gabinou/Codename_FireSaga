@@ -12,6 +12,7 @@ struct Item Item_default = {
     .stats        = {1000, 10, 10},
     .target       = ITEM_TARGET_ENEMY,
     .range        = {0, 1},
+    .aura         = {0, 0},
     .passive      = 0,
     .active       = NULL,
     .users        = NULL, /* item only usable by users.   empty = everyone */

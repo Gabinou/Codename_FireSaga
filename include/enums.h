@@ -57,8 +57,12 @@ enum SOTA_RANGEMAP {
 
 enum SOTA_RANGE {
     RANGE_NULL          = -1,
-    RANGE_MIN           =  0,
-    RANGE_MAX           =  1,
+    RANGE_MIN_INDEX     =  0,
+    RANGE_MAX_INDEX     =  1,
+    /* Range bounds */
+    SOTA_MIN_RANGE      =  0,
+    SOTA_MAX_RANGE      = 12,
+
 };
 
 enum PIXEL_ORDER_ARGB8888 {
@@ -97,6 +101,9 @@ enum AGONY {
 enum SOTA_HIT {
     HIT_DEX_FACTOR          =  2,
     HIT_LUCK_FACTOR         =  2,
+    /* Bounds for computed stat */
+    HIT_MIN                =   0,
+    HIT_MAX                = 100,
 };
 
 enum SOTA_CRIT {
@@ -105,7 +112,9 @@ enum SOTA_CRIT {
     CRIT_FACTOR             = 150,
     CRIT_FACTOR_PROMOTED    = 200,
     CRIT_FACTOR_ASSASSIN    = 250,
-
+    /* Bounds for computed stat */
+    CRIT_MIN                =   0,
+    CRIT_MAX                = 100,
 };
 
 enum SOTA_DODGE {
@@ -115,11 +124,18 @@ enum SOTA_DODGE {
     DODGE_STR_FACTOR        =  4,
     DODGE_FTH_FACTOR        =  2,
     DODGE_WPN_WGT_FACTOR    =  1,
+    /* Bounds for computed stat */
+    DODGE_MIN               = -100, /* negative: Slowed by big weapons */
+    DODGE_MAX               =  100,
+
 };
 
 enum SOTA_SPEED {
     SPEED_STR_FACTOR        =  4,
     SPEED_CON_FACTOR        =  2,
+    /* Bounds for computed stat */
+    SPEED_MIN               = -50,
+    SPEED_MAX               =  50,
 };
 
 enum SOTA_FAVOR {
@@ -171,9 +187,11 @@ enum SOTA_LIMITS {
     SOTA_MAX_MOVEMENT                       =   16,
     SOTA_MAX_PARTY_SIZE                     =   40,
     SOTA_MAX_TRUE_DAMAGE                    =    4,
+
     SOTA_MIN_STAT                           =    0, /* absolute unit stat minimum */
     SOTA_MAX_STAT                           =   50, /* absolute unit stat maximum */
-    SOTA_MAX_RANGE                          =   12,
+
+    SOTA_MIN_LEVEL                          =   0,
     SOTA_MAX_LEVEL                          =   40,
 };
 

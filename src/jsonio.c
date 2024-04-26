@@ -600,8 +600,8 @@ void jsonio_Read_Wpnstats( struct cJSON            *jstats,
     }
 
     struct cJSON *jrange = cJSON_GetObjectItem(jstats, "Range");
-    stats->range.min = (u8)cJSON_GetNumberValue(cJSON_GetArrayItem(jrange, RANGE_MIN));
-    stats->range.max = (u8)cJSON_GetNumberValue(cJSON_GetArrayItem(jrange, RANGE_MAX));
+    stats->range.min = (u8)cJSON_GetNumberValue(cJSON_GetArrayItem(jrange, RANGE_MIN_INDEX));
+    stats->range.max = (u8)cJSON_GetNumberValue(cJSON_GetArrayItem(jrange, RANGE_MAX_INDEX));
     SDL_assert(stats->range.max >= stats->range.min);
     struct cJSON *jhit   = cJSON_GetObjectItem(jstats, "hit");
     struct cJSON *jwgt   = cJSON_GetObjectItem(jstats, "wgt");

@@ -143,19 +143,14 @@ u8 Unit_computeAgony(   struct Unit *u);
 i8 Unit_computeRegrets( struct Unit *u);
 u8 Unit_computeEffectivefactor(struct Unit *a, struct Unit *d);
 
-u8 *Unit_computeAttack( struct Unit *u, int dist);
-u8 *Unit_computeDefense(struct Unit *u);
+i32 *Unit_computeAttack( struct Unit *u, int dist);
+i32 *Unit_computeDefense(struct Unit *u);
 
 struct Unit_stats Unit_effectiveStats(   struct Unit *u);
 struct Unit_stats Unit_effectiveGrowths( struct Unit *u);
 struct Computed_Stats Unit_supportBonus( struct Unit *u);
 struct Computed_Stats Unit_computedStats(struct Unit *u, int dist);
 struct Computed_Stats Unit_computedStats_wLoadout(struct Unit *u, int lh, int rh, int dist);
-
-/* --- Bonus/Malus from items --- */
-/* Bonus and Malus should always be computable from skills, equipment, stats */
-i8 Unit_computeMalus(struct Unit *u);
-i8 Unit_computeBonus(struct Unit *u);
 
 /* --- Loadout Manipulation --- */
 bool Unit_Loadout_twoHanding(int lh, int rh);

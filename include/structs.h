@@ -151,18 +151,18 @@ extern struct Tile_stats Tile_stats_default;
 
 /* Struct is better: Can be cast to array */
 struct Unit_stats {
-    u8 hp;   /* hit points     */
-    u8 str;  /* strength       */
-    u8 mag;  /* magic          */
-    u8 agi;  /* agility        */
-    u8 dex;  /* dexterity      */
-    u8 fth;  /* faith          */
-    u8 luck;
-    u8 def;  /* defense        */
-    u8 res;  /* resistance     */
-    u8 con;  /* constitution   */
-    u8 move; /* movement       */
-    u8 prof; /* proficiency    */
+    i32 hp;   /* hit points     */
+    i32 str;  /* strength       */
+    i32 mag;  /* magic          */
+    i32 agi;  /* agility        */
+    i32 dex;  /* dexterity      */
+    i32 fth;  /* faith          */
+    i32 luck;
+    i32 def;  /* defense        */
+    i32 res;  /* resistance     */
+    i32 con;  /* constitution   */
+    i32 move; /* movement       */
+    i32 prof; /* proficiency    */
 };
 extern struct Unit_stats Unit_stats_default;
 
@@ -173,15 +173,15 @@ struct Range {
 };
 
 struct Computed_Stats {
-    u8 attack[DAMAGE_TYPES];
-    u8 protection[DAMAGE_TYPES];
-    u8 hit;
-    i8 dodge; /* can be negative */
-    u8 crit;
-    u8 favor;
-    u8 move;
-    i8 speed; /* relative to agi so +/- */
-    u8 agony;
+    i32 attack[DAMAGE_TYPES];
+    i32 protection[DAMAGE_TYPES];
+    i32 hit;
+    i32 dodge; /* can be negative */
+    i32 crit;
+    i32 favor;
+    i32 move;
+    i32 speed; /* relative to agi so +/- */
+    i32 agony;
     struct Range range_combined;
     struct Range range_loadout;
 };
@@ -194,20 +194,6 @@ void Computed_Stats_Compare(struct Computed_Stats *stats1,
 struct Bonus_Stats {
     struct Unit_stats       unit_stats;
     struct Computed_Stats   computed_stats;
-    /* How to make sure bonus is still valid? */
-    // - If Passive aura,   source is unit holding a weapon in range
-    // 1. weapon held in unit hands &&
-    // 2. unit in range &&
-    // 3. unit is not self (IMPLICIT)
-    // - If Active buff,    source is weapon or skill
-    // 1. turns_left > 0
-    // 2. Using Skill/Weapon again REFRESHES timer
-    // - If Weapon bonus,   source is weapon currently held by self
-    // 1. weapon held in unit hands &&
-    // 2. unit is self  (IMPLICIT)
-    // - If Support,   source is unit
-    // 1. unit in range
-    // 2. unit is not self (IMPLICIT)
     tnecs_entity unit_ent;
     u16 weapon_id;              /* Should be equipped by unit_ent */
     i32 turn_limit;
@@ -281,16 +267,35 @@ struct Crit_Multiplier {
 };
 extern struct Crit_Multiplier Crit_Multiplier_default;
 
+// Stats issues
+// - Computed_Stats and Weapon_stats are very similar
+//      - Meh Okay
+// - Auras affect both Computed_Stats and Unit_stats
+//      - Put both structure in it? Okay.
+//      - Computed_Stats and Unit_stats are POSITIVE ONLY
+// - Bonus and malus stacks seem wasteful?
+//      - No its fine. Easy way to count numbers of buffs/debuffs
+//          - Why though?
+//      - Only one negative stat a malus? what about mixing stats?
+
+
+struct Aura {
+    struct Range            range; /* [0]: min, [1]: max */
+    struct Unit_stats       unit_stats;
+    struct Computed_Stats   computed_stats;
+};
+
+
 struct Weapon_stats {
-    u8 attack[ATTACK_TYPES_NO_TOTAL];
-    u8 protection[PROTECTION_TYPES_NO_TOTAL];
+    i32 attack[ATTACK_TYPES_NO_TOTAL];
+    i32 protection[PROTECTION_TYPES_NO_TOTAL];
     struct Range range; /* [0]: min, [1]: max */
-    u8 hit;
-    i8 dodge;  /* when the Sword is TOO HEAVY TO DODGE */
-    u8 crit;
-    u8 favor;
-    u8 wgt;    /* weight */
-    u8 prof;   /* proficiency */
+    i32 hit;
+    i32 dodge;  /* when the Sword is TOO HEAVY TO DODGE */
+    i32 crit;
+    i32 favor;
+    i32 wgt;    /* weight */
+    i32 prof;   /* proficiency */
 };
 extern struct Weapon_stats Weapon_stats_default;
 
@@ -543,6 +548,22 @@ typedef struct Unit {
 
     /* Stats */
     struct Unit_stats base_stats;
+
+    /* How to make sure bonus is still valid? */
+    // - If Passive aura,   source is unit holding a weapon in range
+    //      1. weapon held in unit hands &&
+    //      2. unit in range &&
+    //      3. unit is not self (IMPLICIT)
+    // - If Active buff,    source is weapon or skill
+    //      1. turns_left > 0
+    //      2. Using Skill/Weapon again REFRESHES timer
+    // - If Weapon bonus,   source is weapon currently held by self
+    //      1. weapon held in unit hands &&
+    //      2. unit is self  (IMPLICIT)
+    // - If Support,   source is unit
+    //      1. unit in range
+    //      2. unit is not self (IMPLICIT)
+
     struct Bonus_Stats *bonus_stack;
     struct Bonus_Stats *malus_stack;
     struct Unit_stats bonus_stats; // TODO remove for new Bonus_Stat Struct

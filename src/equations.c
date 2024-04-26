@@ -79,7 +79,7 @@ i8 Equation_Unit_Speed(int wpn_wgt, int agi, int con, int str) {
     u8 slowed    = eff_wgt <     0     ?     0     : eff_wgt;
     slowed        = nmath_bminus(slowed, (con / SPEED_CON_FACTOR), 0);
     slowed        = nmath_bminus(slowed, (str / SPEED_STR_FACTOR), 0);
-    i8 out_speed = nmath_bminus(agi,    slowed,                   INT8_MIN);
+    i8 out_speed  = nmath_bminus(agi,    slowed,                   INT8_MIN);
     return (out_speed);
 }
 

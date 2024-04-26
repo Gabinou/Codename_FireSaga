@@ -1058,7 +1058,7 @@ static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Rend
     int width, x, y;
     x = ATK_X_OFFSET, y = ATK_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "ATK", 3, x, y);
-    u8 *att = computed_stats->attack;
+    i32 *att = computed_stats->attack;
     if (computed_stats->attack[DMG_TYPE_TRUE] > 0) {
         /* Compute width of LEFTWARD STAT to center the "/" */
         stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats->attack[DMG_TYPE_PHYSICAL]);
@@ -1079,7 +1079,7 @@ static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Rend
     PixelFont_Write(stats_menu->pixelnours, renderer, "DEF", 3, x, y);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats->protection[DMG_TYPE_PHYSICAL]);
     width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
-    u8 *prot = computed_stats->protection;
+    i32 *prot = computed_stats->protection;
     stbsp_sprintf(numbuff, "%d/%d\0\0", prot[DMG_TYPE_PHYSICAL], prot[DMG_TYPE_MAGICAL]);
     x = PROT_X_OFFSET_STAT1 - width, y = PROT_Y_OFFSET_STAT1;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);

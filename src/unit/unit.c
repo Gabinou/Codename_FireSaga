@@ -1019,52 +1019,7 @@ struct Weapon *Unit_Get_Equipped_Weapon( struct Unit *unit, bool hand) {
     return (wpn);
 }
 
-/* Add-up all malus stat sources */
-i8 Unit_computeMalus(struct Unit *unit) {
-    i8 out = 0;
-    unit->malus_stats = Unit_stats_default;
-    struct Unit_stats temp;
-    /* TODO: Skills Malus */
-
-    /* Rescue Malus */
-    if (unit->rescuee >= UNIT_ID_START) {
-        temp = Unit_stats_div_cst(unit->current_stats, RESCUE_MALUS_FACTOR);
-        unit->malus_stats = Unit_stats_plus(unit->malus_stats, temp);
-    }
-
-    /* Equipment Malus */
-    struct Weapon *weapon;
-    weapon = Unit_Get_Equipped_Weapon(unit, UNIT_HAND_LEFT);
-    if (weapon != NULL)
-        unit->malus_stats = Unit_stats_plus(unit->malus_stats, weapon->item->malus_stats);
-
-    weapon = Unit_Get_Equipped_Weapon(unit, UNIT_HAND_RIGHT);
-    if (weapon != NULL)
-        unit->malus_stats = Unit_stats_plus(unit->malus_stats, weapon->item->malus_stats);
-
-    return (out);
-}
-
-/* Add-up all bonus stat sources */
-i8 Unit_computeBonus(struct Unit *unit) {
-    i8 out = 0;
-    unit->bonus_stats = Unit_stats_default;
-
-    /* TODO: Skills Bonus */
-    /* Equipment Bonus */
-    struct Weapon *weapon;
-    weapon = Unit_Get_Equipped_Weapon(unit, UNIT_HAND_LEFT);
-    if (weapon != NULL)
-        unit->bonus_stats = Unit_stats_plus(unit->bonus_stats, weapon->item->bonus_stats);
-
-    weapon = Unit_Get_Equipped_Weapon(unit, UNIT_HAND_RIGHT);
-    if (weapon != NULL)
-        unit->bonus_stats = Unit_stats_plus(unit->bonus_stats, weapon->item->bonus_stats);
-
-    return (out);
-}
-
-u8 *Unit_Shield_Protection(struct Unit *unit, bool hand) {
+i32 *Unit_Shield_Protection(struct Unit *unit, bool hand) {
     if (!unit->equipped[hand])
         return (NULL);
 
@@ -1078,14 +1033,14 @@ u8 *Unit_Shield_Protection(struct Unit *unit, bool hand) {
     return (weapon->stats.protection);
 }
 
-u8 *Unit_computeDefense(struct Unit *unit) {
+i32 *Unit_computeDefense(struct Unit *unit) {
     /* Reset unit protections */
     unit->computed_stats.protection[DMG_TYPE_PHYSICAL] = 0;
     unit->computed_stats.protection[DMG_TYPE_MAGICAL]  = 0;
 
     /* Shield protection */
     int prot_P = 0, prot_M = 0;
-    u8 *prot;
+    i32 *prot;
     if (prot = Unit_Shield_Protection(unit, UNIT_HAND_LEFT)) {
         prot_P += prot[DMG_TYPE_PHYSICAL];
         prot_M += prot[DMG_TYPE_MAGICAL];
@@ -1103,7 +1058,7 @@ u8 *Unit_computeDefense(struct Unit *unit) {
     return (unit->computed_stats.protection);
 }
 
-u8 *Unit_computeAttack(struct Unit *unit, int distance) {
+i32 *Unit_computeAttack(struct Unit *unit, int distance) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
     /* Reset unit attacks */
@@ -1170,7 +1125,7 @@ u8 *Unit_computeAttack(struct Unit *unit, int distance) {
         unit->computed_stats.attack[DMG_TYPE_MAGICAL]  /= DUAL_WIELD_NOSKILL_MALUS_FACTOR;
     }
 
-    u8 *att = unit->computed_stats.attack;
+    i32 *att = unit->computed_stats.attack;
     att[DMG_TYPE_TOTAL] = att[DMG_TYPE_PHYSICAL] + att[DMG_TYPE_MAGICAL] + att[DMG_TYPE_TRUE];
 
     return (unit->computed_stats.attack);

@@ -37,8 +37,9 @@ typedef struct Item {
     s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
     u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
 
-    u8 target;  /* units on which item is usable. */
+    u8 target;  /* units by which item is usable. */
     struct Range range;
+    struct Range aura;
 
     struct Unit_stats bonus_stats;
     struct Unit_stats malus_stats;
