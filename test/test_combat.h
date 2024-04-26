@@ -380,10 +380,6 @@ void test_combat_flow() {
 
     attacker_hit = Equation_Unit_Hit(attacker_weapon.stats.hit, attacker.effective_stats.dex,
                                      attacker.effective_stats.luck, 0);
-    SDL_Log("%d %d %d %d", attacker_weapon.stats.hit, attacker.effective_stats.dex,
-            attacker.effective_stats.luck, 0);
-    SDL_Log("%d %d", attacker.computed_stats.hit, attacker_hit);
-    getchar();
     nourstest_true(attacker.computed_stats.hit == attacker_hit);
     defender_hit = Equation_Unit_Hit(defender_weapon.stats.hit, defender.effective_stats.dex,
                                      defender.effective_stats.luck, 0);
