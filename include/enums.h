@@ -508,57 +508,37 @@ enum TEXT_COLOR {
     SOTA_BONUS_BLUE  = 0x41,
 };
 
-enum OVERLAY_COLOR {
-    OVERLAY_ATTACK_COLOR_NES =         32,
-    OVERLAY_ATTACK_COLOR_RED =       0xB2,
-    OVERLAY_ATTACK_COLOR_GREEN =     0x10,
-    OVERLAY_ATTACK_COLOR_BLUE =      0x30,
-
-    OVERLAY_DANGER_COLOR_NES =         32,
-    OVERLAY_GLOBALRANGE_COLOR_NES =    30,
-
-    OVERLAY_MOVE_COLOR_NES =           45,
-    OVERLAY_MOVE_COLOR_RED =         0x41,
-    OVERLAY_MOVE_COLOR_GREEN =       0x61,
-    OVERLAY_MOVE_COLOR_BLUE =        0xFB,
-
-    OVERLAY_HEAL_COLOR_NES =           13,
-    OVERLAY_HEAL_COLOR_RED =         0x49,
-    OVERLAY_HEAL_COLOR_GREEN =       0xAA,
-    OVERLAY_HEAL_COLOR_BLUE =        0x10,
-};
-
 enum HPBAR {
-    HPBAR_HEIGHT =                    5,
-    HPBAR_LEN =                      35,
-    HPBAR_PATTERN_MULTIPLIER =        4,
-    HPBAR_PATTERN_START =             6,
-    HPBAR_HPPERROW =                 30, /* 92 pixels, about 6 tiles */
-    HPBAR_TILESIZE_X =                4, /* [pixels] */
-    HPBAR_TILESIZE_Y =               10, /* [pixels] */
-    HPBAR_TEXTURE_NONE =              0,
-    HPBAR_TEXTURE_FILLED =            1,
-    HPBAR_TEXTURE_EMPTY =             2,
-    HPBAR_TEXTURE_PDAMAGE =           3,
-    HPBAR_TEXTURE_MDAMAGE =           4,
-    HPBAR_TEXTURE_TDAMAGE =           5,
-    HPBAR_TEXTURE_OVERHEAL =          6, /* SAME AS SHIELD */
+    HPBAR_HEIGHT                =  5,
+    HPBAR_LEN                   = 35,
+    HPBAR_PATTERN_MULTIPLIER    =  4,
+    HPBAR_PATTERN_START         =  6,
+    HPBAR_HPPERROW              = 30, /* 92 pixels, about 6 tiles */
+    HPBAR_TILESIZE_X            =  4, /* [pixels] */
+    HPBAR_TILESIZE_Y            = 10, /* [pixels] */
+    HPBAR_TEXTURE_NONE          =  0,
+    HPBAR_TEXTURE_FILLED        =  1,
+    HPBAR_TEXTURE_EMPTY         =  2,
+    HPBAR_TEXTURE_PDAMAGE       =  3,
+    HPBAR_TEXTURE_MDAMAGE       =  4,
+    HPBAR_TEXTURE_TDAMAGE       =  5,
+    HPBAR_TEXTURE_OVERHEAL      =  6, /* SAME AS SHIELD */
 };
 #define HPBAR_UPDATEWAIT 0.05f /* [s] */
 
 enum ITEM_DIVISORS {
-    ITEM_DIVISOR =                 100,
-    ITEM_DIVISOR_SWORD =             1,
-    ITEM_DIVISOR_LANCE =           100,
-    ITEM_DIVISOR_AXE =             200,
-    ITEM_DIVISOR_BOW =             300,
-    ITEM_DIVISOR_SHIELD =          400,
-    ITEM_DIVISOR_OFFHAND =         500,
-    ITEM_DIVISOR_MAGIC =           600,
-    ITEM_DIVISOR_ELEMENTAL =       600,
-    ITEM_DIVISOR_DEMONIC =         700,
-    ITEM_DIVISOR_ANGELIC =         800,
-    ITEM_DIVISOR_STAFF =           900,
+    ITEM_DIVISOR            = 100,
+    ITEM_DIVISOR_SWORD      =   1,
+    ITEM_DIVISOR_LANCE      = 100,
+    ITEM_DIVISOR_AXE        = 200,
+    ITEM_DIVISOR_BOW        = 300,
+    ITEM_DIVISOR_SHIELD     = 400,
+    ITEM_DIVISOR_OFFHAND    = 500,
+    ITEM_DIVISOR_MAGIC      = 600,
+    ITEM_DIVISOR_ELEMENTAL  = 600,
+    ITEM_DIVISOR_DEMONIC    = 700,
+    ITEM_DIVISOR_ANGELIC    = 800,
+    ITEM_DIVISOR_STAFF      = 900,
 };
 
 #define REGISTER_ENUM(x) ITEM_STAT_##x,
