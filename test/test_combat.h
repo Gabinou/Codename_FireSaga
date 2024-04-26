@@ -337,30 +337,30 @@ void test_combat_flow() {
     Unit_computedStats(&defender, distance);
     Unit_effectiveStats(&attacker);
 
-    nourstest_true(attacker.current_stats.hp == attacker.effective_stats.hp);
-    nourstest_true(attacker.current_stats.str == attacker.effective_stats.str);
-    nourstest_true(attacker.current_stats.mag == attacker.effective_stats.mag);
-    nourstest_true(attacker.current_stats.agi == attacker.effective_stats.agi);
-    nourstest_true(attacker.current_stats.dex == attacker.effective_stats.dex);
-    nourstest_true(attacker.current_stats.luck == attacker.effective_stats.luck);
-    nourstest_true(attacker.current_stats.def == attacker.effective_stats.def);
-    nourstest_true(attacker.current_stats.res == attacker.effective_stats.res);
-    nourstest_true(attacker.current_stats.con == attacker.effective_stats.con);
-    nourstest_true(attacker.current_stats.move == attacker.effective_stats.move);
-    nourstest_true(attacker.current_stats.prof == attacker.effective_stats.prof);
+    nourstest_true(attacker.current_stats.hp    == attacker.effective_stats.hp);
+    nourstest_true(attacker.current_stats.str   == attacker.effective_stats.str);
+    nourstest_true(attacker.current_stats.mag   == attacker.effective_stats.mag);
+    nourstest_true(attacker.current_stats.agi   == attacker.effective_stats.agi);
+    nourstest_true(attacker.current_stats.dex   == attacker.effective_stats.dex);
+    nourstest_true(attacker.current_stats.luck  == attacker.effective_stats.luck);
+    nourstest_true(attacker.current_stats.def   == attacker.effective_stats.def);
+    nourstest_true(attacker.current_stats.res   == attacker.effective_stats.res);
+    nourstest_true(attacker.current_stats.con   == attacker.effective_stats.con);
+    nourstest_true(attacker.current_stats.move  == attacker.effective_stats.move);
+    nourstest_true(attacker.current_stats.prof  == attacker.effective_stats.prof);
 
     Unit_effectiveStats(&defender);
-    nourstest_true(defender.current_stats.hp == defender.effective_stats.hp);
-    nourstest_true(defender.current_stats.str == defender.effective_stats.str);
-    nourstest_true(defender.current_stats.mag == defender.effective_stats.mag);
-    nourstest_true(defender.current_stats.agi == defender.effective_stats.agi);
-    nourstest_true(defender.current_stats.dex == defender.effective_stats.dex);
-    nourstest_true(defender.current_stats.luck == defender.effective_stats.luck);
-    nourstest_true(defender.current_stats.def == defender.effective_stats.def);
-    nourstest_true(defender.current_stats.res == defender.effective_stats.res);
-    nourstest_true(defender.current_stats.con == defender.effective_stats.con);
-    nourstest_true(defender.current_stats.move == defender.effective_stats.move);
-    nourstest_true(defender.current_stats.prof == defender.effective_stats.prof);
+    nourstest_true(defender.current_stats.hp    == defender.effective_stats.hp);
+    nourstest_true(defender.current_stats.str   == defender.effective_stats.str);
+    nourstest_true(defender.current_stats.mag   == defender.effective_stats.mag);
+    nourstest_true(defender.current_stats.agi   == defender.effective_stats.agi);
+    nourstest_true(defender.current_stats.dex   == defender.effective_stats.dex);
+    nourstest_true(defender.current_stats.luck  == defender.effective_stats.luck);
+    nourstest_true(defender.current_stats.def   == defender.effective_stats.def);
+    nourstest_true(defender.current_stats.res   == defender.effective_stats.res);
+    nourstest_true(defender.current_stats.con   == defender.effective_stats.con);
+    nourstest_true(defender.current_stats.move  == defender.effective_stats.move);
+    nourstest_true(defender.current_stats.prof  == defender.effective_stats.prof);
 
     Unit_computeHit(&attacker, distance);
     Unit_computeHit(&defender, distance);
@@ -380,6 +380,10 @@ void test_combat_flow() {
 
     attacker_hit = Equation_Unit_Hit(attacker_weapon.stats.hit, attacker.effective_stats.dex,
                                      attacker.effective_stats.luck, 0);
+    SDL_Log("%d %d %d %d", attacker_weapon.stats.hit, attacker.effective_stats.dex,
+            attacker.effective_stats.luck, 0);
+    SDL_Log("%d %d", attacker.computed_stats.hit, attacker_hit);
+    getchar();
     nourstest_true(attacker.computed_stats.hit == attacker_hit);
     defender_hit = Equation_Unit_Hit(defender_weapon.stats.hit, defender.effective_stats.dex,
                                      defender.effective_stats.luck, 0);

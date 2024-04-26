@@ -1327,7 +1327,7 @@ struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance) {
 }
 
 /* Add regrets to computed stats. */
-i8 Unit_computeRegrets(struct Unit *unit) {
+i32 Unit_computeRegrets(struct Unit *unit) {
     SDL_assert(unit);
     /* Pre-computation */
     i8 malus = Equation_Regrets(unit->regrets, unit->effective_stats.fth);
@@ -1341,37 +1341,42 @@ i8 Unit_computeRegrets(struct Unit *unit) {
     return (malus);
 }
 
-u8 Unit_computeHit(struct Unit *unit, int distance) {
+i32 Unit_computeHit(struct Unit *unit, int distance) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
-    u8 supports = 0, wpn_hit = 0;
-    int hit_L    = 0, hit_R   = 0;
+    i32 supports = 0, wpn_hit = 0;
+    i32 hit_L    = 0, hit_R   = 0;
     struct Weapon *weapon;
     /* Get stats of both weapons */
     if (unit->equipped[UNIT_HAND_LEFT]) {
         SDL_assert(unit->_equipment[UNIT_HAND_LEFT].id > ITEM_NULL);
         weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_LEFT].id);
         hit_L   = Weapon_Stat_inRange(weapon, WEAPON_STAT_HIT, distance);
+        SDL_Log("hit_R: %d", hit_L);
     }
     if (unit->equipped[UNIT_HAND_RIGHT]) {
         SDL_assert(unit->_equipment[UNIT_HAND_RIGHT].id > ITEM_NULL);
         weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_RIGHT].id);
         hit_R    = Weapon_Stat_inRange(weapon, WEAPON_STAT_HIT, distance);
+        SDL_Log("hit_R: %d", hit_R);
     }
+
     wpn_hit = Equation_Weapon_Hit(hit_L, hit_R);
+    SDL_Log("hit_R: %d %d %d", hit_L, hit_R, wpn_hit);
 
     struct Unit_stats effstats = unit->effective_stats;
+    SDL_Log("Unit_computeHit: %d %d %d %d", wpn_hit, effstats.dex, effstats.luck, supports);
     unit->computed_stats.hit   = Equation_Unit_Hit(wpn_hit, effstats.dex, effstats.luck, supports);
     return (unit->computed_stats.hit);
 }
 
-i8 Unit_computeDodge(struct Unit *unit, int distance) {
+i32 Unit_computeDodge(struct Unit *unit, int distance) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
-    u8 support   = 0, tile_dodge = 0;
-    int wgt_L     = 0, wgt_R      = 0;
-    int dodge_L   = 0, dodge_R    = 0;
-    u8 wpn_dodge = 0, wpn_wgt    = 0;
+    i32 support   = 0, tile_dodge = 0;
+    i32 wgt_L     = 0, wgt_R      = 0;
+    i32 dodge_L   = 0, dodge_R    = 0;
+    i32 wpn_dodge = 0, wpn_wgt    = 0;
     struct Weapon *weapon;
     if (unit->equipped[UNIT_HAND_LEFT]) {
         SDL_assert(unit->_equipment[UNIT_HAND_LEFT].id > ITEM_NULL);
@@ -1397,7 +1402,7 @@ i8 Unit_computeDodge(struct Unit *unit, int distance) {
     return (unit->computed_stats.dodge);
 }
 
-u8 Unit_computeCritical(struct Unit *unit, int distance) {
+i32 Unit_computeCritical(struct Unit *unit, int distance) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
     // TODO: get support bonus
@@ -1422,7 +1427,7 @@ u8 Unit_computeCritical(struct Unit *unit, int distance) {
     return (unit->computed_stats.crit);
 }
 
-u8 Unit_computeFavor(struct Unit *unit, int distance) {
+i32 Unit_computeFavor(struct Unit *unit, int distance) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
     u8 supports = 0 ;
@@ -1446,7 +1451,7 @@ u8 Unit_computeFavor(struct Unit *unit, int distance) {
     return (unit->computed_stats.favor);
 }
 
-u8 Unit_computeAgony(struct Unit *unit) {
+i32 Unit_computeAgony(struct Unit *unit) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
     struct Unit_stats effstats = unit->effective_stats;
@@ -1454,7 +1459,7 @@ u8 Unit_computeAgony(struct Unit *unit) {
     return (unit->computed_stats.agony);
 }
 
-i8 Unit_computeSpeed(struct Unit *unit, int distance) {
+i32 Unit_computeSpeed(struct Unit *unit, int distance) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
     int weight_L = 0, weight_R = 0;
@@ -1481,7 +1486,7 @@ i8 Unit_computeSpeed(struct Unit *unit, int distance) {
     return (unit->computed_stats.speed);
 }
 
-i8 Unit_computeMove(struct Unit *unit) {
+i32 Unit_computeMove(struct Unit *unit) {
     SDL_assert(unit);
     i8 move = unit->effective_stats.move;
     if (unit->mount != NULL)
@@ -1728,7 +1733,7 @@ void Unit_writeJSON( void *input, cJSON *junit) {
     cJSON_AddItemToObject(junit, "Items", jitems);
 }
 
-u8 Unit_computeEffectivefactor(struct Unit *attacker, struct Unit *defender) {
+i32 Unit_computeEffectivefactor(struct Unit *attacker, struct Unit *defender) {
     SDL_assert(attacker);
     SDL_assert(defender);
     u8 effective = NOTEFFECTIVE_FACTOR;

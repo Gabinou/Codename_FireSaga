@@ -131,17 +131,17 @@ bool Unit_hasSkill(struct Unit *u, u64 s);
 *    DEBUG: input -1 to always be in_range
 */
 /* Distance-dependent stats */
-u8 Unit_computeHit(     struct Unit *u, int dist);
-i8 Unit_computeDodge(   struct Unit *u, int dist);
-u8 Unit_computeFavor(   struct Unit *u, int dist);
-i8 Unit_computeSpeed(   struct Unit *u, int dist);
-u8 Unit_computeCritical(struct Unit *u, int dist);
+i32 Unit_computeHit(     struct Unit *u, int dist);
+i32 Unit_computeDodge(   struct Unit *u, int dist);
+i32 Unit_computeFavor(   struct Unit *u, int dist);
+i32 Unit_computeSpeed(   struct Unit *u, int dist);
+i32 Unit_computeCritical(struct Unit *u, int dist);
 
 /* Distance-independent stats */
-i8 Unit_computeMove(    struct Unit *u);
-u8 Unit_computeAgony(   struct Unit *u);
-i8 Unit_computeRegrets( struct Unit *u);
-u8 Unit_computeEffectivefactor(struct Unit *a, struct Unit *d);
+i32 Unit_computeMove(    struct Unit *u);
+i32 Unit_computeAgony(   struct Unit *u);
+i32 Unit_computeRegrets( struct Unit *u);
+i32 Unit_computeEffectivefactor(struct Unit *a, struct Unit *d);
 
 i32 *Unit_computeAttack( struct Unit *u, int dist);
 i32 *Unit_computeDefense(struct Unit *u);

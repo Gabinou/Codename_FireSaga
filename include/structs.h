@@ -168,8 +168,8 @@ extern struct Unit_stats Unit_stats_default;
 
 /* Struct is better: Can be cast to array*/
 struct Range {
-    u8 min;
-    u8 max;
+    i32 min;
+    i32 max;
 };
 
 struct Computed_Stats {
