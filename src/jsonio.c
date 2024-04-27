@@ -288,43 +288,6 @@ void MObj_Link_readJSON(struct cJSON *j, struct Mobj_Link *b) {
 
 }
 
-// void Door_readJSON(struct cJSON *_jdoor, struct Door *door) {
-//     struct cJSON *jtile          = cJSON_GetObjectItem(_jdoor, "tile");
-//     struct cJSON *jevent         = cJSON_GetObjectItem(_jdoor, "event");
-//     struct cJSON *jscene         = cJSON_GetObjectItem(_jdoor, "scene");
-//     struct cJSON *jchapter_open  = cJSON_GetObjectItem(_jdoor, "chapter_open");
-//     struct cJSON *jchapter_close = cJSON_GetObjectItem(_jdoor, "chapter_close");
-
-//     if (jchapter_open != NULL)
-//         door->chapter_open  = cJSON_GetNumberValue(jchapter_open);
-//     if (jchapter_close != NULL)
-//         door->chapter_close = cJSON_GetNumberValue(jchapter_close);
-//     if (jevent != NULL)
-//         door->event         = cJSON_GetNumberValue(jevent);
-//     if (jscene != NULL)
-//         door->scene         = cJSON_GetNumberValue(jscene);
-//     if (jtile != NULL)
-//         door->tile          = cJSON_GetNumberValue(jtile);
-// }
-
-// void Chest_readJSON(struct cJSON *_jchest, struct Chest *chest) {
-//     SDL_assert(_jchest != NULL);
-//     SDL_assert(chest != NULL);
-//     struct cJSON *jgold = cJSON_GetObjectItem(_jchest, "gold");
-//     struct cJSON *jitem = cJSON_GetObjectItem(_jchest, "gold");
-//     struct cJSON *jtile = cJSON_GetObjectItem(_jchest, "tile");
-
-//     if (jtile != NULL)
-//         chest->tile = cJSON_GetNumberValue(jtile);
-//     if (jgold != NULL)
-//         chest->gold = cJSON_GetNumberValue(jgold);
-//     if (jitem != NULL) {
-//         char *name  = cJSON_GetStringValue(jitem);
-//         // if (name != NULL)
-//         // chest->item = Hashes_itemName2ID(name);
-//     }
-// }
-
 void Point_readJSON(struct cJSON *_jpos, struct Point *pos) {
     SDL_assert(_jpos != NULL);
     SDL_assert(pos != NULL);
@@ -536,7 +499,8 @@ void Wpnstats_writeJSON(      struct cJSON                *jstats,
     // cJSON_AddItemToObject(jstats, "dmg_type", pdmg_type);
 }
 
-void Inventory_item_readJSON(struct cJSON *_jitem, struct Inventory_item *item) {
+void Inventory_item_readJSON(void *input, struct cJSON *_jitem) {
+    struct Inventory_item *item = input;
     SDL_assert(_jitem != NULL);
     struct cJSON *jid       = cJSON_GetObjectItem(_jitem, "id");
     struct cJSON *jused     = cJSON_GetObjectItem(_jitem, "used");

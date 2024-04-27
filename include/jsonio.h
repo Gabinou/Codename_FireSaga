@@ -19,8 +19,6 @@
 #include "SDL2/SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
-struct Door;
-struct Chest;
 struct Scene;
 struct Mobj_Link;
 struct Breakable;
@@ -54,9 +52,7 @@ void Palette_readJSON(     char *f, struct SDL_Palette  *p);
 void Promotion_readJSON(   char *f, struct Promotion    *p);
 void PaletteTable_readJSON(char *f, u8                  *p);
 
-// void Door_readJSON(             struct cJSON *j, struct Door             *d);
-// void Chest_readJSON(            struct cJSON *j, struct Chest            *c);
-void Inventory_item_readJSON(   struct cJSON *j, struct Inventory_item   *i);
+void Inventory_item_readJSON(   void *input, struct cJSON *j);
 void fMovement_cost_readJSON(   struct cJSON *j, struct fMovement_cost   *c);
 void Weapon_stats_readJSON(     struct cJSON *j, struct Weapon_stats     *s);
 void Point_readJSON(            struct cJSON *j, struct Point            *p);

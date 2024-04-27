@@ -178,14 +178,28 @@ void Breakable_writeJSON(void *_input, cJSON *jbreakable) {
 
 void Door_readJSON(void *input, cJSON *jdoor) {
     struct Door *door = (struct Door *) input;
-    cJSON *jchapter = cJSON_GetObjectItemCaseSensitive(jdoor, "chapter");
-    cJSON *jevent   = cJSON_GetObjectItemCaseSensitive(jdoor, "event");
-    cJSON *jscene   = cJSON_GetObjectItemCaseSensitive(jdoor, "scene");
-    cJSON *jmobj    = cJSON_GetObjectItemCaseSensitive(jdoor, "Map Object");
-    door->chapter_open  = cJSON_GetNumberValue(jchapter);
-    door->event         = cJSON_GetNumberValue(jchapter);
-    door->scene         = cJSON_GetNumberValue(jscene);
+
+    cJSON *jtile            = cJSON_GetObjectItem(jdoor, "tile");
+    cJSON *jchapter_open    = cJSON_GetObjectItem(jdoor, "chapter_open");
+    cJSON *jchapter_close   = cJSON_GetObjectItem(jdoor, "chapter_close");
+    cJSON *jevent           = cJSON_GetObjectItemCaseSensitive(jdoor, "event");
+    cJSON *jscene           = cJSON_GetObjectItemCaseSensitive(jdoor, "scene");
+    cJSON *jmobj            = cJSON_GetObjectItemCaseSensitive(jdoor, "Map Object");
+
+    // door->chapter_open  = cJSON_GetNumberValue(jchapter);
+    // door->event         = cJSON_GetNumberValue(jchapter);
+    // door->scene         = cJSON_GetNumberValue(jscene);
     // Mobj_Link_readJSON(door->link, jmobj);
+    if (jchapter_open != NULL)
+        door->chapter_open  = cJSON_GetNumberValue(jchapter_open);
+    if (jchapter_close != NULL)
+        door->chapter_close = cJSON_GetNumberValue(jchapter_close);
+    if (jevent != NULL)
+        door->event         = cJSON_GetNumberValue(jevent);
+    if (jscene != NULL)
+        door->scene         = cJSON_GetNumberValue(jscene);
+    if (jtile != NULL)
+        door->tile          = cJSON_GetNumberValue(jtile);
 }
 
 void Door_writeJSON( void *input, cJSON *jdoor) {
@@ -205,11 +219,28 @@ void Door_writeJSON( void *input, cJSON *jdoor) {
 
 void Chest_readJSON(void *input, cJSON *jchest) {
     struct Chest *chest = (struct Chest *) input;
+    SDL_assert(chest    != NULL);
+    SDL_assert(jchest   != NULL);
+    // TODO: Cleanup
+    //     struct cJSON *jtile = cJSON_GetObjectItem(_jchest, "tile");
+
+    //     if (jtile != NULL)
+    //         chest->tile = cJSON_GetNumberValue(jtile);
+    //         chest->gold = cJSON_GetNumberValue(jgold);
+    //         char *name  = cJSON_GetStringValue(jitem);
+    //         // if (name != NULL)
+    //         // chest->item = Hashes_itemName2ID(name);
+    //     }
+    // }
+
     cJSON *jgold = cJSON_GetObjectItemCaseSensitive(jchest, "gold");
-    chest->gold  = cJSON_GetNumberValue(jgold);
     cJSON *jitem = cJSON_GetObjectItemCaseSensitive(jchest, "item");
-    chest->item  = cJSON_GetNumberValue(jitem);
     cJSON *jmobj = cJSON_GetObjectItemCaseSensitive(jchest, "Map Object");
+
+    if (jgold != NULL)
+        chest->gold  = cJSON_GetNumberValue(jgold);
+    if (jitem != NULL)
+        chest->item  = cJSON_GetNumberValue(jitem);
 }
 
 void Chest_writeJSON( void *input, cJSON *jchest) {

@@ -1654,7 +1654,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     cJSON *jitem;
     cJSON_ArrayForEach(jitem, jitems) {
         struct Inventory_item temp_item;
-        Item_readJSON(jitem, &temp_item);
+        Inventory_item_readJSON(&temp_item, jitem);
         if (temp_item.id > ITEM_NULL)
             Unit_Item_Take(unit, temp_item);
     }

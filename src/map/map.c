@@ -737,7 +737,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
         DARR_PUT(map->items_num, cJSON_GetArraySize(jequipment));
         cJSON_ArrayForEach(jitem, jequipment) {
             temp_item = Inventory_item_default;
-            Item_readJSON(jitem, &temp_item);
+            Inventory_item_readJSON(&temp_item, jitem);
             // NOTE:    Do not ignore empty items.
             //          To be able to put weapons in right hand.
             DARR_PUT(temp_equip, temp_item);
@@ -787,7 +787,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
             if (jpos != NULL)
                 Point_readJSON(jpos, (struct Point *)&pos->tilemap_pos);
             if (jchest != NULL)
-                Chest_readJSON(jchest, chest);
+                Chest_readJSON(chest, jchest);
             map->chests_ent[i] = temp_ent;
         }
     } while (0);
@@ -816,7 +816,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
             if (jpos != NULL)
                 Point_readJSON(jpos, (struct Point *)&pos->tilemap_pos);
             if (jdoor != NULL)
-                Door_readJSON(jdoor, door);
+                Door_readJSON(door, jdoor);
             map->doors_ent[i] = temp_ent;
         }
     } while (0);
@@ -858,7 +858,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
 
             struct Breakable *breaka = TNECS_GET_COMPONENT(map->world, temp_ent, Breakable);
             SDL_assert(breaka != NULL);
-            Breakable_readJSON(jbreakables, breaka);
+            Breakable_readJSON(breaka, jbreakables);
             map->breakables_ent[i] = temp_ent;
         }
     } while (0);

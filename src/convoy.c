@@ -194,7 +194,7 @@ void Convoy_readJSON(void *input,  cJSON *in_jconvoy) {
     cJSON *jitem = NULL;
     cJSON_ArrayForEach(jitem, jitems) {
         struct Inventory_item tempitem = Inventory_item_default;
-        Inventory_item_readJSON(jitem, &tempitem);
+        Inventory_item_readJSON(&tempitem, jitem);
         struct cJSON *jstored_type_exp = cJSON_GetObjectItem(jitem, "stored_type_exp");
         u16 stored_type_exp = cJSON_GetNumberValue(jstored_type_exp);
         Convoy_Deposit_byType(in_convoy, tempitem, stored_type_exp);
