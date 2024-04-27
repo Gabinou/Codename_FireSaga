@@ -77,6 +77,23 @@ void Mobj_Link_writeJSON(void *_input, cJSON *jmobj) {
     jabspos = cJSON_CreateArray();
 }
 
+void Tile_stats_readJSON(void *input, struct cJSON      *_jstats) {
+    struct Tile_stats *stats = input;
+    SDL_assert(_jstats != NULL);
+    struct cJSON *jdodge = cJSON_GetObjectItem(_jstats, "Dodge");
+    struct cJSON *jPprot = cJSON_GetObjectItem(_jstats, "Pprot");
+    struct cJSON *jMprot = cJSON_GetObjectItem(_jstats, "Mprot");
+    struct cJSON *jHeal  = cJSON_GetObjectItem(_jstats, "Heal");
+    if (stats->dodge)
+        stats->dodge     = cJSON_GetNumberValue(jdodge);
+    if (stats->Pprot)
+        stats->Pprot     = cJSON_GetNumberValue(jPprot);
+    if (stats->Mprot)
+        stats->Mprot     = cJSON_GetNumberValue(jMprot);
+    if (stats->heal)
+        stats->heal      = cJSON_GetNumberValue(jHeal);
+}
+
 void Mobj_Link_readJSON(void *input, cJSON *_jmobj) {
     struct Mobj_Link *mobj = (struct Mobj_Link *)input;
     cJSON *jlinked      = cJSON_GetObjectItemCaseSensitive(_jmobj, "linked");
@@ -129,9 +146,9 @@ void Tile_readJSON(void *input, cJSON *_jtile) {
         tile->name = malloc(strlen(temp_str) + 1);
         memcpy(tile->name, temp_str, strlen(temp_str) + 1);
     }
-    Tile_stats_readJSON(jstats, &(tile->stats));
+    Tile_stats_readJSON(&(tile->stats), jstats);
     tile->inside = cJSON_IsTrue(jinside);
-    fMovement_cost_readJSON(jmvtcost, &(tile->cost_struct));
+    fMovement_cost_readJSON(&(tile->cost_struct), jmvtcost);
     Tile_makeMvtCostarray(tile);
 }
 
@@ -142,8 +159,8 @@ void Tile_writeJSON(void *_input, cJSON *jtile) {
     cJSON *jcost        = cJSON_CreateObject();
     cJSON *jname        = cJSON_CreateString(_tile->name);
     cJSON *jid          = cJSON_CreateNumber(_tile->id);
-    mvtcost_writeJSON(jcost, &(_tile->cost_struct));
-    Tilestats_writeJSON(jtilestats, &(_tile->stats));
+    fMovement_cost_writeJSON(jcost, &(_tile->cost_struct));
+    Tile_stats_writeJSON(jtilestats, &(_tile->stats));
     cJSON_AddItemToObject(jtile, "Name",   jname);
     cJSON_AddItemToObject(jtile, "id",      jid);
     cJSON_AddBoolToObject(jtile, "inside",  _tile->inside);

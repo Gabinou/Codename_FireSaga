@@ -90,11 +90,11 @@ void Mobj_Link_Free(struct Mobj_Link *mobj);
 
 /* --- I/O --- */
 /* -- Tile -- */
-void Tile_readJSON( void *input, cJSON *jtile);
-void Tile_writeJSON(void *input, cJSON *jtile);
+void Tile_readJSON(      void *input, cJSON *j);
+void Tile_writeJSON(     void *input, cJSON *j);
+void Tile_stats_readJSON(void *input, cJSON *j);
 
 /* -- Mobj -- */
-
 void Door_readJSON(      void *input, cJSON *j);
 void Chest_readJSON(     void *input, cJSON *j);
 void Door_writeJSON(     void *input, cJSON *j);

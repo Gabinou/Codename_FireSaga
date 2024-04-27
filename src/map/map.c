@@ -630,7 +630,7 @@ void Map_writeJSON( void *input, cJSON *jmap) {
         for (u8 i = 0; i < DARR_NUM(temp_equip); i ++) {
             temp_item = temp_equip[i];
             if (temp_item.id > ITEM_NULL)
-                item_writeJSON(jreinforcementeq, &temp_item);
+                Inventory_item_writeJSON(jreinforcementeq, &temp_item);
         }
         cJSON_AddItemToObject(jreinforcement, "Equipment", jreinforcementeq);
         cJSON_AddItemToObject(jreinforcements, "Reinforcement", jreinforcement);
@@ -683,7 +683,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     cJSON *jstart_pos;
     struct Point pos;
     cJSON_ArrayForEach(jstart_pos, jstart_pos_arr) {
-        Point_readJSON(jstart_pos, (struct Point *)&pos);
+        Point_readJSON((struct Point *)&pos, jstart_pos);
         Map_startingPos_Add(map, pos.x, pos.y);
     }
 
@@ -785,7 +785,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
             cJSON *jchest   = cJSON_GetArrayItem(jchests, i);
             cJSON *jpos     = cJSON_GetObjectItem(jchest, "position");
             if (jpos != NULL)
-                Point_readJSON(jpos, (struct Point *)&pos->tilemap_pos);
+                Point_readJSON((struct Point *)&pos->tilemap_pos, jpos);
             if (jchest != NULL)
                 Chest_readJSON(chest, jchest);
             map->chests_ent[i] = temp_ent;
@@ -814,7 +814,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
             cJSON *jdoor    = cJSON_GetArrayItem(jdoors, i);
             cJSON *jpos     = cJSON_GetObjectItem(jdoor, "position");
             if (jpos != NULL)
-                Point_readJSON(jpos, (struct Point *)&pos->tilemap_pos);
+                Point_readJSON((struct Point *)&pos->tilemap_pos, jpos);
             if (jdoor != NULL)
                 Door_readJSON(door, jdoor);
             map->doors_ent[i] = temp_ent;
@@ -842,7 +842,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
             cJSON *jbreakable   = cJSON_GetArrayItem(jbreakables, i);
             cJSON *jpos         = cJSON_GetObjectItem(jbreakable, "position");
             if (jpos != NULL)
-                Point_readJSON(jpos, (struct Point *)&pos->tilemap_pos);
+                Point_readJSON((struct Point *)&pos->tilemap_pos, jpos);
             // if position of breakaable is already a Door/Chest
             // -> add Breakable component to Door/Chest instead
             // -> add Door/Chest + breakable entity to breakable list

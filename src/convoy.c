@@ -213,7 +213,7 @@ void Convoy_writeJSON( void *input, cJSON *in_jconvoy) {
     cJSON_AddItemToObject(in_jconvoy, "bank", jbank);
     for (u8 i = 0; i < in_convoy->items_num; i++) {
         cJSON *jitem = cJSON_CreateObject();
-        item_writeJSON(jitem, &in_convoy->items[i]);
+        Inventory_item_writeJSON(jitem, &in_convoy->items[i]);
         u16 stored_type_exp    = Convoy_Id2TypeExp(in_convoy, i);
         cJSON *jstored_type     = cJSON_CreateNumber(stored_type_exp);
         cJSON_AddItemToObject(jitem, "stored_type_exp", jstored_type);

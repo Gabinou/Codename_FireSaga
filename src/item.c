@@ -345,7 +345,7 @@ void Item_writeJSON(void *_input, cJSON *jitem) {
     cJSON *jclass_ids = cJSON_CreateArray();
     cJSON *jclass_id  = NULL;
 
-    Unitstats_writeJSON(jbonus, &(_item->aura.unit_stats));
+    Unit_stats_writeJSON(jbonus, &(_item->aura.unit_stats));
 
     /* - Users - */
     if (_item->users != NULL) {
@@ -406,7 +406,7 @@ void Item_writeJSON(void *_input, cJSON *jitem) {
     if (_item->write_stats) {
         cJSON *jstats = cJSON_CreateObject();
         struct Item_stats *_stats = &(_item->stats);
-        Itemstats_writeJSON(jstats, _stats);
+        Item_stats_writeJSON(jstats, _stats);
         cJSON_AddItemToObject(jitem, "Stats", jstats);
     }
 }
@@ -485,7 +485,7 @@ void Item_readJSON(void *input, cJSON *_jitem) {
     }
 
     /* - Stats - */
-    Item_stats_readJSON(jstats, &(item->stats));
+    Item_stats_readJSON(&(item->stats), jstats);
 
     /* - Type - */
     if (jtypeid != NULL)
