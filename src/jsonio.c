@@ -334,7 +334,7 @@ void Array_readJSON(struct cJSON *_jarray, i32 *array) {
     }
 }
 
-void jsonio_Read_2DArray(struct cJSON *_jarr, i32 *arr2D,
+void Array2D_readJSON(struct cJSON *_jarr, i32 *arr2D,
                          u8 row_len, u8 col_len) {
     /* caller deals with memory */
     SDL_assert(_jarr != NULL);
@@ -360,8 +360,7 @@ void Array_writeJSON(struct cJSON *_jarr, i32 *arr, size_t num) {
     }
 }
 
-void jsonio_Write_2DArray(struct cJSON *arr, i32 *arr2D,
-                          u8 row_len, u8 col_len) {
+void Array2D_writeJSON(struct cJSON *arr, i32 *arr2D, u8 row_len, u8 col_len) {
     SDL_Log("%d %d", row_len, col_len);
     SDL_assert(arr != NULL);
     struct cJSON *jrow, *jnum;
@@ -377,7 +376,8 @@ void jsonio_Write_2DArray(struct cJSON *arr, i32 *arr2D,
     }
 }
 
-void fMovement_cost_writeJSON(struct cJSON *_jcost, struct fMovement_cost *_cost) {
+void fMovement_cost_writeJSON(void *input, struct cJSON *_jcost, ) {
+    struct fMovement_cost *_cost = input;
     SDL_assert(_jcost != NULL);
     struct cJSON *jmages       = cJSON_CreateNumber(_cost->mages);
     struct cJSON *jfliers      = cJSON_CreateNumber(_cost->fliers);
@@ -399,8 +399,8 @@ void fMovement_cost_writeJSON(struct cJSON *_jcost, struct fMovement_cost *_cost
     cJSON_AddItemToObject(_jcost, "riders_fast", jriders_fast);
 }
 
-void Tile_stats_writeJSON(      struct cJSON       *jstats,
-                                struct Tile_stats *stats) {
+void Tile_stats_writeJSON(void *input, struct cJSON *jstats) {
+    struct Tile_stats *stats = input;
     SDL_assert(jstats != NULL);
     struct cJSON *jdodge = cJSON_CreateNumber(stats->dodge);
     struct cJSON *jPprot = cJSON_CreateNumber(stats->Pprot);
@@ -412,8 +412,8 @@ void Tile_stats_writeJSON(      struct cJSON       *jstats,
     cJSON_AddItemToObject(jstats, "Heal",  jheal);
 }
 
-void Unit_stats_writeJSON(struct cJSON *jstats,
-                          struct Unit_stats *stats) {
+void Unit_stats_writeJSON(void *input, struct cJSON *jstats) {
+    struct Unit_stats *stats = input;
     SDL_assert(jstats != NULL);
     struct cJSON *php   = cJSON_CreateNumber(stats->hp);
     struct cJSON *pstr  = cJSON_CreateNumber(stats->str);
@@ -439,8 +439,8 @@ void Unit_stats_writeJSON(struct cJSON *jstats,
     cJSON_AddItemToObject(jstats, "prof", pprof);
 }
 
-void Item_stats_writeJSON(struct cJSON *jstats,
-                          struct Item_stats *stats) {
+void Item_stats_writeJSON(void *input, struct cJSON *jstats) {
+    struct Item_stats *stats = input;
     SDL_assert(jstats != NULL);
     struct cJSON *jAP    = cJSON_CreateNumber(stats->AP);
     struct cJSON *juses  = cJSON_CreateNumber(stats->uses);
@@ -450,8 +450,8 @@ void Item_stats_writeJSON(struct cJSON *jstats,
     cJSON_AddItemToObject(jstats, "AP", jAP);
 }
 
-void Weapon_stats_writeJSON(      struct cJSON                *jstats,
-                                  struct Weapon_stats *stats) {
+void Weapon_stats_writeJSON(void *input, struct cJSON *jstats) {
+    struct Weapon_stats *stats = input;
     SDL_assert(jstats != NULL);
     struct cJSON *pprot   = cJSON_CreateArray();
     struct cJSON *prange  = cJSON_CreateArray();

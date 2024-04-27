@@ -130,7 +130,7 @@ void Tilemap_Shader_Load_Tilemap_JSON(struct Tilemap_Shader *shd,  cJSON *jmap) 
         int row_len = shd->map->row_len, col_len = shd->map->col_len;
         i32 *shadow_tilemap = malloc(row_len * col_len * sizeof(*shadow_tilemap));
         cJSON *jarr = cJSON_GetObjectItem(jframe, "array");
-        jsonio_Read_2DArray(jarr, shadow_tilemap, row_len, col_len);
+        Array2D_readJSON(jarr, shadow_tilemap, row_len, col_len);
 
         /* - Put shadow tilemap in list of shadow tilemaps - */
         DARR_PUT(shd->shadow_tilemaps, shadow_tilemap);

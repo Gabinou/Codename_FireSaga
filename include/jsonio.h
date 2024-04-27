@@ -37,13 +37,13 @@ void AI_writeJSON(void *ai, cJSON *jai);
 
 /* --- API --- */
 void          jsonio_readJSON( s8 f, void *ptr);
-void          jsonio_writeJSON(s8 f, void *ptr, bool a);
+void          jsonio_writeJSON(s8 f, void *ptr, b32 a);
 struct cJSON *jsonio_parseJSON(s8 f);
 
 /* --- UTILITIES --- */
 /* -- Read -- */
 void Array_readJSON(  struct cJSON *j, i32 *arr);
-void jsonio_Read_2DArray(struct cJSON *j, i32 *, u8 rl, u8 cl);
+void Array2D_readJSON(struct cJSON *j, i32 *, u8 rl, u8 cl);
 
 void RNseed_readJSON(struct cJSON *_j);
 
@@ -64,21 +64,21 @@ void Inventory_item_readJSON(   void *input, struct cJSON *j);
 /* - Narrative - */
 void Scene_readJSON(void *input, struct cJSON *_jnarr);
 // Note: Scenes don't get written, no writing
-bool Conditions_Read(struct Conditions *conditions, cJSON *jconditions);
-bool Condition_Read(u32 *bitfield, size_t bits, cJSON *jcondition);
+b32 Conditions_Read(struct Conditions *conditions, cJSON *jconditions);
+b32 Condition_Read(u32 *bitfield, size_t bits, cJSON *jcondition);
 
 /* -- Write -- */
-void RNseed_writeJSON(   struct cJSON *j);
+void RNseed_writeJSON(struct cJSON *j);
 
-void Array_writeJSON(       struct cJSON *j, i32 *arr, size_t l);
-void jsonio_Write_2DArray(  struct cJSON *j, i32 *arr, u8 rl, u8 cl);
+void Array_writeJSON(  struct cJSON *j, i32 *arr, size_t l);
+void Array2D_writeJSON(struct cJSON *j, i32 *arr, u8 rl, u8 cl);
 
-void Item_stats_writeJSON(      struct cJSON *j, struct Item_stats     *t);
-void Unit_stats_writeJSON(      struct cJSON *j, struct Unit_stats     *t);
-void Tile_stats_writeJSON(      struct cJSON *j, struct Tile_stats     *t);
-void Weapon_stats_writeJSON(    struct cJSON *j, struct Weapon_stats   *s);
-void Inventory_item_writeJSON(  struct cJSON *j, struct Inventory_item *i);
-void fMovement_cost_writeJSON(  struct cJSON *j, struct fMovement_cost *c);
+void Item_stats_writeJSON(      void *input, struct cJSON *j);
+void Unit_stats_writeJSON(      void *input, struct cJSON *j);
+void Tile_stats_writeJSON(      void *input, struct cJSON *j);
+void Weapon_stats_writeJSON(    void *input, struct cJSON *j);
+void Inventory_item_writeJSON(  void *input, struct cJSON *j);
+void fMovement_cost_writeJSON(  void *input, struct cJSON *j);
 
 /* -- Print -- */
 void jsonio_Print(PHYSFS_file *fp, struct cJSON *json);

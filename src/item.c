@@ -345,7 +345,7 @@ void Item_writeJSON(void *_input, cJSON *jitem) {
     cJSON *jclass_ids = cJSON_CreateArray();
     cJSON *jclass_id  = NULL;
 
-    Unit_stats_writeJSON(jbonus, &(_item->aura.unit_stats));
+    Unit_stats_writeJSON(&(_item->aura.unit_stats), jbonus);
 
     /* - Users - */
     if (_item->users != NULL) {

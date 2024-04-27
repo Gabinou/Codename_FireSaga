@@ -646,7 +646,7 @@ void Map_writeJSON( void *input, cJSON *jmap) {
     cJSON_AddItemToObject(jbounds, "col_max", jcol_max);
     cJSON_AddItemToObject(jmap, "Bounds", jbounds);
     cJSON *jtilemap = cJSON_CreateObject();
-    jsonio_Write_2DArray(jtilemap, map->tilemap, map->row_len, map->col_len);
+    Array2D_writeJSON(jtilemap, map->tilemap, map->row_len, map->col_len);
     cJSON_AddItemToObject(jmap, "Tilemap", jtilemap);
 }
 
@@ -875,7 +875,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     cJSON_ArrayForEach(jframe, jframes) {
         map->tilemap = calloc(map->row_len * map->col_len, sizeof(*map->tilemap));
         jarray = cJSON_GetObjectItem(jframe, "array");
-        jsonio_Read_2DArray(jarray, map->tilemap, map->row_len, map->col_len);
+        Array2D_readJSON(jarray, map->tilemap, map->row_len, map->col_len);
         SDL_assert(map->tilemap);
     }
 
