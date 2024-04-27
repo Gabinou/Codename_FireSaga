@@ -84,13 +84,13 @@ void Tile_stats_readJSON(void *input, struct cJSON      *_jstats) {
     struct cJSON *jPprot = cJSON_GetObjectItem(_jstats, "Pprot");
     struct cJSON *jMprot = cJSON_GetObjectItem(_jstats, "Mprot");
     struct cJSON *jHeal  = cJSON_GetObjectItem(_jstats, "Heal");
-    if (stats->dodge)
+    if (jdodge)
         stats->dodge     = cJSON_GetNumberValue(jdodge);
-    if (stats->Pprot)
+    if (jPprot)
         stats->Pprot     = cJSON_GetNumberValue(jPprot);
-    if (stats->Mprot)
+    if (jMprot)
         stats->Mprot     = cJSON_GetNumberValue(jMprot);
-    if (stats->heal)
+    if (jHeal)
         stats->heal      = cJSON_GetNumberValue(jHeal);
 }
 
