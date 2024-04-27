@@ -412,6 +412,7 @@ void Item_writeJSON(void *_input, cJSON *jitem) {
 }
 
 void Item_readJSON(void *input, cJSON *_jitem) {
+    SDL_Log("Item_readJSON");
     SDL_assert(_jitem != NULL);
 
     /* - Preliminaries - */

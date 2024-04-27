@@ -19,5 +19,17 @@ void Aura_readJSON( void *input, cJSON *jaura) {
 }
 
 void Aura_writeJSON(void *input, cJSON *jaura) {
+    struct Aura *aura = input;
 
+    struct cJSON *junit_stats       = cJSON_CreateObject();
+    struct cJSON *jrange            = cJSON_CreateObject();
+    struct cJSON *jcomputed_stats   = cJSON_CreateObject();
+
+    Computed_Stats_writeJSON(&aura->computed_stats, jcomputed_stats);
+    Unit_stats_writeJSON(&aura->unit_stats, junit_stats);
+    Computed_Stats_writeJSON(&aura->range, jrange);
+
+    cJSON_AddItemToObject(jaura, "Computed_Stats", jcomputed_stats);
+    cJSON_AddItemToObject(jaura, "Unit_stats", junit_stats);
+    cJSON_AddItemToObject(jaura, "Range", jrange);
 }

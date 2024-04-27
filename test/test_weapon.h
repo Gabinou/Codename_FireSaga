@@ -21,18 +21,18 @@ void test_weapon1() {
         .attack[DAMAGE_TYPE_PHYSICAL]   = 3,
         .attack[DAMAGE_TYPE_MAGICAL]    = 0,
         .hit    = 80,
-        .crit   = 0,
+        .crit   =  0,
         .dodge  =  0,
-        .favor  = 0,
-        .wgt    = 3,
+        .favor  =  0,
+        .wgt    =  3,
         .range  = {1, 2},
     };
     struct Weapon_stats out_wpn_stats;
     struct Unit_stats in_stats = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
     struct Unit_stats out_stats;
-    uint64_t in_effect;
-    bool in_canSell = false;
-    uint_fast16_t in_type = ITEM_TYPE_SWORD + ITEM_TYPE_LANCE;
+    u64 in_effect;
+    b32 in_canSell = false;
+    u16 in_type = ITEM_TYPE_SWORD + ITEM_TYPE_LANCE;
 
     in_effect = ITEM_EFFECT_KILL1P + ITEM_EFFECT_BRAVE2X + ITEM_EFFECT_BREAK_SHIELD;
     wpn1.item->type = in_type;
@@ -42,10 +42,10 @@ void test_weapon1() {
     char *in_description = "Practice sword, made of wood. It's crushing blows are still deadly.";
     char *out_description;
     memcpy(wpn1.item->description, in_description, strlen(in_description));
-    wpn1.item->passive      = in_effect;
+    wpn1.item->passive          = in_effect;
     wpn1.item->aura.unit_stats  = in_stats;
-    wpn1.item->canSell      = in_canSell;
-    out_wpn_stats           = wpn1.stats;
+    wpn1.item->canSell          = in_canSell;
+    out_wpn_stats               = wpn1.stats;
     nourstest_true(in_wpn_stats.attack[DAMAGE_TYPE_PHYSICAL] ==
                    out_wpn_stats.attack[DAMAGE_TYPE_PHYSICAL]);
     nourstest_true(in_wpn_stats.attack[DAMAGE_TYPE_MAGICAL] ==

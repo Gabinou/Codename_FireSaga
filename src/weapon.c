@@ -86,10 +86,14 @@ void Weapon_readJSON(void *input, cJSON *jwpn) {
     cJSON *jsubtype         = cJSON_GetObjectItemCaseSensitive(jwpn, "Subtype");
     cJSON *jhandedness      = cJSON_GetObjectItemCaseSensitive(jwpn, "Handedness");
     cJSON *jeffective       = cJSON_GetObjectItemCaseSensitive(jwpn, "Effective");
-    if (jhandedness)
+    cJSON *jaura            = cJSON_GetObjectItemCaseSensitive(jwpn, "Aura");
+
+    if (jhandedness != NULL)
         weapon->handedness  = cJSON_GetNumberValue(jhandedness);
-    if (jsubtype)
+    if (jsubtype != NULL)
         weapon->subtype     = cJSON_GetNumberValue(jsubtype);
+    if (jaura != NULL)
+        Aura_readJSON(&weapon->item->aura, jaura);
     Weapon_stats_readJSON(&(weapon->stats), jstats);
     /* Set item range to weapon */
     weapon->item->range.min = weapon->stats.range.min;
@@ -108,14 +112,17 @@ void Weapon_writeJSON(void *input, cJSON *jwpn) {
     Item_writeJSON(weapon->item, jwpn);
     cJSON *jitemstats   = cJSON_CreateObject();
     Weapon_stats_writeJSON(&(weapon->stats), jitemstats);
+    cJSON *jaura   = cJSON_CreateObject();
+    Aura_writeJSON(&(weapon->item->aura), jaura);
     Item_stats_writeJSON(&(weapon->item->stats), jitemstats);
     cJSON *jsubtype     = cJSON_CreateNumber(weapon->subtype);
     cJSON *jeffective   = cJSON_CreateNumber(weapon->effective);
     cJSON *jhandedness  = cJSON_CreateNumber(weapon->handedness);
-    cJSON_AddItemToObject(jwpn, "Stats",      jitemstats);
-    cJSON_AddItemToObject(jwpn, "Subtype",    jsubtype);
-    cJSON_AddItemToObject(jwpn, "Effective",  jeffective);
-    cJSON_AddItemToObject(jwpn, "Handedness", jhandedness);
+    cJSON_AddItemToObject(jwpn, "Stats",        jitemstats);
+    cJSON_AddItemToObject(jwpn, "Subtype",      jsubtype);
+    cJSON_AddItemToObject(jwpn, "Effective",    jeffective);
+    cJSON_AddItemToObject(jwpn, "Handedness",   jhandedness);
+    cJSON_AddItemToObject(jwpn, "Aura",         jaura);
 }
 
 void Weapon_Reload(struct dtab *weapons_dtab, i16 id) {

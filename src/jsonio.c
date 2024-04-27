@@ -284,6 +284,15 @@ void PaletteTable_readJSON(char *filename, u8 *table) {
         cJSON_Delete(jfile);
 }
 
+void Point_writeJSON(void *input, struct cJSON *jpos) {
+    struct Point *pos = input;
+
+    struct cJSON *jnumx = cJSON_CreateNumber(pos->x);
+    struct cJSON *jnumy = cJSON_CreateNumber(pos->y);
+    cJSON_AddItemToObject(jpos, "col", jnumx);
+    cJSON_AddItemToObject(jpos, "row", jnumy);
+}
+
 void Point_readJSON(void *input, struct cJSON *_jpos) {
     struct Point *pos = input;
 
@@ -518,12 +527,69 @@ void Item_stats_readJSON(void *input, struct cJSON *_jstats) {
     stats->price = cJSON_GetNumberValue(jprice);
 }
 
+void Range_writeJSON(void *input, struct cJSON *jrange) {
+    struct Range *range = input;
+
+    struct cJSON *jarr      = cJSON_CreateArray();
+    struct cJSON *jmin      = cJSON_CreateNumber(range->min);
+    struct cJSON *jmax      = cJSON_CreateNumber(range->min);
+    cJSON_AddItemToArray(jarr, jmin);
+    cJSON_AddItemToArray(jarr, jmax);
+
+    cJSON_AddItemToObject(jrange, "Range", jarr);
+
+}
+
 void Range_readJSON(void *input, struct cJSON *jrange) {
     struct Range *range = input;
     SDL_assert(jrange != NULL);
 
     range->min = cJSON_GetNumberValue(cJSON_GetArrayItem(jrange, RANGE_MIN_INDEX));
     range->max = cJSON_GetNumberValue(cJSON_GetArrayItem(jrange, RANGE_MAX_INDEX));
+}
+
+void Computed_Stats_writeJSON(void *input, struct cJSON *jstats) {
+    struct Computed_Stats *stats = input;
+
+    struct cJSON *jarr      = cJSON_CreateArray();
+    struct cJSON *jnum      = cJSON_CreateNumber(stats->attack[0]);
+    cJSON_AddItemToArray(jarr, jnum);
+    jnum      = cJSON_CreateNumber(stats->attack[1]);
+    cJSON_AddItemToArray(jarr, jnum);
+    jnum      = cJSON_CreateNumber(stats->attack[2]);
+    cJSON_AddItemToArray(jarr, jnum);
+    cJSON_AddItemToObject(jstats, "Attack", jarr);
+
+    jarr      = cJSON_CreateArray();
+    jnum      = cJSON_CreateNumber(stats->protection[0]);
+    cJSON_AddItemToArray(jarr, jnum);
+    jnum      = cJSON_CreateNumber(stats->protection[1]);
+    cJSON_AddItemToArray(jarr, jnum);
+    cJSON_AddItemToObject(jstats, "Protection", jarr);
+
+
+    struct cJSON *jrange_loadout  = cJSON_CreateObject();
+    Range_writeJSON(&stats->range_loadout, jrange_loadout);
+    cJSON_AddItemToObject(jstats, "Range_loadout", jrange_loadout);
+    struct cJSON *jrange_combined  = cJSON_CreateObject();
+    Range_writeJSON(&stats->range_combined, jrange_combined);
+    cJSON_AddItemToObject(jstats, "Range_combined", jrange_combined);
+
+    struct cJSON *jhit      = cJSON_CreateNumber(stats->hit);
+    struct cJSON *jdodge    = cJSON_CreateNumber(stats->dodge);
+    struct cJSON *jcrit     = cJSON_CreateNumber(stats->crit);
+    struct cJSON *jfavor    = cJSON_CreateNumber(stats->favor);
+    struct cJSON *jmove     = cJSON_CreateNumber(stats->move);
+    struct cJSON *jspeed    = cJSON_CreateNumber(stats->speed);
+    struct cJSON *jagony    = cJSON_CreateNumber(stats->agony);
+    cJSON_AddItemToObject(jstats, "hit", jarr);
+    cJSON_AddItemToObject(jstats, "dodge", jarr);
+    cJSON_AddItemToObject(jstats, "crit", jarr);
+    cJSON_AddItemToObject(jstats, "favor", jarr);
+    cJSON_AddItemToObject(jstats, "move", jarr);
+    cJSON_AddItemToObject(jstats, "speed", jarr);
+    cJSON_AddItemToObject(jstats, "agony", jarr);
+
 }
 
 void Computed_Stats_readJSON(void *input, struct cJSON *jstats) {

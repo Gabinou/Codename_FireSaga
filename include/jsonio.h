@@ -76,12 +76,15 @@ void RNseed_writeJSON(struct cJSON *j);
 void Array_writeJSON(  struct cJSON *j, i32 *arr, size_t l);
 void Array2D_writeJSON(struct cJSON *j, i32 *arr, u8 rl, u8 cl);
 
+void Range_writeJSON(           void *input, struct cJSON *j);
+void Point_writeJSON(           void *input, struct cJSON *j);
 void Item_stats_writeJSON(      void *input, struct cJSON *j);
 void Unit_stats_writeJSON(      void *input, struct cJSON *j);
 void Tile_stats_writeJSON(      void *input, struct cJSON *j);
 void Weapon_stats_writeJSON(    void *input, struct cJSON *j);
 void Inventory_item_writeJSON(  void *input, struct cJSON *j);
 void fMovement_cost_writeJSON(  void *input, struct cJSON *j);
+void Computed_Stats_writeJSON(  void *input, struct cJSON *j);
 
 /* -- Print -- */
 void jsonio_Print(PHYSFS_file *fp, struct cJSON *json);
