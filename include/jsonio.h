@@ -54,12 +54,14 @@ void Shop_readJSON(        char *filename, struct Shop         *s);
 void Palette_readJSON(     char *filename, struct SDL_Palette  *p);
 void Promotion_readJSON(   char *filename, struct Promotion    *p);
 
+void Range_readJSON(            void *input, struct cJSON *j);
 void Point_readJSON(            void *input, struct cJSON *j);
 void Unit_stats_readJSON(       void *input, struct cJSON *j);
 void Item_stats_readJSON(       void *input, struct cJSON *j);
 void Weapon_stats_readJSON(     void *input, struct cJSON *j);
 void fMovement_cost_readJSON(   void *input, struct cJSON *j);
 void Inventory_item_readJSON(   void *input, struct cJSON *j);
+void Computed_stats_readJSON(   void *input, struct cJSON *j);
 
 /* - Narrative - */
 void Scene_readJSON(void *input, struct cJSON *_jnarr);

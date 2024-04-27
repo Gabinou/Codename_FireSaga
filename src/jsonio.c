@@ -518,6 +518,65 @@ void Item_stats_readJSON(void *input, struct cJSON *_jstats) {
     stats->price = cJSON_GetNumberValue(jprice);
 }
 
+void Range_readJSON(void *input, struct cJSON *jrange) {
+    struct Range *range = input;
+    SDL_assert(jrange != NULL);
+
+    range->min = cJSON_GetNumberValue(cJSON_GetArrayItem(jrange, RANGE_MIN_INDEX));
+    range->max = cJSON_GetNumberValue(cJSON_GetArrayItem(jrange, RANGE_MAX_INDEX));
+}
+
+void Computed_stats_readJSON(void *input, struct cJSON *jstats) {
+    struct Computed_stats *stats = input;
+    SDL_assert(jstats != NULL);
+    struct cJSON *jnum;
+    size_t i;
+    struct cJSON *jattack = cJSON_GetObjectItem(jstats, "Attack");
+    i = 0;
+    cJSON_ArrayForEach(jnum, jattack) {
+        stats->attack[i++] = (u8)cJSON_GetNumberValue(jnum);
+    }
+
+    struct cJSON *jprot = cJSON_GetObjectItem(jstats, "Protection");
+    i = 0;
+    cJSON_ArrayForEach(jnum, jprot) {
+        stats->protection[i++] = (u8)cJSON_GetNumberValue(jnum);
+    }
+
+    struct cJSON *jrange = cJSON_GetObjectItem(jstats, "Range_loadout");
+    if (jrange!= NULL)
+        Range_readJSON(&stats->range_loadout, jrange);
+
+    jrange = cJSON_GetObjectItem(jstats, "Range_combined");
+    if (jrange!= NULL)
+        Range_readJSON(&stats->range_combined, jrange);
+
+    // SDL_assert(stats->range.max >= stats->range.min);
+    struct cJSON *jhit      = cJSON_GetObjectItem(jstats, "hit");
+    struct cJSON *jcrit     = cJSON_GetObjectItem(jstats, "dodge");
+    struct cJSON *jcrit     = cJSON_GetObjectItem(jstats, "crit");
+    struct cJSON *jfavor    = cJSON_GetObjectItem(jstats, "favor");
+    struct cJSON *jmove     = cJSON_GetObjectItem(jstats, "move");
+    struct cJSON *jspeed    = cJSON_GetObjectItem(jstats, "speed");
+    struct cJSON *jagony    = cJSON_GetObjectItem(jstats, "agony");
+
+    if (jhit != NULL)
+        stats->hit   = cJSON_GetNumberValue(jhit);
+    if (jdodge != NULL)
+        stats->dodge = cJSON_GetNumberValue(jdodge);
+    if (jcrit != NULL)
+        stats->crit  = cJSON_GetNumberValue(jcrit);
+    if (jfavor != NULL)
+        stats->favor = cJSON_GetNumberValue(jfavor);
+    if (jmove != NULL)
+        stats->move = cJSON_GetNumberValue(jmove);
+    if (jspeed != NULL)
+        stats->favor = cJSON_GetNumberValue(jspeed);
+    if (jagony != NULL)
+        stats->favor = cJSON_GetNumberValue(jagony);
+}
+
+
 void Weapon_stats_readJSON(void *input, struct cJSON *jstats) {
     struct Weapon_stats *stats = input;
     SDL_assert(jstats != NULL);
@@ -536,23 +595,29 @@ void Weapon_stats_readJSON(void *input, struct cJSON *jstats) {
     }
 
     struct cJSON *jrange = cJSON_GetObjectItem(jstats, "Range");
-    stats->range.min = (u8)cJSON_GetNumberValue(cJSON_GetArrayItem(jrange, RANGE_MIN_INDEX));
-    stats->range.max = (u8)cJSON_GetNumberValue(cJSON_GetArrayItem(jrange, RANGE_MAX_INDEX));
-    SDL_assert(stats->range.max >= stats->range.min);
+    if (jrange!= NULL)
+        Range_readJSON(&stats->range, jrange);
+
+    // SDL_assert(stats->range.max >= stats->range.min);
     struct cJSON *jhit   = cJSON_GetObjectItem(jstats, "hit");
-    struct cJSON *jwgt   = cJSON_GetObjectItem(jstats, "wgt");
+    struct cJSON *jcrit  = cJSON_GetObjectItem(jstats, "dodge");
     struct cJSON *jcrit  = cJSON_GetObjectItem(jstats, "crit");
-    struct cJSON *jprof  = cJSON_GetObjectItem(jstats, "prof");
-    struct cJSON *jhand  = cJSON_GetObjectItem(jstats, "hand");
     struct cJSON *jfavor = cJSON_GetObjectItem(jstats, "favor");
-    struct cJSON *jdodge = cJSON_GetObjectItem(jstats, "dodge");
-    stats->hit   = cJSON_GetNumberValue(jhit);
-    stats->wgt   = cJSON_GetNumberValue(jwgt);
-    stats->crit  = cJSON_GetNumberValue(jcrit);
-    stats->prof  = cJSON_GetNumberValue(jprof);
-    stats->favor = cJSON_GetNumberValue(jfavor);
-    stats->dodge = cJSON_GetNumberValue(jdodge);
-    // stats->hand = cJSON_GetNumberValue(jhand);
+    struct cJSON *jwgt   = cJSON_GetObjectItem(jstats, "wgt");
+    struct cJSON *jprof  = cJSON_GetObjectItem(jstats, "prof");
+
+    if (jhit != NULL)
+        stats->hit   = cJSON_GetNumberValue(jhit);
+    if (jdodge != NULL)
+        stats->dodge  = cJSON_GetNumberValue(jdodge);
+    if (jcrit != NULL)
+        stats->crit  = cJSON_GetNumberValue(jcrit);
+    if (jfavor != NULL)
+        stats->favor = cJSON_GetNumberValue(jfavor);
+    if (jwgt != NULL)
+        stats->wgt   = cJSON_GetNumberValue(jwgt);
+    if (jprof != NULL)
+        stats->prof  = cJSON_GetNumberValue(jprof);
 }
 
 void Unit_stats_readJSON(void *input, struct cJSON *jstats) {
