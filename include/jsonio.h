@@ -4,6 +4,7 @@
 #include "cJSON.h"
 #include "tile.h"
 #include "weapon.h"
+#include "structs.h"
 #include "item.h"
 #include "macros.h"
 #include "convoy.h"
@@ -61,7 +62,7 @@ void Item_stats_readJSON(       void *input, struct cJSON *j);
 void Weapon_stats_readJSON(     void *input, struct cJSON *j);
 void fMovement_cost_readJSON(   void *input, struct cJSON *j);
 void Inventory_item_readJSON(   void *input, struct cJSON *j);
-void Computed_stats_readJSON(   void *input, struct cJSON *j);
+void Computed_Stats_readJSON(   void *input, struct cJSON *j);
 
 /* - Narrative - */
 void Scene_readJSON(void *input, struct cJSON *_jnarr);

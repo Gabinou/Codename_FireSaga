@@ -185,7 +185,7 @@ struct Computed_Stats {
     struct Range range_combined;    /* Range of all equipment */
     struct Range range_loadout;     /* Range of equipped weapons */
     // issue:       What about staff AND weapon equipped?
-    // Solution:    
+    // Solution:
     //          - Only one is shown at a time: Show only one at a time
     //          - Show two at atime with Blue+Red+Purple filter
 };

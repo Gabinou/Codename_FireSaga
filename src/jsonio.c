@@ -526,8 +526,8 @@ void Range_readJSON(void *input, struct cJSON *jrange) {
     range->max = cJSON_GetNumberValue(cJSON_GetArrayItem(jrange, RANGE_MAX_INDEX));
 }
 
-void Computed_stats_readJSON(void *input, struct cJSON *jstats) {
-    struct Computed_stats *stats = input;
+void Computed_Stats_readJSON(void *input, struct cJSON *jstats) {
+    struct Computed_Stats *stats = input;
     SDL_assert(jstats != NULL);
     struct cJSON *jnum;
     size_t i;
@@ -544,16 +544,16 @@ void Computed_stats_readJSON(void *input, struct cJSON *jstats) {
     }
 
     struct cJSON *jrange = cJSON_GetObjectItem(jstats, "Range_loadout");
-    if (jrange!= NULL)
+    if (jrange != NULL)
         Range_readJSON(&stats->range_loadout, jrange);
 
     jrange = cJSON_GetObjectItem(jstats, "Range_combined");
-    if (jrange!= NULL)
+    if (jrange != NULL)
         Range_readJSON(&stats->range_combined, jrange);
 
     // SDL_assert(stats->range.max >= stats->range.min);
     struct cJSON *jhit      = cJSON_GetObjectItem(jstats, "hit");
-    struct cJSON *jcrit     = cJSON_GetObjectItem(jstats, "dodge");
+    struct cJSON *jdodge    = cJSON_GetObjectItem(jstats, "dodge");
     struct cJSON *jcrit     = cJSON_GetObjectItem(jstats, "crit");
     struct cJSON *jfavor    = cJSON_GetObjectItem(jstats, "favor");
     struct cJSON *jmove     = cJSON_GetObjectItem(jstats, "move");
@@ -595,12 +595,12 @@ void Weapon_stats_readJSON(void *input, struct cJSON *jstats) {
     }
 
     struct cJSON *jrange = cJSON_GetObjectItem(jstats, "Range");
-    if (jrange!= NULL)
+    if (jrange != NULL)
         Range_readJSON(&stats->range, jrange);
 
     // SDL_assert(stats->range.max >= stats->range.min);
     struct cJSON *jhit   = cJSON_GetObjectItem(jstats, "hit");
-    struct cJSON *jcrit  = cJSON_GetObjectItem(jstats, "dodge");
+    struct cJSON *jdodge = cJSON_GetObjectItem(jstats, "dodge");
     struct cJSON *jcrit  = cJSON_GetObjectItem(jstats, "crit");
     struct cJSON *jfavor = cJSON_GetObjectItem(jstats, "favor");
     struct cJSON *jwgt   = cJSON_GetObjectItem(jstats, "wgt");
