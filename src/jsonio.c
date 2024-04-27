@@ -109,7 +109,7 @@ void jsonio_readJSON(s8 filename, void *struct_ptr) {
         cJSON_Delete(jfile);
 }
 
-void jsonio_writeJSON(s8 filename, void *struct_ptr, bool append) {
+void jsonio_writeJSON(s8 filename, void *struct_ptr, b32 append) {
     SDL_Log("%s:", filename.data);
 
     /* Parse the json file */
@@ -335,7 +335,7 @@ void Array_readJSON(struct cJSON *_jarray, i32 *array) {
 }
 
 void Array2D_readJSON(struct cJSON *_jarr, i32 *arr2D,
-                         u8 row_len, u8 col_len) {
+                      u8 row_len, u8 col_len) {
     /* caller deals with memory */
     SDL_assert(_jarr != NULL);
     SDL_assert(cJSON_IsArray(_jarr));
@@ -376,7 +376,7 @@ void Array2D_writeJSON(struct cJSON *arr, i32 *arr2D, u8 row_len, u8 col_len) {
     }
 }
 
-void fMovement_cost_writeJSON(void *input, struct cJSON *_jcost, ) {
+void fMovement_cost_writeJSON(void *input, struct cJSON *_jcost) {
     struct fMovement_cost *_cost = input;
     SDL_assert(_jcost != NULL);
     struct cJSON *jmages       = cJSON_CreateNumber(_cost->mages);
@@ -495,7 +495,8 @@ void Inventory_item_readJSON(void *input, struct cJSON *_jitem) {
     item->infusion = cJSON_GetNumberValue(jinfusion);
 }
 
-void Inventory_item_writeJSON(struct cJSON *jitem, struct Inventory_item *item) {
+void Inventory_item_writeJSON(void *input, struct cJSON *jitem) {
+    struct Inventory_item *item = input;
     SDL_assert(jitem != NULL);
     char buffer[DEFAULT_BUFFER_SIZE];
     cJSON *jid       = cJSON_CreateNumber(item->id);

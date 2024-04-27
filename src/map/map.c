@@ -630,7 +630,7 @@ void Map_writeJSON( void *input, cJSON *jmap) {
         for (u8 i = 0; i < DARR_NUM(temp_equip); i ++) {
             temp_item = temp_equip[i];
             if (temp_item.id > ITEM_NULL)
-                Inventory_item_writeJSON(jreinforcementeq, &temp_item);
+                Inventory_item_writeJSON(&temp_item, jreinforcementeq);
         }
         cJSON_AddItemToObject(jreinforcement, "Equipment", jreinforcementeq);
         cJSON_AddItemToObject(jreinforcements, "Reinforcement", jreinforcement);

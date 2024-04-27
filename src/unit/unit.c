@@ -1684,13 +1684,13 @@ void Unit_writeJSON( void *input, cJSON *junit) {
     cJSON *jcurrent_hp    = cJSON_CreateNumber(unit->current_hp);
     cJSON *jclass_index   = cJSON_CreateNumber(unit->class);
     cJSON *jcurrent_stats = cJSON_CreateObject();
-    Unit_stats_writeJSON(jcurrent_stats, &unit->current_stats);
+    Unit_stats_writeJSON(&unit->current_stats, jcurrent_stats);
     cJSON *jcaps_stats    = cJSON_CreateObject();
-    Unit_stats_writeJSON(jcaps_stats, &unit->caps_stats);
+    Unit_stats_writeJSON(&unit->caps_stats, jcaps_stats);
     cJSON *jbase_stats    = cJSON_CreateObject();
-    Unit_stats_writeJSON(jbase_stats, &unit->base_stats);
+    Unit_stats_writeJSON(&unit->base_stats, jbase_stats);
     cJSON *jgrowths       = cJSON_CreateObject();
-    Unit_stats_writeJSON(jgrowths, &unit->growths);
+    Unit_stats_writeJSON(&unit->growths, jgrowths);
     cJSON *jgrown         = cJSON_CreateObject();
     cJSON *jlevel         = NULL;
     cJSON *jlevelup       = NULL;
@@ -1716,14 +1716,14 @@ void Unit_writeJSON( void *input, cJSON *junit) {
         jlevelup = cJSON_CreateObject();
         jlevel = cJSON_CreateNumber(i - unit->base_exp / SOTA_100PERCENT + 2);
         cJSON_AddItemToObject(jlevelup, "level", jlevel);
-        Unit_stats_writeJSON(jlevelup, &unit->grown_stats[i]);
+        Unit_stats_writeJSON(&unit->grown_stats[i], jlevelup);
         cJSON_AddItemToObject(jgrown, "Level-up", jlevelup);
         // +2 -> +1 start at lvl1, +1 cause you level to level 2
     }
     cJSON *jitems = cJSON_CreateArray();
     for (u8 item_num = 0; item_num < DEFAULT_EQUIPMENT_SIZE; item_num ++) {
         cJSON *jitem = cJSON_CreateObject();
-        Inventory_item_writeJSON(jitem, &unit->_equipment[item_num]);
+        Inventory_item_writeJSON(&unit->_equipment[item_num], jitem);
         cJSON_AddItemToArray(jitems, jitem);
     }
     cJSON_AddItemToObject(junit, "Items", jitems);

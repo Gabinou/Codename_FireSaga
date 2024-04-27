@@ -159,8 +159,8 @@ void Tile_writeJSON(void *_input, cJSON *jtile) {
     cJSON *jcost        = cJSON_CreateObject();
     cJSON *jname        = cJSON_CreateString(_tile->name);
     cJSON *jid          = cJSON_CreateNumber(_tile->id);
-    fMovement_cost_writeJSON(jcost, &(_tile->cost_struct));
-    Tile_stats_writeJSON(jtilestats, &(_tile->stats));
+    fMovement_cost_writeJSON(&(_tile->cost_struct), jcost);
+    Tile_stats_writeJSON(&(_tile->stats), jtilestats);
     cJSON_AddItemToObject(jtile, "Name",   jname);
     cJSON_AddItemToObject(jtile, "id",      jid);
     cJSON_AddBoolToObject(jtile, "inside",  _tile->inside);

@@ -406,7 +406,7 @@ void Item_writeJSON(void *_input, cJSON *jitem) {
     if (_item->write_stats) {
         cJSON *jstats = cJSON_CreateObject();
         struct Item_stats *_stats = &(_item->stats);
-        Item_stats_writeJSON(jstats, _stats);
+        Item_stats_writeJSON(_stats, jstats);
         cJSON_AddItemToObject(jitem, "Stats", jstats);
     }
 }

@@ -107,8 +107,8 @@ void Weapon_writeJSON(void *input, cJSON *jwpn) {
     weapon->item->write_stats = false;
     Item_writeJSON(weapon->item, jwpn);
     cJSON *jitemstats   = cJSON_CreateObject();
-    Weapon_stats_writeJSON(jitemstats,   &(weapon->stats));
-    Item_stats_writeJSON(jitemstats,  &(weapon->item->stats));
+    Weapon_stats_writeJSON(&(weapon->stats), jitemstats);
+    Item_stats_writeJSON(&(weapon->item->stats), jitemstats);
     cJSON *jsubtype     = cJSON_CreateNumber(weapon->subtype);
     cJSON *jeffective   = cJSON_CreateNumber(weapon->effective);
     cJSON *jhandedness  = cJSON_CreateNumber(weapon->handedness);
