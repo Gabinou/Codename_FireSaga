@@ -418,20 +418,20 @@ void Item_readJSON(void *input, cJSON *_jitem) {
     /* - Preliminaries - */
     struct Item *item = (struct Item *)input;
     Item_Free(item);
-    cJSON *jname        = cJSON_GetObjectItemCaseSensitive(_jitem,    "Name");
-    cJSON *jid          = cJSON_GetObjectItemCaseSensitive(_jitem,    "id");
-    cJSON *jdescription = cJSON_GetObjectItemCaseSensitive(_jitem,    "Description");
-    cJSON *jbonus_stats = cJSON_GetObjectItemCaseSensitive(_jitem,    "Bonus");
-    cJSON *jcanSell     = cJSON_GetObjectItemCaseSensitive(_jitem,    "canSell");
-    cJSON *jcanRepair   = cJSON_GetObjectItemCaseSensitive(_jitem,    "canRepair");
-    cJSON *jusers       = cJSON_GetObjectItemCaseSensitive(_jitem,    "Users");
-    cJSON *jstats       = cJSON_GetObjectItemCaseSensitive(_jitem,    "Stats");
-    cJSON *jeffects     = cJSON_GetObjectItemCaseSensitive(_jitem,    "Effects");
-    cJSON *jpassive     = cJSON_GetObjectItemCaseSensitive(jeffects, "id");
-    cJSON *jactive      = cJSON_GetObjectItemCaseSensitive(jeffects, "active");
-    cJSON *jprice       = cJSON_GetObjectItemCaseSensitive(_jitem,    "Price");
-    cJSON *jtypes       = cJSON_GetObjectItemCaseSensitive(_jitem,    "Types");
-    cJSON *jtypeid      = cJSON_GetObjectItemCaseSensitive(jtypes,   "id");
+    cJSON *jname        = cJSON_GetObjectItemCaseSensitive(_jitem,      "Name");
+    cJSON *jid          = cJSON_GetObjectItemCaseSensitive(_jitem,      "id");
+    cJSON *jdescription = cJSON_GetObjectItemCaseSensitive(_jitem,      "Description");
+    cJSON *jbonus_stats = cJSON_GetObjectItemCaseSensitive(_jitem,      "Bonus");
+    cJSON *jcanSell     = cJSON_GetObjectItemCaseSensitive(_jitem,      "canSell");
+    cJSON *jcanRepair   = cJSON_GetObjectItemCaseSensitive(_jitem,      "canRepair");
+    cJSON *jusers       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Users");
+    cJSON *jstats       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Stats");
+    cJSON *jeffects     = cJSON_GetObjectItemCaseSensitive(_jitem,      "Effects");
+    cJSON *jpassive     = cJSON_GetObjectItemCaseSensitive(jeffects,    "id");
+    cJSON *jactive      = cJSON_GetObjectItemCaseSensitive(jeffects,    "active");
+    cJSON *jprice       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Price");
+    cJSON *jtypes       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Types");
+    cJSON *jtypeid      = cJSON_GetObjectItemCaseSensitive(jtypes,      "id");
     item->id            = cJSON_GetNumberValue(jid); /* returns 0 if junit is NULL */
 
     /* - Users - */
@@ -486,7 +486,8 @@ void Item_readJSON(void *input, cJSON *_jitem) {
     }
 
     /* - Stats - */
-    Item_stats_readJSON(&(item->stats), jstats);
+    if (jstats != NULL)
+        Item_stats_readJSON(&(item->stats), jstats);
 
     /* - Type - */
     if (jtypeid != NULL)
