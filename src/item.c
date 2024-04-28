@@ -393,7 +393,6 @@ void Item_writeJSON(void *_input, cJSON *jitem) {
     /* - Aura - */
     Aura_writeJSON(&(_item->aura), jaura);
 
-
     /* -- Adding to JSON -- */
     cJSON_AddItemToObject(jitem,   "Name",        jname);
     cJSON_AddStringToObject(jitem, "Description", _item->description);
@@ -435,6 +434,7 @@ void Item_readJSON(void *input, cJSON *_jitem) {
     cJSON *jprice       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Price");
     cJSON *jtypes       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Types");
     cJSON *jtypeid      = cJSON_GetObjectItemCaseSensitive(jtypes,      "id");
+
     item->id            = cJSON_GetNumberValue(jid); /* returns 0 if junit is NULL */
 
     /* - Users - */
@@ -471,7 +471,7 @@ void Item_readJSON(void *input, cJSON *_jitem) {
     memcpy(item->description, string, strlen(string));
 
     /* - Bonus/Malus - */
-    Unit_stats_readJSON(&item->aura, jaura);
+    Aura_readJSON(&item->aura, jaura);
 
     /* - Effects - */
     if (jpassive != NULL)

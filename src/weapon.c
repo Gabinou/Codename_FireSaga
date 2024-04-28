@@ -86,14 +86,11 @@ void Weapon_readJSON(void *input, cJSON *jwpn) {
     cJSON *jsubtype         = cJSON_GetObjectItemCaseSensitive(jwpn, "Subtype");
     cJSON *jhandedness      = cJSON_GetObjectItemCaseSensitive(jwpn, "Handedness");
     cJSON *jeffective       = cJSON_GetObjectItemCaseSensitive(jwpn, "Effective");
-    cJSON *jaura            = cJSON_GetObjectItemCaseSensitive(jwpn, "Aura");
 
     if (jhandedness != NULL)
         weapon->handedness  = cJSON_GetNumberValue(jhandedness);
     if (jsubtype != NULL)
         weapon->subtype     = cJSON_GetNumberValue(jsubtype);
-    if (jaura != NULL)
-        Aura_readJSON(&weapon->item->aura, jaura);
     if (jstats != NULL)
         Weapon_stats_readJSON(&(weapon->stats), jstats);
 

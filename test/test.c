@@ -82,7 +82,7 @@ void unit_tests() {
     // nourstest_run("Equations ",     test_equations);
     // nourstest_run("Filesystem ",    test_filesystem);
     // nourstest_run("Game ",          test_game);
-    // nourstest_run("Item",           test_item);
+    nourstest_run("Item",           test_item);
     // nourstest_run("Map ",           test_map);
     // nourstest_run("Narrative ",     test_narrative);
     // nourstest_run("Pathfinding ",   test_pathfinding);
