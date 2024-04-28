@@ -7,37 +7,39 @@ void Unit_Bonus_Decay(struct Unit *unit) {
 
     size_t i = 0;
     while (i < DARR_NUM(unit->bonus_stack)) {
-        unit->bonus_stack[i].turns--;
-        if (unit->bonus_stack[i].turns == 0)
+        if (unit->bonus_stack[i].turns == 0) {
             DARR_DEL(unit->bonus_stack, i);
-        else
+        } else {
+            unit->bonus_stack[i].turns--;
             i++;
+        }
     }
 }
 
-struct Bonus_Stats Aura2Bonus(struct Aura *aura, tnecs_entity unit, u16 item, u16 skill, b32 active) {
+struct Bonus_Stats Aura2Bonus(struct Aura *aura, tnecs_entity unit, u16 item, u16 skill,
+                              b32 active) {
     struct Bonus_Stats bonus;
     bonus.unit_stats        = aura->unit_stats;
     bonus.computed_stats    = aura->computed_stats;
     bonus.range             = aura->range;
     bonus.turns             = aura->turns;
-    bonus.source_unit       = source_unit;
-    bonus.source_item       = source_item;
-    bonus.source_skill      = source_skill;
+    bonus.source_unit       = unit;
+    bonus.source_item       = item;
+    bonus.source_skill      = skill;
     bonus.active            = active;
-    return(bonus);
+    return (bonus);
 }
 
 b32 Bonus_Stats_Compare(struct Bonus_Stats bonus1, struct Bonus_Stats bonus2) {
     /* Check if bonus_stats are the same.
         Ostensibly, bonuses don't stack.
     */
-    out = true;
+    b32 out = true;
     out &= (bonus1.source_unit  == bonus2.source_unit);
     out &= (bonus1.source_item  == bonus2.source_item);
     out &= (bonus1.source_skill == bonus2.source_skill);
     out &= (bonus1.active       == bonus2.active);
-    return(out);
+    return (out);
 }
 
 void Unit_Bonus_Add(struct Unit *unit, struct Bonus_Stats bonus) {

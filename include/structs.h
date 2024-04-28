@@ -202,7 +202,7 @@ struct Bonus_Stats {
     tnecs_entity source_unit;
     u16 source_item;              /* Should be equipped by unit_ent */
     u16 source_skill;
-    b32 active
+    b32 active;
     i32 turns;
 };
 extern struct Bonus_Stats Bonus_Stats_default;
@@ -278,6 +278,7 @@ struct Aura {
     struct Computed_Stats   computed_stats;
     i32 turns;
 };
+extern struct Aura Aura_default;
 
 struct Weapon_stats {
     i32 attack[ATTACK_TYPES_NO_TOTAL];

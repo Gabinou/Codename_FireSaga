@@ -55,6 +55,9 @@ struct Inventory_item Inventory_item_broken = {
     .highlighted = true,
 };
 
+struct Bonus_Stats Bonus_Stats_default = {0};
+struct Aura Aura_default = {0};
+
 struct Shop Shop_default = {
     .items = NULL,
     .qty   = NULL,

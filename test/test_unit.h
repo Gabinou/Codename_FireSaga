@@ -1,6 +1,7 @@
 #include "nourstest.h"
 #include "platform.h"
 #include "unit/unit.h"
+#include "unit/bonus.h"
 #include "game/game.h"
 #include "game/unit.h"
 #include "RNG.h"
@@ -704,8 +705,55 @@ void test_reinforcements() {
 }
 
 void test_bonus() {
-    // TODO: test that decay of bonuses occurs properly.
+    /* Decay test */
+    struct Bonus_Stats bonus1 = Bonus_Stats_default;
+    struct Bonus_Stats bonus2 = Bonus_Stats_default;
+    struct Bonus_Stats bonus3 = Bonus_Stats_default;
+    struct Bonus_Stats bonus4 = Bonus_Stats_default;
+    struct Bonus_Stats bonus5 = Bonus_Stats_default;
 
+    bonus1.turns = 3;
+    bonus2.turns = 0;
+    bonus3.turns = 3;
+    bonus4.turns = 1;
+    bonus5.turns = 2;
+    struct Unit Silou = Unit_default;
+    Silou.bonus_stack   = DARR_INIT(Silou.bonus_stack,  struct Bonus_Stats, 2);
+    Unit_Bonus_Add(&Silou, bonus1);
+    Unit_Bonus_Add(&Silou, bonus2);
+    Unit_Bonus_Add(&Silou, bonus3);
+    Unit_Bonus_Add(&Silou, bonus4);
+    Unit_Bonus_Add(&Silou, bonus5);
+    nourstest_true(DARR_NUM(Silou.bonus_stack) == 5);
+    nourstest_true(Silou.bonus_stack[0].turns == 3);
+    nourstest_true(Silou.bonus_stack[1].turns == 0);
+    nourstest_true(Silou.bonus_stack[2].turns == 3);
+    nourstest_true(Silou.bonus_stack[3].turns == 1);
+    nourstest_true(Silou.bonus_stack[4].turns == 2);
+
+    Unit_Bonus_Decay(&Silou);
+    nourstest_true(DARR_NUM(Silou.bonus_stack) == 4);
+    nourstest_true(Silou.bonus_stack[0].turns == 2);
+    nourstest_true(Silou.bonus_stack[1].turns == 2);
+    nourstest_true(Silou.bonus_stack[2].turns == 0);
+    nourstest_true(Silou.bonus_stack[3].turns == 1);
+
+    Unit_Bonus_Decay(&Silou);
+    nourstest_true(DARR_NUM(Silou.bonus_stack) == 3);
+    nourstest_true(Silou.bonus_stack[0].turns == 1);
+    nourstest_true(Silou.bonus_stack[1].turns == 1);
+    nourstest_true(Silou.bonus_stack[2].turns == 0);
+
+    Unit_Bonus_Decay(&Silou);
+
+    nourstest_true(DARR_NUM(Silou.bonus_stack) == 2);
+    nourstest_true(Silou.bonus_stack[0].turns == 0);
+    nourstest_true(Silou.bonus_stack[1].turns == 0);
+
+    Unit_Bonus_Decay(&Silou);
+    nourstest_true(DARR_NUM(Silou.bonus_stack) == 0);
+    /* Free */
+    DARR_FREE(Silou.bonus_stack);
 }
 
 void test_unit() {
