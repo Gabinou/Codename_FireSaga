@@ -199,10 +199,11 @@ struct Bonus_Stats {
     struct Unit_stats       unit_stats;
     struct Computed_Stats   computed_stats;
     struct Range range;
-    tnecs_entity unit_ent;
-    u16 weapon_id;              /* Should be equipped by unit_ent */
-    i32 turn_limit;
-    i32 turns_left;
+    tnecs_entity source_unit;
+    u16 source_item;              /* Should be equipped by unit_ent */
+    u16 source_skill;
+    b32 active
+    i32 turns;
 };
 extern struct Bonus_Stats Bonus_Stats_default;
 
@@ -275,7 +276,7 @@ struct Aura {
     struct Range            range; /* [0]: min, [1]: max */
     struct Unit_stats       unit_stats;
     struct Computed_Stats   computed_stats;
-    i32 turn_limit;
+    i32 turns;
 };
 
 struct Weapon_stats {
@@ -543,10 +544,10 @@ typedef struct Unit {
 
     /* How to make sure bonus is still valid? */
     //  - Always remove aura if turn == 0
-    //  - When to decrement auras? -> Turn end 
-    //  - When to increment auras? 
-    //      -> Turn end, after decrementing auras 
-    //      -> Whenever a unit moves 
+    //  - When to decrement auras? -> Turn end
+    //  - When to increment auras?
+    //      -> Turn end, after decrementing auras
+    //      -> Whenever a unit moves
     //  turns_left == 0 means you remove next turn start
     //  Scenario: units waits in range of standard bearer 1 turn
     //      - Aura refreshes -> 1 turn

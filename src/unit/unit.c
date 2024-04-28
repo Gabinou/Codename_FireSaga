@@ -68,7 +68,6 @@ struct Unit Unit_default = {
     .current_stats      = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
     .growths            = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
     .bonus_stack        = NULL,
-    .malus_stack        = NULL,
 
     .hit_sequence    = {0, 0},
     .crit_sequence   = {0, 0},
@@ -144,7 +143,6 @@ struct Unit Unit_Nibal_make(void) {
         .growths            = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
         .agony              = -1,
         .bonus_stack        = NULL,
-        .malus_stack        = NULL,
 
         .skills         = UNIT_SKILL_VENOMOUS_SPIT,
         .exp            = 0,
@@ -187,15 +185,10 @@ void Unit_Allocs(struct Unit *unit) {
     unit->grown_stats   = DARR_INIT(unit->grown_stats,  struct Unit_stats, SOTA_MAX_LEVEL / 8);
     unit->status_queue  = DARR_INIT(unit->status_queue, struct Unit_status, 2);
     unit->bonus_stack   = DARR_INIT(unit->bonus_stack,  struct Bonus_Stats, 2);
-    // unit->malus_stack   = DARR_INIT(unit->malus_stack,  struct Bonus_Stats, 2);
 }
 
 void Unit_Free(struct Unit *unit) {
     SDL_assert(unit != NULL);
-    if (unit->malus_stack != NULL) {
-        DARR_FREE(unit->malus_stack);
-        unit->malus_stack = NULL;
-    }
     if (unit->bonus_stack != NULL) {
         DARR_FREE(unit->bonus_stack);
         unit->bonus_stack = NULL;
