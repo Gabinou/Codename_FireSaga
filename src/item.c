@@ -336,7 +336,7 @@ void Item_writeJSON(void *_input, cJSON *jitem) {
     SDL_assert(jitem != NULL);
     cJSON *jid        = cJSON_CreateNumber(_item->id);
     cJSON *jname      = cJSON_CreateString(_item->name.data);
-    cJSON *jbonus     = cJSON_CreateObject();
+    cJSON *jaura      = cJSON_CreateObject();
     cJSON *jcanSell   = cJSON_CreateBool(_item->canSell);
     cJSON *jusers     = cJSON_CreateObject();
     cJSON *jusers_ids = cJSON_CreateArray();
@@ -344,8 +344,6 @@ void Item_writeJSON(void *_input, cJSON *jitem) {
     cJSON *jclass     = cJSON_CreateObject();
     cJSON *jclass_ids = cJSON_CreateArray();
     cJSON *jclass_id  = NULL;
-
-    Unit_stats_writeJSON(&(_item->aura.unit_stats), jbonus);
 
     /* - Users - */
     if (_item->users != NULL) {
@@ -366,17 +364,18 @@ void Item_writeJSON(void *_input, cJSON *jitem) {
     cJSON_AddItemToObject(jclass, "id", jclass_ids);
 
     /* - Passive effects - */
+    // TODO: Fix writing effects
     cJSON *jpassives = cJSON_CreateObject();
     cJSON *jpassive = NULL;
     jpassive = cJSON_CreateNumber(_item->passive);
     cJSON_AddItemToObject(jpassives, "id", jpassive);
-    s8 *effects = Names_wpnEffects(_item->passive);
-    for (i16 i = 0; i < DARR_NUM(effects); i++) {
-        jpassive = cJSON_CreateString(effects[i].data);
-        cJSON_AddItemToObject(jpassives, "Effect", jpassive);
-        s8_free(&effects[i]);
-    }
-    DARR_FREE(effects);
+    // s8 *effects = Names_wpnEffects(_item->passive);
+    // for (i16 i = 0; i < DARR_NUM(effects); i++) {
+    //     jpassive = cJSON_CreateString(effects[i].data);
+    //     cJSON_AddItemToObject(jpassives, "Effect", jpassive);
+    //     s8_free(&effects[i]);
+    // }
+    // DARR_FREE(effects);
 
     /* - Types - */
     cJSON *jtypes = cJSON_CreateObject();
@@ -391,11 +390,15 @@ void Item_writeJSON(void *_input, cJSON *jitem) {
     }
     DARR_FREE(types);
 
+    /* - Aura - */
+    Aura_writeJSON(&(_item->aura), jaura);
+
+
     /* -- Adding to JSON -- */
     cJSON_AddItemToObject(jitem,   "Name",        jname);
-    cJSON_AddItemToObject(jitem,   "id",          jid);
     cJSON_AddStringToObject(jitem, "Description", _item->description);
-    cJSON_AddItemToObject(jitem,   "Bonus",       jbonus);
+    cJSON_AddItemToObject(jitem,   "id",          jid);
+    cJSON_AddItemToObject(jitem,   "Aura",        jaura);
     cJSON_AddItemToObject(jitem,   "Users",       jusers);
     cJSON_AddItemToObject(jitem,   "Class",       jclass);
     cJSON_AddItemToObject(jitem,   "canSell",     jcanSell);
@@ -421,7 +424,7 @@ void Item_readJSON(void *input, cJSON *_jitem) {
     cJSON *jname        = cJSON_GetObjectItemCaseSensitive(_jitem,      "Name");
     cJSON *jid          = cJSON_GetObjectItemCaseSensitive(_jitem,      "id");
     cJSON *jdescription = cJSON_GetObjectItemCaseSensitive(_jitem,      "Description");
-    cJSON *jbonus_stats = cJSON_GetObjectItemCaseSensitive(_jitem,      "Bonus");
+    cJSON *jaura        = cJSON_GetObjectItemCaseSensitive(_jitem,      "Aura");
     cJSON *jcanSell     = cJSON_GetObjectItemCaseSensitive(_jitem,      "canSell");
     cJSON *jcanRepair   = cJSON_GetObjectItemCaseSensitive(_jitem,      "canRepair");
     cJSON *jusers       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Users");
@@ -468,7 +471,7 @@ void Item_readJSON(void *input, cJSON *_jitem) {
     memcpy(item->description, string, strlen(string));
 
     /* - Bonus/Malus - */
-    // Unit_stats_readJSON(jbonus_stats, &(item->aura.unit_stats));
+    Unit_stats_readJSON(&item->aura, jaura);
 
     /* - Effects - */
     if (jpassive != NULL)

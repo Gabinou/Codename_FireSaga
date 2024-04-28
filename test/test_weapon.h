@@ -81,19 +81,9 @@ void test_weapon1() {
     }
 
     PHYSFS_mount("saves", NULL, 1);
-    SDL_Log("WRITE1");
-    s8 elem_name = jsonElementnames[JSON_WEAPON];
-    SDL_Log("Writing JSON element %s", elem_name.data);
-    elem_name = jsonElementnames[JSON_ITEM];
-    SDL_Log("Writing JSON element %s", elem_name.data);
-    elem_name = jsonElementnames[wpn1.json_element];
-    SDL_Log("Writing JSON element %s", elem_name.data);
 
     jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "weapon_test.json")), &wpn1, false);
-
-    SDL_Log("READ1");
     jsonio_readJSON(s8_literal(PATH_JOIN("saves", "weapon_test.json")), &wpn3);
-    SDL_Log("READING DONE");
     out_wpn_stats = wpn3.stats;
     nourstest_true(in_wpn_stats.attack[DAMAGE_TYPE_PHYSICAL] ==
                    out_wpn_stats.attack[DAMAGE_TYPE_PHYSICAL]);

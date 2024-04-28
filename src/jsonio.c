@@ -521,6 +521,7 @@ void Inventory_item_writeJSON(void *input, struct cJSON *jitem) {
 }
 
 void Item_stats_readJSON(void *input, struct cJSON *_jstats) {
+    SDL_assert(cJSON_IsObject(_jstats));
     struct Item_stats *stats = input;
     SDL_assert(_jstats != NULL);
     struct cJSON *jAP    = cJSON_GetObjectItem(_jstats, "AP");
@@ -532,19 +533,16 @@ void Item_stats_readJSON(void *input, struct cJSON *_jstats) {
 }
 
 void Range_writeJSON(void *input, struct cJSON *jrange) {
+    SDL_assert(cJSON_IsArray(jrange));
     struct Range *range = input;
-
-    struct cJSON *jarr      = cJSON_CreateArray();
     struct cJSON *jmin      = cJSON_CreateNumber(range->min);
     struct cJSON *jmax      = cJSON_CreateNumber(range->min);
-    cJSON_AddItemToArray(jarr, jmin);
-    cJSON_AddItemToArray(jarr, jmax);
-
-    cJSON_AddItemToObject(jrange, "Range", jarr);
-
+    cJSON_AddItemToArray(jrange, jmin);
+    cJSON_AddItemToArray(jrange, jmax);
 }
 
 void Range_readJSON(void *input, struct cJSON *jrange) {
+    SDL_assert(cJSON_IsArray(jrange));
     struct Range *range = input;
     SDL_assert(jrange != NULL);
 
@@ -572,10 +570,10 @@ void Computed_Stats_writeJSON(void *input, struct cJSON *jstats) {
     cJSON_AddItemToObject(jstats, "Protection", jarr);
 
 
-    struct cJSON *jrange_loadout  = cJSON_CreateObject();
+    struct cJSON *jrange_loadout  = cJSON_CreateArray();
     Range_writeJSON(&stats->range_loadout, jrange_loadout);
     cJSON_AddItemToObject(jstats, "Range_loadout", jrange_loadout);
-    struct cJSON *jrange_combined  = cJSON_CreateObject();
+    struct cJSON *jrange_combined  = cJSON_CreateArray();
     Range_writeJSON(&stats->range_combined, jrange_combined);
     cJSON_AddItemToObject(jstats, "Range_combined", jrange_combined);
 
@@ -586,14 +584,13 @@ void Computed_Stats_writeJSON(void *input, struct cJSON *jstats) {
     struct cJSON *jmove     = cJSON_CreateNumber(stats->move);
     struct cJSON *jspeed    = cJSON_CreateNumber(stats->speed);
     struct cJSON *jagony    = cJSON_CreateNumber(stats->agony);
-    cJSON_AddItemToObject(jstats, "hit", jarr);
-    cJSON_AddItemToObject(jstats, "dodge", jarr);
-    cJSON_AddItemToObject(jstats, "crit", jarr);
-    cJSON_AddItemToObject(jstats, "favor", jarr);
-    cJSON_AddItemToObject(jstats, "move", jarr);
-    cJSON_AddItemToObject(jstats, "speed", jarr);
-    cJSON_AddItemToObject(jstats, "agony", jarr);
-
+    cJSON_AddItemToObject(jstats, "hit", jhit);
+    cJSON_AddItemToObject(jstats, "dodge", jdodge);
+    cJSON_AddItemToObject(jstats, "crit", jcrit);
+    cJSON_AddItemToObject(jstats, "favor", jfavor);
+    cJSON_AddItemToObject(jstats, "move", jmove);
+    cJSON_AddItemToObject(jstats, "speed", jspeed);
+    cJSON_AddItemToObject(jstats, "agony", jagony);
 }
 
 void Computed_Stats_readJSON(void *input, struct cJSON *jstats) {
