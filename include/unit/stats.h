@@ -4,38 +4,13 @@
 #include "types.h"
 #include "enums.h"
 #include "structs.h"
-#include "filesystem.h"
-#include "weapon.h"
-#include "supports.h"
-#include "unit/mount.h"
-#include "nmath.h"
-#include "jsonio.h"
-#include "RNG.h"
-#include "physfs.h"
-#include "equations.h"
-#include "platform.h"
-#include "utilities.h"
-#include "combat.h"
-#include "unit/anim.h"
-#include "unit/status.h"
-#include "unit/boss.h"
-#include "unit/stats.h"
-#include "unit/mount.h"
 
-/* --- FORWARD DECLARATIONS --- */
-struct Item;
-struct Weapon;
-struct Damage;
-struct Position;
-struct Map;
-struct RNG_Sequence;
-struct Reinforcement;
 
 /* --- Unit stats --- */
 struct Unit_stats Unit_stats_plus(     struct Unit_stats stats1, struct Unit_stats stats2);
-struct Unit_stats Unit_stats_minus(    struct Unit_stats stats1, struct Unit_stats stats2);
-struct Unit_stats Unit_stats_div_cst(  struct Unit_stats stats,  int cst);
-struct Unit_stats Unit_stats_plus_cst( struct Unit_stats stats1, int cst);
-struct Unit_stats Unit_stats_minus_cst(struct Unit_stats stats,  int cst);
+struct Unit_stats Unit_stats_plus_cst( struct Unit_stats stats1, i32 cst);
+struct Computed_Stats Computed_Stats_plus(     struct Computed_Stats stats1,
+                                               struct Computed_Stats stats2);
+struct Computed_Stats Computed_Stats_plus_cst( struct Computed_Stats stats1, i32 cst);
 
 #endif /* UNIT_STATS_H */

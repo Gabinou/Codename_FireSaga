@@ -752,6 +752,7 @@ void test_bonus() {
 
     Unit_Bonus_Decay(&Silou);
     nourstest_true(DARR_NUM(Silou.bonus_stack) == 0);
+
     /* Free */
     DARR_FREE(Silou.bonus_stack);
 }

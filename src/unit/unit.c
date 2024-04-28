@@ -1802,48 +1802,22 @@ struct Unit_stats Unit_effectiveGrowths(struct Unit *unit) {
 }
 
 struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
-    /* bases + grown + bonus - malus */
+    /* current_stats + all bonuses */
     SDL_assert(unit);
-    /* Skip if not update_stats? */
-    if (!unit->update_stats) {
-        return (unit->effective_stats);
-    }
+
 
     /* Preparation */
     struct Unit_stats temp_ustats = Unit_stats_default;
     // unit->aura.unit_stats             = Unit_stats_default;
-    unit->malus_stats             = Unit_stats_default;
     unit->effective_stats         = unit->current_stats;
-    struct Weapon *weapon;
+    // Unit_stats_plus(unit->aura.unit_stats, weapon->item->aura.unit_stats);
 
-    /* Computing effective stats for strong hand weapon */
-    /* just wielding the weapon increases stats */
-    if (unit->equipped[UNIT_HAND_LEFT]) {
-        SDL_assert(unit->_equipment[UNIT_HAND_LEFT].id != ITEM_NULL);
-        weapon = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_LEFT].id);
-        // Unit_stats_plus(unit->aura.unit_stats, weapon->item->aura.unit_stats);
-        // Unit_stats_plus(unit->malus_stats, weapon->item->malus_stats);
-    }
-    /* Computing effective stats for right hand weapon */
-    if (unit->equipped[UNIT_HAND_RIGHT]) {
-        SDL_assert(unit->_equipment[UNIT_HAND_RIGHT].id != ITEM_NULL);
-        weapon = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_RIGHT].id);
-        SDL_assert(weapon != ITEM_NULL);
-        SDL_assert(weapon->item != ITEM_NULL);
-        // Unit_stats_plus(unit->aura.unit_stats, weapon->item->aura.unit_stats);
-        // Unit_stats_plus(unit->malus_stats, weapon->item->malus_stats);
-    }
 
-    /* If unit is mounted, unit movement is mount movement */
     if (unit->mount != NULL)
         unit->effective_stats.move = MOVE_WITH_MOUNT;
 
     // Unit_stats_plus(unit->effective_stats,  unit->aura.unit_stats);
     // Unit_stats_minus(unit->effective_stats, unit->malus_stats);
-
-    /* effective HP is total hp plus bonuses */
-    unit->effective_stats.hp = unit->current_stats.hp;
-    //TODO: hp bonuses
 
     return (unit->effective_stats);
 }
