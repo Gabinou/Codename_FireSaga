@@ -72,32 +72,32 @@ void render_tests() {
 void unit_tests() {
     SDL_Log("Running unit tests\n");
     printf("Running unit tests\n");
-    // nourstest_run("AI ",            test_AI);
-    // nourstest_run("Bitfields ",     test_bitfields);
-    // nourstest_run("Camp ",          test_camp);
-    // nourstest_run("Combat ",        test_combat);
-    // nourstest_run("Convoy ",        test_convoy);
-    // // nourstest_run("CRT ",        test_crt); // CRT filter too slow
-    // nourstest_run("Enums ",         test_enums);
-    // nourstest_run("Equations ",     test_equations);
-    // nourstest_run("Filesystem ",    test_filesystem);
-    // nourstest_run("Game ",          test_game);
+    nourstest_run("AI ",            test_AI);
+    nourstest_run("Bitfields ",     test_bitfields);
+    nourstest_run("Camp ",          test_camp);
+    nourstest_run("Combat ",        test_combat);
+    nourstest_run("Convoy ",        test_convoy);
+    // nourstest_run("CRT ",        test_crt); // CRT filter too slow
+    nourstest_run("Enums ",         test_enums);
+    nourstest_run("Equations ",     test_equations);
+    nourstest_run("Filesystem ",    test_filesystem);
+    nourstest_run("Game ",          test_game);
     nourstest_run("Item",           test_item);
-    // nourstest_run("Map ",           test_map);
-    // nourstest_run("Narrative ",     test_narrative);
-    // nourstest_run("Pathfinding ",   test_pathfinding);
-    // nourstest_run("Menu ",          test_menu);
-    // nourstest_run("nstr ",          test_nstr);
-    // nourstest_run("Octant ",        test_octant);
-    // nourstest_run("Party ",         test_party);
-    // nourstest_run("Position ",      test_position);
-    // nourstest_run("Pixelfonts ",    test_pixelfonts);
-    // nourstest_run("RNG ",           test_RNG);
-    // nourstest_run("Sprite ",        test_sprite);
-    // nourstest_run("Text ",          test_text);
-    // nourstest_run("Tile ",          test_tile);
-    // nourstest_run("Unit ",          test_unit);
-    // nourstest_run("Utilities ",     test_utilities);
+    nourstest_run("Map ",           test_map);
+    nourstest_run("Narrative ",     test_narrative);
+    nourstest_run("Pathfinding ",   test_pathfinding);
+    nourstest_run("Menu ",          test_menu);
+    nourstest_run("nstr ",          test_nstr);
+    nourstest_run("Octant ",        test_octant);
+    nourstest_run("Party ",         test_party);
+    nourstest_run("Position ",      test_position);
+    nourstest_run("Pixelfonts ",    test_pixelfonts);
+    nourstest_run("RNG ",           test_RNG);
+    nourstest_run("Sprite ",        test_sprite);
+    nourstest_run("Text ",          test_text);
+    nourstest_run("Tile ",          test_tile);
+    nourstest_run("Unit ",          test_unit);
+    nourstest_run("Utilities ",     test_utilities);
     nourstest_run("Weapon ",        test_weapon);
 }
 

@@ -275,6 +275,7 @@ struct Aura {
     struct Range            range; /* [0]: min, [1]: max */
     struct Unit_stats       unit_stats;
     struct Computed_Stats   computed_stats;
+    i32 turn_limit;
 };
 
 struct Weapon_stats {
@@ -541,6 +542,18 @@ typedef struct Unit {
     struct Unit_stats base_stats;
 
     /* How to make sure bonus is still valid? */
+    //  - Always remove aura if turn == 0
+    //  - When to decrement auras? -> Turn end 
+    //  - When to increment auras? 
+    //      -> Turn end, after decrementing auras 
+    //      -> Whenever a unit moves 
+    //  turns_left == 0 means you remove next turn start
+    //  Scenario: units waits in range of standard bearer 1 turn
+    //      - Aura refreshes -> 1 turn
+    //      - Leave aura, end turn -> 0 turn
+    //      - Leave aura, end turn -> removed
+
+
     // - If Passive aura,   source is unit holding a weapon in range
     //      1. weapon held in unit hands &&
     //      2. unit in range &&
@@ -556,7 +569,6 @@ typedef struct Unit {
     //      2. unit is not self (IMPLICIT)
 
     struct Bonus_Stats *bonus_stack;
-    struct Bonus_Stats *malus_stack;
     struct Unit_stats bonus_stats; // TODO remove for new Bonus_Stat Struct
     struct Unit_stats malus_stats; // TODO remove for new Bonus_Stat Struct
     struct Unit_stats caps_stats;

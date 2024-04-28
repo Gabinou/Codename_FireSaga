@@ -1,39 +1,17 @@
 
-#include "unit/bonus.h"
+#include "unit/aura.h"
 
-// TODO: Same functions for maluses
+void Unit_Bonus_Decay(struct Unit *unit) {
+    SDL_assert(unit                 != NULL);
+    SDL_assert(unit->bonus_stack    != NULL);
 
-/* Increment turn and remove expired bonuses from stack */
-void Unit_Bonus_Turn(struct Unit *unit) {
-
+    size_t i = 0;
+    while (i < DARR_NUM(unit->bonus_stack)) {
+        unit->bonus_stack[i].turns--;
+        if (unit->bonus_stack[i].turns == 0)
+            DARR_DEL(unit->bonus_stack, i);
+        else
+            i++;
+    }
 }
 
-/* Compute support bonus from supporter at order, add to bonus_stack */
-/* Range check should be done previously. */
-void Unit_Bonus_Support_Add(struct Unit *unit, i16 _id) {
-
-}
-
-/* Check if Any bonus comes from weapon.
-If so, check if still in hand.
-If not in hand, remove bonus from bonus_Stack */
-void Unit_Bonus_Weapon_Refresh(struct Unit *unit, i16 _id) {
-
-}
-
-/* Iterate over every friendly:
-    - Check if supporting friendly in range
-    - If so refresh support in bonus_stack
-    - If not remove from bonus_stack
-    */
-void Game_Bonus_Supports_Refresh(struct Game *sota) {
-
-
-}
-
-/* Check if any bonus comes from a passive aura (standard)
-If so, check conditions.
-If not satisfied, remove from bonus_stack  */
-void Game_Bonus_Aura_Standard_Refresh(struct Game *sota) {
-
-}

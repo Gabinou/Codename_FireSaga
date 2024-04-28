@@ -22,12 +22,14 @@ void Unit_Status_Decrement(struct Unit *unit) {
     if (unit->status_queue == NULL) {
         return;
     }
-    for (size_t i = 0; i < DARR_NUM(unit->status_queue); i++) {
+    size_t i = 0;
+    while (i < DARR_NUM(unit->status_queue)) {
         unit->status_queue[i].turns--;
         if (unit->status_queue[i].turns <= 0)
             DARR_DEL(unit->status_queue, i);
+        else
+            i++;
     }
-
 }
 
 i16 Unit_Status_Find(struct Unit *unit, i16 status) {

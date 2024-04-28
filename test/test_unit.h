@@ -703,6 +703,11 @@ void test_reinforcements() {
     Unit_Free(&Corsair);
 }
 
+void test_bonus() {
+    // TODO: test that decay of bonuses occurs properly.
+
+}
+
 void test_unit() {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
 
@@ -712,6 +717,7 @@ void test_unit() {
     test_wpn_or_item();
     // test_io();
     test_growth();
+    test_bonus();
     test_reinforcements();
 
     URN_debug = -1;
