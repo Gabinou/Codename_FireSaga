@@ -1044,10 +1044,21 @@ i32 *Unit_computeDefense(struct Unit *unit) {
         prot_M += prot[DMG_TYPE_MAGICAL];
     }
 
+    /* Add all bonuses */
+    i32 bonus_P = 0, bonus_M = 0;
+    if (unit->bonus_stack != NULL) {
+        for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
+            bonus_P += unit->bonus_stack[i].computed_stats.protection[0];
+            bonus_M += unit->bonus_stack[i].computed_stats.protection[1];
+        }
+    }
+
     /* Adding shield protection to effective stats */
     struct Unit_stats effstats = unit->effective_stats;
-    unit->computed_stats.protection[DMG_TYPE_PHYSICAL] = Equation_Weapon_defense(prot_P, effstats.def);
-    unit->computed_stats.protection[DMG_TYPE_MAGICAL]  = Equation_Weapon_defense(prot_M, effstats.res);
+    unit->computed_stats.protection[DMG_TYPE_PHYSICAL] = Equation_Weapon_Defensevar(3, prot_P,
+                                                         effstats.def, bonus_P);
+    unit->computed_stats.protection[DMG_TYPE_MAGICAL]  = Equation_Weapon_Defensevar(3, prot_M,
+                                                         effstats.res, bonus_M);
     return (unit->computed_stats.protection);
 }
 
@@ -1103,12 +1114,24 @@ i32 *Unit_computeAttack(struct Unit *unit, int distance) {
     /* -- Adding weapon attack to effective stats -- */
     struct Unit_stats effstats = unit->effective_stats;
 
+    /* Add all bonuses */
+    i32 bonus_P = 0, bonus_M = 0, bonus_T = 0;
+    if (unit->bonus_stack != NULL) {
+        for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
+            bonus_P += unit->bonus_stack[i].computed_stats.attack[0];
+            bonus_M += unit->bonus_stack[i].computed_stats.attack[1];
+            bonus_T += unit->bonus_stack[i].computed_stats.attack[2];
+        }
+    }
+
     /* No attacking with only fists -> 0 attack means don't add str/mag */
     if (attack_P > 0)
-        unit->computed_stats.attack[DMG_TYPE_PHYSICAL] = Equation_Weapon_Attack(attack_P, effstats.str);
+        unit->computed_stats.attack[DMG_TYPE_PHYSICAL] = Equation_Weapon_Attackvar(3, attack_P,
+                                                         effstats.str, bonus_P);
     if (attack_M > 0)
-        unit->computed_stats.attack[DMG_TYPE_MAGICAL]  = Equation_Weapon_Attack(attack_M, effstats.mag);
-    unit->computed_stats.attack[DMG_TYPE_TRUE] = attack_T;
+        unit->computed_stats.attack[DMG_TYPE_MAGICAL]  = Equation_Weapon_Attackvar(3, attack_M,
+                                                         effstats.mag, bonus_M);
+    unit->computed_stats.attack[DMG_TYPE_TRUE] = Equation_Weapon_Attackvar(2, attack_T, bonus_T);
 
     /* -- DUAL WIELDING -- */
     /* Terrible malus if dual wielding without skill */

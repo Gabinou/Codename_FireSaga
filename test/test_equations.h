@@ -228,10 +228,10 @@ void test_Equation_simple() {
     nourstest_true(Equation_Weapon_Attackvar(2, UINT8_MAX, 2) == UINT8_MAX);
     nourstest_true(Equation_Weapon_Attackvar(3, 3, 4, 5) == 12);
 
-    nourstest_true(Equation_Weapon_defense(1, 2) == 3);
-    nourstest_true(Equation_Weapon_defense(UINT8_MAX, 2) == UINT8_MAX);
-    nourstest_true(Equation_Weapon_defense(1, UINT8_MAX) == UINT8_MAX);
-    nourstest_true(Equation_Weapon_defense(0, 0) == 0);
+    nourstest_true(Equation_Weapon_Defense(1, 2) == 3);
+    nourstest_true(Equation_Weapon_Defense(UINT8_MAX, 2) == UINT8_MAX);
+    nourstest_true(Equation_Weapon_Defense(1, UINT8_MAX) == UINT8_MAX);
+    nourstest_true(Equation_Weapon_Defense(0, 0) == 0);
     nourstest_true(Equation_Weapon_Defensevar(2, 1, 2) == 3);
     nourstest_true(Equation_Weapon_Defensevar(2, 1, UINT8_MAX) == UINT8_MAX);
     nourstest_true(Equation_Weapon_Defensevar(2, UINT8_MAX, 2) == UINT8_MAX);

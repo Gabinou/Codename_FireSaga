@@ -117,7 +117,7 @@ i32 Equation_Unit_Favor(i32 wpn_favor, i32 faith, i32 bonus) {
 }
 
 // prot -> protection which is def/res
-i32 Equation_Weapon_defense(i32 prot, i32 tile_prot) {
+i32 Equation_Weapon_Defense(i32 prot, i32 tile_prot) {
     i32 out_def = nmath_bplus(prot, tile_prot, UINT8_MAX);
     return (out_def);
 }
