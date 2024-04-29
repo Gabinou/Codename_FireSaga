@@ -206,7 +206,8 @@ enum SOTA_LIMITS {
     SOTA_MIN_FAVOR      =  100,
     SOTA_MAX_FAVOR      =    0,
 
-    SOTA_MAX_SPEED      =  -50,
+    SOTA_MIN_SPEED      =  -50,
+    SOTA_MAX_SPEED      =   50,
     SOTA_MIN_DODGE      =  100,
     SOTA_MAX_DODGE      = -100, /* negative: Slowed by big weapons */
     SOTA_MIN_AGONY      =    0,

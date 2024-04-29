@@ -13,7 +13,7 @@ struct Range *Unit_Range_Loadout(struct Unit   *unit) {
     range->max = 0;
     Unit_isdualWielding(unit);
 
-    bool stronghand = Unit_Hand_Strong(unit);
+    b32 stronghand = Unit_Hand_Strong(unit);
     do {
         /* If dual wielding, range_loadout is combined. */
         if (unit->isDualWielding) {
@@ -71,10 +71,10 @@ struct Range *Unit_Range_Item(struct Unit   *unit, int i) {
 */
 
 struct Range *_Unit_Range_Combine( struct Unit   *unit, struct Range *range,
-                                   bool equipped, int archetype) {
+                                   b32 equipped, int archetype) {
     /* - Finds range of ANYTHING - */
     int num = equipped ? UNIT_HANDS_NUM : DEFAULT_EQUIPMENT_SIZE;
-    bool stronghand = Unit_Hand_Strong(unit);
+    b32 stronghand = Unit_Hand_Strong(unit);
     for (int i = 0; i < num; i++) {
         /* Skip if no item */
         if (unit->_equipment[i].id == ITEM_NULL)
@@ -114,7 +114,7 @@ struct Range *Unit_Range_Combine_Equipment(struct Unit *unit) {
     return (Unit_Range_Combine(unit, false));
 }
 
-struct Range *Unit_Range_Combine(struct Unit *unit, bool equipped) {
+struct Range *Unit_Range_Combine(struct Unit *unit, b32 equipped) {
     /* Compute range using unit rangemap */
     int archetype = ITEM_ARCHETYPE_WEAPON;
     int rangemap = unit->user_rangemap > RANGEMAP_NULL ? unit->user_rangemap : unit->rangemap;
@@ -131,7 +131,7 @@ struct Range *Unit_Range_Combine(struct Unit *unit, bool equipped) {
     return (_Unit_Range_Combine(unit, range, equipped, archetype));
 }
 
-struct Range *Unit_Range_Combine_Staves(struct Unit *unit, bool equipped) {
+struct Range *Unit_Range_Combine_Staves(struct Unit *unit, b32 equipped) {
     /* - Finds range only for same weapon type as DECIDED BY INPUT - */
 
     struct Range *range = &unit->computed_stats.range_combined;
@@ -142,7 +142,7 @@ struct Range *Unit_Range_Combine_Staves(struct Unit *unit, bool equipped) {
     return (range);
 }
 
-struct Range *Unit_Range_Combine_Weapons(struct Unit *unit, bool equipped) {
+struct Range *Unit_Range_Combine_Weapons(struct Unit *unit, b32 equipped) {
     /* - Finds range only for same weapon type as DECIDED BY INPUT - */
 
     struct Range *range = &unit->computed_stats.range_combined;
@@ -153,20 +153,23 @@ struct Range *Unit_Range_Combine_Weapons(struct Unit *unit, bool equipped) {
     return (range);
 }
 
-bool Range_Valid(struct Range range) {
-    return ((range.max > 0) && (range.min > 0) && (range.min <= SOTA_MAX_RANGE)
-            && (range.max <= SOTA_MAX_RANGE));
+b32 Range_Valid(struct Range range) {
+    return ((range.max >= SOTA_MIN_RANGE) &&
+            (range.min >= SOTA_MIN_RANGE) &&
+            (range.min <= SOTA_MAX_RANGE) &&
+            (range.max <= SOTA_MAX_RANGE));
 }
 
 void Ranges_Combine(struct Range *r1, struct Range r2) {
+    /* Combine ranges. Should never leave gaps*/
     // Gap example:    1  2  3  4  5
     // r1: [1,1]      |-|             (gap with    r2)
     // r1: [1,2]      |----|          (no gap with r2)
     // r2: [3,5]            |-------|
-    bool r1_valid = Range_Valid(*r1);
-    bool r2_valid = Range_Valid(r2);
+    b32 r1_valid = Range_Valid(*r1);
+    b32 r2_valid = Range_Valid(r2);
 
-    bool gap  = (r1->max < (r2.min  - 1)) || (r1->min > (r2.max  + 1));
+    b32 gap  = (r1->max < (r2.min  - 1)) || (r1->min > (r2.max  + 1));
 
     if (gap && r1_valid && r2_valid) {
         SDL_Log("Gap in combined ranges. Should never happen.");
@@ -176,6 +179,14 @@ void Ranges_Combine(struct Range *r1, struct Range r2) {
     r1->max = r1->max > r2.max ? r1->max : r2.max; /* Best max range is biggest  */
     r1->min = r1->min < r2.min ? r1->min : r2.min; /* Best min range is smallest */
 }
+
+struct Range _Ranges_Combine(struct Range r1, struct Range r2) {
+    struct Range out;
+    out.max = r1.max > r2.max ? r1.max : r2.max; /* Best max range is biggest  */
+    out.min = r1.min < r2.min ? r1.min : r2.min; /* Best min range is smallest */
+    return (out);
+}
+
 
 /* --- Rangemap --- */
 int Unit_Rangemap_Get(struct Unit *unit) {
@@ -191,7 +202,7 @@ void Unit_Rangemap_Toggle(struct Unit *unit) {
         unit->user_rangemap = unit->rangemap;
 
     /* Toggle only if hasStaff or canAttack with equipment*/
-    bool toggle = false;
+    b32 toggle = false;
     toggle |= Unit_canAttack_Eq(unit) && (unit->user_rangemap == RANGEMAP_HEALMAP);
     toggle |= Unit_canStaff_Eq(unit)  && (unit->user_rangemap == RANGEMAP_ATTACKMAP);
 
@@ -206,7 +217,7 @@ void Unit_Rangemap_Toggle(struct Unit *unit) {
 
 void Unit_Rangemap_Equipment(struct Unit *unit) {
     /* 1- Weapon equipped in strong hand */
-    bool stronghand = Unit_Hand_Strong(unit);
+    b32 stronghand = Unit_Hand_Strong(unit);
     if (unit->equipped[stronghand]) {
         Weapon_Load(unit->weapons_dtab, unit->_equipment[stronghand].id);
         struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[stronghand].id);
@@ -221,7 +232,7 @@ void Unit_Rangemap_Equipment(struct Unit *unit) {
     }
 
     /* 2- Weapon equipped in weak hand */
-    bool weakhand = 1 - stronghand;
+    b32 weakhand = 1 - stronghand;
     if (unit->equipped[weakhand] && unit->hands[weakhand]) {
         Weapon_Load(unit->weapons_dtab, unit->_equipment[weakhand].id);
         struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[weakhand].id);

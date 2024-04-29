@@ -67,32 +67,32 @@ struct Computed_Stats Computed_Stats_plus(struct Computed_Stats stats1,
     struct Computed_Stats out_stats = Computed_Stats_default;
 
     out_stats.attack[0] = nmath_inbounds_int32_t((stats1.attack[0] + stats2.attack[0]),
-                                                    SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
+                                                 SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
     out_stats.attack[1] = nmath_inbounds_int32_t((stats1.attack[1] + stats2.attack[1]),
-                                                    SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
+                                                 SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
     out_stats.attack[2] = nmath_inbounds_int32_t((stats1.attack[2] + stats2.attack[2]),
-                                                    SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
+                                                 SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
     out_stats.protection[0] = nmath_inbounds_int32_t((stats1.protection[0] + stats2.protection[0]),
-                                                    SOTA_MIN_PROTECTION, SOTA_MAX_PROTECTION);
+                                                     SOTA_MIN_PROT, SOTA_MAX_PROT);
     out_stats.protection[1] = nmath_inbounds_int32_t((stats1.protection[1] + stats2.protection[1]),
-                                                    SOTA_MIN_PROTECTION, SOTA_MAX_PROTECTION);
-    out_stats.hit  = nmath_inbounds_int32_t((stats1.hit + stats2.hit),  SOTA_MIN_HIT, SOTA_MAX_HIT);
-    out_stats.dodge  = nmath_inbounds_int32_t((stats1.dodge + stats2.dodge),  SOTA_MIN_DODGE, SOTA_MAX_DODGE);
-    out_stats.crit  = nmath_inbounds_int32_t((stats1.crit + stats2.crit),  SOTA_MIN_CRIT, SOTA_MAX_CRIT);
-    out_stats.favor  = nmath_inbounds_int32_t((stats1.favor + stats2.favor),  SOTA_MIN_FAVOR, SOTA_MAX_FAVOR);
-    out_stats.move  = nmath_inbounds_int32_t((stats1.move + stats2.move),  SOTA_MIN_MOVE, SOTA_MAX_MOVE);
-    out_stats.speed  = nmath_inbounds_int32_t((stats1.speed + stats2.speed),  SOTA_MIN_SPEED, SOTA_MAX_SPEED);
-    out_stats.agony  = nmath_inbounds_int32_t((stats1.agony + stats2.agony),  SOTA_MIN_AGONY, SOTA_MAX_AGONY);
-    out_stats.hit  = nmath_inbounds_int32_t((stats1.hit + stats2.hit),  SOTA_MIN_HIT, SOTA_MAX_HIT);
-    out_stats.hit  = nmath_inbounds_int32_t((stats1.hit + stats2.hit),  SOTA_MIN_HIT, SOTA_MAX_HIT);
+                                                     SOTA_MIN_PROT, SOTA_MAX_PROT);
+    out_stats.hit   = nmath_inbounds_int32_t((stats1.hit    + stats2.hit),   SOTA_MIN_HIT,
+                                             SOTA_MAX_HIT);
+    out_stats.dodge = nmath_inbounds_int32_t((stats1.dodge  + stats2.dodge), SOTA_MIN_DODGE,
+                                             SOTA_MAX_DODGE);
+    out_stats.crit  = nmath_inbounds_int32_t((stats1.crit   + stats2.crit),  SOTA_MIN_CRIT,
+                                             SOTA_MAX_CRIT);
+    out_stats.favor = nmath_inbounds_int32_t((stats1.favor  + stats2.favor), SOTA_MIN_FAVOR,
+                                             SOTA_MAX_FAVOR);
+    out_stats.move  = nmath_inbounds_int32_t((stats1.move   + stats2.move),  SOTA_MIN_MOVE,
+                                             SOTA_MAX_MOVE);
+    out_stats.speed = nmath_inbounds_int32_t((stats1.speed  + stats2.speed), SOTA_MIN_SPEED,
+                                             SOTA_MAX_SPEED);
+    out_stats.agony = nmath_inbounds_int32_t((stats1.agony  + stats2.agony), SOTA_MIN_AGONY,
+                                             SOTA_MAX_AGONY);
 
-    // i32 dodge; /* can be negative */
-    // i32 crit;
-    // i32 favor;
-    // i32 move;
-    // i32 speed; /* relative to agi so +/- */
-    // i32 agony;
-    // struct Range range_combined;    /* Range of all equipment */
-    // struct Range range_loadout;     /* Range of equipped weapons */
+    out_stats.range_loadout     = _Ranges_Combine(stats1.range_loadout,     stats2.range_loadout);
+    out_stats.range_combined    = _Ranges_Combine(stats1.range_combined,    stats2.range_combined);
+
     return (out_stats);
 }
