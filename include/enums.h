@@ -199,17 +199,17 @@ enum SOTA_LIMITS {
     SOTA_MIN_PROT       =    0,
     SOTA_MAX_PROT       = 0xFF,
 
-    SOTA_MIN_HIT        =  100,
-    SOTA_MAX_HIT        =    0,
-    SOTA_MIN_CRIT       =  100,
-    SOTA_MAX_CRIT       =    0,
-    SOTA_MIN_FAVOR      =  100,
-    SOTA_MAX_FAVOR      =    0,
+    SOTA_MIN_HIT        =    0,
+    SOTA_MAX_HIT        = 0xFF,
+    SOTA_MIN_CRIT       =    0,
+    SOTA_MAX_CRIT       = 0xFF,
+    SOTA_MIN_FAVOR      =    0,
+    SOTA_MAX_FAVOR      = 0xFF,
 
     SOTA_MIN_SPEED      =  -50,
     SOTA_MAX_SPEED      =   50,
-    SOTA_MIN_DODGE      =  100,
-    SOTA_MAX_DODGE      = -100, /* negative: Slowed by big weapons */
+    SOTA_MAX_DODGE      =  100,
+    SOTA_MIN_DODGE      = -100, /* negative: Slowed by big weapons */
     SOTA_MIN_AGONY      =    0,
     SOTA_MAX_AGONY      =   10,
     SOTA_MIN_RANGE      =    0,

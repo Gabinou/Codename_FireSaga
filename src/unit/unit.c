@@ -1340,6 +1340,7 @@ i32 Unit_computeHit(struct Unit *unit, int distance) {
     i32 supports = 0, wpn_hit = 0;
     i32 hit_L    = 0, hit_R   = 0;
     struct Weapon *weapon;
+
     /* Get stats of both weapons */
     if (unit->equipped[UNIT_HAND_LEFT]) {
         SDL_assert(unit->_equipment[UNIT_HAND_LEFT].id > ITEM_NULL);
@@ -1352,10 +1353,21 @@ i32 Unit_computeHit(struct Unit *unit, int distance) {
         hit_R    = Weapon_Stat_inRange(weapon, WEAPON_STAT_HIT, distance);
     }
 
+    /* Combine hit of both weapons */
     wpn_hit = Equation_Weapon_Hit(hit_L, hit_R);
 
+    /* Compute hit */
     struct Unit_stats effstats = unit->effective_stats;
     unit->computed_stats.hit   = Equation_Unit_Hit(wpn_hit, effstats.dex, effstats.luck, supports);
+
+    /* Add all bonuses */
+    if (unit->bonus_stack != NULL) {
+        for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
+            unit->computed_stats.hit += unit->bonus_stack[i].computed_stats.hit;
+        }
+    }
+
+
     return (unit->computed_stats.hit);
 }
 
@@ -1805,19 +1817,19 @@ struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
     /* current_stats + all bonuses */
     SDL_assert(unit);
 
-
     /* Preparation */
-    struct Unit_stats temp_ustats = Unit_stats_default;
-    // unit->aura.unit_stats             = Unit_stats_default;
-    unit->effective_stats         = unit->current_stats;
-    // Unit_stats_plus(unit->aura.unit_stats, weapon->item->aura.unit_stats);
+    unit->effective_stats = unit->current_stats;
 
+    /* Add all bonuses */
+    if (unit->bonus_stack != NULL) {
+        for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
+            unit->effective_stats = Unit_stats_plus(unit->effective_stats, unit->bonus_stack[i].unit_stats);
+        }
+    }
 
+    /* Add Mount move */
     if (unit->mount != NULL)
-        unit->effective_stats.move = MOVE_WITH_MOUNT;
-
-    // Unit_stats_plus(unit->effective_stats,  unit->aura.unit_stats);
-    // Unit_stats_minus(unit->effective_stats, unit->malus_stats);
+        unit->effective_stats.move = unit->mount->move;
 
     return (unit->effective_stats);
 }

@@ -171,7 +171,7 @@ void Ranges_Combine(struct Range *r1, struct Range r2) {
 
     b32 gap  = (r1->max < (r2.min  - 1)) || (r1->min > (r2.max  + 1));
 
-    if (gap && r1_valid && r2_valid) {
+    if (gap || !r1_valid || !r2_valid) {
         SDL_Log("Gap in combined ranges. Should never happen.");
         exit(ERROR_OutofBounds);
     }
