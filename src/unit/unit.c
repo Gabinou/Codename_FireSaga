@@ -1337,7 +1337,7 @@ i32 Unit_computeRegrets(struct Unit *unit) {
 i32 Unit_computeHit(struct Unit *unit, int distance) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
-    i32 supports = 0, wpn_hit = 0;
+    i32 bonus   = 0, wpn_hit = 0;
     i32 hit_L    = 0, hit_R   = 0;
     struct Weapon *weapon;
 
@@ -1356,17 +1356,16 @@ i32 Unit_computeHit(struct Unit *unit, int distance) {
     /* Combine hit of both weapons */
     wpn_hit = Equation_Weapon_Hit(hit_L, hit_R);
 
-    /* Compute hit */
-    struct Unit_stats effstats = unit->effective_stats;
-    unit->computed_stats.hit   = Equation_Unit_Hit(wpn_hit, effstats.dex, effstats.luck, supports);
-
     /* Add all bonuses */
     if (unit->bonus_stack != NULL) {
         for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
-            unit->computed_stats.hit += unit->bonus_stack[i].computed_stats.hit;
+            bonus += unit->bonus_stack[i].computed_stats.hit;
         }
     }
 
+    /* Compute hit */
+    struct Unit_stats effstats = unit->effective_stats;
+    unit->computed_stats.hit   = Equation_Unit_Hit(wpn_hit, effstats.dex, effstats.luck, bonus);
 
     return (unit->computed_stats.hit);
 }
@@ -1374,10 +1373,10 @@ i32 Unit_computeHit(struct Unit *unit, int distance) {
 i32 Unit_computeDodge(struct Unit *unit, int distance) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
-    i32 support   = 0, tile_dodge = 0;
-    i32 wgt_L     = 0, wgt_R      = 0;
-    i32 dodge_L   = 0, dodge_R    = 0;
-    i32 wpn_dodge = 0, wpn_wgt    = 0;
+    i32 bonus       = 0, tile_dodge = 0;
+    i32 wgt_L       = 0, wgt_R      = 0;
+    i32 dodge_L     = 0, dodge_R    = 0;
+    i32 wpn_dodge   = 0, wpn_wgt    = 0;
     struct Weapon *weapon;
     if (unit->equipped[UNIT_HAND_LEFT]) {
         SDL_assert(unit->_equipment[UNIT_HAND_LEFT].id > ITEM_NULL);
@@ -1396,10 +1395,17 @@ i32 Unit_computeDodge(struct Unit *unit, int distance) {
     /* weapons weight in both hands always added */
     wpn_wgt   = Equation_Weapon_Wgt( wgt_L,   wgt_R);
 
+    /* Add all bonuses */
+    if (unit->bonus_stack != NULL) {
+        for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
+            bonus += unit->bonus_stack[i].computed_stats.dodge;
+        }
+    }
+
     struct Unit_stats effstats = unit->effective_stats;
     unit->computed_stats.dodge = Equation_Unit_Dodge(wpn_wgt, wpn_dodge, effstats.luck,
                                                      effstats.fth, effstats.agi, effstats.str,
-                                                     effstats.con, tile_dodge, support);
+                                                     effstats.con, tile_dodge, bonus);
     return (unit->computed_stats.dodge);
 }
 
@@ -1407,7 +1413,7 @@ i32 Unit_computeCritical(struct Unit *unit, int distance) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
     // TODO: get support bonus
-    u8 supports = 0;
+    i32 bonus = 0;
     int crit_L = 0, crit_R = 0;
     struct Weapon *weapon;
     if (unit->equipped[UNIT_HAND_LEFT]) {
@@ -1423,15 +1429,22 @@ i32 Unit_computeCritical(struct Unit *unit, int distance) {
 
     u8 wpn_crit = Equation_Weapon_Crit(crit_L, crit_R);
 
+    /* Add all bonuses */
+    if (unit->bonus_stack != NULL) {
+        for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
+            bonus += unit->bonus_stack[i].computed_stats.crit;
+        }
+    }
+
     struct Unit_stats effstats = unit->effective_stats;
-    unit->computed_stats.crit = Equation_Unit_Crit(wpn_crit, effstats.dex, effstats.luck, supports);
+    unit->computed_stats.crit = Equation_Unit_Crit(wpn_crit, effstats.dex, effstats.luck, bonus);
     return (unit->computed_stats.crit);
 }
 
 i32 Unit_computeFavor(struct Unit *unit, int distance) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
-    u8 supports = 0 ;
+    i32 bonus = 0 ;
     int favor_L = 0, favor_R = 0;
     struct Weapon *weapon;
     if (unit->equipped[UNIT_HAND_LEFT]) {
@@ -1447,22 +1460,40 @@ i32 Unit_computeFavor(struct Unit *unit, int distance) {
 
     u8 wpn_favor = Equation_Weapon_Crit(favor_L, favor_R);
 
+    /* Add all bonuses */
+    if (unit->bonus_stack != NULL) {
+        for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
+            bonus += unit->bonus_stack[i].computed_stats.favor;
+        }
+    }
+
     struct Unit_stats effstats = unit->effective_stats;
-    unit->computed_stats.favor = Equation_Unit_Favor(wpn_favor, effstats.fth, supports);
+    unit->computed_stats.favor = Equation_Unit_Favor(wpn_favor, effstats.fth, bonus);
     return (unit->computed_stats.favor);
 }
 
 i32 Unit_computeAgony(struct Unit *unit) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
+
+
+    i32 bonus = 0;
+    /* Add all bonuses */
+    if (unit->bonus_stack != NULL) {
+        for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
+            bonus += unit->bonus_stack[i].computed_stats.agony;
+        }
+    }
+
     struct Unit_stats effstats = unit->effective_stats;
-    unit->computed_stats.agony = Equation_Agony_Turns(effstats.str, effstats.def, effstats.con);
+    unit->computed_stats.agony = Equation_Agony_Turns(effstats.str, effstats.def, effstats.con, bonus);
     return (unit->computed_stats.agony);
 }
 
 i32 Unit_computeSpeed(struct Unit *unit, int distance) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
+    i32 bonus = 0;
     int weight_L = 0, weight_R = 0;
     struct Weapon *weapon;
     if (unit->equipped[UNIT_HAND_LEFT]) {
@@ -1480,10 +1511,18 @@ i32 Unit_computeSpeed(struct Unit *unit, int distance) {
     if (unit->isTwoHanding)
         wpn_wgt /= TWO_HANDING_WEIGHT_FACTOR;
 
+    /* Add all bonuses */
+    if (unit->bonus_stack != NULL) {
+        for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
+            bonus += unit->bonus_stack[i].computed_stats.speed;
+        }
+    }
+
     // if (TNECS_TYPEFLAG_HAS_TYPE(unit->skills, UNIT_SKILL_)) {
     // TODO: compute effective_weight
     struct Unit_stats fstats = unit->effective_stats;
-    unit->computed_stats.speed = Equation_Unit_Speed(wpn_wgt, fstats.agi, fstats.con, fstats.str);
+    unit->computed_stats.speed = Equation_Unit_Speed(wpn_wgt, fstats.agi, fstats.con, fstats.str,
+                                                     bonus);
     return (unit->computed_stats.speed);
 }
 

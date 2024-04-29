@@ -21,13 +21,14 @@ struct Damage;
 
 /* --- FUNCTION DEFINITIONS --- */
 /* -- Unit Computed Stats -- */
-i32 Equation_Unit_Hit(  i32 wpn_hit,   i32 dex,       i32 luck, i32 support);
-i32 Equation_Unit_Crit( i32 wpn_crit,  i32 dex,       i32 luck, i32 support);
-i32 Equation_Unit_Speed(i32 wpn_wgt,   i32 agi,       i32 con,  i32 str);
-i32 Equation_Unit_Favor(i32 wpn_favor, i32 faith,     i32 support);
+i32 Equation_Unit_Hit(  i32 wpn_hit,   i32 dex,       i32 luck, i32 bonus);
+i32 Equation_Unit_Crit( i32 wpn_crit,  i32 dex,       i32 luck, i32 bonus);
+i32 Equation_Unit_Speed(i32 wpn_wgt,   i32 agi,       i32 con,  i32 str,
+                        i32 bonus);
+i32 Equation_Unit_Favor(i32 wpn_favor, i32 faith,     i32 bonus);
 i32 Equation_Unit_Dodge(i32 wpn_wgt,   i32 wpn_dodge, i32 luck, i32 faith,
                         i32 agi,       i32 str,       i32 con,  i32 tile_dodge,
-                        i32 support);
+                        i32 bonus);
 
 /* -- Stat total with bonus and malus -- */
 i32 Stat_Total(i32 current, i32 bonus, i32 malus, i32 cap);
@@ -74,7 +75,7 @@ i32 Equation_Weapon_Attackvar( size_t argnum, ...);
 i32 Equation_Weapon_Defensevar(size_t argnum, ...);
 
 /* -- Agony -- */
-i32 Equation_Agony_Turns(        i32 str, i32 def, i32 con);
+i32 Equation_Agony_Turns(        i32 str, i32 def, i32 con, i32 bonus);
 i32 Equation_Agony_PercentonCrit(i32 luck, i32 con);
 
 /* -- AI equations -- */
