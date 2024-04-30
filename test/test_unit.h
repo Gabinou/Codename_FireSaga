@@ -773,6 +773,17 @@ void test_bonus_stats() {
     struct Unit_stats effective_stats = Unit_effectiveStats(&Silou);
 
     nourstest_true(effective_stats.hp == (Silou.current_stats.hp + bonus1.unit_stats.hp));
+    nourstest_true(effective_stats.str == (Silou.current_stats.str + bonus1.unit_stats.str));
+    nourstest_true(effective_stats.mag == (Silou.current_stats.mag + bonus1.unit_stats.mag));
+    nourstest_true(effective_stats.agi == (Silou.current_stats.agi + bonus1.unit_stats.agi));
+    nourstest_true(effective_stats.dex == (Silou.current_stats.dex + bonus1.unit_stats.dex));
+    nourstest_true(effective_stats.fth == (Silou.current_stats.fth + bonus1.unit_stats.fth));
+    nourstest_true(effective_stats.luck == (Silou.current_stats.luck + bonus1.unit_stats.luck));
+    nourstest_true(effective_stats.def == (Silou.current_stats.def + bonus1.unit_stats.def));
+    nourstest_true(effective_stats.res == (Silou.current_stats.res + bonus1.unit_stats.res));
+    nourstest_true(effective_stats.con == (Silou.current_stats.con + bonus1.unit_stats.con));
+    nourstest_true(effective_stats.move == (Silou.current_stats.move + bonus1.unit_stats.move));
+    nourstest_true(effective_stats.prof == (Silou.current_stats.prof + bonus1.unit_stats.prof));
 
     /* Free */
     DARR_FREE(Silou.bonus_stack);
