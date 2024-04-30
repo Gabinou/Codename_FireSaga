@@ -23,13 +23,13 @@ void test_Equation_Unit_Hit() {
     support = 1;
     nourstest_true(Equation_Unit_Hit(wpn_hit, dex, luck,
                                      support) == (wpn_hit + luck / HIT_LUCK_FACTOR + HIT_DEX_FACTOR * dex + support));
-    dex     = UINT8_MAX;
-    nourstest_true(Equation_Unit_Hit(wpn_hit, dex, luck, support) == UINT8_MAX);
-    wpn_hit = UINT8_MAX;
-    dex     = UINT8_MAX;
-    luck    = UINT8_MAX;
-    support = UINT8_MAX;
-    nourstest_true(Equation_Unit_Hit(wpn_hit, dex, luck, support) == UINT8_MAX);
+    dex     = SOTA_MAX_DAMAGE;
+    nourstest_true(Equation_Unit_Hit(wpn_hit, dex, luck, support) == SOTA_MAX_DAMAGE);
+    wpn_hit = SOTA_MAX_DAMAGE;
+    dex     = SOTA_MAX_DAMAGE;
+    luck    = SOTA_MAX_DAMAGE;
+    support = SOTA_MAX_DAMAGE;
+    nourstest_true(Equation_Unit_Hit(wpn_hit, dex, luck, support) == SOTA_MAX_DAMAGE);
 
 }
 
@@ -91,15 +91,15 @@ void test_Equation_Unit_Dodge() {
                                                     agi / DODGE_AGI_FACTOR - con / DODGE_CON_FACTOR - wpn_wgt / DODGE_WPN_WGT_FACTOR) + str /
                    DODGE_STR_FACTOR);
     wpn_wgt = INT8_MAX;
+    i32 slowed = NMATH_MAX(0, wpn_wgt - str / SPEED_STR_FACTOR);
     nourstest_true(Equation_Unit_Dodge(wpn_wgt, wpn_dodge, luck, fth, agi, str, con, tile_dodge,
-                                       support) == (wpn_dodge + support + tile_dodge + luck / DODGE_LUCK_FACTOR + fth / DODGE_FTH_FACTOR +
-                                                    agi / DODGE_AGI_FACTOR - con / DODGE_CON_FACTOR - wpn_wgt / DODGE_WPN_WGT_FACTOR) + str /
-                   DODGE_STR_FACTOR);
+                                       support) == SOTA_MIN_DODGE);
     wpn_dodge = INT8_MAX;
     nourstest_true(Equation_Unit_Dodge(wpn_wgt, wpn_dodge, luck, fth, agi, str, con, tile_dodge,
-                                       support) == (wpn_dodge + support + tile_dodge + luck / DODGE_LUCK_FACTOR + fth / DODGE_FTH_FACTOR +
-                                                    agi / DODGE_AGI_FACTOR - con / DODGE_CON_FACTOR - wpn_wgt / DODGE_WPN_WGT_FACTOR) + str /
-                   DODGE_STR_FACTOR);
+                                       support) == (wpn_dodge + support + tile_dodge +
+                                                    luck / DODGE_LUCK_FACTOR + fth / DODGE_FTH_FACTOR +
+                                                    agi / DODGE_AGI_FACTOR - con / DODGE_CON_FACTOR -
+                                                    wpn_wgt / DODGE_WPN_WGT_FACTOR) + str / DODGE_STR_FACTOR);
 }
 
 void test_Equation_Unit_Favor() {
@@ -116,17 +116,17 @@ void test_Equation_Unit_Favor() {
     wpn_favor = 10;
     nourstest_true(Equation_Unit_Favor(wpn_favor, luck, support) == (wpn_favor + luck / 2 + support));
 
-    wpn_favor = UINT8_MAX;
-    nourstest_true(Equation_Unit_Favor(wpn_favor, luck, support) == UINT8_MAX);
+    wpn_favor = SOTA_MAX_DAMAGE;
+    nourstest_true(Equation_Unit_Favor(wpn_favor, luck, support) == SOTA_MAX_DAMAGE);
     wpn_favor = 0;
-    support = UINT8_MAX;
-    nourstest_true(Equation_Unit_Favor(wpn_favor, luck, support) == UINT8_MAX);
+    support = SOTA_MAX_DAMAGE;
+    nourstest_true(Equation_Unit_Favor(wpn_favor, luck, support) == SOTA_MAX_DAMAGE);
     support = 0;
-    luck = UINT8_MAX;
+    luck = SOTA_MAX_DAMAGE;
     nourstest_true(Equation_Unit_Favor(wpn_favor, luck, support) == 127);
-    support = UINT8_MAX;
-    wpn_favor = UINT8_MAX;
-    nourstest_true(Equation_Unit_Favor(wpn_favor, luck, support) == UINT8_MAX);
+    support = SOTA_MAX_DAMAGE;
+    wpn_favor = SOTA_MAX_DAMAGE;
+    nourstest_true(Equation_Unit_Favor(wpn_favor, luck, support) == SOTA_MAX_DAMAGE);
 }
 
 void test_Equation_Unit_Crit() {
@@ -148,21 +148,21 @@ void test_Equation_Unit_Crit() {
     luck = 10;
     nourstest_true(Equation_Unit_Crit(wpn_crit, dex, luck,
                                       support) == (wpn_crit + dex / CRIT_DEX_FACTOR + luck / CRIT_LUCK_FACTOR + support));
-    support = UINT8_MAX;
-    nourstest_true(Equation_Unit_Crit(wpn_crit, dex, luck, support) == UINT8_MAX);
-    luck = UINT8_MAX;
-    nourstest_true(Equation_Unit_Crit(wpn_crit, dex, luck, support) == UINT8_MAX);
+    support = SOTA_MAX_DAMAGE;
+    nourstest_true(Equation_Unit_Crit(wpn_crit, dex, luck, support) == SOTA_MAX_DAMAGE);
+    luck = SOTA_MAX_DAMAGE;
+    nourstest_true(Equation_Unit_Crit(wpn_crit, dex, luck, support) == SOTA_MAX_DAMAGE);
     luck = 0;
-    dex = UINT8_MAX;
-    nourstest_true(Equation_Unit_Crit(wpn_crit, dex, luck, support) == UINT8_MAX);
+    dex = SOTA_MAX_DAMAGE;
+    nourstest_true(Equation_Unit_Crit(wpn_crit, dex, luck, support) == SOTA_MAX_DAMAGE);
     dex       = 100;
     wpn_crit  = 100;
     luck      = 100;
     support   = 100;
-    nourstest_true(Equation_Unit_Crit(wpn_crit, dex, luck, support) == UINT8_MAX);
+    nourstest_true(Equation_Unit_Crit(wpn_crit, dex, luck, support) == SOTA_MAX_DAMAGE);
     dex   = 200;
     luck  = 200;
-    nourstest_true(Equation_Unit_Crit(wpn_crit, dex, luck, support) == UINT8_MAX);
+    nourstest_true(Equation_Unit_Crit(wpn_crit, dex, luck, support) == SOTA_MAX_DAMAGE);
 }
 
 void test_Equation_Unit_Speed() {
@@ -172,12 +172,12 @@ void test_Equation_Unit_Speed() {
     u8 con = 0;
     u8 str = 0;
     nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str, 0) == 0);
-    wpn_wgt = UINT8_MAX;
-    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str, 0) == INT8_MIN);
+    wpn_wgt = SOTA_MAX_WGT;
+    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str, 0) == SOTA_MIN_SPEED);
     agi = 10;
-    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str, 0) == INT8_MIN);
-    agi = 128;
-    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str, 0) == INT8_MIN + 1);
+    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str, 0) == SOTA_MIN_SPEED);
+    agi = SOTA_MAX_AGI;
+    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str, 0) == 0);
     wpn_wgt = 0;
     agi = 10;
     nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str, 0) == (agi));
@@ -195,10 +195,10 @@ void test_Equation_Unit_Speed() {
     con = 2;
     str = 40;
     nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str, 0) == agi);
-    str = UINT8_MAX;
+    str = SOTA_MAX_DAMAGE;
     nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str, 0) == agi);
     str = 0;
-    con = UINT8_MAX;
+    con = SOTA_MAX_DAMAGE;
     nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str, 0) == agi);
 }
 
@@ -221,21 +221,21 @@ void test_Equation_simple() {
     nourstest_true(int_inbounds(23, 0, 23) == 23);
 
     nourstest_true(Equation_Weapon_Attack(1, 2) == 3);
-    nourstest_true(Equation_Weapon_Attack(UINT8_MAX, 2) == UINT8_MAX);
-    nourstest_true(Equation_Weapon_Attack(1, UINT8_MAX) == UINT8_MAX);
+    nourstest_true(Equation_Weapon_Attack(SOTA_MAX_DAMAGE, 2) == SOTA_MAX_DAMAGE);
+    nourstest_true(Equation_Weapon_Attack(1, SOTA_MAX_DAMAGE) == SOTA_MAX_DAMAGE);
     nourstest_true(Equation_Weapon_Attack(0, 0) == 0);
     nourstest_true(Equation_Weapon_Attackvar(2, 1, 2) == 3);
-    nourstest_true(Equation_Weapon_Attackvar(2, 1, UINT8_MAX) == UINT8_MAX);
-    nourstest_true(Equation_Weapon_Attackvar(2, UINT8_MAX, 2) == UINT8_MAX);
+    nourstest_true(Equation_Weapon_Attackvar(2, 1, SOTA_MAX_DAMAGE) == SOTA_MAX_DAMAGE);
+    nourstest_true(Equation_Weapon_Attackvar(2, SOTA_MAX_DAMAGE, 2) == SOTA_MAX_DAMAGE);
     nourstest_true(Equation_Weapon_Attackvar(3, 3, 4, 5) == 12);
 
     nourstest_true(Equation_Weapon_Defense(1, 2) == 3);
-    nourstest_true(Equation_Weapon_Defense(UINT8_MAX, 2) == UINT8_MAX);
-    nourstest_true(Equation_Weapon_Defense(1, UINT8_MAX) == UINT8_MAX);
+    nourstest_true(Equation_Weapon_Defense(SOTA_MAX_DAMAGE, 2) == SOTA_MAX_DAMAGE);
+    nourstest_true(Equation_Weapon_Defense(1, SOTA_MAX_DAMAGE) == SOTA_MAX_DAMAGE);
     nourstest_true(Equation_Weapon_Defense(0, 0) == 0);
     nourstest_true(Equation_Weapon_Defensevar(2, 1, 2) == 3);
-    nourstest_true(Equation_Weapon_Defensevar(2, 1, UINT8_MAX) == UINT8_MAX);
-    nourstest_true(Equation_Weapon_Defensevar(2, UINT8_MAX, 2) == UINT8_MAX);
+    nourstest_true(Equation_Weapon_Defensevar(2, 1, SOTA_MAX_DAMAGE) == SOTA_MAX_DAMAGE);
+    nourstest_true(Equation_Weapon_Defensevar(2, SOTA_MAX_DAMAGE, 2) == SOTA_MAX_DAMAGE);
     nourstest_true(Equation_Weapon_Defensevar(3, 3, 4, 5) == 12);
 
     nourstest_true(Equation_Combat_Damage(1, 2, NOTEFFECTIVE_FACTOR, CRIT_FACTOR, false) == 0);
@@ -243,62 +243,69 @@ void test_Equation_simple() {
     nourstest_true(Equation_Combat_Damage(3, 2, NOTEFFECTIVE_FACTOR, CRIT_FACTOR, false) == 1);
     nourstest_true(Equation_Combat_Damage(3, 2, NOTEFFECTIVE_FACTOR, CRIT_FACTOR, true)  == 2);
     nourstest_true(Equation_Combat_Damage(3, 2, NOTEFFECTIVE_FACTOR, CRIT_FACTOR_PROMOTED, true) == 4);
-    nourstest_true(Equation_Combat_Damage(3, UINT8_MAX, NOTEFFECTIVE_FACTOR, CRIT_FACTOR, true)  == 0);
-    nourstest_true(Equation_Combat_Damage(UINT8_MAX, UINT8_MAX, NOTEFFECTIVE_FACTOR, CRIT_FACTOR,
-                                          true) == 0);
-    nourstest_true(Equation_Combat_Damage(UINT8_MAX, 1, NOTEFFECTIVE_FACTOR, CRIT_FACTOR, true) == 254);
+    nourstest_true(Equation_Combat_Damage(3, SOTA_MAX_DAMAGE, NOTEFFECTIVE_FACTOR, CRIT_FACTOR,
+                                          true)  == 0);
+    nourstest_true(Equation_Combat_Damage(SOTA_MAX_DAMAGE, SOTA_MAX_DAMAGE, NOTEFFECTIVE_FACTOR,
+                                          CRIT_FACTOR,
+                                          true) == 127);
+    nourstest_true(Equation_Combat_Damage(SOTA_MAX_DAMAGE, 1, NOTEFFECTIVE_FACTOR, CRIT_FACTOR,
+                                          true) == SOTA_MAX_DAMAGE);
 
     nourstest_true(Equation_Combat_Damage(1, 2, EFFECTIVE_FACTOR, CRIT_FACTOR, false) == 1);
     nourstest_true(Equation_Combat_Damage(2, 2, EFFECTIVE_FACTOR, CRIT_FACTOR, false) == 4);
     nourstest_true(Equation_Combat_Damage(3, 2, EFFECTIVE_FACTOR, CRIT_FACTOR, false) == 7);
     nourstest_true(Equation_Combat_Damage(3, 2, EFFECTIVE_FACTOR, CRIT_FACTOR, true)  == 11);
     nourstest_true(Equation_Combat_Damage(3, 2, EFFECTIVE_FACTOR, CRIT_FACTOR_PROMOTED, true) == 16);
-    nourstest_true(Equation_Combat_Damage(3, UINT8_MAX, EFFECTIVE_FACTOR, CRIT_FACTOR, true)  ==  0);
-    nourstest_true(Equation_Combat_Damage(UINT8_MAX, UINT8_MAX, EFFECTIVE_FACTOR, CRIT_FACTOR,
-                                          true) == 0);
-    nourstest_true(Equation_Combat_Damage(UINT8_MAX, 1, EFFECTIVE_FACTOR, CRIT_FACTOR, true) == 254);
+    nourstest_true(Equation_Combat_Damage(3, SOTA_MAX_DAMAGE, EFFECTIVE_FACTOR, CRIT_FACTOR,
+                                          true)  ==  0);
+    nourstest_true(Equation_Combat_Damage(SOTA_MAX_DAMAGE, SOTA_MAX_DAMAGE, EFFECTIVE_FACTOR,
+                                          CRIT_FACTOR,
+                                          true) == SOTA_MAX_DAMAGE);
+    nourstest_true(Equation_Combat_Damage(SOTA_MAX_DAMAGE, 1, EFFECTIVE_FACTOR, CRIT_FACTOR,
+                                          true) == SOTA_MAX_DAMAGE);
 
     nourstest_true(Equation_Weapon_Dodge(1, 2)                == 3);
-    nourstest_true(Equation_Weapon_Dodge(UINT8_MAX, 2)        == UINT8_MAX);
-    nourstest_true(Equation_Weapon_Dodge(1, UINT8_MAX)        == UINT8_MAX);
+    nourstest_true(Equation_Weapon_Dodge(SOTA_MAX_DAMAGE, 2)        == SOTA_MAX_DODGE);
+    nourstest_true(Equation_Weapon_Dodge(1, SOTA_MAX_DAMAGE)        == SOTA_MAX_DODGE);
     nourstest_true(Equation_Weapon_Dodge(0, 0)                == 0);
     nourstest_true(Equation_Weapon_Dodgevar(2, 1, 2)          == 3);
-    nourstest_true(Equation_Weapon_Dodgevar(2, 1, UINT8_MAX)  == UINT8_MAX);
-    nourstest_true(Equation_Weapon_Dodgevar(2, UINT8_MAX, 2)  == UINT8_MAX);
+    nourstest_true(Equation_Weapon_Dodgevar(2, 1, SOTA_MAX_DAMAGE)  == SOTA_MAX_DODGE);
+    nourstest_true(Equation_Weapon_Dodgevar(2, SOTA_MAX_DAMAGE, 2)  == SOTA_MAX_DODGE);
     nourstest_true(Equation_Weapon_Dodgevar(3, 3, 4, 5)       == 12);
 
     nourstest_true(Equation_Weapon_Favor(1, 2) == 3);
-    nourstest_true(Equation_Weapon_Favor(UINT8_MAX, 2) == UINT8_MAX);
-    nourstest_true(Equation_Weapon_Favor(1, UINT8_MAX) == UINT8_MAX);
+    nourstest_true(Equation_Weapon_Favor(SOTA_MAX_DAMAGE, 2) == SOTA_MAX_FAVOR);
+    nourstest_true(Equation_Weapon_Favor(1, SOTA_MAX_DAMAGE) == SOTA_MAX_FAVOR);
     nourstest_true(Equation_Weapon_Favor(0, 0) == 0);
     nourstest_true(Equation_Weapon_Favorvar(2, 1, 2) == 3);
-    nourstest_true(Equation_Weapon_Favorvar(2, 1, UINT8_MAX) == UINT8_MAX);
-    nourstest_true(Equation_Weapon_Favorvar(2, UINT8_MAX, 2) == UINT8_MAX);
+    nourstest_true(Equation_Weapon_Favorvar(2, 1, SOTA_MAX_DAMAGE) == SOTA_MAX_FAVOR);
+    nourstest_true(Equation_Weapon_Favorvar(2, SOTA_MAX_DAMAGE, 2) == SOTA_MAX_FAVOR);
     nourstest_true(Equation_Weapon_Favorvar(3, 3, 4, 5) == 12);
 
     nourstest_true(Equation_Weapon_Hit(1, 2) == 1);
-    nourstest_true(Equation_Weapon_Hit(UINT8_MAX, 2) == 128);
-    nourstest_true(Equation_Weapon_Hit(1, UINT8_MAX) == 128);
-    nourstest_true(Equation_Weapon_Hit(0, UINT8_MAX) == UINT8_MAX);
-    nourstest_true(Equation_Weapon_Hit(UINT8_MAX, 0) == UINT8_MAX);
+    nourstest_true(Equation_Weapon_Hit(SOTA_MAX_DAMAGE, 2) == 128);
+    nourstest_true(Equation_Weapon_Hit(1, SOTA_MAX_DAMAGE) == 128);
+    nourstest_true(Equation_Weapon_Hit(0, SOTA_MAX_DAMAGE) == SOTA_MAX_HIT);
+    nourstest_true(Equation_Weapon_Hit(SOTA_MAX_DAMAGE, 0) == SOTA_MAX_HIT);
     nourstest_true(Equation_Weapon_Hit(0, 10) == 10);
     nourstest_true(Equation_Weapon_Hit(10, 0) == 10);
-    nourstest_true(Equation_Weapon_Hit(UINT8_MAX, UINT8_MAX) == 255);
+    nourstest_true(Equation_Weapon_Hit(SOTA_MAX_DAMAGE, SOTA_MAX_DAMAGE) == SOTA_MAX_DAMAGE);
     nourstest_true(Equation_Weapon_Hit(0, 0) == 0);
     nourstest_true(Equation_Weapon_Hitvar(2, 1, 2) == 3);
-    nourstest_true(Equation_Weapon_Hitvar(2, UINT8_MAX, UINT8_MAX) == 255);
-    nourstest_true(Equation_Weapon_Hitvar(3, UINT8_MAX, UINT8_MAX, UINT8_MAX) == UINT8_MAX);
-    nourstest_true(Equation_Weapon_Hitvar(3, 1000, 1000, 1000) == UINT8_MAX);
+    nourstest_true(Equation_Weapon_Hitvar(2, SOTA_MAX_DAMAGE, SOTA_MAX_DAMAGE) == SOTA_MAX_DAMAGE);
+    nourstest_true(Equation_Weapon_Hitvar(3, SOTA_MAX_DAMAGE, SOTA_MAX_DAMAGE,
+                                          SOTA_MAX_DAMAGE) == SOTA_MAX_DAMAGE);
+    nourstest_true(Equation_Weapon_Hitvar(3, 1000, 1000, 1000) == SOTA_MAX_DAMAGE);
 
     nourstest_true(Equation_Unit_Healshp(27,  15) ==  4);
     nourstest_true(Equation_Unit_Healshp(27,  25) ==  6);
     nourstest_true(Equation_Unit_Healshp(27,  50) == 13);
     nourstest_true(Equation_Unit_Healshp(27, 100) == 27);
 
-    nourstest_true(Equation_Unit_Healshpvar(2, 75, 35) == 102);
-    nourstest_true(Equation_Unit_Healshpvar(2, 75, 45) == 105);
+    nourstest_true(Equation_Unit_Healshpvar(2, 75, 35) == 110);
+    nourstest_true(Equation_Unit_Healshpvar(2, 75, 45) == 120);
     nourstest_true(Equation_Unit_Healshpvar(3, 30, 30, 30) == 90);
-    nourstest_true(Equation_Unit_Healshpvar(4, 30, 30, 30, 30) == 105);
+    nourstest_true(Equation_Unit_Healshpvar(4, 30, 30, 30, 30) == 120);
 
     nourstest_true(Equation_Combat_Hit( 30,  20) == 10);
     nourstest_true(Equation_Combat_Hit( 10,  20) ==  0);

@@ -704,8 +704,7 @@ void test_reinforcements() {
     Unit_Free(&Corsair);
 }
 
-void test_bonus() {
-    /* Decay test */
+void test_bonus_decay() {
     struct Bonus_Stats bonus1 = Bonus_Stats_default;
     struct Bonus_Stats bonus2 = Bonus_Stats_default;
     struct Bonus_Stats bonus3 = Bonus_Stats_default;
@@ -757,6 +756,28 @@ void test_bonus() {
     DARR_FREE(Silou.bonus_stack);
 }
 
+void test_bonus_stats() {
+    struct Bonus_Stats bonus1 = Bonus_Stats_default;
+    struct Unit Silou = Unit_default;
+    //                              hp, str, mag, agi, dex, fth, luck, def, res, con, move
+    struct Unit_stats unit_stats    = {1,  6,  2,  7,  7, 7,  7,  4,  5,  6, 5};
+    Silou.base_stats    = unit_stats;
+    Silou.current_stats = unit_stats;
+
+    /* Adding bonus stats*/
+    struct Unit_stats bonus_stats   = {1,  1,  1,  1,  1, 1,  1,  1,  1,  1, 1};
+    bonus1.unit_stats = bonus_stats;
+    Silou.bonus_stack   = DARR_INIT(Silou.bonus_stack,  struct Bonus_Stats, 2);
+    Unit_Bonus_Add(&Silou, bonus1);
+
+    struct Unit_stats effective_stats = Unit_effectiveStats(&Silou);
+
+    nourstest_true(effective_stats.hp == (Silou.current_stats.hp + bonus1.unit_stats.hp));
+
+    /* Free */
+    DARR_FREE(Silou.bonus_stack);
+}
+
 void test_unit() {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
 
@@ -766,7 +787,8 @@ void test_unit() {
     test_wpn_or_item();
     // test_io();
     test_growth();
-    test_bonus();
+    test_bonus_decay();
+    test_bonus_stats();
     test_reinforcements();
 
     URN_debug = -1;

@@ -268,12 +268,12 @@ i32 Equation_Unit_Healshpvar(size_t argnum, ...) {
         /* Heal portions above 100 get divided by 4 ? */
         wpn_heal += current_arg;
     }
-    wpn_heal = nmath_inbounds_int32_t(wpn_heal, 0, SOTA_100PERCENT);
+    wpn_heal = nmath_inbounds_int32_t(wpn_heal, SOTA_MIN_HEAL_PERCENT, SOTA_MAX_HEAL_PERCENT);
     va_end(valist);
     return (wpn_heal);
 }
 
-/* --  Equation_Combat_Damage -- */
+/* --  Equation_Combat_Damage --     */
 //  Arguments:
 //   1. att is attacker attack:       unit str + wpn might
 //   2. def is defender defense:      unit def + wpn prot
@@ -286,8 +286,14 @@ i32 Equation_Combat_Damage(i32 att, i32 defender_block, i32 effective_multiplier
     // I'm thinking about doubling ATTACK DAMAGE, before removing defense?
 
     i32 crit_factor = crit ? critp_multiplier : SOTA_100PERCENT;
+    /* POST DEFENSE CRIT DAMAGE */
+    // i32 attack      = ((att - defender_block) * effective_multiplier * crit_factor) /
+    // (SOTA_100PERCENT * SOTA_100PERCENT);
+    /* PRE DEFENSE CRIT DAMAGE */
     i32 attack      = (att * effective_multiplier * crit_factor) /
                       (SOTA_100PERCENT * SOTA_100PERCENT) - defender_block;
+
+
     i32 damage      = nmath_inbounds_int32_t(attack, SOTA_MIN_DAMAGE, SOTA_MAX_DAMAGE);
     return (damage);
 }
