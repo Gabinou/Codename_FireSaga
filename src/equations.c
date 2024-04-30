@@ -51,34 +51,25 @@ i32 Equation_Combat_Crit(i32 attacker_crit, i32 defender_favor) {
 
 i32 Equation_Unit_Hit(i32 wpn_hit, i32 dex, i32 luck, i32 bonus) {
     // hit = wpn_hit + dex*2 + luck/2 + bonus
-    i32 eff_hit = wpn_hit > UINT8_MAX ? UINT8_MAX : wpn_hit;
-    i32 out_hit = eff_hit <     0     ?     0     : eff_hit;
-    i32 effdex  = nmath_bmultp(dex,    HIT_DEX_FACTOR,          UINT8_MAX);
-    out_hit     = nmath_bplus(out_hit, effdex,                  UINT8_MAX);
-    out_hit     = nmath_bplus(out_hit, luck / HIT_LUCK_FACTOR,  UINT8_MAX);
-    out_hit     = nmath_bplus(out_hit, bonus,                 UINT8_MAX);
+    i32 out_hit = dex * HIT_DEX_FACTOR + wpn_hit + luck / HIT_LUCK_FACTOR + bonus;
+    out_hit     = nmath_inbounds_int32_t(out_hit, SOTA_MIN_HIT, SOTA_MAX_HIT);
     return (out_hit);
 }
 
 i32 Equation_Unit_Crit(i32 wpn_crit, i32 dex, i32 luck, i32 bonus) {
     // favor = wpn_crit + dex / 3 + luck / 4 + bonus
-    i32 eff_crit = wpn_crit > UINT8_MAX ? UINT8_MAX : wpn_crit;
-    i32 out_crit = eff_crit <    0      ?    0      : eff_crit;
-    out_crit     = nmath_bplus(out_crit, (luck / CRIT_LUCK_FACTOR), UINT8_MAX);
-    out_crit     = nmath_bplus(out_crit, (dex  / CRIT_DEX_FACTOR),  UINT8_MAX);
-    out_crit     = nmath_bplus(out_crit, bonus,                   UINT8_MAX);
+    i32 out_crit = dex / CRIT_DEX_FACTOR + wpn_crit + luck / CRIT_LUCK_FACTOR + bonus;
+    out_crit     = nmath_inbounds_int32_t(out_crit, SOTA_MIN_CRIT, SOTA_MAX_CRIT);
     return (out_crit);
 }
 
 i32 Equation_Unit_Speed(i32 wpn_wgt, i32 agi, i32 con, i32 str, i32 bonus) {
     // speed = agi - slowed
     // slowed = max(0, wpn_wgt - con / 2 - str / 4))
-    i32 eff_wgt     = wpn_wgt > UINT8_MAX ? UINT8_MAX : wpn_wgt;
-    i32 slowed      = eff_wgt <     0     ?     0     : eff_wgt;
-    slowed          = nmath_bminus(slowed, (con / SPEED_CON_FACTOR), 0);
-    slowed          = nmath_bminus(slowed, (str / SPEED_STR_FACTOR), 0);
-    i32 out_speed   = nmath_bminus(agi,    slowed, INT8_MIN);
-    + bonus;
+    i32 slowed = wpn_wgt - con / SPEED_CON_FACTOR - str / SPEED_STR_FACTOR;
+    slowed = NMATH_MAX(0, slowed);
+    i32 out_speed = agi - slowed + bonus;
+    out_speed     = nmath_inbounds_int32_t(out_speed, SOTA_MIN_SPEED, SOTA_MAX_SPEED);
     return (out_speed);
 }
 

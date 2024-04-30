@@ -162,11 +162,7 @@ b32 Ranges_Gap(struct Range r1, struct Range r2) {
     return (gap);
 }
 
-/* NOTE: to check if ranges are correct, run:
-    Range_Valid(r1);
-    Range_Valid(r2);
-    Ranges_Gap(r1, struct Range r2)
- */
+/* "Public", in place range combiner with checking */
 void Ranges_Combine(struct Range *r1, struct Range r2) {
     /* Combine ranges. Should never leave gaps*/
     // Gap example:    1  2  3  4  5
@@ -186,13 +182,13 @@ void Ranges_Combine(struct Range *r1, struct Range r2) {
     *r1 = _Ranges_Combine(*r1, r2);
 }
 
+/* "Private", range combiner without checking */
 struct Range _Ranges_Combine(struct Range r1, struct Range r2) {
     struct Range out;
     out.max = r1.max > r2.max ? r1.max : r2.max; /* Best max range is biggest  */
     out.min = r1.min < r2.min ? r1.min : r2.min; /* Best min range is smallest */
     return (out);
 }
-
 
 /* --- Rangemap --- */
 int Unit_Rangemap_Get(struct Unit *unit) {
