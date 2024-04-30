@@ -171,34 +171,35 @@ void test_Equation_Unit_Speed() {
     u8 agi = 0;
     u8 con = 0;
     u8 str = 0;
-    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str) == 0);
+    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str, 0) == 0);
     wpn_wgt = UINT8_MAX;
-    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str) == INT8_MIN);
+    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str, 0) == INT8_MIN);
     agi = 10;
-    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str) == INT8_MIN);
+    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str, 0) == INT8_MIN);
     agi = 128;
-    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str) == INT8_MIN + 1);
+    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str, 0) == INT8_MIN + 1);
     wpn_wgt = 0;
     agi = 10;
-    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str) == (agi));
+    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str, 0) == (agi));
     wpn_wgt = 10;
-    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str) == (agi - wpn_wgt));
+    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str, 0) == (agi - wpn_wgt));
     agi = 20;
-    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str) == (agi - wpn_wgt));
+    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str, 0) == (agi - wpn_wgt));
     str = 4;
-    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str) == (agi - wpn_wgt + str / 4));
+    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str, 0) == (agi - wpn_wgt + str / 4));
     con = 2;
-    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str) == (agi - wpn_wgt + str / 4 + con / 2));
+    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str,
+                                       0) == (agi - wpn_wgt + str / 4 + con / 2));
     con = 20;
-    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str) == agi);
+    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str, 0) == agi);
     con = 2;
     str = 40;
-    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str) == agi);
+    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str, 0) == agi);
     str = UINT8_MAX;
-    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str) == agi);
+    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str, 0) == agi);
     str = 0;
     con = UINT8_MAX;
-    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str) == agi);
+    nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str, 0) == agi);
 }
 
 void test_Equation_simple() {

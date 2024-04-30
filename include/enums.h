@@ -137,6 +137,7 @@ enum SOTA_REGRETS {
     REGRET_AGONY            =    1,
     REGRET_LOOT             =    1,
     REGRET_MAX              =  500,
+    REGRET_MIN              =    0,
 };
 
 enum SOTA_MATH {

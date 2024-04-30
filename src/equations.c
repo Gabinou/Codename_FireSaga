@@ -19,36 +19,33 @@ i32 Equation_Regrets(i32 kills, i32 faith) {
     i32 divisor = ((eff_faith < 0 ? 0 : eff_faith) / REGRET_FAITH_FACTOR);
     if (divisor > 0)
         out = kills / divisor;
+
+    out = nmath_inbounds_int32_t(out, REGRET_MIN, REGRET_MAX);
     return (out);
 }
 
 i32 Equation_Agony_PercentonCrit(i32 luck, i32 con) {
-    i32 eff_luck    = luck     > UINT8_MAX ? UINT8_MAX : luck;
-    i32 agony_prob  = eff_luck <    0      ?     0     : eff_luck;
-    agony_prob      = con > SOTA_100PERCENT - agony_prob ? SOTA_100PERCENT : agony_prob + con;
+    i32 eff_luck    = luck + con;
+    i32 agony_prob  = nmath_inbounds_int32_t(agony_prob, 0, SOTA_100PERCENT);
     return (agony_prob);
 }
 
 i32 Equation_Agony_Turns(i32 str, i32 def, i32 con, i32 bonus) {
-    i32 eff_str         = str     > UINT8_MAX ? UINT8_MAX : str;
-    i32 agony_length    = eff_str <     0     ?     0     : eff_str;
-    agony_length        = nmath_bplus(agony_length, def, UINT8_MAX);
-    agony_length        = nmath_bplus(agony_length, con, UINT8_MAX);
-    agony_length       /= AGONY_FACTOR + bonus;
+    i32 agony_length     = str + def + con;
+    agony_length        /= AGONY_FACTOR + bonus;
+    agony_length         = nmath_inbounds_int32_t(agony_length, SOTA_MIN_AGONY, SOTA_MAX_AGONY);
     return (agony_length);
 }
 
 i32 Equation_Combat_Hit(i32 att_hit, i32 dfd_avoid) {
-
-    // i32 (defender_avoid > UINT8_MAX ? UINT8_MAX : defender_avoid);
-    i32 out_hit = nmath_bminus((att_hit > UINT8_MAX ? UINT8_MAX : att_hit), dfd_avoid, 0);
+    i32 out_hit = att_hit - dfd_avoid;
+    out_hit     = nmath_inbounds_int32_t(out_hit, 0, SOTA_100PERCENT);
     return (out_hit);
 }
 
 i32 Equation_Combat_Crit(i32 attacker_crit, i32 defender_favor) {
-    i32 eff_crit    = (attacker_crit  > UINT8_MAX ? UINT8_MAX : attacker_crit);
-    i32 eff_favor   = (defender_favor > UINT8_MAX ? UINT8_MAX : defender_favor);
-    i32 out_crit    = nmath_bminus(eff_crit, eff_favor, 0);
+    i32 out_crit    = attacker_crit - defender_favor;
+    out_crit        = nmath_inbounds_int32_t(out_crit, 0, SOTA_100PERCENT);
     return (out_crit);
 }
 

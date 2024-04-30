@@ -387,12 +387,16 @@ void test_combat_flow() {
     Unit_computedStats(&attacker, distance);
     Unit_computedStats(&defender, distance);
     i32 attacker_speed = Equation_Unit_Speed(attacker_weapon.stats.wgt,
-                                             attacker.effective_stats.agi, attacker.effective_stats.con, attacker.effective_stats.str);
+                                             attacker.effective_stats.agi,
+                                             attacker.effective_stats.con,
+                                             attacker.effective_stats.str, 0);
     nourstest_true(Unit_computeSpeed(&attacker, distance) == attacker_speed);
     nourstest_true(attacker.computed_stats.speed == attacker_speed);
     nourstest_true(attacker.computed_stats.speed == 7);
     i32 defender_speed = Equation_Unit_Speed(defender_weapon.stats.wgt,
-                                             defender.effective_stats.agi, defender.effective_stats.con, defender.effective_stats.str);
+                                             defender.effective_stats.agi,
+                                             defender.effective_stats.con,
+                                             defender.effective_stats.str, 0);
     nourstest_true(Unit_computeSpeed(&defender, distance) == defender_speed);
     nourstest_true(defender.computed_stats.speed == defender_speed);
     nourstest_true(defender.computed_stats.speed == 7);
@@ -411,12 +415,16 @@ void test_combat_flow() {
 
     Unit_computedStats(&attacker, distance);
     Unit_computedStats(&defender, distance);
-    attacker_speed = Equation_Unit_Speed(attacker_weapon.stats.wgt, attacker.effective_stats.agi,
-                                         attacker.effective_stats.con, attacker.effective_stats.str);
+    attacker_speed = Equation_Unit_Speed(attacker_weapon.stats.wgt,
+                                         attacker.effective_stats.agi,
+                                         attacker.effective_stats.con,
+                                         attacker.effective_stats.str, 0);
     nourstest_true(Unit_computeSpeed(&attacker, distance) == attacker_speed);
     nourstest_true(attacker.computed_stats.speed == attacker_speed);
-    defender_speed = Equation_Unit_Speed(defender_weapon.stats.wgt, defender.effective_stats.agi,
-                                         defender.effective_stats.con, defender.effective_stats.str);
+    defender_speed = Equation_Unit_Speed(defender_weapon.stats.wgt,
+                                         defender.effective_stats.agi,
+                                         defender.effective_stats.con,
+                                         defender.effective_stats.str, 0);
     nourstest_true(Unit_computeSpeed(&defender, distance) == defender_speed);
     nourstest_true(defender.computed_stats.speed == defender_speed);
     temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,

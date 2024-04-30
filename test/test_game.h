@@ -144,12 +144,16 @@ void test_combat_game() {
     Unit_computedStats(&attacker, distance);
     Unit_computedStats(&attacker, distance);
     Unit_computedStats(&defender, distance);
-    int_fast8_t attacker_speed = Equation_Unit_Speed(attacker_weaponp->stats.wgt,
-                                                     attacker.effective_stats.agi, attacker.effective_stats.con, attacker.effective_stats.str);
+    i32 attacker_speed = Equation_Unit_Speed(attacker_weaponp->stats.wgt,
+                                             attacker.effective_stats.agi,
+                                             attacker.effective_stats.con,
+                                             attacker.effective_stats.str, 0);
     nourstest_true(Unit_computeSpeed(&attacker, distance) == attacker_speed);
     nourstest_true(attacker.computed_stats.speed == attacker_speed);
-    int_fast8_t defender_speed = Equation_Unit_Speed(defender_weaponp->stats.wgt,
-                                                     defender.effective_stats.agi, defender.effective_stats.con, defender.effective_stats.str);
+    i32 defender_speed = Equation_Unit_Speed(defender_weaponp->stats.wgt,
+                                             defender.effective_stats.agi,
+                                             defender.effective_stats.con,
+                                             defender.effective_stats.str, 0);
     nourstest_true(Unit_computeSpeed(&defender, distance) == defender_speed);
     nourstest_true(defender.computed_stats.speed == defender_speed);
     temp_flow = Compute_Combat_Flow(&attacker, &defender, &attacker_pos,
