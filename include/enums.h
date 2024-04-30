@@ -191,6 +191,8 @@ enum SOTA_LIMITS {
     SOTA_MAX_MOVE       =   20,
     SOTA_MIN_PROF       =    0,
     SOTA_MAX_PROF       =   60,
+    SOTA_MIN_WGT        =    0,
+    SOTA_MAX_WGT        =   60,
 
     /* Computed_Stats limits*/
     SOTA_MIN_DAMAGE     =    0,
@@ -199,6 +201,8 @@ enum SOTA_LIMITS {
     SOTA_MAX_ATTACK     = 0xFF,
     SOTA_MIN_PROT       =    0,
     SOTA_MAX_PROT       = 0xFF,
+    SOTA_MIN_HEAL       =    0,
+    SOTA_MAX_HEAL       = 0xFF,
 
     SOTA_MIN_HIT        =    0,
     SOTA_MAX_HIT        = 0xFF,

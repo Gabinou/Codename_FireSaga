@@ -30,9 +30,6 @@ i32 Equation_Unit_Dodge(i32 wpn_wgt,   i32 wpn_dodge, i32 luck, i32 faith,
                         i32 agi,       i32 str,       i32 con,  i32 tile_dodge,
                         i32 bonus);
 
-/* -- Stat total with bonus and malus -- */
-i32 Stat_Total(i32 current, i32 bonus, i32 malus, i32 cap);
-
 /* -- Staff Healing -- */
 i32 Equation_Staff_Healing(i32 item_AP,  i32 user_mag);
 
@@ -41,7 +38,7 @@ i32 Equation_Unit_Healshp(i32 total_hp, i32 heal_percent);
 i32 Equation_Unit_Healshpvar(size_t argnum, ...);
 
 /* -- Unit Rescue -- */
-bool Equation_canCarry(i32 savior_con, i32 victim_con);
+b32 Equation_canCarry(i32 savior_con, i32 victim_con);
 
 /* -- Unit Regrets -- */
 i32 Equation_Regrets(i32 kills, i32 faith);
@@ -50,7 +47,7 @@ i32 Equation_Regrets(i32 kills, i32 faith);
 i32    Equation_Combat_Hit(     i32 hit_a,  i32 avoid_d);
 i32    Equation_Combat_Crit(    i32 crit_a, i32 favor_d);
 i32    Equation_Attack_Damage(  i32 dmg_a,  i32 def_d);
-i32    Equation_Combat_Damage(  i32 att_a,  i32 def_d, i32 eff, i32 critp, bool crit);
+i32    Equation_Combat_Damage(  i32 att_a,  i32 def_d, i32 eff, i32 critp, b32 crit);
 float Equation_Expected_Damage(i32 hit,    i32 crit,  i32 critfactor);
 
 /* -- Compute damage total from other damae types in struct -- */

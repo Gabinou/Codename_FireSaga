@@ -123,8 +123,8 @@ struct MenuElemDirections {
 extern struct MenuElemDirections MenuElemDirections_default;
 
 struct Damage {
-    u8 dmg[DAMAGE_TYPES];
-    u8 dmg_crit[DAMAGE_TYPES];
+    i32 dmg[DAMAGE_TYPES];
+    i32 dmg_crit[DAMAGE_TYPES];
 };
 extern struct Damage Damage_default;
 

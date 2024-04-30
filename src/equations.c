@@ -8,7 +8,7 @@ float Equation_Expected_Damage(i32 hit, i32 crit, i32 critfactor) {
     return (hit / SOTA_100PERCENT * pow((double)critfactor, ((double)crit) / SOTA_100PERCENT));
 }
 
-bool Equation_canCarry(i32 savior_con, i32 victim_con) {
+b32 Equation_canCarry(i32 savior_con, i32 victim_con) {
     return (savior_con > victim_con);
 }
 
@@ -68,6 +68,7 @@ i32 Equation_Unit_Speed(i32 wpn_wgt, i32 agi, i32 con, i32 str, i32 bonus) {
     // slowed = max(0, wpn_wgt - con / 2 - str / 4))
     i32 slowed = wpn_wgt - con / SPEED_CON_FACTOR - str / SPEED_STR_FACTOR;
     slowed = NMATH_MAX(0, slowed);
+
     i32 out_speed = agi - slowed + bonus;
     out_speed     = nmath_inbounds_int32_t(out_speed, SOTA_MIN_SPEED, SOTA_MAX_SPEED);
     return (out_speed);
@@ -79,47 +80,41 @@ i32 Equation_Unit_Dodge(i32 wpn_wgt, i32 wpn_dodge, i32 luck, i32 faith,
     // slowed = max(0, wpn_wgt - str / 4))
     // Dodge can be negative -> weapon equipped too heavy, LITERALLY TOO BULKY TO DODGE
 
-    i32 eff_wgt = wpn_wgt > UINT8_MAX ? UINT8_MAX : wpn_wgt;
-    i32 slowed  = eff_wgt <     0     ?     0     : eff_wgt;
-    slowed      = nmath_bminus(slowed, (str / DODGE_STR_FACTOR), 0);
+    i32 slowed = wpn_wgt - str / SPEED_STR_FACTOR;
+    slowed = NMATH_MAX(0, slowed);
 
-    i32 out_dodge = (tile_dodge > INT8_MAX) ? INT8_MAX : tile_dodge;
-    out_dodge = nmath_bminus(out_dodge, slowed,                      INT8_MIN);
-    out_dodge = nmath_bminus(out_dodge, (con   / DODGE_CON_FACTOR),  INT8_MIN);
-
-    out_dodge = nmath_bplus(out_dodge, (agi   / DODGE_AGI_FACTOR),  INT8_MAX);
-    out_dodge = nmath_bplus(out_dodge, (luck  / DODGE_LUCK_FACTOR), INT8_MAX);
-    out_dodge = nmath_bplus(out_dodge, (faith / DODGE_FTH_FACTOR),  INT8_MAX);
-    out_dodge = nmath_bplus(out_dodge,  wpn_dodge,                   INT8_MAX);
-    out_dodge = nmath_bplus(out_dodge,  bonus,                     INT8_MAX);
+    i32 out_dodge = tile_dodge - slowed - con / DODGE_CON_FACTOR + agi / DODGE_AGI_FACTOR +
+                    luck / DODGE_LUCK_FACTOR + faith / DODGE_FTH_FACTOR + wpn_dodge + bonus;
+    out_dodge     = nmath_inbounds_int32_t(out_dodge, SOTA_MIN_DODGE, SOTA_MAX_DODGE);
     return (out_dodge);
 }
 
 i32 Equation_Unit_Favor(i32 wpn_favor, i32 faith, i32 bonus) {
     // favor = wpn_favor + faith / 2 + bonus
-    i32 eff_favor = wpn_favor > UINT8_MAX ? UINT8_MAX : wpn_favor;
-    i32 out_favor = eff_favor <     0     ?     0     : eff_favor;
-    out_favor = nmath_bplus(out_favor, (faith / FAVOR_FTH_FACTOR), UINT8_MAX);
-    out_favor = nmath_bplus(out_favor, bonus,                    UINT8_MAX);
+
+    i32 out_favor = wpn_favor + (faith / FAVOR_FTH_FACTOR) + bonus;
+    out_favor     = nmath_inbounds_int32_t(out_favor, SOTA_MIN_FAVOR, SOTA_MAX_FAVOR);
     return (out_favor);
 }
 
 // prot -> protection which is def/res
 i32 Equation_Weapon_Defense(i32 prot, i32 tile_prot) {
-    i32 out_def = nmath_bplus(prot, tile_prot, UINT8_MAX);
+    i32 out_def = prot + tile_prot;
+    out_def     = nmath_inbounds_int32_t(out_def, SOTA_MIN_PROT, SOTA_MAX_PROT);
     return (out_def);
 }
 
 i32 Equation_Weapon_Defensevar(size_t argnum, ...) {
     va_list valist;
-    i32 unit_defend = 0;
-    i32 current_arg = 0;
+    i32 unit_defend = 0, current_arg = 0;
     va_start(valist, argnum);
     for (size_t i = 0; i < argnum; i++) {
         current_arg = va_arg(valist, i32);
-        unit_defend = nmath_bplus(unit_defend, current_arg, UINT8_MAX);
+        unit_defend += current_arg;
     }
+
     va_end(valist);
+    unit_defend = nmath_inbounds_int32_t(unit_defend, SOTA_MIN_PROT, SOTA_MAX_PROT);
     return (unit_defend);
 }
 
@@ -127,48 +122,48 @@ i32 Equation_Weapon_Defensevar(size_t argnum, ...) {
 /* Healing value of unit equipping a staff */
 /* Should staves flat heal, or % heal? */
 i32 Equation_Staff_Healing(i32 item_AP, i32 user_mag) {
-    i32 intermediate = item_AP + user_mag < 0 ? 0 : item_AP + user_mag;
-    if (intermediate > UINT8_MAX)
-        intermediate = UINT8_MAX;
-    i32 to_heal = (i32)intermediate;
+    i32 to_heal = item_AP + user_mag;
+    to_heal     = nmath_inbounds_int32_t(to_heal, SOTA_MIN_HEAL, SOTA_MAX_HEAL);
     return (to_heal);
 }
 
 /* --- Equation_Unit_Healshp --- */
 /* Unit healing percent % -> HP */
 i32 Equation_Unit_Healshp(i32 total_hp, i32 heal_percent) {
-    u16 intermediate = (total_hp * heal_percent) / SOTA_100PERCENT;
-    i32 to_heal = (i32)intermediate;
+    i32 to_heal = (total_hp * heal_percent) / SOTA_100PERCENT;
+    to_heal     = nmath_inbounds_int32_t(to_heal, 1, SOTA_MAX_HP);
     return (to_heal);
 }
 
 i32 Equation_Weapon_Attack(i32 Lwpn_might, i32 Rwpn_might) {
-    i32 wpn_attack = nmath_bplus(Lwpn_might, Rwpn_might, UINT8_MAX);
+    i32 wpn_attack = Lwpn_might + Rwpn_might;
+    wpn_attack     = nmath_inbounds_int32_t(wpn_attack, SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
     return (wpn_attack);
 }
 
 void Equation_Damage_Total(struct Damage *dmg) {
-    dmg->dmg[3]      = nmath_bplus(dmg->dmg[0],      dmg->dmg[1],      UINT8_MAX);
-    dmg->dmg[3]      = nmath_bplus(dmg->dmg[3],      dmg->dmg[2],      UINT8_MAX);
-    dmg->dmg_crit[3] = nmath_bplus(dmg->dmg_crit[0], dmg->dmg_crit[1], UINT8_MAX);
-    dmg->dmg_crit[3] = nmath_bplus(dmg->dmg_crit[3], dmg->dmg_crit[2], UINT8_MAX);
+    dmg->dmg[3] = dmg->dmg[0] + dmg->dmg[1] + dmg->dmg[2];
+    dmg->dmg[3] = nmath_inbounds_int32_t(dmg->dmg[3], SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
+    dmg->dmg_crit[3] = dmg->dmg_crit[0] + dmg->dmg_crit[1] + dmg->dmg_crit[2];
+    dmg->dmg_crit[3] = nmath_inbounds_int32_t(dmg->dmg_crit[3], SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
 }
 
 i32 Equation_Weapon_Attackvar(size_t argnum, ...) {
     va_list valist;
-    i32 wpn_attack = 0;
-    i32 current_arg = 0;
+    i32 wpn_attack = 0, current_arg = 0;
     va_start(valist, argnum);
     for (size_t i = 0; i < argnum; i++) {
         current_arg = va_arg(valist, i32);
-        wpn_attack = nmath_bplus(wpn_attack, current_arg, UINT8_MAX);
+        wpn_attack += current_arg;
     }
+
     va_end(valist);
+    wpn_attack = nmath_inbounds_int32_t(wpn_attack, SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
     return (wpn_attack);
 }
 
 i32 Equation_Weapon_Hit(i32 Lwpn_hit, i32 Rwpn_hit) {
-    u16 wpn_hit = Lwpn_hit + Rwpn_hit;
+    i32 wpn_hit = Lwpn_hit + Rwpn_hit;
     if ((Rwpn_hit > 0) && (Lwpn_hit > 0))
         wpn_hit /= 2;
     return (wpn_hit);
@@ -176,101 +171,104 @@ i32 Equation_Weapon_Hit(i32 Lwpn_hit, i32 Rwpn_hit) {
 
 i32 Equation_Weapon_Hitvar(size_t argnum, ...) {
     va_list valist;
-    i32 wpn_hit = 0;
-    i32 current_arg = 0;
+    i32 wpn_hit = 0, current_arg = 0;
     va_start(valist, argnum);
     for (size_t i = 0; i < argnum; i++) {
         current_arg = va_arg(valist, i32);
-        wpn_hit = nmath_bplus(wpn_hit, current_arg, UINT8_MAX);
+        wpn_hit += current_arg;
     }
+    wpn_hit = nmath_inbounds_int32_t(wpn_hit, SOTA_MIN_HIT, SOTA_MAX_HIT);
     va_end(valist);
     return (wpn_hit);
 }
 
 i32 Equation_Weapon_Dodge(i32 Lwpn_dodge, i32 Rwpn_dodge) {
-    i32 wpn_dodge = nmath_bplus(Lwpn_dodge, Rwpn_dodge, UINT8_MAX);
+    i32 wpn_dodge = Lwpn_dodge + Rwpn_dodge;
+    wpn_dodge = nmath_inbounds_int32_t(wpn_dodge, SOTA_MIN_DODGE, SOTA_MAX_DODGE);
     return (wpn_dodge);
 }
 
 i32 Equation_Weapon_Dodgevar(size_t argnum, ...) {
     va_list valist;
-    i32 wpn_dodge = 0;
-    i32 current_arg = 0;
+    i32 wpn_dodge = 0, current_arg = 0;
     va_start(valist, argnum);
     for (size_t i = 0; i < argnum; i++) {
         current_arg = va_arg(valist, i32);
-        wpn_dodge = nmath_bplus(wpn_dodge, (i32)current_arg, UINT8_MAX);
+        wpn_dodge += current_arg;
     }
+    wpn_dodge = nmath_inbounds_int32_t(wpn_dodge, SOTA_MIN_DODGE, SOTA_MAX_DODGE);
     va_end(valist);
+
     return (wpn_dodge);
 }
 
 i32 Equation_Weapon_Crit(i32 Lwpn_crit, i32 Rwpn_crit) {
-    i32 wpn_crit = nmath_bplus(Lwpn_crit, Rwpn_crit, UINT8_MAX);
+    i32 wpn_crit = Lwpn_crit + Rwpn_crit;
+    wpn_crit = nmath_inbounds_int32_t(wpn_crit, SOTA_MIN_CRIT, SOTA_MAX_CRIT);
     return (wpn_crit);
 }
 
 i32 Equation_Weapon_Critvar(size_t argnum, ...) {
     va_list valist;
-    i32 wpn_crit = 0;
-    i32 current_arg = 0;
+    i32 wpn_crit = 0, current_arg = 0;
     va_start(valist, argnum);
     for (size_t i = 0; i < argnum; i++) {
         current_arg = va_arg(valist, i32);
-        wpn_crit = nmath_bplus(wpn_crit, (i32)current_arg, UINT8_MAX);
+        wpn_crit += current_arg;
     }
+    wpn_crit = nmath_inbounds_int32_t(wpn_crit, SOTA_MIN_CRIT, SOTA_MAX_CRIT);
     va_end(valist);
     return (wpn_crit);
 }
 
 i32 Equation_Weapon_Favor(i32 Lwpn_favor, i32 Rwpn_favor) {
-    i32 wpn_favor = nmath_bplus(Lwpn_favor, Rwpn_favor, UINT8_MAX);
+    i32 wpn_favor = Lwpn_favor + Rwpn_favor;
+    wpn_favor = nmath_inbounds_int32_t(wpn_favor, SOTA_MIN_FAVOR, SOTA_MAX_FAVOR);
     return (wpn_favor);
 }
 
 i32 Equation_Weapon_Favorvar(size_t argnum, ...) {
     va_list valist;
-    i32 wpn_favor = 0;
-    i32 current_arg = 0;
+    i32 wpn_favor = 0, current_arg = 0;
     va_start(valist, argnum);
     for (size_t i = 0; i < argnum; i++) {
         current_arg = va_arg(valist, i32);
-        wpn_favor = nmath_bplus(wpn_favor, (i32)current_arg, UINT8_MAX);
+        wpn_favor += current_arg;
     }
+    wpn_favor = nmath_inbounds_int32_t(wpn_favor, SOTA_MIN_FAVOR, SOTA_MAX_FAVOR);
     va_end(valist);
     return (wpn_favor);
 }
 
 i32 Equation_Weapon_Wgt(i32 Lwpn_wgt, i32 Rwpn_wgt) {
-    i32 wpn_wgt = nmath_bplus(Lwpn_wgt, Rwpn_wgt, UINT8_MAX);
+    i32 wpn_wgt = Lwpn_wgt + Rwpn_wgt;
+    wpn_wgt = nmath_inbounds_int32_t(wpn_wgt, SOTA_MIN_WGT, SOTA_MIN_WGT);
     return (wpn_wgt);
 }
 
 i32 Equation_Weapon_Wgtvar(size_t argnum, ...) {
     va_list valist;
-    i32 wpn_wgt = 0;
-    i32 current_arg = 0;
+    i32 wpn_wgt = 0, current_arg = 0;
     va_start(valist, argnum);
     for (size_t i = 0; i < argnum; i++) {
         current_arg = va_arg(valist, i32);
-        wpn_wgt = nmath_bplus(wpn_wgt, (i32)current_arg, UINT8_MAX);
+        wpn_wgt += current_arg;
     }
+    wpn_wgt = nmath_inbounds_int32_t(wpn_wgt, SOTA_MIN_WGT, SOTA_MIN_WGT);
     va_end(valist);
     return (wpn_wgt);
 }
 
 i32 Equation_Unit_Healshpvar(size_t argnum, ...) {
     va_list valist;
-    i32 wpn_heal = 0;
-    i32 current_arg = 0;
+    i32 wpn_heal = 0, current_arg = 0;
     va_start(valist, argnum);
     for (size_t i = 0; i < argnum; i++) {
         current_arg = va_arg(valist, i32);
-        wpn_heal = nmath_bplus(wpn_heal, (i32)current_arg, UINT8_MAX);
+        /* Heal portions above 100 get divided by 4 ? */
+        wpn_heal += current_arg;
     }
-    // Heal portions above 100 get divided by 4
-    if (wpn_heal > SOTA_100PERCENT)
-        wpn_heal = (wpn_heal - SOTA_100PERCENT) / OVERHEAL_FACTOR  + SOTA_100PERCENT;
+    wpn_heal = nmath_inbounds_int32_t(wpn_heal, 0, SOTA_100PERCENT);
     va_end(valist);
     return (wpn_heal);
 }
@@ -279,33 +277,26 @@ i32 Equation_Unit_Healshpvar(size_t argnum, ...) {
 //  Arguments:
 //   1. att is attacker attack:       unit str + wpn might
 //   2. def is defender defense:      unit def + wpn prot
-//   3. effective_multiplier  is in percent e.g. 200 for double damage
-//   4. critp_multiplier      is in percent e.g. 200 for double damage
-i32 Equation_Combat_Damage(i32 att, i32 defender_block,
-                           i32 effective_multiplier, i32 critp_multiplier, bool crit) {
+//   3. effective_multiplier  is in [%] e.g. 200 for double damage
+//   4. critp_multiplier      is in [%] e.g. 200 for double damage
+i32 Equation_Combat_Damage(i32 att, i32 defender_block, i32 effective_multiplier,
+                           i32 critp_multiplier, b32 crit) {
     /* damage = Attack*crit_factor^crit - defense */
     // DESIGN QUESTION: Should effective triple weapon might? or attack damage?
     // I'm thinking about doubling ATTACK DAMAGE, before removing defense?
-    SDL_assert(att >= 0);
+
     i32 crit_factor = crit ? critp_multiplier : SOTA_100PERCENT;
-    u16 attack = (att * effective_multiplier * crit_factor) /
-                 (SOTA_100PERCENT * SOTA_100PERCENT);
-    attack = attack > UINT8_MAX ? UINT8_MAX : attack;
-    i32 damage = nmath_bminus(attack, defender_block, 0);
+    i32 attack      = (att * effective_multiplier * crit_factor) /
+                      (SOTA_100PERCENT * SOTA_100PERCENT) - defender_block;
+    i32 damage      = nmath_inbounds_int32_t(attack, SOTA_MIN_DAMAGE, SOTA_MAX_DAMAGE);
     return (damage);
 }
 
 /* --  Equation_Attack_Damage -- */
 /* Basic attack damage equation with no effective, no crit */
+// UNUSED.
 i32 Equation_Attack_Damage(i32 attacker_dmg, i32 defender_def) {
     return (Equation_Combat_Damage(attacker_dmg, defender_def, 100, 100, false));
-}
-
-i32 Stat_Total(i32 current, i32 bonus, i32 malus, i32 cap) {
-    i32 total = nmath_bplus(current, bonus, UINT8_MAX);
-    total = nmath_bminus(current, malus, 0);
-    total = (total > cap) ? cap : total;
-    return (total);
 }
 
 i32 Equation_AI_Rating_hitRate(i32 in_hit_rate) {
@@ -329,17 +320,17 @@ i32 Equation_AI_Rating_Stats(i32 in_stat) {
     return (out_rating);  /* MAX 85 but rarely approaches that... */
 }
 
-i32 Equation_AI_Rating_HPprop(float in_hp_prop) {
-    i32 out_rating = (i32)((in_hp_prop * 100) / 4);
+i32 Equation_AI_Rating_HPprop(float hp_prop) {
+    i32 out_rating = ((hp_prop * 100) / 4);
     return (out_rating); /* MAX 85 but rarely approaches that... */
 }
 
 i32 Equation_AI_Rating_pushGradient(i32 gradient) {
-    i32 out_rating = (i32)gradient;
+    i32 out_rating = gradient;
     return (out_rating); // MAX ?? but rarely approaches that...
 }
 
 i32 Equation_AI_Rating_pullGradient(i32 gradient) {
-    i32 out_rating = (i32)gradient;
+    i32 out_rating = gradient;
     return (out_rating); // MAX ?? but rarely approaches that...
 }
