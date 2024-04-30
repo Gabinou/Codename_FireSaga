@@ -207,10 +207,9 @@ struct Target test = {
     .excludes = "src/main.c",
     .links    = "SDL2,SDL2_image,SDL2_mixer,m,GLEW,"
                 "cjson,noursmath,physfs,tinymt,tnecs,parg",
-    .flags    = "-L/usr/lib,-fno-strict-overflow,"
-                "-fno-strict-aliasing,-std=iso9899:1999,"
+    .flags    = "-fno-strict-overflow,-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
-                "-DSDL_DISABLE_IMMINTRIN_H,"
+                "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
                 "$(sdl2-config --cflags)",
     .cmd_pre  = "astyle --options=utils/style.txt --verbose "
                 "--recursive src/* include/* test/* names/*",

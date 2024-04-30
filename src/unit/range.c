@@ -9,8 +9,7 @@
 struct Range *Unit_Range_Loadout(struct Unit   *unit) {
 
     struct Range *range = &unit->computed_stats.range_loadout;
-    range->min = UINT8_MAX;
-    range->max = 0;
+    *range = Range_default;
     Unit_isdualWielding(unit);
 
     b32 stronghand = Unit_Hand_Strong(unit);
@@ -154,30 +153,31 @@ struct Range *Unit_Range_Combine_Weapons(struct Unit *unit, b32 equipped) {
 }
 
 b32 Range_Valid(struct Range range) {
-    return ((range.max >= SOTA_MIN_RANGE) &&
-            (range.min >= SOTA_MIN_RANGE) &&
-            (range.min <= SOTA_MAX_RANGE) &&
-            (range.max <= SOTA_MAX_RANGE));
+    return ((range.min >= SOTA_MIN_RANGE) && (range.min <= SOTA_MAX_RANGE) &&
+            (range.max >= SOTA_MIN_RANGE) && (range.max <= SOTA_MAX_RANGE));
 }
 
+b32 Ranges_Gap(struct Range r1, struct Range r2) {
+    b32 gap  = (r1.max < (r2.min  - 1)) || (r1.min > (r2.max  + 1));
+    return (gap);
+}
+
+/* NOTE: to check if ranges are correct, run:
+    Range_Valid(r1);
+    Range_Valid(r2);
+    Ranges_Gap(r1, struct Range r2)
+ */
 void Ranges_Combine(struct Range *r1, struct Range r2) {
     /* Combine ranges. Should never leave gaps*/
     // Gap example:    1  2  3  4  5
     // r1: [1,1]      |-|             (gap with    r2)
     // r1: [1,2]      |----|          (no gap with r2)
     // r2: [3,5]            |-------|
-    b32 r1_valid = Range_Valid(*r1);
-    b32 r2_valid = Range_Valid(r2);
+    SDL_assert(Range_Valid(*r1));
+    SDL_assert(Range_Valid(r2));
+    SDL_assert(!Ranges_Gap(*r1, r2));
 
-    b32 gap  = (r1->max < (r2.min  - 1)) || (r1->min > (r2.max  + 1));
-
-    if (gap || !r1_valid || !r2_valid) {
-        SDL_Log("Gap in combined ranges. Should never happen.");
-        exit(ERROR_OutofBounds);
-    }
-
-    r1->max = r1->max > r2.max ? r1->max : r2.max; /* Best max range is biggest  */
-    r1->min = r1->min < r2.min ? r1->min : r2.min; /* Best min range is smallest */
+    *r1 = _Ranges_Combine(*r1, r2);
 }
 
 struct Range _Ranges_Combine(struct Range r1, struct Range r2) {

@@ -28,6 +28,9 @@ struct Timer Timer_default = {
     .paused       = false,
 };
 
+struct Range Range_default = {.min = SOTA_MAX_RANGE, .max = SOTA_MIN_RANGE};
+
+
 struct Rendered Rendered_default = {
     .graphics.texture   = NULL,
     .flip               = SDL_FLIP_NONE,

@@ -171,6 +171,7 @@ struct Range {
     i32 min;
     i32 max;
 };
+extern struct Range Range_default;
 
 struct Computed_Stats {
     i32 attack[DAMAGE_TYPES];

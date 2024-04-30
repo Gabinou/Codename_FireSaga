@@ -1,13 +1,18 @@
 #ifndef GAME_CONTROL_H
 #define GAME_CONTROL_H
 
+#include "structs.h"
 #include "game/game.h"
+#include "controller/gamepad.h"
+#include "controller/keyboard.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
 struct Unit;
 struct Convoy;
 struct Game;
+struct controllerGamepad;
+struct controllerKeyboard;
 
 /* -- Control -- */
 void Game_Control_Gamepad( struct Game *sota);
