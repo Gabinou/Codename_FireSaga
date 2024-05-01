@@ -1170,11 +1170,6 @@ void Unit_Equipment_Print( struct Unit *unit) {
 
 }
 
-struct Computed_Stats Unit_supportBonus(struct Unit *unit) {
-    // TODO Find all bonuses from supports
-    return (Computed_Stats_default);
-}
-
 /* --- Loadout Manipulation --- */
 /* - Does that loadout wields a weapon with two hands? - */
 bool Unit_Loadout_twoHanding(int lh, int rh) {

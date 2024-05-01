@@ -54,17 +54,21 @@ void Unit_Bonus_Refresh(struct Unit *unit, struct Bonus_Stats bonus) {
         - Update turns to bonus turns
         If not, add it to the bonus_stats stack
     */
-    int found = -1;
     for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
         if (Bonus_Stats_Compare(unit->bonus_stack[i], bonus)) {
-            found = true;
-            break;
+            /* Refresh */
+            // found = true;
+            unit->bonus_stack[i].turns = bonus.turns;
+            return;
         }
     }
 
-    if (found >= 0) {
-        unit->bonus_stack[found].turns = bonus.turns;
-    } else {
-        Unit_Bonus_Add(unit, bonus);
-    }
+    Unit_Bonus_Add(unit, bonus);
+}
+
+/* --- Supports --- */
+struct Bonus_Stats Unit_supportBonus(struct Unit *unit) {
+    /* Support bonus given to other unit if in support range (2 tiles) */
+    /* TODO Find all bonuses from supports */
+    return (Bonus_Stats_default);
 }

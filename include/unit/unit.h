@@ -148,7 +148,6 @@ i32 *Unit_computeDefense(struct Unit *u);
 
 struct Unit_stats Unit_effectiveStats(   struct Unit *u);
 struct Unit_stats Unit_effectiveGrowths( struct Unit *u);
-struct Computed_Stats Unit_supportBonus( struct Unit *u);
 struct Computed_Stats Unit_computedStats(struct Unit *u, int dist);
 struct Computed_Stats Unit_computedStats_wLoadout(struct Unit *u, int lh, int rh, int dist);
 

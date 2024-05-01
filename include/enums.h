@@ -195,7 +195,7 @@ enum SOTA_LIMITS {
     SOTA_MAX_WGT        =   60,
 
     SOTA_MIN_HEAL_PERCENT  =    0,
-    SOTA_MAX_HEAL_PERCENT  = 200,
+    SOTA_MAX_HEAL_PERCENT  =  200,
     /* Computed_Stats limits*/
     SOTA_MIN_DAMAGE     =    0,
     SOTA_MAX_DAMAGE     = 0xFF,

@@ -15,4 +15,7 @@ struct Bonus_Stats Aura2Bonus(struct Aura *a, tnecs_entity u, u16 i, u16 s, b32 
 /* Bonus utils */
 b32 Bonus_Stats_Compare(struct Bonus_Stats bonus1, struct Bonus_Stats bonus2);
 
+/* --- Supports --- */
+struct Bonus_Stats Unit_supportBonus(struct Unit *unit);
+
 #endif /* UNIT_BONUS_H */
