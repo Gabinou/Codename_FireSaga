@@ -772,18 +772,86 @@ void test_bonus_stats() {
 
     struct Unit_stats effective_stats = Unit_effectiveStats(&Silou);
 
-    nourstest_true(effective_stats.hp == (Silou.current_stats.hp + bonus1.unit_stats.hp));
-    nourstest_true(effective_stats.str == (Silou.current_stats.str + bonus1.unit_stats.str));
-    nourstest_true(effective_stats.mag == (Silou.current_stats.mag + bonus1.unit_stats.mag));
-    nourstest_true(effective_stats.agi == (Silou.current_stats.agi + bonus1.unit_stats.agi));
-    nourstest_true(effective_stats.dex == (Silou.current_stats.dex + bonus1.unit_stats.dex));
-    nourstest_true(effective_stats.fth == (Silou.current_stats.fth + bonus1.unit_stats.fth));
-    nourstest_true(effective_stats.luck == (Silou.current_stats.luck + bonus1.unit_stats.luck));
-    nourstest_true(effective_stats.def == (Silou.current_stats.def + bonus1.unit_stats.def));
-    nourstest_true(effective_stats.res == (Silou.current_stats.res + bonus1.unit_stats.res));
-    nourstest_true(effective_stats.con == (Silou.current_stats.con + bonus1.unit_stats.con));
-    nourstest_true(effective_stats.move == (Silou.current_stats.move + bonus1.unit_stats.move));
-    nourstest_true(effective_stats.prof == (Silou.current_stats.prof + bonus1.unit_stats.prof));
+    nourstest_true(effective_stats.hp   == (Silou.current_stats.hp      + bonus1.unit_stats.hp));
+    nourstest_true(effective_stats.str  == (Silou.current_stats.str     + bonus1.unit_stats.str));
+    nourstest_true(effective_stats.mag  == (Silou.current_stats.mag     + bonus1.unit_stats.mag));
+    nourstest_true(effective_stats.agi  == (Silou.current_stats.agi     + bonus1.unit_stats.agi));
+    nourstest_true(effective_stats.dex  == (Silou.current_stats.dex     + bonus1.unit_stats.dex));
+    nourstest_true(effective_stats.fth  == (Silou.current_stats.fth     + bonus1.unit_stats.fth));
+    nourstest_true(effective_stats.luck == (Silou.current_stats.luck    + bonus1.unit_stats.luck));
+    nourstest_true(effective_stats.def  == (Silou.current_stats.def     + bonus1.unit_stats.def));
+    nourstest_true(effective_stats.res  == (Silou.current_stats.res     + bonus1.unit_stats.res));
+    nourstest_true(effective_stats.con  == (Silou.current_stats.con     + bonus1.unit_stats.con));
+    nourstest_true(effective_stats.move == (Silou.current_stats.move    + bonus1.unit_stats.move));
+    nourstest_true(effective_stats.prof == (Silou.current_stats.prof    + bonus1.unit_stats.prof));
+
+    /* Adding bonus_stats2 */
+    struct Unit_stats bonus_stats2   = {0,  2,  3,  4,  5, 6,  7,  8,  9,  10, 11};
+    bonus1.unit_stats   = bonus_stats2;
+    bonus1.turns        = 1;
+    Unit_Bonus_Add(&Silou, bonus1);
+
+    effective_stats = Unit_effectiveStats(&Silou);
+
+    nourstest_true(effective_stats.hp   == (Silou.current_stats.hp      + bonus_stats.hp    +
+                                            bonus_stats2.hp));
+    nourstest_true(effective_stats.str  == (Silou.current_stats.str     + bonus_stats.str   +
+                                            bonus_stats2.str));
+    nourstest_true(effective_stats.mag  == (Silou.current_stats.mag     + bonus_stats.mag   +
+                                            bonus_stats2.mag));
+    nourstest_true(effective_stats.agi  == (Silou.current_stats.agi     + bonus_stats.agi   +
+                                            bonus_stats2.agi));
+    nourstest_true(effective_stats.dex  == (Silou.current_stats.dex     + bonus_stats.dex   +
+                                            bonus_stats2.dex));
+    nourstest_true(effective_stats.fth  == (Silou.current_stats.fth     + bonus_stats.fth   +
+                                            bonus_stats2.fth));
+    nourstest_true(effective_stats.luck == (Silou.current_stats.luck    + bonus_stats.luck  +
+                                            bonus_stats2.luck));
+    nourstest_true(effective_stats.def  == (Silou.current_stats.def     + bonus_stats.def   +
+                                            bonus_stats2.def));
+    nourstest_true(effective_stats.res  == (Silou.current_stats.res     + bonus_stats.res   +
+                                            bonus_stats2.res));
+    nourstest_true(effective_stats.con  == (Silou.current_stats.con     + bonus_stats.con   +
+                                            bonus_stats2.con));
+    nourstest_true(effective_stats.move == (Silou.current_stats.move    + bonus_stats.move  +
+                                            bonus_stats2.move));
+    nourstest_true(effective_stats.prof == (Silou.current_stats.prof    + bonus_stats.prof  +
+                                            bonus_stats2.prof));
+
+    Unit_Bonus_Decay(&Silou);
+
+    effective_stats = Unit_effectiveStats(&Silou);
+
+    nourstest_true(effective_stats.hp   == (Silou.current_stats.hp      + bonus_stats2.hp));
+    nourstest_true(effective_stats.str  == (Silou.current_stats.str     + bonus_stats2.str));
+    nourstest_true(effective_stats.mag  == (Silou.current_stats.mag     + bonus_stats2.mag));
+    nourstest_true(effective_stats.agi  == (Silou.current_stats.agi     + bonus_stats2.agi));
+    nourstest_true(effective_stats.dex  == (Silou.current_stats.dex     + bonus_stats2.dex));
+    nourstest_true(effective_stats.fth  == (Silou.current_stats.fth     + bonus_stats2.fth));
+    nourstest_true(effective_stats.luck == (Silou.current_stats.luck    + bonus_stats2.luck));
+    nourstest_true(effective_stats.def  == (Silou.current_stats.def     + bonus_stats2.def));
+    nourstest_true(effective_stats.res  == (Silou.current_stats.res     + bonus_stats2.res));
+    nourstest_true(effective_stats.con  == (Silou.current_stats.con     + bonus_stats2.con));
+    nourstest_true(effective_stats.move == (Silou.current_stats.move    + bonus_stats2.move));
+    nourstest_true(effective_stats.prof == (Silou.current_stats.prof    + bonus_stats2.prof));
+
+    Unit_Bonus_Decay(&Silou);
+
+    effective_stats = Unit_effectiveStats(&Silou);
+
+    nourstest_true(effective_stats.hp   == (Silou.current_stats.hp));
+    nourstest_true(effective_stats.str  == (Silou.current_stats.str));
+    nourstest_true(effective_stats.mag  == (Silou.current_stats.mag));
+    nourstest_true(effective_stats.agi  == (Silou.current_stats.agi));
+    nourstest_true(effective_stats.dex  == (Silou.current_stats.dex));
+    nourstest_true(effective_stats.fth  == (Silou.current_stats.fth));
+    nourstest_true(effective_stats.luck == (Silou.current_stats.luck));
+    nourstest_true(effective_stats.def  == (Silou.current_stats.def));
+    nourstest_true(effective_stats.res  == (Silou.current_stats.res));
+    nourstest_true(effective_stats.con  == (Silou.current_stats.con));
+    nourstest_true(effective_stats.move == (Silou.current_stats.move));
+    nourstest_true(effective_stats.prof == (Silou.current_stats.prof));
+
 
     /* Free */
     DARR_FREE(Silou.bonus_stack);
