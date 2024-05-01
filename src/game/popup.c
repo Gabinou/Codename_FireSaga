@@ -252,7 +252,7 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
 #ifdef DEBUG_POPUP_UNIT_OFFSCREEN
     i32 midpoint = sota->settings.res.x / 2;
     b32 screen_side_changed = (((new_target.x > midpoint) && (popup_pos.x < midpoint))
-                                || ((new_target.x < midpoint) && (popup_pos.x > midpoint)));
+                               || ((new_target.x < midpoint) && (popup_pos.x > midpoint)));
     if (screen_side_changed)
         Slider_Target_Offscreen(slider, offscreen, &position->pixel_pos);
     Slider_Start(slider, &position->pixel_pos, &offscreen->target);

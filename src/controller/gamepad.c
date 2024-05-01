@@ -182,7 +182,7 @@ void Gamepad_Free(struct controllerGamepad *gp) {
 }
 
 b32 Gamepad_ButtonorAxis(struct controllerGamepad *gp, SDL_GameControllerButton sdl_button, int i,
-                          b32 isbutton) {
+                         b32 isbutton) {
     SDL_GameController *controller  = gp->controllers[i];
     b32 out;
     if (isbutton) {

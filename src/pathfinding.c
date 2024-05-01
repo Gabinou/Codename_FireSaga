@@ -768,7 +768,7 @@ i32 *Pathfinding_unitGradient(i32 *costmap, size_t row_len, size_t col_len,
 
 /* -- Visible -- */
 b32 Pathfinding_Tile_Visible(i32 *sightmap, i32 *blockmap, struct Point start,
-                              struct Point delta, size_t col_len) {
+                             struct Point delta, size_t col_len) {
     /* -- Between start and delta -- */
     i32 distance = abs(delta.x) + abs(delta.y);
 

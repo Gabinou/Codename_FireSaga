@@ -16,13 +16,14 @@ void test_tile() {
     struct Tile_stats out_tile_stats = Tile_stats_default;
     struct fMovement_cost in_cost = {2.0f, 2.0f, 2.0f, 3.0f, 3.0f, 1.0f, 3.0f, 2.0f, 2.0f};
     struct Tile tile1 =  {
-        .json_element = JSON_TILE,
-        .cost_struct = in_cost,
-        .inside = true,
-        .name = "Throne",
-        .id = TILE_THRONE,
-        .stats = in_tile_stats
+        .json_element   = JSON_TILE,
+        .cost_struct    = in_cost,
+        .inside         = true,
+        .name           = "Throne",
+        .id             = TILE_THRONE,
+        .stats          = in_tile_stats
     };
+    nourstest_true(tile1.inside == true);
     Tile_makeMvtCostarray(&tile1);
     struct fMovement_cost out_cost = fMovement_cost_default;
     u8 cost_array[UNIT_MVT_END];

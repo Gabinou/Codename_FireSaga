@@ -128,10 +128,10 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
         case SLIDETYPE_EASYINEASYOUT:; // faster, then slower
             // NOT EASYINEASY OUT -> for slider offscreen type
             b32 going_offscreen = (((pos->x < slider->point.x) && (pos->x < target->x))
-                                    || ((pos->y < slider->point.y) && (pos->y < target->y))
-                                    || ((pos->x > slider->point.x) && (pos->x > target->x))
-                                    || ((pos->y > slider->point.y) && (pos->y > target->y))
-                                   );
+                                   || ((pos->y < slider->point.y) && (pos->y < target->y))
+                                   || ((pos->x > slider->point.x) && (pos->x > target->x))
+                                   || ((pos->y > slider->point.y) && (pos->y > target->y))
+                                  );
             if (go_offscreen && going_offscreen) {
                 // BORKED for popup_unit
                 // Makes popup go out of screen reasonably fast/slow.

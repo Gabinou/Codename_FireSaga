@@ -709,20 +709,23 @@ enum UNIT_SKILL_EXP {
 };
 #undef REGISTER_ENUM
 
+enum INFUSE {
+    SOTA_INFUSEABLE     = -1,
+    SOTA_NON_INFUSEABLE =  0, /* for magic weapons */
+    SOTA_INFUSE_FACTOR  =  3,
+};
+
+
+/* TODO: Combine all skills into one list */
 #define REGISTER_ENUM(x) PASSIVE_SKILL_##x,
 enum PASSIVE_SKILLS {
+    SKILL_START         = 0,
     PASSIVE_SKILL_START = 0,
 #include "names/skills_passive.h"
     PASSIVE_SKILL_END,
     PASSIVE_SKILL_NUM = PASSIVE_SKILL_END,
 };
 #undef REGISTER_ENUM
-
-enum INFUSE {
-    SOTA_INFUSEABLE     = -1,
-    SOTA_NON_INFUSEABLE =  0, /* for magic weapons */
-    SOTA_INFUSE_FACTOR  =  3,
-};
 
 #define REGISTER_ENUM(x) ACTIVE_SKILL_##x,
 enum ACTIVE_SKILLS {

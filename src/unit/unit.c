@@ -1747,7 +1747,7 @@ void Unit_writeJSON( void *input, cJSON *junit) {
     SDL_assert(junit);
     cJSON *jid            = cJSON_CreateNumber(unit->_id);
     cJSON *jexp           = cJSON_CreateNumber(unit->base_exp);
-    cJSON *jsex           = cJSON_Createb32(unit->sex);
+    cJSON *jsex           = cJSON_CreateBool(unit->sex);
     cJSON *jname          = cJSON_CreateString(unit->name.data);
     cJSON *jai            = cJSON_CreateString(unit->ai_filename.data);
     cJSON *jtitle         = NULL;
