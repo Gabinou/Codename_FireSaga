@@ -37,8 +37,8 @@ void test_combat_game() {
     SDL_Log("Setting up inventory");
     struct Inventory_item in_wpn = Inventory_item_default;
     in_wpn.id = ITEM_ID_FLEURET;
-    bool attacker_equip_hand = UNIT_HAND_WEAK;
-    bool defender_equip_hand = UNIT_HAND_WEAK;
+    b32 attacker_equip_hand = UNIT_HAND_WEAK;
+    b32 defender_equip_hand = UNIT_HAND_WEAK;
     Unit_Item_Drop(&defender,           defender_equip_hand);
     Unit_Item_Takeat(&defender, in_wpn, defender_equip_hand);
     Unit_Item_Drop(&attacker,           attacker_equip_hand);

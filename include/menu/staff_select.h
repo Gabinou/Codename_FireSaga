@@ -35,7 +35,7 @@ struct LoadoutSelectMenu;
 /* After selecting staff, if unit can one hand staves, menu mode staves->items */
 void StaffSelectMenu_Select(       struct LoadoutSelectMenu *ssm, i8 s);
 void StaffSelectMenu_Deselect(     struct LoadoutSelectMenu *ssm);
-bool StaffSelectMenu_canEqItem(    struct LoadoutSelectMenu *ssm);
+b32 StaffSelectMenu_canEqItem(    struct LoadoutSelectMenu *ssm);
 void StaffSelectMenu_Switch_Items( struct LoadoutSelectMenu *ssm);
 void StaffSelectMenu_Switch_Staves(struct LoadoutSelectMenu *ssm);
 

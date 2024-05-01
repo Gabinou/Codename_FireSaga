@@ -493,7 +493,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
 
     /* -- Changing animation loop to Taunt -- */
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, hov_ent, Sprite);
-    bool animated = TNECS_ENTITY_HASCOMPONENT(sota->world, hov_ent, Timer);
+    b32 animated = TNECS_ENTITY_HASCOMPONENT(sota->world, hov_ent, Timer);
     if ((sprite->spritesheet != NULL) && (animated) && (!unit_ontile->waits)) {
         if (sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM) {
             Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_TAUNT, sprite->flip);
@@ -561,7 +561,7 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, dehov_ent, Sprite);
     SDL_assert(unit   != NULL);
     SDL_assert(sprite != NULL);
-    bool animated = TNECS_ENTITY_HASCOMPONENT(sota->world, dehov_ent, Timer);
+    b32 animated = TNECS_ENTITY_HASCOMPONENT(sota->world, dehov_ent, Timer);
 
     /* Only if unit doesn't wait */
     if ((sprite->spritesheet != NULL) && (animated) && (!unit->waits)) {
@@ -726,7 +726,7 @@ void fsm_eCncl_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity canceller) {
 }
 
 void fsm_eCncl_sGmpMap_ssMenu(struct Game *sota, tnecs_entity canceller) {
-    bool destroy = false;
+    b32 destroy = false;
     tnecs_entity ent_topop = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     SDL_assert(ent_topop > TNECS_NULL);
     struct Menu *mc_topop = TNECS_GET_COMPONENT(sota->world, ent_topop, Menu);
@@ -1368,7 +1368,7 @@ void fsm_eMenuRight_sScnTalk(struct Game *sota, i32 controller_type) {
 
 void fsm_eMenuRight_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     /* -- Pop previous menu -- */
-    bool destroy = false;
+    b32 destroy = false;
     tnecs_entity popped = Game_menuStack_Pop(sota, destroy);
     SDL_assert(popped > 0);
 
@@ -1423,7 +1423,7 @@ void fsm_eMenuLeft_sPrep(struct Game *sota, i32 controller_type) {
 
 void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     /* -- Pop previous menu -- */
-    bool destroy = false;
+    b32 destroy = false;
     tnecs_entity popped = Game_menuStack_Pop(sota, destroy);
     SDL_assert(popped > 0);
 

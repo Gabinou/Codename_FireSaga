@@ -35,7 +35,7 @@ void Game_Cursor_Move_toCandidate(struct Game *sota);
 
 void Game_Cursor_movedTime_Compute(struct Game *sota, u64 time_ms);
 
-bool Game_isCursoronTilemap(struct Game *sota);
+b32 Game_isCursoronTilemap(struct Game *sota);
 
 /* --- Mouse --- */
 void Game_Mouse_Free(   struct Game *sota);

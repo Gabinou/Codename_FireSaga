@@ -34,8 +34,8 @@ struct RNG_Sequence;
 struct Reinforcement;
 
 /* -- Unit second-order info -- */
-extern u8   army_alignment[ARMY_END];
-extern bool army_isPC[ARMY_END];
+extern i32 army_alignment[ARMY_END];
+extern b32 army_isPC[ARMY_END];
 
 /* --- UNIT STATS --- */
 
@@ -67,19 +67,21 @@ int Unit_Hand_Side2Strong(struct Unit *unit, int i);
 
 void Unit_setid(      struct Unit *u, i16 id);
 void Unit_setStats(   struct Unit *u, struct Unit_stats stats);
-void Unit_setStats(   struct Unit *u, struct Unit_stats stats);
 void Unit_setBases(   struct Unit *u, struct Unit_stats stats);
 void Unit_setClassind(struct Unit *u, i8 class_i);
 
 struct Unit_stats Unit_getStats(struct Unit *u);
 
+struct Item     *Unit_Get_Equipped_Item(    struct Unit *unit, b32 hand);
+struct Weapon   *Unit_Get_Equipped_Weapon(  struct Unit *unit, b32 hand);
+
 /* --- Items --- */
 /* -- Deplete: decrease durability -- */
 void _Unit_Item_Deplete(           struct Unit *u, int  i, int a);
-void _Unit_Equipped_Deplete(       struct Unit *u, bool h, int a);
+void _Unit_Equipped_Deplete(       struct Unit *u, b32 h, int a);
 
 void Unit_Item_Deplete(            struct Unit *u, int i);
-void Unit_Equipped_Staff_Deplete(  struct Unit *u, bool h);
+void Unit_Equipped_Staff_Deplete(  struct Unit *u, b32 h);
 void Unit_Equipped_Weapons_Deplete(struct Unit *u);
 void Unit_Equipped_Shields_Deplete(struct Unit *u);
 
@@ -95,36 +97,36 @@ struct Inventory_item Unit_Item_Drop(struct Unit *u, i16 ind1);
 void Unit_Equipment_Drop(struct Unit *u);
 
 /* --- Equipping --- */
-bool                  Unit_Equip(           struct Unit *u, bool h, int i);
-void                  Unit_Unequip(         struct Unit *u, bool h);
-bool                  Unit_Equip_inHand(    struct Unit *u, bool h);
+b32                  Unit_Equip(           struct Unit *u, b32 h, int i);
+void                  Unit_Unequip(         struct Unit *u, b32 h);
+b32                  Unit_Equip_inHand(    struct Unit *u, b32 h);
 struct Inventory_item Unit_Equip_TwoHanding(struct Unit *u);
 
 /* --- Checking Equipment: de-equip if broken --- */
-void _Unit_Check_Equipped(struct Unit *u, bool hand);
+void _Unit_Check_Equipped(struct Unit *u, b32 hand);
 void  Unit_Check_Equipped(struct Unit *u);
 
 /* --- Supports --- */
 void Unit_supportUp(struct Unit *u, i16 id);
 
 /* --- Second-order info --- */
-bool SotA_isPC(          u8 a);
+b32 SotA_isPC(          u8 a);
 u8  SotA_army2alignment(u8 a);
 
 u8  Unit_mvtType(struct Unit *u);
 
 /* --- Debug --- */
-bool Unit_Equipment_Full( struct Unit *u);
+b32 Unit_Equipment_Full( struct Unit *u);
 void Unit_Equipment_Print(struct Unit *u);
 
 /* --- Usability --- */
-bool Unit_Eq_Usable(  struct Unit *u, int a, int i);
-bool Unit_All_Usable( struct Unit *u);
+b32 Unit_Eq_Usable(  struct Unit *u, int a, int i);
+b32 Unit_All_Usable( struct Unit *u);
 void Unit_Find_Usable(struct Unit *u, int a);
-bool Unit_Item_Usable(struct Unit *u, int a, int i);
+b32 Unit_Item_Usable(struct Unit *u, int a, int i);
 
 /* --- Skills --- */
-bool Unit_hasSkill(struct Unit *u, u64 s);
+b32 Unit_hasSkill(struct Unit *u, u64 s);
 
 /* --- Stat computation --- */
 /* Gives weapon stat if distance is in range.
@@ -152,7 +154,7 @@ struct Computed_Stats Unit_computedStats(struct Unit *u, int dist);
 struct Computed_Stats Unit_computedStats_wLoadout(struct Unit *u, int lh, int rh, int dist);
 
 /* --- Loadout Manipulation --- */
-bool Unit_Loadout_twoHanding(int lh, int rh);
+b32 Unit_Loadout_twoHanding(int lh, int rh);
 
 /* - Public: Chooses between _Unit_Loadout_Swap_Twohanding and _Unit_Loadout_Swap - */
 void Unit_Loadout_Swap(        struct Unit *u, int lh, int rh);
@@ -177,34 +179,34 @@ void Unit_refresh( struct Unit *u);
 void Unit_agonizes(struct Unit *u);
 
 void Unit_getsHealed( struct Unit *u, u8 healing);
-void Unit_takesDamage(struct Unit *u, u8 dmg, bool ct);
+void Unit_takesDamage(struct Unit *u, u8 dmg, b32 ct);
 
 /* --- I/O --- */
 void Unit_readJSON( void *u, cJSON *junit);
 void Unit_writeJSON(void *u, cJSON *junit);
 
 /* --- Unit state --- */
-bool Unit_isdualWielding(struct Unit *u);
+b32 Unit_isdualWielding(struct Unit *u);
 // WrongHanding: using shield or offhand in strong hand and vice vdrsa
-bool Unit_iswrongHanding(struct Unit *u);
+b32 Unit_iswrongHanding(struct Unit *u);
 
 /* --- Unit Can --- */
-bool Unit_canDance(struct Unit *u);
+b32 Unit_canDance(struct Unit *u);
 
 /* -- Can Carry -- */
-bool Unit_canCarry(struct Unit *u1, struct Unit *u2);
+b32 Unit_canCarry(struct Unit *u1, struct Unit *u2);
 
 /* -- Can Equip -- */
-bool Unit_canEquip(       struct Unit *u, i16 id);
+b32 Unit_canEquip(       struct Unit *u, i16 id);
 u8   Unit_Equippables(    struct Unit *u, u8 *eq);
-bool Unit_canEquip_Type(  struct Unit *u, i16 id);
-bool Unit_canEquip_Hand(  struct Unit *u, i16 id, bool h);
-bool Unit_canEquip_inHand(struct Unit *u, bool h);
+b32 Unit_canEquip_Type(  struct Unit *u, i16 id);
+b32 Unit_canEquip_Hand(  struct Unit *u, i16 id, b32 h);
+b32 Unit_canEquip_inHand(struct Unit *u, b32 h);
 
 /* -- Can Attack -- */
-bool _Unit_canAttack(   struct Unit *u, bool hand);  /* with weapon in hand       */
-bool  Unit_canAttack(   struct Unit *u);             /* with equipped weapon      */
-bool  Unit_canAttack_Eq(struct Unit *u);             /* with any wpn in equipment */
+b32 _Unit_canAttack(   struct Unit *u, b32 hand);  /* with weapon in hand       */
+b32  Unit_canAttack(   struct Unit *u);             /* with equipped weapon      */
+b32  Unit_canAttack_Eq(struct Unit *u);             /* with any wpn in equipment */
 
 /* -- Can Staff -- */
 int Unit_canStaff(        struct Unit *u);
@@ -219,6 +221,6 @@ i16 Unit_getLvl(  struct Unit *u);
 void Unit_Promote(struct Unit *u, i8 new_class_i);
 
 /* -- Unit_id -- */
-bool Unit_ID_Valid(u16 id);
+b32 Unit_ID_Valid(u16 id);
 
 #endif /* UNIT_H */

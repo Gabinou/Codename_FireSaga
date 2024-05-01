@@ -42,7 +42,7 @@ struct RNG_Sequence;
 #define SOTA_MINLEN 12
 
 /* --- matrix --- */
-bool list_isIn_2D(i32 *list_2D, size_t list_len, i32 x, i32 y);
+b32 list_isIn_2D(i32 *list_2D, size_t list_len, i32 x, i32 y);
 i32 *matrix2list_noM(i32 *matrix, i32 *list, size_t row_len, size_t col_len);
 i32 *matrix2list(    i32 *matrix,            size_t row_len, size_t col_len);
 i32 *list2matrix(    i32 *list,              size_t row_len, size_t col_len, size_t list_len);
@@ -64,8 +64,8 @@ i32 *matrix_plus(i32 *matrix1, i32 *matrix2, size_t arr_len);
 
 /* --- Array --- */
 int int_inbounds(int pos, int boundmin, int boundmax);
-bool i8_all_equal(i8 *arr1, i8 *arr2, size_t len);
-bool Utilities_charArr_Equal(char *arr1, char *arr2, size_t len);
+b32 i8_all_equal(i8 *arr1, i8 *arr2, size_t len);
+b32 Utilities_charArr_Equal(char *arr1, char *arr2, size_t len);
 
 /* --- Weapons and items --- */
 struct WpnorItem Utilities_WpnorItem(i16 id, struct dtab *wt, struct dtab *it);

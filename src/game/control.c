@@ -26,7 +26,7 @@ void Gamepad_Pressed(i8 sota_b, i8 *press, i8 *pressed_num, i32 *controller_type
                      u32 event, struct controllerGamepad *gp) {
     i32 theld       = gp->timeheld_button_ns;
     i32 min_held    = GAMEPAD_MINHELD_ns;
-    bool butblk     = gp->block_buttons;
+    b32 butblk     = gp->block_buttons;
 
     Control_Pressed(sota_b, press, pressed_num, controller_type,
                     event, butblk, theld, min_held);
@@ -36,14 +36,14 @@ void Keyboard_Pressed(i8 sota_b, i8 *press, i8 *pressed_num, i32 *controller_typ
                       u32 event, struct controllerKeyboard *kb) {
     i32 theld       = kb->timeheld_button_ns;
     i32 min_held    = KEYBOARD_MINHELD_ns;
-    bool butblk     = kb->block_buttons;
+    b32 butblk     = kb->block_buttons;
 
     Control_Pressed(sota_b, press, pressed_num, controller_type,
                     event, butblk, theld, min_held);
 }
 
 void Control_Pressed(i8 sota_b, i8 *press, i8 *pressed_num, i32 *controller_type,
-                     u32 event, bool block, i32 t_held_ns, i32 t_min_ns) {
+                     u32 event, b32 block, i32 t_held_ns, i32 t_min_ns) {
     press[(*pressed_num)++] = sota_b;
     if (block) {
         return;
@@ -79,7 +79,7 @@ void Game_Control_Keyboard(struct Game *sota) {
     /* -- Keyboard button checking -- */
     i8 press[SOTA_BUTTON_END];
     i8 pnum          = 0;
-    bool butblk      =  kb->block_buttons;
+    b32 butblk      =  kb->block_buttons;
     size_t *mheld    = &kb->held_move_num;
     i32    *theld    = &kb->timeheld_button_ns;
     i32    *theld_ns = &kb->timeheld_move_ns;
@@ -98,10 +98,10 @@ void Game_Control_Keyboard(struct Game *sota) {
     /* -- Keyboard move checking -- */
     i8 pmove[SOTA_DIRECTIONS_MAIN_NUM];
     i8 pmove_num = 0;
-    bool right = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_RIGHT);
-    bool up    = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_UP);
-    bool left  = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_LEFT);
-    bool down  = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_DOWN);
+    b32 right = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_RIGHT);
+    b32 up    = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_UP);
+    b32 left  = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_LEFT);
+    b32 down  = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_DOWN);
 
     /* - Collapse diagonals to one of 4 main directions - */
     if (up && !down) {

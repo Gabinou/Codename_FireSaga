@@ -90,7 +90,7 @@ void SliderOffscreen_Compute_Next(struct Slider *slider, struct SliderOffscreen 
 }
 
 void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
-                         struct Point *target, bool go_offscreen) {
+                         struct Point *target, b32 go_offscreen) {
     // This function is used by Slidepopup. Should not be changed.
     // Extract what other sprites need
 
@@ -127,7 +127,7 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
             break;
         case SLIDETYPE_EASYINEASYOUT:; // faster, then slower
             // NOT EASYINEASY OUT -> for slider offscreen type
-            bool going_offscreen = (((pos->x < slider->point.x) && (pos->x < target->x))
+            b32 going_offscreen = (((pos->x < slider->point.x) && (pos->x < target->x))
                                     || ((pos->y < slider->point.y) && (pos->y < target->y))
                                     || ((pos->x > slider->point.x) && (pos->x > target->x))
                                     || ((pos->y > slider->point.y) && (pos->y > target->y))

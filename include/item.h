@@ -57,10 +57,10 @@ typedef struct Item {
     s8 name;
     char description[DEFAULT_BUFFER_SIZE * 2];
 
-    bool canSell     : 1;
-    bool write_stats : 1;
-    bool canUse      : 1;
-    bool canRepair   : 1; /* TODO: Move to weapon? */
+    b32 canSell     : 1;
+    b32 write_stats : 1;
+    b32 canUse      : 1;
+    b32 canRepair   : 1; /* TODO: Move to weapon? */
 } Item;
 extern struct Item Item_default;
 
@@ -85,12 +85,12 @@ void Item_writeJSON(void *input, cJSON *jitem);
 int Item_Archetype(i16 id);
 
 /* --- Is --- */
-bool Item_isStaff(  i16 id);
-bool Item_isShield( i16 id);
-bool Item_isWeapon( i16 id);
-bool Item_isOffhand(i16 id);
+b32 Item_isStaff(  i16 id);
+b32 Item_isShield( i16 id);
+b32 Item_isWeapon( i16 id);
+b32 Item_isOffhand(i16 id);
 
-bool Item_canUse(struct Item *item,  struct Unit *unit);
+b32 Item_canUse(struct Item *item,  struct Unit *unit);
 
 /* --- Use --- */
 void Item_Use(              struct Item *i, struct Unit *u, struct Unit *t);
@@ -98,7 +98,7 @@ void Inventory_item_Break(  struct Inventory_item *invitem);
 void Inventory_item_Deplete(struct Inventory_item *invitem, int uses);
 
 /* --- Check --- */
-bool Item_ID_isValid(u16 id); /* NOT for weapons */
+b32 Item_ID_isValid(u16 id); /* NOT for weapons */
 
 /* --- Stat --- */
 int Item_Stat( struct Item *item, i16 s);

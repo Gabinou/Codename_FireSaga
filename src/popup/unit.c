@@ -107,8 +107,8 @@ struct Point PopUp_Unit_Position(struct PopUp *popup, struct PopUp_Unit *pu,
             break;
     }
     /* Check if popup should move corner */
-    bool x_lower   = pixel_pos->x <= pu->cursor_limit_min.x;
-    bool x_greater = pixel_pos->x >= pu->cursor_limit_max.x;
+    b32 x_lower   = pixel_pos->x <= pu->cursor_limit_min.x;
+    b32 x_greater = pixel_pos->x >= pu->cursor_limit_max.x;
     if ((x_greater) && (pu->corner == SOTA_DIRECTION_TOPRIGHT))
         pu->corner = SOTA_DIRECTION_TOPLEFT;
     if ((x_lower) && (pu->corner == SOTA_DIRECTION_TOPLEFT))

@@ -4,7 +4,7 @@
 /*-- Map Usable -- */
 /* Find if a weapon/staff usable by unit has an enemy in range */
 void Map_Find_Usable(struct Map *map, tnecs_world *world, tnecs_entity unit_ent,
-                     bool move, int archetype) {
+                     b32 move, int archetype) {
     Map_Costmap_Movement_Compute(map, world, unit_ent);
     struct Unit     *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     struct Position *pos  = TNECS_GET_COMPONENT(world, unit_ent, Position);
@@ -45,7 +45,7 @@ void Map_Find_Usable(struct Map *map, tnecs_world *world, tnecs_entity unit_ent,
 
 tnecs_entity *Map_Find_Defendants(struct Map *map, i32 *attacktolist,
                                   tnecs_entity *defendants, tnecs_entity aggressor,
-                                  bool fastquit) {
+                                  b32 fastquit) {
     /* Find all defendants on attacktolist according to alignment */
 
     /* Note: Assumes attacktolist was created before with matrix2list_noM */
@@ -74,7 +74,7 @@ tnecs_entity *Map_Find_Defendants(struct Map *map, i32 *attacktolist,
 }
 
 tnecs_entity *Map_Find_Breakables(struct Map *map, i32 *attacktolist,
-                                  tnecs_entity *attackable, bool fastquit) {
+                                  tnecs_entity *attackable, b32 fastquit) {
     /* Find all breakables on attacktolist */
 
     // Note: Assumes attacktolist was created before with matrix2list_noM
@@ -100,7 +100,7 @@ tnecs_entity *Map_Find_Breakables(struct Map *map, i32 *attacktolist,
 
 tnecs_entity *Map_Find_Patients(struct Map *map, struct dtab *weapons_dtab, i32 *healtolist,
                                 tnecs_entity *patients, tnecs_entity healer_ent,
-                                bool fastquit) {
+                                b32 fastquit) {
     /* Find all patients on healtolist according to alignment */
     /* Assumes healtolist was created before with matrix2list_noM */
     struct Unit *healer = TNECS_GET_COMPONENT(map->world, healer_ent, Unit);
@@ -121,7 +121,7 @@ tnecs_entity *Map_Find_Patients(struct Map *map, struct dtab *weapons_dtab, i32 
             continue;
         struct Unit *patient = TNECS_GET_COMPONENT(map->world, unitontile, Unit);
         u8 align_patient = army_alignment[patient->army];
-        bool add;
+        b32 add;
         switch (staff->item->target) {
             case ALIGNMENT_NULL:
                 add = true;
@@ -270,7 +270,7 @@ tnecs_entity *Map_Find_Doors(struct Map *map, tnecs_entity *openable, i32 x, i32
         struct Position *pos = TNECS_GET_COMPONENT(map->world, map->doors_ent[i], Position);
         size_t x_at          = pos->tilemap_pos.x;
         size_t y_at          = pos->tilemap_pos.y;
-        bool door = (((x + 1) == x_at)    && (y == y_at));
+        b32 door = (((x + 1) == x_at)    && (y == y_at));
         door     |= (((x - 1) == x_at)    && (y == y_at));
         door     |= (((y + 1) == y_at)    && (x == x_at));
         door     |= (((y - 1) == y_at)    && (x == x_at));
@@ -288,7 +288,7 @@ tnecs_entity *Map_Find_Chests(struct Map *map, tnecs_entity *openable, i32 x, i3
         struct Position *pos = TNECS_GET_COMPONENT(map->world, map->chests_ent[i], Position);
         size_t x_at          = pos->tilemap_pos.x;
         size_t y_at          = pos->tilemap_pos.y;
-        bool chest = (((x + 1) == x_at)    && (y == y_at));
+        b32 chest = (((x + 1) == x_at)    && (y == y_at));
         chest     |= (((x - 1) == x_at)    && (y == y_at));
         chest     |= (((y + 1) == y_at)    && (x == x_at));
         chest     |= (((y - 1) == y_at)    && (x == x_at));

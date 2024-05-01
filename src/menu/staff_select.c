@@ -38,7 +38,7 @@ struct MenuElemDirections ssm_links[LSM_ELEMS_NUM] = {
     /* SSM_ELEM_ITEM6 */ {LSM_ELEM_NULL, LSM_ELEM_ITEM5, LSM_ELEM_NULL, LSM_ELEM_NULL},
 };
 
-bool StaffSelectMenu_canEqItem(struct LoadoutSelectMenu *ssm) {
+b32 StaffSelectMenu_canEqItem(struct LoadoutSelectMenu *ssm) {
     return (Unit_canStaff_oneHand(ssm->unit));
 }
 

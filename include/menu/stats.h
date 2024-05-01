@@ -395,8 +395,8 @@ struct StatsMenu {
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
 
-    bool update_stats       : 1; /* only false in tests */
-    bool tophand_stronghand : 1; /* If false, tophand is lefthand */
+    b32 update_stats       : 1; /* only false in tests */
+    b32 tophand_stronghand : 1; /* If false, tophand is lefthand */
 };
 extern struct StatsMenu StatsMenu_default;
 

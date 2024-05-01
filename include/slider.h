@@ -31,13 +31,13 @@ extern struct Slider Slider_default;
 typedef struct SliderOffscreen {
     struct Settings             *settings;
     struct Point  target;
-    bool   go_offscreen;
+    b32   go_offscreen;
 } SliderOffscreen;
 extern struct SliderOffscreen SliderOffscreen_default;
 
 /* --- FUNCTIONS --- */
 void Slider_Start(           struct Slider *s, struct Point *p, struct Point *t);
-void Slider_Compute_Next(    struct Slider *s, struct Point *p, struct Point *t, bool g);
+void Slider_Compute_Next(    struct Slider *s, struct Point *p, struct Point *t, b32 g);
 void Slider_Target_Offscreen(struct Slider *s, struct SliderOffscreen *o, struct Point *p);
 void SliderOffscreen_Compute_Next(struct Slider *s, struct SliderOffscreen *o,
                                   struct Point *p);

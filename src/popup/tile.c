@@ -74,8 +74,8 @@ struct Point PopUp_Tile_Position(struct PopUp *popup, struct PopUp_Tile *pt,
             break;
     }
     /* check if popup should move corner */
-    bool x_greater = pixel_pos->x >= pt->cursor_limit_max.x;
-    bool x_lower = pixel_pos->x <= pt->cursor_limit_min.x;
+    b32 x_greater = pixel_pos->x >= pt->cursor_limit_max.x;
+    b32 x_lower = pixel_pos->x <= pt->cursor_limit_min.x;
     if ((x_greater) && (pt->corner == SOTA_DIRECTION_BOTRIGHT))
         pt->corner = SOTA_DIRECTION_BOTLEFT;
     if ((x_lower) && (pt->corner == SOTA_DIRECTION_BOTLEFT))

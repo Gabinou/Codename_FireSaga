@@ -67,7 +67,7 @@ void HexPosition_Move(struct HexPosition *in_hexpos, u8 in_direction,
 }
 
 struct Point Hex2Pixel(struct nmath_hexpoint_int32_t in_hexpoint,
-                       i32 in_radius, bool in_orientation) {
+                       i32 in_radius, b32 in_orientation) {
     struct Point out;
     float sqrt3 = carmack_sqrt_int32_t(3);
     if (in_orientation == FLAT_TOP) {
@@ -100,7 +100,7 @@ struct nmath_hexpoint_int32_t HexRound(struct nmath_hexpoint_float in_point) {
 
 struct nmath_hexpoint_int32_t Pixel2Hex(struct Point in_point,
                                         i32 in_radius,
-                                        bool in_orientation) {
+                                        b32 in_orientation) {
     struct nmath_hexpoint_float temp;
     float sqrt3 = carmack_sqrt_int32_t(3);
     if (in_orientation == FLAT_TOP) {

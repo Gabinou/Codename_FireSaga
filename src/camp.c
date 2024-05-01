@@ -68,7 +68,7 @@ void Camp_Job_Forbid(struct Camp *in_camp, i16 unit_id, i16 job_id) {
 
 u8 Camp_hasJob(struct Camp *in_camp, i16 unit_id) {
     u8 *jobs_arr = (u8 *)&in_camp->guards;
-    bool found = false;
+    b32 found = false;
     u8 has_job = CAMP_JOB_NULL;
     for (i16 job_id = 1; job_id < (CAMPJOB_END); job_id++) {
         u8 *job_arr = jobs_arr + ((job_id - 1) * CAMP_JOB_MAX);

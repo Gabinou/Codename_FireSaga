@@ -194,7 +194,7 @@ void LoadoutSelectMenu_Select(       struct LoadoutSelectMenu *lsm, int s);
 void LoadoutSelectMenu_Deselect(     struct LoadoutSelectMenu *lsm);
 int  LoadoutSelectMenu_num_items(    struct LoadoutSelectMenu *lsm);
 void LoadoutSelectMenu_Select_Reset( struct LoadoutSelectMenu *lsm);
-bool WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm);
+b32 WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm);
 
 void ItemSelectMenu_Select(          struct LoadoutSelectMenu *lsm, int s);
 

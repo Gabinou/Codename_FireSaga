@@ -240,7 +240,7 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
                                      sota->camera.offset.y, sota->camera.zoom);
     struct Point new_target;
     new_target = PopUp_Unit_Position(popup, popup_unit, &popup->n9patch, &sota->settings, &pixel_pos);
-    bool moved = (new_target.x != slider->target.x) || (new_target.y != slider->target.y);
+    b32 moved = (new_target.x != slider->target.x) || (new_target.y != slider->target.y);
 
     if (!moved) {
         return;
@@ -251,7 +251,7 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
     slider->target = new_target;
 #ifdef DEBUG_POPUP_UNIT_OFFSCREEN
     i32 midpoint = sota->settings.res.x / 2;
-    bool screen_side_changed = (((new_target.x > midpoint) && (popup_pos.x < midpoint))
+    b32 screen_side_changed = (((new_target.x > midpoint) && (popup_pos.x < midpoint))
                                 || ((new_target.x < midpoint) && (popup_pos.x > midpoint)));
     if (screen_side_changed)
         Slider_Target_Offscreen(slider, offscreen, &position->pixel_pos);
@@ -290,7 +290,7 @@ void Game_PopUp_Tile_Place(struct Game *sota, struct Point cursor_pos) {
     new_target = PopUp_Tile_Position(popup, popup_tile, &popup->n9patch, &sota->settings,
                                      &pixel_pos, sota->moved_direction);
 
-    bool moved = (new_target.x != slider->target.x) || (new_target.y != slider->target.y);
+    b32 moved = (new_target.x != slider->target.x) || (new_target.y != slider->target.y);
     if (!moved) {
         return;
     }

@@ -1,8 +1,8 @@
 #include "game/menu.h"
 
 /* --- All Menus --- */
-bool Game_Menus_Init(struct Game *sota) {
-    bool success = true;
+b32 Game_Menus_Init(struct Game *sota) {
+    b32 success = true;
     if (sota->menu_stack != NULL)
         DARR_FREE(sota->menu_stack);
     sota->menu_stack = DARR_INIT(sota->menu_stack, tnecs_entity, MENU_PLAYER_SELECT_END);
@@ -89,7 +89,7 @@ void Game_menuStack_Push(struct Game *sota, tnecs_entity in_menu_entity) {
     SDL_Log("DARR_NUM %ld", DARR_NUM(sota->menu_stack));
 }
 
-tnecs_entity Game_menuStack_Pop(struct Game *sota, bool destroy) {
+tnecs_entity Game_menuStack_Pop(struct Game *sota, b32 destroy) {
     tnecs_entity menu_stack_top_entity = DARR_POP(sota->menu_stack);
     SDL_assert(menu_stack_top_entity > 0);
     struct Menu *mc;

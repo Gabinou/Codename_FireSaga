@@ -181,10 +181,10 @@ void Gamepad_Free(struct controllerGamepad *gp) {
     }
 }
 
-bool Gamepad_ButtonorAxis(struct controllerGamepad *gp, SDL_GameControllerButton sdl_button, int i,
-                          bool isbutton) {
+b32 Gamepad_ButtonorAxis(struct controllerGamepad *gp, SDL_GameControllerButton sdl_button, int i,
+                          b32 isbutton) {
     SDL_GameController *controller  = gp->controllers[i];
-    bool out;
+    b32 out;
     if (isbutton) {
         out = SDL_GameControllerGetButton(controller, sdl_button);
         // if (out)
@@ -198,16 +198,16 @@ bool Gamepad_ButtonorAxis(struct controllerGamepad *gp, SDL_GameControllerButton
     return (out);
 }
 // Note: input button index in GamepadInputMap
-bool Gamepad_isPressed(struct controllerGamepad *gp, int sota_button) {
+b32 Gamepad_isPressed(struct controllerGamepad *gp, int sota_button) {
     /* -- Preliminaries -- */
     SDL_GameControllerButton *map = &gp->inputmap->dpad_right;
     SDL_GameControllerButton sdl_button = map[sota_button];
 
     /* -- Check if button/axis is pressed, -- */
-    bool isbutton = (sdl_button != SDL_CONTROLLER_AXIS_TRIGGERLEFT);
+    b32 isbutton = (sdl_button != SDL_CONTROLLER_AXIS_TRIGGERLEFT);
     isbutton     &= (sdl_button != SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
 
-    bool out = false;
+    b32 out = false;
     for (int i = 0; i < gp->controllers_num; i++) {
         out |= Gamepad_ButtonorAxis(gp, sdl_button, i, isbutton);
     }
@@ -227,7 +227,7 @@ struct Point Gamepad_Joystick_Direction(struct controllerGamepad *gp) {
         Sint16 axis_right_y = SDL_GameControllerGetAxis(controller, im->axis_right_y);
 
         /* - Left/Right axis - */
-        bool pressed = false;
+        b32 pressed = false;
         if          ((axis_left_x >  jdead) || (axis_right_x >  jdead)) {
             cursor_move.x = 1;
             pressed = true;
@@ -306,7 +306,7 @@ void Gamepad_addController(struct controllerGamepad *gp, i32 joystick_device) {
 void Gamepad_Held(i8 *held, size_t *h_num, i32 *held_ns, i8 *pressed, size_t p_num, i32 dt_ns) {
     SDL_assert(p_num < SOTA_INPUT_END);
     SDL_assert(p_num >= 0);
-    bool arrequal = false;
+    b32 arrequal = false;
     if ((*h_num == p_num) && (p_num != 0))
         arrequal = i8_all_equal(held, pressed, p_num);
 

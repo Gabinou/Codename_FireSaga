@@ -48,27 +48,27 @@ void Weapon_Free(struct Weapon *weapon) {
 }
 
 /* --- isCan? --- */
-bool Weapon_canInfuse(struct Weapon *weapon, struct Inventory_item *item) {
+b32 Weapon_canInfuse(struct Weapon *weapon, struct Inventory_item *item) {
     SDL_assert(weapon);
-    bool out = (item->infusion <= SOTA_INFUSEABLE) && !weapon->isMagic;
+    b32 out = (item->infusion <= SOTA_INFUSEABLE) && !weapon->isMagic;
     return (out);
 }
 
-bool Weapon_canAttack(struct Weapon *weapon) {
+b32 Weapon_canAttack(struct Weapon *weapon) {
     weapon->canAttack  = Weapon_canAttackfromType(weapon);
     weapon->canAttack *= Weapon_canAttackfromID(weapon);
     return (weapon->canAttack);
 }
 
-bool Weapon_canAttackfromType(struct Weapon *weapon) {
+b32 Weapon_canAttackfromType(struct Weapon *weapon) {
     SDL_Log("%ld", weapon->item->type);
     SDL_assert(weapon);
     SDL_assert(weapon->item != NULL);
-    bool iscan = flagsum_isIn(weapon->item->type, ITEM_TYPE_canATTACK);
+    b32 iscan = flagsum_isIn(weapon->item->type, ITEM_TYPE_canATTACK);
     return (iscan);
 }
 
-bool Weapon_canAttackfromID(struct Weapon *weapon) {
+b32 Weapon_canAttackfromID(struct Weapon *weapon) {
     SDL_assert(weapon);
     SDL_assert(weapon->item != NULL);
     return ((weapon->item->id == ITEM_NULL) || (weapon->item->id == ITEM_ID_BROKEN) ? 0 : 1);
@@ -212,7 +212,7 @@ void Weapon_Save(struct dtab *weapons_dtab, i16 id) {
         }
         filename = s8cat(filename, s8_literal(".json"));
         SDL_Log("Saving weapon %ld %s", id, filename.data);
-        bool append = false;
+        b32 append = false;
         struct Weapon *weapon = (struct Weapon *)DTAB_GET(weapons_dtab, id);
         jsonio_writeJSON(filename, weapon, false);
         s8_free(&filename);
@@ -286,23 +286,23 @@ u16 Weapon_TypeExp(struct Weapon *weapon) {
     return (type_exp);
 }
 
-bool Weapon_isOffhand(u16 id) {
-    bool is = ((id > ITEM_ID_OFFHAND_START) && (id < ITEM_ID_OFFHAND_END));
+b32 Weapon_isOffhand(u16 id) {
+    b32 is = ((id > ITEM_ID_OFFHAND_START) && (id < ITEM_ID_OFFHAND_END));
     return (is);
 }
 
-bool Weapon_isShield(u16 id) {
-    bool is = ((id > ITEM_ID_SHIELD_START) && (id < ITEM_ID_SHIELD_END));
+b32 Weapon_isShield(u16 id) {
+    b32 is = ((id > ITEM_ID_SHIELD_START) && (id < ITEM_ID_SHIELD_END));
     return (is);
 }
 
-bool Weapon_isStaff(u16 id) {
-    bool is = ((id > ITEM_ID_STAFF_START) && (id < ITEM_ID_STAFF_END));
+b32 Weapon_isStaff(u16 id) {
+    b32 is = ((id > ITEM_ID_STAFF_START) && (id < ITEM_ID_STAFF_END));
     return (is);
 }
 
-bool Weapon_ID_isValid(u16 id) {
-    bool valid = false;
+b32 Weapon_ID_isValid(u16 id) {
+    b32 valid = false;
     valid |= ((id > ITEM_ID_SWORD_START)     && (id < ITEM_ID_SWORD_END));
     valid |= ((id > ITEM_ID_LANCE_START)     && (id < ITEM_ID_LANCE_END));
     valid |= ((id > ITEM_ID_AXE_START)       && (id < ITEM_ID_AXE_END));
@@ -353,8 +353,8 @@ int Weapon_Stat_inRange(struct Weapon *weapon, i16 stattype, int distance) {
     *    DEBUG: input -1 to always be in_range
     */
     struct Range range = weapon->stats.range;
-    bool in_range = ((distance < 0) || (range.min <= distance) && (distance <= range.min));
-    bool isshield  = Weapon_isShield(weapon->item->id);
-    bool isoffhand = Weapon_isOffhand(weapon->item->id);
+    b32 in_range = ((distance < 0) || (range.min <= distance) && (distance <= range.min));
+    b32 isshield  = Weapon_isShield(weapon->item->id);
+    b32 isoffhand = Weapon_isOffhand(weapon->item->id);
     return ((in_range || isshield || isoffhand) ? Weapon_Stat(weapon, stattype) : 0);
 }

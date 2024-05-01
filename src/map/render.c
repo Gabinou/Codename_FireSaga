@@ -453,8 +453,8 @@ void Map_Grid_Draw(struct Map *map,  struct Settings *settings, struct Camera *c
     Utilities_DrawColor_Reset(map->renderer);
 }
 
-bool Map_Shadowmap_newFrame(struct Map *map) {
-    bool shadow_updates = false;
+b32 Map_Shadowmap_newFrame(struct Map *map) {
+    b32 shadow_updates = false;
 #if !defined(MAP_NO_ANIMATION) || !defined(MAP_SHADOW_NO_ANIMATION)
     if (map->shadow_frame_counter++ > map->shadow_frame_pause) {
         shadow_updates = true;
@@ -464,8 +464,8 @@ bool Map_Shadowmap_newFrame(struct Map *map) {
     return (shadow_updates);
 }
 
-bool Map_Tilemap_newFrame(struct Map *map) {
-    bool tm_up = false ;
+b32 Map_Tilemap_newFrame(struct Map *map) {
+    b32 tm_up = false ;
 #if !defined(MAP_NO_ANIMATION) || !defined(MAP_TILEMAP_NO_ANIMATION)
     if (map->tilemap_frame_counter++ > map->tilemap_frame_pause) {
         tm_up = true;
@@ -515,8 +515,8 @@ void Map_Draw(struct Map *map,  struct Settings *settings,
     };
 
     /* -- Map update switches -- */
-    bool sm_up = Map_Shadowmap_newFrame(map);
-    bool tm_up = Map_Tilemap_newFrame(map);
+    b32 sm_up = Map_Shadowmap_newFrame(map);
+    b32 tm_up = Map_Tilemap_newFrame(map);
     if (map->update || map->camera_moved)
         Map_Visible_Tiles(map, settings, camera);
     else

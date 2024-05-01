@@ -94,7 +94,7 @@ struct PixelFont *PixelFont_Alloc(void) {
     return (font);
 }
 
-void PixelFont_Free(struct PixelFont *font, bool isfree) {
+void PixelFont_Free(struct PixelFont *font, b32 isfree) {
     SDL_assert(font != NULL);
     if (font->texture != NULL) {
         SDL_DestroyTexture(font->texture);
@@ -271,7 +271,7 @@ struct TextLines PixelFont_Lines(struct PixelFont *font,  char *text, size_t len
         line_len_char = current_break - current_start;
 
         /* -- Add hyphen if last char is not a space -- */
-        bool add_hyphen = (text[current_break - 1] != ' ');
+        b32 add_hyphen = (text[current_break - 1] != ' ');
         /* true:  need 1 more char to put hyphen */
         /* false: last char is a space and is removed */
         line_len_char += add_hyphen - 1 + add_hyphen;
@@ -461,7 +461,7 @@ void PixelFont_Compute_Glyph_BBox(struct PixelFont *font) {
 int PixelFont_Scroll(struct PixelFont *font, u64 time_ns) {
     /* Timer should always reset after updating */
     int time_ms = (int)(time_ns / SOTA_us);
-    bool scroll = (time_ms >= font->scroll_speed);
+    b32 scroll = (time_ms >= font->scroll_speed);
     font->scroll_len += scroll;
     return (scroll);
 }

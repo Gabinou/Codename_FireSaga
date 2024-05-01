@@ -258,7 +258,7 @@ struct Point Pathfinding_Closest_Unblocked(i32 *distmap, size_t row_len, size_t 
             }
 
             /* Skip neighbour if: already visited AND higher cost */
-            bool visited = neighbour.priority;
+            b32 visited = neighbour.priority;
             if (visited)
                 continue;
 
@@ -331,7 +331,7 @@ void Pathfinding_Distance_Plus(i32 *distmap, i32 *costmap, tnecs_entity *enemy_o
             neighbour.y     = int_inbounds(q_cycle4_zmzp(n) + current.y, 0, row_len - 1);
 
             /* Skip neighbour if: is target */
-            bool istarget = ((target.x == neighbour.x) && (target.y == neighbour.y));
+            b32 istarget = ((target.x == neighbour.x) && (target.y == neighbour.y));
             if (istarget)
                 continue;
 
@@ -360,8 +360,8 @@ void Pathfinding_Distance_Plus(i32 *distmap, i32 *costmap, tnecs_entity *enemy_o
                 dist = distmap[current_n] + DISTMAP_OCCUPIED + 1;
 
             /* Skip neighbour if: already visited AND higher cost AN */
-            bool higher_cost        = (dist >= distmap[neighbour_n]);
-            bool visited            = (distmap[neighbour_n] > 0);
+            b32 higher_cost        = (dist >= distmap[neighbour_n]);
+            b32 visited            = (distmap[neighbour_n] > 0);
             if (visited && higher_cost)
                 continue;
 
@@ -461,8 +461,8 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
                 continue;
 
             /* Skip neighbour if: already visited AND higher cost */
-            bool higher_cost  = (neighbour.cost >= cost[current_n]);
-            bool visited      = (cost[current_n] > 0);
+            b32 higher_cost  = (neighbour.cost >= cost[current_n]);
+            b32 visited      = (cost[current_n] > 0);
             if (visited && higher_cost)
                 continue;
 
@@ -532,7 +532,7 @@ void Pathfinding_Moveto_noM(i32 *move_matrix, i32 *cost_matrix, size_t row_len,
     struct Node *closed = DARR_INIT(closed, struct Node, init_size);
     struct Node current = {start.x, start.y, 0};
     DARR_PUT(open, current);
-    bool neighbour_inclosed;
+    b32 neighbour_inclosed;
 
     /* -- Loop over open nodes -- */
     while (DARR_NUM(open) > 0) {
@@ -667,7 +667,7 @@ void _Pathfinding_Attackto(i32 x, i32 y, i32 *attackmap, i32 *move_matrix,
                            u8 range[2], i32 mode_movetile) {
     /* -- Setup variables -- */
     struct Point point;
-    bool add_point  = (mode_movetile != MOVETILE_EXCLUDE);
+    b32 add_point  = (mode_movetile != MOVETILE_EXCLUDE);
     if (mode_movetile == MOVETILE_INCLUDE)
         attackmap[y * col_len + x] = 1;
 
@@ -767,12 +767,12 @@ i32 *Pathfinding_unitGradient(i32 *costmap, size_t row_len, size_t col_len,
 }
 
 /* -- Visible -- */
-bool Pathfinding_Tile_Visible(i32 *sightmap, i32 *blockmap, struct Point start,
+b32 Pathfinding_Tile_Visible(i32 *sightmap, i32 *blockmap, struct Point start,
                               struct Point delta, size_t col_len) {
     /* -- Between start and delta -- */
     i32 distance = abs(delta.x) + abs(delta.y);
 
-    bool visible = true;
+    b32 visible = true;
     for (i32 d = 1; d <= distance; d++) {
         i32 dist_x = (i32)lround(d * delta.x * (1.0f / distance));
         i32 dist_y = (i32)lround(d * delta.y * (1.0f / distance));

@@ -517,15 +517,15 @@ void fsm_eCncl_sGmpMap_ssMenu_mTM(struct Game *sota, struct Menu *mc) {
     SDL_assert(tm);
 
     /* If item is selected, deselect item */
-    bool isItem = (tm->selected_item > ITEM_NULL) && (tm->selected_item < DEFAULT_EQUIPMENT_SIZE);
-    bool isTrader = (tm->selected_trader == TRADER_PASSIVE) || (tm->selected_trader == TRADER_ACTIVE);
+    b32 isItem = (tm->selected_item > ITEM_NULL) && (tm->selected_item < DEFAULT_EQUIPMENT_SIZE);
+    b32 isTrader = (tm->selected_trader == TRADER_PASSIVE) || (tm->selected_trader == TRADER_ACTIVE);
     if (isItem || isTrader) {
         // TradeMenu_Deselect(tm);
         return;
     }
 
     /* - Hide TradeMenu - */
-    bool destroy = false;
+    b32 destroy = false;
     tnecs_entity menu_popped_entity = Game_menuStack_Pop(sota, destroy);
     SDL_assert(menu_popped_entity == sota->trade_menu);
 
@@ -564,7 +564,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
         SDL_assert(ssm->update == true);
     } else {
         /* move cursor to second hand */
-        bool destroy = false;
+        b32 destroy = false;
         tnecs_entity menu_popped_entity = Game_menuStack_Pop(sota, destroy);
         SDL_assert(menu_popped_entity == sota->staff_select_menu);
 
@@ -591,7 +591,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
 
 //     // 1. Destroy pre_combat menu -> Move to input cancel defendant select
 //     SDL_assert(DARR_NUM(sota->menu_stack) > 0);
-//     bool destroy = false;
+//     b32 destroy = false;
 //     tnecs_entity menu_popped_entity = Game_menuStack_Pop(sota, destroy);
 //     SDL_assert(menu_popped_entity > 0);
 
@@ -613,7 +613,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
 
 void fsm_eCncl_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
     SDL_assert(DARR_NUM(sota->menu_stack) > 0);
-    bool destroy = false;
+    b32 destroy = false;
     tnecs_entity menu_popped_entity = Game_menuStack_Pop(sota, destroy);
     SDL_assert(menu_popped_entity > 0);
     struct Menu *mc_pop;
@@ -657,7 +657,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         SDL_assert(wsm->update == true);
     } else {
         /* -- No item was selected, destroying wsm menu -- */
-        bool destroy = false;
+        b32 destroy = false;
         tnecs_entity popped_ent = Game_menuStack_Pop(sota, destroy);
         SDL_assert(popped_ent > 0);
 
@@ -698,7 +698,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
     struct LoadoutSelectMenu *ism = mc->data;
 
     /* -- Popping ism -- */
-    bool destroy = false;
+    b32 destroy = false;
     tnecs_entity popped_ent = Game_menuStack_Pop(sota, destroy);
     SDL_assert(popped_ent > 0);
 
@@ -714,7 +714,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
 
 void fsm_eCncl_sGmpMap_ssMenu_mSM(struct Game *sota, struct Menu *mc) {
     /* -- Destroy stats menu and go back to standby -- */
-    bool destroy = false;
+    b32 destroy = false;
     tnecs_entity menu_popped_entity = Game_menuStack_Pop(sota, destroy);
     SDL_assert(menu_popped_entity > 0);
 
@@ -779,8 +779,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mTM(struct Game *sota, struct Menu *mc) {
     SDL_assert(tm);
 
     /* If no item is selected, select item */
-    // bool isItem = (tm->selected_item > ITEM_NULL) && (tm->selected_item < DEFAULT_EQUIPMENT_SIZE);
-    // bool isTrader = (tm->selected_trader == TRADER_PASSIVE) || (tm->selected_trader == TRADER_ACTIVE);
+    // b32 isItem = (tm->selected_item > ITEM_NULL) && (tm->selected_item < DEFAULT_EQUIPMENT_SIZE);
+    // b32 isTrader = (tm->selected_trader == TRADER_PASSIVE) || (tm->selected_trader == TRADER_ACTIVE);
     // if (!isItem || !isTrader) {
     //     TradeMenu_Select(tm);
     //     //     return;
@@ -917,7 +917,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moQuit(struct Game *sota, struct Menu *mc) {
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moWait(struct Game *sota, struct Menu *mc) {
 
     /* Pop all menus */
-    bool destroy = false;
+    b32 destroy = false;
     while (DARR_NUM(sota->menu_stack) > 0)
         Game_menuStack_Pop(sota, destroy);
 
@@ -1167,7 +1167,7 @@ void fsm_eStart_sPrep_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
     Game_cursorFocus_onMap(sota);
 
     /* -- Destroy Deployment Menu -- */
-    bool destroy = true;
+    b32 destroy = true;
     tnecs_entity menu_popped_entity = Game_menuStack_Pop(sota, destroy);
     SDL_assert(menu_popped_entity == sota->deployment_menu);
 

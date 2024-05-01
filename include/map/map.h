@@ -202,21 +202,21 @@ struct Map {
     struct Map_condition *waits_friendly;
 
     /* --- MAP SWITCHES --- */
-    bool win                : 1;
-    bool loss               : 1;
-    bool update             : 1;
-    bool seized             : 1; /* maybe unnecessary if turn system. */
-    // bool show_move          : 1;
-    // bool show_heal          : 1;
-    // bool show_grid          : 1;
-    bool show_icons         : 1;
-    // bool show_attack        : 1;
-    bool show_danger        : 1;
-    bool show_overlay       : 1;
-    bool camera_moved       : 1;
-    bool visible_changed    : 1;
-    bool shading_changed    : 1;
-    bool show_globalRange   : 1;
+    b32 win                : 1;
+    b32 loss               : 1;
+    b32 update             : 1;
+    b32 seized             : 1; /* maybe unnecessary if turn system. */
+    // b32 show_move          : 1;
+    // b32 show_heal          : 1;
+    // b32 show_grid          : 1;
+    b32 show_icons         : 1;
+    // b32 show_attack        : 1;
+    b32 show_danger        : 1;
+    b32 show_overlay       : 1;
+    b32 camera_moved       : 1;
+    b32 visible_changed    : 1;
+    b32 shading_changed    : 1;
+    b32 show_globalRange   : 1;
 };
 extern struct Map Map_default;
 
@@ -258,5 +258,13 @@ b32 Map_Boss_Alive(struct Map *map, i16 army);
 
 /* --- Tile --- */
 struct Tile *Map_Tile_Get(struct Map *map, i32 x, i32 y);
+
+/* --- Bonus --- */
+void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_entity *entities, 
+                    tnecs_entity source_ent, u16 item, u16 skill, b32 active);
+void Map_Bonus_Support_Apply( struct Map *map);
+
+void Map_Bonus_Standard_Apply_Army(struct Map *map, i32 army);
+void Map_Bonus_Standard_Apply_Unit(struct Map *map, tnecs_entity ent, tnecs_entity *entities) {
 
 #endif /* MAP_H */

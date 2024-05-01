@@ -55,7 +55,7 @@ int Filesystem_Free(void);
 void Filesystem_Mount(s8 folder);
 
 /* --- MISC. --- */
-bool Filesystem_fequal(char *filename1,  char *filename2);
+b32 Filesystem_fequal(char *filename1,  char *filename2);
 void Filesystem_Load_Bytes(char *name, u8 **mem, size_t *len);
 
 /* --- SURFACES&TEXTURES --- */

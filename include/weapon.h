@@ -13,8 +13,8 @@ struct  Weapon {
 
     u8 handedness;
     u8 subtype;        /* ex: thrust swords     */
-    bool isMagic   : 1;
-    bool canAttack : 1; /* for special weapons   */
+    b32 isMagic   : 1;
+    b32 canAttack : 1; /* for special weapons   */
     u16 effective;
     struct Item         *item;
     struct Weapon_stats  stats;
@@ -37,15 +37,15 @@ void Weapon_Init(struct Weapon *wpn);
 
 /* --- isCan? --- */
 u16 Weapon_TypeExp(           struct Weapon *wpn);
-bool Weapon_canInfuse(        struct Weapon *wpn,  struct Inventory_item *item);
-bool Weapon_canAttack(        struct Weapon *wpn);
-bool Weapon_canAttackfromID(  struct Weapon *wpn);
-bool Weapon_canAttackfromType(struct Weapon *wpn);
+b32 Weapon_canInfuse(        struct Weapon *wpn,  struct Inventory_item *item);
+b32 Weapon_canAttack(        struct Weapon *wpn);
+b32 Weapon_canAttackfromID(  struct Weapon *wpn);
+b32 Weapon_canAttackfromType(struct Weapon *wpn);
 
-bool Weapon_isStaff(   u16 id);
-bool Weapon_isShield(  u16 id);
-bool Weapon_isOffhand( u16 id);
-bool Weapon_ID_isValid(u16 id);
+b32 Weapon_isStaff(   u16 id);
+b32 Weapon_isShield(  u16 id);
+b32 Weapon_isOffhand( u16 id);
+b32 Weapon_ID_isValid(u16 id);
 
 /* --- I/O --- */
 void Weapon_readJSON( void *input, cJSON *json);

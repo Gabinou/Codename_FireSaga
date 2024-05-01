@@ -75,7 +75,7 @@ struct Text_Bubble_Tail {
     SDL_Rect            dstrect;
     struct Point        pos;
 
-    bool half : 1;  /* Half around tail target is in */
+    b32 half : 1;  /* Half around tail target is in */
 };
 
 struct Text_Bubble {
@@ -103,10 +103,10 @@ struct Text_Bubble {
     i8 bg_color;
     i8 line_color;
 
-    bool scroll         : 1;
-    bool animating      : 1;
-    bool vscroll_dir    : 1;
-    bool vscroll_anim   : 1;
+    b32 scroll         : 1;
+    b32 animating      : 1;
+    b32 vscroll_dir    : 1;
+    b32 vscroll_anim   : 1;
     SDL_Palette *palette;
 };
 extern struct Text_Bubble TextBubble_default;

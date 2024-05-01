@@ -180,7 +180,7 @@ i32 WeaponSelectMenu_Elem_Move(struct Menu *mc, i32 direction) {
 void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct Menu *mc) {
     /* Get number of elements for the menu */
     i32 stronghand       = Unit_Hand_Strong(lsm->unit);
-    bool strong_selected = (lsm->selected[stronghand] > -1);
+    b32 strong_selected = (lsm->selected[stronghand] > -1);
     i32 num_eq     = lsm->unit->num_equipment;
     i32 num_eq_wsm = num_eq < DEFAULT_EQUIPMENT_SIZE ? num_eq + 1 : DEFAULT_EQUIPMENT_SIZE;
 
@@ -201,7 +201,7 @@ void LoadoutSelectMenu_Elem_Pos(struct LoadoutSelectMenu *lsm, struct Menu *mc) 
     SDL_assert(mc->n9patch.scale.x > 0);
     SDL_assert(mc->n9patch.scale.y > 0);
 
-    bool header_drawn = (lsm->header.data != NULL);
+    b32 header_drawn = (lsm->header.data != NULL);
     /* - Skip if already in screen frame - */
     if (mc->elem_pos_frame == ELEM_POS_SCREEN_FRAME)
         return;
@@ -225,7 +225,7 @@ void LoadoutSelectMenu_Elem_Pos_Revert(struct LoadoutSelectMenu *lsm, struct Men
     /* 1. Makes the cursor focus on right place on the Screen       */
     /* 2. Box lined are drawn in menu frame, making thinner lines   */
 
-    bool header_drawn = (lsm->header.data != NULL);
+    b32 header_drawn = (lsm->header.data != NULL);
     /* - Skip if already in screen frame - */
     if (mc->elem_pos_frame == ELEM_POS_MENU_FRAME) {
         return;
@@ -246,9 +246,9 @@ void LoadoutSelectMenu_Elem_Pos_Revert(struct LoadoutSelectMenu *lsm, struct Men
 }
 
 /* --- Checking --- */
-bool WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm) {
+b32 WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm) {
     /* Are there any side_i weapons left in rest of inventory? */
-    bool remains = false;
+    b32 remains = false;
 
     /* Get stronghand */
     i32 stronghand = Unit_Hand_Strong(lsm->unit);
@@ -270,7 +270,7 @@ bool WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm) {
 /* --- Item placement --- */
 i32 LoadoutSelectMenu_num_items(struct LoadoutSelectMenu *lsm) {
     i32 stronghand = Unit_Hand_Strong(lsm->unit);
-    bool strong_selected = (lsm->selected[stronghand] > -1);
+    b32 strong_selected = (lsm->selected[stronghand] > -1);
     return (strong_selected ? DEFAULT_EQUIPMENT_SIZE : lsm->unit->num_usable);
 }
 
@@ -381,7 +381,7 @@ void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9p
     i32 stronghand = Unit_Hand_Strong(lsm->unit);
 
     /* If stronghand is selected, menu should change to show all items in equipment */
-    bool strong_selected = (lsm->selected[stronghand] > -1);
+    b32 strong_selected = (lsm->selected[stronghand] > -1);
     i32 num_items = LoadoutSelectMenu_num_items(lsm);
 
     for (i32 i = 0; i < num_items; i++) {
@@ -415,7 +415,7 @@ void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9p
         max_width = width > max_width ? width : max_width;
     }
     i32 header_w = 0;
-    bool header_drawn = (lsm->header.data != NULL);
+    b32 header_drawn = (lsm->header.data != NULL);
     if (header_drawn) {
         header_w = PixelFont_Width(lsm->pixelnours_big, lsm->header.data,
                                    lsm->header.num) + LSM_HEADER_LEFT + LSM_HEADER_RIGHT;
@@ -486,12 +486,12 @@ static void _LoadoutSelectMenu_Draw_Header(struct LoadoutSelectMenu *lsm,
 static void _LoadoutSelectMenu_Draw_Highlight(struct LoadoutSelectMenu  *lsm,
                                               SDL_Renderer       *renderer) {
     /* - Skip if no highlight - */
-    bool highlight = (lsm->selected[UNIT_HAND_LEFT] >= 0);
+    b32 highlight = (lsm->selected[UNIT_HAND_LEFT] >= 0);
     if (!highlight)
         return;
 
     /* - Top Weapon highlight - */
-    bool header_drawn = (lsm->header.data != NULL);
+    b32 header_drawn = (lsm->header.data != NULL);
     SDL_Rect srcrect;
 
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
@@ -536,7 +536,7 @@ static void _LoadoutSelectMenu_Draw_Hands(struct LoadoutSelectMenu *lsm,
     /* -- Preliminaries -- */
     i32 num_items       = LoadoutSelectMenu_num_items(lsm);
     i32 stronghand      = Unit_Hand_Strong(lsm->unit);
-    bool header_drawn   = (lsm->header.data != NULL);
+    b32 header_drawn   = (lsm->header.data != NULL);
     SDL_Rect srcrect, dstrect;
 
     /* Computing y offset for weak hand, or twohanding icon placement */
@@ -601,7 +601,7 @@ static void _LoadoutSelectMenu_Draw_Hands(struct LoadoutSelectMenu *lsm,
 static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
                                           SDL_Renderer       *renderer) {
     /* -- Preliminaries -- */
-    bool header_drawn = (lsm->header.data != NULL);
+    b32 header_drawn = (lsm->header.data != NULL);
     SDL_Rect srcrect, dstrect;
     struct Unit *unit = lsm->unit;
     char numbuff[10];
@@ -612,10 +612,10 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
     i32 stronghand = Unit_Hand_Strong(lsm->unit);
     i32 weakhand   = 1 - stronghand;
     i32 num_items  = LoadoutSelectMenu_num_items(lsm);
-    bool highlight = (lsm->selected[UNIT_HAND_LEFT] >= 0);
+    b32 highlight = (lsm->selected[UNIT_HAND_LEFT] >= 0);
 
     /* If stronghand is selected, menu should change to show all items in equipment */
-    bool strong_selected = (lsm->selected[stronghand] > -1);
+    b32 strong_selected = (lsm->selected[stronghand] > -1);
 
     SDL_assert(lsm->unit->num_usable > 0);
     SDL_assert(lsm->unit->num_usable <= DEFAULT_EQUIPMENT_SIZE);

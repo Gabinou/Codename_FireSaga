@@ -204,23 +204,23 @@ void Inventory_item_Break(struct Inventory_item *inventory_item) {
     *inventory_item = Inventory_item_broken;
 }
 
-bool Item_ID_isValid(u16 id) {
-    bool valid = false;
+b32 Item_ID_isValid(u16 id) {
+    b32 valid = false;
     valid |= ((id > ITEM_ID_ITEM_START) && (id < ITEM_ID_ITEM_END));
     valid |= (id == ITEM_ID_BROKEN);
     return (valid);
 }
 
-bool Item_canUse(struct Item *item,  struct Unit *unit) {
+b32 Item_canUse(struct Item *item,  struct Unit *unit) {
     /* ITEM Checks if current unit can use item. GAME checks if target is in range */
     SDL_assert(item != NULL);
     SDL_assert(unit != NULL);
 
     /* Item has effect, no specfic users, can use */
-    bool has_effect = (item->active != NULL);
+    b32 has_effect = (item->active != NULL);
 
     /* Check if unit is a user */
-    bool is_user  = false;
+    b32 is_user  = false;
     if (item->users == NULL) {
         is_user = true;
     } else {
@@ -234,7 +234,7 @@ bool Item_canUse(struct Item *item,  struct Unit *unit) {
     }
 
     /* Check if unit class is in the classes */
-    bool is_class = false;
+    b32 is_class = false;
     if (item->classes == NULL) {
         is_class = true;
     } else {
@@ -529,21 +529,21 @@ i32 Item_Archetype(i16 id) {
     return (archetype);
 }
 
-bool Item_isOffhand(i16  id) {
+b32 Item_isOffhand(i16  id) {
     return (Weapon_isOffhand(id));
 }
 
-bool Item_isShield(i16  id) {
+b32 Item_isShield(i16  id) {
     /* Must be equivalent to using shield item archetype */
     return (Weapon_isShield(id));
 }
 
-bool Item_isStaff(i16  id) {
+b32 Item_isStaff(i16  id) {
     /* Must be equivalent to using staff item archetype */
     return (Weapon_isStaff(id));
 }
 
-bool Item_isWeapon(i16 id) {
+b32 Item_isWeapon(i16 id) {
     /* Must be equivalent to using weapon item archetype */
     return (Item_Archetype(id) == ITEM_ARCHETYPE_WEAPON);
 }

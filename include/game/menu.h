@@ -25,10 +25,10 @@ struct Input_Arguments;
 void Game_Switch_toCandidates(struct Game *sota, tnecs_entity *candidates);
 
 /* --- All Menus --- */
-bool Game_Menus_Init(struct Game *sota);
+b32 Game_Menus_Init(struct Game *sota);
 
 /* --- Menu stack --- */
-tnecs_entity Game_menuStack_Pop(struct Game *sota, bool destroy);
+tnecs_entity Game_menuStack_Pop(struct Game *sota, b32 destroy);
 void Game_menuStack_Push(struct Game *sota, tnecs_entity in_menu_entity);
 void Game_menuStack_Free(struct Game *sota);
 

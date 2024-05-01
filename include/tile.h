@@ -21,7 +21,7 @@ typedef struct Tile {
     struct Tile_stats stats;
     float cost_array[UNIT_MVT_END];
     struct fMovement_cost cost_struct;
-    bool inside : 1;
+    b32 inside : 1;
 } Tile;
 extern struct Tile Tile_default;
 

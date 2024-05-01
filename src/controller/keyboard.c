@@ -47,7 +47,7 @@ struct controllerKeyboard controllerKeyboard_default = {
 void Keyboard_Held(i8 *held, size_t *h_num, i32 *timeheld, i8 *pressed, size_t p_num, i32 dt_ns) {
     SDL_assert(p_num < SOTA_INPUT_END);
     SDL_assert(p_num >= 0);
-    bool arrequal = false;
+    b32 arrequal = false;
     if ((*h_num == p_num) && (p_num != 0))
         arrequal = i8_all_equal(held, pressed, p_num);
 
@@ -64,7 +64,7 @@ void Keyboard_Held(i8 *held, size_t *h_num, i32 *timeheld, i8 *pressed, size_t p
     }
 }
 
-bool Keyboard_isPressed(struct controllerKeyboard *kb, const u8 *state_array, int button) {
+b32 Keyboard_isPressed(struct controllerKeyboard *kb, const u8 *state_array, int button) {
 
     /* -- Preliminaries -- */
     struct KeyboardInputMap *map = kb->inputmap;
@@ -73,7 +73,7 @@ bool Keyboard_isPressed(struct controllerKeyboard *kb, const u8 *state_array, in
     buttons += button * SOTA_MAPPABLE_BUTTONS_NUM;
 
     /* -- Check if button/axis is pressed, -- */
-    bool out = false;
+    b32 out = false;
     u8 len  = *(&map->dpad_right_len + button);
 
     for (int i = 0; i < len; i++) {

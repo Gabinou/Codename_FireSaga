@@ -187,10 +187,10 @@ typedef struct PopUp_Loadout_Stats {
     int ry_offset;
 
     int distance;
-    bool l_equip_override   : 1;
-    bool r_equip_override   : 1;
-    bool tophand_stronghand : 1; // If false, tophand is lefthand
-    bool twoHanding         : 1; // If false, tophand is lefthand
+    b32 l_equip_override   : 1;
+    b32 r_equip_override   : 1;
+    b32 tophand_stronghand : 1; // If false, tophand is lefthand
+    b32 twoHanding         : 1; // If false, tophand is lefthand
 } PopUp_Loadout_Stats;
 
 extern struct PopUp_Loadout_Stats PopUp_Loadout_Stats_default;

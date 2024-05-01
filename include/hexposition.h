@@ -28,7 +28,7 @@ enum CUBE_DIRECTIONS {
 
 typedef struct HexPosition {
     struct nmath_hexpoint_int32_t pos;
-    bool orientation;
+    b32 orientation;
     i32 radius; // e.g. size of hexagon/side length.
 } HexPosition;
 extern struct HexPosition HexPosition_default;
@@ -46,8 +46,8 @@ void HexPosition_Move(struct HexPosition *in_hexpos, u8 direction, u8 magnitude)
 
 struct nmath_hexpoint_int32_t HexRound(struct nmath_hexpoint_float p);
 
-struct Point Hex2Pixel(struct nmath_hexpoint_int32_t hp, i32 r, bool o);
-struct nmath_hexpoint_int32_t Pixel2Hex(struct Point p,  i32 r, bool o);
+struct Point Hex2Pixel(struct nmath_hexpoint_int32_t hp, i32 r, b32 o);
+struct nmath_hexpoint_int32_t Pixel2Hex(struct Point p,  i32 r, b32 o);
 void plotHex2DArray(i16 *in_array, size_t x_len, size_t z_len, int o);
 
 #endif /* HexPOSITION_H */

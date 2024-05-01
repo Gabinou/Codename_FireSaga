@@ -122,10 +122,10 @@ void CRT_Shadow_Mask(u8 *mask, uint_fast32_t size_x, uint_fast32_t size_y,
     SDL_Log("CRT_Shadow_Mask");
     for (uint_fast32_t j = 0; j < size_y; j++) {
         for (uint_fast32_t i = 0; i < size_x; i++) {
-            bool tostagger = ((i + x_offset) % (2 * (cell_width + Hblank))) >=
+            b32 tostagger = ((i + x_offset) % (2 * (cell_width + Hblank))) >=
                              (cell_width + Hblank - 1);
-            bool horiz = ((i + x_offset) % (cell_width + Hblank)) < cell_width;
-            bool vert = ((j + y_offset + tostagger * stagger) % (cell_height + Vblank)) < cell_height;
+            b32 horiz = ((i + x_offset) % (cell_width + Hblank)) < cell_width;
+            b32 vert = ((j + y_offset + tostagger * stagger) % (cell_height + Vblank)) < cell_height;
             mask[i + j * size_x] = vert && horiz;
         }
     }

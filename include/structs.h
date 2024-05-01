@@ -56,7 +56,7 @@ struct Fps {
     struct Point pos;
     SDL_Color textcolor;
     float sizefactor[TWO_D];
-    bool show;
+    b32 show;
     int cap;    /* [Hz] [s^-1] */
     int ff_cap; /* [%] Fast forward cap above FPS */
 };
@@ -76,7 +76,7 @@ struct Map_settings {
     u8          grid_thickness; /* Number of lines to draw (mirrored) */
     u8          perim_thickness; /* Number of lines to draw (mirrored) */
     SDL_Color   color_grid;
-    bool        grid_show;
+    b32        grid_show;
 };
 /* grid_thickness 1 ->  |   (center line only)          */
 /* grid_thickness 2 -> |||  (center line, +/- 1 lines)  */
@@ -211,8 +211,8 @@ extern struct Bonus_Stats Bonus_Stats_default;
 struct Condition {
     /* Conversation condition? */
     i16 unitid;
-    bool dead;
-    bool recruited;
+    b32 dead;
+    b32 recruited;
 };
 extern struct Condition Condition_default;
 
@@ -227,7 +227,7 @@ struct HP {
     u8 max;
     u8 current;
     u8 overheal;
-    bool divine; /* divine shield */
+    b32 divine; /* divine shield */
 };
 extern struct HP HP_default;
 
@@ -304,7 +304,7 @@ extern struct Shop Shop_default;
 struct Inventory_item {
     i16 id;
     u8 used;
-    bool highlighted;
+    b32 highlighted;
     /* item images are highlighted by default. */
     /* Only dark when in unit inventory and unequippable */
     i8 infusion;
@@ -364,8 +364,8 @@ struct Camera {
 typedef struct Timer {
     u64 time_ns;
     u64 frame_count;
-    bool reset; /* reset if above time. */
-    bool paused;
+    b32 reset; /* reset if above time. */
+    b32 paused;
 } Timer;
 extern struct Timer Timer_default;
 
@@ -407,7 +407,7 @@ typedef struct Convoy {
     u8 books_num;
     u8 items_num;
     u8 size;
-    bool sort_direction;
+    b32 sort_direction;
 } Convoy;
 
 extern struct Convoy Convoy_default;
@@ -616,8 +616,8 @@ typedef struct Unit {
     /* Defendant position (self is Aggressor.) */
     struct Point dft_pos; /* Used to compute stats in case of dual wielding */
 
-    bool hands   [UNIT_HANDS_NUM];      /* Does unit have hands?     */
-    bool equipped[UNIT_HANDS_NUM];      /* Is Item in hand equipped? */
+    b32 hands   [UNIT_HANDS_NUM];      /* Does unit have hands?     */
+    b32 equipped[UNIT_HANDS_NUM];      /* Is Item in hand equipped? */
 
     s8 *skill_names;
 
@@ -636,7 +636,7 @@ typedef struct Unit {
     i8 num_usable;
 
     struct Mount *mount;
-    bool mounted;
+    b32 mounted;
 
     s8 name; /* TODO: get rid of it. Use global_unitNames */
     s8 title;    /* Lord, Duke, etc. */
@@ -647,16 +647,16 @@ typedef struct Unit {
     // struct Computed_Stats support_bonuses[SOTA_MAX_SUPPORTS];
     // struct Computed_Stats support_bonus;
 
-    bool sex            : 1; /* 0:F, 1:M. eg. hasPenis. */
-    bool waits          : 1;
-    bool alive          : 1;
-    bool literate       : 1; /* Reading/writing for scribe job. */
-    bool courageous     : 1; /* For reaction to story events    */
-    bool show_danger    : 1;
-    bool update_stats   : 1;
-    bool isTwoHanding   : 1; /* If true, one Inventory_Item in hands is a copy */
-    bool divine_shield  : 1;
-    bool isDualWielding : 1;
+    b32 sex            : 1; /* 0:F, 1:M. eg. hasPenis. */
+    b32 waits          : 1;
+    b32 alive          : 1;
+    b32 literate       : 1; /* Reading/writing for scribe job. */
+    b32 courageous     : 1; /* For reaction to story events    */
+    b32 show_danger    : 1;
+    b32 update_stats   : 1;
+    b32 isTwoHanding   : 1; /* If true, one Inventory_Item in hands is a copy */
+    b32 divine_shield  : 1;
+    b32 isDualWielding : 1;
 } Unit;
 extern struct Unit Unit_default;
 
@@ -689,8 +689,8 @@ struct Graph {
 
     u8 stat_num;
     u8 linestyle;
-    bool x_ticks : 1;
-    bool y_ticks : 1;
+    b32 x_ticks : 1;
+    b32 y_ticks : 1;
 };
 extern struct Graph Graph_default;
 
@@ -913,8 +913,8 @@ struct Game {
     u64 s_xoshiro256ss[4]; /* Only used to read s from RNG file */
 
     struct Point cursor_move;
-    bool cursor_frame_moved;
-    bool cursor_diagonal;
+    b32 cursor_frame_moved;
+    b32 cursor_diagonal;
 
     /* --- FPS --- */
     float instant_fps; /* frames/time after fps_text->update_time_ns */
@@ -956,12 +956,12 @@ struct Game {
     Mix_Chunk *soundfx_next_turn;
 
     u64    runtime_ns; // -> millions of years
-    bool  *shadow_area;  /* pixels */
-    bool   ismouse          : 1;
-    bool   iscursor         : 1;
-    bool   isrunning        : 1;
-    bool   isShadow         : 1;
-    bool   fast_forward     : 1;
+    b32  *shadow_area;  /* pixels */
+    b32   ismouse          : 1;
+    b32   iscursor         : 1;
+    b32   isrunning        : 1;
+    b32   isShadow         : 1;
+    b32   fast_forward     : 1;
 };
 extern struct Game Game_default;
 

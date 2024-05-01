@@ -53,16 +53,16 @@ i32 *Map_Attacktolist_Compute(  struct Map *map);
 i32 *Map_Attackfromlist_Compute(struct Map *map);
 
 i32 *Map_Healtomap_Compute(    struct Map *map, tnecs_world *w,
-                               tnecs_entity u, bool m, bool e);
+                               tnecs_entity u, b32 m, b32 e);
 i32 *Map_Attacktomap_Compute(  struct Map *map, tnecs_world *w,
-                               tnecs_entity u, bool m, bool e);
+                               tnecs_entity u, b32 m, b32 e);
 i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_world *w, tnecs_entity a,
-                               tnecs_entity d, bool m, bool e);
+                               tnecs_entity d, b32 m, b32 e);
 
 i32 *Map_Healtomap_Compute_wLoadout(  struct Map *map, tnecs_world *w,
-                                      tnecs_entity u, bool m, int lh, int rh);
+                                      tnecs_entity u, b32 m, int lh, int rh);
 i32 *Map_Attacktomap_Compute_wLoadout(struct Map *map, tnecs_world *w,
-                                      tnecs_entity u, bool m, int lh, int rh);
+                                      tnecs_entity u, b32 m, int lh, int rh);
 
 i32 *_Map_tomap_Compute(i32 *tomap, i32 *mvtmat, u8 row_len, u8 col_len,
                         i32 mv, struct Range *r, u8 mode);

@@ -590,8 +590,8 @@ void Game_Init(struct Game *sota, int argc, char *argv[]) {
     PixelFont_Load(sota->pixelnours_tight, sota->renderer, path);
 
     /* Sprite init */
-    bool absolute = false;
-    bool isCursor = false;
+    b32 absolute = false;
+    b32 isCursor = false;
     dstrect_funcs[absolute][isCursor = true]        = &Cursor_Dstrect_Relative;
     dstrect_funcs[absolute][isCursor = false]       = &Sprite_Dstrect_Relative;
     dstrect_funcs[absolute = true][isCursor = true] = &Cursor_Dstrect_Absolute;

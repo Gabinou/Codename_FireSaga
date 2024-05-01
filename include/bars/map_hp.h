@@ -25,8 +25,8 @@ typedef struct MapHPBar {
     tnecs_entity unit_ent;
     struct Point tilemap_pos;
     SDL_Texture *texture;
-    bool update  : 1;
-    bool visible : 1;
+    b32 update  : 1;
+    b32 visible : 1;
 } MapHPBar;
 extern struct MapHPBar MapHPBar_default;
 

@@ -105,8 +105,8 @@ typedef struct Sprite {
 
     s8 asset_name;
 
-    bool map_unit : 1;
-    bool visible  : 1;
+    b32 map_unit : 1;
+    b32 visible  : 1;
 } Sprite;
 extern struct Sprite Sprite_default;
 

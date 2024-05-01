@@ -57,7 +57,7 @@ struct Menu {
     i8 elem_num;
     i8 type;
 
-    bool visible : 1;
+    b32 visible : 1;
 };
 extern struct Menu Menu_default;
 

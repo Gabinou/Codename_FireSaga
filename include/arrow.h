@@ -51,7 +51,7 @@ typedef struct Arrow {
     struct Point start;
     struct SDL_Texture *textures;  /* [patch_id] */
     struct Rendered rendereds[SOTA_MAX_MOVEMENT]; /* [patch_id] */
-    bool show: 1;
+    b32 show: 1;
 } Arrow;
 extern struct Arrow Arrow_default;
 

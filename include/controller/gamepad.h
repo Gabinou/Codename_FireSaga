@@ -39,8 +39,8 @@ typedef struct controllerGamepad {
     i32         timeheld_button_ns;
     char      **sdl_button_names;
 
-    bool        block_buttons   : 1;
-    bool        block_move      : 1;
+    b32        block_buttons   : 1;
+    b32        block_move      : 1;
 } controllerGamepad;
 extern struct controllerGamepad controllerGamepad_default;
 
@@ -67,8 +67,8 @@ void Gamepad_removeController(struct controllerGamepad *g, i32 i);
 
 /* -- Pressed button -- */
 void Gamepad_Held(i8 *h, size_t *hn, i32 *t, i8 *p, size_t pn, i32 dt);
-bool Gamepad_isPressed(   struct controllerGamepad *g,  int sb);
-bool Gamepad_ButtonorAxis(struct controllerGamepad *g,  SDL_GameControllerButton b, int i, bool is);
+b32 Gamepad_isPressed(   struct controllerGamepad *g,  int sb);
+b32 Gamepad_ButtonorAxis(struct controllerGamepad *g,  SDL_GameControllerButton b, int i, b32 is);
 struct Point Gamepad_Joystick_Direction(struct controllerGamepad *g);
 
 #endif /* CONTROLLERGAMEPAD_H */

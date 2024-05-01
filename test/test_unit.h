@@ -852,7 +852,6 @@ void test_bonus_stats() {
     nourstest_true(effective_stats.move == (Silou.current_stats.move));
     nourstest_true(effective_stats.prof == (Silou.current_stats.prof));
 
-
     /* Free */
     DARR_FREE(Silou.bonus_stack);
 }

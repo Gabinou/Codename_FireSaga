@@ -973,3 +973,78 @@ struct Tile *Map_Tile_Get(struct Map *map, i32 x, i32 y) {
     size_t tile_order = Map_Tile_Order(map, tile_ind);
     return (map->tiles + tile_order);
 }
+
+/* --- Bonus --- */
+
+void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_entity *entities, 
+                    tnecs_entity source_ent, u16 item, u16 skill, b32 active) {
+    // aura: bonus to apply
+    // entities: units to appy bonus to.
+    // source_ent, item, skill, active: aura source info
+
+    /* Apply standard bonus to all unit in range */
+    struct Bonus_Stats  bonus       = Aura2Bonus(&aura, source_ent, item, skill, active); 
+    struct Position    *source_pos  = TNECS_GET_COMPONENT(map->world, source_ent, Position);
+    SDL_assert(source_pos != NULL);
+
+    size_t num_ent              = DARR_NUM(entities);
+    for (int i = 0; i < num_ent; i++) {
+        tnecs_entity ent = entities[i];
+        SDL_assert(ent > TNECS_NULL);
+        struct Position *pos = TNECS_GET_COMPONENT(map->world, ent, Position);
+
+        i32 distance = Pathfinding_Manhattan(source_pos->tilemap_pos, pos->tilemap_pos);
+
+        if ((distance >= aura.range.min) && (distance <= aura.range.max)) {
+            struct Unit *unit = TNECS_GET_COMPONENT(map->world, ent, Unit);
+            SDL_assert(unit != NULL);
+            Unit_Bonus_Refresh(unit, bonus);
+        }
+    }
+
+}
+
+void Map_Bonus_Standard_Apply_Unit(struct Map *map, tnecs_entity ent, tnecs_entity *entities) {
+    SDL_assert(ent > TNECS_NULL);
+    struct Unit     *unit   = TNECS_GET_COMPONENT(map->world, entities[i], Unit);
+    struct Position *pos    = TNECS_GET_COMPONENT(map->world, entities[i], Position);
+    SDL_assert(pos          != NULL);
+    SDL_assert(unit         != NULL);
+    SDL_assert(unit->class  == UNIT_CLASS_STANDARD_BEARER);
+    b32 active = false;
+    u16 skill  = SKILL_START;
+
+    /* Check if unit has a standard equipped */
+    struct Item *itemL = Unit_Get_Equipped_Item(unit, UNIT_HAND_LEFT);
+    if ((itemL != NULL) && (itemL->type == ITEM_TYPE_STANDARD))
+        Map_Aura_Apply(map, itemL->aura, pos->tilemap_pos, entities, ent, itemL->_id, skill, active);
+
+    struct Item *itemR = Unit_Get_Equipped_Item(unit, UNIT_HAND_RIGHT);
+    if ((itemR != NULL) && (itemR->type == ITEM_TYPE_STANDARD))
+        Map_Aura_Apply(map, itemR->aura, pos->tilemap_pos, entities, ent, itemL->_id, skill, active);
+}
+
+void Map_Bonus_Standard_Apply(struct Map *map, i32 army) {
+    SDL_assert(map != NULL);
+    SDL_assert((army > ARMY_START) && (army < ARMY_END));
+
+    /* Get army */
+    tnecs *entities = NULL;
+    if (army_alignment[army] == ALIGNMENT_FRIENDLY)
+        entities = map->friendlies_onfield;
+    else if (army_alignment[army] == ALIGNMENT_ENEMY)
+        entities = map->enemies_onfield;
+    SDL_assert(entities != NULL);
+
+    /* Check if any unit in army is a standard bearer */
+    size_t num_ent = DARR_NUM(entities);
+    for (int i = 0; i < num_ent; i++) {
+        tnecs_entity ent = entities[i];
+        SDL_assert(ent > TNECS_NULL);
+        struct Unit *unit = TNECS_GET_COMPONENT(map->world, ent, Unit);
+        SDL_assert(unit != NULL);
+
+        if (unit->class == UNIT_CLASS_STANDARD_BEARER)
+            Map_Bonus_Standard_Apply_Unit(map, ent, entities);   
+    }
+}

@@ -5,6 +5,7 @@
 #include "pixelfonts.h"
 #include "menu.h"
 #include "graph.h"
+#include "unit/bonus.h"
 #include "n9patch.h"
 #include "stb_sprintf.h"
 
@@ -180,7 +181,7 @@ struct GrowthsMenu {
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
     struct Graph graph;
-    bool update_stats : 1; /* only false in tests */
+    b32 update_stats : 1; /* only false in tests */
 };
 extern struct GrowthsMenu GrowthsMenu_default;
 

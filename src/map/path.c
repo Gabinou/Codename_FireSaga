@@ -130,7 +130,7 @@ i32 *Map_Healtolist_Compute(struct Map   *map) {
 }
 
 i32 *Map_Healtomap_Compute_wLoadout(struct Map *map, tnecs_world *world, tnecs_entity ent,
-                                    bool move, int lh, int rh) {
+                                    b32 move, int lh, int rh) {
     struct Unit     *unit = TNECS_GET_COMPONENT(world, ent, Unit);
     Unit_Loadout_Swap(unit, lh, rh);
     i32 *out = Map_Healtomap_Compute(map, world, ent, move, true);
@@ -140,7 +140,7 @@ i32 *Map_Healtomap_Compute_wLoadout(struct Map *map, tnecs_world *world, tnecs_e
 }
 
 i32 *Map_Healtomap_Compute(struct Map *map, tnecs_world *world, tnecs_entity unit_ent,
-                           bool move, bool equipped) {
+                           b32 move, b32 equipped) {
     Map_Costmap_Movement_Compute(map, world, unit_ent);
     struct Unit     *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     struct Position *pos  = TNECS_GET_COMPONENT(world, unit_ent, Position);
@@ -171,7 +171,7 @@ i32 *Map_Attackfromlist_Compute(struct Map *map) {
 }
 
 i32 *Map_Attacktomap_Compute_wLoadout(struct Map *map, tnecs_world *world, tnecs_entity ent,
-                                      bool move, int lh, int rh) {
+                                      b32 move, int lh, int rh) {
     struct Unit     *unit = TNECS_GET_COMPONENT(world, ent, Unit);
     Unit_Loadout_Swap(unit, lh, rh);
     i32 *out = Map_Attacktomap_Compute(map, world, ent, move, true);
@@ -181,7 +181,7 @@ i32 *Map_Attacktomap_Compute_wLoadout(struct Map *map, tnecs_world *world, tnecs
 }
 
 i32 *Map_Attacktomap_Compute(struct Map *map, tnecs_world *world,
-                             tnecs_entity unit_ent, bool move, bool equipped) {
+                             tnecs_entity unit_ent, b32 move, b32 equipped) {
     Map_Costmap_Movement_Compute(map, world, unit_ent);
     struct Unit     *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     struct Position *pos  = TNECS_GET_COMPONENT(world, unit_ent, Position);
@@ -198,7 +198,7 @@ i32 *Map_Attacktomap_Compute(struct Map *map, tnecs_world *world,
 }
 
 i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_world *world, tnecs_entity agg,
-                               tnecs_entity dft, bool move, bool equipped) {
+                               tnecs_entity dft, b32 move, b32 equipped) {
     Map_Costmap_Movement_Compute(map, world, agg);
     // SDL_Log("COSTMAP");
     // matrix_print(map->costmap, map->row_len, map->col_len);

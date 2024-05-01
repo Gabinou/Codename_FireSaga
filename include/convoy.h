@@ -34,7 +34,7 @@ void Convoy_Deposit_byType(struct Convoy *c, struct Inventory_item i, i16 exp);
 void Convoy_Deposit_byIndex(struct Convoy *c, struct Inventory_item i, i16 exp);
 
 struct Inventory_item Convoy_Withdraw(struct Convoy *conv, i16 i);
-bool Convoy_isFull(struct Convoy *conv);
+b32 Convoy_isFull(struct Convoy *conv);
 
 /* --- Conversion --- */
 u16 Convoy_Id2TypeExp(struct Convoy *conv, i16 i);

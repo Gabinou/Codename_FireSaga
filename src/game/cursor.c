@@ -153,7 +153,7 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
     /* --- SKIPPING --- */
     tnecs_entity menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     /* - Skip if Keyboard/Gamepad set sota->cursor_move -*/
-    bool skip = !((sota->cursor_move.x == 0) && (sota->cursor_move.y == 0));
+    b32 skip = !((sota->cursor_move.x == 0) && (sota->cursor_move.y == 0));
     skip |= (menu == TNECS_NULL);
     skip |= !sota->ismouse;
     skip |= sota->iscursor;
@@ -171,8 +171,8 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
     struct Slider *cursor_slider = TNECS_GET_COMPONENT(sota->world, cursor, Slider);
     SDL_assert(cursor_slider != NULL);
 
-    bool slidex = (cursor_slider->target.x != cursor_position->pixel_pos.x);
-    bool slidey = (cursor_slider->target.y != cursor_position->pixel_pos.y);
+    b32 slidex = (cursor_slider->target.x != cursor_position->pixel_pos.x);
+    b32 slidey = (cursor_slider->target.y != cursor_position->pixel_pos.y);
     if (!(slidex || slidey)) {
         return;
     }
@@ -221,8 +221,8 @@ void Game_Cursor_movedTime_Compute(struct Game *sota, uint64_t time_ns) {
     }
 }
 
-bool Game_isCursoronTilemap(struct Game *sota) {
-    bool out = false;
+b32 Game_isCursoronTilemap(struct Game *sota) {
+    b32 out = false;
     if (sota->ismouse) {
         tnecs_entity mouse = sota->entity_mouse;
         struct Point mouse_pos, tilemap_pos;
@@ -231,8 +231,8 @@ bool Game_isCursoronTilemap(struct Game *sota) {
                                            sota->camera.offset.x, sota->camera.zoom);
         tilemap_pos.y = SOTA_PIXEL2TILEMAP(mouse_pos.y, sota->map->tilesize[1],
                                            sota->camera.offset.y, sota->camera.zoom);
-        bool x_isIn = int_inbounds(tilemap_pos.x, 0, sota->map->col_len - 1);
-        bool y_isIn = int_inbounds(tilemap_pos.y, 0, sota->map->row_len - 1);
+        b32 x_isIn = int_inbounds(tilemap_pos.x, 0, sota->map->col_len - 1);
+        b32 y_isIn = int_inbounds(tilemap_pos.y, 0, sota->map->row_len - 1);
         out = (x_isIn && y_isIn);
     }
     return (out);
@@ -244,7 +244,7 @@ void Game_CursorfollowsMouse_onMap(struct Game *sota) {
     SDL_assert(sota->map != NULL);
     /* --- SKIPPING --- */
     /* - skip if any sota->cursor_move not 0 (other controller moved) - */
-    bool skip = ((sota->cursor_move.x != 0) || (sota->cursor_move.y != 0));
+    b32 skip = ((sota->cursor_move.x != 0) || (sota->cursor_move.y != 0));
     skip |= !sota->ismouse;
     skip |= sota->iscursor;
     skip |= (sota->entity_mouse <= TNECS_NULL);
@@ -260,8 +260,8 @@ void Game_CursorfollowsMouse_onMap(struct Game *sota) {
     struct Slider *cursor_slider = TNECS_GET_COMPONENT(sota->world, cursor, Slider);
     SDL_assert(cursor_slider != NULL);
 
-    bool slidex = (cursor_slider->target.x != cursor_position->pixel_pos.x);
-    bool slidey = (cursor_slider->target.y != cursor_position->pixel_pos.y);
+    b32 slidex = (cursor_slider->target.x != cursor_position->pixel_pos.x);
+    b32 slidey = (cursor_slider->target.y != cursor_position->pixel_pos.y);
     if (slidex || slidey) {
         return;
     }
@@ -298,7 +298,7 @@ void Game_Cursor_Moves_onMenu(struct Game *sota) {
     /* For basically all states except Gameplay_map.standby */
     tnecs_entity menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     Game_Cursor_Moves_Straight(sota);
-    bool skip = ((sota->cursor_move.x == 0) && (sota->cursor_move.y == 0));
+    b32 skip = ((sota->cursor_move.x == 0) && (sota->cursor_move.y == 0));
     skip |= (menu == TNECS_NULL);
 
     if (!skip)
@@ -323,7 +323,7 @@ void Game_Cursor_Move_toCandidate(struct Game *sota) {
 
 void Game_Cursor_Next_Candidate(struct Game *sota) {
     Game_Cursor_Moves_Straight(sota);
-    bool skip = ((sota->cursor_move.x == 0) && (sota->cursor_move.y == 0));
+    b32 skip = ((sota->cursor_move.x == 0) && (sota->cursor_move.y == 0));
 
     if (skip)
         return;
@@ -335,7 +335,7 @@ void Game_Cursor_Next_Candidate(struct Game *sota) {
 void Game_Cursor_Moves_onMap(struct Game *sota) {
     /* --- SKIPPING --- */
     /* - skip if any sota->cursor_move 0 - */
-    bool skip = ((sota->cursor_move.x == 0) && (sota->cursor_move.y == 0));
+    b32 skip = ((sota->cursor_move.x == 0) && (sota->cursor_move.y == 0));
     skip |= (sota->entity_cursor <= TNECS_NULL);
 
     if (skip) {
@@ -349,7 +349,7 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
     SDL_assert(position != NULL);
 
     /* -- Cursor_Moves should not be sent WHEN: -- */
-    bool canSend = true;
+    b32 canSend = true;
     //    1- cursor is in sliding animation.
     //       Game_CursorfollowsMouse_onMap TAKES CHARGE
 
@@ -359,8 +359,8 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
     struct Slider *cursor_slider = TNECS_GET_COMPONENT(sota->world, cursor, Slider);
     SDL_assert(cursor_slider != NULL);
 
-    bool slidex = (cursor_slider->target.x != cursor_position->pixel_pos.x);
-    bool slidey = (cursor_slider->target.y != cursor_position->pixel_pos.y);
+    b32 slidex = (cursor_slider->target.x != cursor_position->pixel_pos.x);
+    b32 slidey = (cursor_slider->target.y != cursor_position->pixel_pos.y);
     if (slidex || slidey) {
         return;
     }

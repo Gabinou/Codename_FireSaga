@@ -139,8 +139,8 @@ void Filesystem_Load_Bytes( char *name, u8 **mem, size_t *len) {
     PHYSFS_close(physfs_file);
 }
 
-bool Filesystem_fequal( char *filename1,  char *filename2) {
-    bool out = false;
+b32 Filesystem_fequal( char *filename1,  char *filename2) {
+    b32 out = false;
     PHYSFS_file *fp1  = PHYSFS_openRead(filename1);
     PHYSFS_file *fp2  = PHYSFS_openRead(filename2);
     SDL_assert(fp1);

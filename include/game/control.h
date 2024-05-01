@@ -24,7 +24,7 @@ void Control_Cursor_Moves(struct Game *s, struct Point cm, struct Point t,
                           struct Point px, i32 ct);
 
 void Control_Pressed( i8 b, i8 *l, i8 *p, i32 *ct, u32 e,
-                      bool o, i32 t, i32 m);
+                      b32 o, i32 t, i32 m);
 void Gamepad_Pressed( i8 b, i8 *l, i8 *p, i32 *ct, u32 e,
                       struct controllerGamepad  *gp);
 void Keyboard_Pressed(i8 b, i8 *l, i8 *p, i32 *ct, u32 e,

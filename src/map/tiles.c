@@ -214,7 +214,7 @@ void Map_Unique_TilesindexfromTilemap(struct Map *map) {
         SDL_assert(DARR_LEN(tile_orders) == 1);
         u16 *tilesprite_ind = map->tilesprites_ind[tile_orders[0]];
         u16 tilesnum = map->tilesprites_num[tile_orders[0]];
-        bool found = false;
+        b32 found = false;
         for (size_t i = 0; i < tilesnum; i++) {
             if (tilesprite_ind[i] == tofind) {
                 found = true;

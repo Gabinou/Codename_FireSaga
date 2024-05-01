@@ -133,8 +133,8 @@ static struct Rendered _Arrow_Decider_End(i32 x_0, i32 y_0, i32 x_1, i32 y_1, i3
     struct Point move_12 = {x_2 - x_1, y_2 - y_1};
     int direction_12     = Ternary_Direction(move_12);
 
-    bool left_01 = (direction_01 == SOTA_DIRECTION_LEFT);
-    bool left_12 = (direction_12 == SOTA_DIRECTION_LEFT);
+    b32 left_01 = (direction_01 == SOTA_DIRECTION_LEFT);
+    b32 left_12 = (direction_12 == SOTA_DIRECTION_LEFT);
 
     out.flip = (left_01 || left_12) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
     switch (direction_01) {
@@ -301,14 +301,14 @@ void Arrow_Path_Add(struct Arrow *arrow, i32 x_next, i32 y_next) {
     /* -- Point characteristics -- */
     i32 x_previous  = arrow->pathlist[index];
     i32 y_previous  = arrow->pathlist[index + 1];
-    bool isprevious = ((x_next == x_previous) && (y_next == y_previous));
-    bool isin_list  = list_isIn_2D(arrow->pathlist, point_current, x_next, y_next);
+    b32 isprevious = ((x_next == x_previous) && (y_next == y_previous));
+    b32 isin_list  = list_isIn_2D(arrow->pathlist, point_current, x_next, y_next);
 
     /* - Arrow can be infinitely long or not - */
 #ifdef INFINITE_MOVE_ALL
-    bool istoolong = (num_current > ARROW_MAX_LEN);
+    b32 istoolong = (num_current > ARROW_MAX_LEN);
 #else
-    bool istoolong = (num_current > arrow->move);
+    b32 istoolong = (num_current > arrow->move);
 #endif /* INFINITE_MOVE_ALL */
 
     /* - Point decider - */

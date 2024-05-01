@@ -24,7 +24,7 @@ void Convoy_Clear(struct Convoy *in_convoy) {
     in_convoy->items_num = in_convoy->books_num = 0;
 }
 
-bool Convoy_isFull(struct Convoy *in_convoy) {
+b32 Convoy_isFull(struct Convoy *in_convoy) {
     return (in_convoy->items_num >= in_convoy->size);
 }
 

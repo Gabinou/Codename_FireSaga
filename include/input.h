@@ -14,7 +14,7 @@ struct Input_Arguments {
     u16   talkScene;
     u8    map_index;
     u8    startup_mode;
-    bool  print_help;       /* If help requested anywhere, print help and exit  */
+    b32  print_help;       /* If help requested anywhere, print help and exit  */
     char *save_filename;    /* debug saves are outside normal save integers     */
 };
 extern struct Input_Arguments Input_Arguments_default;

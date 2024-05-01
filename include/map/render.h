@@ -46,7 +46,7 @@ void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
                              struct Camera  *camera, struct Point pos,
                              struct Range    range,  int colori);
 
-bool Map_Tilemap_newFrame(  struct Map *map);
-bool Map_Shadowmap_newFrame(struct Map *map);
+b32 Map_Tilemap_newFrame(  struct Map *map);
+b32 Map_Shadowmap_newFrame(struct Map *map);
 
 #endif /* MAP_RENDER_H */

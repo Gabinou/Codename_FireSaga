@@ -319,7 +319,7 @@ void Unit_setClassind(struct Unit *unit, i8 class_index) {
     unit->mvt_type   = Unit_mvtType(unit);
     unit->equippable = class_equippables[unit->class];
 
-    bool healclass  = (unit->class == UNIT_CLASS_BISHOP);
+    b32 healclass  = (unit->class == UNIT_CLASS_BISHOP);
     healclass      |= (unit->class == UNIT_CLASS_CLERIC);
 
     Unit_Rangemap_Default(unit);
@@ -360,7 +360,7 @@ u8 SotA_army2alignment(u8 army) {
     return (army_alignment[army]);
 }
 
-bool SotA_isPC(u8 army) {
+b32 SotA_isPC(u8 army) {
     SDL_assert((army > ARMY_START) && (army < ARMY_END));
     return (army_isPC[army]);
 }
@@ -375,11 +375,11 @@ void Unit_Find_Usable(struct Unit *unit, int archetype) {
     }
 }
 
-bool Unit_All_Usable(struct Unit *unit) {
+b32 Unit_All_Usable(struct Unit *unit) {
     /* -- Set all weapons to be usable --  */
     /* Use case: Dropping item  */
     unit->num_usable    = 0;
-    bool all_usable     = true;
+    b32 all_usable     = true;
     for (int i = 0; i < unit->num_equipment; i++) {
         unit->eq_usable[unit->num_usable] = i;
         if (!unit->eq_usable[unit->num_usable])
@@ -389,14 +389,14 @@ bool Unit_All_Usable(struct Unit *unit) {
     return (all_usable);
 }
 
-bool Unit_Eq_Usable( struct Unit *unit, int archetype, int i) {
+b32 Unit_Eq_Usable( struct Unit *unit, int archetype, int i) {
     SDL_assert(i >= 0);
     SDL_assert(i < DEFAULT_EQUIPMENT_SIZE);
     return (Unit_Item_Usable(unit, archetype, unit->_equipment[i].id));
 }
 
-bool Unit_Item_Usable( struct Unit *unit, int archetype, int id) {
-    bool usable = false;
+b32 Unit_Item_Usable( struct Unit *unit, int archetype, int id) {
+    b32 usable = false;
     do {
         /* -- If item select, everything is usable --  */
         if (archetype == ITEM_ARCHETYPE_ITEM) {
@@ -404,10 +404,10 @@ bool Unit_Item_Usable( struct Unit *unit, int archetype, int id) {
             break;
         }
 
-        bool iswpn    = Item_isWeapon(id);
-        bool isstaff  = Item_isStaff(id);
-        bool isshield = Item_isShield(id);
-        bool canequip = Unit_canEquip(unit, id);
+        b32 iswpn    = Item_isWeapon(id);
+        b32 isstaff  = Item_isStaff(id);
+        b32 isshield = Item_isShield(id);
+        b32 canequip = Unit_canEquip(unit, id);
         SDL_assert(!(isstaff && iswpn));
 
         if (archetype == ITEM_ARCHETYPE_WEAPON) {
@@ -423,7 +423,7 @@ bool Unit_Item_Usable( struct Unit *unit, int archetype, int id) {
 }
 
 /* --- Skills --- */
-bool Unit_hasSkill( struct Unit *unit, u64 skill) {
+b32 Unit_hasSkill( struct Unit *unit, u64 skill) {
     return ((unit->skills & skill) > 0);
 }
 
@@ -536,7 +536,7 @@ struct Inventory_item Unit_Equip_TwoHanding(struct Unit *unit) {
     SDL_assert(unit != NULL);
     /* Weapon is in stronghand, equipping to weakhand */
     int stronghand = Unit_Hand_Strong(unit);
-    bool weakhand  = 1 - stronghand;
+    b32 weakhand  = 1 - stronghand;
     if (!unit->hands[weakhand] || !unit->hands[stronghand]) {
         SDL_Log("Can't equip a weapon in two hands without two hands");
         exit(ERROR_Generic);
@@ -557,7 +557,7 @@ struct Inventory_item Unit_Equip_TwoHanding(struct Unit *unit) {
     return (out);
 }
 
-void _Unit_Check_Equipped(struct Unit *unit, bool hand) {
+void _Unit_Check_Equipped(struct Unit *unit, b32 hand) {
     if (!unit->equipped[hand])
         return;
 
@@ -578,12 +578,12 @@ void Unit_Check_Equipped(struct Unit *unit) {
 
 }
 
-bool Unit_Equip(struct Unit *unit, bool hand, int i) {
+b32 Unit_Equip(struct Unit *unit, b32 hand, int i) {
     Unit_Item_Swap(unit, hand, i);
     return (Unit_Equip_inHand(unit, hand));
 }
 
-bool Unit_Equip_inHand(struct Unit *unit, bool hand) {
+b32 Unit_Equip_inHand(struct Unit *unit, b32 hand) {
     SDL_Log("hand %d, equipment id %ld", hand, unit->_equipment[hand].id);
     SDL_assert(unit != NULL);
 
@@ -611,7 +611,7 @@ bool Unit_Equip_inHand(struct Unit *unit, bool hand) {
     return (unit->equipped[hand]);
 }
 
-void Unit_Unequip(struct Unit *unit, bool hand) {
+void Unit_Unequip(struct Unit *unit, b32 hand) {
     SDL_assert(unit);
 
     /* -- Unequip -- */
@@ -629,9 +629,9 @@ void Unit_Unequip(struct Unit *unit, bool hand) {
 
 /* Makes unit take damage.
 * NO DAMAGE COMPUTATION HERE! Crit multiplication responsible by caller.
-* Input crit bool just to determine if unit dies instantly or not.
+* Input crit b32 just to determine if unit dies instantly or not.
 */
-void Unit_takesDamage(struct Unit *unit, u8 damage, bool crit) {
+void Unit_takesDamage(struct Unit *unit, u8 damage, b32 crit) {
     SDL_Log("%s takes %d damage \n", unit->name.data, damage);
     /* -- Checks -- */
     SDL_assert(unit);
@@ -768,27 +768,27 @@ void Unit_dies(struct Unit *unit) {
 }
 
 /* Can unit equip weapon input item? */
-bool Unit_canEquip( struct Unit *unit, i16 id) {
+b32 Unit_canEquip( struct Unit *unit, i16 id) {
     if (id <= ITEM_NULL) {
         return (false);
     }
 
-    bool type    = Unit_canEquip_Type(unit, id);
-    bool left    = Unit_canEquip_Hand(unit, id, UNIT_HAND_LEFT);
-    bool right   = Unit_canEquip_Hand(unit, id, UNIT_HAND_RIGHT);
+    b32 type    = Unit_canEquip_Type(unit, id);
+    b32 left    = Unit_canEquip_Hand(unit, id, UNIT_HAND_LEFT);
+    b32 right   = Unit_canEquip_Hand(unit, id, UNIT_HAND_RIGHT);
     // SDL_Log("Unit_canEquip_Hand %d %d %d", type, right, left);
     return (type && (left || right));
 }
 
 /* Can unit equip weapon currently in hand? */
-bool Unit_canEquip_inHand( struct Unit *unit, bool hand) {
+b32 Unit_canEquip_inHand( struct Unit *unit, b32 hand) {
     SDL_assert(unit->weapons_dtab != NULL);
     i16 hand_id = unit->_equipment[hand].id;
     return (Unit_canEquip_Hand(unit, hand_id, hand));
 }
 
 /* Can unit equip arbitrary weapon in its hand? */
-bool Unit_canEquip_Hand( struct Unit *unit, i16 id, bool hand) {
+b32 Unit_canEquip_Hand( struct Unit *unit, i16 id, b32 hand) {
     if (id <= ITEM_NULL) {
         return (false);
     }
@@ -799,11 +799,11 @@ bool Unit_canEquip_Hand( struct Unit *unit, i16 id, bool hand) {
     SDL_assert(unit->weapons_dtab != NULL);
     struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);
 
-    bool eq_any = (weapon->handedness == WEAPON_HAND_ANY);
+    b32 eq_any = (weapon->handedness == WEAPON_HAND_ANY);
     // 2O: two-hand weapon in other hand
-    bool eq_2O  = (weapon->handedness == WEAPON_HAND_TWO);
+    b32 eq_2O  = (weapon->handedness == WEAPON_HAND_TWO);
     // 1A: one-hand weapon in any hand
-    bool eq_1A  = (weapon->handedness == WEAPON_HAND_ONE);
+    b32 eq_1A  = (weapon->handedness == WEAPON_HAND_ONE);
     // TODO: Right hand or left hand
 
     if (eq_2O || eq_any  || eq_1A) {
@@ -828,7 +828,7 @@ u8 Unit_Equippables(struct Unit *unit, u8 *equippables) {
 }
 
 /* Can unit equip arbitrary weapon with a certain type? */
-bool Unit_canEquip_Type( struct Unit *unit, i16 id) {
+b32 Unit_canEquip_Type( struct Unit *unit, i16 id) {
     /* Unequippable if ITEM_NULL */
     if (id <= ITEM_NULL) {
         return (false);
@@ -850,7 +850,7 @@ bool Unit_canEquip_Type( struct Unit *unit, i16 id) {
     }
 
     /* Is weapon's type equippable by unit? */
-    bool found = false;
+    b32 found = false;
     for (u8 i = 0; i < DARR_NUM(weapon->item->users); i++) {
         found = (weapon->item->users[i] == unit->_id);
         if (found) {
@@ -862,8 +862,8 @@ bool Unit_canEquip_Type( struct Unit *unit, i16 id) {
 }
 
 /* Is a rightie using a weapon in its left hand? */
-bool Unit_iswrongHanding(struct Unit *unit) {
-    bool out = false;
+b32 Unit_iswrongHanding(struct Unit *unit) {
+    b32 out = false;
     do {
         struct Inventory_item *item = Unit_Item_Strong(unit, UNIT_HAND_WEAK);
         if ((item->id == ITEM_NULL) || (item->id == ITEM_ID_BROKEN))
@@ -882,7 +882,7 @@ bool Unit_iswrongHanding(struct Unit *unit) {
 /* Is a unit wielding a weapon in its hand? Note: Units can equip staves.
     -> Equipped + a weapon (not a staff, or offhand, or trinket...)
  */
-bool Unit_isWielding(struct Unit *unit, bool hand) {
+b32 Unit_isWielding(struct Unit *unit, b32 hand) {
     if (!unit->equipped[hand])
         return (false);
 
@@ -898,25 +898,25 @@ bool Unit_isWielding(struct Unit *unit, bool hand) {
 }
 
 /* If a unit dual wielding? i.e. wielding a weapon in both hands */
-bool Unit_isdualWielding(struct Unit *unit) {
+b32 Unit_isdualWielding(struct Unit *unit) {
     SDL_assert(unit);
 
     // Unit_Equipment_Print(unit);
 
-    bool left   = Unit_isWielding(unit, UNIT_HAND_LEFT);
-    bool right  = Unit_isWielding(unit, UNIT_HAND_RIGHT);
+    b32 left   = Unit_isWielding(unit, UNIT_HAND_LEFT);
+    b32 right  = Unit_isWielding(unit, UNIT_HAND_RIGHT);
 
     return (unit->isDualWielding = left && right && !unit->isTwoHanding);
 }
 
-bool Unit_canCarry(struct Unit *savior, struct Unit *victim) {
+b32 Unit_canCarry(struct Unit *savior, struct Unit *victim) {
     struct Unit_stats victim_stats = Unit_effectiveStats(victim);
     struct Unit_stats savior_stats = Unit_effectiveStats(savior);
     return (Equation_canCarry(savior_stats.con, victim_stats.con));
 }
 
-bool Unit_canDance(struct Unit *unit) {
-    bool out = (unit->class == UNIT_CLASS_DANCER);
+b32 Unit_canDance(struct Unit *unit) {
+    b32 out = (unit->class == UNIT_CLASS_DANCER);
 
     return (out);
 }
@@ -936,7 +936,7 @@ int Unit_canStaff_Eq( struct  Unit *unit) {
 /* - Can unit equip a staff in strong hand? - */
 int Unit_canStaff( struct Unit *unit) {
 
-    bool out = false, stronghand = Unit_Hand_Strong(unit);
+    b32 out = false, stronghand = Unit_Hand_Strong(unit);
 
     if (unit->equipped[stronghand]) {
         struct Inventory_item item = unit->_equipment[stronghand];
@@ -952,7 +952,7 @@ int Unit_canStaff_oneHand( struct Unit *unit) {
 }
 
 /* - Any Weapon to attack with in equipment - */
-bool Unit_canAttack_Eq(struct Unit *unit) {
+b32 Unit_canAttack_Eq(struct Unit *unit) {
     SDL_assert(unit != NULL);
     SDL_assert(unit->weapons_dtab != NULL);
     /* - If any item in equipment is a weapon, can attack - */
@@ -977,18 +977,18 @@ bool Unit_canAttack_Eq(struct Unit *unit) {
 }
 
 /* - Can unit attack with equipped weapons - */
-bool Unit_canAttack(struct Unit *unit) {
+b32 Unit_canAttack(struct Unit *unit) {
     SDL_assert(unit != NULL);
     SDL_assert(unit->weapons_dtab != NULL);
 
-    bool left   = _Unit_canAttack(unit, UNIT_HAND_LEFT);
-    bool right  = _Unit_canAttack(unit, UNIT_HAND_RIGHT);
+    b32 left   = _Unit_canAttack(unit, UNIT_HAND_LEFT);
+    b32 right  = _Unit_canAttack(unit, UNIT_HAND_RIGHT);
 
     return (left || right);
 }
 
 /* - Can unit attack with weapon in hand - */
-bool _Unit_canAttack(struct Unit *unit, bool hand) {
+b32 _Unit_canAttack(struct Unit *unit, b32 hand) {
     if (!unit->equipped[hand])
         return (false);
 
@@ -1000,7 +1000,8 @@ bool _Unit_canAttack(struct Unit *unit, bool hand) {
     return (wpn->canAttack);
 }
 
-struct Weapon *Unit_Get_Equipped_Weapon( struct Unit *unit, bool hand) {
+/* TODO: USE IT. */
+struct Weapon *Unit_Get_Equipped_Weapon(struct Unit *unit, b32 hand) {
     if (!unit->equipped[hand])
         return (NULL);
 
@@ -1012,7 +1013,19 @@ struct Weapon *Unit_Get_Equipped_Weapon( struct Unit *unit, bool hand) {
     return (wpn);
 }
 
-i32 *Unit_Shield_Protection(struct Unit *unit, bool hand) {
+struct Item *Unit_Get_Equipped_Item(struct Unit *unit, b32 hand) {
+    if (!unit->equipped[hand])
+        return (NULL);
+
+    int id = unit->_equipment[hand].id;
+    if (id == ITEM_NULL)
+        return (NULL);
+
+    struct Item *item = DTAB_GET(unit->items_dtab, unit->_equipment[hand].id);
+    return (item);
+}
+
+i32 *Unit_Shield_Protection(struct Unit *unit, b32 hand) {
     if (!unit->equipped[hand])
         return (NULL);
 
@@ -1135,7 +1148,7 @@ i32 *Unit_computeAttack(struct Unit *unit, int distance) {
 
     /* -- DUAL WIELDING -- */
     /* Terrible malus if dual wielding without skill */
-    bool candualwield = TNECS_TYPEFLAG_HAS_TYPE(unit->skills, UNIT_SKILL_DUAL_WIELD);
+    b32 candualwield = TNECS_TYPEFLAG_HAS_TYPE(unit->skills, UNIT_SKILL_DUAL_WIELD);
     if (Unit_isdualWielding(unit) && !candualwield) {
         unit->computed_stats.attack[DMG_TYPE_PHYSICAL] /= DUAL_WIELD_NOSKILL_MALUS_FACTOR;
         unit->computed_stats.attack[DMG_TYPE_MAGICAL]  /= DUAL_WIELD_NOSKILL_MALUS_FACTOR;
@@ -1147,7 +1160,7 @@ i32 *Unit_computeAttack(struct Unit *unit, int distance) {
     return (unit->computed_stats.attack);
 }
 
-bool Unit_Equipment_Full( struct Unit *unit) {
+b32 Unit_Equipment_Full( struct Unit *unit) {
     return (unit->num_equipment == DEFAULT_EQUIPMENT_SIZE);
 }
 
@@ -1172,17 +1185,17 @@ void Unit_Equipment_Print( struct Unit *unit) {
 
 /* --- Loadout Manipulation --- */
 /* - Does that loadout wields a weapon with two hands? - */
-bool Unit_Loadout_twoHanding(int lh, int rh) {
-    bool lh_valid = (lh > -1) && (lh < DEFAULT_EQUIPMENT_SIZE);
-    bool rh_valid = (rh > -1) && (rh < DEFAULT_EQUIPMENT_SIZE);
+b32 Unit_Loadout_twoHanding(int lh, int rh) {
+    b32 lh_valid = (lh > -1) && (lh < DEFAULT_EQUIPMENT_SIZE);
+    b32 rh_valid = (rh > -1) && (rh < DEFAULT_EQUIPMENT_SIZE);
     return ((lh_valid && rh_valid && (lh == rh)));
 }
 
 /* - Public: Chooses between tohanding and not - */
 void Unit_Loadout_Swap(struct Unit *unit, int lh, int rh) {
-    bool lh_valid = (lh > -1) && (lh < DEFAULT_EQUIPMENT_SIZE);
-    bool rh_valid = (rh > -1) && (rh < DEFAULT_EQUIPMENT_SIZE);
-    bool twohands = Unit_Loadout_twoHanding(lh, rh);
+    b32 lh_valid = (lh > -1) && (lh < DEFAULT_EQUIPMENT_SIZE);
+    b32 rh_valid = (rh > -1) && (rh < DEFAULT_EQUIPMENT_SIZE);
+    b32 twohands = Unit_Loadout_twoHanding(lh, rh);
 
     if (twohands) {
         _Unit_Loadout_Swap_Twohanding(unit, lh);
@@ -1196,9 +1209,9 @@ void Unit_Loadout_Swap(struct Unit *unit, int lh, int rh) {
 }
 
 void Unit_Loadout_Swap_Reverse(struct Unit *unit, int lh, int rh) {
-    bool lh_valid = (lh > -1) && (lh < DEFAULT_EQUIPMENT_SIZE);
-    bool rh_valid = (rh > -1) && (rh < DEFAULT_EQUIPMENT_SIZE);
-    bool twohands = Unit_Loadout_twoHanding(lh, rh);
+    b32 lh_valid = (lh > -1) && (lh < DEFAULT_EQUIPMENT_SIZE);
+    b32 rh_valid = (rh > -1) && (rh < DEFAULT_EQUIPMENT_SIZE);
+    b32 twohands = Unit_Loadout_twoHanding(lh, rh);
 
     if (twohands) {
         _Unit_Loadout_Swap_Reverse_Twohanding(unit);
@@ -1231,8 +1244,8 @@ void _Unit_Loadout_Swap_Reverse_Twohanding(struct Unit *unit) {
 
 void _Unit_Loadout_Swap(struct Unit *unit, int lh, int rh) {
     SDL_assert(lh != rh); /* no twohanding here */
-    bool lh_valid = ((lh > -1) && (lh < DEFAULT_EQUIPMENT_SIZE));
-    bool rh_valid = ((rh > -1) && (rh < DEFAULT_EQUIPMENT_SIZE));
+    b32 lh_valid = ((lh > -1) && (lh < DEFAULT_EQUIPMENT_SIZE));
+    b32 rh_valid = ((rh > -1) && (rh < DEFAULT_EQUIPMENT_SIZE));
 
     /* Swapping */
     if (lh_valid && (lh != UNIT_HAND_LEFT)) {
@@ -1261,8 +1274,8 @@ void _Unit_Loadout_Swap(struct Unit *unit, int lh, int rh) {
 /* If input hand indices (lh, rh) are unvalid, unequip hand */
 void _Unit_Loadout_Swap_Reverse(struct Unit *unit, int lh, int rh) {
     SDL_assert(lh != rh); /* no twohanding here */
-    bool lh_valid = ((lh > -1) && (lh < DEFAULT_EQUIPMENT_SIZE));
-    bool rh_valid = ((rh > -1) && (rh < DEFAULT_EQUIPMENT_SIZE));
+    b32 lh_valid = ((lh > -1) && (lh < DEFAULT_EQUIPMENT_SIZE));
+    b32 rh_valid = ((rh > -1) && (rh < DEFAULT_EQUIPMENT_SIZE));
 
     /* Swapping */
     if (lh_valid && (lh != UNIT_HAND_LEFT)) {
@@ -1572,7 +1585,7 @@ void _Unit_Item_Deplete(struct Unit *unit, int i, int archetype) {
     Inventory_item_Deplete(&unit->_equipment[UNIT_HAND_LEFT], item->stats.uses);
 }
 
-void _Unit_Equipped_Deplete(struct Unit *unit, bool hand, int archetype) {
+void _Unit_Equipped_Deplete(struct Unit *unit, b32 hand, int archetype) {
     if (!unit->equipped[hand]) {
         return;
     }
@@ -1585,7 +1598,7 @@ void Unit_Item_Deplete(struct Unit *unit, int i) {
     _Unit_Item_Deplete(unit, i, ITEM_ARCHETYPE_NULL);
 }
 
-void Unit_Equipped_Staff_Deplete(struct Unit *unit, bool hand) {
+void Unit_Equipped_Staff_Deplete(struct Unit *unit, b32 hand) {
     /* Upon healing, decrease staff durability */
     _Unit_Equipped_Deplete(unit, hand, ITEM_ARCHETYPE_STAFF);
 }
@@ -1734,7 +1747,7 @@ void Unit_writeJSON( void *input, cJSON *junit) {
     SDL_assert(junit);
     cJSON *jid            = cJSON_CreateNumber(unit->_id);
     cJSON *jexp           = cJSON_CreateNumber(unit->base_exp);
-    cJSON *jsex           = cJSON_CreateBool(unit->sex);
+    cJSON *jsex           = cJSON_Createb32(unit->sex);
     cJSON *jname          = cJSON_CreateString(unit->name.data);
     cJSON *jai            = cJSON_CreateString(unit->ai_filename.data);
     cJSON *jtitle         = NULL;
@@ -1901,9 +1914,9 @@ void Unit_Promote(struct Unit *unit, i8 new_class_index) {
 }
 
 /* -- Unit_id -- */
-bool Unit_ID_Valid(u16 id) {
+b32 Unit_ID_Valid(u16 id) {
     SDL_Log("Unit ID valid: %d", id);
-    bool out = (id > UNIT_ID_PC_START)      && (id < UNIT_ID_PC_END);
+    b32 out = (id > UNIT_ID_PC_START)      && (id < UNIT_ID_PC_END);
     out |=     (id > UNIT_ID_NPC_START)     && (id < UNIT_ID_NPC_END);
     out |=     (id > UNIT_ID_GENERIC_START) && (id < UNIT_ID_GENERIC_END);
     return (out);

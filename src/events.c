@@ -267,7 +267,7 @@ void receive_event_Input_STATS(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *userevent) {
     /* -- Popping all menus -- */
-    bool destroy = false;
+    b32 destroy = false;
     while (DARR_NUM(sota->menu_stack) > 0)
         Game_menuStack_Pop(sota, destroy);
     SDL_assert(DARR_NUM(sota->menu_stack) == 0);
@@ -462,7 +462,7 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
     }
 
     /* -- Removing menus -- */
-    bool destroy = false;
+    b32 destroy = false;
 
     /* -- Hiding menus -- */
     while (DARR_NUM(sota->menu_stack) > 0)
@@ -1050,7 +1050,7 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {
     /* -- Check: Only Zoom_in on the map -- */
     SDL_assert(sota->state == GAME_STATE_Gameplay_Map);
-    bool correct_substate = (sota->substate == GAME_SUBSTATE_STANDBY);
+    b32 correct_substate = (sota->substate == GAME_SUBSTATE_STANDBY);
     correct_substate |= (sota->substate == GAME_SUBSTATE_MAP_CANDIDATES);
     correct_substate |= (sota->substate == GAME_SUBSTATE_MAP_UNIT_MOVES);
     correct_substate |= (sota->substate == GAME_SUBSTATE_MAP_ANIMATION);
@@ -1092,7 +1092,7 @@ void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Input_ZOOM_OUT(struct Game *sota, SDL_Event *userevent) {
     /* -- Check: Only Zoom_out on the map -- */
     SDL_assert(sota->state == GAME_STATE_Gameplay_Map);
-    bool correct_substate = (sota->substate == GAME_SUBSTATE_STANDBY);
+    b32 correct_substate = (sota->substate == GAME_SUBSTATE_STANDBY);
     correct_substate |= (sota->substate == GAME_SUBSTATE_MAP_CANDIDATES);
     correct_substate |= (sota->substate == GAME_SUBSTATE_MAP_UNIT_MOVES);
     correct_substate |= (sota->substate == GAME_SUBSTATE_MAP_ANIMATION);

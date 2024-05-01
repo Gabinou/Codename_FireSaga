@@ -19,8 +19,8 @@ size_t *matrix_where(i32 *array, i32 to_find, size_t arr_len) {
     return (found_list);
 }
 
-bool list_isIn_2D(i32 *list_2D, size_t list_len, i32 x, i32 y) {
-    bool found = false;
+b32 list_isIn_2D(i32 *list_2D, size_t list_len, i32 x, i32 y) {
+    b32 found = false;
     for (size_t i = 0; i < list_len; i++) {
         if ((x == list_2D[i * NMATH_TWO_D + 0]) && (y == list_2D[i * NMATH_TWO_D + 1])) {
             found = true;
@@ -136,8 +136,8 @@ int int_inbounds(int pos, int boundmin, int boundmax) {
     return (out);
 }
 
-bool i8_all_equal(i8 *arr1, i8 *arr2, size_t len) {
-    bool arrequal = true;
+b32 i8_all_equal(i8 *arr1, i8 *arr2, size_t len) {
+    b32 arrequal = true;
     for (int i = 0; i < len; i++) {
         if (arr1[i] != arr2[i]) {
             arrequal = false;
@@ -153,8 +153,8 @@ size_t Util_SDL_Surface_Index(SDL_Surface *surf, int x, int y) {
     return (y * surf->pitch + x * surf->format->BytesPerPixel);
 }
 
-bool Utilities_charArr_Equal(char *arr1, char *arr2, size_t len) {
-    bool arrequal = true;
+b32 Utilities_charArr_Equal(char *arr1, char *arr2, size_t len) {
+    b32 arrequal = true;
     for (int i = 0; i < len; i++) {
         if (arr1[i] != arr2[i]) {
             arrequal = false;
@@ -179,10 +179,10 @@ int Utilities_Loop(int direction, int flip) {
     else if (direction == SOTA_DIRECTION_TOP)
         loop = MAP_UNIT_LOOP_MOVET;
     else if (direction == SOTA_DIRECTION_LEFT) {
-        bool isflip = (flip == SDL_FLIP_HORIZONTAL);
+        b32 isflip = (flip == SDL_FLIP_HORIZONTAL);
         loop = isflip * MAP_UNIT_LOOP_MOVER + (1 - isflip) * MAP_UNIT_LOOP_MOVEL;
     } else if (direction == SOTA_DIRECTION_RIGHT) {
-        bool isflip = (flip == SDL_FLIP_HORIZONTAL);
+        b32 isflip = (flip == SDL_FLIP_HORIZONTAL);
         loop = isflip * MAP_UNIT_LOOP_MOVEL + (1 - isflip) * MAP_UNIT_LOOP_MOVER;
     }
 
@@ -240,7 +240,7 @@ char *Utilities_Print_itemStats(struct Item_stats stats) {
     return (out);
 }
 
-u8 army_alignment[ARMY_END] = {
+i32 army_alignment[ARMY_END] = {
     /* ARMY_START                     */ ALIGNMENT_ENEMY,
     /* FRIENDLY                       */ ALIGNMENT_FRIENDLY,
     /* ENEMY                          */ ALIGNMENT_ENEMY,
@@ -257,7 +257,7 @@ u8 army_alignment[ARMY_END] = {
     /* BANDITS                        */ ALIGNMENT_ENEMY,
 };
 
-bool army_isPC[ARMY_END] = {
+b32 army_isPC[ARMY_END] = {
     /* ARMY_START                     */ false,
     /* FRIENDLY                       */ true,
     /* ENEMY                          */ false,
