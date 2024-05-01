@@ -47,6 +47,7 @@
 #include "popup/test_text_bubble.h"
 #include "popup/test_unit.h"
 
+#include "integration/test_aura.h"
 #include "integration/test_basic.h"
 #include "integration/test_conditions.h"
 
@@ -111,6 +112,7 @@ void integration_tests(int argc, char *argv[]) {
     nourstest_run_args("Loss Death 1",  test_main_char_death_loss,  argc, argv);
     nourstest_run_args("Loss Death 2",  test_silou_death_loss,      argc, argv);
     nourstest_run_args("Win Boss",      test_boss_death_win,        argc, argv);
+    nourstest_run_args("Aura",          test_aura,                  argc, argv);
 }
 
 void random_checks() {
