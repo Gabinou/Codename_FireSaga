@@ -1002,27 +1002,17 @@ b32 _Unit_canAttack(struct Unit *unit, b32 hand) {
 
 /* TODO: USE IT. */
 struct Weapon *Unit_Get_Equipped_Weapon(struct Unit *unit, b32 hand) {
-    if (!unit->equipped[hand])
+    if (!unit->equipped[hand]) {
         return (NULL);
+    }
 
     int id = unit->_equipment[hand].id;
-    if (id == ITEM_NULL)
+    if (id == ITEM_NULL) {
         return (NULL);
+    }
 
     struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[hand].id);
     return (wpn);
-}
-
-struct Item *Unit_Get_Equipped_Item(struct Unit *unit, b32 hand) {
-    if (!unit->equipped[hand])
-        return (NULL);
-
-    int id = unit->_equipment[hand].id;
-    if (id == ITEM_NULL)
-        return (NULL);
-
-    struct Item *item = DTAB_GET(unit->items_dtab, unit->_equipment[hand].id);
-    return (item);
 }
 
 i32 *Unit_Shield_Protection(struct Unit *unit, b32 hand) {

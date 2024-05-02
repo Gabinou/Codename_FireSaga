@@ -978,6 +978,7 @@ struct Tile *Map_Tile_Get(struct Map *map, i32 x, i32 y) {
 
 void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_entity *entities,
                     tnecs_entity source_ent, u16 item, u16 skill, b32 active) {
+    SDL_Log("Map_Aura_Apply");
     // aura: bonus to apply
     // entities: units to appy bonus to.
     // source_ent, item, skill, active: aura source info
@@ -1005,6 +1006,7 @@ void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_entity *entities,
 }
 
 void Map_Bonus_Standard_Apply_Unit(struct Map *map, tnecs_entity ent, tnecs_entity *entities) {
+    SDL_Log("Map_Bonus_Standard_Apply_Unit");
     SDL_assert(ent > TNECS_NULL);
     struct Unit     *unit   = TNECS_GET_COMPONENT(map->world, ent, Unit);
     struct Position *pos    = TNECS_GET_COMPONENT(map->world, ent, Position);
@@ -1015,13 +1017,13 @@ void Map_Bonus_Standard_Apply_Unit(struct Map *map, tnecs_entity ent, tnecs_enti
     u16 skill  = SKILL_START;
 
     /* Check if unit has a standard equipped */
-    struct Item *itemL = Unit_Get_Equipped_Item(unit, UNIT_HAND_LEFT);
-    if ((itemL != NULL) && (itemL->type == ITEM_TYPE_STANDARD))
-        Map_Aura_Apply(map, itemL->aura, entities, ent, itemL->id, skill, active);
+    struct Weapon *wpnL = Unit_Get_Equipped_Weapon(unit, UNIT_HAND_LEFT);
+    if ((wpnL != NULL) && (wpnL->item->type == ITEM_TYPE_STANDARD))
+        Map_Aura_Apply(map, wpnL->item->aura, entities, ent, wpnL->item->id, skill, active);
 
-    struct Item *itemR = Unit_Get_Equipped_Item(unit, UNIT_HAND_RIGHT);
-    if ((itemR != NULL) && (itemR->type == ITEM_TYPE_STANDARD))
-        Map_Aura_Apply(map, itemR->aura, entities, ent, itemL->id, skill, active);
+    struct Weapon *wpnR = Unit_Get_Equipped_Weapon(unit, UNIT_HAND_RIGHT);
+    if ((wpnR != NULL) && (wpnR->item->type == ITEM_TYPE_STANDARD))
+        Map_Aura_Apply(map, wpnR->item->aura, entities, ent, wpnR->item->id, skill, active);
 }
 
 void Map_Bonus_Standard_Apply(struct Map *map, i32 army) {
@@ -1043,8 +1045,9 @@ void Map_Bonus_Standard_Apply(struct Map *map, i32 army) {
         SDL_assert(ent > TNECS_NULL);
         struct Unit *unit = TNECS_GET_COMPONENT(map->world, ent, Unit);
         SDL_assert(unit != NULL);
-
-        if (unit->class == UNIT_CLASS_STANDARD_BEARER)
+        if (unit->class == UNIT_CLASS_STANDARD_BEARER) {
+            SDL_Log("unit->_id %d", unit->_id);
             Map_Bonus_Standard_Apply_Unit(map, ent, entities);
+        }
     }
 }

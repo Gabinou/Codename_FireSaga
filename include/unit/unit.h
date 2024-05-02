@@ -72,7 +72,6 @@ void Unit_setClassind(struct Unit *u, i8 class_i);
 
 struct Unit_stats Unit_getStats(struct Unit *u);
 
-struct Item     *Unit_Get_Equipped_Item(    struct Unit *unit, b32 hand);
 struct Weapon   *Unit_Get_Equipped_Weapon(  struct Unit *unit, b32 hand);
 
 /* --- Items --- */
