@@ -1,9 +1,9 @@
 {
     "Item":
     {
-        "Name": "Angel Feather",
-        "id": 1207,
-        "Description": "Beautiful and fluffy. Given by incarnates and possessed to the worthy. Amplifies Angelic magics.",
+        "Name": "Cibo",
+        "id": 514,
+        "Description": "Helpful and loyal. Works best paired with Killy.",
         "Bonus":
         {
             "hp": 0,
@@ -39,29 +39,29 @@
         "canSell": false,
         "Effects":
         {
-            "id": 37,
-            "Name": "Angelic"
+            "Effect": "Killy_Cibo_Pair",
+            "id": 33
         },
         "Types":
         {
-            "id": 4096,
-            "Type": "Trinket"
+            "id": 6,
+            "Type": "Offhand"
         },
         "Subtype": 0,
         "Handedness": 0,
         "Stats":
         {
-            "Attack": [0,7,0],
+            "Attack": [9,0,0],
             "Protection": [0,0],
-            "hit": 13,
-            "dodge": 0,
-            "crit": 2,
+            "hit": 80,
+            "dodge": 5,
+            "crit": 0,
             "favor": 5,
-            "wgt": 2,
-            "prof": 14,
+            "wgt": 6,
+            "prof": 12,
             "Range": [1,1],
-            "uses": 11,
-            "price": 2000,
+            "uses": 36,
+            "price": 0,
             "AP": 0
         },
         "Effective": 9.2233720368547758E+18

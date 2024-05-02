@@ -156,10 +156,7 @@ void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
     SDL_assert(temp_weapon.item != NULL);
 
     temp_weapon.item->type = 1 << (id / ITEM_DIVISOR);
-    if (temp_weapon.item->id != id) {
-        SDL_Log("Read id %d from file %s, expected %d", temp_weapon.item->id, filename.data, id);
-        exit(ERROR_Generic);
-    }
+    temp_weapon.item->id = id;
 
     /* - Add weapon to dtab - */
     DTAB_ADD(weapons_dtab, &temp_weapon, id);

@@ -165,9 +165,9 @@ void Names_class_equippables(void) {
 #undef  REGISTER_ENUM
 }
 
-s8 *Names_unitTypes(u16 in_typecode) {
+s8 *Names_unitTypes(u16 typecode) {
     s8 *out = DARR_INIT(out, s8, UNIT_TYPE_END);
-#define REGISTER_ENUM(x) if flagsum_isIn(in_typecode, UNIT_TYPE_##x) {\
+#define REGISTER_ENUM(x) if flagsum_isIn(typecode, UNIT_TYPE_##x) {\
         DARR_PUT(out, s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2));\
     }
 #include "names/units_types.h"
@@ -195,10 +195,10 @@ void Names_jsonElementnames(void) {
     jsonElementnames[JSON_WEAPON] = s8_mut("Item");
 }
 
-s8 *Names_wpnType(u16 in_typecode) {
+s8 *Names_wpnType(u16 typecode) {
     s8 *type_names = DARR_INIT(type_names, s8, ITEM_TYPE_END);
     s8 type_name;
-#define REGISTER_ENUM(x) if flagsum_isIn(in_typecode, ITEM_TYPE_##x) {\
+#define REGISTER_ENUM(x) if flagsum_isIn(typecode, ITEM_TYPE_##x) {\
         type_name = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2);\
         DARR_PUT(type_names, type_name);\
     }

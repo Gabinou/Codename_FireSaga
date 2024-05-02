@@ -1,9 +1,9 @@
 {
     "Item":
     {
-        "Name": "Angel Feather",
-        "id": 1207,
-        "Description": "Beautiful and fluffy. Given by incarnates and possessed to the worthy. Amplifies Angelic magics.",
+        "Name": "Club",
+        "id": 208,
+        "Description": "Big and wooden.",
         "Bonus":
         {
             "hp": 0,
@@ -39,29 +39,28 @@
         "canSell": false,
         "Effects":
         {
-            "id": 37,
-            "Name": "Angelic"
+            "id": 0
         },
         "Types":
         {
-            "id": 4096,
-            "Type": "Trinket"
+            "id": 4,
+            "Type": "Axe"
         },
         "Subtype": 0,
         "Handedness": 0,
         "Stats":
         {
-            "Attack": [0,7,0],
+            "Attack": [5,0,0],
             "Protection": [0,0],
-            "hit": 13,
-            "dodge": 0,
-            "crit": 2,
-            "favor": 5,
-            "wgt": 2,
-            "prof": 14,
+            "hit": 60,
+            "dodge": 1,
+            "crit": 1,
+            "favor": 1,
+            "wgt": 6,
+            "prof": 1,
             "Range": [1,1],
-            "uses": 11,
-            "price": 2000,
+            "uses": 35,
+            "price": 411,
             "AP": 0
         },
         "Effective": 9.2233720368547758E+18

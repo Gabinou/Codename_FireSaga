@@ -1,9 +1,9 @@
 {
     "Item":
     {
-        "Name": "Angel Feather",
-        "id": 1207,
-        "Description": "Beautiful and fluffy. Given by incarnates and possessed to the worthy. Amplifies Angelic magics.",
+        "Name": "Feanor",
+        "id": 606,
+        "Description": "The fire used to forge Secundus, contained magically. Can melt any and all metals.",
         "Bonus":
         {
             "hp": 0,
@@ -39,29 +39,28 @@
         "canSell": false,
         "Effects":
         {
-            "id": 37,
-            "Name": "Angelic"
+            "id": 0
         },
         "Types":
         {
-            "id": 4096,
-            "Type": "Trinket"
+            "id": 64,
+            "Type": "Elemental"
         },
         "Subtype": 0,
         "Handedness": 0,
         "Stats":
         {
-            "Attack": [0,7,0],
+            "Attack": [0,18,0],
             "Protection": [0,0],
-            "hit": 13,
+            "hit": 75,
             "dodge": 0,
-            "crit": 2,
-            "favor": 5,
-            "wgt": 2,
-            "prof": 14,
-            "Range": [1,1],
-            "uses": 11,
-            "price": 2000,
+            "crit": 5,
+            "favor": 0,
+            "wgt": 11,
+            "prof": 18,
+            "Range": [0,0],
+            "uses": 18,
+            "price": 5000,
             "AP": 0
         },
         "Effective": 9.2233720368547758E+18
