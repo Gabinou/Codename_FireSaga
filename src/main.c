@@ -16,12 +16,6 @@
 *  Please do not distribute compiled executables
 */
 
-#include "SDL2/SDL.h"
-#ifdef SOTA_OPENGL
-    #include <GL/glew.h>
-    #include <SDL_opengl.h>
-    #include <GL/glu.h>
-#endif
 #include "game/game.h"
 
 int main(int argc, char *argv[]) {
