@@ -17,19 +17,35 @@ void test_aura(int argc, char *argv[]) {
     Game_Map_Reinforcements_Load(sota);
     SDL_assert(DARR_NUM(sota->map->units_onfield) > 0);
 
+
+    /* Load Standard */
+    Weapon_Load(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
+
     /* -- Place all friendlies close together -- */
+    i32 id;
+    tnecs_entity ent;
     /* Place Standard bearer inside */
-    
+    struct Point pos = {4, 4};
+    Game_Party_Entity_Create(sota, id = UNIT_ID_ERWIN, pos);
+    tnecs_entity ent = sota->units_loaded[id];
+    Map_Unit_Put(sota->map, pos.x, pos.y, ent);
+    SDL_assert(sota->units_loaded[id] > TNECS_NULL);
+
     /* Give standard to standard bearer */
+    struct Unit *bearer = TNECS_GET_COMPONENT(sota->world, ent, Unit);
+
+    struct Inventory_item standard = Inventory_item_default;
+    standard.id = ITEM_ID_IMPERIAL_STANDARD;
+    Unit_Item_Take(&bearer, standard);
 
     /* Place Friendly 1 inside */
-    struct Point pos = {1, 1};
-    Game_Party_Entity_Create(sota, UNIT_ID_SILOU, pos);
-    tnecs_entity killer_entity = sota->units_loaded[UNIT_ID_SILOU];
-    Map_Unit_Put(sota->map, pos.x, pos.y, killer_entity);
-    SDL_assert(sota->units_loaded[UNIT_ID_SILOU] > TNECS_NULL);
-    SDL_assert(killer_entity > TNECS_NULL);
-    SDL_assert(boss_entity != killer_entity);
+    pos.x = 3;
+    pos.y = 3;
+    Game_Party_Entity_Create(sota, id = UNIT_ID_SILOU, pos);
+    tnecs_entity ent = sota->units_loaded[id];
+    Map_Unit_Put(sota->map, pos.x, pos.y, ent);
+    SDL_assert(sota->units_loaded[id] > TNECS_NULL);
+
     /* Place Friendly 2 inside */
 
     /* Place Friendly 3 outside */

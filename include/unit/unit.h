@@ -97,9 +97,9 @@ struct Inventory_item Unit_Item_Drop(struct Unit *u, i16 ind1);
 void Unit_Equipment_Drop(struct Unit *u);
 
 /* --- Equipping --- */
-b32                  Unit_Equip(           struct Unit *u, b32 h, int i);
+b32                   Unit_Equip(           struct Unit *u, b32 h, int i);
 void                  Unit_Unequip(         struct Unit *u, b32 h);
-b32                  Unit_Equip_inHand(    struct Unit *u, b32 h);
+b32                   Unit_Equip_inHand(    struct Unit *u, b32 h);
 struct Inventory_item Unit_Equip_TwoHanding(struct Unit *u);
 
 /* --- Checking Equipment: de-equip if broken --- */
@@ -120,10 +120,10 @@ b32 Unit_Equipment_Full( struct Unit *u);
 void Unit_Equipment_Print(struct Unit *u);
 
 /* --- Usability --- */
-b32 Unit_Eq_Usable(  struct Unit *u, int a, int i);
-b32 Unit_All_Usable( struct Unit *u);
+b32  Unit_Eq_Usable(  struct Unit *u, int a, int i);
+b32  Unit_All_Usable( struct Unit *u);
 void Unit_Find_Usable(struct Unit *u, int a);
-b32 Unit_Item_Usable(struct Unit *u, int a, int i);
+b32  Unit_Item_Usable(struct Unit *u, int a, int i);
 
 /* --- Skills --- */
 b32 Unit_hasSkill(struct Unit *u, u64 s);
@@ -198,15 +198,15 @@ b32 Unit_canCarry(struct Unit *u1, struct Unit *u2);
 
 /* -- Can Equip -- */
 b32 Unit_canEquip(       struct Unit *u, i16 id);
-u8   Unit_Equippables(    struct Unit *u, u8 *eq);
+u8  Unit_Equippables(    struct Unit *u, u8 *eq);
 b32 Unit_canEquip_Type(  struct Unit *u, i16 id);
 b32 Unit_canEquip_Hand(  struct Unit *u, i16 id, b32 h);
 b32 Unit_canEquip_inHand(struct Unit *u, b32 h);
 
 /* -- Can Attack -- */
 b32 _Unit_canAttack(   struct Unit *u, b32 hand);  /* with weapon in hand       */
-b32  Unit_canAttack(   struct Unit *u);             /* with equipped weapon      */
-b32  Unit_canAttack_Eq(struct Unit *u);             /* with any wpn in equipment */
+b32  Unit_canAttack(   struct Unit *u);            /* with equipped weapon      */
+b32  Unit_canAttack_Eq(struct Unit *u);            /* with any wpn in equipment */
 
 /* -- Can Staff -- */
 int Unit_canStaff(        struct Unit *u);
@@ -217,7 +217,7 @@ u8 Unit_Brave(struct Unit *u);
 
 /* --- Lvlup && Promotion --- */
 void Unit_lvlUp(  struct Unit *u);
-i16 Unit_getLvl(  struct Unit *u);
+i16  Unit_getLvl( struct Unit *u);
 void Unit_Promote(struct Unit *u, i8 new_class_i);
 
 /* -- Unit_id -- */
