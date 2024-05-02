@@ -264,6 +264,7 @@ void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_entity *entities,
                     tnecs_entity source_ent, u16 item, u16 skill, b32 active);
 void Map_Bonus_Support_Apply( struct Map *map);
 
+void Map_Bonus_Standard_Apply(     struct Map *map, i32 army);
 void Map_Bonus_Standard_Apply_Army(struct Map *map, i32 army);
 void Map_Bonus_Standard_Apply_Unit(struct Map *map, tnecs_entity ent, tnecs_entity *entities);
 
