@@ -1,68 +1,67 @@
 {
-    "Item":
-    {
-        "Name": "Damas Axe",
-        "id": 203,
-        "Description": "Increases critical hit chance.",
-        "Bonus":
-        {
-            "hp": 0,
-            "str": 0,
-            "mag": 0,
-            "agi": 0,
-            "dex": 0,
-            "luck": 0,
-            "def": 0,
-            "res": 0,
-            "con": 0,
-            "move": 0,
-            "prof": 0
-        },
-        "Users":
-        {
-            "id": []
-        },
-        "Malus":
-        {
-            "hp": 0,
-            "str": 0,
-            "mag": 0,
-            "agi": 0,
-            "dex": 0,
-            "luck": 0,
-            "def": 0,
-            "res": 0,
-            "con": 0,
-            "move": 0,
-            "prof": 0
-        },
-        "canSell": false,
-        "Effects":
-        {
-            "id": 0
-        },
-        "Types":
-        {
-            "id": 4,
-            "Type": "Axe"
-        },
-        "Subtype": 0,
-        "Handedness": 0,
-        "Stats":
-        {
-            "Attack": [10,0,0],
-            "Protection": [0,0],
-            "hit": 45,
-            "dodge": 0,
-            "crit": 35,
-            "favor": 0,
-            "wgt": 11,
-            "prof": 12,
-            "Range": [1,1],
-            "uses": 25,
-            "price": 1400,
-            "AP": 0
-        },
-        "Effective": 9.2233720368547758E+18
-    }
+	"Item":	{
+		"Name":	"Damas Axe",
+		"Description":	"Increases critical hit chance.",
+		"id":	214,
+		"Aura":	{
+			"Computed_Stats":	{
+				"Attack":	[0, 0, 0],
+				"Protection":	[0, 0],
+				"Range_loadout":	[0, 0],
+				"Range_combined":	[0, 0],
+				"hit":	0,
+				"dodge":	0,
+				"crit":	0,
+				"favor":	0,
+				"move":	0,
+				"speed":	0,
+				"agony":	0
+			},
+			"Unit_stats":	{
+				"hp":	0,
+				"str":	0,
+				"mag":	0,
+				"agi":	0,
+				"dex":	0,
+				"luck":	0,
+				"def":	0,
+				"res":	0,
+				"con":	0,
+				"move":	0,
+				"prof":	0
+			},
+			"Range":	[0, 0]
+		},
+		"Users":	{
+			"id":	[]
+		},
+		"Class":	{
+			"id":	[]
+		},
+		"canSell":	false,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	4,
+			"Type":	"Axe"
+		},
+		"Stats":	{
+			"Attack":	[10, 0, 0],
+			"Protection":	[0, 0],
+			"hit":	45,
+			"dodge":	0,
+			"crit":	35,
+			"favor":	0,
+			"wgt":	11,
+			"prof":	12,
+			"Range":	[1, 1],
+			"uses":	25,
+			"price":	1400,
+			"AP":	0
+		},
+		"Subtype":	0,
+		"Effective":	0,
+		"Handedness":	0
+	}
 }

@@ -1,69 +1,67 @@
 {
-    "Item":
-    {
-        "Name": "Fingolfin",
-        "id": 806,
-        "Description": "Courage revealed in impenetrable nights. Strikes 7 times at darkness's heart.",
-        "Bonus":
-        {
-            "hp": 0,
-            "str": 0,
-            "mag": 0,
-            "agi": 0,
-            "dex": 0,
-            "luck": 0,
-            "def": 0,
-            "res": 0,
-            "con": 0,
-            "move": 0,
-            "prof": 0
-        },
-        "Users":
-        {
-            "id": []
-        },
-        "Malus":
-        {
-            "hp": 0,
-            "str": 0,
-            "mag": 0,
-            "agi": 0,
-            "dex": 0,
-            "luck": 0,
-            "def": 0,
-            "res": 0,
-            "con": 0,
-            "move": 0,
-            "prof": 0
-        },
-        "canSell": false,
-        "Effects":
-        {
-            "id": 77,
-            "Name": "Brave7x"
-        },
-        "Types":
-        {
-            "id": 256,
-            "Type": "Angelic"
-        },
-        "Subtype": 0,
-        "Handedness": 0,
-        "Stats":
-        {
-            "Attack": [0,3,0],
-            "Protection": [0,0],
-            "hit": 60,
-            "dodge": 0,
-            "crit": 5,
-            "favor": 7,
-            "wgt": 20,
-            "prof": 17,
-            "Range": [1,2],
-            "uses": 77,
-            "price": 20000,
-            "AP": 0
-        },
-        "Effective": 0
-    }
+	"Item":	{
+		"Name":	"Fingolfin",
+		"Description":	"Courage revealed in impenetrable nights. Strikes 7 times at darkness's heart.",
+		"id":	806,
+		"Aura":	{
+			"Computed_Stats":	{
+				"Attack":	[0, 0, 0],
+				"Protection":	[0, 0],
+				"Range_loadout":	[0, 0],
+				"Range_combined":	[0, 0],
+				"hit":	0,
+				"dodge":	0,
+				"crit":	0,
+				"favor":	0,
+				"move":	0,
+				"speed":	0,
+				"agony":	0
+			},
+			"Unit_stats":	{
+				"hp":	0,
+				"str":	0,
+				"mag":	0,
+				"agi":	0,
+				"dex":	0,
+				"luck":	0,
+				"def":	0,
+				"res":	0,
+				"con":	0,
+				"move":	0,
+				"prof":	0
+			},
+			"Range":	[0, 0]
+		},
+		"Users":	{
+			"id":	[]
+		},
+		"Class":	{
+			"id":	[]
+		},
+		"canSell":	false,
+		"Effects":	{
+			"id":	77
+		},
+		"Types":	{
+			"id":	256,
+			"Type":	"Angelic"
+		},
+		"Stats":	{
+			"Attack":	[0, 3, 0],
+			"Protection":	[0, 0],
+			"hit":	60,
+			"dodge":	0,
+			"crit":	5,
+			"favor":	7,
+			"wgt":	20,
+			"prof":	17,
+			"Range":	[1, 2],
+			"uses":	77,
+			"price":	20000,
+			"AP":	0
+		},
+		"Subtype":	0,
+		"Effective":	0,
+		"Handedness":	0
+	}
 }

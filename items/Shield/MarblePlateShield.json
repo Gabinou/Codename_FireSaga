@@ -1,47 +1,51 @@
 {
 	"Item":	{
 		"Name":	"Marble Plate Shield",
-		"id":	415,
 		"Description":	"Kite shield lined in an ornate layer of sculpted marble. Magical.",
-		"Bonus":	{
-			"hp":	0,
-			"str":	0,
-			"mag":	0,
-			"agi":	0,
-			"dex":	0,
-			"luck":	0,
-			"def":	0,
-			"res":	0,
-			"con":	0,
-			"move":	0,
-			"prof":	0
+		"id":	415,
+		"Aura":	{
+			"Computed_Stats":	{
+				"Attack":	[0, 0, 0],
+				"Protection":	[0, 0],
+				"Range_loadout":	[0, 0],
+				"Range_combined":	[0, 0],
+				"hit":	0,
+				"dodge":	0,
+				"crit":	0,
+				"favor":	0,
+				"move":	0,
+				"speed":	0,
+				"agony":	0
+			},
+			"Unit_stats":	{
+				"hp":	0,
+				"str":	0,
+				"mag":	0,
+				"agi":	0,
+				"dex":	0,
+				"luck":	0,
+				"def":	0,
+				"res":	0,
+				"con":	0,
+				"move":	0,
+				"prof":	0
+			},
+			"Range":	[0, 0]
 		},
 		"Users":	{
 			"id":	[]
 		},
-		"Malus":	{
-			"hp":	0,
-			"str":	0,
-			"mag":	0,
-			"agi":	0,
-			"dex":	0,
-			"luck":	0,
-			"def":	0,
-			"res":	0,
-			"con":	0,
-			"move":	0,
-			"prof":	0
+		"Class":	{
+			"id":	[]
 		},
 		"canSell":	false,
 		"Effects":	{
 			"id":	0
 		},
 		"Types":	{
-			"id":	512,
+			"id":	16,
 			"Type":	"Shield"
 		},
-		"Subtype":	0,
-		"Handedness":	0,
 		"Stats":	{
 			"Attack":	[15, 0, 0],
 			"Protection":	[15, 0],
@@ -56,6 +60,8 @@
 			"price":	0,
 			"AP":	0
 		},
-		"Effective":	9.2233720368547758e+18
+		"Subtype":	0,
+		"Effective":	0,
+		"Handedness":	0
 	}
 }

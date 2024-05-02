@@ -1,41 +1,67 @@
 {
-    "Item":
-    {
-        "Name": "Imperial Standard",
-        "id": 1301,
-        "Description": "The Empire's emblematic phrase sewn gold on red.",
-        "Users":
-        {
-            "id": [1]
-        },
-        "canSell": false,
-        "Effects":
-        {
-            "passive": 54,
-            "active": 55
-           },
-        "Types":
-        {
-            "id": 262144,
-            "Type": "Standard"
-        },
-        "Subtype": 0,
-        "Handedness": 0,
-        "Stats":
-        {
-            "Attack": [4,0,0],
-            "Protection": [1,1],
-            "hit": 0,
-            "dodge": 0,
-            "crit": 0,
-            "favor": 0,
-            "wgt": 8,
-            "prof": 4,
-            "Range": [0,1],
-            "uses": 10,
-            "price": 0,
-            "AP": 0
-        },
-        "Effective": 0
-    }
+	"Item":	{
+		"Name":	"Imperial Standard",
+		"Description":	"The Empire's emblematic phrase sewn gold on red.",
+		"id":	1301,
+		"Aura":	{
+			"Computed_Stats":	{
+				"Attack":	[0, 0, 0],
+				"Protection":	[0, 0],
+				"Range_loadout":	[0, 0],
+				"Range_combined":	[0, 0],
+				"hit":	0,
+				"dodge":	0,
+				"crit":	0,
+				"favor":	0,
+				"move":	0,
+				"speed":	0,
+				"agony":	0
+			},
+			"Unit_stats":	{
+				"hp":	0,
+				"str":	0,
+				"mag":	0,
+				"agi":	0,
+				"dex":	0,
+				"luck":	0,
+				"def":	0,
+				"res":	0,
+				"con":	0,
+				"move":	0,
+				"prof":	0
+			},
+			"Range":	[0, 0]
+		},
+		"Users":	{
+			"id":	[1]
+		},
+		"Class":	{
+			"id":	[]
+		},
+		"canSell":	false,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	8192,
+			"Type":	"Standard"
+		},
+		"Stats":	{
+			"Attack":	[4, 0, 0],
+			"Protection":	[1, 1],
+			"hit":	0,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	8,
+			"prof":	4,
+			"Range":	[0, 1],
+			"uses":	10,
+			"price":	0,
+			"AP":	0
+		},
+		"Subtype":	0,
+		"Effective":	0,
+		"Handedness":	0
+	}
 }

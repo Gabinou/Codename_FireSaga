@@ -1,68 +1,67 @@
 {
-    "Item":
-    {
-        "Name": "Raijintou",
-        "id": 22,
-        "Description": "The thunder god's sword. Rains lightning upon enemies at a distance.",
-        "Bonus":
-        {
-            "hp": 0,
-            "str": 0,
-            "mag": 0,
-            "agi": 0,
-            "dex": 0,
-            "luck": 0,
-            "def": 0,
-            "res": 0,
-            "con": 0,
-            "move": 0,
-            "prof": 0
-        },
-        "Users":
-        {
-            "id": []
-        },
-        "Malus":
-        {
-            "hp": 0,
-            "str": 0,
-            "mag": 0,
-            "agi": 0,
-            "dex": 0,
-            "luck": 0,
-            "def": 0,
-            "res": 0,
-            "con": 0,
-            "move": 0,
-            "prof": 0
-        },
-        "canSell": false,
-        "Effects":
-        {
-            "id": 0
-        },
-        "Types":
-        {
-            "id": 1,
-            "Type": "Sword"
-        },
-        "Subtype": 0,
-        "Handedness": 0,
-        "Stats":
-        {
-            "Attack": [9,9,0],
-            "Protection": [0,0],
-            "hit": 50,
-            "dodge": 0,
-            "crit": 0,
-            "favor": 0,
-            "wgt": 7,
-            "prof": 11,
-            "Range": [1,2],
-            "uses": 18,
-            "price": 1200,
-            "AP": 0
-        },
-        "Effective": 9.2233720368547758E+18
-    }
+	"Item":	{
+		"Name":	"Raijintou",
+		"Description":	"The thunder god's sword. Rains lightning upon enemies at a distance.",
+		"id":	22,
+		"Aura":	{
+			"Computed_Stats":	{
+				"Attack":	[0, 0, 0],
+				"Protection":	[0, 0],
+				"Range_loadout":	[0, 0],
+				"Range_combined":	[0, 0],
+				"hit":	0,
+				"dodge":	0,
+				"crit":	0,
+				"favor":	0,
+				"move":	0,
+				"speed":	0,
+				"agony":	0
+			},
+			"Unit_stats":	{
+				"hp":	0,
+				"str":	0,
+				"mag":	0,
+				"agi":	0,
+				"dex":	0,
+				"luck":	0,
+				"def":	0,
+				"res":	0,
+				"con":	0,
+				"move":	0,
+				"prof":	0
+			},
+			"Range":	[0, 0]
+		},
+		"Users":	{
+			"id":	[]
+		},
+		"Class":	{
+			"id":	[]
+		},
+		"canSell":	false,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	1,
+			"Type":	"Sword"
+		},
+		"Stats":	{
+			"Attack":	[9, 9, 0],
+			"Protection":	[0, 0],
+			"hit":	50,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	7,
+			"prof":	11,
+			"Range":	[1, 2],
+			"uses":	18,
+			"price":	1200,
+			"AP":	0
+		},
+		"Subtype":	0,
+		"Effective":	0,
+		"Handedness":	0
+	}
 }
