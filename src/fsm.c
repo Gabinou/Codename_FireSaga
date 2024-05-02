@@ -868,7 +868,7 @@ void fsm_eCrsMvs_sGmpMap_ssMapUnitMv(struct Game *sota,
     struct Slider *cursor_sl    = TNECS_GET_COMPONENT(sota->world, cursor, Slider);
     struct Sprite *cursor_sp    = TNECS_GET_COMPONENT(sota->world, cursor, Sprite);
 
-    // Always on tilemap
+    /* Always on tilemap */
     Position_Pos_Add(cursor_pos, sota->cursor_move.x, sota->cursor_move.y);
     Cursor_Target(cursor_sl, cursor_sp, cursor_pos);
     sota->cursor_move.x = 0;
@@ -1257,6 +1257,10 @@ void fsm_eAcpt_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity accepter_entit
                                MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
     }
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
+    
+    /* - Update Standard passive aura for all units - */
+    Map_Bonus_Standard_Remove(sota->map, army); /* TODO: */
+    Map_Bonus_Standard_Apply(sota->map, army);
 
     /* - Pre-menu update computation for content - */
     Game_preUnitAction_Targets(sota, unit_ent);
@@ -1266,6 +1270,7 @@ void fsm_eAcpt_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity accepter_entit
 
     /* - Focusing cursor on Menu - */
     Game_cursorFocus_onMenu(sota);
+
 }
 
 void fsm_eAcpt_sGmpMap_ssMapMini(struct Game *sota, tnecs_entity accepter_entity) {
