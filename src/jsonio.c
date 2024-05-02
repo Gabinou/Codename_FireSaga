@@ -430,6 +430,7 @@ void Unit_stats_writeJSON(void *input, struct cJSON *jstats) {
     struct cJSON *pagi  = cJSON_CreateNumber(stats->agi);
     struct cJSON *pdex  = cJSON_CreateNumber(stats->dex);
     struct cJSON *pluck = cJSON_CreateNumber(stats->luck);
+    struct cJSON *pfth  = cJSON_CreateNumber(stats->fth);
     struct cJSON *pdef  = cJSON_CreateNumber(stats->def);
     struct cJSON *pres  = cJSON_CreateNumber(stats->res);
     struct cJSON *pcon  = cJSON_CreateNumber(stats->con);
@@ -441,6 +442,7 @@ void Unit_stats_writeJSON(void *input, struct cJSON *jstats) {
     cJSON_AddItemToObject(jstats, "agi",  pagi);
     cJSON_AddItemToObject(jstats, "dex",  pdex);
     cJSON_AddItemToObject(jstats, "luck", pluck);
+    cJSON_AddItemToObject(jstats, "fth",  pfth);
     cJSON_AddItemToObject(jstats, "def",  pdef);
     cJSON_AddItemToObject(jstats, "res",  pres);
     cJSON_AddItemToObject(jstats, "con",  pcon);
@@ -532,7 +534,7 @@ void Range_writeJSON(void *input, struct cJSON *jrange) {
     SDL_assert(cJSON_IsArray(jrange));
     struct Range *range = input;
     struct cJSON *jmin      = cJSON_CreateNumber(range->min);
-    struct cJSON *jmax      = cJSON_CreateNumber(range->min);
+    struct cJSON *jmax      = cJSON_CreateNumber(range->max);
     cJSON_AddItemToArray(jrange, jmin);
     cJSON_AddItemToArray(jrange, jmax);
 }
@@ -692,8 +694,8 @@ void Unit_stats_readJSON(void *input, struct cJSON *jstats) {
     struct cJSON *jmag  = cJSON_GetObjectItem(jstats, "mag");
     struct cJSON *jagi  = cJSON_GetObjectItem(jstats, "agi");
     struct cJSON *jdex  = cJSON_GetObjectItem(jstats, "dex");
-    struct cJSON *jfth  = cJSON_GetObjectItem(jstats, "fth");
     struct cJSON *jluck = cJSON_GetObjectItem(jstats, "luck");
+    struct cJSON *jfth  = cJSON_GetObjectItem(jstats, "fth");
     struct cJSON *jdef  = cJSON_GetObjectItem(jstats, "def");
     struct cJSON *jres  = cJSON_GetObjectItem(jstats, "res");
     struct cJSON *jcon  = cJSON_GetObjectItem(jstats, "con");

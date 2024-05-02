@@ -21,16 +21,18 @@
 				"hp":	0,
 				"str":	0,
 				"mag":	0,
-				"agi":	0,
-				"dex":	0,
-				"luck":	0,
+				"agi":	1,
+				"dex":	2,
+				"luck":	1,
+				"fth":	1,
 				"def":	0,
 				"res":	0,
 				"con":	0,
 				"move":	0,
 				"prof":	0
 			},
-			"Range":	[0, 0]
+			"Range":	[0, 3],
+			"turns":	1
 		},
 		"Users":	{
 			"id":	[1]

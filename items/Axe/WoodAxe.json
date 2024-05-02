@@ -1,6 +1,6 @@
 {
 	"Item":	{
-		"Name":	"Club",
+		"Name":	"Wood Axe",
 		"Description":	"Big and wooden.",
 		"id":	215,
 		"Aura":	{
@@ -24,13 +24,15 @@
 				"agi":	0,
 				"dex":	0,
 				"luck":	0,
+				"fth":	0,
 				"def":	0,
 				"res":	0,
 				"con":	0,
 				"move":	0,
 				"prof":	0
 			},
-			"Range":	[0, 0]
+			"Range":	[0, 0],
+			"turns":	0
 		},
 		"Users":	{
 			"id":	[]
