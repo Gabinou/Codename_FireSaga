@@ -130,7 +130,6 @@ void test_aura(int argc, char *argv[]) {
     nourstest_true(effective_stats.move == servil->current_stats.move);
     nourstest_true(effective_stats.prof == servil->current_stats.prof);
 
-
     /* Quit game */
     Game_Free(sota);
     nourstest_true(true);

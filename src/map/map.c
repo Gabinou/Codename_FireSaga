@@ -1045,9 +1045,9 @@ void Map_Bonus_Standard_Apply(struct Map *map, i32 army) {
         SDL_assert(ent > TNECS_NULL);
         struct Unit *unit = TNECS_GET_COMPONENT(map->world, ent, Unit);
         SDL_assert(unit != NULL);
-        if (unit->class == UNIT_CLASS_STANDARD_BEARER) {
-            SDL_Log("unit->_id %d", unit->_id);
+        
+        if (unit->class == UNIT_CLASS_STANDARD_BEARER)
             Map_Bonus_Standard_Apply_Unit(map, ent, entities);
-        }
+        
     }
 }
