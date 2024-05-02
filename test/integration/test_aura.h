@@ -31,7 +31,6 @@ void test_aura(int argc, char *argv[]) {
 
     /* Place Friendly 3 outside */
 
-    
     /* Check Aura in bonus stack */
     // nourstest_true(sota->map->win);
     // nourstest_true(!sota->map->loss);

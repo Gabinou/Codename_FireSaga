@@ -17,7 +17,6 @@ void test_scene() {
     Scene_readJSON(&scene, jscene);
     nourstest_true(scene.lines_raw_num == 6);
     // Scene_Raw_Print(&scene);
-    // getchar();
 
     /* - Line 0 - */
     nourstest_true(Bitfield_Get(scene.lines_raw[0].conditions.alive, UNIT_ORDER_ERWIN));
@@ -132,7 +131,6 @@ void test_scene() {
 
     /* -- Output replace -- */
     // Scene_Render_Print(&scene);
-    // getchar();
 
     /* Clean the jfile */
     Scene_Free(&scene);

@@ -206,7 +206,7 @@ void Palette_Tables_Load(void) {
     // for (int i = 0; i < PALETTE_SOTA_COLOR_NUM; i++) {
     //     SDL_Log("from to %d->%d ", i, palette_table_SOTA_shadow[i]);
     // }
-    // getchar();
+
     path = PATH_JOIN("assets", "palettes",  "palette_table_sota_darken.json");
     PaletteTable_readJSON(path, palette_table_SOTA_darken);
     path = PATH_JOIN("assets", "palettes",  "palette_table_sota_lighten.json");

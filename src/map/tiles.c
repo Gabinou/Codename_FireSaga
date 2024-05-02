@@ -127,9 +127,7 @@ void Map_Tilesets_Load(struct Map *map) {
         if (map->tileset_surfaces[map->ipalette_base][i] != NULL)
             SDL_FreeSurface(map->tileset_surfaces[map->ipalette_base][i]);
         SDL_Surface *surf = Filesystem_Surface_Load(tilesetname.data, SDL_PIXELFORMAT_INDEX8);
-        /* To check if tilesets get loaded properly: getchar and check the output surface by
-            Filesystem_Surface_Load */
-        // getchar();
+        /* To check if tilesets get loaded properly: check the output surface */
         SDL_assert(surf != NULL);
         SDL_assert(SDL_ISPIXELFORMAT_INDEXED(surf->format->format));
         map->tileset_surfaces[map->ipalette_base][i] = surf;
