@@ -144,19 +144,15 @@ void jsonio_writeJSON(s8 filename, void *struct_ptr, b32 append) {
     /* Write to the json element */
     SDL_assert(json_write_funcs[jelem_id] != NULL);
     json_write_funcs[jelem_id](struct_ptr, jelement);
-    SDL_Log("out");
 
     /* Actually write to the file */
     cJSON_AddItemToObject(json, elem_name.data, jelement);
-    SDL_Log("added");
     jsonio_Print(fp, json);
-    SDL_Log("printed");
 
     /* Clean the file */
     PHYSFS_close(fp);
     if (json != NULL)
         cJSON_Delete(json);
-    SDL_Log("losed");
 }
 
 /* --- UTILITIES --- */
@@ -736,7 +732,6 @@ void jsonio_Print(PHYSFS_file *fp, struct cJSON *_json) {
     char *buffer = cJSON_Print(_json);
 
     /* Set up buffering for a PhysicsFS file handle. */
-    SDL_Log("len");
     size_t length = strlen(buffer);
     if (!PHYSFS_setBuffer(fp, length)) {
         SDL_Log("PHYSFS_setBuffer failed");
@@ -744,11 +739,9 @@ void jsonio_Print(PHYSFS_file *fp, struct cJSON *_json) {
     }
 
     /* Write bytes to file with Physfs */
-    SDL_Log("PHYSFS_writeBytes");
     PHYSFS_writeBytes(fp, buffer, length);
 
     /* Free buffer */
-    SDL_Log("free");
     cJSON_free(buffer);
 }
 

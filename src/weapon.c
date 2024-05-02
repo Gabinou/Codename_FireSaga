@@ -198,16 +198,7 @@ void Weapon_Save(struct dtab *weapons_dtab, i16 id) {
     if (DTAB_GET(weapons_dtab, id) != NULL) {
         SDL_Log("Saving Weapon id %ld", id);
         s8 filename = s8_mut("items"PHYSFS_SEPARATOR);
-        size_t item_order = *(u16 *)DTAB_GET(global_itemOrders, id);
-        SDL_assert(item_order != 0);
-        SDL_Log("%s", global_itemNames[item_order].data);
-        memcpy(buffer, global_itemNames[item_order].data, global_itemNames[item_order].num);
-        token = strtok(buffer, " \t");
-        while (token != NULL) {
-            filename    = s8cat(filename, s8_var(token));
-            token       = strtok(NULL, " \t");
-        }
-        filename = s8cat(filename, s8_literal(".json"));
+        filename    = Weapon_Filename(filename, id);
         SDL_Log("Saving weapon %ld %s", id, filename.data);
         b32 append = false;
         struct Weapon *weapon = (struct Weapon *)DTAB_GET(weapons_dtab, id);
