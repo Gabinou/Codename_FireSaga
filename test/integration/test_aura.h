@@ -20,8 +20,9 @@ void test_aura(int argc, char *argv[]) {
 
 
     /* Load Standard */
+    SDL_assert(sota->weapons_dtab != NULL);
     Weapon_Load(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
-
+    SDL_assert(DTAB_GET(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD) != NULL);
     /* -- Place all friendlies close together -- */
     i32 id;
     tnecs_entity ent;
@@ -60,9 +61,9 @@ void test_aura(int argc, char *argv[]) {
     SDL_assert(silou != NULL);
 
     /* Check effective stats */
-    struct Unit_stats effective_stats = Unit_effectiveStats(silou);
-    struct Weapon *standardwpn = DTAB_GET(weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
-    struct Unit_stats aura_bonus = standardwpn->item->aura.unit_stats;
+    struct Unit_stats effective_stats   = Unit_effectiveStats(silou);
+    struct Weapon *standardwpn          = DTAB_GET(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
+    struct Unit_stats aura_bonus        = standardwpn->item->aura.unit_stats;
 
     nourstest_true(effective_stats.hp   == (silou->current_stats.hp     + aura_bonus.hp));
     nourstest_true(effective_stats.str  == (silou->current_stats.str    + aura_bonus.str));
@@ -76,7 +77,6 @@ void test_aura(int argc, char *argv[]) {
     nourstest_true(effective_stats.con  == (silou->current_stats.con    + aura_bonus.con));
     nourstest_true(effective_stats.move == (silou->current_stats.move   + aura_bonus.move));
     nourstest_true(effective_stats.prof == (silou->current_stats.prof   + aura_bonus.prof));
-
 
     /* Quit game */
     Game_Free(sota);
