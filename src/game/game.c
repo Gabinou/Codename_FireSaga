@@ -246,7 +246,7 @@ void Game_AI_Free(struct Game *sota) {
     }
 }
 
-void Post_Game_Free(void) {
+void Game_Post_Free(void) {
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Utilities\n");
     Utilities_Free();
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Filesystem\n");
@@ -255,7 +255,7 @@ void Post_Game_Free(void) {
     Names_Free();
 }
 
-void Pre_Game_Startup(int argc, char *argv[]) {
+void Game_Pre_Init(int argc, char *argv[]) {
     /* --- LOGGING --- */
     Log_Init();
 #ifdef SDL_ASSERT_LEVEL
@@ -304,7 +304,6 @@ void _Game_Step_Render(struct Game *sota) {
     /* Render FSM */
     SDL_assert(fsm_rFrame_s[sota->state] != NULL);
     fsm_rFrame_s[sota->state](sota); /* RENDER */
-    // TODO: deal with frame running LONGER than expected
     u64 updateTime_ns = SOTA_ns / sota->settings.FPS.cap;
     tnecs_world_step_wdata(sota->world, updateTime_ns, sota); /* RENDER */
 
@@ -333,6 +332,7 @@ void _Game_Step_PostFrame(struct Game *sota, u64 currentTime_ns) {
 }
 
 void Game_Step(struct Game *sota) {
+    /* TODO: deal with frame running LONGER than expected */
     u64 currentTime_ns = _Game_Step_PreFrame(sota);
     _Game_Step_Control(sota);
     Events_Manage(sota); /* CONTROL */

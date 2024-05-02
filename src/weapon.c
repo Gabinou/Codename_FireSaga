@@ -220,7 +220,7 @@ void Weapon_Save(struct dtab *weapons_dtab, i16 id) {
 }
 
 void Weapons_All_Load(struct dtab *weapons_dtab) {
-    for (size_t i = ITEM_NULL; i < ITEM_ID_CLAW_END; i++) {
+    for (size_t i = ITEM_NULL; i < ITEM_ID_SLING_END; i++) {
         SDL_Log("Loading Weapon %zu", i);
         if (Weapon_ID_isValid(i))
             Weapon_Load(weapons_dtab, i);
@@ -228,7 +228,7 @@ void Weapons_All_Load(struct dtab *weapons_dtab) {
 }
 
 void Weapons_All_Reload(struct dtab *weapons_dtab) {
-    for (size_t i = ITEM_NULL; i < ITEM_ID_CLAW_END; i++) {
+    for (size_t i = ITEM_NULL; i < ITEM_ID_SLING_END; i++) {
         SDL_Log("Reloading Weapon %zu", i);
         if (Weapon_ID_isValid(i))
             Weapon_Reload(weapons_dtab, i);
@@ -236,7 +236,7 @@ void Weapons_All_Reload(struct dtab *weapons_dtab) {
 }
 
 void Weapons_All_Save(struct dtab *weapons_dtab) {
-    for (size_t i = ITEM_NULL; i < ITEM_ID_CLAW_END; i++) {
+    for (size_t i = ITEM_NULL; i < ITEM_ID_SLING_END; i++) {
         SDL_Log("%zu", i);
         if (!Weapon_ID_isValid(i))
             continue;
@@ -248,7 +248,7 @@ void Weapons_All_Save(struct dtab *weapons_dtab) {
 }
 
 void Weapons_All_Free(struct dtab *weapons_dtab) {
-    for (size_t i = ITEM_NULL; i < ITEM_ID_CLAW_END; i++) {
+    for (size_t i = ITEM_NULL; i < ITEM_ID_SLING_END; i++) {
         if (DTAB_GET(weapons_dtab, i) != NULL)
             Weapon_Free(DTAB_GET(weapons_dtab, i));
     }
@@ -315,6 +315,8 @@ b32 Weapon_ID_isValid(u16 id) {
     valid |= ((id > ITEM_ID_STAFF_START)     && (id < ITEM_ID_STAFF_END));
     valid |= ((id > ITEM_ID_CLAW_START)      && (id < ITEM_ID_CLAW_END));
     valid |= ((id > ITEM_ID_TRINKET_START)   && (id < ITEM_ID_TRINKET_END));
+    valid |= ((id > ITEM_ID_STANDARD_START)  && (id < ITEM_ID_STANDARD_END));
+    valid |= ((id > ITEM_ID_SLING_START)     && (id < ITEM_ID_SLING_END));
     valid |= (id == ITEM_ID_GBE);
     return (valid);
 }

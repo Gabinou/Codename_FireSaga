@@ -156,7 +156,7 @@ int main(int argc, char *argv[]) {
     nourstest_results();
 
     /* -- Postliminaries -- */
-    Post_Game_Free();
+    Game_Post_Free();
     SDL_Quit();
     fclose(stdout);
     return (0);

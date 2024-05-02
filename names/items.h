@@ -230,6 +230,9 @@ REGISTER_ENUM(EMPEROR_STANDARD,             1603)
 REGISTER_ENUM(LABARUM,                      1604)
 REGISTER_ENUM(STANDARD_END,                 1605)
 
+REGISTER_ENUM(SLING_START,                  1700)
+REGISTER_ENUM(SLING_END,                    1701)
+
 REGISTER_ENUM(BROKEN,                       2001)
 
 REGISTER_ENUM(GBE,                         32767)

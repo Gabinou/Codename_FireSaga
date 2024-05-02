@@ -23,13 +23,15 @@ int main(int argc, char *argv[]) {
     atexit(SDL_Quit);
 
     /* -- Startup -- */
-    Pre_Game_Startup(argc, argv);
+    Game_Pre_Init(argc, argv);
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     struct Game *sota = SDL_malloc(sizeof(struct Game));
     *sota = Game_default;
     sota->settings = Settings_default;
     Game_Init(sota, argc, argv);
+
+    Game_Weapons_Rewrite(sota);
 
     /* -- Master loop -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Starting main game loop\n");
@@ -38,7 +40,7 @@ int main(int argc, char *argv[]) {
 
     /* -- Cleaning & Quitting -- */
     Game_Free(sota);
-    Post_Game_Free();
+    Game_Post_Free();
     SDL_Log("SotA quit.\n");
     return (NO_ERROR);
 }

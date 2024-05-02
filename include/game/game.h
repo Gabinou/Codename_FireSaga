@@ -66,8 +66,8 @@ void Events_Names_Declare(void);
 void Events_Receivers_Declare(void);
 
 /* --- Pre game --- */
-void Pre_Game_Startup(int argc, char *argv[]);
-void Post_Game_Free(void);
+void Game_Pre_Init(int argc, char *argv[]);
+void Game_Post_Free(void);
 
 /* --- Constructors/Destructors --- */
 void Game_Init(   struct Game *sota, int argc, char *argv[]);
