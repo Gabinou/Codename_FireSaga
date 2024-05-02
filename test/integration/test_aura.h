@@ -4,21 +4,24 @@
 void test_aura(int argc, char *argv[]) {
     /* -- Startup -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
-    struct Game *sota = SDL_malloc(sizeof(struct Game));
-    *sota = Game_default;
-    sota->settings = Settings_default;
-    sota->settings.window = false;
+    struct Game *sota       = SDL_malloc(sizeof(struct Game));
+    *sota                   = Game_default;
+    sota->settings          = Settings_default;
+    sota->settings.window   = false;
     Game_Init(sota, argc, argv);
     nourstest_true(sota->state      == GAME_STATE_Title_Screen);
     nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
 
     /* Load Save file test/debug_map.json */
-    // Game_Map_Load(sota, CHAPTER_TEST_V8);
     Game_debugMap_Load(sota);
     Game_Map_Reinforcements_Load(sota);
     SDL_assert(DARR_NUM(sota->map->units_onfield) > 0);
 
     /* -- Place all friendlies close together -- */
+    /* Place Standard bearer inside */
+    
+    /* Give standard to standard bearer */
+
     /* Place Friendly 1 inside */
     struct Point pos = {1, 1};
     Game_Party_Entity_Create(sota, UNIT_ID_SILOU, pos);
