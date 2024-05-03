@@ -323,9 +323,19 @@ void test_aura_decay(int argc, char *argv[]) {
     nourstest_true(effective_stats.move == servil->current_stats.move);
     nourstest_true(effective_stats.prof == servil->current_stats.prof);
 
-
-    // fsm_eAcpt_sGmpMap_sMapUnitMv(sota, TNECS_NULL);
     /* Quit game */
     Game_Free(sota);
     nourstest_true(true);
+}
+
+void test_aura_fsm(int argc, char *argv[]) {
+/* Test scenario:
+    - Unit starts turn inside standard aura range
+        - Bonus active
+    - Unit moves outside range, triggering -> fsm_eAcpt_sGmpMap_sMapUnitMv
+        - Bonus removed
+     */
+    /* Mocking stuff for fsm_eAcpt_sGmpMap_sMapUnitMv */
+
+    fsm_eAcpt_sGmpMap_sMapUnitMv(sota, TNECS_NULL);
 }
