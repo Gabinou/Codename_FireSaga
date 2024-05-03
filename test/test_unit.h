@@ -730,27 +730,48 @@ void test_bonus_decay() {
     nourstest_true(Silou.bonus_stack[3].turns == 1);
     nourstest_true(Silou.bonus_stack[4].turns == 2);
 
-    Unit_Bonus_Decay(&Silou);
+    Unit_Bonus_Persistent_Decay(&Silou);
     nourstest_true(DARR_NUM(Silou.bonus_stack) == 4);
     nourstest_true(Silou.bonus_stack[0].turns == 2);
     nourstest_true(Silou.bonus_stack[1].turns == 2);
     nourstest_true(Silou.bonus_stack[2].turns == 0);
     nourstest_true(Silou.bonus_stack[3].turns == 1);
 
-    Unit_Bonus_Decay(&Silou);
+    Unit_Bonus_Persistent_Decay(&Silou);
     nourstest_true(DARR_NUM(Silou.bonus_stack) == 3);
     nourstest_true(Silou.bonus_stack[0].turns == 1);
     nourstest_true(Silou.bonus_stack[1].turns == 1);
     nourstest_true(Silou.bonus_stack[2].turns == 0);
 
-    Unit_Bonus_Decay(&Silou);
+    Unit_Bonus_Persistent_Decay(&Silou);
 
     nourstest_true(DARR_NUM(Silou.bonus_stack) == 2);
     nourstest_true(Silou.bonus_stack[0].turns == 0);
     nourstest_true(Silou.bonus_stack[1].turns == 0);
 
-    Unit_Bonus_Decay(&Silou);
+    Unit_Bonus_Persistent_Decay(&Silou);
     nourstest_true(DARR_NUM(Silou.bonus_stack) == 0);
+
+    // TODO test instant aura decay.
+    struct Bonus_Stats bonus_instant1 = Bonus_Stats_default;
+    struct Bonus_Stats bonus_instant2 = Bonus_Stats_default;
+    struct Bonus_Stats bonus_instant3 = Bonus_Stats_default;
+
+    bonus_instant1.turns = -1;
+    bonus_instant2.turns =  0;
+    bonus_instant3.turns = -2;
+    Unit_Bonus_Add(&Silou, bonus_instant1);
+    Unit_Bonus_Add(&Silou, bonus_instant2);
+    Unit_Bonus_Add(&Silou, bonus_instant3);
+    nourstest_true(DARR_NUM(Silou.bonus_stack) == 3);
+    Unit_Bonus_Instant_Decay(&Silou);
+    nourstest_true(DARR_NUM(Silou.bonus_stack) == 1);
+
+    Unit_Bonus_Add(&Silou, bonus_instant1);
+    Unit_Bonus_Add(&Silou, bonus_instant3);
+    Unit_Bonus_Persistent_Decay(&Silou);
+    nourstest_true(DARR_NUM(Silou.bonus_stack) == 2);
+
 
     /* Free */
     DARR_FREE(Silou.bonus_stack);
@@ -818,7 +839,7 @@ void test_bonus_stats() {
     nourstest_true(effective_stats.prof == (Silou.current_stats.prof    + bonus_stats.prof  +
                                             bonus_stats2.prof));
 
-    Unit_Bonus_Decay(&Silou);
+    Unit_Bonus_Persistent_Decay(&Silou);
 
     effective_stats = Unit_effectiveStats(&Silou);
 
@@ -835,7 +856,7 @@ void test_bonus_stats() {
     nourstest_true(effective_stats.move == (Silou.current_stats.move    + bonus_stats2.move));
     nourstest_true(effective_stats.prof == (Silou.current_stats.prof    + bonus_stats2.prof));
 
-    Unit_Bonus_Decay(&Silou);
+    Unit_Bonus_Persistent_Decay(&Silou);
 
     effective_stats = Unit_effectiveStats(&Silou);
 

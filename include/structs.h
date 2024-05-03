@@ -546,11 +546,18 @@ typedef struct Unit {
 
     /* How to make sure bonus is still valid? */
     //  - Always remove aura if turn == 0
-    //  - When to decrement auras? -> Turn end
+    //  - When to decrement auras? DESIGN QUESTION.
+    //      -> Turn end: persisting auras
+    //          - Any unit that gets an aura, even a turn 0 one, KEEPS IT UNTIL TURN END.
+    //      -> Every move: instant auras
+    //          - Instantly get removed if out of range.
+    //
     //  - When to increment auras?
     //      -> Turn end, after decrementing auras
     //      -> Whenever a unit moves
-    //  turns_left == 0 means you remove next turn start
+    //  - turns_left == 0 means you remove next turn start
+    //  - turns_left <+ -1 means you remove on move
+    //  - turns_left == 0xFF is forever
     //  Scenario: units waits in range of standard bearer 1 turn
     //      - Aura refreshes -> 1 turn
     //      - Leave aura, end turn -> 0 turn

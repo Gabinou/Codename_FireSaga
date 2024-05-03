@@ -842,8 +842,8 @@ void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
     Map_Palettemap_Reset(sota->map);
 
     /* - Update Standard passive aura for all units - */
-    Map_Bonus_Standard_Remove(sota->map, army); /* TODO: */
-    Map_Bonus_Standard_Apply(sota->map, army);
+    // Map_Bonus_Remove_Instant(sota->map, army);
+    // Map_Bonus_Standard_Apply(sota->map, army);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
 }

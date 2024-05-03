@@ -1,18 +1,46 @@
 
 #include "unit/bonus.h"
 
-void Unit_Bonus_Decay(struct Unit *unit) {
+/* Instant aura: You only get it if you're in range at all times.
+ * - Need to be called for all units every unit move
+ */
+void Unit_Bonus_Instant_Decay(struct Unit *unit) {
+    /* Any aura/bonus with value <= AURA_REMOVE_ON_MOVE gets removed */
     SDL_assert(unit                 != NULL);
     SDL_assert(unit->bonus_stack    != NULL);
 
     size_t i = 0;
     while (i < DARR_NUM(unit->bonus_stack)) {
-        if (unit->bonus_stack[i].turns == 0) {
+        if (unit->bonus_stack[i].turns <= AURA_REMOVE_ON_MOVE) {
             DARR_DEL(unit->bonus_stack, i);
-        } else {
-            unit->bonus_stack[i].turns--;
-            i++;
+            continue;
         }
+        i++;
+    }
+}
+
+/* Persistent aura: Only gets removed at turn end, even if it lasts 0 turns.
+ * - Need to be called for all units every end turn
+*/
+void Unit_Bonus_Persistent_Decay(struct Unit *unit) {
+    /*  1. Any bonus with value == AURA_REMOVE_ON_TURN_END gets removed
+        2. Any bonus with value  > AURA_REMOVE_ON_TURN_END gets decremented
+    */
+
+    SDL_assert(unit                 != NULL);
+    SDL_assert(unit->bonus_stack    != NULL);
+
+    size_t i = 0;
+    while (i < DARR_NUM(unit->bonus_stack)) {
+        if (unit->bonus_stack[i].turns == AURA_REMOVE_ON_TURN_END) {
+            DARR_DEL(unit->bonus_stack, i);
+            continue;
+        }
+
+        if (unit->bonus_stack[i].turns > AURA_REMOVE_ON_TURN_END) {
+            unit->bonus_stack[i].turns--;
+        }
+        i++;
     }
 }
 

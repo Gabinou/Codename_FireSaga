@@ -975,6 +975,13 @@ struct Tile *Map_Tile_Get(struct Map *map, i32 x, i32 y) {
 }
 
 /* --- Bonus --- */
+void Map_Bonus_Remove_Instant(   struct Map *map, i32 army) {
+    /* Any bonus with value <= AURA_REMOVE_ON_MOVE gets removed */
+}
+
+void Map_Bonus_Remove_Turn_End( struct Map *map, i32 army) {
+
+}
 
 void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_entity *entities,
                     tnecs_entity source_ent, u16 item, u16 skill, b32 active) {
@@ -1045,9 +1052,9 @@ void Map_Bonus_Standard_Apply(struct Map *map, i32 army) {
         SDL_assert(ent > TNECS_NULL);
         struct Unit *unit = TNECS_GET_COMPONENT(map->world, ent, Unit);
         SDL_assert(unit != NULL);
-        
+
         if (unit->class == UNIT_CLASS_STANDARD_BEARER)
             Map_Bonus_Standard_Apply_Unit(map, ent, entities);
-        
+
     }
 }

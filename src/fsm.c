@@ -1257,10 +1257,10 @@ void fsm_eAcpt_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity accepter_entit
                                MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
     }
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
-    
+
     /* - Update Standard passive aura for all units - */
-    Map_Bonus_Standard_Remove(sota->map, army); /* TODO: */
-    Map_Bonus_Standard_Apply(sota->map, army);
+    // Map_Bonus_Remove_Instant(sota->map, army);
+    // Map_Bonus_Standard_Apply(sota->map, army);
 
     /* - Pre-menu update computation for content - */
     Game_preUnitAction_Targets(sota, unit_ent);

@@ -248,6 +248,7 @@ void Map_writeJSON( void *input, cJSON *jmap);
 
 /* --- Map events / Triggers --- */
 void Map_Turn_Increment(struct Map *map);
+
 i8 Map_Army_Next(struct Map *map);
 
 /* --- Music --- */
@@ -260,6 +261,7 @@ b32 Map_Boss_Alive(struct Map *map, i16 army);
 struct Tile *Map_Tile_Get(struct Map *map, i32 x, i32 y);
 
 /* --- Bonus --- */
+/* -- Apply -- */
 void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_entity *entities,
                     tnecs_entity source_ent, u16 item, u16 skill, b32 active);
 void Map_Bonus_Support_Apply( struct Map *map);
@@ -267,5 +269,11 @@ void Map_Bonus_Support_Apply( struct Map *map);
 void Map_Bonus_Standard_Apply(     struct Map *map, i32 army);
 void Map_Bonus_Standard_Apply_Army(struct Map *map, i32 army);
 void Map_Bonus_Standard_Apply_Unit(struct Map *map, tnecs_entity ent, tnecs_entity *entities);
+
+/* -- Remove -- */
+void Map_Bonus_Remove_onMove(       struct Map *map, i32 army);
+void Map_Bonus_Remove_Turn_End(     struct Map *map, i32 army);
+void Map_Bonus_Remove_onMove_Unit(  struct Map *map, tnecs_entity ent);
+void Map_Bonus_Remove_Turn_End_Unit(struct Map *map, tnecs_entity ent);
 
 #endif /* MAP_H */

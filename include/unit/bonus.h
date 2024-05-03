@@ -7,7 +7,9 @@
 #include "unit/unit.h"
 #include "aura.h"
 
-void Unit_Bonus_Decay(struct Unit *unit);
+void Unit_Bonus_Persistent_Decay(struct Unit *unit);
+void Unit_Bonus_Instant_Decay(struct Unit *unit);
+
 void Unit_Bonus_Add(struct Unit *unit, struct Bonus_Stats bonus);
 void Unit_Bonus_Refresh(struct Unit *unit, struct Bonus_Stats bonus);
 struct Bonus_Stats Aura2Bonus(struct Aura *a, tnecs_entity u, u16 i, u16 s, b32 ac);

@@ -48,6 +48,11 @@ enum bOFFSET {
     // json_element before json_filename -> 7 bytes padding for alignment!
 };
 
+enum SOTA_AURA {
+    AURA_REMOVE_ON_MOVE         = -1, /* Or any value below */
+    AURA_REMOVE_ON_TURN_END     =  0, /* Any value above 0 gets decremented at turn end */
+};
+
 enum SOTA_RANGEMAP {
     RANGEMAP_NULL      = 0,
     RANGEMAP_HEALMAP   = 1, /*includes staves and items (horns, salve, etc.) */
