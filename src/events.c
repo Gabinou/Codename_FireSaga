@@ -208,7 +208,7 @@ void receive_event_Cursor_Disable(struct Game *sota, SDL_Event *Cursor_Disable) 
 }
 
 void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) {
-    u8 army = * (u8 *) userevent->user.data1;
+    i32 army = * (i32 *) userevent->user.data1;
 
     if (army == ARMY_FRIENDLY) {
         /* --- Control goes to player --- */
@@ -741,7 +741,7 @@ void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
         }
     }
 
-    u8 *army = &sota->map->army_onfield[sota->map->army_i];
+    i32 *army = &sota->map->army_onfield[sota->map->army_i];
 
     /* Switch control to next army */
     Event_Emit(__func__, SDL_USEREVENT, event_Game_Control_Switch, army, NULL);
@@ -841,10 +841,10 @@ void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
     Map_Danger_Reset(sota->map);
     Map_Palettemap_Reset(sota->map);
 
-    /* - Update Standard passive aura for all units - */
-    // Map_Bonus_Remove_Instant(sota->map, army);
-    // Map_Bonus_Standard_Apply(sota->map, army);
-
+    /* - Decrement persistent auras for all units - */
+    i32 army = sota->map->army_onfield[sota->map->army_i];
+    Map_Bonus_Remove_Persistent(sota->map, army);
+    
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
 }
 

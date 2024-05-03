@@ -975,20 +975,39 @@ struct Tile *Map_Tile_Get(struct Map *map, i32 x, i32 y) {
 }
 
 /* --- Bonus --- */
-void Map_Bonus_Remove_Instant(   struct Map *map, i32 army) {
-    /* Any bonus with value <= AURA_REMOVE_ON_MOVE gets removed */
+void Map_Bonus_Remove_Instant(struct Map *map, i32 army) {
+    tnecs_entity *entities = Map_Get_onField(map, army);
+    SDL_assert(entities != NULL);
+
+    size_t num_ent = DARR_NUM(entities);
+    for (int i = 0; i < num_ent; i++) {
+        tnecs_entity ent = entities[i];
+        SDL_assert(ent > TNECS_NULL);
+        struct Unit *unit = TNECS_GET_COMPONENT(map->world, ent, Unit);
+        SDL_assert(unit != NULL);
+        Unit_Bonus_Instant_Decay(unit);
+    }
 }
 
-void Map_Bonus_Remove_Turn_End( struct Map *map, i32 army) {
+void Map_Bonus_Remove_Persistent(struct Map *map, i32 army) {
+    tnecs_entity *entities = Map_Get_onField(map, army);
+    SDL_assert(entities != NULL);
 
+    size_t num_ent = DARR_NUM(entities);
+    for (int i = 0; i < num_ent; i++) {
+        tnecs_entity ent = entities[i];
+        SDL_assert(ent > TNECS_NULL);
+        struct Unit *unit = TNECS_GET_COMPONENT(map->world, ent, Unit);
+        SDL_assert(unit != NULL);
+        Unit_Bonus_Persistent_Decay(unit);
+    }
 }
 
 void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_entity *entities,
                     tnecs_entity source_ent, u16 item, u16 skill, b32 active) {
-    SDL_Log("Map_Aura_Apply");
-    // aura: bonus to apply
-    // entities: units to appy bonus to.
-    // source_ent, item, skill, active: aura source info
+    /* aura:                bonus to apply.                  */
+    /* entities:            units to appy bonus to.          */
+    /* aura source info:    source_ent, item, skill, active. */
 
     /* Apply standard bonus to all unit in range */
     struct Bonus_Stats  bonus       = Aura2Bonus(&aura, source_ent, item, skill, active);
@@ -1013,7 +1032,6 @@ void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_entity *entities,
 }
 
 void Map_Bonus_Standard_Apply_Unit(struct Map *map, tnecs_entity ent, tnecs_entity *entities) {
-    SDL_Log("Map_Bonus_Standard_Apply_Unit");
     SDL_assert(ent > TNECS_NULL);
     struct Unit     *unit   = TNECS_GET_COMPONENT(map->world, ent, Unit);
     struct Position *pos    = TNECS_GET_COMPONENT(map->world, ent, Position);
@@ -1038,11 +1056,7 @@ void Map_Bonus_Standard_Apply(struct Map *map, i32 army) {
     SDL_assert((army > ARMY_START) && (army < ARMY_END));
 
     /* Get army */
-    tnecs_entity *entities = NULL;
-    if (army_alignment[army] == ALIGNMENT_FRIENDLY)
-        entities = map->friendlies_onfield;
-    else if (army_alignment[army] == ALIGNMENT_ENEMY)
-        entities = map->enemies_onfield;
+    tnecs_entity *entities = Map_Get_onField(map, army);
     SDL_assert(entities != NULL);
 
     /* Check if any unit in army is a standard bearer */
@@ -1057,4 +1071,14 @@ void Map_Bonus_Standard_Apply(struct Map *map, i32 army) {
             Map_Bonus_Standard_Apply_Unit(map, ent, entities);
 
     }
+}
+
+/* -- Entities -- */
+tnecs_entity *Map_Get_onField(struct Map *map, i32 army) {
+    tnecs_entity *entities = NULL;
+    if (army_alignment[army] == ALIGNMENT_FRIENDLY)
+        entities = map->friendlies_onfield;
+    else if (army_alignment[army] == ALIGNMENT_ENEMY)
+        entities = map->enemies_onfield;
+    return (entities);
 }

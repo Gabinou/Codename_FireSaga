@@ -772,7 +772,6 @@ void test_bonus_decay() {
     Unit_Bonus_Persistent_Decay(&Silou);
     nourstest_true(DARR_NUM(Silou.bonus_stack) == 2);
 
-
     /* Free */
     DARR_FREE(Silou.bonus_stack);
 }

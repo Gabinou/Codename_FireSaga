@@ -156,7 +156,7 @@ struct Map {
     tnecs_entity *friendlies_killed;
     tnecs_entity *enemies_killed;
 
-    i8 *army_onfield;
+    i32 *army_onfield;
     struct Point *units_positions_list;  /* same order as unit_onfield */
     struct Point *start_pos;
 
@@ -275,5 +275,8 @@ void Map_Bonus_Remove_onMove(       struct Map *map, i32 army);
 void Map_Bonus_Remove_Turn_End(     struct Map *map, i32 army);
 void Map_Bonus_Remove_onMove_Unit(  struct Map *map, tnecs_entity ent);
 void Map_Bonus_Remove_Turn_End_Unit(struct Map *map, tnecs_entity ent);
+
+/* -- Entities -- */
+tnecs_entity *Map_Get_onField(struct Map *map, i32 army);
 
 #endif /* MAP_H */
