@@ -45,12 +45,12 @@ void Unit_Bonus_Persistent_Decay(struct Unit *unit) {
 }
 
 struct Bonus_Stats Aura2Bonus(struct Aura *aura, tnecs_entity unit, u16 item, u16 skill,
-                              b32 active) {
+                              b32 active, b32 instant) {
     struct Bonus_Stats bonus;
     bonus.unit_stats        = aura->unit_stats;
     bonus.computed_stats    = aura->computed_stats;
     bonus.range             = aura->range;
-    bonus.turns             = aura->turns;
+    bonus.turns             = instant ? AURA_REMOVE_ON_MOVE : aura->turns;
     bonus.source_unit       = unit;
     bonus.source_item       = item;
     bonus.source_skill      = skill;

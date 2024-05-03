@@ -844,7 +844,7 @@ void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
     /* - Decrement persistent auras for all units - */
     i32 army = sota->map->army_onfield[sota->map->army_i];
     Map_Bonus_Remove_Persistent(sota->map, army);
-    
+
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
 }
 

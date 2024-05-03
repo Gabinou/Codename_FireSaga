@@ -1272,7 +1272,6 @@ void fsm_eAcpt_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity accepter_entit
 
     /* - Focusing cursor on Menu - */
     Game_cursorFocus_onMenu(sota);
-
 }
 
 void fsm_eAcpt_sGmpMap_ssMapMini(struct Game *sota, tnecs_entity accepter_entity) {

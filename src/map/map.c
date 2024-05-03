@@ -174,7 +174,8 @@ struct Map *Map_Init(struct Map *map, i32 width, i32 height) {
     map->friendlies_onfield = DARR_INIT(map->friendlies_onfield, tnecs_entity, 20);
     map->units_onfield      = DARR_INIT(map->units_onfield, tnecs_entity, 20);
     map->reinf_equipments   = DARR_INIT(map->reinf_equipments, struct Inventory_item *, 30);
-    map->army_onfield       = DARR_INIT(map->army_onfield, u8, 5);
+    map->army_onfield       = DARR_INIT(map->army_onfield, i32, 5);
+
 
     Map_Tilesize_Set(map, width, height);
     if (map->arrow != NULL)
@@ -1004,13 +1005,13 @@ void Map_Bonus_Remove_Persistent(struct Map *map, i32 army) {
 }
 
 void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_entity *entities,
-                    tnecs_entity source_ent, u16 item, u16 skill, b32 active) {
+                    tnecs_entity source_ent, u16 item, u16 skill, b32 active, b32 instant) {
     /* aura:                bonus to apply.                  */
     /* entities:            units to appy bonus to.          */
     /* aura source info:    source_ent, item, skill, active. */
 
     /* Apply standard bonus to all unit in range */
-    struct Bonus_Stats  bonus       = Aura2Bonus(&aura, source_ent, item, skill, active);
+    struct Bonus_Stats  bonus       = Aura2Bonus(&aura, source_ent, item, skill, active, instant);
     struct Position    *source_pos  = TNECS_GET_COMPONENT(map->world, source_ent, Position);
     SDL_assert(source_pos != NULL);
 
@@ -1032,23 +1033,25 @@ void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_entity *entities,
 }
 
 void Map_Bonus_Standard_Apply_Unit(struct Map *map, tnecs_entity ent, tnecs_entity *entities) {
+    /* Apply passive instant standard bonus to unit */
     SDL_assert(ent > TNECS_NULL);
     struct Unit     *unit   = TNECS_GET_COMPONENT(map->world, ent, Unit);
     struct Position *pos    = TNECS_GET_COMPONENT(map->world, ent, Position);
     SDL_assert(pos          != NULL);
     SDL_assert(unit         != NULL);
     SDL_assert(unit->class  == UNIT_CLASS_STANDARD_BEARER);
-    b32 active = false;
-    u16 skill  = SKILL_START;
+    b32 active  = false;
+    b32 instant = true;
+    u16 skill   = SKILL_START;
 
     /* Check if unit has a standard equipped */
     struct Weapon *wpnL = Unit_Get_Equipped_Weapon(unit, UNIT_HAND_LEFT);
     if ((wpnL != NULL) && (wpnL->item->type == ITEM_TYPE_STANDARD))
-        Map_Aura_Apply(map, wpnL->item->aura, entities, ent, wpnL->item->id, skill, active);
+        Map_Aura_Apply(map, wpnL->item->aura, entities, ent, wpnL->item->id, skill, active, instant);
 
     struct Weapon *wpnR = Unit_Get_Equipped_Weapon(unit, UNIT_HAND_RIGHT);
     if ((wpnR != NULL) && (wpnR->item->type == ITEM_TYPE_STANDARD))
-        Map_Aura_Apply(map, wpnR->item->aura, entities, ent, wpnR->item->id, skill, active);
+        Map_Aura_Apply(map, wpnR->item->aura, entities, ent, wpnR->item->id, skill, active, instant);
 }
 
 void Map_Bonus_Standard_Apply(struct Map *map, i32 army) {
