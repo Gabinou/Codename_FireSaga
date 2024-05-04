@@ -25,6 +25,7 @@ int main(int argc, char *argv[]) {
     /* -- Startup -- */
     Game_Pre_Init(argc, argv);
 
+    assert(false);
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     struct Game *sota = SDL_malloc(sizeof(struct Game));
     *sota = Game_default;

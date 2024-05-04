@@ -329,12 +329,12 @@ void test_aura_decay(int argc, char *argv[]) {
 }
 
 void test_aura_fsm(int argc, char *argv[]) {
-/* Test scenario:
-    - Unit starts turn inside standard aura range
-        - Bonus active
-    - Unit moves outside range, triggering -> fsm_eAcpt_sGmpMap_sMapUnitMv
-        - Bonus removed
-     */
+    /* Test scenario:
+        - Unit starts turn inside standard aura range
+            - Bonus active
+        - Unit moves outside range, triggering -> fsm_eAcpt_sGmpMap_sMapUnitMv
+            - Bonus removed
+         */
     /* Mocking stuff for fsm_eAcpt_sGmpMap_sMapUnitMv */
 
     fsm_eAcpt_sGmpMap_sMapUnitMv(sota, TNECS_NULL);
