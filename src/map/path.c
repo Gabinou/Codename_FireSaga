@@ -147,7 +147,7 @@ i32 *Map_Healtomap_Compute(struct Map *map, tnecs_world *world, tnecs_entity uni
     struct Point start = pos->tilemap_pos;
     i32 move_stat = move ? Unit_getStats(unit).move : 0;
     _Map_Movemap_Compute(map, start, move_stat);
-    struct Range range = {.min = UINT8_MAX, .max = 0 };
+    struct Range range = Range_default;
     _Unit_Range_Combine(unit, &range, equipped, ITEM_ARCHETYPE_STAFF);
     // SDL_Log("range %d %d", range.min, range.max);
 
@@ -200,7 +200,6 @@ i32 *Map_Attacktomap_Compute(struct Map *map, tnecs_world *world,
 i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_world *world, tnecs_entity agg,
                                tnecs_entity dft, b32 move, b32 equipped) {
     Map_Costmap_Movement_Compute(map, world, agg);
-    // SDL_Log("COSTMAP");
     // matrix_print(map->costmap, map->row_len, map->col_len);
 
     struct Unit *agg_unit = TNECS_GET_COMPONENT(world, agg, Unit);
@@ -208,7 +207,7 @@ i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_world *world, tnecs_entity
     struct Position *agg_pos = TNECS_GET_COMPONENT(world, agg, Position);
     struct Position *dft_pos = TNECS_GET_COMPONENT(world, dft, Position);
     /* Get agg range */
-    struct Range range = {.min = UINT8_MAX, .max = 0};
+    struct Range range = Range_default;
     _Unit_Range_Combine(agg_unit, &range, equipped, ITEM_ARCHETYPE_WEAPON);
 
     /* Compute movemap */

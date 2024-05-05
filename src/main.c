@@ -31,8 +31,6 @@ int main(int argc, char *argv[]) {
     sota->settings = Settings_default;
     Game_Init(sota, argc, argv);
 
-    Game_Weapons_Rewrite(sota);
-
     /* -- Master loop -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Starting main game loop\n");
     while (sota->isrunning)

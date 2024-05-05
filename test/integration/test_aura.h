@@ -330,11 +330,11 @@ void test_aura_decay(int argc, char *argv[]) {
 
 void test_aura_fsm(int argc, char *argv[]) {
     /* Test scenario:
-        - Unit moves inside range, triggering -> fsm_eAcpt_sGmpMap_sMapUnitMv
-            - Bonus active
-        - Unit moves outside range, triggering -> fsm_eAcpt_sGmpMap_sMapUnitMv
-            - Bonus removed
-         */
+     *    - Unit moves inside range, triggering -> fsm_eAcpt_sGmpMap_sMapUnitMv
+     *        - Bonus active
+     *    - Unit moves outside range, triggering -> fsm_eAcpt_sGmpMap_sMapUnitMv
+     *        - Bonus inactive
+    */
 
     /* -- Startup -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
@@ -369,16 +369,13 @@ void test_aura_fsm(int argc, char *argv[]) {
     SDL_assert(sota->units_loaded[id] > TNECS_NULL);
 
     /* Give standard to standard bearer */
-    struct Unit *bearer = TNECS_GET_COMPONENT(sota->world, ent, Unit);
-    SDL_assert(bearer != NULL);
-
     struct Inventory_item standard = Inventory_item_default;
     standard.id = ITEM_ID_IMPERIAL_STANDARD;
-    Unit_Item_Drop(     bearer, UNIT_HAND_RIGHT);
-    Unit_Item_Takeat(   bearer, standard, UNIT_HAND_RIGHT);
-    Unit_Equip_inHand(  bearer, UNIT_HAND_RIGHT);
-    SDL_assert(bearer->equipped[UNIT_HAND_RIGHT] == true);
-    SDL_assert(bearer->_equipment[UNIT_HAND_RIGHT].id == ITEM_ID_IMPERIAL_STANDARD);
+    Unit_Item_Drop(     erwin, UNIT_HAND_RIGHT);
+    Unit_Item_Takeat(   erwin, standard, UNIT_HAND_RIGHT);
+    Unit_Equip_inHand(  erwin, UNIT_HAND_RIGHT);
+    SDL_assert(erwin->equipped[UNIT_HAND_RIGHT] == true);
+    SDL_assert(erwin->_equipment[UNIT_HAND_RIGHT].id == ITEM_ID_IMPERIAL_STANDARD);
 
     /* Move Friendly 1 inside */
     pos.x = 0;
@@ -389,13 +386,16 @@ void test_aura_fsm(int argc, char *argv[]) {
     SDL_assert(sota->units_loaded[id] > TNECS_NULL);
     sota->selected_unit_initial_position.x  = 0;
     sota->selected_unit_initial_position.y  = 0;
-    sota->selected_unit_moved_position.x    = 3;
-    sota->selected_unit_moved_position.y    = 3;
+    struct Position *cursor_pos             = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor,
+                                              Position);
+    cursor_pos->tilemap_pos.x               = 3;
+    cursor_pos->tilemap_pos.y               = 3;
 
     /* Mocking stuff for fsm_eAcpt_sGmpMap_sMapUnitMv */
     sota->selected_unit_entity = sota->units_loaded[UNIT_ID_SILOU];
     sota->map->army_i = 0;
     fsm_eAcpt_sGmpMap_sMapUnitMv(sota, TNECS_NULL);
+    getchar();
     struct Position *silou_pos = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[UNIT_ID_SILOU],
                                                      Position);
     SDL_assert(silou_pos->tilemap_pos.x == sota->selected_unit_moved_position.x);
@@ -425,9 +425,30 @@ void test_aura_fsm(int argc, char *argv[]) {
     /* Move Friendly 1 outside */
     sota->selected_unit_initial_position.x  = 3;
     sota->selected_unit_initial_position.y  = 3;
-    sota->selected_unit_moved_position.x    = 0;
-    sota->selected_unit_moved_position.y    = 0;
-    sota->selected_unit_entity = sota->units_loaded[UNIT_ID_SILOU];
+    cursor_pos->tilemap_pos.x               = 0;
+    cursor_pos->tilemap_pos.y               = 0;
+    sota->selected_unit_entity              = sota->units_loaded[UNIT_ID_SILOU];
+
+    fsm_eAcpt_sGmpMap_sMapUnitMv(sota, TNECS_NULL);
+    nourstest_true(DARR_NUM(silou->bonus_stack) == 0);
+    silou_pos = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[UNIT_ID_SILOU], Position);
+    SDL_assert(silou_pos->tilemap_pos.x == sota->selected_unit_moved_position.x);
+    SDL_assert(silou_pos->tilemap_pos.y == sota->selected_unit_moved_position.y);
+
+    effective_stats   = Unit_effectiveStats(silou);
+
+    nourstest_true(effective_stats.hp   == silou->current_stats.hp);
+    nourstest_true(effective_stats.str  == silou->current_stats.str);
+    nourstest_true(effective_stats.mag  == silou->current_stats.mag);
+    nourstest_true(effective_stats.agi  == silou->current_stats.agi);
+    nourstest_true(effective_stats.dex  == silou->current_stats.dex);
+    nourstest_true(effective_stats.fth  == silou->current_stats.fth);
+    nourstest_true(effective_stats.luck == silou->current_stats.luck);
+    nourstest_true(effective_stats.def  == silou->current_stats.def);
+    nourstest_true(effective_stats.res  == silou->current_stats.res);
+    nourstest_true(effective_stats.con  == silou->current_stats.con);
+    nourstest_true(effective_stats.move == silou->current_stats.move);
+    nourstest_true(effective_stats.prof == silou->current_stats.prof);
 
 
     /* Quit game */
