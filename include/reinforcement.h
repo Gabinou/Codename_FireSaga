@@ -11,12 +11,12 @@ struct Unit;
 
 struct Reinforcement {
     struct Point position;
-    i16 army;
-    i8  boss_icon;
+    i32 army;
+    i32 boss_icon;
     s8  filename;
     s8  ai_filename; /* Overrides ai_filename in unit */
-    u8  turn;
-    u8  levelups;
+    i32 turn;
+    i32 levelups;
 };
 extern struct Reinforcement Reinforcement_default;
 

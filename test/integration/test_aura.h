@@ -386,8 +386,7 @@ void test_aura_fsm(int argc, char *argv[]) {
     SDL_assert(sota->units_loaded[id] > TNECS_NULL);
     sota->selected_unit_initial_position.x  = 0;
     sota->selected_unit_initial_position.y  = 0;
-    struct Position *cursor_pos             = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor,
-                                              Position);
+    struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     cursor_pos->tilemap_pos.x               = 3;
     cursor_pos->tilemap_pos.y               = 3;
 
@@ -395,7 +394,6 @@ void test_aura_fsm(int argc, char *argv[]) {
     sota->selected_unit_entity = sota->units_loaded[UNIT_ID_SILOU];
     sota->map->army_i = 0;
     fsm_eAcpt_sGmpMap_sMapUnitMv(sota, TNECS_NULL);
-    getchar();
     struct Position *silou_pos = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[UNIT_ID_SILOU],
                                                      Position);
     SDL_assert(silou_pos->tilemap_pos.x == sota->selected_unit_moved_position.x);
