@@ -73,7 +73,7 @@ i32 *Pathfinding_PushPullto_noM(i32 *pushpulltomap,
 }
 
 struct SquareNeighbours pathfinding_Direction_Pushto(i32 *attackfrommap, size_t row_len,
-                                                     size_t col_len, u8 range[2], struct Point target) {
+                                                     size_t col_len, i32 range[2], struct Point target) {
     struct SquareNeighbours Pushto = {0, 0, 0, 0};
     struct Point neighbour;
     for (i32 distance = range[0]; distance <= range[1]; distance++) {
@@ -608,7 +608,7 @@ void Pathfinding_Neighbour(struct Node *open, struct Node *closed, struct Node n
 /* -- Attackfrom -- */
 void Pathfinding_Attackfrom_noM(i32 *attackmap, i32 *movemap,
                                 size_t row_len, size_t col_len,
-                                struct Point target, u8 range[2]) {
+                                struct Point target, i32 range[2]) {
     /* -- Wipe attackmap -- */
     for (i32 i = 0; i < row_len * col_len; i++)
         attackmap[i] = ATTACKMAP_BLOCKED;
@@ -629,7 +629,7 @@ void Pathfinding_Attackfrom_noM(i32 *attackmap, i32 *movemap,
 //      - Useful for auras and supports as well
 void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
                               size_t row_len, size_t col_len,
-                              u8 range[2], i32 mode_movetile) {
+                              i32 range[2], i32 mode_movetile) {
     /* -- Wipe attackmap -- */
     for (i32 i = 0; i < row_len * col_len; i++)
         attackmap[i] = ATTACKMAP_BLOCKED;
@@ -650,7 +650,7 @@ void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
 }
 
 i32 *Pathfinding_Attackto(i32 *move_matrix, size_t row_len, size_t col_len,
-                          u8 range[2], i32 mode_movetile) {
+                          i32 range[2], i32 mode_movetile) {
     /* -- Setup output attackmap -- */
     i32 *attackmap = calloc(row_len * col_len, sizeof(*attackmap));
     Pathfinding_Attackto_noM(attackmap, move_matrix, row_len, col_len, range, mode_movetile);
@@ -664,7 +664,7 @@ i32 *Pathfinding_Attackto(i32 *move_matrix, size_t row_len, size_t col_len,
 // ->
 void _Pathfinding_Attackto(i32 x, i32 y, i32 *attackmap, i32 *move_matrix,
                            size_t row_len, size_t col_len,
-                           u8 range[2], i32 mode_movetile) {
+                           i32 range[2], i32 mode_movetile) {
     /* -- Setup variables -- */
     struct Point point;
     b32 add_point  = (mode_movetile != MOVETILE_EXCLUDE);

@@ -282,9 +282,9 @@ void fsm_rFrame_sGmpMap(struct Game *sota) {
         tnecs_entity entity = sota->map->friendlies_onfield[i];
         struct Position *pos = TNECS_GET_COMPONENT(sota->world, entity, Position);
         int colori = (i % (PALETTE_SOTA_COLOR_NUM - 1)) + 8;
-        Map_Perimeter_Draw_Aura(sota->map,    &sota->settings,
+        Map_Perimeter_Draw_Aura(sota->map,     &sota->settings,
                                 &sota->camera, pos->tilemap_pos,
-                                support_range,  colori);
+                                support_range, colori);
     }
 #endif /* DEBUG_SUPPORT_PERIMITER */
 

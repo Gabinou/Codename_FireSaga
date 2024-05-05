@@ -348,7 +348,7 @@ void test_pathfinding_attackto() {
     {
         struct Point start  = {7, 10};
         int move = 0;
-        u8 range[2] = {1, 2};
+        i32 range[2] = {1, 2};
         i32 movemap[ROW_LEN * COL_LEN] = {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -482,7 +482,7 @@ void test_pathfinding_attackfrom() {
         struct Point start  = {7, 10};
         struct Point target = {11, 10};
         int move = 5;
-        u8 range[2] = {1, 2};
+        i32 range[2] = {1, 2};
         i32 costmap[ROW_LEN * COL_LEN] = {
             1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
             1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -569,7 +569,7 @@ void test_pathfinding_attackfrom() {
         struct Point start  = {7, 10};
         struct Point target = {14, 14};
         int move = 5;
-        u8 range[2] = {3, 7};
+        i32 range[2] = {3, 7};
         i32 costmap[ROW_LEN * COL_LEN] = {
             1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
             1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,

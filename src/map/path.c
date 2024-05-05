@@ -116,7 +116,7 @@ i32 *Map_Movemap_Compute(struct Map *map, tnecs_world *world, tnecs_entity unit_
 // TODO: get rid of this useless interface
 i32 *_Map_tomap_Compute(i32 *tomap, i32 *movemap, u8 row_len, u8 col_len,
                         i32 move, struct Range *range, u8 mode_movetile) {
-    Pathfinding_Attackto_noM(tomap, movemap, row_len, col_len, (u8 *)range,
+    Pathfinding_Attackto_noM(tomap, movemap, row_len, col_len, (i32 *)range,
                              mode_movetile);
     return (tomap);
 }
@@ -202,10 +202,10 @@ i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_world *world, tnecs_entity
     Map_Costmap_Movement_Compute(map, world, agg);
     // matrix_print(map->costmap, map->row_len, map->col_len);
 
-    struct Unit *agg_unit = TNECS_GET_COMPONENT(world, agg, Unit);
+    struct Unit *agg_unit       = TNECS_GET_COMPONENT(world, agg, Unit);
     /* Get dft position */
-    struct Position *agg_pos = TNECS_GET_COMPONENT(world, agg, Position);
-    struct Position *dft_pos = TNECS_GET_COMPONENT(world, dft, Position);
+    struct Position *agg_pos    = TNECS_GET_COMPONENT(world, agg, Position);
+    struct Position *dft_pos    = TNECS_GET_COMPONENT(world, dft, Position);
     /* Get agg range */
     struct Range range = Range_default;
     _Unit_Range_Combine(agg_unit, &range, equipped, ITEM_ARCHETYPE_WEAPON);
@@ -217,7 +217,7 @@ i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_world *world, tnecs_entity
     // matrix_print(map->movemap, map->row_len, map->col_len);
 
     Pathfinding_Attackfrom_noM(map->attackfrommap, map->movemap, map->row_len,
-                               map->col_len, dft_pos->tilemap_pos, (u8 *)&range);
+                               map->col_len, dft_pos->tilemap_pos, (i32 *)&range);
 
     return (map->attackfrommap);
 }
@@ -394,7 +394,7 @@ void Map_globalRange(struct Map *map, tnecs_world *world, u8 alignment) {
         Pathfinding_Moveto_noM(map->movemap, map->costmap, map->row_len,
                                map->col_len, start, move);
         Pathfinding_Attackto_noM(map->attacktomap, map->movemap, map->row_len,
-                                 map->col_len, (u8 *)range, MOVETILE_INCLUDE);
+                                 map->col_len, (i32 *)range, MOVETILE_INCLUDE);
         map->global_rangemap = matrix_plus_noM(map->global_rangemap, map->attacktomap,
                                                map->row_len * map->col_len);
     }
