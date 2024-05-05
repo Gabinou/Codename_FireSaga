@@ -358,7 +358,8 @@ void test_aura_fsm(int argc, char *argv[]) {
     /* -- Place all friendlies close together -- */
     i32 id;
     tnecs_entity ent;
-    /* Place Standard bearer inside */
+
+    /* Place Standard bearer */
     struct Point pos = {4, 4};
     Game_Party_Entity_Create(sota, id = UNIT_ID_ERWIN, pos);
     struct Unit *erwin = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[id], Unit);
@@ -379,19 +380,55 @@ void test_aura_fsm(int argc, char *argv[]) {
     SDL_assert(bearer->equipped[UNIT_HAND_RIGHT] == true);
     SDL_assert(bearer->_equipment[UNIT_HAND_RIGHT].id == ITEM_ID_IMPERIAL_STANDARD);
 
-    /* Place Friendly 1 inside */
+    /* Move Friendly 1 inside */
+    pos.x = 0;
+    pos.y = 0;
     Game_Party_Entity_Create(sota, id = UNIT_ID_SILOU, pos);
     ent = sota->units_loaded[id];
+    Map_Unit_Put(sota->map, pos.x, pos.y, ent);
     SDL_assert(sota->units_loaded[id] > TNECS_NULL);
-
-    sota->selected_unit_entity = sota->units_loaded[UNIT_ID_ERWIN];
     sota->selected_unit_initial_position.x  = 0;
     sota->selected_unit_initial_position.y  = 0;
     sota->selected_unit_moved_position.x    = 3;
-    sota->selected_unit_moved_position.x    = 3;
+    sota->selected_unit_moved_position.y    = 3;
 
     /* Mocking stuff for fsm_eAcpt_sGmpMap_sMapUnitMv */
+    sota->selected_unit_entity = sota->units_loaded[UNIT_ID_SILOU];
+    sota->map->army_i = 0;
     fsm_eAcpt_sGmpMap_sMapUnitMv(sota, TNECS_NULL);
+    struct Position *silou_pos = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[UNIT_ID_SILOU],
+                                                     Position);
+    SDL_assert(silou_pos->tilemap_pos.x == sota->selected_unit_moved_position.x);
+    SDL_assert(silou_pos->tilemap_pos.y == sota->selected_unit_moved_position.y);
+
+    /* Check effective stats */
+    struct Unit *silou = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[UNIT_ID_SILOU], Unit);
+    nourstest_true(DARR_NUM(silou->bonus_stack) == 1);
+    SDL_assert(silou != NULL);
+    struct Weapon *standardwpn          = DTAB_GET(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
+    struct Unit_stats aura_bonus        = standardwpn->item->aura.unit_stats;
+    struct Unit_stats effective_stats   = Unit_effectiveStats(silou);
+
+    nourstest_true(effective_stats.hp   == (silou->current_stats.hp     + aura_bonus.hp));
+    nourstest_true(effective_stats.str  == (silou->current_stats.str    + aura_bonus.str));
+    nourstest_true(effective_stats.mag  == (silou->current_stats.mag    + aura_bonus.mag));
+    nourstest_true(effective_stats.agi  == (silou->current_stats.agi    + aura_bonus.agi));
+    nourstest_true(effective_stats.dex  == (silou->current_stats.dex    + aura_bonus.dex));
+    nourstest_true(effective_stats.fth  == (silou->current_stats.fth    + aura_bonus.fth));
+    nourstest_true(effective_stats.luck == (silou->current_stats.luck   + aura_bonus.luck));
+    nourstest_true(effective_stats.def  == (silou->current_stats.def    + aura_bonus.def));
+    nourstest_true(effective_stats.res  == (silou->current_stats.res    + aura_bonus.res));
+    nourstest_true(effective_stats.con  == (silou->current_stats.con    + aura_bonus.con));
+    nourstest_true(effective_stats.move == (silou->current_stats.move   + aura_bonus.move));
+    nourstest_true(effective_stats.prof == (silou->current_stats.prof   + aura_bonus.prof));
+
+    /* Move Friendly 1 outside */
+    sota->selected_unit_initial_position.x  = 3;
+    sota->selected_unit_initial_position.y  = 3;
+    sota->selected_unit_moved_position.x    = 0;
+    sota->selected_unit_moved_position.y    = 0;
+    sota->selected_unit_entity = sota->units_loaded[UNIT_ID_SILOU];
+
 
     /* Quit game */
     Game_Free(sota);

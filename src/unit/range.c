@@ -145,8 +145,8 @@ struct Range *Unit_Range_Combine_Weapons(struct Unit *unit, b32 equipped) {
     /* - Finds range only for same weapon type as DECIDED BY INPUT - */
 
     struct Range *range = &unit->computed_stats.range_combined;
-    range->min = UINT8_MAX;
-    range->max = 0;
+    range->min = Range_default.min;
+    range->max = Range_default.max;
     _Unit_Range_Combine(unit, range, equipped, ITEM_ARCHETYPE_WEAPON);
 
     return (range);
