@@ -330,12 +330,68 @@ void test_aura_decay(int argc, char *argv[]) {
 
 void test_aura_fsm(int argc, char *argv[]) {
     /* Test scenario:
-        - Unit starts turn inside standard aura range
+        - Unit moves inside range, triggering -> fsm_eAcpt_sGmpMap_sMapUnitMv
             - Bonus active
         - Unit moves outside range, triggering -> fsm_eAcpt_sGmpMap_sMapUnitMv
             - Bonus removed
          */
-    /* Mocking stuff for fsm_eAcpt_sGmpMap_sMapUnitMv */
 
+    /* -- Startup -- */
+    SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
+    struct Game *sota       = SDL_malloc(sizeof(struct Game));
+    *sota                   = Game_default;
+    sota->settings          = Settings_default;
+    sota->settings.window   = false;
+    Game_Init(sota, argc, argv);
+    nourstest_true(sota->state      == GAME_STATE_Title_Screen);
+    nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
+
+    /* Load Save file test/debug_map.json */
+    Game_debugMap_Load(sota);
+    Game_Map_Reinforcements_Load(sota);
+    SDL_assert(DARR_NUM(sota->map->units_onfield) > 0);
+
+    /* Load Standard */
+    SDL_assert(sota->weapons_dtab != NULL);
+    Weapon_Load(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
+    SDL_assert(DTAB_GET(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD) != NULL);
+    /* -- Place all friendlies close together -- */
+    i32 id;
+    tnecs_entity ent;
+    /* Place Standard bearer inside */
+    struct Point pos = {4, 4};
+    Game_Party_Entity_Create(sota, id = UNIT_ID_ERWIN, pos);
+    struct Unit *erwin = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[id], Unit);
+    erwin->class = UNIT_CLASS_STANDARD_BEARER;
+    ent = sota->units_loaded[id];
+    Map_Unit_Put(sota->map, pos.x, pos.y, ent);
+    SDL_assert(sota->units_loaded[id] > TNECS_NULL);
+
+    /* Give standard to standard bearer */
+    struct Unit *bearer = TNECS_GET_COMPONENT(sota->world, ent, Unit);
+    SDL_assert(bearer != NULL);
+
+    struct Inventory_item standard = Inventory_item_default;
+    standard.id = ITEM_ID_IMPERIAL_STANDARD;
+    Unit_Item_Drop(     bearer, UNIT_HAND_RIGHT);
+    Unit_Item_Takeat(   bearer, standard, UNIT_HAND_RIGHT);
+    Unit_Equip_inHand(  bearer, UNIT_HAND_RIGHT);
+    SDL_assert(bearer->equipped[UNIT_HAND_RIGHT] == true);
+    SDL_assert(bearer->_equipment[UNIT_HAND_RIGHT].id == ITEM_ID_IMPERIAL_STANDARD);
+
+    /* Place Friendly 1 inside */
+    pos.x = 3;
+    pos.y = 3;
+    Game_Party_Entity_Create(sota, id = UNIT_ID_SILOU, pos);
+    ent = sota->units_loaded[id];
+    Map_Unit_Put(sota->map, pos.x, pos.y, ent);
+    SDL_assert(sota->units_loaded[id] > TNECS_NULL);
+
+    /* Mocking stuff for fsm_eAcpt_sGmpMap_sMapUnitMv */
+    sota->selected_unit_entity = sota->units_loaded[UNIT_ID_ERWIN];
     fsm_eAcpt_sGmpMap_sMapUnitMv(sota, TNECS_NULL);
+
+    /* Quit game */
+    Game_Free(sota);
+    nourstest_true(true);
 }
