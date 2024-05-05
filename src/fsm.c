@@ -1211,13 +1211,14 @@ void fsm_eAcpt_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity accepter_entit
     /* - Make popup_tile invisible - */
     tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_TILE];
     struct PopUp *popup      = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
-    SDL_assert(popup != NULL);
-    popup->visible = false;
+    if (popup != NULL) {
+        popup->visible = false;
+    }
 
     /* - Get selected unit on tile - */
     struct Position *accepter_position, *selected_pos;
-    struct Unit *unit       = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
-    selected_pos            = TNECS_GET_COMPONENT(sota->world, unit_ent, Position);
+    struct Unit *unit       = TNECS_GET_COMPONENT(sota->world, unit_ent,            Unit);
+    selected_pos            = TNECS_GET_COMPONENT(sota->world, unit_ent,            Position);
     accepter_position       = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
 
     /* - Unit should be PC - */
@@ -1238,8 +1239,8 @@ void fsm_eAcpt_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity accepter_entit
     /* - Moving unit to new tile - */
     sota->selected_unit_moved_position.x    = accepter_position->tilemap_pos.x;
     sota->selected_unit_moved_position.y    = accepter_position->tilemap_pos.y;
-    struct Point initial      = sota->selected_unit_initial_position;
-    struct Point moved        = sota->selected_unit_moved_position;
+    struct Point initial                    = sota->selected_unit_initial_position;
+    struct Point moved                      = sota->selected_unit_moved_position;
     if ((initial.x != moved.x) || (initial.y != moved.y))
         Map_Unit_Move(sota->map, initial.x, initial.y, moved.x, moved.y);
 

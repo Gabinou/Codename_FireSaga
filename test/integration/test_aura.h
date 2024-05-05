@@ -380,15 +380,17 @@ void test_aura_fsm(int argc, char *argv[]) {
     SDL_assert(bearer->_equipment[UNIT_HAND_RIGHT].id == ITEM_ID_IMPERIAL_STANDARD);
 
     /* Place Friendly 1 inside */
-    pos.x = 3;
-    pos.y = 3;
     Game_Party_Entity_Create(sota, id = UNIT_ID_SILOU, pos);
     ent = sota->units_loaded[id];
-    Map_Unit_Put(sota->map, pos.x, pos.y, ent);
     SDL_assert(sota->units_loaded[id] > TNECS_NULL);
 
-    /* Mocking stuff for fsm_eAcpt_sGmpMap_sMapUnitMv */
     sota->selected_unit_entity = sota->units_loaded[UNIT_ID_ERWIN];
+    sota->selected_unit_initial_position.x  = 0;
+    sota->selected_unit_initial_position.y  = 0;
+    sota->selected_unit_moved_position.x    = 3;
+    sota->selected_unit_moved_position.x    = 3;
+
+    /* Mocking stuff for fsm_eAcpt_sGmpMap_sMapUnitMv */
     fsm_eAcpt_sGmpMap_sMapUnitMv(sota, TNECS_NULL);
 
     /* Quit game */

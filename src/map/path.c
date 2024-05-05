@@ -188,7 +188,7 @@ i32 *Map_Attacktomap_Compute(struct Map *map, tnecs_world *world,
     struct Point start = pos->tilemap_pos;
     i32 move_stat = move ? Unit_getStats(unit).move : 0;
     _Map_Movemap_Compute(map, start, move_stat);
-    struct Range range = {.min = UINT8_MAX, .max = 0 };
+    struct Range range = Range_default;
     _Unit_Range_Combine(unit, &range, equipped, ITEM_ARCHETYPE_WEAPON);
     map->update = true;
     map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap, map->row_len,
