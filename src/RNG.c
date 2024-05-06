@@ -139,25 +139,21 @@ u32 RNG_openBSD_u32(struct TINYMT32_T *tinymt, u32 min, u32 max) {
     u32 x;
     do {
         x = tinymt32_generate_uint32(tinymt);
-        /* Rejects the last pigeonhole           */
-        /* Ex: 32 with max=5 -> rejects 30,31,32 */
     } while (x < t);
     u32 out = min + (x % s);
     return (out);
 }
 
 u64 RNG_openBSD_u64(u64 min, u64 max) {
-    /* "Scales" uniform integer from [0 and 2**32 - 1] to [min, max[        */
+    /* "Scales" uniform integer from [0 and 2**64 - 1] to [min, max[        */
     /* Unbiased according to: Fast Random Integer Generation in an Interval */
     u64 x;
-    u64 s = max - min;
-    u64 t = (UINT32_MAX - s + 1) % s;
+    u64 width = max - min;
+    u64 limit = (UINT64_MAX - width + 1) % width; //.+1 cause.umax is 2^n - 1
     do {
         x = next_xoshiro256ss();
-        /* Rejects the last pigeonhole           */
-        /* Ex: 32 with max=5 -> rejects 30,31,32 */
-    } while (x < t);
-    u64 out = min + (x % s);
+    } while (x < limit);
+    u64 out = min + (x % width);
     return (out);
 }
 
