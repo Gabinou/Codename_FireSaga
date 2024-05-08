@@ -448,7 +448,6 @@ void test_aura_fsm(int argc, char *argv[]) {
     nourstest_true(effective_stats.move == silou->current_stats.move);
     nourstest_true(effective_stats.prof == silou->current_stats.prof);
 
-
     /* Quit game */
     Game_Free(sota);
     nourstest_true(true);
