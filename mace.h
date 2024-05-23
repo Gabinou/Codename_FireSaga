@@ -4051,7 +4051,6 @@ void mace_Target_sources_grow(struct Target *target) {
 
     /* -- Alloc objects -- */
     if (target->_argv_objects == NULL) {
-        printf("ALLOC \n");
         bytesize = sizeof(*target->_argv_objects);
         target->_argv_objects       = calloc(target->_len_sources, bytesize);
     }
@@ -4071,7 +4070,6 @@ void mace_Target_sources_grow(struct Target *target) {
 
     /* -- Alloc object dependencies -- */
     if (previous_len != new_len) {
-        printf("REALLOC \n");
         /* -- Realloc recompiles -- */
         bytesize = target->_len_sources * sizeof(*target->_recompiles);
         target->_recompiles = realloc(target->_recompiles, bytesize);
@@ -4224,11 +4222,9 @@ void mace_argv_add_config(struct Target *target,
         return;
 
     for (int i = 0; i < configs[mace_config]._flag_num; ++i) {
-        *argv = mace_argv_grow(*argv, argc, arg_len);
-        printf("configs[mace_config]._flags[i] %s\n", configs[mace_config]._flags[i]);
-        size_t len = strlen(configs[mace_config]._flags[i]);
-        printf("len %d\n", len);
-        char *flag = calloc(len, sizeof(*flag));
+        *argv       = mace_argv_grow(*argv, argc, arg_len);
+        size_t len  = strlen(configs[mace_config]._flags[i]) + 1;
+        char *flag  = calloc(len, sizeof(*flag));
         strncpy(flag, configs[mace_config]._flags[i],  len);
         (*argv)[(*argc)++] = flag;
     }
@@ -4812,7 +4808,6 @@ bool mace_Target_Object_Add(struct Target *target, char *token) {
     Target_Object_Hash_Add_nocoll(target, hash_nocoll);
 
     mace_Target_sources_grow(target);
-    printf("target->_argc_sources %d %d\n", target->_argc_sources, target->_len_sources);
     target->_argv_objects[target->_argc_sources - 1] = arg;
 
     // Does object file exist
@@ -4939,17 +4934,13 @@ bool mace_Target_Source_Add(struct Target *target, char *token) {
 
     mace_Target_sources_grow(target);
 
-    size_t token_len = strlen(token);
-    char *arg = calloc(token_len + 1, sizeof(*arg));
-    strncpy(arg, token, token_len);
-    assert(arg != NULL);
-
     /* - Expand path - */
     char *rpath = calloc(PATH_MAX, sizeof(*rpath));
-    if (realpath(arg, rpath) == NULL) {
+    if (realpath(token, rpath) == NULL) {
         printf("Warning! realpath issue: %s\n", rpath);
-        free(rpath);
-        rpath = arg;
+        size_t token_len = strlen(token) + 1;
+        assert(token_len < PATH_MAX);
+        strncpy(rpath, token, token_len);
     }
 
     /* - Check if file is excluded - */
@@ -4961,9 +4952,6 @@ bool mace_Target_Source_Add(struct Target *target, char *token) {
 
     /* -- Actually adding source here -- */
     target->_argv_sources[target->_argc_sources++] = rpath;
-
-    if ((arg != rpath) && (arg != NULL))
-        free(arg);
 
     return (false);
 }
@@ -5192,7 +5180,14 @@ void mace_run_commands(const char *commands) {
         token = strtok(NULL, mace_command_separator);
     } while (token != NULL);
 
-    free(argv);
+    /* FREE */
+    for (int i = 0; i < argc; ++i) {
+        if (argv[i] != NULL)
+            free(argv[i]);
+    }
+    if (argv != NULL)
+        free(argv);
+    if (buffer != NULL)
     free(buffer);
 }
 
