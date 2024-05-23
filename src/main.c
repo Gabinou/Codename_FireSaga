@@ -18,27 +18,51 @@
 
 #include "game/game.h"
 
+// hot reload TODO TODO:
+// 1. Check if .so file changed every x frames? y seconds?.
+// 2. If changed,
+//  1. Load so object:
+//      void * so_handle = SDL_LoadObject(const char *sofile);
+//  2. Load function from so object:
+//      void *SDL_LoadFunction(void *so_handle, const char *name);
+
+struct VTable {
+    void (*game_pre_init)(int argc, char *argv[]);
+    void (*game_init)(struct Game *sota, int argc, char *argv[]);
+    void (*game_step)(struct Game *sota);
+    void (*game_free)(struct Game *sota);
+    void (*game_post_free)(void);
+};
+
 int main(int argc, char *argv[]) {
     /* -- atexit -- */
     atexit(SDL_Quit);
 
+    struct VTable vtable = {
+        .game_pre_init  = Game_Pre_Init,
+        .game_init      = Game_Init,
+        .game_step      = Game_Step,
+        .game_free      = Game_Free,
+        .game_post_free = Game_Post_Free,
+    };
+
     /* -- Startup -- */
-    Game_Pre_Init(argc, argv);
+    vtable.game_pre_init(argc, argv);
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     struct Game *sota = SDL_malloc(sizeof(struct Game));
     *sota = Game_default;
     sota->settings = Settings_default;
-    Game_Init(sota, argc, argv);
+    vtable.game_init(sota, argc, argv);
 
     /* -- Master loop -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Starting main game loop\n");
     while (sota->isrunning)
-        Game_Step(sota);
+        vtable.game_step(sota);
 
     /* -- Cleaning & Quitting -- */
-    Game_Free(sota);
-    Game_Post_Free();
+    vtable.game_free(sota);
+    vtable.game_post_free();
     SDL_Log("SotA quit.\n");
     return (NO_ERROR);
 }

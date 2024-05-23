@@ -424,10 +424,10 @@ void Game_Cursor_Create(struct Game *sota) {
     slider = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Slider);
     SDL_assert(slider != NULL);
     *slider = Slider_default;
-    slider->slidefactors[DIMENSION_X] = SOTA_CURSOR_SLIDEFACTOR;
-    slider->slidefactors[DIMENSION_Y] = SOTA_CURSOR_SLIDEFACTOR;
-    slider->update_wait_ns = CURSOR_SLIDEWAIT_ns;
-    slider->slidetype = SLIDETYPE_GEOMETRIC;
+    slider->slidefactors[DIMENSION_X]   = SOTA_CURSOR_SLIDEFACTOR;
+    slider->slidefactors[DIMENSION_Y]   = SOTA_CURSOR_SLIDEFACTOR;
+    slider->update_wait_ns              = CURSOR_SLIDEWAIT_ns;
+    slider->slidetype                   = SLIDETYPE_GEOMETRIC;
 
     /* -- sprite -- */
     struct Timer *timer;
@@ -546,7 +546,6 @@ void Game_Mouse_Create(struct Game *sota) {
     sprite->dstrect.h = MOUSE_DEFAULT_DSTRECT_H;
     SDL_assert(sprite->dstrect.w);
     SDL_assert(sprite->dstrect.h);
-
 }
 
 void Game_Mouse_Enable(struct Game *sota) {
