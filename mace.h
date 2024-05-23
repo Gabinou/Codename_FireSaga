@@ -4423,6 +4423,29 @@ void mace_link_dynamic_library(struct Target *target) {
         }
     }
 
+    /* -- argv link_flags -- */
+    if ((target->_argc_links > 0) && (target->_argv_links != NULL)) {
+        for (int i = 0; i < target->_argc_links; i++) {
+            argv = mace_argv_grow(argv, &argc, &arg_len);
+            argv[argc++] = target->_argv_links[i];
+        }
+    }
+    /* -- argv flags -- */
+    if ((target->_argc_flags > 0) && (target->_argv_flags != NULL)) {
+        for (int i = 0; i < target->_argc_flags; i++) {
+            argv = mace_argv_grow(argv, &argc, &arg_len);
+            argv[argc++] = target->_argv_flags[i];
+        }
+    }
+
+    /* -- argv link_flags -- */
+    if ((target->_argc_link_flags > 0) && (target->_argv_link_flags != NULL)) {
+        for (int i = 0; i < target->_argc_link_flags; i++) {
+            argv = mace_argv_grow(argv, &argc, &arg_len);
+            argv[argc++] = target->_argv_link_flags[i];
+        }
+    }
+
     /* --- argv config --- */
     int config_startc = argc;
     mace_argv_add_config(target, &argv, &argc, &arg_len);
@@ -4549,6 +4572,14 @@ void mace_link_executable(struct Target *target) {
         for (int i = 0; i < argc_links; i++) {
             argv = mace_argv_grow(argv, &argc, &arg_len);
             argv[argc++] = argv_links[i];
+        }
+    }
+
+    /* -- argv link_flags -- */
+    if ((target->_argc_link_flags > 0) && (target->_argv_link_flags != NULL)) {
+        for (int i = 0; i < target->_argc_link_flags; i++) {
+            argv = mace_argv_grow(argv, &argc, &arg_len);
+            argv[argc++] = target->_argv_link_flags[i];
         }
     }
 

@@ -2,12 +2,10 @@
 #include "mace.h"
 
 #ifndef CC
-    #define CC "gcc"
-    // #define CC "tcc"
+    #define CC "tcc"
 #endif
 #ifndef AR
-    // #define AR "tcc -ar"
-    #define AR "ar"
+    #define AR "tcc -ar"
 #endif
 
 struct Config debug         = {
@@ -64,6 +62,7 @@ struct Target noursmath = {
     .base_dir  = "second_party/noursmath",
     .flags     = "-std=iso9899:1999",
     .sources   = ".",
+    .link_flags = "-whole-archive",
     .kind      = MACE_STATIC_LIBRARY,
 };
 
@@ -71,6 +70,7 @@ struct Target parg      = {
     .base_dir  = "second_party/parg",
     .flags     = "-std=iso9899:1999",
     .sources   = ".",
+    .link_flags = "-whole-archive",
     .kind      = MACE_STATIC_LIBRARY,
 };
 
@@ -78,6 +78,7 @@ struct Target tnecs     = {
     .base_dir  = "second_party/tnecs",
     .flags     = "-std=iso9899:1999",
     .sources   = ".",
+    .link_flags = "-whole-archive",
     .kind      = MACE_STATIC_LIBRARY,
 };
 
@@ -86,6 +87,7 @@ struct Target cjson     = {
     .base_dir  = "third_party/cJson",
     .flags     = "-std=iso9899:1999",
     .sources   = ".",
+    .link_flags = "-whole-archive,-rpath=/home/gabinours/firesaga/build",
     .kind      = MACE_STATIC_LIBRARY,
 };
 
@@ -105,6 +107,7 @@ struct Target physfs    = {
                  "-DPHYSFS_SUPPORTS_SLB=0,"
                  "-DPHYSFS_SUPPORTS_VDF=0",
     .base_dir  = "third_party/physfs",
+    .link_flags = "-whole-archive",
     .allatonce = false,
     .kind      = MACE_STATIC_LIBRARY,
 };
@@ -113,6 +116,7 @@ struct Target tinymt    = {
     .sources   = ".",
     .flags     = "-std=iso9899:1999",
     .base_dir  = "third_party/tinymt",
+    .link_flags = "-whole-archive",
     .kind      = MACE_STATIC_LIBRARY,
 };
 
@@ -178,6 +182,7 @@ struct Target sota_main = {
                 "/usr/include/SDL2",
     .sources  = "src/main.c",
     .links    = "sota_dll,SDL2,parg",
+    .link_flags = "-rpath=/home/gabinours/firesaga/build",
     .flags    = "-fno-strict-overflow,-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
                 "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
@@ -203,10 +208,10 @@ struct Target sota_dll = {
     .link_flags = "-whole-archive,-rpath=/home/gabinours/firesaga/build",
     .links      = "SDL2,SDL2_image,SDL2_mixer,m,GLEW,"
                   "cjson,noursmath,physfs,tinymt,tnecs,parg",
-    .flags      = "$(sdl2-config --cflags)"
-                "-fno-strict-overflow,-fno-strict-aliasing,"
-                "-fwrapv,-fno-delete-null-pointer-checks,"
-                "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999",
+    .flags      = "-Lbuild,-fno-strict-overflow,-fno-strict-aliasing,"
+                  "-fwrapv,-fno-delete-null-pointer-checks,"
+                  "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
+                  "$(sdl2-config --cflags)",
     .cmd_pre    = "astyle --options=utils/style.txt --verbose "
                   "--recursive src/* include/* test/* names/*",
     .kind       = MACE_SHARED_LIBRARY, /* Check with "file" cmd */
