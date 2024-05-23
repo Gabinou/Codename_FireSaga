@@ -4376,6 +4376,12 @@ void mace_link_dynamic_library(struct Target *target) {
     int cfPICflag   = argc;
     argv[argc++]    = fPICflag;
 
+    /* --- Adding build to rpath flag --- */
+    char *rpath     = calloc(17, sizeof(*rpath));
+    strncpy(rpath, "-Wl,-rpath=.", 16);
+    int rpathflag   = argc;
+    argv[argc++]    = rpath;
+
     /* --- Adding -shared flag --- */
     char *sharedflag     = calloc(8, sizeof(*sharedflag));
     strncpy(sharedflag, "-shared", 7);
@@ -4404,6 +4410,7 @@ void mace_link_dynamic_library(struct Target *target) {
 
     free(argv[cfPICflag]);
     free(argv[csharedflag]);
+    free(argv[rpathflag]);
     free(argv[libc]);
     for (int i = config_startc; i < config_endc; i++) {
         free(argv[i]);
@@ -4519,6 +4526,12 @@ void mace_link_executable(struct Target *target) {
         }
     }
 
+    /* --- Adding build to rpath flag --- */
+    char *rpath     = calloc(17, sizeof(*rpath));
+    strncpy(rpath, "-Wl,-rpath=.", 16);
+    int rpathflag   = argc;
+    argv[argc++]    = rpath;
+
     /* -- argv -L flag for build_dir -- */
     argv = mace_argv_grow(argv, &argc, &arg_len);
     size_t build_dir_len = strlen(build_dir);
@@ -4540,6 +4553,7 @@ void mace_link_executable(struct Target *target) {
         mace_wait_pid(pid);
     }
 
+    free(argv[rpathflag]);
     free(argv[oflag_i]);
     free(argv[ldirflag_i]);
     for (int i = config_startc; i < config_endc; i++) {

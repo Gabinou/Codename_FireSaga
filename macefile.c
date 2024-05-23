@@ -165,6 +165,51 @@ struct Target sota = {
     .kind     = MACE_EXECUTABLE,
 };
 
+struct Target sota_main = {
+    .includes = ".,include,include/bars,include/menu,"
+                "include/popup,include/unit,"
+                "include/systems,names,names/popup,names/menu,"
+                "second_party/noursmath,second_party/tnecs,"
+                "second_party/parg,second_party/nourstest,"
+                "third_party/physfs,third_party/tinymt," 
+                "third_party/stb,third_party/cJson,"
+                "/usr/include/SDL2",
+    .sources  = "src/main.c",
+    .links    = "sota_dll,SDL2",
+    .flags    = "-fno-strict-overflow,-fno-strict-aliasing,"
+                "-fwrapv,-fno-delete-null-pointer-checks,"
+                "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
+                "$(sdl2-config --cflags)",
+    .cmd_pre  = "astyle --options=utils/style.txt --verbose "
+                "--recursive src/* include/* test/* names/*",
+    .kind     = MACE_EXECUTABLE,
+};
+
+struct Target sota_dll = {
+    .includes = ".,include,include/bars,include/menu,"
+                "include/popup,include/unit,"
+                "include/systems,names,names/popup,names/menu,"
+                "second_party/noursmath,second_party/tnecs,"
+                "second_party/parg,second_party/nourstest,"
+                "third_party/physfs,third_party/tinymt," 
+                "third_party/stb,third_party/cJson,"
+                "/usr/include/SDL2",
+    .sources  = "src,src/bars/,src/menu/,src/popup/,"
+                "src/systems/,src/game/,src/map/,src/unit/,"
+                "src/controller/",
+    .excludes = "src/main.c",
+    .links    = "SDL2,SDL2_image,SDL2_mixer,m,GLEW,"
+                "cjson,noursmath,physfs,tinymt,tnecs,parg",
+    .flags    = "-fno-strict-overflow,-fno-strict-aliasing,"
+                "-fwrapv,-fno-delete-null-pointer-checks,"
+                "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
+                "$(sdl2-config --cflags)",
+    .cmd_pre  = "astyle --options=utils/style.txt --verbose "
+                "--recursive src/* include/* test/* names/*",
+    .kind     = MACE_SHARED_LIBRARY, /* Check with "file" cmd */
+};
+
+
 /* -- Linux to Windows cross compilation -- */
 struct Target l2w_sota = {
     .includes = ".,include,include/bars,include/menu,"
@@ -272,10 +317,12 @@ int mace(int argc, char *argv[]) {
     MACE_ADD_TARGET(tinymt);
 
     /* - SotA - */
-    MACE_ADD_TARGET(sota);
+    // MACE_ADD_TARGET(sota);
+    MACE_ADD_TARGET(sota_main);
+    MACE_ADD_TARGET(sota_dll);
     MACE_ADD_TARGET(win_sota);
     MACE_ADD_TARGET(l2w_sota);
-    MACE_SET_DEFAULT_TARGET(sota);
+    MACE_SET_DEFAULT_TARGET(sota_main);
 
     /* - Testing - */
     MACE_ADD_TARGET(test);
