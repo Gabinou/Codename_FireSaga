@@ -4029,8 +4029,7 @@ void mace_Target_sources_grow(struct Target *target) {
     /* -- Alloc sources -- */
     if (target->_argv_sources == NULL) {
         target->_len_sources  = 8;
-        bytesize = target->_len_sources * sizeof(*target->_argv_sources);
-        target->_argv_sources = malloc(bytesize);
+        target->_argv_sources = calloc(target->_len_sources, sizeof(*target->_argv_sources));
     }
 
     /* -- Alloc deps_headers -- */
@@ -4052,6 +4051,7 @@ void mace_Target_sources_grow(struct Target *target) {
 
     /* -- Alloc objects -- */
     if (target->_argv_objects == NULL) {
+        printf("ALLOC \n");
         bytesize = sizeof(*target->_argv_objects);
         target->_argv_objects       = calloc(target->_len_sources, bytesize);
     }
@@ -4063,35 +4063,41 @@ void mace_Target_sources_grow(struct Target *target) {
         bytesize = sizeof(*target->_argv_objects_hash);
         target->_argv_objects_hash  = calloc(target->_len_sources, bytesize);
     }
+    /* -- Realloc sources -- */
+    int previous_len  = target->_len_sources;
+    target->_argv_sources = mace_argv_grow(target->_argv_sources, &target->_argc_sources,
+                                           &target->_len_sources);
+    int new_len  = target->_len_sources;
+
     /* -- Alloc object dependencies -- */
-    if (target->_argc_sources >= target->_len_sources) {
+    if (previous_len != new_len) {
+        printf("REALLOC \n");
         /* -- Realloc recompiles -- */
-        bytesize = target->_len_sources * 2 * sizeof(*target->_recompiles);
+        bytesize = target->_len_sources * sizeof(*target->_recompiles);
         target->_recompiles = realloc(target->_recompiles, bytesize);
-        memset(target->_recompiles + target->_len_sources, 0, bytesize / 2);
+        memset(target->_recompiles + target->_len_sources / 2, 0, bytesize / 2);
 
         /* -- Realloc objects -- */
-        bytesize = target->_len_sources * 2 * sizeof(*target->_argv_objects);
+        bytesize = target->_len_sources * sizeof(*target->_argv_objects);
         target->_argv_objects = realloc(target->_argv_objects, bytesize);
-        memset(target->_argv_objects + target->_len_sources, 0, bytesize / 2);
+        memset(target->_argv_objects + target->_len_sources / 2, 0, bytesize / 2);
     }
 
     /* -- Realloc deps_headers -- */
-    if (target->_argc_sources >= target->_len_sources) {
-        size_t bytesize = target->_len_sources * 2 * sizeof(*target->_deps_headers);
+    if (previous_len != new_len) {
+        size_t bytesize = target->_len_sources * sizeof(*target->_deps_headers);
         target->_deps_headers = realloc(target->_deps_headers, bytesize);
-        memset(target->_deps_headers + target->_len_sources, 0, bytesize / 2);
-        bytesize = target->_len_sources * 2 * sizeof(*target->_deps_headers_num);
+        memset(target->_deps_headers + target->_len_sources / 2, 0, bytesize / 2);
+
+        bytesize = target->_len_sources * sizeof(*target->_deps_headers_num);
         target->_deps_headers_num = realloc(target->_deps_headers_num, bytesize);
-        memset(target->_deps_headers_num + target->_len_sources, 0, bytesize / 2);
-        bytesize = target->_len_sources * 2 * sizeof(*target->_deps_headers_len);
+        memset(target->_deps_headers_num + target->_len_sources / 2, 0, bytesize / 2);
+        
+        bytesize = target->_len_sources * sizeof(*target->_deps_headers_len);
         target->_deps_headers_len = realloc(target->_deps_headers_len, bytesize);
-        memset(target->_deps_headers_num + target->_len_sources, 0, bytesize / 2);
+        memset(target->_deps_headers_num + target->_len_sources / 2, 0, bytesize / 2);
     }
 
-    /* -- Realloc sources -- */
-    target->_argv_sources = mace_argv_grow(target->_argv_sources, &target->_argc_sources,
-                                           &target->_len_sources);
 
     /* -- Realloc objects -- */
     if (target->_len_sources >= target->_argc_objects_hash) {
@@ -4805,6 +4811,8 @@ bool mace_Target_Object_Add(struct Target *target, char *token) {
     uint64_t hash_nocoll = mace_hash(arg + flag_len);
     Target_Object_Hash_Add_nocoll(target, hash_nocoll);
 
+    mace_Target_sources_grow(target);
+    printf("target->_argc_sources %d %d\n", target->_argc_sources, target->_len_sources);
     target->_argv_objects[target->_argc_sources - 1] = arg;
 
     // Does object file exist
