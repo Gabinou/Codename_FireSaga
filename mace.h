@@ -138,6 +138,8 @@ struct Target {
     const char *base_dir;          /* dir                                     */
     /* Links are targets or libraries. If target, its built before self.      */
     const char *links;             /* libraries or targets                    */
+    /* Linker flags are passed to the linker. Written as -Wl, *option*      */
+    const char *linker_flags;             /* libraries or targets                    */
     /* Dependencies are targets, built before self.                           */
     const char *dependencies;      /* targets                                 */
     const char *flags;             /* passed as is to compiler                */
@@ -4377,10 +4379,10 @@ void mace_link_dynamic_library(struct Target *target) {
     argv[argc++]    = fPICflag;
 
     /* --- Adding build to rpath flag --- */
-    char *rpath     = calloc(12, sizeof(*rpath));
-    strncpy(rpath, "-Wl,-rpath=.", 11);
-    int rpathflag   = argc;
-    argv[argc++]    = rpath;
+    // char *rpath     = calloc(41, sizeof(*rpath));
+    // // strncpy(rpath, "-Wl,-rpath=/home/gabinours/firesaga/build", 41);
+    // int rpathflag   = argc;
+    // argv[argc++]    = rpath;
 
     /* --- Adding -shared flag --- */
     char *sharedflag     = calloc(8, sizeof(*sharedflag));
@@ -4410,7 +4412,7 @@ void mace_link_dynamic_library(struct Target *target) {
 
     free(argv[cfPICflag]);
     free(argv[csharedflag]);
-    free(argv[rpathflag]);
+    // free(argv[rpathflag]);
     free(argv[libc]);
     for (int i = config_startc; i < config_endc; i++) {
         free(argv[i]);
@@ -4527,8 +4529,8 @@ void mace_link_executable(struct Target *target) {
     }
 
     /* --- Adding build to rpath flag --- */
-    char *rpath     = calloc(12, sizeof(*rpath));
-    strncpy(rpath, "-Wl,-rpath=.", 11);
+    char *rpath     = calloc(41, sizeof(*rpath));
+    strncpy(rpath, "-Wl,-rpath=/home/gabinours/firesaga/build", 41);
     int rpathflag   = argc;
     argv[argc++]    = rpath;
 

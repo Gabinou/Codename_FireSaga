@@ -18,6 +18,7 @@ struct Input_Arguments {
     char *save_filename;    /* debug saves are outside normal save integers     */
 };
 extern struct Input_Arguments Input_Arguments_default;
+extern struct parg_state parg_state_default;
 
 struct Input_Arguments Input_parseInputs(int argc, char *argv[]);
 

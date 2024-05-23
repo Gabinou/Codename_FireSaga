@@ -175,7 +175,7 @@ struct Target sota_main = {
                 "third_party/stb,third_party/cJson,"
                 "/usr/include/SDL2",
     .sources  = "src/main.c",
-    .links    = "sota_dll,SDL2",
+    .links    = "sota_dll,SDL2,parg",
     .flags    = "-fno-strict-overflow,-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
                 "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
