@@ -333,7 +333,7 @@ void _Game_Step_PostFrame(struct Game *sota, u64 currentTime_ns) {
 
 void Game_Step(struct Game *sota) {
     /* TODO: deal with frame running LONGER than expected */
-    printf("STEPPING\n");
+    // printf("STEPPING\n");
     u64 currentTime_ns = _Game_Step_PreFrame(sota);
     _Game_Step_Control(sota);
     Events_Manage(sota); /* CONTROL */

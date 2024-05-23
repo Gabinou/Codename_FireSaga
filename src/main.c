@@ -34,7 +34,7 @@ struct VTable {
     void (*game_post_free)(void);
 };
 
-#define SOTA_DLL "libsota_dll.so"
+#define SOTA_DLL "/home/gabinours/firesaga/build/libsota_dll.so"
 #define RELOAD_FRAMES 60
 
 void VTable_Load(struct VTable *vtable) {
