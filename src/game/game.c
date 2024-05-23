@@ -333,6 +333,7 @@ void _Game_Step_PostFrame(struct Game *sota, u64 currentTime_ns) {
 
 void Game_Step(struct Game *sota) {
     /* TODO: deal with frame running LONGER than expected */
+    printf("STEPPING\n");
     u64 currentTime_ns = _Game_Step_PreFrame(sota);
     _Game_Step_Control(sota);
     Events_Manage(sota); /* CONTROL */
@@ -341,6 +342,10 @@ void Game_Step(struct Game *sota) {
 }
 
 void Game_Init(struct Game *sota, int argc, char *argv[]) {
+    /* -- Setting defaults -- */
+    *sota = Game_default;
+    sota->settings = Settings_default;
+
     /* -- Input parsing -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Checking input arguments\n");
     struct Input_Arguments args = Input_parseInputs(argc, argv);

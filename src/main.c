@@ -34,31 +34,48 @@ struct VTable {
     void (*game_post_free)(void);
 };
 
+#define SOTA_DLL "libsota_dll.so"
+#define RELOAD_FRAMES 60
+
+void VTable_Load(struct VTable *vtable) {
+    void *so_handle         = SDL_LoadObject(SOTA_DLL);
+    SDL_assert(so_handle != NULL);
+    vtable->game_pre_init   = SDL_LoadFunction(so_handle, "Game_Pre_Init");
+    vtable->game_init       = SDL_LoadFunction(so_handle, "Game_Init");
+    vtable->game_step       = SDL_LoadFunction(so_handle, "Game_Step");
+    vtable->game_free       = SDL_LoadFunction(so_handle, "Game_Free");
+    vtable->game_post_free  = SDL_LoadFunction(so_handle, "Game_Post_Free");
+    SDL_assert(vtable->game_pre_init    != NULL);
+    SDL_assert(vtable->game_init        != NULL);
+    SDL_assert(vtable->game_step        != NULL);
+    SDL_assert(vtable->game_free        != NULL);
+    SDL_assert(vtable->game_post_free   != NULL);
+    SDL_UnloadObject(so_handle);
+}
+
+extern struct Game Game_default;
+
 int main(int argc, char *argv[]) {
-    /* -- atexit -- */
+    /* -- atexit -> Quit SDL -- */
     atexit(SDL_Quit);
 
-    struct VTable vtable = {
-        .game_pre_init  = Game_Pre_Init,
-        .game_init      = Game_Init,
-        .game_step      = Game_Step,
-        .game_free      = Game_Free,
-        .game_post_free = Game_Post_Free,
-    };
+    /* -- Initialize vtable with first loaded functions -- */
+    struct VTable vtable = {};
+    VTable_Load(&vtable);
 
     /* -- Startup -- */
     vtable.game_pre_init(argc, argv);
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     struct Game *sota = SDL_malloc(sizeof(struct Game));
-    *sota = Game_default;
-    sota->settings = Settings_default;
     vtable.game_init(sota, argc, argv);
 
     /* -- Master loop -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Starting main game loop\n");
-    while (sota->isrunning)
+    while (sota->isrunning) {
+        VTable_Load(&vtable);
         vtable.game_step(sota);
+    }
 
     /* -- Cleaning & Quitting -- */
     vtable.game_free(sota);
