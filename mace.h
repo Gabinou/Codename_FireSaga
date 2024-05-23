@@ -4020,7 +4020,6 @@ void mace_Target_Parse_User(struct Target *target) {
 }
 
 void mace_Target_argv_grow(struct Target *target) {
-    printf("mace_Target_argv_grow \n");
     target->_argv = mace_argv_grow(target->_argv, &target->_argc, &target->_arg_len);
 }
 
@@ -4104,7 +4103,7 @@ void mace_Target_sources_grow(struct Target *target) {
 }
 
 char **mace_argv_grow(char **argv, int *argc, int *arg_len) {
-    if (*argc >= *arg_len) {
+    if ((*argc + 1) >= *arg_len) {
         size_t new_len = (*arg_len) * 2;
         size_t bytesize = new_len * sizeof(*argv);
         argv = realloc(argv, bytesize);
@@ -4214,14 +4213,15 @@ void mace_Target_argv_compile(struct Target *target) {
 }
 
 void mace_argv_add_config(struct Target *target,
-                              char ** *argv, int *argc, int *arg_len) {
+                          char ** *argv, int *argc, int *arg_len) {
     if (config_num <= 0)
         return;
 
     for (int i = 0; i < configs[mace_config]._flag_num; ++i) {
         *argv = mace_argv_grow(*argv, argc, arg_len);
-        printf();
+        printf("configs[mace_config]._flags[i] %s\n", configs[mace_config]._flags[i]);
         size_t len = strlen(configs[mace_config]._flags[i]);
+        printf("len %d\n", len);
         char *flag = calloc(len, sizeof(*flag));
         strncpy(flag, configs[mace_config]._flags[i],  len);
         (*argv)[(*argc)++] = flag;
@@ -4301,7 +4301,6 @@ char *mace_args2line(char *const arguments[]) {
 
     char *argline = calloc(len, sizeof(*argline));
     while ((arguments[i] != NULL) && (i < MACE_MAX_ITERATIONS)) {
-        // printf("arguments[i] '%s'\n", arguments[i]);
         size_t ilen = strlen(arguments[i]);
         if ((num + ilen + 1) > len) {
             argline = realloc(argline, len * 2 * sizeof(*argline));
@@ -4360,7 +4359,6 @@ pid_t mace_exec(const char *exec, char *const arguments[]) {
 /* Wait on process with pid to finish */
 void mace_wait_pid(int pid) {
     int status;
-    // printf("waitpid(pid, &status, 0) %d\n", waitpid(pid, &status, 0));
     if (waitpid(pid, &status, 0) > 0) {
         if (WEXITSTATUS(status) == 0) {
             /* pass */
@@ -5407,14 +5405,13 @@ void mace_parse_config(struct Config *config) {
 
     /* -- Split flags string into target orders -- */
     int len = 8, i = 0;
-    config->_flags    = malloc(len * sizeof(*config->_flags));
+    config->_flags    = calloc(len, sizeof(*config->_flags));
     config->_flag_num = 0;
 
     char *buffer = mace_str_buffer(config->flags);
     char *token  = strtok(buffer, mace_flag_separator);
     do {
-        printf(" token %d %s\n", strlen(token), token);
-        char *flag = calloc(strlen(token), sizeof(*flag));
+        char *flag = calloc(strlen(token) + 1, sizeof(*flag));
         strncpy(flag, token, strlen(token));
         config->_flags[config->_flag_num++] = flag;
         /* Increase config->_flags size */
@@ -5422,6 +5419,7 @@ void mace_parse_config(struct Config *config) {
             len *= 2;
             size_t bytesize = len * sizeof(*config->_flags);
             config->_flags  = realloc(config->_flags, bytesize);
+            memset(config->_flags + len / 2, 0, len / 2);
         }
         token = strtok(NULL, mace_flag_separator);
     } while (token != NULL);
