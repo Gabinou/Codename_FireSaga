@@ -132,17 +132,17 @@ enum MACE_TARGET_KIND { /* for target.kind */
 /*********************************** STRUCTS **********************************/
 struct Target {
     /*-------------------------- PUBLIC MEMBERS --------------------------*/
-    const char *includes;          /* dirs                                    */
-    const char *sources;           /* files, dirs, glob                       */
-    const char *excludes;          /* files                                   */
-    const char *base_dir;          /* dir                                     */
-    /* Links are targets or libraries. If target, its built before self.      */
-    const char *links;             /* libraries or targets                    */
-    /* Linker flags are passed to the linker. Written as -Wl, *option*      */
-    const char *linker_flags;             /* libraries or targets                    */
-    /* Dependencies are targets, built before self.                           */
-    const char *dependencies;      /* targets                                 */
-    const char *flags;             /* passed as is to compiler                */
+    const char *includes;           /* dirs                                    */
+    const char *sources;            /* files, dirs, glob                       */
+    const char *excludes;           /* files                                   */
+    const char *base_dir;           /* dir                                     */
+    /* Links are targets or libraries. If target, its built before self.       */
+    const char *links;              /* libraries or targets                    */
+    /* Linker flags are passed to the linker. Written as -Wl, *option*         */
+    const char *link_flags;         /* prepend "-Wl,", pass to compiled        */
+    /* Dependencies are targets, built before self.                            */
+    const char *dependencies;       /* targets                                 */
+    const char *flags;              /* passed as is to compiler                */
 
     const char *cmd_pre; /* command ran before building target      */
     const char *cmd_post;/* command ran after  building target      */
@@ -173,27 +173,29 @@ struct Target {
     * };                                                                   /
     *     NOTE: default separator is ",", set with 'mace_set_separator'    /
     *                                                                      /
-    *--------------------------------------------------------------------*/
+    *---------------------------------------------------------------------*/
 
-    /*-------------------------- PRIVATE MEMBERS -------------------------*/
-    char *_name;           /* target name                         */
-    uint64_t       _hash;          /* target name hash                    */
-    int            _order;         /* target order added by user          */
+    /*-------------------------- PRIVATE MEMBERS --------------------------*/
+    char *_name;                    /* target name                         */
+    uint64_t       _hash;           /* target name hash                    */
+    int            _order;          /* target order added by user          */
 
     /* --- Compilation --- */
-    char **_argv;          /* argv buffer for commands            */
-    int             _argc;         /* number of arguments in argv         */
-    int             _arg_len;      /* alloced len of argv                 */
-    int             _argc_tail;    /* tail of argv to free                */
-    char **_argv_includes; /* user includes, in argv form         */
-    int             _argc_includes;/* number of args in _argv_includes    */
-    char **_argv_links;    /* linked libraries                    */
-    int             _argc_links;   /* num of args in argv_links           */
-    char **_argv_flags;    /* user flags                          */
-    int             _argc_flags;   /* number of args in argv_flags        */
-    char **_argv_sources;  /* sources                             */
-    int             _argc_sources; /* number of args in argv_sources      */
-    int             _len_sources;  /* alloc len of args in argv_sources   */
+    char **_argv;                   /* argv buffer for commands            */
+    int    _argc;                   /* number of arguments in argv         */
+    int    _arg_len;                /* alloced len of argv                 */
+    int    _argc_tail;              /* tail of argv to free                */
+    char **_argv_includes;          /* user includes, in argv form         */
+    int    _argc_includes;          /* number of args in _argv_includes    */
+    char **_argv_link_flags;        /* linker flags                        */
+    int    _argc_link_flags;        /* num of args in argv_links           */
+    char **_argv_links;             /* linked libraries                    */
+    int    _argc_links;             /* num of args in argv_links           */
+    char **_argv_flags;             /* user flags                          */
+    int    _argc_flags;             /* number of args in argv_flags        */
+    char **_argv_sources;           /* sources                             */
+    int    _argc_sources;           /* number of args in argv_sources      */
+    int    _len_sources;            /* alloc len of args in argv_sources   */
 
     // WARNING: _argv_objects_hash DOES NOT include objects with number
     //          to prevent collisions!
@@ -3869,10 +3871,10 @@ void mace_argv_free(char **argv, int argc) {
     free(argv);
 }
 
-char **mace_argv_flags(int *len, int *argc, char **argv,
-                       const char *user_str, const char *flag, bool path, const char *separator) {
+char **mace_argv_flags(int *len, int *argc, char **argv, const char *user_str,
+                       const char *flag, bool path, const char *separator) {
+    assert(len  != NULL);
     assert(argc != NULL);
-    assert(len != NULL);
     assert((*len) > 0);
     size_t flag_len = (flag == NULL) ? 0 : strlen(flag);
 
@@ -3892,8 +3894,9 @@ char **mace_argv_flags(int *len, int *argc, char **argv,
                 free(rpath);
                 rpath = NULL;
             } else {
-                rpath = realloc(rpath, (strlen(rpath) + 1) * sizeof(*rpath));
-                to_use = rpath;
+                rpath                   = realloc(rpath, (strlen(rpath) + 1) * sizeof(*rpath));
+                rpath[strlen(rpath)]    = '\0';
+                to_use                  = rpath;
             }
         }
         size_t to_use_len = strlen(to_use);
@@ -3903,7 +3906,7 @@ char **mace_argv_flags(int *len, int *argc, char **argv,
         char *arg = calloc(total_len, sizeof(*arg));
 
         /* - Copy flag into arg - */
-        if (flag_len > 0) {
+        if ((flag_len > 0) && (flag != NULL)) {
             strncpy(arg, flag, flag_len);
             i += flag_len;
         }
@@ -3912,7 +3915,6 @@ char **mace_argv_flags(int *len, int *argc, char **argv,
         strncpy(arg + i, to_use, to_use_len);
         i += to_use_len;
         argv[(*argc)++] = arg;
-
         token = strtok_r(NULL, separator, &sav);
         if (rpath != NULL) {
             free(rpath);
@@ -3977,6 +3979,18 @@ void mace_Target_Parse_User(struct Target *target) {
                                                  "-I", true, mace_separator);
         bytesize               = target->_argc_includes * sizeof(*target->_argv_includes);
         target->_argv_includes = realloc(target->_argv_includes, bytesize);
+    }
+
+    /* -- Make _argv_linker_flags to argv -- */
+    if (target->link_flags != NULL) {
+        len = 8;
+        target->_argc_link_flags = 0;
+        target->_argv_link_flags = calloc(len, sizeof(*target->_argv_link_flags));
+        target->_argv_link_flags = mace_argv_flags(&len, &target->_argc_link_flags,
+                                                 target->_argv_link_flags, target->link_flags,
+                                                 "-Wl,", true, mace_separator);
+        bytesize                 = target->_argc_link_flags * sizeof(*target->_argv_link_flags);
+        target->_argv_link_flags = realloc(target->_argv_link_flags, bytesize);
     }
 
     /* -- Make _argv_links to argv -- */
@@ -4169,6 +4183,13 @@ void mace_Target_argv_compile(struct Target *target) {
             target->_argv[target->_argc++] = target->_argv_includes[i];
         }
     }
+    /* -- argv link_flags -- */
+    if ((target->_argc_link_flags > 0) && (target->_argv_link_flags != NULL)) {
+        for (int i = 0; i < target->_argc_link_flags; i++) {
+            mace_Target_argv_grow(target);
+            target->_argv[target->_argc++] = target->_argv_link_flags[i];
+        }
+    }
 
     /* -- argv -c flag for objects -- */
     target->_argc_tail =    target->_argc;
@@ -4333,8 +4354,11 @@ pid_t mace_exec(const char *exec, char *const arguments[]) {
 /* Wait on process with pid to finish */
 void mace_wait_pid(int pid) {
     int status;
+    // printf("waitpid(pid, &status, 0) %d\n", waitpid(pid, &status, 0));
     if (waitpid(pid, &status, 0) > 0) {
-        if (WIFEXITED(status)        && !WEXITSTATUS(status)) {
+        if (WEXITSTATUS(status) == 0) {
+            /* pass */
+        } else if (WIFEXITED(status)        && !WEXITSTATUS(status)) {
             /* pass */
         } else if (WIFEXITED(status) &&  WEXITSTATUS(status)) {
             if (WEXITSTATUS(status) == 127) {
@@ -4346,6 +4370,7 @@ void mace_wait_pid(int pid) {
                 exit(WEXITSTATUS(status));
             }
         } else {
+            fprintf(stderr,"is baka? %d\n", WEXITSTATUS(status));
             fprintf(stderr, "Fork didn't terminate normally. %d\n", WEXITSTATUS(status));
             exit(WEXITSTATUS(status));
         }
@@ -4378,12 +4403,6 @@ void mace_link_dynamic_library(struct Target *target) {
     int cfPICflag   = argc;
     argv[argc++]    = fPICflag;
 
-    /* --- Adding build to rpath flag --- */
-    // char *rpath     = calloc(41, sizeof(*rpath));
-    // // strncpy(rpath, "-Wl,-rpath=/home/gabinours/firesaga/build", 41);
-    // int rpathflag   = argc;
-    // argv[argc++]    = rpath;
-
     /* --- Adding -shared flag --- */
     char *sharedflag     = calloc(8, sizeof(*sharedflag));
     strncpy(sharedflag, "-shared", 7);
@@ -4412,7 +4431,6 @@ void mace_link_dynamic_library(struct Target *target) {
 
     free(argv[cfPICflag]);
     free(argv[csharedflag]);
-    // free(argv[rpathflag]);
     free(argv[libc]);
     for (int i = config_startc; i < config_endc; i++) {
         free(argv[i]);
@@ -4528,12 +4546,6 @@ void mace_link_executable(struct Target *target) {
         }
     }
 
-    /* --- Adding build to rpath flag --- */
-    char *rpath     = calloc(41, sizeof(*rpath));
-    strncpy(rpath, "-Wl,-rpath=/home/gabinours/firesaga/build", 41);
-    int rpathflag   = argc;
-    argv[argc++]    = rpath;
-
     /* -- argv -L flag for build_dir -- */
     argv = mace_argv_grow(argv, &argc, &arg_len);
     size_t build_dir_len = strlen(build_dir);
@@ -4555,7 +4567,6 @@ void mace_link_executable(struct Target *target) {
         mace_wait_pid(pid);
     }
 
-    free(argv[rpathflag]);
     free(argv[oflag_i]);
     free(argv[ldirflag_i]);
     for (int i = config_startc; i < config_endc; i++) {
@@ -4612,6 +4623,7 @@ void mace_Target_precompile(struct Target *target) {
 
             /* -- Actual pre-compilation -- */
             mace_exec_print(target->_argv, target->_argc);
+
             pid_t pid = MACE_EXEC(target->_argv[0], target->_argv);
             mace_pqueue_put(pid);
 
@@ -5591,6 +5603,9 @@ void mace_Target_Free_argv(struct Target *target) {
     mace_argv_free(target->_argv_includes, target->_argc_includes);
     target->_argv_includes  = NULL;
     target->_argc_includes  = 0;
+    mace_argv_free(target->_argv_link_flags, target->_argc_link_flags);
+    target->_argv_link_flags    = NULL;
+    target->_argc_link_flags    = 0;
     mace_argv_free(target->_argv_links, target->_argc_links);
     target->_argv_links     = NULL;
     target->_argc_links     = 0;
