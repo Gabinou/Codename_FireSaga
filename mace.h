@@ -4946,8 +4946,10 @@ bool mace_Target_Source_Add(struct Target *target, char *token) {
     /* - Check if file is excluded - */
     uint64_t rpath_hash = mace_hash(rpath);
     for (int i = 0; i < target->_excludes_num; i++) {
-        if (target->_excludes[i] == rpath_hash)
+        if (target->_excludes[i] == rpath_hash) {
+            free(rpath);
             return (true);
+        }
     }
 
     /* -- Actually adding source here -- */
@@ -5188,7 +5190,7 @@ void mace_run_commands(const char *commands) {
     if (argv != NULL)
         free(argv);
     if (buffer != NULL)
-    free(buffer);
+        free(buffer);
 }
 
 void mace_prebuild_target(struct Target *target) {
