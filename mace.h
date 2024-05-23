@@ -4377,8 +4377,8 @@ void mace_link_dynamic_library(struct Target *target) {
     argv[argc++]    = fPICflag;
 
     /* --- Adding build to rpath flag --- */
-    char *rpath     = calloc(17, sizeof(*rpath));
-    strncpy(rpath, "-Wl,-rpath=.", 16);
+    char *rpath     = calloc(12, sizeof(*rpath));
+    strncpy(rpath, "-Wl,-rpath=.", 11);
     int rpathflag   = argc;
     argv[argc++]    = rpath;
 
@@ -4527,8 +4527,8 @@ void mace_link_executable(struct Target *target) {
     }
 
     /* --- Adding build to rpath flag --- */
-    char *rpath     = calloc(17, sizeof(*rpath));
-    strncpy(rpath, "-Wl,-rpath=.", 16);
+    char *rpath     = calloc(12, sizeof(*rpath));
+    strncpy(rpath, "-Wl,-rpath=.", 11);
     int rpathflag   = argc;
     argv[argc++]    = rpath;
 
