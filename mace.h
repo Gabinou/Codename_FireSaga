@@ -4020,6 +4020,7 @@ void mace_Target_Parse_User(struct Target *target) {
 }
 
 void mace_Target_argv_grow(struct Target *target) {
+    printf("mace_Target_argv_grow \n");
     target->_argv = mace_argv_grow(target->_argv, &target->_argc, &target->_arg_len);
 }
 
@@ -4157,6 +4158,7 @@ void mace_Target_argv_allatonce(struct Target *target) {
 
     /* -- add config -- */
     mace_argv_add_config(target, &target->_argv, &target->_argc, &target->_arg_len);
+    target->_argv[target->_argc] = NULL;
 }
 
 void mace_Target_argv_compile(struct Target *target) {
@@ -4176,18 +4178,20 @@ void mace_Target_argv_compile(struct Target *target) {
             target->_argv[target->_argc++] = target->_argv_flags[i];
         }
     }
-    /* -- argv includes -- */
-    if ((target->_argc_includes > 0) && (target->_argv_includes != NULL)) {
-        for (int i = 0; i < target->_argc_includes; i++) {
-            mace_Target_argv_grow(target);
-            target->_argv[target->_argc++] = target->_argv_includes[i];
-        }
-    }
+
     /* -- argv link_flags -- */
     if ((target->_argc_link_flags > 0) && (target->_argv_link_flags != NULL)) {
         for (int i = 0; i < target->_argc_link_flags; i++) {
             mace_Target_argv_grow(target);
             target->_argv[target->_argc++] = target->_argv_link_flags[i];
+        }
+    }
+
+    /* -- argv includes -- */
+    if ((target->_argc_includes > 0) && (target->_argv_includes != NULL)) {
+        for (int i = 0; i < target->_argc_includes; i++) {
+            mace_Target_argv_grow(target);
+            target->_argv[target->_argc++] = target->_argv_includes[i];
         }
     }
 
@@ -4216,6 +4220,7 @@ void mace_argv_add_config(struct Target *target,
 
     for (int i = 0; i < configs[mace_config]._flag_num; ++i) {
         *argv = mace_argv_grow(*argv, argc, arg_len);
+        printf();
         size_t len = strlen(configs[mace_config]._flags[i]);
         char *flag = calloc(len, sizeof(*flag));
         strncpy(flag, configs[mace_config]._flags[i],  len);
@@ -4245,7 +4250,7 @@ pid_t mace_pqueue_pop() {
 void mace_pqueue_put(pid_t pid) {
     assert(pnum < plen);
     if (plen > 1) {
-        size_t bytes = plen * sizeof(*pqueue);
+        size_t bytes = (plen - 1) * sizeof(*pqueue);
         memmove(pqueue + 1, pqueue, bytes);
     }
     pqueue[0] = pid;
@@ -4296,6 +4301,7 @@ char *mace_args2line(char *const arguments[]) {
 
     char *argline = calloc(len, sizeof(*argline));
     while ((arguments[i] != NULL) && (i < MACE_MAX_ITERATIONS)) {
+        // printf("arguments[i] '%s'\n", arguments[i]);
         size_t ilen = strlen(arguments[i]);
         if ((num + ilen + 1) > len) {
             argline = realloc(argline, len * 2 * sizeof(*argline));
@@ -4602,8 +4608,10 @@ void mace_Target_precompile(struct Target *target) {
     assert(target->_argv != NULL);
     int argc = 0;
 
-    target->_argv[MACE_ARGV_CC] = cc;
-    target->_argv[target->_argc++] = cc_depflag;
+    target->_argv[MACE_ARGV_CC]     = cc;
+    mace_Target_argv_grow(target);
+    target->_argv[target->_argc++]  = cc_depflag;
+    target->_argv[target->_argc]    = NULL;
     /* - Single source argv - */
     while (true) {
         /* - Skip if no recompiles - */
@@ -4623,7 +4631,7 @@ void mace_Target_precompile(struct Target *target) {
 
             /* -- Actual pre-compilation -- */
             mace_exec_print(target->_argv, target->_argc);
-
+            assert(target->_argv[target->_argc] == NULL);
             pid_t pid = MACE_EXEC(target->_argv[0], target->_argv);
             mace_pqueue_put(pid);
 
@@ -4936,9 +4944,6 @@ bool mace_Target_Source_Add(struct Target *target, char *token) {
         printf("Warning! realpath issue: %s\n", rpath);
         free(rpath);
         rpath = arg;
-    } else {
-        rpath = realloc(rpath, (strlen(rpath) + 1) * sizeof(*rpath));
-        free(arg);
     }
 
     /* - Check if file is excluded - */
@@ -4950,6 +4955,9 @@ bool mace_Target_Source_Add(struct Target *target, char *token) {
 
     /* -- Actually adding source here -- */
     target->_argv_sources[target->_argc_sources++] = rpath;
+
+    if ((arg != rpath) && (arg != NULL))
+        free(arg);
 
     return (false);
 }
@@ -5405,6 +5413,7 @@ void mace_parse_config(struct Config *config) {
     char *buffer = mace_str_buffer(config->flags);
     char *token  = strtok(buffer, mace_flag_separator);
     do {
+        printf(" token %d %s\n", strlen(token), token);
         char *flag = calloc(strlen(token), sizeof(*flag));
         strncpy(flag, token, strlen(token));
         config->_flags[config->_flag_num++] = flag;
