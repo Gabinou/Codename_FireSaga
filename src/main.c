@@ -17,6 +17,8 @@
 */
 
 #include "game/game.h"
+#include "SDL2/SDL.h"
+#include <dlfcn.h>
 
 // hot reload TODO TODO:
 // 1. Check if .so file changed every x frames? y seconds?.
@@ -34,33 +36,59 @@ struct VTable {
     void (*game_post_free)(void);
 };
 
-#define SOTA_DLL "/home/gabinours/firesaga/build/libsota_dll.so"
 #define RELOAD_FRAMES 60
+static const char *sota_dll = "libsota_dll.so";
+
+void *so_handle = NULL;
 
 void VTable_Load(struct VTable *vtable) {
-    void *so_handle         = SDL_LoadObject(SOTA_DLL);
-    SDL_assert(so_handle != NULL);
+    if (so_handle != NULL)
+        SDL_UnloadObject(so_handle);
+
+    so_handle = SDL_LoadObject(sota_dll);
+    // so_handle = dlopen(sota_dll, RTLD_NOW);
+
+    if (so_handle == NULL) {
+        printf("HOTRELOAD: could not load %s: %s\n", sota_dll, dlerror());
+        exit(1);
+    }
     vtable->game_pre_init   = SDL_LoadFunction(so_handle, "Game_Pre_Init");
     vtable->game_init       = SDL_LoadFunction(so_handle, "Game_Init");
     vtable->game_step       = SDL_LoadFunction(so_handle, "Game_Step");
     vtable->game_free       = SDL_LoadFunction(so_handle, "Game_Free");
     vtable->game_post_free  = SDL_LoadFunction(so_handle, "Game_Post_Free");
-    SDL_assert(vtable->game_pre_init    != NULL);
-    SDL_assert(vtable->game_init        != NULL);
-    SDL_assert(vtable->game_step        != NULL);
-    SDL_assert(vtable->game_free        != NULL);
-    SDL_assert(vtable->game_post_free   != NULL);
-    SDL_UnloadObject(so_handle);
-}
+    if (vtable->game_pre_init == NULL) {
+        printf("HOTRELOAD: could not load %s: %s\n", "Game_Pre_Init", dlerror());
+        exit(1);
+    }
 
-extern struct Game Game_default;
+    if (vtable->game_init == NULL) {
+        printf("HOTRELOAD: could not load %s: %s\n", "Game_Init", dlerror());
+        exit(1);
+    }
+
+    if (vtable->game_step == NULL) {
+        printf("HOTRELOAD: could not load %s: %s\n", "Game_Step", dlerror());
+        exit(1);
+    }
+
+    if (vtable->game_free == NULL) {
+        printf("HOTRELOAD: could not load %s: %s\n", "Game_Free", dlerror());
+        exit(1);
+    }
+
+    if (vtable->game_post_free == NULL) {
+        printf("HOTRELOAD: could not load %s: %s\n", "Game_Post_Free", dlerror());
+        exit(1);
+    }
+}
 
 int main(int argc, char *argv[]) {
     /* -- atexit -> Quit SDL -- */
     atexit(SDL_Quit);
 
     /* -- Initialize vtable with first loaded functions -- */
-    struct VTable vtable = {};
+    struct VTable vtable = {0};
     VTable_Load(&vtable);
 
     /* -- Startup -- */
@@ -72,8 +100,11 @@ int main(int argc, char *argv[]) {
 
     /* -- Master loop -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Starting main game loop\n");
+    u64 i = 1;
     while (sota->isrunning) {
+        // if (i++ % 120 == 0) {
         VTable_Load(&vtable);
+        // }
         vtable.game_step(sota);
     }
 

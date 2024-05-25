@@ -56,7 +56,7 @@ uint64_t dtab_hash_sdbm(const char * str) {
     return (hash);
 }
 
-size_t dtab_found(struct dtab * dtab_ptr, uint64_t in_hash) {
+size_t dtab_found(struct dtab *dtab_ptr, uint64_t in_hash) {
     size_t pos = DTAB_NULL;
     for (size_t i = 0; i < dtab_ptr->num; i++) {
         if (dtab_ptr->keys[i] == in_hash) {
@@ -67,7 +67,7 @@ size_t dtab_found(struct dtab * dtab_ptr, uint64_t in_hash) {
     return (pos);
 }
 
-void *dtab_get(struct dtab * dtab_ptr, uint64_t in_hash) {
+void *dtab_get(struct dtab *dtab_ptr, uint64_t in_hash) {
     void *out = NULL;
     size_t pos = dtab_found(dtab_ptr, in_hash);
     if (pos) {

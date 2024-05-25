@@ -182,8 +182,8 @@ struct Target sota = {
                 "third_party/stb,third_party/cJson,"
                 "/usr/include/SDL2",
     .sources  = "src/main.c",
-    .links    = "sota_dll,SDL2,parg",
-    .link_flags = "-rpath=/home/gabinours/firesaga/build",
+    .links    = "SDL2,parg",
+    .link_flags = "-rpath=./",
     .flags    = "-fno-strict-overflow,-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
                 "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
@@ -206,12 +206,12 @@ struct Target sota_dll = {
                   "src/systems/,src/game/,src/map/,src/unit/,"
                   "src/controller/",
     .excludes   = "src/main.c",
-    .link_flags = "-whole-archive,-rpath=/home/gabinours/firesaga/build",
+    .link_flags = "-rpath=./,-whole-archive,",
     .links      = "SDL2,SDL2_image,SDL2_mixer,m,GLEW,"
                   "cjson,noursmath,physfs,tinymt,tnecs,parg",
     .flags      = "-Lbuild,-fno-strict-overflow,-fno-strict-aliasing,"
                   "-fwrapv,-fno-delete-null-pointer-checks,"
-                  "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
+                  "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999",
                   "$(sdl2-config --cflags)",
     .cmd_pre    = "astyle --options=utils/style.txt --verbose "
                   "--recursive src/* include/* test/* names/*",

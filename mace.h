@@ -4431,6 +4431,16 @@ void mace_link_dynamic_library(struct Target *target) {
         }
     }
 
+    /* -- argv link_flags -- */
+    if ((target->_argc_link_flags > 0) && (target->_argv_link_flags != NULL)) {
+        for (int i = 0; i < target->_argc_link_flags; i++) {
+            printf("argc %d %d \n", argc, arg_len);
+            argv = mace_argv_grow(argv, &argc, &arg_len);
+            argv[argc++] = target->_argv_link_flags[i];
+            printf("argc %d %d argv %s \n", arg_len, argc, target->_argv_link_flags[i]);
+        }
+    }
+
     /* -- argv flags -- */
     if ((target->_argc_flags > 0) && (target->_argv_flags != NULL)) {
         for (int i = 0; i < target->_argc_flags; i++) {
@@ -4439,18 +4449,10 @@ void mace_link_dynamic_library(struct Target *target) {
         }
     }
 
-    /* -- argv link_flags -- */
-    if ((target->_argc_link_flags > 0) && (target->_argv_link_flags != NULL)) {
-        for (int i = 0; i < target->_argc_link_flags; i++) {
-            argv = mace_argv_grow(argv, &argc, &arg_len);
-            argv[argc++] = target->_argv_link_flags[i];
-        }
-    }
-
     /* --- argv config --- */
-    int config_startc = argc;
+    int config_startc   = argc;
     mace_argv_add_config(target, &argv, &argc, &arg_len);
-    int config_endc = argc;
+    int config_endc     = argc;
 
     /* --- Actual linking --- */
     mace_exec_print(argv, argc);
