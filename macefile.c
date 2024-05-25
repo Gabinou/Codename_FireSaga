@@ -148,7 +148,7 @@ struct Target win_sota = {
 };
 
 /* -- Native Linux -- */
-struct Target sota_static = {
+struct Target sota = {
     .includes = ".,include,include/bars,include/menu,"
                 "include/popup,include/unit,"
                 "include/systems,names,names/popup,names/menu,"
@@ -172,7 +172,7 @@ struct Target sota_static = {
 };
 
 /* Main loop for hot reloading */
-struct Target sota = {
+struct Target sota_main = {
     .includes = ".,include,include/bars,include/menu,"
                 "include/popup,include/unit,"
                 "include/systems,names,names/popup,names/menu,"
@@ -328,8 +328,8 @@ int mace(int argc, char *argv[]) {
     /* - SotA - */
     // MACE_ADD_TARGET(sota);
     MACE_ADD_TARGET(sota);
+    MACE_ADD_TARGET(sota_main);
     MACE_ADD_TARGET(sota_dll);
-    MACE_ADD_TARGET(sota_static);
     MACE_ADD_TARGET(win_sota);
     MACE_ADD_TARGET(l2w_sota);
     MACE_SET_DEFAULT_TARGET(sota);
