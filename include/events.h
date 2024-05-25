@@ -2,7 +2,6 @@
 #define EVENTS_H
 
 #include "enums.h"
-#include "nmath.h"
 #include "tnecs.h"
 #include "fsm.h"
 #include "game/map.h"
