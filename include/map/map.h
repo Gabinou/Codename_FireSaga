@@ -77,9 +77,6 @@ struct Map {
     struct SDL_Texture *stack_attack;
     struct SDL_Texture *stack_danger;
 
-    struct Point boundsmin; /* Maybe useless with row_len and offset? */
-    struct Point boundsmax; /* Maybe useless with row_len and offset? */
-
     struct Point visiblemin;
     struct Point visiblemax;
 

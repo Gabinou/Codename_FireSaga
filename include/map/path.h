@@ -8,9 +8,6 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Map;
 
-/* --- Bounds --- */
-void Map_Bounds_Compute(struct Map *map);
-
 i32 *Map_Danger_Compute(struct Map *map, tnecs_world *w, tnecs_entity u);
 
 /* --- Dangermap --- */

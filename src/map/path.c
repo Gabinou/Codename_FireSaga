@@ -1,15 +1,6 @@
 
 #include "map/path.h"
 
-void Map_Bounds_Compute(struct Map *map) {
-    SDL_Log("%d %d", map->col_len, map->row_len);
-    SDL_assert((map->col_len != 0) || (map->row_len != 0));
-    map->boundsmin.x = 0;
-    map->boundsmax.x = map->col_len - 1;
-    map->boundsmin.y = 0;
-    map->boundsmax.y = map->row_len - 1;
-}
-
 void Map_Global_Danger_Reset(struct Map *map) {
     memset(map->global_dangermap, 0, sizeof(*map->global_dangermap) * map->row_len * map->col_len);
     map->shading_changed = true;

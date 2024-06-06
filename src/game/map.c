@@ -89,7 +89,9 @@ void Game_debugMap_Load(struct Game *sota) {
     /* - Updating game states - */
 
     // TODO read party from save json, not map
-    Game_Map_Load(sota, CHAPTER_TEST_V8);
+    // Game_Map_Load(sota, CHAPTER_TEST_V8);
+    // Game_Map_Load(sota, CHAPTER_TEST_V8);
+    Game_Map_Load(sota, CHAPTER_TEST_NES1);
 
     SDL_assert(DARR_NUM(sota->map->death_enemy) == 1);
     SDL_assert(DARR_NUM(sota->map->death_friendly) == 2);
@@ -275,8 +277,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         *position = Position_default;
         // SDL_memcpy(position, &Position_default, sizeof(Position));
         position->onTilemap = true;
-        Position_Bounds_Set(position, sota->map->boundsmin.x, sota->map->boundsmax.x,
-                            sota->map->boundsmin.y, sota->map->boundsmax.y);
+        Position_Bounds_Set(position, 0, sota->map->col_len, 0, sota->map->row_len);
         position->scale[0]      = (float)sota->map->tilesize[0];
         position->scale[1]      = (float)sota->map->tilesize[0];
         position->tilemap_pos.x = reinf->position.x;

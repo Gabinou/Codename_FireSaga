@@ -183,9 +183,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     SDL_assert(pos != NULL);
     memcpy(pos, &Position_default, sizeof(Position_default));
     pos->onTilemap = true;
-    Map_Bounds_Compute(sota->map);
-    Position_Bounds_Set(pos, sota->map->boundsmin.x, sota->map->boundsmax.x,
-                        sota->map->boundsmin.y, sota->map->boundsmax.y);
+    Position_Bounds_Set(pos, 0, sota->map->col_len, 0, sota->map->row_len);
     pos->scale[0] = (float)sota->settings.tilesize[0];
     pos->scale[1] = (float)sota->settings.tilesize[1];
     pos->tilemap_pos.x = in_pos.x;

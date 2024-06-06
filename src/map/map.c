@@ -80,8 +80,6 @@ struct Map Map_default = {
     .ipalette_shadow        = PALETTE_SOTA_SHADOW,
     .ipalette_enemy         = PALETTE_SOTA,
 
-    .boundsmin              = {  0,   0},
-    .boundsmax              = {255, 255},
     .turn                   = 1, /* Automatic loss if turn 255. */
     .reinf_loaded           = 0,
     .chapter                = 0,
@@ -636,16 +634,6 @@ void Map_writeJSON( void *input, cJSON *jmap) {
         cJSON_AddItemToObject(jreinforcement, "Equipment", jreinforcementeq);
         cJSON_AddItemToObject(jreinforcements, "Reinforcement", jreinforcement);
     }
-    cJSON *jbounds  = cJSON_CreateObject();
-    cJSON *jrow_min = cJSON_CreateNumber(map->boundsmin.x);
-    cJSON *jrow_max = cJSON_CreateNumber(map->boundsmax.x);
-    cJSON *jcol_min = cJSON_CreateNumber(map->boundsmin.y);
-    cJSON *jcol_max = cJSON_CreateNumber(map->boundsmax.y);
-    cJSON_AddItemToObject(jbounds, "row_min", jrow_min);
-    cJSON_AddItemToObject(jbounds, "row_max", jrow_max);
-    cJSON_AddItemToObject(jbounds, "col_min", jcol_min);
-    cJSON_AddItemToObject(jbounds, "col_max", jcol_max);
-    cJSON_AddItemToObject(jmap, "Bounds", jbounds);
     cJSON *jtilemap = cJSON_CreateObject();
     Array2D_writeJSON(jtilemap, map->tilemap, map->row_len, map->col_len);
     cJSON_AddItemToObject(jmap, "Tilemap", jtilemap);
@@ -745,16 +733,6 @@ void Map_readJSON(void *input,  cJSON *jmap) {
         }
         DARR_PUT(map->reinf_equipments, temp_equip);
     }
-
-    cJSON *jbounds      = cJSON_GetObjectItem(jmap, "Bounds");
-    cJSON *jrow_min     = cJSON_GetObjectItem(jbounds, "row_min");
-    cJSON *jrow_max     = cJSON_GetObjectItem(jbounds, "row_max");
-    cJSON *jcol_min     = cJSON_GetObjectItem(jbounds, "col_min");
-    cJSON *jcol_max     = cJSON_GetObjectItem(jbounds, "col_max");
-    map->boundsmin.x    = cJSON_GetNumberValue(jcol_min);
-    map->boundsmax.x    = cJSON_GetNumberValue(jcol_max);
-    map->boundsmin.y    = cJSON_GetNumberValue(jcol_min);
-    map->boundsmax.y    = cJSON_GetNumberValue(jcol_max);
 
     /* -- Read Map objects -- */
     SDL_Log("Read Map objects");
@@ -884,7 +862,6 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     Map_Tilemap_MapObjects(map);
 
     /* -- Misc. Computations -- */
-    Map_Bounds_Compute(map);
     Map_Tilemap_Surface_Init(map);
     Map_swappedTextures_All(map);
     _Map_Tilemap_Shader_Init(map);

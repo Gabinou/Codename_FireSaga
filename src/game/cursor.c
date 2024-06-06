@@ -34,11 +34,8 @@ void Game_cursorFocus_onMap(struct Game *sota) {
     struct Position *position = TNECS_GET_COMPONENT(sota->world, cursor, Position);
     SDL_assert(position != NULL);
     position->onTilemap = true;
-    Map_Bounds_Compute(sota->map);
 
-    struct Point min = sota->map->boundsmin;
-    struct Point max = sota->map->boundsmax;
-    Position_Bounds_Set(position, min.x, max.x, min.y, max.y);
+    Position_Bounds_Set(position, 0, sota->map->col_len, 0, sota->map->row_len);
 
     /* -- Placing cursor on map -- */
     i32 map_tilesize[2] = {sota->map->tilesize[0], sota->map->tilesize[1]};
