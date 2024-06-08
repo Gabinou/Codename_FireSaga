@@ -278,7 +278,10 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
         dstrect.x = PU_ICONL_X + 1;
         struct Inventory_item *item = Unit_Item_Strong(pu->unit, UNIT_HAND_STRONG);
         if ((pu->unit->equipped[UNIT_HAND_STRONG]) && (item->id > ITEM_NULL)) {
+            Weapon_Load(pu->unit->weapons_dtab, item->id);
             struct Weapon *weapon = DTAB_GET(pu->unit->weapons_dtab, item->id);
+            SDL_Log("");
+            SDL_assert(weapon != NULL);
             u16 type_ind = Weapon_TypeExp(weapon);
             srcrect.x = (type_ind % PU_WPN_ICON_ROWLEN) * PU_WPN_ICON_H;
             srcrect.y = (type_ind / PU_WPN_ICON_ROWLEN) * PU_WPN_ICON_W;
@@ -292,7 +295,9 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
         dstrect.x = PU_ICONR_X + 1;
         item = Unit_Item_Strong(pu->unit, UNIT_HAND_WEAK);
         if ((pu->unit->equipped[UNIT_HAND_WEAK]) && (item->id > ITEM_NULL)) {
+            Weapon_Load(pu->unit->weapons_dtab, item->id);
             struct Weapon *weapon = DTAB_GET(pu->unit->weapons_dtab, item->id);
+            SDL_assert(weapon != NULL);
             u16 type_ind = Weapon_TypeExp(weapon);
             srcrect.x = (type_ind % PU_WPN_ICON_ROWLEN) * PU_WPN_ICON_H;
             srcrect.y = (type_ind / PU_WPN_ICON_ROWLEN) * PU_WPN_ICON_W;
