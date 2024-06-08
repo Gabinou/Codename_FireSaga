@@ -83,6 +83,7 @@ extern struct Door Door_default;
 /* --- Constructors/Destructors --- */
 /* -- Tile -- */
 void Tile_Free(struct Tile *tile);
+b32 Tile_Valid_ID(u8 id);
 
 /* -- Mobj -- */
 void Mobj_Link_Init(struct Mobj_Link *mobj);

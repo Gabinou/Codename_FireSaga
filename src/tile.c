@@ -269,3 +269,8 @@ void Chest_writeJSON( void *input, cJSON *jchest) {
     cJSON_AddItemToObject(jchest, "item", jitem);
     cJSON *jmobj = cJSON_CreateObject();
 }
+
+b32 Tile_Valid_ID(u8 id) {
+    return ((id < TILE_ID_MAX) && (id < TILE_END) && (id > TILE_START));
+}
+

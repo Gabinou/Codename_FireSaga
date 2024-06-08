@@ -22,6 +22,7 @@ void Map_Tiles_Load(struct Map *map) {
     map->tiles_id   = DARR_INIT(map->tiles_id, i32, 64);
 
     for (size_t i = 0; i < DARR_NUM(map->tilesindex); i++) {
+
         /* -- Get tile_id -- */
         i32 tile_id = map->tilesindex[i];
         /* - If above TILE_ID_MAX, tile_id encodes the tile sprite too - */
@@ -42,6 +43,7 @@ void Map_Tiles_Load(struct Map *map) {
         s8_free(&filename);
         SDL_free(temp_tile);
     }
+    SDL_assert(DARR_NUM(map->tiles_id) == DARR_NUM(map->tilesindex));
 }
 
 void Map_Tilesets_Free(struct Map *map) {
@@ -143,7 +145,9 @@ void Map_Tilemap_MapObjects(struct Map *map) {
 }
 
 void Map_Tilemap_Chests(struct Map *map) {
-    SDL_assert(map->chest_num > 0);
+    if (map->chest_num <= 0)
+        return;
+
     for (size_t i = 0; i < map->chest_num; i++) {
         struct Chest    *chest  = TNECS_GET_COMPONENT(map->world, map->chests_ent[i], Chest);
         struct Position *pos    = TNECS_GET_COMPONENT(map->world, map->chests_ent[i], Position);
@@ -157,7 +161,9 @@ void Map_Tilemap_Chests(struct Map *map) {
 }
 
 void Map_Tilemap_Breakables(struct Map *map) {
-    SDL_assert(map->breakable_num > 0);
+    if (map->breakable_num <= 0)
+        return;
+
     for (size_t i = 0; i < map->breakable_num; i++) {
         struct Breakable *breaka;
         breaka = TNECS_GET_COMPONENT(map->world, map->breakables_ent[i], Breakable);
@@ -172,11 +178,12 @@ void Map_Tilemap_Breakables(struct Map *map) {
         i32 tile = breaka->tile + TILE_DOOR * TILE_DIVISOR;
         map->tilemap[y * map->col_len + x] = tile;
     }
-
 }
 
 void Map_Tilemap_Doors(struct Map *map) {
-    SDL_assert(map->door_num > 0);
+    if (map->door_num <= 0)
+        return;
+
     for (size_t i = 0; i < map->door_num; i++) {
         struct Door *door = TNECS_GET_COMPONENT(map->world, map->doors_ent[i], Door);
         struct Position *pos = TNECS_GET_COMPONENT(map->world, map->doors_ent[i], Position);
@@ -189,10 +196,10 @@ void Map_Tilemap_Doors(struct Map *map) {
     }
 }
 
-void Map_Tileset_Stack_Add(struct Map *map) {
-    SDL_assert(map->tilesindex);
-    DARR_PUT(map->tilesindex, TILE_ICONS);
-}
+// void Map_Tileset_Stack_Add(struct Map *map) {
+//     SDL_assert(map->tilesindex);
+//     DARR_PUT(map->tilesindex, TILE_ICONS);
+// }
 
 void Map_Tilesize_Set(struct Map *map, i32 width, i32 height) {
     map->tilesize[0] = width;
@@ -226,18 +233,26 @@ void Map_Unique_TilesindexfromTilemap(struct Map *map) {
 }
 
 u8 Map_Tile_Order(struct Map *map, i32 tile) {
+    SDL_assert(Tile_Valid_ID(tile));
     SDL_assert(tile > TILE_START);
     SDL_assert(map->tiles_id);
     SDL_assert(map->tiles);
     SDL_assert(DARR_NUM(map->tiles) == DARR_NUM(map->tiles_id));
+    SDL_assert(DARR_NUM(map->tiles)     > 0);
+    SDL_assert(DARR_NUM(map->tiles_id)  > 0);
     u8 out = UINT8_MAX;
-    for (u8 i = 0; i < DARR_NUM(map->tiles); i++) {
+    SDL_Log("%d", TILE_BUILDINGS);
+    for (u8 i = 0; i < DARR_NUM(map->tiles_id); i++) {
+        SDL_Log("map->tiles_id[i] %d %d", map->tiles_id[i], tile);
         if (map->tiles_id[i] == tile) {
             out = i;
             break;
         }
     }
-    SDL_assert(out != UINT8_MAX);
+    if (out >= DARR_NUM(map->tiles)) {
+        SDL_LogError(SOTA_LOG_SYSTEM, "Tile %d not found in map", tile, global_tilenames[tile]);
+        exit(1);
+    }
     return (out);
 }
 

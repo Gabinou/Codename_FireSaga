@@ -681,7 +681,6 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     cJSON *jtiles = cJSON_GetObjectItem(jmap, "tiles");
     cJSON *jid, *jtile;
     _Map_Tilesindex_Init(map);
-    Map_Tileset_Stack_Add(map);
     cJSON_ArrayForEach(jtile, jtiles) {
         jid = cJSON_GetObjectItem(jtile, "id");
         DARR_PUT(map->tilesindex, cJSON_GetNumberValue(jid));
