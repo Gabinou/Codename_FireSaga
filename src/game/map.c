@@ -90,11 +90,9 @@ void Game_debugMap_Load(struct Game *sota) {
 
     // TODO read party from save json, not map
     // Game_Map_Load(sota, CHAPTER_TEST_V8);
-    // Game_Map_Load(sota, CHAPTER_TEST_V8);
+    // SDL_assert(DARR_NUM(sota->map->death_enemy) == 1);
+    // SDL_assert(DARR_NUM(sota->map->death_friendly) == 2);
     Game_Map_Load(sota, CHAPTER_TEST_NES1);
-
-    SDL_assert(DARR_NUM(sota->map->death_enemy) == 1);
-    SDL_assert(DARR_NUM(sota->map->death_friendly) == 2);
 
     // TODO: load from json file
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Loading in test party\n");

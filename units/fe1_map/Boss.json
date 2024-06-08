@@ -1,14 +1,13 @@
 {
 	"Unit":	{
-		"id":	2012,
-		"Name":	"Corsair",
+		"id":	1008,
+		"Name":	"Gazzak",
 		"Sex":	true,
 		"BaseExp":	0,
-		"Exp":	0,
-		"CurrentHP":	1,
+		"Exp":	400,
+		"CurrentHP":	27,
 		"Class":	"Corsair",
 		"Class Index":	12,
-		"AI": "aggressive.json",
 		"Bases":	{
 			"hp":	27,
 			"str":	4,
@@ -23,14 +22,14 @@
 			"prof":	0
 		},
 		"Stats":	{
-			"hp":	40,
-			"str":	18,
+			"hp":	27,
+			"str":	4,
 			"mag":	5,
-			"agi":	15,
-			"dex":	8,
-			"luck":	10,
-			"def":	8,
-			"res":	5,
+			"agi":	7,
+			"dex":	6,
+			"luck":	8,
+			"def":	4,
+			"res":	0,
 			"con":	5,
 			"move":	5,
 			"prof":	0
