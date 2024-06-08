@@ -300,7 +300,7 @@ void Mace_Arguments_Free(struct Mace_Arguments *args);
 enum MACE {
     MACE_DEFAULT_TARGET_LEN     =    8,
     MACE_MAX_COMMANDS           =    8,
-    MACE_MAX_ITERATIONS         =  128,
+    MACE_MAX_ITERATIONS         = 1024,
     MACE_DEFAULT_OBJECT_LEN     =   16,
     MACE_DEFAULT_OBJECTS_LEN    =  128,
     MACE_CWD_BUFFERSIZE         =  128,
@@ -485,9 +485,9 @@ b32 s8equal(s8 *s1, s8 *s2) {
 
 /* --- mace_build --- */
 /* -- linking -- */
-void mace_link_executable(struct Target *target);
-void mace_link_static_library(struct Target *target);
-void mace_link_dynamic_library(struct Target *target);
+void mace_link_executable(      struct Target *target);
+void mace_link_static_library(  struct Target *target);
+void mace_link_dynamic_library( struct Target *target);
 
 typedef void (*mace_link_t)(struct Target *);
 mace_link_t mace_link[MACE_TARGET_NUM - 1] = {mace_link_executable, mace_link_static_library, mace_link_dynamic_library};
@@ -4314,11 +4314,8 @@ char *mace_args2line(char *const arguments[]) {
         argline[num++] = ' ';
         i++;
     }
-
-    while ((num + 1) > len) {
-        argline = realloc(argline, len * 2 * sizeof(*argline));
-        memset(argline + len, 0, len);
-        len *= 2;
+    if (i == MACE_MAX_ITERATIONS) {
+        printf("Warning! Max iterations reached. Truncating argv.");
     }
     argline[num] = '\0';
     return (argline);
@@ -4434,10 +4431,8 @@ void mace_link_dynamic_library(struct Target *target) {
     /* -- argv link_flags -- */
     if ((target->_argc_link_flags > 0) && (target->_argv_link_flags != NULL)) {
         for (int i = 0; i < target->_argc_link_flags; i++) {
-            printf("argc %d %d \n", argc, arg_len);
             argv = mace_argv_grow(argv, &argc, &arg_len);
             argv[argc++] = target->_argv_link_flags[i];
-            printf("argc %d %d argv %s \n", arg_len, argc, target->_argv_link_flags[i]);
         }
     }
 
@@ -4594,6 +4589,12 @@ void mace_link_executable(struct Target *target) {
         }
     }
 
+    /* -- argv config -- */
+    argv = mace_argv_grow(argv, &argc, &arg_len);
+    int config_startc = argc;
+    mace_argv_add_config(target, &argv, &argc, &arg_len);
+    int config_endc = argc;
+
     /* -- argv -L flag for build_dir -- */
     argv = mace_argv_grow(argv, &argc, &arg_len);
     size_t build_dir_len = strlen(build_dir);
@@ -4603,12 +4604,9 @@ void mace_link_executable(struct Target *target) {
     int ldirflag_i   = argc++;
     argv[ldirflag_i] = ldirflag;
 
-    /* -- argv config -- */
-    int config_startc = argc;
-    mace_argv_add_config(target, &argv, &argc, &arg_len);
-    int config_endc = argc;
+// #include <limits.h>
 
-    /* --- Actual linking --- */
+    /* --- Actual linking  --- */
     mace_exec_print(argv, argc);
     if (!dry_run) {
         pid_t pid = MACE_EXEC(argv[0], argv);
@@ -5416,7 +5414,7 @@ bool mace_circular_deps(struct Target *targs, size_t len) {
 
             /* Dependency is self */
             if (i == j) {
-                printf("Warning: Target '%s' depends on itself.\n", targs[i]._name);
+                printf("Warning! Target '%s' depends on itself.\n", targs[i]._name);
                 continue;
             }
 
