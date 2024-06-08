@@ -73,6 +73,8 @@ void Unit_setClassind(struct Unit *u, i8 class_i);
 struct Unit_stats Unit_getStats(struct Unit *u);
 
 struct Weapon   *Unit_Get_Equipped_Weapon(  struct Unit *unit, b32 hand);
+// TODO: Unit equipped weapon in strong space!
+int Unit_Equipped_Strong(struct Unit *u, int i); /* strong space */
 
 /* --- Items --- */
 /* -- Deplete: decrease durability -- */

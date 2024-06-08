@@ -163,7 +163,7 @@ struct Unit Unit_Nibal_make(void) {
         .show_danger    = false,
 
         .computed_stats = {{0, 0, 0}, {0, 0, 0}, 0, 0, 0, 0, 0, 0, 0, {-1, -1}},
-        .equipped       = {-1, -1},
+        .equipped       = {false, false},
         .hands          = {true, true},
 
         .mount          = NULL,
