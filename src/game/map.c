@@ -236,10 +236,11 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
             unit->_equipment[j] = sota->map->reinf_equipments[i][j];
         }
 
-        if (unit->_equipment[UNIT_HAND_RIGHT].id > 0)
+        if (Unit_canEquip(unit, unit->_equipment[UNIT_HAND_RIGHT].id))
             Unit_Equip_inHand(unit, UNIT_HAND_RIGHT);
-        if (unit->_equipment[UNIT_HAND_LEFT].id > 0)
+        if (Unit_canEquip(unit, unit->_equipment[UNIT_HAND_LEFT].id))
             Unit_Equip_inHand(unit, UNIT_HAND_LEFT);
+
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         SDL_assert(unit->status_queue != NULL);
 

@@ -134,7 +134,12 @@ void Weapon_Reload(struct dtab *weapons_dtab, i16 id) {
 }
 
 void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
-    SDL_assert(Weapon_ID_isValid(id));
+    if (!Weapon_ID_isValid(id)) {
+        SDL_LogError(SOTA_LOG_SYSTEM, "Weapon ID '%d' invalid", id);
+        SDL_assert(Weapon_ID_isValid(id));
+        exit(1);
+    }
+
     SDL_assert(weapons_dtab != NULL);
 
     /* -- Skip is already loaded -- */
