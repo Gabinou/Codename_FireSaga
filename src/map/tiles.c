@@ -196,11 +196,6 @@ void Map_Tilemap_Doors(struct Map *map) {
     }
 }
 
-// void Map_Tileset_Stack_Add(struct Map *map) {
-//     SDL_assert(map->tilesindex);
-//     DARR_PUT(map->tilesindex, TILE_ICONS);
-// }
-
 void Map_Tilesize_Set(struct Map *map, i32 width, i32 height) {
     map->tilesize[0] = width;
     map->tilesize[1] = height;
