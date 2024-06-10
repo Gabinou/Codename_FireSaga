@@ -1,10 +1,10 @@
 {
     "Party": {
         "filenames":  [
-            "units/debug_map/Erwin.json",   
-            "units/debug_map/Silou.json",   
-            "units/debug_map/Servil.json",   
-            "units/debug_map/Kiara.json"   
+            "units/fe1_map/fe1_party/Erwin.json",   
+            "units/fe1_map/fe1_party/Silou.json",   
+            "units/fe1_map/fe1_party/Servil.json",   
+            "units/fe1_map/fe1_party/Kiara.json"   
         ]
     }
 }
