@@ -52,21 +52,15 @@
 		},
 		"Items":	{
 			"Item":	{
-				"name":	"Empty",
+				"name":	"Iron Lance",
 				"Infused":	-1,
-				"id":	-1,
+				"id":	102,
 				"used":	0
 			},
 			"Item":	{
-				"name":	"Empty",
+				"name":	"Wooden Shield",
 				"Infused":	-1,
-				"id":	-1,
-				"used":	0
-			},
-			"Item":	{
-				"name":	"Empty",
-				"Infused":	-1,
-				"id":	-1,
+				"id":	402,
 				"used":	0
 			},
 			"Item":	{

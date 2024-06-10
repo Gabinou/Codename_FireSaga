@@ -1,51 +1,57 @@
 {
 	"Unit":	{
-		"id":	2012,
-		"Name":	"Corsair",
-		"Sex":	true,
-		"BaseExp":	0,
-		"Exp":	0,
-		"CurrentHP":	21,
-		"Class":	"Corsair",
-		"Class Index":	12,
-		"Bases":	{
-			"hp":	21,
-			"str":	4,
-			"mag":	0,
-			"agi":	2,
-			"dex":	1,
-			"luck":	0,
-			"def":	4,
-			"res":	0,
-			"con":	5,
-			"move":	5,
-			"prof":	0
-		},
+		"id":	3,
+		"Name":	"Silou",
+		"Sex":	false,
+		"BaseExp":	400,
+		"Exp":	400,
+		"Handedness":	 1,
+		"CurrentHP": 	1,
+		"Class":	"Mage",
+		"Class Index":	20,
+		"Supports": ["Erwin", "Perygnon"], 
+		"Support Type": "Wild", 
 		"Stats":	{
-			"hp":	21,
+			"hp":	20,
 			"str":	4,
-			"mag":	0,
-			"agi":	2,
-			"dex":	1,
-			"luck":	0,
+			"mag":	5,
+			"agi":	7,
+			"dex":	6,
+			"fth":	5,
+			"luck":	8,
 			"def":	4,
-			"res":	0,
+			"res":	6,
 			"con":	5,
 			"move":	5,
-			"prof":	0
+			"prof":	6
+		},		
+		"Bases":	{
+			"hp":	20,
+			"str":	4,
+			"mag":	5,
+			"agi":	7,
+			"dex":	6,
+			"luck":	8,
+			"fth":	5,
+			"def":	4,
+			"res":	6,
+			"con":	5,
+			"move":	5,
+			"prof":	6
 		},
 		"Caps":	{
 			"hp":	48,
-			"str":	14,
+			"str":	24,
 			"mag":	25,
 			"agi":	32,
 			"dex":	34,
+			"fth":	50,
 			"luck":	28,
 			"def":	19,
 			"res":	40,
-			"con":	15,
-			"move":	0,
-			"prof":	0
+			"con":	17,
+			"move":	12,
+			"prof":	30
 		},
 		"Growths":	{
 			"hp":	60,
@@ -53,8 +59,8 @@
 			"mag":	20,
 			"agi":	60,
 			"dex":	70,
+			"fth":	20,
 			"luck":	40,
-			"fth":	40,
 			"def":	30,
 			"res":	20,
 			"con":	10,
@@ -65,39 +71,33 @@
 		},
 		"Items":	{
 			"Item":	{
-				"name":	"Empty",
+				"name":	"Wooden Shield",
 				"Infused":	-1,
-				"id":	-1,
+				"id":	402,
 				"used":	0
 			},
 			"Item":	{
-				"name":	"Empty",
+				"name":	"Fighting Stick",
 				"Infused":	-1,
-				"id":	-1,
+				"id":	101,
 				"used":	0
 			},
 			"Item":	{
-				"name":	"Empty",
+				"name":	"Ball lightning",
 				"Infused":	-1,
-				"id":	-1,
+				"id": 608,
 				"used":	0
 			},
 			"Item":	{
-				"name":	"Empty",
+				"name":	"Silverlight Spear",
 				"Infused":	-1,
-				"id":	-1,
+				"id":	805,
 				"used":	0
 			},
 			"Item":	{
-				"name":	"Empty",
+				"name":	"Leather Shield",
 				"Infused":	-1,
-				"id":	-1,
-				"used":	0
-			},
-			"Item":	{
-				"name":	"Empty",
-				"Infused":	-1,
-				"id":	-1,
+				"id":	404,
 				"used":	0
 			},
 			"Item":	{

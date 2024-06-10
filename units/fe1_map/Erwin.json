@@ -1,39 +1,41 @@
 {
 	"Unit":	{
-		"id":	2012,
-		"Name":	"Corsair",
+		"id":	1,
+		"Name":	"Erwin",
 		"Sex":	true,
 		"BaseExp":	0,
 		"Exp":	0,
-		"CurrentHP":	21,
-		"Class":	"Corsair",
-		"Class Index":	12,
-		"Bases":	{
-			"hp":	21,
-			"str":	4,
-			"mag":	0,
-			"agi":	2,
-			"dex":	1,
-			"luck":	0,
-			"def":	4,
-			"res":	0,
-			"con":	5,
-			"move":	5,
-			"prof":	0
-		},
+		"CurrentHP":	17,
+		"Class":	"Standard Bearer",
+		"Class Index":	18,
 		"Stats":	{
-			"hp":	21,
-			"str":	4,
-			"mag":	0,
-			"agi":	2,
-			"dex":	1,
-			"luck":	0,
+			"hp":	17,
+			"str":	6,
+			"mag":	2,
+			"agi":	7,
+			"dex":	7,
+			"luck":	7,
 			"def":	4,
-			"res":	0,
-			"con":	5,
+			"res":	5,
+			"con":	6,
 			"move":	5,
-			"prof":	0
+			"prof":	4
 		},
+		"Bases":	{
+			"hp":	17,
+			"str":	8,
+			"mag":	0,
+			"agi":	5,
+			"dex":	6,
+			"luck":	8,
+			"fth":	12,
+			"def":	6,
+			"res":	1,
+			"con":	6,
+			"move":	6,
+			"prof":	3
+		},
+
 		"Caps":	{
 			"hp":	48,
 			"str":	14,
@@ -44,8 +46,8 @@
 			"def":	19,
 			"res":	40,
 			"con":	15,
-			"move":	0,
-			"prof":	0
+			"move":	7,
+			"prof":	20
 		},
 		"Growths":	{
 			"hp":	60,
@@ -53,8 +55,8 @@
 			"mag":	20,
 			"agi":	60,
 			"dex":	70,
-			"luck":	40,
 			"fth":	40,
+			"luck":	40,
 			"def":	30,
 			"res":	20,
 			"con":	10,
@@ -65,27 +67,21 @@
 		},
 		"Items":	{
 			"Item":	{
-				"name":	"Empty",
+				"name":	"Fleuret",
 				"Infused":	-1,
-				"id":	-1,
+				"id":	4,
 				"used":	0
 			},
 			"Item":	{
-				"name":	"Empty",
+				"name":	"Kitchen knife",
 				"Infused":	-1,
-				"id":	-1,
+				"id":	2,
 				"used":	0
 			},
 			"Item":	{
-				"name":	"Empty",
+				"name":	"Pot lid",
 				"Infused":	-1,
-				"id":	-1,
-				"used":	0
-			},
-			"Item":	{
-				"name":	"Empty",
-				"Infused":	-1,
-				"id":	-1,
+				"id":	401,
 				"used":	0
 			},
 			"Item":	{

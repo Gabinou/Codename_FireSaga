@@ -1,10 +1,13 @@
 {
     "Party": {
         "filenames":  [
-            "units/fe1_map/fe1_party/Erwin.json",   
-            "units/fe1_map/fe1_party/Silou.json",   
-            "units/fe1_map/fe1_party/Servil.json",   
-            "units/fe1_map/fe1_party/Kiara.json"   
+            "units/fe1_map/Erwin.json",   
+            "units/fe1_map/Silou.json",   
+            "units/fe1_map/Servil.json",   
+            "units/fe1_map/Kiara.json",   
+            "units/fe1_map/Kakwi.json",   
+            "units/fe1_map/Teharon.json",   
+            "units/fe1_map/Chasse.json"   
         ]
     }
 }
