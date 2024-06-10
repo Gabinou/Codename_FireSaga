@@ -25,6 +25,12 @@ void Game_Map_Load(struct Game *sota, i16 in_map_index) {
     // Map_dArrays_Init(sota->map, &sota->settings);
     jsonio_readJSON(mapFilenames[in_map_index], sota->map);
     // read_json sets the row_len and col_len necessary for dArrays_Init
+
+    /* Set initial camera position */
+    sota->camera.offset.x   = sota->map->camera.offset.x;
+    sota->camera.offset.y   = sota->map->camera.offset.y;
+    sota->camera.zoom       = sota->map->camera.zoom;
+
     sota->map->update = true;
 }
 

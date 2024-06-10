@@ -198,6 +198,8 @@ struct Map {
     struct Map_condition *turn_end;
     struct Map_condition *waits_friendly;
 
+    struct Camera camera;
+
     /* --- MAP SWITCHES --- */
     b32 win                : 1;
     b32 loss               : 1;

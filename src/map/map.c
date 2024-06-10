@@ -30,6 +30,10 @@ struct Map Map_default = {
     .tilemap_frame_factor   = 0.15f,
     .tilemap_frame_counter  = UINT8_MAX - 1, /* map renders on first frame */
 
+    .camera.offset.x = DEFAULT_CAMERA_XOFFSET,
+    .camera.offset.y = DEFAULT_CAMERA_YOFFSET,
+    .camera.zoom     = DEFAULT_CAMERA_ZOOM,
+
     .tilemap_shader         = NULL,
     .tileset_surfaces       = NULL,
     .tileset_textures       = NULL,
@@ -653,6 +657,19 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     cJSON *jrow_len     = cJSON_GetObjectItem(jmap_size, "row_len");
     cJSON *jcol_len     = cJSON_GetObjectItem(jmap_size, "col_len");
 
+    cJSON *jcamera      = cJSON_GetObjectItem(jmap, "Camera");
+    cJSON *joffset      = cJSON_GetObjectItem(jcamera, "offset");
+    cJSON *jzoom        = cJSON_GetObjectItem(jcamera, "zoom");
+
+    SDL_assert(cJSON_IsArray(joffset));
+    SDL_assert(cJSON_GetArraySize(joffset) == TWO_D);
+
+    map->camera.offset.x = cJSON_GetNumberValue(cJSON_GetArrayItem(joffset, 0));
+    map->camera.offset.y = cJSON_GetNumberValue(cJSON_GetArrayItem(joffset, 1));
+    map->camera.zoom     = cJSON_GetNumberValue(jzoom);
+
+
+    map->chapter = cJSON_GetNumberValue(jchapter);
     map->chapter = cJSON_GetNumberValue(jchapter);
     map->row_len = cJSON_GetNumberValue(jrow_len);
     map->col_len = cJSON_GetNumberValue(jcol_len);
