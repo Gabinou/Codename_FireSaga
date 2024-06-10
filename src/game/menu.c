@@ -117,8 +117,8 @@ void Game_DeploymentMenu_Create(struct Game *sota) {
     SDL_assert(dm != NULL);
     mc->data = dm;
 
-    dm->pos.x       = sota->settings.res.x / 3;
-    dm->pos.y       = sota->settings.res.y / 3;
+    dm->pos.x       = sota->settings.res.x / 10;
+    dm->pos.y       = sota->settings.res.y / 4;
     mc->visible     = true;
     mc->elem_links  = dm_links;
     mc->elem_pos    = dm_elem_pos;
