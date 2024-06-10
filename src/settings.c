@@ -36,7 +36,8 @@ struct Settings Settings_default = {
 
     },
     .enemy_turn_settings = {
-        .pause_post_reinforcement = 2ULL * SOTA_ns / 2ULL,
+        .pause_post_reinforcement   = SOTA_ns,
+        .pause_post_move            = SOTA_ns / 4ULL,
     },
 
     .music_volume   = MIX_MAX_VOLUME / 2,

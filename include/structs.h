@@ -84,6 +84,7 @@ struct Map_settings {
 
 struct Enemy_Turn_settings {
     u64 pause_post_reinforcement;
+    u64 pause_post_move;
 };
 
 struct Settings {
@@ -366,6 +367,7 @@ typedef struct Timer {
     u64 frame_count;
     b32 reset; /* reset if above time. */
     b32 paused;
+    u64 limit_ns;
 } Timer;
 extern struct Timer Timer_default;
 

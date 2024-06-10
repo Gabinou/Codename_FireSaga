@@ -78,12 +78,13 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     /* --- AI CONTROL --- */
 
     /* -- Reinforcements timer: pause before moving units -- */
+    /* -- TODO: Rename to AI timer? */
     // TODO: Animate reinforcements
     if (sota->reinf_timer != TNECS_NULL) {
         struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->reinf_timer, Timer);
         SDL_assert(timer != NULL);
         u64 limit = sota->settings.enemy_turn_settings.pause_post_reinforcement;
-        if (timer->time_ns <= limit)
+        if (timer->time_ns <= timer->limit_ns)
             return;
 
         tnecs_entity_destroy(sota->world, sota->reinf_timer);
@@ -166,6 +167,7 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
         sota->reinf_timer   = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer);
         struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->reinf_timer, Timer);
         *timer = Timer_default;
+        timer->limit_ns = sota->settings.enemy_turn_settings.pause_post_move;
     }
 }
 

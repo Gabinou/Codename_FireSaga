@@ -26,6 +26,7 @@ struct Timer Timer_default = {
     .frame_count  = 0,
     .reset        = false,
     .paused       = false,
+    .limit_ns     = SOTA_ns,
 };
 
 struct Range Range_default = {.min = SOTA_MAX_RANGE, .max = SOTA_MIN_RANGE};
