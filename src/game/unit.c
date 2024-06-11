@@ -156,6 +156,8 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
 
     unit->items_dtab   = sota->items_dtab;
     unit->weapons_dtab = sota->weapons_dtab;
+    SDL_assert(unit->mvt_type > UNIT_MVT_START);
+
     struct Inventory_item *item = Unit_Item_Strong(unit, UNIT_HAND_WEAK);
     if (item->id > ITEM_NULL)
         Unit_Equip_inHand(unit, UNIT_HAND_WEAK);

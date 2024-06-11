@@ -303,7 +303,7 @@ float *Map_fCostmap_Movement_Compute(struct Map *map, tnecs_world *world,
 
 i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_world *world,
                                   tnecs_entity unit_ent) {
-    SDL_assert(map->unitmap     != NULL);
+    SDL_assert(map->unitmap != NULL);
     SDL_assert(map->costmap != NULL);
 
     /* - Skip if previously computed - */
@@ -316,11 +316,11 @@ i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_world *world,
     struct Unit *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     struct Tile *temp_tile;
     i32 tile_ind = 0;
+    SDL_assert(unit->mvt_type > UNIT_MVT_START);
     i8 unit_movetype = unit->mvt_type;
     u8 army = unit->army;
 
     /* - Compute cost of each tile - */
-    SDL_assert(unit_movetype > UNIT_MVT_START);
     for (size_t i = 0; i < (map->col_len * map->row_len); i++) {
 #ifdef UNITS_IGNORE_TERRAIN
         /* - All units fly - */

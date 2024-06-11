@@ -1,6 +1,7 @@
 
 #include "unit/unit.h"
 
+// TODO: use `names/classes.h ` to fill
 int  class_mvt_types[UNIT_CLASS_END] = {
     /* NULL              */ UNIT_MVT_FOOT_SLOW,
     /* VILLAGER          */ UNIT_MVT_FOOT_SLOW,
@@ -54,6 +55,8 @@ int  class_mvt_types[UNIT_CLASS_END] = {
     /* NULL              */ UNIT_MVT_MAGES,
     /* VESTAL            */ UNIT_MVT_MAGES,
     /* WOLF              */ UNIT_MVT_FOOT_FAST,
+    /* GLADIATORLEGIONARY*/ UNIT_MVT_FOOT_SLOW,
+    /* GLADIATOR         */ UNIT_MVT_FOOT_FAST,
 };
 
 struct Unit Unit_default = {
