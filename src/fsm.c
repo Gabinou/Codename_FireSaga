@@ -449,7 +449,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     PopUp_Unit_Set(popup_unit, sota);
     SDL_assert(popup_unit->unit != NULL);
     popup->visible = true;
-    struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    const struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     // TODO: use struct Point everywhere, replace .x = with struct equality
     struct Point pos = cursor_pos->tilemap_pos;
 
@@ -543,7 +543,7 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
     SDL_assert(popup_ent > TNECS_NULL);
 
     /* -- Making unit NULL -- */
-    struct Position *cursor_pos;
+    const struct Position *cursor_pos;
     cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     struct Point pos    = cursor_pos->tilemap_pos;
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
@@ -705,7 +705,7 @@ void fsm_eCncl_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity canceller) {
 
     /* 1. Dehover candidate defendant */
     SDL_assert(sota->entity_cursor != TNECS_NULL);
-    struct Position *cursor_pos;
+    const struct Position *cursor_pos;
     cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
 
     struct Point pos = cursor_pos->tilemap_pos;
@@ -759,7 +759,7 @@ void fsm_eCncl_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity canceller) {
 
     /* Reset cursor lastpos to current pos */
     // prevents cursor dehovering from far away
-    struct Position *cursor_pos;
+    const struct Position *cursor_pos;
     cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     sota->cursor_lastpos.x = cursor_pos->tilemap_pos.x;
     sota->cursor_lastpos.y = cursor_pos->tilemap_pos.y;
@@ -903,7 +903,7 @@ void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
 
     // SDL_assert(sota->moved_direction > -1);
     SDL_assert(sota->entity_cursor != TNECS_NULL);
-    struct Position *cursor_pos;
+    const struct Position *cursor_pos;
     cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
 
     struct Point pos          = cursor_pos->tilemap_pos;
@@ -932,7 +932,7 @@ void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
 void fsm_eCrsMvd_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
                                    struct Point *cursor_move) {
 
-    struct Position *cursor_pos;
+    const struct Position *cursor_pos;
     cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     struct Point pos = cursor_pos->tilemap_pos;
     // SDL_assert(sota->moved_direction > -1);
@@ -984,9 +984,7 @@ void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game  *sota, tnecs_entity mover_entity,
     struct DeploymentMenu *dm = mc->data;
     SDL_assert(dm != NULL);
     i32 start_pos_i = DeploymentMenu_Map_StartPos(dm, sota->candidate);
-    SDL_Log("start_pos_i %d", start_pos_i);
     struct Point next_pos = sota->map->start_pos[start_pos_i];
-    SDL_Log("next_pos %d %d", next_pos.x, next_pos.y);
     Position_Pos_Set(cursor_pos, next_pos.x, next_pos.y);
 
     // Always on tilemap
@@ -1117,7 +1115,7 @@ void fsm_eAcpt_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity canceller) {
 
 void fsm_eAcpt_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
     SDL_assert(sota->entity_cursor);
-    struct Position *cursor_pos;
+    const struct Position *cursor_pos;
     cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     SDL_assert(cursor_pos != NULL);
     struct Point pos = cursor_pos->tilemap_pos;
@@ -1216,7 +1214,8 @@ void fsm_eAcpt_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity accepter_entit
     }
 
     /* - Get selected unit on tile - */
-    struct Position *accepter_position, *selected_pos;
+    const struct Position *accepter_position;
+    struct Position *selected_pos;
     struct Unit *unit       = TNECS_GET_COMPONENT(sota->world, unit_ent,            Unit);
     selected_pos            = TNECS_GET_COMPONENT(sota->world, unit_ent,            Position);
     accepter_position       = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);

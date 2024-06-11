@@ -146,7 +146,7 @@ struct Point PopUp_Tile_Center_Prot(struct PopUp_Tile *pt, char *numbuff) {
 /* --- Setters --- */
 void PopUp_Tile_Set(struct PopUp_Tile *popup_tile, struct Game *sota) {
     SDL_assert(popup_tile != NULL);
-    struct Position *cursor_position;
+    const struct Position *cursor_position;
     cursor_position = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
 
     /* -- Give tile to popup_tile -- */

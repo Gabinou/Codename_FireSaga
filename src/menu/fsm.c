@@ -1174,6 +1174,21 @@ void fsm_eStart_sPrep_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
     /* -- Disable palette map during turn transition -- */
     Map_Palettemap_Autoset(sota->map, 0);
 
+    /* -- Set cursor position to first starting position -- */
+    SDL_assert(sota                     != NULL);
+    SDL_assert(sota->entity_cursor      != TNECS_NULL);
+    struct Position *position = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    SDL_assert(position                 != NULL);
+    SDL_assert(sota->map                != NULL);
+    SDL_assert(sota->map->start_pos     != NULL);
+    SDL_assert(DARR_NUM(sota->map->start_pos) > 0);
+    Position_Pos_Set(position, sota->map->start_pos[0].x, sota->map->start_pos[0].y);
+   
+    // Game_cursorFocus_onMap resets position to cursor_lastpos;
+    // TODO: bool flag to disable Game_cursorFocus_onMap resetting cursor pos.
+    sota->cursor_lastpos.x = sota->map->start_pos[0].x;
+    sota->cursor_lastpos.y = sota->map->start_pos[0].y;
+
     /* -- Start turn transition -- */
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
 }

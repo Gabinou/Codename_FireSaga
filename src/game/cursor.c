@@ -52,11 +52,9 @@ void Game_cursorFocus_onMap(struct Game *sota) {
         tilemap_pos.y = int_inbounds(tilemap_pos.y, 0, row_len - 1);
         position->tilemap_pos.x = tilemap_pos.x;
         position->tilemap_pos.y = tilemap_pos.y;
+        Position_Pos_Set(position, tilemap_pos.x, sota->cursor_lastpos.y);
     } else if (sota->iscursor) {
-        int lastposx = sota->cursor_lastpos.x;
-        int lastposy = sota->cursor_lastpos.y;
-        position->tilemap_pos.x = int_inbounds(lastposx, 0, col_len - 1);
-        position->tilemap_pos.y = int_inbounds(lastposy, 0, row_len - 1);
+        Position_Pos_Set(position, sota->cursor_lastpos.x, sota->cursor_lastpos.y);
     }
 
     sota->cursor_lastpos.x = position->tilemap_pos.x;

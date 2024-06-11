@@ -322,7 +322,6 @@ void Animate_Map_Animation(tnecs_system_input *input) {
         size_t         typeflag_id = input->entity_typeflag_id;
         tnecs_entity   entity      = world->entities_bytype[typeflag_id][order];
 
-        // Map_TurnTransition_Animate(sota, entity, map_anim, timer);
         map_anim->anim(sota, entity, map_anim, timer);
     }
 }

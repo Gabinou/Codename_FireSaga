@@ -230,11 +230,11 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         /* -- Turn only increments at the start of player turn -- */
         Map_Turn_Increment(sota->map);
 
-        // Only if unit on tile
-        struct Position *cursor_pos;
+        /* Only if unit on tile */
+        const struct Position *cursor_pos;
         cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
-        struct Point pos = cursor_pos->tilemap_pos;
-        int current_i  = pos.y * sota->map->col_len + pos.x;
+        struct Point pos    = cursor_pos->tilemap_pos;
+        int current_i       = pos.y * sota->map->col_len + pos.x;
         tnecs_entity ontile = sota->map->unitmap[current_i];
 
         /* unit hovering */
