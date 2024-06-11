@@ -276,6 +276,7 @@ b32 army_isPC[ARMY_END] = {
 
 void Utilities_Load(void) {
     Names_Load_All();
+    Names_Print_All("");
     Palettes_Load();
     Palette_Tables_Load();
 }

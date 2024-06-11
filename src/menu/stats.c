@@ -978,11 +978,15 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
     }
 
     SDL_assert(unit->weapons_dtab != NULL);
+    Weapon_Load(unit->weapons_dtab, item->id);
     struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, item->id);
     SDL_assert(weapon                   != NULL);
     SDL_assert(weapon->item             != NULL);
     SDL_assert(weapon->item->name.data  != NULL);
-    s8 item_name = s8_mut(weapon->item->name.data);
+    // s8 item_name = s8_mut(weapon->item->name.data);
+    int *order = DTAB_GET(global_itemOrders, item->id);
+    SDL_assert(order != NULL);
+    s8 item_name = global_itemNames[*order];
 
     /* - uses left - */
     SDL_assert(weapon->item->stats.uses > 0);
@@ -998,7 +1002,8 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
     /* - Item name - */
-    item_name = s8_toUpper(item_name);
+    s8 item_name_upper = s8_mut(item_name.data);
+    item_name_upper = s8_toUpper(item_name_upper);
     int width = PixelFont_Width_Len(stats_menu->pixelnours_big, item_name.data);
     int limit = i < ITEM_HANDS_INDEX ? ITEM1_NAME_W_MAX : ITEM3_NAME_W_MAX;
     x = ITEM1_NAME_X_OFFSET;
@@ -1011,22 +1016,21 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
 
         /* Name is short enough: write on one line */
         y = item_y_offset;
-        item_name = s8_toUpper(item_name);
-        PixelFont_Write_Len(stats_menu->pixelnours, renderer, item_name.data, x, y);
-        s8_free(&item_name);
+        PixelFont_Write_Len(stats_menu->pixelnours, renderer, item_name_upper.data, x, y);
+        s8_free(&item_name_upper);
         return;
     }
 
     /* Name too long: write on two lines if too long */
     stats_menu->pixelnours->linespace = -1;
     /* find last space to replace with \n */
-    char *last_space = strrchr(item_name.data, ' ');
+    char *last_space = strrchr(item_name_upper.data, ' ');
 
     if (i == UNIT_HAND_RIGHT) {
         size_t len2 = strlen(last_space + 1);
-        size_t len1 = item_name.num - len2 - 1;
+        size_t len1 = item_name_upper.num - len2 - 1;
 
-        int w1 = PixelFont_Width(stats_menu->pixelnours_big, item_name.data,  len1);
+        int w1 = PixelFont_Width(stats_menu->pixelnours_big, item_name_upper.data,  len1);
         int w2 = PixelFont_Width(stats_menu->pixelnours_big, last_space + 1, len2);
 
         size_t offset = w1 > w2 ? w1 : w2;
@@ -1035,9 +1039,9 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
 
     nstr_replaceSingle(last_space, ' ', '\n');
     y = item_y_offset - ITEM_TWOLINES_OFFSET_Y;
-    PixelFont_Write_Len(stats_menu->pixelnours, renderer, s8_toUpper(item_name).data, x, y);
+    PixelFont_Write_Len(stats_menu->pixelnours, renderer, item_name_upper.data, x, y);
 
-    s8_free(&item_name);
+    s8_free(&item_name_upper);
 }
 
 static void _StatsMenu_Draw_Equipment(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {

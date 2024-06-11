@@ -312,7 +312,7 @@ void Names_Free(void) {
     }
 }
 
-void Names_Print_All( char *foldername) {
+void Names_Print_All(char *foldername) {
     SDL_Log("foldername %s", foldername);
     /* TODO: Use PHYSFS_writeBytes, PHYSFS_openWrite */
 
@@ -412,7 +412,7 @@ void Names_Print_All( char *foldername) {
     SDL_Log("filename %s", filename.data);
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
-    for (size_t i = 0; i < DARR_NUM(global_itemNames); i++)
+    for (size_t i = 0; i < global_itemOrders->num; i++)
         fprintf(fp, "%zu %s \n", i, global_itemNames[i].data);
     fclose(fp);
 
