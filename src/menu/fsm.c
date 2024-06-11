@@ -1121,8 +1121,7 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
             struct Sprite *sprite;
             sprite = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Sprite);
             // TODO: REMOVE IF WHEN ALL MAP_UNITS HAVE SPRITESHEETS.
-            if (sprite->spritesheet != NULL) {
-                SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM);
+            if ((sprite->spritesheet != NULL) && (sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM)) {
                 Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_MOVER, sprite->flip);
                 Sprite_Animation_Loop(sprite);
                 Sprite_Draw(sprite, sota->renderer);
@@ -1183,7 +1182,7 @@ void fsm_eStart_sPrep_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
     SDL_assert(sota->map->start_pos     != NULL);
     SDL_assert(DARR_NUM(sota->map->start_pos) > 0);
     Position_Pos_Set(position, sota->map->start_pos[0].x, sota->map->start_pos[0].y);
-   
+
     // Game_cursorFocus_onMap resets position to cursor_lastpos;
     // TODO: bool flag to disable Game_cursorFocus_onMap resetting cursor pos.
     sota->cursor_lastpos.x = sota->map->start_pos[0].x;
