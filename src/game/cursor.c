@@ -35,7 +35,7 @@ void Game_cursorFocus_onMap(struct Game *sota) {
     SDL_assert(position != NULL);
     position->onTilemap = true;
 
-    Position_Bounds_Set(position, 0, sota->map->col_len, 0, sota->map->row_len);
+    Position_Bounds_Set(position, 0, sota->map->col_len - 1, 0, sota->map->row_len - 1);
 
     /* -- Placing cursor on map -- */
     i32 map_tilesize[2] = {sota->map->tilesize[0], sota->map->tilesize[1]};

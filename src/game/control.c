@@ -26,7 +26,7 @@ void Gamepad_Pressed(i8 sota_b, i8 *press, i8 *pressed_num, i32 *controller_type
                      u32 event, struct controllerGamepad *gp) {
     i32 theld       = gp->timeheld_button_ns;
     i32 min_held    = GAMEPAD_MINHELD_ns;
-    b32 butblk     = gp->block_buttons;
+    b32 butblk      = gp->block_buttons;
 
     Control_Pressed(sota_b, press, pressed_num, controller_type,
                     event, butblk, theld, min_held);
@@ -36,7 +36,7 @@ void Keyboard_Pressed(i8 sota_b, i8 *press, i8 *pressed_num, i32 *controller_typ
                       u32 event, struct controllerKeyboard *kb) {
     i32 theld       = kb->timeheld_button_ns;
     i32 min_held    = KEYBOARD_MINHELD_ns;
-    b32 butblk     = kb->block_buttons;
+    b32 butblk      = kb->block_buttons;
 
     Control_Pressed(sota_b, press, pressed_num, controller_type,
                     event, butblk, theld, min_held);
