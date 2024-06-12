@@ -247,7 +247,9 @@ void DeploymentMenu_Map_Swap(   DeploymentMenu *dm);
 void DeploymentMenu_Party_Set(  DeploymentMenu *dm, struct Unit *p, i16 *pi, i32 n);
 i32  DeploymentMenu_Map_StartPos(DeploymentMenu *dm, i32 candidate);
 i32  DeploymentMenu_Map_Find_Pos(DeploymentMenu *dm, struct Map *map, u8 c, u8 r);
-void DeploymentMenu_Map_StartPos_Select(DeploymentMenu *dm, i32 candidate);
+
+void DeploymentMenu_Map_StartPos_Select(    DeploymentMenu *dm, i32 candidate);
+void DeploymentMenu_Map_StartPos_Deselect(  DeploymentMenu *dm);
 
 /* --- Utility --- */
 void _DeploymentMenu_Selected_Num(DeploymentMenu *dm);

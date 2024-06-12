@@ -1150,7 +1150,6 @@ void fsm_eAcpt_sPrep_ssMapCndt(struct Game *sota, tnecs_entity accepter_entity) 
     struct DeploymentMenu *dm = mc->data;
     SDL_assert(dm != NULL);
 
-    // TODO: move unit even if empty pos selected
     if (dm->start_pos_order1 >= 0) {
         /* Unit was selected previously, exchange with currently selected tile */
         DeploymentMenu_Map_StartPos_Select(dm, sota->candidate);
@@ -1174,13 +1173,15 @@ void fsm_eAcpt_sPrep_ssMapCndt(struct Game *sota, tnecs_entity accepter_entity) 
         i32 pos1_i = DeploymentMenu_Map_Find_Pos(dm, sota->map, pos1.x, pos1.y);
         i32 pos2_i = DeploymentMenu_Map_Find_Pos(dm, sota->map, pos2.x, pos2.y);
 
-        if (pos1_i != pos2_i)
+        if (pos1_i != pos2_i) {
             DeploymentMenu_Map_Swap(dm);
+        } else {
+            DeploymentMenu_Map_StartPos_Deselect(dm);
+        }
     } else {
-        /* No unit was selected previously selecting */
+        /* No unit was selected previously, selecting now */
         DeploymentMenu_Map_StartPos_Select(dm, sota->candidate);
     }
-
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu(struct Game *sota, tnecs_entity accepter_entity) {

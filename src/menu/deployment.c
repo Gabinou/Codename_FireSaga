@@ -146,7 +146,7 @@ void _DeploymentMenu_Selected_Num(DeploymentMenu *dm) {
 }
 
 i32 _DeploymentMenu_Unselected(DeploymentMenu *dm) {
-    i32 out = 0, i = 0;
+    i32 out = DM_UNSELECTED, i = 0;
     while (i < dm->_party_size) {
         if (dm->_selected[i] == out) {
             out++;
@@ -161,10 +161,10 @@ i32 _DeploymentMenu_Unselected(DeploymentMenu *dm) {
 
 void _DeploymentMenu_Swap_Unit(DeploymentMenu *dm, SDL_Renderer *renderer,
                                i16 unit) {
-    if (dm->_selected[unit] >= 0) {
-        _DeploymentMenu_Swap(dm, renderer, dm->white, dm->black);
+    if (dm->_selected[unit] > DM_UNSELECTED) {
+        _DeploymentMenu_Swap(dm, renderer, dm->white,       dm->black);
     } else {
-        _DeploymentMenu_Swap(dm, renderer, dm->dark_gray, dm->black);
+        _DeploymentMenu_Swap(dm, renderer, dm->dark_gray,   dm->black);
     }
 }
 
@@ -788,12 +788,14 @@ void DeploymentMenu_UnitOrder_Reset(DeploymentMenu *dm) {
         i16 unit_id1 = dm->_party_id_stack[unit_order1];
         i16 unit_id2 = dm->_party_id_stack[unit_order2];
 
-        dm->_party_id_stack[unit_order2] = unit_id1;
-        dm->_party_id_stack[unit_order1] = unit_id2;
-        dm->_selected[unit_order1] = start_order2;
-        dm->_selected[unit_order2] = start_order1;
-        dm->_start_pos_i[start_order1] = unit_order2;
-        dm->_start_pos_i[start_order2] = unit_order1;
+        dm->_party_id_stack[unit_order2]    = unit_id1;
+        dm->_party_id_stack[unit_order1]    = unit_id2;
+        i32 selected1 = dm->_selected[unit_order1];
+        i32 selected2 = dm->_selected[unit_order2];
+        dm->_selected[unit_order1]          = selected2;
+        dm->_selected[unit_order2]          = selected1;
+        dm->_start_pos_i[start_order1]      = unit_order2;
+        dm->_start_pos_i[start_order2]      = unit_order1;
     }
     dm->update = true;
 }
@@ -807,19 +809,21 @@ void DeploymentMenu_Map_Swap(DeploymentMenu *dm) {
         dm->start_pos_order2 = -1;
         return;
     }
+    /* Actual swapping of the units */
     SDL_assert(dm->start_pos_order1 < dm->select_max);
     SDL_assert(dm->start_pos_order2 < dm->select_max);
-    i32 unit_order1 = dm->_start_pos_i[dm->start_pos_order1];
-    i32 unit_order2 = dm->_start_pos_i[dm->start_pos_order2];
+    i32 unit_order1     = dm->_start_pos_i[dm->start_pos_order1];
+    i32 unit_order2     = dm->_start_pos_i[dm->start_pos_order2];
     dm->_start_pos_i[dm->start_pos_order1] = unit_order2;
     dm->_start_pos_i[dm->start_pos_order2] = unit_order1;
 
-    // SDL_assert(dm->_selected[unit_order1] == start_order1);
-    // SDL_assert(dm->_selected[unit_order2] == start_order2);
-    dm->_selected[unit_order1] = dm->start_pos_order2;
-    dm->_selected[unit_order2] = dm->start_pos_order1;
-    dm->start_pos_order1 = -1;
-    dm->start_pos_order2 = -1;
+    /* Swap the selected state too. */
+    i32 start_order1    = dm->_selected[unit_order1];
+    i32 start_order2    = dm->_selected[unit_order2];
+    dm->_selected[unit_order1] = start_order1;
+    dm->_selected[unit_order2] = start_order2;
+
+    DeploymentMenu_Map_StartPos_Deselect(dm);
 }
 
 i32 DeploymentMenu_Map_StartPos(DeploymentMenu *dm, i32 candidate) {
@@ -837,6 +841,11 @@ void DeploymentMenu_Map_StartPos_Select(DeploymentMenu *dm, i32 candidate) {
     } else {
         SDL_assert(false);
     }
+}
+
+void DeploymentMenu_Map_StartPos_Deselect(DeploymentMenu *dm) {
+    dm->start_pos_order1 = -1;
+    dm->start_pos_order2 = -1;
 }
 
 void DeploymentMenu_Map_Set(DeploymentMenu *dm, struct Map *map) {
@@ -1013,6 +1022,7 @@ i32 DeploymentMenu_Select(DeploymentMenu *dm, i8 elem) {
 
 /* --- Drawing --- */
 void DeploymentMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *renderer) {
+
     DeploymentMenu   *dm         = (DeploymentMenu *)mc->data;
     struct n9Patch          *n9patch    = &mc->n9patch;
 
@@ -1112,7 +1122,6 @@ void DeploymentMenu_Update(DeploymentMenu *dm, struct n9Patch *n9patch,
     _DeploymentMenu_Draw_Names(dm, renderer);
     _DeploymentMenu_Draw_Unit_Num(dm, renderer);
     _DeploymentMenu_Draw_Icons(dm, renderer);
-
     Utilities_DrawColor_Reset(renderer);
 
     /* -- Finish -- */
