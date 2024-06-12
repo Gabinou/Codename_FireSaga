@@ -20,10 +20,10 @@ struct Mouse {
     u8 move;
 };
 
-struct Point {
+typedef struct Point {
     i32 x;
     i32 y;
-};
+} Point;
 
 struct Pointf {
     float x;
@@ -53,7 +53,7 @@ struct Nodeq {
 
 
 struct Fps {
-    struct Point pos;
+    Point pos;
     SDL_Color textcolor;
     float sizefactor[TWO_D];
     b32 show;
@@ -88,8 +88,8 @@ struct Enemy_Turn_settings {
 };
 
 struct Settings {
-    struct Point res; /* resolution */
-    struct Point pos;
+    Point res; /* resolution */
+    Point pos;
     struct Fps   FPS;
 
     struct Cursor cursor; /* 32 bits */
@@ -114,14 +114,13 @@ struct Settings {
 };
 extern struct Settings Settings_default;
 
-
-struct MenuElemDirections {
+typedef struct MenuElemDirections {
     i8 right;
     i8 top;
     i8 left;
     i8 bottom;
-};
-extern struct MenuElemDirections MenuElemDirections_default;
+} MenuElemDirections;
+extern MenuElemDirections MenuElemDirections_default;
 
 struct Damage {
     i32 dmg[DAMAGE_TYPES];
@@ -314,7 +313,7 @@ extern struct Inventory_item Inventory_item_default;
 extern struct Inventory_item Inventory_item_broken;
 
 // struct Reinforcement {
-//     struct Point position;
+//     Point position;
 //     i16 army;
 //     // i16 id;
 //     s8 filename;
@@ -358,7 +357,7 @@ struct fMovement_cost {
 extern struct fMovement_cost fMovement_cost_default;
 
 struct Camera {
-    struct Point offset; /* pixels */
+    Point offset; /* pixels */
     float        zoom;
 };
 
@@ -376,8 +375,8 @@ extern struct Timer Timer_default;
 // objective is out of range.
 // Ex: attacking unit on the way to seizing a tile
 struct AI_Action {
-    struct Point target_move;   /* {-1, -1} if none */
-    struct Point target_action; /* {-1, -1} if none */
+    Point target_move;   /* {-1, -1} if none */
+    Point target_action; /* {-1, -1} if none */
     tnecs_entity patient;       /* as in opposite of agent */
     int action;
 };
@@ -623,7 +622,7 @@ typedef struct Unit {
     bitflag16_t job_talent;
 
     /* Defendant position (self is Aggressor.) */
-    struct Point dft_pos; /* Used to compute stats in case of dual wielding */
+    Point dft_pos; /* Used to compute stats in case of dual wielding */
 
     b32 hands   [UNIT_HANDS_NUM];      /* Does unit have hands?     */
     b32 equipped[UNIT_HANDS_NUM];      /* Is Item in hand equipped? */
@@ -684,8 +683,8 @@ struct Graph {
 
     struct GraphStat graph_stats[UNIT_STAT_NUM];
 
-    struct Point plot_min; /* [XY units] */
-    struct Point plot_max; /* [XY units] */
+    Point plot_min; /* [XY units] */
+    Point plot_max; /* [XY units] */
 
     i32 header; /* [pixels] */
     i32 footer; /* [pixels] */
@@ -708,7 +707,7 @@ extern struct Graph Graph_default;
 struct CircleBar {
     int fill;
     SDL_RendererFlip flip;
-    struct Point pos;
+    Point pos;
 };
 extern struct CircleBar CircleBar_default;
 
@@ -717,8 +716,8 @@ struct SimpleBar {
     float fill;
     size_t len; /* [pixels] as overfilled */
     size_t height; /* [pixels] */
-    struct Point pos;
-    struct Point scale;
+    Point pos;
+    Point scale;
     SDL_Color BG_dark;
     SDL_Color BG_light;
     SDL_Color FG_dark;
@@ -832,7 +831,7 @@ struct Game {
     tnecs_world  *world_control;
 
     tnecs_component timer_typeflag;
-    struct Point  cursor_lastpos;
+    Point  cursor_lastpos;
 
     struct dtab *menu_options_dtab;
     struct dtab *defaultstates_dtab;
@@ -891,8 +890,8 @@ struct Game {
     i8 moved_direction;
     i8 selected_menu_option;
 
-    struct Point selected_unit_initial_position;
-    struct Point selected_unit_moved_position;
+    Point selected_unit_initial_position;
+    Point selected_unit_moved_position;
 
     tnecs_entity *map_enemies;
     struct Party party_struct;
@@ -921,7 +920,7 @@ struct Game {
     struct Convoy      convoy;
     u64 s_xoshiro256ss[4]; /* Only used to read s from RNG file */
 
-    struct Point cursor_move;
+    Point cursor_move;
     b32 cursor_frame_moved;
     b32 cursor_diagonal;
 

@@ -193,9 +193,9 @@ enum DM_MENU {
 //      - Weapon icons
 //      - Mount icons
 
-struct DeploymentMenu {
+typedef struct DeploymentMenu {
     b32 update;
-    struct Point pos;        /* [pixels] */
+    Point pos;        /* [pixels] */
     /* two spaces:
     - party_space: unit_order in _party_id_stack and _selected
     - start_space: start_order in _start_pos_i     */
@@ -228,56 +228,56 @@ struct DeploymentMenu {
 
     i32 start_pos_order1;
     i32 start_pos_order2;
-};
-extern struct DeploymentMenu DeploymentMenu_default;
+} DeploymentMenu;
+extern DeploymentMenu DeploymentMenu_default;
 
 /* --- ELEMENTS --- */
-extern struct MenuElemDirections dm_links[DM_ELEM_NUM];
-extern struct Point dm_elem_pos[DM_ELEM_NUM];
-extern struct Point dm_elem_box[DM_ELEM_NUM];
+extern MenuElemDirections dm_links[DM_ELEM_NUM];
+extern Point dm_elem_pos[DM_ELEM_NUM];
+extern Point dm_elem_box[DM_ELEM_NUM];
 
 /* --- Constructors/Destructors --- */
-struct DeploymentMenu *DeploymentMenu_Alloc(void);
-void DeploymentMenu_Free(struct DeploymentMenu *dm);
-void DeploymentMenu_Load(struct DeploymentMenu *dm, SDL_Renderer *renderer,
+DeploymentMenu *DeploymentMenu_Alloc(void);
+void DeploymentMenu_Free(DeploymentMenu *dm);
+void DeploymentMenu_Load(DeploymentMenu *dm, SDL_Renderer *renderer,
                          struct n9Patch *n9patch);
 
-void DeploymentMenu_Map_Set(     struct DeploymentMenu *dm, struct Map *map);
-void DeploymentMenu_Map_Swap(    struct DeploymentMenu *dm);
-void DeploymentMenu_Party_Set(   struct DeploymentMenu *dm, struct Unit *p, i16 *pi, i32 n);
-i32  DeploymentMenu_Map_StartPos(struct DeploymentMenu *dm, i32 candidate);
-i32  DeploymentMenu_Map_Find_Pos(struct DeploymentMenu *dm, struct Map *map, u8 c, u8 r);
-void DeploymentMenu_Map_StartPos_Select(struct DeploymentMenu *dm, i32 candidate);
+void DeploymentMenu_Map_Set(    DeploymentMenu *dm, struct Map *map);
+void DeploymentMenu_Map_Swap(   DeploymentMenu *dm);
+void DeploymentMenu_Party_Set(  DeploymentMenu *dm, struct Unit *p, i16 *pi, i32 n);
+i32  DeploymentMenu_Map_StartPos(DeploymentMenu *dm, i32 candidate);
+i32  DeploymentMenu_Map_Find_Pos(DeploymentMenu *dm, struct Map *map, u8 c, u8 r);
+void DeploymentMenu_Map_StartPos_Select(DeploymentMenu *dm, i32 candidate);
 
 /* --- Utility --- */
-void _DeploymentMenu_Selected_Num(struct DeploymentMenu *dm);
-i32  _DeploymentMenu_Num(struct DeploymentMenu *dm);
-void _DeploymentMenu_Swap_Unit(struct DeploymentMenu *dm, SDL_Renderer *r, i16 u);
-void _DeploymentMenu_Swap(struct DeploymentMenu *dm, SDL_Renderer *r, i8 w, i8 b);
+void _DeploymentMenu_Selected_Num(DeploymentMenu *dm);
+i32  _DeploymentMenu_Num(DeploymentMenu *dm);
+void _DeploymentMenu_Swap_Unit(DeploymentMenu *dm, SDL_Renderer *r, i16 u);
+void _DeploymentMenu_Swap(DeploymentMenu *dm, SDL_Renderer *r, i8 w, i8 b);
 
-void DeploymentMenu_UnitOrder_Reset(struct DeploymentMenu *dm);
+void DeploymentMenu_UnitOrder_Reset(DeploymentMenu *dm);
 
 /* --- Scrolling --- */
-void DeploymentMenu_Scroll_Up(   struct DeploymentMenu *dm);
-void DeploymentMenu_Scroll_Down( struct DeploymentMenu *dm);
-void DeploymentMenu_Scroll_Left( struct DeploymentMenu *dm);
-void DeploymentMenu_Scroll_Right(struct DeploymentMenu *dm);
+void DeploymentMenu_Scroll_Up(   DeploymentMenu *dm);
+void DeploymentMenu_Scroll_Down( DeploymentMenu *dm);
+void DeploymentMenu_Scroll_Left( DeploymentMenu *dm);
+void DeploymentMenu_Scroll_Right(DeploymentMenu *dm);
 
 /* --- Elements --- */
-void DeploymentMenu_Elem_Pos(       struct DeploymentMenu *dm, struct Menu *mc);
-void DeploymentMenu_Elem_Links(     struct DeploymentMenu *dm, struct Menu *mc);
-void DeploymentMenu_Elem_Reset(     struct DeploymentMenu *dm, struct Menu *mc);
-void DeploymentMenu_Elem_Pos_Revert(struct DeploymentMenu *dm, struct Menu *mc);
+void DeploymentMenu_Elem_Pos(       DeploymentMenu *dm, struct Menu *mc);
+void DeploymentMenu_Elem_Links(     DeploymentMenu *dm, struct Menu *mc);
+void DeploymentMenu_Elem_Reset(     DeploymentMenu *dm, struct Menu *mc);
+void DeploymentMenu_Elem_Pos_Revert(DeploymentMenu *dm, struct Menu *mc);
 
 /* --- Selection --- */
-i32  DeploymentMenu_Select(     struct DeploymentMenu *dm, i8 elem);
+i32  DeploymentMenu_Select(DeploymentMenu *dm, i8 elem);
 
 /* --- Elem Move --- */
 i32 DeploymentMenu_Elem_Move(struct Menu *menu, i32 direction);
 
 /* --- Drawing --- */
 void DeploymentMenu_Draw(  struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
-void DeploymentMenu_Update(struct DeploymentMenu *dm, struct n9Patch      *n,
+void DeploymentMenu_Update(DeploymentMenu *dm, struct n9Patch      *n,
                            SDL_Texture    *t,         SDL_Renderer *r);
 
 #endif /* DEPLOYMENT_MENU_H */
