@@ -398,7 +398,7 @@ b32 Unit_Eq_Usable( struct Unit *unit, int archetype, int i) {
     return (Unit_Item_Usable(unit, archetype, unit->_equipment[i].id));
 }
 
-b32 Unit_Item_Usable( struct Unit *unit, int archetype, int id) {
+b32 Unit_Item_Usable(struct Unit *unit, int archetype, int id) {
     b32 usable = false;
     do {
         /* -- If item select, everything is usable --  */

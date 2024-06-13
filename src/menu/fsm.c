@@ -962,12 +962,16 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff(struct Game *sota, struct Menu *mc) {
     if (sota->staff_select_menu == TNECS_NULL)
         Game_StaffSelectMenu_Create(sota);
 
+
     SDL_assert(sota->staff_select_menu    > TNECS_NULL);
     SDL_assert(sota->selected_unit_entity > TNECS_NULL);
     Game_StaffSelectMenu_Enable(sota, sota->selected_unit_entity);
 
+
     /* -- Enable healmap rangemap to choose patients -- */
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Unit);
+    Unit_Find_Usable(unit, ITEM_ARCHETYPE_STAFF);
+
     // TODO: save rangemap previous state? how to go back
     unit->rangemap = RANGEMAP_HEALMAP;
     Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL);
@@ -978,7 +982,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff(struct Game *sota, struct Menu *mc) {
     // if (sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS] == TNECS_NULL)
     //     Game_PopUp_Loadout_Stats_Create(sota);
 
-    // struct Unit *unit = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Unit);
     // PopUp_Loadout_Stats_Unit(pls, unit);
 
     /* -- TODO: Render Face -- */
