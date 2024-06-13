@@ -138,9 +138,11 @@ tnecs_entity *Map_Find_Patients(struct Map *map, struct dtab *weapons_dtab, i32 
                 add = true;
             case ALIGNMENT_FRIENDLY:
                 add = (align_patient == align_healer);
+            // TODO: check if staff heals and unit is full hp.
             case ALIGNMENT_ENEMY:
                 add = align_patient |= align_healer;
         }
+
         if (add)
             DARR_PUT(patients, unitontile);
     }

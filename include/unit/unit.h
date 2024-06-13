@@ -214,6 +214,10 @@ int Unit_canStaff(        struct Unit *u);
 int Unit_canStaff_Eq(     struct Unit *u);
 int Unit_canStaff_oneHand(struct Unit *u);
 
+/* -- HP is full -- */
+b32 Unit_HP_isFull(struct Unit *u);
+
+/* -- Brave -- */
 u8 Unit_Brave(struct Unit *u);
 
 /* --- Lvlup && Promotion --- */

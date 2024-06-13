@@ -1909,8 +1909,13 @@ void Unit_Promote(struct Unit *unit, i8 new_class_index) {
 /* -- Unit_id -- */
 b32 Unit_ID_Valid(u16 id) {
     SDL_Log("Unit ID valid: %d", id);
-    b32 out = (id > UNIT_ID_PC_START)      && (id < UNIT_ID_PC_END);
+    b32 out =  (id > UNIT_ID_PC_START)      && (id < UNIT_ID_PC_END);
     out |=     (id > UNIT_ID_NPC_START)     && (id < UNIT_ID_NPC_END);
     out |=     (id > UNIT_ID_GENERIC_START) && (id < UNIT_ID_GENERIC_END);
     return (out);
+}
+
+b32 Unit_HP_isFull(struct Unit *unit) {
+    Unit_effectiveStats(unit);
+    return (unit->current_hp == unit->effective_stats.hp);
 }
