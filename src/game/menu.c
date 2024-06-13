@@ -339,24 +339,25 @@ void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
 
 /* -- Finding if any staff equipment has a patient -- */
 void Game_preLoadout_Patients(struct Game *sota, tnecs_entity actor) {
-
-    DARR_NUM(sota->defendants) = 0;
+    SDL_Log("Game_preLoadout_Patients");
+    DARR_NUM(sota->patients) = 0;
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, actor, Unit);
 
     /* Combine ranges for all weapons in equipment */
     struct Range *range = Unit_Range_Combine_Staves(unit, false);
 
     /* Compute healtolist */
+    // TODO: find yourself as patient for staves that can target themselves.
     sota->map->healtomap = _Map_tomap_Compute(sota->map->healtomap, sota->map->movemap,
                                               sota->map->row_len,   sota->map->col_len,
-                                              true, range, NMATH_MOVETILE_INCLUDE);
+                                              true, range, NMATH_MOVETILE_EXCLUDE);
 
+    // matrix_print(sota->map->healtomap, sota->map->row_len, sota->map->col_len);
     Map_Healtolist_Compute(sota->map);
 
     /* Find Patients if any */
     sota->patients = Map_Find_Patients(sota->map, sota->weapons_dtab, sota->map->healtolist,
                                        sota->patients, actor, true);
-
 }
 
 /* -- Finding if any weapon in equipment has a defendant -- */

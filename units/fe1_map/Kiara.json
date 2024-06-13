@@ -71,15 +71,15 @@
 		},
 		"Items":	{
 			"Item":	{
-				"name":	"Heal",
-				"Infused":	-1,
-				"id": 901,
-				"used":	0
-			},
-			"Item":	{
 				"name":	"Empty",
 				"Infused":	-1,
 				"id":	-1,
+				"used":	0
+			},
+			"Item":	{
+				"name":	"Heal",
+				"Infused":	-1,
+				"id": 901,
 				"used":	0
 			},
 			"Item":	{

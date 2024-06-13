@@ -104,12 +104,23 @@ tnecs_entity *Map_Find_Patients(struct Map *map, struct dtab *weapons_dtab, i32 
     /* Find all patients on healtolist according to alignment */
     /* Assumes healtolist was created before with matrix2list_noM */
     struct Unit *healer = TNECS_GET_COMPONENT(map->world, healer_ent, Unit);
+    SDL_assert(healer != NULL);
 
     /* TODO: full health people arent patients. */
 
     /* -- Getting staff -- */
     struct Inventory_item *item = Unit_Item_Strong(healer, UNIT_HAND_STRONG);
+    SDL_assert(item != NULL);
     struct Weapon *staff = (struct Weapon *)DTAB_GET(weapons_dtab, item->id);
+    /* -- TODO: can only use staff in two hands -- */
+    if (staff == NULL) {
+        item = Unit_Item_Strong(healer, UNIT_HAND_WEAK);
+        SDL_assert(item != NULL);
+        staff = (struct Weapon *)DTAB_GET(weapons_dtab, item->id);
+    }
+
+    SDL_assert(staff != NULL);
+    SDL_assert(staff->item != NULL);
 
     /* -- Check healtolist for valid patients -- */
     u8 align_healer = army_alignment[healer->army];

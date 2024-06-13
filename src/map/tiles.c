@@ -238,7 +238,6 @@ u8 Map_Tile_Order(struct Map *map, i32 tile) {
     u8 out = UINT8_MAX;
     SDL_Log("%d", TILE_BUILDINGS);
     for (u8 i = 0; i < DARR_NUM(map->tiles_id); i++) {
-        SDL_Log("map->tiles_id[i] %d %d", map->tiles_id[i], tile);
         if (map->tiles_id[i] == tile) {
             out = i;
             break;
