@@ -46,8 +46,7 @@ struct Range *Unit_Range_Loadout(struct Unit   *unit) {
 
 struct Range *Unit_Range_Item(struct Unit   *unit, int i) {
     struct Range *range = &unit->computed_stats.range_combined;
-    range->min = UINT8_MAX;
-    range->max = 0;
+    *range = Range_default;
 
     do {
         /* If dual wielding, range_loadout is combined. */
@@ -173,11 +172,10 @@ void Ranges_Combine(struct Range *r1, struct Range r2) {
 
     /* Check for a gap in the ranges */
     /* If any range is the default_range, ignore the gaps in range. */
-    b32 default_range;
-    default_range  = (r1->min == Range_default.min) && (r1->max == Range_default.max);
-    default_range  |= (r2.min == Range_default.min) && (r2.max  == Range_default.max);
-    // b32 default_range = (*r1 == Range_default) || (r2 == Range_default);
-    SDL_assert(default_range || !Ranges_Gap(*r1, r2));
+    b32 any_invalid;
+    any_invalid  = (r1->min >= Range_default.min) && (r1->max <= Range_default.max);
+    any_invalid  |= (r2.min >= Range_default.min) && (r2.max  <= Range_default.max);
+    SDL_assert(any_invalid || !Ranges_Gap(*r1, r2));
 
     *r1 = _Ranges_Combine(*r1, r2);
     SDL_assert(Range_Valid(*r1));
