@@ -1005,6 +1005,12 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
     SDL_assert(mc->n9patch.scale.x > 0);
     SDL_assert(mc->n9patch.scale.y > 0);
 
+    /* 4. Focus on menu */
+    Game_cursorFocus_onMenu(sota);
+
+    /* 5. Move cursor to weak hand, strong hand on top */
+    Menu_Elem_Set(mc, sota, 0);
+
     struct LoadoutSelectMenu *wsm = mc->data;
 
     /* -- Create PopUp_Loadout_Stats -- */
@@ -1043,6 +1049,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
     /* -- TODO: Render Face -- */
+
+
 
 }
 
