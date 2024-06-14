@@ -355,8 +355,9 @@ void Game_PopUp_Map_Combat_Update(   struct Game *sota) {
     pmc->pixelnours_tight   = sota->pixelnours_tight;
 
     /* - position - */
-    position->pixel_pos.x   = sota->settings.res.x / 2;
-    position->pixel_pos.y   = sota->settings.res.y / 2;
+    // TODO: dynamically set position on the corners like popup_tile
+    position->pixel_pos.x   = 1;
+    position->pixel_pos.y   = 1;
 }
 
 void Game_PopUp_Map_Combat_Hide(struct Game *sota) {
