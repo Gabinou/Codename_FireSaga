@@ -722,7 +722,6 @@ void fsm_eCncl_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity canceller) {
 
     if (fsm_eCncl_sGmpMap_ssMapCndt_mo[sota->selected_menu_option] != NULL)
         fsm_eCncl_sGmpMap_ssMapCndt_mo[sota->selected_menu_option](sota, NULL);
-
 }
 
 void fsm_eCncl_sGmpMap_ssMenu(struct Game *sota, tnecs_entity canceller) {

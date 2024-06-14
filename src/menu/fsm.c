@@ -429,6 +429,8 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
     /* 6. HUD reappear */
     popup->visible = true;
 
+    /* 7. Remove PopupPre_Combat */
+    Game_PopUp_Pre_Combat_Hide(sota);
 }
 
 /* event_Cursor_Moves */
@@ -846,6 +848,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         LoadoutSelectMenu_Elem_Reset(wsm, mc);
         LoadoutSelectMenu_Elem_Pos(wsm, mc);
         Menu_Elem_Boxes_Check(mc);
+
+        Menu_Elem_Set(mc, sota, 1);
 
     } else {
         /* Loadout selected, find new defendants*/

@@ -121,6 +121,7 @@ void Game_PopUp_Pre_Combat_Enable(struct Game *sota) {
     SDL_assert(sota->aggressor > TNECS_NULL);
     SDL_assert(sota->defendant > TNECS_NULL);
     PreCombatPopup_Load(pcp, sota->aggressor, sota->defendant, sota->renderer, &popup->n9patch);
+    popup->visible = true;
 }
 
 void Game_PopUp_Pre_Combat_Hide(struct Game *sota) {

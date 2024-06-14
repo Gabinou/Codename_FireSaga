@@ -32,7 +32,6 @@ void Game_Switch_toCandidates(struct Game *sota, tnecs_entity *candidates) {
     /* - Hover on first candidate - */
     *data2_entity = sota->candidates[index];
     Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Hovers_Unit, NULL, data2_entity);
-
 }
 
 /* --- Menu stack --- */
