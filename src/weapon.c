@@ -348,7 +348,7 @@ int Weapon_Stat_inRange(struct Weapon *weapon, i16 stattype, int distance) {
     *    DEBUG: input -1 to always be in_range
     */
     struct Range range = weapon->stats.range;
-    b32 in_range = ((distance < 0) || (range.min <= distance) && (distance <= range.min));
+    b32 in_range = ((distance < 0) || (range.min <= distance) && (distance <= range.max));
     b32 isshield  = Weapon_isShield(weapon->item->id);
     b32 isoffhand = Weapon_isOffhand(weapon->item->id);
     return ((in_range || isshield || isoffhand) ? Weapon_Stat(weapon, stattype) : 0);

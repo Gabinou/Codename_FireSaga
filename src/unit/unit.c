@@ -1362,7 +1362,7 @@ i32 Unit_computeHit(struct Unit *unit, int distance) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
     i32 bonus   = 0, wpn_hit = 0;
-    i32 hit_L    = 0, hit_R   = 0;
+    i32 hit_L   = 0, hit_R   = 0;
     struct Weapon *weapon;
 
     /* Get stats of both weapons */

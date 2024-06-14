@@ -637,7 +637,6 @@ void PreCombatPopup_Set(struct PreCombatPopup *pcp, struct Game *sota) {
     pcp->sota     = sota;
     pcp->update   = true;
     pcp->forecast = &sota->combat_forecast;
-
 }
 
 struct PreCombatPopup *PreCombatPopup_Alloc(void) {
