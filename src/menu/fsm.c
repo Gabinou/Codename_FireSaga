@@ -907,7 +907,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
             mc->visible = false;
             strncpy(sota->reason, "staff was selected, time to select patient", sizeof(sota->reason));
             Game_Switch_toCandidates(sota, sota->patients);
-            getchar();
         }
     }
 

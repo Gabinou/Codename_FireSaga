@@ -429,7 +429,7 @@ void Item_readJSON(void *input, cJSON *_jitem) {
     cJSON *jusers       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Users");
     cJSON *jstats       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Stats");
     cJSON *jeffects     = cJSON_GetObjectItemCaseSensitive(_jitem,      "Effects");
-    cJSON *jpassive     = cJSON_GetObjectItemCaseSensitive(jeffects,    "id");
+    cJSON *jpassive     = cJSON_GetObjectItemCaseSensitive(jeffects,    "passive");
     cJSON *jactive      = cJSON_GetObjectItemCaseSensitive(jeffects,    "active");
     cJSON *jprice       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Price");
     cJSON *jtypes       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Types");
