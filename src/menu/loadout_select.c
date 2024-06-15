@@ -306,7 +306,8 @@ void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
 
         /* Unequip weapon if it was in other hand */
         if ((side_i == UNIT_HAND_LEFT) || (side_i == UNIT_HAND_RIGHT))
-            Unit_Unequip(lsm->unit, UNIT_HAND_RIGHT - side_i);
+            Unit_Unequip(lsm->unit, UNIT_HAND_RIGHT - stronghand);
+
     } else if (lsm->selected[weakhand] < 0) {
         /* For weakhand select, side space == usable space*/
         lsm->selected[weakhand] = select;                                       /* usable_space */
@@ -334,8 +335,6 @@ void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
         SDL_assert(false);      /* For debug    */
         exit(ERROR_Generic);    /* For release  */
     }
-    SDL_Log("unit->equipped %d %d", lsm->unit->equipped[0], lsm->unit->equipped[1]);
-    getchar();
     lsm->update = true;
 }
 

@@ -942,6 +942,7 @@ int Unit_canStaff( struct Unit *unit) {
     b32 out = false, stronghand = Unit_Hand_Strong(unit);
 
     if (unit->equipped[stronghand]) {
+        SDL_Log("IS EQUIPPED");
         struct Inventory_item item = unit->_equipment[stronghand];
         out = Weapon_isStaff(item.id);
     }
