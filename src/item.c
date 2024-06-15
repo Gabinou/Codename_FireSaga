@@ -491,8 +491,11 @@ void Item_readJSON(void *input, cJSON *_jitem) {
     }
 
     /* - Target - */
-    if (Weapon_isStaff(item->id)) {
-        item->target = ITEM_TARGET_FRIENDLY;
+
+    if (Weapon_ID_isValid(item->id)) {
+        if (Weapon_isStaff(item->id)) {
+            item->target = ITEM_TARGET_FRIENDLY;
+        }
     }
     if (jtarget != NULL) {
         item->target = cJSON_GetNumberValue(jtarget);

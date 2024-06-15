@@ -306,7 +306,9 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
     SDL_assert(psm != NULL);
     PlayerSelectMenu_Options_Reset(psm);
 
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_ITEMS);
+    // TODO: Reinsert ITEM menu when implemented.
+    // PlayerSelectMenu_Option_Add(psm, MENU_OPTION_ITEMS);
+
     // TODO: Reinsert trade menu when implemented.
     // if (DARR_NUM(sota->passives) > 0)
     // PlayerSelectMenu_Option_Add(psm, MENU_OPTION_TRADE);

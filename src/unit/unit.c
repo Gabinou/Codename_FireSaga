@@ -446,7 +446,12 @@ void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, size_t i) {
     if (item.id == ITEM_NULL) {
         return;
     }
-    Weapon_Load(unit->weapons_dtab, item.id);
+
+    if (Weapon_ID_isValid(item.id)) {
+        Weapon_Load(unit->weapons_dtab, item.id);
+    } else {
+        Item_Load(unit->items_dtab, item.id);
+    }
 
     if ((i < 0) || (i >= DEFAULT_EQUIPMENT_SIZE)) {
         SDL_Log("Item i out of bounds");
@@ -459,7 +464,6 @@ void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, size_t i) {
     }
     _Unit_Item_Takeat(unit, item, i);
     unit->num_equipment++;
-
 }
 
 void Unit_Item_Take(struct Unit *unit, struct Inventory_item item) {
