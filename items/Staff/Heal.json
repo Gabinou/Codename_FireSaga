@@ -65,6 +65,7 @@
 		},
 		"Subtype":	0,
 		"Effective":	0,
-		"Handedness":	0
+		"Handedness":	0,
+		"Target":	3
 	}
 }

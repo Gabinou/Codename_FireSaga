@@ -431,6 +431,7 @@ void Item_readJSON(void *input, cJSON *_jitem) {
     cJSON *jeffects     = cJSON_GetObjectItemCaseSensitive(_jitem,      "Effects");
     cJSON *jpassive     = cJSON_GetObjectItemCaseSensitive(jeffects,    "passive");
     cJSON *jactive      = cJSON_GetObjectItemCaseSensitive(jeffects,    "active");
+    cJSON *jtarget      = cJSON_GetObjectItemCaseSensitive(_jitem,      "Target");
     cJSON *jprice       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Price");
     cJSON *jtypes       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Types");
     cJSON *jtypeid      = cJSON_GetObjectItemCaseSensitive(jtypes,      "id");
@@ -487,6 +488,14 @@ void Item_readJSON(void *input, cJSON *_jitem) {
             }
         }
         item->active = item_effect_funcs[active_order];
+    }
+
+    /* - Target - */
+    if (Weapon_isStaff(item->id)) {
+        item->target = ITEM_TARGET_FRIENDLY;
+    }
+    if (jtarget != NULL) {
+        item->target = cJSON_GetNumberValue(jtarget);
     }
 
     /* - Stats - */

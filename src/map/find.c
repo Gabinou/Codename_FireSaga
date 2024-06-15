@@ -130,17 +130,26 @@ tnecs_entity *Map_Find_Patients(struct Map *map, struct dtab *weapons_dtab, i32 
         tnecs_entity unitontile = map->unitmap[y_at * map->col_len + x_at];
         if (unitontile <= TNECS_NULL)
             continue;
+
+        /* DESIGN QUESTION: Can healers heal themselves? */
+        if (healer_ent == unitontile)
+            continue;
+
         struct Unit *patient = TNECS_GET_COMPONENT(map->world, unitontile, Unit);
+        struct Unit_stats p_eff_stats = Unit_effectiveStats(patient);
+
         u8 align_patient = army_alignment[patient->army];
-        b32 add;
+        b32 add = false;
         switch (staff->item->target) {
-            case ALIGNMENT_NULL:
+            case ITEM_NO_TARGET:
                 add = true;
-            case ALIGNMENT_FRIENDLY:
-                add = (align_patient == align_healer);
-            // TODO: check if staff heals and unit is full hp.
-            case ALIGNMENT_ENEMY:
+                break;
+            case ITEM_TARGET_FRIENDLY:
+                add = (align_patient == align_healer) && (patient->current_hp < p_eff_stats.hp);
+                break;
+            case ITEM_TARGET_ENEMY:
                 add = align_patient |= align_healer;
+                break;
         }
 
         if (add)

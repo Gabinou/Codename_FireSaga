@@ -909,7 +909,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
             Game_Switch_toCandidates(sota, sota->patients);
         }
     }
-
 }
 
 /* --- fsm_psm_option_accept --- */
