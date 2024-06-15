@@ -294,7 +294,7 @@ void Item_Load(struct dtab *items_dtab, i16 id) {
     SDL_assert(items_dtab != NULL);
 
     if (DTAB_GET(items_dtab, id) != NULL) {
-        Weapon_Free(DTAB_GET(items_dtab, id));
+        Item_Free(DTAB_GET(items_dtab, id));
         DTAB_DEL(items_dtab, id);
     }
 

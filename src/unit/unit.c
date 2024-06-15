@@ -599,6 +599,12 @@ b32 Unit_Equip_inHand(struct Unit *unit, b32 hand) {
         SDL_Log("No item in hand. Cannot equip.");
         return (unit->equipped[hand] = false);
     }
+    if (Weapon_ID_isValid(unit->_equipment[hand].id)) {
+        SDL_Log("Invalid weapon. Cannot equip.");
+        return (unit->equipped[hand] = false);
+    }
+
+
     Weapon_Load(unit->weapons_dtab, unit->_equipment[hand].id);
 
     /* -- Error checking -- */
@@ -1732,10 +1738,16 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     }
 
     /* -- Equip -- */
-    if (unit->_equipment[UNIT_HAND_RIGHT].id != ITEM_NULL )
-        Unit_Equip_inHand(unit, UNIT_HAND_RIGHT);
-    if (unit->_equipment[UNIT_HAND_LEFT].id != ITEM_NULL )
-        Unit_Equip_inHand(unit, UNIT_HAND_LEFT);
+    if (unit->_equipment[UNIT_HAND_RIGHT].id != ITEM_NULL) {
+        if (Weapon_ID_isValid(unit->_equipment[UNIT_HAND_RIGHT].id)) {
+            Unit_Equip_inHand(unit, UNIT_HAND_RIGHT);
+        }
+    }
+    if (unit->_equipment[UNIT_HAND_LEFT].id != ITEM_NULL) {
+        if (Weapon_ID_isValid(unit->_equipment[UNIT_HAND_LEFT].id)) {
+            Unit_Equip_inHand(unit, UNIT_HAND_LEFT);
+        }
+    }
 }
 
 void Unit_writeJSON( void *input, cJSON *junit) {
