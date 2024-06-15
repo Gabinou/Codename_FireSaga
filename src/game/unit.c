@@ -158,12 +158,14 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     unit->weapons_dtab = sota->weapons_dtab;
     SDL_assert(unit->mvt_type > UNIT_MVT_START);
 
-    struct Inventory_item *item = Unit_Item_Strong(unit, UNIT_HAND_WEAK);
-    if (item->id > ITEM_NULL)
-        Unit_Equip_inHand(unit, UNIT_HAND_WEAK);
-    item = Unit_Item_Strong(unit, UNIT_HAND_STRONG);
-    if (item->id > ITEM_NULL)
-        Unit_Equip_inHand(unit, UNIT_HAND_STRONG);
+    struct Inventory_item *item = Unit_Item_Side(unit, UNIT_HAND_LEFT);
+    if (Weapon_ID_isValid(item->id))
+        Unit_Equip_inHand(unit, UNIT_HAND_LEFT);
+
+    item = Unit_Item_Side(unit, UNIT_HAND_RIGHT);
+    SDL_Log("%d %d", item->id, Weapon_ID_isValid(item->id));
+    if (Weapon_ID_isValid(item->id))
+        Unit_Equip_inHand(unit, UNIT_HAND_RIGHT);
 
     // SDL_Log("-- loading slider --");
     // struct Slider * slider = TNECS_GET_COMPONENT(sota->world, unit_ent, Slider);
