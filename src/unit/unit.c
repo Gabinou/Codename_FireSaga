@@ -447,7 +447,7 @@ void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, size_t i) {
         return;
     }
 
-    if (Weapon_ID_isValid(item.id)) {
+    if (Weapon_ID_isValid(item. id)) {
         Weapon_Load(unit->weapons_dtab, item.id);
     } else {
         Item_Load(unit->items_dtab, item.id);
