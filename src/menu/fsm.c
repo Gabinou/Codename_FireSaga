@@ -540,7 +540,6 @@ void fsm_eCncl_sGmpMap_ssMenu_mTM(struct Game *sota, struct Menu *mc) {
     strncpy(sota->reason, "trade was selected, time to select passive trade", sizeof(sota->reason));
     Game_Switch_toCandidates(sota, sota->passives);
     Game_Cursor_Move_toCandidate(sota);
-
 }
 
 void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
@@ -901,12 +900,14 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
 
         if (DARR_NUM(sota->patients) == 0) {
             SDL_Log("Invalid Loadout: no patient in range");
-            LoadoutSelectMenu_Deselect(ssm);
+            SDL_assert(false);
+            // LoadoutSelectMenu_Deselect(ssm);
         } else {
             Game_postLoadout_Patients(sota, sota->aggressor);
             mc->visible = false;
             strncpy(sota->reason, "staff was selected, time to select patient", sizeof(sota->reason));
             Game_Switch_toCandidates(sota, sota->patients);
+            getchar();
         }
     }
 
@@ -966,11 +967,9 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff(struct Game *sota, struct Menu *mc) {
     if (sota->staff_select_menu == TNECS_NULL)
         Game_StaffSelectMenu_Create(sota);
 
-
     SDL_assert(sota->staff_select_menu    > TNECS_NULL);
     SDL_assert(sota->selected_unit_entity > TNECS_NULL);
     Game_StaffSelectMenu_Enable(sota, sota->selected_unit_entity);
-
 
     /* -- Enable healmap rangemap to choose patients -- */
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Unit);
@@ -989,7 +988,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff(struct Game *sota, struct Menu *mc) {
     // PopUp_Loadout_Stats_Unit(pls, unit);
 
     /* -- TODO: Render Face -- */
-
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad) {

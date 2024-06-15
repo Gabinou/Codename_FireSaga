@@ -831,7 +831,8 @@ void fsm_eCrsMvs_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
     sota->cursor_move.y = 0;
 
     /* Update pre_combat_popup */
-    Game_PopUp_Pre_Combat_Enable(sota);
+    if (sota->candidates == sota->defendants)
+        Game_PopUp_Pre_Combat_Enable(sota);
 }
 
 void fsm_eCrsMvs_sGmpMap_ssMapUnitMv(struct Game *sota,
