@@ -991,6 +991,13 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->substate == GAME_SUBSTATE_MENU);
     strncpy(sota->reason, "loadout was selected, time to select defendant", sizeof(sota->reason));
     Game_Switch_toCandidates(sota, sota->defendants);
+
+    // 1. Compute Combat stuff -> Move to cursor hovers new defendant
+    sota->defendant = sota->candidates[sota->candidate];
+    Game_Combat_Outcome(sota);
+
+    // 2. Enable Pre-combat menu -> Move to cursor hovers new defendant
+    Game_PopUp_Pre_Combat_Enable(sota);
 }
 
 void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {

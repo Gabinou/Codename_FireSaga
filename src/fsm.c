@@ -516,14 +516,6 @@ void fsm_eCrsHvUnit_ssMapCndt(struct Game *sota, tnecs_entity hov_ent) {
         Sprite_Draw(sprite, sota->renderer);
     }
 
-    /* OLD event_Defendant_Select */
-    // 1. Compute Combat stuff -> Move to cursor hovers new defendant
-    sota->defendant = sota->candidates[sota->candidate];
-    Game_Combat_Outcome(sota);
-
-    // 2. Enable Pre-combat menu -> Move to cursor hovers new defendant
-    Game_PopUp_Pre_Combat_Enable(sota);
-
     // 3. Attackmap only defendant. -> Move to cursor hovers new defendant
     struct Map *map = sota->map;
     struct Position *pos  = TNECS_GET_COMPONENT(sota->world, sota->defendant, Position);
