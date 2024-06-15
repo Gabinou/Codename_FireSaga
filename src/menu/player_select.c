@@ -307,8 +307,9 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
     PlayerSelectMenu_Options_Reset(psm);
 
     PlayerSelectMenu_Option_Add(psm, MENU_OPTION_ITEMS);
-    if (DARR_NUM(sota->passives) > 0)
-        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_TRADE);
+    // TODO: Reinsert trade menu when implemented.
+    // if (DARR_NUM(sota->passives) > 0)
+    // PlayerSelectMenu_Option_Add(psm, MENU_OPTION_TRADE);
 
     /* --- Check if unit can SEIZE --- */
     /* -- Seizable: Check if tile is a throne --  */

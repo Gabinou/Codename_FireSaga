@@ -291,6 +291,7 @@ void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
     i32 stronghand  = Unit_Hand_Strong(lsm->unit);                              /* side space */
     i32 weakhand    = 1 - stronghand;                                           /* side space */
 
+    // If unselected songhand is unselected, there should be usable weapons
     if (lsm->selected[stronghand] < 0) {
         SDL_assert(select < lsm->unit->num_usable);
     }
@@ -303,6 +304,9 @@ void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
         }
         Unit_Equip_inHand(lsm->unit, stronghand);
 
+        /* Unequip weapon if it was in other hand */
+        if ((side_i == UNIT_HAND_LEFT) || (side_i == UNIT_HAND_RIGHT))
+            Unit_Unequip(lsm->unit, UNIT_HAND_RIGHT - side_i);
     } else if (lsm->selected[weakhand] < 0) {
         /* For weakhand select, side space == usable space*/
         lsm->selected[weakhand] = select;                                       /* usable_space */
@@ -327,8 +331,11 @@ void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
     } else {
         /* - Both Hands already selected - */
         SDL_Log("Both weapons already selected, but select sent to LoadoutSelectMenu");
-        exit(ERROR_Generic);
+        SDL_assert(false);      /* For debug    */
+        exit(ERROR_Generic);    /* For release  */
     }
+    SDL_Log("unit->equipped %d %d", lsm->unit->equipped[0], lsm->unit->equipped[1]);
+    getchar();
     lsm->update = true;
 }
 
