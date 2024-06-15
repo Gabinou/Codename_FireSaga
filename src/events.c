@@ -990,7 +990,7 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->state    == GAME_STATE_Gameplay_Map);
     SDL_assert(sota->substate == GAME_SUBSTATE_MENU);
     strncpy(sota->reason, "loadout was selected, time to select defendant", sizeof(sota->reason));
-    Game_Switch_toCandidates(sota, sota->defendants);
+    Game_Switch_toCandidates(sota, sota->defendants); // sends event_Cursor_Hovers_Unit
 
     // 1. Compute Combat stuff -> Move to cursor hovers new defendant
     sota->defendant = sota->candidates[sota->candidate];
@@ -998,6 +998,23 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
 
     // 2. Enable Pre-combat menu -> Move to cursor hovers new defendant
     Game_PopUp_Pre_Combat_Enable(sota);
+
+    /* -- Start unit combat stance loop -- */
+    // NOTE: ONLY FOR ATTACK
+    struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, sota->defendant, Sprite);
+    if (MAP_UNIT_LOOP_STANCE < sprite->spritesheet->loop_num) {
+        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_STANCE, sprite->flip);
+        Sprite_Animation_Loop(sprite);
+        Sprite_Draw(sprite, sota->renderer);
+    }
+
+    // 3. Attackmap only defendant. -> Move to cursor hovers new defendant
+    struct Map *map = sota->map;
+    struct Position *pos  = TNECS_GET_COMPONENT(sota->world, sota->defendant, Position);
+    memset(map->attacktomap, 0, map->row_len * map->col_len * sizeof(*map->attacktomap));
+    map->attacktomap[(pos->tilemap_pos.y * map->col_len + pos->tilemap_pos.x)] = 1;
+    Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_ATTACK);
+    Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 }
 
 void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {

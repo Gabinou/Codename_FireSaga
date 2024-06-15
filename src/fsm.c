@@ -506,23 +506,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
 void fsm_eCrsHvUnit_ssMapCndt(struct Game *sota, tnecs_entity hov_ent) {
     /* --- Select new candidate for action --- */
     SDL_assert(hov_ent > TNECS_NULL);
-
-    /* -- Start unit combat stance loop -- */
-    // NOTE: ONLY FOR ATTACK
-    struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, hov_ent, Sprite);
-    if (MAP_UNIT_LOOP_STANCE < sprite->spritesheet->loop_num) {
-        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_STANCE, sprite->flip);
-        Sprite_Animation_Loop(sprite);
-        Sprite_Draw(sprite, sota->renderer);
-    }
-
-    // 3. Attackmap only defendant. -> Move to cursor hovers new defendant
-    struct Map *map = sota->map;
-    struct Position *pos  = TNECS_GET_COMPONENT(sota->world, sota->defendant, Position);
-    memset(map->attacktomap, 0, map->row_len * map->col_len * sizeof(*map->attacktomap));
-    map->attacktomap[(pos->tilemap_pos.y * map->col_len + pos->tilemap_pos.x)] = 1;
-    Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_ATTACK);
-    Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
+    sota->hovered_unit_entity = hov_ent;
 }
 
 // -- FSM: Cursor_Dehovers_Unit --
