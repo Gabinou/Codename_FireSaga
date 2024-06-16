@@ -968,30 +968,38 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
     /* - Iem icon - */
     item_y_offset      = ITEM1_NAME_Y_OFFSET + strong_i * (ITEM_ICON_H + ITEM_ICON_SPACE);
     item_dura_y_offset = ITEM1_DURA_Y_OFFSET + strong_i * (ITEM_ICON_H + ITEM_ICON_SPACE);
-    /* Writing - if no item, then next*/
-    struct Inventory_item *item = Unit_Item_Side(unit, i);
 
-    if (item->id <= ITEM_NULL) {
+    /* Writing - if no item, then next*/
+    struct Inventory_item *invitem = Unit_Item_Side(unit, i);
+
+    if (invitem->id <= ITEM_NULL) {
         int x = ITEM1_NAME_X_OFFSET, y = item_y_offset;
         PixelFont_Write(stats_menu->pixelnours, renderer, "-", 1, x, y);
         return;
     }
 
-    SDL_assert(unit->weapons_dtab != NULL);
-    Weapon_Load(unit->weapons_dtab, item->id);
-    struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, item->id);
-    SDL_assert(weapon                   != NULL);
-    SDL_assert(weapon->item             != NULL);
-    SDL_assert(weapon->item->name.data  != NULL);
-    // s8 item_name = s8_mut(weapon->item->name.data);
-    int *order = DTAB_GET(global_itemOrders, item->id);
-    SDL_assert(order != NULL);
-    s8 item_name = global_itemNames[*order];
+    /* Writing - number of uses left */
+    int uses_left;
+    if (Weapon_ID_isValid(invitem->id)) {
+        SDL_assert(unit->weapons_dtab != NULL);
+        Weapon_Load(unit->weapons_dtab, invitem->id);
+        struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, invitem->id);
+        SDL_assert(weapon                   != NULL);
+        SDL_assert(weapon->item             != NULL);
+        SDL_assert(weapon->item->name.data  != NULL);
 
-    /* - uses left - */
-    SDL_assert(weapon->item->stats.uses > 0);
-    item = Unit_Item_Side(unit, i);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", (weapon->item->stats.uses - item->used));
+        /* - uses left - */
+        SDL_assert(weapon->item->stats.uses > 0);
+        uses_left = (weapon->item->stats.uses - invitem->used);
+    } else {
+        Item_Load(unit->weapons_dtab, invitem->id);
+        struct Item *item = DTAB_GET(unit->items_dtab, invitem->id);
+        uses_left = (item->stats.uses - invitem->used);
+    }
+    SDL_assert(uses_left > 0);
+
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", uses_left);
+
     int width_uses_left = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
     int x = ITEM1_DURA_X_OFFSET - width_uses_left / 2, y = item_dura_y_offset;
     if (i == UNIT_HAND_LEFT)
@@ -1002,6 +1010,9 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
     /* - Item name - */
+    int *order = DTAB_GET(global_itemOrders, invitem->id);
+    SDL_assert(order != NULL);
+    s8 item_name = global_itemNames[*order];
     s8 item_name_upper = s8_mut(item_name.data);
     item_name_upper = s8_toUpper(item_name_upper);
     int width = PixelFont_Width_Len(stats_menu->pixelnours_big, item_name.data);

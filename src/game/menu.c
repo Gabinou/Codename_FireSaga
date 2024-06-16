@@ -241,8 +241,8 @@ void Game_StatsMenu_Create(struct Game *sota) {
 
     /* stats_menu struct init */
     struct StatsMenu *stats_menu = StatsMenu_Alloc();
-    stats_menu->pos.x = sota->settings.res.x / 3;
-    stats_menu->pos.y = sota->settings.res.y / 3;
+    stats_menu->pos.x = sota->settings.res.x / 4;
+    stats_menu->pos.y = sota->settings.res.y / 5;
     mc->data          = stats_menu;
     mc->visible       = true;
     mc->elem_links    = sm_links;

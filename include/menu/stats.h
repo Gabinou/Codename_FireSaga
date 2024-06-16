@@ -74,7 +74,7 @@ enum STATS_MENU {
     STATS_MENU_PATCH_Y_SIZE     = 23,
     STATS_MENU_N9PATCH_SCALE_X  =  3,
     STATS_MENU_N9PATCH_SCALE_Y  =  3,
-    SM_ROWLEN     =  8,
+    SM_ROWLEN                   =  8,
     MENU_PATCH_PIXELS           =  8,
     STATS_MENU_LINESPACE        =  8,
     TOP_LINE                    =  5,
