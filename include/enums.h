@@ -557,18 +557,6 @@ enum ITEM_ARCHETYPE_NEW {
     ITEM_ARCHTYPE_NUM = 7,
 };
 
-// TODO: remove old archetypes
-enum ITEM_ARCHETYPE {
-    ITEM_ARCHETYPE_NULL     = -1,
-    ITEM_ARCHETYPE_ITEM     =  0,
-    ITEM_ARCHETYPE_STAFF    =  1, /* Staves use Weapon struct  -> weapons_dtab */
-    ITEM_ARCHETYPE_WEAPON   =  2,
-    ITEM_ARCHETYPE_SHIELD   =  3, /* Shields use Weapon struct -> weapons_dtab */
-    ITEM_ARCHETYPE_NUM,
-};
-
-struct dtab *Dtab_ItemOrWeapon(u64 archetype);
-
 enum TEXT_COLOR {
     SOTA_MALUS_RED   = 0xB2,
     SOTA_MALUS_GREEN = 0x10,
