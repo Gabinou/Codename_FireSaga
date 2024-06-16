@@ -684,12 +684,17 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
         i32 item_y_offset = LSM1_NAME_Y_OFFSET + strong_i * (ITEM_ICON_H + 2) +
                             (header_drawn * LSM_ROW_HEIGHT);
 
-        if (item->id == ITEM_NULL) {
+
+        if ((item->id == ITEM_NULL) || !Weapon_ID_isValid(item->id)) {
             PixelFont_Write(lsm->pixelnours, renderer, "-", 1, item_x_offset, item_y_offset);
             continue;
         }
+        // TODO: can select items in loadout
+
         SDL_assert(unit->weapons_dtab != NULL);
         struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, item->id);
+        SDL_assert(weapon != NULL);
+
 
         /* - Write uses left - */
         i32 item_dura_x_offset = LSM1_DURA_X_OFFSET;
@@ -712,7 +717,6 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
             }
         }
 
-        SDL_assert(weapon != NULL);
         SDL_assert((side_i >= 0) && (side_i <= DEFAULT_EQUIPMENT_SIZE));
         i32 uses_left = weapon->item->stats.uses - item->used;
         stbsp_sprintf(numbuff, "%d\0\0\0\0", uses_left);
