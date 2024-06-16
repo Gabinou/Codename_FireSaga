@@ -191,7 +191,6 @@ void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct Menu *mc
         mc->elem_links[i].top    = LSM_ELEM_NULL;
         mc->elem_links[i].bottom = LSM_ELEM_NULL;
     }
-
 }
 
 void LoadoutSelectMenu_Elem_Pos(struct LoadoutSelectMenu *lsm, struct Menu *mc) {
@@ -291,7 +290,7 @@ void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
     i32 stronghand  = Unit_Hand_Strong(lsm->unit);                              /* side space */
     i32 weakhand    = 1 - stronghand;                                           /* side space */
 
-    // If unselected songhand is unselected, there should be usable weapons
+    // If stronghand is unselected, there should be usable weapons
     if (lsm->selected[stronghand] < 0) {
         SDL_assert(select < lsm->unit->num_usable);
     }
@@ -375,7 +374,6 @@ void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
     lsm->selected[reverthand] = -1;
     lsm->update               = true;
     Unit_Equip_inHand(lsm->unit, reverthand);
-
 }
 
 /* --- Drawing --- */
@@ -639,6 +637,7 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
 
         /* Icons, text drawn on line strong_i  */
         i32 strong_i = Unit_Id_Strong(unit, i);
+
         /* Skip if hand is out of bounds */
         if (strong_i >= num_items)
             continue;

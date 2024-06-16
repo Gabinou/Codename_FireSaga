@@ -529,6 +529,8 @@ void Game_WeaponSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_on
     SDL_assert(unit_ontile != NULL);
     SDL_assert(unit_ontile->weapons_dtab != NULL);
 
+    Unit_Find_Usable(unit_ontile, ITEM_ARCHETYPE_WEAPON);
+
     struct Menu *mc;
     mc = TNECS_GET_COMPONENT(sota->world, sota->weapon_select_menu, Menu);
     mc->visible = true;
@@ -543,6 +545,8 @@ void Game_WeaponSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_on
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
 
+
+    LoadoutSelectMenu_Elem_Pos_Revert(wsm, mc);
     LoadoutSelectMenu_Elem_Reset(wsm, mc);
     LoadoutSelectMenu_Elem_Pos(  wsm, mc);
     Menu_Elem_Boxes_Check(mc);
