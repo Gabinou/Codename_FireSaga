@@ -722,6 +722,20 @@ void fsm_eCncl_sGmpMap_ssMenu_mSM(struct Game *sota, struct Menu *mc) {
     i8 new_substate = GAME_SUBSTATE_STANDBY;
     strncpy(sota->reason, "Stops showing stats menu during gameplay", sizeof(sota->reason));
     Game_subState_Set(sota, new_substate, sota->reason);
+
+    /* - Make popup_tile visible - */
+    tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_TILE];
+    struct PopUp *popup    = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
+    if (popup != NULL)
+        popup->visible = true;
+
+    /* - Make popup_unit invisible - */
+    popup_ent   = sota->popups[POPUP_TYPE_HUD_UNIT];
+    popup       = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
+    if (popup != NULL)
+        popup->visible = true;
+
+
 }
 
 /* --- fsm_eAcpt_sGmpMap_ssMenu_m --- */

@@ -1271,17 +1271,32 @@ void fsm_eStats_ssStby(struct Game *sota, tnecs_entity accepter) {
                (sota->state == GAME_STATE_Preparation)
               );
 
+    /* Find which unit was hovered */
     SDL_assert(sota->entity_cursor);
     struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     SDL_assert(cursor_pos != NULL);
     struct Point pos = cursor_pos->tilemap_pos;
     tnecs_entity ontile = sota->map->unitmap[pos.y * sota->map->col_len + pos.x];
+
+    /* Enabling stats menu for hovered unit */
     if (ontile > TNECS_NULL)
         Game_StatsMenu_Enable(sota, ontile);
     else {
         /* -- TODO: draw a map marker here, like tear ring saga -- */
         SDL_Log("NO UNIT ON TILE");
     }
+
+    /* - Make popup_tile invisible - */
+    tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_TILE];
+    struct PopUp *popup    = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
+    if (popup != NULL)
+        popup->visible = false;
+
+    /* - Make popup_unit invisible - */
+    popup_ent   = sota->popups[POPUP_TYPE_HUD_UNIT];
+    popup       = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
+    if (popup != NULL)
+        popup->visible = false;
 }
 
 // -- FSM: UNIT_SELECT EVENT --
