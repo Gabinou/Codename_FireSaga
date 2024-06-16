@@ -315,7 +315,7 @@ struct WpnorItem Utilities_WpnorItem(i16 id, struct dtab *weapons_dtab, struct d
 
     struct WpnorItem out = WpnorItem_default;
 
-    out.dtab = (Item_Archetype(id) == ITEM_ARCHTYPE_ITEM);
+    out.dtab = (Item_Archetype(id) == ITEM_ARCHETYPE_ITEM);
 
     if (out.dtab == SOTA_DTAB_ITEMS) {
         Item_Load(items_dtab, id);

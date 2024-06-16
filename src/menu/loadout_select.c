@@ -44,8 +44,8 @@ struct LoadoutSelectMenu LoadoutSelectMenu_default = {
     .texture                = NULL,
     .texture_hands          = NULL,
     .selected               = {-1, -1},
-    .archetype_stronghand   = ITEM_ARCHTYPE_STRONGHAND_ATTACK,
-    .archetype_weakhand     = ITEM_ARCHTYPE_WEAKHAND,
+    .archetype_stronghand   = ITEM_ARCHETYPE_STRONGHAND_ATTACK,
+    .archetype_weakhand     = ITEM_ARCHETYPE_WEAKHAND,
     .unit                   = NULL,
     .pixelnours             = NULL,
     .pixelnours_big         = NULL,
@@ -115,7 +115,7 @@ void WeaponSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map,
                            SDL_Renderer *renderer, struct n9Patch *n9patch) {
     WeaponSelectMenu_Load_n9Patch(lsm, renderer, n9patch);
 
-    lsm->archetype_stronghand = ITEM_ARCHTYPE_STRONGHAND_ATTACK;
+    lsm->archetype_stronghand = ITEM_ARCHETYPE_STRONGHAND_ATTACK;
     LoadoutSelectMenu_Load(lsm, map, world, unit_ent, renderer, n9patch, lsm->archetype_stronghand);
 }
 
@@ -131,7 +131,7 @@ void StaffSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, tnecs_
     n9patch->size_pixels.x   = (MENU_PATCH_PIXELS * LSM_PATCH_X_SIZE);
     n9patch->size_pixels.y   = (MENU_PATCH_PIXELS * LSM_PATCH_Y_SIZE);
 
-    lsm->archetype_stronghand = ITEM_ARCHTYPE_STRONGHAND_STAFF;
+    lsm->archetype_stronghand = ITEM_ARCHETYPE_STRONGHAND_STAFF;
     LoadoutSelectMenu_Load(lsm, map, world, unit_ent, renderer, n9patch, lsm->archetype_stronghand);
 }
 

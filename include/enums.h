@@ -539,22 +539,22 @@ enum ITEM_TYPES {
 /*        SubType -> Thrust Sword   */
 // Archetype is weapon type with possibly multiple bits enabled
 enum ITEM_ARCHETYPE_NEW {
-    ITEM_ARCHTYPE_NULL     =   -1,
-    ITEM_ARCHTYPE_ITEM     =   ITEM_TYPE_ITEM,
-    ITEM_ARCHTYPE_STAFF    =   ITEM_TYPE_STAFF,
-    ITEM_ARCHTYPE_SHIELD   =   ITEM_TYPE_SHIELD,
-    ITEM_ARCHTYPE_WEAPON   =   ITEM_TYPE_SWORD     & ITEM_TYPE_LANCE       &
-                               ITEM_TYPE_AXE       & ITEM_TYPE_ELEMENTAL   &
-                               ITEM_TYPE_DEMONIC   & ITEM_TYPE_ANGELIC     &
-                               ITEM_TYPE_CLAW      & ITEM_TYPE_STANDARD    &
-                               ITEM_TYPE_BOW       & ITEM_TYPE_OFFHAND,
-    ITEM_ARCHTYPE_WEAKHAND =   ITEM_TYPE_OFFHAND   & ITEM_TYPE_SHIELD      &
-                               ITEM_TYPE_ITEM      & ITEM_ARCHTYPE_WEAPON,
+    ITEM_ARCHETYPE_NULL     =   -1,
+    ITEM_ARCHETYPE_ITEM     =   ITEM_TYPE_ITEM,
+    ITEM_ARCHETYPE_STAFF    =   ITEM_TYPE_STAFF,
+    ITEM_ARCHETYPE_SHIELD   =   ITEM_TYPE_SHIELD,
+    ITEM_ARCHETYPE_WEAPON   =   ITEM_TYPE_SWORD     & ITEM_TYPE_LANCE       &
+                                ITEM_TYPE_AXE       & ITEM_TYPE_ELEMENTAL   &
+                                ITEM_TYPE_DEMONIC   & ITEM_TYPE_ANGELIC     &
+                                ITEM_TYPE_CLAW      & ITEM_TYPE_STANDARD    &
+                                ITEM_TYPE_BOW       & ITEM_TYPE_OFFHAND,
+    ITEM_ARCHETYPE_WEAKHAND =   ITEM_TYPE_OFFHAND   & ITEM_TYPE_SHIELD      &
+                                ITEM_TYPE_ITEM      & ITEM_ARCHETYPE_WEAPON,
     /* All weapon types that can be equipped for Unit action: Attack */
-    ITEM_ARCHTYPE_STRONGHAND_ATTACK    = ITEM_ARCHTYPE_WEAPON,
+    ITEM_ARCHETYPE_STRONGHAND_ATTACK    = ITEM_ARCHETYPE_WEAPON,
     /* All weapon types that can be equipped for Unit action: Staff */
-    ITEM_ARCHTYPE_STRONGHAND_STAFF     = ITEM_ARCHTYPE_STAFF,
-    ITEM_ARCHTYPE_NUM = 7,
+    ITEM_ARCHETYPE_STRONGHAND_STAFF     = ITEM_ARCHETYPE_STAFF,
+    ITEM_ARCHETYPE_NUM = 7,
 };
 
 enum TEXT_COLOR {

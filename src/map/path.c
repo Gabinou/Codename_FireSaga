@@ -139,7 +139,7 @@ i32 *Map_Healtomap_Compute(struct Map *map, tnecs_world *world, tnecs_entity uni
     i32 move_stat = move ? Unit_getStats(unit).move : 0;
     _Map_Movemap_Compute(map, start, move_stat);
     struct Range range = Range_default;
-    _Unit_Range_Combine(unit, &range, equipped, ITEM_ARCHTYPE_STAFF);
+    _Unit_Range_Combine(unit, &range, equipped, ITEM_ARCHETYPE_STAFF);
     // SDL_Log("range %d %d", range.min, range.max);
 
     map->update = true;
@@ -180,7 +180,7 @@ i32 *Map_Attacktomap_Compute(struct Map *map, tnecs_world *world,
     i32 move_stat = move ? Unit_getStats(unit).move : 0;
     _Map_Movemap_Compute(map, start, move_stat);
     struct Range range = Range_default;
-    _Unit_Range_Combine(unit, &range, equipped, ITEM_ARCHTYPE_WEAPON);
+    _Unit_Range_Combine(unit, &range, equipped, ITEM_ARCHETYPE_WEAPON);
     map->update = true;
     map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap, map->row_len,
                                           map->col_len, move_stat, &range, MOVETILE_INCLUDE);
@@ -199,7 +199,7 @@ i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_world *world, tnecs_entity
     struct Position *dft_pos    = TNECS_GET_COMPONENT(world, dft, Position);
     /* Get agg range */
     struct Range range = Range_default;
-    _Unit_Range_Combine(agg_unit, &range, equipped, ITEM_ARCHTYPE_WEAPON);
+    _Unit_Range_Combine(agg_unit, &range, equipped, ITEM_ARCHETYPE_WEAPON);
 
     /* Compute movemap */
     i32 move_stat = move ? Unit_getStats(agg_unit).move : 0;

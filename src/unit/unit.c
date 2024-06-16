@@ -402,7 +402,7 @@ b32 Unit_Item_Usable(struct Unit *unit, u64 archetype, int id) {
     b32 usable = false;
     do {
         /* -- If item select, everything is usable --  */
-        if (archetype == ITEM_ARCHTYPE_ITEM) {
+        if (archetype == ITEM_ARCHETYPE_ITEM) {
             usable = true;
             break;
         }
@@ -413,11 +413,11 @@ b32 Unit_Item_Usable(struct Unit *unit, u64 archetype, int id) {
         b32 canequip = Unit_canEquip(unit, id);
         SDL_assert(!(isstaff && iswpn));
 
-        if (archetype == ITEM_ARCHTYPE_WEAPON) {
+        if (archetype == ITEM_ARCHETYPE_WEAPON) {
             usable = (iswpn && !isstaff && canequip);
-        } else if (archetype == ITEM_ARCHTYPE_STAFF) {
+        } else if (archetype == ITEM_ARCHETYPE_STAFF) {
             usable = isstaff;
-        } else if (archetype == ITEM_ARCHTYPE_SHIELD) {
+        } else if (archetype == ITEM_ARCHETYPE_SHIELD) {
             usable = isshield;
         }
 
@@ -883,7 +883,7 @@ b32 Unit_iswrongHanding(struct Unit *unit) {
 
         u64 archetype = Item_Archetype(item->id);
         /* Offhands count as weapon archetype, so need to check like this for wronghanding*/
-        if ((archetype == ITEM_ARCHTYPE_SHIELD) || Item_isOffhand(item->id))
+        if ((archetype == ITEM_ARCHETYPE_SHIELD) || Item_isOffhand(item->id))
             break;
         out = true;
     } while (false);
@@ -903,7 +903,7 @@ b32 Unit_isWielding(struct Unit *unit, b32 hand) {
         return (false);
 
     u64 archetype = Item_Archetype(id);
-    if (archetype != ITEM_ARCHTYPE_WEAPON)
+    if (archetype != ITEM_ARCHETYPE_WEAPON)
         return (false);
 
     return (true);
@@ -1597,26 +1597,26 @@ void _Unit_Equipped_Deplete(struct Unit *unit, b32 hand, u64 archetype) {
 
 void Unit_Item_Deplete(struct Unit *unit, int i) {
     /* Upon use, decrease item durability */
-    _Unit_Item_Deplete(unit, i, ITEM_ARCHTYPE_NULL);
+    _Unit_Item_Deplete(unit, i, ITEM_ARCHETYPE_NULL);
 }
 
 void Unit_Equipped_Staff_Deplete(struct Unit *unit, b32 hand) {
     /* Upon healing, decrease staff durability */
-    _Unit_Equipped_Deplete(unit, hand, ITEM_ARCHTYPE_STAFF);
+    _Unit_Equipped_Deplete(unit, hand, ITEM_ARCHETYPE_STAFF);
 }
 
 void Unit_Equipped_Weapons_Deplete(struct Unit *unit) {
     /* Upon getting hit, decrease shields durability */
-    _Unit_Equipped_Deplete(unit, UNIT_HAND_LEFT, ITEM_ARCHTYPE_WEAPON);
+    _Unit_Equipped_Deplete(unit, UNIT_HAND_LEFT, ITEM_ARCHETYPE_WEAPON);
     if (!unit->isTwoHanding)
-        _Unit_Equipped_Deplete(unit, UNIT_HAND_RIGHT, ITEM_ARCHTYPE_WEAPON);
+        _Unit_Equipped_Deplete(unit, UNIT_HAND_RIGHT, ITEM_ARCHETYPE_WEAPON);
 }
 
 void Unit_Equipped_Shields_Deplete(struct Unit *unit) {
     /* Upon getting hit, use shields */
-    _Unit_Equipped_Deplete(unit, UNIT_HAND_LEFT, ITEM_ARCHTYPE_SHIELD);
+    _Unit_Equipped_Deplete(unit, UNIT_HAND_LEFT, ITEM_ARCHETYPE_SHIELD);
     if (!unit->isTwoHanding)
-        _Unit_Equipped_Deplete(unit, UNIT_HAND_RIGHT, ITEM_ARCHTYPE_SHIELD);
+        _Unit_Equipped_Deplete(unit, UNIT_HAND_RIGHT, ITEM_ARCHETYPE_SHIELD);
 }
 
 /* --- I/O --- */

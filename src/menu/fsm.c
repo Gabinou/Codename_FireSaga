@@ -985,7 +985,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff(struct Game *sota, struct Menu *mc) {
 
     /* -- Enable healmap rangemap to choose patients -- */
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Unit);
-    Unit_Find_Usable(unit, ITEM_ARCHTYPE_STAFF);
+    Unit_Find_Usable(unit, ITEM_ARCHETYPE_STAFF);
 
     // TODO: save rangemap previous state? how to go back
     unit->rangemap = RANGEMAP_HEALMAP;
