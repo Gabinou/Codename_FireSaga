@@ -78,8 +78,8 @@ int Unit_Equipped_Strong(struct Unit *u, int i); /* strong space */
 
 /* --- Items --- */
 /* -- Deplete: decrease durability -- */
-void _Unit_Item_Deplete(           struct Unit *u, int  i, int a);
-void _Unit_Equipped_Deplete(       struct Unit *u, b32 h, int a);
+void _Unit_Item_Deplete(           struct Unit *u, int  i, u64 a);
+void _Unit_Equipped_Deplete(       struct Unit *u, b32 h, u64 a);
 
 void Unit_Item_Deplete(            struct Unit *u, int i);
 void Unit_Equipped_Staff_Deplete(  struct Unit *u, b32 h);
@@ -121,10 +121,10 @@ b32 Unit_Equipment_Full( struct Unit *u);
 void Unit_Equipment_Print(struct Unit *u);
 
 /* --- Usability --- */
-b32  Unit_Eq_Usable(  struct Unit *u, int a, int i);
+b32  Unit_Eq_Usable(  struct Unit *u, u64 a, int i);
 b32  Unit_All_Usable( struct Unit *u);
-void Unit_Find_Usable(struct Unit *u, int a);
-b32  Unit_Item_Usable(struct Unit *u, int a, int i);
+void Unit_Find_Usable(struct Unit *u, u64 a);
+b32  Unit_Item_Usable(struct Unit *u, u64 a, int i);
 
 /* --- Skills --- */
 b32 Unit_hasSkill(struct Unit *u, u64 s);

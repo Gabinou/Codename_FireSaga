@@ -502,22 +502,6 @@ enum ITEM_ORDER {
     ITEM_NUM,
 };
 
-/* --- ITEM HIERARCHY --- */
-/* Example: Fleuret                 */
-/*      Archetype -> Weapon         */
-/*           Type -> Sword          */
-/*        SubType -> Thrust Sword   */
-enum ITEM_ARCHETYPE {
-    ITEM_ARCHETYPE_NULL     = -1,
-    ITEM_ARCHETYPE_ITEM     =  0,
-    ITEM_ARCHETYPE_STAFF    =  1, /* Staves use Weapon struct  -> weapons_dtab */
-    ITEM_ARCHETYPE_WEAPON   =  2,
-    ITEM_ARCHETYPE_SHIELD   =  3, /* Shields use Weapon struct -> weapons_dtab */
-    ITEM_ARCHETYPE_NUM,
-};
-extern int dtabs_id[ITEM_ARCHETYPE_NUM];
-
-/* Note: Only ITEM_ARCHETYPE_ITEM use Item struct -> items_dtab */
 enum DTAB {
     SOTA_DTAB_NULL       = -1,
     SOTA_DTAB_WEAPONS    =  0,
@@ -539,11 +523,11 @@ enum ITEM_TYPES {
     ITEM_TYPE_START = 0,
 #include "names/items_types.h"
     ITEM_TYPE_END = 1UL << ITEM_TYPE_EXP_END,
-    ITEM_TYPE_canATTACK =   ITEM_TYPE_SWORD     && ITEM_TYPE_LANCE &&
-                            ITEM_TYPE_AXE       && ITEM_TYPE_ELEMENTAL &&
-                            ITEM_TYPE_DEMONIC   && ITEM_TYPE_ANGELIC &&
-                            ITEM_TYPE_CLAW      && ITEM_TYPE_STANDARD &&
-                            ITEM_TYPE_BOW       && ITEM_TYPE_OFFHAND,
+    ITEM_TYPE_canATTACK =   ITEM_TYPE_SWORD     & ITEM_TYPE_LANCE       &
+                            ITEM_TYPE_AXE       & ITEM_TYPE_ELEMENTAL   &
+                            ITEM_TYPE_DEMONIC   & ITEM_TYPE_ANGELIC     &
+                            ITEM_TYPE_CLAW      & ITEM_TYPE_STANDARD    &
+                            ITEM_TYPE_BOW       & ITEM_TYPE_OFFHAND,
 };
 #undef REGISTER_ENUM
 
@@ -558,21 +542,31 @@ enum ITEM_ARCHETYPE_NEW {
     ITEM_ARCHTYPE_ITEM     =   ITEM_TYPE_ITEM,
     ITEM_ARCHTYPE_STAFF    =   ITEM_TYPE_STAFF,
     ITEM_ARCHTYPE_SHIELD   =   ITEM_TYPE_SHIELD,
-    ITEM_ARCHTYPE_WEAPON   =   ITEM_TYPE_SWORD     && ITEM_TYPE_LANCE &&
-                               ITEM_TYPE_AXE       && ITEM_TYPE_ELEMENTAL &&
-                               ITEM_TYPE_DEMONIC   && ITEM_TYPE_ANGELIC &&
-                               ITEM_TYPE_CLAW      && ITEM_TYPE_STANDARD &&
-                               ITEM_TYPE_BOW       && ITEM_TYPE_OFFHAND,
-    ITEM_ARCHTYPE_WEAKHAND =   ITEM_TYPE_OFFHAND   && ITEM_TYPE_SHIELD &&
-                               ITEM_TYPE_ITEM      && ITEM_ARCHETYPE_WEAPON,
+    ITEM_ARCHTYPE_WEAPON   =   ITEM_TYPE_SWORD     & ITEM_TYPE_LANCE       &
+                               ITEM_TYPE_AXE       & ITEM_TYPE_ELEMENTAL   &
+                               ITEM_TYPE_DEMONIC   & ITEM_TYPE_ANGELIC     &
+                               ITEM_TYPE_CLAW      & ITEM_TYPE_STANDARD    &
+                               ITEM_TYPE_BOW       & ITEM_TYPE_OFFHAND,
+    ITEM_ARCHTYPE_WEAKHAND =   ITEM_TYPE_OFFHAND   & ITEM_TYPE_SHIELD      &
+                               ITEM_TYPE_ITEM      & ITEM_ARCHTYPE_WEAPON,
     /* All weapon types that can be equipped for Unit action: Attack */
-    ITEM_ARCHTYPE_STRONGHAND_ATTACK    = ITEM_ARCHETYPE_WEAPON,
+    ITEM_ARCHTYPE_STRONGHAND_ATTACK    = ITEM_ARCHTYPE_WEAPON,
     /* All weapon types that can be equipped for Unit action: Staff */
-    ITEM_ARCHTYPE_STRONGHAND_Staff     = ITEM_ARCHETYPE_STAFF,
+    ITEM_ARCHTYPE_STRONGHAND_STAFF     = ITEM_ARCHTYPE_STAFF,
     ITEM_ARCHTYPE_NUM = 7,
 };
-extern int dtabs_id[ITEM_ARCHETYPE_NUM];
 
+// TODO: remove old archetypes
+enum ITEM_ARCHETYPE {
+    ITEM_ARCHETYPE_NULL     = -1,
+    ITEM_ARCHETYPE_ITEM     =  0,
+    ITEM_ARCHETYPE_STAFF    =  1, /* Staves use Weapon struct  -> weapons_dtab */
+    ITEM_ARCHETYPE_WEAPON   =  2,
+    ITEM_ARCHETYPE_SHIELD   =  3, /* Shields use Weapon struct -> weapons_dtab */
+    ITEM_ARCHETYPE_NUM,
+};
+
+struct dtab *Dtab_ItemOrWeapon(u64 archetype);
 
 enum TEXT_COLOR {
     SOTA_MALUS_RED   = 0xB2,

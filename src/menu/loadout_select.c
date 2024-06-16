@@ -1,4 +1,5 @@
 #include "menu/loadout_select.h"
+#include "menu/loadout_select.h"
 
 struct Point wsm_cursor_pos[LSM_ELEMS_NUM] = {
     /* LSM_ELEM_ITEM2 */ {LSM1_X_OFFSET, LSM1_Y_OFFSET},
@@ -43,8 +44,8 @@ struct LoadoutSelectMenu LoadoutSelectMenu_default = {
     .texture                = NULL,
     .texture_hands          = NULL,
     .selected               = {-1, -1},
-    .archetype_stronghand   = ITEM_ARCHETYPE_WEAPON,
-    .archetype_weakhand     = ITEM_ARCHETYPE_ITEM,
+    .archetype_stronghand   = ITEM_ARCHTYPE_STRONGHAND_ATTACK,
+    .archetype_weakhand     = ITEM_ARCHTYPE_WEAKHAND,
     .unit                   = NULL,
     .pixelnours             = NULL,
     .pixelnours_big         = NULL,
@@ -114,7 +115,7 @@ void WeaponSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map,
                            SDL_Renderer *renderer, struct n9Patch *n9patch) {
     WeaponSelectMenu_Load_n9Patch(lsm, renderer, n9patch);
 
-    lsm->archetype_stronghand = ITEM_ARCHETYPE_WEAPON;
+    lsm->archetype_stronghand = ITEM_ARCHTYPE_STRONGHAND_ATTACK;
     LoadoutSelectMenu_Load(lsm, map, world, unit_ent, renderer, n9patch, lsm->archetype_stronghand);
 }
 
@@ -130,12 +131,14 @@ void StaffSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, tnecs_
     n9patch->size_pixels.x   = (MENU_PATCH_PIXELS * LSM_PATCH_X_SIZE);
     n9patch->size_pixels.y   = (MENU_PATCH_PIXELS * LSM_PATCH_Y_SIZE);
 
-    lsm->archetype_stronghand = ITEM_ARCHETYPE_STAFF;
+    lsm->archetype_stronghand = ITEM_ARCHTYPE_STRONGHAND_STAFF;
     LoadoutSelectMenu_Load(lsm, map, world, unit_ent, renderer, n9patch, lsm->archetype_stronghand);
 }
 
-void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, tnecs_world *world,
-                            tnecs_entity unit_ent, SDL_Renderer *renderer, struct n9Patch *n9patch, i32 archetype) {
+void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map,
+                            tnecs_world *world, tnecs_entity unit_ent,
+                            SDL_Renderer *renderer, struct n9Patch *n9patch,
+                            u64 archetype) {
     SDL_assert(n9patch != NULL);
     SDL_assert(lsm != NULL);
     SDL_assert(unit_ent > TNECS_NULL);

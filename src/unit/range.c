@@ -17,7 +17,7 @@ struct Range *Unit_Range_Loadout(struct Unit   *unit) {
         /* If dual wielding, range_loadout is combined. */
         if (unit->isDualWielding) {
             SDL_Log("IS dual wielding,");
-            _Unit_Range_Combine(unit, range, true, ITEM_ARCHETYPE_WEAPON);
+            _Unit_Range_Combine(unit, range, true, ITEM_ARCHTYPE_WEAPON);
             break;
         }
 
@@ -27,7 +27,7 @@ struct Range *Unit_Range_Loadout(struct Unit   *unit) {
             break;
         }
 
-        if (!Unit_Eq_Usable(unit, ITEM_ARCHETYPE_WEAPON, stronghand)) {
+        if (!Unit_Eq_Usable(unit, ITEM_ARCHTYPE_WEAPON, stronghand)) {
             SDL_Log("If not usable,");
             break;
         }
@@ -87,14 +87,14 @@ struct Range *_Unit_Range_Combine( struct Unit   *unit, struct Range *range,
             continue;
 
         /* Skip if wrong archetype*/
-        if ((archetype == ITEM_ARCHETYPE_STAFF)  && !Item_isStaff(unit->_equipment[i].id))
+        if ((archetype == ITEM_ARCHTYPE_STAFF)  && !Item_isStaff(unit->_equipment[i].id))
             continue;
 
         /* Skip if weakhand for staff */
-        if ((archetype == ITEM_ARCHETYPE_STAFF)  && (i != stronghand) && (equipped))
+        if ((archetype == ITEM_ARCHTYPE_STAFF)  && (i != stronghand) && (equipped))
             continue;
 
-        if ((archetype == ITEM_ARCHETYPE_WEAPON) && !Item_isWeapon(unit->_equipment[i].id))
+        if ((archetype == ITEM_ARCHTYPE_WEAPON) && !Item_isWeapon(unit->_equipment[i].id))
             continue;
 
         /* Combine ranges */
@@ -114,13 +114,13 @@ struct Range *Unit_Range_Combine_Equipment(struct Unit *unit) {
 
 struct Range *Unit_Range_Combine(struct Unit *unit, b32 equipped) {
     /* Compute range using unit rangemap */
-    int archetype = ITEM_ARCHETYPE_WEAPON;
+    int archetype = ITEM_ARCHTYPE_WEAPON;
     int rangemap = unit->user_rangemap > RANGEMAP_NULL ? unit->user_rangemap : unit->rangemap;
 
     if (rangemap == RANGEMAP_HEALMAP) {
-        archetype = ITEM_ARCHETYPE_STAFF;
+        archetype = ITEM_ARCHTYPE_STAFF;
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
-        archetype = ITEM_ARCHETYPE_WEAPON;
+        archetype = ITEM_ARCHTYPE_WEAPON;
     }
 
     struct Range *range = &unit->computed_stats.range_combined;
@@ -135,7 +135,7 @@ struct Range *Unit_Range_Combine_Staves(struct Unit *unit, b32 equipped) {
     struct Range *range = &unit->computed_stats.range_combined;
     range->min = UINT8_MAX;
     range->max = 0;
-    _Unit_Range_Combine(unit, range, equipped, ITEM_ARCHETYPE_STAFF);
+    _Unit_Range_Combine(unit, range, equipped, ITEM_ARCHTYPE_STAFF);
 
     return (range);
 }
@@ -146,7 +146,7 @@ struct Range *Unit_Range_Combine_Weapons(struct Unit *unit, b32 equipped) {
     struct Range *range = &unit->computed_stats.range_combined;
     range->min = Range_default.min;
     range->max = Range_default.max;
-    _Unit_Range_Combine(unit, range, equipped, ITEM_ARCHETYPE_WEAPON);
+    _Unit_Range_Combine(unit, range, equipped, ITEM_ARCHTYPE_WEAPON);
 
     return (range);
 }

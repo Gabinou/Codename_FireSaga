@@ -314,8 +314,8 @@ struct WpnorItem Utilities_WpnorItem(i16 id, struct dtab *weapons_dtab, struct d
     SDL_assert(items_dtab   != NULL);
 
     struct WpnorItem out = WpnorItem_default;
-    out.dtab = dtabs_id[Item_Archetype(id)];
-    SDL_assert(out.dtab > SOTA_DTAB_NULL);
+
+    out.dtab = (Item_Archetype(id) == ITEM_ARCHTYPE_ITEM);
 
     if (out.dtab == SOTA_DTAB_ITEMS) {
         Item_Load(items_dtab, id);

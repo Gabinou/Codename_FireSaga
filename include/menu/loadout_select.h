@@ -172,7 +172,7 @@ struct LoadoutSelectMenu *LoadoutSelectMenu_Alloc(void);
 void LoadoutSelectMenu_Free(struct LoadoutSelectMenu *lsm);
 void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
                             tnecs_world *w, tnecs_entity ent, SDL_Renderer *r,
-                            struct n9Patch *n9, int a);
+                            struct n9Patch *n9, u64 a);
 
 void _LoadoutSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Unit *u,
                              SDL_Renderer *r, struct n9Patch *n9);

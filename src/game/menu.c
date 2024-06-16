@@ -507,7 +507,7 @@ void Game_WeaponSelectMenu_Create(struct Game *sota) {
     struct LoadoutSelectMenu *wsm   = LoadoutSelectMenu_Alloc();
     wsm->pos.x                      = sota->settings.res.x / 2;
     wsm->pos.y                      = sota->settings.res.y / 2;
-    wsm->archetype_stronghand       = ITEM_ARCHETYPE_WEAPON;
+    wsm->archetype_stronghand       = ITEM_ARCHTYPE_WEAPON;
     mc->data                        = wsm;
     mc->visible                     = true;
     mc->elem_links                  = wsm_links;
@@ -529,7 +529,7 @@ void Game_WeaponSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_on
     SDL_assert(unit_ontile != NULL);
     SDL_assert(unit_ontile->weapons_dtab != NULL);
 
-    Unit_Find_Usable(unit_ontile, ITEM_ARCHETYPE_WEAPON);
+    Unit_Find_Usable(unit_ontile, ITEM_ARCHTYPE_WEAPON);
 
     struct Menu *mc;
     mc = TNECS_GET_COMPONENT(sota->world, sota->weapon_select_menu, Menu);
@@ -760,7 +760,7 @@ void Game_StaffSelectMenu_Create(struct Game *sota) {
     struct LoadoutSelectMenu *ssm   = LoadoutSelectMenu_Alloc();
     ssm->pos.x                      = sota->settings.res.x / 2;
     ssm->pos.y                      = sota->settings.res.y / 2;
-    ssm->archetype_stronghand       = ITEM_ARCHETYPE_STAFF;
+    ssm->archetype_stronghand       = ITEM_ARCHTYPE_STAFF;
     mc->data                        = ssm;
     mc->visible                     = true;
     mc->elem_links                  = ssm_links;

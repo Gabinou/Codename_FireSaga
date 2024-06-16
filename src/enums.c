@@ -19,12 +19,6 @@
 #include "names/units_PC.h"
 #undef REGISTER_ENUM
 
-int dtabs_id[ITEM_ARCHETYPE_NUM] = {
-    /* ITEM_ARCHETYPE_ITEM   */ SOTA_DTAB_ITEMS,
-    /* ITEM_ARCHETYPE_STAFF  */ SOTA_DTAB_WEAPONS,
-    /* ITEM_ARCHETYPE_WEAPON */ SOTA_DTAB_WEAPONS,
-    /* ITEM_ARCHETYPE_SHIELD */ SOTA_DTAB_WEAPONS
-};
 
 /* Direction array index from ternary index */
 // Array order: Right,    Top,     Left,     Bottom,
