@@ -1,6 +1,7 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
+#include <math.h>
 #include "types.h"
 #include "debug.h"
 #include "enums.h"

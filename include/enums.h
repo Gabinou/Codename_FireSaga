@@ -1,6 +1,7 @@
 #ifndef ENUMS_H
 #define ENUMS_H
 
+#include <math.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include "types.h"

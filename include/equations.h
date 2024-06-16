@@ -1,6 +1,7 @@
 #ifndef EQUATIONS_H
 #define EQUATIONS_H
 
+#include <math.h>
 #include <stdarg.h>
 #include <limits.h>
 #include "enums.h"

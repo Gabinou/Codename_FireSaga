@@ -1,6 +1,7 @@
 #ifndef UNIT_H
 #define UNIT_H
 
+#include <math.h>
 #include "types.h"
 #include "enums.h"
 #include "structs.h"

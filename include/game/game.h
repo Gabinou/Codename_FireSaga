@@ -1,6 +1,7 @@
 #ifndef GAME_STRUCT_H
 #define GAME_STRUCT_H
 
+#include <math.h>
 #include <stdio.h>
 #include "SDL2/SDL.h"
 #ifdef SOTA_OPENGL
@@ -45,7 +46,6 @@
 #include "tile.h"
 #include "text.h"
 #include "AI.h"
-#include "nmath.h"
 #include "RNG.h"
 #include "position.h"
 #include "sprite.h"

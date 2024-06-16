@@ -1,6 +1,7 @@
 #ifndef COMBAT_H
 #define COMBAT_H
 
+#include <math.h>
 #include "SDL2/SDL.h"
 #include "types.h"
 #include "enums.h"

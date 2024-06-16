@@ -1,6 +1,7 @@
 #ifndef EVENTS_H
 #define EVENTS_H
 
+#include <math.h>
 #include "enums.h"
 #include "tnecs.h"
 #include "fsm.h"

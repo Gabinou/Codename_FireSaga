@@ -1,13 +1,13 @@
 #ifndef NOURSMATH_H
 #define NOURSMATH_H
 
+#include <math.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include <assert.h>
-#include <math.h>
 
 /******************************* NOURS_MATH v0.3 *****************************/
 /* Math library I made during the development of my game, Codename:Firesaga
