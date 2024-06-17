@@ -497,6 +497,16 @@ void Unit_Equipment_Drop(struct Unit *unit) {
     }
 }
 
+void Unit_Equipment_Import(struct Unit *u, struct Inventory_item *equipment) {
+
+}
+
+void Unit_Equipment_Export(struct Unit *u, struct Inventory_item *equipment) {
+
+}
+
+
+
 struct Inventory_item Unit_Item_Drop(struct Unit *unit, i16 i) {
     if ((i < 0) || (i >= DEFAULT_EQUIPMENT_SIZE)) {
         SDL_Log("Item index out of bounds");
@@ -514,6 +524,10 @@ struct Inventory_item Unit_Item_Drop(struct Unit *unit, i16 i) {
 
 void Unit_Item_Swap(struct Unit *unit, i16 i1, i16 i2) {
     SDL_assert(unit);
+    Equipment_Swap(unit->_equipment, i1, i2);
+}
+
+void Equipment_Swap(struct Inventory_item *_equipment, i16 i1, i16 i2) {
     if ((i1 < 0) || (i1 >= DEFAULT_EQUIPMENT_SIZE)) {
         SDL_Log("Item index1 out of bounds");
         exit(ERROR_OutofBounds);
@@ -522,10 +536,11 @@ void Unit_Item_Swap(struct Unit *unit, i16 i1, i16 i2) {
         SDL_Log("Item index2 out of bounds");
         exit(ERROR_OutofBounds);
     }
-    struct Inventory_item buffer  = unit->_equipment[i1];
-    unit->_equipment[i1]          = unit->_equipment[i2];
-    unit->_equipment[i2]          = buffer;
+    struct Inventory_item buffer  = _equipment[i1];
+    _equipment[i1]          = _equipment[i2];
+    _equipment[i2]          = buffer;
 }
+
 
 void Unit_Item_Trade(struct Unit *giver, struct Unit *taker, i16 ig, i16 it) {
     SDL_assert(giver);

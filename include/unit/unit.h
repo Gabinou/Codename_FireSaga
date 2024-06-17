@@ -97,6 +97,8 @@ void _Unit_Item_Takeat(struct Unit *u, struct Inventory_item i, size_t j);
 /* -- Dropping -- */
 struct Inventory_item Unit_Item_Drop(struct Unit *u, i16 ind1);
 void Unit_Equipment_Drop(struct Unit *u);
+void Unit_Equipment_Import(struct Unit *u, struct Inventory_item *equipment);
+void Unit_Equipment_Export(struct Unit *u, struct Inventory_item *equipment);
 
 /* --- Equipping --- */
 b32                   Unit_Equip(           struct Unit *u, b32 h, int i);
