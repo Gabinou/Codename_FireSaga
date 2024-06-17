@@ -401,12 +401,18 @@ b32 Unit_Eq_Usable( struct Unit *unit, u64 archetype, int i) {
 b32 Unit_Item_Usable(struct Unit *unit, u64 archetype, int id) {
     b32 usable = false;
     do {
-        /* -- If item select, everything is usable --  */
+        /* -- If item, everything is usable --  */
         if (archetype == ITEM_ARCHETYPE_ITEM) {
             usable = true;
             break;
         }
-        SDL_assert(Weapon_ID_isValid(id));
+
+        /* -- Looking for a weapon, found item --  */
+        if (!Weapon_ID_isValid(id));
+        usable = false;
+        break;
+
+        /* -- Check if weapon type is in archetype --  */
         Weapon_Load(unit->weapons_dtab, id);
         struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);
         if (flagsum_isIn(weapon->item->type, archetype))
