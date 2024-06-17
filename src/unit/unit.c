@@ -497,15 +497,15 @@ void Unit_Equipment_Drop(struct Unit *unit) {
     }
 }
 
-void Unit_Equipment_Import(struct Unit *u, struct Inventory_item *equipment) {
-
+void Unit_Equipment_Import(struct Unit *unit, struct Inventory_item *equipment) {
+  size_t bytesize = sizeof(*unit->_equipment) * DEFAULT_EQUIPMENT_SIZE;
+  memcpy(unit->_equipment, equipment, bytesize);
 }
 
-void Unit_Equipment_Export(struct Unit *u, struct Inventory_item *equipment) {
-
+void Unit_Equipment_Export(struct Unit *unit, struct Inventory_item *equipment) {
+  size_t bytesize = sizeof(*unit->_equipment) * DEFAULT_EQUIPMENT_SIZE;
+  memcpy(equipment, unit->_equipment, bytesize);
 }
-
-
 
 struct Inventory_item Unit_Item_Drop(struct Unit *unit, i16 i) {
     if ((i < 0) || (i >= DEFAULT_EQUIPMENT_SIZE)) {

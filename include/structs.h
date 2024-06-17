@@ -302,14 +302,14 @@ struct Shop {
 };
 extern struct Shop Shop_default;
 
-struct Inventory_item {
+typedef struct Inventory_item {
     i16 id;
     u8 used;
     b32 highlighted;
     /* item images are highlighted by default. */
     /* Only dark when in unit inventory and unequippable */
     i8 infusion;
-};
+} InInventory_item;
 extern struct Inventory_item Inventory_item_default;
 extern struct Inventory_item Inventory_item_broken;
 
