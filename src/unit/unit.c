@@ -406,20 +406,11 @@ b32 Unit_Item_Usable(struct Unit *unit, u64 archetype, int id) {
             usable = true;
             break;
         }
-
-        b32 iswpn    = Item_isWeapon(id);
-        b32 isstaff  = Item_isStaff(id);
-        b32 isshield = Item_isShield(id);
-        b32 canequip = Unit_canEquip(unit, id);
-        SDL_assert(!(isstaff && iswpn));
-
-        if (archetype == ITEM_ARCHETYPE_WEAPON) {
-            usable = (iswpn && !isstaff && canequip);
-        } else if (archetype == ITEM_ARCHETYPE_STAFF) {
-            usable = isstaff;
-        } else if (archetype == ITEM_ARCHETYPE_SHIELD) {
-            usable = isshield;
-        }
+        SDL_assert(Weapon_ID_isValid(id));
+        Weapon_Load(unit->weapons_dtab, id);
+        struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);
+        if (flagsum_isIn(weapon->item->type, archetype))
+            usable = true;
 
     } while (false);
     return (usable);
@@ -447,7 +438,7 @@ void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, size_t i) {
         return;
     }
 
-    if (Weapon_ID_isValid(item. id)) {
+    if (Weapon_ID_isValid(item.id)) {
         Weapon_Load(unit->weapons_dtab, item.id);
     } else {
         Item_Load(unit->items_dtab, item.id);
@@ -874,22 +865,22 @@ b32 Unit_canEquip_Type( struct Unit *unit, i16 id) {
 }
 
 /* Is a rightie using a weapon in its left hand? */
-b32 Unit_iswrongHanding(struct Unit *unit) {
-    b32 out = false;
-    do {
-        struct Inventory_item *item = Unit_Item_Strong(unit, UNIT_HAND_WEAK);
-        if ((item->id == ITEM_NULL) || (item->id == ITEM_ID_BROKEN))
-            break;
+// b32 Unit_iswrongHanding(struct Unit *unit) {
+//     b32 out = false;
+//     do {
+//         struct Inventory_item *item = Unit_Item_Strong(unit, UNIT_HAND_WEAK);
+//         if ((item->id == ITEM_NULL) || (item->id == ITEM_ID_BROKEN))
+//             break;
 
-        u64 archetype = Item_Archetype(item->id);
-        /* Offhands count as weapon archetype, so need to check like this for wronghanding*/
-        if ((archetype == ITEM_ARCHETYPE_SHIELD) || Item_isOffhand(item->id))
-            break;
-        out = true;
-    } while (false);
+//         u64 archetype = Item_Archetype(item->id);
+//         /* Offhands count as weapon archetype, so need to check like this for wronghanding*/
+//         if ((archetype == ITEM_ARCHETYPE_SHIELD) || Item_isOffhand(item->id))
+//             break;
+//         out = true;
+//     } while (false);
 
-    return (out);
-}
+//     return (out);
+// }
 
 /* Is a unit wielding a weapon in its hand? Note: Units can equip staves.
     -> Equipped + a weapon (not a staff, or offhand, or trinket...)
@@ -902,8 +893,7 @@ b32 Unit_isWielding(struct Unit *unit, b32 hand) {
     if (id <= ITEM_NULL)
         return (false);
 
-    u64 archetype = Item_Archetype(id);
-    if (archetype != ITEM_ARCHETYPE_WEAPON)
+    if (Item_Archetype(id) != ITEM_ARCHETYPE_WEAPON)
         return (false);
 
     return (true);

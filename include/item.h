@@ -43,7 +43,7 @@ typedef struct Item {
 
     struct Item_stats stats;
     u16  id;           /* 0 is NULL */
-    u16  type;         /* and not type_exp */
+    u64  type;         /* and not type_exp */
     u16 *users;        /* item only usable by users.   NULL -> everyone */
     u16 *classes;      /* item only usable by classes. NULL -> everyone */
 
