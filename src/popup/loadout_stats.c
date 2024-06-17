@@ -609,7 +609,7 @@ void PopUp_Loadout_Stats_Unit(struct PopUp_Loadout_Stats *pls, struct Unit *unit
     Unit_Unequip(unit, UNIT_HAND_RIGHT);
 
     PopUp_Loadout_Stats_ItemTypes(pls);
-    PopUp_Loadout_Stats_Previous(pls);
+    // PopUp_Loadout_Stats_Previous(pls);
 }
 
 void PopUp_Loadout_Stats_Previous(struct PopUp_Loadout_Stats *pls) {

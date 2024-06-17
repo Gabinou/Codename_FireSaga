@@ -458,14 +458,14 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     SDL_assert(popup_ent > TNECS_NULL);
 
     /* -- Hover on new item -- */
-    PopUp_Loadout_Stats_Hover(pls, wsm, mc->elem);
+    // PopUp_Loadout_Stats_Hover(pls, wsm, mc->elem);
 
     /* - Compute new attackmap with equipped - */
     int rangemap = Unit_Rangemap_Get(wsm->unit);
-    Map_Attacktomap_Compute_wLoadout(sota->map, sota->world, sota->aggressor, false,
-                                     pls->item_left, pls->item_right);
-    Map_Healtomap_Compute_wLoadout(sota->map, sota->world, sota->aggressor, false,
-                                   pls->item_left, pls->item_right);
+    // Map_Attacktomap_Compute_wLoadout(sota->map, sota->world, sota->aggressor, false,
+    //                                  pls->item_left, pls->item_right);
+    // Map_Healtomap_Compute_wLoadout(sota->map, sota->world, sota->aggressor, false,
+    //                                pls->item_left, pls->item_right);
 
     if (rangemap        == RANGEMAP_HEALMAP) {
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL);
@@ -474,7 +474,7 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     }
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
-    PopUp_Loadout_Stats_New(pls);
+    // PopUp_Loadout_Stats_New(pls);
 }
 
 void fsm_eCrsMvs_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
@@ -509,7 +509,7 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
         // -> new_elem selected, switching it to left hand
         pls->item_left = mc->elem;
     }
-    PopUp_Loadout_Stats_New(pls);
+    // PopUp_Loadout_Stats_New(pls);
 
 }
 
@@ -647,7 +647,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         struct PopUp_Loadout_Stats *pls = (struct PopUp_Loadout_Stats *)popup->data;
         pls->item_left  = wsm->unit->eq_usable[UNIT_HAND_LEFT];
         pls->item_right = wsm->unit->eq_usable[UNIT_HAND_RIGHT];
-        PopUp_Loadout_Stats_Previous(pls);
+        // PopUp_Loadout_Stats_Previous(pls);
         // pls->previous_cs = Unit_computedStats_wLoadout(wsm->unit, pls->item_left, pls->item_right);
 
         LoadoutSelectMenu_Elem_Pos_Revert(wsm, mc);
@@ -855,7 +855,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         // Set previous_cs to new loadout
         pls->item_left  = UNIT_HAND_LEFT;
         pls->item_right = UNIT_HAND_RIGHT;
-        PopUp_Loadout_Stats_Previous(pls);
+        // PopUp_Loadout_Stats_Previous(pls);
 
         LoadoutSelectMenu_Elem_Pos_Revert(wsm, mc);
         LoadoutSelectMenu_Elem_Reset(wsm, mc);
@@ -1044,10 +1044,10 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
 
     /* - Compute new attackmap with equipped - */
     int rangemap = Unit_Rangemap_Get(wsm->unit);
-    Map_Attacktomap_Compute_wLoadout(sota->map, sota->world, sota->aggressor, false,
-                                     pls->item_left, pls->item_right);
-    Map_Healtomap_Compute_wLoadout(sota->map, sota->world, sota->aggressor, false,
-                                   pls->item_left, pls->item_right);
+    // Map_Attacktomap_Compute_wLoadout(sota->map, sota->world, sota->aggressor, false,
+    //                                  pls->item_left, pls->item_right);
+    // Map_Healtomap_Compute_wLoadout(sota->map, sota->world, sota->aggressor, false,
+    //                                pls->item_left, pls->item_right);
 
     if (rangemap        == RANGEMAP_HEALMAP) {
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL);

@@ -302,7 +302,7 @@ void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
         lsm->selected[stronghand] = side_i;                                     /* side space */
         /* - SWAP - */
         if (side_i != stronghand) {
-            Unit_Item_Swap(lsm->unit, side_i, stronghand);                      /* side space */
+            // Unit_Item_Swap(lsm->unit, side_i, stronghand);                      /* side space */
         }
         Unit_Equip_inHand(lsm->unit, stronghand);
 
@@ -322,13 +322,14 @@ void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
                 Unit_Item_Drop(lsm->unit, weakhand);
             } else {
                 /* - Swap weapon in weakhand - */
-                Unit_Item_Swap(lsm->unit, weakhand, lsm->unit->num_equipment);  /* eq space */
+                // Unit_Item_Swap(lsm->unit, weakhand, lsm->unit->num_equipment);  /* eq space */
             }
             Unit_Equip_TwoHanding(lsm->unit);
         } else if (usable_i != weakhand) {
             /* - SWAP - */
-            if (usable_i != weakhand)
-                Unit_Item_Swap(lsm->unit, usable_i, weakhand);                  /* side space */
+            if (usable_i != weakhand) {
+                // Unit_Item_Swap(lsm->unit, usable_i, weakhand);                  /* side space */
+            }
             Unit_Equip_inHand(lsm->unit, weakhand);                             /* eq space */
         }
     } else {
@@ -350,6 +351,7 @@ void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
     /* -- Revert selected item, only for second hand -- */
     SDL_assert(lsm       != NULL);
     SDL_assert(lsm->unit != NULL);
+    lsm->update               = true;
 
     /*- Get the tophand -*/
     i32 stronghand = Unit_Hand_Strong(lsm->unit);
@@ -371,11 +373,11 @@ void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
     i32 item    = (reverthand == weakhand) ? select     : lsm->unit->eq_usable[select];
     i32 to_swap = (reverthand == weakhand) ? reverthand : lsm->unit->eq_usable[reverthand];
 
-    // if (item != to_swap)
-    //     Unit_Item_Swap(lsm->unit, item, to_swap);
+    if (item != to_swap) {
+        Unit_Item_Swap(lsm->unit, item, to_swap);
+    }
 
     lsm->selected[reverthand] = -1;
-    lsm->update               = true;
     Unit_Equip_inHand(lsm->unit, reverthand);
 }
 
@@ -635,20 +637,17 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
     for (i32 i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
         /* - Icons - */
         // TODO: weapon icons images.
-        i32 side_i   = strong_selected ? i : lsm->unit->eq_usable[i];
+        i32 strong_i = Unit_Id_Strong(unit, i);
+        i32 side_i   = strong_selected ? strong_i : lsm->unit->eq_usable[i];
 
         /* Icons, text drawn on line strong_i  */
-        i32 strong_i = Unit_Id_Strong(unit, i);
-
-        /* Skip if hand is out of bounds */
-        if (strong_i >= num_items)
-            continue;
+        SDL_Log("i, side_i, strong_i %d %d %d", i, side_i, strong_i);
 
         item         = Unit_Item_Side(unit, side_i);
 
         /* -- Weapon icon -- */
         srcrect.x = LSM1_X_OFFSET;
-        srcrect.y = LSM1_Y_OFFSET + strong_i * (LSM_ICON_H + 2) + (header_drawn * LSM_ROW_HEIGHT);
+        srcrect.y = LSM1_Y_OFFSET + i * (LSM_ICON_H + 2) + (header_drawn * LSM_ROW_HEIGHT);
 
         if (strong_i == UNIT_HAND_LEFT) {
             if (stronghand == UNIT_HAND_LEFT) {
@@ -682,7 +681,7 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
 
         /* - Write '-' if no weapon - */
         i32 item_x_offset = LSM1_NAME_X_OFFSET;
-        i32 item_y_offset = LSM1_NAME_Y_OFFSET + strong_i * (ITEM_ICON_H + 2) +
+        i32 item_y_offset = LSM1_NAME_Y_OFFSET + i * (ITEM_ICON_H + 2) +
                             (header_drawn * LSM_ROW_HEIGHT);
 
 
@@ -699,7 +698,7 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
 
         /* - Write uses left - */
         i32 item_dura_x_offset = LSM1_DURA_X_OFFSET;
-        i32 item_dura_y_offset = LSM1_DURA_Y_OFFSET + strong_i * (ITEM_ICON_H + 2) +
+        i32 item_dura_y_offset = LSM1_DURA_Y_OFFSET + i * (ITEM_ICON_H + 2) +
                                  (header_drawn * LSM_ROW_HEIGHT);
 
         if (strong_i == UNIT_HAND_LEFT) {
@@ -724,6 +723,7 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
 
         i32 dura_w = PixelFont_Width(lsm->pixelnours_big, numbuff, strlen(numbuff));
         item_dura_x_offset -= dura_w / 2;
+
         PixelFont_Write(lsm->pixelnours_big, renderer, numbuff, strlen(numbuff),
                         item_dura_x_offset,  item_dura_y_offset);
 
@@ -747,12 +747,14 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
                 item_x_offset = item_dura_x_offset - name_w - 4;
             }
         }
+        SDL_Log("%s", lsm->item_name.data);
 
         PixelFont_Write(lsm->pixelnours, renderer, lsm->item_name.data, lsm->item_name.num, item_x_offset,
                         item_y_offset);
     }
 
 }
+
 void LoadoutSelectMenu_Texture_Create(struct LoadoutSelectMenu  *lsm, struct n9Patch *n9patch,
                                       SDL_Renderer *renderer) {
     /* -- Compute menu size -- */
