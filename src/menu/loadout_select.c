@@ -632,7 +632,6 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
     srcrect.w = ITEM_ICON_W;
     srcrect.h = ITEM_ICON_H;
 
-    // Unit_Equipment_Pri32(lsm->unit);
     for (i32 i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
         /* - Icons - */
         // TODO: weapon icons images.

@@ -524,11 +524,11 @@ enum ITEM_TYPES {
     ITEM_TYPE_START = 0,
 #include "names/items_types.h"
     ITEM_TYPE_END = 1UL << ITEM_TYPE_EXP_END,
-    ITEM_TYPE_canATTACK =   ITEM_TYPE_SWORD     & ITEM_TYPE_LANCE       &
-                            ITEM_TYPE_AXE       & ITEM_TYPE_ELEMENTAL   &
-                            ITEM_TYPE_DEMONIC   & ITEM_TYPE_ANGELIC     &
-                            ITEM_TYPE_CLAW      & ITEM_TYPE_STANDARD    &
-                            ITEM_TYPE_BOW       & ITEM_TYPE_OFFHAND,
+    ITEM_TYPE_canATTACK =   ITEM_TYPE_SWORD     | ITEM_TYPE_LANCE       |
+                            ITEM_TYPE_AXE       | ITEM_TYPE_ELEMENTAL   |
+                            ITEM_TYPE_DEMONIC   | ITEM_TYPE_ANGELIC     |
+                            ITEM_TYPE_CLAW      | ITEM_TYPE_STANDARD    |
+                            ITEM_TYPE_BOW       | ITEM_TYPE_OFFHAND,
 };
 #undef REGISTER_ENUM
 
@@ -543,13 +543,13 @@ enum ITEM_ARCHETYPE_NEW {
     ITEM_ARCHETYPE_ITEM     =   ITEM_TYPE_ITEM,
     ITEM_ARCHETYPE_STAFF    =   ITEM_TYPE_STAFF,
     ITEM_ARCHETYPE_SHIELD   =   ITEM_TYPE_SHIELD,
-    ITEM_ARCHETYPE_WEAPON   =   ITEM_TYPE_SWORD     & ITEM_TYPE_LANCE       &
-                                ITEM_TYPE_AXE       & ITEM_TYPE_ELEMENTAL   &
-                                ITEM_TYPE_DEMONIC   & ITEM_TYPE_ANGELIC     &
-                                ITEM_TYPE_CLAW      & ITEM_TYPE_STANDARD    &
-                                ITEM_TYPE_BOW       & ITEM_TYPE_OFFHAND,
-    ITEM_ARCHETYPE_WEAKHAND =   ITEM_TYPE_OFFHAND   & ITEM_TYPE_SHIELD      &
-                                ITEM_TYPE_ITEM      & ITEM_ARCHETYPE_WEAPON,
+    ITEM_ARCHETYPE_WEAPON   =   ITEM_TYPE_SWORD     | ITEM_TYPE_LANCE       |
+                                ITEM_TYPE_AXE       | ITEM_TYPE_ELEMENTAL   |
+                                ITEM_TYPE_DEMONIC   | ITEM_TYPE_ANGELIC     |
+                                ITEM_TYPE_CLAW      | ITEM_TYPE_STANDARD    |
+                                ITEM_TYPE_BOW       | ITEM_TYPE_OFFHAND,
+    ITEM_ARCHETYPE_WEAKHAND =   ITEM_TYPE_OFFHAND   | ITEM_TYPE_SHIELD      |
+                                ITEM_TYPE_ITEM      | ITEM_ARCHETYPE_WEAPON,
     /* All weapon types that can be equipped for Unit action: Attack */
     ITEM_ARCHETYPE_STRONGHAND_ATTACK    = ITEM_ARCHETYPE_WEAPON,
     /* All weapon types that can be equipped for Unit action: Staff */

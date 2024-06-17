@@ -74,35 +74,41 @@ struct Range *_Unit_Range_Combine( struct Unit   *unit, struct Range *range,
     int num = equipped ? UNIT_HANDS_NUM : DEFAULT_EQUIPMENT_SIZE;
     b32 stronghand = Unit_Hand_Strong(unit);
     for (int i = 0; i < num; i++) {
+
         /* Skip if no item */
-        if (unit->_equipment[i].id == ITEM_NULL)
+        if (unit->_equipment[i].id == ITEM_NULL) {
             continue;
+        }
 
         /* Equipped only: Skip if unequipped */
-        if (equipped && !unit->equipped[i])
+        if (equipped && !unit->equipped[i]) {
             continue;
+        }
 
         /* Skip if unusable */
-        if (!Unit_Eq_Usable(unit, archetype, i))
+        if (!Unit_Eq_Usable(unit, archetype, i)) {
             continue;
+        }
 
         /* Skip if wrong archetype*/
-        if ((archetype == ITEM_ARCHETYPE_STAFF)  && !Item_isStaff(unit->_equipment[i].id))
+        if (flagsum_isIn(archetype, ITEM_ARCHETYPE_STAFF)  && !Item_isStaff(unit->_equipment[i].id)) {
             continue;
+        }
 
         /* Skip if weakhand for staff */
-        if ((archetype == ITEM_ARCHETYPE_STAFF)  && (i != stronghand) && (equipped))
+        if (flagsum_isIn(archetype, ITEM_ARCHETYPE_STAFF)  && (i != stronghand) && (equipped)) {
             continue;
+        }
 
-        if ((archetype == ITEM_ARCHETYPE_WEAPON) && !Item_isWeapon(unit->_equipment[i].id))
+        if (flagsum_isIn(archetype, ITEM_ARCHETYPE_WEAPON) && !Item_isWeapon(unit->_equipment[i].id)) {
             continue;
+        }
 
         /* Combine ranges */
         Weapon_Load(unit->weapons_dtab, unit->_equipment[i].id);
         struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[i].id);
         Ranges_Combine(range, wpn->stats.range);
     }
-
     return (range);
 }
 
