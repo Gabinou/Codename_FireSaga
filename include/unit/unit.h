@@ -163,15 +163,12 @@ b32 Unit_Loadout_twoHanding(int lh, int rh);
 
 /* - Public: Chooses between _Unit_Loadout_Swap_Twohanding and _Unit_Loadout_Swap - */
 void Unit_Loadout_Swap(        struct Unit *u, int lh, int rh);
-void Unit_Loadout_Swap_Reverse(struct Unit *u, int lh, int rh);
 
 /* - Private: Only for not twohanding - */
 void _Unit_Loadout_Swap(        struct Unit *u, int lh, int rh);
-void _Unit_Loadout_Swap_Reverse(struct Unit *u, int lh, int rh);
 
 /* - Private: Only for twohanding - */
 void _Unit_Loadout_Swap_Twohanding(        struct Unit *u, int i);
-void _Unit_Loadout_Swap_Reverse_Twohanding(struct Unit *u);
 
 /* --- Debug Utils --- */
 void Unit_Cap_Stats(    struct Unit *u);

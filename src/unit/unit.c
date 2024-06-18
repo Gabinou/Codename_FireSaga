@@ -498,11 +498,11 @@ void Unit_Equipment_Drop(struct Unit *unit) {
 }
 
 void Unit_Equipment_Import(struct Unit *unit, struct Inventory_item *equipment) {
-    Equipment_Copy(equipment, unit->_equipment, DEFAULT_EQUIPMENT_SIZE);
+    Equipment_Copy(unit->_equipment, equipment, DEFAULT_EQUIPMENT_SIZE);
 }
 
 void Unit_Equipment_Export(struct Unit *unit, struct Inventory_item *equipment) {
-    Equipment_Copy(unit->_equipment, equipment, DEFAULT_EQUIPMENT_SIZE);
+    Equipment_Copy(equipment, unit->_equipment, DEFAULT_EQUIPMENT_SIZE);
 }
 
 struct Inventory_item Unit_Item_Drop(struct Unit *unit, i16 i) {
@@ -1228,38 +1228,12 @@ void Unit_Loadout_Swap(struct Unit *unit, int lh, int rh) {
 
 }
 
-void Unit_Loadout_Swap_Reverse(struct Unit *unit, int lh, int rh) {
-    b32 lh_valid = (lh > -1) && (lh < DEFAULT_EQUIPMENT_SIZE);
-    b32 rh_valid = (rh > -1) && (rh < DEFAULT_EQUIPMENT_SIZE);
-    b32 twohands = Unit_Loadout_twoHanding(lh, rh);
-
-    if (twohands) {
-        _Unit_Loadout_Swap_Reverse_Twohanding(unit);
-    } else if (lh_valid || rh_valid) {
-        _Unit_Loadout_Swap_Reverse(unit, lh, rh);
-    } else {
-        SDL_Log("Invalid input. Not swapping items %d %d", lh, rh);
-    }
-    // Unit_Equipment_Print(unit);
-
-}
-
 void _Unit_Loadout_Swap_Twohanding(struct Unit *unit, int i) {
     int stronghand  = Unit_Hand_Strong(unit);
     if (i != stronghand)
         Unit_Item_Swap(unit, stronghand, i);
     unit->temp = Unit_Equip_TwoHanding(unit);
     // TODO: Place in an empty inventory spot.
-}
-
-void _Unit_Loadout_Swap_Reverse_Twohanding(struct Unit *unit) {
-    int stronghand  = Unit_Hand_Strong(unit);
-    int weakhand    = 1 - stronghand;
-    // TODO: Only takeat if item was not previously dropped.
-    _Unit_Item_Takeat(unit, unit->temp, weakhand);
-    // Unit_Equipment_Print(unit);
-    unit->temp = Inventory_item_default;
-    unit->isTwoHanding = false;
 }
 
 void _Unit_Loadout_Swap(struct Unit *unit, int lh, int rh) {
@@ -1288,45 +1262,21 @@ void _Unit_Loadout_Swap(struct Unit *unit, int lh, int rh) {
         Unit_Equip_inHand(unit, UNIT_HAND_RIGHT);
     else
         Unit_Unequip(unit, UNIT_HAND_RIGHT);
-
-}
-
-/* If input hand indices (lh, rh) are unvalid, unequip hand */
-void _Unit_Loadout_Swap_Reverse(struct Unit *unit, int lh, int rh) {
-    SDL_assert(lh != rh); /* no twohanding here */
-    b32 lh_valid = ((lh > -1) && (lh < DEFAULT_EQUIPMENT_SIZE));
-    b32 rh_valid = ((rh > -1) && (rh < DEFAULT_EQUIPMENT_SIZE));
-
-    /* Swapping */
-    if (lh_valid && (lh != UNIT_HAND_LEFT)) {
-        /* item rh wanted switched UNIT_HAND_LEFT -> lh */
-        if (rh == UNIT_HAND_LEFT)
-            rh = lh;
-    }
-
-    if (rh_valid && (rh != UNIT_HAND_RIGHT))
-        Unit_Item_Swap(unit, UNIT_HAND_RIGHT, rh);
-    if (lh_valid && (lh != UNIT_HAND_LEFT))
-        Unit_Item_Swap(unit, UNIT_HAND_LEFT,  lh);
-
-    /* Equipping */
-    if (lh_valid)
-        Unit_Equip_inHand(unit, UNIT_HAND_LEFT);
-    else
-        Unit_Unequip(unit, UNIT_HAND_LEFT);
-
-    if (rh_valid)
-        Unit_Equip_inHand(unit, UNIT_HAND_RIGHT);
-    else
-        Unit_Unequip(unit, UNIT_HAND_RIGHT);
-
 }
 
 struct Computed_Stats Unit_computedStats_wLoadout(struct Unit *unit, int lh, int rh, int dist) {
+
     // TODO: what if unit is already twohanding?
+
+    /* Save starting equipment */
+    struct Inventory_item start_equipment[DEFAULT_EQUIPMENT_SIZE];
+    Unit_Equipment_Export(unit, start_equipment);
+
     Unit_Loadout_Swap(unit, lh, rh);
     Unit_computedStats(unit, dist);
-    Unit_Loadout_Swap_Reverse(unit, lh, rh);
+
+    /* Restore starting equipment */
+    Unit_Equipment_Import(unit, start_equipment);
 
     return (unit->computed_stats);
 }
