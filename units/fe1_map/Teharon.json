@@ -87,15 +87,15 @@
 				"used":	0
 			},
 			"Item":	{
-				"name":	"Empty",
+				"name":	"Steel Lance",
 				"Infused":	-1,
-				"id":	-1,
+				"id":	104,
 				"used":	0
 			},
 			"Item":	{
-				"name":	"Empty",
+				"name":	"Wooden Shield",
 				"Infused":	-1,
-				"id":	-1,
+				"id": 402,
 				"used":	0
 			},
 			"Item":	{

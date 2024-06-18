@@ -290,13 +290,16 @@ void LoadoutSelectMenu_Select_Stronghand(struct LoadoutSelectMenu *lsm, int sele
     /* Player just selected loadout for stronghand */
 
     /* - Swap weapons according to player choice - */
-    i32 usable_i    = Unit_Id_Strong(lsm->unit, select);        /* side space */
-    i32 side_i      = lsm->unit->eq_usable[usable_i];           /* side space */
+    i32 strong_i    = Unit_Id_Strong(lsm->unit, select);        /* side space */
+    i32 usable_i    = lsm->unit->eq_usable[select];             /* side space */
     i32 stronghand  = Unit_Hand_Strong(lsm->unit);              /* side space */
 
-    lsm->selected[stronghand] = side_i;                         /* side space */
+    lsm->selected[stronghand] = usable_i;                       /* side space */
 
     /* - SWAP - */
+    SDL_Log("side_i %d 
+        %d %d %d", select, strong_i, usable_i, stronghand);
+    getchar();
     if (usable_i != stronghand) {
         Unit_Item_Swap(lsm->unit, usable_i, stronghand);        /* side space */
     }
@@ -304,7 +307,7 @@ void LoadoutSelectMenu_Select_Stronghand(struct LoadoutSelectMenu *lsm, int sele
     Unit_Equip_inHand(lsm->unit, stronghand);
 
     /* Unequip weapon if it was in other hand */
-    if ((side_i == UNIT_HAND_LEFT) || (side_i == UNIT_HAND_RIGHT))
+    if ((strong_i == UNIT_HAND_LEFT) || (strong_i == UNIT_HAND_RIGHT))
         Unit_Unequip(lsm->unit, UNIT_HAND_RIGHT - stronghand);
 }
 
@@ -659,7 +662,7 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
     srcrect.w = ITEM_ICON_W;
     srcrect.h = ITEM_ICON_H;
 
-    for (i32 i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
+    for (i32 i = 0; i < lsm->unit->num_usable; i++) {
         /* - Icons - */
         // TODO: weapon icons images.
         i32 strong_i = Unit_Id_Strong(unit, i);
