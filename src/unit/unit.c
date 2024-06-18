@@ -1265,7 +1265,6 @@ void _Unit_Loadout_Swap(struct Unit *unit, int lh, int rh) {
 }
 
 struct Computed_Stats Unit_computedStats_wLoadout(struct Unit *unit, int lh, int rh, int dist) {
-
     // TODO: what if unit is already twohanding?
 
     /* Save starting equipment */

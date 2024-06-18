@@ -178,6 +178,8 @@ void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
                             tnecs_world *w, tnecs_entity ent, SDL_Renderer *r,
                             struct n9Patch *n9, u64 a);
 
+void LoadoutSelectMenu_Unit(struct LoadoutSelectMenu *sm, struct Unit *u);
+
 void _LoadoutSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Unit *u,
                              SDL_Renderer *r, struct n9Patch *n9);
 
@@ -194,9 +196,11 @@ void StaffSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
 void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm,  char *header);
 
 /* --- Item placement --- */
-void LoadoutSelectMenu_Select(       struct LoadoutSelectMenu *lsm, int s);
+void LoadoutSelectMenu_Select(           struct LoadoutSelectMenu *lsm, int s);
+void LoadoutSelectMenu_Select_Weakhand(  struct LoadoutSelectMenu *lsm, int s);
+void LoadoutSelectMenu_Select_Stronghand(struct LoadoutSelectMenu *lsm, int s);
+
 void LoadoutSelectMenu_Deselect(     struct LoadoutSelectMenu *lsm);
-int  LoadoutSelectMenu_num_items(    struct LoadoutSelectMenu *lsm);
 void LoadoutSelectMenu_Select_Reset( struct LoadoutSelectMenu *lsm);
 b32 WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm);
 
