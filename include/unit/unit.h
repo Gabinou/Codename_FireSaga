@@ -11,6 +11,7 @@
 #include "unit/mount.h"
 #include "nmath.h"
 #include "jsonio.h"
+#include "equipment.h"
 #include "RNG.h"
 #include "physfs.h"
 #include "equations.h"
@@ -206,6 +207,8 @@ u8  Unit_Equippables(    struct Unit *u, u8 *eq);
 b32 Unit_canEquip_Type(  struct Unit *u, i16 id);
 b32 Unit_canEquip_Hand(  struct Unit *u, i16 id, b32 h);
 b32 Unit_canEquip_inHand(struct Unit *u, b32 h);
+
+void Equipment_Swap(struct Inventory_item *_equipment, i16 i1, i16 i2);
 
 /* -- Can Attack -- */
 b32 _Unit_canAttack(   struct Unit *u, b32 hand);  /* with weapon in hand       */

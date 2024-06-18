@@ -309,7 +309,7 @@ typedef struct Inventory_item {
     /* item images are highlighted by default. */
     /* Only dark when in unit inventory and unequippable */
     i8 infusion;
-} InInventory_item;
+}   Inventory_item;
 extern struct Inventory_item Inventory_item_default;
 extern struct Inventory_item Inventory_item_broken;
 
