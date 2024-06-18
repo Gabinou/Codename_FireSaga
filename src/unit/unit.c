@@ -527,6 +527,7 @@ void Unit_Item_Swap(struct Unit *unit, i16 i1, i16 i2) {
     Equipment_Swap(unit->_equipment, i1, i2);
 }
 
+// TODO move to equipment source
 void Equipment_Swap(struct Inventory_item *_equipment, i16 i1, i16 i2) {
     if ((i1 < 0) || (i1 >= DEFAULT_EQUIPMENT_SIZE)) {
         SDL_Log("Item index1 out of bounds");
