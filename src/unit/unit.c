@@ -413,6 +413,9 @@ b32 Unit_Item_Usable(struct Unit *unit, u64 archetype, int id) {
             break;
         }
 
+        // Are equipped weapons usable? No. 
+        // UNLESS TWO-handed and equipped only in one hand.
+
         /* -- Check if weapon type is in archetype --  */
         Weapon_Load(unit->weapons_dtab, id);
         struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);

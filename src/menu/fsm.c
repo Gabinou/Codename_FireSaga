@@ -825,9 +825,15 @@ void fsm_eAcpt_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
 void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     /* Swap weapons */
     struct LoadoutSelectMenu *wsm = mc->data;
+    i32 stronghand  = Unit_Hand_Strong(wsm->unit);
     SDL_assert(mc->elem >= 0);
     SDL_assert(mc->elem < DEFAULT_EQUIPMENT_SIZE);
+    SDL_Log("wsm->selected[stronghand] %d", wsm->selected[stronghand]);
+    SDL_Log("wsm->selected[weakhand] %d", wsm->selected[1 - stronghand]);
     LoadoutSelectMenu_Select(wsm, mc->elem);
+    SDL_Log("wsm->selected[stronghand] %d", wsm->selected[stronghand]);
+    SDL_Log("wsm->selected[weakhand] %d", wsm->selected[1 - stronghand]);
+    getchar();
 
     /* - Compute new attackmap with equipped - */
     int rangemap = Unit_Rangemap_Get(wsm->unit);
@@ -850,11 +856,14 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         tnecs_entity cursor = sota->entity_cursor;
         Menu_Elem_Set(mc, sota, new_elem);
 
-
         i32 stronghand  = Unit_Hand_Strong(wsm->unit);
         if (wsm->selected[stronghand] >= 0) {
+            SDL_Log("ITEM_ARCHETYPE_WEAKHAND");
             Unit_Find_Usable(wsm->unit, ITEM_ARCHETYPE_WEAKHAND);
         }
+        SDL_Log("wsm->selected[stronghand] %d", wsm->selected[stronghand]);
+        SDL_Log("wsm->selected[weakhand] %d", 1 - wsm->selected[stronghand]);
+        getchar();
 
         int popup_ind       = POPUP_TYPE_HUD_LOADOUT_STATS;
         struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, sota->popups[popup_ind], PopUp);

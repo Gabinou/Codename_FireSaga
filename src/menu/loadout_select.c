@@ -297,9 +297,8 @@ void LoadoutSelectMenu_Select_Stronghand(struct LoadoutSelectMenu *lsm, int sele
     lsm->selected[stronghand] = usable_i;                       /* side space */
 
     /* - SWAP - */
-    SDL_Log("side_i %d 
-        %d %d %d", select, strong_i, usable_i, stronghand);
-    getchar();
+    SDL_Log("side_i %d %d %d %d", select, strong_i, usable_i, stronghand);
+    // getchar();
     if (usable_i != stronghand) {
         Unit_Item_Swap(lsm->unit, usable_i, stronghand);        /* side space */
     }
@@ -345,7 +344,6 @@ void LoadoutSelectMenu_Select_Weakhand(struct LoadoutSelectMenu *lsm, int select
     Unit_Equipment_Export(lsm->unit, lsm->equipment2);
 }
 
-
 /* - Select Weapon/Staff - */
 void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
     /* Player just selected loadout. */
@@ -363,10 +361,10 @@ void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
         SDL_assert(select < lsm->unit->num_usable);
     }
 
-    if (lsm->selected[stronghand] < 0) {
-        LoadoutSelectMenu_Select_Stronghand(lsm, select);
-    } else if (lsm->selected[weakhand] < 0) {
+    if (lsm->selected[stronghand] >= 0) {
         LoadoutSelectMenu_Select_Weakhand(lsm, select);
+    } else if (lsm->selected[stronghand] < 0) {
+        LoadoutSelectMenu_Select_Stronghand(lsm, select);
     } else {
         /* - Both Hands already selected - */
         SDL_Log("Both weapons already selected, but select sent to LoadoutSelectMenu");
@@ -404,7 +402,7 @@ void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
 
     if (reverthand == weakhand) {
         Unit_Equipment_Import(lsm->unit, lsm->equipment1);
-    } else if (reverthand == weakhand) {
+    } else if (reverthand == stronghand) {
         Unit_Equipment_Import(lsm->unit, lsm->equipment0);
     }
 }
@@ -649,7 +647,7 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
     i32 stronghand = Unit_Hand_Strong(lsm->unit);
     i32 weakhand   = 1 - stronghand;
     i32 num_items  = lsm->unit->num_usable;
-    b32 highlight = (lsm->selected[0] >= 0);
+    b32 highlight  = (lsm->selected[0] >= 0);
 
     /* If stronghand is selected, menu should change to show all items in equipment */
     b32 strong_selected = (lsm->selected[stronghand] > -1);
@@ -661,6 +659,15 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
     srcrect.w = ITEM_ICON_W;
     srcrect.h = ITEM_ICON_H;
+
+    // 1- no hand selected
+    //      draw eq_usable + stronghand icon
+    // 2- stronghand selected
+    //      draw eq_usable + item in stronghand + weakhand icon
+    //      INCLUDING weapon in stronghand
+    //      ONLY IF can two-hand?
+    //
+    SDL_Log("lsm->unit->num_usable %d", lsm->unit->num_usable);
 
     for (i32 i = 0; i < lsm->unit->num_usable; i++) {
         /* - Icons - */
