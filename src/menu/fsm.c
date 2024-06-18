@@ -638,8 +638,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         tnecs_entity cursor = sota->entity_cursor;
         Menu_Elem_Set(mc, sota, new_elem);
 
-        /* Item selected in hand 0, swapping */
-        LoadoutSelectMenu_Deselect(wsm);
+        Unit_Find_Usable(wsm->unit, ITEM_ARCHETYPE_WEAPON);
 
         /* Set previous_cs to new loadout */
         int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
@@ -655,7 +654,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         LoadoutSelectMenu_Elem_Pos(wsm, mc);
         Menu_Elem_Boxes_Check(mc);
 
-        SDL_assert(wsm->update == true);
+        wsm->update = true;
     } else {
         /* -- No item was selected, destroying wsm menu -- */
         b32 destroy = false;
@@ -679,6 +678,9 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         /* 5. Reset previous candidate */
         sota->previous_candidate = -1;
     }
+
+    /* Item selected in hand 0, swapping */
+    LoadoutSelectMenu_Deselect(wsm);
 
     /* - Compute new attackmap with equipped - */
     int rangemap = Unit_Rangemap_Get(wsm->unit);
@@ -844,9 +846,15 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         SDL_assert(mc->n9patch.scale.x > 0);
         SDL_assert(mc->n9patch.scale.y > 0);
         /* move cursor to second hand */
-        int new_elem            = LSM_ELEM_ITEM2;
-        tnecs_entity cursor   = sota->entity_cursor;
+        int new_elem        = LSM_ELEM_ITEM2;
+        tnecs_entity cursor = sota->entity_cursor;
         Menu_Elem_Set(mc, sota, new_elem);
+
+
+        i32 stronghand  = Unit_Hand_Strong(wsm->unit);
+        if (wsm->selected[stronghand] >= 0) {
+            Unit_Find_Usable(wsm->unit, ITEM_ARCHETYPE_WEAKHAND);
+        }
 
         int popup_ind       = POPUP_TYPE_HUD_LOADOUT_STATS;
         struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, sota->popups[popup_ind], PopUp);

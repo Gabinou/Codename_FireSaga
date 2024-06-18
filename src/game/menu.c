@@ -529,6 +529,7 @@ void Game_WeaponSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_on
     SDL_assert(unit_ontile != NULL);
     SDL_assert(unit_ontile->weapons_dtab != NULL);
 
+    /* Starting wsm selection from stronghand*/
     Unit_Find_Usable(unit_ontile, ITEM_ARCHETYPE_WEAPON);
 
     struct Menu *mc;
@@ -538,13 +539,13 @@ void Game_WeaponSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_on
     struct LoadoutSelectMenu *wsm = mc->data;
     SDL_assert(mc->elem_pos == wsm_elem_pos);
     // LoadoutSelectMenu_Load(wsm, unit_ontile, sota->renderer);
+    LoadoutSelectMenu_Select_Reset(wsm);
     WeaponSelectMenu_Load(wsm, sota->map, sota->world, unit_entity_ontile,
                           sota->renderer, &mc->n9patch);
     SDL_assert(mc->n9patch.scale.x > 0);
     SDL_assert(mc->n9patch.scale.y > 0);
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
-
 
     LoadoutSelectMenu_Elem_Pos_Revert(wsm, mc);
     LoadoutSelectMenu_Elem_Reset(wsm, mc);

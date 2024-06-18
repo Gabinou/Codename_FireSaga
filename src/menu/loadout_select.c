@@ -152,7 +152,7 @@ void _LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Unit *unit,
     SDL_assert(unit               != NULL);
     SDL_assert(n9patch            != NULL);
     SDL_assert(unit->weapons_dtab != NULL);
-    lsm->unit    = unit;
+    LoadoutSelectMenu_Unit(lsm, unit);
     lsm->update  = true;
     if (lsm->texture_hands == NULL) {
         char *path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Hands.png");
@@ -364,7 +364,7 @@ void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
     if (lsm->selected[stronghand] < 0) {
         LoadoutSelectMenu_Select_Stronghand(lsm, select);
     } else if (lsm->selected[weakhand] < 0) {
-        LoadoutSelectMenu_Select_Stronghand(lsm, select);
+        LoadoutSelectMenu_Select_Weakhand(lsm, select);
     } else {
         /* - Both Hands already selected - */
         SDL_Log("Both weapons already selected, but select sent to LoadoutSelectMenu");
