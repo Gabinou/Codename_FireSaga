@@ -297,8 +297,8 @@ void LoadoutSelectMenu_Select_Stronghand(struct LoadoutSelectMenu *lsm, int sele
     lsm->selected[stronghand] = side_i;                         /* side space */
 
     /* - SWAP - */
-    if (side_i != stronghand) {
-        Unit_Item_Swap(lsm->unit, side_i, stronghand);          /* side space */
+    if (usable_i != stronghand) {
+        Unit_Item_Swap(lsm->unit, usable_i, stronghand);        /* side space */
     }
     Unit_Equipment_Export(lsm->unit, lsm->equipment1);
     Unit_Equip_inHand(lsm->unit, stronghand);
@@ -306,7 +306,6 @@ void LoadoutSelectMenu_Select_Stronghand(struct LoadoutSelectMenu *lsm, int sele
     /* Unequip weapon if it was in other hand */
     if ((side_i == UNIT_HAND_LEFT) || (side_i == UNIT_HAND_RIGHT))
         Unit_Unequip(lsm->unit, UNIT_HAND_RIGHT - stronghand);
-
 }
 
 void LoadoutSelectMenu_Select_Weakhand(struct LoadoutSelectMenu *lsm, int select) {
