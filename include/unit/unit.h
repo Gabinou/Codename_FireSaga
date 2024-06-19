@@ -74,8 +74,11 @@ void Unit_setClassind(struct Unit *u, i8 class_i);
 
 struct Unit_stats Unit_getStats(struct Unit *u);
 
+int Unit_Get_Equipped(struct Unit *unit, b32 hand);
 struct Weapon   *Unit_Get_Equipped_Weapon(  struct Unit *unit, b32 hand);
+
 // TODO: Unit equipped weapon in strong space!
+// TODO: remove
 int Unit_Equipped_Strong(struct Unit *u, int i); /* strong space */
 
 /* --- Items --- */
