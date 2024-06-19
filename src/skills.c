@@ -38,7 +38,7 @@ void Skill_CLEAVE(struct Unit *aggressor, void *in_defendant) {
 
 void Skill_DISMEMBER(struct Unit *aggressor, void *in_defendant) {
     struct Unit *defendant = in_defendant;
-    defendant->hands[UNIT_HAND_STRONG] = false;
+    defendant->hands[Unit_Hand_Strong(defendant)] = false;
 }
 
 void Skill_TUNNELING(struct Unit *actor, void *pos) {

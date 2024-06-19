@@ -108,10 +108,11 @@ void TradeMenu_Trade(struct TradeMenu *tm) {
     struct Unit *taker = tm->target_trader   ? tm->active->unit : tm->passive->unit;
 
     /* If item in hand, de-equip */
-    if ((tm->selected_item == UNIT_HAND_STRONG) || (tm->selected_item == UNIT_HAND_WEAK)) {
+    if ((tm->selected_item == Unit_Hand_Strong(giver))
+        || (tm->selected_item == Unit_Hand_Weak(giver))) {
         Unit_Unequip(giver, tm->selected_item);
     }
-    if ((tm->target_item == UNIT_HAND_STRONG) || (tm->target_item == UNIT_HAND_WEAK)) {
+    if ((tm->target_item == Unit_Hand_Strong(taker)) || (tm->target_item == Unit_Hand_Weak(taker))) {
         Unit_Unequip(taker, tm->target_item);
     }
 
@@ -120,10 +121,11 @@ void TradeMenu_Trade(struct TradeMenu *tm) {
     /* Re-equip whatever is in hands. */
     // Do that, cause otherwise can't instantly attack/staff,
     // would have to go reequip manually before, which sucks.
-    if ((tm->selected_item == UNIT_HAND_STRONG) || (tm->selected_item == UNIT_HAND_WEAK)) {
+    if ((tm->selected_item == Unit_Hand_Strong(giver))
+        || (tm->selected_item == Unit_Hand_Weak(giver))) {
         Unit_Equip_inHand(giver, tm->selected_item);
     }
-    if ((tm->target_item == UNIT_HAND_STRONG) || (tm->target_item == UNIT_HAND_WEAK)) {
+    if ((tm->target_item == Unit_Hand_Strong(taker)) || (tm->target_item == Unit_Hand_Weak(taker))) {
         Unit_Equip_inHand(taker, tm->target_item);
     }
 

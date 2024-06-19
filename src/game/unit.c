@@ -158,11 +158,11 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     unit->weapons_dtab = sota->weapons_dtab;
     SDL_assert(unit->mvt_type > UNIT_MVT_START);
 
-    struct Inventory_item *item = Unit_Item_Side(unit, UNIT_HAND_LEFT);
+    struct Inventory_item *item = Unit_Item(unit, UNIT_HAND_LEFT);
     if (Weapon_ID_isValid(item->id))
         Unit_Equip_inHand(unit, UNIT_HAND_LEFT);
 
-    item = Unit_Item_Side(unit, UNIT_HAND_RIGHT);
+    item = Unit_Item(unit, UNIT_HAND_RIGHT);
     SDL_Log("%d %d", item->id, Weapon_ID_isValid(item->id));
     if (Weapon_ID_isValid(item->id))
         Unit_Equip_inHand(unit, UNIT_HAND_RIGHT);

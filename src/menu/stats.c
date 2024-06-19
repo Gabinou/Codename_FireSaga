@@ -948,14 +948,11 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
     struct Unit *unit = stats_menu->unit;
     i16 item_y_offset, item_dura_y_offset;
 
-    /* Draw on line strong_i  */
-    int strong_i = Unit_Id_Strong(unit, i);
-
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
     srcrect.w = ITEM_ICON_W;
     srcrect.h = ITEM_ICON_H;
     srcrect.x = SM_ITEML_X;
-    srcrect.y = SM_ITEM_Y + strong_i * SM_LINE;
+    srcrect.y = SM_ITEM_Y + i * SM_LINE;
     if (stats_menu->unit->isTwoHanding)
         srcrect.y = SM_ITEM_TWOHAND_Y;
     else if (i == UNIT_HAND_RIGHT)
@@ -966,11 +963,11 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
 
     SDL_RenderFillRect(renderer, &srcrect);
     /* - Iem icon - */
-    item_y_offset      = ITEM1_NAME_Y_OFFSET + strong_i * (ITEM_ICON_H + ITEM_ICON_SPACE);
-    item_dura_y_offset = ITEM1_DURA_Y_OFFSET + strong_i * (ITEM_ICON_H + ITEM_ICON_SPACE);
+    item_y_offset      = ITEM1_NAME_Y_OFFSET + i * (ITEM_ICON_H + ITEM_ICON_SPACE);
+    item_dura_y_offset = ITEM1_DURA_Y_OFFSET + i * (ITEM_ICON_H + ITEM_ICON_SPACE);
 
     /* Writing - if no item, then next*/
-    struct Inventory_item *invitem = Unit_Item_Side(unit, i);
+    struct Inventory_item *invitem = Unit_Item(unit, i);
 
     if (invitem->id <= ITEM_NULL) {
         int x = ITEM1_NAME_X_OFFSET, y = item_y_offset;

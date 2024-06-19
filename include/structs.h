@@ -151,7 +151,7 @@ struct Tile_stats {
 extern struct Tile_stats Tile_stats_default;
 
 /* Struct is better: Can be cast to array */
-struct Unit_stats {
+typedef struct Unit_stats {
     i32 hp;   /* hit points     */
     i32 str;  /* strength       */
     i32 mag;  /* magic          */
@@ -164,7 +164,7 @@ struct Unit_stats {
     i32 con;  /* constitution   */
     i32 move; /* movement       */
     i32 prof; /* proficiency    */
-};
+} Unit_stats;
 extern struct Unit_stats Unit_stats_default;
 
 /* Struct is better: Can be cast to array*/

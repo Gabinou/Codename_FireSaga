@@ -120,8 +120,8 @@ struct Unit Unit_default = {
     .literate        = false, // Reading/writing for scribe job.
     .show_danger     = false,
 
-    .hands           = {true, true},
-    .equipped        = {false, false},
+    .hands           = {true,   true},
+    ._equipped       = {-1,     -1},
     .update_stats    = true,
     .computed_stats  = {{0, 0}, {0, 0}, 0, 0, 0, 0, 0, 0, 0, {-1, -1}},
 
@@ -166,7 +166,7 @@ struct Unit Unit_Nibal_make(void) {
         .show_danger    = false,
 
         .computed_stats = {{0, 0, 0}, {0, 0, 0}, 0, 0, 0, 0, 0, 0, 0, {-1, -1}},
-        .equipped       = {false, false},
+        ._equipped      = {-1, -1},
         .hands          = {true, true},
 
         .mount          = NULL,
@@ -228,28 +228,6 @@ void Unit_Reinforcement_Load(struct Unit *unit, struct Reinforcement *reinf) {
     unit->army = reinf->army;
 }
 
-/* --- Setters/Getters --- */
-/* Unit_Item_Strong works both ways:
-    - Get id in strong space from side space [0, eq_size]
-    - Get weapon in correct hand side from stronghand id
-*/
-int Unit_Id_Strong(struct Unit *unit, int side_i) {
-    return (side_i < UNIT_HANDS_NUM ? Unit_Hand_Strong2Side(unit, side_i) : side_i);
-}
-
-/* Unit_Item_Strong only gives the weapon in input hand.*/
-struct Inventory_item *Unit_Item_Side(struct Unit *unit, int side_i) {
-    return (&unit->_equipment[side_i]);
-}
-
-/* Unit_Item_Strong works both ways:
-    - Get weapon in stronghand from indices [0, eq_size]
-    - Get weapon in correct hand side from stronghand
-*/
-struct Inventory_item *Unit_Item_Strong(struct Unit *unit, int strong_i) {
-    return (&unit->_equipment[Unit_Id_Strong(unit, strong_i)]);
-}
-
 int Unit_Hand_Strong2Side( struct Unit *unit, int strong_i) {
     /*  strong in out   strong    in    out
     *      0   0   0     left   strong  left    --> XOR
@@ -271,9 +249,14 @@ int Unit_Hand_Side2Strong( struct Unit *unit, int side_i) {
 }
 
 /* Note: weakhand = 1 - stronghand */
-int Unit_Hand_Strong( struct Unit *unit) {
+int Unit_Hand_Strong(struct Unit *unit) {
     SDL_assert(unit != NULL);
     return (SotA_Hand_Strong(unit->handedness));
+}
+
+int Unit_Hand_Weak(struct Unit *unit) {
+    SDL_assert(unit != NULL);
+    return (1 - SotA_Hand_Strong(unit->handedness));
 }
 
 int SotA_Hand_Strong(i8 handedness) {
@@ -594,21 +577,6 @@ b32 _Unit_canAttack(struct Unit *unit, b32 hand) {
 
     struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, item.id);
     return (wpn->canAttack);
-}
-
-/* TODO: USE IT. */
-struct Weapon *Unit_Get_Equipped_Weapon(struct Unit *unit, b32 hand) {
-    if (!Unit_isEquipped(unit, hand)) {
-        return (NULL);
-    }
-
-    int id = unit->_equipment[hand].id;
-    if (id == ITEM_NULL) {
-        return (NULL);
-    }
-
-    struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[hand].id);
-    return (wpn);
 }
 
 i32 *Unit_Shield_Protection(struct Unit *unit, b32 hand) {

@@ -274,7 +274,7 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *in_mc) 
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, healer, Unit);
     tnecs_entity patient_ent = sota->candidates[sota->candidate];
     struct Unit *patient = TNECS_GET_COMPONENT(sota->world, patient_ent, Unit);
-    struct Inventory_item *staff_inv = Unit_Item_Strong(unit, UNIT_HAND_STRONG);
+    struct Inventory_item *staff_inv = Unit_Item(unit, Unit_Hand_Strong(unit));
     struct Weapon *staff = DTAB_GET(unit->weapons_dtab, staff_inv->id);
     SDL_assert(TNECS_TYPEFLAG_HAS_TYPE(staff->item->type, ITEM_TYPE_STAFF));
     SDL_assert(staff->item->active != NULL);
@@ -424,7 +424,7 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
     Game_cursorFocus_onMenu(sota);
 
     /* 5. Move cursor to weak hand, strong hand on top */
-    Menu_Elem_Set(mc, sota, UNIT_HAND_WEAK);
+    Menu_Elem_Set(mc, sota, 1);
 
     /* 6. HUD reappear */
     popup->visible = true;

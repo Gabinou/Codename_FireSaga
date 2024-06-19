@@ -20,6 +20,7 @@
 #include "combat.h"
 #include "unit/anim.h"
 #include "unit/status.h"
+#include "unit/equipment.h"
 #include "unit/boss.h"
 #include "unit/range.h"
 #include "unit/stats.h"
@@ -43,107 +44,103 @@ extern b32 army_isPC[ARMY_END];
 
 
 /* --- Constructors/Destructors --- */
-void Unit_Init(        struct Unit *u);
-void Unit_Free(        struct Unit *u);
-void Unit_Allocs(      struct Unit *u);
-void Unit_InitWweapons(struct Unit *u, struct dtab *weapons_dtab);
-void Unit_Reinforcement_Load(struct Unit *u, struct Reinforcement *r);
+void Unit_Init(        Unit *u);
+void Unit_Free(        Unit *u);
+void Unit_Allocs(      Unit *u);
+void Unit_InitWweapons(Unit *u, struct dtab *weapons_dtab);
+void Unit_Reinforcement_Load(Unit *u, struct Reinforcement *r);
 
-int Unit_Hand_Strong(struct Unit *u);
+int Unit_Hand_Weak(  Unit *u);
+int Unit_Hand_Strong(Unit *u);
 int SotA_Hand_Strong(i8 handedness);
 
-// TODO: Remove <<<<<<<<<<<<<<<
-int Unit_Hand_Strong2Side(struct Unit *unit, int i);
-int Unit_Hand_Side2Strong(struct Unit *unit, int i);
-// TODO: Remove >>>>>>>>>>>>>>>
+void Unit_setid(      Unit *u, i16 id);
+void Unit_setStats(   Unit *u, Unit_stats stats);
+void Unit_setBases(   Unit *u, Unit_stats stats);
+void Unit_setClassind(Unit *u, i8 class_i);
 
-void Unit_setid(      struct Unit *u, i16 id);
-void Unit_setStats(   struct Unit *u, struct Unit_stats stats);
-void Unit_setBases(   struct Unit *u, struct Unit_stats stats);
-void Unit_setClassind(struct Unit *u, i8 class_i);
-
-struct Unit_stats Unit_getStats(struct Unit *u);
+Unit_stats Unit_getStats(Unit *u);
 
 /* --- Supports --- */
-void Unit_supportUp(struct Unit *u, i16 id);
+void Unit_supportUp(Unit *u, i16 id);
 
 /* --- Second-order info --- */
 b32 SotA_isPC(          u8 a);
 u8  SotA_army2alignment(u8 a);
 
-u8  Unit_mvtType(struct Unit *u);
+u8  Unit_mvtType(Unit *u);
 
 /* --- Skills --- */
-b32 Unit_hasSkill(struct Unit *u, u64 s);
+b32 Unit_hasSkill(Unit *u, u64 s);
 
 /* --- Stat computation --- */
 /* Gives weapon stat if distance is in range.
 *    DEBUG: input -1 to always be in_range
 */
 /* Distance-dependent stats */
-i32 Unit_computeHit(     struct Unit *u, int dist);
-i32 Unit_computeDodge(   struct Unit *u, int dist);
-i32 Unit_computeFavor(   struct Unit *u, int dist);
-i32 Unit_computeSpeed(   struct Unit *u, int dist);
-i32 Unit_computeCritical(struct Unit *u, int dist);
+i32 Unit_computeHit(     Unit *u, int dist);
+i32 Unit_computeDodge(   Unit *u, int dist);
+i32 Unit_computeFavor(   Unit *u, int dist);
+i32 Unit_computeSpeed(   Unit *u, int dist);
+i32 Unit_computeCritical(Unit *u, int dist);
 
 /* Distance-independent stats */
-i32 Unit_computeMove(    struct Unit *u);
-i32 Unit_computeAgony(   struct Unit *u);
-i32 Unit_computeRegrets( struct Unit *u);
-i32 Unit_computeEffectivefactor(struct Unit *a, struct Unit *d);
+i32 Unit_computeMove(    Unit *u);
+i32 Unit_computeAgony(   Unit *u);
+i32 Unit_computeRegrets( Unit *u);
+i32 Unit_computeEffectivefactor(Unit *a, Unit *d);
 
-i32 *Unit_computeAttack( struct Unit *u, int dist);
-i32 *Unit_computeDefense(struct Unit *u);
+i32 *Unit_computeAttack( Unit *u, int dist);
+i32 *Unit_computeDefense(Unit *u);
 
-struct Unit_stats Unit_effectiveStats(   struct Unit *u);
-struct Unit_stats Unit_effectiveGrowths( struct Unit *u);
-struct Computed_Stats Unit_computedStats(struct Unit *u, int dist);
-struct Computed_Stats Unit_computedStats_wLoadout(struct Unit *u, int lh, int rh, int dist);
+Unit_stats Unit_effectiveStats(   Unit *u);
+Unit_stats Unit_effectiveGrowths( Unit *u);
+struct Computed_Stats Unit_computedStats(Unit *u, int dist);
+struct Computed_Stats Unit_computedStats_wLoadout(Unit *u, int lh, int rh, int dist);
 
 /* --- Debug Utils --- */
-void Unit_Cap_Stats(    struct Unit *u);
-void Unit_HalfCap_Stats(struct Unit *u);
+void Unit_Cap_Stats(    Unit *u);
+void Unit_HalfCap_Stats(Unit *u);
 
 /* --- Unit State change --- */
-void Unit_wait(    struct Unit *u);
-void Unit_dies(    struct Unit *u);
-void Unit_refresh( struct Unit *u);
-void Unit_agonizes(struct Unit *u);
+void Unit_wait(    Unit *u);
+void Unit_dies(    Unit *u);
+void Unit_refresh( Unit *u);
+void Unit_agonizes(Unit *u);
 
-void Unit_getsHealed( struct Unit *u, u8 healing);
-void Unit_takesDamage(struct Unit *u, u8 dmg, b32 ct);
+void Unit_getsHealed( Unit *u, u8 healing);
+void Unit_takesDamage(Unit *u, u8 dmg, b32 ct);
 
 /* --- I/O --- */
 void Unit_readJSON( void *u, cJSON *junit);
 void Unit_writeJSON(void *u, cJSON *junit);
 
 /* --- Unit Can --- */
-b32 Unit_canDance(struct Unit *u);
+b32 Unit_canDance(Unit *u);
 
 /* -- Can Carry -- */
-b32 Unit_canCarry(struct Unit *u1, struct Unit *u2);
+b32 Unit_canCarry(Unit *u1, Unit *u2);
 
 /* -- Can Attack -- */
-b32 _Unit_canAttack(   struct Unit *u, b32 hand);  /* with weapon in hand       */
-b32  Unit_canAttack(   struct Unit *u);            /* with equipped weapon      */
-b32  Unit_canAttack_Eq(struct Unit *u);            /* with any wpn in equipment */
+b32 _Unit_canAttack(   Unit *u, b32 hand);  /* with weapon in hand       */
+b32  Unit_canAttack(   Unit *u);            /* with equipped weapon      */
+b32  Unit_canAttack_Eq(Unit *u);            /* with any wpn in equipment */
 
 /* -- Can Staff -- */
-int Unit_canStaff(        struct Unit *u);
-int Unit_canStaff_Eq(     struct Unit *u);
-int Unit_canStaff_oneHand(struct Unit *u);
+int Unit_canStaff(        Unit *u);
+int Unit_canStaff_Eq(     Unit *u);
+int Unit_canStaff_oneHand(Unit *u);
 
 /* -- HP is full -- */
-b32 Unit_HP_isFull(struct Unit *u);
+b32 Unit_HP_isFull(Unit *u);
 
 /* -- Brave -- */
-u8 Unit_Brave(struct Unit *u);
+u8 Unit_Brave(Unit *u);
 
 /* --- Lvlup && Promotion --- */
-void Unit_lvlUp(  struct Unit *u);
-i16  Unit_getLvl( struct Unit *u);
-void Unit_Promote(struct Unit *u, i8 new_class_i);
+void Unit_lvlUp(  Unit *u);
+i16  Unit_getLvl( Unit *u);
+void Unit_Promote(Unit *u, i8 new_class_i);
 
 /* -- Unit_id -- */
 b32 Unit_ID_Valid(u16 id);

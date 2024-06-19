@@ -154,24 +154,19 @@ struct Inventory_item Unit_Item_Drop(struct Unit *unit, i16 i) {
 
 void Unit_Item_Swap(struct Unit *unit, i16 i1, i16 i2) {
     SDL_assert(unit);
-    Equipment_Swap(unit->_equipment, i1, i2);
-}
 
-// TODO move to equipment source
-void Equipment_Swap(struct Inventory_item *_equipment, i16 i1, i16 i2) {
-    if ((i1 < 0) || (i1 >= DEFAULT_EQUIPMENT_SIZE)) {
-        SDL_Log("Item index1 out of bounds");
-        exit(ERROR_OutofBounds);
-    }
-    if ((i2 < 0) || (i2 >= DEFAULT_EQUIPMENT_SIZE)) {
-        SDL_Log("Item index2 out of bounds");
-        exit(ERROR_OutofBounds);
-    }
-    struct Inventory_item buffer  = _equipment[i1];
-    _equipment[i1]          = _equipment[i2];
-    _equipment[i2]          = buffer;
-}
+    if (i1 == i2)
+        return;
 
+    b32 i1_valid = (i1 >= 0) && (i1 < DEFAULT_EQUIPMENT_SIZE);
+    b32 i2_valid = (i2 >= 0) && (i2 < DEFAULT_EQUIPMENT_SIZE);
+    if (i1_valid && i2_valid) {
+        Equipment_Swap(unit->_equipment, i1, i2);
+    } else {
+        SDL_Log("Invalid item swapping index %d %d", i1, i2);
+        SDL_assert(false);
+    }
+}
 
 void Unit_Item_Trade(struct Unit *giver, struct Unit *taker, i16 ig, i16 it) {
     SDL_assert(giver);
@@ -209,14 +204,14 @@ struct Inventory_item Unit_Equip_TwoHanding(struct Unit *unit) {
     unit->_equipment[weakhand] = unit->_equipment[stronghand];
 
     /* -- Set flags -- */
-    unit->equipped[weakhand]   = true;
-    unit->isTwoHanding         = true;
+    unit->_equipped[weakhand]   = unit->_equipped[stronghand];
+    unit->isTwoHanding          = true;
 
     return (out);
 }
 
 void _Unit_Check_Equipped(struct Unit *unit, b32 hand) {
-    if (!unit->equipped[hand])
+    if (!Unit_isEquipped(unit, hand))
         return;
 
     if (unit->_equipment[hand].id <= ITEM_NULL)
@@ -248,11 +243,11 @@ b32 Unit_Equip_inHand(struct Unit *unit, b32 hand) {
     /* -- Error if try to equip NULL item -- */
     if (unit->_equipment[hand].id <= ITEM_NULL) {
         SDL_Log("No item in hand. Cannot equip.");
-        return (unit->equipped[hand] = false);
+        return (unit->_equipped[hand] = -1);
     }
     if (!Weapon_ID_isValid(unit->_equipment[hand].id)) {
         SDL_Log("Invalid weapon. Cannot equip.");
-        return (unit->equipped[hand] = false);
+        return (unit->_equipped[hand] = -1);
     }
 
     Weapon_Load(unit->weapons_dtab, unit->_equipment[hand].id);
@@ -260,25 +255,25 @@ b32 Unit_Equip_inHand(struct Unit *unit, b32 hand) {
     /* -- Error checking -- */
     if (!Unit_canEquip(unit, unit->_equipment[hand].id)) {
         SDL_Log("Cannot equip item.");
-        return (unit->equipped[hand] = false);
+        return (unit->_equipped[hand] = -1);
     }
 
     if (!unit->hands[hand]) {
         SDL_Log("No hand to equip with.");
-        return (unit->equipped[hand] = false);
+        return (unit->_equipped[hand] = -1);
     }
 
-    unit->equipped[hand] = true;
+    unit->_equipped[hand] = hand;
     Unit_isdualWielding(unit);
 
-    return (unit->equipped[hand]);
+    return (unit->_equipped[hand]);
 }
 
 void Unit_Unequip(struct Unit *unit, b32 hand) {
     SDL_assert(unit);
 
     /* -- Unequip -- */
-    unit->equipped[hand] = false;
+    unit->_equipped[hand] = -1;
 
     /* -- If twohanding, not anymore! -- */
     if (unit->isTwoHanding) {
@@ -387,19 +382,7 @@ b32 Unit_canEquip_Type( struct Unit *unit, i16 id) {
 
 /* Is a rightie using a weapon in its left hand? */
 // b32 Unit_iswrongHanding(struct Unit *unit) {
-//     b32 out = false;
-//     do {
-//         struct Inventory_item *item = Unit_Item_Strong(unit, UNIT_HAND_WEAK);
-//         if ((item->id == ITEM_NULL) || (item->id == ITEM_ID_BROKEN))
-//             break;
-
-//         u64 archetype = Item_Archetype(item->id);
-//         /* Offhands count as weapon archetype, so need to check like this for wronghanding*/
-//         if ((archetype == ITEM_ARCHETYPE_SHIELD) || Item_isOffhand(item->id))
-//             break;
-//         out = true;
-//     } while (false);
-
+//  Check if archetype in weakhand is NOT ITEM_ARCHETYPE_WEAKHAND
 //     return (out);
 // }
 
@@ -407,7 +390,7 @@ b32 Unit_canEquip_Type( struct Unit *unit, i16 id) {
     -> Equipped + a weapon (not a staff, or offhand, or trinket...)
  */
 b32 Unit_isWielding(struct Unit *unit, b32 hand) {
-    if (!unit->equipped[hand])
+    if (!Unit_isEquipped(unit, hand))
         return (false);
 
     u16 id = unit->_equipment[hand].id;
@@ -435,63 +418,9 @@ b32 Unit_isdualWielding(struct Unit *unit) {
 
 /* --- Loadout Manipulation --- */
 /* - Does that loadout wields a weapon with two hands? - */
-b32 Unit_Loadout_twoHanding(int lh, int rh) {
-    b32 lh_valid = (lh > -1) && (lh < DEFAULT_EQUIPMENT_SIZE);
-    b32 rh_valid = (rh > -1) && (rh < DEFAULT_EQUIPMENT_SIZE);
-    return ((lh_valid && rh_valid && (lh == rh)));
-}
-
-/* - Public: Chooses between tohanding and not - */
-void Unit_Loadout_Swap(struct Unit *unit, int lh, int rh) {
-    b32 lh_valid = (lh > -1) && (lh < DEFAULT_EQUIPMENT_SIZE);
-    b32 rh_valid = (rh > -1) && (rh < DEFAULT_EQUIPMENT_SIZE);
-    b32 twohands = Unit_Loadout_twoHanding(lh, rh);
-
-    if (twohands) {
-        _Unit_Loadout_Swap_Twohanding(unit, lh);
-    } else if (lh_valid || rh_valid) {
-        _Unit_Loadout_Swap(unit, lh, rh);
-    } else {
-        SDL_Log("Invalid input. Not swapping items %d %d", lh, rh);
-    }
-    // Unit_Equipment_Print(unit);
-
-}
-
-void _Unit_Loadout_Swap_Twohanding(struct Unit *unit, int i) {
-    int stronghand  = Unit_Hand_Strong(unit);
-    if (i != stronghand)
-        Unit_Item_Swap(unit, stronghand, i);
-    unit->temp = Unit_Equip_TwoHanding(unit);
-    // TODO: Place in an empty inventory spot.
-}
-
-void _Unit_Loadout_Swap(struct Unit *unit, int lh, int rh) {
-    SDL_assert(lh != rh); /* no twohanding here */
-    b32 lh_valid = ((lh > -1) && (lh < DEFAULT_EQUIPMENT_SIZE));
-    b32 rh_valid = ((rh > -1) && (rh < DEFAULT_EQUIPMENT_SIZE));
-
-    /* Swapping */
-    if (lh_valid && (lh != UNIT_HAND_LEFT)) {
-        Unit_Item_Swap(unit, UNIT_HAND_LEFT, lh);
-        /* item rh wanted switched UNIT_HAND_LEFT -> lh */
-        if (rh == UNIT_HAND_LEFT)
-            rh = lh;
-    }
-
-    if (rh_valid && (rh != UNIT_HAND_RIGHT))
-        Unit_Item_Swap(unit, UNIT_HAND_RIGHT, rh);
-
-    /* Equipping */
-    if (lh_valid)
-        Unit_Equip_inHand(unit, UNIT_HAND_LEFT);
-    else
-        Unit_Unequip(unit, UNIT_HAND_LEFT);
-
-    if (rh_valid)
-        Unit_Equip_inHand(unit, UNIT_HAND_RIGHT);
-    else
-        Unit_Unequip(unit, UNIT_HAND_RIGHT);
+b32 Unit_istwoHanding(  struct Unit *u) {
+    // TODO
+    return (false);
 }
 
 /* -- Deplete: decrease durability -- */
@@ -514,7 +443,7 @@ void _Unit_Item_Deplete(struct Unit *unit, int i, u64 archetype) {
 }
 
 void _Unit_Equipped_Deplete(struct Unit *unit, b32 hand, u64 archetype) {
-    if (!unit->equipped[hand]) {
+    if (!Unit_isEquipped(unit, hand)) {
         return;
     }
 
@@ -546,20 +475,21 @@ void Unit_Equipped_Shields_Deplete(struct Unit *unit) {
 }
 
 b32 Unit_isEquipped(Unit *unit, b32 hand) {
-    b32 min_bound = (unit->equipped[hand] >= 0);
-    b32 max_bound = (unit->equipped[hand] < DEFAULT_EQUIPMENT_SIZE);
+    b32 min_bound = (unit->_equipped[hand] >= 0);
+    b32 max_bound = (unit->_equipped[hand] < DEFAULT_EQUIPMENT_SIZE);
     return (min_bound, max_bound);
 }
 
 int Unit_Equipped(  Unit *unit, b32 hand) {
-    return (unit->equipped[hand]);
+    /* Return order of equipped item in unit _equipment*/
+    return (unit->_equipped[hand]);
 }
 
-int Unit_Get_Equipped_ID(Unit *unit, b32 hand) {
-    if (unit->equipped[hand] < 0 || unit->equipped[hand] > DEFAULT_EQUIPMENT_SIZE)
-        return (-1);
+Inventory_item *Unit_Item_Equipped(Unit *unit, b32 hand) {
+    if (unit->_equipped[hand] < 0 || unit->_equipped[hand] > DEFAULT_EQUIPMENT_SIZE)
+        return (NULL);
     else
-        return (unit->_equipment[unit->equipped[hand]]);
+        return (&unit->_equipment[unit->_equipped[hand]]);
 }
 
 Inventory_item *Unit_Item(Unit *unit, int i) {

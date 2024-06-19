@@ -1156,8 +1156,8 @@ enum WEAPON_SUBTYPE {
 enum UNIT_HANDS {
     UNIT_HAND_LEFT           = 0,
     UNIT_HAND_RIGHT          = 1,
-    UNIT_HAND_STRONG         = 0,
-    UNIT_HAND_WEAK           = 1,
+    // UNIT_HAND_STRONG         = 0,
+    // UNIT_HAND_WEAK           = 1,
     UNIT_HANDS_NUM           = 2,
 };
 
