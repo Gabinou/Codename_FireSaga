@@ -26,78 +26,78 @@
 #include "unit/mount.h"
 
 /* --- Setters/Getters --- */
-int Unit_Id_Strong(struct Unit *u, int i);
+int Unit_Id_Strong(Unit *u, int i);
 
 /* -- Item spaces -- */
 // TODO: REMOVE ________________________________________________________________
 /* Equipment, items                         ->    side space */
 /* Menus, popups are top hand/strong hand   ->  strong space */
-struct Inventory_item *Unit_Item_Side(  struct Unit *u, int i); /*   side space */
-struct Inventory_item *Unit_Item_Strong(struct Unit *u, int i); /* strong space */
-void Unit_Set_Item_Side(struct Unit *u, int i);                 /*   side space */
-int Unit_Hand_Strong(struct Unit *u);
+Inventory_item *Unit_Item_Side(  Unit *u, int i); /*   side space */
+Inventory_item *Unit_Item_Strong(Unit *u, int i); /* strong space */
+void Unit_Set_Item_Side(Unit *u, int i);                 /*   side space */
+int Unit_Hand_Strong(Unit *u);
 int SotA_Hand_Strong(i8 handedness);
-int Unit_Hand_Strong2Side(struct Unit *unit, int i);
-int Unit_Hand_Side2Strong(struct Unit *unit, int i);
+int Unit_Hand_Strong2Side(Unit *unit, int i);
+int Unit_Hand_Side2Strong(Unit *unit, int i);
+int Unit_Equipped_Strong(Unit *u, int i); /* strong space */
 // TODO: REMOVE ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-int Unit_Get_Equipped(struct Unit *unit, b32 hand);
-struct Weapon   *Unit_Get_Equipped_Weapon(  struct Unit *unit, b32 hand);
-
-// TODO: remove
-int Unit_Equipped_Strong(struct Unit *u, int i); /* strong space */
+int Unit_Get_Equipped(Unit *unit, b32 hand);
+struct Weapon   *Unit_Get_Equipped_Weapon(  Unit *unit, b32 hand);
 
 /* --- Items --- */
 /* -- Deplete: decrease durability -- */
-void _Unit_Item_Deplete(           struct Unit *u, int  i, u64 a);
-void _Unit_Equipped_Deplete(       struct Unit *u, b32 h, u64 a);
+void _Unit_Item_Deplete(           Unit *u, int  i, u64 a);
+void _Unit_Equipped_Deplete(       Unit *u, b32 h, u64 a);
 
-void Unit_Item_Deplete(            struct Unit *u, int i);
-void Unit_Equipped_Staff_Deplete(  struct Unit *u, b32 h);
-void Unit_Equipped_Weapons_Deplete(struct Unit *u);
-void Unit_Equipped_Shields_Deplete(struct Unit *u);
+void Unit_Item_Deplete(            Unit *u, int i);
+void Unit_Equipped_Staff_Deplete(  Unit *u, b32 h);
+void Unit_Equipped_Weapons_Deplete(Unit *u);
+void Unit_Equipped_Shields_Deplete(Unit *u);
 
 /* -- Trading -- */
-void  Unit_Item_Take(  struct Unit *u, struct Inventory_item item);
-void  Unit_Item_Swap(  struct Unit *u, i16 ind1, i16 ind2);
-void  Unit_Item_Trade( struct Unit *g, struct Unit *t, i16 giver_i, i16 taker_i);
-void  Unit_Item_Takeat(struct Unit *u, struct Inventory_item i, size_t j);
-void _Unit_Item_Takeat(struct Unit *u, struct Inventory_item i, size_t j);
+void  Unit_Item_Take(  Unit *u, Inventory_item item);
+void  Unit_Item_Trade( Unit *g, Unit *t, i16 giver_i, i16 taker_i);
+void  Unit_Item_Takeat(Unit *u, Inventory_item i, size_t j);
+void _Unit_Item_Takeat(Unit *u, Inventory_item i, size_t j);
+
+/* -- Swapping -- */
+void Unit_Item_Swap(  Unit *u, i16 ind1, i16 ind2);
+void Equipment_Swap(Inventory_item *_equipment, i16 i1, i16 i2);
 
 /* -- Dropping -- */
-struct Inventory_item Unit_Item_Drop(struct Unit *u, i16 ind1);
-void Unit_Equipment_Drop(struct Unit *u);
-void Unit_Equipment_Import(struct Unit *u, struct Inventory_item *equipment);
-void Unit_Equipment_Export(struct Unit *u, struct Inventory_item *equipment);
+Inventory_item Unit_Item_Drop(Unit *u, i16 ind1);
+void Unit_Equipment_Drop(Unit *u);
+void Unit_Equipment_Import(Unit *u, Inventory_item *equipment);
+void Unit_Equipment_Export(Unit *u, Inventory_item *equipment);
 
 /* --- Equipping --- */
-b32                   Unit_Equip(           struct Unit *u, b32 h, int i);
-void                  Unit_Unequip(         struct Unit *u, b32 h);
-b32                   Unit_Equip_inHand(    struct Unit *u, b32 h);
-struct Inventory_item Unit_Equip_TwoHanding(struct Unit *u);
+b32                   Unit_Equip(           Unit *u, b32 h, int i);
+void                  Unit_Unequip(         Unit *u, b32 h);
+b32                   Unit_Equip_inHand(    Unit *u, b32 h);
+Inventory_item Unit_Equip_TwoHanding(Unit *u);
 
 /* --- Checking Equipment: de-equip if broken --- */
-void _Unit_Check_Equipped(struct Unit *u, b32 hand);
-void  Unit_Check_Equipped(struct Unit *u);
+void _Unit_Check_Equipped(Unit *u, b32 hand);
+void  Unit_Check_Equipped(Unit *u);
 
-/* --- Debug --- */
-b32 Unit_Equipment_Full( struct Unit *u);
-void Unit_Equipment_Print(struct Unit *u);
 
 /* --- Usability --- */
-b32  Unit_Eq_Usable(  struct Unit *u, u64 a, int i);
-b32  Unit_All_Usable( struct Unit *u);
-void Unit_Find_Usable(struct Unit *u, u64 a);
-b32  Unit_Item_Usable(struct Unit *u, u64 a, int i);
+b32  Unit_Eq_Usable(  Unit *u, u64 a, int i);
+b32  Unit_All_Usable( Unit *u);
+void Unit_Find_Usable(Unit *u, u64 a);
+b32  Unit_Item_Usable(Unit *u, u64 a, int i);
 
 /* -- Can Equip -- */
-b32 Unit_canEquip(       struct Unit *u, i16 id);
-u8  Unit_Equippables(    struct Unit *u, u8 *eq);
-b32 Unit_canEquip_Type(  struct Unit *u, i16 id);
-b32 Unit_canEquip_Hand(  struct Unit *u, i16 id, b32 h);
-b32 Unit_canEquip_inHand(struct Unit *u, b32 h);
+b32 Unit_canEquip(       Unit *u, i16 id);
+u8  Unit_Equippables(    Unit *u, u8 *eq);
+b32 Unit_canEquip_Type(  Unit *u, i16 id);
+b32 Unit_canEquip_Hand(  Unit *u, i16 id, b32 h);
+b32 Unit_canEquip_inHand(Unit *u, b32 h);
 
-// TODO: move to src/equipment.c
-void Equipment_Swap(struct Inventory_item *_equipment, i16 i1, i16 i2);
+/* --- Debug --- */
+b32  Unit_Equipment_Full( Unit *u);
+void Unit_Equipment_Print(Unit *u);
+
 
 #endif /* UNIT_EQUIPMENT_H */

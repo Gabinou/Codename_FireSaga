@@ -11,7 +11,7 @@
 #include "unit/mount.h"
 #include "nmath.h"
 #include "jsonio.h"
-#include "equipment.h"
+#include "inventory.h"
 #include "RNG.h"
 #include "physfs.h"
 #include "equations.h"
@@ -64,8 +64,10 @@ void Unit_Set_Item_Side(struct Unit *u, int i);                 /*   side space 
 int Unit_Hand_Strong(struct Unit *u);
 int SotA_Hand_Strong(i8 handedness);
 
+// TODO: Remove <<<<<<<<<<<<<<<
 int Unit_Hand_Strong2Side(struct Unit *unit, int i);
 int Unit_Hand_Side2Strong(struct Unit *unit, int i);
+// TODO: Remove >>>>>>>>>>>>>>>
 
 void Unit_setid(      struct Unit *u, i16 id);
 void Unit_setStats(   struct Unit *u, struct Unit_stats stats);
