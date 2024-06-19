@@ -545,4 +545,23 @@ void Unit_Equipped_Shields_Deplete(struct Unit *unit) {
         _Unit_Equipped_Deplete(unit, UNIT_HAND_RIGHT, ITEM_ARCHETYPE_SHIELD);
 }
 
+b32 Unit_isEquipped(Unit *unit, b32 hand) {
+    b32 min_bound = (unit->equipped[hand] >= 0);
+    b32 max_bound = (unit->equipped[hand] < DEFAULT_EQUIPMENT_SIZE);
+    return (min_bound, max_bound);
+}
 
+int Unit_Equipped(  Unit *unit, b32 hand) {
+    return (unit->equipped[hand]);
+}
+
+int Unit_Get_Equipped_ID(Unit *unit, b32 hand) {
+    if (unit->equipped[hand] < 0 || unit->equipped[hand] > DEFAULT_EQUIPMENT_SIZE)
+        return (-1);
+    else
+        return (unit->_equipment[unit->equipped[hand]]);
+}
+
+Inventory_item *Unit_Item(Unit *unit, int i) {
+    return (&unit->_equipment[i]);
+}

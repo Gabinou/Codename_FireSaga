@@ -281,10 +281,7 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
 
         struct Inventory_item *item = Unit_Item_Strong(pu->unit, unit_hand_strong);
 
-        int unit_hand_strongside    = Unit_Hand_Strong2Side(pu->unit, unit_hand_strong);
-        int unit_hand_weakside      = Unit_Hand_Strong2Side(pu->unit, unit_hand_weak);
-
-        if ((pu->unit->equipped[unit_hand_strongside]) && (item->id > ITEM_NULL)) {
+        if (Unit_isEquipped(unit, unit_hand_strong) && (item->id > ITEM_NULL)) {
             Weapon_Load(pu->unit->weapons_dtab, item->id);
             struct Weapon *weapon = DTAB_GET(pu->unit->weapons_dtab, item->id);
             SDL_assert(weapon != NULL);
@@ -300,8 +297,8 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
         /* right hand */
         dstrect.x = PU_ICONR_X + 1;
         item = Unit_Item_Strong(pu->unit, unit_hand_weak);
-        if ((pu->unit->equipped[unit_hand_weakside]) && (item->id > ITEM_NULL)) {
-            Weapon_Load(pu->unit->weapons_dtab, item->id);
+        if ((Unit_isEquipped(unit, unit_hand_weak) && (item->id > ITEM_NULL)) {
+        Weapon_Load(pu->unit->weapons_dtab, item->id);
             struct Weapon *weapon = DTAB_GET(pu->unit->weapons_dtab, item->id);
             SDL_assert(weapon != NULL);
             u16 type_ind = Weapon_TypeExp(weapon);

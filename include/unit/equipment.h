@@ -40,10 +40,19 @@ int SotA_Hand_Strong(i8 handedness);
 int Unit_Hand_Strong2Side(Unit *unit, int i);
 int Unit_Hand_Side2Strong(Unit *unit, int i);
 int Unit_Equipped_Strong(Unit *u, int i); /* strong space */
+void Unit_Set_Item_Side(struct Unit *u, int i);
 // TODO: REMOVE ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-int Unit_Get_Equipped(Unit *unit, b32 hand);
-struct Weapon   *Unit_Get_Equipped_Weapon(  Unit *unit, b32 hand);
+// TODO: REMOVE ________________________________________________________________
+Inventory_item *Unit_Item(Unit *u, int i);
+// TODO: IMPLEMENT ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Inventory_item *Unit_Item(Unit *u, int i);
+
+int Unit_Equipped(  Unit *unit, b32 hand);
+b32 Unit_isEquipped(Unit *unit, b32 hand);
+int Unit_Get_Equipped_ID(Unit *unit, b32 hand);
+struct Weapon *Unit_Get_Equipped_Weapon(Unit *unit, b32 hand);
 
 /* --- Items --- */
 /* -- Deplete: decrease durability -- */
@@ -81,7 +90,6 @@ Inventory_item Unit_Equip_TwoHanding(Unit *u);
 void _Unit_Check_Equipped(Unit *u, b32 hand);
 void  Unit_Check_Equipped(Unit *u);
 
-
 /* --- Usability --- */
 b32  Unit_Eq_Usable(  Unit *u, u64 a, int i);
 b32  Unit_All_Usable( Unit *u);
@@ -95,9 +103,26 @@ b32 Unit_canEquip_Type(  Unit *u, i16 id);
 b32 Unit_canEquip_Hand(  Unit *u, i16 id, b32 h);
 b32 Unit_canEquip_inHand(Unit *u, b32 h);
 
+/* --- Unit state --- */
+b32 Unit_isdualWielding(struct Unit *u);
+// WrongHanding: using shield or offhand in strong hand and vice vdrsa
+b32 Unit_iswrongHanding(struct Unit *u);
+
+/* --- Loadout Manipulation --- */
+b32 Unit_Loadout_twoHanding(int lh, int rh);
+
+/* - Public: Chooses between _Unit_Loadout_Swap_Twohanding and _Unit_Loadout_Swap - */
+void Unit_Loadout_Swap(        struct Unit *u, int lh, int rh);
+
+/* - Private: Only for not twohanding - */
+void _Unit_Loadout_Swap(        struct Unit *u, int lh, int rh);
+
+/* - Private: Only for twohanding - */
+void _Unit_Loadout_Swap_Twohanding(        struct Unit *u, int i);
+
+
 /* --- Debug --- */
 b32  Unit_Equipment_Full( Unit *u);
 void Unit_Equipment_Print(Unit *u);
-
 
 #endif /* UNIT_EQUIPMENT_H */

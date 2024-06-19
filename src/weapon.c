@@ -14,12 +14,6 @@ struct Weapon Weapon_default = {
     .canAttack    = 1,
 };
 
-struct WpnorItem WpnorItem_default = {
-    .dtab   = SOTA_DTAB_NULL,
-    .wpn    = NULL,
-    .item   = NULL,
-};
-
 /* --- Constructors/Destructors --- */
 void Weapon_Init(struct Weapon *weapon) {
     *weapon = Weapon_default;

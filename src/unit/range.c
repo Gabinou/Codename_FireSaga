@@ -22,7 +22,7 @@ struct Range *Unit_Range_Loadout(struct Unit   *unit) {
         }
 
         /* If not dual wielding, compute range of weapon in stronghand. */
-        if (!unit->equipped[stronghand]) {
+        if (!Unit_isEquipped(unit, stronghand)) {
             SDL_Log("If not dual wielding,");
             break;
         }
@@ -81,7 +81,7 @@ struct Range *_Unit_Range_Combine( struct Unit   *unit, struct Range *range,
         }
 
         /* Equipped only: Skip if unequipped */
-        if (equipped && !unit->equipped[i]) {
+        if (equipped && !Unit_isEquipped(unit, i)) {
             continue;
         }
 
@@ -225,7 +225,7 @@ void Unit_Rangemap_Toggle(struct Unit *unit) {
 void Unit_Rangemap_Equipment(struct Unit *unit) {
     /* 1- Weapon equipped in strong hand */
     b32 stronghand = Unit_Hand_Strong(unit);
-    if (unit->equipped[stronghand]) {
+    if (Unit_isEquipped(unit, stronghand) && unit->hands[stronghand]) {
         Weapon_Load(unit->weapons_dtab, unit->_equipment[stronghand].id);
         struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[stronghand].id);
         u16 type = wpn->item->type;
@@ -240,7 +240,7 @@ void Unit_Rangemap_Equipment(struct Unit *unit) {
 
     /* 2- Weapon equipped in weak hand */
     b32 weakhand = 1 - stronghand;
-    if (unit->equipped[weakhand] && unit->hands[weakhand]) {
+    if (Unit_isEquipped(unit, weakhand) && unit->hands[weakhand]) {
         Weapon_Load(unit->weapons_dtab, unit->_equipment[weakhand].id);
         struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[weakhand].id);
         u16 type = wpn->item->type;

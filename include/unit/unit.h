@@ -49,18 +49,6 @@ void Unit_Allocs(      struct Unit *u);
 void Unit_InitWweapons(struct Unit *u, struct dtab *weapons_dtab);
 void Unit_Reinforcement_Load(struct Unit *u, struct Reinforcement *r);
 
-/* --- Setters/Getters --- */
-int Unit_Id_Strong(struct Unit *u, int i);
-/* -- Item spaces -- */
-/* Equipment, items                         ->    side space */
-/* Menus, popups are top hand/strong hand   ->  strong space */
-struct Inventory_item *Unit_Item_Side(  struct Unit *u, int i); /*   side space */
-struct Inventory_item *Unit_Item_Strong(struct Unit *u, int i); /* strong space */
-
-struct WpnorItem Unit_WpnorItem(struct Unit *u, int i);         /*   side space */
-
-void Unit_Set_Item_Side(struct Unit *u, int i);                 /*   side space */
-
 int Unit_Hand_Strong(struct Unit *u);
 int SotA_Hand_Strong(i8 handedness);
 
@@ -76,46 +64,6 @@ void Unit_setClassind(struct Unit *u, i8 class_i);
 
 struct Unit_stats Unit_getStats(struct Unit *u);
 
-int Unit_Get_Equipped(struct Unit *unit, b32 hand);
-struct Weapon   *Unit_Get_Equipped_Weapon(  struct Unit *unit, b32 hand);
-
-// TODO: Unit equipped weapon in strong space!
-// TODO: remove
-int Unit_Equipped_Strong(struct Unit *u, int i); /* strong space */
-
-/* --- Items --- */
-/* -- Deplete: decrease durability -- */
-void _Unit_Item_Deplete(           struct Unit *u, int  i, u64 a);
-void _Unit_Equipped_Deplete(       struct Unit *u, b32 h, u64 a);
-
-void Unit_Item_Deplete(            struct Unit *u, int i);
-void Unit_Equipped_Staff_Deplete(  struct Unit *u, b32 h);
-void Unit_Equipped_Weapons_Deplete(struct Unit *u);
-void Unit_Equipped_Shields_Deplete(struct Unit *u);
-
-/* -- Trading -- */
-void  Unit_Item_Take(  struct Unit *u, struct Inventory_item item);
-void  Unit_Item_Swap(  struct Unit *u, i16 ind1, i16 ind2);
-void  Unit_Item_Trade( struct Unit *g, struct Unit *t, i16 giver_i, i16 taker_i);
-void  Unit_Item_Takeat(struct Unit *u, struct Inventory_item i, size_t j);
-void _Unit_Item_Takeat(struct Unit *u, struct Inventory_item i, size_t j);
-
-/* -- Dropping -- */
-struct Inventory_item Unit_Item_Drop(struct Unit *u, i16 ind1);
-void Unit_Equipment_Drop(struct Unit *u);
-void Unit_Equipment_Import(struct Unit *u, struct Inventory_item *equipment);
-void Unit_Equipment_Export(struct Unit *u, struct Inventory_item *equipment);
-
-/* --- Equipping --- */
-b32                   Unit_Equip(           struct Unit *u, b32 h, int i);
-void                  Unit_Unequip(         struct Unit *u, b32 h);
-b32                   Unit_Equip_inHand(    struct Unit *u, b32 h);
-struct Inventory_item Unit_Equip_TwoHanding(struct Unit *u);
-
-/* --- Checking Equipment: de-equip if broken --- */
-void _Unit_Check_Equipped(struct Unit *u, b32 hand);
-void  Unit_Check_Equipped(struct Unit *u);
-
 /* --- Supports --- */
 void Unit_supportUp(struct Unit *u, i16 id);
 
@@ -124,16 +72,6 @@ b32 SotA_isPC(          u8 a);
 u8  SotA_army2alignment(u8 a);
 
 u8  Unit_mvtType(struct Unit *u);
-
-/* --- Debug --- */
-b32 Unit_Equipment_Full( struct Unit *u);
-void Unit_Equipment_Print(struct Unit *u);
-
-/* --- Usability --- */
-b32  Unit_Eq_Usable(  struct Unit *u, u64 a, int i);
-b32  Unit_All_Usable( struct Unit *u);
-void Unit_Find_Usable(struct Unit *u, u64 a);
-b32  Unit_Item_Usable(struct Unit *u, u64 a, int i);
 
 /* --- Skills --- */
 b32 Unit_hasSkill(struct Unit *u, u64 s);
@@ -163,18 +101,6 @@ struct Unit_stats Unit_effectiveGrowths( struct Unit *u);
 struct Computed_Stats Unit_computedStats(struct Unit *u, int dist);
 struct Computed_Stats Unit_computedStats_wLoadout(struct Unit *u, int lh, int rh, int dist);
 
-/* --- Loadout Manipulation --- */
-b32 Unit_Loadout_twoHanding(int lh, int rh);
-
-/* - Public: Chooses between _Unit_Loadout_Swap_Twohanding and _Unit_Loadout_Swap - */
-void Unit_Loadout_Swap(        struct Unit *u, int lh, int rh);
-
-/* - Private: Only for not twohanding - */
-void _Unit_Loadout_Swap(        struct Unit *u, int lh, int rh);
-
-/* - Private: Only for twohanding - */
-void _Unit_Loadout_Swap_Twohanding(        struct Unit *u, int i);
-
 /* --- Debug Utils --- */
 void Unit_Cap_Stats(    struct Unit *u);
 void Unit_HalfCap_Stats(struct Unit *u);
@@ -192,25 +118,11 @@ void Unit_takesDamage(struct Unit *u, u8 dmg, b32 ct);
 void Unit_readJSON( void *u, cJSON *junit);
 void Unit_writeJSON(void *u, cJSON *junit);
 
-/* --- Unit state --- */
-b32 Unit_isdualWielding(struct Unit *u);
-// WrongHanding: using shield or offhand in strong hand and vice vdrsa
-b32 Unit_iswrongHanding(struct Unit *u);
-
 /* --- Unit Can --- */
 b32 Unit_canDance(struct Unit *u);
 
 /* -- Can Carry -- */
 b32 Unit_canCarry(struct Unit *u1, struct Unit *u2);
-
-/* -- Can Equip -- */
-b32 Unit_canEquip(       struct Unit *u, i16 id);
-u8  Unit_Equippables(    struct Unit *u, u8 *eq);
-b32 Unit_canEquip_Type(  struct Unit *u, i16 id);
-b32 Unit_canEquip_Hand(  struct Unit *u, i16 id, b32 h);
-b32 Unit_canEquip_inHand(struct Unit *u, b32 h);
-
-void Equipment_Swap(struct Inventory_item *_equipment, i16 i1, i16 i2);
 
 /* -- Can Attack -- */
 b32 _Unit_canAttack(   struct Unit *u, b32 hand);  /* with weapon in hand       */

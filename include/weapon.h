@@ -23,14 +23,6 @@ struct  Weapon {
 typedef struct Weapon Weapon;
 extern struct Weapon Weapon_default;
 
-/* --- Union and discriminator for Weapons/Items --- */
-struct WpnorItem {
-    int dtab;
-    struct Weapon *wpn;
-    struct Item   *item;
-};
-extern struct WpnorItem WpnorItem_default;
-
 /* --- Constructors/Destructors --- */
 void Weapon_Free(struct Weapon *wpn);
 void Weapon_Init(struct Weapon *wpn);

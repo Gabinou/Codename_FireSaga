@@ -306,24 +306,3 @@ void SOTA_Free_Textures(SDL_Texture **textures, int num) {
         textures[i] = NULL;
     }
 }
-
-/* --- Weapons and items --- */
-struct WpnorItem Utilities_WpnorItem(i16 id, struct dtab *weapons_dtab, struct dtab *items_dtab) {
-    /* --- PRELIMINARIES --- */
-    SDL_assert(weapons_dtab != NULL);
-    SDL_assert(items_dtab   != NULL);
-
-    struct WpnorItem out = WpnorItem_default;
-
-    out.dtab = (Item_Archetype(id) == ITEM_ARCHETYPE_ITEM);
-
-    if (out.dtab == SOTA_DTAB_ITEMS) {
-        Item_Load(items_dtab, id);
-        out.item = DTAB_GET(items_dtab,  id);
-    } else {
-        Weapon_Load(weapons_dtab, id);
-        out.wpn = DTAB_GET(weapons_dtab, id);
-    }
-
-    return (out);
-}

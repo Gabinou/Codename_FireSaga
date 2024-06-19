@@ -128,17 +128,11 @@ void ItemDropMenu_Update(struct  ItemDropMenu  *idm, struct n9Patch *n9patch,
     SDL_Rect dstrect, srcrect;
 
     /* - Loading item - */
-    struct WpnorItem wpn_or_item = Unit_WpnorItem(idm->unit, idm->item_todrop);
+    Inventory_item *item = Unit_Item(idm->unit, idm->item_todrop);
 
     /* Item name */
     s8 name = s8_mut("");
-    if (wpn_or_item.dtab == SOTA_DTAB_WEAPONS) {
-        SDL_assert(wpn_or_item.item == NULL);
-        name = s8cat(name, wpn_or_item.wpn->item->name);
-    } else {
-        SDL_assert(wpn_or_item.wpn == NULL);
-        name = s8cat(name, wpn_or_item.item->name);
-    }
+    name = s8cat(name, global_itemNames[item.id]);
     name = s8_toUpper(name);
 
     /* --- Compute menu width dynamically --- */

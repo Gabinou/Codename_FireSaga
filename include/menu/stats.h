@@ -7,6 +7,7 @@
 #include "pixelfonts.h"
 #include "menu.h"
 #include "unit/unit.h"
+#include "unit/equipment.h"
 #include "nmath.h"
 #include "n9patch.h"
 #include "events.h"
