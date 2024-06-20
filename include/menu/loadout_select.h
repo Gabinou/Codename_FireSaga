@@ -163,10 +163,6 @@ struct LoadoutSelectMenu {
     int archetype_weakhand;
     u8 black;
     u8 white;
-
-    Inventory_item equipment0[DEFAULT_EQUIPMENT_SIZE];
-    Inventory_item equipment1[DEFAULT_EQUIPMENT_SIZE];
-    Inventory_item equipment2[DEFAULT_EQUIPMENT_SIZE];
 };
 
 extern struct LoadoutSelectMenu LoadoutSelectMenu_default;

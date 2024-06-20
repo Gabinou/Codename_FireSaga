@@ -33,9 +33,10 @@ void Names_unitNames(void) {
 #undef REGISTER_ENUM
 
 s8 Unit_Name(int id) {
-    u64 *order = DTAB_GET(global_unitOrders, id);
-    SDL_Log("%d %d '%s'", id, order, global_itemNames[*order].data);
-    getchar();
+    SDL_assert(global_itemOrders != NULL);
+    SDL_assert(global_itemNames != NULL);
+    int *order = DTAB_GET(global_itemOrders, id);
+    SDL_assert(order != NULL);
     return (global_itemNames[*order]);
 }
 

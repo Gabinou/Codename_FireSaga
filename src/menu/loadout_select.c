@@ -275,7 +275,6 @@ void LoadoutSelectMenu_Unit(struct LoadoutSelectMenu *lsm, struct Unit *unit) {
     SDL_assert(lsm  != NULL);
     SDL_assert(unit != NULL);
     lsm->unit = unit;
-    Unit_Equipment_Export(unit, lsm->equipment0);
 }
 
 
@@ -294,7 +293,7 @@ void LoadoutSelectMenu_Select_Stronghand(struct LoadoutSelectMenu *lsm, int eq) 
 void LoadoutSelectMenu_Select_Weakhand(struct LoadoutSelectMenu *lsm, int select) {
     /* Player just selected loadout for weakhand */
 
-    /* - Swap weapons according to player choice - */
+    /* - Equip weapons according to player choice - */
     i32 eq_i    = lsm->unit->eq_usable[select];
     i32 stronghand  = Unit_Hand_Strong(lsm->unit);
     i32 weakhand    = 1 - stronghand;
@@ -307,17 +306,10 @@ void LoadoutSelectMenu_Select_Weakhand(struct LoadoutSelectMenu *lsm, int select
             /* - Drop weapon in weakhand - */
             // TODO: Ask user with item drop menu
             Unit_Item_Drop(lsm->unit, weakhand);
-        } else {
-            /* - Swap weapon in weakhand - */
-            // Unit_Item_Swap(lsm->unit, weakhand, lsm->unit->num_equipment);  /* side space */
         }
 
         // Unit_Equip_TwoHanding(lsm->unit);
     } else if (eq_i != weakhand) {
-        /* - SWAP - */
-        if (eq_i != weakhand) {
-            // Unit_Item_Swap(lsm->unit, eq_i, weakhand);   /* side space */
-        }
         Unit_Equip(lsm->unit, weakhand, weakhand);           /* eq space */
     }
     Unit_Equipment_Export(lsm->unit, lsm->equipment2);
@@ -328,7 +320,7 @@ void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
     /* Player just selected loadout. */
 
     /* Note: select is in strong space: stronghandd first hand */
-    /* - Swap weapons according to player choice - */
+    /* - Equip weapons according to player choice - */
     i32 eq          = lsm->unit->eq_usable[select];
     i32 stronghand  = Unit_Hand_Strong(lsm->unit);
     i32 weakhand    = 1 - stronghand;
@@ -367,20 +359,10 @@ void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
     i32 stronghand = Unit_Hand_Strong(lsm->unit);
     i32 weakhand   = 1 - stronghand;
 
-    /*- Get the hand to revert -*/
-    i32 reverthand = (lsm->selected[weakhand] > -1) ? weakhand : stronghand;
-
     /*- Skip if no item to revert -*/
     if ((lsm->selected[weakhand] == -1) && (lsm->selected[stronghand] == -1)) {
         SDL_Log("Warning: No item to deselect");
         return;
-    }
-    lsm->selected[reverthand] = -1;
-
-    if (reverthand == weakhand) {
-        Unit_Equipment_Import(lsm->unit, lsm->equipment1);
-    } else if (reverthand == stronghand) {
-        Unit_Equipment_Import(lsm->unit, lsm->equipment0);
     }
 }
 
@@ -698,7 +680,6 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
         lsm->item_name = s8cpy(lsm->item_name, Unit_Name(item->id));
         lsm->item_name = s8_toUpper(lsm->item_name);
         i32 name_w = PixelFont_Width(lsm->pixelnours, lsm->item_name.data, lsm->item_name.num);
-        getchar();
         PixelFont_Write(lsm->pixelnours, renderer, lsm->item_name.data, lsm->item_name.num, item_x_offset,
                         item_y_offset);
     }
