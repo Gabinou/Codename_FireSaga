@@ -7,19 +7,6 @@
 #include "SDL2/SDL.h"
 
 /* --- WEAPON/ITEM --- */
-typedef struct Weapon {
-    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
-    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
-
-    u8 handedness;
-    u8 subtype;        /* ex: thrust swords     */
-    b32 isMagic   : 1;
-    b32 canAttack : 1; /* for special weapons   */
-    u16 effective;
-    struct Item         *item;
-    struct Weapon_stats  stats;
-} Weapon;
-extern struct Weapon Weapon_default;
 
 /* --- Constructors/Destructors --- */
 void Weapon_Free(struct Weapon *wpn);

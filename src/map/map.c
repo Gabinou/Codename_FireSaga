@@ -1043,11 +1043,11 @@ void Map_Bonus_Standard_Apply_Unit(struct Map *map, tnecs_entity ent, tnecs_enti
     u16 skill   = SKILL_START;
 
     /* Check if unit has a standard equipped */
-    struct Weapon *wpnL = Unit_Get_Equipped_Weapon(unit, UNIT_HAND_LEFT);
+    struct Weapon *wpnL = Unit_Equipped_Weapon(unit, UNIT_HAND_LEFT);
     if ((wpnL != NULL) && (wpnL->item->type == ITEM_TYPE_STANDARD))
         Map_Aura_Apply(map, wpnL->item->aura, entities, ent, wpnL->item->id, skill, active, instant);
 
-    struct Weapon *wpnR = Unit_Get_Equipped_Weapon(unit, UNIT_HAND_RIGHT);
+    struct Weapon *wpnR = Unit_Equipped_Weapon(unit, UNIT_HAND_RIGHT);
     if ((wpnR != NULL) && (wpnR->item->type == ITEM_TYPE_STANDARD))
         Map_Aura_Apply(map, wpnR->item->aura, entities, ent, wpnR->item->id, skill, active, instant);
 }

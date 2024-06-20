@@ -11,6 +11,14 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_mixer.h"
 
+
+/* --- FORWARD DECLARATIONS --- */
+struct Unit;
+struct Item;
+
+/* --- FUNCTIONS --- */
+typedef i8(* use_function_t)(struct Item *, struct Unit *, struct Unit *);
+
 struct Cursor {
     i16 frames;
     i16 speed;
@@ -974,5 +982,49 @@ struct Game {
 };
 extern struct Game Game_default;
 
+typedef struct Item {
+    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
+    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
+
+    u8 target;  /* units by which item is usable. */
+    struct Range range;
+    struct Aura aura; /* Aura with range [0, 0] to for wielder-only bonus */
+
+    struct Item_stats stats;
+    u16  id;           /* 0 is NULL */
+    u64  type;         /* and not type_exp */
+    u16 *users;        /* item only usable by users.   NULL -> everyone */
+    u16 *classes;      /* item only usable by classes. NULL -> everyone */
+
+    /* -- Item Effects -- */
+    u64 passive;
+
+    /* Use function is used for Staves effects too. */
+    use_function_t active; /* NULL if not usable */
+
+    // TODO: Change to s8
+    s8 name;
+    char description[DEFAULT_BUFFER_SIZE * 2];
+
+    b32 canSell     : 1;
+    b32 write_stats : 1;
+    b32 canUse      : 1;
+    b32 canRepair   : 1; /* TODO: Move to weapon? */
+} Item;
+extern struct Item Item_default;
+
+typedef struct Weapon {
+    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
+    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
+
+    u8 handedness;
+    u8 subtype;        /* ex: thrust swords     */
+    b32 isMagic   : 1;
+    b32 canAttack : 1; /* for special weapons   */
+    u16 effective;
+    Item         *item;
+    struct Weapon_stats  stats;
+} Weapon;
+extern struct Weapon Weapon_default;
 
 #endif /* STRUCTS_H */

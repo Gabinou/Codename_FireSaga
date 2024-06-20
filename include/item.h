@@ -4,7 +4,6 @@
 #include "enums.h"
 #include "cJSON.h"
 #include "utilities.h"
-#include "structs.h"
 #include "unit/unit.h"
 // #define STB_SPRINTF_IMPLEMENTATION
 #include "stb_sprintf.h"
@@ -30,39 +29,7 @@ enum ITEM_TARGET {
     ITEM_TARGET_NUM,
 };
 
-/* --- DEFINITIONS --- */
-typedef i8(* use_function_t)(struct Item *, struct Unit *, struct Unit *);
 
-typedef struct Item {
-    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
-    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
-
-    u8 target;  /* units by which item is usable. */
-    struct Range range;
-    struct Aura aura; /* Aura with range [0, 0] to for wielder-only bonus */
-
-    struct Item_stats stats;
-    u16  id;           /* 0 is NULL */
-    u64  type;         /* and not type_exp */
-    u16 *users;        /* item only usable by users.   NULL -> everyone */
-    u16 *classes;      /* item only usable by classes. NULL -> everyone */
-
-    /* -- Item Effects -- */
-    u64 passive;
-
-    /* Use function is used for Staves effects too. */
-    use_function_t active; /* NULL if not usable */
-
-    // TODO: Change to s8
-    s8 name;
-    char description[DEFAULT_BUFFER_SIZE * 2];
-
-    b32 canSell     : 1;
-    b32 write_stats : 1;
-    b32 canUse      : 1;
-    b32 canRepair   : 1; /* TODO: Move to weapon? */
-} Item;
-extern struct Item Item_default;
 
 /* --- Inventory Item --- */
 void Inventory_item_Swap(struct Inventory_item *items, u8 i1, u8 i2);
