@@ -30,16 +30,18 @@ void Unit_Item_Swap(  Unit *u, i16 ind1, i16 ind2);
 /* -- Dropping -- */
 Inventory_item Unit_Item_Drop(Unit *u, i16 ind1);
 void Unit_Equipment_Drop(Unit *u);
+/* TODO: Remove. No swapping -> no need to export equipment*/
 void Unit_Equipment_Import(Unit *u, Inventory_item *equipment);
 void Unit_Equipment_Export(Unit *u, Inventory_item *equipment);
 
+void Unit_Equipped_Import(Unit *u, int *equipped);
+void Unit_Equipped_Export(Unit *u, int *equipped);
+
 /* --- Equipping --- */
-int Unit_Equipped(  Unit *unit, b32 hand);
-b32 Unit_isEquipped(Unit *unit, b32 hand);
-b32            Unit_Equip(           Unit *u, b32 h, int i);
-void           Unit_Unequip(         Unit *u, b32 h);
-b32            Unit_Equip_inHand(    Unit *u, b32 h);
-Inventory_item Unit_Equip_TwoHanding(Unit *u);
+int     Unit_Equipped(  Unit *unit, b32 hand);
+b32     Unit_isEquipped(Unit *unit, b32 hand);
+void    Unit_Equip(  Unit *u, b32 h, int i);
+void    Unit_Unequip(Unit *u, b32 h);
 
 /* -- Can Equip -- */
 b32 Unit_canEquip(       Unit *u, i16 id);

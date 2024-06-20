@@ -129,6 +129,16 @@ void Unit_Equipment_Drop(struct Unit *unit) {
     }
 }
 
+void Unit_Equipped_Import(Unit *unit, int *equipped) {
+    size_t bytesize = UNIT_HANDS_NUM * sizeof(*equipped);
+    memcpy(unit->_equipped, equipped, bytesize);
+}
+
+void Unit_Equipped_Export(Unit *unit, int *equipped) {
+    size_t bytesize = UNIT_HANDS_NUM * sizeof(*equipped);
+    memcpy(equipped, unit->_equipped, bytesize);
+}
+
 void Unit_Equipment_Import(struct Unit *unit, struct Inventory_item *equipment) {
     Equipment_Copy(unit->_equipment, equipment, DEFAULT_EQUIPMENT_SIZE);
 }
@@ -231,58 +241,24 @@ void Unit_Check_Equipped(struct Unit *unit) {
 
 }
 
-b32 Unit_Equip(struct Unit *unit, b32 hand, int i) {
-    Unit_Item_Swap(unit, hand, i);
-    return (Unit_Equip_inHand(unit, hand));
-}
+void Unit_Equip(struct Unit *unit, b32 hand, int i) {
+    SDL_assert(unit);
+    SDL_assert(i >= 0);
+    SDL_assert(i < DEFAULT_EQUIPMENT_SIZE);
 
-b32 Unit_Equip_inHand(struct Unit *unit, b32 hand) {
-    SDL_Log("hand %d, equipment id %ld", hand, unit->_equipment[hand].id);
-    SDL_assert(unit != NULL);
-
-    /* -- Error if try to equip NULL item -- */
-    if (unit->_equipment[hand].id <= ITEM_NULL) {
-        SDL_Log("No item in hand. Cannot equip.");
-        return (unit->_equipped[hand] = -1);
-    }
-    if (!Weapon_ID_isValid(unit->_equipment[hand].id)) {
-        SDL_Log("Invalid weapon. Cannot equip.");
-        return (unit->_equipped[hand] = -1);
-    }
-
-    Weapon_Load(unit->weapons_dtab, unit->_equipment[hand].id);
-
-    /* -- Error checking -- */
-    if (!Unit_canEquip(unit, unit->_equipment[hand].id)) {
-        SDL_Log("Cannot equip item.");
-        return (unit->_equipped[hand] = -1);
-    }
-
-    if (!unit->hands[hand]) {
-        SDL_Log("No hand to equip with.");
-        return (unit->_equipped[hand] = -1);
-    }
-
-    unit->_equipped[hand] = hand;
-    Unit_isdualWielding(unit);
-
-    return (unit->_equipped[hand]);
+    unit->_equipped[hand] = i;
 }
 
 void Unit_Unequip(struct Unit *unit, b32 hand) {
     SDL_assert(unit);
-
     /* -- Unequip -- */
-    unit->_equipped[hand] = -1;
-
+    unit->_equipped[hand]   = -1;
+    
     /* -- If twohanding, not anymore! -- */
-    if (unit->isTwoHanding) {
-        unit->_equipment[hand] = Inventory_item_default;
-        unit->isTwoHanding    = false;
-    }
-    /* -- If dual wielding, not anymore! -- */
-    unit->isDualWielding = false;
+    unit->isTwoHanding      = false;
 
+    /* -- If dual wielding, not anymore! -- */
+    unit->isDualWielding    = false;
 }
 
 /* -- Can Equip -- */
@@ -477,10 +453,10 @@ void Unit_Equipped_Shields_Deplete(struct Unit *unit) {
 b32 Unit_isEquipped(Unit *unit, b32 hand) {
     b32 min_bound = (unit->_equipped[hand] >= 0);
     b32 max_bound = (unit->_equipped[hand] < DEFAULT_EQUIPMENT_SIZE);
-    return (min_bound, max_bound);
+    return (min_bound && max_bound);
 }
 
-int Unit_Equipped(  Unit *unit, b32 hand) {
+int Unit_Equipped(Unit *unit, b32 hand) {
     /* Return order of equipped item in unit _equipment*/
     return (unit->_equipped[hand]);
 }

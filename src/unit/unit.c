@@ -744,14 +744,16 @@ struct Computed_Stats Unit_computedStats_wLoadout(struct Unit *unit, int lh, int
     // TODO: what if unit is already twohanding?
 
     /* Save starting equipment */
-    struct Inventory_item start_equipment[DEFAULT_EQUIPMENT_SIZE];
+    // struct Inventory_item start_equipment[DEFAULT_EQUIPMENT_SIZE];
+    int equipped_start[UNIT_HANDS_NUM];
     Unit_Equipment_Export(unit, start_equipment);
-
-    Unit_Loadout_Swap(unit, lh, rh);
+    
+    Unit_Equip(unit, UNIT_HAND_LEFT,    lh);
+    Unit_Equip(unit, UNIT_HAND_RIGHT,   rh);
     Unit_computedStats(unit, dist);
 
     /* Restore starting equipment */
-    Unit_Equipment_Import(unit, start_equipment);
+    // Unit_Equipment_Import(unit, start_equipment);
 
     return (unit->computed_stats);
 }
