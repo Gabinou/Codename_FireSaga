@@ -679,7 +679,6 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
         struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, item->id);
         SDL_assert(weapon != NULL);
 
-
         /* - Uses left - */
         i32 item_dura_x_offset = LSM1_DURA_X_OFFSET;
         i32 item_dura_y_offset = LSM1_DURA_Y_OFFSET + i * (ITEM_ICON_H + 2) +
@@ -696,10 +695,10 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
                         item_dura_x_offset,  item_dura_y_offset);
 
         /* - Weapon name - */
-        lsm->item_name = s8cpy(lsm->item_name, global_itemNames[item->id]);
+        lsm->item_name = s8cpy(lsm->item_name, Unit_Name(item->id));
         lsm->item_name = s8_toUpper(lsm->item_name);
         i32 name_w = PixelFont_Width(lsm->pixelnours, lsm->item_name.data, lsm->item_name.num);
-
+        getchar();
         PixelFont_Write(lsm->pixelnours, renderer, lsm->item_name.data, lsm->item_name.num, item_x_offset,
                         item_y_offset);
     }

@@ -80,6 +80,7 @@ void Names_Print_All(char *filename);
 
 u64 sota_hash_djb2(s8 str);
 int Unit_Name2Order(s8 name);
+s8 Unit_Name(int id);
 
 #endif /* NAMES_H */
 

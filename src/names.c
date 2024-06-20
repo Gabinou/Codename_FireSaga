@@ -32,6 +32,13 @@ void Names_unitNames(void) {
 }
 #undef REGISTER_ENUM
 
+s8 Unit_Name(int id) {
+    u64 *order = DTAB_GET(global_unitOrders, id);
+    SDL_Log("%d %d '%s'", id, order, global_itemNames[*order].data);
+    getchar();
+    return (global_itemNames[*order]);
+}
+
 int Unit_Name2Order(s8 name) {
     int order = -1;
     u64 hash = sota_hash_djb2(name);
