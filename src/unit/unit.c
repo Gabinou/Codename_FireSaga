@@ -583,9 +583,10 @@ i32 *Unit_Shield_Protection(struct Unit *unit, b32 hand) {
     if (!Unit_isEquipped(unit, hand))
         return (NULL);
 
-    SDL_assert(Weapon_ID_isValid(unit->_equipped[hand]));
-    Weapon_Load(unit->weapons_dtab, unit->_equipped[hand]);
-    struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, unit->_equipment[hand].id);
+    i16 id = Unit_InvItem(unit, unit->_equipped[hand])->id;
+    SDL_assert(Weapon_ID_isValid(id));
+    Weapon_Load(unit->weapons_dtab, id);
+    struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);
 
     /* should be equivalent to using archetype */
     if (!flagsum_isIn(weapon->item->type, ITEM_TYPE_SHIELD))

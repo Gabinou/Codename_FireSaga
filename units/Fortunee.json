@@ -1,0 +1,106 @@
+
+    "Unit": {
+        "id":   1004,
+        "Name": "Fortunee",
+        "Sex":  false,
+        "BaseExp":  0,
+        "Exp":  0,
+        "CurrentHP":    24,
+        "Class":    "Battlemage",
+        "Class Index":  21,
+        "Stats":    {
+            "hp":   35,
+            "str":  18,
+            "mag":  3,
+            "agi":  15,
+            "dex":  9,
+            "fth":  0,
+            "luck": 35,
+            "def":  16,
+            "res":  8,
+            "con":  13,
+            "move": 6,
+            "prof": 14
+        },
+        "Bases":    {
+            "hp":   15,
+            "str":  4,
+            "mag":  5,
+            "agi":  7,
+            "dex":  6,
+            "fth":  5,
+            "luck": 35,
+            "def":  4,
+            "res":  6,
+            "con":  5,
+            "move": 5,
+            "prof": 6
+        },
+        "Caps": {
+            "hp":   60,
+            "str":  35,
+            "mag":  14,
+            "agi":  28,
+            "dex":  40,
+            "luck": 40,
+            "def":  35,
+            "res":  25,
+            "con":  20,
+            "move": 7,
+            "prof": 25
+        },
+        "Growths":  {
+            "hp":   80,
+            "str":  70,
+            "mag":  10,
+            "agi":  30,
+            "dex":  30,
+            "luck": 40,
+            "def":  40,
+            "res":  15,
+            "con":  20,
+            "move": 0,
+            "prof": 20
+        },
+        "Level-ups":    {
+        },
+        "Items":    {
+            "Item": {
+                "name": "Silverlight Spear",
+                "Infused":  -1,
+                "id":   805,
+                "used": 0
+            },
+            "Item": {
+                "name": "Empty",
+                "Infused":  -1,
+                "id":   -1,
+                "used": 0
+            },
+            "Item": {
+                "name": "Empty",
+                "Infused":  -1,
+                "id":   -1,
+                "used": 0
+            },
+            "Item": {
+                "name": "Empty",
+                "Infused":  -1,
+                "id":   -1,
+                "used": 0
+            },
+            "Item": {
+                "name": "Empty",
+                "Infused":  -1,
+                "id":   -1,
+                "used": 0
+            },
+            "Item": {
+                "name": "Empty",
+                "Infused":  -1,
+                "id":   -1,
+                "used": 0
+            }
+        }
+    }
+}

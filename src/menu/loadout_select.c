@@ -286,26 +286,9 @@ void LoadoutSelectMenu_Select_Reset(struct LoadoutSelectMenu *lsm) {
 
 }
 
-void LoadoutSelectMenu_Select_Stronghand(struct LoadoutSelectMenu *lsm, int select) {
+void LoadoutSelectMenu_Select_Stronghand(struct LoadoutSelectMenu *lsm, int eq) {
     /* Player just selected loadout for stronghand */
 
-    /* - Swap weapons according to player choice - */
-    i32 eq_i    = lsm->unit->eq_usable[select];
-    i32 stronghand  = Unit_Hand_Strong(lsm->unit);
-    lsm->selected[stronghand] = eq_i;
-
-    /* - SWAP - */
-    SDL_Log("side_i %d %d %d %d", select, eq_i, stronghand);
-    // getchar();
-    if (eq_i != stronghand) {
-        Unit_Item_Swap(lsm->unit, eq_i, stronghand);
-    }
-    Unit_Equipment_Export(lsm->unit, lsm->equipment1);
-    Unit_Equip(lsm->unit, stronghand, stronghand);
-
-    /* Unequip weapon if it was in other hand */
-    if ((select == UNIT_HAND_LEFT) || (select == UNIT_HAND_RIGHT))
-        Unit_Unequip(lsm->unit, UNIT_HAND_RIGHT - stronghand);
 }
 
 void LoadoutSelectMenu_Select_Weakhand(struct LoadoutSelectMenu *lsm, int select) {
@@ -343,11 +326,10 @@ void LoadoutSelectMenu_Select_Weakhand(struct LoadoutSelectMenu *lsm, int select
 /* - Select Weapon/Staff - */
 void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
     /* Player just selected loadout. */
-    // TODO: return i32 that says if selection remains?
 
     /* Note: select is in strong space: stronghandd first hand */
     /* - Swap weapons according to player choice - */
-    i32 side_i      = lsm->unit->eq_usable[select];
+    i32 eq          = lsm->unit->eq_usable[select];
     i32 stronghand  = Unit_Hand_Strong(lsm->unit);
     i32 weakhand    = 1 - stronghand;
 
@@ -357,9 +339,9 @@ void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
     }
 
     if (lsm->selected[stronghand] >= 0) {
-        LoadoutSelectMenu_Select_Weakhand(lsm, select);
+        Unit_Equip(lsm->unit, weakhand, eq);
     } else if (lsm->selected[stronghand] < 0) {
-        LoadoutSelectMenu_Select_Stronghand(lsm, select);
+        Unit_Equip(lsm->unit, stronghand, eq);
     } else {
         /* - Both Hands already selected - */
         SDL_Log("Both weapons already selected, but select sent to LoadoutSelectMenu");
@@ -655,44 +637,18 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
     srcrect.w = ITEM_ICON_W;
     srcrect.h = ITEM_ICON_H;
 
-    // 1- no hand selected
-    //      draw eq_usable + stronghand icon
-    // 2- stronghand selected
-    //      draw eq_usable + item in stronghand + weakhand icon
-    //      INCLUDING weapon in stronghand
-    //      ONLY IF can two-hand?
-    //
-    SDL_Log("lsm->unit->num_usable %d", lsm->unit->num_usable);
-
     for (i32 i = 0; i < lsm->unit->num_usable; i++) {
         /* - Icons - */
         // TODO: weapon icons images.
         i32 side_i   = lsm->unit->eq_usable[i];
 
-        /* Icons, text drawn on line strong_i  */
-        SDL_Log("i, side_i, strong_i %d %d %d", i, side_i);
+        item = Unit_InvItem(unit, side_i);
 
-        item         = Unit_InvItem(unit, side_i);
+        /* Icons, text drawn on line strong_i  */
 
         /* -- Weapon icon -- */
         srcrect.x = LSM1_X_OFFSET;
         srcrect.y = LSM1_Y_OFFSET + i * (LSM_ICON_H + 2) + (header_drawn * LSM_ROW_HEIGHT);
-
-        if (side_i == UNIT_HAND_LEFT) {
-            if (stronghand == UNIT_HAND_LEFT) {
-                srcrect.x = LSM1_X_OFFSET + LSM_HANDS_TILESIZE - 3;
-            } else if (stronghand == UNIT_HAND_RIGHT) {
-                srcrect.x = lsm->menu_w - LSM_HANDS_TILESIZE - LSM_ICON_W - 3;
-            }
-        }
-
-        if (side_i == UNIT_HAND_RIGHT) {
-            if (weakhand == UNIT_HAND_LEFT) {
-                srcrect.x = LSM1_X_OFFSET + LSM_HANDS_TILESIZE - 3;
-            } else if (weakhand == UNIT_HAND_RIGHT) {
-                srcrect.x = lsm->menu_w - LSM_HANDS_TILESIZE - LSM_ICON_W - 3;
-            }
-        }
 
         SDL_RenderFillRect(renderer, &srcrect);
 
@@ -718,33 +674,16 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
             PixelFont_Write(lsm->pixelnours, renderer, "-", 1, item_x_offset, item_y_offset);
             continue;
         }
-        // TODO: can select items in loadout
 
         SDL_assert(unit->weapons_dtab != NULL);
         struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, item->id);
         SDL_assert(weapon != NULL);
 
 
-        /* - Write uses left - */
+        /* - Uses left - */
         i32 item_dura_x_offset = LSM1_DURA_X_OFFSET;
         i32 item_dura_y_offset = LSM1_DURA_Y_OFFSET + i * (ITEM_ICON_H + 2) +
                                  (header_drawn * LSM_ROW_HEIGHT);
-
-        if (side_i == UNIT_HAND_LEFT) {
-            if (stronghand == UNIT_HAND_LEFT) {
-                item_dura_x_offset = srcrect.x + LSM_HANDS_TILESIZE + 3;
-            } else if (stronghand == UNIT_HAND_RIGHT) {
-                item_dura_x_offset = srcrect.x - LSM_ICON_W / 2 - 1;
-            }
-        }
-
-        if (side_i == UNIT_HAND_RIGHT) {
-            if (weakhand == UNIT_HAND_LEFT) {
-                item_dura_x_offset = srcrect.x + LSM_HANDS_TILESIZE + 3;
-            } else if (weakhand == UNIT_HAND_RIGHT) {
-                item_dura_x_offset = srcrect.x - LSM_ICON_W / 2 - 1;
-            }
-        }
 
         SDL_assert((side_i >= 0) && (side_i <= DEFAULT_EQUIPMENT_SIZE));
         i32 uses_left = weapon->item->stats.uses - item->used;
@@ -756,35 +695,18 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
         PixelFont_Write(lsm->pixelnours_big, renderer, numbuff, strlen(numbuff),
                         item_dura_x_offset,  item_dura_y_offset);
 
-        /* - Write weapon name - */
-        lsm->item_name = s8cpy(lsm->item_name, weapon->item->name);
+        /* - Weapon name - */
+        lsm->item_name = s8cpy(lsm->item_name, global_itemNames[item->id]);
         lsm->item_name = s8_toUpper(lsm->item_name);
         i32 name_w = PixelFont_Width(lsm->pixelnours, lsm->item_name.data, lsm->item_name.num);
-
-        if (side_i == UNIT_HAND_LEFT) {
-            if (stronghand == UNIT_HAND_LEFT) {
-                item_x_offset = item_dura_x_offset + dura_w / 2 + 8;
-            } else if (stronghand == UNIT_HAND_RIGHT) {
-                item_x_offset = item_dura_x_offset - name_w - 4;
-            }
-        }
-
-        if (side_i == UNIT_HAND_RIGHT) {
-            if (weakhand == UNIT_HAND_LEFT) {
-                item_x_offset = item_dura_x_offset + dura_w / 2 + 8;
-            } else if (weakhand == UNIT_HAND_RIGHT) {
-                item_x_offset = item_dura_x_offset - name_w - 4;
-            }
-        }
-        SDL_Log("%s", lsm->item_name.data);
 
         PixelFont_Write(lsm->pixelnours, renderer, lsm->item_name.data, lsm->item_name.num, item_x_offset,
                         item_y_offset);
     }
-
 }
 
-void LoadoutSelectMenu_Texture_Create(struct LoadoutSelectMenu  *lsm, struct n9Patch *n9patch,
+void LoadoutSelectMenu_Texture_Create(struct LoadoutSelectMenu  *lsm,
+                                      struct n9Patch *n9patch,
                                       SDL_Renderer *renderer) {
     /* -- Compute menu size -- */
     LoadoutSelectMenu_Size(lsm, n9patch);
