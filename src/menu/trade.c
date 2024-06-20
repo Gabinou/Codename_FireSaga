@@ -123,10 +123,10 @@ void TradeMenu_Trade(struct TradeMenu *tm) {
     // would have to go reequip manually before, which sucks.
     if ((tm->selected_item == Unit_Hand_Strong(giver))
         || (tm->selected_item == Unit_Hand_Weak(giver))) {
-        Unit_Equip_inHand(giver, tm->selected_item);
+        Unit_Equip(giver, tm->selected_item, tm->selected_item);
     }
     if ((tm->target_item == Unit_Hand_Strong(taker)) || (tm->target_item == Unit_Hand_Weak(taker))) {
-        Unit_Equip_inHand(taker, tm->target_item);
+        Unit_Equip(taker, tm->target_item, tm->target_item);
     }
 
     /* Update trade menu */

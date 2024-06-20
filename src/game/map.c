@@ -243,9 +243,9 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         }
 
         if (Unit_canEquip(unit, unit->_equipment[UNIT_HAND_RIGHT].id))
-            Unit_Equip_inHand(unit, UNIT_HAND_RIGHT);
+            Unit_Equip(unit, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
         if (Unit_canEquip(unit, unit->_equipment[UNIT_HAND_LEFT].id))
-            Unit_Equip_inHand(unit, UNIT_HAND_LEFT);
+            Unit_Equip(unit, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
 
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         SDL_assert(unit->status_queue != NULL);

@@ -38,7 +38,7 @@ struct Reinforcement;
 
 /* -- Unit second-order info -- */
 extern i32 army_alignment[ARMY_END];
-extern b32 army_isPC[ARMY_END];
+extern b32      army_isPC[ARMY_END];
 
 /* --- UNIT STATS --- */
 

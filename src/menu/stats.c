@@ -1161,7 +1161,7 @@ void StatsMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *renderer) {
     b32 can_equip = Unit_canEquip_inHand(stats_menu->unit, UNIT_HAND_LEFT);
     if (can_equip) {
         stats_menu->update = true;
-        Unit_Equip_inHand(stats_menu->unit, UNIT_HAND_LEFT);
+        Unit_Equip(stats_menu->unit, UNIT_HAND_LEFT, UNIT_HAND_LEFT);
     }
 #endif
     /* TODO: set position of statsmenu */

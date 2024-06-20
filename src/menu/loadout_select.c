@@ -301,7 +301,7 @@ void LoadoutSelectMenu_Select_Stronghand(struct LoadoutSelectMenu *lsm, int sele
         Unit_Item_Swap(lsm->unit, eq_i, stronghand);
     }
     Unit_Equipment_Export(lsm->unit, lsm->equipment1);
-    Unit_Equip_inHand(lsm->unit, stronghand);
+    Unit_Equip(lsm->unit, stronghand, stronghand);
 
     /* Unequip weapon if it was in other hand */
     if ((select == UNIT_HAND_LEFT) || (select == UNIT_HAND_RIGHT))
@@ -326,16 +326,16 @@ void LoadoutSelectMenu_Select_Weakhand(struct LoadoutSelectMenu *lsm, int select
             Unit_Item_Drop(lsm->unit, weakhand);
         } else {
             /* - Swap weapon in weakhand - */
-            Unit_Item_Swap(lsm->unit, weakhand, lsm->unit->num_equipment);  /* side space */
+            // Unit_Item_Swap(lsm->unit, weakhand, lsm->unit->num_equipment);  /* side space */
         }
 
-        Unit_Equip_TwoHanding(lsm->unit);
+        // Unit_Equip_TwoHanding(lsm->unit);
     } else if (eq_i != weakhand) {
         /* - SWAP - */
         if (eq_i != weakhand) {
             // Unit_Item_Swap(lsm->unit, eq_i, weakhand);   /* side space */
         }
-        Unit_Equip_inHand(lsm->unit, weakhand);                 /* eq space */
+        Unit_Equip(lsm->unit, weakhand, weakhand);           /* eq space */
     }
     Unit_Equipment_Export(lsm->unit, lsm->equipment2);
 }

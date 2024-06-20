@@ -625,7 +625,7 @@ typedef struct Unit {
     /* Defendant position (self is Aggressor.) */
     Point dft_pos; /* Used to compute stats in case of dual wielding */
 
-    b32 hands   [UNIT_HANDS_NUM];      /* Does unit have hands?             */
+    b32     hands[UNIT_HANDS_NUM];     /* Does unit have hands?             */
     int _equipped[UNIT_HANDS_NUM];     /* index of equipped item in hand    */
 
     s8 *skill_names;

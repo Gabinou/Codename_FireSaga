@@ -253,7 +253,7 @@ void Unit_Unequip(struct Unit *unit, b32 hand) {
     SDL_assert(unit);
     /* -- Unequip -- */
     unit->_equipped[hand]   = -1;
-    
+
     /* -- If twohanding, not anymore! -- */
     unit->isTwoHanding      = false;
 

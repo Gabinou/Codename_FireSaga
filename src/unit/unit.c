@@ -741,19 +741,16 @@ void Unit_Equipment_Print( struct Unit *unit) {
 
 
 struct Computed_Stats Unit_computedStats_wLoadout(struct Unit *unit, int lh, int rh, int dist) {
-    // TODO: what if unit is already twohanding?
-
     /* Save starting equipment */
-    // struct Inventory_item start_equipment[DEFAULT_EQUIPMENT_SIZE];
-    int equipped_start[UNIT_HANDS_NUM];
-    Unit_Equipment_Export(unit, start_equipment);
-    
+    int start_equipped[UNIT_HANDS_NUM];
+    Unit_Equipped_Export(unit, start_equipped);
+
     Unit_Equip(unit, UNIT_HAND_LEFT,    lh);
     Unit_Equip(unit, UNIT_HAND_RIGHT,   rh);
     Unit_computedStats(unit, dist);
 
     /* Restore starting equipment */
-    // Unit_Equipment_Import(unit, start_equipment);
+    Unit_Equipped_Import(unit, start_equipped);
 
     return (unit->computed_stats);
 }
@@ -1137,12 +1134,12 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     /* -- Equip -- */
     if (unit->_equipment[UNIT_HAND_RIGHT].id != ITEM_NULL) {
         if (Weapon_ID_isValid(unit->_equipment[UNIT_HAND_RIGHT].id)) {
-            Unit_Equip_inHand(unit, UNIT_HAND_RIGHT);
+            Unit_Equip(unit, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
         }
     }
     if (unit->_equipment[UNIT_HAND_LEFT].id != ITEM_NULL) {
         if (Weapon_ID_isValid(unit->_equipment[UNIT_HAND_LEFT].id)) {
-            Unit_Equip_inHand(unit, UNIT_HAND_LEFT);
+            Unit_Equip(unit, UNIT_HAND_LEFT, UNIT_HAND_LEFT);
         }
     }
 }

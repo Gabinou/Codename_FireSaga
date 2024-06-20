@@ -160,12 +160,12 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
 
     struct Inventory_item *item = Unit_Item(unit, UNIT_HAND_LEFT);
     if (Weapon_ID_isValid(item->id))
-        Unit_Equip_inHand(unit, UNIT_HAND_LEFT);
+        Unit_Equip(unit, UNIT_HAND_LEFT, UNIT_HAND_LEFT);
 
     item = Unit_Item(unit, UNIT_HAND_RIGHT);
     SDL_Log("%d %d", item->id, Weapon_ID_isValid(item->id));
     if (Weapon_ID_isValid(item->id))
-        Unit_Equip_inHand(unit, UNIT_HAND_RIGHT);
+        Unit_Equip(unit, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
 
     // SDL_Log("-- loading slider --");
     // struct Slider * slider = TNECS_GET_COMPONENT(sota->world, unit_ent, Slider);

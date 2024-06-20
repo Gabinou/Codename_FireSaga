@@ -623,10 +623,11 @@ void PopUp_Loadout_Stats_Previous(struct PopUp_Loadout_Stats *pls) {
 
 void PopUp_Loadout_Stats_New(struct PopUp_Loadout_Stats *pls) {
     PopUp_Loadout_Stats_ItemTypes(pls);
-    pls->new_cs     = Unit_computedStats_wLoadout(pls->unit, pls->item_left, pls->item_right,
+    pls->new_cs     = Unit_computedStats_wLoadout(pls->unit,
+                                                  pls->item_left, pls->item_right,
                                                   pls->distance);
     pls->update     = true;
-    pls->twoHanding = Unit_Loadout_twoHanding(pls->item_left, pls->item_right);
+    pls->twoHanding = Unit_istwoHanding(pls->unit);
 }
 
 /* --- Select --- */

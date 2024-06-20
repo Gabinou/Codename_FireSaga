@@ -125,14 +125,15 @@ i32 *Map_Healtomap_Compute_wLoadout(struct Map *map, tnecs_world *world, tnecs_e
     struct Unit     *unit = TNECS_GET_COMPONENT(world, ent, Unit);
 
     /* Save starting equipment */
-    struct Inventory_item start_equipment[DEFAULT_EQUIPMENT_SIZE];
-    Unit_Equipment_Export(unit, start_equipment);
+    int start_equipped[UNIT_HANDS_NUM];
+    Unit_Equipped_Export(unit, start_equipped);
 
-    Unit_Loadout_Swap(unit, lh, rh);
+    Unit_Equip(unit, UNIT_HAND_LEFT,    lh);
+    Unit_Equip(unit, UNIT_HAND_RIGHT,   rh);
     i32 *out = Map_Healtomap_Compute(map, world, ent, move, true);
 
     /* Restore starting equipment */
-    Unit_Equipment_Import(unit, start_equipment);
+    Unit_Equipped_Import(unit, start_equipped);
 
     return (out);
 }
@@ -173,14 +174,15 @@ i32 *Map_Attacktomap_Compute_wLoadout(struct Map *map, tnecs_world *world, tnecs
     struct Unit     *unit = TNECS_GET_COMPONENT(world, ent, Unit);
 
     /* Save starting equipment */
-    struct Inventory_item start_equipment[DEFAULT_EQUIPMENT_SIZE];
-    Unit_Equipment_Export(unit, start_equipment);
+    int start_equipped[UNIT_HANDS_NUM];
+    Unit_Equipped_Export(unit, start_equipped);
 
-    Unit_Loadout_Swap(unit, lh, rh);
+    Unit_Equip(unit, UNIT_HAND_LEFT,    lh);
+    Unit_Equip(unit, UNIT_HAND_RIGHT,   rh);
     i32 *out = Map_Attacktomap_Compute(map, world, ent, move, true);
 
     /* Restore starting equipment */
-    Unit_Equipment_Import(unit, start_equipment);
+    Unit_Equipped_Import(unit, start_equipped);
 
     return (out);
 }
