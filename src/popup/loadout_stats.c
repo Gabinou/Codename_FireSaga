@@ -415,7 +415,7 @@ static void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls,
         SDL_RenderCopy(renderer, pls->texture_equip, &srcrect, &dstrect);
     } else {
         /* Left hand */
-        struct Inventory_item *item = Unit_Item(pls->unit, pls->item_left);
+        struct Inventory_item *item = Unit_InvItem(pls->unit, pls->item_left);
         if (Unit_canEquip(pls->unit, item->id) || pls->l_equip_override) {
             dstrect.x = PLS_ICON_EQUIPL_X;
             dstrect.y = PLS_ICON_EQUIPL_Y + pls->ly_offset;
@@ -423,7 +423,7 @@ static void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls,
         }
 
         /* Right hand */
-        item = Unit_Item(pls->unit, pls->item_right);
+        item = Unit_InvItem(pls->unit, pls->item_right);
         if (Unit_canEquip(pls->unit, item->id) || pls->r_equip_override) {
             dstrect.x = PLS_ICON_EQUIPR_X;
             dstrect.y = PLS_ICON_EQUIPR_Y + pls->ry_offset;
@@ -443,7 +443,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
         if (pls->unit->weapons_dtab == NULL)
             break;
 
-        struct Inventory_item *item = Unit_Item(pls->unit, pls->item_left);
+        struct Inventory_item *item = Unit_InvItem(pls->unit, pls->item_left);
         int x = PLS_NAMEL_X;
         int y = PLS_NAMEL_Y + pls->ly_offset;
         int width;
@@ -478,7 +478,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
         if (pls->unit->weapons_dtab == NULL)
             break;
 
-        struct Inventory_item *item = Unit_Item(pls->unit, pls->item_right);
+        struct Inventory_item *item = Unit_InvItem(pls->unit, pls->item_right);
         int x = PLS_NAMER_X;
         int y = PLS_NAMER_Y + pls->ry_offset;
         int width;
@@ -578,7 +578,7 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
     SDL_assert(pls->unit->weapons_dtab != NULL);
 
     /* Left hand item type */
-    struct Inventory_item *item = Unit_Item(pls->unit, pls->item_left);
+    struct Inventory_item *item = Unit_InvItem(pls->unit, pls->item_left);
     if (Weapon_ID_isValid(item->id)) {
         Weapon_Load(pls->unit->weapons_dtab, item->id);
         pls->type_left = Weapon_TypeExp(DTAB_GET(pls->unit->weapons_dtab, item->id));
@@ -587,7 +587,7 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
     }
 
     /* Right hand item type */
-    item = Unit_Item(pls->unit, pls->item_right);
+    item = Unit_InvItem(pls->unit, pls->item_right);
     if (Weapon_ID_isValid(item->id)) {
         Weapon_Load(pls->unit->weapons_dtab, item->id);
         pls->type_right = Weapon_TypeExp(DTAB_GET(pls->unit->weapons_dtab, item->id));

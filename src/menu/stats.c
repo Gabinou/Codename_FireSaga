@@ -967,7 +967,7 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
     item_dura_y_offset = ITEM1_DURA_Y_OFFSET + i * (ITEM_ICON_H + ITEM_ICON_SPACE);
 
     /* Writing - if no item, then next*/
-    struct Inventory_item *invitem = Unit_Item(unit, i);
+    struct Inventory_item *invitem = Unit_InvItem(unit, i);
 
     if (invitem->id <= ITEM_NULL) {
         int x = ITEM1_NAME_X_OFFSET, y = item_y_offset;

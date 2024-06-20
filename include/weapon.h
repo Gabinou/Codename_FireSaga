@@ -7,7 +7,7 @@
 #include "SDL2/SDL.h"
 
 /* --- WEAPON/ITEM --- */
-struct  Weapon {
+typedef struct Weapon {
     s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
     u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
 
@@ -18,9 +18,7 @@ struct  Weapon {
     u16 effective;
     struct Item         *item;
     struct Weapon_stats  stats;
-};
-
-typedef struct Weapon Weapon;
+} Weapon;
 extern struct Weapon Weapon_default;
 
 /* --- Constructors/Destructors --- */

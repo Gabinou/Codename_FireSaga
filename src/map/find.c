@@ -109,12 +109,12 @@ tnecs_entity *Map_Find_Patients(struct Map *map, struct dtab *weapons_dtab, i32 
     /* TODO: full health people arent patients. */
 
     /* -- Getting staff -- */
-    struct Inventory_item *item = Unit_Item(healer, Unit_Hand_Strong(healer));
+    struct Inventory_item *item = Unit_InvItem(healer, Unit_Hand_Strong(healer));
     SDL_assert(item != NULL);
     struct Weapon *staff = (struct Weapon *)DTAB_GET(weapons_dtab, item->id);
     /* -- TODO: can only use staff in two hands -- */
     if (staff == NULL) {
-        item = Unit_Item(healer, Unit_Hand_Weak(healer));
+        item = Unit_InvItem(healer, Unit_Hand_Weak(healer));
         SDL_assert(item != NULL);
         staff = (struct Weapon *)DTAB_GET(weapons_dtab, item->id);
     }

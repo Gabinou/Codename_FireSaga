@@ -128,7 +128,7 @@ void ItemDropMenu_Update(struct  ItemDropMenu  *idm, struct n9Patch *n9patch,
     SDL_Rect dstrect, srcrect;
 
     /* - Loading item - */
-    Inventory_item *item = Unit_Item(idm->unit, idm->item_todrop);
+    Inventory_item *item = Unit_InvItem(idm->unit, idm->item_todrop);
 
     /* Item name */
     s8 name = s8_mut("");

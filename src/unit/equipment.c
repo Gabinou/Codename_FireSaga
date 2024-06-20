@@ -468,6 +468,50 @@ Inventory_item *Unit_Item_Equipped(Unit *unit, b32 hand) {
         return (&unit->_equipment[unit->_equipped[hand]]);
 }
 
-Inventory_item *Unit_Item(Unit *unit, int i) {
+Inventory_item *Unit_InvItem(Unit *unit, int i) {
     return (&unit->_equipment[i]);
+}
+
+/* -- Getters -- */
+Weapon *Unit_Equipped_Weapon(Unit *unit, b32 hand) {
+    SDL_assert(unit);
+    SDL_assert(unit->weapons_dtab);
+
+    /* Skipped if not a weapon */
+    if (!unit->_equipped[hand])
+        return (NULL);
+
+    return (Unit_Weapon(unit, hand));
+}
+
+Weapon *Unit_Weapon(Unit *unit, int eq) {
+    SDL_assert(unit);
+    SDL_assert(unit->weapons_dtab);
+
+    /* Skipped if not a weapon */
+    i16 id = unit->_equipment[eq].id;
+    if (!Weapon_ID_isValid(id))
+        return (NULL);
+
+    /* Load and return weapon */
+    Weapon_Load(unit->weapons_dtab, id);
+    Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);
+    SDL_assert(weapon != NULL);
+    return (weapon);
+}
+
+Item *Unit_Get_Item(Unit *unit, int eq) {
+    SDL_assert(unit);
+    SDL_assert(unit->items_dtab);
+
+    /* Skipped if not an item */
+    i16 id = unit->_equipment[eq].id;
+    if (Weapon_ID_isValid(id))
+        return (NULL);
+
+    /* Load and return item */
+    Item_Load(unit->items_dtab, id);
+    struct Item *item = DTAB_GET(unit->items_dtab, id);
+    SDL_assert(item != NULL);
+    return (item);
 }

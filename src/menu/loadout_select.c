@@ -420,7 +420,7 @@ void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9p
         SDL_assert((side_i >= 0) && (side_i < DEFAULT_EQUIPMENT_SIZE));
 
         /* unit_item ensures tophand is stronghand */
-        struct Inventory_item *item = Unit_Item(lsm->unit, side_i);
+        struct Inventory_item *item = Unit_InvItem(lsm->unit, side_i);
         if (item->id == ITEM_NULL)
             continue;
 
@@ -528,7 +528,7 @@ static void _LoadoutSelectMenu_Draw_Highlight(struct LoadoutSelectMenu  *lsm,
     i32 stronghand = Unit_Hand_Strong(lsm->unit);
 
     SDL_assert(lsm->unit->weapons_dtab != NULL);
-    struct Inventory_item *item   = Unit_Item(lsm->unit, Unit_Hand_Strong(lsm->unit));
+    struct Inventory_item *item   = Unit_InvItem(lsm->unit, Unit_Hand_Strong(lsm->unit));
     struct Weapon         *weapon = DTAB_GET(lsm->unit->weapons_dtab, item->id);
     s8 name = weapon->item->name;
     srcrect.w  = PixelFont_Width(lsm->pixelnours, s8_toUpper(name).data, name.num);
@@ -672,7 +672,7 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
         /* Icons, text drawn on line strong_i  */
         SDL_Log("i, side_i, strong_i %d %d %d", i, side_i);
 
-        item         = Unit_Item(unit, side_i);
+        item         = Unit_InvItem(unit, side_i);
 
         /* -- Weapon icon -- */
         srcrect.x = LSM1_X_OFFSET;

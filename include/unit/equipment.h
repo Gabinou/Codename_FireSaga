@@ -3,11 +3,14 @@
 
 #include "types.h"
 #include "enums.h"
+#include "item.h"
+#include "weapon.h"
+#include "unit/unit.h"
 #include "structs.h"
 #include "unit/unit.h"
 
 /* --- Items --- */
-Inventory_item *Unit_Item(Unit *u, int i);
+Inventory_item *Unit_InvItem(Unit *u, int i);
 
 /* -- Deplete: decrease durability -- */
 void _Unit_Item_Deplete(           Unit *u, int  i, u64 a);
@@ -31,15 +34,22 @@ void Unit_Item_Swap(  Unit *u, i16 ind1, i16 ind2);
 Inventory_item Unit_Item_Drop(Unit *u, i16 ind1);
 void Unit_Equipment_Drop(Unit *u);
 /* TODO: Remove. No swapping -> no need to export equipment*/
+
+/* -- Importing/Exporting -- */
 void Unit_Equipment_Import(Unit *u, Inventory_item *equipment);
 void Unit_Equipment_Export(Unit *u, Inventory_item *equipment);
 
 void Unit_Equipped_Import(Unit *u, int *equipped);
 void Unit_Equipped_Export(Unit *u, int *equipped);
 
+/* -- Getters -- */
+Weapon *Unit_Weapon(         Unit *u, int eq);
+Item   *Unit_Get_Item(       Unit *u, int eq);
+Weapon *Unit_Equipped_Weapon(Unit *u, b32 hand);
+
 /* --- Equipping --- */
-int     Unit_Equipped(  Unit *unit, b32 hand);
-b32     Unit_isEquipped(Unit *unit, b32 hand);
+int     Unit_Equipped(  Unit *u, b32 hand);
+b32     Unit_isEquipped(Unit *u, b32 hand);
 void    Unit_Equip(  Unit *u, b32 h, int i);
 void    Unit_Unequip(Unit *u, b32 h);
 
@@ -61,9 +71,9 @@ void Unit_Find_Usable(Unit *u, u64 a);
 b32  Unit_Item_Usable(Unit *u, u64 a, int i);
 
 /* --- Unit state --- */
-b32 Unit_istwoHanding(  struct Unit *u);
-b32 Unit_isdualWielding(struct Unit *u);
-b32 Unit_iswrongHanding(struct Unit *u);
+b32 Unit_istwoHanding(  Unit *u);
+b32 Unit_isdualWielding(Unit *u);
+b32 Unit_iswrongHanding(Unit *u);
 
 /* --- Debug --- */
 b32  Unit_Equipment_Full( Unit *u);
