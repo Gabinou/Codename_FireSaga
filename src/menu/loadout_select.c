@@ -307,12 +307,9 @@ void LoadoutSelectMenu_Select_Weakhand(struct LoadoutSelectMenu *lsm, int select
             // TODO: Ask user with item drop menu
             Unit_Item_Drop(lsm->unit, weakhand);
         }
-
-        // Unit_Equip_TwoHanding(lsm->unit);
     } else if (eq_i != weakhand) {
         Unit_Equip(lsm->unit, weakhand, weakhand);           /* eq space */
     }
-    Unit_Equipment_Export(lsm->unit, lsm->equipment2);
 }
 
 /* - Select Weapon/Staff - */
