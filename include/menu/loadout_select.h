@@ -192,12 +192,9 @@ void StaffSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
 void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm,  char *header);
 
 /* --- Item placement --- */
-void LoadoutSelectMenu_Select(           struct LoadoutSelectMenu *lsm, int s);
-void LoadoutSelectMenu_Select_Weakhand(  struct LoadoutSelectMenu *lsm, int s);
-void LoadoutSelectMenu_Select_Stronghand(struct LoadoutSelectMenu *lsm, int s);
-
-void LoadoutSelectMenu_Deselect(     struct LoadoutSelectMenu *lsm);
-void LoadoutSelectMenu_Select_Reset( struct LoadoutSelectMenu *lsm);
+void LoadoutSelectMenu_Select(      struct LoadoutSelectMenu *lsm, int s);
+void LoadoutSelectMenu_Deselect(    struct LoadoutSelectMenu *lsm);
+void LoadoutSelectMenu_Select_Reset(struct LoadoutSelectMenu *lsm);
 b32 WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm);
 
 void ItemSelectMenu_Select(          struct LoadoutSelectMenu *lsm, int s);
@@ -213,7 +210,7 @@ void LoadoutSelectMenu_Elem_Pos_Revert(struct LoadoutSelectMenu *lsm,
                                        struct Menu *mc);
 
 /* --- Drawing --- */
-void LoadoutSelectMenu_Size(struct LoadoutSelectMenu  *lsm, struct n9Patch *n9);
+void LoadoutSelectMenu_Size(struct LoadoutSelectMenu *lsm, struct n9Patch *n9);
 void LoadoutSelectMenu_Draw(  struct  Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
 void LoadoutSelectMenu_Update(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9,
                               SDL_Texture *rt, SDL_Renderer *r);

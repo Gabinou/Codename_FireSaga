@@ -285,33 +285,6 @@ void LoadoutSelectMenu_Select_Reset(struct LoadoutSelectMenu *lsm) {
 
 }
 
-void LoadoutSelectMenu_Select_Stronghand(struct LoadoutSelectMenu *lsm, int eq) {
-    /* Player just selected loadout for stronghand */
-
-}
-
-void LoadoutSelectMenu_Select_Weakhand(struct LoadoutSelectMenu *lsm, int select) {
-    /* Player just selected loadout for weakhand */
-
-    /* - Equip weapons according to player choice - */
-    i32 eq_i    = lsm->unit->eq_usable[select];
-    i32 stronghand  = Unit_Hand_Strong(lsm->unit);
-    i32 weakhand    = 1 - stronghand;
-
-    lsm->selected[weakhand] = eq_i;
-
-    if (eq_i == stronghand) {
-        /* - TWOHANDING - */
-        if (Unit_Equipment_Full(lsm->unit)) {
-            /* - Drop weapon in weakhand - */
-            // TODO: Ask user with item drop menu
-            Unit_Item_Drop(lsm->unit, weakhand);
-        }
-    } else if (eq_i != weakhand) {
-        Unit_Equip(lsm->unit, weakhand, weakhand);           /* eq space */
-    }
-}
-
 /* - Select Weapon/Staff - */
 void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
     /* Player just selected loadout. */
@@ -328,8 +301,10 @@ void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
     }
 
     if (lsm->selected[stronghand] >= 0) {
+        lsm->selected[weakhand] = eq;
         Unit_Equip(lsm->unit, weakhand, eq);
     } else if (lsm->selected[stronghand] < 0) {
+        lsm->selected[stronghand] = eq;
         Unit_Equip(lsm->unit, stronghand, eq);
     } else {
         /* - Both Hands already selected - */
