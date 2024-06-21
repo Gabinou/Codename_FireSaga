@@ -409,15 +409,12 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
     SDL_assert(wsm->selected[UNIT_HAND_LEFT]  > -1);
     SDL_assert(wsm->selected[UNIT_HAND_RIGHT] > -1);
     LoadoutSelectMenu_Deselect(wsm);
-    SDL_assert((wsm->selected[UNIT_HAND_LEFT] > -1) ^ (wsm->selected[UNIT_HAND_RIGHT] > -1));
+    SDL_assert((wsm->selected[UNIT_HAND_LEFT] != -1) || (wsm->selected[UNIT_HAND_RIGHT] != -1));
 
     /* 3. Set previous_cs to new loadout */
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, sota->popups[popup_ind], PopUp);
     struct PopUp_Loadout_Stats *pls = popup->data;
-
-    // pls->item_left  = wsm->unit->eq_usable[UNIT_HAND_LEFT];
-    // pls->item_right = wsm->unit->eq_usable[UNIT_HAND_RIGHT];
     PopUp_Loadout_Stats_New(pls);
 
     /* 4. Focus on menu */

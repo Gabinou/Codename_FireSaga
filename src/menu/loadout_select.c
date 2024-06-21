@@ -325,7 +325,7 @@ void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
     /* -- Revert selected item, only for second hand -- */
     SDL_assert(lsm       != NULL);
     SDL_assert(lsm->unit != NULL);
-    lsm->update               = true;
+    lsm->update           = true;
 
     /*- Get the tophand -*/
     i32 stronghand = Unit_Hand_Strong(lsm->unit);
@@ -335,6 +335,11 @@ void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
     if ((lsm->selected[weakhand] == -1) && (lsm->selected[stronghand] == -1)) {
         SDL_Log("Warning: No item to deselect");
         return;
+    }
+    if (lsm->selected[weakhand] != -1) {
+        lsm->selected[weakhand] = -1;
+    } else if (lsm->selected[stronghand] != -1) {
+        lsm->selected[stronghand] = -1;
     }
 }
 
