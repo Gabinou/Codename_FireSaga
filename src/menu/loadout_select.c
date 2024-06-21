@@ -58,7 +58,8 @@ struct LoadoutSelectMenu LoadoutSelectMenu_default = {
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
 static void _LoadoutSelectMenu_Draw_Items(      struct    LoadoutSelectMenu *l,
                                                 SDL_Renderer                *r);
-static void _LoadoutSelectMenu_Draw_Hands(      struct  LoadoutSelectMenu   *l,
+static void _LoadoutSelectMenu_Draw_Hands(      struct Menu                 *m,
+                                                struct  LoadoutSelectMenu   *l,
                                                 SDL_Renderer                *r);
 static void _LoadoutSelectMenu_Draw_Header(     struct  LoadoutSelectMenu   *l,
                                                 SDL_Renderer                *r);
@@ -422,7 +423,7 @@ void LoadoutSelectMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *
     struct Unit *unit       = lsm->unit;
 
     if (lsm->update) {
-        LoadoutSelectMenu_Update(lsm, n9patch, target, renderer);
+        LoadoutSelectMenu_Update(mc, lsm, n9patch, target, renderer);
         lsm->update = false;
     }
 
@@ -502,11 +503,13 @@ static void _LoadoutSelectMenu_Draw_Highlight(struct LoadoutSelectMenu  *lsm,
     SDL_RenderFillRect(renderer, &srcrect);
 }
 
-static void _LoadoutSelectMenu_Draw_Hands(struct LoadoutSelectMenu *lsm,
+static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
+                                          struct LoadoutSelectMenu *lsm,
                                           SDL_Renderer      *renderer) {
     /* -- Preliminaries -- */
-    i32 num_items       = lsm->unit->num_usable;
-    i32 stronghand      = Unit_Hand_Strong(lsm->unit);
+    i32 num_items      = lsm->unit->num_usable;
+    b32 stronghand     = Unit_Hand_Strong(lsm->unit);
+    b32 weakhand       = 1 - stronghand;
     b32 header_drawn   = (lsm->header.data != NULL);
     SDL_Rect srcrect, dstrect;
 
@@ -514,7 +517,9 @@ static void _LoadoutSelectMenu_Draw_Hands(struct LoadoutSelectMenu *lsm,
     i32 ly_offset = 0, ry_offset = 0;
     if (stronghand == UNIT_HAND_RIGHT) {
         ly_offset = LSM_WEAKHAND_Y_OFFSET;
+        ry_offset = LSM_STRONGHAND_Y_OFFSET;
     } else if (stronghand == UNIT_HAND_LEFT) {
+        ly_offset = LSM_STRONGHAND_Y_OFFSET;
         ry_offset = LSM_WEAKHAND_Y_OFFSET;
     }
 
@@ -523,17 +528,16 @@ static void _LoadoutSelectMenu_Draw_Hands(struct LoadoutSelectMenu *lsm,
     dstrect.w = srcrect.w;
     dstrect.h = srcrect.h;
 
-    /* -- Left hand icon -- */
-    i32 hand_i = (stronghand != UNIT_HAND_LEFT) ? LSM_HANDS_SMALL_L : LSM_HANDS_BIG_L;
-    /* - Skip if hand lower outside of menu - */
-    i32 limit = (stronghand == UNIT_HAND_LEFT) ? 1 : 2;
-    if (num_items >= limit) {
+    /* -- Weak hand icon -- */
+    // 1. Follows cursor when selecting for weakhand
+    int hand_i = (weakhand == UNIT_HAND_LEFT) ? LSM_HANDS_SMALL_L : LSM_HANDS_BIG_L;
+    if ((lsm->selected[stronghand] >= 0) && (lsm->selected[stronghand] < DEFAULT_EQUIPMENT_SIZE)) {
         srcrect.x = hand_i * srcrect.w;
         srcrect.y = 0;
 
         /* Moving hand if two handing or weak hand */
         dstrect.x = LSM_HANDL_X;
-        dstrect.y = LSM_HANDL_Y + ly_offset + (header_drawn * LSM_ROW_HEIGHT);
+        dstrect.y = ly_offset + ((header_drawn + mc->elem) * LSM_ROW_HEIGHT);
 
         /* Moving hand if small */
         if (stronghand != UNIT_HAND_LEFT) {
@@ -542,8 +546,11 @@ static void _LoadoutSelectMenu_Draw_Hands(struct LoadoutSelectMenu *lsm,
         }
         SDL_RenderCopy(renderer, lsm->texture_hands, &srcrect, &dstrect);
     }
+    // 2. Not rendered otherwise
 
-    /* -- Right hand icon -- */
+    /* -- Strong hand icon -- */
+    // 1. Follows cursor when selecting for stronghand
+    // 2. Is at selected item position
     srcrect.w = LSM_HANDS_TILESIZE;
     srcrect.h = LSM_HANDS_TILESIZE;
     dstrect.w = srcrect.w;
@@ -551,22 +558,34 @@ static void _LoadoutSelectMenu_Draw_Hands(struct LoadoutSelectMenu *lsm,
 
     hand_i = (stronghand == UNIT_HAND_LEFT) ? LSM_HANDS_SMALL_R : LSM_HANDS_BIG_R;
     /* - Skip if hand lower outside of menu - */
-    limit = (stronghand == UNIT_HAND_RIGHT) ? 1 : 2;
-    if (num_items >= limit) {
-        srcrect.x = hand_i * srcrect.w;
-        srcrect.y = 0;
+    srcrect.x = hand_i * srcrect.w;
+    srcrect.y = 0;
 
-        /* Moving hand if two handing or weak hand */
-        dstrect.x = lsm->menu_w - LSM_HANDS_TILESIZE;
-        dstrect.y = LSM_HANDR_Y + ry_offset + (header_drawn * LSM_ROW_HEIGHT);
-
-        /* Moving hand if small */
-        if (stronghand == UNIT_HAND_LEFT) {
-            dstrect.x += LSM_HAND_SMALLX_OFFSET;
-            dstrect.y += LSM_HAND_SMALLY_OFFSET;
+    /* Moving hand if two handing or weak hand */
+    dstrect.x = lsm->menu_w - LSM_HANDS_TILESIZE;
+    if ((lsm->selected[stronghand] >= 0) && (lsm->selected[stronghand] < DEFAULT_EQUIPMENT_SIZE)) {
+        // render at weapon position if selected
+        // Find selected eq in usable
+        int index = -1;
+        for (int i = 0; i < lsm->unit->num_usable; i++) {
+            if (lsm->selected[stronghand] == lsm->unit->eq_usable[i]) {
+                index = i;
+                break;
+            }
         }
-        SDL_RenderCopy(renderer, lsm->texture_hands, &srcrect, &dstrect);
+        SDL_assert(index >= 0);
+
+        dstrect.y = ry_offset + ((header_drawn + index) * LSM_ROW_HEIGHT);
+    } else {
+        // Follow cursor if unselected
+        dstrect.y = ry_offset + ((header_drawn + mc->elem) * LSM_ROW_HEIGHT);
     }
+    /* Moving hand if small */
+    if (stronghand == UNIT_HAND_LEFT) {
+        dstrect.x += LSM_HAND_SMALLX_OFFSET;
+        dstrect.y += LSM_HAND_SMALLY_OFFSET;
+    }
+    SDL_RenderCopy(renderer, lsm->texture_hands, &srcrect, &dstrect);
 }
 
 static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
@@ -678,7 +697,8 @@ void LoadoutSelectMenu_Texture_Create(struct LoadoutSelectMenu  *lsm,
     SDL_assert(lsm->texture != NULL);
 }
 
-void LoadoutSelectMenu_Update(struct LoadoutSelectMenu *lsm, struct n9Patch *n9patch,
+void LoadoutSelectMenu_Update(struct  Menu *mc, struct LoadoutSelectMenu *lsm,
+                              struct n9Patch *n9patch,
                               SDL_Texture *target, SDL_Renderer *renderer) {
     /* --- PRELIMINARIES --- */
     SDL_assert(lsm      != NULL);
@@ -704,7 +724,7 @@ void LoadoutSelectMenu_Update(struct LoadoutSelectMenu *lsm, struct n9Patch *n9p
 
     _LoadoutSelectMenu_Draw_Header(lsm, renderer);
     _LoadoutSelectMenu_Draw_Highlight(lsm, renderer);
-    _LoadoutSelectMenu_Draw_Hands(lsm, renderer);
+    _LoadoutSelectMenu_Draw_Hands(mc, lsm, renderer);
     _LoadoutSelectMenu_Draw_Items(lsm, renderer);
 
     SDL_SetRenderTarget(renderer, target);

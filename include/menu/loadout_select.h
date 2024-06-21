@@ -115,6 +115,7 @@ enum LSM_HANDS {
     LSM_HANDR_Y                 =   6,
     LSM_HAND_SMALLX_OFFSET      =   2,
     LSM_HAND_SMALLY_OFFSET      =   3,
+    LSM_STRONGHAND_Y_OFFSET     =   7,
     LSM_WEAKHAND_Y_OFFSET       =  14,
     LSM_TWOHAND_Y_OFFSET        =   2,
 };
@@ -212,7 +213,7 @@ void LoadoutSelectMenu_Elem_Pos_Revert(struct LoadoutSelectMenu *lsm,
 /* --- Drawing --- */
 void LoadoutSelectMenu_Size(struct LoadoutSelectMenu *lsm, struct n9Patch *n9);
 void LoadoutSelectMenu_Draw(  struct  Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
-void LoadoutSelectMenu_Update(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9,
+void LoadoutSelectMenu_Update(struct  Menu *mc, struct LoadoutSelectMenu  *lsm, struct n9Patch *n9,
                               SDL_Texture *rt, SDL_Renderer *r);
 
 #endif /* LSM_H */

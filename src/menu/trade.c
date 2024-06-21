@@ -143,7 +143,7 @@ void TradeMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *renderer
 
     SDL_assert(active != NULL);
     if (active->update) {
-        LoadoutSelectMenu_Update(active, n9patch, target, renderer);
+        LoadoutSelectMenu_Update(mc, active, n9patch, target, renderer);
         active->update = false;
         passive->pos.x = active->pos.x + n9patch->size_pixels.x * n9patch->scale.x;
         TradeMenu_Elem_Pos(tm, mc);
@@ -151,7 +151,7 @@ void TradeMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *renderer
     SDL_assert(active->texture != NULL);
     SDL_assert(passive != NULL);
     if (passive->update) {
-        LoadoutSelectMenu_Update(passive, n9patch, target, renderer);
+        LoadoutSelectMenu_Update(mc, passive, n9patch, target, renderer);
         passive->update = false;
     }
     SDL_assert(passive->texture != NULL);
