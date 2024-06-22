@@ -646,16 +646,18 @@ i32 *Unit_computeAttack(struct Unit *unit, int distance) {
     struct Weapon *weapon;
     /* Get stats of both weapons */
     if (Unit_isEquipped(unit, UNIT_HAND_LEFT)) {
-        SDL_assert(unit->_equipment[UNIT_HAND_LEFT].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_LEFT].id);
+        int id = unit->_equipped[UNIT_HAND_LEFT];
+        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
+        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
         attack_P += Weapon_Stat_inRange(weapon, WEAPON_STAT_pATTACK, distance);
         attack_M += Weapon_Stat_inRange(weapon, WEAPON_STAT_mATTACK, distance);
         attack_T += Weapon_Stat_inRange(weapon, WEAPON_STAT_tATTACK, distance);
 
     }
     if (Unit_isEquipped(unit, UNIT_HAND_RIGHT)) {
-        SDL_assert(unit->_equipment[UNIT_HAND_RIGHT].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_RIGHT].id);
+        int id = unit->_equipped[UNIT_HAND_RIGHT];
+        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
+        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
         attack_P += Weapon_Stat_inRange(weapon, WEAPON_STAT_pATTACK, distance);
         attack_M += Weapon_Stat_inRange(weapon, WEAPON_STAT_mATTACK, distance);
         attack_T += Weapon_Stat_inRange(weapon, WEAPON_STAT_tATTACK, distance);
@@ -821,13 +823,15 @@ i32 Unit_computeHit(struct Unit *unit, int distance) {
 
     /* Get stats of both weapons */
     if (Unit_isEquipped(unit, UNIT_HAND_LEFT)) {
-        SDL_assert(unit->_equipment[UNIT_HAND_LEFT].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_LEFT].id);
+        int id = unit->_equipped[UNIT_HAND_LEFT];
+        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
+        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
         hit_L   = Weapon_Stat_inRange(weapon, WEAPON_STAT_HIT, distance);
     }
     if (Unit_isEquipped(unit, UNIT_HAND_RIGHT)) {
-        SDL_assert(unit->_equipment[UNIT_HAND_RIGHT].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_RIGHT].id);
+        int id = unit->_equipped[UNIT_HAND_RIGHT];
+        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
+        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
         hit_R    = Weapon_Stat_inRange(weapon, WEAPON_STAT_HIT, distance);
     }
 
@@ -857,14 +861,16 @@ i32 Unit_computeDodge(struct Unit *unit, int distance) {
     i32 wpn_dodge   = 0, wpn_wgt    = 0;
     struct Weapon *weapon;
     if (Unit_isEquipped(unit, UNIT_HAND_LEFT)) {
-        SDL_assert(unit->_equipment[UNIT_HAND_LEFT].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_LEFT].id);
+        int id = unit->_equipped[UNIT_HAND_LEFT];
+        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
+        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
         dodge_L = Weapon_Stat_inRange(weapon, WEAPON_STAT_DODGE, distance);
         wgt_L = Weapon_Stat(weapon, WEAPON_STAT_WGT);
     }
     if (Unit_isEquipped(unit, UNIT_HAND_RIGHT)) {
-        SDL_assert(unit->_equipment[UNIT_HAND_RIGHT].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_RIGHT].id);
+        int id = unit->_equipped[UNIT_HAND_RIGHT];
+        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
+        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
         dodge_R  = Weapon_Stat_inRange(weapon, WEAPON_STAT_DODGE, distance);
         wgt_R  = Weapon_Stat(weapon, WEAPON_STAT_WGT);
     }
@@ -896,13 +902,15 @@ i32 Unit_computeCritical(struct Unit *unit, int distance) {
     struct Weapon *weapon;
 
     if (Unit_isEquipped(unit, UNIT_HAND_LEFT)) {
-        SDL_assert(unit->_equipment[UNIT_HAND_LEFT].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_LEFT].id);
+        int id = unit->_equipped[UNIT_HAND_LEFT];
+        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
+        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
         crit_L = Weapon_Stat_inRange(weapon, WEAPON_STAT_CRIT, distance);
     }
     if (Unit_isEquipped(unit, UNIT_HAND_RIGHT)) {
-        SDL_assert(unit->_equipment[UNIT_HAND_RIGHT].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_RIGHT].id);
+        int id = unit->_equipped[UNIT_HAND_RIGHT];
+        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
+        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
         crit_R  = Weapon_Stat_inRange(weapon, WEAPON_STAT_CRIT, distance);
     }
 
@@ -928,13 +936,15 @@ i32 Unit_computeFavor(struct Unit *unit, int distance) {
     struct Weapon *weapon;
 
     if (Unit_isEquipped(unit, UNIT_HAND_LEFT)) {
-        SDL_assert(unit->_equipment[UNIT_HAND_LEFT].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_LEFT].id);
+        int id = unit->_equipped[UNIT_HAND_LEFT];
+        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
+        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
         favor_L = Weapon_Stat_inRange(weapon, WEAPON_STAT_FAVOR, distance);
     }
     if (Unit_isEquipped(unit, UNIT_HAND_RIGHT)) {
-        SDL_assert(unit->_equipment[UNIT_HAND_RIGHT].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_RIGHT].id);
+        int id = unit->_equipped[UNIT_HAND_RIGHT];
+        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
+        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
         favor_R  = Weapon_Stat_inRange(weapon, WEAPON_STAT_FAVOR, distance);
     }
 
@@ -978,13 +988,15 @@ i32 Unit_computeSpeed(struct Unit *unit, int distance) {
     struct Weapon *weapon;
 
     if (Unit_isEquipped(unit, UNIT_HAND_LEFT)) {
-        SDL_assert(unit->_equipment[UNIT_HAND_LEFT].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_LEFT].id);
+        int id = unit->_equipped[UNIT_HAND_LEFT];
+        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
+        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
         weight_L  = Weapon_Stat(weapon, WEAPON_STAT_WGT);
     }
     if (Unit_isEquipped(unit, UNIT_HAND_RIGHT)) {
-        SDL_assert(unit->_equipment[UNIT_HAND_RIGHT].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_RIGHT].id);
+        int id = unit->_equipped[UNIT_HAND_RIGHT];
+        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
+        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
         weight_R  = Weapon_Stat(weapon, WEAPON_STAT_WGT);
     }
     /* item weight in both hands is always added */
@@ -1228,7 +1240,8 @@ u8 Unit_Brave(struct Unit *unit) {
     struct Weapon *weapon;
     // TODO: use AP to compute brave factor
     if (Unit_isEquipped(unit, UNIT_HAND_LEFT)) {
-        weapon = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_LEFT].id);
+        int id = unit->_equipped[UNIT_HAND_LEFT];
+        weapon = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
         temp_effect = weapon->item->passive;
         if (flagsum_isIn(temp_effect, ITEM_EFFECT_BRAVE2X))
             out_brave = 2;
@@ -1239,7 +1252,8 @@ u8 Unit_Brave(struct Unit *unit) {
     }
 
     if (Unit_isEquipped(unit, UNIT_HAND_RIGHT)) {
-        weapon = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_RIGHT].id);
+        int id = unit->_equipped[UNIT_HAND_RIGHT];
+        weapon = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
         temp_effect = weapon->item->passive;
         if (flagsum_isIn(temp_effect, ITEM_EFFECT_BRAVE2X))
             out_brave = (out_brave >  2) ? out_brave : 2;
