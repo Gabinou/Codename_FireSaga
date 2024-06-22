@@ -742,12 +742,16 @@ struct Computed_Stats Unit_computedStats_wLoadout(struct Unit *unit, int lh, int
     /* Save starting equipment */
     int start_equipped[UNIT_HANDS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
-    if ((lh >= 0) && (lh < DEFAULT_EQUIPMENT_SIZE))
+    if ((lh >= 0) && (lh < DEFAULT_EQUIPMENT_SIZE)) {
         Unit_Equip(unit, UNIT_HAND_LEFT,    lh);
-    if ((rh >= 0) && (rh < DEFAULT_EQUIPMENT_SIZE))
+        SDL_assert(unit->_equipped[UNIT_HAND_LEFT] == lh);
+    }
+    if ((rh >= 0) && (rh < DEFAULT_EQUIPMENT_SIZE)) {
         Unit_Equip(unit, UNIT_HAND_RIGHT,   rh);
-    Unit_computedStats(unit, dist);
+        SDL_assert(unit->_equipped[UNIT_HAND_RIGHT] == rh);
+    }
 
+    Unit_computedStats(unit, dist);
     /* Restore starting equipment */
     Unit_Equipped_Import(unit, start_equipped);
 

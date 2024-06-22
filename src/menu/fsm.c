@@ -472,8 +472,6 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     }
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
-    // SDL_Log("pls->item %d %d", pls->item_left, pls->item_right);
-    // getchar();
     PopUp_Loadout_Stats_New(pls);
 }
 
@@ -509,8 +507,7 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
         // -> new_elem selected, switching it to left hand
         pls->item_left = mc->elem;
     }
-    // PopUp_Loadout_Stats_New(pls);
-
+    PopUp_Loadout_Stats_New(pls);
 }
 
 /* --- fsm_eCncl_sGmpMap_ssMenu_m --- */

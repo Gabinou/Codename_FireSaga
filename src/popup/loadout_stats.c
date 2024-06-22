@@ -622,10 +622,16 @@ void PopUp_Loadout_Stats_Previous(struct PopUp_Loadout_Stats *pls) {
 }
 
 void PopUp_Loadout_Stats_New(struct PopUp_Loadout_Stats *pls) {
+    SDL_Log("PopUp_Loadout_Stats_New");
     PopUp_Loadout_Stats_ItemTypes(pls);
+    SDL_Log("pls->item_left, %d %d", pls->item_left, pls->item_right);
     pls->new_cs     = Unit_computedStats_wLoadout(pls->unit,
                                                   pls->item_left, pls->item_right,
                                                   pls->distance);
+    SDL_Log("%d", pls->new_cs.attack[0]);
+    getchar();
+
+    // getchar();
     pls->update     = true;
     pls->twoHanding = Unit_istwoHanding(pls->unit);
 }
