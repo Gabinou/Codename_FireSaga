@@ -601,9 +601,10 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
 void PopUp_Loadout_Stats_Unit(struct PopUp_Loadout_Stats *pls, struct Unit *unit) {
     SDL_assert(unit != NULL);
     pls->unit = unit;
-    int stronghand = Unit_Hand_Strong(pls->unit);
-    pls->item_left  = (stronghand == UNIT_HAND_LEFT)  ? unit->eq_usable[UNIT_HAND_LEFT]  : -1;
-    pls->item_right = (stronghand == UNIT_HAND_RIGHT) ? unit->eq_usable[UNIT_HAND_RIGHT] : -1;
+    int eq_left = unit->eq_usable[unit->_equipped[UNIT_HAND_LEFT]];
+    pls->item_left  = (Unit_isEquipped(unit, UNIT_HAND_LEFT))  ? eq_left : -1;
+    int eq_right = unit->eq_usable[unit->_equipped[UNIT_HAND_RIGHT]];
+    pls->item_right = (Unit_isEquipped(unit, UNIT_HAND_RIGHT)) ? eq_right : -1;
 
     Unit_Unequip(unit, UNIT_HAND_LEFT);
     Unit_Unequip(unit, UNIT_HAND_RIGHT);
@@ -643,21 +644,49 @@ void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls, struct LoadoutSe
     int stronghand = Unit_Hand_Strong(pls->unit);
     int weakhand   = 1 - stronghand;
 
-    if (wsm->selected[weakhand] < 0) {
-        /* Selection stronghand first */
-
+    if (wsm->selected[stronghand] == -1)  {
+        /* Stronghand selected */
         if (stronghand == UNIT_HAND_LEFT) {
-            pls->item_left  = wsm->unit->eq_usable[elem];
+            pls->item_left  = pls->unit->eq_usable[elem];
         } else {
-            pls->item_right = wsm->unit->eq_usable[elem];
+            pls->item_right = pls->unit->eq_usable[elem];
         }
-
     } else {
-        /* Selection weakhand second */
+        /* Weakhand selected */
         if (weakhand == UNIT_HAND_LEFT) {
-            pls->item_left  = wsm->unit->eq_usable[elem];
+            pls->item_left  = pls->unit->eq_usable[elem];
         } else {
-            pls->item_right = wsm->unit->eq_usable[elem];
+            pls->item_right = pls->unit->eq_usable[elem];
+        }
+    }
+}
+
+void PopUp_Loadout_Stats_Select(struct PopUp_Loadout_Stats *pls, struct LoadoutSelectMenu *wsm) {
+    SDL_assert(pls       != NULL);
+    SDL_assert(wsm       != NULL);
+    SDL_assert(wsm->unit != NULL);
+    SDL_assert(pls->unit != NULL);
+    SDL_assert(wsm->unit == pls->unit);
+
+    /* - Select item - */
+    int stronghand = Unit_Hand_Strong(pls->unit);
+    int weakhand   = 1 - stronghand;
+
+    if ((wsm->selected[stronghand] >= 0) && (wsm->selected[stronghand] < DEFAULT_EQUIPMENT_SIZE))  {
+        /* Stronghand selected */
+        if (stronghand == UNIT_HAND_LEFT) {
+            pls->item_left  = wsm->selected[stronghand];
+        } else {
+            pls->item_right = wsm->selected[stronghand];
+        }
+    }
+
+    if ((wsm->selected[weakhand] >= 0) && (wsm->selected[weakhand] < DEFAULT_EQUIPMENT_SIZE))  {
+        /* Weakhand selected */
+        if (weakhand == UNIT_HAND_LEFT) {
+            pls->item_left  = wsm->selected[weakhand];
+        } else {
+            pls->item_right = wsm->selected[weakhand];
         }
     }
 }

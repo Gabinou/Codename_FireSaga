@@ -206,8 +206,10 @@ void  PopUp_Loadout_Stats_Unit(    struct PopUp_Loadout_Stats *pls, struct Unit 
 void  PopUp_Loadout_Stats_Previous(struct PopUp_Loadout_Stats *pls);
 
 /* --- Select --- */
-void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls,
-                               struct LoadoutSelectMenu *wsm, int elem);
+void PopUp_Loadout_Stats_Select(struct PopUp_Loadout_Stats  *pls,
+                                struct LoadoutSelectMenu    *wsm);
+void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats  *pls,
+                               struct LoadoutSelectMenu    *wsm, int elem);
 
 /* --- Internals --- */
 void PopUp_Loadout_Stats_ItemTypes(      struct PopUp_Loadout_Stats *pls);

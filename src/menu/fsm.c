@@ -875,6 +875,13 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
             Event_Emit(__func__, SDL_USEREVENT, event_Loadout_Selected, data1_entity, data2_entity);
         }
     }
+
+    int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
+    struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, sota->popups[popup_ind], PopUp);
+    popup->visible = true;
+    struct PopUp_Loadout_Stats *pls = popup->data;
+
+    PopUp_Loadout_Stats_Select(pls, wsm);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
