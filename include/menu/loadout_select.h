@@ -66,7 +66,7 @@ enum LSM_HANDS {
     LSM_HAND_SMALLX_OFFSET      =   2,
     LSM_HAND_SMALLY_OFFSET      =   3,
     LSM_STRONGHAND_Y_OFFSET     =   7,
-    LSM_WEAKHAND_Y_OFFSET       =  14,
+    LSM_WEAKHAND_Y_OFFSET       =   6,
     LSM_TWOHAND_Y_OFFSET        =   2,
 };
 
