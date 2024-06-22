@@ -439,7 +439,6 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
     do {
         if ((pls->item_left <= -1) || (pls->item_left >= DEFAULT_EQUIPMENT_SIZE))
             break;
-
         if (pls->unit->weapons_dtab == NULL)
             break;
 
@@ -475,6 +474,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
 
         if ((pls->item_right <= -1) || (pls->item_right >= DEFAULT_EQUIPMENT_SIZE))
             break;
+
         if (pls->unit->weapons_dtab == NULL)
             break;
 

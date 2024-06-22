@@ -456,7 +456,7 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     SDL_assert(popup_ent > TNECS_NULL);
 
     /* -- Hover on new item -- */
-    // PopUp_Loadout_Stats_Hover(pls, wsm, mc->elem);
+    PopUp_Loadout_Stats_Hover(pls, wsm, mc->elem);
 
     /* - Compute new attackmap with equipped - */
     int rangemap = Unit_Rangemap_Get(wsm->unit);
@@ -472,7 +472,9 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     }
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
-    // PopUp_Loadout_Stats_New(pls);
+    // SDL_Log("pls->item %d %d", pls->item_left, pls->item_right);
+    // getchar();
+    PopUp_Loadout_Stats_New(pls);
 }
 
 void fsm_eCrsMvs_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
@@ -641,9 +643,9 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         /* Set previous_cs to new loadout */
         int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
         struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, sota->popups[popup_ind], PopUp);
-        struct PopUp_Loadout_Stats *pls = (struct PopUp_Loadout_Stats *)popup->data;
-        pls->item_left  = wsm->unit->eq_usable[UNIT_HAND_LEFT];
-        pls->item_right = wsm->unit->eq_usable[UNIT_HAND_RIGHT];
+        // struct PopUp_Loadout_Stats *pls = (struct PopUp_Loadout_Stats *)popup->data;
+        // pls->item_left  = wsm->unit->eq_usable[mc->elem];
+        // pls->item_right = wsm->unit->eq_usable[mc->elem];
         // PopUp_Loadout_Stats_Previous(pls);
         // pls->previous_cs = Unit_computedStats_wLoadout(wsm->unit, pls->item_left, pls->item_right);
 

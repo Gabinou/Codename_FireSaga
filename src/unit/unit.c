@@ -736,18 +736,16 @@ void Unit_Equipment_Print( struct Unit *unit) {
 
         SDL_Log("%d %s", i, wpn->item->name);
     }
-
 }
-
-
 
 struct Computed_Stats Unit_computedStats_wLoadout(struct Unit *unit, int lh, int rh, int dist) {
     /* Save starting equipment */
     int start_equipped[UNIT_HANDS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
-
-    Unit_Equip(unit, UNIT_HAND_LEFT,    lh);
-    Unit_Equip(unit, UNIT_HAND_RIGHT,   rh);
+    if ((lh >= 0) && (lh < DEFAULT_EQUIPMENT_SIZE))
+        Unit_Equip(unit, UNIT_HAND_LEFT,    lh);
+    if ((rh >= 0) && (rh < DEFAULT_EQUIPMENT_SIZE))
+        Unit_Equip(unit, UNIT_HAND_RIGHT,   rh);
     Unit_computedStats(unit, dist);
 
     /* Restore starting equipment */
