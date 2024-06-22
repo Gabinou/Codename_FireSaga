@@ -845,11 +845,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     if (WeaponSelectMenu_Usable_Remains(wsm)) {
         SDL_assert(mc->n9patch.scale.x > 0);
         SDL_assert(mc->n9patch.scale.y > 0);
-        /* move cursor to second hand */
-        int new_elem        = LSM_ELEM_ITEM2;
-        tnecs_entity cursor = sota->entity_cursor;
-        Menu_Elem_Set(mc, sota, new_elem);
-
         i32 stronghand  = Unit_Hand_Strong(wsm->unit);
         if (wsm->selected[stronghand] >= 0) {
             SDL_Log("ITEM_ARCHETYPE_WEAKHAND");
@@ -860,16 +855,12 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, sota->popups[popup_ind], PopUp);
         struct PopUp_Loadout_Stats *pls = popup->data;
 
-        // Set previous_cs to new loadout
-        pls->item_left  = UNIT_HAND_LEFT;
-        pls->item_right = UNIT_HAND_RIGHT;
-        // PopUp_Loadout_Stats_Previous(pls);
-
         LoadoutSelectMenu_Elem_Pos_Revert(wsm, mc);
         LoadoutSelectMenu_Elem_Reset(wsm, mc);
         LoadoutSelectMenu_Elem_Pos(wsm, mc);
         Menu_Elem_Boxes_Check(mc);
 
+        /* move cursor to top hand */
         Menu_Elem_Set(mc, sota, 0);
 
     } else {
@@ -885,7 +876,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
             Event_Emit(__func__, SDL_USEREVENT, event_Loadout_Selected, data1_entity, data2_entity);
         }
     }
-
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
@@ -1071,9 +1061,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
     /* -- TODO: Render Face -- */
-
-
-
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moItem(struct Game *sota, struct Menu *mc) {

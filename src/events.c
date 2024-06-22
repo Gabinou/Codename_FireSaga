@@ -1235,7 +1235,6 @@ void receive_event_Unit_Rescue(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
-
     struct Sprite *agg_sprite = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Sprite);
     struct Sprite *dft_sprite = TNECS_GET_COMPONENT(sota->world, sota->defendant, Sprite);
 

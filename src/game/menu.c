@@ -681,11 +681,11 @@ void Game_ItemSelectMenu_Create(struct Game *sota) {
                                                               SDL_PIXELFORMAT_INDEX8);
 
     /* stats_menu struct init */
-    struct LoadoutSelectMenu *ism =      LoadoutSelectMenu_Alloc();
-    ism->pos.x =                    sota->settings.res.x / 2;
-    ism->pos.y =                    sota->settings.res.y / 2;
-    mc->data =                      ism;
-    mc->visible =                   true;
+    struct LoadoutSelectMenu *ism   = LoadoutSelectMenu_Alloc();
+    ism->pos.x                      = sota->settings.res.x / 2;
+    ism->pos.y                      = sota->settings.res.y / 2;
+    mc->data                        = ism;
+    mc->visible                     = true;
     // mc->elem_links =                item_select_menu_links;
     // mc->elem_pos =                  item_select_menu_elem_pos;
     // mc->elem_box =                  item_select_menu_elem_box;

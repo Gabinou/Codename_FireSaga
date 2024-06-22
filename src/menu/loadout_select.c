@@ -28,6 +28,16 @@ struct Point  wsm_elem_pos[LSM_ELEMS_NUM] = {
     /* LSM_ELEM_ITEM6 */ {LSM6_X_OFFSET, LSM6_Y_OFFSET},
 };
 
+struct MenuElemDirections wsm_links_start[LSM_ELEMS_NUM] = {
+    /*right, top, left, bottom */
+    /* LSM_ELEM_ITEM1 */ {LSM_ELEM_NULL, LSM_ELEM_NULL,  LSM_ELEM_NULL, LSM_ELEM_ITEM2},
+    /* LSM_ELEM_ITEM2 */ {LSM_ELEM_NULL, LSM_ELEM_ITEM1, LSM_ELEM_NULL, LSM_ELEM_ITEM3},
+    /* LSM_ELEM_ITEM3 */ {LSM_ELEM_NULL, LSM_ELEM_ITEM2, LSM_ELEM_NULL, LSM_ELEM_ITEM4},
+    /* LSM_ELEM_ITEM4 */ {LSM_ELEM_NULL, LSM_ELEM_ITEM3, LSM_ELEM_NULL, LSM_ELEM_ITEM5},
+    /* LSM_ELEM_ITEM5 */ {LSM_ELEM_NULL, LSM_ELEM_ITEM4, LSM_ELEM_NULL, LSM_ELEM_ITEM6},
+    /* LSM_ELEM_ITEM6 */ {LSM_ELEM_NULL, LSM_ELEM_ITEM5, LSM_ELEM_NULL, LSM_ELEM_NULL},
+};
+
 struct MenuElemDirections wsm_links[LSM_ELEMS_NUM] = {
     /*right, top, left, bottom */
     /* LSM_ELEM_ITEM1 */ {LSM_ELEM_NULL, LSM_ELEM_NULL,  LSM_ELEM_NULL, LSM_ELEM_ITEM2},
@@ -176,15 +186,15 @@ i32 ItemSelectMenu_Elem_Move( struct Menu *mc, i32 direction) {
 
 i32 WeaponSelectMenu_Elem_Move(struct Menu *mc, i32 direction) {
     struct LoadoutSelectMenu *wsm = mc->data;
-    i32 min = (wsm->selected[Unit_Hand_Strong(wsm->unit)] > -1) ? 1 : 0;
-    return (Periodic_Elem_Move(mc, direction, min, mc->elem_num));
+    return (Periodic_Elem_Move(mc, direction, 0, mc->elem_num));
 }
 
 /* --- Elements --- */
 void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct Menu *mc) {
     /* Get number of elements for the menu */
     mc->elem_num   = lsm->unit->num_usable;
-    mc->elem_links = wsm_links;
+    size_t bytesize = sizeof(*wsm_links_start) * LSM_ELEMS_NUM;
+    memcpy(mc->elem_links, wsm_links_start, bytesize);
 
     mc->elem_links[0].top                   = LSM_ELEM_NULL;
     mc->elem_links[mc->elem_num - 1].bottom = LSM_ELEM_NULL;
