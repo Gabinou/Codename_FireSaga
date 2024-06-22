@@ -183,18 +183,11 @@ i32 WeaponSelectMenu_Elem_Move(struct Menu *mc, i32 direction) {
 /* --- Elements --- */
 void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct Menu *mc) {
     /* Get number of elements for the menu */
-    i32 stronghand       = Unit_Hand_Strong(lsm->unit);
-    b32 strong_selected = (lsm->selected[stronghand] > -1);
-    i32 num_eq     = lsm->unit->num_equipment;
-    i32 num_eq_wsm = num_eq < DEFAULT_EQUIPMENT_SIZE ? num_eq + 1 : DEFAULT_EQUIPMENT_SIZE;
-
-    mc->elem_num   = strong_selected ? num_eq_wsm : lsm->unit->num_usable;
+    mc->elem_num   = lsm->unit->num_usable;
     mc->elem_links = wsm_links;
 
-    for (i32 i = mc->elem_num - 1; i < DEFAULT_EQUIPMENT_SIZE; i++) {
-        mc->elem_links[i].top    = LSM_ELEM_NULL;
-        mc->elem_links[i].bottom = LSM_ELEM_NULL;
-    }
+    mc->elem_links[0].top                   = LSM_ELEM_NULL;
+    mc->elem_links[mc->elem_num - 1].bottom = LSM_ELEM_NULL;
 }
 
 void LoadoutSelectMenu_Elem_Pos(struct LoadoutSelectMenu *lsm, struct Menu *mc) {

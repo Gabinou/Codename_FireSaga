@@ -870,7 +870,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         LoadoutSelectMenu_Elem_Pos(wsm, mc);
         Menu_Elem_Boxes_Check(mc);
 
-        Menu_Elem_Set(mc, sota, 1);
+        Menu_Elem_Set(mc, sota, 0);
 
     } else {
         /* Loadout selected, find new defendants*/
