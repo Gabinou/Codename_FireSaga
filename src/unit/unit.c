@@ -1146,17 +1146,19 @@ void Unit_readJSON(void *input,  cJSON *junit) {
             Unit_Item_Take(unit, temp_item);
     }
 
+    unit->_equipped[UNIT_HAND_LEFT]     = -1;
+    unit->_equipped[UNIT_HAND_RIGHT]    = -1;
     /* -- Equip -- */
-    if (unit->_equipment[UNIT_HAND_RIGHT].id != ITEM_NULL) {
-        if (Weapon_ID_isValid(unit->_equipment[UNIT_HAND_RIGHT].id)) {
-            Unit_Equip(unit, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
-        }
-    }
-    if (unit->_equipment[UNIT_HAND_LEFT].id != ITEM_NULL) {
-        if (Weapon_ID_isValid(unit->_equipment[UNIT_HAND_LEFT].id)) {
-            Unit_Equip(unit, UNIT_HAND_LEFT, UNIT_HAND_LEFT);
-        }
-    }
+    // if (unit->_equipment[UNIT_HAND_RIGHT].id != ITEM_NULL) {
+    //     if (Weapon_ID_isValid(unit->_equipment[UNIT_HAND_RIGHT].id)) {
+    //         Unit_Equip(unit, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
+    //     }
+    // }
+    // if (unit->_equipment[UNIT_HAND_LEFT].id != ITEM_NULL) {
+    //     if (Weapon_ID_isValid(unit->_equipment[UNIT_HAND_LEFT].id)) {
+    //         Unit_Equip(unit, UNIT_HAND_LEFT, UNIT_HAND_LEFT);
+    //     }
+    // }
 }
 
 void Unit_writeJSON( void *input, cJSON *junit) {

@@ -1,5 +1,4 @@
 #include "menu/loadout_select.h"
-#include "menu/loadout_select.h"
 
 struct Point wsm_cursor_pos[LSM_ELEMS_NUM] = {
     /* LSM_ELEM_ITEM2 */ {LSM1_X_OFFSET, LSM1_Y_OFFSET},

@@ -394,7 +394,6 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moTrade(struct Game *sota, struct Menu *in_mc) 
 }
 
 void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
-
     /* 1. Turn Item_Select_Menu visible */
     int stack_top               = DARR_NUM(sota->menu_stack) - 1;
     tnecs_entity menu_top     = sota->menu_stack[stack_top];
@@ -415,18 +414,17 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, sota->popups[popup_ind], PopUp);
     struct PopUp_Loadout_Stats *pls = popup->data;
+    Menu_Elem_Set(mc, sota, 0);
+    PopUp_Loadout_Stats_Hover(pls, wsm, mc->elem);
     PopUp_Loadout_Stats_New(pls);
 
     /* 4. Focus on menu */
     Game_cursorFocus_onMenu(sota);
 
-    /* 5. Move cursor to weak hand, strong hand on top */
-    Menu_Elem_Set(mc, sota, 1);
-
-    /* 6. HUD reappear */
+    /* 5. HUD reappear */
     popup->visible = true;
 
-    /* 7. Remove PopupPre_Combat */
+    /* 6. Remove PopupPre_Combat */
     Game_PopUp_Pre_Combat_Hide(sota);
 }
 
@@ -450,7 +448,7 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     wsm->update = true;
 
     /* - Get Popup_Loadout_Stats -- */
-    tnecs_entity popup_ent        = sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS];
+    tnecs_entity popup_ent          = sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS];
     struct PopUp *popup             = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
     struct PopUp_Loadout_Stats *pls = popup->data;
     SDL_assert(popup_ent > TNECS_NULL);
@@ -507,6 +505,15 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
         // -> new_elem selected, switching it to left hand
         pls->item_left = mc->elem;
     }
+
+    struct Menu *mc_popup;
+    mc_popup = TNECS_GET_COMPONENT(sota->world, sota->weapon_select_menu, Menu);
+    SDL_assert(mc_popup->n9patch.scale.x > 0);
+    SDL_assert(mc_popup->n9patch.scale.y > 0);
+    struct LoadoutSelectMenu *wsm = mc_popup->data;
+
+    Menu_Elem_Set(mc_popup, sota, 0);
+    PopUp_Loadout_Stats_Hover(pls, wsm, mc_popup->elem);
     PopUp_Loadout_Stats_New(pls);
 }
 
@@ -662,9 +669,9 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         Game_cursorFocus_onMenu(sota);
 
         /* 3. Move cursor to Attack menu option on psm */
-        tnecs_entity menu          = sota->player_select_menus[MENU_PLAYER_SELECT_UNIT_ACTION];
-        struct Menu *mc     = TNECS_GET_COMPONENT(sota->world, menu, Menu);
-        struct PlayerSelectMenu *psm = (struct PlayerSelectMenu *)mc->data;
+        tnecs_entity menu               = sota->player_select_menus[MENU_PLAYER_SELECT_UNIT_ACTION];
+        struct Menu *mc                 = TNECS_GET_COMPONENT(sota->world, menu, Menu);
+        struct PlayerSelectMenu *psm    = (struct PlayerSelectMenu *)mc->data;
         int new_elem = PlayerSelectMenu_Option_Index(psm, MENU_OPTION_ATTACK);
         Menu_Elem_Set(mc, sota, new_elem);
 
@@ -690,7 +697,6 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
     }
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
-
 }
 
 void fsm_eCncl_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
@@ -882,6 +888,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     struct PopUp_Loadout_Stats *pls = popup->data;
 
     PopUp_Loadout_Stats_Select(pls, wsm);
+    PopUp_Loadout_Stats_Hover(pls, wsm, mc->elem);
+    PopUp_Loadout_Stats_New(pls);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
@@ -1045,6 +1053,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
 
     /* -- Hover on new item -- */
     PopUp_Loadout_Stats_Hover(pls, wsm, mc->elem);
+    PopUp_Loadout_Stats_New(pls);
 
     /* - Compute new attackmap with equipped - */
     int rangemap = Unit_Rangemap_Get(wsm->unit);

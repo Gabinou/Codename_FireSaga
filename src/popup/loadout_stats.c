@@ -602,9 +602,9 @@ void PopUp_Loadout_Stats_Unit(struct PopUp_Loadout_Stats *pls, struct Unit *unit
     SDL_assert(unit != NULL);
     pls->unit = unit;
     int eq_left = unit->eq_usable[unit->_equipped[UNIT_HAND_LEFT]];
-    pls->item_left  = (Unit_isEquipped(unit, UNIT_HAND_LEFT))  ? eq_left : -1;
+    pls->item_left  = -1;
     int eq_right = unit->eq_usable[unit->_equipped[UNIT_HAND_RIGHT]];
-    pls->item_right = (Unit_isEquipped(unit, UNIT_HAND_RIGHT)) ? eq_right : -1;
+    pls->item_right = -1;
 
     Unit_Unequip(unit, UNIT_HAND_LEFT);
     Unit_Unequip(unit, UNIT_HAND_RIGHT);
