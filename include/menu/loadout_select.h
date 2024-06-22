@@ -52,6 +52,26 @@ struct MenuElemDirections;
 *       - Make second hand show TWO HANDING or something.
 */
 
+enum LSM_HANDS {
+    LSM_HANDS_TILESIZE          =  16,
+    LSM_HANDS_NONE              =  -1,
+    LSM_HANDS_BIG_L             =   0,
+    LSM_HANDS_SMALL_L           =   1,
+    LSM_HANDS_SMALL_R           =   2,
+    LSM_HANDS_BIG_R             =   3,
+    LSM_HANDL_X                 =  10,
+    LSM_HANDL_Y                 =   6,
+    LSM_HANDR_X                 = 100,
+    LSM_HANDR_Y                 =   6,
+    LSM_HAND_SMALLX_OFFSET      =   2,
+    LSM_HAND_SMALLY_OFFSET      =   3,
+    LSM_STRONGHAND_Y_OFFSET     =   7,
+    LSM_WEAKHAND_Y_OFFSET       =  14,
+    LSM_TWOHAND_Y_OFFSET        =   2,
+};
+
+
+
 enum LSM_MENU {
     LSM_PATCH_X_PIXELS          =  8,
     LSM_PATCH_Y_PIXELS          =  8,
@@ -81,7 +101,7 @@ enum LSM_MENU {
 
     LSM_ICON_W                  = 12,
     LSM_ICON_H                  = 12,
-    LSM1_X_OFFSET               =  9,
+    LSM1_X_OFFSET               =  9 + LSM_HANDS_TILESIZE,
     LSM1_Y_OFFSET               =  7,
 
     LSM1_DURA_X_OFFSET          = LSM1_X_OFFSET + LSM_ICON_W + 7,
@@ -100,24 +120,6 @@ enum LSM_MENU {
     LSM4_Y_OFFSET               = LSM3_Y_OFFSET + LSM_ICON_H + 2,
     LSM5_Y_OFFSET               = LSM4_Y_OFFSET + LSM_ICON_H + 2,
     LSM6_Y_OFFSET               = LSM5_Y_OFFSET + LSM_ICON_H + 2,
-};
-
-enum LSM_HANDS {
-    LSM_HANDS_TILESIZE          =  16,
-    LSM_HANDS_NONE              =  -1,
-    LSM_HANDS_BIG_L             =   0,
-    LSM_HANDS_SMALL_L           =   1,
-    LSM_HANDS_SMALL_R           =   2,
-    LSM_HANDS_BIG_R             =   3,
-    LSM_HANDL_X                 =  10,
-    LSM_HANDL_Y                 =   6,
-    LSM_HANDR_X                 = 100,
-    LSM_HANDR_Y                 =   6,
-    LSM_HAND_SMALLX_OFFSET      =   2,
-    LSM_HAND_SMALLY_OFFSET      =   3,
-    LSM_STRONGHAND_Y_OFFSET     =   7,
-    LSM_WEAKHAND_Y_OFFSET       =  14,
-    LSM_TWOHAND_Y_OFFSET        =   2,
 };
 
 enum LSM_ELEMS {
