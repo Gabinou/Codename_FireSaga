@@ -245,6 +245,7 @@ void Unit_Equip(struct Unit *unit, b32 hand, int i) {
     SDL_assert(unit);
     SDL_assert(i >= 0);
     SDL_assert(i < DEFAULT_EQUIPMENT_SIZE);
+    SDL_assert(unit->_equipment[i].id > ITEM_NULL);
 
     unit->_equipped[hand] = i;
 }

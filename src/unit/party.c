@@ -121,6 +121,7 @@ void _Party_Load(struct Unit *party, struct dtab *weapons_dtab,
     for (size_t i = 0; i < load_num; i++) {
         s8 filename = filenames[i];
         temp_unit               = Unit_default;
+        SDL_Log("'%s' %d %d", filename.data, i, temp_unit._id);
         temp_unit.items_dtab    = items_dtab;
         temp_unit.weapons_dtab  = weapons_dtab;
 

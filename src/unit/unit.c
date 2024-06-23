@@ -768,6 +768,7 @@ struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance) {
     }
 
     /* check if no weapons in hand*/
+    SDL_Log("%d %d", Unit_isEquipped(unit, UNIT_HAND_LEFT), Unit_isEquipped(unit, UNIT_HAND_RIGHT));
     if (Unit_isEquipped(unit, UNIT_HAND_LEFT) || Unit_isEquipped(unit, UNIT_HAND_RIGHT)) {
         Unit_computeHit(     unit,  distance);
         Unit_computeAttack(  unit,  distance);
@@ -1149,15 +1150,22 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     unit->_equipped[UNIT_HAND_LEFT]     = -1;
     unit->_equipped[UNIT_HAND_RIGHT]    = -1;
     /* -- Equip -- */
-    // if (unit->_equipment[UNIT_HAND_RIGHT].id != ITEM_NULL) {
-    //     if (Weapon_ID_isValid(unit->_equipment[UNIT_HAND_RIGHT].id)) {
-    //         Unit_Equip(unit, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
-    //     }
-    // }
-    // if (unit->_equipment[UNIT_HAND_LEFT].id != ITEM_NULL) {
-    //     if (Weapon_ID_isValid(unit->_equipment[UNIT_HAND_LEFT].id)) {
-    //         Unit_Equip(unit, UNIT_HAND_LEFT, UNIT_HAND_LEFT);
-    //     }
+    if (unit->_equipment[UNIT_HAND_LEFT].id != ITEM_NULL) {
+        if (Weapon_ID_isValid(unit->_equipment[UNIT_HAND_LEFT].id)) {
+            Unit_Equip(unit, UNIT_HAND_LEFT, UNIT_HAND_LEFT);
+        }
+    }
+    if (unit->_equipment[UNIT_HAND_RIGHT].id != ITEM_NULL) {
+        if (Weapon_ID_isValid(unit->_equipment[UNIT_HAND_RIGHT].id)) {
+            Unit_Equip(unit, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
+        }
+    }
+    // if (unit->_id == 2012) {
+    //     SDL_Log("CORSAIR ");
+    //     SDL_Log("%d %d", Unit_isEquipped(unit, UNIT_HAND_LEFT), Unit_isEquipped(unit, UNIT_HAND_RIGHT));
+    //     SDL_Log("%d %d", unit->_equipped[UNIT_HAND_LEFT], unit->_equipped[UNIT_HAND_RIGHT]);
+    //     SDL_Log("%d %d", unit->_equipment[UNIT_HAND_LEFT].id, unit->_equipment[UNIT_HAND_RIGHT].id);
+    //     getchar();
     // }
 }
 
