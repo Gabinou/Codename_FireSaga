@@ -472,7 +472,7 @@ static void _LoadoutSelectMenu_Draw_Header(struct LoadoutSelectMenu *lsm,
 //     i32 stronghand = Unit_Hand_Strong(lsm->unit);
 
 //     SDL_assert(lsm->unit->weapons_dtab != NULL);
-//     struct Inventory_item *item   = Unit_InvItem(lsm->unit, Unit_Hand_Strong(lsm->unit));
+//     struct Inventory_item *item   = Unit_Item_Equipped(lsm->unit, Unit_Hand_Strong(lsm->unit));
 //     SDL_Log("item->id %d", item->id);
 //     Weapon_Load(lsm->unit->weapons_dtab, item->id);
 //     struct Weapon         *weapon = DTAB_GET(lsm->unit->weapons_dtab, item->id);

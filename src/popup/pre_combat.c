@@ -100,8 +100,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         /* Unit is NOT two handing, printing both left and right weapons */
         dstrect.x = (PCP_SIMPLE_DICONL_X + PCP_SIMPLE_ICON_OFFSET_X);
         /* left hand */
-        index = pcp->agg_unit->_equipped[UNIT_HAND_LEFT];
-        item = Unit_InvItem(pcp->dft_unit, index);
+        item = Unit_Item_Equipped(pcp->dft_unit, UNIT_HAND_LEFT);
         if (Unit_isEquipped(pcp->dft_unit, UNIT_HAND_LEFT) && (item->id > ITEM_NULL)) {
             struct Weapon *weapon = DTAB_GET(pcp->dft_unit->weapons_dtab, item->id);
             u16 type_ind = Weapon_TypeExp(weapon);
@@ -115,8 +114,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
 
         /* right hand */
         dstrect.x = (PCP_SIMPLE_DICONR_X + PCP_SIMPLE_ICON_OFFSET_X);
-        index = pcp->agg_unit->_equipped[UNIT_HAND_RIGHT];
-        item = Unit_InvItem(pcp->dft_unit, UNIT_HAND_RIGHT);
+        item = Unit_Item_Equipped(pcp->dft_unit, UNIT_HAND_RIGHT);
         if (Unit_isEquipped(pcp->dft_unit, UNIT_HAND_RIGHT) && (item->id > ITEM_NULL)) {
             struct Weapon *weapon = DTAB_GET(pcp->dft_unit->weapons_dtab, item->id);
             u16 type_ind = Weapon_TypeExp(weapon);
@@ -131,8 +129,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         /* Unit is two handing, printing ONE icon in the center */
         dstrect.x  = (PCP_SIMPLE_DICONL_X + PCP_SIMPLE_ICON_OFFSET_X) / 2;
         dstrect.x += (PCP_SIMPLE_DICONR_X + PCP_SIMPLE_ICON_OFFSET_X) / 2;
-        index = pcp->agg_unit->_equipped[UNIT_HAND_RIGHT];
-        item = Unit_InvItem(pcp->dft_unit, index);
+        item = Unit_Item_Equipped(pcp->dft_unit, UNIT_HAND_RIGHT);
         SDL_assert(item->id > ITEM_NULL);
         struct Weapon *weapon = DTAB_GET(pcp->dft_unit->weapons_dtab, item->id);
         u16 type = weapon->item->type;
@@ -151,8 +148,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         /* Unit is NOT two handing, printing both left and right weapons */
         dstrect.x = (PCP_SIMPLE_AICONL_X + PCP_SIMPLE_ICON_OFFSET_X);
         /* left hand */
-        int index = pcp->agg_unit->_equipped[UNIT_HAND_LEFT];
-        item = Unit_InvItem(pcp->agg_unit, index);
+        item = Unit_Item_Equipped(pcp->dft_unit, UNIT_HAND_LEFT);
         if (Unit_isEquipped(pcp->agg_unit, UNIT_HAND_LEFT) && (item->id > ITEM_NULL)) {
             struct Weapon *weapon = DTAB_GET(pcp->agg_unit->weapons_dtab, item->id);
             u16 type = weapon->item->type;
@@ -172,7 +168,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         dstrect.x = (PCP_SIMPLE_AICONR_X + PCP_SIMPLE_ICON_OFFSET_X);
         dstrect.y = (PCP_SIMPLE_AICONR_Y + PCP_SIMPLE_ICON_OFFSET_Y);
         index = pcp->agg_unit->_equipped[UNIT_HAND_RIGHT];
-        item = Unit_InvItem(pcp->agg_unit, index);
+        item = Unit_Item_Equipped(pcp->dft_unit, UNIT_HAND_RIGHT);
         if (Unit_isEquipped(pcp->agg_unit, UNIT_HAND_RIGHT) && (item->id > ITEM_NULL)) {
             SDL_Log("item->id %d", item->id);
             struct Weapon *weapon = DTAB_GET(pcp->dft_unit->weapons_dtab, item->id);
@@ -194,8 +190,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         /* Unit is two handing, printing ONE icon in the center */
         dstrect.x  = (PCP_SIMPLE_AICONL_X + PCP_SIMPLE_ICON_OFFSET_X) / 2;
         dstrect.x += (PCP_SIMPLE_AICONR_X + PCP_SIMPLE_ICON_OFFSET_X) / 2;
-        int index = pcp->agg_unit->_equipped[UNIT_HAND_RIGHT];
-        item = Unit_InvItem(pcp->agg_unit, index);
+        item = Unit_Item_Equipped(pcp->dft_unit, UNIT_HAND_RIGHT);
         SDL_assert(item->id > ITEM_NULL);
         struct Weapon *weapon = DTAB_GET(pcp->agg_unit->weapons_dtab, item->id);
         SDL_assert(weapon       != NULL);

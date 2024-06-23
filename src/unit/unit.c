@@ -583,7 +583,7 @@ i32 *Unit_Shield_Protection(struct Unit *unit, b32 hand) {
     if (!Unit_isEquipped(unit, hand))
         return (NULL);
 
-    i16 id = Unit_InvItem(unit, unit->_equipped[hand])->id;
+    i16 id = Unit_Item_Equipped(unit, hand)->id;
     SDL_assert(Weapon_ID_isValid(id));
     Weapon_Load(unit->weapons_dtab, id);
     struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);
