@@ -213,7 +213,6 @@ struct Inventory_item Unit_Equip_TwoHanding(struct Unit *unit) {
 
     /* -- Set flags -- */
     unit->_equipped[weakhand]   = unit->_equipped[stronghand];
-    unit->isTwoHanding          = true;
 
     return (out);
 }
@@ -254,7 +253,7 @@ void Unit_Unequip(struct Unit *unit, b32 hand) {
     unit->_equipped[hand]   = -1;
 
     /* -- If twohanding, not anymore! -- */
-    unit->isTwoHanding      = false;
+    SDL_assert(Unit_istwoHanding(unit) == false);
 
     /* -- If dual wielding, not anymore! -- */
     unit->isDualWielding    = false;
@@ -387,15 +386,19 @@ b32 Unit_isdualWielding(struct Unit *unit) {
     b32 left   = Unit_isWielding(unit, UNIT_HAND_LEFT);
     b32 right  = Unit_isWielding(unit, UNIT_HAND_RIGHT);
 
-    return (unit->isDualWielding = left && right && !unit->isTwoHanding);
+    return (unit->isDualWielding = left && right && !Unit_istwoHanding(unit));
 }
 
 
 /* --- Loadout Manipulation --- */
 /* - Does that loadout wields a weapon with two hands? - */
-b32 Unit_istwoHanding(  struct Unit *u) {
-    // TODO
-    return (false);
+b32 Unit_istwoHanding(Unit *unit) {
+    b32 lvalid  =   unit->_equipped[UNIT_HAND_LEFT] >= 0;
+    lvalid      &=  unit->_equipped[UNIT_HAND_LEFT] < DEFAULT_EQUIPMENT_SIZE;
+    b32 rvalid  =   unit->_equipped[UNIT_HAND_RIGHT] >= 0;
+    rvalid      &=  unit->_equipped[UNIT_HAND_RIGHT] < DEFAULT_EQUIPMENT_SIZE;
+    b32 equal   =   unit->_equipped[UNIT_HAND_LEFT] == unit->_equipped[UNIT_HAND_RIGHT];
+    return (lvalid && rvalid && equal);
 }
 
 /* -- Deplete: decrease durability -- */
@@ -404,17 +407,20 @@ void _Unit_Item_Deplete(struct Unit *unit, int i, u64 archetype) {
 
     /* Skip if NULL. Not an error, unit can have empty hand. */
     if (unit->_equipment[i].id == ITEM_NULL) {
+        SDL_Log("ITEM_NULL");
         return;
     }
 
     /* Skip if item's archetype to deplete does not match input. */
-    if (!(Item_Archetype(unit->_equipment[i].id) != archetype)) {
+    if (!(flagsum_isIn(unit->_equipment[i].id, archetype))) {
+        SDL_Log("Archetype mismatch");
         return;
     }
 
+    SDL_Log("Depleting");
     struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, unit->_equipment[i].id);
     struct Item   *item   = weapon->item;
-    Inventory_item_Deplete(&unit->_equipment[UNIT_HAND_LEFT], item->stats.uses);
+    Inventory_item_Deplete(&unit->_equipment[i], item->stats.uses);
 }
 
 void _Unit_Equipped_Deplete(struct Unit *unit, b32 hand, u64 archetype) {
@@ -438,14 +444,14 @@ void Unit_Equipped_Staff_Deplete(struct Unit *unit, b32 hand) {
 void Unit_Equipped_Weapons_Deplete(struct Unit *unit) {
     /* Upon getting hit, decrease shields durability */
     _Unit_Equipped_Deplete(unit, UNIT_HAND_LEFT, ITEM_ARCHETYPE_WEAPON);
-    if (!unit->isTwoHanding)
+    if (!Unit_istwoHanding(unit))
         _Unit_Equipped_Deplete(unit, UNIT_HAND_RIGHT, ITEM_ARCHETYPE_WEAPON);
 }
 
 void Unit_Equipped_Shields_Deplete(struct Unit *unit) {
     /* Upon getting hit, use shields */
     _Unit_Equipped_Deplete(unit, UNIT_HAND_LEFT, ITEM_ARCHETYPE_SHIELD);
-    if (!unit->isTwoHanding)
+    if (!Unit_istwoHanding(unit))
         _Unit_Equipped_Deplete(unit, UNIT_HAND_RIGHT, ITEM_ARCHETYPE_SHIELD);
 }
 

@@ -667,7 +667,7 @@ i32 *Unit_computeAttack(struct Unit *unit, int distance) {
     /* -- Twohanding -- */
     // DESIGN: weapon stats in both hands added
     // even when teo handing
-    //  if (unit->isTwoHanding) {
+    //  if (Unit_istwoHanding(unit)) {
     /*                   / 2 -> cause attack value is added twice */
     //   attack_P = (attack_P / 2) * TWO_HANDING_MIGHT_FACTOR;
     //    attack_M = (attack_M / 2) * TWO_HANDING_MIGHT_FACTOR;
@@ -679,7 +679,7 @@ i32 *Unit_computeAttack(struct Unit *unit, int distance) {
         attack_T += SOTA_SKILL_PINPRICK;
     if (TNECS_TYPEFLAG_HAS_TYPE(unit->skills, UNIT_SKILL_PIERCE))
         attack_T += SOTA_SKILL_PIERCE;
-    if (TNECS_TYPEFLAG_HAS_TYPE(unit->skills, UNIT_SKILL_CRUSH) && unit->isTwoHanding)
+    if (TNECS_TYPEFLAG_HAS_TYPE(unit->skills, UNIT_SKILL_CRUSH) && Unit_istwoHanding(unit))
         attack_T += SOTA_SKILL_CRUSH;
 
     /* -- Adding weapon attack to effective stats -- */
@@ -1002,7 +1002,7 @@ i32 Unit_computeSpeed(struct Unit *unit, int distance) {
     }
     /* item weight in both hands is always added */
     u8 wpn_wgt = Equation_Weapon_Wgt(weight_L, weight_R);
-    if (unit->isTwoHanding)
+    if (Unit_istwoHanding(unit))
         wpn_wgt /= TWO_HANDING_WEIGHT_FACTOR;
 
     /* Add all bonuses */

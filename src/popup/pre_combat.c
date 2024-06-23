@@ -96,7 +96,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
     dstrect.w = srcrect.w,         dstrect.h = srcrect.h;
     /* Defendant */
     dstrect.y = (PCP_SIMPLE_DICONL_Y + PCP_SIMPLE_ICON_OFFSET_Y);
-    if (!pcp->dft_unit->isTwoHanding) {
+    if (!Unit_istwoHanding(pcp->dft_unit)) {
         /* Unit is NOT two handing, printing both left and right weapons */
         dstrect.x = (PCP_SIMPLE_DICONL_X + PCP_SIMPLE_ICON_OFFSET_X);
         /* left hand */
@@ -144,7 +144,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
 
     /* Aggressor */
     dstrect.y = (PCP_SIMPLE_AICONL_Y + PCP_SIMPLE_ICON_OFFSET_Y);
-    if (!pcp->agg_unit->isTwoHanding) {
+    if (!Unit_istwoHanding(pcp->agg_unit)) {
         /* Unit is NOT two handing, printing both left and right weapons */
         dstrect.x = (PCP_SIMPLE_AICONL_X + PCP_SIMPLE_ICON_OFFSET_X);
         /* left hand */

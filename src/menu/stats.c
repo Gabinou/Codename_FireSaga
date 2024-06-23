@@ -1,5 +1,6 @@
 
 #include "menu/stats.h"
+#include "unit/equipment.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
 /* --- Constructors/Destructors --- */
@@ -786,7 +787,7 @@ static void _StatsMenu_Draw_Hands(struct StatsMenu *stats_menu, SDL_Renderer *re
     int stronghand = Unit_Hand_Strong(stats_menu->unit);
 
     int ly_offset = 0, ry_offset = 0;
-    if (stats_menu->unit->isTwoHanding)
+    if (Unit_istwoHanding(stats_menu->unit))
         ly_offset = SM_TWOHAND_Y_OFFSET;
 
     srcrect.w = SM_HANDS_TILESIZE;
@@ -953,7 +954,7 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
     srcrect.h = ITEM_ICON_H;
     srcrect.x = SM_ITEML_X;
     srcrect.y = SM_ITEM_Y + i * SM_LINE;
-    if (stats_menu->unit->isTwoHanding)
+    if (Unit_istwoHanding(stats_menu->unit))
         srcrect.y = SM_ITEM_TWOHAND_Y;
     else if (i == UNIT_HAND_RIGHT)
         srcrect.x = SM_ITEMR_X;

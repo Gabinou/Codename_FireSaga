@@ -12,6 +12,7 @@
 /* --- Items --- */
 Inventory_item *Unit_InvItem(       Unit *u, int i);
 Inventory_item *Unit_Item_Equipped( Unit *u, b32 hand);
+b32 Unit_istwoHanding(Unit *u);
 
 /* -- Deplete: decrease durability -- */
 void _Unit_Item_Deplete(           Unit *u, int  i, u64 a);

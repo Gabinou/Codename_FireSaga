@@ -267,7 +267,7 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     dstrect.w = PU_WPN_ICON_H;
     srcrect.w = PU_WPN_ICON_H;
     srcrect.h = PU_WPN_ICON_W;
-    if (!pu->unit->isTwoHanding) {
+    if (!Unit_istwoHanding(pu->unit)) {
         /* Unit is NOT two handing, printing both left and right weapons */
         // DESIGN QUESTION:
         // Face in popup unit may confuse item sides

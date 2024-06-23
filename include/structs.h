@@ -671,7 +671,6 @@ typedef struct Unit {
     b32 courageous     : 1; /* For reaction to story events    */
     b32 show_danger    : 1;
     b32 update_stats   : 1;
-    b32 isTwoHanding   : 1; /* If true, one Inventory_Item in hands is a copy */
     b32 divine_shield  : 1;
     b32 isDualWielding : 1;
 } Unit;
