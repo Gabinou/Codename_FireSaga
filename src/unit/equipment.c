@@ -422,7 +422,7 @@ void _Unit_Equipped_Deplete(struct Unit *unit, b32 hand, u64 archetype) {
         return;
     }
 
-    _Unit_Item_Deplete(unit, hand, archetype);
+    _Unit_Item_Deplete(unit, unit->_equipped[hand], archetype);
 }
 
 void Unit_Item_Deplete(struct Unit *unit, int i) {

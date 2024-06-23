@@ -457,53 +457,57 @@ static void _LoadoutSelectMenu_Draw_Header(struct LoadoutSelectMenu *lsm,
                     LSM_HEADER_LEFT,  LSM_TOP_OF_TEXT);
 }
 
-static void _LoadoutSelectMenu_Draw_Highlight(struct LoadoutSelectMenu  *lsm,
-                                              SDL_Renderer       *renderer) {
-    /* - Skip if no highlight - */
-    b32 highlight = (lsm->selected[0] >= 0);
-    if (!highlight)
-        return;
+// static void _LoadoutSelectMenu_Draw_Highlight(struct LoadoutSelectMenu  *lsm,
+//                                               SDL_Renderer       *renderer) {
+//     /* - Skip if no highlight - */
+//     b32 highlight = (lsm->selected[0] >= 0);
+//     if (!highlight)
+//         return;
 
-    /* - Top Weapon highlight - */
-    b32 header_drawn = (lsm->header.data != NULL);
-    SDL_Rect srcrect;
+//     /* - Top Weapon highlight - */
+//     b32 header_drawn = (lsm->header.data != NULL);
+//     SDL_Rect srcrect;
 
-    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
-    i32 stronghand = Unit_Hand_Strong(lsm->unit);
+//     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
+//     i32 stronghand = Unit_Hand_Strong(lsm->unit);
 
-    SDL_assert(lsm->unit->weapons_dtab != NULL);
-    struct Inventory_item *item   = Unit_InvItem(lsm->unit, Unit_Hand_Strong(lsm->unit));
-    struct Weapon         *weapon = DTAB_GET(lsm->unit->weapons_dtab, item->id);
-    s8 name = weapon->item->name;
-    srcrect.w  = PixelFont_Width(lsm->pixelnours, s8_toUpper(name).data, name.num);
-    i32 uses_left = weapon->item->stats.uses - item->used;
-    char numbuff[8];
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", uses_left);
+//     SDL_assert(lsm->unit->weapons_dtab != NULL);
+//     struct Inventory_item *item   = Unit_InvItem(lsm->unit, Unit_Hand_Strong(lsm->unit));
+//     SDL_Log("item->id %d", item->id);
+//     Weapon_Load(lsm->unit->weapons_dtab, item->id);
+//     struct Weapon         *weapon = DTAB_GET(lsm->unit->weapons_dtab, item->id);
+//     SDL_assert(weapon               != NULL);
+//     SDL_assert(weapon->item         != NULL);
+//     s8 name = weapon->item->name;
+//     srcrect.w  = PixelFont_Width(lsm->pixelnours, s8_toUpper(name).data, name.num);
+//     i32 uses_left = weapon->item->stats.uses - item->used;
+//     char numbuff[8];
+//     stbsp_sprintf(numbuff, "%d\0\0\0\0", uses_left);
 
-    i32 dura_w = PixelFont_Width(lsm->pixelnours_big, numbuff, strlen(numbuff));
+//     i32 dura_w = PixelFont_Width(lsm->pixelnours_big, numbuff, strlen(numbuff));
 
-    if (stronghand == UNIT_HAND_LEFT) {
-        srcrect.x = LSM1_X_OFFSET + LSM_HANDS_TILESIZE - 3;
-    } else if (stronghand == UNIT_HAND_RIGHT) {
-        srcrect.x = lsm->menu_w - LSM_HANDS_TILESIZE - LSM_ICON_W * 2 - dura_w - srcrect.w;
-    }
-    srcrect.y = LSM1_Y_OFFSET + (header_drawn * LSM_ROW_HEIGHT);
-    srcrect.w += ITEM_ICON_W + LSM_ICONTOTEXT_W + LSM_HIGHLIGHT_EXTRA_W;
-    srcrect.h  = ITEM_ICON_H;
-    srcrect.y += 2 ;
-    srcrect.h -= 4;
-    SDL_RenderFillRect(renderer, &srcrect);
-    srcrect.y -= 1;
-    srcrect.x += 1;
-    srcrect.h += 2;
-    srcrect.w -= 2;
-    SDL_RenderFillRect(renderer, &srcrect);
-    srcrect.y -= 1;
-    srcrect.x += 1;
-    srcrect.h += 2;
-    srcrect.w -= 2;
-    SDL_RenderFillRect(renderer, &srcrect);
-}
+//     if (stronghand == UNIT_HAND_LEFT) {
+//         srcrect.x = LSM1_X_OFFSET + LSM_HANDS_TILESIZE - 3;
+//     } else if (stronghand == UNIT_HAND_RIGHT) {
+//         srcrect.x = lsm->menu_w - LSM_HANDS_TILESIZE - LSM_ICON_W * 2 - dura_w - srcrect.w;
+//     }
+//     srcrect.y = LSM1_Y_OFFSET + (header_drawn * LSM_ROW_HEIGHT);
+//     srcrect.w += ITEM_ICON_W + LSM_ICONTOTEXT_W + LSM_HIGHLIGHT_EXTRA_W;
+//     srcrect.h  = ITEM_ICON_H;
+//     srcrect.y += 2 ;
+//     srcrect.h -= 4;
+//     SDL_RenderFillRect(renderer, &srcrect);
+//     srcrect.y -= 1;
+//     srcrect.x += 1;
+//     srcrect.h += 2;
+//     srcrect.w -= 2;
+//     SDL_RenderFillRect(renderer, &srcrect);
+//     srcrect.y -= 1;
+//     srcrect.x += 1;
+//     srcrect.h += 2;
+//     srcrect.w -= 2;
+//     SDL_RenderFillRect(renderer, &srcrect);
+// }
 
 static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
                                           struct LoadoutSelectMenu *lsm,
@@ -725,7 +729,7 @@ void LoadoutSelectMenu_Update(struct  Menu *mc, struct LoadoutSelectMenu *lsm,
     n9patch->scale.y = scale_y;
 
     _LoadoutSelectMenu_Draw_Header(lsm, renderer);
-    _LoadoutSelectMenu_Draw_Highlight(lsm, renderer);
+    // _LoadoutSelectMenu_Draw_Highlight(lsm, renderer);
     _LoadoutSelectMenu_Draw_Hands(mc, lsm, renderer);
     _LoadoutSelectMenu_Draw_Items(lsm, renderer);
 

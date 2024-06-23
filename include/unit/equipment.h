@@ -52,6 +52,7 @@ int     Unit_Equipped(  Unit *u, b32 hand);
 b32     Unit_isEquipped(Unit *u, b32 hand);
 void    Unit_Equip(  Unit *u, b32 h, int i);
 void    Unit_Unequip(Unit *u, b32 h);
+Inventory_item *Unit_Item_Equipped(Unit *unit, b32 hand);
 
 /* -- Can Equip -- */
 b32 Unit_canEquip(       Unit *u, i16 id);
