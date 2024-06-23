@@ -179,6 +179,7 @@ typedef struct PopUp_Loadout_Stats {
     struct PixelFont *pixelnours_big;
     struct Computed_Stats previous_cs;
     struct Computed_Stats new_cs;
+    int equipped[UNIT_HANDS_NUM];
     int item_left;  /* item side space */
     int item_right; /* item side space */
     i16 type_left;
@@ -200,6 +201,7 @@ void PopUp_Loadout_Stats_Free(struct PopUp_Loadout_Stats *pls);
 void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls, SDL_Renderer *r,
                               struct n9Patch *n9);
 
+void  PopUp_Loadout_Stats_Starting_Eq(struct PopUp_Loadout_Stats *pls, int *equipped);
 /* --- Setters --- */
 void  PopUp_Loadout_Stats_New(     struct PopUp_Loadout_Stats *pls);
 void  PopUp_Loadout_Stats_Unit(    struct PopUp_Loadout_Stats *pls, struct Unit *u);

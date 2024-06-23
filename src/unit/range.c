@@ -16,26 +16,22 @@ struct Range *Unit_Range_Loadout(struct Unit   *unit) {
     do {
         /* If dual wielding, range_loadout is combined. */
         if (unit->isDualWielding) {
-            SDL_Log("IS dual wielding,");
             _Unit_Range_Combine(unit, range, true, ITEM_ARCHETYPE_WEAPON);
             break;
         }
 
         /* If not dual wielding, compute range of weapon in stronghand. */
         if (!Unit_isEquipped(unit, stronghand)) {
-            SDL_Log("If not dual wielding,");
             break;
         }
 
         if (!Unit_Eq_Usable(unit, ITEM_ARCHETYPE_WEAPON, stronghand)) {
-            SDL_Log("If not usable,");
             break;
         }
 
         Weapon_Load(unit->weapons_dtab, unit->_equipment[stronghand].id);
         struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[stronghand].id);
         if (wpn == NULL) {
-            SDL_Log("wpn null,");
             break;
         }
         Ranges_Combine(range, wpn->stats.range);

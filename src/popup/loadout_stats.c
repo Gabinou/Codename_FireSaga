@@ -436,6 +436,8 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
                                                SDL_Renderer *renderer) {
     /* - EQUIPPED WEAPONS NAMES - */
     /* Left hand */
+    // SDL_Log("DRAW %d %d", pls->item_left, pls->item_right);
+    // getchar();
     do {
         if ((pls->item_left <= -1) || (pls->item_left >= DEFAULT_EQUIPMENT_SIZE))
             break;
@@ -522,6 +524,10 @@ void PopUp_Loadout_Stats_Free(struct PopUp_Loadout_Stats *pls) {
         pls->texture_weapon_icons = NULL;
     }
 
+}
+void  PopUp_Loadout_Stats_Starting_Eq(struct PopUp_Loadout_Stats *pls, int *equipped) {
+    pls->equipped[UNIT_HAND_LEFT]   = equipped[UNIT_HAND_LEFT];
+    pls->equipped[UNIT_HAND_RIGHT]  = equipped[UNIT_HAND_RIGHT];
 }
 
 void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer,
@@ -611,15 +617,20 @@ void PopUp_Loadout_Stats_Unit(struct PopUp_Loadout_Stats *pls, struct Unit *unit
 
     PopUp_Loadout_Stats_ItemTypes(pls);
     PopUp_Loadout_Stats_Previous(pls);
+    PopUp_Loadout_Stats_Starting_Eq(pls, unit->_equipped);
 }
 
 void PopUp_Loadout_Stats_Previous(struct PopUp_Loadout_Stats *pls) {
     PopUp_Loadout_Stats_ItemTypes(pls);
 
-    pls->previous_cs = Unit_computedStats_wLoadout(pls->unit, pls->item_left, pls->item_right,
+    pls->previous_cs = Unit_computedStats_wLoadout(pls->unit,
+                                                   pls->item_left, pls->item_right,
                                                    pls->distance);
-    pls->new_cs      = pls->previous_cs;
+    // pls->new_cs      = pls->previous_cs;
+
     pls->update      = true;
+    // SDL_Log("PopUp_Loadout_Stats_Previous");
+    // getchar();
 }
 
 void PopUp_Loadout_Stats_New(struct PopUp_Loadout_Stats *pls) {
