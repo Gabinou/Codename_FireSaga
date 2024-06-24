@@ -741,7 +741,6 @@ void PopUp_Loadout_Stats_Draw(struct PopUp *popup, struct Point pos,
     SDL_assert(pls->texture != NULL);
     SDL_RenderCopy(renderer, pls->texture, NULL, &dstrect);
     Utilities_DrawColor_Reset(renderer);
-
 }
 
 void PopUp_Loadout_Stats_Update(struct PopUp_Loadout_Stats *pls, struct n9Patch *n9patch,
@@ -804,4 +803,5 @@ void PopUp_Loadout_Stats_Update(struct PopUp_Loadout_Stats *pls, struct n9Patch 
     _PopUp_Loadout_Stats_Draw_Stats(     pls, renderer);
     _PopUp_Loadout_Stats_Draw_Arrows(    pls, renderer);
     SDL_SetRenderTarget(renderer, render_target);
+    Utilities_DrawColor_Reset(renderer);
 }

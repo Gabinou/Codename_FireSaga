@@ -641,11 +641,6 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
             /* Change black only to grey */
             PixelFont_Swap_Palette(lsm->pixelnours,     renderer, -1, 2);
             PixelFont_Swap_Palette(lsm->pixelnours_big, renderer, -1, 2);
-        } else {
-            /* Reset black and white */
-            // TODO: generalize colors
-            PixelFont_Swap_Palette(lsm->pixelnours,     renderer, lsm->white, lsm->black);
-            PixelFont_Swap_Palette(lsm->pixelnours_big, renderer, lsm->white, lsm->black);
         }
 
         /* - Write '-' if no weapon - */
@@ -685,6 +680,11 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
         PixelFont_Write(lsm->pixelnours, renderer, lsm->item_name.data, lsm->item_name.num, item_x_offset,
                         item_y_offset);
     }
+
+    /* Reset colors */
+    PixelFont_Swap_Palette(lsm->pixelnours,     renderer, lsm->white, lsm->black);
+    PixelFont_Swap_Palette(lsm->pixelnours_big, renderer, lsm->white, lsm->black);
+    Utilities_DrawColor_Reset(renderer);
 }
 
 void LoadoutSelectMenu_Texture_Create(struct LoadoutSelectMenu  *lsm,
@@ -734,4 +734,5 @@ void LoadoutSelectMenu_Update(struct  Menu *mc, struct LoadoutSelectMenu *lsm,
     _LoadoutSelectMenu_Draw_Items(lsm, renderer);
 
     SDL_SetRenderTarget(renderer, target);
+    Utilities_DrawColor_Reset(renderer);
 }

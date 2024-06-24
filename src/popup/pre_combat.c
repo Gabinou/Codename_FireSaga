@@ -74,6 +74,7 @@ static void _PreCombatPopup_Draw_Faces(struct PreCombatPopup *pcp, SDL_Renderer 
     srcrect.w = PCP_SIMPLE_AFACEL_W;
     srcrect.h = PCP_SIMPLE_AFACEL_H;
     SDL_RenderFillRect(renderer, &srcrect);
+    Utilities_DrawColor_Reset(renderer);
 }
 
 static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Renderer *renderer) {
@@ -148,7 +149,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         /* Unit is NOT two handing, printing both left and right weapons */
         dstrect.x = (PCP_SIMPLE_AICONL_X + PCP_SIMPLE_ICON_OFFSET_X);
         /* left hand */
-        item = Unit_Item_Equipped(pcp->dft_unit, UNIT_HAND_LEFT);
+        item = Unit_Item_Equipped(pcp->agg_unit, UNIT_HAND_LEFT);
         if (Unit_isEquipped(pcp->agg_unit, UNIT_HAND_LEFT) && (item->id > ITEM_NULL)) {
             struct Weapon *weapon = DTAB_GET(pcp->agg_unit->weapons_dtab, item->id);
             u16 type = weapon->item->type;
@@ -168,10 +169,9 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         dstrect.x = (PCP_SIMPLE_AICONR_X + PCP_SIMPLE_ICON_OFFSET_X);
         dstrect.y = (PCP_SIMPLE_AICONR_Y + PCP_SIMPLE_ICON_OFFSET_Y);
         index = pcp->agg_unit->_equipped[UNIT_HAND_RIGHT];
-        item = Unit_Item_Equipped(pcp->dft_unit, UNIT_HAND_RIGHT);
+        item = Unit_Item_Equipped(pcp->agg_unit, UNIT_HAND_RIGHT);
         if (Unit_isEquipped(pcp->agg_unit, UNIT_HAND_RIGHT) && (item->id > ITEM_NULL)) {
-            SDL_Log("item->id %d", item->id);
-            struct Weapon *weapon = DTAB_GET(pcp->dft_unit->weapons_dtab, item->id);
+            struct Weapon *weapon = DTAB_GET(pcp->agg_unit->weapons_dtab, item->id);
             SDL_assert(weapon       != NULL);
             SDL_assert(weapon->item != NULL);
             u16 type = weapon->item->type;
@@ -190,7 +190,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         /* Unit is two handing, printing ONE icon in the center */
         dstrect.x  = (PCP_SIMPLE_AICONL_X + PCP_SIMPLE_ICON_OFFSET_X) / 2;
         dstrect.x += (PCP_SIMPLE_AICONR_X + PCP_SIMPLE_ICON_OFFSET_X) / 2;
-        item = Unit_Item_Equipped(pcp->dft_unit, UNIT_HAND_RIGHT);
+        item = Unit_Item_Equipped(pcp->agg_unit, UNIT_HAND_RIGHT);
         SDL_assert(item->id > ITEM_NULL);
         struct Weapon *weapon = DTAB_GET(pcp->agg_unit->weapons_dtab, item->id);
         SDL_assert(weapon       != NULL);
@@ -204,6 +204,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         srcrect.y = (type_ind / PCP_SIMPLE_ICON_ROWLEN) * PCP_SIMPLE_ICON_H;
         SDL_RenderCopy(renderer, pcp->texture_weapons, &srcrect, &dstrect);
     }
+    Utilities_DrawColor_Reset(renderer);
 }
 
 static void _PreCombatPopup_Draw_Stats(struct PreCombatPopup *pcp, SDL_Renderer *renderer) {
