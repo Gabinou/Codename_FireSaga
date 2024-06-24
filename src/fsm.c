@@ -396,6 +396,21 @@ fsm_eGlbRng_s_t fsm_eGlbRng_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL
 };
 
+fsm_eCmbtEnd_ss_t fsm_eCmbtEnd_ss[GAME_SUBSTATE_NUM] = {
+    /* NULL */            NULL,
+    /* MAP_MINIMAP */     NULL,
+    /* MENU */            NULL,
+    /* MAP_UNIT_MOVES */  NULL,
+    /* MAP_COMBAT */      NULL,
+    /* MAP_NPCTURN */     &fsm_eGlbRng_ssMapNPC,
+    /* SAVING */          NULL,
+    /* STANDBY */         NULL,
+    /* MAP_CANDIDATES */  NULL,
+    /* CUTSCENE */        NULL,
+    /* MAP_ANIMATION */   &fsm_eGlbRng_ssMapAnim,
+};
+
+
 /* -- FSM: Input_globalRange EVENT -- */
 void fsm_eGlbRng_ssStby(struct Game *sota) {
     /* --- Toggle global range --- */
@@ -1240,7 +1255,6 @@ void fsm_eAcpt_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity accepter_entit
     SDL_assert(sota->map->army_i < DARR_NUM(sota->map->army_onfield));
     i32 army = sota->map->army_onfield[sota->map->army_i];
     SDL_Log("sota->map->army_i %d %d %d", sota->map->army_i, army, unit->army);
-    // getchar();
     SDL_assert(army == unit->army); /* only units in current army should be moving */
     Map_Bonus_Remove_Instant(sota->map, unit->army);
     Map_Bonus_Standard_Apply(sota->map, unit->army);
@@ -1515,4 +1529,21 @@ void fsm_eMenuLeft_sPrep_ssMapCndt(struct Game *sota) {
 
     /* - Place cursor on dm->elem == map candidate - */
     SDL_assert(sota->state == GAME_STATE_Preparation);
+}
+
+void fsm_eGlbRng_ssMapNPC(  struct Game *sota) {
+    // Make all popups invisible
+    SDL_Log(__func__);
+    getchar();
+
+}
+
+void fsm_eGlbRng_ssMapAnim( struct Game *sota) {
+    // Return to standby substate -> ONLY IF ON FRIENDLY TURN
+    SDL_Log(__func__);
+    getchar();
+
+    *data1_entity = sota->entity_cursor;
+    Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
+
 }

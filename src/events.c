@@ -715,7 +715,6 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->map->army_i >= 0);
     SDL_assert(sota->map->army_i < DARR_NUM(sota->map->army_onfield));
     SDL_Log("Turn_Transition army_i %d", sota->map->army_i);
-    getchar();
     i8 army      = sota->map->army_onfield[sota->map->army_i];
     SDL_assert(army >= 0);
     SDL_assert(army < ARMY_NUM);
@@ -1379,9 +1378,8 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
     // 6. Revert hovered entity to aggressor
     sota->hovered_unit_entity = sota->aggressor;
 
-    // 7. Return to standby
-    *data1_entity = sota->entity_cursor;
-    Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
+    if (fsm_eCmbtEnd_ss[sota->substate] != NULL)
+        fsm_eCmbtEnd_ss[sota->substate](sota);
 }
 
 void receive_event_Defendant_Select(struct Game *sota, SDL_Event *userevent) {

@@ -1160,13 +1160,6 @@ void Unit_readJSON(void *input,  cJSON *junit) {
             Unit_Equip(unit, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
         }
     }
-    // if (unit->_id == 2012) {
-    //     SDL_Log("CORSAIR ");
-    //     SDL_Log("%d %d", Unit_isEquipped(unit, UNIT_HAND_LEFT), Unit_isEquipped(unit, UNIT_HAND_RIGHT));
-    //     SDL_Log("%d %d", unit->_equipped[UNIT_HAND_LEFT], unit->_equipped[UNIT_HAND_RIGHT]);
-    //     SDL_Log("%d %d", unit->_equipment[UNIT_HAND_LEFT].id, unit->_equipment[UNIT_HAND_RIGHT].id);
-    //     getchar();
-    // }
 }
 
 void Unit_writeJSON( void *input, cJSON *junit) {

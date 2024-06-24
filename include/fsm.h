@@ -75,6 +75,7 @@ typedef fsm_eMenuRight_s_t  fsm_eMenuLeft_sGmpMap_ss_t;
 typedef fsm_eMenuRight_s_t  fsm_eMenuRight_sGmpMap_ss_t;
 typedef fsm_eCrsMvd_s_t     fsm_eCrsMvs_s_t;
 typedef fsm_eGlbRng_s_t     fsm_eMenuLeft_sPrep_ss_t;
+typedef fsm_eGlbRng_s_t     fsm_eCmbtEnd_ss_t;
 typedef fsm_eGmp2Stby_s_t   fsm_eUnitDsel_s_t;
 typedef fsm_eGmp2Stby_s_t   fsm_eUnitSel_s_t ;
 typedef fsm_eGmp2Stby_s_t   fsm_eUnitDng_s_t;
@@ -242,5 +243,11 @@ void fsm_eUnitDsel_sMapUnitMv(struct Game *sota, tnecs_entity ent);
 extern fsm_eGlbRng_s_t fsm_eGlbRng_ss[GAME_SUBSTATE_NUM];
 
 void fsm_eGlbRng_ssStby(struct Game *sota);
+
+/* -- FSM: Combat_End EVENT -- */
+extern fsm_eCmbtEnd_ss_t fsm_eCmbtEnd_ss[GAME_SUBSTATE_NUM];
+
+void fsm_eGlbRng_ssMapNPC(  struct Game *sota);
+void fsm_eGlbRng_ssMapAnim( struct Game *sota);
 
 #endif /* FSM_H */
