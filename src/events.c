@@ -714,6 +714,8 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     Map_Army_Next(sota->map);
     SDL_assert(sota->map->army_i >= 0);
     SDL_assert(sota->map->army_i < DARR_NUM(sota->map->army_onfield));
+    SDL_Log("Turn_Transition army_i %d", sota->map->army_i);
+    getchar();
     i8 army      = sota->map->army_onfield[sota->map->army_i];
     SDL_assert(army >= 0);
     SDL_assert(army < ARMY_NUM);

@@ -79,7 +79,6 @@ static void _PreCombatPopup_Draw_Faces(struct PreCombatPopup *pcp, SDL_Renderer 
 
 static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Renderer *renderer) {
     struct Inventory_item *item;
-    int index;
     SDL_Rect dstrect, srcrect;
     /* - Weapon icons - */
     /* Fill Background */
@@ -168,7 +167,6 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         /* right hand */
         dstrect.x = (PCP_SIMPLE_AICONR_X + PCP_SIMPLE_ICON_OFFSET_X);
         dstrect.y = (PCP_SIMPLE_AICONR_Y + PCP_SIMPLE_ICON_OFFSET_Y);
-        index = pcp->agg_unit->_equipped[UNIT_HAND_RIGHT];
         item = Unit_Item_Equipped(pcp->agg_unit, UNIT_HAND_RIGHT);
         if (Unit_isEquipped(pcp->agg_unit, UNIT_HAND_RIGHT) && (item->id > ITEM_NULL)) {
             struct Weapon *weapon = DTAB_GET(pcp->agg_unit->weapons_dtab, item->id);
@@ -176,7 +174,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
             SDL_assert(weapon->item != NULL);
             u16 type = weapon->item->type;
             // TODO: weapon with multiple types
-            SDL_assert(weapon->item->type > 1);
+            SDL_assert(weapon->item->type > 0);
             int type_ind = (int)(log(type) / log(2.0f)) + 1;
             SDL_assert(type_ind > 0);
             srcrect.x = (type_ind % PCP_SIMPLE_ICON_ROWLEN) * PCP_SIMPLE_ICON_W;

@@ -1239,7 +1239,8 @@ void fsm_eAcpt_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity accepter_entit
     SDL_assert(sota->map->army_i >= 0);
     SDL_assert(sota->map->army_i < DARR_NUM(sota->map->army_onfield));
     i32 army = sota->map->army_onfield[sota->map->army_i];
-    SDL_Log("%d %d", sota->map->army_i, army, unit->army);
+    SDL_Log("sota->map->army_i %d %d %d", sota->map->army_i, army, unit->army);
+    // getchar();
     SDL_assert(army == unit->army); /* only units in current army should be moving */
     Map_Bonus_Remove_Instant(sota->map, unit->army);
     Map_Bonus_Standard_Apply(sota->map, unit->army);
