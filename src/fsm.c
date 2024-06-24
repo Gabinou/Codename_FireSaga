@@ -1533,17 +1533,25 @@ void fsm_eMenuLeft_sPrep_ssMapCndt(struct Game *sota) {
 
 void fsm_eGlbRng_ssMapNPC(  struct Game *sota) {
     // Make all popups invisible
-    SDL_Log(__func__);
-    getchar();
 
+    /* --- Invisible Popups --- */
+    /* -- Popup_Loadout_stats -- */
+    tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS];
+    if (popup_ent > TNECS_NULL) {
+        struct PopUp *popup_ptr = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
+        SDL_assert(popup_ptr != NULL);
+        popup_ptr->visible = false;
+    }
+
+    /* -- Setting game substate -- */
+    strncpy(sota->reason, "Control returns to AI",
+            sizeof(sota->reason));
+    Game_subState_Set(sota, GAME_SUBSTATE_MAP_NPCTURN, sota->reason);
 }
 
 void fsm_eGlbRng_ssMapAnim( struct Game *sota) {
     // Return to standby substate -> ONLY IF ON FRIENDLY TURN
-    SDL_Log(__func__);
-    getchar();
 
     *data1_entity = sota->entity_cursor;
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
-
 }

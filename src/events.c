@@ -1249,10 +1249,10 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     strncpy(sota->reason, "Quitting gameplay", sizeof(sota->reason));
     Game_subState_Set(sota, GAME_SUBSTATE_MAP_ANIMATION, sota->reason);
     /* -- find attack direction -- */
-    struct Position *agg_posc = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Position);
-    struct Position *dft_posc = TNECS_GET_COMPONENT(sota->world, sota->defendant, Position);
-    struct Point *agg_pos     = &agg_posc->tilemap_pos;
-    struct Point *dft_pos     = &dft_posc->tilemap_pos;
+    struct Position *agg_posc   = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Position);
+    struct Position *dft_posc   = TNECS_GET_COMPONENT(sota->world, sota->defendant, Position);
+    struct Point    *dft_pos    = &dft_posc->tilemap_pos;
+    struct Point    *agg_pos    = &agg_posc->tilemap_pos;
 
     struct Point move = {dft_pos->x - agg_pos->x, dft_pos->y - agg_pos->y};
     move.x = move.x < -1 ? -1 : move.x;
@@ -1378,8 +1378,8 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
     // 6. Revert hovered entity to aggressor
     sota->hovered_unit_entity = sota->aggressor;
 
-    if (fsm_eCmbtEnd_ss[sota->substate] != NULL)
-        fsm_eCmbtEnd_ss[sota->substate](sota);
+    if (fsm_eCmbtEnd_ss[sota->substate_previous] != NULL)
+        fsm_eCmbtEnd_ss[sota->substate_previous](sota);
 }
 
 void receive_event_Defendant_Select(struct Game *sota, SDL_Event *userevent) {
