@@ -247,7 +247,7 @@ void fsm_eGlbRng_ssStby(struct Game *sota);
 /* -- FSM: Combat_End EVENT -- */
 extern fsm_eCmbtEnd_ss_t fsm_eCmbtEnd_ss[GAME_SUBSTATE_NUM];
 
-void fsm_eGlbRng_ssMapNPC(  struct Game *sota);
-void fsm_eGlbRng_ssMapAnim( struct Game *sota);
+void fsm_eCmbtEnd_ssMapNPC(  struct Game *sota);
+void fsm_eCmbtEnd_ssMapCndt( struct Game *sota);
 
 #endif /* FSM_H */

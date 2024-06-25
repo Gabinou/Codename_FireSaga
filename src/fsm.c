@@ -402,12 +402,12 @@ fsm_eCmbtEnd_ss_t fsm_eCmbtEnd_ss[GAME_SUBSTATE_NUM] = {
     /* MENU */            NULL,
     /* MAP_UNIT_MOVES */  NULL,
     /* MAP_COMBAT */      NULL,
-    /* MAP_NPCTURN */     &fsm_eGlbRng_ssMapNPC,
+    /* MAP_NPCTURN */     &fsm_eCmbtEnd_ssMapNPC,
     /* SAVING */          NULL,
     /* STANDBY */         NULL,
-    /* MAP_CANDIDATES */  NULL,
+    /* MAP_CANDIDATES */  &fsm_eCmbtEnd_ssMapCndt,
     /* CUTSCENE */        NULL,
-    /* MAP_ANIMATION */   &fsm_eGlbRng_ssMapAnim,
+    /* MAP_ANIMATION */   NULL,
 };
 
 
@@ -1531,7 +1531,7 @@ void fsm_eMenuLeft_sPrep_ssMapCndt(struct Game *sota) {
     SDL_assert(sota->state == GAME_STATE_Preparation);
 }
 
-void fsm_eGlbRng_ssMapNPC(  struct Game *sota) {
+void fsm_eCmbtEnd_ssMapNPC(  struct Game *sota) {
     // Make all popups invisible
 
     /* --- Invisible Popups --- */
@@ -1544,14 +1544,12 @@ void fsm_eGlbRng_ssMapNPC(  struct Game *sota) {
     }
 
     /* -- Setting game substate -- */
-    strncpy(sota->reason, "Control returns to AI",
-            sizeof(sota->reason));
+    strncpy(sota->reason, "Control returns to AI", sizeof(sota->reason));
     Game_subState_Set(sota, GAME_SUBSTATE_MAP_NPCTURN, sota->reason);
 }
 
-void fsm_eGlbRng_ssMapAnim( struct Game *sota) {
+void fsm_eCmbtEnd_ssMapCndt( struct Game *sota) {
     // Return to standby substate -> ONLY IF ON FRIENDLY TURN
-
     *data1_entity = sota->entity_cursor;
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
 }
