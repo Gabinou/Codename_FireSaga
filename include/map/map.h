@@ -37,7 +37,7 @@ struct Map_condition;
 #define ARROW_FILENAME ARROW_FILENAME_
 #define ARROW_FILENAME_ PATH_JOIN("..", "assets", "GUI", "arrow.png")
 
-struct Map {
+typedef struct Map {
     s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
     u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
 
@@ -216,7 +216,7 @@ struct Map {
     b32 visible_changed    : 1;
     b32 shading_changed    : 1;
     b32 show_globalRange   : 1;
-};
+} Map;
 extern struct Map Map_default;
 
 /* --- Constructor/Destructors --- */

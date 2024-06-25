@@ -130,7 +130,7 @@ void fsm_eCrsDeHvUnit_sGmpMap(struct Game *sota, tnecs_entity ent);
 
 void fsm_eCrsDeHvUnit_ssStby(    struct Game *sota, tnecs_entity ent);
 void fsm_eCrsDeHvUnit_ssMapCndt( struct Game *sota, tnecs_entity ent);
-void fsm_eCrsDeHvUnit_sMapUnitMv(struct Game *sota, tnecs_entity ent);
+void fsm_eCrsDeHvUnit_ssMapUnitMv(struct Game *sota, tnecs_entity ent);
 
 /* -- FSM: Input_Start EVENT -- */
 // e.g. PAUSE -> Remove later
@@ -161,7 +161,7 @@ void fsm_eAcpt_sGmpMap_ssMapNPC(  struct Game *sota, tnecs_entity ent);
 void fsm_eAcpt_sGmpMap_ssMapMini( struct Game *sota, tnecs_entity ent);
 void fsm_eAcpt_sGmpMap_ssMapCndt( struct Game *sota, tnecs_entity ent);
 void fsm_eAcpt_sGmpMap_ssMapCmbt( struct Game *sota, tnecs_entity ent);
-void fsm_eAcpt_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity ent);
+void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity ent);
 
 /* -- FSM: Input_Cancel EVENT -- */
 extern fsm_eCncl_s_t  fsm_eCncl_s[GAME_STATE_NUM];
@@ -181,7 +181,7 @@ void fsm_eCncl_sGmpMap_ssAnim(    struct Game *sota, tnecs_entity ent);
 void fsm_eCncl_sGmpMap_ssMapNPC(  struct Game *sota, tnecs_entity ent);
 void fsm_eCncl_sGmpMap_ssMapCndt( struct Game *sota, tnecs_entity ent);
 void fsm_eCncl_sGmpMap_ssMapCmbt( struct Game *sota, tnecs_entity ent);
-void fsm_eCncl_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity ent);
+void fsm_eCncl_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity ent);
 
 /* -- FSM: Input_Stats EVENT -- */
 extern fsm_eStats_s_t fsm_eStats_s[GAME_STATE_NUM];
@@ -224,7 +224,7 @@ extern fsm_eGmp2Stby_s_t fsm_eGmp2Stby_s[GAME_STATE_NUM];
 extern fsm_eGmp2Stby_s_t fsm_eGmp2Stby_ss[GAME_SUBSTATE_NUM];
 
 void fsm_eGmp2Stby_sGmpMap(   struct Game *sota, tnecs_entity ent);
-void fsm_eGmp2Stby_sMapUnitMv(struct Game *sota, tnecs_entity ent);
+void fsm_eGmp2Stby_ssMapUnitMv(struct Game *sota, tnecs_entity ent);
 
 /* -- FSM: Unit_Select EVENT -- */
 extern fsm_eUnitSel_s_t fsm_eUnitSel_s[GAME_STATE_NUM];
@@ -236,8 +236,8 @@ void fsm_eUnitSel_ssStby(struct Game *sota, tnecs_entity ent);
 extern fsm_eUnitDsel_s_t fsm_eUnitDsel_s[GAME_STATE_NUM];
 extern fsm_eUnitDsel_s_t fsm_eUnitDsel_ss[GAME_SUBSTATE_NUM];
 
-void fsm_eUnitDsel_ssMenu(    struct Game *sota, tnecs_entity ent);
-void fsm_eUnitDsel_sMapUnitMv(struct Game *sota, tnecs_entity ent);
+void fsm_eUnitDsel_ssMenu(      struct Game *sota, tnecs_entity ent);
+void fsm_eUnitDsel_ssMapUnitMv( struct Game *sota, tnecs_entity ent);
 
 /* -- FSM: Input_globalRange EVENT -- */
 extern fsm_eGlbRng_s_t fsm_eGlbRng_ss[GAME_SUBSTATE_NUM];

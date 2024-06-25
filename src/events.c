@@ -886,14 +886,14 @@ void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->selected_unit_entity   != TNECS_NULL);
 
     /* -- Initialize Arrow -- */
-    struct Position *cpos;
-    struct Unit *selected;
+    Position *cpos;
+    Unit     *selected;
     cpos     = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor,        Position);
     selected = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Unit);
     SDL_assert(cpos                 != NULL);
     SDL_assert(selected             != NULL);
     SDL_assert(sota->map->costmap   != NULL);
-    struct Map *map = sota->map;
+    Map *map = sota->map;
     Arrow_Path_Init(map->arrow, map->costmap, Unit_computeMove(selected), cpos->tilemap_pos);
     strncpy(sota->reason, "friendly unit was selected and can move", sizeof(sota->reason));
     Game_subState_Set(sota, GAME_SUBSTATE_MAP_UNIT_MOVES, sota->reason);

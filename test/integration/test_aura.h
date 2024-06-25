@@ -330,9 +330,9 @@ void test_aura_decay(int argc, char *argv[]) {
 
 void test_aura_fsm(int argc, char *argv[]) {
     /* Test scenario:
-     *    - Unit moves inside range, triggering -> fsm_eAcpt_sGmpMap_sMapUnitMv
+     *    - Unit moves inside range, triggering -> fsm_eAcpt_sGmpMap_ssMapUnitMv
      *        - Bonus active
-     *    - Unit moves outside range, triggering -> fsm_eAcpt_sGmpMap_sMapUnitMv
+     *    - Unit moves outside range, triggering -> fsm_eAcpt_sGmpMap_ssMapUnitMv
      *        - Bonus inactive
     */
 
@@ -390,10 +390,10 @@ void test_aura_fsm(int argc, char *argv[]) {
     cursor_pos->tilemap_pos.x               = 3;
     cursor_pos->tilemap_pos.y               = 3;
 
-    /* Mocking stuff for fsm_eAcpt_sGmpMap_sMapUnitMv */
+    /* Mocking stuff for fsm_eAcpt_sGmpMap_ssMapUnitMv */
     sota->selected_unit_entity = sota->units_loaded[UNIT_ID_SILOU];
     sota->map->army_i = 0;
-    fsm_eAcpt_sGmpMap_sMapUnitMv(sota, TNECS_NULL);
+    fsm_eAcpt_sGmpMap_ssMapUnitMv(sota, TNECS_NULL);
     struct Position *silou_pos = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[UNIT_ID_SILOU],
                                                      Position);
     SDL_assert(silou_pos->tilemap_pos.x == sota->selected_unit_moved_position.x);
@@ -427,7 +427,7 @@ void test_aura_fsm(int argc, char *argv[]) {
     cursor_pos->tilemap_pos.y               = 0;
     sota->selected_unit_entity              = sota->units_loaded[UNIT_ID_SILOU];
 
-    fsm_eAcpt_sGmpMap_sMapUnitMv(sota, TNECS_NULL);
+    fsm_eAcpt_sGmpMap_ssMapUnitMv(sota, TNECS_NULL);
     nourstest_true(DARR_NUM(silou->bonus_stack) == 0);
     silou_pos = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[UNIT_ID_SILOU], Position);
     SDL_assert(silou_pos->tilemap_pos.x == sota->selected_unit_moved_position.x);

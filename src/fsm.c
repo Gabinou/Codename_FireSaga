@@ -104,7 +104,7 @@ fsm_eGmp2Stby_s_t fsm_eGmp2Stby_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            NULL,
-    /* MAP_UNIT_MOVES */  &fsm_eGmp2Stby_sMapUnitMv,
+    /* MAP_UNIT_MOVES */  &fsm_eGmp2Stby_ssMapUnitMv,
     /* MAP_COMBAT */      NULL,
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
@@ -217,7 +217,7 @@ fsm_eAcpt_s_t fsm_eAcpt_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     &fsm_eAcpt_sGmpMap_ssMapMini,
     /* MENU */            &fsm_eAcpt_sGmpMap_ssMenu,
-    /* MAP_UNIT_MOVES */  &fsm_eAcpt_sGmpMap_sMapUnitMv,
+    /* MAP_UNIT_MOVES */  &fsm_eAcpt_sGmpMap_ssMapUnitMv,
     /* MAP_COMBAT */      &fsm_eAcpt_sGmpMap_ssMapCmbt,
     /* MAP_NPCTURN */     &fsm_eAcpt_sGmpMap_ssMapNPC,
     /* SAVING */          NULL,
@@ -259,7 +259,7 @@ fsm_eCncl_s_t fsm_eCncl_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            &fsm_eCncl_sGmpMap_ssMenu,
-    /* MAP_UNIT_MOVES */  &fsm_eCncl_sGmpMap_sMapUnitMv,
+    /* MAP_UNIT_MOVES */  &fsm_eCncl_sGmpMap_ssMapUnitMv,
     /* MAP_COMBAT */      &fsm_eCncl_sGmpMap_ssMapCmbt,
     /* MAP_NPCTURN */     &fsm_eCncl_sGmpMap_ssMapNPC,
     /* SAVING */          NULL,
@@ -287,7 +287,7 @@ fsm_eUnitDsel_s_t fsm_eUnitDsel_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            &fsm_eUnitDsel_ssMenu,
-    /* MAP_UNIT_MOVES */  &fsm_eUnitDsel_sMapUnitMv,
+    /* MAP_UNIT_MOVES */  &fsm_eUnitDsel_ssMapUnitMv,
     /* MAP_COMBAT */      NULL,
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
@@ -729,7 +729,7 @@ void fsm_eCncl_sGmpMap_ssMenu(struct Game *sota, tnecs_entity canceller) {
 
 }
 
-void fsm_eCncl_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity canceller) {
+void fsm_eCncl_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity canceller) {
     /* --- Hide movemap, return unit to starting pos --- */
     sota->map->arrow->show = false;
 
@@ -1023,7 +1023,7 @@ void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity mover_entit
 }
 
 // -- FSM: Gameplay_Return2Standby EVENT --
-void fsm_eGmp2Stby_sMapUnitMv(struct Game *sota, tnecs_entity ent) {
+void fsm_eGmp2Stby_ssMapUnitMv(struct Game *sota, tnecs_entity ent) {
 
     if (sota->selected_unit_entity > 0)
         Event_Emit(__func__, SDL_USEREVENT, event_Unit_Icon_Return, NULL, NULL);
@@ -1189,7 +1189,7 @@ void fsm_eAcpt_sGmpMap_ssMenu(struct Game *sota, tnecs_entity accepter_entity) {
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Select, NULL, NULL);
 }
 
-void fsm_eAcpt_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity accepter_entity) {
+void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_entity) {
     /* - Unit should have been selected - */
     SDL_assert(sota->selected_unit_entity != TNECS_NULL);
     tnecs_entity unit_ent = sota->selected_unit_entity;
@@ -1206,14 +1206,23 @@ void fsm_eAcpt_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity accepter_entit
     }
 
     /* - Get selected unit on tile - */
-    const struct Position *accepter_position;
+    const struct Position *cursor_pos;
     struct Position *selected_pos;
-    struct Unit *unit       = TNECS_GET_COMPONENT(sota->world, unit_ent,            Unit);
-    selected_pos            = TNECS_GET_COMPONENT(sota->world, unit_ent,            Position);
-    accepter_position       = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    struct Unit *unit   = TNECS_GET_COMPONENT(sota->world, unit_ent,            Unit);
+    selected_pos        = TNECS_GET_COMPONENT(sota->world, unit_ent,            Position);
+    cursor_pos          = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
 
     /* - Unit should be PC - */
     SDL_assert(SotA_isPC(unit->army));
+
+    /* - Skip if friendly on tile - */
+    int current_i       = cursor_pos->tilemap_pos.y * sota->map->col_len +
+                          cursor_pos->tilemap_pos.x;
+    tnecs_entity ontile = sota->map->unitmap[current_i];
+
+    if (ontile != NULL) {
+        return;
+    }
 
     /* -- Creating Unit Action Menu -- */
     tnecs_entity *menu = &sota->player_select_menus[MENU_PLAYER_SELECT_UNIT_ACTION];
@@ -1224,12 +1233,12 @@ void fsm_eAcpt_sGmpMap_sMapUnitMv(struct Game *sota, tnecs_entity accepter_entit
     /* - Send event_Menu_Created Event to set substate - */
     strncpy(sota->reason, "friendly unit has moved, time to choose action", sizeof(sota->reason));
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, menu, NULL);
-    sota->cursor_lastpos.x = accepter_position->tilemap_pos.x;
-    sota->cursor_lastpos.y = accepter_position->tilemap_pos.y;
+    sota->cursor_lastpos.x = cursor_pos->tilemap_pos.x;
+    sota->cursor_lastpos.y = cursor_pos->tilemap_pos.y;
 
     /* - Moving unit to new tile - */
-    sota->selected_unit_moved_position.x    = accepter_position->tilemap_pos.x;
-    sota->selected_unit_moved_position.y    = accepter_position->tilemap_pos.y;
+    sota->selected_unit_moved_position.x    = cursor_pos->tilemap_pos.x;
+    sota->selected_unit_moved_position.y    = cursor_pos->tilemap_pos.y;
     struct Point initial                    = sota->selected_unit_initial_position;
     struct Point moved                      = sota->selected_unit_moved_position;
     if ((initial.x != moved.x) || (initial.y != moved.y))
@@ -1351,7 +1360,7 @@ void fsm_eUnitDsel_ssMenu(struct Game *sota, tnecs_entity selector) {
     Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
 }
 
-void fsm_eUnitDsel_sMapUnitMv(struct Game *sota, tnecs_entity selector) {
+void fsm_eUnitDsel_ssMapUnitMv(struct Game *sota, tnecs_entity selector) {
     /*  -- Hide arrow -- */
     sota->map->arrow->show = false;
 
