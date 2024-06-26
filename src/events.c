@@ -1238,6 +1238,8 @@ void receive_event_Unit_Rescue(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
+    SDL_assert(sota->aggressor > TNECS_NULL);
+    SDL_assert(sota->defendant > TNECS_NULL);
     struct Sprite *agg_sprite = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Sprite);
     struct Sprite *dft_sprite = TNECS_GET_COMPONENT(sota->world, sota->defendant, Sprite);
 
@@ -1507,11 +1509,14 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
     struct PopUp *popup_ptr  = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
     struct PopUp_Map_Combat *pmc = popup_ptr->data;
-    SDL_assert(pmc->aggressor == sota->aggressor);
     SDL_assert(pmc->defendant == sota->defendant);
-    Unit *aggressor  = TNECS_GET_COMPONENT(sota->world, sota->aggressor, PopUp);
-    Unit *defendant  = TNECS_GET_COMPONENT(sota->world, sota->defendant, PopUp);
-
+    SDL_assert(pmc->aggressor == sota->aggressor);
+    SDL_assert(pmc->defendant > TNECS_NULL);
+    SDL_assert(pmc->aggressor > TNECS_NULL);
+    Unit *aggressor  = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Unit);
+    Unit *defendant  = TNECS_GET_COMPONENT(sota->world, sota->defendant, Unit);
+    SDL_assert(aggressor != NULL);
+    SDL_assert(defendant != NULL);
 
     // 1. Get next HP of attacked unit
     struct Combat_Attack attack = sota->combat_outcome.attacks[pmc->current_attack++];

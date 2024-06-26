@@ -26,7 +26,8 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
         b32 paused = ((combat_timer->time_ns / SOTA_us) < combat_anim->pause_after_ms);
         if (!paused) {
             tnecs_entity_destroy(sota->world, entity);
-            Event_Emit(__func__, SDL_USEREVENT, event_Combat_End, NULL, NULL);
+            receive_event_Combat_End(sota, NULL);
+            // Event_Emit(__func__, SDL_USEREVENT, event_Combat_End, NULL, NULL);
         }
         /* - Skip if no more attacks to animate - */
         return;
@@ -68,7 +69,12 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
     }
 
     combat_anim->attack_ind++;
-    Event_Emit(__func__, SDL_USEREVENT, event_Increment_Attack, NULL, NULL);
+    SDL_assert(sota->aggressor  > TNECS_NULL);
+    SDL_assert(sota->defendant  > TNECS_NULL);
+    SDL_Event *userevent = malloc(sizeof(userevent));
+    receive_event_Increment_Attack(sota, userevent);
+    free(userevent);
+    // Event_Emit(__func__, SDL_USEREVENT, event_Increment_Attack, NULL, NULL);
 
     /* - reset combat timer for next attack - */
     combat_timer->time_ns       = 0;

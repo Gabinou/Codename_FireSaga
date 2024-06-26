@@ -395,6 +395,7 @@ void Combat_Resolve(struct Combat_Attack *combat_attacks, u8 attack_num,
 void Combat_Resolve_Attack(struct Combat_Attack attack, struct Unit *attacker,
                            struct Unit *defender) {
     /* - Skip if attack doesn't hit - */
+    SDL_assert(defender != NULL);
     if (!attack.hit)
         /* - Deplete ranged weapons here? - */
         return;

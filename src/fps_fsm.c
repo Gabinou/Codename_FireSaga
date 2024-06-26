@@ -134,6 +134,7 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     b32 move_anim   = sota->ai_state.move_anim;
 
     /* -- AI moves unit -- */
+    // TODO: wait on combat to finish!
     if (decided && !move_anim) {
         SDL_LogDebug(SOTA_LOG_AI, "AI_Move");
         SDL_assert(!act_anim);
