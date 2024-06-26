@@ -361,8 +361,6 @@ i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_world *world,
         struct Unit *ontile_unit = TNECS_GET_COMPONENT(world, ontile_unit_ent, Unit);
         SDL_assert(ontile_unit != NULL);
         u8 ontile_army = ontile_unit->army;
-        SDL_Log("name: %s", ontile_unit->name.data);
-        SDL_Log("ontile_unit->army %d", ontile_unit->army);
         SDL_assert((ontile_army < ARMY_END) && (ontile_army > ARMY_START));
 
         if (SotA_army2alignment(ontile_army) != SotA_army2alignment(army))

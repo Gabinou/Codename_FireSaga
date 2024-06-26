@@ -1211,12 +1211,12 @@ void receive_event_Unit_Wait(struct Game *sota, SDL_Event *userevent) {
     Map_Stacked_Dangermap_Reset(sota->map);
     Map_Palettemap_Reset(sota->map);
 
-    /* -- Deselect unit and go back to map -- */
-    Event_Emit(__func__, SDL_USEREVENT, event_Unit_Deselect, NULL, &sota->selected_unit_entity);
-
     if (DARR_NUM(sota->menu_stack) == 0)
         Game_cursorFocus_onMap(sota);
+    /* -- Deselect unit and go back to map -- */
 
+    // Event_Emit(__func__, SDL_USEREVENT, event_Unit_Deselect, NULL, &sota->selected_unit_entity);
+    receive_event_Unit_Deselect(sota, userevent);
 }
 
 void receive_event_Unit_Talk(struct Game *sota, SDL_Event *userevent) {
@@ -1330,7 +1330,7 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
                                                  PopUp);
     struct PopUp_Map_Combat *pmc = popup->data;
 
-    PopUp_Map_Combat_Units(pmc, sota, aggressor, defendant, agg_pos, dft_pos);
+    PopUp_Map_Combat_Units(pmc, sota, sota->aggressor, sota->defendant);
     popup->visible = true;
     /* - Deselect weapons in LoadoutSelectMenu, if it exists - */
     mc = TNECS_GET_COMPONENT(sota->world, sota->weapon_select_menu, Menu);
@@ -1347,7 +1347,7 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
-    Event_Emit(__func__, SDL_USEREVENT, event_Unit_Wait, NULL, NULL);
+    // Event_Emit(__func__, SDL_USEREVENT, event_Unit_Wait, NULL, NULL);
 
     // 1. Resolve Combat
     struct Unit *aggressor = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Unit);
@@ -1397,6 +1397,8 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
 
     SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, sota->defendant, Timer));
     SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, sota->aggressor, Timer));
+
+    receive_event_Unit_Wait(sota, userevent);
 }
 
 void receive_event_Defendant_Select(struct Game *sota, SDL_Event *userevent) {
@@ -1483,6 +1485,7 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
 
     /* --- Deleting entity? --- */
     // - Put unit entity in list of killed units
+
     /* --- Check Map conditions --- */
     Map_Conditions_Check_Death(sota->map->death_enemy,      sota->map,
                                victim,                      boss, sota);
@@ -1504,25 +1507,34 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
     struct PopUp *popup_ptr  = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
     struct PopUp_Map_Combat *pmc = popup_ptr->data;
-    pmc->aggressor = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Unit);
-    pmc->defendant = TNECS_GET_COMPONENT(sota->world, sota->defendant, Unit);
+    SDL_assert(pmc->aggressor == sota->aggressor);
+    SDL_assert(pmc->defendant == sota->defendant);
+    Unit *aggressor  = TNECS_GET_COMPONENT(sota->world, sota->aggressor, PopUp);
+    Unit *defendant  = TNECS_GET_COMPONENT(sota->world, sota->defendant, PopUp);
+
 
     // 1. Get next HP of attacked unit
     struct Combat_Attack attack = sota->combat_outcome.attacks[pmc->current_attack++];
     struct Unit *attacker, *defender;
-    attacker = attack.attacker ? pmc->aggressor : pmc->defendant;
-    defender = attack.attacker ? pmc->defendant : pmc->aggressor;
+    attacker = attack.attacker ? aggressor : defendant;
+    defender = attack.attacker ? defendant : aggressor;
     Combat_Resolve_Attack(attack, attacker, defender);
 
     // 2. Check for unit agony/death
-    b32 agg_death = (!pmc->aggressor->alive) || (pmc->aggressor->agony >= 0);
+    b32 agg_death = (!aggressor->alive) || (aggressor->agony >= 0);
     if (agg_death) {
-        Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &sota->aggressor, &sota->defendant);
+        userevent->user.data1 = &sota->aggressor;
+        userevent->user.data2 = &sota->defendant;
+        receive_event_Unit_Dies(sota, userevent);
+        // Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &sota->aggressor, &sota->defendant);
     }
 
-    b32 dft_death = (!pmc->defendant->alive) || (pmc->defendant->agony >= 0);
+    b32 dft_death = (!defendant->alive) || (defendant->agony >= 0);
     if (dft_death) {
-        Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &sota->defendant, &sota->aggressor);
+        userevent->user.data1 = &sota->defendant;
+        userevent->user.data2 = &sota->aggressor;
+        receive_event_Unit_Dies(sota, userevent);
+        // Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &sota->defendant, &sota->aggressor);
     }
     /* Only one of combatants can die */
     SDL_assert(!(dft_death && agg_death));

@@ -13,8 +13,9 @@ static void _PopUp_Map_Combat_Draw_CircleBars(struct PopUp_Map_Combat *pmc,
                                               SDL_Renderer *r);
 
 struct PopUp_Map_Combat PopUp_Map_Combat_default = {
-    .aggressor              = NULL,
-    .defendant              = NULL,
+    .aggressor              = TNECS_NULL,
+    .defendant              = TNECS_NULL,
+    .world                  = NULL,
     .pixelnours_big         = NULL,
     .pixelnours_tight       = NULL,
     .topoff_aggressor       = {0},
@@ -109,8 +110,7 @@ void PopUp_Map_Combat_Load(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer,
 }
 
 void PopUp_Map_Combat_Units(struct PopUp_Map_Combat *pmc, struct Game *sota,
-                            struct Unit *aggressor, struct Unit *defendant,
-                            struct Point *agg_pos,  struct Point *dft_pos) {
+                            tnecs_entity aggressor, tnecs_entity defendant) {
 
     /* -- Preliminaries -- */
     // tnecs_entity popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
@@ -121,18 +121,14 @@ void PopUp_Map_Combat_Units(struct PopUp_Map_Combat *pmc, struct Game *sota,
     // struct Unit *defendant = TNECS_GET_COMPONENT(sota->world, sota->defendant, Unit);
     // SDL_assert(popup != NULL);
     SDL_assert(pmc          != NULL);
-    SDL_assert(aggressor    != NULL);
-    SDL_assert(dft_pos      != NULL);
-    SDL_assert(agg_pos      != NULL);
+    SDL_assert(aggressor    > TNECS_NULL);
+    SDL_assert(defendant    > TNECS_NULL);
 
     /* -- Update -- */
     pmc->aggressor      = aggressor;
     pmc->defendant      = defendant;
-    pmc->dft_pos        = dft_pos;
-    pmc->agg_pos        = agg_pos;
+    pmc->world          = sota->world;
     pmc->forecast       = &sota->combat_forecast;
-    pmc->agg_current_hp = pmc->aggressor->current_hp;
-    pmc->dft_current_hp = pmc->defendant->current_hp;
     pmc->phases         = sota->combat_outcome.phases;
     pmc->update         = true;
 }
@@ -165,11 +161,18 @@ static void _PopUp_Map_Combat_Draw_HP(struct PopUp_Map_Combat *pmc, SDL_Renderer
     char numbuff[10];
     int width;
     struct Point temp_pos;
-    struct Unit_stats effective_stats_agg    = Unit_effectiveStats(pmc->aggressor);
-    struct Unit_stats effective_stats_dft    = Unit_effectiveStats(pmc->defendant);
+    SDL_assert(pmc->aggressor > TNECS_NULL);
+    SDL_assert(pmc->defendant > TNECS_NULL);
+    struct Unit *agg_unit = TNECS_GET_COMPONENT(pmc->world, pmc->aggressor, Unit);
+    struct Unit *dft_unit = TNECS_GET_COMPONENT(pmc->world, pmc->defendant, Unit);
+    SDL_assert(agg_unit != NULL);
+    SDL_assert(dft_unit != NULL);
+
+    struct Unit_stats effective_stats_agg    = Unit_effectiveStats(agg_unit);
+    struct Unit_stats effective_stats_dft    = Unit_effectiveStats(dft_unit);
 
     /* -- HP number -- */
-    int toprint = int_inbounds(pmc->agg_current_hp, 0, SOTA_100PERCENT);
+    int toprint = int_inbounds(agg_unit->current_hp, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
     width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
     temp_pos.x = POPUP_MAP_COMBAT_BLUE_HP_X - width / 2;
@@ -177,7 +180,7 @@ static void _PopUp_Map_Combat_Draw_HP(struct PopUp_Map_Combat *pmc, SDL_Renderer
 
     PixelFont_Write(pmc->pixelnours_tight, renderer, numbuff, strlen(numbuff), temp_pos.x, temp_pos.y);
 
-    toprint = int_inbounds(pmc->dft_current_hp, 0, SOTA_100PERCENT);
+    toprint = int_inbounds(dft_unit->current_hp, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
     width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
     temp_pos.x = POPUP_MAP_COMBAT_RED_HP_X - width / 2;
@@ -188,8 +191,8 @@ static void _PopUp_Map_Combat_Draw_HP(struct PopUp_Map_Combat *pmc, SDL_Renderer
 
     /* -- TopoffBars -- */
     // TODO: update health before/after EACH combat attack animation
-    pmc->topoff_aggressor.fill = ((float)pmc->agg_current_hp) / ((float)effective_stats_agg.hp);
-    pmc->topoff_defendant.fill = ((float)pmc->dft_current_hp) / ((float)effective_stats_dft.hp);
+    pmc->topoff_aggressor.fill = ((float)agg_unit->current_hp) / ((float)effective_stats_agg.hp);
+    pmc->topoff_defendant.fill = ((float)dft_unit->current_hp) / ((float)effective_stats_dft.hp);
     TopoffBar_Draw(&pmc->topoff_aggressor, renderer);
     TopoffBar_Draw(&pmc->topoff_defendant, renderer);
 
@@ -198,7 +201,9 @@ static void _PopUp_Map_Combat_Draw_HP(struct PopUp_Map_Combat *pmc, SDL_Renderer
 static void _PopUp_Map_Combat_Draw_Names(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer) {
     /* --- Names --- */
     struct Point temp_pos;
-    s8 name = pmc->aggressor->name;
+
+    struct Unit *agg_unit = TNECS_GET_COMPONENT(pmc->world, pmc->aggressor, Unit);
+    s8 name = agg_unit->name;
     int width = PixelFont_Width(pmc->pixelnours_tight, name.data, name.num);
 
     temp_pos.x = POPUP_MAP_COMBAT_PATCH_BLUE_NAME_X - width / 2;
@@ -208,7 +213,9 @@ static void _PopUp_Map_Combat_Draw_Names(struct PopUp_Map_Combat *pmc, SDL_Rende
 
     temp_pos.x = POPUP_MAP_COMBAT_PATCH_RED_NAME_X - width / 2;
     temp_pos.y = POPUP_MAP_COMBAT_PATCH_RED_NAME_Y;
-    name = pmc->defendant->name;
+
+    struct Unit *dft_unit = TNECS_GET_COMPONENT(pmc->world, pmc->defendant, Unit);
+    name = dft_unit->name;
     PixelFont_Write(pmc->pixelnours_big, renderer, name.data, name.num,
                     temp_pos.x, temp_pos.y);
 }
@@ -386,10 +393,8 @@ void PopUp_Map_Combat_Update(struct PopUp_Map_Combat *pmc, struct n9Patch *n9pat
     SDL_assert(n9patch                      != NULL);
     SDL_assert(pmc                          != NULL);
     SDL_assert(renderer                     != NULL);
-    SDL_assert(pmc->aggressor               != NULL);
-    SDL_assert(pmc->defendant               != NULL);
-    SDL_assert(pmc->dft_pos                 != NULL);
-    SDL_assert(pmc->agg_pos                 != NULL);
+    SDL_assert(pmc->aggressor               >  TNECS_NULL);
+    SDL_assert(pmc->defendant               >  TNECS_NULL);
     SDL_assert(pmc->texture_n9patch_red     != NULL);
     SDL_assert(pmc->texture_n9patch_blue    != NULL);
     SDL_assert(pmc->texture_header_red      != NULL);

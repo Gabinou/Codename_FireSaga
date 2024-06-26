@@ -3,6 +3,7 @@
 
 #include "enums.h"
 #include "structs.h"
+#include "tnecs.h"
 #include "n9patch.h"
 #include "popup/popup.h"
 #include "bars/circle.h"
@@ -88,10 +89,11 @@ enum POPUP_MAP_COMBAT {
 typedef struct PopUp_Map_Combat {
     b32 update;
 
-    struct Unit *aggressor;
-    struct Unit *defendant;
-    struct Point *agg_pos;
-    struct Point *dft_pos;
+    tnecs_world  *world;
+
+    // TODO: use entities
+    tnecs_entity aggressor;
+    tnecs_entity defendant;
     SDL_Texture *texture;
     struct PixelFont *pixelnours_big;
     struct PixelFont *pixelnours_tight;
@@ -109,9 +111,6 @@ typedef struct PopUp_Map_Combat {
     struct Combat_Forecast *forecast;
     struct Combat_Phase    *phases;
 
-    u8 agg_current_hp;
-    u8 dft_current_hp;
-
     int current_attack;
 
     SDL_Palette *palette;
@@ -125,8 +124,7 @@ void PopUp_Map_Combat_Free(struct PopUp_Map_Combat *pmc);
 
 /* --- Setters --- */
 void PopUp_Map_Combat_Units(struct PopUp_Map_Combat *pmc, struct Game *sota,
-                            struct Unit *a, struct Unit *d, struct Point *agg_pos,
-                            struct Point *dft_pos);
+                            tnecs_entity aggressor, tnecs_entity defendant);
 
 struct n9Patch PopUp_Map_Combat_Compute_Patch(struct PopUp_Map_Combat *pmc,
                                               struct n9Patch *n9patch);

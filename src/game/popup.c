@@ -346,7 +346,7 @@ void Game_PopUp_Map_Combat_Update(   struct Game *sota) {
     struct Point *agg_pos = &agg_posc->tilemap_pos;
     struct Point *dft_pos = &dft_posc->tilemap_pos;
 
-    PopUp_Map_Combat_Units(pmc, sota, aggressor, defendant, agg_pos, dft_pos);
+    PopUp_Map_Combat_Units(pmc, sota, sota->aggressor, sota->defendant);
 
     PopUp_Map_Combat_Load(pmc, sota->renderer, &popup->n9patch);
 
