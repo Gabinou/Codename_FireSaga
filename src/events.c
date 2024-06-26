@@ -1196,9 +1196,11 @@ void receive_event_Unit_Refresh(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Unit_Wait(struct Game *sota, SDL_Event *userevent) {
-
     /* -- Preliminaries -- */
-    tnecs_entity unit_ent = sota->selected_unit_entity;
+
+    /* - Make aggressor wait - */
+    SDL_assert(sota->aggressor == sota->selected_unit_entity);
+    tnecs_entity unit_ent = sota->aggressor;
     SDL_assert(unit_ent > TNECS_NULL);
     Game_Unit_Wait(sota, unit_ent);
 
@@ -1238,6 +1240,9 @@ void receive_event_Unit_Rescue(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     struct Sprite *agg_sprite = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Sprite);
     struct Sprite *dft_sprite = TNECS_GET_COMPONENT(sota->world, sota->defendant, Sprite);
+
+    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, sota->defendant, Timer));
+    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, sota->aggressor, Timer));
 
     // 1. Make cursor visible
     struct Sprite *sprite     = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
@@ -1285,10 +1290,13 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
             break;
     }
 
+
     struct Timer *agg_timer = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Timer);
     struct Timer *dft_timer = TNECS_GET_COMPONENT(sota->world, sota->defendant, Timer);
-    agg_timer->paused = true;
+    SDL_assert(agg_timer != NULL);
+    SDL_assert(dft_timer != NULL);
     dft_timer->paused = true;
+    agg_timer->paused = true;
 
     /* -- Create combat animation entity -- */
     // TODO change to MapAnimation component
@@ -1333,6 +1341,9 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
 
     /* - Set previous candidate to NULL - */
     sota->previous_candidate = -1;
+
+    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, sota->defendant, Timer));
+    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, sota->aggressor, Timer));
 }
 
 void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
@@ -1344,7 +1355,10 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
     aggressor->waits = true;
     struct Unit *defendant = TNECS_GET_COMPONENT(sota->world, sota->defendant, Unit);
 
-    tnecs_entity popup_ent     = sota->popups[POPUP_TYPE_MAP_COMBAT];
+    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, sota->defendant, Timer));
+    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, sota->aggressor, Timer));
+
+    tnecs_entity  popup_ent      = sota->popups[POPUP_TYPE_MAP_COMBAT];
     struct PopUp *popup_ptr      = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
     struct PopUp_Map_Combat *pmc = popup_ptr->data;
 
@@ -1380,6 +1394,9 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
 
     if (fsm_eCmbtEnd_ss[sota->substate_previous] != NULL)
         fsm_eCmbtEnd_ss[sota->substate_previous](sota);
+
+    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, sota->defendant, Timer));
+    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, sota->aggressor, Timer));
 }
 
 void receive_event_Defendant_Select(struct Game *sota, SDL_Event *userevent) {

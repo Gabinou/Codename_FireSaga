@@ -15,8 +15,11 @@ struct MapAnimation MapAnimation_default = {
 void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
                         struct CombatAnimation *combat_anim, struct Timer *combat_timer) {
     /* --- Animate fight on the map: Units take turn hitting each other --- */
-    SDL_assert(combat_anim     != NULL);
-    SDL_assert(combat_timer != NULL);
+    SDL_assert(combat_anim      != NULL);
+    SDL_assert(combat_timer     != NULL);
+    SDL_assert(sota->aggressor  > TNECS_NULL);
+    SDL_assert(sota->defendant  > TNECS_NULL);
+
     b32 no_more_attacks = (combat_anim->attack_ind >= sota->combat_forecast.attack_num);
     if (no_more_attacks || sota->combat_outcome.ended) {
         /* - Check for remaining attack, ending combat after pause - */
@@ -32,7 +35,7 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
     /* - pausing attacker for constant time - */
     int attacker_i = sota->combat_outcome.phases[combat_anim->attack_ind].attacker;
     tnecs_entity attacker = attacker_i ? sota->aggressor : sota->defendant;
-
+    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, attacker, Timer));
     struct Timer *att_timer = TNECS_GET_COMPONENT(sota->world, attacker, Timer);
     SDL_assert(att_timer != NULL);
     att_timer->paused = ((combat_timer->time_ns / SOTA_us) < combat_anim->pause_before_ms);
@@ -75,6 +78,7 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
 
     /* - pause defender - */
     tnecs_entity defender = attacker_i ? sota->defendant : sota->aggressor;
+    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, defender, Timer));
     struct Timer *def_timer = TNECS_GET_COMPONENT(sota->world, defender, Timer);
     SDL_assert(def_timer != NULL);
     def_timer->paused = true;

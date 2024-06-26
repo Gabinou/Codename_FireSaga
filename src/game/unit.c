@@ -40,14 +40,19 @@ void Game_Unit_Wait(struct Game *sota, tnecs_entity ent) {
 #ifndef DEBUG_UNIT_MOVEAFTERWAIT
     /* unit waits */
     Unit_wait(unit);
+    SDL_assert(unit->waits);
     /* set palette to dark */
     Sprite_Darken(sprite, sota->renderer);
 #endif /*DEBUG_UNIT_MOVEAFTERWAIT*/
 
     /* stop animation */
     Sprite_Animation_Restart(sprite, MAP_UNIT_LOOP_IDLE);
-    if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, Timer))
-        TNECS_REMOVE_COMPONENTS(sota->world, ent, Timer);
+    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, ent, Timer));
+    struct Timer *timer = TNECS_GET_COMPONENT(sota->world, ent, Timer);
+    timer->paused = true;
+    // if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, Timer))
+
+    // TNECS_REMOVE_COMPONENTS(sota->world, ent, Timer);
     Sprite_Draw(sprite, sota->renderer);
 }
 
@@ -63,13 +68,14 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
     SDL_assert(sprite != NULL);
 
     Unit_refresh(unit);
+    SDL_assert(!unit->waits);
     /* -- set palette back to nes --  */
     Sprite_Unveil(sprite, sota->renderer);
 
     /* restart animation */
     Sprite_Animation_Restart(sprite, MAP_UNIT_LOOP_IDLE);
-    if (!TNECS_ENTITY_HASCOMPONENT(sota->world, ent, Timer))
-        TNECS_ADD_COMPONENT(sota->world, ent, Timer);
+    // if (!TNECS_ENTITY_HASCOMPONENT(sota->world, ent, Timer))
+    // TNECS_ADD_COMPONENT(sota->world, ent, Timer);
     struct Timer *timer = TNECS_GET_COMPONENT(sota->world, ent, Timer);
     SDL_assert(timer != NULL);
     *timer = Timer_default;

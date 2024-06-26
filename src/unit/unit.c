@@ -386,8 +386,8 @@ void Unit_getsHealed(struct Unit *unit, u8 healing) {
 
 void Unit_wait(struct Unit *unit) {
     SDL_assert(unit);
-    unit->waits = true;
-    unit->show_danger = false;
+    unit->waits         = true;
+    unit->show_danger   = false;
 }
 
 void Unit_refresh(struct Unit *unit) {
