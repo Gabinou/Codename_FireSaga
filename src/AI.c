@@ -389,6 +389,13 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
 
 /* --- Move unit to target_move --- */
 void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+    SDL_Log(__func__);
+    SDL_Log(__func__);
+    SDL_Log(__func__);
+    SDL_Log(__func__);
+    SDL_Log(__func__);
+    SDL_Log(__func__);
+    SDL_Log(__func__);
     // TODO: wait until previous combat is finished before moving
     /* -- AI moves, after taking the decision -- */
     struct AI   *ai     = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
@@ -417,7 +424,44 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
     // TODO: Movement Animation
     struct Point old = pos->tilemap_pos;
     struct Point new = action->target_move;
+    int old_index = old.y * sota->map->col_len + old.x;
+    int new_index = new.y * sota->map->col_len + new.x;
+    entity_print(sota->map->unitmap, sota->map->row_len, sota->map->col_len);
+    SDL_Log("new %d %d", new.x, new.y);
+    SDL_Log("old %d %d", old.x, old.y);
+    SDL_Log("ent %d %d", sota->map->unitmap[old_index], npc_ent);
+    SDL_assert(sota->map->unitmap[old_index] == npc_ent);
+    if ((new.x == old.x) && (new.y == old.y)) {
+        SDL_LogWarn(SOTA_LOG_AI, "AI Move: target_move is current position. Skipping");
+        return;
+    }
+
+    SDL_assert(old.y > 0);
+    SDL_assert(old.y < sota->map->row_len);
+    SDL_assert(old.x > 0);
+    SDL_assert(old.x < sota->map->col_len);
+    SDL_assert(new.y > 0);
+    SDL_assert(new.y < sota->map->row_len);
+    SDL_assert(new.x > 0);
+    SDL_assert(new.x < sota->map->col_len);
+
+
+    SDL_assert(sota->map->unitmap[old_index] > TNECS_NULL);
+    tnecs_entity ent = sota->map->unitmap[old_index];
+    SDL_Log("%d %d", sota->map->unitmap[old_index], sota->map->unitmap[new_index]);
     Map_Unit_Move(sota->map, old.x, old.y, new.x, new.y);
+
+    SDL_Log("old %d %d", old.x, old.y);
+    SDL_Log("new %d %d", new.x, new.y);
+    SDL_Log("new %lu %d %d", ent, pos->tilemap_pos.x, pos->tilemap_pos.y);
+
+    SDL_assert(sota->map->unitmap[new_index] == npc_ent);
+    pos = TNECS_GET_COMPONENT(sota->map->world, npc_ent, Position);
+    SDL_assert(pos->tilemap_pos.x == new.x);
+    SDL_assert(pos->tilemap_pos.y == new.y);
+    SDL_Log("%d %d", sota->map->unitmap[old_index], sota->map->unitmap[new_index]);
+    SDL_Log("%d %d", sota->map->unitmap[new_index], ent);
+    SDL_assert(sota->map->unitmap[new_index] == ent);
 }
 
 void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {

@@ -49,6 +49,7 @@ i32 *list2matrix(    i32 *list,              size_t row_len, size_t col_len, siz
 i32 *list2matrix_noM(i32 *out, i32 *list,    size_t row_len, size_t col_len, size_t list_len);
 
 void matrix_print(i32 *array, size_t row_len, size_t col_len);
+void entity_print(tnecs_entity *array, size_t row_len, size_t col_len);
 
 size_t *matrix_where(i32 *array, i32 to_find, size_t arr_len);
 

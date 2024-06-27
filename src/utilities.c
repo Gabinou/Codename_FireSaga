@@ -60,6 +60,14 @@ void matrix_print(i32 *array, size_t row_len, size_t col_len) {
     }
 }
 
+void entity_print(tnecs_entity *array, size_t row_len, size_t col_len) {
+    for (size_t row = 0; row < row_len; row++) {
+        for (size_t col = 0; col < col_len; col++)
+            printf("%2d ", array[row * col_len + col]);
+        printf("\n");
+    }
+}
+
 i32 *matrix_and_noM(i32 *out, i32 *matrix1, i32 *matrix2, size_t arr_len) {
     for (size_t i = 0; i < arr_len; i++)
         out[i] = (matrix1[i] && matrix2[i]);

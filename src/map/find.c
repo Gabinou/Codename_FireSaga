@@ -50,6 +50,7 @@ tnecs_entity *Map_Find_Defendants(struct Map *map, i32 *attacktolist,
 
     /* Note: Assumes attacktolist was created before with matrix2list_noM */
     SDL_assert(aggressor > TNECS_NULL);
+    SDL_assert(defendants != NULL);
     SDL_assert(attacktolist);
     for (size_t i = 0; i < DARR_NUM(attacktolist) / TWO_D; i++) {
         size_t x_at = attacktolist[TWO_D * i];

@@ -23,12 +23,18 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
     b32 no_more_attacks = (combat_anim->attack_ind >= sota->combat_forecast.attack_num);
     if (no_more_attacks || sota->combat_outcome.ended) {
         /* - Check for remaining attack, ending combat after pause - */
+        SDL_Log("COMBATOVER");
+        SDL_Log("COMBATOVER");
+        SDL_Log("COMBATOVER");
         b32 paused = ((combat_timer->time_ns / SOTA_us) < combat_anim->pause_after_ms);
+        SDL_Log("paused %d", paused);
         if (!paused) {
+            SDL_Log("tnecs_entity_destroy");
             tnecs_entity_destroy(sota->world, entity);
             receive_event_Combat_End(sota, NULL);
             // Event_Emit(__func__, SDL_USEREVENT, event_Combat_End, NULL, NULL);
         }
+        // getchar();
         /* - Skip if no more attacks to animate - */
         return;
     }

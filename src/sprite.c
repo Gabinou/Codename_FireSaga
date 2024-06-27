@@ -322,6 +322,7 @@ void Sprite_Load(struct Sprite *sprite, char *asset_name, SDL_Renderer *renderer
     /* -- Keep spritesheed in memory -- */
     sprite->spritesheet->surface = Filesystem_Surface_Load(sprite->asset_name.data,
                                                            SDL_PIXELFORMAT_INDEX8);
+    SDL_assert(renderer                     != NULL);
     SDL_assert(sprite->spritesheet->surface != NULL);
     sprite->texture = SDL_CreateTextureFromSurface(renderer, sprite->spritesheet->surface);
 }

@@ -291,6 +291,15 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         position->pixel_pos.y   = (i32)lround(position->tilemap_pos.y * position->scale[1]);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
 
+        int index = position->tilemap_pos.y * sota->map->col_len + position->tilemap_pos.x;
+        // check if another unit already on the map.
+        if (sota->map->unitmap[index] != TNECS_NULL) {
+            // DESIGN QUESTION. If another entity is already on the map.
+            //  -> FE does not even load unit
+            tnecs_entity_destroy(sota->world, temp_unit_ent);
+            continue;
+        }
+
         SDL_Log("-- loading sprite --");
         struct Timer *timer;
         timer = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Timer);
