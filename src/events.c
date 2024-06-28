@@ -1349,10 +1349,6 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
-    SDL_Log(__func__);
-    SDL_Log(__func__);
-    SDL_Log(__func__);
-    SDL_Log(__func__);
     // Event_Emit(__func__, SDL_USEREVENT, event_Unit_Wait, NULL, NULL);
 
     // 1. Resolve Combat
@@ -1458,8 +1454,6 @@ void receive_event_Convoy_Map(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
-    SDL_Log(__func__);
-    SDL_Log(__func__);
     /* --- PRELIMINARIES --- */
     tnecs_entity victim_entity = *(tnecs_entity *) userevent->user.data1;
     tnecs_entity killer_entity = *(tnecs_entity *) userevent->user.data2;
