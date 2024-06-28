@@ -140,12 +140,15 @@ static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
     Map_Attackfrommap_Compute(sota->map, sota->world, npc_ent, defendant, true, true);
 
     i32 *attackfromlist = Map_Attackfromlist_Compute(sota->map);
-    /* Should be at least on tile to attack from. */
+    /* Should be at least   on tile to attack from. */
     SDL_assert(DARR_NUM(attackfromlist) > 0);
 
     // TODO: find good tile to attack from
-    action->target_move.x = attackfromlist[0];
-    action->target_move.y = attackfromlist[1];
+    // action->target_move.x = attackfromlist[0];
+    // action->target_move.y = attackfromlist[1];
+
+    // int index = action->target_move.y * sota->map->col_len + action->target_move.x;
+    // SDL_assert(sota->map->unitmap[index] == TNECS_NULL);
 
     /* - Set target_action to enemy-occupied tile - */
     struct Position *pos = TNECS_GET_COMPONENT(sota->world, defendant, Position);
@@ -313,6 +316,7 @@ void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action 
 }
 
 void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+    SDL_Log(__func__);
     /* --- AI decides where to move unit depending on action to take --- */
     /* --- Skip depending on movement priority --- */
     struct AI       *ai  = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
@@ -338,6 +342,7 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
 }
 
 void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+    SDL_Log(__func__);
     /* -- Set target_move to closest tile on way to target_action -- */
 
     /* -- Skip movement if target is at current position -- */
@@ -389,6 +394,7 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
 
 /* --- Move unit to target_move --- */
 void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+    SDL_Log(__func__);
     // TODO: wait until previous combat is finished before moving
     /* -- AI moves, after taking the decision -- */
     struct AI   *ai     = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
@@ -419,12 +425,18 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
     struct Point new = action->target_move;
     int old_index = old.y * sota->map->col_len + old.x;
     int new_index = new.y * sota->map->col_len + new.x;
-    // entity_print(sota->map->unitmap, sota->map->row_len, sota->map->col_len);
-    SDL_assert(sota->map->unitmap[old_index] == npc_ent);
     if ((new.x == old.x) && (new.y == old.y)) {
         SDL_LogWarn(SOTA_LOG_AI, "AI Move: target_move is current position. Skipping");
         return;
     }
+
+    // entity_print(sota->map->unitmap, sota->map->row_len, sota->map->col_len);
+    SDL_Log("old %d %d", old.x, old.y);
+    SDL_Log("new %d %d", new.x, new.y);
+    entity_print(sota->map->unitmap, sota->map->row_len, sota->map->col_len);
+    SDL_Log("npc_ent %d->%d %d", sota->map->unitmap[old_index], sota->map->unitmap[new_index], npc_ent);
+    SDL_assert(sota->map->unitmap[old_index] == npc_ent);
+    SDL_assert(sota->map->unitmap[new_index] == TNECS_NULL);
 
     SDL_assert(old.y > 0);
     SDL_assert(old.y < sota->map->row_len);

@@ -434,6 +434,8 @@ void Sprite_Shade(struct Sprite *sprite, SDL_Renderer *renderer, struct Index_Sh
 }
 
 void Sprite_Unveil(struct Sprite *sprite, SDL_Renderer *renderer) {
+    SDL_assert(sprite);
+    SDL_assert(renderer);
     sprite->texture = SDL_CreateTextureFromSurface(renderer, sprite->spritesheet->surface);
 }
 

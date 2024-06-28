@@ -397,7 +397,14 @@ struct Nodeq *Pathfinding_Frontier_Insert(struct Nodeq *frontier_queue, struct N
 i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupymap,
                             size_t row_len, size_t col_len, int move,
                             struct Point start, struct Point end, b32 forward) {
+    SDL_Log(__func__);
     /* Assumes square grid, path_list is a DARR */
+
+    SDL_Log("OCCUPY MAP");
+    entity_print(occupymap, row_len, col_len);
+    SDL_Log("end   %d %d", end.x, end.y);
+    SDL_Log("start %d %d", start.x, start.y);
+
     /* [1]: http://www.redblobgames.com/pathfinding/a-star/introduction.html */
     /* -- Checks -- */
     SDL_assert((start.x != end.x) || (start.y != end.y));
@@ -409,7 +416,10 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
     i32 *cost       = calloc(row_len * col_len, sizeof(*cost));
     i32 *came_from  = calloc(row_len * col_len, sizeof(*came_from));
     i32 *distmap    = calloc(row_len * col_len, sizeof(*distmap));
+
     Pathfinding_Distance(distmap, costmap, row_len, col_len, end, start);
+    SDL_Log("DIST MAP");
+    matrix_print(distmap, row_len, col_len);
     struct Point closest = start; /* In case target is blocked */
     struct Nodeq current = {.x = start.x, .y = start.y, .cost = 0};
     struct Nodeq neighbour;
@@ -423,6 +433,8 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
     while (DARR_NUM(frontier_queue) > 0) {
         current = DARR_POP(frontier_queue);
         /* - End loop when end point is reached - */
+        SDL_Log("current %d %d", current.x, current.y);
+        SDL_Log("end %d %d", end.x, end.y);
         if ((current.x == end.x) && (current.y == end.y))
             break;
 
@@ -431,9 +443,23 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
         //          cause tiles close to end might be blocked
         int current_dist = distmap[current.y * col_len + current.x];
         int closest_dist = distmap[closest.y * col_len + closest.x];
-        if ((closest_dist != 0) && (current_dist < closest_dist)) {
+        // SDL_Log("closest %d %d", closest.x, closest.y);
+        int index = current.y * col_len + current.x;
+        b32 occupied = (occupymap == NULL) ? false : (occupymap[index] != TNECS_NULL);
+        SDL_Log("occupied %d %d %d", current_dist, closest_dist, occupied);
+
+        b32 closest_valid   = (closest_dist >= MOVEMAP_MOVEABLEMIN);
+        b32 current_valid   = (current_dist >= MOVEMAP_MOVEABLEMIN);
+        b32 closer          = (current_dist < closest_dist);
+        SDL_Log("bools %d %d %d", current_valid, closest_valid, occupied);
+
+        b32 cond1           = current_valid && !closest_valid && !occupied;
+        b32 cond2           = current_valid &&  closest_valid && closer && !occupied;
+        SDL_Log("%d %d", cond1, cond2);
+        if (cond1 || cond2) {
             closest.x = current.x;
             closest.y = current.y;
+            SDL_Log("SET closest %d %d", closest.x, closest.y);
         }
 
         /* -- Visit all square neighbours -- */
@@ -441,32 +467,44 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
             /* Get next neighbour movement cost */
             neighbour.x     = int_inbounds(q_cycle4_mzpz(n) + current.x, 0, col_len - 1);
             neighbour.y     = int_inbounds(q_cycle4_zmzp(n) + current.y, 0, row_len - 1);
-            int current_n = neighbour.y * col_len + neighbour.x;
+            int current_n   = neighbour.y * col_len + neighbour.x;
             neighbour.cost  = current.cost + costmap[current_n];
 
             /* Compute conditions for adding neighbour to frontier */
             /* Skip neighbour if: blocked */
-            if (costmap[current_n] < MOVEMAP_MOVEABLEMIN)
+            if (costmap[current_n] < MOVEMAP_MOVEABLEMIN) {
+                SDL_Log("blocked, costmap");
                 continue;
+            }
 
             /* Skip neighbour if: blocked */
-            if (distmap[current_n] < MOVEMAP_MOVEABLEMIN)
+            if (distmap[current_n] < MOVEMAP_MOVEABLEMIN) {
+                SDL_Log("blocked, distmap");
                 continue;
+            }
 
             /* Skip neighbour if: cost greater than move */
-            if ((neighbour.cost > move) && (move >= 0))
+            if ((neighbour.cost > move) && (move >= 0)) {
+                SDL_Log("too far");
                 continue;
+            }
 
-            /* Skip neighbour if: tile is occupied */
+            /* Skip neighbour if: tile is occupied at MOVE */
             // short-circuit on NULL occupymap
-            if ((occupymap != NULL) && (occupymap[current_n] != TNECS_NULL))
+            if ((occupymap != NULL) && (occupymap[current_n] != TNECS_NULL) && (neighbour.cost == move)) {
+                SDL_Log("occupied");
                 continue;
+            }
+
+            /* Skip neighbour if: tile is end tile AND occupied  */
 
             /* Skip neighbour if: already visited AND higher cost */
             b32 higher_cost  = (neighbour.cost >= cost[current_n]);
             b32 visited      = (cost[current_n] > 0);
-            if (visited && higher_cost)
+            if (visited && higher_cost) {
+                SDL_Log("visited");
                 continue;
+            }
 
             /* distance is heuristic for closeness to goal */
             cost[current_n] = neighbour.cost;
@@ -490,9 +528,20 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
 
     if ((current.x == end.x) && (current.y == end.y)) {
         /* End reached, get path to it*/
+        int current_n = end.y * col_len + end.x;
+        if (occupymap != NULL)
+            SDL_assert(occupymap[current_n] == TNECS_NULL);
         path_list = pathlist_f(path_list, came_from, col_len, start, end);
     } else {
         /* End NOT reached, get path to closest tile */
+        int current_n = closest.y * col_len + closest.x;
+        SDL_Log("start NOT REACHED %d %d", start.x, start.y);
+        SDL_Log("closest NOT REACHED %d %d", closest.x, closest.y);
+        /* If closest is equal to start: don't move. */
+        if ((closest.x != start.x) || (closest.y != start.y)) {
+            if (occupymap != NULL)
+                SDL_assert(occupymap[current_n] == TNECS_NULL);
+        }
         path_list = pathlist_f(path_list, came_from, col_len, start, closest);
     }
 
