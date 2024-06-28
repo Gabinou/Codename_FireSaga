@@ -370,7 +370,6 @@ void Array_writeJSON(struct cJSON *_jarr, i32 *arr, size_t num) {
 }
 
 void Array2D_writeJSON(struct cJSON *arr, i32 *arr2D, u8 row_len, u8 col_len) {
-    SDL_Log("%d %d", row_len, col_len);
     SDL_assert(arr != NULL);
     struct cJSON *jrow, *jnum;
     char rowname[DEFAULT_BUFFER_SIZE / 8];

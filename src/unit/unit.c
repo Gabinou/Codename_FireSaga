@@ -768,7 +768,6 @@ struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance) {
     }
 
     /* check if no weapons in hand*/
-    SDL_Log("%d %d", Unit_isEquipped(unit, UNIT_HAND_LEFT), Unit_isEquipped(unit, UNIT_HAND_RIGHT));
     if (Unit_isEquipped(unit, UNIT_HAND_LEFT) || Unit_isEquipped(unit, UNIT_HAND_RIGHT)) {
         Unit_computeHit(     unit,  distance);
         Unit_computeAttack(  unit,  distance);

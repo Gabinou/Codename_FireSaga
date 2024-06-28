@@ -147,7 +147,6 @@ i32 *Map_Healtomap_Compute(struct Map *map, tnecs_world *world, tnecs_entity uni
     _Map_Movemap_Compute(map, start, move_stat);
     struct Range range = Range_default;
     _Unit_Range_Combine(unit, &range, equipped, ITEM_ARCHETYPE_STAFF);
-    // SDL_Log("range %d %d", range.min, range.max);
 
     map->update = true;
     map->healtomap = _Map_tomap_Compute(map->healtomap, map->movemap, map->row_len, map->col_len,
@@ -219,7 +218,6 @@ i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_world *world, tnecs_entity
     /* Compute movemap */
     i32 move_stat = move ? Unit_getStats(agg_unit).move : 0;
     _Map_Movemap_Compute(map, agg_pos->tilemap_pos, move_stat);
-    // SDL_Log("MOVEMAP");
     // matrix_print(map->movemap, map->row_len, map->col_len);
 
     Pathfinding_Attackfrom_noM(map->attackfrommap, map->movemap, map->row_len,

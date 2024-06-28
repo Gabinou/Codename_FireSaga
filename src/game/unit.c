@@ -169,7 +169,6 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
         Unit_Equip(unit, UNIT_HAND_LEFT, UNIT_HAND_LEFT);
 
     item = Unit_InvItem(unit, UNIT_HAND_RIGHT);
-    SDL_Log("%d %d", item->id, Weapon_ID_isValid(item->id));
     if (Weapon_ID_isValid(item->id))
         Unit_Equip(unit, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
 
