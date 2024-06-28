@@ -83,8 +83,8 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
                               struct Map           *map,
                               struct Unit          *unit,
                               struct Boss          *boss) {
-    SDL_Log("Map_Condition: Check_Death");
-    SDL_Log("Unit id Silou:%d Died:%d condition:%d", UNIT_ID_SILOU, unit->_id, condition->unit);
+    // SDL_Log("Map_Condition: Check_Death");
+    // SDL_Log("Unit id Silou:%d Died:%d condition:%d", UNIT_ID_SILOU, unit->_id, condition->unit);
 
     /* Checking for matching army */
     b32 match_army = true;
@@ -93,7 +93,7 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
 
     /* -- No match: army -- */
     if (!match_army) {
-        SDL_Log("No match: army");
+        // SDL_Log("No match: army");
         return (false);
     }
 
@@ -104,13 +104,13 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
 
     /* -- No match: unit -- */
     if (match_unit) {
-        SDL_Log("Match: unit");
+        // SDL_Log("Match: unit");
         return (true);
     }
 
     /* Match: Rout */
     if (!condition->boss && condition->all && (DARR_NUM(map->enemies_onfield) == 0)) {
-        SDL_Log("Match: Rout");
+        // SDL_Log("Match: Rout");
         return (true);
     }
 
@@ -119,18 +119,18 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
 
     /* Match: Any boss */
     if (condition->boss && !condition->all && died_boss) {
-        SDL_Log("Match: Any boss");
+        // SDL_Log("Match: Any boss");
         return (true);
     }
 
     /* Match: All boss */
     if (condition->boss && condition->all && died_boss && !Map_Boss_Alive(map, ARMY_ENEMY)) {
-        SDL_Log("Match: All bosses");
+        // SDL_Log("Match: All bosses");
         return (true);
     }
 
     /* -- No match -- */
-    SDL_Log("No match");
+    // SDL_Log("No match");
     return (false);
 }
 

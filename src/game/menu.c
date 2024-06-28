@@ -82,10 +82,8 @@ void Game_menuStack_Free(struct Game *sota) {
 }
 
 void Game_menuStack_Push(struct Game *sota, tnecs_entity in_menu_entity) {
-    SDL_Log("%ld", in_menu_entity);
     SDL_assert(in_menu_entity > 0);
     DARR_PUT(sota->menu_stack, in_menu_entity);
-    SDL_Log("DARR_NUM %ld", DARR_NUM(sota->menu_stack));
 }
 
 tnecs_entity Game_menuStack_Pop(struct Game *sota, b32 destroy) {
@@ -338,7 +336,6 @@ void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
 
 /* -- Finding if any staff equipment has a patient -- */
 void Game_preLoadout_Patients(struct Game *sota, tnecs_entity actor) {
-    SDL_Log("Game_preLoadout_Patients");
     DARR_NUM(sota->patients) = 0;
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, actor, Unit);
 

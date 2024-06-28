@@ -23,13 +23,13 @@ void _Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
         pos->tilemap_pos.y   = row;
         pos->pixel_pos.x     = pos->tilemap_pos.x * pos->scale[0];
         pos->pixel_pos.y     = pos->tilemap_pos.y * pos->scale[1];
-        SDL_Log("_Map_Unit_Put %lu %d %d", entity, pos->tilemap_pos.x, pos->tilemap_pos.y);
+        // SDL_Log("_Map_Unit_Put %lu %d %d", entity, pos->tilemap_pos.x, pos->tilemap_pos.y);
         map->unitmap[index]  = entity;
     }
 }
 
 void Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
-    SDL_Log("%lu", entity);
+    // SDL_Log("%lu", entity);
     SDL_assert(map->world != NULL);
     SDL_assert(map->unitmap != NULL);
     SDL_assert((row < map->row_len) && (col < map->col_len));
@@ -98,7 +98,7 @@ void Map_Unit_Swap(struct Map *map, u8 old_col, u8 old_row, u8 new_col, u8 new_r
 }
 
 void Map_Unit_Move(struct Map *map, u8 col, u8 row, u8 new_col, u8 new_row) {
-    SDL_Log(__func__);
+    // SDL_Log(__func__);
     /* Note: Does NOT check if [new_x, new_y] is empty. */
     SDL_assert(map->unitmap != NULL);
     SDL_assert(col      < map->col_len);
@@ -240,11 +240,11 @@ void Map_Unit_Remove(struct Map *map, tnecs_entity entity) {
     struct Position *pos = TNECS_GET_COMPONENT(map->world, entity, Position);
     SDL_assert(pos->onTilemap);
 
-    SDL_Log("pos->tilemap_pos %d %d", pos->tilemap_pos.x, pos->tilemap_pos.y);
+    // SDL_Log("pos->tilemap_pos %d %d", pos->tilemap_pos.x, pos->tilemap_pos.y);
     int index = pos->tilemap_pos.y * map->col_len + pos->tilemap_pos.x;
     tnecs_entity ontile_ent = map->unitmap[index];
     SDL_assert(ontile_ent > TNECS_NULL);
-    SDL_Log("%s %d %d", __func__, ontile_ent, map->unitmap[index]);
+    // SDL_Log("%s %d %d", __func__, ontile_ent, map->unitmap[index]);
     SDL_assert(ontile_ent == entity);
     struct Sprite *sprite = TNECS_GET_COMPONENT(map->world, entity, Sprite);
     if (sprite != NULL)

@@ -161,7 +161,7 @@ b32 Filesystem_fequal( char *filename1,  char *filename2) {
 /* --- SURFACES AND TEXTURES --- */
 // TODO: Input palette to load indexed surface
 SDL_Surface *Filesystem_Surface_Load( char *filename,  u32 format) {
-    SDL_Log("%s\n", filename);
+    // SDL_Log("%s\n", filename);
     SDL_Surface *loadedsurface  = NULL, *outsurface   = NULL;
     SDL_Surface *conv1surface   = NULL, *conv2surface = NULL;
     SDL_Surface *indexedsurface = NULL;
@@ -176,7 +176,7 @@ SDL_Surface *Filesystem_Surface_Load( char *filename,  u32 format) {
 
     SDL_assert(loadedsurface != NULL);
     if (SDL_ISPIXELFORMAT_INDEXED(format)) {
-        SDL_Log("is indexed %d\n", SDL_ISPIXELFORMAT_INDEXED(format));
+        // SDL_Log("is indexed %d\n", SDL_ISPIXELFORMAT_INDEXED(format));
         /* align bits for Filesystem_Surface_Pixels2Indices allocs */
         conv1surface = SDL_ConvertSurfaceFormat(loadedsurface, SDL_PIXELFORMAT_ABGR8888, SDL_IGNORE);
         SDL_FreeSurface(loadedsurface);
@@ -246,7 +246,7 @@ SDL_Surface *Filesystem_Surface_Palette_Swap(SDL_Surface *surface, SDL_Palette *
 }
 
 SDL_Texture *Filesystem_Texture_Load(struct SDL_Renderer *renderer,  char *file, u32 format) {
-    SDL_Log("%s\n", file);
+    // SDL_Log("%s\n", file);
     SDL_Surface *tempsurface = Filesystem_Surface_Load(file, format);
     // SDL_SaveBMP(tempsurface, "readsurface.png");
 

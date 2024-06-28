@@ -106,7 +106,7 @@ tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code) {
 void Event_Emit( const char *emitter, u32 type, i32 code, void *data1, void *data2) {
     SDL_assert(code > 0);
     s8 event_name = event_names[code - event_Start];
-    SDL_Log("emitter -> %s, event -> %s", emitter, event_name.data);
+    // SDL_Log("emitter -> %s, event -> %s", emitter, event_name.data);
     SDL_assert(type != ((UINT32_MAX) - 1));
     SDL_Event event;
     event.type          = type;
@@ -576,8 +576,7 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     u64 after_ns    = tnecs_get_ns();
     u64 elapsed_ms  = (after_ns - before_ns) / SOTA_us;
     float frame     = (float)(sota->instant_fps * elapsed_ms) / SOTA_ms;
-    SDL_Log("Reload %d ms %f frames", elapsed_ms, frame);
-
+    // SDL_Log("Reload %d ms %f frames", elapsed_ms, frame);
 }
 
 void receive_event_SDL_QUIT(struct Game *sota, SDL_Event *event) {
@@ -714,7 +713,7 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     Map_Army_Next(sota->map);
     SDL_assert(sota->map->army_i >= 0);
     SDL_assert(sota->map->army_i < DARR_NUM(sota->map->army_onfield));
-    SDL_Log("Turn_Transition army_i %d", sota->map->army_i);
+
     i8 army      = sota->map->army_onfield[sota->map->army_i];
     SDL_assert(army >= 0);
     SDL_assert(army < ARMY_NUM);

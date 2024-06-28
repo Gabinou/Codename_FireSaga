@@ -353,7 +353,7 @@ b32 Unit_hasSkill( struct Unit *unit, u64 skill) {
 * Input crit b32 just to determine if unit dies instantly or not.
 */
 void Unit_takesDamage(struct Unit *unit, u8 damage, b32 crit) {
-    SDL_Log("%s takes %d damage \n", unit->name.data, damage);
+    // SDL_Log("%s takes %d damage \n", unit->name.data, damage);
     /* -- Checks -- */
     SDL_assert(unit);
     SDL_assert(unit->current_hp > 0);
@@ -368,13 +368,13 @@ void Unit_takesDamage(struct Unit *unit, u8 damage, b32 crit) {
         else
             Unit_agonizes(unit);
     }
-    SDL_Log("unit->current_hp %d", unit->current_hp);
-    SDL_Log("unit->agonizes %d", unit->agony);
-    SDL_Log("unit->alive %d", unit->alive);
+    // SDL_Log("unit->current_hp %d", unit->current_hp);
+    // SDL_Log("unit->agonizes %d", unit->agony);
+    // SDL_Log("unit->alive %d", unit->alive);
 }
 
 void Unit_getsHealed(struct Unit *unit, u8 healing) {
-    SDL_Log("%s gets healed for %d\n", unit->name.data, healing);
+    // SDL_Log("%s gets healed for %d\n", unit->name.data, healing);
     /* -- Checks -- */
     SDL_assert(unit);
 

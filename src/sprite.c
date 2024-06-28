@@ -266,9 +266,6 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit,
 
     /* -- Loading spritesheet metadata -- */
     s8 filename = s8_mut(PATH_JOIN("assets", "map_units")PHYSFS_SEPARATOR);
-    SDL_Log("unit->id %lu",    unit->_id);
-    SDL_Log("unit->name %s",   unit->name);
-    SDL_Log("unit->class %ld", unit->class);
 
     filename = s8cat(filename, s8_var(classNames[unit->class].data));
     filename = s8cat(filename, s8_literal(".json"));

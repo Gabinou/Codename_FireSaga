@@ -316,7 +316,7 @@ void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action 
 }
 
 void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
-    SDL_Log(__func__);
+    // SDL_Log(__func__);
     /* --- AI decides where to move unit depending on action to take --- */
     /* --- Skip depending on movement priority --- */
     struct AI       *ai  = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
@@ -342,7 +342,7 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
 }
 
 void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
-    SDL_Log(__func__);
+    // SDL_Log(__func__);
     /* -- Set target_move to closest tile on way to target_action -- */
 
     /* -- Skip movement if target is at current position -- */
@@ -394,7 +394,7 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
 
 /* --- Move unit to target_move --- */
 void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
-    SDL_Log(__func__);
+    // SDL_Log(__func__);
     // TODO: wait until previous combat is finished before moving
     /* -- AI moves, after taking the decision -- */
     struct AI   *ai     = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
@@ -431,10 +431,7 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
     }
 
     // entity_print(sota->map->unitmap, sota->map->row_len, sota->map->col_len);
-    SDL_Log("old %d %d", old.x, old.y);
-    SDL_Log("new %d %d", new.x, new.y);
-    entity_print(sota->map->unitmap, sota->map->row_len, sota->map->col_len);
-    SDL_Log("npc_ent %d->%d %d", sota->map->unitmap[old_index], sota->map->unitmap[new_index], npc_ent);
+    // entity_print(sota->map->unitmap, sota->map->row_len, sota->map->col_len);
     SDL_assert(sota->map->unitmap[old_index] == npc_ent);
     SDL_assert(sota->map->unitmap[new_index] == TNECS_NULL);
 
@@ -567,7 +564,6 @@ void AI_writeJSON(void *input,  cJSON *jai) {
 
 void Unit_Move_onMap_Animate(struct Game  *sota,  tnecs_entity entity,
                              struct Timer *timer, struct UnitMoveAnimation *anim) {
-    SDL_Log("%d %d", timer->time_ns / 1000000, anim->time_ns / 1000000);
     if (timer->time_ns >= anim->time_ns) {
         SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "Unit Animation Finished");
         /* Remove component to stop calling __func__ */

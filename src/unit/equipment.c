@@ -417,7 +417,7 @@ void _Unit_Item_Deplete(struct Unit *unit, int i, u64 archetype) {
         return;
     }
 
-    SDL_Log("Depleting");
+    // SDL_Log("Depleting");
     struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, unit->_equipment[i].id);
     struct Item   *item   = weapon->item;
     Inventory_item_Deplete(&unit->_equipment[i], item->stats.uses);

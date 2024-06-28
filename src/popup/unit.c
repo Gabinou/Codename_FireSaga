@@ -236,7 +236,6 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     struct Point pos;
     s8 name = pu->unit->name;
     SDL_assert(name.data != NULL);
-    SDL_Log("name.data %s %d", name.data, name.num );
     pos = PopUp_Unit_Center_Name(pu, n9patch, name.data, name.num);
     PixelFont_Write(pu->pixelnours_big, renderer, name.data, name.num, pos.x, pos.y);
     /* -- PORTRAIT/FACE -- */

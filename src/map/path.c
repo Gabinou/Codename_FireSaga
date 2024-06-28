@@ -50,7 +50,6 @@ void Map_Stacked_Dangermap_Compute(struct Map *map, i32 *dangermap) {
 void Map_Stacked_Dangermap_Reset(struct Map *map) {
     int len = map->row_len * map->col_len;
     if (map->stacked_dangermap != NULL) {
-        SDL_Log("Map_Stackmap_Reset SETdanger");
         int size = sizeof(*map->stacked_dangermap);
         map->stacked_dangermap = memset(map->stacked_dangermap, 0, size * len);
     }
