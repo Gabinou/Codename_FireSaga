@@ -1321,18 +1321,18 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
         mc->visible = false;
 
     /* - Show map combat popup - */
-    if (sota->popups[POPUP_TYPE_MAP_COMBAT] == TNECS_NULL)
-        Game_PopUp_Map_Combat_Create(sota);
-    Game_PopUp_Map_Combat_Update(sota);
+    // if (sota->popups[POPUP_TYPE_MAP_COMBAT] == TNECS_NULL)
+    // Game_PopUp_Map_Combat_Create(sota);
+    // Game_PopUp_Map_Combat_Update(sota);
 
-    struct Unit *aggressor = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Unit);
-    struct Unit *defendant = TNECS_GET_COMPONENT(sota->world, sota->defendant, Unit);
-    struct PopUp *popup    = TNECS_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_MAP_COMBAT],
-                                                 PopUp);
-    struct PopUp_Map_Combat *pmc = popup->data;
+    // struct Unit *aggressor = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Unit);
+    // struct Unit *defendant = TNECS_GET_COMPONENT(sota->world, sota->defendant, Unit);
+    // struct PopUp *popup    = TNECS_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_MAP_COMBAT],
+    // PopUp);
+    // struct PopUp_Map_Combat *pmc = popup->data;
 
-    PopUp_Map_Combat_Units(pmc, sota, sota->aggressor, sota->defendant);
-    popup->visible = true;
+    // PopUp_Map_Combat_Units(pmc, sota, sota->aggressor, sota->defendant);
+    // popup->visible = true;
     /* - Deselect weapons in LoadoutSelectMenu, if it exists - */
     mc = TNECS_GET_COMPONENT(sota->world, sota->weapon_select_menu, Menu);
     if (mc != NULL) {
@@ -1361,7 +1361,7 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
 
     tnecs_entity  popup_ent      = sota->popups[POPUP_TYPE_MAP_COMBAT];
     struct PopUp *popup_ptr      = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
-    struct PopUp_Map_Combat *pmc = popup_ptr->data;
+    // struct PopUp_Map_Combat *pmc = popup_ptr->data;
 
     /* 2. Update maphpbars. */
     // Unit might be dead, only update if maphpbar exists
@@ -1508,18 +1508,19 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     /* -- Popup_Map_Combat -- */
     tnecs_entity popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
     struct PopUp *popup_ptr  = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
-    struct PopUp_Map_Combat *pmc = popup_ptr->data;
-    SDL_assert(pmc->defendant == sota->defendant);
-    SDL_assert(pmc->aggressor == sota->aggressor);
-    SDL_assert(pmc->defendant > TNECS_NULL);
-    SDL_assert(pmc->aggressor > TNECS_NULL);
+    // struct PopUp_Map_Combat *pmc = popup_ptr->data;
+    // SDL_assert(pmc->defendant == sota->defendant);
+    // SDL_assert(pmc->aggressor == sota->aggressor);
+    // SDL_assert(pmc->defendant > TNECS_NULL);
+    // SDL_assert(pmc->aggressor > TNECS_NULL);
     Unit *aggressor  = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Unit);
     Unit *defendant  = TNECS_GET_COMPONENT(sota->world, sota->defendant, Unit);
     SDL_assert(aggressor != NULL);
     SDL_assert(defendant != NULL);
 
     // 1. Get next HP of attacked unit
-    struct Combat_Attack attack = sota->combat_outcome.attacks[pmc->current_attack++];
+    struct Combat_Attack attack = sota->combat_outcome.attacks[sota->combat_outcome.current_attack++];
+    // pmc->current_attack = sota->combat_outcome.current_attack;
     struct Unit *attacker, *defender;
     attacker = attack.attacker ? aggressor : defendant;
     defender = attack.attacker ? defendant : aggressor;
@@ -1546,11 +1547,11 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
 
     sota->combat_outcome.ended = (agg_death || dft_death);
 
-    SDL_assert(popup_ptr != NULL);
-    SDL_assert(pmc != NULL);
+    // SDL_assert(popup_ptr != NULL);
+    // SDL_assert(pmc != NULL);
     SDL_assert(sota->aggressor != TNECS_NULL);
     SDL_assert(sota->defendant != TNECS_NULL);
-    pmc->update = true;
+    // pmc->update = true;
 }
 
 void receive_event_Unit_Agonizes(struct Game *sota, SDL_Event *userevent) {

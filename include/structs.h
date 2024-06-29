@@ -507,6 +507,7 @@ extern struct Combat_Forecast Combat_Forecast_default;
 struct Combat_Outcome {
     struct Combat_Phase   phases[SOTA_COMBAT_MAX_PHASES];
     struct Combat_Attack *attacks;
+    int current_attack;
     b32                   ended; /* death before all attacks */
 };
 extern struct Combat_Outcome Combat_Outcome_default;

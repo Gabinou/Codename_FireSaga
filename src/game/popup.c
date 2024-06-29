@@ -362,7 +362,8 @@ void Game_PopUp_Map_Combat_Update(   struct Game *sota) {
 
 void Game_PopUp_Map_Combat_Hide(struct Game *sota) {
     tnecs_entity popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
-    SDL_assert(popup_ent != TNECS_NULL);
+    if (popup_ent == TNECS_NULL)
+        return;
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
     popup->visible = false;
 }

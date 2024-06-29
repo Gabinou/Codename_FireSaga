@@ -336,9 +336,10 @@ void Index_Shader_Free(struct Index_Shader *shd) {
 
 SDL_Surface *Index_Shade_Surface(struct Index_Shader *shd, SDL_Surface *surf, SDL_Rect *rect) {
     /* -- Preliminaries -- */
-    SDL_assert(shd != NULL);
+    SDL_assert(shd              != NULL);
     SDL_assert(shd->pixels_list != NULL);
-    SDL_assert(surf != NULL);
+    SDL_assert(surf             != NULL);
+    SDL_assert(surf->format     != NULL);
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(surf->format->format));
 
     /* -- Create new surf to shade -- */
