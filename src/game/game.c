@@ -91,6 +91,7 @@ struct Game Game_default = {
 /* --- Constructors/Destructors --- */
 
 void Game_Free(struct Game *sota) {
+    AI_State_Free(&sota->ai_state);
     Party_Free(&sota->party_struct);
     Game_Party_Free(sota->party);
     Game_Title_Destroy(sota);

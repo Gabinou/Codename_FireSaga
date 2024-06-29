@@ -199,6 +199,7 @@ void AI_writeJSON(void *ai, cJSON *jai);
 /* --- AI_State --- */
 void AI_State_Pop( struct AI_State *ais, tnecs_world *world);
 void AI_State_Init(struct AI_State *ais, tnecs_world *world, struct Map *map);
+void AI_State_Free(struct AI_State *ais);
 
 void AI_State_Turn_Start( struct AI_State *ais);
 void AI_State_Turn_Finish(struct AI_State *ais);

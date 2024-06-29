@@ -390,7 +390,7 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
                                              start, target, true);
 
     int point_num       = DARR_NUM(path_list) / TWO_D;
-    int *computed_path  = list2matrix(path_list, row_len, col_len, point_num);
+    // int *computed_path  = list2matrix(path_list, row_len, col_len, point_num);
     // printf("computed_path\n\n");
     // matrix_print(computed_path, row_len, col_len);
 
@@ -472,6 +472,12 @@ void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
 }
 
 /* --- AI_State --- */
+void AI_State_Free(struct AI_State *ai_state) {
+    if (ai_state->npcs != NULL) {
+        DARR_FREE(ai_state->npcs);
+        ai_state->npcs = NULL;
+    }
+}
 void AI_State_Init(struct AI_State *ai_state, tnecs_world *world, struct Map *map) {
     /* -- Init ai_state->npc --  */
     if (ai_state->npcs == NULL)
