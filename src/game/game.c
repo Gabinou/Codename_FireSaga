@@ -102,7 +102,7 @@ void Game_Free(struct Game *sota) {
     Game_Mouse_Free(sota);
     Game_menuStack_Free(sota);
     Game_PlayerSelectMenus_Free(sota);
-
+    Game_PopUp_Unit_Free(sota);
     if (sota->combat_outcome.attacks != NULL) {
         DARR_FREE(sota->combat_outcome.attacks);
         sota->combat_outcome.attacks = NULL;

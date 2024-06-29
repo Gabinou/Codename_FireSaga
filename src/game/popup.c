@@ -138,6 +138,19 @@ void Game_PopUp_Pre_Combat_Free(struct Game *sota) {
 }
 
 /* --- POPUP_UNIT --- */
+void Game_PopUp_Unit_Free(struct Game *sota) {
+    if (sota->popups[POPUP_TYPE_HUD_UNIT] > TNECS_NULL) {
+        tnecs_entity         popup_ent      = sota->popups[POPUP_TYPE_HUD_UNIT];
+        struct PopUp        *popup          = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
+        struct PopUp_Unit   *pu             = popup->data;
+
+        PopUp_Unit_Free(pu);
+        SDL_free(popup->data);
+        tnecs_entity_destroy(sota->world, popup_ent);
+        sota->popups[POPUP_TYPE_HUD_UNIT]   = TNECS_NULL;
+    }
+}
+
 void Game_PopUp_Unit_Create(struct Game *sota) {
     if (sota->popups[POPUP_TYPE_HUD_UNIT] != TNECS_NULL) {
         SDL_Log("Popup POPUP_TYPE_HUD_UNIT is already loaded");
@@ -163,7 +176,8 @@ void Game_PopUp_Unit_Create(struct Game *sota) {
     popup->visible = true;
 
     /* - n9Patch - */
-    popup->data = malloc(sizeof(struct PopUp_Unit));
+    if (popup->data == NULL)
+        popup->data = malloc(sizeof(struct PopUp_Unit));
     struct PopUp_Unit *popup_unit = popup->data;
     *popup_unit = PopUp_Unit_default;
     PopUp_Unit_Load(popup_unit, sota->renderer, &popup->n9patch);

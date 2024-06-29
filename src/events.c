@@ -1513,6 +1513,8 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     // SDL_assert(pmc->aggressor == sota->aggressor);
     // SDL_assert(pmc->defendant > TNECS_NULL);
     // SDL_assert(pmc->aggressor > TNECS_NULL);
+    SDL_assert(sota->aggressor > TNECS_NULL);
+    SDL_assert(sota->defendant > TNECS_NULL);
     Unit *aggressor  = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Unit);
     Unit *defendant  = TNECS_GET_COMPONENT(sota->world, sota->defendant, Unit);
     SDL_assert(aggressor != NULL);
