@@ -17,21 +17,25 @@ struct Range *Unit_Range_Loadout(struct Unit   *unit) {
         /* If dual wielding, range_loadout is combined. */
         if (unit->isDualWielding) {
             _Unit_Range_Combine(unit, range, true, ITEM_ARCHETYPE_WEAPON);
+            // SDL_Log("unit->isDualWielding");
             break;
         }
 
         /* If not dual wielding, compute range of weapon in stronghand. */
         if (!Unit_isEquipped(unit, stronghand)) {
+            // SDL_Log("stronghand not equipped");
             break;
         }
 
         if (!Unit_Eq_Usable(unit, ITEM_ARCHETYPE_WEAPON, stronghand)) {
+            // SDL_Log("Not usable");
             break;
         }
 
         Weapon_Load(unit->weapons_dtab, unit->_equipment[stronghand].id);
         struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[stronghand].id);
         if (wpn == NULL) {
+            // SDL_Log("WPN null");
             break;
         }
         Ranges_Combine(range, wpn->stats.range);
@@ -267,7 +271,6 @@ void Unit_Rangemap_Default(struct Unit *unit) {
 
 b32 Unit_inRange_Loadout(Unit *agg, Position *agg_pos, Position *dft_pos) {
     struct Range *range = Unit_Range_Loadout(agg);
-    SDL_Log("range %d %d", range->min, range->max);
     int distance    =  abs(agg_pos->tilemap_pos.x - dft_pos->tilemap_pos.x);
     distance        += abs(agg_pos->tilemap_pos.y - dft_pos->tilemap_pos.y);
     return ((distance >= range->min) && (distance <= range->max));

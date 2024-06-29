@@ -672,7 +672,6 @@ void receive_event_SDL_MOUSEBUTTON(struct Game *sota, SDL_Event *event) {
 }
 
 void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
-    SDL_Log("%s", __func__);
     struct Map *map = sota->map;
     SDL_assert(sota->state == GAME_STATE_Gameplay_Map);
 
@@ -1197,7 +1196,6 @@ void receive_event_Unit_Refresh(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Unit_Wait(struct Game *sota, SDL_Event *userevent) {
-    SDL_Log("%s", __func__);
     /* -- Preliminaries -- */
 
     /* - Make aggressor wait - */
@@ -1240,7 +1238,6 @@ void receive_event_Unit_Rescue(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
-    SDL_Log("%s %d %d", __func__, sota->aggressor, sota->defendant);
     SDL_assert(sota->aggressor > TNECS_NULL);
     SDL_assert(sota->defendant > TNECS_NULL);
     struct Sprite *agg_sprite = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Sprite);
@@ -1351,7 +1348,6 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
-    SDL_Log("%s", __func__);
     // Event_Emit(__func__, SDL_USEREVENT, event_Unit_Wait, NULL, NULL);
 
     // 1. Resolve Combat
@@ -1475,7 +1471,6 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     /* --- Removing unit from map --- */
     SDL_assert(sota->map->world == sota->world);
     SDL_assert(victim_entity > TNECS_NULL);
-    SDL_Log("%s %d", __func__, victim_entity);
     Map_Unit_Remove(sota->map, victim_entity);
 
     /* --- Making unit sprite invisible --- */
@@ -1528,9 +1523,7 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     struct Unit *attacker, *defender;
     attacker = attack.attacker ? aggressor : defendant;
     defender = attack.attacker ? defendant : aggressor;
-    SDL_Log("receive_event_Increment_Attack %d %d", aggressor->current_hp, defendant->current_hp);
     Combat_Resolve_Attack(attack, attacker, defender);
-    SDL_Log("receive_event_Increment_Attack %d %d", aggressor->current_hp, defendant->current_hp);
 
     // 2. Check for unit agony/death
     b32 agg_death = (!aggressor->alive) || (aggressor->agony >= 0);
