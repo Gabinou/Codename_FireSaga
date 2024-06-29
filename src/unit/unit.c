@@ -109,6 +109,7 @@ struct Unit Unit_default = {
     ._id             = 0,
     .status_queue    = NULL,
     .grown_stats     = NULL,
+    .bonus_stack     = NULL,
 
     .weapons_dtab    = NULL,
 
@@ -153,9 +154,11 @@ struct Unit Unit_Nibal_make(void) {
         .army           = ARMY_HAMILCAR,
         ._id            = UNIT_ID_NIBAL,
         .status_queue   = NULL,
+        .bonus_stack    = NULL,
 
         .grown_stats    = NULL,
         .weapons_dtab   = NULL,
+
 
         .current_hp     = 35,
         .alive          = true,
@@ -185,12 +188,21 @@ void Unit_Init(struct Unit *unit) {
 }
 
 void Unit_Allocs(struct Unit *unit) {
+    if (unit->grown_stats != NULL)
+        DARR_FREE(unit->grown_stats);
     unit->grown_stats   = DARR_INIT(unit->grown_stats,  struct Unit_stats, SOTA_MAX_LEVEL / 8);
+
+    if (unit->status_queue != NULL)
+        DARR_FREE(unit->status_queue);
     unit->status_queue  = DARR_INIT(unit->status_queue, struct Unit_status, 2);
+
+    if (unit->bonus_stack != NULL)
+        DARR_FREE(unit->bonus_stack);
     unit->bonus_stack   = DARR_INIT(unit->bonus_stack,  struct Bonus_Stats, 2);
 }
 
 void Unit_Free(struct Unit *unit) {
+    SDL_Log("Unit_Free");
     SDL_assert(unit != NULL);
     if (unit->bonus_stack != NULL) {
         DARR_FREE(unit->bonus_stack);
@@ -965,7 +977,6 @@ i32 Unit_computeFavor(struct Unit *unit, int distance) {
 i32 Unit_computeAgony(struct Unit *unit) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
-
 
     i32 bonus = 0;
     /* Add all bonuses */

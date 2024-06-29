@@ -125,6 +125,7 @@ void Game_debugMap_Load(struct Game *sota) {
 
 /* --- Reinforcements --- */
 void Game_Map_Reinforcements_Free(struct Game *sota) {
+    SDL_Log("Game_Map_Reinforcements_Free");
     SDL_assert(sota != NULL);
     if (sota->map_enemies == NULL) {
         SDL_Log("Map enemies uninitialized");
@@ -140,12 +141,14 @@ void Game_Map_Reinforcements_Free(struct Game *sota) {
         tnecs_entity temp_unit_ent =  DARR_POP(sota->map_enemies);
 
         struct Unit *unit = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
-        if (unit)
+        if (unit) {
             Unit_Free(unit);
+        }
 
         struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Sprite);
-        if (sprite)
+        if (sprite) {
             Sprite_Free(sprite);
+        }
     }
 
     if (sota->map_enemies != NULL) {
@@ -163,29 +166,66 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         if ((reinf->turn != sota->map->turn))
             continue;
 
-        SDL_Log("-- Reinforcement turn: %d %d --", reinf->turn, sota->map->turn);
+        // SDL_Log("-- Reinforcement turn: %d %d --", reinf->turn, sota->map->turn);
 
         // TODO: Skip if something blocks tile reinforcements come to
-        SDL_Log("-- loading reinforcements %ld --", i);
-        SDL_Log("-- create entity --");
+        // SDL_Log("-- loading reinforcements %ld --", i);
+        // SDL_Log("-- create entity --");
         tnecs_entity temp_unit_ent;
         temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Unit, Position,
                                                         Sprite, Timer, MapHPBar, AI);
         DARR_PUT(sota->map_enemies, temp_unit_ent);
 
-        SDL_Log("-- checks --");
+        // SDL_Log("-- checks --");
         tnecs_component typeflag;
         typeflag = TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Unit, Position,
                                                   Sprite, Timer, MapHPBar, AI);
 
-        SDL_Log("- 1 -");
         size_t typeflag_id1 = tnecs_typeflagid(sota->world, typeflag);
-        SDL_Log("- 2 -");
         size_t typeflag_id2 = tnecs_typeflagid(sota->world, sota->world->entity_typeflags[temp_unit_ent]);
 
-        SDL_Log("-- loading unit Boss --");
+        int num_typeflag1 = sota->world->num_entities_bytype[typeflag_id1];
+        int num_typeflag2 = sota->world->num_entities_bytype[typeflag_id2];
+
+        // SDL_Log("- current -");
+        size_t current_num = sota->world->num_entities_bytype[typeflag_id1];
+
+        tnecs_entity **entities_bytype = sota->world->entities_bytype;
+        SDL_assert(entities_bytype != NULL);
+
+        // SDL_Log("-- loading position --");
+        struct Position *position = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Position);
+        SDL_assert(position != NULL);
+        *position = Position_default;
+        // SDL_memcpy(position, &Position_default, sizeof(Position));
+        position->onTilemap = true;
+        Position_Bounds_Set(position, 0, sota->map->col_len, 0, sota->map->row_len);
+        position->scale[0]      = (float)sota->map->tilesize[0];
+        position->scale[1]      = (float)sota->map->tilesize[0];
+        position->tilemap_pos.x = reinf->position.x;
+        position->tilemap_pos.y = reinf->position.y;
+        position->pixel_pos.x   = (i32)lround(position->tilemap_pos.x * position->scale[0]);
+        position->pixel_pos.y   = (i32)lround(position->tilemap_pos.y * position->scale[1]);
+        SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
+
+        int index = position->tilemap_pos.y * sota->map->col_len + position->tilemap_pos.x;
+
+        // check if another unit already on the map.
+        if (sota->map->unitmap[index] != TNECS_NULL) {
+            // DESIGN QUESTION. If another entity is already on the map.
+            //  -> FE does not even load unit
+            // Unit_Free(unit);
+            tnecs_entity_destroy(sota->world, DARR_POP(sota->map_enemies));
+            continue;
+        }
+
         if ((reinf->boss_icon > BOSS_ICON_NULL) && (reinf->boss_icon < BOSS_ICON_NUM)) {
+            SDL_Log("-- loading unit Boss --");
+            SDL_Log("%d %d", position->tilemap_pos.x, position->tilemap_pos.y);
             tnecs_entity entity = TNECS_ADD_COMPONENT(sota->world, temp_unit_ent, Boss);
+            position = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Position);
+
+            // SDL_Log("%d %d", position->tilemap_pos.x, position->tilemap_pos.y);
             SDL_assert(temp_unit_ent == entity);
             struct Boss *boss = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Boss);
             SDL_assert(boss != NULL);
@@ -195,14 +235,6 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
             typeflag += TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Boss);
             typeflag_id1 = tnecs_typeflagid(sota->world, typeflag);
         }
-        int num_typeflag1 = sota->world->num_entities_bytype[typeflag_id1];
-        int num_typeflag2 = sota->world->num_entities_bytype[typeflag_id2];
-
-        SDL_Log("- current -");
-        size_t current_num = sota->world->num_entities_bytype[typeflag_id1];
-
-        tnecs_entity **entities_bytype = sota->world->entities_bytype;
-        SDL_assert(entities_bytype != NULL);
 
         // TODO: Walking around on the map
         // SDL_Log("-- loading slider --");
@@ -214,11 +246,12 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         // slider->update_wait = CURSOR_SLIDEWAIT;
         // slider->slidetype = SLIDETYPE_GEOMETRIC;
 
-        SDL_Log("-- loading unit --");
+        // SDL_Log("-- loading unit --");
         struct Unit *unit = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
+        *unit = Unit_default;
+        Unit_Allocs(unit);
         SDL_assert(unit != NULL);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
-        Unit_Init(unit);
 
         /* DESIGN: Reinforcements wait! */
         unit->waits = true;
@@ -237,7 +270,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         /* Make AI reinforcements levelup */
         Unit_Reinforcement_Levelups(unit, reinf);
 
-        SDL_Log("-- loading unit equipment --");
+        // SDL_Log("-- loading unit equipment --");
         for (int j = 0; j < DARR_NUM(sota->map->reinf_equipments[i]); j++) {
             unit->_equipment[j] = sota->map->reinf_equipments[i][j];
         }
@@ -252,7 +285,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
         s8_free(&unit_path);
 
-        SDL_Log("-- loading unit AI --");
+        // SDL_Log("-- loading unit AI --");
         struct AI *ai = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, AI);
         *ai = AI_default;
         s8 ai_path  = s8_mut("ai"PHYSFS_SEPARATOR);
@@ -269,38 +302,14 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
         s8_free(&ai_path);
 
-        SDL_Log("-- loading map_hp_bar --");
+        // SDL_Log("-- loading map_hp_bar --");
         struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, MapHPBar);
         // *map_hp_bar = MapHPBar_default;
         map_hp_bar->unit_ent = temp_unit_ent;
         map_hp_bar->len = sota->settings.tilesize[0];
         map_hp_bar->update = true;
 
-        SDL_Log("-- loading position --");
-        struct Position *position = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Position);
-        SDL_assert(position != NULL);
-        *position = Position_default;
-        // SDL_memcpy(position, &Position_default, sizeof(Position));
-        position->onTilemap = true;
-        Position_Bounds_Set(position, 0, sota->map->col_len, 0, sota->map->row_len);
-        position->scale[0]      = (float)sota->map->tilesize[0];
-        position->scale[1]      = (float)sota->map->tilesize[0];
-        position->tilemap_pos.x = reinf->position.x;
-        position->tilemap_pos.y = reinf->position.y;
-        position->pixel_pos.x   = (i32)lround(position->tilemap_pos.x * position->scale[0]);
-        position->pixel_pos.y   = (i32)lround(position->tilemap_pos.y * position->scale[1]);
-        SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
-
-        int index = position->tilemap_pos.y * sota->map->col_len + position->tilemap_pos.x;
-        // check if another unit already on the map.
-        if (sota->map->unitmap[index] != TNECS_NULL) {
-            // DESIGN QUESTION. If another entity is already on the map.
-            //  -> FE does not even load unit
-            tnecs_entity_destroy(sota->world, temp_unit_ent);
-            continue;
-        }
-
-        SDL_Log("-- loading sprite --");
+        // SDL_Log("-- loading sprite --");
         struct Timer *timer;
         timer = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Timer);
         SDL_assert(timer != NULL);
@@ -330,7 +339,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(unit->name.data != NULL);
     }
     sota->map->reinf_loaded = sota->map->turn;
-    SDL_assert(DARR_NUM(sota->map_enemies) == DARR_NUM(sota->map->reinforcements));
+    SDL_assert(DARR_NUM(sota->map_enemies) <= DARR_NUM(sota->map->reinforcements));
 
 }
 

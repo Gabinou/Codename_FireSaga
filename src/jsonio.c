@@ -107,6 +107,8 @@ void jsonio_readJSON(s8 filename, void *struct_ptr) {
     /* Clean the jfile */
     if (jfile != NULL)
         cJSON_Delete(jfile);
+
+    s8_free(&filename_mut);
 }
 
 void jsonio_writeJSON(s8 filename, void *struct_ptr, b32 append) {

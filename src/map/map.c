@@ -133,9 +133,12 @@ static void _Map_Reinforcements_Free(struct Map *map) {
     if (map->reinforcements == NULL)
         return;
 
-    for (u8 r = 0; r < DARR_NUM(map->reinforcements); r++) {
+    for (int r = 0; r < DARR_NUM(map->reinforcements); r++) {
         Reinforcement_Free(&map->reinforcements[r]);
     }
+
+    DARR_FREE(map->reinforcements);
+    map->reinforcements = NULL;
 }
 
 static void _Map_Tilemap_Shader_Free(struct Map *map) {
@@ -283,10 +286,6 @@ void Map_Free(struct Map *map) {
     if (map->friendlies_onfield != NULL) {
         DARR_FREE(map->friendlies_onfield);
         map->friendlies_onfield = NULL;
-    }
-    if (map->reinforcements != NULL) {
-        DARR_FREE(map->reinforcements);
-        map->reinforcements = NULL;
     }
     if (map->reinf_equipments != NULL) {
         for (size_t i = 0; i < DARR_NUM(map->reinf_equipments); i++) {
