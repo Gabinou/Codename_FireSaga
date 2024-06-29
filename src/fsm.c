@@ -1220,7 +1220,8 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
                           cursor_pos->tilemap_pos.x;
     tnecs_entity ontile = sota->map->unitmap[current_i];
 
-    if (ontile != NULL) {
+    /* - Not unit selected - */
+    if (ontile != TNECS_NULL) {
         return;
     }
 
