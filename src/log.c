@@ -18,6 +18,7 @@ static const char *SDL_priority_prefixes[SDL_NUM_LOG_PRIORITIES] = {
 };
 
 void Log_Init(void) {
+    printf(__func__);
     /* -- Clear logfile -- */
     fclose(fopen(LOGFILE, "w"));
 
@@ -45,10 +46,17 @@ void Log_Init(void) {
 
 void Log2file(void *userdata, int category, SDL_LogPriority priority,
               const char *message) {
+    SDL_assert(message != NULL);
+    SDL_assert((priority > 0) && (priority < SDL_NUM_LOG_PRIORITIES));
+
     /* -- Log to file -- */
     FILE *logf = fopen(LOGFILE, "a");
-    fprintf(logf, "%s:\t%s\n", SDL_priority_prefixes[priority], message);
-    fclose(logf);
+    if (logf != NULL) {
+        // fprintf(stderr, "%s\n", SDL_priority_prefixes[priority]);
+        // fprintf(stderr, "%s\n", message);
+        fprintf(logf, "%s:\t%s\n", SDL_priority_prefixes[priority], message);
+        fclose(logf);
+    }
 
     /* -- Log  -- */
     /* Copied from SDL_log.c */

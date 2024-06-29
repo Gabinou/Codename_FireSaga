@@ -57,13 +57,16 @@ void Game_Unit_Wait(struct Game *sota, tnecs_entity ent) {
 }
 
 void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
+    SDL_assert(sota != NULL);
+    printf("Game_Unit_Refresh %d\n", ent);
+
     /* --- Refresh unit on map --- */
+    SDL_assert(TNECS_ENTITY_EXISTS(sota->world, ent));
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, ent, Unit);
     SDL_assert(unit != NULL);
     /* --- Skip if unit is not waiting --- */
     if (!unit->waits)
         return;
-
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, ent, Sprite);
     SDL_assert(sprite != NULL);
 

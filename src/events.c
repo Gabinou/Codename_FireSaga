@@ -671,6 +671,7 @@ void receive_event_SDL_MOUSEBUTTON(struct Game *sota, SDL_Event *event) {
 }
 
 void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
+    SDL_Log("%s", __func__);
     struct Map *map = sota->map;
     SDL_assert(sota->state == GAME_STATE_Gameplay_Map);
 
@@ -1471,6 +1472,7 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     /* --- Removing unit from map --- */
     SDL_assert(sota->map->world == sota->world);
     SDL_assert(victim_entity > TNECS_NULL);
+    SDL_Log("%s %d", __func__, victim_entity);
     Map_Unit_Remove(sota->map, victim_entity);
 
     /* --- Making unit sprite invisible --- */
@@ -1654,6 +1656,7 @@ void Events_Receivers_Declare(void) {
 }
 
 void Events_Manage(struct Game *sota) {
+    SDL_Log("%s", __func__);
     SDL_assert(sota != NULL);
     SDL_Event event;
 

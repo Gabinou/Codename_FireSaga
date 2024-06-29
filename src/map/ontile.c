@@ -98,7 +98,7 @@ void Map_Unit_Swap(struct Map *map, u8 old_col, u8 old_row, u8 new_col, u8 new_r
 }
 
 void Map_Unit_Move(struct Map *map, u8 col, u8 row, u8 new_col, u8 new_row) {
-    // SDL_Log(__func__);
+    // SDL_Log("%s", __func__);
     /* Note: Does NOT check if [new_x, new_y] is empty. */
     SDL_assert(map->unitmap != NULL);
     SDL_assert(col      < map->col_len);

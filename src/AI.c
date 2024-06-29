@@ -37,6 +37,7 @@ void _AI_Doer_Wait(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *ac
 }
 
 void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+    SDL_Log("%s", __func__);
     /* --- AI Unit Attacks the selected defendant --- */
     /* -- Set aggressor for combat -- */
     sota->aggressor = npc_ent;
@@ -316,7 +317,7 @@ void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action 
 }
 
 void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
-    // SDL_Log(__func__);
+    // SDL_Log("%s", __func__);
     /* --- AI decides where to move unit depending on action to take --- */
     /* --- Skip depending on movement priority --- */
     struct AI       *ai  = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
@@ -342,7 +343,7 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
 }
 
 void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
-    // SDL_Log(__func__);
+    // SDL_Log("%s", __func__);
     /* -- Set target_move to closest tile on way to target_action -- */
 
     /* -- Skip movement if target is at current position -- */
@@ -394,7 +395,9 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
 
 /* --- Move unit to target_move --- */
 void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
-    // SDL_Log(__func__);
+    SDL_Log("%s %d -> (%d %d)", __func__, npc_ent, action->target_move.x, action->target_move.y);
+
+    // SDL_Log("%s", __func__);
     // TODO: wait until previous combat is finished before moving
     /* -- AI moves, after taking the decision -- */
     struct AI   *ai     = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);

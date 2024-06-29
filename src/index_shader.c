@@ -344,12 +344,15 @@ SDL_Surface *Index_Shade_Surface(struct Index_Shader *shd, SDL_Surface *surf, SD
     /* -- Create new surf to shade -- */
     /* - copy pixel data - */
     SDL_LockSurface(surf);
-    void *new_pixels = SDL_malloc(surf->h * surf->pitch);
-    SDL_memcpy(new_pixels, surf->pixels, surf->h * surf->pitch);
-    SDL_UnlockSurface(surf);
+    SDL_Surface *out = SDL_CreateRGBSurfaceWithFormat(SDL_IGNORE, surf->w, surf->h,
+                                                      surf->format->BitsPerPixel, surf->format->format);
+    SDL_LockSurface(out);
+    SDL_memcpy(out->pixels, surf->pixels, surf->h * surf->pitch);
 
-    SDL_Surface *out = SDL_CreateRGBSurfaceWithFormatFrom(new_pixels, surf->w, surf->h,
-                                                          surf->format->BitsPerPixel, surf->pitch, surf->format->format);
+
+    SDL_UnlockSurface(surf);
+    SDL_UnlockSurface(out);
+
     SDL_assert(out != NULL);
     SDL_assert((out->w > 0) && (out->h > 0));
     int success = SDL_SetColorKey(out, SDL_TRUE, PALETTE_COLORKEY);
