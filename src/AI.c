@@ -388,6 +388,10 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
 
     /* -- Pathfinding --  */
     int *path_list  = DARR_INIT(path_list, int, 16);
+    matrix_print(costmap, row_len, col_len);
+    printf("\n\n");
+    entity_print(unitmap, row_len, col_len);
+
     path_list       = Pathfinding_Astar_plus(path_list, costmap, unitmap,
                                              row_len, col_len, move,
                                              start, target, true);

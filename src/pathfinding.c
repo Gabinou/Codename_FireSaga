@@ -479,11 +479,11 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
 
             /* Skip neighbour if: tile is occupied at MOVE */
             // short-circuit on NULL occupymap
+            // Occupied tiles can be TRAVERSED but not OCCUPIED.
+            // What does that mean for frontier? Nothing. Tile CAN be in frontier.
             if ((occupymap != NULL) && (occupymap[current_n] != TNECS_NULL) && (neighbour.cost == move)) {
                 continue;
             }
-
-            /* Skip neighbour if: tile is end tile AND occupied  */
 
             /* Skip neighbour if: already visited AND higher cost */
             b32 higher_cost  = (neighbour.cost >= cost[current_n]);
@@ -505,6 +505,9 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
             struct Point movep = {neighbour.x - current.x, neighbour.y - current.y};
 
             /* Update came_from, to build better path */
+            // Occupied tiles can be TRAVERSED but not OCCUPIED.
+            // What does it mean for came from?
+            // came from from SHOULD NOT lead to occupied tile
             came_from[current_n] = Ternary_Direction(movep);
         }
     }
