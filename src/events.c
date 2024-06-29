@@ -293,8 +293,8 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
     tnecs_entity popup_ent;
     struct PopUp *popup_ptr;
     /* -- Make Popup_Tile visible -- */
+    popup_ent = sota->popups[POPUP_TYPE_HUD_TILE];
     if (popup_ent > TNECS_NULL) {
-        popup_ent = sota->popups[POPUP_TYPE_HUD_TILE];
         popup_ptr = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
         SDL_assert(popup_ptr != NULL);
         popup_ptr->visible = true;
@@ -1506,8 +1506,8 @@ void receive_event_Unit_Loots(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     /* -- Popup_Map_Combat -- */
-    tnecs_entity popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
-    struct PopUp *popup_ptr  = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
+    // tnecs_entity popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
+    // struct PopUp *popup_ptr  = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
     // struct PopUp_Map_Combat *pmc = popup_ptr->data;
     // SDL_assert(pmc->defendant == sota->defendant);
     // SDL_assert(pmc->aggressor == sota->aggressor);
