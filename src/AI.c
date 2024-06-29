@@ -52,6 +52,8 @@ void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
     struct Position *agg_pos    = TNECS_GET_COMPONENT(sota->world, npc_ent,  Position);
     struct Position *dft_pos    = TNECS_GET_COMPONENT(sota->world, friendly, Position);
     struct Unit     *aggressor  = TNECS_GET_COMPONENT(sota->world, npc_ent,  Unit);
+    SDL_Log("agg_pos %d %d", agg_pos->tilemap_pos.x, agg_pos->tilemap_pos.y);
+    SDL_Log("dft_pos %d %d", dft_pos->tilemap_pos.x, dft_pos->tilemap_pos.y);
     SDL_assert(Unit_inRange_Loadout(aggressor, agg_pos, dft_pos));
 
     /* -- Set npc_ent for waiting after combat -- */
@@ -107,6 +109,7 @@ static b32 _AI_Decider_Move_onChapter(struct Game *sota, tnecs_entity npc_ent) {
 /* -- Master Deciders -- */
 static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
                                     struct AI_Action *action) {
+    SDL_Log("_AI_Decider_Master_Kill");
     /* --- AI Unit tries to kill enemy --- */
     /* -- Get list of defendants in range -- */
     Map_Attacktomap_Compute(sota->map, sota->world, npc_ent, true, false);
@@ -151,6 +154,8 @@ static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
     SDL_assert(DARR_NUM(attackfromlist) > 0);
 
     // TODO: find good tile to attack from
+    action->target_move.x = -1;
+    action->target_move.y = -1;
     // action->target_move.x = attackfromlist[0];
     // action->target_move.y = attackfromlist[1];
 
@@ -330,8 +335,10 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
     SDL_assert(ai  != NULL);
 
     /* AI_Decider_move function decides if AI unit moves or not */
-    if (!AI_Decider_move[ai->move](sota, npc_ent))
+    if (!AI_Decider_move[ai->move](sota, npc_ent)) {
+        SDL_Log("Don't move cause decider");
         return;
+    }
 
     b32 set_x   = (action->target_move.x >= 0);
     set_x      &= (action->target_move.x < sota->map->col_len);
@@ -349,7 +356,7 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
 }
 
 void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
-    // SDL_Log("%s", __func__);
+    SDL_Log("%s", __func__);
     /* -- Set target_move to closest tile on way to target_action -- */
 
     /* -- Skip movement if target is at current position -- */
@@ -358,19 +365,19 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
     struct Point target = action->target_action;
     struct Point start  = pos->tilemap_pos;
     if ((target.x == start.x) && (target.y == start.y)) {
-        SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: target is current position. Skipping.");
+        SDL_Log("AI Move Decider: target is current position. Skipping.");
         return;
     }
 
     /* -- Skip movement if target adjacent to current position -- */
-    b32 adjacent_x   = (action->target_action.x == pos->tilemap_pos.x - 1);
-    adjacent_x      |= (action->target_action.x == pos->tilemap_pos.x + 1);
-    b32 adjacent_y   = (action->target_action.y == pos->tilemap_pos.y - 1);
-    adjacent_y      |= (action->target_action.y == pos->tilemap_pos.y + 1);
-    if (adjacent_x && adjacent_y) {
-        SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: target is adjacent. Skipping.");
-        return;
-    }
+    // b32 adjacent_x   = (action->target_action.x == pos->tilemap_pos.x - 1);
+    // adjacent_x      |= (action->target_action.x == pos->tilemap_pos.x + 1);
+    // b32 adjacent_y   = (action->target_action.y == pos->tilemap_pos.y - 1);
+    // adjacent_y      |= (action->target_action.y == pos->tilemap_pos.y + 1);
+    // if (adjacent_x && adjacent_y) {
+    //     SDL_Log("AI Move Decider: target is adjacent. Skipping.");
+    //     return;
+    // }
 
     /* -- Compute costmap for pathfinding -- */
     Map_Costmap_Movement_Compute(sota->map, sota->world, npc_ent);
@@ -388,17 +395,24 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
 
     /* -- Pathfinding --  */
     int *path_list  = DARR_INIT(path_list, int, 16);
+
+    printf("costmap\n\n");
     matrix_print(costmap, row_len, col_len);
-    printf("\n\n");
+    printf("unitmap\n\n");
     entity_print(unitmap, row_len, col_len);
 
     path_list       = Pathfinding_Astar_plus(path_list, costmap, unitmap,
                                              row_len, col_len, move,
                                              start, target, true);
 
-    int point_num   = DARR_NUM(path_list) / TWO_D - 1;
-    action->target_move.x = path_list[point_num * TWO_D];
-    action->target_move.y = path_list[point_num * TWO_D + 1];
+    int point_num       = DARR_NUM(path_list) / TWO_D;
+    int *computed_path  = list2matrix(path_list, row_len, col_len, point_num);
+    printf("computed_path\n\n");
+    matrix_print(computed_path, row_len, col_len);
+
+    int index   = point_num - 1;
+    action->target_move.x = path_list[index * TWO_D];
+    action->target_move.y = path_list[index * TWO_D + 1];
 
     DARR_FREE(path_list);
 }
@@ -416,6 +430,7 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
 
     /* -- Skip no movement -- */
     if (ai->move == AI_MOVE_NEVER) {
+        SDL_Log("AI Move: AI_MOVE_NEVER set. Skipping.");
         SDL_LogDebug(SOTA_LOG_AI, "AI Move: AI_MOVE_NEVER set. Skipping.");
         return;
     }
