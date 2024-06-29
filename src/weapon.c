@@ -92,7 +92,7 @@ void Weapon_readJSON(void *input, cJSON *jwpn) {
     weapon->item->range.min = weapon->stats.range.min;
     weapon->item->range.max = weapon->stats.range.max;
     if (jeffective != NULL)
-        weapon->effective       = cJSON_GetNumberValue(jeffective);
+        weapon->effective   = cJSON_GetNumberValue(jeffective);
 
     weapon->canAttack       = Weapon_canAttack(weapon);
 }
