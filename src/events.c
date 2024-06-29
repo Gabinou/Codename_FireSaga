@@ -250,6 +250,7 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         }
 
         /* -- Timer for reinforcements -- */
+        SDL_assert(sota->reinf_timer == TNECS_NULL);
         sota->reinf_timer   = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer);
         struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->reinf_timer, Timer);
         *timer = Timer_default;
@@ -1196,6 +1197,7 @@ void receive_event_Unit_Refresh(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Unit_Wait(struct Game *sota, SDL_Event *userevent) {
+    SDL_Log("%s", __func__);
     /* -- Preliminaries -- */
 
     /* - Make aggressor wait - */
@@ -1238,6 +1240,7 @@ void receive_event_Unit_Rescue(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
+    SDL_Log("%s %d %d", __func__, sota->aggressor, sota->defendant);
     SDL_assert(sota->aggressor > TNECS_NULL);
     SDL_assert(sota->defendant > TNECS_NULL);
     struct Sprite *agg_sprite = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Sprite);
@@ -1267,8 +1270,8 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     move.y = move.y < -1 ? -1 : move.y;
     move.y = move.y >  1 ?  1 : move.y;
     i8 direction = Ternary_Direction(move);
-    /* -- reset animation states -- */
 
+    /* -- reset animation states -- */
     switch (direction) {
         case SOTA_DIRECTION_BOTTOM:
         case SOTA_DIRECTION_BOTLEFT:
@@ -1291,7 +1294,6 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
             Sprite_Animation_Restart(dft_sprite, MAP_UNIT_LOOP_ATTACKR);
             break;
     }
-
 
     struct Timer *agg_timer = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Timer);
     struct Timer *dft_timer = TNECS_GET_COMPONENT(sota->world, sota->defendant, Timer);
@@ -1349,6 +1351,7 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
+    SDL_Log("%s", __func__);
     // Event_Emit(__func__, SDL_USEREVENT, event_Unit_Wait, NULL, NULL);
 
     // 1. Resolve Combat
@@ -1525,7 +1528,9 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     struct Unit *attacker, *defender;
     attacker = attack.attacker ? aggressor : defendant;
     defender = attack.attacker ? defendant : aggressor;
+    SDL_Log("receive_event_Increment_Attack %d %d", aggressor->current_hp, defendant->current_hp);
     Combat_Resolve_Attack(attack, attacker, defender);
+    SDL_Log("receive_event_Increment_Attack %d %d", aggressor->current_hp, defendant->current_hp);
 
     // 2. Check for unit agony/death
     b32 agg_death = (!aggressor->alive) || (aggressor->agony >= 0);
@@ -1656,7 +1661,6 @@ void Events_Receivers_Declare(void) {
 }
 
 void Events_Manage(struct Game *sota) {
-    SDL_Log("%s", __func__);
     SDL_assert(sota != NULL);
     SDL_Event event;
 

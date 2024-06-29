@@ -53,7 +53,7 @@ void Game_Unit_Wait(struct Game *sota, tnecs_entity ent) {
     // if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, Timer))
 
     // TNECS_REMOVE_COMPONENTS(sota->world, ent, Timer);
-    Sprite_Draw(sprite, sota->renderer);
+    // Sprite_Draw(sprite, sota->renderer);
 }
 
 void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {

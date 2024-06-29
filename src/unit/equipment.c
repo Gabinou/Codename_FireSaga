@@ -407,13 +407,13 @@ void _Unit_Item_Deplete(struct Unit *unit, int i, u64 archetype) {
 
     /* Skip if NULL. Not an error, unit can have empty hand. */
     if (unit->_equipment[i].id == ITEM_NULL) {
-        SDL_Log("ITEM_NULL");
+        // SDL_Log("ITEM_NULL");
         return;
     }
 
     /* Skip if item's archetype to deplete does not match input. */
     if (!(flagsum_isIn(unit->_equipment[i].id, archetype))) {
-        SDL_Log("Archetype mismatch");
+        // SDL_Log("Archetype mismatch");
         return;
     }
 

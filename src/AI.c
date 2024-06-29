@@ -37,16 +37,22 @@ void _AI_Doer_Wait(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *ac
 }
 
 void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
-    SDL_Log("%s", __func__);
     /* --- AI Unit Attacks the selected defendant --- */
     /* -- Set aggressor for combat -- */
     sota->aggressor = npc_ent;
+    SDL_Log("%s %d", __func__, npc_ent);
 
     /* -- Set defendant for combat -- */
     struct Point pos = action->target_action;
     tnecs_entity friendly = Map_Unit_Get(sota->map, pos.x, pos.y);
     SDL_assert(friendly != TNECS_NULL);
     sota->defendant = friendly;
+
+    /* -- Check: enemy is really in range of unit -- */
+    struct Position *agg_pos    = TNECS_GET_COMPONENT(sota->world, npc_ent,  Position);
+    struct Position *dft_pos    = TNECS_GET_COMPONENT(sota->world, friendly, Position);
+    struct Unit     *aggressor  = TNECS_GET_COMPONENT(sota->world, npc_ent,  Unit);
+    SDL_assert(Unit_inRange_Loadout(aggressor, agg_pos, dft_pos));
 
     /* -- Set npc_ent for waiting after combat -- */
     sota->selected_unit_entity = npc_ent;
@@ -395,12 +401,14 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
 
 /* --- Move unit to target_move --- */
 void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
-    SDL_Log("%s %d -> (%d %d)", __func__, npc_ent, action->target_move.x, action->target_move.y);
+    struct AI       *ai     = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
+    struct Position *pos    = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
+    SDL_Log("%s %d, (%d %d) -> (%d %d)", __func__, npc_ent, pos->tilemap_pos.x, pos->tilemap_pos.y,
+            action->target_move.x, action->target_move.y);
 
     // SDL_Log("%s", __func__);
     // TODO: wait until previous combat is finished before moving
     /* -- AI moves, after taking the decision -- */
-    struct AI   *ai     = TNECS_GET_COMPONENT(sota->world, npc_ent, AI);
 
     /* -- Skip no movement -- */
     if (ai->move == AI_MOVE_NEVER) {
@@ -418,7 +426,6 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
         return;
     }
 
-    struct Position *pos    = TNECS_GET_COMPONENT(sota->world, npc_ent, Position);
     struct Sprite   *sprite = TNECS_GET_COMPONENT(sota->world, npc_ent, Sprite);
     SDL_assert(pos      != NULL);
     SDL_assert(sprite   != NULL);

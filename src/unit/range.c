@@ -264,3 +264,10 @@ void Unit_Rangemap_Default(struct Unit *unit) {
     }
 
 }
+
+b32 Unit_inRange_Loadout(Unit *agg, Position *agg_pos, Position *dft_pos) {
+    struct Range *range = Unit_Range_Loadout(agg);
+    int distance    =  abs(agg_pos->tilemap_pos.x - dft_pos->tilemap_pos.x);
+    distance        += abs(agg_pos->tilemap_pos.y - dft_pos->tilemap_pos.y);
+    return (range->min >= distance && distance <= range->max );
+}
