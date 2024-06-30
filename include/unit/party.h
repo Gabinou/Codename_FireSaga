@@ -8,6 +8,7 @@
 
 /* --- Constructor/Destructors --- */
 void Party_Free( struct Party *party);
+void Party_Init( struct Party *party);
 void Party_Reset(struct Party *party);
 
 /* --- Utilities --- */

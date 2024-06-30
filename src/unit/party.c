@@ -35,6 +35,16 @@ void Party_Free(struct Party *party) {
     s8_free(&party->folder);
     s8_free(&party->json_filename);
 }
+void Party_Init( struct Party *party) {
+    SDL_assert(party->json_names        == NULL);
+    SDL_assert(party->json_filenames    == NULL);
+    SDL_assert(party->json_units        == NULL);
+    SDL_assert(party->json_ids          == NULL);
+    party->json_names       = DARR_INIT(party->json_names,      s8,     SOTA_MAX_PARTY_SIZE);
+    party->json_filenames   = DARR_INIT(party->json_filenames,  s8,     SOTA_MAX_PARTY_SIZE);
+    party->json_units       = DARR_INIT(party->json_units,      Unit,   SOTA_MAX_PARTY_SIZE);
+    party->json_ids         = DARR_INIT(party->json_ids,        i16,    SOTA_MAX_PARTY_SIZE);
+}
 
 void Party_Reset(struct Party *party) {
     /* Remove all filenames + all units to 0 */
@@ -149,10 +159,8 @@ void Party_readJSON(void *input, cJSON *jparty) {
         folder = s8cpy(folder, party->folder);
 
     Party_Free(party);
+    Party_Init(party);
     party->folder = folder;
-
-    party->json_names     = DARR_INIT(party->json_names,      s8, SOTA_MAX_PARTY_SIZE);
-    party->json_filenames = DARR_INIT(party->json_filenames,  s8, SOTA_MAX_PARTY_SIZE);
 
     // SDL_Log("-- Get json objects --");
     cJSON *jids         = cJSON_GetObjectItem(jparty, "ids");
