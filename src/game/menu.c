@@ -49,11 +49,12 @@ void Game_DeploymentMenu_Free(struct Game *sota) {
 }
 
 void Game_menuStack_Free(struct Game *sota) {
-    struct StatsMenu *stats_menu;
+    struct StatsMenu        *stats_menu;
     struct PlayerSelectMenu *psm_menu;
     SDL_assert(sota->menu_stack != NULL);
     while (DARR_NUM(sota->menu_stack) > 0) {
         tnecs_entity entity = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
+        SDL_assert(TNECS_ENTITY_EXISTS(sota->world, entity));
         struct Menu *mc = TNECS_GET_COMPONENT(sota->world, entity, Menu);
 
         if (mc->data == NULL) {
@@ -910,9 +911,11 @@ void Game_FirstMenu_Destroy(struct Game *sota) {
         struct Menu *mc;
         mc = TNECS_GET_COMPONENT(sota->world, sota->first_menu, Menu);
         SDL_DestroyTexture(mc->n9patch.texture);
-        PlayerSelectMenu_Free(mc->data, mc);
-        mc->data = NULL;
-        tnecs_entity_destroy(sota->world, sota->first_menu);
+        if (mc->data != NULL) {
+            PlayerSelectMenu_Free(mc->data, mc);
+            mc->data = NULL;
+            tnecs_entity_destroy(sota->world, sota->first_menu);
+        }
     }
     /* only first_menu should be on the stack */
     SDL_assert(DARR_NUM(sota->menu_stack) == 1);

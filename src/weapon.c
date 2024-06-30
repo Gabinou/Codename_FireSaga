@@ -55,7 +55,6 @@ b32 Weapon_canAttack(struct Weapon *weapon) {
 }
 
 b32 Weapon_canAttackfromType(struct Weapon *weapon) {
-    SDL_Log("%ld", weapon->item->type);
     SDL_assert(weapon);
     SDL_assert(weapon->item != NULL);
     b32 iscan = flagsum_isIn(weapon->item->type, ITEM_TYPE_canATTACK);
@@ -98,7 +97,6 @@ void Weapon_readJSON(void *input, cJSON *jwpn) {
 }
 
 void Weapon_writeJSON(void *input, cJSON *jwpn) {
-    SDL_Log("Weapon_writeJSON");
     struct Weapon *weapon = (struct Weapon *) input;
     SDL_assert(jwpn         != NULL);
     SDL_assert(weapon       != NULL);
@@ -145,7 +143,6 @@ void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
     filename    = Weapon_Filename(filename, id);
 
     struct Weapon temp_weapon = Weapon_default;
-    SDL_Log("Loading weapon %ld %s", id, filename.data);
     SDL_assert(temp_weapon.json_element == JSON_WEAPON);
 
     /* - read weapon - */
@@ -195,10 +192,8 @@ void Weapon_Save(struct dtab *weapons_dtab, i16 id) {
     char *token;
     char buffer[DEFAULT_BUFFER_SIZE];
     if (DTAB_GET(weapons_dtab, id) != NULL) {
-        SDL_Log("Saving Weapon id %ld", id);
         s8 filename = s8_mut("items"PHYSFS_SEPARATOR);
         filename    = Weapon_Filename(filename, id);
-        SDL_Log("Saving weapon %ld %s", id, filename.data);
         b32 append = false;
         struct Weapon *weapon = (struct Weapon *)DTAB_GET(weapons_dtab, id);
         jsonio_writeJSON(filename, weapon, false);
@@ -208,7 +203,6 @@ void Weapon_Save(struct dtab *weapons_dtab, i16 id) {
 
 void Weapons_All_Load(struct dtab *weapons_dtab) {
     for (size_t i = ITEM_NULL; i < ITEM_ID_SLING_END; i++) {
-        SDL_Log("Loading Weapon %zu", i);
         if (Weapon_ID_isValid(i))
             Weapon_Load(weapons_dtab, i);
     }
@@ -216,7 +210,6 @@ void Weapons_All_Load(struct dtab *weapons_dtab) {
 
 void Weapons_All_Reload(struct dtab *weapons_dtab) {
     for (size_t i = ITEM_NULL; i < ITEM_ID_SLING_END; i++) {
-        SDL_Log("Reloading Weapon %zu", i);
         if (Weapon_ID_isValid(i))
             Weapon_Reload(weapons_dtab, i);
     }
@@ -224,7 +217,6 @@ void Weapons_All_Reload(struct dtab *weapons_dtab) {
 
 void Weapons_All_Save(struct dtab *weapons_dtab) {
     for (size_t i = ITEM_NULL; i < ITEM_ID_SLING_END; i++) {
-        SDL_Log("%zu", i);
         if (!Weapon_ID_isValid(i))
             continue;
 

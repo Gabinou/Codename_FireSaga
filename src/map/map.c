@@ -197,10 +197,12 @@ void Map_Units_Free(struct Map *map) {
         tnecs_entity uent = map->unitmap[i];
         if (uent == TNECS_NULL)
             continue;
+        if (map->world->entities[uent] == TNECS_NULL)
+            continue;
+
         struct Unit *unit = TNECS_GET_COMPONENT(map->world, uent, Unit);
 
         // Check that unit is not in the party
-
         if ((unit != NULL) && (unit->_id > UNIT_ID_PC_START)) {
             Unit_Free(unit);
         }

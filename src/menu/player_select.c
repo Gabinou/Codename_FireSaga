@@ -139,9 +139,9 @@ void PlayerSelectMenu_Option_Add(struct PlayerSelectMenu *psm, u32 option) {
     DARR_PUT(psm->options, option);
 
     /* - Computing option width, check if increase menu width - */
-    s8 text = menuOptionnames[option];
-    int text_width = PixelFont_Width(psm->pixelnours, text.data, text.num);
-    int padding = psm->menu_padding.left + psm->menu_padding.right;
+    s8 text             = menuOptionnames[option];
+    int text_width      = PixelFont_Width(psm->pixelnours, text.data, text.num);
+    int padding         = psm->menu_padding.left + psm->menu_padding.right;
     if ((text_width + padding) > psm->text_width) {
         psm->text_width = text_width + padding;
     }

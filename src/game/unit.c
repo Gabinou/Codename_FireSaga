@@ -100,9 +100,17 @@ void Game_Party_Unload(struct Game *sota, i16 *to_unload_ids, size_t unload_num)
 }
 
 void Game_Party_Free(struct Unit *party) {
+    SDL_Log("Game_Party_Free");
     for (size_t j = 0; j < SOTA_MAX_PARTY_SIZE; j++) {
+        if (party[j]._id == UNIT_ID_NULL)
+            continue;
+
+        SDL_Log("party[j]._id %d", party[j]._id);
+        SDL_assert((party[j]._id > UNIT_ID_START) && (party[j]._id < UNIT_ID_END));
+
         Unit_Free(&party[j]);
         party[j] = Unit_default;
+        SDL_assert(party[j]._id == UNIT_ID_NULL);
     }
 }
 
@@ -113,12 +121,12 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     tnecs_entity unit_ent;
     if (sota->units_loaded[unit_id] != TNECS_NULL) {
         unit_ent = sota->units_loaded[unit_id];
-        SDL_Log("Unit %d (%s, entity %d) is already loaded", unit_id,
-                global_unitNames[unit_id].data, unit_ent);
+        // SDL_Log("Unit %d (%s, entity %d) is already loaded", unit_id,
+        // global_unitNames[unit_id].data, unit_ent);
     } else {
-        SDL_Log("-- create entity for unit %ld --", unit_id);
+        // SDL_Log("-- create entity for unit %ld --", unit_id);
         char filename[DEFAULT_BUFFER_SIZE];
-        SDL_Log("-- create entity --");
+        // SDL_Log("-- create entity --");
         unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position,
                                                    Sprite, Timer, MapHPBar);
     }
@@ -148,7 +156,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     SDL_assert(unit_ent > TNECS_NULL);
     SDL_assert(sota->world->entity_typeflags[unit_ent] == typeflag);
 
-    SDL_Log("-- loading unit --");
+    // SDL_Log("-- loading unit --");
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
     SDL_assert(unit != NULL);
     SDL_assert(sota->party[unit_id]._id != 0);
@@ -182,13 +190,13 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     // slider->slidefactors[DIMENSION_Y] = 2.0f;
     // slider->update_wait = CURSOR_SLIDEWAIT;
     // slider->slidetype = SLIDETYPE_GEOMETRIC;
-    SDL_Log("-- loading map_hp_bar --");
+    // SDL_Log("-- loading map_hp_bar --");
     struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(sota->world, unit_ent, MapHPBar);
     *map_hp_bar = MapHPBar_default;
     map_hp_bar->unit_ent = unit_ent;
     map_hp_bar->len = sota->settings.tilesize[0];
 
-    SDL_Log("-- loading position --");
+    // SDL_Log("-- loading position --");
     struct Position *pos;
     pos = TNECS_GET_COMPONENT(sota->world, unit_ent, Position);
     SDL_assert(pos != NULL);
@@ -202,7 +210,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     pos->pixel_pos.x = (i32)lround(pos->tilemap_pos.x * pos->scale[0]);
     pos->pixel_pos.y = (i32)lround(pos->tilemap_pos.y * pos->scale[1]);
 
-    SDL_Log("-- loading sprite --");
+    // SDL_Log("-- loading sprite --");
     struct Timer *timer;
     timer = TNECS_GET_COMPONENT(sota->world, unit_ent, Timer);
     SDL_assert(timer != NULL);
@@ -223,7 +231,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     Sprite_Rects_Init(sprite);
     Sprite_defaultShaders_Load(sprite);
 
-    SDL_Log("-- checks --");
+    // SDL_Log("-- checks --");
     sprite->visible = true;
     SDL_assert(typeflag_id1 == typeflag_id2);
     size_t current_num = world->num_entities_bytype[typeflag_id1];

@@ -1577,7 +1577,6 @@ void receive_event_SDL_WINDOWEVENT(struct Game *sota, SDL_Event *event) {
 
     switch (event->window.event) {
         case SDL_WINDOWEVENT_CLOSE:
-            SDL_Log("SDL_WINDOWEVENT_CLOSE");
             Event_Emit(__func__, SDL_QUIT, event_SDL_QUIT, NULL, NULL);
             break;
     }
@@ -1607,8 +1606,6 @@ void Events_Names_Free(void) {
 
 s8 *event_names = NULL;
 void Events_Names_Alloc(void) {
-    SDL_Log("event_End event_Start %d %d", event_End, event_Start);
-    SDL_Log("event_End - event_Start %d", event_End - event_Start);
     event_names = calloc((event_End - event_Start) + 1, sizeof(*event_names));
     SDL_assert(event_names != NULL);
 

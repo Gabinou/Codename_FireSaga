@@ -82,7 +82,7 @@ void Game_Gameplay_Start(struct Game *sota, i32 state, i32 substate) {
     }
 
     // TODO: move music start to when game inits.
-    SDL_Log("Loading Music\n");
+    // SDL_Log("Loading Music\n");
     Map_Music_Load(sota->map);
 
     /* -- Load reinforcements -- */
@@ -108,7 +108,7 @@ void Game_debugMap_Load(struct Game *sota) {
 
     /* - Reading party json - */
     SDL_assert(sota->map->party_filename.data != NULL);
-    SDL_Log("sota->map->party_filename %s", sota->map->party_filename.data);
+    // SDL_Log("sota->map->party_filename %s", sota->map->party_filename.data);
 
     sota->party_struct = Party_default;
     Party_Folder(&sota->party_struct, "units/debug_map");
@@ -139,6 +139,10 @@ void Game_Map_Reinforcements_Free(struct Game *sota) {
     char filename[DEFAULT_BUFFER_SIZE];
     while (DARR_NUM(sota->map_enemies) > 0) {
         tnecs_entity temp_unit_ent =  DARR_POP(sota->map_enemies);
+        if (temp_unit_ent == TNECS_NULL)
+            continue;
+        if (sota->world->entities[temp_unit_ent] == TNECS_NULL)
+            continue;
 
         struct Unit *unit = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
 
@@ -231,8 +235,8 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         }
 
         if ((reinf->boss_icon > BOSS_ICON_NULL) && (reinf->boss_icon < BOSS_ICON_NUM)) {
-            SDL_Log("-- loading unit Boss --");
-            SDL_Log("%d %d", position->tilemap_pos.x, position->tilemap_pos.y);
+            // SDL_Log("-- loading unit Boss --");
+            // SDL_Log("%d %d", position->tilemap_pos.x, position->tilemap_pos.y);
             tnecs_entity entity = TNECS_ADD_COMPONENT(sota->world, temp_unit_ent, Boss);
             position = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Position);
 
@@ -348,7 +352,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         Sprite_Rects_Init(sprite);
         Sprite_defaultShaders_Load(sprite);
 
-        SDL_Log("-- put on map --");
+        // SDL_Log("-- put on map --");
         SDL_assert(sota->world->entity_typeflags[temp_unit_ent] == typeflag);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         Map_Unit_Put(sota->map, position->tilemap_pos.x, position->tilemap_pos.y, temp_unit_ent);

@@ -189,7 +189,7 @@ void Spritesheet_Loop_Set(struct Spritesheet *spritesheet, int loop,
 /* --- SPRITE --- */
 /* -- Constructor/Destructors -- */
 void Sprite_Free(struct Sprite *sprite) {
-    SDL_Log("Freeing shaders");
+    // SDL_Log("Freeing shaders");
     if (sprite->shader_any != NULL) {
         Index_Shader_Free(sprite->shader_any);
         SDL_free(sprite->shader_any);
@@ -205,18 +205,18 @@ void Sprite_Free(struct Sprite *sprite) {
         SDL_free(sprite->shader_lighten);
         sprite->shader_lighten = NULL;
     }
-    SDL_Log("Freeing spritesheets");
+    // SDL_Log("Freeing spritesheets");
     if (sprite->spritesheet != NULL) {
         Spritesheet_Free(sprite->spritesheet);
         SDL_free(sprite->spritesheet);
         sprite->spritesheet = NULL;
     }
 
-    SDL_Log("Freeing name");
+    // SDL_Log("Freeing name");
     s8_free(&sprite->asset_name);
     s8_free(&sprite->json_filename);
 
-    SDL_Log("Freeing Textures");
+    // SDL_Log("Freeing Textures");
     if (sprite->texture != NULL) {
         SDL_DestroyTexture(sprite->texture);
         sprite->texture = NULL;

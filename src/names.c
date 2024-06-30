@@ -246,7 +246,6 @@ void Names_Load_All(void) {
 }
 
 void Names_Free(void) {
-    SDL_Log("menuOptionnames");
     for (size_t i = MENU_OPTION_START + 1; i < MENU_OPTION_END; i++) {
         s8_free(&menuOptionnames[i]);
     }
@@ -255,39 +254,30 @@ void Names_Free(void) {
         s8_free(&sceneTimes[i]);
     }
 
-    SDL_Log("gamesubStatenames");
     for (size_t i = 0; i < GAME_SUBSTATE_END; i++) {
         s8_free(&gamesubStatenames[i]);
     }
-    SDL_Log("gameStatenames");
     for (size_t i = 0; i < GAME_STATE_END; i++) {
         s8_free(&gameStatenames[i]);
     }
-    SDL_Log("mapFilenames");
     for (size_t i = 0; i < CHAPTER_END; i++) {
         s8_free(&mapFilenames[i]);
     }
-    SDL_Log("jsonElementnames");
     for (size_t i = 0; i < JSON_END; i++) {
         s8_free(&jsonElementnames[i]);
     }
-    SDL_Log("armyNames");
     for (size_t i = 0; i < ARMY_END; i++) {
         s8_free(&armyNames[i]);
     }
-    SDL_Log("global_itemNames");
     for (size_t i = 0; i < ITEM_NUM; i++) {
         s8_free(&global_itemNames[i]);
     }
-    SDL_Log("global_tilenames i");
     for (size_t i = TILE_START; i < TILE_END; i++) {
         s8_free(&global_tilenames[i]);
     }
-    SDL_Log("campjobNames");
     for (size_t i = 0; i < CAMPJOB_END; i++) {
         s8_free(&campjobNames[i]);
     }
-    SDL_Log("global_unitNames");
     for (int i = 0; i < UNIT_NUM; i++) {
         s8_free(&global_unitNames[i]);
     }
@@ -295,13 +285,9 @@ void Names_Free(void) {
         DTAB_FREE(global_unitOrders);
         global_unitOrders = NULL;
     }
-
-    SDL_Log("statNames");
     for (size_t i = 0; i < ITEM_STAT_END; i++) {
         s8_free(&statNames[i]);
     }
-
-    SDL_Log("unitStatuses");
     for (size_t i = 0; i < UNIT_STATUS_END; i++) {
         s8_free(&unitStatuses[i]);
     }
@@ -309,8 +295,6 @@ void Names_Free(void) {
         DTAB_FREE(global_itemOrders);
         global_itemOrders = NULL;
     }
-
-    SDL_Log("classNames");
     for (size_t i = 0; i < UNIT_CLASS_END; i++) {
         s8_free(&classNames[i]);
     }
@@ -321,14 +305,14 @@ void Names_Free(void) {
 }
 
 void Names_Print_All(char *foldername) {
-    SDL_Log("foldername %s", foldername);
+    // SDL_Log("foldername %s", foldername);
     /* TODO: Use PHYSFS_writeBytes, PHYSFS_openWrite */
 
     FILE *fp = NULL;
     /* --- Army names --- */
     s8 filename = s8_mut(foldername);
     filename = s8cat(filename, s8_literal("Utilities_armyNames.txt"));
-    SDL_Log("filename %s", filename.data);
+    // SDL_Log("filename %s", filename.data);
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = ARMY_START; i < (ARMY_END - 1); i++) {
@@ -340,7 +324,7 @@ void Names_Print_All(char *foldername) {
     /* --- Stat names --- */
     filename = s8_mut(foldername);
     filename = s8cat(filename, s8_literal("Utilities_unitStatuses.txt"));
-    SDL_Log("filename %s", filename.data);
+    // SDL_Log("filename %s", filename.data);
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = UNIT_STATUS_EXP_START; i < (UNIT_STATUS_EXP_END - 1); i++)
@@ -351,7 +335,7 @@ void Names_Print_All(char *foldername) {
     /* --- Json element names --- */
     filename = s8_mut(foldername);
     filename = s8cat(filename, s8_literal("Utilities_jsonElementnames.txt"));
-    SDL_Log("filename %s", filename.data);
+    // SDL_Log("filename %s", filename.data);
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = JSON_START; i < (JSON_END - 1); i++)
@@ -362,7 +346,7 @@ void Names_Print_All(char *foldername) {
     /* --- Camp job names --- */
     filename = s8_mut(foldername);
     filename = s8cat(filename, s8_literal("Utilities_campjobNames.txt"));
-    SDL_Log("filename %s", filename.data);
+    // SDL_Log("filename %s", filename.data);
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = CAMPJOB_START; i < (CAMPJOB_END - 1); i++)
@@ -373,7 +357,7 @@ void Names_Print_All(char *foldername) {
     /* --- Game State names --- */
     filename = s8_mut(foldername);
     filename = s8cat(filename, s8_literal("Utilities_gameStatenames.txt"));
-    SDL_Log("filename %s", filename.data);
+    // SDL_Log("filename %s", filename.data);
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = GAME_STATE_START; i < (GAME_STATE_END - 1); i++)
@@ -384,7 +368,7 @@ void Names_Print_All(char *foldername) {
     /* --- Menu Option names --- */
     filename = s8_mut(foldername);
     filename = s8cat(filename, s8_literal("Utilities_menuOptionnames.txt"));
-    SDL_Log("filename %s", filename.data);
+    // SDL_Log("filename %s", filename.data);
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = MENU_OPTION_START; i < MENU_OPTION_END; i++)
@@ -395,7 +379,7 @@ void Names_Print_All(char *foldername) {
     /* --- Game substate names --- */
     filename = s8_mut(foldername);
     filename = s8cat(filename, s8_literal("Utilities_gamesubStatenames.txt"));
-    SDL_Log("filename %s", filename.data);
+    // SDL_Log("filename %s", filename.data);
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = GAME_SUBSTATE_START; i < (GAME_SUBSTATE_END - 1); i++)
@@ -406,7 +390,7 @@ void Names_Print_All(char *foldername) {
     /* --- Unit names --- */
     filename = s8_mut(foldername);
     filename = s8cat(filename, s8_literal("Utilities_unitNames.txt"));
-    SDL_Log("filename %s", filename.data);
+    // SDL_Log("filename %s", filename.data);
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (size_t i = 0; i < UNIT_NUM; i++)
@@ -417,7 +401,7 @@ void Names_Print_All(char *foldername) {
     /* --- Item names --- */
     filename = s8_mut(foldername);
     filename = s8cat(filename, s8_literal("Utilities_itemNames.txt"));
-    SDL_Log("filename %s", filename.data);
+    // SDL_Log("filename %s", filename.data);
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (size_t i = 0; i < global_itemOrders->num; i++)
@@ -428,7 +412,7 @@ void Names_Print_All(char *foldername) {
     s8_free(&filename);
     filename = s8_mut(foldername);
     filename = s8cat(filename, s8_literal("Utilities_statNames.txt"));
-    SDL_Log("filename %s", filename.data);
+    // SDL_Log("filename %s", filename.data);
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = ITEM_STAT_START; i < (ITEM_STAT_END - 1); i++)
@@ -439,7 +423,7 @@ void Names_Print_All(char *foldername) {
     s8_free(&filename);
     filename = s8_mut(foldername);
     filename = s8cat(filename, s8_literal("utilitiessexNames.txt"));
-    SDL_Log("filename %s", filename.data);
+    // SDL_Log("filename %s", filename.data);
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = UNIT_SEX_F; i < (UNIT_SEX_M + 1); i++)
@@ -450,7 +434,7 @@ void Names_Print_All(char *foldername) {
     s8_free(&filename);
     filename = s8_mut(foldername);
     filename = s8cat(filename, s8_literal("Utilities_classNames.txt"));
-    SDL_Log("filename %s", filename.data);
+    // SDL_Log("filename %s", filename.data);
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (u8 i = UNIT_CLASS_START; i < UNIT_CLASS_END; i++)
@@ -461,7 +445,7 @@ void Names_Print_All(char *foldername) {
     /* --- Tile names --- */
     filename = s8_mut(foldername);
     filename = s8cat(filename, s8_literal("Utilities_tilenames.txt"));
-    SDL_Log("filename %s", filename.data);
+    // SDL_Log("filename %s", filename.data);
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     SDL_assert(global_tilenames != NULL);

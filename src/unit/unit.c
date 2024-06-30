@@ -202,7 +202,7 @@ void Unit_Allocs(struct Unit *unit) {
 }
 
 void Unit_Free(struct Unit *unit) {
-    SDL_Log("Unit_Free");
+    // SDL_Log("Unit_Free %d", unit->_id);
     SDL_assert(unit != NULL);
     if (unit->bonus_stack != NULL) {
         DARR_FREE(unit->bonus_stack);
@@ -230,6 +230,7 @@ void Unit_Free(struct Unit *unit) {
     s8_free(&unit->name);
     s8_free(&unit->title);
     s8_free(&unit->ai_filename);
+    unit->_id = 0;
 }
 
 void Unit_InitWweapons(struct Unit *unit, struct dtab *weapons_dtab) {
@@ -297,9 +298,9 @@ void Unit_setSkills(struct Unit *unit, u64 skills) {
     if (unit->skill_names != NULL)
         DARR_FREE(unit->skill_names);
     unit->skill_names = Names_skillNames(unit->skills);
-    SDL_Log("Unit new skills: %lx \n", unit->skills);
-    for (u8 i = 0; DARR_LEN(unit->skill_names); i++)
-        SDL_Log("Skill name: %s", unit->skill_names[i].data);
+    // SDL_Log("Unit new skills: %lx \n", unit->skills);
+    // for (u8 i = 0; DARR_LEN(unit->skill_names); i++)
+    // SDL_Log("Skill name: %s", unit->skill_names[i].data);
 }
 
 void Unit_setClassind(struct Unit *unit, i8 class_index) {
@@ -1045,7 +1046,7 @@ i32 Unit_computeMove(struct Unit *unit) {
 void Unit_readJSON(void *input,  cJSON *junit) {
     struct Unit *unit = (struct Unit *)input;
     SDL_assert(unit);
-    SDL_Log("-- Get json objects --");
+    // SDL_Log("-- Get json objects --");
     cJSON *jid              = cJSON_GetObjectItem(junit, "id");
     cJSON *jai              = cJSON_GetObjectItem(junit, "AI");
     cJSON *jarmy            = cJSON_GetObjectItem(junit, "army");
@@ -1065,14 +1066,14 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     cJSON *jsupport_type    = cJSON_GetObjectItem(junit, "Support Type");
     cJSON *jcurrent_stats   = cJSON_GetObjectItem(junit, "Stats");
 
-    SDL_Log("-- setting name from ID --");
+    // SDL_Log("-- setting name from ID --");
     SDL_assert(jid);
     Unit_setid(unit, cJSON_GetNumberValue(jid));
     SDL_assert(unit->name.data != NULL);
     char *json_name     = cJSON_GetStringValue(jname);
     char *ai_filename   = cJSON_GetStringValue(jai);
     if (ai_filename != NULL) {
-        SDL_Log("ai_filename '%s'", ai_filename);
+        // SDL_Log("ai_filename '%s'", ai_filename);
         unit->ai_filename   = s8_mut(ai_filename);
     }
     u16 order = *(u16 *)DTAB_GET(global_unitOrders, unit->_id);
@@ -1085,7 +1086,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
         exit(ERROR_JSONParsingFailed);
     }
 
-    SDL_Log("-- startup misc --");
+    // SDL_Log("-- startup misc --");
     unit->sex               = cJSON_IsTrue(jsex);
     unit->army              = cJSON_GetNumberValue(jarmy);
     unit->exp               = cJSON_GetNumberValue(jexp);
@@ -1093,7 +1094,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     Unit_setClassind(unit, cJSON_GetNumberValue(jclass_index));
     SDL_assert(jcurrent_stats);
 
-    SDL_Log("-- Supports --");
+    // SDL_Log("-- Supports --");
     unit->support_type = cJSON_GetNumberValue(jsupport_type);
     if (jsupports != NULL) {
         if (!cJSON_IsArray(jsupports)) {
@@ -1111,7 +1112,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
         }
     }
 
-    SDL_Log("--set stats --");
+    // SDL_Log("--set stats --");
     Unit_stats_readJSON(&unit->current_stats, jcurrent_stats);
     SDL_assert(jcaps_stats);
     Unit_stats_readJSON(&unit->caps_stats, jcaps_stats);
@@ -1142,7 +1143,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     };
 
     /* -- Unit should also read/write equipped -- */
-    SDL_Log("-- items --");
+    // SDL_Log("-- items --");
 
     /* -- Drop everything, unequip all -- */
     Unit_Equipment_Drop(unit);
@@ -1349,7 +1350,6 @@ void Unit_Promote(struct Unit *unit, i8 new_class_index) {
 
 /* -- Unit_id -- */
 b32 Unit_ID_Valid(u16 id) {
-    SDL_Log("Unit ID valid: %d", id);
     b32 out =  (id > UNIT_ID_PC_START)      && (id < UNIT_ID_PC_END);
     out |=     (id > UNIT_ID_NPC_START)     && (id < UNIT_ID_NPC_END);
     out |=     (id > UNIT_ID_GENERIC_START) && (id < UNIT_ID_GENERIC_END);

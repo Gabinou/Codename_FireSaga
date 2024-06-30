@@ -302,7 +302,6 @@ void Item_Load(struct dtab *items_dtab, i16 id) {
     filename    = Item_Filename(filename, id);
 
     struct Item temp_item = Item_default;
-    SDL_Log("Loading item %ld %s", id, filename.data);
     SDL_assert(temp_item.json_element == JSON_ITEM);
 
     /* - read weapon - */
@@ -316,7 +315,6 @@ void Item_Load(struct dtab *items_dtab, i16 id) {
 
 void Item_All_Load(struct dtab *items_dtab) {
     for (size_t i = ITEM_ID_ITEM_START; i < ITEM_ID_ITEM_END; i++) {
-        SDL_Log("%zu", i);
         if (Item_ID_isValid(i))
             Item_Load(items_dtab, i);
     }
@@ -324,7 +322,6 @@ void Item_All_Load(struct dtab *items_dtab) {
 
 void Item_All_Reload(struct dtab *items_dtab) {
     for (size_t i = ITEM_ID_ITEM_START; i < ITEM_ID_ITEM_END; i++) {
-        SDL_Log("%zu", i);
         if (Item_ID_isValid(i))
             Item_Reload(items_dtab, i);
     }
@@ -414,7 +411,6 @@ void Item_writeJSON(void *_input, cJSON *jitem) {
 }
 
 void Item_readJSON(void *input, cJSON *_jitem) {
-    SDL_Log("Item_readJSON");
     SDL_assert(_jitem != NULL);
 
     /* - Preliminaries - */
@@ -452,7 +448,6 @@ void Item_readJSON(void *input, cJSON *_jitem) {
 
     /* - Item order - */
     SDL_assert(global_itemOrders != NULL);
-    SDL_Log("item->id %d", item->id);
     i32 item_order = *(i32 *)DTAB_GET(global_itemOrders, item->id);
     // i32 max_order  = DARR_NUM(global_itemNames);
     // SDL_Log("%d %d", item_order, max_order);
