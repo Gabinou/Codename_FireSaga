@@ -165,7 +165,7 @@ void _Party_Load(struct Unit *party, struct dtab *weapons_dtab,
 
         SDL_assert(temp_unit._id > UNIT_ID_PC_START);
         SDL_assert(temp_unit._id < UNIT_ID_PC_END);
-        party[temp_unit._id] = temp_unit;
+        DARR_PUT(party, temp_unit);
     }
 }
 
@@ -176,7 +176,6 @@ void Party_Load(struct Party *party,
     SDL_assert(party != NULL);
     s8 *filenames = party->json_filenames;
     SDL_assert(filenames != NULL);
-
     _Party_Load(party->json_units, wdtab, idtab, filenames, DARR_NUM(filenames));
 }
 

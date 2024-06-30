@@ -198,9 +198,9 @@ void Game_Free(struct Game *sota) {
 
     Game_Items_Free(  &sota->items_dtab);
     Game_Weapons_Free(&sota->weapons_dtab);
-    if (sota->units_loaded != NULL) {
-        SDL_free(sota->units_loaded);
-        sota->units_loaded = NULL;
+    if (sota->party->entities != NULL) {
+        SDL_free(sota->party->entities);
+        sota->party->entities = NULL;
     }
     if (sota->menu_pixelfont != NULL) {
         PixelFont_Free(sota->menu_pixelfont, false);
@@ -378,7 +378,7 @@ void Game_Init(struct Game *sota, int argc, char *argv[]) {
     }
     sota->map_enemies = DARR_INIT(sota->map_enemies, tnecs_entity, 16);
 
-    sota->units_loaded = SDL_calloc(UNIT_ID_END, sizeof(* sota->units_loaded));
+    sota->party->entities = SDL_calloc(UNIT_ID_END, sizeof(* sota->party->entities));
 
     sota->camera.offset.x = DEFAULT_CAMERA_XOFFSET;
     sota->camera.offset.y = DEFAULT_CAMERA_YOFFSET;

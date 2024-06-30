@@ -77,6 +77,7 @@ fsm_DeploymentMenu_Draw fsm_DeploymentMenu_Draw_Pages[DM_PAGE_NUM] = {
 DeploymentMenu DeploymentMenu_default = {
     .update             = true,
     .pos                = {-1, -1},
+    .world              = NULL,
 
     ._party_size        =   0,
     ._selected_num      =   0,
@@ -85,7 +86,6 @@ DeploymentMenu DeploymentMenu_default = {
     .page               =   0,   /* Left - Right scrolling [0, DM_PAGE_NUM]*/
 
     .party              = NULL,
-    ._party_id_stack    = NULL,
     ._start_pos_i       = NULL,
     ._selected          = NULL,
     .map                = NULL,
@@ -336,8 +336,10 @@ static void _DeploymentMenu_Draw_Names(DeploymentMenu *dm, SDL_Renderer *rendere
     for (i32 i = 0; i < num_to_draw; i++) {
         y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->_party_id_stack[i + dm->top_unit];
-        struct Unit *unit = &dm->party[unit_id];
+        int unit_id = dm->party->id_stack[i + dm->top_unit];
+        tnecs_entity ent = dm->party->entities[unit_id];
+        SDL_assert(ent > TNECS_NULL);
+        struct Unit *unit = TNECS_GET_COMPONENT(dm->world, ent, UNIT);
         SDL_assert(unit != NULL);
         _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
         SDL_assert(unit->_id > UNIT_ID_PC_START);
@@ -360,9 +362,12 @@ static void _DeploymentMenu_Draw_Stats_P1(DeploymentMenu *dm, SDL_Renderer *rend
     struct Unit *unit;
     for (i32 i = 0; i < num_to_draw; i++) {
         SDL_assert(dm->party != NULL);
-        unit_id = dm->_party_id_stack[i + dm->top_unit];
-        unit = &dm->party[unit_id];
+        unit_id = dm->party->id_stack[i + dm->top_unit];
+        tnecs_entity ent = dm->party->entities[unit_id];
+        SDL_assert(ent > TNECS_NULL);
+        struct Unit *unit = TNECS_GET_COMPONENT(dm->world, ent, UNIT);
         SDL_assert(unit != NULL);
+
         _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
 
         /* - HP - */
@@ -418,8 +423,10 @@ static void _DeploymentMenu_Draw_Stats_P2(DeploymentMenu *dm, SDL_Renderer *rend
     i32 num_to_draw = _DeploymentMenu_Num(dm);
     for (i32 i = 0; i < num_to_draw; i++) {
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->_party_id_stack[i + dm->top_unit];
-        struct Unit *unit = &dm->party[unit_id];
+        int unit_id = dm->party->id_stack[i + dm->top_unit];
+        tnecs_entity ent = dm->party->entities[unit_id];
+        SDL_assert(ent > TNECS_NULL);
+        struct Unit *unit = TNECS_GET_COMPONENT(dm->world, ent, UNIT);
         SDL_assert(unit != NULL);
         _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
 
@@ -475,8 +482,11 @@ static void _DeploymentMenu_Draw_Stats_P3(DeploymentMenu *dm, SDL_Renderer *rend
     i32 num_to_draw = _DeploymentMenu_Num(dm);
     for (i32 i = 0; i < num_to_draw; i++) {
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->_party_id_stack[i + dm->top_unit];
-        struct Unit *unit = &dm->party[unit_id];
+        int unit_id = dm->party->id_stack[i + dm->top_unit];
+        tnecs_entity ent = dm->party->entities[unit_id];
+        SDL_assert(ent > TNECS_NULL);
+        struct Unit *unit = TNECS_GET_COMPONENT(dm->world, ent, UNIT);
+        SDL_assert(unit != NULL);
         SDL_assert(unit != NULL);
         _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
 
@@ -532,8 +542,10 @@ static void _DeploymentMenu_Draw_Stats_P4(DeploymentMenu *dm, SDL_Renderer *rend
     i32 num_to_draw = _DeploymentMenu_Num(dm);
     for (i32 i = 0; i < num_to_draw; i++) {
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->_party_id_stack[i + dm->top_unit];
-        struct Unit *unit = &dm->party[unit_id];
+        int unit_id = dm->party->id_stack[i + dm->top_unit];
+        tnecs_entity ent = dm->party->entities[unit_id];
+        SDL_assert(ent > TNECS_NULL);
+        struct Unit *unit = TNECS_GET_COMPONENT(dm->world, ent, UNIT);
         SDL_assert(unit != NULL);
         _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
         SDL_assert(unit != NULL);
@@ -592,8 +604,10 @@ static void _DeploymentMenu_Draw_Mount(DeploymentMenu *dm,
     for (i32 i = 0; i < num_to_draw; i++) {
         y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
-        int unit_id = dm->_party_id_stack[i + dm->top_unit];
-        struct Unit *unit = &dm->party[unit_id];
+        int unit_id = dm->party->id_stack[i + dm->top_unit];
+        tnecs_entity ent = dm->party->entities[unit_id];
+        SDL_assert(ent > TNECS_NULL);
+        struct Unit *unit = TNECS_GET_COMPONENT(dm->world, ent, UNIT);
         SDL_assert(unit != NULL);
         _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
 
@@ -785,11 +799,11 @@ void DeploymentMenu_UnitOrder_Reset(DeploymentMenu *dm) {
         i16 unit_order2 = start_order1;
         i32 start_order2 = dm->_selected[unit_order2];
 
-        i16 unit_id1 = dm->_party_id_stack[unit_order1];
-        i16 unit_id2 = dm->_party_id_stack[unit_order2];
+        i16 unit_id1 = dm->party->id_stack[unit_order1];
+        i16 unit_id2 = dm->party->id_stack[unit_order2];
 
-        dm->_party_id_stack[unit_order2]    = unit_id1;
-        dm->_party_id_stack[unit_order1]    = unit_id2;
+        dm->party->id_stack[unit_order2]    = unit_id1;
+        dm->party->id_stack[unit_order1]    = unit_id2;
         i32 selected1 = dm->_selected[unit_order1];
         i32 selected2 = dm->_selected[unit_order2];
         dm->_selected[unit_order1]          = selected2;
@@ -862,17 +876,15 @@ void DeploymentMenu_Map_Set(DeploymentMenu *dm, struct Map *map) {
         dm->_start_pos_i[i] = i;
 }
 
-void DeploymentMenu_Party_Set(DeploymentMenu *dm, struct Unit *party,
-                              i16 *party_id_stack, i32 num) {
+void DeploymentMenu_Party_Set(DeploymentMenu *dm, struct Party *party) {
     if (dm->_selected != NULL) {
         SDL_free(dm->_selected);
         dm->_selected = NULL;
     }
     dm->party           = party;
-    dm->_party_size     = num;
+    dm->_party_size     = Party_Size(party);
     SDL_assert(dm->_party_size > 0);
     SDL_assert(dm->_party_size < SOTA_MAX_PARTY_SIZE);
-    dm->_party_id_stack = party_id_stack;
     dm->_selected_num   = 0;
     dm->top_unit        = 0;
     dm->_selected       = SDL_calloc(dm->_party_size, sizeof(*dm->_selected));

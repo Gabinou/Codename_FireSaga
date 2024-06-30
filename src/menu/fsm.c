@@ -724,7 +724,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
     if (unit_order < 0)
         return;
     i32 dm_order = dm->_selected[unit_order];
-    i16 unit_id = dm->_party_id_stack[unit_order];
+    i16 unit_id = dm->party->id_stack[unit_order];
 
     SDL_assert(Unit_ID_Valid(unit_id));
     // TODO: get start_pos_order from dm_order with list in map
@@ -732,10 +732,10 @@ void fsm_eAcpt_sGmpMap_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
     i32 start_pos_i = DeploymentMenu_Map_StartPos(dm, dm_order);
     struct Point pos = sota->map->start_pos[dm_order];
 
-    if (sota->units_loaded[unit_id] <= TNECS_NULL)
+    if (sota->party.entities[unit_id] <= TNECS_NULL)
         Game_Party_Entity_Create(sota, unit_id, pos);
 
-    tnecs_entity unit_ent = sota->units_loaded[unit_id];
+    tnecs_entity unit_ent = sota->party.entities[unit_id];
     SDL_assert(unit_ent > TNECS_NULL);
 
     /* Add or remove unit from map */

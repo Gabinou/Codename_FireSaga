@@ -117,6 +117,7 @@ void Game_DeploymentMenu_Create(struct Game *sota) {
 
     dm->pos.x       = sota->settings.res.x / 10;
     dm->pos.y       = sota->settings.res.y / 4;
+    dm->world       = sota->world;
     mc->visible     = true;
     mc->elem_links  = dm_links;
     mc->elem_pos    = dm_elem_pos;
@@ -126,6 +127,7 @@ void Game_DeploymentMenu_Create(struct Game *sota) {
     SDL_assert(mc->elem_pos != NULL);
     DeploymentMenu_Load(dm, sota->renderer, &mc->n9patch);
     DeploymentMenu_Elem_Pos(dm, mc);
+
 
     /* Set position of cursor to go back to after cancelling */
     SDL_assert(sota->map                != NULL);

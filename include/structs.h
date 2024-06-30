@@ -822,7 +822,7 @@ struct Party {
 
     /* Entities created from json_units */
     /* Always in same order -> UNIT_ID_... */
-    tnecs_entity    entities        [SOTA_MAX_PARTY_SIZE];
+    tnecs_entity    entities        [SOTA_MAX_PARTY_SIZE]; /* [unit_id] -> entity */
 
     /* Id stack for units currently in party*/
     i16            *id_stack;
@@ -857,7 +857,6 @@ struct Game {
     struct dtab *weapons_dtab;
     struct dtab *tiles_loaded_dtab;
     struct dtab *units_loaded_dtab;
-    tnecs_entity *units_loaded; /* only for party? */
 
     tnecs_entity ai_timer;
     tnecs_entity reinf_timer;

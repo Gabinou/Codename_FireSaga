@@ -196,20 +196,20 @@ enum DM_MENU {
 typedef struct DeploymentMenu {
     b32 update;
     Point pos;        /* [pixels] */
+    tnecs_world  *world;
     /* two spaces:
     - party_space: unit_order in _party_id_stack and _selected
     - start_space: start_order in _start_pos_i     */
 
-    i16 *_party_id_stack;    /* [unit_order] -> unit_id */
-    i16 *_start_pos_i;       /* [start_order] -> unit_order */
-    i32 *_selected;          /* [unit_order] -> start_order */
+    i16 *_start_pos_i;       /* [start_order]   -> unit_order */
+    i32 *_selected;          /* [unit_order]    -> start_order */
     i32  _selected_num;
     i32  _party_size;
     i32  select_max;
     i32 top_unit;           /* Up   - Down  scrolling [0, _party_size] */
     i32 page;               /* Left - Right scrolling [0, DM_PAGE_NUM]*/
 
-    struct Unit         *party;
+    struct Party        *party;
     struct Map          *map;
     struct PixelFont    *font_wpns; /* wpn icons as font to write them easily */
     struct PixelFont    *pixelnours;
@@ -244,7 +244,7 @@ void DeploymentMenu_Load(DeploymentMenu *dm, SDL_Renderer *renderer,
 
 void DeploymentMenu_Map_Set(    DeploymentMenu *dm, struct Map *map);
 void DeploymentMenu_Map_Swap(   DeploymentMenu *dm);
-void DeploymentMenu_Party_Set(  DeploymentMenu *dm, struct Unit *p, i16 *pi, i32 n);
+void DeploymentMenu_Party_Set(  DeploymentMenu *dm, struct Party *p);
 i32  DeploymentMenu_Map_StartPos(DeploymentMenu *dm, i32 candidate);
 i32  DeploymentMenu_Map_Find_Pos(DeploymentMenu *dm, struct Map *map, u8 c, u8 r);
 
