@@ -104,13 +104,18 @@ void Game_debugMap_Load(struct Game *sota) {
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Loading in test party\n");
 
     /* -- Loading Party -- */
+    sota->party = Party_default;
+    Party_Init(&sota->party);
+    SDL_assert(sota->party.json_names       != NULL);
+    SDL_assert(sota->party.json_filenames   != NULL);
+    SDL_assert(sota->party.json_ids         != NULL);
+    SDL_assert(sota->party.json_units       != NULL);
     Game_Party_Clear(sota);
 
     /* - Reading party json - */
     SDL_assert(sota->map->party_filename.data != NULL);
     // SDL_Log("sota->map->party_filename %s", sota->map->party_filename.data);
 
-    sota->party = Party_default;
     Party_Folder(&sota->party, "units/debug_map");
     jsonio_readJSON(sota->map->party_filename, &sota->party);
     SDL_assert(sota->party.json_filenames != NULL);

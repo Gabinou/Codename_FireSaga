@@ -32,6 +32,29 @@ void Party_Free(struct Party *party) {
         party->json_filenames = NULL;
     }
 
+    if (party->json_units != NULL) {
+        for (int i = 0; i < DARR_NUM(party->json_units); i++) {
+            if (party->json_units[i]._id > UNIT_ID_NULL) {
+                Unit_Free(&party->json_units[i]);
+            }
+        }
+
+        DARR_FREE(party->json_units);
+        party->json_filenames = NULL;
+    }
+
+    if (party->id_stack != NULL) {
+        DARR_FREE(party->id_stack);
+        party->id_stack = NULL;
+    }
+
+    if (party->json_filenames != NULL) {
+        for (int i = 0; i < DARR_NUM(party->json_filenames); i++)
+            s8_free(&party->json_filenames[i]);
+        DARR_FREE(party->json_filenames);
+        party->json_filenames = NULL;
+    }
+
     s8_free(&party->folder);
     s8_free(&party->json_filename);
 }
@@ -40,10 +63,12 @@ void Party_Init( struct Party *party) {
     SDL_assert(party->json_filenames    == NULL);
     SDL_assert(party->json_units        == NULL);
     SDL_assert(party->json_ids          == NULL);
+    SDL_assert(party->id_stack          == NULL);
     party->json_names       = DARR_INIT(party->json_names,      s8,     SOTA_MAX_PARTY_SIZE);
     party->json_filenames   = DARR_INIT(party->json_filenames,  s8,     SOTA_MAX_PARTY_SIZE);
     party->json_units       = DARR_INIT(party->json_units,      Unit,   SOTA_MAX_PARTY_SIZE);
     party->json_ids         = DARR_INIT(party->json_ids,        i16,    SOTA_MAX_PARTY_SIZE);
+    party->id_stack         = DARR_INIT(party->id_stack,        i16,    SOTA_MAX_PARTY_SIZE);
 }
 
 void Party_Reset(struct Party *party) {
@@ -64,8 +89,13 @@ i32 Party_Size(struct Party *ps)  {
 }
 
 i32 _Party_Size(struct Unit *units, i16 *id_stack)  {
+    SDL_assert(units    != NULL);
+    SDL_assert(id_stack != NULL);
+    SDL_assert(DARR_LEN(id_stack)   == SOTA_MAX_PARTY_SIZE);
+    SDL_assert(DARR_LEN(units)      == SOTA_MAX_PARTY_SIZE);
+
     i32 num = 0;
-    for (size_t i = 0; i < SOTA_MAX_PARTY_SIZE; i++) {
+    for (size_t i = 0; i < DARR_NUM(units); i++) {
         if (units[i]._id > UNIT_ID_PC_START && units[i]._id < UNIT_ID_PC_END) {
             id_stack[num++] = units[i]._id;
         }
@@ -152,15 +182,11 @@ void Party_Load(struct Party *party,
 
 void Party_readJSON(void *input, cJSON *jparty) {
     struct Party *party = (struct Party *)input;
-    SDL_assert(party != NULL);
-
-    s8 folder = {0};
-    if (party->folder.data != NULL)
-        folder = s8cpy(folder, party->folder);
-
-    Party_Free(party);
-    Party_Init(party);
-    party->folder = folder;
+    SDL_assert(party                    != NULL);
+    SDL_assert(party->json_ids          != NULL);
+    SDL_assert(party->json_units        != NULL);
+    SDL_assert(party->json_names        != NULL);
+    SDL_assert(party->json_filenames    != NULL);
 
     // SDL_Log("-- Get json objects --");
     cJSON *jids         = cJSON_GetObjectItem(jparty, "ids");

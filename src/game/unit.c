@@ -86,8 +86,13 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
 
 /* --- Party utilities --- */
 void Game_Party_Clear(struct Game *sota) {
-    for (size_t i = 0; i < SOTA_MAX_PARTY_SIZE; i++)
+    if (sota->party.json_units == NULL) {
+        return;
+    }
+
+    for (size_t i = 0; i < SOTA_MAX_PARTY_SIZE; i++) {
         sota->party.json_units[i] = Unit_default;
+    }
 }
 
 void Game_Party_Unload(struct Game *sota, i16 *to_unload_ids, size_t unload_num) {
