@@ -87,14 +87,14 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
 /* --- Party utilities --- */
 void Game_Party_Clear(struct Game *sota) {
     for (size_t i = 0; i < SOTA_MAX_PARTY_SIZE; i++)
-        sota->party[i] = Unit_default;
+        sota->party.units[i] = Unit_default;
 }
 
 void Game_Party_Unload(struct Game *sota, i16 *to_unload_ids, size_t unload_num) {
     for (size_t i = 0; i < unload_num; i++) {
         for (size_t j = 0; j < SOTA_MAX_PARTY_SIZE; j++) {
-            if (sota->party[j]._id == to_unload_ids[i])
-                sota->party[j] = Unit_default;
+            if (sota->party.units[j]._id == to_unload_ids[i])
+                sota->party.units[j] = Unit_default;
         }
     }
 }
@@ -105,27 +105,29 @@ void Game_Loaded_Units_Free(struct Game *sota) {
     // TODO
 }
 
-void Game_Party_Free(struct Game *sota, struct Unit *party) {
+void Game_Party_Free(struct Game *sota) {
     /* -- Free unit struct read from JSON files in party array -- */
+    struct Unit     *units      = sota->party.units;
+    tnecs_entity    *entities   = sota->party.entities;
     for (size_t j = 0; j < SOTA_MAX_PARTY_SIZE; j++) {
         // Skip if party unit was never read
         // -| Party unit did not become component for entity in units_loaded
-        if (party[j]._id == UNIT_ID_NULL)
+        if (units[j]._id == UNIT_ID_NULL)
             continue;
 
-        SDL_assert((party[j]._id > UNIT_ID_START) && (party[j]._id < UNIT_ID_END));
+        SDL_assert((units[j]._id > UNIT_ID_START) && (units[j]._id < UNIT_ID_END));
 
-        if (sota->units_loaded[j] > TNECS_NULL) {
+        if (entities[j] > TNECS_NULL) {
             // Free loaded unit component from and clear party entry
-            Unit *unit = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[j], Unit);
+            Unit *unit = TNECS_GET_COMPONENT(sota->world, entities[j], Unit);
             Unit_Free(unit);
             SDL_assert(unit->_id == UNIT_ID_NULL);
         } else {
             // Free unit entry in party and clear party entry
-            Unit_Free(&party[j]);
+            Unit_Free(&units[j]);
         }
-        party[j] = Unit_default;
-        SDL_assert(party[j]._id == UNIT_ID_NULL);
+        units[j] = Unit_default;
+        SDL_assert(units[j]._id == UNIT_ID_NULL);
     }
 }
 
@@ -174,13 +176,13 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     // SDL_Log("-- loading unit --");
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
     SDL_assert(unit != NULL);
-    SDL_assert(sota->party[unit_id]._id != 0);
-    memcpy(unit, &sota->party[unit_id], sizeof(struct Unit));
+    SDL_assert(sota->party.units[unit_id]._id != 0);
+    memcpy(unit, &sota->party.units[unit_id], sizeof(struct Unit));
 
     // Unit_Allocs(unit);
 
-    SDL_assert((sota->party[unit_id].handedness > UNIT_HAND_NULL)
-               && (sota->party[unit_id].handedness < UNIT_HAND_END));
+    SDL_assert((sota->party.units[unit_id].handedness > UNIT_HAND_NULL)
+               && (sota->party.units[unit_id].handedness < UNIT_HAND_END));
     SDL_assert((unit->handedness > UNIT_HAND_NULL) && (unit->handedness < UNIT_HAND_END));
 
     Unit_setid(unit, unit_id);

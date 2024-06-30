@@ -8,9 +8,10 @@ struct Party Party_default =  {
     .size           = 0,
     .names          = NULL,
     .filenames      = NULL,
-    .ids            = NULL,
-    .party          = NULL,
-    .party_id_stack = NULL,
+    .ids            = {0},
+    .units          = {0},
+    .entities       = {0},
+    .id_stack       = NULL,
 };
 
 /* --- Party --- */
@@ -31,11 +32,6 @@ void Party_Free(struct Party *party) {
         party->filenames = NULL;
     }
 
-    if (party->ids != NULL) {
-        DARR_FREE(party->ids);
-        party->ids = NULL;
-    }
-
     s8_free(&party->folder);
     s8_free(&party->json_filename);
 }
@@ -47,70 +43,66 @@ void Party_Reset(struct Party *party) {
             s8_free(&party->filenames[i]);
         DARR_NUM(party->filenames) = 0;
     }
-    if (party->party != NULL) {
-        memset(party->party, 0, sizeof(party->party) * SOTA_MAX_PARTY_SIZE);
-    }
+    memset(party->units, 0, sizeof(*party->units) * SOTA_MAX_PARTY_SIZE);
 }
 
 /* --- Utilities --- */
 i32 Party_Size(struct Party *ps)  {
     SDL_assert(ps                   != NULL);
-    SDL_assert(ps->party            != NULL);
-    SDL_assert(ps->party_id_stack   != NULL);
-    ps->size = _Party_Size(ps->party, ps->party_id_stack);
+    ps->size = _Party_Size(ps->units, ps->id_stack);
     return (ps->size);
 }
 
-i32 _Party_Size(struct Unit *party, i16 *party_id_stack)  {
+i32 _Party_Size(struct Unit *units, i16 *id_stack)  {
     i32 num = 0;
     for (size_t i = 0; i < SOTA_MAX_PARTY_SIZE; i++) {
-        if (party[i]._id > UNIT_ID_PC_START && party[i]._id < UNIT_ID_PC_END) {
-            party_id_stack[num++] = party[i]._id;
+        if (units[i]._id > UNIT_ID_PC_START && units[i]._id < UNIT_ID_PC_END) {
+            id_stack[num++] = units[i]._id;
         }
     }
     return (num);
 }
 
-void Party_Folder(struct Party *party_struct, char *folder) {
-    s8_free(&party_struct->folder);
-    party_struct->folder = s8_mut(folder);
+void Party_Folder(struct Party *party, char *folder) {
+    s8_free(&party->folder);
+    party->folder = s8_mut(folder);
 }
 
-void Party_Ids2Filenames(struct Party *party_struct) {
-    SDL_assert(party_struct != NULL);
-    SDL_assert(party_struct->ids);
-    SDL_assert(party_struct->filenames);
-    SDL_assert(party_struct->folder.data != NULL);
+void Party_Ids2Filenames(struct Party *party) {
+    SDL_assert(party != NULL);
+    SDL_assert(party->ids);
+    SDL_assert(party->filenames);
+    SDL_assert(party->folder.data != NULL);
     SDL_assert(global_unitOrders != NULL);
     SDL_assert(global_unitNames != NULL);
 
-    for (int i = 0; i < DARR_NUM(party_struct->ids); i++) {
-        s8 filename     = s8_mut(party_struct->folder.data);
+    for (int i = 0; i < DARR_NUM(party->ids); i++) {
+        s8 filename     = s8_mut(party->folder.data);
         filename        = s8cat(filename, s8_literal(PHYSFS_SEPARATOR));
-        SDL_assert(party_struct->ids[i] > UNIT_ID_PC_START);
-        SDL_assert(party_struct->ids[i] < UNIT_ID_END);
-        u64 *order    = DTAB_GET(global_unitOrders, party_struct->ids[i]);
+        SDL_assert(party->ids[i] > UNIT_ID_PC_START);
+        SDL_assert(party->ids[i] < UNIT_ID_END);
+        u64 *order    = DTAB_GET(global_unitOrders, party->ids[i]);
         SDL_assert(order != NULL);
         SDL_assert(*order > 0);
         SDL_assert(*order < UNIT_NUM);
         filename        = s8cat(filename, global_unitNames[*order]);
         filename        = s8cat(filename, s8_literal(".json"));
-        DARR_PUT(party_struct->filenames, filename);
+        DARR_PUT(party->filenames, filename);
     }
 }
 
-void Party_Names2Filenames(struct Party *party_struct) {
-    SDL_assert(party_struct != NULL);
-    SDL_assert(party_struct->names);
-    SDL_assert(party_struct->filenames);
-    SDL_assert(party_struct->folder.data != NULL);
+void Party_Names2Filenames(struct Party *party) {
+    SDL_assert(party != NULL);
+    SDL_assert(party->names);
+    SDL_assert(party->filenames);
+    SDL_assert(party->folder.data != NULL);
 
-    for (int i = 0; i < DARR_NUM(party_struct->names); i++) {
-        s8 filename     = s8_mut(party_struct->folder.data);
+    for (int i = 0; i < DARR_NUM(party->names); i++) {
+        s8 filename     = s8_mut(party->folder.data);
         filename        = s8cat(filename, s8_literal(PHYSFS_SEPARATOR));
-        filename        = s8cat(filename, party_struct->names[i]);
+        filename        = s8cat(filename, party->names[i]);
         filename        = s8cat(filename, s8_literal(".json"));
-        DARR_PUT(party_struct->filenames, filename);
+        DARR_PUT(party->filenames, filename);
     }
 }
 
@@ -138,31 +130,30 @@ void _Party_Load(struct Unit *party, struct dtab *weapons_dtab,
     }
 }
 
-void Party_Load(struct Party *party_struct,
+void Party_Load(struct Party *party,
                 struct dtab *wdtab, struct dtab *idtab) {
     /* Load units in party)_struct->party, also add dtabs */
-    struct Unit *party = party_struct->party;
+    struct Unit *units = party->units;
     SDL_assert(party != NULL);
-    s8 *filenames = party_struct->filenames;
+    s8 *filenames = party->filenames;
     SDL_assert(filenames != NULL);
 
-    _Party_Load(party, wdtab, idtab, filenames, DARR_NUM(filenames));
+    _Party_Load(party->units, wdtab, idtab, filenames, DARR_NUM(filenames));
 }
 
 void Party_readJSON(void *input, cJSON *jparty) {
-    struct Party *party_struct = (struct Party *)input;
-    SDL_assert(party_struct != NULL);
+    struct Party *party = (struct Party *)input;
+    SDL_assert(party != NULL);
 
     s8 folder = {0};
-    if (party_struct->folder.data != NULL)
-        folder = s8cpy(folder, party_struct->folder);
+    if (party->folder.data != NULL)
+        folder = s8cpy(folder, party->folder);
 
-    Party_Free(party_struct);
-    party_struct->folder = folder;
+    Party_Free(party);
+    party->folder = folder;
 
-    party_struct->ids       = DARR_INIT(party_struct->ids, i16, 8);
-    party_struct->names     = DARR_INIT(party_struct->names, s8, 8);
-    party_struct->filenames = DARR_INIT(party_struct->filenames, s8, 8);
+    party->names     = DARR_INIT(party->names, s8, 8);
+    party->filenames = DARR_INIT(party->filenames, s8, 8);
 
     // SDL_Log("-- Get json objects --");
     cJSON *jids         = cJSON_GetObjectItem(jparty, "ids");
@@ -178,7 +169,7 @@ void Party_readJSON(void *input, cJSON *jparty) {
         i32 num = cJSON_GetArraySize(jids);
         for (int i = 0; i < num; i++) {
             struct cJSON *jid = cJSON_GetArrayItem(jids, i);
-            DARR_PUT(party_struct->ids, cJSON_GetNumberValue(jid));
+            DARR_PUT(party->ids, cJSON_GetNumberValue(jid));
         }
     }
 
@@ -191,7 +182,7 @@ void Party_readJSON(void *input, cJSON *jparty) {
         i32 num = cJSON_GetArraySize(jnames);
         for (int i = 0; i < num; i++) {
             struct cJSON *jname = cJSON_GetArrayItem(jnames, i);
-            DARR_PUT(party_struct->names, s8_mut(cJSON_GetStringValue(jname)));
+            DARR_PUT(party->names, s8_mut(cJSON_GetStringValue(jname)));
         }
     }
 
@@ -204,23 +195,23 @@ void Party_readJSON(void *input, cJSON *jparty) {
         i32 num = cJSON_GetArraySize(jfilenames);
         for (int i = 0; i < num; i++) {
             struct cJSON *jfilename = cJSON_GetArrayItem(jfilenames, i);
-            DARR_PUT(party_struct->filenames, s8_mut(cJSON_GetStringValue(jfilename)));
+            DARR_PUT(party->filenames, s8_mut(cJSON_GetStringValue(jfilename)));
         }
     }
 }
 
 void Party_writeJSON(void *input, cJSON *jparty) {
     /* --- Write file with list of units --- */
-    struct Party *party_struct = (struct Party *)input;
-    SDL_assert(party_struct != NULL);
-    struct Unit *party = party_struct->party;
+    struct Party *party = (struct Party *)input;
+    SDL_assert(party != NULL);
+    struct Unit *party = party->party;
     SDL_assert(party != NULL);
 
     cJSON *jfilenames       = cJSON_CreateArray();
 
-    i32 num = DARR_NUM(party_struct->filenames);
+    i32 num = DARR_NUM(party->filenames);
     for (int i = 0; i < num; i++) {
-        struct cJSON *jfilename = cJSON_CreateString(party_struct->filenames[i].data);
+        struct cJSON *jfilename = cJSON_CreateString(party->filenames[i].data);
         cJSON_AddItemToArray(jfilenames, jfilename);
     }
 
@@ -229,8 +220,8 @@ void Party_writeJSON(void *input, cJSON *jparty) {
 
 void Party_Units_writeJSON(void *input, cJSON *jparty) {
     /* --- Each individual unit as a separate json file --- */
-    struct Party *party_struct = (struct Party *)input;
-    SDL_assert(party_struct != NULL);
-    struct Unit *party = party_struct->party;
+    struct Party *party = (struct Party *)input;
+    SDL_assert(party != NULL);
+    struct Unit *party = party->party;
     SDL_assert(party != NULL);
 }

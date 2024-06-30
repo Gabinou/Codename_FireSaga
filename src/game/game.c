@@ -44,9 +44,9 @@ struct Game Game_default = {
 
     .ai_timer               = TNECS_NULL,
 
-    .party_struct           = {0},
     .party                  = {0},
-    .party_id_stack         = {0},
+    // .party                  = {0},
+    // .party_id_stack         = {0},
 
     // .menu_font              = NULL,
     .menu_pixelfont         = NULL,
@@ -92,8 +92,8 @@ struct Game Game_default = {
 
 void Game_Free(struct Game *sota) {
     AI_State_Free(&sota->ai_state);
-    Party_Free(&sota->party_struct);
-    Game_Party_Free(sota, sota->party);
+    Game_Party_Free(sota);
+    Party_Free(&sota->party);
     Game_Title_Destroy(sota);
     Game_Map_Reinforcements_Free(sota);
     Game_DeploymentMenu_Free(sota);
@@ -714,27 +714,27 @@ void _Game_loadJSON(struct Game *sota, s8  filename) {
     /* - Party filename may or may not be the current file - */
     cJSON   *jparty_filename    = cJSON_GetObjectItem(json, "filename");
     char    *party_filename     = cJSON_GetStringValue(jparty_filename);
-    sota->party_struct          = Party_default;
+    sota->party                 = Party_default;
 
     if (party_filename == NULL) {
         /* - If no filename in Party, Party is in the current file - */
-        Party_readJSON(&sota->party_struct, jparty);
+        Party_readJSON(&sota->party, jparty);
     } else {
         /* - Reading party json - */
         SDL_assert(party_filename != NULL);
         SDL_Log("party_filename %s", party_filename);
 
         /* party filename should include folder */
-        Party_Folder(&sota->party_struct, "");
-        jsonio_readJSON(s8_var(party_filename), &sota->party_struct);
+        Party_Folder(&sota->party, "");
+        jsonio_readJSON(s8_var(party_filename), &sota->party);
     }
 
     /* - Loading party units json - */
-    sota->party_struct.party            = sota->party;
-    sota->party_struct.party_id_stack   = sota->party_id_stack;
-    Party_Load(&sota->party_struct, sota->weapons_dtab, sota->items_dtab);
-    Party_Size(&sota->party_struct);
-    SDL_assert(sota->party_struct.size > 0);
+    // sota->party.units            = sota->party;
+    // sota->party.party_id_stack   = sota->party_id_stack;
+    Party_Load(&sota->party, sota->weapons_dtab, sota->items_dtab);
+    Party_Size(&sota->party);
+    SDL_assert(sota->party.size > 0);
 
     /* - Free - */
     cJSON_Delete(json);
@@ -767,7 +767,7 @@ void _Game_saveJSON(struct Game *sota, s8  filename) {
 
     /* --- Party --- */
     cJSON *jparty       = cJSON_CreateObject();
-    Party_writeJSON(&sota->party_struct, jparty);
+    Party_writeJSON(&sota->party, jparty);
 
     /* --- Adding to parent JSON object --- */
     cJSON_AddItemToObject(json, "RNG",          jRNG);

@@ -71,7 +71,7 @@ void Game_Gameplay_Start(struct Game *sota, i32 state, i32 substate) {
         struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
         struct DeploymentMenu *dm = mc->data;
         SDL_assert(dm->_party_size > 0);
-        DeploymentMenu_Party_Set(dm, sota->party, sota->party_id_stack, sota->party_struct.size);
+        DeploymentMenu_Party_Set(dm, sota->party.units, sota->party.id_stack, sota->party.size);
 
         Game_cursorFocus_onMenu(sota);
 
@@ -110,17 +110,15 @@ void Game_debugMap_Load(struct Game *sota) {
     SDL_assert(sota->map->party_filename.data != NULL);
     // SDL_Log("sota->map->party_filename %s", sota->map->party_filename.data);
 
-    sota->party_struct = Party_default;
-    Party_Folder(&sota->party_struct, "units/debug_map");
-    jsonio_readJSON(sota->map->party_filename, &sota->party_struct);
-    SDL_assert(sota->party_struct.filenames != NULL);
+    sota->party = Party_default;
+    Party_Folder(&sota->party, "units/debug_map");
+    jsonio_readJSON(sota->map->party_filename, &sota->party);
+    SDL_assert(sota->party.filenames != NULL);
 
     /* - Loading party units json - */
-    sota->party_struct.party            = sota->party;
-    sota->party_struct.party_id_stack   = sota->party_id_stack;
-    Party_Load(&sota->party_struct, sota->weapons_dtab, sota->items_dtab);
-    Party_Size(&sota->party_struct);
-    SDL_assert(sota->party_struct.size > 0);
+    Party_Load(&sota->party, sota->weapons_dtab, sota->items_dtab);
+    Party_Size(&sota->party);
+    SDL_assert(sota->party.size > 0);
 }
 
 /* --- Reinforcements --- */

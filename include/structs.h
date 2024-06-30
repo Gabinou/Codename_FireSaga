@@ -815,11 +815,16 @@ struct Party {
     s8   folder;
     s8  *names;
     s8  *filenames;
-    i16 *ids;
-    struct Unit *party;
-    i32 size;
-    i16 *party_id_stack;
 
+    /* Always in same order -> UNIT_ID_... */
+    Unit            units   [SOTA_MAX_PARTY_SIZE];
+    i16             ids     [SOTA_MAX_PARTY_SIZE];
+    tnecs_entity    entities[SOTA_MAX_PARTY_SIZE];
+
+    /* Id stack for units currently in party*/
+    i16             *id_stack;
+
+    i32 size;
 };
 extern struct Party Party_default;
 
@@ -903,9 +908,9 @@ struct Game {
     Point selected_unit_moved_position;
 
     tnecs_entity *map_enemies;
-    struct Party party_struct;
-    struct Unit party[SOTA_MAX_PARTY_SIZE];
-    i16 party_id_stack[SOTA_MAX_PARTY_SIZE];
+    struct Party party;
+    // struct Unit party[SOTA_MAX_PARTY_SIZE];
+    // i16 party_id_stack[SOTA_MAX_PARTY_SIZE];
 
     tnecs_entity *ent_unit_loaded;
 
@@ -923,7 +928,7 @@ struct Game {
     i8 state_previous;
     i8 substate_previous;
 
-    SDL_Window  *window;
+    SDL_Window *window;
 
     struct Settings    settings;
     struct Convoy      convoy;
