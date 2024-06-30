@@ -106,7 +106,7 @@ i64  Game_FPS_Delay( struct Game *sota, u64 e);
 void Game_FPS_Create(struct Game *sota, i64 ut);
 
 /* --- SETTINGS --- */
-void Game_Brightness_Set(struct Game *sota, float bright);
+void  Game_Brightness_Set(struct Game *sota, float bright);
 float Game_Brightness_Get(struct Game *sota);
 
 /* --- AUDIO --- */

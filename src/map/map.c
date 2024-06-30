@@ -190,8 +190,7 @@ struct Map *Map_Init(struct Map *map, i32 width, i32 height) {
 }
 
 void Map_Units_Free(struct Map *map) {
-
-    /* -- Free units on unitmap -- */
+    /* -- Free non-PC units on unitmap -- */
     SDL_assert(map->unitmap);
     for (size_t i = 0; i < map->col_len * map->row_len ; i++) {
         tnecs_entity uent = map->unitmap[i];
@@ -203,7 +202,7 @@ void Map_Units_Free(struct Map *map) {
         struct Unit *unit = TNECS_GET_COMPONENT(map->world, uent, Unit);
 
         // Check that unit is not in the party
-        if ((unit != NULL) && (unit->_id > UNIT_ID_PC_START)) {
+        if ((unit != NULL) && (unit->_id > UNIT_ID_PC_END)) {
             Unit_Free(unit);
         }
 
@@ -555,8 +554,10 @@ void Map_Tilemap_Texture_Init(struct Map *map) {
 }
 
 void Map_Tilemap_Surface_Free(struct Map *map) {
-    if (map->tilemap_surface != NULL)
+    if (map->tilemap_surface != NULL) {
         SDL_FreeSurface(map->tilemap_surface);
+        map->tilemap_surface = NULL;
+    }
 }
 
 void Map_Tilemap_Surface_Init(struct Map *map) {
