@@ -99,10 +99,17 @@ void Game_Party_Unload(struct Game *sota, i16 *to_unload_ids, size_t unload_num)
     }
 }
 
+
+void Game_Loaded_Units_Free(struct Game *sota) {
+    /* -- Free entities in units_loaded array -- */
+    // TODO
+}
+
 void Game_Party_Free(struct Game *sota, struct Unit *party) {
+    /* -- Free unit struct read from JSON files in party array -- */
     for (size_t j = 0; j < SOTA_MAX_PARTY_SIZE; j++) {
         // Skip if party unit was never read
-        // -| Party unit did not become component for entity in units_loaded 
+        // -| Party unit did not become component for entity in units_loaded
         if (party[j]._id == UNIT_ID_NULL)
             continue;
 
