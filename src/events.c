@@ -1521,9 +1521,14 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(defendant != NULL);
 
     // 1. Get next HP of attacked unit
+    struct Combat_Attack *attacks = sota->combat_outcome.attacks;
+    SDL_assert(sota->combat_outcome.current_attack < DARR_NUM(attacks));
     struct Combat_Attack attack = sota->combat_outcome.attacks[sota->combat_outcome.current_attack++];
+
     // pmc->current_attack = sota->combat_outcome.current_attack;
-    struct Unit *attacker, *defender;
+    struct Unit *attacker = NULL, *defender = NULL;
+
+
     attacker = attack.attacker ? aggressor : defendant;
     defender = attack.attacker ? defendant : aggressor;
     Combat_Resolve_Attack(attack, attacker, defender);

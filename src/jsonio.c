@@ -103,6 +103,7 @@ void jsonio_readJSON(s8 filename, void *struct_ptr) {
 
     if (json_filename->data != NULL) {
         s8_free(json_filename);
+        SDL_assert(json_filename->data == NULL);
     }
     *json_filename = filename_mut;
 

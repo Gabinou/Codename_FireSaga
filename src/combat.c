@@ -276,7 +276,7 @@ void Compute_Combat_Outcome(struct Combat_Outcome   *outcome,
     }
     forecast->attack_num        = DARR_NUM(darr_attacks);
     outcome->ended              = false;
-
+    outcome->current_attack     = 0;
 }
 
 /* -- Combat Attacks -- */

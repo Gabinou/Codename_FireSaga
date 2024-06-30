@@ -4,7 +4,7 @@
 /* 3x-4x faster than null-terminated strings! */
 /* -- s8_mut ONLY, unless noted otherwise -- */
 
-s8 s8_mut( char *string) {
+s8 s8_mut(char *string) {
     s8 s8_string;
     size_t len = strlen(string) + 1;
     s8_string.num  = len - 1;

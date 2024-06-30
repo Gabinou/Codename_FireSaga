@@ -225,7 +225,8 @@ void Unit_Free(struct Unit *unit) {
         DARR_FREE(unit->status_queue);
         unit->status_queue = NULL;
     }
-    s8_free(&unit->json_filename);
+    if (unit->json_filename.data != NULL)
+        s8_free(&unit->json_filename);
     s8_free(&unit->name);
     s8_free(&unit->title);
     s8_free(&unit->ai_filename);
