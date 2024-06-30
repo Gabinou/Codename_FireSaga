@@ -99,16 +99,24 @@ void Game_Party_Unload(struct Game *sota, i16 *to_unload_ids, size_t unload_num)
     }
 }
 
-void Game_Party_Free(struct Unit *party) {
-    SDL_Log("Game_Party_Free");
+void Game_Party_Free(struct Game *sota, struct Unit *party) {
     for (size_t j = 0; j < SOTA_MAX_PARTY_SIZE; j++) {
+        // Skip if party unit was never read
+        // -| Party unit did not become component for entity in units_loaded 
         if (party[j]._id == UNIT_ID_NULL)
             continue;
 
-        SDL_Log("party[j]._id %d", party[j]._id);
         SDL_assert((party[j]._id > UNIT_ID_START) && (party[j]._id < UNIT_ID_END));
 
-        Unit_Free(&party[j]);
+        if (sota->units_loaded[j] > TNECS_NULL) {
+            // Free loaded unit component from and clear party entry
+            Unit *unit = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[j], Unit);
+            Unit_Free(unit);
+            SDL_assert(unit->_id == UNIT_ID_NULL);
+        } else {
+            // Free unit entry in party and clear party entry
+            Unit_Free(&party[j]);
+        }
         party[j] = Unit_default;
         SDL_assert(party[j]._id == UNIT_ID_NULL);
     }
@@ -161,7 +169,8 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     SDL_assert(unit != NULL);
     SDL_assert(sota->party[unit_id]._id != 0);
     memcpy(unit, &sota->party[unit_id], sizeof(struct Unit));
-    Unit_Allocs(unit);
+
+    // Unit_Allocs(unit);
 
     SDL_assert((sota->party[unit_id].handedness > UNIT_HAND_NULL)
                && (sota->party[unit_id].handedness < UNIT_HAND_END));

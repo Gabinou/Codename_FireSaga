@@ -201,15 +201,18 @@ void Map_Units_Free(struct Map *map) {
 
         struct Unit *unit = TNECS_GET_COMPONENT(map->world, uent, Unit);
 
-        // Check that unit is not in the party
-        if ((unit != NULL) && (unit->_id > UNIT_ID_PC_END)) {
-            Unit_Free(unit);
-        }
-
         struct Sprite *sprite = TNECS_GET_COMPONENT(map->world, uent, Sprite);
         if (sprite != NULL)
             Sprite_Free(sprite);
-        tnecs_entity_destroy(map->world, uent);
+
+        // Freeing unit if not in party
+        if ((unit != NULL) && (unit->_id > UNIT_ID_PC_END)) {
+            SDL_Log("Destroying %d", unit->_id);
+            Unit_Free(unit);
+            tnecs_entity_destroy(map->world, uent);
+        } else if (unit == NULL) {
+            tnecs_entity_destroy(map->world, uent);
+        }
     }
 
     s8_free(&map->json_filename);

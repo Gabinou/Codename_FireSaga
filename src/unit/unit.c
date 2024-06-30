@@ -289,6 +289,9 @@ void Unit_setid(struct Unit *unit, i16 id) {
     SDL_assert(unit->name.data == NULL);
 
     u16 order = *(u16 *)dtab_get(global_unitOrders, id);
+    if (unit->name.data != NULL) {
+        s8_free(&unit->name);
+    }
     unit->name = s8cpy(unit->name, global_unitNames[order]);
 }
 

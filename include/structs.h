@@ -849,7 +849,7 @@ struct Game {
     struct dtab *weapons_dtab;
     struct dtab *tiles_loaded_dtab;
     struct dtab *units_loaded_dtab;
-    tnecs_entity *units_loaded;
+    tnecs_entity *units_loaded; /* only for party? */
 
     tnecs_entity ai_timer;
     tnecs_entity reinf_timer;
