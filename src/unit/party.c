@@ -166,6 +166,7 @@ void _Party_Load(struct Unit *party, struct dtab *weapons_dtab,
         SDL_assert(temp_unit._id > UNIT_ID_PC_START);
         SDL_assert(temp_unit._id < UNIT_ID_PC_END);
         DARR_PUT(party, temp_unit);
+
     }
 }
 

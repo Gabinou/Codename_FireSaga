@@ -53,7 +53,6 @@ struct Game Game_default = {
 
     .map                    = NULL,
     .window                 = NULL,
-    .units_loaded           = NULL,
     .selected_unit_moved_position   = {-1, -1},
     .selected_unit_initial_position = {-1, -1},
     // .convoy = Convoy_default,
@@ -198,10 +197,6 @@ void Game_Free(struct Game *sota) {
 
     Game_Items_Free(  &sota->items_dtab);
     Game_Weapons_Free(&sota->weapons_dtab);
-    if (sota->party->entities != NULL) {
-        SDL_free(sota->party->entities);
-        sota->party->entities = NULL;
-    }
     if (sota->menu_pixelfont != NULL) {
         PixelFont_Free(sota->menu_pixelfont, false);
     }
@@ -377,8 +372,6 @@ void Game_Init(struct Game *sota, int argc, char *argv[]) {
         sota->map_enemies = NULL;
     }
     sota->map_enemies = DARR_INIT(sota->map_enemies, tnecs_entity, 16);
-
-    sota->party->entities = SDL_calloc(UNIT_ID_END, sizeof(* sota->party->entities));
 
     sota->camera.offset.x = DEFAULT_CAMERA_XOFFSET;
     sota->camera.offset.y = DEFAULT_CAMERA_YOFFSET;
@@ -733,6 +726,19 @@ void _Game_loadJSON(struct Game *sota, s8  filename) {
     Party_Load(&sota->party, sota->weapons_dtab, sota->items_dtab);
     Party_Size(&sota->party);
     SDL_assert(sota->party.size > 0);
+
+    /* - Making unit read into entities - */
+    for (int i = 0; i < SOTA_MAX_PARTY_SIZE; ++i) {
+        int id = sota->party.json_units[i]._id;
+        if ((id > UNIT_ID_PC_START) && (id > UNIT_ID_PC_END))
+            continue;
+
+        if (sota->party.entities[id] > TNECS_NULL)
+            continue;
+
+        struct Point pos = {0, 0};
+        Game_Party_Entity_Create(sota, id, pos);
+    }
 
     /* - Free - */
     cJSON_Delete(json);

@@ -71,7 +71,7 @@ void Game_Gameplay_Start(struct Game *sota, i32 state, i32 substate) {
         struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
         struct DeploymentMenu *dm = mc->data;
         SDL_assert(dm->_party_size > 0);
-        DeploymentMenu_Party_Set(dm, sota->party.json_units, sota->party.id_stack, sota->party.size);
+        DeploymentMenu_Party_Set(dm, &sota->party);
 
         Game_cursorFocus_onMenu(sota);
 
@@ -123,6 +123,20 @@ void Game_debugMap_Load(struct Game *sota) {
     /* - Loading party units json - */
     Party_Load(&sota->party, sota->weapons_dtab, sota->items_dtab);
     Party_Size(&sota->party);
+
+    /* - Making unit read into entities - */
+    for (int i = 0; i < SOTA_MAX_PARTY_SIZE; ++i) {
+        int id = sota->party.json_units[i]._id;
+        if ((id > UNIT_ID_PC_START) && (id > UNIT_ID_PC_END))
+            continue;
+
+        if (sota->party.entities[id] > TNECS_NULL)
+            continue;
+
+        struct Point pos = {0, 0};
+        Game_Party_Entity_Create(sota, id, pos);
+    }
+
     SDL_assert(sota->party.size > 0);
 }
 
