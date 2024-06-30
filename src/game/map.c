@@ -113,7 +113,7 @@ void Game_debugMap_Load(struct Game *sota) {
     sota->party = Party_default;
     Party_Folder(&sota->party, "units/debug_map");
     jsonio_readJSON(sota->map->party_filename, &sota->party);
-    SDL_assert(sota->party.filenames != NULL);
+    SDL_assert(sota->party.json_filenames != NULL);
 
     /* - Loading party units json - */
     Party_Load(&sota->party, sota->weapons_dtab, sota->items_dtab);

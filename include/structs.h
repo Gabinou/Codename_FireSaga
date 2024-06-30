@@ -814,7 +814,7 @@ struct Party {
 
     s8   folder;
 
-    /* Json read values */
+    /* Json read values in order of read */
     s8              *json_filenames;
     s8              *json_names;
     Unit            *json_units;
