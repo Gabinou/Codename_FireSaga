@@ -122,7 +122,6 @@ void _Party_Load(struct Unit *party, struct dtab *weapons_dtab,
         s8 filename = filenames[i];
         temp_unit               = Unit_default;
         SDL_assert(temp_unit.json_filename.data == NULL);
-        SDL_Log("'%s' %d %d", filename.data, i, temp_unit._id);
         temp_unit.items_dtab    = items_dtab;
         temp_unit.weapons_dtab  = weapons_dtab;
 
@@ -165,7 +164,7 @@ void Party_readJSON(void *input, cJSON *jparty) {
     party_struct->names     = DARR_INIT(party_struct->names, s8, 8);
     party_struct->filenames = DARR_INIT(party_struct->filenames, s8, 8);
 
-    SDL_Log("-- Get json objects --");
+    // SDL_Log("-- Get json objects --");
     cJSON *jids         = cJSON_GetObjectItem(jparty, "ids");
     cJSON *jnames       = cJSON_GetObjectItem(jparty, "names");
     cJSON *jfilenames   = cJSON_GetObjectItem(jparty, "filenames");

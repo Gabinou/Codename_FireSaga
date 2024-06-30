@@ -339,9 +339,7 @@ void Map_Free(struct Map *map) {
     Map_Tilemap_Surface_Free(map);
     _Map_Tilesindex_Free(map);
     _Map_Reinforcements_Free(map);
-    SDL_Log("Arrow");
     Arrow_Free(map->arrow);
-    SDL_Log("tilemap_shader");
     if (map->tilemap_shader != NULL) {
         Tilemap_Shader_Free(map->tilemap_shader);
         SDL_free(map->tilemap_shader);
@@ -685,7 +683,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     Map_dArrays_Init(map, &Settings_default);
 
     /* -- Read Starting Positions -- */
-    SDL_Log("Read Starting Positions");
+    // SDL_Log("Read Starting Positions");
     cJSON *jstart_pos_arr = cJSON_GetObjectItem(jmap, "Starting Positions");
     SDL_assert(cJSON_IsArray(jstart_pos_arr));
     if (map->start_pos != NULL)
@@ -699,7 +697,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     }
 
     /* -- Read tiles -- */
-    SDL_Log("Read tiles");
+    // SDL_Log("Read tiles");
     cJSON *jtiles = cJSON_GetObjectItem(jmap, "tiles");
     cJSON *jid, *jtile;
     _Map_Tilesindex_Init(map);
@@ -716,7 +714,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     SDL_assert(map->tileset_surfaces[0]);
 
     /* -- Read Reinforcements --  */
-    SDL_Log("Read Reinforcements");
+    // SDL_Log("Read Reinforcements");
     if (map->reinforcements != NULL)
         DARR_FREE(map->reinforcements);
     map->reinforcements = DARR_INIT(map->reinforcements, struct Reinforcement, 16);
@@ -756,7 +754,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     }
 
     /* -- Read Map objects -- */
-    SDL_Log("Read Map objects");
+    // SDL_Log("Read Map objects");
     cJSON *jmobj        = cJSON_GetObjectItem(jmap,  "Map_Objects");
     cJSON *jdoors       = cJSON_GetObjectItem(jmobj, "Doors");
     cJSON *jchests      = cJSON_GetObjectItem(jmobj, "Chests");
@@ -837,10 +835,10 @@ void Map_readJSON(void *input,  cJSON *jmap) {
 
         map->breakables_ent = calloc(map->breakable_num, sizeof(*map->breakables_ent));
         for (size_t i = 0; i < map->breakable_num; i++) {
-            tnecs_entity temp_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Breakable, Position);
+            tnecs_entity temp_ent   = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Breakable, Position);
             struct Position *pos    = TNECS_GET_COMPONENT(map->world, temp_ent, Position);
-            cJSON *jbreakable   = cJSON_GetArrayItem(jbreakables, i);
-            cJSON *jpos         = cJSON_GetObjectItem(jbreakable, "position");
+            cJSON *jbreakable       = cJSON_GetArrayItem(jbreakables, i);
+            cJSON *jpos             = cJSON_GetObjectItem(jbreakable, "position");
             if (jpos != NULL)
                 Point_readJSON((struct Point *)&pos->tilemap_pos, jpos);
             // if position of breakaable is already a Door/Chest
@@ -1004,7 +1002,7 @@ void Map_Bonus_Remove_Persistent(struct Map *map, i32 army) {
 
 void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_entity *entities,
                     tnecs_entity source_ent, u16 item, u16 skill, b32 active, b32 instant) {
-    SDL_Log("Map_Aura_Apply");
+    // SDL_Log("Map_Aura_Apply");
     /* aura:                bonus to apply.                  */
     /* entities:            units to appy bonus to.          */
     /* aura source info:    source_ent, item, skill, active. */
@@ -1021,10 +1019,10 @@ void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_entity *entities,
         struct Position *pos = TNECS_GET_COMPONENT(map->world, ent, Position);
 
         i32 distance = Pathfinding_Manhattan(source_pos->tilemap_pos, pos->tilemap_pos);
-        SDL_Log("source %d %d", source_pos->tilemap_pos.x, source_pos->tilemap_pos.y);
-        SDL_Log("pos %d %d", pos->tilemap_pos.x, pos->tilemap_pos.y);
-        SDL_Log("distance %d", distance);
-        SDL_Log("aura %d %d", aura.range.min, aura.range.max);
+        // SDL_Log("source %d %d", source_pos->tilemap_pos.x, source_pos->tilemap_pos.y);
+        // SDL_Log("pos %d %d", pos->tilemap_pos.x, pos->tilemap_pos.y);
+        // SDL_Log("distance %d", distance);
+        // SDL_Log("aura %d %d", aura.range.min, aura.range.max);
         if ((distance >= aura.range.min) && (distance <= aura.range.max)) {
             struct Unit *unit = TNECS_GET_COMPONENT(map->world, ent, Unit);
             SDL_assert(unit != NULL);
@@ -1036,7 +1034,7 @@ void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_entity *entities,
 
 void Map_Bonus_Standard_Apply_Unit(struct Map *map, tnecs_entity ent, tnecs_entity *entities) {
     /* Apply passive instant standard bonus to unit */
-    SDL_Log("Map_Bonus_Standard_Apply_Unit");
+    // SDL_Log("Map_Bonus_Standard_Apply_Unit");
     SDL_assert(ent > TNECS_NULL);
     struct Unit     *unit   = TNECS_GET_COMPONENT(map->world, ent, Unit);
     struct Position *pos    = TNECS_GET_COMPONENT(map->world, ent, Position);

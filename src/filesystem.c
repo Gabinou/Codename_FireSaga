@@ -4,7 +4,7 @@
 /* --- INIT --- */
 
 void Filesystem_Mount(s8 folder) {
-    SDL_Log("Mounting build dir: '%s'", folder.data);
+    // SDL_Log("Mounting build dir: '%s'", folder.data);
     if (!PHYSFS_mount(folder.data, NULL, 1)) {
         SDL_Log("Could not mount %s", folder.data);
         exit(ERROR_PHYSFSCannotMount);
@@ -47,16 +47,16 @@ int Filesystem_Init(char *argv0) {
     }
     Filesystem_Mount(temp);
     PHYSFS_setWriteDir(temp.data);
-    SDL_Log("Base directory: %s\n", temp.data);
+    // SDL_Log("Base directory: %s\n", temp.data);
 
     /* -- Mounting saves directory -- */
     temp = s8cat(temp, s8_literal(DIR_SEPARATOR"saves"));
     if (PHYSFS_stat(temp.data, NULL) == 0) {
-        SDL_Log("mkdir %s", temp.data);
+        // SDL_Log("mkdir %s", temp.data);
         sota_mkdir(temp.data);
     }
 
-    SDL_Log("Mounting saves dir: '%s'", temp.data);
+    // SDL_Log("Mounting saves dir: '%s'", temp.data);
     Filesystem_Mount(temp);
 
     /* -- Mounting build directory -- */
@@ -303,6 +303,7 @@ SDL_Surface *Filesystem_indexedSurface_Init(size_t w, size_t h) {
 
     if (PALETTE_DEFAULT == NULL) {
         SDL_Log("palette_NES not loaded");
+        SDL_assert(false);
         exit(ERROR_NullPointer);
     }
 
