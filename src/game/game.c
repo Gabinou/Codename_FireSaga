@@ -712,9 +712,9 @@ void _Game_loadJSON(struct Game *sota, s8  filename) {
     cJSON *jparty = cJSON_GetObjectItem(json, "Party");
 
     /* - Party filename may or may not be the current file - */
-    cJSON *jparty_filename = cJSON_GetObjectItem(json, "filename");
-    char *party_filename =  cJSON_GetStringValue(jparty_filename);
-    sota->party_struct = Party_default;
+    cJSON   *jparty_filename    = cJSON_GetObjectItem(json, "filename");
+    char    *party_filename     = cJSON_GetStringValue(jparty_filename);
+    sota->party_struct          = Party_default;
 
     if (party_filename == NULL) {
         /* - If no filename in Party, Party is in the current file - */

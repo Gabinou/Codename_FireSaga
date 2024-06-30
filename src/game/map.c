@@ -141,14 +141,25 @@ void Game_Map_Reinforcements_Free(struct Game *sota) {
         tnecs_entity temp_unit_ent =  DARR_POP(sota->map_enemies);
 
         struct Unit *unit = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
+
         if (unit) {
-            Unit_Free(unit);
+            b32 isPC = (unit->_id > UNIT_ID_PC_START) && (unit->_id < UNIT_ID_PC_END);
+            /* Only_Game_Party_Free frees PC units */
+            SDL_Log("unit->_id %d", unit->_id);
+            // getchar();
+
+            if (!isPC) {
+                Unit_Free(unit);
+                SDL_assert(unit->grown_stats == NULL);
+            }
         }
 
         struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Sprite);
         if (sprite) {
             Sprite_Free(sprite);
         }
+
+        tnecs_entity_destroy(sota->world, temp_unit_ent);
     }
 
     if (sota->map_enemies != NULL) {
