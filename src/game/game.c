@@ -730,7 +730,7 @@ void _Game_loadJSON(struct Game *sota, s8  filename) {
     }
 
     /* - Loading party units json - */
-    // sota->party.units            = sota->party;
+    // sota->party.json_units            = sota->party;
     // sota->party.party_id_stack   = sota->party_id_stack;
     Party_Load(&sota->party, sota->weapons_dtab, sota->items_dtab);
     Party_Size(&sota->party);

@@ -807,22 +807,25 @@ extern struct KeyboardInputMap KeyboardInputMap_default;
 
 
 /* --- Party --- */
-/* Just for Json loading */
+/* Just for JSON loading */
 struct Party {
     s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
     u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
 
     s8   folder;
-    s8  *names;
-    s8  *filenames;
 
+    /* Json read values */
+    s8              *json_filenames;
+    s8              *json_names;
+    Unit            *json_units;
+    i16             *json_ids;
+
+    /* Entities created from json_units */
     /* Always in same order -> UNIT_ID_... */
-    Unit            units   [SOTA_MAX_PARTY_SIZE];
-    i16             ids     [SOTA_MAX_PARTY_SIZE];
-    tnecs_entity    entities[SOTA_MAX_PARTY_SIZE];
+    tnecs_entity    entities        [SOTA_MAX_PARTY_SIZE];
 
     /* Id stack for units currently in party*/
-    i16             *id_stack;
+    i16            *id_stack;
 
     i32 size;
 };

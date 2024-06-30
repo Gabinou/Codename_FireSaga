@@ -71,7 +71,7 @@ void Game_Gameplay_Start(struct Game *sota, i32 state, i32 substate) {
         struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
         struct DeploymentMenu *dm = mc->data;
         SDL_assert(dm->_party_size > 0);
-        DeploymentMenu_Party_Set(dm, sota->party.units, sota->party.id_stack, sota->party.size);
+        DeploymentMenu_Party_Set(dm, sota->party.json_units, sota->party.id_stack, sota->party.size);
 
         Game_cursorFocus_onMenu(sota);
 

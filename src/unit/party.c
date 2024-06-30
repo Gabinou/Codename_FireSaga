@@ -8,8 +8,8 @@ struct Party Party_default =  {
     .size           = 0,
     .names          = NULL,
     .filenames      = NULL,
-    .ids            = {0},
-    .units          = {0},
+    // .ids            = {0},
+    .json_units     = {0},
     .entities       = {0},
     .id_stack       = NULL,
 };
@@ -43,13 +43,13 @@ void Party_Reset(struct Party *party) {
             s8_free(&party->filenames[i]);
         DARR_NUM(party->filenames) = 0;
     }
-    memset(party->units, 0, sizeof(*party->units) * SOTA_MAX_PARTY_SIZE);
+    memset(party->json_units, 0, sizeof(*party->json_units) * SOTA_MAX_PARTY_SIZE);
 }
 
 /* --- Utilities --- */
 i32 Party_Size(struct Party *ps)  {
     SDL_assert(ps                   != NULL);
-    ps->size = _Party_Size(ps->units, ps->id_stack);
+    ps->size = _Party_Size(ps->json_units, ps->id_stack);
     return (ps->size);
 }
 
@@ -70,11 +70,10 @@ void Party_Folder(struct Party *party, char *folder) {
 
 void Party_Ids2Filenames(struct Party *party) {
     SDL_assert(party != NULL);
-    SDL_assert(party->ids);
     SDL_assert(party->filenames);
-    SDL_assert(party->folder.data != NULL);
-    SDL_assert(global_unitOrders != NULL);
-    SDL_assert(global_unitNames != NULL);
+    SDL_assert(party->folder.data   != NULL);
+    SDL_assert(global_unitOrders    != NULL);
+    SDL_assert(global_unitNames     != NULL);
 
     for (int i = 0; i < DARR_NUM(party->ids); i++) {
         s8 filename     = s8_mut(party->folder.data);
@@ -133,12 +132,12 @@ void _Party_Load(struct Unit *party, struct dtab *weapons_dtab,
 void Party_Load(struct Party *party,
                 struct dtab *wdtab, struct dtab *idtab) {
     /* Load units in party)_struct->party, also add dtabs */
-    struct Unit *units = party->units;
+    struct Unit *units = party->json_units;
     SDL_assert(party != NULL);
     s8 *filenames = party->filenames;
     SDL_assert(filenames != NULL);
 
-    _Party_Load(party->units, wdtab, idtab, filenames, DARR_NUM(filenames));
+    _Party_Load(party->json_units, wdtab, idtab, filenames, DARR_NUM(filenames));
 }
 
 void Party_readJSON(void *input, cJSON *jparty) {
@@ -152,8 +151,8 @@ void Party_readJSON(void *input, cJSON *jparty) {
     Party_Free(party);
     party->folder = folder;
 
-    party->names     = DARR_INIT(party->names, s8, 8);
-    party->filenames = DARR_INIT(party->filenames, s8, 8);
+    party->names     = DARR_INIT(party->names,      s8, SOTA_MAX_PARTY_SIZE);
+    party->filenames = DARR_INIT(party->filenames,  s8, SOTA_MAX_PARTY_SIZE);
 
     // SDL_Log("-- Get json objects --");
     cJSON *jids         = cJSON_GetObjectItem(jparty, "ids");

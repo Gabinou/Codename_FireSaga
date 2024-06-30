@@ -87,14 +87,14 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
 /* --- Party utilities --- */
 void Game_Party_Clear(struct Game *sota) {
     for (size_t i = 0; i < SOTA_MAX_PARTY_SIZE; i++)
-        sota->party.units[i] = Unit_default;
+        sota->party.json_units[i] = Unit_default;
 }
 
 void Game_Party_Unload(struct Game *sota, i16 *to_unload_ids, size_t unload_num) {
     for (size_t i = 0; i < unload_num; i++) {
         for (size_t j = 0; j < SOTA_MAX_PARTY_SIZE; j++) {
-            if (sota->party.units[j]._id == to_unload_ids[i])
-                sota->party.units[j] = Unit_default;
+            if (sota->party.json_units[j]._id == to_unload_ids[i])
+                sota->party.json_units[j] = Unit_default;
         }
     }
 }
@@ -107,7 +107,7 @@ void Game_Loaded_Units_Free(struct Game *sota) {
 
 void Game_Party_Free(struct Game *sota) {
     /* -- Free unit struct read from JSON files in party array -- */
-    struct Unit     *units      = sota->party.units;
+    struct Unit     *units      = sota->party.json_units;
     tnecs_entity    *entities   = sota->party.entities;
     for (size_t j = 0; j < SOTA_MAX_PARTY_SIZE; j++) {
         // Skip if party unit was never read
@@ -176,13 +176,13 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     // SDL_Log("-- loading unit --");
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
     SDL_assert(unit != NULL);
-    SDL_assert(sota->party.units[unit_id]._id != 0);
-    memcpy(unit, &sota->party.units[unit_id], sizeof(struct Unit));
+    SDL_assert(sota->party.json_units[unit_id]._id != 0);
+    memcpy(unit, &sota->party.json_units[unit_id], sizeof(struct Unit));
 
     // Unit_Allocs(unit);
 
-    SDL_assert((sota->party.units[unit_id].handedness > UNIT_HAND_NULL)
-               && (sota->party.units[unit_id].handedness < UNIT_HAND_END));
+    SDL_assert((sota->party.json_units[unit_id].handedness > UNIT_HAND_NULL)
+               && (sota->party.json_units[unit_id].handedness < UNIT_HAND_END));
     SDL_assert((unit->handedness > UNIT_HAND_NULL) && (unit->handedness < UNIT_HAND_END));
 
     Unit_setid(unit, unit_id);
