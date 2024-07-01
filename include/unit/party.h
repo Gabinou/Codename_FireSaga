@@ -11,6 +11,9 @@ void Party_Free( struct Party *party);
 void Party_Init( struct Party *party);
 void Party_Reset(struct Party *party);
 
+/* --- Order --- */
+int Party_Unit_Order(struct Party *party, i16 id);
+
 /* --- Utilities --- */
 void Party_Folder(          struct Party *ps, char *folder);
 void Party_Ids2Filenames(   struct Party *ps);

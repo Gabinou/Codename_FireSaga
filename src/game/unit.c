@@ -138,6 +138,8 @@ void Game_Party_Free(struct Game *sota) {
 
 tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
                                       struct Point in_pos) {
+    SDL_assert((unit_id > UNIT_ID_START) && (unit_id < UNIT_ID_END));
+
     /* Create Unit entity from previously loaded party unit. */
     tnecs_world *world = sota->world;
     tnecs_entity unit_ent;
@@ -181,8 +183,11 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     // SDL_Log("-- loading unit --");
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
     SDL_assert(unit != NULL);
-    SDL_assert(sota->party.json_units[unit_id]._id != 0);
-    memcpy(unit, &sota->party.json_units[unit_id], sizeof(struct Unit));
+    int order = Party_Unit_Order(&sota->party, unit_id);
+    SDL_assert(order >= 0 && order < SOTA_MAX_PARTY_SIZE);
+    SDL_assert(sota->party.json_units[order]._id == unit_id);
+    SDL_assert(sota->party.json_units[order]._id != 0);
+    memcpy(unit, &sota->party.json_units[order], sizeof(struct Unit));
 
     // Unit_Allocs(unit);
 

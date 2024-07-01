@@ -146,7 +146,7 @@ void Party_Names2Filenames(struct Party *party) {
 }
 
 /* --- JSONIO --- */
-void _Party_Load(struct Unit *party, struct dtab *weapons_dtab,
+void _Party_Load(struct Unit *json_units, struct dtab *weapons_dtab,
                  struct dtab *items_dtab, s8 *filenames, size_t load_num) {
     struct Unit temp_unit;
     for (size_t i = 0; i < load_num; i++) {
@@ -165,8 +165,8 @@ void _Party_Load(struct Unit *party, struct dtab *weapons_dtab,
 
         SDL_assert(temp_unit._id > UNIT_ID_PC_START);
         SDL_assert(temp_unit._id < UNIT_ID_PC_END);
-        DARR_PUT(party, temp_unit);
 
+        DARR_PUT(json_units, temp_unit);
     }
 }
 
@@ -178,6 +178,17 @@ void Party_Load(struct Party *party,
     s8 *filenames = party->json_filenames;
     SDL_assert(filenames != NULL);
     _Party_Load(party->json_units, wdtab, idtab, filenames, DARR_NUM(filenames));
+}
+
+int Party_Unit_Order(struct Party *party, i16 id) {
+    i16 out = -1;
+    for (int i = 0; i < DARR_NUM(party->json_units); i++) {
+        if (party->json_units[i]._id == id) {
+            out = i;
+            break;
+        }
+    }
+    return (out);
 }
 
 void Party_readJSON(void *input, cJSON *jparty) {

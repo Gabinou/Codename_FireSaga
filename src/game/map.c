@@ -127,7 +127,7 @@ void Game_debugMap_Load(struct Game *sota) {
     /* - Making unit read into entities - */
     for (int i = 0; i < SOTA_MAX_PARTY_SIZE; ++i) {
         int id = sota->party.json_units[i]._id;
-        if ((id > UNIT_ID_PC_START) && (id > UNIT_ID_PC_END))
+        if ((id <= UNIT_ID_PC_START) || (id >= UNIT_ID_PC_END))
             continue;
 
         if (sota->party.entities[id] > TNECS_NULL)
@@ -142,7 +142,7 @@ void Game_debugMap_Load(struct Game *sota) {
 
 /* --- Reinforcements --- */
 void Game_Map_Reinforcements_Free(struct Game *sota) {
-    SDL_Log("Game_Map_Reinforcements_Free");
+
     SDL_assert(sota != NULL);
     if (sota->map_enemies == NULL) {
         SDL_Log("Map enemies uninitialized");
