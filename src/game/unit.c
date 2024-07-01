@@ -248,7 +248,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     SDL_assert(sprite != NULL);
     memcpy(sprite, &Sprite_default, sizeof(Sprite_default));
     Sprite_Map_Unit_Load(sprite, unit, sota->renderer);
-    sprite->visible = true;
+    sprite->visible = false;
     sprite->flip = SDL_FLIP_HORIZONTAL;
 
     SDL_assert(sprite->spritesheet != NULL);
@@ -260,7 +260,6 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     Sprite_defaultShaders_Load(sprite);
 
     // SDL_Log("-- checks --");
-    sprite->visible = true;
     SDL_assert(typeflag_id1 == typeflag_id2);
     size_t current_num = world->num_entities_bytype[typeflag_id1];
     SDL_assert(world->entities_bytype[typeflag_id1][current_num - 1] == unit_ent);
@@ -288,7 +287,11 @@ void Game_putPConMap(struct Game    *sota,   i16    *unit_ids,
         SDL_assert(temp->name.data  != NULL);
 
         SDL_assert(sota->map->world == sota->world);
-        Map_Unit_Put(sota->map,  posarr[i].x, posarr[i].y, unit_ent);
+        Map_Unit_Put(sota->map, posarr[i].x, posarr[i].y, unit_ent);
+
+        struct Position *pos = TNECS_GET_COMPONENT(sota->world, unit_ent, Position);
+        SDL_assert(pos->tilemap_pos.x == posarr[i].x);
+        SDL_assert(pos->tilemap_pos.y == posarr[i].y);
     }
 }
 
