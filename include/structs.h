@@ -817,7 +817,6 @@ struct Party {
     /* Json read values in order of read */
     s8              *json_filenames;
     s8              *json_names;
-    Unit            *json_units;
     i16             *json_ids;
 
     /* Entities created from json_units */

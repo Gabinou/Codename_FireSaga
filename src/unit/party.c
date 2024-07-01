@@ -3,14 +3,13 @@
 
 struct Party Party_default =  {
     .json_element   = JSON_PARTY,
+    .size           = 0,
     .json_filename  = {0},
     .folder         = {0},
-    .size           = 0,
+    .entities       = {0},
     .json_names     = NULL,
     .json_filenames = NULL,
     .json_ids       = NULL,
-    .json_units     = NULL,
-    .entities       = {0},
     .id_stack       = NULL,
 };
 
@@ -32,27 +31,14 @@ void Party_Free(struct Party *party) {
         party->json_filenames = NULL;
     }
 
-    if (party->json_units != NULL) {
-        for (int i = 0; i < DARR_NUM(party->json_units); i++) {
-            if (party->json_units[i]._id > UNIT_ID_NULL) {
-                Unit_Free(&party->json_units[i]);
-            }
-        }
-
-        DARR_FREE(party->json_units);
-        party->json_filenames = NULL;
+    if (party->json_ids != NULL) {
+        DARR_FREE(party->json_ids);
+        party->json_ids = NULL;
     }
 
     if (party->id_stack != NULL) {
         DARR_FREE(party->id_stack);
         party->id_stack = NULL;
-    }
-
-    if (party->json_filenames != NULL) {
-        for (int i = 0; i < DARR_NUM(party->json_filenames); i++)
-            s8_free(&party->json_filenames[i]);
-        DARR_FREE(party->json_filenames);
-        party->json_filenames = NULL;
     }
 
     s8_free(&party->folder);
@@ -61,14 +47,12 @@ void Party_Free(struct Party *party) {
 void Party_Init( struct Party *party) {
     SDL_assert(party->json_names        == NULL);
     SDL_assert(party->json_filenames    == NULL);
-    SDL_assert(party->json_units        == NULL);
     SDL_assert(party->json_ids          == NULL);
     SDL_assert(party->id_stack          == NULL);
-    party->json_names       = DARR_INIT(party->json_names,      s8,     SOTA_MAX_PARTY_SIZE);
-    party->json_filenames   = DARR_INIT(party->json_filenames,  s8,     SOTA_MAX_PARTY_SIZE);
-    party->json_units       = DARR_INIT(party->json_units,      Unit,   SOTA_MAX_PARTY_SIZE);
     party->json_ids         = DARR_INIT(party->json_ids,        i16,    SOTA_MAX_PARTY_SIZE);
     party->id_stack         = DARR_INIT(party->id_stack,        i16,    SOTA_MAX_PARTY_SIZE);
+    party->json_names       = DARR_INIT(party->json_names,      s8,     SOTA_MAX_PARTY_SIZE);
+    party->json_filenames   = DARR_INIT(party->json_filenames,  s8,     SOTA_MAX_PARTY_SIZE);
 }
 
 void Party_Reset(struct Party *party) {
@@ -78,7 +62,6 @@ void Party_Reset(struct Party *party) {
             s8_free(&party->json_filenames[i]);
         DARR_NUM(party->json_filenames) = 0;
     }
-    memset(party->json_units, 0, sizeof(*party->json_units) * SOTA_MAX_PARTY_SIZE);
 }
 
 /* --- Utilities --- */
@@ -149,7 +132,7 @@ void Party_Names2Filenames(struct Party *party) {
 }
 
 /* --- JSONIO --- */
-void _Party_Load(struct Unit *json_units, struct dtab *weapons_dtab,
+void _Party_Load(tnecs_entity *entities, struct dtab *weapons_dtab,
                  struct dtab *items_dtab, s8 *filenames, size_t load_num) {
     struct Unit temp_unit;
     for (size_t i = 0; i < load_num; i++) {
@@ -169,38 +152,24 @@ void _Party_Load(struct Unit *json_units, struct dtab *weapons_dtab,
         SDL_assert(temp_unit._id > UNIT_ID_PC_START);
         SDL_assert(temp_unit._id < UNIT_ID_PC_END);
 
-        // TODO: get rid of json_units, just create entity directly.
-        // party should be entities!
-        DARR_PUT(json_units, temp_unit);
+        struct Point pos = {0, 0};
+        entities[temp_unit._id] = Game_Party_Entity_Create(sota, temp_unit._id, pos, &temp_unit);
     }
 }
 
-void Party_Load(struct Party *party,
+void Party_Load(struct Party *party, struct Game *sota,
                 struct dtab *wdtab, struct dtab *idtab) {
     /* Load units in party)_struct->party, also add dtabs */
-    struct Unit *units = party->json_units;
     SDL_assert(party != NULL);
     s8 *filenames = party->json_filenames;
     SDL_assert(filenames != NULL);
-    _Party_Load(party->json_units, wdtab, idtab, filenames, DARR_NUM(filenames));
-}
-
-int Party_Unit_Order(struct Party *party, i16 id) {
-    i16 out = -1;
-    for (int i = 0; i < DARR_NUM(party->json_units); i++) {
-        if (party->json_units[i]._id == id) {
-            out = i;
-            break;
-        }
-    }
-    return (out);
+    _Party_Load(party->entities, wdtab, idtab, filenames, DARR_NUM(filenames));
 }
 
 void Party_readJSON(void *input, cJSON *jparty) {
     struct Party *party = (struct Party *)input;
     SDL_assert(party                    != NULL);
     SDL_assert(party->json_ids          != NULL);
-    SDL_assert(party->json_units        != NULL);
     SDL_assert(party->json_names        != NULL);
     SDL_assert(party->json_filenames    != NULL);
 
@@ -253,7 +222,6 @@ void Party_writeJSON(void *input, cJSON *jparty) {
     /* --- Write file with list of units --- */
     struct Party *party = (struct Party *)input;
     SDL_assert(party != NULL);
-    SDL_assert(party->json_units != NULL);
 
     cJSON *jfilenames       = cJSON_CreateArray();
 
@@ -270,5 +238,4 @@ void Party_Units_writeJSON(void *input, cJSON *jparty) {
     /* --- Each individual unit as a separate json file --- */
     struct Party *party = (struct Party *)input;
     SDL_assert(party != NULL);
-    SDL_assert(party->json_units != NULL);
 }

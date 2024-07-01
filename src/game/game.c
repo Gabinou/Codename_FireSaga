@@ -727,19 +727,6 @@ void _Game_loadJSON(struct Game *sota, s8  filename) {
     Party_Size(&sota->party);
     SDL_assert(sota->party.size > 0);
 
-    /* - Making unit read into entities - */
-    for (int i = 0; i < SOTA_MAX_PARTY_SIZE; ++i) {
-        int id = sota->party.json_units[i]._id;
-        if ((id > UNIT_ID_PC_START) && (id > UNIT_ID_PC_END))
-            continue;
-
-        if (sota->party.entities[id] > TNECS_NULL)
-            continue;
-
-        struct Point pos = {0, 0};
-        Game_Party_Entity_Create(sota, id, pos);
-    }
-
     /* - Free - */
     cJSON_Delete(json);
 }

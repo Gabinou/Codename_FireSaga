@@ -109,7 +109,6 @@ void Game_debugMap_Load(struct Game *sota) {
     SDL_assert(sota->party.json_names       != NULL);
     SDL_assert(sota->party.json_filenames   != NULL);
     SDL_assert(sota->party.json_ids         != NULL);
-    SDL_assert(sota->party.json_units       != NULL);
     Game_Party_Clear(sota);
 
     /* - Reading party json - */
@@ -123,19 +122,6 @@ void Game_debugMap_Load(struct Game *sota) {
     /* - Loading party units json - */
     Party_Load(&sota->party, sota->weapons_dtab, sota->items_dtab);
     Party_Size(&sota->party);
-
-    /* - Making unit read into entities - */
-    for (int i = 0; i < SOTA_MAX_PARTY_SIZE; ++i) {
-        int id = sota->party.json_units[i]._id;
-        if ((id <= UNIT_ID_PC_START) || (id >= UNIT_ID_PC_END))
-            continue;
-
-        if (sota->party.entities[id] > TNECS_NULL)
-            continue;
-
-        struct Point pos = {0, 0};
-        Game_Party_Entity_Create(sota, id, pos);
-    }
 
     SDL_assert(sota->party.size > 0);
 }

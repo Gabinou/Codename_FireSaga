@@ -12,7 +12,7 @@ void Party_Init( struct Party *party);
 void Party_Reset(struct Party *party);
 
 /* --- Order --- */
-int Party_Unit_Order(struct Party *party, i16 id);
+// int Party_Unit_Order(struct Party *party, i16 id);
 
 /* --- Utilities --- */
 void Party_Folder(          struct Party *ps, char *folder);
@@ -24,8 +24,8 @@ void Party_ID_Stack(struct Party *party);
 
 /* --- JSONIO --- */
 /* -- Load party units from party structs -- */
-void Party_Load(struct Party *ps, struct dtab  *wdtab, struct dtab *idtab);
-void _Party_Load(struct Unit *party, struct dtab *wdtab, struct dtab *idtab,
+void Party_Load(struct Party *party, struct Game *sota, struct dtab *wdtab, struct dtab *idtab);
+void _Party_Load(struct Unit *party, struct Game *sota, struct dtab *wdtab, struct dtab *idtab,
                  s8 *farr, size_t load_num);
 
 /* -- Load party struct -- */
