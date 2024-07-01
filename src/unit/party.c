@@ -84,23 +84,16 @@ void Party_Reset(struct Party *party) {
 /* --- Utilities --- */
 i32 Party_Size(struct Party *ps)  {
     SDL_assert(ps                   != NULL);
-    ps->size = _Party_Size(ps->json_units, ps->id_stack);
-    return (ps->size);
-}
-
-i32 _Party_Size(struct Unit *units, i16 *id_stack)  {
-    SDL_assert(units    != NULL);
-    SDL_assert(id_stack != NULL);
-    SDL_assert(DARR_LEN(id_stack)   == SOTA_MAX_PARTY_SIZE);
-    SDL_assert(DARR_LEN(units)      == SOTA_MAX_PARTY_SIZE);
-
-    i32 num = 0;
-    for (size_t i = 0; i < DARR_NUM(units); i++) {
-        if (units[i]._id > UNIT_ID_PC_START && units[i]._id < UNIT_ID_PC_END) {
-            id_stack[num++] = units[i]._id;
-        }
+    ps->size = 0;
+    for (size_t i = UNIT_ID_START + 1; i < SOTA_MAX_PARTY_SIZE; i++) {
+        int order = Party_Unit_Order(ps, i);
+        b32 unit_json_valid = (order > UNIT_ID_START) && (order < UNIT_ID_END);
+        b32 valid = ps->entities[i] > TNECS_NULL;
+        if (unit_json_valid || valid)
+            ps->size++;
     }
-    return (num);
+    SDL_Log("ps->size %d", ps->size);
+    return (ps->size);
 }
 
 void Party_Folder(struct Party *party, char *folder) {
@@ -166,6 +159,8 @@ void _Party_Load(struct Unit *json_units, struct dtab *weapons_dtab,
         SDL_assert(temp_unit._id > UNIT_ID_PC_START);
         SDL_assert(temp_unit._id < UNIT_ID_PC_END);
 
+        // TODO: get rid of json_units, just create entity directly.
+        // party should be entities!
         DARR_PUT(json_units, temp_unit);
     }
 }

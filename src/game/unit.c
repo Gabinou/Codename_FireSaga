@@ -114,25 +114,25 @@ void Game_Party_Free(struct Game *sota) {
     /* -- Free unit struct read from JSON files in party array -- */
     struct Unit     *units      = sota->party.json_units;
     tnecs_entity    *entities   = sota->party.entities;
-    for (size_t j = 0; j < SOTA_MAX_PARTY_SIZE; j++) {
+    for (size_t j = UNIT_ID_START + 1; j < SOTA_MAX_PARTY_SIZE; j++) {
         // Skip if party unit was never read
         // -| Party unit did not become component for entity in units_loaded
-        if (units[j]._id == UNIT_ID_NULL)
+        if ((units[j]._id <= UNIT_ID_START) || (units[j]._id >= UNIT_ID_END))
             continue;
 
-        SDL_assert((units[j]._id > UNIT_ID_START) && (units[j]._id < UNIT_ID_END));
+        int order = Party_Unit_Order(&sota->party, j);
 
         if (entities[j] > TNECS_NULL) {
             // Free loaded unit component from and clear party entry
             Unit *unit = TNECS_GET_COMPONENT(sota->world, entities[j], Unit);
             Unit_Free(unit);
             SDL_assert(unit->_id == UNIT_ID_NULL);
-        } else {
+        } else if (units[order]._id != UNIT_ID_NULL) {
             // Free unit entry in party and clear party entry
-            Unit_Free(&units[j]);
+            Unit_Free(&units[order]);
+            units[order] = Unit_default;
         }
-        units[j] = Unit_default;
-        SDL_assert(units[j]._id == UNIT_ID_NULL);
+        SDL_assert(units[order]._id == UNIT_ID_NULL);
     }
 }
 
@@ -188,6 +188,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     SDL_assert(sota->party.json_units[order]._id == unit_id);
     SDL_assert(sota->party.json_units[order]._id != 0);
     memcpy(unit, &sota->party.json_units[order], sizeof(struct Unit));
+    sota->party.json_units[order] = Unit_default;
 
     // Unit_Allocs(unit);
 
