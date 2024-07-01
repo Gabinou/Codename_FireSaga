@@ -92,9 +92,19 @@ i32 Party_Size(struct Party *ps)  {
         if (unit_json_valid || valid)
             ps->size++;
     }
-    SDL_Log("ps->size %d", ps->size);
+
     return (ps->size);
 }
+
+void Party_ID_Stack(struct Party *party)  {
+    DARR_NUM(party->id_stack) = 0;
+    for (size_t i = UNIT_ID_START + 1; i < SOTA_MAX_PARTY_SIZE; i++) {
+        if (party->entities[i] > TNECS_NULL) {
+            DARR_PUT(party->id_stack, i);
+        }
+    }
+}
+
 
 void Party_Folder(struct Party *party, char *folder) {
     s8_free(&party->folder);

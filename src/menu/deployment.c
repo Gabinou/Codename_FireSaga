@@ -885,6 +885,7 @@ void DeploymentMenu_Party_Set(DeploymentMenu *dm, struct Party *party) {
         dm->_selected = NULL;
     }
     dm->party           = party;
+    Party_ID_Stack(party);
     dm->_party_size     = Party_Size(party);
     SDL_assert(dm->_party_size > 0);
     SDL_assert(dm->_party_size < SOTA_MAX_PARTY_SIZE);

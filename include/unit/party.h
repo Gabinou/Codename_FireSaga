@@ -20,6 +20,7 @@ void Party_Ids2Filenames(   struct Party *ps);
 void Party_Names2Filenames( struct Party *ps);
 i32 Party_Size( struct Party *ps);
 i32 _Party_Size(struct Unit *party, i16 *id);
+void Party_ID_Stack(struct Party *party);
 
 /* --- JSONIO --- */
 /* -- Load party units from party structs -- */
