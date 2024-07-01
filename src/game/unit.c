@@ -223,6 +223,8 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     *map_hp_bar = MapHPBar_default;
     map_hp_bar->unit_ent = unit_ent;
     map_hp_bar->len = sota->settings.tilesize[0];
+    map_hp_bar->update      = false;
+    map_hp_bar->visible     = false;
 
     // SDL_Log("-- loading position --");
     struct Position *pos;
