@@ -404,9 +404,8 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
     /* [1]: http://www.redblobgames.com/pathfinding/a-star/introduction.html */
     /* -- Checks -- */
     SDL_assert((start.x != end.x) || (start.y != end.y));
-    if (costmap[start.y * col_len + start.x] >= MOVEMAP_MOVEABLEMIN) {
-        // TODO: fix?
-        // SDL_LogError(SOTA_LOG_AI, "Pathfinding: start position not moveable.");
+    if (costmap[start.y * col_len + start.x] < MOVEMAP_MOVEABLEMIN) {
+        SDL_LogError(SOTA_LOG_AI, "Pathfinding: start position not moveable.");
     }
 
     /* Alloc variables */
