@@ -45,9 +45,12 @@ void Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
         TNECS_ADD_COMPONENT(map->world, entity, MapHPBar);
         struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(map->world, entity, MapHPBar);
         *map_hp_bar = MapHPBar_default;
-        map_hp_bar->unit_ent = entity;
-        map_hp_bar->len = map->tilesize[0];
     }
+    struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(map->world, entity, MapHPBar);
+    map_hp_bar->unit_ent    = entity;
+    map_hp_bar->len         = map->tilesize[0];
+    map_hp_bar->update      = true;
+    map_hp_bar->visible     = true;
 
     /* -- Updating unit pos -- */
     struct Unit     *temp_unit   = TNECS_GET_COMPONENT(map->world, entity, Unit);
