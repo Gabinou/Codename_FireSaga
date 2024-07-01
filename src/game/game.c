@@ -701,7 +701,6 @@ void _Game_loadJSON(struct Game *sota, s8  filename) {
     //     convoy.setWeapons(&weapons);
 
     /* --- Party --- */
-    Game_Party_Clear(sota);
     cJSON *jparty = cJSON_GetObjectItem(json, "Party");
 
     /* - Party filename may or may not be the current file - */
@@ -723,7 +722,7 @@ void _Game_loadJSON(struct Game *sota, s8  filename) {
     }
 
     /* - Loading party units json - */
-    Party_Load(&sota->party, sota->weapons_dtab, sota->items_dtab);
+    Party_Load(&sota->party, sota, sota->weapons_dtab, sota->items_dtab);
     Party_Size(&sota->party);
     SDL_assert(sota->party.size > 0);
 

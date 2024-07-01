@@ -97,11 +97,11 @@ void Game_Party_Free(struct Game *sota) {
         // Skip if party unit was never read
         // -| Party unit did not become component for entity in units_loaded
         if (entities[j] <= TNECS_NULL) {
-        return;
+            return;
         }
         // Free loaded unit component from and clear party entry
         Unit *unit = TNECS_GET_COMPONENT(sota->world, entities[j], Unit);
-        SDL_assert(unit != NULL)
+        SDL_assert(unit != NULL);
         Unit_Free(unit);
     }
 }
@@ -245,7 +245,7 @@ void Game_putPConMap(struct Game    *sota,   i16    *unit_ids,
         SDL_assert(Unit_ID_Valid(unit_ids[i]));
         size_t order = *(u16 *)DTAB_GET(global_unitOrders, unit_ids[i]);
         if (sota->party.entities[unit_ids[i]] <= TNECS_NULL)
-            Game_Party_Entity_Create(sota, unit_ids[i], posarr[i]);
+            Game_Party_Entity_Create(sota, unit_ids[i], posarr[i], NULL);
         tnecs_entity unit_ent = sota->party.entities[unit_ids[i]];
 
         SDL_assert(unit_ent > TNECS_NULL);

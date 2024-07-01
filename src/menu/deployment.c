@@ -364,7 +364,6 @@ static void _DeploymentMenu_Draw_Stats_P1(DeploymentMenu *dm, SDL_Renderer *rend
         SDL_assert(dm->party != NULL);
         SDL_assert(i + dm->top_unit < DARR_NUM(dm->party->id_stack));
         unit_id = dm->party->id_stack[i + dm->top_unit];
-        SDL_Log("unit_id %d", unit_id);
         SDL_assert((unit_id > UNIT_ID_PC_START) && (unit_id < UNIT_ID_PC_END));
         tnecs_entity ent = dm->party->entities[unit_id];
         SDL_assert(ent > TNECS_NULL);

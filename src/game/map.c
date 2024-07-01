@@ -109,7 +109,6 @@ void Game_debugMap_Load(struct Game *sota) {
     SDL_assert(sota->party.json_names       != NULL);
     SDL_assert(sota->party.json_filenames   != NULL);
     SDL_assert(sota->party.json_ids         != NULL);
-    Game_Party_Clear(sota);
 
     /* - Reading party json - */
     SDL_assert(sota->map->party_filename.data != NULL);
@@ -120,7 +119,7 @@ void Game_debugMap_Load(struct Game *sota) {
     SDL_assert(sota->party.json_filenames != NULL);
 
     /* - Loading party units json - */
-    Party_Load(&sota->party, sota->weapons_dtab, sota->items_dtab);
+    Party_Load(&sota->party, sota, sota->weapons_dtab, sota->items_dtab);
     Party_Size(&sota->party);
 
     SDL_assert(sota->party.size > 0);
@@ -151,9 +150,6 @@ void Game_Map_Reinforcements_Free(struct Game *sota) {
 
         if (unit) {
             b32 isPC = (unit->_id > UNIT_ID_PC_START) && (unit->_id < UNIT_ID_PC_END);
-            /* Only_Game_Party_Free frees PC units */
-            SDL_Log("unit->_id %d", unit->_id);
-            // getchar();
 
             if (!isPC) {
                 Unit_Free(unit);

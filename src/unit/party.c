@@ -69,13 +69,10 @@ i32 Party_Size(struct Party *ps)  {
     SDL_assert(ps                   != NULL);
     ps->size = 0;
     for (size_t i = UNIT_ID_START + 1; i < SOTA_MAX_PARTY_SIZE; i++) {
-        int order = Party_Unit_Order(ps, i);
-        b32 unit_json_valid = (order > UNIT_ID_START) && (order < UNIT_ID_END);
-        b32 valid = ps->entities[i] > TNECS_NULL;
-        if (unit_json_valid || valid)
+        if (ps->entities[i] > TNECS_NULL) {
             ps->size++;
+        }
     }
-
     return (ps->size);
 }
 
@@ -132,7 +129,7 @@ void Party_Names2Filenames(struct Party *party) {
 }
 
 /* --- JSONIO --- */
-void _Party_Load(tnecs_entity *entities, struct dtab *weapons_dtab,
+void _Party_Load(tnecs_entity *entities, struct Game *sota, struct dtab *weapons_dtab,
                  struct dtab *items_dtab, s8 *filenames, size_t load_num) {
     struct Unit temp_unit;
     for (size_t i = 0; i < load_num; i++) {
@@ -163,7 +160,7 @@ void Party_Load(struct Party *party, struct Game *sota,
     SDL_assert(party != NULL);
     s8 *filenames = party->json_filenames;
     SDL_assert(filenames != NULL);
-    _Party_Load(party->entities, wdtab, idtab, filenames, DARR_NUM(filenames));
+    _Party_Load(party->entities, sota, wdtab, idtab, filenames, DARR_NUM(filenames));
 }
 
 void Party_readJSON(void *input, cJSON *jparty) {

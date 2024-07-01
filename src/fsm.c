@@ -962,14 +962,12 @@ void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game  *sota, tnecs_entity mover_entity,
 
     /* Actually move the cursor from cursor_move_data set by systemControl */
     // Note: always on tilemap
-    SDL_Log("previous sota->candidate %d", sota->candidate);
     int num_pos = DARR_NUM(sota->map->start_pos);
     if ((sota->cursor_move.x > 0) || (sota->cursor_move.y > 0)) {
         sota->candidate = sota->candidate >= (num_pos - 1) ? 0 : sota->candidate + 1;
     } else if ((sota->cursor_move.x < 0) || (sota->cursor_move.y < 0)) {
         sota->candidate = sota->candidate <= 0 ? num_pos - 1 : sota->candidate - 1;
     }
-    SDL_Log("next sota->candidate %d", sota->candidate);
     struct Menu *mc;
     mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
     struct DeploymentMenu *dm = mc->data;

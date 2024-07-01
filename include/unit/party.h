@@ -24,9 +24,11 @@ void Party_ID_Stack(struct Party *party);
 
 /* --- JSONIO --- */
 /* -- Load party units from party structs -- */
-void Party_Load(struct Party *party, struct Game *sota, struct dtab *wdtab, struct dtab *idtab);
-void _Party_Load(struct Unit *party, struct Game *sota, struct dtab *wdtab, struct dtab *idtab,
-                 s8 *farr, size_t load_num);
+void Party_Load(    struct Party    *party,     struct Game *sota,
+                    struct dtab     *wdtab,     struct dtab *idtab);
+void _Party_Load(   tnecs_entity *entities,     struct Game *sota,
+                    struct dtab     *wdtab,     struct dtab *idtab,
+                    s8 *farr, size_t load_num);
 
 /* -- Load party struct -- */
 void Party_readJSON(void *input, cJSON *jparty);

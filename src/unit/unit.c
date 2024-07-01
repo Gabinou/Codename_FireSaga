@@ -202,7 +202,6 @@ void Unit_Allocs(struct Unit *unit) {
 }
 
 void Unit_Free(struct Unit *unit) {
-    SDL_Log("Unit_Free %d", unit->_id);
     SDL_assert(unit != NULL);
     if (unit->bonus_stack != NULL) {
         DARR_FREE(unit->bonus_stack);
