@@ -18,7 +18,6 @@ static const char *SDL_priority_prefixes[SDL_NUM_LOG_PRIORITIES] = {
 };
 
 void Log_Init(void) {
-    printf(__func__);
     /* -- Clear logfile -- */
     fclose(fopen(LOGFILE, "w"));
 

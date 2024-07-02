@@ -104,7 +104,7 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
 
     /* -- If no more NPCs, end NPC turn. -- */
     if (sota->ai_state.npcs && (DARR_NUM(sota->ai_state.npcs) < 1)) {
-        SDL_Log("AI Turn Finished");
+        // SDL_Log("AI Turn Finished");
         AI_State_Turn_Finish(&sota->ai_state);
         Event_Emit(__func__, SDL_USEREVENT, event_Turn_End, NULL, NULL);
         return;

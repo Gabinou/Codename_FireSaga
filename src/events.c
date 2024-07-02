@@ -728,8 +728,8 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     } else {
         sota->music = sota->map->music_enemy;
     }
-    if (sota->music != NULL);
-    Game_Music_Play(sota);
+    if (sota->music != NULL)
+        Game_Music_Play(sota);
 
     /* -- Play Turn Transition -- */
 #ifndef DEBUG_NO_SOUNDFX
