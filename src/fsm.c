@@ -854,10 +854,10 @@ void fsm_eCrsMvs_sGmpMap_ssMapUnitMv(struct Game *sota,
                                      tnecs_entity mover_entity, struct Point *cursor_move) {
 
     /* -- Move cursor -- */
-    tnecs_entity cursor       = sota->entity_cursor;
+    tnecs_entity cursor         = sota->entity_cursor;
     struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, cursor, Position);
-    struct Slider *cursor_sl    = TNECS_GET_COMPONENT(sota->world, cursor, Slider);
-    struct Sprite *cursor_sp    = TNECS_GET_COMPONENT(sota->world, cursor, Sprite);
+    struct Slider   *cursor_sl  = TNECS_GET_COMPONENT(sota->world, cursor, Slider);
+    struct Sprite   *cursor_sp  = TNECS_GET_COMPONENT(sota->world, cursor, Sprite);
 
     /* Always on tilemap */
     Position_Pos_Add(cursor_pos, sota->cursor_move.x, sota->cursor_move.y);
@@ -990,7 +990,6 @@ void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity mover_entit
     selected_pos = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Position);
     selected_pos->tilemap_pos.x = cursor_pos->x;
     selected_pos->tilemap_pos.y = cursor_pos->y;
-
     selected_pos->pixel_pos.x = selected_pos->tilemap_pos.x * selected_pos->scale[0];
     selected_pos->pixel_pos.y = selected_pos->tilemap_pos.y * selected_pos->scale[1];
 
