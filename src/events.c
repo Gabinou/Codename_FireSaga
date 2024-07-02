@@ -728,6 +728,7 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     } else {
         sota->music = sota->map->music_enemy;
     }
+    if (sota->music != NULL);
     Game_Music_Play(sota);
 
     /* -- Play Turn Transition -- */
@@ -1321,18 +1322,18 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
         mc->visible = false;
 
     /* - Show map combat popup - */
-    // if (sota->popups[POPUP_TYPE_MAP_COMBAT] == TNECS_NULL)
-    // Game_PopUp_Map_Combat_Create(sota);
-    // Game_PopUp_Map_Combat_Update(sota);
+    if (sota->popups[POPUP_TYPE_MAP_COMBAT] == TNECS_NULL)
+        Game_PopUp_Map_Combat_Create(sota);
+    Game_PopUp_Map_Combat_Update(sota);
 
-    // struct Unit *aggressor = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Unit);
-    // struct Unit *defendant = TNECS_GET_COMPONENT(sota->world, sota->defendant, Unit);
-    // struct PopUp *popup    = TNECS_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_MAP_COMBAT],
-    // PopUp);
-    // struct PopUp_Map_Combat *pmc = popup->data;
+    struct Unit *aggressor = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Unit);
+    struct Unit *defendant = TNECS_GET_COMPONENT(sota->world, sota->defendant, Unit);
+    struct PopUp *popup    = TNECS_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_MAP_COMBAT],
+                                                 PopUp);
+    struct PopUp_Map_Combat *pmc = popup->data;
 
-    // PopUp_Map_Combat_Units(pmc, sota, sota->aggressor, sota->defendant);
-    // popup->visible = true;
+    PopUp_Map_Combat_Units(pmc, sota, sota->aggressor, sota->defendant);
+    popup->visible = true;
     /* - Deselect weapons in LoadoutSelectMenu, if it exists - */
     mc = TNECS_GET_COMPONENT(sota->world, sota->weapon_select_menu, Menu);
     if (mc != NULL) {

@@ -809,7 +809,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         SDL_assert(mc->n9patch.scale.y > 0);
         i32 stronghand  = Unit_Hand_Strong(wsm->unit);
         if (wsm->selected[stronghand] >= 0) {
-            SDL_Log("ITEM_ARCHETYPE_WEAKHAND");
             Unit_Find_Usable(wsm->unit, ITEM_ARCHETYPE_WEAKHAND);
         }
 
@@ -835,7 +834,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
 
         /* - Check that a defendant is in range of current loadout - */
         if (DARR_NUM(sota->defendants) == 0) {
-            SDL_Log("Invalid Loadout: no defendant in range");
             LoadoutSelectMenu_Deselect(wsm);
         } else {
             Event_Emit(__func__, SDL_USEREVENT, event_Loadout_Selected, data1_entity, data2_entity);
@@ -880,7 +878,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
         /* TODO: remove the check, ssm should only have staves with patients in range */
 
         if (DARR_NUM(sota->patients) == 0) {
-            SDL_Log("Invalid Loadout: no patient in range");
             SDL_assert(false);
             // LoadoutSelectMenu_Deselect(ssm);
         } else {

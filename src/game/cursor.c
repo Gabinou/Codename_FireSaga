@@ -7,18 +7,15 @@ void Game_cursorFocus_onMap(struct Game *sota) {
 
     /* - Load square animated cursor - */
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, cursor, Sprite);
-    // SDL_assert(sprite != NULL);
-    // char *path = PATH_JOIN("..", "assets", "GUI", "Cursor", "mapcursors.png");
-    // Sprite_Load(sprite, path, sota->renderer);
+    SDL_assert(sprite != NULL);
+    char *path = PATH_JOIN("..", "assets", "GUI", "Cursor", "mapcursors.png");
+    Sprite_Load(sprite, path, sota->renderer);
     struct Spritesheet *ss = sprite->spritesheet;
 
     ss->frames[0] = sota->settings.cursor.frames;
     for (int i = 0; i < ss->frames[0]; ++i)
         ss->speeds[0][i] = sota->settings.cursor.speed;
 
-    // sprite->frames = sota->settings.cursor.frames;
-    // sprite->frames_shadow = sota->settings.cursor.frames;
-    // sprite->speed = sota->settings.cursor.speed;
     sprite->scale.x = 1;
     sprite->scale.y = 1;
 
