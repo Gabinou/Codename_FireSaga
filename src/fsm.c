@@ -1290,8 +1290,7 @@ void fsm_eAcpt_sGmpMap_ssMapNPC(struct Game *sota, tnecs_entity accepter_entity)
 /* Input_Stats */
 void fsm_eStats_ssStby(struct Game *sota, tnecs_entity accepter) {
     SDL_assert((sota->state == GAME_STATE_Gameplay_Map) ||
-               (sota->state == GAME_STATE_Preparation)
-              );
+               (sota->state == GAME_STATE_Preparation));
 
     /* Find which unit was hovered */
     SDL_assert(sota->entity_cursor);

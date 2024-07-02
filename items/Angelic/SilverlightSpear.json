@@ -51,7 +51,7 @@
 		"Stats":	{
 			"Attack":	[0, 15, 0],
 			"Protection":	[0, 0],
-			"hit":	0,
+			"hit":	50,
 			"dodge":	0,
 			"crit":	0,
 			"favor":	15,
