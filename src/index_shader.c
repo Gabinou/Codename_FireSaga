@@ -138,7 +138,6 @@ void Tilemap_Shader_Load_Tilemap_JSON(struct Tilemap_Shader *shd,  cJSON *jmap) 
 }
 
 void Tilemap_Shader_Free(struct Tilemap_Shader *shd) {
-    SDL_Log("shadowtile_pixels_lists");
     SDL_assert(shd != NULL);
     if (shd->shadowtile_pixels_lists != NULL) {
         for (size_t i = 0; i < shd->shadowtile_num; i++) {
@@ -150,12 +149,10 @@ void Tilemap_Shader_Free(struct Tilemap_Shader *shd) {
         SDL_free(shd->shadowtile_pixels_lists);
         shd->shadowtile_pixels_lists = NULL;
     }
-    SDL_Log("shadowtile_pixels_num");
     if (shd->shadowtile_pixels_num != NULL) {
         SDL_free(shd->shadowtile_pixels_num);
         shd->shadowtile_pixels_num = NULL;
     }
-    SDL_Log("shadow_tilemaps i");
     if (shd->shadow_tilemaps != NULL) {
         for (size_t i = 0; i < shd->frames; i++) {
             if (shd->shadow_tilemaps[i] != NULL) {
@@ -163,7 +160,6 @@ void Tilemap_Shader_Free(struct Tilemap_Shader *shd) {
                 shd->shadow_tilemaps[i] = NULL;
             }
         }
-        SDL_Log("shadow_tilemaps");
         DARR_FREE(shd->shadow_tilemaps);
         shd->shadow_tilemaps = NULL;
     }
@@ -177,7 +173,7 @@ static void _Tilemap_Shader_Shadow_Free( struct Tilemap_Shader *shd) {
 }
 
 void Tilemap_Shader_Alloc(struct Tilemap_Shader *shd, size_t tilenum) {
-    shd->shadowtile_num = tilenum;
+    shd->shadowtile_num             = tilenum;
     shd->shadowtile_pixels_num      = calloc(tilenum, sizeof(*shd->shadowtile_pixels_num));
     shd->shadowtile_pixels_lists    = calloc(tilenum, sizeof(*shd->shadowtile_pixels_lists));
 }

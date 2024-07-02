@@ -1142,15 +1142,18 @@ void fsm_eStart_sPrep_ssMenu_mSM(struct Game *sota, struct Menu *mc) {
 void fsm_eStart_sPrep_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
     /* --- Start battle --- */
 
+    /* -- Place units in deployment slots on map -- */
+    struct DeploymentMenu *dm = mc->data;
+    if (dm->_selected_num == 0) {
+        return;
+    }
+
     /* -- Game substate to on Map -- */
     strncpy(sota->reason, "Preparation done. March!", sizeof(sota->reason));
     if (sota->state != GAME_STATE_Gameplay_Map)
         Game_State_Set(sota, GAME_STATE_Gameplay_Map, sota->reason);
     if (sota->substate != GAME_SUBSTATE_STANDBY)
         Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
-
-    /* -- Place units in deployment slots on map -- */
-    struct DeploymentMenu *dm = mc->data;
 
     /* -- Load map -- */
     Game_PopUp_Tile_Create(sota);
