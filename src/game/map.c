@@ -270,7 +270,8 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         /* DESIGN: Reinforcements wait! */
         unit->waits = true;
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
-        unit->weapons_dtab = sota->weapons_dtab;
+        unit->weapons_dtab  = sota->weapons_dtab;
+        unit->items_dtab    = sota->items_dtab;
         s8 unit_path  = s8_mut("units"PHYSFS_SEPARATOR);
         unit_path     = s8cat(unit_path, reinf->filename);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);

@@ -1305,7 +1305,7 @@ void fsm_eStats_ssStby(struct Game *sota, tnecs_entity accepter) {
         Game_StatsMenu_Enable(sota, ontile);
     else {
         /* -- TODO: draw a map marker here, like tear ring saga -- */
-        SDL_Log("NO UNIT ON TILE");
+        // SDL_Log("NO UNIT ON TILE");
     }
 
     /* - Make popup_tile invisible - */

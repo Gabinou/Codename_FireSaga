@@ -990,7 +990,8 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
         SDL_assert(weapon->item->stats.uses > 0);
         uses_left = (weapon->item->stats.uses - invitem->used);
     } else {
-        Item_Load(unit->weapons_dtab, invitem->id);
+        SDL_assert(unit->items_dtab != NULL);
+        Item_Load(unit->items_dtab, invitem->id);
         struct Item *item = DTAB_GET(unit->items_dtab, invitem->id);
         uses_left = (item->stats.uses - invitem->used);
     }

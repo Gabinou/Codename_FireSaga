@@ -980,7 +980,6 @@ float Game_Brightness_Get(struct Game *sota) {
 /* -- Music -- */
 
 void Game_Music_Play(struct Game *sota) {
-
     if (sota->music == NULL) {
         SDL_LogWarn(SOTA_LOG_AUDIO, "Sota has no song to play.");
         return;
