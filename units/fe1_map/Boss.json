@@ -5,7 +5,7 @@
 		"Sex":	true,
 		"BaseExp":	0,
 		"Exp":	400,
-		"CurrentHP":	35,
+		"CurrentHP":35,
 		"Class":	"Corsair",
 		"Class Index":	12,
 		"Bases":	{

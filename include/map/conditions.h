@@ -45,7 +45,7 @@ struct Map_condition {
     i16    army;            /* -1 for anyone    */
     b32    boss;            /* true for boss    */
     b32    all;             /* true for rout    */
-    i16    unit;         /* -1 for anyone    */
+    i16    unit;            /* -1 for anyone    */
     // i8     unit_class;   /* -1 for anyone    */
     /* -- WHERE -- */
     // i16    col_min;    /* -1 for anywhere  */
