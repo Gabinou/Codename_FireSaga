@@ -381,12 +381,18 @@ b32 Unit_isWielding(struct Unit *unit, b32 hand) {
 b32 Unit_isdualWielding(struct Unit *unit) {
     SDL_assert(unit);
 
-    // Unit_Equipment_Print(unit);
+    /* To be dual wielding unit must: */
+    // - Wield a weapon in weakhand
+    // - Wield a weapon in stronghand
+    b32 left            = Unit_isWielding(unit, UNIT_HAND_LEFT);
+    b32 right           = Unit_isWielding(unit, UNIT_HAND_RIGHT);
 
-    b32 left   = Unit_isWielding(unit, UNIT_HAND_LEFT);
-    b32 right  = Unit_isWielding(unit, UNIT_HAND_RIGHT);
-
-    return (unit->isDualWielding = left && right && !Unit_istwoHanding(unit));
+    int eq_L = unit->_equipped[UNIT_HAND_LEFT];
+    int eq_R = unit->_equipped[UNIT_HAND_RIGHT];
+    b32 left_canWeakhand    = left  ? Weapon_canWeakhand(eq_L) : true;
+    b32 right_canWeakhand   = right ? Weapon_canWeakhand(eq_R) : true;
+    unit->isDualWielding    = (left_canWeakhand || right_canWeakhand) && !Unit_istwoHanding(unit);
+    return (unit->isDualWielding);
 }
 
 

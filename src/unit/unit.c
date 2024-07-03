@@ -664,7 +664,9 @@ i32 *Unit_computeAttack(struct Unit *unit, int distance) {
     if (Unit_isEquipped(unit, UNIT_HAND_LEFT)) {
         int id = unit->_equipped[UNIT_HAND_LEFT];
         SDL_assert(unit->_equipment[id].id > ITEM_NULL);
+        SDL_Log("L unit->_equipment[id].id %d", unit->_equipment[id].id);
         weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
+        SDL_Log("Weapon_Stat_inRange %d", Weapon_Stat_inRange(weapon, WEAPON_STAT_pATTACK, distance));
         attack_P += Weapon_Stat_inRange(weapon, WEAPON_STAT_pATTACK, distance);
         attack_M += Weapon_Stat_inRange(weapon, WEAPON_STAT_mATTACK, distance);
         attack_T += Weapon_Stat_inRange(weapon, WEAPON_STAT_tATTACK, distance);
@@ -673,7 +675,9 @@ i32 *Unit_computeAttack(struct Unit *unit, int distance) {
     if (Unit_isEquipped(unit, UNIT_HAND_RIGHT)) {
         int id = unit->_equipped[UNIT_HAND_RIGHT];
         SDL_assert(unit->_equipment[id].id > ITEM_NULL);
+        SDL_Log("R unit->_equipment[id].id %d", unit->_equipment[id].id);
         weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
+        SDL_Log("Weapon_Stat_inRange %d", Weapon_Stat_inRange(weapon, WEAPON_STAT_pATTACK, distance));
         attack_P += Weapon_Stat_inRange(weapon, WEAPON_STAT_pATTACK, distance);
         attack_M += Weapon_Stat_inRange(weapon, WEAPON_STAT_mATTACK, distance);
         attack_T += Weapon_Stat_inRange(weapon, WEAPON_STAT_tATTACK, distance);
@@ -712,12 +716,18 @@ i32 *Unit_computeAttack(struct Unit *unit, int distance) {
     }
 
     /* No attacking with only fists -> 0 attack means don't add str/mag */
-    if (attack_P > 0)
+    if (attack_P > 0) {
+        SDL_Log("Equation_Weapon_Attackvar input %d %d  %d", attack_P, effstats.str, bonus_P);
+        SDL_Log("Equation_Weapon_Attackvar %d", Equation_Weapon_Attackvar(3, attack_P, effstats.str,
+                bonus_P));
         unit->computed_stats.attack[DMG_TYPE_PHYSICAL] = Equation_Weapon_Attackvar(3, attack_P,
                                                          effstats.str, bonus_P);
-    if (attack_M > 0)
+    }
+
+    if (attack_M > 0) {
         unit->computed_stats.attack[DMG_TYPE_MAGICAL]  = Equation_Weapon_Attackvar(3, attack_M,
                                                          effstats.mag, bonus_M);
+    }
     unit->computed_stats.attack[DMG_TYPE_TRUE] = Equation_Weapon_Attackvar(2, attack_T, bonus_T);
 
     /* -- DUAL WIELDING -- */

@@ -231,7 +231,6 @@ void Weapons_All_Free(struct dtab *weapons_dtab) {
         if (DTAB_GET(weapons_dtab, i) != NULL)
             Weapon_Free(DTAB_GET(weapons_dtab, i));
     }
-
 }
 
 u16 Weapon_TypeExp(struct Weapon *weapon) {
@@ -272,6 +271,17 @@ b32 Weapon_isOffhand(u16 id) {
 
 b32 Weapon_isShield(u16 id) {
     b32 is = ((id > ITEM_ID_SHIELD_START) && (id < ITEM_ID_SHIELD_END));
+    return (is);
+}
+
+b32 Weapon_isTrinket(u16 id) {
+    b32 is = ((id > ITEM_ID_SHIELD_START) && (id < ITEM_ID_SHIELD_END));
+    return (is);
+}
+
+b32 Weapon_canWeakhand(u16 id) {
+    /* Weapon can be carried in weakhand without penalty */
+    b32 is = Weapon_isShield(id) || Weapon_isOffhand(id) || Weapon_isTrinket(id);
     return (is);
 }
 

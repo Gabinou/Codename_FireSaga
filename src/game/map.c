@@ -228,7 +228,6 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         if (sota->map->unitmap[index] != TNECS_NULL) {
             // DESIGN QUESTION. If another entity is already on the map.
             //  -> FE does not even load unit
-            // Unit_Free(unit);
             tnecs_entity_destroy(sota->world, DARR_POP(sota->map_enemies));
             continue;
         }
@@ -297,8 +296,11 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
             Unit_Equip(unit, UNIT_HAND_LEFT, UNIT_HAND_LEFT);
         }
 
-        b32 stronghand = Unit_Hand_Strong(unit);
+        Unit_effectiveStats(unit);
 
+        /* Check that reinforcement has something equipped at least in strong hand */
+        // Ensures enemy can attack
+        b32 stronghand = Unit_Hand_Strong(unit);
         SDL_assert(Unit_isEquipped(unit, stronghand));
 
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
