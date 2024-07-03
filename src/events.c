@@ -1077,8 +1077,8 @@ void receive_event_Input_ZOOM_OUT(struct Game *sota, SDL_Event *userevent) {
     struct Sprite *cursor_sprite;
     struct Sprite *mouse_sprite;
     struct Sprite *sprite_atorigin;
-    cursor_sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
-    mouse_sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_mouse, Sprite);
+    cursor_sprite   = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
+    mouse_sprite    = TNECS_GET_COMPONENT(sota->world, sota->entity_mouse, Sprite);
     SDL_assert(cursor_sprite != NULL);
     SDL_assert(mouse_sprite != NULL);
 
@@ -1150,37 +1150,68 @@ void receive_event_Unit_Seize(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
-    /* --- TODO: Start map Game over animation --- */
-    tnecs_entity game_over;
-    game_over = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, MapAnimation, Position, Text, Timer);
+    /* - Hiding menus - */
+    b32 destroy = false;
+    while (DARR_NUM(sota->menu_stack) > 0)
+        Game_menuStack_Pop(sota, destroy);
+
+    /* - Hide Cursor - */
+    struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
+    SDL_assert(sprite != NULL);
+    sprite->visible = false;
+
+    /* - Hiding popups - */
+    if (sota->popups[POPUP_TYPE_HUD_TILE] != TNECS_NULL) {
+        Game_PopUp_Tile_Hide(sota);
+    }
+    if (sota->popups[POPUP_TYPE_HUD_UNIT] != TNECS_NULL) {
+        Game_PopUp_Unit_Hide(sota);
+    }
+
+    /* - Remove unused components - */
+    for (int i = 0; i < DARR_NUM(sota->map->units_onfield); i++) {
+        tnecs_entity ent = sota->map->units_onfield[i];
+        TNECS_REMOVE_COMPONENTS(sota->world, ent, MapHPBar);
+        if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, RenderTop)) {
+            TNECS_REMOVE_COMPONENTS(sota->world, ent, RenderTop);
+        }
+
+        if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, UnitMoveAnimation)) {
+            TNECS_REMOVE_COMPONENTS(sota->world, ent, UnitMoveAnimation);
+        }
+
+        if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, Boss)) {
+            TNECS_REMOVE_COMPONENTS(sota->world, ent, Boss);
+        }
+    }
+
+    /* - Map_Free - */
+    Game_Map_Free(sota);
+
+    /* -- Creating scene to play -- */
+    sota->scene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Scene, Position,
+                                                  Text, Timer);
+
+    struct Scene *scene;
+    scene  = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
+    *scene = Scene_default;
+    scene->event = event_Quit;
 
     struct Timer *timer;
-    timer  = TNECS_GET_COMPONENT(sota->world, game_over, Timer);
+    timer  = TNECS_GET_COMPONENT(sota->world, sota->scene, Timer);
     *timer = Timer_default;
 
-    // TODO: fancy game over screen with animation?
-    struct MapAnimation *map_anim;
-    map_anim  = TNECS_GET_COMPONENT(sota->world, game_over, MapAnimation);
-    *map_anim = MapAnimation_default;
-    map_anim->time_ns = SOTA_SOUNDFX_NEXT_TURN_DURATION_ms * SOTA_us;
-    map_anim->anim = &Map_GameOver_Animate;
-
-    /* -- Change music -- */
-    // TODO: PLay game over music
-    // Game_Music_Stop(sota);
-    // sota->music = sota->map->music_friendly;
-    // Game_Music_Play(sota);
-
+    /* TODO: remove when scene can actually play */
     struct Text *text;
-    text  = TNECS_GET_COMPONENT(sota->world, game_over, Text);
+    text  = TNECS_GET_COMPONENT(sota->world, sota->scene, Text);
     *text = Text_default;
-    text->pixelfont = sota->pixelnours_big;
-    s8 line = s8_literal("Game Over");
+    text->pixelfont         = sota->pixelnours_big;
+    s8 line = s8_literal("Tragedy.");
     Text_Set(text, line.data, PIXELNOURS_BIG_Y_OFFSET);
     SDL_assert((text->rect.w > 0) && (text->rect.h > 0));
 
     struct Position *position;
-    position  = TNECS_GET_COMPONENT(sota->world, game_over, Position);
+    position  = TNECS_GET_COMPONENT(sota->world, sota->scene, Position);
     *position = Position_default;
     position->onTilemap = false;
     position->scale[0] = 10.0f;
@@ -1188,8 +1219,14 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
     position->pixel_pos.x = sota->settings.res.x / 2 - text->rect.w / 2 * position->scale[0];
     position->pixel_pos.y = sota->settings.res.y / 2;
 
-    strncpy(sota->reason, "Game Over is an animation", sizeof(sota->reason));
-    Game_subState_Set(sota, GAME_SUBSTATE_MAP_ANIMATION, sota->reason);
+    /* - Set state to scene - */
+    strncpy(sota->reason, "Game plays scene", sizeof(sota->reason));
+    Game_State_Set(sota, GAME_STATE_Scene_Talk, sota->reason);
+
+    if (sota->substate != GAME_SUBSTATE_STANDBY) {
+        strncpy(sota->reason, "Scene is playing", sizeof(sota->reason));
+        Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
+    }
 }
 
 void receive_event_Unit_Refresh(struct Game *sota, SDL_Event *userevent) {
