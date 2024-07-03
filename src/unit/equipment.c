@@ -379,9 +379,9 @@ b32 Unit_isWielding(struct Unit *unit, b32 hand) {
 
 /* If a unit dual wielding? i.e. wielding a weapon in both hands */
 b32 Unit_isdualWielding(struct Unit *unit) {
-    SDL_assert(unit);   
+    SDL_assert(unit);
     // TODO: test this function
-    
+
     /* To be dual wielding unit must: */
     // - Wield a weapon in weakhand
     // - Wield a weapon in stronghand

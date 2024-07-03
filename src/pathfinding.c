@@ -510,6 +510,7 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
             came_from[current_n] = Ternary_Direction(movep);
         }
     }
+
     PathList_f forward_f    = &Pathfinding_PathList_Forward;
     PathList_f backward_f   = &Pathfinding_PathList_Backward;
     PathList_f pathlist_f   = forward ? forward_f : backward_f;
