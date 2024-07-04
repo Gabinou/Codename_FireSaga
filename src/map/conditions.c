@@ -31,6 +31,21 @@ struct Map_condition Map_condition_main_char_loss = {
     .lose    =   true,
 };
 
+struct Map_condition Map_condition_rout_loss = {
+    .army    =   1,
+    .boss    =   false,
+    .all     =   true,
+    .unit    =   -1,
+    .min     =   -1,
+    .at      =   -1,
+    .max     =   -1,
+    .gold    =    0,
+    .item    =   ITEM_NULL,
+    .scene   =    0,
+    .win     =   false,
+    .lose    =   true,
+};
+
 struct Map_condition Map_condition_debug_map_loss = {
     .army    =   -1,
     .boss    =   false,
@@ -108,8 +123,16 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
         return (true);
     }
 
+    tnecs_entity *army_onfield = NULL;
+    if (army_alignment[condition->army] == ALIGNMENT_FRIENDLY) {
+        army_onfield = map->friendlies_onfield;
+    } else {
+        army_onfield = map->enemies_onfield;
+    }
+    SDL_assert(army_onfield != NULL);
+
     /* Match: Rout */
-    if (!condition->boss && condition->all && (DARR_NUM(map->enemies_onfield) == 0)) {
+    if (!condition->boss && condition->all && (DARR_NUM(army_onfield) == 0)) {
         // SDL_Log("Match: Rout");
         return (true);
     }

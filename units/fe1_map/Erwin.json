@@ -5,11 +5,11 @@
 		"Sex":	true,
 		"BaseExp":	0,
 		"Exp":	0,
-		"CurrentHP":	17,
+		"CurrentHP":	1,
 		"Class":	"Standard Bearer",
 		"Class Index":	18,
 		"Stats":	{
-			"hp":	17,
+			"hp":	19,
 			"str":	6,
 			"mag":	2,
 			"agi":	7,
@@ -22,7 +22,7 @@
 			"prof":	4
 		},
 		"Bases":	{
-			"hp":	17,
+			"hp":	19,
 			"str":	8,
 			"mag":	0,
 			"agi":	5,
@@ -76,7 +76,7 @@
 				"name":	"Gladius",
 				"Infused":	-1,
 				"id":	30,
-				"used":	0
+				"used":	39
 			},
 			"Item":	{
 				"name":	"Kitchen knife",
@@ -97,9 +97,9 @@
 				"used":	0
 			},
 			"Item":	{
-				"name":	"Empty",
+				"name":	"Gladius",
 				"Infused":	-1,
-				"id":	-1,
+				"id":	30,
 				"used":	0
 			}
 		}
