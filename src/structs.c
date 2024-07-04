@@ -54,7 +54,7 @@ struct Inventory_item Inventory_item_default = {
 
 struct Inventory_item Inventory_item_broken = {
     .id          = ITEM_ID_BROKEN,
-    .used        = UINT8_MAX,
+    .used        = 0,
     .infusion    = SOTA_NON_INFUSEABLE,
     .highlighted = true,
 };
