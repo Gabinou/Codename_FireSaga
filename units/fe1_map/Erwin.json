@@ -91,9 +91,9 @@
 				"used":	0
 			},
 			"Item":	{
-				"name":	"Empty",
+				"name":	"Broken",
 				"Infused":	-1,
-				"id":	-1,
+				"id":	2001,
 				"used":	0
 			},
 			"Item":	{

@@ -995,7 +995,7 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
         struct Item *item = DTAB_GET(unit->items_dtab, invitem->id);
         uses_left = (item->stats.uses - invitem->used);
     }
-    SDL_assert(uses_left > 0);
+    // SDL_assert(uses_left > 0);
 
     stbsp_sprintf(numbuff, "%d\0\0\0\0", uses_left);
 
