@@ -1217,8 +1217,8 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
                           cursor_pos->tilemap_pos.x;
     tnecs_entity ontile = sota->map->unitmap[current_i];
 
-    /* - Not unit selected - */
-    if (ontile != TNECS_NULL) {
+    /* - Someone else already occupies tile -> Can't move there - */
+    if ((ontile != TNECS_NULL) && (sota->selected_unit_entity != ontile)) {
         return;
     }
 
