@@ -5,7 +5,7 @@
 		"Sex":	true,
 		"BaseExp":	0,
 		"Exp":	0,
-		"CurrentHP":	1,
+		"CurrentHP":	19,
 		"Class":	"Standard Bearer",
 		"Class Index":	18,
 		"Stats":	{
@@ -15,7 +15,7 @@
 			"agi":	7,
 			"dex":	7,
 			"luck":	7,
-			"def":	4,
+			"def":	14,
 			"res":	5,
 			"con":	6,
 			"move":	5,

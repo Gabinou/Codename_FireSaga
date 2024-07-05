@@ -790,6 +790,9 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     struct PopUp_Loadout_Stats *pls = popup->data;
 
     LoadoutSelectMenu_Select(wsm, mc->elem);
+    i32 weakhand   = 1 - stronghand;
+
+    SDL_Log("selected %d %d", wsm->selected[weakhand], wsm->selected[stronghand]);
 
     /* - Compute new attackmap with equipped - */
     int rangemap = Unit_Rangemap_Get(wsm->unit);
@@ -803,11 +806,11 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     }
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
-    // TODO: Change to if other item in invetory
+    // TODO: Change to weakhand if other item in inventory
+    SDL_Log("remains %d", WeaponSelectMenu_Usable_Remains(wsm));
     if (WeaponSelectMenu_Usable_Remains(wsm)) {
         SDL_assert(mc->n9patch.scale.x > 0);
         SDL_assert(mc->n9patch.scale.y > 0);
-        i32 stronghand  = Unit_Hand_Strong(wsm->unit);
         if (wsm->selected[stronghand] >= 0) {
             Unit_Find_Usable(wsm->unit, ITEM_ARCHETYPE_WEAKHAND);
         }
@@ -826,18 +829,20 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
 
         /* move cursor to top hand */
         Menu_Elem_Set(mc, sota, 0);
-
     } else {
         /* Loadout selected, find new defendants*/
         // TODO: use WeaponSelectMenu_Loadout_Valid/remove it
         Game_postLoadout_Defendants(sota, sota->aggressor);
+        SDL_Log("defendants %d", DARR_NUM(sota->defendants));
 
         /* - Check that a defendant is in range of current loadout - */
-        if (DARR_NUM(sota->defendants) == 0) {
-            LoadoutSelectMenu_Deselect(wsm);
-        } else {
-            Event_Emit(__func__, SDL_USEREVENT, event_Loadout_Selected, data1_entity, data2_entity);
-        }
+        SDL_assert(DARR_NUM(sota->defendants) > 0);
+
+        // if (DARR_NUM(sota->defendants) == 0) {
+        // LoadoutSelectMenu_Deselect(wsm);
+        // } else {
+        Event_Emit(__func__, SDL_USEREVENT, event_Loadout_Selected, data1_entity, data2_entity);
+        // }
     }
 
     PopUp_Loadout_Stats_Select(pls, wsm);

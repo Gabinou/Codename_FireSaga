@@ -190,11 +190,12 @@ i32 *Map_Attacktomap_Compute(struct Map *map, tnecs_world *world,
     Map_Costmap_Movement_Compute(map, world, unit_ent);
     struct Unit     *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     struct Position *pos  = TNECS_GET_COMPONENT(world, unit_ent, Position);
-    struct Point start = pos->tilemap_pos;
-    i32 move_stat = move ? Unit_getStats(unit).move : 0;
+    struct Point     start      = pos->tilemap_pos;
+    i32              move_stat  = move ? Unit_getStats(unit).move : 0;
     _Map_Movemap_Compute(map, start, move_stat);
     struct Range range = Range_default;
     _Unit_Range_Combine(unit, &range, equipped, ITEM_ARCHETYPE_WEAPON);
+    SDL_Log("range %d %d", range.min, range.max);
     map->update = true;
     map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap, map->row_len,
                                           map->col_len, move_stat, &range, MOVETILE_INCLUDE);

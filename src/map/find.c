@@ -59,6 +59,7 @@ tnecs_entity *Map_Find_Defendants(struct Map *map, i32 *attacktolist,
         /* - Checking for units on x_at, y_at - */
         size_t index = y_at * map->col_len + x_at;
         tnecs_entity unitontile = map->unitmap[index];
+        SDL_Log("unitontile %d", unitontile);
         if (unitontile <= TNECS_NULL)
             continue;
 

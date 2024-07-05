@@ -261,19 +261,18 @@ b32 WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm) {
 
     /* After no weapon was selected */
     if ((lsm->selected[stronghand] < 0) && (lsm->selected[weakhand] < 0)) {
-        remains = lsm->unit->num_usable > 0; /* Any usable weapon remains */
+        remains = lsm->unit->num_usable > 0; /* Any usable weapon remains? */
     }
 
     /* After first weapon was selected */
     if ((lsm->selected[stronghand] >= 0) && (lsm->selected[weakhand] < 0)) {
-        remains = lsm->unit->num_equipment > 1; /* Any item remains */
+        remains = lsm->unit->num_equipment > 1; /* Any item remains? */
     }
 
     return (remains);
 }
 
 /* --- Item placement --- */
-
 void LoadoutSelectMenu_Unit(struct LoadoutSelectMenu *lsm, struct Unit *unit) {
     SDL_assert(lsm  != NULL);
     SDL_assert(unit != NULL);

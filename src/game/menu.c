@@ -313,7 +313,21 @@ void Game_postLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
     DARR_NUM(sota->defendants) = 0;
 
     /* - Compute attacktolist - */
-    Map_Attacktomap_Compute(sota->map, sota->world, actor, false, true);
+    SDL_assert(sota->weapon_select_menu > TNECS_NULL);
+    struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->weapon_select_menu, Menu);
+    SDL_assert(mc != NULL);
+    struct LoadoutSelectMenu *lsm = mc->data;
+    SDL_assert(lsm != NULL);
+
+    SDL_assert((lsm->selected[UNIT_HAND_LEFT] >= 0)
+               && (lsm->selected[UNIT_HAND_LEFT] < DEFAULT_EQUIPMENT_SIZE));
+    SDL_assert((lsm->selected[UNIT_HAND_RIGHT] >= 0)
+               && (lsm->selected[UNIT_HAND_RIGHT] < DEFAULT_EQUIPMENT_SIZE));
+    Map_Attacktomap_Compute_wLoadout(sota->map, sota->world, actor, false,
+                                     lsm->selected[UNIT_HAND_LEFT],
+                                     lsm->selected[UNIT_HAND_RIGHT]);
+
+    matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
     Map_Attacktolist_Compute(sota->map);
 
     /* Find all Defendants */
