@@ -438,7 +438,7 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
 }
 
 void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
-    SDL_assert(mc->elem < DEFAULT_EQUIPMENT_SIZE);
+    SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
     /* -- Update Popup_Loadout_Stats to potential loadout -- */
     struct LoadoutSelectMenu *wsm = mc->data;
     wsm->update = true;
@@ -474,7 +474,7 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
     struct LoadoutSelectMenu *ism = mc->data;
 
     /* - Get Popup_Loadout_Stats -- */
-    SDL_assert(mc->elem < DEFAULT_EQUIPMENT_SIZE);
+    SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
     tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS];
     SDL_assert(popup_ent > TNECS_NULL);
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
@@ -499,7 +499,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mTM(struct Game *sota, struct Menu *mc) {
     SDL_assert(tm);
 
     /* If item is selected, deselect item */
-    b32 isItem = (tm->selected_item > ITEM_NULL) && (tm->selected_item < DEFAULT_EQUIPMENT_SIZE);
+    b32 isItem = (tm->selected_item > ITEM_NULL) && (tm->selected_item < SOTA_EQUIPMENT_SIZE);
     b32 isTrader = (tm->selected_trader == TRADER_PASSIVE) || (tm->selected_trader == TRADER_ACTIVE);
     if (isItem || isTrader) {
         // TradeMenu_Deselect(tm);
@@ -751,7 +751,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mTM(struct Game *sota, struct Menu *mc) {
     SDL_assert(tm);
 
     /* If no item is selected, select item */
-    // b32 isItem = (tm->selected_item > ITEM_NULL) && (tm->selected_item < DEFAULT_EQUIPMENT_SIZE);
+    // b32 isItem = (tm->selected_item > ITEM_NULL) && (tm->selected_item < SOTA_EQUIPMENT_SIZE);
     // b32 isTrader = (tm->selected_trader == TRADER_PASSIVE) || (tm->selected_trader == TRADER_ACTIVE);
     // if (!isItem || !isTrader) {
     //     TradeMenu_Select(tm);
@@ -782,7 +782,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     struct LoadoutSelectMenu *wsm = mc->data;
     i32 stronghand  = Unit_Hand_Strong(wsm->unit);
     SDL_assert(mc->elem >= 0);
-    SDL_assert(mc->elem < DEFAULT_EQUIPMENT_SIZE);
+    SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
 
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, sota->popups[popup_ind], PopUp);
@@ -791,8 +791,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
 
     LoadoutSelectMenu_Select(wsm, mc->elem);
     i32 weakhand   = 1 - stronghand;
-
-    SDL_Log("selected %d %d", wsm->selected[weakhand], wsm->selected[stronghand]);
 
     /* - Compute new attackmap with equipped - */
     int rangemap = Unit_Rangemap_Get(wsm->unit);
@@ -807,7 +805,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
     // TODO: Change to weakhand if other item in inventory
-    SDL_Log("remains %d", WeaponSelectMenu_Usable_Remains(wsm));
+    // TODO: option to equip nothing in weakhand
+    // TODO: Automatically equip nothing in weakhand if no other item in equipment
     if (WeaponSelectMenu_Usable_Remains(wsm)) {
         SDL_assert(mc->n9patch.scale.x > 0);
         SDL_assert(mc->n9patch.scale.y > 0);
@@ -833,7 +832,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         /* Loadout selected, find new defendants*/
         // TODO: use WeaponSelectMenu_Loadout_Valid/remove it
         Game_postLoadout_Defendants(sota, sota->aggressor);
-        SDL_Log("defendants %d", DARR_NUM(sota->defendants));
 
         /* - Check that a defendant is in range of current loadout - */
         SDL_assert(DARR_NUM(sota->defendants) > 0);
@@ -864,7 +862,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
 void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
     struct LoadoutSelectMenu *ssm = mc->data;
     SDL_assert(mc->elem >= 0);
-    SDL_assert(mc->elem < DEFAULT_EQUIPMENT_SIZE);
+    SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
 
     LoadoutSelectMenu_Select(ssm, mc->elem);
 

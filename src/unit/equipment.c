@@ -6,7 +6,7 @@
 void Unit_Find_Usable(struct Unit *unit, u64 archetype) {
     /* -- Find usable weapons in eq_space --  */
     unit->num_usable = 0;
-    for (int i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
+    for (int i = 0; i < SOTA_EQUIPMENT_SIZE; i++) {
         if (Unit_Eq_Usable(unit, archetype, i))
             unit->eq_usable[unit->num_usable++] = i;
     }
@@ -28,7 +28,7 @@ b32 Unit_All_Usable(struct Unit *unit) {
 
 b32 Unit_Eq_Usable( struct Unit *unit, u64 archetype, int i) {
     SDL_assert(i >= 0);
-    SDL_assert(i < DEFAULT_EQUIPMENT_SIZE);
+    SDL_assert(i < SOTA_EQUIPMENT_SIZE);
     return (Unit_Item_Usable(unit, archetype, unit->_equipment[i].id));
 }
 
@@ -38,12 +38,14 @@ b32 Unit_Item_Usable(struct Unit *unit, u64 archetype, int id) {
         /* -- If item, everything is usable --  */
         if (archetype == ITEM_ARCHETYPE_ITEM) {
             usable = true;
+            // SDL_Log("If item, everything is usable");
             break;
         }
 
         /* -- Looking for a weapon, found item --  */
         if (!Weapon_ID_isValid(id)) {
             usable = false;
+            // SDL_Log("Looking for a weapon, found item");
             break;
         }
 
@@ -58,8 +60,10 @@ b32 Unit_Item_Usable(struct Unit *unit, u64 archetype, int id) {
         SDL_assert(weapon->item != NULL);
         SDL_assert(weapon->item->type > 0);
 
-        if (flagsum_isIn(weapon->item->type, archetype))
+        if (flagsum_isIn(weapon->item->type, archetype)) {
+            // SDL_Log("Is usable");
             usable = true;
+        }
 
     } while (false);
     return (usable);
@@ -88,7 +92,7 @@ void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, size_t i) {
         Item_Load(unit->items_dtab, item.id);
     }
 
-    if ((i < 0) || (i >= DEFAULT_EQUIPMENT_SIZE)) {
+    if ((i < 0) || (i >= SOTA_EQUIPMENT_SIZE)) {
         SDL_Log("Item i out of bounds");
         // TODO: many errors are asserts
         exit(ERROR_OutofBounds);
@@ -103,7 +107,7 @@ void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, size_t i) {
 
 void Unit_Item_Take(struct Unit *unit, struct Inventory_item item) {
     SDL_assert(unit);
-    if (unit->num_equipment >= DEFAULT_EQUIPMENT_SIZE) {
+    if (unit->num_equipment >= SOTA_EQUIPMENT_SIZE) {
         SDL_Log("Unit Inventory full, should not be able to take item");
         exit(ERROR_OutofBounds);
     }
@@ -113,7 +117,7 @@ void Unit_Item_Take(struct Unit *unit, struct Inventory_item item) {
         exit(ERROR_OutofBounds);
     }
 
-    for (size_t i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
+    for (size_t i = 0; i < SOTA_EQUIPMENT_SIZE; i++) {
         if (unit->_equipment[i].id == ITEM_NULL) {
             Unit_Item_Takeat(unit, item, i);
             break;
@@ -122,7 +126,7 @@ void Unit_Item_Take(struct Unit *unit, struct Inventory_item item) {
 }
 
 void Unit_Equipment_Drop(struct Unit *unit) {
-    for (int i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
+    for (int i = 0; i < SOTA_EQUIPMENT_SIZE; i++) {
         Unit_Item_Drop(unit, i);
     }
 }
@@ -138,15 +142,15 @@ void Unit_Equipped_Export(Unit *unit, int *equipped) {
 }
 
 void Unit_Equipment_Import(struct Unit *unit, struct Inventory_item *equipment) {
-    Equipment_Copy(unit->_equipment, equipment, DEFAULT_EQUIPMENT_SIZE);
+    Equipment_Copy(unit->_equipment, equipment, SOTA_EQUIPMENT_SIZE);
 }
 
 void Unit_Equipment_Export(struct Unit *unit, struct Inventory_item *equipment) {
-    Equipment_Copy(equipment, unit->_equipment, DEFAULT_EQUIPMENT_SIZE);
+    Equipment_Copy(equipment, unit->_equipment, SOTA_EQUIPMENT_SIZE);
 }
 
 struct Inventory_item Unit_Item_Drop(struct Unit *unit, i16 i) {
-    if ((i < 0) || (i >= DEFAULT_EQUIPMENT_SIZE)) {
+    if ((i < 0) || (i >= SOTA_EQUIPMENT_SIZE)) {
         SDL_Log("Item index out of bounds");
         exit(ERROR_OutofBounds);
     }
@@ -166,8 +170,8 @@ void Unit_Item_Swap(struct Unit *unit, i16 i1, i16 i2) {
     if (i1 == i2)
         return;
 
-    b32 i1_valid = (i1 >= 0) && (i1 < DEFAULT_EQUIPMENT_SIZE);
-    b32 i2_valid = (i2 >= 0) && (i2 < DEFAULT_EQUIPMENT_SIZE);
+    b32 i1_valid = (i1 >= 0) && (i1 < SOTA_EQUIPMENT_SIZE);
+    b32 i2_valid = (i2 >= 0) && (i2 < SOTA_EQUIPMENT_SIZE);
     if (i1_valid && i2_valid) {
         Equipment_Swap(unit->_equipment, i1, i2);
     } else {
@@ -179,11 +183,11 @@ void Unit_Item_Swap(struct Unit *unit, i16 i1, i16 i2) {
 void Unit_Item_Trade(struct Unit *giver, struct Unit *taker, i16 ig, i16 it) {
     SDL_assert(giver);
     SDL_assert(taker);
-    if ((it < 0) || (it >= DEFAULT_EQUIPMENT_SIZE)) {
+    if ((it < 0) || (it >= SOTA_EQUIPMENT_SIZE)) {
         SDL_Log("Taker Item index out of bounds");
         exit(ERROR_OutofBounds);
     }
-    if ((ig < 0) || (ig >= DEFAULT_EQUIPMENT_SIZE)) {
+    if ((ig < 0) || (ig >= SOTA_EQUIPMENT_SIZE)) {
         SDL_Log("Giver Item index out of bounds");
         exit(ERROR_OutofBounds);
     }
@@ -241,7 +245,7 @@ void Unit_Check_Equipped(struct Unit *unit) {
 void Unit_Equip(struct Unit *unit, b32 hand, int i) {
     SDL_assert(unit);
     SDL_assert(i >= 0);
-    SDL_assert(i < DEFAULT_EQUIPMENT_SIZE);
+    SDL_assert(i < SOTA_EQUIPMENT_SIZE);
     SDL_assert(unit->_equipment[i].id > ITEM_NULL);
 
     unit->_equipped[hand] = i;
@@ -401,9 +405,9 @@ b32 Unit_isdualWielding(struct Unit *unit) {
 /* - Does that loadout wields a weapon with two hands? - */
 b32 Unit_istwoHanding(Unit *unit) {
     b32 lvalid  =   unit->_equipped[UNIT_HAND_LEFT] >= 0;
-    lvalid      &=  unit->_equipped[UNIT_HAND_LEFT] < DEFAULT_EQUIPMENT_SIZE;
+    lvalid      &=  unit->_equipped[UNIT_HAND_LEFT] < SOTA_EQUIPMENT_SIZE;
     b32 rvalid  =   unit->_equipped[UNIT_HAND_RIGHT] >= 0;
-    rvalid      &=  unit->_equipped[UNIT_HAND_RIGHT] < DEFAULT_EQUIPMENT_SIZE;
+    rvalid      &=  unit->_equipped[UNIT_HAND_RIGHT] < SOTA_EQUIPMENT_SIZE;
     b32 equal   =   unit->_equipped[UNIT_HAND_LEFT] == unit->_equipped[UNIT_HAND_RIGHT];
     return (lvalid && rvalid && equal);
 }
@@ -464,7 +468,7 @@ void Unit_Equipped_Shields_Deplete(struct Unit *unit) {
 
 b32 Unit_isEquipped(Unit *unit, b32 hand) {
     b32 min_bound = (unit->_equipped[hand] >= 0);
-    b32 max_bound = (unit->_equipped[hand] < DEFAULT_EQUIPMENT_SIZE);
+    b32 max_bound = (unit->_equipped[hand] < SOTA_EQUIPMENT_SIZE);
     return (min_bound && max_bound);
 }
 
@@ -474,7 +478,7 @@ int Unit_Equipped(Unit *unit, b32 hand) {
 }
 
 Inventory_item *Unit_Item_Equipped(Unit *unit, b32 hand) {
-    if (unit->_equipped[hand] < 0 || unit->_equipped[hand] > DEFAULT_EQUIPMENT_SIZE)
+    if (unit->_equipped[hand] < 0 || unit->_equipped[hand] > SOTA_EQUIPMENT_SIZE)
         return (NULL);
     else
         return (&unit->_equipment[unit->_equipped[hand]]);

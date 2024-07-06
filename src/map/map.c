@@ -207,7 +207,6 @@ void Map_Units_Free(struct Map *map) {
 
         // Freeing unit if not in party
         if ((unit != NULL) && (unit->_id > UNIT_ID_PC_END)) {
-            SDL_Log("Destroying %d", unit->_id);
             Unit_Free(unit);
             tnecs_entity_destroy(map->world, uent);
         } else if (unit == NULL) {
@@ -727,7 +726,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     map->reinf_equipments = DARR_INIT(map->reinf_equipments, struct Inventory_item *, 30);
     if (map->items_num != NULL)
         DARR_FREE(map->items_num);
-    map->items_num = DARR_INIT(map->items_num, u8, DEFAULT_EQUIPMENT_SIZE);
+    map->items_num = DARR_INIT(map->items_num, u8, SOTA_EQUIPMENT_SIZE);
     cJSON *jreinforcements = cJSON_GetObjectItem(jmap, "Reinforcements");
     SDL_assert(jreinforcements != NULL);
     cJSON *jequipment, *jitem;
@@ -739,7 +738,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
         Reinforcement_readJSON(jreinforcement, &temp_rein);
         DARR_PUT(map->reinforcements, temp_rein);
         jequipment = cJSON_GetObjectItem(jreinforcement, "Equipment");
-        temp_equip = DARR_INIT(temp_equip, struct Inventory_item, DEFAULT_EQUIPMENT_SIZE);
+        temp_equip = DARR_INIT(temp_equip, struct Inventory_item, SOTA_EQUIPMENT_SIZE);
 
         if (!cJSON_IsArray(jequipment)) {
             SDL_Log("Missing Equipment array in Reinforcement %d", i);

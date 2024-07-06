@@ -1056,7 +1056,7 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
 
 static void _StatsMenu_Draw_Equipment(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* --- Equipment --- */
-    for (u8 i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
+    for (u8 i = 0; i < SOTA_EQUIPMENT_SIZE; i++) {
         _StatsMenu_Draw_Item(stats_menu, renderer, i);
     }
 

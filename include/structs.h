@@ -644,12 +644,12 @@ typedef struct Unit {
 
     /* _equipment is in side space: [left, right, 2, 3, 4, 5]   */
     /* Most functions are in side space unless stated otherwise */
-    struct Inventory_item _equipment[DEFAULT_EQUIPMENT_SIZE];
+    struct Inventory_item _equipment[SOTA_EQUIPMENT_SIZE];
 
     /* For twohanding when computing computedstats */
     struct Inventory_item temp;
 
-    i8 eq_usable[DEFAULT_EQUIPMENT_SIZE];
+    i8 eq_usable[SOTA_EQUIPMENT_SIZE];
     i8 num_equipment;
     i8 num_usable;
 

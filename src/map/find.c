@@ -18,7 +18,7 @@ void Map_Find_Usable(struct Map *map, tnecs_world *world, tnecs_entity unit_ent,
     tnecs_entity *defendants  = DARR_INIT(defendants, tnecs_entity, 4);
 
     unit->num_usable = 0;
-    for (int i = 0; i < DEFAULT_EQUIPMENT_SIZE; ++i) {
+    for (int i = 0; i < SOTA_EQUIPMENT_SIZE; ++i) {
         /* Skip if weapon is not usable */
         if (!Unit_Eq_Usable(unit, archetype, i))
             continue;
@@ -59,7 +59,6 @@ tnecs_entity *Map_Find_Defendants(struct Map *map, i32 *attacktolist,
         /* - Checking for units on x_at, y_at - */
         size_t index = y_at * map->col_len + x_at;
         tnecs_entity unitontile = map->unitmap[index];
-        SDL_Log("unitontile %d", unitontile);
         if (unitontile <= TNECS_NULL)
             continue;
 

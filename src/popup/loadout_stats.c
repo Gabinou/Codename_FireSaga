@@ -438,7 +438,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
     /* Left hand */
     // SDL_Log("DRAW %d %d", pls->item_left, pls->item_right);
     do {
-        if ((pls->item_left <= -1) || (pls->item_left >= DEFAULT_EQUIPMENT_SIZE))
+        if ((pls->item_left <= -1) || (pls->item_left >= SOTA_EQUIPMENT_SIZE))
             break;
         if (pls->unit->weapons_dtab == NULL)
             break;
@@ -473,7 +473,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
         if (pls->twoHanding)
             break;
 
-        if ((pls->item_right <= -1) || (pls->item_right >= DEFAULT_EQUIPMENT_SIZE))
+        if ((pls->item_right <= -1) || (pls->item_right >= SOTA_EQUIPMENT_SIZE))
             break;
 
         if (pls->unit->weapons_dtab == NULL)
@@ -678,7 +678,7 @@ void PopUp_Loadout_Stats_Select(struct PopUp_Loadout_Stats *pls, struct LoadoutS
     int stronghand = Unit_Hand_Strong(pls->unit);
     int weakhand   = 1 - stronghand;
 
-    if ((wsm->selected[stronghand] >= 0) && (wsm->selected[stronghand] < DEFAULT_EQUIPMENT_SIZE))  {
+    if ((wsm->selected[stronghand] >= 0) && (wsm->selected[stronghand] < SOTA_EQUIPMENT_SIZE))  {
         /* Stronghand selected */
         if (stronghand == UNIT_HAND_LEFT) {
             pls->item_left  = wsm->selected[stronghand];
@@ -687,7 +687,7 @@ void PopUp_Loadout_Stats_Select(struct PopUp_Loadout_Stats *pls, struct LoadoutS
         }
     }
 
-    if ((wsm->selected[weakhand] >= 0) && (wsm->selected[weakhand] < DEFAULT_EQUIPMENT_SIZE))  {
+    if ((wsm->selected[weakhand] >= 0) && (wsm->selected[weakhand] < SOTA_EQUIPMENT_SIZE))  {
         /* Weakhand selected */
         if (weakhand == UNIT_HAND_LEFT) {
             pls->item_left  = wsm->selected[weakhand];

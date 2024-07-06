@@ -520,7 +520,7 @@ b32 Unit_canDance(struct Unit *unit) {
 /* - Unit has any usable staff in Equipment? - */
 int Unit_canStaff_Eq( struct  Unit *unit) {
 
-    for (int i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
+    for (int i = 0; i < SOTA_EQUIPMENT_SIZE; i++) {
         struct Inventory_item item = unit->_equipment[i];
         if (Weapon_isStaff(item.id)) {
             return (true);
@@ -551,7 +551,7 @@ b32 Unit_canAttack_Eq(struct Unit *unit) {
     SDL_assert(unit != NULL);
     SDL_assert(unit->weapons_dtab != NULL);
     /* - If any item in equipment is a weapon, can attack - */
-    for (int i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
+    for (int i = 0; i < SOTA_EQUIPMENT_SIZE; i++) {
         struct Inventory_item item = unit->_equipment[i];
         if (item.id == ITEM_NULL)
             continue;
@@ -738,12 +738,12 @@ i32 *Unit_computeAttack(struct Unit *unit, int distance) {
 }
 
 b32 Unit_Equipment_Full( struct Unit *unit) {
-    return (unit->num_equipment == DEFAULT_EQUIPMENT_SIZE);
+    return (unit->num_equipment == SOTA_EQUIPMENT_SIZE);
 }
 
 void Unit_Equipment_Print( struct Unit *unit) {
     SDL_assert(unit != NULL);
-    for (u8 i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
+    for (u8 i = 0; i < SOTA_EQUIPMENT_SIZE; i++) {
         if (unit->_equipment[i].id == ITEM_NULL) {
             SDL_Log("%d ITEM_NULL", i);
             continue;
@@ -763,11 +763,11 @@ struct Computed_Stats Unit_computedStats_wLoadout(struct Unit *unit, int lh, int
     /* Save starting equipment */
     int start_equipped[UNIT_HANDS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
-    if ((lh >= 0) && (lh < DEFAULT_EQUIPMENT_SIZE)) {
+    if ((lh >= 0) && (lh < SOTA_EQUIPMENT_SIZE)) {
         Unit_Equip(unit, UNIT_HAND_LEFT,    lh);
         SDL_assert(unit->_equipped[UNIT_HAND_LEFT] == lh);
     }
-    if ((rh >= 0) && (rh < DEFAULT_EQUIPMENT_SIZE)) {
+    if ((rh >= 0) && (rh < SOTA_EQUIPMENT_SIZE)) {
         Unit_Equip(unit, UNIT_HAND_RIGHT,   rh);
         SDL_assert(unit->_equipped[UNIT_HAND_RIGHT] == rh);
     }
@@ -1234,7 +1234,7 @@ void Unit_writeJSON( void *input, cJSON *junit) {
         // +2 -> +1 start at lvl1, +1 cause you level to level 2
     }
     cJSON *jitems = cJSON_CreateArray();
-    for (u8 item_num = 0; item_num < DEFAULT_EQUIPMENT_SIZE; item_num ++) {
+    for (u8 item_num = 0; item_num < SOTA_EQUIPMENT_SIZE; item_num ++) {
         cJSON *jitem = cJSON_CreateObject();
         Inventory_item_writeJSON(&unit->_equipment[item_num], jitem);
         cJSON_AddItemToArray(jitems, jitem);

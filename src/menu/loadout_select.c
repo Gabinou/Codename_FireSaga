@@ -180,7 +180,7 @@ void _LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Unit *unit,
 
 /* --- Elem Move --- */
 i32 ItemSelectMenu_Elem_Move( struct Menu *mc, i32 direction) {
-    return (Periodic_Elem_Move(mc, direction, 0, DEFAULT_EQUIPMENT_SIZE));
+    return (Periodic_Elem_Move(mc, direction, 0, SOTA_EQUIPMENT_SIZE));
 }
 
 i32 WeaponSelectMenu_Elem_Move(struct Menu *mc, i32 direction) {
@@ -360,7 +360,7 @@ void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9p
     for (i32 i = 0; i < num_items; i++) {
         /* If stronghand was selected, i is in eq_space */
         i32 side_i = strong_selected ? i : lsm->unit->eq_usable[i];  /* side space */
-        SDL_assert((side_i >= 0) && (side_i < DEFAULT_EQUIPMENT_SIZE));
+        SDL_assert((side_i >= 0) && (side_i < SOTA_EQUIPMENT_SIZE));
 
         /* unit_item ensures tophand is stronghand */
         struct Inventory_item *item = Unit_InvItem(lsm->unit, side_i);
@@ -536,7 +536,7 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
     /* -- Weak hand icon -- */
     // 1. Follows cursor when selecting for weakhand
     int hand_i = (weakhand == UNIT_HAND_LEFT) ? LSM_HANDS_SMALL_L : LSM_HANDS_BIG_L;
-    if ((lsm->selected[stronghand] >= 0) && (lsm->selected[stronghand] < DEFAULT_EQUIPMENT_SIZE)) {
+    if ((lsm->selected[stronghand] >= 0) && (lsm->selected[stronghand] < SOTA_EQUIPMENT_SIZE)) {
         srcrect.x = hand_i * srcrect.w;
         srcrect.y = 0;
 
@@ -568,7 +568,7 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
 
     /* Moving hand if two handing or weak hand */
     dstrect.x = lsm->menu_w - LSM_HANDS_TILESIZE;
-    if ((lsm->selected[stronghand] >= 0) && (lsm->selected[stronghand] < DEFAULT_EQUIPMENT_SIZE)) {
+    if ((lsm->selected[stronghand] >= 0) && (lsm->selected[stronghand] < SOTA_EQUIPMENT_SIZE)) {
         // render at weapon position if selected
         // Find selected eq in usable
         int index = -1;
@@ -613,7 +613,7 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
     b32 strong_selected = (lsm->selected[stronghand] > -1);
 
     SDL_assert(lsm->unit->num_usable > 0);
-    SDL_assert(lsm->unit->num_usable <= DEFAULT_EQUIPMENT_SIZE);
+    SDL_assert(lsm->unit->num_usable <= SOTA_EQUIPMENT_SIZE);
 
     /* -- Inventory -- */
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
@@ -662,7 +662,7 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
         i32 item_dura_y_offset = LSM1_DURA_Y_OFFSET + i * (ITEM_ICON_H + 2) +
                                  (header_drawn * LSM_ROW_HEIGHT);
 
-        SDL_assert((side_i >= 0) && (side_i <= DEFAULT_EQUIPMENT_SIZE));
+        SDL_assert((side_i >= 0) && (side_i <= SOTA_EQUIPMENT_SIZE));
         i32 uses_left = weapon->item->stats.uses - item->used;
         stbsp_sprintf(numbuff, "%d\0\0\0\0", uses_left);
 

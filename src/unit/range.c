@@ -71,36 +71,41 @@ struct Range *Unit_Range_Item(struct Unit   *unit, int i) {
 struct Range *_Unit_Range_Combine( struct Unit   *unit, struct Range *range,
                                    b32 equipped, int archetype) {
     /* - Finds range of ANYTHING - */
-    int num = equipped ? UNIT_HANDS_NUM : DEFAULT_EQUIPMENT_SIZE;
     b32 stronghand = Unit_Hand_Strong(unit);
-    for (int i = 0; i < num; i++) {
+    for (int i = 0; i < SOTA_EQUIPMENT_SIZE; i++) {
 
         /* Skip if no item */
         if (unit->_equipment[i].id == ITEM_NULL) {
+            // SDL_Log("Skip if no item");
             continue;
         }
 
         /* Equipped only: Skip if unequipped */
         if (equipped && !Unit_isEquipped(unit, i)) {
+            // SDL_Log("Equipped only: Skip if unequipped");
             continue;
         }
 
         /* Skip if unusable */
         if (!Unit_Eq_Usable(unit, archetype, i)) {
+            // SDL_Log("Skip if unusable");
             continue;
         }
 
-        /* Skip if wrong archetype*/
+        /* Skip if wrong archetype */
         if (flagsum_isIn(archetype, ITEM_ARCHETYPE_STAFF)  && !Item_isStaff(unit->_equipment[i].id)) {
+            // SDL_Log("Skip if wrong archetype");
             continue;
         }
 
         /* Skip if weakhand for staff */
         if (flagsum_isIn(archetype, ITEM_ARCHETYPE_STAFF)  && (i != stronghand) && (equipped)) {
+            // SDL_Log("Skip if weakhand for staff");
             continue;
         }
 
         if (flagsum_isIn(archetype, ITEM_ARCHETYPE_WEAPON) && !Item_isWeapon(unit->_equipment[i].id)) {
+            // SDL_Log("Archetype mismatch");
             continue;
         }
 

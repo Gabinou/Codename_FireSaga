@@ -320,9 +320,9 @@ void Game_postLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
     SDL_assert(lsm != NULL);
 
     SDL_assert((lsm->selected[UNIT_HAND_LEFT] >= 0)
-               && (lsm->selected[UNIT_HAND_LEFT] < DEFAULT_EQUIPMENT_SIZE));
+               && (lsm->selected[UNIT_HAND_LEFT] < SOTA_EQUIPMENT_SIZE));
     SDL_assert((lsm->selected[UNIT_HAND_RIGHT] >= 0)
-               && (lsm->selected[UNIT_HAND_RIGHT] < DEFAULT_EQUIPMENT_SIZE));
+               && (lsm->selected[UNIT_HAND_RIGHT] < SOTA_EQUIPMENT_SIZE));
     Map_Attacktomap_Compute_wLoadout(sota->map, sota->world, actor, false,
                                      lsm->selected[UNIT_HAND_LEFT],
                                      lsm->selected[UNIT_HAND_RIGHT]);
@@ -810,7 +810,7 @@ void Game_StaffSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_ont
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
 
     mc->elem_num = ssm->unit->num_usable;
-    for (int i = mc->elem_num - 1; i < DEFAULT_EQUIPMENT_SIZE; i++) {
+    for (int i = mc->elem_num - 1; i < SOTA_EQUIPMENT_SIZE; i++) {
         mc->elem_links[i].top    = LSM_ELEM_NULL;
         mc->elem_links[i].bottom = LSM_ELEM_NULL;
     }

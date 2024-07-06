@@ -29,7 +29,6 @@ void _Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
 }
 
 void Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
-    // SDL_Log("%lu", entity);
     SDL_assert(map->world != NULL);
     SDL_assert(map->unitmap != NULL);
     SDL_assert((row < map->row_len) && (col < map->col_len));
@@ -101,7 +100,6 @@ void Map_Unit_Swap(struct Map *map, u8 old_col, u8 old_row, u8 new_col, u8 new_r
 }
 
 void Map_Unit_Move(struct Map *map, u8 col, u8 row, u8 new_col, u8 new_row) {
-    // SDL_Log("%s", __func__);
     /* Note: Does NOT check if [new_x, new_y] is empty. */
     SDL_assert(map->unitmap != NULL);
     SDL_assert(col      < map->col_len);
