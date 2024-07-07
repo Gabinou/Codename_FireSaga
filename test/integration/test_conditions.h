@@ -24,10 +24,10 @@ void test_boss_death_win(int argc, char *argv[]) {
 
     /* Get killer */
     struct Point pos = {1, 1};
-    Game_Party_Entity_Create(sota, UNIT_ID_SILOU, pos);
-    tnecs_entity killer_entity = sota->units_loaded[UNIT_ID_SILOU];
+    Game_Party_Entity_Create(sota, UNIT_ID_SILOU, pos, &Unit_default);
+    tnecs_entity killer_entity = sota->party.entities[UNIT_ID_SILOU];
     Map_Unit_Put(sota->map, pos.x, pos.y, killer_entity);
-    SDL_assert(sota->units_loaded[UNIT_ID_SILOU] > TNECS_NULL);
+    SDL_assert(sota->party.entities[UNIT_ID_SILOU] > TNECS_NULL);
     SDL_assert(killer_entity > TNECS_NULL);
     SDL_assert(boss_entity != killer_entity);
 
@@ -78,10 +78,10 @@ void test_main_char_death_loss(int argc, char *argv[]) {
 
     /* Get Silou */
     struct Point pos = {1, 1};
-    Game_Party_Entity_Create(sota, UNIT_ID_ERWIN, pos);
-    tnecs_entity main_char_entity = sota->units_loaded[UNIT_ID_ERWIN];
+    Game_Party_Entity_Create(sota, UNIT_ID_ERWIN, pos, &Unit_default);
+    tnecs_entity main_char_entity = sota->party.entities[UNIT_ID_ERWIN];
     Map_Unit_Put(sota->map, pos.x, pos.y, main_char_entity);
-    SDL_assert(sota->units_loaded[UNIT_ID_ERWIN] > TNECS_NULL);
+    SDL_assert(sota->party.entities[UNIT_ID_ERWIN] > TNECS_NULL);
     SDL_assert(main_char_entity > TNECS_NULL);
     SDL_assert(boss_entity != main_char_entity);
 
@@ -134,10 +134,10 @@ void test_silou_death_loss(int argc, char *argv[]) {
 
     /* Get Silou */
     struct Point pos = {1, 1};
-    Game_Party_Entity_Create(sota, UNIT_ID_SILOU, pos);
-    tnecs_entity silou_entity = sota->units_loaded[UNIT_ID_SILOU];
+    Game_Party_Entity_Create(sota, UNIT_ID_SILOU, pos, &Unit_default);
+    tnecs_entity silou_entity = sota->party.entities[UNIT_ID_SILOU];
     Map_Unit_Put(sota->map, pos.x, pos.y, silou_entity);
-    SDL_assert(sota->units_loaded[UNIT_ID_SILOU] > TNECS_NULL);
+    SDL_assert(sota->party.entities[UNIT_ID_SILOU] > TNECS_NULL);
     SDL_assert(silou_entity > TNECS_NULL);
     SDL_assert(boss_entity != silou_entity);
 

@@ -8,6 +8,7 @@ void test_party() {
     s8 path_party = s8_literal(PATH_JOIN(PARTY_FOLDER, "debug.json"));
 
     struct Party party = Party_default;
+    Party_Init(&party);
     Party_Folder(&party, PATH_JOIN(PARTY_FOLDER));
     SDL_assert(party.folder.data != NULL);
     jsonio_readJSON(path_party, &party);

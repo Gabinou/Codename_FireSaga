@@ -37,30 +37,30 @@ void test_combat_game() {
     SDL_Log("Setting up inventory");
     struct Inventory_item in_wpn = Inventory_item_default;
     in_wpn.id = ITEM_ID_FLEURET;
-    b32 attacker_equip_hand = UNIT_HAND_WEAK;
-    b32 defender_equip_hand = UNIT_HAND_WEAK;
+    b32 attacker_equip_hand = 1 - Unit_Hand_Strong(&attacker);
+    b32 defender_equip_hand = 1 - Unit_Hand_Strong(&defender);
     Unit_Item_Drop(&defender,           defender_equip_hand);
     Unit_Item_Takeat(&defender, in_wpn, defender_equip_hand);
     Unit_Item_Drop(&attacker,           attacker_equip_hand);
     Unit_Item_Takeat(&attacker, in_wpn, attacker_equip_hand);
-    defender.equipped[defender_equip_hand] = true;
-    attacker.equipped[attacker_equip_hand] = true;
-    SDL_assert(defender.equipped[defender_equip_hand]);
-    SDL_assert(attacker.equipped[attacker_equip_hand]);
+    Unit_Equip(&defender, defender_equip_hand, defender_equip_hand);
+    Unit_Equip(&attacker, attacker_equip_hand, attacker_equip_hand);
+    SDL_assert(Unit_isEquipped(&defender, defender_equip_hand));
+    SDL_assert(Unit_isEquipped(&attacker, attacker_equip_hand));
     SDL_assert(defender._equipment[defender_equip_hand].id = ITEM_ID_FLEURET);
     SDL_assert(attacker._equipment[attacker_equip_hand].id = ITEM_ID_FLEURET);
     nourstest_true(Unit_canAttack(&defender));
     nourstest_true(Unit_canAttack(&attacker));
-    SDL_assert(defender.equipped[defender_equip_hand]);
-    SDL_assert(attacker.equipped[attacker_equip_hand]);
+    SDL_assert(Unit_isEquipped(&defender, defender_equip_hand));
+    SDL_assert(Unit_isEquipped(&attacker, attacker_equip_hand));
     SDL_assert(defender._equipment[defender_equip_hand].id = ITEM_ID_FLEURET);
     SDL_assert(attacker._equipment[attacker_equip_hand].id = ITEM_ID_FLEURET);
     nourstest_true(attacker.current_hp == attacker_stats.hp);
     nourstest_true(defender.current_hp == defender_stats.hp);
     Unit_computedStats(&attacker, distance);
     Unit_computedStats(&defender, distance);
-    SDL_assert(defender.equipped[defender_equip_hand]);
-    SDL_assert(attacker.equipped[attacker_equip_hand]);
+    SDL_assert(Unit_isEquipped(&defender, defender_equip_hand));
+    SDL_assert(Unit_isEquipped(&attacker, attacker_equip_hand));
     SDL_assert(defender._equipment[defender_equip_hand].id = ITEM_ID_FLEURET);
     SDL_assert(attacker._equipment[attacker_equip_hand].id = ITEM_ID_FLEURET);
 
@@ -105,8 +105,8 @@ void test_combat_game() {
     uint_fast16_t temp_id;
 
     SDL_Log("checking defender equipped");
-    SDL_assert(defender.equipped[defender_equip_hand]);
-    if (defender.equipped[defender_equip_hand]) {
+    SDL_assert(Unit_isEquipped(&defender, defender_equip_hand));
+    if (Unit_isEquipped(&defender, defender_equip_hand)) {
         SDL_assert(defender.weapons_dtab != NULL);
         SDL_assert(defender._equipment != NULL);
         temp_id = defender._equipment[defender_equip_hand].id;
@@ -116,8 +116,8 @@ void test_combat_game() {
     }
 
     SDL_Log("checking attacker equipped");
-    SDL_assert(attacker.equipped[attacker_equip_hand]);
-    if (attacker.equipped[attacker_equip_hand]) {
+    SDL_assert(Unit_isEquipped(&attacker, attacker_equip_hand));
+    if (Unit_isEquipped(&attacker, attacker_equip_hand)) {
         SDL_assert(attacker.weapons_dtab != NULL);
         attacker_weaponp = ((struct Weapon *)DTAB_GET(attacker.weapons_dtab,
                                                       attacker._equipment[attacker_equip_hand].id));
