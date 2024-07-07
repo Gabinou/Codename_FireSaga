@@ -18,22 +18,20 @@ void test_aura_apply(int argc, char *argv[]) {
     Game_Map_Reinforcements_Load(sota);
     SDL_assert(DARR_NUM(sota->map->units_onfield) > 0);
 
-
     /* Load Standard */
     SDL_assert(sota->weapons_dtab != NULL);
     Weapon_Load(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
     SDL_assert(DTAB_GET(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD) != NULL);
     /* -- Place all friendlies close together -- */
     i32 id;
-    tnecs_entity ent;
     /* Place Standard bearer inside */
     struct Point pos = {4, 4};
-    Game_Party_Entity_Create(sota, id = UNIT_ID_ERWIN, pos);
-    struct Unit *erwin = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[id], Unit);
+    Game_Party_Entity_Create(sota, id = UNIT_ID_ERWIN, pos, &Unit_default);
+    struct Unit *erwin = TNECS_GET_COMPONENT(sota->world, UNIT_ID_ERWIN, Unit);
     erwin->class = UNIT_CLASS_STANDARD_BEARER;
-    ent = sota->units_loaded[id];
+    tnecs_entity ent = sota->party.entities[UNIT_ID_ERWIN];
+    SDL_assert(ent > TNECS_NULL);
     Map_Unit_Put(sota->map, pos.x, pos.y, ent);
-    SDL_assert(sota->units_loaded[id] > TNECS_NULL);
 
     /* Give standard to standard bearer */
     struct Unit *bearer = TNECS_GET_COMPONENT(sota->world, ent, Unit);
@@ -43,33 +41,33 @@ void test_aura_apply(int argc, char *argv[]) {
     standard.id = ITEM_ID_IMPERIAL_STANDARD;
     Unit_Item_Drop(     bearer, UNIT_HAND_RIGHT);
     Unit_Item_Takeat(   bearer, standard, UNIT_HAND_RIGHT);
-    Unit_Equip_inHand(  bearer, UNIT_HAND_RIGHT);
-    SDL_assert(bearer->equipped[UNIT_HAND_RIGHT] == true);
+    Unit_Equip(bearer, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
+    SDL_assert(Unit_isEquipped(erwin, UNIT_HAND_RIGHT));
     SDL_assert(bearer->_equipment[UNIT_HAND_RIGHT].id == ITEM_ID_IMPERIAL_STANDARD);
 
     /* Place Friendly 1 inside */
     pos.x = 3;
     pos.y = 3;
-    Game_Party_Entity_Create(sota, id = UNIT_ID_SILOU, pos);
-    ent = sota->units_loaded[id];
+    Game_Party_Entity_Create(sota, id = UNIT_ID_SILOU, pos, &Unit_default);
+    ent = sota->party.entities[id];
+    SDL_assert(ent > TNECS_NULL);
     Map_Unit_Put(sota->map, pos.x, pos.y, ent);
-    SDL_assert(sota->units_loaded[id] > TNECS_NULL);
 
     /* Place Friendly 2 inside */
     pos.x = 3;
     pos.y = 2;
-    Game_Party_Entity_Create(sota, id = UNIT_ID_KIARA, pos);
-    ent = sota->units_loaded[id];
+    Game_Party_Entity_Create(sota, id = UNIT_ID_KIARA, pos, &Unit_default);
+    ent = sota->party.entities[id];
+    SDL_assert(ent > TNECS_NULL);
     Map_Unit_Put(sota->map, pos.x, pos.y, ent);
-    SDL_assert(sota->units_loaded[id] > TNECS_NULL);
 
     /* Place Friendly 3 outside */
     pos.x = 2;
     pos.y = 2;
-    Game_Party_Entity_Create(sota, id = UNIT_ID_SERVIL, pos);
-    ent = sota->units_loaded[id];
+    Game_Party_Entity_Create(sota, id = UNIT_ID_SERVIL, pos, &Unit_default);
+    ent = sota->party.entities[id];
+    SDL_assert(ent > TNECS_NULL);
     Map_Unit_Put(sota->map, pos.x, pos.y, ent);
-    SDL_assert(sota->units_loaded[id] > TNECS_NULL);
 
     /* Check Aura in bonus stack */
     Map_Bonus_Standard_Apply(sota->map, ARMY_FRIENDLY);
@@ -78,7 +76,7 @@ void test_aura_apply(int argc, char *argv[]) {
     struct Unit_stats aura_bonus        = standardwpn->item->aura.unit_stats;
 
     /* Check effective stats */
-    struct Unit *silou = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[UNIT_ID_SILOU], Unit);
+    struct Unit *silou = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SILOU], Unit);
     SDL_assert(silou != NULL);
     struct Unit_stats effective_stats   = Unit_effectiveStats(silou);
 
@@ -95,7 +93,7 @@ void test_aura_apply(int argc, char *argv[]) {
     nourstest_true(effective_stats.move == (silou->current_stats.move   + aura_bonus.move));
     nourstest_true(effective_stats.prof == (silou->current_stats.prof   + aura_bonus.prof));
 
-    struct Unit *kiara = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[UNIT_ID_KIARA], Unit);
+    struct Unit *kiara = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_KIARA], Unit);
     SDL_assert(kiara != NULL);
     effective_stats = Unit_effectiveStats(kiara);
 
@@ -112,7 +110,7 @@ void test_aura_apply(int argc, char *argv[]) {
     nourstest_true(effective_stats.move == (kiara->current_stats.move   + aura_bonus.move));
     nourstest_true(effective_stats.prof == (kiara->current_stats.prof   + aura_bonus.prof));
 
-    struct Unit *servil = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[UNIT_ID_SERVIL], Unit);
+    struct Unit *servil = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SERVIL], Unit);
     SDL_assert(servil != NULL);
     effective_stats = Unit_effectiveStats(servil);
 
@@ -160,12 +158,12 @@ void test_aura_decay(int argc, char *argv[]) {
     tnecs_entity ent;
     /* Place Standard bearer inside */
     struct Point pos = {4, 4};
-    Game_Party_Entity_Create(sota, id = UNIT_ID_ERWIN, pos);
-    struct Unit *erwin = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[id], Unit);
+    Game_Party_Entity_Create(sota, id = UNIT_ID_ERWIN, pos, &Unit_default);
+    struct Unit *erwin = TNECS_GET_COMPONENT(sota->world, sota->party.entities[id], Unit);
     erwin->class = UNIT_CLASS_STANDARD_BEARER;
-    ent = sota->units_loaded[id];
+    ent = sota->party.entities[id];
     Map_Unit_Put(sota->map, pos.x, pos.y, ent);
-    SDL_assert(sota->units_loaded[id] > TNECS_NULL);
+    SDL_assert(sota->party.entities[id] > TNECS_NULL);
 
     /* Give standard to standard bearer */
     struct Unit *bearer = TNECS_GET_COMPONENT(sota->world, ent, Unit);
@@ -175,33 +173,33 @@ void test_aura_decay(int argc, char *argv[]) {
     standard.id = ITEM_ID_IMPERIAL_STANDARD;
     Unit_Item_Drop(     bearer, UNIT_HAND_RIGHT);
     Unit_Item_Takeat(   bearer, standard, UNIT_HAND_RIGHT);
-    Unit_Equip_inHand(  bearer, UNIT_HAND_RIGHT);
-    SDL_assert(bearer->equipped[UNIT_HAND_RIGHT] == true);
+    Unit_Equip(bearer, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
+    SDL_assert(Unit_isEquipped(bearer, UNIT_HAND_RIGHT) == true);
     SDL_assert(bearer->_equipment[UNIT_HAND_RIGHT].id == ITEM_ID_IMPERIAL_STANDARD);
 
     /* Place Friendly 1 inside */
     pos.x = 3;
     pos.y = 3;
-    Game_Party_Entity_Create(sota, id = UNIT_ID_SILOU, pos);
-    ent = sota->units_loaded[id];
+    Game_Party_Entity_Create(sota, id = UNIT_ID_SILOU, pos, &Unit_default);
+    ent = sota->party.entities[id];
     Map_Unit_Put(sota->map, pos.x, pos.y, ent);
-    SDL_assert(sota->units_loaded[id] > TNECS_NULL);
+    SDL_assert(sota->party.entities[id] > TNECS_NULL);
 
     /* Place Friendly 2 inside */
     pos.x = 3;
     pos.y = 2;
-    Game_Party_Entity_Create(sota, id = UNIT_ID_KIARA, pos);
-    ent = sota->units_loaded[id];
+    Game_Party_Entity_Create(sota, id = UNIT_ID_KIARA, pos, &Unit_default);
+    ent = sota->party.entities[id];
     Map_Unit_Put(sota->map, pos.x, pos.y, ent);
-    SDL_assert(sota->units_loaded[id] > TNECS_NULL);
+    SDL_assert(sota->party.entities[id] > TNECS_NULL);
 
     /* Place Friendly 3 outside */
     pos.x = 2;
     pos.y = 2;
-    Game_Party_Entity_Create(sota, id = UNIT_ID_SERVIL, pos);
-    ent = sota->units_loaded[id];
+    Game_Party_Entity_Create(sota, id = UNIT_ID_SERVIL, pos, &Unit_default);
+    ent = sota->party.entities[id];
     Map_Unit_Put(sota->map, pos.x, pos.y, ent);
-    SDL_assert(sota->units_loaded[id] > TNECS_NULL);
+    SDL_assert(sota->party.entities[id] > TNECS_NULL);
 
     /* Check Aura in bonus stack */
     Map_Bonus_Standard_Apply(sota->map, ARMY_FRIENDLY);
@@ -212,7 +210,7 @@ void test_aura_decay(int argc, char *argv[]) {
     Map_Bonus_Remove_Instant(sota->map, ARMY_FRIENDLY);
 
     /* Check effective stats */
-    struct Unit *silou = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[UNIT_ID_SILOU], Unit);
+    struct Unit *silou = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SILOU], Unit);
     nourstest_true(DARR_NUM(silou->bonus_stack) == 0);
     SDL_assert(silou != NULL);
     struct Unit_stats effective_stats   = Unit_effectiveStats(silou);
@@ -230,7 +228,7 @@ void test_aura_decay(int argc, char *argv[]) {
     nourstest_true(effective_stats.move == (silou->current_stats.move));
     nourstest_true(effective_stats.prof == (silou->current_stats.prof));
 
-    struct Unit *kiara = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[UNIT_ID_KIARA], Unit);
+    struct Unit *kiara = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_KIARA], Unit);
     nourstest_true(DARR_NUM(kiara->bonus_stack) == 0);
     SDL_assert(kiara != NULL);
     effective_stats = Unit_effectiveStats(kiara);
@@ -248,7 +246,7 @@ void test_aura_decay(int argc, char *argv[]) {
     nourstest_true(effective_stats.move == (kiara->current_stats.move));
     nourstest_true(effective_stats.prof == (kiara->current_stats.prof));
 
-    struct Unit *servil = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[UNIT_ID_SERVIL], Unit);
+    struct Unit *servil = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SERVIL], Unit);
     nourstest_true(DARR_NUM(servil->bonus_stack) == 0);
     SDL_assert(servil != NULL);
     effective_stats = Unit_effectiveStats(servil);
@@ -269,7 +267,7 @@ void test_aura_decay(int argc, char *argv[]) {
     Map_Bonus_Standard_Apply(sota->map, ARMY_FRIENDLY);
 
     /* Check effective stats */
-    silou = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[UNIT_ID_SILOU], Unit);
+    silou = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SILOU], Unit);
     nourstest_true(DARR_NUM(silou->bonus_stack) == 1);
     SDL_assert(silou != NULL);
     effective_stats   = Unit_effectiveStats(silou);
@@ -287,7 +285,7 @@ void test_aura_decay(int argc, char *argv[]) {
     nourstest_true(effective_stats.move == (silou->current_stats.move   + aura_bonus.move));
     nourstest_true(effective_stats.prof == (silou->current_stats.prof   + aura_bonus.prof));
 
-    kiara = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[UNIT_ID_KIARA], Unit);
+    kiara = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_KIARA], Unit);
     nourstest_true(DARR_NUM(kiara->bonus_stack) == 1);
     SDL_assert(kiara != NULL);
     effective_stats = Unit_effectiveStats(kiara);
@@ -305,7 +303,7 @@ void test_aura_decay(int argc, char *argv[]) {
     nourstest_true(effective_stats.move == (kiara->current_stats.move   + aura_bonus.move));
     nourstest_true(effective_stats.prof == (kiara->current_stats.prof   + aura_bonus.prof));
 
-    servil = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[UNIT_ID_SERVIL], Unit);
+    servil = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SERVIL], Unit);
     nourstest_true(DARR_NUM(servil->bonus_stack) == 0);
     SDL_assert(servil != NULL);
     effective_stats = Unit_effectiveStats(servil);
@@ -361,29 +359,29 @@ void test_aura_fsm(int argc, char *argv[]) {
 
     /* Place Standard bearer */
     struct Point pos = {4, 4};
-    Game_Party_Entity_Create(sota, id = UNIT_ID_ERWIN, pos);
-    struct Unit *erwin = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[id], Unit);
+    Game_Party_Entity_Create(sota, id = UNIT_ID_ERWIN, pos, &Unit_default);
+    struct Unit *erwin = TNECS_GET_COMPONENT(sota->world, sota->party.entities[id], Unit);
     erwin->class = UNIT_CLASS_STANDARD_BEARER;
-    ent = sota->units_loaded[id];
+    ent = sota->party.entities[id];
     Map_Unit_Put(sota->map, pos.x, pos.y, ent);
-    SDL_assert(sota->units_loaded[id] > TNECS_NULL);
+    SDL_assert(sota->party.entities[id] > TNECS_NULL);
 
     /* Give standard to standard bearer */
     struct Inventory_item standard = Inventory_item_default;
     standard.id = ITEM_ID_IMPERIAL_STANDARD;
     Unit_Item_Drop(     erwin, UNIT_HAND_RIGHT);
     Unit_Item_Takeat(   erwin, standard, UNIT_HAND_RIGHT);
-    Unit_Equip_inHand(  erwin, UNIT_HAND_RIGHT);
-    SDL_assert(erwin->equipped[UNIT_HAND_RIGHT] == true);
+    Unit_Equip(         erwin, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
+    SDL_assert(Unit_isEquipped(erwin, UNIT_HAND_RIGHT) == true);
     SDL_assert(erwin->_equipment[UNIT_HAND_RIGHT].id == ITEM_ID_IMPERIAL_STANDARD);
 
     /* Move Friendly 1 inside */
     pos.x = 0;
     pos.y = 0;
-    Game_Party_Entity_Create(sota, id = UNIT_ID_SILOU, pos);
-    ent = sota->units_loaded[id];
+    Game_Party_Entity_Create(sota, id = UNIT_ID_SILOU, pos, &Unit_default);
+    ent = sota->party.entities[id];
     Map_Unit_Put(sota->map, pos.x, pos.y, ent);
-    SDL_assert(sota->units_loaded[id] > TNECS_NULL);
+    SDL_assert(sota->party.entities[id] > TNECS_NULL);
     sota->selected_unit_initial_position.x  = 0;
     sota->selected_unit_initial_position.y  = 0;
     struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
@@ -391,16 +389,16 @@ void test_aura_fsm(int argc, char *argv[]) {
     cursor_pos->tilemap_pos.y               = 3;
 
     /* Mocking stuff for fsm_eAcpt_sGmpMap_ssMapUnitMv */
-    sota->selected_unit_entity = sota->units_loaded[UNIT_ID_SILOU];
+    sota->selected_unit_entity = sota->party.entities[UNIT_ID_SILOU];
     sota->map->army_i = 0;
     fsm_eAcpt_sGmpMap_ssMapUnitMv(sota, TNECS_NULL);
-    struct Position *silou_pos = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[UNIT_ID_SILOU],
+    struct Position *silou_pos = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SILOU],
                                                      Position);
     SDL_assert(silou_pos->tilemap_pos.x == sota->selected_unit_moved_position.x);
     SDL_assert(silou_pos->tilemap_pos.y == sota->selected_unit_moved_position.y);
 
     /* Check effective stats */
-    struct Unit *silou = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[UNIT_ID_SILOU], Unit);
+    struct Unit *silou = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SILOU], Unit);
     nourstest_true(DARR_NUM(silou->bonus_stack) == 1);
     SDL_assert(silou != NULL);
     struct Weapon *standardwpn          = DTAB_GET(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
@@ -425,11 +423,11 @@ void test_aura_fsm(int argc, char *argv[]) {
     sota->selected_unit_initial_position.y  = 3;
     cursor_pos->tilemap_pos.x               = 0;
     cursor_pos->tilemap_pos.y               = 0;
-    sota->selected_unit_entity              = sota->units_loaded[UNIT_ID_SILOU];
+    sota->selected_unit_entity              = sota->party.entities[UNIT_ID_SILOU];
 
     fsm_eAcpt_sGmpMap_ssMapUnitMv(sota, TNECS_NULL);
     nourstest_true(DARR_NUM(silou->bonus_stack) == 0);
-    silou_pos = TNECS_GET_COMPONENT(sota->world, sota->units_loaded[UNIT_ID_SILOU], Position);
+    silou_pos = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SILOU], Position);
     SDL_assert(silou_pos->tilemap_pos.x == sota->selected_unit_moved_position.x);
     SDL_assert(silou_pos->tilemap_pos.y == sota->selected_unit_moved_position.y);
 

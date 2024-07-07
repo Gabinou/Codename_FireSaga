@@ -91,7 +91,6 @@ typedef struct PopUp_Map_Combat {
 
     tnecs_world  *world;
 
-    // TODO: use entities
     tnecs_entity aggressor;
     tnecs_entity defendant;
     SDL_Texture *texture;

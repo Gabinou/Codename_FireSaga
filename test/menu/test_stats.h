@@ -54,11 +54,16 @@ void test_menu_stats() {
     in_wpn.used = 0;
     Weapon_Load(weapons_dtab, in_wpn.id);
 
-    Unit_Item_Drop(&Silou,           UNIT_HAND_WEAK);
-    Unit_Item_Takeat(&Silou, in_wpn, UNIT_HAND_WEAK);
+    int stronghand  = Unit_Hand_Strong(&Silou);
+    int weakhand    = 1 - stronghand;
+
+    Unit_Item_Drop(&Silou,           weakhand);
+    Unit_Item_Takeat(&Silou, in_wpn, weakhand);
     SDL_assert(Silou.num_equipment == 4);
-    Silou.equipped[UNIT_HAND_WEAK] = true;
-    SDL_assert(Silou.equipped[UNIT_HAND_WEAK]);
+
+    Silou._equipped[weakhand] = true;
+    Unit_Equip(&Silou, weakhand, weakhand);
+    SDL_assert(Unit_isEquipped(&Silou, stronghand));
     nourstest_true(Unit_canAttack(&Silou));
     Unit_computedStats(&Silou, -1);
     Unit_effectiveStats(&Silou);

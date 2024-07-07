@@ -66,7 +66,6 @@ void test_popup_loadout_stats() {
 
     pls.unit = &unit;
 
-    unit.isTwoHanding = true;
     struct Inventory_item item = Inventory_item_default;
 
     item.id = ITEM_ID_GLAIVE;
@@ -110,8 +109,6 @@ void test_popup_loadout_stats() {
     Filesystem_Texture_Dump(PATH_JOIN("popup_loadout_stats",
                                       "PopupLoadoutStats_TwoHanding_AMBIDEXTROUS.png"),
                             renderer, pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
-
-    unit.isTwoHanding = false;
 
     /* -- All higher -- */
     pls.previous_cs = low_cs;

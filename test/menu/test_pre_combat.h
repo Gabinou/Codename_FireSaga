@@ -59,24 +59,27 @@ void test_menu_pre_combat() {
     nourstest_true(Silou.num_equipment == 4);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Hamilcar_test.json")), &Hamilcar);
 
+    int stronghand  = Unit_Hand_Strong(&Silou);
+    int weakhand    = 1 - stronghand;
+
     /* - Combatants equip - */
     struct Inventory_item in_wpn = Inventory_item_default;
     in_wpn.id = ITEM_ID_FLEURET;
     in_wpn.used = 0;
     Weapon_Load(weapons_dtab, in_wpn.id);
-    // Unit_Item_Drop(&Silou,           UNIT_HAND_WEAK);
-    // Unit_Item_Takeat(&Silou, in_wpn, UNIT_HAND_WEAK);
+    // Unit_Item_Drop(&Silou,           weakhand);
+    // Unit_Item_Takeat(&Silou, in_wpn, weakhand);
     nourstest_true(Silou.num_equipment == 4);
-    Silou.equipped[UNIT_HAND_WEAK] = true;
-    Silou.equipped[UNIT_HAND_STRONG] = true;
+    Unit_Equip(&Silou, weakhand, weakhand);
+    Unit_Equip(&Silou, stronghand, stronghand);
     // Silou has BALL LIGHTNING and WOODEN SHIELD
     // Hamilcar has GLAIVE and WOODEN SHIELD
 
-    Hamilcar.equipped[UNIT_HAND_WEAK] = true;
-    Hamilcar.equipped[UNIT_HAND_STRONG] = true;
-    SDL_assert(Silou.equipped[UNIT_HAND_WEAK]);
-    SDL_assert(Hamilcar.equipped[UNIT_HAND_WEAK]);
-    SDL_assert(Hamilcar.equipped[UNIT_HAND_STRONG]);
+    Unit_Equip(&Hamilcar, weakhand, weakhand);
+    Unit_Equip(&Hamilcar, stronghand, stronghand);
+    SDL_assert(Unit_isEquipped(&Silou, weakhand));
+    SDL_assert(Unit_isEquipped(&Hamilcar, weakhand));
+    SDL_assert(Unit_isEquipped(&Hamilcar, stronghand));
     nourstest_true(Unit_canAttack(&Silou));
     nourstest_true(Unit_canAttack(&Hamilcar));
 
@@ -487,12 +490,12 @@ void test_menu_pre_combat() {
     /* -- Weapon icons -- */
 
     /* -- Unequip left -- */
-    nourstest_true(Silou.equipped[UNIT_HAND_STRONG]);
-    Unit_Unequip(&Silou, UNIT_HAND_STRONG);
-    nourstest_true(!Silou.equipped[UNIT_HAND_STRONG]);
-    nourstest_true(Hamilcar.equipped[UNIT_HAND_STRONG]);
-    Unit_Unequip(&Hamilcar, UNIT_HAND_STRONG);
-    nourstest_true(!Hamilcar.equipped[UNIT_HAND_STRONG]);
+    nourstest_true(Unit_isEquipped(&Silou, stronghand));
+    Unit_Unequip(&Silou, stronghand);
+    nourstest_true(!Unit_isEquipped(&Silou, stronghand));
+    nourstest_true(Unit_isEquipped(&Hamilcar, stronghand));
+    Unit_Unequip(&Hamilcar, stronghand);
+    nourstest_true(!Unit_isEquipped(&Hamilcar, stronghand));
 
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
@@ -500,28 +503,28 @@ void test_menu_pre_combat() {
                             renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Unequip Right -- */
-    Unit_Equip_inHand(&Silou, UNIT_HAND_STRONG);
-    Unit_Unequip(&Silou, UNIT_HAND_WEAK);
-    Unit_Equip_inHand(&Hamilcar, UNIT_HAND_STRONG);
-    Unit_Unequip(&Hamilcar, UNIT_HAND_WEAK);
+    Unit_Equip(&Silou, stronghand, stronghand);
+    Unit_Unequip(&Silou, weakhand);
+    Unit_Equip(&Hamilcar, stronghand, stronghand);
+    Unit_Unequip(&Hamilcar, weakhand);
 
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Unequip_Right_Hand.png"),
                             renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Two handing -- */
-    nourstest_true(!Silou.isTwoHanding);
-    nourstest_true(!Hamilcar.isTwoHanding);
-    Unit_Item_Drop(&Hamilcar, UNIT_HAND_WEAK);
-    Unit_Item_Drop(&Silou, UNIT_HAND_WEAK);
+    nourstest_true(!Unit_istwoHanding(&Silou));
+    nourstest_true(!Unit_istwoHanding(&Hamilcar));
+    Unit_Item_Drop(&Hamilcar, weakhand);
+    Unit_Item_Drop(&Silou, weakhand);
     Silou._equipment[0].id    = ITEM_ID_BROADSWORD;
     Silou._equipment[1].id    = ITEM_ID_BROADSWORD;
     Hamilcar._equipment[0].id = ITEM_ID_BROADSWORD;
     Hamilcar._equipment[1].id = ITEM_ID_BROADSWORD;
-    Unit_Equip_TwoHanding(&Hamilcar);
-    Unit_Equip_TwoHanding(&Silou);
-    nourstest_true(Silou.isTwoHanding);
-    nourstest_true(Hamilcar.isTwoHanding);
+    Unit_Equip(&Silou,    weakhand, stronghand);
+    Unit_Equip(&Hamilcar, weakhand, stronghand);
+    nourstest_true(Unit_istwoHanding(&Silou));
+    nourstest_true(Unit_istwoHanding(&Hamilcar));
 
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Two_Handing.png"),
