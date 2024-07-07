@@ -283,8 +283,8 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *in_mc) 
     map_hp_bar->visible =   true;
 
     /* - Healer waits - */
-    SDL_assert(healer > TNECS_NULL);
-    Game_Unit_Wait(sota, healer);
+    SDL_assert(healer_ent > TNECS_NULL);
+    Game_Unit_Wait(sota, healer_ent);
 
     /* - hide movemap - */
     Map_Stacked_Dangermap_Reset(sota->map);
@@ -552,7 +552,6 @@ void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
         struct PlayerSelectMenu *psm = (struct PlayerSelectMenu *)mc_ua->data;
         int new_elem = PlayerSelectMenu_Option_Index(psm, MENU_OPTION_STAFF);
         Menu_Elem_Set(mc_ua, sota, new_elem);
-
     }
 }
 
@@ -857,17 +856,20 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
     SDL_assert(mc->elem >= 0);
     SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
 
-    LoadoutSelectMenu_Select(ssm, mc->elem);
+    StaffSelectMenu_Select(ssm, mc->elem);
 
     /* - Switch to Map_Candidates substate - */
     SDL_assert(sota->state    == GAME_STATE_Gameplay_Map);
     SDL_assert(sota->substate == GAME_SUBSTATE_MENU);
 
     if (StaffSelectMenu_canEqItem(ssm)) {
+        /* Unit can use staff in one hand */
         /* move cursor to second hand */
         int new_elem            = LSM_ELEM_ITEM2;
         tnecs_entity cursor   = sota->entity_cursor;
         Menu_Elem_Set(mc, sota, new_elem);
+
+        /* Switch to selecting items */
         StaffSelectMenu_Switch_Items(ssm);
     } else {
         /* - Check that a patient is in range of current loadout - */

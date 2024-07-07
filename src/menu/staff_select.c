@@ -49,3 +49,33 @@ void StaffSelectMenu_Switch_Items(struct  LoadoutSelectMenu *ssm) {
 void StaffSelectMenu_Switch_Staves(struct LoadoutSelectMenu *ssm) {
     ssm->update     = true;
 }
+
+void StaffSelectMenu_Select(struct LoadoutSelectMenu *ssm, i32 select) {
+    /* Player just selected loadout. */
+
+    /* Note: select is in strong space: stronghandd first hand */
+    /* - Equip weapons according to player choice - */
+    i32 eq          = ssm->unit->eq_usable[select];
+    i32 stronghand  = Unit_Hand_Strong(ssm->unit);
+    i32 weakhand    = 1 - stronghand;
+
+    // If stronghand is unselected, there should be usable weapons
+    if (ssm->selected[stronghand] < 0) {
+        SDL_assert(select < ssm->unit->num_usable);
+    }
+
+    // TODO: selection if one hand skill exists
+    if (ssm->selected[stronghand] < 0) {
+        // Equipping staff in both hands
+        ssm->selected[stronghand]   = eq;
+        ssm->selected[weakhand]     = eq;
+        Unit_Equip(ssm->unit, stronghand, eq);
+        Unit_Equip(ssm->unit, weakhand, eq);
+    } else {
+        /* - Both Hands already selected - */
+        SDL_Log("Both weapons already selected, but select sent to LoadoutSelectMenu");
+        SDL_assert(false);      /* For  debug   */
+        exit(ERROR_Generic);    /* For release  */
+    }
+    ssm->update = true;
+}
