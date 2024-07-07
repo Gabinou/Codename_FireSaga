@@ -26,7 +26,7 @@
 #include "test_octant.h"
 #include "test_text.h"
 #include "test_tile.h"
-// #include "test_unit.h" // TODO: equipped update
+#include "test_unit.h"
 #include "test_utilities.h"
 #include "test_weapon.h"
 
@@ -96,7 +96,7 @@ void unit_tests() {
     nourstest_run("Sprite ",        test_sprite);
     nourstest_run("Text ",          test_text);
     nourstest_run("Tile ",          test_tile);
-    // nourstest_run("Unit ",          test_unit);
+    nourstest_run("Unit ",          test_unit);
     nourstest_run("Utilities ",     test_utilities);
     nourstest_run("Weapon ",        test_weapon);
 }
@@ -105,15 +105,15 @@ void integration_tests(int argc, char *argv[]) {
     SDL_Log("Running integration tests\n");
     printf("Running integration tests\n");
 
-    // nourstest_run_args("Minimal",       test_minimal,               argc, argv);
-    // nourstest_run_args("Step",          test_step,                  argc, argv);
-    // nourstest_run_args("Load/Save",     test_load_save,             argc, argv);
-    // nourstest_run_args("Loss Death 1",  test_main_char_death_loss,  argc, argv);
-    // nourstest_run_args("Loss Death 2",  test_silou_death_loss,      argc, argv);
-    // nourstest_run_args("Win Boss",      test_boss_death_win,        argc, argv);
-    // nourstest_run_args("Aura apply",    test_aura_apply,            argc, argv);
-    // nourstest_run_args("Aura decay",    test_aura_decay,            argc, argv);
-    // nourstest_run_args("Aura fsm",      test_aura_fsm,              argc, argv);
+    nourstest_run_args("Minimal",       test_minimal,               argc, argv);
+    nourstest_run_args("Step",          test_step,                  argc, argv);
+    nourstest_run_args("Load/Save",     test_load_save,             argc, argv);
+    nourstest_run_args("Loss Death 1",  test_main_char_death_loss,  argc, argv);
+    nourstest_run_args("Loss Death 2",  test_silou_death_loss,      argc, argv);
+    nourstest_run_args("Win Boss",      test_boss_death_win,        argc, argv);
+    nourstest_run_args("Aura apply",    test_aura_apply,            argc, argv);
+    nourstest_run_args("Aura decay",    test_aura_decay,            argc, argv);
+    nourstest_run_args("Aura fsm",      test_aura_fsm,              argc, argv);
 }
 
 void random_checks() {

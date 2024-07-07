@@ -59,11 +59,15 @@ void test_load_save(int argc, char *argv[]) {
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     struct Game *sota = SDL_malloc(sizeof(struct Game));
     *sota = Game_default;
+
     sota->settings = Settings_default;
     sota->settings.window = false;
     Game_Init(sota, argc, argv);
     nourstest_true(sota->state      == GAME_STATE_Title_Screen);
     nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
+    sota->map = &Map_default;
+    sota->map->row_len = 21;
+    sota->map->col_len = 21;
 
     /* Load Save test file */
     char *path1 = PATH_JOIN("saves", "debug_save.json");
@@ -79,6 +83,7 @@ void test_load_save(int argc, char *argv[]) {
     nourstest_true(jsonio_Equal(path1,  path2, false));
 
     /* Quit game */
+    sota->map = NULL;
     Game_Free(sota);
     nourstest_true(true);
 }

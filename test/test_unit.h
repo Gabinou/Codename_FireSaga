@@ -372,16 +372,14 @@ void test_skills() {
     Silou.skills = UNIT_SKILL_PINPRICK;
     struct Inventory_item in_wpn = Inventory_item_default;
     in_wpn.id = ITEM_ID_FLEURET;
-    Unit_Item_Drop(&Silou,           UNIT_HAND_WEAK);
-    Unit_Item_Takeat(&Silou, in_wpn, UNIT_HAND_WEAK);
-    Unit_Item_Drop(&Enemy,           UNIT_HAND_WEAK);
-    Unit_Item_Takeat(&Enemy, in_wpn, UNIT_HAND_WEAK);
-    Silou.equipped[UNIT_HAND_WEAK] = true;
-    Enemy.equipped[UNIT_HAND_WEAK] = true;
-    // Unit_Equip_inHand(&Silou, UNIT_HAND_WEAK);
-    // Unit_Equip_inHand(&Enemy, UNIT_HAND_WEAK);
-    nourstest_true(Enemy.equipped[UNIT_HAND_WEAK]);
-    nourstest_true(Silou.equipped[UNIT_HAND_WEAK]);
+    Unit_Item_Drop(&Silou,           UNIT_HAND_LEFT);
+    Unit_Item_Takeat(&Silou, in_wpn, UNIT_HAND_LEFT);
+    Unit_Item_Drop(&Enemy,           UNIT_HAND_LEFT);
+    Unit_Item_Takeat(&Enemy, in_wpn, UNIT_HAND_LEFT);
+    Unit_Equip(&Silou, UNIT_HAND_LEFT, UNIT_HAND_LEFT);
+    Unit_Equip(&Enemy, UNIT_HAND_LEFT, UNIT_HAND_LEFT);
+    nourstest_true(Unit_isEquipped(&Enemy, UNIT_HAND_LEFT));
+    nourstest_true(Unit_isEquipped(&Silou, UNIT_HAND_LEFT));
     nourstest_true(Unit_canAttack(&Enemy));
     nourstest_true(Unit_canAttack(&Silou));
     Unit_computedStats(&Silou, distance);
@@ -634,62 +632,6 @@ void test_growth() {
     Unit_Free(&Silou);
 }
 
-void test_wpn_or_item() {
-    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
-    struct Unit Silou = Unit_default;
-    Unit_Init(&Silou);
-    struct dtab *weapons_dtab   = DTAB_INIT(weapons_dtab, struct Weapon);
-    struct dtab *items_dtab     = DTAB_INIT(items_dtab,   struct Item);
-    Silou.weapons_dtab  = weapons_dtab;
-    Silou.items_dtab    = items_dtab;
-
-    Silou.handedness = UNIT_HAND_LEFTIE;
-    Silou._equipment[0].id = ITEM_ID_RETRACTABLE_WRISTBLADE;
-    Silou._equipment[1].id = ITEM_ID_REPEATABLE_CROSSBOW;
-    Silou._equipment[2].id = ITEM_ID_HONJOU_MASAMUNE;
-    Silou._equipment[3].id = ITEM_ID_SILVERLIGHT_SPEAR;
-    Silou._equipment[4].id = ITEM_ID_PANACEA;
-
-    int eq_id = 0;
-    struct WpnorItem wpn_or_item = Unit_WpnorItem(&Silou, eq_id);
-    nourstest_true(wpn_or_item.dtab          == SOTA_DTAB_WEAPONS);
-    nourstest_true(wpn_or_item.wpn->item->id == Silou._equipment[eq_id].id);
-    nourstest_true(wpn_or_item.wpn->item->id == ITEM_ID_RETRACTABLE_WRISTBLADE);
-    nourstest_true(wpn_or_item.item          == NULL);
-
-    eq_id = 1;
-    wpn_or_item = Unit_WpnorItem(&Silou, eq_id);
-    nourstest_true(wpn_or_item.dtab          == SOTA_DTAB_WEAPONS);
-    nourstest_true(wpn_or_item.wpn->item->id == Silou._equipment[eq_id].id);
-    nourstest_true(wpn_or_item.wpn->item->id == ITEM_ID_REPEATABLE_CROSSBOW);
-    nourstest_true(wpn_or_item.item          == NULL);
-
-    eq_id = 2;
-    wpn_or_item = Unit_WpnorItem(&Silou, eq_id);
-    nourstest_true(wpn_or_item.dtab          == SOTA_DTAB_WEAPONS);
-    nourstest_true(wpn_or_item.wpn->item->id == Silou._equipment[eq_id].id);
-    nourstest_true(wpn_or_item.wpn->item->id == ITEM_ID_HONJOU_MASAMUNE);
-    nourstest_true(wpn_or_item.item          == NULL);
-
-    eq_id = 3;
-    wpn_or_item = Unit_WpnorItem(&Silou, eq_id);
-    nourstest_true(wpn_or_item.dtab          == SOTA_DTAB_WEAPONS);
-    nourstest_true(wpn_or_item.wpn->item->id == Silou._equipment[eq_id].id);
-    nourstest_true(wpn_or_item.wpn->item->id == ITEM_ID_SILVERLIGHT_SPEAR);
-    nourstest_true(wpn_or_item.item          == NULL);
-
-    eq_id = 4;
-    wpn_or_item = Unit_WpnorItem(&Silou, eq_id);
-    nourstest_true(wpn_or_item.dtab          == SOTA_DTAB_ITEMS);
-    nourstest_true(wpn_or_item.item->id      == Silou._equipment[eq_id].id);
-    nourstest_true(wpn_or_item.item->id      == ITEM_ID_PANACEA);
-    nourstest_true(wpn_or_item.wpn           == NULL);
-
-    Game_Items_Free(&items_dtab);
-    Game_Weapons_Free(&weapons_dtab);
-    Unit_Free(&Silou);
-}
-
 void test_reinforcements() {
     struct Unit Corsair = Unit_default;
     struct Reinforcement reinf = Reinforcement_default;
@@ -882,7 +824,6 @@ void test_unit() {
     // test_promotion();
     // test_canEquip(); /* BROKEN */
     test_skills();
-    test_wpn_or_item();
     // test_io();
     test_growth();
     test_bonus_decay();
