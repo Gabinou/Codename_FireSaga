@@ -345,7 +345,7 @@ void test_Pathfinding_Astar_plus() {
 
         int point_num       = DARR_NUM(path_list) / TWO_D;
         int *computed_path  = list2matrix(path_list, ROW_LEN, COL_LEN, point_num);
-        matrix_print(computed_path, ROW_LEN, COL_LEN);
+        // matrix_print(computed_path, ROW_LEN, COL_LEN);
 
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(computed_path[i] == expected_path[i]);

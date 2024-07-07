@@ -13,38 +13,38 @@ void test_party() {
     jsonio_readJSON(path_party, &party);
 
     /* --- Reading Party JSON only test --- */
-    nourstest_true(party.names != NULL);
-    nourstest_true(DARR_NUM(party.names) == 1);
-    nourstest_true(s8equal(s8_literal("Erwin"), party.names[0]));
+    nourstest_true(party.json_names != NULL);
+    nourstest_true(DARR_NUM(party.json_names) == 1);
+    nourstest_true(s8equal(s8_literal("Erwin"), party.json_names[0]));
 
-    nourstest_true(party.ids != NULL);
-    nourstest_true(DARR_NUM(party.ids) == 1);
-    nourstest_true(party.ids[0] == 2012);
-    SDL_assert(party.ids[0] == 2012);
+    nourstest_true(party.json_ids != NULL);
+    nourstest_true(DARR_NUM(party.json_ids) == 1);
+    nourstest_true(party.json_ids[0] == 2012);
+    SDL_assert(party.json_ids[0] == 2012);
 
-    nourstest_true(party.filenames != NULL);
-    nourstest_true(DARR_NUM(party.filenames) == 1);
+    nourstest_true(party.json_filenames != NULL);
+    nourstest_true(DARR_NUM(party.json_filenames) == 1);
     s8 path = s8_literal(PATH_JOIN(DEBUG_MAP_FOLDER, "Boss.json"));
-    nourstest_true(s8equal(path, party.filenames[0]));
+    nourstest_true(s8equal(path, party.json_filenames[0]));
 
     /* --- Creating filenames for ids --- */
-    SDL_assert(party.ids[0] == 2012);
+    SDL_assert(party.json_ids[0] == 2012);
     Party_Ids2Filenames(&party);
-    nourstest_true(DARR_NUM(party.filenames) == 2);
+    nourstest_true(DARR_NUM(party.json_filenames) == 2);
     path = s8_literal(PATH_JOIN(DEBUG_MAP_FOLDER, "Boss.json"));
-    nourstest_true(s8equal(path, party.filenames[0]));
+    nourstest_true(s8equal(path, party.json_filenames[0]));
     path = s8_literal(PATH_JOIN(PARTY_FOLDER, "Corsair.json"));
-    nourstest_true(s8equal(path, party.filenames[1]));
+    nourstest_true(s8equal(path, party.json_filenames[1]));
 
     /* --- Creating filenames for ids --- */
     Party_Names2Filenames(&party);
-    nourstest_true(DARR_NUM(party.filenames) == 3);
+    nourstest_true(DARR_NUM(party.json_filenames) == 3);
     path = s8_literal(PATH_JOIN(DEBUG_MAP_FOLDER, "Boss.json"));
-    nourstest_true(s8equal(path, party.filenames[0]));
+    nourstest_true(s8equal(path, party.json_filenames[0]));
     path = s8_literal(PATH_JOIN(PARTY_FOLDER, "Corsair.json"));
-    nourstest_true(s8equal(path, party.filenames[1]));
+    nourstest_true(s8equal(path, party.json_filenames[1]));
     path = s8_literal(PATH_JOIN(PARTY_FOLDER, "Erwin.json"));
-    nourstest_true(s8equal(path, party.filenames[2]));
+    nourstest_true(s8equal(path, party.json_filenames[2]));
 
     Party_Free(&party);
 }
