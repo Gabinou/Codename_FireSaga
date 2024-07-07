@@ -195,7 +195,6 @@ i32 *Map_Attacktomap_Compute(struct Map *map, tnecs_world *world,
     _Map_Movemap_Compute(map, start, move_stat);
     struct Range range = Range_default;
     _Unit_Range_Combine(unit, &range, equipped, ITEM_ARCHETYPE_WEAPON);
-    SDL_Log("range %d %d", range.min, range.max);
     map->update = true;
     map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap, map->row_len,
                                           map->col_len, move_stat, &range, MOVETILE_INCLUDE);

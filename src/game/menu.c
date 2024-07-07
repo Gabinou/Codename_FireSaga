@@ -327,7 +327,7 @@ void Game_postLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
                                      lsm->selected[UNIT_HAND_LEFT],
                                      lsm->selected[UNIT_HAND_RIGHT]);
 
-    matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
+    // matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
     Map_Attacktolist_Compute(sota->map);
 
     /* Find all Defendants */
