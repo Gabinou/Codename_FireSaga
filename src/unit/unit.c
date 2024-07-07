@@ -62,6 +62,8 @@ int  class_mvt_types[UNIT_CLASS_END] = {
 struct Unit Unit_default = {
     .json_element   = JSON_UNIT,
     .json_filename  = {0},
+    .mvt_type       = UNIT_MVT_FOOT_SLOW,
+    .class          = UNIT_CLASS_VILLAGER,
 
     /*                    hp str mag agi dex fth luck def res con move prof */
     .base_stats         = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},

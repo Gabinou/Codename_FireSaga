@@ -5,6 +5,7 @@
 void test_aura_apply(int argc, char *argv[]) {
     /* -- Startup -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
+    Names_Load_All();
     struct Game *sota       = SDL_malloc(sizeof(struct Game));
     *sota                   = Game_default;
     sota->settings          = Settings_default;
@@ -27,9 +28,10 @@ void test_aura_apply(int argc, char *argv[]) {
     /* Place Standard bearer inside */
     struct Point pos = {4, 4};
     Game_Party_Entity_Create(sota, id = UNIT_ID_ERWIN, pos, &Unit_default);
-    struct Unit *erwin = TNECS_GET_COMPONENT(sota->world, UNIT_ID_ERWIN, Unit);
-    erwin->class = UNIT_CLASS_STANDARD_BEARER;
     tnecs_entity ent = sota->party.entities[UNIT_ID_ERWIN];
+    struct Unit *erwin = TNECS_GET_COMPONENT(sota->world, ent, Unit);
+
+    erwin->class = UNIT_CLASS_STANDARD_BEARER;
     SDL_assert(ent > TNECS_NULL);
     Map_Unit_Put(sota->map, pos.x, pos.y, ent);
 
@@ -129,12 +131,14 @@ void test_aura_apply(int argc, char *argv[]) {
 
     /* Quit game */
     Game_Free(sota);
+    Names_Free();
     nourstest_true(true);
 }
 
 void test_aura_decay(int argc, char *argv[]) {
     /* -- Startup -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
+    Names_Load_All();
     struct Game *sota       = SDL_malloc(sizeof(struct Game));
     *sota                   = Game_default;
     sota->settings          = Settings_default;
@@ -323,6 +327,7 @@ void test_aura_decay(int argc, char *argv[]) {
 
     /* Quit game */
     Game_Free(sota);
+    Names_Free();
     nourstest_true(true);
 }
 
@@ -336,6 +341,7 @@ void test_aura_fsm(int argc, char *argv[]) {
 
     /* -- Startup -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
+    Names_Load_All();
     struct Game *sota       = SDL_malloc(sizeof(struct Game));
     *sota                   = Game_default;
     sota->settings          = Settings_default;
@@ -448,5 +454,6 @@ void test_aura_fsm(int argc, char *argv[]) {
 
     /* Quit game */
     Game_Free(sota);
+    Names_Free();
     nourstest_true(true);
 }

@@ -255,6 +255,10 @@ void Sprite_defaultShaders_Load(struct Sprite *sprite) {
 
 void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit,
                           SDL_Renderer *renderer) {
+    SDL_assert(renderer != NULL);
+    SDL_assert(sprite   != NULL);
+    SDL_assert(unit     != NULL);
+
     /* -- Alloc Spritesheet -- */
     if (sprite->spritesheet != NULL) {
         Spritesheet_Free(sprite->spritesheet);
@@ -267,6 +271,9 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit,
     /* -- Loading spritesheet metadata -- */
     s8 filename = s8_mut(PATH_JOIN("assets", "map_units")PHYSFS_SEPARATOR);
 
+    SDL_assert(classNames != NULL);
+    SDL_assert((unit->class > UNIT_CLASS_START) && (unit->class < UNIT_CLASS_END));
+    SDL_assert(classNames[unit->class].data != NULL);
     filename = s8cat(filename, s8_var(classNames[unit->class].data));
     filename = s8cat(filename, s8_literal(".json"));
     filename = s8_replaceSingle(filename, ' ', '_');

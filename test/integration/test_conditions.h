@@ -3,6 +3,7 @@
 
 void test_boss_death_win(int argc, char *argv[]) {
     /* -- Startup -- */
+    Names_Load_All();
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     struct Game *sota = SDL_malloc(sizeof(struct Game));
     *sota = Game_default;
@@ -52,11 +53,14 @@ void test_boss_death_win(int argc, char *argv[]) {
 
     /* Quit game */
     Game_Free(sota);
+    Names_Free();
     nourstest_true(true);
 }
 
 void test_main_char_death_loss(int argc, char *argv[]) {
     /* -- Startup -- */
+    Names_Load_All();
+
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     struct Game *sota = SDL_malloc(sizeof(struct Game));
     *sota = Game_default;
@@ -109,11 +113,14 @@ void test_main_char_death_loss(int argc, char *argv[]) {
     /* Quit game */
     Game_Free(sota);
     nourstest_true(true);
+    Names_Free();
 }
 
 void test_silou_death_loss(int argc, char *argv[]) {
     /* -- Startup -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
+    Names_Load_All();
+
     struct Game *sota = SDL_malloc(sizeof(struct Game));
     *sota = Game_default;
     sota->settings = Settings_default;
@@ -164,5 +171,6 @@ void test_silou_death_loss(int argc, char *argv[]) {
 
     /* Quit game */
     Game_Free(sota);
+    Names_Free();
     nourstest_true(true);
 }

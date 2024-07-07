@@ -113,6 +113,11 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     /* Create Unit entity from previously loaded party unit. */
     tnecs_world *world = sota->world;
     tnecs_entity unit_ent;
+
+    tnecs_component typeflag   = TNECS_COMPONENT_NAMES2TYPEFLAG(world, Unit, Position,
+                                                                Sprite, Timer, MapHPBar);
+    size_t typeflag_id1 = tnecs_typeflagid(world, typeflag);
+
     if (sota->party.entities[unit_id] > TNECS_NULL) {
         unit_ent = sota->party.entities[unit_id];
         // SDL_Log("Unit %d (%s, entity %d) is already loaded", unit_id,
@@ -123,6 +128,8 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
         // SDL_Log("-- create entity --");
         unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position,
                                                    Sprite, Timer, MapHPBar);
+        size_t current_num = world->num_entities_bytype[typeflag_id1];
+        SDL_assert(world->entities_bytype[typeflag_id1][current_num - 1] == unit_ent);
     }
 
     SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, unit_ent, Unit));
@@ -142,9 +149,6 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
         TNECS_ADD_COMPONENT(sota->world, unit_ent, Timer);
     }
 
-    tnecs_component typeflag   = TNECS_COMPONENT_NAMES2TYPEFLAG(world, Unit, Position,
-                                                                Sprite, Timer, MapHPBar);
-    size_t typeflag_id1 = tnecs_typeflagid(world, typeflag);
     size_t typeflag_id2 = tnecs_typeflagid(world, world->entity_typeflags[unit_ent]);
     SDL_assert(world->entities[unit_ent] == unit_ent);
     SDL_assert(unit_ent > TNECS_NULL);
@@ -186,9 +190,9 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     // slider->slidetype = SLIDETYPE_GEOMETRIC;
     // SDL_Log("-- loading map_hp_bar --");
     struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(sota->world, unit_ent, MapHPBar);
-    *map_hp_bar = MapHPBar_default;
-    map_hp_bar->unit_ent = unit_ent;
-    map_hp_bar->len = sota->settings.tilesize[0];
+    *map_hp_bar             = MapHPBar_default;
+    map_hp_bar->unit_ent    = unit_ent;
+    map_hp_bar->len         = sota->settings.tilesize[0];
     map_hp_bar->update      = false;
     map_hp_bar->visible     = false;
 
@@ -201,12 +205,12 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
 
     SDL_assert(sota->map != NULL);
     Position_Bounds_Set(pos, 0, sota->map->col_len, 0, sota->map->row_len);
-    pos->scale[0] = (float)sota->settings.tilesize[0];
-    pos->scale[1] = (float)sota->settings.tilesize[1];
-    pos->tilemap_pos.x = in_pos.x;
-    pos->tilemap_pos.y = in_pos.y;
-    pos->pixel_pos.x = (i32)lround(pos->tilemap_pos.x * pos->scale[0]);
-    pos->pixel_pos.y = (i32)lround(pos->tilemap_pos.y * pos->scale[1]);
+    pos->scale[0]       = (float)sota->settings.tilesize[0];
+    pos->scale[1]       = (float)sota->settings.tilesize[1];
+    pos->tilemap_pos.x  = in_pos.x;
+    pos->tilemap_pos.y  = in_pos.y;
+    pos->pixel_pos.x    = (i32)lround(pos->tilemap_pos.x * pos->scale[0]);
+    pos->pixel_pos.y    = (i32)lround(pos->tilemap_pos.y * pos->scale[1]);
 
     // SDL_Log("-- loading sprite --");
     struct Timer *timer;
@@ -231,8 +235,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
 
     // SDL_Log("-- checks --");
     SDL_assert(typeflag_id1 == typeflag_id2);
-    size_t current_num = world->num_entities_bytype[typeflag_id1];
-    SDL_assert(world->entities_bytype[typeflag_id1][current_num - 1] == unit_ent);
+    SDL_assert(world->entities[unit_ent] == unit_ent);
     sota->party.entities[unit_id] = unit_ent;
     SDL_assert(unit->name.data != NULL);
 
