@@ -544,13 +544,14 @@ void Unit_Staff_Use(Unit *healer, Unit *patient) {
     int weakhand    = 1 - stronghand;
     struct Inventory_item *weakhand_inv   = Unit_Item_Equipped(healer, weakhand);
     struct Inventory_item *stronghand_inv = Unit_Item_Equipped(healer, stronghand);
+    SDL_assert(stronghand_inv != NULL);
     SDL_assert(Weapon_isStaff(stronghand_inv->id));
 
     /* TODO: Check if healer has the staff in onehand skill */
     b32 has_skill = false;
     if (!has_skill) {
         /* Staves should be equipped in both hands */
-        SDL_assert(weakhand_inv->id == stronghand_inv->id);
+        SDL_assert((weakhand_inv != NULL) && (weakhand_inv->id == stronghand_inv->id));
     }
 
     /* Get staff weapon */

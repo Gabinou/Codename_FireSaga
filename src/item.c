@@ -250,6 +250,7 @@ b32 Item_canUse(struct Item *item,  struct Unit *unit) {
     return (item->canUse = (has_effect && is_user && is_class));
 }
 
+// TODO: move to unit responsibility
 void Item_Use(struct Item *item, struct Unit *user,
               struct Unit *targets) {
     /* Game takes charge of uses-- */
