@@ -81,4 +81,7 @@ b32 Unit_iswrongHanding(Unit *u);
 b32  Unit_Equipment_Full( Unit *u);
 void Unit_Equipment_Print(Unit *u);
 
+/* -- Use -- */
+void Unit_Staff_Use(Unit *unit, Unit *patient);
+
 #endif /* UNIT_EQUIPMENT_H */

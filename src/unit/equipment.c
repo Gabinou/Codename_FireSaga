@@ -531,3 +531,36 @@ Item *Unit_Get_Item(Unit *unit, int eq) {
     SDL_assert(item != NULL);
     return (item);
 }
+
+/* -- Use -- */
+void Unit_Staff_Use(Unit *healer, Unit *patient) {
+    /* Should not be called if staves not properly equipped:
+    *       - Staff in strong hand
+    *       - Staff in weakhand IF not onehand skill
+    */
+
+    /* Get equipped weapon id */
+    int stronghand  = Unit_Hand_Strong(healer);
+    int weakhand    = 1 - stronghand;
+    struct Inventory_item *weakhand_inv   = Unit_Item_Equipped(healer, weakhand);
+    struct Inventory_item *stronghand_inv = Unit_Item_Equipped(healer, stronghand);
+    SDL_assert(Weapon_isStaff(stronghand_inv->id));
+
+    /* TODO: Check if healer has the staff in onehand skill */
+    b32 has_skill = false;
+    if (!has_skill) {
+        /* Staves should be equipped in both hands */
+        SDL_assert(weakhand_inv->id == stronghand_inv->id);
+    }
+
+    /* Get staff weapon */
+    struct Weapon *staff = DTAB_GET(healer->weapons_dtab, stronghand_inv->id);
+    SDL_assert(TNECS_TYPEFLAG_HAS_TYPE(staff->item->type, ITEM_TYPE_STAFF));
+    SDL_assert(staff->item->active != NULL);
+
+    /* Use staff active */
+    staff->item->active(staff->item, healer, patient);
+
+    /* Deplete staff */
+    Unit_Equipped_Staff_Deplete(healer, stronghand);
+}

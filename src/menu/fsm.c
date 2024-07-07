@@ -268,19 +268,12 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moDance(struct Game *sota, struct Menu *in_mc) 
 
 void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *in_mc) {
 
-    tnecs_entity healer = sota->selected_unit_entity;
     /* - Healer uses staff on patient - */
-    /* IF no one hand staff SKILL */
-    struct Unit *unit = TNECS_GET_COMPONENT(sota->world, healer, Unit);
-    tnecs_entity patient_ent = sota->candidates[sota->candidate];
-    struct Unit *patient = TNECS_GET_COMPONENT(sota->world, patient_ent, Unit);
-    struct Inventory_item *staff_inv = Unit_Item_Equipped(unit, Unit_Hand_Strong(unit));
-    struct Weapon *staff = DTAB_GET(unit->weapons_dtab, staff_inv->id);
-    SDL_assert(TNECS_TYPEFLAG_HAS_TYPE(staff->item->type, ITEM_TYPE_STAFF));
-    SDL_assert(staff->item->active != NULL);
-    staff->item->active(staff->item, unit, patient);
-
-    /* TODO: IF one hand staff SKILL */
+    tnecs_entity healer_ent     = sota->selected_unit_entity;
+    tnecs_entity patient_ent    = sota->candidates[sota->candidate];
+    struct Unit *healer     = TNECS_GET_COMPONENT(sota->world, healer_ent, Unit);
+    struct Unit *patient    = TNECS_GET_COMPONENT(sota->world, patient_ent, Unit);
+    Unit_Staff_Use(healer, patient);
 
     /* - Update maphpbar - */
     struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(sota->world, patient_ent, MapHPBar);
