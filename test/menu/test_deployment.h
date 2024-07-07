@@ -105,13 +105,14 @@ void test_menu_deployment() {
     *sota = Game_default;
     sota->settings = Settings_default;
     sota->settings.window = false;
-    Game_Init(sota, 0, NULL);
+    char argv[1] = {0};
+    Game_Init(sota, 0, &argv);
 
     party_struct = Party_default;
-    weapons_dtab            = DTAB_INIT(weapons_dtab,   struct Weapon);
-    items_dtab              = DTAB_INIT(items_dtab,     struct Item);
-    party_struct.json_ids        = DARR_INIT(party_struct.json_ids, i16, 8);
-    party_struct.json_filenames  = DARR_INIT(party_struct.json_filenames, s8, 8);
+    weapons_dtab                    = DTAB_INIT(weapons_dtab,   struct Weapon);
+    items_dtab                      = DTAB_INIT(items_dtab,     struct Item);
+    party_struct.json_ids           = DARR_INIT(party_struct.json_ids, i16, 8);
+    party_struct.json_filenames     = DARR_INIT(party_struct.json_filenames, s8, 8);
 
     /* -- Create n9patch -- */
     struct n9Patch n9patch = n9Patch_default;

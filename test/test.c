@@ -53,8 +53,8 @@
 void render_tests() {
     SDL_Log("Running rendering tests\n");
     printf("Running rendering tests\n");
-    // test_arrow();
-    // test_menu_deployment();
+    test_arrow();
+    test_menu_deployment();
     // test_menu_growths();
     // test_menu_loadout_select();
     // test_menu_player_select();
@@ -151,9 +151,9 @@ int main(int argc, char *argv[]) {
 
     /* -- Running tests -- */
     // test_events();
-    unit_tests();
-    // render_tests();
-    integration_tests(argc, argv);
+    // unit_tests();
+    render_tests();
+    // integration_tests(argc, argv);
     nourstest_results();
 
     /* -- Postliminaries -- */
