@@ -337,6 +337,7 @@ void Item_writeJSON(void *_input, cJSON *jitem) {
     cJSON *jaura      = cJSON_CreateObject();
     cJSON *jcanSell   = cJSON_CreateBool(_item->canSell);
     cJSON *jusers     = cJSON_CreateObject();
+    cJSON *jeffects   = cJSON_CreateObject();
     cJSON *jusers_ids = cJSON_CreateArray();
     cJSON *jusers_id  = NULL;
     cJSON *jclass     = cJSON_CreateObject();
@@ -363,17 +364,8 @@ void Item_writeJSON(void *_input, cJSON *jitem) {
 
     /* - Passive effects - */
     // TODO: Fix writing effects
-    cJSON *jpassives = cJSON_CreateObject();
-    cJSON *jpassive = NULL;
-    jpassive = cJSON_CreateNumber(_item->passive);
-    cJSON_AddItemToObject(jpassives, "id", jpassive);
-    // s8 *effects = Names_wpnEffects(_item->passive);
-    // for (i16 i = 0; i < DARR_NUM(effects); i++) {
-    //     jpassive = cJSON_CreateString(effects[i].data);
-    //     cJSON_AddItemToObject(jpassives, "Effect", jpassive);
-    //     s8_free(&effects[i]);
-    // }
-    // DARR_FREE(effects);
+    cJSON *jpassive = cJSON_CreateNumber(_item->passive);
+    cJSON_AddItemToObject(jeffects, "passive", jpassive);
 
     /* - Types - */
     cJSON *jtypes = cJSON_CreateObject();
@@ -399,7 +391,7 @@ void Item_writeJSON(void *_input, cJSON *jitem) {
     cJSON_AddItemToObject(jitem,   "Users",       jusers);
     cJSON_AddItemToObject(jitem,   "Class",       jclass);
     cJSON_AddItemToObject(jitem,   "canSell",     jcanSell);
-    cJSON_AddItemToObject(jitem,   "Effects",     jpassives);
+    cJSON_AddItemToObject(jitem,   "Effects",     jeffects);
     cJSON_AddItemToObject(jitem,   "Types",       jtypes);
 
     /* - Writing stats - */
