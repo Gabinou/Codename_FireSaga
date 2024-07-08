@@ -41,6 +41,7 @@ b32 Combat_canAttack_Equipped(struct Unit *attacker, struct Unit *defender,
     SDL_assert(dfd_pos);
     /* Get range of current loadout */
     struct Range *att_range = Unit_Range_Loadout(attacker);
+    SDL_Log("att_range %d %d", att_range->min, att_range->max);
     /* Is enemy in range? */
     u8 distance  = abs(dfd_pos->x - att_pos->x) +  abs(dfd_pos->y - att_pos->y);
     b32 can     = (distance >= att_range->min) && (distance <= att_range->max);
@@ -60,12 +61,14 @@ struct Combat_Flow Compute_Combat_Flow(struct Unit *agg, struct Unit *dft,
     if (out_flow.defendant_retaliates)
         out_flow.defendant_phases = 1;
 
+    // Set number of combat phases for adversary, if doubling
     // TODO: Triple, Quadruple phases with skill.
     if (Combat_canDouble(agg, dft))
         out_flow.aggressor_phases *= 2;
     if (Combat_canDouble(dft, agg))
         out_flow.defendant_phases *= 2;
 
+    // Check that adversary does not have extra combat phases
     if (out_flow.defendant_phases > 1)
         SDL_assert(out_flow.aggressor_phases <= 1);
     if (out_flow.aggressor_phases > 1)

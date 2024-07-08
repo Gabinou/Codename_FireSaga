@@ -36,8 +36,8 @@ void test_combat_stats() {
 
     // struct Inventory_item in_wpn = Inventory_item_default;
     // in_wpn.id = ITEM_ID_FLEURET;
-    // b32 attacker_equip_hand = UNIT_HAND_LEFT;
-    // b32 defender_equip_hand = UNIT_HAND_LEFT;
+    // b32 attacker_equip_hand = Unit_Hand_Strong(&attacker);
+    // b32 defender_equip_hand = Unit_Hand_Strong(&defender);
     // Unit_Item_Drop(defender,           defender_equip_hand);
     // Unit_Item_Takeat(defender, in_wpn, defender_equip_hand);
     // Unit_Item_Drop(attacker,           attacker_equip_hand);
@@ -170,8 +170,9 @@ void test_combat_death() {
 
     struct Inventory_item in_wpn = Inventory_item_default;
     in_wpn.id = ITEM_ID_FLEURET;
-    b32 attacker_equip_hand = UNIT_HAND_LEFT;
-    b32 defender_equip_hand = UNIT_HAND_LEFT;
+
+    b32 attacker_equip_hand = Unit_Hand_Strong(&attacker);
+    b32 defender_equip_hand = Unit_Hand_Strong(&defender);
     struct Combat_Forecast forecast;
     Unit_Item_Drop(&defender,           defender_equip_hand);
     Unit_Item_Takeat(&defender, in_wpn, defender_equip_hand);
@@ -319,8 +320,8 @@ void test_combat_flow() {
 
     struct Inventory_item in_wpn = Inventory_item_default;
     in_wpn.id = ITEM_ID_FLEURET;
-    b32 attacker_equip_hand = UNIT_HAND_LEFT;
-    b32 defender_equip_hand = UNIT_HAND_LEFT;
+    b32 attacker_equip_hand = Unit_Hand_Strong(&attacker);
+    b32 defender_equip_hand = Unit_Hand_Strong(&defender);
     Unit_Item_Drop(&defender,           defender_equip_hand);
     Unit_Item_Takeat(&defender, in_wpn, defender_equip_hand);
     Unit_Item_Drop(&attacker,           attacker_equip_hand);
@@ -400,7 +401,8 @@ void test_combat_flow() {
     nourstest_true(Unit_computeSpeed(&defender, distance) == defender_speed);
     nourstest_true(defender.computed_stats.speed == defender_speed);
     nourstest_true(defender.computed_stats.speed == 7);
-    temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
+    temp_flow = Compute_Combat_Flow(&attacker, &defender,
+                                    (struct Point *)&attacker_pos,
                                     (struct Point *)&defender_pos);
     nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender,
                    &attacker, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
