@@ -2,9 +2,11 @@
 #define DEBUG_H
 
 #include "macros.h"
+#include "SDL2/SDL.h"
 
 /* -- Release switches -- */
 // #define SOTA_NO_LOGS
+
 
 /* -- Various defines -- */
 #define SOTA_RNG SOTA_RN_DOUBLE
@@ -53,6 +55,10 @@
 
 /* UNIT */
 // #define DEBUG_UNIT_MOVEAFTERWAIT
+
+/* Assertion handler -> always break */
+#define SOTA_ASSERT_ALWAYS_BREAK
+SDL_AssertState sota_assert_handler(const SDL_AssertData *data, void *userdata);
 
 #define TWOHANDING_DOUBLES_DAMAGE
 

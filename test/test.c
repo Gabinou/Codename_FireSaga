@@ -138,6 +138,10 @@ int main(int argc, char *argv[]) {
     random_checks();
 
     /* -- Preliminaries -- */
+#ifdef SOTA_ASSERT_ALWAYS_BREAK
+    SDL_SetAssertionHandler(sota_assert_handler, NULL);
+#endif /* SOTA_ASSERT_ALWAYS_BREAK */
+
     Log_Init();
     freopen("test_results.txt", "w+", stdout);
     SDL_Log("Filesystem_Init\n");
@@ -151,8 +155,8 @@ int main(int argc, char *argv[]) {
 
     /* -- Running tests -- */
     // test_events();
-    unit_tests();
-    // render_tests();
+    // unit_tests();
+    render_tests();
     // integration_tests(argc, argv);
     nourstest_results();
 

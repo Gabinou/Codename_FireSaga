@@ -262,6 +262,11 @@ void Game_Pre_Init(int argc, char *argv[]) {
 
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Starting IES\n");
 
+    /* --- ASSERTS --- */
+#ifdef SOTA_ASSERT_ALWAYS_BREAK
+    SDL_SetAssertionHandler(sota_assert_handler, NULL);
+#endif /* SOTA_ASSERT_ALWAYS_BREAK */
+
     /* -- Platform detection -- */
     if (PLATFORM != platform_fromSDL()) {
         SDL_LogCritical(0, "C Platform not the same as SDL platform");
