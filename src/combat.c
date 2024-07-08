@@ -41,7 +41,6 @@ b32 Combat_canAttack_Equipped(struct Unit *attacker, struct Unit *defender,
     SDL_assert(dfd_pos);
     /* Get range of current loadout */
     struct Range *att_range = Unit_Range_Loadout(attacker);
-    SDL_Log("att_range %d %d", att_range->min, att_range->max);
     /* Is enemy in range? */
     u8 distance  = abs(dfd_pos->x - att_pos->x) +  abs(dfd_pos->y - att_pos->y);
     b32 can     = (distance >= att_range->min) && (distance <= att_range->max);

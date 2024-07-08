@@ -37,8 +37,8 @@ void test_combat_game() {
     SDL_Log("Setting up inventory");
     struct Inventory_item in_wpn = Inventory_item_default;
     in_wpn.id = ITEM_ID_FLEURET;
-    b32 attacker_equip_hand = 1 - Unit_Hand_Strong(&attacker);
-    b32 defender_equip_hand = 1 - Unit_Hand_Strong(&defender);
+    b32 attacker_equip_hand = Unit_Hand_Strong(&attacker);
+    b32 defender_equip_hand = Unit_Hand_Strong(&defender);
     Unit_Item_Drop(&defender,           defender_equip_hand);
     Unit_Item_Takeat(&defender, in_wpn, defender_equip_hand);
     Unit_Item_Drop(&attacker,           attacker_equip_hand);
@@ -163,9 +163,12 @@ void test_combat_game() {
 
     struct Combat_Forecast test_Combat_Forecast;
 
+    SDL_Log("attacker_pos %d %d", attacker_pos.x, attacker_pos.y);
+    SDL_Log("defender_pos %d %d", defender_pos.x, defender_pos.y);
     firesaga.combat_forecast = Compute_Combat_Forecast(&attacker, &defender,
                                                        &attacker_pos,
                                                        &defender_pos);
+    getchar();
     nourstest_true(firesaga.combat_forecast.flow.aggressor_phases == 1);
     nourstest_true(firesaga.combat_forecast.flow.defendant_phases == 1);
     nourstest_true(firesaga.combat_forecast.flow.defendant_retaliates == true);
