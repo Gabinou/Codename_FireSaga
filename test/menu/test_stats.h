@@ -8,6 +8,7 @@ void test_menu_stats() {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     /* -- Preliminaries -- */
     sota_mkdir("menu_stats");
+    Names_Load_All();
 
     /* -- Weapon dtab -- */
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
@@ -404,4 +405,5 @@ void test_menu_stats() {
 
     SDL_DestroyRenderer(renderer);
     Unit_Free(&Silou);
+    Names_Free();
 }
