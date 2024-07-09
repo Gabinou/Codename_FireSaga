@@ -526,6 +526,8 @@ void test_menu_pre_combat() {
     nourstest_true(Unit_istwoHanding(&Silou));
     nourstest_true(Unit_istwoHanding(&Hamilcar));
 
+    Weapon_Load(weapons_dtab, ITEM_ID_BROADSWORD);
+
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Two_Handing.png"),
                             renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);

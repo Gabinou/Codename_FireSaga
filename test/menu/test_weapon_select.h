@@ -50,21 +50,24 @@ void test_menu_loadout_select() {
 
     /* - Unit equip - */
     struct Inventory_item in_wpn = Inventory_item_default;
-    in_wpn.id   = ITEM_ID_FLEURET;
-    in_wpn.used = 0;
-    Weapon_Load(weapons_dtab, in_wpn.id);
+    // in_wpn.id   = ITEM_ID_FLEURET;
+    // in_wpn.used = 0;
+    // Weapon_Load(weapons_dtab, in_wpn.id);
 
     i32 stronghand  = Unit_Hand_Strong(&Silou);
-    i32 weakhand    = 1 - stronghand;
-
-    Unit_Item_Drop(&Silou,           weakhand);
-    Unit_Item_Takeat(&Silou, in_wpn, weakhand);
+    // i32 weakhand    = 1 - stronghand;
+    // Unit_Item_Drop(&Silou,           weakhand);
+    // Unit_Item_Takeat(&Silou, in_wpn, weakhand);
     SDL_assert(Silou.num_equipment == 4);
-    Unit_Equip(&Silou, weakhand, weakhand);
+    Unit_Equip(&Silou, stronghand, 0);
     SDL_assert(Unit_isEquipped(&Silou, stronghand));
     nourstest_true(Unit_canAttack(&Silou));
     Unit_Find_Usable(&Silou, ITEM_ARCHETYPE_WEAPON);
+    SDL_assert(Silou.num_usable > 0);
+    SDL_assert(Silou.eq_usable[0] == 0);
+
     _LoadoutSelectMenu_Load(wsm, &Silou, renderer, &n9patch);
+    wsm->selected[stronghand] = Silou.eq_usable[0];
     struct  Menu mc;
     mc.elem = 0;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);

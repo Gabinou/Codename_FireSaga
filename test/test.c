@@ -55,18 +55,18 @@ void render_tests() {
     printf("Running rendering tests\n");
     test_arrow();
     test_menu_deployment();
-    // test_menu_growths();
-    // test_menu_loadout_select();
-    // test_menu_player_select();
-    // test_menu_pre_combat();
-    // test_menu_item_drop();
-    // test_menu_stats();
-    // test_popup_loadout_stats();
-    // test_popup_map_combat();
-    // test_popup_objective();
-    // test_popup_unit();
-    // test_bars_slider_bar();
-    // test_text_bubble();
+    test_menu_growths();
+    test_menu_loadout_select();
+    test_menu_player_select();
+    test_menu_pre_combat();
+    test_menu_item_drop();
+    test_menu_stats();
+    test_popup_loadout_stats();
+    test_popup_map_combat();
+    test_popup_objective();
+    test_popup_unit();
+    test_bars_slider_bar();
+    test_text_bubble();
 }
 
 void unit_tests() {
