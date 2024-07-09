@@ -5,6 +5,7 @@ void test_menu_item_drop() {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     /* -- Preliminaries -- */
     sota_mkdir("menu_item_drop");
+    Names_Load_All();
 
     /* -- Weapon dtab -- */
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
@@ -97,5 +98,7 @@ void test_menu_item_drop() {
     Weapons_All_Free(weapons_dtab);
     DTAB_FREE(items_dtab);
     DTAB_FREE(weapons_dtab);
+    Names_Free();
+
     SDL_DestroyRenderer(renderer);
 }

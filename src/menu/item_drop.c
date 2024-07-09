@@ -132,7 +132,8 @@ void ItemDropMenu_Update(struct  ItemDropMenu  *idm, struct n9Patch *n9patch,
 
     /* Item name */
     s8 name = s8_mut("");
-    name = s8cat(name, global_itemNames[item->id]);
+    int *order = DTAB_GET(global_itemOrders, item->id);
+    name = s8cat(name, global_itemNames[*order]);
     name = s8_toUpper(name);
 
     /* --- Compute menu width dynamically --- */

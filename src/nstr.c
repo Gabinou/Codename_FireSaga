@@ -46,6 +46,8 @@ s8 s8cat(s8 s1, s8 s2) {
     }
 
     /* Concatenate */
+    SDL_assert(s1.data != NULL);
+    SDL_assert(s2.data != NULL);
     memcpy(s1.data + s1.num, s2.data, s2.num);
     s1.num += s2.num;
     SDL_assert(strlen(s1.data) == s1.num);
