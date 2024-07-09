@@ -66,7 +66,7 @@ void Party_Reset(struct Party *party) {
 
 /* --- Utilities --- */
 i32 Party_Size(struct Party *ps)  {
-    SDL_assert(ps                   != NULL);
+    SDL_assert(ps != NULL);
     ps->size = 0;
     for (size_t i = UNIT_ID_START + 1; i < SOTA_MAX_PARTY_SIZE; i++) {
         if (ps->entities[i] > TNECS_NULL) {
@@ -77,6 +77,7 @@ i32 Party_Size(struct Party *ps)  {
 }
 
 void Party_ID_Stack(struct Party *party)  {
+    SDL_assert(party->id_stack != NULL);
     DARR_NUM(party->id_stack) = 0;
     for (size_t i = UNIT_ID_START + 1; i < SOTA_MAX_PARTY_SIZE; i++) {
         if (party->entities[i] > TNECS_NULL) {
@@ -160,6 +161,7 @@ void Party_Load(struct Party *party, struct Game *sota,
     SDL_assert(party != NULL);
     s8 *filenames = party->json_filenames;
     SDL_assert(filenames != NULL);
+    SDL_assert(DARR_NUM(filenames) > 0);
     _Party_Load(party->entities, sota, wdtab, idtab, filenames, DARR_NUM(filenames));
 }
 

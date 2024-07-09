@@ -329,6 +329,7 @@ static void _DeploymentMenu_Draw_Unit_Num(DeploymentMenu *dm, SDL_Renderer *rend
 }
 
 static void _DeploymentMenu_Draw_Names(DeploymentMenu *dm, SDL_Renderer *renderer) {
+    SDL_assert(dm->world != NULL);
     i32 num_to_draw = _DeploymentMenu_Num(dm);
     int x = DM_NAME_X, y = DM_NAME_CONTENT_Y;
     Point point = _Unit_Frame(x, y);
@@ -355,6 +356,7 @@ static void _DeploymentMenu_Draw_Names(DeploymentMenu *dm, SDL_Renderer *rendere
 
 /* -- Page 1 -- */
 static void _DeploymentMenu_Draw_Stats_P1(DeploymentMenu *dm, SDL_Renderer *renderer) {
+    SDL_assert(dm->world != NULL);
     unsigned char array[8] = {0};
     i32 num_to_draw = _DeploymentMenu_Num(dm);
     Point point;
@@ -418,6 +420,7 @@ static void _DeploymentMenu_Draw_Stats_P1(DeploymentMenu *dm, SDL_Renderer *rend
 
 /* -- Page 2 -- */
 static void _DeploymentMenu_Draw_Stats_P2(DeploymentMenu *dm, SDL_Renderer *renderer) {
+    SDL_assert(dm->world != NULL);
     char array[8] = {0};
     int x = 0, y = 0;
     Point point;
@@ -477,6 +480,7 @@ static void _DeploymentMenu_Draw_Stats_P2(DeploymentMenu *dm, SDL_Renderer *rend
 
 /* -- Page 3 -- */
 static void _DeploymentMenu_Draw_Stats_P3(DeploymentMenu *dm, SDL_Renderer *renderer) {
+    SDL_assert(dm->world != NULL);
     char array[8] = {0};
     int x = 0, y = 0;
     Point point;
@@ -537,6 +541,7 @@ static void _DeploymentMenu_Draw_Stats_P3(DeploymentMenu *dm, SDL_Renderer *rend
 
 /* -- Page 4 -- */
 static void _DeploymentMenu_Draw_Stats_P4(DeploymentMenu *dm, SDL_Renderer *renderer) {
+    SDL_assert(dm->world != NULL);
     char array[8] = {0};
     int x = 0, y = 0;
     Point point;
@@ -594,8 +599,8 @@ static void _DeploymentMenu_Draw_Unit(DeploymentMenu *dm,
     /* Draw map unit as side icon */
 }
 
-static void _DeploymentMenu_Draw_Mount(DeploymentMenu *dm,
-                                       SDL_Renderer *renderer) {
+static void _DeploymentMenu_Draw_Mount(DeploymentMenu *dm, SDL_Renderer *renderer) {
+    SDL_assert(dm->world != NULL);
     /* - preliminaries - */
     i32 num_to_draw = _DeploymentMenu_Num(dm);
     SDL_Rect dstrect, srcrect;
@@ -883,6 +888,7 @@ void DeploymentMenu_Party_Set(DeploymentMenu *dm, struct Party *party) {
         SDL_free(dm->_selected);
         dm->_selected = NULL;
     }
+    SDL_assert(DARR_NUM(party->entities) > 0);
     dm->party           = party;
     Party_ID_Stack(party);
     dm->_party_size     = Party_Size(party);
