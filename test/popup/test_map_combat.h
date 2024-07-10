@@ -8,6 +8,7 @@ void test_popup_map_combat() {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     /* -- Preliminaries -- */
     sota_mkdir("popup_map_combat");
+    Names_Load_All();
 
     /* -- Tinymt -- */
     struct TINYMT32_T tinymt32;
@@ -373,8 +374,14 @@ void test_popup_map_combat() {
     //                         pmc.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- FREE -- */
-    PixelFont_Free(pmc.pixelnours_tight, true);
-    PixelFont_Free(pmc.pixelnours_big,   true);
+    if (pmc.pixelnours_tight != NULL) {
+        PixelFont_Free(pmc.pixelnours_tight, true);
+    }
+
+    if (pmc.pixelnours_big != NULL) {
+        PixelFont_Free(pmc.pixelnours_big,   true);
+    }
+
     PopUp_Map_Combat_Free(&pmc);
     DARR_FREE(combat_attacks);
     Game_Weapons_Free(&weapons_dtab);
@@ -382,5 +389,6 @@ void test_popup_map_combat() {
     SDL_FreeSurface(surface);
     Unit_Free(&aggressor);
     Unit_Free(&defendant);
+    Names_Free();
     SDL_Quit();
 }

@@ -90,6 +90,7 @@ void jsonio_readJSON(s8 filename, void *struct_ptr) {
     struct cJSON *jelement = cJSON_GetObjectItem(jfile, elem_name.data);
     if (jelement == NULL) {
         SDL_Log("JSON element '%s' does not exist in '%s'", elem_name.data, filename.data);
+        SDL_assert(false);
         exit(ERROR_JSONElementNotSet);
     }
 
