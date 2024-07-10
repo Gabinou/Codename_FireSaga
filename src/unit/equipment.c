@@ -6,7 +6,7 @@
 void Unit_Find_Usable(struct Unit *unit, u64 archetype) {
     /* -- Find usable weapons in eq_space --  */
     unit->num_usable = 0;
-    for (int i = 0; i < SOTA_EQUIPMENT_SIZE; i++) {
+    for (i32 i = 0; i < SOTA_EQUIPMENT_SIZE; i++) {
         if (Unit_Eq_Usable(unit, archetype, i))
             unit->eq_usable[unit->num_usable++] = i;
     }
@@ -17,7 +17,7 @@ b32 Unit_All_Usable(struct Unit *unit) {
     /* Use case: Dropping item  */
     unit->num_usable    = 0;
     b32 all_usable     = true;
-    for (int i = 0; i < unit->num_equipment; i++) {
+    for (i32 i = 0; i < unit->num_equipment; i++) {
         unit->eq_usable[unit->num_usable] = i;
         if (!unit->eq_usable[unit->num_usable])
             all_usable = false;
@@ -26,13 +26,13 @@ b32 Unit_All_Usable(struct Unit *unit) {
     return (all_usable);
 }
 
-b32 Unit_Eq_Usable( struct Unit *unit, u64 archetype, int i) {
+b32 Unit_Eq_Usable( struct Unit *unit, u64 archetype, i32 i) {
     SDL_assert(i >= 0);
     SDL_assert(i < SOTA_EQUIPMENT_SIZE);
     return (Unit_Item_Usable(unit, archetype, unit->_equipment[i].id));
 }
 
-b32 Unit_Item_Usable(struct Unit *unit, u64 archetype, int id) {
+b32 Unit_Item_Usable(struct Unit *unit, u64 archetype, i32 id) {
     b32 usable = false;
     do {
         /* -- If item, everything is usable --  */
@@ -126,17 +126,17 @@ void Unit_Item_Take(struct Unit *unit, struct Inventory_item item) {
 }
 
 void Unit_Equipment_Drop(struct Unit *unit) {
-    for (int i = 0; i < SOTA_EQUIPMENT_SIZE; i++) {
+    for (i32 i = 0; i < SOTA_EQUIPMENT_SIZE; i++) {
         Unit_Item_Drop(unit, i);
     }
 }
 
-void Unit_Equipped_Import(Unit *unit, int *equipped) {
+void Unit_Equipped_Import(Unit *unit, i32 *equipped) {
     size_t bytesize = UNIT_HANDS_NUM * sizeof(*equipped);
     memcpy(unit->_equipped, equipped, bytesize);
 }
 
-void Unit_Equipped_Export(Unit *unit, int *equipped) {
+void Unit_Equipped_Export(Unit *unit, i32 *equipped) {
     size_t bytesize = UNIT_HANDS_NUM * sizeof(*equipped);
     memcpy(equipped, unit->_equipped, bytesize);
 }
@@ -220,13 +220,22 @@ void Unit_Check_Equipped(struct Unit *unit) {
 
 }
 
-void Unit_Equip(struct Unit *unit, b32 hand, int i) {
+
+/// @return: 0 on equip, 1 on failed to equip
+i32 Unit_Equip(struct Unit *unit, b32 hand, i32 i) {
     SDL_assert(unit);
     SDL_assert(i >= 0);
     SDL_assert(i < SOTA_EQUIPMENT_SIZE);
     SDL_assert(unit->_equipment[i].id > ITEM_NULL);
 
+    /* Check if unit is trying to and can twohand weapon */
+    b32 other_hand = 1 - hand;
+    if ((unit->_equipped[other_hand] = i) && (!Unit_canTwoHand(unit, i))) {
+        return (EXIT_FAILURE);
+    }
+
     unit->_equipped[hand] = i;
+    return (EXIT_SUCCESS);
 }
 
 void Unit_Unequip(struct Unit *unit, b32 hand) {
@@ -370,8 +379,8 @@ b32 Unit_isdualWielding(struct Unit *unit) {
     b32 left            = Unit_isWielding(unit, UNIT_HAND_LEFT);
     b32 right           = Unit_isWielding(unit, UNIT_HAND_RIGHT);
 
-    int eq_L = unit->_equipped[UNIT_HAND_LEFT];
-    int eq_R = unit->_equipped[UNIT_HAND_RIGHT];
+    i32 eq_L = unit->_equipped[UNIT_HAND_LEFT];
+    i32 eq_R = unit->_equipped[UNIT_HAND_RIGHT];
     b32 left_canWeakhand    = left  ? Weapon_canWeakhand(eq_L) : true;
     b32 right_canWeakhand   = right ? Weapon_canWeakhand(eq_R) : true;
     unit->isDualWielding    = (left_canWeakhand && right_canWeakhand) && !Unit_istwoHanding(unit);
@@ -391,7 +400,7 @@ b32 Unit_istwoHanding(Unit *unit) {
 }
 
 /* -- Deplete: decrease durability -- */
-void _Unit_Item_Deplete(struct Unit *unit, int i, u64 archetype) {
+void _Unit_Item_Deplete(struct Unit *unit, i32 i, u64 archetype) {
     /* Only unit function that calls Inventory_item_Deplete */
 
     /* Skip if NULL. Not an error, unit can have empty hand. */
@@ -420,7 +429,7 @@ void _Unit_Equipped_Deplete(struct Unit *unit, b32 hand, u64 archetype) {
     _Unit_Item_Deplete(unit, unit->_equipped[hand], archetype);
 }
 
-void Unit_Item_Deplete(struct Unit *unit, int i) {
+void Unit_Item_Deplete(struct Unit *unit, i32 i) {
     /* Upon use, decrease item durability */
     _Unit_Item_Deplete(unit, i, ITEM_ARCHETYPE_NULL);
 }
@@ -450,7 +459,7 @@ b32 Unit_isEquipped(Unit *unit, b32 hand) {
     return (min_bound && max_bound);
 }
 
-int Unit_Equipped(Unit *unit, b32 hand) {
+i32 Unit_Equipped(Unit *unit, b32 hand) {
     /* Return order of equipped item in unit _equipment*/
     return (unit->_equipped[hand]);
 }
@@ -462,7 +471,7 @@ Inventory_item *Unit_Item_Equipped(Unit *unit, b32 hand) {
         return (&unit->_equipment[unit->_equipped[hand]]);
 }
 
-Inventory_item *Unit_InvItem(Unit *unit, int i) {
+Inventory_item *Unit_InvItem(Unit *unit, i32 i) {
     return (&unit->_equipment[i]);
 }
 
@@ -478,7 +487,7 @@ Weapon *Unit_Equipped_Weapon(Unit *unit, b32 hand) {
     return (Unit_Weapon(unit, hand));
 }
 
-Weapon *Unit_Weapon(Unit *unit, int eq) {
+Weapon *Unit_Weapon(Unit *unit, i32 eq) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
 
@@ -494,7 +503,7 @@ Weapon *Unit_Weapon(Unit *unit, int eq) {
     return (weapon);
 }
 
-Item *Unit_Get_Item(Unit *unit, int eq) {
+Item *Unit_Get_Item(Unit *unit, i32 eq) {
     SDL_assert(unit);
     SDL_assert(unit->items_dtab);
 
@@ -556,8 +565,8 @@ void Unit_Staff_Use(Unit *healer, Unit *patient) {
     */
 
     /* Get equipped weapon id */
-    int stronghand  = Unit_Hand_Strong(healer);
-    int weakhand    = 1 - stronghand;
+    i32 stronghand  = Unit_Hand_Strong(healer);
+    i32 weakhand    = 1 - stronghand;
     struct Inventory_item *weakhand_inv   = Unit_Item_Equipped(healer, weakhand);
     struct Inventory_item *stronghand_inv = Unit_Item_Equipped(healer, stronghand);
     SDL_assert(stronghand_inv != NULL);

@@ -51,7 +51,7 @@ Weapon *Unit_Equipped_Weapon(Unit *u, b32 hand);
 /* --- Equipping --- */
 i32     Unit_Equipped(  Unit *u, b32 hand);
 b32     Unit_isEquipped(Unit *u, b32 hand);
-void    Unit_Equip(  Unit *u, b32 h, i32 i);
+i32     Unit_Equip(  Unit *u, b32 h, i32 i);
 void    Unit_Unequip(Unit *u, b32 h);
 
 /* -- Can Equip -- */
