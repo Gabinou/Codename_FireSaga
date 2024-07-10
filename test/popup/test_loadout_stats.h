@@ -7,6 +7,7 @@ void test_popup_loadout_stats() {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     /* -- Preliminaries -- */
     sota_mkdir("popup_loadout_stats");
+    Names_Load_All();
 
     /* -- Create renderer -- */
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
@@ -225,5 +226,7 @@ void test_popup_loadout_stats() {
     SDL_FreeSurface(surface);
     Weapons_All_Free(weapons_dtab);
     DTAB_FREE(weapons_dtab);
+    Names_Free();
+
     SDL_Quit();
 }

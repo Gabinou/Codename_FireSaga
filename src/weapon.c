@@ -126,6 +126,7 @@ void Weapon_Reload(struct dtab *weapons_dtab, i16 id) {
 }
 
 void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
+    SDL_assert(weapons_dtab != NULL);
     if (!Weapon_ID_isValid(id)) {
         SDL_LogError(SOTA_LOG_SYSTEM, "Weapon ID '%d' invalid", id);
         SDL_assert(Weapon_ID_isValid(id));
@@ -160,6 +161,8 @@ void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
 }
 
 s8 Weapon_Filename(s8 filename, i16 id) {
+    SDL_assert(global_itemNames != NULL);
+
     char buffer[DEFAULT_BUFFER_SIZE] = {0};
     char *token;
 
