@@ -163,12 +163,9 @@ void test_combat_game() {
 
     struct Combat_Forecast test_Combat_Forecast;
 
-    SDL_Log("attacker_pos %d %d", attacker_pos.x, attacker_pos.y);
-    SDL_Log("defender_pos %d %d", defender_pos.x, defender_pos.y);
     firesaga.combat_forecast = Compute_Combat_Forecast(&attacker, &defender,
                                                        &attacker_pos,
                                                        &defender_pos);
-    getchar();
     nourstest_true(firesaga.combat_forecast.flow.aggressor_phases == 1);
     nourstest_true(firesaga.combat_forecast.flow.defendant_phases == 1);
     nourstest_true(firesaga.combat_forecast.flow.defendant_retaliates == true);

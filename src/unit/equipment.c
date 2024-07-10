@@ -230,7 +230,8 @@ i32 Unit_Equip(struct Unit *unit, b32 hand, i32 i) {
 
     /* Check if unit is trying to and can twohand weapon */
     b32 other_hand = 1 - hand;
-    if ((unit->_equipped[other_hand] = i) && (!Unit_canTwoHand(unit, i))) {
+    if ((unit->_equipped[other_hand] == i) && (!Unit_canTwoHand(unit, i))) {
+        SDL_Log("Cannot twohand");
         return (EXIT_FAILURE);
     }
 

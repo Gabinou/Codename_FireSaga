@@ -90,19 +90,16 @@ void testConvoysort() {
 
     convoy.sort_direction = SOTA_CONVOY_SORT_HIGH2LOW;
     Convoy_Sort(&convoy, WEAPON_STAT_HIT);
-    for (int_fast16_t i = ITEM_TYPE_EXP_NULL + 1; i < ITEM_TYPE_NUM; i++) {
-        for (int_fast16_t j = convoy.cumnum[i - 1]; j < (convoy.cumnum[i] - 1); j++) {
-            SDL_Log("i,j, %ld %ld", i, j);
+    for (i16 i = ITEM_TYPE_EXP_NULL + 1; i < ITEM_TYPE_NUM; i++) {
+        for (i16 j = convoy.cumnum[i - 1]; j < (convoy.cumnum[i] - 1); j++) {
             struct Inventory_item item1 = convoy.items[j];
             SDL_assert(item1.id > ITEM_NULL);
             struct Inventory_item item2 = convoy.items[j + 1];
             SDL_assert(item2.id > ITEM_NULL);
-            SDL_Log("item1.id, item2.id %ld %ld", item1.id, item2.id);
             struct Weapon *weapon1 = (struct Weapon *)DTAB_GET(convoy.weapons_dtab, item1.id);
             SDL_assert(weapon1 != NULL);
             struct Weapon *weapon2 = (struct Weapon *)DTAB_GET(convoy.weapons_dtab, item2.id);
             SDL_assert(weapon2 != NULL);
-            SDL_Log("weapon1,weapon2, %hhu %hhu", weapon1->stats.hit, weapon2->stats.hit);
             nourstest_true(weapon1->item->type == weapon2->item->type);
             nourstest_true(weapon1->stats.hit >= weapon2->stats.hit);
         }
@@ -110,19 +107,16 @@ void testConvoysort() {
 
     convoy.sort_direction = SOTA_CONVOY_SORT_LOW2HIGH;
     Convoy_Sort(&convoy, WEAPON_STAT_HIT);
-    for (int_fast16_t i = ITEM_TYPE_EXP_NULL + 1; i < ITEM_TYPE_NUM; i++) {
-        for (int_fast16_t j = convoy.cumnum[i - 1]; j < (convoy.cumnum[i] - 1); j++) {
-            SDL_Log("i,j, %ld %ld", i, j);
+    for (i16 i = ITEM_TYPE_EXP_NULL + 1; i < ITEM_TYPE_NUM; i++) {
+        for (i16 j = convoy.cumnum[i - 1]; j < (convoy.cumnum[i] - 1); j++) {
             struct Inventory_item item1 = convoy.items[j];
             SDL_assert(item1.id > ITEM_NULL);
             struct Inventory_item item2 = convoy.items[j + 1];
             SDL_assert(item2.id > ITEM_NULL);
-            SDL_Log("item1.id, item2.id %ld %ld", item1.id, item2.id);
             struct Weapon *weapon1 = (struct Weapon *)DTAB_GET(convoy.weapons_dtab, item1.id);
             SDL_assert(weapon1 != NULL);
             struct Weapon *weapon2 = (struct Weapon *)DTAB_GET(convoy.weapons_dtab, item2.id);
             SDL_assert(weapon2 != NULL);
-            SDL_Log("weapon1,weapon2, %d %d", weapon1->stats.hit, weapon2->stats.hit);
             nourstest_true(weapon1->item->type == weapon2->item->type);
             nourstest_true(weapon1->stats.hit <= weapon2->stats.hit);
         }
@@ -133,20 +127,16 @@ void testConvoysort() {
 
     convoy.sort_direction = SOTA_CONVOY_SORT_HIGH2LOW;
     Convoy_Sort(&convoy, WEAPON_STAT_pATTACK);
-    for (int_fast16_t i = ITEM_TYPE_EXP_NULL + 1; i < ITEM_TYPE_NUM; i++) {
-        for (int_fast16_t j = convoy.cumnum[i - 1]; j < (convoy.cumnum[i] - 1); j++) {
-            SDL_Log("i,j, %ld %ld", i, j);
+    for (i16 i = ITEM_TYPE_EXP_NULL + 1; i < ITEM_TYPE_NUM; i++) {
+        for (i16 j = convoy.cumnum[i - 1]; j < (convoy.cumnum[i] - 1); j++) {
             struct Inventory_item item1 = convoy.items[j];
             SDL_assert(item1.id > ITEM_NULL);
             struct Inventory_item item2 = convoy.items[j + 1];
             SDL_assert(item2.id > ITEM_NULL);
-            SDL_Log("item1.id, item2.id %ld %ld", item1.id, item2.id);
             struct Weapon *weapon1 = (struct Weapon *)DTAB_GET(convoy.weapons_dtab, item1.id);
             SDL_assert(weapon1 != NULL);
             struct Weapon *weapon2 = (struct Weapon *)DTAB_GET(convoy.weapons_dtab, item2.id);
             SDL_assert(weapon2 != NULL);
-            SDL_Log("weapon1,weapon2, %d %d", weapon1->stats.attack[DAMAGE_TYPE_PHYSICAL],
-                    weapon2->stats.attack[DAMAGE_TYPE_PHYSICAL]);
             nourstest_true(weapon1->item->type == weapon2->item->type);
             nourstest_true(weapon1->stats.attack[DAMAGE_TYPE_PHYSICAL] >=
                            weapon2->stats.attack[DAMAGE_TYPE_PHYSICAL]);
@@ -158,20 +148,16 @@ void testConvoysort() {
 
     convoy.sort_direction = SOTA_CONVOY_SORT_LOW2HIGH;
     Convoy_Sort(&convoy, WEAPON_STAT_pATTACK);
-    for (int_fast16_t i = ITEM_TYPE_EXP_NULL + 1; i < ITEM_TYPE_NUM; i++) {
-        for (int_fast16_t j = convoy.cumnum[i - 1]; j < (convoy.cumnum[i] - 1); j++) {
-            SDL_Log("i,j, %ld %ld", i, j);
+    for (i16 i = ITEM_TYPE_EXP_NULL + 1; i < ITEM_TYPE_NUM; i++) {
+        for (i16 j = convoy.cumnum[i - 1]; j < (convoy.cumnum[i] - 1); j++) {
             struct Inventory_item item1 = convoy.items[j];
             SDL_assert(item1.id > ITEM_NULL);
             struct Inventory_item item2 = convoy.items[j + 1];
             SDL_assert(item2.id > ITEM_NULL);
-            SDL_Log("item1.id, item2.id %ld %ld", item1.id, item2.id);
             struct Weapon *weapon1 = (struct Weapon *)DTAB_GET(convoy.weapons_dtab, item1.id);
             SDL_assert(weapon1 != NULL);
             struct Weapon *weapon2 = (struct Weapon *)DTAB_GET(convoy.weapons_dtab, item2.id);
             SDL_assert(weapon2 != NULL);
-            SDL_Log("weapon1,weapon2, %d %d", weapon1->stats.attack[DAMAGE_TYPE_PHYSICAL],
-                    weapon2->stats.attack[DAMAGE_TYPE_PHYSICAL]);
             nourstest_true(weapon1->item->type == weapon2->item->type);
             nourstest_true(weapon1->stats.attack[DAMAGE_TYPE_PHYSICAL] <=
                            weapon2->stats.attack[DAMAGE_TYPE_PHYSICAL]);
