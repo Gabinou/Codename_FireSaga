@@ -10,15 +10,14 @@
 #include "unit/unit.h"
 
 /* --- Items --- */
-Inventory_item *Unit_InvItem(       Unit *u, int i);
+Inventory_item *Unit_InvItem(       Unit *u, i32 i);
 Inventory_item *Unit_Item_Equipped( Unit *u, b32 hand);
-b32 Unit_istwoHanding(Unit *u);
 
 /* -- Deplete: decrease durability -- */
-void _Unit_Item_Deplete(           Unit *u, int  i, u64 a);
+void _Unit_Item_Deplete(           Unit *u, i32  i, u64 a);
 void _Unit_Equipped_Deplete(       Unit *u, b32 h, u64 a);
 
-void Unit_Item_Deplete(            Unit *u, int i);
+void Unit_Item_Deplete(            Unit *u, i32 i);
 void Unit_Equipped_Staff_Deplete(  Unit *u, b32 h);
 void Unit_Equipped_Weapons_Deplete(Unit *u);
 void Unit_Equipped_Shields_Deplete(Unit *u);
@@ -41,18 +40,18 @@ void Unit_Equipment_Drop(Unit *u);
 void Unit_Equipment_Import(Unit *u, Inventory_item *equipment);
 void Unit_Equipment_Export(Unit *u, Inventory_item *equipment);
 
-void Unit_Equipped_Import(Unit *u, int *equipped);
-void Unit_Equipped_Export(Unit *u, int *equipped);
+void Unit_Equipped_Import(Unit *u, i32 *equipped);
+void Unit_Equipped_Export(Unit *u, i32 *equipped);
 
 /* -- Getters -- */
-Weapon *Unit_Weapon(         Unit *u, int eq);
-Item   *Unit_Get_Item(       Unit *u, int eq);
+Weapon *Unit_Weapon(         Unit *u, i32 eq);
+Item   *Unit_Get_Item(       Unit *u, i32 eq);
 Weapon *Unit_Equipped_Weapon(Unit *u, b32 hand);
 
 /* --- Equipping --- */
-int     Unit_Equipped(  Unit *u, b32 hand);
+i32     Unit_Equipped(  Unit *u, b32 hand);
 b32     Unit_isEquipped(Unit *u, b32 hand);
-void    Unit_Equip(  Unit *u, b32 h, int i);
+void    Unit_Equip(  Unit *u, b32 h, i32 i);
 void    Unit_Unequip(Unit *u, b32 h);
 
 /* -- Can Equip -- */
@@ -67,10 +66,10 @@ void _Unit_Check_Equipped(Unit *u, b32 hand);
 void  Unit_Check_Equipped(Unit *u);
 
 /* --- Usability --- */
-b32  Unit_Eq_Usable(  Unit *u, u64 a, int i);
+b32  Unit_Eq_Usable(  Unit *u, u64 a, i32 i);
 b32  Unit_All_Usable( Unit *u);
 void Unit_Find_Usable(Unit *u, u64 a);
-b32  Unit_Item_Usable(Unit *u, u64 a, int i);
+b32  Unit_Item_Usable(Unit *u, u64 a, i32 i);
 
 /* --- Unit state --- */
 b32 Unit_istwoHanding(  Unit *u);
@@ -80,6 +79,9 @@ b32 Unit_iswrongHanding(Unit *u);
 /* --- Debug --- */
 b32  Unit_Equipment_Full( Unit *u);
 void Unit_Equipment_Print(Unit *u);
+
+/* -- Can -- */
+b32 Unit_canTwoHand(Unit *u, i32 i);
 
 /* -- Use -- */
 void Unit_Staff_Use(Unit *unit, Unit *patient);

@@ -524,11 +524,6 @@ enum ITEM_TYPES {
     ITEM_TYPE_START = 0,
 #include "names/items_types.h"
     ITEM_TYPE_END = 1UL << ITEM_TYPE_EXP_END,
-    ITEM_TYPE_canATTACK =   ITEM_TYPE_SWORD     | ITEM_TYPE_LANCE       |
-                            ITEM_TYPE_AXE       | ITEM_TYPE_ELEMENTAL   |
-                            ITEM_TYPE_DEMONIC   | ITEM_TYPE_ANGELIC     |
-                            ITEM_TYPE_CLAW      | ITEM_TYPE_STANDARD    |
-                            ITEM_TYPE_BOW       | ITEM_TYPE_OFFHAND,
 };
 #undef REGISTER_ENUM
 

@@ -150,13 +150,15 @@ int main(int argc, char *argv[]) {
     Utilities_Load();
     SDL_Log("Initializing RNG\n");
     RNG_Init_xoroshiro256ss();
-    if (SDL_Init(SDL_INIT_EVERYTHING))
+    if (SDL_Init(SDL_INIT_EVERYTHING)) {
+        SDL_Log("SDL_Init failed\n");
         exit(1);
+    }
 
     /* -- Running tests -- */
     // test_events();
-    // unit_tests();
-    render_tests();
+    unit_tests();
+    // render_tests();
     // integration_tests(argc, argv);
     nourstest_results();
 

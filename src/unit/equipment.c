@@ -185,40 +185,18 @@ void Unit_Item_Trade(struct Unit *giver, struct Unit *taker, i16 ig, i16 it) {
     SDL_assert(taker);
     if ((it < 0) || (it >= SOTA_EQUIPMENT_SIZE)) {
         SDL_Log("Taker Item index out of bounds");
+        SDL_assert(false);
         exit(ERROR_OutofBounds);
     }
     if ((ig < 0) || (ig >= SOTA_EQUIPMENT_SIZE)) {
         SDL_Log("Giver Item index out of bounds");
+        SDL_assert(false);
         exit(ERROR_OutofBounds);
     }
     struct Inventory_item buffer_giver = Unit_Item_Drop(giver, ig);
     struct Inventory_item buffer_taker = Unit_Item_Drop(taker, it);
     Unit_Item_Takeat(taker, buffer_giver, it);
     Unit_Item_Takeat(giver, buffer_taker, ig);
-}
-
-struct Inventory_item Unit_Equip_TwoHanding(struct Unit *unit) {
-    SDL_assert(unit != NULL);
-    /* Weapon is in stronghand, equipping to weakhand */
-    int stronghand = Unit_Hand_Strong(unit);
-    b32 weakhand  = 1 - stronghand;
-    if (!unit->hands[weakhand] || !unit->hands[stronghand]) {
-        SDL_Log("Can't equip a weapon in two hands without two hands");
-        exit(ERROR_Generic);
-    }
-
-    /* -- Checks -- */
-    SDL_assert(unit->_equipment[stronghand].id > ITEM_NULL);
-    Weapon_Load(unit->weapons_dtab, unit->_equipment[stronghand].id);
-
-    /* -- Copy item in hand to other hand -- */
-    struct Inventory_item out  = unit->_equipment[weakhand];
-    unit->_equipment[weakhand] = unit->_equipment[stronghand];
-
-    /* -- Set flags -- */
-    unit->_equipped[weakhand]   = unit->_equipped[stronghand];
-
-    return (out);
 }
 
 void _Unit_Check_Equipped(struct Unit *unit, b32 hand) {
@@ -402,7 +380,7 @@ b32 Unit_isdualWielding(struct Unit *unit) {
 
 
 /* --- Loadout Manipulation --- */
-/* - Does that loadout wields a weapon with two hands? - */
+/* - Does that unit wield a weapon with two hands? - */
 b32 Unit_istwoHanding(Unit *unit) {
     b32 lvalid  =   unit->_equipped[UNIT_HAND_LEFT] >= 0;
     lvalid      &=  unit->_equipped[UNIT_HAND_LEFT] < SOTA_EQUIPMENT_SIZE;
@@ -532,6 +510,44 @@ Item *Unit_Get_Item(Unit *unit, int eq) {
     return (item);
 }
 
+/* -- Can -- */
+b32 Unit_canTwoHand(Unit *unit, i32 i) {
+    SDL_assert(unit                 != NULL);
+    SDL_assert(unit->weapons_dtab   != NULL);
+
+    struct Inventory_item inv_item = unit->_equipment[i];
+
+    /* Cannot twohand non-weapon, pure items, or broken */
+    if (!Weapon_ID_isValid(inv_item.id)) {
+        return (false);
+    }
+
+    /* Cannot twohand unequippable item */
+    if (!Unit_canEquip(unit, inv_item.id)) {
+        return (false);
+    }
+
+    /* Cannot twohand magic weapons */
+    struct Weapon *wpn  = DTAB_GET(unit->weapons_dtab, inv_item.id);
+    SDL_assert(wpn->item->type > ITEM_TYPE_NULL);
+    b32 is_elemental    = flagsum_isIn(wpn->item->type, ITEM_TYPE_ELEMENTAL);
+    b32 is_angelic      = flagsum_isIn(wpn->item->type, ITEM_TYPE_ANGELIC);
+    b32 is_demonic      = flagsum_isIn(wpn->item->type, ITEM_TYPE_DEMONIC);
+    if (is_elemental || is_angelic || is_demonic) {
+        return (false);
+    }
+
+    /* Cannot twohand weapon that can only be wielded in one hand */
+    b32 any_hand = (wpn->handedness == WEAPON_HAND_TWO);
+    b32 two_hand = (wpn->handedness == WEAPON_HAND_ANY);
+    if (!(any_hand || two_hand)) {
+        return (false);
+    }
+
+    return (true);
+}
+
+
 /* -- Use -- */
 void Unit_Staff_Use(Unit *healer, Unit *patient) {
     /* Should not be called if staves not properly equipped:
@@ -556,7 +572,7 @@ void Unit_Staff_Use(Unit *healer, Unit *patient) {
 
     /* Get staff weapon */
     struct Weapon *staff = DTAB_GET(healer->weapons_dtab, stronghand_inv->id);
-    SDL_assert(TNECS_TYPEFLAG_HAS_TYPE(staff->item->type, ITEM_TYPE_STAFF));
+    SDL_assert(flagsum_isIn(staff->item->type, ITEM_TYPE_STAFF));
     SDL_assert(staff->item->active != NULL);
 
     /* Use staff active */

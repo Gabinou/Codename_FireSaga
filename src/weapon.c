@@ -57,7 +57,7 @@ b32 Weapon_canAttack(struct Weapon *weapon) {
 b32 Weapon_canAttackfromType(struct Weapon *weapon) {
     SDL_assert(weapon);
     SDL_assert(weapon->item != NULL);
-    b32 iscan = flagsum_isIn(weapon->item->type, ITEM_TYPE_canATTACK);
+    b32 iscan = flagsum_isIn(weapon->item->type, ITEM_ARCHETYPE_WEAPON);
     return (iscan);
 }
 
