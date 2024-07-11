@@ -6,12 +6,12 @@
 #include "game/unit.h"
 #include "RNG.h"
 
-void test_promotion() {
+void test_promotion(void) {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
 
 }
 
-void test_canEquip() {
+void test_canEquip(void) {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     struct Unit Silou = Unit_default;
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
@@ -342,7 +342,7 @@ void test_canEquip() {
     Unit_Free(&Silou);
 }
 
-void test_skills() {
+void test_skills(void) {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     struct Combat_Phase combat_outcome[SOTA_COMBAT_MAX_PHASES];
     struct TINYMT32_T tinymt32;
@@ -391,7 +391,7 @@ void test_skills() {
     Game_Weapons_Free(&weapons_dtab);
 }
 
-void test_io() {
+void test_io(void) {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     struct Unit unit1 = Unit_default;
     struct Unit unit2 = Unit_default;
@@ -527,7 +527,7 @@ void test_io() {
     Game_Weapons_Free(&weapons_dtab2);
 }
 
-void test_growth() {
+void test_growth(void) {
     rng_sequence_breaker_miss_growth = true;
     struct Unit Silou = Unit_default;
     Unit_Init(&Silou);
@@ -632,7 +632,7 @@ void test_growth() {
     Unit_Free(&Silou);
 }
 
-void test_reinforcements() {
+void test_reinforcements(void) {
     struct Unit Corsair = Unit_default;
     struct Reinforcement reinf = Reinforcement_default;
     reinf.levelups = 2;
@@ -646,7 +646,7 @@ void test_reinforcements() {
     Unit_Free(&Corsair);
 }
 
-void test_bonus_decay() {
+void test_bonus_decay(void) {
     struct Bonus_Stats bonus1 = Bonus_Stats_default;
     struct Bonus_Stats bonus2 = Bonus_Stats_default;
     struct Bonus_Stats bonus3 = Bonus_Stats_default;
@@ -658,7 +658,7 @@ void test_bonus_decay() {
     bonus3.turns = 3;
     bonus4.turns = 1;
     bonus5.turns = 2;
-    struct Unit Silou = Unit_default;
+    struct Unit Silou   = Unit_default;
     Silou.bonus_stack   = DARR_INIT(Silou.bonus_stack,  struct Bonus_Stats, 2);
     Unit_Bonus_Add(&Silou, bonus1);
     Unit_Bonus_Add(&Silou, bonus2);
@@ -718,7 +718,7 @@ void test_bonus_decay() {
     DARR_FREE(Silou.bonus_stack);
 }
 
-void test_bonus_stats() {
+void test_bonus_stats(void) {
     struct Bonus_Stats bonus1 = Bonus_Stats_default;
     struct Unit Silou = Unit_default;
     //                              hp, str, mag, agi, dex, fth, luck, def, res, con, move
@@ -818,7 +818,33 @@ void test_bonus_stats() {
     DARR_FREE(Silou.bonus_stack);
 }
 
-void test_unit() {
+void test_twohanding(void) {
+    struct Unit Silou           = Unit_default;
+    struct Inventory_item wpn   = Inventory_item_default;
+    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    Unit_InitWweapons(&Silou, weapons_dtab);
+    Unit_setClassind(&Silou, UNIT_CLASS_STANDARD_BEARER);
+
+    wpn.id = ITEM_ID_FLEURET;
+    SDL_assert(Unit_canEquip(&Silou, wpn.id));
+    Unit_Item_Takeat(&Silou, wpn, 0);
+    wpn.id = ITEM_ID_IRON_LANCE;
+    SDL_assert(Unit_canEquip(&Silou, wpn.id));
+    Unit_Item_Takeat(&Silou, wpn, 1);
+
+    nourstest_true(Unit_Equip(&Silou, UNIT_HAND_LEFT,  0) == EXIT_SUCCESS);
+    nourstest_true(Unit_Equip(&Silou, UNIT_HAND_RIGHT, 0) == EXIT_FAILURE);
+    nourstest_true(!Unit_istwoHanding(&Silou));
+
+    nourstest_true(Unit_Equip(&Silou, UNIT_HAND_LEFT,  1) == EXIT_SUCCESS);
+    nourstest_true(Unit_Equip(&Silou, UNIT_HAND_RIGHT, 1) == EXIT_SUCCESS);
+    nourstest_true(Unit_istwoHanding(&Silou));
+
+    Game_Weapons_Free(&weapons_dtab);
+    Unit_Free(&Silou);
+}
+
+void test_unit(void) {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
 
     // test_promotion();
@@ -828,6 +854,7 @@ void test_unit() {
     test_growth();
     test_bonus_decay();
     test_bonus_stats();
+    test_twohanding();
     test_reinforcements();
 
     URN_debug = -1;

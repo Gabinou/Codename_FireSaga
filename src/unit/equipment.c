@@ -227,6 +227,9 @@ i32 Unit_Equip(struct Unit *unit, b32 hand, i32 i) {
     SDL_assert(i >= 0);
     SDL_assert(i < SOTA_EQUIPMENT_SIZE);
     SDL_assert(unit->_equipment[i].id > ITEM_NULL);
+    SDL_assert(unit->weapons_dtab != NULL);
+
+    Weapon_Load(unit->weapons_dtab, unit->_equipment[i].id);
 
     /* Check if unit is trying to and can twohand weapon */
     b32 other_hand = 1 - hand;
