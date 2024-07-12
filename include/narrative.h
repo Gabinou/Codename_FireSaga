@@ -20,30 +20,84 @@ struct Boss;
 struct Game;
 struct Settings;
 
+enum SCENE {
+    SCENE_MAX_ACTORS = 8,
+};
+
+enum SCENE_bOFFSET {
+    SCENE_STATEMENT_bOFFSET = 0,
+};
+
+// Statements: Renpy terminology
+//      Anything a Scene can do.
+//      Scene pauses only on line. Otherwise play statements.
+enum SCENE_STATEMENTS {
+    SCENE_STATEMENT_LINE        = 0,
+    SCENE_STATEMENT_DIDASCALIE  = 1,
+    SCENE_STATEMENT_BACKGROUND  = 2,
+    SCENE_STATEMENT_MUSIC       = 3,
+    SCENE_STATEMENT_NUM         = 4,
+};
+
+// Scene Statement FSM
+
+typedef void (*fsm_scene_statement_t)(void *);
+extern fsm_scene_statement_t scene_statement_play[SCENE_STATEMENT_NUM];
+
+// Features in order of importance
+// 1- Scenes   with dynamic conditions -> play if conditions are met
+//  -> Yes
+// 2- Lines    with dynamic conditions -> play if conditions are met
+//  -> Maybe
+// 3- Lines    with dynamic content    -> replaced at runtime
+//  -> mmmMaybe?
+
+
 /* -- Didascalie (theater vocabulary) -- */
 // - Note to actors of a scene about what to *do* during a scene
-// TODO
-// Example instructions:
+// Only for actors -> Sprites
 //  Sprites:
 //  - Transform (animated or not)
 //    - Move to position (Sliding)
 //    - Flip
 //    - Rotate
+//  - Animate
+//      - Fade in, fade out
+struct SceneDidascalie {
+    i32 type;  /* SCENE_STATEMENT_bOFFSET = 0  (+ 4) */
+
+};
+extern struct SceneDidascalie SceneDidascalie_default;
+extern struct SceneDidascalie SceneDidascalie_FadeAll;
+
+struct SceneLine {
+    i32 type;  /* SCENE_STATEMENT_bOFFSET = 0  (+ 4) */
+
+    s8 speaker;
+    s8 line;
+};
+extern struct SceneLine SceneLine_default;
+
+struct SceneMusic {
+    i32 type;  /* SCENE_STATEMENT_bOFFSET = 0  (+ 4) */
+
+};
+extern struct SceneBackground SceneMusic_default;
+extern struct SceneBackground SceneMusic_Stop;
+
 //  Background:
 //  - Transition effects
 //    - Slide
 //    - Fade (to black)
+struct SceneBackground {
+    i32 type;  /* SCENE_STATEMENT_bOFFSET = 0  (+ 4) */
+
+};
+extern struct SceneBackground SceneBackground_default;
+extern struct SceneBackground SceneBackground_FadeToBlack;
 //  Screen:
 //  - Shake screen
 
-
-/* How to intertwine didascalie and lines? */
-// - Each line can have didascalie
-// - Didascalie plays AFTER player dismisses line
-//      - Except: Initial scene state didascalie
-// - Didascalie changes scene state to new scene state
-struct Didascalie {
-};
 
 /* -- Game Narrative Conditions -- */
 // 1- To load and play Scenes,
@@ -62,66 +116,34 @@ struct Conditions {
 extern struct Conditions Conditions_Game_default;
 extern struct Conditions Conditions_Line_default;
 
-struct RawLine {
-    struct Conditions conditions;
-    s8  speaker;
-    s8  rawline;
-    u16 speaker_order;
-};
-extern struct RawLine RawLine_default;
-
-struct Line {
-    s8 speaker;
-    s8 line;
-};
-extern struct Line Line_default;
 
 /* A scene is a conversation.
-*   - Up to 4 characters sprites on screen at once
+*   - Up to 8 characters sprites on screen at once
 *   - Characters can move around screen
 *       - Limited animation
 *            - Lip sync
-*            - blinking
-*            - doing a flip
+*            - Blinking
+*            - Sliding, rotating
 *   - Text bubbles with scrollling text
 */
 typedef struct Scene {
     s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
     u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
 
-    /* -- Current game condition -- */
-    struct Conditions    game_cond;
-
     /* -- Condition to play scene -- */
     struct Conditions    cond;
 
-    /* -- Raw text tiles -- */
-    struct RawLine      *lines_raw;
+    u16 *actors;
 
-    /* -- Rendered text tiles -- */
-    struct Line         *lines;
-    int *rendered; /* indices of rendered lines */
+    /* Statements: meat of the Scene
+     *  - SceneLine, SceneDidascalie, SceneMusic, SceneBackground
+     */
+    void **statements;
 
-    /* -- Speakers -- */
-    u16 id;
-    u16 lines_raw_num;
-    u16 lines_num;
-    u16 actors_num;
-
-    /* -- Event to start after end -- */
+    /* -- Post-scene -- */
+    // How to play another scene after one scene ended?
     tnecs_entity event;
 
-    /* -- Didascalies -- */
-    // TODO
-    struct Didascalie   *didascalies;
-
-    /* -- Dynamic lines -- */
-    // Tokens are replaced with
-    // Tokens: REPLACE_TOKEN_X, X is int from 0
-    s8 *with;
-
-    /* -- Speakers -- */
-    u16 *speakers; /* Unit_order */
 } Scene;
 extern struct Scene Scene_default;
 
@@ -138,10 +160,18 @@ void Conditions_Recruited(struct Conditions *cond, size_t uo);
 
 /* --- Constructors/Destructors --- */
 void Scene_Free(struct Scene *scene);
+void Scene_Init(struct Scene *scene);
 
 /* --- Replace --- */
 // TODO: replace text dynamically
 void Scene_Replace_Add(struct Scene *scene, s8 with);
+
+/* --- Actors --- */
+i32     Scene_Actors_Num(Scene *scene);
+
+/// @return Actor order in actors DARR, or -1;
+i32     Scene_Actor_Find(Scene *scene, u16 actor);
+void    Scene_Actor_Add( Scene *scene, u16 actor);
 
 /* --- I/O --- */
 void Scene_readJSON( void *s, cJSON *js);

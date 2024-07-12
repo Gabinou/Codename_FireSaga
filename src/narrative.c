@@ -4,13 +4,6 @@
 #include "stb_sprintf.h"
 // #endif // STB_SPRINTF_IMPLEMENTATION
 
-struct Scene Scene_default =  {
-    .json_element   = JSON_SCENE,
-    .lines_raw      = NULL,
-    .with           = NULL,
-    .speakers       = NULL,
-    .actors_num     = 0,
-};
 
 struct Conditions Conditions_Line_default = {
     .alive      = {0},
@@ -24,44 +17,32 @@ struct Conditions Conditions_Game_default = {
     .recruited  = {0},          /* No one recruited at start    */
 };
 
-struct RawLine RawLine_default = {
-    .conditions     = {0},
-    .speaker        = {0},
-    .rawline        = {0},
-    .speaker_order  = 0,
+struct Scene Scene_default =  {
+    //     .json_element   = JSON_SCENE,
+    //     .lines_raw      = NULL,
+    //     .with           = NULL,
+    //     .speakers       = NULL,
+    //     .actors_num     = 0,
 };
 
-struct Line Line_default = {
-    .line           = {0},
-    .speaker        = {0},
-};
+
+void Scene_Init(struct Scene *scene) {
+    SDL_assert(scene != NULL);
+    scene->statements   = DARR_INIT(scene->statements, void *, 16);
+    scene->actors       = DARR_INIT(scene->statements, u16, 16);
+}
 
 void Scene_Free(struct Scene *scene) {
-    SDL_assert(scene != NULL);
-    if (scene->lines_raw != NULL) {
-        for (size_t i = 0; i < scene->lines_raw_num; i++) {
-            s8_free(&scene->lines_raw[i].rawline);
-        }
-        SDL_free(scene->lines_raw);
-        scene->lines_raw = NULL;
-    }
+    if (scene == NULL)
+        return;
 
-    if (scene->lines != NULL) {
-        SDL_free(scene->lines);
-        scene->lines = NULL;
+    if (scene->statements != NULL) {
+        DARR_FREE(scene->statements);
+        scene->statements = NULL;
     }
-    if (scene->rendered != NULL) {
-        SDL_free(scene->rendered);
-        scene->rendered = NULL;
-    }
-    if (scene->speakers != NULL) {
-        SDL_free(scene->speakers);
-        scene->speakers = NULL;
-    }
-
-    if (scene->with != NULL) {
-        DARR_FREE(scene->with);
-        scene->with = NULL;
+    if (scene->actors != NULL) {
+        DARR_FREE(scene->actors);
+        scene->actors = NULL;
     }
 }
 
@@ -116,261 +97,261 @@ b32 Conditions_Compare(struct Conditions *line_cond, struct Conditions *game_con
     return (isdead && isalive && isrec);
 }
 
-/* --- Replace --- */
-void Scene_Replace_Add(struct Scene *scene, s8 with) {
-    if (scene->with == NULL) {
-        scene->with = DARR_INIT(scene->with, s8, 4);
-    }
-    DARR_PUT(scene->with, with);
-}
+// /* --- Replace --- */
+// void Scene_Replace_Add(struct Scene *scene, s8 with) {
+//     if (scene->with == NULL) {
+//         scene->with = DARR_INIT(scene->with, s8, 4);
+//     }
+//     DARR_PUT(scene->with, with);
+// }
 
-void Scene_Replace(struct Scene *scene) {
+// void Scene_Replace(struct Scene *scene) {
 
-}
+// }
 
-/* --- Rendering --- */
-/* Read game condition and render text lines */
-void Scene_Render(struct Scene *scene) {
-    if (scene->lines != NULL) {
-        SDL_free(scene->lines);
-        scene->lines = NULL;
-    }
-    if (scene->rendered != NULL) {
-        SDL_free(scene->rendered);
-        scene->rendered = NULL;
-    }
-    if (scene->rendered != NULL) {
-        SDL_free(scene->rendered);
-        scene->rendered = NULL;
-    }
-    if (scene->speakers != NULL) {
-        SDL_free(scene->speakers);
-        scene->speakers = NULL;
-    }
+// /* --- Rendering --- */
+// /* Read game condition and render text lines */
+// void Scene_Render(struct Scene *scene) {
+//     if (scene->lines != NULL) {
+//         SDL_free(scene->lines);
+//         scene->lines = NULL;
+//     }
+//     if (scene->rendered != NULL) {
+//         SDL_free(scene->rendered);
+//         scene->rendered = NULL;
+//     }
+//     if (scene->rendered != NULL) {
+//         SDL_free(scene->rendered);
+//         scene->rendered = NULL;
+//     }
+//     if (scene->speakers != NULL) {
+//         SDL_free(scene->speakers);
+//         scene->speakers = NULL;
+//     }
 
-    scene->lines    = SDL_calloc(scene->lines_raw_num, sizeof(*scene->lines));
-    scene->rendered = SDL_calloc(scene->lines_raw_num, sizeof(*scene->rendered));
-    scene->speakers = SDL_calloc(scene->lines_raw_num, sizeof(*scene->rendered));
-    scene->lines_num = 0;
-    /* Check lines conditions */
-    for (size_t i = 0; i < scene->lines_raw_num; i++) {
-        if (Conditions_Compare(&scene->lines_raw[i].conditions, &scene->game_cond)) {
-            scene->lines[scene->lines_num].line     = scene->lines_raw[i].rawline;
-            scene->lines[scene->lines_num].speaker  = scene->lines_raw[i].speaker;
-            Scene_Speaker_Add(scene, scene->lines_raw[i].speaker_order);
+//     scene->lines    = SDL_calloc(scene->lines_raw_num, sizeof(*scene->lines));
+//     scene->rendered = SDL_calloc(scene->lines_raw_num, sizeof(*scene->rendered));
+//     scene->speakers = SDL_calloc(scene->lines_raw_num, sizeof(*scene->rendered));
+//     scene->lines_num = 0;
+//     /* Check lines conditions */
+//     for (size_t i = 0; i < scene->lines_raw_num; i++) {
+//         if (Conditions_Compare(&scene->lines_raw[i].conditions, &scene->game_cond)) {
+//             scene->lines[scene->lines_num].line     = scene->lines_raw[i].rawline;
+//             scene->lines[scene->lines_num].speaker  = scene->lines_raw[i].speaker;
+//             Scene_Speaker_Add(scene, scene->lines_raw[i].speaker_order);
 
-            scene->rendered[scene->lines_num]       = i;
-            scene->lines_num++;
-        }
-    }
-    /* Replace all tokens */
-    if (scene->with == NULL)
-        return;
+//             scene->rendered[scene->lines_num]       = i;
+//             scene->lines_num++;
+//         }
+//     }
+//     /* Replace all tokens */
+//     if (scene->with == NULL)
+//         return;
 
-    char replace[DEFAULT_BUFFER_SIZE];
-    struct Line *lines = scene->lines;
-    for (size_t i = 0; i < scene->lines_num; i++) {
-        for (size_t j = 0; j < DARR_NUM(scene->with); j++) {
-            memset(replace, 0, DEFAULT_BUFFER_SIZE);
-            stbsp_snprintf(replace,   DEFAULT_BUFFER_SIZE, "REPLACE_TOKEN_%d", j);
-            lines[i].line = s8_Replace(lines[i].line, replace, scene->with[j].data);
-        }
-    }
-}
+//     char replace[DEFAULT_BUFFER_SIZE];
+//     struct Line *lines = scene->lines;
+//     for (size_t i = 0; i < scene->lines_num; i++) {
+//         for (size_t j = 0; j < DARR_NUM(scene->with); j++) {
+//             memset(replace, 0, DEFAULT_BUFFER_SIZE);
+//             stbsp_snprintf(replace,   DEFAULT_BUFFER_SIZE, "REPLACE_TOKEN_%d", j);
+//             lines[i].line = s8_Replace(lines[i].line, replace, scene->with[j].data);
+//         }
+//     }
+// }
 
-/* --- I/O --- */
+// /* --- I/O --- */
 void Scene_readJSON(void *input, cJSON *jscene) {
-    SDL_assert(jscene != NULL);
-    struct Scene *scene = (struct Scene *)input;
-    Scene_Free(scene);
-    cJSON *jscene_conds = cJSON_GetObjectItem(jscene, "Conditions");
-    cJSON *jrawlines    = cJSON_GetObjectItem(jscene, "Lines");
-    SDL_assert(jrawlines != NULL);
-    if (!cJSON_IsArray(jrawlines)) {
-        SDL_Log("Lines object should be a JSON array.");
-        exit(ERROR_Generic);
-    }
+    //     SDL_assert(jscene != NULL);
+    //     struct Scene *scene = (struct Scene *)input;
+    //     Scene_Free(scene);
+    //     cJSON *jscene_conds = cJSON_GetObjectItem(jscene, "Conditions");
+    //     cJSON *jrawlines    = cJSON_GetObjectItem(jscene, "Lines");
+    //     SDL_assert(jrawlines != NULL);
+    //     if (!cJSON_IsArray(jrawlines)) {
+    //         SDL_Log("Lines object should be a JSON array.");
+    //         exit(ERROR_Generic);
+    //     }
 
-    /* -- Read Scene conditions -- */
-    if (jscene_conds)
-        Conditions_readJSON(&scene->cond, jscene_conds);
+    //     /* -- Read Scene conditions -- */
+    //     if (jscene_conds)
+    //         Conditions_readJSON(&scene->cond, jscene_conds);
 
-    /* -- Read raw lines -- */
-    scene->lines_raw_num = cJSON_GetArraySize(jrawlines);
-    scene->lines_raw = SDL_calloc(scene->lines_raw_num, sizeof(*scene->lines_raw));
-    for (size_t i = 0; i < scene->lines_raw_num; i++) {
-        cJSON *jrawline         = cJSON_GetArrayItem(jrawlines, i);
+    //     /* -- Read raw lines -- */
+    //     scene->lines_raw_num = cJSON_GetArraySize(jrawlines);
+    //     scene->lines_raw = SDL_calloc(scene->lines_raw_num, sizeof(*scene->lines_raw));
+    //     for (size_t i = 0; i < scene->lines_raw_num; i++) {
+    //         cJSON *jrawline         = cJSON_GetArrayItem(jrawlines, i);
 
-        cJSON *jspeaker         = cJSON_GetObjectItem(jrawline, "Speaker");
-        char  *speaker          = cJSON_GetStringValue(jspeaker);
-        scene->lines_raw[i].speaker    = s8_var(speaker);
+    //         cJSON *jspeaker         = cJSON_GetObjectItem(jrawline, "Speaker");
+    //         char  *speaker          = cJSON_GetStringValue(jspeaker);
+    //         scene->lines_raw[i].speaker    = s8_var(speaker);
 
-        cJSON *jline            = cJSON_GetObjectItem(jrawline, "Line");
-        char  *line             = cJSON_GetStringValue(jline);
-        scene->lines_raw[i].rawline    = s8_mut(line);
+    //         cJSON *jline            = cJSON_GetObjectItem(jrawline, "Line");
+    //         char  *line             = cJSON_GetStringValue(jline);
+    //         scene->lines_raw[i].rawline    = s8_mut(line);
 
-        cJSON *jline_cond       = cJSON_GetObjectItem(jrawline, "Conditions");
-        Conditions_readJSON(&scene->lines_raw[i].conditions, jline_cond);
+    //         cJSON *jline_cond       = cJSON_GetObjectItem(jrawline, "Conditions");
+    //         Conditions_readJSON(&scene->lines_raw[i].conditions, jline_cond);
 
-        /* -- Get speaker unit order -- */
-        s8 speakerstr = s8_camelCase(s8_toLower(s8_mut(speaker)), ' ', 2);
-        u16 order = Unit_Name2Order(speakerstr);
-        SDL_assert(order >= 0);
-        scene->lines_raw[i].speaker_order = order;
-        s8_free(&speakerstr);
+    //         /* -- Get speaker unit order -- */
+    //         s8 speakerstr = s8_camelCase(s8_toLower(s8_mut(speaker)), ' ', 2);
+    //         u16 order = Unit_Name2Order(speakerstr);
+    //         SDL_assert(order >= 0);
+    //         scene->lines_raw[i].speaker_order = order;
+    //         s8_free(&speakerstr);
 
-        /* -- Speaker should always be alive -- */
-        Bitfield_On(scene->lines_raw[i].conditions.alive, order);
-    }
+    //         /* -- Speaker should always be alive -- */
+    //         Bitfield_On(scene->lines_raw[i].conditions.alive, order);
+    //     }
+    // }
+
+    // void Scene_writeJSON(void *scene, cJSON *jscene) {
+    //     // If necessary...
+    // }
+
+    // void Condition_Array_Read(u32 *array, cJSON *jarray) {
+    //     size_t num = cJSON_GetArraySize(jarray);
+
+    //     for (int i = 0; i < num; i++) {
+    //         cJSON *jname = cJSON_GetArrayItem(jarray, i);
+    //         char  *name  = cJSON_GetStringValue(jname);
+    //         s8 namestr = s8_camelCase(s8_toLower(s8_mut(name)), ' ', 2);
+    //         int order  = Unit_Name2Order(namestr);
+    //         s8_free(&namestr);
+    //         SDL_assert(order >= 0);
+    //         Bitfield_On(array, order);
+    //     }
 }
 
-void Scene_writeJSON(void *scene, cJSON *jscene) {
-    // If necessary...
-}
+// void Conditions_readJSON( void *input, cJSON *jconds) {
+//     struct Conditions *conds = (struct Conditions *)input;
 
-void Condition_Array_Read(u32 *array, cJSON *jarray) {
-    size_t num = cJSON_GetArraySize(jarray);
+//     cJSON *jdead        = cJSON_GetObjectItem(jconds, "Dead");
+//     cJSON *jalive       = cJSON_GetObjectItem(jconds, "Alive");
+//     cJSON *jrecruited   = cJSON_GetObjectItem(jconds, "Recruited");
 
-    for (int i = 0; i < num; i++) {
-        cJSON *jname = cJSON_GetArrayItem(jarray, i);
-        char  *name  = cJSON_GetStringValue(jname);
-        s8 namestr = s8_camelCase(s8_toLower(s8_mut(name)), ' ', 2);
-        int order  = Unit_Name2Order(namestr);
-        s8_free(&namestr);
-        SDL_assert(order >= 0);
-        Bitfield_On(array, order);
-    }
-}
+//     if (jdead != NULL) {
+//         if (!cJSON_IsArray(jdead)) {
+//             SDL_Log("Dead object should be a JSON array.");
+//             exit(ERROR_Generic);
+//         }
+//         Condition_Array_Read(conds->dead, jdead);
+//     }
 
-void Conditions_readJSON( void *input, cJSON *jconds) {
-    struct Conditions *conds = (struct Conditions *)input;
+//     if (jalive != NULL) {
+//         if (!cJSON_IsArray(jalive)) {
+//             SDL_Log("Alive object should be a JSON array.");
+//             exit(ERROR_Generic);
+//         }
+//         Condition_Array_Read(conds->alive, jalive);
+//     }
 
-    cJSON *jdead        = cJSON_GetObjectItem(jconds, "Dead");
-    cJSON *jalive       = cJSON_GetObjectItem(jconds, "Alive");
-    cJSON *jrecruited   = cJSON_GetObjectItem(jconds, "Recruited");
+//     if (jrecruited != NULL) {
+//         if (!cJSON_IsArray(jrecruited)) {
+//             SDL_Log("Recruited object should be a JSON array.");
+//             exit(ERROR_Generic);
+//         }
+//         Condition_Array_Read(conds->recruited, jrecruited);
+//     }
+// }
 
-    if (jdead != NULL) {
-        if (!cJSON_IsArray(jdead)) {
-            SDL_Log("Dead object should be a JSON array.");
-            exit(ERROR_Generic);
-        }
-        Condition_Array_Read(conds->dead, jdead);
-    }
+// void Conditions_writeJSON(void *input, cJSON *jconds) {
+//     struct Conditions *conds = (struct Conditions *)input;
+//     SDL_assert(conds    != NULL);
+//     SDL_assert(jconds   != NULL);
+//     SDL_assert(conds->alive     != NULL);
+//     SDL_assert(conds->recruited != NULL);
 
-    if (jalive != NULL) {
-        if (!cJSON_IsArray(jalive)) {
-            SDL_Log("Alive object should be a JSON array.");
-            exit(ERROR_Generic);
-        }
-        Condition_Array_Read(conds->alive, jalive);
-    }
+// }
 
-    if (jrecruited != NULL) {
-        if (!cJSON_IsArray(jrecruited)) {
-            SDL_Log("Recruited object should be a JSON array.");
-            exit(ERROR_Generic);
-        }
-        Condition_Array_Read(conds->recruited, jrecruited);
-    }
-}
+// struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_conds,
+//                           i16 chapter, u16 scene_time) {
+//     /* Scenes darr */
+//     if (sdarr != NULL)
+//         DARR_FREE(sdarr);
+//     sdarr = DARR_INIT(sdarr, struct Scene, 4);
+//     /* Creating base filename */
+//     s8 filename     = s8_mut("");
+//     char extension[8] = {0};
+//     s8 base         = s8_mut("scenes"DIR_SEPARATOR);
+//     base            = Filesystem_Scene_Chapter(base, chapter);
+//     base            = s8cat(base, s8_var(sceneTimes[scene_time].data));
 
-void Conditions_writeJSON(void *input, cJSON *jconds) {
-    struct Conditions *conds = (struct Conditions *)input;
-    SDL_assert(conds    != NULL);
-    SDL_assert(jconds   != NULL);
-    SDL_assert(conds->alive     != NULL);
-    SDL_assert(conds->recruited != NULL);
+//     /* Reading scene files */
+//     struct cJSON *jscene, *jfile;
+//     for (i16 i = 1; i < DEFAULT_BUFFER_SIZE; i++) {
+//         // TODO: remake batch scene function
+//         stbsp_sprintf(extension, "%d.json", i);
+//         s8cpy(filename, base);
+//         s8cat(filename, s8_var(extension));
+//         if (!PHYSFS_exists(filename.data))
+//             break;
+//         jfile = jsonio_parseJSON(filename);
+//         SDL_assert(jfile);
+//         jscene = cJSON_GetObjectItem(jfile, "Scene");
+//         SDL_assert(jscene);
+//         struct Scene scene;
+//         Scene_readJSON(&scene,  jscene);
+//         DARR_PUT(sdarr, scene);
+//     }
 
-}
+//     s8_free(&filename);
+//     s8_free(&base);
+//     return (sdarr);
+// }
 
-struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_conds,
-                          i16 chapter, u16 scene_time) {
-    /* Scenes darr */
-    if (sdarr != NULL)
-        DARR_FREE(sdarr);
-    sdarr = DARR_INIT(sdarr, struct Scene, 4);
-    /* Creating base filename */
-    s8 filename     = s8_mut("");
-    char extension[8] = {0};
-    s8 base         = s8_mut("scenes"DIR_SEPARATOR);
-    base            = Filesystem_Scene_Chapter(base, chapter);
-    base            = s8cat(base, s8_var(sceneTimes[scene_time].data));
+// /* --- Speakers --- */
+// void Scene_Speaker_Add(struct Scene *scene, u16 order) {
+//     int index = 0;
+//     for (int i = 0; i < scene->lines_raw_num; i++) {
+//         /* Skip if order found in speakers */
+//         if (order == scene->speakers[i])
+//             return;
 
-    /* Reading scene files */
-    struct cJSON *jscene, *jfile;
-    for (i16 i = 1; i < DEFAULT_BUFFER_SIZE; i++) {
-        // TODO: remake batch scene function
-        stbsp_sprintf(extension, "%d.json", i);
-        s8cpy(filename, base);
-        s8cat(filename, s8_var(extension));
-        if (!PHYSFS_exists(filename.data))
-            break;
-        jfile = jsonio_parseJSON(filename);
-        SDL_assert(jfile);
-        jscene = cJSON_GetObjectItem(jfile, "Scene");
-        SDL_assert(jscene);
-        struct Scene scene;
-        Scene_readJSON(&scene,  jscene);
-        DARR_PUT(sdarr, scene);
-    }
+//         /* Set index to greatest free spot in speakers array */
+//         if ((scene->speakers[i] > 0) && (index < 1))
+//             index = i;
+//     }
+//     SDL_assert(index >= 0);
+//     SDL_assert(index < scene->lines_raw_num);
+//     scene->speakers[index] = order;
+// }
 
-    s8_free(&filename);
-    s8_free(&base);
-    return (sdarr);
-}
+// /* --- Print --- */
+// void Scene_Raw_Print(struct Scene *scene) {
+//     SDL_Log("Raw scene: ");
+//     /* Find max length of name to print cols */
+//     struct RawLine *raws = scene->lines_raw;
+//     int max_name = 0;
+//     for (size_t i = 0; i < scene->lines_raw_num; i++) {
+//         if (max_name < raws[i].speaker.num)
+//             max_name = raws[i].speaker.num;
+//     }
 
-/* --- Speakers --- */
-void Scene_Speaker_Add(struct Scene *scene, u16 order) {
-    int index = 0;
-    for (int i = 0; i < scene->lines_raw_num; i++) {
-        /* Skip if order found in speakers */
-        if (order == scene->speakers[i])
-            return;
+//     /* Print text lines in columns */
+//     for (size_t i = 0; i < scene->lines_raw_num; i++) {
+//         struct RawLine raw = raws[i];
+//         SDL_Log("%-*s : %s", max_name, raw.speaker.data, raw.rawline.data);
+//     }
+// }
 
-        /* Set index to greatest free spot in speakers array */
-        if ((scene->speakers[i] > 0) && (index < 1))
-            index = i;
-    }
-    SDL_assert(index >= 0);
-    SDL_assert(index < scene->lines_raw_num);
-    scene->speakers[index] = order;
-}
+// void Scene_Render_Print(struct Scene *scene) {
+//     SDL_Log("Rendered Scene: ");
+//     struct Line *lines = scene->lines;
+//     int max_name = 0;
+//     for (size_t i = 0; i < scene->lines_num; i++) {
+//         if (max_name < lines[i].speaker.num)
+//             max_name = lines[i].speaker.num;
+//     }
 
-/* --- Print --- */
-void Scene_Raw_Print(struct Scene *scene) {
-    SDL_Log("Raw scene: ");
-    /* Find max length of name to print cols */
-    struct RawLine *raws = scene->lines_raw;
-    int max_name = 0;
-    for (size_t i = 0; i < scene->lines_raw_num; i++) {
-        if (max_name < raws[i].speaker.num)
-            max_name = raws[i].speaker.num;
-    }
+//     /* Print text lines in columns */
+//     for (size_t i = 0; i < scene->lines_num; i++) {
+//         struct Line line = lines[i];
+//         SDL_Log("%-*s : %s", max_name, line.speaker.data, line.line.data);
+//     }
+// }
 
-    /* Print text lines in columns */
-    for (size_t i = 0; i < scene->lines_raw_num; i++) {
-        struct RawLine raw = raws[i];
-        SDL_Log("%-*s : %s", max_name, raw.speaker.data, raw.rawline.data);
-    }
-}
-
-void Scene_Render_Print(struct Scene *scene) {
-    SDL_Log("Rendered Scene: ");
-    struct Line *lines = scene->lines;
-    int max_name = 0;
-    for (size_t i = 0; i < scene->lines_num; i++) {
-        if (max_name < lines[i].speaker.num)
-            max_name = lines[i].speaker.num;
-    }
-
-    /* Print text lines in columns */
-    for (size_t i = 0; i < scene->lines_num; i++) {
-        struct Line line = lines[i];
-        SDL_Log("%-*s : %s", max_name, line.speaker.data, line.line.data);
-    }
-}
-
-/* --- Player interaction --- */
+// /* --- Player interaction --- */
 void Scene_Finish(struct Scene *scene, struct Game *sota) {
     /* - Finish scene - */
     SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "Scene Animation Finished");
@@ -386,42 +367,70 @@ void Scene_Next_Line(struct Scene *scene, struct Game *sota) {
     Scene_Finish(scene, sota);
 }
 
-/* --- Animate --- */
-void _Scene_Animate_Actors(        struct Scene *scene) {
+// /* --- Animate --- */
+// void _Scene_Animate_Actors(        struct Scene *scene) {
 
-}
-void _Scene_Animate_Background(    struct Scene *scene) {
+// }
+// void _Scene_Animate_Background(    struct Scene *scene) {
 
-}
-void _Scene_Animate_Text_Bubbles(  struct Scene *scene) {
+// }
+// void _Scene_Animate_Text_Bubbles(  struct Scene *scene) {
 
-}
+// }
 
 void Scene_Animate(struct Game  *sota, tnecs_entity entity,
                    struct Scene *scene, struct Timer *timer) {
-    /* - Change frame to be drawn each frame - */
+    //     /* - Change frame to be drawn each frame - */
 
-    _Scene_Animate_Background(scene);
-    _Scene_Animate_Actors(scene);
-    _Scene_Animate_Text_Bubbles(scene);
+    //     _Scene_Animate_Background(scene);
+    //     _Scene_Animate_Actors(scene);
+    //     _Scene_Animate_Text_Bubbles(scene);
 }
 
-/* --- Draw --- */
-void _Scene_Draw_Actors(        struct Scene *scene, SDL_Renderer *renderer) {
+void Scene_Actor_Add(Scene *scene, u16 actor) {
+    SDL_assert(scene != NULL);
+    /* Do not add new actor if found */
+    if (Scene_Actor_Find(scene, actor) >= 0) {
+        return;
+    }
 
-}
-void _Scene_Draw_Background(    struct Scene *scene, SDL_Renderer *renderer) {
+    /* Do not add new actor if too many actors already */
+    if (DARR_NUM(scene->actors) >= SCENE_MAX_ACTORS) {
+        return;
+    }
 
+    /* Add new actor */
+    DARR_PUT(scene->actors, actor);
 }
-void _Scene_Draw_Text_Bubbles(  struct Scene *scene, SDL_Renderer *renderer) {
 
+i32 Scene_Actor_Find(Scene *scene, u16 actor) {
+    SDL_assert(scene != NULL);
+    i32 found = -1;
+    for (i32 i = 0; i < DARR_NUM(scene->actors); i++) {
+        if (scene->actors[i] == actor) {
+            found = i;
+            break;
+        }
+    }
+    return (found);
 }
+
+// /* --- Draw --- */
+// void _Scene_Draw_Actors(        struct Scene *scene, SDL_Renderer *renderer) {
+
+// }
+// void _Scene_Draw_Background(    struct Scene *scene, SDL_Renderer *renderer) {
+
+// }
+// void _Scene_Draw_Text_Bubbles(  struct Scene *scene, SDL_Renderer *renderer) {
+
+// }
 
 void Scene_Draw(struct Scene *scene, struct Settings *settings, struct SDL_Texture *rt,
                 SDL_Renderer *renderer) {
-    /* - Draw the scene frame - */
+    //     /* - Draw the scene frame - */
 
-    _Scene_Draw_Background(scene, renderer);
-    _Scene_Draw_Actors(scene, renderer);
-    _Scene_Draw_Text_Bubbles(scene, renderer);
+    //     _Scene_Draw_Background(scene, renderer);
+    //     _Scene_Draw_Actors(scene, renderer);
+    //     _Scene_Draw_Text_Bubbles(scene, renderer);
 }
