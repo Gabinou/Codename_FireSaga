@@ -59,11 +59,12 @@ enum SCENE_bOFFSET {
 //      Anything a Scene can do.
 //      Scene pauses only on line. Otherwise play statements.
 enum SCENE_STATEMENTS {
-    SCENE_STATEMENT_LINE        = 0,
-    SCENE_STATEMENT_DIDASCALIE  = 1,
-    SCENE_STATEMENT_BACKGROUND  = 2,
-    SCENE_STATEMENT_MUSIC       = 3,
-    SCENE_STATEMENT_NUM         = 4,
+    SCENE_STATEMENT_START       = -1,
+    SCENE_STATEMENT_LINE        =  0,
+    SCENE_STATEMENT_DIDASCALIE  =  1,
+    SCENE_STATEMENT_BACKGROUND  =  2,
+    SCENE_STATEMENT_MUSIC       =  3,
+    SCENE_STATEMENT_NUM         =  4,
 };
 
 // Scene Statement FSM
@@ -138,8 +139,9 @@ typedef struct Scene {
     u16 *actors;
 
     /* Statements: meat of the Scene
-     *  - SceneLine, SceneDidascalie, SceneMusic, SceneBackground
+     *  - SceneLine, SceneDidascalie, SceneMusic OR SceneBackground 
      */
+    i32    statement;
     void **statements;
 
     /* -- Post-scene -- */
