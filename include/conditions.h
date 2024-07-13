@@ -16,23 +16,29 @@ struct Conditions {
     u32 recruited[BITFIELD_LEN(UNIT_ORDER_PC_END)];
 };
 // NOTE: Alive and dead are separate for those conditions:
-//      - line REQUIRES unit to be alive        -> alive bit 1
-//      - line does not care if unit is alive   -> alive bit 0
-//      - line REQUIRES unit to be dead         -> dead bit  1
-//      - line does not care if unit is dead    -> dead bit  0
-extern struct Conditions Conditions_Game_default;
-extern struct Conditions Conditions_Line_default;
-
+//      - REQUIRES unit to be alive        -> alive bit 1
+//      - does not care if unit is alive   -> alive bit 0
+//      - REQUIRES unit to be dead         -> dead bit  1
+//      - does not care if unit is dead    -> dead bit  0
+extern struct Conditions Conditions_Game_start;
+extern struct Conditions Conditions_default;
 
 /* --- Conditions --- */
 b32 Conditions_Compare(struct Conditions *line_cond, struct Conditions *game_cond);
 
-void Conditions_Dead_char(     struct Conditions *cond, char *u);
-void Conditions_Alive_char(    struct Conditions *cond, char *u);
-void Conditions_Recruited_char(struct Conditions *cond, char *u);
+/* Set condition from Unit Name */
+void Conditions_Dead_Name(     struct Conditions *cond, char *u);
+void Conditions_Alive_Name(    struct Conditions *cond, char *u);
+void Conditions_Recruited_Name(struct Conditions *cond, char *u);
 
-void Conditions_Dead(     struct Conditions *cond, size_t uo);
-void Conditions_Alive(    struct Conditions *cond, size_t uo);
-void Conditions_Recruited(struct Conditions *cond, size_t uo);
+/* Set condition from Unit ID */
+void Conditions_Dead_ID(     struct Conditions *cond, u16 uid);
+void Conditions_Alive_ID(    struct Conditions *cond, u16 uid);
+void Conditions_Recruited_ID(struct Conditions *cond, u16 uid);
+
+/* Set condition from Unit Order */
+void Conditions_Dead_Order(     struct Conditions *cond, size_t uo);
+void Conditions_Alive_Order(    struct Conditions *cond, size_t uo);
+void Conditions_Recruited_Order(struct Conditions *cond, size_t uo);
 
 #endif /* CONDITIONS_H */

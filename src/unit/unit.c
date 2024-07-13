@@ -289,7 +289,7 @@ void Unit_setid(struct Unit *unit, i16 id) {
     s8_free(&unit->name);
     SDL_assert(unit->name.data == NULL);
 
-    u16 order = *(u16 *)dtab_get(global_unitOrders, id);
+    u64 order = *(u64 *)dtab_get(global_unitOrders, id);
     if (unit->name.data != NULL) {
         s8_free(&unit->name);
     }
@@ -1083,7 +1083,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
         // SDL_Log("ai_filename '%s'", ai_filename);
         unit->ai_filename   = s8_mut(ai_filename);
     }
-    u16 order = *(u16 *)DTAB_GET(global_unitOrders, unit->_id);
+    u64 order = *(u64 *)DTAB_GET(global_unitOrders, unit->_id);
     s8 idname = global_unitNames[order];
 
     if (!s8equal(unit->name, s8_var(json_name))) {
