@@ -209,9 +209,16 @@ void Scene_Render_Output(struct Scene *scene, s8 path);
 void Scene_Raw_Print(   struct Scene *scene);
 void Scene_Render_Print(struct Scene *scene);
 
+/* --- Numbers --- */
+void Scene_Line_Num(        struct Scene *scene);
+void Scene_Music_Num(       struct Scene *scene);
+void Scene_Statement_Num(   struct Scene *scene);
+void Scene_Didascalie_Num(  struct Scene *scene);
+void Scene_Background_Num(  struct Scene *scene);
+
 /* --- Player Interaction --- */
-void Scene_Next_Line(struct Scene *scene, struct Game *sota);
-void Scene_Finish(struct Scene *scene, struct Game *sota);
+void Scene_Finish(      struct Scene *scene, struct Game *sota);
+void Scene_Next_Line(   struct Scene *scene, struct Game *sota);
 
 /* --- Play --- */
 void _Scene_Animate_Actors(        struct Scene *scene);

@@ -74,11 +74,13 @@ void Conditions_Recruited_ID(struct Conditions *cond, u16 _id) {
 
 /* Set condition from Unit order */
 void Conditions_Dead_Order(struct Conditions *cond, size_t unit_order) {
-    Bitfield_On( cond->dead, unit_order);
+    Bitfield_On( cond->dead,    unit_order);
+    Bitfield_Off(cond->alive,   unit_order);
 }
 
 void Conditions_Alive_Order(struct Conditions *cond, size_t unit_order) {
-    Bitfield_On( cond->alive, unit_order);
+    Bitfield_On( cond->alive,   unit_order);
+    Bitfield_Off(cond->dead,    unit_order);
 }
 
 void Conditions_Recruited_Order(struct Conditions *cond, size_t unit_order) {

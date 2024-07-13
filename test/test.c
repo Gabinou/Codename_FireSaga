@@ -12,6 +12,7 @@
 #include "test_party.h"
 #include "test_enums.h"
 #include "test_filesystem.h"
+#include "test_conditions.h"
 #include "test_game.h"
 #include "test_item.h"
 #include "test_map.h"
@@ -76,6 +77,7 @@ void unit_tests() {
     nourstest_run("Bitfields ",     test_bitfields);
     nourstest_run("Camp ",          test_camp);
     nourstest_run("Combat ",        test_combat);
+    nourstest_run("Conditions ",    test_conditions);
     nourstest_run("Convoy ",        test_convoy);
     // nourstest_run("CRT ",        test_crt); // CRT filter too slow
     nourstest_run("Enums ",         test_enums);
@@ -84,7 +86,6 @@ void unit_tests() {
     nourstest_run("Game ",          test_game);
     nourstest_run("Item",           test_item);
     nourstest_run("Map ",           test_map);
-    nourstest_run("Narrative ",     test_narrative);
     nourstest_run("Pathfinding ",   test_pathfinding);
     nourstest_run("Menu ",          test_menu);
     nourstest_run("nstr ",          test_nstr);
@@ -93,6 +94,7 @@ void unit_tests() {
     nourstest_run("Position ",      test_position);
     nourstest_run("Pixelfonts ",    test_pixelfonts);
     nourstest_run("RNG ",           test_RNG);
+    nourstest_run("Scene ",         test_scene);
     nourstest_run("Sprite ",        test_sprite);
     nourstest_run("Text ",          test_text);
     nourstest_run("Tile ",          test_tile);
