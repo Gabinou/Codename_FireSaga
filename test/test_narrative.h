@@ -1,5 +1,5 @@
 #include "nourstest.h"
-#include "narrative.h"
+#include "scene.h"
 #include "enums.h"
 #include "types.h"
 #include "jsonio.h"

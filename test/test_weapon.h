@@ -1,7 +1,7 @@
 #include "nourstest.h"
 #include "weapon.h"
 #include "platform.h"
-#include "narrative.h"
+#include "scene.h"
 
 void test_weapon1() {
     SDL_Log("test_weapon");

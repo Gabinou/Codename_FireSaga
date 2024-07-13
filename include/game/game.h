@@ -21,7 +21,7 @@
 #include "controller/keyboard.h"
 #include "credits.h"
 #include "index_shader.h"
-#include "narrative.h"
+#include "scene.h"
 #include "enums.h"
 #include "structs.h"
 #include "bitfields.h"

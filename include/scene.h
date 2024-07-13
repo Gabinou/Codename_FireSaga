@@ -15,6 +15,22 @@
 #include "bitfields.h"
 #include "SDL2/SDL.h"
 
+/* ---------------------------------- Scene ------------------------------ */  
+//  A visual novel
+//      - Multiple characters talk to each other
+//      - Characters move around, emote, lip sync, blink...
+//      - Sound & music
+//      - Transition effects
+//      - Interactive script
+//          1- Scenes   with dynamic conditions -> play if conditions are met
+//           -> Yes
+//          2- Lines    with dynamic conditions -> play if conditions are met
+//           -> Maybe
+//          3- Lines    with dynamic content    -> replaced at runtime
+//           -> mmmMaybe?
+//      - Branching decisions during scene
+//          - Ex: Give away weapons OR Refuse to give away weapons
+
 /* --- FORWARD DECLARATIONS --- */
 struct Boss;
 struct Game;
@@ -43,14 +59,6 @@ enum SCENE_STATEMENTS {
 
 typedef void (*fsm_scene_statement_t)(void *);
 extern fsm_scene_statement_t scene_statement_play[SCENE_STATEMENT_NUM];
-
-// Features in order of importance
-// 1- Scenes   with dynamic conditions -> play if conditions are met
-//  -> Yes
-// 2- Lines    with dynamic conditions -> play if conditions are met
-//  -> Maybe
-// 3- Lines    with dynamic content    -> replaced at runtime
-//  -> mmmMaybe?
 
 
 /* -- Didascalie (theater vocabulary) -- */

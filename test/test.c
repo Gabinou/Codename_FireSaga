@@ -21,7 +21,7 @@
 #include "test_pathfinding.h"
 #include "test_position.h"
 #include "test_pixelfonts.h"
-#include "test_narrative.h"
+#include "test_scene.h"
 #include "test_sprite.h"
 #include "test_octant.h"
 #include "test_text.h"

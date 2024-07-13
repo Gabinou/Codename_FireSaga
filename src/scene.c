@@ -1,4 +1,4 @@
-#include "narrative.h"
+#include "scene.h"
 // #ifndef STB_SPRINTF_IMPLEMENTATION
 // #define STB_SPRINTF_IMPLEMENTATION
 #include "stb_sprintf.h"

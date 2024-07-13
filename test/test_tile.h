@@ -3,7 +3,7 @@
 #include "jsonio.h"
 #include "platform.h"
 #include "utilities.h"
-#include "narrative.h"
+#include "scene.h"
 
 void test_tile() {
 

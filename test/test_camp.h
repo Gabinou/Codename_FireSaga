@@ -1,6 +1,6 @@
 #include "nourstest.h"
 #include "camp.h"
-#include "narrative.h"
+#include "scene.h"
 #include "RNG.h"
 
 void test_camp() {

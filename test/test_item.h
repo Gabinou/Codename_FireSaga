@@ -1,7 +1,7 @@
 #include "nourstest.h"
 #include "item.h"
 #include "jsonio.h"
-#include "narrative.h"
+#include "scene.h"
 
 void test_item() {
     SDL_Log("test_item");

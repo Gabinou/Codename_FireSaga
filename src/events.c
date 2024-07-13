@@ -7,7 +7,7 @@
 #include "game/menu.h"
 #include "game/cursor.h"
 #include "unit/unit.h"
-#include "narrative.h"
+#include "scene.h"
 #include "convoy.h"
 #include "arrow.h"
 #include "menu/menu.h"
@@ -331,8 +331,10 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
     }
 
     /* -- If map is won or loss, quit -- */
-    if (sota->map->win)
+    if (sota->map->win) {
+        // TODO Replace by Cutscene
         Event_Emit(__func__, SDL_USEREVENT, event_Scene_Play, NULL, NULL);
+    }
 
     if (sota->map->loss)
         Event_Emit(__func__, SDL_USEREVENT, event_Game_Over, NULL, NULL);

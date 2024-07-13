@@ -7,7 +7,7 @@
 #include "enums.h"
 #include "structs.h"
 #include "unit/unit.h"
-#include "narrative.h"
+#include "scene.h"
 #include "equations.h"
 #include "nmath.h"
 #include "cJSON.h"
