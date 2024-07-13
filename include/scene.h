@@ -87,6 +87,8 @@ extern fsm_scene_statement_t scene_statement_play[SCENE_STATEMENT_NUM];
 struct SceneDidascalie {
     i32 type;  /* SCENE_STATEMENT_bOFFSET = 0  (+ 4) */
 
+    /* -- Condition to play statement -- */
+    struct Conditions    cond;
 };
 extern struct SceneDidascalie SceneDidascalie_default;
 extern struct SceneDidascalie SceneDidascalie_FadeAll;
@@ -96,12 +98,17 @@ struct SceneLine {
 
     s8 speaker;
     s8 line;
+
+    /* -- Condition to play statement -- */
+    struct Conditions    cond;
 };
 extern struct SceneLine SceneLine_default;
 
 struct SceneMusic {
     i32 type;  /* SCENE_STATEMENT_bOFFSET = 0  (+ 4) */
 
+    /* -- Condition to play statement -- */
+    struct Conditions    cond;
 };
 extern struct SceneBackground SceneMusic_default;
 extern struct SceneBackground SceneMusic_Stop;
@@ -113,6 +120,8 @@ extern struct SceneBackground SceneMusic_Stop;
 struct SceneBackground {
     i32 type;  /* SCENE_STATEMENT_bOFFSET = 0  (+ 4) */
 
+    /* -- Condition to play statement -- */
+    struct Conditions    cond;
 };
 extern struct SceneBackground SceneBackground_default;
 extern struct SceneBackground SceneBackground_FadeToBlack;
@@ -139,7 +148,7 @@ typedef struct Scene {
     u16 *actors;
 
     /* Statements: meat of the Scene
-     *  - SceneLine, SceneDidascalie, SceneMusic OR SceneBackground 
+     *  - SceneLine, SceneDidascalie, SceneMusic OR SceneBackground
      */
     i32    statement;
     void **statements;

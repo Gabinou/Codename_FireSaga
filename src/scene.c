@@ -298,18 +298,18 @@ void Scene_Finish(struct Scene *scene, struct Game *sota) {
 
 void Scene_Next_Line(struct Scene *scene, struct Game *sota) {
     /* - Get next statement type, play it if its not a - */
-    struct SceneLine next_line* = NULL;
-/* TODO: enable when ready to play statements */
+    struct SceneLine *next_line = NULL;
+    /* TODO: enable when ready to play statements */
 #if 0
     u64 statement_num = DARR_NUM(scene->statements);
     while (scene->statement < statement_num) {
         void    *statement  = scene->statements[scene->statement++]
-        i32     *type       = (i32 *)statement; 
+                              i32     * type       = (i32 *)statement;
         SDL_assert((*type) > SCENE_STATEMENT_START);
         SDL_assert((*type) < SCENE_STATEMENT_NUM);
         if ((*type) == SCENE_STATEMENT_LINE) {
             next_line = (struct SceneLine *)statement;
-            break; 
+            break;
         } else {
             scene_statement_play[(*type)](statement);
         }
