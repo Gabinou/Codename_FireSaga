@@ -1,5 +1,5 @@
-#ifndef NARRATIVE_H
-#define NARRATIVE_H
+#ifndef SCENE_H
+#define SCENE_H
 
 #include <string.h>
 #include "events.h"
@@ -15,9 +15,12 @@
 #include "bitfields.h"
 #include "SDL2/SDL.h"
 
-/* ---------------------------------- Scene ------------------------------ */  
+/* ---------------------------------- Scene --------------------------------- */  
 //  A visual novel
 //      - Multiple characters talk to each other
+//          - Player clicks to move to next line
+//          - Text bubbles pointing to each character?
+//          - Text box on screen bottom?
 //      - Characters move around, emote, lip sync, blink...
 //      - Sound & music
 //      - Transition effects
@@ -30,6 +33,13 @@
 //           -> mmmMaybe?
 //      - Branching decisions during scene
 //          - Ex: Give away weapons OR Refuse to give away weapons
+
+// Is narrated map a Scene or a cutscene?
+//  - Show map (difference kind of background)
+//      - Units move around on map
+//  - Text box on screen bottom
+//  - Player clicks to move to next line
+//   ANSWER -> A Scene
 
 /* --- FORWARD DECLARATIONS --- */
 struct Boss;
@@ -149,7 +159,13 @@ typedef struct Scene {
     void **statements;
 
     /* -- Post-scene -- */
-    // How to play another scene after one scene ended?
+    // What happens after a scene ends?
+    //  - Play another scene
+    //          -> event_Scene_Play
+    //  - Go back to gameplay, preparation.
+    //          -> event?
+    //  - Go back to next chapter start.
+    //          -> event?
     tnecs_entity event;
 
 } Scene;
@@ -228,4 +244,4 @@ void _Scene_Draw_Text_Bubbles(  struct Scene *scene, SDL_Renderer *renderer);
 void Scene_Draw(struct Scene *scene, struct Settings *settings,
                 struct SDL_Texture *rt, SDL_Renderer *renderer);
 
-#endif /* NARRATIVE_H */
+#endif /* SCENE_H */
