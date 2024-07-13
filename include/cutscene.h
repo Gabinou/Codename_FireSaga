@@ -15,7 +15,7 @@
 #include "bitfields.h"
 #include "SDL2/SDL.h"
 
-/* -------------------------------- Cutscene -------------------------------- */  
+/* -------------------------------- Cutscene -------------------------------- */
 //  An animation
 //      - Sprites, text moving around
 //      - Non-interactive (Player can skip scene)
@@ -27,7 +27,7 @@ typedef struct Cutscene {
     // What happens after a cutscene ends?
     //      - Go back to gameplay, preparation
     //          -> event?
-    //      - Go back to FirstMenu -> GameOver 
+    //      - GameOver cutscene: Go back to FirstMenu
     //          -> event_Quit
     tnecs_entity event;
 
