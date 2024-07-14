@@ -832,7 +832,7 @@ extern struct Party Party_default;
 
 
 /* --- Game Object --- */
-struct Game {
+typedef struct Game {
     SDL_Renderer    *renderer;
     SDL_Texture     *render_target;
 #ifdef SOTA_OPENGL
@@ -984,7 +984,7 @@ struct Game {
     b32   isrunning        : 1;
     b32   isShadow         : 1;
     b32   fast_forward     : 1;
-};
+} Game;
 extern struct Game Game_default;
 
 typedef struct Item {

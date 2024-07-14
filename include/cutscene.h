@@ -7,6 +7,7 @@
 #include "utilities.h"
 #include "filesystem.h"
 #include "jsonio.h"
+#include "structs.h"
 #include "enums.h"
 #include "macros.h"
 #include "debug.h"

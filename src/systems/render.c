@@ -372,7 +372,7 @@ void Animate_Cutscene(tnecs_system_input *input) {
         tnecs_entity     entity      = world->entities_bytype[typeflag_id][order];
 
         if (timer->time_ns >= cutscene->time_ns) {
-            Cutscene_Finish(cutscene);
+            Cutscene_Finish(cutscene, sota);
         }
         // Cutscene_Animate(sota, entity, scene, timer);
     }
