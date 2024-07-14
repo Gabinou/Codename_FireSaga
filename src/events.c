@@ -383,21 +383,21 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     Game_Map_Free(sota);
 
     /* -- Creating scene to play -- */
-    sota->scene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Scene, Position,
-                                                  Text, Timer);
+    sota->cutscene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Cutscene,
+                                                     Position, Text, Timer);
 
-    struct Scene *scene;
-    scene  = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
-    *scene = Scene_default;
-    scene->event = event_Quit;
+    struct Cutscene *cutscene;
+    cutscene  = TNECS_GET_COMPONENT(sota->world, sota->cutscene, Cutscene);
+    *cutscene = Cutscene_default;
+    cutscene->event = event_Quit;
 
     struct Timer *timer;
-    timer  = TNECS_GET_COMPONENT(sota->world, sota->scene, Timer);
+    timer  = TNECS_GET_COMPONENT(sota->world, sota->cutscene, Timer);
     *timer = Timer_default;
 
-    /* TODO: remove when scene can actually play */
+    /* TODO: remove when cutscene can actually play */
     struct Text *text;
-    text  = TNECS_GET_COMPONENT(sota->world, sota->scene, Text);
+    text  = TNECS_GET_COMPONENT(sota->world, sota->cutscene, Text);
     *text = Text_default;
     text->pixelfont         = sota->pixelnours_big;
     s8 line = s8_literal("You win!");
@@ -405,7 +405,7 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     SDL_assert((text->rect.w > 0) && (text->rect.h > 0));
 
     struct Position *position;
-    position  = TNECS_GET_COMPONENT(sota->world, sota->scene, Position);
+    position  = TNECS_GET_COMPONENT(sota->world, sota->cutscene, Position);
     *position = Position_default;
     position->onTilemap = false;
     position->scale[0] = 10.0f;
@@ -413,12 +413,12 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     position->pixel_pos.x = sota->settings.res.x / 2 - text->rect.w / 2 * position->scale[0];
     position->pixel_pos.y = sota->settings.res.y / 2;
 
-    /* - Set state to scene - */
-    strncpy(sota->reason, "Game plays scene", sizeof(sota->reason));
-    Game_State_Set(sota, GAME_STATE_Scene_Talk, sota->reason);
+    /* - Set state to cutscene - */
+    strncpy(sota->reason, "Game plays cutscene", sizeof(sota->reason));
+    Game_State_Set(sota, GAME_STATE_Cutscene, sota->reason);
 
     if (sota->substate != GAME_SUBSTATE_STANDBY) {
-        strncpy(sota->reason, "Scene is playing", sizeof(sota->reason));
+        strncpy(sota->reason, "Cutscene is playing", sizeof(sota->reason));
         Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
     }
 }
@@ -471,8 +471,16 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
     SDL_assert(sprite != NULL);
     sprite->visible = true;
 
-    /* -- Destroying Scene -- */
-    struct Scene *scene  = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
+    /* -- Destroying Cutscene -- */
+    struct Cutscene *cutscene  = TNECS_GET_COMPONENT(sota->world, sota->cutscene, Cutscene);
+    if (cutscene != NULL) {
+        Cutscene_Free(cutscene);
+        tnecs_entity_destroy(sota->world, sota->cutscene);
+        sota->cutscene = TNECS_NULL;
+    }
+
+    /* -- Destroying scene -- */
+    struct Scene *scene  = TNECS_GET_COMPONENT(sota->world, sota->scene, Cutscene);
     if (scene != NULL) {
         Scene_Free(scene);
         tnecs_entity_destroy(sota->world, sota->scene);
@@ -1191,30 +1199,31 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
     /* - Map_Free - */
     Game_Map_Free(sota);
 
-    /* -- Creating scene to play -- */
-    sota->scene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Scene,
-                                                  Position, Text, Timer);
+    /* -- Creating cutscene to play -- */
+    sota->cutscene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Cutscene,
+                                                     Position, Text, Timer);
 
-    struct Scene *scene;
-    scene  = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
-    *scene = Scene_default;
-    scene->event = event_Quit;
+    struct Cutscene *cutscene;
+    cutscene  = TNECS_GET_COMPONENT(sota->world, sota->cutscene, Cutscene);
+    *cutscene = Cutscene_default;
+    cutscene->event = event_Quit;
 
     struct Timer *timer;
-    timer  = TNECS_GET_COMPONENT(sota->world, sota->scene, Timer);
+    timer  = TNECS_GET_COMPONENT(sota->world, sota->cutscene, Timer);
     *timer = Timer_default;
 
-    /* TODO: remove when scene can actually play */
+    /* TODO: remove Text when cutscene can actually play */
     struct Text *text;
-    text  = TNECS_GET_COMPONENT(sota->world, sota->scene, Text);
+    text  = TNECS_GET_COMPONENT(sota->world, sota->cutscene, Text);
     *text = Text_default;
     text->pixelfont         = sota->pixelnours_big;
     s8 line = s8_literal("Tragedy.");
     Text_Set(text, line.data, PIXELNOURS_BIG_Y_OFFSET);
     SDL_assert((text->rect.w > 0) && (text->rect.h > 0));
 
+    /* TODO: remove Position when cutscene can actually play */
     struct Position *position;
-    position  = TNECS_GET_COMPONENT(sota->world, sota->scene, Position);
+    position  = TNECS_GET_COMPONENT(sota->world, sota->cutscene, Position);
     *position = Position_default;
     position->onTilemap = false;
     position->scale[0] = 10.0f;
@@ -1222,12 +1231,12 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
     position->pixel_pos.x = sota->settings.res.x / 2 - text->rect.w / 2 * position->scale[0];
     position->pixel_pos.y = sota->settings.res.y / 2;
 
-    /* - Set state to scene - */
-    strncpy(sota->reason, "Game plays scene", sizeof(sota->reason));
-    Game_State_Set(sota, GAME_STATE_Scene_Talk, sota->reason);
+    /* - Set state to cutscene - */
+    strncpy(sota->reason, "Game plays cutscene", sizeof(sota->reason));
+    Game_State_Set(sota, GAME_STATE_Cutscene, sota->reason);
 
     if (sota->substate != GAME_SUBSTATE_STANDBY) {
-        strncpy(sota->reason, "Scene is playing", sizeof(sota->reason));
+        strncpy(sota->reason, "Cutscene is playing", sizeof(sota->reason));
         Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
     }
 }

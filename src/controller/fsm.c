@@ -6,7 +6,7 @@ fsm_Input_s_t fsm_Input_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
     /* Scene_Talk */     NULL,
-    /* Scene_FMV */      NULL,
+    /* Cutscene */      NULL,
     /* Gameplay_Map */   &fsm_Input_sGAMEPLAY_MAP,
     /* Gameplay_Camp */  NULL,
     /* Preparation */    NULL,

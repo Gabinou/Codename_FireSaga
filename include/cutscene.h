@@ -20,8 +20,10 @@
 //      - Sprites, text moving around
 //      - Non-interactive (Player can skip scene)
 
-
 typedef struct Cutscene {
+    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
+    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
+
     /* Time cutscene plays */
     u64 time_ns;
 
@@ -37,5 +39,9 @@ typedef struct Cutscene {
 extern struct Cutscene Cutscene_default;
 extern struct Cutscene Cutscene_GameOver;
 
+void Cutscene_Free(Cutscene *cutscene);
+void Cutscene_Init(Cutscene *cutscene);
+
+void Cutscene_Finish(Cutscene *cutscene, Game *sota);
 
 #endif /* CUTSCENE_H */

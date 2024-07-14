@@ -535,7 +535,9 @@ void Game_Init(struct Game *sota, int argc, char *argv[]) {
     // TNECS_REGISTER_SYSTEM_wEXCL(world, Control_Touchpad, 0, Position, Sprite, controllerTouchpad);
 
     /* -- Animating and sliding systems before drawing --  */
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Scene,  1, Scene, Position, Text, Timer);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Scene,       1, Scene,       Position, Text, Timer);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Cutscene,    1, Cutscene,    Position, Text, Timer);
+
     TNECS_REGISTER_SYSTEM_wEXCL(world, Slide_Sprite,   0, Sprite, Position, Slider);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Slide_PopUp_Offscreen, 1, PopUp, Slider,
                                 SliderOffscreen, Position);

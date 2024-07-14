@@ -1,6 +1,6 @@
 REGISTER_ENUM(Combat,           Cmbt)
 REGISTER_ENUM(Scene_Talk,       ScnTalk)
-REGISTER_ENUM(Scene_FMV,        ScnFMV)
+REGISTER_ENUM(Cutscene,         CutScn)
 REGISTER_ENUM(Gameplay_Map,     GmpMap)
 REGISTER_ENUM(Gameplay_Camp,    GmpCamp)
 REGISTER_ENUM(Preparation,      Prep)
