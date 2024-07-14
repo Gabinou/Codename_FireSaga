@@ -19,7 +19,7 @@ fsm_eAcpt_s_t fsm_eAcpt_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
     /* Scene_Talk */     &fsm_eAcpt_sScnTalk,
-    /* Cutscene */      NULL,
+    /* Cutscene */       &fsm_eAcpt_sCutScn,
     /* Gameplay_Map */   &fsm_eAcpt_sGmpMap,
     /* Gameplay_Camp */  NULL,
     /* Preparation */    &fsm_eAcpt_sPrep,
@@ -31,7 +31,7 @@ fsm_eStart_s_t fsm_eStart_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
     /* Scene_Talk */     &fsm_eStart_sScnTalk,
-    /* Cutscene */      NULL,
+    /* Cutscene */       &fsm_eStart_sCutScn,
     /* Gameplay_Map */   NULL,
     /* Gameplay_Camp */  NULL,
     /* Preparation */    &fsm_eStart_sPrep,
@@ -1047,6 +1047,13 @@ void fsm_eStart_sScnTalk(struct Game *sota, tnecs_entity accepter) {
     Scene_Finish(scene, sota);
 }
 
+void fsm_eStart_sCutScn(struct Game *sota, tnecs_entity nope) {
+    /* --- Finish Cutscene --- */
+    SDL_assert(sota->cutscene > TNECS_NULL);
+    struct Cutscene *cutscene = TNECS_GET_COMPONENT(sota->world, sota->cutscene, Cutscene);
+    Cutscene_Finish(cutscene, sota);
+}
+
 void fsm_eStart_sPrep(struct Game *sota, tnecs_entity accepter) {
     /* --- Preparation done: Start Map gameplay --- */
     // TODO: check that in prep stat, menu is deployment
@@ -1075,6 +1082,13 @@ void fsm_eAcpt_sScnTalk(struct Game *sota, tnecs_entity nope) {
     SDL_assert(sota->scene > TNECS_NULL);
     struct Scene *scene = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
     Scene_Next_Line(scene, sota);
+}
+
+void fsm_eAcpt_sCutScn(struct Game *sota, tnecs_entity nope) {
+    /* --- Finish cutscene --- */
+    SDL_assert(sota->cutscene > TNECS_NULL);
+    struct Cutscene *cutscene = TNECS_GET_COMPONENT(sota->world, sota->cutscene, Cutscene);
+    Cutscene_Finish(cutscene, sota);
 }
 
 void fsm_eAcpt_sGmpMap(struct Game *sota, tnecs_entity accepter) {
