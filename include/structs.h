@@ -884,6 +884,7 @@ struct Game {
     tnecs_entity weapon_select_menu;
     tnecs_entity stats_menu;
     tnecs_entity scene;
+    tnecs_entity cutscene;
     tnecs_entity pre_combat_popup;
     tnecs_entity first_menu;
     tnecs_entity title;

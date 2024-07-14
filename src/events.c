@@ -336,8 +336,9 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
         Event_Emit(__func__, SDL_USEREVENT, event_Scene_Play, NULL, NULL);
     }
 
-    if (sota->map->loss)
+    if (sota->map->loss) {
         Event_Emit(__func__, SDL_USEREVENT, event_Game_Over, NULL, NULL);
+    }
 }
 
 void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
@@ -1191,8 +1192,8 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
     Game_Map_Free(sota);
 
     /* -- Creating scene to play -- */
-    sota->scene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Scene, Position,
-                                                  Text, Timer);
+    sota->scene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Scene,
+                                                  Position, Text, Timer);
 
     struct Scene *scene;
     scene  = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);

@@ -22,6 +22,8 @@
 
 
 typedef struct Cutscene {
+    /* Time cutscene plays */
+    u64 time_ns;
 
     /* -- Post-scene -- */
     // What happens after a cutscene ends?

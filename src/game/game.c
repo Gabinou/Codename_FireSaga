@@ -30,11 +30,13 @@ struct Game Game_default = {
     .cursor_move            = {0},
     .entity_mouse           = TNECS_NULL,
     .ent_unit_loaded        = NULL,
-    .entity_cursor          = 0,
-    .entity_transition      = 0,
-    .entity_highlighted     = 0,
-    .entity_shadowed        = 0,
-    .entity_fps             = 0,
+    .entity_cursor          = TNECS_NULL,
+    .entity_transition      = TNECS_NULL,
+    .entity_highlighted     = TNECS_NULL,
+    .entity_shadowed        = TNECS_NULL,
+    .entity_fps             = TNECS_NULL,
+    .scene                  = TNECS_NULL,
+    .cutscene               = TNECS_NULL,
     .selected_unit_entity   = 0,
 
     .isShadow               = false,
@@ -521,6 +523,7 @@ void Game_Init(struct Game *sota, int argc, char *argv[]) {
     TNECS_REGISTER_COMPONENT(sota->world, PixelFont);
     TNECS_REGISTER_COMPONENT(sota->world, AI);
     TNECS_REGISTER_COMPONENT(sota->world, Scene);
+    TNECS_REGISTER_COMPONENT(sota->world, Cutscene);
     sota->timer_typeflag = TNECS_COMPONENT_NAME2TYPE(sota->world, Timer);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration\n");

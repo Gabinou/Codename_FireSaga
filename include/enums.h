@@ -371,7 +371,7 @@ enum FRAME_PAUSE_MODE {
 };
 
 enum SOTA_CONVERSIONS {
-    SOTA_ns                 = 1000000000, /* [ns/s] */
+    SOTA_ns                 = 1000000000UL, /* [ns/s] */
     SOTA_us                 =    1000000, /* [us/s] */
     SOTA_ms                 =       1000, /* [ms/s] */
 };
