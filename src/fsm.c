@@ -1062,7 +1062,11 @@ void fsm_eStart_sPrep(struct Game *sota, tnecs_entity accepter) {
 }
 
 void fsm_eStart_sPrep_ssMapCndt(struct Game *sota, tnecs_entity ent) {
-    /* Start combat? */
+    /* --- Start battle --- */
+    SDL_assert(sota->deployment_menu > TNECS_NULL);
+    struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
+    Game_Battle_Start(sota, mc);
+    SDL_assert(mc != NULL);
 }
 
 void fsm_eStart_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
@@ -1070,8 +1074,9 @@ void fsm_eStart_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
     SDL_assert(DARR_NUM(sota->menu_stack) > 0);
     tnecs_entity top_menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     SDL_assert(top_menu > TNECS_NULL);
+    SDL_assert(top_menu == sota->deployment_menu);
     struct Menu *mc = TNECS_GET_COMPONENT(sota->world, top_menu, Menu);
-
+    SDL_assert(mc != NULL);
     if (fsm_eStart_sPrep_ssMenu_m[mc->type] != NULL)
         fsm_eStart_sPrep_ssMenu_m[mc->type](sota, mc);
 }

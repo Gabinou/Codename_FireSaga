@@ -1036,3 +1036,51 @@ int Game_Volume_Music_Get(  struct Game *sota) {
 int Game_Volume_SoundFX_Get(struct Game *sota) {
     return (Mix_MasterVolume(-1));
 }
+
+/* -- Battle -- */
+void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
+    /* -- Place units in deployment slots on map -- */
+    struct DeploymentMenu *dm = mc->data;
+    if (dm->_selected_num == 0) {
+        return;
+    }
+
+    /* -- Game substate to on Map -- */
+    strncpy(sota->reason, "Preparation done. March!", sizeof(sota->reason));
+    if (sota->state != GAME_STATE_Gameplay_Map)
+        Game_State_Set(sota, GAME_STATE_Gameplay_Map, sota->reason);
+    if (sota->substate != GAME_SUBSTATE_STANDBY)
+        Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
+
+    /* -- Load map -- */
+    Game_PopUp_Tile_Create(sota);
+    Game_cursorFocus_onMap(sota);
+
+    /* -- Destroy Deployment Menu -- */
+    b32 destroy = true;
+    u64 menu_num = DARR_NUM(sota->menu_stack);
+    if (sota->menu_stack[menu_num - 1] == sota->deployment_menu) {
+        Game_menuStack_Pop(sota, destroy);
+    }
+
+    /* -- Disable palette map during turn transition -- */
+    Map_Palettemap_Autoset(sota->map, 0);
+
+    /* -- Set cursor position to first starting position -- */
+    SDL_assert(sota                     != NULL);
+    SDL_assert(sota->entity_cursor      != TNECS_NULL);
+    struct Position *position = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    SDL_assert(position                 != NULL);
+    SDL_assert(sota->map                != NULL);
+    SDL_assert(sota->map->start_pos     != NULL);
+    SDL_assert(DARR_NUM(sota->map->start_pos) > 0);
+    Position_Pos_Set(position, sota->map->start_pos[0].x, sota->map->start_pos[0].y);
+
+    // Game_cursorFocus_onMap resets position to cursor_lastpos;
+    // TODO: bool flag to disable Game_cursorFocus_onMap resetting cursor pos.
+    sota->cursor_lastpos.x = sota->map->start_pos[0].x;
+    sota->cursor_lastpos.y = sota->map->start_pos[0].y;
+
+    /* -- Start turn transition -- */
+    Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
+}

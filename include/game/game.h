@@ -124,4 +124,7 @@ int  Game_Volume_Music_Get(  struct Game *sota);
 void Game_Volume_SoundFX_Set(struct Game *sota, int volume);
 int  Game_Volume_SoundFX_Get(struct Game *sota);
 
+/* -- Battle -- */
+void  Game_Battle_Start(struct Game *sota, struct Menu *mc);
+
 #endif /* GAME_STRUCT_H */
