@@ -77,10 +77,8 @@ void fsm_cFrame_sGmpMap_ssMapCmbt(struct Game *sota) {
 void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     /* --- AI CONTROL --- */
     if (sota->map->loss) {
-        SDL_Log("AI CONTROL -> LOSS");
+        // SDL_Log("AI CONTROL -> LOSS");
         Event_Emit(__func__, SDL_USEREVENT, event_Game_Over, NULL, NULL);
-        strncpy(sota->reason, "Game Over is an animation", sizeof(sota->reason));
-        Game_subState_Set(sota, GAME_SUBSTATE_MAP_ANIMATION, sota->reason);
         return;
     }
 

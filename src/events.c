@@ -191,14 +191,12 @@ void receive_event_Input_CANCEL(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Map_Win(struct Game *sota, SDL_Event *Map_Win) {
-    SDL_Log("Map was won!");
-
+    // SDL_Log("Map was won!");
     sota->map->win = true;
 }
 
 void receive_event_Map_Lose(struct Game *sota, SDL_Event *Map_Lose) {
-    SDL_Log("Map was lost!");
-
+    // SDL_Log("Map was lost!");
     sota->map->loss = true;
 }
 
