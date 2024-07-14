@@ -309,7 +309,7 @@ int mace(int argc, char *argv[]) {
     MACE_ADD_CONFIG(win_debug);
     MACE_ADD_CONFIG(win_release);
     MACE_ADD_CONFIG(l2w_tcc_debug);
-    MACE_ADD_CONFIG(l2w_tcc_debug);
+    MACE_ADD_CONFIG(l2w_tcc_release);
     MACE_ADD_CONFIG(l2w_gcc_debug);
     MACE_ADD_CONFIG(l2w_gcc_release);
     MACE_ADD_CONFIG(tcc_bounds);
