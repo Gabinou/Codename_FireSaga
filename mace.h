@@ -5347,9 +5347,10 @@ void mace_build_order_add(size_t order) {
     build_order[build_order_num++] = order;
 }
 
-/* - Depth first search through depencies - */
+/// @brief Depth first search through target depencies to construct a 
+///     build_order to for user target and all its dependencies
 void mace_build_order_recursive(struct Target target, size_t *o_cnt) {
-    /* Make sure recurssion number isn't greater than target number */
+    /* Make sure recursion number isn't greater than target number */
     if ((*o_cnt) >= target_num)
         return;
 
@@ -5388,17 +5389,20 @@ void mace_build_order_recursive(struct Target target, size_t *o_cnt) {
     return;
 }
 
-bool mace_Target_hasDep(struct Target *target, uint64_t hash) {
+/// @brief Check if target depends on target with input hash.
+bool mace_Target_hasDep(struct Target *target, uint64_t target_hash) {
     if (target->_deps_links == NULL)
         return (false);
 
     for (int i = 0; i < target->_deps_links_num; i++) {
-        if (target->_deps_links[i] == hash)
+        if (target->_deps_links[i] == target_hash)
             return (true);
     }
     return (false);
 }
 
+/// @brief Check if any two targets depend on each other.
+///     TODO: Resolve circular dependencies somehow.
 bool mace_circular_deps(struct Target *targs, size_t len) {
     /* -- Circular dependency conditions -- */
     /*   1- Target i has j dependency       */
@@ -5428,6 +5432,7 @@ bool mace_circular_deps(struct Target *targs, size_t len) {
     return (false);
 }
 
+/// @brief Creates obj_dir, build_dir...
 void mace_make_dirs() {
     /* obj_dir for intermediary files */
     mace_mkdir(obj_dir);
@@ -5442,6 +5447,8 @@ void mace_make_dirs() {
     mace_mkdir(build_dir);
 }
 
+/// @brief Read config string, splitting string into _flags using
+///     mace_flag_separator.
 void mace_parse_config(struct Config *config) {
     mace_Config_Free(config);
     if (config->flags == NULL) {
@@ -5478,6 +5485,8 @@ void mace_parse_configs() {
     }
 }
 
+/// @brief Determine build_order of user target using depth-first 
+///     search through its dependencies
 void mace_build_order() {
     size_t o_cnt = 0; /* order count */
 
@@ -5516,6 +5525,7 @@ void mace_build_order() {
     }
 }
 
+/// @brief Prepare for build step: check whats needs to be recompiled
 void mace_pre_build() {
     /* --- Make output directories. --- */
     mace_make_dirs();
@@ -5532,6 +5542,7 @@ void mace_pre_build() {
     }
 }
 
+/// @brief Actually compile and link target.
 void mace_build() {
     /* Clean and exit if set by user */
     if (mace_user_target == MACE_CLEAN_ORDER) {
@@ -5694,14 +5705,8 @@ void mace_Target_Free_argv(struct Target *target) {
     }
 }
 
-int mace_Target_header_order(struct Target *target, uint64_t hash) {
-    for (int i = 0; i < target->_headers_num; ++i) {
-        if (target->_headers_hash[i] == hash)
-            return (i);
-    }
-    return (-1);
-}
-
+/// @brief Alloc _deps_header arrays if don't exist. 
+///     Realloc to bigger if num close to len
 void mace_Target_Grow_deps_headers(struct Target *target, int source_i) {
     if (target->_deps_headers[source_i] == NULL) {
         target->_deps_headers_num[source_i] = 0;
@@ -5718,6 +5723,8 @@ void mace_Target_Grow_deps_headers(struct Target *target, int source_i) {
     }
 }
 
+/// @brief Alloc header arrays if don't exist. 
+///     Realloc to bigger if num close to len
 void mace_Target_Grow_Headers(struct Target *target) {
     /* -- Alloc headers -- */
     if (target->_headers == NULL) {
@@ -5825,8 +5832,10 @@ void mace_Target_Read_Objdeps(struct Target *target, char *deps, int source_i) {
     }
 }
 
-int mace_Target_hasHeader(struct Target *target, uint64_t hash) {
-    for (int i = 0; i < target->_headers_num; i++) {
+/// @brief Check if target has header from input filename hash.
+/// @return -1 if not found, header_order if found.
+int mace_Target_header_order(struct Target *target, uint64_t hash) {
+    for (int i = 0; i < target->_headers_num; ++i) {
         if (target->_headers_hash[i] == hash)
             return (i);
     }
@@ -5865,6 +5874,7 @@ void mace_Target_Header_Add_Objpath(struct Target *target, char *header) {
     target->_headers_checksum[target->_headers_num] = header_checksum;
 }
 
+/// @brief Add header file name to target.
 uint64_t mace_Target_Header_Add(struct Target *target, char *header) {
     /* Check if header hash already in _headers_hash */
     /* Add header hash to _headers_hash */
@@ -5872,7 +5882,7 @@ uint64_t mace_Target_Header_Add(struct Target *target, char *header) {
 
     /* Add header name to _headers */
     mace_Target_Grow_Headers(target);
-    if (mace_Target_hasHeader(target, hash) == -1) {
+    if (mace_Target_header_order(target, hash) == -1) {
         /* Add header hash */
         target->_headers_hash[target->_headers_num] = hash;
 
@@ -5891,6 +5901,7 @@ uint64_t mace_Target_Header_Add(struct Target *target, char *header) {
     return (hash);
 }
 
+/// @brief Add header as dependency of target.
 void mace_Target_Objdep_Add(struct Target *target, int header_order, int source_i) {
     /* Check if header_order in _deps_headers */
     assert(source_i > -1);
@@ -5907,6 +5918,7 @@ void mace_Target_Objdep_Add(struct Target *target, int header_order, int source_
     target->_deps_headers[source_i][i] = header_order;
 }
 
+/// @brief Read .d file and built .ho file from it.
 char *mace_Target_Read_d(struct Target *target, int source_i) {
     char *obj_file_flag = target->_argv_objects[source_i];
 
@@ -5979,7 +5991,7 @@ char *mace_Target_Read_d(struct Target *target, int source_i) {
     }
     fclose(fd);
 
-    /* - Only need to compute .ho file if source changed OR fho doesn't exist - */
+    /* - Only need to compute .ho file if source changed OR .ho doesn't exist - */
     bool source_changed = target->_recompiles[source_i];
     if ((!source_changed) && (fho_exists)) {
         free(obj_file);
@@ -5989,8 +6001,8 @@ char *mace_Target_Read_d(struct Target *target, int source_i) {
 }
 
 
-/* - Parse .d file, recording all header files to .ho files - */
-// Only be called if source file changed
+/// @brief Parse .d file, recording all header files to .ho files
+///     Should only be called if source file changed
 void mace_Target_Parse_Objdep(struct Target *target, int source_i) {
     /* Set _deps_headers_num to invalid */
     target->_deps_headers_num[source_i] = -1;
@@ -6014,6 +6026,7 @@ void mace_Target_Parse_Objdep(struct Target *target, int source_i) {
     free(obj_file);
 }
 
+/// @brief Read .ho file and put all read headers in _deps_headers
 void mace_Target_Read_ho(struct Target *target, int source_i) {
     // Only read if .ho file was not created.
     if (target->_deps_headers_num[source_i] > 0)
@@ -6070,10 +6083,8 @@ void mace_Target_Read_ho(struct Target *target, int source_i) {
     fclose(fho);
 }
 
+/// @brief Save header order dependencies to .ho. .d should exist.
 void mace_Target_Parse_Objdeps(struct Target *target) {
-    // Save header order dependencies to .ho
-    // .d should exist
-
     /* Loop over all _argv_sources */
     for (int i = 0; i < target->_argc_sources; i++) {
         mace_Target_Parse_Objdep(target, i);
@@ -6081,6 +6092,7 @@ void mace_Target_Parse_Objdeps(struct Target *target) {
     }
 }
 
+/// @brief Alloc stuff in preparation for user to set targets, configs, etc.
 void mace_pre_user(struct Mace_Arguments *args) {
     mace_post_build(NULL);
 
@@ -6123,6 +6135,7 @@ void mace_pre_user(struct Mace_Arguments *args) {
     mace_set_obj_dir("obj/");
 }
 
+/// @brief Prepare for build after user added targets, configs, etc.
 void mace_post_user(struct Mace_Arguments *args) {
     //   1- Moves to user set dir if not NULL.
     //   2- Checks that at least one target exists,
@@ -6216,6 +6229,7 @@ void mace_post_user(struct Mace_Arguments *args) {
     }
 }
 
+/// @brief Free everything, cause all targets were built.
 void mace_post_build(struct Mace_Arguments *args) {
     Mace_Arguments_Free(args);
     for (int i = 0; i < target_num; i++) {
@@ -6260,7 +6274,7 @@ void mace_post_build(struct Mace_Arguments *args) {
     object_len      = 0;
     build_order_num = 0;
 }
-
+/// @brief Realloc _deps_links to bigger if num close to len
 void mace_Target_Deps_Grow(struct Target *target) {
     if (target->_deps_links_len <= target->_deps_links_num) {
         target->_deps_links_len *= 2;
@@ -6269,8 +6283,8 @@ void mace_Target_Deps_Grow(struct Target *target) {
     }
 }
 
-void mace_Target_Deps_Add(struct Target *target, uint64_t hash) {
-    if (!mace_Target_hasDep(target, hash)) {
+void mace_Target_Deps_Add(struct Target *target, uint64_t target_hash) {
+    if (!mace_Target_hasDep(target, target_hash)) {
         mace_Target_Deps_Grow(target);
         target->_deps_links[target->_deps_links_num++] = hash;
     }
@@ -6328,11 +6342,11 @@ void mace_Target_Deps_Hash(struct Target *target) {
 }
 
 /********************************** checksums *********************************/
-/// @brief Compute sha1dc checksum of file.
 #define MACE_SRC_FOLDER_STR_LEN 4
 #define MACE_INCLUDE_FOLDER_STR_LEN 8
 #define MACE_CHECKSUM_EXTENSION_STR_LEN 5
 #define MACE_SEPARATOR_STR_LEN 1
+/// @brief Compute sha1dc checksum of file.
 char *mace_checksum_filename(char *file, int mode) {
     // Files should be .c or .h
     assert(obj_dir != NULL);
@@ -6392,6 +6406,7 @@ inline bool mace_sha1dc_cmp(uint8_t hash1[SHA1_LEN], uint8_t hash2[SHA1_LEN]) {
 }
 
 /// @brief Check for collision in sha1dc checksum between input file and hash
+/// TODO: What should user do if sha1dc collision found? 
 void mace_sha1dc(char *file, uint8_t hash[SHA1_LEN]) {
     assert(file != NULL);
     size_t size;
@@ -6426,7 +6441,7 @@ void mace_sha1dc(char *file, uint8_t hash[SHA1_LEN]) {
     /* - check for collision - */
     foundcollision = SHA1DCFinal(hash, &ctx2);
 
-    // What should user do if sha1dc collision found? 
+    // TODO: What should user do if sha1dc collision found? 
     if (foundcollision) {
         fprintf(stderr, "sha1dc: collision detected");
         exit(1);
@@ -6655,7 +6670,7 @@ void Mace_Arguments_Free(struct Mace_Arguments *args) {
 /************************************ main ************************************/
 
 #ifndef MACE_OVERRIDE_MAIN
-/// @brief mace main function. mace.h implements main, not the macefile!
+/// @brief mace.h implements main, not the macefile!
 ///     1- Runs mace function, get all info from user:
 ///       - Compiler, Targets, Configs, Directories
 ///     2- Builds dependency graph from targets' links, dependencies
