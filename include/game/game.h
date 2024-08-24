@@ -60,6 +60,7 @@ struct Item;
 struct Unit;
 struct Convoy;
 struct Game;
+struct Menu;
 
 void Events_Data_Malloc(void);
 void Events_Data_Free(void);

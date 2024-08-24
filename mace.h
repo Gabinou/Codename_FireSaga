@@ -42,10 +42,10 @@ extern int mace(int argc, char *argv[]);
 //   1- Add targets         -> MACE_ADD_TARGET
 //   2- Set compiler        -> MACE_SET_COMPILER
 // Optional:
-//   3- Set build_dir       -> mace_set_obj_dir
-//   4- Set obj_dir         -> mace_set_build_dir
-//   5- Set separator       -> mace_set_separator
-//   6- Set default target  -> mace_default_target
+//   3- Set build_dir       -> MACE_SET_OBJ_DIR
+//   4- Set obj_dir         -> MACE_SET_BUILD_DIR
+//   5- Set separator       -> MACE_SET_SEPARATOR
+//   6- Set default target  -> MACE_SET_DEFAULT_TARGET
 //   7- Add configs         -> MACE_ADD_CONFIG
 //      - First added config is default
 
@@ -525,9 +525,9 @@ static bool build_all  = false; /* Don't check object dependencies */
 /* --- Processes --- */
 // Compile objects in parallel.
 // Compile targets in series.
-static pid_t *pqueue   = NULL;
-static int pnum        =  0;
-static int plen        = -1;
+static pid_t   *pqueue  = NULL;
+static int      pnum    =  0;
+static int      plen    = -1;
 
 #endif /* MACE_CONVENIENCE_EXECUTABLE */
 /* -- separator -- */
