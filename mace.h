@@ -85,38 +85,31 @@ extern int mace(int argc, char *argv[]);
 /* -- Directories -- */
 /* - obj_dir - */
 // Folder for intermediary files: .o, .d .sha1, etc.
-char    *mace_set_obj_dir(char *obj);
 #define  MACE_SET_OBJ_DIR(dir) _MACE_SET_OBJ_DIR(dir)
 #define _MACE_SET_OBJ_DIR(dir)  mace_set_obj_dir(#dir)
 
 /* - build_dir - */
 // Folder for targets: binaries, libraries.
-char    *mace_set_build_dir(char *build);
 #define  MACE_SET_BUILD_DIR(dir) _MACE_SET_BUILD_DIR(dir)
 #define _MACE_SET_BUILD_DIR(dir)  mace_set_build_dir(#dir)
 
 /* -- Separator -- */
 // Separator for files/folders in target member variables. Default is ",".
-void     mace_set_separator(char *sep);
 #define  MACE_SET_SEPARATOR(sep) _MACE_SET_SEPARATOR(sep)
 #define _MACE_SET_SEPARATOR(sep)  mace_set_separator(#sep)
 
 /* --- Targets --- */
 struct Target;
-void    mace_add_target(struct Target *target, char *name);
 #define MACE_ADD_TARGET(target)     mace_add_target(&target, #target)
 
 /* --- Configs --- */
 struct Config;
-void    mace_add_config(struct Config *config, char *name);
 #define MACE_ADD_CONFIG(config)     mace_add_config(&config, #config)
 
 #define MACE_TARGET_CONFIG(target, config)  mace_target_config(#target, #config)
-void    mace_target_config(char *ntarget, char *nconfig);
 
 // When set by user, mace builds all only default target and its dependencies.
 // If no default target is set, mace builds all targets.
-void    mace_set_default_target(char *name);
 #define MACE_SET_DEFAULT_TARGET(target) mace_set_default_target(#target)
 
 /* -- Target kinds -- */
