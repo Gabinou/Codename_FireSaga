@@ -1341,6 +1341,9 @@ void fsm_eStats_sGmpMap(struct Game *sota, tnecs_entity ent) {
     fsm_eStats_sGmpMap_ssStby(sota, ent);
 }
 
+void fsm_eStats_sPrep_ssStby(  struct Game *sota, tnecs_entity ent) {
+
+}
 
 void fsm_eStats_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
     SDL_assert((sota->state == GAME_STATE_Gameplay_Map) ||

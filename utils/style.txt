@@ -21,7 +21,6 @@
 --pad-oper
 --pad-comma
 --pad-header
---align-reference=name
 # As of 3.5.2 operators in enums are aligned as pointers
 # --align-pointer=name
 

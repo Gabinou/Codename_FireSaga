@@ -196,7 +196,7 @@ enum DM_MENU {
 typedef struct DeploymentMenu {
     b32 update;
     Point pos;        /* [pixels] */
-    tnecs_world  *world;
+    tnecs_world *world;
     /* two spaces:
     - party_space: unit_order in _party_id_stack and _selected
     - start_space: start_order in _start_pos_i     */

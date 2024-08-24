@@ -191,9 +191,13 @@ extern fsm_eStats_s_t fsm_eStats_sPrep_ss[GAME_SUBSTATE_NUM];
 extern fsm_eStats_s_t fsm_eStats_sGmpMap_ss[GAME_SUBSTATE_NUM];
 
 void fsm_eStats_sPrep(  struct Game *sota, tnecs_entity ent);
+
+void fsm_eStats_sPrep_ssStby(  struct Game *sota, tnecs_entity ent);
+
 void fsm_eStats_sGmpMap(struct Game *sota, tnecs_entity ent);
 
-void fsm_eStats_sGmpMap_ssStby(struct Game *sota, tnecs_entity ent);
+void fsm_eStats_sGmpMap_ssStby(  struct Game *sota, tnecs_entity ent);
+
 
 /* -- FSM: Input_menuRight EVENT -- */
 extern fsm_eMenuRight_s_t  fsm_eMenuRight_s[GAME_STATE_NUM];
