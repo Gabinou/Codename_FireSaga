@@ -48,6 +48,7 @@ extern int mace(int argc, char *argv[]);
 //   6- Set default target  -> MACE_SET_DEFAULT_TARGET
 //   7- Add configs         -> MACE_ADD_CONFIG
 //      - First added config is default
+//   8- Set target config   -> MACE_TARGET_CONFIG
 
 /*---------------------------------------------------------------------*/
 /*                               EXAMPLE                                /
@@ -64,7 +65,15 @@ extern int mace(int argc, char *argv[]);
 /*---------------------------------------------------------------------*/
 /*                             PUBLIC API                              */
 /*---------------------------------------------------------------------*/
-/* --- SETTERS --- */
+
+/* -- Targets -- */
+struct Target;
+// Note: MACE_ADD_TARGET stringifies variable name for hashing
+#define MACE_ADD_TARGET(target) mace_add_target(&target, #target)
+
+// When set by user, mace builds all only default target and its dependencies.
+// If no default target is set, mace builds all targets.
+#define MACE_SET_DEFAULT_TARGET(target) mace_set_default_target(#target)
 
 /* -- Compiler -- */
 // Compiler setting priority:
@@ -73,14 +82,6 @@ extern int mace(int argc, char *argv[]);
 //      c- macefile       (with MACE_SET_COMPILER,mace_set_compiler)
 #define MACE_SET_COMPILER(compiler) _MACE_SET_COMPILER(compiler)
 #define _MACE_SET_COMPILER(compiler) mace_set_compiler(#compiler)
-
-/* -- Achiver -- */
-// Achiver setting priority:
-//      a- input argument (with -a,--ar)
-//      b- config
-//      c- macefile       (with MACE_SET_ARCHIVER,mace_set_archiver)
-#define MACE_SET_ARCHIVER(archiver) _MACE_SET_ARCHIVER(archiver)
-#define _MACE_SET_ARCHIVER(archiver) mace_set_archiver(#archiver)
 
 /* -- Directories -- */
 /* - obj_dir - */
@@ -98,19 +99,30 @@ extern int mace(int argc, char *argv[]);
 #define  MACE_SET_SEPARATOR(sep) _MACE_SET_SEPARATOR(sep)
 #define _MACE_SET_SEPARATOR(sep)  mace_set_separator(#sep)
 
-/* --- Targets --- */
-struct Target;
-#define MACE_ADD_TARGET(target) mace_add_target(&target, #target)
-
-/* --- Configs --- */
+/* -- Configs -- */
 struct Config;
+// Note: MACE_ADD_CONFIG stringifies variable name for hashing
 #define MACE_ADD_CONFIG(config) mace_add_config(&config, #config)
 
+// Set default config for target.
 #define MACE_TARGET_CONFIG(target, config) mace_target_config(#target, #config)
 
-// When set by user, mace builds all only default target and its dependencies.
-// If no default target is set, mace builds all targets.
-#define MACE_SET_DEFAULT_TARGET(target) mace_set_default_target(#target)
+/* -- Unsupported compiler utils -- */
+//  - Set automatically in mace_set_compiler for tcc, gcc, clang.
+//  - Only set these manually if using a different compiler.
+
+/* -- Archiver -- */
+// Archiver setting priority:
+//      a- input argument (with -a,--ar)
+//      b- config
+//      c- macefile       (with MACE_SET_ARCHIVER, mace_set_archiver)
+#define MACE_SET_ARCHIVER(archiver) _MACE_SET_ARCHIVER(archiver)
+#define _MACE_SET_ARCHIVER(archiver) mace_set_archiver(#archiver)
+
+/* -- cc_depflag -- */
+// Set cc_depflag: compiler flag to build .d dependency files.
+#define MACE_SET_CC_DEPFLAG(cc_depflag) _MACE_SET_CC_DEPFLAG(cc_depflag)
+#define _MACE_SET_CC_DEPFLAG(cc_depflag) mace_set_cc_depflag(#cc_depflag)
 
 /* -- Target kinds -- */
 enum MACE_TARGET_KIND { /* for target.kind */
@@ -309,7 +321,6 @@ enum MACE {
     MACE_OBJDEP_BUFFER          = 4096,
 };
 
-
 enum MACE_CONFIG {
     MACE_NULL_CONFIG            =  -1,
     MACE_DEFAULT_CONFIG         =   0,
@@ -371,6 +382,7 @@ static char *mace_set_obj_dir(char *obj);
 static void  mace_set_compiler(char *cc);
 static void  mace_set_archiver(char *ar);
 static char *mace_set_build_dir(char *build);
+static void  mace_set_cc_depflag(char *depflag);
 
 /* --- mace add --- */
 static void mace_add_target(struct Target *target, char *name);
@@ -3173,7 +3185,7 @@ struct parg_state parg_state_default = {
     .nextchar = NULL
 };
 
-/* Automatic usage/help printing */
+/// @brief Automatic usage/help printing
 void mace_parg_usage(const char *name, const struct parg_opt *longopts) {
     assert(name     != NULL);
     assert(longopts != NULL);
@@ -3201,6 +3213,7 @@ void mace_parg_usage(const char *name, const struct parg_opt *longopts) {
     }
 }
 
+/// @brief Invert a string from i to j
 void reverse(char *v[], int i, int j) {
     while (j - i > 1) {
         char *tmp = v[i];
@@ -3584,7 +3597,8 @@ int parg_zgetopt_long(struct parg_state *ps, int argc, char *const argv[],
     } while(0)
 
 /******************************* MACE_ADD_CONFIG ******************************/
-
+/// @brief Add config to list of configs. 
+///     Note: Expects name to be stringified config variable name
 void mace_add_config(struct Config *config, char *name) {
     configs[config_num]        = *config;
     uint64_t hash = mace_hash(name);
@@ -3598,6 +3612,8 @@ void mace_add_config(struct Config *config, char *name) {
 }
 
 /******************************* MACE_ADD_TARGET ******************************/
+/// @brief Add target to list of targets. 
+///     Note: Expects name to be stringified target variable name
 void mace_add_target(struct Target *target, char *name) {
     targets[target_num]          = *target;
     targets[target_num]._name    = name;
@@ -3769,7 +3785,6 @@ void mace_target_config(char *target_name, char *config_name) {
     targets[target_order].config = config_order;
 }
 
-
 #endif /* MACE_CONVENIENCE_EXECUTABLE */
 /********************************* mace_hash **********************************/
 /// @brief Main hashing algorithm of mace: djb2.
@@ -3805,28 +3820,47 @@ char *mace_set_build_dir(char *build) {
     return (build_dir = mace_str_buffer(build));
 }
 
+/// @brief Only place where archiver ar is set.
 void mace_set_archiver(char *archiver) {
     ar = archiver;
 }
 
+/// @brief Only place where cc_depflag is set.
+void mace_set_cc_depflag(char *depflag) {
+    cc_depflag = depflag;
+}
+
+/// @brief Only place where compiler cc is set.
 void mace_set_compiler(char *compiler) {
     cc = compiler;
 
     if (strstr(cc, "gcc") != NULL) {
-        cc_depflag = "-MM";
-        ar = "ar";
+        mace_set_cc_depflag("-MM");
+        mace_set_archiver("ar");
     } else if (strstr(cc, "tcc") != NULL) {
-        cc_depflag = "-MD";
-        ar = "tcc -ar";
+        mace_set_cc_depflag("-MD");
+        mace_set_archiver("tcc -ar");
     } else if (strstr(cc, "clang") != NULL) {
-        cc_depflag = "-MM";
-        ar = "llvm-ar";
+        mace_set_cc_depflag("-MM");
+        mace_set_archiver("llvm-ar");
     } else {
         fprintf(stderr, "Error: unknown compiler '%s'. \n", compiler);
         exit(1);
     }
 }
 
+/// @brief Only place were mace_separator is set.
+void mace_set_separator(char *sep) {
+    if (sep == NULL) {
+        fprintf(stderr, "Separator should not be NULL.\n");
+        exit(1);
+    }
+    if (strlen(sep) != 1) {
+        fprintf(stderr, "Separator should have length one.\n");
+        exit(1);
+    }
+    mace_separator = sep;
+}
 
 /************************************ argv ************************************/
 
@@ -3854,13 +3888,13 @@ char **mace_argv_flags(int *len, int *argc, char **argv, const char *user_str,
     size_t flag_len = (flag == NULL) ? 0 : strlen(flag);
 
     /* -- Copy user_str into modifiable buffer -- */
-    char *buffer = mace_str_buffer(user_str);
-    char *sav = NULL;
-    char *token = strtok_r(buffer, separator, &sav);
+    char *buffer    = mace_str_buffer(user_str);
+    char *sav       = NULL;
+    char *token     = strtok_r(buffer, separator, &sav);
     while (token != NULL) {
         argv = mace_argv_grow(argv, argc, len);
-        char *to_use = token;
-        char *rpath = NULL;
+        char *to_use    = token;
+        char *rpath     = NULL;
         if (path) {
             /* - Expand path - */
             rpath = calloc(PATH_MAX, sizeof(*rpath));
@@ -3874,10 +3908,10 @@ char **mace_argv_flags(int *len, int *argc, char **argv, const char *user_str,
                 to_use                  = rpath;
             }
         }
-        size_t to_use_len = strlen(to_use);
 
-        size_t total_len = (to_use_len + flag_len + 1);
-        size_t i = 0;
+        size_t to_use_len   = strlen(to_use);
+        size_t total_len    = (to_use_len + flag_len + 1);
+        size_t i            = 0;
         char *arg = calloc(total_len, sizeof(*arg));
 
         /* - Copy flag into arg - */
@@ -3998,10 +4032,12 @@ void mace_Target_Parse_User(struct Target *target) {
     mace_Target_excludes(target);
 }
 
+/// @brief Realloc target->argv to bigger if num close to len
 void mace_Target_argv_grow(struct Target *target) {
     target->_argv = mace_argv_grow(target->_argv, &target->_argc, &target->_arg_len);
 }
 
+/// @brief Alloc target sources stuff. Realloc to bigger if num close to len.
 void mace_Target_sources_grow(struct Target *target) {
     size_t bytesize;
 
@@ -4085,6 +4121,7 @@ void mace_Target_sources_grow(struct Target *target) {
     }
 }
 
+/// @brief Realloc argv if argc close to arg_len.
 char **mace_argv_grow(char **argv, int *argc, int *arg_len) {
     if ((*argc + 1) >= *arg_len) {
         size_t new_len = (*arg_len) * 2;
@@ -4096,7 +4133,8 @@ char **mace_argv_grow(char **argv, int *argc, int *arg_len) {
     return (argv);
 }
 
-// should be called after all sources have been added.
+/// @brief Create argv, argc for compiling objects all at once.
+///     Should be called after all sources have been added.
 void mace_Target_argv_allatonce(struct Target *target) {
     if (target->_argv == NULL) {
         target->_arg_len = 8;
@@ -4143,8 +4181,9 @@ void mace_Target_argv_allatonce(struct Target *target) {
     target->_argv[target->_argc] = NULL;
 }
 
+/// @brief Create argv, argc for compiling objects one at a time.
+///     Should be called after mace_Target_Parse_User
 void mace_Target_argv_compile(struct Target *target) {
-    /* Should be called after mace_Target_Parse_User */
     if (target->_argv == NULL) {
         target->_arg_len = 8;
         target->_argc = 0;
@@ -4195,6 +4234,7 @@ void mace_Target_argv_compile(struct Target *target) {
     target->_argv[target->_argc] = NULL;
 }
 
+/// @brief Add config as flags to argv for compilation.
 void mace_argv_add_config(struct Target *target,
                           char ** *argv, int *argc, int *arg_len) {
     if (config_num <= 0)
@@ -4207,18 +4247,6 @@ void mace_argv_add_config(struct Target *target,
         strncpy(flag, configs[mace_config]._flags[i],  len);
         (*argv)[(*argc)++] = flag;
     }
-}
-
-void mace_set_separator(char *sep) {
-    if (sep == NULL) {
-        fprintf(stderr, "Separator should not be NULL.\n");
-        exit(1);
-    }
-    if (strlen(sep) != 1) {
-        fprintf(stderr, "Separator should have length one.\n");
-        exit(1);
-    }
-    mace_separator = sep;
 }
 
 /******************************** mace_pqueue *********************************/
@@ -6286,7 +6314,7 @@ void mace_Target_Deps_Grow(struct Target *target) {
 void mace_Target_Deps_Add(struct Target *target, uint64_t target_hash) {
     if (!mace_Target_hasDep(target, target_hash)) {
         mace_Target_Deps_Grow(target);
-        target->_deps_links[target->_deps_links_num++] = hash;
+        target->_deps_links[target->_deps_links_num++] = target_hash;
     }
 }
 
@@ -6351,8 +6379,8 @@ char *mace_checksum_filename(char *file, int mode) {
     // Files should be .c or .h
     assert(obj_dir != NULL);
     size_t path_len  = strlen(file);
-    char *dot        = strchr(file,  '.'); // last dot in path
-    char *slash      = strrchr(file, '/'); // last slash in path
+    char *dot        = strchr(file,  '.'); /* last dot in path      */
+    char *slash      = strrchr(file, '/'); /* last slash in path    */
     if (dot == NULL) {
         fprintf(stderr, "Error: Could not find extension in filename.\n");
         exit(1);
