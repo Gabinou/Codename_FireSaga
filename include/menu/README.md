@@ -12,12 +12,12 @@ Main point of interaction between Player and game
 - e.g. How does the STR stat work
 
 ## Implementation details
-- Arbitrary of elements (***elem ***)
+- Arbitrary of elements (***elem***)
     , boxes on menu
-    - Cursor can move between each ***elem ***using 4 directions
-    - Each ***elem ***linked to 4 next ***elem ***using array of directions
-    - Try to make each ***elem ***box fit snuggly in menu space
-    - All ***elem ** * + attributes are independent from menu appearance
+    - Cursor can move between each ***elem*** using 4 directions
+    - Each ***elem*** linked to 4 next ***elem*** using array of directions
+    - Try to make each ***elem*** box fit snuggly in menu space
+    - All ***elem*** + attributes are independent from menu appearance
     - Position, size, directions, links...
-    - Press button with cursor on ***elem ***to perform action
+    - Press button with cursor on ***elem*** to perform action
     - Behavior taken charge by Game State FSM -> Menu FSM

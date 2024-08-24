@@ -142,8 +142,8 @@ struct Target win_sota = {
                 "-fno-strict-overflow,-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
                 "$(sdl2-config --cflags)",
-    .cmd_pre  = "astyle --options=utils/style.txt --verbose "
-                "--recursive src/* include/* test/* names/*",
+    .cmd_pre  = "astyle --options=utils/style.txt --verbose --recursive"
+                " src/*.c include/*.h test/*.c test/*.h names/*.h",
     .kind     = MACE_EXECUTABLE,
 };
 
@@ -166,8 +166,8 @@ struct Target sota = {
                 "-fwrapv,-fno-delete-null-pointer-checks,"
                 "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
                 "$(sdl2-config --cflags)",
-    .cmd_pre  = "astyle --options=utils/style.txt --verbose "
-                "--recursive src/* include/* test/* names/*",
+    .cmd_pre  = "astyle --options=utils/style.txt --verbose --recursive"
+                " src/*.c include/*.h test/*.c test/*.h names/*.h",
     .kind     = MACE_EXECUTABLE,
 };
 
@@ -188,8 +188,8 @@ struct Target sota_main = {
                 "-fwrapv,-fno-delete-null-pointer-checks,"
                 "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
                 "$(sdl2-config --cflags)",
-    .cmd_pre  = "astyle --options=utils/style.txt --verbose "
-                "--recursive src/* include/* test/* names/*",
+    .cmd_pre  = "astyle --options=utils/style.txt --verbose --recursive"
+                " src/*.c include/*.h test/*.c test/*.h names/*.h",
     .kind     = MACE_EXECUTABLE,
 };
 
@@ -213,8 +213,8 @@ struct Target sota_dll = {
                   "-fwrapv,-fno-delete-null-pointer-checks,"
                   "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999",
                   "$(sdl2-config --cflags)",
-    .cmd_pre    = "astyle --options=utils/style.txt --verbose "
-                  "--recursive src/* include/* test/* names/*",
+    .cmd_pre  = "astyle --options=utils/style.txt --verbose --recursive"
+                " src/*.c include/*.h test/*.c test/*.h names/*.h",
     .kind       = MACE_SHARED_LIBRARY, /* Check with "file" cmd */
 };
 
@@ -239,8 +239,8 @@ struct Target l2w_sota = {
                 "-fwrapv,-fno-delete-null-pointer-checks,"
                 "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
                 "$(sdl2-config --cflags)",
-    .cmd_pre  = "astyle --options=utils/style.txt --verbose "
-                "--recursive src/* include/* test/* names/*",
+    .cmd_pre  = "astyle --options=utils/style.txt --verbose --recursive"
+                " src/*.c include/*.h test/*.c test/*.h names/*.h",
     .kind     = MACE_EXECUTABLE,
 };
 
@@ -265,8 +265,8 @@ struct Target test = {
                 "-fwrapv,-fno-delete-null-pointer-checks,"
                 "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
                 "$(sdl2-config --cflags)",
-    .cmd_pre  = "astyle --options=utils/style.txt --verbose "
-                "--recursive src/* include/* test/* names/*",
+    .cmd_pre  = "astyle --options=utils/style.txt --verbose --recursive"
+                " src/*.c include/*.h test/*.c test/*.h names/*.h",
     .kind     = MACE_EXECUTABLE,
 };
 
@@ -291,8 +291,8 @@ struct Target bench = {
                 "-fwrapv,-fno-delete-null-pointer-checks,"
                 "-DSDL_DISABLE_IMMINTRIN_H,"
                 "$(sdl2-config --cflags)",
-    .cmd_pre  = "astyle --options=utils/style.txt --verbose "
-                "--recursive src/* include/* test/* names/*",
+    .cmd_pre  = "astyle --options=utils/style.txt --verbose --recursive"
+                " src/*.c include/*.h test/*.c test/*.h names/*.h",
     .kind     = MACE_EXECUTABLE,
 };
 
