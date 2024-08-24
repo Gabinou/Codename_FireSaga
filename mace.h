@@ -339,9 +339,11 @@ enum MACE_CHECKSUM_MODE {
 
 /******************************** DECLARATIONS ********************************/
 /* --- mace --- */
-void mace_finish(struct Mace_Arguments    *args);
-void mace_pre_user(struct Mace_Arguments  *args);
-void mace_post_user(struct Mace_Arguments *args);
+void mace_pre_build();
+void mace_build();
+void mace_post_build(   struct Mace_Arguments *args);
+void mace_pre_user(     struct Mace_Arguments *args);
+void mace_post_user(    struct Mace_Arguments *args);
 
 /* --- mace_args --- */
 struct Mace_Arguments mace_parse_args(int argc, char *argv[]);
@@ -500,7 +502,6 @@ int mace_unlink_cb(const char *fpath, const struct stat *sb, int typeflag, struc
 /* -- compiling object files -> .o -- */
 void mace_compile_glob(struct Target *target, char *globsrc,
                        const char *flags);
-void mace_build_targets();
 void mace_build_target(struct Target *target);
 void mace_run_commands(const  char *commands);
 void mace_print_message(const char *message);
@@ -519,7 +520,7 @@ void mace_parse_configs();
 void mace_parse_config(struct Config *config);
 
 /* - build order of all targets - */
-void mace_build_order_targets();
+void mace_build_order();
 void mace_build_order_recursive(struct Target target, size_t *o_cnt);
 
 /* --- mace_is --- */
@@ -5477,7 +5478,7 @@ void mace_parse_configs() {
     }
 }
 
-void mace_build_order_targets() {
+void mace_build_order() {
     size_t o_cnt = 0; /* order count */
 
     /* If only 1 include, build order is trivial */
@@ -5515,7 +5516,13 @@ void mace_build_order_targets() {
     }
 }
 
-void mace_prebuild_targets() {
+void mace_pre_build() {
+    /* --- Make output directories. --- */
+    mace_make_dirs();
+
+    /* --- Compute build order using targets links and deps lists. --- */
+    mace_build_order();
+
     /* Actually prebuild all targets */
     if (mace_user_target == MACE_CLEAN_ORDER)
         return;
@@ -5525,7 +5532,7 @@ void mace_prebuild_targets() {
     }
 }
 
-void mace_build_targets() {
+void mace_build() {
     /* Clean and exit if set by user */
     if (mace_user_target == MACE_CLEAN_ORDER) {
         mace_clean();
@@ -6075,7 +6082,7 @@ void mace_Target_Parse_Objdeps(struct Target *target) {
 }
 
 void mace_pre_user(struct Mace_Arguments *args) {
-    mace_finish(NULL);
+    mace_post_build(NULL);
 
     /* --- Set switches --- */
     if (args != NULL) {
@@ -6209,7 +6216,7 @@ void mace_post_user(struct Mace_Arguments *args) {
     }
 }
 
-void mace_finish(struct Mace_Arguments *args) {
+void mace_post_build(struct Mace_Arguments *args) {
     Mace_Arguments_Free(args);
     for (int i = 0; i < target_num; i++) {
         mace_Target_Free(&targets[i]);
@@ -6658,20 +6665,14 @@ int main(int argc, char *argv[]) {
     /* --- Post-user ops: checks, allocs, default target. --- */
     mace_post_user(&args);
 
-    /* --- Make output directories. --- */
-    mace_make_dirs();
-
-    /* --- Compute build order using targets links and deps lists. --- */
-    mace_build_order_targets();
-
     /* --- Check which objects need recompilation --- */
-    mace_prebuild_targets();
+    mace_pre_build();
 
     /* --- Perform compilation with build_order --- */
-    mace_build_targets();
+    mace_build();
 
     /* --- Finish --- */
-    mace_finish(&args);
+    mace_post_build(&args);
     return (0);
 }
 #endif /* MACE_OVERRIDE_MAIN */
