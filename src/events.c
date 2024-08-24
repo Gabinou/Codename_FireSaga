@@ -274,8 +274,8 @@ void receive_event_Input_STATS(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity accepter_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(accepter_entity > 0);
     *data1_entity = accepter_entity;
-    if (fsm_eStats_ss[sota->substate] != NULL)
-        fsm_eStats_ss[sota->substate](sota, accepter_entity);
+    if (fsm_eStats_s[sota->substate] != NULL)
+        fsm_eStats_s[sota->substate](sota, accepter_entity);
 }
 
 void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *userevent) {

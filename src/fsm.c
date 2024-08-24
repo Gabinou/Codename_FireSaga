@@ -27,6 +27,18 @@ fsm_eAcpt_s_t fsm_eAcpt_s[GAME_STATE_NUM] = {
     /* Animation */      NULL,
 };
 
+fsm_eStats_s_t fsm_eStats_s[GAME_STATE_NUM] = {
+    /* NULL */           NULL,
+    /* Combat */         NULL,
+    /* Scene_Talk */     NULL,
+    /* Cutscene */       NULL,
+    /* Gameplay_Map */   &fsm_eStats_sGmpMap,
+    /* Gameplay_Camp */  NULL,
+    /* Preparation */    &fsm_eStats_sPrep,
+    /* Title_Screen */   NULL,
+    /* Animation */      NULL,
+};
+
 fsm_eStart_s_t fsm_eStart_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
@@ -269,7 +281,7 @@ fsm_eCncl_s_t fsm_eCncl_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL
 };
 
-fsm_eStats_s_t fsm_eStats_ss[GAME_SUBSTATE_NUM] = {
+fsm_eStats_s_t fsm_eStats_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            NULL,
@@ -277,8 +289,22 @@ fsm_eStats_s_t fsm_eStats_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_COMBAT */      NULL,
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
-    /* STANDBY */         &fsm_eStats_ssStby,
-    /* MAP_CANDIDATES */  &fsm_eStats_ssStby,
+    /* STANDBY */         &fsm_eStats_sGmpMap_ssStby,
+    /* MAP_CANDIDATES */  &fsm_eStats_sGmpMap_ssStby,
+    /* CUTSCENE */        NULL,
+    /* MAP_ANIMATION */   NULL
+};
+
+fsm_eStats_s_t fsm_eStats_sPrep_ss[GAME_SUBSTATE_NUM] = {
+    /* NULL */            NULL,
+    /* MAP_MINIMAP */     NULL,
+    /* MENU */            NULL,
+    /* MAP_UNIT_MOVES */  NULL,
+    /* MAP_COMBAT */      NULL,
+    /* MAP_NPCTURN */     NULL,
+    /* SAVING */          NULL,
+    /* STANDBY */         NULL,
+    /* MAP_CANDIDATES */  &fsm_eStats_sPrep_ssStby,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL
 };
@@ -1307,7 +1333,16 @@ void fsm_eAcpt_sGmpMap_ssMapNPC(struct Game *sota, tnecs_entity accepter_entity)
 }
 
 /* Input_Stats */
-void fsm_eStats_ssStby(struct Game *sota, tnecs_entity accepter) {
+void fsm_eStats_sPrep(  struct Game *sota, tnecs_entity ent) {
+    fsm_eStats_sGmpMap_ssStby(sota, ent);
+}
+
+void fsm_eStats_sGmpMap(struct Game *sota, tnecs_entity ent) {
+    fsm_eStats_sGmpMap_ssStby(sota, ent);
+}
+
+
+void fsm_eStats_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
     SDL_assert((sota->state == GAME_STATE_Gameplay_Map) ||
                (sota->state == GAME_STATE_Preparation));
 
@@ -1487,13 +1522,11 @@ void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     struct Menu *new_menu_comp;
     switch (stats_menu_cycle[new_id]) {
         case MENU_TYPE_STATS:
-            SDL_Log("NEW MENU_TYPE_STATS");
             Game_StatsMenu_Enable(sota, ontile);
             new_menu_comp = TNECS_GET_COMPONENT(sota->world, sota->stats_menu, Menu);
             new_menu_comp->visible = true;
             break;
         case MENU_TYPE_GROWTHS:
-            SDL_Log("NEW MENU_TYPE_GROWTHS");
             Game_GrowthsMenu_Enable(sota, ontile);
             new_menu_comp = TNECS_GET_COMPONENT(sota->world, sota->growths_menu, Menu);
             new_menu_comp->visible = true;
