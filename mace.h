@@ -40,8 +40,8 @@
 extern int mace(int argc, char *argv[]);
 // Necessary:
 //   1- Add targets         -> MACE_ADD_TARGET
-//   2- Set compiler        -> MACE_SET_COMPILER
 // Optional:
+//   2- Set compiler        -> MACE_SET_COMPILER
 //   3- Set build_dir       -> MACE_SET_OBJ_DIR
 //   4- Set obj_dir         -> MACE_SET_BUILD_DIR
 //   5- Set separator       -> MACE_SET_SEPARATOR
@@ -80,7 +80,7 @@ extern int mace(int argc, char *argv[]);
 //      b- config
 //      c- macefile       (with MACE_SET_ARCHIVER,mace_set_archiver)
 #define MACE_SET_ARCHIVER(archiver) _MACE_SET_ARCHIVER(archiver)
-#define _MACE_SET_archiver(archiver) mace_set_archiver(#archiver)
+#define _MACE_SET_ARCHIVER(archiver) mace_set_archiver(#archiver)
 
 /* -- Directories -- */
 /* - obj_dir - */
@@ -100,13 +100,13 @@ extern int mace(int argc, char *argv[]);
 
 /* --- Targets --- */
 struct Target;
-#define MACE_ADD_TARGET(target)     mace_add_target(&target, #target)
+#define MACE_ADD_TARGET(target) mace_add_target(&target, #target)
 
 /* --- Configs --- */
 struct Config;
-#define MACE_ADD_CONFIG(config)     mace_add_config(&config, #config)
+#define MACE_ADD_CONFIG(config) mace_add_config(&config, #config)
 
-#define MACE_TARGET_CONFIG(target, config)  mace_target_config(#target, #config)
+#define MACE_TARGET_CONFIG(target, config) mace_target_config(#target, #config)
 
 // When set by user, mace builds all only default target and its dependencies.
 // If no default target is set, mace builds all targets.
