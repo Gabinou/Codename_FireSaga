@@ -208,10 +208,10 @@ struct Target {
 
     /* --- Dependencies ---  */
     /* -- Target dependencies --  */
-    uint64_t *_deps_links; /* target or libs hashes               */
-    size_t     _deps_links_num;    /* target or libs hashes               */
-    size_t     _deps_links_len;    /* target or libs hashes               */
-    size_t     _d_cnt;             /* dependency count, for build order   */
+    uint64_t    *_deps_links; /* target or libs hashes               */
+    size_t       _deps_links_num;    /* target or libs hashes               */
+    size_t       _deps_links_len;    /* target or libs hashes               */
+    size_t       _d_cnt;             /* dependency count, for build order   */
 
     /* -- Object dependencies --  */
     uint64_t   *_headers_checksum_hash;
@@ -3623,12 +3623,13 @@ void mace_add_target(struct Target *target, char *name) {
     }
 }
 
+/// @brief Set target built by default when running mace without target
 void mace_set_default_target(char *name) {
     mace_default_target_hash = (name == NULL) ? 0 : mace_hash(name);
 }
 
+/// @brief Compute default target order from hash. Called post-user. 
 void mace_default_target_order() {
-    /* Called post-user to compute default target order from hash */
     if (mace_default_target_hash == 0)
         return;
 
@@ -3643,12 +3644,13 @@ void mace_default_target_order() {
     exit(1);
 }
 
+/// @brief Set config used to build targets by default
 void mace_set_default_config(char *name) {
     mace_default_config_hash = (name == NULL) ? 0 : mace_hash(name);
 }
 
+/// @brief Compute default target order from hash. Called post-user.
 void mace_default_config_order() {
-    /* Called post-user to compute default target order from hash */
     if (mace_default_config_hash == 0)
         return;
 
@@ -5123,6 +5125,7 @@ void mace_object_path(char *source) {
     free(path);
 }
 #endif /* MACE_CONVENIENCE_EXECUTABLE */
+/// @brief Copy input str into calloc'ed buffer
 char *mace_str_buffer(const char *strlit) {
     size_t  litlen  = strlen(strlit);
     char   *buffer  = calloc(litlen + 1, sizeof(*buffer));
@@ -5138,7 +5141,17 @@ void mace_print_message(const char *message) {
     sprintf("%s\n", message);
 }
 /********************************* mace_clean *********************************/
+/// @brief Mace implementation of recursive remove i.e. "rm -rf"
+int mace_rmrf(char *path) {
+    return nftw(path, mace_unlink_cb, 64, FTW_DEPTH | FTW_PHYS);
+}
+
+/// @brief User defined function for mace_rmrf
+///     - Removes found file. 
 int mace_unlink_cb(const char *fpath, const struct stat *sb, int typeflag, struct FTW *ftwbuf) {
+        // TODO: Do not remove anything if current dir is root
+        // TODO: More safety? 
+
         /* Do not remove current directory */
         if (ftwbuf->level == 0)
             return 0;
@@ -5151,10 +5164,8 @@ int mace_unlink_cb(const char *fpath, const struct stat *sb, int typeflag, struc
         return rv;
     }
 
-int mace_rmrf(char *path) {
-    return nftw(path, mace_unlink_cb, 64, FTW_DEPTH | FTW_PHYS);
-}
 
+/// @brief Remove content of object and build directories.
 void mace_clean() {
     sprintf("Cleaning '%s'\n", obj_dir);
     mace_rmrf(obj_dir);
@@ -5164,6 +5175,10 @@ void mace_clean() {
 
 
 /******************************** mace_build **********************************/
+/// @brief Run command input as a single long char string.
+///     - Split tokens between spaces i.e. " "
+///     - Reconstitute argv, argc
+///     - Actually run command
 void mace_run_commands(const char *commands) {
     if (commands == NULL)
         return;
@@ -5209,6 +5224,9 @@ void mace_run_commands(const char *commands) {
         free(buffer);
 }
 
+/// @brief Pre-build step.
+///     - Compute checksums for each source, header file 
+///     - Check which files need to be re-compiled depending on checksums 
 void mace_prebuild_target(struct Target *target) {
     sprintf("Pre-Build target %s\n", target->_name);
     // Check which sources don't need to be recompiled
@@ -5261,6 +5279,7 @@ void mace_prebuild_target(struct Target *target) {
     assert(chdir(cwd) == 0);
 }
 
+/// @brief Build input target: compile then link.
 void mace_build_target(struct Target *target) {
     sprintf("Building target %s\n", target->_name);
     /* --- Compile now. --- */
@@ -5285,6 +5304,7 @@ void mace_build_target(struct Target *target) {
     assert(chdir(cwd) == 0);
 }
 
+/// @brief Check if target order is in build_order
 bool mace_in_build_order(size_t order, int *b_order, int num) {
     bool out = false;
     assert(b_order != NULL);
@@ -5297,6 +5317,8 @@ bool mace_in_build_order(size_t order, int *b_order, int num) {
     return (out);
 }
 
+/// @brief Get target order from input hash
+/// @return Target order (as added by user), or -1 if not found
 int mace_hash_order(uint64_t hash) {
     int order = -1;
     for (int i = 0; i < target_num; i++) {
@@ -5308,10 +5330,12 @@ int mace_hash_order(uint64_t hash) {
     return (order);
 }
 
+/// @brief Get target order (as added by user)
 int mace_target_order(struct Target target) {
     return (mace_hash_order(target._hash));
 }
 
+/// @brief Add target with input order into build_order
 void mace_build_order_add(size_t order) {
     assert(build_order != NULL);
     assert(build_order_num < target_num);
@@ -5324,7 +5348,7 @@ void mace_build_order_add(size_t order) {
 
 /* - Depth first search through depencies - */
 void mace_build_order_recursive(struct Target target, size_t *o_cnt) {
-    /* o_cnt should never be geq to target_num */
+    /* Make sure recurssion number isn't greater than target number */
     if ((*o_cnt) >= target_num)
         return;
 
@@ -5353,12 +5377,12 @@ void mace_build_order_recursive(struct Target target, size_t *o_cnt) {
     if (mace_in_build_order(order, build_order, build_order_num))
         return;
 
-    /* All dependencies of target were built, add it to build order */
     if (target._d_cnt != target._deps_links_num) {
         fprintf(stderr, "Error: Not all target dependencies before target in build order.\n");
         exit(1);
     }
 
+    /* All dependencies of target were built, add it to build order */
     mace_build_order_add(order);
     return;
 }
