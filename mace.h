@@ -6621,7 +6621,7 @@ void Mace_Arguments_Free(struct Mace_Arguments *args) {
 // 1- Runs mace function, get all info from user:
 //   - Compiler, Targets, Configs, Directories
 // 2- Builds dependency graph from targets' links, dependencies
-// 3- Determine which targets need to be recompiled
+// 3- Determines which targets need to be recompiled
 // 4- Build the targets
 
 #ifndef MACE_OVERRIDE_MAIN
