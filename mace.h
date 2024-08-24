@@ -3654,9 +3654,6 @@ void mace_default_config_order() {
     if (mace_default_config_hash == 0)
         return;
 
-    // if (mace_user_target == MACE_CLEAN_ORDER)
-    //     return;
-
     for (int i = 0; i < config_num; i++) {
         if (mace_default_config_hash == configs[i]._hash) {
             mace_default_config = i;
@@ -3668,6 +3665,7 @@ void mace_default_config_order() {
     exit(1);
 }
 
+/// @brief Find user config from its hash.
 void mace_user_config_set(uint64_t hash, char *name) {
     if (hash == 0)
         return;
@@ -3683,6 +3681,7 @@ void mace_user_config_set(uint64_t hash, char *name) {
     exit(1);
 }
 
+/// @brief Decide if user target or default target should be compiled.
 void mace_target_resolve() {
     /* Target priority: */
     //  - user      target
@@ -3698,6 +3697,7 @@ void mace_target_resolve() {
     mace_target = mace_default_target;
 }
 
+/// @brief Decide if user config or default config should be used.
 void mace_config_resolve(struct Target *target) {
     /* Config priority: */
     //  - user      config
@@ -3720,6 +3720,7 @@ void mace_config_resolve(struct Target *target) {
     mace_config = mace_default_config;
 }
 
+/// @brief Set mace_user_target from input hash.
 void mace_user_target_set(uint64_t hash, char *name) {
     if (hash == 0)
         return;
@@ -3740,8 +3741,8 @@ void mace_user_target_set(uint64_t hash, char *name) {
     exit(1);
 }
 
+/// @brief Set default config for target.
 void mace_target_config(char *target_name, char *config_name) {
-    /* Set default config for target */
     uint64_t target_hash = mace_hash(target_name);
     uint64_t config_hash = mace_hash(config_name);
     int target_order = -1;
@@ -3771,6 +3772,7 @@ void mace_target_config(char *target_name, char *config_name) {
 
 #endif /* MACE_CONVENIENCE_EXECUTABLE */
 /********************************* mace_hash **********************************/
+/// @brief Main hashing algorithm of mace: djb2.
 uint64_t mace_hash(const char *str) {
     /* djb2 hashing algorithm by Dan Bernstein.
     * Description: This algorithm (k=33) was first reported by dan bernstein many
@@ -3789,13 +3791,14 @@ uint64_t mace_hash(const char *str) {
 
 
 /******************************** MACE_SETTERS ********************************/
-// Sets where the object files will be placed during build.
+/// @brief Sets where the object files will be placed during build.
 char *mace_set_obj_dir(char *obj) {
     if (obj_dir != NULL)
         free(obj_dir);
     return (obj_dir = mace_str_buffer(obj));
 }
 
+/// @brief Sets where the executables, libraries will be built to.
 char *mace_set_build_dir(char *build) {
     if (build_dir != NULL)
         free(build_dir);
@@ -3828,17 +3831,8 @@ void mace_set_compiler(char *compiler) {
 /************************************ argv ************************************/
 
 #endif /* MACE_CONVENIENCE_EXECUTABLE */
-void argv_free(int argc, char **argv) {
-    if (argv == NULL)
-        return;
 
-    for (int i = 0; i < argc; i++) {
-        free(argv[i]);
-        argv[i] = NULL;
-    }
-    argv = NULL;
-}
-
+/// @brief Free all arrays in argv array of pointers.
 void mace_argv_free(char **argv, int argc) {
     for (int i = 0; i < argc; i++) {
         if (argv[i] != NULL) {
@@ -3849,6 +3843,9 @@ void mace_argv_free(char **argv, int argc) {
     free(argv);
 }
 
+/// @brief Build all argv flags from input user single string.
+///     - Split user_str using separator 
+///     - Copy each token into a new buffer, put pointer in argv 
 char **mace_argv_flags(int *len, int *argc, char **argv, const char *user_str,
                        const char *flag, bool path, const char *separator) {
     assert(len  != NULL);
@@ -3904,6 +3901,10 @@ char **mace_argv_flags(int *len, int *argc, char **argv, const char *user_str,
 }
 #ifndef MACE_CONVENIENCE_EXECUTABLE
 
+/// @brief Parse user input target->excludes string. 
+///     - Split excludes using mace_separator
+///     - Hash file into _excludes list
+///  TODO: exclude directories
 void mace_Target_excludes(struct Target *target) {
     if (target->excludes == NULL)
         return;
@@ -3941,9 +3942,9 @@ void mace_Target_excludes(struct Target *target) {
     free(buffer);
 }
 
+/// @brief Makes flags for target includes, links libraries, and flags
+///     - NOT sources: they can be folders, so need to be globbed
 void mace_Target_Parse_User(struct Target *target) {
-    // Makes flags for target includes, links libraries, and flags
-    //  NOT sources: they can be folders, so need to be globbed
     mace_Target_Free_argv(target);
     int len, bytesize;
 
@@ -6327,6 +6328,11 @@ void mace_Target_Deps_Hash(struct Target *target) {
 }
 
 /********************************** checksums *********************************/
+/// @brief Compute sha1dc checksum of file.
+#define MACE_SRC_FOLDER_STR_LEN 4
+#define MACE_INCLUDE_FOLDER_STR_LEN 8
+#define MACE_CHECKSUM_EXTENSION_STR_LEN 5
+#define MACE_SEPARATOR_STR_LEN 1
 char *mace_checksum_filename(char *file, int mode) {
     // Files should be .c or .h
     assert(obj_dir != NULL);
@@ -6345,11 +6351,11 @@ char *mace_checksum_filename(char *file, int mode) {
     size_t file_len     = dot_i - slash_i;
 
     /* Alloc new file */
-    size_t checksum_len  = (file_len + 6) + obj_dir_len + 1;
+    size_t checksum_len  = (file_len + MACE_SEPARATOR_STR_LEN + MACE_CHECKSUM_EXTENSION_STR_LEN) + obj_dir_len + 1;
     if (mode == MACE_CHECKSUM_MODE_SRC) {
-        checksum_len += 4;
+        checksum_len += MACE_SRC_FOLDER_STR_LEN;
     } else if (mode == MACE_CHECKSUM_MODE_INCLUDE) {
-        checksum_len += 8;
+        checksum_len += MACE_INCLUDE_FOLDER_STR_LEN;
     }
 
     char *sha1   = calloc(checksum_len, sizeof(*sha1));
@@ -6358,17 +6364,17 @@ char *mace_checksum_filename(char *file, int mode) {
 
     /* Add slash to obj_dir if not present */
     if (sha1[obj_dir_len - 1] != '/') {
-        strncpy(sha1 + total, "/", 1);
-        total += 1;
+        strncpy(sha1 + total, "/", MACE_SEPARATOR_STR_LEN);
+        total += MACE_SEPARATOR_STR_LEN;
     }
 
     /* Add mid folder */
     if (mode == MACE_CHECKSUM_MODE_SRC) {
-        strncpy(sha1 + total, "src/", 4);
-        total += 4;
+        strncpy(sha1 + total, "src/", MACE_SRC_FOLDER_STR_LEN);
+        total += MACE_SRC_FOLDER_STR_LEN;
     } else if (mode == MACE_CHECKSUM_MODE_INCLUDE) {
-        strncpy(sha1 + total, "include/", 8);
-        total += 8;
+        strncpy(sha1 + total, "include/", MACE_INCLUDE_FOLDER_STR_LEN);
+        total += MACE_INCLUDE_FOLDER_STR_LEN;
     }
 
     /* Add file name */
@@ -6376,14 +6382,16 @@ char *mace_checksum_filename(char *file, int mode) {
     total += file_len;
 
     /* Add extension */
-    strncpy(sha1 + total, ".sha1", 5);
+    strncpy(sha1 + total, ".sha1", MACE_CHECKSUM_EXTENSION_STR_LEN);
     return (sha1);
 }
 
+/// @brief Check if two shadc1 checksums are equal
 inline bool mace_sha1dc_cmp(uint8_t hash1[SHA1_LEN], uint8_t hash2[SHA1_LEN]) {
     return (memcmp(hash1, hash2, SHA1_LEN) == 0);
 }
 
+/// @brief Check for collision in sha1dc checksum between input file and hash
 void mace_sha1dc(char *file, uint8_t hash[SHA1_LEN]) {
     assert(file != NULL);
     size_t size;
@@ -6418,6 +6426,7 @@ void mace_sha1dc(char *file, uint8_t hash[SHA1_LEN]) {
     /* - check for collision - */
     foundcollision = SHA1DCFinal(hash, &ctx2);
 
+    // What should user do if sha1dc collision found? 
     if (foundcollision) {
         fprintf(stderr, "sha1dc: collision detected");
         exit(1);
@@ -6463,22 +6472,23 @@ struct Mace_Arguments Mace_Arguments_default = {
     .build_all          = false,
 };
 
+/// @brief Compare user flag input arguments to enviroment variables
 struct Mace_Arguments mace_combine_args_env(struct Mace_Arguments args, struct Mace_Arguments env) {
         struct Mace_Arguments out;
         /* Prioritize user arguments over environment */
-        bool _user_target = (args.user_target           != Mace_Arguments_default.user_target);
-        bool _macefile = (args.macefile                 != Mace_Arguments_default.macefile);
-        bool _user_config = (args.user_config           != Mace_Arguments_default.user_config);
-        bool _dir = (args.dir                           != Mace_Arguments_default.dir);
-        bool _cc = (args.cc                             != Mace_Arguments_default.cc);
-        bool _ar = (args.ar                             != Mace_Arguments_default.cc);
-        bool _user_target_hash = (args.user_target_hash != Mace_Arguments_default.user_target_hash);
-        bool _user_config_hash = (args.user_config_hash != Mace_Arguments_default.user_config_hash);
-        bool _jobs = (args.jobs                         != Mace_Arguments_default.jobs);
-        bool _debug = (args.debug                       != Mace_Arguments_default.debug);
-        bool _silent = (args.silent                     != Mace_Arguments_default.silent);
-        bool _dry_run = (args.dry_run                   != Mace_Arguments_default.dry_run);
-        bool _build_all = (args.build_all               != Mace_Arguments_default.build_all);
+        bool _user_target       = (args.user_target      != Mace_Arguments_default.user_target);
+        bool _macefile          = (args.macefile         != Mace_Arguments_default.macefile);
+        bool _user_config       = (args.user_config      != Mace_Arguments_default.user_config);
+        bool _dir               = (args.dir              != Mace_Arguments_default.dir);
+        bool _cc                = (args.cc               != Mace_Arguments_default.cc);
+        bool _ar                = (args.ar               != Mace_Arguments_default.cc);
+        bool _user_target_hash  = (args.user_target_hash != Mace_Arguments_default.user_target_hash);
+        bool _user_config_hash  = (args.user_config_hash != Mace_Arguments_default.user_config_hash);
+        bool _jobs              = (args.jobs             != Mace_Arguments_default.jobs);
+        bool _debug             = (args.debug            != Mace_Arguments_default.debug);
+        bool _silent            = (args.silent           != Mace_Arguments_default.silent);
+        bool _dry_run           = (args.dry_run          != Mace_Arguments_default.dry_run);
+        bool _build_all         = (args.build_all        != Mace_Arguments_default.build_all);
 
         out.user_target      = _user_target      ? args.user_target      : env.user_target;
         out.macefile         = _macefile         ? args.macefile         : env.macefile;
@@ -6497,8 +6507,8 @@ struct Mace_Arguments mace_combine_args_env(struct Mace_Arguments args, struct M
         return (out);
     }
 
+/// @brief Parse MACEFLAGS environment variable
 struct Mace_Arguments mace_parse_env() {
-    /* Parse MACEFLAGS environment variable */
     char *env_args = getenv("MACEFLAGS");
     if (env_args != NULL) {
         int argc = 1, len = 8;
@@ -6518,6 +6528,7 @@ struct Mace_Arguments mace_parse_env() {
     return (Mace_Arguments_default);
 }
 
+/// @brief Parse builder/mace convenience executable input args using parg
 struct Mace_Arguments mace_parse_args(int argc, char *argv[]) {
     struct Mace_Arguments out_args = Mace_Arguments_default;
     struct parg_state ps = parg_state_default;
@@ -6642,13 +6653,14 @@ void Mace_Arguments_Free(struct Mace_Arguments *args) {
 }
 
 /************************************ main ************************************/
-// 1- Runs mace function, get all info from user:
-//   - Compiler, Targets, Configs, Directories
-// 2- Builds dependency graph from targets' links, dependencies
-// 3- Determines which targets need to be recompiled
-// 4- Build the targets
 
 #ifndef MACE_OVERRIDE_MAIN
+/// @brief mace main function. mace.h implements main, not the macefile!
+///     1- Runs mace function, get all info from user:
+///       - Compiler, Targets, Configs, Directories
+///     2- Builds dependency graph from targets' links, dependencies
+///     3- Determines which targets need to be recompiled
+///     4- Build the targets
 int main(int argc, char *argv[]) {
     /* --- Parse user arguments --- */
     struct Mace_Arguments args      = mace_parse_args(argc, argv);
