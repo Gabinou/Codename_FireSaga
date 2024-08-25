@@ -408,10 +408,10 @@ static void mace_Target_Grow_Headers(     struct Target *target);
 static void mace_Target_Grow_deps_headers(struct Target *target, int obj_hash_id);
 
 /* - hash - */
-static int  Target_hasObjectHash(struct Target *target, uint64_t hash);
-static int  Target_hasObjectHash_nocoll(struct Target *target, uint64_t hash);
-static void Target_Object_Hash_Add(struct Target *target, uint64_t hash);
-static void Target_Object_Hash_Add_nocoll(struct Target *target, uint64_t hash);
+static int  Target_hasObjectHash(           struct Target *target, uint64_t hash);
+static void Target_Object_Hash_Add(         struct Target *target, uint64_t hash);
+static int  Target_hasObjectHash_nocoll(    struct Target *target, uint64_t hash);
+static void Target_Object_Hash_Add_nocoll(  struct Target *target, uint64_t hash);
 
 /* - obj_deps - */
 static char *mace_Target_Read_d(struct Target *target, int source_i);
@@ -4271,8 +4271,8 @@ void mace_pqueue_put(pid_t pid) {
 // POP -> --pnum evaluates to 7
 
 /****************************** mace_glob_sources *****************************/
+/// @brief If source is a folder, get all .c files in it.
 glob_t mace_glob_sources(const char *path) {
-    /* If source is a folder, get all .c files in it */
     glob_t  globbed;
     int     flags   = 0;
     int     ret     = glob(path, flags, mace_globerr, &globbed);
@@ -4296,7 +4296,7 @@ int mace_globerr(const char *path, int eerrno) {
 
 #endif /* MACE_CONVENIENCE_EXECUTABLE */
 /********************************* mace_exec **********************************/
-// Execute command in forked process.
+/// @brief Print command to be run in forked process.
 void mace_exec_print(char *const arguments[], size_t argnum) {
     for (int i = 0; i < argnum; i++) {
         vsprintf("%s ", arguments[i]);
@@ -4304,6 +4304,7 @@ void mace_exec_print(char *const arguments[], size_t argnum) {
     vsprintf("\n");
 }
 
+/// @brief Put back arguments array (argv) into a single line for execvp.
 char *mace_args2line(char *const arguments[]) {
     int i   = 0;
     int num = 0, len = 64;
@@ -4328,6 +4329,7 @@ char *mace_args2line(char *const arguments[]) {
     return (argline);
 }
 
+/// @brief Execute command in a different fork with execvp and bash.
 pid_t mace_exec_wbash(const char *exec, char *const arguments[]) {
     char *argline = mace_args2line(arguments);
     pid_t pid = fork();
@@ -4349,6 +4351,7 @@ pid_t mace_exec_wbash(const char *exec, char *const arguments[]) {
     return (pid);
 }
 
+/// @brief Execute command in a different fork with execvp.
 pid_t mace_exec(const char *exec, char *const arguments[]) {
     pid_t pid = fork();
     if (pid < 0) {
@@ -4360,15 +4363,14 @@ pid_t mace_exec(const char *exec, char *const arguments[]) {
     }
     return (pid);
 }
-#define MACE_EXEC mace_exec_wbash
 
-/* Wait on process with pid to finish */
+/// @brief Wait on process with pid to finish
 void mace_wait_pid(int pid) {
     int status;
     if (waitpid(pid, &status, 0) > 0) {
         if (WEXITSTATUS(status) == 0) {
             /* pass */
-        } else if (WIFEXITED(status)        && !WEXITSTATUS(status)) {
+        } else if (WIFEXITED(status) && !WEXITSTATUS(status)) {
             /* pass */
         } else if (WIFEXITED(status) &&  WEXITSTATUS(status)) {
             if (WEXITSTATUS(status) == 127) {
@@ -4459,7 +4461,7 @@ void mace_link_dynamic_library(struct Target *target) {
     /* --- Actual linking --- */
     mace_exec_print(argv, argc);
     if (!dry_run) {
-        pid_t pid = MACE_EXEC(argv[0], argv);
+        pid_t pid = mace_exec_wbash(argv[0], argv);
         mace_wait_pid(pid);
     }
 
@@ -4528,7 +4530,7 @@ void mace_link_static_library(struct Target *target) {
     /* --- Actual linking --- */
     mace_exec_print(argv, argc);
     if (!dry_run) {
-        pid_t pid = MACE_EXEC(argv[0], argv);
+        pid_t pid = mace_exec_wbash(argv[0], argv);
         mace_wait_pid(pid);
     }
     free(buffer);
@@ -4616,7 +4618,7 @@ void mace_link_executable(struct Target *target) {
     /* --- Actual linking  --- */
     mace_exec_print(argv, argc);
     if (!dry_run) {
-        pid_t pid = MACE_EXEC(argv[0], argv);
+        pid_t pid = mace_exec_wbash(argv[0], argv);
         mace_wait_pid(pid);
     }
 
@@ -4629,6 +4631,7 @@ void mace_link_executable(struct Target *target) {
     free(exec);
 }
 
+/// @brief Compile target's obj file all at once.
 void mace_Target_compile_allatonce(struct Target *target) {
     // Compile ALL objects at once
     /* -- Move to obj_dir -- */
@@ -4641,7 +4644,7 @@ void mace_Target_compile_allatonce(struct Target *target) {
     /* -- Actual compilation -- */
     mace_exec_print(target->_argv, target->_argc);
     if (!dry_run) {
-        pid_t pid = MACE_EXEC(target->_argv[0], target->_argv);
+        pid_t pid = mace_exec_wbash(target->_argv[0], target->_argv);
         mace_wait_pid(pid);
     }
 
@@ -4649,6 +4652,7 @@ void mace_Target_compile_allatonce(struct Target *target) {
     assert(chdir(cwd) == 0);
 }
 
+/// @brief Target pre-compilation: check which file needs to be recompiled
 void mace_Target_precompile(struct Target *target) {
     /* Compute latest object dependencies .d file */
     assert(target != NULL);
@@ -4679,7 +4683,7 @@ void mace_Target_precompile(struct Target *target) {
             /* -- Actual pre-compilation -- */
             mace_exec_print(target->_argv, target->_argc);
             assert(target->_argv[target->_argc] == NULL);
-            pid_t pid = MACE_EXEC(target->_argv[0], target->_argv);
+            pid_t pid = mace_exec_wbash(target->_argv[0], target->_argv);
             mace_pqueue_put(pid);
 
             target->_argv[MACE_ARGV_OBJECT][len - 1] = 'o';
@@ -4712,8 +4716,8 @@ void mace_Target_precompile(struct Target *target) {
     mace_Headers_Checksums_Checks(target);
 }
 
+/// @brief Compile targets' objects one at a time
 void mace_Target_compile(struct Target *target) {
-    // compile all objects
     assert(target != NULL);
     assert(target->_argv != NULL);
 
@@ -4740,7 +4744,7 @@ void mace_Target_compile(struct Target *target) {
             /* -- Actual compilation -- */
             mace_exec_print(target->_argv, target->_argc);
             if (!dry_run) {
-                pid_t pid = MACE_EXEC(target->_argv[0], target->_argv);
+                pid_t pid = mace_exec_wbash(target->_argv[0], target->_argv);
                 mace_pqueue_put(pid);
             }
         }
@@ -4761,6 +4765,7 @@ void mace_Target_compile(struct Target *target) {
     }
 }
 
+/// @brief Alloc _objects_hash_nocoll. Realloc if num close to len. Add hash.
 void Target_Object_Hash_Add_nocoll(struct Target *target, uint64_t hash) {
     if (target->_objects_hash_nocoll == NULL) {
         target->_objects_hash_nocoll_num = 0;
@@ -4779,6 +4784,7 @@ void Target_Object_Hash_Add_nocoll(struct Target *target, uint64_t hash) {
     target->_objects_hash_nocoll[target->_objects_hash_nocoll_num++] = hash;
 }
 
+/// @brief Check if hash is in _objects_hash_nocoll.
 int Target_hasObjectHash_nocoll(struct Target *target, uint64_t hash) {
     if (target->_objects_hash_nocoll == NULL)
         return (-1);
@@ -4792,6 +4798,7 @@ int Target_hasObjectHash_nocoll(struct Target *target, uint64_t hash) {
 }
 
 
+/// @brief Add object hash to target.
 void Target_Object_Hash_Add(struct Target *target, uint64_t hash) {
     assert(target->_argv_objects_hash != NULL);
     assert(target->_argv_objects_cnt != NULL);
@@ -4799,6 +4806,7 @@ void Target_Object_Hash_Add(struct Target *target, uint64_t hash) {
     target->_argv_objects_cnt[target->_argc_objects_hash++] = 0;
 }
 
+/// @brief Check if target has object hash.
 int Target_hasObjectHash(struct Target *target, uint64_t hash) {
     if (target->_argv_objects_hash == NULL)
         return (-1);
@@ -4811,10 +4819,12 @@ int Target_hasObjectHash(struct Target *target, uint64_t hash) {
     return (-1);
 }
 
+/// @brief Add target to list of recompiles.
 void mace_Target_Recompiles_Add(struct Target *target, bool add) {
     target->_recompiles[target->_argc_sources - 1] = add;
 }
 
+/// @brief Add object needing to be compiled to target.
 bool mace_Target_Object_Add(struct Target *target, char *token) {
     /* token is object path */
     if (token == NULL)
@@ -4862,6 +4872,7 @@ bool mace_Target_Object_Add(struct Target *target, char *token) {
     return (exists);
 }
 
+/// @brief Check if any source/header file changed for object.
 void mace_Headers_Checksums_Checks(struct Target *target) {
     assert(target->_hdrs_changed != NULL);
     if (build_all) {
@@ -4886,6 +4897,7 @@ void mace_Headers_Checksums_Checks(struct Target *target) {
     }
 }
 
+/// @brief Compute checksums for all headers.
 void mace_Headers_Checksums(struct Target *target) {
     /* --- HEADERS CHECKSUMS --- */
     assert(chdir(cwd) == 0);
@@ -4932,6 +4944,7 @@ void mace_Headers_Checksums(struct Target *target) {
         assert(chdir(target->base_dir) == 0);
 }
 
+/// @brief Compute checksums for all sources.
 bool mace_Source_Checksum(struct Target *target, char *source_path, char *obj_path) {
     /* --- SOURCE CHECKSUM --- */
     /* - Compute current checksum - */
@@ -4975,6 +4988,7 @@ bool mace_Source_Checksum(struct Target *target, char *source_path, char *obj_pa
     return (changed);
 }
 
+/// @brief Add source file to target.
 bool mace_Target_Source_Add(struct Target *target, char *token) {
     if (token == NULL)
         return (true);
@@ -5005,6 +5019,10 @@ bool mace_Target_Source_Add(struct Target *target, char *token) {
     return (false);
 }
 
+/// @brief Add found source file to target
+///     - Create object name from source name
+///     - Make source checksum
+///     - Check if source needs to be recompiled
 void mace_Target_Parse_Source(struct Target *target, char *path, char *src) {
     bool excluded = mace_Target_Source_Add(target, path);
     if (!excluded) {
@@ -5017,7 +5035,7 @@ void mace_Target_Parse_Source(struct Target *target, char *path, char *src) {
     }
 }
 
-/* Compile globbed files to objects */
+/// @brief Globbed files for sources and parse objects.
 void mace_compile_glob(struct Target *target, char *globsrc,
                            const char *flags) {
     glob_t globbed = mace_glob_sources(globsrc);
@@ -5074,6 +5092,7 @@ void mace_mkdir(const char *path) {
     }
 }
 
+/// @brief Create path to executable to compile.
 char *mace_executable_path(char *target_name) {
     assert(target_name != NULL);
     size_t bld_len = strlen(build_dir);
@@ -5091,7 +5110,8 @@ char *mace_executable_path(char *target_name) {
     return (exec);
 }
 
-// TODO: static and dynamic path
+/// @brief Create path to library to compile.
+///     TODO: static and dynamic path
 char *mace_library_path(char *target_name, int kind) {
     assert(target_name != NULL);
     size_t bld_len = strlen(build_dir);
@@ -5118,11 +5138,13 @@ char *mace_library_path(char *target_name, int kind) {
 }
 
 /******************************* mace_globals *********************************/
+/// @brief Realloc global object.
 void mace_object_grow() {
     object_len *= 2;
     object      = realloc(object,   object_len  * sizeof(*object));
 }
 
+/// @brief Write object path from source file to global object.
 void mace_object_path(char *source) {
     /* --- Expanding path --- */
     size_t cwd_len      = strlen(cwd);
@@ -5566,6 +5588,7 @@ void mace_pre_build() {
         return;
 
     for (int z = 0; z < build_order_num; z++) {
+        mace_Target_Grow_Headers(&targets[build_order[z]]);
         mace_prebuild_target(&targets[build_order[z]]);
     }
 }
@@ -5821,7 +5844,8 @@ void mace_Target_Grow_Headers(struct Target *target) {
         memset(target->_headers + target->_headers_len / 2, 0, bytesize / 2);
     }
 }
-
+/// @brief Read target object .d files to cehck which headers are
+///     required for re-compilation
 void mace_Target_Read_Objdeps(struct Target *target, char *deps, int source_i) {
     /* --- Split headers into tokens --- */
     char *header   = strtok(deps, mace_d_separator);
