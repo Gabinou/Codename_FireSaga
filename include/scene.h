@@ -16,6 +16,25 @@
 #include "bitfields.h"
 #include "SDL2/SDL.h"
 
+// SCENE MVP
+//  1.
+//      - Change state to scene
+//      - Write fixed Lines     in box at bottom
+//           -> TEXT BUBBLES LATER
+//      - Write fixed Speaker name on top of box
+//           -> HIGHLIGHT SPEAKER LATER
+//      - Button to skip scene
+//      - Button to go to next line
+//      - Draw Speaker Rectangle somewhere on the scene
+//  2.
+//      - Load speaker from file
+//      - Load Lines from file
+//      - highlight speaker
+//      - Speaker movement
+//          - Basic slides
+
+//  
+
 /* ---------------------------------- Scene --------------------------------- */
 //  A visual novel
 //      - Multiple characters talk to each other
@@ -41,6 +60,8 @@
 //  - Text box on screen bottom
 //  - Player clicks to move to next line
 //   ANSWER -> A Scene
+
+
 
 /* --- FORWARD DECLARATIONS --- */
 struct Boss;
@@ -127,7 +148,6 @@ extern struct SceneBackground SceneBackground_default;
 extern struct SceneBackground SceneBackground_FadeToBlack;
 //  Screen:
 //  - Shake screen
-
 
 /* A scene is a conversation.
 *   - Up to 8 characters sprites on screen at once
