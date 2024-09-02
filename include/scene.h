@@ -33,7 +33,7 @@
 //      - Speaker movement
 //          - Basic slides
 
-//  
+//
 
 /* ---------------------------------- Scene --------------------------------- */
 //  A visual novel

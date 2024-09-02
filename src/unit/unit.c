@@ -593,7 +593,12 @@ b32 _Unit_canAttack(struct Unit *unit, b32 hand) {
     if (item.id <= ITEM_NULL)
         return (false);
 
+    SDL_assert(Weapon_ID_isValid(item.id));
+    Weapon_Load(unit->weapons_dtab, item.id);
+
     struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, item.id);
+    SDL_assert(wpn != NULL);
+
     return (wpn->canAttack);
 }
 
