@@ -559,7 +559,7 @@ static void _DeploymentMenu_Draw_Stats_P4(DeploymentMenu *dm, SDL_Renderer *rend
 
         /* WPN_TYPES */
         u8 equippables[ITEM_TYPE_EXP_END] = {0};
-        u8 equippable_num = Unit_Equippables(unit, equippables);
+        u8 equippable_num = Unit_canEquip_Types(unit, equippables);
         x = DM_WPN_TYPE_X;
         y = DM_WPN_TYPE_CONTENT_Y;
         point = _Page_Frame(x, y);

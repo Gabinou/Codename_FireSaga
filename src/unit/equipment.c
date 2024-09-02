@@ -383,13 +383,8 @@ b32 Unit_canEquip_Hand( struct Unit *unit, i16 id, b32 hand) {
     return (false);
 }
 
-/* Can unit equip arbitrary weapon with a certain type? */
-// TODO: Rename Unit_Equippables -> Unit_canEquip_Types
-// Equippable:
-//      - Weapon that has type unit can use
-//      - Don't care about HANDS, TWOHANDING, ETC.
 /* Find all equippable types, put them in equippables array */
-u8 Unit_Equippables(struct Unit *unit, u8 *equippables) {
+u8 Unit_canEquip_Types(struct Unit *unit, u8 *equippables) {
     u8 type = 1, equippable_num = 0;
     uint64_t wpntypecode = 1;
     memset(equippables, 0, ITEM_TYPE_EXP_END * sizeof(*equippables));

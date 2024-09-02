@@ -61,7 +61,7 @@ void    Unit_Unequip(Unit *u, b32 h);
 
 /* -- Can Equip -- */
 b32 Unit_canEquip(       Unit *u, i16 id);
-u8  Unit_Equippables(    Unit *u, u8 *eq);
+u8  Unit_canEquip_Types(    Unit *u, u8 *eq);
 b32 Unit_canEquip_Type(  Unit *u, i16 id);
 b32 Unit_canEquip_Hand(  Unit *u, i16 id, b32 h);
 b32 Unit_canEquip_inHand(Unit *u, b32 h);
