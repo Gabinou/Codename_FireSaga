@@ -48,6 +48,11 @@ Weapon *Unit_Weapon(         Unit *u, i32 eq);
 Item   *Unit_Get_Item(       Unit *u, i32 eq);
 Weapon *Unit_Equipped_Weapon(Unit *u, b32 hand);
 
+/* ID of equipped weapon */
+i32 Unit_Id_Equipped(Unit *u, i32 hand);
+/* Order in _equipment of equipped weapon */
+i32 Unit_Eq_Equipped(Unit *u, i32 hand);
+
 /* --- Equipping --- */
 i32     Unit_Equipped(  Unit *u, b32 hand);
 b32     Unit_isEquipped(Unit *u, b32 hand);

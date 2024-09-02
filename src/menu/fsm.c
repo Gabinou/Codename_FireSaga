@@ -798,12 +798,13 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     // TODO: Change to weakhand if other item in inventory
     // TODO: option to equip nothing in weakhand
     // TODO: Automatically equip nothing in weakhand if no other item in equipment
+    if (wsm->selected[stronghand] >= 0) {
+        Unit_Find_Usable(wsm->unit, ITEM_ARCHETYPE_WEAKHAND);
+    }
+
     if (WeaponSelectMenu_Usable_Remains(wsm)) {
         SDL_assert(mc->n9patch.scale.x > 0);
         SDL_assert(mc->n9patch.scale.y > 0);
-        if (wsm->selected[stronghand] >= 0) {
-            Unit_Find_Usable(wsm->unit, ITEM_ARCHETYPE_WEAKHAND);
-        }
 
         int popup_ind       = POPUP_TYPE_HUD_LOADOUT_STATS;
         struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, sota->popups[popup_ind], PopUp);
@@ -814,11 +815,17 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         LoadoutSelectMenu_Elem_Pos(wsm, mc);
         Menu_Elem_Boxes_Check(mc);
 
+        /* Use wsm loadout to compute "previous" loadout */
         PopUp_Loadout_Stats_Select(pls, wsm);
         PopUp_Loadout_Stats_Previous(pls);
 
         /* move cursor to top hand */
         Menu_Elem_Set(mc, sota, 0);
+
+        // Use wsm loadout to compute loadout after changing
+        // to new usable items
+        PopUp_Loadout_Stats_Hover(pls, wsm, mc->elem);
+        PopUp_Loadout_Stats_New(pls);
     } else {
         /* Loadout selected, find new defendants*/
         // TODO: use WeaponSelectMenu_Loadout_Valid/remove it
@@ -827,16 +834,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         /* - Check that a defendant is in range of current loadout - */
         SDL_assert(DARR_NUM(sota->defendants) > 0);
 
-        // if (DARR_NUM(sota->defendants) == 0) {
-        // LoadoutSelectMenu_Deselect(wsm);
-        // } else {
         Event_Emit(__func__, SDL_USEREVENT, event_Loadout_Selected, data1_entity, data2_entity);
-        // }
     }
-
-    PopUp_Loadout_Stats_Select(pls, wsm);
-    PopUp_Loadout_Stats_Hover(pls, wsm, mc->elem);
-    PopUp_Loadout_Stats_New(pls);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {

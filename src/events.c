@@ -985,9 +985,9 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     /* Aggressor loadout was selected, time to select defendant. */
 
     /* - Turn menu_attack invisible - */
-    int stack_top               = DARR_NUM(sota->menu_stack) - 1;
-    tnecs_entity menu_top     = sota->menu_stack[stack_top];
-    struct Menu *mc    = TNECS_GET_COMPONENT(sota->world, menu_top, Menu);
+    int stack_top           = DARR_NUM(sota->menu_stack) - 1;
+    tnecs_entity menu_top   = sota->menu_stack[stack_top];
+    struct Menu *mc         = TNECS_GET_COMPONENT(sota->world, menu_top, Menu);
     SDL_assert(mc              != NULL);
     SDL_assert(mc->type        == MENU_TYPE_WEAPON_SELECT);
     SDL_assert(mc->elem_pos    != NULL);

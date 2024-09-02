@@ -770,6 +770,7 @@ struct Computed_Stats Unit_computedStats_wLoadout(struct Unit *unit, int lh, int
     /* Save starting equipment */
     int start_equipped[UNIT_HANDS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
+    SDL_Log("lh rh %d %d", lh, rh);
     if ((lh >= 0) && (lh < SOTA_EQUIPMENT_SIZE)) {
         Unit_Equip(unit, UNIT_HAND_LEFT,    lh);
         SDL_assert(unit->_equipped[UNIT_HAND_LEFT] == lh);

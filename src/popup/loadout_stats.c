@@ -620,6 +620,7 @@ void PopUp_Loadout_Stats_Unit(struct PopUp_Loadout_Stats *pls, struct Unit *unit
 }
 
 void PopUp_Loadout_Stats_Previous(struct PopUp_Loadout_Stats *pls) {
+    /* Compute loadout stats of "previous" loadout to compare against */
     PopUp_Loadout_Stats_ItemTypes(pls);
 
     pls->previous_cs = Unit_computedStats_wLoadout(pls->unit,
@@ -629,7 +630,9 @@ void PopUp_Loadout_Stats_Previous(struct PopUp_Loadout_Stats *pls) {
 }
 
 void PopUp_Loadout_Stats_New(struct PopUp_Loadout_Stats *pls) {
+    /* Compute loadout stats of "new" loadout compared with "previous" loadout */
     PopUp_Loadout_Stats_ItemTypes(pls);
+    SDL_Log("pls->unit %d %d", pls->unit->_equipped[0], pls->unit->_equipped[1]);
     pls->new_cs     = Unit_computedStats_wLoadout(pls->unit,
                                                   pls->item_left, pls->item_right,
                                                   pls->distance);
@@ -640,6 +643,8 @@ void PopUp_Loadout_Stats_New(struct PopUp_Loadout_Stats *pls) {
 /* --- Select --- */
 void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls, struct LoadoutSelectMenu *wsm,
                                int elem) {
+    /* Set pls items to weapons hovered in wsm */
+
     SDL_assert(pls       != NULL);
     SDL_assert(wsm       != NULL);
     SDL_assert(wsm->unit != NULL);
@@ -668,6 +673,7 @@ void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls, struct LoadoutSe
 }
 
 void PopUp_Loadout_Stats_Select(struct PopUp_Loadout_Stats *pls, struct LoadoutSelectMenu *wsm) {
+    /* Set pls items to weapons selected in wsm */
     SDL_assert(pls       != NULL);
     SDL_assert(wsm       != NULL);
     SDL_assert(wsm->unit != NULL);
@@ -677,7 +683,8 @@ void PopUp_Loadout_Stats_Select(struct PopUp_Loadout_Stats *pls, struct LoadoutS
     /* - Select item - */
     int stronghand = Unit_Hand_Strong(pls->unit);
     int weakhand   = 1 - stronghand;
-
+    pls->item_left  = -1;
+    pls->item_right = -1;
     if ((wsm->selected[stronghand] >= 0) && (wsm->selected[stronghand] < SOTA_EQUIPMENT_SIZE))  {
         /* Stronghand selected */
         if (stronghand == UNIT_HAND_LEFT) {
@@ -695,6 +702,7 @@ void PopUp_Loadout_Stats_Select(struct PopUp_Loadout_Stats *pls, struct LoadoutS
             pls->item_right = wsm->selected[weakhand];
         }
     }
+    SDL_Log("pls->item_left %d %d", pls->item_left, pls->item_right);
 }
 
 /* --- Rendering --- */
