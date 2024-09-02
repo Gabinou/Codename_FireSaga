@@ -50,6 +50,7 @@ Weapon *Unit_Equipped_Weapon(Unit *u, b32 hand);
 
 /* ID of equipped weapon */
 i32 Unit_Id_Equipped(Unit *u, i32 hand);
+i32 Unit_Id_Equipment(Unit *u, i32 eq);
 /* Order in _equipment of equipped weapon */
 i32 Unit_Eq_Equipped(Unit *u, i32 hand);
 
@@ -60,12 +61,12 @@ i32     Unit_Equip(  Unit *u, b32 h, i32 i);
 void    Unit_Unequip(Unit *u, b32 h);
 
 /* -- Can Equip -- */
-b32 Unit_canEquip(          Unit *u,    i16 id);
+b32 Unit_canEquip(          Unit *u,    i32 eq);
 u8  Unit_canEquip_Types(    Unit *u,    u8 *eq);
-b32 Unit_canEquip_Type(     Unit *u,    i16 id);
-b32 Unit_canEquip_Hand(     Unit *u,    i16 id, b32 h);
-b32 Unit_canEquip_inHand(   Unit *u,    b32 h);
-b32 Unit_canEquip_Users(    Unit *u,    i16 id) {
+b32 Unit_canEquip_Type(     Unit *u,    i32 eq);
+b32 Unit_canEquip_Hand(     Unit *u,    b32 h);
+b32 Unit_canEquip_Users(    Unit *u,    i32 eq)
+b32 Unit_canEquip_TwoHand(  Unit *u,    i32 eq);
 
 /* --- Checking Equipment: de-equip if broken --- */
 void _Unit_Check_Equipped(Unit *u, b32 hand);
@@ -86,7 +87,6 @@ b32  Unit_Equipment_Full( Unit *u);
 void Unit_Equipment_Print(Unit *u);
 
 /* -- Can -- */
-b32 Unit_canTwoHand(Unit *u, i32 i);
 
 /* -- Use -- */
 void Unit_Staff_Use(Unit *unit, Unit *patient);

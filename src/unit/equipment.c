@@ -21,6 +21,12 @@ b32 Unit_Eq_Usable( struct Unit *unit, u64 archetype, i32 eq) {
     return (Unit_Item_Usable(unit, archetype, unit->_equipment[eq].id));
 }
 
+// TODO: Possible_Loadout.
+//     - canEquip true
+//     - Can be equipped next.
+//          - e.g. two hands weapon must be carried in two hands
+
+
 // TODO: Unit_Item_Usable -> Unit_canEquip_Archetype
 b32 Unit_Item_Usable(struct Unit *unit, u64 archetype, i32 id) {
     b32 usable = false;
@@ -76,6 +82,13 @@ b32 Unit_Item_Usable(struct Unit *unit, u64 archetype, i32 id) {
 i32 Unit_Eq_Equipped(Unit *unit, i32 hand) {
     SDL_assert((hand == UNIT_HAND_LEFT) || (hand == UNIT_HAND_RIGHT));
     return (unit->_equipped[hand]);
+}
+
+/* ID of equipment item */
+i32 Unit_Id_Equipment(Unit *u, i32 eq) {
+    SDL_assert(eq >= 0);
+    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
+    return(unit->_equipment[eq].id);
 }
 
 /* ID of equipped weapon */
@@ -287,39 +300,44 @@ void Unit_Unequip(struct Unit *unit, b32 hand) {
 //      - First hand can always equip.
 //      - Second hand needs to check if pointing to same "eq"
 //      - Need "eq" in input, not id.
-b32 Unit_canEquip(struct Unit *unit, i16 id) {
-    if (id <= ITEM_NULL) {
-        return (false);
-    }
+b32 Unit_canEquip(struct Unit *unit, i32 eq, b32 hand) {
+    SDL_assert(eq >= 0);
+    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
 
-    b32 type    = Unit_canEquip_Type(unit, id);
-    b32 left    = Unit_canEquip_Hand(unit, id, UNIT_HAND_LEFT);
-    b32 right   = Unit_canEquip_Hand(unit, id, UNIT_HAND_RIGHT);
-    b32 users   = Unit_canEquip_Users(unit, id);
+    i32 id = Unit_Id_Equipment(unit, eq);
+    if (id <= ITEM_NULL)
+        return (false);
+    if (!Weapon_ID_isValid(id))
+        return (false);
+
+    b32 type    = Unit_canEquip_Type(unit, eq);
+    b32 hand    = Unit_canEquip_Hand(unit, eq, hand);
+    b32 users   = Unit_canEquip_Users(unit, eq);
+    b32 twohand = Unit_canEquip_TwoHand(unit, eq, hand);
 
     // SDL_Log("Unit_canEquip_Hand %d %d %d", type, right, left);
-    return (users && type && (left || right));
+    return (twohand && users && type && hand);
 }
 
-/* -- Can -- */
-// Polarity is INVERSED
-// if weapon can be twohanded is PART of Unit_canEquip
+// Can equipement be two-handed?
+b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand) {
+    SDL_assert(eq >= 0);
+    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
 
-b32 Unit_canTwoHand(Unit *unit, i32 i) {
-    SDL_assert(unit                 != NULL);
-    SDL_assert(unit->weapons_dtab   != NULL);
-
-    struct Inventory_item inv_item = unit->_equipment[i];
-
-    /* Cannot twohand non-weapon, pure items, or broken */
-    if (!Weapon_ID_isValid(inv_item.id)) {
+    i32 id = Unit_Id_Equipment(unit, eq);
+    if (id <= ITEM_NULL)
         return (false);
+    if (!Weapon_ID_isValid(id))
+        return (false);
+
+    b32 other_hand = 1 - hand; 
+    // If eq not equipped in other hand, or if nothing equipped in other hand
+    // twohand criteria does not block canEquip */
+    if (Unit_Eq_Equipped(unit, other_hand) != eq) {
+        return(true);
     }
 
-    /* Cannot twohand unequippable item */
-    if (!Unit_canEquip(unit, inv_item.id)) {
-        return (false);
-    }
+    /* --- eq is equipped in other hand --- */
 
     /* Cannot twohand magic weapons */
     struct Weapon *wpn  = DTAB_GET(unit->weapons_dtab, inv_item.id);
@@ -341,37 +359,45 @@ b32 Unit_canTwoHand(Unit *unit, i32 i) {
     return (true);
 }
 
-/* Can unit equip weapon currently in hand? */
-b32 Unit_canEquip_inHand( struct Unit *unit, b32 hand) {
+/* Can unit equip weapon in eq currently in hand? */
+b32 Unit_canEquip_Hand(struct Unit *unit, i32 eq, b32 hand) {
     SDL_assert(unit->weapons_dtab != NULL);
-    i16 hand_id = unit->_equipment[hand].id;
-    return (Unit_canEquip_Hand(unit, hand_id, hand));
-}
 
-/* Can unit equip input weapon in its hand? */
-b32 Unit_canEquip_Hand( struct Unit *unit, i16 id, b32 hand) {
-    if (id <= ITEM_NULL) {
+    i32 id = Unit_Id_Equipment(unit, eq);
+    if (id <= ITEM_NULL)
         return (false);
-    }
-    if (!Weapon_ID_isValid(id)) {
+    if (!Weapon_ID_isValid(id))
         return (false);
-    }
 
-    SDL_assert(unit->weapons_dtab != NULL);
     struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);
 
-    b32 eq_any = (weapon->handedness == WEAPON_HAND_ANY);
-    // 2O: two-hand weapon in other hand
-    b32 eq_2O  = (weapon->handedness == WEAPON_HAND_TWO);
-    // 1A: one-hand weapon in any hand
-    b32 eq_1A  = (weapon->handedness == WEAPON_HAND_ONE);
-    // TODO: Right hand or left hand
+    // Any handedness
+    if (weapon->handedness == WEAPON_HAND_ANY)
+        return(true);
 
-    if (eq_2O || eq_any || eq_1A) {
-        return (true);
+    // one-hand weapon in any hand
+    if (weapon->handedness == WEAPON_HAND_ONE)
+        return(true);
+
+    // two-hand weapon in other hand. Can equip if:
+    //      - Other hand empty.
+    //      - Other hand equipped eq.
+    if  (weapon->handedness == WEAPON_HAND_TWO) {
+        b32 other_hand = 1 - hand; 
+        i32 eq_other = Unit_Eq_Equipped(unit, other_hand);
+        /* Term 1 and 2:    nothing equipped in other hand.     */
+        /* Term 3:          same eq in other hand.              */
+        if (eq_other < 0) || (eq_other >= SOTA_EQUIPMENT_SIZE) || (eq_other == eq)
+            return(true);
     }
+    
+    // left hand weapon in left hand
+    if ((weapon->handedness == WEAPON_HAND_LEFT) && (hand == UNIT_HAND_LEFT))
+        return(true);
 
-    return (false);
+    // right hand weapon in right hand
+    if ((weapon->handedness == WEAPON_HAND_RIGHT) && (hand == UNIT_HAND_RIGHT));
+        return(true);
 }
 
 /* Is item among possible users? */
