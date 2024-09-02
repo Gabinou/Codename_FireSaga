@@ -60,11 +60,12 @@ i32     Unit_Equip(  Unit *u, b32 h, i32 i);
 void    Unit_Unequip(Unit *u, b32 h);
 
 /* -- Can Equip -- */
-b32 Unit_canEquip(       Unit *u, i16 id);
-u8  Unit_canEquip_Types(    Unit *u, u8 *eq);
-b32 Unit_canEquip_Type(  Unit *u, i16 id);
-b32 Unit_canEquip_Hand(  Unit *u, i16 id, b32 h);
-b32 Unit_canEquip_inHand(Unit *u, b32 h);
+b32 Unit_canEquip(          Unit *u,    i16 id);
+u8  Unit_canEquip_Types(    Unit *u,    u8 *eq);
+b32 Unit_canEquip_Type(     Unit *u,    i16 id);
+b32 Unit_canEquip_Hand(     Unit *u,    i16 id, b32 h);
+b32 Unit_canEquip_inHand(   Unit *u,    b32 h);
+b32 Unit_canEquip_Users(    Unit *u,    i16 id) {
 
 /* --- Checking Equipment: de-equip if broken --- */
 void _Unit_Check_Equipped(Unit *u, b32 hand);
@@ -72,7 +73,6 @@ void  Unit_Check_Equipped(Unit *u);
 
 /* --- Usability --- */
 b32  Unit_Eq_Usable(  Unit *u, u64 a, i32 i);
-b32  Unit_All_Usable( Unit *u);
 void Unit_Find_Usable(Unit *u, u64 a);
 b32  Unit_Item_Usable(Unit *u, u64 a, i32 i);
 

@@ -3,38 +3,25 @@
 
 
 /* --- Usability --- */
+// TODO: Unit_Find_Usable -> Unit_CanEquip_Archetype_Equipment
 void Unit_Find_Usable(struct Unit *unit, u64 archetype) {
     /* -- Find usable weapons in eq_space --  */
     unit->num_usable = 0;
-    for (i32 i = 0; i < SOTA_EQUIPMENT_SIZE; i++) {
-        if (Unit_Eq_Usable(unit, archetype, i))
-            unit->eq_usable[unit->num_usable++] = i;
+    for (i32 eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
+        if (Unit_Eq_Usable(unit, archetype, eq))
+            unit->eq_usable[unit->num_usable++] = eq;
     }
 }
 
-b32 Unit_All_Usable(struct Unit *unit) {
-    /* -- Set all weapons to be usable --  */
-    /* Use case: Dropping item  */
-    unit->num_usable    = 0;
-    b32 all_usable     = true;
-    for (i32 i = 0; i < unit->num_equipment; i++) {
-        unit->eq_usable[unit->num_usable] = i;
-        if (!unit->eq_usable[unit->num_usable])
-            all_usable = false;
-        unit->num_usable++;
-    }
-    return (all_usable);
+// TODO: Unit_canEquip_Archetype_Eq
+/* Can unit equip item at eq of archetype */
+b32 Unit_Eq_Usable( struct Unit *unit, u64 archetype, i32 eq) {
+    SDL_assert(eq >= 0);
+    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
+    return (Unit_Item_Usable(unit, archetype, unit->_equipment[eq].id));
 }
 
-b32 Unit_Eq_Usable( struct Unit *unit, u64 archetype, i32 i) {
-    SDL_assert(i >= 0);
-    SDL_assert(i < SOTA_EQUIPMENT_SIZE);
-    return (Unit_Item_Usable(unit, archetype, unit->_equipment[i].id));
-}
-
-// What is being usable?
-//  - Most items
-//  - Weapon that has a "Use" function
+// TODO: Unit_Item_Usable -> Unit_canEquip_Archetype
 b32 Unit_Item_Usable(struct Unit *unit, u64 archetype, i32 id) {
     b32 usable = false;
     /* Only one return is good. */
@@ -245,9 +232,7 @@ void Unit_Check_Equipped(struct Unit *unit) {
     /* Checks if equipped weapon is BORKED, de-equips if so */
     _Unit_Check_Equipped(unit, UNIT_HAND_LEFT);
     _Unit_Check_Equipped(unit, UNIT_HAND_RIGHT);
-
 }
-
 
 /// @return: 0 on equip, 1 on failed to equip
 i32 Unit_Equip(struct Unit *unit, b32 hand, i32 eq) {
@@ -260,6 +245,7 @@ i32 Unit_Equip(struct Unit *unit, b32 hand, i32 eq) {
     Weapon_Load(unit->weapons_dtab, unit->_equipment[eq].id);
 
     /* Check if unit is trying to and can twohand weapon */
+    // TODO-> change to Unit_canEquip once twohand polarity is reversed
     b32 other_hand = 1 - hand;
     if ((unit->_equipped[other_hand] == eq) && (!Unit_canTwoHand(unit, eq))) {
         SDL_Log("Cannot twohand");
@@ -286,6 +272,7 @@ void Unit_Unequip(struct Unit *unit, b32 hand) {
 // CanEquip vs usable:
 // SAME CONCEPT.
 // TODO: Remove usable stuff
+// TODO: Remove usable stuff
 /* Can unit equip weapon input item? */
 // Yes if:
 //    - Weapon type is in list of unit usable weapons
@@ -294,7 +281,12 @@ void Unit_Unequip(struct Unit *unit, b32 hand) {
 //          - Weapon might need to be twohanded
 //              - Unit can twohand the weapon
 //    - IF applicable: unit is in list of users
-
+// Does canEquip depend on equipment in current hand?
+//  - Equipment can always be switched
+//  - Twohands -> yes.
+//      - First hand can always equip.
+//      - Second hand needs to check if pointing to same "eq"
+//      - Need "eq" in input, not id.
 b32 Unit_canEquip(struct Unit *unit, i16 id) {
     if (id <= ITEM_NULL) {
         return (false);
@@ -303,8 +295,10 @@ b32 Unit_canEquip(struct Unit *unit, i16 id) {
     b32 type    = Unit_canEquip_Type(unit, id);
     b32 left    = Unit_canEquip_Hand(unit, id, UNIT_HAND_LEFT);
     b32 right   = Unit_canEquip_Hand(unit, id, UNIT_HAND_RIGHT);
+    b32 users   = Unit_canEquip_Users(unit, id);
+
     // SDL_Log("Unit_canEquip_Hand %d %d %d", type, right, left);
-    return (type && (left || right));
+    return (users && type && (left || right));
 }
 
 /* -- Can -- */
@@ -347,9 +341,6 @@ b32 Unit_canTwoHand(Unit *unit, i32 i) {
     return (true);
 }
 
-
-
-
 /* Can unit equip weapon currently in hand? */
 b32 Unit_canEquip_inHand( struct Unit *unit, b32 hand) {
     SDL_assert(unit->weapons_dtab != NULL);
@@ -383,18 +374,27 @@ b32 Unit_canEquip_Hand( struct Unit *unit, i16 id, b32 hand) {
     return (false);
 }
 
-/* Find all equippable types, put them in equippables array */
-u8 Unit_canEquip_Types(struct Unit *unit, u8 *equippables) {
-    u8 type = 1, equippable_num = 0;
-    uint64_t wpntypecode = 1;
-    memset(equippables, 0, ITEM_TYPE_EXP_END * sizeof(*equippables));
-    while ((wpntypecode < ITEM_TYPE_END) & (type < ITEM_TYPE_EXP_END)) {
-        if ((unit->equippable & wpntypecode) > 0)
-            equippables[equippable_num++] = type;
-        type++;
-        wpntypecode *= 2;
+/* Is item among possible users? */
+b32 Unit_canEquip_Users(struct Unit *unit, i16 id) {
+    /* Is unit among weapon's users? */
+    SDL_assert(unit->weapons_dtab != NULL);
+    Weapon_Load(unit->weapons_dtab, id);
+    struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);
+
+    /* Can equip if no list of users */
+    if (weapon->item->users == NULL) {
+        return (true);
     }
-    return (equippable_num);
+
+    u16 wpntypecode      = weapon->item->type;
+    SDL_assert(wpntypecode);
+    b32 found = false;
+    for (i32 u = 0; u < DARR_NUM(weapon->item->users); u++) {
+        found = (weapon->item->users[u] == unit->_id);
+        if (found)
+            break;
+    }
+    return (found);
 }
 
 /* Can unit equip arbitrary weapon with a certain type? */
@@ -414,11 +414,6 @@ b32 Unit_canEquip_Type(struct Unit *unit, i16 id) {
     u16 wpntypecode      = weapon->item->type;
     SDL_assert(wpntypecode);
 
-    /* Is unit among weapon's users? */
-    if ((weapon->item->users == NULL) || (DARR_NUM(weapon->item->users) == 0)) {
-        return ((unit->equippable & wpntypecode) > 0);
-    }
-
     /* Is weapon's type equippable by unit? */
     b32 found = false;
     for (u8 i = 0; i < DARR_NUM(weapon->item->users); i++) {
@@ -430,6 +425,21 @@ b32 Unit_canEquip_Type(struct Unit *unit, i16 id) {
 
     return (false);
 }
+
+/* Find all CanEquip types, put them in equippables array */
+u8 Unit_canEquip_Types(struct Unit *unit, u8 *equippables) {
+    u8 type = 1, equippable_num = 0;
+    uint64_t wpntypecode = 1;
+    memset(equippables, 0, ITEM_TYPE_EXP_END * sizeof(*equippables));
+    while ((wpntypecode < ITEM_TYPE_END) & (type < ITEM_TYPE_EXP_END)) {
+        if ((unit->equippable & wpntypecode) > 0)
+            equippables[equippable_num++] = type;
+        type++;
+        wpntypecode *= 2;
+    }
+    return (equippable_num);
+}
+
 
 /* Is a rightie using a weapon in its left hand? */
 // b32 Unit_iswrongHanding(struct Unit *unit) {
