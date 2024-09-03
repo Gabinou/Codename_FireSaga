@@ -61,16 +61,18 @@ void    Unit_Unequip(   Unit *u, b32 h);
 b32     Unit_isEquipped(Unit *u, b32 hand);
 
 /* -- Can Equip -- */
-b32 Unit_canEquip_wLoadout( Unit *u,    i32 eq, b32 hand, int lh, int rh);
 b32 Unit_canEquip(          Unit *u,    i32 eq, b32 hand);
 b32 Unit_canEquip_inHand(   Unit *u,    i32 eq);
+b32 Unit_canEquip_AnyHand(  Unit *u,    i32 eq, b32 hand);
+b32 Unit_canEquip_wLoadout( Unit *u,    i32 eq, b32 hand, int lh, int rh);
+
 b32 Unit_canEquip_OneHand(  Unit *u,    i32 eq, b32 hand);
 b32 Unit_canEquip_TwoHand(  Unit *u,    i32 eq, b32 hand);
-
-u8  Unit_canEquip_Types(    Unit *u,    u8 *eq);
 b32 Unit_canEquip_Type(     Unit *u,    i32 eq);
 b32 Unit_canEquip_Hand(     Unit *u,    b32 h);
 b32 Unit_canEquip_Users(    Unit *u,    i32 eq);
+
+u8  Unit_canEquip_Types(    Unit *u,    u8 *eq);
 
 /* --- Checking Equipment: de-equip if broken --- */
 void _Unit_Check_Equipped(Unit *u, b32 hand);

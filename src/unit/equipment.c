@@ -177,6 +177,11 @@ void Unit_Unequip(struct Unit *unit, b32 hand) {
     unit->isDualWielding    = false;
 }
 
+/* -- Usable -- */
+// - Weapon:    CanEquip
+// - Staff:     CanEquip
+// - Item:      Yes
+
 /* -- canEquip -- */
 /* Can unit equip weapon input item? */
 // Yes if:
@@ -232,8 +237,25 @@ b32 Unit_canEquip_wLoadout(struct Unit *unit, i32 eq, b32 hand, int lh, int rh) 
     return (can);
 }
 
-b32 Unit_canEquip_inHand(struct Unit *unit, b32 hand) {
-    return (Unit_canEquip(unit, hand, hand));
+b32 Unit_canEquip_inHand(Unit *unit, b32 hand) {
+    return(Unit_canEquip(unit, hand, hand));
+}
+
+b32 Unit_canEquip_AnyHand(Unit *unit, i32 eq) {
+    return( Unit_canEquip(unit, eq, UNIT_HAND_LEFT) || 
+            Unit_canEquip(unit, eq, UNIT_HAND_RIGHT));
+}
+
+b32 Unit_canEquip_Archetype(struct Unit *unit, i32 eq, b32 hand, ) {
+
+
+        if (!flagsum_isIn(weapon->item->type, archetype)) {
+            // SDL_Log("Not in usable archetypes");
+
+            break;
+        }
+
+
 }
 
 b32 Unit_canEquip(struct Unit *unit, i32 eq, b32 hand) {
