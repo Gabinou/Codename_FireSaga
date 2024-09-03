@@ -79,6 +79,27 @@ b32 Unit_canEquip_Archetype(            Unit *u, i32 eq, b32 h, i64 a);
 b32 Unit_canEquip_Archetype_wLoadout(   Unit *u, i32 eq, b32 h, i64 a,
                                         int  lh, int rh);
 
+enum CANEQUIP {
+  canEquip_Eq_All = -1,
+  canEquip_Archetype_Any = ITEM_ARCHETYPE_NULL,
+};
+// Input for canEquip function
+struct canEquip {
+    // Loadout: -1 for any
+    int lh;
+    int rh;
+    
+    // Hand to equip to
+    i32 handedness;
+    
+    i64 archetype;
+    
+    // Equipment index to check. 
+    int eq; 
+}
+
+extern struct canEquip canEquip
+
 /* - Usable -> to fill menus and stuff - */
 // Aka -> Unit_canEquip_Equipment_wLoadout_Archetype_Anyhand
 void Unit_Find_Usable(Unit *u, i64 a);
