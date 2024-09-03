@@ -210,39 +210,6 @@ void Unit_Find_Usable(Unit *unit, i64 archetype) {
 
     /* Restore starting equipment */
     Unit_Equipped_Import(unit, start_equipped);
-
-}
-
-void Unit_canEquip_Equipment_wLoadout(Unit *unit, b32 hand, int lh, int rh) {
-    /* Save starting equipment */
-    int start_equipped[UNIT_HANDS_NUM];
-    Unit_Equipped_Export(unit, start_equipped);
-
-    unit->num_canEquip = 0;
-    for (i32 eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
-        if (Unit_canEquip_wLoadout(unit, eq, hand, lh, rh)) {
-            unit->eq_canEquip[unit->num_canEquip++] = eq;
-        }
-    }
-
-    /* Restore starting equipment */
-    Unit_Equipped_Import(unit, start_equipped);
-}
-
-void Unit_canEquip_Equipment(Unit *unit, b32 hand) {
-    /* Save starting equipment */
-    int start_equipped[UNIT_HANDS_NUM];
-    Unit_Equipped_Export(unit, start_equipped);
-
-    unit->num_canEquip = 0;
-    for (i32 eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
-        if (Unit_canEquip(unit, eq, hand)) {
-            unit->eq_canEquip[unit->num_canEquip++] = eq;
-        }
-    }
-
-    /* Restore starting equipment */
-    Unit_Equipped_Import(unit, start_equipped);
 }
 
 b32 Unit_canEquip_wLoadout(struct Unit *unit, i32 eq, b32 hand, int lh, int rh) {
