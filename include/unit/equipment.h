@@ -83,11 +83,6 @@ b32 Unit_canEquip_Archetype_wLoadout(   Unit *u, i32 eq, b32 h, i64 a,
 void _Unit_Check_Equipped(Unit *u, b32 hand);
 void  Unit_Check_Equipped(Unit *u);
 
-/* --- Usability --- */
-b32  Unit_eq_canEquip(  Unit *u, u64 a, i32 i);
-void Unit_Find_Usable(Unit *u, u64 a);
-b32  Unit_Item_Usable(Unit *u, u64 a, i32 i);
-
 /* --- Unit state --- */
 b32 Unit_istwoHanding(  Unit *u);
 b32 Unit_isdualWielding(Unit *u);
