@@ -18,13 +18,14 @@ void Map_Find_Usable(struct Map *map, tnecs_world *world, tnecs_entity unit_ent,
     tnecs_entity *defendants  = DARR_INIT(defendants, tnecs_entity, 4);
 
     unit->num_canEquip = 0;
-    for (int i = 0; i < SOTA_EQUIPMENT_SIZE; ++i) {
+    for (int eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         /* Skip if weapon is not usable */
-        if (!Unit_eq_canEquip(unit, archetype, i))
+        if (!Unit_canEquip_Archetype_wLoadout(unit, eq, UNIT_HAND_LEFT,  archetype, -1, -1) &&
+            !Unit_canEquip_Archetype_wLoadout(unit, eq, UNIT_HAND_RIGHT, archetype, -1, -1))
             continue;
 
         /* Compute range */
-        Unit_Range_Item(unit, i);
+        Unit_Range_Item(unit, eq);
         struct Range *range = &unit->computed_stats.range_combined;
 
         /* Compute attacktolist to check if any enemy in it */
@@ -37,7 +38,7 @@ void Map_Find_Usable(struct Map *map, tnecs_world *world, tnecs_entity unit_ent,
         defendants = Map_Find_Defendants(map, map->attacktolist, defendants, unit_ent, false);
 
         if (DARR_NUM(defendants) > 0)
-            unit->eq_canEquip[unit->num_canEquip++] = i;
+            unit->eq_canEquip[unit->num_canEquip++] = eq;
     }
 
     DARR_FREE(defendants);

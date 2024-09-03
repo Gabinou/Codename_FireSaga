@@ -238,25 +238,47 @@ b32 Unit_canEquip_wLoadout(struct Unit *unit, i32 eq, b32 hand, int lh, int rh) 
 }
 
 b32 Unit_canEquip_inHand(Unit *unit, b32 hand) {
-    return(Unit_canEquip(unit, hand, hand));
+    return (Unit_canEquip(unit, hand, hand));
 }
 
 b32 Unit_canEquip_AnyHand(Unit *unit, i32 eq) {
-    return( Unit_canEquip(unit, eq, UNIT_HAND_LEFT) || 
-            Unit_canEquip(unit, eq, UNIT_HAND_RIGHT));
+    return ( Unit_canEquip(unit, eq, UNIT_HAND_LEFT) ||
+             Unit_canEquip(unit, eq, UNIT_HAND_RIGHT));
 }
 
-b32 Unit_canEquip_Archetype(struct Unit *unit, i32 eq, b32 hand, ) {
+b32 Unit_canEquip_Archetype(Unit *unit, i32 eq, b32 hand, i64 archetype) {
+    SDL_assert(unit                 != NULL);
+    SDL_assert(unit->weapons_dtab   != NULL);
 
+    if (archetype == ITEM_ARCHETYPE_ITEM) {
+        return (true);
+    }
 
-        if (!flagsum_isIn(weapon->item->type, archetype)) {
-            // SDL_Log("Not in usable archetypes");
+    Weapon_Load(unit->weapons_dtab, unit->_equipment[eq].id);
+    Weapon *wpn = Unit_Weapon(unit, eq);
 
-            break;
-        }
+    if (!flagsum_isIn(wpn->item->type, archetype)) {
+        return (false);
+    }
 
-
+    return (Unit_canEquip(unit, eq, hand));
 }
+
+b32 Unit_canEquip_Archetype_wLoadout(struct Unit *unit, i32 eq, b32 hand, i64 archetype, int lh,
+                                     int rh) {
+    /* Save starting equipment */
+    int start_equipped[UNIT_HANDS_NUM];
+    Unit_Equipped_Export(unit, start_equipped);
+
+    unit->_equipped[UNIT_HAND_LEFT]     = lh;
+    unit->_equipped[UNIT_HAND_RIGHT]    = rh;
+    b32 can = Unit_canEquip_Archetype(unit, eq, hand, archetype);
+
+    /* Restore starting equipment */
+    Unit_Equipped_Import(unit, start_equipped);
+    return (can);
+}
+
 
 b32 Unit_canEquip(struct Unit *unit, i32 eq, b32 hand) {
     SDL_assert(eq >= 0);

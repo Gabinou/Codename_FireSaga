@@ -27,6 +27,7 @@ struct Range *Unit_Range_Loadout(struct Unit   *unit) {
             break;
         }
 
+        if (!Unit_canEquip_Archetype_wLoadout(unit, stronghand, stronghand, ITEM_ARCHETYPE_WEAPON,
         if (!Unit_eq_canEquip(unit, ITEM_ARCHETYPE_WEAPON, stronghand)) {
             // SDL_Log("Not usable");
             break;
