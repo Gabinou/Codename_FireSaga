@@ -809,7 +809,7 @@ void Game_StaffSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_ont
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
 
-    mc->elem_num = ssm->unit->num_usable;
+    mc->elem_num = ssm->unit->num_canEquip;
     for (int i = mc->elem_num - 1; i < SOTA_EQUIPMENT_SIZE; i++) {
         mc->elem_links[i].top    = LSM_ELEM_NULL;
         mc->elem_links[i].bottom = LSM_ELEM_NULL;

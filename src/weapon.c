@@ -352,3 +352,17 @@ int Weapon_Stat_inRange(struct Weapon *weapon, i16 stattype, int distance) {
     b32 isoffhand = Weapon_isOffhand(weapon->item->id);
     return ((in_range || isshield || isoffhand) ? Weapon_Stat(weapon, stattype) : 0);
 }
+
+/* --- Handing --- */
+// Can weapon be onehanded?
+b32 Weapon_TwoHand_Only(Weapon *wpn) {
+    return (wpn->handedness == WEAPON_HAND_TWO);
+}
+
+// Can weapon be twohanded?
+b32 Weapon_OneHand_Only(Weapon *wpn) {
+    b32 left_hand   = (wpn->handedness == WEAPON_HAND_LEFT);
+    b32 right_hand  = (wpn->handedness == WEAPON_HAND_RIGHT);
+    b32 one_hand    = (wpn->handedness == WEAPON_HAND_ONE);
+    return (one_hand || left_hand || right_hand);
+}

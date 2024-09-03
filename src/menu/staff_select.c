@@ -55,13 +55,13 @@ void StaffSelectMenu_Select(struct LoadoutSelectMenu *ssm, i32 select) {
 
     /* Note: select is in strong space: stronghandd first hand */
     /* - Equip weapons according to player choice - */
-    i32 eq          = ssm->unit->eq_usable[select];
+    i32 eq          = ssm->unit->eq_canEquip[select];
     i32 stronghand  = Unit_Hand_Strong(ssm->unit);
     i32 weakhand    = 1 - stronghand;
 
     // If stronghand is unselected, there should be usable weapons
     if (ssm->selected[stronghand] < 0) {
-        SDL_assert(select < ssm->unit->num_usable);
+        SDL_assert(select < ssm->unit->num_canEquip);
     }
 
     // TODO: selection if one hand skill exists

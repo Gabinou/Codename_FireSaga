@@ -260,7 +260,7 @@ enum SOTA_BOOKS {
 };
 
 enum SOTA_DEFAULTS {
-    SOTA_EQUIPMENT_SIZE                   =    6,
+    SOTA_EQUIPMENT_SIZE                     =    6,
     DEFAULT_BUFFER_SIZE                      =  128,
 };
 
@@ -1155,6 +1155,7 @@ enum UNIT_HANDS {
     // UNIT_HAND_WEAK           = 1,
     UNIT_HANDS_NUM           = 2,
 };
+#define UNIT_OTHER_HAND(hand) 1 - hand
 
 enum WEAPON_HANDEDNESS {
     WEAPON_HAND_NULL         = 0,

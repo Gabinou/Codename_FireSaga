@@ -11,7 +11,7 @@ void test_promotion(void) {
 
 }
 
-void test_canEquip(void) {
+void test_canEquip_Type(void) {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     struct Unit Silou = Unit_default;
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
@@ -846,9 +846,13 @@ void test_twohanding(void) {
 
 void test_unit(void) {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
+    test_canEquip();
+    test_canEquip_Type();
+    test_canEquip_Types();
+    test_canEquip_Hand();
+    test_canEquip_TwoHand();
 
     // test_promotion();
-    // test_canEquip(); /* BROKEN */
     test_skills();
     // test_io();
     test_growth();

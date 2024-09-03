@@ -12,6 +12,10 @@
 void Weapon_Free(struct Weapon *wpn);
 void Weapon_Init(struct Weapon *wpn);
 
+/* --- Handing --- */
+b32 Weapon_TwoHand_Only(Weapon *wpn);
+b32 Weapon_OneHand_Only(Weapon *wpn);
+
 /* --- isCan? --- */
 u16 Weapon_TypeExp(           struct Weapon *wpn);
 b32 Weapon_canInfuse(        struct Weapon *wpn,  struct Inventory_item *item);

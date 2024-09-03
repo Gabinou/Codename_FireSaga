@@ -415,16 +415,14 @@ static void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls,
         SDL_RenderCopy(renderer, pls->texture_equip, &srcrect, &dstrect);
     } else {
         /* Left hand */
-        struct Inventory_item *item = Unit_InvItem(pls->unit, pls->item_left);
-        if (Unit_canEquip(pls->unit, item->id) || pls->l_equip_override) {
+        if (Unit_canEquip(pls->unit, pls->item_left, UNIT_HAND_LEFT) || pls->l_equip_override) {
             dstrect.x = PLS_ICON_EQUIPL_X;
             dstrect.y = PLS_ICON_EQUIPL_Y + pls->ly_offset;
             SDL_RenderCopy(renderer, pls->texture_equip, &srcrect, &dstrect);
         }
 
         /* Right hand */
-        item = Unit_InvItem(pls->unit, pls->item_right);
-        if (Unit_canEquip(pls->unit, item->id) || pls->r_equip_override) {
+        if (Unit_canEquip(pls->unit, pls->item_right, UNIT_HAND_RIGHT) || pls->r_equip_override) {
             dstrect.x = PLS_ICON_EQUIPR_X;
             dstrect.y = PLS_ICON_EQUIPR_Y + pls->ry_offset;
             SDL_RenderCopy(renderer, pls->texture_equip, &srcrect, &dstrect);
@@ -606,9 +604,9 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
 void PopUp_Loadout_Stats_Unit(struct PopUp_Loadout_Stats *pls, struct Unit *unit) {
     SDL_assert(unit != NULL);
     pls->unit = unit;
-    int eq_left = unit->eq_usable[unit->_equipped[UNIT_HAND_LEFT]];
+    int eq_left = unit->eq_canEquip[unit->_equipped[UNIT_HAND_LEFT]];
     pls->item_left  = -1;
-    int eq_right = unit->eq_usable[unit->_equipped[UNIT_HAND_RIGHT]];
+    int eq_right = unit->eq_canEquip[unit->_equipped[UNIT_HAND_RIGHT]];
     pls->item_right = -1;
 
     Unit_Unequip(unit, UNIT_HAND_LEFT);
@@ -658,16 +656,16 @@ void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls, struct LoadoutSe
     if (wsm->selected[stronghand] == -1)  {
         /* Stronghand selected */
         if (stronghand == UNIT_HAND_LEFT) {
-            pls->item_left  = pls->unit->eq_usable[elem];
+            pls->item_left  = pls->unit->eq_canEquip[elem];
         } else {
-            pls->item_right = pls->unit->eq_usable[elem];
+            pls->item_right = pls->unit->eq_canEquip[elem];
         }
     } else {
         /* Weakhand selected */
         if (weakhand == UNIT_HAND_LEFT) {
-            pls->item_left  = pls->unit->eq_usable[elem];
+            pls->item_left  = pls->unit->eq_canEquip[elem];
         } else {
-            pls->item_right = pls->unit->eq_usable[elem];
+            pls->item_right = pls->unit->eq_canEquip[elem];
         }
     }
 }

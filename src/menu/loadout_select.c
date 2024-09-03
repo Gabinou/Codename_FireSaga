@@ -191,7 +191,7 @@ i32 WeaponSelectMenu_Elem_Move(struct Menu *mc, i32 direction) {
 /* --- Elements --- */
 void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct Menu *mc) {
     /* Get number of elements for the menu */
-    mc->elem_num   = lsm->unit->num_usable;
+    mc->elem_num   = lsm->unit->num_canEquip;
     size_t bytesize = sizeof(*wsm_links_start) * LSM_ELEMS_NUM;
     memcpy(mc->elem_links, wsm_links_start, bytesize);
 
@@ -261,7 +261,7 @@ b32 WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm) {
 
     /* After no weapon was selected */
     if ((lsm->selected[stronghand] < 0) && (lsm->selected[weakhand] < 0)) {
-        remains = lsm->unit->num_usable > 0; /* Any usable weapon remains? */
+        remains = lsm->unit->num_canEquip > 0; /* Any usable weapon remains? */
     }
 
     /* After first weapon was selected */
@@ -293,13 +293,13 @@ void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
 
     /* Note: select is in strong space: stronghandd first hand */
     /* - Equip weapons according to player choice - */
-    i32 eq          = lsm->unit->eq_usable[select];
+    i32 eq          = lsm->unit->eq_canEquip[select];
     i32 stronghand  = Unit_Hand_Strong(lsm->unit);
     i32 weakhand    = 1 - stronghand;
 
     // If stronghand is unselected, there should be usable weapons
     if (lsm->selected[stronghand] < 0) {
-        SDL_assert(select < lsm->unit->num_usable);
+        SDL_assert(select < lsm->unit->num_canEquip);
     }
 
     if (lsm->selected[stronghand] >= 0) {
@@ -355,11 +355,11 @@ void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9p
 
     /* If stronghand is selected, menu should change to show all items in equipment */
     b32 strong_selected = (lsm->selected[stronghand] > -1);
-    i32 num_items = lsm->unit->num_usable;
+    i32 num_items = lsm->unit->num_canEquip;
 
     for (i32 i = 0; i < num_items; i++) {
         /* If stronghand was selected, i is in eq_space */
-        i32 side_i = strong_selected ? i : lsm->unit->eq_usable[i];  /* side space */
+        i32 side_i = strong_selected ? i : lsm->unit->eq_canEquip[i];  /* side space */
         SDL_assert((side_i >= 0) && (side_i < SOTA_EQUIPMENT_SIZE));
 
         /* unit_item ensures tophand is stronghand */
@@ -512,7 +512,7 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
                                           struct LoadoutSelectMenu *lsm,
                                           SDL_Renderer      *renderer) {
     /* -- Preliminaries -- */
-    i32 num_items      = lsm->unit->num_usable;
+    i32 num_items      = lsm->unit->num_canEquip;
     b32 stronghand     = Unit_Hand_Strong(lsm->unit);
     b32 weakhand       = 1 - stronghand;
     b32 header_drawn   = (lsm->header.data != NULL);
@@ -572,8 +572,8 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
         // render at weapon position if selected
         // Find selected eq in usable
         int index = -1;
-        for (int i = 0; i < lsm->unit->num_usable; i++) {
-            if (lsm->selected[stronghand] == lsm->unit->eq_usable[i]) {
+        for (int i = 0; i < lsm->unit->num_canEquip; i++) {
+            if (lsm->selected[stronghand] == lsm->unit->eq_canEquip[i]) {
                 index = i;
                 break;
             }
@@ -606,24 +606,24 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
     /* Icons, text drawn on stronghand's side */
     i32 stronghand = Unit_Hand_Strong(lsm->unit);
     i32 weakhand   = 1 - stronghand;
-    i32 num_items  = lsm->unit->num_usable;
+    i32 num_items  = lsm->unit->num_canEquip;
     b32 highlight  = (lsm->selected[0] >= 0);
 
     /* If stronghand is selected, menu should change to show all items in equipment */
     b32 strong_selected = (lsm->selected[stronghand] > -1);
 
-    SDL_assert(lsm->unit->num_usable > 0);
-    SDL_assert(lsm->unit->num_usable <= SOTA_EQUIPMENT_SIZE);
+    SDL_assert(lsm->unit->num_canEquip > 0);
+    SDL_assert(lsm->unit->num_canEquip <= SOTA_EQUIPMENT_SIZE);
 
     /* -- Inventory -- */
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
     srcrect.w = ITEM_ICON_W;
     srcrect.h = ITEM_ICON_H;
 
-    for (i32 i = 0; i < lsm->unit->num_usable; i++) {
+    for (i32 i = 0; i < lsm->unit->num_canEquip; i++) {
         /* - Icons - */
         // TODO: weapon icons images.
-        i32 side_i   = lsm->unit->eq_usable[i];
+        i32 side_i   = lsm->unit->eq_canEquip[i];
 
         item = Unit_InvItem(unit, side_i);
 

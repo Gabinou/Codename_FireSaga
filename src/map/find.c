@@ -17,10 +17,10 @@ void Map_Find_Usable(struct Map *map, tnecs_world *world, tnecs_entity unit_ent,
     /* Alloc defendants */
     tnecs_entity *defendants  = DARR_INIT(defendants, tnecs_entity, 4);
 
-    unit->num_usable = 0;
+    unit->num_canEquip = 0;
     for (int i = 0; i < SOTA_EQUIPMENT_SIZE; ++i) {
         /* Skip if weapon is not usable */
-        if (!Unit_Eq_Usable(unit, archetype, i))
+        if (!Unit_eq_canEquip(unit, archetype, i))
             continue;
 
         /* Compute range */
@@ -37,7 +37,7 @@ void Map_Find_Usable(struct Map *map, tnecs_world *world, tnecs_entity unit_ent,
         defendants = Map_Find_Defendants(map, map->attacktolist, defendants, unit_ent, false);
 
         if (DARR_NUM(defendants) > 0)
-            unit->eq_usable[unit->num_usable++] = i;
+            unit->eq_canEquip[unit->num_canEquip++] = i;
     }
 
     DARR_FREE(defendants);

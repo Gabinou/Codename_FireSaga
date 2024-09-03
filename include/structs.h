@@ -649,9 +649,9 @@ typedef struct Unit {
     /* For twohanding when computing computedstats */
     struct Inventory_item temp;
 
-    i8 eq_usable[SOTA_EQUIPMENT_SIZE];
-    i8 num_equipment;
-    i8 num_usable;
+    i32 eq_canEquip[SOTA_EQUIPMENT_SIZE];
+    i32 num_equipment;
+    i32 num_canEquip;
 
     struct Mount *mount;
     b32 mounted;
