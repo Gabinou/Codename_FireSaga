@@ -191,7 +191,29 @@ void Unit_Unequip(struct Unit *unit, b32 hand) {
 //          - Weapon might need to be twohanded
 //    - IF applicable: unit is in list of users
 //  Note: Depends on current equipment in other hands
-void Unit_canEquip_Equipment_wLoadout(struct Unit *unit, i32 eq, b32 hand, int lh, int rh) {
+
+// Aka -> Unit_canEquip_Equipment_wLoadout_Archetype_Anyhand
+void Unit_Find_Usable(Unit *unit, i64 archetype) {
+    /* Save starting equipment */
+    int start_equipped[UNIT_HANDS_NUM];
+    Unit_Equipped_Export(unit, start_equipped);
+
+    unit->num_canEquip = 0;
+    for (i32 eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
+        if (
+                Unit_canEquip_Archetype_wLoadout(unit, eq, UNIT_HAND_LEFT, archetype, -1, -1) ||
+                Unit_canEquip_Archetype_wLoadout(unit, eq, UNIT_HAND_RIGHT, archetype, -1, -1)
+        ) {
+            unit->eq_canEquip[unit->num_canEquip++] = eq;
+        }
+    }
+
+    /* Restore starting equipment */
+    Unit_Equipped_Import(unit, start_equipped);
+
+}
+
+void Unit_canEquip_Equipment_wLoadout(Unit *unit, b32 hand, int lh, int rh) {
     /* Save starting equipment */
     int start_equipped[UNIT_HANDS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
@@ -207,7 +229,7 @@ void Unit_canEquip_Equipment_wLoadout(struct Unit *unit, i32 eq, b32 hand, int l
     Unit_Equipped_Import(unit, start_equipped);
 }
 
-void Unit_canEquip_Equipment(struct Unit *unit, i32 eq, b32 hand) {
+void Unit_canEquip_Equipment(Unit *unit, b32 hand) {
     /* Save starting equipment */
     int start_equipped[UNIT_HANDS_NUM];
     Unit_Equipped_Export(unit, start_equipped);

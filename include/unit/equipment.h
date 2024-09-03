@@ -78,6 +78,12 @@ b32 Unit_canEquip_Archetype(            Unit *u, i32 eq, b32 h, i64 a);
 b32 Unit_canEquip_Archetype_wLoadout(   Unit *u, i32 eq, b32 h, i64 a,
                                         int  lh, int rh);
 
+void Unit_canEquip_Equipment(Unit *u, b32 hand);
+void Unit_canEquip_Equipment_wLoadout(Unit *u, b32 hand, int  lh, int rh);
+void Unit_canEquip_Equipment_wLoadout_Archetype(Unit *u, b32 hand, int  lh, int rh);
+
+// Aka -> Unit_canEquip_Equipment_wLoadout_Archetype_Anyhand
+void Unit_Find_Usable(Unit *u, i64 a);
 
 /* --- Checking Equipment: de-equip if broken --- */
 void _Unit_Check_Equipped(Unit *u, b32 hand);
