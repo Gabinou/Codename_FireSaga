@@ -61,9 +61,9 @@ void    Unit_Unequip(   Unit *u, b32 h);
 b32     Unit_isEquipped(Unit *u, b32 hand);
 
 /* - Base canEquips - */
-b32 Unit_canEquip_Type(     Unit *u,    i32 eq);
-b32 Unit_canEquip_Users(    Unit *u,    i32 eq);
-b32 Unit_canEquip_OneHand(  Unit *u,    i32 eq, b32 hand);
+b32  Unit_canEquip_Type(    Unit *u,    i32 eq);
+b32  Unit_canEquip_Users(   Unit *u,    i32 eq);
+b32  Unit_canEquip_OneHand( Unit *u,    i32 eq, b32 hand);
 b32 _Unit_canEquip_OneHand( Unit *u,    i32 eq, b32 hand, Weapon *wpn);
 
 b32 Unit_canEquip_TwoHand(  Unit *u,    i32 eq, b32 hand);

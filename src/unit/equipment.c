@@ -348,8 +348,8 @@ b32 _Unit_canEquip_OneHand(Unit *unit, i32 eq, b32 hand, Weapon *weapon) {
         return (false);
 
     // right hand weapon in left hand
-    if ((weapon->handedness == WEAPON_HAND_RIGHT) && (hand == UNIT_HAND_LEFT));
-    return (false);
+    if ((weapon->handedness == WEAPON_HAND_RIGHT) && (hand == UNIT_HAND_LEFT))
+        return (false);
 
     /* Failure: Trying to twohand a onehand only weapon */
     b32 other_hand      = UNIT_OTHER_HAND(hand);
