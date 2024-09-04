@@ -62,11 +62,11 @@ void test_menu_item_drop() {
     Weapon_Load(weapons_dtab, Silou._equipment[1].id);
     Weapon_Load(weapons_dtab, Silou._equipment[2].id);
     Weapon_Load(weapons_dtab, Silou._equipment[3].id);
-    idm->unit->eq_usable[0] = 0;
-    idm->unit->eq_usable[1] = 1;
-    idm->unit->eq_usable[2] = 2;
-    idm->unit->eq_usable[3] = 3;
-    idm->unit->num_usable   = 4;
+    idm->unit->eq_canEquip[0] = 0;
+    idm->unit->eq_canEquip[1] = 1;
+    idm->unit->eq_canEquip[2] = 2;
+    idm->unit->eq_canEquip[3] = 3;
+    idm->unit->num_canEquip   = 4;
 
     idm->item_todrop = 0;
     ItemDropMenu_Update(idm, &n9patch, render_target, renderer);

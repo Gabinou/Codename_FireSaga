@@ -338,17 +338,10 @@ b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand) {
     return (true);
 }
 
-// IF equipment can be one-handed, CAN the unit equip it?
-b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, b32 hand) {
-    SDL_assert(unit->weapons_dtab != NULL);
-
-    i32 id = Unit_Id_Equipment(unit, eq);
-    if (id <= ITEM_NULL)
-        return (false);
-    if (!Weapon_ID_isValid(id))
-        return (false);
-
-    struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);
+b32 _Unit_canEquip_OneHand(Unit *unit, i32 eq, b32 hand, Weapon *weapon) {
+    SDL_assert(unit                 != NULL);
+    SDL_assert(weapon               != NULL);
+    SDL_assert(unit->weapons_dtab   != NULL);
 
     // left hand weapon in right hand
     if ((weapon->handedness == WEAPON_HAND_LEFT) && (hand == UNIT_HAND_RIGHT))
@@ -367,8 +360,7 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, b32 hand) {
     b32 eq_same         = (eq_other == eq);
     b32 eq_in_bound     = (eq_other >= 0) && (eq_other < SOTA_EQUIPMENT_SIZE);
 
-    Weapon *wpn         = Unit_Weapon(unit, eq);
-    b32 one_hand_only   = Weapon_OneHand_Only(wpn);
+    b32 one_hand_only   = Weapon_OneHand_Only(weapon);
     b32 one_hand_cant   = one_hand_only && (eq_in_bound && eq_same);
     if (one_hand_cant) {
         return (false);
@@ -380,6 +372,24 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, b32 hand) {
 
     return (true);
 }
+
+// IF equipment can be one-handed, CAN the unit equip it?
+b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, b32 hand) {
+    SDL_assert(unit                 != NULL);
+    SDL_assert(unit->weapons_dtab   != NULL);
+
+    i32 id = Unit_Id_Equipment(unit, eq);
+    if (id <= ITEM_NULL)
+        return (false);
+    if (!Weapon_ID_isValid(id))
+        return (false);
+
+    struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);
+
+    return (_Unit_canEquip_OneHand(unit, eq, hand, weapon));
+}
+
+
 
 /* Is item among possible users? */
 b32 Unit_canEquip_Users(struct Unit *unit, i32 id) {
