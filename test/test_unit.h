@@ -855,30 +855,36 @@ void test_canEquip_OneHand() {
 
     Silou._equipped[UNIT_HAND_LEFT]     = -1;
     Silou._equipped[UNIT_HAND_RIGHT]    = -1;
+    Silou._equipment[0]    = ITEM_ID_FLEURET;
+    Silou._equipment[1]    = ITEM_ID_FLEURET;
+    Silou._equipment[2]    = ITEM_ID_FLEURET;
+    Silou._equipment[3]    = ITEM_ID_FLEURET;
+    Silou._equipment[4]    = ITEM_ID_FLEURET;
+    Silou._equipment[5]    = ITEM_ID_FLEURET;
 
     // Left handed Weapon
     weapon->handedness = WEAPON_HAND_LEFT;
-    nourstest_true( _Unit_canEquip_OneHand(&Silou,  0, UNIT_HAND_LEFT,  weapon));
-    nourstest_true(!_Unit_canEquip_OneHand(&Silou,  0, UNIT_HAND_RIGHT, weapon));
+    nourstest_true( Unit_canEquip_OneHand(&Silou,  0, UNIT_HAND_LEFT));
+    nourstest_true(!Unit_canEquip_OneHand(&Silou,  0, UNIT_HAND_RIGHT));
 
     // Right handed Weapon
     weapon->handedness = WEAPON_HAND_RIGHT;
-    nourstest_true(!_Unit_canEquip_OneHand(&Silou, 0, UNIT_HAND_LEFT,  weapon));
-    nourstest_true( _Unit_canEquip_OneHand(&Silou, 0, UNIT_HAND_RIGHT, weapon));
+    nourstest_true(!Unit_canEquip_OneHand(&Silou, 0, UNIT_HAND_LEFT));
+    nourstest_true( Unit_canEquip_OneHand(&Silou, 0, UNIT_HAND_RIGHT));
 
     weapon->handedness = WEAPON_HAND_ONE;
     for (i32 eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         // One handed Weapon already equipped in left hand
         Silou._equipped[UNIT_HAND_LEFT]     = eq;
         Silou._equipped[UNIT_HAND_RIGHT]    = -1;
-        nourstest_true( _Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_LEFT,  weapon));
-        nourstest_true(!_Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_RIGHT, weapon));
+        nourstest_true( Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_LEFT));
+        nourstest_true(!Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_RIGHT));
 
         // One handed Weapon already equipped in right hand
         Silou._equipped[UNIT_HAND_LEFT]     = -1;
         Silou._equipped[UNIT_HAND_RIGHT]    = eq;
-        nourstest_true(!_Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_LEFT,  weapon));
-        nourstest_true( _Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_RIGHT, weapon));
+        nourstest_true(!Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_LEFT));
+        nourstest_true( Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_RIGHT));
     }
 
     // Any handed Weapon
@@ -887,14 +893,14 @@ void test_canEquip_OneHand() {
         // One handed Weapon already equipped in left hand
         Silou._equipped[UNIT_HAND_LEFT]     = eq;
         Silou._equipped[UNIT_HAND_RIGHT]    = -1;
-        nourstest_true(_Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_LEFT,  weapon));
-        nourstest_true(_Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_RIGHT, weapon));
+        nourstest_true(Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_LEFT));
+        nourstest_true(Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_RIGHT));
 
         // One handed Weapon already equipped in right hand
         Silou._equipped[UNIT_HAND_LEFT]     = -1;
         Silou._equipped[UNIT_HAND_RIGHT]    = eq;
-        nourstest_true(_Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_LEFT,  weapon));
-        nourstest_true(_Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_RIGHT, weapon));
+        nourstest_true(Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_LEFT));
+        nourstest_true(Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_RIGHT));
     }
 
     // Two handed Weapon
@@ -903,14 +909,14 @@ void test_canEquip_OneHand() {
         // One handed Weapon already equipped in left hand
         Silou._equipped[UNIT_HAND_LEFT]     = eq;
         Silou._equipped[UNIT_HAND_RIGHT]    = -1;
-        nourstest_true(_Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_LEFT,  weapon));
-        nourstest_true(_Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_RIGHT, weapon));
+        nourstest_true(Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_LEFT));
+        nourstest_true(Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_RIGHT));
 
         // One handed Weapon already equipped in right hand
         Silou._equipped[UNIT_HAND_LEFT]     = -1;
         Silou._equipped[UNIT_HAND_RIGHT]    = eq;
-        nourstest_true(_Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_LEFT,  weapon));
-        nourstest_true(_Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_RIGHT, weapon));
+        nourstest_true(Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_LEFT));
+        nourstest_true(Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_RIGHT));
     }
     Game_Weapons_Free(&weapons_dtab);
 }
@@ -926,30 +932,36 @@ void test_canEquip_TwoHand() {
 
     Silou._equipped[UNIT_HAND_LEFT]     = -1;
     Silou._equipped[UNIT_HAND_RIGHT]    = -1;
+    Silou._equipment[0]    = ITEM_ID_FLEURET;
+    Silou._equipment[1]    = ITEM_ID_FLEURET;
+    Silou._equipment[2]    = ITEM_ID_FLEURET;
+    Silou._equipment[3]    = ITEM_ID_FLEURET;
+    Silou._equipment[4]    = ITEM_ID_FLEURET;
+    Silou._equipment[5]    = ITEM_ID_FLEURET;
 
     // Left handed Weapon
     weapon->handedness = WEAPON_HAND_LEFT;
-    nourstest_true(_Unit_canEquip_TwoHand(&Silou,  0, UNIT_HAND_LEFT,  weapon));
-    nourstest_true(_Unit_canEquip_TwoHand(&Silou,  0, UNIT_HAND_RIGHT, weapon));
+    nourstest_true(Unit_canEquip_TwoHand(&Silou,  0, UNIT_HAND_LEFT));
+    nourstest_true(Unit_canEquip_TwoHand(&Silou,  0, UNIT_HAND_RIGHT));
 
     // Right handed Weapon
     weapon->handedness = WEAPON_HAND_RIGHT;
-    nourstest_true(_Unit_canEquip_TwoHand(&Silou, 0, UNIT_HAND_LEFT,  weapon));
-    nourstest_true(_Unit_canEquip_TwoHand(&Silou, 0, UNIT_HAND_RIGHT, weapon));
+    nourstest_true(Unit_canEquip_TwoHand(&Silou, 0, UNIT_HAND_LEFT));
+    nourstest_true(Unit_canEquip_TwoHand(&Silou, 0, UNIT_HAND_RIGHT));
 
     weapon->handedness = WEAPON_HAND_ONE;
     for (i32 eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         // One handed Weapon already equipped in left hand
         Silou._equipped[UNIT_HAND_LEFT]     = eq;
         Silou._equipped[UNIT_HAND_RIGHT]    = -1;
-        nourstest_true(_Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_LEFT,  weapon));
-        nourstest_true(_Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_RIGHT, weapon));
+        nourstest_true(Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_LEFT));
+        nourstest_true(Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_RIGHT));
 
         // One handed Weapon already equipped in right hand
         Silou._equipped[UNIT_HAND_LEFT]     = -1;
         Silou._equipped[UNIT_HAND_RIGHT]    = eq;
-        nourstest_true(_Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_LEFT,  weapon));
-        nourstest_true(_Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_RIGHT, weapon));
+        nourstest_true(Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_LEFT));
+        nourstest_true(Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_RIGHT));
     }
 
     // Any handed Weapon
@@ -958,14 +970,14 @@ void test_canEquip_TwoHand() {
         // One handed Weapon already equipped in left hand
         Silou._equipped[UNIT_HAND_LEFT]     = SOTA_EQUIPMENT_SIZE - eq - 1;
         Silou._equipped[UNIT_HAND_RIGHT]    = -1;
-        nourstest_true(_Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_LEFT,  weapon));
-        nourstest_true(_Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_RIGHT, weapon));
+        nourstest_true(Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_LEFT));
+        nourstest_true(Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_RIGHT));
 
         // One handed Weapon already equipped in right hand
         Silou._equipped[UNIT_HAND_LEFT]     = -1;
         Silou._equipped[UNIT_HAND_RIGHT]    = SOTA_EQUIPMENT_SIZE - eq - 1;
-        nourstest_true(_Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_LEFT,  weapon));
-        nourstest_true(_Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_RIGHT, weapon));
+        nourstest_true(Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_LEFT));
+        nourstest_true(Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_RIGHT));
     }
 
     // Two handed Weapon
@@ -974,14 +986,14 @@ void test_canEquip_TwoHand() {
         // Other weapon weapon equipped in left hand
         Silou._equipped[UNIT_HAND_LEFT]     = SOTA_EQUIPMENT_SIZE - eq - 1;
         Silou._equipped[UNIT_HAND_RIGHT]    = -1;
-        nourstest_true( _Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_LEFT,  weapon));
-        nourstest_true(!_Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_RIGHT, weapon));
+        nourstest_true( Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_LEFT));
+        nourstest_true(!Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_RIGHT));
 
         // Other weapon weapon equipped in right hand
         Silou._equipped[UNIT_HAND_LEFT]     = -1;
         Silou._equipped[UNIT_HAND_RIGHT]    = SOTA_EQUIPMENT_SIZE - eq - 1;
-        nourstest_true(!_Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_LEFT,  weapon));
-        nourstest_true( _Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_RIGHT, weapon));
+        nourstest_true(!Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_LEFT));
+        nourstest_true( Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_RIGHT));
     }
 
     Game_Weapons_Free(&weapons_dtab);
