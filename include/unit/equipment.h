@@ -53,49 +53,26 @@ i32 Unit_Id_Equipped(Unit *u, i32 hand);
 i32 Unit_Id_Equipment(Unit *u, i32 eq);
 
 /* Order in _equipment of equipped weapon */
-i32 Unit_Eq_Equipped(Unit *u, i32 hand);
+i32 Unit_Eq_Equipped(Unit *u, b32 hand);
 
 /* --- Equipping --- */
 void    Unit_Equip(     Unit *u, b32 h, i32 i);
 void    Unit_Unequip(   Unit *u, b32 h);
 b32     Unit_isEquipped(Unit *u, b32 hand);
 
-/* -- Can Equip -- */
-// Input for canEquip function
-typedef struct {
-    // Loadout: -1 for any
-    int lh;
-    int rh;
-    
-    // Hand to equip to.
-    b32 hand;
-    
-    // Negative values mean any archetype.
-    // Why do we need to know archetypes?
-    //      - Find all equippable staves ONLY
-    //      - Find all equippable weapons (of any type) ONLY
-
-    i64 archetype;
-    
-    // Equipment index to check. 
-    int eq; 
-} canEquip;
-
-extern canEquip canEquip_default;
-
 /* - Base canEquips - */
 b32 Unit_canEquip_Type(     Unit *u,    i32 eq);
 b32 Unit_canEquip_Users(    Unit *u,    i32 eq);
 b32 Unit_canEquip_OneHand(  Unit *u,    i32 eq, b32 hand);
 b32 Unit_canEquip_TwoHand(  Unit *u,    i32 eq, b32 hand);
-b32 Unit_canEquip_Archetype(Unit *u,    i32 eq, b32 hand, i64 archetype) {
+b32 Unit_canEquip_Archetype(Unit *u,    i32 eq, b32 hand, i64 archetype);
 
 u8  Unit_canEquip_allTypes( Unit *u,    u8 *eq);
 
 /* - Combined canEquips - */
-b32  Unit_canEquip(          Unit *u, canEquip e);
-b32 _Unit_canEquip(          Unit *u, canEquip e);
-b32  Unit_canEquip_Equipment(Unit *u, canEquip e);
+b32   Unit_canEquip(          Unit *u, canEquip e);
+b32  _Unit_canEquip(          Unit *u, canEquip e);
+void  Unit_canEquip_Equipment(Unit *u, canEquip e);
 
 /* --- Checking Equipment: de-equip if broken --- */
 void _Unit_Check_Equipped(Unit *u, b32 hand);

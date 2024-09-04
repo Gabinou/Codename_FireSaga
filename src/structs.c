@@ -14,10 +14,25 @@ struct nmath_hexpoint_int32_t Cube_Diagonal_ym =    { 2, -1, -1};
 struct nmath_hexpoint_int32_t Cube_Diagonal_zp =    { 1, -2,  1};
 struct nmath_hexpoint_int32_t Cube_Diagonal_zm =    {-1,  2, -1};
 
+canEquip canEquip_default = {
+    // Try to equip:
+    /* 1. Weapon in right hand (slot 1) */
+    .eq         = UNIT_HAND_RIGHT,
+
+    /* 2. In right hand */
+    .hand       = UNIT_HAND_RIGHT,
+
+    /* 3. Ignoring current loadout */
+    .lh         = -1,
+    .rh         = -1,
+
+    /* 4. Of any archetype */
+    .archetype  = ITEM_ARCHETYPE_NULL,
+};
+
 struct Damage Damage_default = {{0, 0}, {0, 0}};
 
 struct HP HP_default = {0, 0, 0, 0};
-
 
 struct Computed_Stats Computed_Stats_default = {0};
 

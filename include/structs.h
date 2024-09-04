@@ -19,6 +19,31 @@ struct Item;
 /* --- FUNCTIONS --- */
 typedef i8(* use_function_t)(struct Item *, struct Unit *, struct Unit *);
 
+/* --- STRUCTS --- */
+
+/* -- Can Equip -- */
+// Input for canEquip function
+typedef struct {
+    // Loadout: -1 for any
+    int lh;
+    int rh;
+
+    // Hand to equip to.
+    b32 hand;
+
+    // Negative values mean any archetype.
+    // Why do we need to know archetypes?
+    //      - Find all equippable staves ONLY
+    //      - Find all equippable weapons (of any type) ONLY
+
+    i64 archetype;
+
+    // Equipment index to check.
+    int eq;
+} canEquip;
+
+extern canEquip canEquip_default;
+
 struct Cursor {
     i16 frames;
     i16 speed;

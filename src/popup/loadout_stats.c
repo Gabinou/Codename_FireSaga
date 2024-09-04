@@ -415,14 +415,22 @@ static void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls,
         SDL_RenderCopy(renderer, pls->texture_equip, &srcrect, &dstrect);
     } else {
         /* Left hand */
-        if (Unit_canEquip(pls->unit, pls->item_left, UNIT_HAND_LEFT) || pls->l_equip_override) {
+        canEquip can_equip  = canEquip_default;
+        can_equip.lh        = Unit_Eq_Equipped(pls->unit, UNIT_HAND_LEFT);
+        can_equip.rh        = Unit_Eq_Equipped(pls->unit, UNIT_HAND_RIGHT);
+        can_equip.eq        = UNIT_HAND_LEFT;
+        can_equip.hand      = UNIT_HAND_LEFT;
+        b32 iscan = Unit_canEquip(pls->unit, can_equip);
+        if (Unit_canEquip(pls->unit, can_equip) || pls->l_equip_override) {
             dstrect.x = PLS_ICON_EQUIPL_X;
             dstrect.y = PLS_ICON_EQUIPL_Y + pls->ly_offset;
             SDL_RenderCopy(renderer, pls->texture_equip, &srcrect, &dstrect);
         }
 
         /* Right hand */
-        if (Unit_canEquip(pls->unit, pls->item_right, UNIT_HAND_RIGHT) || pls->r_equip_override) {
+        can_equip.eq        = UNIT_HAND_RIGHT;
+        can_equip.hand      = UNIT_HAND_RIGHT;
+        if (Unit_canEquip(pls->unit, can_equip) || pls->r_equip_override) {
             dstrect.x = PLS_ICON_EQUIPR_X;
             dstrect.y = PLS_ICON_EQUIPR_Y + pls->ry_offset;
             SDL_RenderCopy(renderer, pls->texture_equip, &srcrect, &dstrect);

@@ -288,11 +288,18 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         for (int j = 0; j < DARR_NUM(sota->map->reinf_equipments[i]); j++) {
             unit->_equipment[j] = sota->map->reinf_equipments[i][j];
         }
-
-        if (Unit_canEquip_inHand(unit, UNIT_HAND_LEFT)) {
+        canEquip can_equip  = canEquip_default;
+        can_equip.lh        = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
+        can_equip.rh        = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
+        can_equip.eq        = UNIT_HAND_LEFT;
+        can_equip.hand      = UNIT_HAND_LEFT;
+        if (Unit_canEquip(unit, can_equip)) {
             Unit_Equip(unit, UNIT_HAND_LEFT, UNIT_HAND_LEFT);
         }
-        if (Unit_canEquip_inHand(unit, UNIT_HAND_RIGHT)) {
+
+        can_equip.eq        = UNIT_HAND_RIGHT;
+        can_equip.hand      = UNIT_HAND_RIGHT;
+        if (Unit_canEquip(unit, can_equip)) {
             Unit_Equip(unit, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
         }
 

@@ -1,22 +1,6 @@
 
 #include "unit/equipment.h"
 
-canEquip canEquip_default = {
-    // Try to equip:
-    /* 1. Weapon in right hand (slot 1) */
-    .eq         = UNIT_HAND_RIGHT;
-    
-    /* 2. In right hand */
-    .hand       = UNIT_HAND_RIGHT;
-
-    /* 3. Ignoring current loadout */
-    .lh         = -1;
-    .rh         = -1;
-    
-    /* 4. Of any archetype */
-    .archetype  = ITEM_ARCHETYPE_NULL;
-}
-
 /* --- Items --- */
 /* Private item atker at specific spot. Does no checks
  */
@@ -286,7 +270,7 @@ b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
     /* Restore starting equipment */
     Unit_Equipped_Import(unit, start_equipped);
 
-    return(can);
+    return (can);
 }
 
 b32 Unit_canEquip_Archetype(Unit *unit, i32 eq, b32 hand, i64 archetype) {
@@ -308,10 +292,8 @@ b32 Unit_canEquip_Archetype(Unit *unit, i32 eq, b32 hand, i64 archetype) {
         return (false);
     }
 
-    return (Unit_canEquip(unit, eq, hand));
+    return (true);
 }
-
-
 
 // IF equipment can be two-handed, CAN the unit equip it?
 b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand) {
@@ -632,7 +614,7 @@ Item *Unit_Get_Item(Unit *unit, i32 eq) {
 }
 
 /* Order in _equipment of equipped weapon */
-i32 Unit_Eq_Equipped(Unit *unit, i32 hand) {
+i32 Unit_Eq_Equipped(Unit *unit, b32 hand) {
     SDL_assert((hand == UNIT_HAND_LEFT) || (hand == UNIT_HAND_RIGHT));
     return (unit->_equipped[hand]);
 }

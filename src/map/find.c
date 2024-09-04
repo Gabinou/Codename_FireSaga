@@ -18,10 +18,19 @@ void Map_Find_Usable(struct Map *map, tnecs_world *world, tnecs_entity unit_ent,
     tnecs_entity *defendants  = DARR_INIT(defendants, tnecs_entity, 4);
 
     unit->num_canEquip = 0;
+    canEquip can_equip  = canEquip_default;
+    can_equip.lh        = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
+    can_equip.rh        = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
+    can_equip.archetype = archetype;
     for (int eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         /* Skip if weapon is not usable */
-        if (!Unit_canEquip_Archetype_wLoadout(unit, eq, UNIT_HAND_LEFT,  archetype, -1, -1) &&
-            !Unit_canEquip_Archetype_wLoadout(unit, eq, UNIT_HAND_RIGHT, archetype, -1, -1))
+        can_equip.eq        = eq;
+
+        can_equip.hand      = UNIT_HAND_LEFT;
+        if (!Unit_canEquip(unit, can_equip))
+            continue;
+        can_equip.hand      = UNIT_HAND_LEFT;
+        if (!Unit_canEquip(unit, can_equip))
             continue;
 
         /* Compute range */

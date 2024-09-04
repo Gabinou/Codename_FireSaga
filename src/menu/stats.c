@@ -1160,8 +1160,14 @@ void StatsMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *renderer) {
 #ifndef __SOTA_RELEASE__
     /* if unit has nothing equipped, but item in hand is equippable, equip it. */
     SDL_assert(stats_menu->unit);
-    b32 can_equip = Unit_canEquip_inHand(stats_menu->unit, UNIT_HAND_LEFT);
-    if (can_equip) {
+
+    canEquip can_equip  = canEquip_default;
+    can_equip.lh        = Unit_Eq_Equipped(stats_menu->unit, UNIT_HAND_LEFT);
+    can_equip.rh        = Unit_Eq_Equipped(stats_menu->unit, UNIT_HAND_RIGHT);
+    can_equip.eq        = UNIT_HAND_LEFT;
+    can_equip.hand      = UNIT_HAND_LEFT;
+    b32 iscan = Unit_canEquip(stats_menu->unit, can_equip);
+    if (iscan) {
         stats_menu->update = true;
         Unit_Equip(stats_menu->unit, UNIT_HAND_LEFT, UNIT_HAND_LEFT);
     }
