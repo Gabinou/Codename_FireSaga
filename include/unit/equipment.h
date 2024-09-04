@@ -61,6 +61,25 @@ void    Unit_Unequip(   Unit *u, b32 h);
 b32     Unit_isEquipped(Unit *u, b32 hand);
 
 /* -- Can Equip -- */
+// Input for canEquip function
+typedef struct {
+    // Loadout: -1 for any
+    int lh;
+    int rh;
+    
+    // Hand to equip to.
+    b32 hand;
+    
+    // Negative values mean any archetype.
+    // Why do we need to know archetypes?
+    i64 archetype;
+    
+    // Equipment index to check. 
+    int eq; 
+} canEquip;
+
+extern canEquip canEquip_default;
+
 /* - Base canEquips - */
 b32 Unit_canEquip_OneHand(  Unit *u,    i32 eq, b32 hand);
 b32 Unit_canEquip_TwoHand(  Unit *u,    i32 eq, b32 hand);
@@ -70,6 +89,7 @@ b32 Unit_canEquip_Users(    Unit *u,    i32 eq);
 u8  Unit_canEquip_Types(    Unit *u,    u8 *eq);
 
 /* - Combined canEquips - */
+b32 Unit_canEquip(          Unit *u,    struct canEquip);
 b32 Unit_canEquip(          Unit *u,    i32 eq, b32 hand);
 b32 Unit_canEquip_inHand(   Unit *u,    i32 eq);
 b32 Unit_canEquip_AnyHand(  Unit *u,    i32 eq);
@@ -83,22 +103,6 @@ enum CANEQUIP {
   canEquip_Eq_All = -1,
   canEquip_Archetype_Any = ITEM_ARCHETYPE_NULL,
 };
-// Input for canEquip function
-struct canEquip {
-    // Loadout: -1 for any
-    int lh;
-    int rh;
-    
-    // Hand to equip to
-    i32 handedness;
-    
-    i64 archetype;
-    
-    // Equipment index to check. 
-    int eq; 
-}
-
-extern struct canEquip canEquip
 
 /* - Usable -> to fill menus and stuff - */
 // Aka -> Unit_canEquip_Equipment_wLoadout_Archetype_Anyhand

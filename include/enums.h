@@ -1173,6 +1173,8 @@ enum UNIT_HANDEDNESS {
     UNIT_HAND_AMBIDEXTROUS   = 0b11, // 3
     UNIT_HAND_END
 };
+// Note UNIT_HAND_LEFT =
+
 
 enum RNGs {
     SOTA_RN_SINGLE = 1,

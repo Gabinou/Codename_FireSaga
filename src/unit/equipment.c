@@ -1,6 +1,29 @@
 
 #include "unit/equipment.h"
 
+canEquip canEquip_default = {
+    // Try to equip:
+    /* 1. Weapon in right hand (slot 1) */
+    .eq         = UNIT_HAND_RIGHT;
+    
+    /* 2. In right hand */
+    .hand       = UNIT_HAND_RIGHT;
+
+    /* 3. Ignoring current loadout */
+    .lh         = -1;
+    .rh         = -1;
+    
+    /* 4. Of any archetype */
+    .archetype  = ITEM_ARCHETYPE_NULL;
+}
+
+// Can you get equippable archetypes from hand?
+//  - ~No~ Priests -> Can only equip staves.
+//      - Taken care of by the equippable types though!
+// - Stronghand:    Any archetype
+// - Weakhand:      Any Too
+
+
 /* --- Items --- */
 /* Private item atker at specific spot. Does no checks
  */
