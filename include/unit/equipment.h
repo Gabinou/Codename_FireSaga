@@ -72,6 +72,9 @@ typedef struct {
     
     // Negative values mean any archetype.
     // Why do we need to know archetypes?
+    //      - Find all equippable staves ONLY
+    //      - Find all equippable weapons (of any type) ONLY
+
     i64 archetype;
     
     // Equipment index to check. 
@@ -81,32 +84,18 @@ typedef struct {
 extern canEquip canEquip_default;
 
 /* - Base canEquips - */
-b32 Unit_canEquip_OneHand(  Unit *u,    i32 eq, b32 hand);
-b32 Unit_canEquip_TwoHand(  Unit *u,    i32 eq, b32 hand);
 b32 Unit_canEquip_Type(     Unit *u,    i32 eq);
 b32 Unit_canEquip_Users(    Unit *u,    i32 eq);
+b32 Unit_canEquip_OneHand(  Unit *u,    i32 eq, b32 hand);
+b32 Unit_canEquip_TwoHand(  Unit *u,    i32 eq, b32 hand);
+b32 Unit_canEquip_Archetype(Unit *u,    i32 eq, b32 hand, i64 archetype) {
 
-u8  Unit_canEquip_Types(    Unit *u,    u8 *eq);
+u8  Unit_canEquip_allTypes( Unit *u,    u8 *eq);
 
 /* - Combined canEquips - */
-b32 Unit_canEquip(          Unit *u,    struct canEquip);
-b32 Unit_canEquip(          Unit *u,    i32 eq, b32 hand);
-b32 Unit_canEquip_inHand(   Unit *u,    i32 eq);
-b32 Unit_canEquip_AnyHand(  Unit *u,    i32 eq);
-b32 Unit_canEquip_wLoadout( Unit *u,    i32 eq, b32 hand, int lh, int rh);
-
-b32 Unit_canEquip_Archetype(            Unit *u, i32 eq, b32 h, i64 a);
-b32 Unit_canEquip_Archetype_wLoadout(   Unit *u, i32 eq, b32 h, i64 a,
-                                        int  lh, int rh);
-
-enum CANEQUIP {
-  canEquip_Eq_All = -1,
-  canEquip_Archetype_Any = ITEM_ARCHETYPE_NULL,
-};
-
-/* - Usable -> to fill menus and stuff - */
-// Aka -> Unit_canEquip_Equipment_wLoadout_Archetype_Anyhand
-void Unit_Find_Usable(Unit *u, i64 a);
+b32  Unit_canEquip(          Unit *u, canEquip e);
+b32 _Unit_canEquip(          Unit *u, canEquip e);
+b32  Unit_canEquip_Equipment(Unit *u, canEquip e);
 
 /* --- Checking Equipment: de-equip if broken --- */
 void _Unit_Check_Equipped(Unit *u, b32 hand);

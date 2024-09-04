@@ -585,7 +585,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         tnecs_entity cursor = sota->entity_cursor;
         Menu_Elem_Set(mc, sota, new_elem);
 
-        Unit_Find_Usable(wsm->unit, ITEM_ARCHETYPE_WEAPON);
+        Unit_canEquip_Equipment(wsm->unit, ITEM_ARCHETYPE_WEAPON);
         LoadoutSelectMenu_Elem_Pos_Revert(wsm, mc);
         LoadoutSelectMenu_Elem_Reset(wsm, mc);
         LoadoutSelectMenu_Elem_Pos(wsm, mc);
@@ -799,7 +799,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     // TODO: option to equip nothing in weakhand
     // TODO: Automatically equip nothing in weakhand if no other item in equipment
     if (wsm->selected[stronghand] >= 0) {
-        Unit_Find_Usable(wsm->unit, ITEM_ARCHETYPE_WEAKHAND);
+        Unit_canEquip_Equipment(wsm->unit, ITEM_ARCHETYPE_WEAKHAND);
     }
 
     if (WeaponSelectMenu_Usable_Remains(wsm)) {
@@ -945,7 +945,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff(struct Game *sota, struct Menu *mc) {
 
     /* -- Enable healmap rangemap to choose patients -- */
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Unit);
-    Unit_Find_Usable(unit, ITEM_ARCHETYPE_STAFF);
+    Unit_canEquip_Equipment(unit, ITEM_ARCHETYPE_STAFF);
 
     // TODO: save rangemap previous state? how to go back
     unit->rangemap = RANGEMAP_HEALMAP;

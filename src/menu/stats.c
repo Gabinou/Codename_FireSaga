@@ -929,7 +929,7 @@ static void _StatsMenu_Draw_WpnTypes(struct StatsMenu *stats_menu, SDL_Renderer 
     srcrect.w = SM_WEAPONS_TILESIZE;
 
     u8 equippables[ITEM_TYPE_EXP_END];
-    u8 equippable_num  = Unit_canEquip_Types(unit, equippables);
+    u8 equippable_num  = Unit_canEquip_allTypes(unit, equippables);
     SDL_assert(equippable_num < stats_menu->font_wpns->charset_num);
 
     /* render equippable type icons, centering */

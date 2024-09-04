@@ -544,7 +544,7 @@ void Game_WeaponSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_on
     SDL_assert(unit_ontile->weapons_dtab != NULL);
 
     /* Starting wsm selection from stronghand*/
-    Unit_Find_Usable(unit_ontile, ITEM_ARCHETYPE_WEAPON);
+    Unit_canEquip_Equipment(unit_ontile, ITEM_ARCHETYPE_WEAPON);
 
     struct Menu *mc;
     mc = TNECS_GET_COMPONENT(sota->world, sota->weapon_select_menu, Menu);

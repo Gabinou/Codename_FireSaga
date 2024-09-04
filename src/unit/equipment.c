@@ -17,13 +17,6 @@ canEquip canEquip_default = {
     .archetype  = ITEM_ARCHETYPE_NULL;
 }
 
-// Can you get equippable archetypes from hand?
-//  - ~No~ Priests -> Can only equip staves.
-//      - Taken care of by the equippable types though!
-// - Stronghand:    Any archetype
-// - Weakhand:      Any Too
-
-
 /* --- Items --- */
 /* Private item atker at specific spot. Does no checks
  */
@@ -215,19 +208,29 @@ void Unit_Unequip(struct Unit *unit, b32 hand) {
 //    - IF applicable: unit is in list of users
 //  Note: Depends on current equipment in other hands
 
-// Aka -> Unit_canEquip_Equipment_wLoadout_Archetype_Anyhand
-void Unit_Find_Usable(Unit *unit, i64 archetype) {
+void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
     /* Save starting equipment */
     int start_equipped[UNIT_HANDS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
 
+    unit->_equipped[UNIT_HAND_LEFT]     = can_equip.lh;
+    unit->_equipped[UNIT_HAND_RIGHT]    = can_equip.rh;
+
     unit->num_canEquip = 0;
     for (i32 eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
-        if (
-                Unit_canEquip_Archetype_wLoadout(unit, eq, UNIT_HAND_LEFT, archetype, -1, -1) ||
-                Unit_canEquip_Archetype_wLoadout(unit, eq, UNIT_HAND_RIGHT, archetype, -1, -1)
-        ) {
+        // canEquip Lefthand
+        can_equip.eq    = eq;
+        can_equip.hand  = UNIT_HAND_LEFT;
+        if (_Unit_canEquip(unit, can_equip)) {
             unit->eq_canEquip[unit->num_canEquip++] = eq;
+            continue;
+        }
+
+        // canEquip Righthand
+        can_equip.hand  = UNIT_HAND_RIGHT;
+        if (_Unit_canEquip(unit, can_equip)) {
+            unit->eq_canEquip[unit->num_canEquip++] = eq;
+            continue;
         }
     }
 
@@ -235,32 +238,64 @@ void Unit_Find_Usable(Unit *unit, i64 archetype) {
     Unit_Equipped_Import(unit, start_equipped);
 }
 
-b32 Unit_canEquip_wLoadout(struct Unit *unit, i32 eq, b32 hand, int lh, int rh) {
+b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
+    SDL_assert(can_equip.eq >= 0);
+    SDL_assert(can_equip.eq < SOTA_EQUIPMENT_SIZE);
+
+    i32 id = Unit_Id_Equipment(unit, can_equip.eq);
+    if (id <= ITEM_NULL)
+        return (false);
+    if (!Weapon_ID_isValid(id))
+        return (false);
+
+    if (!Unit_canEquip_Type(unit, can_equip.eq)) {
+        return (false);
+    }
+
+    if (!Unit_canEquip_Users(unit, can_equip.eq)) {
+        return (false);
+    }
+
+    if (!Unit_canEquip_OneHand(unit, can_equip.eq, can_equip.hand)) {
+        return (false);
+    }
+
+    if (!Unit_canEquip_TwoHand(unit, can_equip.eq, can_equip.hand)) {
+        return (false);
+    }
+
+    if (!Unit_canEquip_Archetype(unit, can_equip.eq, can_equip.hand, can_equip.archetype)) {
+        return (false);
+    }
+
+    return (true);
+}
+
+b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
+    SDL_assert(can_equip.eq >= 0);
+    SDL_assert(can_equip.eq < SOTA_EQUIPMENT_SIZE);
+
+    unit->_equipped[UNIT_HAND_LEFT]     = can_equip.lh;
+    unit->_equipped[UNIT_HAND_RIGHT]    = can_equip.rh;
+
     /* Save starting equipment */
     int start_equipped[UNIT_HANDS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
-
-    unit->_equipped[UNIT_HAND_LEFT]     = lh;
-    unit->_equipped[UNIT_HAND_RIGHT]    = rh;
-    b32 can = Unit_canEquip(unit, eq, hand);
+    b32 can = _Unit_canEquip(unit, can_equip);
 
     /* Restore starting equipment */
     Unit_Equipped_Import(unit, start_equipped);
-    return (can);
-}
 
-b32 Unit_canEquip_inHand(Unit *unit, b32 hand) {
-    return (Unit_canEquip(unit, hand, hand));
-}
-
-b32 Unit_canEquip_AnyHand(Unit *unit, i32 eq) {
-    return ( Unit_canEquip(unit, eq, UNIT_HAND_LEFT) ||
-             Unit_canEquip(unit, eq, UNIT_HAND_RIGHT));
+    return(can);
 }
 
 b32 Unit_canEquip_Archetype(Unit *unit, i32 eq, b32 hand, i64 archetype) {
     SDL_assert(unit                 != NULL);
     SDL_assert(unit->weapons_dtab   != NULL);
+
+    if (archetype == ITEM_ARCHETYPE_NULL) {
+        return (true);
+    }
 
     if (archetype == ITEM_ARCHETYPE_ITEM) {
         return (true);
@@ -276,50 +311,7 @@ b32 Unit_canEquip_Archetype(Unit *unit, i32 eq, b32 hand, i64 archetype) {
     return (Unit_canEquip(unit, eq, hand));
 }
 
-b32 Unit_canEquip_Archetype_wLoadout(struct Unit *unit, i32 eq, b32 hand, i64 archetype, int lh,
-                                     int rh) {
-    /* Save starting equipment */
-    int start_equipped[UNIT_HANDS_NUM];
-    Unit_Equipped_Export(unit, start_equipped);
 
-    unit->_equipped[UNIT_HAND_LEFT]     = lh;
-    unit->_equipped[UNIT_HAND_RIGHT]    = rh;
-    b32 can = Unit_canEquip_Archetype(unit, eq, hand, archetype);
-
-    /* Restore starting equipment */
-    Unit_Equipped_Import(unit, start_equipped);
-    return (can);
-}
-
-
-b32 Unit_canEquip(struct Unit *unit, i32 eq, b32 hand) {
-    SDL_assert(eq >= 0);
-    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
-
-    i32 id = Unit_Id_Equipment(unit, eq);
-    if (id <= ITEM_NULL)
-        return (false);
-    if (!Weapon_ID_isValid(id))
-        return (false);
-
-    if (!Unit_canEquip_Type(unit, eq)) {
-        return (false);
-    }
-
-    if (!Unit_canEquip_Users(unit, eq)) {
-        return (false);
-    }
-
-    if (!Unit_canEquip_OneHand(unit, eq, hand)) {
-        return (false);
-    }
-
-    if (!Unit_canEquip_TwoHand(unit, eq, hand)) {
-        return (false);
-    }
-
-    return (true);
-}
 
 // IF equipment can be two-handed, CAN the unit equip it?
 b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand) {
@@ -393,7 +385,7 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, b32 hand) {
     b32 eq_same         = (eq_other == eq);
     b32 eq_in_bound     = (eq_other >= 0) && (eq_other < SOTA_EQUIPMENT_SIZE);
 
-    Weapon *wpn = Unit_Weapon(unit, eq);
+    Weapon *wpn         = Unit_Weapon(unit, eq);
     b32 one_hand_only   = Weapon_OneHand_Only(wpn);
     b32 one_hand_cant   = one_hand_only && (eq_in_bound && eq_same);
     if (one_hand_cant) {
@@ -460,7 +452,7 @@ b32 Unit_canEquip_Type(struct Unit *unit, i32 id) {
 }
 
 /* Find all CanEquip types, put them in equippables array */
-u8 Unit_canEquip_Types(struct Unit *unit, u8 *equippables) {
+u8 Unit_canEquip_allTypes(struct Unit *unit, u8 *equippables) {
     u8 type = 1, equippable_num = 0;
     uint64_t wpntypecode = 1;
     memset(equippables, 0, ITEM_TYPE_EXP_END * sizeof(*equippables));
