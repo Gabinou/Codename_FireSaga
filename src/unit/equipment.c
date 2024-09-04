@@ -295,19 +295,12 @@ b32 Unit_canEquip_Archetype(Unit *unit, i32 eq, b32 hand, i64 archetype) {
     return (true);
 }
 
-// IF equipment can be two-handed, CAN the unit equip it?
-b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand) {
+b32 _Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand, Weapon *wpn) {
     SDL_assert(eq >= 0);
     SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(wpn != NULL);
+    SDL_assert(wpn->item->type > ITEM_TYPE_NULL);
 
-    i32 id = Unit_Id_Equipment(unit, eq);
-    if (id <= ITEM_NULL)
-        return (false);
-    if (!Weapon_ID_isValid(id))
-        return (false);
-
-    /* Cannot twohand magic weapons */
-    struct Weapon *wpn  = DTAB_GET(unit->weapons_dtab, id);
     SDL_assert(wpn->item->type > ITEM_TYPE_NULL);
     b32 is_elemental    = flagsum_isIn(wpn->item->type, ITEM_TYPE_ELEMENTAL);
     b32 is_angelic      = flagsum_isIn(wpn->item->type, ITEM_TYPE_ANGELIC);
@@ -336,6 +329,22 @@ b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand) {
     //  - Any hand weapon equipped in one or two hand
 
     return (true);
+}
+
+// IF equipment can be two-handed, CAN the unit equip it?
+b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand) {
+    SDL_assert(eq >= 0);
+    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
+
+    i32 id = Unit_Id_Equipment(unit, eq);
+    if (id <= ITEM_NULL)
+        return (false);
+    if (!Weapon_ID_isValid(id))
+        return (false);
+
+    /* Cannot twohand magic weapons */
+    struct Weapon *wpn  = DTAB_GET(unit->weapons_dtab, id);
+    return (_Unit_canEquip_TwoHand(unit, eq, hand, wpn));
 }
 
 b32 _Unit_canEquip_OneHand(Unit *unit, i32 eq, b32 hand, Weapon *weapon) {
@@ -388,8 +397,6 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, b32 hand) {
 
     return (_Unit_canEquip_OneHand(unit, eq, hand, weapon));
 }
-
-
 
 /* Is item among possible users? */
 b32 Unit_canEquip_Users(struct Unit *unit, i32 id) {
