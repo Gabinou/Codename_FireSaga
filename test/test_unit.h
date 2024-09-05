@@ -765,14 +765,11 @@ void test_canEquip_Archetype(void) {
 
 void test_unit(void) {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
-    // test_canEquip();
     test_canEquip_OneHand();
     test_canEquip_TwoHand();
     test_canEquip_Type();
     test_canEquip_Users();
     test_canEquip_Archetype();
-
-    // test_canEquip_Types();
 
     test_skills();
     test_io();
