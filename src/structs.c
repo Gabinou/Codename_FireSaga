@@ -63,7 +63,7 @@ struct Tile_stats Tile_stats_default = {
 struct Inventory_item Inventory_item_default = {
     .id          = ITEM_NULL,
     .used        = 0,
-    .infusion    = SOTA_INFUSEABLE,
+    .infusion    = SOTA_NON_INFUSEABLE,
     .highlighted = true,
 };
 

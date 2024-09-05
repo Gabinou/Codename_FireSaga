@@ -6,10 +6,6 @@
 #include "game/unit.h"
 #include "RNG.h"
 
-void test_promotion(void) {
-    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
-
-}
 
 void test_canEquip_Type(void) {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
@@ -541,32 +537,6 @@ void test_bonus_stats(void) {
     DARR_FREE(Silou.bonus_stack);
 }
 
-void test_twohanding(void) {
-    // struct Unit Silou           = Unit_default;
-    // struct Inventory_item wpn   = Inventory_item_default;
-    // struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
-    // Unit_InitWweapons(&Silou, weapons_dtab);
-    // Unit_setClassind(&Silou, UNIT_CLASS_STANDARD_BEARER);
-
-    // wpn.id = ITEM_ID_FLEURET;
-    // SDL_assert(Unit_canEquip(&Silou, wpn.id));
-    // Unit_Item_Takeat(&Silou, wpn, 0);
-    // wpn.id = ITEM_ID_IRON_LANCE;
-    // SDL_assert(Unit_canEquip(&Silou, wpn.id));
-    // Unit_Item_Takeat(&Silou, wpn, 1);
-
-    // nourstest_true(Unit_Equip(&Silou, UNIT_HAND_LEFT,  0) == EXIT_SUCCESS);
-    // nourstest_true(Unit_Equip(&Silou, UNIT_HAND_RIGHT, 0) == EXIT_FAILURE);
-    // nourstest_true(!Unit_istwoHanding(&Silou));
-
-    // nourstest_true(Unit_Equip(&Silou, UNIT_HAND_LEFT,  1) == EXIT_SUCCESS);
-    // nourstest_true(Unit_Equip(&Silou, UNIT_HAND_RIGHT, 1) == EXIT_SUCCESS);
-    // nourstest_true(Unit_istwoHanding(&Silou));
-
-    // Game_Weapons_Free(&weapons_dtab);
-    // Unit_Free(&Silou);
-}
-
 void test_canEquip_OneHand() {
     struct Unit Silou = Unit_default;
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
@@ -722,24 +692,26 @@ void test_canEquip_TwoHand() {
     Game_Weapons_Free(&weapons_dtab);
 }
 
+void test_canEquip_Users(void) {
+
+}
+
 void test_unit(void) {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     // test_canEquip();
     test_canEquip_OneHand();
     test_canEquip_TwoHand();
     test_canEquip_Type();
-    // test_canEquip_Users();
+    test_canEquip_Users();
     // test_canEquip_Archertype();
 
     // test_canEquip_Types();
 
-    // test_promotion();
     test_skills();
-    // test_io();
+    test_io();
     test_growth();
     test_bonus_decay();
     test_bonus_stats();
-    test_twohanding();
     test_reinforcements();
 
     URN_debug = -1;
