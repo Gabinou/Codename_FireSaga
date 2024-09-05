@@ -27,7 +27,7 @@ struct Range *Unit_Range_Loadout(struct Unit   *unit) {
             break;
         }
 
-        if (!Unit_canEquip_Archetype(unit, stronghand, stronghand, ITEM_ARCHETYPE_WEAPON)) {
+        if (!Unit_canEquip_Archetype(unit, stronghand, ITEM_ARCHETYPE_WEAPON)) {
             // SDL_Log("Not usable");
             break;
         }
@@ -87,7 +87,7 @@ struct Range *_Unit_Range_Combine( struct Unit   *unit, struct Range *range,
         }
 
         /* Skip if unusable */
-        if (!Unit_canEquip_Archetype(unit, stronghand, stronghand, ITEM_ARCHETYPE_WEAPON)) {
+        if (!Unit_canEquip_Archetype(unit, stronghand, ITEM_ARCHETYPE_WEAPON)) {
             // SDL_Log("Skip if unusable");
             continue;
         }

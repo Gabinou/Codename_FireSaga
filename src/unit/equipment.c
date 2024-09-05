@@ -236,6 +236,10 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
         return (false);
     }
 
+    if (!Unit_canEquip_Archetype(unit, can_equip.eq, can_equip.archetype)) {
+        return (false);
+    }
+
     if (!Unit_canEquip_Users(unit, can_equip.eq)) {
         return (false);
     }
@@ -245,10 +249,6 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
     }
 
     if (!Unit_canEquip_TwoHand(unit, can_equip.eq, can_equip.hand)) {
-        return (false);
-    }
-
-    if (!Unit_canEquip_Archetype(unit, can_equip.eq, can_equip.hand, can_equip.archetype)) {
         return (false);
     }
 
@@ -273,7 +273,7 @@ b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
     return (can);
 }
 
-b32 Unit_canEquip_Archetype(Unit *unit, i32 eq, b32 hand, i64 archetype) {
+b32 Unit_canEquip_Archetype(Unit *unit, i32 eq, i64 archetype) {
     SDL_assert(unit                 != NULL);
     SDL_assert(unit->weapons_dtab   != NULL);
 
