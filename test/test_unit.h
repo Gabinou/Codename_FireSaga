@@ -855,12 +855,12 @@ void test_canEquip_OneHand() {
 
     Silou._equipped[UNIT_HAND_LEFT]     = -1;
     Silou._equipped[UNIT_HAND_RIGHT]    = -1;
-    Silou._equipment[0]    = ITEM_ID_FLEURET;
-    Silou._equipment[1]    = ITEM_ID_FLEURET;
-    Silou._equipment[2]    = ITEM_ID_FLEURET;
-    Silou._equipment[3]    = ITEM_ID_FLEURET;
-    Silou._equipment[4]    = ITEM_ID_FLEURET;
-    Silou._equipment[5]    = ITEM_ID_FLEURET;
+    Silou._equipment[0].id    = ITEM_ID_FLEURET;
+    Silou._equipment[1].id    = ITEM_ID_FLEURET;
+    Silou._equipment[2].id    = ITEM_ID_FLEURET;
+    Silou._equipment[3].id    = ITEM_ID_FLEURET;
+    Silou._equipment[4].id    = ITEM_ID_FLEURET;
+    Silou._equipment[5].id    = ITEM_ID_FLEURET;
 
     // Left handed Weapon
     weapon->handedness = WEAPON_HAND_LEFT;
@@ -932,12 +932,12 @@ void test_canEquip_TwoHand() {
 
     Silou._equipped[UNIT_HAND_LEFT]     = -1;
     Silou._equipped[UNIT_HAND_RIGHT]    = -1;
-    Silou._equipment[0]    = ITEM_ID_FLEURET;
-    Silou._equipment[1]    = ITEM_ID_FLEURET;
-    Silou._equipment[2]    = ITEM_ID_FLEURET;
-    Silou._equipment[3]    = ITEM_ID_FLEURET;
-    Silou._equipment[4]    = ITEM_ID_FLEURET;
-    Silou._equipment[5]    = ITEM_ID_FLEURET;
+    Silou._equipment[0].id    = ITEM_ID_FLEURET;
+    Silou._equipment[1].id    = ITEM_ID_FLEURET;
+    Silou._equipment[2].id    = ITEM_ID_FLEURET;
+    Silou._equipment[3].id    = ITEM_ID_FLEURET;
+    Silou._equipment[4].id    = ITEM_ID_FLEURET;
+    Silou._equipment[5].id    = ITEM_ID_FLEURET;
 
     // Left handed Weapon
     weapon->handedness = WEAPON_HAND_LEFT;
