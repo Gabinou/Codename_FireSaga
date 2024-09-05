@@ -693,7 +693,30 @@ void test_canEquip_TwoHand() {
 }
 
 void test_canEquip_Users(void) {
+    struct Unit Silou = Unit_default;
+    Silou._id = UNIT_ID_SILOU;
+    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    Unit_InitWweapons(&Silou, weapons_dtab);
+    Weapon_Load(weapons_dtab, ITEM_ID_FLEURET);
 
+    struct Weapon *weapon = DTAB_GET(weapons_dtab, ITEM_ID_FLEURET);
+
+    int eq = 0;
+    Silou._equipment[eq].id = ITEM_ID_FLEURET;
+    weapon->item->users     = NULL;
+
+    nourstest_true(Unit_canEquip_Users(&Silou, eq));
+    u16 *users = DARR_INIT(users, u16, 4);
+    users[0] = UNIT_ID_ERWIN;
+    users[1] = UNIT_ID_ERWIN;
+    users[2] = UNIT_ID_ERWIN;
+    users[3] = UNIT_ID_ERWIN;
+    DARR_NUM(users) = 4;
+    weapon->item->users = users;
+    nourstest_true(!Unit_canEquip_Users(&Silou, eq));
+
+    users[3] = UNIT_ID_SILOU;
+    nourstest_true(Unit_canEquip_Users(&Silou, eq));
 }
 
 void test_unit(void) {
@@ -703,7 +726,7 @@ void test_unit(void) {
     test_canEquip_TwoHand();
     test_canEquip_Type();
     test_canEquip_Users();
-    // test_canEquip_Archertype();
+    // test_canEquip_Archetype();
 
     // test_canEquip_Types();
 

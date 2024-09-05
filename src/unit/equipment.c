@@ -388,9 +388,18 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, b32 hand) {
 
 
 /* Is item among possible users? */
-b32 Unit_canEquip_Users(struct Unit *unit, i32 id) {
+b32 Unit_canEquip_Users(struct Unit *unit, i32 eq) {
     /* Is unit among weapon's users? */
+    SDL_assert(unit != NULL);
     SDL_assert(unit->weapons_dtab != NULL);
+
+    i32 id = Unit_Id_Equipment(unit, eq);
+    if (id <= ITEM_NULL)
+        return (false);
+    if (!Weapon_ID_isValid(id))
+        return (false);
+
+
     Weapon_Load(unit->weapons_dtab, id);
     struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);
 
@@ -399,15 +408,11 @@ b32 Unit_canEquip_Users(struct Unit *unit, i32 id) {
         return (true);
     }
 
-    u16 wpntypecode      = weapon->item->type;
-    SDL_assert(wpntypecode);
-    b32 found = false;
     for (i32 u = 0; u < DARR_NUM(weapon->item->users); u++) {
-        found = (weapon->item->users[u] == unit->_id);
-        if (found)
-            break;
+        if (weapon->item->users[u] == unit->_id)
+            return (true);
     }
-    return (found);
+    return (false);
 }
 
 /* Can unit equip arbitrary weapon with a certain type? */
