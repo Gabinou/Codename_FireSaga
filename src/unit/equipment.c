@@ -423,20 +423,12 @@ b32 Unit_canEquip_Type(struct Unit *unit, i32 id) {
 
     SDL_assert(unit->weapons_dtab != NULL);
     Weapon_Load(unit->weapons_dtab, id);
-    struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);
-    u16 wpntypecode      = weapon->item->type;
+    struct Weapon *weapon   = DTAB_GET(unit->weapons_dtab, id);
+    u16 wpntypecode         = weapon->item->type;
     SDL_assert(wpntypecode);
 
     /* Is weapon's type equippable by unit? */
-    b32 found = false;
-    for (u8 i = 0; i < DARR_NUM(weapon->item->users); i++) {
-        found = (weapon->item->users[i] == unit->_id);
-        if (found) {
-            return ((unit->equippable & wpntypecode) > 0);
-        }
-    }
-
-    return (false);
+    return ((unit->equippable & wpntypecode) > 0);
 }
 
 /* Find all CanEquip types, put them in equippables array */

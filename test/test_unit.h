@@ -11,336 +11,57 @@ void test_promotion(void) {
 
 }
 
-// void test_canEquip_Type(void) {
-//     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
-//     struct Unit Silou = Unit_default;
-//     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
-//     Unit_InitWweapons(&Silou, weapons_dtab);
-//     Unit_setClassind(&Silou, UNIT_CLASS_FENCER);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HOE)            == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
+void test_canEquip_Type(void) {
+    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
+    struct Unit Silou = Unit_default;
+    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    Unit_InitWweapons(&Silou, weapons_dtab);
 
-//     Unit_setClassind(&Silou, UNIT_CLASS_DUKE);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HOE)            == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
+    Silou.equippable = 0;
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == false);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == false);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == false);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HOE)            == false);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == false);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == false);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == false);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == false);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == false);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == false);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == false);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == false);
 
-//     Unit_setClassind(&Silou, UNIT_CLASS_ARCHER);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HOE)            == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
+    Silou.equippable = ITEM_TYPE_SWORD | ITEM_TYPE_OFFHAND | ITEM_TYPE_SHIELD;
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == true);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == true);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == false);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HOE)            == false);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == false);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == true);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == true);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == false);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == false);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == false);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == false);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == false);
 
-//     Unit_setClassind(&Silou, UNIT_CLASS_MARKSMAN);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HOE)            == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
+    Silou.equippable = -1;
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == true);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == true);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == true);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HOE)            == true);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == true);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == true);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == true);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == true);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == true);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == true);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == true);
+    nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == true);
 
-//     Unit_setClassind(&Silou, UNIT_CLASS_ANGEL);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HOE)            == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_RADIANT_CLAW)   == 1);
-
-//     Unit_setClassind(&Silou, UNIT_CLASS_DEMON);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HOE)            == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 1);
-
-//     Unit_setClassind(&Silou, UNIT_CLASS_ANGELIC_INCARNATE);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HOE)            == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
-
-//     Unit_setClassind(&Silou, UNIT_CLASS_DEMONIC_INCARNATE);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HOE)            == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
-
-//     Unit_setClassind(&Silou, UNIT_CLASS_FENCER);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HOE)            == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
-
-//     Unit_setClassind(&Silou, UNIT_CLASS_DUELIST);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HOE)            == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
-
-//     Unit_setClassind(&Silou, UNIT_CLASS_DUELIST);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HOE)            == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
-
-//     Unit_setClassind(&Silou, UNIT_CLASS_PICKPOCKET);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HOE)            == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
-
-//     Unit_setClassind(&Silou, UNIT_CLASS_THIEF);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HOE)            == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
-
-//     Unit_setClassind(&Silou, UNIT_CLASS_CORSAIR);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_IRON_AXE)       == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
-
-//     Unit_setClassind(&Silou, UNIT_CLASS_VIKING);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_STEEL_AXE)      == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
-
-//     Unit_setClassind(&Silou, UNIT_CLASS_RAVAGER);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_DAMAS_AXE)      == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
-
-//     Unit_setClassind(&Silou, UNIT_CLASS_PIKEMAN);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_IRON_LANCE)     == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HOE)            == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
-
-//     Unit_setClassind(&Silou, UNIT_CLASS_MAGE);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HOE)            == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
-
-//     Unit_setClassind(&Silou, UNIT_CLASS_BATTLEMAGE);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HOE)            == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
-
-//     Unit_setClassind(&Silou, UNIT_CLASS_PRIEST);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HOE)            == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
-
-//     Unit_setClassind(&Silou, UNIT_CLASS_BISHOP);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HOE)            == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
-
-//     Unit_setClassind(&Silou, UNIT_CLASS_ORACLE);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HOE)            == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
-
-//     Unit_setClassind(&Silou, UNIT_CLASS_CLERIC);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HOE)            == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_SHORT_BOW)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ADAPTED_SHIELD) == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_POT_LID)        == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_ICICLE)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_NETHER)         == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MOONLIGHT)      == 0);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == 1);
-//     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == 0);
-
-//     Game_Weapons_Free(&weapons_dtab);
-//     Unit_Free(&Silou);
-// }
+    Game_Weapons_Free(&weapons_dtab);
+    Unit_Free(&Silou);
+}
 
 void test_skills(void) {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
@@ -432,7 +153,7 @@ void test_io(void) {
     Unit_Item_Take(&unit1, in_wpn);
     out_stats = unit1.current_stats;
     nourstest_true(s8equal(unit1.name, s8_literal("Silou")));
-    nourstest_true(unit1.sex == 1);
+    nourstest_true(unit1.sex == true);
     nourstest_true(in_stats.hp      == out_stats.hp);
     nourstest_true(in_stats.str     == out_stats.str);
     nourstest_true(in_stats.mag     == out_stats.mag);
@@ -564,16 +285,16 @@ void test_growth(void) {
     nourstest_true(Silou.grown_stats[0].con     == temp_growths.con);  /* 0 at first */
     nourstest_true(Silou.grown_stats[0].move    == temp_growths.move); /* 0 at first */
     nourstest_true(Silou.grown_stats[0].prof    == temp_growths.prof);
-    nourstest_true(DARR_NUM(Silou.grown_stats)  == 1);
+    nourstest_true(DARR_NUM(Silou.grown_stats)  == true);
 
     nourstest_true(Silou.growths.move == 10);
     nourstest_true(Silou.growths.con  == 10);
     nourstest_true(Silou.growths.prof == 20);
 
-    nourstest_true(Silou.res_sequence.len  == 0);
-    nourstest_true(Silou.move_sequence.len == 1);
-    nourstest_true(Silou.con_sequence.len  == 1);
-    nourstest_true(Silou.prof_sequence.len == 0);
+    nourstest_true(Silou.res_sequence.len  == false);
+    nourstest_true(Silou.move_sequence.len == true);
+    nourstest_true(Silou.con_sequence.len  == true);
+    nourstest_true(Silou.prof_sequence.len == false);
 
     /* Second level up: con and move grow, cause of increased rate */
     Unit_lvlUp(&Silou);
@@ -587,13 +308,15 @@ void test_growth(void) {
     nourstest_true(Silou.grown_stats[1].luck    == temp_growths.luck);
     nourstest_true(Silou.grown_stats[1].def     == temp_growths.def);
     nourstest_true(Silou.grown_stats[1].res     == temp_growths.res);
-    nourstest_true(Silou.grown_stats[1].con     == 1); /* grows now, SB eff rate is 10*1.2 = 12 > 11  */
-    nourstest_true(Silou.grown_stats[1].move    == 1); /* grows now, SB eff rate is 10*1.2 = 12 > 11  */
+    nourstest_true(Silou.grown_stats[1].con     ==
+                   true); /* grows now, SB eff rate is 10*1.2 = 12 > 11  */
+    nourstest_true(Silou.grown_stats[1].move    ==
+                   true); /* grows now, SB eff rate is 10*1.2 = 12 > 11  */
     nourstest_true(Silou.grown_stats[1].prof    == temp_growths.prof);
 
-    nourstest_true(Silou.con_sequence.len    == 0);
-    nourstest_true(Silou.move_sequence.len   == 0);
-    nourstest_true(Silou.prof_sequence.len   == 0);
+    nourstest_true(Silou.con_sequence.len    == false);
+    nourstest_true(Silou.move_sequence.len   == false);
+    nourstest_true(Silou.prof_sequence.len   == false);
 
     nourstest_true(Silou.prof_sequence.eff_rate == in_growths.prof);
     nourstest_true(Silou.move_sequence.eff_rate  > in_growths.move);
@@ -615,19 +338,19 @@ void test_growth(void) {
     nourstest_true(Silou.grown_stats[2].move    == temp_growths.move);
     nourstest_true(Silou.grown_stats[2].prof    == temp_growths.prof);
 
-    nourstest_true(Silou.res_sequence.len  == 0);
-    nourstest_true(Silou.con_sequence.len  == 0);
-    nourstest_true(Silou.move_sequence.len == 0);
-    nourstest_true(Silou.prof_sequence.len == 0);
+    nourstest_true(Silou.res_sequence.len  == false);
+    nourstest_true(Silou.con_sequence.len  == false);
+    nourstest_true(Silou.move_sequence.len == false);
+    nourstest_true(Silou.prof_sequence.len == false);
 
     Unit_lvlUp(&Silou);
     nourstest_true(DARR_NUM(Silou.grown_stats)  == 4);
     nourstest_true(Silou.grown_stats[3].con     == temp_growths.con);
     nourstest_true(Silou.grown_stats[3].move    == temp_growths.move);
     nourstest_true(Silou.grown_stats[3].prof    == temp_growths.prof);
-    nourstest_true(Silou.prof_sequence.len      == 0);
-    nourstest_true(Silou.move_sequence.len      == 0);
-    nourstest_true(Silou.con_sequence.len       == 0);
+    nourstest_true(Silou.prof_sequence.len      == false);
+    nourstest_true(Silou.move_sequence.len      == false);
+    nourstest_true(Silou.con_sequence.len       == false);
 
     Unit_Free(&Silou);
 }
@@ -667,32 +390,32 @@ void test_bonus_decay(void) {
     Unit_Bonus_Add(&Silou, bonus5);
     nourstest_true(DARR_NUM(Silou.bonus_stack) == 5);
     nourstest_true(Silou.bonus_stack[0].turns == 3);
-    nourstest_true(Silou.bonus_stack[1].turns == 0);
+    nourstest_true(Silou.bonus_stack[1].turns == false);
     nourstest_true(Silou.bonus_stack[2].turns == 3);
-    nourstest_true(Silou.bonus_stack[3].turns == 1);
+    nourstest_true(Silou.bonus_stack[3].turns == true);
     nourstest_true(Silou.bonus_stack[4].turns == 2);
 
     Unit_Bonus_Persistent_Decay(&Silou);
     nourstest_true(DARR_NUM(Silou.bonus_stack) == 4);
     nourstest_true(Silou.bonus_stack[0].turns == 2);
     nourstest_true(Silou.bonus_stack[1].turns == 2);
-    nourstest_true(Silou.bonus_stack[2].turns == 0);
-    nourstest_true(Silou.bonus_stack[3].turns == 1);
+    nourstest_true(Silou.bonus_stack[2].turns == false);
+    nourstest_true(Silou.bonus_stack[3].turns == true);
 
     Unit_Bonus_Persistent_Decay(&Silou);
     nourstest_true(DARR_NUM(Silou.bonus_stack) == 3);
-    nourstest_true(Silou.bonus_stack[0].turns == 1);
-    nourstest_true(Silou.bonus_stack[1].turns == 1);
-    nourstest_true(Silou.bonus_stack[2].turns == 0);
+    nourstest_true(Silou.bonus_stack[0].turns == true);
+    nourstest_true(Silou.bonus_stack[1].turns == true);
+    nourstest_true(Silou.bonus_stack[2].turns == false);
 
     Unit_Bonus_Persistent_Decay(&Silou);
 
     nourstest_true(DARR_NUM(Silou.bonus_stack) == 2);
-    nourstest_true(Silou.bonus_stack[0].turns == 0);
-    nourstest_true(Silou.bonus_stack[1].turns == 0);
+    nourstest_true(Silou.bonus_stack[0].turns == false);
+    nourstest_true(Silou.bonus_stack[1].turns == false);
 
     Unit_Bonus_Persistent_Decay(&Silou);
-    nourstest_true(DARR_NUM(Silou.bonus_stack) == 0);
+    nourstest_true(DARR_NUM(Silou.bonus_stack) == false);
 
     // TODO test instant aura decay.
     struct Bonus_Stats bonus_instant1 = Bonus_Stats_default;
@@ -707,7 +430,7 @@ void test_bonus_decay(void) {
     Unit_Bonus_Add(&Silou, bonus_instant3);
     nourstest_true(DARR_NUM(Silou.bonus_stack) == 3);
     Unit_Bonus_Instant_Decay(&Silou);
-    nourstest_true(DARR_NUM(Silou.bonus_stack) == 1);
+    nourstest_true(DARR_NUM(Silou.bonus_stack) == true);
 
     Unit_Bonus_Add(&Silou, bonus_instant1);
     Unit_Bonus_Add(&Silou, bonus_instant3);
@@ -1004,7 +727,7 @@ void test_unit(void) {
     // test_canEquip();
     test_canEquip_OneHand();
     test_canEquip_TwoHand();
-    // test_canEquip_Type();
+    test_canEquip_Type();
     // test_canEquip_Users();
     // test_canEquip_Archertype();
 
