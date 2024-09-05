@@ -149,8 +149,6 @@ void test_io(void) {
     Unit_Item_Take(&unit1, in_wpn);
     out_stats = unit1.current_stats;
     nourstest_true(s8equal(unit1.name, s8_literal("Silou")));
-    SDL_Log("unit1.sex %d", unit1.sex);
-    getchar();
     nourstest_true(unit1.sex        == true);
     nourstest_true(in_stats.hp      == out_stats.hp);
     nourstest_true(in_stats.str     == out_stats.str);

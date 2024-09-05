@@ -702,7 +702,6 @@ typedef struct Unit {
 } Unit;
 extern struct Unit Unit_default;
 
-
 struct GraphStat {
     i16 level;
     i16 base_level;
