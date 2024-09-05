@@ -690,15 +690,15 @@ typedef struct Unit {
     // struct Computed_Stats support_bonuses[SOTA_MAX_SUPPORTS];
     // struct Computed_Stats support_bonus;
 
-    b32 sex            : 1; /* 0:F, 1:M. eg. hasPenis. */
-    b32 waits          : 1;
-    b32 alive          : 1;
-    b32 literate       : 1; /* Reading/writing for scribe job. */
-    b32 courageous     : 1; /* For reaction to story events    */
-    b32 show_danger    : 1;
-    b32 update_stats   : 1;
-    b32 divine_shield  : 1;
-    b32 isDualWielding : 1;
+    b32 sex;            /* 0:F, 1:M. eg. hasPenis. */
+    b32 waits;
+    b32 alive;
+    b32 literate;       /* Reading/writing for scribe job. */
+    b32 courageous;     /* For reaction to story events    */
+    b32 show_danger;
+    b32 update_stats;
+    b32 divine_shield;
+    b32 isDualWielding;
 } Unit;
 extern struct Unit Unit_default;
 
