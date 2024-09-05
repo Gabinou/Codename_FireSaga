@@ -694,15 +694,16 @@ void test_canEquip_TwoHand() {
 
 void test_canEquip_Users(void) {
     struct Unit Silou = Unit_default;
-    Silou._id = UNIT_ID_SILOU;
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
     Unit_InitWweapons(&Silou, weapons_dtab);
-    Weapon_Load(weapons_dtab, ITEM_ID_FLEURET);
+    int id = ITEM_ID_FLEURET;
+    Weapon_Load(weapons_dtab, id);
+    Silou._id = UNIT_ID_SILOU;
 
-    struct Weapon *weapon = DTAB_GET(weapons_dtab, ITEM_ID_FLEURET);
+    struct Weapon *weapon = DTAB_GET(weapons_dtab, id);
 
     int eq = 0;
-    Silou._equipment[eq].id = ITEM_ID_FLEURET;
+    Silou._equipment[eq].id = id;
     weapon->item->users     = NULL;
 
     nourstest_true(Unit_canEquip_Users(&Silou, eq));
@@ -716,7 +717,7 @@ void test_canEquip_Users(void) {
     nourstest_true(!Unit_canEquip_Users(&Silou, eq));
 
     users[3] = UNIT_ID_SILOU;
-    nourstest_true(Unit_canEquip_Users(&Silou, eq));
+    nourstest_true( Unit_canEquip_Users(&Silou, eq));
 }
 
 void test_unit(void) {

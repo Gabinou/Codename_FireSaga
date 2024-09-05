@@ -389,7 +389,6 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, b32 hand) {
 
 /* Is item among possible users? */
 b32 Unit_canEquip_Users(struct Unit *unit, i32 eq) {
-    /* Is unit among weapon's users? */
     SDL_assert(unit != NULL);
     SDL_assert(unit->weapons_dtab != NULL);
 
@@ -398,7 +397,6 @@ b32 Unit_canEquip_Users(struct Unit *unit, i32 eq) {
         return (false);
     if (!Weapon_ID_isValid(id))
         return (false);
-
 
     Weapon_Load(unit->weapons_dtab, id);
     struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);
