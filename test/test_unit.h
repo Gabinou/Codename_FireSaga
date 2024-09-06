@@ -621,9 +621,10 @@ void test_canEquip_TwoHand() {
     Unit_InitWweapons(&Silou, weapons_dtab);
     Unit_setClassind(&Silou, UNIT_CLASS_FENCER);
     Weapon_Load(weapons_dtab, ITEM_ID_FLEURET);
+    Weapon_Load(weapons_dtab, ITEM_ID_RAPIERE);
     struct Weapon *weapon = DTAB_GET(weapons_dtab, ITEM_ID_FLEURET);
-    /* Try to equip a one hand weapon when already in other hand */
 
+    /* Try to equip a one hand weapon when already in other hand */
     Silou._equipped[UNIT_HAND_LEFT]     = -1;
     Silou._equipped[UNIT_HAND_RIGHT]    = -1;
     Silou._equipment[0].id    = ITEM_ID_FLEURET;
@@ -690,6 +691,34 @@ void test_canEquip_TwoHand() {
         nourstest_true( Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_RIGHT));
     }
 
+    /* Try to equip a two  two handes weapon when already in different hands */
+    struct Weapon *weapon2 = DTAB_GET(weapons_dtab, ITEM_ID_RAPIERE);
+    weapon->handedness  = WEAPON_HAND_TWO;
+    weapon2->handedness = WEAPON_HAND_TWO;
+
+    /* Try to equip a one hand weapon when already in other hand */
+    Silou._equipped[UNIT_HAND_LEFT]     = 0;
+    Silou._equipped[UNIT_HAND_RIGHT]    = -1;
+    Silou._equipment[0].id    = ITEM_ID_FLEURET;
+    Silou._equipment[1].id    = ITEM_ID_RAPIERE;
+
+    nourstest_true(!Unit_canEquip_TwoHand(&Silou, 1, UNIT_HAND_RIGHT));
+    nourstest_true( Unit_canEquip_TwoHand(&Silou, 0, UNIT_HAND_RIGHT));
+
+    /* Try to equip a one hand weapon when already in other hand with type
+         that can't be twohanded */
+    Silou._equipped[UNIT_HAND_LEFT]     = 0;
+    Silou._equipped[UNIT_HAND_RIGHT]    = -1;
+    Silou._equipment[0].id    = ITEM_ID_FLEURET;
+    Silou._equipment[1].id    = ITEM_ID_RAPIERE;
+
+    weapon->handedness  = WEAPON_HAND_ANY;
+    weapon2->handedness = WEAPON_HAND_ANY;
+    weapon->item->type = ITEM_TYPE_ELEMENTAL;
+    weapon->item->type = ITEM_TYPE_ANGELIC;
+    nourstest_true( Unit_canEquip_TwoHand(&Silou, 1, UNIT_HAND_RIGHT));
+    nourstest_true(!Unit_canEquip_TwoHand(&Silou, 0, UNIT_HAND_RIGHT));
+
     Game_Weapons_Free(&weapons_dtab);
 }
 
@@ -719,6 +748,7 @@ void test_canEquip_Users(void) {
 
     users[3] = UNIT_ID_SILOU;
     nourstest_true( Unit_canEquip_Users(&Silou, eq));
+
 
     Game_Weapons_Free(&weapons_dtab);
 }

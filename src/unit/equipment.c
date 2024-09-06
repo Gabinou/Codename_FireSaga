@@ -227,12 +227,14 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
     SDL_assert(can_equip.eq < SOTA_EQUIPMENT_SIZE);
 
     i32 id = Unit_Id_Equipment(unit, can_equip.eq);
-    if (id <= ITEM_NULL)
+    if (id <= ITEM_NULL) {
         return (false);
-    if (!Weapon_ID_isValid(id))
+    }
+    if (!Weapon_ID_isValid(id)) {
         return (false);
+    }
 
-    if (!Unit_canEquip_Type(unit, can_equip.eq)) {
+    if (!Unit_canEquip_Type(unit, id)) {
         return (false);
     }
 
@@ -300,26 +302,16 @@ b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand) {
     SDL_assert(eq >= 0);
     SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
     i32 id = Unit_Id_Equipment(unit, eq);
-    if (id <= ITEM_NULL)
+    if (id <= ITEM_NULL) {
         return (false);
-    if (!Weapon_ID_isValid(id))
-        return (false);
-
-    /* Cannot twohand magic weapons */
-    struct Weapon *wpn  = DTAB_GET(unit->weapons_dtab, id);
-    SDL_assert(wpn        != NULL);
-    SDL_assert(wpn->item  != NULL);
-    SDL_assert(wpn->item->type > ITEM_TYPE_NULL);
-
-    SDL_assert(wpn->item->type > ITEM_TYPE_NULL);
-    b32 is_elemental    = flagsum_isIn(wpn->item->type, ITEM_TYPE_ELEMENTAL);
-    b32 is_angelic      = flagsum_isIn(wpn->item->type, ITEM_TYPE_ANGELIC);
-    b32 is_demonic      = flagsum_isIn(wpn->item->type, ITEM_TYPE_DEMONIC);
-    if (is_elemental || is_angelic || is_demonic) {
+    }
+    if (!Weapon_ID_isValid(id)) {
         return (false);
     }
 
+
     /* Failure: Trying to onehand a twohand only weapon */
+    struct Weapon *wpn  = DTAB_GET(unit->weapons_dtab, id);
     b32 two_hand_only   = Weapon_TwoHand_Only(wpn);
 
     b32 other_hand      = UNIT_OTHER_HAND(hand);
@@ -331,6 +323,20 @@ b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand) {
     b32 eq_in_bound     = (eq_other >= 0) && (eq_other < SOTA_EQUIPMENT_SIZE);
     b32 two_hand_cant   = two_hand_only && (eq_in_bound && eq_diff);
     if (two_hand_cant) {
+        return (false);
+    }
+
+    /* Cannot twohand magic weapons */
+    b32 eq_same         = (eq_other == eq);
+    SDL_assert(wpn        != NULL);
+    SDL_assert(wpn->item  != NULL);
+    SDL_assert(wpn->item->type > ITEM_TYPE_NULL);
+
+    SDL_assert(wpn->item->type > ITEM_TYPE_NULL);
+    b32 is_elemental    = flagsum_isIn(wpn->item->type, ITEM_TYPE_ELEMENTAL);
+    b32 is_angelic      = flagsum_isIn(wpn->item->type, ITEM_TYPE_ANGELIC);
+    b32 is_demonic      = flagsum_isIn(wpn->item->type, ITEM_TYPE_DEMONIC);
+    if (eq_same && (is_elemental || is_angelic || is_demonic)) {
         return (false);
     }
 
@@ -403,6 +409,10 @@ b32 Unit_canEquip_Users(struct Unit *unit, i32 eq) {
 
     /* Can equip if no list of users */
     if (weapon->item->users == NULL) {
+        return (true);
+    }
+
+    if (DARR_NUM(weapon->item->users) == 0) {
         return (true);
     }
 
@@ -616,12 +626,14 @@ Item *Unit_Get_Item(Unit *unit, i32 eq) {
 
 /* Order in _equipment of equipped weapon */
 i32 Unit_Eq_Equipped(Unit *unit, b32 hand) {
+    SDL_assert(unit != NULL);
     SDL_assert((hand == UNIT_HAND_LEFT) || (hand == UNIT_HAND_RIGHT));
     return (unit->_equipped[hand]);
 }
 
 /* ID of equipment item */
 i32 Unit_Id_Equipment(Unit *unit, i32 eq) {
+    SDL_assert(unit != NULL);
     SDL_assert(eq >= 0);
     SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
     return (unit->_equipment[eq].id);
@@ -629,6 +641,7 @@ i32 Unit_Id_Equipment(Unit *unit, i32 eq) {
 
 /* ID of equipped weapon */
 i32 Unit_Id_Equipped(Unit *unit, i32 hand) {
+    SDL_assert(unit != NULL);
     SDL_assert((hand == UNIT_HAND_LEFT) || (hand == UNIT_HAND_RIGHT));
     return (unit->_equipment[Unit_Eq_Equipped(unit, hand)].id);
 }
