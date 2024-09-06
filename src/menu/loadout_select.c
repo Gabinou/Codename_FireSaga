@@ -571,16 +571,17 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
     if ((lsm->selected[stronghand] >= 0) && (lsm->selected[stronghand] < SOTA_EQUIPMENT_SIZE)) {
         // render at weapon position if selected
         // Find selected eq in usable
-        int index = -1;
-        for (int i = 0; i < lsm->unit->num_canEquip; i++) {
-            if (lsm->selected[stronghand] == lsm->unit->eq_canEquip[i]) {
-                index = i;
-                break;
-            }
-        }
-        SDL_assert(index >= 0);
+        // int index = -1;
+        // for (int i = 0; i < lsm->unit->num_canEquip; i++) {
+        //     // Nah: just render what is selected.
+        //     if (lsm->selected[stronghand] == lsm->unit->eq_canEquip[i]) {
+        //         index = i;
+        //         break;
+        //     }
+        // }
+        // SDL_assert(index >= 0);
 
-        dstrect.y = ry_offset + ((header_drawn + index) * LSM_ROW_HEIGHT);
+        dstrect.y = ry_offset + ((header_drawn + lsm->selected[stronghand]) * LSM_ROW_HEIGHT);
     } else {
         // Follow cursor if unselected
         dstrect.y = ry_offset + ((header_drawn + mc->elem) * LSM_ROW_HEIGHT);
