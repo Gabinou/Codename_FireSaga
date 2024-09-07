@@ -544,7 +544,8 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
         /* Moving hand if two handing or weak hand */
         dstrect.x = LSM_HANDL_X;
 
-        int left_hand_row = (UNIT_HAND_LEFT == weakhand) ? mc->elem : lsm->selected[stronghand];
+        int left_hand_row = ((UNIT_HAND_LEFT == stronghand)
+                             && !strong_selected) ? mc->elem : lsm->selected[stronghand];
 
         /* Computing y offset for weak hand, or twohanding icon placement */
         i32 ly_offset = (stronghand == UNIT_HAND_RIGHT) ? LSM_WEAKHAND_Y_OFFSET : LSM_STRONGHAND_Y_OFFSET;
@@ -576,7 +577,9 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
         /* Moving hand if two handing or weak hand */
         dstrect.x = lsm->menu_w - LSM_HANDS_TILESIZE;
 
-        int right_hand_row = (UNIT_HAND_RIGHT == weakhand) ? mc->elem : lsm->selected[stronghand];
+        int right_hand_row = ((UNIT_HAND_RIGHT == stronghand)
+                              && !strong_selected) ? mc->elem : lsm->selected[stronghand];
+
 
         /* Computing y offset for weak hand, or twohanding icon placement */
         int ry_offset = (stronghand == UNIT_HAND_RIGHT) ? LSM_STRONGHAND_Y_OFFSET : LSM_WEAKHAND_Y_OFFSET;
