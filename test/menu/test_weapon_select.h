@@ -140,20 +140,27 @@ void test_menu_loadout_select() {
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- HIGHLIGHT -- */
+    /* Testing writing stuff to grey arbitrarily */
+
+    /* Switch black to grey */
     int grey = 2;
-    PixelFont_Swap_Palette(wsm->pixelnours, renderer, SOTA_BLACK, grey);
+    PixelFont_Swap_Palette(wsm->pixelnours, renderer, -1, grey);
+    PixelFont_Swap_Palette(wsm->pixelnours_big, renderer, -1, grey);
+  
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_Grey1.png"), renderer,
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
-    PixelFont_Swap_Palette(wsm->pixelnours, renderer, grey, SOTA_BLACK);
+
+    /* Switch grey back to black */
+    PixelFont_Swap_Palette(wsm->pixelnours, renderer, SOTA_WHITE, SOTA_BLACK);
+    PixelFont_Swap_Palette(wsm->pixelnours_big, renderer, -1, grey);
 
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_Grey2.png"), renderer,
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
-    getchar();
-    LoadoutSelectMenu_Deselect(wsm);
-    LoadoutSelectMenu_Deselect(wsm);
 
+    LoadoutSelectMenu_Deselect(wsm);
+    LoadoutSelectMenu_Deselect(wsm);
 
     wsm->selected[stronghand]   = 3;
     mc.elem                     = 3;

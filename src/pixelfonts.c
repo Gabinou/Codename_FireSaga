@@ -155,6 +155,8 @@ void PixelFont_Swap_Palette(struct PixelFont *font, SDL_Renderer *renderer, i8 N
     i8 Oldb = font->black, Oldw = font->white;
     Palette_Colors_Swap(font->palette, renderer, &font->surface, &font->texture,
                         Oldw, Oldb, NEWw, NEWb);
+    font->white = NEWw;
+    font->black = NEWb;
 }
 
 void TextLines_Realloc(struct TextLines *textlines, size_t len) {

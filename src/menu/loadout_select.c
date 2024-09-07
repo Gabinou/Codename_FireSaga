@@ -610,7 +610,8 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
     i32 stronghand = Unit_Hand_Strong(lsm->unit);
     i32 weakhand   = 1 - stronghand;
     i32 num_items  = lsm->unit->num_canEquip;
-    b32 highlight  = (lsm->selected[0] >= 0);
+    // b32 highlight  = (lsm->selected[0] >= 0);
+    b32 highlight  = false;
 
     /* If stronghand is selected, menu should change to show all items in equipment */
     b32 strong_selected = (lsm->selected[stronghand] > -1);
