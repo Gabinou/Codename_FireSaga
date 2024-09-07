@@ -519,16 +519,6 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
     b32 header_drawn   = (lsm->header.data != NULL);
     SDL_Rect srcrect, dstrect;
 
-    /* Computing y offset for weak hand, or twohanding icon placement */
-    i32 ly_offset = 0, ry_offset = 0;
-    if (stronghand == UNIT_HAND_RIGHT) {
-        ly_offset = LSM_WEAKHAND_Y_OFFSET;
-        ry_offset = LSM_STRONGHAND_Y_OFFSET;
-    } else if (stronghand == UNIT_HAND_LEFT) {
-        ly_offset = LSM_STRONGHAND_Y_OFFSET;
-        ry_offset = LSM_WEAKHAND_Y_OFFSET;
-    }
-
     b32 strong_selected = (lsm->selected[stronghand] >= 0)
                           && (lsm->selected[stronghand] < SOTA_EQUIPMENT_SIZE);
 
@@ -544,7 +534,8 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
         dstrect.w = srcrect.w;
         dstrect.h = srcrect.h;
 
-        // 1. Follows cursor when selecting for weakhand
+        // 1. Follows cursor when selecting for hand
+        // 2. Is at selected item position if stronghnad
         int hand_i = (weakhand == UNIT_HAND_LEFT) ? LSM_HANDS_SMALL_L : LSM_HANDS_BIG_L;
 
         srcrect.x = hand_i * srcrect.w;
@@ -554,6 +545,9 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
         dstrect.x = LSM_HANDL_X;
 
         int left_hand_row = (UNIT_HAND_LEFT == weakhand) ? mc->elem : lsm->selected[stronghand];
+
+        /* Computing y offset for weak hand, or twohanding icon placement */
+        i32 ly_offset = (stronghand == UNIT_HAND_RIGHT) ? LSM_WEAKHAND_Y_OFFSET : LSM_STRONGHAND_Y_OFFSET;
 
         dstrect.y = ly_offset + (header_drawn + left_hand_row) * LSM_ROW_HEIGHT;
 
@@ -567,13 +561,13 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
 
     /* -- Right hand icon -- */
     if (draw_right_hand) {
-        // 1. Follows cursor when selecting for stronghand
-        // 2. Is at selected item position
         srcrect.w = LSM_HANDS_TILESIZE;
         srcrect.h = LSM_HANDS_TILESIZE;
         dstrect.w = srcrect.w;
         dstrect.h = srcrect.h;
 
+        // 1. Follows cursor when selecting for hand
+        // 2. Is at selected item position if stronghnad
         int hand_i = (stronghand == UNIT_HAND_LEFT) ? LSM_HANDS_SMALL_R : LSM_HANDS_BIG_R;
 
         srcrect.x = hand_i * srcrect.w;
@@ -583,6 +577,9 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
         dstrect.x = lsm->menu_w - LSM_HANDS_TILESIZE;
 
         int right_hand_row = (UNIT_HAND_RIGHT == weakhand) ? mc->elem : lsm->selected[stronghand];
+
+        /* Computing y offset for weak hand, or twohanding icon placement */
+        int ry_offset = (stronghand == UNIT_HAND_RIGHT) ? LSM_STRONGHAND_Y_OFFSET : LSM_WEAKHAND_Y_OFFSET;
 
         dstrect.y = ry_offset + (header_drawn + right_hand_row) * LSM_ROW_HEIGHT;
 
