@@ -154,7 +154,7 @@ struct LoadoutSelectMenu {
     int menu_w;
     int menu_h;
 
-    struct Unit *unit;
+    struct Unit *unit; // TODO: use tnecs_entity
     // selected is -1 if NULL
 
     struct PixelFont *pixelnours;

@@ -354,7 +354,8 @@ void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9p
     i32 stronghand = Unit_Hand_Strong(lsm->unit);
 
     /* If stronghand is selected, menu should change to show all items in equipment */
-    b32 strong_selected = (lsm->selected[stronghand] > -1);
+    b32 strong_selected = (lsm->selected[stronghand] >= 0)
+                          && (lsm->selected[stronghand] < SOTA_EQUIPMENT_SIZE);
     i32 num_items = lsm->unit->num_canEquip;
 
     for (i32 i = 0; i < num_items; i++) {
@@ -528,21 +529,33 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
         ry_offset = LSM_WEAKHAND_Y_OFFSET;
     }
 
-    srcrect.w = LSM_HANDS_TILESIZE;
-    srcrect.h = LSM_HANDS_TILESIZE;
-    dstrect.w = srcrect.w;
-    dstrect.h = srcrect.h;
+    b32 strong_selected = (lsm->selected[stronghand] >= 0)
+                          && (lsm->selected[stronghand] < SOTA_EQUIPMENT_SIZE);
 
-    /* -- Weak hand icon -- */
-    // 1. Follows cursor when selecting for weakhand
-    int hand_i = (weakhand == UNIT_HAND_LEFT) ? LSM_HANDS_SMALL_L : LSM_HANDS_BIG_L;
-    if ((lsm->selected[stronghand] >= 0) && (lsm->selected[stronghand] < SOTA_EQUIPMENT_SIZE)) {
+    b32 draw_left_hand  = (strong_selected && (weakhand == UNIT_HAND_LEFT)) ||
+                          (stronghand == UNIT_HAND_LEFT);
+    b32 draw_right_hand = (strong_selected && (weakhand == UNIT_HAND_RIGHT)) ||
+                          (stronghand == UNIT_HAND_RIGHT);
+
+    /* -- Left hand icon -- */
+    if (draw_left_hand) {
+        srcrect.w = LSM_HANDS_TILESIZE;
+        srcrect.h = LSM_HANDS_TILESIZE;
+        dstrect.w = srcrect.w;
+        dstrect.h = srcrect.h;
+
+        // 1. Follows cursor when selecting for weakhand
+        int hand_i = (weakhand == UNIT_HAND_LEFT) ? LSM_HANDS_SMALL_L : LSM_HANDS_BIG_L;
+
         srcrect.x = hand_i * srcrect.w;
         srcrect.y = 0;
 
         /* Moving hand if two handing or weak hand */
         dstrect.x = LSM_HANDL_X;
-        dstrect.y = ly_offset + ((header_drawn + mc->elem) * LSM_ROW_HEIGHT);
+
+        int left_hand_row = (UNIT_HAND_LEFT == weakhand) ? mc->elem : lsm->selected[stronghand];
+
+        dstrect.y = ly_offset + (header_drawn + left_hand_row) * LSM_ROW_HEIGHT;
 
         /* Moving hand if small */
         if (stronghand != UNIT_HAND_LEFT) {
@@ -551,47 +564,36 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
         }
         SDL_RenderCopy(renderer, lsm->texture_hands, &srcrect, &dstrect);
     }
-    // 2. Not rendered otherwise
 
-    /* -- Strong hand icon -- */
-    // 1. Follows cursor when selecting for stronghand
-    // 2. Is at selected item position
-    srcrect.w = LSM_HANDS_TILESIZE;
-    srcrect.h = LSM_HANDS_TILESIZE;
-    dstrect.w = srcrect.w;
-    dstrect.h = srcrect.h;
+    /* -- Right hand icon -- */
+    if (draw_right_hand) {
+        // 1. Follows cursor when selecting for stronghand
+        // 2. Is at selected item position
+        srcrect.w = LSM_HANDS_TILESIZE;
+        srcrect.h = LSM_HANDS_TILESIZE;
+        dstrect.w = srcrect.w;
+        dstrect.h = srcrect.h;
 
-    hand_i = (stronghand == UNIT_HAND_LEFT) ? LSM_HANDS_SMALL_R : LSM_HANDS_BIG_R;
-    /* - Skip if hand lower outside of menu - */
-    srcrect.x = hand_i * srcrect.w;
-    srcrect.y = 0;
+        int hand_i = (stronghand == UNIT_HAND_LEFT) ? LSM_HANDS_SMALL_R : LSM_HANDS_BIG_R;
 
-    /* Moving hand if two handing or weak hand */
-    dstrect.x = lsm->menu_w - LSM_HANDS_TILESIZE;
-    if ((lsm->selected[stronghand] >= 0) && (lsm->selected[stronghand] < SOTA_EQUIPMENT_SIZE)) {
-        // render at weapon position if selected
-        // Find selected eq in usable
-        // int index = -1;
-        // for (int i = 0; i < lsm->unit->num_canEquip; i++) {
-        //     // Nah: just render what is selected.
-        //     if (lsm->selected[stronghand] == lsm->unit->eq_canEquip[i]) {
-        //         index = i;
-        //         break;
-        //     }
-        // }
-        // SDL_assert(index >= 0);
+        srcrect.x = hand_i * srcrect.w;
+        srcrect.y = 0;
 
-        dstrect.y = ry_offset + ((header_drawn + lsm->selected[stronghand]) * LSM_ROW_HEIGHT);
-    } else {
-        // Follow cursor if unselected
-        dstrect.y = ry_offset + ((header_drawn + mc->elem) * LSM_ROW_HEIGHT);
+        /* Moving hand if two handing or weak hand */
+        dstrect.x = lsm->menu_w - LSM_HANDS_TILESIZE;
+
+        int right_hand_row = (UNIT_HAND_RIGHT == weakhand) ? mc->elem : lsm->selected[stronghand];
+
+        dstrect.y = ry_offset + (header_drawn + right_hand_row) * LSM_ROW_HEIGHT;
+
+        /* Moving hand if small */
+        if (stronghand != UNIT_HAND_RIGHT) {
+            dstrect.x += LSM_HAND_SMALLX_OFFSET;
+            dstrect.y += LSM_HAND_SMALLY_OFFSET;
+        }
+
+        SDL_RenderCopy(renderer, lsm->texture_hands, &srcrect, &dstrect);
     }
-    /* Moving hand if small */
-    if (stronghand == UNIT_HAND_LEFT) {
-        dstrect.x += LSM_HAND_SMALLX_OFFSET;
-        dstrect.y += LSM_HAND_SMALLY_OFFSET;
-    }
-    SDL_RenderCopy(renderer, lsm->texture_hands, &srcrect, &dstrect);
 }
 
 static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
