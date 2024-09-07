@@ -259,6 +259,7 @@ void Palette_Colors_Swap(SDL_Palette *palette, SDL_Renderer *renderer,
 
     *texture = SDL_CreateTextureFromSurface(renderer, *surface);
 
+    /* Swap colors BACK in palette_NES */
     if (NEWw > -1) {
         palette->colors[Oldw].g = old_white.g;
         palette->colors[Oldw].r = old_white.r;
