@@ -8,7 +8,7 @@
 struct Map;
 
 /*-- Map Usable -- */
-void Map_canEquip(struct Map *m, tnecs_world *w, tnecs_entity ent, b32 mo, int a);
+void Map_canEquip(struct Map *m, tnecs_entity ent, b32 mo, int a);
 
 /* -- Find at tile -- */
 tnecs_entity Map_Find_Door_Ent(     struct Map *map, i32 x, i32 y);

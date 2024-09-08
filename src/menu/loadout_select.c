@@ -152,9 +152,12 @@ void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map,
     SDL_assert(n9patch != NULL);
     SDL_assert(lsm != NULL);
     SDL_assert(unit_ent > TNECS_NULL);
-    struct Unit     *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
+    SDL_assert(map          != NULL);
+    SDL_assert(map->world   != NULL);
+
+    struct Unit     *unit = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
     _LoadoutSelectMenu_Load(lsm, unit, renderer, n9patch);
-    Map_canEquip(map, world, unit_ent, false, archetype);
+    Map_canEquip(map, unit_ent, false, archetype);
 }
 
 void _LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Unit *unit,

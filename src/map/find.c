@@ -3,11 +3,14 @@
 
 /*-- Map Usable -- */
 /* Find if a weapon/staff usable by unit has an enemy in range */
-void Map_canEquip(struct Map *map, tnecs_world *world, tnecs_entity unit_ent,
+void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
                   b32 move, int archetype) {
-    Map_Costmap_Movement_Compute(map, world, unit_ent);
-    struct Unit     *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
-    struct Position *pos  = TNECS_GET_COMPONENT(world, unit_ent, Position);
+    SDL_assert(map          != NULL);
+    SDL_assert(map->world   != NULL);
+
+    Map_Costmap_Movement_Compute(map, map->world, unit_ent);
+    struct Unit     *unit = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
+    struct Position *pos  = TNECS_GET_COMPONENT(map->world, unit_ent, Position);
 
     /* Compute movemap */
     struct Point start = pos->tilemap_pos;
