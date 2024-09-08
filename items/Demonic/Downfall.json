@@ -1,7 +1,7 @@
 {
 	"Item":	{
 		"Name":	"Downfall",
-		"Description":	"Jet black hook, preventing escape as demons drag you underground.",
+		"Description":	"Jet black hooks drag you to hell.",
 		"id":	702,
 		"Aura":	{
 			"Computed_Stats":	{
@@ -64,6 +64,6 @@
 		},
 		"Subtype":	0,
 		"Effective":	0,
-		"Handedness":	0
+		"Handedness":	2
 	}
 }

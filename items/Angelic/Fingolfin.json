@@ -60,10 +60,10 @@
 			"Range":	[1, 2],
 			"uses":	77,
 			"price":	20000,
-			"AP":	0
+			"AP":	7
 		},
 		"Subtype":	0,
 		"Effective":	0,
-		"Handedness":	0
+		"Handedness":	2
 	}
 }

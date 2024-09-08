@@ -1,7 +1,7 @@
 {
 	"Item":	{
 		"Name":	"Daybreak",
-		"Description":	"Light shall return.",
+		"Description":	"Light has returned.",
 		"id":	802,
 		"Aura":	{
 			"Computed_Stats":	{
@@ -64,6 +64,6 @@
 		},
 		"Subtype":	0,
 		"Effective":	0,
-		"Handedness":	0
+		"Handedness":	2
 	}
 }

@@ -1040,7 +1040,7 @@ enum SOTA_COMBAT {
     SOTA_AGGRESSOR                  = 1,
 
     SOTA_BRAVE_DEFAULT              = 1,
-    SOTA_BRAVE_MAX                  = 4,
+    SOTA_BRAVE_MAX                  = 7, /* For Fingolfin */
 
     SOTA_ASTRA_DEFAULT              = 1,
     SOTA_ASTRA                      = 5,

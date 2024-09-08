@@ -877,7 +877,6 @@ void test_canEquip(void) {
     /* -- Stronghand equipped -- */
 
     /* --- Mage that can two hand due to skill --- */
-    // TODO
     /* -- Stronghand NOT equipped -- */
     /* -- Stronghand equipped -- */
 
