@@ -122,7 +122,7 @@ void test_map_perimeter(void) {
 #undef TEST_COL_LEN
 
 void test_map_usable(void) {
-    //  - Does the loadout make sense for unit/class/selection on MAP.
+    /* Does the loadout make sense for unit/class/selection on MAP. */
 
 }
 

@@ -795,14 +795,72 @@ void test_canEquip_Archetype(void) {
 
 void test_canEquip(void) {
     //  - Does the loadout make sense for unit/class/selection
+    struct Unit Silou = Unit_default;
+    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    Unit_InitWweapons(&Silou, weapons_dtab);
+    int id = ITEM_ID_FLEURET;
+    Weapon_Load(weapons_dtab, id);
+    Silou._id = UNIT_ID_SILOU;
 
-    /* --- Staff user --- */
+    /* --- Staff user that can't twohand --- */
+    Unit_setClassind(&Silou, UNIT_CLASS_VESTAL);
+    int eq = 0;
+    Silou._equipment[eq].id = id;
+    Silou._equipped[UNIT_HAND_LEFT]     = 0;
+    Silou._equipped[UNIT_HAND_RIGHT]    = -1;
+    Silou._equipment[0].id    = ITEM_ID_FLEURET;
+    Silou._equipment[1].id    = ITEM_ID_RAPIERE;
+    Silou._equipment[2].id    = ITEM_ID_HEAL;
+
+    /* Nothing in either hand */
+    canEquip can_equip = canEquip_default;
+    can_equip.hand  = UNIT_HAND_LEFT;
+    can_equip.lh    = -1;
+    can_equip.rh    = -1;
+
+    can_equip.eq    = 0;
+    nourstest_true(!Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 1;
+    nourstest_true(!Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 2;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+
+    /* Something in either hand */
+    can_equip.lh    =  0;
+    can_equip.rh    =  1;
+
+    can_equip.eq    = 0;
+    nourstest_true(!Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 1;
+    nourstest_true(!Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 2;
+    nourstest_true(!Unit_canEquip(&Silou, can_equip));
+
+    /* Something in either hand */
+    can_equip.lh    =  0;
+    can_equip.rh    =  1;
+
+    can_equip.eq    = 0;
+    nourstest_true(!Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 1;
+    nourstest_true(!Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 2;
+    nourstest_true(!Unit_canEquip(&Silou, can_equip));
+
+
+
+    /* --- Staff user that can twohand --- */
+    // TODO
+    /* -- Stronghand NOT equipped -- */
+    /* -- Stronghand equipped -- */
+
 
     /* --- Mage that can't two hand --- */
     /* -- Stronghand NOT equipped -- */
     /* -- Stronghand equipped -- */
 
     /* --- Mage that can two hand due to skill --- */
+    // TODO
     /* -- Stronghand NOT equipped -- */
     /* -- Stronghand equipped -- */
 
