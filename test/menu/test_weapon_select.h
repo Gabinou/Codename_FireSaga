@@ -5,7 +5,7 @@
 #include "RNG.h"
 
 void test_menu_loadout_select_unit(void) {
-    // Test with arbirary values 
+    // Test with arbirary values
 
     /* -- Preliminaries -- */
     sota_mkdir("menu_loadout_select");
@@ -310,30 +310,7 @@ void test_menu_loadout_select_unit(void) {
 }
 
 
-void test_menu_loadout_select_integration(void) {
-    // Integration test: 
-    //  - Does the loadout make sense for unit/class/selection 
-
-    /* --- Staff user --- */
-
-    /* --- Mage that can't two hand --- */
-    /* -- Stronghand NOT equipped -- */
-    /* -- Stronghand equipped -- */
-
-    /* --- Mage that can two hand due to skill --- */
-    /* -- Stronghand NOT equipped -- */
-    /* -- Stronghand equipped -- */
-
-    /* --- Normal physical soldier --- */
-    /* -- Stronghand NOT equipped -- */
-    /* -- Stronghand equipped -- */
-
-} 
-
-
-void test_menu_loadout_select(void) { 
+void test_menu_loadout_select(void) {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
-    test_menu_loadout_select_unit(); 
-    test_menu_loadout_select_integration(); 
-
+    test_menu_loadout_select_unit();
 }

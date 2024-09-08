@@ -5,7 +5,7 @@
 #define TEST_ROW_LEN 10
 #define TEST_COL_LEN 10
 
-void test_map_simple() {
+void test_map_simple(void) {
     i32 x = 6, y = 6;
     size_t row_len = TEST_ROW_LEN, col_len = TEST_COL_LEN;
     struct Range range = {2, 4};
@@ -45,7 +45,7 @@ void test_map_simple() {
 #define TEST_ROW_LEN 11
 #define TEST_COL_LEN 10
 
-void test_map_perimeter() {
+void test_map_perimeter(void) {
     i32 dangermap[TEST_COL_LEN * TEST_ROW_LEN] = {
         00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
         00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
@@ -121,8 +121,14 @@ void test_map_perimeter() {
 #undef TEST_ROW_LEN
 #undef TEST_COL_LEN
 
+void test_map_usable(void) {
+    //  - Does the loadout make sense for unit/class/selection on MAP.
+
+}
+
 void test_map() {
 
     test_map_simple();
     test_map_perimeter();
+    test_map_usable();
 }

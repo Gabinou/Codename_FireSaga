@@ -3,8 +3,8 @@
 
 /*-- Map Usable -- */
 /* Find if a weapon/staff usable by unit has an enemy in range */
-void Map_Find_Usable(struct Map *map, tnecs_world *world, tnecs_entity unit_ent,
-                     b32 move, int archetype) {
+void Map_canEquip(struct Map *map, tnecs_world *world, tnecs_entity unit_ent,
+                  b32 move, int archetype) {
     Map_Costmap_Movement_Compute(map, world, unit_ent);
     struct Unit     *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     struct Position *pos  = TNECS_GET_COMPONENT(world, unit_ent, Position);

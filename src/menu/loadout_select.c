@@ -154,7 +154,7 @@ void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map,
     SDL_assert(unit_ent > TNECS_NULL);
     struct Unit     *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     _LoadoutSelectMenu_Load(lsm, unit, renderer, n9patch);
-    Map_Find_Usable(map, world, unit_ent, false, archetype);
+    Map_canEquip(map, world, unit_ent, false, archetype);
 }
 
 void _LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Unit *unit,

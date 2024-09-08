@@ -793,6 +793,25 @@ void test_canEquip_Archetype(void) {
     Game_Weapons_Free(&weapons_dtab);
 }
 
+void test_canEquip(void) {
+    //  - Does the loadout make sense for unit/class/selection
+
+    /* --- Staff user --- */
+
+    /* --- Mage that can't two hand --- */
+    /* -- Stronghand NOT equipped -- */
+    /* -- Stronghand equipped -- */
+
+    /* --- Mage that can two hand due to skill --- */
+    /* -- Stronghand NOT equipped -- */
+    /* -- Stronghand equipped -- */
+
+    /* --- Normal physical soldier --- */
+    /* -- Stronghand NOT equipped -- */
+    /* -- Stronghand equipped -- */
+
+}
+
 void test_unit(void) {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     test_canEquip_OneHand();
@@ -800,6 +819,7 @@ void test_unit(void) {
     test_canEquip_Type();
     test_canEquip_Users();
     test_canEquip_Archetype();
+    test_canEquip();
 
     test_skills();
     test_io();
