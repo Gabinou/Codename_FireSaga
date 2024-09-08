@@ -544,9 +544,14 @@ int Unit_canStaff(struct Unit *unit) {
 }
 
 /* - Can unit equip a staff with only one hand? - */
-int Unit_canStaff_oneHand( struct Unit *unit) {
+b32 Unit_canStaff_oneHand(Unit *unit) {
     return (Unit_hasSkill(unit, PASSIVE_SKILL_STAFF_ONE_HAND));
 }
+
+b32 Unit_canMagic_oneHand(Unit *unit) {
+    return (Unit_hasSkill(unit, PASSIVE_SKILL_MAGIC_ONE_HAND));
+}
+
 
 /* - Any Weapon to attack with in equipment - */
 b32 Unit_canAttack_Eq(struct Unit *unit) {

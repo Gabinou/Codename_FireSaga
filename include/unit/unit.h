@@ -129,7 +129,9 @@ b32  Unit_canAttack_Eq(Unit *u);            /* with any wpn in equipment */
 /* -- Can Staff -- */
 int Unit_canStaff(        Unit *u);
 int Unit_canStaff_Eq(     Unit *u);
+
 int Unit_canStaff_oneHand(Unit *u);
+int Unit_canMagic_oneHand(Unit *u);
 
 /* -- HP is full -- */
 b32 Unit_HP_isFull(Unit *u);

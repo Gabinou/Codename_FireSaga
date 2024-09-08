@@ -50,6 +50,7 @@ void Item_writeJSON(void *input, cJSON *jitem);
 
 /* --- Type --- */
 u64 Item_Archetype(i16 id);
+b32 Item_hasType(struct Item *item, u64 type);
 
 /* --- Is --- */
 b32 Item_isStaff(  i16 id);

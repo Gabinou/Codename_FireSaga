@@ -320,28 +320,32 @@ b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand) {
     //      - Other hand equipped different wpn.
     b32 eq_diff         = (eq_other != eq);
     b32 eq_in_bound     = (eq_other >= 0) && (eq_other < SOTA_EQUIPMENT_SIZE);
-    b32 one_hand_skill  = Unit_canStaff_oneHand(unit);
-    b32 two_hand_cant   = !one_hand_skill && two_hand_only && (eq_in_bound && eq_diff) ;
+    b32 two_hand_cant   = two_hand_only && (eq_in_bound && eq_diff) ;
 
     if (two_hand_cant) {
         return (false);
     }
 
-    /* Cannot twohand magic weapons */
-    b32 eq_same         = (eq_other == eq);
-    SDL_assert(wpn        != NULL);
-    SDL_assert(wpn->item  != NULL);
-    SDL_assert(wpn->item->type > ITEM_TYPE_NULL);
-
-    b32 is_elemental    = flagsum_isIn(wpn->item->type, ITEM_TYPE_ELEMENTAL);
-    b32 is_angelic      = flagsum_isIn(wpn->item->type, ITEM_TYPE_ANGELIC);
-    b32 is_demonic      = flagsum_isIn(wpn->item->type, ITEM_TYPE_DEMONIC);
-    if (eq_same && (is_elemental || is_angelic || is_demonic)) {
-        return (false);
+    /* Cannot twohand magic weapons/staves */
+    b32 eq_same = (eq_other == eq) && eq_in_bound;
+    if (Item_hasType(wpn->item, ITEM_TYPE_STAFF)) {
+        b32 one_hand_skill = Unit_canStaff_oneHand(unit);
+        if (eq_same && !one_hand_skill) {
+            return (false);
+        }
+    } else if (
+            Item_hasType(wpn->item, ITEM_TYPE_ELEMENTAL) ||
+            Item_hasType(wpn->item, ITEM_TYPE_ANGELIC)   ||
+            Item_hasType(wpn->item, ITEM_TYPE_DEMONIC)
+    ) {
+        b32 one_hand_skill = Unit_canMagic_oneHand(unit);
+        if (eq_same && !one_hand_skill) {
+            return (false);
+        }
     }
 
     // Weapon could be:
-    //  - two hand only weapon equipped in other hand
+    //  - Two hand only weapon equipped in other hand
     //  - Any hand weapon equipped in one or two hand
 
     return (true);

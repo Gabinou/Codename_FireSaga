@@ -530,6 +530,10 @@ u64 Item_Archetype(i16 id) {
     return (archetype);
 }
 
+b32 Item_hasType(struct Item *item, u64 type) {
+    return ((type & item->type) > 0);
+}
+
 b32 Item_isOffhand(i16  id) {
     return (Weapon_isOffhand(id));
 }
