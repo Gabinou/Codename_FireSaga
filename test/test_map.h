@@ -155,6 +155,11 @@ void test_map_usable(void) {
     silou->_equipment[1].id             = ITEM_ID_IRON_AXE;
     silou->_equipment[2].id             = ITEM_ID_IRON_LANCE;
     silou->_equipment[3].id             = ITEM_ID_SHORT_BOW;
+    silou->army                         = ARMY_FRIENDLY;
+    erwin->army                         = ARMY_FRIENDLY;
+    enemy1->army                        = ARMY_ENEMY;
+    enemy2->army                        = ARMY_ENEMY;
+    enemy3->army                        = ARMY_ENEMY;
     silou->current_stats.move           = 1;
     silou_pos->tilemap_pos.x    = 0;
     silou_pos->tilemap_pos.y    = 0;
@@ -168,10 +173,10 @@ void test_map_usable(void) {
     enemy3_pos->tilemap_pos.y   = 1;
 
     /* Map init */
-    Map *map = Map_Init(map, TEST_COL_LEN, TEST_ROW_LEN);
-    map->row_len = TEST_ROW_LEN;
-    map->col_len = TEST_COL_LEN;
-    map->world = world;
+    Map *map        = Map_Init(map, 16, 16);
+    map->row_len    = TEST_ROW_LEN;
+    map->col_len    = TEST_COL_LEN;
+    map->world      = world;
     Map_dArrays_Init(map);
 
     /* -- Testing 1 range, 0 move -- */

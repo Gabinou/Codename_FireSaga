@@ -339,6 +339,9 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
     SDL_assert(map->world   != NULL);
     SDL_assert(map->unitmap != NULL);
     SDL_assert(map->costmap != NULL);
+    SDL_assert(map->tilemap != NULL);
+    SDL_assert(map->col_len > 0);
+    SDL_assert(map->row_len > 0);
     SDL_assert(unit         != NULL);
     SDL_assert(unit->mvt_type > UNIT_MVT_START);
 
@@ -346,8 +349,11 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
     memset(map->costmap, 0, sizeof(*map->costmap) * map->col_len * map->row_len);
 
     /* - Compute cost of each tile - */
-    for (size_t i = 0; i < (map->col_len * map->row_len); i++) {
-
+    int len = (map->col_len * map->row_len);
+    SDL_assert(len > 0);
+    for (int i = 0; i < len; ++i) {
+        // for (int i = 0; i < len; i++) {
+        SDL_Log("%d", i);
 #ifdef UNITS_IGNORE_TERRAIN
 
         /* - All units fly - */
@@ -355,7 +361,7 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
 
 #else /* !UNITS_IGNORE_TERRAIN */
 
-        /* - Compute cost from tile - */
+        // /* - Compute cost from tile - */
         i32 tile_ind = map->tilemap[i] / TILE_DIVISOR;
         SDL_assert(tile_ind > 0);
         size_t tile_order = Map_Tile_Order(map, tile_ind);
@@ -365,18 +371,19 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
 #endif /* UNITS_IGNORE_TERRAIN */
 
         /* - Check if tile is occupied by enemy unit - */
-        tnecs_entity ontile_unit_ent = map->unitmap[i];
-        if ((ontile_unit_ent <= UNIT_ID_START) || (ontile_unit_ent >= UNIT_ID_NPC_END))
-            continue;
+        // tnecs_entity ontile_unit_ent = map->unitmap[i];
+        // if (ontile_unit_ent <= TNECS_NULL) {
+        //     continue;
+        // }
+        // struct Unit *ontile_unit = TNECS_GET_COMPONENT(map->world, ontile_unit_ent, Unit);
+        // SDL_assert(ontile_unit != NULL);
 
-        struct Unit *ontile_unit = TNECS_GET_COMPONENT(map->world, ontile_unit_ent, Unit);
-        SDL_assert(ontile_unit != NULL);
-        u8 ontile_army = ontile_unit->army;
-        SDL_assert((ontile_army < ARMY_END) && (ontile_army > ARMY_START));
+        // u8 ontile_army = ontile_unit->army;
+        // SDL_assert((ontile_army < ARMY_END) && (ontile_army > ARMY_START));
 
-        if (SotA_army2alignment(ontile_army) != SotA_army2alignment(unit->army))
-            map->costmap[i] = COSTMAP_BLOCKED;
-
+        // if (SotA_army2alignment(ontile_army) != SotA_army2alignment(unit->army)) {
+        //     map->costmap[i] = COSTMAP_BLOCKED;
+        // }
     }
     return (map->costmap);
 }
