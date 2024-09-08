@@ -231,26 +231,32 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
         return (false);
     }
     if (!Weapon_ID_isValid(id)) {
+        SDL_Log("Can't Weapon_ID_isValid");
         return (false);
     }
 
     if (!Unit_canEquip_Type(unit, id)) {
+        SDL_Log("Can't Unit_canEquip_Archetype");
         return (false);
     }
 
     if (!Unit_canEquip_Archetype(unit, can_equip.eq, can_equip.archetype)) {
+        SDL_Log("Can't Unit_canEquip_Archetype");
         return (false);
     }
 
     if (!Unit_canEquip_Users(unit, can_equip.eq)) {
+        SDL_Log("Can't Unit_canEquip_Users");
         return (false);
     }
 
     if (!Unit_canEquip_OneHand(unit, can_equip.eq, can_equip.hand)) {
+        SDL_Log("Can't Unit_canEquip_OneHand");
         return (false);
     }
 
     if (!Unit_canEquip_TwoHand(unit, can_equip.eq, can_equip.hand)) {
+        SDL_Log("Can't Unit_canEquip_TwoHand");
         return (false);
     }
 
@@ -375,7 +381,7 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, b32 hand) {
     /* Cannot onehand magic weapons/staves */
     if (Item_hasType(wpn->item, ITEM_TYPE_STAFF)) {
         b32 one_hand_skill = Unit_canStaff_oneHand(unit);
-        if (!one_hand_skill) {
+        if (eq_same && !one_hand_skill) {
             return (false);
         }
     } else if (
@@ -384,7 +390,7 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, b32 hand) {
             Item_hasType(wpn->item, ITEM_TYPE_DEMONIC)
     ) {
         b32 one_hand_skill = Unit_canMagic_oneHand(unit);
-        if (!one_hand_skill) {
+        if (eq_same && !one_hand_skill) {
             return (false);
         }
     }

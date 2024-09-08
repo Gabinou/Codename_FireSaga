@@ -800,6 +800,7 @@ void test_canEquip(void) {
 
     /* --- Staff user that can't twohand --- */
     Unit_setClassind(&Silou, UNIT_CLASS_VESTAL);
+    Silou.equippable = ITEM_TYPE_STAFF;
     Silou._equipped[UNIT_HAND_LEFT]     =  0;
     Silou._equipped[UNIT_HAND_RIGHT]    = -1;
     Silou._equipment[0].id              = ITEM_ID_FLEURET;
@@ -818,7 +819,7 @@ void test_canEquip(void) {
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
     can_equip.eq    = 2;
     nourstest_true( Unit_canEquip(&Silou, can_equip));
-
+    
     /* Something in either hand */
     can_equip.lh    =  0;
     can_equip.rh    =  1;
@@ -927,6 +928,7 @@ void test_canEquip(void) {
     nourstest_true( Unit_canEquip(&Silou, can_equip));
     can_equip.eq    = 2;
     nourstest_true( Unit_canEquip(&Silou, can_equip));
+    getchar();
 
     can_equip.lh    = 1;
     can_equip.rh    = 1;
