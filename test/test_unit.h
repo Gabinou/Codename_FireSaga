@@ -749,7 +749,6 @@ void test_canEquip_Users(void) {
     users[3] = UNIT_ID_SILOU;
     nourstest_true( Unit_canEquip_Users(&Silou, eq));
 
-
     Game_Weapons_Free(&weapons_dtab);
 }
 
@@ -813,10 +812,10 @@ void test_canEquip(void) {
     Silou._equipment[2].id    = ITEM_ID_HEAL;
 
     /* Nothing in either hand */
-    canEquip can_equip = canEquip_default;
-    can_equip.hand  = UNIT_HAND_LEFT;
-    can_equip.lh    = -1;
-    can_equip.rh    = -1;
+    canEquip can_equip  = canEquip_default;
+    can_equip.hand      = UNIT_HAND_LEFT;
+    can_equip.lh        = -1;
+    can_equip.rh        = -1;
 
     can_equip.eq    = 0;
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
@@ -846,8 +845,6 @@ void test_canEquip(void) {
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
     can_equip.eq    = 2;
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
-
-
 
     /* --- Staff user that can twohand --- */
     // TODO

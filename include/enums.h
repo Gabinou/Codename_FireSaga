@@ -1151,8 +1151,6 @@ enum WEAPON_SUBTYPE {
 enum UNIT_HANDS {
     UNIT_HAND_LEFT           = 0,
     UNIT_HAND_RIGHT          = 1,
-    // UNIT_HAND_STRONG         = 0,
-    // UNIT_HAND_WEAK           = 1,
     UNIT_HANDS_NUM           = 2,
 };
 #define UNIT_OTHER_HAND(hand) 1 - hand
@@ -1173,8 +1171,6 @@ enum UNIT_HANDEDNESS {
     UNIT_HAND_AMBIDEXTROUS   = 0b11, // 3
     UNIT_HAND_END
 };
-// Note UNIT_HAND_LEFT =
-
 
 enum RNGs {
     SOTA_RN_SINGLE = 1,
