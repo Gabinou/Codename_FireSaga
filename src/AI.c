@@ -368,7 +368,8 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
     }
 
     /* -- Compute costmap for pathfinding -- */
-    Map_Costmap_Movement_Compute(sota->map, sota->world, npc_ent);
+    sota->map->world = sota->world;
+    Map_Costmap_Movement_Compute(sota->map, npc_ent);
     i32 *costmap            = sota->map->costmap;
     tnecs_entity *unitmap   = sota->map->unitmap;
     int move                = Unit_computeMove(npc);

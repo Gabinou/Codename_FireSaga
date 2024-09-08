@@ -29,7 +29,9 @@ void Map_Global_Dangermap_Reset(  struct Map *map);
 void Map_Global_Dangermap_Compute(struct Map *map);
 
 /* --- costmap --- */
-i32   *Map_Costmap_Movement_Compute( struct Map *map, tnecs_world *w, tnecs_entity u);
+i32   * Map_Costmap_Movement_Compute(struct Map *map, tnecs_entity u);
+i32   *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *u);
+
 i32   *Map_Costmap_PushPull_Compute( struct Map *map, tnecs_world *w, tnecs_entity u);
 float *Map_fCostmap_Movement_Compute(struct Map *map, tnecs_world *w, tnecs_entity u);
 

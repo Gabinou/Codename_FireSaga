@@ -6,9 +6,12 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Map;
+struct Unit;
 
 /*-- Map Usable -- */
-void Map_canEquip(struct Map *m, tnecs_entity ent, b32 mo, int a);
+// move: find canEquip including on moveable tiles or not
+void  Map_canEquip(struct Map *map, tnecs_entity ent, b32 move, int archetype);
+void _Map_canEquip(struct Map *map, Unit *unit, b32 move, int archetype);
 
 /* -- Find at tile -- */
 tnecs_entity Map_Find_Door_Ent(     struct Map *map, i32 x, i32 y);

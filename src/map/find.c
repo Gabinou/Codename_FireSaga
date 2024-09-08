@@ -2,13 +2,19 @@
 #include "map/find.h"
 
 /*-- Map Usable -- */
+
 /* Find if a weapon/staff usable by unit has an enemy in range */
+
+void _Map_canEquip(struct Map *map, Unit *unit, b32 move, int archetype) {
+
+}
+
 void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
                   b32 move, int archetype) {
     SDL_assert(map          != NULL);
     SDL_assert(map->world   != NULL);
 
-    Map_Costmap_Movement_Compute(map, map->world, unit_ent);
+    Map_Costmap_Movement_Compute(map, unit_ent);
     struct Unit     *unit = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
     struct Position *pos  = TNECS_GET_COMPONENT(map->world, unit_ent, Position);
 
@@ -55,6 +61,7 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
 
     DARR_FREE(defendants);
 }
+
 
 tnecs_entity *Map_Find_Defendants(struct Map *map, i32 *attacktolist,
                                   tnecs_entity *defendants, tnecs_entity aggressor,
