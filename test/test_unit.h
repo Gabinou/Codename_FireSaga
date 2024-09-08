@@ -819,7 +819,7 @@ void test_canEquip(void) {
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
     can_equip.eq    = 2;
     nourstest_true( Unit_canEquip(&Silou, can_equip));
-    
+
     /* Something in either hand */
     can_equip.lh    =  0;
     can_equip.rh    =  1;
@@ -925,19 +925,18 @@ void test_canEquip(void) {
     can_equip.eq    = 0;
     nourstest_true( Unit_canEquip(&Silou, can_equip));
     can_equip.eq    = 1;
-    nourstest_true( Unit_canEquip(&Silou, can_equip));
+    nourstest_true(!Unit_canEquip(&Silou, can_equip));
     can_equip.eq    = 2;
-    nourstest_true( Unit_canEquip(&Silou, can_equip));
-    getchar();
+    nourstest_true(!Unit_canEquip(&Silou, can_equip));
 
     can_equip.lh    = 1;
     can_equip.rh    = 1;
     can_equip.eq    = 0;
-    nourstest_true( Unit_canEquip(&Silou, can_equip));
+    nourstest_true(!Unit_canEquip(&Silou, can_equip));
     can_equip.eq    = 1;
     nourstest_true( Unit_canEquip(&Silou, can_equip));
     can_equip.eq    = 2;
-    nourstest_true( Unit_canEquip(&Silou, can_equip));
+    nourstest_true(!Unit_canEquip(&Silou, can_equip));
 
 
     /* --- Normal physical soldier --- */
