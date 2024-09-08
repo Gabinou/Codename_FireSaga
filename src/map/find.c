@@ -4,19 +4,14 @@
 /*-- Map Usable -- */
 
 /* Find if a weapon/staff usable by unit has an enemy in range */
-
-void _Map_canEquip(struct Map *map, Unit *unit, b32 move, int archetype) {
-
-}
-
 void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
                   b32 move, int archetype) {
     SDL_assert(map          != NULL);
     SDL_assert(map->world   != NULL);
 
-    Map_Costmap_Movement_Compute(map, unit_ent);
-    struct Unit     *unit = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
-    struct Position *pos  = TNECS_GET_COMPONENT(map->world, unit_ent, Position);
+    Unit     *unit = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
+    Position *pos  = TNECS_GET_COMPONENT(map->world, unit_ent, Position);
+    _Map_Costmap_Movement_Compute(map, unit);
 
     /* Compute movemap */
     struct Point start = pos->tilemap_pos;
@@ -88,6 +83,7 @@ tnecs_entity *Map_Find_Defendants(struct Map *map, i32 *attacktolist,
         struct Unit *unit   = TNECS_GET_COMPONENT(map->world, unitontile, Unit);
         u8 align_t          = SotA_army2alignment(unit->army);
         u8 align_a          = SotA_army2alignment(agg->army);
+
         if (align_a != align_t)
             DARR_PUT(defendants, unitontile);
     }
