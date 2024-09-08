@@ -278,4 +278,7 @@ void Map_Bonus_Remove_Turn_End_Unit(struct Map *map, tnecs_entity ent);
 /* -- Entities -- */
 tnecs_entity *Map_Get_onField(struct Map *map, i32 army);
 
+void _Map_Tilesindex_Init(struct Map *map);
+
 #endif /* MAP_H */
+

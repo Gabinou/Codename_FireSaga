@@ -179,6 +179,18 @@ void test_map_usable(void) {
     map->world      = world;
     Map_dArrays_Init(map);
 
+    _Map_Tilesindex_Init(map);
+    DARR_PUT(map->tilesindex, TILE_PLAIN);
+    Map_Tiles_Load(map);
+
+    map->tilemap = calloc(map->row_len * map->col_len, sizeof(*map->tilemap));
+    for (int i = 0; i < (map->row_len * map->col_len); i++) {
+        map->tilemap[i] = TILE_PLAIN * TILE_DIVISOR + 1;
+    }
+    SDL_assert(DARR_NUM(map->tilesindex)    == 1);
+    SDL_assert(DARR_NUM(map->tiles)         == 1);
+    SDL_assert(DARR_NUM(map->tilesindex)    == 1);
+
     /* -- Testing 1 range, 0 move -- */
     _Map_Unit_Put(map, silou_pos->tilemap_pos.x, silou_pos->tilemap_pos.y, Silou);
     _Map_Unit_Put(map, erwin_pos->tilemap_pos.x, silou_pos->tilemap_pos.y, Erwin);

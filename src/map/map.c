@@ -161,7 +161,7 @@ static void _Map_Tilesindex_Free(struct Map *map) {
         DARR_FREE(map->tilesindex);
 }
 
-static void _Map_Tilesindex_Init(struct Map *map) {
+void _Map_Tilesindex_Init(struct Map *map) {
     _Map_Tilesindex_Free(map);
     map->tilesindex = DARR_INIT(map->tilesindex, i32, DEFAULT_TILESPRITE_BUFFER);
 }
@@ -180,7 +180,6 @@ struct Map *Map_Init(struct Map *map, i32 width, i32 height) {
     map->units_onfield      = DARR_INIT(map->units_onfield, tnecs_entity, 20);
     map->reinf_equipments   = DARR_INIT(map->reinf_equipments, struct Inventory_item *, 30);
     map->army_onfield       = DARR_INIT(map->army_onfield, i32, 5);
-
 
     Map_Tilesize_Set(map, width, height);
     if (map->arrow != NULL)
@@ -874,6 +873,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
         SDL_free(map->tilemap);
 
     cJSON_ArrayForEach(jframe, jframes) {
+        // TODO: tilemaps[i]
         map->tilemap = calloc(map->row_len * map->col_len, sizeof(*map->tilemap));
         jarray = cJSON_GetObjectItem(jframe, "array");
         Array2D_readJSON(jarray, map->tilemap, map->row_len, map->col_len);
