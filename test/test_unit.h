@@ -847,10 +847,30 @@ void test_canEquip(void) {
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
 
     /* --- Staff user that can twohand with skill --- */
-    // TODO
-    /* -- Stronghand NOT equipped -- */
-    /* -- Stronghand equipped -- */
+    Silou.skills |= PASSIVE_SKILL_STAFF_ONE_HAND;
 
+    /* -- Stronghand NOT equipped -- */
+    can_equip.hand      = UNIT_HAND_LEFT;
+    can_equip.lh        = -1;
+    can_equip.rh        = -1;
+
+    can_equip.eq    = 0;
+    nourstest_true(!Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 1;
+    nourstest_true(!Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 2;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+
+    /* -- Stronghand equipped -- */
+    can_equip.lh    =  2;
+    can_equip.rh    =  2;
+
+    can_equip.eq    = 0;
+    nourstest_true(!Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 1;
+    nourstest_true(!Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 2;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
 
     /* --- Mage that can't two hand --- */
     /* -- Stronghand NOT equipped -- */
