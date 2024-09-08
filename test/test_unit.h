@@ -846,7 +846,7 @@ void test_canEquip(void) {
     can_equip.eq    = 2;
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
 
-    /* --- Staff user that can twohand --- */
+    /* --- Staff user that can twohand with skill --- */
     // TODO
     /* -- Stronghand NOT equipped -- */
     /* -- Stronghand equipped -- */
