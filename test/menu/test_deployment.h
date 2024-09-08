@@ -35,7 +35,6 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
     SDL_assert(sota->party.entities[UNIT_ID_KIARA] > TNECS_NULL);
     SDL_assert(sota->party.entities[UNIT_ID_RAYAN] > TNECS_NULL);
 
-
     Unit *silou = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SILOU], Unit);
     Unit *erwin = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_ERWIN], Unit);
     Unit *kiara = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_KIARA], Unit);

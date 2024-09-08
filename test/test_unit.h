@@ -966,7 +966,6 @@ void test_canEquip(void) {
     nourstest_true( Unit_canEquip(&Silou, can_equip));
     can_equip.eq    = 2;
     nourstest_true( Unit_canEquip(&Silou, can_equip));
-
 }
 
 void test_unit(void) {

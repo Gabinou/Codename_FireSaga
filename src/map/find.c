@@ -42,8 +42,10 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
         struct Range *range = &unit->computed_stats.range_combined;
 
         /* Compute attacktolist to check if any enemy in it */
-        map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap, map->row_len, map->col_len,
-                                              move_stat, range, NMATH_MOVETILE_INCLUDE);
+        map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap,
+                                              map->row_len, map->col_len,
+                                              move_stat, range,
+                                              NMATH_MOVETILE_INCLUDE);
 
         Map_Attacktolist_Compute(map);
 

@@ -118,16 +118,38 @@ void test_map_perimeter(void) {
     }
 }
 
-#undef TEST_ROW_LEN
-#undef TEST_COL_LEN
 
 void test_map_usable(void) {
     /* Does the loadout make sense for unit/class/selection on MAP. */
+    struct Unit Silou = Unit_default;
+    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    Unit_InitWweapons(&Silou, weapons_dtab);
 
+
+    tnecs_world = tnecs_world_genesis();
+    TNECS_REGISTER_COMPONENT(sota->world, Unit);
+    TNECS_REGISTER_COMPONENT(sota->world, Position);
+    tnecs_entity Silou_ent  = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Unit, Position);
+ 
+
+    i32 unitmap[TEST_COL_LEN * TEST_ROW_LEN] = {
+        00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
+        00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
+        00, 00, 00, 00, 00, 00, 01, 00, 00, 00,
+        00, 00, 00, 00, 00, 01, 01, 01, 00, 00,
+        00, 00, 00, 00, 01, 01, 01, 01, 01, 00,
+        00, 00, 00, 01, 01, 01, 00, 01, 01, 01,
+        00, 00, 01, 01, 01, 00, 00, 00, 01, 01,
+        00, 00, 00, 01, 01, 01, 00, 01, 01, 01,
+        00, 00, 00, 00, 01, 01, 01, 01, 01, 00,
+        00, 00, 00, 00, 00, 01, 01, 01, 00, 00
+    };
 }
 
-void test_map() {
+#undef TEST_ROW_LEN
+#undef TEST_COL_LEN
 
+void test_map(void) {
     test_map_simple();
     test_map_perimeter();
     test_map_usable();
