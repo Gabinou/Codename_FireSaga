@@ -229,7 +229,7 @@ void Map_Texture_Alloc(struct Map *map);
 
 /* -- Dynamic arrays -- */
 void Map_dArrays_Free(struct Map *map);
-void Map_dArrays_Init(struct Map *map,  struct Settings *settings);
+void Map_dArrays_Init(struct Map *map);
 
 /* --- Tilemap --- */
 void Map_Tilemap_Surface_Init(struct Map *map);

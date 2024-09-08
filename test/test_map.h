@@ -118,32 +118,74 @@ void test_map_perimeter(void) {
     }
 }
 
-
 void test_map_usable(void) {
     /* Does the loadout make sense for unit/class/selection on MAP. */
-    struct Unit Silou = Unit_default;
+
+    /* Tnecs init */
+    tnecs_world *world = tnecs_world_genesis();
+    TNECS_REGISTER_COMPONENT(world, Unit);
+    TNECS_REGISTER_COMPONENT(world, Position);
+    tnecs_entity Silou  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
+    tnecs_entity Erwin  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
+    tnecs_entity Enemy1 = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
+    tnecs_entity Enemy2 = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
+    tnecs_entity Enemy3 = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
+
+    Unit *silou     = TNECS_GET_COMPONENT(world, Silou,     Unit);
+    Unit *erwin     = TNECS_GET_COMPONENT(world, Erwin,     Unit);
+    Unit *enemy1    = TNECS_GET_COMPONENT(world, Enemy1,    Unit);
+    Unit *enemy2    = TNECS_GET_COMPONENT(world, Enemy2,    Unit);
+    Unit *enemy3    = TNECS_GET_COMPONENT(world, Enemy3,    Unit);
+
+    Position *silou_pos     = TNECS_GET_COMPONENT(world, Silou,     Position);
+    Position *erwin_pos     = TNECS_GET_COMPONENT(world, Erwin,     Position);
+    Position *enemy1_pos    = TNECS_GET_COMPONENT(world, Enemy1,    Position);
+    Position *enemy2_pos    = TNECS_GET_COMPONENT(world, Enemy2,    Position);
+    Position *enemy3_pos    = TNECS_GET_COMPONENT(world, Enemy3,    Position);
+
+    /* Units init */
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
-    Unit_InitWweapons(&Silou, weapons_dtab);
+    Unit_InitWweapons(silou, weapons_dtab);
 
+    /* --- Testing 1 range only --- */
+    silou->equippable = ITEM_TYPE_SWORD;
+    silou->_equipped[UNIT_HAND_LEFT]    =  0;
+    silou->_equipped[UNIT_HAND_RIGHT]   = -1;
+    silou->_equipment[0].id             = ITEM_ID_FLEURET;
+    silou->_equipment[1].id             = ITEM_ID_IRON_AXE;
+    silou->_equipment[2].id             = ITEM_ID_IRON_LANCE;
+    silou->_equipment[3].id             = ITEM_ID_SHORT_BOW;
+    silou->current_stats.move           = 1;
+    silou_pos->tilemap_pos.x    = 0;
+    silou_pos->tilemap_pos.y    = 0;
+    erwin_pos->tilemap_pos.x    = 0;
+    erwin_pos->tilemap_pos.y    = 1;
+    enemy1_pos->tilemap_pos.x   = 1;
+    enemy1_pos->tilemap_pos.y   = 1;
+    enemy2_pos->tilemap_pos.x   = 2;
+    enemy2_pos->tilemap_pos.y   = 1;
+    enemy3_pos->tilemap_pos.x   = 3;
+    enemy3_pos->tilemap_pos.y   = 1;
 
-    tnecs_world = tnecs_world_genesis();
-    TNECS_REGISTER_COMPONENT(sota->world, Unit);
-    TNECS_REGISTER_COMPONENT(sota->world, Position);
-    tnecs_entity Silou_ent  = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Unit, Position);
- 
+    /* Map init */
+    Map *map = Map_Init(map, TEST_COL_LEN, TEST_ROW_LEN);
+    map->row_len = TEST_ROW_LEN;
+    map->col_len = TEST_COL_LEN;
+    map->world = world;
+    Map_dArrays_Init(map);
 
-    i32 unitmap[TEST_COL_LEN * TEST_ROW_LEN] = {
-        00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
-        00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
-        00, 00, 00, 00, 00, 00, 01, 00, 00, 00,
-        00, 00, 00, 00, 00, 01, 01, 01, 00, 00,
-        00, 00, 00, 00, 01, 01, 01, 01, 01, 00,
-        00, 00, 00, 01, 01, 01, 00, 01, 01, 01,
-        00, 00, 01, 01, 01, 00, 00, 00, 01, 01,
-        00, 00, 00, 01, 01, 01, 00, 01, 01, 01,
-        00, 00, 00, 00, 01, 01, 01, 01, 01, 00,
-        00, 00, 00, 00, 00, 01, 01, 01, 00, 00
-    };
+    /* -- Testing 1 range, 0 move -- */
+    _Map_Unit_Put(map, silou_pos->tilemap_pos.x, silou_pos->tilemap_pos.y, Silou);
+    _Map_Unit_Put(map, erwin_pos->tilemap_pos.x, silou_pos->tilemap_pos.y, Erwin);
+    _Map_Unit_Put(map, enemy1_pos->tilemap_pos.x, enemy1_pos->tilemap_pos.y, Enemy1);
+    _Map_Unit_Put(map, enemy2_pos->tilemap_pos.x, enemy2_pos->tilemap_pos.y, Enemy2);
+    _Map_Unit_Put(map, enemy3_pos->tilemap_pos.x, enemy3_pos->tilemap_pos.y, Enemy3);
+
+    Map_canEquip(map, Silou, false, ITEM_ARCHETYPE_WEAPON);
+    nourstest_true(silou->num_canEquip == 0);
+
+    Map_Free(map);
+    tnecs_world_destroy(world);
 }
 
 #undef TEST_ROW_LEN

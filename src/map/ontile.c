@@ -14,18 +14,19 @@ void Map_startingPos_Add(struct Map *map, i32 col, i32 row) {
 }
 
 void _Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
-
+    SDL_assert(map          != NULL);
+    SDL_assert(map->unitmap != NULL);
     /* -- Updating unit pos -- */
-    if (entity > TNECS_NULL) {
-        size_t index = row * map->col_len + col;
-        struct Position *pos = TNECS_GET_COMPONENT(map->world, entity, Position);
-        pos->tilemap_pos.x   = col;
-        pos->tilemap_pos.y   = row;
-        pos->pixel_pos.x     = pos->tilemap_pos.x * pos->scale[0];
-        pos->pixel_pos.y     = pos->tilemap_pos.y * pos->scale[1];
-        // SDL_Log("_Map_Unit_Put %lu %d %d", entity, pos->tilemap_pos.x, pos->tilemap_pos.y);
-        map->unitmap[index]  = entity;
+    if (entity <= TNECS_NULL) {
+        return;
     }
+    size_t index        = row * map->col_len + col;
+    struct Position *pos = TNECS_GET_COMPONENT(map->world, entity, Position);
+    pos->tilemap_pos.x   = col;
+    pos->tilemap_pos.y   = row;
+    pos->pixel_pos.x     = pos->tilemap_pos.x * pos->scale[0];
+    pos->pixel_pos.y     = pos->tilemap_pos.y * pos->scale[1];
+    map->unitmap[index]  = entity;
 }
 
 void Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {

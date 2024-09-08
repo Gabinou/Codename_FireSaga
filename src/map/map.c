@@ -353,7 +353,7 @@ void Map_Free(struct Map *map) {
     Map_dArrays_Free(map);
 }
 
-void Map_dArrays_Init(struct Map *map,  struct Settings *settings) {
+void Map_dArrays_Init(struct Map *map) {
     SDL_assert(map->row_len > 0);
     SDL_assert(map->col_len > 0);
     SDL_assert(map->row_len < UCHAR_MAX);
@@ -683,7 +683,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
         map->arrow->col_len = map->col_len;
         map->arrow->row_len = map->row_len;
     }
-    Map_dArrays_Init(map, &Settings_default);
+    Map_dArrays_Init(map);
 
     /* -- Read Starting Positions -- */
     // SDL_Log("Read Starting Positions");
