@@ -938,10 +938,34 @@ void test_canEquip(void) {
     can_equip.eq    = 2;
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
 
-
     /* --- Normal physical soldier --- */
+    Silou.equippable = ITEM_TYPE_LANCE | ITEM_TYPE_SHIELD | ITEM_TYPE_SWORD;
+    Silou._equipment[0].id = ITEM_ID_IRON_LANCE;
+    Silou._equipment[1].id = ITEM_ID_WOODEN_SHIELD;
+    Silou._equipment[2].id = ITEM_ID_WRATH_LANCE;
+
     /* -- Stronghand NOT equipped -- */
+    can_equip.lh    =  -1;
+    can_equip.rh    =  -1;
+
+    can_equip.eq    = 0;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 1;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 2;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+
     /* -- Stronghand equipped -- */
+
+    can_equip.lh    =  0;
+    can_equip.rh    =  0;
+
+    can_equip.eq    = 0;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 1;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 2;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
 
 }
 
