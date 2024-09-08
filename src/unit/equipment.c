@@ -309,8 +309,10 @@ b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand) {
         return (false);
     }
 
-    /* Failure: Trying to onehand a twohand only weapon */
+    /* Failure: Trying to twohand a onehand only weapon */
     struct Weapon *wpn  = DTAB_GET(unit->weapons_dtab, id);
+
+    /* Failure: Trying to onehand a twohand only weapon */
     b32 two_hand_only   = Weapon_TwoHand_Only(wpn);
 
     b32 other_hand      = UNIT_OTHER_HAND(hand);
@@ -320,28 +322,10 @@ b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand) {
     //      - Other hand equipped different wpn.
     b32 eq_diff         = (eq_other != eq);
     b32 eq_in_bound     = (eq_other >= 0) && (eq_other < SOTA_EQUIPMENT_SIZE);
-    b32 two_hand_cant   = two_hand_only && (eq_in_bound && eq_diff) ;
+    b32 two_hand_cant   = two_hand_only && (eq_in_bound && eq_diff);
 
     if (two_hand_cant) {
         return (false);
-    }
-
-    /* Cannot twohand magic weapons/staves */
-    b32 eq_same = (eq_other == eq) && eq_in_bound;
-    if (Item_hasType(wpn->item, ITEM_TYPE_STAFF)) {
-        b32 one_hand_skill = Unit_canStaff_oneHand(unit);
-        if (eq_same && !one_hand_skill) {
-            return (false);
-        }
-    } else if (
-            Item_hasType(wpn->item, ITEM_TYPE_ELEMENTAL) ||
-            Item_hasType(wpn->item, ITEM_TYPE_ANGELIC)   ||
-            Item_hasType(wpn->item, ITEM_TYPE_DEMONIC)
-    ) {
-        b32 one_hand_skill = Unit_canMagic_oneHand(unit);
-        if (eq_same && !one_hand_skill) {
-            return (false);
-        }
     }
 
     // Weapon could be:
@@ -362,30 +346,47 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, b32 hand) {
     if (!Weapon_ID_isValid(id))
         return (false);
 
-    struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);
-    SDL_assert(weapon               != NULL);
+    struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, id);
+    SDL_assert(wpn               != NULL);
 
-    // left hand weapon in right hand
-    if ((weapon->handedness == WEAPON_HAND_LEFT) && (hand == UNIT_HAND_RIGHT))
+    // left hand wpn in right hand
+    if ((wpn->handedness == WEAPON_HAND_LEFT) && (hand == UNIT_HAND_RIGHT))
         return (false);
 
-    // right hand weapon in left hand
-    if ((weapon->handedness == WEAPON_HAND_RIGHT) && (hand == UNIT_HAND_LEFT))
+    // right hand wpn in left hand
+    if ((wpn->handedness == WEAPON_HAND_RIGHT) && (hand == UNIT_HAND_LEFT))
         return (false);
 
-    /* Failure: Trying to twohand a onehand only weapon */
+    /* Failure: Trying to twohand a onehand only wpn */
     b32 other_hand      = UNIT_OTHER_HAND(hand);
     i32 eq_other        = Unit_Eq_Equipped(unit, other_hand);
 
-    // One-hand only weapon can't be equipped if:
+    // One-hand only wpn can't be equipped if:
     //      - Other hand equipped different wpn.
     b32 eq_same         = (eq_other == eq);
     b32 eq_in_bound     = (eq_other >= 0) && (eq_other < SOTA_EQUIPMENT_SIZE);
 
-    b32 one_hand_only   = Weapon_OneHand_Only(weapon);
+    b32 one_hand_only   = Weapon_OneHand_Only(wpn);
     b32 one_hand_cant   = one_hand_only && (eq_in_bound && eq_same);
     if (one_hand_cant) {
         return (false);
+    }
+
+    /* Cannot onehand magic weapons/staves */
+    if (Item_hasType(wpn->item, ITEM_TYPE_STAFF)) {
+        b32 one_hand_skill = Unit_canStaff_oneHand(unit);
+        if (!one_hand_skill) {
+            return (false);
+        }
+    } else if (
+            Item_hasType(wpn->item, ITEM_TYPE_ELEMENTAL) ||
+            Item_hasType(wpn->item, ITEM_TYPE_ANGELIC)   ||
+            Item_hasType(wpn->item, ITEM_TYPE_DEMONIC)
+    ) {
+        b32 one_hand_skill = Unit_canMagic_oneHand(unit);
+        if (!one_hand_skill) {
+            return (false);
+        }
     }
 
     // Weapon could be:

@@ -707,17 +707,17 @@ void test_canEquip_TwoHand() {
 
     /* Try to equip a one hand weapon when already in other hand with type
          that can't be twohanded */
-    Silou._equipped[UNIT_HAND_LEFT]     = 0;
+    Silou._equipped[UNIT_HAND_LEFT]     =  0;
     Silou._equipped[UNIT_HAND_RIGHT]    = -1;
     Silou._equipment[0].id    = ITEM_ID_FLEURET;
     Silou._equipment[1].id    = ITEM_ID_RAPIERE;
 
     weapon->handedness  = WEAPON_HAND_ANY;
     weapon2->handedness = WEAPON_HAND_ANY;
-    weapon->item->type = ITEM_TYPE_ELEMENTAL;
-    weapon->item->type = ITEM_TYPE_ANGELIC;
+    weapon->item->type  = ITEM_TYPE_ELEMENTAL;
+    weapon->item->type  = ITEM_TYPE_ANGELIC;
     nourstest_true( Unit_canEquip_TwoHand(&Silou, 1, UNIT_HAND_RIGHT));
-    nourstest_true(!Unit_canEquip_TwoHand(&Silou, 0, UNIT_HAND_RIGHT));
+    nourstest_true(!Unit_canEquip_OneHand(&Silou, 0, UNIT_HAND_RIGHT));
 
     Game_Weapons_Free(&weapons_dtab);
 }
@@ -788,7 +788,6 @@ void test_canEquip_Archetype(void) {
     nourstest_true( Unit_canEquip_Archetype(&Silou, eq, ITEM_ARCHETYPE_SHIELD));
     nourstest_true(!Unit_canEquip_Archetype(&Silou, eq, ITEM_ARCHETYPE_STAFF));
 
-
     Game_Weapons_Free(&weapons_dtab);
 }
 
@@ -797,19 +796,15 @@ void test_canEquip(void) {
     struct Unit Silou = Unit_default;
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
     Unit_InitWweapons(&Silou, weapons_dtab);
-    int id = ITEM_ID_FLEURET;
-    Weapon_Load(weapons_dtab, id);
     Silou._id = UNIT_ID_SILOU;
 
     /* --- Staff user that can't twohand --- */
     Unit_setClassind(&Silou, UNIT_CLASS_VESTAL);
-    int eq = 0;
-    Silou._equipment[eq].id = id;
-    Silou._equipped[UNIT_HAND_LEFT]     = 0;
+    Silou._equipped[UNIT_HAND_LEFT]     =  0;
     Silou._equipped[UNIT_HAND_RIGHT]    = -1;
-    Silou._equipment[0].id    = ITEM_ID_FLEURET;
-    Silou._equipment[1].id    = ITEM_ID_RAPIERE;
-    Silou._equipment[2].id    = ITEM_ID_HEAL;
+    Silou._equipment[0].id              = ITEM_ID_FLEURET;
+    Silou._equipment[1].id              = ITEM_ID_RAPIERE;
+    Silou._equipment[2].id              = ITEM_ID_HEAL;
 
     /* Nothing in either hand */
     canEquip can_equip  = canEquip_default;
@@ -873,12 +868,75 @@ void test_canEquip(void) {
     nourstest_true( Unit_canEquip(&Silou, can_equip));
 
     /* --- Mage that can't two hand --- */
+    Unit_setClassind(&Silou, UNIT_CLASS_MAGE);
+    Silou.equippable = ITEM_TYPE_ANGELIC | ITEM_TYPE_DEMONIC | ITEM_TYPE_ELEMENTAL;
+
+    Silou._equipment[0].id              = ITEM_ID_WIND_SPEAR;
+    Silou._equipment[1].id              = ITEM_ID_DOWNFALL;
+    Silou._equipment[2].id              = ITEM_ID_SILVERLIGHT_SPEAR;
+
     /* -- Stronghand NOT equipped -- */
+    can_equip.lh    =  -1;
+    can_equip.rh    =  -1;
+
+    can_equip.eq    = 0;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 1;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 2;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+
     /* -- Stronghand equipped -- */
+    can_equip.lh    = 0;
+    can_equip.rh    = 0;
+    can_equip.eq    = 0;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 1;
+    nourstest_true(!Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 2;
+    nourstest_true(!Unit_canEquip(&Silou, can_equip));
+
+    can_equip.lh    = 1;
+    can_equip.rh    = 1;
+    can_equip.eq    = 0;
+    nourstest_true(!Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 1;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 2;
+    nourstest_true(!Unit_canEquip(&Silou, can_equip));
 
     /* --- Mage that can two hand due to skill --- */
+    Silou.skills = PASSIVE_SKILL_MAGIC_ONE_HAND;
     /* -- Stronghand NOT equipped -- */
+    can_equip.lh    =  -1;
+    can_equip.rh    =  -1;
+
+    can_equip.eq    = 0;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 1;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 2;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+
     /* -- Stronghand equipped -- */
+    can_equip.lh    = 0;
+    can_equip.rh    = 0;
+    can_equip.eq    = 0;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 1;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 2;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+
+    can_equip.lh    = 1;
+    can_equip.rh    = 1;
+    can_equip.eq    = 0;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 1;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 2;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+
 
     /* --- Normal physical soldier --- */
     /* -- Stronghand NOT equipped -- */
@@ -904,3 +962,4 @@ void test_unit(void) {
 
     URN_debug = -1;
 }
+
