@@ -12,7 +12,7 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
     Unit     *unit = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
     Position *pos  = TNECS_GET_COMPONENT(map->world, unit_ent, Position);
     _Map_Costmap_Movement_Compute(map, unit);
-    
+
     /* Compute movemap */
     struct Point start = pos->tilemap_pos;
     i32 move_stat = move ? Unit_getStats(unit).move : 0;
@@ -43,6 +43,7 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
 
         /* Compute attacktolist to check if any enemy in it */
         map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap,
+                                              map->unitmap,
                                               map->row_len, map->col_len,
                                               move_stat, range,
                                               NMATH_MOVETILE_INCLUDE);

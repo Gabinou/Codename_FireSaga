@@ -361,7 +361,8 @@ void Game_preLoadout_Patients(struct Game *sota, tnecs_entity actor) {
 
     /* Compute healtolist */
     // TODO: find yourself as patient for staves that can target themselves.
-    sota->map->healtomap = _Map_tomap_Compute(sota->map->healtomap, sota->map->movemap,
+    tnecs_entity *occupymap = NULL;
+    sota->map->healtomap = _Map_tomap_Compute(sota->map->healtomap, sota->map->movemap, occupymap,
                                               sota->map->row_len,   sota->map->col_len,
                                               true, range, NMATH_MOVETILE_EXCLUDE);
 
@@ -383,7 +384,8 @@ void Game_preLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
     struct Range *range = Unit_Range_Combine_Weapons(unit, false);
 
     /* Compute attacktolist */
-    sota->map->attacktomap = _Map_tomap_Compute(sota->map->attacktomap, sota->map->movemap,
+    tnecs_entity *occupymap = NULL;
+    sota->map->attacktomap = _Map_tomap_Compute(sota->map->attacktomap, sota->map->movemap, occupymap,
                                                 sota->map->row_len,     sota->map->col_len,
                                                 true, range, NMATH_MOVETILE_INCLUDE);
     Map_Attacktolist_Compute(sota->map);

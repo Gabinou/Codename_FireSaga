@@ -665,9 +665,9 @@ void Pathfinding_Attackfrom_noM(i32 *attackmap, i32 *movemap,
 // Where can aggressor attack to considering where he can move?
 //  - Output does not use movement cost. Uses manhattan distance.
 //      - Useful for auras and supports as well
-//  - Note: Overwrites attackmap a couple times -> can't find which weapon 
+//  - Note: Overwrites attackmap a couple times -> can't find which weapon
 //          can be used to attackto
-void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix, 
+void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
                               u64 *occupymap,
                               size_t row_len, size_t col_len,
                               i32 range[2], i32 mode_movetile) {
@@ -684,10 +684,10 @@ void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
     for (i32 i = 0; i < list_len; i++) {
         i32 x = move_list[i * TWO_D + 0];
         i32 y = move_list[i * TWO_D + 1];
-                
+
         /* Can only attack from tile if not occupied */
         if ((occupymap != NULL) &&
-           (occupymap[y * col_len + x] > TNECS_NULL)) {
+            (occupymap[y * col_len + x] > TNECS_NULL)) {
             continue;
         }
 
@@ -731,7 +731,7 @@ void _Pathfinding_Attackto(i32 x, i32 y,
             for (i32 n = 0; n < SQUARE_NEIGHBOURS; n++) {
                 point.x = int_inbounds(x + q_cycle4_pmmp(n) * rangex, 0, col_len - 1);
                 point.y = int_inbounds(y + q_cycle4_ppmm(n) * rangey, 0, row_len - 1);
-                
+
                 if (mode_movetile == MOVETILE_EXCLUDE) {
                     if (move_matrix == NULL) {
                         /*Add point only if different from start */

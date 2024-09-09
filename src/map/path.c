@@ -108,9 +108,9 @@ i32 *Map_Movemap_Compute(struct Map *map, tnecs_world *world, tnecs_entity unit_
 
 // TODO: get rid of this useless interface
 i32 *_Map_tomap_Compute(i32 *tomap, i32 *movemap, tnecs_entity *occupymap,
-                        u8 row_len, u8 col_len,i32 move,
+                        u8 row_len, u8 col_len, i32 move,
                         struct Range *range, u8 mode_movetile) {
-    Pathfinding_Attackto_noM(tomap, movemap, occupymap, 
+    Pathfinding_Attackto_noM(tomap, movemap, occupymap,
                              row_len, col_len,
                              (i32 *)range, mode_movetile);
     return (tomap);
@@ -158,7 +158,9 @@ i32 *Map_Healtomap_Compute(struct Map *map, tnecs_world *world, tnecs_entity uni
     _Unit_Range_Combine(unit, &range, equipped, ITEM_ARCHETYPE_STAFF);
 
     map->update = true;
-    map->healtomap = _Map_tomap_Compute(map->healtomap, map->movemap, map->row_len, map->col_len,
+    map->healtomap = _Map_tomap_Compute(map->healtomap, map->movemap,
+                                        map->unitmap,
+                                        map->row_len, map->col_len,
                                         move_stat, &range, MOVETILE_INCLUDE);
     // matrix_print(map->healtomap, map->row_len, map->col_len);
     return (map->healtomap);
@@ -209,8 +211,10 @@ i32 *Map_Attacktomap_Compute(struct Map *map, tnecs_world *world,
     struct Range range = Range_default;
     _Unit_Range_Combine(unit, &range, equipped, ITEM_ARCHETYPE_WEAPON);
     map->update = true;
-    map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap, map->row_len,
-                                          map->col_len, move_stat, &range, MOVETILE_INCLUDE);
+    map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap,
+                                          map->unitmap,
+                                          map->row_len, map->col_len,
+                                          move_stat, &range, MOVETILE_INCLUDE);
     // matrix_print(map->attacktomap, map->row_len, map->col_len);
     return (map->attacktomap);
 }
@@ -258,8 +262,10 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_world *world, tnecs_entity unit_e
     _Map_Movemap_Compute(map, start, move);
     struct Range *range = Unit_Range_Combine_Equipment(unit);
 
-    map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap, map->row_len,
-                                          map->col_len, move, range, MOVETILE_INCLUDE);
+    map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap,
+                                          map->unitmap,
+                                          map->row_len, map->col_len,
+                                          move, range, MOVETILE_INCLUDE);
     memset(map->temp, 0, sizeof(*map->temp)*map->row_len * map->col_len);
     map->temp = matrix_plus_noM(map->temp, map->attacktomap, map->row_len * map->col_len);
     // matrix_print(map->temp, map->row_len, map->col_len);
@@ -442,8 +448,10 @@ void Map_globalRange(struct Map *map, tnecs_world *world, u8 alignment) {
         Map_Costmap_Movement_Compute(map, unit_entities[i]);
         Pathfinding_Moveto_noM(map->movemap, map->costmap, map->row_len,
                                map->col_len, start, move);
-        Pathfinding_Attackto_noM(map->attacktomap, map->movemap, map->row_len,
-                                 map->col_len, (i32 *)range, MOVETILE_INCLUDE);
+        Pathfinding_Attackto_noM(map->attacktomap, map->movemap,
+                                 map->unitmap,
+                                 map->row_len, map->col_len,
+                                 (i32 *)range, MOVETILE_INCLUDE);
         map->global_rangemap = matrix_plus_noM(map->global_rangemap, map->attacktomap,
                                                map->row_len * map->col_len);
     }
