@@ -210,7 +210,6 @@ void test_map_usable(void) {
                                         enemy1_pos->tilemap_pos.x,
                                         enemy1_pos->tilemap_pos.y) == Enemy1);
 
-
     erwin_pos->tilemap_pos.x    = 0;
     erwin_pos->tilemap_pos.y    = 1;
     enemy1_pos->tilemap_pos.x   = 0;
@@ -219,8 +218,6 @@ void test_map_usable(void) {
     _Map_Unit_Put(map, enemy1_pos->tilemap_pos.x, enemy1_pos->tilemap_pos.y, Enemy1);
     Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_WEAPON);
     nourstest_true(silou->num_canEquip == 0);
-
-
 
     Map_Free(map);
     tnecs_world_destroy(world);

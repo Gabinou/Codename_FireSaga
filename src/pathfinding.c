@@ -34,6 +34,7 @@ void Taxicab_Circle(i32 *matrix, i32 value, i32 x, i32 y, size_t row_len, size_t
         subrangey_max = (rangex > range->max) ? 0 : (range->max - rangex);
         for (i32 rangey = subrangey_min; rangey <= subrangey_max; rangey++) {
             for (i32 n = 0; n < SQUARE_NEIGHBOURS; n++) {
+                // TODO int_inbounds might break conditions! REMOVE
                 i32 tempx = int_inbounds(x + q_cycle4_pmmp(n) * rangex, 0, col_len - 1);
                 i32 tempy = int_inbounds(y + q_cycle4_ppmm(n) * rangey, 0, row_len - 1);
                 matrix[tempy * col_len + tempx] = value;
@@ -61,6 +62,7 @@ i32 *Pathfinding_PushPullto_noM(i32 *pushpulltomap,
             temp_distance = *(block_ptr + n);
             if (*(pushpullto_ptr + n) >= NMATH_PUSHPULLMAP_MINDIST) {
                 for (i32  distance = 1; distance < temp_distance; distance++) {
+                    // TODO int_inbounds might break conditions! REMOVE
                     pushpullto_tile.x = int_inbounds((distance * q_cycle4_pzmz(n)) + start.x, 0, col_len - 1);
                     pushpullto_tile.y = int_inbounds((distance * q_cycle4_zmzp(n)) + start.y, 0, row_len - 1);
                     pushpulltomap[pushpullto_tile.y * col_len + pushpullto_tile.x] = distance;
@@ -78,6 +80,7 @@ struct SquareNeighbours pathfinding_Direction_Pushto(i32 *attackfrommap, size_t 
     struct Point neighbour;
     for (i32 distance = range[0]; distance <= range[1]; distance++) {
         for (i32  i = 0; i < NMATH_SQUARE_NEIGHBOURS; i++) {
+            // TODO int_inbounds might break conditions! REMOVE
             neighbour.x = int_inbounds((target.x + distance * q_cycle4_pzmz(i)), 0, col_len - 1);
             neighbour.y = int_inbounds((target.y + distance * q_cycle4_zpzm(i)), 0, row_len - 1);
             if (attackfrommap[neighbour.y * col_len + neighbour.x] >= NMATH_ATTACKFROM_MOVEABLEMIN) {
@@ -124,6 +127,7 @@ i32 *Pathfinding_PushPullto(struct SquareNeighbours direction_block,
         temp_distance = *(block_ptr + n);
         if (*(pushpullto_ptr + n) >= NMATH_PUSHPULLMAP_MINDIST) {
             for (i32  distance = 1; distance < temp_distance; distance++) {
+                // TODO int_inbounds might break conditions! REMOVE
                 pushpullto_tile.x = int_inbounds((distance * q_cycle4_pzmz(n)) + start.x, 0,
                                                  col_len - 1);
                 pushpullto_tile.y = int_inbounds((distance * q_cycle4_zmzp(n)) + start.y, 0,
@@ -154,6 +158,7 @@ struct SquareNeighbours pathfinding_Direction_Block(i32 *costmap_pushpull, size_
            || (distance_block.right == 0)) {
         distance++;
         for (i32  i = 0; i < NMATH_SQUARE_NEIGHBOURS; i++) {
+            // TODO int_inbounds might break conditions! REMOVE
             neighbour.x = int_inbounds((start.x + q_cycle4_pzmz(i) * distance), 0, col_len - 1);
             neighbour.y = int_inbounds((start.y + q_cycle4_zpzm(i) * distance), 0, row_len - 1);
             if ((costmap_pushpull[neighbour.y * col_len + neighbour.x] == 0)
@@ -241,6 +246,7 @@ struct Point Pathfinding_Closest_Unblocked(i32 *distmap, size_t row_len, size_t 
         /* -- Visit all square neighbours -- */
         for (size_t n = 0; n < SQUARE_NEIGHBOURS; n++) {
             /* Get next neighbour movement cost */
+            // TODO int_inbounds might break conditions! REMOVE
             neighbour.x     = int_inbounds(q_cycle4_mzpz(n) + current.x, 0, col_len - 1);
             neighbour.y     = int_inbounds(q_cycle4_zmzp(n) + current.y, 0, row_len - 1);
             int current_n = neighbour.y * col_len + neighbour.x;
@@ -327,6 +333,7 @@ void Pathfinding_Distance_Plus(i32 *distmap, i32 *costmap, tnecs_entity *enemy_o
         /* -- Visit all square neighbours -- */
         for (size_t n = 0; n < SQUARE_NEIGHBOURS; n++) {
             /* Get next neighbour movement cost */
+            // TODO int_inbounds might break conditions! REMOVE
             neighbour.x     = int_inbounds(q_cycle4_mzpz(n) + current.x, 0, col_len - 1);
             neighbour.y     = int_inbounds(q_cycle4_zmzp(n) + current.y, 0, row_len - 1);
 
@@ -455,6 +462,7 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
         /* -- Visit all square neighbours -- */
         for (size_t n = 0; n < SQUARE_NEIGHBOURS; n++) {
             /* Get next neighbour movement cost */
+            // TODO int_inbounds might break conditions! REMOVE
             neighbour.x     = int_inbounds(q_cycle4_mzpz(n) + current.x, 0, col_len - 1);
             neighbour.y     = int_inbounds(q_cycle4_zmzp(n) + current.y, 0, row_len - 1);
             int current_n   = neighbour.y * col_len + neighbour.x;
@@ -602,6 +610,7 @@ void Pathfinding_Moveto_Neighbours(struct Node *open, struct Node *closed,
     /* -- Move to four square neighbour tiles -- */
     for (size_t i = 0; i < SQUARE_NEIGHBOURS; i++) {
         /* - Get square neighbour - */
+        // TODO int_inbounds might break conditions! REMOVE
         neighbour.x = int_inbounds(current.x + q_cycle4_mzpz(i), 0, col_len - 1);
         neighbour.y = int_inbounds(current.y + q_cycle4_zmzp(i), 0, row_len - 1);
 
@@ -723,14 +732,24 @@ void _Pathfinding_Attackto(i32 x, i32 y,
 
     /* -- Iterate over possible ranges in x -- */
     for (i32 rangex = 0; rangex <= range[1]; rangex++) {
-        i32 subrangey_min = (rangex > range[0]) ? 0 : (range[0] - rangex);
-        i32 subrangey_max = (rangex > range[1]) ? 0 : (range[1] - rangex);
+        i32 subrangey_min = (rangex >= range[0]) ? 0 : (range[0] - rangex);
+        i32 subrangey_max = (rangex >= range[1]) ? 0 : (range[1] - rangex);
         /* -- Iterate over possible ranges in y, knowing x range -- */
         for (i32 rangey = subrangey_min; rangey <= subrangey_max; rangey++) {
+            SDL_assert((rangex + rangey) >= range[0]);
+            SDL_assert((rangex + rangey) <= range[1]);
             /* -- Iterate over range 4 combinations: x+y+, x+y-, x-y+, x-y- */
             for (i32 n = 0; n < SQUARE_NEIGHBOURS; n++) {
-                point.x = int_inbounds(x + q_cycle4_pmmp(n) * rangex, 0, col_len - 1);
-                point.y = int_inbounds(y + q_cycle4_ppmm(n) * rangey, 0, row_len - 1);
+                point.x = x + q_cycle4_pmmp(n) * rangex;
+                point.y = y + q_cycle4_ppmm(n) * rangey;
+
+                /* Skip if point out of bounds */
+                if ((point.x < 0) || (point.x >= col_len)) {
+                    continue;
+                }
+                if ((point.y < 0) || (point.y >= col_len)) {
+                    continue;
+                }
 
                 if (mode_movetile == MOVETILE_EXCLUDE) {
                     if (move_matrix == NULL) {
@@ -788,7 +807,7 @@ void Pathfinding_unitGradient_noM(i32 *gradmap, i32 *costmap,
 
         /* -- Visit all square neighbours -- */
         for (i32 n = 0; n < NMATH_SQUARE_NEIGHBOURS; n++) {
-
+            // TODO int_inbounds might break conditions! REMOVE
             neighbour.x = int_inbounds(q_cycle4_mzpz(n) + current.x, 0, col_len - 1);
             neighbour.y = int_inbounds(q_cycle4_zmzp(n) + current.y, 0, row_len - 1);
             neighbour.distance = gradmap[current.y * col_len + current.x] + 1;
@@ -872,6 +891,7 @@ void Pathfinding_Visible_noM(i32 *sightmap, i32 *blockmap,
             i32 x_2  = (n / NMATH_SQUARE_NEIGHBOURS) * q_cycle4_pmmp(n);
             i32 y_2  = (n / NMATH_SQUARE_NEIGHBOURS) * q_cycle4_ppmm(n);
 
+            // TODO int_inbounds might break conditions! REMOVE
             delta.x = int_inbounds(x_1 + x_2, -start.x, col_len - start.x);
             delta.y = int_inbounds(y_1 + y_2, -start.y, row_len - start.y);
 

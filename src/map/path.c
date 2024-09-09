@@ -341,6 +341,9 @@ float *Map_fCostmap_Movement_Compute(struct Map *map, tnecs_world *world,
     return (map->fcostmap);
 }
 
+/* Create costmap for unit. Block tiles if occupied by enemy.
+*   costmap: how many points to traverse/move to tile.
+*/
 i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
     SDL_assert(map          != NULL);
     SDL_assert(map->world   != NULL);
