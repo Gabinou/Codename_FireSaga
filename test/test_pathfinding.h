@@ -1654,6 +1654,9 @@ void test_pathfinding_attackto_unitmap() {
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);
     }
+    // TODO: test 2 range with exclude.
+    // TODO: test 1-2 range with include/exclude.
+    // TODO: test 3-7 range with include/exclude.
 }
 
 #undef ROW_LEN
