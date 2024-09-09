@@ -214,23 +214,33 @@ int entity_isIn(u64 *array, u64 to_find, size_t arr_len) {
     return (found);
 }
 
-void _Map_Unit_Remove_List(struct Map *map,  tnecs_entity entity) {
+tnecs_entity _Map_Unit_Remove_List(struct Map *map,  tnecs_entity entity) {
+    tnecs_entity out = TNECS_NULL;
     int found = entity_isIn(map->friendlies_onfield, entity, DARR_NUM(map->friendlies_onfield));
-    if (found > -1)
+    if (found > -1) {
+        tnecs_entity out = map->friendlies_onfield[found];
         DARR_DEL(map->friendlies_onfield, found);
+    }
 
     found = entity_isIn(map->enemies_onfield, entity, DARR_NUM(map->enemies_onfield));
-    if (found > -1)
+    if (found > -1) {
+        tnecs_entity out = map->enemies_onfield[found];
         DARR_DEL(map->enemies_onfield, found);
+    }
 
     found = entity_isIn(map->units_onfield, entity, DARR_NUM(map->units_onfield));
-    if (found > -1)
+    if (found > -1) {
+        tnecs_entity out = map->enemies_onfield[found];
         DARR_DEL(map->units_onfield, found);
+    }
+    return (out);
 }
 
-void _Map_Unit_Remove_Map(struct Map *map, u8 col, u8 row) {
+tnecs_entity _Map_Unit_Remove_Map(struct Map *map, u8 col, u8 row) {
     SDL_assert(map->unitmap != NULL);
-    map->unitmap[row * map->col_len + col] = 0;
+    tnecs_entity out = map->unitmap[row * map->col_len + col];
+    map->unitmap[row * map->col_len + col] = TNECS_NULL;
+    return (out);
 }
 
 void Map_Unit_Remove(struct Map *map, tnecs_entity entity) {

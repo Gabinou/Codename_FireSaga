@@ -55,10 +55,8 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
         if (DARR_NUM(defendants) > 0)
             unit->eq_canEquip[unit->num_canEquip++] = eq;
     }
-
     DARR_FREE(defendants);
 }
-
 
 tnecs_entity *Map_Find_Defendants(struct Map *map, i32 *attacktolist,
                                   tnecs_entity *defendants, tnecs_entity aggressor,

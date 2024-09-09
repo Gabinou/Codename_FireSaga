@@ -131,11 +131,11 @@ void test_map_usable(void) {
     tnecs_entity Enemy2 = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
     tnecs_entity Enemy3 = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
 
-    Unit *silou     = TNECS_GET_COMPONENT(world, Silou,     Unit);
-    Unit *erwin     = TNECS_GET_COMPONENT(world, Erwin,     Unit);
-    Unit *enemy1    = TNECS_GET_COMPONENT(world, Enemy1,    Unit);
-    Unit *enemy2    = TNECS_GET_COMPONENT(world, Enemy2,    Unit);
-    Unit *enemy3    = TNECS_GET_COMPONENT(world, Enemy3,    Unit);
+    Unit *silou             = TNECS_GET_COMPONENT(world, Silou,     Unit);
+    Unit *erwin             = TNECS_GET_COMPONENT(world, Erwin,     Unit);
+    Unit *enemy1            = TNECS_GET_COMPONENT(world, Enemy1,    Unit);
+    Unit *enemy2            = TNECS_GET_COMPONENT(world, Enemy2,    Unit);
+    Unit *enemy3            = TNECS_GET_COMPONENT(world, Enemy3,    Unit);
 
     Position *silou_pos     = TNECS_GET_COMPONENT(world, Silou,     Position);
     Position *erwin_pos     = TNECS_GET_COMPONENT(world, Erwin,     Position);
@@ -160,17 +160,17 @@ void test_map_usable(void) {
     enemy1->army                        = ARMY_ENEMY;
     enemy2->army                        = ARMY_ENEMY;
     enemy3->army                        = ARMY_ENEMY;
-    silou->current_stats.move           = 1;
+    silou->current_stats.move           = 2;
     silou_pos->tilemap_pos.x    = 0;
     silou_pos->tilemap_pos.y    = 0;
     erwin_pos->tilemap_pos.x    = 0;
     erwin_pos->tilemap_pos.y    = 1;
-    enemy1_pos->tilemap_pos.x   = 1;
-    enemy1_pos->tilemap_pos.y   = 1;
-    enemy2_pos->tilemap_pos.x   = 2;
-    enemy2_pos->tilemap_pos.y   = 1;
-    enemy3_pos->tilemap_pos.x   = 3;
-    enemy3_pos->tilemap_pos.y   = 1;
+    enemy1_pos->tilemap_pos.x   = 0;
+    enemy1_pos->tilemap_pos.y   = 2;
+    enemy2_pos->tilemap_pos.x   = 0;
+    enemy2_pos->tilemap_pos.y   = 3;
+    enemy3_pos->tilemap_pos.x   = 0;
+    enemy3_pos->tilemap_pos.y   = 4;
 
     /* Map init */
     Map *map        = Map_Init(map, 16, 16);
@@ -191,15 +191,36 @@ void test_map_usable(void) {
     SDL_assert(DARR_NUM(map->tiles)         == 1);
     SDL_assert(DARR_NUM(map->tilesindex)    == 1);
 
-    /* -- Testing 1 range, 0 move -- */
+    /* --- NO enemy in range --- */
     _Map_Unit_Put(map, silou_pos->tilemap_pos.x, silou_pos->tilemap_pos.y, Silou);
-    _Map_Unit_Put(map, erwin_pos->tilemap_pos.x, silou_pos->tilemap_pos.y, Erwin);
-    _Map_Unit_Put(map, enemy1_pos->tilemap_pos.x, enemy1_pos->tilemap_pos.y, Enemy1);
-    _Map_Unit_Put(map, enemy2_pos->tilemap_pos.x, enemy2_pos->tilemap_pos.y, Enemy2);
-    _Map_Unit_Put(map, enemy3_pos->tilemap_pos.x, enemy3_pos->tilemap_pos.y, Enemy3);
-
     Map_canEquip(map, Silou, false, ITEM_ARCHETYPE_WEAPON);
     nourstest_true(silou->num_canEquip == 0);
+
+    /* -- Testing 1 range, 0 move -- */
+    _Map_Unit_Put(map, erwin_pos->tilemap_pos.x, silou_pos->tilemap_pos.y, Erwin);
+    _Map_Unit_Put(map, enemy1_pos->tilemap_pos.x, enemy1_pos->tilemap_pos.y, Enemy1);
+
+    /* -- Testing 1 range, 1 move, Erwin blocks -- */
+    Map_canEquip(map, Silou, false, ITEM_ARCHETYPE_WEAPON);
+    nourstest_true(silou->num_canEquip == 0);
+    nourstest_true(_Map_Unit_Remove_Map(map,
+                                        erwin_pos->tilemap_pos.x,
+                                        erwin_pos->tilemap_pos.y) == Erwin);
+    nourstest_true(_Map_Unit_Remove_Map(map,
+                                        enemy1_pos->tilemap_pos.x,
+                                        enemy1_pos->tilemap_pos.y) == Enemy1);
+
+
+    erwin_pos->tilemap_pos.x    = 0;
+    erwin_pos->tilemap_pos.y    = 1;
+    enemy1_pos->tilemap_pos.x   = 0;
+    enemy1_pos->tilemap_pos.y   = 2;
+    _Map_Unit_Put(map, erwin_pos->tilemap_pos.x, silou_pos->tilemap_pos.y, Erwin);
+    _Map_Unit_Put(map, enemy1_pos->tilemap_pos.x, enemy1_pos->tilemap_pos.y, Enemy1);
+    Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_WEAPON);
+    nourstest_true(silou->num_canEquip == 0);
+
+
 
     Map_Free(map);
     tnecs_world_destroy(world);

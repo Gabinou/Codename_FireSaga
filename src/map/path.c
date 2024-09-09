@@ -352,8 +352,6 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
     int len = (map->col_len * map->row_len);
     SDL_assert(len > 0);
     for (int i = 0; i < len; ++i) {
-        // for (int i = 0; i < len; i++) {
-        SDL_Log("%d", i);
 #ifdef UNITS_IGNORE_TERRAIN
 
         /* - All units fly - */
@@ -371,19 +369,22 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
 #endif /* UNITS_IGNORE_TERRAIN */
 
         /* - Check if tile is occupied by enemy unit - */
-        // tnecs_entity ontile_unit_ent = map->unitmap[i];
-        // if (ontile_unit_ent <= TNECS_NULL) {
-        //     continue;
-        // }
-        // struct Unit *ontile_unit = TNECS_GET_COMPONENT(map->world, ontile_unit_ent, Unit);
-        // SDL_assert(ontile_unit != NULL);
+        tnecs_entity ontile_unit_ent = map->unitmap[i];
 
-        // u8 ontile_army = ontile_unit->army;
-        // SDL_assert((ontile_army < ARMY_END) && (ontile_army > ARMY_START));
+        // Skip if tile unoccupied
+        if (ontile_unit_ent <= TNECS_NULL) {
+            continue;
+        }
 
-        // if (SotA_army2alignment(ontile_army) != SotA_army2alignment(unit->army)) {
-        //     map->costmap[i] = COSTMAP_BLOCKED;
-        // }
+        struct Unit *ontile_unit = TNECS_GET_COMPONENT(map->world, ontile_unit_ent, Unit);
+        SDL_assert(ontile_unit != NULL);
+
+        u8 ontile_army = ontile_unit->army;
+        SDL_assert((ontile_army < ARMY_END) && (ontile_army > ARMY_START));
+
+        if (SotA_army2alignment(ontile_army) != SotA_army2alignment(unit->army)) {
+            map->costmap[i] = COSTMAP_BLOCKED;
+        }
     }
     return (map->costmap);
 }
