@@ -191,20 +191,6 @@ void Map_addArmy(struct Map *map, u8 army) {
     DARR_INSERT(map->army_onfield, army, insert);
 }
 
-// size_t *entity_where(u64 *array, u64 to_find, size_t arr_len) {
-//     size_t *found_list = DARR_INIT(found_list, size_t, arr_len);
-//     for (size_t i = 0; i < arr_len; i++) {
-//         if (array[i] == to_find) {
-//             DARR_PUT(found_list, i);
-//             break;
-//         }
-//     }
-//     DARR_LEN(found_list) = DARR_NUM(found_list);
-//     size_t newl = (DARR_NUM(found_list) < SOTA_MINLEN ? SOTA_MINLEN : DARR_NUM(found_list));
-//     found_list = DARR_REALLOC(found_list, newl);
-//     return (found_list);
-// }
-
 int entity_isIn(u64 *array, u64 to_find, size_t arr_len) {
     int found = -1;
     for (size_t i = 0; i < arr_len; i++) {

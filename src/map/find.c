@@ -12,7 +12,7 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
     Unit     *unit = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
     Position *pos  = TNECS_GET_COMPONENT(map->world, unit_ent, Position);
     _Map_Costmap_Movement_Compute(map, unit);
-
+    
     /* Compute movemap */
     struct Point start = pos->tilemap_pos;
     i32 move_stat = move ? Unit_getStats(unit).move : 0;

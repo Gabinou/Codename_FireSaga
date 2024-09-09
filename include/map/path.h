@@ -63,8 +63,9 @@ i32 *Map_Healtomap_Compute_wLoadout(  struct Map *map, tnecs_world *w,
 i32 *Map_Attacktomap_Compute_wLoadout(struct Map *map, tnecs_world *w,
                                       tnecs_entity u, b32 m, int lh, int rh);
 
-i32 *_Map_tomap_Compute(i32 *tomap, i32 *mvtmat, u8 row_len, u8 col_len,
-                        i32 mv, struct Range *r, u8 mode);
+i32 *_Map_tomap_Compute(i32 *tomap,         i32 *mvtmat,  tnecs_entity *unitmap,
+                        u8   row_len,       u8   col_len, i32  mv,
+                        struct Range *r,    u8 mode);
 
 /* --- global_rangemap --- */
 void Map_globalRange(struct Map *map, tnecs_world *w, u8 alignment);

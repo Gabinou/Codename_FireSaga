@@ -826,7 +826,7 @@ void test_pathfinding_attackto() {
         };
 
         i32 attacktomap[ROW_LEN * COL_LEN] = {0};
-        Pathfinding_Attackto_noM(attacktomap, movemap, ROW_LEN, COL_LEN, range, MOVETILE_EXCLUDE);
+        Pathfinding_Attackto_noM(attacktomap, movemap, NULL, ROW_LEN, COL_LEN, range, MOVETILE_EXCLUDE);
 
         // matrix_print(attacktomap, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)

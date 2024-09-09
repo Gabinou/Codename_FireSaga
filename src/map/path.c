@@ -89,7 +89,6 @@ i32 *_Map_Movemap_Compute(struct Map *map, struct Point start_in, i32 move) {
     struct Point start = {start_in.x, start_in.y};
     Pathfinding_Moveto_noM(map->movemap, map->costmap,
                            map->row_len, map->col_len, start, move);
-    // matrix_print(map->movemap, map->row_len, map->col_len);
 
     return (map->movemap);
 }
@@ -108,10 +107,12 @@ i32 *Map_Movemap_Compute(struct Map *map, tnecs_world *world, tnecs_entity unit_
 }
 
 // TODO: get rid of this useless interface
-i32 *_Map_tomap_Compute(i32 *tomap, i32 *movemap, u8 row_len, u8 col_len,
-                        i32 move, struct Range *range, u8 mode_movetile) {
-    Pathfinding_Attackto_noM(tomap, movemap, row_len, col_len, (i32 *)range,
-                             mode_movetile);
+i32 *_Map_tomap_Compute(i32 *tomap, i32 *movemap, tnecs_entity *occupymap,
+                        u8 row_len, u8 col_len,i32 move,
+                        struct Range *range, u8 mode_movetile) {
+    Pathfinding_Attackto_noM(tomap, movemap, occupymap, 
+                             row_len, col_len,
+                             (i32 *)range, mode_movetile);
     return (tomap);
 }
 

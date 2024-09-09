@@ -2,6 +2,7 @@
 #define PATHFINDING_H
 
 #include "structs.h"
+#include "tnecs.h"
 #include "map/map.h"
 
 /* --- ENUMS --- */
@@ -148,16 +149,18 @@ void Pathfinding_Visible_noM(i32 *sightmap, i32 *blockmap, size_t row_len,
 // NOMENCLATURE: attackto alternatives
 // - assailable
 // TODO: attack to use position and range instead of movemap
-i32 *Pathfinding_Attackto(i32 *move_matrix, size_t row_len, size_t col_len,
+i32 *Pathfinding_Attackto(i32 *move_matrix, u64 *occupymap,
+                          size_t row_len, size_t col_len,
                           i32 range[2], i32 mode_movetile);
-void Pathfinding_Attackto_noM(i32 *attackto_mat, i32 *move_matrix,
+void Pathfinding_Attackto_noM(i32 *attackto_mat, i32 *move_matrix, u64 *occupymap,
                               size_t row_len, size_t col_len,
                               i32 range[2], i32 mode_movetile);
-void _Pathfinding_Attackto(i32 x, i32 y, i32 *attackmap, i32 *movemat,
+void _Pathfinding_Attackto(i32 x, i32 y, i32 *attackmap, i32 *movemat, 
                            size_t row_len, size_t col_len,
                            i32 range[2], i32 mode_movetile);
 
 /* -- Attackfrom -- */
+// Todo: Can't attack from occupied tiles
 i32 *Pathfinding_Attackfrom(i32 *movemap, size_t row_len, size_t col_len,
                             struct Point target, i32 range[2], int mode_output);
 void Pathfinding_Attackfrom_noM(i32 *attackfrom, i32 *movemap,
