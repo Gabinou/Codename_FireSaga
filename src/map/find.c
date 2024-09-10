@@ -18,6 +18,9 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
     i32 move_stat = move ? Unit_getStats(unit).move : 0;
     _Map_Movemap_Compute(map, start, move_stat);
 
+    // printf("MOVE\n");
+    // matrix_print(map->movemap, map->row_len, map->col_len);
+
     /* Alloc defendants */
     tnecs_entity *defendants  = DARR_INIT(defendants, tnecs_entity, 4);
 
@@ -46,7 +49,8 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
                                  map->unitmap,
                                  map->row_len, map->col_len,
                                  (i32 *)range, MOVETILE_IGNORE);
-
+        // printf("ATK\n");
+        // matrix_print(map->attacktomap, map->row_len, map->col_len);
         Map_Attacktolist_Compute(map);
 
         /* Find all Defendants in list */

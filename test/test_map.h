@@ -172,8 +172,12 @@ void test_map_usable(void) {
     enemy3_pos->tilemap_pos.x   = 0;
     enemy3_pos->tilemap_pos.y   = 4;
 
+    Unit_stats eff_stats = Unit_effectiveStats(silou);
+    SDL_assert(silou->current_stats.move == eff_stats.move);
+
     /* Map init */
-    Map *map        = Map_Init(map, 16, 16);
+    Map *map        = calloc(1, sizeof(Map));
+    Map_Init(map, 16, 16);
     map->row_len    = TEST_ROW_LEN;
     map->col_len    = TEST_COL_LEN;
     map->world      = world;
@@ -215,13 +219,19 @@ void test_map_usable(void) {
     erwin_pos->tilemap_pos.y    = 1;
     enemy1_pos->tilemap_pos.x   = 0;
     enemy1_pos->tilemap_pos.y   = 2;
-    _Map_Unit_Put(map, erwin_pos->tilemap_pos.x,    silou_pos->tilemap_pos.y,   Erwin);
+    _Map_Unit_Put(map, erwin_pos->tilemap_pos.x,    erwin_pos->tilemap_pos.y,   Erwin);
     _Map_Unit_Put(map, enemy1_pos->tilemap_pos.x,   enemy1_pos->tilemap_pos.y,  Enemy1);
+
+    // printf("UNITMAP\n");
+    // entity_print(map->unitmap, map->row_len, map->col_len);
+
     Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_WEAPON);
+    getchar();
     nourstest_true(silou->num_canEquip == 0);
 
     Map_Free(map);
     tnecs_world_destroy(world);
+    free(map);
 }
 
 #undef TEST_ROW_LEN
