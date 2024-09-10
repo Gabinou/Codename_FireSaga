@@ -226,8 +226,20 @@ void test_map_usable(void) {
     // entity_print(map->unitmap, map->row_len, map->col_len);
 
     Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_WEAPON);
-    getchar();
     nourstest_true(silou->num_canEquip == 0);
+
+    silou->current_stats.move           = 4;
+    eff_stats = Unit_effectiveStats(silou);
+    SDL_assert(silou->current_stats.move == eff_stats.move);
+    _Map_Unit_Put(map, 1, 2,  Erwin);
+
+    Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_WEAPON);
+    nourstest_true(silou->num_canEquip == 0);
+
+    /* --- 1 enemy in range --- */
+    nourstest_true(_Map_Unit_Remove_Map(map, 1, 2) == Erwin);
+    Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_WEAPON);
+    nourstest_true(silou->num_canEquip == 1);
 
     Map_Free(map);
     tnecs_world_destroy(world);
