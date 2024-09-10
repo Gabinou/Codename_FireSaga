@@ -17,8 +17,9 @@ enum PATHFINDING_POINTS_MODE {
 };
 
 enum PATHFINDING_MODE_MOVETILE {
-    MOVETILE_EXCLUDE = 0,
-    MOVETILE_INCLUDE = 1,
+    MOVETILE_EXCLUDE    = 0,
+    MOVETILE_INCLUDE    = 1,
+    MOVETILE_IGNORE     = 2,
 };
 
 /* --- About blocking --- */

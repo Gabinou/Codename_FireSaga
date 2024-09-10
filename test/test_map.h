@@ -202,7 +202,8 @@ void test_map_usable(void) {
 
     /* -- Testing 1 range, 1 move, Erwin blocks -- */
     Map_canEquip(map, Silou, false, ITEM_ARCHETYPE_WEAPON);
-    nourstest_true(silou->num_canEquip == 0);
+    nourstest_true(silou->num_canEquip == 0)
+    ;
     nourstest_true(_Map_Unit_Remove_Map(map,
                                         erwin_pos->tilemap_pos.x,
                                         erwin_pos->tilemap_pos.y) == Erwin);
@@ -214,8 +215,8 @@ void test_map_usable(void) {
     erwin_pos->tilemap_pos.y    = 1;
     enemy1_pos->tilemap_pos.x   = 0;
     enemy1_pos->tilemap_pos.y   = 2;
-    _Map_Unit_Put(map, erwin_pos->tilemap_pos.x, silou_pos->tilemap_pos.y, Erwin);
-    _Map_Unit_Put(map, enemy1_pos->tilemap_pos.x, enemy1_pos->tilemap_pos.y, Enemy1);
+    _Map_Unit_Put(map, erwin_pos->tilemap_pos.x,    silou_pos->tilemap_pos.y,   Erwin);
+    _Map_Unit_Put(map, enemy1_pos->tilemap_pos.x,   enemy1_pos->tilemap_pos.y,  Enemy1);
     Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_WEAPON);
     nourstest_true(silou->num_canEquip == 0);
 

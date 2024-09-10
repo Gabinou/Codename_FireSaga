@@ -728,8 +728,9 @@ void _Pathfinding_Attackto(i32 x, i32 y,
     /* -- Setup variables -- */
     struct Point point;
     b32 add_point  = (mode_movetile != MOVETILE_EXCLUDE);
-    if (mode_movetile == MOVETILE_INCLUDE)
+    if (mode_movetile == MOVETILE_INCLUDE) {
         attackmap[y * col_len + x] = 1;
+    }
 
     /* -- Iterate over possible ranges in x -- */
     for (i32 rangex = 0; rangex <= range[1]; rangex++) {
