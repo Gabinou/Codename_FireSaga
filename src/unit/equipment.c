@@ -231,32 +231,26 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
         return (false);
     }
     if (!Weapon_ID_isValid(id)) {
-        SDL_Log("Can't Weapon_ID_isValid");
         return (false);
     }
 
     if (!Unit_canEquip_Type(unit, id)) {
-        SDL_Log("Can't Unit_canEquip_Archetype");
         return (false);
     }
 
     if (!Unit_canEquip_Archetype(unit, can_equip.eq, can_equip.archetype)) {
-        SDL_Log("Can't Unit_canEquip_Archetype");
         return (false);
     }
 
     if (!Unit_canEquip_Users(unit, can_equip.eq)) {
-        SDL_Log("Can't Unit_canEquip_Users");
         return (false);
     }
 
     if (!Unit_canEquip_OneHand(unit, can_equip.eq, can_equip.hand)) {
-        SDL_Log("Can't Unit_canEquip_OneHand");
         return (false);
     }
 
     if (!Unit_canEquip_TwoHand(unit, can_equip.eq, can_equip.hand)) {
-        SDL_Log("Can't Unit_canEquip_TwoHand");
         return (false);
     }
 
