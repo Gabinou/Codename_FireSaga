@@ -702,8 +702,8 @@ void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
 
         // NOTE:    This call may overwrite attackmap distances
         //          Can't find which weapon was used to attack.
-        _Pathfinding_Attackto(x, y, attackmap, move_matrix, row_len,
-                              col_len, range, mode_movetile);
+        _Pathfinding_Attackto(x, y, attackmap, move_matrix, occupymap,
+                              row_len, col_len, range, mode_movetile);
     }
     DARR_FREE(move_list);
 }
@@ -722,6 +722,7 @@ i32 *Pathfinding_Attackto(i32 *move_matrix, u64 *occupymap, size_t row_len, size
 // If move_matrix is NULL, effectively attackto only from (x,y) point.
 void _Pathfinding_Attackto(i32 x, i32 y,
                            i32 *attackmap, i32 *move_matrix,
+                           u64 *occupymap,
                            size_t row_len, size_t col_len,
                            i32 range[2], i32 mode_movetile) {
     /* -- Setup variables -- */
@@ -756,8 +757,12 @@ void _Pathfinding_Attackto(i32 x, i32 y,
                         /*Add point only if different from start */
                         add_point = (point.y != y) || (point.x != x);
                     } else {
-                        /*Add point if can't move to point */
-                        add_point = (move_matrix[point.y * col_len + point.x] == MOVEMAP_BLOCKED);
+                        /* Add point if can't move to point */
+                        b32 movemap_blocked = (move_matrix[point.y * col_len + point.x] == MOVEMAP_BLOCKED);
+                        // If tile blocked by unit, it CAN be attacked
+                        b32 unitmap_blocked = (occupymap == NULL) ? false : (occupymap[point.y * col_len + point.x] >
+                                                                             TNECS_NULL);
+                        add_point = movemap_blocked || unitmap_blocked;
                     }
                 }
 

@@ -856,7 +856,7 @@ void test_pathfinding_attackto() {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
         };
 
-        _Pathfinding_Attackto(start.x, start.y, attacktomap, NULL, ROW_LEN, COL_LEN, range,
+        _Pathfinding_Attackto(start.x, start.y, attacktomap, NULL, NULL, ROW_LEN, COL_LEN, range,
                               MOVETILE_EXCLUDE);
 
         // matrix_print(attacktomap, ROW_LEN, COL_LEN);
@@ -891,7 +891,7 @@ void test_pathfinding_attackto() {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
         };
 
-        _Pathfinding_Attackto(start.x, start.y, attacktomap, NULL, ROW_LEN, COL_LEN, range,
+        _Pathfinding_Attackto(start.x, start.y, attacktomap, NULL, NULL, ROW_LEN, COL_LEN, range,
                               MOVETILE_INCLUDE);
 
         // matrix_print(attacktomap, ROW_LEN, COL_LEN);
@@ -1404,7 +1404,6 @@ void test_pathfinding_distance() {
 void test_pathfinding_attackto_unitmap() {
     /* --- 1 range unit wants to attack entity 2, friendly 1 is there --- */
     {
-        struct Point start  = {0, 0};
         i32 range[2] = {1, 1};
         i32 movemap[ROW_LEN * COL_LEN] = {
             1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1455,7 +1454,6 @@ void test_pathfinding_attackto_unitmap() {
     }
 
     {
-        struct Point start  = {0, 0};
         i32 range[2] = {1, 1};
         i32 movemap[ROW_LEN * COL_LEN] = {
             1, 2, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1505,7 +1503,6 @@ void test_pathfinding_attackto_unitmap() {
             nourstest_true(attackto[i] == expected_attackto[i]);
     }
     {
-        struct Point start  = {0, 0};
         i32 range[2] = {1, 1};
         i32 movemap[ROW_LEN * COL_LEN] = {
             1, 2, 3, 0, 0, 0, 0, 0, 0, 0,
@@ -1555,7 +1552,6 @@ void test_pathfinding_attackto_unitmap() {
             nourstest_true(attackto[i] == expected_attackto[i]);
     }
     {
-        struct Point start  = {0, 0};
         i32 range[2] = {1, 1};
         i32 movemap[ROW_LEN * COL_LEN] = {
             1, 2, 3, 4, 0, 0, 0, 0, 0, 0,
@@ -1606,7 +1602,6 @@ void test_pathfinding_attackto_unitmap() {
     }
     /* --- 2 range unit wants to attack entity 2, friendly 1 is there --- */
     {
-        struct Point start  = {0, 0};
         i32 range[2] = {2, 2};
         i32 movemap[ROW_LEN * COL_LEN] = {
             1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1656,7 +1651,6 @@ void test_pathfinding_attackto_unitmap() {
     }
 
     {
-        struct Point start  = {0, 0};
         i32 range[2] = {2, 2};
         i32 movemap[ROW_LEN * COL_LEN] = {
             1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1706,7 +1700,6 @@ void test_pathfinding_attackto_unitmap() {
     }
 
     {
-        struct Point start  = {0, 0};
         i32 range[2] = {2, 2};
         i32 movemap[ROW_LEN * COL_LEN] = {
             1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1756,7 +1749,6 @@ void test_pathfinding_attackto_unitmap() {
     }
 
     {
-        struct Point start  = {0, 0};
         i32 range[2] = {2, 2};
         i32 movemap[ROW_LEN * COL_LEN] = {
             1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1800,14 +1792,13 @@ void test_pathfinding_attackto_unitmap() {
         Pathfinding_Attackto_noM(attackto, movemap, unitmap,
                                  ROW_LEN, COL_LEN,
                                  range, MOVETILE_EXCLUDE);
-        matrix_print(attackto, ROW_LEN, COL_LEN);
+        // matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);
     }
 
     /* --- 1-2 range unit wants to attack entity 2, friendly 1 is there --- */
     {
-        struct Point start  = {0, 0};
         i32 range[2] = {1, 2};
         i32 movemap[ROW_LEN * COL_LEN] = {
             1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1857,7 +1848,6 @@ void test_pathfinding_attackto_unitmap() {
     }
 
     {
-        struct Point start  = {0, 0};
         i32 range[2] = {1, 2};
         i32 movemap[ROW_LEN * COL_LEN] = {
             1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1902,6 +1892,153 @@ void test_pathfinding_attackto_unitmap() {
                                  ROW_LEN, COL_LEN,
                                  range, MOVETILE_EXCLUDE);
         // matrix_print(attackto, ROW_LEN, COL_LEN);
+        for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
+            nourstest_true(attackto[i] == expected_attackto[i]);
+    }
+
+    {
+        i32 range[2] = {1, 2};
+        i32 movemap[ROW_LEN * COL_LEN] = {
+            1, 2, 0, 0, 0, 0, 0, 0, 0, 0,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        };
+        u64 unitmap[ROW_LEN * COL_LEN] = {
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        };
+
+        u64 expected_attackto[ROW_LEN * COL_LEN] = {
+            0, 0, 1, 2, 0, 0, 0, 0, 0, 0,
+            2, 1, 2, 0, 0, 0, 0, 0, 0, 0,
+            2, 2, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        };
+
+        i32 attackto[ROW_LEN * COL_LEN] = {0};
+        Pathfinding_Attackto_noM(attackto, movemap, unitmap,
+                                 ROW_LEN, COL_LEN,
+                                 range, MOVETILE_EXCLUDE);
+        // matrix_print(attackto, ROW_LEN, COL_LEN);
+        for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
+            nourstest_true(attackto[i] == expected_attackto[i]);
+    }
+
+
+    {
+        i32 range[2] = {1, 2};
+        i32 movemap[ROW_LEN * COL_LEN] = {
+            1, 2, 3, 0, 0, 0, 0, 0, 0, 0,
+            2, 3, 0, 0, 0, 0, 0, 0, 0, 0,
+            3, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        };
+        u64 unitmap[ROW_LEN * COL_LEN] = {
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        };
+
+        u64 expected_attackto[ROW_LEN * COL_LEN] = {
+            0, 0, 0, 1, 2, 0, 0, 0, 0, 0,
+            1, 0, 1, 2, 0, 0, 0, 0, 0, 0,
+            0, 1, 2, 0, 0, 0, 0, 0, 0, 0,
+            1, 2, 0, 0, 0, 0, 0, 0, 0, 0,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        };
+
+        i32 attackto[ROW_LEN * COL_LEN] = {0};
+        Pathfinding_Attackto_noM(attackto, movemap, unitmap,
+                                 ROW_LEN, COL_LEN,
+                                 range, MOVETILE_EXCLUDE);
+        // matrix_print(attackto, ROW_LEN, COL_LEN);
+        for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
+            nourstest_true(attackto[i] == expected_attackto[i]);
+    }
+    {
+        i32 range[2] = {1, 2};
+        i32 movemap[ROW_LEN * COL_LEN] = {
+            1, 2, 3, 0, 0, 0, 0, 0, 0, 0,
+            2, 3, 0, 0, 0, 0, 0, 0, 0, 0,
+            3, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        };
+        u64 unitmap[ROW_LEN * COL_LEN] = {
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        };
+
+        u64 expected_attackto[ROW_LEN * COL_LEN] = {
+            2, 1, 1, 1, 2, 0, 0, 0, 0, 0,
+            1, 2, 1, 2, 0, 0, 0, 0, 0, 0,
+            2, 1, 2, 0, 0, 0, 0, 0, 0, 0,
+            1, 2, 0, 0, 0, 0, 0, 0, 0, 0,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        };
+
+        i32 attackto[ROW_LEN * COL_LEN] = {0};
+        Pathfinding_Attackto_noM(attackto, movemap, unitmap,
+                                 ROW_LEN, COL_LEN,
+                                 range, MOVETILE_INCLUDE);
+        matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);
     }

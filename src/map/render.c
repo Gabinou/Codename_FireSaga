@@ -389,7 +389,7 @@ void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
     i32 *rangearr = (i32 *)&range;
     i32 include = range.min == 0 ? MOVETILE_INCLUDE : MOVETILE_EXCLUDE;
     memset(map->temp, 0, map->row_len * map->col_len * sizeof(*map->temp));
-    _Pathfinding_Attackto(pos.x, pos.y, map->temp, NULL, map->row_len, map->col_len,
+    _Pathfinding_Attackto(pos.x, pos.y, map->temp, NULL, NULL, map->row_len, map->col_len,
                           rangearr, include);
 
     size_t bytesize = sizeof(struct Padding);
