@@ -241,6 +241,9 @@ void test_map_usable(void) {
     Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_WEAPON);
     nourstest_true(silou->num_canEquip == 1);
 
+    /* --- TODO: Range types, blocked by unit --- */
+    /* --- TODO: multiple types, blocked by unit --- */
+
     Map_Free(map);
     tnecs_world_destroy(world);
     free(map);
