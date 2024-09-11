@@ -149,6 +149,7 @@ void test_map_usable(void) {
     silou->_equipment[1].id             = ITEM_ID_IRON_AXE;
     silou->_equipment[2].id             = ITEM_ID_IRON_LANCE;
     silou->_equipment[3].id             = ITEM_ID_COMPOSITE_BOW;
+    silou->_equipment[4].id             = ITEM_ID_HEAL;
     silou->army                         = ARMY_FRIENDLY;
     erwin->army                         = ARMY_FRIENDLY;
     enemy->army                         = ARMY_ENEMY;
@@ -244,7 +245,6 @@ void test_map_usable(void) {
     Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_WEAPON);
     nourstest_true(silou->num_canEquip == 0);
 
-
     silou->current_stats.move           = 2;
     Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_WEAPON);
     nourstest_true(silou->num_canEquip == 0);
@@ -258,7 +258,7 @@ void test_map_usable(void) {
     silou->equippable = ITEM_TYPE_BOW | ITEM_TYPE_SWORD;
     silou->current_stats.move           = 1;
     Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_WEAPON);
-    nourstest_true(silou->num_canEquip == 0);
+    nourstest_true(silou->num_canEquip      == 0);
 
     // printf("UNITMAP\n");
     // entity_print(map->unitmap, map->row_len, map->col_len);
@@ -274,7 +274,33 @@ void test_map_usable(void) {
     nourstest_true(silou->eq_canEquip[0]    == 0);
     nourstest_true(silou->eq_canEquip[1]    == 3);
 
-    // getchar();
+    /* --- Testing staff --- */
+    silou->equippable = ITEM_TYPE_STAFF;
+    memset(map->unitmap, 0, sizeof(*map->unitmap) * map->col_len * map->row_len);
+    silou->current_stats.move = 1;
+
+    silou_pos->tilemap_pos.x    = 0;
+    silou_pos->tilemap_pos.y    = 0;
+    enemy_pos->tilemap_pos.x    = 0;
+    enemy_pos->tilemap_pos.y    = 1;
+    erwin_pos->tilemap_pos.x    = 0;
+    erwin_pos->tilemap_pos.y    = 2;
+    _Map_Unit_Put(map, silou_pos->tilemap_pos.x, silou_pos->tilemap_pos.y, Silou);
+    _Map_Unit_Put(map, erwin_pos->tilemap_pos.x, erwin_pos->tilemap_pos.y, Erwin);
+    _Map_Unit_Put(map, enemy_pos->tilemap_pos.x, enemy_pos->tilemap_pos.y, Enemy);
+
+    Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_STAFF);
+    nourstest_true(silou->num_canEquip      == 0);
+
+    silou->current_stats.move = 2;
+    Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_STAFF);
+    nourstest_true(silou->num_canEquip      == 0);
+
+    silou->current_stats.move = 3;
+    Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_STAFF);
+    nourstest_true(silou->num_canEquip      == 1);
+    nourstest_true(silou->eq_canEquip[0]    == 4);
+
     Map_Free(map);
     tnecs_world_destroy(world);
     free(map);

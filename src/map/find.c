@@ -8,6 +8,8 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
                   b32 move, int archetype) {
     SDL_assert(map          != NULL);
     SDL_assert(map->world   != NULL);
+    SDL_assert((archetype == ITEM_ARCHETYPE_WEAPON) ||
+               (archetype == ITEM_ARCHETYPE_STAFF));
 
     Unit     *unit = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
     Position *pos  = TNECS_GET_COMPONENT(map->world, unit_ent, Position);
@@ -55,6 +57,7 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
 
         /* Find all Defendants in list */
         defendants = Map_Find_Defendants(map, map->attacktolist, defendants, unit_ent, false);
+
         // printf("DARR_NUM(defendants) %d\n", DARR_NUM(defendants));
         if (DARR_NUM(defendants) > 0) {
             unit->eq_canEquip[unit->num_canEquip++] = eq;
