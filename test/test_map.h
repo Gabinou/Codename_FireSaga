@@ -127,21 +127,15 @@ void test_map_usable(void) {
     TNECS_REGISTER_COMPONENT(world, Position);
     tnecs_entity Silou  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
     tnecs_entity Erwin  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
-    tnecs_entity Enemy1 = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
-    tnecs_entity Enemy2 = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
-    tnecs_entity Enemy3 = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
+    tnecs_entity Enemy = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
 
     Unit *silou             = TNECS_GET_COMPONENT(world, Silou,     Unit);
     Unit *erwin             = TNECS_GET_COMPONENT(world, Erwin,     Unit);
-    Unit *enemy1            = TNECS_GET_COMPONENT(world, Enemy1,    Unit);
-    Unit *enemy2            = TNECS_GET_COMPONENT(world, Enemy2,    Unit);
-    Unit *enemy3            = TNECS_GET_COMPONENT(world, Enemy3,    Unit);
+    Unit *enemy            = TNECS_GET_COMPONENT(world, Enemy,    Unit);
 
     Position *silou_pos     = TNECS_GET_COMPONENT(world, Silou,     Position);
     Position *erwin_pos     = TNECS_GET_COMPONENT(world, Erwin,     Position);
-    Position *enemy1_pos    = TNECS_GET_COMPONENT(world, Enemy1,    Position);
-    Position *enemy2_pos    = TNECS_GET_COMPONENT(world, Enemy2,    Position);
-    Position *enemy3_pos    = TNECS_GET_COMPONENT(world, Enemy3,    Position);
+    Position *enemy_pos    = TNECS_GET_COMPONENT(world, Enemy,    Position);
 
     /* Units init */
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
@@ -154,23 +148,17 @@ void test_map_usable(void) {
     silou->_equipment[0].id             = ITEM_ID_FLEURET;
     silou->_equipment[1].id             = ITEM_ID_IRON_AXE;
     silou->_equipment[2].id             = ITEM_ID_IRON_LANCE;
-    silou->_equipment[3].id             = ITEM_ID_SHORT_BOW;
+    silou->_equipment[3].id             = ITEM_ID_COMPOSITE_BOW;
     silou->army                         = ARMY_FRIENDLY;
     erwin->army                         = ARMY_FRIENDLY;
-    enemy1->army                        = ARMY_ENEMY;
-    enemy2->army                        = ARMY_ENEMY;
-    enemy3->army                        = ARMY_ENEMY;
+    enemy->army                         = ARMY_ENEMY;
     silou->current_stats.move           = 2;
     silou_pos->tilemap_pos.x    = 0;
     silou_pos->tilemap_pos.y    = 0;
     erwin_pos->tilemap_pos.x    = 0;
     erwin_pos->tilemap_pos.y    = 1;
-    enemy1_pos->tilemap_pos.x   = 0;
-    enemy1_pos->tilemap_pos.y   = 2;
-    enemy2_pos->tilemap_pos.x   = 0;
-    enemy2_pos->tilemap_pos.y   = 3;
-    enemy3_pos->tilemap_pos.x   = 0;
-    enemy3_pos->tilemap_pos.y   = 4;
+    enemy_pos->tilemap_pos.x    = 0;
+    enemy_pos->tilemap_pos.y    = 2;
 
     Unit_stats eff_stats = Unit_effectiveStats(silou);
     SDL_assert(silou->current_stats.move == eff_stats.move);
@@ -202,7 +190,7 @@ void test_map_usable(void) {
 
     /* -- Testing 1 range, 0 move -- */
     _Map_Unit_Put(map, erwin_pos->tilemap_pos.x, silou_pos->tilemap_pos.y, Erwin);
-    _Map_Unit_Put(map, enemy1_pos->tilemap_pos.x, enemy1_pos->tilemap_pos.y, Enemy1);
+    _Map_Unit_Put(map, enemy_pos->tilemap_pos.x, enemy_pos->tilemap_pos.y, Enemy);
 
     /* -- Testing 1 range, 1 move, Erwin blocks -- */
     Map_canEquip(map, Silou, false, ITEM_ARCHETYPE_WEAPON);
@@ -212,18 +200,15 @@ void test_map_usable(void) {
                                         erwin_pos->tilemap_pos.x,
                                         erwin_pos->tilemap_pos.y) == Erwin);
     nourstest_true(_Map_Unit_Remove_Map(map,
-                                        enemy1_pos->tilemap_pos.x,
-                                        enemy1_pos->tilemap_pos.y) == Enemy1);
+                                        enemy_pos->tilemap_pos.x,
+                                        enemy_pos->tilemap_pos.y) == Enemy);
 
     erwin_pos->tilemap_pos.x    = 0;
     erwin_pos->tilemap_pos.y    = 1;
-    enemy1_pos->tilemap_pos.x   = 0;
-    enemy1_pos->tilemap_pos.y   = 2;
+    enemy_pos->tilemap_pos.x    = 0;
+    enemy_pos->tilemap_pos.y    = 2;
     _Map_Unit_Put(map, erwin_pos->tilemap_pos.x,    erwin_pos->tilemap_pos.y,   Erwin);
-    _Map_Unit_Put(map, enemy1_pos->tilemap_pos.x,   enemy1_pos->tilemap_pos.y,  Enemy1);
-
-    // printf("UNITMAP\n");
-    // entity_print(map->unitmap, map->row_len, map->col_len);
+    _Map_Unit_Put(map, enemy_pos->tilemap_pos.x,   enemy_pos->tilemap_pos.y,  Enemy);
 
     Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_WEAPON);
     nourstest_true(silou->num_canEquip == 0);
@@ -239,11 +224,57 @@ void test_map_usable(void) {
     /* --- 1 enemy in range --- */
     nourstest_true(_Map_Unit_Remove_Map(map, 1, 2) == Erwin);
     Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_WEAPON);
-    nourstest_true(silou->num_canEquip == 1);
+    nourstest_true(silou->num_canEquip      == 1);
+    nourstest_true(silou->eq_canEquip[0]    == 0);
 
     /* --- TODO: Range types, blocked by unit --- */
-    /* --- TODO: multiple types, blocked by unit --- */
+    silou->equippable = ITEM_TYPE_BOW;
+    memset(map->unitmap, 0, sizeof(*map->unitmap) * map->col_len * map->row_len);
+    silou->current_stats.move           = 1;
 
+    silou_pos->tilemap_pos.x    = 0;
+    silou_pos->tilemap_pos.y    = 0;
+    erwin_pos->tilemap_pos.x    = 0;
+    erwin_pos->tilemap_pos.y    = 1;
+    enemy_pos->tilemap_pos.x    = 0;
+    enemy_pos->tilemap_pos.y    = 3;
+    _Map_Unit_Put(map, silou_pos->tilemap_pos.x, silou_pos->tilemap_pos.y, Silou);
+    _Map_Unit_Put(map, erwin_pos->tilemap_pos.x, erwin_pos->tilemap_pos.y, Erwin);
+    _Map_Unit_Put(map, enemy_pos->tilemap_pos.x, enemy_pos->tilemap_pos.y, Enemy);
+    Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_WEAPON);
+    nourstest_true(silou->num_canEquip == 0);
+
+
+    silou->current_stats.move           = 2;
+    Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_WEAPON);
+    nourstest_true(silou->num_canEquip == 0);
+
+    silou->current_stats.move           = 3;
+    Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_WEAPON);
+    nourstest_true(silou->num_canEquip      == 1);
+    nourstest_true(silou->eq_canEquip[0]    == 3);
+
+    /* --- TODO: multiple types, blocked by unit --- */
+    silou->equippable = ITEM_TYPE_BOW | ITEM_TYPE_SWORD;
+    silou->current_stats.move           = 1;
+    Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_WEAPON);
+    nourstest_true(silou->num_canEquip == 0);
+
+    // printf("UNITMAP\n");
+    // entity_print(map->unitmap, map->row_len, map->col_len);
+
+    silou->current_stats.move           = 2;
+    Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_WEAPON);
+    nourstest_true(silou->num_canEquip      == 1);
+    nourstest_true(silou->eq_canEquip[0]    == 0);
+
+    silou->current_stats.move           = 3;
+    Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_WEAPON);
+    nourstest_true(silou->num_canEquip      == 2);
+    nourstest_true(silou->eq_canEquip[0]    == 0);
+    nourstest_true(silou->eq_canEquip[1]    == 3);
+
+    // getchar();
     Map_Free(map);
     tnecs_world_destroy(world);
     free(map);
