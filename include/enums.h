@@ -1093,6 +1093,11 @@ enum SHOPPING {
     SHOPPING_SELLER =     1,
 };
 
+enum MAP {
+    MAP_MAX_COLS = 50,
+    MAP_MAX_ROWS = 50
+};
+
 enum MAP_DANGERMAP {
     DANGERMAP_UNIT_DIVISOR           = 1000,
 };

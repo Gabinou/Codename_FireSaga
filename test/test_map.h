@@ -165,12 +165,11 @@ void test_map_usable(void) {
     SDL_assert(silou->current_stats.move == eff_stats.move);
 
     /* Map init */
-    Map *map        = calloc(1, sizeof(Map));
-    Map_Init(map, 16, 16);
-    map->row_len    = TEST_ROW_LEN;
-    map->col_len    = TEST_COL_LEN;
+    Map *map = {0};
+    map = Map_Init(map, 16, 16);
+    SDL_assert(map->attacktolist != NULL);
+    Map_Init_Size(map, TEST_COL_LEN, TEST_ROW_LEN);
     map->world      = world;
-    Map_dArrays_Init(map);
 
     _Map_Tilesindex_Init(map);
     DARR_PUT(map->tilesindex, TILE_PLAIN);

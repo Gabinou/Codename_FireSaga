@@ -51,10 +51,12 @@ typedef struct Map {
     /* --- BASICS --- */
     u8 turn; /* Automatic loss if turn 255. */
     u8 reinf_loaded;
-    u8 row_len;
-    u8 col_len;
+
+    /* Map size */
+    u8 row_len; /* [tiles] */
+    u8 col_len; /* [tiles] */
     i32 chapter;
-    i32 tilesize[TWO_D];
+    i32 tilesize[TWO_D]; /* [pixels] */
     struct Arrow    *arrow;
     tnecs_world     *world;
     SDL_Renderer    *renderer;
@@ -225,6 +227,7 @@ struct Map *Map_Init(      struct Map *map, i32 width, i32 height);
 void        Map_Units_Free(struct Map *map);
 void        Map_Units_Hide(struct Map *map);
 
+void Map_Init_Size(struct Map *map, u8 col_len, u8 row_len);
 void Map_Texture_Alloc(struct Map *map);
 
 /* -- Dynamic arrays -- */

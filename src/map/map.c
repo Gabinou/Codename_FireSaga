@@ -185,6 +185,11 @@ struct Map *Map_Init(struct Map *map, i32 width, i32 height) {
     if (map->arrow != NULL)
         Arrow_Free(map->arrow);
     map->arrow = Arrow_Init(map->tilesize);
+
+    Map_dArrays_Init(map);
+    SDL_assert(map->attackfromlist  != NULL);
+    SDL_assert(map->attacktolist    != NULL);
+    SDL_assert(map->healtolist      != NULL);
     return (map); // return cause pointer address can change.
 }
 
@@ -349,66 +354,6 @@ void Map_Free(struct Map *map) {
         SDL_DestroyTexture(map->texture);
         map->texture = NULL;
     }
-    Map_dArrays_Free(map);
-}
-
-void Map_dArrays_Init(struct Map *map) {
-    SDL_assert(map->row_len > 0);
-    SDL_assert(map->col_len > 0);
-    SDL_assert(map->row_len < UCHAR_MAX);
-    SDL_assert(map->col_len < UCHAR_MAX);
-    if (map->healtolist == NULL)
-        map->healtolist   = DARR_INIT(map->healtolist,   i32, 32);
-    if (map->attacktolist == NULL)
-        map->attacktolist = DARR_INIT(map->attacktolist, i32, 32);
-    if (map->attackfromlist == NULL)
-        map->attackfromlist = DARR_INIT(map->attackfromlist, i32, 32);
-    int len = map->row_len * map->col_len;
-    if (map->temp == NULL)
-        map->temp               = calloc(len,  sizeof(*map->temp));
-    if (map->unitmap == NULL)
-        map->unitmap            = calloc(len,  sizeof(*map->unitmap));
-    if (map->costmap == NULL)
-        map->costmap            = calloc(len,  sizeof(*map->costmap));
-    if (map->movemap == NULL)
-        map->movemap            = calloc(len,  sizeof(*map->movemap));
-    if (map->start_posmap == NULL)
-        map->start_posmap       = calloc(len,  sizeof(*map->start_posmap));
-    if (map->fcostmap == NULL)
-        map->fcostmap           = calloc(len,  sizeof(*map->fcostmap));
-    if (map->fmovemap == NULL)
-        map->fmovemap           = calloc(len,  sizeof(*map->fmovemap));
-    if (map->dangermap == NULL)
-        map->dangermap          = calloc(len,  sizeof(*map->dangermap));
-    if (map->palettemap == NULL)
-        map->palettemap         = malloc(len * sizeof(*map->palettemap));
-    if (map->attacktomap == NULL)
-        map->attacktomap        = calloc(len,  sizeof(*map->attacktomap));
-    if (map->healtomap == NULL)
-        map->healtomap          = calloc(len,  sizeof(*map->healtomap));
-    if (map->healfrommap == NULL)
-        map->healfrommap        = calloc(len,  sizeof(*map->healfrommap));
-    if (map->temp_palette == NULL)
-        map->temp_palette       = malloc(len * sizeof(*map->temp_palette));
-    if (map->attackfrommap == NULL)
-        map->attackfrommap      = calloc(len,  sizeof(*map->attackfrommap));
-    if (map->global_rangemap == NULL)
-        map->global_rangemap    = calloc(len,  sizeof(*map->global_rangemap));
-    if (map->global_dangermap == NULL)
-        map->global_dangermap   = calloc(len,  sizeof(*map->global_dangermap));
-    if (map->edges_danger == NULL)
-        map->edges_danger = calloc(len, sizeof(*map->edges_danger));
-
-    if (map->stack_mode == MAP_SETTING_STACK_DANGERMAP) {
-        if (map->stacked_dangermap == NULL)
-            map->stacked_dangermap          = calloc(len, sizeof(*map->stacked_dangermap));
-        if (map->stacked_global_dangermap == NULL)
-            map->stacked_global_dangermap   = calloc(len, sizeof(*map->stacked_global_dangermap));
-    }
-    Map_Palettemap_Reset(map);
-}
-
-void Map_dArrays_Free(struct Map *map) {
     if (map->unitmap != NULL) {
         SDL_free(map->unitmap);
         map->unitmap = NULL;
@@ -486,6 +431,67 @@ void Map_dArrays_Free(struct Map *map) {
         map->global_dangermap = NULL;
     }
 
+    Map_dArrays_Free(map);
+}
+
+void Map_Init_Size(struct Map *map, u8 col_len, u8 row_len) {
+    map->row_len = row_len;
+    map->col_len = col_len;
+    int len = map->row_len * map->col_len;
+    if (map->temp == NULL)
+        map->temp               = calloc(len,  sizeof(*map->temp));
+    if (map->unitmap == NULL)
+        map->unitmap            = calloc(len,  sizeof(*map->unitmap));
+    if (map->costmap == NULL)
+        map->costmap            = calloc(len,  sizeof(*map->costmap));
+    if (map->movemap == NULL)
+        map->movemap            = calloc(len,  sizeof(*map->movemap));
+    if (map->start_posmap == NULL)
+        map->start_posmap       = calloc(len,  sizeof(*map->start_posmap));
+    if (map->fcostmap == NULL)
+        map->fcostmap           = calloc(len,  sizeof(*map->fcostmap));
+    if (map->fmovemap == NULL)
+        map->fmovemap           = calloc(len,  sizeof(*map->fmovemap));
+    if (map->dangermap == NULL)
+        map->dangermap          = calloc(len,  sizeof(*map->dangermap));
+    if (map->palettemap == NULL)
+        map->palettemap         = malloc(len * sizeof(*map->palettemap));
+    if (map->attacktomap == NULL)
+        map->attacktomap        = calloc(len,  sizeof(*map->attacktomap));
+    if (map->healtomap == NULL)
+        map->healtomap          = calloc(len,  sizeof(*map->healtomap));
+    if (map->healfrommap == NULL)
+        map->healfrommap        = calloc(len,  sizeof(*map->healfrommap));
+    if (map->temp_palette == NULL)
+        map->temp_palette       = malloc(len * sizeof(*map->temp_palette));
+    if (map->attackfrommap == NULL)
+        map->attackfrommap      = calloc(len,  sizeof(*map->attackfrommap));
+    if (map->global_rangemap == NULL)
+        map->global_rangemap    = calloc(len,  sizeof(*map->global_rangemap));
+    if (map->global_dangermap == NULL)
+        map->global_dangermap   = calloc(len,  sizeof(*map->global_dangermap));
+    if (map->edges_danger == NULL)
+        map->edges_danger = calloc(len, sizeof(*map->edges_danger));
+
+    if (map->stack_mode == MAP_SETTING_STACK_DANGERMAP) {
+        if (map->stacked_dangermap == NULL)
+            map->stacked_dangermap          = calloc(len, sizeof(*map->stacked_dangermap));
+        if (map->stacked_global_dangermap == NULL)
+            map->stacked_global_dangermap   = calloc(len, sizeof(*map->stacked_global_dangermap));
+    }
+    Map_Palettemap_Reset(map);
+}
+
+void Map_dArrays_Init(struct Map *map) {
+    if (map->healtolist == NULL)
+        map->healtolist   = DARR_INIT(map->healtolist,   i32, 32);
+    if (map->attacktolist == NULL)
+        map->attacktolist = DARR_INIT(map->attacktolist, i32, 32);
+    if (map->attackfromlist == NULL)
+        map->attackfromlist = DARR_INIT(map->attackfromlist, i32, 32);
+}
+
+void Map_dArrays_Free(struct Map *map) {
     if (map->attacktolist != NULL) {
         DARR_FREE(map->attacktolist);
         map->attacktolist = NULL;
@@ -673,16 +679,15 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     map->camera.offset.y = cJSON_GetNumberValue(cJSON_GetArrayItem(joffset, 1));
     map->camera.zoom     = cJSON_GetNumberValue(jzoom);
 
+    map->chapter = cJSON_GetNumberValue(jchapter);
+    map->chapter = cJSON_GetNumberValue(jchapter);
 
-    map->chapter = cJSON_GetNumberValue(jchapter);
-    map->chapter = cJSON_GetNumberValue(jchapter);
-    map->row_len = cJSON_GetNumberValue(jrow_len);
-    map->col_len = cJSON_GetNumberValue(jcol_len);
+    Map_Init_Size(map, cJSON_GetNumberValue(jcol_len), cJSON_GetNumberValue(jrow_len));
+
     if (map->arrow) {
         map->arrow->col_len = map->col_len;
         map->arrow->row_len = map->row_len;
     }
-    Map_dArrays_Init(map);
 
     /* -- Read Starting Positions -- */
     // SDL_Log("Read Starting Positions");

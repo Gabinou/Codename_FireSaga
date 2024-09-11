@@ -12,8 +12,8 @@ void Map_Frame_Pauses(struct Map *map,  struct Settings *settings) {
 }
 
 void Map_Palettemap_Reset(struct Map *map) {
-    SDL_assert(map->row_len > 0);
-    SDL_assert(map->col_len > 0);
+    SDL_assert(map->row_len < MAP_MAX_ROWS);
+    SDL_assert(map->col_len < MAP_MAX_COLS);
     size_t bytesize = map->col_len * map->row_len * sizeof(*map->palettemap);
     SDL_assert(map->palettemap != NULL);
     memset(map->palettemap, map->ipalette_base, bytesize);

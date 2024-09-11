@@ -167,6 +167,8 @@ i32 *Map_Healtomap_Compute(struct Map *map, tnecs_world *world, tnecs_entity uni
 }
 
 i32 *Map_Attacktolist_Compute(struct Map *map) {
+    SDL_assert(map->attacktolist    != NULL);
+    SDL_assert(map->attacktomap     != NULL);
     map->attacktolist = matrix2list_noM(map->attacktomap, map->attacktolist,
                                         map->row_len, map->col_len);
     return (map->attacktolist);
