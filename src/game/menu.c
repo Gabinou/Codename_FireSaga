@@ -346,8 +346,11 @@ void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     Map_Healtolist_Compute(sota->map);
 
     /* Find all Patients if any */
+    // TODO: find hand which equips staff
     sota->patients = Map_Find_Patients(sota->map, sota->map->healtolist,
-                                       sota->patients, actor, false);
+                                       sota->patients, actor,
+                                       Unit_Id_Equipped(unit, UNIT_HAND_LEFT),
+                                       false);
 
 }
 
@@ -370,8 +373,11 @@ void Game_preLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     Map_Healtolist_Compute(sota->map);
 
     /* Find Patients if any */
+    // TODO: find hand which equips staff
     sota->patients = Map_Find_Patients(sota->map, sota->map->healtolist,
-                                       sota->patients, actor, true);
+                                       sota->patients, actor,
+                                       Unit_Id_Equipped(unit, UNIT_HAND_LEFT),
+                                       true);
 }
 
 /* -- Finding if any weapon in equipment has a defendant -- */
