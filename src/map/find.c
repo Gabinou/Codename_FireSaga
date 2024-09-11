@@ -56,7 +56,11 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
         Map_Attacktolist_Compute(map);
 
         /* Find all Defendants in list */
-        defendants = Map_Find_Defendants(map, map->attacktolist, defendants, unit_ent, false);
+        if (archetype == ITEM_ARCHETYPE_WEAPON) {
+            defendants = Map_Find_Defendants(map, map->attacktolist, defendants, unit_ent, false);
+        } else if (archetype == ITEM_ARCHETYPE_STAFF) {
+            defendants = Map_Find_Patients(map, map->attacktolist, defendants, unit_ent, false)
+        }
 
         // printf("DARR_NUM(defendants) %d\n", DARR_NUM(defendants));
         if (DARR_NUM(defendants) > 0) {
@@ -130,7 +134,8 @@ tnecs_entity *Map_Find_Patients(struct Map *map, struct dtab *weapons_dtab, i32 
     /* Find all patients on healtolist according to alignment */
     /* Assumes healtolist was created before with matrix2list_noM */
     struct Unit *healer = TNECS_GET_COMPONENT(map->world, healer_ent, Unit);
-    SDL_assert(healer != NULL);
+    SDL_assert(healer               != NULL);
+    SDL_assert(healer->weapons_dtab != NULL);
 
     /* TODO: full health people arent patients. */
 
@@ -141,12 +146,12 @@ tnecs_entity *Map_Find_Patients(struct Map *map, struct dtab *weapons_dtab, i32 
         return (patients);
     }
 
-    struct Weapon *staff = (struct Weapon *)DTAB_GET(weapons_dtab, item->id);
+    struct Weapon *staff = (struct Weapon *)DTAB_GET(healer->weapons_dtab, item->id);
     /* -- TODO: can only use staff in two hands -- */
     if (staff == NULL) {
         item = Unit_InvItem(healer, Unit_Hand_Weak(healer));
         SDL_assert(item != NULL);
-        staff = (struct Weapon *)DTAB_GET(weapons_dtab, item->id);
+        staff = (struct Weapon *)DTAB_GET(healer->weapons_dtab, item->id);
     }
 
     SDL_assert(staff != NULL);

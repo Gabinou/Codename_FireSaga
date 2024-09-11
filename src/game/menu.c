@@ -346,7 +346,7 @@ void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     Map_Healtolist_Compute(sota->map);
 
     /* Find all Patients if any */
-    sota->patients = Map_Find_Patients(sota->map, sota->weapons_dtab, sota->map->healtolist,
+    sota->patients = Map_Find_Patients(sota->map, sota->map->healtolist,
                                        sota->patients, actor, false);
 
 }
@@ -370,7 +370,7 @@ void Game_preLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     Map_Healtolist_Compute(sota->map);
 
     /* Find Patients if any */
-    sota->patients = Map_Find_Patients(sota->map, sota->weapons_dtab, sota->map->healtolist,
+    sota->patients = Map_Find_Patients(sota->map, sota->map->healtolist,
                                        sota->patients, actor, true);
 }
 
