@@ -3,7 +3,8 @@
 
 /* -- Loadout Range -- */
 /* Compute range of loadout:
-*  - Range of weapon in dominant hand
+*  - TODO: make it Range of weapon in both hands
+*   -
 *   - UNLESS dual-wielding. Ranges combine, BUT only add stats if in range.
 */
 struct Range *Unit_Range_Loadout(struct Unit   *unit) {
@@ -27,7 +28,14 @@ struct Range *Unit_Range_Loadout(struct Unit   *unit) {
             break;
         }
 
-        if (!Unit_canEquip_Archetype(unit, stronghand, ITEM_ARCHETYPE_WEAPON)) {
+        canEquip can_equip  = canEquip_default;
+        can_equip.eq        = stronghand;
+        can_equip.lh        = -1;
+        can_equip.rh        = -1;
+        can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
+        can_equip.hand      = stronghand;
+
+        if (!Unit_canEquip(unit, can_equip)) {
             // SDL_Log("Not usable");
             break;
         }
@@ -72,46 +80,35 @@ struct Range *_Unit_Range_Combine( struct Unit   *unit, struct Range *range,
                                    b32 equipped, int archetype) {
     /* - Finds range of ANYTHING - */
     b32 stronghand = Unit_Hand_Strong(unit);
-    for (int i = 0; i < SOTA_EQUIPMENT_SIZE; i++) {
+    for (int eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
 
         /* Skip if no item */
-        if (unit->_equipment[i].id == ITEM_NULL) {
+        if (unit->_equipment[eq].id == ITEM_NULL) {
             // SDL_Log("Skip if no item");
             continue;
         }
 
         /* Equipped only: Skip if unequipped */
-        if (equipped && !Unit_isEquipped(unit, i)) {
+        if (equipped && !Unit_isEquipped(unit, eq)) {
             // SDL_Log("Equipped only: Skip if unequipped");
             continue;
         }
+        canEquip can_equip  = canEquip_default;
+        can_equip.eq        = eq;
+        can_equip.lh        = -1;
+        can_equip.rh        = -1;
+        can_equip.archetype = archetype;
+        can_equip.hand      = stronghand;
 
         /* Skip if unusable */
-        if (!Unit_canEquip_Archetype(unit, stronghand, ITEM_ARCHETYPE_WEAPON)) {
+        if (!Unit_canEquip(unit, can_equip)) {
             // SDL_Log("Skip if unusable");
             continue;
         }
 
-        /* Skip if wrong archetype */
-        if (flagsum_isIn(archetype, ITEM_ARCHETYPE_STAFF)  && !Item_isStaff(unit->_equipment[i].id)) {
-            // SDL_Log("Skip if wrong archetype");
-            continue;
-        }
-
-        /* Skip if weakhand for staff */
-        if (flagsum_isIn(archetype, ITEM_ARCHETYPE_STAFF)  && (i != stronghand) && (equipped)) {
-            // SDL_Log("Skip if weakhand for staff");
-            continue;
-        }
-
-        if (flagsum_isIn(archetype, ITEM_ARCHETYPE_WEAPON) && !Item_isWeapon(unit->_equipment[i].id)) {
-            // SDL_Log("Archetype mismatch");
-            continue;
-        }
-
         /* Combine ranges */
-        Weapon_Load(unit->weapons_dtab, unit->_equipment[i].id);
-        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[i].id);
+        Weapon_Load(unit->weapons_dtab, unit->_equipment[eq].id);
+        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[eq].id);
         Ranges_Combine(range, wpn->stats.range);
     }
     return (range);

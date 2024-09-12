@@ -993,6 +993,10 @@ void test_canEquip(void) {
     nourstest_true( Unit_canEquip(&Silou, can_equip));
 }
 
+void test_range(void) {
+
+}
+
 void test_unit(void) {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     test_canEquip_OneHand();
@@ -1001,6 +1005,8 @@ void test_unit(void) {
     test_canEquip_Users();
     test_canEquip_Archetype();
     test_canEquip();
+
+    test_Range();
 
     test_skills();
     test_io();
