@@ -20,19 +20,21 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
     i32 move_stat = move ? Unit_getStats(unit).move : 0;
     _Map_Movemap_Compute(map, start, move_stat);
 
-    printf("MOVE\n");
-    matrix_print(map->movemap, map->row_len, map->col_len);
+    // printf("MOVE\n");
+    // matrix_print(map->movemap, map->row_len, map->col_len);
 
     /* Alloc defendants */
     tnecs_entity *defendants  = DARR_INIT(defendants, tnecs_entity, 4);
 
     unit->num_canEquip = 0;
     canEquip can_equip  = canEquip_default;
-    can_equip.lh        = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
-    can_equip.rh        = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
+    // Map_canEquip point is to find ALL possible equippables
+    can_equip.lh        = -1;
+    can_equip.rh        = -1;
     can_equip.archetype = archetype;
     for (int eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         /* Skip if weapon is not usable */
+        // printf("eq %d \n", eq);
         can_equip.eq        = eq;
 
         can_equip.hand      = UNIT_HAND_LEFT;
@@ -40,7 +42,6 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
         can_equip.hand      = UNIT_HAND_RIGHT;
         b32 can_equip_right = Unit_canEquip(unit, can_equip);
         if (!can_equip_right && !can_equip_right) {
-            SDL_Log("Can't equip at all");
             continue;
         }
 
@@ -53,8 +54,9 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
                                  map->unitmap,
                                  map->row_len, map->col_len,
                                  (i32 *)range, MOVETILE_IGNORE);
-        printf("ATK\n");
-        matrix_print(map->attacktomap, map->row_len, map->col_len);
+        // printf("ATK\n");
+        // matrix_print(map->attacktomap, map->row_len, map->col_len);
+
         Map_Attacktolist_Compute(map);
 
         /* Find all Defendants in list */
@@ -64,7 +66,7 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
             defendants = Map_Find_Patients(map, map->attacktolist, defendants, unit_ent, eq, false);
         }
 
-        printf("DARR_NUM(defendants) %d\n", DARR_NUM(defendants));
+        // printf("DARR_NUM(defendants) %d\n", DARR_NUM(defendants));
         if (DARR_NUM(defendants) > 0) {
             unit->eq_canEquip[unit->num_canEquip++] = eq;
         }

@@ -622,6 +622,7 @@ void test_canEquip_TwoHand() {
     Unit_setClassind(&Silou, UNIT_CLASS_FENCER);
     Weapon_Load(weapons_dtab, ITEM_ID_FLEURET);
     Weapon_Load(weapons_dtab, ITEM_ID_RAPIERE);
+    Weapon_Load(weapons_dtab, ITEM_ID_HEAL);
     struct Weapon *weapon = DTAB_GET(weapons_dtab, ITEM_ID_FLEURET);
 
     /* Try to equip a one hand weapon when already in other hand */
@@ -718,6 +719,14 @@ void test_canEquip_TwoHand() {
     weapon->item->type  = ITEM_TYPE_ANGELIC;
     nourstest_true( Unit_canEquip_TwoHand(&Silou, 1, UNIT_HAND_RIGHT));
     nourstest_true(!Unit_canEquip_OneHand(&Silou, 0, UNIT_HAND_RIGHT));
+
+    /* Try to equip staff  */
+    Silou._equipped[UNIT_HAND_LEFT]     = -1;
+    Silou._equipped[UNIT_HAND_RIGHT]    = -1;
+    Silou._equipment[0].id    = ITEM_ID_HEAL;
+
+    nourstest_true( Unit_canEquip_TwoHand(&Silou, 0, UNIT_HAND_RIGHT));
+    nourstest_true( Unit_canEquip_TwoHand(&Silou, 0, UNIT_HAND_LEFT));
 
     Game_Weapons_Free(&weapons_dtab);
 }
@@ -956,7 +965,6 @@ void test_canEquip(void) {
     nourstest_true( Unit_canEquip(&Silou, can_equip));
 
     /* -- Stronghand equipped -- */
-
     can_equip.lh    =  0;
     can_equip.rh    =  0;
 
@@ -964,6 +972,23 @@ void test_canEquip(void) {
     nourstest_true( Unit_canEquip(&Silou, can_equip));
     can_equip.eq    = 1;
     nourstest_true( Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 2;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+
+    /* -- Mage test -- */
+    Silou.equippable = ITEM_TYPE_ELEMENTAL | ITEM_TYPE_SHIELD | ITEM_TYPE_LANCE;
+    Silou._equipment[0].id = ITEM_ID_BALL_LIGHTNING;
+    Silou._equipment[1].id = ITEM_ID_SILVERLIGHT_SPEAR;
+    Silou._equipment[2].id = ITEM_ID_LEATHER_SHIELD;
+    Silou._equipment[3].id = ITEM_ID_SALVE;
+
+    can_equip.lh    =  -1;
+    can_equip.rh    =  -1;
+
+    can_equip.eq    = 0;
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+    can_equip.eq    = 1;
+    nourstest_true(!Unit_canEquip(&Silou, can_equip));
     can_equip.eq    = 2;
     nourstest_true( Unit_canEquip(&Silou, can_equip));
 }

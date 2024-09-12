@@ -311,12 +311,12 @@ void test_map_usable(void) {
     Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_STAFF);
     nourstest_true(silou->num_canEquip      == 1);
     nourstest_true(silou->eq_canEquip[0]    == 4);
+    // getchar();
 
     // TODO: Staff with no target
     // TODO: Staff with enemy target
     // TODO: Ranged staff
 
-    // getchar();
     Map_Free(map);
     tnecs_world_destroy(world);
     free(map);
