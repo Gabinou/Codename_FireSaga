@@ -204,19 +204,32 @@ i32 *Map_Attacktomap_Compute(struct Map *map, tnecs_world *world,
     map->world = world;
     SDL_assert(map->world   != NULL);
 
+    /* Compute Movemap */
     Map_Costmap_Movement_Compute(map, unit_ent);
     struct Unit     *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     struct Position *pos  = TNECS_GET_COMPONENT(world, unit_ent, Position);
     struct Point     start      = pos->tilemap_pos;
     i32              move_stat  = move ? Unit_getStats(unit).move : 0;
+
     _Map_Movemap_Compute(map, start, move_stat);
+
+    /* Compute Unit range */
     struct Range range = Range_default;
     _Unit_Range_Combine(unit, &range, equipped, ITEM_ARCHETYPE_WEAPON);
-    map->update = true;
+
+    /* Enable occupymap */
+    tnecs_entity *input_occupymap = NULL;
+    if (move == true) {
+        // Enable occupymap only to check when unit actually MOVES
+        input_occupymap = map->unitmap;
+    }
+
+    /* Compute new attacktomap */
     map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap,
-                                          map->unitmap,
+                                          input_occupymap,
                                           map->row_len, map->col_len,
                                           move_stat, &range, MOVETILE_INCLUDE);
+    map->update = true;
     // matrix_print(map->attacktomap, map->row_len, map->col_len);
     return (map->attacktomap);
 }

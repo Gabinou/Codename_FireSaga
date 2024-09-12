@@ -20,8 +20,8 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
     i32 move_stat = move ? Unit_getStats(unit).move : 0;
     _Map_Movemap_Compute(map, start, move_stat);
 
-    // printf("MOVE\n");
-    // matrix_print(map->movemap, map->row_len, map->col_len);
+    printf("MOVE\n");
+    matrix_print(map->movemap, map->row_len, map->col_len);
 
     /* Alloc defendants */
     tnecs_entity *defendants  = DARR_INIT(defendants, tnecs_entity, 4);
@@ -36,11 +36,13 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
         can_equip.eq        = eq;
 
         can_equip.hand      = UNIT_HAND_LEFT;
-        if (!Unit_canEquip(unit, can_equip))
+        b32 can_equip_left  = Unit_canEquip(unit, can_equip);
+        can_equip.hand      = UNIT_HAND_RIGHT;
+        b32 can_equip_right = Unit_canEquip(unit, can_equip);
+        if (!can_equip_right && !can_equip_right) {
+            SDL_Log("Can't equip at all");
             continue;
-        can_equip.hand      = UNIT_HAND_LEFT;
-        if (!Unit_canEquip(unit, can_equip))
-            continue;
+        }
 
         /* Compute range */
         Unit_Range_Item(unit, eq);
@@ -51,8 +53,8 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
                                  map->unitmap,
                                  map->row_len, map->col_len,
                                  (i32 *)range, MOVETILE_IGNORE);
-        // printf("ATK\n");
-        // matrix_print(map->attacktomap, map->row_len, map->col_len);
+        printf("ATK\n");
+        matrix_print(map->attacktomap, map->row_len, map->col_len);
         Map_Attacktolist_Compute(map);
 
         /* Find all Defendants in list */
@@ -62,7 +64,7 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
             defendants = Map_Find_Patients(map, map->attacktolist, defendants, unit_ent, eq, false);
         }
 
-        // printf("DARR_NUM(defendants) %d\n", DARR_NUM(defendants));
+        printf("DARR_NUM(defendants) %d\n", DARR_NUM(defendants));
         if (DARR_NUM(defendants) > 0) {
             unit->eq_canEquip[unit->num_canEquip++] = eq;
         }

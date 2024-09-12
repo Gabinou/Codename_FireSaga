@@ -1262,9 +1262,9 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
                           cursor_pos->tilemap_pos.x;
     tnecs_entity ontile = sota->map->unitmap[current_i];
 
-    /* - Someone else already occupies tile -> Can't move there - */
+    /* - Someone else already occupies tile -> Something went wrong - */
     if ((ontile != TNECS_NULL) && (sota->selected_unit_entity != ontile)) {
-        return;
+        SDL_assert(false);
     }
 
     /* -- Creating Unit Action Menu -- */
@@ -1292,6 +1292,8 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     /* - Compute new stackmap with recomputed attacktomap - */
     Map_Healtomap_Compute(sota->map,   sota->world, unit_ent, false, false);
     Map_Attacktomap_Compute(sota->map, sota->world, unit_ent, false, false);
+
+    // matrix_print(sota->map->attacktomap, sota->map->col_len, sota->map->row_len);
 
     int rangemap = Unit_Rangemap_Get(unit);
     if (rangemap == RANGEMAP_HEALMAP) {

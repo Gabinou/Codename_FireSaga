@@ -1002,7 +1002,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
     if (sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS] == TNECS_NULL)
         Game_PopUp_Loadout_Stats_Create(sota);
 
-
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, sota->popups[popup_ind], PopUp);
     popup->visible = true;

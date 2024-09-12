@@ -127,6 +127,11 @@ void WeaponSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map,
 
     lsm->archetype_stronghand = ITEM_ARCHETYPE_STRONGHAND_ATTACK;
     LoadoutSelectMenu_Load(lsm, map, world, unit_ent, renderer, n9patch, lsm->archetype_stronghand);
+
+    matrix_print(map->attacktomap, map->row_len, map->col_len);
+
+    SDL_Log("num %d", lsm->unit->num_canEquip);
+    getchar();
 }
 
 void StaffSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, tnecs_world *world,
