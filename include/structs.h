@@ -28,7 +28,7 @@ typedef struct {
     int lh;
     int rh;
 
-    // Hand to equip to.
+    // Hand to equip to, considering loadout.
     b32 hand;
 
     // Negative values mean any archetype.

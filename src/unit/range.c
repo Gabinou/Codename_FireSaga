@@ -7,7 +7,7 @@
 *   -
 *   - UNLESS dual-wielding. Ranges combine, BUT only add stats if in range.
 */
-struct Range *Unit_Range_Loadout(struct Unit   *unit) {
+struct Range *Unit_Range_Loadout(struct Unit *unit) {
 
     struct Range *range = &unit->computed_stats.range_loadout;
     *range = Range_default;
@@ -52,19 +52,38 @@ struct Range *Unit_Range_Loadout(struct Unit   *unit) {
     return (range);
 }
 
-struct Range *Unit_Range_Item(struct Unit   *unit, int i) {
+struct Range *Unit_Range_Eq(struct Unit *unit, int eq) {
+    SDL_assert(eq > 0);
+    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
+
     struct Range *range = &unit->computed_stats.range_combined;
+    SDL_assert(range != NULL);
     *range = Range_default;
 
-    do {
-        /* If dual wielding, range_loadout is combined. */
-        Weapon_Load(unit->weapons_dtab, unit->_equipment[i].id);
-        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[i].id);
-        if (wpn == NULL)
-            break;
+    i32 id = Unit_Id_Equipment(unit, eq);
+    if (item.id == ITEM_NULL) {
+        // SDL_Log("ITEM_NULL");
+        return(range);
+    }
 
-        Ranges_Combine(range, wpn->stats.range);
-    } while (false);
+    if (!Weapon_ID_isValid(item.id)) {
+        // SDL_Log("!Weapon_ID_isValid");
+        return(range);
+    }
+
+    canEquip can_equip = canEquip_default;
+    can_equip.hand  = Unit_Hand_Strong(unit);
+    can_equip.eq    = eq;
+    if (!Unit_canEquip(unit, canEquip e)) {
+        // SDL_Log("!Unit_canEquip");
+        return(range);
+    }
+
+    Weapon_Load(unit->weapons_dtab, unit->_equipment[id].id);
+    struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[i].id);
+    SDL_assert(wpn != NULL);
+
+    Ranges_Combine(range, wpn->stats.range);
 
     return (range);
 }
@@ -122,15 +141,19 @@ struct Range *Unit_Range_Combine_Equipment(struct Unit *unit) {
 
 struct Range *Unit_Range_Combine(struct Unit *unit, b32 equipped) {
     /* Compute range using unit rangemap */
-    int archetype = ITEM_ARCHETYPE_WEAPON;
+
+    /* Decide if user rangemap is used */
     int rangemap = unit->user_rangemap > RANGEMAP_NULL ? unit->user_rangemap : unit->rangemap;
 
+    /* Get weapon archetype from rangemap */
+    int archetype = ITEM_ARCHETYPE_WEAPON;
     if (rangemap == RANGEMAP_HEALMAP) {
         archetype = ITEM_ARCHETYPE_STAFF;
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
         archetype = ITEM_ARCHETYPE_WEAPON;
     }
 
+    /* Compute range usign archetype */
     struct Range *range = &unit->computed_stats.range_combined;
     range->min = UINT8_MAX;
     range->max = 0;

@@ -39,9 +39,9 @@ void Unit_Rangemap_Default(  struct Unit *u);
 void Unit_Rangemap_Equipment(struct Unit *u);
 
 b32 Range_Valid(    struct Range r1);
+
 void Ranges_Combine( struct Range *r1, struct Range r2);
 struct Range  _Ranges_Combine(struct Range r1, struct Range r2);
-b32 Range_toCombine(struct Unit *u, struct Weapon *w);
 
 /* -- Equipment Range Combiners -- */
 /* Compute range of equipment or equipped by combining ranges
