@@ -267,33 +267,36 @@ u16 Weapon_TypeExp(struct Weapon *weapon) {
     return (type_exp);
 }
 
-b32 Weapon_isOffhand(u16 id) {
+b32 Weapon_isOffhand(i32 id) {
     b32 is = ((id > ITEM_ID_OFFHAND_START) && (id < ITEM_ID_OFFHAND_END));
     return (is);
 }
 
-b32 Weapon_isShield(u16 id) {
+b32 Weapon_isShield(i32 id) {
     b32 is = ((id > ITEM_ID_SHIELD_START) && (id < ITEM_ID_SHIELD_END));
     return (is);
 }
 
-b32 Weapon_isTrinket(u16 id) {
+b32 Weapon_isTrinket(i32 id) {
     b32 is = ((id > ITEM_ID_SHIELD_START) && (id < ITEM_ID_SHIELD_END));
     return (is);
 }
 
-b32 Weapon_canWeakhand(u16 id) {
+b32 Weapon_canWeakhand(i32 id) {
     /* Weapon can be carried in weakhand without penalty */
     b32 is = Weapon_isShield(id) || Weapon_isOffhand(id) || Weapon_isTrinket(id);
     return (is);
 }
 
-b32 Weapon_isStaff(u16 id) {
+b32 Weapon_isStaff(i32 id) {
     b32 is = ((id > ITEM_ID_STAFF_START) && (id < ITEM_ID_STAFF_END));
     return (is);
 }
 
-b32 Weapon_ID_isValid(u16 id) {
+b32 Weapon_ID_isValid(i32 id) {
+    if(id == ITEM_NULL) {
+        return(false);
+    }
     b32 valid = false;
     valid |= ((id > ITEM_ID_SWORD_START)     && (id < ITEM_ID_SWORD_END));
     valid |= ((id > ITEM_ID_LANCE_START)     && (id < ITEM_ID_LANCE_END));

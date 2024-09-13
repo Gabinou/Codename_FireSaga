@@ -103,35 +103,28 @@ struct Range *Unit_Range_Eq(struct Unit *unit, int eq) {
 }
 
 /* -- Range Combiners -- */
-/* Compute range of equipment or equipped by combining ranges
-*   Usage:
-*       - Dangermap
-*       - Menu Option checking
-*/
+/* Combines range of all weapons in equipment assuming NO LOADOUT */
+// - Combined range may no reflect actual loadout range
+//      - Ex: will combine range of two two-hand only weapons
+struct Range *Unit_Range_Equipment(Unit *unit, i64 archetype) {
+    struct Range *range = &unit->computed_stats.range_combined;
+    *range = Range_default;
 
-struct Range *_Unit_Range_Combine( struct Unit   *unit, struct Range *range,
-                                   b32 equipped, int archetype) {
-    /* - Finds range of ANYTHING - */
-    b32 stronghand = Unit_Hand_Strong(unit);
     for (int eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
 
         /* Skip if no item */
-        if (unit->_equipment[eq].id == ITEM_NULL) {
-            // SDL_Log("Skip if no item");
+        i32 id = Unit_Id_Equipment(unit, eq);
+        if (!Weapon_ID_isValid(id)) {
+            // SDL_Log("!Weapon_ID_isValid\n");
             continue;
         }
 
-        /* Equipped only: Skip if unequipped */
-        if (equipped && !Unit_isEquipped(unit, eq)) {
-            // SDL_Log("Equipped only: Skip if unequipped");
-            continue;
-        }
         canEquip can_equip  = canEquip_default;
         can_equip.eq        = eq;
         can_equip.lh        = -1;
         can_equip.rh        = -1;
         can_equip.archetype = archetype;
-        can_equip.hand      = stronghand;
+        can_equip.hand      = Unit_Hand_Strong(unit);
 
         /* Skip if unusable */
         if (!Unit_canEquip(unit, can_equip)) {
@@ -140,61 +133,97 @@ struct Range *_Unit_Range_Combine( struct Unit   *unit, struct Range *range,
         }
 
         /* Combine ranges */
-        Weapon_Load(unit->weapons_dtab, unit->_equipment[eq].id);
-        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[eq].id);
+        Weapon_Load(unit->weapons_dtab, id);
+        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, id);
+        SDL_assert(wpn != NULL);
         Ranges_Combine(range, wpn->stats.range);
     }
     return (range);
 }
 
-struct Range *Unit_Range_Combine_Equipment(struct Unit *unit) {
-    /* Compute range of equipment, using unit rangemap */
-    /* Used to find if any */
-    return (Unit_Range_Combine(unit, false));
-}
+// Combine ranges of items in current loadout
+// Item was previously equipped, no need to check if CAN equip
+struct Range *Unit_Range_Loadout(Unit *unit, i64 archetype) {
+    struct Range *range = &unit->computed_stats.range_loadout;
+    *range = Range_default;
 
-struct Range *Unit_Range_Combine(struct Unit *unit, b32 equipped) {
-    /* Compute range using unit rangemap */
+    for (int hand = 0; hand < UNIT_HAND_NUM; hand++) {
+        int eq = Unit_Id_Equipped(unit, hand);
 
-    /* Decide if user rangemap is used */
-    int rangemap = unit->user_rangemap > RANGEMAP_NULL ? unit->user_rangemap : unit->rangemap;
+        /* Skip if no item */
+        i32 id = Unit_Id_Equipment(unit, eq);
+        if (!Weapon_ID_isValid(id)) {
+            // SDL_Log("!Weapon_ID_isValid\n");
+            continue;
+        }
 
-    /* Get weapon archetype from rangemap */
-    int archetype = ITEM_ARCHETYPE_WEAPON;
-    if (rangemap == RANGEMAP_HEALMAP) {
-        archetype = ITEM_ARCHETYPE_STAFF;
-    } else if (rangemap == RANGEMAP_ATTACKMAP) {
-        archetype = ITEM_ARCHETYPE_WEAPON;
+        /* Skip if archertype doesn't match */
+        // TODO
+
+        /* Combine ranges */
+        Weapon_Load(unit->weapons_dtab, id);
+        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, id);
+        SDL_assert(wpn != NULL);
+        Ranges_Combine(range, wpn->stats.range);
     }
-
-    /* Compute range usign archetype */
-    struct Range *range = &unit->computed_stats.range_combined;
-    range->min = UINT8_MAX;
-    range->max = 0;
-    return (_Unit_Range_Combine(unit, range, equipped, archetype));
-}
-
-struct Range *Unit_Range_Combine_Staves(struct Unit *unit, b32 equipped) {
-    /* - Finds range only for same weapon type as DECIDED BY INPUT - */
-
-    struct Range *range = &unit->computed_stats.range_combined;
-    range->min = UINT8_MAX;
-    range->max = 0;
-    _Unit_Range_Combine(unit, range, equipped, ITEM_ARCHETYPE_STAFF);
-
     return (range);
 }
 
-struct Range *Unit_Range_Combine_Weapons(struct Unit *unit, b32 equipped) {
-    /* - Finds range only for same weapon type as DECIDED BY INPUT - */
-
-    struct Range *range = &unit->computed_stats.range_combined;
-    range->min = Range_default.min;
-    range->max = Range_default.max;
-    _Unit_Range_Combine(unit, range, equipped, ITEM_ARCHETYPE_WEAPON);
-
-    return (range);
+b32 Unit_inRange_Loadout(Unit *agg, Position *agg_pos, Position *dft_pos) {
+    struct Range *range = Unit_Range_Loadout(agg);
+    int distance    =  abs(agg_pos->tilemap_pos.x - dft_pos->tilemap_pos.x);
+    distance        += abs(agg_pos->tilemap_pos.y - dft_pos->tilemap_pos.y);
+    return ((distance >= range->min) && (distance <= range->max));
 }
+
+// struct Range *Unit_Range_Combine_Equipment(struct Unit *unit) {
+//     /* Compute range of equipment, using unit rangemap */
+//     /* Used to find if any */
+//     return (Unit_Range_Combine(unit, false));
+// }
+
+// struct Range *Unit_Range_Combine(struct Unit *unit, b32 equipped) {
+//     /* Compute range using unit rangemap */
+
+//     /* Decide if user rangemap is used */
+//     int rangemap = unit->user_rangemap > RANGEMAP_NULL ? unit->user_rangemap : unit->rangemap;
+
+//     /* Get weapon archetype from rangemap */
+//     int archetype = ITEM_ARCHETYPE_WEAPON;
+//     if (rangemap == RANGEMAP_HEALMAP) {
+//         archetype = ITEM_ARCHETYPE_STAFF;
+//     } else if (rangemap == RANGEMAP_ATTACKMAP) {
+//         archetype = ITEM_ARCHETYPE_WEAPON;
+//     }
+
+//     /* Compute range usign archetype */
+//     struct Range *range = &unit->computed_stats.range_combined;
+//     range->min = UINT8_MAX;
+//     range->max = 0;
+//     return (_Unit_Range_Combine(unit, range, equipped, archetype));
+// }
+
+// struct Range *Unit_Range_Combine_Staves(struct Unit *unit, b32 equipped) {
+//     /* - Finds range only for same weapon type as DECIDED BY INPUT - */
+
+//     struct Range *range = &unit->computed_stats.range_combined;
+//     range->min = UINT8_MAX;
+//     range->max = 0;
+//     _Unit_Range_Combine(unit, range, equipped, ITEM_ARCHETYPE_STAFF);
+
+//     return (range);
+// }
+
+// struct Range *Unit_Range_Combine_Weapons(struct Unit *unit, b32 equipped) {
+//     /* - Finds range only for same weapon type as DECIDED BY INPUT - */
+
+//     struct Range *range = &unit->computed_stats.range_combined;
+//     range->min = Range_default.min;
+//     range->max = Range_default.max;
+//     _Unit_Range_Combine(unit, range, equipped, ITEM_ARCHETYPE_WEAPON);
+
+//     return (range);
+// }
 
 b32 Range_Valid(struct Range range) {
     return ((range.min >= SOTA_MIN_RANGE) && (range.min <= SOTA_MAX_RANGE) &&
@@ -306,11 +335,4 @@ void Unit_Rangemap_Default(struct Unit *unit) {
         unit->rangemap = RANGEMAP_ATTACKMAP;
     }
 
-}
-
-b32 Unit_inRange_Loadout(Unit *agg, Position *agg_pos, Position *dft_pos) {
-    struct Range *range = Unit_Range_Loadout(agg);
-    int distance    =  abs(agg_pos->tilemap_pos.x - dft_pos->tilemap_pos.x);
-    distance        += abs(agg_pos->tilemap_pos.y - dft_pos->tilemap_pos.y);
-    return ((distance >= range->min) && (distance <= range->max));
 }

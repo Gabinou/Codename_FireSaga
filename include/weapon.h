@@ -22,13 +22,13 @@ b32 Weapon_canInfuse(        struct Weapon *wpn,  struct Inventory_item *item);
 b32 Weapon_canAttack(        struct Weapon *wpn);
 b32 Weapon_canAttackfromID(  struct Weapon *wpn);
 b32 Weapon_canAttackfromType(struct Weapon *wpn);
-b32 Weapon_canWeakhand(u16 id);
+b32 Weapon_canWeakhand(i32 id);
 
-b32 Weapon_isStaff(   u16 id);
-b32 Weapon_isShield(  u16 id);
-b32 Weapon_isTrinket( u16 id);
-b32 Weapon_isOffhand( u16 id);
-b32 Weapon_ID_isValid(u16 id);
+b32 Weapon_isStaff(   i32 id);
+b32 Weapon_isShield(  i32 id);
+b32 Weapon_isTrinket( i32 id);
+b32 Weapon_isOffhand( i32 id);
+b32 Weapon_ID_isValid(i32 id);
 
 /* --- I/O --- */
 void Weapon_readJSON( void *input, cJSON *json);

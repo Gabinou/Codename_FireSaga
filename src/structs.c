@@ -36,12 +36,10 @@ canEquip canEquip_default = {
 canRange canRange_default = {
     // Try to equip:
     /* 1.1 Loadout eq */
-    .eq_lh         = -1,
-    .eq_rh         = -1,
+    .eq         = -1,
 
     /* 1.2 Loadout id */
-    .id_lh         = ITEM_NULL,
-    .id_rh         = ITEM_NULL,
+    .id         = ITEM_NULL,
 
     /* 2. Of any archetype */
     .archetype  = ITEM_ARCHETYPE_NULL,

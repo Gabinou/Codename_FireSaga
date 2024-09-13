@@ -20,26 +20,6 @@ struct Item;
 typedef i8(* use_function_t)(struct Item *, struct Unit *, struct Unit *);
 
 /* --- STRUCTS --- */
-
-/* -- Can Range -- */
-// Input for Range function
-typedef struct {
-    // Loadout eq: -1 for any. Priority: eq > id.
-    int eq_lh;
-    int eq_rh;
-
-    // Loadout id: -1 for any. Priority: eq > id.
-    int id_lh;
-    int id_rh;
-
-    // Why do we need to know archetypes?
-    //      - Find all equippable staves ONLY
-    //      - Find all equippable weapons (of any type) ONLY    
-    i64 archetype;
-
-} canRange;
-extern canRange canRange_default;
-
 /* -- Can Equip -- */
 // Input for canEquip function
 typedef struct {
