@@ -1006,7 +1006,7 @@ void test_unit(void) {
     test_canEquip_Archetype();
     test_canEquip();
 
-    test_Range();
+    test_range();
 
     test_skills();
     test_io();

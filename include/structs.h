@@ -38,8 +38,11 @@ typedef struct {
 
     i64 archetype;
 
-    // Equipment index to check.
+    // Equipment index to check. Priority: eq > id.
     int eq;
+
+    // Item id to check.  Priority: eq > id.
+    int id;
 } canEquip;
 
 extern canEquip canEquip_default;

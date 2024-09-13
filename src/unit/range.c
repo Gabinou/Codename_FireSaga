@@ -52,40 +52,43 @@ struct Range *Unit_Range_Loadout(struct Unit *unit) {
     return (range);
 }
 
-struct Range *Unit_Range_Eq(struct Unit *unit, int eq) {
-    SDL_assert(eq > 0);
-    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
-
+struct Range *Unit_Range_Id(struct Unit *unit, int id) {
     struct Range *range = &unit->computed_stats.range_combined;
     SDL_assert(range != NULL);
     *range = Range_default;
 
-    i32 id = Unit_Id_Equipment(unit, eq);
-    if (item.id == ITEM_NULL) {
+    if (id == ITEM_NULL) {
         // SDL_Log("ITEM_NULL");
-        return(range);
+        return (range);
     }
 
-    if (!Weapon_ID_isValid(item.id)) {
+    if (!Weapon_ID_isValid(id)) {
         // SDL_Log("!Weapon_ID_isValid");
-        return(range);
+        return (range);
     }
 
-    canEquip can_equip = canEquip_default;
-    can_equip.hand  = Unit_Hand_Strong(unit);
-    can_equip.eq    = eq;
-    if (!Unit_canEquip(unit, canEquip e)) {
+    canEquip can_equip  = canEquip_default;
+    can_equip.hand      = Unit_Hand_Strong(unit);
+    can_equip.id        = id;
+    if (!Unit_canEquip(unit, can_equip)) {
         // SDL_Log("!Unit_canEquip");
-        return(range);
+        return (range);
     }
 
-    Weapon_Load(unit->weapons_dtab, unit->_equipment[id].id);
-    struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[i].id);
+    Weapon_Load(unit->weapons_dtab, id);
+    struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, id);
     SDL_assert(wpn != NULL);
 
     Ranges_Combine(range, wpn->stats.range);
 
     return (range);
+}
+
+struct Range *Unit_Range_Eq(struct Unit *unit, int eq) {
+    SDL_assert(eq > 0);
+    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
+
+    return (Unit_Range_Eq(unit, Unit_Id_Equipment(unit, eq)));
 }
 
 /* -- Range Combiners -- */

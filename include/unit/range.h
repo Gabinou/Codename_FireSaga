@@ -61,7 +61,8 @@ struct Range *_Unit_Range_Combine(struct Unit  *u, struct Range *r, b32 e, int a
 *  - Range of weapon in strong hand
 *   - UNLESS dual-wielding. Ranges combine, BUT only add stats if in range.
 */
-struct Range *Unit_Range_Item(   struct Unit *u, int i);
+struct Range *Unit_Range_Id(   struct Unit *u, int id);
+struct Range *Unit_Range_Eq(   struct Unit *u, int eq);
 struct Range *Unit_Range_Loadout(struct Unit *u);
 
 b32 Unit_inRange_Loadout(struct Unit *agg, struct Position *agg_pos, struct Position *dft_pos);

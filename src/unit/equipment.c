@@ -223,10 +223,12 @@ void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
 }
 
 b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
-    SDL_assert(can_equip.eq >= 0);
-    SDL_assert(can_equip.eq < SOTA_EQUIPMENT_SIZE);
 
-    i32 id = Unit_Id_Equipment(unit, can_equip.eq);
+    i32 id = can_equip.id;
+    if ((can_equip.eq >= 0) && (can_equip.eq < SOTA_EQUIPMENT_SIZE)) {
+        id = Unit_Id_Equipment(unit, can_equip.eq);
+    }
+
     if (id <= ITEM_NULL) {
         // SDL_Log("ITEM_NULL\n");
         return (false);

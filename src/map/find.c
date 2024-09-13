@@ -46,8 +46,7 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
         }
 
         /* Compute range */
-        Unit_Range_Item(unit, eq);
-        struct Range *range = &unit->computed_stats.range_combined;
+        struct Range *range = Unit_Range_Eq(unit, eq);
 
         /* Compute attacktolist to check if any enemy in it */
         Pathfinding_Attackto_noM(map->attacktomap, map->movemap,
