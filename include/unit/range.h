@@ -32,16 +32,21 @@ struct Map;
 struct RNG_Sequence;
 struct Reinforcement;
 
+// Public API: 
+//  - Range computes range of current loadout. No canEquip check
+// Private API: Range computes range of input loadout. No canEquip check
+//  - Range computes range of input loadout. No canEquip check
+
 /* --- Rangemap --- */
 int  Unit_Rangemap_Get(      struct Unit *u);
 void Unit_Rangemap_Toggle(   struct Unit *u);
 void Unit_Rangemap_Default(  struct Unit *u);
 void Unit_Rangemap_Equipment(struct Unit *u);
 
-b32 Range_Valid(    struct Range r1);
+b32 Range_Valid(struct Range r1);
 
-void Ranges_Combine( struct Range *r1, struct Range r2);
-struct Range  _Ranges_Combine(struct Range r1, struct Range r2);
+void            Ranges_Combine(struct Range *r1, struct Range r2);
+struct Range   _Ranges_Combine(struct Range  r1, struct Range r2);
 
 /* -- Equipment Range Combiners -- */
 /* Compute range of equipment or equipped by combining ranges
@@ -49,22 +54,24 @@ struct Range  _Ranges_Combine(struct Range r1, struct Range r2);
 *       - Dangermap
 *       - Menu Option checking
 */
-struct Range *Unit_Range_Combine(          struct Unit *u, b32 eq);
-struct Range *Unit_Range_Combine_Staves(   struct Unit *u, b32 eq);
-struct Range *Unit_Range_Combine_Weapons(  struct Unit *u, b32 eq);
-struct Range *Unit_Range_Combine_Equipment(struct Unit *u);
-
-struct Range *_Unit_Range_Combine(struct Unit  *u, struct Range *r, b32 e, int a);
+// struct Range *_Unit_Range_Combine(struct Unit *u, struct Range *r, 
+//                                   b32 e, int a);
+// struct Range * Unit_Range_Combine(          struct Unit *u, b32 eq);
+// struct Range * Unit_Range_Combine_Staves(   struct Unit *u, b32 eq);
+// struct Range * Unit_Range_Combine_Weapons(  struct Unit *u, b32 eq);
+// struct Range * Unit_Range_Combine_Equipment(struct Unit *u);
 
 /* -- Loadout Range -- */
 /* Compute range of loadout:
 *  - Range of weapon in strong hand
 *   - UNLESS dual-wielding. Ranges combine, BUT only add stats if in range.
 */
-struct Range *Unit_Range_Id(   struct Unit *u, int id);
-struct Range *Unit_Range_Eq(   struct Unit *u, int eq);
-struct Range *Unit_Range_Loadout(struct Unit *u);
+// struct Range *Unit_Range_Id(        struct Unit *u, int id);
+// struct Range *Unit_Range_Eq(        struct Unit *u, int eq);
+struct Range *Unit_Range_Loadout(Unit *u, canEquip can);
 
-b32 Unit_inRange_Loadout(struct Unit *agg, struct Position *agg_pos, struct Position *dft_pos);
+b32 Unit_inRange_Loadout(   struct Unit     *agg,
+                            struct Position *agg_pos,
+                            struct Position *dft_pos);
 
 #endif /* UNIT_RANGE_H */

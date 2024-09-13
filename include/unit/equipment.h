@@ -71,8 +71,9 @@ b32 Unit_canEquip_Archetype(Unit *u,    i32 eq, i64 archetype);
 u8  Unit_canEquip_allTypes( Unit *u,    u8 *eq);
 
 /* - Combined canEquips - */
-b32   Unit_canEquip(          Unit *u, canEquip e);
 b32  _Unit_canEquip(          Unit *u, canEquip e);
+b32   Unit_canEquip(          Unit *u, canEquip e);
+b32   Unit_canEquip_Hands(    Unit *u, canEquip e);
 void  Unit_canEquip_Equipment(Unit *u, canEquip e);
 
 /* --- Checking Equipment: de-equip if broken --- */

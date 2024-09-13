@@ -33,6 +33,20 @@ canEquip canEquip_default = {
     .archetype  = ITEM_ARCHETYPE_NULL,
 };
 
+canRange canRange_default = {
+    // Try to equip:
+    /* 1.1 Loadout eq */
+    .eq_lh         = -1,
+    .eq_rh         = -1,
+
+    /* 1.2 Loadout id */
+    .id_lh         = ITEM_NULL,
+    .id_rh         = ITEM_NULL,
+
+    /* 2. Of any archetype */
+    .archetype  = ITEM_ARCHETYPE_NULL,
+};
+
 struct Damage Damage_default = {{0, 0}, {0, 0}};
 
 struct HP HP_default = {0, 0, 0, 0};

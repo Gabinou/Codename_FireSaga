@@ -34,14 +34,11 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
     can_equip.archetype = archetype;
     for (int eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         /* Skip if weapon is not usable */
-        SDL_Log("eq %d \n", eq);
+        // SDL_Log("eq %d \n", eq);
         can_equip.eq        = eq;
 
-        can_equip.hand      = UNIT_HAND_LEFT;
-        b32 can_equip_left  = Unit_canEquip(unit, can_equip);
-        can_equip.hand      = UNIT_HAND_RIGHT;
-        b32 can_equip_right = Unit_canEquip(unit, can_equip);
-        if (!can_equip_right && !can_equip_right) {
+        if (!Unit_canEquip_AnyHand(unit, can_equip)) {
+            SDL_Log("!Unit_canEquip_AnyHand");
             continue;
         }
 
@@ -65,7 +62,7 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
             defendants = Map_Find_Patients(map, map->attacktolist, defendants, unit_ent, eq, false);
         }
 
-        printf("DARR_NUM(defendants) %d\n", DARR_NUM(defendants));
+        // printf("DARR_NUM(defendants) %d\n", DARR_NUM(defendants));
         if (DARR_NUM(defendants) > 0) {
             unit->eq_canEquip[unit->num_canEquip++] = eq;
         }

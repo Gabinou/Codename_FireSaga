@@ -177,6 +177,14 @@ void Unit_Unequip(struct Unit *unit, b32 hand) {
     unit->isDualWielding    = false;
 }
 
+b32 Unit_canEquip_AnyHand(Unit *unit, canEquip can_equip) {
+   can_equip.hand      = UNIT_HAND_LEFT;
+   b32 can_equip_left  = Unit_canEquip(unit, can_equip);
+   can_equip.hand      = UNIT_HAND_RIGHT;
+   b32 can_equip_right = Unit_canEquip(unit, can_equip);
+   return(!can_equip_right && !can_equip_right);
+}
+
 /* -- Usable -- */
 // - Weapon:    CanEquip
 // - Staff:     CanEquip
@@ -193,6 +201,7 @@ void Unit_Unequip(struct Unit *unit, b32 hand) {
 //  Note: Depends on current equipment in other hands
 
 void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
+    SDL_assert(false);
     /* Save starting equipment */
     int start_equipped[UNIT_HANDS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
@@ -223,7 +232,6 @@ void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
 }
 
 b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
-
     i32 id = can_equip.id;
     if ((can_equip.eq >= 0) && (can_equip.eq < SOTA_EQUIPMENT_SIZE)) {
         id = Unit_Id_Equipment(unit, can_equip.eq);
