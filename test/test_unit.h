@@ -994,6 +994,45 @@ void test_canEquip(void) {
 }
 
 void test_range(void) {
+    //  - Does the loadout make sense for unit/class/selection
+    struct Unit Silou = Unit_default;
+    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    Unit_InitWweapons(&Silou, weapons_dtab);
+    Silou._id = UNIT_ID_SILOU;
+
+    Silou._equipped[UNIT_HAND_LEFT]     = -1;
+    Silou._equipped[UNIT_HAND_RIGHT]    = -1;
+    Silou._equipment[0].id    = ITEM_ID_FLEURET;
+    Silou._equipment[1].id    = ITEM_ID_RAPIERE;
+    Silou._equipment[2].id    = ITEM_ID_GLAIVE;
+    Silou._equipment[3].id    = ITEM_ID_IRON_SWORD;
+    Silou._equipment[4].id    = ITEM_ID_UCHIGATANA;
+    Silou._equipment[5].id    = ITEM_ID_EXSANGUE;
+
+    Weapon_Load(weapons_dtab, ITEM_ID_FLEURET);
+    struct Weapon *wpn0 = DTAB_GET(weapons_dtab, Silou._equipment[0].id);
+    struct Weapon *wpn1 = DTAB_GET(weapons_dtab, Silou._equipment[1].id);
+    struct Weapon *wpn2 = DTAB_GET(weapons_dtab, Silou._equipment[2].id);
+    struct Weapon *wpn3 = DTAB_GET(weapons_dtab, Silou._equipment[3].id);
+    struct Weapon *wpn4 = DTAB_GET(weapons_dtab, Silou._equipment[4].id);
+    struct Weapon *wpn5 = DTAB_GET(weapons_dtab, Silou._equipment[5].id);
+
+    /* Swords */
+    wpn0->item->range.min = 1;
+    wpn0->item->range.max = 1;
+    /* Magic weapons, lance, axes */
+    wpn1->item->range.min = 1;
+    wpn1->item->range.max = 2;
+    /* Magic weapons -> siege tomes */
+    wpn2->item->range.min = 3;
+    wpn2->item->range.max = 7;
+    /* Bows */
+    wpn3->item->range.min = 2;
+    wpn3->item->range.max = 2;
+    wpn4->item->range.min = 2;
+    wpn4->item->range.max = 3;
+    wpn5->item->range.min = 2;
+    wpn5->item->range.max = 4;
 
 }
 
