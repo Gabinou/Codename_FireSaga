@@ -4,33 +4,7 @@
 #include "types.h"
 #include "enums.h"
 #include "structs.h"
-#include "filesystem.h"
 #include "weapon.h"
-#include "supports.h"
-#include "unit/mount.h"
-#include "nmath.h"
-#include "jsonio.h"
-#include "RNG.h"
-#include "physfs.h"
-#include "equations.h"
-#include "platform.h"
-#include "utilities.h"
-#include "combat.h"
-#include "types.h"
-#include "unit/anim.h"
-#include "unit/status.h"
-#include "unit/boss.h"
-#include "unit/stats.h"
-#include "unit/mount.h"
-
-/* --- FORWARD DECLARATIONS --- */
-struct Item;
-struct Weapon;
-struct Damage;
-struct Position;
-struct Map;
-struct RNG_Sequence;
-struct Reinforcement;
 
 // Range is valid if:
 //  - min range >= max range
@@ -65,6 +39,5 @@ int  Unit_Rangemap_Get(      struct Unit *u);
 void Unit_Rangemap_Toggle(   struct Unit *u);
 void Unit_Rangemap_Default(  struct Unit *u);
 void Unit_Rangemap_Equipment(struct Unit *u);
-
 
 #endif /* UNIT_RANGE_H */
