@@ -63,8 +63,8 @@ struct Range *Unit_Range(struct Unit *unit, canEquip can) {
 //     return (range);
 // }
 
-struct Range *Unit_Range_Id(struct Unit *unit, int id) {
-    struct Range *range = &unit->computed_stats.range_combined;
+struct Range *Unit_Range_Id(struct Unit *unit, int id, i64 archetype) {
+    struct Range *range = &unit->computed_stats.range_equipment;
     SDL_assert(range != NULL);
     *range = Range_default;
 
@@ -77,6 +77,8 @@ struct Range *Unit_Range_Id(struct Unit *unit, int id) {
         // SDL_Log("!Weapon_ID_isValid");
         return (range);
     }
+
+    // TODO:check archetype
 
     canEquip can_equip  = canEquip_default;
     can_equip.hand      = Unit_Hand_Strong(unit);
@@ -95,11 +97,11 @@ struct Range *Unit_Range_Id(struct Unit *unit, int id) {
     return (range);
 }
 
-struct Range *Unit_Range_Eq(struct Unit *unit, int eq) {
+struct Range *Unit_Range_Eq(struct Unit *unit, int eq, i64 archetype) {
     SDL_assert(eq > 0);
     SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
 
-    return (Unit_Range_Eq(unit, Unit_Id_Equipment(unit, eq)));
+    return (Unit_Range_Eq(unit, Unit_Id_Equipment(unit, eq), archetype));
 }
 
 /* -- Range Combiners -- */
@@ -107,7 +109,7 @@ struct Range *Unit_Range_Eq(struct Unit *unit, int eq) {
 // - Combined range may no reflect actual loadout range
 //      - Ex: will combine range of two two-hand only weapons
 struct Range *Unit_Range_Equipment(Unit *unit, i64 archetype) {
-    struct Range *range = &unit->computed_stats.range_combined;
+    struct Range *range = &unit->computed_stats.range_equipment;
     *range = Range_default;
 
     for (int eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
@@ -147,7 +149,7 @@ struct Range *Unit_Range_Loadout(Unit *unit, i64 archetype) {
     struct Range *range = &unit->computed_stats.range_loadout;
     *range = Range_default;
 
-    for (int hand = 0; hand < UNIT_HAND_NUM; hand++) {
+    for (int hand = 0; hand < UNIT_HANDS_NUM; hand++) {
         int eq = Unit_Id_Equipped(unit, hand);
 
         /* Skip if no item */
@@ -169,8 +171,11 @@ struct Range *Unit_Range_Loadout(Unit *unit, i64 archetype) {
     return (range);
 }
 
-b32 Unit_inRange_Loadout(Unit *agg, Position *agg_pos, Position *dft_pos) {
-    struct Range *range = Unit_Range_Loadout(agg);
+b32 Unit_inRange_Loadout(struct Unit        *agg, 
+                         struct Position    *agg_pos,
+                         struct Position    *dft_pos,
+                         i64 archetype) {
+    struct Range *range = Unit_Range_Loadout(agg, archetype);
     int distance    =  abs(agg_pos->tilemap_pos.x - dft_pos->tilemap_pos.x);
     distance        += abs(agg_pos->tilemap_pos.y - dft_pos->tilemap_pos.y);
     return ((distance >= range->min) && (distance <= range->max));
@@ -197,7 +202,7 @@ b32 Unit_inRange_Loadout(Unit *agg, Position *agg_pos, Position *dft_pos) {
 //     }
 
 //     /* Compute range usign archetype */
-//     struct Range *range = &unit->computed_stats.range_combined;
+//     struct Range *range = &unit->computed_stats.range_equipment;
 //     range->min = UINT8_MAX;
 //     range->max = 0;
 //     return (_Unit_Range_Combine(unit, range, equipped, archetype));
@@ -206,7 +211,7 @@ b32 Unit_inRange_Loadout(Unit *agg, Position *agg_pos, Position *dft_pos) {
 // struct Range *Unit_Range_Combine_Staves(struct Unit *unit, b32 equipped) {
 //     /* - Finds range only for same weapon type as DECIDED BY INPUT - */
 
-//     struct Range *range = &unit->computed_stats.range_combined;
+//     struct Range *range = &unit->computed_stats.range_equipment;
 //     range->min = UINT8_MAX;
 //     range->max = 0;
 //     _Unit_Range_Combine(unit, range, equipped, ITEM_ARCHETYPE_STAFF);
@@ -217,7 +222,7 @@ b32 Unit_inRange_Loadout(Unit *agg, Position *agg_pos, Position *dft_pos) {
 // struct Range *Unit_Range_Combine_Weapons(struct Unit *unit, b32 equipped) {
 //     /* - Finds range only for same weapon type as DECIDED BY INPUT - */
 
-//     struct Range *range = &unit->computed_stats.range_combined;
+//     struct Range *range = &unit->computed_stats.range_equipment;
 //     range->min = Range_default.min;
 //     range->max = Range_default.max;
 //     _Unit_Range_Combine(unit, range, equipped, ITEM_ARCHETYPE_WEAPON);

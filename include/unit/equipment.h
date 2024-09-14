@@ -64,7 +64,9 @@ b32     Unit_isEquipped(Unit *u, b32 hand);
 b32  Unit_canEquip_Type(    Unit *u,    i32 eq);
 b32  Unit_canEquip_Users(   Unit *u,    i32 eq);
 b32  Unit_canEquip_OneHand( Unit *u,    i32 eq, b32 hand);
-b32  Unit_canEquip_TwoHand(  Unit *u,   i32 eq, b32 hand);
+b32  Unit_canEquip_TwoHand( Unit *u,    i32 eq, b32 hand);
+
+
 
 b32 Unit_canEquip_Archetype(Unit *u,    i32 eq, i64 archetype);
 
@@ -73,7 +75,7 @@ u8  Unit_canEquip_allTypes( Unit *u,    u8 *eq);
 /* - Combined canEquips - */
 b32  _Unit_canEquip(          Unit *u, canEquip e);
 b32   Unit_canEquip(          Unit *u, canEquip e);
-b32   Unit_canEquip_Hands(    Unit *u, canEquip e);
+b32   Unit_canEquip_AnyHand(  Unit *u, canEquip e);
 void  Unit_canEquip_Equipment(Unit *u, canEquip e);
 
 /* --- Checking Equipment: de-equip if broken --- */

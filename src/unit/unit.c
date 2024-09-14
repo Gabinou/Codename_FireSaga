@@ -811,8 +811,8 @@ struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance) {
         unit->computed_stats.attack[DMG_TYPE_TOTAL]    = 0;
         unit->computed_stats.hit                       = 0;
         unit->computed_stats.crit                      = 0;
-        unit->computed_stats.range_combined.min        = 0;
-        unit->computed_stats.range_combined.max        = 0;
+        unit->computed_stats.range_equipment.min       = 0;
+        unit->computed_stats.range_equipment.max       = 0;
         unit->computed_stats.range_loadout.min         = 0;
         unit->computed_stats.range_loadout.max         = 0;
     }
@@ -826,7 +826,8 @@ struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance) {
     Unit_computeAgony(unit);
     Unit_computeDefense(unit);
     Unit_computeRegrets(unit);
-    Unit_Range_Loadout(unit);
+    // Staves don't change stats -> ITEM_ARCHETYPE_WEAPON only;
+    Unit_Range_Loadout(unit, ITEM_ARCHETYPE_WEAPON);
 
     return (unit->computed_stats);
 }

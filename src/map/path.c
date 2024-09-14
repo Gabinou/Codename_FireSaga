@@ -154,14 +154,13 @@ i32 *Map_Healtomap_Compute(struct Map *map, tnecs_world *world, tnecs_entity uni
     struct Point start = pos->tilemap_pos;
     i32 move_stat = move ? Unit_getStats(unit).move : 0;
     _Map_Movemap_Compute(map, start, move_stat);
-    struct Range range = Range_default;
-    _Unit_Range_Combine(unit, &range, equipped, ITEM_ARCHETYPE_STAFF);
+    struct Range *range = Unit_Range_Loadout(unit, ITEM_ARCHETYPE_STAFF);
 
     map->update = true;
     map->healtomap = _Map_tomap_Compute(map->healtomap, map->movemap,
                                         map->unitmap,
                                         map->row_len, map->col_len,
-                                        move_stat, &range, MOVETILE_INCLUDE);
+                                        move_stat, range, MOVETILE_INCLUDE);
     // matrix_print(map->healtomap, map->row_len, map->col_len);
     return (map->healtomap);
 }
@@ -214,8 +213,7 @@ i32 *Map_Attacktomap_Compute(struct Map *map, tnecs_world *world,
     _Map_Movemap_Compute(map, start, move_stat);
 
     /* Compute Unit range */
-    struct Range range = Range_default;
-    _Unit_Range_Combine(unit, &range, equipped, ITEM_ARCHETYPE_WEAPON);
+    struct Range *range = Unit_Range_Loadout(unit, ITEM_ARCHETYPE_WEAPON);
 
     /* Enable occupymap */
     tnecs_entity *input_occupymap = NULL;
@@ -228,7 +226,7 @@ i32 *Map_Attacktomap_Compute(struct Map *map, tnecs_world *world,
     map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap,
                                           input_occupymap,
                                           map->row_len, map->col_len,
-                                          move_stat, &range, MOVETILE_INCLUDE);
+                                          move_stat, range, MOVETILE_INCLUDE);
     map->update = true;
     // matrix_print(map->attacktomap, map->row_len, map->col_len);
     return (map->attacktomap);
@@ -248,8 +246,7 @@ i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_world *world, tnecs_entity
     struct Position *agg_pos    = TNECS_GET_COMPONENT(world, agg, Position);
     struct Position *dft_pos    = TNECS_GET_COMPONENT(world, dft, Position);
     /* Get agg range */
-    struct Range range = Range_default;
-    _Unit_Range_Combine(agg_unit, &range, equipped, ITEM_ARCHETYPE_WEAPON);
+    struct Range *range = Unit_Range_Loadout(agg_unit, ITEM_ARCHETYPE_WEAPON);
 
     /* Compute movemap */
     i32 move_stat = move ? Unit_getStats(agg_unit).move : 0;
@@ -257,7 +254,7 @@ i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_world *world, tnecs_entity
     // matrix_print(map->movemap, map->row_len, map->col_len);
 
     Pathfinding_Attackfrom_noM(map->attackfrommap, map->movemap, map->row_len,
-                               map->col_len, dft_pos->tilemap_pos, (i32 *)&range);
+                               map->col_len, dft_pos->tilemap_pos, (i32 *)range);
 
     return (map->attackfrommap);
 }
@@ -275,7 +272,7 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_world *world, tnecs_entity unit_e
     i32 move = Unit_getStats(unit).move;
     struct Point start = position->tilemap_pos;
     _Map_Movemap_Compute(map, start, move);
-    struct Range *range = Unit_Range_Combine_Equipment(unit);
+    struct Range *range = Unit_Range_Equipment(unit, ITEM_ARCHETYPE_WEAPON);
 
     map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap,
                                           map->unitmap,
@@ -459,7 +456,8 @@ void Map_globalRange(struct Map *map, tnecs_world *world, u8 alignment) {
     for (int i = 0; i < num_unit_entities; i++) {
         struct Unit     *temp_unit  = TNECS_GET_COMPONENT(map->world, unit_entities[i], Unit);
         struct Position *temp_pos   = TNECS_GET_COMPONENT(map->world, unit_entities[i], Position);
-        struct Range    *range      = Unit_Range_Combine_Equipment(temp_unit);
+        struct Range *range = Unit_Range_Equipment(temp_unit, ITEM_ARCHETYPE_WEAPON);
+
         struct Unit_stats temp_effective_stats = Unit_effectiveStats(temp_unit);
         u8 move = temp_effective_stats.move;
         struct Point start = {temp_pos->tilemap_pos.x, temp_pos->tilemap_pos.y};

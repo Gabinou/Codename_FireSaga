@@ -51,9 +51,13 @@ struct Range *Unit_Range_Loadout(Unit *u, i64 archetype);
 //      - Ex: will combine range of two two-hand only weapons
 struct Range *Unit_Range_Equipment(Unit *u, i64 archetype);
 
-b32 Unit_inRange_Loadout(struct Unit     *agg,
-                         struct Position *agg_pos,
-                         struct Position *dft_pos);
+b32 Unit_inRange_Loadout(struct Unit        *agg,
+                         struct Position    *agg_pos,
+                         struct Position    *dft_pos,
+                                i64          archetype);
+
+/* --- Combine --- */
+void Ranges_Combine(struct Range *r1, struct Range r2);
 
 /* --- Rangemap --- */
 int  Unit_Rangemap_Get(      struct Unit *u);

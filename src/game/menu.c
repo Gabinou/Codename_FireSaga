@@ -359,8 +359,8 @@ void Game_preLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     DARR_NUM(sota->patients) = 0;
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, actor, Unit);
 
-    /* Combine ranges for all weapons in equipment */
-    struct Range *range = Unit_Range_Combine_Staves(unit, false);
+    /* Combine ranges for all staves in equipment */
+    struct Range *range = Unit_Range_Equipment(unit, ITEM_ARCHETYPE_STAFF);
 
     /* Compute healtolist */
     // TODO: find yourself as patient for staves that can target themselves.
@@ -387,7 +387,7 @@ void Game_preLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, actor, Unit);
 
     /* Combine all weapon ranges */
-    struct Range *range = Unit_Range_Combine_Weapons(unit, false);
+    struct Range *range = Unit_Range_Equipment(unit, ITEM_ARCHETYPE_WEAPON);
 
     /* Compute attacktolist */
     tnecs_entity *occupymap = NULL;

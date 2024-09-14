@@ -573,9 +573,9 @@ void Computed_Stats_writeJSON(void *input, struct cJSON *jstats) {
     struct cJSON *jrange_loadout  = cJSON_CreateArray();
     Range_writeJSON(&stats->range_loadout, jrange_loadout);
     cJSON_AddItemToObject(jstats, "Range_loadout", jrange_loadout);
-    struct cJSON *jrange_combined  = cJSON_CreateArray();
-    Range_writeJSON(&stats->range_combined, jrange_combined);
-    cJSON_AddItemToObject(jstats, "Range_combined", jrange_combined);
+    struct cJSON *jrange_equipment  = cJSON_CreateArray();
+    Range_writeJSON(&stats->range_equipment, jrange_equipment);
+    cJSON_AddItemToObject(jstats, "range_equipment", jrange_equipment);
 
     struct cJSON *jhit      = cJSON_CreateNumber(stats->hit);
     struct cJSON *jdodge    = cJSON_CreateNumber(stats->dodge);
@@ -614,9 +614,9 @@ void Computed_Stats_readJSON(void *input, struct cJSON *jstats) {
     if (jrange != NULL)
         Range_readJSON(&stats->range_loadout, jrange);
 
-    jrange = cJSON_GetObjectItem(jstats, "Range_combined");
+    jrange = cJSON_GetObjectItem(jstats, "range_equipment");
     if (jrange != NULL)
-        Range_readJSON(&stats->range_combined, jrange);
+        Range_readJSON(&stats->range_equipment, jrange);
 
     // SDL_assert(stats->range.max >= stats->range.min);
     struct cJSON *jhit      = cJSON_GetObjectItem(jstats, "hit");

@@ -91,8 +91,13 @@ struct Computed_Stats Computed_Stats_plus(struct Computed_Stats stats1,
     out_stats.agony = nmath_inbounds_int32_t((stats1.agony  + stats2.agony), SOTA_MIN_AGONY,
                                              SOTA_MAX_AGONY);
 
-    out_stats.range_loadout     = _Ranges_Combine(stats1.range_loadout,     stats2.range_loadout);
-    out_stats.range_combined    = _Ranges_Combine(stats1.range_combined,    stats2.range_combined);
+    out_stats.range_loadout = Range_default;
+    Ranges_Combine(&out_stats.range_loadout, stats1.range_loadout);
+    Ranges_Combine(&out_stats.range_loadout, stats2.range_loadout);
+
+    out_stats.range_equipment = Range_default;
+    Ranges_Combine(&out_stats.range_equipment, stats1.range_equipment);
+    Ranges_Combine(&out_stats.range_equipment, stats2.range_equipment);
 
     return (out_stats);
 }
