@@ -51,7 +51,7 @@ void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
     struct Position *agg_pos    = TNECS_GET_COMPONENT(sota->world, npc_ent,  Position);
     struct Position *dft_pos    = TNECS_GET_COMPONENT(sota->world, friendly, Position);
     struct Unit     *aggressor  = TNECS_GET_COMPONENT(sota->world, npc_ent,  Unit);
-    if (!Unit_inRange_Loadout(aggressor, agg_pos, dft_pos)) {
+    if (!Unit_inRange_Loadout(aggressor, agg_pos, dft_pos, ITEM_ARCHETYPE_WEAPON)) {
         /* Skipping attack, not actually in range */
         Game_Unit_Wait(sota, npc_ent);
         return;

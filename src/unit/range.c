@@ -14,51 +14,51 @@ struct Range *Unit_Range(struct Unit *unit, canEquip can) {
 // What info do I need to compute range?
 // Loadout Weapon id/eq
 // Archetype
-// 
+//
 
 // struct Range *Unit_Range_Loadout(struct Unit *unit) {
 
 //     struct Range *range = &unit->computed_stats.range_loadout;
 //     *range = Range_default;
-    // Unit_isdualWielding(unit);
+// Unit_isdualWielding(unit);
 
-    // b32 stronghand = Unit_Hand_Strong(unit);
-    // i32 id_lh = Unit_Id_Equipped(unit, UNIT_HAND_LEFT);
-    // i32 id_fh = Unit_Id_Equipped(unit, UNIT_HAND_LEFT);
-    // do {
-    //     /* If dual wielding, range_loadout is combined. */
-    //     if (unit->isDualWielding) {
-    //         _Unit_Range_Combine(unit, range, true, ITEM_ARCHETYPE_WEAPON);
-    //         // SDL_Log("unit->isDualWielding");
-    //         break;
-    //     }
+// b32 stronghand = Unit_Hand_Strong(unit);
+// i32 id_lh = Unit_Id_Equipped(unit, UNIT_HAND_LEFT);
+// i32 id_fh = Unit_Id_Equipped(unit, UNIT_HAND_LEFT);
+// do {
+//     /* If dual wielding, range_loadout is combined. */
+//     if (unit->isDualWielding) {
+//         _Unit_Range_Combine(unit, range, true, ITEM_ARCHETYPE_WEAPON);
+//         // SDL_Log("unit->isDualWielding");
+//         break;
+//     }
 
-    //     /* If not dual wielding, compute range of weapon in stronghand. */
-    //     if (!Unit_isEquipped(unit, stronghand)) {
-    //         // SDL_Log("stronghand not equipped");
-    //         break;
-    //     }
+//     /* If not dual wielding, compute range of weapon in stronghand. */
+//     if (!Unit_isEquipped(unit, stronghand)) {
+//         // SDL_Log("stronghand not equipped");
+//         break;
+//     }
 
-    //     canEquip can_equip  = canEquip_default;
-    //     can_equip.eq        = stronghand;
-    //     can_equip.lh        = -1;
-    //     can_equip.rh        = -1;
-    //     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
-    //     can_equip.hand      = stronghand;
+//     canEquip can_equip  = canEquip_default;
+//     can_equip.eq        = stronghand;
+//     can_equip.lh        = -1;
+//     can_equip.rh        = -1;
+//     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
+//     can_equip.hand      = stronghand;
 
-    //     if (!Unit_canEquip(unit, can_equip)) {
-    //         // SDL_Log("Not usable");
-    //         break;
-    //     }
+//     if (!Unit_canEquip(unit, can_equip)) {
+//         // SDL_Log("Not usable");
+//         break;
+//     }
 
-    //     Weapon_Load(unit->weapons_dtab, unit->_equipment[stronghand].id);
-    //     struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[stronghand].id);
-    //     if (wpn == NULL) {
-    //         // SDL_Log("WPN null");
-    //         break;
-    //     }
-    //     Ranges_Combine(range, wpn->stats.range);
-    // } while (false);
+//     Weapon_Load(unit->weapons_dtab, unit->_equipment[stronghand].id);
+//     struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[stronghand].id);
+//     if (wpn == NULL) {
+//         // SDL_Log("WPN null");
+//         break;
+//     }
+//     Ranges_Combine(range, wpn->stats.range);
+// } while (false);
 
 //     return (range);
 // }
@@ -171,7 +171,7 @@ struct Range *Unit_Range_Loadout(Unit *unit, i64 archetype) {
     return (range);
 }
 
-b32 Unit_inRange_Loadout(struct Unit        *agg, 
+b32 Unit_inRange_Loadout(struct Unit        *agg,
                          struct Position    *agg_pos,
                          struct Position    *dft_pos,
                          i64 archetype) {

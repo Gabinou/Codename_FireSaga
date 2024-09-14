@@ -294,8 +294,8 @@ b32 Weapon_isStaff(i32 id) {
 }
 
 b32 Weapon_ID_isValid(i32 id) {
-    if(id == ITEM_NULL) {
-        return(false);
+    if (id == ITEM_NULL) {
+        return (false);
     }
     b32 valid = false;
     valid |= ((id > ITEM_ID_SWORD_START)     && (id < ITEM_ID_SWORD_END));

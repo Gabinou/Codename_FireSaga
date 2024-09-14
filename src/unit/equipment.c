@@ -178,11 +178,11 @@ void Unit_Unequip(struct Unit *unit, b32 hand) {
 }
 
 b32 Unit_canEquip_AnyHand(Unit *unit, canEquip can_equip) {
-   can_equip.hand      = UNIT_HAND_LEFT;
-   b32 can_equip_left  = Unit_canEquip(unit, can_equip);
-   can_equip.hand      = UNIT_HAND_RIGHT;
-   b32 can_equip_right = Unit_canEquip(unit, can_equip);
-   return(!can_equip_right && !can_equip_right);
+    can_equip.hand      = UNIT_HAND_LEFT;
+    b32 can_equip_left  = Unit_canEquip(unit, can_equip);
+    can_equip.hand      = UNIT_HAND_RIGHT;
+    b32 can_equip_right = Unit_canEquip(unit, can_equip);
+    return (!can_equip_right && !can_equip_right);
 }
 
 /* -- Usable -- */
