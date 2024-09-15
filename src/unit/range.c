@@ -20,6 +20,7 @@ b32 _Range_Archetype_Match(struct Weapon *wpn, i64 archetype) {
 }
 
 struct Range *Unit_Range_Id(struct Unit *unit, int id, i64 archetype) {
+    SDL_Log("Unit_Range_Id %d %d", id, ITEM_ID_FLEURET);
     struct Range *range = &unit->computed_stats.range_equipment;
     SDL_assert(range != NULL);
     *range = Range_default;
@@ -35,10 +36,9 @@ struct Range *Unit_Range_Id(struct Unit *unit, int id, i64 archetype) {
     }
 
     canEquip can_equip  = canEquip_default;
-    can_equip.hand      = Unit_Hand_Strong(unit);
     can_equip.id        = id;
-    if (!Unit_canEquip(unit, can_equip)) {
-        // SDL_Log("!Unit_canEquip");
+    if (!Unit_canEquip_AnyHand(unit, can_equip)) {
+        SDL_Log("!Unit_canEquip");
         return (range);
     }
 
@@ -47,7 +47,7 @@ struct Range *Unit_Range_Id(struct Unit *unit, int id, i64 archetype) {
     SDL_assert(wpn != NULL);
 
     if (!_Range_Archetype_Match(wpn, archetype)) {
-        // SDL_Log("!!_Range_Archetype_Match");
+        SDL_Log("!_Range_Archetype_Match");
         return (range);
     }
 
@@ -57,10 +57,11 @@ struct Range *Unit_Range_Id(struct Unit *unit, int id, i64 archetype) {
 }
 
 struct Range *Unit_Range_Eq(struct Unit *unit, int eq, i64 archetype) {
-    SDL_assert(eq > 0);
+    SDL_assert(unit != NULL);
+    SDL_assert(eq >= 0);
     SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
 
-    return (Unit_Range_Eq(unit, Unit_Id_Equipment(unit, eq), archetype));
+    return (Unit_Range_Id(unit, Unit_Id_Equipment(unit, eq), archetype));
 }
 
 /* Combines range of all weapons in equipment assuming NO LOADOUT */
@@ -150,7 +151,9 @@ b32 Unit_inRange_Loadout(struct Unit        *agg,
 
 b32 Range_Valid(struct Range range) {
     return ((range.min >= SOTA_MIN_RANGE) && (range.min <= SOTA_MAX_RANGE) &&
-            (range.max >= SOTA_MIN_RANGE) && (range.max <= SOTA_MAX_RANGE));
+            (range.max >= SOTA_MIN_RANGE) && (range.max <= SOTA_MAX_RANGE) &&
+            (range.max >= range.min)
+           );
 }
 
 b32 Ranges_Gap(struct Range r1, struct Range r2) {

@@ -991,10 +991,12 @@ void test_canEquip(void) {
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
     can_equip.eq    = 2;
     nourstest_true( Unit_canEquip(&Silou, can_equip));
+
+    Game_Weapons_Free(&weapons_dtab);
 }
 
 void test_range(void) {
-    //  - Does the loadout make sense for unit/class/selection
+    /*  - Does the loadout make sense for unit/class/selection - */
     struct Unit Silou = Unit_default;
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
     Unit_InitWweapons(&Silou, weapons_dtab);
@@ -1009,13 +1011,24 @@ void test_range(void) {
     Silou._equipment[4].id    = ITEM_ID_UCHIGATANA;
     Silou._equipment[5].id    = ITEM_ID_EXSANGUE;
 
-    Weapon_Load(weapons_dtab, ITEM_ID_FLEURET);
+    Weapon_Load(weapons_dtab, Silou._equipment[0].id);
+    Weapon_Load(weapons_dtab, Silou._equipment[1].id);
+    Weapon_Load(weapons_dtab, Silou._equipment[2].id);
+    Weapon_Load(weapons_dtab, Silou._equipment[3].id);
+    Weapon_Load(weapons_dtab, Silou._equipment[4].id);
+    Weapon_Load(weapons_dtab, Silou._equipment[5].id);
     struct Weapon *wpn0 = DTAB_GET(weapons_dtab, Silou._equipment[0].id);
     struct Weapon *wpn1 = DTAB_GET(weapons_dtab, Silou._equipment[1].id);
     struct Weapon *wpn2 = DTAB_GET(weapons_dtab, Silou._equipment[2].id);
     struct Weapon *wpn3 = DTAB_GET(weapons_dtab, Silou._equipment[3].id);
     struct Weapon *wpn4 = DTAB_GET(weapons_dtab, Silou._equipment[4].id);
     struct Weapon *wpn5 = DTAB_GET(weapons_dtab, Silou._equipment[5].id);
+    SDL_assert(wpn0 != NULL);
+    SDL_assert(wpn1 != NULL);
+    SDL_assert(wpn2 != NULL);
+    SDL_assert(wpn3 != NULL);
+    SDL_assert(wpn4 != NULL);
+    SDL_assert(wpn5 != NULL);
 
     /* Swords */
     wpn0->item->range.min = 1;
@@ -1034,6 +1047,21 @@ void test_range(void) {
     wpn5->item->range.min = 2;
     wpn5->item->range.max = 4;
 
+    struct Range *range = NULL;
+    Silou.equippable = ITEM_TYPE_SWORD;
+    range = Unit_Range_Eq(&Silou, 0, ITEM_ARCHETYPE_WEAPON);
+    SDL_Log("range %d %d", range->min, range->max);
+    getchar();
+    nourstest_true(Range_Valid(*range));
+
+    range = Unit_Range_Eq(&Silou, 0, ITEM_TYPE_LANCE);
+    nourstest_true(!Range_Valid(*range));
+
+    // range = Unit_Range_Id(          &Silou, Silou._equipment[0].id, ITEM_TYPE_SWORD);
+    // range = Unit_Range_Loadout(     &Silou, ITEM_TYPE_SWORD);
+    // range = Unit_Range_Equipment(   &Silou, ITEM_TYPE_SWORD);
+
+    Game_Weapons_Free(&weapons_dtab);
 }
 
 void test_unit(void) {

@@ -182,7 +182,7 @@ b32 Unit_canEquip_AnyHand(Unit *unit, canEquip can_equip) {
     b32 can_equip_left  = Unit_canEquip(unit, can_equip);
     can_equip.hand      = UNIT_HAND_RIGHT;
     b32 can_equip_right = Unit_canEquip(unit, can_equip);
-    return (!can_equip_right && !can_equip_right);
+    return (can_equip_right || can_equip_right);
 }
 
 /* -- Usable -- */
@@ -238,36 +238,36 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
     }
 
     if (id <= ITEM_NULL) {
-        // SDL_Log("ITEM_NULL\n");
+        SDL_Log("ITEM_NULL\n");
         return (false);
     }
     if (!Weapon_ID_isValid(id)) {
-        // SDL_Log("!Weapon_ID_isValid\n");
+        SDL_Log("!Weapon_ID_isValid\n");
         return (false);
     }
 
     if (!Unit_canEquip_Type(unit, id)) {
-        // SDL_Log("!Unit_canEquip_Type\n");
+        SDL_Log("!Unit_canEquip_Type\n");
         return (false);
     }
 
     if (!Unit_canEquip_Archetype(unit, can_equip.eq, can_equip.archetype)) {
-        // SDL_Log("!Unit_canEquip_Archetype\n");
+        SDL_Log("!Unit_canEquip_Archetype\n");
         return (false);
     }
 
     if (!Unit_canEquip_Users(unit, can_equip.eq)) {
-        // SDL_Log("!Unit_canEquip_Users\n");
+        SDL_Log("!Unit_canEquip_Users\n");
         return (false);
     }
 
     if (!Unit_canEquip_OneHand(unit, can_equip.eq, can_equip.hand)) {
-        // SDL_Log("!Unit_canEquip_OneHand\n");
+        SDL_Log("!Unit_canEquip_OneHand\n");
         return (false);
     }
 
     if (!Unit_canEquip_TwoHand(unit, can_equip.eq, can_equip.hand)) {
-        // SDL_Log("!Unit_canEquip_TwoHand\n");
+        SDL_Log("!Unit_canEquip_TwoHand\n");
         return (false);
     }
 
