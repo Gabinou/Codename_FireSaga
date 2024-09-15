@@ -19,25 +19,19 @@ b32 _Range_Archetype_Match(struct Weapon *wpn, i64 archetype) {
     return (true);
 }
 
+
 struct Range *Unit_Range_Id(struct Unit *unit, int id, i64 archetype) {
     struct Range *range = &unit->computed_stats.range_equipment;
     SDL_assert(range != NULL);
     *range = Range_default;
 
     if (id == ITEM_NULL) {
-        // SDL_Log("ITEM_NULL");
+        SDL_Log("ITEM_NULL");
         return (range);
     }
 
     if (!Weapon_ID_isValid(id)) {
-        // SDL_Log("!Weapon_ID_isValid");
-        return (range);
-    }
-
-    canEquip can_equip  = canEquip_default;
-    can_equip.id        = id;
-    if (!Unit_canEquip_AnyHand(unit, can_equip)) {
-        // SDL_Log("!Unit_canEquip");
+        SDL_Log("!Weapon_ID_isValid");
         return (range);
     }
 
@@ -46,7 +40,7 @@ struct Range *Unit_Range_Id(struct Unit *unit, int id, i64 archetype) {
     SDL_assert(wpn != NULL);
 
     if (!_Range_Archetype_Match(wpn, archetype)) {
-        // SDL_Log("!_Range_Archetype_Match");
+        SDL_Log("!_Range_Archetype_Match");
         return (range);
     }
 
@@ -59,6 +53,17 @@ struct Range *Unit_Range_Eq(struct Unit *unit, int eq, i64 archetype) {
     SDL_assert(unit != NULL);
     SDL_assert(eq >= 0);
     SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
+
+    struct Range *range = &unit->computed_stats.range_equipment;
+    SDL_assert(range != NULL);
+    *range = Range_default;
+
+    canEquip can_equip  = canEquip_default;
+    can_equip.eq        = eq;
+    if (!Unit_canEquip_AnyHand(unit, can_equip)) {
+        SDL_Log("!Unit_canEquip_AnyHand");
+        return (range);
+    }
 
     return (Unit_Range_Id(unit, Unit_Id_Equipment(unit, eq), archetype));
 }

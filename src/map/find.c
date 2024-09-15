@@ -34,24 +34,25 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
     can_equip.archetype = archetype;
     for (int eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         /* Skip if weapon is not usable */
-        // SDL_Log("eq %d \n", eq);
+        SDL_Log("eq %d \n", eq);
         can_equip.eq        = eq;
 
         if (!Unit_canEquip_AnyHand(unit, can_equip)) {
-            // SDL_Log("!Unit_canEquip_AnyHand");
+            SDL_Log("!Unit_canEquip_AnyHand");
             continue;
         }
 
         /* Compute range */
         struct Range *range = Unit_Range_Eq(unit, eq, archetype);
+        SDL_Log("range %d %d", range->min, range->max);
 
         /* Compute attacktolist to check if any enemy in it */
         Pathfinding_Attackto_noM(map->attacktomap, map->movemap,
                                  map->unitmap,
                                  map->row_len, map->col_len,
                                  (i32 *)range, MOVETILE_IGNORE);
-        // printf("ATK\n");
-        // matrix_print(map->attacktomap, map->row_len, map->col_len);
+        printf("ATK\n");
+        matrix_print(map->attacktomap, map->row_len, map->col_len);
 
         Map_Attacktolist_Compute(map);
 
@@ -62,7 +63,7 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
             defendants = Map_Find_Patients(map, map->attacktolist, defendants, unit_ent, eq, false);
         }
 
-        // printf("DARR_NUM(defendants) %d\n", DARR_NUM(defendants));
+        printf("DARR_NUM(defendants) %d\n", DARR_NUM(defendants));
         if (DARR_NUM(defendants) > 0) {
             unit->eq_canEquip[unit->num_canEquip++] = eq;
         }

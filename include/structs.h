@@ -35,11 +35,9 @@ typedef struct {
     //      - Find all equippable weapons (of any type) ONLY
     i64 archetype;
 
-    // Equipment index to check.    Priority: eq > id.
+    // Equipment index to check.
     int eq;
 
-    // Item id to check.            Priority: eq > id.
-    int id;
 } canEquip;
 extern canEquip canEquip_default;
 

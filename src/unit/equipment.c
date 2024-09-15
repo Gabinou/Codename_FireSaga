@@ -232,42 +232,42 @@ void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
 }
 
 b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
-    i32 id = can_equip.id;
-    if ((can_equip.eq >= 0) && (can_equip.eq < SOTA_EQUIPMENT_SIZE)) {
-        id = Unit_Id_Equipment(unit, can_equip.eq);
-    }
+    SDL_assert(can_equip.eq >= 0);
+    SDL_assert(can_equip.eq < SOTA_EQUIPMENT_SIZE);
+    int id = Unit_Id_Equipment(unit, can_equip.eq);
 
     if (id <= ITEM_NULL) {
-        // SDL_Log("ITEM_NULL\n");
+        SDL_Log("ITEM_NULL\n");
         return (false);
     }
+
     if (!Weapon_ID_isValid(id)) {
-        // SDL_Log("!Weapon_ID_isValid\n");
+        SDL_Log("!Weapon_ID_isValid\n");
         return (false);
     }
 
     if (!Unit_canEquip_Type(unit, id)) {
-        // SDL_Log("!Unit_canEquip_Type\n");
+        SDL_Log("!Unit_canEquip_Type\n");
         return (false);
     }
 
-    if (!Unit_canEquip_Archetype(unit, can_equip.eq, can_equip.archetype)) {
-        // SDL_Log("!Unit_canEquip_Archetype\n");
+    if (!Unit_canEquip_Archetype(unit, id, can_equip.archetype)) {
+        SDL_Log("!Unit_canEquip_Archetype\n");
         return (false);
     }
 
-    if (!Unit_canEquip_Users(unit, can_equip.eq)) {
-        // SDL_Log("!Unit_canEquip_Users\n");
+    if (!Unit_canEquip_Users(unit, id)) {
+        SDL_Log("!Unit_canEquip_Users\n");
         return (false);
     }
 
     if (!Unit_canEquip_OneHand(unit, can_equip.eq, can_equip.hand)) {
-        // SDL_Log("!Unit_canEquip_OneHand\n");
+        SDL_Log("!Unit_canEquip_OneHand\n");
         return (false);
     }
 
     if (!Unit_canEquip_TwoHand(unit, can_equip.eq, can_equip.hand)) {
-        // SDL_Log("!Unit_canEquip_TwoHand\n");
+        SDL_Log("!Unit_canEquip_TwoHand\n");
         return (false);
     }
 
@@ -275,9 +275,6 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
 }
 
 b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
-    SDL_assert(can_equip.eq >= 0);
-    SDL_assert(can_equip.eq < SOTA_EQUIPMENT_SIZE);
-
     unit->_equipped[UNIT_HAND_LEFT]     = can_equip.lh;
     unit->_equipped[UNIT_HAND_RIGHT]    = can_equip.rh;
 
@@ -292,7 +289,7 @@ b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
     return (can);
 }
 
-b32 Unit_canEquip_Archetype(Unit *unit, i32 eq, i64 archetype) {
+b32 Unit_canEquip_Archetype(Unit *unit, i32 id, i64 archetype) {
     SDL_assert(unit                 != NULL);
     SDL_assert(unit->weapons_dtab   != NULL);
 
@@ -304,8 +301,9 @@ b32 Unit_canEquip_Archetype(Unit *unit, i32 eq, i64 archetype) {
         return (true);
     }
 
-    Weapon_Load(unit->weapons_dtab, unit->_equipment[eq].id);
-    Weapon *wpn = Unit_Weapon(unit, eq);
+    Weapon_Load(unit->weapons_dtab, id);
+    struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, id);
+    SDL_assert(wpn != NULL);
 
     if (!flagsum_isIn(wpn->item->type, archetype)) {
         return (false);
@@ -318,6 +316,9 @@ b32 Unit_canEquip_Archetype(Unit *unit, i32 eq, i64 archetype) {
 b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand) {
     SDL_assert(eq >= 0);
     SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(unit                 != NULL);
+    SDL_assert(unit->weapons_dtab   != NULL);
+
     i32 id = Unit_Id_Equipment(unit, eq);
     if (id <= ITEM_NULL) {
         return (false);
@@ -355,8 +356,11 @@ b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand) {
 
 // IF equipment can be one-handed, CAN the unit equip it?
 b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, b32 hand) {
+    SDL_assert(eq >= 0);
+    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
     SDL_assert(unit                 != NULL);
     SDL_assert(unit->weapons_dtab   != NULL);
+
     i32 id = Unit_Id_Equipment(unit, eq);
     if (id <= ITEM_NULL)
         return (false);
@@ -364,7 +368,7 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, b32 hand) {
         return (false);
 
     struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, id);
-    SDL_assert(wpn               != NULL);
+    SDL_assert(wpn != NULL);
 
     // left hand wpn in right hand
     if ((wpn->handedness == WEAPON_HAND_LEFT) && (hand == UNIT_HAND_RIGHT))
@@ -416,15 +420,9 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, b32 hand) {
 
 
 /* Is item among possible users? */
-b32 Unit_canEquip_Users(struct Unit *unit, i32 eq) {
+b32 Unit_canEquip_Users(struct Unit *unit, i32 id) {
     SDL_assert(unit != NULL);
     SDL_assert(unit->weapons_dtab != NULL);
-
-    i32 id = Unit_Id_Equipment(unit, eq);
-    if (id <= ITEM_NULL)
-        return (false);
-    if (!Weapon_ID_isValid(id))
-        return (false);
 
     Weapon_Load(unit->weapons_dtab, id);
     struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);

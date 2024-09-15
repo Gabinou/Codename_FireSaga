@@ -12,6 +12,7 @@ b32 Range_Valid(struct Range r1);
 
 // Range of a single piece of equipment, if can be equipped
 struct Range *Unit_Range_Eq(Unit *u, i32 eq, i64 archetype);
+// Range of a single piece of equipment -> CAN'T CHECK canEquip!
 struct Range *Unit_Range_Id(Unit *u, i32 id, i64 archetype);
 
 // Combine ranges of items in current loadout

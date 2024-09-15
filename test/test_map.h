@@ -223,9 +223,11 @@ void test_map_usable(void) {
 
     /* --- 1 enemy in range --- */
     nourstest_true(_Map_Unit_Remove_Map(map, 1, 2) == Erwin);
+    SDL_Log("1 enemy in range");
     Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_WEAPON);
     nourstest_true(silou->num_canEquip      == 1);
     nourstest_true(silou->eq_canEquip[0]    == 0);
+    getchar();
 
     /* --- TODO: Range types, blocked by unit --- */
     silou->equippable = ITEM_TYPE_BOW;

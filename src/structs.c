@@ -16,11 +16,8 @@ struct nmath_hexpoint_int32_t Cube_Diagonal_zm =    {-1,  2, -1};
 
 canEquip canEquip_default = {
     // Try to equip:
-    /* 1.1 Weapon in right hand (slot 1) */
-    .eq         = UNIT_HAND_RIGHT,
-
-    /* 1.1 Weapon with id */
-    .id         = ITEM_NULL,
+    /* 1. Weapon in equipment[eq] slot */
+    .eq         = -1,
 
     /* 2. In right hand */
     .hand       = UNIT_HAND_RIGHT,
