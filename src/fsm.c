@@ -609,59 +609,13 @@ void fsm_eCrsDeHvUnit_ssMapCndt(struct Game *sota, tnecs_entity dehov_ent) {
 
 /* -- FSM: INPUT_CANCEL EVENT -- */
 void fsm_eCncl_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
+    SDL_assert(sota->deployment_menu > TNECS_NULL);
 
-    int num_menu_stack      = DARR_NUM(sota->menu_stack);
-    tnecs_entity top_menu   = sota->menu_stack[num_menu_stack - 1];
+    struct Menu *mc;
+    mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
 
-    // TODO: use menu/fsm
-    if ((num_menu_stack == 1) && (top_menu == sota->deployment_menu)) {
-        /* topmenu is deployment menu */
-        /* Go back to map candidate selection */
-        /* Candidates get switched around map starting positions */
-        SDL_assert(sota->menu_stack[0] != TNECS_NULL);
-        SDL_assert(DARR_NUM(sota->menu_stack) == 1);
-        DARR_POP(sota->menu_stack);
-        SDL_assert(DARR_NUM(sota->menu_stack) == 0);
-
-        strncpy(sota->reason, "Change to map candidates", sizeof(sota->reason));
-        Game_subState_Set(sota, GAME_SUBSTATE_MAP_CANDIDATES, sota->reason);
-
-        /* - Reset potential candidates - */
-        sota->candidate     = 0;
-
-        /* - Focus on map - */
-        struct Menu *mc;
-        if (sota->deployment_menu != TNECS_NULL) {
-            mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
-            if (mc)
-                mc->visible = false;
-        }
-
-        Game_cursorFocus_onMap(sota);
-
-    } else if ((num_menu_stack > 1) && (top_menu == sota->stats_menu)) {
-        // Top menu is stats menu: DISABLE IT
-        SDL_assert(sota->menu_stack[1] != TNECS_NULL);
-        SDL_assert(DARR_NUM(sota->menu_stack) == 2);
-        tnecs_entity popped = Game_menuStack_Pop(sota, false);
-        SDL_assert(DARR_NUM(sota->menu_stack) == 1);
-        SDL_assert(popped != NULL);
-        SDL_assert(popped == sota->stats_menu);
-        SDL_assert(sota->menu_stack[0] == sota->deployment_menu);
-        SDL_assert(sota->deployment_menu > TNECS_NULL);
-
-        struct Menu *mc;
-        mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
-        SDL_assert(mc);
-        mc->visible = true;
-
-        Game_cursorFocus_onMenu(sota);
-    } else {
-        // Should not happen
-        SDL_assert(false);
-        SDL_Log("Wrong menu during deployment", sota->substate);
-        exit(ERROR_Generic);
-    }
+    if (fsm_eCncl_sPrep_ssMenu_m[mc->type] != NULL)
+        fsm_eCncl_sPrep_ssMenu_m[mc->type](sota, mc);
 }
 
 void fsm_eCncl_sPrep_ssMapCndt( struct Game *sota, tnecs_entity ent) {
@@ -1377,12 +1331,7 @@ void fsm_eStats_sPrep_ssMapCndt(  struct Game *sota, tnecs_entity ent) {
 }
 
 void fsm_eStats_sPrep_ssMenu(  struct Game *sota, tnecs_entity ent) {
-    SDL_assert((sota->state == GAME_STATE_Gameplay_Map) ||
-               (sota->state == GAME_STATE_Preparation));
     SDL_assert(sota->deployment_menu > TNECS_NULL);
-
-    int num_menu_stack      = DARR_NUM(sota->menu_stack);
-    tnecs_entity top_menu   = sota->menu_stack[num_menu_stack - 1];
 
     struct Menu *mc;
     mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
