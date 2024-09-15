@@ -49,7 +49,7 @@ Item   *Unit_Get_Item(       Unit *u, i32 eq);
 Weapon *Unit_Equipped_Weapon(Unit *u, b32 hand);
 
 /* ID of equipped weapon */
-i32 Unit_Id_Equipped(Unit *u, i32 hand);
+i32 Unit_Id_Equipped(Unit *u,  i32 hand);
 i32 Unit_Id_Equipment(Unit *u, i32 eq);
 
 /* Order in _equipment of equipped weapon */
@@ -61,8 +61,8 @@ void    Unit_Unequip(   Unit *u, b32 h);
 b32     Unit_isEquipped(Unit *u, b32 hand);
 
 /* - Base canEquips - */
-b32  Unit_canEquip_Type(    Unit *u,    i32 eq);
-b32  Unit_canEquip_Users(   Unit *u,    i32 eq);
+b32  Unit_canEquip_Type(    Unit *u,    i32 id);
+b32  Unit_canEquip_Users(   Unit *u,    i32 id);
 b32  Unit_canEquip_OneHand( Unit *u,    i32 eq, b32 hand);
 b32  Unit_canEquip_TwoHand( Unit *u,    i32 eq, b32 hand);
 
@@ -88,8 +88,6 @@ b32 Unit_iswrongHanding(Unit *u);
 /* --- Debug --- */
 b32  Unit_Equipment_Full( Unit *u);
 void Unit_Equipment_Print(Unit *u);
-
-/* -- Can -- */
 
 /* -- Use -- */
 void Unit_Staff_Use(Unit *unit, Unit *patient);

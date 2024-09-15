@@ -745,7 +745,7 @@ void test_canEquip_Users(void) {
     Silou._equipment[eq].id = id;
     weapon->item->users     = NULL;
 
-    nourstest_true(Unit_canEquip_Users(&Silou, eq));
+    nourstest_true(Unit_canEquip_Users(&Silou, id));
     u16 *users = DARR_INIT(users, u16, 4);
     users[0] = UNIT_ID_ERWIN;
     users[1] = UNIT_ID_ERWIN;
@@ -753,10 +753,10 @@ void test_canEquip_Users(void) {
     users[3] = UNIT_ID_ERWIN;
     DARR_NUM(users) = 4;
     weapon->item->users = users;
-    nourstest_true(!Unit_canEquip_Users(&Silou, eq));
+    nourstest_true(!Unit_canEquip_Users(&Silou, id));
 
     users[3] = UNIT_ID_SILOU;
-    nourstest_true( Unit_canEquip_Users(&Silou, eq));
+    nourstest_true( Unit_canEquip_Users(&Silou, id));
 
     Game_Weapons_Free(&weapons_dtab);
 }
@@ -774,28 +774,28 @@ void test_canEquip_Archetype(void) {
     int eq = 0;
     Silou._equipment[eq].id = id;
 
-    nourstest_true( Unit_canEquip_Archetype(&Silou, eq, ITEM_ARCHETYPE_NULL));
-    nourstest_true( Unit_canEquip_Archetype(&Silou, eq, ITEM_ARCHETYPE_ITEM));
-    nourstest_true( Unit_canEquip_Archetype(&Silou, eq, ITEM_ARCHETYPE_WEAKHAND));
-    nourstest_true( Unit_canEquip_Archetype(&Silou, eq, ITEM_ARCHETYPE_WEAPON));
-    nourstest_true(!Unit_canEquip_Archetype(&Silou, eq, ITEM_ARCHETYPE_SHIELD));
-    nourstest_true(!Unit_canEquip_Archetype(&Silou, eq, ITEM_ARCHETYPE_STAFF));
+    nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_NULL));
+    nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_ITEM));
+    nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_WEAKHAND));
+    nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_WEAPON));
+    nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_SHIELD));
+    nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_STAFF));
 
     weapon->item->type = ITEM_TYPE_STAFF;
-    nourstest_true( Unit_canEquip_Archetype(&Silou, eq, ITEM_ARCHETYPE_NULL));
-    nourstest_true( Unit_canEquip_Archetype(&Silou, eq, ITEM_ARCHETYPE_ITEM));
-    nourstest_true(!Unit_canEquip_Archetype(&Silou, eq, ITEM_ARCHETYPE_WEAKHAND));
-    nourstest_true(!Unit_canEquip_Archetype(&Silou, eq, ITEM_ARCHETYPE_WEAPON));
-    nourstest_true(!Unit_canEquip_Archetype(&Silou, eq, ITEM_ARCHETYPE_SHIELD));
-    nourstest_true( Unit_canEquip_Archetype(&Silou, eq, ITEM_ARCHETYPE_STAFF));
+    nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_NULL));
+    nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_ITEM));
+    nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_WEAKHAND));
+    nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_WEAPON));
+    nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_SHIELD));
+    nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_STAFF));
 
     weapon->item->type = ITEM_TYPE_SHIELD;
-    nourstest_true( Unit_canEquip_Archetype(&Silou, eq, ITEM_ARCHETYPE_NULL));
-    nourstest_true( Unit_canEquip_Archetype(&Silou, eq, ITEM_ARCHETYPE_ITEM));
-    nourstest_true( Unit_canEquip_Archetype(&Silou, eq, ITEM_ARCHETYPE_WEAKHAND));
-    nourstest_true(!Unit_canEquip_Archetype(&Silou, eq, ITEM_ARCHETYPE_WEAPON));
-    nourstest_true( Unit_canEquip_Archetype(&Silou, eq, ITEM_ARCHETYPE_SHIELD));
-    nourstest_true(!Unit_canEquip_Archetype(&Silou, eq, ITEM_ARCHETYPE_STAFF));
+    nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_NULL));
+    nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_ITEM));
+    nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_WEAKHAND));
+    nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_WEAPON));
+    nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_SHIELD));
+    nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_STAFF));
 
     Game_Weapons_Free(&weapons_dtab);
 }
