@@ -612,7 +612,8 @@ void fsm_eCncl_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
     SDL_assert(sota->deployment_menu > TNECS_NULL);
 
     struct Menu *mc;
-    mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
+    tnecs_entity top_menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
+    mc = TNECS_GET_COMPONENT(sota->world, top_menu, Menu);
 
     if (fsm_eCncl_sPrep_ssMenu_m[mc->type] != NULL)
         fsm_eCncl_sPrep_ssMenu_m[mc->type](sota, mc);

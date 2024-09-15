@@ -56,22 +56,6 @@ fsm_menu_t fsm_eStats_sPrep_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_DEPLOYMENT */      &fsm_eStats_sPrep_ssMenu_mDM,
 };
 
-fsm_menu_t fsm_eStats_sPrep_ssMapCndt_m[MENU_TYPE_END] = {
-    /* MENU_TYPE_START */           NULL,
-    /* MENU_TYPE_PLAYER_SELECT */   NULL,
-    /* MENU_TYPE_WEAPON_SELECT  */  NULL,
-    /* MENU_TYPE_STAFF_SELECT  */   NULL,
-    /* MENU_TYPE_ITEM_SELECT  */    NULL,
-    /* MENU_TYPE_STATS */           &fsm_eStats_sPrep_ssMapCndt_mSM,
-    /* MENU_TYPE_RESCUE */          NULL,
-    /* MENU_TYPE_SUPPORTS */        NULL,
-    /* MENU_TYPE_GROWTHS */         NULL,
-    /* MENU_TYPE_TRADE */           NULL,
-    /* MENU_TYPE_ITEM_DROP */       NULL,
-    /* MENU_TYPE_DEPLOYMENT */      NULL,
-};
-
-
 fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_START */           NULL,
     /* MENU_TYPE_PLAYER_SELECT */   &fsm_eAcpt_sGmpMap_ssMenu_mPSM,
@@ -115,21 +99,6 @@ fsm_menu_t fsm_eCncl_sPrep_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_TRADE */           NULL,
     /* MENU_TYPE_ITEM_DROP */       NULL,
     /* MENU_TYPE_DEPLOYMENT */      &fsm_eCncl_sPrep_ssMenu_mDM,
-};
-
-fsm_menu_t fsm_eCncl_sPrep_ssMapCndt_m[MENU_TYPE_END] = {
-    /* MENU_TYPE_START */           NULL,
-    /* MENU_TYPE_PLAYER_SELECT */   NULL,
-    /* MENU_TYPE_WEAPON_SELECT */   NULL,
-    /* MENU_TYPE_STAFF_SELECT  */   NULL,
-    /* MENU_TYPE_ITEM_SELECT  */    NULL,
-    /* MENU_TYPE_STATS */           &fsm_eCncl_sPrep_ssMapCndt_mSM,
-    /* MENU_TYPE_RESCUE */          NULL,
-    /* MENU_TYPE_SUPPORTS */        NULL,
-    /* MENU_TYPE_GROWTHS */         NULL,
-    /* MENU_TYPE_TRADE */           NULL,
-    /* MENU_TYPE_ITEM_DROP */       NULL,
-    /* MENU_TYPE_DEPLOYMENT */      NULL,
 };
 
 fsm_menu_t fsm_eCrsMvs_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
@@ -1264,21 +1233,25 @@ void fsm_eCncl_sPrep_ssMenu_mSM( struct Game *sota, struct Menu *mc) {
     int num_menu_stack      = DARR_NUM(sota->menu_stack);
     tnecs_entity top_menu   = sota->menu_stack[num_menu_stack - 1];
 
-    SDL_assert(num_menu_stack > 1);
-    SDL_assert(top_menu == sota->stats_menu);
-
-    SDL_assert(sota->menu_stack[1] != TNECS_NULL);
-    SDL_assert(DARR_NUM(sota->menu_stack) == 2);
     tnecs_entity popped = Game_menuStack_Pop(sota, false);
-    SDL_assert(DARR_NUM(sota->menu_stack) == 1);
-    SDL_assert(popped != NULL);
-    SDL_assert(popped == sota->stats_menu);
-    SDL_assert(sota->menu_stack[0] == sota->deployment_menu);
-    SDL_assert(sota->deployment_menu > TNECS_NULL);
 
     /* - Focus on new menu - */
-    mc->visible = true;
-    Game_cursorFocus_onMenu(sota);
+    if (DARR_NUM(sota->menu_stack) > 0) {
+        /* Return to deployment menu */
+        mc->visible = false;
+        Game_cursorFocus_onMenu(sota);
+    } else {
+        /* Return to Map candidates */
+        strncpy(sota->reason, "Change to map candidates", sizeof(sota->reason));
+        Game_subState_Set(sota, GAME_SUBSTATE_MAP_CANDIDATES, sota->reason);
+
+        /* - Reset potential candidates - */
+        sota->candidate     = 0;
+
+        /* - Focus on map - */
+        mc->visible = false;
+        Game_cursorFocus_onMap(sota);
+    }
 }
 
 void fsm_eCncl_sPrep_ssMenu_mDM( struct Game *sota, struct Menu *mc) {
