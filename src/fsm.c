@@ -55,7 +55,7 @@ fsm_eCncl_s_t fsm_eCncl_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
     /* Scene_Talk */     &fsm_eAcpt_sScnTalk,
-    /* Cutscene */      NULL,
+    /* Cutscene */       NULL,
     /* Gameplay_Map */   &fsm_eCncl_sGmpMap,
     /* Gameplay_Camp */  NULL,
     /* Preparation */    &fsm_eCncl_sPrep,
@@ -304,7 +304,7 @@ fsm_eStats_s_t fsm_eStats_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
     /* STANDBY */         NULL,
-    /* MAP_CANDIDATES */  &fsm_eStats_sPrep_ssStby,
+    /* MAP_CANDIDATES */  &fsm_eStats_sPrep_ssMapCndt,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL
 };
@@ -1372,7 +1372,7 @@ void fsm_eStats_sGmpMap(struct Game *sota, tnecs_entity ent) {
     fsm_eStats_sGmpMap_ssStby(sota, ent);
 }
 
-void fsm_eStats_sPrep_ssStby(  struct Game *sota, tnecs_entity ent) {
+void fsm_eStats_sPrep_ssMapCndt(  struct Game *sota, tnecs_entity ent) {
 
 }
 
@@ -1384,33 +1384,11 @@ void fsm_eStats_sPrep_ssMenu(  struct Game *sota, tnecs_entity ent) {
     int num_menu_stack      = DARR_NUM(sota->menu_stack);
     tnecs_entity top_menu   = sota->menu_stack[num_menu_stack - 1];
 
-    // TODO: use menu/fsm
-    if ((num_menu_stack == 1) && (top_menu == sota->deployment_menu)) {
-        // Top menu is deployments menu: enable stats menu
+    struct Menu *mc;
+    mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
 
-        /* Find which unit is hovered in deployment menu */
-        SDL_assert(sota->entity_cursor);
-
-        /* - Get unit overed in deployment menu - */
-        struct Menu *mc;
-        mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
-
-        struct DeploymentMenu *dm = mc->data;
-        tnecs_entity hovered = DeploymentMenu_Hovered_Entity(dm, mc->elem);
-        SDL_assert(hovered > TNECS_NULL);
-
-        /* Enabling stats menu for hovered unit */
-        Game_StatsMenu_Enable(sota, hovered);
-
-    } else if ((num_menu_stack > 1) && (top_menu == sota->stats_menu)) {
-        // Top menu is stats menu: do nothing
-        return;
-    } else {
-        // Should not happen
-        SDL_assert(false);
-        SDL_Log("Wrong menu during deployment", sota->substate);
-        exit(ERROR_Generic);
-    }
+    if (fsm_eStats_sPrep_ssMenu_m[mc->type] != NULL)
+        fsm_eStats_sPrep_ssMenu_m[mc->type](sota, mc);
 }
 
 /* Displaying stats menu */

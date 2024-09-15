@@ -41,6 +41,21 @@ fsm_menu_t fsm_eStart_sPrep_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_DEPLOYMENT */      &fsm_eStart_sPrep_ssMenu_mDM,
 };
 
+fsm_menu_t fsm_eStats_sPrep_ssMenu_m[MENU_TYPE_END] = {
+    /* MENU_TYPE_START */           NULL,
+    /* MENU_TYPE_PLAYER_SELECT */   NULL,
+    /* MENU_TYPE_WEAPON_SELECT  */  NULL,
+    /* MENU_TYPE_STAFF_SELECT  */   NULL,
+    /* MENU_TYPE_ITEM_SELECT  */    NULL,
+    /* MENU_TYPE_STATS */           &fsm_eStats_sPrep_ssMenu_mSM,
+    /* MENU_TYPE_RESCUE */          NULL,
+    /* MENU_TYPE_SUPPORTS */        NULL,
+    /* MENU_TYPE_GROWTHS */         NULL,
+    /* MENU_TYPE_TRADE */           NULL,
+    /* MENU_TYPE_ITEM_DROP */       NULL,
+    /* MENU_TYPE_DEPLOYMENT */      &fsm_eStats_sPrep_ssMenu_mDM,
+};
+
 fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_START */           NULL,
     /* MENU_TYPE_PLAYER_SELECT */   &fsm_eAcpt_sGmpMap_ssMenu_mPSM,
@@ -1153,3 +1168,35 @@ void fsm_eStart_sPrep_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
     Game_Battle_Start(sota, mc);
 }
 
+/* event_Input_Stats */
+void fsm_eStats_sPrep_ssMenu_mSM( struct Game *sota, struct Menu *mc) {
+    // Top menu is stats menu: do nothing
+    SDL_assert(mc != NULL);
+    int num_menu_stack      = DARR_NUM(sota->menu_stack);
+    tnecs_entity top_menu   = sota->menu_stack[num_menu_stack - 1];
+
+    SDL_assert(num_menu_stack > 1);
+    SDL_assert(top_menu == sota->stats_menu);
+}
+
+void fsm_eStats_sPrep_ssMenu_mDM( struct Game *sota, struct Menu *mc) {
+    // Top menu is deployments menu: enable stats menu
+    SDL_assert(mc != NULL);
+    int num_menu_stack      = DARR_NUM(sota->menu_stack);
+    tnecs_entity top_menu   = sota->menu_stack[num_menu_stack - 1];
+
+    SDL_assert(num_menu_stack == 1);
+    SDL_assert(top_menu == sota->deployment_menu);
+
+
+    /* Find which unit is hovered in deployment menu */
+    SDL_assert(sota->entity_cursor);
+
+    /* - Get unit hovered in deployment menu - */
+    struct DeploymentMenu *dm = mc->data;
+    tnecs_entity hovered = DeploymentMenu_Hovered_Entity(dm, mc->elem);
+    SDL_assert(hovered > TNECS_NULL);
+
+    /* Enabling stats menu for hovered unit */
+    Game_StatsMenu_Enable(sota, hovered);
+}
