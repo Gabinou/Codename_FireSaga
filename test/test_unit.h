@@ -1119,7 +1119,6 @@ void test_range(void) {
     nourstest_true(range->min == wpns[4]->stats.range.min);
     nourstest_true(range->max == wpns[5]->stats.range.max);
 
-
     Silou._equipped[UNIT_HAND_LEFT]     = 3;
     Silou._equipped[UNIT_HAND_RIGHT]    = 4;
     range = Unit_Range_Loadout(&Silou, ITEM_TYPE_SWORD);
@@ -1127,7 +1126,35 @@ void test_range(void) {
     nourstest_true(range->max == wpns[4]->stats.range.max);
 
     /* Unit_Range_Equipment */
-    // range = Unit_Range_Equipment(   &Silou, ITEM_TYPE_SWORD);
+
+    Silou._equipment[0].id    = ITEM_NULL;
+    Silou._equipment[1].id    = ITEM_ID_RAPIERE;
+    Silou._equipment[2].id    = ITEM_ID_GLAIVE;
+    Silou._equipment[3].id    = ITEM_NULL;
+    Silou._equipment[4].id    = ITEM_NULL;
+    Silou._equipment[5].id    = ITEM_NULL;
+    range = Unit_Range_Equipment(&Silou, ITEM_TYPE_SWORD);
+    nourstest_true(range->min == wpns[1]->stats.range.min);
+    nourstest_true(range->max == wpns[2]->stats.range.max);
+
+    Silou._equipment[0].id    = ITEM_NULL;
+    Silou._equipment[1].id    = ITEM_NULL;
+    Silou._equipment[2].id    = ITEM_NULL;
+    Silou._equipment[3].id    = ITEM_ID_IRON_SWORD;
+    Silou._equipment[4].id    = ITEM_ID_UCHIGATANA;
+    Silou._equipment[5].id    = ITEM_ID_EXSANGUE;
+    range = Unit_Range_Equipment(&Silou, ITEM_TYPE_SWORD);
+    nourstest_true(range->min == wpns[3]->stats.range.min);
+    nourstest_true(range->max == wpns[5]->stats.range.max);
+
+    Silou._equipment[0].id    = ITEM_ID_FLEURET;
+    Silou._equipment[1].id    = ITEM_NULL;
+    Silou._equipment[2].id    = ITEM_ID_GLAIVE;
+    Silou._equipment[3].id    = ITEM_NULL;
+    Silou._equipment[4].id    = ITEM_NULL;
+    Silou._equipment[5].id    = ITEM_NULL;
+    range = Unit_Range_Equipment(&Silou, ITEM_TYPE_SWORD);
+    nourstest_true(!Range_Valid(*range));
 
     Game_Weapons_Free(&weapons_dtab);
 }

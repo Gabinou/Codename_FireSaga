@@ -173,10 +173,16 @@ void Ranges_Combine(struct Range *r1, struct Range r2) {
     b32 any_invalid;
     any_invalid  = (r1->min >= Range_default.min) && (r1->max <= Range_default.max);
     any_invalid  |= (r2.min >= Range_default.min) && (r2.max  <= Range_default.max);
-    SDL_assert(any_invalid || !Ranges_Gap(*r1, r2));
 
-    *r1 = _Ranges_Combine(*r1, r2);
-    SDL_assert(Range_Valid(*r1));
+    if (!any_invalid && Ranges_Gap(*r1, r2)) {
+        *r1 = Range_default;
+        // If there is any gaps, set output to invalid to detect during runtime
+    } else {
+        // There is no gap, combine ranges
+        *r1 = _Ranges_Combine(*r1, r2);
+        SDL_assert(Range_Valid(*r1));
+    }
+
 }
 
 /* "Private", range combiner without checking */
