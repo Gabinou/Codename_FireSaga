@@ -317,7 +317,7 @@ extern struct Aura Aura_default;
 struct Weapon_stats {
     i32 attack[ATTACK_TYPES_NO_TOTAL];
     i32 protection[PROTECTION_TYPES_NO_TOTAL];
-    struct Range range; /* [0]: min, [1]: max */
+    struct Range range; /* of attack [0]: min, [1]: max */
     i32 hit;
     i32 dodge;  /* when the Sword is TOO HEAVY TO DODGE */
     i32 crit;

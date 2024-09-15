@@ -38,7 +38,7 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
         can_equip.eq        = eq;
 
         if (!Unit_canEquip_AnyHand(unit, can_equip)) {
-            SDL_Log("!Unit_canEquip_AnyHand");
+            // SDL_Log("!Unit_canEquip_AnyHand");
             continue;
         }
 

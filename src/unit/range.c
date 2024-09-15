@@ -20,7 +20,6 @@ b32 _Range_Archetype_Match(struct Weapon *wpn, i64 archetype) {
 }
 
 struct Range *Unit_Range_Id(struct Unit *unit, int id, i64 archetype) {
-    SDL_Log("Unit_Range_Id %d %d", id, ITEM_ID_FLEURET);
     struct Range *range = &unit->computed_stats.range_equipment;
     SDL_assert(range != NULL);
     *range = Range_default;
@@ -38,16 +37,16 @@ struct Range *Unit_Range_Id(struct Unit *unit, int id, i64 archetype) {
     canEquip can_equip  = canEquip_default;
     can_equip.id        = id;
     if (!Unit_canEquip_AnyHand(unit, can_equip)) {
-        SDL_Log("!Unit_canEquip");
+        // SDL_Log("!Unit_canEquip");
         return (range);
     }
 
-    Weapon_Load(unit->weapons_dtab, id);
+    // Weapon_Load(unit->weapons_dtab, id);
     struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, id);
     SDL_assert(wpn != NULL);
 
     if (!_Range_Archetype_Match(wpn, archetype)) {
-        SDL_Log("!_Range_Archetype_Match");
+        // SDL_Log("!_Range_Archetype_Match");
         return (range);
     }
 
@@ -115,10 +114,9 @@ struct Range *Unit_Range_Loadout(Unit *unit, i64 archetype) {
     *range = Range_default;
 
     for (int hand = 0; hand < UNIT_HANDS_NUM; hand++) {
-        int eq = Unit_Id_Equipped(unit, hand);
+        int id = Unit_Id_Equipped(unit, hand);
 
         /* Skip if no item */
-        i32 id = Unit_Id_Equipment(unit, eq);
         if (!Weapon_ID_isValid(id)) {
             // SDL_Log("!Weapon_ID_isValid\n");
             continue;

@@ -996,6 +996,21 @@ void test_canEquip(void) {
 }
 
 void test_range(void) {
+
+    struct Range range1     = {0};
+    struct Range range2     = {0};
+    struct Range range_out  = {0};
+    range1.min = 1;
+    range1.max = 2;
+    range2      = Range_default;
+    range_out   = _Ranges_Combine(range1, range2);
+    nourstest_true(range_out.min == range1.min);
+    nourstest_true(range_out.max == range1.max);
+
+    Ranges_Combine(&range2, range1);
+    nourstest_true(range2.min == range1.min);
+    nourstest_true(range2.max == range1.max);
+
     /*  - Does the loadout make sense for unit/class/selection - */
     struct Unit Silou = Unit_default;
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
@@ -1017,48 +1032,101 @@ void test_range(void) {
     Weapon_Load(weapons_dtab, Silou._equipment[3].id);
     Weapon_Load(weapons_dtab, Silou._equipment[4].id);
     Weapon_Load(weapons_dtab, Silou._equipment[5].id);
-    struct Weapon *wpn0 = DTAB_GET(weapons_dtab, Silou._equipment[0].id);
-    struct Weapon *wpn1 = DTAB_GET(weapons_dtab, Silou._equipment[1].id);
-    struct Weapon *wpn2 = DTAB_GET(weapons_dtab, Silou._equipment[2].id);
-    struct Weapon *wpn3 = DTAB_GET(weapons_dtab, Silou._equipment[3].id);
-    struct Weapon *wpn4 = DTAB_GET(weapons_dtab, Silou._equipment[4].id);
-    struct Weapon *wpn5 = DTAB_GET(weapons_dtab, Silou._equipment[5].id);
-    SDL_assert(wpn0 != NULL);
-    SDL_assert(wpn1 != NULL);
-    SDL_assert(wpn2 != NULL);
-    SDL_assert(wpn3 != NULL);
-    SDL_assert(wpn4 != NULL);
-    SDL_assert(wpn5 != NULL);
+    struct Weapon *wpns[SOTA_EQUIPMENT_SIZE];
+    wpns[0] = DTAB_GET(weapons_dtab, Silou._equipment[0].id);
+    wpns[1] = DTAB_GET(weapons_dtab, Silou._equipment[1].id);
+    wpns[2] = DTAB_GET(weapons_dtab, Silou._equipment[2].id);
+    wpns[3] = DTAB_GET(weapons_dtab, Silou._equipment[3].id);
+    wpns[4] = DTAB_GET(weapons_dtab, Silou._equipment[4].id);
+    wpns[5] = DTAB_GET(weapons_dtab, Silou._equipment[5].id);
+    SDL_assert(wpns[0] != NULL);
+    SDL_assert(wpns[1] != NULL);
+    SDL_assert(wpns[2] != NULL);
+    SDL_assert(wpns[3] != NULL);
+    SDL_assert(wpns[4] != NULL);
+    SDL_assert(wpns[5] != NULL);
 
     /* Swords */
-    wpn0->item->range.min = 1;
-    wpn0->item->range.max = 1;
+    wpns[0]->stats.range.min = 1;
+    wpns[0]->stats.range.max = 1;
     /* Magic weapons, lance, axes */
-    wpn1->item->range.min = 1;
-    wpn1->item->range.max = 2;
+    wpns[1]->stats.range.min = 1;
+    wpns[1]->stats.range.max = 2;
+    SDL_assert(wpns[1]->stats.range.min == 1);
+    SDL_assert(wpns[1]->stats.range.max == 2);
     /* Magic weapons -> siege tomes */
-    wpn2->item->range.min = 3;
-    wpn2->item->range.max = 7;
+    wpns[2]->stats.range.min = 3;
+    wpns[2]->stats.range.max = 7;
+    SDL_assert(wpns[2]->stats.range.min == 3);
+    SDL_assert(wpns[2]->stats.range.max == 7);
     /* Bows */
-    wpn3->item->range.min = 2;
-    wpn3->item->range.max = 2;
-    wpn4->item->range.min = 2;
-    wpn4->item->range.max = 3;
-    wpn5->item->range.min = 2;
-    wpn5->item->range.max = 4;
+    wpns[3]->stats.range.min = 2;
+    wpns[3]->stats.range.max = 2;
+    wpns[4]->stats.range.min = 2;
+    wpns[4]->stats.range.max = 3;
+    wpns[5]->stats.range.min = 2;
+    wpns[5]->stats.range.max = 4;
+
+    struct Weapon *wpn = DTAB_GET(weapons_dtab, Silou._equipment[1].id);
+    SDL_assert(wpn->stats.range.min == 1);
+    SDL_assert(wpn->stats.range.max == 2);
 
     struct Range *range = NULL;
+
+    /* Unit_Range_Eq */
     Silou.equippable = ITEM_TYPE_SWORD;
-    range = Unit_Range_Eq(&Silou, 0, ITEM_ARCHETYPE_WEAPON);
-    SDL_Log("range %d %d", range->min, range->max);
-    getchar();
-    nourstest_true(Range_Valid(*range));
+    for (int eq = 0; eq < SOTA_EQUIPMENT_SIZE; ++eq) {
+        range = Unit_Range_Eq(&Silou, eq, ITEM_ARCHETYPE_WEAPON);
+        nourstest_true(Range_Valid(*range));
+        nourstest_true(wpns[eq]->stats.range.min == range->min);
+        nourstest_true(wpns[eq]->stats.range.max == range->max);
 
-    range = Unit_Range_Eq(&Silou, 0, ITEM_TYPE_LANCE);
-    nourstest_true(!Range_Valid(*range));
+        range = Unit_Range_Eq(&Silou, eq, ITEM_TYPE_LANCE);
+        nourstest_true(!Range_Valid(*range));
+    }
 
-    // range = Unit_Range_Id(          &Silou, Silou._equipment[0].id, ITEM_TYPE_SWORD);
-    // range = Unit_Range_Loadout(     &Silou, ITEM_TYPE_SWORD);
+    /* Unit_Range_Id */
+    for (int eq = 0; eq < SOTA_EQUIPMENT_SIZE; ++eq) {
+        range = Unit_Range_Id(&Silou, Silou._equipment[eq].id, ITEM_ARCHETYPE_WEAPON);
+        nourstest_true(Range_Valid(*range));
+        nourstest_true(wpns[eq]->stats.range.min == range->min);
+        nourstest_true(wpns[eq]->stats.range.max == range->max);
+
+        range = Unit_Range_Id(&Silou, Silou._equipment[eq].id, ITEM_TYPE_LANCE);
+        nourstest_true(!Range_Valid(*range));
+    }
+
+    wpn = DTAB_GET(weapons_dtab, Silou._equipment[1].id);
+    SDL_assert(wpn->stats.range.min == 1);
+    SDL_assert(wpn->stats.range.max == 2);
+
+    /* Unit_Range_Loadout */
+    Silou._equipped[UNIT_HAND_LEFT]     = 0;
+    Silou._equipped[UNIT_HAND_RIGHT]    = 1;
+    range = Unit_Range_Loadout(&Silou, ITEM_TYPE_SWORD);
+    nourstest_true(range->min == wpns[1]->stats.range.min);
+    nourstest_true(range->max == wpns[1]->stats.range.max);
+
+    Silou._equipped[UNIT_HAND_LEFT]     = 1;
+    Silou._equipped[UNIT_HAND_RIGHT]    = 2;
+    range = Unit_Range_Loadout(&Silou, ITEM_TYPE_SWORD);
+    nourstest_true(range->min == wpns[1]->stats.range.min);
+    nourstest_true(range->max == wpns[2]->stats.range.max);
+
+    Silou._equipped[UNIT_HAND_LEFT]     = 4;
+    Silou._equipped[UNIT_HAND_RIGHT]    = 5;
+    range = Unit_Range_Loadout(&Silou, ITEM_TYPE_SWORD);
+    nourstest_true(range->min == wpns[4]->stats.range.min);
+    nourstest_true(range->max == wpns[5]->stats.range.max);
+
+
+    Silou._equipped[UNIT_HAND_LEFT]     = 3;
+    Silou._equipped[UNIT_HAND_RIGHT]    = 4;
+    range = Unit_Range_Loadout(&Silou, ITEM_TYPE_SWORD);
+    nourstest_true(range->min == wpns[3]->stats.range.min);
+    nourstest_true(range->max == wpns[4]->stats.range.max);
+
+    /* Unit_Range_Equipment */
     // range = Unit_Range_Equipment(   &Silou, ITEM_TYPE_SWORD);
 
     Game_Weapons_Free(&weapons_dtab);
