@@ -68,7 +68,7 @@ fsm_menu_t fsm_eStats_sPrep_ssMapCndt_m[MENU_TYPE_END] = {
     /* MENU_TYPE_GROWTHS */         NULL,
     /* MENU_TYPE_TRADE */           NULL,
     /* MENU_TYPE_ITEM_DROP */       NULL,
-    /* MENU_TYPE_DEPLOYMENT */      &fsm_eStats_sPrep_ssMapCndt_mDM,
+    /* MENU_TYPE_DEPLOYMENT */      NULL,
 };
 
 
@@ -129,7 +129,7 @@ fsm_menu_t fsm_eCncl_sPrep_ssMapCndt_m[MENU_TYPE_END] = {
     /* MENU_TYPE_GROWTHS */         NULL,
     /* MENU_TYPE_TRADE */           NULL,
     /* MENU_TYPE_ITEM_DROP */       NULL,
-    /* MENU_TYPE_DEPLOYMENT */      &fsm_eCncl_sPrep_ssMapCndt_mDM,
+    /* MENU_TYPE_DEPLOYMENT */      NULL,
 };
 
 fsm_menu_t fsm_eCrsMvs_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
@@ -1248,13 +1248,14 @@ void fsm_eStats_sPrep_ssMenu_mDM( struct Game *sota, struct Menu *mc) {
 }
 
 void fsm_eStats_sPrep_ssMapCndt_mSM( struct Game *sota, struct Menu *mc) {
+    // Top menu is stats menu: do nothing
+    SDL_assert(mc != NULL);
+    int num_menu_stack      = DARR_NUM(sota->menu_stack);
+    tnecs_entity top_menu   = sota->menu_stack[num_menu_stack - 1];
 
+    SDL_assert(num_menu_stack == 1);
+    SDL_assert(top_menu == sota->stats_menu);
 }
-
-void fsm_eStats_sPrep_ssMapCndt_mDM( struct Game *sota, struct Menu *mc) {
-
-}
-
 
 void fsm_eCncl_sPrep_ssMenu_mSM( struct Game *sota, struct Menu *mc) {
     // Top menu is stats menu: DISABLE IT
@@ -1308,10 +1309,18 @@ void fsm_eCncl_sPrep_ssMenu_mDM( struct Game *sota, struct Menu *mc) {
 }
 
 void fsm_eCncl_sPrep_ssMapCndt_mSM( struct Game *sota, struct Menu *mc) {
+    // Top menu is stats menu: DISABLE IT
+    SDL_assert(mc != NULL);
 
+    int num_menu_stack      = DARR_NUM(sota->menu_stack);
+    tnecs_entity top_menu   = sota->menu_stack[num_menu_stack - 1];
+
+    SDL_assert(num_menu_stack == 1);
+    SDL_assert(top_menu == sota->stats_menu);
+
+    tnecs_entity popped = Game_menuStack_Pop(sota, false);
+
+    /* - Focus on new menu - */
+    mc->visible = true;
+    Game_cursorFocus_onMenu(sota);
 }
-
-void fsm_eCncl_sPrep_ssMapCndt_mDM( struct Game *sota, struct Menu *mc) {
-
-}
-

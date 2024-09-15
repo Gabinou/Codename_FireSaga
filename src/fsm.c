@@ -1326,8 +1326,18 @@ void fsm_eStats_sGmpMap(struct Game *sota, tnecs_entity ent) {
     fsm_eStats_sGmpMap_ssStby(sota, ent);
 }
 
-void fsm_eStats_sPrep_ssMapCndt(  struct Game *sota, tnecs_entity ent) {
+void fsm_eStats_sPrep_ssMapCndt(struct Game *sota, tnecs_entity ent) {
+    /* Find which unit is hovered on map */
+    SDL_assert(sota->entity_cursor);
+    struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    SDL_assert(cursor_pos != NULL);
+    struct Point pos = cursor_pos->tilemap_pos;
+    tnecs_entity ontile = sota->map->unitmap[pos.y * sota->map->col_len + pos.x];
 
+    /* Enabling stats menu for hovered unit */
+    if (ontile > TNECS_NULL) {
+        Game_StatsMenu_Enable(sota, ontile);
+    }
 }
 
 void fsm_eStats_sPrep_ssMenu(  struct Game *sota, tnecs_entity ent) {
