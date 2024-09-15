@@ -270,7 +270,7 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
 
 void receive_event_Input_STATS(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota != NULL);
-    getchar();
+
     i32 controller_type = * (i32 *) userevent->user.data1;
     tnecs_entity accepter_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(accepter_entity > 0);

@@ -1352,7 +1352,7 @@ void fsm_eStats_sPrep_ssStby(  struct Game *sota, tnecs_entity ent) {
 void fsm_eStats_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
     SDL_assert((sota->state == GAME_STATE_Gameplay_Map) ||
                (sota->state == GAME_STATE_Preparation));
-    getchar();
+
     /* Find which unit was hovered */
     SDL_assert(sota->entity_cursor);
     struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);

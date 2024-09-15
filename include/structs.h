@@ -197,10 +197,16 @@ typedef struct Unit_stats {
 } Unit_stats;
 extern struct Unit_stats Unit_stats_default;
 
-/* Struct is better: Can be cast to array*/
+/* Struct is better: Can be cast to array */
 struct Range {
     i32 min;
     i32 max;
+};
+extern struct Range Range_default;
+
+/* Imagine I would implement a range with gaps */
+struct RangeGaps {
+    i32 canatt[SOTA_MAX_RANGE];
 };
 extern struct Range Range_default;
 
