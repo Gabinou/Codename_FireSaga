@@ -270,12 +270,13 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
 
 void receive_event_Input_STATS(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota != NULL);
+    getchar();
     i32 controller_type = * (i32 *) userevent->user.data1;
     tnecs_entity accepter_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(accepter_entity > 0);
     *data1_entity = accepter_entity;
-    if (fsm_eStats_s[sota->substate] != NULL)
-        fsm_eStats_s[sota->substate](sota, accepter_entity);
+    if (fsm_eStats_s[sota->state] != NULL)
+        fsm_eStats_s[sota->state](sota, accepter_entity);
 }
 
 void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *userevent) {
