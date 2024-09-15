@@ -418,6 +418,12 @@ static void _DeploymentMenu_Draw_Stats_P1(DeploymentMenu *dm, SDL_Renderer *rend
     _DeploymentMenu_Swap(dm, renderer, dm->white, dm->black);
 }
 
+tnecs_entity DeploymentMenu_Hovered_Entity(DeploymentMenu *dm, i32 elem) {
+    int unit_id = dm->party->id_stack[elem + dm->top_unit];
+    return (dm->party->entities[unit_id]);
+}
+
+
 /* -- Page 2 -- */
 static void _DeploymentMenu_Draw_Stats_P2(DeploymentMenu *dm, SDL_Renderer *renderer) {
     SDL_assert(dm->world != NULL);
@@ -967,6 +973,7 @@ void DeploymentMenu_Elem_Links(DeploymentMenu *dm, struct Menu *mc) {
     }
 }
 
+
 void DeploymentMenu_Elem_Pos(DeploymentMenu *dm, struct Menu *mc) {
     /* Scales elem_pos to menu size. */
     /* 1. Makes the cursor focus on right place on the Screen       */
@@ -1017,7 +1024,7 @@ void DeploymentMenu_Elem_Pos_Revert(DeploymentMenu *dm, struct Menu *mc) {
 }
 
 /* --- Selection --- */
-i32 DeploymentMenu_Select(DeploymentMenu *dm, i8 elem) {
+i32 DeploymentMenu_Select(DeploymentMenu *dm, i32 elem) {
     /* Get unit order from elem */
     i32 unit_order = dm->top_unit + elem;
 

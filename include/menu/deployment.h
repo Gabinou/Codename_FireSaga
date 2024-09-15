@@ -272,7 +272,8 @@ void DeploymentMenu_Elem_Reset(     DeploymentMenu *dm, struct Menu *mc);
 void DeploymentMenu_Elem_Pos_Revert(DeploymentMenu *dm, struct Menu *mc);
 
 /* --- Selection --- */
-i32  DeploymentMenu_Select(DeploymentMenu *dm, i8 elem);
+i32  DeploymentMenu_Select(DeploymentMenu *dm, i32 elem);
+tnecs_entity DeploymentMenu_Hovered_Entity(DeploymentMenu *dm, i32 elem);
 
 /* --- Elem Move --- */
 i32 DeploymentMenu_Elem_Move(struct Menu *menu, i32 direction);
