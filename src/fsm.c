@@ -647,13 +647,15 @@ void fsm_eCncl_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
         SDL_assert(DARR_NUM(sota->menu_stack) == 1);
         SDL_assert(popped != NULL);
         SDL_assert(popped == sota->stats_menu);
-        SDL_assert(sota->menu_stack[1] == sota->deployment_menu);
+        SDL_assert(sota->menu_stack[0] == sota->deployment_menu);
         SDL_assert(sota->deployment_menu > TNECS_NULL);
 
         struct Menu *mc;
         mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
         SDL_assert(mc);
-        mc->visible = false;
+        mc->visible = true;
+
+        Game_cursorFocus_onMenu(sota);
     } else {
         // Should not happen
         SDL_assert(false);
