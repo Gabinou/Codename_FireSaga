@@ -102,7 +102,6 @@ struct Unit Unit_default = {
 
     .dft_pos   =   {-1, -1},
 
-    .handedness      = UNIT_HAND_RIGHTIE,
     .skills          = 0,
     .skill_names     = NULL,
     .exp             = 0,
@@ -116,13 +115,15 @@ struct Unit Unit_default = {
     .weapons_dtab    = NULL,
 
     .current_hp      = SOTA_MIN_HP,
-    .alive              = true,
+    .alive           = true,
     .talkable        = 0,
 
     .sex             = false, // 0:F, 1:M. eg. hasPenis.
     .literate        = false, // Reading/writing for scribe job.
     .show_danger     = false,
 
+    .hand_num        = UNIT_HAND_NUM,
+    .handedness      = UNIT_HAND_RIGHTIE,
     .hands           = {true, true, false, false},
     ._equipped       = {
         ITEM_UNEQUIPPED,
