@@ -2,8 +2,7 @@
 #include "unit/equipment.h"
 
 /* --- Items --- */
-/* Private item atker at specific spot. Does no checks
- */
+/* Private item atker at specific spot. Does no checks */
 void _Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, size_t i) {
     unit->_equipment[i] = item;
 }
@@ -138,13 +137,14 @@ void _Unit_Check_Equipped(struct Unit *unit, b32 hand) {
     if (!Unit_isEquipped(unit, hand))
         return;
 
-    if (unit->_equipment[hand].id <= ITEM_NULL)
+    i32 id = Unit_Id_Equipped(unit, hand);
+
+    if (id != ITEM_ID_BROKEN)
         return;
 
-    if (unit->_equipment[hand].id != ITEM_ID_BROKEN)
+    if (Item_ID_isValid(id))
         return;
 
-    /* Broken item in hand, unequipping */
     Unit_Unequip(unit, hand);
 }
 
@@ -199,7 +199,6 @@ b32 Unit_canEquip_AnyHand(Unit *unit, canEquip can_equip) {
 //          - Weapon might need to be twohanded
 //    - IF applicable: unit is in list of users
 //  Note: Depends on current equipment in other hands
-
 void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
     SDL_assert(false);
     /* Save starting equipment */

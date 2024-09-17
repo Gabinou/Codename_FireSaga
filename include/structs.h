@@ -28,7 +28,7 @@ typedef struct {
     int rh;
 
     // Hand to equip to, considering loadout.
-    b32 hand;
+    i32 hand;
 
     // Why do we need to know archetypes?
     //      - Find all equippable staves ONLY
@@ -662,6 +662,7 @@ typedef struct Unit {
     /* Defendant position (self is Aggressor.) */
     Point dft_pos; /* Used to compute stats in case of dual wielding */
 
+    i32     hand_num;
     b32     hands[MAX_HANDS_NUM];     /* Does unit have hands?             */
     i32 _equipped[MAX_HANDS_NUM];     /* index of equipped item in hand    */
 

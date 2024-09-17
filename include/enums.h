@@ -1161,8 +1161,8 @@ enum UNIT_HANDS {
     UNIT_HAND_LEFT              = 0,
     UNIT_HAND_RIGHT             = 1,
     UNIT_HANDS_NUM              = 2,
-    TETRABRACHIOS_HAND_LEFT     = 2,
-    TETRABRACHIOS_HAND_RIGHT    = 3,
+    TETRABRACHIOS_HAND_LEFT     = 2, /* TOP/BOTTOM LEFT     */
+    TETRABRACHIOS_HAND_RIGHT    = 3, /* TOP/BOTTOM RIGHT    */
     TETRABRACHIOS_HANDS_NUM     = 4,
     MAX_HANDS_NUM               = 4,
 };

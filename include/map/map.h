@@ -223,6 +223,7 @@ extern struct Map Map_default;
 
 /* --- Constructor/Destructors --- */
 void        Map_Free(      struct Map *map);
+// TODO: Formalize Map_initializations
 struct Map *Map_Init(      struct Map *map, i32 width, i32 height);
 void        Map_Units_Free(struct Map *map);
 void        Map_Units_Hide(struct Map *map);
