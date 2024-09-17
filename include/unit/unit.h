@@ -45,11 +45,11 @@ extern b32      army_isPC[ARMY_END];
 
 /* --- Constructors/Destructors --- */
 
-void Unit_Init(        Unit *u);
-void Unit_InitWweapons(Unit *u, struct dtab *weapons_dtab);
+void Unit_Init(         Unit *u);
+void Unit_InitWweapons( Unit *u, struct dtab *weapons_dtab);
+void Unit_Alloc_Members(Unit *u);
 
-void Unit_Free(        Unit *u);
-void Unit_Allocs(      Unit *u);
+void Unit_Free(         Unit *u);
 
 void Unit_Reinforcement_Load(Unit *u, struct Reinforcement *r);
 

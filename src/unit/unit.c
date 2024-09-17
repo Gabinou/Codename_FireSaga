@@ -123,11 +123,13 @@ struct Unit Unit_default = {
     .literate        = false, // Reading/writing for scribe job.
     .show_danger     = false,
 
-    .hands           = {true,   true, false, false},
-    ._equipped       = {ITEM_UNEQUIPPED,
-                        ITEM_UNEQUIPPED,
-                        ITEM_UNEQUIPPED,
-                        ITEM_UNEQUIPPED}
+    .hands           = {true, true, false, false},
+    ._equipped       = {
+        ITEM_UNEQUIPPED,
+        ITEM_UNEQUIPPED,
+        ITEM_UNEQUIPPED,
+        ITEM_UNEQUIPPED
+    },
 
     .update_stats    = true,
     .computed_stats  = {{0, 0}, {0, 0}, 0, 0, 0, 0, 0, 0, 0, {-1, -1}},
@@ -190,10 +192,10 @@ void Unit_Init(struct Unit *unit) {
     SDL_assert(unit != NULL);
     Unit_Free(unit);
     *unit = Unit_default;
-    Unit_Allocs(unit);
+    Unit_Alloc_Members(unit);
 }
 
-void Unit_Allocs(struct Unit *unit) {
+void Unit_Alloc_Members(struct Unit *unit) {
     if (unit->grown_stats != NULL)
         DARR_FREE(unit->grown_stats);
     unit->grown_stats   = DARR_INIT(unit->grown_stats,  struct Unit_stats, SOTA_MAX_LEVEL / 8);

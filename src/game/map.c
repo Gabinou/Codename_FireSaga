@@ -260,7 +260,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         // SDL_Log("-- loading unit --");
         struct Unit *unit = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
         *unit = Unit_default;
-        Unit_Allocs(unit);
+        Unit_Alloc_Members(unit);
         SDL_assert(unit != NULL);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
 
