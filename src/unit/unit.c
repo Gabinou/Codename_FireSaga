@@ -572,32 +572,42 @@ b32 Unit_canAttack(struct Unit *unit) {
     SDL_assert(unit->weapons_dtab != NULL);
 
     for (int hand = 0; hand < unit->hands_num; hand++) {
-        if (!_Unit_canAttack(unit, hand)) {
-            return (false);
+        if (_Unit_canAttack(unit, hand)) {
+            return (true);
         }
     }
 
-    return (true);
+    return (false);
 }
 
 /* - Can unit attack with weapon in hand - */
 b32 _Unit_canAttack(struct Unit *unit, i32 hand) {
-    if (!unit->hands[hand])
+    if (!unit->hands[hand]) {
+        SDL_Log("No hands");
         return (false);
+    }
 
-    if (!Unit_isEquipped(unit, hand))
+    if (!Unit_isEquipped(unit, hand)) {
+        SDL_Log("!Unit_isEquipped");
         return (false);
+    }
 
     i32 id = Unit_Id_Equipped(unit,  hand);
-    if (!Weapon_ID_isValid(id))
+    if (!Weapon_ID_isValid(id)) {
+        SDL_Log("!Weapon_ID_isValid");
         return (false);
+    }
 
     Weapon_Load(unit->weapons_dtab, id);
 
     struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, id);
     SDL_assert(wpn != NULL);
+    if (!wpn->canAttack) {
+        SDL_Log("!wpn->canAttack");
+        return (false);
+    }
 
-    return (wpn->canAttack);
+    return (true);
 }
 
 i32 *Unit_Shield_Protection(struct Unit *unit, b32 hand) {

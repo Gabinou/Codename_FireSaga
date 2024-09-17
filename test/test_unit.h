@@ -99,6 +99,7 @@ void test_skills(void) {
     nourstest_true(Unit_isEquipped(&Silou, UNIT_HAND_LEFT));
     nourstest_true(Unit_canAttack(&Enemy));
     nourstest_true(Unit_canAttack(&Silou));
+    getchar();
     Unit_computedStats(&Silou, distance);
     Unit_computedStats(&Enemy, distance);
 
@@ -994,7 +995,6 @@ void test_canEquip(void) {
 }
 
 void test_range(void) {
-
     struct Range range1     = {0};
     struct Range range2     = {0};
     struct Range range_out  = {0};
@@ -1157,6 +1157,10 @@ void test_range(void) {
     Game_Weapons_Free(&weapons_dtab);
 }
 
+void test_tetrabrachios(void) {
+
+}
+
 void test_unit(void) {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     test_canEquip_OneHand();
@@ -1165,6 +1169,7 @@ void test_unit(void) {
     test_canEquip_Users();
     test_canEquip_Archetype();
     test_canEquip();
+    test_tetrabrachios();
 
     test_range();
 
