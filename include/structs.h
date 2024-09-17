@@ -24,8 +24,7 @@ typedef i8(* use_function_t)(struct Item *, struct Unit *, struct Unit *);
 // Input for canEquip function
 typedef struct {
     // Loadout: -1 for any
-    int lh;
-    int rh;
+    i32 loadout[MAX_HANDS_NUM];
 
     // Hand to equip to, considering loadout.
     i32 hand;
@@ -662,7 +661,7 @@ typedef struct Unit {
     /* Defendant position (self is Aggressor.) */
     Point dft_pos; /* Used to compute stats in case of dual wielding */
 
-    i32     hand_num;
+    i32     hands_num;
     b32     hands[MAX_HANDS_NUM];     /* Does unit have hands?             */
     i32 _equipped[MAX_HANDS_NUM];     /* index of equipped item in hand    */
 

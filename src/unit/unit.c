@@ -122,7 +122,7 @@ struct Unit Unit_default = {
     .literate        = false, // Reading/writing for scribe job.
     .show_danger     = false,
 
-    .hand_num        = UNIT_HAND_NUM,
+    .hands_num       = UNIT_HANDS_NUM,
     .handedness      = UNIT_HAND_RIGHTIE,
     .hands           = {true, true, false, false},
     ._equipped       = {
@@ -248,26 +248,6 @@ void Unit_InitWweapons(struct Unit *unit, struct dtab *weapons_dtab) {
 
 void Unit_Reinforcement_Load(struct Unit *unit, struct Reinforcement *reinf) {
     unit->army = reinf->army;
-}
-
-int Unit_Hand_Strong2Side( struct Unit *unit, int strong_i) {
-    /*  strong in out   strong    in    out
-    *      0   0   0     left   strong  left    --> XOR
-    *      0   1   1     left    weak   right   --> XOR
-    *      1   0   1     right  strong  right   --> XOR
-    *      1   1   0     right   weak   left    --> XOR
-    */
-    return (Unit_Hand_Strong(unit) ^ strong_i);
-}
-
-int Unit_Hand_Side2Strong( struct Unit *unit, int side_i) {
-    /*  strong in out   strong    in    out
-    *      0   0   0     left    left  strong   --> XOR
-    *      0   1   1     left    right  weak    --> XOR
-    *      1   0   1     right   left   weak    --> XOR
-    *      1   1   0     right   right strong   --> XOR
-    */
-    return (Unit_Hand_Strong(unit) ^ side_i);
 }
 
 /* Note: weakhand = 1 - stronghand */
@@ -541,7 +521,8 @@ int Unit_canStaff_Eq( struct  Unit *unit) {
 /* - Can unit equip a staff in strong hand? - */
 int Unit_canStaff(struct Unit *unit) {
 
-    b32 out = false, stronghand = Unit_Hand_Strong(unit);
+    i32 stronghand = Unit_Hand_Strong(unit);
+    b32 out = false;
     if (Unit_isEquipped(unit, stronghand)) {
         struct Inventory_item item = unit->_equipment[stronghand];
         out = Weapon_isStaff(item.id);
@@ -590,25 +571,30 @@ b32 Unit_canAttack(struct Unit *unit) {
     SDL_assert(unit != NULL);
     SDL_assert(unit->weapons_dtab != NULL);
 
-    b32 left   = _Unit_canAttack(unit, UNIT_HAND_LEFT);
-    b32 right  = _Unit_canAttack(unit, UNIT_HAND_RIGHT);
+    for (int hand = 0; hand < unit->hands_num; hand++) {
+        if (!_Unit_canAttack(unit, hand)) {
+            return (false);
+        }
+    }
 
-    return (left || right);
+    return (true);
 }
 
 /* - Can unit attack with weapon in hand - */
-b32 _Unit_canAttack(struct Unit *unit, b32 hand) {
+b32 _Unit_canAttack(struct Unit *unit, i32 hand) {
+    if (!unit->hands[hand])
+        return (false);
+
     if (!Unit_isEquipped(unit, hand))
         return (false);
 
-    struct Inventory_item item = unit->_equipment[hand];
-    if (item.id <= ITEM_NULL)
+    i32 id = Unit_Id_Equipped(unit,  hand);
+    if (!Weapon_ID_isValid(id))
         return (false);
 
-    SDL_assert(Weapon_ID_isValid(item.id));
-    Weapon_Load(unit->weapons_dtab, item.id);
+    Weapon_Load(unit->weapons_dtab, id);
 
-    struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, item.id);
+    struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, id);
     SDL_assert(wpn != NULL);
 
     return (wpn->canAttack);
