@@ -23,8 +23,12 @@ canEquip canEquip_default = {
     .hand       = UNIT_HAND_RIGHT,
 
     /* 3. Ignoring current loadout */
-    .lh         = -1,
-    .rh         = -1,
+    .loadout    = {
+        ITEM_UNEQUIPPED,
+        ITEM_UNEQUIPPED,
+        ITEM_UNEQUIPPED,
+        ITEM_UNEQUIPPED
+    },
 
     /* 4. Of any archetype */
     .archetype  = ITEM_ARCHETYPE_NULL,
