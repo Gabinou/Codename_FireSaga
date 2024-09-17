@@ -662,8 +662,8 @@ typedef struct Unit {
     /* Defendant position (self is Aggressor.) */
     Point dft_pos; /* Used to compute stats in case of dual wielding */
 
-    b32     hands[UNIT_HANDS_NUM];     /* Does unit have hands?             */
-    int _equipped[UNIT_HANDS_NUM];     /* index of equipped item in hand    */
+    b32     hands[MAX_HANDS_NUM];     /* Does unit have hands?             */
+    i32 _equipped[MAX_HANDS_NUM];     /* index of equipped item in hand    */
 
     s8 *skill_names;
 
@@ -684,8 +684,8 @@ typedef struct Unit {
     struct Mount *mount;
     b32 mounted;
 
-    s8 name; /* TODO: get rid of it. Use global_unitNames */
-    s8 title;    /* Lord, Duke, etc. */
+    s8 name;        /* TODO: get rid of it. Use id for global_unitNames */
+    s8 title;       /* TODO: get rid of it. Use ir for global_unitTitles */
 
     struct Computed_Stats computed_stats;   /* Computed from Unit_Stats */
 

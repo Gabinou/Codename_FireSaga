@@ -116,15 +116,19 @@ struct Unit Unit_default = {
     .weapons_dtab    = NULL,
 
     .current_hp      = SOTA_MIN_HP,
-    .alive        = true,
+    .alive              = true,
     .talkable        = 0,
 
     .sex             = false, // 0:F, 1:M. eg. hasPenis.
     .literate        = false, // Reading/writing for scribe job.
     .show_danger     = false,
 
-    .hands           = {true,   true},
-    ._equipped       = {-1,     -1},
+    .hands           = {true,   true, false, false},
+    ._equipped       = {ITEM_UNEQUIPPED,
+                        ITEM_UNEQUIPPED,
+                        ITEM_UNEQUIPPED,
+                        ITEM_UNEQUIPPED}
+
     .update_stats    = true,
     .computed_stats  = {{0, 0}, {0, 0}, 0, 0, 0, 0, 0, 0, 0, {-1, -1}},
 
@@ -133,8 +137,8 @@ struct Unit Unit_default = {
     .ai_filename     = {0},
     .title           = {0},
     .num_equipment   =  0,
-    .eq_canEquip       = {0},
-    .num_canEquip      =  0,
+    .eq_canEquip     = {0},
+    .num_canEquip    =  0,
 };
 
 struct Unit Unit_Nibal_make(void) {

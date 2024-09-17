@@ -459,6 +459,10 @@ enum OPTIONS {
     MENU_OPTION_NUM = MENU_OPTION_END,
 };
 
+enum ITEM_EQUIPMENT {
+    ITEM_UNEQUIPPED = -1,
+};
+
 /* ITEM_ID is the explicit, human-friendly item index
 * EXAMPLE:
 *   global_itemNames[ITEM_ORDER...] -> correct item name
@@ -1154,9 +1158,13 @@ enum WEAPON_SUBTYPE {
 };
 
 enum UNIT_HANDS {
-    UNIT_HAND_LEFT           = 0,
-    UNIT_HAND_RIGHT          = 1,
-    UNIT_HANDS_NUM           = 2,
+    UNIT_HAND_LEFT              = 0,
+    UNIT_HAND_RIGHT             = 1,
+    UNIT_HANDS_NUM              = 2,
+    TETRABRACHIOS_HAND_LEFT     = 2,
+    TETRABRACHIOS_HAND_RIGHT    = 3,
+    TETRABRACHIOS_HANDS_NUM     = 4,
+    MAX_HANDS_NUM               = 4,
 };
 #define UNIT_OTHER_HAND(hand) 1 - hand
 
