@@ -1162,8 +1162,8 @@ void StatsMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *renderer) {
     SDL_assert(stats_menu->unit);
 
     canEquip can_equip  = canEquip_default;
-    can_equip.lh        = Unit_Eq_Equipped(stats_menu->unit, UNIT_HAND_LEFT);
-    can_equip.rh        = Unit_Eq_Equipped(stats_menu->unit, UNIT_HAND_RIGHT);
+    can_equip.loadout[UNIT_HAND_LEFT]        = Unit_Eq_Equipped(stats_menu->unit, UNIT_HAND_LEFT);
+    can_equip.loadout[UNIT_HAND_RIGHT]        = Unit_Eq_Equipped(stats_menu->unit, UNIT_HAND_RIGHT);
     can_equip.eq        = UNIT_HAND_LEFT;
     can_equip.hand      = UNIT_HAND_LEFT;
     b32 iscan = Unit_canEquip(stats_menu->unit, can_equip);

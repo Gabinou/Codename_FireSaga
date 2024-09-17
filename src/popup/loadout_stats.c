@@ -416,8 +416,8 @@ static void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls,
     } else {
         /* Left hand */
         canEquip can_equip  = canEquip_default;
-        can_equip.lh        = Unit_Eq_Equipped(pls->unit, UNIT_HAND_LEFT);
-        can_equip.rh        = Unit_Eq_Equipped(pls->unit, UNIT_HAND_RIGHT);
+        can_equip.loadout[UNIT_HAND_LEFT]        = Unit_Eq_Equipped(pls->unit, UNIT_HAND_LEFT);
+        can_equip.loadout[UNIT_HAND_RIGHT]        = Unit_Eq_Equipped(pls->unit, UNIT_HAND_RIGHT);
         can_equip.eq        = UNIT_HAND_LEFT;
         can_equip.hand      = UNIT_HAND_LEFT;
         b32 iscan = Unit_canEquip(pls->unit, can_equip);

@@ -29,8 +29,8 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
     unit->num_canEquip = 0;
     canEquip can_equip  = canEquip_default;
     // Map_canEquip point is to find ALL possible equippables
-    can_equip.lh        = -1;
-    can_equip.rh        = -1;
+    can_equip.loadout[UNIT_HAND_LEFT]        = -1;
+    can_equip.loadout[UNIT_HAND_RIGHT]        = -1;
     can_equip.archetype = archetype;
     for (int eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         /* Skip if weapon is not usable */

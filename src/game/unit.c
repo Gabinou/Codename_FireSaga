@@ -173,8 +173,6 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     SDL_assert(unit->mvt_type > UNIT_MVT_START);
 
     canEquip can_equip  = canEquip_default;
-    can_equip.lh        = -1;
-    can_equip.rh        = -1;
     can_equip.hand      = UNIT_HAND_LEFT;
     can_equip.eq        = UNIT_HAND_LEFT;
 

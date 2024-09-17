@@ -86,8 +86,8 @@ struct Range *Unit_Range_Equipment(Unit *unit, i64 archetype) {
 
         canEquip can_equip  = canEquip_default;
         can_equip.eq        = eq;
-        can_equip.lh        = -1;
-        can_equip.rh        = -1;
+        can_equip.loadout[UNIT_HAND_LEFT]        = -1;
+        can_equip.loadout[UNIT_HAND_RIGHT]        = -1;
         can_equip.archetype = archetype;
         can_equip.hand      = Unit_Hand_Strong(unit);
 
