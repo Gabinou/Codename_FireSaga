@@ -1380,5 +1380,5 @@ b32 Unit_ID_Valid(u16 id) {
 
 b32 Unit_HP_isFull(struct Unit *unit) {
     Unit_effectiveStats(unit);
-    return (unit->current_hp == unit->effective_stats.hp);
+    return (unit->current_hp >= unit->effective_stats.hp);
 }
