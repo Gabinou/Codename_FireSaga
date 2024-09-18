@@ -209,7 +209,7 @@ struct RangeGaps {
 };
 extern struct Range Range_default;
 
-struct Computed_Stats {
+typedef struct Computed_Stats {
     i32 attack[DAMAGE_TYPES];
     i32 protection[DAMAGE_TYPES];
     i32 hit;
@@ -225,7 +225,7 @@ struct Computed_Stats {
     // Solution:
     //          - Only one is shown at a time: Show only one at a time
     //          - Show two at atime with Blue+Red+Purple filter
-};
+} Computed_Stats;
 extern struct Computed_Stats Computed_Stats_default;
 
 void Computed_Stats_Print(  struct Computed_Stats *stats);

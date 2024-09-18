@@ -6,10 +6,11 @@
 #include "unit/range.h"
 #include "structs.h"
 
-
 /* --- Unit stats --- */
-struct Unit_stats Unit_stats_plus(     struct Unit_stats stats1, struct Unit_stats stats2);
-struct Unit_stats Unit_stats_plus_cst( struct Unit_stats stats1, i32 cst);
-struct Computed_Stats Computed_Stats_plus(struct Computed_Stats s1, struct Computed_Stats s2);
+Unit_stats Unit_stats_plus(     Unit_stats stats1, Unit_stats stats2);
+Unit_stats Unit_stats_plus_cst( Unit_stats stats1, i32 cst);
+
+/* --- Computed stats --- */
+Computed_Stats Computed_Stats_plus(Computed_Stats s1, Computed_Stats s2);
 
 #endif /* UNIT_STATS_H */

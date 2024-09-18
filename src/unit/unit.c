@@ -197,17 +197,17 @@ void Unit_Init(struct Unit *unit) {
 }
 
 void Unit_Alloc_Members(struct Unit *unit) {
-    if (unit->grown_stats != NULL)
-        DARR_FREE(unit->grown_stats);
-    unit->grown_stats   = DARR_INIT(unit->grown_stats,  struct Unit_stats, SOTA_MAX_LEVEL / 8);
+    if (unit->grown_stats == NULL) {
+        unit->grown_stats   = DARR_INIT(unit->grown_stats,  struct Unit_stats, SOTA_MAX_LEVEL / 8);
+    }
 
-    if (unit->status_queue != NULL)
-        DARR_FREE(unit->status_queue);
-    unit->status_queue  = DARR_INIT(unit->status_queue, struct Unit_status, 2);
+    if (unit->status_queue == NULL) {
+        unit->status_queue  = DARR_INIT(unit->status_queue, struct Unit_status, 2);
+    }
 
-    if (unit->bonus_stack != NULL)
-        DARR_FREE(unit->bonus_stack);
-    unit->bonus_stack   = DARR_INIT(unit->bonus_stack,  struct Bonus_Stats, 2);
+    if (unit->bonus_stack == NULL) {
+        unit->bonus_stack   = DARR_INIT(unit->bonus_stack,  struct Bonus_Stats, 2);
+    }
 }
 
 void Unit_Free(struct Unit *unit) {
