@@ -23,19 +23,19 @@ enum STATUSES {
 };
 
 /* --- UNIT STATUS --- */
-struct Unit_status {
+typedef struct Unit_status {
     /* Number of turns to be in this state. */
     /* <0 means forever. */
     i8 status;
     i8 turns;
-};
+} Unit_status;
 extern struct Unit_status Unit_status_default;
 
 /* --- Unit status --- */
-void Unit_Status_Add(      struct Unit *u, struct Unit_status);
-i16  Unit_Status_Find(      struct Unit *u, i16 status);
-void Unit_Status_Remove(   struct Unit *u, i16 i);
-void Unit_Status_Decrement(struct Unit *u);
-i16  Unit_Status_Find_Turns(struct Unit *unit, i16 turns);
+void Unit_Status_Add(      Unit *u, Unit_status s);
+void Unit_Status_Decrement(Unit *u);
+
+/* -- Find -- */
+i16  Unit_Status_Find(      Unit *u, i16 status);
 
 #endif /* UNIT_STATUS_H */

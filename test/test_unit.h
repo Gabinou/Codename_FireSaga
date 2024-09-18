@@ -1156,6 +1156,10 @@ void test_range(void) {
     Game_Weapons_Free(&weapons_dtab);
 }
 
+void test_status(void) {
+
+}
+
 void test_tetrabrachios(void) {
 
 }
@@ -1169,6 +1173,7 @@ void test_unit(void) {
     test_canEquip_Archetype();
     test_canEquip();
     test_tetrabrachios();
+    test_status();
 
     test_range();
 
