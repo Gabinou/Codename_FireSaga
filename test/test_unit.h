@@ -99,7 +99,6 @@ void test_skills(void) {
     nourstest_true(Unit_isEquipped(&Silou, UNIT_HAND_LEFT));
     nourstest_true(Unit_canAttack(&Enemy));
     nourstest_true(Unit_canAttack(&Silou));
-    getchar();
     Unit_computedStats(&Silou, distance);
     Unit_computedStats(&Enemy, distance);
 

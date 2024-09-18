@@ -33,11 +33,11 @@ struct Mount {
     /* con only? con + weapon weight? */
     /* ridable_classes: only if necessary: */
     /* i8 * ridable_classes; // 0 means all classes. */
-    b32 sex            : 1; // 0:F, 1:M. eg. hasPenis.
+    b32 sex; // 0:F, 1:M. eg. hasPenis.
     /* Most mounts are scared of magic. */
     /* Healing magic doesn't count, not scary at all. */
-    b32 promoted       : 1;
-    b32 mages_can_ride : 1;
+    b32 promoted;
+    b32 mages_can_ride;
 };
 
 /* --- WALKING MOUNTS --- */

@@ -22,7 +22,7 @@ typedef i8(* use_function_t)(struct Item *, struct Unit *, struct Unit *);
 /* --- STRUCTS --- */
 /* -- Can Equip -- */
 // Input for canEquip function
-typedef struct {
+typedef struct canEquip {
     // Loadout: -1 for any
     i32 loadout[MAX_HANDS_NUM];
 
@@ -232,16 +232,19 @@ void Computed_Stats_Print(  struct Computed_Stats *stats);
 void Computed_Stats_Compare(struct Computed_Stats *stats1,
                             struct Computed_Stats *stats2);
 
-struct Bonus_Stats {
+/* Bonus stats added to unit, including decay/removal conditions */
+typedef struct Bonus_Stats {
+    /* Stat bonuses */
     struct Unit_stats       unit_stats;
     struct Computed_Stats   computed_stats;
+    /* Conditions */
     struct Range range;
     tnecs_entity source_unit;
     u16 source_item;              /* Should be equipped by unit_ent */
     u16 source_skill;
     b32 active;
     i32 turns;
-};
+} Bonus_Stats;
 extern struct Bonus_Stats Bonus_Stats_default;
 
 struct Condition {
@@ -309,12 +312,12 @@ struct Crit_Multiplier {
 };
 extern struct Crit_Multiplier Crit_Multiplier_default;
 
-struct Aura {
+typedef struct Aura {
     struct Range            range; /* [0]: min, [1]: max */
     struct Unit_stats       unit_stats;
     struct Computed_Stats   computed_stats;
     i32 turns;
-};
+} Aura;
 extern struct Aura Aura_default;
 
 struct Weapon_stats {
@@ -581,40 +584,6 @@ typedef struct Unit {
 
     /* Stats */
     struct Unit_stats base_stats;
-
-    /* How to make sure bonus is still valid? */
-    //  - Always remove aura if turn == 0
-    //  - When to decrement auras? DESIGN QUESTION.
-    //      -> Turn end: persisting auras
-    //          - Any unit that gets an aura, even a turn 0 one, KEEPS IT UNTIL TURN END.
-    //      -> Every move: instant auras
-    //          - Instantly get removed if out of range.
-    //
-    //  - When to increment auras?
-    //      -> Turn end, after decrementing auras
-    //      -> Whenever a unit moves
-    //  - turns_left == 0 means you remove next turn start
-    //  - turns_left <+ -1 means you remove on move
-    //  - turns_left == 0xFF is forever
-    //  Scenario: units waits in range of standard bearer 1 turn
-    //      - Aura refreshes -> 1 turn
-    //      - Leave aura, end turn -> 0 turn
-    //      - Leave aura, end turn -> removed
-
-
-    // - If Passive aura,   source is unit holding a weapon in range
-    //      1. weapon held in unit hands &&
-    //      2. unit in range &&
-    //      3. unit is not self (IMPLICIT)
-    // - If Active buff,    source is weapon or skill
-    //      1. turns_left > 0
-    //      2. Using Skill/Weapon again REFRESHES timer
-    // - If Weapon bonus,   source is weapon currently held by self
-    //      1. weapon held in unit hands &&
-    //      2. unit is self  (IMPLICIT)
-    // - If Support,   source is unit
-    //      1. unit in range
-    //      2. unit is not self (IMPLICIT)
 
     struct Bonus_Stats *bonus_stack;
     struct Unit_stats bonus_stats; // TODO remove for new Bonus_Stat Struct

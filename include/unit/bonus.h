@@ -7,15 +7,33 @@
 #include "unit/unit.h"
 #include "aura.h"
 
-void Unit_Bonus_Persistent_Decay(struct Unit *unit);
-void Unit_Bonus_Instant_Decay(struct Unit *unit);
+/* Unit Bonus stats
+*   - Aura, items, supports, etc. apply bonus stats to units
+*   - Each bonus stat is added through this API.
+*   - Each bonus stat includes conditions for decay/removal
+*/
 
-void Unit_Bonus_Add(struct Unit *unit, struct Bonus_Stats bonus);
-void Unit_Bonus_Refresh(struct Unit *unit, struct Bonus_Stats bonus);
-struct Bonus_Stats Aura2Bonus(struct Aura *a, tnecs_entity u, u16 i, u16 s, b32 ac, b32 in);
+/* --- Adding --- */
+// Add bonus, without checking      e.g. stacks
+void Unit_Bonus_Add(Unit *unit, Bonus_Stats bonus);
+// Adds bonus or refresh turn count e.g. doesn't stack
+void Unit_Bonus_Refresh(Unit *unit, Bonus_Stats bonus);
 
-/* Bonus utils */
-b32 Bonus_Stats_Compare(struct Bonus_Stats bonus1, struct Bonus_Stats bonus2);
+/* --- Decay/Removal --- */
+/* Instant aura: You only get it if you're in range at all times.
+ * - Need to be called for all units every unit move
+ */
+void Unit_Bonus_Instant_Decay(Unit *unit);
+
+/* Persistent aura: Only gets removed at turn end, even if it lasts 0 turns.
+ * - Need to be called for all units every end turn
+*/
+void Unit_Bonus_Persistent_Decay(Unit *unit);
+
+/* --- Utilities --- */
+Bonus_Stats Aura2Bonus(Aura *a, tnecs_entity u, u16 i, u16 s, b32 ac, b32 in);
+
+b32 Bonus_Stats_isEqual(Bonus_Stats bonus1, Bonus_Stats bonus2);
 
 /* --- Supports --- */
 struct Bonus_Stats Unit_supportBonus(struct Unit *unit);
