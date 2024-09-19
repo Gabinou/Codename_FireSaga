@@ -122,7 +122,7 @@ struct Unit Unit_default = {
     .literate        = false, // Reading/writing for scribe job.
     .show_danger     = false,
 
-    .hands_num       = UNIT_HANDS_NUM,
+    .arms_num       = UNIT_ARMS_NUM,
     .handedness      = UNIT_HAND_RIGHTIE,
     .hands           = {true, true, false, false},
     ._equipped       = {
@@ -144,49 +144,52 @@ struct Unit Unit_default = {
     .num_canEquip    =  0,
 };
 
-struct Unit Unit_Nibal_make(void) {
-    struct Unit Nibal_unit = {
-        .json_element = JSON_UNIT,
-        /*                    hp str mag agi dex fth luck def res con move prof */
-        .base_stats         = {35, 20, 20, 18, 25, 14, 12, 18, 22, 30, 06, 15},
-        // .aura.unit_stats        = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-        .caps_stats         = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-        // .malus_stats        = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-        .current_stats      = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-        .growths            = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-        .agony              = -1,
-        .bonus_stack        = NULL,
+struct Unit Nibal_unit = {
+    .json_element = JSON_UNIT,
+    /*                    hp str mag agi dex fth luck def res con move prof */
+    .base_stats         = {35, 20, 20, 18, 25, 14, 12, 18, 22, 30, 06, 15},
+    // .aura.unit_stats        = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+    .caps_stats         = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+    // .malus_stats        = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+    .current_stats      = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+    .growths            = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+    .agony              = -1,
+    .bonus_stack        = NULL,
 
-        .skills         = UNIT_SKILL_VENOMOUS_SPIT,
-        .exp            = 0,
-        .base_exp       = 2500,
-        .army           = ARMY_HAMILCAR,
-        ._id            = UNIT_ID_NIBAL,
-        .status_queue   = NULL,
-        .bonus_stack    = NULL,
+    // .skills         = UNIT_SKILL_VENOMOUS_SPIT,
+    .exp            = 0,
+    .base_exp       = 2500,
+    .army           = ARMY_HAMILCAR,
+    ._id            = UNIT_ID_NIBAL,
+    .status_queue   = NULL,
+    .bonus_stack    = NULL,
 
-        .grown_stats    = NULL,
-        .weapons_dtab   = NULL,
+    .grown_stats    = NULL,
+    .weapons_dtab   = NULL,
 
 
-        .current_hp     = 35,
-        .alive          = true,
-        .talkable       = 0,
+    .current_hp     = 35,
+    .alive          = true,
+    .talkable       = 0,
 
-        .sex            = true,  /* 0:F, 1:M. eg. hasPenis. */
-        .literate       = false, /* Reading/writing for scribe job. */
-        .show_danger    = false,
+    .sex            = true,  /* 0:F, 1:M. eg. hasPenis. */
+    .literate       = false, /* Reading/writing for scribe job. */
+    .show_danger    = false,
 
-        .computed_stats = {{0, 0, 0}, {0, 0, 0}, 0, 0, 0, 0, 0, 0, 0, {-1, -1}},
-        ._equipped      = {-1, -1},
-        .hands          = {true, true},
+    .computed_stats = {{0, 0, 0}, {0, 0, 0}, 0, 0, 0, 0, 0, 0, 0, {-1, -1}},
+    ._equipped      = {-1, -1},
+    .hands          = {true, true},
 
-        .mount          = NULL,
+    .mount          = NULL,
 
-        .num_equipment  = 0,
-    };
-    return (Nibal_unit);
+    .num_equipment  = 0,
+};
+
+void Tetrabrachios_Default(Unit *unit) {
+    *unit = Unit_default;
+    unit->arms_num = 4;
 }
+
 
 /* --- Constructors/Destructors --- */
 void Unit_Init(struct Unit *unit) {
@@ -571,7 +574,7 @@ b32 Unit_canAttack(struct Unit *unit) {
     SDL_assert(unit != NULL);
     SDL_assert(unit->weapons_dtab != NULL);
 
-    for (int hand = 0; hand < unit->hands_num; hand++) {
+    for (int hand = 0; hand < unit->arms_num; hand++) {
         if (_Unit_canAttack(unit, hand)) {
             return (true);
         }
@@ -776,7 +779,7 @@ void Unit_Equipment_Print( struct Unit *unit) {
 
 struct Computed_Stats Unit_computedStats_wLoadout(struct Unit *unit, int lh, int rh, int dist) {
     /* Save starting equipment */
-    int start_equipped[UNIT_HANDS_NUM];
+    int start_equipped[UNIT_ARMS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
 
     if ((lh >= 0) && (lh < SOTA_EQUIPMENT_SIZE)) {

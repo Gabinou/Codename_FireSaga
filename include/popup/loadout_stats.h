@@ -179,7 +179,7 @@ typedef struct PopUp_Loadout_Stats {
     struct PixelFont *pixelnours_big;
     struct Computed_Stats previous_cs;
     struct Computed_Stats new_cs;
-    int equipped[UNIT_HANDS_NUM];
+    int equipped[UNIT_ARMS_NUM];
     int item_left;  /* item side space */
     int item_right; /* item side space */
     i16 type_left;

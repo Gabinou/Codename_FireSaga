@@ -1161,11 +1161,11 @@ enum UNIT_HANDS {
     /* Only first two hands can be strong/weak hands */
     UNIT_HAND_LEFT              = 0,
     UNIT_HAND_RIGHT             = 1,
-    UNIT_HANDS_NUM              = 2,
+    UNIT_ARMS_NUM              = 2,
     TETRABRACHIOS_HAND_LEFT     = 2, /* TOP/BOTTOM LEFT     */
     TETRABRACHIOS_HAND_RIGHT    = 3, /* TOP/BOTTOM RIGHT    */
     TETRABRACHIOS_HANDS_NUM     = 4,
-    MAX_HANDS_NUM               = 4,
+    MAX_ARMS_NUM               = 4,
 };
 #define UNIT_OTHER_HAND(hand) 1 - hand
 

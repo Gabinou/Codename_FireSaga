@@ -61,6 +61,8 @@ void    Unit_Unequip(   Unit *u, b32 h);
 b32     Unit_isEquipped(Unit *u, b32 hand);
 
 /* - Base canEquips - */
+// TODO: tetrabrachios canequip?
+// only if playable!
 b32  Unit_canEquip_Type(    Unit *u,    i32 id);
 b32  Unit_canEquip_Users(   Unit *u,    i32 id);
 b32  Unit_canEquip_OneHand( Unit *u,    i32 eq, b32 hand);

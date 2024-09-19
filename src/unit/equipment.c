@@ -114,12 +114,12 @@ void Unit_Item_Trade(struct Unit *giver, struct Unit *taker, i16 ig, i16 it) {
 
 /* Importing and exporting equipped for wloadout functions */
 void Unit_Equipped_Import(Unit *unit, i32 *equipped) {
-    size_t bytesize = unit->hands_num * sizeof(*equipped);
+    size_t bytesize = unit->arms_num * sizeof(*equipped);
     memcpy(unit->_equipped, equipped, bytesize);
 }
 
 void Unit_Equipped_Export(Unit *unit, i32 *equipped) {
-    size_t bytesize = unit->hands_num * sizeof(*equipped);
+    size_t bytesize = unit->arms_num * sizeof(*equipped);
     memcpy(equipped, unit->_equipped, bytesize);
 }
 
@@ -150,7 +150,7 @@ void _Unit_Check_Equipped(struct Unit *unit, b32 hand) {
 
 void Unit_Check_Equipped(struct Unit *unit) {
     /* Checks if equipped weapon is BORKED, de-equips if so */
-    for (int hand = 0; hand < unit->hands_num; hand++) {
+    for (int hand = 0; hand < unit->arms_num; hand++) {
         if (unit->hands[hand]) {
             _Unit_Check_Equipped(unit, hand);
         }
@@ -161,7 +161,7 @@ void Unit_Check_Equipped(struct Unit *unit) {
 void Unit_Equip(struct Unit *unit, i32 hand, i32 eq) {
     SDL_assert(unit);
     SDL_assert(hand >= 0);
-    SDL_assert(hand < MAX_HANDS_NUM);
+    SDL_assert(hand < MAX_ARMS_NUM);
     SDL_assert(eq >= 0);
     SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
     int id = Unit_Id_Equipment(unit, eq);
@@ -173,12 +173,12 @@ void Unit_Equip(struct Unit *unit, i32 hand, i32 eq) {
 void Unit_Unequip(struct Unit *unit, i32 hand) {
     SDL_assert(unit);
     SDL_assert(hand >= 0);
-    SDL_assert(hand < MAX_HANDS_NUM);
+    SDL_assert(hand < MAX_ARMS_NUM);
 
     /* -- Unequip -- */
     unit->_equipped[hand] = ITEM_UNEQUIPPED;
 
-    if (unit->hands_num == UNIT_HANDS_NUM) {
+    if (unit->arms_num == UNIT_ARMS_NUM) {
         /* -- If twohanding, not anymore! -- */
         SDL_assert(Unit_istwoHanding(unit) == false);
 
@@ -191,7 +191,7 @@ void Unit_Unequip(struct Unit *unit, i32 hand) {
 b32 Unit_canEquip_AnyHand(Unit *unit, canEquip can_equip) {
     /* Check that unit has hands to equip with */
     b32 found = false;
-    for (int hand = 0; hand < unit->hands_num; hand++) {
+    for (int hand = 0; hand < unit->arms_num; hand++) {
         if (unit->hands[hand]) {
             found = true;
             break;
@@ -203,7 +203,7 @@ b32 Unit_canEquip_AnyHand(Unit *unit, canEquip can_equip) {
     }
 
     /* Check that unit can equip item in hand */
-    for (int hand = 0; hand < unit->hands_num; hand++) {
+    for (int hand = 0; hand < unit->arms_num; hand++) {
         /* Skip hands that unit doesn't have */
         if (!unit->hands[hand]) {
             continue;
@@ -234,16 +234,16 @@ b32 Unit_canEquip_AnyHand(Unit *unit, canEquip can_equip) {
 void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
     SDL_assert(false);
     /* Save starting equipment */
-    int start_equipped[MAX_HANDS_NUM];
+    int start_equipped[MAX_ARMS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
 
-    for (int hand = 0; hand < unit->hands_num; hand++) {
+    for (int hand = 0; hand < unit->arms_num; hand++) {
         unit->_equipped[hand] = can_equip.loadout[hand];
     }
 
     unit->num_canEquip = 0;
     for (i32 eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
-        for (int hand = 0; hand < unit->hands_num; hand++) {
+        for (int hand = 0; hand < unit->arms_num; hand++) {
             // canEquip hands
             can_equip.eq    = eq;
             can_equip.hand  = hand;
@@ -308,11 +308,11 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
 
 b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
     /* Save starting equipment */
-    int start_equipped[MAX_HANDS_NUM];
+    int start_equipped[MAX_ARMS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
 
     /* Equip loadout */
-    for (int hand = 0; hand < unit->hands_num; hand++) {
+    for (int hand = 0; hand < unit->arms_num; hand++) {
         unit->_equipped[hand] = can_equip.loadout[hand];
     }
     /* Check if can equip */
@@ -688,8 +688,8 @@ Item *Unit_Get_Item(Unit *unit, i32 eq) {
 i32 Unit_Eq_Equipped(Unit *unit, i32 hand) {
     SDL_assert(unit != NULL);
     SDL_assert(hand >= 0);
-    SDL_assert(hand < UNIT_HANDS_NUM);
-    SDL_assert(hand < unit->hands_num);
+    SDL_assert(hand < UNIT_ARMS_NUM);
+    SDL_assert(hand < unit->arms_num);
     return (unit->_equipped[hand]);
 }
 

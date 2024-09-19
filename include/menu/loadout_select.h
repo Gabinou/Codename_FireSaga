@@ -159,7 +159,7 @@ struct LoadoutSelectMenu {
 
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
-    i8 selected[UNIT_HANDS_NUM]; /* side space */
+    i8 selected[UNIT_ARMS_NUM]; /* side space */
     s8 item_name;
     s8 header;
 

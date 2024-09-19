@@ -118,7 +118,7 @@ struct Range *Unit_Range_Loadout(Unit *unit, i64 archetype) {
     struct Range *range = &unit->computed_stats.range_loadout;
     *range = Range_default;
 
-    for (int hand = 0; hand < unit->hands_num; hand++) {
+    for (int hand = 0; hand < unit->arms_num; hand++) {
         int id = Unit_Id_Equipped(unit, hand);
 
         /* Skip if no item */

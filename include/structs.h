@@ -24,7 +24,7 @@ typedef i8(* use_function_t)(struct Item *, struct Unit *, struct Unit *);
 // Input for canEquip function
 typedef struct canEquip {
     // Loadout: -1 for any
-    i32 loadout[MAX_HANDS_NUM];
+    i32 loadout[MAX_ARMS_NUM];
 
     // Hand to equip to, considering loadout.
     i32 hand;
@@ -514,8 +514,8 @@ struct Combat_Stats {
     struct Damage           dft_damage;
     struct Computed_Stats   agg_stats;
     struct Computed_Stats   dft_stats;
-    i8                      agg_equipment[UNIT_HANDS_NUM];
-    i8                      dft_equipment[UNIT_HANDS_NUM];
+    i8                      agg_equipment[UNIT_ARMS_NUM];
+    i8                      dft_equipment[UNIT_ARMS_NUM];
 };
 extern struct Combat_Stats Combat_Stats_default;
 
@@ -630,9 +630,9 @@ typedef struct Unit {
     /* Defendant position (self is Aggressor.) */
     Point dft_pos; /* Used to compute stats in case of dual wielding */
 
-    i32     hands_num;
-    b32     hands[MAX_HANDS_NUM];     /* Does unit have hands?             */
-    i32 _equipped[MAX_HANDS_NUM];     /* index of equipped item in hand    */
+    i32     arms_num;
+    b32     hands[MAX_ARMS_NUM];     /* Does unit have hands?             */
+    i32 _equipped[MAX_ARMS_NUM];     /* index of equipped item in hand    */
 
     s8 *skill_names;
 
