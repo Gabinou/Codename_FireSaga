@@ -122,7 +122,7 @@ struct Unit Unit_default = {
     .literate        = false, // Reading/writing for scribe job.
     .show_danger     = false,
 
-    .arms_num       = UNIT_ARMS_NUM,
+    .arms_num        = UNIT_ARMS_NUM,
     .handedness      = UNIT_HAND_RIGHTIE,
     .hands           = {true, true, false, false},
     ._equipped       = {
@@ -187,11 +187,19 @@ struct Unit Nibal_unit = {
 
 void Tetrabrachios_Default(Unit *unit) {
     *unit = Unit_default;
-    unit->arms_num = 4;
+    unit->arms_num = TETRABRACHIOS_ARMS_NUM;
+    unit->hands[TETRABRACHIOS_HAND_LEFT]    = true;;
+    unit->hands[TETRABRACHIOS_HAND_RIGHT]   = true;
 }
 
-
 /* --- Constructors/Destructors --- */
+void Tetrabrachios_Init(struct Unit *unit) {
+    SDL_assert(unit != NULL);
+    Unit_Free(unit);
+    Tetrabrachios_Default(unit);
+    Unit_Alloc_Members(unit);
+}
+
 void Unit_Init(struct Unit *unit) {
     SDL_assert(unit != NULL);
     Unit_Free(unit);

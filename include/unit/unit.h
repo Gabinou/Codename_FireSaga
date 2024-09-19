@@ -43,6 +43,7 @@ extern b32      army_isPC[ARMY_END];
 /* --- UNIT STATS --- */
 
 /* --- Tetrabrachios --- */
+void Tetrabrachios_Init(   Unit *u);
 void Tetrabrachios_Default(Unit *u);
 
 /* --- Constructors/Destructors --- */
