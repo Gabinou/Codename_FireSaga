@@ -9,10 +9,7 @@ struct Combat_Phase Combat_Phase_default = {
 };
 
 struct Combat_Attack Combat_Attack_default = {
-    .hit           = false,
-    .crit          = false,
     .attacker      = SOTA_AGGRESSOR,
-    .total_damage  = 0,
 };
 
 struct Combat_Flow Combat_Flow_default = {
@@ -20,8 +17,7 @@ struct Combat_Flow Combat_Flow_default = {
     .defendant_brave        = SOTA_BRAVE_DEFAULT,
     .aggressor_phases       = 1,
     .defendant_phases       = 1,
-    .defendant_retaliates   = false,
-} ;
+};
 
 struct Combat_Rates Combat_Rates_default = {0};
 struct Combat_Death Combat_Death_default = {0};

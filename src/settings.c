@@ -47,7 +47,6 @@ struct Settings Settings_default = {
     .mouse              = {MOUSE_DEFAULT_ONHOLD, MOUSE_DEFAULT_MOVE},
     .cursor             = {DEFAULT_CURSOR_FRAMES, DEFAULT_CURSOR_SPEED},
 
-    .fullscreen         = false,
     .window             = true,
     .tophand_stronghand = true, // TODO: REMOVE
 };

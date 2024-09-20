@@ -1,20 +1,8 @@
 #include "index_shader.h"
 
-struct Index_Shader Index_Shader_default = {
-    .to            = NULL,
-    .pixels_list   = NULL,
-    .pixels_num    = 0,
-    .shaded_pixels = NULL, /* only shade pixels in here */
-};
+struct Index_Shader Index_Shader_default = {0};
 
-struct Tilemap_Shader Tilemap_Shader_default = {
-    .to                      = NULL,
-    .shadowtile_pixels_lists = NULL,
-    .shadowtile_num          = 0,
-    .shadowtile_pixels_num   = NULL,
-    .shadow_tilemaps         = NULL,
-    .map                     = NULL,
-};
+struct Tilemap_Shader Tilemap_Shader_default = {0};
 
 /* --- STATIC FUNCTIONS --- */
 static void _Index_Shade_Rect(u8 *to, SDL_Surface *unlocked_surface,

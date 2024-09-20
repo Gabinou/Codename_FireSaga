@@ -354,22 +354,9 @@ struct MenuElemDirections sm_links[SM_ELEM_NUM] = {
 };
 
 struct StatsMenu StatsMenu_default = {
-    .texture            = NULL,
-    .texture_face       = NULL,
-    .texture_sex        = NULL,
-    .texture_mount      = NULL,
-    .texture_hands      = NULL,
-    .texture_statuses   = NULL,
-
-    .unit               = NULL,
-    // only record menu pos. other pos are computed.
-    .pixelnours         = NULL,
-    .pixelnours_big     = NULL,
     .pos                = {-1, -1},
-
     .update             = true,
     .update_stats       = true,
-    .tophand_stronghand = false,
 };
 
 struct StatsMenu *StatsMenu_Alloc(void) {

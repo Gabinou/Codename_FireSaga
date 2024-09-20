@@ -25,14 +25,11 @@ struct Unit_stats test_grown_stats[10] = {
 struct Unit_stats test_base_stats = {05, 06, 07, 8, 9, 10, 11, 12, 13, 01, 02, 03};
 
 struct GraphStat GraphStat_default = {
-    .level      =   0,
-    .base_level =   0,
     .cumul_stat = {-1},
     .stat_id    =  -1,
 };
 
 struct Graph Graph_default = {
-    .rect = {0},
     .graph_stats = {
         {0, 0, {-1}, -1},
         {0, 0, {-1}, -1},
@@ -48,14 +45,8 @@ struct Graph Graph_default = {
         {0, 0, {-1}, -1}
     },
 
-    .plot_min = {0, 0}, // [XY units]
     .y_lenperpixel = GRAPH_DEFAULT_LENPERPIXEL_HEIGHT, /* 2 or 1 */
     .plot_max = {GRAPH_DATA_WIDTH / GRAPH_DEFAULT_LENPERPIXEL_WIDTH, SOTA_MAX_STAT / GRAPH_DEFAULT_LENPERPIXEL_HEIGHT}, // [XY units]
-
-    .header = 0, // [pixels]
-    .footer = 0, // [pixels]
-    .margin_left = 0, // [pixels]
-    .margin_right = 0, // [pixels]
 
     .linestyle = GRAPH_LINESTYLE_POINT,
     .x_ticks = true,

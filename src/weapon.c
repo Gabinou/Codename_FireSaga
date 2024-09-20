@@ -1,16 +1,12 @@
 
 #include "weapon.h"
 
+/* Note: magic weapons EXPLODE if infused */
 struct Weapon Weapon_default = {
-    .json_filename  = {0},
     .json_element   = JSON_WEAPON,
 
-    .item         = NULL,
     .handedness   = WEAPON_HAND_ANY,
     .subtype      = WEAPON_SUBTYPE_NONE,
-    .stats        = {0},
-    .effective    = 0,
-    .isMagic      = 0, /* magic weapons EXPLODE if infused */
     .canAttack    = 1,
 };
 

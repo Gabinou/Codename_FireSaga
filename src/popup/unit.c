@@ -1,14 +1,8 @@
 #include "popup/unit.h"
 
 struct PopUp_Unit PopUp_Unit_default = {
-    .unit             = NULL,
-    .texture          = NULL,
-    .texture_header   = NULL,
-    .pixelnours       = NULL,
-    .pixelnours_big   = NULL,
     .update           = true,
     .corner           = SOTA_DIRECTION_TOPLEFT,
-    .offset           = { 0,  0},
     .cursor_limit_min = {-1, -1},
     .cursor_limit_max = {-1, -1},
     .distance         = -1,

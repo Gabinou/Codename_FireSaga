@@ -21,16 +21,6 @@ int map_unit_offsets[MAP_UNIT_LOOP_NUM][TWO_D] = {
 /* --- Defaults --- */
 struct Spritesheet Spritesheet_default = {
     .json_element   = JSON_SPRITE,
-    .json_filename  = {0},
-    .surface        = NULL,
-    .palette        = NULL,
-    .loops_pos      = NULL,
-    .frames         = NULL,
-    .speeds         = NULL,
-    .loop_modes     = NULL,
-    .loop_num       = 0,
-    .current_loop   = 0,
-    .current_frame  = 0,
 };
 
 struct Sprite Sprite_default = {
@@ -39,11 +29,7 @@ struct Sprite Sprite_default = {
     .dstrect        = { 0,  0, 32, 32}, /* x,y,w,h */
     .scale          = { 1,  1},
     .tilesize       = {32, 32},
-    .spritesheet    = NULL,
-    .texture        = NULL,
     .flip           = SDL_FLIP_NONE,
-    .asset_name     = {0},
-    .map_unit       = false,
     .visible        = true
 };
 

@@ -6,23 +6,14 @@
 
 struct Map Map_default = {
     .json_element           = JSON_MAP,
-    .json_filename          = {0},
-    .party_filename         = {0},
-
-    .world                  = NULL,
-    .renderer               = NULL,
     .show_icons             = true,
-    .win                    = false,
-    .loss                   = false,
     .frames                 = 10,
     .frames_shadow          = 10,
     .speed                  = 50,
-    .tilesize               = {0, 0},
 
     .perimiter_danger_color = SOTA_RED,
     .perimiter_aura_color   = SOTA_PURPLE,
 
-    .items_num              = NULL,
     .shadow_frame_pause     = 3,
     .tilemap_frame_pause    = 6,
     .shadow_frame_factor    = 0.10f,
@@ -30,50 +21,9 @@ struct Map Map_default = {
     .tilemap_frame_factor   = 0.15f,
     .tilemap_frame_counter  = UINT8_MAX - 1, /* map renders on first frame */
 
-    .camera.offset.x = DEFAULT_CAMERA_XOFFSET,
-    .camera.offset.y = DEFAULT_CAMERA_YOFFSET,
-    .camera.zoom     = DEFAULT_CAMERA_ZOOM,
-
-    .tilemap_shader         = NULL,
-    .tileset_surfaces       = NULL,
-    .tileset_textures       = NULL,
-    .texture                = NULL,
-    .fcostmap               = NULL,
-    .fmovemap               = NULL,
-    .costmap                = NULL,
-    .costmap_ent            = TNECS_NULL,
-    .movemap                = NULL,
-    .start_posmap           = NULL,
-    .attackfrommap          = NULL,
-    .attacktomap            = NULL,
-    .attacktolist           = NULL,
-    .healtomap              = NULL,
-    .healfrommap            = NULL,
-    .dangermap              = NULL,
-    .global_dangermap       = NULL,
-    .rendered_dangermap     = NULL,
-    .global_rangemap        = NULL,
-    .tilesindex             = NULL,
-    .tilemap_surface        = NULL,
-
-    // .show_move              = false,
-    // .show_attack            = false,
-    // .show_heal              = false,
-    .show_danger            = false,
-    .show_globalRange       = false,
-    // .show_grid              = false,
-
-    .camera_moved           = false,
-    .visible_changed        = false,
-    .shading_changed        = false,
-
-    .row_len                = 0,
-    .col_len                = 0,
-
-    .tiles_id               = NULL,
-    .tiles                  = NULL,
-    .tilemap                = NULL,
-    .palettemap             = NULL,
+    .camera.offset.x        = DEFAULT_CAMERA_XOFFSET,
+    .camera.offset.y        = DEFAULT_CAMERA_YOFFSET,
+    .camera.zoom            = DEFAULT_CAMERA_ZOOM,
 
     .ipalette_base          = PALETTE_SOTA,
     .ipalette_red           = PALETTE_SOTA_FILTER_RED,
@@ -84,48 +34,11 @@ struct Map Map_default = {
     .ipalette_shadow        = PALETTE_SOTA_SHADOW,
     .ipalette_enemy         = PALETTE_SOTA,
 
-    .turn                   = 1, /* Automatic loss if turn 255. */
-    .reinf_loaded           = 0,
-    .chapter                = 0,
-
-    .reinforcements         = NULL,
-    .reinf_equipments       = NULL,
-
-    .breakables_ent         = NULL,
-    .chests_ent             = NULL,
-    .doors_ent              = NULL,
-    .breakable_num          = 0,
-    .chest_num              = 0,
-    .door_num               = 0,
-
-    .start_pos              = NULL,
+    .turn                   =  1, /* Automatic loss if turn 255. */
     .army_i                 = -1,
-    .army_onfield           = NULL,
-    .units_onfield          = NULL,
-    .friendlies_onfield     = NULL,
-    .enemies_onfield        = NULL,
-    .unitmap                = NULL,
-    .arrow                  = NULL,
-
-    .stacked_dangermap          = NULL,
-    .stacked_global_dangermap   = NULL,
-    .temp_palette               = NULL,
-
-    .healtolist     = NULL,
-    .attacktolist   = NULL,
-    .temp   = NULL,
-
-    // .show_move              = false,
-
     /* --- MUSIC --- */
-    .music_i_friendly           = SOTA_MUSIC_DEBUG,
-    .music_i_enemy              = -1,
-    .music_friendly             = NULL,
-    .music_enemy                = NULL,
-
-    // .boss;
-    // .bossdied;
-    // .seized; // maybe unecessary if turn system.
+    .music_i_friendly       = SOTA_MUSIC_DEBUG,
+    .music_i_enemy          = -1,
 };
 
 /* --- STATIC FUNCTIONS --- */

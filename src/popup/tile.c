@@ -1,14 +1,8 @@
 #include "popup/tile.h"
 
 struct PopUp_Tile PopUp_Tile_default = {
-    .tile             = NULL,
-    .texture          = NULL,
-    .texture_header   = NULL,
-    .pixelnours       = NULL,
-    .pixelnours_big   = NULL,
     .update           = true,
     .corner           = SOTA_DIRECTION_BOTLEFT,
-    .offset           = { 0,  0},
     .cursor_limit_min = {-1, -1},
     .cursor_limit_max = {-1, -1},
 };

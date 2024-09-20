@@ -4,9 +4,6 @@
 struct Input_Arguments Input_Arguments_default = {
     .map_index     = CHAPTER_TEST,
     .startup_mode  = STARTUP_TESTING,
-    .cutScene      = 0,
-    .talkScene     = 0,
-    .save_filename = NULL,
 };
 
 static struct parg_opt longopts[] = {

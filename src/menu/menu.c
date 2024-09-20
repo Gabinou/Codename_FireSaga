@@ -8,17 +8,8 @@ struct MenuElemDirections MenuElemDirections_default = {
 };
 
 struct Menu Menu_default =  {
-    .elem_pos         = NULL, /* [elem] */
     .elem_pos_frame   = ELEM_POS_MENU_FRAME,
-    .elem_box         = NULL, /* [elem] */
-    .cursor_pos       = NULL, /* [elem] */
-    .elem_description = NULL, /* [elem] */
-    .elem_links       = NULL, /* [elem] */
-    .data             = NULL,
     .visible          = true,
-    .elem             = 0,
-    .draw             = NULL,
-    .type             = SOTA_NULL,
 };
 
 /* --- Menu --- */

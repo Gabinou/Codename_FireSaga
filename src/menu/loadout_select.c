@@ -50,16 +50,9 @@ struct MenuElemDirections wsm_links[LSM_ELEMS_NUM] = {
 struct LoadoutSelectMenu LoadoutSelectMenu_default = {
     .update                 = true,
     .pos                    = {-1, -1},
-    .texture                = NULL,
-    .texture_hands          = NULL,
     .selected               = {-1, -1},
     .archetype_stronghand   = ITEM_ARCHETYPE_STRONGHAND_ATTACK,
     .archetype_weakhand     = ITEM_ARCHETYPE_WEAKHAND,
-    .unit                   = NULL,
-    .pixelnours             = NULL,
-    .pixelnours_big         = NULL,
-    .header                 = {0},
-    .item_name              = {0},
     .black                  = SOTA_BLACK,
     .white                  = SOTA_WHITE,
 };

@@ -2,20 +2,7 @@
 #include "unit/stats.h"
 
 /* --- Unit stats --- */
-struct Unit_stats Unit_stats_default = {
-    .hp     = 0,
-    .str    = 0,
-    .mag    = 0,
-    .dex    = 0,
-    .agi    = 0,
-    .fth    = 0,
-    .luck   = 0,
-    .def    = 0,
-    .res    = 0,
-    .move   = 0,
-    .con    = 0,
-    .prof   = 0
-};
+struct Unit_stats Unit_stats_default = {0};
 
 struct Unit_stats Unit_stats_plus_cst(struct Unit_stats stats1, i32 cst) {
     struct Unit_stats out_stats = Unit_stats_default;

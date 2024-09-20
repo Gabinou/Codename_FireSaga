@@ -19,13 +19,10 @@ int army_icons[ARMY_NUM] = {
 
 struct Boss Boss_default = {
     .icon       = BOSS_ICON_STGEORGE,
-    .dstrect    = {0},
     .srcrect    = {
-        .x = 0, .y = 0,
         .w = BOSS_ICON_WIDTH,
         .h = BOSS_ICON_HEIGHT
     },
-    .texture    = NULL,
 };
 
 void Boss_Free(struct Boss *boss) {

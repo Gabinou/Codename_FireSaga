@@ -141,21 +141,10 @@ char sota_input_names[SOTA_INPUT_END][SOTA_INPUT_NAME_MAX_LEN] = {
 #undef REGISTER_ENUM
 
 struct controllerGamepad controllerGamepad_default = {
-    .inputmap           = NULL,
-    .controllers        = NULL,
-    .joystick_instances = NULL,
     .controller_type    = CONTROLLER_GAMEPAD,
-
-    .controllers_num    =    0,
     .controllers_len    =    2,
-
     .deadzone_joystick  = 8000,
     .deadzone_trigger   = 8000,
-    .timeheld_move_ns   =    0,
-    .timeheld_button_ns =    0,
-
-    .block_buttons      =    0,
-    .block_move         =    0,
 };
 
 /* --- Constructors/Destructors --- */
@@ -322,5 +311,4 @@ void Gamepad_Held(i8 *held, size_t *h_num, i32 *held_ns, i8 *pressed, size_t p_n
         /* - Don't press any buttons - */
         *held_ns    = 0;
     }
-
 }

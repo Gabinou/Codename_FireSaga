@@ -1,11 +1,10 @@
 #include "bars/simple.h"
 
 struct SimpleBar SimpleBar_default = {
-    .fill = 1.0f,
-    .len = 10,  /* [pixels] */
+    .fill   = 1.0f,
+    .len    = 10,  /* [pixels] */
     .height = SIMPLEBAR_HEIGHT,  /* [pixels] */
-    .pos = {0, 0},
-    .flip = SDL_FLIP_NONE,
+    .flip   = SDL_FLIP_NONE,
 };
 
 void SimpleBar_Draw(struct SimpleBar *sb, SDL_Renderer *renderer) {

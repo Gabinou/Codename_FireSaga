@@ -2,17 +2,14 @@
 #include "conditions.h"
 #include "unit.h"
 
-struct Conditions Conditions_default = {
-    /* No requirements */
-    .alive      = {0},
-    .dead       = {0},
-    .recruited  = {0},
-};
+/* No requirements */
+struct Conditions Conditions_default = {0};
 
+/* Everyone alive at start      */
+/* No one dead at start         */
+/* No one recruited at start    */
 struct Conditions Conditions_Game_start = {
-    .alive      = {0xFFFFFFFF}, /* Everyone alive at start      */
-    .dead       = {0},          /* No one dead at start         */
-    .recruited  = {0},          /* No one recruited at start    */
+    .alive      = {0xFFFFFFFF},
 };
 
 /// @brief  Are all conditions in cond1 satisfied in cond2?

@@ -1,14 +1,6 @@
 #include "bars/texture.h"
 
-struct TextureBar TextureBar_default = {
-    .textures = NULL,
-    .row_len = 0,
-    .len = 0,
-    .fill = 0.0f,
-    .pos = {0},
-    .scale = {0},
-    .size_pixels = {0}
-};
+struct TextureBar TextureBar_default = {0};
 
 void TextureBar_Draw(struct TextureBar *tb, SDL_Renderer *renderer) {
     /* -- Compute fill -- */

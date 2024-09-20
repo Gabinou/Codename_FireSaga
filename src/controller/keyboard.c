@@ -37,11 +37,6 @@ struct KeyboardInputMap KeyboardInputMap_default = {
 
 struct controllerKeyboard controllerKeyboard_default = {
     .controller_type    = CONTROLLER_KEYBOARD,
-    .timeheld_button_ns = 0,
-    .timeheld_move_ns   = 0,
-    .block_buttons      = false,
-    .block_move         = false,
-    .inputmap           = NULL,
 };
 
 void Keyboard_Held(i8 *held, size_t *h_num, i32 *timeheld, i8 *pressed, size_t p_num, i32 dt_ns) {

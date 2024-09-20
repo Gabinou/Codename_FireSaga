@@ -1,13 +1,6 @@
 #include "text.h"
 
 struct Text Text_default = {
-    .texture        = NULL,
-    .pixelfont      = NULL,
-    .line           = {0},
-    .len            =  0,
-    .rect           = {0},
-    .update_time_ns =  0,
-    .onUpdate       = NULL,
     .visible        = true,
     .update         = true,
 };

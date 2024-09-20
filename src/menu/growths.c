@@ -8,13 +8,9 @@ static void _GrowthsMenu_Draw_Growths( struct GrowthsMenu *g, SDL_Renderer *r);
 static void _GrowthsMenu_Draw_Supports(struct GrowthsMenu *g, SDL_Renderer *r);
 
 struct GrowthsMenu GrowthsMenu_default = {
-    .texture        = NULL,
     .update         = true,
     .update_stats   = true,
-    .unit           = NULL,
     // only record menu pos. other pos are computed.
-    .pixelnours     = NULL,
-    .pixelnours_big = NULL,
     .pos            = {-1, -1},
 };
 

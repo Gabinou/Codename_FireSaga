@@ -2,13 +2,8 @@
 #include "menu/item_drop.h"
 struct ItemDropMenu ItemDropMenu_default = {
     .pos            = {-1, -1},
-    .texture        = NULL,
     .item_todrop    = -1,
     .item_width     = -1,
-    .unit           = NULL,
-    .pixelnours     = NULL,
-    .pixelnours_big = NULL,
-    .update         = false,
 };
 
 struct Point idm_cursor_pos[IDM_ELEM_NUM] = {

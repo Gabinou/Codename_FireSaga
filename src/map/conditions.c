@@ -3,46 +3,29 @@
 
 struct Map_condition Map_condition_default = {
     .army    =   -1,
-    .boss    =   false,
-    .all     =   false,
-    .unit    =   UNIT_ID_NULL,
     .min     =   -1,
     .at      =   -1,
     .max     =   -1,
-    .gold    =    0,
     .item    =   ITEM_NULL,
-    .scene   =    0,
-    .win     =   false,
-    .lose    =   false,
 };
 
 struct Map_condition Map_condition_main_char_loss = {
     .army    =   -1,
-    .boss    =   false,
-    .all     =   false,
     .unit    =   UNIT_ID_ERWIN,
     .min     =   -1,
     .at      =   -1,
     .max     =   -1,
-    .gold    =    0,
     .item    =   ITEM_NULL,
-    .scene   =    0,
-    .win     =   false,
     .lose    =   true,
 };
 
 struct Map_condition Map_condition_rout_loss = {
     .army    =   1,
-    .boss    =   false,
     .all     =   true,
     .unit    =   -1,
     .min     =   -1,
     .at      =   -1,
     .max     =   -1,
-    .gold    =    0,
-    .item    =   ITEM_NULL,
-    .scene   =    0,
-    .win     =   false,
     .lose    =   true,
 };
 
@@ -54,26 +37,18 @@ struct Map_condition Map_condition_debug_map_loss = {
     .min     =   -1,
     .at      =   -1,
     .max     =   -1,
-    .gold    =    0,
     .item    =   ITEM_NULL,
-    .scene   =    0,
-    .win     =   false,
     .lose    =   true,
 };
 
 struct Map_condition Map_condition_boss_win = {
     .army    =   ARMY_ENEMY,
     .boss    =   true,
-    .all     =   false,
-    .unit    =   false,
     .min     =   -1,
     .at      =   -1,
     .max     =   -1,
-    .gold    =    0,
     .item    =   ITEM_NULL,
-    .scene   =    0,
     .win     =   true,
-    .lose    =   false,
 };
 
 void Map_Conditions_Check_Death(struct Map_condition *conditions_darr,

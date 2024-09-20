@@ -4,16 +4,10 @@
 struct Slider Slider_default = {
     .slidetype =       SLIDETYPE_NONE,
     .slide_num =       10,
-    .update_wait_ns =  0, // for whole sprite
-    .timer_ns =        0, // for whole sprite
     .slidefactors =    {2.0f, 2.0f}, // for SLIDETYPE_GEOMETRIC
-    .target =          {0, 0},
 };
 
-struct SliderOffscreen SliderOffscreen_default = {
-    .target = {0, 0},
-    .go_offscreen = false,
-};
+struct SliderOffscreen SliderOffscreen_default = {0};
 
 void Slider_Start(struct Slider *slider, struct Point *pos,
                   struct Point *target) {

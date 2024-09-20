@@ -2,31 +2,16 @@
 #include "text_bubble.h"
 
 struct Text_Bubble_Tail Text_Bubble_Tail_default = {
-    .pos        = {0, 0},
     .flip       = SDL_FLIP_NONE,
-    .texture    = NULL,
-    .angle      = 0.0,
-    .half       = false,
-    .index      = false,
-    .index      = false,
 };
 
 struct Text_Bubble TextBubble_default = {
-    .width              =  0,
-    .height             =  0,
     .row_height         = ASCII_GLYPH_HEIGHT,
-    .lines              = {0},
     .line_len_px        = 64,
     .line_num_max       = -1,
     .target             = {-100, -100},
-    .pixelfont          = NULL,
-    .palette            = NULL,
-    .texture            = NULL,
-    .texture_vscroll    = NULL,
-    .update             = false,
     .vscroll_speed      = TEXT_BUBBLE_VSCROLL_SPEED,
     .vscroll_dir        = TEXT_BUBBLE_VSCROLL_TOP,
-    .vscroll            = 0,
 
     .padding     = {
         .left       = TEXT_BUBBLE_PADDING_LEFT,
@@ -40,14 +25,7 @@ struct Text_Bubble TextBubble_default = {
     .bg_color       = SOTA_WHITE,
     .line_color     = SOTA_BLACK,
 
-    .tail     = {
-        .pos            = {0, 0},
-        .flip           = SDL_FLIP_NONE,
-        .texture        = NULL,
-        .angle          = 0.0,
-        .half           = false,
-        .index          = false,
-    },
+    .tail     = {.flip = SDL_FLIP_NONE},
 };
 
 void TextBubble_Free(struct Text_Bubble *bubble) {

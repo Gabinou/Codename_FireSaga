@@ -13,20 +13,6 @@ static void _PopUp_Map_Combat_Draw_CircleBars(struct PopUp_Map_Combat *pmc,
                                               SDL_Renderer *r);
 
 struct PopUp_Map_Combat PopUp_Map_Combat_default = {
-    .aggressor              = TNECS_NULL,
-    .defendant              = TNECS_NULL,
-    .world                  = NULL,
-    .pixelnours_big         = NULL,
-    .pixelnours_tight       = NULL,
-    .topoff_aggressor       = {0},
-    .topoff_defendant       = {0},
-    .texture                = NULL,
-    .texture_n9patch_red    = NULL,
-    .texture_n9patch_blue   = NULL,
-    .texture_header_red     = NULL,
-    .texture_header_blue    = NULL,
-
-    .current_attack         = 0,
     .update                 = true,
 };
 

@@ -14,21 +14,7 @@ u8 max_jobs[CAMPJOB_END] = {
 };
 
 struct Camp Camp_default = {
-    .json_filename  = {0},
     .json_element   = JSON_CAMP,
-
-    .guards = {CAMP_JOB_NULL},
-    .librarians = {CAMP_JOB_NULL},
-    .assistants = {CAMP_JOB_NULL},
-    .cooks = {CAMP_JOB_NULL},
-    .scribes = {CAMP_JOB_NULL},
-    .stablehands = {CAMP_JOB_NULL},
-    .clergymen = {CAMP_JOB_NULL},
-    .storagemasters = {CAMP_JOB_NULL},
-    .magicresearchers = {CAMP_JOB_NULL},
-    .workers = {0},
-
-    .forbidden_jobs = {CAMP_JOB_NULL},
 };
 
 void Camp_Free(struct Camp *camp) {

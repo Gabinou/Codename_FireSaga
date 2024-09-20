@@ -2,10 +2,8 @@
 #include "bars/slider_bar.h"
 
 SliderBar SliderBar_default = {
-    .fill       = 0,
     .len        = SLIDER_BAR_MIN_LEN,
     .increment  = SLIDER_BAR_INCREMENTS,
-    .pos        = {0},
 };
 
 /* --- Moving Cursor --- */

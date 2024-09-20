@@ -2,7 +2,6 @@
 
 struct Cutscene Cutscene_default = {
     .time_ns    = 4UL * SOTA_ns,
-    .event      = TNECS_NULL,
 };
 
 void Cutscene_Free(Cutscene *cutscene) {

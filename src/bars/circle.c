@@ -3,7 +3,6 @@
 
 /* --- CIRCLE_BAR --- */
 struct CircleBar CircleBar_default = {
-    .fill = 0.0f,
     .flip = SDL_FLIP_NONE,
 };
 

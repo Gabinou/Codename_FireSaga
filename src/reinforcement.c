@@ -2,13 +2,8 @@
 #include "reinforcement.h"
 
 struct Reinforcement Reinforcement_default = {
-    .ai_filename    = {0},
-    .filename       = {0},
-    .turn           =  0,
-    .levelups       =  0,
     .army           = -1,
     .boss_icon      = -1,
-    .position       = {0, 0},
 };
 
 void Reinforcement_Free(struct Reinforcement *reinf) {

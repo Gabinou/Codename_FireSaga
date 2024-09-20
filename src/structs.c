@@ -34,17 +34,13 @@ canEquip canEquip_default = {
     .archetype  = ITEM_ARCHETYPE_NULL,
 };
 
-struct Damage Damage_default = {{0, 0}, {0, 0}};
+struct Damage Damage_default = {0};
 
-struct HP HP_default = {0, 0, 0, 0};
+struct HP HP_default = {0};
 
 struct Computed_Stats Computed_Stats_default = {0};
 
 struct Timer Timer_default = {
-    .time_ns      = 0,
-    .frame_count  = 0,
-    .reset        = false,
-    .paused       = false,
     .limit_ns     = SOTA_ns,
 };
 
@@ -52,9 +48,7 @@ struct Range Range_default = {.min = SOTA_MAX_RANGE, .max = SOTA_MIN_RANGE};
 
 
 struct Rendered Rendered_default = {
-    .graphics.texture   = NULL,
     .flip               = SDL_FLIP_NONE,
-    .angle              = 0,
 };
 
 struct Tile_stats Tile_stats_default = {
@@ -66,14 +60,12 @@ struct Tile_stats Tile_stats_default = {
 
 struct Inventory_item Inventory_item_default = {
     .id          = ITEM_NULL,
-    .used        = 0,
     .infusion    = SOTA_NON_INFUSEABLE,
     .highlighted = true,
 };
 
 struct Inventory_item Inventory_item_broken = {
     .id          = ITEM_ID_BROKEN,
-    .used        = 0,
     .infusion    = SOTA_NON_INFUSEABLE,
     .highlighted = true,
 };
@@ -81,63 +73,20 @@ struct Inventory_item Inventory_item_broken = {
 struct Bonus_Stats Bonus_Stats_default = {0};
 struct Aura Aura_default = {0};
 
-struct Shop Shop_default = {
-    .items = NULL,
-    .qty   = NULL,
-};
+struct Shop Shop_default = {0};
 
-struct Padding Padding_default = {
-    .right   = 0,
-    .top     = 0,
-    .left    = 0,
-    .bottom  = 0,
-};
+struct Padding Padding_default = {0};
 
-struct Item_stats Item_stats_default = {
-    .price   = 0,
-    .uses    = 0,
-    .AP      = 0, /* Ability Power for heal (%), blowHorn, gainStats, gainSkill */
-};
+struct Item_stats Item_stats_default = {0};
 
-struct Weapon_stats Weapon_stats_default = {
-    .attack      = {0},
-    .protection  = {0},
-    .hit         =  0,
-    .dodge       =  0, /* can be negative */
-    .crit        =  0,
-    .favor       =  0,
-    .range       = {0}, /* [0]: min, [1]: max */
-    .wgt         =  0, /* weight */
-    .prof        =  0, /* proficiency */
-};
+struct Weapon_stats Weapon_stats_default = {0};
 
-struct Movement_cost Movement_cost_default = {
-    .foot_slow    = 0,
-    .foot_fast    = 0,
-    .mages        = 0,
-    .riders_fast  = 0,
-    .riders_slow  = 0,
-    .fliers       = 0,
-    .armors       = 0,
-    .pirates      = 0,
-    .bandits      = 0
-};
+struct Movement_cost Movement_cost_default = {0};
 
-struct fMovement_cost fMovement_cost_default = {
-    .foot_slow   = 0.0f,
-    .foot_fast   = 0.0f,
-    .mages       = 0.0f,
-    .riders_fast = 0.0f,
-    .riders_slow = 0.0f,
-    .fliers      = 0.0f,
-    .armors      = 0.0f,
-    .pirates     = 0.0f,
-    .bandits     = 0.0f
-};
+struct fMovement_cost fMovement_cost_default = {0};
 
 struct Condition Condition_default = {
     .unitid      = -1,
-    .dead        = false,
     .recruited   = true,
 };
 
