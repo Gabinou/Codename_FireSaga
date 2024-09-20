@@ -505,12 +505,6 @@ enum ITEM_ORDER {
     ITEM_NUM,
 };
 
-enum DTAB {
-    SOTA_DTAB_NULL       = -1,
-    SOTA_DTAB_WEAPONS    =  0,
-    SOTA_DTAB_ITEMS      =  1,
-};
-
 #define REGISTER_ENUM(x) ITEM_TYPE_EXP_##x,
 enum ITEM_TYPE_EXP {
     ITEM_TYPE_EXP_NULL = 0,
