@@ -758,9 +758,11 @@ enum UNIT_SKILL {
 
 #define REGISTER_ENUM(x) UNIT_STAT_##x,
 enum UNIT_STATS {
-    UNIT_STAT_START = -1,
+    UNIT_STAT_NULL      = 0,
 #include "names/units_stats.h"
-    UNIT_STAT_NUM
+    UNIT_STAT_MALLOC,
+    UNIT_STAT_NUM       = UNIT_STAT_MALLOC - 1
+
 };
 #undef REGISTER_ENUM
 

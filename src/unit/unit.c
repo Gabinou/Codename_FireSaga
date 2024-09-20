@@ -61,66 +61,20 @@ int  class_mvt_types[UNIT_CLASS_END] = {
 
 struct Unit Unit_default = {
     .json_element   = JSON_UNIT,
-    .json_filename  = {0},
     .mvt_type       = UNIT_MVT_FOOT_SLOW,
     .class          = UNIT_CLASS_VILLAGER,
 
-    /*                    hp str mag agi dex fth luck def res con move prof */
-    .base_stats         = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-    // .aura.unit_stats        = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-    .caps_stats         = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-    // .malus_stats        = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-    .current_stats      = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-    .growths            = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-    .bonus_stack        = NULL,
-
-    .hit_sequence    = {0, 0},
-    .crit_sequence   = {0, 0},
-
-    .agony    = -1,
-    .regrets  =  0,
-    .rescuee  = UNIT_NULL,
-
-    .hp_sequence     = {0, 0},
-    .str_sequence    = {0, 0},
-    .mag_sequence    = {0, 0},
-    .dex_sequence    = {0, 0},
-    .agi_sequence    = {0, 0},
-    .fth_sequence    = {0, 0},
-    .luck_sequence   = {0, 0},
-    .def_sequence    = {0, 0},
-    .res_sequence    = {0, 0},
-    .con_sequence    = {0, 0},
-    .move_sequence   = {0, 0},
-    .prof_sequence   = {0, 0},
+    .agony          = -1,
 
     .rangemap        = RANGEMAP_ATTACKMAP,
     .user_rangemap   = RANGEMAP_NULL,
 
-    // .support_bonuses =  {{{0}}},
-    // .support_bonus   =   {{0}},
-
     .dft_pos   =   {-1, -1},
 
-    .skills          = 0,
-    .skill_names     = NULL,
-    .exp             = 0,
-    .base_exp        = 0,
     .army            = 1,
-    ._id             = 0,
-    .status_queue    = NULL,
-    .grown_stats     = NULL,
-    .bonus_stack     = NULL,
-
-    .weapons_dtab    = NULL,
 
     .current_hp      = SOTA_MIN_HP,
     .alive           = true,
-    .talkable        = 0,
-
-    .sex             = false, // 0:F, 1:M. eg. hasPenis.
-    .literate        = false, // Reading/writing for scribe job.
-    .show_danger     = false,
 
     .arms_num        = UNIT_ARMS_NUM,
     .handedness      = UNIT_HAND_RIGHTIE,
@@ -134,55 +88,26 @@ struct Unit Unit_default = {
 
     .update_stats    = true,
     .computed_stats  = {{0, 0}, {0, 0}, 0, 0, 0, 0, 0, 0, 0, {-1, -1}},
-
-    .temp            = {0},
-    .name            = {0},
-    .ai_filename     = {0},
-    .title           = {0},
-    .num_equipment   =  0,
-    .eq_canEquip     = {0},
-    .num_canEquip    =  0,
 };
 
 struct Unit Nibal_unit = {
     .json_element = JSON_UNIT,
     /*                    hp str mag agi dex fth luck def res con move prof */
     .base_stats         = {35, 20, 20, 18, 25, 14, 12, 18, 22, 30, 06, 15},
-    // .aura.unit_stats        = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-    .caps_stats         = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-    // .malus_stats        = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-    .current_stats      = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-    .growths            = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
     .agony              = -1,
-    .bonus_stack        = NULL,
 
-    // .skills         = UNIT_SKILL_VENOMOUS_SPIT,
-    .exp            = 0,
     .base_exp       = 2500,
     .army           = ARMY_HAMILCAR,
     ._id            = UNIT_ID_NIBAL,
-    .status_queue   = NULL,
-    .bonus_stack    = NULL,
-
-    .grown_stats    = NULL,
-    .weapons_dtab   = NULL,
-
 
     .current_hp     = 35,
     .alive          = true,
-    .talkable       = 0,
-
     .sex            = true,  /* 0:F, 1:M. eg. hasPenis. */
-    .literate       = false, /* Reading/writing for scribe job. */
-    .show_danger    = false,
 
     .computed_stats = {{0, 0, 0}, {0, 0, 0}, 0, 0, 0, 0, 0, 0, 0, {-1, -1}},
     ._equipped      = {-1, -1},
     .hands          = {true, true},
 
-    .mount          = NULL,
-
-    .num_equipment  = 0,
 };
 
 void Tetrabrachios_Default(Unit *unit) {
@@ -458,7 +383,7 @@ void Unit_lvlUp(struct Unit *unit) {
     i32 *current_stats = &unit->current_stats.hp;
     struct RNG_Sequence *sequences = (struct RNG_Sequence *)&unit->hp_sequence;
 
-    for (int i = 0; i < UNIT_STAT_NUM; i++) {
+    for (int i = UNIT_STAT_NULL + 1; i <= UNIT_STAT_NUM; i++) {
         /* Skip if stat is capped */
         if (current_stats[i] >= caps_stats[i])
             continue;
@@ -486,8 +411,10 @@ void Unit_lvlUp(struct Unit *unit) {
     }
 
     /* -- Actually adding grown stats to current_stats -- */
-    for (int i = 0; i < UNIT_STAT_NUM; i++)
-        current_stats[i] += stats_arr[i];
+    // for (int i = UNIT_STAT_NULL + 1; i <= UNIT_STAT_NUM; i++) {
+    //     current_stats[i] += stats_arr[i];
+    // }
+    unit->current_stats = Unit_stats_plus(unit->current_stats, temp_stats);
 
     /* -- Adding current lvlup to all grown stats -- */
     DARR_PUT(unit->grown_stats, temp_stats);

@@ -52,7 +52,7 @@ int Unit_Name2Order(s8 name) {
     return (order);
 }
 
-s8 statNames[UNIT_STAT_NUM] = {0};
+s8 statNames[UNIT_STAT_MALLOC] = {0};
 void Names_statNames(void) {
 #define REGISTER_ENUM(x) statNames[ITEM_STAT_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);
 #include "names/items_stats.h"
@@ -260,7 +260,7 @@ void Names_Free(void) {
     for (size_t i = 0; i < GAME_STATE_END; i++) {
         s8_free(&gameStatenames[i]);
     }
-    for (size_t i = 0; i < CHAPTER_MALLOC; i++) {
+    for (size_t i = CHAPTER_NULL + 1; i < CHAPTER_MALLOC; i++) {
         s8_free(&mapFilenames[i]);
     }
     for (size_t i = 0; i < JSON_END; i++) {

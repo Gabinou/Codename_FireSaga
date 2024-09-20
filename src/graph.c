@@ -24,10 +24,7 @@ struct Unit_stats test_grown_stats[10] = {
 
 struct Unit_stats test_base_stats = {05, 06, 07, 8, 9, 10, 11, 12, 13, 01, 02, 03};
 
-struct GraphStat GraphStat_default = {
-    .cumul_stat = {-1},
-    .stat_id    =  -1,
-};
+struct GraphStat GraphStat_default = {0};
 
 struct Graph Graph_default = {
     .graph_stats = {
@@ -54,7 +51,7 @@ struct Graph Graph_default = {
 };
 
 void Graph_Stat_Remove(struct Graph *graph, u8 stat_id) {
-    graph->graph_stats[stat_id].stat_id = -1;
+    graph->graph_stats[stat_id].stat_id = STAT_ID_NULL;
 }
 
 void Graph_Stat_Add(struct Graph *graph, struct Unit_stats *base_stats,
@@ -97,8 +94,8 @@ void Graph_Draw(struct Graph *graph, struct n9Patch *n9patch, struct PixelFont *
     }
     SDL_SetRenderTarget(renderer, graph->texture);
     _Graph_Draw_Axes(graph, n9patch, pixelnours_big, renderer, render_target);
-    for (u8 i = 0; i < UNIT_STAT_NUM; i++) {
-        if (graph->graph_stats[i].stat_id >= 0)
+    for (u8 i = UNIT_STAT_NULL + 1; i <= UNIT_STAT_NUM; i++) {
+        if (graph->graph_stats[i].stat_id > STAT_ID_NULL)
             _Graph_Draw_Stat(graph, i, n9patch, pixelnours_big, renderer, render_target);
     }
     SDL_SetRenderTarget(renderer, render_target);

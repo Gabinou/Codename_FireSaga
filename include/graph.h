@@ -52,6 +52,10 @@ enum GRAPH_LINESTYLE { /* palette_NES, offset by 1 for NULL == 0 */
     GRAPH_LINESTYLE_LINE  = 2,
 };
 
+enum STAT_ID {
+    STAT_ID_NULL = 0,
+};
+
 extern struct Unit_stats test_grown_stats[10];
 extern struct Unit_stats test_base_stats;
 

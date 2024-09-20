@@ -181,6 +181,7 @@ extern struct Tile_stats Tile_stats_default;
 
 /* Struct is better: Can be cast to array */
 typedef struct Unit_stats {
+    i32 null; /* null stat     */
     i32 hp;   /* hit points     */
     i32 str;  /* strength       */
     i32 mag;  /* magic          */
@@ -686,7 +687,7 @@ struct Graph {
     SDL_Rect rect; // x,y,w,h
     SDL_Texture *texture;
 
-    struct GraphStat graph_stats[UNIT_STAT_NUM];
+    struct GraphStat graph_stats[UNIT_STAT_MALLOC];
 
     Point plot_min; /* [XY units] */
     Point plot_max; /* [XY units] */
