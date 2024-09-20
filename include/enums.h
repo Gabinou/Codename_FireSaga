@@ -980,12 +980,13 @@ enum ERRORS {
 
 #define REGISTER_ENUM(x, y, z) CHAPTER_##x,
 enum CHAPTERS {
-    NO_CHAPTER    = -1,
-    CHAPTER_START = -1,
+    NO_CHAPTER      = 0,
+    CHAPTER_NULL    = 0,
+    CHAPTER_START   = 0,
 #include "names/chapters.h"
     CHAPTER_FOLDER_TEST,
-    CHAPTER_END,
-    CHAPTER_NUM = CHAPTER_END,
+    CHAPTER_MALLOC,
+    CHAPTER_NUM     = CHAPTER_MALLOC - 1
 };
 #undef REGISTER_ENUM
 

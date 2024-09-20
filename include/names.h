@@ -21,7 +21,7 @@ extern s8 classNames[UNIT_CLASS_NUM];
 extern s8 sceneTimes[SCENE_TIME_NUM];
 extern s8 unitStatuses[UNIT_STATUS_END];
 extern s8 campjobNames[CAMPJOB_END];
-extern s8 mapFilenames[CHAPTER_END];
+extern s8 mapFilenames[CHAPTER_MALLOC];
 extern s8 support_types[SUPPORT_TYPE_NUM];
 extern s8 gameStatenames[GAME_STATE_END];
 extern s8 menuOptionnames[MENU_OPTION_END];

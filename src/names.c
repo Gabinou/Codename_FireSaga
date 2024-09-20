@@ -128,7 +128,7 @@ void Names_gameStatenames(void) {
 #undef REGISTER_ENUM
 }
 
-s8 mapFilenames[CHAPTER_END] = {0};
+s8 mapFilenames[CHAPTER_MALLOC] = {0};
 void Names_mapFilenames(void) {
 #define REGISTER_ENUM(x, y, z) mapFilenames[CHAPTER_##x] = s8cat(s8_mut("assets"PHYSFS_SEPARATOR"maps"PHYSFS_SEPARATOR), s8_literal(#y));
 #include "names/chapters.h"
@@ -260,7 +260,7 @@ void Names_Free(void) {
     for (size_t i = 0; i < GAME_STATE_END; i++) {
         s8_free(&gameStatenames[i]);
     }
-    for (size_t i = 0; i < CHAPTER_END; i++) {
+    for (size_t i = 0; i < CHAPTER_MALLOC; i++) {
         s8_free(&mapFilenames[i]);
     }
     for (size_t i = 0; i < JSON_END; i++) {
