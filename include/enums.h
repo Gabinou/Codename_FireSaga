@@ -858,7 +858,6 @@ enum UNIT_MVT {
 #define REGISTER_ENUM(x, y) SOTA_INPUT_##x,
 enum SOTA_INPUTS {
     SOTA_INPUT_DPAD_END         =  4,
-    SOTA_INPUT_NULL             = -1,
     SOTA_INPUT_START            = -1,
 #include "names/input.h"
     SOTA_INPUT_END,
@@ -868,7 +867,6 @@ enum SOTA_INPUTS {
 enum SOTA_BUTTONS {
     SOTA_MAPPABLE_BUTTONS_NUM   =  2,
     SOTA_BUTTON_DPAD_END        =  4,
-    SOTA_BUTTON_NULL            = -1,
     SOTA_BUTTON_DPAD_RIGHT      =  0,
     SOTA_BUTTON_DPAD_UP,
     SOTA_BUTTON_DPAD_DOWN,
