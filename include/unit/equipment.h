@@ -56,7 +56,7 @@ i32 Unit_Id_Equipment(Unit *u, i32 eq);
 i32 Unit_Eq_Equipped(Unit *u, b32 hand);
 
 /* --- Equipping --- */
-void    Unit_Equip(     Unit *u, b32 h, i32 i);
+void    Unit_Equip(     Unit *u, b32 h, i32 eq);
 void    Unit_Unequip(   Unit *u, b32 h);
 b32     Unit_isEquipped(Unit *u, b32 hand);
 
