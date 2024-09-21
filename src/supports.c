@@ -1,10 +1,6 @@
 #include "supports.h"
 
-struct Support Support_default = {
-    .other_id =    -1,
-    .other_type =  -1,
-    .level =       -1
-};
+struct Support Support_default = {0};
 
 struct Computed_Stats Support_Bonus(struct Support support, u16 self_type) {
     struct Computed_Stats bonus = {0};

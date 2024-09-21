@@ -160,7 +160,7 @@ int main(int argc, char *argv[]) {
     /* -- Running tests -- */
     // test_events();
     unit_tests();
-    // render_tests();
+    render_tests();
     // integration_tests(argc, argv);
     nourstest_results();
 

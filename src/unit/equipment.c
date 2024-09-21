@@ -232,7 +232,6 @@ b32 Unit_canEquip_AnyHand(Unit *unit, canEquip can_equip) {
 //    - IF applicable: unit is in list of users
 //  Note: Depends on current equipment in other hands
 void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
-    SDL_assert(false);
     /* Save starting equipment */
     int start_equipped[MAX_ARMS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
