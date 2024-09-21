@@ -155,6 +155,9 @@ void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map,
     struct Unit     *unit = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
     _LoadoutSelectMenu_Load(lsm, unit, renderer, n9patch);
     Map_canEquip(map, unit_ent, false, archetype);
+    // TWO-HAND ONLY DESIGN ISSUE:
+    //  - Two-handed only weapons can ONLY BE EQUIPPED IF ALSO IN OTHER HAND
+    //      - MUST ASSUME WEAPON IS IN OTHER HAND
 }
 
 void _LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Unit *unit,

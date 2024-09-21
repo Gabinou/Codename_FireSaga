@@ -49,6 +49,19 @@ typedef struct canEquip {
     //      - Needed by LoadoutSelectMenu
     i32 two_hands_mode;
 
+
+    // TWO-HAND ONLY DESIGN ISSUE:
+    //  - Two-handed only weapons can ONLY BE EQUIPPED IF ALSO IN OTHER HAND
+    //      - MUST ASSUME WEAPON IS IN OTHER HAND
+
+    // Two-handed mode.
+    //  - TWO_HANDED_STRICT
+    //      - Can only equip if weapon is currently in other hand
+    //  - TWO_HANDED_LOOSE
+    //      - Can equip even in one hand -> step 1 to equip in two hands
+    //      - Needed by LoadoutSelectMenu
+    i32 two_hands_mode;
+
 } canEquip;
 extern canEquip canEquip_default;
 
