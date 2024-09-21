@@ -1,10 +1,6 @@
 
 #include "menu/item_drop.h"
-struct ItemDropMenu ItemDropMenu_default = {
-    .pos            = {-1, -1},
-    .item_todrop    = -1,
-    .item_width     = -1,
-};
+struct ItemDropMenu ItemDropMenu_default = {0};
 
 struct Point idm_cursor_pos[IDM_ELEM_NUM] = {
     /* ID_ELEM_YES */ {IDM_ELEM_YES_X, IDM_ELEM_YES_Y},

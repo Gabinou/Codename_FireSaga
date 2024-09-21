@@ -131,6 +131,7 @@ enum LSM_ELEMS {
     LSM_ELEM_ITEM5,
     LSM_ELEM_ITEM6,
     LSM_ELEMS_NUM,
+
 };
 
 #define LSM_BUFFER_LEN 128
@@ -143,6 +144,7 @@ extern struct Point   wsm_elem_pos[LSM_ELEMS_NUM];
 extern struct Point   wsm_elem_box[LSM_ELEMS_NUM];
 extern struct Point   wsm_cursor_pos[LSM_ELEMS_NUM];
 extern struct Point   wsm_cursor_box[LSM_ELEMS_NUM];
+
 
 struct LoadoutSelectMenu {
     b32 update;

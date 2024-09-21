@@ -86,7 +86,6 @@ struct Movement_cost Movement_cost_default = {0};
 struct fMovement_cost fMovement_cost_default = {0};
 
 struct Condition Condition_default = {
-    .unitid      = -1,
     .recruited   = true,
 };
 

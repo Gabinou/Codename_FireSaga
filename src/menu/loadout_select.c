@@ -49,8 +49,7 @@ struct MenuElemDirections wsm_links[LSM_ELEMS_NUM] = {
 
 struct LoadoutSelectMenu LoadoutSelectMenu_default = {
     .update                 = true,
-    .pos                    = {-1, -1},
-    .selected               = {-1, -1},
+    .selected               = {LSM_ELEM_NULL, LSM_ELEM_NULL},
     .archetype_stronghand   = ITEM_ARCHETYPE_STRONGHAND_ATTACK,
     .archetype_weakhand     = ITEM_ARCHETYPE_WEAKHAND,
     .black                  = SOTA_BLACK,
@@ -282,8 +281,8 @@ void LoadoutSelectMenu_Unit(struct LoadoutSelectMenu *lsm, struct Unit *unit) {
 
 
 void LoadoutSelectMenu_Select_Reset(struct LoadoutSelectMenu *lsm) {
-    lsm->selected[UNIT_HAND_LEFT]  = -1;
-    lsm->selected[UNIT_HAND_RIGHT] = -1;
+    lsm->selected[UNIT_HAND_LEFT]  = LSM_ELEM_NULL;
+    lsm->selected[UNIT_HAND_RIGHT] = LSM_ELEM_NULL;
     lsm->update                    = true;
 
 }
@@ -335,14 +334,14 @@ void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
     i32 weakhand   = 1 - stronghand;
 
     /*- Skip if no item to revert -*/
-    if ((lsm->selected[weakhand] == -1) && (lsm->selected[stronghand] == -1)) {
+    if ((lsm->selected[weakhand] == LSM_ELEM_NULL) && (lsm->selected[stronghand] == LSM_ELEM_NULL)) {
         SDL_Log("Warning: No item to deselect");
         return;
     }
-    if (lsm->selected[weakhand] != -1) {
-        lsm->selected[weakhand] = -1;
-    } else if (lsm->selected[stronghand] != -1) {
-        lsm->selected[stronghand] = -1;
+    if (lsm->selected[weakhand] != LSM_ELEM_NULL) {
+        lsm->selected[weakhand] = LSM_ELEM_NULL;
+    } else if (lsm->selected[stronghand] != LSM_ELEM_NULL) {
+        lsm->selected[stronghand] = LSM_ELEM_NULL;
     }
 }
 
@@ -615,7 +614,7 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
     b32 highlight  = false;
 
     /* If stronghand is selected, menu should change to show all items in equipment */
-    b32 strong_selected = (lsm->selected[stronghand] > -1);
+    b32 strong_selected = (lsm->selected[stronghand] > LSM_ELEM_NULL);
 
     SDL_assert(lsm->unit->num_canEquip > 0);
     SDL_assert(lsm->unit->num_canEquip <= SOTA_EQUIPMENT_SIZE);

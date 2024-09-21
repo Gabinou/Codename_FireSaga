@@ -354,7 +354,6 @@ struct MenuElemDirections sm_links[SM_ELEM_NUM] = {
 };
 
 struct StatsMenu StatsMenu_default = {
-    .pos                = {-1, -1},
     .update             = true,
     .update_stats       = true,
 };
