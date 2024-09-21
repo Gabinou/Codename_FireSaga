@@ -284,49 +284,51 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
     SDL_assert(can_equip.to_eq <= SOTA_EQUIPMENT_SIZE);
 
     if (can_equip.to_eq == ITEM_UNEQUIPPED) {
-        // SDL_Log("Can't equip nothing \n");
+        SDL_Log("Can't equip nothing \n");
         return (false);
     }
 
     if (!unit->hands[can_equip.hand]) {
-        // SDL_Log("No hand \n");
+        SDL_Log("No hand \n");
         return (false);
     }
 
     int eq = can_equip.to_eq - ITEM_EQUIPPED_DIFF;
+
     int id = Unit_Id_Equipment(unit, eq);
+    SDL_Log("eq, id %d %d\n", eq, id);
 
     if (id <= ITEM_NULL) {
-        // SDL_Log("ITEM_NULL\n");
+        SDL_Log("ITEM_NULL\n");
         return (false);
     }
     if (!Weapon_ID_isValid(id)) {
-        // SDL_Log("!Weapon_ID_isValid\n");
+        SDL_Log("!Weapon_ID_isValid\n");
         return (false);
     }
 
     if (!Unit_canEquip_Type(unit, id)) {
-        // SDL_Log("!Unit_canEquip_Type\n");
+        SDL_Log("!Unit_canEquip_Type\n");
         return (false);
     }
 
     if (!Unit_canEquip_Archetype(unit, id, can_equip.archetype)) {
-        // SDL_Log("!Unit_canEquip_Archetype\n");
+        SDL_Log("!Unit_canEquip_Archetype\n");
         return (false);
     }
 
     if (!Unit_canEquip_Users(unit, id)) {
-        // SDL_Log("!Unit_canEquip_Users\n");
+        SDL_Log("!Unit_canEquip_Users\n");
         return (false);
     }
 
     if (!Unit_canEquip_OneHand(unit, eq, can_equip.hand)) {
-        // SDL_Log("!Unit_canEquip_OneHand\n");
+        SDL_Log("!Unit_canEquip_OneHand\n");
         return (false);
     }
 
     if (!Unit_canEquip_TwoHand(unit, eq, can_equip.hand)) {
-        // SDL_Log("!Unit_canEquip_TwoHand\n");
+        SDL_Log("!Unit_canEquip_TwoHand\n");
         return (false);
     }
 
@@ -398,12 +400,13 @@ b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand) {
 
     b32 other_hand      = UNIT_OTHER_HAND(hand);
     i32 eq_other        = Unit_Eq_Equipped(unit, other_hand);
-
     // Two-hand only weapon can't be equipped if:
     //      - Other hand equipped different wpn.
     b32 eq_diff         = (eq_other != eq);
     b32 eq_in_bound     = (eq_other >= 0) && (eq_other < SOTA_EQUIPMENT_SIZE);
     b32 two_hand_cant   = two_hand_only && (eq_in_bound && eq_diff);
+    // SDL_Log("eq_other %d", eq_other);
+    // SDL_Log("eq_diff, eq_in_bound, two_hand_only %d %d %d", eq_diff, eq_in_bound, two_hand_only);
 
     if (two_hand_cant) {
         return (false);
@@ -415,7 +418,6 @@ b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand) {
 
     return (true);
 }
-
 
 // IF equipment can be one-handed, CAN the unit equip it?
 b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, b32 hand) {
@@ -452,14 +454,18 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, b32 hand) {
 
     b32 one_hand_only   = Weapon_OneHand_Only(wpn);
     b32 one_hand_cant   = one_hand_only && (eq_in_bound && eq_same);
+    SDL_Log("eq_other %d", eq_other);
+    SDL_Log("eq_same, eq_in_bound, one_hand_only %d %d %d", eq_same, eq_in_bound, one_hand_only);
+
     if (one_hand_cant) {
         return (false);
     }
+    SDL_Log("CAN");
 
     /* Cannot onehand magic weapons/staves */
     if (Item_hasType(wpn->item, ITEM_TYPE_STAFF)) {
         b32 one_hand_skill = Unit_canStaff_oneHand(unit);
-        if (eq_same && !one_hand_skill) {
+        if (!eq_same && !one_hand_skill) {
             return (false);
         }
     } else if (
@@ -468,7 +474,7 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, b32 hand) {
             Item_hasType(wpn->item, ITEM_TYPE_DEMONIC)
     ) {
         b32 one_hand_skill = Unit_canMagic_oneHand(unit);
-        if (eq_same && !one_hand_skill) {
+        if (!eq_same && !one_hand_skill) {
             return (false);
         }
     }

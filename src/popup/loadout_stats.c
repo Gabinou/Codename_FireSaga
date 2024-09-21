@@ -15,26 +15,8 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
                                                SDL_Renderer *renderer);
 
 struct PopUp_Loadout_Stats PopUp_Loadout_Stats_default = {
-    .unit                    = NULL,
-    .texture                 = NULL,
-    .texture_arrows          = NULL,
-    .texture_hands           = NULL,
-    .texture_weapon_icons    = NULL,
-    .pixelnours              = NULL,
-    .pixelnours_big          = NULL,
-    .item_left               = -1,
-    .item_right              = -1,
-    .ly_offset               =  0,
-    .ry_offset               =  0,
-    .type_left               = -1,
-    .type_right              = -1,
     .distance                = -1,
-    .previous_cs             = {0},
-    .new_cs                  = {0},
-    .l_equip_override        =  0,
-    .r_equip_override        =  0,
     .tophand_stronghand      = true, /* Tophand should basically always be stronghand */
-    .update                  = false,
 };
 
 /* --- STATIC FUNCTIONS --- */
@@ -416,8 +398,12 @@ static void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls,
     } else {
         /* Left hand */
         canEquip can_equip  = canEquip_default;
-        canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  Unit_Eq_Equipped(pls->unit, UNIT_HAND_LEFT));
-        canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, Unit_Eq_Equipped(pls->unit, UNIT_HAND_RIGHT));
+        if (Unit_Eq_Equipped(pls->unit, UNIT_HAND_LEFT) > ITEM_UNEQUIPPED) {
+            canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  Unit_Eq_Equipped(pls->unit, UNIT_HAND_LEFT));
+        }
+        if (Unit_Eq_Equipped(pls->unit, UNIT_HAND_RIGHT) > ITEM_UNEQUIPPED) {
+            canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, Unit_Eq_Equipped(pls->unit, UNIT_HAND_RIGHT));
+        }
 
         canEquip_Eq(&can_equip, UNIT_HAND_LEFT);
         can_equip.hand      = UNIT_HAND_LEFT;
@@ -445,7 +431,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
     /* Left hand */
     // SDL_Log("DRAW %d %d", pls->item_left, pls->item_right);
     do {
-        if ((pls->item_left <= -1) || (pls->item_left >= SOTA_EQUIPMENT_SIZE))
+        if ((pls->item_left < ITEM_UNEQUIPPED) || (pls->item_left >= SOTA_EQUIPMENT_SIZE))
             break;
         if (pls->unit->weapons_dtab == NULL)
             break;
@@ -480,7 +466,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
         if (pls->twoHanding)
             break;
 
-        if ((pls->item_right <= -1) || (pls->item_right >= SOTA_EQUIPMENT_SIZE))
+        if ((pls->item_right <= ITEM_UNEQUIPPED) || (pls->item_right >= SOTA_EQUIPMENT_SIZE))
             break;
 
         if (pls->unit->weapons_dtab == NULL)
@@ -614,9 +600,9 @@ void PopUp_Loadout_Stats_Unit(struct PopUp_Loadout_Stats *pls, struct Unit *unit
     SDL_assert(unit != NULL);
     pls->unit = unit;
     int eq_left = unit->eq_canEquip[unit->_equipped[UNIT_HAND_LEFT]];
-    pls->item_left  = -1;
+    pls->item_left  = ITEM_UNEQUIPPED;
     int eq_right = unit->eq_canEquip[unit->_equipped[UNIT_HAND_RIGHT]];
-    pls->item_right = -1;
+    pls->item_right = ITEM_UNEQUIPPED;
 
     Unit_Unequip(unit, UNIT_HAND_LEFT);
     Unit_Unequip(unit, UNIT_HAND_RIGHT);
@@ -662,7 +648,7 @@ void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls, struct LoadoutSe
     int stronghand = Unit_Hand_Strong(pls->unit);
     int weakhand   = 1 - stronghand;
 
-    if (wsm->selected[stronghand] == -1)  {
+    if (wsm->selected[stronghand] == ITEM_UNEQUIPPED)  {
         /* Stronghand selected */
         if (stronghand == UNIT_HAND_LEFT) {
             pls->item_left  = pls->unit->eq_canEquip[elem];
