@@ -43,6 +43,6 @@ void Boss_Icon_Draw(struct Boss     *boss, struct Position  *pos,
                     SDL_Renderer *r);
 
 /* -- Get default boss icon from army -- */
-extern int army_icons[ARMY_NUM];
+extern int army_icons[ARMY_MALLOC];
 
 #endif /* UNIT_BOSS_H */

@@ -16,7 +16,7 @@
 // TODO make names not global
 extern s8 sexNames[UNIT_SEX_NUM];
 extern s8 statNames[UNIT_STAT_MALLOC];
-extern s8 armyNames[ARMY_NUM];
+extern s8 armyNames[ARMY_MALLOC];
 extern s8 classNames[UNIT_CLASS_NUM];
 extern s8 sceneTimes[SCENE_TIME_NUM];
 extern s8 unitStatuses[UNIT_STATUS_END];

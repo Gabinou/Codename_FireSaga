@@ -51,7 +51,7 @@ char sdl_buttons[SOTA_BUTTON_END] = {
     /* SOTA_BUTTON_TRIGGER_RIGHT  */ SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
 };
 
-u8 army_control[ARMY_NUM] = {
+u8 army_control[ARMY_MALLOC] = {
 #define REGISTER_ENUM(x, y) SOTA_##y,
 #include "names/armies.h"
 #undef REGISTER_ENUM

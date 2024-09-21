@@ -669,14 +669,16 @@ enum UNIT_TYPES {
 
 #define REGISTER_ENUM(x, y) ARMY_##x,
 enum UNIT_ARMIES {
-    ARMY_START = 0,
+    ARMY_NULL   = 0,
+    ARMY_START  = 0,
 #include "names/armies.h"
     ARMY_END,
-    ARMY_NUM = ARMY_END,
+    ARMY_MALLOC = ARMY_END,
+    ARMY_NUM    = ARMY_END - 1,
 };
 #undef REGISTER_ENUM
 
-extern u8 army_control[ARMY_NUM];
+extern u8 army_control[ARMY_MALLOC];
 
 /* UNIT_ID is the explicit, human-friendly unit index
 * EXAMPLE:

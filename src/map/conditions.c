@@ -2,52 +2,41 @@
 #include "map/conditions.h"
 
 struct Map_condition Map_condition_default = {
-    .army    =   -1,
     .min     =   -1,
     .at      =   -1,
     .max     =   -1,
-    .item    =   ITEM_NULL,
 };
 
 struct Map_condition Map_condition_main_char_loss = {
-    .army    =   -1,
-    .unit    =   UNIT_ID_ERWIN,
     .min     =   -1,
     .at      =   -1,
     .max     =   -1,
-    .item    =   ITEM_NULL,
+    .unit    =   UNIT_ID_ERWIN,
     .lose    =   true,
 };
 
 struct Map_condition Map_condition_rout_loss = {
-    .army    =   1,
-    .all     =   true,
-    .unit    =   -1,
     .min     =   -1,
     .at      =   -1,
     .max     =   -1,
+    .all     =   true,
     .lose    =   true,
 };
 
 struct Map_condition Map_condition_debug_map_loss = {
-    .army    =   -1,
-    .boss    =   false,
-    .all     =   false,
-    .unit    =   UNIT_ID_SILOU,
     .min     =   -1,
     .at      =   -1,
     .max     =   -1,
-    .item    =   ITEM_NULL,
+    .unit    =   UNIT_ID_SILOU,
     .lose    =   true,
 };
 
 struct Map_condition Map_condition_boss_win = {
-    .army    =   ARMY_ENEMY,
-    .boss    =   true,
     .min     =   -1,
     .at      =   -1,
     .max     =   -1,
-    .item    =   ITEM_NULL,
+    .army    =   ARMY_ENEMY,
+    .boss    =   true,
     .win     =   true,
 };
 
@@ -78,7 +67,7 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
 
     /* Checking for matching army */
     b32 match_army = true;
-    if ((condition->army > ARMY_START) && (condition->army < ARMY_NUM))
+    if ((condition->army > ARMY_START) && (condition->army <= ARMY_NUM))
         match_army = (unit->army == condition->army);
 
     /* -- No match: army -- */

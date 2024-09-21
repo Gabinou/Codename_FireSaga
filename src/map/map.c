@@ -860,8 +860,8 @@ i8 Map_Army_Next(struct Map *map) {
 
     /* Check for wrap around back to player */
     map->army_i = ((map->army_i + 1) >= army_num) ? 0 : (map->army_i + 1);
-    SDL_assert(map->army_i >= 0);
-    SDL_assert(map->army_i < ARMY_NUM);
+    SDL_assert(map->army_i >  ARMY_NULL);
+    SDL_assert(map->army_i <= ARMY_NUM);
 
     return (map->army_i);
 }
