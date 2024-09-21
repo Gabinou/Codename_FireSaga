@@ -820,33 +820,33 @@ void test_canEquip(void) {
     canEquip can_equip  = canEquip_default;
     can_equip.hand      = UNIT_HAND_LEFT;
 
-    can_equip.eq    = 0;
+    canEquip_Eq(&can_equip, ITEM1);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 1;
+    canEquip_Eq(&can_equip, ITEM2);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 2;
+    canEquip_Eq(&can_equip, ITEM3);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
 
     /* Something in either hand */
-    can_equip.loadout[UNIT_HAND_LEFT]   =  0;
-    can_equip.loadout[UNIT_HAND_RIGHT]  =  1;
+    canEquip_Loadout(&can_equip, UNIT_HAND_LEFT, ITEM1);
+    canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, ITEM2);
 
-    can_equip.eq    = 0;
+    canEquip_Eq(&can_equip, ITEM1);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 1;
+    canEquip_Eq(&can_equip, ITEM2);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 2;
+    canEquip_Eq(&can_equip, ITEM3);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
 
     /* Something in either hand */
-    can_equip.loadout[UNIT_HAND_LEFT]   =  0;
-    can_equip.loadout[UNIT_HAND_RIGHT]  =  1;
+    canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  ITEM1);
+    canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, ITEM2);
 
-    can_equip.eq    = 0;
+    canEquip_Eq(&can_equip, ITEM1);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 1;
+    canEquip_Eq(&can_equip, ITEM2);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 2;
+    canEquip_Eq(&can_equip, ITEM3);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
 
     /* --- Staff user that can twohand with skill --- */
@@ -854,25 +854,25 @@ void test_canEquip(void) {
 
     /* -- Stronghand NOT equipped -- */
     can_equip.hand      = UNIT_HAND_LEFT;
-    can_equip.loadout[UNIT_HAND_LEFT]   = -1;
-    can_equip.loadout[UNIT_HAND_RIGHT]  = -1;
+    canEquip_Loadout_None(&can_equip, UNIT_HAND_LEFT);
+    canEquip_Loadout_None(&can_equip, UNIT_HAND_RIGHT);
 
-    can_equip.eq    = 0;
+    canEquip_Eq(&can_equip, ITEM1);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 1;
+    canEquip_Eq(&can_equip, ITEM2);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 2;
+    canEquip_Eq(&can_equip, ITEM3);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
 
     /* -- Stronghand equipped -- */
-    can_equip.loadout[UNIT_HAND_LEFT]   =  2;
-    can_equip.loadout[UNIT_HAND_RIGHT]  =  2;
+    canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  ITEM3);
+    canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, ITEM3);
 
-    can_equip.eq    = 0;
+    canEquip_Eq(&can_equip, ITEM1);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 1;
+    canEquip_Eq(&can_equip, ITEM2);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 2;
+    canEquip_Eq(&can_equip, ITEM3);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
 
     /* --- Mage that can't two hand --- */
@@ -884,65 +884,65 @@ void test_canEquip(void) {
     Silou._equipment[2].id              = ITEM_ID_SILVERLIGHT_SPEAR;
 
     /* -- Stronghand NOT equipped -- */
-    can_equip.loadout[UNIT_HAND_LEFT]    =  -1;
-    can_equip.loadout[UNIT_HAND_RIGHT]    =  -1;
+    canEquip_Loadout_None(&can_equip, UNIT_HAND_LEFT);
+    canEquip_Loadout_None(&can_equip, UNIT_HAND_RIGHT);
 
-    can_equip.eq    = 0;
+    canEquip_Eq(&can_equip, ITEM1);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 1;
+    canEquip_Eq(&can_equip, ITEM2);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 2;
+    canEquip_Eq(&can_equip, ITEM3);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
 
     /* -- Stronghand equipped -- */
-    can_equip.loadout[UNIT_HAND_LEFT]    = 0;
-    can_equip.loadout[UNIT_HAND_RIGHT]    = 0;
-    can_equip.eq    = 0;
+    canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  ITEM1);
+    canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, ITEM1);
+    canEquip_Eq(&can_equip, ITEM1);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 1;
+    canEquip_Eq(&can_equip, ITEM2);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 2;
+    canEquip_Eq(&can_equip, ITEM3);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
 
-    can_equip.loadout[UNIT_HAND_LEFT]    = 1;
-    can_equip.loadout[UNIT_HAND_RIGHT]    = 1;
-    can_equip.eq    = 0;
+    canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  ITEM2);
+    canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, ITEM2);
+    canEquip_Eq(&can_equip, ITEM1);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 1;
+    canEquip_Eq(&can_equip, ITEM2);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 2;
+    canEquip_Eq(&can_equip, ITEM3);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
 
     /* --- Mage that can two hand due to skill --- */
     Silou.skills = PASSIVE_SKILL_MAGIC_ONE_HAND;
     /* -- Stronghand NOT equipped -- */
-    can_equip.loadout[UNIT_HAND_LEFT]    =  -1;
-    can_equip.loadout[UNIT_HAND_RIGHT]    =  -1;
+    canEquip_Loadout_None(&can_equip, UNIT_HAND_LEFT);
+    canEquip_Loadout_None(&can_equip, UNIT_HAND_RIGHT);
 
-    can_equip.eq    = 0;
+    canEquip_Eq(&can_equip, ITEM1);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 1;
+    canEquip_Eq(&can_equip, ITEM2);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 2;
+    canEquip_Eq(&can_equip, ITEM3);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
 
     /* -- Stronghand equipped -- */
-    can_equip.loadout[UNIT_HAND_LEFT]    = 0;
-    can_equip.loadout[UNIT_HAND_RIGHT]    = 0;
-    can_equip.eq    = 0;
+    canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  ITEM1);
+    canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, ITEM1);
+    canEquip_Eq(&can_equip, ITEM1);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 1;
+    canEquip_Eq(&can_equip, ITEM2);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 2;
+    canEquip_Eq(&can_equip, ITEM3);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
 
-    can_equip.loadout[UNIT_HAND_LEFT]    = 1;
-    can_equip.loadout[UNIT_HAND_RIGHT]    = 1;
-    can_equip.eq    = 0;
+    canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  ITEM1);
+    canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, ITEM1);
+    canEquip_Eq(&can_equip, ITEM1);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 1;
+    canEquip_Eq(&can_equip, ITEM2);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 2;
+    canEquip_Eq(&can_equip, ITEM3);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
 
     /* --- Normal physical soldier --- */
@@ -952,25 +952,25 @@ void test_canEquip(void) {
     Silou._equipment[2].id = ITEM_ID_WRATH_LANCE;
 
     /* -- Stronghand NOT equipped -- */
-    can_equip.loadout[UNIT_HAND_LEFT]    =  -1;
-    can_equip.loadout[UNIT_HAND_RIGHT]    =  -1;
+    canEquip_Loadout_None(&can_equip, UNIT_HAND_LEFT);
+    canEquip_Loadout_None(&can_equip, UNIT_HAND_RIGHT);
 
-    can_equip.eq    = 0;
+    canEquip_Eq(&can_equip, ITEM1);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 1;
+    canEquip_Eq(&can_equip, ITEM2);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 2;
+    canEquip_Eq(&can_equip, ITEM3);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
 
     /* -- Stronghand equipped -- */
-    can_equip.loadout[UNIT_HAND_LEFT]    =  0;
-    can_equip.loadout[UNIT_HAND_RIGHT]    =  0;
+    canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  ITEM1);
+    canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, ITEM1);
 
-    can_equip.eq    = 0;
+    canEquip_Eq(&can_equip, ITEM1);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 1;
+    canEquip_Eq(&can_equip, ITEM2);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 2;
+    canEquip_Eq(&can_equip, ITEM3);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
 
     /* -- Mage test -- */
@@ -980,14 +980,14 @@ void test_canEquip(void) {
     Silou._equipment[2].id = ITEM_ID_LEATHER_SHIELD;
     Silou._equipment[3].id = ITEM_ID_SALVE;
 
-    can_equip.loadout[UNIT_HAND_LEFT]    =  -1;
-    can_equip.loadout[UNIT_HAND_RIGHT]    =  -1;
+    canEquip_Loadout_None(&can_equip, UNIT_HAND_LEFT);
+    canEquip_Loadout_None(&can_equip, UNIT_HAND_RIGHT);
 
-    can_equip.eq    = 0;
+    canEquip_Eq(&can_equip, ITEM1);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 1;
+    canEquip_Eq(&can_equip, ITEM2);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
-    can_equip.eq    = 2;
+    canEquip_Eq(&can_equip, ITEM3);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
 
     Game_Weapons_Free(&weapons_dtab);

@@ -1,6 +1,27 @@
 
 #include "unit/equipment.h"
 
+/* - canEquips setters - */
+void canEquip_Eq(canEquip *can_equip, i32 eq) {
+    SDL_assert(eq >= ITEM1);
+    SDL_assert(eq <= ITEM6);
+    can_equip->to_eq = eq + ITEM_EQUIPPED_DIFF;
+}
+
+void canEquip_Loadout(canEquip *can_equip, i32 hand, i32 eq) {
+    SDL_assert(hand >= 0);
+    SDL_assert(hand < MAX_ARMS_NUM);
+    SDL_assert(eq >= ITEM1);
+    SDL_assert(eq <= ITEM6);
+    can_equip->loadout[hand] = eq + ITEM_EQUIPPED_DIFF;
+}
+
+void canEquip_Loadout_None(canEquip *can_equip, i32 hand) {
+    SDL_assert(hand >= 0);
+    SDL_assert(hand < MAX_ARMS_NUM);
+    can_equip->loadout[hand] = ITEM_UNEQUIPPED;
+}
+
 /* --- Items --- */
 /* Private item atker at specific spot. Does no checks */
 void _Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, size_t i) {
@@ -237,14 +258,14 @@ void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
     Unit_Equipped_Export(unit, start_equipped);
 
     for (int hand = 0; hand < unit->arms_num; hand++) {
-        Unit_Equip(unit, hand, can_equip.loadout[hand]);
+        unit->_equipped[hand] = can_equip.loadout[hand];
     }
 
     unit->num_canEquip = 0;
     for (i32 eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         for (int hand = 0; hand < unit->arms_num; hand++) {
             // canEquip hands
-            can_equip.eq    = eq;
+            canEquip_Eq(&can_equip, eq);
             can_equip.hand  = hand;
             if (_Unit_canEquip(unit, can_equip)) {
                 unit->eq_canEquip[unit->num_canEquip++] = eq;
@@ -258,15 +279,22 @@ void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
 }
 
 b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
-    SDL_assert(can_equip.eq >= 0);
-    SDL_assert(can_equip.eq < SOTA_EQUIPMENT_SIZE);
+
+    SDL_assert(can_equip.to_eq >= ITEM_UNEQUIPPED);
+    SDL_assert(can_equip.to_eq <= SOTA_EQUIPMENT_SIZE);
+
+    if (can_equip.to_eq == ITEM_UNEQUIPPED) {
+        // SDL_Log("Can't equip nothing \n");
+        return (false);
+    }
 
     if (!unit->hands[can_equip.hand]) {
         // SDL_Log("No hand \n");
         return (false);
     }
 
-    int id = Unit_Id_Equipment(unit, can_equip.eq);
+    int eq = can_equip.to_eq - ITEM_EQUIPPED_DIFF;
+    int id = Unit_Id_Equipment(unit, eq);
 
     if (id <= ITEM_NULL) {
         // SDL_Log("ITEM_NULL\n");
@@ -292,12 +320,12 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
         return (false);
     }
 
-    if (!Unit_canEquip_OneHand(unit, can_equip.eq, can_equip.hand)) {
+    if (!Unit_canEquip_OneHand(unit, eq, can_equip.hand)) {
         // SDL_Log("!Unit_canEquip_OneHand\n");
         return (false);
     }
 
-    if (!Unit_canEquip_TwoHand(unit, can_equip.eq, can_equip.hand)) {
+    if (!Unit_canEquip_TwoHand(unit, eq, can_equip.hand)) {
         // SDL_Log("!Unit_canEquip_TwoHand\n");
         return (false);
     }
@@ -312,7 +340,7 @@ b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
 
     /* Equip loadout */
     for (int hand = 0; hand < unit->arms_num; hand++) {
-        Unit_Equip(unit, hand, can_equip.loadout[hand]);
+        unit->_equipped[hand] = can_equip.loadout[hand];
     }
     /* Check if can equip */
     b32 can = _Unit_canEquip(unit, can_equip);

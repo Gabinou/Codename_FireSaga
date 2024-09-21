@@ -416,9 +416,10 @@ static void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls,
     } else {
         /* Left hand */
         canEquip can_equip  = canEquip_default;
-        can_equip.loadout[UNIT_HAND_LEFT]        = Unit_Eq_Equipped(pls->unit, UNIT_HAND_LEFT);
-        can_equip.loadout[UNIT_HAND_RIGHT]        = Unit_Eq_Equipped(pls->unit, UNIT_HAND_RIGHT);
-        can_equip.eq        = UNIT_HAND_LEFT;
+        canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  Unit_Eq_Equipped(pls->unit, UNIT_HAND_LEFT));
+        canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, Unit_Eq_Equipped(pls->unit, UNIT_HAND_RIGHT));
+
+        canEquip_Eq(&can_equip, UNIT_HAND_LEFT);
         can_equip.hand      = UNIT_HAND_LEFT;
         b32 iscan = Unit_canEquip(pls->unit, can_equip);
         if (Unit_canEquip(pls->unit, can_equip) || pls->l_equip_override) {
@@ -428,7 +429,7 @@ static void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls,
         }
 
         /* Right hand */
-        can_equip.eq        = UNIT_HAND_RIGHT;
+        canEquip_Eq(&can_equip, UNIT_HAND_LEFT);
         can_equip.hand      = UNIT_HAND_RIGHT;
         if (Unit_canEquip(pls->unit, can_equip) || pls->r_equip_override) {
             dstrect.x = PLS_ICON_EQUIPR_X;

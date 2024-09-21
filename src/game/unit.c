@@ -174,14 +174,14 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
 
     canEquip can_equip  = canEquip_default;
     can_equip.hand      = UNIT_HAND_LEFT;
-    can_equip.eq        = UNIT_HAND_LEFT;
+    canEquip_Eq(&can_equip, UNIT_HAND_LEFT);
 
     if (Unit_canEquip(unit, can_equip)) {
         Unit_Equip(unit, UNIT_HAND_LEFT, UNIT_HAND_LEFT);
     }
 
     can_equip.hand      = UNIT_HAND_RIGHT;
-    can_equip.eq        = UNIT_HAND_RIGHT;
+    canEquip_Eq(&can_equip, UNIT_HAND_RIGHT);
     if (Unit_canEquip(unit, can_equip)) {
         Unit_Equip(unit, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
     }

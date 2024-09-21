@@ -17,18 +17,9 @@ struct nmath_hexpoint_int32_t Cube_Diagonal_zm =    {-1,  2, -1};
 canEquip canEquip_default = {
     // Try to equip:
     /* 1. Weapon in equipment[eq] slot */
-    .eq         = -1,
-
     /* 2. In right hand */
     .hand       = UNIT_HAND_RIGHT,
-
     /* 3. Ignoring current loadout */
-    .loadout    = {
-        ITEM_UNEQUIPPED,
-        ITEM_UNEQUIPPED,
-        ITEM_UNEQUIPPED,
-        ITEM_UNEQUIPPED
-    },
     /* 4. Of any archetype */
 };
 

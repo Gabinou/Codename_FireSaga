@@ -553,8 +553,10 @@ void Game_WeaponSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_on
 
     /* Starting wsm selection from stronghand*/
     canEquip can_equip  = canEquip_default;
-    can_equip.loadout[UNIT_HAND_LEFT]        = Unit_Eq_Equipped(unit_ontile, UNIT_HAND_LEFT);
-    can_equip.loadout[UNIT_HAND_RIGHT]        = Unit_Eq_Equipped(unit_ontile, UNIT_HAND_RIGHT);
+    canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  Unit_Eq_Equipped(unit_ontile, UNIT_HAND_LEFT));
+    canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, Unit_Eq_Equipped(unit_ontile, UNIT_HAND_RIGHT));
+
+
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     Unit_canEquip_Equipment(unit_ontile, can_equip);
 

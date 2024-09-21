@@ -24,7 +24,7 @@ typedef i8(* use_function_t)(struct Item *, struct Unit *, struct Unit *);
 // Input for canEquip function
 typedef struct canEquip {
     // Loadout: -1 for any
-    i32 loadout[MAX_ARMS_NUM];
+    i32 loadout[MAX_ARMS_NUM]; /* -> [ITEM_UNEQUIPPED, ITEM1_EQUIPPED] */
 
     // Hand to equip to, considering loadout.
     i32 hand;
@@ -35,7 +35,7 @@ typedef struct canEquip {
     i64 archetype;
 
     // Equipment index to check.
-    int eq;
+    i32 to_eq; /* -> [ITEM_UNEQUIPPED, ITEM1_EQUIPPED] */
 
 } canEquip;
 extern canEquip canEquip_default;
