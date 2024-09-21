@@ -29,9 +29,7 @@ canEquip canEquip_default = {
         ITEM_UNEQUIPPED,
         ITEM_UNEQUIPPED
     },
-
     /* 4. Of any archetype */
-    .archetype  = ITEM_ARCHETYPE_NULL,
 };
 
 struct Damage Damage_default = {0};

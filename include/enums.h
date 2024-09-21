@@ -530,7 +530,7 @@ enum ITEM_TYPES {
 /*        SubType -> Thrust Sword   */
 // Archetype is weapon type with possibly multiple bits enabled
 enum ITEM_ARCHETYPE_NEW {
-    ITEM_ARCHETYPE_NULL     =   -1,
+    ITEM_ARCHETYPE_NULL     =   ITEM_TYPE_NULL,
     ITEM_ARCHETYPE_ITEM     =   ITEM_TYPE_ITEM,
     ITEM_ARCHETYPE_STAFF    =   ITEM_TYPE_STAFF,
     ITEM_ARCHETYPE_SHIELD   =   ITEM_TYPE_SHIELD,

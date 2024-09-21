@@ -367,6 +367,10 @@ void Unit_supportUp(struct Unit *unit, i16 id) {
     }
 
 }
+struct RNG_Sequence *Unit_sequences_arr(Unit *unit) {
+    struct RNG_Sequence *sequences = (struct RNG_Sequence *)&unit->hp_sequence - (UNIT_STAT_NULL + 1);
+    return (sequences);
+}
 
 // This function is ugly as sin. TODO: Refactor this. Make more understandable.
 void Unit_lvlUp(struct Unit *unit) {
@@ -381,7 +385,7 @@ void Unit_lvlUp(struct Unit *unit) {
     i32 *stats_arr      = Unit_stats_arr(&temp_stats);
     i32 *caps_stats     = Unit_stats_arr(&unit->caps_stats);
     i32 *current_stats  = Unit_stats_arr(&unit->current_stats);
-    struct RNG_Sequence *sequences = (struct RNG_Sequence *)&unit->hp_sequence;
+    struct RNG_Sequence *sequences = Unit_sequences_arr(unit);
 
     for (int i = UNIT_STAT_NULL + 1; i <= UNIT_STAT_NUM; i++) {
         /* Skip if stat is capped */
