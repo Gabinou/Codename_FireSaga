@@ -708,8 +708,8 @@ void test_canEquip_TwoHand() {
 
     /* Try to equip a one hand weapon when already in other hand with type
          that can't be twohanded */
-    Unit_Equip(&Silou, UNIT_HAND_LEFT, 0);
-    Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
+    Unit_Equip(&Silou,      UNIT_HAND_LEFT, 0);
+    Unit_Unequip(&Silou,    UNIT_HAND_RIGHT);
     Silou._equipment[0].id    = ITEM_ID_FLEURET;
     Silou._equipment[1].id    = ITEM_ID_RAPIERE;
 
@@ -718,7 +718,7 @@ void test_canEquip_TwoHand() {
     weapon->item->type  = ITEM_TYPE_ELEMENTAL;
     weapon->item->type  = ITEM_TYPE_ANGELIC;
     nourstest_true( Unit_canEquip_TwoHand(&Silou, 1, UNIT_HAND_RIGHT));
-    nourstest_true(!Unit_canEquip_OneHand(&Silou, 0, UNIT_HAND_RIGHT));
+    nourstest_true( Unit_canEquip_OneHand(&Silou, 0, UNIT_HAND_RIGHT));
 
     /* Try to equip staff  */
     Unit_Unequip(&Silou, UNIT_HAND_LEFT);
@@ -825,7 +825,12 @@ void test_canEquip(void) {
     canEquip_Eq(&can_equip, ITEM2);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
     canEquip_Eq(&can_equip, ITEM3);
+    nourstest_true(!Unit_canEquip(&Silou, can_equip));
+
+    // Unit_Equip(&Silou, UNIT_HAND_RIGHT, 2);
+    canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, 2);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
+    // getchar();
 
     /* Something in either hand */
     canEquip_Loadout(&can_equip, UNIT_HAND_LEFT, ITEM1);

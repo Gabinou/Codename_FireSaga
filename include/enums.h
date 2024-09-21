@@ -474,6 +474,10 @@ enum ITEM_EQUIPMENT {
     ITEM6               = 5,
     SOTA_EQUIPMENT_SIZE = 6,
 };
+enum CAN_EQUIP {
+    CAN_EQUIP_TWO_HAND_STRICT   = 0,
+    CAN_EQUIP_TWO_HAND_LOOSE    = 1,
+};
 
 /* ITEM_ID is the explicit, human-friendly item index
 * EXAMPLE:

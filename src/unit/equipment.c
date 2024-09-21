@@ -327,7 +327,7 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
         return (false);
     }
 
-    if (!Unit_canEquip_TwoHand(unit, eq, can_equip.hand)) {
+    if (!Unit_canEquip_TwoHand(unit, eq, can_equip.hand, can_equip.two_hands_mode)) {
         SDL_Log("!Unit_canEquip_TwoHand\n");
         return (false);
     }
@@ -378,7 +378,7 @@ b32 Unit_canEquip_Archetype(Unit *unit, i32 id, i64 archetype) {
 
 // IF equipment can be two-handed, CAN the unit equip it?
 // TODO: Tetrabrachios twohanding?
-b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand) {
+b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand, i32 mode) {
     SDL_assert(eq >= 0);
     SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
     SDL_assert(unit                 != NULL);
@@ -392,7 +392,6 @@ b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand) {
         return (false);
     }
 
-    /* Failure: Trying to twohand a onehand only weapon */
     struct Weapon *wpn  = DTAB_GET(unit->weapons_dtab, id);
 
     /* Failure: Trying to onehand a twohand only weapon */
@@ -403,12 +402,13 @@ b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand) {
     // Two-hand only weapon can't be equipped if:
     //      - Other hand equipped different wpn.
     b32 eq_diff         = (eq_other != eq);
+    b32 strict          = (mode == CAN_EQUIP_TWO_HAND_STRICT);
     b32 eq_in_bound     = (eq_other >= 0) && (eq_other < SOTA_EQUIPMENT_SIZE);
     b32 two_hand_cant   = two_hand_only && (eq_in_bound && eq_diff);
     // SDL_Log("eq_other %d", eq_other);
     // SDL_Log("eq_diff, eq_in_bound, two_hand_only %d %d %d", eq_diff, eq_in_bound, two_hand_only);
 
-    if (two_hand_cant) {
+    if (strict && two_hand_cant) {
         return (false);
     }
 

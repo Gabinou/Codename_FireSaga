@@ -71,7 +71,7 @@ void canEquip_Loadout_None( canEquip *e, i32 hand);
 b32  Unit_canEquip_Type(    Unit *u,    i32 id);
 b32  Unit_canEquip_Users(   Unit *u,    i32 id);
 b32  Unit_canEquip_OneHand( Unit *u,    i32 eq, b32 hand);
-b32  Unit_canEquip_TwoHand( Unit *u,    i32 eq, b32 hand);
+b32  Unit_canEquip_TwoHand( Unit *u,    i32 eq, b32 hand, i32 mode);
 
 b32 Unit_canEquip_Archetype(Unit *u,    i32 eq, i64 archetype);
 
