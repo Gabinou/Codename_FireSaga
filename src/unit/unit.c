@@ -376,11 +376,11 @@ void Unit_lvlUp(struct Unit *unit) {
     struct Unit_stats grows = Unit_stats_default;
     u8 temp_growth;
     struct Unit_stats temp_stats = {0};
-    i32 *growths       = &unit->growths.hp;
-    i32 *grows_arr     = &grows.hp;
-    i32 *stats_arr     = &temp_stats.hp;
-    i32 *caps_stats    = &unit->caps_stats.hp;
-    i32 *current_stats = &unit->current_stats.hp;
+    i32 *growths        = Unit_stats_arr(&unit->growths);
+    i32 *grows_arr      = Unit_stats_arr(&grows);
+    i32 *stats_arr      = Unit_stats_arr(&temp_stats);
+    i32 *caps_stats     = Unit_stats_arr(&unit->caps_stats);
+    i32 *current_stats  = Unit_stats_arr(&unit->current_stats);
     struct RNG_Sequence *sequences = (struct RNG_Sequence *)&unit->hp_sequence;
 
     for (int i = UNIT_STAT_NULL + 1; i <= UNIT_STAT_NUM; i++) {

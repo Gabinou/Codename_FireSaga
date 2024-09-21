@@ -2,7 +2,6 @@
 #include "reinforcement.h"
 
 struct Reinforcement Reinforcement_default = {
-    .army           = -1,
     .boss_icon      = -1,
 };
 
