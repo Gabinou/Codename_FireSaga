@@ -465,7 +465,7 @@ enum ITEM_EQUIPMENT {
     ITEM5_EQUIPPED,
     ITEM6_EQUIPPED,
     ITEM_EQUIPPED_DIFF  = 1,
-    
+
     ITEM1               = 0,
     ITEM2               = 1,
     ITEM3               = 2,

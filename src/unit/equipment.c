@@ -237,7 +237,7 @@ void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
     Unit_Equipped_Export(unit, start_equipped);
 
     for (int hand = 0; hand < unit->arms_num; hand++) {
-        Unit_Equip(unit, can_equip.loadout[hand]);
+        Unit_Equip(unit, hand, can_equip.loadout[hand]);
     }
 
     unit->num_canEquip = 0;
@@ -312,7 +312,7 @@ b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
 
     /* Equip loadout */
     for (int hand = 0; hand < unit->arms_num; hand++) {
-        Unit_Equip(unit, can_equip.loadout[hand]);
+        Unit_Equip(unit, hand, can_equip.loadout[hand]);
     }
     /* Check if can equip */
     b32 can = _Unit_canEquip(unit, can_equip);
@@ -588,12 +588,12 @@ void _Unit_Item_Deplete(struct Unit *unit, i32 eq, u64 archetype) {
     Inventory_item_Deplete(&unit->_equipment[eq], item->stats.uses);
 }
 
-void _Unit_Equipped_Deplete(struct Unit *unit, b32 hand, u64 archetype) {
+void _Unit_Equipped_Deplete(struct Unit *unit, i32 hand, u64 archetype) {
     if (!Unit_isEquipped(unit, hand)) {
         return;
     }
 
-    _Unit_Item_Deplete(unit, Unit_Eq_Equipped(hand), archetype);
+    _Unit_Item_Deplete(unit, Unit_Eq_Equipped(unit, hand), archetype);
 }
 
 void Unit_Item_Deplete(struct Unit *unit, i32 eq) {
@@ -631,9 +631,9 @@ b32 Unit_isEquipped(Unit *unit, b32 hand) {
 Inventory_item *Unit_Item_Equipped(Unit *unit, b32 hand) {
     if (!Unit_isEquipped(unit, hand))
         return (NULL);
-        
+
     i32 eq = Unit_Eq_Equipped(unit, hand);
-    
+
     return (&unit->_equipment[eq]);
 }
 
@@ -688,9 +688,9 @@ Item *Unit_Get_Item(Unit *unit, i32 eq) {
 /* Order in _equipment of equipped weapon */
 i32 Unit_Eq_Equipped(Unit *unit, i32 eq) {
     SDL_assert(unit != NULL);
-    SDL_assert(hand >= 0);
-    SDL_assert(hand < UNIT_ARMS_NUM);
-    SDL_assert(hand < unit->arms_num);
+    SDL_assert(eq >= 0);
+    SDL_assert(eq < UNIT_ARMS_NUM);
+    SDL_assert(eq < unit->arms_num);
     // ITEM_EQUIPPED_DIFF should only be used here _equipped only accessed here
     return (unit->_equipped[eq] - ITEM_EQUIPPED_DIFF);
 }

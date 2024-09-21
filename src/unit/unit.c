@@ -607,7 +607,7 @@ i32 *Unit_computeAttack(struct Unit *unit, int distance) {
     struct Weapon *weapon;
     /* Get stats of both weapons */
     if (Unit_isEquipped(unit, UNIT_HAND_LEFT)) {
-        int id = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT];
+        int id = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
         SDL_assert(unit->_equipment[id].id > ITEM_NULL);
         weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
         attack_P += Weapon_Stat_inRange(weapon, WEAPON_STAT_pATTACK, distance);
@@ -616,7 +616,7 @@ i32 *Unit_computeAttack(struct Unit *unit, int distance) {
 
     }
     if (Unit_isEquipped(unit, UNIT_HAND_RIGHT)) {
-        int id = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT];
+        int id = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
         SDL_assert(unit->_equipment[id].id > ITEM_NULL);
         weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
         attack_P += Weapon_Stat_inRange(weapon, WEAPON_STAT_pATTACK, distance);
