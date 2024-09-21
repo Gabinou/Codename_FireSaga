@@ -258,7 +258,6 @@ enum SOTA_BOOKS {
 };
 
 enum SOTA_DEFAULTS {
-    SOTA_EQUIPMENT_SIZE                     =    6,
     DEFAULT_BUFFER_SIZE                      =  128,
 };
 
@@ -458,7 +457,16 @@ enum OPTIONS {
 };
 
 enum ITEM_EQUIPMENT {
-    ITEM_UNEQUIPPED = -1,
+    ITEM_UNEQUIPPED = 0,
+    ITEM1           = 1,
+    ITEM2           = 2,
+    ITEM3           = 3,
+    ITEM4           = 4,
+    ITEM5           = 5,
+    ITEM6           = 6,
+    ITEM_MALLOC,
+    ITEM_NUM        = ITEM_MALLOC - 1,
+    SOTA_EQUIPMENT_SIZE = 6,
 };
 
 /* ITEM_ID is the explicit, human-friendly item index

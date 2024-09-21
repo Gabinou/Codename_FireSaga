@@ -64,37 +64,26 @@ struct Unit Unit_default = {
     .mvt_type       = UNIT_MVT_FOOT_SLOW,
     .class          = UNIT_CLASS_VILLAGER,
 
-    .agony          = -1,
+    .rangemap       = RANGEMAP_ATTACKMAP,
 
-    .rangemap        = RANGEMAP_ATTACKMAP,
-    .user_rangemap   = RANGEMAP_NULL,
+    .dft_pos        =   {-1, -1},
 
-    .dft_pos   =   {-1, -1},
+    .army           = 1,
 
-    .army            = 1,
+    .current_hp     = SOTA_MIN_HP,
+    .alive          = true,
 
-    .current_hp      = SOTA_MIN_HP,
-    .alive           = true,
+    .arms_num       = UNIT_ARMS_NUM,
+    .handedness     = UNIT_HAND_RIGHTIE,
+    .hands          = {true, true, false, false},
 
-    .arms_num        = UNIT_ARMS_NUM,
-    .handedness      = UNIT_HAND_RIGHTIE,
-    .hands           = {true, true, false, false},
-    ._equipped       = {
-        ITEM_UNEQUIPPED,
-        ITEM_UNEQUIPPED,
-        ITEM_UNEQUIPPED,
-        ITEM_UNEQUIPPED
-    },
-
-    .update_stats    = true,
-    .computed_stats  = {{0, 0}, {0, 0}, 0, 0, 0, 0, 0, 0, 0, {-1, -1}},
+    .update_stats   = true,
 };
 
 struct Unit Nibal_unit = {
     .json_element = JSON_UNIT,
     /*                    hp str mag agi dex fth luck def res con move prof */
     .base_stats         = {35, 20, 20, 18, 25, 14, 12, 18, 22, 30, 06, 15},
-    .agony              = -1,
 
     .base_exp       = 2500,
     .army           = ARMY_HAMILCAR,
