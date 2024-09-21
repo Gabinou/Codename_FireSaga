@@ -631,15 +631,15 @@ typedef struct Unit {
     Point dft_pos; /* Used to compute stats in case of dual wielding */
 
     i32     arms_num;
-    b32     hands[ITEM_MALLOC];     /* Does unit have hands?             */
-    i32 _equipped[ITEM_MALLOC];     /* index of equipped item in hand    */
+    b32     hands[SOTA_EQUIPMENT_SIZE];     /* Does unit have hands?             */
+    i32 _equipped[SOTA_EQUIPMENT_SIZE];     /* index of equipped item in hand    */
 
     s8 *skill_names;
 
     struct dtab *weapons_dtab;
     struct dtab *items_dtab;
 
-    struct Inventory_item _equipment[ITEM_MALLOC];
+    struct Inventory_item _equipment[SOTA_EQUIPMENT_SIZE];
 
     /* For twohanding when computing computedstats */
     struct Inventory_item temp;

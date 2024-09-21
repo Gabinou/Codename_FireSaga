@@ -458,14 +458,20 @@ enum OPTIONS {
 
 enum ITEM_EQUIPMENT {
     ITEM_UNEQUIPPED = 0,
-    ITEM1           = 1,
-    ITEM2           = 2,
-    ITEM3           = 3,
-    ITEM4           = 4,
-    ITEM5           = 5,
-    ITEM6           = 6,
-    ITEM_MALLOC,
-    ITEM_NUM        = ITEM_MALLOC - 1,
+    ITEM1_EQUIPPED,
+    ITEM2_EQUIPPED,
+    ITEM3_EQUIPPED,
+    ITEM4_EQUIPPED,
+    ITEM5_EQUIPPED,
+    ITEM6_EQUIPPED,
+    ITEM_EQUIPPED_DIFF  = 1,
+    
+    ITEM1               = 0,
+    ITEM2               = 1,
+    ITEM3               = 2,
+    ITEM4               = 3,
+    ITEM5               = 4,
+    ITEM6               = 5,
     SOTA_EQUIPMENT_SIZE = 6,
 };
 
