@@ -810,8 +810,8 @@ void test_canEquip(void) {
     /* --- Staff user that can't twohand --- */
     Unit_setClassind(&Silou, UNIT_CLASS_VESTAL);
     Silou.equippable = ITEM_TYPE_STAFF;
-    Unit_Equip(&Silou, UNIT_HAND_LEFT, 0);
-    Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
+    // Unit_Equip(&Silou, UNIT_HAND_LEFT, 0);
+    // Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
     Silou._equipment[0].id              = ITEM_ID_FLEURET;
     Silou._equipment[1].id              = ITEM_ID_RAPIERE;
     Silou._equipment[2].id              = ITEM_ID_HEAL;

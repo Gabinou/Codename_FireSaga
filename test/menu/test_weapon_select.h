@@ -55,24 +55,19 @@ void test_menu_loadout_select_unit(void) {
     // in_wpn.used = 0;
     // Weapon_Load(weapons_dtab, in_wpn.id);
 
-    Silou.handedness = UNIT_HAND_LEFTIE;
-    i32 stronghand  = Unit_Hand_Strong(&Silou);
-    i32 weakhand    = Unit_Hand_Weak(&Silou);
-    // i32 weakhand    = 1 - stronghand;
-    // Unit_Item_Drop(&Silou,           weakhand);
-    // Unit_Item_Takeat(&Silou, in_wpn, weakhand);
+    Silou.handedness    = UNIT_HAND_LEFTIE;
+    i32 stronghand      = Unit_Hand_Strong(&Silou);
+    i32 weakhand        = Unit_Hand_Weak(&Silou);
     Silou.equippable |= ITEM_TYPE_ANGELIC;
     SDL_assert(Silou.num_equipment == 4);
-    Silou._equipped[UNIT_HAND_LEFT] = -1;
-    Silou._equipped[UNIT_HAND_RIGHT] = -1;
     Unit_Equip(&Silou, stronghand, 0);
     SDL_assert(Unit_isEquipped(&Silou, stronghand));
     nourstest_true(Unit_canAttack(&Silou));
 
     wsm->unit = &Silou;
     canEquip can_equip  = canEquip_default;
-    canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  Unit_Eq_Equipped(wsm->unit, UNIT_HAND_LEFT));
-    canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, Unit_Eq_Equipped(wsm->unit, UNIT_HAND_RIGHT));
+    // canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  Unit_Eq_Equipped(wsm->unit, UNIT_HAND_LEFT));
+    // canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, Unit_Eq_Equipped(wsm->unit, UNIT_HAND_RIGHT));
 
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     Unit_canEquip_Equipment(wsm->unit, can_equip);
@@ -81,7 +76,7 @@ void test_menu_loadout_select_unit(void) {
 
     _LoadoutSelectMenu_Load(wsm, &Silou, renderer, &n9patch);
     wsm->selected[stronghand] = Silou.eq_canEquip[0];
-    struct  Menu mc;
+    struct Menu mc;
     mc.elem = 0;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu.png"), renderer,
