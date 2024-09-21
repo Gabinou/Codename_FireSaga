@@ -7,9 +7,10 @@
 // static void _Graph_Draw_Stat(struct Graph *g, u8 stat, struct n9Patch *n9patch,
 //                              struct PixelFont *pb, SDL_Renderer *r, SDL_Texture *rt);
 
-/*hp str mag agi dex fth luck def res con move prof */
 
+// TODO: move test grown stat stuff to render tests
 struct Unit_stats test_grown_stats[10] = {
+    /*hp str mag agi dex fth luck def res con move prof */
     { 0,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0},
     { 1,  1,  0,  0,  0,  0,  1,  1,  1,  0,  0,  0},
     { 0,  1,  1,  0,  0,  1,  0,  1,  1,  0,  0,  1},
@@ -22,32 +23,18 @@ struct Unit_stats test_grown_stats[10] = {
     { 0,  1,  0,  0,  0,  1,  0,  0,  1,  0,  0,  1},
 };
 
+/*                                  hp str mag agi dex fth luck def res con move prof */
 struct Unit_stats test_base_stats = {05, 06, 07, 8, 9, 10, 11, 12, 13, 01, 02, 03};
 
 struct GraphStat GraphStat_default = {0};
 
 struct Graph Graph_default = {
-    .graph_stats = {
-        {0, 0, {-1}, -1},
-        {0, 0, {-1}, -1},
-        {0, 0, {-1}, -1},
-        {0, 0, {-1}, -1},
-        {0, 0, {-1}, -1},
-        {0, 0, {-1}, -1},
-        {0, 0, {-1}, -1},
-        {0, 0, {-1}, -1},
-        {0, 0, {-1}, -1},
-        {0, 0, {-1}, -1},
-        {0, 0, {-1}, -1},
-        {0, 0, {-1}, -1}
-    },
-
     .y_lenperpixel = GRAPH_DEFAULT_LENPERPIXEL_HEIGHT, /* 2 or 1 */
     .plot_max = {GRAPH_DATA_WIDTH / GRAPH_DEFAULT_LENPERPIXEL_WIDTH, SOTA_MAX_STAT / GRAPH_DEFAULT_LENPERPIXEL_HEIGHT}, // [XY units]
 
-    .linestyle = GRAPH_LINESTYLE_POINT,
-    .x_ticks = true,
-    .y_ticks = true,
+    .linestyle  = GRAPH_LINESTYLE_POINT,
+    .x_ticks    = true,
+    .y_ticks    = true,
 };
 
 void Graph_Stat_Remove(struct Graph *graph, u8 stat_id) {
@@ -56,23 +43,23 @@ void Graph_Stat_Remove(struct Graph *graph, u8 stat_id) {
 
 void Graph_Stat_Add(struct Graph *graph, struct Unit_stats *base_stats,
                     struct Unit_stats *grown_stats, i8 level, i8 base_level, u8 stat_id) {
-    u8 *stat_arr, *base_arr, total_grown = 0;
+    i32 *stat_arr, *base_arr, total_grown = 0;
+
     struct GraphStat graph_stat = GraphStat_default;
     graph_stat.level = level;
     graph_stat.base_level = base_level;
     graph_stat.stat_id = stat_id;
 
     /* Compute cumul_stat using unit grown_stat */
-    for (u8 i = 0; i <= (level - base_level); i++) {
+    for (u8 lvl = 0; lvl <= (level - base_level); lvl++) {
         /* No growth yet at base level */
-        if (i > 0) {
-            /* Cast stat structs to array cause it contains only u8 */
-            stat_arr = (u8 *)(&grown_stats[i - 1]);
+        if (lvl > 0) {
+            stat_arr = Unit_stats_arr(grown_stats);
             /* Use stat_id as offset in stat_arr */
             total_grown += *(stat_arr + stat_id);
         }
-        base_arr = (u8 *)(base_stats);
-        graph_stat.cumul_stat[i] = *(base_arr + stat_id) + total_grown;
+        base_arr = Unit_stats_arr(base_stats);
+        graph_stat.cumul_stat[lvl] = *(base_arr + stat_id) + total_grown;
     }
     graph->graph_stats[stat_id] = graph_stat;
 }
@@ -94,7 +81,7 @@ void Graph_Draw(struct Graph *graph, struct n9Patch *n9patch, struct PixelFont *
     }
     SDL_SetRenderTarget(renderer, graph->texture);
     _Graph_Draw_Axes(graph, n9patch, pixelnours_big, renderer, render_target);
-    for (u8 i = UNIT_STAT_NULL + 1; i <= UNIT_STAT_NUM; i++) {
+    for (int i = UNIT_STAT_NULL + 1; i <= UNIT_STAT_NUM; i++) {
         if (graph->graph_stats[i].stat_id > STAT_ID_NULL)
             _Graph_Draw_Stat(graph, i, n9patch, pixelnours_big, renderer, render_target);
     }

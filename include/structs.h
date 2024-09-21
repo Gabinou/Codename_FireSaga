@@ -181,7 +181,6 @@ extern struct Tile_stats Tile_stats_default;
 
 /* Struct is better: Can be cast to array */
 typedef struct Unit_stats {
-    i32 null; /* null stat     */
     i32 hp;   /* hit points     */
     i32 str;  /* strength       */
     i32 mag;  /* magic          */

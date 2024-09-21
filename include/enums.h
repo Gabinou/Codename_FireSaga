@@ -756,6 +756,10 @@ enum UNIT_SKILL {
 };
 #undef REGISTER_ENUM
 
+enum STAT_ID {
+    STAT_ID_NULL = 0,
+};
+
 #define REGISTER_ENUM(x) UNIT_STAT_##x,
 enum UNIT_STATS {
     UNIT_STAT_NULL      = 0,

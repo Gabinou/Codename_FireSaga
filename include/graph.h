@@ -52,18 +52,14 @@ enum GRAPH_LINESTYLE { /* palette_NES, offset by 1 for NULL == 0 */
     GRAPH_LINESTYLE_LINE  = 2,
 };
 
-enum STAT_ID {
-    STAT_ID_NULL = 0,
-};
-
 extern struct Unit_stats test_grown_stats[10];
 extern struct Unit_stats test_base_stats;
 
 /* --- Stats --- */
 void Graph_Stat_Remove(struct Graph *g, u8 stat);
 // TODO: call Graph_Stat_Add when growths menu elem is selected.
-void Graph_Stat_Add(struct Graph *g, struct Unit_stats *base_stats,
-                    struct Unit_stats *grown_stats,
+void Graph_Stat_Add(struct Graph *g, Unit_stats *base_stats,
+                    Unit_stats *grown_stats,
                     i8 level, i8 base_level, u8 stat);
 
 /* --- Drawing --- */
