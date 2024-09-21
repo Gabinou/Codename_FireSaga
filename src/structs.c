@@ -49,15 +49,9 @@ struct Rendered Rendered_default = {
     .flip               = SDL_FLIP_NONE,
 };
 
-struct Tile_stats Tile_stats_default = {
-    .dodge = -1,
-    .Pprot = -1,
-    .Mprot = -1,
-    .heal  = -1
-};
+struct Tile_stats Tile_stats_default = {0};
 
 struct Inventory_item Inventory_item_default = {
-    .id          = ITEM_NULL,
     .infusion    = SOTA_NON_INFUSEABLE,
     .highlighted = true,
 };
