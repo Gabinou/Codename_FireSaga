@@ -25,8 +25,8 @@ void Unit_Equipped_Shields_Deplete(Unit *u);
 /* -- Trading -- */
 void  Unit_Item_Take(  Unit *u, Inventory_item item);
 void  Unit_Item_Trade( Unit *g, Unit *t, enum_item giver_i, enum_item taker_i);
-void  Unit_Item_Takeat(Unit *u, Inventory_item i, size_t j);
-void _Unit_Item_Takeat(Unit *u, Inventory_item i, size_t j);
+void  Unit_Item_Takeat(Unit *u, Inventory_item i, enum_item j);
+void _Unit_Item_Takeat(Unit *u, Inventory_item i, enum_item j);
 
 /* -- Swapping -- */
 void Unit_Item_Swap(  Unit *u, enum_item ind1, enum_item ind2);
@@ -73,7 +73,7 @@ b32  Unit_canEquip_Users(   Unit *u,    item_id id);
 b32  Unit_canEquip_OneHand( Unit *u,    enum_item eq, unit_hand h);
 b32  Unit_canEquip_TwoHand( Unit *u,    enum_item eq, unit_hand h, i32 mode);
 
-b32 Unit_canEquip_Archetype(Unit *u,    enum_item eq, i64 archetype);
+b32 Unit_canEquip_Archetype(Unit *u,    enum_item eq, item_archetype archetype);
 
 u8  Unit_canEquip_allTypes( Unit *u,    u8 *eq);
 
