@@ -24,10 +24,10 @@ typedef i8(* use_function_t)(struct Item *, struct Unit *, struct Unit *);
 // Input for canEquip function
 typedef struct canEquip {
     // Loadout: -1 for any
-    enum_equipped loadout[MAX_ARMS_NUM];
+    i32 loadout[MAX_ARMS_NUM];
 
     // Hand to equip to, considering loadout.
-    unit_hand hand;
+    i32 hand;
 
     // Why do we need to know archetypes?
     //      - Find all equippable staves ONLY
@@ -35,7 +35,7 @@ typedef struct canEquip {
     i64 archetype;
 
     // Equipment index to check.
-    enum_equipped to_eq;
+    i32 to_eq;
 
     // Two-handed mode.
     //  - TWO_HAND_EQ_MODE_STRICT
@@ -350,7 +350,7 @@ struct Shop {
 extern struct Shop Shop_default;
 
 typedef struct Inventory_item {
-    item_id id;
+    i32 id;
     u8 used;
     b32 highlighted;
     /* item images are highlighted by default. */
@@ -641,7 +641,7 @@ typedef struct Unit {
 
     i32     arms_num;
     b32     hands[SOTA_EQUIPMENT_SIZE];     /* Does unit have hands?             */
-    enum_equipped _equipped[SOTA_EQUIPMENT_SIZE];
+    i32 _equipped[SOTA_EQUIPMENT_SIZE];
 
     s8 *skill_names;
 
@@ -653,7 +653,7 @@ typedef struct Unit {
     /* For twohanding when computing computedstats */
     struct Inventory_item temp;
 
-    enum_eq eq_canEquip[SOTA_EQUIPMENT_SIZE];
+    i32 eq_canEquip[SOTA_EQUIPMENT_SIZE];
     i32 num_equipment;
     i32 num_canEquip;
 

@@ -456,7 +456,7 @@ enum OPTIONS {
     MENU_OPTION_NUM = MENU_OPTION_END,
 };
 
-typedef enum enum_equipped {
+enum ITEM_EQUIPPED {
     ITEM_UNEQUIPPED = 0,
     ITEM1_EQUIPPED,
     ITEM2_EQUIPPED,
@@ -465,9 +465,9 @@ typedef enum enum_equipped {
     ITEM5_EQUIPPED,
     ITEM6_EQUIPPED,
     ITEM_EQUIPPED_DIFF  = 1,
-} enum_equipped;
+};
 
-typedef enum enum_eq { /* enum_equipment */
+enum ENUM_EQ { /* enum_equipment */
     ITEM1               = 0,
     ITEM2               = 1,
     ITEM3               = 2,
@@ -475,19 +475,19 @@ typedef enum enum_eq { /* enum_equipment */
     ITEM5               = 4,
     ITEM6               = 5,
     SOTA_EQUIPMENT_SIZE = 6,
-} enum_eq;
+};
 
-typedef enum two_hand_eq_mode {
+enum TWO_HAND_EQ_MODE {
     TWO_HAND_EQ_MODE_STRICT   = 0,
     TWO_HAND_EQ_MODE_LOOSE    = 1,
-} two_hand_eq_mode;
+};
 
 /* ITEM_ID is the explicit, human-friendly item index
 * EXAMPLE:
 *   global_itemNames[ITEM_ORDER...] -> correct item name
 */
 
-typedef enum item_id {
+enum ITEM_ID {
     ITEM_NULL     = 0,
     ITEM_ID_START = 0,
 #define REGISTER_ENUM(x, y) ITEM_ID_##x = y,
@@ -504,11 +504,11 @@ typedef enum item_id {
 #undef REGISTER_ENUM
 
     ITEM_ID_BOOKEND,
-} item_id;
+};
 
 // ITEM_ORDER is the implicit, compiler-friendly item position in array
 // global_itemNames[ITEM_ORDER...] -> correct item name
-typedef enum item_order {
+enum ITEM_ORDER {
     ITEM_ORDER_START = 0,
 #define REGISTER_ENUM(x, y) ITEM_ORDER_##x,
 #include "names/items.h"
@@ -524,7 +524,7 @@ typedef enum item_order {
 #undef REGISTER_ENUM
 
     ITEM_NUM,
-} item_order;
+};
 
 #define REGISTER_ENUM(x) ITEM_TYPE_EXP_##x,
 enum ITEM_TYPE_EXP {
@@ -536,12 +536,12 @@ enum ITEM_TYPE_EXP {
 #undef REGISTER_ENUM
 
 #define REGISTER_ENUM(x) ITEM_TYPE_##x = 1UL << (ITEM_TYPE_EXP_##x - 1),
-typedef enum item_type {
+enum ITEM_TYPE {
     ITEM_TYPE_NULL  = 0,
     ITEM_TYPE_START = 0,
 #include "names/items_types.h"
     ITEM_TYPE_END = 1UL << ITEM_TYPE_EXP_END,
-} item_type;
+};
 #undef REGISTER_ENUM
 
 /* --- ITEM HIERARCHY --- */
@@ -550,7 +550,7 @@ typedef enum item_type {
 /*           Type -> Sword          */
 /*        SubType -> Thrust Sword   */
 // Archetype is weapon type with possibly multiple bits enabled
-typedef enum item_archetype {
+enum ITEM_ARCHETYPE {
     ITEM_ARCHETYPE_NULL     =   ITEM_TYPE_NULL,
     ITEM_ARCHETYPE_ITEM     =   ITEM_TYPE_ITEM,
     ITEM_ARCHETYPE_STAFF    =   ITEM_TYPE_STAFF,
@@ -567,7 +567,7 @@ typedef enum item_archetype {
     /* All weapon types that can be equipped for Unit action: Staff */
     ITEM_ARCHETYPE_STRONGHAND_STAFF     = ITEM_ARCHETYPE_STAFF,
     ITEM_ARCHETYPE_NUM = 7,
-} item_archetype;
+};
 
 enum TEXT_COLOR {
     SOTA_MALUS_RED   = 0xB2,
@@ -1176,7 +1176,7 @@ enum WEAPON_SUBTYPE {
     WEAPON_SUBTYPE_THRUST    = 1,
 };
 
-typedef enum unit_hand {
+enum UNIT_HAND {
     /* Only first two hands can be strong/weak hands */
     UNIT_HAND_LEFT              = 0,
     UNIT_HAND_RIGHT             = 1,
@@ -1185,7 +1185,7 @@ typedef enum unit_hand {
     TETRABRACHIOS_HAND_RIGHT    = 3, /* TOP/BOTTOM RIGHT    */
     TETRABRACHIOS_ARMS_NUM      = 4,
     MAX_ARMS_NUM                = 4,
-} unit_hand;
+};
 #define UNIT_OTHER_HAND(hand) 1 - hand
 
 enum WEAPON_HANDEDNESS {

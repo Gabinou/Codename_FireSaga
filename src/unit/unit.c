@@ -706,7 +706,7 @@ void Unit_Equipment_Print( struct Unit *unit) {
 
 struct Computed_Stats Unit_computedStats_wLoadout(struct Unit *unit, int lh, int rh, int dist) {
     /* Save starting equipment */
-    enum_equipped start_equipped[UNIT_ARMS_NUM];
+    i32 start_equipped[UNIT_ARMS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
 
     if ((lh >= 0) && (lh < SOTA_EQUIPMENT_SIZE)) {
@@ -1107,8 +1107,9 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     cJSON_ArrayForEach(jitem, jitems) {
         struct Inventory_item temp_item;
         Inventory_item_readJSON(&temp_item, jitem);
-        if (temp_item.id > ITEM_NULL)
+        if (temp_item.id > ITEM_NULL) {
             Unit_Item_Take(unit, temp_item);
+        }
     }
 
     Unit_Unequip(unit, UNIT_HAND_LEFT);

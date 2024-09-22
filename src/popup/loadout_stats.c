@@ -398,7 +398,12 @@ static void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls,
     } else {
         /* Left hand */
         canEquip can_equip  = canEquip_default;
-        if (Unit_Eq_Equipped(pls->unit, UNIT_HAND_LEFT) > ITEM_UNEQUIPPED) {
+        i32 eq = Unit_Eq_Equipped(pls->unit, UNIT_HAND_LEFT);
+        if (eq > ITEM_UNEQUIPPED) {
+            SDL_Log("%d", eq);
+            SDL_Log("%d", eq);
+            SDL_Log("%d", eq > ITEM_UNEQUIPPED);
+            SDL_Log("%d", eq > ITEM_UNEQUIPPED);
             canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  Unit_Eq_Equipped(pls->unit, UNIT_HAND_LEFT));
         }
         if (Unit_Eq_Equipped(pls->unit, UNIT_HAND_RIGHT) > ITEM_UNEQUIPPED) {
@@ -517,7 +522,7 @@ void PopUp_Loadout_Stats_Free(struct PopUp_Loadout_Stats *pls) {
     }
 
 }
-void  PopUp_Loadout_Stats_Starting_Eq(struct PopUp_Loadout_Stats *pls, enum_equipped *equipped) {
+void  PopUp_Loadout_Stats_Starting_Eq(struct PopUp_Loadout_Stats *pls, i32 *equipped) {
     pls->equipped[UNIT_HAND_LEFT]   = equipped[UNIT_HAND_LEFT];
     pls->equipped[UNIT_HAND_RIGHT]  = equipped[UNIT_HAND_RIGHT];
 }

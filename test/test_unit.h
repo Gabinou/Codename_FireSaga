@@ -638,7 +638,7 @@ void test_canEquip_TwoHand() {
 
     // Left handed Weapon
     weapon->handedness = WEAPON_HAND_LEFT;
-    two_hand_eq_mode mode = TWO_HAND_EQ_MODE_STRICT;
+    i32 mode = TWO_HAND_EQ_MODE_STRICT;
     nourstest_true(Unit_canEquip_TwoHand(&Silou,  0, UNIT_HAND_LEFT, mode));
     nourstest_true(Unit_canEquip_TwoHand(&Silou,  0, UNIT_HAND_RIGHT, mode));
 

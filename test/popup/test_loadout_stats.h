@@ -75,12 +75,12 @@ void test_popup_loadout_stats() {
     item.id = ITEM_ID_LEATHER_SHIELD;
     Weapon_Load(weapons_dtab, item.id);
     Unit_Item_Takeat(&unit, item, 1);
-    pls.type_left = ITEM_TYPE_EXP_SWORD;
+    pls.type_left   = ITEM_TYPE_EXP_SWORD;
     pls.item_left   = 0;
     pls.item_right  = 1;
 
-    pls.l_equip_override   = false;
-    pls.r_equip_override  = true;
+    pls.l_equip_override    = false;
+    pls.r_equip_override    = true;
 
     PopUp_Loadout_Stats_Update(&pls, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_loadout_stats", "PopupLoadoutStats_TwoHanding.png"),
