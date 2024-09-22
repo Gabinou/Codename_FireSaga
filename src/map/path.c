@@ -129,7 +129,7 @@ i32 *Map_Healtomap_Compute_wLoadout(struct Map *map, tnecs_world *world, tnecs_e
     struct Unit     *unit = TNECS_GET_COMPONENT(world, ent, Unit);
 
     /* Save starting equipment */
-    int start_equipped[UNIT_ARMS_NUM];
+    enum_equipped start_equipped[UNIT_ARMS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
 
     Unit_Equip(unit, UNIT_HAND_LEFT,    lh);
@@ -184,7 +184,7 @@ i32 *Map_Attacktomap_Compute_wLoadout(struct Map *map, tnecs_world *world, tnecs
     struct Unit     *unit = TNECS_GET_COMPONENT(world, ent, Unit);
 
     /* Save starting equipment */
-    int start_equipped[UNIT_ARMS_NUM];
+    enum_equipped start_equipped[UNIT_ARMS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
 
     Unit_Equip(unit, UNIT_HAND_LEFT,    lh);

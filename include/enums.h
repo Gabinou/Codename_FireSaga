@@ -748,7 +748,6 @@ enum INFUSE {
     SOTA_INFUSE_FACTOR  =  3,
 };
 
-
 /* TODO: Combine all skills into one list */
 #define REGISTER_ENUM(x) PASSIVE_SKILL_##x,
 enum PASSIVE_SKILLS {
