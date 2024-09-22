@@ -2,13 +2,13 @@
 #include "unit/equipment.h"
 
 /* - canEquips setters - */
-void canEquip_Eq(canEquip *can_equip, enum_item eq) {
+void canEquip_Eq(canEquip *can_equip, enum_eq eq) {
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
     can_equip->to_eq = eq + ITEM_EQUIPPED_DIFF;
 }
 
-void canEquip_Loadout(canEquip *can_equip, i32 hand, enum_item eq) {
+void canEquip_Loadout(canEquip *can_equip, unit_hand hand, enum_eq eq) {
     SDL_assert(hand >= 0);
     SDL_assert(hand < MAX_ARMS_NUM);
     SDL_assert(eq >= ITEM1);
@@ -16,7 +16,7 @@ void canEquip_Loadout(canEquip *can_equip, i32 hand, enum_item eq) {
     can_equip->loadout[hand] = eq + ITEM_EQUIPPED_DIFF;
 }
 
-void canEquip_Loadout_None(canEquip *can_equip, i32 hand) {
+void canEquip_Loadout_None(canEquip *can_equip, unit_hand hand) {
     SDL_assert(hand >= 0);
     SDL_assert(hand < MAX_ARMS_NUM);
     can_equip->loadout[hand] = ITEM_UNEQUIPPED;
@@ -24,14 +24,14 @@ void canEquip_Loadout_None(canEquip *can_equip, i32 hand) {
 
 /* --- Items --- */
 /* Private item atker at specific spot. Does no checks */
-void _Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, enum_item eq) {
+void _Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, enum_eq eq) {
     unit->_equipment[eq] = item;
 }
 
 /* Take item at specific spot
     - During gameplay, errors if taken at non-empty location
  */
-void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, enum_item eq) {
+void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, enum_eq eq) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab != NULL);
     if (item.id == ITEM_NULL) {
@@ -69,27 +69,27 @@ void Unit_Item_Take(struct Unit *unit, struct Inventory_item item) {
         exit(ERROR_OutofBounds);
     }
 
-    for (size_t i = 0; i < SOTA_EQUIPMENT_SIZE; i++) {
-        if (unit->_equipment[i].id == ITEM_NULL) {
-            Unit_Item_Takeat(unit, item, i);
+    for (item_eq eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
+        if (unit->_equipment[eq].id == ITEM_NULL) {
+            Unit_Item_Takeat(unit, item, eq);
             break;
         }
     }
 }
 
 void Unit_Equipment_Drop(struct Unit *unit) {
-    for (i32 i = 0; i < SOTA_EQUIPMENT_SIZE; i++) {
-        Unit_Item_Drop(unit, i);
+    for (enum_eq eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
+        Unit_Item_Drop(unit, eq);
     }
 }
 
-struct Inventory_item Unit_Item_Drop(struct Unit *unit, enum_item i) {
-    if ((i < 0) || (i >= SOTA_EQUIPMENT_SIZE)) {
+struct Inventory_item Unit_Item_Drop(struct Unit *unit, enum_eq eq) {
+    if ((eq < 0) || (eq >= SOTA_EQUIPMENT_SIZE)) {
         SDL_Log("Item index out of bounds");
         exit(ERROR_OutofBounds);
     }
-    struct Inventory_item out  = unit->_equipment[i];
-    unit->_equipment[i]        = Inventory_item_default;
+    struct Inventory_item out  = unit->_equipment[eq];
+    unit->_equipment[eq]        = Inventory_item_default;
     if (unit->num_equipment > 0)
         unit->num_equipment--;
     else
@@ -98,7 +98,7 @@ struct Inventory_item Unit_Item_Drop(struct Unit *unit, enum_item i) {
     return (out);
 }
 
-void Unit_Item_Swap(struct Unit *unit, enum_item i1, enum_item i2) {
+void Unit_Item_Swap(struct Unit *unit, enum_eq i1, enum_eq i2) {
     SDL_assert(unit);
 
     if (i1 == i2)
@@ -115,7 +115,7 @@ void Unit_Item_Swap(struct Unit *unit, enum_item i1, enum_item i2) {
 }
 
 void Unit_Item_Trade(struct Unit   *giver,  struct Unit *taker,
-                     enum_item      ig,     enum_item    it) {
+     enum_eq ig,     enum_eq    it) {
     SDL_assert(giver);
     SDL_assert(taker);
     if ((it < 0) || (it >= SOTA_EQUIPMENT_SIZE)) {
@@ -155,11 +155,11 @@ void Unit_Equipment_Export(struct Unit *unit, struct Inventory_item *equipment) 
 }
 
 /* Checking equipped for errors broken items */
-void _Unit_Check_Equipped(struct Unit *unit, b32 hand) {
+void _Unit_Check_Equipped(struct Unit *unit, unit_hand hand) {
     if (!Unit_isEquipped(unit, hand))
         return;
 
-    i32 id = Unit_Id_Equipped(unit, hand);
+    item_id id = Unit_Id_Equipped(unit, hand);
 
     if (id != ITEM_ID_BROKEN)
         return;
@@ -172,7 +172,7 @@ void _Unit_Check_Equipped(struct Unit *unit, b32 hand) {
 
 void Unit_Check_Equipped(struct Unit *unit) {
     /* Checks if equipped weapon is BORKED, de-equips if so */
-    for (int hand = 0; hand < unit->arms_num; hand++) {
+    for (unit_hand hand = 0; hand < unit->arms_num; hand++) {
         if (unit->hands[hand]) {
             _Unit_Check_Equipped(unit, hand);
         }
@@ -180,19 +180,19 @@ void Unit_Check_Equipped(struct Unit *unit) {
 }
 
 // Does NOT check if item can be equipped
-void Unit_Equip(struct Unit *unit, i32 hand, i32 eq) {
+void Unit_Equip(struct Unit *unit, unit_hand hand, item_eq eq) {
     SDL_assert(unit);
     SDL_assert(hand >= 0);
     SDL_assert(hand < MAX_ARMS_NUM);
     SDL_assert(eq >= 0);
     SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
-    int id = Unit_Id_Equipment(unit, eq);
+    item_id id = Unit_Id_Equipment(unit, eq);
     SDL_assert(id > ITEM_NULL);
 
     unit->_equipped[hand] = eq + ITEM_EQUIPPED_DIFF;
 }
 
-void Unit_Unequip(struct Unit *unit, i32 hand) {
+void Unit_Unequip(struct Unit *unit, unit_hand hand) {
     SDL_assert(unit);
     SDL_assert(hand >= 0);
     SDL_assert(hand < MAX_ARMS_NUM);
@@ -213,7 +213,7 @@ void Unit_Unequip(struct Unit *unit, i32 hand) {
 b32 Unit_canEquip_AnyHand(Unit *unit, canEquip can_equip) {
     /* Check that unit has hands to equip with */
     b32 found = false;
-    for (int hand = 0; hand < unit->arms_num; hand++) {
+    for (unit_hand hand = 0; hand < unit->arms_num; hand++) {
         if (unit->hands[hand]) {
             found = true;
             break;
@@ -225,7 +225,7 @@ b32 Unit_canEquip_AnyHand(Unit *unit, canEquip can_equip) {
     }
 
     /* Check that unit can equip item in hand */
-    for (int hand = 0; hand < unit->arms_num; hand++) {
+    for (unit_hand hand = 0; hand < unit->arms_num; hand++) {
         /* Skip hands that unit doesn't have */
         if (!unit->hands[hand]) {
             continue;
@@ -255,16 +255,16 @@ b32 Unit_canEquip_AnyHand(Unit *unit, canEquip can_equip) {
 //  Note: Depends on current equipment in other hands
 void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
     /* Save starting equipment */
-    int start_equipped[MAX_ARMS_NUM];
+    enum_equipped start_equipped[MAX_ARMS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
 
-    for (int hand = 0; hand < unit->arms_num; hand++) {
+    for (unit_hand hand = 0; hand < unit->arms_num; hand++) {
         unit->_equipped[hand] = can_equip.loadout[hand];
     }
 
     unit->num_canEquip = 0;
-    for (i32 eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
-        for (int hand = 0; hand < unit->arms_num; hand++) {
+    for (item_eq eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
+        for (unit_hand hand = 0; hand < unit->arms_num; hand++) {
             // canEquip hands
             canEquip_Eq(&can_equip, eq);
             can_equip.hand  = hand;
@@ -294,15 +294,16 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
         return (false);
     }
 
-    int eq = can_equip.to_eq - ITEM_EQUIPPED_DIFF;
+    enum_equipped eq = can_equip.to_eq - ITEM_EQUIPPED_DIFF;
 
-    int id = Unit_Id_Equipment(unit, eq);
+    item_id id = Unit_Id_Equipment(unit, eq);
     SDL_Log("eq, id %d %d\n", eq, id);
 
     if (id <= ITEM_NULL) {
         SDL_Log("ITEM_NULL\n");
         return (false);
     }
+
     if (!Weapon_ID_isValid(id)) {
         SDL_Log("!Weapon_ID_isValid\n");
         return (false);
@@ -338,11 +339,11 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
 
 b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
     /* Save starting equipment */
-    int start_equipped[MAX_ARMS_NUM];
+    start_equipped[MAX_ARMS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
 
     /* Equip loadout */
-    for (int hand = 0; hand < unit->arms_num; hand++) {
+    for (unit_hand hand = 0; hand < unit->arms_num; hand++) {
         unit->_equipped[hand] = can_equip.loadout[hand];
     }
     /* Check if can equip */
@@ -354,7 +355,7 @@ b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
     return (can);
 }
 
-b32 Unit_canEquip_Archetype(Unit *unit, i32 id, i64 archetype) {
+b32 Unit_canEquip_Archetype(Unit *unit, item_id id, item_archetype archetype) {
     SDL_assert(unit                 != NULL);
     SDL_assert(unit->weapons_dtab   != NULL);
 
@@ -379,13 +380,13 @@ b32 Unit_canEquip_Archetype(Unit *unit, i32 id, i64 archetype) {
 
 // IF equipment can be two-handed, CAN the unit equip it?
 // TODO: Tetrabrachios twohanding?
-b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand, i32 mode) {
+b32 Unit_canEquip_TwoHand(Unit *unit, enum_eq eq, unit_hand hand, i32 mode) {
     SDL_assert(eq >= 0);
     SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
     SDL_assert(unit                 != NULL);
     SDL_assert(unit->weapons_dtab   != NULL);
 
-    i32 id = Unit_Id_Equipment(unit, eq);
+    item_id id = Unit_Id_Equipment(unit, eq);
     if (id <= ITEM_NULL) {
         return (false);
     }
@@ -399,7 +400,7 @@ b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand, i32 mode) {
     b32 two_hand_only   = Weapon_TwoHand_Only(wpn);
 
     b32 other_hand      = UNIT_OTHER_HAND(hand);
-    i32 eq_other        = Unit_Eq_Equipped(unit, other_hand);
+    enum_eq eq_other        = Unit_Eq_Equipped(unit, other_hand);
     // Two-hand only weapon can't be equipped if:
     //      - Other hand equipped different wpn.
     b32 eq_diff         = (eq_other != eq);
@@ -421,13 +422,13 @@ b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, b32 hand, i32 mode) {
 }
 
 // IF equipment can be one-handed, CAN the unit equip it?
-b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, b32 hand) {
+b32 Unit_canEquip_OneHand(Unit *unit, enum_eq eq, unit_hand hand) {
     SDL_assert(eq >= 0);
     SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
     SDL_assert(unit                 != NULL);
     SDL_assert(unit->weapons_dtab   != NULL);
 
-    i32 id = Unit_Id_Equipment(unit, eq);
+    item_id id = Unit_Id_Equipment(unit, eq);
     if (id <= ITEM_NULL)
         return (false);
     if (!Weapon_ID_isValid(id))
@@ -446,7 +447,7 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, b32 hand) {
 
     /* Failure: Trying to twohand a onehand only wpn */
     b32 other_hand      = UNIT_OTHER_HAND(hand);
-    i32 eq_other        = Unit_Eq_Equipped(unit, other_hand);
+    enum_eq eq_other        = Unit_Eq_Equipped(unit, other_hand);
 
     // One-hand only wpn can't be equipped if:
     //      - Other hand equipped different wpn.
@@ -535,9 +536,10 @@ b32 Unit_canEquip_Type(struct Unit *unit, item_id id) {
 }
 
 /* Find all CanEquip types, put them in equippables array */
+// TODO better types
 u8 Unit_canEquip_allTypes(struct Unit *unit, u8 *equippables) {
     u8 type = 1, equippable_num = 0;
-    uint64_t wpntypecode = 1;
+    item_type wpntypecode = 1;
     memset(equippables, 0, ITEM_TYPE_EXP_END * sizeof(*equippables));
     while ((wpntypecode < ITEM_TYPE_END) & (type < ITEM_TYPE_EXP_END)) {
         if ((unit->equippable & wpntypecode) > 0)
@@ -551,11 +553,11 @@ u8 Unit_canEquip_allTypes(struct Unit *unit, u8 *equippables) {
 /* Is a unit wielding a weapon in its hand? Note: Units can equip staves.
     -> Equipped + a weapon (not a staff, or offhand, or trinket...)
  */
-b32 Unit_isWielding(struct Unit *unit, b32 hand) {
+b32 Unit_isWielding(struct Unit *unit, unit_hand hand) {
     if (!Unit_isEquipped(unit, hand))
         return (false);
 
-    u16 id = Unit_Id_Equipment(unit, hand);
+    item_id id = Unit_Id_Equipment(unit, hand);
     if (id <= ITEM_NULL)
         return (false);
 
@@ -577,8 +579,8 @@ b32 Unit_isdualWielding(struct Unit *unit) {
     b32 left            = Unit_isWielding(unit, UNIT_HAND_LEFT);
     b32 right           = Unit_isWielding(unit, UNIT_HAND_RIGHT);
 
-    i32 eq_L = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
-    i32 eq_R = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
+    enum_eq eq_L = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
+    enum_eq eq_R = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
     b32 left_canWeakhand    = left  ? Weapon_canWeakhand(eq_L) : true;
     b32 right_canWeakhand   = right ? Weapon_canWeakhand(eq_R) : true;
     unit->isDualWielding    = (left_canWeakhand && right_canWeakhand) && !Unit_istwoHanding(unit);
@@ -590,11 +592,11 @@ b32 Unit_isdualWielding(struct Unit *unit) {
 /* - Does that unit wield a weapon with two hands? - */
 // TODO: Tetrabrachios twohanding?
 b32 Unit_istwoHanding(Unit *unit) {
-    i32 eq_left     = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
+    enum_eq eq_left     = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
     if ((eq_left  < 0) || (eq_left  >= SOTA_EQUIPMENT_SIZE)) {
         return (false);
     }
-    i32 eq_right    = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
+    enum_eq eq_right    = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
     if ((eq_right  < 0) && (eq_right  >= SOTA_EQUIPMENT_SIZE)) {
         return (false);
     }
@@ -602,9 +604,9 @@ b32 Unit_istwoHanding(Unit *unit) {
 }
 
 /* -- Deplete: decrease durability -- */
-void _Unit_Item_Deplete(struct Unit *unit, i32 eq, u64 archetype) {
+void _Unit_Item_Deplete(struct Unit *unit, enum_eq eq, item_archetype archetype) {
     /* Only unit function that calls Inventory_item_Deplete */
-    i32 id = Unit_Id_Equipment(unit, eq);
+    item_id id = Unit_Id_Equipment(unit, eq);
     /* Skip if NULL. Not an error, unit can have empty hand. */
     if (id == ITEM_NULL) {
         // SDL_Log("ITEM_NULL");
@@ -623,7 +625,7 @@ void _Unit_Item_Deplete(struct Unit *unit, i32 eq, u64 archetype) {
     Inventory_item_Deplete(&unit->_equipment[eq], item->stats.uses);
 }
 
-void _Unit_Equipped_Deplete(struct Unit *unit, i32 hand, u64 archetype) {
+void _Unit_Equipped_Deplete(Unit *unit, unit_hand hand, item_archetype archetype) {
     if (!Unit_isEquipped(unit, hand)) {
         return;
     }
@@ -631,12 +633,12 @@ void _Unit_Equipped_Deplete(struct Unit *unit, i32 hand, u64 archetype) {
     _Unit_Item_Deplete(unit, Unit_Eq_Equipped(unit, hand), archetype);
 }
 
-void Unit_Item_Deplete(struct Unit *unit, i32 eq) {
+void Unit_Item_Deplete(struct Unit *unit, enum_eq eq) {
     /* Upon use, decrease item durability */
     _Unit_Item_Deplete(unit, eq, ITEM_ARCHETYPE_NULL);
 }
 
-void Unit_Equipped_Staff_Deplete(struct Unit *unit, b32 hand) {
+void Unit_Equipped_Staff_Deplete(struct Unit *unit, unit_hand hand) {
     /* Upon healing, decrease staff durability */
     _Unit_Equipped_Deplete(unit, hand, ITEM_ARCHETYPE_STAFF);
 }
@@ -657,22 +659,22 @@ void Unit_Equipped_Shields_Deplete(struct Unit *unit) {
         _Unit_Equipped_Deplete(unit, UNIT_HAND_RIGHT, ITEM_ARCHETYPE_SHIELD);
 }
 
-b32 Unit_isEquipped(Unit *unit, b32 hand) {
+b32 Unit_isEquipped(Unit *unit, unit_hand hand) {
     b32 min_bound = (unit->_equipped[hand] > ITEM_UNEQUIPPED);
     b32 max_bound = (unit->_equipped[hand] <= SOTA_EQUIPMENT_SIZE);
     return (min_bound && max_bound);
 }
 
-Inventory_item *Unit_Item_Equipped(Unit *unit, b32 hand) {
+Inventory_item *Unit_Item_Equipped(Unit *unit, unit_hand hand) {
     if (!Unit_isEquipped(unit, hand))
         return (NULL);
 
-    i32 eq = Unit_Eq_Equipped(unit, hand);
+    enum_eq eq = Unit_Eq_Equipped(unit, hand);
 
     return (&unit->_equipment[eq]);
 }
 
-Inventory_item *Unit_InvItem(Unit *unit, enum_item eq) {
+Inventory_item *Unit_InvItem(Unit *unit, enum_eq eq) {
     return (&unit->_equipment[eq]);
 }
 
@@ -688,12 +690,12 @@ Weapon *Unit_Equipped_Weapon(Unit *unit, unit_hand hand) {
     return (Unit_Weapon(unit, hand));
 }
 
-Weapon *Unit_Weapon(Unit *unit, i32 eq) {
+Weapon *Unit_Weapon(Unit *unit, enum_eq eq) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
 
     /* Skipped if not a weapon */
-    i16 id = unit->_equipment[eq].id;
+    item_id id = unit->_equipment[eq].id;
     if (!Weapon_ID_isValid(id))
         return (NULL);
 
@@ -704,12 +706,12 @@ Weapon *Unit_Weapon(Unit *unit, i32 eq) {
     return (weapon);
 }
 
-Item *Unit_Get_Item(Unit *unit, i32 eq) {
+Item *Unit_Get_Item(Unit *unit, enum_eq eq) {
     SDL_assert(unit);
     SDL_assert(unit->items_dtab);
 
     /* Skipped if not an item */
-    i16 id = unit->_equipment[eq].id;
+    item_id id = unit->_equipment[eq].id;
     if (Weapon_ID_isValid(id))
         return (NULL);
 
@@ -721,7 +723,7 @@ Item *Unit_Get_Item(Unit *unit, i32 eq) {
 }
 
 /* Order in _equipment of equipped weapon */
-i32 Unit_Eq_Equipped(Unit *unit, i32 eq) {
+enum_eq Unit_Eq_Equipped(Unit *unit, enum_eq eq) {
     SDL_assert(unit != NULL);
     SDL_assert(eq >= 0);
     SDL_assert(eq < UNIT_ARMS_NUM);
@@ -731,7 +733,7 @@ i32 Unit_Eq_Equipped(Unit *unit, i32 eq) {
 }
 
 /* ID of equipment item */
-i32 Unit_Id_Equipment(Unit *unit, i32 eq) {
+item_id Unit_Id_Equipment(Unit *unit, enum_eq eq) {
     SDL_assert(unit != NULL);
     SDL_assert(eq >= 0);
     SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
@@ -739,7 +741,7 @@ i32 Unit_Id_Equipment(Unit *unit, i32 eq) {
 }
 
 /* ID of equipped weapon */
-i32 Unit_Id_Equipped(Unit *unit, i32 hand) {
+item_id Unit_Id_Equipped(Unit *unit, unit_hand hand) {
     SDL_assert(unit != NULL);
     SDL_assert((hand == UNIT_HAND_LEFT) || (hand == UNIT_HAND_RIGHT));
     return (unit->_equipment[Unit_Eq_Equipped(unit, hand)].id);
@@ -753,8 +755,8 @@ void Unit_Staff_Use(Unit *healer, Unit *patient) {
     */
 
     /* Get equipped weapon id */
-    i32 stronghand  = Unit_Hand_Strong(healer);
-    i32 weakhand    = 1 - stronghand;
+    unit_hand stronghand  = Unit_Hand_Strong(healer);
+    unit_hand weakhand    = 1 - stronghand;
     struct Inventory_item *weakhand_inv   = Unit_Item_Equipped(healer, weakhand);
     struct Inventory_item *stronghand_inv = Unit_Item_Equipped(healer, stronghand);
     SDL_assert(stronghand_inv != NULL);

@@ -366,7 +366,7 @@ struct Shop {
 extern struct Shop Shop_default;
 
 typedef struct Inventory_item {
-    i16 id;
+    item_id id;
     u8 used;
     b32 highlighted;
     /* item images are highlighted by default. */

@@ -467,7 +467,7 @@ typedef enum enum_equipped {
     ITEM_EQUIPPED_DIFF  = 1,
 } enum_equipped;
 
-typedef enum enum_item {
+typedef enum enum_eq { /* enum_equipment */
     ITEM1               = 0,
     ITEM2               = 1,
     ITEM3               = 2,
@@ -475,7 +475,7 @@ typedef enum enum_item {
     ITEM5               = 4,
     ITEM6               = 5,
     SOTA_EQUIPMENT_SIZE = 6,
-} enum_item;
+} enum_ew;
 
 enum CAN_EQUIP {
     CAN_EQUIP_TWO_HAND_STRICT   = 0,
@@ -747,8 +747,8 @@ enum UNIT_SKILL_EXP {
 #undef REGISTER_ENUM
 
 enum INFUSE {
-    SOTA_INFUSEABLE     = -1,
-    SOTA_NON_INFUSEABLE =  0, /* for magic weapons */
+    SOTA_NON_INFUSEABLE = -1, /* for magic weapons */
+    SOTA_INFUSEABLE     =  0,
     SOTA_INFUSE_FACTOR  =  3,
 };
 
