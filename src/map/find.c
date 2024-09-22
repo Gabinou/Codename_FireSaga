@@ -5,7 +5,7 @@
 
 /* Find if a weapon/staff usable by unit has an enemy in range */
 void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
-                  b32 move, int archetype) {
+                  b32 move, i64 archetype) {
     SDL_assert(map          != NULL);
     SDL_assert(map->world   != NULL);
     SDL_assert((archetype == ITEM_ARCHETYPE_WEAPON) ||
@@ -29,7 +29,8 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
     unit->num_canEquip = 0;
     canEquip can_equip  = canEquip_default;
     // Map_canEquip point is to find ALL possible equippables
-    can_equip.archetype = archetype;
+    can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE;
+    can_equip.archetype         = archetype;
     for (int eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         /* Skip if weapon is not usable */
         // SDL_Log("eq %d \n", eq);

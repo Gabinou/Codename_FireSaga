@@ -59,7 +59,9 @@ struct Range *Unit_Range_Eq(struct Unit *unit, i32 eq, i64 archetype) {
     *range = Range_default;
 
     canEquip can_equip  = canEquip_default;
+    can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE;
     canEquip_Eq(&can_equip, eq);
+
     if (!Unit_canEquip_AnyHand(unit, can_equip)) {
         // SDL_Log("!Unit_canEquip_AnyHand");
         return (range);
