@@ -43,7 +43,6 @@ struct Rendered Rendered_default = {
 struct Tile_stats Tile_stats_default = {0};
 
 struct Inventory_item Inventory_item_default = {
-    .infusion    = SOTA_NON_INFUSEABLE,
     .highlighted = true,
 };
 

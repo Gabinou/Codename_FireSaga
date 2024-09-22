@@ -296,7 +296,7 @@ void test_map_usable(void) {
     nourstest_true(silou->num_canEquip      == 0);
 
     silou->current_stats.move = 3;
-    // Can't equip staff when patien is full health
+    // Can't equip staff when patient is full health
     Map_canEquip(map, Silou, true, ITEM_ARCHETYPE_STAFF);
     // printf("silou->num_canEquip %d \n", silou->num_canEquip);
     nourstest_true(silou->num_canEquip      == 0);
