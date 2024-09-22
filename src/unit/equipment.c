@@ -2,13 +2,13 @@
 #include "unit/equipment.h"
 
 /* - canEquips setters - */
-void canEquip_Eq(canEquip *can_equip, i32 eq) {
+void canEquip_Eq(canEquip *can_equip, enum_item eq) {
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
     can_equip->to_eq = eq + ITEM_EQUIPPED_DIFF;
 }
 
-void canEquip_Loadout(canEquip *can_equip, i32 hand, i32 eq) {
+void canEquip_Loadout(canEquip *can_equip, i32 hand, enum_item eq) {
     SDL_assert(hand >= 0);
     SDL_assert(hand < MAX_ARMS_NUM);
     SDL_assert(eq >= ITEM1);
@@ -24,14 +24,14 @@ void canEquip_Loadout_None(canEquip *can_equip, i32 hand) {
 
 /* --- Items --- */
 /* Private item atker at specific spot. Does no checks */
-void _Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, size_t i) {
-    unit->_equipment[i] = item;
+void _Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, enum_item eq) {
+    unit->_equipment[eq] = item;
 }
 
 /* Take item at specific spot
     - During gameplay, errors if taken at non-empty location
  */
-void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, size_t i) {
+void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, enum_item eq) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab != NULL);
     if (item.id == ITEM_NULL) {
@@ -44,16 +44,16 @@ void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, size_t i) {
         Item_Load(unit->items_dtab, item.id);
     }
 
-    if ((i < 0) || (i >= SOTA_EQUIPMENT_SIZE)) {
+    if ((eq < 0) || (eq >= SOTA_EQUIPMENT_SIZE)) {
         SDL_Log("Item i out of bounds");
         // TODO: many errors are asserts
         exit(ERROR_OutofBounds);
     }
-    if (unit->_equipment[i].id != ITEM_NULL) {
+    if (unit->_equipment[eq].id != ITEM_NULL) {
         SDL_Log("Item taken at non-empty spot");
         exit(ERROR_OutofBounds);
     }
-    _Unit_Item_Takeat(unit, item, i);
+    _Unit_Item_Takeat(unit, item, eq);
     unit->num_equipment++;
 }
 
@@ -83,7 +83,7 @@ void Unit_Equipment_Drop(struct Unit *unit) {
     }
 }
 
-struct Inventory_item Unit_Item_Drop(struct Unit *unit, i16 i) {
+struct Inventory_item Unit_Item_Drop(struct Unit *unit, enum_item i) {
     if ((i < 0) || (i >= SOTA_EQUIPMENT_SIZE)) {
         SDL_Log("Item index out of bounds");
         exit(ERROR_OutofBounds);
@@ -98,7 +98,7 @@ struct Inventory_item Unit_Item_Drop(struct Unit *unit, i16 i) {
     return (out);
 }
 
-void Unit_Item_Swap(struct Unit *unit, i16 i1, i16 i2) {
+void Unit_Item_Swap(struct Unit *unit, enum_item i1, enum_item i2) {
     SDL_assert(unit);
 
     if (i1 == i2)
@@ -114,7 +114,8 @@ void Unit_Item_Swap(struct Unit *unit, i16 i1, i16 i2) {
     }
 }
 
-void Unit_Item_Trade(struct Unit *giver, struct Unit *taker, i16 ig, i16 it) {
+void Unit_Item_Trade(struct Unit   *giver,  struct Unit *taker,
+                     enum_item      ig,     enum_item    it) {
     SDL_assert(giver);
     SDL_assert(taker);
     if ((it < 0) || (it >= SOTA_EQUIPMENT_SIZE)) {
@@ -134,12 +135,12 @@ void Unit_Item_Trade(struct Unit *giver, struct Unit *taker, i16 ig, i16 it) {
 }
 
 /* Importing and exporting equipped for wloadout functions */
-void Unit_Equipped_Import(Unit *unit, i32 *equipped) {
+void Unit_Equipped_Import(Unit *unit, enum_equipped *equipped) {
     size_t bytesize = unit->arms_num * sizeof(*equipped);
     memcpy(unit->_equipped, equipped, bytesize);
 }
 
-void Unit_Equipped_Export(Unit *unit, i32 *equipped) {
+void Unit_Equipped_Export(Unit *unit, enum_equipped *equipped) {
     size_t bytesize = unit->arms_num * sizeof(*equipped);
     memcpy(equipped, unit->_equipped, bytesize);
 }
@@ -488,10 +489,10 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, b32 hand) {
 
 
 
-/* Is item among possible users? */
-b32 Unit_canEquip_Users(struct Unit *unit, i32 id) {
-    SDL_assert(unit != NULL);
-    SDL_assert(unit->weapons_dtab != NULL);
+/* Is unit among item possible users? */
+b32 Unit_canEquip_Users(struct Unit *unit, item_id id) {
+    SDL_assert(unit                 != NULL);
+    SDL_assert(unit->weapons_dtab   != NULL);
 
     Weapon_Load(unit->weapons_dtab, id);
     struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);
@@ -513,7 +514,7 @@ b32 Unit_canEquip_Users(struct Unit *unit, i32 id) {
 }
 
 /* Can unit equip arbitrary weapon with a certain type? */
-b32 Unit_canEquip_Type(struct Unit *unit, i32 id) {
+b32 Unit_canEquip_Type(struct Unit *unit, item_id id) {
     /* Unequippable if ITEM_NULL */
     if (id <= ITEM_NULL) {
         return (false);
@@ -671,12 +672,12 @@ Inventory_item *Unit_Item_Equipped(Unit *unit, b32 hand) {
     return (&unit->_equipment[eq]);
 }
 
-Inventory_item *Unit_InvItem(Unit *unit, i32 eq) {
+Inventory_item *Unit_InvItem(Unit *unit, enum_item eq) {
     return (&unit->_equipment[eq]);
 }
 
 /* -- Getters -- */
-Weapon *Unit_Equipped_Weapon(Unit *unit, b32 hand) {
+Weapon *Unit_Equipped_Weapon(Unit *unit, unit_hand hand) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
 
