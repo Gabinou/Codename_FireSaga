@@ -288,6 +288,7 @@ void Unit_takesDamage(struct Unit *unit, u8 damage, b32 crit) {
     SDL_assert(unit->current_hp > 0);
 
     /* -- Actually take damage -- */
+    // SDL_Log("unit->current_hp %d", unit->current_hp);
     unit->current_hp = (damage > unit->current_hp) ? 0 : (unit->current_hp - damage);
     /* -- Check for Death or Agony -- */
     if (unit->current_hp == 0) {
@@ -503,6 +504,7 @@ b32 Unit_canAttack(struct Unit *unit) {
 
     for (int hand = 0; hand < unit->arms_num; hand++) {
         if (_Unit_canAttack(unit, hand)) {
+            // SDL_Log("CanAttack!");
             return (true);
         }
     }
@@ -513,18 +515,18 @@ b32 Unit_canAttack(struct Unit *unit) {
 /* - Can unit attack with weapon in hand - */
 b32 _Unit_canAttack(struct Unit *unit, i32 hand) {
     if (!unit->hands[hand]) {
-        SDL_Log("No hands");
+        // SDL_Log("No hands");
         return (false);
     }
 
     if (!Unit_isEquipped(unit, hand)) {
-        SDL_Log("!Unit_isEquipped");
+        // SDL_Log("!Unit_isEquipped");
         return (false);
     }
 
     i32 id = Unit_Id_Equipped(unit,  hand);
     if (!Weapon_ID_isValid(id)) {
-        SDL_Log("!Weapon_ID_isValid");
+        // SDL_Log("!Weapon_ID_isValid");
         return (false);
     }
 
@@ -533,7 +535,7 @@ b32 _Unit_canAttack(struct Unit *unit, i32 hand) {
     struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, id);
     SDL_assert(wpn != NULL);
     if (!wpn->canAttack) {
-        SDL_Log("!wpn->canAttack");
+        // SDL_Log("!wpn->canAttack");
         return (false);
     }
 

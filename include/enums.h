@@ -96,6 +96,7 @@ enum SOTA_TEXT {
 };
 
 enum AGONY {
+    AGONY_NULL              = 0,
     AGONY_FACTOR            = 20,
 };
 

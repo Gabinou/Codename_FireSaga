@@ -375,15 +375,15 @@ void Combat_Resolve(struct Combat_Attack *combat_attacks, u8 attack_num,
     SDL_assert(attack_num <= SOTA_COMBAT_MAX_PHASES);
     struct Unit *attacker, *defender;
 
-    for (u8 i = 0; i < attack_num; i++) {
+    for (int i = 0; i < attack_num; i++) {
         attacker = combat_attacks[i].attacker ? aggressor : defendant;
         defender = combat_attacks[i].attacker ? defendant : aggressor;
 
         if (Unit_canAttack(attacker))
             Combat_Resolve_Attack(combat_attacks[i], attacker, defender);
 
-        b32 agg_death = (!aggressor->alive) || (aggressor->agony >= 0);
-        b32 dft_death = (!defendant->alive) || (defendant->agony >= 0);
+        b32 agg_death = (!aggressor->alive) || (aggressor->agony > AGONY_NULL);
+        b32 dft_death = (!defendant->alive) || (defendant->agony > AGONY_NULL);
 
         if (agg_death || dft_death)
             break;

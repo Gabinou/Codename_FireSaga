@@ -386,9 +386,20 @@ void test_combat_game() {
 
     Compute_Combat_Outcome(&firesaga.combat_outcome, &firesaga.combat_forecast,
                            &attacker, &defender);
+    attacker.current_hp = attacker.current_stats.hp;
 
-    Combat_Resolve(firesaga.combat_outcome.attacks, firesaga.combat_forecast.attack_num, &attacker,
-                   &defender);
+    nourstest_true(firesaga.combat_forecast.attack_num == 2);
+    nourstest_true(firesaga.combat_forecast.phase_num == 2);
+    nourstest_true(firesaga.combat_outcome.phases[0].attacker == SOTA_AGGRESSOR);
+    nourstest_true(firesaga.combat_outcome.attacks[0].hit);
+    nourstest_true(!firesaga.combat_outcome.attacks[0].crit);
+    nourstest_true(firesaga.combat_outcome.phases[1].attacker == SOTA_DEFENDANT);
+    nourstest_true(firesaga.combat_outcome.attacks[1].hit);
+    nourstest_true(!firesaga.combat_outcome.attacks[1].crit);
+
+    Combat_Resolve(firesaga.combat_outcome.attacks,
+                   firesaga.combat_forecast.attack_num,
+                   &attacker, &defender);
     nourstest_true(attacker.current_hp == (attacker.current_stats.hp -
                                            (defender.computed_stats.attack[DAMAGE_TYPE_PHYSICAL] - attacker.effective_stats.def)));
     nourstest_true(defender.current_hp == (defender.current_stats.hp -
