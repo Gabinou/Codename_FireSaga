@@ -24,7 +24,7 @@ typedef i8(* use_function_t)(struct Item *, struct Unit *, struct Unit *);
 // Input for canEquip function
 typedef struct canEquip {
     // Loadout: -1 for any
-    i32 loadout[MAX_ARMS_NUM]; /* -> [ITEM_UNEQUIPPED, ITEM1_EQUIPPED] */
+    item_equipped loadout[MAX_ARMS_NUM];
 
     // Hand to equip to, considering loadout.
     i32 hand;
@@ -35,7 +35,7 @@ typedef struct canEquip {
     i64 archetype;
 
     // Equipment index to check.
-    i32 to_eq; /* -> [ITEM_UNEQUIPPED, ITEM1_EQUIPPED] */
+    item_equipped to_eq; /* -> [ITEM_UNEQUIPPED, ITEM1_EQUIPPED] */
 
 
     // TWO-HAND ONLY DESIGN ISSUE:
@@ -645,7 +645,7 @@ typedef struct Unit {
 
     i32     arms_num;
     b32     hands[SOTA_EQUIPMENT_SIZE];     /* Does unit have hands?             */
-    i32 _equipped[SOTA_EQUIPMENT_SIZE];     /* index of equipped item in hand    */
+    item_equipped _equipped[SOTA_EQUIPMENT_SIZE];
 
     s8 *skill_names;
 

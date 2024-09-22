@@ -456,7 +456,7 @@ enum OPTIONS {
     MENU_OPTION_NUM = MENU_OPTION_END,
 };
 
-enum ITEM_EQUIPMENT {
+typedef enum item_equipped {
     ITEM_UNEQUIPPED = 0,
     ITEM1_EQUIPPED,
     ITEM2_EQUIPPED,
@@ -465,7 +465,9 @@ enum ITEM_EQUIPMENT {
     ITEM5_EQUIPPED,
     ITEM6_EQUIPPED,
     ITEM_EQUIPPED_DIFF  = 1,
+} item_equipped;
 
+enum ITEMS {
     ITEM1               = 0,
     ITEM2               = 1,
     ITEM3               = 2,
