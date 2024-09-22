@@ -49,11 +49,11 @@ Item   *Unit_Get_Item(       Unit *u, enum_eq eq);
 Weapon *Unit_Equipped_Weapon(Unit *u, unit_hand hand);
 
 /* ID of equipped weapon */
-i32 Unit_Id_Equipped( Unit *u, unit_hand hand);
-i32 Unit_Id_Equipment(Unit *u, enum_eq eq);
+item_id Unit_Id_Equipped( Unit *u, unit_hand hand);
+item_id Unit_Id_Equipment(Unit *u, enum_eq eq);
 
 /* Order in _equipment of equipped weapon */
-i32 Unit_Eq_Equipped(Unit *u, unit_hand hand);
+enum_eq Unit_Eq_Equipped(Unit *unit, enum_eq eq);
 
 /* --- Equipping --- */
 void    Unit_Equip(     Unit *u, unit_hand h, enum_eq eq);
@@ -73,7 +73,7 @@ b32  Unit_canEquip_Users(   Unit *u,    item_id id);
 b32  Unit_canEquip_OneHand( Unit *u,    enum_eq eq, unit_hand h);
 b32  Unit_canEquip_TwoHand( Unit *u,    enum_eq eq, unit_hand h, i32 mode);
 
-b32 Unit_canEquip_Archetype(Unit *u,    enum_eq eq, item_archetype archetype);
+b32 Unit_canEquip_Archetype(Unit *u,    item_id id, item_archetype archetype);
 
 u8  Unit_canEquip_allTypes( Unit *u,    u8 *eq);
 

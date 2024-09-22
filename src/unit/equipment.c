@@ -69,7 +69,7 @@ void Unit_Item_Take(struct Unit *unit, struct Inventory_item item) {
         exit(ERROR_OutofBounds);
     }
 
-    for (item_eq eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
+    for (enum_eq eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         if (unit->_equipment[eq].id == ITEM_NULL) {
             Unit_Item_Takeat(unit, item, eq);
             break;
@@ -115,7 +115,7 @@ void Unit_Item_Swap(struct Unit *unit, enum_eq i1, enum_eq i2) {
 }
 
 void Unit_Item_Trade(struct Unit   *giver,  struct Unit *taker,
-     enum_eq ig,     enum_eq    it) {
+                     enum_eq ig,     enum_eq    it) {
     SDL_assert(giver);
     SDL_assert(taker);
     if ((it < 0) || (it >= SOTA_EQUIPMENT_SIZE)) {
@@ -180,7 +180,7 @@ void Unit_Check_Equipped(struct Unit *unit) {
 }
 
 // Does NOT check if item can be equipped
-void Unit_Equip(struct Unit *unit, unit_hand hand, item_eq eq) {
+void Unit_Equip(Unit *unit, unit_hand hand, enum_eq eq) {
     SDL_assert(unit);
     SDL_assert(hand >= 0);
     SDL_assert(hand < MAX_ARMS_NUM);
@@ -263,7 +263,7 @@ void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
     }
 
     unit->num_canEquip = 0;
-    for (item_eq eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
+    for (enum_eq eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         for (unit_hand hand = 0; hand < unit->arms_num; hand++) {
             // canEquip hands
             canEquip_Eq(&can_equip, eq);
@@ -339,7 +339,7 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
 
 b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
     /* Save starting equipment */
-    start_equipped[MAX_ARMS_NUM];
+    enum_equipped start_equipped[MAX_ARMS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
 
     /* Equip loadout */

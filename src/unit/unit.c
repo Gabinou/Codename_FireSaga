@@ -706,7 +706,7 @@ void Unit_Equipment_Print( struct Unit *unit) {
 
 struct Computed_Stats Unit_computedStats_wLoadout(struct Unit *unit, int lh, int rh, int dist) {
     /* Save starting equipment */
-    int start_equipped[UNIT_ARMS_NUM];
+    enum_equipped start_equipped[UNIT_ARMS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
 
     if ((lh >= 0) && (lh < SOTA_EQUIPMENT_SIZE)) {

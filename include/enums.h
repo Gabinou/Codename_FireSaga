@@ -475,12 +475,8 @@ typedef enum enum_eq { /* enum_equipment */
     ITEM5               = 4,
     ITEM6               = 5,
     SOTA_EQUIPMENT_SIZE = 6,
-} enum_ew;
+} enum_eq;
 
-enum CAN_EQUIP {
-    CAN_EQUIP_TWO_HAND_STRICT   = 0,
-    CAN_EQUIP_TWO_HAND_LOOSE    = 1,
-};
 enum CAN_EQUIP {
     CAN_EQUIP_TWO_HAND_STRICT   = 0,
     CAN_EQUIP_TWO_HAND_LOOSE    = 1,
