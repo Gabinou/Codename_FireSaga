@@ -404,7 +404,7 @@ b32 Unit_canEquip_TwoHand(Unit *unit, enum_eq eq, unit_hand hand, i32 mode) {
     // Two-hand only weapon can't be equipped if:
     //      - Other hand equipped different wpn.
     b32 eq_diff         = (eq_other != eq);
-    b32 strict          = (mode == CAN_EQUIP_TWO_HAND_STRICT);
+    b32 strict          = (mode == TWO_HAND_EQ_MODE_STRICT);
     b32 eq_in_bound     = (eq_other >= 0) && (eq_other < SOTA_EQUIPMENT_SIZE);
     b32 two_hand_cant   = two_hand_only && (eq_in_bound && eq_diff);
     // SDL_Log("eq_other %d", eq_other);

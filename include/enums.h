@@ -477,10 +477,10 @@ typedef enum enum_eq { /* enum_equipment */
     SOTA_EQUIPMENT_SIZE = 6,
 } enum_eq;
 
-enum CAN_EQUIP {
-    CAN_EQUIP_TWO_HAND_STRICT   = 0,
-    CAN_EQUIP_TWO_HAND_LOOSE    = 1,
-};
+typedef enum two_hand_eq_mode {
+    TWO_HAND_EQ_MODE_STRICT   = 0,
+    TWO_HAND_EQ_MODE_LOOSE    = 1,
+} two_hand_eq_mode;
 
 /* ITEM_ID is the explicit, human-friendly item index
 * EXAMPLE:
