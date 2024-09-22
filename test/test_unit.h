@@ -945,10 +945,24 @@ void test_canEquip(void) {
 
     canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  ITEM1);
     canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, ITEM1);
+    can_equip.two_hands_mode = TWO_HAND_EQ_MODE_STRICT;
     canEquip_Eq(&can_equip, ITEM1);
-    nourstest_true(!Unit_canEquip(&Silou, can_equip));
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+    can_equip.two_hands_mode = TWO_HAND_EQ_MODE_LOOSE;
+    canEquip_Eq(&can_equip, ITEM1);
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+
+    can_equip.two_hands_mode = TWO_HAND_EQ_MODE_LOOSE;
     canEquip_Eq(&can_equip, ITEM2);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
+    can_equip.two_hands_mode = TWO_HAND_EQ_MODE_STRICT;
+    canEquip_Eq(&can_equip, ITEM2);
+    nourstest_true(!Unit_canEquip(&Silou, can_equip));
+
+    can_equip.two_hands_mode = TWO_HAND_EQ_MODE_LOOSE;
+    canEquip_Eq(&can_equip, ITEM3);
+    nourstest_true( Unit_canEquip(&Silou, can_equip));
+    can_equip.two_hands_mode = TWO_HAND_EQ_MODE_STRICT;
     canEquip_Eq(&can_equip, ITEM3);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
 
