@@ -28,9 +28,7 @@ void _Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, i32 eq) {
     unit->_equipment[eq] = item;
 }
 
-/* Take item at specific spot
-    - During gameplay, errors if taken at non-empty location
- */
+/* Take item at specific spot */
 void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, i32 eq) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab != NULL);
@@ -48,7 +46,7 @@ void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, i32 eq) {
 
     SDL_assert(eq >= 0);
     SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
-    SDL_assert(unit->_equipment[eq].id > ITEM_NULL);
+    SDL_assert(unit->_equipment[eq].id <= ITEM_NULL);
 
     _Unit_Item_Takeat(unit, item, eq);
     unit->num_equipment++;
@@ -58,7 +56,6 @@ void Unit_Item_Take(struct Unit *unit, struct Inventory_item item) {
     SDL_assert(unit);
     SDL_assert(unit->num_equipment < SOTA_EQUIPMENT_SIZE);
     SDL_assert(item.id > ITEM_NULL);
-
 
     for (i32 eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         if (unit->_equipment[eq].id == ITEM_NULL) {

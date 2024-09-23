@@ -40,6 +40,7 @@ void test_menu_growths() {
     /* -- Create Unit -- */
     struct Unit Silou = Unit_default;
     SDL_assert(Silou.grown_stats == NULL);
+    Unit_Init(&Silou);
     Silou.weapons_dtab = weapons_dtab;
     SDL_assert(Silou.num_equipment == 0);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);

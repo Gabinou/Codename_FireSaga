@@ -38,6 +38,9 @@ void test_popup_map_combat() {
     /* -- Create combatants -- */
     struct Unit aggressor  = Unit_default;
     struct Unit defendant  = Unit_default;
+    Unit_Init(&aggressor);
+    Unit_Init(&defendant);
+
     aggressor.weapons_dtab = weapons_dtab;
     defendant.weapons_dtab = weapons_dtab;
 

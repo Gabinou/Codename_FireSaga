@@ -50,7 +50,9 @@ void test_menu_pre_combat() {
 
     /* -- Create Combatants -- */
     struct Unit Silou = Unit_default;
+    Unit_Init(&Silou);
     struct Unit Hamilcar = Unit_default;
+    Unit_Init(&Hamilcar);
     Silou.weapons_dtab = weapons_dtab;
     Hamilcar.weapons_dtab = weapons_dtab;
     nourstest_true(Silou.num_equipment    == 0);

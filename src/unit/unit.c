@@ -66,7 +66,7 @@ struct Unit Unit_default = {
 
     .rangemap       = RANGEMAP_ATTACKMAP,
 
-    .dft_pos        =   {-1, -1},
+    .dft_pos        = {-1, -1},
 
     .army           = 1,
 
@@ -75,15 +75,15 @@ struct Unit Unit_default = {
 
     .arms_num       = UNIT_ARMS_NUM,
     .handedness     = UNIT_HAND_RIGHTIE,
-    .hands          = {true, true, false, false},
+    .hands          = {true, true},
 
     .update_stats   = true,
 };
 
 struct Unit Nibal_unit = {
     .json_element = JSON_UNIT,
-    /*                    hp str mag agi dex fth luck def res con move prof */
-    .base_stats         = {35, 20, 20, 18, 25, 14, 12, 18, 22, 30, 06, 15},
+    /*              hp str mag agi dex fth luck def res con move prof */
+    .base_stats     = {35, 20, 20, 18, 25, 14, 12, 18, 22, 30, 06, 15},
 
     .base_exp       = 2500,
     .army           = ARMY_HAMILCAR,
@@ -93,15 +93,13 @@ struct Unit Nibal_unit = {
     .alive          = true,
     .sex            = true,  /* 0:F, 1:M. eg. hasPenis. */
 
-    .computed_stats = {{0, 0, 0}, {0, 0, 0}, 0, 0, 0, 0, 0, 0, 0, {-1, -1}},
     .hands          = {true, true},
-
 };
 
 void Tetrabrachios_Default(Unit *unit) {
     *unit = Unit_default;
     unit->arms_num = TETRABRACHIOS_ARMS_NUM;
-    unit->hands[TETRABRACHIOS_HAND_LEFT]    = true;;
+    unit->hands[TETRABRACHIOS_HAND_LEFT]    = true;
     unit->hands[TETRABRACHIOS_HAND_RIGHT]   = true;
 }
 
@@ -174,22 +172,15 @@ void Unit_Reinforcement_Load(struct Unit *unit, struct Reinforcement *reinf) {
     unit->army = reinf->army;
 }
 
-/* Note: weakhand = 1 - stronghand */
+/* Other hands than the main two can't be strong/weak hand */
 int Unit_Hand_Strong(struct Unit *unit) {
     SDL_assert(unit != NULL);
-    return (SotA_Hand_Strong(unit->handedness));
+    return ((unit->handedness == UNIT_HAND_LEFTIE) ? UNIT_HAND_LEFT : UNIT_HAND_RIGHT);
 }
 
 int Unit_Hand_Weak(struct Unit *unit) {
     SDL_assert(unit != NULL);
-    return (1 - SotA_Hand_Strong(unit->handedness));
-}
-
-int SotA_Hand_Strong(i8 handedness) {
-    SDL_assert((handedness > UNIT_HAND_NULL) && (handedness < UNIT_HAND_END));
-    /* Stronghand is left hand only for left-handed.
-    *  Stronghand is right hand for for right-handed AND ambidextrous. */
-    return ((handedness == UNIT_HAND_LEFTIE) ? UNIT_HAND_LEFT : UNIT_HAND_RIGHT);
+    return (1 - Unit_Hand_Strong(unit));
 }
 
 void Unit_setid(struct Unit *unit, i16 id) {
@@ -225,11 +216,10 @@ void Unit_setClassind(struct Unit *unit, i8 class_index) {
     unit->mvt_type   = Unit_mvtType(unit);
     unit->equippable = class_equippables[unit->class];
 
-    b32 healclass  = (unit->class == UNIT_CLASS_BISHOP);
+    b32 healclass   = (unit->class == UNIT_CLASS_BISHOP);
     healclass      |= (unit->class == UNIT_CLASS_CLERIC);
 
     Unit_Rangemap_Default(unit);
-
 }
 
 void Unit_setStats(struct Unit *unit, struct Unit_stats stats) {
@@ -451,7 +441,6 @@ int Unit_canStaff_Eq( struct  Unit *unit) {
 
 /* - Can unit equip a staff in strong hand? - */
 int Unit_canStaff(struct Unit *unit) {
-
     i32 stronghand = Unit_Hand_Strong(unit);
     b32 out = false;
     if (Unit_isEquipped(unit, stronghand)) {
@@ -542,7 +531,7 @@ b32 _Unit_canAttack(struct Unit *unit, i32 hand) {
     return (true);
 }
 
-i32 *Unit_Shield_Protection(struct Unit *unit, b32 hand) {
+i32 *Unit_Shield_Protection(struct Unit *unit, i32 hand) {
     if (!Unit_isEquipped(unit, hand))
         return (NULL);
 
@@ -565,24 +554,21 @@ i32 *Unit_computeDefense(struct Unit *unit) {
 
     /* Shield protection */
     int prot_P = 0, prot_M = 0;
-    i32 *prot;
-    if (prot = Unit_Shield_Protection(unit, UNIT_HAND_LEFT)) {
-        prot_P += prot[DMG_TYPE_PHYSICAL];
-        prot_M += prot[DMG_TYPE_MAGICAL];
-    }
 
-    if (prot = Unit_Shield_Protection(unit, UNIT_HAND_RIGHT)) {
-        prot_P += prot[DMG_TYPE_PHYSICAL];
-        prot_M += prot[DMG_TYPE_MAGICAL];
+    for (i32 hand = 0; hand < unit->arms_num; hand++) {
+        i32 *prot;
+        if (prot = Unit_Shield_Protection(unit, hand)) {
+            prot_P += prot[DMG_TYPE_PHYSICAL];
+            prot_M += prot[DMG_TYPE_MAGICAL];
+        }
     }
 
     /* Add all bonuses */
     i32 bonus_P = 0, bonus_M = 0;
-    if (unit->bonus_stack != NULL) {
-        for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
-            bonus_P += unit->bonus_stack[i].computed_stats.protection[0];
-            bonus_M += unit->bonus_stack[i].computed_stats.protection[1];
-        }
+    SDL_assert(unit->bonus_stack != NULL);
+    for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
+        bonus_P += unit->bonus_stack[i].computed_stats.protection[DMG_TYPE_PHYSICAL];
+        bonus_M += unit->bonus_stack[i].computed_stats.protection[DMG_TYPE_MAGICAL];
     }
 
     /* Adding shield protection to effective stats */
@@ -608,23 +594,16 @@ i32 *Unit_computeAttack(struct Unit *unit, int distance) {
 
     struct Weapon *weapon;
     /* Get stats of both weapons */
-    if (Unit_isEquipped(unit, UNIT_HAND_LEFT)) {
-        int id = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
-        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
+    for (i32 hand = 0; hand < unit->arms_num; hand++) {
+        if (!Unit_isEquipped(unit, hand))
+            continue;
+
+        int id = Unit_Id_Equipped(unit, hand);
+        SDL_assert(Weapon_ID_isValid(id));
+        weapon   = DTAB_GET(unit->weapons_dtab, id);
         attack_P += Weapon_Stat_inRange(weapon, WEAPON_STAT_pATTACK, distance);
         attack_M += Weapon_Stat_inRange(weapon, WEAPON_STAT_mATTACK, distance);
         attack_T += Weapon_Stat_inRange(weapon, WEAPON_STAT_tATTACK, distance);
-
-    }
-    if (Unit_isEquipped(unit, UNIT_HAND_RIGHT)) {
-        int id = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
-        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
-        attack_P += Weapon_Stat_inRange(weapon, WEAPON_STAT_pATTACK, distance);
-        attack_M += Weapon_Stat_inRange(weapon, WEAPON_STAT_mATTACK, distance);
-        attack_T += Weapon_Stat_inRange(weapon, WEAPON_STAT_tATTACK, distance);
-
     }
 
     /* -- Twohanding -- */

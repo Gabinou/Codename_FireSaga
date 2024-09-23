@@ -57,7 +57,6 @@ void Unit_Reinforcement_Load(Unit *u, struct Reinforcement *r);
 
 int Unit_Hand_Weak(  Unit *u);
 int Unit_Hand_Strong(Unit *u);
-int SotA_Hand_Strong(i8 handedness);
 
 void Unit_setid(      Unit *u, i16 id);
 void Unit_setStats(   Unit *u, Unit_stats stats);
@@ -151,5 +150,7 @@ void Unit_Promote(Unit *u, i8 new_class_i);
 
 /* -- Unit_id -- */
 b32 Unit_ID_Valid(u16 id);
+
+i32 *Unit_Shield_Protection(struct Unit *unit, i32 hand);
 
 #endif /* UNIT_H */
