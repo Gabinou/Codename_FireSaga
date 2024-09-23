@@ -958,7 +958,6 @@ i32 Unit_computeMove(struct Unit *unit) {
     return (unit->computed_stats.move);
 }
 
-
 /* --- I/O --- */
 void Unit_readJSON(void *input,  cJSON *junit) {
     struct Unit *unit = (struct Unit *)input;
