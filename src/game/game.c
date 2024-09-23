@@ -197,7 +197,7 @@ void Game_Free(struct Game *sota) {
         sota->world_control = NULL;
     }
 
-    Game_Items_Free(  &sota->items_dtab);
+    Game_Items_Free(&sota->items_dtab);
     Game_Weapons_Free(&sota->weapons_dtab);
     if (sota->menu_pixelfont != NULL) {
         PixelFont_Free(sota->menu_pixelfont, false);

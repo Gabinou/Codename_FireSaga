@@ -131,11 +131,11 @@ void TextBubble_Colors_Swap(struct Text_Bubble *bubble, SDL_Renderer *renderer,
                             struct n9Patch *n9patch) {
     /* -- Switch color & create textures -- */
     Palette_Colors_Swap(bubble->palette,        renderer,
-                        &bubble->surface,       &n9patch->texture,
+                        &bubble->surface, &n9patch->texture,
                         bubble->old_bg_color,   bubble->old_line_color,
                         bubble->bg_color,       bubble->line_color);
     Palette_Colors_Swap(bubble->palette,        renderer,
-                        &bubble->tail.surface,  &bubble->tail.texture,
+                        &bubble->tail.surface, &bubble->tail.texture,
                         bubble->old_bg_color,   bubble->old_line_color,
                         bubble->bg_color,       bubble->line_color);
 

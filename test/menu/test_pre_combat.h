@@ -138,7 +138,7 @@ void test_menu_pre_combat() {
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Doubling_Agg_Digit1.png"),
@@ -146,7 +146,7 @@ void test_menu_pre_combat() {
 
     /* -- SIMPLE SPLIT MODE -- */
     pcp->mode = PCP_MODE_SIMPLE;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
@@ -155,7 +155,7 @@ void test_menu_pre_combat() {
 
     /* -- MATH MODE -- */
     pcp->mode = PCP_MODE_MATH;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Math_Doubling_Agg_Digit1.png"),
@@ -167,7 +167,7 @@ void test_menu_pre_combat() {
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Doubling_Dft_Digit1.png"),
@@ -175,7 +175,7 @@ void test_menu_pre_combat() {
 
     /* -- SIMPLE SPLIT MODE -- */
     pcp->mode = PCP_MODE_SIMPLE;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
@@ -184,7 +184,7 @@ void test_menu_pre_combat() {
 
     /* -- MATH MODE -- */
     pcp->mode = PCP_MODE_MATH;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Math_Doubling_Dft_Digit1.png"),
@@ -222,7 +222,7 @@ void test_menu_pre_combat() {
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Doubling_Agg_Digit2.png"),
@@ -230,7 +230,7 @@ void test_menu_pre_combat() {
 
     /* -- SIMPLE SPLIT MODE -- */
     pcp->mode = PCP_MODE_SIMPLE;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
@@ -239,7 +239,7 @@ void test_menu_pre_combat() {
 
     /* -- MATH MODE -- */
     pcp->mode = PCP_MODE_MATH;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Math_Doubling_Agg_Digit2.png"),
@@ -251,7 +251,7 @@ void test_menu_pre_combat() {
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Doubling_Dft_Digit2.png"),
@@ -259,7 +259,7 @@ void test_menu_pre_combat() {
 
     /* -- SIMPLE SPLIT MODE -- */
     pcp->mode = PCP_MODE_SIMPLE;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
@@ -268,7 +268,7 @@ void test_menu_pre_combat() {
 
     /* -- MATH MODE -- */
     pcp->mode = PCP_MODE_MATH;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Math_Doubling_Dft_Digit2.png"),
@@ -297,7 +297,7 @@ void test_menu_pre_combat() {
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
 
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Doubling_Agg_Digit3.png"),
@@ -306,7 +306,7 @@ void test_menu_pre_combat() {
     /* -- SIMPLE SPLIT MODE -- */
     pcp->mode = PCP_MODE_SIMPLE;
 
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
@@ -316,7 +316,7 @@ void test_menu_pre_combat() {
     /* -- MATH MODE -- */
     pcp->mode = PCP_MODE_MATH;
 
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Math_Doubling_Agg_Digit3.png"),
@@ -328,7 +328,7 @@ void test_menu_pre_combat() {
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Doubling_Dft_Digit3.png"),
@@ -336,7 +336,7 @@ void test_menu_pre_combat() {
 
     /* -- SIMPLE SPLIT MODE -- */
     pcp->mode = PCP_MODE_SIMPLE;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
@@ -345,7 +345,7 @@ void test_menu_pre_combat() {
 
     /* -- MATH MODE -- */
     pcp->mode = PCP_MODE_MATH;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Math_Doubling_Dft_Digit3.png"),
@@ -366,7 +366,7 @@ void test_menu_pre_combat() {
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_True_Damage_Agg_Digit2.png"),
@@ -374,7 +374,7 @@ void test_menu_pre_combat() {
 
     /* -- SIMPLE SPLIT MODE -- */
     pcp->mode = PCP_MODE_SIMPLE;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
@@ -383,7 +383,7 @@ void test_menu_pre_combat() {
 
     /* -- MATH MODE -- */
     pcp->mode = PCP_MODE_MATH;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
@@ -396,7 +396,7 @@ void test_menu_pre_combat() {
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_True_Damage_Dft_Digit2.png"),
@@ -404,7 +404,7 @@ void test_menu_pre_combat() {
 
     /* -- SIMPLE SPLIT MODE -- */
     pcp->mode = PCP_MODE_SIMPLE;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
@@ -413,7 +413,7 @@ void test_menu_pre_combat() {
 
     /* -- MATH MODE -- */
     pcp->mode = PCP_MODE_MATH;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
@@ -433,7 +433,7 @@ void test_menu_pre_combat() {
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_True_Damage_Agg_Digit1.png"),
@@ -441,7 +441,7 @@ void test_menu_pre_combat() {
 
     /* -- SIMPLE SPLIT MODE -- */
     pcp->mode = PCP_MODE_SIMPLE;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
@@ -450,7 +450,7 @@ void test_menu_pre_combat() {
 
     /* -- MATH MODE -- */
     pcp->mode = PCP_MODE_MATH;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
@@ -463,7 +463,7 @@ void test_menu_pre_combat() {
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_True_Damage_Dft_Digit1.png"),
@@ -471,7 +471,7 @@ void test_menu_pre_combat() {
 
     /* -- SIMPLE SPLIT MODE -- */
     pcp->mode = PCP_MODE_SIMPLE;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
@@ -480,7 +480,7 @@ void test_menu_pre_combat() {
 
     /* -- MATH MODE -- */
     pcp->mode = PCP_MODE_MATH;
-    combat_forecast = Compute_Combat_Forecast(&Silou,  &Hamilcar, &silou_pos.tilemap_pos,
+    combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat",
