@@ -877,8 +877,7 @@ i32 Unit_computeFavor(struct Unit *unit, int distance) {
         int id          = Unit_Id_Equipped(unit, hand);
         SDL_assert(Weapon_ID_isValid(id));
         weapon          = DTAB_GET(unit->weapons_dtab, id);
-
-        favors[hand] = Weapon_Stat_inRange(weapon, WEAPON_STAT_FAVOR, distance);
+        favors[hand]    = Weapon_Stat_inRange(weapon, WEAPON_STAT_FAVOR, distance);
     }
 
     i32 wpn_favor = Equation_Weapon_Favorarr(favors, MAX_ARMS_NUM);
@@ -916,23 +915,21 @@ i32 Unit_computeSpeed(struct Unit *unit, int distance) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
     i32 bonus = 0;
-    int weight_L = 0, weight_R = 0;
+    i32 wgts[MAX_ARMS_NUM]      = {0};
     struct Weapon *weapon;
 
-    if (Unit_isEquipped(unit, UNIT_HAND_LEFT)) {
-        int id = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
-        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
-        weight_L  = Weapon_Stat(weapon, WEAPON_STAT_WGT);
+    for (i32 hand = 0; hand < unit->arms_num; hand++) {
+        if (!Unit_isEquipped(unit, hand))
+            continue;
+
+        int id          = Unit_Id_Equipped(unit, hand);
+        SDL_assert(Weapon_ID_isValid(id));
+        weapon          = DTAB_GET(unit->weapons_dtab, id);
+        wgts[hand]      = Weapon_Stat(weapon, WEAPON_STAT_WGT);
     }
-    if (Unit_isEquipped(unit, UNIT_HAND_RIGHT)) {
-        int id = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
-        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
-        weight_R  = Weapon_Stat(weapon, WEAPON_STAT_WGT);
-    }
+
     /* item weight in both hands is always added */
-    u8 wpn_wgt = Equation_Weapon_Wgt(weight_L, weight_R);
+    i32 wpn_wgt     = Equation_Weapon_Wgtarr(wgts, MAX_ARMS_NUM);
     if (Unit_istwoHanding(unit))
         wpn_wgt /= TWO_HANDING_WEIGHT_FACTOR;
 
@@ -946,7 +943,8 @@ i32 Unit_computeSpeed(struct Unit *unit, int distance) {
     // if (TNECS_TYPEFLAG_HAS_TYPE(unit->skills, UNIT_SKILL_)) {
     // TODO: compute effective_weight
     struct Unit_stats fstats = unit->effective_stats;
-    unit->computed_stats.speed = Equation_Unit_Speed(wpn_wgt, fstats.agi, fstats.con, fstats.str,
+    unit->computed_stats.speed = Equation_Unit_Speed(wpn_wgt, fstats.agi,
+                                                     fstats.con, fstats.str,
                                                      bonus);
     return (unit->computed_stats.speed);
 }
