@@ -46,30 +46,19 @@ void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, i32 eq) {
         return;
     }
 
-    if ((eq < 0) || (eq >= SOTA_EQUIPMENT_SIZE)) {
-        SDL_Log("Item i out of bounds");
-        // TODO: many errors are asserts
-        exit(ERROR_OutofBounds);
-    }
-    if (unit->_equipment[eq].id != ITEM_NULL) {
-        SDL_Log("Item taken at non-empty spot");
-        exit(ERROR_OutofBounds);
-    }
+    SDL_assert(eq >= 0);
+    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(unit->_equipment[eq].id > ITEM_NULL);
+
     _Unit_Item_Takeat(unit, item, eq);
     unit->num_equipment++;
 }
 
 void Unit_Item_Take(struct Unit *unit, struct Inventory_item item) {
     SDL_assert(unit);
-    if (unit->num_equipment >= SOTA_EQUIPMENT_SIZE) {
-        SDL_Log("Unit Inventory full, should not be able to take item");
-        exit(ERROR_OutofBounds);
-    }
+    SDL_assert(unit->num_equipment < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(item.id > ITEM_NULL);
 
-    if (item.id <= ITEM_NULL) {
-        SDL_Log("Unit should not be able to take NULL item");
-        exit(ERROR_OutofBounds);
-    }
 
     for (i32 eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         if (unit->_equipment[eq].id == ITEM_NULL) {
@@ -86,10 +75,9 @@ void Unit_Equipment_Drop(struct Unit *unit) {
 }
 
 struct Inventory_item Unit_Item_Drop(struct Unit *unit, i32 eq) {
-    if ((eq < 0) || (eq >= SOTA_EQUIPMENT_SIZE)) {
-        SDL_Log("Item index out of bounds");
-        exit(ERROR_OutofBounds);
-    }
+    SDL_assert(eq >= 0);
+    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
+
     struct Inventory_item out  = unit->_equipment[eq];
     unit->_equipment[eq]        = Inventory_item_default;
     if (unit->num_equipment > 0)
@@ -117,23 +105,18 @@ void Unit_Item_Swap(struct Unit *unit, i32 i1, i32 i2) {
 }
 
 void Unit_Item_Trade(struct Unit   *giver,  struct Unit *taker,
-                     i32 ig,     i32    it) {
+                     i32 eq_g,     i32    eq_t) {
     SDL_assert(giver);
     SDL_assert(taker);
-    if ((it < 0) || (it >= SOTA_EQUIPMENT_SIZE)) {
-        SDL_Log("Taker Item index out of bounds");
-        SDL_assert(false);
-        exit(ERROR_OutofBounds);
-    }
-    if ((ig < 0) || (ig >= SOTA_EQUIPMENT_SIZE)) {
-        SDL_Log("Giver Item index out of bounds");
-        SDL_assert(false);
-        exit(ERROR_OutofBounds);
-    }
-    struct Inventory_item buffer_giver = Unit_Item_Drop(giver, ig);
-    struct Inventory_item buffer_taker = Unit_Item_Drop(taker, it);
-    Unit_Item_Takeat(taker, buffer_giver, it);
-    Unit_Item_Takeat(giver, buffer_taker, ig);
+    SDL_assert(eq_g >= 0);
+    SDL_assert(eq_g < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(eq_t >= 0);
+    SDL_assert(eq_t < SOTA_EQUIPMENT_SIZE);
+
+    struct Inventory_item buffer_giver = Unit_Item_Drop(giver, eq_g);
+    struct Inventory_item buffer_taker = Unit_Item_Drop(taker, eq_t);
+    Unit_Item_Takeat(taker, buffer_giver, eq_t);
+    Unit_Item_Takeat(giver, buffer_taker, eq_g);
 }
 
 /* Importing and exporting equipped for wloadout functions */
@@ -744,7 +727,6 @@ i32 Unit_Id_Equipment(Unit *unit, i32 eq) {
 /* ID of equipped weapon */
 i32 Unit_Id_Equipped(Unit *unit, i32 hand) {
     SDL_assert(unit != NULL);
-    SDL_assert((hand == UNIT_HAND_LEFT) || (hand == UNIT_HAND_RIGHT));
     if (!Unit_isEquipped(unit, hand)) {
         return (ITEM_NULL);
     }

@@ -40,6 +40,5 @@ b32 _Range_Archetype_Match(struct Weapon    *wpn, i64 archetype);
 int  Unit_Rangemap_Get(      struct Unit *u);
 void Unit_Rangemap_Toggle(   struct Unit *u);
 void Unit_Rangemap_Default(  struct Unit *u);
-void Unit_Rangemap_Equipment(struct Unit *u);
 
 #endif /* UNIT_RANGE_H */

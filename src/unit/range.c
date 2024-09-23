@@ -25,7 +25,7 @@ struct Range *Unit_Range_Id(struct Unit *unit, int id, i64 archetype) {
     SDL_assert(range != NULL);
     *range = Range_default;
 
-    if (id == ITEM_NULL) {
+    if (id <= ITEM_NULL) {
         // SDL_Log("ITEM_NULL");
         return (range);
     }
@@ -54,16 +54,19 @@ struct Range *Unit_Range_Eq(struct Unit *unit, i32 eq, i64 archetype) {
     SDL_assert(eq >= 0);
     SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
 
-    struct Range *range = &unit->computed_stats.range_equipment;
-    SDL_assert(range != NULL);
-    *range = Range_default;
-
-    canEquip can_equip  = canEquip_default;
+    canEquip can_equip          = canEquip_default;
+    can_equip.hand              = Unit_Hand_Strong(unit);
+    can_equip.archetype         = archetype;
     can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE;
     canEquip_Eq(&can_equip, eq);
+    canEquip_Loadout_None(&can_equip, UNIT_HAND_LEFT);
+    canEquip_Loadout_None(&can_equip, UNIT_HAND_RIGHT);
 
     if (!Unit_canEquip_AnyHand(unit, can_equip)) {
         // SDL_Log("!Unit_canEquip_AnyHand");
+        struct Range *range = &unit->computed_stats.range_equipment;
+        SDL_assert(range != NULL);
+        *range = Range_default;
         return (range);
     }
 
@@ -75,7 +78,7 @@ struct Range *Unit_Range_Eq(struct Unit *unit, i32 eq, i64 archetype) {
 //      - Ex: will combine range of two two-hand only weapons
 struct Range *Unit_Range_Equipment(Unit *unit, i64 archetype) {
     struct Range *range = &unit->computed_stats.range_equipment;
-    *range = Range_default;
+    *range              = Range_default;
 
     for (int eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
 
@@ -86,14 +89,15 @@ struct Range *Unit_Range_Equipment(Unit *unit, i64 archetype) {
             continue;
         }
 
-        canEquip can_equip  = canEquip_default;
+        /* Skip if can't equip */
+        canEquip can_equip          = canEquip_default;
+        can_equip.hand              = Unit_Hand_Strong(unit);
+        can_equip.archetype         = archetype;
+        can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE;
         canEquip_Eq(&can_equip, eq);
         canEquip_Loadout_None(&can_equip, UNIT_HAND_LEFT);
         canEquip_Loadout_None(&can_equip, UNIT_HAND_RIGHT);
-        can_equip.archetype = archetype;
-        can_equip.hand      = Unit_Hand_Strong(unit);
 
-        /* Skip if unusable */
         if (!Unit_canEquip(unit, can_equip)) {
             // SDL_Log("Skip if unusable");
             continue;
@@ -227,39 +231,6 @@ void Unit_Rangemap_Toggle(struct Unit *unit) {
 
 }
 
-void Unit_Rangemap_Equipment(struct Unit *unit) {
-    /* 1- Weapon equipped in strong hand */
-    b32 stronghand = Unit_Hand_Strong(unit);
-    if (Unit_isEquipped(unit, stronghand) && unit->hands[stronghand]) {
-        Weapon_Load(unit->weapons_dtab, unit->_equipment[stronghand].id);
-        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[stronghand].id);
-        u16 type = wpn->item->type;
-
-        if (flagsum_isIn(type, ITEM_TYPE_STAFF) || flagsum_isIn(type, ITEM_TYPE_ITEM)) {
-            unit->rangemap = RANGEMAP_HEALMAP;
-        } else {
-            unit->rangemap = RANGEMAP_ATTACKMAP;
-        }
-        return;
-    }
-
-    /* 2- Weapon equipped in weak hand */
-    b32 weakhand = 1 - stronghand;
-    if (Unit_isEquipped(unit, weakhand) && unit->hands[weakhand]) {
-        Weapon_Load(unit->weapons_dtab, unit->_equipment[weakhand].id);
-        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[weakhand].id);
-        u16 type = wpn->item->type;
-
-        if (flagsum_isIn(type, ITEM_TYPE_STAFF) || flagsum_isIn(type, ITEM_TYPE_ITEM)) {
-            unit->rangemap = RANGEMAP_HEALMAP;
-        } else {
-            unit->rangemap = RANGEMAP_ATTACKMAP;
-        }
-
-        return;
-    }
-}
-
 void Unit_Rangemap_Default(struct Unit *unit) {
     int rangemap = unit->user_rangemap > RANGEMAP_NULL ? unit->user_rangemap : unit->rangemap;
     // Compute default rangemap priority
@@ -271,5 +242,4 @@ void Unit_Rangemap_Default(struct Unit *unit) {
     } else {
         unit->rangemap = RANGEMAP_ATTACKMAP;
     }
-
 }
