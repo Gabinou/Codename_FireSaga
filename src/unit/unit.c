@@ -765,31 +765,27 @@ i32 Unit_computeHit(struct Unit *unit, int distance) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
     i32 bonus   = 0, wpn_hit = 0;
-    i32 hit_L   = 0, hit_R   = 0;
+    i32 hits[MAX_ARMS_NUM] = {0};
     struct Weapon *weapon;
 
     /* Get stats of both weapons */
-    if (Unit_isEquipped(unit, UNIT_HAND_LEFT)) {
-        int id = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
-        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
-        hit_L   = Weapon_Stat_inRange(weapon, WEAPON_STAT_HIT, distance);
-    }
-    if (Unit_isEquipped(unit, UNIT_HAND_RIGHT)) {
-        int id = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
-        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
-        hit_R    = Weapon_Stat_inRange(weapon, WEAPON_STAT_HIT, distance);
+    for (i32 hand = 0; hand < unit->arms_num; hand++) {
+        if (!Unit_isEquipped(unit, hand))
+            continue;
+
+        int id      = Unit_Id_Equipped(unit, hand);
+        SDL_assert(Weapon_ID_isValid(id));
+        weapon      = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
+        /* Combine hit of both weapons */
+        hits[hand]  = Weapon_Stat_inRange(weapon, WEAPON_STAT_HIT, distance);
     }
 
-    /* Combine hit of both weapons */
-    wpn_hit = Equation_Weapon_Hit(hit_L, hit_R);
+    i32 hit = Equation_Weapon_Hitarr(hits, MAX_ARMS_NUM);
 
     /* Add all bonuses */
-    if (unit->bonus_stack != NULL) {
-        for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
-            bonus += unit->bonus_stack[i].computed_stats.hit;
-        }
+    SDL_assert(unit->bonus_stack != NULL);
+    for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
+        bonus += unit->bonus_stack[i].computed_stats.hit;
     }
 
     /* Compute hit */

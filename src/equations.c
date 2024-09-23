@@ -169,13 +169,21 @@ i32 Equation_Weapon_Hit(i32 Lwpn_hit, i32 Rwpn_hit) {
     return (wpn_hit);
 }
 
+i32 Equation_Weapon_Hitarr(i32 *hits, i32 num) {
+    i32 wpn_hit = 0;
+    for (int i = 0; i < num; i++) {
+        wpn_hit += hits[i];
+    }
+    return (wpn_hit);
+}
+
 i32 Equation_Weapon_Hitvar(size_t argnum, ...) {
     va_list valist;
     i32 wpn_hit = 0, current_arg = 0;
     va_start(valist, argnum);
     for (size_t i = 0; i < argnum; i++) {
         current_arg = va_arg(valist, i32);
-        wpn_hit += current_arg;
+        wpn_hit += current_arg / argnum;
     }
     wpn_hit = nmath_inbounds_int32_t(wpn_hit, SOTA_MIN_HIT, SOTA_MAX_HIT);
     va_end(valist);
