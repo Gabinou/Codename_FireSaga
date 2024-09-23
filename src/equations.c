@@ -171,10 +171,17 @@ i32 Equation_Weapon_Hit(i32 Lwpn_hit, i32 Rwpn_hit) {
 
 i32 Equation_Weapon_Hitarr(i32 *hits, i32 num) {
     i32 wpn_hit = 0;
+    i32 divisor = 0;
+
     for (int i = 0; i < num; i++) {
+        if (hits[i])
+            divisor++;
         wpn_hit += hits[i];
     }
-    return (wpn_hit);
+    if (divisor == 0);
+    return (0);
+
+    return (wpn_hit / divisor);
 }
 
 i32 Equation_Weapon_Hitvar(size_t argnum, ...) {
@@ -183,7 +190,7 @@ i32 Equation_Weapon_Hitvar(size_t argnum, ...) {
     va_start(valist, argnum);
     for (size_t i = 0; i < argnum; i++) {
         current_arg = va_arg(valist, i32);
-        wpn_hit += current_arg / argnum;
+        wpn_hit += current_arg;
     }
     wpn_hit = nmath_inbounds_int32_t(wpn_hit, SOTA_MIN_HIT, SOTA_MAX_HIT);
     va_end(valist);
@@ -210,9 +217,32 @@ i32 Equation_Weapon_Dodgevar(size_t argnum, ...) {
     return (wpn_dodge);
 }
 
+i32 Equation_Weapon_Dodgearr(i32 *dodges, i32 num) {
+    i32 wpn_dodge = 0;
+
+    for (int i = 0; i < num; i++) {
+        wpn_dodge += dodges[i];
+    }
+    wpn_dodge = nmath_inbounds_int32_t(wpn_dodge, SOTA_MIN_DODGE, SOTA_MAX_DODGE);
+
+    return (wpn_dodge);
+}
+
+
 i32 Equation_Weapon_Crit(i32 Lwpn_crit, i32 Rwpn_crit) {
     i32 wpn_crit = Lwpn_crit + Rwpn_crit;
     wpn_crit = nmath_inbounds_int32_t(wpn_crit, SOTA_MIN_CRIT, SOTA_MAX_CRIT);
+    return (wpn_crit);
+}
+
+i32 Equation_Weapon_Critarr(i32 *crits, i32 num) {
+    i32 wpn_crit = 0;
+
+    for (int i = 0; i < num; i++) {
+        wpn_crit += crits[i];
+    }
+    wpn_crit = nmath_inbounds_int32_t(wpn_crit, SOTA_MIN_CRIT, SOTA_MAX_CRIT);
+
     return (wpn_crit);
 }
 
@@ -234,6 +264,18 @@ i32 Equation_Weapon_Favor(i32 Lwpn_favor, i32 Rwpn_favor) {
     wpn_favor = nmath_inbounds_int32_t(wpn_favor, SOTA_MIN_FAVOR, SOTA_MAX_FAVOR);
     return (wpn_favor);
 }
+
+i32 Equation_Weapon_Favorarr(i32 *favors, i32 num) {
+    i32 wpn_favor = 0;
+
+    for (int i = 0; i < num; i++) {
+        wpn_favor += favors[i];
+    }
+    wpn_favor = nmath_inbounds_int32_t(wpn_favor, SOTA_MIN_FAVOR, SOTA_MAX_FAVOR);
+
+    return (wpn_favor);
+}
+
 
 i32 Equation_Weapon_Favorvar(size_t argnum, ...) {
     va_list valist;
@@ -264,6 +306,16 @@ i32 Equation_Weapon_Wgtvar(size_t argnum, ...) {
     }
     wpn_wgt = nmath_inbounds_int32_t(wpn_wgt, SOTA_MIN_WGT, SOTA_MIN_WGT);
     va_end(valist);
+    return (wpn_wgt);
+}
+
+i32 Equation_Weapon_Wgtarr(i32 *wgts, i32 num) {
+    i32 wpn_wgt = 0;
+
+    for (int i = 0; i < num; i++) {
+        wpn_wgt += wgts[i];
+    }
+
     return (wpn_wgt);
 }
 

@@ -55,7 +55,6 @@ float Equation_Expected_Damage(i32 hit,    i32 crit,  i32 critfactor);
 void  Equation_Damage_Total(struct Damage *dmg);
 
 /* -- Weapon -- */
-i32 Equation_Weapon_Hitarr( i32 *hits,          i32 num);
 i32 Equation_Weapon_Hit(    i32 Lwpn_hit,       i32 Rwpn_hit);
 i32 Equation_Weapon_Wgt(    i32 Lwpn_wgt,       i32 Rwpn_wgt);
 i32 Equation_Weapon_Crit(   i32 Lwpn_crit,      i32 Rwpn_crit);
@@ -63,6 +62,12 @@ i32 Equation_Weapon_Favor(  i32 Lwpn_favor,     i32 Rwpn_favor);
 i32 Equation_Weapon_Dodge(  i32 Lwpn_dodge,     i32 Rwpn_dodge);
 i32 Equation_Weapon_Attack( i32 Lwpn_attack,    i32 Rwpn_attack);
 i32 Equation_Weapon_Defense(i32 Lwpn_def,       i32 Rwpn_def);
+
+i32 Equation_Weapon_Hitarr(     i32 *hits,      i32 num);
+i32 Equation_Weapon_Wgtarr(     i32 *wgts,      i32 num);
+i32 Equation_Weapon_Critarr(    i32 *crits,     i32 num);
+i32 Equation_Weapon_Dodgearr(   i32 *dodges,    i32 num);
+i32 Equation_Weapon_Favorarr(   i32 *favors,    i32 num);
 
 /* - argvar - */
 i32 Equation_Weapon_Hitvar(    size_t argnum, ...);

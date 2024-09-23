@@ -764,7 +764,6 @@ i32 Unit_computeRegrets(struct Unit *unit) {
 i32 Unit_computeHit(struct Unit *unit, int distance) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
-    i32 bonus   = 0, wpn_hit = 0;
     i32 hits[MAX_ARMS_NUM] = {0};
     struct Weapon *weapon;
 
@@ -775,15 +774,16 @@ i32 Unit_computeHit(struct Unit *unit, int distance) {
 
         int id      = Unit_Id_Equipped(unit, hand);
         SDL_assert(Weapon_ID_isValid(id));
-        weapon      = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
+        weapon      = DTAB_GET(unit->weapons_dtab, id);
         /* Combine hit of both weapons */
         hits[hand]  = Weapon_Stat_inRange(weapon, WEAPON_STAT_HIT, distance);
     }
 
-    i32 hit = Equation_Weapon_Hitarr(hits, MAX_ARMS_NUM);
+    i32 wpn_hit = Equation_Weapon_Dodgearr(hits, MAX_ARMS_NUM);
 
     /* Add all bonuses */
     SDL_assert(unit->bonus_stack != NULL);
+    i32 bonus   = 0;
     for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
         bonus += unit->bonus_stack[i].computed_stats.hit;
     }
@@ -799,28 +799,23 @@ i32 Unit_computeDodge(struct Unit *unit, int distance) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
     i32 bonus       = 0, tile_dodge = 0;
-    i32 wgt_L       = 0, wgt_R      = 0;
-    i32 dodge_L     = 0, dodge_R    = 0;
-    i32 wpn_dodge   = 0, wpn_wgt    = 0;
+    i32 wgts[MAX_ARMS_NUM]      = {0};
+    i32 dodges[MAX_ARMS_NUM]    = {0};
     struct Weapon *weapon;
-    if (Unit_isEquipped(unit, UNIT_HAND_LEFT)) {
-        int id = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
-        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
-        dodge_L = Weapon_Stat_inRange(weapon, WEAPON_STAT_DODGE, distance);
-        wgt_L = Weapon_Stat(weapon, WEAPON_STAT_WGT);
-    }
-    if (Unit_isEquipped(unit, UNIT_HAND_RIGHT)) {
-        int id = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
-        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
-        dodge_R  = Weapon_Stat_inRange(weapon, WEAPON_STAT_DODGE, distance);
-        wgt_R  = Weapon_Stat(weapon, WEAPON_STAT_WGT);
+
+    for (i32 hand = 0; hand < unit->arms_num; hand++) {
+        if (!Unit_isEquipped(unit, hand))
+            continue;
+
+        int id          = Unit_Id_Equipped(unit, hand);
+        SDL_assert(Weapon_ID_isValid(id));
+        weapon          = DTAB_GET(unit->weapons_dtab, id);
+        dodges[hand]    = Weapon_Stat_inRange(weapon, WEAPON_STAT_DODGE, distance);
+        wgts[hand]      = Weapon_Stat(weapon, WEAPON_STAT_WGT);
     }
 
-    wpn_dodge = Equation_Weapon_Dodge(dodge_L, dodge_R);
-    /* weapons weight in both hands always added */
-    wpn_wgt   = Equation_Weapon_Wgt( wgt_L,   wgt_R);
+    i32 wpn_dodge   = Equation_Weapon_Dodgearr(dodges, MAX_ARMS_NUM);
+    i32 wpn_wgt     = Equation_Weapon_Wgtarr(wgts, MAX_ARMS_NUM);
 
     /* Add all bonuses */
     if (unit->bonus_stack != NULL) {
@@ -841,23 +836,20 @@ i32 Unit_computeCritical(struct Unit *unit, int distance) {
     SDL_assert(unit->weapons_dtab);
     // TODO: get support bonus
     i32 bonus = 0;
-    int crit_L = 0, crit_R = 0;
+    i32 crits[MAX_ARMS_NUM] = {0};
     struct Weapon *weapon;
 
-    if (Unit_isEquipped(unit, UNIT_HAND_LEFT)) {
-        int id = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
-        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
-        crit_L = Weapon_Stat_inRange(weapon, WEAPON_STAT_CRIT, distance);
-    }
-    if (Unit_isEquipped(unit, UNIT_HAND_RIGHT)) {
-        int id = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
-        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
-        crit_R  = Weapon_Stat_inRange(weapon, WEAPON_STAT_CRIT, distance);
+    for (i32 hand = 0; hand < unit->arms_num; hand++) {
+        if (!Unit_isEquipped(unit, hand))
+            continue;
+
+        int id          = Unit_Id_Equipped(unit, hand);
+        SDL_assert(Weapon_ID_isValid(id));
+        weapon          = DTAB_GET(unit->weapons_dtab, id);
+        crits[hand]     = Weapon_Stat_inRange(weapon, WEAPON_STAT_CRIT, distance);
     }
 
-    u8 wpn_crit = Equation_Weapon_Crit(crit_L, crit_R);
+    u8 wpn_crit = Equation_Weapon_Critarr(crits, MAX_ARMS_NUM);
 
     /* Add all bonuses */
     if (unit->bonus_stack != NULL) {
@@ -875,23 +867,21 @@ i32 Unit_computeFavor(struct Unit *unit, int distance) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
     i32 bonus = 0 ;
-    int favor_L = 0, favor_R = 0;
+    i32 favors[MAX_ARMS_NUM] = {0};
     struct Weapon *weapon;
 
-    if (Unit_isEquipped(unit, UNIT_HAND_LEFT)) {
-        int id = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
-        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
-        favor_L = Weapon_Stat_inRange(weapon, WEAPON_STAT_FAVOR, distance);
-    }
-    if (Unit_isEquipped(unit, UNIT_HAND_RIGHT)) {
-        int id = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
-        SDL_assert(unit->_equipment[id].id > ITEM_NULL);
-        weapon   = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
-        favor_R  = Weapon_Stat_inRange(weapon, WEAPON_STAT_FAVOR, distance);
+    for (i32 hand = 0; hand < unit->arms_num; hand++) {
+        if (!Unit_isEquipped(unit, hand))
+            continue;
+
+        int id          = Unit_Id_Equipped(unit, hand);
+        SDL_assert(Weapon_ID_isValid(id));
+        weapon          = DTAB_GET(unit->weapons_dtab, id);
+
+        favors[hand] = Weapon_Stat_inRange(weapon, WEAPON_STAT_FAVOR, distance);
     }
 
-    u8 wpn_favor = Equation_Weapon_Crit(favor_L, favor_R);
+    i32 wpn_favor = Equation_Weapon_Favorarr(favors, MAX_ARMS_NUM);
 
     /* Add all bonuses */
     if (unit->bonus_stack != NULL) {
