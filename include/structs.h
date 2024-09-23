@@ -20,11 +20,16 @@ struct Item;
 typedef i8(* use_function_t)(struct Item *, struct Unit *, struct Unit *);
 
 /* --- STRUCTS --- */
+/* -- Loadout -- */
+typedef struct Loadout {
+    i32 _loadout[MAX_ARMS_NUM] /* [ITEM_UNEQUIPPED, SOTA_EQUIPMENT_SIZE]*/;
+} Loadout;
+extern Loadout Loadout_default;
+
 /* -- Can Equip -- */
 // Input for canEquip function
 typedef struct canEquip {
-    // Loadout: -1 for any
-    i32 loadout[MAX_ARMS_NUM];
+    i32 loadout[MAX_ARMS_NUM] /* [ITEM_UNEQUIPPED, SOTA_EQUIPMENT_SIZE]*/;
 
     // Hand to equip to, considering loadout.
     i32 hand;
