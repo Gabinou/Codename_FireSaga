@@ -133,6 +133,12 @@ void Unit_Equip(Unit *unit, i32 hand, i32 eq) {
     unit->_equipped[hand] = eq2equipped(eq);
 }
 
+void Unit_Unequip_All(Unit *unit) {
+    SDL_assert(unit);
+    i64 bytesize = unit->arms_num * sizeof(*unit->_equipped);
+    memset(unit->_equipped, 0, bytesize);
+}
+
 void Unit_Unequip(struct Unit *unit, i32 hand) {
     SDL_assert(unit);
     SDL_assert(hand >= 0);

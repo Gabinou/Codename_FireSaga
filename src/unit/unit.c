@@ -427,9 +427,8 @@ b32 Unit_canDance(struct Unit *unit) {
     return (out);
 }
 
-/* - Unit has any usable staff in Equipment? - */
+/* - Unit has any staff in Equipment? - */
 int Unit_canStaff_Eq( struct  Unit *unit) {
-
     for (int i = 0; i < SOTA_EQUIPMENT_SIZE; i++) {
         struct Inventory_item item = unit->_equipment[i];
         if (Weapon_isStaff(item.id)) {
@@ -439,7 +438,7 @@ int Unit_canStaff_Eq( struct  Unit *unit) {
     return (false);
 }
 
-/* - Can unit equip a staff in strong hand? - */
+/* - Canstaff only if a staff is equipped in strong hand. - */
 int Unit_canStaff(struct Unit *unit) {
     i32 stronghand = Unit_Hand_Strong(unit);
     b32 out = false;
@@ -459,7 +458,6 @@ b32 Unit_canStaff_oneHand(Unit *unit) {
 b32 Unit_canMagic_oneHand(Unit *unit) {
     return (Unit_hasSkill(unit, PASSIVE_SKILL_MAGIC_ONE_HAND));
 }
-
 
 /* - Any Weapon to attack with in equipment - */
 b32 Unit_canAttack_Eq(struct Unit *unit) {
@@ -535,7 +533,7 @@ i32 *Unit_Shield_Protection(struct Unit *unit, i32 hand) {
     if (!Unit_isEquipped(unit, hand))
         return (NULL);
 
-    i16 id = Unit_Item_Equipped(unit, hand)->id;
+    i16 id = Unit_Id_Equipped(unit, hand);
     SDL_assert(Weapon_ID_isValid(id));
     Weapon_Load(unit->weapons_dtab, id);
     struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);
@@ -1058,8 +1056,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
 
     /* -- Drop everything, unequip all -- */
     Unit_Equipment_Drop(unit);
-    Unit_Unequip(unit, UNIT_HAND_LEFT);
-    Unit_Unequip(unit, UNIT_HAND_RIGHT);
+    Unit_Unequip_All(unit);
 
     /* -- Load equipment -- */
     cJSON *jitem;
@@ -1071,23 +1068,19 @@ void Unit_readJSON(void *input,  cJSON *junit) {
         }
     }
 
-    Unit_Unequip(unit, UNIT_HAND_LEFT);
-    Unit_Unequip(unit, UNIT_HAND_RIGHT);
-
     /* -- Equip -- */
-    if (unit->_equipment[UNIT_HAND_LEFT].id != ITEM_NULL) {
-        if (Weapon_ID_isValid(unit->_equipment[UNIT_HAND_LEFT].id)) {
-            Unit_Equip(unit, UNIT_HAND_LEFT, UNIT_HAND_LEFT);
-        }
-    }
-    if (unit->_equipment[UNIT_HAND_RIGHT].id != ITEM_NULL) {
-        if (Weapon_ID_isValid(unit->_equipment[UNIT_HAND_RIGHT].id)) {
-            Unit_Equip(unit, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
-        }
+    for (i32 hand = 0; hand < unit->arms_num; hand++) {
+        if (unit->_equipment[hand].id <= ITEM_NULL)
+            continue;
+
+        if (!Weapon_ID_isValid(unit->_equipment[hand].id))
+            continue;
+
+        Unit_Equip(unit, hand, hand);
     }
 }
 
-void Unit_writeJSON( void *input, cJSON *junit) {
+void Unit_writeJSON(void *input, cJSON *junit) {
     struct Unit *unit = (struct Unit *)input;
     SDL_assert(unit);
     SDL_assert(junit);

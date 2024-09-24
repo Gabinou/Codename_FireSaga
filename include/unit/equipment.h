@@ -51,6 +51,7 @@ i32 Unit_Eq_Equipped(Unit *unit, i32 eq);
 /* --- Equipping --- */
 void    Unit_Equip(     Unit *u, i32 h, i32 eq);
 void    Unit_Unequip(   Unit *u, i32 h);
+void    Unit_Unequip_All(Unit *u);
 b32     Unit_isEquipped(Unit *u, i32 h);
 b32     Unit_anyWeapon_Equipped(Unit *u, i32 h);
 
