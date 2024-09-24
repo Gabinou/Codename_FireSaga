@@ -69,8 +69,6 @@ void test_menu_loadout_select_unit(void) {
     canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  Unit_Eq_Equipped(wsm->unit, UNIT_HAND_LEFT));
     canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, Unit_Eq_Equipped(wsm->unit, UNIT_HAND_RIGHT));
 
-    SDL_Log("loadout %d %d", can_equip.loadout[UNIT_HAND_LEFT], can_equip.loadout[UNIT_HAND_RIGHT]);
-
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     Unit_canEquip_Equipment(wsm->unit, can_equip);
     SDL_assert(Silou.num_canEquip > 0);

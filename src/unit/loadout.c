@@ -11,7 +11,7 @@ i32 eq2equipped(i32 eq) {
 
 i32 equipped2eq(i32 equipped) {
     SDL_assert(equipped >= ITEM1_EQUIPPED);
-    SDL_assert(equipped <= ITEM1_EQUIPPED);
+    SDL_assert(equipped <= ITEM6_EQUIPPED);
     return (equipped - ITEM_EQUIPPED_DIFF);
 }
 

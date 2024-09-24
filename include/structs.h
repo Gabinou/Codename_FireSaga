@@ -22,7 +22,7 @@ typedef i32(* use_function_t)(struct Item *, struct Unit *, struct Unit *);
 /* --- STRUCTS --- */
 /* -- Loadout -- */
 typedef struct Loadout {
-    i32 _loadout[MAX_ARMS_NUM] /* [ITEM_UNEQUIPPED, SOTA_EQUIPMENT_SIZE]*/;
+    i32 _loadout[MAX_ARMS_NUM]; /* [ITEM_UNEQUIPPED, SOTA_EQUIPMENT_SIZE] */
 } Loadout;
 extern Loadout Loadout_default;
 
@@ -646,7 +646,7 @@ typedef struct Unit {
 
     i32     arms_num;
     b32     hands[SOTA_EQUIPMENT_SIZE];     /* Does unit have hands?             */
-    i32 _equipped[SOTA_EQUIPMENT_SIZE];
+    i32 _equipped[SOTA_EQUIPMENT_SIZE];  /* [ITEM_UNEQUIPPED, SOTA_EQUIPMENT_SIZE] */
 
     s8 *skill_names;
 
