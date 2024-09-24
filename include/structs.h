@@ -17,7 +17,7 @@ struct Unit;
 struct Item;
 
 /* --- FUNCTIONS --- */
-typedef i8(* use_function_t)(struct Item *, struct Unit *, struct Unit *);
+typedef i32(* use_function_t)(struct Item *, struct Unit *, struct Unit *);
 
 /* --- STRUCTS --- */
 /* -- Loadout -- */

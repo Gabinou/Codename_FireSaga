@@ -86,52 +86,52 @@ use_function_t item_effect_funcs[ITEM_EFFECT_NUM] = {
 };
 
 /* --- USE_EFFECTS --- */
-i8 useEffect_STAFF_HEAL(struct Item *item,
-                        struct Unit *user,
-                        struct Unit *target) {
+i32 useEffect_STAFF_HEAL(struct Item *item,
+                         struct Unit *user,
+                         struct Unit *target) {
     // HEALING ITEMS CAN BE USED ON OTHER UNITS/PEGASUSES/ENEMIES.
     u8 healing = Equation_Staff_Healing(item->stats.AP, user->current_stats.mag);
     Unit_getsHealed(target, healing);
     return (-1);
 }
 
-i8 useEffect_USE_DIVINE_SHIELD(struct Item *item,
-                               struct Unit *user,
-                               struct Unit *target) {
+i32 useEffect_USE_DIVINE_SHIELD(struct Item *item,
+                                struct Unit *user,
+                                struct Unit *target) {
     target->divine_shield = true;
     return (-1);
 }
 
-i8 useEffect_BLOW_HORN(struct Item *item,
-                       struct Unit *user,
-                       struct Unit *target) {
+i32 useEffect_BLOW_HORN(struct Item *item,
+                        struct Unit *user,
+                        struct Unit *target) {
     return (-1);
 }
 
-i8 useEffect_USE_PROMOTE(struct Item *item,
-                         struct Unit *user,
-                         struct Unit *target) {
+i32 useEffect_USE_PROMOTE(struct Item *item,
+                          struct Unit *user,
+                          struct Unit *target) {
     // Unit_Promote(unit, i8 new_class_index);
     return (-1);
 }
 
-i8 useEffect_USE_LVL_UP(struct Item *item,
-                        struct Unit *user,
-                        struct Unit *target) {
+i32 useEffect_USE_LVL_UP(struct Item *item,
+                         struct Unit *user,
+                         struct Unit *target) {
     Unit_lvlUp(user);
     return (-1);
 }
 
-i8 useEffect_USE_GAIN_SKILL(struct Item *item,
-                            struct Unit *user,
-                            struct Unit *target) {
+i32 useEffect_USE_GAIN_SKILL(struct Item *item,
+                             struct Unit *user,
+                             struct Unit *target) {
     target->skills += item->stats.AP;
     return (-1);
 }
 
-i8 useEffect_USE_GAIN_STATS(struct Item *item,
-                            struct Unit *user,
-                            struct Unit *target) {
+i32 useEffect_USE_GAIN_STATS(struct Item *item,
+                             struct Unit *user,
+                             struct Unit *target) {
     switch (item->id) {
         case ITEM_ID_TALISMAN_HP:
             target->current_stats.hp += item->stats.AP;
@@ -173,15 +173,15 @@ i8 useEffect_USE_GAIN_STATS(struct Item *item,
     return (-1);
 }
 
-i8 useEffect_CALL_PEGASUS(struct Item *item,
-                          struct Unit *user,
-                          struct Unit *target) {
+i32 useEffect_CALL_PEGASUS(struct Item *item,
+                           struct Unit *user,
+                           struct Unit *target) {
     return (-1);
 }
 
-i8 useEffect_CALL_HORSE(struct Item *item,
-                        struct Unit *user,
-                        struct Unit *target) {
+i32 useEffect_CALL_HORSE(struct Item *item,
+                         struct Unit *user,
+                         struct Unit *target) {
     return (-1);
 }
 

@@ -12,16 +12,16 @@ void Loadout_Set(Loadout *loadout, i32 hand, i32 eq) {
 i32 Loadout_Eq(Loadout *loadout, i32 hand) {
     SDL_assert(hand >= 0);
     SDL_assert(hand < MAX_ARMS_NUM);
-    return(loadout->_loadout[hand] - ITEM_EQUIPPED_DIFF);
+    return (loadout->_loadout[hand] - ITEM_EQUIPPED_DIFF);
 }
 
 i32 Loadout_isEquipped(Loadout *loadout, i32 hand) {
     SDL_assert(hand >= 0);
     SDL_assert(hand < MAX_ARMS_NUM);
-    return(loadout->_loadout[hand] > ITEM_UNEQUIPPED);
+    return (loadout->_loadout[hand] > ITEM_UNEQUIPPED);
 }
 
-void Loadout_None(canEquip *can_equip, i32 hand) {
+void Loadout_None(Loadout *loadout, i32 hand) {
     SDL_assert(hand >= 0);
     SDL_assert(hand < MAX_ARMS_NUM);
     loadout->_loadout[hand] = ITEM_UNEQUIPPED;

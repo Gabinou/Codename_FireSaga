@@ -87,7 +87,7 @@ enum ITEM_EFFECTS_ORDER {
 };
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) i8 useEffect_##x(struct Item *i, struct Unit *u, struct Unit *t);
+#define REGISTER_ENUM(x, y) i32 useEffect_##x(struct Item *i, struct Unit *u, struct Unit *t);
 #include "names/items_effects.h"
 #undef REGISTER_ENUM
 
