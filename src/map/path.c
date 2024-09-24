@@ -125,15 +125,15 @@ i32 *Map_Healtolist_Compute(struct Map   *map) {
 }
 
 i32 *Map_Healtomap_Compute_wLoadout(struct Map *map, tnecs_world *world, tnecs_entity ent,
-                                    b32 move, int lh, int rh) {
+                                    b32 move, Loadout *loadout) {
     struct Unit     *unit = TNECS_GET_COMPONENT(world, ent, Unit);
 
     /* Save starting equipment */
     i32 start_equipped[UNIT_ARMS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
 
-    Unit_Equip(unit, UNIT_HAND_LEFT,    lh);
-    Unit_Equip(unit, UNIT_HAND_RIGHT,   rh);
+    /* Compute healmap with input loadout */
+    Unit_Loadout_Import(unit, loadout);
     i32 *out = Map_Healtomap_Compute(map, world, ent, move, true);
 
     /* Restore starting equipment */
@@ -180,15 +180,15 @@ i32 *Map_Attackfromlist_Compute(struct Map *map) {
 }
 
 i32 *Map_Attacktomap_Compute_wLoadout(struct Map *map, tnecs_world *world, tnecs_entity ent,
-                                      b32 move, int lh, int rh) {
+                                      b32 move, Loadout *loadout) {
     struct Unit     *unit = TNECS_GET_COMPONENT(world, ent, Unit);
 
     /* Save starting equipment */
     i32 start_equipped[UNIT_ARMS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
 
-    Unit_Equip(unit, UNIT_HAND_LEFT,    lh);
-    Unit_Equip(unit, UNIT_HAND_RIGHT,   rh);
+    /* Compute healmap with input loadout */
+    Unit_Loadout_Import(unit, loadout);
     i32 *out = Map_Attacktomap_Compute(map, world, ent, move, true);
 
     /* Restore starting equipment */

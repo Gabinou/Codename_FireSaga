@@ -65,6 +65,7 @@ void canEquip_Loadout_None(canEquip *can_equip, i32 hand) {
 
 /* --- Importing/Exporting --- */
 /* Importing and exporting equipped for wloadout functions */
+
 void Unit_Equipped_Import(Unit *unit, i32 *_loadout) {
     size_t bytesize = unit->arms_num * sizeof(*_loadout);
     memcpy(unit->_equipped, _loadout, bytesize);
@@ -75,10 +76,12 @@ void Unit_Equipped_Export(Unit *unit, i32 *_loadout) {
     memcpy(_loadout, unit->_equipped, bytesize);
 }
 
+/* Unit <- Loadout */
 void Unit_Loadout_Import(Unit *unit, Loadout *loadout) {
     Unit_Equipped_Import(unit, loadout->_loadout);
 }
 
+/* Unit -> Loadout */
 void Unit_Loadout_Export(Unit *unit, Loadout *loadout) {
     Unit_Equipped_Export(unit, loadout->_loadout);
 }

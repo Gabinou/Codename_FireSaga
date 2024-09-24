@@ -323,9 +323,13 @@ void Game_postLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
                && (lsm->selected[UNIT_HAND_LEFT] < SOTA_EQUIPMENT_SIZE));
     SDL_assert((lsm->selected[UNIT_HAND_RIGHT] >= 0)
                && (lsm->selected[UNIT_HAND_RIGHT] < SOTA_EQUIPMENT_SIZE));
-    Map_Attacktomap_Compute_wLoadout(sota->map, sota->world, actor, false,
-                                     lsm->selected[UNIT_HAND_LEFT],
-                                     lsm->selected[UNIT_HAND_RIGHT]);
+
+
+    Loadout loadout = Loadout_default;
+    Loadout_Set(&loadout, UNIT_HAND_LEFT, lsm->selected[UNIT_HAND_LEFT]);
+    Loadout_Set(&loadout, UNIT_HAND_RIGHT, lsm->selected[UNIT_HAND_RIGHT]);
+
+    Map_Attacktomap_Compute_wLoadout(sota->map, sota->world, actor, false, &loadout);
 
     // matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
     Map_Attacktolist_Compute(sota->map);

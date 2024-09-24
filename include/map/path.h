@@ -59,9 +59,9 @@ i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_world *w, tnecs_entity a,
                                tnecs_entity d, b32 m, b32 e);
 
 i32 *Map_Healtomap_Compute_wLoadout(  struct Map *map, tnecs_world *w,
-                                      tnecs_entity u, b32 m, int lh, int rh);
+                                      tnecs_entity u, b32 m, Loadout *l);
 i32 *Map_Attacktomap_Compute_wLoadout(struct Map *map, tnecs_world *w,
-                                      tnecs_entity u, b32 m, int lh, int rh);
+                                      tnecs_entity u, b32 m, Loadout *l);
 
 i32 *_Map_tomap_Compute(i32 *tomap,         i32 *mvtmat,  tnecs_entity *unitmap,
                         u8   row_len,       u8   col_len, i32  mv,
