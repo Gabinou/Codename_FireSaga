@@ -95,26 +95,6 @@ void Unit_Item_Trade(struct Unit   *giver,  struct Unit *taker,
     Unit_Item_Takeat(giver, buffer_taker, eq_g);
 }
 
-/* Importing and exporting equipped for wloadout functions */
-void Unit_Equipped_Import(Unit *unit, i32 *equipped) {
-    size_t bytesize = unit->arms_num * sizeof(*equipped);
-    memcpy(unit->_equipped, equipped, bytesize);
-}
-
-void Unit_Equipped_Export(Unit *unit, i32 *equipped) {
-    size_t bytesize = unit->arms_num * sizeof(*equipped);
-    memcpy(equipped, unit->_equipped, bytesize);
-}
-
-/* Importing and exporting equipment */
-void Unit_Equipment_Import(struct Unit *unit, struct Inventory_item *equipment) {
-    Equipment_Copy(unit->_equipment, equipment, SOTA_EQUIPMENT_SIZE);
-}
-
-void Unit_Equipment_Export(struct Unit *unit, struct Inventory_item *equipment) {
-    Equipment_Copy(equipment, unit->_equipment, SOTA_EQUIPMENT_SIZE);
-}
-
 /* Checking equipped for errors broken items */
 void _Unit_Check_Equipped(struct Unit *unit, i32 hand) {
     if (!Unit_isEquipped(unit, hand))

@@ -36,13 +36,6 @@ Inventory_item Unit_Item_Drop(Unit *u, i32 ind1);
 void Unit_Equipment_Drop(Unit *u);
 /* TODO: Remove. No swapping -> no need to export equipment*/
 
-/* -- Importing/Exporting -- */
-void Unit_Equipment_Import(Unit *u, Inventory_item *equipment);
-void Unit_Equipment_Export(Unit *u, Inventory_item *equipment);
-
-void Unit_Equipped_Import(Unit *u, i32 *equipped);
-void Unit_Equipped_Export(Unit *u, i32 *equipped);
-
 /* -- Getters -- */
 Weapon *Unit_Weapon(         Unit *u, i32 eq);
 Item   *Unit_Get_Item(       Unit *u, i32 eq);
