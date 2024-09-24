@@ -100,7 +100,7 @@ i32 *Unit_computeDefense(Unit *u);
 Unit_stats Unit_effectiveStats(   Unit *u);
 Unit_stats Unit_effectiveGrowths( Unit *u);
 struct Computed_Stats Unit_computedStats(Unit *u, int dist);
-struct Computed_Stats Unit_computedStats_wLoadout(Unit *u, int lh, int rh, int dist);
+struct Computed_Stats Unit_computedStats_wLoadout(Unit *u, Loadout *loadout, int dist);
 
 /* --- Debug Utils --- */
 void Unit_Cap_Stats(    Unit *u);

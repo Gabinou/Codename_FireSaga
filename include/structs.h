@@ -233,7 +233,7 @@ typedef struct Computed_Stats {
     i32 move;
     i32 speed; /* relative to agi so +/- */
     i32 agony;
-    struct Range range_equipment;    /* Range of all equipment */
+    struct Range range_equipment;   /* Range of all equipment */
     struct Range range_loadout;     /* Range of equipped weapons */
     // issue:       What about staff AND weapon equipped?
     // Solution:

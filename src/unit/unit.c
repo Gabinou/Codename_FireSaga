@@ -594,7 +594,7 @@ i32 *Unit_computeAttack(struct Unit *unit, int distance) {
 
     struct Weapon *weapon;
     /* Get stats of both weapons */
-    for (i32 hand = 0; hand < unit->arms_num; hand++) {
+    for (i32 hand   = 0; hand < unit->arms_num; hand++) {
         if (!Unit_isEquipped(unit, hand))
             continue;
 
@@ -685,21 +685,15 @@ void Unit_Equipment_Print( struct Unit *unit) {
     }
 }
 
-struct Computed_Stats Unit_computedStats_wLoadout(struct Unit *unit, int lh, int rh, int dist) {
+struct Computed_Stats Unit_computedStats_wLoadout(Unit *unit, Loadout *loadout, int dist) {
     /* Save starting equipment */
     i32 start_equipped[UNIT_ARMS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
 
-    if ((lh >= 0) && (lh < SOTA_EQUIPMENT_SIZE)) {
-        Unit_Equip(unit, UNIT_HAND_LEFT,    lh);
-        SDL_assert(Unit_Eq_Equipped(unit, UNIT_HAND_LEFT) == lh);
-    }
-    if ((rh >= 0) && (rh < SOTA_EQUIPMENT_SIZE)) {
-        Unit_Equip(unit, UNIT_HAND_RIGHT,   rh);
-        SDL_assert(Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT) == rh);
-    }
-
+    /* Compute stats with input loadout */
+    Unit_Loadout_Import(unit, loadout);
     Unit_computedStats(unit, dist);
+
     /* Restore starting equipment */
     Unit_Equipped_Import(unit, start_equipped);
 
@@ -707,17 +701,19 @@ struct Computed_Stats Unit_computedStats_wLoadout(struct Unit *unit, int lh, int
 }
 
 /* Computed stats at distance (-1 is always in range) */
+// Implicitely for weapons. Staves only care about range -> compute directly.
 struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance) {
     SDL_assert(unit);
     if (!unit->update_stats) {
         return (unit->computed_stats);
     }
 
-    /* check if no weapons in hand*/
-    if (Unit_isEquipped(unit, UNIT_HAND_LEFT) || Unit_isEquipped(unit, UNIT_HAND_RIGHT)) {
+    /* Weapon-dependent stats */
+    if (Unit_canAttack(unit)) {
         Unit_computeHit(     unit,  distance);
         Unit_computeAttack(  unit,  distance);
         Unit_computeCritical(unit,  distance);
+        Unit_Range_Loadout(unit, ITEM_ARCHETYPE_WEAPON);
     } else {
         unit->computed_stats.attack[DMG_TYPE_PHYSICAL] = 0;
         unit->computed_stats.attack[DMG_TYPE_MAGICAL]  = 0;
@@ -730,6 +726,7 @@ struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance) {
         unit->computed_stats.range_loadout.min         = 0;
         unit->computed_stats.range_loadout.max         = 0;
     }
+    
     /* Distance-dependent stats */
     Unit_computeSpeed(unit,   distance);
     Unit_computeDodge(unit,   distance);
@@ -740,8 +737,6 @@ struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance) {
     Unit_computeAgony(unit);
     Unit_computeDefense(unit);
     Unit_computeRegrets(unit);
-    // Staves don't change stats -> ITEM_ARCHETYPE_WEAPON only;
-    Unit_Range_Loadout(unit, ITEM_ARCHETYPE_WEAPON);
 
     return (unit->computed_stats);
 }
@@ -1164,7 +1159,7 @@ i32 Unit_computeEffectivefactor(struct Unit *attacker, struct Unit *defender) {
 
 /* Compute Brave factor, c-a-d combat attack multiplier in all combat phases
     Function computes the highest brave factor among equipped weapons.
-    This means that -> Brave factor DOES NOT STACK <-
+    This means that -> Brave factor DOES NOT STACK. <-
 */
 u8 Unit_Brave(struct Unit *unit) {
     SDL_assert(unit);
@@ -1172,6 +1167,7 @@ u8 Unit_Brave(struct Unit *unit) {
     u64 temp_effect = 0;
     struct Weapon *weapon;
     // TODO: use AP to compute brave factor
+    // TODO: Brave for all hands
     if (Unit_isEquipped(unit, UNIT_HAND_LEFT)) {
         int id = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
         weapon = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
