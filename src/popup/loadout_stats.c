@@ -434,14 +434,14 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
                                                SDL_Renderer *renderer) {
     /* - EQUIPPED WEAPONS NAMES - */
     /* Left hand */
-    // SDL_Log("DRAW %d %d", pls->item_left, pls->item_right);
+    // SDL_Log("DRAW %d %d", pls->eq_left, pls->eq_right);
     do {
-        if ((pls->item_left < ITEM_UNEQUIPPED) || (pls->item_left >= SOTA_EQUIPMENT_SIZE))
+        if ((pls->eq_left < ITEM_UNEQUIPPED) || (pls->eq_left >= SOTA_EQUIPMENT_SIZE))
             break;
         if (pls->unit->weapons_dtab == NULL)
             break;
 
-        struct Inventory_item *item = Unit_InvItem(pls->unit, pls->item_left);
+        struct Inventory_item *item = Unit_InvItem(pls->unit, pls->eq_left);
         int x = PLS_NAMEL_X;
         int y = PLS_NAMEL_Y + pls->ly_offset;
         int width;
@@ -471,13 +471,13 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
         if (pls->twoHanding)
             break;
 
-        if ((pls->item_right <= ITEM_UNEQUIPPED) || (pls->item_right >= SOTA_EQUIPMENT_SIZE))
+        if ((pls->eq_right <= ITEM_UNEQUIPPED) || (pls->eq_right >= SOTA_EQUIPMENT_SIZE))
             break;
 
         if (pls->unit->weapons_dtab == NULL)
             break;
 
-        struct Inventory_item *item = Unit_InvItem(pls->unit, pls->item_right);
+        struct Inventory_item *item = Unit_InvItem(pls->unit, pls->eq_right);
         int x = PLS_NAMER_X;
         int y = PLS_NAMER_Y + pls->ry_offset;
         int width;
@@ -581,7 +581,7 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
     SDL_assert(pls->unit->weapons_dtab != NULL);
 
     /* Left hand item type */
-    struct Inventory_item *item = Unit_InvItem(pls->unit, pls->item_left);
+    struct Inventory_item *item = Unit_InvItem(pls->unit, pls->eq_left);
     if (Weapon_ID_isValid(item->id)) {
         Weapon_Load(pls->unit->weapons_dtab, item->id);
         pls->type_left = Weapon_TypeExp(DTAB_GET(pls->unit->weapons_dtab, item->id));
@@ -590,7 +590,7 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
     }
 
     /* Right hand item type */
-    item = Unit_InvItem(pls->unit, pls->item_right);
+    item = Unit_InvItem(pls->unit, pls->eq_right);
     if (Weapon_ID_isValid(item->id)) {
         Weapon_Load(pls->unit->weapons_dtab, item->id);
         pls->type_right = Weapon_TypeExp(DTAB_GET(pls->unit->weapons_dtab, item->id));
@@ -605,9 +605,9 @@ void PopUp_Loadout_Stats_Unit(struct PopUp_Loadout_Stats *pls, struct Unit *unit
     SDL_assert(unit != NULL);
     pls->unit = unit;
     int eq_left = unit->eq_canEquip[unit->_equipped[UNIT_HAND_LEFT]];
-    pls->item_left  = ITEM_UNEQUIPPED;
+    pls->eq_left  = ITEM_UNEQUIPPED;
     int eq_right = unit->eq_canEquip[unit->_equipped[UNIT_HAND_RIGHT]];
-    pls->item_right = ITEM_UNEQUIPPED;
+    pls->eq_right = ITEM_UNEQUIPPED;
 
     Unit_Unequip(unit, UNIT_HAND_LEFT);
     Unit_Unequip(unit, UNIT_HAND_RIGHT);
@@ -621,8 +621,11 @@ void PopUp_Loadout_Stats_Previous(struct PopUp_Loadout_Stats *pls) {
     /* Compute loadout stats of "previous" loadout to compare against */
     PopUp_Loadout_Stats_ItemTypes(pls);
 
+    Loadout loadout = Loadout_default;
+    Loadout_Set(&loadout, UNIT_HAND_LEFT, pls->eq_left);
+    Loadout_Set(&loadout, UNIT_HAND_RIGHT, pls->eq_right);
     pls->previous_cs = Unit_computedStats_wLoadout(pls->unit,
-                                                   pls->item_left, pls->item_right,
+                                                   &loadout,
                                                    pls->distance);
     pls->update      = true;
 }
@@ -630,9 +633,12 @@ void PopUp_Loadout_Stats_Previous(struct PopUp_Loadout_Stats *pls) {
 void PopUp_Loadout_Stats_New(struct PopUp_Loadout_Stats *pls) {
     /* Compute loadout stats of "new" loadout compared with "previous" loadout */
     PopUp_Loadout_Stats_ItemTypes(pls);
-    SDL_Log("pls->unit %d %d", pls->unit->_equipped[0], pls->unit->_equipped[1]);
+
+    Loadout loadout = Loadout_default;
+    Loadout_Set(&loadout, UNIT_HAND_LEFT, pls->eq_left);
+    Loadout_Set(&loadout, UNIT_HAND_RIGHT, pls->eq_right);
     pls->new_cs     = Unit_computedStats_wLoadout(pls->unit,
-                                                  pls->item_left, pls->item_right,
+                                                  &loadout,
                                                   pls->distance);
     pls->update     = true;
     pls->twoHanding = Unit_istwoHanding(pls->unit);
@@ -656,16 +662,16 @@ void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls, struct LoadoutSe
     if (wsm->selected[stronghand] == ITEM_UNEQUIPPED)  {
         /* Stronghand selected */
         if (stronghand == UNIT_HAND_LEFT) {
-            pls->item_left  = pls->unit->eq_canEquip[elem];
+            pls->eq_left  = pls->unit->eq_canEquip[elem];
         } else {
-            pls->item_right = pls->unit->eq_canEquip[elem];
+            pls->eq_right = pls->unit->eq_canEquip[elem];
         }
     } else {
         /* Weakhand selected */
         if (weakhand == UNIT_HAND_LEFT) {
-            pls->item_left  = pls->unit->eq_canEquip[elem];
+            pls->eq_left  = pls->unit->eq_canEquip[elem];
         } else {
-            pls->item_right = pls->unit->eq_canEquip[elem];
+            pls->eq_right = pls->unit->eq_canEquip[elem];
         }
     }
 }
@@ -681,26 +687,26 @@ void PopUp_Loadout_Stats_Select(struct PopUp_Loadout_Stats *pls, struct LoadoutS
     /* - Select item - */
     int stronghand = Unit_Hand_Strong(pls->unit);
     int weakhand   = 1 - stronghand;
-    pls->item_left  = -1;
-    pls->item_right = -1;
+    pls->eq_left  = -1;
+    pls->eq_right = -1;
     if ((wsm->selected[stronghand] >= 0) && (wsm->selected[stronghand] < SOTA_EQUIPMENT_SIZE))  {
         /* Stronghand selected */
         if (stronghand == UNIT_HAND_LEFT) {
-            pls->item_left  = wsm->selected[stronghand];
+            pls->eq_left  = wsm->selected[stronghand];
         } else {
-            pls->item_right = wsm->selected[stronghand];
+            pls->eq_right = wsm->selected[stronghand];
         }
     }
 
     if ((wsm->selected[weakhand] >= 0) && (wsm->selected[weakhand] < SOTA_EQUIPMENT_SIZE))  {
         /* Weakhand selected */
         if (weakhand == UNIT_HAND_LEFT) {
-            pls->item_left  = wsm->selected[weakhand];
+            pls->eq_left  = wsm->selected[weakhand];
         } else {
-            pls->item_right = wsm->selected[weakhand];
+            pls->eq_right = wsm->selected[weakhand];
         }
     }
-    SDL_Log("pls->item_left %d %d", pls->item_left, pls->item_right);
+    SDL_Log("pls->eq_left %d %d", pls->eq_left, pls->eq_right);
 }
 
 /* --- Rendering --- */

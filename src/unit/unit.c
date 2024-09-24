@@ -726,7 +726,7 @@ struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance) {
         unit->computed_stats.range_loadout.min         = 0;
         unit->computed_stats.range_loadout.max         = 0;
     }
-    
+
     /* Distance-dependent stats */
     Unit_computeSpeed(unit,   distance);
     Unit_computeDodge(unit,   distance);

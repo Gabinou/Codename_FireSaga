@@ -478,9 +478,9 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     /* - Compute new attackmap with equipped - */
     int rangemap = Unit_Rangemap_Get(wsm->unit);
     // Map_Attacktomap_Compute_wLoadout(sota->map, sota->world, sota->aggressor, false,
-    //                                  pls->item_left, pls->item_right);
+    //                                  pls->eq_left, pls->eq_right);
     // Map_Healtomap_Compute_wLoadout(sota->map, sota->world, sota->aggressor, false,
-    //                                pls->item_left, pls->item_right);
+    //                                pls->eq_left, pls->eq_right);
 
     if (rangemap        == RANGEMAP_HEALMAP) {
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL);
@@ -655,9 +655,9 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     LoadoutSelectMenu_Deselect(wsm);
     // /* Set previous_cs to new loadout */
     if (weakhand == UNIT_HAND_LEFT) {
-        pls->item_left  = pls->equipped[UNIT_HAND_LEFT];
+        pls->eq_left  = pls->equipped[UNIT_HAND_LEFT];
     } else {
-        pls->item_right = pls->equipped[UNIT_HAND_RIGHT];
+        pls->eq_right = pls->equipped[UNIT_HAND_RIGHT];
     }
 
     PopUp_Loadout_Stats_Previous(pls);
@@ -1046,9 +1046,9 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
     /* - Compute new attackmap with equipped - */
     int rangemap = Unit_Rangemap_Get(wsm->unit);
     // Map_Attacktomap_Compute_wLoadout(sota->map, sota->world, sota->aggressor, false,
-    //                                  pls->item_left, pls->item_right);
+    //                                  pls->eq_left, pls->eq_right);
     // Map_Healtomap_Compute_wLoadout(sota->map, sota->world, sota->aggressor, false,
-    //                                pls->item_left, pls->item_right);
+    //                                pls->eq_left, pls->eq_right);
 
     if (rangemap        == RANGEMAP_HEALMAP) {
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL);

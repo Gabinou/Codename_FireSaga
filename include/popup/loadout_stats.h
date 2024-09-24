@@ -180,8 +180,8 @@ typedef struct PopUp_Loadout_Stats {
     struct Computed_Stats previous_cs;
     struct Computed_Stats new_cs;
     int equipped[UNIT_ARMS_NUM];
-    int item_left;  /* item side space */
-    int item_right; /* item side space */
+    int eq_left;  /* item side space */
+    int eq_right; /* item side space */
     i16 type_left;
     i16 type_right;
     int ly_offset;

@@ -76,8 +76,8 @@ void test_popup_loadout_stats() {
     Weapon_Load(weapons_dtab, item.id);
     Unit_Item_Takeat(&unit, item, 1);
     pls.type_left   = ITEM_TYPE_EXP_SWORD;
-    pls.item_left   = 0;
-    pls.item_right  = 1;
+    pls.eq_left   = 0;
+    pls.eq_right  = 1;
 
     pls.l_equip_override    = false;
     pls.r_equip_override    = true;
