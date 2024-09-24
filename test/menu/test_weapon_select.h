@@ -4,7 +4,7 @@
 #include "unit/unit.h"
 #include "RNG.h"
 
-void test_menu_loadout_select_unit(void) {
+void test_menu_loadout_select(void) {
     // Test with arbirary values
 
     /* -- Preliminaries -- */
@@ -281,8 +281,6 @@ void test_menu_loadout_select_unit(void) {
                                       "WeaponSelectMenu_RNotSelected_Usable1.png"), renderer,
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-
-
     /* --- Testing header drawing --- */
     wsm->unit->num_canEquip   = 4;
     LoadoutSelectMenu_Header_Set(wsm, "Drop 1 item for two-handing");
@@ -303,10 +301,50 @@ void test_menu_loadout_select_unit(void) {
     Unit_Free(&Silou);
 
     SDL_DestroyRenderer(renderer);
+    Game_Weapons_Free(&weapons_dtab);
 }
 
+void test_menu_loadout_select_two_hands(void) {
+    // Test that the menu correctly shows
+    //  - Twohand only weapons at first
+    //  - If first selected weapon is only twohand,
+    //      only show it possible in other hand.
 
-void test_menu_loadout_select(void) {
+    /* -- Weapon dtab -- */
+    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+
+    /* -- Create Unit -- */
+    struct Unit Silou = Unit_default;
+    Unit_Init(&Silou);
+    Silou.weapons_dtab = weapons_dtab;
+    SDL_assert(Silou.num_equipment == 0);
+    Silou._equipment[0].id      = ITEM_ID_FLEURET;
+    Silou._equipment[1].id      = ITEM_ID_RAPIERE;
+    Silou._equipment[2].id      = ITEM_ID_IRON_SWORD;
+    Silou._equipment[3].id      = ITEM_ID_FLEURET;
+    Silou.handedness    = UNIT_HAND_LEFTIE;
+    Silou.equippable    = ITEM_TYPE_SWORD;
+
+    /* -- Setup two hamded weapon -- */
+    Weapon_Load(weapons_dtab, Silou._equipment[0].id);
+    struct Weapon *weapon = DTAB_GET(weapons_dtab, Silou._equipment[0].id);
+    weapon->handedness  = WEAPON_HAND_TWO;
+
+    /* -- Create LoadoutSelectMenu -- */
+    struct LoadoutSelectMenu *wsm = LoadoutSelectMenu_Alloc();
+    wsm->unit = &Silou;
+
+    Unit_Free(&Silou);
+    LoadoutSelectMenu_Free(wsm);
+    Game_Weapons_Free(&weapons_dtab);
+}
+
+void unit_test_menu_loadout_select(void) {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
-    test_menu_loadout_select_unit();
+    test_menu_loadout_select_two_hands();
+}
+
+void render_test_menu_loadout_select(void) {
+    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
+    test_menu_loadout_select();
 }

@@ -4,6 +4,7 @@
 /*-- Map Usable -- */
 
 /* Find if a weapon/staff usable by unit has an enemy in range */
+// -> TWO_HAND_EQ_MODE_LOOSE
 void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
                   b32 move, i64 archetype) {
     SDL_assert(map          != NULL);

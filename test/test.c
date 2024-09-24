@@ -57,7 +57,7 @@ void render_tests() {
     test_arrow();
     test_menu_deployment();
     test_menu_growths();
-    test_menu_loadout_select();
+    render_test_menu_loadout_select();
     test_menu_player_select();
     test_menu_pre_combat();
     test_menu_item_drop();
@@ -101,6 +101,7 @@ void unit_tests() {
     nourstest_run("Unit ",          test_unit);
     nourstest_run("Utilities ",     test_utilities);
     nourstest_run("Weapon ",        test_weapon);
+    nourstest_run("Menu, Loadout Select ",        unit_test_menu_loadout_select);
 }
 
 void integration_tests(int argc, char *argv[]) {
