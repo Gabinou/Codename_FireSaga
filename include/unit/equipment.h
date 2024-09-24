@@ -5,9 +5,9 @@
 #include "enums.h"
 #include "item.h"
 #include "weapon.h"
-#include "unit/unit.h"
 #include "structs.h"
 #include "unit/unit.h"
+#include "unit/loadout.h"
 
 /* --- Items --- */
 Inventory_item *Unit_InvItem(       Unit *u, i32 eq);
@@ -59,11 +59,6 @@ i32 Unit_Eq_Equipped(Unit *unit, i32 eq);
 void    Unit_Equip(     Unit *u, i32 h, i32 eq);
 void    Unit_Unequip(   Unit *u, i32 h);
 b32     Unit_isEquipped(Unit *u, i32 h);
-
-/* - canEquips setters - */
-void canEquip_Eq(           canEquip *e, i32 eq);
-void canEquip_Loadout(      canEquip *e, i32 h, i32 eq);
-void canEquip_Loadout_None( canEquip *e, i32 h);
 
 /* - Base canEquips - */
 // TODO: tetrabrachios canequip?

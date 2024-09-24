@@ -29,7 +29,7 @@ extern Loadout Loadout_default;
 /* -- Can Equip -- */
 // Input for canEquip function
 typedef struct canEquip {
-    i32 loadout[MAX_ARMS_NUM] /* [ITEM_UNEQUIPPED, SOTA_EQUIPMENT_SIZE]*/;
+    i32 _loadout[MAX_ARMS_NUM]; /* [ITEM_UNEQUIPPED, SOTA_EQUIPMENT_SIZE] */
 
     // Hand to equip to, considering loadout.
     i32 hand;
@@ -39,8 +39,8 @@ typedef struct canEquip {
     //      - Find all equippable weapons (of any type) ONLY
     i64 archetype;
 
-    // Equipment index to check.
-    i32 to_eq;
+    // Equipped index to check.
+    i32 _eq; /* [ITEM_UNEQUIPPED, SOTA_EQUIPMENT_SIZE] */
 
     // Two-handed mode.
     //  - TWO_HAND_EQ_MODE_STRICT
