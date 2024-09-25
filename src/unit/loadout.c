@@ -15,6 +15,14 @@ i32 equipped2eq(i32 equipped) {
     return (equipped - ITEM_EQUIPPED_DIFF);
 }
 
+b32 equipped_valid(i32 equipped) {
+    return((equipped >= ITEM1_EQUIPPED) && (equipped <= ITEM6_EQUIPPED));
+}
+
+b32 eq_valid(i32 eq) {
+    return((eq >= ITEM1) && (eq <= ITEM6));
+}
+
 /* --- Loadout --- */
 void Loadout_Set(Loadout *loadout, i32 hand, i32 eq) {
     SDL_assert(hand >= 0);

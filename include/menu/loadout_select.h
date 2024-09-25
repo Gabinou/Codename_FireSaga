@@ -24,7 +24,7 @@ struct MenuElemDirections;
 //  -   ItemSelectmenu
 //  -   TradeMenu
 // TODO: Empty option for weakhand
-// TODO: Weakhand can include items + empty if there is room
+// TODO: Any number of hands
 // TODO: TWO HAND WEAPONS
 //      - Can't use two handed weapon if equipment full
 //      - Menu to ask to send item in hand to convoy?
@@ -159,7 +159,7 @@ struct LoadoutSelectMenu {
 
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
-    i32 selected[UNIT_ARMS_NUM];  /* [ITEM_UNEQUIPPED, SOTA_EQUIPMENT_SIZE] */
+    Loadout selected;  /* [ITEM_UNEQUIPPED, SOTA_EQUIPMENT_SIZE] */
     s8 item_name;
     s8 header;
 

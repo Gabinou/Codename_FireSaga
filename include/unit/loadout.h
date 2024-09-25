@@ -13,6 +13,9 @@
 i32 eq2equipped(i32 eq);
 i32 equipped2eq(i32 equipped);
 
+b32 eq_valid(       i32 eq);
+b32 equipped_valid( i32 equipped);
+
 /* --- Loadout --- */
 // unit._equipped:      Currently equipped equipment
 // loadout._loadout:    Possible equipped equipment

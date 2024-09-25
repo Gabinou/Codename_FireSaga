@@ -49,7 +49,6 @@ struct MenuElemDirections wsm_links[LSM_ELEMS_NUM] = {
 
 struct LoadoutSelectMenu LoadoutSelectMenu_default = {
     .update                 = true,
-    .selected               = {LSM_ELEM_NULL, LSM_ELEM_NULL},
     .archetype_stronghand   = ITEM_ARCHETYPE_STRONGHAND_ATTACK,
     .archetype_weakhand     = ITEM_ARCHETYPE_WEAKHAND,
     .black                  = SOTA_BLACK,
@@ -256,8 +255,8 @@ b32 WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm) {
     b32 remains = false;
 
     /* Get stronghand */
-    i32 stronghand = Unit_Hand_Strong(lsm->unit);
-    i32 weakhand   = 1 - stronghand;
+    i32 stronghand  = Unit_Hand_Strong(lsm->unit);
+    i32 weakhand    = Unit_Hand_Weak(lsm->unit);
 
     /* After no weapon was selected */
     if ((lsm->selected[stronghand] < 0) && (lsm->selected[weakhand] < 0)) {
@@ -281,32 +280,30 @@ void LoadoutSelectMenu_Unit(struct LoadoutSelectMenu *lsm, struct Unit *unit) {
 
 
 void LoadoutSelectMenu_Select_Reset(struct LoadoutSelectMenu *lsm) {
-    lsm->selected[UNIT_HAND_LEFT]  = LSM_ELEM_NULL;
-    lsm->selected[UNIT_HAND_RIGHT] = LSM_ELEM_NULL;
+    for (i32 hand = 0; hand < MAX_ARMS_NUM; hand++) {
+        Loadout_None(&lsm->loadout, hand);
+    }
     lsm->update                    = true;
 }
 
 /* - Select Weapon/Staff - */
 void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
-    /* Player just selected loadout. */
+    /* Player just selected loadout, equip it */
 
-    /* Note: select is in strong space: stronghandd first hand */
     /* - Equip weapons according to player choice - */
     i32 eq          = lsm->unit->eq_canEquip[select];
     i32 stronghand  = Unit_Hand_Strong(lsm->unit);
-    i32 weakhand    = 1 - stronghand;
+    i32 weakhand    = Unit_Hand_Weak(lsm->unit);
 
-    // If stronghand is unselected, there should be usable weapons
-    if (lsm->selected[stronghand] < 0) {
-        SDL_assert(select < lsm->unit->num_canEquip);
-    }
+    // There should be always be usable weapons
+    SDL_assert(select < lsm->unit->num_canEquip);
 
-    if (lsm->selected[stronghand] >= 0) {
-        lsm->selected[weakhand] = eq;
-        Unit_Equip(lsm->unit, weakhand, eq);
-    } else if (lsm->selected[stronghand] < 0) {
-        lsm->selected[stronghand] = eq;
+    if (Loadout_Eq(lsm->selected, stronghand) == ITEM_UNEQUIPPED) {
+        Loadout_Set(lsm->selected, stronghand, eq);
         Unit_Equip(lsm->unit, stronghand, eq);
+    } else if (equipped_valid(Loadout_Eq(lsm->selected, stronghand))) {
+        Loadout_Set(lsm->selected, weakhand, eq);
+        Unit_Equip(lsm->unit, weakhand, eq);
     } else {
         /* - Both Hands already selected - */
         SDL_Log("Both weapons already selected, but select sent to LoadoutSelectMenu");
@@ -323,24 +320,26 @@ void ItemSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 s) {
 }
 
 void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
-    /* -- Revert selected item, only for second hand -- */
+    /* -- Revert selected item -- */
     SDL_assert(lsm       != NULL);
     SDL_assert(lsm->unit != NULL);
     lsm->update           = true;
 
     /*- Get the tophand -*/
-    i32 stronghand = Unit_Hand_Strong(lsm->unit);
-    i32 weakhand   = 1 - stronghand;
+    i32 stronghand  = Unit_Hand_Strong(lsm->unit);
+    i32 weakhand    = Unit_Hand_Weak(lsm->unit);
 
     /*- Skip if no item to revert -*/
-    if ((lsm->selected[weakhand] == LSM_ELEM_NULL) && (lsm->selected[stronghand] == LSM_ELEM_NULL)) {
+    if (
+        !equipped_valid(Loadout_Eq(lsm->selected, stronghand)) &&
+        !equipped_valid(Loadout_Eq(lsm->selected, weakhand))
+       ) {
         SDL_Log("Warning: No item to deselect");
         return;
-    }
-    if (lsm->selected[weakhand] != LSM_ELEM_NULL) {
-        lsm->selected[weakhand] = LSM_ELEM_NULL;
-    } else if (lsm->selected[stronghand] != LSM_ELEM_NULL) {
-        lsm->selected[stronghand] = LSM_ELEM_NULL;
+    } else if (!equipped_valid(Loadout_Eq(lsm->selected, weakhand))) {
+        Loadout_None(&lsm->selected, weakhand);
+    } else if (!equipped_valid(Loadout_Eq(lsm->selected, stronghand))) {
+        Loadout_None(&lsm->selected, stronghand);
     }
 }
 
