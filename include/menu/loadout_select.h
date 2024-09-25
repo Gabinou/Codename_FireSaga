@@ -148,18 +148,20 @@ extern struct Point   wsm_cursor_box[LSM_ELEMS_NUM];
 struct LoadoutSelectMenu {
     b32 update;
     struct Point pos; /* [pixels] */
-
     SDL_Texture *texture;
     SDL_Texture *texture_hands;
 
     i32 menu_w;
     i32 menu_h;
 
-    struct Unit *unit; // TODO: use tnecs_entity + world
+    tnecs_entity unit;
+    struct Map *map;
+    tnecs_world *world;
 
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
-    Loadout selected;  /* [ITEM_UNEQUIPPED, SOTA_EQUIPMENT_SIZE] */
+    Loadout initial;    /* [ITEM_UNEQUIPPED, SOTA_EQUIPMENT_SIZE] */
+    Loadout selected;   /* [ITEM_UNEQUIPPED, SOTA_EQUIPMENT_SIZE] */
     s8 item_name;
     s8 header;
 
@@ -174,24 +176,21 @@ extern struct LoadoutSelectMenu LoadoutSelectMenu_default;
 /* --- Constructors/Destructors --- */
 struct LoadoutSelectMenu *LoadoutSelectMenu_Alloc(void);
 void LoadoutSelectMenu_Free(struct LoadoutSelectMenu *lsm);
+
 void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
-                            tnecs_world *w, tnecs_entity ent, SDL_Renderer *r,
+                            tnecs_world *w, SDL_Renderer *r,
                             struct n9Patch *n9, u64 a);
 
-void LoadoutSelectMenu_Unit(struct LoadoutSelectMenu *sm, struct Unit *u);
+void LoadoutSelectMenu_Unit(struct LoadoutSelectMenu *sm, tnecs_entity ent);
 
-void _LoadoutSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Unit *u,
-                             SDL_Renderer *r, struct n9Patch *n9);
 
 void WeaponSelectMenu_Load_n9Patch(struct LoadoutSelectMenu *sm, SDL_Renderer *r,
                                    struct n9Patch *n9);
 void WeaponSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
-                           tnecs_world *w, tnecs_entity ent,
-                           SDL_Renderer *r, struct n9Patch *n9);
+                           tnecs_world *w, SDL_Renderer *r, struct n9Patch *n9);
 
 void StaffSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
-                          tnecs_world *w, tnecs_entity ent, SDL_Renderer *r,
-                          struct n9Patch *n9);
+                          tnecs_world *w, SDL_Renderer *r, struct n9Patch *n9);
 
 void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm,  char *header);
 
