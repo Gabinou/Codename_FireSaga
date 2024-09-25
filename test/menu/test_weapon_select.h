@@ -322,8 +322,8 @@ void test_menu_loadout_select_two_hands(void) {
     Silou._equipment[1].id      = ITEM_ID_RAPIERE;
     Silou._equipment[2].id      = ITEM_ID_IRON_SWORD;
     Silou._equipment[3].id      = ITEM_ID_FLEURET;
-    Silou.handedness    = UNIT_HAND_LEFTIE;
-    Silou.equippable    = ITEM_TYPE_SWORD;
+    Silou.handedness            = UNIT_HAND_LEFTIE;
+    Silou.equippable            = ITEM_TYPE_SWORD;
 
     /* -- Setup two hamded weapon -- */
     Weapon_Load(weapons_dtab, Silou._equipment[0].id);

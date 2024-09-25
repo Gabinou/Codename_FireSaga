@@ -151,7 +151,6 @@ struct Settings {
     int soundfx_volume;
     float brightness;
 
-
     b32 fullscreen          : 1;
     b32 window              : 1;
     b32 tophand_stronghand  : 1;

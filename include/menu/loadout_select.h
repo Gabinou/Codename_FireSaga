@@ -24,7 +24,7 @@ struct MenuElemDirections;
 //  -   ItemSelectmenu
 //  -   TradeMenu
 // TODO: Empty option for weakhand
-// TODO: Weakhand selection is always ALL ITEMS + empty if there is room
+// TODO: Weakhand can include items + empty if there is room
 // TODO: TWO HAND WEAPONS
 //      - Can't use two handed weapon if equipment full
 //      - Menu to ask to send item in hand to convoy?
@@ -36,11 +36,12 @@ struct MenuElemDirections;
 // Two hand weapons && full equipment : click twice + send an item to convoy menu
 // Stronghand choose first, so it is always on top.
 
-/* lsm Selection flow:
-*   0. Cursor starts on strong hand
+/* LSM Selection flow:
+*   0. Cursor starts currently equipped weapon in strong hand
 *   1. Move, Click to select strong Hand weapon
-*   2. Strong hand weapon switches to selected item
-*   3. Highlight stronghand weapon, can still select it if twohanding.
+*   2. Strong hand icon switches to selected item
+*   3. Highlight stronghand weapon, can still select it for twohanding.
+*       - If weapon is twohand ONLY, can ONLY select it
 *   4. Cursor Resets to Weak hand
 *   5. Move, Click to select Weak Hand weapon
 */
@@ -69,8 +70,6 @@ enum LSM_HANDS {
     LSM_WEAKHAND_Y_OFFSET       =   6,
     LSM_TWOHAND_Y_OFFSET        =   2,
 };
-
-
 
 enum LSM_MENU {
     LSM_PATCH_X_PIXELS          =  8,
@@ -153,15 +152,14 @@ struct LoadoutSelectMenu {
     SDL_Texture *texture;
     SDL_Texture *texture_hands;
 
-    int menu_w;
-    int menu_h;
+    i32 menu_w;
+    i32 menu_h;
 
-    struct Unit *unit; // TODO: use tnecs_entity
-    // selected is -1 if NULL
+    struct Unit *unit; // TODO: use tnecs_entity + world
 
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
-    i8 selected[UNIT_ARMS_NUM]; /* side space */
+    i32 selected[UNIT_ARMS_NUM];  /* [ITEM_UNEQUIPPED, SOTA_EQUIPMENT_SIZE] */
     s8 item_name;
     s8 header;
 
@@ -198,6 +196,7 @@ void StaffSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
 void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm,  char *header);
 
 /* --- Item placement --- */
+void LoadoutSelectMenu_Select(      struct LoadoutSelectMenu *lsm, int s);
 void LoadoutSelectMenu_Select(      struct LoadoutSelectMenu *lsm, int s);
 void LoadoutSelectMenu_Deselect(    struct LoadoutSelectMenu *lsm);
 void LoadoutSelectMenu_Select_Reset(struct LoadoutSelectMenu *lsm);

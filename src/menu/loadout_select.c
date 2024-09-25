@@ -284,7 +284,6 @@ void LoadoutSelectMenu_Select_Reset(struct LoadoutSelectMenu *lsm) {
     lsm->selected[UNIT_HAND_LEFT]  = LSM_ELEM_NULL;
     lsm->selected[UNIT_HAND_RIGHT] = LSM_ELEM_NULL;
     lsm->update                    = true;
-
 }
 
 /* - Select Weapon/Staff - */
