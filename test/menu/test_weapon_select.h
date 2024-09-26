@@ -14,8 +14,9 @@ void test_menu_loadout_select(void) {
     tnecs_world *world = tnecs_world_genesis();
     TNECS_REGISTER_COMPONENT(world, Unit);
     TNECS_REGISTER_COMPONENT(world, Position);
-    tnecs_entity Silou  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
-   
+    tnecs_entity Silou_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
+    struct Unit *Silou      = TNECS_GET_COMPONENT(world, Silou_ent, Unit);
+
     /* -- Weapon dtab -- */
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
 
@@ -48,8 +49,8 @@ void test_menu_loadout_select(void) {
     WeaponSelectMenu_Load_n9Patch(wsm, renderer, &n9patch);
 
     /* -- Create Unit -- */
-    struct Unit Silou = Unit_default;
-    Unit_Init(&Silou);
+    *Silou = Unit_default;
+    Unit_Init(Silou);
     /* - title - */
     Silou.weapons_dtab = weapons_dtab;
     SDL_assert(Silou.num_equipment == 0);
@@ -377,9 +378,10 @@ void test_menu_loadout_select_two_hands(void) {
     /* -- Equipping a one-hand only weapon -- */
     /* - Can be selected by stronghand - */
     /* - Two-hand only weapons can't be selected  - */
+    /* - Option to equip nothing in weakhand  - */
 
     /* -- Equipping a any hand weapon -- */
-    
+
     /* -- Equipping a any left-hand only weapon -- */
 
     /* -- Equipping a any right-hand only weapon -- */

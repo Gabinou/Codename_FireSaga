@@ -52,8 +52,8 @@ typedef struct canEquip {
     i32 two_hands_mode;
 
     // For Map_canEquip
-    //  - Find canEquip item in range, with or without unit movement 
-    b32 move
+    //  - Find canEquip item in range, with or without unit movement
+    b32 move;
 
 } canEquip;
 extern canEquip canEquip_default;

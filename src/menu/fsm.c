@@ -428,10 +428,11 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
 
     /* 2. Cancel one of the selection of item select menu */
     struct LoadoutSelectMenu *wsm = mc->data;
-    SDL_assert(wsm->selected[UNIT_HAND_LEFT]  > -1);
-    SDL_assert(wsm->selected[UNIT_HAND_RIGHT] > -1);
+    SDL_assert(!Loadout_isEquipped(&wsm->selected, UNIT_HAND_LEFT));
+    SDL_assert(!Loadout_isEquipped(&wsm->selected, UNIT_HAND_RIGHT));
     LoadoutSelectMenu_Deselect(wsm);
-    SDL_assert((wsm->selected[UNIT_HAND_LEFT] != -1) || (wsm->selected[UNIT_HAND_RIGHT] != -1));
+    SDL_assert(Loadout_isEquipped(&wsm->selected, UNIT_HAND_LEFT)
+               || Loadout_isEquipped(&wsm->selected, UNIT_HAND_RIGHT));
 
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, sota->popups[popup_ind], PopUp);
@@ -476,7 +477,8 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     PopUp_Loadout_Stats_Hover(pls, wsm, mc->elem);
 
     /* - Compute new attackmap with equipped - */
-    int rangemap = Unit_Rangemap_Get(wsm->unit);
+    struct Unit *unit = TNECS_GET_COMPONENT(sota->world, wsm->unit, Unit);
+    int rangemap = Unit_Rangemap_Get(unit);
 
     // Loadout loadout = Loadout_default;
     // Loadout_Set(&loadout, UNIT_HAND_LEFT, pls->eq_left);
@@ -555,10 +557,12 @@ void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
     // - Destroy staff_select menu
     SDL_assert(mc->type == MENU_TYPE_STAFF_SELECT);
     struct LoadoutSelectMenu *ssm = mc->data;
-    int tophand = Unit_Hand_Strong(ssm->unit);
-    int bothand = 1 - tophand;
+    struct Unit *unit = TNECS_GET_COMPONENT(sota->world, ssm->unit, Unit);
 
-    if ((ssm->selected[tophand] > -1) && (StaffSelectMenu_canEqItem(ssm))) {
+    int tophand = Unit_Hand_Strong(unit);
+    int bothand = Unit_Hand_Weak(unit);
+
+    if (Loadout_isEquipped(&ssm->selected, tophand) && StaffSelectMenu_canEqItem(ssm)) {
         /* move cursor to first hand */
         int new_elem = LSM_ELEM_ITEM1;
         tnecs_entity cursor = sota->entity_cursor;
@@ -606,26 +610,27 @@ void fsm_eCncl_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
 void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     SDL_assert(mc->type == MENU_TYPE_WEAPON_SELECT);
     struct LoadoutSelectMenu *wsm = mc->data;
+    struct Unit *unit = TNECS_GET_COMPONENT(sota->world, wsm->unit, Unit);
 
-    int stronghand  = Unit_Hand_Strong(wsm->unit);
-    int weakhand    = 1 - stronghand;
+    int stronghand  = Unit_Hand_Strong(unit);
+    int weakhand    = Unit_Hand_Weak(unit);
 
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, sota->popups[popup_ind], PopUp);
     struct PopUp_Loadout_Stats *pls = (struct PopUp_Loadout_Stats *)popup->data;
 
 
-    if (wsm->selected[stronghand] > -1) {
+    if (Loadout_isEquipped(&wsm->selected, stronghand)) {
         /* move cursor to first hand */
         int new_elem = LSM_ELEM_ITEM1;
         tnecs_entity cursor = sota->entity_cursor;
         Menu_Elem_Set(mc, sota, new_elem);
 
         canEquip can_equip  = canEquip_default;
-        canEquip_Loadout(&can_equip, UNIT_HAND_LEFT, Unit_Eq_Equipped(wsm->unit, UNIT_HAND_LEFT));
-        canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, Unit_Eq_Equipped(wsm->unit, UNIT_HAND_RIGHT));
+        canEquip_Loadout(&can_equip, UNIT_HAND_LEFT, Unit_Eq_Equipped(unit, UNIT_HAND_LEFT));
+        canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT));
         can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
-        Unit_canEquip_Equipment(wsm->unit, can_equip);
+        Unit_canEquip_Equipment(unit, can_equip);
         LoadoutSelectMenu_Elem_Pos_Revert(wsm, mc);
         LoadoutSelectMenu_Elem_Reset(wsm, mc);
         LoadoutSelectMenu_Elem_Pos(wsm, mc);
@@ -668,7 +673,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     PopUp_Loadout_Stats_Previous(pls);
 
     /* - Compute new attackmap with equipped - */
-    int rangemap = Unit_Rangemap_Get(wsm->unit);
+    int rangemap = Unit_Rangemap_Get(unit);
     Map_Healtomap_Compute(  sota->map, sota->world, sota->aggressor, false, true);
     Map_Attacktomap_Compute(sota->map, sota->world, sota->aggressor, false, true);
 
@@ -698,9 +703,8 @@ void fsm_eCncl_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
 
     /* Hide loadout stats Popup */
     Game_PopUp_Loadout_Stats_Hide(sota);
-    ism->selected[UNIT_HAND_LEFT]   = -1;
-    ism->selected[UNIT_HAND_RIGHT]  = -1;
-
+    Loadout_None(&ism->selected, UNIT_HAND_LEFT);
+    Loadout_None(&ism->selected, UNIT_HAND_RIGHT);
 }
 
 void fsm_eCncl_sGmpMap_ssMenu_mSM(struct Game *sota, struct Menu *mc) {
@@ -808,7 +812,9 @@ void fsm_eAcpt_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
 void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     /* Swap weapons */
     struct LoadoutSelectMenu *wsm = mc->data;
-    i32 stronghand  = Unit_Hand_Strong(wsm->unit);
+    Unit *unit = TNECS_GET_COMPONENT(sota->world, wsm->unit, Unit);
+    i32 stronghand  = Unit_Hand_Strong(unit);
+    i32 weakhand    = Unit_Hand_Weak(unit);
     SDL_assert(mc->elem >= 0);
     SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
 
@@ -818,10 +824,9 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     struct PopUp_Loadout_Stats *pls = popup->data;
 
     LoadoutSelectMenu_Select(wsm, mc->elem);
-    i32 weakhand   = 1 - stronghand;
 
     /* - Compute new attackmap with equipped - */
-    int rangemap = Unit_Rangemap_Get(wsm->unit);
+    int rangemap = Unit_Rangemap_Get(unit);
     Map_Healtomap_Compute(  sota->map, sota->world, sota->aggressor, false, true);
     Map_Attacktomap_Compute(sota->map, sota->world, sota->aggressor, false, true);
 
@@ -835,12 +840,12 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     // TODO: Change to weakhand if other item in inventory
     // TODO: option to equip nothing in weakhand
     // TODO: Automatically equip nothing in weakhand if no other item in equipment
-    if (wsm->selected[stronghand] >= 0) {
+    if (Loadout_isEquipped(&wsm->selected, stronghand)) {
         canEquip can_equip  = canEquip_default;
-        canEquip_Loadout(&can_equip, UNIT_HAND_LEFT, Unit_Eq_Equipped(wsm->unit, UNIT_HAND_LEFT));
-        canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, Unit_Eq_Equipped(wsm->unit, UNIT_HAND_RIGHT));
+        canEquip_Loadout(&can_equip, UNIT_HAND_LEFT, Unit_Eq_Equipped(unit, UNIT_HAND_LEFT));
+        canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT));
         can_equip.archetype = ITEM_ARCHETYPE_WEAKHAND;
-        Unit_canEquip_Equipment(wsm->unit, can_equip);
+        Unit_canEquip_Equipment(unit, can_equip);
     }
 
     if (WeaponSelectMenu_Usable_Remains(wsm)) {
@@ -1049,7 +1054,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
     PopUp_Loadout_Stats_New(pls);
 
     /* - Compute new attackmap with equipped - */
-    int rangemap = Unit_Rangemap_Get(wsm->unit);
+    int rangemap = Unit_Rangemap_Get(unit);
     // Loadout loadout = Loadout_default;
     // Loadout_Set(&loadout, UNIT_HAND_LEFT, pls->eq_left);
     // Loadout_Set(&loadout, UNIT_HAND_RIGHT, pls->eq_right);

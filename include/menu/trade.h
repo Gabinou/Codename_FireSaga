@@ -45,10 +45,11 @@ extern struct Point trade_cursor_box[TRADE_MENU_ELEMS_NUM];
 struct TradeMenu {
     struct LoadoutSelectMenu *active;
     struct LoadoutSelectMenu *passive;
-    i8 selected_trader;
-    i8 selected_item;
-    i8 target_trader;
-    i8 target_item;
+    i32 selected_trader;
+    i32 selected_item;
+    i32 target_trader;
+    i32 target_item;
+    tnecs_world *world;
 };
 
 /* --- Constructors/Destructors --- */

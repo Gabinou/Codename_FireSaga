@@ -182,14 +182,17 @@ typedef struct PopUp_Loadout_Stats {
     int equipped[UNIT_ARMS_NUM];
     int eq_left;  /* item side space */
     int eq_right; /* item side space */
+    // TODO: use loadout
+    Loadout initial;    /* [ITEM_UNEQUIPPED, SOTA_EQUIPMENT_SIZE] */
+
     i16 type_left;
     i16 type_right;
     int ly_offset;
     int ry_offset;
 
     int distance;
-    b32 l_equip_override   : 1;
-    b32 r_equip_override   : 1;
+    b32 l_equip_override   : 1; /* ? */
+    b32 r_equip_override   : 1; /* ? */
     b32 tophand_stronghand : 1; // If false, tophand is lefthand
     b32 twoHanding         : 1; // If false, tophand is lefthand
 } PopUp_Loadout_Stats;

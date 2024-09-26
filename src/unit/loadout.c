@@ -16,11 +16,11 @@ i32 equipped2eq(i32 equipped) {
 }
 
 b32 equipped_valid(i32 equipped) {
-    return((equipped >= ITEM1_EQUIPPED) && (equipped <= ITEM6_EQUIPPED));
+    return ((equipped >= ITEM1_EQUIPPED) && (equipped <= ITEM6_EQUIPPED));
 }
 
 b32 eq_valid(i32 eq) {
-    return((eq >= ITEM1) && (eq <= ITEM6));
+    return ((eq >= ITEM1) && (eq <= ITEM6));
 }
 
 /* --- Loadout --- */
@@ -38,7 +38,7 @@ i32 Loadout_Eq(Loadout *loadout, i32 hand) {
     return (equipped2eq(loadout->_loadout[hand]));
 }
 
-i32 Loadout_isEquipped(Loadout *loadout, i32 hand) {
+b32 Loadout_isEquipped(Loadout *loadout, i32 hand) {
     SDL_assert(hand >= 0);
     SDL_assert(hand < MAX_ARMS_NUM);
     return (loadout->_loadout[hand] > ITEM_UNEQUIPPED);

@@ -7,8 +7,8 @@
 void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
     SDL_assert(map          != NULL);
     SDL_assert(map->world   != NULL);
-    SDL_assert((archetype == ITEM_ARCHETYPE_WEAPON) ||
-               (archetype == ITEM_ARCHETYPE_STAFF));
+    SDL_assert((can_equip.archetype == ITEM_ARCHETYPE_WEAPON) ||
+               (can_equip.archetype == ITEM_ARCHETYPE_STAFF));
 
     Unit     *unit = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
     Position *pos  = TNECS_GET_COMPONENT(map->world, unit_ent, Position);
@@ -16,7 +16,7 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
 
     /* Compute movemap */
     struct Point start = pos->tilemap_pos;
-    i32 move_stat = move ? Unit_getStats(unit).move : 0;
+    i32 move_stat = can_equip.move ? Unit_getStats(unit).move : 0;
     _Map_Movemap_Compute(map, start, move_stat);
 
     // printf("MOVE\n");
@@ -36,11 +36,7 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
             continue;
         }
 
-        /* Compute range */
-        struct Range *range = Unit_Range_Eq(unit, eq, can_equip.archetype);
-        // SDL_Log("range %d %d", range->min, range->max);
-    
-        if (Map_canEquip_Range(map, range, defendants)) {
+        if (Map_canEquip_Range(map, unit_ent, defendants, eq, can_equip.archetype)) {
             unit->eq_canEquip[unit->num_canEquip++] = eq;
         }
     }
@@ -48,18 +44,28 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
     DARR_FREE(defendants);
 }
 
-b32 Map_canEquip_Range(struct Map *map, struct Range *range, tnecs_entity *defendants, i64 archetype) {
-    /* NOTES: 
+b32 Map_canEquip_Range(struct Map *map, tnecs_entity unit_ent,
+                       tnecs_entity *defendants, i32 eq, i64 archetype) {
+    /* NOTES:
         1- assumes movemap was computed before
-        2- assumes entites are tracked on unitmap
+        2- assumes entities are tracked on unitmap
     */
     SDL_assert(map              != NULL);
-    SDL_assert(range            != NULL);
     SDL_assert(defendants       != NULL);
+    SDL_assert(map->world       != NULL);
     SDL_assert(map->movemap     != NULL);
     SDL_assert(map->unitmap     != NULL);
     SDL_assert(map->attacktomap != NULL);
-    
+
+    Unit     *unit = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
+
+    /* Compute range */
+    struct Range *range = Unit_Range_Eq(unit, eq, archetype);
+    SDL_assert(range            != NULL);
+    // SDL_Log("range %d %d", range->min, range->max);
+
+
+
     /* Compute attacktolist to check if any enemy in it */
     Pathfinding_Attackto_noM(map->attacktomap, map->movemap,
                              map->unitmap,
@@ -81,7 +87,7 @@ b32 Map_canEquip_Range(struct Map *map, struct Range *range, tnecs_entity *defen
     b32 out = (DARR_NUM(defendants) > 0);
 
     DARR_NUM(defendants) = 0;
-    return(out);
+    return (out);
 }
 
 

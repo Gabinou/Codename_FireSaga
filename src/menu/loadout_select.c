@@ -112,16 +112,11 @@ void WeaponSelectMenu_Load_n9Patch(struct LoadoutSelectMenu *lsm, SDL_Renderer *
 }
 
 void WeaponSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map,
-                           tnecs_world *world, tnecs_entity unit_ent,
-                           SDL_Renderer *renderer, struct n9Patch *n9patch) {
+                           tnecs_world *world, SDL_Renderer *renderer,
+                           struct n9Patch *n9patch) {
     WeaponSelectMenu_Load_n9Patch(lsm, renderer, n9patch);
-    
-    LoadoutSelectMenu_Load(lsm, map, world, unit_ent, renderer, n9patch, lsm->archetype_stronghand);
 
-    matrix_print(map->attacktomap, map->row_len, map->col_len);
-
-    SDL_Log("num %d", lsm->unit->num_canEquip);
-    getchar();
+    LoadoutSelectMenu_Load(lsm, map, world, renderer, n9patch);
 }
 
 void StaffSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, tnecs_world *world,
@@ -137,7 +132,7 @@ void StaffSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, tnecs_
     n9patch->size_pixels.y   = (MENU_PATCH_PIXELS * LSM_PATCH_Y_SIZE);
 
     lsm->archetype_stronghand = ITEM_ARCHETYPE_STRONGHAND_STAFF;
-    LoadoutSelectMenu_Load(lsm, map, world, renderer, n9patch, lsm->archetype_stronghand);
+    LoadoutSelectMenu_Load(lsm, map, world, renderer, n9patch);
 }
 
 void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map,
@@ -147,7 +142,6 @@ void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map,
     SDL_assert(world    != NULL);
     SDL_assert(map      != NULL);
     SDL_assert(n9patch  != NULL);
-    SDL_assert(unit_ent > TNECS_NULL);
     lsm->map    = map;
     lsm->world  = world;
 
@@ -178,7 +172,11 @@ i32 WeaponSelectMenu_Elem_Move(struct Menu *mc, i32 direction) {
 /* --- Elements --- */
 void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct Menu *mc) {
     /* Get number of elements for the menu */
-    mc->elem_num   = lsm->unit->num_canEquip;
+    SDL_assert(lsm          != NULL);
+    SDL_assert(lsm->world   != NULL);
+    Unit *unit = TNECS_GET_COMPONENT(lsm->world, lsm->unit, Unit);
+
+    mc->elem_num   = unit->num_canEquip;
     size_t bytesize = sizeof(*wsm_links_start) * LSM_ELEMS_NUM;
     memcpy(mc->elem_links, wsm_links_start, bytesize);
 
@@ -243,17 +241,19 @@ b32 WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm) {
     b32 remains = false;
 
     /* Get stronghand */
-    i32 stronghand  = Unit_Hand_Strong(lsm->unit);
-    i32 weakhand    = Unit_Hand_Weak(lsm->unit);
+    struct Unit *unit = TNECS_GET_COMPONENT(lsm->world, lsm->unit, Unit);
 
-    if (!equipped_valid(Loadout_Eq(lsm->selected, stronghand)) && 
-        !equipped_valid(Loadout_Eq(lsm->selected, weakhand))) {
+    i32 stronghand  = Unit_Hand_Strong(unit);
+    i32 weakhand    = Unit_Hand_Weak(unit);
+
+    if (!equipped_valid(Loadout_Eq(&lsm->selected, stronghand)) &&
+        !equipped_valid(Loadout_Eq(&lsm->selected, weakhand))) {
         /* After no weapon was selected */
-        remains = lsm->unit->num_canEquip > 0; /* Any usable weapon remains? */
-    } else if (equipped_valid(Loadout_Eq(lsm->selected, stronghand)) && 
-        !equipped_valid(Loadout_Eq(lsm->selected, weakhand))) {
+        remains = unit->num_canEquip > 0; /* Any usable weapon remains? */
+    } else if (equipped_valid(Loadout_Eq(&lsm->selected, stronghand)) &&
+               !equipped_valid(Loadout_Eq(&lsm->selected, weakhand))) {
         /* After first weapon was selected */
-        remains = lsm->unit->num_equipment > 1; /* Any item remains? */
+        remains = unit->num_equipment > 1; /* Any item remains? */
     } else {
         SDL_Log("WeaponSelectMenu_Usable_Remains should not be called when both hands are selectedé");
         SDL_assert(false);
@@ -272,16 +272,21 @@ void LoadoutSelectMenu_Unit(struct LoadoutSelectMenu *lsm, tnecs_entity ent) {
     SDL_assert(lsm  != NULL);
     SDL_assert(lsm->map     != NULL);
     SDL_assert(lsm->world   != NULL);
-    SDL_assert(end  > TNECS_NULL);
+    SDL_assert(ent  > TNECS_NULL);
     lsm->unit = ent;
     Unit *unit = TNECS_GET_COMPONENT(lsm->world, ent, Unit);
     Unit_Loadout_Export(unit, &lsm->initial);
     lsm->update  = true;
+
+    matrix_print(lsm->map->attacktomap, lsm->map->row_len, lsm->map->col_len);
+
+    SDL_Log("num %d", unit->num_canEquip);
+    getchar();
 }
 
 void LoadoutSelectMenu_Select_Reset(struct LoadoutSelectMenu *lsm) {
     for (i32 hand = 0; hand < MAX_ARMS_NUM; hand++) {
-        Loadout_None(&lsm->loadout, hand);
+        Loadout_None(&lsm->selected, hand);
     }
     lsm->update = true;
 }
@@ -291,19 +296,20 @@ void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
     /* Player just selected loadout, equip it */
 
     /* - Equip weapons according to player choice - */
-    i32 eq          = lsm->unit->eq_canEquip[select];
-    i32 stronghand  = Unit_Hand_Strong(lsm->unit);
-    i32 weakhand    = Unit_Hand_Weak(lsm->unit);
+    Unit *unit      = TNECS_GET_COMPONENT(lsm->world, lsm->unit, Unit);
+    i32 eq          = unit->eq_canEquip[select];
+    i32 stronghand  = Unit_Hand_Strong(unit);
+    i32 weakhand    = Unit_Hand_Weak(unit);
 
     // There should be always be usable weapons
-    SDL_assert(select < lsm->unit->num_canEquip);
+    SDL_assert(select < unit->num_canEquip);
 
-    if (Loadout_Eq(lsm->selected, stronghand) == ITEM_UNEQUIPPED) {
-        Loadout_Set(lsm->selected, stronghand, eq);
-        Unit_Equip(lsm->unit, stronghand, eq);
-    } else if (equipped_valid(Loadout_Eq(lsm->selected, stronghand))) {
-        Loadout_Set(lsm->selected, weakhand, eq);
-        Unit_Equip(lsm->unit, weakhand, eq);
+    if (Loadout_Eq(&lsm->selected, stronghand) == ITEM_UNEQUIPPED) {
+        Loadout_Set(&lsm->selected, stronghand, eq);
+        Unit_Equip(unit, stronghand, eq);
+    } else if (equipped_valid(Loadout_Eq(&lsm->selected, stronghand))) {
+        Loadout_Set(&lsm->selected, weakhand, eq);
+        Unit_Equip(unit, weakhand, eq);
     } else {
         /* - Both Hands already selected - */
         SDL_Log("Both weapons already selected, but select sent to LoadoutSelectMenu");
@@ -322,23 +328,24 @@ void ItemSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 s) {
 void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
     /* -- Revert selected item -- */
     SDL_assert(lsm       != NULL);
-    SDL_assert(lsm->unit != NULL);
+    SDL_assert(lsm->unit > TNECS_NULL);
     lsm->update           = true;
 
     /*- Get the tophand -*/
-    i32 stronghand  = Unit_Hand_Strong(lsm->unit);
-    i32 weakhand    = Unit_Hand_Weak(lsm->unit);
+    Unit *unit      = TNECS_GET_COMPONENT(lsm->world, lsm->unit, Unit);
+    i32 stronghand  = Unit_Hand_Strong(unit);
+    i32 weakhand    = Unit_Hand_Weak(unit);
 
     /*- Skip if no item to revert -*/
     if (
-        !equipped_valid(Loadout_Eq(lsm->selected, stronghand)) &&
-        !equipped_valid(Loadout_Eq(lsm->selected, weakhand))
-       ) {
+            !equipped_valid(Loadout_Eq(&lsm->selected, stronghand)) &&
+            !equipped_valid(Loadout_Eq(&lsm->selected, weakhand))
+    ) {
         SDL_Log("Warning: No item to deselect");
         return;
-    } else if (!equipped_valid(Loadout_Eq(lsm->selected, weakhand))) {
+    } else if (!equipped_valid(Loadout_Eq(&lsm->selected, weakhand))) {
         Loadout_None(&lsm->selected, weakhand);
-    } else if (!equipped_valid(Loadout_Eq(lsm->selected, stronghand))) {
+    } else if (!equipped_valid(Loadout_Eq(&lsm->selected, stronghand))) {
         Loadout_None(&lsm->selected, stronghand);
     }
 }
@@ -346,36 +353,37 @@ void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
 /* --- Drawing --- */
 void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9patch) {
     /* - Compute new menu width and height - */
+    Unit *unit      = TNECS_GET_COMPONENT(lsm->world, lsm->unit, Unit);
     i32 width, max_width = LSM_ITEM_MIN_WIDTH;
     /* -- HANDS --  */
     /* Icons, text drawn on stronghand's side */
-    i32 stronghand = Unit_Hand_Strong(lsm->unit);
+    i32 stronghand = Unit_Hand_Strong(unit);
 
     /* If stronghand is selected, menu should change to show all items in equipment */
-    b32 strong_selected = equipped_valid(Loadout_Eq(lsm->selected, stronghand));
-    i32 num_items = lsm->unit->num_canEquip;
+    b32 strong_selected = equipped_valid(Loadout_Eq(&lsm->selected, stronghand));
+    i32 num_items = unit->num_canEquip;
 
     for (i32 i = 0; i < num_items; i++) {
         /* If stronghand was selected, i is in eq_space */
-        i32 side_i = strong_selected ? i : lsm->unit->eq_canEquip[i];  /* side space */
+        i32 side_i = strong_selected ? i : unit->eq_canEquip[i];  /* side space */
         SDL_assert((side_i >= 0) && (side_i < SOTA_EQUIPMENT_SIZE));
 
         /* unit_item ensures tophand is stronghand */
-        struct Inventory_item *item = Unit_InvItem(lsm->unit, side_i);
+        struct Inventory_item *item = Unit_InvItem(unit, side_i);
         if (item->id == ITEM_NULL)
             continue;
 
         s8_free(&lsm->item_name);
         if (Weapon_ID_isValid(item->id)) {
             /* Item is a weapon */
-            SDL_assert(lsm->unit->weapons_dtab != NULL);
-            struct Weapon *weapon = DTAB_GET(lsm->unit->weapons_dtab, item->id);
+            SDL_assert(unit->weapons_dtab != NULL);
+            struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, item->id);
             SDL_assert(weapon != NULL);
             lsm->item_name = s8_mut(weapon->item->name.data);
         } else if (Item_ID_isValid(item->id)) {
             /* Pure item */
-            Item_Load(lsm->unit->items_dtab, item->id);
-            struct Item *pure_item = DTAB_GET(lsm->unit->items_dtab, item->id);
+            Item_Load(unit->items_dtab, item->id);
+            struct Item *pure_item = DTAB_GET(unit->items_dtab, item->id);
             lsm->item_name = s8_mut(pure_item->name.data);
         } else {
             SDL_Log("LoadoutSelectMenu: Neither a valid item nor weapon");
@@ -418,8 +426,13 @@ void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9p
 void LoadoutSelectMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *renderer) {
     struct LoadoutSelectMenu *lsm = (struct LoadoutSelectMenu *)mc->data;
     SDL_assert(lsm != NULL);
+    SDL_assert(lsm->unit > TNECS_NULL);
+    SDL_assert(lsm->world != NULL);
     struct n9Patch *n9patch = &mc->n9patch;
-    struct Unit *unit       = lsm->unit;
+    lsm->update           = true;
+
+    /*- Get the tophand -*/
+    Unit *unit      = TNECS_GET_COMPONENT(lsm->world, lsm->unit, Unit);
 
     if (lsm->update) {
         LoadoutSelectMenu_Update(mc, lsm, n9patch, target, renderer);
@@ -510,13 +523,18 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
                                           struct LoadoutSelectMenu *lsm,
                                           SDL_Renderer      *renderer) {
     /* -- Preliminaries -- */
-    i32 num_items      = lsm->unit->num_canEquip;
-    b32 stronghand     = Unit_Hand_Strong(lsm->unit);
-    b32 weakhand       = 1 - stronghand;
-    b32 header_drawn   = (lsm->header.data != NULL);
+    SDL_assert(lsm != NULL);
+    SDL_assert(lsm->unit > TNECS_NULL);
+    SDL_assert(lsm->world != NULL);
+
+    Unit *unit          = TNECS_GET_COMPONENT(lsm->world, lsm->unit, Unit);
+    i32 num_items       = unit->num_canEquip;
+    b32 stronghand      = Unit_Hand_Strong(unit);
+    b32 weakhand        = Unit_Hand_Weak(unit);
+    b32 header_drawn    = (lsm->header.data != NULL);
     SDL_Rect srcrect, dstrect;
 
-    b32 strong_selected = equipped_valid(Loadout_Eq(lsm->selected, stronghand));
+    b32 strong_selected = equipped_valid(Loadout_Eq(&lsm->selected, stronghand));
 
     /* -- Left hand icon -- */
     srcrect.w = LSM_HANDS_TILESIZE;
@@ -535,7 +553,7 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
     dstrect.x = LSM_HANDL_X;
 
     int left_hand_row = ((UNIT_HAND_LEFT == stronghand)
-                         && !strong_selected) ? mc->elem : Loadout_Eq(lsm->selected, stronghand);
+                         && !strong_selected) ? mc->elem : Loadout_Eq(&lsm->selected, stronghand);
 
     /* Computing y offset for weak hand, or twohanding icon placement */
     i32 ly_offset = (stronghand == UNIT_HAND_RIGHT) ? LSM_WEAKHAND_Y_OFFSET : LSM_STRONGHAND_Y_OFFSET;
@@ -557,7 +575,7 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
 
     // 1. Follows cursor when selecting for hand
     // 2. Is at selected item position if stronghnad
-    int hand_i = (stronghand == UNIT_HAND_LEFT) ? LSM_HANDS_SMALL_R : LSM_HANDS_BIG_R;
+    hand_i = (stronghand == UNIT_HAND_LEFT) ? LSM_HANDS_SMALL_R : LSM_HANDS_BIG_R;
 
     srcrect.x = hand_i * srcrect.w;
     srcrect.y = 0;
@@ -566,7 +584,7 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
     dstrect.x = lsm->menu_w - LSM_HANDS_TILESIZE;
 
     int right_hand_row = ((UNIT_HAND_RIGHT == stronghand)
-                          && !strong_selected) ? mc->elem : Loadout_Eq(lsm->selected, stronghand);
+                          && !strong_selected) ? mc->elem : Loadout_Eq(&lsm->selected, stronghand);
 
 
     /* Computing y offset for weak hand, or twohanding icon placement */
@@ -585,36 +603,40 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
 
 static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
                                           SDL_Renderer       *renderer) {
+    SDL_assert(lsm != NULL);
+    SDL_assert(lsm->unit > TNECS_NULL);
+    SDL_assert(lsm->world != NULL);
+
     /* -- Preliminaries -- */
     b32 header_drawn = (lsm->header.data != NULL);
     SDL_Rect srcrect, dstrect;
-    struct Unit *unit = lsm->unit;
     char numbuff[10];
     struct Inventory_item *item;
 
     /* -- HANDS --  */
     /* Icons, text drawn on stronghand's side */
-    i32 stronghand = Unit_Hand_Strong(lsm->unit);
-    i32 weakhand   = 1 - stronghand;
-    i32 num_items  = lsm->unit->num_canEquip;
+    Unit *unit      = TNECS_GET_COMPONENT(lsm->world, lsm->unit, Unit);
+    i32 stronghand  = Unit_Hand_Strong(unit);
+    i32 weakhand    = Unit_Hand_Strong(unit);
+    i32 num_items   = unit->num_canEquip;
     // b32 highlight  = (lsm->selected[0] >= 0);
     b32 highlight  = false;
 
     /* If stronghand is selected, menu should change to show all items in equipment */
-    b32 strong_selected = equipped_valid(Loadout_Eq(lsm->selected, stronghand));
+    b32 strong_selected = equipped_valid(Loadout_Eq(&lsm->selected, stronghand));
 
-    SDL_assert(lsm->unit->num_canEquip > 0);
-    SDL_assert(lsm->unit->num_canEquip <= SOTA_EQUIPMENT_SIZE);
+    SDL_assert(unit->num_canEquip > 0);
+    SDL_assert(unit->num_canEquip <= SOTA_EQUIPMENT_SIZE);
 
     /* -- Inventory -- */
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
     srcrect.w = ITEM_ICON_W;
     srcrect.h = ITEM_ICON_H;
 
-    for (i32 i = 0; i < lsm->unit->num_canEquip; i++) {
+    for (i32 i = 0; i < unit->num_canEquip; i++) {
         /* - Icons - */
         // TODO: weapon icons images.
-        i32 side_i   = lsm->unit->eq_canEquip[i];
+        i32 side_i   = unit->eq_canEquip[i];
 
         item = Unit_InvItem(unit, side_i);
 

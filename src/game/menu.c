@@ -319,15 +319,12 @@ void Game_postLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
     struct LoadoutSelectMenu *lsm = mc->data;
     SDL_assert(lsm != NULL);
 
-    SDL_assert((lsm->selected[UNIT_HAND_LEFT] >= 0)
-               && (lsm->selected[UNIT_HAND_LEFT] < SOTA_EQUIPMENT_SIZE));
-    SDL_assert((lsm->selected[UNIT_HAND_RIGHT] >= 0)
-               && (lsm->selected[UNIT_HAND_RIGHT] < SOTA_EQUIPMENT_SIZE));
-
+    SDL_assert(Loadout_isEquipped(&lsm->selected, UNIT_HAND_LEFT));
+    SDL_assert(Loadout_isEquipped(&lsm->selected, UNIT_HAND_RIGHT));
 
     Loadout loadout = Loadout_default;
-    Loadout_Set(&loadout, UNIT_HAND_LEFT, lsm->selected[UNIT_HAND_LEFT]);
-    Loadout_Set(&loadout, UNIT_HAND_RIGHT, lsm->selected[UNIT_HAND_RIGHT]);
+    Loadout_Set(&loadout, UNIT_HAND_LEFT,   Loadout_Eq(&lsm->selected, UNIT_HAND_LEFT));
+    Loadout_Set(&loadout, UNIT_HAND_RIGHT,  Loadout_Eq(&lsm->selected, UNIT_HAND_RIGHT));
 
     Map_Attacktomap_Compute_wLoadout(sota->map, sota->world, actor, false, &loadout);
 
@@ -572,8 +569,8 @@ void Game_WeaponSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_on
     SDL_assert(mc->elem_pos == wsm_elem_pos);
     // LoadoutSelectMenu_Load(wsm, unit_ontile, sota->renderer);
     LoadoutSelectMenu_Select_Reset(wsm);
-    WeaponSelectMenu_Load(wsm, sota->map, sota->world, unit_entity_ontile,
-                          sota->renderer, &mc->n9patch);
+    WeaponSelectMenu_Load(wsm, sota->map, sota->world, sota->renderer, &mc->n9patch);
+    LoadoutSelectMenu_Unit(wsm, unit_entity_ontile);
     SDL_assert(mc->n9patch.scale.x > 0);
     SDL_assert(mc->n9patch.scale.y > 0);
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
@@ -823,11 +820,12 @@ void Game_StaffSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_ont
 
     struct LoadoutSelectMenu *ssm = mc->data;
     SDL_assert(mc->elem_pos == ssm_elem_pos);
-    StaffSelectMenu_Load(ssm, sota->map, sota->world, unit_entity_ontile, sota->renderer, &mc->n9patch);
+    StaffSelectMenu_Load(ssm, sota->map, sota->world, sota->renderer, &mc->n9patch);
+    LoadoutSelectMenu_Unit(ssm, unit_entity_ontile);
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
 
-    mc->elem_num = ssm->unit->num_canEquip;
+    mc->elem_num = unit_ontile->num_canEquip;
     for (int i = mc->elem_num - 1; i < SOTA_EQUIPMENT_SIZE; i++) {
         mc->elem_links[i].top    = LSM_ELEM_NULL;
         mc->elem_links[i].bottom = LSM_ELEM_NULL;

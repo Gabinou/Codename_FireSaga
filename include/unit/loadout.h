@@ -22,7 +22,7 @@ b32 equipped_valid( i32 equipped);
 i32  Loadout_Eq(        Loadout *loadout, i32 hand);
 void Loadout_Set(       Loadout *loadout, i32 hand, i32 eq);
 void Loadout_None(      Loadout *loadout, i32 hand);
-i32  Loadout_isEquipped(Loadout *loadout, i32 hand);
+b32  Loadout_isEquipped(Loadout *loadout, i32 hand);
 
 /* --- canEquip --- */
 void canEquip_Eq(           canEquip *e, i32 eq);
