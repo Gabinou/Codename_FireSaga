@@ -103,8 +103,8 @@ void TradeMenu_Select(struct   TradeMenu *tm, i8 selected) {
 }
 
 void TradeMenu_Trade(struct TradeMenu *tm) {
-    SDL_assert(tm != NULL);
-    SDL_assert(tm->world != NULL);
+    SDL_assert(tm           != NULL);
+    SDL_assert(tm->world    != NULL);
 
     tnecs_entity giver_ent = tm->selected_trader ? tm->active->unit : tm->passive->unit;
     tnecs_entity taker_ent = tm->target_trader   ? tm->active->unit : tm->passive->unit;
