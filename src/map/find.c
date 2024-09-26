@@ -4,9 +4,7 @@
 /*-- Map Usable -- */
 
 /* Find if a weapon/staff usable by unit has an enemy in range */
-// -> TWO_HAND_EQ_MODE_LOOSE
-void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
-                  b32 move, i64 archetype) {
+void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
     SDL_assert(map          != NULL);
     SDL_assert(map->world   != NULL);
     SDL_assert((archetype == ITEM_ARCHETYPE_WEAPON) ||
@@ -27,11 +25,7 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
     /* Alloc defendants */
     tnecs_entity *defendants  = DARR_INIT(defendants, tnecs_entity, 4);
 
-    unit->num_canEquip = 0;
-    canEquip can_equip  = canEquip_default;
-    // Map_canEquip point is to find ALL possible equippables
-    can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE;
-    can_equip.archetype         = archetype;
+    unit->num_canEquip  = 0;
     for (int eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         /* Skip if weapon is not usable */
         // SDL_Log("eq %d \n", eq);
@@ -43,34 +37,53 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent,
         }
 
         /* Compute range */
-        struct Range *range = Unit_Range_Eq(unit, eq, archetype);
+        struct Range *range = Unit_Range_Eq(unit, eq, can_equip.archetype);
         // SDL_Log("range %d %d", range->min, range->max);
-
-        /* Compute attacktolist to check if any enemy in it */
-        Pathfinding_Attackto_noM(map->attacktomap, map->movemap,
-                                 map->unitmap,
-                                 map->row_len, map->col_len,
-                                 (i32 *)range, MOVETILE_IGNORE);
-        // printf("ATK\n");
-        // matrix_print(map->attacktomap, map->row_len, map->col_len);
-
-        Map_Attacktolist_Compute(map);
-
-        /* Find all Defendants in list */
-        if (archetype == ITEM_ARCHETYPE_WEAPON) {
-            defendants = Map_Find_Defendants(map, map->attacktolist, defendants, unit_ent, false);
-        } else if (archetype == ITEM_ARCHETYPE_STAFF) {
-            defendants = Map_Find_Patients(map, map->attacktolist, defendants, unit_ent, eq, false);
-        }
-
-        // printf("DARR_NUM(defendants) %d\n", DARR_NUM(defendants));
-        if (DARR_NUM(defendants) > 0) {
+    
+        if (Map_canEquip_Range(map, range, defendants)) {
             unit->eq_canEquip[unit->num_canEquip++] = eq;
         }
-        DARR_NUM(defendants) = 0;
     }
+
     DARR_FREE(defendants);
 }
+
+b32 Map_canEquip_Range(struct Map *map, struct Range *range, tnecs_entity *defendants, i64 archetype) {
+    /* NOTES: 
+        1- assumes movemap was computed before
+        2- assumes entites are tracked on unitmap
+    */
+    SDL_assert(map              != NULL);
+    SDL_assert(range            != NULL);
+    SDL_assert(defendants       != NULL);
+    SDL_assert(map->movemap     != NULL);
+    SDL_assert(map->unitmap     != NULL);
+    SDL_assert(map->attacktomap != NULL);
+    
+    /* Compute attacktolist to check if any enemy in it */
+    Pathfinding_Attackto_noM(map->attacktomap, map->movemap,
+                             map->unitmap,
+                             map->row_len, map->col_len,
+                             (i32 *)range, MOVETILE_IGNORE);
+    // printf("ATK\n");
+    // matrix_print(map->attacktomap, map->row_len, map->col_len);
+
+    Map_Attacktolist_Compute(map);
+
+    /* Find all Defendants in list */
+    if (archetype == ITEM_ARCHETYPE_WEAPON) {
+        defendants = Map_Find_Defendants(map, map->attacktolist, defendants, unit_ent, false);
+    } else if (archetype == ITEM_ARCHETYPE_STAFF) {
+        defendants = Map_Find_Patients(map, map->attacktolist, defendants, unit_ent, eq, false);
+    }
+
+    // printf("DARR_NUM(defendants) %d\n", DARR_NUM(defendants));
+    b32 out = (DARR_NUM(defendants) > 0);
+
+    DARR_NUM(defendants) = 0;
+    return(out);
+}
+
 
 tnecs_entity *Map_Find_Defendants(struct Map *map, i32 *attacktolist,
                                   tnecs_entity *defendants, tnecs_entity aggressor,

@@ -329,6 +329,7 @@ void test_menu_loadout_select_two_hands(void) {
     //  - If first selected weapon is only twohand,
     //      only show it possible in other hand.
 
+    /* --- PREPARATION --- */
     /* -- Weapon dtab -- */
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
 
@@ -341,18 +342,49 @@ void test_menu_loadout_select_two_hands(void) {
     Silou._equipment[1].id      = ITEM_ID_RAPIERE;
     Silou._equipment[2].id      = ITEM_ID_IRON_SWORD;
     Silou._equipment[3].id      = ITEM_ID_FLEURET;
+    Silou._equipment[4].id      = ITEM_ID_WOODEN_SHIELD;
+    Silou._equipment[5].id      = ITEM_ID_SALVE;
     Silou.handedness            = UNIT_HAND_LEFTIE;
     Silou.equippable            = ITEM_TYPE_SWORD;
 
-    /* -- Setup two hamded weapon -- */
     Weapon_Load(weapons_dtab, Silou._equipment[0].id);
-    struct Weapon *weapon = DTAB_GET(weapons_dtab, Silou._equipment[0].id);
-    weapon->handedness  = WEAPON_HAND_TWO;
+    Weapon_Load(weapons_dtab, Silou._equipment[1].id);
+    Weapon_Load(weapons_dtab, Silou._equipment[2].id);
+    Weapon_Load(weapons_dtab, Silou._equipment[3].id);
+    struct Weapon *weapons[6] = {0};
+    weapon[0] = DTAB_GET(weapons_dtab, Silou._equipment[0].id);
+    weapon[1] = DTAB_GET(weapons_dtab, Silou._equipment[1].id);
+    weapon[2] = DTAB_GET(weapons_dtab, Silou._equipment[2].id);
+    weapon[3] = DTAB_GET(weapons_dtab, Silou._equipment[3].id);
+    weapon[4] = DTAB_GET(weapons_dtab, Silou._equipment[4].id);
 
     /* -- Create LoadoutSelectMenu -- */
     struct LoadoutSelectMenu *wsm = LoadoutSelectMenu_Alloc();
     wsm->unit = &Silou;
 
+    /* --- TESTS --- */
+
+    /* -- Equipping a two-hand only weapon -- */
+    weapon[0]->handedness  = WEAPON_HAND_TWO;
+    weapon[1]->handedness  = WEAPON_HAND_ONE;
+    weapon[2]->handedness  = WEAPON_HAND_ANY;
+    weapon[3]->handedness  = WEAPON_HAND_LEFT;
+    /* - Can be selected by stronghand                  - */
+    LoadoutSelectMenu_Select_Reset(wsm);
+    /* - No other weapon can be selected by weakhand    - */
+    LoadoutSelectMenu_Select_Select(wsm);
+
+    /* -- Equipping a one-hand only weapon -- */
+    /* - Can be selected by stronghand - */
+    /* - Two-hand only weapons can't be selected  - */
+
+    /* -- Equipping a any hand weapon -- */
+    
+    /* -- Equipping a any left-hand only weapon -- */
+
+    /* -- Equipping a any right-hand only weapon -- */
+
+    /* --- FREE --- */
     Unit_Free(&Silou);
     LoadoutSelectMenu_Free(wsm);
     Game_Weapons_Free(&weapons_dtab);

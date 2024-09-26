@@ -194,6 +194,9 @@ void StaffSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
 
 void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm,  char *header);
 
+/* --- CanEquip --- */
+void LoadoutSelectMenu_canEquip(struct LoadoutSelectMenu *lsm);
+
 /* --- Item placement --- */
 void LoadoutSelectMenu_Select(      struct LoadoutSelectMenu *lsm, int s);
 void LoadoutSelectMenu_Select(      struct LoadoutSelectMenu *lsm, int s);

@@ -261,6 +261,11 @@ b32 WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm) {
 
     return (remains);
 }
+/* --- CanEquip --- */
+void LoadoutSelectMenu_canEquip(struct LoadoutSelectMenu *lsm) {
+    // If no hand selected: Map_canEquip of archetype, without movement, any loadout
+    // If any hand selected:  Map_canEquip of archetype, without movement, selected loadout
+}
 
 /* --- Item placement --- */
 void LoadoutSelectMenu_Unit(struct LoadoutSelectMenu *lsm, tnecs_entity ent) {
