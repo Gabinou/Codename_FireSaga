@@ -1,6 +1,20 @@
 
 #include "map/render.h"
 
+void Map_Units_Hide(struct Map *map) {
+    if (map->unitmap == NULL)
+        return;
+
+    for (size_t i = 0; i < (map->col_len * map->row_len); i++) {
+        tnecs_entity uent = map->unitmap[i];
+        if (uent == TNECS_NULL)
+            continue;
+        struct Sprite *sprite = TNECS_GET_COMPONENT(map->world, uent, Sprite);
+        if (sprite != NULL)
+            sprite->visible = false;
+    }
+}
+
 void Map_Frame_Pauses(struct Map *map,  struct Settings *settings) {
     SDL_assert(map);
     SDL_assert(map->tilemap_frame_factor > 0.0f);

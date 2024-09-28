@@ -223,14 +223,15 @@ extern struct Map Map_default;
 /* --- Constructor/Destructors --- */
 
 struct Map *Map_New(i32 width, i32 height);
+
 void _Map_Tilesindex_Init(struct Map *map);
 
-void Map_Size_Set(struct Map *map, u8 col_len, u8 row_len);
+void Map_Size_Set(Map *map, i32 col, i32 row);
+void Map_Tilesize_Set(Map *map, i32 w, i32 h);
 
 void Map_Free(      struct Map *map);
 void Map_Units_Free(struct Map *map);
 
-void Map_Units_Hide(struct Map *map);
 
 void Map_Texture_Alloc(struct Map *map);
 
@@ -280,7 +281,6 @@ void Map_Bonus_Remove_Turn_End_Unit(struct Map *map, tnecs_entity ent);
 
 /* -- Entities -- */
 tnecs_entity *Map_Get_onField(struct Map *map, i32 army);
-
 
 #endif /* MAP_H */
 

@@ -6,6 +6,8 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Map;
 
+void Map_Units_Hide(struct Map *map);
+
 /* --- Palettes --- */
 void Map_Palettemap_Reset(  struct Map *map);
 void Map_Palettemap_addMap( struct Map *map, i32 *pmap, u8 palette);

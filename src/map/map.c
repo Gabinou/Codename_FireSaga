@@ -76,7 +76,7 @@ Map *Map_New(NewMap new_map) {
     Map_Tilesize_Set(   map,    new_map.tilesize[0],    new_map.tilesize[1]);
     Map_Size_Set(       map,    new_map.col_len,        new_map.row_len);
     Map_Members_Alloc(map);
-    return (map); // return cause pointer address can change.
+    return (map);
 }
 
 void Map_Units_Free(struct Map *map) {
@@ -109,20 +109,6 @@ void Map_Units_Free(struct Map *map) {
     /* -- Free unitmap -- */
     SDL_free(map->unitmap);
     map->unitmap = NULL;
-}
-
-void Map_Units_Hide(struct Map *map) {
-    if (map->unitmap == NULL)
-        return;
-
-    for (size_t i = 0; i < (map->col_len * map->row_len); i++) {
-        tnecs_entity uent = map->unitmap[i];
-        if (uent == TNECS_NULL)
-            continue;
-        struct Sprite *sprite = TNECS_GET_COMPONENT(map->world, uent, Sprite);
-        if (sprite != NULL)
-            sprite->visible = false;
-    }
 }
 
 void Map_Free(struct Map *map) {
@@ -323,6 +309,15 @@ void Map_Free(struct Map *map) {
     Map_Members_Free(map);
 }
 
+void Map_Tilesize_Set(struct Map *map, i32 width, i32 height) {
+    SDL_assert(width  > 0);
+    SDL_assert(height > 0);
+    SDL_assert(width  == SOTA_TILESIZE);
+    SDL_assert(height == SOTA_TILESIZE);
+    map->tilesize[0] = width;
+    map->tilesize[1] = height;
+}
+
 void Map_Size_Set(struct Map *map, u8 col_len, u8 row_len) {
     map->row_len = row_len;
     map->col_len = col_len;
@@ -339,7 +334,11 @@ void Map_Members_Alloc(struct Map *map) {
     SDL_assert(map->row_len < MAP_MAX_COLS);
     SDL_assert(map->col_len < MAP_MAX_ROWS);
     int len = map->row_len * map->col_len;
-
+    
+    Map_Texture_Alloc(map);
+    Map_Tilemap_Shader_Init(map);
+    Map_Tilemap_Surface_Init(map);
+    _Map_Tilemap_Shader_Init(map);
     SDL_assert(map->tilemap == NULL);
     map->tilemap = calloc(len, sizeof(*map->tilemap));
 
@@ -506,9 +505,12 @@ void Map_Tilemap_Surface_Free(struct Map *map) {
     }
 }
 
-void Map_Tilemap_Surface_Init(struct Map *map) {
+void  {
     SDL_assert(map->col_len > 0);
     SDL_assert(map->row_len > 0);
+    SDL_assert(map->col_len < MAP_MAX_COLS);
+    SDL_assert(map->row_len > MAP_MAX_ROWS);
+    
     Map_Tilemap_Surface_Free(map);
     int x_size = map->tilesize[0] * map->col_len;
     int y_size = map->tilesize[1] * map->row_len;
