@@ -327,11 +327,12 @@ void Map_Tilesize_Set(struct Map *map, i32 width, i32 height) {
     SDL_assert(height > 0);
     SDL_assert(width  == SOTA_TILESIZE);
     SDL_assert(height == SOTA_TILESIZE);
-    SDL_assert(map->arrow != NULL);
     map->tilesize[0] = width;
     map->tilesize[1] = height;
-    map->arrow->map_tilesize[0] = width;
-    map->arrow->map_tilesize[1] = height;
+    if (map->arrow) {
+        map->arrow->map_tilesize[0] = width;
+        map->arrow->map_tilesize[1] = height;
+    }
 }
 
 void Map_Size_Set(struct Map *map, i32 col_len, i32 row_len) {
@@ -382,12 +383,6 @@ void Map_Members_Alloc(struct Map *map) {
 
     SDL_assert(map->attackfromlist == NULL);
     map->attackfromlist = DARR_INIT(map->attackfromlist, i32, 32);
-
-    SDL_assert(map->items_num == NULL);
-    map->items_num = DARR_INIT(map->items_num, u8, 8);
-
-    SDL_assert(map->start_pos == NULL);
-    map->start_pos = DARR_INIT(map->start_pos, Point, 20);
 
     SDL_assert(map->enemies_onfield == NULL);
     map->enemies_onfield = DARR_INIT(map->enemies_onfield, tnecs_entity, 20);

@@ -48,10 +48,13 @@ void Map_Palettemap_addList(struct Map *map, i32 *list, u8 palette) {
 }
 
 void Map_Renderer_Set(struct Map *map, SDL_Renderer *renderer) {
-    SDL_assert(renderer);
-    map->renderer = renderer;
-    if (map->arrow != NULL)
+    SDL_assert(map);
+    if (renderer != NULL) {
+        map->renderer = renderer;
+    }
+    if ((map->arrow != NULL) &&  (map->renderer  != NULL)) {
         Arrow_Textures_Load(map->arrow, ARROW_FILENAME, map->renderer);
+    }
 }
 
 void Map_Palettemap_Autoset(struct Map *map, u16 flagsum) {
