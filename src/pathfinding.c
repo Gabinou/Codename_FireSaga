@@ -231,7 +231,7 @@ struct Point Pathfinding_Closest_Unblocked(i32 *distmap, size_t row_len, size_t 
     /* Lowest priority (movcost + distance) is top priority, at low index. */
     struct Nodeq *frontier_queue = DARR_INIT(frontier_queue, struct Nodeq, row_len * col_len);
     struct Nodeq current = {.x = target.x, .y = target.y, .cost = 0, .priority = 0};
-    struct Nodeq neighbour;
+    struct Nodeq neighbour = {0};
     DARR_PUT(frontier_queue, current);
     struct Point out = {-1, -1};
 
@@ -320,7 +320,7 @@ void Pathfinding_Distance_Plus(i32 *distmap, i32 *costmap, tnecs_entity *enemy_o
     /* Lowest priority (movcost + distance) is top priority, at low index. */
     struct Nodeq *frontier_queue = DARR_INIT(frontier_queue, struct Nodeq, row_len * col_len);
     struct Nodeq current = {.x = target.x, .y = target.y};
-    struct Nodeq neighbour;
+    struct Nodeq neighbour = {0};
     DARR_PUT(frontier_queue, current);
 
     while (DARR_NUM(frontier_queue) > 0) {
@@ -605,7 +605,7 @@ void Pathfinding_Moveto_noM(i32 *move_matrix, i32 *cost_matrix, size_t row_len,
 void Pathfinding_Moveto_Neighbours(struct Node *open, struct Node *closed,
                                    struct Node current, i32 *cost_matrix,
                                    size_t row_len, size_t col_len, i32 move) {
-    struct Node neighbour;
+    struct Node neighbour = {0};
 
     /* -- Move to four square neighbour tiles -- */
     for (size_t i = 0; i < SQUARE_NEIGHBOURS; i++) {
@@ -794,7 +794,8 @@ void Pathfinding_unitGradient_noM(i32 *gradmap, i32 *costmap,
     /* -- Setup nodes -- */
     struct Node *open   = DARR_INIT(open,   struct Node, row_len * col_len);
     struct Node *closed = DARR_INIT(closed, struct Node, row_len * col_len);
-    struct Node current, neighbour;
+    struct Node current     = {0};
+    struct Node neighbour   = {0};
 
     /* -- Setup units on gradmap + open nodes -- */
     for (i32 i = 0; i < unit_num; i++) {

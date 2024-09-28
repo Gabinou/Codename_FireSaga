@@ -93,7 +93,7 @@ i32 *matrix_plus_noM(i32 *matrix1, i32 *matrix2, size_t arr_len) {
 
 i32 *matrix_plus(i32 *matrix1, i32 *matrix2, size_t arr_len) {
     i32 *out = calloc(arr_len, sizeof(*out));
-    return (matrix_plus_noM(matrix1, matrix2, arr_len));
+    return (matrix_plus_noM(out, matrix2, arr_len));
 }
 
 i32 *matrix2list_noM(i32 *matrix, i32 *list, size_t row_len, size_t col_len) {
@@ -181,7 +181,7 @@ void Cursor_Box_Offset(struct Point *pos) {
 /* -- Directions -- */
 int Utilities_Loop(int direction, int flip) {
     /* Get sprite loop from direction and flip */
-    int loop;
+    int loop = LOOPING_INVALID;
     if (direction == SOTA_DIRECTION_BOTTOM)
         loop = MAP_UNIT_LOOP_MOVEB;
     else if (direction == SOTA_DIRECTION_TOP)

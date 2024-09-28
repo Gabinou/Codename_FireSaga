@@ -338,7 +338,8 @@ void Filesystem_Surface_Pixels2Indices(SDL_Surface *abgr_surf, SDL_Surface *inde
     SDL_assert(index_surf->h == abgr_surf->h);
 
     u32 pixel, color;
-    u8 bitsmin = 24, bitsmax = 32; /* Bits for A channel? */
+    i32 bitsmin = 24, 
+    i32 bitsmax = 32; /* Bits for A channel? */
     SDL_LockSurface(abgr_surf);
     SDL_LockSurface(index_surf);
     u8 *arbg_pixels  = (u8 *)abgr_surf->pixels;
@@ -355,8 +356,10 @@ void Filesystem_Surface_Pixels2Indices(SDL_Surface *abgr_surf, SDL_Surface *inde
                 pixel = SDL_SwapBE32(pixel);
 
             /* Get rid of A channel? */
-            for (size_t j = bitsmin; j < bitsmax; j++)
+            for (i32 j = bitsmin; j < bitsmax; j++) {
+                SDL_assert(j < 32); /* cause pixel is u32 */
                 pixel &= ~(1 << j);
+            }
 
             /* Find which color this pixel corresponds to */
             for (size_t i = 0; i < index_surf->format->palette->ncolors; i++) {
