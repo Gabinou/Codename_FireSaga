@@ -199,7 +199,6 @@ void LoadoutSelectMenu_canEquip(struct LoadoutSelectMenu *lsm);
 
 /* --- Item placement --- */
 void LoadoutSelectMenu_Select(      struct LoadoutSelectMenu *lsm, int s);
-void LoadoutSelectMenu_Select(      struct LoadoutSelectMenu *lsm, int s);
 void LoadoutSelectMenu_Deselect(    struct LoadoutSelectMenu *lsm);
 void LoadoutSelectMenu_Select_Reset(struct LoadoutSelectMenu *lsm);
 b32 WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm);

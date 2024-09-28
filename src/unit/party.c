@@ -49,10 +49,10 @@ void Party_Init( struct Party *party) {
     SDL_assert(party != NULL);
     Party_Free(party);
     *party = Party_default;
-    Party_Alloc_Members( party);
+    Party_Members_Alloc( party);
 }
 
-void Party_Alloc_Members( struct Party *party) {
+void Party_Members_Alloc( struct Party *party) {
     SDL_assert(party != NULL);
     if (party->json_names        == NULL) {
         party->json_names       = DARR_INIT(party->json_names,      s8,     SOTA_MAX_PARTY_SIZE);

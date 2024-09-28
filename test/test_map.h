@@ -168,7 +168,7 @@ void test_map_usable(void) {
     Map *map = {0};
     map = Map_Init(map, 16, 16);
     SDL_assert(map->attacktolist != NULL);
-    Map_Init_Size(map, TEST_COL_LEN, TEST_ROW_LEN);
+    Map_Size_Set(map, TEST_COL_LEN, TEST_ROW_LEN);
     map->world      = world;
 
     _Map_Tilesindex_Init(map);

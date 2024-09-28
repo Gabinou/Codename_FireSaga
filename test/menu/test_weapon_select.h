@@ -372,8 +372,9 @@ void test_menu_loadout_select_two_hands(void) {
     weapon[3]->handedness  = WEAPON_HAND_LEFT;
     /* - Can be selected by stronghand                  - */
     LoadoutSelectMenu_Select_Reset(wsm);
+
     /* - No other weapon can be selected by weakhand    - */
-    LoadoutSelectMenu_Select_Select(wsm);
+    LoadoutSelectMenu_Select(wsm, 0);
 
     /* -- Equipping a one-hand only weapon -- */
     /* - Can be selected by stronghand - */

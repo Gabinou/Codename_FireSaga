@@ -37,6 +37,13 @@ struct Map_condition;
 #define ARROW_FILENAME ARROW_FILENAME_
 #define ARROW_FILENAME_ PATH_JOIN("..", "assets", "GUI", "arrow.png")
 
+typedef struct NewMap {
+    i32 tilesize[TWO_D];
+
+    i32 row_len; /* [tiles] */
+    i32 col_len; /* [tiles] */
+} NewMap;
+
 typedef struct Map {
     s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
     u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
@@ -45,16 +52,16 @@ typedef struct Map {
     s8 party_filename;
 
     /* --- BASICS --- */
-    u8 perimiter_danger_color;
-    u8 perimiter_aura_color;
+    i32 perimiter_danger_color;
+    i32 perimiter_aura_color;
 
     /* --- BASICS --- */
-    u8 turn; /* Automatic loss if turn 255. */
-    u8 reinf_loaded;
+    i32 turn; /* Automatic loss if turn 255. */
+    i32 reinf_loaded;
 
     /* Map size */
-    u8 row_len; /* [tiles] */
-    u8 col_len; /* [tiles] */
+    i32 row_len; /* [tiles] */
+    i32 col_len; /* [tiles] */
     i32 chapter;
     i32 tilesize[TWO_D]; /* [pixels] */
     struct Arrow    *arrow;
@@ -170,11 +177,6 @@ typedef struct Map {
     struct SDL_Surface  ***tileset_surfaces; /* [palette_id][tiles_order] */
     struct SDL_Texture  ***tileset_textures; /* [palette_id][tiles_order] */
 
-    /* -- Unique tiles -- */
-    /* tileset_order == tile_order*/
-    u16 **tilesprites_ind;     /* [tileset_order][tilesprite_order]    */
-    u16  *tilesprites_num;     /* [tileset_order]                      */
-
     /* --- REINFORCEMENT --- */
     u8 *items_num;
     struct Reinforcement   *reinforcements;  /* pointer to 1D dynamic array */
@@ -184,9 +186,6 @@ typedef struct Map {
     tnecs_entity *doors_ent;  /* breakable doors are here */
     tnecs_entity *chests_ent;
     tnecs_entity *breakables_ent;
-    u16 door_num;
-    u16 chest_num;
-    u16 breakable_num;
 
     /* --- MUSIC --- */
     i32 music_i_friendly;
@@ -222,28 +221,28 @@ typedef struct Map {
 extern struct Map Map_default;
 
 /* --- Constructor/Destructors --- */
-void        Map_Free(      struct Map *map);
-// TODO: Formalize Map_initializations
-struct Map *Map_Init(      struct Map *map, i32 width, i32 height);
-void        Map_Units_Free(struct Map *map);
-void        Map_Units_Hide(struct Map *map);
 
-void Map_Init_Size(struct Map *map, u8 col_len, u8 row_len);
+struct Map *Map_New(i32 width, i32 height);
+void _Map_Tilesindex_Init(struct Map *map);
+
+void Map_Size_Set(struct Map *map, u8 col_len, u8 row_len);
+
+void Map_Free(      struct Map *map);
+void Map_Units_Free(struct Map *map);
+
+void Map_Units_Hide(struct Map *map);
+
 void Map_Texture_Alloc(struct Map *map);
 
 /* -- Dynamic arrays -- */
-void Map_dArrays_Free(struct Map *map);
-void Map_dArrays_Init(struct Map *map);
+void Map_Members_Free(struct Map *map);
+void Map_Members_Alloc(struct Map *map);
 
 /* --- Tilemap --- */
 void Map_Tilemap_Surface_Init(struct Map *map);
 void Map_Tilemap_Surface_Free(struct Map *map);
 void Map_Tilemap_Texture_Init(struct Map *map);
 void Map_Tilemap_Texture_Free(struct Map *map);
-
-/* --- Tilesprites --- */
-void Map_Tilesprites_Init(struct Map *map, size_t tiles_num);
-void Map_Tilesprites_Free(struct Map *map);
 
 /* --- I/O --- */
 void Map_readJSON(  void *input, cJSON *jmap);
@@ -282,7 +281,6 @@ void Map_Bonus_Remove_Turn_End_Unit(struct Map *map, tnecs_entity ent);
 /* -- Entities -- */
 tnecs_entity *Map_Get_onField(struct Map *map, i32 army);
 
-void _Map_Tilesindex_Init(struct Map *map);
 
 #endif /* MAP_H */
 

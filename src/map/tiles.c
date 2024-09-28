@@ -203,28 +203,6 @@ void Map_Tilesize_Set(struct Map *map, i32 width, i32 height) {
     }
 }
 
-void Map_Unique_TilesindexfromTilemap(struct Map *map) {
-    SDL_assert(map->tilemap);
-    for (size_t i = 0; i < map->col_len * map->row_len; i++) {
-        i32 tile_ind = map->tilemap[i] / TILE_DIVISOR;
-        i32 tofind = map->tilemap[i] - tile_ind * TILE_DIVISOR;
-        size_t *tile_orders = matrix_where(map->tilesindex, tile_ind, DARR_NUM(map->tilesindex));
-        SDL_assert(DARR_LEN(tile_orders) == 1);
-        u16 *tilesprite_ind = map->tilesprites_ind[tile_orders[0]];
-        u16 tilesnum = map->tilesprites_num[tile_orders[0]];
-        b32 found = false;
-        for (size_t i = 0; i < tilesnum; i++) {
-            if (tilesprite_ind[i] == tofind) {
-                found = true;
-                break;
-            }
-        }
-        if (!found)
-            DARR_PUT(tilesprite_ind, tofind);
-        DARR_FREE(tile_orders);
-    }
-}
-
 u8 Map_Tile_Order(struct Map *map, i32 tile) {
     SDL_assert(Tile_Valid_ID(tile));
     SDL_assert(tile > TILE_START);

@@ -35,7 +35,6 @@ struct Map Map_default = {
     .ipalette_enemy         = PALETTE_SOTA,
 
     .turn                   =  1, /* Automatic loss if turn 255. */
-    .army_i                 = -1,
     /* --- MUSIC --- */
     .music_i_friendly       = SOTA_MUSIC_DEBUG,
     .music_i_enemy          = -1,
@@ -69,40 +68,14 @@ static void _Map_Tilemap_Shader_Init(struct Map *map) {
     map->tilemap_shader->to     = palette_table_SOTA_shadow;
 }
 
-static void _Map_Tilesindex_Free(struct Map *map) {
-    if (map->tilesindex != NULL)
-        DARR_FREE(map->tilesindex);
-}
-
-void _Map_Tilesindex_Init(struct Map *map) {
-    _Map_Tilesindex_Free(map);
-    map->tilesindex = DARR_INIT(map->tilesindex, i32, DEFAULT_TILESPRITE_BUFFER);
-}
-
 /* --- GLOBAL FUNCTIONS --- */
 /* --- Constructor/Destructors --- */
-struct Map *Map_Init(struct Map *map, i32 width, i32 height) {
-    if (map != NULL)
-        Map_Free(map);
-    map  = (struct Map *)SDL_malloc(sizeof(struct Map));
-    *map = Map_default;
-    map->items_num          = DARR_INIT(map->items_num, u8, 8);
-    map->start_pos          = DARR_INIT(map->start_pos, struct Point, 20);
-    map->enemies_onfield    = DARR_INIT(map->enemies_onfield, tnecs_entity, 20);
-    map->friendlies_onfield = DARR_INIT(map->friendlies_onfield, tnecs_entity, 20);
-    map->units_onfield      = DARR_INIT(map->units_onfield, tnecs_entity, 20);
-    map->reinf_equipments   = DARR_INIT(map->reinf_equipments, struct Inventory_item *, 30);
-    map->army_onfield       = DARR_INIT(map->army_onfield, i32, 5);
-
-    Map_Tilesize_Set(map, width, height);
-    if (map->arrow != NULL)
-        Arrow_Free(map->arrow);
-    map->arrow = Arrow_Init(map->tilesize);
-
-    Map_dArrays_Init(map);
-    SDL_assert(map->attackfromlist  != NULL);
-    SDL_assert(map->attacktolist    != NULL);
-    SDL_assert(map->healtolist      != NULL);
+Map *Map_New(NewMap new_map) {
+    Map *map    = SDL_malloc(sizeof(Map));
+    *map        = Map_default;
+    Map_Tilesize_Set(   map,    new_map.tilesize[0],    new_map.tilesize[1]);
+    Map_Size_Set(       map,    new_map.col_len,        new_map.row_len);
+    Map_Members_Alloc(map);
     return (map); // return cause pointer address can change.
 }
 
@@ -165,6 +138,10 @@ void Map_Free(struct Map *map) {
     if (map->music_friendly != NULL) {
         Mix_FreeMusic(map->music_friendly);
         map->music_friendly = NULL;
+    }
+    
+    if (map->tilesindex != NULL)
+        DARR_FREE(map->tilesindex);
     }
 
     /* - Conditions - */
@@ -255,7 +232,6 @@ void Map_Free(struct Map *map) {
         map->units_onfield = NULL;
     }
     Map_Tilemap_Surface_Free(map);
-    _Map_Tilesindex_Free(map);
     _Map_Reinforcements_Free(map);
     Arrow_Free(map->arrow);
     if (map->tilemap_shader != NULL) {
@@ -344,67 +320,142 @@ void Map_Free(struct Map *map) {
         map->global_dangermap = NULL;
     }
 
-    Map_dArrays_Free(map);
+    Map_Members_Free(map);
 }
 
-void Map_Init_Size(struct Map *map, u8 col_len, u8 row_len) {
+void Map_Size_Set(struct Map *map, u8 col_len, u8 row_len) {
     map->row_len = row_len;
     map->col_len = col_len;
+
+    SDL_assert(map->row_len > 0);
+    SDL_assert(map->col_len > 0);
+    SDL_assert(map->row_len < MAP_MAX_COLS);
+    SDL_assert(map->col_len < MAP_MAX_ROWS);
+}
+
+void Map_Members_Alloc(struct Map *map) {
+    SDL_assert(map->row_len > 0);
+    SDL_assert(map->col_len > 0);
+    SDL_assert(map->row_len < MAP_MAX_COLS);
+    SDL_assert(map->col_len < MAP_MAX_ROWS);
     int len = map->row_len * map->col_len;
-    if (map->temp == NULL)
-        map->temp               = calloc(len,  sizeof(*map->temp));
-    if (map->unitmap == NULL)
-        map->unitmap            = calloc(len,  sizeof(*map->unitmap));
-    if (map->costmap == NULL)
-        map->costmap            = calloc(len,  sizeof(*map->costmap));
-    if (map->movemap == NULL)
-        map->movemap            = calloc(len,  sizeof(*map->movemap));
-    if (map->start_posmap == NULL)
-        map->start_posmap       = calloc(len,  sizeof(*map->start_posmap));
-    if (map->fcostmap == NULL)
-        map->fcostmap           = calloc(len,  sizeof(*map->fcostmap));
-    if (map->fmovemap == NULL)
-        map->fmovemap           = calloc(len,  sizeof(*map->fmovemap));
-    if (map->dangermap == NULL)
-        map->dangermap          = calloc(len,  sizeof(*map->dangermap));
-    if (map->palettemap == NULL)
-        map->palettemap         = malloc(len * sizeof(*map->palettemap));
-    if (map->attacktomap == NULL)
-        map->attacktomap        = calloc(len,  sizeof(*map->attacktomap));
-    if (map->healtomap == NULL)
-        map->healtomap          = calloc(len,  sizeof(*map->healtomap));
-    if (map->healfrommap == NULL)
-        map->healfrommap        = calloc(len,  sizeof(*map->healfrommap));
-    if (map->temp_palette == NULL)
-        map->temp_palette       = malloc(len * sizeof(*map->temp_palette));
-    if (map->attackfrommap == NULL)
-        map->attackfrommap      = calloc(len,  sizeof(*map->attackfrommap));
-    if (map->global_rangemap == NULL)
-        map->global_rangemap    = calloc(len,  sizeof(*map->global_rangemap));
-    if (map->global_dangermap == NULL)
-        map->global_dangermap   = calloc(len,  sizeof(*map->global_dangermap));
-    if (map->edges_danger == NULL)
-        map->edges_danger = calloc(len, sizeof(*map->edges_danger));
+
+    SDL_assert(map->tilemap == NULL);
+    map->tilemap = calloc(len, sizeof(*map->tilemap));
+
+    SDL_assert(map->start_pos == NULL);
+    map->start_pos = DARR_INIT(map->start_pos, struct Point, 16);
+
+    SDL_assert(map->death_enemy == NULL);
+    map->death_enemy = DARR_INIT(map->death_enemy, struct Map_condition, 2);
+
+    SDL_assert(map->death_friendly == NULL);
+    map->death_friendly = DARR_INIT(map->death_friendly, struct Map_condition, 2);
+
+    SDL_assert(map->reinforcements == NULL);
+    map->reinforcements = DARR_INIT(map->reinforcements, struct Reinforcement, 16);
+
+    SDL_assert(map->items_num == NULL);
+    map->items_num = DARR_INIT(map->items_num, u8, SOTA_EQUIPMENT_SIZE);
+
+    SDL_assert(map->tilesindex == NULL);
+    map->tilesindex = DARR_INIT(map->tilesindex, i32, DEFAULT_TILESPRITE_BUFFER);
+
+    SDL_assert(map->healtolist == NULL);
+    map->healtolist = DARR_INIT(map->healtolist, i32, 32);
+
+    SDL_assert(map->attacktolist == NULL);
+    map->attacktolist = DARR_INIT(map->attacktolist, i32, 32);
+
+    SDL_assert(map->attackfromlist == NULL);
+    map->attackfromlist = DARR_INIT(map->attackfromlist, i32, 32);
+
+    SDL_assert(map->items_num == NULL);
+    map->items_num = DARR_INIT(map->items_num, u8, 8);
+
+    SDL_assert(map->start_pos == NULL);
+    map->start_pos = DARR_INIT(map->start_pos, Point, 20);
+
+    SDL_assert(map->enemies_onfield == NULL);
+    map->enemies_onfield = DARR_INIT(map->enemies_onfield, tnecs_entity, 20);
+
+    SDL_assert(map->friendlies_onfield == NULL);
+    map->friendlies_onfield = DARR_INIT(map->friendlies_onfield, tnecs_entity, 20);
+
+    SDL_assert(map->units_onfield == NULL);
+    map->units_onfield = DARR_INIT(map->units_onfield, tnecs_entity, 20);
+
+    SDL_assert(map->reinf_equipments == NULL);
+    map->reinf_equipments = DARR_INIT(map->reinf_equipments, Inventory_item *, 30);
+    
+    SDL_assert(map->army_onfield == NULL);
+    map->army_onfield = DARR_INIT(map->army_onfield, i32, 5);
+
+    SDL_assert(map->temp == NULL);
+    map->temp = calloc(len,  sizeof(*map->temp));
+
+    SDL_assert(map->unitmap == NULL);
+    map->unitmap = calloc(len,  sizeof(*map->unitmap));
+
+    SDL_assert(map->costmap == NULL);
+    map->costmap = calloc(len,  sizeof(*map->costmap));
+
+    SDL_assert(map->movemap == NULL);
+    map->movemap = calloc(len,  sizeof(*map->movemap));
+
+    SDL_assert(map->start_posmap == NULL);
+    map->start_posmap = calloc(len,  sizeof(*map->start_posmap));
+
+    SDL_assert(map->fcostmap == NULL);
+    map->fcostmap = calloc(len,  sizeof(*map->fcostmap));
+
+    SDL_assert(map->fmovemap == NULL);
+    map->fmovemap = calloc(len,  sizeof(*map->fmovemap));
+
+    SDL_assert(map->dangermap == NULL);
+    map->dangermap = calloc(len,  sizeof(*map->dangermap));
+
+    SDL_assert(map->palettemap == NULL);
+    map->palettemap = malloc(len * sizeof(*map->palettemap));
+
+    SDL_assert(map->attacktomap == NULL);
+    map->attacktomap = calloc(len,  sizeof(*map->attacktomap));
+
+    SDL_assert(map->healtomap == NULL);
+    map->healtomap = calloc(len,  sizeof(*map->healtomap));
+
+    SDL_assert(map->healfrommap == NULL);
+    map->healfrommap = calloc(len,  sizeof(*map->healfrommap));
+
+    SDL_assert(map->temp_palette == NULL);
+    map->temp_palette = malloc(len * sizeof(*map->temp_palette));
+
+    SDL_assert(map->attackfrommap == NULL);
+    map->attackfrommap = calloc(len,  sizeof(*map->attackfrommap));
+
+    SDL_assert(map->global_rangemap == NULL);
+    map->global_rangemap = calloc(len,  sizeof(*map->global_rangemap));
+
+    SDL_assert(map->global_dangermap == NULL);
+    map->global_dangermap = calloc(len,  sizeof(*map->global_dangermap));
+
+    SDL_assert(map->edges_danger == NULL);
+    map->edges_danger = calloc(len, sizeof(*map->edges_danger));
+
+    SDL_assert(map->arrow == NULL);
+    map->arrow = Arrow_Init(map->tilesize);
 
     if (map->stack_mode == MAP_SETTING_STACK_DANGERMAP) {
-        if (map->stacked_dangermap == NULL)
-            map->stacked_dangermap          = calloc(len, sizeof(*map->stacked_dangermap));
-        if (map->stacked_global_dangermap == NULL)
-            map->stacked_global_dangermap   = calloc(len, sizeof(*map->stacked_global_dangermap));
+        SDL_assert(map->stacked_dangermap == NULL);
+        map->stacked_dangermap          = calloc(len, sizeof(*map->stacked_dangermap));
+        SDL_assert(map->stacked_global_dangermap == NULL);
+        map->stacked_global_dangermap   = calloc(len, sizeof(*map->stacked_global_dangermap));
     }
+
     Map_Palettemap_Reset(map);
 }
 
-void Map_dArrays_Init(struct Map *map) {
-    if (map->healtolist == NULL)
-        map->healtolist   = DARR_INIT(map->healtolist,   i32, 32);
-    if (map->attacktolist == NULL)
-        map->attacktolist = DARR_INIT(map->attacktolist, i32, 32);
-    if (map->attackfromlist == NULL)
-        map->attackfromlist = DARR_INIT(map->attackfromlist, i32, 32);
-}
-
-void Map_dArrays_Free(struct Map *map) {
+void Map_Members_Free(struct Map *map) {
     if (map->attacktolist != NULL) {
         DARR_FREE(map->attacktolist);
         map->attacktolist = NULL;
@@ -429,31 +480,6 @@ void Map_Texture_Alloc(struct Map *map) {
                                      map->tilesize[1] * map->row_len);
     SDL_SetTextureBlendMode(map->texture, SDL_BLENDMODE_BLEND);
 
-}
-
-void Map_Tilesprites_Free(struct Map *map) {
-    if (map->tilesprites_ind == NULL)  {
-        return;
-    }
-    for (size_t i = 0; i < DARR_NUM(map->tilesprites_ind); i++) {
-        if (map->tilesprites_ind[i] == NULL)
-            continue;
-        DARR_FREE(map->tilesprites_ind[i]);
-        map->tilesprites_ind[i] = NULL;
-    }
-    DARR_FREE(map->tilesprites_ind);
-    map->tilesprites_ind = NULL;
-
-}
-
-void Map_Tilesprites_Init(struct Map *map, size_t tiles_num) {
-    SDL_assert(tiles_num > 0);
-    Map_Tilesprites_Free(map);
-    map->tilesprites_ind = DARR_INIT(map->tilesprites_ind, u16 *, tiles_num);
-    DARR_NUM(map->tilesprites_ind) = tiles_num;
-    for (size_t i = 0; i < tiles_num; i++) {
-        map->tilesprites_ind[i] = DARR_INIT(map->tilesprites_ind[i], u16, DEFAULT_TILESPRITE_BUFFER);
-    }
 }
 
 void Map_Tilemap_Texture_Free(struct Map *map) {
@@ -568,6 +594,15 @@ void Map_writeJSON( void *input, cJSON *jmap) {
 }
 
 void Map_readJSON(void *input,  cJSON *jmap) {
+    SDL_assert(map->death_enemy         != NULL);
+    SDL_assert(map->death_friendly      != NULL);
+    SDL_assert(map->reinforcements      != NULL);
+    SDL_assert(map->reinf_equipments    != NULL);
+    SDL_assert(map->items_num           != NULL);
+    SDL_assert(map->chests_ent          != NULL)
+    SDL_assert(map->breakables_ent      != NULL)
+    SDL_assert(map->doors_ent           != NULL)
+
     struct Map *map = (struct Map *) input;
     SDL_assert(jmap != NULL);
     /* -- Read party filename (for debug) -- */
@@ -595,7 +630,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     map->chapter = cJSON_GetNumberValue(jchapter);
     map->chapter = cJSON_GetNumberValue(jchapter);
 
-    Map_Init_Size(map, cJSON_GetNumberValue(jcol_len), cJSON_GetNumberValue(jrow_len));
+    Map_Size_Set(map, cJSON_GetNumberValue(jcol_len), cJSON_GetNumberValue(jrow_len));
 
     if (map->arrow) {
         map->arrow->col_len = map->col_len;
@@ -606,9 +641,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     // SDL_Log("Read Starting Positions");
     cJSON *jstart_pos_arr = cJSON_GetObjectItem(jmap, "Starting Positions");
     SDL_assert(cJSON_IsArray(jstart_pos_arr));
-    if (map->start_pos != NULL)
-        DARR_FREE(map->start_pos);
-    map->start_pos = DARR_INIT(map->start_pos, struct Point, 16);
+
     cJSON *jstart_pos;
     struct Point pos;
     cJSON_ArrayForEach(jstart_pos, jstart_pos_arr) {
@@ -620,7 +653,6 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     // SDL_Log("Read tiles");
     cJSON *jtiles = cJSON_GetObjectItem(jmap, "tiles");
     cJSON *jid, *jtile;
-    _Map_Tilesindex_Init(map);
     cJSON_ArrayForEach(jtile, jtiles) {
         jid = cJSON_GetObjectItem(jtile, "id");
         DARR_PUT(map->tilesindex, cJSON_GetNumberValue(jid));
@@ -635,15 +667,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
 
     /* -- Read Reinforcements --  */
     // SDL_Log("Read Reinforcements");
-    if (map->reinforcements != NULL)
-        DARR_FREE(map->reinforcements);
-    map->reinforcements = DARR_INIT(map->reinforcements, struct Reinforcement, 16);
-    if (map->reinf_equipments != NULL)
-        DARR_FREE(map->reinf_equipments);
-    map->reinf_equipments = DARR_INIT(map->reinf_equipments, struct Inventory_item *, 30);
-    if (map->items_num != NULL)
-        DARR_FREE(map->items_num);
-    map->items_num = DARR_INIT(map->items_num, u8, SOTA_EQUIPMENT_SIZE);
+
     cJSON *jreinforcements = cJSON_GetObjectItem(jmap, "Reinforcements");
     SDL_assert(jreinforcements != NULL);
     cJSON *jequipment, *jitem;
@@ -687,26 +711,32 @@ void Map_readJSON(void *input,  cJSON *jmap) {
         if (jchests == NULL)
             break;
 
-        if (map->chests_ent != NULL)
-            SDL_free(map->chests_ent);
         SDL_assert(cJSON_IsArray(jchests));
-        map->chest_num = cJSON_GetArraySize(jchests);
+ 
+        DARR_NUM(map->chests_ent) = 0;
 
-        if (map->chest_num <= 0)
-            break;
-
-        map->chests_ent = calloc(map->chest_num, sizeof(*map->chests_ent));
         for (size_t i = 0; i < map->chest_num; i++) {
-            tnecs_entity temp_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Chest, Position);
-            struct Chest *chest     = TNECS_GET_COMPONENT(map->world, temp_ent, Chest);
+            tnecs_entity temp_ent   = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Chest, Position);
+            struct Chest    *chest  = TNECS_GET_COMPONENT(map->world, temp_ent, Chest);
             struct Position *pos    = TNECS_GET_COMPONENT(map->world, temp_ent, Position);
+            SDL_assert(pos      != NULL);
+            SDL_assert(chest    != NULL);
             cJSON *jchest   = cJSON_GetArrayItem(jchests, i);
             cJSON *jpos     = cJSON_GetObjectItem(jchest, "position");
-            if (jpos != NULL)
-                Point_readJSON((struct Point *)&pos->tilemap_pos, jpos);
-            if (jchest != NULL)
-                Chest_readJSON(chest, jchest);
-            map->chests_ent[i] = temp_ent;
+
+            if (jchest == NULL) {
+                SDL_Log("Warning: could not read chest %d", i);
+                continue;
+            }
+            if (jpos == NULL) {
+                SDL_Log("Warning: could not read chest %d's position", i);
+                continue;
+            }
+        
+            Point_readJSON((struct Point *)&pos->tilemap_pos, jpos);
+            Chest_readJSON(chest, jchest);
+        
+            DARR_PUT(map->chests_ent, temp_ent);
         }
     } while (0);
 
@@ -714,28 +744,31 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     do { /*Loop never executes, just used for break*/
         if (jdoors == NULL)
             break;
-
-        if (map->doors_ent != NULL)
-            SDL_free(map->doors_ent);
-
         SDL_assert(cJSON_IsArray(jdoors));
-        map->door_num = cJSON_GetArraySize(jdoors);
 
-        if (map->door_num <= 0)
-            break;
+        DARR_NUM(map->doors_ent) = 0;
 
-        map->doors_ent = calloc(map->door_num, sizeof(*map->doors_ent));
-        for (size_t i = 0; i < map->door_num; i++) {
-            tnecs_entity temp_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Door, Position);
-            struct Door *door       = TNECS_GET_COMPONENT(map->world, temp_ent, Door);
+        for (size_t i = 0; i < cJSON_GetArraySize(jdoors); i++) {
+            tnecs_entity temp_ent   = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Door, Position);
+            struct Door     *door   = TNECS_GET_COMPONENT(map->world, temp_ent, Door);
             struct Position *pos    = TNECS_GET_COMPONENT(map->world, temp_ent, Position);
+            SDL_assert(pos  != NULL);
+            SDL_assert(door != NULL);
+
             cJSON *jdoor    = cJSON_GetArrayItem(jdoors, i);
             cJSON *jpos     = cJSON_GetObjectItem(jdoor, "position");
-            if (jpos != NULL)
-                Point_readJSON((struct Point *)&pos->tilemap_pos, jpos);
-            if (jdoor != NULL)
-                Door_readJSON(door, jdoor);
-            map->doors_ent[i] = temp_ent;
+            if (jdoor == NULL) {
+                SDL_Log("Warning: could not read door %d", i);
+                continue;
+            }
+            if (jpos == NULL) {
+                SDL_Log("Warning: could not read door %d's position", i);
+                continue;
+            }
+            Point_readJSON((struct Point *)&pos->tilemap_pos, jpos);
+            Door_readJSON(door, jdoor);
+
+            DARR_PUT(map->doors_ent, temp_ent);
         }
     } while (0);
 
@@ -745,22 +778,27 @@ void Map_readJSON(void *input,  cJSON *jmap) {
         if (jbreakables == NULL)
             break;
 
-        if (map->breakables_ent != NULL)
-            SDL_free(map->breakables_ent);
         SDL_assert(cJSON_IsArray(jbreakables));
-        map->breakable_num = cJSON_GetArraySize(jbreakables);
 
-        if (map->breakable_num <= 0)
-            break;
+        DARR_NUM(map->breakables_ent) = 0;
 
-        map->breakables_ent = calloc(map->breakable_num, sizeof(*map->breakables_ent));
-        for (size_t i = 0; i < map->breakable_num; i++) {
+        for (size_t i = 0; i < cJSON_GetArraySize(jbreakables); i++) {
             tnecs_entity temp_ent   = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Breakable, Position);
             struct Position *pos    = TNECS_GET_COMPONENT(map->world, temp_ent, Position);
+            SDL_assert(pos != NULL);
             cJSON *jbreakable       = cJSON_GetArrayItem(jbreakables, i);
             cJSON *jpos             = cJSON_GetObjectItem(jbreakable, "position");
-            if (jpos != NULL)
-                Point_readJSON((struct Point *)&pos->tilemap_pos, jpos);
+            if (jbreakable == NULL) {
+                SDL_Log("Warning: could not read breakable %d", i);
+                continue;
+            }
+            if (jpos == NULL) {
+                SDL_Log("Warning: could not read breakable %d's position", i);
+                continue;
+            }
+
+            Point_readJSON((struct Point *)&pos->tilemap_pos, jpos);
+            
             // if position of breakaable is already a Door/Chest
             // -> add Breakable component to Door/Chest instead
             // -> add Door/Chest + breakable entity to breakable list
@@ -777,7 +815,8 @@ void Map_readJSON(void *input,  cJSON *jmap) {
             struct Breakable *breaka = TNECS_GET_COMPONENT(map->world, temp_ent, Breakable);
             SDL_assert(breaka != NULL);
             Breakable_readJSON(breaka, jbreakables);
-            map->breakables_ent[i] = temp_ent;
+
+            DARR_PUT(map->breakables_ent, temp_ent);
         }
     } while (0);
 
@@ -792,7 +831,6 @@ void Map_readJSON(void *input,  cJSON *jmap) {
 
     cJSON_ArrayForEach(jframe, jframes) {
         // TODO: tilemaps[i]
-        map->tilemap = calloc(map->row_len * map->col_len, sizeof(*map->tilemap));
         jarray = cJSON_GetObjectItem(jframe, "array");
         Array2D_readJSON(jarray, map->tilemap, map->row_len, map->col_len);
         SDL_assert(map->tilemap);
@@ -822,13 +860,6 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     }
 
     /* --- Parsing conditions --- */
-    if (map->death_enemy != NULL)
-        DARR_FREE(map->death_enemy);
-    if (map->death_friendly != NULL)
-        DARR_FREE(map->death_friendly);
-
-    map->death_enemy      = DARR_INIT(map->death_enemy,     struct Map_condition, 2);
-    map->death_friendly   = DARR_INIT(map->death_friendly,  struct Map_condition, 2);
 
     cJSON *jmap_conditions  = cJSON_GetObjectItem(jmap, "Conditions");
     cJSON *jdeath_enemy     = cJSON_GetObjectItem(jmap_conditions, "death_enemy");

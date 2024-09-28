@@ -108,17 +108,17 @@ void Tetrabrachios_Init(struct Unit *unit) {
     SDL_assert(unit != NULL);
     Unit_Free(unit);
     Tetrabrachios_Default(unit);
-    Unit_Alloc_Members(unit);
+    Unit_Members_Alloc(unit);
 }
 
 void Unit_Init(struct Unit *unit) {
     SDL_assert(unit != NULL);
     Unit_Free(unit);
     *unit = Unit_default;
-    Unit_Alloc_Members(unit);
+    Unit_Members_Alloc(unit);
 }
 
-void Unit_Alloc_Members(struct Unit *unit) {
+void Unit_Members_Alloc(struct Unit *unit) {
     if (unit->grown_stats == NULL) {
         unit->grown_stats   = DARR_INIT(unit->grown_stats,  struct Unit_stats, SOTA_MAX_LEVEL / 8);
     }
@@ -129,6 +129,11 @@ void Unit_Alloc_Members(struct Unit *unit) {
 
     if (unit->bonus_stack == NULL) {
         unit->bonus_stack   = DARR_INIT(unit->bonus_stack,  struct Bonus_Stats, 2);
+    }
+    // TODO only allocate IF playable?
+    //  - unless enemies have growth haha
+    if (unit->grown_stats == NULL) {
+        unit->grown_stats = DARR_INIT(unit->grown_stats, struct Unit_stats, SOTA_MAX_LEVEL / 8);
     }
 }
 
@@ -953,6 +958,7 @@ i32 Unit_computeMove(struct Unit *unit) {
 
 /* --- I/O --- */
 void Unit_readJSON(void *input,  cJSON *junit) {
+    SDL_assert(unit->grown_stats != NULL);
     struct Unit *unit = (struct Unit *)input;
     SDL_assert(unit);
     // SDL_Log("-- Get json objects --");
@@ -1039,12 +1045,8 @@ void Unit_readJSON(void *input,  cJSON *junit) {
 
     cJSON *jlevelup = cJSON_GetObjectItem(jlevelups, "Level-up");
     struct Unit_stats temp_ustats;
-    if (unit->grown_stats != NULL) {
-        DARR_FREE(unit->grown_stats);
-        unit->grown_stats = NULL;
-    }
 
-    unit->grown_stats = DARR_INIT(unit->grown_stats, struct Unit_stats, SOTA_MAX_LEVEL / 8);
+    DARR_NUM(unit->grown_stats) = 0;
     while (jlevelup != NULL) {
         Unit_stats_readJSON(&temp_ustats, jlevelup);
         DARR_PUT(unit->grown_stats, temp_ustats);

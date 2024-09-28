@@ -10,7 +10,7 @@
 void Party_Init( struct Party *party);
 void Party_Free( struct Party *party);
 
-void Party_Alloc_Members( struct Party *party);
+void Party_Members_Alloc( struct Party *party);
 
 /* Remove all filenames in party json_filenames */
 void Party_Reset(struct Party *party);
