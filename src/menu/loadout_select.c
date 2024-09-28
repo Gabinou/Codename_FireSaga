@@ -269,7 +269,7 @@ void LoadoutSelectMenu_canEquip(struct LoadoutSelectMenu *lsm) {
 
 /* --- Item placement --- */
 void LoadoutSelectMenu_Unit(struct LoadoutSelectMenu *lsm, tnecs_entity ent) {
-    SDL_assert(lsm  != NULL);
+    SDL_assert(lsm          != NULL);
     SDL_assert(lsm->map     != NULL);
     SDL_assert(lsm->world   != NULL);
     SDL_assert(ent  > TNECS_NULL);

@@ -4,7 +4,11 @@
 #include "stb_sprintf.h"
 //#endif /* STB_SPRINTF_IMPLEMENTATION */
 
-struct Map Map_default = {
+NewMap NewMap_default {
+    .tilesize = {SOTA_TILESIZE, SOTA_TILESIZE},
+}
+
+Map Map_default = {
     .json_element           = JSON_MAP,
     .show_icons             = true,
     .frames                 = 10,
@@ -40,7 +44,6 @@ struct Map Map_default = {
     .music_i_enemy          = -1,
 };
 
-/* --- STATIC FUNCTIONS --- */
 void Map_Reinforcements_Free(struct Map *map) {
     if (map->reinforcements == NULL)
         return;
@@ -61,7 +64,7 @@ void Map_Tilemap_Shader_Free(struct Map *map) {
     }
 }
 
-void Map_Tilemap_Shader_Init(struct Map *map) {
+void Map_Tilemap_Shader_Init(Map *map) {
     map->tilemap_shader         = SDL_malloc(sizeof(struct Tilemap_Shader));
     *map->tilemap_shader        = Tilemap_Shader_default;
     map->tilemap_shader->map    = map;
@@ -73,6 +76,7 @@ void Map_Tilemap_Shader_Init(struct Map *map) {
 Map *Map_New(NewMap new_map) {
     Map *map    = SDL_malloc(sizeof(Map));
     *map        = Map_default;
+    map->world  = new_map.world;
     Map_Size_Set(       map,    new_map.col_len,        new_map.row_len);
     Map_Tilesize_Set(   map,    new_map.tilesize[0],    new_map.tilesize[1]);
     Map_Members_Alloc(map);
@@ -342,8 +346,6 @@ void Map_Members_Alloc(struct Map *map) {
     
     Map_Texture_Alloc(map);
     Map_Tilemap_Shader_Init(map);
-    Map_Tilemap_Surface_Init(map);
-    Map_Tilemap_Shader_Init(map);
     SDL_assert(map->tilemap == NULL);
     map->tilemap = calloc(len, sizeof(*map->tilemap));
 
@@ -582,12 +584,12 @@ void Map_writeJSON( void *input, cJSON *jmap) {
     cJSON *jreinforcementeq;
     cJSON *jreinforcements = cJSON_CreateObject();
     cJSON_AddItemToObject(jmap, "Reinforcements", jreinforcements);
-    for (u8 r = 0; r < DARR_NUM(map->reinforcements); r++) {
+    for (i32 r = 0; r < DARR_NUM(map->reinforcements); r++) {
         jreinforcement   = cJSON_CreateObject();
         jreinforcementeq = cJSON_CreateObject();
         Reinforcement_writeJSON(jreinforcement, &(map->reinforcements)[r]);
         temp_equip = map->reinf_equipments[r];
-        for (u8 i = 0; i < DARR_NUM(temp_equip); i ++) {
+        for (i32 i = 0; i < DARR_NUM(temp_equip); i ++) {
             temp_item = temp_equip[i];
             if (temp_item.id > ITEM_NULL)
                 Inventory_item_writeJSON(&temp_item, jreinforcementeq);
@@ -847,9 +849,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     Map_Tilemap_MapObjects(map);
 
     /* -- Misc. Computations -- */
-    Map_Tilemap_Surface_Init(map);
     Map_swappedTextures_All(map);
-    Map_Tilemap_Shader_Init(map);
     map->tilemap_shader->frames = map->frames;
     Tilemap_Shader_Load_Tilemap_JSON(map->tilemap_shader, jmap);
     // SDL_assert(map->tilemap_shader->shadow_tilemaps);

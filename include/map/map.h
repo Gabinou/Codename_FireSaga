@@ -42,7 +42,10 @@ typedef struct NewMap {
 
     i32 row_len; /* [tiles] */
     i32 col_len; /* [tiles] */
+
+    tnecs_world *world;
 } NewMap;
+extern NewMap NewMap_default;
 
 typedef struct Map {
     s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
@@ -230,7 +233,7 @@ void Map_Texture_Alloc(         Map *map);
 void Map_Tilemap_Shader_Init(   Map *map);
 
 /* -- Free -- */
-void Map_Free(      struct Map *map);
+void Map_Free(Map *map);
 
 void Map_Members_Free(Map *map);
 

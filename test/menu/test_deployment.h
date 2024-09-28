@@ -105,6 +105,9 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
     SDL_assert(dm->_party_size == 11);
 }
 
+#define TEST_ROW_LEN 10
+#define TEST_COL_LEN 10
+
 void test_menu_deployment() {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     /* --- Preliminaries --- */
@@ -117,7 +120,16 @@ void test_menu_deployment() {
     sota->settings.window = false;
     char argv[1] = {0};
     Game_Init(sota, 0, &argv);
-    sota->map = Map_Init(sota->map, sota->settings.tilesize[0], sota->settings.tilesize[1]);
+
+    /* Map init */
+    NewMap new_map  = NewMap_default;
+    new_map.tilesize[0] = sota->settings.tilesize[0];
+    new_map.tilesize[1] = sota->settings.tilesize[1];
+    new_map.row_len     = TEST_ROW_LEN;
+    new_map.col_len     = TEST_COL_LEN;
+    new_map.world       = sota->world;
+
+    sota->map = Map_New(new_map);
 
     party = Party_default;
     weapons_dtab                    = DTAB_INIT(weapons_dtab,   struct Weapon);
@@ -320,3 +332,5 @@ void test_menu_deployment() {
 
 #undef PARTY_FOLDER
 #undef DEBUG_MAP_FOLDER
+#undef TEST_ROW_LEN
+#undef TEST_COL_LEN

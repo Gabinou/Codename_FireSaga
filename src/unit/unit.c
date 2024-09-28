@@ -958,8 +958,8 @@ i32 Unit_computeMove(struct Unit *unit) {
 
 /* --- I/O --- */
 void Unit_readJSON(void *input,  cJSON *junit) {
-    SDL_assert(unit->grown_stats != NULL);
     struct Unit *unit = (struct Unit *)input;
+    SDL_assert(unit->grown_stats != NULL);
     SDL_assert(unit);
     // SDL_Log("-- Get json objects --");
     cJSON *jid              = cJSON_GetObjectItem(junit, "id");
