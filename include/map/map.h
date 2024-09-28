@@ -44,6 +44,10 @@ typedef struct NewMap {
     i32 col_len; /* [tiles] */
 
     tnecs_world *world;
+
+    SDL_Renderer    *renderer;
+
+    i32 stack_mode;
 } NewMap;
 extern NewMap NewMap_default;
 
@@ -75,7 +79,7 @@ typedef struct Map {
     struct Tilemap_Shader *tilemap_shader;
 
     /* --- STACK_MAP --- */
-    u8 stack_mode;
+    i32 stack_mode;
 
     /* - Actual stackmaps - */
     i32 *stacked_dangermap;         /* 2D dynamic array */
@@ -254,6 +258,7 @@ void Map_Tilesize_Set(Map *map, i32 w, i32 h);
 /* --- I/O --- */
 void Map_readJSON(  void *input, cJSON *jmap);
 void Map_writeJSON( void *input, cJSON *jmap);
+void Map_RowCol_readJSON(s8 filename, i32 rowcol[TWO_D]);
 
 /* --- Map events / Triggers --- */
 void Map_Turn_Increment(struct Map *map);
@@ -289,4 +294,3 @@ void Map_Bonus_Remove_Turn_End_Unit(struct Map *map, tnecs_entity ent);
 tnecs_entity *Map_Get_onField(struct Map *map, i32 army);
 
 #endif /* MAP_H */
-

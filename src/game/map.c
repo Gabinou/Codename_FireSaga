@@ -1,4 +1,5 @@
 #include "game/map.h"
+#include "map/map.h"
 
 #define STB_SPRINTF_IMPLEMENTATION
 // #ifndef STB_SPRINTF_IMPLEMENTATION
@@ -15,13 +16,30 @@ void Game_Map_Load(struct Game *sota, i16 in_map_index) {
     Game_Map_Free(sota);
 
     /* --- Allocating map --- */
-    sota->map = Map_Init(sota->map, sota->settings.tilesize[0], sota->settings.tilesize[1]);
-    SDL_assert(sota->world != NULL);
-    sota->map->world        = sota->world;
-    sota->map->stack_mode   = sota->settings.map_settings.stack_mode;
-    Map_Renderer_Set(sota->map, sota->renderer);
-
     /* --- Reading map from json files --- */
+    i32 rowcol[TWO_D];
+    Map_RowCol_readJSON(mapFilenames[in_map_index], rowcol);
+
+    NewMap new_map      = NewMap_default;
+    new_map.tilesize[0] = sota->settings.tilesize[0];
+    new_map.tilesize[1] = sota->settings.tilesize[1];
+    new_map.row_len     = rowcol[SOTA_ROW_INDEX];
+    new_map.col_len     = rowcol[SOTA_COL_INDEX];
+    new_map.world       = sota->world;
+    new_map.renderer    = sota->renderer;
+    new_map.stack_mode  = sota->settings.map_settings.stack_mode;
+
+    sota->map = Map_New(new_map);
+    SDL_assert(sota->world != NULL);
+
+    // Issue: Need to readjson file to alloc some members
+    //      - Only parameters need to read are row_len and col_len
+    // Solution:
+    //      1. read file one time BEFORE allocation
+    //          - No need to change Map_New
+    //          - No allocation in readjson
+    //      2. Allocate in new if row_len/col_len set, readJson otherwise
+
     jsonio_readJSON(mapFilenames[in_map_index], sota->map);
 
     /* Set initial camera position */

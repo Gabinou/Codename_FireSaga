@@ -4,9 +4,9 @@
 #include "stb_sprintf.h"
 //#endif /* STB_SPRINTF_IMPLEMENTATION */
 
-NewMap NewMap_default {
+NewMap NewMap_default = {
     .tilesize = {SOTA_TILESIZE, SOTA_TILESIZE},
-}
+};
 
 Map Map_default = {
     .json_element           = JSON_MAP,
@@ -77,9 +77,14 @@ Map *Map_New(NewMap new_map) {
     Map *map    = SDL_malloc(sizeof(Map));
     *map        = Map_default;
     map->world  = new_map.world;
+
     Map_Size_Set(       map,    new_map.col_len,        new_map.row_len);
     Map_Tilesize_Set(   map,    new_map.tilesize[0],    new_map.tilesize[1]);
     Map_Members_Alloc(map);
+
+    Map_Renderer_Set(map, new_map.renderer);
+    map->stack_mode = new_map.stack_mode;
+
     return (map);
 }
 
@@ -134,7 +139,7 @@ void Map_Free(struct Map *map) {
         Mix_FreeMusic(map->music_friendly);
         map->music_friendly = NULL;
     }
-    
+
     if (map->tilesindex != NULL) {
         DARR_FREE(map->tilesindex);
     }
@@ -176,7 +181,6 @@ void Map_Free(struct Map *map) {
     }
 
     Map_Tilesets_Free(map);
-    Map_Tilesprites_Free(map);
     Map_Tilemap_Texture_Free(map);
     Map_Tiles_Free(map);
     if (map->friendlies_onfield != NULL) {
@@ -323,11 +327,14 @@ void Map_Tilesize_Set(struct Map *map, i32 width, i32 height) {
     SDL_assert(height > 0);
     SDL_assert(width  == SOTA_TILESIZE);
     SDL_assert(height == SOTA_TILESIZE);
+    SDL_assert(map->arrow != NULL);
     map->tilesize[0] = width;
     map->tilesize[1] = height;
+    map->arrow->map_tilesize[0] = width;
+    map->arrow->map_tilesize[1] = height;
 }
 
-void Map_Size_Set(struct Map *map, u8 col_len, u8 row_len) {
+void Map_Size_Set(struct Map *map, i32 col_len, i32 row_len) {
     map->row_len = row_len;
     map->col_len = col_len;
 
@@ -343,7 +350,7 @@ void Map_Members_Alloc(struct Map *map) {
     SDL_assert(map->row_len < MAP_MAX_COLS);
     SDL_assert(map->col_len < MAP_MAX_ROWS);
     int len = map->row_len * map->col_len;
-    
+
     Map_Texture_Alloc(map);
     Map_Tilemap_Shader_Init(map);
     SDL_assert(map->tilemap == NULL);
@@ -393,7 +400,7 @@ void Map_Members_Alloc(struct Map *map) {
 
     SDL_assert(map->reinf_equipments == NULL);
     map->reinf_equipments = DARR_INIT(map->reinf_equipments, Inventory_item *, 30);
-    
+
     SDL_assert(map->army_onfield == NULL);
     map->army_onfield = DARR_INIT(map->army_onfield, i32, 5);
 
@@ -512,12 +519,12 @@ void Map_Tilemap_Surface_Free(struct Map *map) {
     }
 }
 
-void  {
+void Map_Tilemap_Surface_init(struct Map *map) {
     SDL_assert(map->col_len > 0);
     SDL_assert(map->row_len > 0);
     SDL_assert(map->col_len < MAP_MAX_COLS);
     SDL_assert(map->row_len > MAP_MAX_ROWS);
-    
+
     Map_Tilemap_Surface_Free(map);
     int x_size = map->tilesize[0] * map->col_len;
     int y_size = map->tilesize[1] * map->row_len;
@@ -602,7 +609,36 @@ void Map_writeJSON( void *input, cJSON *jmap) {
     cJSON_AddItemToObject(jmap, "Tilemap", jtilemap);
 }
 
+void Map_RowCol_readJSON(s8 filename, i32 rowcol[TWO_D]) {
+    // SDL_Log("%s", filename);
+    struct cJSON *jfile = jsonio_parseJSON(s8_var(filename.data));
+    SDL_assert(jfile != NULL);
+
+    s8 elem_name = jsonElementnames[JSON_MAP];
+    struct cJSON *jmap = cJSON_GetObjectItem(jfile, elem_name.data);
+    if (jmap == NULL) {
+        SDL_Log("No '%s' element in map json", elem_name.data);
+        exit(ERROR_JSONParsingFailed);
+    }
+
+    struct cJSON *jmap_size = cJSON_GetObjectItem(jmap, "Map size");
+    if (jmap_size == NULL) {
+        SDL_Log("No 'Map Size' element in map element");
+        exit(ERROR_JSONParsingFailed);
+    }
+
+    cJSON *jrow_len     = cJSON_GetObjectItem(jmap_size,    "row_len");
+    cJSON *jcol_len     = cJSON_GetObjectItem(jmap_size,    "col_len");
+
+    rowcol[SOTA_COL_INDEX] = cJSON_GetNumberValue(jcol_len);
+    rowcol[SOTA_ROW_INDEX] = cJSON_GetNumberValue(jrow_len);
+
+    if (jfile != NULL)
+        cJSON_Delete(jfile);
+}
+
 void Map_readJSON(void *input,  cJSON *jmap) {
+    struct Map *map = (struct Map *) input;
     SDL_assert(map->death_enemy         != NULL);
     SDL_assert(map->death_friendly      != NULL);
     SDL_assert(map->reinforcements      != NULL);
@@ -612,7 +648,6 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     SDL_assert(map->breakables_ent      != NULL);
     SDL_assert(map->doors_ent           != NULL);
 
-    struct Map *map = (struct Map *) input;
     SDL_assert(jmap != NULL);
     /* -- Read party filename (for debug) -- */
     cJSON *jparty = cJSON_GetObjectItem(jmap, "party");
@@ -639,7 +674,15 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     map->chapter = cJSON_GetNumberValue(jchapter);
     map->chapter = cJSON_GetNumberValue(jchapter);
 
-    Map_Size_Set(map, cJSON_GetNumberValue(jcol_len), cJSON_GetNumberValue(jrow_len));
+    if (map->col_len != cJSON_GetNumberValue(jcol_len)) {
+        SDL_Log("map->col_len should be set to '%d'", cJSON_GetNumberValue(jcol_len));
+        exit(ERROR_Generic);
+    }
+
+    if (map->row_len != cJSON_GetNumberValue(jrow_len)) {
+        SDL_Log("map->row_len should be set to '%d'", cJSON_GetNumberValue(jrow_len));
+        exit(ERROR_Generic);
+    }
 
     if (map->arrow) {
         map->arrow->col_len = map->col_len;
@@ -721,10 +764,10 @@ void Map_readJSON(void *input,  cJSON *jmap) {
             break;
 
         SDL_assert(cJSON_IsArray(jchests));
- 
+
         DARR_NUM(map->chests_ent) = 0;
 
-        for (size_t i = 0; i < map->chest_num; i++) {
+        for (size_t i = 0; i < DARR_NUM(map->chests_ent); i++) {
             tnecs_entity temp_ent   = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Chest, Position);
             struct Chest    *chest  = TNECS_GET_COMPONENT(map->world, temp_ent, Chest);
             struct Position *pos    = TNECS_GET_COMPONENT(map->world, temp_ent, Position);
@@ -741,10 +784,10 @@ void Map_readJSON(void *input,  cJSON *jmap) {
                 SDL_Log("Warning: could not read chest %d's position", i);
                 continue;
             }
-        
+
             Point_readJSON((struct Point *)&pos->tilemap_pos, jpos);
             Chest_readJSON(chest, jchest);
-        
+
             DARR_PUT(map->chests_ent, temp_ent);
         }
     } while (0);
@@ -807,7 +850,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
             }
 
             Point_readJSON((struct Point *)&pos->tilemap_pos, jpos);
-            
+
             // if position of breakaable is already a Door/Chest
             // -> add Breakable component to Door/Chest instead
             // -> add Door/Chest + breakable entity to breakable list

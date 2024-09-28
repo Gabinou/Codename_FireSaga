@@ -35,6 +35,11 @@ enum PIXELFONT {
     ASCII_GLYPH_NUM             = 0x0100
 };
 
+enum ROWCOL {
+    SOTA_COL_INDEX = 0,
+    SOTA_ROW_INDEX = 1,
+};
+
 enum bOFFSET {
     // bOFFSET: offset in bytes
     // HOWTO: for a WHAT in a struct

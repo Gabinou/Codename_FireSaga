@@ -143,10 +143,10 @@ void Map_Tilemap_MapObjects(struct Map *map) {
 }
 
 void Map_Tilemap_Chests(struct Map *map) {
-    if (map->chest_num <= 0)
+    if (DARR_NUM(map->chests_ent) <= 0)
         return;
 
-    for (size_t i = 0; i < map->chest_num; i++) {
+    for (size_t i = 0; i < DARR_NUM(map->chests_ent); i++) {
         struct Chest    *chest  = TNECS_GET_COMPONENT(map->world, map->chests_ent[i], Chest);
         struct Position *pos    = TNECS_GET_COMPONENT(map->world, map->chests_ent[i], Position);
         if (chest->tile == 0)
@@ -159,10 +159,10 @@ void Map_Tilemap_Chests(struct Map *map) {
 }
 
 void Map_Tilemap_Breakables(struct Map *map) {
-    if (map->breakable_num <= 0)
+    if (DARR_NUM(map->breakables_ent) <= 0)
         return;
 
-    for (size_t i = 0; i < map->breakable_num; i++) {
+    for (size_t i = 0; i < DARR_NUM(map->breakables_ent); i++) {
         struct Breakable *breaka;
         breaka = TNECS_GET_COMPONENT(map->world, map->breakables_ent[i], Breakable);
         SDL_assert(breaka != NULL);
@@ -179,10 +179,10 @@ void Map_Tilemap_Breakables(struct Map *map) {
 }
 
 void Map_Tilemap_Doors(struct Map *map) {
-    if (map->door_num <= 0)
+    if (DARR_NUM(map->doors_ent) <= 0)
         return;
 
-    for (size_t i = 0; i < map->door_num; i++) {
+    for (size_t i = 0; i < DARR_NUM(map->doors_ent); i++) {
         struct Door *door = TNECS_GET_COMPONENT(map->world, map->doors_ent[i], Door);
         struct Position *pos = TNECS_GET_COMPONENT(map->world, map->doors_ent[i], Position);
         if (door->tile == 0)
@@ -191,15 +191,6 @@ void Map_Tilemap_Doors(struct Map *map) {
         int y = pos->tilemap_pos.y;
         i32 tile = door->tile + TILE_DOOR * TILE_DIVISOR;
         map->tilemap[y * map->col_len + x] = tile;
-    }
-}
-
-void Map_Tilesize_Set(struct Map *map, i32 width, i32 height) {
-    map->tilesize[0] = width;
-    map->tilesize[1] = height;
-    if (map->arrow) {
-        map->arrow->map_tilesize[0] = width;
-        map->arrow->map_tilesize[1] = height;
     }
 }
 

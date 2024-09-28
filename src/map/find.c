@@ -134,7 +134,7 @@ tnecs_entity *Map_Find_Breakables(struct Map *map, i32 *attacktolist,
         size_t x_at = attacktolist[TWO_D * i];
         size_t y_at = attacktolist[TWO_D * i + 1];
         /* - Checking for breakable on x_at, y_at - */
-        for (size_t j = 0; j < map->breakable_num; j++) {
+        for (size_t j = 0; j < DARR_NUM(map->breakables_ent); j++) {
             struct Position *pos;
             pos = TNECS_GET_COMPONENT(map->world, map->breakables_ent[j], Position);
             SDL_assert(pos != NULL);
@@ -213,7 +213,7 @@ tnecs_entity *Map_Find_Patients(struct Map *map, i32 *healtolist,
 
 tnecs_entity Map_Find_Breakable_Ent(struct Map *map, i32 x, i32 y) {
     tnecs_entity out = TNECS_NULL;
-    for (size_t i = 0; i < map->breakable_num; i++) {
+    for (size_t i = 0; i < DARR_NUM(map->breakables_ent); i++) {
         struct Position *pos;
         pos = TNECS_GET_COMPONENT(map->world, map->breakables_ent[i], Position);
         if ((x == pos->tilemap_pos.x) && (y == pos->tilemap_pos.y)) {
@@ -226,7 +226,7 @@ tnecs_entity Map_Find_Breakable_Ent(struct Map *map, i32 x, i32 y) {
 
 tnecs_entity Map_Find_Door_Ent(struct Map *map, i32 x, i32 y) {
     tnecs_entity out = TNECS_NULL;
-    for (size_t i = 0; i < map->breakable_num; i++) {
+    for (size_t i = 0; i < DARR_NUM(map->breakables_ent); i++) {
         struct Position *pos = TNECS_GET_COMPONENT(map->world, map->doors_ent[i], Position);
         if ((x == pos->tilemap_pos.x) && (y == pos->tilemap_pos.y)) {
             out = map->doors_ent[i];
@@ -238,7 +238,7 @@ tnecs_entity Map_Find_Door_Ent(struct Map *map, i32 x, i32 y) {
 
 tnecs_entity Map_Find_Chest_Ent(struct Map *map, i32 x, i32 y) {
     tnecs_entity out = TNECS_NULL;
-    for (size_t i = 0; i < map->breakable_num; i++) {
+    for (size_t i = 0; i < DARR_NUM(map->breakables_ent); i++) {
         struct Position *pos = TNECS_GET_COMPONENT(map->world, map->chests_ent[i], Position);
         if ((x == pos->tilemap_pos.x) && (y == pos->tilemap_pos.y)) {
             out = map->chests_ent[i];
@@ -341,7 +341,7 @@ tnecs_entity *Map_Find_Victims(struct Map *map, tnecs_entity *victims_ent,
 
 tnecs_entity *Map_Find_Doors(struct Map *map, tnecs_entity *openable, i32 x, i32 y) {
     /* -- Check if unit is next to a door -- */
-    for (size_t i = 0; i < map->door_num; i++) {
+    for (size_t i = 0; i < DARR_NUM(map->doors_ent); i++) {
         struct Position *pos = TNECS_GET_COMPONENT(map->world, map->doors_ent[i], Position);
         size_t x_at          = pos->tilemap_pos.x;
         size_t y_at          = pos->tilemap_pos.y;
@@ -359,7 +359,7 @@ tnecs_entity *Map_Find_Doors(struct Map *map, tnecs_entity *openable, i32 x, i32
 
 tnecs_entity *Map_Find_Chests(struct Map *map, tnecs_entity *openable, i32 x, i32 y) {
     // Find Chests on current position and neighbours
-    for (size_t i = 0; i < map->chest_num; i++) {
+    for (size_t i = 0; i < DARR_NUM(map->chests_ent); i++) {
         struct Position *pos = TNECS_GET_COMPONENT(map->world, map->chests_ent[i], Position);
         size_t x_at          = pos->tilemap_pos.x;
         size_t y_at          = pos->tilemap_pos.y;
