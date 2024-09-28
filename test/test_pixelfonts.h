@@ -11,8 +11,15 @@ void test_pixelfonts_internals() {
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
 
     struct PixelFont *test_font = PixelFont_Alloc();
+    // test_font->row_len = 8;
+    // test_font->col_len = 8;
+    test_font->glyph_width  = 8;
+    test_font->glyph_height = 8;
+    SDL_assert(test_font->row_len > 0);
+    SDL_assert(test_font->col_len > 0);
     char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours_test.png");
     PixelFont_Load(test_font, renderer, path);
+    getchar();
 
     /* --- Test bounding boxes --- */
     nourstest_true(test_font->glyph_bbox_width[0]       == 0);
