@@ -397,6 +397,8 @@ int PixelFont_Lines_Num_Len(struct PixelFont *font,  char *text, size_t line_len
 }
 
 int PixelFont_Width_Len(struct PixelFont *font,  char *text) {
+    SDL_assert(font != NULL);
+    SDL_assert(text != NULL);
     size_t len = strlen(text);
     return (PixelFont_Width(font, text, len));
 }

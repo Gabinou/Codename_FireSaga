@@ -60,7 +60,7 @@ void Map_Renderer_Set(struct Map *map, SDL_Renderer *renderer) {
 void Map_Palettemap_Autoset(struct Map *map, u16 flagsum) {
     Map_Palettemap_Reset(map);
     int size = map->row_len * map->col_len;
-    i32 *palette = map->temp_palette;
+    i32 *palette    = map->temp_palette;
     size_t bytesize = map->col_len * map->row_len * sizeof(*map->temp_palette);
 
     /* Last set Map_Palettemap_addMap is rendered */
