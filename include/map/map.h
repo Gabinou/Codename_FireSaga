@@ -222,28 +222,31 @@ extern struct Map Map_default;
 
 /* --- Constructor/Destructors --- */
 
-struct Map *Map_New(i32 width, i32 height);
+struct Map *Map_New(NewMap new_map);
 
-void _Map_Tilesindex_Init(struct Map *map);
+void Map_Members_Alloc(Map *map);
 
-void Map_Size_Set(Map *map, i32 col, i32 row);
-void Map_Tilesize_Set(Map *map, i32 w, i32 h);
+void Map_Texture_Alloc(         Map *map);
+void Map_Tilemap_Shader_Init(   Map *map);
 
+/* -- Free -- */
 void Map_Free(      struct Map *map);
-void Map_Units_Free(struct Map *map);
 
+void Map_Members_Free(Map *map);
 
-void Map_Texture_Alloc(struct Map *map);
-
-/* -- Dynamic arrays -- */
-void Map_Members_Free(struct Map *map);
-void Map_Members_Alloc(struct Map *map);
+void Map_Unitmap_Free(          Map *map);
+void Map_Tilemap_Shader_Free(   Map *map);
+void Map_Reinforcements_Free(   Map *map);
 
 /* --- Tilemap --- */
 void Map_Tilemap_Surface_Init(struct Map *map);
 void Map_Tilemap_Surface_Free(struct Map *map);
 void Map_Tilemap_Texture_Init(struct Map *map);
 void Map_Tilemap_Texture_Free(struct Map *map);
+
+/* --- Setters --- */
+void Map_Size_Set(Map *map, i32 col, i32 row);
+void Map_Tilesize_Set(Map *map, i32 w, i32 h);
 
 /* --- I/O --- */
 void Map_readJSON(  void *input, cJSON *jmap);

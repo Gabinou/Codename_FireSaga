@@ -23,7 +23,7 @@ void Game_Gameplay_Start(struct Game *sota, i32 state, i32 substate);
 
 /* --- Reinforcements --- */
 void Game_Map_Reinforcements_Load(struct Game *sota);
-void Game_Map_Reinforcements_Free(struct Game *sota);
+void GameMap_Reinforcements_Free(struct Game *sota);
 
 /* --- Tiles & tilesets  --- */
 void Game_Tiles_Unload( struct Game *sota);

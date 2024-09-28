@@ -41,7 +41,7 @@ struct Map Map_default = {
 };
 
 /* --- STATIC FUNCTIONS --- */
-static void _Map_Reinforcements_Free(struct Map *map) {
+void Map_Reinforcements_Free(struct Map *map) {
     if (map->reinforcements == NULL)
         return;
 
@@ -53,7 +53,7 @@ static void _Map_Reinforcements_Free(struct Map *map) {
     map->reinforcements = NULL;
 }
 
-static void _Map_Tilemap_Shader_Free(struct Map *map) {
+void Map_Tilemap_Shader_Free(struct Map *map) {
     Tilemap_Shader_Free(map->tilemap_shader);
     if (map->tilemap_shader != NULL) {
         SDL_free(map->tilemap_shader);
@@ -61,7 +61,7 @@ static void _Map_Tilemap_Shader_Free(struct Map *map) {
     }
 }
 
-static void _Map_Tilemap_Shader_Init(struct Map *map) {
+void Map_Tilemap_Shader_Init(struct Map *map) {
     map->tilemap_shader         = SDL_malloc(sizeof(struct Tilemap_Shader));
     *map->tilemap_shader        = Tilemap_Shader_default;
     map->tilemap_shader->map    = map;
@@ -73,25 +73,29 @@ static void _Map_Tilemap_Shader_Init(struct Map *map) {
 Map *Map_New(NewMap new_map) {
     Map *map    = SDL_malloc(sizeof(Map));
     *map        = Map_default;
-    Map_Tilesize_Set(   map,    new_map.tilesize[0],    new_map.tilesize[1]);
     Map_Size_Set(       map,    new_map.col_len,        new_map.row_len);
+    Map_Tilesize_Set(   map,    new_map.tilesize[0],    new_map.tilesize[1]);
     Map_Members_Alloc(map);
     return (map);
 }
 
-void Map_Units_Free(struct Map *map) {
+void Map_Unitmap_Free(struct Map *map) {
     /* -- Free non-PC units on unitmap -- */
     SDL_assert(map->unitmap);
     for (size_t i = 0; i < map->col_len * map->row_len ; i++) {
         tnecs_entity uent = map->unitmap[i];
-        if (uent == TNECS_NULL)
+        if (uent == TNECS_NULL) {
+            map->unitmap[i] = TNECS_NULL;
             continue;
-        if (map->world->entities[uent] == TNECS_NULL)
+        }
+        if (map->world->entities[uent] == TNECS_NULL) {
+            map->unitmap[i] = TNECS_NULL;
             continue;
+        }
 
-        struct Unit *unit = TNECS_GET_COMPONENT(map->world, uent, Unit);
+        Unit    *unit   = TNECS_GET_COMPONENT(map->world, uent, Unit);
+        Sprite  *sprite = TNECS_GET_COMPONENT(map->world, uent, Sprite);
 
-        struct Sprite *sprite = TNECS_GET_COMPONENT(map->world, uent, Sprite);
         if (sprite != NULL)
             Sprite_Free(sprite);
 
@@ -102,6 +106,7 @@ void Map_Units_Free(struct Map *map) {
         } else if (unit == NULL) {
             tnecs_entity_destroy(map->world, uent);
         }
+        map->unitmap[i] = TNECS_NULL;
     }
 
     s8_free(&map->json_filename);
@@ -126,7 +131,7 @@ void Map_Free(struct Map *map) {
         map->music_friendly = NULL;
     }
     
-    if (map->tilesindex != NULL)
+    if (map->tilesindex != NULL) {
         DARR_FREE(map->tilesindex);
     }
 
@@ -218,7 +223,7 @@ void Map_Free(struct Map *map) {
         map->units_onfield = NULL;
     }
     Map_Tilemap_Surface_Free(map);
-    _Map_Reinforcements_Free(map);
+    Map_Reinforcements_Free(map);
     Arrow_Free(map->arrow);
     if (map->tilemap_shader != NULL) {
         Tilemap_Shader_Free(map->tilemap_shader);
@@ -338,7 +343,7 @@ void Map_Members_Alloc(struct Map *map) {
     Map_Texture_Alloc(map);
     Map_Tilemap_Shader_Init(map);
     Map_Tilemap_Surface_Init(map);
-    _Map_Tilemap_Shader_Init(map);
+    Map_Tilemap_Shader_Init(map);
     SDL_assert(map->tilemap == NULL);
     map->tilemap = calloc(len, sizeof(*map->tilemap));
 
@@ -601,9 +606,9 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     SDL_assert(map->reinforcements      != NULL);
     SDL_assert(map->reinf_equipments    != NULL);
     SDL_assert(map->items_num           != NULL);
-    SDL_assert(map->chests_ent          != NULL)
-    SDL_assert(map->breakables_ent      != NULL)
-    SDL_assert(map->doors_ent           != NULL)
+    SDL_assert(map->chests_ent          != NULL);
+    SDL_assert(map->breakables_ent      != NULL);
+    SDL_assert(map->doors_ent           != NULL);
 
     struct Map *map = (struct Map *) input;
     SDL_assert(jmap != NULL);
@@ -613,14 +618,14 @@ void Map_readJSON(void *input,  cJSON *jmap) {
         map->party_filename = s8_mut(cJSON_GetStringValue(jparty));
 
     /* -- Read map info -- */
-    cJSON *jchapter     = cJSON_GetObjectItem(jmap, "chapter");
-    cJSON *jmap_size    = cJSON_GetObjectItem(jmap, "Map size");
-    cJSON *jrow_len     = cJSON_GetObjectItem(jmap_size, "row_len");
-    cJSON *jcol_len     = cJSON_GetObjectItem(jmap_size, "col_len");
+    cJSON *jchapter     = cJSON_GetObjectItem(jmap,         "chapter");
+    cJSON *jmap_size    = cJSON_GetObjectItem(jmap,         "Map size");
+    cJSON *jrow_len     = cJSON_GetObjectItem(jmap_size,    "row_len");
+    cJSON *jcol_len     = cJSON_GetObjectItem(jmap_size,    "col_len");
 
-    cJSON *jcamera      = cJSON_GetObjectItem(jmap, "Camera");
-    cJSON *joffset      = cJSON_GetObjectItem(jcamera, "offset");
-    cJSON *jzoom        = cJSON_GetObjectItem(jcamera, "zoom");
+    cJSON *jcamera      = cJSON_GetObjectItem(jmap,     "Camera");
+    cJSON *joffset      = cJSON_GetObjectItem(jcamera,  "offset");
+    cJSON *jzoom        = cJSON_GetObjectItem(jcamera,  "zoom");
 
     SDL_assert(cJSON_IsArray(joffset));
     SDL_assert(cJSON_GetArraySize(joffset) == TWO_D);
@@ -844,7 +849,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     /* -- Misc. Computations -- */
     Map_Tilemap_Surface_Init(map);
     Map_swappedTextures_All(map);
-    _Map_Tilemap_Shader_Init(map);
+    Map_Tilemap_Shader_Init(map);
     map->tilemap_shader->frames = map->frames;
     Tilemap_Shader_Load_Tilemap_JSON(map->tilemap_shader, jmap);
     // SDL_assert(map->tilemap_shader->shadow_tilemaps);

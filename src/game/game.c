@@ -96,7 +96,7 @@ void Game_Free(struct Game *sota) {
     Game_Party_Free(sota);
     Party_Free(&sota->party);
     Game_Title_Destroy(sota);
-    Game_Map_Reinforcements_Free(sota);
+    GameMap_Reinforcements_Free(sota);
     Game_DeploymentMenu_Free(sota);
     Game_Cursor_Free(sota);
     Game_PopUp_Tile_Free(sota);
@@ -157,7 +157,7 @@ void Game_Free(struct Game *sota) {
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Map");
 
     if ((sota->map != NULL) && (sota->map->unitmap != NULL))
-        Map_Units_Free(sota->map);
+        Map_Unitmap_Free(sota->map);
     Game_Map_Free(sota);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Camera");

@@ -124,7 +124,7 @@ void Game_debugMap_Load(struct Game *sota) {
 }
 
 /* --- Reinforcements --- */
-void Game_Map_Reinforcements_Free(struct Game *sota) {
+void GameMap_Reinforcements_Free(struct Game *sota) {
 
     SDL_assert(sota != NULL);
     if (sota->map_enemies == NULL) {

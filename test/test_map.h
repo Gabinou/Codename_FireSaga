@@ -171,7 +171,6 @@ void test_map_usable(void) {
     Map_Size_Set(map, TEST_COL_LEN, TEST_ROW_LEN);
     map->world      = world;
 
-    _Map_Tilesindex_Init(map);
     DARR_PUT(map->tilesindex, TILE_PLAIN);
     Map_Tiles_Load(map);
 
