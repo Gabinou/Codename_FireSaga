@@ -34,6 +34,7 @@ void Map_Danger_Sub(struct Map *map, i32 *danger) {
 }
 
 void Map_Stacked_Dangermap_Compute(struct Map *map, i32 *dangermap) {
+    SDL_assert(map->stacked_dangermap != NULL);
     int size = map->row_len * map->col_len;
     i32 *temp_map = matrix_ssmaller(dangermap, DANGERMAP_UNIT_DIVISOR, size);
     map->stacked_dangermap = matrix_and_noM(map->stacked_dangermap,

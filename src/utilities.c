@@ -69,6 +69,9 @@ void entity_print(tnecs_entity *array, size_t row_len, size_t col_len) {
 }
 
 i32 *matrix_and_noM(i32 *out, i32 *matrix1, i32 *matrix2, size_t arr_len) {
+    SDL_assert(out      != NULL);
+    SDL_assert(matrix1  != NULL);
+    SDL_assert(matrix2  != NULL);
     for (size_t i = 0; i < arr_len; i++)
         out[i] = (matrix1[i] && matrix2[i]);
     return (out);

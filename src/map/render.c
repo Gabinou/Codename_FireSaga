@@ -294,6 +294,7 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
 }
 
 void Map_swappedTextures_All(struct Map *map) {
+    SDL_assert(map->tilesindex != NULL);
     for (size_t palette_id = PALETTE_START + 1; palette_id < PALETTE_NUM; palette_id++) {
         for (size_t tile_order = 0; tile_order < DARR_NUM(map->tiles); tile_order++)
             Map_Tileset_newPalette(map, map->tilesindex[tile_order], palette_id);

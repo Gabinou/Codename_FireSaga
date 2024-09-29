@@ -5,7 +5,8 @@
 //#endif /* STB_SPRINTF_IMPLEMENTATION */
 
 NewMap NewMap_default = {
-    .tilesize = {SOTA_TILESIZE, SOTA_TILESIZE},
+    .tilesize   = {SOTA_TILESIZE, SOTA_TILESIZE},
+    .stack_mode = MAP_SETTING_STACK_DANGERMAP,
 };
 
 Map Map_default = {
@@ -168,15 +169,15 @@ void Map_Free(struct Map *map) {
         map->edges_danger = NULL;
     }
     if (map->breakables_ent != NULL) {
-        SDL_free(map->breakables_ent);
+        DARR_FREE(map->breakables_ent);
         map->breakables_ent = NULL;
     }
     if (map->chests_ent != NULL) {
-        SDL_free(map->chests_ent);
+        DARR_FREE(map->chests_ent);
         map->chests_ent = NULL;
     }
     if (map->doors_ent != NULL) {
-        SDL_free(map->doors_ent);
+        DARR_FREE(map->doors_ent);
         map->doors_ent = NULL;
     }
 
@@ -342,6 +343,7 @@ void Map_Size_Set(struct Map *map, i32 col_len, i32 row_len) {
     SDL_assert(map->row_len > 0);
     SDL_assert(map->col_len > 0);
     SDL_assert(map->row_len < MAP_MAX_COLS);
+
     SDL_assert(map->col_len < MAP_MAX_ROWS);
 }
 
@@ -351,6 +353,15 @@ void Map_Members_Alloc(struct Map *map) {
     SDL_assert(map->row_len < MAP_MAX_COLS);
     SDL_assert(map->col_len < MAP_MAX_ROWS);
     int len = map->row_len * map->col_len;
+
+    SDL_assert(map->doors_ent == NULL);
+    map->doors_ent = DARR_INIT(map->doors_ent, tnecs_entity, 4);
+
+    SDL_assert(map->breakables_ent == NULL);
+    map->breakables_ent = DARR_INIT(map->breakables_ent, tnecs_entity, 4);
+
+    SDL_assert(map->chests_ent == NULL);
+    map->chests_ent = DARR_INIT(map->chests_ent, tnecs_entity, 4);
 
     Map_Texture_Alloc(map);
     Map_Tilemap_Shader_Init(map);
@@ -872,9 +883,6 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     cJSON *jtilemap = cJSON_GetObjectItem(jmap, "tilemap");
     cJSON *jframes  = cJSON_GetObjectItem(jtilemap, "frames");
     map->frames     = cJSON_GetNumberValue(jframes);
-
-    if (map->tilemap != NULL)
-        SDL_free(map->tilemap);
 
     cJSON_ArrayForEach(jframe, jframes) {
         // TODO: tilemaps[i]
