@@ -66,13 +66,14 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
     // SDL_Log("Unit id Silou:%d Died:%d condition:%d", UNIT_ID_SILOU, unit->_id, condition->unit);
 
     /* Checking for matching army */
-    b32 match_army = true;
+    b32 match_army = false;
     if ((condition->army > ARMY_START) && (condition->army <= ARMY_NUM))
         match_army = (unit->army == condition->army);
 
     /* -- No match: army -- */
+    SDL_Log("armies: %d %d", condition->army, unit->army);
     if (!match_army) {
-        // SDL_Log("No match: army");
+        SDL_Log("No match: army");
         return (false);
     }
 
@@ -83,7 +84,7 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
 
     /* -- No match: unit -- */
     if (match_unit) {
-        // SDL_Log("Match: unit");
+        SDL_Log("Match: unit");
         return (true);
     }
 
@@ -97,27 +98,29 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
 
     /* Match: Rout */
     if (!condition->boss && condition->all && (DARR_NUM(army_onfield) == 0)) {
-        // SDL_Log("Match: Rout");
+        SDL_Log("Match: Rout");
         return (true);
     }
 
     /* Checking for boss death */
     b32 died_boss = (boss != NULL);
+    SDL_Log("died_boss %d", died_boss);
 
     /* Match: Any boss */
+    SDL_Log("boss %d %d %d", condition->boss, condition->all, died_boss);
     if (condition->boss && !condition->all && died_boss) {
-        // SDL_Log("Match: Any boss");
+        SDL_Log("Match: Any boss");
         return (true);
     }
 
     /* Match: All boss */
     if (condition->boss && condition->all && died_boss && !Map_Boss_Alive(map, ARMY_ENEMY)) {
-        // SDL_Log("Match: All bosses");
+        SDL_Log("Match: All bosses");
         return (true);
     }
 
     /* -- No match -- */
-    // SDL_Log("No match");
+    SDL_Log("No match");
     return (false);
 }
 
@@ -186,28 +189,28 @@ void Map_Condition_readJSON(void *input, cJSON *jmap_cond) {
     cJSON *jwin     = cJSON_GetObjectItem(jmap_cond, "win");
     cJSON *jlose    = cJSON_GetObjectItem(jmap_cond, "lose");
 
-    if (jarmy != NULL)
+    if (jarmy   != NULL)
         map_cond->army  = cJSON_GetNumberValue(jarmy);
-    if (jboss != NULL)
+    if (jboss   != NULL)
         map_cond->boss  = cJSON_IsTrue(jboss);
-    if (jall != NULL)
+    if (jall    != NULL)
         map_cond->all   = cJSON_IsTrue(jall);
-    if (junit != NULL)
+    if (junit   != NULL)
         map_cond->unit  = cJSON_GetNumberValue(junit);
-    if (jmin != NULL)
+    if (jmin    != NULL)
         map_cond->min   = cJSON_GetNumberValue(jmin);
-    if (jmax != NULL)
+    if (jmax    != NULL)
         map_cond->max   = cJSON_GetNumberValue(jmax);
-    if (jat != NULL)
+    if (jat     != NULL)
         map_cond->at    = cJSON_GetNumberValue(jat);
-    if (jgold != NULL)
+    if (jgold   != NULL)
         map_cond->gold  = cJSON_GetNumberValue(jgold);
-    if (jitem != NULL)
+    if (jitem   != NULL)
         map_cond->item  = cJSON_GetNumberValue(jitem);
-    if (jscene != NULL)
+    if (jscene  != NULL)
         map_cond->scene = cJSON_GetNumberValue(jscene);
-    if (jwin != NULL)
+    if (jwin    != NULL)
         map_cond->win   = cJSON_IsTrue(jwin);
-    if (jlose != NULL)
+    if (jlose   != NULL)
         map_cond->lose  = cJSON_IsTrue(jlose);
 }

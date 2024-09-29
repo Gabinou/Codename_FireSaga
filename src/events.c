@@ -129,7 +129,7 @@ void receive_event_Load_Debug_Map(struct Game *sota, SDL_Event *userevent) {
     Game_Title_Destroy(sota);
 
     /* -- LOAD Debug map -- */
-    Game_debugMap_Load(sota);
+    Game_Map_Party_Load(sota, CHAPTER_TEST_NES1);
     Game_Gameplay_Start(sota, GAME_STATE_Preparation, GAME_SUBSTATE_MENU);
     Utilities_DrawColor_Reset(sota->renderer);
 
@@ -1505,13 +1505,21 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     /* --- PRELIMINARIES --- */
     tnecs_entity victim_entity = *(tnecs_entity *) userevent->user.data1;
     tnecs_entity killer_entity = *(tnecs_entity *) userevent->user.data2;
+    SDL_Log("victim_entity, killer_entity %d %d", victim_entity, killer_entity);
     SDL_assert(victim_entity > TNECS_NULL);
     SDL_assert(killer_entity > TNECS_NULL);
     struct Unit *killer = TNECS_GET_COMPONENT(sota->world, killer_entity, Unit);
     struct Unit *victim = TNECS_GET_COMPONENT(sota->world, victim_entity, Unit);
     struct Boss *boss   = TNECS_GET_COMPONENT(sota->world, victim_entity, Boss);
+
     SDL_assert(killer != NULL);
     SDL_assert(victim != NULL);
+
+    SDL_Log("boss %d", boss == NULL);
+    b32 died_boss = (boss != NULL);
+    SDL_Log("died_boss %d", died_boss);
+
+    // getchar();
 
     /* --- Increasing Killer's regrets --- */
     int regrets = killer->regrets;
@@ -1540,8 +1548,8 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     /* --- Check Map conditions --- */
     Map_Conditions_Check_Death(sota->map->death_enemy,      sota->map,
                                victim,                      boss, sota);
-    Map_Conditions_Check_Death(sota->map->death_friendly,   sota->map,
-                               victim,                      boss, sota);
+    // Map_Conditions_Check_Death(sota->map->death_friendly,   sota->map,
+    // victim,                      boss, sota);
 }
 
 void receive_event_Unit_Loots(struct Game *sota, SDL_Event *userevent) {

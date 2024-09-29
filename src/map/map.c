@@ -922,9 +922,15 @@ void Map_readJSON(void *input,  cJSON *jmap) {
 
     cJSON_ArrayForEach(jmap_condition, jdeath_enemy) {
         struct Map_condition map_cond = Map_condition_default;
+        SDL_Log("BEFORE map_cond %d %d", map_cond.boss, map_cond.all);
         Map_Condition_readJSON(&map_cond, jmap_condition);
         DARR_PUT(map->death_enemy, map_cond);
+        SDL_Log("AFTER map_cond %d %d", map_cond.boss, map_cond.all);
     }
+
+    SDL_Log("map->death_enemy %d %d", map->death_enemy[0].boss, map->death_enemy[0].all);
+
+
 
     cJSON_ArrayForEach(jmap_condition, jdeath_friendly) {
         struct Map_condition map_cond = Map_condition_default;

@@ -7,7 +7,7 @@
 // #endif /* STB_SPRINTF_IMPLEMENTATION */
 
 /* --- Map utilities --- */
-void Game_Map_Load(struct Game *sota, i16 in_map_index) {
+void Game_Map_Load(struct Game *sota, i32 in_map_index) {
     SDL_assert((in_map_index > CHAPTER_START) && (in_map_index < CHAPTER_NUM));
     SDL_LogDebug(SOTA_LOG_SYSTEM, "%ld \n", in_map_index);
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Associated map filename     %s \n", mapFilenames[in_map_index].data);
@@ -59,10 +59,6 @@ void Game_Map_Free(struct Game *sota) {
     }
 }
 
-void Game_debugMap_Free(struct Game *sota) {
-
-}
-
 /* Game_Gameplay_Start */
 // Pre-requisites:
 //  - Map loaded
@@ -105,7 +101,7 @@ void Game_Gameplay_Start(struct Game *sota, i32 state, i32 substate) {
     Game_Map_Reinforcements_Load(sota);
 }
 
-void Game_debugMap_Load(struct Game *sota) {
+void Game_Map_Party_Load(struct Game *sota, i32 mapi) {
     /* -- Preliminaries -- */
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Loading in test Map\n");
     /* - Updating game states - */
@@ -114,7 +110,8 @@ void Game_debugMap_Load(struct Game *sota) {
     // Game_Map_Load(sota, CHAPTER_TEST_V8);
     // SDL_assert(DARR_NUM(sota->map->death_enemy) == 1);
     // SDL_assert(DARR_NUM(sota->map->death_friendly) == 2);
-    Game_Map_Load(sota, CHAPTER_TEST_NES1);
+    // Game_Map_Load(sota, CHAPTER_TEST_NES1);
+    Game_Map_Load(sota, mapi);
 
     // TODO: load from json file
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Loading in test party\n");

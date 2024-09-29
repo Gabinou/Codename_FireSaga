@@ -2,6 +2,7 @@
 #include "map/ontile.h"
 
 void test_boss_death_win(int argc, char *argv[]) {
+    SDL_Log("test_boss_death_win");
     /* -- Startup -- */
     Names_Load_All();
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
@@ -14,8 +15,7 @@ void test_boss_death_win(int argc, char *argv[]) {
     nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
 
     /* Load Save file test/debug_map.json */
-    // Game_Map_Load(sota, CHAPTER_TEST_V8);
-    Game_debugMap_Load(sota);
+    Game_Map_Party_Load(sota, CHAPTER_TEST_V8);
     Game_Map_Reinforcements_Load(sota);
     SDL_assert(DARR_NUM(sota->map->units_onfield) > 0);
 
@@ -39,13 +39,16 @@ void test_boss_death_win(int argc, char *argv[]) {
     struct Boss *boss = TNECS_GET_COMPONENT(sota->world, boss_entity, Boss);
     SDL_assert(boss != NULL);
 
+    SDL_Log("boss_entity, killer_entity %d %d", boss_entity, killer_entity);
     Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &boss_entity, &killer_entity);
     SDL_Event event;
     SDL_assert(SDL_PollEvent(&event));
 
     /* Events_Manage should trigger map win on boss death */
     // receive_event_Unit_Dies->Map_Conditions_Check_Death->Receive_event_Map_Win
+    SDL_Log("Events_Manage");
     Events_Manage(sota);
+    getchar();
 
     /* Check Win */
     nourstest_true(sota->map->win);
@@ -71,8 +74,7 @@ void test_main_char_death_loss(int argc, char *argv[]) {
     nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
 
     /* Load Save file test/debug_map.json */
-    // Game_Map_Load(sota, CHAPTER_TEST_V8);
-    Game_debugMap_Load(sota);
+    Game_Map_Party_Load(sota, CHAPTER_TEST_V8);
     SDL_assert(sota->map->stacked_dangermap != NULL);
     Game_Map_Reinforcements_Load(sota);
     SDL_assert(sota->map->stacked_dangermap != NULL);
@@ -132,8 +134,7 @@ void test_silou_death_loss(int argc, char *argv[]) {
     nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
 
     /* Load Save file test/debug_map.json */
-    // Game_Map_Load(sota, CHAPTER_TEST_V8);
-    Game_debugMap_Load(sota);
+    Game_Map_Party_Load(sota, CHAPTER_TEST_V8);
     Game_Map_Reinforcements_Load(sota);
     SDL_assert(DARR_NUM(sota->map->units_onfield) > 0);
 
