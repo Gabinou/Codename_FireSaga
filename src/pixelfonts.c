@@ -113,7 +113,7 @@ void PixelFont_Load(struct PixelFont *font, SDL_Renderer *renderer, char *fontna
     font->surface = Filesystem_Surface_Load(fontname, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(font->surface != NULL);
     SDL_assert(font->surface->format->palette == palette_SOTA);
-    // SDL_SaveBMP(font->surface, "outsurface.bmp");
+    SDL_SaveBMP(font->surface, "outsurface.bmp");
     SDL_assert(renderer != NULL);
     font->palette = palette_SOTA;
     font->texture = SDL_CreateTextureFromSurface(renderer, font->surface);
@@ -214,13 +214,13 @@ struct TextLines PixelFont_Lines(struct PixelFont *font,  char *text, size_t len
         /* Get start of current line from next line */
         current_start = next_start;
         int line_i = textlines.line_num;
-        SDL_Log("Get start of current line from next line %d", line_i);
+        // SDL_Log("Get start of current line from next line %d", line_i);
 
         textlines.line_num += 1;
 
         /* Check if previous line was assigned correctly */
         if (textlines.line_num > 1) {
-            SDL_assert(textlines.lines[line_i] != NULL);
+            SDL_assert(textlines.lines[line_i - 1] != NULL);
         }
 
         if (textlines.line_num > textlines.line_len) {
@@ -232,10 +232,10 @@ struct TextLines PixelFont_Lines(struct PixelFont *font,  char *text, size_t len
         line_len_char = current_break - current_start;
         SDL_assert((line_len_char >= 0));
 
-        SDL_Log("%d %d %d", current_break, len_char, line_len_px);
+        // SDL_Log("%d %d %d", current_break, len_char, line_len_px);
         /* -- Break: text fits in final row -- */
         if (current_break >= len_char) {
-            SDL_Log("Break: text fits in final row %d", line_i);
+            // SDL_Log("Break: text fits in final row %d", line_i);
             textlines.lines[line_i] = calloc(line_len_char + 1, sizeof(char));
             memcpy(textlines.lines[line_i], text + current_start, line_len_char);
 
@@ -248,7 +248,7 @@ struct TextLines PixelFont_Lines(struct PixelFont *font,  char *text, size_t len
         /* -- Text doesn't fit in final row -- */
         /* - If current_break a space, break line there - */
         if (text[current_break] == ' ') {
-            SDL_Log("Text doesn't fit in final row %d", line_i);
+            // SDL_Log("Text doesn't fit in final row %d", line_i);
             /* Push current_break one space, beginning new line */
             int line_i = textlines.line_num - 1;
             textlines.lines[line_i] = calloc(line_len_char + 1, sizeof(char));
@@ -262,7 +262,7 @@ struct TextLines PixelFont_Lines(struct PixelFont *font,  char *text, size_t len
             continue;
         }
 
-        SDL_Log("Add hyphen if last char is not a space");
+        // SDL_Log("Add hyphen if last char is not a space");
         next_start = NextLine_Start(text, current_start, current_break, line_len_char);
         SDL_assert(next_start <= current_break);
         current_break = next_start;
@@ -292,7 +292,7 @@ struct TextLines PixelFont_Lines(struct PixelFont *font,  char *text, size_t len
         SDL_assert(textlines.lines_len[line_i] > 0);
     }
 
-    SDL_Log("textlines.line_num %d", textlines.line_num);
+    // SDL_Log("textlines.line_num %d", textlines.line_num);
 
     return (textlines);
 }
@@ -424,16 +424,18 @@ int PixelFont_Width(struct PixelFont *font,  char *text, size_t len) {
 }
 
 void PixelFont_Compute_Glyph_BBox(struct PixelFont *font) {
-    SDL_Log("PixelFont_Compute_Glyph_BBox");
+    // SDL_Log("PixelFont_Compute_Glyph_BBox");
     SDL_assert(font->surface);
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(font->surface->format->format));
+    // Filesystem_Surface_Dump("pixelfont_test_write.png", font->surface);
+
     SDL_LockSurface(font->surface);
     u8 *pixels = font->surface->pixels;
 
     /* Glyph cache friendly loop */
     for (size_t row = 0; row < font->row_len; row++) {
         for (size_t col = 0; col < font->col_len; col++) {
-            SDL_Log("col row %d %d", col, row);
+            // SDL_Log("col row %d %d", col, row);
             u8 origin_x = col * font->glyph_width;
             u8 origin_y = row * font->glyph_height;
             // SDL_Log("origin %d %d", origin_x, origin_y);
@@ -444,7 +446,7 @@ void PixelFont_Compute_Glyph_BBox(struct PixelFont *font) {
                     /* if pixel not transparent, its in the box */
                     size_t index = Util_SDL_Surface_Index(font->surface, x, y);
                     if (pixels[index] != PALETTE_COLORKEY) {
-                        SDL_Log("pixels[index] %d %d %d", index, PALETTE_COLORKEY, pixels[index]);
+                        // SDL_Log("pixels[index] %d %d %d", index, PALETTE_COLORKEY, pixels[index]);
                         max_width  = (x - origin_x) > max_width  ? (x - origin_x) : max_width;
                         max_height = (y - origin_y) > max_height ? (y - origin_y) : max_height;
                     }
@@ -455,11 +457,11 @@ void PixelFont_Compute_Glyph_BBox(struct PixelFont *font) {
             SDL_assert(index < font->charset_num);
             if (max_width > 0) {
                 font->glyph_bbox_width[index]  = max_width + 1;
-                SDL_Log("glyph_bbox_width[index] %d %d", index, font->glyph_bbox_width[index]);
+                // SDL_Log("glyph_bbox_width[index] %d %d", index, font->glyph_bbox_width[index]);
             }
             if (max_height > 0) {
                 font->glyph_bbox_height[index] = max_height + 1;
-                SDL_Log("glyph_bbox_height[index] %d %d", index, font->glyph_bbox_height[index]);
+                // SDL_Log("glyph_bbox_height[index] %d %d", index, font->glyph_bbox_height[index]);
             }
         }
     }

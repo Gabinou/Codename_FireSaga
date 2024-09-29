@@ -162,8 +162,9 @@ b32 Filesystem_fequal( char *filename1,  char *filename2) {
 // TODO: Input palette to load indexed surface
 SDL_Surface *Filesystem_Surface_Load( char *filename,  u32 format) {
     // SDL_Log("%s\n", filename);
-    SDL_Surface *loadedsurface  = NULL, *outsurface   = NULL;
-    SDL_Surface *conv1surface   = NULL, *conv2surface = NULL;
+    SDL_Surface *loadedsurface  = NULL;
+    SDL_Surface *outsurface     = NULL;
+    SDL_Surface *conv1surface   = NULL;
     SDL_Surface *indexedsurface = NULL;
     /* IMG_Load leaves some pixels non-init -> SDL_ConvertSurfaceFormat */
     loadedsurface = IMG_Load(filename);
@@ -171,18 +172,19 @@ SDL_Surface *Filesystem_Surface_Load( char *filename,  u32 format) {
         SDL_LogError(SOTA_LOG_SYSTEM, "FILE '%s' does not exist", filename);
         exit(ERROR_CannotOpenFile);
     }
-    // TODO: debug switch for debug surfaces
-    SDL_SaveBMP(loadedsurface, "loadedsurface.png");
+
+    // SDL_SaveBMP(loadedsurface, "loadedsurface.png");
 
     SDL_assert(loadedsurface != NULL);
     if (SDL_ISPIXELFORMAT_INDEXED(format)) {
         // SDL_Log("is indexed %d\n", SDL_ISPIXELFORMAT_INDEXED(format));
         /* align bits for Filesystem_Surface_Pixels2Indices allocs */
         conv1surface = SDL_ConvertSurfaceFormat(loadedsurface, SDL_PIXELFORMAT_ABGR8888, SDL_IGNORE);
+        SDL_assert(conv1surface != NULL);
         SDL_FreeSurface(loadedsurface);
 
-        SDL_SaveBMP(conv1surface, "conv1surface.png");
-        SDL_assert(conv1surface != NULL);
+        // SDL_SaveBMP(conv1surface, "conv1surface.png");
+
         /* alloc: */
         indexedsurface = Filesystem_indexedSurface_Init(conv1surface->w, conv1surface->h);
         SDL_assert(indexedsurface != NULL);
@@ -193,21 +195,17 @@ SDL_Surface *Filesystem_Surface_Load( char *filename,  u32 format) {
         SDL_assert(indexedsurface != NULL);
         SDL_LockSurface(indexedsurface);
         SDL_LockSurface(conv1surface);
+
         /* no alloc: */
         Filesystem_Surface_Pixels2Indices(conv1surface, indexedsurface);
-        SDL_SaveBMP(indexedsurface, "indexedsurface.png");
-        /*makes surfaces faster allocs? */
-        // conv2surface = SDL_ConvertSurface(indexedsurface, indexedsurface->format, SDL_IGNORE);
-        // SDL_assert(conv2surface != NULL);
 
-        // SDL_SaveBMP(conv2surface, "conv2surface.png");
-        // SDL_assert(conv2surface != NULL);
+        // SDL_SaveBMP(indexedsurface, "indexedsurface.png");
+
         SDL_UnlockSurface(indexedsurface);
         SDL_UnlockSurface(conv1surface);
 
         outsurface = indexedsurface;
-        // conv2surface = NULL;
-        SDL_SaveBMP(indexedsurface, "indexedsurface2.bmp");
+        // SDL_SaveBMP(indexedsurface, "indexedsurface2.bmp");
         SDL_FreeSurface(conv1surface);
     } else
         outsurface = loadedsurface;
@@ -337,9 +335,9 @@ void Filesystem_Surface_Pixels2Indices(SDL_Surface *abgr_surf, SDL_Surface *inde
     SDL_assert(index_surf->w == abgr_surf->w);
     SDL_assert(index_surf->h == abgr_surf->h);
 
-    u32 pixel, color;
+    u64 pixel, color;
     i32 bitsmin = 24;
-    i32 bitsmax = 31; /* Bits for A channel? */
+    i32 bitsmax = 32; /* Bits for A channel? */
     SDL_LockSurface(abgr_surf);
     SDL_LockSurface(index_surf);
     u8 *arbg_pixels  = (u8 *)abgr_surf->pixels;
@@ -357,7 +355,6 @@ void Filesystem_Surface_Pixels2Indices(SDL_Surface *abgr_surf, SDL_Surface *inde
 
             /* Get rid of A channel? */
             for (i32 j = bitsmin; j < bitsmax; j++) {
-                SDL_assert(j < 31); /* cause pixel is u32 */
                 pixel &= ~(1 << j);
             }
 

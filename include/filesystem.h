@@ -60,12 +60,11 @@ void Filesystem_Load_Bytes(char *name, u8 **mem, size_t *len);
 
 /* --- SURFACES&TEXTURES --- */
 SDL_Surface *Filesystem_TexturetoSurface(SDL_Renderer *, SDL_Texture *, u32, SDL_Texture *);
-void Filesystem_Texture_Dump( char *f, SDL_Renderer *, SDL_Texture *,
-                              u32 fo, SDL_Texture *rt);
-void Filesystem_Surface_Dump( char *f, SDL_Surface *);
+void Filesystem_Texture_Dump(char *f, SDL_Renderer *, SDL_Texture *, u32 fo, SDL_Texture *rt);
+void Filesystem_Surface_Dump(char *f, SDL_Surface *);
 
 /* -- Loading -- */
-SDL_Surface *Filesystem_Surface_Load(char *f, u32 in_format);
+SDL_Surface *Filesystem_Surface_Load(char *f, u32 format);
 SDL_Texture *Filesystem_Texture_Load(struct SDL_Renderer *,  char *f, u32);
 
 /* -- Palettes & index shaders -- */
