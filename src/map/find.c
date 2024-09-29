@@ -220,10 +220,13 @@ tnecs_entity *Map_Find_Patients(struct Map *map, i32 *healtolist,
 }
 
 tnecs_entity Map_Find_Breakable_Ent(struct Map *map, i32 x, i32 y) {
+    SDL_assert(map          != NULL);
+    SDL_assert(map->world   != NULL);
     tnecs_entity out = TNECS_NULL;
     for (size_t i = 0; i < DARR_NUM(map->breakables_ent); i++) {
         struct Position *pos;
         pos = TNECS_GET_COMPONENT(map->world, map->breakables_ent[i], Position);
+        SDL_assert(pos != NULL);
         if ((x == pos->tilemap_pos.x) && (y == pos->tilemap_pos.y)) {
             out = map->breakables_ent[i];
             break;
@@ -233,9 +236,12 @@ tnecs_entity Map_Find_Breakable_Ent(struct Map *map, i32 x, i32 y) {
 }
 
 tnecs_entity Map_Find_Door_Ent(struct Map *map, i32 x, i32 y) {
+    SDL_assert(map          != NULL);
+    SDL_assert(map->world   != NULL);
     tnecs_entity out = TNECS_NULL;
-    for (size_t i = 0; i < DARR_NUM(map->breakables_ent); i++) {
+    for (size_t i = 0; i < DARR_NUM(map->doors_ent); i++) {
         struct Position *pos = TNECS_GET_COMPONENT(map->world, map->doors_ent[i], Position);
+        SDL_assert(pos != NULL);
         if ((x == pos->tilemap_pos.x) && (y == pos->tilemap_pos.y)) {
             out = map->doors_ent[i];
             break;
@@ -245,9 +251,12 @@ tnecs_entity Map_Find_Door_Ent(struct Map *map, i32 x, i32 y) {
 }
 
 tnecs_entity Map_Find_Chest_Ent(struct Map *map, i32 x, i32 y) {
+    SDL_assert(map          != NULL);
+    SDL_assert(map->world   != NULL);
     tnecs_entity out = TNECS_NULL;
-    for (size_t i = 0; i < DARR_NUM(map->breakables_ent); i++) {
+    for (size_t i = 0; i < DARR_NUM(map->chests_ent); i++) {
         struct Position *pos = TNECS_GET_COMPONENT(map->world, map->chests_ent[i], Position);
+        SDL_assert(pos != NULL);
         if ((x == pos->tilemap_pos.x) && (y == pos->tilemap_pos.y)) {
             out = map->chests_ent[i];
             break;
@@ -257,6 +266,7 @@ tnecs_entity Map_Find_Chest_Ent(struct Map *map, i32 x, i32 y) {
 }
 
 tnecs_entity *Map_Find_Spectators(struct Map *map, tnecs_entity *spectators, i32 x, i32 y) {
+
     /* -- Find spectator on neighbour tiles (to dance) -- */
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
         int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, map->col_len);

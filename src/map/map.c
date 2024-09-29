@@ -670,9 +670,10 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     cJSON *jcamera      = cJSON_GetObjectItem(jmap,     "Camera");
     cJSON *joffset      = cJSON_GetObjectItem(jcamera,  "offset");
     cJSON *jzoom        = cJSON_GetObjectItem(jcamera,  "zoom");
-
-    SDL_assert(cJSON_IsArray(joffset));
-    SDL_assert(cJSON_GetArraySize(joffset) == TWO_D);
+    if (joffset != NULL) {
+        SDL_assert(cJSON_IsArray(joffset));
+        SDL_assert(cJSON_GetArraySize(joffset) == TWO_D);
+    }
 
     map->camera.offset.x = cJSON_GetNumberValue(cJSON_GetArrayItem(joffset, 0));
     map->camera.offset.y = cJSON_GetNumberValue(cJSON_GetArrayItem(joffset, 1));
