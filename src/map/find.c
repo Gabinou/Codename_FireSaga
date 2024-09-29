@@ -162,6 +162,14 @@ tnecs_entity *Map_Find_Patients(struct Map *map, i32 *healtolist,
 
     /* -- Getting staff -- */
     Inventory_item *item = Unit_InvItem(healer, eq);
+    SDL_assert(item->id > ITEM_NULL);
+    /* Skip if its not a staff */
+    if (!Weapon_isStaff(item->id)) {
+        return (patients);
+    }
+
+
+    Weapon_Load(healer->weapons_dtab, item->id);
     struct Weapon *staff = (struct Weapon *)DTAB_GET(healer->weapons_dtab, item->id);
     /* -- TODO: can only use staff in two hands -- */
     if (staff == NULL) {

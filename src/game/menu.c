@@ -375,10 +375,13 @@ void Game_preLoadout_Patients(struct Game *sota, tnecs_entity actor) {
 
     /* Find Patients if any */
     // TODO: find hand which equips staff
-    sota->patients = Map_Find_Patients(sota->map, sota->map->healtolist,
-                                       sota->patients, actor,
-                                       Unit_Id_Equipped(unit, UNIT_HAND_LEFT),
-                                       true);
+    i32 stronghand = Unit_Hand_Strong(unit);
+    if (Unit_isEquipped(unit, stronghand)) {
+        sota->patients = Map_Find_Patients(sota->map, sota->map->healtolist,
+                                           sota->patients, actor,
+                                           Unit_Id_Equipped(unit, stronghand),
+                                           true);
+    }
 }
 
 /* -- Finding if any weapon in equipment has a defendant -- */

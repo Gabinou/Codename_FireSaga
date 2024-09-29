@@ -75,16 +75,15 @@ void Map_Tilemap_Shader_Init(Map *map) {
 /* --- GLOBAL FUNCTIONS --- */
 /* --- Constructor/Destructors --- */
 Map *Map_New(NewMap new_map) {
-    Map *map    = SDL_malloc(sizeof(Map));
-    *map        = Map_default;
-    map->world  = new_map.world;
+    Map *map        = SDL_malloc(sizeof(Map));
+    *map            = Map_default;
+    map->world      = new_map.world;
+    map->stack_mode = new_map.stack_mode;
 
     Map_Size_Set(       map,    new_map.col_len,        new_map.row_len);
     Map_Tilesize_Set(   map,    new_map.tilesize[0],    new_map.tilesize[1]);
     Map_Members_Alloc(map);
-
     Map_Renderer_Set(map, new_map.renderer);
-    map->stack_mode = new_map.stack_mode;
 
     return (map);
 }
@@ -464,7 +463,9 @@ void Map_Members_Alloc(struct Map *map) {
     SDL_assert(map->arrow == NULL);
     map->arrow = Arrow_Init(map->tilesize);
 
+    // SDL_Log("map->stack_mode %d %d", map->stack_mode, MAP_SETTING_STACK_DANGERMAP);
     if (map->stack_mode == MAP_SETTING_STACK_DANGERMAP) {
+        // SDL_Log("Allocating stacked_dangermap");
         SDL_assert(map->stacked_dangermap == NULL);
         map->stacked_dangermap          = calloc(len, sizeof(*map->stacked_dangermap));
         SDL_assert(map->stacked_global_dangermap == NULL);
