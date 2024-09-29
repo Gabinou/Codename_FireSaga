@@ -293,6 +293,9 @@ void LoadoutSelectMenu_Select_Reset(struct LoadoutSelectMenu *lsm) {
 
 /* - Select Weapon/Staff - */
 void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
+    SDL_assert(lsm          != NULL);
+    SDL_assert(lsm->world   != NULL);
+    SDL_assert(lsm->unit    > TNECS_NULL);
     /* Player just selected loadout, equip it */
 
     /* - Equip weapons according to player choice - */

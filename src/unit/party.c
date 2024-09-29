@@ -154,12 +154,16 @@ void _Party_Load(tnecs_entity *entities, struct Game *sota,
                  s8 *filenames, size_t load_num) {
     struct Unit temp_unit;
     for (size_t i = 0; i < load_num; i++) {
-        s8 filename = filenames[i];
-        temp_unit               = Unit_default;
+        /* Unit init */
+        temp_unit   = Unit_default;
+        Unit_Init(&temp_unit);
+
         SDL_assert(temp_unit.json_filename.data == NULL);
         temp_unit.items_dtab    = items_dtab;
         temp_unit.weapons_dtab  = weapons_dtab;
 
+        /* Readjson */
+        s8 filename = filenames[i];
         jsonio_readJSON(filename, &temp_unit);
         temp_unit.army = ARMY_FRIENDLY;
         SDL_assert(temp_unit.name.data != NULL);

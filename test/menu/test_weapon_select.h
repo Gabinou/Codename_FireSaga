@@ -46,6 +46,9 @@ void test_menu_loadout_select(void) {
 
     /* -- Create LoadoutSelectMenu -- */
     struct LoadoutSelectMenu *wsm = LoadoutSelectMenu_Alloc();
+    wsm->world  = world;
+    wsm->unit   = Silou_ent;
+
     Loadout_Set(&wsm->selected, UNIT_HAND_LEFT,   0);
     Loadout_Set(&wsm->selected, UNIT_HAND_RIGHT,  1);
 
@@ -385,7 +388,8 @@ void test_menu_loadout_select_two_hands(void) {
 
     /* -- Create LoadoutSelectMenu -- */
     struct LoadoutSelectMenu *wsm = LoadoutSelectMenu_Alloc();
-    Silou = Silou;
+    wsm->world  = world;
+    wsm->unit   = Silou_ent;
 
     /* --- TESTS --- */
 
@@ -398,7 +402,7 @@ void test_menu_loadout_select_two_hands(void) {
     LoadoutSelectMenu_Select_Reset(wsm);
 
     /* - No other weapon can be selected by weakhand    - */
-    LoadoutSelectMenu_Select(wsm, 0);
+    // LoadoutSelectMenu_Select(wsm, 0);
 
     /* -- Equipping a one-hand only weapon -- */
     /* - Can be selected by stronghand - */

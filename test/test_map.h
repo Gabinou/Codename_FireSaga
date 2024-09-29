@@ -338,7 +338,7 @@ void test_map_usable(void) {
     silou->current_stats.move = 3;
     // Can't equip staff when patient is full health
     can_equip           = canEquip_default;
-    can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
+    can_equip.archetype = ITEM_ARCHETYPE_STAFF;
     can_equip.move      = true;
     Map_canEquip(map, Silou, can_equip);
     // printf("silou->num_canEquip %d \n", silou->num_canEquip);
@@ -347,20 +347,21 @@ void test_map_usable(void) {
     erwin->current_hp = 1;
     erwin->current_stats.hp = 19;
 
-    can_equip           = canEquip_default;
-    can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
-    can_equip.move      = true;
+    // Can equip staff when patient is NOT health
+    can_equip                   = canEquip_default;
+    can_equip.archetype         = ITEM_ARCHETYPE_STAFF;
+    can_equip.move              = true;
+    can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE;
     Map_canEquip(map, Silou, can_equip);
     nourstest_true(silou->num_canEquip      == 1);
     nourstest_true(silou->eq_canEquip[0]    == 4);
 
+    // Can't equip staff, can't reach patient
     can_equip           = canEquip_default;
-    can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
-    can_equip.move      = true;
+    can_equip.archetype = ITEM_ARCHETYPE_STAFF;
+    can_equip.move      = false;
     Map_canEquip(map, Silou, can_equip);
-    nourstest_true(silou->num_canEquip      == 1);
-    nourstest_true(silou->eq_canEquip[0]    == 4);
-    // getchar();
+    nourstest_true(silou->num_canEquip      == 0);
 
     // TODO: Staff with no target
     // TODO: Staff with enemy target
