@@ -246,12 +246,12 @@ b32 WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm) {
     i32 stronghand  = Unit_Hand_Strong(unit);
     i32 weakhand    = Unit_Hand_Weak(unit);
 
-    if (!equipped_valid(Loadout_Eq(&lsm->selected, stronghand)) &&
-        !equipped_valid(Loadout_Eq(&lsm->selected, weakhand))) {
+    if (!Loadout_isEquipped(&lsm->selected, stronghand) &&
+        !Loadout_isEquipped(&lsm->selected, weakhand)) {
         /* After no weapon was selected */
         remains = unit->num_canEquip > 0; /* Any usable weapon remains? */
-    } else if (equipped_valid(Loadout_Eq(&lsm->selected, stronghand)) &&
-               !equipped_valid(Loadout_Eq(&lsm->selected, weakhand))) {
+    } else if (Loadout_isEquipped(&lsm->selected, stronghand) &&
+               !Loadout_isEquipped(&lsm->selected, weakhand)) {
         /* After first weapon was selected */
         remains = unit->num_equipment > 1; /* Any item remains? */
     } else {
@@ -277,11 +277,6 @@ void LoadoutSelectMenu_Unit(struct LoadoutSelectMenu *lsm, tnecs_entity ent) {
     Unit *unit = TNECS_GET_COMPONENT(lsm->world, ent, Unit);
     Unit_Loadout_Export(unit, &lsm->initial);
     lsm->update  = true;
-
-    matrix_print(lsm->map->attacktomap, lsm->map->row_len, lsm->map->col_len);
-
-    SDL_Log("num %d", unit->num_canEquip);
-    getchar();
 }
 
 void LoadoutSelectMenu_Select_Reset(struct LoadoutSelectMenu *lsm) {
@@ -307,10 +302,10 @@ void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
     // There should be always be usable weapons
     SDL_assert(select < unit->num_canEquip);
 
-    if (Loadout_Eq(&lsm->selected, stronghand) == ITEM_UNEQUIPPED) {
+    if (!Loadout_isEquipped(&lsm->selected, stronghand)) {
         Loadout_Set(&lsm->selected, stronghand, eq);
         Unit_Equip(unit, stronghand, eq);
-    } else if (equipped_valid(Loadout_Eq(&lsm->selected, stronghand))) {
+    } else if (Loadout_isEquipped(&lsm->selected, stronghand)) {
         Loadout_Set(&lsm->selected, weakhand, eq);
         Unit_Equip(unit, weakhand, eq);
     } else {
@@ -336,19 +331,20 @@ void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
 
     /*- Get the tophand -*/
     Unit *unit      = TNECS_GET_COMPONENT(lsm->world, lsm->unit, Unit);
+    SDL_assert(unit       != NULL);
     i32 stronghand  = Unit_Hand_Strong(unit);
     i32 weakhand    = Unit_Hand_Weak(unit);
 
     /*- Skip if no item to revert -*/
     if (
-            !equipped_valid(Loadout_Eq(&lsm->selected, stronghand)) &&
-            !equipped_valid(Loadout_Eq(&lsm->selected, weakhand))
+            !Loadout_isEquipped(&lsm->selected, stronghand) &&
+            !Loadout_isEquipped(&lsm->selected, weakhand)
     ) {
         SDL_Log("Warning: No item to deselect");
         return;
-    } else if (!equipped_valid(Loadout_Eq(&lsm->selected, weakhand))) {
+    } else if (Loadout_isEquipped(&lsm->selected, weakhand)) {
         Loadout_None(&lsm->selected, weakhand);
-    } else if (!equipped_valid(Loadout_Eq(&lsm->selected, stronghand))) {
+    } else if (Loadout_isEquipped(&lsm->selected, stronghand)) {
         Loadout_None(&lsm->selected, stronghand);
     }
 }
@@ -363,7 +359,7 @@ void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9p
     i32 stronghand = Unit_Hand_Strong(unit);
 
     /* If stronghand is selected, menu should change to show all items in equipment */
-    b32 strong_selected = equipped_valid(Loadout_Eq(&lsm->selected, stronghand));
+    b32 strong_selected = Loadout_isEquipped(&lsm->selected, stronghand);
     i32 num_items = unit->num_canEquip;
 
     for (i32 i = 0; i < num_items; i++) {
@@ -537,71 +533,94 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
     b32 header_drawn    = (lsm->header.data != NULL);
     SDL_Rect srcrect, dstrect;
 
-    b32 strong_selected = equipped_valid(Loadout_Eq(&lsm->selected, stronghand));
+    b32 strong_selected = Loadout_isEquipped(&lsm->selected, stronghand);
 
-    /* -- Left hand icon -- */
-    srcrect.w = LSM_HANDS_TILESIZE;
-    srcrect.h = LSM_HANDS_TILESIZE;
-    dstrect.w = srcrect.w;
-    dstrect.h = srcrect.h;
+    b32 skip_draw_left  = !strong_selected && (UNIT_HAND_LEFT   == weakhand);
+    b32 skip_draw_right = !strong_selected && (UNIT_HAND_RIGHT  == weakhand);
 
-    // 1. Follows cursor when selecting for hand
-    // 2. Is at selected item position if stronghnad
-    int hand_i = (weakhand == UNIT_HAND_LEFT) ? LSM_HANDS_SMALL_L : LSM_HANDS_BIG_L;
+    if (!skip_draw_left) {
+        /* -- Left hand icon -- */
+        srcrect.w = LSM_HANDS_TILESIZE;
+        srcrect.h = LSM_HANDS_TILESIZE;
+        dstrect.w = srcrect.w;
+        dstrect.h = srcrect.h;
 
-    srcrect.x = hand_i * srcrect.w;
-    srcrect.y = 0;
+        // 1. Follows cursor when selecting for hand
+        // 2. Is at selected item position if stronghnad
+        int hand_i = (weakhand == UNIT_HAND_LEFT) ? LSM_HANDS_SMALL_L : LSM_HANDS_BIG_L;
 
-    /* Moving hand if two handing or weak hand */
-    dstrect.x = LSM_HANDL_X;
+        srcrect.x = hand_i * srcrect.w;
+        srcrect.y = 0;
 
-    int left_hand_row = ((UNIT_HAND_LEFT == stronghand)
-                         && !strong_selected) ? mc->elem : Loadout_Eq(&lsm->selected, stronghand);
+        /* Moving hand if two handing or weak hand */
+        dstrect.x = LSM_HANDL_X;
 
-    /* Computing y offset for weak hand, or twohanding icon placement */
-    i32 ly_offset = (stronghand == UNIT_HAND_RIGHT) ? LSM_WEAKHAND_Y_OFFSET : LSM_STRONGHAND_Y_OFFSET;
+        // int left_hand_row = ((UNIT_HAND_LEFT == stronghand)
+        // && strong_selected) ? Loadout_Eq(&lsm->selected, stronghand) : mc->elem;
+        int left_hand_row = 0;
+        if (UNIT_HAND_LEFT == stronghand) {
+            // left hand is strong hand, selected first
+            left_hand_row = strong_selected ? Loadout_Eq(&lsm->selected, stronghand) : mc->elem;
+        } else {
+            // if left hand is weakhand and strong is not selected should not be drawn
+            left_hand_row = mc->elem;
+        }
 
-    dstrect.y = ly_offset + (header_drawn + left_hand_row) * LSM_ROW_HEIGHT;
+        /* Computing y offset for weak hand, or twohanding icon placement */
+        i32 ly_offset = (stronghand == UNIT_HAND_RIGHT) ? LSM_WEAKHAND_Y_OFFSET : LSM_STRONGHAND_Y_OFFSET;
 
-    /* Moving hand if small */
-    if (stronghand != UNIT_HAND_LEFT) {
-        dstrect.x += LSM_HAND_SMALLX_OFFSET;
-        dstrect.y += LSM_HAND_SMALLY_OFFSET;
-    }
-    SDL_RenderCopy(renderer, lsm->texture_hands, &srcrect, &dstrect);
+        dstrect.y = ly_offset + (header_drawn + left_hand_row) * LSM_ROW_HEIGHT;
 
-    /* -- Right hand icon -- */
-    srcrect.w = LSM_HANDS_TILESIZE;
-    srcrect.h = LSM_HANDS_TILESIZE;
-    dstrect.w = srcrect.w;
-    dstrect.h = srcrect.h;
+        /* Moving hand if small */
+        if (stronghand != UNIT_HAND_LEFT) {
+            dstrect.x += LSM_HAND_SMALLX_OFFSET;
+            dstrect.y += LSM_HAND_SMALLY_OFFSET;
+        }
 
-    // 1. Follows cursor when selecting for hand
-    // 2. Is at selected item position if stronghnad
-    hand_i = (stronghand == UNIT_HAND_LEFT) ? LSM_HANDS_SMALL_R : LSM_HANDS_BIG_R;
-
-    srcrect.x = hand_i * srcrect.w;
-    srcrect.y = 0;
-
-    /* Moving hand if two handing or weak hand */
-    dstrect.x = lsm->menu_w - LSM_HANDS_TILESIZE;
-
-    int right_hand_row = ((UNIT_HAND_RIGHT == stronghand)
-                          && !strong_selected) ? mc->elem : Loadout_Eq(&lsm->selected, stronghand);
-
-
-    /* Computing y offset for weak hand, or twohanding icon placement */
-    int ry_offset = (stronghand == UNIT_HAND_RIGHT) ? LSM_STRONGHAND_Y_OFFSET : LSM_WEAKHAND_Y_OFFSET;
-
-    dstrect.y = ry_offset + (header_drawn + right_hand_row) * LSM_ROW_HEIGHT;
-
-    /* Moving hand if small */
-    if (stronghand != UNIT_HAND_RIGHT) {
-        dstrect.x += LSM_HAND_SMALLX_OFFSET;
-        dstrect.y += LSM_HAND_SMALLY_OFFSET;
+        SDL_RenderCopy(renderer, lsm->texture_hands, &srcrect, &dstrect);
     }
 
-    SDL_RenderCopy(renderer, lsm->texture_hands, &srcrect, &dstrect);
+    if (!skip_draw_right) {
+        /* -- Right hand icon -- */
+        srcrect.w = LSM_HANDS_TILESIZE;
+        srcrect.h = LSM_HANDS_TILESIZE;
+        dstrect.w = srcrect.w;
+        dstrect.h = srcrect.h;
+
+        // 1. Follows cursor when selecting for hand
+        // 2. Is at selected item position if stronghnad
+        int hand_i = (stronghand == UNIT_HAND_LEFT) ? LSM_HANDS_SMALL_R : LSM_HANDS_BIG_R;
+
+        srcrect.x = hand_i * srcrect.w;
+        srcrect.y = 0;
+
+        /* Moving hand if two handing or weak hand */
+        dstrect.x = lsm->menu_w - LSM_HANDS_TILESIZE;
+
+        // int right_hand_row = ((UNIT_HAND_RIGHT == stronghand)
+        // && strong_selected) ? Loadout_Eq(&lsm->selected, stronghand) : mc->elem;
+        int right_hand_row = 0;
+        if (UNIT_HAND_RIGHT == stronghand) {
+            // left hand is strong hand, selected first
+            right_hand_row = strong_selected ? Loadout_Eq(&lsm->selected, stronghand) : mc->elem;
+        } else {
+            // if left hand is weakhand and strong is not selected should not be drawn
+            right_hand_row = mc->elem;
+        }
+
+        /* Computing y offset for weak hand, or twohanding icon placement */
+        int ry_offset = (stronghand == UNIT_HAND_RIGHT) ? LSM_STRONGHAND_Y_OFFSET : LSM_WEAKHAND_Y_OFFSET;
+
+        dstrect.y = ry_offset + (header_drawn + right_hand_row) * LSM_ROW_HEIGHT;
+
+        /* Moving hand if small */
+        if (stronghand != UNIT_HAND_RIGHT) {
+            dstrect.x += LSM_HAND_SMALLX_OFFSET;
+            dstrect.y += LSM_HAND_SMALLY_OFFSET;
+        }
+
+        SDL_RenderCopy(renderer, lsm->texture_hands, &srcrect, &dstrect);
+    }
 }
 
 static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
@@ -626,7 +645,7 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
     b32 highlight  = false;
 
     /* If stronghand is selected, menu should change to show all items in equipment */
-    b32 strong_selected = equipped_valid(Loadout_Eq(&lsm->selected, stronghand));
+    b32 strong_selected = Loadout_isEquipped(&lsm->selected, stronghand);
 
     SDL_assert(unit->num_canEquip > 0);
     SDL_assert(unit->num_canEquip <= SOTA_EQUIPMENT_SIZE);

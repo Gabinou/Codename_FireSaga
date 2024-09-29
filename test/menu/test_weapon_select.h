@@ -21,12 +21,12 @@ void test_menu_loadout_select(void) {
     struct Unit *Silou      = TNECS_GET_COMPONENT(world, Silou_ent, Unit);
 
     /* -- Map -- */
-    NewMap new_map  = NewMap_default;
-    new_map.tilesize[0] = sota->settings.tilesize[0];
-    new_map.tilesize[1] = sota->settings.tilesize[1];
+    NewMap new_map      = NewMap_default;
+    new_map.tilesize[0] = 16;
+    new_map.tilesize[1] = 16;
     new_map.row_len     = TEST_ROW_LEN;
     new_map.col_len     = TEST_COL_LEN;
-    new_map.world       = sota->world;
+    new_map.world       = world;
 
     Map *map = Map_New(new_map);
 
@@ -167,7 +167,7 @@ void test_menu_loadout_select(void) {
 
     /* Switch black to grey */
     int grey = 2;
-    PixelFont_Swap_Palette(wsm->pixelnours, renderer, -1, grey);
+    PixelFont_Swap_Palette(wsm->pixelnours,     renderer, -1, grey);
     PixelFont_Swap_Palette(wsm->pixelnours_big, renderer, -1, grey);
 
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
@@ -186,63 +186,63 @@ void test_menu_loadout_select(void) {
     LoadoutSelectMenu_Deselect(wsm);
 
     Loadout_Set(&wsm->selected, stronghand, 3);
-    mc.elem                 = 3;
-    Silou->num_canEquip     = 4;
+    mc.elem             = 0;
+    Silou->num_canEquip = 4;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_LSelected_Usable4.png"),
                             renderer,
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     Loadout_Set(&wsm->selected, stronghand, 2);
-    mc.elem                 = 2;
-    Silou->num_canEquip     = 3;
+    mc.elem             = 0;
+    Silou->num_canEquip = 3;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_LSelected_Usable3.png"),
                             renderer,
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     Loadout_Set(&wsm->selected, stronghand, 1);
-    mc.elem                     = 1;
-    Silou->num_canEquip     = 2;
+    mc.elem             = 0;
+    Silou->num_canEquip = 2;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_LSelected_Usable2.png"),
                             renderer,
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     Loadout_Set(&wsm->selected, stronghand, 0);
-    mc.elem                     = 0;
-    Silou->num_canEquip     = 1;
+    mc.elem             = 0;
+    Silou->num_canEquip = 1;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_LSelected_Usable1.png"),
                             renderer,
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     Loadout_None(&wsm->selected, stronghand);
-    mc.elem                     =  3;
-    Silou->num_canEquip     =  4;
+    mc.elem             =  3;
+    Silou->num_canEquip =  4;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select",
                                       "WeaponSelectMenu_LNotSelected_Usable4.png"), renderer,
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     Loadout_None(&wsm->selected, stronghand);
-    mc.elem                     =  2;
-    Silou->num_canEquip     =  3;
+    mc.elem             =  2;
+    Silou->num_canEquip =  3;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select",
                                       "WeaponSelectMenu_LNotSelected_Usable3.png"), renderer,
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     Loadout_None(&wsm->selected, stronghand);
-    mc.elem                     =  1;
-    Silou->num_canEquip     =  2;
+    mc.elem             =  1;
+    Silou->num_canEquip =  2;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select",
                                       "WeaponSelectMenu_LNotSelected_Usable2.png"), renderer,
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     Loadout_None(&wsm->selected, stronghand);
-    mc.elem                     =  0;
+    mc.elem                 =  0;
     Silou->num_canEquip     =  1;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select",
@@ -254,7 +254,7 @@ void test_menu_loadout_select(void) {
     weakhand    = Unit_Hand_Weak(Silou);
 
     Loadout_Set(&wsm->selected, stronghand, 3);
-    mc.elem                     = 3;
+    mc.elem                 = 0;
     Silou->num_canEquip     = 4;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_RSelected_Usable4.png"),
@@ -262,7 +262,7 @@ void test_menu_loadout_select(void) {
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     Loadout_Set(&wsm->selected, stronghand, 2);
-    mc.elem                     = 2;
+    mc.elem                 = 0;
     Silou->num_canEquip     = 3;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_RSelected_Usable3.png"),
@@ -270,7 +270,7 @@ void test_menu_loadout_select(void) {
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     Loadout_Set(&wsm->selected, stronghand, 1);
-    mc.elem                     = 1;
+    mc.elem                 = 0;
     Silou->num_canEquip     = 2;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_RSelected_Usable2.png"),
@@ -278,7 +278,7 @@ void test_menu_loadout_select(void) {
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     Loadout_Set(&wsm->selected, stronghand, 0);
-    mc.elem                     = 0;
+    mc.elem                 = 0;
     Silou->num_canEquip     = 1;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_RSelected_Usable1.png"),
@@ -286,7 +286,7 @@ void test_menu_loadout_select(void) {
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     Loadout_None(&wsm->selected, stronghand);
-    mc.elem                     =  3;
+    mc.elem                 =  3;
     Silou->num_canEquip     =  4;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select",
