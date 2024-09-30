@@ -70,7 +70,9 @@ struct Unit Unit_default = {
 
     .army           = 1,
 
-    .current_hp     = SOTA_MIN_HP,
+    .current_hp         = SOTA_MIN_HP,
+    .current_stats.hp   = SOTA_MIN_HP,
+
     .alive          = true,
 
     .arms_num       = UNIT_ARMS_NUM,
@@ -229,8 +231,8 @@ void Unit_setClassind(struct Unit *unit, i8 class_index) {
 
 void Unit_setStats(struct Unit *unit, struct Unit_stats stats) {
     SDL_assert(unit);
-    unit->current_hp    = unit->current_stats.hp;
     unit->current_stats = stats;
+    unit->current_hp    = unit->current_stats.hp;
     Unit_effectiveStats(unit);
     Unit_computedStats(unit, -1);
     unit->current_hp = unit->effective_stats.hp;
@@ -1201,7 +1203,6 @@ void Unit_Cap_Stats(struct Unit *unit) {
     unit->current_stats.res  = unit->caps_stats.res;
     unit->current_stats.con  = unit->caps_stats.con;
     unit->current_stats.prof = unit->caps_stats.prof;
-
 }
 
 /* What is this for?
