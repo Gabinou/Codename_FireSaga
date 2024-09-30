@@ -60,6 +60,5 @@ void test_popup_unit() {
     SDL_FreeSurface(surface);
     Weapons_All_Free(weapons_dtab);
     DTAB_FREE(weapons_dtab);
-    Names_Free();
     SDL_Quit();
 }

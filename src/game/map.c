@@ -143,11 +143,11 @@ void GameMap_Reinforcements_Free(struct Game *sota) {
 
     SDL_assert(sota != NULL);
     if (sota->map_enemies == NULL) {
-        SDL_Log("Map enemies uninitialized");
+        // SDL_Log("Map enemies uninitialized");
         return;
     }
     if (DARR_NUM(sota->map_enemies) == 0) {
-        SDL_Log("No map enemies");
+        // SDL_Log("No map enemies");
         return;
     }
 

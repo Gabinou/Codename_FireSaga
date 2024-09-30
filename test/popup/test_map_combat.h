@@ -392,6 +392,5 @@ void test_popup_map_combat() {
     SDL_FreeSurface(surface);
     Unit_Free(&aggressor);
     Unit_Free(&defendant);
-    Names_Free();
     SDL_Quit();
 }

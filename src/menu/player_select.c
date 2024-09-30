@@ -127,7 +127,10 @@ void PlayerSelectMenu_Option_Add(struct PlayerSelectMenu *psm, u32 option) {
     DARR_PUT(psm->options, option);
 
     /* - Computing option width, check if increase menu width - */
+    SDL_assert(option > MENU_OPTION_START);
+    SDL_assert(option < MENU_OPTION_END);
     s8 text             = menuOptionnames[option];
+    SDL_assert(text.data != NULL);
     int text_width      = PixelFont_Width(psm->pixelnours, text.data, text.num);
     int padding         = psm->menu_padding.left + psm->menu_padding.right;
     if ((text_width + padding) > psm->text_width) {
@@ -135,6 +138,7 @@ void PlayerSelectMenu_Option_Add(struct PlayerSelectMenu *psm, u32 option) {
     }
 
     DARR_PUT(psm->option_names, text.data);
+    SDL_assert(text.data != NULL);
 }
 
 void PlayerSelectMenu_Compute_Size(struct PlayerSelectMenu *psm, struct n9Patch *n9patch) {

@@ -405,5 +405,4 @@ void test_menu_stats() {
 
     SDL_DestroyRenderer(renderer);
     Unit_Free(&Silou);
-    Names_Free();
 }
