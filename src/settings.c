@@ -48,5 +48,4 @@ struct Settings Settings_default = {
     .cursor             = {DEFAULT_CURSOR_FRAMES, DEFAULT_CURSOR_SPEED},
 
     .window             = true,
-    .tophand_stronghand = true, // TODO: REMOVE
 };

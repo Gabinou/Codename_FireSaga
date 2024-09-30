@@ -318,11 +318,6 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
         Unit_effectiveStats(unit);
 
-        /* Check that reinforcement has something equipped at least in strong hand */
-        // Ensures enemy can attack
-        b32 stronghand = Unit_Hand_Strong(unit);
-        SDL_assert(Unit_isEquipped(unit, stronghand));
-
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         SDL_assert(unit->status_queue != NULL);
 

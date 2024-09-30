@@ -157,7 +157,6 @@ struct Settings {
 
     b32 fullscreen          : 1;
     b32 window              : 1;
-    b32 tophand_stronghand  : 1;
 };
 extern struct Settings Settings_default;
 

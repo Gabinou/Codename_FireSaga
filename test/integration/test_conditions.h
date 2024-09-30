@@ -39,16 +39,13 @@ void test_boss_death_win(int argc, char *argv[]) {
     struct Boss *boss = TNECS_GET_COMPONENT(sota->world, boss_entity, Boss);
     SDL_assert(boss != NULL);
 
-    SDL_Log("boss_entity, killer_entity %d %d", boss_entity, killer_entity);
     Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &boss_entity, &killer_entity);
     SDL_Event event;
     SDL_assert(SDL_PollEvent(&event));
 
     /* Events_Manage should trigger map win on boss death */
     // receive_event_Unit_Dies->Map_Conditions_Check_Death->Receive_event_Map_Win
-    SDL_Log("Events_Manage");
     Events_Manage(sota);
-    getchar();
 
     /* Check Win */
     nourstest_true(sota->map->win);
@@ -121,6 +118,7 @@ void test_main_char_death_loss(int argc, char *argv[]) {
 }
 
 void test_silou_death_loss(int argc, char *argv[]) {
+    SDL_Log("test_silou_death_loss");
     /* -- Startup -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     Names_Load_All();

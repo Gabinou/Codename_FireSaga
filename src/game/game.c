@@ -389,7 +389,7 @@ void Game_Init(struct Game *sota, int argc, char *argv[]) {
     // i16 flags = SDL_WINDOW_RESIZABLE; /* ? */
     if (sota->settings.fullscreen)
         flags |= SDL_WINDOW_FULLSCREEN;
-    if (!sota->settings.window)
+    if (sota->settings.window)
         flags |= SDL_WINDOW_HIDDEN;
 
 #ifndef SOTA_OPENGL
