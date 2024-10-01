@@ -389,8 +389,7 @@ void Game_Init(struct Game *sota, Settings settings) {
     // i16 flags = SDL_WINDOW_RESIZABLE; /* ? */
     if (sota->settings.fullscreen)
         flags |= SDL_WINDOW_FULLSCREEN;
-    if (sota->settings.window)
-        flags |= SDL_WINDOW_HIDDEN;
+    flags |= sota->settings.window;
 
 #ifndef SOTA_OPENGL
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Firesaga: Window Initialization");
