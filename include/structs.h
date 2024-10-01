@@ -167,8 +167,8 @@ typedef struct Settings {
 
     struct Input_Arguments args;
 
+    u32 window;
     b32 fullscreen          : 1;
-    b32 window              : 1;
 } Settings;
 extern struct Settings Settings_default;
 

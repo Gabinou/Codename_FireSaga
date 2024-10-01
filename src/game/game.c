@@ -54,7 +54,6 @@ struct Game Game_default = {
     .menu_pixelfont         = NULL,
 
     .map                    = NULL,
-    .window                 = NULL,
     .selected_unit_moved_position   = {-1, -1},
     .selected_unit_initial_position = {-1, -1},
     // .convoy = Convoy_default,
@@ -385,11 +384,9 @@ void Game_Init(struct Game *sota, Settings settings) {
     sota->camera.zoom     = DEFAULT_CAMERA_ZOOM;
 
     /* Window flags */
-    i16 flags = 0;
-    // i16 flags = SDL_WINDOW_RESIZABLE; /* ? */
+    u32 flags = sota->settings.window;
     if (sota->settings.fullscreen)
         flags |= SDL_WINDOW_FULLSCREEN;
-    flags |= sota->settings.window;
 
 #ifndef SOTA_OPENGL
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Firesaga: Window Initialization");

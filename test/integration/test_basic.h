@@ -5,9 +5,10 @@ void test_minimal(int argc, char *argv[]) {
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     struct Game *sota = SDL_malloc(sizeof(struct Game));
     *sota = Game_default;
-    sota->settings = Settings_default;
-    sota->settings.window = SDL_WINDOW_HIDDEN;
-    Game_Init(sota, sota->settings);
+    Settings settings   = Settings_default;
+    settings.window     = SDL_WINDOW_HIDDEN;
+
+    Game_Init(sota, settings);
     nourstest_true(sota->state      == GAME_STATE_Title_Screen);
     nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
 
@@ -21,8 +22,8 @@ void test_step(int argc, char *argv[]) {
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     struct Game *sota = SDL_malloc(sizeof(struct Game));
     *sota = Game_default;
-    sota->settings = Settings_default;
-    sota->settings.window = SDL_WINDOW_HIDDEN;
+    sota->settings          = Settings_default;
+    sota->settings.window   = SDL_WINDOW_HIDDEN;
     Game_Init(sota, sota->settings);
     nourstest_true(sota->state      == GAME_STATE_Title_Screen);
     nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
