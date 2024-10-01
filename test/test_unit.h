@@ -833,7 +833,6 @@ void test_canEquip(void) {
     // Unit_Equip(&Silou, UNIT_HAND_RIGHT, 2);
     canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, 2);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
-    // getchar();
 
     /* Something in either hand */
     canEquip_Loadout(&can_equip, UNIT_HAND_LEFT, ITEM1);
