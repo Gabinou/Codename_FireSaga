@@ -255,7 +255,7 @@ void Game_Post_Free(void) {
     Names_Free();
 }
 
-void Game_Pre_Init(int argc, char *argv[]) {
+Input_Arguments Game_Pre_Init(int argc, char *argv[]) {
     /* --- LOGGING --- */
     Log_Init();
 #ifdef SDL_ASSERT_LEVEL
@@ -284,6 +284,10 @@ void Game_Pre_Init(int argc, char *argv[]) {
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Initializing RNG\n");
     RNG_Init_xoroshiro256ss();
+
+    /* -- Input parsing -- */
+    SDL_LogInfo(SOTA_LOG_SYSTEM, "Checking input arguments\n");
+    return (Input_parseInputs(argc, argv));
 }
 
 u64 _Game_Step_PreFrame(struct Game *sota) {
@@ -338,7 +342,7 @@ void _Game_Step_PostFrame(struct Game *sota, u64 currentTime_ns) {
 
 void Game_Step(struct Game *sota) {
     /* TODO: deal with frame running LONGER than expected */
-    // printf("STEPPING\n");
+    // printf("Step\n");
     u64 currentTime_ns = _Game_Step_PreFrame(sota);
     _Game_Step_Control(sota);
     Events_Manage(sota); /* CONTROL */
@@ -346,14 +350,10 @@ void Game_Step(struct Game *sota) {
     _Game_Step_PostFrame(sota, currentTime_ns);
 }
 
-void Game_Init(struct Game *sota, int argc, char *argv[]) {
+void Game_Init(struct Game *sota, Settings settings) {
     /* -- Setting defaults -- */
     *sota = Game_default;
-    sota->settings = Settings_default;
-
-    /* -- Input parsing -- */
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "Checking input arguments\n");
-    struct Input_Arguments args = Input_parseInputs(argc, argv);
+    sota->settings = settings;
 
     SDL_assert(sota->settings.FPS.cap > 0);
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Init game");
@@ -636,7 +636,7 @@ void Game_Init(struct Game *sota, int argc, char *argv[]) {
     Game_Mouse_Create(sota);
 
     /* -- Load Title -- */
-    Game_titleScreen_Load(sota, args);
+    Game_titleScreen_Load(sota, sota->settings.args);
     Game_Mouse_Disable(sota);
     Game_cursorFocus_onMenu(sota);
 

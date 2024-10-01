@@ -17,7 +17,6 @@
 #include "position.h"
 #include "sprite.h"
 #include "music.h"
-#include "settings.h"
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_render.h"
 #include "SDL2/SDL_mixer.h"

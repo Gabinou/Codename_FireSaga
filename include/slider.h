@@ -4,7 +4,6 @@
 #include "enums.h"
 #include "debug.h"
 #include "structs.h"
-#include "settings.h"
 #include "nmath.h"
 #include "types.h"
 #include "macros.h"

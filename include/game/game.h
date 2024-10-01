@@ -10,8 +10,6 @@
     #include <GL/glu.h>
 #endif
 #include "convoy.h"
-#include "settings.h"
-#include "settings.h"
 #include "unit/party.h"
 #include "unit/unit.h"
 #include "SDL2/SDL.h"
@@ -69,11 +67,11 @@ void Events_Names_Declare(void);
 void Events_Receivers_Declare(void);
 
 /* --- Pre game --- */
-void Game_Pre_Init(int argc, char *argv[]);
+Input_Arguments Game_Pre_Init(int argc, char *argv[]);
 void Game_Post_Free(void);
 
 /* --- Constructors/Destructors --- */
-void Game_Init(   struct Game *sota, int argc, char *argv[]);
+void Game_Init(   struct Game *sota, Settings settings);
 void Game_Free(   struct Game *sota);
 void Game_AI_Free(struct Game *sota);
 

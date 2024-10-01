@@ -135,7 +135,17 @@ struct Enemy_Turn_settings {
     u64 pause_post_move;
 };
 
-struct Settings {
+typedef struct Input_Arguments {
+    u16   cutScene;         /* plays the scene then exits */
+    u16   talkScene;
+    u8    map_index;
+    u8    startup_mode;
+    b32   print_help;       /* If help requested anywhere, print help and exit  */
+    char *save_filename;    /* debug saves are outside normal save integers     */
+} Input_Arguments;
+extern struct Input_Arguments Input_Arguments_default;
+
+typedef struct Settings {
     Point res; /* resolution */
     Point pos;
     struct Fps   FPS;
@@ -155,9 +165,11 @@ struct Settings {
     int soundfx_volume;
     float brightness;
 
+    struct Input_Arguments args;
+
     b32 fullscreen          : 1;
     b32 window              : 1;
-};
+} Settings;
 extern struct Settings Settings_default;
 
 typedef struct MenuElemDirections {

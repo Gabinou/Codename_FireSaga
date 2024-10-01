@@ -23,11 +23,13 @@ int main(int argc, char *argv[]) {
     atexit(SDL_Quit);
 
     /* -- Startup -- */
-    Game_Pre_Init(argc, argv);
+    Settings settings   = Settings_default;
+    settings.window     = SDL_WINDOW_SHOWN;
+    settings.args       = Game_Pre_Init(argc, argv);
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     struct Game *sota = SDL_malloc(sizeof(struct Game));
-    Game_Init(sota, argc, argv);
+    Game_Init(sota, settings);
 
     /* -- Master loop -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Starting main game loop\n");

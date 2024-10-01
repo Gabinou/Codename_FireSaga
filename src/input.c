@@ -1,11 +1,6 @@
 
 #include "input.h"
 
-struct Input_Arguments Input_Arguments_default = {
-    .map_index     = CHAPTER_TEST,
-    .startup_mode  = STARTUP_TESTING,
-};
-
 static struct parg_opt longopts[] = {
     {"help",    PARG_NOARG,     0, 'h', NULL,   "display this help text and exit"},
     {"version", PARG_NOARG,     0, 'v', NULL,   "display version and exit"},
