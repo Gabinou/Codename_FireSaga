@@ -513,6 +513,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
 
     SDL_Log("Equipped: %d %d", Unit_Eq_Equipped(unit_ontile, UNIT_HAND_LEFT),
             Unit_Eq_Equipped(unit_ontile, UNIT_HAND_RIGHT));
+    getchar();
     Map_Healtomap_Compute(  sota->map, sota->world, hov_ent, move, equipped);
     Map_Attacktomap_Compute(sota->map, sota->world, hov_ent, move, equipped);
     int rangemap = Unit_Rangemap_Get(unit_ontile);

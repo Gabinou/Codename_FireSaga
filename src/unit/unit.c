@@ -1072,16 +1072,8 @@ void Unit_readJSON(void *input,  cJSON *junit) {
         }
     }
 
-    /* -- Equip -- */
-    for (i32 hand = 0; hand < unit->arms_num; hand++) {
-        if (unit->_equipment[hand].id <= ITEM_NULL)
-            continue;
+    /* -- Load equipped -- */
 
-        if (!Weapon_ID_isValid(unit->_equipment[hand].id))
-            continue;
-
-        Unit_Equip(unit, hand, hand);
-    }
 }
 
 void Unit_writeJSON(void *input, cJSON *junit) {
