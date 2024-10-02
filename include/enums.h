@@ -175,6 +175,7 @@ enum SOTA_SETTINGS {
 };
 
 enum SOTA_LIMITS {
+    SOTA_MAX_TURNS      =  255,
 
     /* Unit_stats limits*/
     SOTA_MIN_HP         =    1,
@@ -1289,7 +1290,7 @@ enum PLAYER_SETTINGS {
     SOTA_SETTINGS_ANIMATION         =  0,
     SOTA_SETTINGS_TEXT_SPEED        =  1,
     SOTA_SETTINGS_AUTOCURSOR        =  2,
-    SOTA_SETTINGS_AUTOEND_TURNS     =  3,
+    SOTA_SETTINGS_AUTOEND_TURNTURNS     =  3,
     SOTA_SETTINGS_VOLUME_MUSIC      =  4,
     SOTA_SETTINGS_VOLUME_SOUNDFX    =  5,
     SOTA_SETTINGS_BRIGHTNESS        =  6,

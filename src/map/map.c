@@ -939,6 +939,8 @@ void Map_readJSON(void *input,  cJSON *jmap) {
 /* --- Map events / Triggers --- */
 /* Ouputs index of army in army_onfield*/
 i8 Map_Army_Next(struct Map *map) {
+    SDL_assert(map->turn > 0);
+    SDL_assert(map->turn < SOTA_MAX_TURNS);
     /* Get next army in line for control */
     SDL_assert(map->army_onfield != NULL);
 
@@ -947,7 +949,7 @@ i8 Map_Army_Next(struct Map *map) {
     SDL_assert(army_num <= ARMY_NUM);
 
     /* Check for wrap around back to player */
-    map->army_i = ((map->army_i + 1) >= army_num) ? 0 : (map->army_i + 1);
+    map->army_i = (map->turn - 1) % army_num;
     SDL_assert(map->army_i >  ARMY_NULL);
     SDL_assert(map->army_i <= ARMY_NUM);
 
