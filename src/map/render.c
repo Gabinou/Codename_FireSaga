@@ -206,7 +206,7 @@ void Map_Visible_Tiles(struct Map *map,  struct Settings *settings, struct Camer
     if (map->visiblemax.y >= map->row_len)
         map->visiblemax.y = map->row_len - 1;
 
-    map->visible_changed = (visiblemprev.x != map->visiblemin.x);
+    map->visible_changed =  (visiblemprev.x != map->visiblemin.x);
     map->visible_changed |= (visiblemprev.y != map->visiblemin.y);
     map->visible_changed |= (visiblemax_prev.x != map->visiblemax.x);
     map->visible_changed |= (visiblemax_prev.y != map->visiblemax.y);
@@ -222,12 +222,12 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(map->tilemap_surface->format->format));
 
     /* -- Preliminaries -- */
-    SDL_Rect dstrect = {0, 0, map->tilesize[0], map->tilesize[1]};
-    SDL_Rect srcrect = {0, 0, map->tilesize[0], map->tilesize[1]};
-    i32 tile_ind     = 0;
-    i32 tile_order   = 0;
-    i32 texture_ind  = 0;
-    u8 palette_ind  = 0;
+    SDL_Rect dstrect    = {0, 0, map->tilesize[0], map->tilesize[1]};
+    SDL_Rect srcrect    = {0, 0, map->tilesize[0], map->tilesize[1]};
+    i32 tile_ind        = 0;
+    i32 tile_order      = 0;
+    i32 texture_ind     = 0;
+    u8 palette_ind      = 0;
     int success;
 
     /* Stitching map from tiles */

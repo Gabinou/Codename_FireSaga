@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     /* -- Startup -- */
     Settings settings   = Settings_default;
     settings.window     = SDL_WINDOW_SHOWN;
-    settings.args       = Game_Pre_Init(argc, argv);
+    settings.args       = IES_Init(argc, argv);
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     struct Game *sota = SDL_malloc(sizeof(struct Game));

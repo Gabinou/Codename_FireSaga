@@ -254,7 +254,7 @@ void Game_Post_Free(void) {
     Names_Free();
 }
 
-Input_Arguments Game_Pre_Init(int argc, char *argv[]) {
+Input_Arguments IES_Init(int argc, char *argv[]) {
     /* --- LOGGING --- */
     Log_Init();
 #ifdef SDL_ASSERT_LEVEL
@@ -478,17 +478,20 @@ void Game_Init(struct Game *sota, Settings settings) {
         SDL_LogWarn(SOTA_LOG_SYSTEM, "gamecontrollerdb.txt not found!\n");
     s8_free(&path_mapping);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Allocating space for globals\n");
+
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Allocating space for events\n");
     Events_Data_Malloc();
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Initializing user events\n");
     Events_Names_Declare();
     Events_Names_Alloc();
     Events_Receivers_Declare();
+
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Initializing Menus\n");
     Game_Menus_Init(sota);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Tnecs: Genesis\n");
     sota->world = tnecs_world_genesis();
+
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Components Registration\n");
     TNECS_REGISTER_COMPONENT(sota->world, Position);
     TNECS_REGISTER_COMPONENT(sota->world, Sprite);
@@ -578,7 +581,6 @@ void Game_Init(struct Game *sota, Settings settings) {
                                 Unit);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration DONE\n");
 
-    sota->isrunning = true;
     sota->keyboardInputMap  = KeyboardInputMap_default;
     sota->gamepadInputMap   = GamepadInputMap_switch_pro;
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Loading pixelfonts\n");
@@ -643,6 +645,8 @@ void Game_Init(struct Game *sota, Settings settings) {
     SDL_assert(sota->state      == GAME_STATE_Title_Screen);
     SDL_assert(sota->substate   == GAME_SUBSTATE_MENU);
     SDL_assert(sota->entity_mouse);
+
+    sota->isrunning = true;
 }
 
 void Game_Save_Copy(i16 from_ind,  i16 to_ind) {

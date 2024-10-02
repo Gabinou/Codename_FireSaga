@@ -67,7 +67,7 @@ void Events_Names_Declare(void);
 void Events_Receivers_Declare(void);
 
 /* --- Pre game --- */
-Input_Arguments Game_Pre_Init(int argc, char *argv[]);
+Input_Arguments IES_Init(int argc, char *argv[]);
 void Game_Post_Free(void);
 
 /* --- Constructors/Destructors --- */

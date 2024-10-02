@@ -29,7 +29,7 @@
 //      void *SDL_LoadFunction(void *so_handle, const char *name);
 
 struct VTable {
-    void (*game_pre_init)(int argc, char *argv[]);
+    void (*IES_Init)(int argc, char *argv[]);
     void (*game_init)(struct Game *sota, int argc, char *argv[]);
     void (*game_step)(struct Game *sota);
     void (*game_free)(struct Game *sota);
@@ -52,13 +52,13 @@ void VTable_Load(struct VTable *vtable) {
         printf("HOTRELOAD: could not load %s: %s\n", sota_dll, dlerror());
         exit(1);
     }
-    vtable->game_pre_init   = SDL_LoadFunction(so_handle, "Game_Pre_Init");
+    vtable->IES_Init   = SDL_LoadFunction(so_handle, "IES_Init");
     vtable->game_init       = SDL_LoadFunction(so_handle, "Game_Init");
     vtable->game_step       = SDL_LoadFunction(so_handle, "Game_Step");
     vtable->game_free       = SDL_LoadFunction(so_handle, "Game_Free");
     vtable->game_post_free  = SDL_LoadFunction(so_handle, "Game_Post_Free");
-    if (vtable->game_pre_init == NULL) {
-        printf("HOTRELOAD: could not load %s: %s\n", "Game_Pre_Init", dlerror());
+    if (vtable->IES_Init == NULL) {
+        printf("HOTRELOAD: could not load %s: %s\n", "IES_Init", dlerror());
         exit(1);
     }
 
@@ -92,7 +92,7 @@ int main(int argc, char *argv[]) {
     VTable_Load(&vtable);
 
     /* -- Startup -- */
-    vtable.game_pre_init(argc, argv);
+    vtable.IES_Init(argc, argv);
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     struct Game *sota = SDL_malloc(sizeof(struct Game));

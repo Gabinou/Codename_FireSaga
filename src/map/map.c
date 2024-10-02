@@ -82,8 +82,8 @@ Map *Map_New(NewMap new_map) {
 
     Map_Size_Set(       map,    new_map.col_len,        new_map.row_len);
     Map_Tilesize_Set(   map,    new_map.tilesize[0],    new_map.tilesize[1]);
-    Map_Members_Alloc(map);
     Map_Renderer_Set(map, new_map.renderer);
+    Map_Members_Alloc(map);
 
     return (map);
 }
@@ -347,11 +347,15 @@ void Map_Size_Set(struct Map *map, i32 col_len, i32 row_len) {
 }
 
 void Map_Members_Alloc(struct Map *map) {
+    SDL_assert(map->renderer != NULL);
     SDL_assert(map->row_len > 0);
     SDL_assert(map->col_len > 0);
     SDL_assert(map->row_len < MAP_MAX_COLS);
     SDL_assert(map->col_len < MAP_MAX_ROWS);
     int len = map->row_len * map->col_len;
+
+    Map_Tilemap_Surface_Init(map);
+    Map_Tilemap_Texture_Init(map);
 
     SDL_assert(map->doors_ent == NULL);
     map->doors_ent = DARR_INIT(map->doors_ent, tnecs_entity, 4);
@@ -526,11 +530,11 @@ void Map_Tilemap_Surface_Free(struct Map *map) {
     }
 }
 
-void Map_Tilemap_Surface_init(struct Map *map) {
+void Map_Tilemap_Surface_Init(struct Map *map) {
     SDL_assert(map->col_len > 0);
     SDL_assert(map->row_len > 0);
     SDL_assert(map->col_len < MAP_MAX_COLS);
-    SDL_assert(map->row_len > MAP_MAX_ROWS);
+    SDL_assert(map->row_len < MAP_MAX_ROWS);
 
     Map_Tilemap_Surface_Free(map);
     int x_size = map->tilesize[0] * map->col_len;
@@ -901,8 +905,6 @@ void Map_readJSON(void *input,  cJSON *jmap) {
     map->tilemap_shader->frames = map->frames;
     Tilemap_Shader_Load_Tilemap_JSON(map->tilemap_shader, jmap);
     // SDL_assert(map->tilemap_shader->shadow_tilemaps);
-    Map_Tilemap_Texture_Init(map);
-    Map_Texture_Alloc(map);
 
     /* --- Parsing shadow tileset --- */
     if (map->tilemap_shader->shadow_tilemaps) {
