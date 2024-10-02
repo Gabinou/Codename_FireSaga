@@ -52,9 +52,6 @@ void Map_Renderer_Set(struct Map *map, SDL_Renderer *renderer) {
     if (renderer != NULL) {
         map->renderer = renderer;
     }
-    if ((map->arrow != NULL) &&  (map->renderer  != NULL)) {
-        Arrow_Textures_Load(map->arrow, ARROW_FILENAME, map->renderer);
-    }
 }
 
 void Map_Palettemap_Autoset(struct Map *map, u16 flagsum) {
@@ -548,8 +545,10 @@ void Map_Draw(struct Map *map,  struct Settings *settings,
     SDL_RenderCopy(map->renderer, map->tilemap_texture, NULL, &dstrect); /* slow */
 
     /* -- Draw Arrow -- */
-    if (map->arrow && map->arrow->show)
+    if (map->arrow && map->arrow->show) {
+        SDL_assert(map->arrow->textures != NULL);
         Arrow_Draw(map->arrow, map->renderer, camera);
+    }
 
     Utilities_DrawColor_Reset(map->renderer);
 }

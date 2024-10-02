@@ -466,6 +466,9 @@ void Map_Members_Alloc(struct Map *map) {
 
     SDL_assert(map->arrow == NULL);
     map->arrow = Arrow_Init(map->tilesize);
+    SDL_assert(map->arrow != NULL);
+    Arrow_Textures_Load(map->arrow, ARROW_FILENAME, map->renderer);
+    SDL_assert(map->arrow->textures != NULL);
 
     // SDL_Log("map->stack_mode %d %d", map->stack_mode, MAP_SETTING_STACK_DANGERMAP);
     if (map->stack_mode == MAP_SETTING_STACK_DANGERMAP) {
@@ -950,8 +953,8 @@ i8 Map_Army_Next(struct Map *map) {
 
     /* Check for wrap around back to player */
     map->army_i = (map->turn - 1) % army_num;
-    SDL_assert(map->army_i >  ARMY_NULL);
-    SDL_assert(map->army_i <= ARMY_NUM);
+    SDL_assert(map->army_i >= 0);
+    SDL_assert(map->army_i <= army_num);
 
     return (map->army_i);
 }

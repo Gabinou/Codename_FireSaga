@@ -273,6 +273,12 @@ void Arrow_Free(struct Arrow *arrow) {
 /* --- I/O --- */
 void Arrow_Textures_Load(struct Arrow *arrow,  char *filename, SDL_Renderer *renderer) {
     SDL_assert(renderer != NULL);
+
+    if (arrow->textures != NULL) {
+        SDL_DestroyTexture(arrow->textures);
+        arrow->textures = NULL;
+    }
+
     arrow->textures = Filesystem_Texture_Load(renderer, filename, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(arrow->textures != NULL);
 }
