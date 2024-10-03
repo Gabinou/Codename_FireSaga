@@ -659,8 +659,8 @@ typedef struct Unit {
     Point dft_pos; /* Used to compute stats in case of dual wielding */
 
     i32     arms_num;
-    b32     hands[SOTA_EQUIPMENT_SIZE];     /* Does unit have hands?             */
-    i32 _equipped[SOTA_EQUIPMENT_SIZE];  /* [ITEM_UNEQUIPPED, SOTA_EQUIPMENT_SIZE] */
+    b32     hands[MAX_ARMS_NUM]; /* Does unit have hands?             */
+    i32 _equipped[MAX_ARMS_NUM]; /* [ITEM_UNEQUIPPED, SOTA_EQUIPMENT_SIZE] */
 
     s8 *skill_names;
 

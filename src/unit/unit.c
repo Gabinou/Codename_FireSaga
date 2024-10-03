@@ -973,6 +973,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     cJSON *jtitle           = cJSON_GetObjectItem(junit, "Title");
     cJSON *jitems           = cJSON_GetObjectItem(junit, "Items");
     cJSON *jgrowths         = cJSON_GetObjectItem(junit, "Growths");
+    cJSON *jequipped        = cJSON_GetObjectItem(junit, "Equipped");
     cJSON *jlevelups        = cJSON_GetObjectItem(junit, "Level-ups");
     cJSON *jsupports        = cJSON_GetObjectItem(junit, "Supports");
     cJSON *jbase_exp        = cJSON_GetObjectItem(junit, "BaseExp");
@@ -982,6 +983,52 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     cJSON *jclass_index     = cJSON_GetObjectItem(junit, "Class Index");
     cJSON *jsupport_type    = cJSON_GetObjectItem(junit, "Support Type");
     cJSON *jcurrent_stats   = cJSON_GetObjectItem(junit, "Stats");
+
+    cJSON *jhandedness      = cJSON_GetObjectItem(junit, "Handedness");
+    cJSON *jhands           = cJSON_GetObjectItem(junit, "Hands");
+    cJSON *jarms_num        = cJSON_GetObjectItem(junit, "Arms Num");
+
+    /* --- Hands --- */
+    if (jarms_num != NULL) {
+        unit->arms_num     = cJSON_GetNumberValue(jarms_num);
+        if ((unit->arms_num <= 0) || (unit->arms_num > MAX_ARMS_NUM)) {
+            SDL_Log("Unit should have between 1-%d \"Hands Num\".", MAX_ARMS_NUM);
+            exit(1);
+        }
+    }
+
+    if (jhandedness != NULL) {
+        unit->handedness = cJSON_GetNumberValue(jhandedness);
+    }
+
+    if (jhands != NULL) {
+        if (!cJSON_IsArray(jhands)) {
+            SDL_Log("Unit \"Hands\" should be a JSON array.");
+            exit(1);
+        }
+
+        if (cJSON_GetArraySize(jhands) != unit->arms_num) {
+            SDL_Log("Unit \"Hands\" array should have same size as \"Hands Num\".");
+            exit(1);
+        }
+
+        for (int i = 0; i < unit->arms_num; i++) {
+            cJSON *jhand    = cJSON_GetArrayItem(jhands, i);
+            unit->hands[i]  = cJSON_GetNumberValue(jhand);
+        }
+    }
+
+    /* --- Equipped --- */
+    if (jequipped != NULL) {
+        if (cJSON_GetArraySize(jequipped) != unit->arms_num) {
+            SDL_Log("Unit \"Equipped\" array should have same size as \"Hands Num\".");
+            exit(1);
+        }
+        for (int i = 0; i < unit->arms_num; i++) {
+            cJSON *jequippedi  = cJSON_GetArrayItem(jequipped, i);
+            unit->_equipped[i] = cJSON_GetNumberValue(jequippedi);
+        }
+    }
 
     // SDL_Log("-- setting name from ID --");
     SDL_assert(jid);
@@ -1080,6 +1127,22 @@ void Unit_writeJSON(void *input, cJSON *junit) {
     struct Unit *unit = (struct Unit *)input;
     SDL_assert(unit);
     SDL_assert(junit);
+    /* --- Hands --- */
+    cJSON *jhandedness  = cJSON_CreateNumber(unit->handedness);
+    cJSON *jarms_num    = cJSON_CreateNumber(unit->arms_num);
+    cJSON *jhands       = cJSON_CreateArray();
+    cJSON *jequipped    = cJSON_CreateArray();
+    for (i32 i = 0; i < unit->arms_num; i++) {
+        cJSON *jhand        = cJSON_CreateNumber(unit->hands[i]);
+        cJSON *jequippedi   = cJSON_CreateNumber(unit->_equipped[i]);
+        cJSON_AddItemToArray(jhands,    jhand);
+        cJSON_AddItemToArray(jequipped, jequippedi);
+    }
+    cJSON_AddItemToObject(junit, "Hands",       jhands);
+    cJSON_AddItemToObject(junit, "Equipped",    jequipped);
+    cJSON_AddItemToObject(junit, "Arms Num",    jarms_num);
+    cJSON_AddItemToObject(junit, "Handedness",  jhandedness);
+
     cJSON *jid            = cJSON_CreateNumber(unit->_id);
     cJSON *jexp           = cJSON_CreateNumber(unit->base_exp);
     cJSON *jsex           = cJSON_CreateBool(unit->sex);
