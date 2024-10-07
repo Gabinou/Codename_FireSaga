@@ -52,7 +52,6 @@
 #include "integration/test_conditions.h"
 
 void render_tests() {
-    SDL_Log("Running rendering tests\n");
     printf("Running rendering tests\n");
     test_arrow();
     test_menu_deployment();
@@ -71,7 +70,6 @@ void render_tests() {
 }
 
 void unit_tests() {
-    SDL_Log("Running unit tests\n");
     printf("Running unit tests\n");
     nourstest_run("AI ",            test_AI);
     nourstest_run("Bitfields ",     test_bitfields);
@@ -105,7 +103,6 @@ void unit_tests() {
 }
 
 void integration_tests(int argc, char *argv[]) {
-    SDL_Log("Running integration tests\n");
     printf("Running integration tests\n");
 
     nourstest_run_args("Minimal",       test_minimal,               argc, argv);
@@ -122,7 +119,7 @@ void integration_tests(int argc, char *argv[]) {
 void random_checks() {
 #if HAVE_STDIO_H
     SDL_Log("Printing all names\n");
-    // Names_Print_All("");
+    Names_Print_All("");
 #endif /* HAVE_STDIO_H */
 
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Running on "PLATFORM_NAME);
@@ -138,7 +135,7 @@ void random_checks() {
 
 int main(int argc, char *argv[]) {
     /* -- Checks -- */
-    random_checks();
+    // random_checks();
 
     /* -- Preliminaries -- */
 #ifdef SOTA_ASSERT_ALWAYS_BREAK
@@ -147,17 +144,14 @@ int main(int argc, char *argv[]) {
 
     Log_Init();
     freopen("test_results.txt", "w+", stdout);
-    SDL_Log("Filesystem_Init\n");
     Filesystem_Init(0);
-    SDL_Log("Initializing utilities\n");
     Utilities_Load();
-    SDL_Log("Initializing RNG\n");
     RNG_Init_xoroshiro256ss();
     if (SDL_Init(SDL_INIT_EVERYTHING)) {
         SDL_Log("SDL_Init failed\n");
         exit(1);
     }
-
+    getchar();
     /* -- Running tests -- */
     // test_events();
     unit_tests();

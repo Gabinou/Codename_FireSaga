@@ -5,7 +5,7 @@
 
 void test_utilities() {
 
-    SDL_Log("test_Unit_army2alignment");
+    // test_Unit_army2alignment
     nourstest_true(SotA_army2alignment(ARMY_FRIENDLY)                   == ALIGNMENT_FRIENDLY);
     nourstest_true(SotA_army2alignment(ARMY_ERWIN)                      == ALIGNMENT_FRIENDLY);
     nourstest_true(SotA_army2alignment(ARMY_FREE_MILITIA)               == ALIGNMENT_FRIENDLY);
@@ -20,7 +20,7 @@ void test_utilities() {
     nourstest_true(SotA_army2alignment(ARMY_ENEMY)                      == ALIGNMENT_ENEMY);
     nourstest_true(SotA_army2alignment(ARMY_BANDITS)                    == ALIGNMENT_ENEMY);
 
-    SDL_Log("test_unitNames");
+    // test_unitNames
     u64 order;
     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_ERWIN);
     nourstest_true(s8equal(global_unitNames[order], s8_literal("Erwin")));
@@ -91,7 +91,7 @@ void test_utilities() {
     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_FENCER);
     nourstest_true(s8equal(global_unitNames[order], s8_literal("Fencer")));
 
-    SDL_Log("test_str");
+    // test_str
 
     s8 temp = s8_mut("test_utilities");
     nourstest_true(s8equal(s8_literal("test utilities"), s8_replaceSingle(temp, '_', ' ')));
@@ -118,7 +118,7 @@ void test_utilities() {
     }
     nourstest_true(Filesystem_fequal("test_results.txt", "test_results.txt"));
 
-    SDL_Log("test_tilenames");
+    // test_tilenames
     nourstest_true(s8equal(global_tilenames[TILE_PLAIN],     s8_literal("Plain"))     );
     nourstest_true(s8equal(global_tilenames[TILE_BUSH],      s8_literal("Bush"))      );
     nourstest_true(s8equal(global_tilenames[TILE_FOREST],    s8_literal("Forest"))    );
@@ -165,7 +165,7 @@ void test_utilities() {
     nourstest_true(s8equal(global_tilenames[TILE_TRAIL],     s8_literal("Trail"))     );
     nourstest_true(s8equal(global_tilenames[TILE_SHADOW],    s8_literal("Shadow"))    );
 
-    SDL_Log("test_wpn_names");
+    // test_wpn_names
     u16 wpn_typecode;
     uint64_t temp_item_id;
     wpn_typecode = ITEM_TYPE_SWORD + ITEM_TYPE_LANCE;

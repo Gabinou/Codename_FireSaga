@@ -2,7 +2,6 @@
 #include "filesystem.h"
 
 void test_leaks() {
-    SDL_Log("test_leaks");
     sota_mkdir("filesystem");
 
     /* Filesystem_indexedSurface_Init leak */
@@ -73,6 +72,5 @@ void test_leaks() {
 }
 
 void test_filesystem() {
-    SDL_Log("test_filesystem");
     test_leaks();
 }

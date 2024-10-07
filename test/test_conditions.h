@@ -5,7 +5,6 @@
 #include "jsonio.h"
 
 void test_conditions() {
-    SDL_Log("test_conditions");
     struct Conditions game_cond = Conditions_Game_start;
     struct Conditions line_cond = Conditions_default;
 

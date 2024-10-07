@@ -4,7 +4,6 @@
 #include "RNG.h"
 
 void test_camp() {
-    SDL_Log("test_camp");
     struct Camp camp  = Camp_default;
     struct Camp camp2 = Camp_default;
 

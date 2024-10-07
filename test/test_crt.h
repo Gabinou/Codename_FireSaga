@@ -9,7 +9,6 @@ enum MAT_LENS {
 };
 
 void test_crt() {
-    SDL_Log("test_crt");
     int cell_width = 2;
     int cell_height = 5;
     int cell_blank_R = 1;

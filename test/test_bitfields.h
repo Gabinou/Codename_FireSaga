@@ -2,7 +2,6 @@
 #include "bitfields.h"
 
 void test_bitfields() {
-    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     nourstest_true(BITFIELD_LEN(1) == 1);
     nourstest_true(BITFIELD_LEN(2) == 1);
     nourstest_true(BITFIELD_LEN(3) == 1);

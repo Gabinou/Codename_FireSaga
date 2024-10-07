@@ -6,7 +6,6 @@ u32 event_NonRecursive;
 void Event_Emit_Test( const char *emitter, u32 type, i32 code, void *data1, void *data2) {
     SDL_assert(code > 0);
     SDL_assert(type != ((UINT32_MAX) - 1));
-    SDL_Log("EMITTED: %d", code);
     SDL_Event event;
     event.type          = type;
     event.user.code     = code;

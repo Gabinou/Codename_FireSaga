@@ -4,7 +4,7 @@
 #include "scene.h"
 
 void test_item() {
-    SDL_Log("test_item");
+    // test_item
     if (PHYSFS_stat("saves", NULL) == 0) {
         PHYSFS_mkdir("saves");
     }
@@ -55,7 +55,7 @@ void test_item() {
     item1.write_stats = true;
     jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "item_test.json")), &item1, false);
 
-    SDL_Log("Saved item_test");
+    // Saved item_test
     SDL_assert(item2.json_filename.data == NULL);
     s8_free(&item2.json_filename);
     jsonio_readJSON(s8_literal(PATH_JOIN("saves", "item_test.json")), &item2);

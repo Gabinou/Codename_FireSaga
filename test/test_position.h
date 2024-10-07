@@ -2,7 +2,6 @@
 #include "position.h"
 
 void test_position() {
-    SDL_Log("test_position");
     struct Position position = Position_default;
     struct Point pos = {0};
     struct Point *ptrpos = NULL;

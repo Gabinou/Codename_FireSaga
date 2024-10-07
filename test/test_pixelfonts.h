@@ -260,7 +260,6 @@ void test_pixelfonts_render() {
 }
 
 void test_pixelfonts() {
-    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     sota_mkdir("pixelfont");
     test_pixelfonts_internals();
     test_pixelfonts_render();

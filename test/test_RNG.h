@@ -135,7 +135,6 @@ void test_RNG_SequenceBreaker() {
 #undef ITERATIONS
 #define ITERATIONS 1000000
 void test_RNG() {
-    SDL_Log("test_RNG");
     PHYSFS_file *fp = PHYSFS_openWrite(PATH_JOIN("build", "RNG.txt"));
     char buffer[8] = {0};
     URN_debug = -1;

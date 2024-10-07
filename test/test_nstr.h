@@ -5,7 +5,6 @@
 #define ITERATIONS 100000
 
 void test_nstr() {
-    SDL_Log("Testing nstr");
     s8 mac = s8_literal("Mac OS X");
     nourstest_true(mac.num == 8);
     s8 lizard = s8_literal("The lizard is a wizard, by joving rove. I say living hell.");

@@ -3,7 +3,6 @@
 #include "equations.h"
 
 void test_Equation_Unit_Hit() {
-    SDL_Log("test_Equation_Unit_Hit");
     u8 wpn_hit = 0;
     u8 dex     = 0;
     u8 luck    = 0;
@@ -34,7 +33,6 @@ void test_Equation_Unit_Hit() {
 }
 
 void test_Equation_Unit_Dodge() {
-    SDL_Log("test_Equation_Unit_Dodge");
     u8 wpn_dodge   = 0;
     u8 wpn_wgt     = 0;
     u8 tile_dodge  = 0;
@@ -103,7 +101,6 @@ void test_Equation_Unit_Dodge() {
 }
 
 void test_Equation_Unit_Favor() {
-    SDL_Log("test_Equation_Unit_Favor");
     u8 wpn_favor = 0;
     u8 luck = 0;
     u8 support = 0;
@@ -130,7 +127,6 @@ void test_Equation_Unit_Favor() {
 }
 
 void test_Equation_Unit_Crit() {
-    SDL_Log("test_Equation_Unit_Crit");
     u8 wpn_crit  = 0;
     u8 dex       = 0;
     u8 luck      = 0;
@@ -166,7 +162,6 @@ void test_Equation_Unit_Crit() {
 }
 
 void test_Equation_Unit_Speed() {
-    SDL_Log("test_Equation_Unit_Speed");
     u8 wpn_wgt = 0;
     u8 agi = 0;
     u8 con = 0;
@@ -203,7 +198,6 @@ void test_Equation_Unit_Speed() {
 }
 
 void test_Equation_simple() {
-    SDL_Log("test_Equation_simple");
 
     nourstest_true(int_inbounds( 1, 0, 23) == 1);
     nourstest_true(int_inbounds(-1, 0, 23) == 0);
@@ -321,7 +315,6 @@ void test_Equation_simple() {
 }
 
 void test_equations() {
-    SDL_Log("test_equations");
     test_Equation_Unit_Hit();
     test_Equation_Unit_Dodge();
     test_Equation_Unit_Speed();

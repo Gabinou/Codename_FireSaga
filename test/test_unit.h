@@ -9,7 +9,6 @@
 
 
 void test_canEquip_Type(void) {
-    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     struct Unit Silou = Unit_default;
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
     Unit_InitWweapons(&Silou, weapons_dtab);
@@ -61,7 +60,6 @@ void test_canEquip_Type(void) {
 }
 
 void test_skills(void) {
-    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     struct Combat_Phase combat_outcome[SOTA_COMBAT_MAX_PHASES];
     struct TINYMT32_T tinymt32;
     RNG_Init_tinymt(&tinymt32);
@@ -110,7 +108,6 @@ void test_skills(void) {
 }
 
 void test_io(void) {
-    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     struct Unit unit1 = Unit_default;
     struct Unit unit2 = Unit_default;
     struct Unit unit3 = Unit_default;
@@ -1186,7 +1183,6 @@ void test_tetrabrachios(void) {
 }
 
 void test_unit(void) {
-    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     test_canEquip_OneHand();
     test_canEquip_TwoHand();
     test_canEquip_Type();

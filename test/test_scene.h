@@ -5,7 +5,6 @@
 #include "jsonio.h"
 
 void test_scene() {
-    SDL_Log("test_scene");
     s8 path = s8_literal(PATH_JOIN("scenes", "example.json"));
 
     /* --- Read scene file --- */

@@ -14,7 +14,7 @@ void test_combat_game() {
     firesaga.combat_outcome.attacks = DARR_INIT(firesaga.combat_outcome.attacks, struct Combat_Attack,
                                                 SOTA_COMBAT_MAX_ATTACKS);
 
-    SDL_Log("Init test_combat");
+    // Init test_combat
     struct Combat_Flow temp_flow;
     struct Unit attacker = Unit_default;
     struct Unit defender = Unit_default;
@@ -34,7 +34,7 @@ void test_combat_game() {
     Unit_setStats(&defender, defender_stats);
     Unit_setStats(&attacker, attacker_stats);
 
-    SDL_Log("Setting up inventory");
+    // Setting up inventory
     struct Inventory_item in_wpn = Inventory_item_default;
     in_wpn.id = ITEM_ID_FLEURET;
     b32 attacker_equip_hand = Unit_Hand_Strong(&attacker);
@@ -66,7 +66,7 @@ void test_combat_game() {
 
     struct Weapon *fleuret = ((struct Weapon *)DTAB_GET(weapons_dtab, in_wpn.id));
 
-    SDL_Log("computing attacker effectiveStats");
+    // computing attacker effectiveStats
     Unit_effectiveStats(&attacker);
     nourstest_true(attacker.current_stats.hp    == attacker.effective_stats.hp);
     nourstest_true(attacker.current_stats.str   == attacker.effective_stats.str);
@@ -80,7 +80,7 @@ void test_combat_game() {
     nourstest_true(attacker.current_stats.move  == attacker.effective_stats.move);
     nourstest_true(attacker.current_stats.prof  == attacker.effective_stats.prof);
 
-    SDL_Log("computing defender effectiveStats");
+    // computing defender effectiveStats
     Unit_effectiveStats(&defender);
     nourstest_true(defender.current_stats.hp    == defender.effective_stats.hp);
     nourstest_true(defender.current_stats.str   == defender.effective_stats.str);
@@ -94,9 +94,9 @@ void test_combat_game() {
     nourstest_true(defender.current_stats.move  == defender.effective_stats.move);
     nourstest_true(defender.current_stats.prof  == defender.effective_stats.prof);
 
-    SDL_Log("computing attacker effectiveStats");
+    // computing attacker effectiveStats");
     Unit_computeHit(&attacker, distance);
-    SDL_Log("computing defender effectiveStats");
+    // computing defender effectiveStats");
     Unit_computeHit(&defender, distance);
     u8 attacker_hit;
     u8 defender_hit;
@@ -104,7 +104,7 @@ void test_combat_game() {
     struct Weapon *defender_weaponp;
     uint_fast16_t temp_id;
 
-    SDL_Log("checking defender equipped");
+    // checking defender equipped");
     SDL_assert(Unit_isEquipped(&defender, defender_equip_hand));
     if (Unit_isEquipped(&defender, defender_equip_hand)) {
         SDL_assert(defender.weapons_dtab != NULL);
@@ -115,7 +115,7 @@ void test_combat_game() {
         SDL_assert(defender_weaponp != NULL);
     }
 
-    SDL_Log("checking attacker equipped");
+    // checking attacker equipped");
     SDL_assert(Unit_isEquipped(&attacker, attacker_equip_hand));
     if (Unit_isEquipped(&attacker, attacker_equip_hand)) {
         SDL_assert(attacker.weapons_dtab != NULL);
@@ -124,7 +124,7 @@ void test_combat_game() {
         nourstest_true(attacker_weaponp != NULL);
     }
 
-    SDL_Log("manual Equation_Unit_Hit");
+    // manual Equation_Unit_Hit");
     nourstest_true(attacker_weaponp != NULL);
     nourstest_true(attacker_weaponp->stats.hit);
     nourstest_true(attacker.effective_stats.dex);

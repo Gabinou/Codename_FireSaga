@@ -1079,7 +1079,6 @@ void test_Text_Bubble_pixelfont16_minus() {
 }
 
 void test_text_bubble() {
-    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     sota_mkdir("popup_text_bubble");
     test_text_bubble_VScroll_Anim();
     test_Text_Bubble_Tail();

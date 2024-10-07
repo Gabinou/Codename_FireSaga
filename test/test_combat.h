@@ -8,7 +8,6 @@
 #include "RNG.h"
 
 void test_combat_stats() {
-    SDL_Log("test_combat_stats");
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
     struct Unit *attacker = (struct Unit *)calloc(1, sizeof(struct Unit));
     * attacker = Unit_default;
@@ -690,7 +689,6 @@ void test_combat_sequence() {
 }
 
 void test_combat() {
-    SDL_Log("test_combat");
     test_combat_stats();
     // test_combat_death();
     test_combat_flow();

@@ -4,7 +4,6 @@
 #include "scene.h"
 
 void test_weapon1() {
-    SDL_Log("test_weapon");
     struct Weapon wpn1  = Weapon_default;
     struct Weapon wpn2  = Weapon_default;
     struct Weapon wpn3  = Weapon_default;

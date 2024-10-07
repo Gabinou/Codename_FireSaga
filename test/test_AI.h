@@ -10,7 +10,6 @@ enum ENUM_TEST_AI {
 };
 
 void test_AI() {
-    SDL_Log("test_AI");
     uint32_t move;
     struct Point start = {10, 6};
     struct Point end   = {15, 1};

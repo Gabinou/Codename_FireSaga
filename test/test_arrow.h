@@ -34,7 +34,6 @@ void test_arrow_draw_start_end(struct Camera *camera,  struct Arrow *arrow,
 }
 
 void test_arrow() {
-    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     /* -- Preliminaries -- */
     sota_mkdir("arrow");
 
