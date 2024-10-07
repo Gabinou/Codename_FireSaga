@@ -62,9 +62,8 @@ void test_menu_stats() {
     Unit_Item_Takeat(&Silou, in_wpn, weakhand);
     SDL_assert(Silou.num_equipment == 4);
 
-    Silou._equipped[weakhand] = true;
     Unit_Equip(&Silou, weakhand, weakhand);
-    SDL_assert(Unit_isEquipped(&Silou, stronghand));
+    SDL_assert(Unit_isEquipped(&Silou, weakhand));
     nourstest_true(Unit_canAttack(&Silou));
     Unit_computedStats(&Silou, -1);
     Unit_effectiveStats(&Silou);

@@ -84,11 +84,17 @@ void test_menu_loadout_select(void) {
     i32 weakhand        = Unit_Hand_Weak(Silou);
     Silou->equippable |= ITEM_TYPE_ANGELIC;
     SDL_assert(Silou->num_equipment == 4);
-    Unit_Equip(Silou, stronghand, 0);
+    Unit_Equip(Silou, stronghand,   ITEM1);
+    Unit_Equip(Silou, weakhand,     ITEM4);
     SDL_assert(Unit_isEquipped(Silou, stronghand));
     nourstest_true(Unit_canAttack(Silou));
 
     canEquip can_equip  = canEquip_default;
+    SDL_assert(Unit_Eq_Equipped(Silou, UNIT_HAND_LEFT)  >= ITEM1);
+    SDL_assert(Unit_Eq_Equipped(Silou, UNIT_HAND_LEFT)  <= ITEM6);
+    SDL_assert(Unit_Eq_Equipped(Silou, UNIT_HAND_RIGHT) >= ITEM1);
+    SDL_assert(Unit_Eq_Equipped(Silou, UNIT_HAND_RIGHT) <= ITEM6);
+
     canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  Unit_Eq_Equipped(Silou, UNIT_HAND_LEFT));
     canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, Unit_Eq_Equipped(Silou, UNIT_HAND_RIGHT));
 

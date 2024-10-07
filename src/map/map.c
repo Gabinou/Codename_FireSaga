@@ -347,15 +347,11 @@ void Map_Size_Set(struct Map *map, i32 col_len, i32 row_len) {
 }
 
 void Map_Members_Alloc(struct Map *map) {
-    SDL_assert(map->renderer != NULL);
     SDL_assert(map->row_len > 0);
     SDL_assert(map->col_len > 0);
     SDL_assert(map->row_len < MAP_MAX_COLS);
     SDL_assert(map->col_len < MAP_MAX_ROWS);
     int len = map->row_len * map->col_len;
-
-    Map_Tilemap_Surface_Init(map);
-    Map_Tilemap_Texture_Init(map);
 
     SDL_assert(map->doors_ent == NULL);
     map->doors_ent = DARR_INIT(map->doors_ent, tnecs_entity, 4);
@@ -464,11 +460,18 @@ void Map_Members_Alloc(struct Map *map) {
     SDL_assert(map->edges_danger == NULL);
     map->edges_danger = calloc(len, sizeof(*map->edges_danger));
 
-    SDL_assert(map->arrow == NULL);
-    map->arrow = Arrow_Init(map->tilesize);
-    SDL_assert(map->arrow != NULL);
-    Arrow_Textures_Load(map->arrow, ARROW_FILENAME, map->renderer);
-    SDL_assert(map->arrow->textures != NULL);
+    if (map->renderer != NULL) {
+        Map_Tilemap_Surface_Init(map);
+        Map_Tilemap_Texture_Init(map);
+
+        SDL_assert(map->arrow == NULL);
+        map->arrow = Arrow_Init(map->tilesize);
+        SDL_assert(map->arrow != NULL);
+        Arrow_Textures_Load(map->arrow, ARROW_FILENAME, map->renderer);
+        SDL_assert(map->arrow->textures != NULL);
+    } else {
+        SDL_LogWarn(SDL_LOG_CATEGORY_RENDER, "Map: Renderer is NULL, skipping related member allocs");
+    }
 
     // SDL_Log("map->stack_mode %d %d", map->stack_mode, MAP_SETTING_STACK_DANGERMAP);
     if (map->stack_mode == MAP_SETTING_STACK_DANGERMAP) {
