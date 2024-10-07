@@ -27,6 +27,7 @@ int main(int argc, char *argv[]) {
     settings.window     = SDL_WINDOW_SHOWN;
     settings.args       = IES_Init(argc, argv);
 
+    SDL_Log("IES start.\n");
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     struct Game *sota = SDL_malloc(sizeof(struct Game));
     Game_Init(sota, settings);
@@ -41,7 +42,7 @@ int main(int argc, char *argv[]) {
     /* -- Cleaning & Quitting -- */
     Game_Free(sota);
     Game_Post_Free();
-    SDL_Log("SotA quit.\n");
+    SDL_Log("IES quit.\n");
     return (NO_ERROR);
 }
 
