@@ -5,7 +5,6 @@
 #include "RNG.h"
 
 void test_menu_pre_combat() {
-    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     /* -- Preliminaries -- */
     sota_mkdir("menu_pre_combat");
 

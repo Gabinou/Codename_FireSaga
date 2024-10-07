@@ -109,7 +109,6 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
 #define TEST_COL_LEN 10
 
 void test_menu_deployment() {
-    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     /* --- Preliminaries --- */
     sota_mkdir("menu_deployment");
 

@@ -53,6 +53,7 @@
 
 void render_tests() {
     printf("Running rendering tests\n");
+    SDL_Log("Running rendering tests\n");
     test_arrow();
     test_menu_deployment();
     test_menu_growths();
@@ -71,6 +72,7 @@ void render_tests() {
 
 void unit_tests() {
     printf("Running unit tests\n");
+    SDL_Log("Running unit tests\n");
     nourstest_run("AI ",            test_AI);
     nourstest_run("Bitfields ",     test_bitfields);
     nourstest_run("Camp ",          test_camp);
@@ -104,7 +106,7 @@ void unit_tests() {
 
 void integration_tests(int argc, char *argv[]) {
     printf("Running integration tests\n");
-
+    SDL_Log("Running integration tests\n");
     nourstest_run_args("Minimal",       test_minimal,               argc, argv);
     nourstest_run_args("Step",          test_step,                  argc, argv);
     nourstest_run_args("Load/Save",     test_load_save,             argc, argv);
@@ -151,7 +153,7 @@ int main(int argc, char *argv[]) {
         SDL_Log("SDL_Init failed\n");
         exit(1);
     }
-    getchar();
+
     /* -- Running tests -- */
     // test_events();
     unit_tests();

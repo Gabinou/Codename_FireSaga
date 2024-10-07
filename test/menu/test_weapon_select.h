@@ -429,11 +429,9 @@ void test_menu_loadout_select_two_hands(void) {
 
 
 void unit_test_menu_loadout_select(void) {
-    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     test_menu_loadout_select_two_hands();
 }
 
 void render_test_menu_loadout_select(void) {
-    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     test_menu_loadout_select();
 }

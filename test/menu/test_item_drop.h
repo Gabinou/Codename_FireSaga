@@ -2,7 +2,6 @@
 #include "menu/item_drop.h"
 
 void test_menu_item_drop() {
-    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     /* -- Preliminaries -- */
     sota_mkdir("menu_item_drop");
 

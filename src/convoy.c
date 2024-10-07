@@ -87,7 +87,7 @@ void Convoy_Swap(struct Convoy *in_convoy, i16 i1, i16 i2) {
 
 void Convoy_Deposit_byIndex(struct Convoy *in_convoy, struct Inventory_item in_item,
                             i16 i) {
-    SDL_Log("Depositing: %ld at %ld", in_item.id, i);
+    // SDL_Log("Depositing: %ld at %ld", in_item.id, i);
     SDL_assert(i < in_convoy->size);
     u16 stored_type_exp = Convoy_Id2TypeExp(in_convoy, i);
     Convoy_Shift_Plus(in_convoy, i, stored_type_exp);
@@ -96,7 +96,7 @@ void Convoy_Deposit_byIndex(struct Convoy *in_convoy, struct Inventory_item in_i
 
 void Convoy_Deposit_byType(struct Convoy *in_convoy, struct Inventory_item in_item,
                            i16 type_exp) {
-    SDL_Log("Depositing: %ld", in_item.id);
+    // SDL_Log("Depositing: %ld", in_item.id);
     SDL_assert(in_convoy->weapons_dtab != NULL);
     Weapon_Load(in_convoy->weapons_dtab, in_item.id);
     u16 typecode = ((struct Weapon *)DTAB_GET(in_convoy->weapons_dtab,

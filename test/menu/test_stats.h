@@ -5,7 +5,6 @@
 #include "RNG.h"
 
 void test_menu_stats() {
-    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     /* -- Preliminaries -- */
     sota_mkdir("menu_stats");
     Names_Load_All();
