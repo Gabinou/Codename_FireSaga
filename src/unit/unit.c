@@ -986,17 +986,8 @@ void Unit_readJSON(void *input,  cJSON *junit) {
 
     cJSON *jhandedness      = cJSON_GetObjectItem(junit, "Handedness");
     cJSON *jhands           = cJSON_GetObjectItem(junit, "Hands");
-    cJSON *jarms_num        = cJSON_GetObjectItem(junit, "Arms Num");
 
     /* --- Hands --- */
-    if (jarms_num != NULL) {
-        unit->arms_num     = cJSON_GetNumberValue(jarms_num);
-        if ((unit->arms_num <= 0) || (unit->arms_num > MAX_ARMS_NUM)) {
-            SDL_Log("Unit should have between 1-%d \"Hands Num\".", MAX_ARMS_NUM);
-            exit(1);
-        }
-    }
-
     if (jhandedness != NULL) {
         unit->handedness = cJSON_GetNumberValue(jhandedness);
     }
@@ -1007,10 +998,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
             exit(1);
         }
 
-        if (cJSON_GetArraySize(jhands) != unit->arms_num) {
-            SDL_Log("Unit \"Hands\" array should have same size as \"Hands Num\".");
-            exit(1);
-        }
+        unit->arms_num = cJSON_GetArraySize(jhands);
 
         for (int i = 0; i < unit->arms_num; i++) {
             cJSON *jhand    = cJSON_GetArrayItem(jhands, i);
@@ -1129,7 +1117,6 @@ void Unit_writeJSON(void *input, cJSON *junit) {
     SDL_assert(junit);
     /* --- Hands --- */
     cJSON *jhandedness  = cJSON_CreateNumber(unit->handedness);
-    cJSON *jarms_num    = cJSON_CreateNumber(unit->arms_num);
     cJSON *jhands       = cJSON_CreateArray();
     cJSON *jequipped    = cJSON_CreateArray();
     for (i32 i = 0; i < unit->arms_num; i++) {
@@ -1140,7 +1127,6 @@ void Unit_writeJSON(void *input, cJSON *junit) {
     }
     cJSON_AddItemToObject(junit, "Hands",       jhands);
     cJSON_AddItemToObject(junit, "Equipped",    jequipped);
-    cJSON_AddItemToObject(junit, "Arms Num",    jarms_num);
     cJSON_AddItemToObject(junit, "Handedness",  jhandedness);
 
     cJSON *jid            = cJSON_CreateNumber(unit->_id);
