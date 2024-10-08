@@ -12,6 +12,7 @@ NewMap NewMap_default = {
 Map Map_default = {
     .json_element           = JSON_MAP,
     .show_icons             = true,
+    .cost_multiplier        =  1,
     .frames                 = 10,
     .frames_shadow          = 10,
     .speed                  = 50,

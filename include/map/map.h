@@ -108,6 +108,8 @@ typedef struct Map {
 
     /* --- costmap, MOVEMAP, ATTACKMAP... --- */
     i32 *temp;                  /* 2D dynamic array */
+
+    i32 cost_multiplier;
     i32 *costmap;               /* 2D dynamic array */
     i32 *movemap;               /* 2D dynamic array */
     i32 *start_posmap;          /* 2D dynamic array */

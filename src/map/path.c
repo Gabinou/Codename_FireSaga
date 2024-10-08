@@ -198,6 +198,12 @@ i32 *Map_Attacktomap_Compute_wLoadout(struct Map *map, tnecs_world *world, tnecs
     return (out);
 }
 
+i32 *Map_Attackto(  struct Map *map, tnecs_world *world, tnecs_entity unit_ent,
+                    AttackTo attackto) {
+
+}
+
+
 i32 *Map_Attacktomap_Compute(struct Map *map, tnecs_world *world,
                              tnecs_entity unit_ent, b32 move, b32 equipped) {
     SDL_assert(map          != NULL);

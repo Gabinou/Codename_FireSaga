@@ -38,10 +38,13 @@ typedef struct AttackTo {
     // attacktomap: ITEM_ARCHETYPE_WEAPON
     i64 archetype;
 
+    /* ARRAY_MATRIX, ARRAY_LIST */
     i32 output_type;
 
     /* LOADOUT_EQUIPPED, LOADOUT_EQUIPMENT, LOADOUT_INPUT */
     i32 eq_type;
+
+    i32 mode_movetile;
 
 } AttackTo;
 extern AttackTo AttackTo_default;
@@ -75,7 +78,6 @@ typedef struct canEquip {
     // For Map_canEquip
     //  - Find canEquip item in range, with or without unit movement
     b32 move;
-
 } canEquip;
 extern canEquip canEquip_default;
 
