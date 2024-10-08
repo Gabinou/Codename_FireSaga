@@ -515,8 +515,14 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     // Unit_Eq_Equipped(unit_ontile, UNIT_HAND_RIGHT));
     // getchar();
 
+    /* Compute healtomap for EQUIPMENT */
     Map_Healtomap_Compute(  sota->map, sota->world, hov_ent, move, equipped);
+
+    /* Compute attacktomap for EQUIPMENT */
     Map_Attacktomap_Compute(sota->map, sota->world, hov_ent, move, equipped);
+    // matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
+    getchar();
+
     int rangemap = Unit_Rangemap_Get(unit_ontile);
 
     /* - Compute new stackmap with recomputed attacktomap - */

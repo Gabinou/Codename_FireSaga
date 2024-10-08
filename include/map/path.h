@@ -70,8 +70,4 @@ i32 *_Map_tomap_Compute(i32 *tomap,         i32 *mvtmat,  tnecs_entity *unitmap,
 /* --- global_rangemap --- */
 void Map_globalRange(struct Map *map, tnecs_world *w, u8 alignment);
 
-/* --- startposmap --- */
-void Map_StartPos(struct Map *map);
-
-
 #endif /* MAP_PATH_H */

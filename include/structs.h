@@ -24,11 +24,32 @@ typedef i32(* use_function_t)(struct Item *, struct Unit *, struct Unit *);
 typedef struct Loadout {
     i32 _loadout[MAX_ARMS_NUM]; /* [ITEM_UNEQUIPPED, SOTA_EQUIPMENT_SIZE] */
 } Loadout;
+
 extern Loadout Loadout_default;
+/* -- attackto -- */
+typedef struct AttackTo {
+    // First to be able to cast: Loadout = &canEquip;
+    /* only if eq_type == LOADOUT_INPUT */
+    i32 _loadout[MAX_ARMS_NUM]; /* [ITEM_UNEQUIPPED, SOTA_EQUIPMENT_SIZE] */
+
+    b32 move;
+
+    // healtomap: ITEM_ARCHETYPE_STAFF
+    // attacktomap: ITEM_ARCHETYPE_WEAPON
+    i64 archetype;
+
+    i32 output_type;
+
+    /* LOADOUT_EQUIPPED, LOADOUT_EQUIPMENT, LOADOUT_INPUT */
+    i32 eq_type;
+
+} AttackTo;
+extern AttackTo AttackTo_default;
 
 /* -- Can Equip -- */
 // Input for canEquip function
 typedef struct canEquip {
+    // First to be able to cast: Loadout = &canEquip;
     i32 _loadout[MAX_ARMS_NUM]; /* [ITEM_UNEQUIPPED, SOTA_EQUIPMENT_SIZE] */
 
     // Hand to equip to, considering loadout.

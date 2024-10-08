@@ -59,9 +59,9 @@ SDL_Surface *Tilemap_Shade_Surface(struct Tilemap_Shader *ts, SDL_Surface *su,
 /* Modifies the index value of the pixels, without changing the palette. */
 struct Index_Shader {
     u8 *to;            /* [from] is a palette_table */
-    u8 *pixels_list;   /* POINTS_LIST: 2D -> X: [2*i], Y: [2*i+1], POINTS_MATRIX */
+    u8 *pixels_list;   /* ARRAY_LIST: 2D -> X: [2*i], Y: [2*i+1], ARRAY_MATRIX */
     u8 *shaded_pixels;
-    size_t pixels_num;  /* POINTS_LIST: 2D -> X: [2*i], Y: [2*i+1], POINTS_MATRIX */
+    size_t pixels_num;  /* ARRAY_LIST: 2D -> X: [2*i], Y: [2*i+1], ARRAY_MATRIX */
 };
 extern struct Index_Shader Index_Shader_default;
 

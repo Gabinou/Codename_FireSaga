@@ -463,6 +463,12 @@ enum OPTIONS {
     MENU_OPTION_NUM = MENU_OPTION_END,
 };
 
+enum LOADOUT_TYPE {
+    LOADOUT_EQUIPPED    = 0, /* With equipped weapons */
+    LOADOUT_EQUIPMENT   = 1, /* With weapons in equipment */
+    LOADOUT_INPUT       = 2, /* With weapons in loadout struct equipped */
+};
+
 enum ITEM_EQUIPPED {
     ITEM_UNEQUIPPED = 0,
     ITEM1_EQUIPPED,
@@ -1173,9 +1179,9 @@ enum LOOPINGS {
     LOOPING_NUM,
 };
 
-enum POINTS {
-    POINTS_MATRIX            = 0,
-    POINTS_LIST              = 1,
+enum ARRAY_TYPE {
+    ARRAY_MATRIX            = 0,
+    ARRAY_LIST              = 1,
 };
 
 enum WEAPON_SUBTYPE {
