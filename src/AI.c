@@ -81,8 +81,8 @@ static b32 _AI_Decider_Move_inRange(struct Game *sota, tnecs_entity npc_ent) {
     /* --- Move to enemy in range --- */
     /* --- Get list of defendants in range --- */
     struct Map *map = sota->map;
-    Map_Attacktomap_Compute(map, sota->world, npc_ent, true, false);
-    Map_Attacktolist_Compute(map);
+    Map_Maptomap_Compute(map, sota->world, npc_ent, true, false);
+    Map_Maptolist_Compute(map);
     tnecs_entity *dfts = DARR_INIT(dfts, tnecs_entity, 1);
     dfts = Map_Find_Defendants(map, map->attacktolist, dfts, npc_ent, true);
 
@@ -112,8 +112,8 @@ static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
                                     struct AI_Action *action) {
     /* --- AI Unit tries to kill enemy --- */
     /* -- Get list of defendants in range -- */
-    Map_Attacktomap_Compute(sota->map, sota->world, npc_ent, true, false);
-    Map_Attacktolist_Compute(sota->map);
+    Map_Maptomap_Compute(sota->map, sota->world, npc_ent, true, false);
+    Map_Maptolist_Compute(sota->map);
     tnecs_entity *defendants = DARR_INIT(defendants, tnecs_entity, 4);
     defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist, defendants, npc_ent, false);
 
@@ -212,8 +212,8 @@ static void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
 
     /* -- Find defendants at target_move -- */
     pos->tilemap_pos = newpos;
-    Map_Attacktomap_Compute(sota->map, sota->world, npc_ent, false, false);
-    Map_Attacktolist_Compute(sota->map);
+    Map_Maptomap_Compute(sota->map, sota->world, npc_ent, false, false);
+    Map_Maptolist_Compute(sota->map);
     tnecs_entity *defendants = DARR_INIT(defendants, tnecs_entity, 4);
     defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist, defendants, npc_ent, false);
 

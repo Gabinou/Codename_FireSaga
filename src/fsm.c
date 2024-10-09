@@ -519,7 +519,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     Map_Healtomap_Compute(  sota->map, sota->world, hov_ent, move, equipped);
 
     /* Compute attacktomap for EQUIPMENT */
-    Map_Attacktomap_Compute(sota->map, sota->world, hov_ent, move, equipped);
+    Map_Maptomap_Compute(sota->map, sota->world, hov_ent, move, equipped);
     // matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
     getchar();
 
@@ -1282,7 +1282,7 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
 
     /* - Compute new stackmap with recomputed attacktomap - */
     Map_Healtomap_Compute(sota->map,   sota->world, unit_ent, false, false);
-    Map_Attacktomap_Compute(sota->map, sota->world, unit_ent, false, false);
+    Map_Maptomap_Compute(sota->map, sota->world, unit_ent, false, false);
 
     // matrix_print(sota->map->attacktomap, sota->map->col_len, sota->map->row_len);
 

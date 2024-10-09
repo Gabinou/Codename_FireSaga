@@ -64,8 +64,6 @@ b32 Map_canEquip_Range(struct Map *map, tnecs_entity unit_ent,
     SDL_assert(range            != NULL);
     // SDL_Log("range %d %d", range->min, range->max);
 
-
-
     /* Compute attacktolist to check if any enemy in it */
     Pathfinding_Attackto_noM(map->attacktomap, map->movemap,
                              map->unitmap,
@@ -74,7 +72,8 @@ b32 Map_canEquip_Range(struct Map *map, tnecs_entity unit_ent,
     // printf("ATK\n");
     // matrix_print(map->attacktomap, map->row_len, map->col_len);
 
-    Map_Attacktolist_Compute(map);
+    map->attacktolist = matrix2list_noM(map->attacktomap, map->attacktolist,
+                                        map->row_len, map->col_len);
 
     /* Find all Defendants in list */
     if (archetype == ITEM_ARCHETYPE_WEAPON) {

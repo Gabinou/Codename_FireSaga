@@ -47,7 +47,7 @@ typedef struct MapTo {
     i32 mode_movetile;
 
 } MapTo;
-extern MapTo AttackTo_default;
+extern MapTo MapTo_default;
 
 /* -- Can Equip -- */
 // Input for canEquip function

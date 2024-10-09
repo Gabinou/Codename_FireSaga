@@ -484,7 +484,7 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     // Loadout_Set(&loadout, UNIT_HAND_LEFT, pls->eq_left);
     // Loadout_Set(&loadout, UNIT_HAND_RIGHT, pls->eq_right);
 
-    // Map_Attacktomap_Compute_wLoadout(sota->map, sota->world, sota->aggressor, false,
+    // Map_Maptomap_Compute_wLoadout(sota->map, sota->world, sota->aggressor, false,
     //                                  &loadout);
     // Map_Healtomap_Compute_wLoadout(sota->map, sota->world, sota->aggressor, false,
     //                                &loadout);
@@ -675,7 +675,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     /* - Compute new attackmap with equipped - */
     int rangemap = Unit_Rangemap_Get(unit);
     Map_Healtomap_Compute(  sota->map, sota->world, sota->aggressor, false, true);
-    Map_Attacktomap_Compute(sota->map, sota->world, sota->aggressor, false, true);
+    Map_Maptomap_Compute(sota->map, sota->world, sota->aggressor, false, true);
 
     if (rangemap        == RANGEMAP_HEALMAP) {
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL);
@@ -828,7 +828,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     /* - Compute new attackmap with equipped - */
     int rangemap = Unit_Rangemap_Get(unit);
     Map_Healtomap_Compute(  sota->map, sota->world, sota->aggressor, false, true);
-    Map_Attacktomap_Compute(sota->map, sota->world, sota->aggressor, false, true);
+    Map_Maptomap_Compute(sota->map, sota->world, sota->aggressor, false, true);
 
     if (rangemap        == RANGEMAP_HEALMAP) {
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL);
@@ -1059,7 +1059,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
     // Loadout_Set(&loadout, UNIT_HAND_LEFT, pls->eq_left);
     // Loadout_Set(&loadout, UNIT_HAND_RIGHT, pls->eq_right);
 
-    // Map_Attacktomap_Compute_wLoadout(sota->map, sota->world, sota->aggressor, false,
+    // Map_Maptomap_Compute_wLoadout(sota->map, sota->world, sota->aggressor, false,
     //                                  &loadout);
     // Map_Healtomap_Compute_wLoadout(sota->map, sota->world, sota->aggressor, false,
     //                                &loadout);
@@ -1140,7 +1140,7 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
             // 2.1 inital pos != moved pos, so cursor would move...
             Position_Pos_Set(selected_pos, init_pos.x, init_pos.y);
             Map_Healtomap_Compute(  sota->map, sota->world, sota->selected_unit_entity, true, true);
-            Map_Attacktomap_Compute(sota->map, sota->world, sota->selected_unit_entity, true, true);
+            Map_Maptomap_Compute(sota->map, sota->world, sota->selected_unit_entity, true, true);
             // 2.2 BUT: Moving pos ptr to selected position so that cursor doesn't move
             // Position_Pos_Set(selected_pos, init_pos.x, init_pos.y);
             // tnecs_entity cursor = sota->entity_cursor;
