@@ -125,54 +125,32 @@ i32 *Map_Healtolist_Compute(struct Map   *map) {
     return (map->healtolist);
 }
 
-i32 *Map_Healtomap_Compute_wLoadout(struct Map *map, tnecs_world *world, tnecs_entity ent,
-                                    b32 move, Loadout *loadout) {
-    struct Unit     *unit = TNECS_GET_COMPONENT(world, ent, Unit);
+// i32 *Map_Healtomap_Compute_wLoadout(struct Map *map, tnecs_world *world, tnecs_entity ent,
+//                                     b32 move, Loadout *loadout) {
+//     struct Unit     *unit = TNECS_GET_COMPONENT(world, ent, Unit);
 
-    /* Save starting equipment */
-    i32 start_equipped[UNIT_ARMS_NUM];
-    Unit_Equipped_Export(unit, start_equipped);
+//     /* Save starting equipment */
+//     i32 start_equipped[UNIT_ARMS_NUM];
+//     Unit_Equipped_Export(unit, start_equipped);
 
-    /* Compute healmap with input loadout */
-    Unit_Loadout_Import(unit, loadout);
-    i32 *out = Map_Healtomap_Compute(map, world, ent, move, true);
+//     /* Compute healmap with input loadout */
+//     Unit_Loadout_Import(unit, loadout);
+//     i32 *out = Map_Healtomap_Compute(map, world, ent, move, true);
 
-    /* Restore starting equipment */
-    Unit_Equipped_Import(unit, start_equipped);
+//     /* Restore starting equipment */
+//     Unit_Equipped_Import(unit, start_equipped);
 
-    return (out);
-}
+//     return (out);
+// }
 
-i32 *Map_Healtomap_Compute(struct Map *map, tnecs_world *world, tnecs_entity unit_ent,
-                           b32 move, b32 equipped) {
-    SDL_assert(map          != NULL);
-    map->world = world;
-    SDL_assert(map->world   != NULL);
 
-    Map_Costmap_Movement_Compute(map, unit_ent);
-    struct Unit     *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
-    struct Position *pos  = TNECS_GET_COMPONENT(world, unit_ent, Position);
-    struct Point start = pos->tilemap_pos;
-    i32 move_stat = move ? Unit_getStats(unit).move : 0;
-    _Map_Movemap_Compute(map, start, move_stat);
-    struct Range *range = Unit_Range_Loadout(unit, ITEM_ARCHETYPE_STAFF);
-
-    map->update = true;
-    map->healtomap = _Map_tomap_Compute(map->healtomap, map->movemap,
-                                        map->unitmap,
-                                        map->row_len, map->col_len,
-                                        move_stat, range, MOVETILE_INCLUDE);
-    // matrix_print(map->healtomap, map->row_len, map->col_len);
-    return (map->healtomap);
-}
-
-i32 *Map_Attacktolist_Compute(struct Map *map) {
-    SDL_assert(map->attacktolist    != NULL);
-    SDL_assert(map->attacktomap     != NULL);
-    map->attacktolist = matrix2list_noM(map->attacktomap, map->attacktolist,
-                                        map->row_len, map->col_len);
-    return (map->attacktolist);
-}
+// i32 *Map_Attacktolist_Compute(struct Map *map) {
+//     SDL_assert(map->attacktolist    != NULL);
+//     SDL_assert(map->attacktomap     != NULL);
+//     map->attacktolist = matrix2list_noM(map->attacktomap, map->attacktolist,
+//                                         map->row_len, map->col_len);
+//     return (map->attacktolist);
+// }
 
 i32 *Map_Attackfromlist_Compute(struct Map *map) {
     map->attackfromlist = matrix2list_noM(map->attackfrommap, map->attackfromlist,
@@ -180,64 +158,137 @@ i32 *Map_Attackfromlist_Compute(struct Map *map) {
     return (map->attackfromlist);
 }
 
-i32 *Map_Attacktomap_Compute_wLoadout(struct Map *map, tnecs_world *world, tnecs_entity ent,
-                                      b32 move, Loadout *loadout) {
-    struct Unit     *unit = TNECS_GET_COMPONENT(world, ent, Unit);
+// i32 *Map_Attacktomap_Compute_wLoadout(struct Map *map, tnecs_world *world, tnecs_entity ent,
+//                                       b32 move, Loadout *loadout) {
+//     struct Unit     *unit = TNECS_GET_COMPONENT(world, ent, Unit);
 
-    /* Save starting equipment */
-    i32 start_equipped[UNIT_ARMS_NUM];
-    Unit_Equipped_Export(unit, start_equipped);
+//     /* Save starting equipment */
+//     i32 start_equipped[UNIT_ARMS_NUM];
+//     Unit_Equipped_Export(unit, start_equipped);
 
-    /* Compute healmap with input loadout */
-    Unit_Loadout_Import(unit, loadout);
-    i32 *out = Map_Attacktomap_Compute(map, world, ent, move, true);
+//     /* Compute healmap with input loadout */
+//     Unit_Loadout_Import(unit, loadout);
+//     i32 *out = Map_Attacktomap_Compute(map, world, ent, move, true);
 
-    /* Restore starting equipment */
-    Unit_Equipped_Import(unit, start_equipped);
+//     /* Restore starting equipment */
+//     Unit_Equipped_Import(unit, start_equipped);
 
-    return (out);
-}
+//     return (out);
+// }
 
-i32 *Map_Attackto(  struct Map *map, tnecs_world *world, tnecs_entity unit_ent,
-                    AttackTo attackto) {
-
-}
-
-
-i32 *Map_Attacktomap_Compute(struct Map *map, tnecs_world *world,
-                             tnecs_entity unit_ent, b32 move, b32 equipped) {
+i32 *Map_Attackto(  struct Map *map, tnecs_entity unit_ent, MapTo mapto) {
     SDL_assert(map          != NULL);
-    map->world = world;
     SDL_assert(map->world   != NULL);
 
-    /* Compute Movemap */
     Map_Costmap_Movement_Compute(map, unit_ent);
-    struct Unit     *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
-    struct Position *pos  = TNECS_GET_COMPONENT(world, unit_ent, Position);
+    struct Unit     *unit = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
+    struct Position *pos  = TNECS_GET_COMPONENT(map->world, unit_ent, Position);
+    SDL_assert(unit != NULL);
+    SDL_assert(pos  != NULL);
+
     struct Point     start      = pos->tilemap_pos;
-    i32              move_stat  = move ? Unit_getStats(unit).move : 0;
+    i32 move_stat  = mapto.move ? Unit_getStats(unit).move : 0;
 
-    _Map_Movemap_Compute(map, start, move_stat);
+    Range *range = NULL;
+    if (mapto.eq_type == LOADOUT_EQUIPPED) {
+        range = Unit_Range_Equipped(unit, mapto.archetype);
+    } else if (mapto.eq_type == LOADOUT_EQUIPMENT) {
+        range = Unit_Range_Equipment(unit, mapto.archetype);
+    } else if (mapto.eq_type == LOADOUT_LOADOUT) {
+        /* Save starting equipment */
+        i32 start_equipped[UNIT_ARMS_NUM];
+        Unit_Equipped_Export(unit, start_equipped);
 
-    /* Compute Unit range */
-    struct Range *range = Unit_Range_Loadout(unit, ITEM_ARCHETYPE_WEAPON);
+        /* Compute healmap with input loadout */
+        Unit_Equipped_Import(unit, mapto._loadout);
+        range = Unit_Range_Equipped(unit, mapto.archetype);
 
-    /* Enable occupymap */
-    tnecs_entity *input_occupymap = NULL;
-    if (move == true) {
-        // Enable occupymap only to check when unit actually MOVES
-        input_occupymap = map->unitmap;
+        /* Restore starting equipment */
+        Unit_Equipped_Import(unit, start_equipped);
     }
+    SDL_assert(range != NULL);
+
+    // Enable occupymap only to check when unit actually MOVES
+    tnecs_entity *input_occupymap = (mapto.move == true) ? map->unitmap : NULL;
 
     /* Compute new attacktomap */
     map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap,
-                                          input_occupymap,
-                                          map->row_len, map->col_len,
-                                          move_stat, range, MOVETILE_INCLUDE);
-    map->update = true;
+                                          input_occupymap, map->row_len, map->col_len,
+                                          move_stat, range, mapto.mode_movetile);
     // matrix_print(map->attacktomap, map->row_len, map->col_len);
-    return (map->attacktomap);
+
+    i32* out = NULL;
+    if (mapto.output_type == ARRAY_MATRIX) {
+        out = map->attacktomap;
+    } else if (mapto.output_type == ARRAY_MATRIX)  {
+        map->attacktolist = matrix2list_noM(map->attacktomap, map->attacktolist,
+                                            map->row_len, map->col_len);
+        out = map->attacktolist;
+    }
+    SDL_assert(out != NULL);
+
+    map->update = true;
+    return (out);
 }
+
+
+// i32 *Map_Healtomap_Compute(struct Map *map, tnecs_world *world, tnecs_entity unit_ent,
+//                            b32 move, b32 equipped) {
+//     SDL_assert(map          != NULL);
+//     map->world = world;
+//     SDL_assert(map->world   != NULL);
+
+//     Map_Costmap_Movement_Compute(map, unit_ent);
+//     struct Unit     *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
+//     struct Position *pos  = TNECS_GET_COMPONENT(world, unit_ent, Position);
+//     struct Point start = pos->tilemap_pos;
+//     i32 move_stat = move ? Unit_getStats(unit).move : 0;
+//     _Map_Movemap_Compute(map, start, move_stat);
+//     struct Range *range = Unit_Range_Equipped(unit, ITEM_ARCHETYPE_STAFF);
+
+//     map->update = true;
+//     map->healtomap = _Map_tomap_Compute(map->healtomap, map->movemap,
+//                                         map->unitmap,
+//                                         map->row_len, map->col_len,
+//                                         move_stat, range, MOVETILE_INCLUDE);
+//     // matrix_print(map->healtomap, map->row_len, map->col_len);
+//     return (map->healtomap);
+// }
+
+// i32 *Map_Attacktomap_Compute(struct Map *map, tnecs_world *world,
+//                              tnecs_entity unit_ent, b32 move, b32 equipped) {
+//     SDL_assert(map          != NULL);
+//     // map->world = world;
+//     SDL_assert(map->world   != NULL);
+
+//     /* Compute Movemap */
+//     Map_Costmap_Movement_Compute(map, unit_ent);
+//     struct Unit     *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
+//     struct Position *pos  = TNECS_GET_COMPONENT(world, unit_ent, Position);
+//     struct Point     start      = pos->tilemap_pos;
+//     i32              move_stat  = move ? Unit_getStats(unit).move : 0;
+
+//     _Map_Movemap_Compute(map, start, move_stat);
+
+//     /* Compute Unit range */
+//     struct Range *range = Unit_Range_Equipped(unit, ITEM_ARCHETYPE_WEAPON);
+
+//     /* Enable occupymap */
+//     tnecs_entity *input_occupymap = NULL;
+//     if (move == true) {
+//         // Enable occupymap only to check when unit actually MOVES
+//         input_occupymap = map->unitmap;
+//     }
+
+//     /* Compute new attacktomap */
+//     map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap,
+//                                           input_occupymap,
+//                                           map->row_len, map->col_len,
+//                                           move_stat, range, MOVETILE_INCLUDE);
+//     map->update = true;
+//     // matrix_print(map->attacktomap, map->row_len, map->col_len);
+//     return (map->attacktomap);
+// }
 
 i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_world *world, tnecs_entity agg,
                                tnecs_entity dft, b32 move, b32 equipped) {
@@ -253,7 +304,7 @@ i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_world *world, tnecs_entity
     struct Position *agg_pos    = TNECS_GET_COMPONENT(world, agg, Position);
     struct Position *dft_pos    = TNECS_GET_COMPONENT(world, dft, Position);
     /* Get agg range */
-    struct Range *range = Unit_Range_Loadout(agg_unit, ITEM_ARCHETYPE_WEAPON);
+    struct Range *range = Unit_Range_Equipped(agg_unit, ITEM_ARCHETYPE_WEAPON);
 
     /* Compute movemap */
     i32 move_stat = move ? Unit_getStats(agg_unit).move : 0;

@@ -56,12 +56,12 @@ float *Map_fMovemap_Compute(struct Map *map, tnecs_world *w, tnecs_entity u);
 //                                tnecs_entity u, b32 m, b32 e);
 
 // i32 *Map_Healtomap_Compute_wLoadout(  struct Map *map, tnecs_world *w,
-                                      // tnecs_entity u, b32 m, Loadout *l);
+// tnecs_entity u, b32 m, Loadout *l);
 // i32 *Map_Attacktomap_Compute_wLoadout(struct Map *map, tnecs_world *w,
-                                      // tnecs_entity u, b32 m, Loadout *l);
+// tnecs_entity u, b32 m, Loadout *l);
 
-i32 *Map_Attackto(  struct Map *map, tnecs_world *w, tnecs_entity u,
-                    AttackTo attackto);
+i32 *Map_Attackto(  struct Map *map, tnecs_entity u,
+                    MapTo attackto);
 
 i32 *Map_Attackfromlist_Compute(struct Map *map);
 i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_world *w, tnecs_entity a,

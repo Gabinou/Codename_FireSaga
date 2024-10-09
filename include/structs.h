@@ -27,7 +27,7 @@ typedef struct Loadout {
 
 extern Loadout Loadout_default;
 /* -- attackto -- */
-typedef struct AttackTo {
+typedef struct MapTo {
     // First to be able to cast: Loadout = &canEquip;
     /* only if eq_type == LOADOUT_INPUT */
     i32 _loadout[MAX_ARMS_NUM]; /* [ITEM_UNEQUIPPED, SOTA_EQUIPMENT_SIZE] */
@@ -46,8 +46,8 @@ typedef struct AttackTo {
 
     i32 mode_movetile;
 
-} AttackTo;
-extern AttackTo AttackTo_default;
+} MapTo;
+extern MapTo AttackTo_default;
 
 /* -- Can Equip -- */
 // Input for canEquip function
@@ -248,10 +248,10 @@ typedef struct Unit_stats {
 extern struct Unit_stats Unit_stats_default;
 
 /* Struct is better: Can be cast to array */
-struct Range {
+typedef struct Range {
     i32 min;
     i32 max;
-};
+} Range;
 extern struct Range Range_default;
 
 /* Imagine I would implement a range with gaps */
@@ -1076,5 +1076,22 @@ typedef struct Weapon {
     struct Weapon_stats  stats;
 } Weapon;
 extern struct Weapon Weapon_default;
+
+typedef struct Arrow {
+    i32 *costmap;
+    i32 *movemap;
+    i32 move;
+    i32 col_len;
+    i32 row_len;
+    i32 *pathlist;  /* from initial unit position to current cursor position */
+    i32 tilesize[TWO_D];
+    i32 map_tilesize[TWO_D];
+    struct Point start;
+    struct SDL_Texture *textures;  /* [patch_id] */
+    struct Rendered rendereds[SOTA_MAX_MOVEMENT]; /* [patch_id] */
+    b32 show;
+} Arrow;
+extern struct Arrow Arrow_default;
+
 
 #endif /* STRUCTS_H */

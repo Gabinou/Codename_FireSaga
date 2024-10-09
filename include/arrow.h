@@ -40,26 +40,10 @@ enum ARROW_17PATCHES {
     ARROW_MAXLEN              = 128,
 };
 
-typedef struct Arrow {
-    i32 *costmap;
-    i32 *movemap;
-    i32 move;
-    i32 col_len;
-    i32 row_len;
-    i32 *pathlist;  /* from initial unit position to current cursor position */
-    i32 tilesize[TWO_D];
-    i32 map_tilesize[TWO_D];
-    struct Point start;
-    struct SDL_Texture *textures;  /* [patch_id] */
-    struct Rendered rendereds[SOTA_MAX_MOVEMENT]; /* [patch_id] */
-    b32 show: 1;
-} Arrow;
-extern struct Arrow Arrow_default;
-
 /* --- PUBLIC --- */
-/* -- ructors/Deructors -- */
-struct Arrow *Arrow_Init(i32 tilesize[TWO_D]);
-void          Arrow_Free(struct Arrow *a);
+/* -- Constructors/Destructors -- */
+Arrow   *Arrow_Init(i32 tilesize[TWO_D]);
+void     Arrow_Free(struct Arrow *a);
 
 /* -- Path -- */
 void Arrow_Path_Add( struct Arrow *a, i32  x, i32 y);

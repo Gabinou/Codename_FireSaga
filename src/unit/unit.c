@@ -718,7 +718,7 @@ struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance) {
         Unit_computeHit(     unit,  distance);
         Unit_computeAttack(  unit,  distance);
         Unit_computeCritical(unit,  distance);
-        Unit_Range_Loadout(unit, ITEM_ARCHETYPE_WEAPON);
+        Unit_Range_Equipped(unit, ITEM_ARCHETYPE_WEAPON);
     } else {
         unit->computed_stats.attack[DMG_TYPE_PHYSICAL] = 0;
         unit->computed_stats.attack[DMG_TYPE_MAGICAL]  = 0;

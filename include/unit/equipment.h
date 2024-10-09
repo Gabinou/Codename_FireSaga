@@ -9,6 +9,10 @@
 #include "unit/unit.h"
 #include "unit/loadout.h"
 
+/* --- Glossary --- */
+// - Loadout:   array of weapons that COULD be equipped
+// - Equipped:  array of weapons currently equipped
+
 /* --- Items --- */
 Inventory_item *Unit_InvItem(       Unit *u, i32 eq);
 Inventory_item *Unit_Item_Equipped( Unit *u, i32 hand);

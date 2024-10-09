@@ -1118,25 +1118,25 @@ void test_range(void) {
     /* Unit_Range_Loadout */
     Unit_Equip(&Silou, UNIT_HAND_LEFT, 0);
     Unit_Equip(&Silou, UNIT_HAND_RIGHT, 1);
-    range = Unit_Range_Loadout(&Silou, ITEM_TYPE_SWORD);
+    range = Unit_Range_Equipped(&Silou, ITEM_TYPE_SWORD);
     nourstest_true(range->min == wpns[1]->stats.range.min);
     nourstest_true(range->max == wpns[1]->stats.range.max);
 
     Unit_Equip(&Silou, UNIT_HAND_LEFT, 1);
     Unit_Equip(&Silou, UNIT_HAND_RIGHT, 2);
-    range = Unit_Range_Loadout(&Silou, ITEM_TYPE_SWORD);
+    range = Unit_Range_Equipped(&Silou, ITEM_TYPE_SWORD);
     nourstest_true(range->min == wpns[1]->stats.range.min);
     nourstest_true(range->max == wpns[2]->stats.range.max);
 
     Unit_Equip(&Silou, UNIT_HAND_LEFT, 4);
     Unit_Equip(&Silou, UNIT_HAND_RIGHT, 5);
-    range = Unit_Range_Loadout(&Silou, ITEM_TYPE_SWORD);
+    range = Unit_Range_Equipped(&Silou, ITEM_TYPE_SWORD);
     nourstest_true(range->min == wpns[4]->stats.range.min);
     nourstest_true(range->max == wpns[5]->stats.range.max);
 
     Unit_Equip(&Silou, UNIT_HAND_LEFT, 3);
     Unit_Equip(&Silou, UNIT_HAND_RIGHT, 4);
-    range = Unit_Range_Loadout(&Silou, ITEM_TYPE_SWORD);
+    range = Unit_Range_Equipped(&Silou, ITEM_TYPE_SWORD);
     nourstest_true(range->min == wpns[3]->stats.range.min);
     nourstest_true(range->max == wpns[4]->stats.range.max);
 

@@ -120,7 +120,7 @@ struct Range *Unit_Range_Equipment(Unit *unit, i64 archetype) {
 
 // Combine ranges of items in current loadout
 // Item was previously equipped, no need to check if CAN equip
-struct Range *Unit_Range_Loadout(Unit *unit, i64 archetype) {
+struct Range *Unit_Range_Equipped(Unit *unit, i64 archetype) {
     struct Range *range = &unit->computed_stats.range_loadout;
     *range = Range_default;
 
@@ -152,7 +152,7 @@ b32 Unit_inRange_Loadout(struct Unit        *agg,
                          struct Position    *agg_pos,
                          struct Position    *dft_pos,
                          i64 archetype) {
-    struct Range *range = Unit_Range_Loadout(agg, archetype);
+    struct Range *range = Unit_Range_Equipped(agg, archetype);
     int distance    =  abs(agg_pos->tilemap_pos.x - dft_pos->tilemap_pos.x);
     distance        += abs(agg_pos->tilemap_pos.y - dft_pos->tilemap_pos.y);
     return ((distance >= range->min) && (distance <= range->max));

@@ -32,6 +32,7 @@ struct Game;
 struct Unit;
 struct Map_condition;
 
+
 /* --- ENUMS --- */
 #define ARROW_FILENAME ARROW_FILENAME_
 #define ARROW_FILENAME_ PATH_JOIN("..", "assets", "GUI", "arrow.png")
@@ -57,7 +58,7 @@ typedef struct Map {
     // TODO: remove. should be in savefile
     s8 party_filename;
 
-    /* --- BASICS --- */
+    /* --- PERIMETER --- */
     i32 perimiter_danger_color;
     i32 perimiter_aura_color;
 
@@ -70,7 +71,8 @@ typedef struct Map {
     i32 col_len; /* [tiles] */
     i32 chapter;
     i32 tilesize[TWO_D]; /* [pixels] */
-    struct Arrow    *arrow;
+
+    Arrow           *arrow;
     tnecs_world     *world;
     SDL_Renderer    *renderer;
 

@@ -15,9 +15,9 @@ struct Range *Unit_Range_Eq(Unit *u, i32 eq, i64 archetype);
 // Range of a single piece of equipment -> CAN'T CHECK canEquip!
 struct Range *Unit_Range_Id(Unit *u, i32 id, i64 archetype);
 
-// Combine ranges of items in current loadout
+// Combine ranges of items currently equipped
 // Item was previously equipped, no need to check if CAN equip
-struct Range *Unit_Range_Loadout(Unit *u, i64 archetype);
+struct Range *Unit_Range_Equipped(Unit *u, i64 archetype);
 
 /* Combines range of all weapons in equipment, if can be equipped */
 // - Combine ranges of all equippable equipment, assuming NO LOADOUT
