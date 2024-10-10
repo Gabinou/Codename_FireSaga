@@ -81,8 +81,16 @@ static b32 _AI_Decider_Move_inRange(struct Game *sota, tnecs_entity npc_ent) {
     /* --- Move to enemy in range --- */
     /* --- Get list of defendants in range --- */
     struct Map *map = sota->map;
-    Map_Maptomap_Compute(map, sota->world, npc_ent, true, false);
-    Map_Maptolist_Compute(map);
+
+    /* - mapto settings for attacktolist - */
+    MapTo mapto = MapTo_default;
+
+    mapto.move          = true;
+    mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
+    mapto.eq_type       = LOADOUT_EQUIPPED;
+    mapto.output_type   = ARRAY_LIST;
+    Map_Mapto(sota->map, npc_ent, mapto);
+
     tnecs_entity *dfts = DARR_INIT(dfts, tnecs_entity, 1);
     dfts = Map_Find_Defendants(map, map->attacktolist, dfts, npc_ent, true);
 

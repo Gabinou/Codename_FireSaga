@@ -478,17 +478,26 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
 
     /* - Compute new attackmap with equipped - */
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, wsm->unit, Unit);
+
+    /* - mapto settings for attacktolist - */
+    MapTo mapto = MapTo_default;
+    Loadout *loadout = (Loadout *)&mapto;
+    Loadout_Set(loadout, UNIT_HAND_LEFT,   pls->eq_left);
+    Loadout_Set(loadout, UNIT_HAND_RIGHT,  pls->eq_right);
+
+    mapto.move          = false;
+    mapto.archetype     = ITEM_ARCHETYPE_STAFF;
+    mapto.eq_type       = LOADOUT_LOADOUT;
+    mapto.output_type   = ARRAY_MATRIX;
+
+    /* - healtopmap - */
+    Map_Mapto(sota->map, sota->aggressor, mapto);
+
+    /* - attacktomap - */
+    mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
+    Map_Mapto(sota->map, sota->aggressor, mapto);
+
     int rangemap = Unit_Rangemap_Get(unit);
-
-    // Loadout loadout = Loadout_default;
-    // Loadout_Set(&loadout, UNIT_HAND_LEFT, pls->eq_left);
-    // Loadout_Set(&loadout, UNIT_HAND_RIGHT, pls->eq_right);
-
-    // Map_Maptomap_Compute_wLoadout(sota->map, sota->world, sota->aggressor, false,
-    //                                  &loadout);
-    // Map_Healtomap_Compute_wLoadout(sota->map, sota->world, sota->aggressor, false,
-    //                                &loadout);
-
     if (rangemap        == RANGEMAP_HEALMAP) {
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL);
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
@@ -674,8 +683,21 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
 
     /* - Compute new attackmap with equipped - */
     int rangemap = Unit_Rangemap_Get(unit);
-    Map_Healtomap_Compute(  sota->map, sota->world, sota->aggressor, false, true);
-    Map_Maptomap_Compute(sota->map, sota->world, sota->aggressor, false, true);
+
+    /* - mapto settings for attacktolist - */
+    MapTo mapto = MapTo_default;
+
+    mapto.move          = false;
+    mapto.archetype     = ITEM_ARCHETYPE_STAFF;
+    mapto.eq_type       = LOADOUT_EQUIPPED;
+    mapto.output_type   = ARRAY_MATRIX;
+
+    /* - healtopmap - */
+    Map_Mapto(sota->map, sota->aggressor, mapto);
+
+    /* - attacktomap - */
+    mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
+    Map_Mapto(sota->map, sota->aggressor, mapto);
 
     if (rangemap        == RANGEMAP_HEALMAP) {
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL);
@@ -826,10 +848,23 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     LoadoutSelectMenu_Select(wsm, mc->elem);
 
     /* - Compute new attackmap with equipped - */
-    int rangemap = Unit_Rangemap_Get(unit);
-    Map_Healtomap_Compute(  sota->map, sota->world, sota->aggressor, false, true);
-    Map_Maptomap_Compute(sota->map, sota->world, sota->aggressor, false, true);
 
+    /* - mapto settings for attacktolist - */
+    MapTo mapto = MapTo_default;
+
+    mapto.move          = false;
+    mapto.archetype     = ITEM_ARCHETYPE_STAFF;
+    mapto.eq_type       = LOADOUT_EQUIPPED;
+    mapto.output_type   = ARRAY_MATRIX;
+
+    /* - healtopmap - */
+    Map_Mapto(sota->map, sota->aggressor, mapto);
+
+    /* - attacktomap - */
+    mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
+    Map_Mapto(sota->map, sota->aggressor, mapto);
+
+    int rangemap = Unit_Rangemap_Get(unit);
     if (rangemap        == RANGEMAP_HEALMAP) {
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL);
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
@@ -1054,16 +1089,25 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
     PopUp_Loadout_Stats_New(pls);
 
     /* - Compute new attackmap with equipped - */
+    /* - mapto settings for attacktolist - */
+    MapTo mapto = MapTo_default;
+    Loadout *loadout = (Loadout *)&mapto;
+    Loadout_Set(loadout, UNIT_HAND_LEFT,   pls->eq_left);
+    Loadout_Set(loadout, UNIT_HAND_RIGHT,  pls->eq_right);
+
+    mapto.move          = false;
+    mapto.archetype     = ITEM_ARCHETYPE_STAFF;
+    mapto.eq_type       = LOADOUT_LOADOUT;
+    mapto.output_type   = ARRAY_MATRIX;
+
+    /* - healtopmap - */
+    Map_Mapto(sota->map, sota->aggressor, mapto);
+
+    /* - attacktomap - */
+    mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
+    Map_Mapto(sota->map, sota->aggressor, mapto);
+
     int rangemap = Unit_Rangemap_Get(unit);
-    // Loadout loadout = Loadout_default;
-    // Loadout_Set(&loadout, UNIT_HAND_LEFT, pls->eq_left);
-    // Loadout_Set(&loadout, UNIT_HAND_RIGHT, pls->eq_right);
-
-    // Map_Maptomap_Compute_wLoadout(sota->map, sota->world, sota->aggressor, false,
-    //                                  &loadout);
-    // Map_Healtomap_Compute_wLoadout(sota->map, sota->world, sota->aggressor, false,
-    //                                &loadout);
-
     if (rangemap        == RANGEMAP_HEALMAP) {
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL);
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
@@ -1139,8 +1183,22 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
             // 2. Moving pos ptr to initial position to compute initial attacktomap
             // 2.1 inital pos != moved pos, so cursor would move...
             Position_Pos_Set(selected_pos, init_pos.x, init_pos.y);
-            Map_Healtomap_Compute(  sota->map, sota->world, sota->selected_unit_entity, true, true);
-            Map_Maptomap_Compute(sota->map, sota->world, sota->selected_unit_entity, true, true);
+
+            /* - mapto settings for attacktolist - */
+            MapTo mapto = MapTo_default;
+
+            mapto.move          = true;
+            mapto.archetype     = ITEM_ARCHETYPE_STAFF;
+            mapto.eq_type       = LOADOUT_EQUIPPED;
+            mapto.output_type   = ARRAY_MATRIX;
+
+            /* - healtopmap - */
+            Map_Mapto(sota->map, sota->selected_unit_entity, mapto);
+
+            /* - attacktomap - */
+            mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
+            Map_Mapto(sota->map, sota->selected_unit_entity, mapto);
+
             // 2.2 BUT: Moving pos ptr to selected position so that cursor doesn't move
             // Position_Pos_Set(selected_pos, init_pos.x, init_pos.y);
             // tnecs_entity cursor = sota->entity_cursor;

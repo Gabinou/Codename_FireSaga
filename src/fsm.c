@@ -516,7 +516,9 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     // getchar();
 
     /* Compute healtomap for EQUIPMENT */
-    Map_Healtomap_Compute(  sota->map, sota->world, hov_ent, move, equipped);
+
+
+    // Map_Healtomap_Compute(  sota->map, sota->world, hov_ent, move, equipped);
 
     /* Compute attacktomap for EQUIPMENT */
     Map_Maptomap_Compute(sota->map, sota->world, hov_ent, move, equipped);
