@@ -503,26 +503,26 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
 
     /* -- Compute attackmap and movemap -- */
     sota->map->update   = true;
-    b32 move            = true;
-    b32 equipped        = false;
+
+    /* - mapto settings for attacktolist - */
+    MapTo mapto = MapTo_default;
 
     /* Don't show movemap if AI never moves */
     struct AI *ai = TNECS_GET_COMPONENT(sota->world, hov_ent, AI);
     if (ai != NULL)
-        move = (ai->move != AI_MOVE_NEVER);
+        mapto.move = (ai->move != AI_MOVE_NEVER);
+    mapto.archetype     = ITEM_ARCHETYPE_STAFF;
+    mapto.eq_type       = LOADOUT_EQUIPMENT;
+    mapto.output_type   = ARRAY_MATRIX;
 
-    // SDL_Log("Equipped: %d %d", Unit_Eq_Equipped(unit_ontile, UNIT_HAND_LEFT),
-    // Unit_Eq_Equipped(unit_ontile, UNIT_HAND_RIGHT));
-    // getchar();
+    /* - healtopmap - */
+    Map_Mapto(sota->map, hov_ent, mapto);
 
-    /* Compute healtomap for EQUIPMENT */
+    /* - attacktomap - */
+    mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
+    Map_Mapto(sota->map, hov_ent, mapto);
 
-
-    // Map_Healtomap_Compute(  sota->map, sota->world, hov_ent, move, equipped);
-
-    /* Compute attacktomap for EQUIPMENT */
-    Map_Maptomap_Compute(sota->map, sota->world, hov_ent, move, equipped);
-    // matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
+    matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
     getchar();
 
     int rangemap = Unit_Rangemap_Get(unit_ontile);
@@ -1283,8 +1283,21 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     Position_Pos_Set(selected_pos, moved.x, moved.y);
 
     /* - Compute new stackmap with recomputed attacktomap - */
-    Map_Healtomap_Compute(sota->map,   sota->world, unit_ent, false, false);
-    Map_Maptomap_Compute(sota->map, sota->world, unit_ent, false, false);
+    /* - mapto settings for attacktolist - */
+    MapTo mapto = MapTo_default;
+
+    /* Don't show movemap if AI never moves */
+    mapto.move          = false;
+    mapto.archetype     = ITEM_ARCHETYPE_STAFF;
+    mapto.eq_type       = LOADOUT_EQUIPMENT;
+    mapto.output_type   = ARRAY_MATRIX;
+
+    /* - healtopmap - */
+    Map_Mapto(sota->map, unit_ent, mapto);
+
+    /* - attacktomap - */
+    mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
+    Map_Mapto(sota->map, unit_ent, mapto);
 
     // matrix_print(sota->map->attacktomap, sota->map->col_len, sota->map->row_len);
 

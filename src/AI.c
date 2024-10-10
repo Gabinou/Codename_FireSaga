@@ -120,8 +120,15 @@ static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
                                     struct AI_Action *action) {
     /* --- AI Unit tries to kill enemy --- */
     /* -- Get list of defendants in range -- */
-    Map_Maptomap_Compute(sota->map, sota->world, npc_ent, true, false);
-    Map_Maptolist_Compute(sota->map);
+    /* - mapto settings for attacktolist - */
+    MapTo mapto = MapTo_default;
+
+    mapto.move          = true;
+    mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
+    mapto.eq_type       = LOADOUT_EQUIPMENT;
+    mapto.output_type   = ARRAY_MATRIX;
+    Map_Mapto(sota->map, npc_ent, mapto);
+
     tnecs_entity *defendants = DARR_INIT(defendants, tnecs_entity, 4);
     defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist, defendants, npc_ent, false);
 
@@ -220,8 +227,16 @@ static void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
 
     /* -- Find defendants at target_move -- */
     pos->tilemap_pos = newpos;
-    Map_Maptomap_Compute(sota->map, sota->world, npc_ent, false, false);
-    Map_Maptolist_Compute(sota->map);
+
+    /* - mapto settings for attacktolist - */
+    MapTo mapto = MapTo_default;
+
+    mapto.move          = false;
+    mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
+    mapto.eq_type       = LOADOUT_EQUIPMENT;
+    mapto.output_type   = ARRAY_MATRIX;
+    Map_Mapto(sota->map, npc_ent, mapto);
+
     tnecs_entity *defendants = DARR_INIT(defendants, tnecs_entity, 4);
     defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist, defendants, npc_ent, false);
 
