@@ -109,16 +109,6 @@ i32 *Map_Movemap_Compute(struct Map *map, tnecs_entity unit_ent) {
     return (_Map_Movemap_Compute(map, start, move));
 }
 
-// TODO: get rid of this useless interface
-i32 *_Map_tomap_Compute(i32 *tomap, i32 *movemap, tnecs_entity *occupymap,
-                        u8 row_len, u8 col_len, i32 move,
-                        struct Range *range, u8 mode_movetile) {
-    Pathfinding_Attackto_noM(tomap, movemap, occupymap,
-                             row_len, col_len,
-                             (i32 *)range, mode_movetile);
-    return (tomap);
-}
-
 i32 *Map_Healtolist_Compute(struct Map   *map) {
     SDL_assert(map->healtomap  != NULL);
     SDL_assert(map->healtolist != NULL);
@@ -181,9 +171,10 @@ i32 *Map_Mapto(  struct Map *map, tnecs_entity unit_ent, MapTo mapto) {
     SDL_assert(tolist   != NULL);
 
     /* Compute new attacktomap */
-    *tomap = _Map_tomap_Compute(*tomap, map->movemap,
-                                input_occupymap, map->row_len, map->col_len,
-                                move_stat, range, mapto.mode_movetile);
+    Pathfinding_Attackto_noM(*tomap, map->movemap, input_occupymap,
+                             map->row_len, map->col_len,
+                             (i32 *)range, mapto.mode_movetile);
+
     // matrix_print(map->attacktomap, map->row_len, map->col_len);
 
     i32* out = NULL;
@@ -234,17 +225,17 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_entity unit_ent) {
     struct Position *position   = TNECS_GET_COMPONENT(map->world, unit_ent, Position);
     struct Unit *unit           = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
     SDL_assert(position != NULL);
-    SDL_assert(unit != NULL);
+    SDL_assert(unit     != NULL);
     i32 move = Unit_getStats(unit).move;
     struct Point start = position->tilemap_pos;
     _Map_Movemap_Compute(map, start, move);
     struct Range *range = Unit_Range_Equipment(unit, ITEM_ARCHETYPE_WEAPON);
 
-    map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap,
-                                          map->unitmap,
-                                          map->row_len, map->col_len,
-                                          move, range, MOVETILE_INCLUDE);
-    memset(map->temp, 0, sizeof(*map->temp)*map->row_len * map->col_len);
+    Pathfinding_Attackto_noM(map->attacktomap, map->movemap, map->unitmap,
+                             map->row_len, map->col_len,
+                             (i32 *)range, MOVETILE_INCLUDE);
+
+    // memset(map->temp, 0, sizeof(*map->temp)*map->row_len * map->col_len);
     map->temp = matrix_plus_noM(map->temp, map->attacktomap, map->row_len * map->col_len);
     // matrix_print(map->temp, map->row_len, map->col_len);
     return (map->temp);

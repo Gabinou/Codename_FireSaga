@@ -18,8 +18,6 @@ void Map_Danger_Reset(             struct Map *map);
 void Map_Stacked_Dangermap_Reset(  struct Map *map);
 void Map_Stacked_Dangermap_Compute(struct Map *map, i32 *danger);
 
-void Map_Danger_Perimeter_Compute(struct Map *map, i32 *danger);
-
 /* --- Global_Dangermap --- */
 // Global_Dangermap: All enemies added to dangermap upon toggle by Player
 void Map_Global_Danger_Add(       struct Map *map, i32 *danger);
@@ -39,6 +37,8 @@ float *Map_fCostmap_Movement_Compute(struct Map *map, tnecs_entity u);
 struct Padding *Map_PerimeterM(i32 *map, i32 row_len, i32 col_len);
 void Map_Perimeter(struct Padding *edges, i32 *map, i32 row_len, i32 col_len);
 
+void Map_Danger_Perimeter_Compute(struct Map *map, i32 *danger);
+
 /* --- Movemap --- */
 // Map_Movemap_Compute also computes REQUIRED costmap
 i32   *Map_Movemap_Compute( struct Map *map, tnecs_entity u);
@@ -51,10 +51,6 @@ i32 *Map_Mapto(struct Map *map, tnecs_entity u, MapTo attackto);
 i32 *Map_Attackfromlist_Compute(struct Map *map);
 i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_entity a,
                                tnecs_entity d, b32 m, b32 e);
-
-i32 *_Map_tomap_Compute(i32 *tomap,         i32 *mvtmat,  tnecs_entity *unitmap,
-                        u8   row_len,       u8   col_len, i32  mv,
-                        struct Range *r,    u8 mode);
 
 /* --- global_rangemap --- */
 void Map_globalRange(struct Map *map, u8 alignment);
