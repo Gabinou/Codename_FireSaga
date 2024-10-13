@@ -179,10 +179,10 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
 }
 
 i32 *Map_Act_From(struct Map *map, MapAct map_from) {
-    SDL_assert(map          != NULL);
-    SDL_assert(map->world   != NULL);
-    SDL_assert(map_from.aggressor  > TNECS_NULL);
-    SDL_assert(map_from.defendant  > TNECS_NULL);
+    SDL_assert(map                  != NULL);
+    SDL_assert(map->world           != NULL);
+    SDL_assert(map_from.aggressor   > TNECS_NULL);
+    SDL_assert(map_from.defendant   > TNECS_NULL);
 
     Map_Costmap_Movement_Compute(map, map_from.aggressor);
     // matrix_print(map->costmap, map->row_len, map->col_len);
@@ -230,38 +230,6 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     map->update = true;
     return (out);
 }
-
-// i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_entity agg,
-//                                tnecs_entity dft, b32 move, b32 equipped) {
-//     SDL_assert(map          != NULL);
-//     SDL_assert(map->world   != NULL);
-
-//     Map_Costmap_Movement_Compute(map, agg);
-//     // matrix_print(map->costmap, map->row_len, map->col_len);
-
-//     struct Unit *agg_unit       = TNECS_GET_COMPONENT(map->world, agg, Unit);
-//     /* Get dft position */
-//     struct Position *agg_pos    = TNECS_GET_COMPONENT(map->world, agg, Position);
-//     struct Position *dft_pos    = TNECS_GET_COMPONENT(map->world, dft, Position);
-//     /* Get agg range */
-//     struct Range *range = Unit_Range_Equipped(agg_unit, ITEM_ARCHETYPE_WEAPON);
-
-//     /* Compute movemap */
-//     i32 move_stat = move ? Unit_getStats(agg_unit).move : 0;
-//     _Map_Movemap_Compute(map, agg_pos->tilemap_pos, move_stat);
-//     // matrix_print(map->movemap, map->row_len, map->col_len);
-
-//     Pathfinding_Attackfrom_noM(map->attackfrommap, map->movemap, map->row_len,
-//                                map->col_len, dft_pos->tilemap_pos, (i32 *)range);
-
-//     return (map->attackfrommap);
-// }
-
-// i32 *Map_Attackfromlist_Compute(struct Map *map) {
-//     map->attackfromlist = matrix2list_noM(map->attackfrommap, map->attackfromlist,
-//                                           map->row_len, map->col_len);
-//     return (map->attackfromlist);
-// }
 
 i32 *Map_Danger_Compute(struct Map *map, tnecs_entity unit_ent) {
     SDL_assert(map          != NULL);
