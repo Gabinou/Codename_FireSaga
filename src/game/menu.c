@@ -322,17 +322,17 @@ void Game_postLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
     SDL_assert(Loadout_isEquipped(&lsm->selected, UNIT_HAND_LEFT));
     SDL_assert(Loadout_isEquipped(&lsm->selected, UNIT_HAND_RIGHT));
 
-    /* - mapto settings for attacktolist - */
-    MapTo mapto = MapTo_default;
-    Loadout *loadout = (Loadout *)&mapto;
+    /* - MapAct settings for attacktolist - */
+    MapAct MapAct = MapAct_default;
+    Loadout *loadout = (Loadout *)&MapAct;
     Loadout_Set(loadout, UNIT_HAND_LEFT,   Loadout_Eq(&lsm->selected, UNIT_HAND_LEFT));
     Loadout_Set(loadout, UNIT_HAND_RIGHT,  Loadout_Eq(&lsm->selected, UNIT_HAND_RIGHT));
 
-    mapto.move          = false;
-    mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
-    mapto.eq_type       = LOADOUT_LOADOUT;
-    mapto.output_type   = ARRAY_LIST;
-    Map_To(sota->map, actor, mapto);
+    MapAct.move          = false;
+    MapAct.archetype     = ITEM_ARCHETYPE_WEAPON;
+    MapAct.eq_type       = LOADOUT_LOADOUT;
+    MapAct.output_type   = ARRAY_LIST;
+    Map_Act_To(sota->map, actor, MapAct);
 
     /* Find all Defendants */
     sota->defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist,
@@ -351,17 +351,17 @@ void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     SDL_assert(lsm != NULL);
 
     /* - Compute healtolist - */
-    /* - mapto settings for attacktolist - */
-    MapTo mapto = MapTo_default;
-    Loadout *loadout = (Loadout *)&mapto;
+    /* - MapAct settings for attacktolist - */
+    MapAct MapAct = MapAct_default;
+    Loadout *loadout = (Loadout *)&MapAct;
     Loadout_Set(loadout, UNIT_HAND_LEFT,   Loadout_Eq(&lsm->selected, UNIT_HAND_LEFT));
     Loadout_Set(loadout, UNIT_HAND_RIGHT,  Loadout_Eq(&lsm->selected, UNIT_HAND_RIGHT));
 
-    mapto.move          = false;
-    mapto.archetype     = ITEM_ARCHETYPE_STAFF;
-    mapto.eq_type       = LOADOUT_LOADOUT;
-    mapto.output_type   = ARRAY_LIST;
-    Map_To(sota->map, actor, mapto);
+    MapAct.move          = false;
+    MapAct.archetype     = ITEM_ARCHETYPE_STAFF;
+    MapAct.eq_type       = LOADOUT_LOADOUT;
+    MapAct.output_type   = ARRAY_LIST;
+    Map_Act_To(sota->map, actor, MapAct);
 
     /* Find all Patients if any */
     // TODO: find hand which equips staff
@@ -383,20 +383,20 @@ void Game_preLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     // /* Compute healtolist */
     // // TODO: find yourself as patient for staves that can target themselves.
     // tnecs_entity *occupymap = NULL;
-    // sota->map->healtomap = _Map_tomap_Compute(sota->map->healtomap, sota->map->movemap, occupymap,
+    // sota->map->healtomap = _Map_Act_Tomap_Compute(sota->map->healtomap, sota->map->movemap, occupymap,
     //                                           sota->map->row_len,   sota->map->col_len,
     //                                           true, range, NMATH_MOVETILE_EXCLUDE);
 
 
     /* --- Compute healtolist --- */
-    /* -- mapto settings for healtolist -- */
-    MapTo mapto = MapTo_default;
+    /* -- MapAct settings for healtolist -- */
+    MapAct MapAct = MapAct_default;
 
-    mapto.move          = false;
-    mapto.archetype     = ITEM_ARCHETYPE_STAFF;
-    mapto.eq_type       = LOADOUT_EQUIPMENT;
-    mapto.output_type   = ARRAY_LIST;
-    Map_To(sota->map, actor, mapto);
+    MapAct.move          = false;
+    MapAct.archetype     = ITEM_ARCHETYPE_STAFF;
+    MapAct.eq_type       = LOADOUT_EQUIPMENT;
+    MapAct.output_type   = ARRAY_LIST;
+    Map_Act_To(sota->map, actor, MapAct);
 
     // matrix_print(sota->map->healtomap, sota->map->row_len, sota->map->col_len);
 
@@ -425,20 +425,20 @@ void Game_preLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
 
     /* Compute attacktolist */
     // tnecs_entity *occupymap = NULL;
-    // sota->map->attacktomap = _Map_tomap_Compute(sota->map->attacktomap, sota->map->movemap, occupymap,
+    // sota->map->attacktomap = _Map_Act_Tomap_Compute(sota->map->attacktomap, sota->map->movemap, occupymap,
     //                                             sota->map->row_len,     sota->map->col_len,
     //                                             true, range, NMATH_MOVETILE_INCLUDE);
-    // Map_Tolist_Compute(sota->map);
+    // Map_Act_Tolist_Compute(sota->map);
 
     /* --- Compute attacktolist --- */
-    /* -- mapto settings for attacktolist -- */
-    MapTo mapto = MapTo_default;
+    /* -- MapAct settings for attacktolist -- */
+    MapAct MapAct = MapAct_default;
 
-    mapto.move          = false;
-    mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
-    mapto.eq_type       = LOADOUT_EQUIPMENT;
-    mapto.output_type   = ARRAY_LIST;
-    Map_To(sota->map, actor, mapto);
+    MapAct.move          = false;
+    MapAct.archetype     = ITEM_ARCHETYPE_WEAPON;
+    MapAct.eq_type       = LOADOUT_EQUIPMENT;
+    MapAct.output_type   = ARRAY_LIST;
+    Map_Act_To(sota->map, actor, MapAct);
 
     /* Find Defendants if any */
     sota->defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist,

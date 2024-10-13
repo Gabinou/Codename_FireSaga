@@ -16,7 +16,7 @@ struct nmath_hexpoint_int32_t Cube_Diagonal_zm =    {-1,  2, -1};
 
 Loadout Loadout_default = {0};
 
-MapTo MapTo_default = {0};
+MapAct MapAct_default = {0};
 
 canEquip canEquip_default = {
     // Try to equip:

@@ -82,14 +82,14 @@ static b32 _AI_Decider_Move_inRange(struct Game *sota, tnecs_entity npc_ent) {
     /* --- Get list of defendants in range --- */
     struct Map *map = sota->map;
 
-    /* - mapto settings for attacktolist - */
-    MapTo mapto = MapTo_default;
+    /* - MapAct settings for attacktolist - */
+    MapAct MapAct = MapAct_default;
 
-    mapto.move          = true;
-    mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
-    mapto.eq_type       = LOADOUT_EQUIPPED;
-    mapto.output_type   = ARRAY_LIST;
-    Map_To(sota->map, npc_ent, mapto);
+    MapAct.move          = true;
+    MapAct.archetype     = ITEM_ARCHETYPE_WEAPON;
+    MapAct.eq_type       = LOADOUT_EQUIPPED;
+    MapAct.output_type   = ARRAY_LIST;
+    Map_Act_To(sota->map, npc_ent, MapAct);
 
     tnecs_entity *dfts = DARR_INIT(dfts, tnecs_entity, 1);
     dfts = Map_Find_Defendants(map, map->attacktolist, dfts, npc_ent, true);
@@ -120,14 +120,14 @@ static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
                                     struct AI_Action *action) {
     /* --- AI Unit tries to kill enemy --- */
     /* -- Get list of defendants in range -- */
-    /* - mapto settings for attacktolist - */
-    MapTo mapto = MapTo_default;
+    /* - MapAct settings for attacktolist - */
+    MapAct MapAct = MapAct_default;
 
-    mapto.move          = true;
-    mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
-    mapto.eq_type       = LOADOUT_EQUIPMENT;
-    mapto.output_type   = ARRAY_MATRIX;
-    Map_To(sota->map, npc_ent, mapto);
+    MapAct.move          = true;
+    MapAct.archetype     = ITEM_ARCHETYPE_WEAPON;
+    MapAct.eq_type       = LOADOUT_EQUIPMENT;
+    MapAct.output_type   = ARRAY_MATRIX;
+    Map_Act_To(sota->map, npc_ent, MapAct);
 
     tnecs_entity *defendants = DARR_INIT(defendants, tnecs_entity, 4);
     defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist, defendants, npc_ent, false);
@@ -228,14 +228,14 @@ static void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
     /* -- Find defendants at target_move -- */
     pos->tilemap_pos = newpos;
 
-    /* - mapto settings for attacktolist - */
-    MapTo mapto = MapTo_default;
+    /* - MapAct settings for attacktolist - */
+    MapAct MapAct = MapAct_default;
 
-    mapto.move          = false;
-    mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
-    mapto.eq_type       = LOADOUT_EQUIPMENT;
-    mapto.output_type   = ARRAY_MATRIX;
-    Map_To(sota->map, npc_ent, mapto);
+    MapAct.move          = false;
+    MapAct.archetype     = ITEM_ARCHETYPE_WEAPON;
+    MapAct.eq_type       = LOADOUT_EQUIPMENT;
+    MapAct.output_type   = ARRAY_MATRIX;
+    Map_Act_To(sota->map, npc_ent, MapAct);
 
     tnecs_entity *defendants = DARR_INIT(defendants, tnecs_entity, 4);
     defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist, defendants, npc_ent, false);

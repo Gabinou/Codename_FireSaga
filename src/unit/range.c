@@ -210,7 +210,7 @@ int Unit_Rangemap_Get(struct Unit *unit) {
     return (rangemap);
 }
 
-void Unit_Rangemap_Toggle(struct Unit *unit) {
+void Unit_RangeMap_Act_Toggle(struct Unit *unit) {
     SDL_assert((unit->rangemap > RANGEMAP_NULL) && (unit->rangemap < RANGEMAP_NUM));
 
     /* Set user_rangemap to default */

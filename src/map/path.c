@@ -109,7 +109,7 @@ i32 *Map_Movemap_Compute(struct Map *map, tnecs_entity unit_ent) {
     return (_Map_Movemap_Compute(map, start, move));
 }
 
-i32 *Map_To(  struct Map *map, tnecs_entity unit_ent, MapTo mapto) {
+i32 *Map_Act_To(  struct Map *map, tnecs_entity unit_ent, MapAct MapAct) {
     SDL_assert(map          != NULL);
     SDL_assert(map->world   != NULL);
 
@@ -120,21 +120,21 @@ i32 *Map_To(  struct Map *map, tnecs_entity unit_ent, MapTo mapto) {
     SDL_assert(pos  != NULL);
 
     struct Point     start      = pos->tilemap_pos;
-    i32 move_stat  = mapto.move ? Unit_getStats(unit).move : 0;
+    i32 move_stat  = MapAct.move ? Unit_getStats(unit).move : 0;
 
     Range *range = NULL;
-    if (mapto.eq_type == LOADOUT_EQUIPPED) {
-        range = Unit_Range_Equipped(unit, mapto.archetype);
-    } else if (mapto.eq_type == LOADOUT_EQUIPMENT) {
-        range = Unit_Range_Equipment(unit, mapto.archetype);
-    } else if (mapto.eq_type == LOADOUT_LOADOUT) {
+    if (MapAct.eq_type == LOADOUT_EQUIPPED) {
+        range = Unit_Range_Equipped(unit, MapAct.archetype);
+    } else if (MapAct.eq_type == LOADOUT_EQUIPMENT) {
+        range = Unit_Range_Equipment(unit, MapAct.archetype);
+    } else if (MapAct.eq_type == LOADOUT_LOADOUT) {
         /* Save starting equipment */
         i32 start_equipped[UNIT_ARMS_NUM];
         Unit_Equipped_Export(unit, start_equipped);
 
         /* Compute healmap with input loadout */
-        Unit_Equipped_Import(unit, mapto._loadout);
-        range = Unit_Range_Equipped(unit, mapto.archetype);
+        Unit_Equipped_Import(unit, MapAct._loadout);
+        range = Unit_Range_Equipped(unit, MapAct.archetype);
 
         /* Restore starting equipment */
         Unit_Equipped_Import(unit, start_equipped);
@@ -142,14 +142,14 @@ i32 *Map_To(  struct Map *map, tnecs_entity unit_ent, MapTo mapto) {
     SDL_assert(range != NULL);
 
     // Enable occupymap only to check when unit actually MOVES
-    tnecs_entity *input_occupymap = (mapto.move == true) ? map->unitmap : NULL;
+    tnecs_entity *input_occupymap = (MapAct.move == true) ? map->unitmap : NULL;
 
     i32 **tomap  = NULL;
     i32 **tolist = NULL;
-    if (mapto.archetype == ITEM_ARCHETYPE_WEAPON) {
+    if (MapAct.archetype == ITEM_ARCHETYPE_WEAPON) {
         tomap   = &map->attacktomap;
         tolist  = &map->attacktolist;
-    } else if (mapto.archetype == ITEM_ARCHETYPE_STAFF) {
+    } else if (MapAct.archetype == ITEM_ARCHETYPE_STAFF) {
         tomap   = &map->healtomap;
         tolist  = &map->healtolist;
     }
@@ -159,14 +159,14 @@ i32 *Map_To(  struct Map *map, tnecs_entity unit_ent, MapTo mapto) {
     /* Compute new attacktomap */
     Pathfinding_Attackto_noM(*tomap, map->movemap, input_occupymap,
                              map->row_len, map->col_len,
-                             (i32 *)range, mapto.mode_movetile);
+                             (i32 *)range, MapAct.mode_movetile);
 
     // matrix_print(map->attacktomap, map->row_len, map->col_len);
 
     i32* out = NULL;
-    if (mapto.output_type == ARRAY_MATRIX) {
+    if (MapAct.output_type == ARRAY_MATRIX) {
         out     = *tomap;
-    } else if (mapto.output_type == ARRAY_LIST)  {
+    } else if (MapAct.output_type == ARRAY_LIST)  {
         *tolist = matrix2list_noM(*tomap, *tolist,
                                   map->row_len, map->col_len);
         out     = *tolist;
@@ -175,6 +175,10 @@ i32 *Map_To(  struct Map *map, tnecs_entity unit_ent, MapTo mapto) {
 
     map->update = true;
     return (out);
+}
+
+i32 *Map_Act_From(struct Map *map, tnecs_entity u, MapAct MapAct) {
+    
 }
 
 i32 *Map_Attackfromlist_Compute(struct Map *map) {

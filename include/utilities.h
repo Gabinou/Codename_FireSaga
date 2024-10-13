@@ -42,6 +42,7 @@ struct RNG_Sequence;
 #define SOTA_MINLEN 12
 
 /* --- matrix --- */
+
 b32 list_isIn_2D(i32 *list_2D, size_t list_len, i32 x, i32 y);
 i32 *matrix2list_noM(i32 *matrix, i32 *list, size_t row_len, size_t col_len);
 i32 *matrix2list(    i32 *matrix,            size_t row_len, size_t col_len);

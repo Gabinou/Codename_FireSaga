@@ -27,7 +27,7 @@ typedef struct Loadout {
 
 extern Loadout Loadout_default;
 /* -- attackto -- */
-typedef struct MapTo {
+typedef struct MapAct {
     // First to be able to cast: Loadout = &canEquip;
     /* only if eq_type == LOADOUT_INPUT */
     i32 _loadout[MAX_ARMS_NUM]; /* [ITEM_UNEQUIPPED, SOTA_EQUIPMENT_SIZE] */
@@ -46,8 +46,8 @@ typedef struct MapTo {
 
     i32 mode_movetile;
 
-} MapTo;
-extern MapTo MapTo_default;
+} MapAct;
+extern MapAct MapAct_default;
 
 /* -- Can Equip -- */
 // Input for canEquip function
