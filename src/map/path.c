@@ -75,10 +75,13 @@ float *_Map_fMovemap_Compute(struct Map *map, struct Pointf start, float move) {
     return (map->fmovemap);
 }
 
-float *Map_fMovemap_Compute(struct Map *map, tnecs_world *world, tnecs_entity unit_ent) {
-    Map_fCostmap_Movement_Compute(map, world, unit_ent);
-    struct Unit *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
-    struct Position *pos = TNECS_GET_COMPONENT(world, unit_ent, Position);
+float *Map_fMovemap_Compute(struct Map *map, tnecs_entity unit_ent) {
+    SDL_assert(map          != NULL);
+    SDL_assert(map->world   != NULL);
+
+    Map_fCostmap_Movement_Compute(map, unit_ent);
+    struct Unit *unit = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
+    struct Position *pos = TNECS_GET_COMPONENT(map->world, unit_ent, Position);
     i32 move = Unit_getStats(unit).move;
     struct Pointf start;
     start.x = (float)pos->tilemap_pos.x;
@@ -94,9 +97,8 @@ i32 *_Map_Movemap_Compute(struct Map *map, struct Point start_in, i32 move) {
     return (map->movemap);
 }
 
-i32 *Map_Movemap_Compute(struct Map *map, tnecs_world *world, tnecs_entity unit_ent) {
+i32 *Map_Movemap_Compute(struct Map *map, tnecs_entity unit_ent) {
     SDL_assert(map          != NULL);
-    map->world = world;
     SDL_assert(map->world   != NULL);
 
     Map_Costmap_Movement_Compute(map, unit_ent);
@@ -302,19 +304,18 @@ i32 *Map_Mapto(  struct Map *map, tnecs_entity unit_ent, MapTo mapto) {
 //     return (map->attacktomap);
 // }
 
-i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_world *world, tnecs_entity agg,
+i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_entity agg,
                                tnecs_entity dft, b32 move, b32 equipped) {
     SDL_assert(map          != NULL);
-    map->world = world;
     SDL_assert(map->world   != NULL);
 
     Map_Costmap_Movement_Compute(map, agg);
     // matrix_print(map->costmap, map->row_len, map->col_len);
 
-    struct Unit *agg_unit       = TNECS_GET_COMPONENT(world, agg, Unit);
+    struct Unit *agg_unit       = TNECS_GET_COMPONENT(map->world, agg, Unit);
     /* Get dft position */
-    struct Position *agg_pos    = TNECS_GET_COMPONENT(world, agg, Position);
-    struct Position *dft_pos    = TNECS_GET_COMPONENT(world, dft, Position);
+    struct Position *agg_pos    = TNECS_GET_COMPONENT(map->world, agg, Position);
+    struct Position *dft_pos    = TNECS_GET_COMPONENT(map->world, dft, Position);
     /* Get agg range */
     struct Range *range = Unit_Range_Equipped(agg_unit, ITEM_ARCHETYPE_WEAPON);
 
@@ -329,14 +330,13 @@ i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_world *world, tnecs_entity
     return (map->attackfrommap);
 }
 
-i32 *Map_Danger_Compute(struct Map *map, tnecs_world *world, tnecs_entity unit_ent) {
+i32 *Map_Danger_Compute(struct Map *map, tnecs_entity unit_ent) {
     SDL_assert(map          != NULL);
-    map->world = world;
     SDL_assert(map->world   != NULL);
 
     Map_Costmap_Movement_Compute(map, unit_ent);
-    struct Position *position   = TNECS_GET_COMPONENT(world, unit_ent, Position);
-    struct Unit *unit           = TNECS_GET_COMPONENT(world, unit_ent, Unit);
+    struct Position *position   = TNECS_GET_COMPONENT(map->world, unit_ent, Position);
+    struct Unit *unit           = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
     SDL_assert(position != NULL);
     SDL_assert(unit != NULL);
     i32 move = Unit_getStats(unit).move;
@@ -354,12 +354,13 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_world *world, tnecs_entity unit_e
     return (map->temp);
 }
 
-i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_world *world,
-                                  tnecs_entity unit_ent) {
+i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_entity unit_ent) {
     SDL_assert(unit_ent != 0);
+    SDL_assert(map          != NULL);
     SDL_assert(map->costmap != NULL);
+    SDL_assert(map->world   != NULL);
     memset(map->costmap, 0, sizeof(*map->costmap) * map->col_len * map->row_len);
-    struct Unit *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
+    struct Unit *unit = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
     struct Tile *temp_tile;
     i32 tile_ind = 0;
     i8 unit_movetype = unit->mvt_type;
@@ -376,22 +377,21 @@ i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_world *world,
         map->costmap[i] = temp_tile->cost_array[unit_movetype];
         if (ontile_unit_ent <= TNECS_NULL)
             continue;
-        struct Unit *ontile_unit = TNECS_GET_COMPONENT(world, ontile_unit_ent, Unit);
+        struct Unit *ontile_unit = TNECS_GET_COMPONENT(map->world, ontile_unit_ent, Unit);
         if (ontile_unit != NULL)
             map->costmap[i] = COSTMAP_BLOCKED;
     }
     return (map->costmap);
 }
 
-float *Map_fCostmap_Movement_Compute(struct Map *map, tnecs_world *world,
-                                     tnecs_entity unit_ent) {
+float *Map_fCostmap_Movement_Compute(struct Map *map, tnecs_entity unit_ent) {
     SDL_assert(map->unitmap != NULL);
     SDL_assert(map->costmap != NULL);
     SDL_assert(((unit_ent > 0) && (unit_ent < UNIT_ID_NPC_END)));
 
     /* Preliminaries*/
     memset(map->fcostmap, 0, sizeof(*map->fcostmap) * map->col_len * map->row_len);
-    struct Unit *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
+    struct Unit *unit = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
     struct Tile *temp_tile;
     i32 tile_ind = 0;
     i8 unit_movetype = unit->mvt_type;
@@ -412,7 +412,7 @@ float *Map_fCostmap_Movement_Compute(struct Map *map, tnecs_world *world,
         if ((ontile_unit_ent <= UNIT_ID_START) || (ontile_unit_ent >= UNIT_ID_NPC_END))
             continue;
 
-        struct Unit *ontile_unit = TNECS_GET_COMPONENT(world, ontile_unit_ent, Unit);
+        struct Unit *ontile_unit = TNECS_GET_COMPONENT(map->world, ontile_unit_ent, Unit);
         SDL_assert(ontile_unit != NULL);
         u8 ontile_army = ontile_unit->army;
         SDL_assert((ontile_army < ARMY_END) && (ontile_army > ARMY_START));
@@ -499,10 +499,9 @@ i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_entity unit_ent) {
     return (_Map_Costmap_Movement_Compute(map, unit));
 }
 
-void Map_globalRange(struct Map *map, tnecs_world *world, u8 alignment) {
-    SDL_assert(map != NULL);
-    map->world = world;
-    SDL_assert(map->world != NULL);
+void Map_globalRange(struct Map *map, u8 alignment) {
+    SDL_assert(map          != NULL);
+    SDL_assert(map->world   != NULL);
 
     tnecs_entity *unit_entities = NULL;
     u8 num_unit_entities = 0;

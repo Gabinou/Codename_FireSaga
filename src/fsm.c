@@ -445,7 +445,7 @@ void fsm_eGlbRng_ssStby(struct Game *sota) {
         tnecs_entity entity = sota->map->enemies_onfield[i];
 
         /* - Compute new dangermap  - */
-        i32 *temp_danger = Map_Danger_Compute(sota->map, sota->world, entity);
+        i32 *temp_danger = Map_Danger_Compute(sota->map, entity);
 
         if (sota->map->show_globalRange) {
             /* Currently showing global map, removing */
@@ -666,7 +666,7 @@ void fsm_eUnitDng_ssStby(struct Game *sota, tnecs_entity selector_entity) {
 
     /* -- Computing new dangermap -- */
     struct Position *pos    = TNECS_GET_COMPONENT(sota->world, selector_entity, Position);
-    i32 *temp_danger        = Map_Danger_Compute(sota->map, sota->world, selected);
+    i32 *temp_danger        = Map_Danger_Compute(sota->map, selected);
     int map_index = pos->tilemap_pos.y * sota->map->col_len + pos->tilemap_pos.x;
     if (unit->show_danger) {
         Map_Danger_Sub(sota->map, temp_danger);

@@ -162,7 +162,7 @@ static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
     tnecs_entity defendant = defendants[0];
 
     /* - Set target_move to unoccupied tile in range (attackfrom) - */
-    Map_Attackfrommap_Compute(sota->map, sota->world, npc_ent, defendant, true, true);
+    Map_Attackfrommap_Compute(sota->map, npc_ent, defendant, true, true);
 
     i32 *attackfromlist = Map_Attackfromlist_Compute(sota->map);
     /* Should be at least   on tile to attack from. */
