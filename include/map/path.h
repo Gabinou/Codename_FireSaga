@@ -46,25 +46,12 @@ i32  *_Map_Movemap_Compute( struct Map *map, struct Point   s, i32 mv);
 float *Map_fMovemap_Compute(struct Map *map, tnecs_entity u);
 
 /* --- Attackmap --- */
-/* Map_Maptomap_Compute also computes REQUIRED costmap, movemap */
-// i32 *Map_Healtolist_Compute(    struct Map *map);
-// i32 *Map_Maptolist_Compute(  struct Map *map);
-
-// i32 *Map_Healtomap_Compute(    struct Map *map, tnecs_world *w,
-//                                tnecs_entity u, b32 m, b32 e);
-// i32 *Map_Maptomap_Compute(  struct Map *map, tnecs_world *w,
-//                                tnecs_entity u, b32 m, b32 e);
-
-// i32 *Map_Healtomap_Compute_wLoadout(  struct Map *map, tnecs_world *w,
-// tnecs_entity u, b32 m, Loadout *l);
-// i32 *Map_Maptomap_Compute_wLoadout(struct Map *map, tnecs_world *w,
-// tnecs_entity u, b32 m, Loadout *l);
-
 i32 *Map_Mapto(struct Map *map, tnecs_entity u, MapTo attackto);
 
 i32 *Map_Attackfromlist_Compute(struct Map *map);
 i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_entity a,
                                tnecs_entity d, b32 m, b32 e);
+
 i32 *_Map_tomap_Compute(i32 *tomap,         i32 *mvtmat,  tnecs_entity *unitmap,
                         u8   row_len,       u8   col_len, i32  mv,
                         struct Range *r,    u8 mode);
