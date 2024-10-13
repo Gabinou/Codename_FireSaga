@@ -491,11 +491,11 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     mapto.output_type   = ARRAY_MATRIX;
 
     /* - healtopmap - */
-    Map_Mapto(sota->map, sota->aggressor, mapto);
+    Map_To(sota->map, sota->aggressor, mapto);
 
     /* - attacktomap - */
     mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
-    Map_Mapto(sota->map, sota->aggressor, mapto);
+    Map_To(sota->map, sota->aggressor, mapto);
 
     int rangemap = Unit_Rangemap_Get(unit);
     if (rangemap        == RANGEMAP_HEALMAP) {
@@ -693,11 +693,11 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     mapto.output_type   = ARRAY_MATRIX;
 
     /* - healtopmap - */
-    Map_Mapto(sota->map, sota->aggressor, mapto);
+    Map_To(sota->map, sota->aggressor, mapto);
 
     /* - attacktomap - */
     mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
-    Map_Mapto(sota->map, sota->aggressor, mapto);
+    Map_To(sota->map, sota->aggressor, mapto);
 
     if (rangemap        == RANGEMAP_HEALMAP) {
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL);
@@ -858,11 +858,11 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     mapto.output_type   = ARRAY_MATRIX;
 
     /* - healtopmap - */
-    Map_Mapto(sota->map, sota->aggressor, mapto);
+    Map_To(sota->map, sota->aggressor, mapto);
 
     /* - attacktomap - */
     mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
-    Map_Mapto(sota->map, sota->aggressor, mapto);
+    Map_To(sota->map, sota->aggressor, mapto);
 
     int rangemap = Unit_Rangemap_Get(unit);
     if (rangemap        == RANGEMAP_HEALMAP) {
@@ -1101,11 +1101,11 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
     mapto.output_type   = ARRAY_MATRIX;
 
     /* - healtopmap - */
-    Map_Mapto(sota->map, sota->aggressor, mapto);
+    Map_To(sota->map, sota->aggressor, mapto);
 
     /* - attacktomap - */
     mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
-    Map_Mapto(sota->map, sota->aggressor, mapto);
+    Map_To(sota->map, sota->aggressor, mapto);
 
     int rangemap = Unit_Rangemap_Get(unit);
     if (rangemap        == RANGEMAP_HEALMAP) {
@@ -1193,11 +1193,11 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
             mapto.output_type   = ARRAY_MATRIX;
 
             /* - healtopmap - */
-            Map_Mapto(sota->map, sota->selected_unit_entity, mapto);
+            Map_To(sota->map, sota->selected_unit_entity, mapto);
 
             /* - attacktomap - */
             mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
-            Map_Mapto(sota->map, sota->selected_unit_entity, mapto);
+            Map_To(sota->map, sota->selected_unit_entity, mapto);
 
             // 2.2 BUT: Moving pos ptr to selected position so that cursor doesn't move
             // Position_Pos_Set(selected_pos, init_pos.x, init_pos.y);

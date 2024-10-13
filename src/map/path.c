@@ -109,21 +109,7 @@ i32 *Map_Movemap_Compute(struct Map *map, tnecs_entity unit_ent) {
     return (_Map_Movemap_Compute(map, start, move));
 }
 
-i32 *Map_Healtolist_Compute(struct Map   *map) {
-    SDL_assert(map->healtomap  != NULL);
-    SDL_assert(map->healtolist != NULL);
-    map->healtolist = matrix2list_noM(map->healtomap, map->healtolist,
-                                      map->row_len, map->col_len);
-    return (map->healtolist);
-}
-
-i32 *Map_Attackfromlist_Compute(struct Map *map) {
-    map->attackfromlist = matrix2list_noM(map->attackfrommap, map->attackfromlist,
-                                          map->row_len, map->col_len);
-    return (map->attackfromlist);
-}
-
-i32 *Map_Mapto(  struct Map *map, tnecs_entity unit_ent, MapTo mapto) {
+i32 *Map_To(  struct Map *map, tnecs_entity unit_ent, MapTo mapto) {
     SDL_assert(map          != NULL);
     SDL_assert(map->world   != NULL);
 
@@ -189,6 +175,12 @@ i32 *Map_Mapto(  struct Map *map, tnecs_entity unit_ent, MapTo mapto) {
 
     map->update = true;
     return (out);
+}
+
+i32 *Map_Attackfromlist_Compute(struct Map *map) {
+    map->attackfromlist = matrix2list_noM(map->attackfrommap, map->attackfromlist,
+                                          map->row_len, map->col_len);
+    return (map->attackfromlist);
 }
 
 i32 *Map_Attackfrommap_Compute(struct Map *map, tnecs_entity agg,

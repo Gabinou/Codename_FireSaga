@@ -332,7 +332,7 @@ void Game_postLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
     mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
     mapto.eq_type       = LOADOUT_LOADOUT;
     mapto.output_type   = ARRAY_LIST;
-    Map_Mapto(sota->map, actor, mapto);
+    Map_To(sota->map, actor, mapto);
 
     /* Find all Defendants */
     sota->defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist,
@@ -361,10 +361,7 @@ void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     mapto.archetype     = ITEM_ARCHETYPE_STAFF;
     mapto.eq_type       = LOADOUT_LOADOUT;
     mapto.output_type   = ARRAY_LIST;
-    Map_Mapto(sota->map, actor, mapto);
-
-    // Map_Healtomap_Compute(sota->map, sota->world, actor, false, true);
-    // Map_Healtolist_Compute(sota->map);
+    Map_To(sota->map, actor, mapto);
 
     /* Find all Patients if any */
     // TODO: find hand which equips staff
@@ -399,10 +396,9 @@ void Game_preLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     mapto.archetype     = ITEM_ARCHETYPE_STAFF;
     mapto.eq_type       = LOADOUT_EQUIPMENT;
     mapto.output_type   = ARRAY_LIST;
-    Map_Mapto(sota->map, actor, mapto);
+    Map_To(sota->map, actor, mapto);
 
     // matrix_print(sota->map->healtomap, sota->map->row_len, sota->map->col_len);
-    // Map_Healtolist_Compute(sota->map);
 
     /* Find Patients if any */
     // TODO: find hand which equips staff
@@ -432,7 +428,7 @@ void Game_preLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
     // sota->map->attacktomap = _Map_tomap_Compute(sota->map->attacktomap, sota->map->movemap, occupymap,
     //                                             sota->map->row_len,     sota->map->col_len,
     //                                             true, range, NMATH_MOVETILE_INCLUDE);
-    // Map_Maptolist_Compute(sota->map);
+    // Map_Tolist_Compute(sota->map);
 
     /* --- Compute attacktolist --- */
     /* -- mapto settings for attacktolist -- */
@@ -442,7 +438,7 @@ void Game_preLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
     mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
     mapto.eq_type       = LOADOUT_EQUIPMENT;
     mapto.output_type   = ARRAY_LIST;
-    Map_Mapto(sota->map, actor, mapto);
+    Map_To(sota->map, actor, mapto);
 
     /* Find Defendants if any */
     sota->defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist,

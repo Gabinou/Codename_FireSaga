@@ -516,11 +516,11 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     mapto.output_type   = ARRAY_MATRIX;
 
     /* - healtopmap - */
-    Map_Mapto(sota->map, hov_ent, mapto);
+    Map_To(sota->map, hov_ent, mapto);
 
     /* - attacktomap - */
     mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
-    Map_Mapto(sota->map, hov_ent, mapto);
+    Map_To(sota->map, hov_ent, mapto);
 
     matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
     getchar();
@@ -1293,11 +1293,11 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     mapto.output_type   = ARRAY_MATRIX;
 
     /* - healtopmap - */
-    Map_Mapto(sota->map, unit_ent, mapto);
+    Map_To(sota->map, unit_ent, mapto);
 
     /* - attacktomap - */
     mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
-    Map_Mapto(sota->map, unit_ent, mapto);
+    Map_To(sota->map, unit_ent, mapto);
 
     // matrix_print(sota->map->attacktomap, sota->map->col_len, sota->map->row_len);
 

@@ -89,7 +89,7 @@ static b32 _AI_Decider_Move_inRange(struct Game *sota, tnecs_entity npc_ent) {
     mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
     mapto.eq_type       = LOADOUT_EQUIPPED;
     mapto.output_type   = ARRAY_LIST;
-    Map_Mapto(sota->map, npc_ent, mapto);
+    Map_To(sota->map, npc_ent, mapto);
 
     tnecs_entity *dfts = DARR_INIT(dfts, tnecs_entity, 1);
     dfts = Map_Find_Defendants(map, map->attacktolist, dfts, npc_ent, true);
@@ -127,7 +127,7 @@ static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
     mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
     mapto.eq_type       = LOADOUT_EQUIPMENT;
     mapto.output_type   = ARRAY_MATRIX;
-    Map_Mapto(sota->map, npc_ent, mapto);
+    Map_To(sota->map, npc_ent, mapto);
 
     tnecs_entity *defendants = DARR_INIT(defendants, tnecs_entity, 4);
     defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist, defendants, npc_ent, false);
@@ -235,7 +235,7 @@ static void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
     mapto.archetype     = ITEM_ARCHETYPE_WEAPON;
     mapto.eq_type       = LOADOUT_EQUIPMENT;
     mapto.output_type   = ARRAY_MATRIX;
-    Map_Mapto(sota->map, npc_ent, mapto);
+    Map_To(sota->map, npc_ent, mapto);
 
     tnecs_entity *defendants = DARR_INIT(defendants, tnecs_entity, 4);
     defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist, defendants, npc_ent, false);
