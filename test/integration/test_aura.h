@@ -17,7 +17,9 @@ void test_aura_apply(int argc, char *argv[]) {
     /* Load Save file test/debug_map.json */
     Game_Map_Party_Load(sota, CHAPTER_TEST_NES1);
     Game_Map_Reinforcements_Load(sota);
+    SDL_assert(sota->map != NULL );
     SDL_assert(DARR_NUM(sota->map->units_onfield) > 0);
+    sota->map->world = sota->world;
 
     /* Load Standard */
     SDL_assert(sota->weapons_dtab != NULL);
@@ -34,6 +36,7 @@ void test_aura_apply(int argc, char *argv[]) {
     erwin->class = UNIT_CLASS_STANDARD_BEARER;
     SDL_assert(ent > TNECS_NULL);
     Map_Unit_Put(sota->map, pos.x, pos.y, ent);
+
 
     /* Give standard to standard bearer */
     struct Unit *bearer = TNECS_GET_COMPONENT(sota->world, ent, Unit);
@@ -150,8 +153,9 @@ void test_aura_decay(int argc, char *argv[]) {
     /* Load Save file test/debug_map.json */
     Game_Map_Party_Load(sota, CHAPTER_TEST_NES1);
     Game_Map_Reinforcements_Load(sota);
+    SDL_assert(sota->map != NULL );
     SDL_assert(DARR_NUM(sota->map->units_onfield) > 0);
-
+    sota->map->world = sota->world;
 
     /* Load Standard */
     SDL_assert(sota->weapons_dtab != NULL);
@@ -353,7 +357,9 @@ void test_aura_fsm(int argc, char *argv[]) {
     /* Load Save file test/debug_map.json */
     Game_Map_Party_Load(sota, CHAPTER_TEST_NES1);
     Game_Map_Reinforcements_Load(sota);
+    SDL_assert(sota->map != NULL );
     SDL_assert(DARR_NUM(sota->map->units_onfield) > 0);
+    sota->map->world = sota->world;
 
     /* Load Standard */
     SDL_assert(sota->weapons_dtab != NULL);

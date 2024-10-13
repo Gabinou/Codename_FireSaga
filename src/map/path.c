@@ -234,7 +234,7 @@ i32 *Map_Mapto(  struct Map *map, tnecs_entity unit_ent, MapTo mapto) {
     i32* out = NULL;
     if (mapto.output_type == ARRAY_MATRIX) {
         out     = *tomap;
-    } else if (mapto.output_type == ARRAY_MATRIX)  {
+    } else if (mapto.output_type == ARRAY_LIST)  {
         *tolist = matrix2list_noM(*tomap, map->attacktolist,
                                   map->row_len, map->col_len);
         out     = *tolist;
