@@ -46,6 +46,9 @@ typedef struct MapAct {
 
     i32 mode_movetile;
 
+    tnecs_entity aggressor; /* or healer    */
+    tnecs_entity defendant; /* or patient   */
+
 } MapAct;
 extern MapAct MapAct_default;
 

@@ -83,13 +83,14 @@ static b32 _AI_Decider_Move_inRange(struct Game *sota, tnecs_entity npc_ent) {
     struct Map *map = sota->map;
 
     /* - MapAct settings for attacktolist - */
-    MapAct MapAct = MapAct_default;
+    MapAct map_to = MapAct_default;
 
-    MapAct.move          = true;
-    MapAct.archetype     = ITEM_ARCHETYPE_WEAPON;
-    MapAct.eq_type       = LOADOUT_EQUIPPED;
-    MapAct.output_type   = ARRAY_LIST;
-    Map_Act_To(sota->map, npc_ent, MapAct);
+    map_to.move         = true;
+    map_to.archetype    = ITEM_ARCHETYPE_WEAPON;
+    map_to.eq_type      = LOADOUT_EQUIPPED;
+    map_to.output_type  = ARRAY_LIST;
+    map_to.aggressor    = npc_ent;
+    Map_Act_To(sota->map, map_to);
 
     tnecs_entity *dfts = DARR_INIT(dfts, tnecs_entity, 1);
     dfts = Map_Find_Defendants(map, map->attacktolist, dfts, npc_ent, true);
@@ -121,13 +122,14 @@ static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
     /* --- AI Unit tries to kill enemy --- */
     /* -- Get list of defendants in range -- */
     /* - MapAct settings for attacktolist - */
-    MapAct MapAct = MapAct_default;
+    MapAct map_to = MapAct_default;
 
-    MapAct.move          = true;
-    MapAct.archetype     = ITEM_ARCHETYPE_WEAPON;
-    MapAct.eq_type       = LOADOUT_EQUIPMENT;
-    MapAct.output_type   = ARRAY_MATRIX;
-    Map_Act_To(sota->map, npc_ent, MapAct);
+    map_to.move         = true;
+    map_to.archetype    = ITEM_ARCHETYPE_WEAPON;
+    map_to.eq_type      = LOADOUT_EQUIPMENT;
+    map_to.output_type  = ARRAY_MATRIX;
+    map_to.aggressor    = npc_ent;
+    Map_Act_To(sota->map, map_to);
 
     tnecs_entity *defendants = DARR_INIT(defendants, tnecs_entity, 4);
     defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist, defendants, npc_ent, false);
@@ -162,9 +164,15 @@ static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
     tnecs_entity defendant = defendants[0];
 
     /* - Set target_move to unoccupied tile in range (attackfrom) - */
-    Map_Attackfrommap_Compute(sota->map, npc_ent, defendant, true, true);
+    // Map_Attackfrommap_Compute(sota->map, npc_ent, defendant, true, true);
+    map_to.move         = true;
+    map_to.archetype    = ITEM_ARCHETYPE_WEAPON;
+    map_to.eq_type      = LOADOUT_EQUIPPED;
+    map_to.output_type  = ARRAY_LIST;
+    map_to.aggressor    = npc_ent;
+    map_to.defendant    = defendant;
+    i32 *attackfromlist = Map_Act_To(sota->map, map_to);
 
-    i32 *attackfromlist = Map_Attackfromlist_Compute(sota->map);
     /* Should be at least   on tile to attack from. */
     SDL_assert(DARR_NUM(attackfromlist) > 0);
 
@@ -229,13 +237,14 @@ static void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
     pos->tilemap_pos = newpos;
 
     /* - MapAct settings for attacktolist - */
-    MapAct MapAct = MapAct_default;
+    MapAct map_to = MapAct_default;
 
-    MapAct.move          = false;
-    MapAct.archetype     = ITEM_ARCHETYPE_WEAPON;
-    MapAct.eq_type       = LOADOUT_EQUIPMENT;
-    MapAct.output_type   = ARRAY_MATRIX;
-    Map_Act_To(sota->map, npc_ent, MapAct);
+    map_to.move         = false;
+    map_to.archetype    = ITEM_ARCHETYPE_WEAPON;
+    map_to.eq_type      = LOADOUT_EQUIPMENT;
+    map_to.output_type  = ARRAY_MATRIX;
+    map_to.aggressor    = npc_ent;
+    Map_Act_To(sota->map, map_to);
 
     tnecs_entity *defendants = DARR_INIT(defendants, tnecs_entity, 4);
     defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist, defendants, npc_ent, false);

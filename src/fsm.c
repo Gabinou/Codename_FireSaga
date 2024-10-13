@@ -505,22 +505,23 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     sota->map->update   = true;
 
     /* - MapAct settings for attacktolist - */
-    MapAct MapAct = MapAct_default;
+    MapAct map_to = MapAct_default;
 
     /* Don't show movemap if AI never moves */
     struct AI *ai = TNECS_GET_COMPONENT(sota->world, hov_ent, AI);
     if (ai != NULL)
-        MapAct.move = (ai->move != AI_MOVE_NEVER);
-    MapAct.archetype     = ITEM_ARCHETYPE_STAFF;
-    MapAct.eq_type       = LOADOUT_EQUIPMENT;
-    MapAct.output_type   = ARRAY_MATRIX;
+        map_to.move = (ai->move != AI_MOVE_NEVER);
+    map_to.archetype    = ITEM_ARCHETYPE_STAFF;
+    map_to.eq_type      = LOADOUT_EQUIPMENT;
+    map_to.output_type  = ARRAY_MATRIX;
+    map_to.aggressor    = hov_ent;
 
     /* - healtopmap - */
-    Map_Act_To(sota->map, hov_ent, MapAct);
+    Map_Act_To(sota->map, map_to);
 
     /* - attacktomap - */
-    MapAct.archetype     = ITEM_ARCHETYPE_WEAPON;
-    Map_Act_To(sota->map, hov_ent, MapAct);
+    map_to.archetype     = ITEM_ARCHETYPE_WEAPON;
+    Map_Act_To(sota->map, map_to);
 
     matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
     getchar();
@@ -1284,20 +1285,21 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
 
     /* - Compute new stackmap with recomputed attacktomap - */
     /* - MapAct settings for attacktolist - */
-    MapAct MapAct = MapAct_default;
+    MapAct map_to = MapAct_default;
 
     /* Don't show movemap if AI never moves */
-    MapAct.move          = false;
-    MapAct.archetype     = ITEM_ARCHETYPE_STAFF;
-    MapAct.eq_type       = LOADOUT_EQUIPMENT;
-    MapAct.output_type   = ARRAY_MATRIX;
+    map_to.move         = false;
+    map_to.archetype    = ITEM_ARCHETYPE_STAFF;
+    map_to.eq_type      = LOADOUT_EQUIPMENT;
+    map_to.output_type  = ARRAY_MATRIX;
+    map_to.aggressor    = unit_ent;
 
     /* - healtopmap - */
-    Map_Act_To(sota->map, unit_ent, MapAct);
+    Map_Act_To(sota->map, map_to);
 
     /* - attacktomap - */
-    MapAct.archetype     = ITEM_ARCHETYPE_WEAPON;
-    Map_Act_To(sota->map, unit_ent, MapAct);
+    map_to.archetype     = ITEM_ARCHETYPE_WEAPON;
+    Map_Act_To(sota->map, map_to);
 
     // matrix_print(sota->map->attacktomap, sota->map->col_len, sota->map->row_len);
 

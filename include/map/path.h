@@ -45,16 +45,16 @@ i32  *_Map_Movemap_Compute( struct Map *map, struct Point   s, i32 mv);
 float *Map_fMovemap_Compute(struct Map *map, tnecs_entity u);
 
 /* --- Map_Act_To --- */
-// Find tiles the unit can perform action TO another tile
+// Tiles that unit can perform action TO
 // - Attack unit on tile -> attacktomap
 // - Heal   unit on tile -> healtomap
-i32 *Map_Act_To(struct Map *map, tnecs_entity u, MapAct MapAct);
+i32 *Map_Act_To(struct Map *map, MapAct map_to);
 
 /* --- Map_Act_From --- */
-// Find tiles the unit can perform action FROM another tile
+// Tiles the unit can perform action FROM
 // - Attack unit from tile -> attackfrommap
 // - Heal   unit from tile -> healfrommap
-i32 *Map_Act_From(struct Map *map, tnecs_entity u, MapAct MapAct);
+i32 *Map_Act_From(struct Map *map, MapAct map_from);
 
 /* --- global_rangemap --- */
 void Map_globalRange(struct Map *map, u8 alignment);
