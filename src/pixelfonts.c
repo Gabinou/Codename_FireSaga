@@ -73,7 +73,7 @@ struct PixelFont TextureFont_default =  {
 
 /*--- Constructors/Destructors --- */
 struct PixelFont *PixelFont_Alloc(void) {
-    struct PixelFont *font  = malloc(sizeof(struct PixelFont));
+    struct PixelFont *font  = SDL_malloc(sizeof(struct PixelFont));
     SDL_assert(font);
     *font = PixelFont_default;
     font->glyph_bbox_width  = SDL_calloc(font->charset_num, sizeof(*font->glyph_bbox_width));
@@ -122,7 +122,7 @@ void PixelFont_Load(struct PixelFont *font, SDL_Renderer *renderer, char *fontna
 }
 
 struct PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len) {
-    struct PixelFont *font = malloc(sizeof(struct PixelFont));
+    struct PixelFont *font = SDL_malloc(sizeof(struct PixelFont));
     SDL_assert(font);
     *font = TextureFont_default;
     font->palette = palette_SOTA;
@@ -147,7 +147,7 @@ void PixelFont_Swap_Palette(struct PixelFont *font, SDL_Renderer *renderer, i8 N
 void TextLines_Realloc(struct TextLines *textlines, size_t len) {
     SDL_assert(len > textlines->line_len);
     if (textlines->lines == NULL) {
-        textlines->lines = calloc(len, sizeof(*textlines->lines));
+        textlines->lines = SDL_calloc(len, sizeof(*textlines->lines));
         SDL_assert(textlines->lines != NULL);
     } else {
         /* Re-Allocation */
@@ -162,7 +162,7 @@ void TextLines_Realloc(struct TextLines *textlines, size_t len) {
     }
 
     if (textlines->lines_len == NULL) {
-        textlines->lines_len = calloc(len, sizeof(*textlines->lines_len));
+        textlines->lines_len = SDL_calloc(len, sizeof(*textlines->lines_len));
         SDL_assert(textlines->lines_len != NULL);
     } else {
         SDL_assert(len > textlines->line_len);
@@ -236,7 +236,7 @@ struct TextLines PixelFont_Lines(struct PixelFont *font,  char *text, size_t len
         /* -- Break: text fits in final row -- */
         if (current_break >= len_char) {
             // SDL_Log("Break: text fits in final row %d", line_i);
-            textlines.lines[line_i] = calloc(line_len_char + 1, sizeof(char));
+            textlines.lines[line_i] = SDL_calloc(line_len_char + 1, sizeof(char));
             memcpy(textlines.lines[line_i], text + current_start, line_len_char);
 
             /* -- Measure line length -- */
@@ -251,7 +251,7 @@ struct TextLines PixelFont_Lines(struct PixelFont *font,  char *text, size_t len
             // SDL_Log("Text doesn't fit in final row %d", line_i);
             /* Push current_break one space, beginning new line */
             int line_i = textlines.line_num - 1;
-            textlines.lines[line_i] = calloc(line_len_char + 1, sizeof(char));
+            textlines.lines[line_i] = SDL_calloc(line_len_char + 1, sizeof(char));
             SDL_assert(textlines.lines[line_i] !=  NULL);
             memcpy(textlines.lines[line_i], text + current_start, line_len_char);
             next_start = current_break + 1;
@@ -278,7 +278,7 @@ struct TextLines PixelFont_Lines(struct PixelFont *font,  char *text, size_t len
         SDL_assert(line_len_char >= 0);
 
         /* -- Copy test line -- */
-        textlines.lines[line_i] = calloc(line_len_char + 1, sizeof(char));
+        textlines.lines[line_i] = SDL_calloc(line_len_char + 1, sizeof(char));
         memcpy(textlines.lines[line_i], text + current_start, line_len_char);
 
         /* -- Add hyphen if necessary -- */
@@ -362,7 +362,7 @@ int NextLine_Start( char *text, int previous_break, int current_break, size_t li
     int next_char;
     /* - If current_break is a char, need to check word length - */
     /* Get first half of length */
-    char *buffer = calloc(line_len_char + 1, sizeof(buffer));
+    char *buffer = SDL_calloc(line_len_char + 1, sizeof(buffer));
     memcpy(buffer, text + previous_break, line_len_char);
     char *space_before  = strrchr(buffer, ' ');
     size_t word_half1 = line_len_char - (space_before - buffer) - 1;

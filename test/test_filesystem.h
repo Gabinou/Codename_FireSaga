@@ -8,7 +8,7 @@ void test_leaks() {
     SDL_Surface *surf = Filesystem_indexedSurface_Init(1028, 1028);
     char *path = PATH_JOIN("filesystem", "empty1.png");
     SDL_SaveBMP(surf, path);
-    /* -- free -- */
+    /* -- SDL_free -- */
     SDL_FreeSurface(surf);
     surf = NULL;
 
@@ -20,7 +20,7 @@ void test_leaks() {
 
     path = PATH_JOIN("filesystem", "pixelnours_test1.png");
     SDL_SaveBMP(surf2, path);
-    /* -- free -- */
+    /* -- SDL_free -- */
     SDL_FreeSurface(surf2);
     surf2 = NULL;
 
@@ -35,7 +35,7 @@ void test_leaks() {
     SDL_Surface *surf4 = Filesystem_Surface_Palette_Swap(surf3, palette_SOTA_filter_red);
     path = PATH_JOIN("filesystem", "pixelnours_test_red.png");
     SDL_SaveBMP(surf4, path);
-    /* -- free -- */
+    /* -- SDL_free -- */
     SDL_FreeSurface(surf3);
     SDL_FreeSurface(surf4);
     surf3 = NULL;
@@ -66,7 +66,7 @@ void test_leaks() {
     path = PATH_JOIN("filesystem", "pixelnours_index.png");
     SDL_SaveBMP(surf_index, path);
 
-    /* -- free -- */
+    /* -- SDL_free -- */
     SDL_FreeSurface(surf_abgr);
     SDL_FreeSurface(surf_index);
 }

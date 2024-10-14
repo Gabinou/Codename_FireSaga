@@ -415,7 +415,7 @@ extern struct Inventory_item Inventory_item_broken;
 //     //      - Gets rid of name from file vs name from id conflict
 //     //      - Gets rid of name id in file vs id in reinforcement issue
 //     // 2- Make ai id and use it instead of ai_filename
-//     //      - Have to free strings
+//     //      - Have to SDL_free strings
 //     //      - char array?
 //     s8 ai_filename; /* Overrides ai_filename in unit */
 //     u8 turn;

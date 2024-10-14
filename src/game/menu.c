@@ -1056,7 +1056,6 @@ void Game_Title_Destroy(struct Game *sota) {
 
     tnecs_entity_destroy(sota->world, sota->title);
     sota->title = TNECS_NULL;
-    getchar();
 }
 
 void Game_FirstMenu_Create(struct Game *sota) {

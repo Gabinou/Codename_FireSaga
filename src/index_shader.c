@@ -78,7 +78,7 @@ u8 *pixels_and_noM(u8 *out, u8 *matrix1, u8 *matrix2, size_t arr_len) {
 }
 
 u8 *pixels_and(u8 *matrix1, u8 *matrix2, size_t arr_len) {
-    u8 *out = calloc(arr_len, sizeof(*out));
+    u8 *out = SDL_calloc(arr_len, sizeof(*out));
     return (pixels_and_noM(out, matrix1, matrix2, arr_len));
 }
 
@@ -116,7 +116,7 @@ void Tilemap_Shader_Load_Tilemap_JSON(struct Tilemap_Shader *shd,  cJSON *jmap) 
 
         /* - Read shadow tilemap for current frame - */
         int row_len = shd->map->row_len, col_len = shd->map->col_len;
-        i32 *shadow_tilemap = malloc(row_len * col_len * sizeof(*shadow_tilemap));
+        i32 *shadow_tilemap = SDL_malloc(row_len * col_len * sizeof(*shadow_tilemap));
         cJSON *jarr = cJSON_GetObjectItem(jframe, "array");
         Array2D_readJSON(jarr, shadow_tilemap, row_len, col_len);
 
@@ -162,8 +162,8 @@ static void _Tilemap_Shader_Shadow_Free( struct Tilemap_Shader *shd) {
 
 void Tilemap_Shader_Alloc(struct Tilemap_Shader *shd, size_t tilenum) {
     shd->shadowtile_num             = tilenum;
-    shd->shadowtile_pixels_num      = calloc(tilenum, sizeof(*shd->shadowtile_pixels_num));
-    shd->shadowtile_pixels_lists    = calloc(tilenum, sizeof(*shd->shadowtile_pixels_lists));
+    shd->shadowtile_pixels_num      = SDL_calloc(tilenum, sizeof(*shd->shadowtile_pixels_num));
+    shd->shadowtile_pixels_lists    = SDL_calloc(tilenum, sizeof(*shd->shadowtile_pixels_lists));
 }
 
 void Tilemap_Shader_Load_Tileset_pixels(struct Tilemap_Shader *shd,  char *filename,
@@ -186,7 +186,7 @@ void Tilemap_Shader_Load_Tileset_pixels(struct Tilemap_Shader *shd,  char *filen
         /* - alloc shadowtile pixels - */
         shd->shadowtile_pixels_num[i] = DARR_NUM(temp_arr) / 2;
         bytesize = shd->shadowtile_pixels_num[i] * sizeof(*temp_arr);
-        shd->shadowtile_pixels_lists[i] = malloc(bytesize);
+        shd->shadowtile_pixels_lists[i] = SDL_malloc(bytesize);
         /* - copy shaded pixels into shadowtile_pixels - */
         memcpy(shd->shadowtile_pixels_lists[i], temp_arr, bytesize);
         DARR_FREE(temp_arr);
@@ -225,7 +225,7 @@ void Tilemap_Shader_Load_Tileset_JSON(struct Tilemap_Shader *shd,
         /* - Alloc shadow tile - */
         size_t bytesize = sizeof(*shd->shadowtile_pixels_lists[i]);
         bytesize *= TWO_D * shd->shadowtile_pixels_num[i];
-        shd->shadowtile_pixels_lists[i] = malloc(bytesize);
+        shd->shadowtile_pixels_lists[i] = SDL_malloc(bytesize);
 
         /* - Get tile in json - */
         char tilename[TILENAME_MAX_LEN];
@@ -292,7 +292,7 @@ void Index_Shader_Load(struct Index_Shader *shd, SDL_Surface *surf, SDL_Rect *re
     size_t bytesize = rect->w * rect->h;
     size_t offset = Util_SDL_Surface_Index(surf, rect->x, rect->y);
 
-    u8 *temp_arr = malloc(bytesize);
+    u8 *temp_arr = SDL_malloc(bytesize);
     memcpy(temp_arr, surf->pixels + offset, bytesize);
     SDL_UnlockSurface(surf);
 

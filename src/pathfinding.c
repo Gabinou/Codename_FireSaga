@@ -114,7 +114,7 @@ i32 *Pathfinding_PushPullto(struct SquareNeighbours direction_block,
             pushpulltomap = DARR_INIT(pushpulltomap, i32, row_len * col_len * NMATH_TWO_D);
             break;
         case (NMATH_POINTS_MODE_MATRIX):
-            pushpulltomap = calloc(row_len * col_len, sizeof(*pushpulltomap));
+            pushpulltomap = SDL_calloc(row_len * col_len, sizeof(*pushpulltomap));
             for (size_t row = 0; row < row_len; row++) {
                 for (size_t col = 0; col < col_len; col++) {
                     pushpulltomap[(row * col_len + col)] = NMATH_PUSHPULLMAP_BLOCKED;
@@ -416,9 +416,9 @@ i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupyma
     }
 
     /* Alloc variables */
-    i32 *cost       = calloc(row_len * col_len, sizeof(*cost));
-    i32 *came_from  = calloc(row_len * col_len, sizeof(*came_from));
-    i32 *distmap    = calloc(row_len * col_len, sizeof(*distmap));
+    i32 *cost       = SDL_calloc(row_len * col_len, sizeof(*cost));
+    i32 *came_from  = SDL_calloc(row_len * col_len, sizeof(*came_from));
+    i32 *distmap    = SDL_calloc(row_len * col_len, sizeof(*distmap));
 
     Pathfinding_Distance(distmap, costmap, row_len, col_len, end, start);
 
@@ -560,7 +560,7 @@ i32 *Pathfinding_Astar(i32 *path_list, i32 *costmap, size_t row_len, size_t col_
 i32 *Pathfinding_Moveto(i32 *cost_matrix, size_t row_len, size_t col_len,
                         struct Point start, i32 move) {
     /* -- Setup output move_matrix -- */
-    i32 *move_matrix = calloc(row_len * col_len, sizeof(*move_matrix));
+    i32 *move_matrix = SDL_calloc(row_len * col_len, sizeof(*move_matrix));
     Pathfinding_Moveto_noM(move_matrix, cost_matrix, row_len, col_len, start, move);
 
     return (move_matrix);
@@ -711,7 +711,7 @@ void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
 i32 *Pathfinding_Attackto(i32 *move_matrix, u64 *occupymap, size_t row_len, size_t col_len,
                           i32 range[2], i32 mode_movetile) {
     /* -- Setup output attackmap -- */
-    i32 *attackmap = calloc(row_len * col_len, sizeof(*attackmap));
+    i32 *attackmap = SDL_calloc(row_len * col_len, sizeof(*attackmap));
     Pathfinding_Attackto_noM(attackmap, move_matrix, occupymap, row_len, col_len, range, mode_movetile);
 
     return (attackmap);
@@ -839,7 +839,7 @@ void Pathfinding_unitGradient_noM(i32 *gradmap, i32 *costmap,
 
 i32 *Pathfinding_unitGradient(i32 *costmap, size_t row_len, size_t col_len,
                               struct Point *targets, size_t unit_num) {
-    i32 *gradmap = calloc(row_len * col_len, sizeof(i32));
+    i32 *gradmap = SDL_calloc(row_len * col_len, sizeof(i32));
     Pathfinding_unitGradient_noM(gradmap, costmap, row_len, col_len, targets, unit_num);
 
     return (gradmap);
@@ -921,7 +921,7 @@ void Pathfinding_Visible_noM(i32 *sightmap, i32 *blockmap,
 
 i32 *Pathfinding_Visible(i32 *blockmap, size_t row_len, size_t col_len,
                          struct Point start, i32 sight) {
-    i32 *sightmap = calloc(row_len * col_len, sizeof(i32));
+    i32 *sightmap = SDL_calloc(row_len * col_len, sizeof(i32));
     Pathfinding_Visible_noM(sightmap, blockmap, row_len, col_len, start, sight);
 
     return (sightmap);

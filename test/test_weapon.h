@@ -10,9 +10,9 @@ void test_weapon1() {
     struct Item item1   = Item_default;
     struct Item item2   = Item_default;
     struct Item item3   = Item_default;
-    wpn1.item   = malloc(sizeof(struct Item));
-    wpn2.item   = malloc(sizeof(struct Item));
-    // wpn3.item   = malloc(sizeof(struct Item));
+    wpn1.item   = SDL_malloc(sizeof(struct Item));
+    wpn2.item   = SDL_malloc(sizeof(struct Item));
+    // wpn3.item   = SDL_malloc(sizeof(struct Item));
     *wpn1.item  = Item_default;
     *wpn2.item  = Item_default;
     // *wpn3.item  = Item_default;
@@ -153,11 +153,11 @@ void test_weapon1() {
                                      PATH_JOIN("saves", "weapon_rewrite.json")));
 
     Weapon_Free(&wpn1);
-    free(wpn1.item);
+    SDL_free(wpn1.item);
     Weapon_Free(&wpn2);
-    free(wpn2.item);
+    SDL_free(wpn2.item);
     Weapon_Free(&wpn3);
-    free(wpn3.item);
+    SDL_free(wpn3.item);
 }
 
 void test_weapon_stats() {

@@ -79,7 +79,7 @@ void CRT_Pixels2Floats(struct FloatRGB *floatrgb, SDL_Surface *surface,
 SDL_Surface *CRT_Floats2Pixels(struct FloatRGB *floatrgb, uint_fast32_t width,
                                uint_fast32_t height) {
     SDL_Log("CRT_Floats2Pixels");
-    uint32_t *pixels = (uint32_t *)malloc(height * width * sizeof(*pixels));
+    uint32_t *pixels = (uint32_t *)SDL_malloc(height * width * sizeof(*pixels));
     SDL_assert(pixels != NULL);
     uint32_t pixel32;
     uint8_t *pixel8 = (uint8_t *)&pixel32;
@@ -168,7 +168,7 @@ void Lanczos_Filter_2D_T(float *samples, float *filtered, uint_fast32_t size_sam
                          uint_fast32_t size_filtered_y,
                          int_fast8_t a) {
     SDL_Log("Lanczos_Filter_2D");
-    float *filtered_cols = calloc(size_samples_x * size_filtered_y, sizeof(*filtered_cols));
+    float *filtered_cols = SDL_calloc(size_samples_x * size_filtered_y, sizeof(*filtered_cols));
     memset(filtered, 0, size_filtered_x * size_filtered_y * sizeof(*filtered));
     float delta_y = (float)size_samples_y / (float)size_filtered_y;
     float delta_x = (float)size_samples_x / (float)size_filtered_x;
@@ -213,7 +213,7 @@ void Lanczos_Filter_2D(float *samples, float *filtered, uint_fast32_t size_sampl
                        uint_fast32_t size_filtered_y,
                        int_fast8_t a) {
     SDL_Log("Lanczos_Filter_2D");
-    float *filtered_rows = calloc(size_filtered_x * size_samples_y, sizeof(*filtered_rows));
+    float *filtered_rows = SDL_calloc(size_filtered_x * size_samples_y, sizeof(*filtered_rows));
     memset(filtered, 0, size_filtered_x * size_filtered_y * sizeof(*filtered));
     /* Separate Rows and Cols is much faster*/
     /* ROWS */
@@ -282,10 +282,10 @@ float Scanline_Brightness(float c, float n) {
 void CRT_Bloom(float *color, uint_fast32_t width, uint_fast32_t height, float radius) {
     SDL_Log("CRT_Bloom");
     // for Gamma == 2
-    float *copy = malloc(width * height * sizeof(*copy));
+    float *copy = SDL_malloc(width * height * sizeof(*copy));
     memcpy(copy, color, width * height * sizeof(*copy));
-    float *copy_blurred = malloc(width * height * sizeof(*copy));
-    float *temp = malloc(width * height * sizeof(*copy));
+    float *copy_blurred = SDL_malloc(width * height * sizeof(*copy));
+    float *temp = SDL_malloc(width * height * sizeof(*copy));
     CRT_Bloom_Correction_Enum(copy, width * height);
     blur(copy, copy_blurred, temp, width, height, radius, GAMMA_N);
     // gaussBlur_4(copy, copy_blurred, width, height, radius, GAMMA_N);
@@ -486,7 +486,7 @@ void gaussBlur_4(float *src, float *dest, uint_fast32_t width, uint_fast32_t hei
                  uint_fast32_t n) {
     SDL_Log("gaussBlur_4 %lu %lu", width, height);
     // SDL_Log("n %d", n);
-    uint_fast32_t *sizes = malloc(n * sizeof(*sizes));
+    uint_fast32_t *sizes = SDL_malloc(n * sizeof(*sizes));
     boxesForGauss(sizes, radius, n);
     float radiuss = (sizes[0] - 1.0f) / 2.0f;
     boxBlur_4(src, dest, width, height, radiuss);
@@ -600,12 +600,12 @@ void CRT_Filter(struct CRT *in_crt, SDL_Texture *render_target,
                             in_crt->target_format, render_target);
     // Convert RGB to float
     struct FloatRGB input_floatrgb;
-    input_floatrgb.R = calloc(in_crt->input_width * in_crt->input_height,
-                              sizeof(*input_floatrgb.R));
-    input_floatrgb.G = calloc(in_crt->input_width * in_crt->input_height,
-                              sizeof(*input_floatrgb.G));
-    input_floatrgb.B = calloc(in_crt->input_width * in_crt->input_height,
-                              sizeof(*input_floatrgb.B));
+    input_floatrgb.R = SDL_calloc(in_crt->input_width * in_crt->input_height,
+                                  sizeof(*input_floatrgb.R));
+    input_floatrgb.G = SDL_calloc(in_crt->input_width * in_crt->input_height,
+                                  sizeof(*input_floatrgb.G));
+    input_floatrgb.B = SDL_calloc(in_crt->input_width * in_crt->input_height,
+                                  sizeof(*input_floatrgb.B));
     SDL_assert(in_crt->input_width == in_crt->unfiltered->w);
     SDL_assert(in_crt->input_height == in_crt->unfiltered->h);
     SDL_assert(in_crt->unfiltered->pitch == in_crt->unfiltered->w * SDL_BYTESPERPIXEL(
@@ -624,12 +624,12 @@ void CRT_Filter(struct CRT *in_crt, SDL_Texture *render_target,
     // SDL_SaveBMP(in_crt->filtered, "CRT_UNGAMMA.png");
     // Scale to scanline count using lanczos
     struct FloatRGB scanline_floatrgb;
-    scanline_floatrgb.R = malloc(in_crt->input_width * in_crt->num_scanlines * sizeof(
-                                         *scanline_floatrgb.R));
-    scanline_floatrgb.G = malloc(in_crt->input_width * in_crt->num_scanlines * sizeof(
-                                         *scanline_floatrgb.G));
-    scanline_floatrgb.B = malloc(in_crt->input_width * in_crt->num_scanlines * sizeof(
-                                         *scanline_floatrgb.B));
+    scanline_floatrgb.R = SDL_malloc(in_crt->input_width * in_crt->num_scanlines * sizeof(
+                                             *scanline_floatrgb.R));
+    scanline_floatrgb.G = SDL_malloc(in_crt->input_width * in_crt->num_scanlines * sizeof(
+                                             *scanline_floatrgb.G));
+    scanline_floatrgb.B = SDL_malloc(in_crt->input_width * in_crt->num_scanlines * sizeof(
+                                             *scanline_floatrgb.B));
     SDL_Log("in_crt->input_height, in_crt->num_scanlines %lu %luy", in_crt->input_height,
             in_crt->num_scanlines);
     // Lanczos_Filter_2D is borked. it makes stripes in the y axis.
@@ -649,12 +649,12 @@ void CRT_Filter(struct CRT *in_crt, SDL_Texture *render_target,
     // Scale to intermediate using nearest
     // Note: nearest also scales brightness
     struct FloatRGB intermediate_floatrgb;
-    intermediate_floatrgb.R = calloc(in_crt->intermediate_width * in_crt->intermediate_height,
-                                     sizeof(*intermediate_floatrgb.R));
-    intermediate_floatrgb.G = calloc(in_crt->intermediate_width * in_crt->intermediate_height,
-                                     sizeof(*intermediate_floatrgb.G));
-    intermediate_floatrgb.B = calloc(in_crt->intermediate_width * in_crt->intermediate_height,
-                                     sizeof(*intermediate_floatrgb.B));
+    intermediate_floatrgb.R = SDL_calloc(in_crt->intermediate_width * in_crt->intermediate_height,
+                                         sizeof(*intermediate_floatrgb.R));
+    intermediate_floatrgb.G = SDL_calloc(in_crt->intermediate_width * in_crt->intermediate_height,
+                                         sizeof(*intermediate_floatrgb.G));
+    intermediate_floatrgb.B = SDL_calloc(in_crt->intermediate_width * in_crt->intermediate_height,
+                                         sizeof(*intermediate_floatrgb.B));
     Nearest_Scanline_Filter_2D(scanline_floatrgb.R, intermediate_floatrgb.R,
                                in_crt->input_width,
                                in_crt->num_scanlines, in_crt->intermediate_width, in_crt->intermediate_height);
@@ -668,9 +668,9 @@ void CRT_Filter(struct CRT *in_crt, SDL_Texture *render_target,
                                          in_crt->intermediate_height);
     SDL_SaveBMP(in_crt->filtered, "CRT_INTERMEDIATE.png");
     // Filtering with Shadow masks
-    u8 *temp_mask = calloc(in_crt->intermediate_width *
-                           in_crt->intermediate_height,
-                           sizeof(*temp_mask));
+    u8 *temp_mask = SDL_calloc(in_crt->intermediate_width *
+                               in_crt->intermediate_height,
+                               sizeof(*temp_mask));
     u8 x_offset_B = 0;
     u8 x_offset_G = in_crt->cell_width + in_crt->cell_blank_R ;
     u8 x_offset_R = in_crt->cell_width * 2 + in_crt->cell_blank_G +
@@ -709,12 +709,12 @@ void CRT_Filter(struct CRT *in_crt, SDL_Texture *render_target,
     SDL_SaveBMP(in_crt->filtered, "CRT_SHADOW_MASK.png");
     // Rescaling to render_target size
     struct FloatRGB output_floatrgb;
-    output_floatrgb.R = calloc(in_crt->output_width * in_crt->output_height,
-                               sizeof(*output_floatrgb.R));
-    output_floatrgb.G = calloc(in_crt->output_width * in_crt->output_height,
-                               sizeof(*output_floatrgb.G));
-    output_floatrgb.B = calloc(in_crt->output_width * in_crt->output_height,
-                               sizeof(*output_floatrgb.B));
+    output_floatrgb.R = SDL_calloc(in_crt->output_width * in_crt->output_height,
+                                   sizeof(*output_floatrgb.R));
+    output_floatrgb.G = SDL_calloc(in_crt->output_width * in_crt->output_height,
+                                   sizeof(*output_floatrgb.G));
+    output_floatrgb.B = SDL_calloc(in_crt->output_width * in_crt->output_height,
+                                   sizeof(*output_floatrgb.B));
     // Downscaling should be vertical first
     if ((in_crt->intermediate_width != in_crt->output_width)
         && (in_crt->intermediate_height != in_crt->output_height)) {

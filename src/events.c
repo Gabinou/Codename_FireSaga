@@ -1659,7 +1659,7 @@ void Events_Names_Free(void) {
 
 s8 *event_names = NULL;
 void Events_Names_Alloc(void) {
-    event_names = calloc((event_End - event_Start) + 1, sizeof(*event_names));
+    event_names = SDL_calloc((event_End - event_Start) + 1, sizeof(*event_names));
     SDL_assert(event_names != NULL);
 
 #define REGISTER_ENUM(x, y)event_names[(event_##x - event_Start)] = s8_toUpper(s8_mut(#x));

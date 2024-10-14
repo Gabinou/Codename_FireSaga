@@ -10,7 +10,7 @@ void test_map_simple(void) {
     size_t row_len = TEST_ROW_LEN, col_len = TEST_COL_LEN;
     struct Range range = {2, 4};
     i32 *list           = DARR_INIT(list, i32, 16);
-    i32 *test_matrix    = calloc(row_len * col_len, sizeof(*test_matrix));
+    i32 *test_matrix    = SDL_calloc(row_len * col_len, sizeof(*test_matrix));
 
     list        = Taxicab_Circle_List(list, test_matrix, 1, x,  y, row_len, col_len, &range);
     memset(test_matrix, 0, row_len * col_len * sizeof(*test_matrix));
@@ -113,7 +113,7 @@ void test_map_perimeter(void) {
     nourstest_true(perimeter_edges[6 * TEST_COL_LEN + 4].bottom == 0);
 
     if (perimeter_edges != NULL) {
-        free(perimeter_edges);
+        SDL_free(perimeter_edges);
         perimeter_edges = NULL;
     }
 }
@@ -369,7 +369,7 @@ void test_map_usable(void) {
 
     Map_Free(map);
     tnecs_world_destroy(world);
-    free(map);
+    SDL_free(map);
 }
 
 #undef TEST_ROW_LEN

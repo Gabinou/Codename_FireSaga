@@ -9,9 +9,9 @@
 
 void test_combat_stats() {
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
-    struct Unit *attacker = (struct Unit *)calloc(1, sizeof(struct Unit));
+    struct Unit *attacker = (struct Unit *)SDL_calloc(1, sizeof(struct Unit));
     * attacker = Unit_default;
-    struct Unit *defender = (struct Unit *)calloc(1, sizeof(struct Unit));
+    struct Unit *defender = (struct Unit *)SDL_calloc(1, sizeof(struct Unit));
     * defender = Unit_default;
     Unit_InitWweapons(attacker, weapons_dtab);
     Unit_InitWweapons(defender, weapons_dtab);

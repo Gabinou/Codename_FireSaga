@@ -110,7 +110,7 @@ void Palettes_Load(void) {
     Palette_readJSON(path, palette_SOTA_enemy);
 
     Palettes_Free();
-    sota_palettes = calloc(PALETTE_NUM, sizeof(*sota_palettes));
+    sota_palettes = SDL_calloc(PALETTE_NUM, sizeof(*sota_palettes));
     sota_palettes[PALETTE_NULL]               = NULL;
     sota_palettes[PALETTE_NES]                = palette_NES;
     sota_palettes[PALETTE_NES_ENEMY]          = palette_NES_enemy;

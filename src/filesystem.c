@@ -281,7 +281,7 @@ SDL_Surface *Filesystem_TexturetoSurface(SDL_Renderer *renderer, SDL_Texture *te
 
     /* Create buffer to hold texture data and load it */
     int bits    = SDL_BITSPERPIXEL(format), bytes = SDL_BYTESPERPIXEL(format);
-    pixels      = malloc(w * h * bytes);
+    pixels      = SDL_malloc(w * h * bytes);
     SDL_assert(pixels);
     success = SDL_RenderReadPixels(renderer, NULL, format, pixels, w * bytes);
     SDL_assert(success == 0);

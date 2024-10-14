@@ -17,7 +17,7 @@ void Weapon_Init(struct Weapon *weapon) {
     SDL_assert(weapon       != NULL);
     SDL_assert(weapon->item == NULL);
 
-    weapon->item    = malloc(sizeof(struct Item));
+    weapon->item    = SDL_malloc(sizeof(struct Item));
     *(weapon->item) = Item_default;
 }
 

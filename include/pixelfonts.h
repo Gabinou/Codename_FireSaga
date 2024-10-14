@@ -71,7 +71,7 @@ extern struct PixelFont TextureFont_default;
 struct PixelFont *PixelFont_Alloc(void);
 struct PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len);
 
-void PixelFont_Free(struct PixelFont *f, b32 free);
+void PixelFont_Free(struct PixelFont *f, b32 isfree);
 void PixelFont_Load(struct PixelFont *f, SDL_Renderer *r, char *fontname);
 
 /* --- Internals --- */

@@ -37,8 +37,8 @@ struct Tile Tile_default = {
 void Mobj_Link_Init(struct Mobj_Link *mobj) {
     Mobj_Link_Free(mobj);
     if (mobj->num_linked > 0) {
-        mobj->relpos_linked = calloc(mobj->num_linked * TWO_D, sizeof(*mobj->relpos_linked));
-        mobj->abspos_linked = calloc(mobj->num_linked * TWO_D, sizeof(*mobj->abspos_linked));
+        mobj->relpos_linked = SDL_calloc(mobj->num_linked * TWO_D, sizeof(*mobj->relpos_linked));
+        mobj->abspos_linked = SDL_calloc(mobj->num_linked * TWO_D, sizeof(*mobj->abspos_linked));
     }
 }
 
@@ -143,7 +143,7 @@ void Tile_readJSON(void *input, cJSON *_jtile) {
     tile->id = cJSON_GetNumberValue(jid);
     char *temp_str = cJSON_GetStringValue(jname);
     if (temp_str != NULL) {
-        tile->name = malloc(strlen(temp_str) + 1);
+        tile->name = SDL_malloc(strlen(temp_str) + 1);
         memcpy(tile->name, temp_str, strlen(temp_str) + 1);
     }
     Tile_stats_readJSON(&(tile->stats), jstats);

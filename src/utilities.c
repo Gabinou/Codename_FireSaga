@@ -37,7 +37,7 @@ i32 *matrix_sgreater_noM(i32 *out, i32 *matrix1, i32 tocompare, size_t arr_len) 
 }
 
 i32 *matrix_sgreater(i32 *matrix1, i32 tocompare, size_t arr_len) {
-    i32 *out = calloc(arr_len, sizeof(*out));
+    i32 *out = SDL_calloc(arr_len, sizeof(*out));
     return (matrix_sgreater_noM(out, matrix1, tocompare, arr_len));
 }
 
@@ -48,7 +48,7 @@ i32 *matrix_ssmaller_noM(i32 *out, i32 *matrix1, i32 tocompare, size_t arr_len) 
 }
 
 i32 *matrix_ssmaller(i32 *matrix1, i32 tocompare, size_t arr_len) {
-    i32 *out = calloc(arr_len, sizeof(*out));
+    i32 *out = SDL_calloc(arr_len, sizeof(*out));
     return (matrix_ssmaller_noM(out, matrix1, tocompare, arr_len));
 }
 
@@ -78,7 +78,7 @@ i32 *matrix_and_noM(i32 *out, i32 *matrix1, i32 *matrix2, size_t arr_len) {
 }
 
 i32 *matrix_and(i32 *matrix1, i32 *matrix2, size_t arr_len) {
-    i32 *out = calloc(arr_len, sizeof(*out));
+    i32 *out = SDL_calloc(arr_len, sizeof(*out));
     return (matrix_and_noM(out, matrix1, matrix2, arr_len));
 }
 
@@ -95,7 +95,7 @@ i32 *matrix_plus_noM(i32 *matrix1, i32 *matrix2, size_t arr_len) {
 }
 
 i32 *matrix_plus(i32 *matrix1, i32 *matrix2, size_t arr_len) {
-    i32 *out = calloc(arr_len, sizeof(*out));
+    i32 *out = SDL_calloc(arr_len, sizeof(*out));
     return (matrix_plus_noM(out, matrix2, arr_len));
 }
 
@@ -131,7 +131,7 @@ i32 *list2matrix_noM(i32 *out, i32 *list, size_t row_len, size_t col_len, size_t
 }
 
 i32 *list2matrix(i32 *list, size_t row_len, size_t col_len, size_t list_len) {
-    i32 *out = calloc(row_len * col_len, sizeof(i32));
+    i32 *out = SDL_calloc(row_len * col_len, sizeof(i32));
     list2matrix_noM(out, list, row_len, col_len, list_len);
 
     return (out);

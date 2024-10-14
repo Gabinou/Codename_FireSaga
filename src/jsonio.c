@@ -177,8 +177,8 @@ void Shop_readJSON(char *filename, struct Shop *shop) {
         exit(ERROR_JSONParsingFailed);
     }
     size_t items_num = cJSON_GetArraySize(jitems);
-    shop->qty = calloc(items_num, sizeof(*shop->qty));
-    shop->items = calloc(items_num, sizeof(*shop->items));
+    shop->qty = SDL_calloc(items_num, sizeof(*shop->qty));
+    shop->items = SDL_calloc(items_num, sizeof(*shop->items));
     for (int i = 0; i < items_num; i++) {
         struct cJSON *jitem = cJSON_GetArrayItem(jitems, i);
         shop->qty[i]        = cJSON_GetNumberValue(jitem);

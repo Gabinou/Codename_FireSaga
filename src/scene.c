@@ -245,7 +245,7 @@ void Scene_readJSON(void *input, cJSON *jscene) {
 //         if (order == scene->speakers[i])
 //             return;
 
-//         /* Set index to greatest free spot in speakers array */
+//         /* Set index to greatest SDL_free spot in speakers array */
 //         if ((scene->speakers[i] > 0) && (index < 1))
 //             index = i;
 //     }
