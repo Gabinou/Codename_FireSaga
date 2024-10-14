@@ -76,8 +76,8 @@ struct PixelFont *PixelFont_Alloc(void) {
     struct PixelFont *font  = malloc(sizeof(struct PixelFont));
     SDL_assert(font);
     *font = PixelFont_default;
-    font->glyph_bbox_width  = calloc(font->charset_num, sizeof(*font->glyph_bbox_width));
-    font->glyph_bbox_height = calloc(font->charset_num, sizeof(*font->glyph_bbox_height));
+    font->glyph_bbox_width  = SDL_calloc(font->charset_num, sizeof(*font->glyph_bbox_width));
+    font->glyph_bbox_height = SDL_calloc(font->charset_num, sizeof(*font->glyph_bbox_height));
     return (font);
 }
 
@@ -131,8 +131,8 @@ struct PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len) {
     font->row_len     = row_len;
     font->col_len     = col_len;
 
-    font->glyph_bbox_width  = malloc(font->charset_num * sizeof(*font->glyph_bbox_width));
-    font->glyph_bbox_height = malloc(font->charset_num * sizeof(*font->glyph_bbox_height));
+    font->glyph_bbox_width  = SDL_malloc(font->charset_num * sizeof(*font->glyph_bbox_width));
+    font->glyph_bbox_height = SDL_malloc(font->charset_num * sizeof(*font->glyph_bbox_height));
 
     return (font);
 }
@@ -200,8 +200,8 @@ struct TextLines PixelFont_Lines_Len(struct PixelFont *font,  char *text, size_t
 
 struct TextLines PixelFont_Lines(struct PixelFont *font,  char *text, size_t len_char,
                                  size_t line_len_px) {
-    SDL_assert(font != NULL);
-    SDL_assert(font->glyph_bbox_width != NULL);
+    SDL_assert(font                     != NULL);
+    SDL_assert(font->glyph_bbox_width   != NULL);
     struct TextLines textlines = TextLines_default;
     TextLines_Realloc(&textlines, 4);
     SDL_assert(textlines.line_len == 4);

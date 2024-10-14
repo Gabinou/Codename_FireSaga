@@ -22,8 +22,8 @@ typedef struct Text {
     SDL_Rect            rect;
     i64                 update_time_ns; /* 0 means update one time */
     onUpdate_t          onUpdate;
-    b32                visible;
-    b32                update;
+    b32                 visible;
+    b32                 update;
 } Text;
 extern struct Text Text_default;
 

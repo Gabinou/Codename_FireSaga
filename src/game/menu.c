@@ -1043,15 +1043,20 @@ void Game_Title_Create(struct Game *sota) {
 }
 
 void Game_Title_Destroy(struct Game *sota) {
-    if (sota->title != TNECS_NULL) {
-        struct Text *text = TNECS_GET_COMPONENT(sota->world, sota->title, Text);
-
-        if (text != NULL)
-            PixelFont_Free(text->pixelfont, true);
-
-        tnecs_entity_destroy(sota->world, sota->title);
-        sota->title = TNECS_NULL;
+    if (sota->title == TNECS_NULL) {
+        return;
     }
+
+    struct Text *text = TNECS_GET_COMPONENT(sota->world, sota->title, Text);
+    SDL_assert(text != NULL);
+
+    if ((text != NULL) && (text->pixelfont != NULL)) {
+        PixelFont_Free(text->pixelfont, true);
+    }
+
+    tnecs_entity_destroy(sota->world, sota->title);
+    sota->title = TNECS_NULL;
+    getchar();
 }
 
 void Game_FirstMenu_Create(struct Game *sota) {
