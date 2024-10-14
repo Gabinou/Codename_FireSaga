@@ -132,9 +132,9 @@ struct Target win_sota = {
                 "third_party/physfs,third_party/tinymt," 
                 "third_party/stb,third_party/cJson,"
                 "/usr/include/SDL2",
-    .sources  = "src/*.c,src/bars/,src/menu/,src/popup/,"
-                "src/systems/,src/game/,src/map,"
-                "src/controller",
+    .sources  = "src,src/bars/,src/menu/,src/popup/,"
+                "src/systems/,src/game/,src/map/,src/unit/,"
+                "src/controller/",
     .links    = "SDL2,SDL2_image,SDL2_mixer,m,cjson,"
                 "noursmath,physfs,tinymt,tnecs,parg",
                 /* TODO: Remove flags given by sdl2-config */
