@@ -681,7 +681,7 @@ void PopUp_Loadout_Stats_Select(struct PopUp_Loadout_Stats *pls, struct LoadoutS
     /* Set pls items to weapons selected in wsm */
     SDL_assert(pls       != NULL);
     SDL_assert(wsm       != NULL);
-    SDL_assert(wsm->unit != NULL);
+    SDL_assert(wsm->unit > TNECS_NULL);
     SDL_assert(pls->unit != NULL);
 
     Unit *unit = TNECS_GET_COMPONENT(wsm->world, wsm->unit, Unit);

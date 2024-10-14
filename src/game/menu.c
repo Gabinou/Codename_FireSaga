@@ -710,8 +710,8 @@ void Game_TradeMenu_Update(struct Game *sota, tnecs_entity selected, tnecs_entit
     // ism->update = true;
     // LoadoutSelectMenu_Load(tm->active,  active,  sota->renderer);
     // LoadoutSelectMenu_Load(tm->passive, passive, sota->renderer);
-    SDL_assert(tm->active->unit != NULL);
-    SDL_assert(tm->passive->unit != NULL);
+    SDL_assert(tm->active->unit     > TNECS_NULL);
+    SDL_assert(tm->passive->unit    > TNECS_NULL);
 
     tm->active->pos.x   = sota->settings.res.x / 4;
     tm->active->pos.y   = sota->settings.res.y / 3;

@@ -138,7 +138,7 @@ struct Target win_sota = {
     .links    = "SDL2,SDL2_image,SDL2_mixer,m,cjson,"
                 "noursmath,physfs,tinymt,tnecs,parg",
                 /* TODO: Remove flags given by sdl2-config */
-    .flags    = "-lmingw32,-lSDL2main,-std=iso9899:1999,"
+    .flags    = "-lmingw32,-lSDL2,-lSDL2main,-std=iso9899:1999,"
                 "-fno-strict-overflow,-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
                 "$(sdl2-config --cflags)",
