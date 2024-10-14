@@ -5,7 +5,7 @@
 #include "types.h"
 #include "debug.h"
 #include "enums.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* --- Useful log funcs --- */
 //      SDL_LogVerbose(SOTA_LOG_FPS, "");  -> only publishes if category is verbose

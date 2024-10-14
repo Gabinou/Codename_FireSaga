@@ -8,7 +8,7 @@
 #include "debug.h"
 #include "utilities.h"
 #include "macros.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* -- How to present controller remapping to players? -- */
 // -> Use gameplay.standby sota_inputs as labels

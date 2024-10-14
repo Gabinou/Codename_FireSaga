@@ -21,7 +21,7 @@
 #include "arrow.h"
 #include "structs.h"
 #include "map/ontile.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;

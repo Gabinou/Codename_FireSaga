@@ -3,7 +3,7 @@
 
 #include <math.h>
 #include <stdio.h>
-#include "SDL2/SDL.h"
+#include "SDL.h"
 #ifdef SOTA_OPENGL
     #include <GL/glew.h>
     #include <SDL_opengl.h>
@@ -12,8 +12,8 @@
 #include "convoy.h"
 #include "unit/party.h"
 #include "unit/unit.h"
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_mixer.h"
+#include "SDL.h"
+#include "SDL_mixer.h"
 #include "tnecs.h"
 #include "combat.h"
 #include "controller/keyboard.h"

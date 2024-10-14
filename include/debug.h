@@ -2,7 +2,7 @@
 #define DEBUG_H
 
 #include "macros.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* -- Release switches -- */
 // #define SOTA_NO_LOGS

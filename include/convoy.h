@@ -16,7 +16,7 @@
 #include "combat.h"
 #include "utilities.h"
 #include "platform.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* --- FORWARD DECLARATINOS --- */
 struct Game;

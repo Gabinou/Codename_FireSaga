@@ -2,7 +2,7 @@
 #define SLIDER_BAR_H
 
 #include "utilities.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* --- SLIDER_BAR --- */
 /* Used by user to control settings over a range e.g. volume */

@@ -8,7 +8,7 @@
 #include "game/game.h"
 #include "popup/popup.h"
 #include "pixelfonts.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 #include "stb_sprintf.h"
 
 /* --- FORWARD DECLARATIONS --- */

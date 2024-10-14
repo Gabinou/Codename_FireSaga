@@ -9,7 +9,7 @@
 #include "enums.h"
 #include "macros.h"
 #include "debug.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* -- Names -- */
 // TODO migrate names to s8

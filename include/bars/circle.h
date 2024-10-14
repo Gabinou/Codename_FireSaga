@@ -2,7 +2,7 @@
 #define CIRCLE_BAR_H
 
 #include "utilities.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* --- CIRCLE_BAR --- */
 // Circle bar used to show the number of attacks: 1 for single 2 for double.

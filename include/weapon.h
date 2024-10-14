@@ -4,7 +4,7 @@
 #include "item.h"
 #include "aura.h"
 #include "filesystem.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* --- WEAPON/ITEM --- */
 

@@ -14,7 +14,7 @@
 #include "nmath.h"
 #include "cJSON.h"
 #include "bitfields.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 // SCENE MVP
 //  1.

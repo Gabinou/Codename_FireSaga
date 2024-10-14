@@ -8,7 +8,7 @@
 #include "unit/unit.h"
 #include "tnecs.h"
 #include "pixelfonts.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 #include "menu/loadout_select.h"
 #include "stb_sprintf.h"
 

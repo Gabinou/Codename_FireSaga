@@ -17,7 +17,7 @@
 #include "utilities.h"
 #include "supports.h"
 #include "names.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Scene;

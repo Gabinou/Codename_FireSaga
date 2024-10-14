@@ -2,7 +2,7 @@
 #define SIMPLE_BAR_H
 
 #include "utilities.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* --- SimpleBar --- */
 // Bar drawn without slants or textures, mainly for stats.

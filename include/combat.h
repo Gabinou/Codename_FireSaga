@@ -2,7 +2,7 @@
 #define COMBAT_H
 
 #include <math.h>
-#include "SDL2/SDL.h"
+#include "SDL.h"
 #include "types.h"
 #include "enums.h"
 #include "structs.h"

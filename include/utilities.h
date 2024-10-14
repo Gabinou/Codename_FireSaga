@@ -22,7 +22,7 @@
 #include "structs.h"
 #include "nmath.h"
 #include "nstr.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct RNG_Sequence;

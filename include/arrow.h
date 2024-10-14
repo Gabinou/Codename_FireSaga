@@ -2,7 +2,7 @@
 #define ARROW_H
 
 #include <math.h>
-#include "SDL2/SDL.h"
+#include "SDL.h"
 #include "nmath.h"
 #include "pathfinding.h"
 #include "enums.h"

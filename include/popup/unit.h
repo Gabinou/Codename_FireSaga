@@ -10,7 +10,7 @@
 #include "unit/equipment.h"
 #include "game/game.h"
 #include "pixelfonts.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 #include "stb_sprintf.h"
 
 /* --- FORWARD DECLARATIONS --- */

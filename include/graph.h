@@ -8,7 +8,7 @@
 #include "nmath.h"
 #include "n9patch.h"
 #include "stb_sprintf.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;

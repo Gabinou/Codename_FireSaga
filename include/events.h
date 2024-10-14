@@ -7,7 +7,7 @@
 #include "fsm.h"
 #include "game/map.h"
 #include "reload.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;

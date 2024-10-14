@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "types.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /* BITFIELDS */
 /* Array of bits */
