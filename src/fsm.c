@@ -523,8 +523,10 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     map_to.archetype     = ITEM_ARCHETYPE_WEAPON;
     Map_Act_To(sota->map, map_to);
 
-    matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
-    getchar();
+    // SDL_Log("attacktomap");
+    // matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
+    // SDL_Log("Movemap");
+    // matrix_print(sota->map->movemap, sota->map->row_len, sota->map->col_len);
 
     int rangemap = Unit_Rangemap_Get(unit_ontile);
 

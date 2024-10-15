@@ -637,8 +637,8 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         Menu_Elem_Set(mc, sota, new_elem);
 
         canEquip can_equip  = canEquip_default;
-        canEquip_Loadout(&can_equip, UNIT_HAND_LEFT, Unit_Eq_Equipped(unit, UNIT_HAND_LEFT));
-        canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT));
+        canEquip_Loadout(&can_equip, UNIT_HAND_LEFT, ITEM1);
+        canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, ITEM2);
         can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
         Unit_canEquip_Equipment(unit, can_equip);
         LoadoutSelectMenu_Elem_Pos_Revert(wsm, mc);
@@ -880,8 +880,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     // TODO: Automatically equip nothing in weakhand if no other item in equipment
     if (Loadout_isEquipped(&wsm->selected, stronghand)) {
         canEquip can_equip  = canEquip_default;
-        canEquip_Loadout(&can_equip, UNIT_HAND_LEFT, Unit_Eq_Equipped(unit, UNIT_HAND_LEFT));
-        canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT));
+        canEquip_Loadout(&can_equip, UNIT_HAND_LEFT, ITEM1);
+        canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, ITEM2);
         can_equip.archetype = ITEM_ARCHETYPE_WEAKHAND;
         Unit_canEquip_Equipment(unit, can_equip);
     }

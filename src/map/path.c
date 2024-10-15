@@ -115,6 +115,8 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
     SDL_assert(mapto.aggressor  > TNECS_NULL);
 
     Map_Costmap_Movement_Compute(map, mapto.aggressor);
+    Map_Movemap_Compute(map, mapto.aggressor);
+
     struct Unit     *unit = TNECS_GET_COMPONENT(map->world, mapto.aggressor, Unit);
     struct Position *pos  = TNECS_GET_COMPONENT(map->world, mapto.aggressor, Position);
     SDL_assert(unit != NULL);

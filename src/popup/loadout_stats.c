@@ -622,8 +622,8 @@ void PopUp_Loadout_Stats_Previous(struct PopUp_Loadout_Stats *pls) {
     PopUp_Loadout_Stats_ItemTypes(pls);
 
     Loadout loadout = Loadout_default;
-    Loadout_Set(&loadout, UNIT_HAND_LEFT, pls->eq_left);
-    Loadout_Set(&loadout, UNIT_HAND_RIGHT, pls->eq_right);
+    Loadout_Set(&loadout, UNIT_HAND_LEFT,   pls->eq_left);
+    Loadout_Set(&loadout, UNIT_HAND_RIGHT,  pls->eq_right);
     pls->previous_cs = Unit_computedStats_wLoadout(pls->unit,
                                                    &loadout,
                                                    pls->distance);
