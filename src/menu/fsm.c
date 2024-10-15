@@ -462,7 +462,8 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
 }
 
 void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
-    SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(mc->elem >= ITEM1);
+    SDL_assert(mc->elem < SOTA_EQUIPMENT_ARRAY_SIZE);
     /* -- Update Popup_Loadout_Stats to potential loadout -- */
     struct LoadoutSelectMenu *wsm = mc->data;
     wsm->update = true;
@@ -514,7 +515,8 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
     struct LoadoutSelectMenu *ism = mc->data;
 
     /* - Get Popup_Loadout_Stats -- */
-    SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(mc->elem >= ITEM1);
+    SDL_assert(mc->elem < SOTA_EQUIPMENT_ARRAY_SIZE);
     tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS];
     SDL_assert(popup_ent > TNECS_NULL);
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
@@ -539,7 +541,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mTM(struct Game *sota, struct Menu *mc) {
     SDL_assert(tm);
 
     /* If item is selected, deselect item */
-    b32 isItem = (tm->selected_item > ITEM_NULL) && (tm->selected_item < SOTA_EQUIPMENT_SIZE);
+    b32 isItem = (tm->selected_item > ITEM_NULL) && (tm->selected_item < SOTA_EQUIPMENT_ARRAY_SIZE);
     b32 isTrader = (tm->selected_trader == TRADER_PASSIVE) || (tm->selected_trader == TRADER_ACTIVE);
     if (isItem || isTrader) {
         // TradeMenu_Deselect(tm);
@@ -807,7 +809,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mTM(struct Game *sota, struct Menu *mc) {
     SDL_assert(tm);
 
     /* If no item is selected, select item */
-    // b32 isItem = (tm->selected_item > ITEM_NULL) && (tm->selected_item < SOTA_EQUIPMENT_SIZE);
+    // b32 isItem = (tm->selected_item > ITEM_NULL) && (tm->selected_item < SOTA_EQUIPMENT_ARRAY_SIZE);
     // b32 isTrader = (tm->selected_trader == TRADER_PASSIVE) || (tm->selected_trader == TRADER_ACTIVE);
     // if (!isItem || !isTrader) {
     //     TradeMenu_Select(tm);
@@ -839,8 +841,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     Unit *unit = TNECS_GET_COMPONENT(sota->world, wsm->unit, Unit);
     i32 stronghand  = Unit_Hand_Strong(unit);
     i32 weakhand    = Unit_Hand_Weak(unit);
-    SDL_assert(mc->elem >= 0);
-    SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(mc->elem > ITEM_NULL);
+    SDL_assert(mc->elem < SOTA_EQUIPMENT_ARRAY_SIZE);
 
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, sota->popups[popup_ind], PopUp);
@@ -935,8 +937,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
 
 void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
     struct LoadoutSelectMenu *ssm = mc->data;
-    SDL_assert(mc->elem >= 0);
-    SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(mc->elem > ITEM_NULL);
+    SDL_assert(mc->elem < SOTA_EQUIPMENT_ARRAY_SIZE);
 
     StaffSelectMenu_Select(ssm, mc->elem);
 

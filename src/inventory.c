@@ -8,11 +8,11 @@ void Equipment_Copy(Inventory_item *dest, Inventory_item *src, size_t size) {
 
 void Equipment_Swap(struct Inventory_item *equipment, i16 i1, i16 i2) {
     // TODO: NOT exit -> assert and print warning
-    if ((i1 < 0) || (i1 >= SOTA_EQUIPMENT_SIZE)) {
+    if ((i1 < ITEM1) || (i1 > SOTA_EQUIPMENT_SIZE)) {
         SDL_Log("Item index1 out of bounds");
         exit(ERROR_OutofBounds);
     }
-    if ((i2 < 0) || (i2 >= SOTA_EQUIPMENT_SIZE)) {
+    if ((i2 < ITEM1) || (i2 > SOTA_EQUIPMENT_SIZE)) {
         SDL_Log("Item index2 out of bounds");
         exit(ERROR_OutofBounds);
     }

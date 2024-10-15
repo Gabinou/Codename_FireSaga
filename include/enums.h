@@ -469,26 +469,19 @@ enum LOADOUT_TYPE {
     LOADOUT_LOADOUT     = 2, /* With weapons in loadout struct equipped */
 };
 
-enum ITEM_EQUIPPED {
-    ITEM_UNEQUIPPED = 0,
-    ITEM1_EQUIPPED,
-    ITEM2_EQUIPPED,
-    ITEM3_EQUIPPED,
-    ITEM4_EQUIPPED,
-    ITEM5_EQUIPPED,
-    ITEM6_EQUIPPED,
-    ITEM_EQUIPPED_DIFF  = 1,
+enum ENUM_EQ { /* enum_equipment */
+    ITEM_UNEQUIPPED             = 0,
+    ITEM_NULL                   = 0,
+    ITEM1,
+    ITEM2,
+    ITEM3,
+    ITEM4,
+    ITEM5,
+    ITEM6,
+    SOTA_EQUIPMENT_ARRAY_SIZE,
+    SOTA_EQUIPMENT_SIZE         = SOTA_EQUIPMENT_ARRAY_SIZE - 1,
 };
 
-enum ENUM_EQ { /* enum_equipment */
-    ITEM1               = 0,
-    ITEM2               = 1,
-    ITEM3               = 2,
-    ITEM4               = 3,
-    ITEM5               = 4,
-    ITEM6               = 5,
-    SOTA_EQUIPMENT_SIZE = 6,
-};
 
 enum TWO_HAND_EQ_MODE {
     TWO_HAND_EQ_MODE_STRICT   = 0,
@@ -501,7 +494,6 @@ enum TWO_HAND_EQ_MODE {
 */
 
 enum ITEM_ID {
-    ITEM_NULL     = 0,
     ITEM_ID_START = 0,
 #define REGISTER_ENUM(x, y) ITEM_ID_##x = y,
 #include "names/items.h"
@@ -1191,11 +1183,12 @@ enum WEAPON_SUBTYPE {
 
 enum UNIT_HAND {
     /* Only first two hands can be strong/weak hands */
-    UNIT_HAND_LEFT              = 0,
-    UNIT_HAND_RIGHT             = 1,
+    UNIT_HAND_LEFT              = ITEM1,
+    UNIT_HAND_RIGHT             = ITEM2,
     UNIT_ARMS_NUM               = 2,
-    TETRABRACHIOS_HAND_LEFT     = 2, /* TOP/BOTTOM LEFT     */
-    TETRABRACHIOS_HAND_RIGHT    = 3, /* TOP/BOTTOM RIGHT    */
+    UNIT_ARMS_ARRAY_SIZE        = 3,
+    TETRABRACHIOS_HAND_LEFT     = ITEM3, /* TOP/BOTTOM LEFT     */
+    TETRABRACHIOS_HAND_RIGHT    = ITEM4, /* TOP/BOTTOM RIGHT    */
     TETRABRACHIOS_ARMS_NUM      = 4,
     MAX_ARMS_NUM                = 4,
 };

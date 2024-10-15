@@ -381,7 +381,7 @@ void Map_Members_Alloc(struct Map *map) {
     map->reinforcements = DARR_INIT(map->reinforcements, struct Reinforcement, 16);
 
     SDL_assert(map->items_num == NULL);
-    map->items_num = DARR_INIT(map->items_num, u8, SOTA_EQUIPMENT_SIZE);
+    map->items_num = DARR_INIT(map->items_num, u8, SOTA_EQUIPMENT_ARRAY_SIZE);
 
     SDL_assert(map->tilesindex == NULL);
     map->tilesindex = DARR_INIT(map->tilesindex, i32, DEFAULT_TILESPRITE_BUFFER);
@@ -614,7 +614,7 @@ void Map_writeJSON( void *input, cJSON *jmap) {
         jreinforcementeq = cJSON_CreateObject();
         Reinforcement_writeJSON(jreinforcement, &(map->reinforcements)[r]);
         temp_equip = map->reinf_equipments[r];
-        for (i32 i = 0; i < DARR_NUM(temp_equip); i ++) {
+        for (i32 i = 0; i < DARR_NUM(temp_equip); i++) {
             temp_item = temp_equip[i];
             if (temp_item.id > ITEM_NULL)
                 Inventory_item_writeJSON(&temp_item, jreinforcementeq);
@@ -750,7 +750,9 @@ void Map_readJSON(void *input,  cJSON *jmap) {
         Reinforcement_readJSON(jreinforcement, &temp_rein);
         DARR_PUT(map->reinforcements, temp_rein);
         jequipment = cJSON_GetObjectItem(jreinforcement, "Equipment");
-        temp_equip = DARR_INIT(temp_equip, struct Inventory_item, SOTA_EQUIPMENT_SIZE);
+        temp_equip = DARR_INIT(temp_equip, struct Inventory_item, SOTA_EQUIPMENT_ARRAY_SIZE);
+        /* FIRST ITEM IS NULL */
+        DARR_PUT(temp_equip, temp_item);
 
         if (!cJSON_IsArray(jequipment)) {
             SDL_Log("Missing Equipment array in Reinforcement %d", i);

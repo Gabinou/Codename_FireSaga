@@ -365,7 +365,7 @@ void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9p
     for (i32 i = 0; i < num_items; i++) {
         /* If stronghand was selected, i is in eq_space */
         i32 side_i = strong_selected ? i : unit->eq_canEquip[i];  /* side space */
-        SDL_assert((side_i >= 0) && (side_i < SOTA_EQUIPMENT_SIZE));
+        SDL_assert((side_i >= ITEM1) && (side_i <= ITEM6));
 
         /* unit_item ensures tophand is stronghand */
         struct Inventory_item *item = Unit_InvItem(unit, side_i);
@@ -697,7 +697,7 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
         i32 item_dura_y_offset = LSM1_DURA_Y_OFFSET + i * (ITEM_ICON_H + 2) +
                                  (header_drawn * LSM_ROW_HEIGHT);
 
-        SDL_assert((side_i >= 0) && (side_i <= SOTA_EQUIPMENT_SIZE));
+        SDL_assert((side_i >= ITEM1) && (side_i <= ITEM6));
         i32 uses_left = weapon->item->stats.uses - item->used;
         stbsp_sprintf(numbuff, "%d\0\0\0\0", uses_left);
 

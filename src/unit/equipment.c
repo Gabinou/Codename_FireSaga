@@ -23,8 +23,8 @@ void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, i32 eq) {
         return;
     }
 
-    SDL_assert(eq >= 0);
-    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(eq >= ITEM1);
+    SDL_assert(eq < SOTA_EQUIPMENT_ARRAY_SIZE);
     SDL_assert(unit->_equipment[eq].id <= ITEM_NULL);
 
     _Unit_Item_Takeat(unit, item, eq);
@@ -36,7 +36,7 @@ void Unit_Item_Take(struct Unit *unit, struct Inventory_item item) {
     SDL_assert(unit->num_equipment < SOTA_EQUIPMENT_SIZE);
     SDL_assert(item.id > ITEM_NULL);
 
-    for (i32 eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
+    for (i32 eq = ITEM1; eq < SOTA_EQUIPMENT_ARRAY_SIZE; eq++) {
         if (unit->_equipment[eq].id == ITEM_NULL) {
             Unit_Item_Takeat(unit, item, eq);
             break;
@@ -45,16 +45,16 @@ void Unit_Item_Take(struct Unit *unit, struct Inventory_item item) {
 }
 
 void Unit_Equipment_Drop(struct Unit *unit) {
-    for (i32 eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
+    for (i32 eq = ITEM1; eq < SOTA_EQUIPMENT_ARRAY_SIZE; eq++) {
         Unit_Item_Drop(unit, eq);
     }
 }
 
 struct Inventory_item Unit_Item_Drop(struct Unit *unit, i32 eq) {
-    SDL_assert(eq >= 0);
-    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(eq >= ITEM1);
+    SDL_assert(eq < SOTA_EQUIPMENT_ARRAY_SIZE);
 
-    struct Inventory_item out  = unit->_equipment[eq];
+    struct Inventory_item out   = unit->_equipment[eq];
     unit->_equipment[eq]        = Inventory_item_default;
     if (unit->num_equipment > 0)
         unit->num_equipment--;
@@ -70,8 +70,8 @@ void Unit_Item_Swap(struct Unit *unit, i32 i1, i32 i2) {
     if (i1 == i2)
         return;
 
-    b32 i1_valid = (i1 >= 0) && (i1 < SOTA_EQUIPMENT_SIZE);
-    b32 i2_valid = (i2 >= 0) && (i2 < SOTA_EQUIPMENT_SIZE);
+    b32 i1_valid = (i1 >= ITEM1) && (i1 < SOTA_EQUIPMENT_ARRAY_SIZE);
+    b32 i2_valid = (i2 >= ITEM1) && (i2 < SOTA_EQUIPMENT_ARRAY_SIZE);
     if (i1_valid && i2_valid) {
         Equipment_Swap(unit->_equipment, i1, i2);
     } else {
@@ -84,10 +84,10 @@ void Unit_Item_Trade(struct Unit   *giver,  struct Unit *taker,
                      i32 eq_g,     i32    eq_t) {
     SDL_assert(giver);
     SDL_assert(taker);
-    SDL_assert(eq_g >= 0);
-    SDL_assert(eq_g < SOTA_EQUIPMENT_SIZE);
-    SDL_assert(eq_t >= 0);
-    SDL_assert(eq_t < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(eq_g >= ITEM1);
+    SDL_assert(eq_g < SOTA_EQUIPMENT_ARRAY_SIZE);
+    SDL_assert(eq_t >= ITEM1);
+    SDL_assert(eq_t < SOTA_EQUIPMENT_ARRAY_SIZE);
 
     struct Inventory_item buffer_giver = Unit_Item_Drop(giver, eq_g);
     struct Inventory_item buffer_taker = Unit_Item_Drop(taker, eq_t);
@@ -123,14 +123,14 @@ void Unit_Check_Equipped(struct Unit *unit) {
 // Does NOT check if item can be equipped
 void Unit_Equip(Unit *unit, i32 hand, i32 eq) {
     SDL_assert(unit);
-    SDL_assert(hand >= 0);
-    SDL_assert(hand < MAX_ARMS_NUM);
-    SDL_assert(eq >= 0);
-    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(hand >= UNIT_HAND_LEFT);
+    SDL_assert(hand <= MAX_ARMS_NUM);
+    SDL_assert(eq >= ITEM1);
+    SDL_assert(eq < SOTA_EQUIPMENT_ARRAY_SIZE);
     i32 id = Unit_Id_Equipment(unit, eq);
     SDL_assert(id > ITEM_NULL);
 
-    unit->_equipped[hand] = eq2equipped(eq);
+    unit->_equipped[hand - UNIT_HAND_LEFT] = eq;
 }
 
 void Unit_Unequip_All(Unit *unit) {
@@ -210,8 +210,8 @@ void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
     }
 
     unit->num_canEquip = 0;
-    for (i32 eq = 0; eq < SOTA_EQUIPMENT_SIZE; eq++) {
-        for (i32 hand = 0; hand < unit->arms_num; hand++) {
+    for (i32 eq = ITEM1; eq < SOTA_EQUIPMENT_ARRAY_SIZE; eq++) {
+        for (i32 hand = UNIT_HAND_LEFT; hand < unit->arms_num; hand++) {
             // canEquip hands
             canEquip_Eq(&can_equip, eq);
             can_equip.hand  = hand;
@@ -241,7 +241,7 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
         return (false);
     }
 
-    i32 eq = equipped2eq(can_equip._eq);
+    i32 eq = can_equip._eq;
     i32 id = Unit_Id_Equipment(unit, eq);
 
     if (id <= ITEM_NULL) {
@@ -326,8 +326,8 @@ b32 Unit_canEquip_Archetype(Unit *unit, i32 id, i64 archetype) {
 // IF equipment can be two-handed, CAN the unit equip it?
 // TODO: Tetrabrachios twohanding?
 b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
-    SDL_assert(eq >= 0);
-    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(eq >= ITEM1);
+    SDL_assert(eq < SOTA_EQUIPMENT_ARRAY_SIZE);
     SDL_assert(unit                 != NULL);
     SDL_assert(unit->weapons_dtab   != NULL);
 
@@ -350,7 +350,7 @@ b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     //      - Other hand equipped different wpn.
     b32 eq_diff         = (eq_other != eq);
     b32 strict          = (mode == TWO_HAND_EQ_MODE_STRICT);
-    b32 eq_in_bound     = (eq_other >= 0) && (eq_other < SOTA_EQUIPMENT_SIZE);
+    b32 eq_in_bound     = (eq_other >= ITEM1) && (eq_other < SOTA_EQUIPMENT_ARRAY_SIZE);
     b32 two_hand_cant   = two_hand_only && (eq_in_bound && eq_diff);
     // SDL_Log("eq_other %d", eq_other);
     // SDL_Log("eq_diff, eq_in_bound, two_hand_only %d %d %d", eq_diff, eq_in_bound, two_hand_only);
@@ -368,8 +368,8 @@ b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
 
 // IF equipment can be one-handed, CAN the unit equip it?
 b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
-    SDL_assert(eq >= 0);
-    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(eq >= ITEM1);
+    SDL_assert(eq < SOTA_EQUIPMENT_ARRAY_SIZE);
     SDL_assert(unit                 != NULL);
     SDL_assert(unit->weapons_dtab   != NULL);
 
@@ -397,7 +397,7 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     // One-hand only wpn can't be equipped if:
     //      - Other hand equipped different wpn.
     b32 eq_same         = (eq_other == eq);
-    b32 eq_in_bound     = (eq_other >= 0) && (eq_other < SOTA_EQUIPMENT_SIZE);
+    b32 eq_in_bound     = (eq_other >= ITEM1) && (eq_other < SOTA_EQUIPMENT_ARRAY_SIZE);
 
     b32 one_hand_only   = Weapon_OneHand_Only(wpn);
     b32 one_hand_cant   = one_hand_only && (eq_in_bound && eq_same);
@@ -538,11 +538,11 @@ b32 Unit_isdualWielding(struct Unit *unit) {
 // TODO: Tetrabrachios twohanding?
 b32 Unit_istwoHanding(Unit *unit) {
     i32 eq_left     = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
-    if ((eq_left  < 0) || (eq_left  >= SOTA_EQUIPMENT_SIZE)) {
+    if ((eq_left  < ITEM1) || (eq_left  >= SOTA_EQUIPMENT_ARRAY_SIZE)) {
         return (false);
     }
     i32 eq_right    = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
-    if ((eq_right  < 0) && (eq_right  >= SOTA_EQUIPMENT_SIZE)) {
+    if ((eq_right  < ITEM1) && (eq_right  >= SOTA_EQUIPMENT_ARRAY_SIZE)) {
         return (false);
     }
     return (eq_left == eq_right);
@@ -670,19 +670,18 @@ Item *Unit_Get_Item(Unit *unit, i32 eq) {
 /* Order in _equipment of equipped weapon */
 i32 Unit_Eq_Equipped(Unit *unit, i32 eq) {
     SDL_assert(unit != NULL);
-    SDL_assert(eq >= 0);
-    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
-    SDL_assert(eq < UNIT_ARMS_NUM);
-    SDL_assert(eq < unit->arms_num);
-    // ITEM_EQUIPPED_DIFF should only be used here _equipped only accessed here
-    return (unit->_equipped[eq] - ITEM_EQUIPPED_DIFF);
+    SDL_assert(eq >= ITEM1);
+    SDL_assert(eq < SOTA_EQUIPMENT_ARRAY_SIZE);
+    SDL_assert(eq < (UNIT_ARMS_NUM + ITEM1));
+    SDL_assert(eq < (unit->arms_num + ITEM1));
+    return (unit->_equipped[eq]);
 }
 
 /* ID of equipment item */
 i32 Unit_Id_Equipment(Unit *unit, i32 eq) {
     SDL_assert(unit != NULL);
-    SDL_assert(eq >= 0);
-    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(eq >= ITEM1);
+    SDL_assert(eq < SOTA_EQUIPMENT_ARRAY_SIZE);
     return (unit->_equipment[eq].id);
 }
 

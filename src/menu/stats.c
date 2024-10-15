@@ -928,8 +928,10 @@ static void _StatsMenu_Draw_WpnTypes(struct StatsMenu *stats_menu, SDL_Renderer 
     }
 }
 
-static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *renderer, int i) {
+static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *renderer, int eq) {
     /* -- Preliminaries -- */
+    SDL_assert(eq >= ITEM1);
+    SDL_assert(eq < SOTA_EQUIPMENT_ARRAY_SIZE);
     SDL_Rect dstrect, srcrect;
     char numbuff[10];
     struct Unit *unit = stats_menu->unit;
@@ -939,22 +941,22 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
     srcrect.w = ITEM_ICON_W;
     srcrect.h = ITEM_ICON_H;
     srcrect.x = SM_ITEML_X;
-    srcrect.y = SM_ITEM_Y + i * SM_LINE;
+    srcrect.y = SM_ITEM_Y + (eq - ITEM1) * SM_LINE;
     if (Unit_istwoHanding(stats_menu->unit))
         srcrect.y = SM_ITEM_TWOHAND_Y;
-    else if (i == UNIT_HAND_RIGHT)
+    else if (eq == UNIT_HAND_RIGHT)
         srcrect.x = SM_ITEMR_X;
 
-    if (i == 0)
+    if (eq == ITEM1)
         srcrect.x += SM_HANDL_X_OFFSET;
 
     SDL_RenderFillRect(renderer, &srcrect);
     /* - Iem icon - */
-    item_y_offset      = ITEM1_NAME_Y_OFFSET + i * (ITEM_ICON_H + ITEM_ICON_SPACE);
-    item_dura_y_offset = ITEM1_DURA_Y_OFFSET + i * (ITEM_ICON_H + ITEM_ICON_SPACE);
+    item_y_offset      = ITEM1_NAME_Y_OFFSET + (eq - ITEM1) * (ITEM_ICON_H + ITEM_ICON_SPACE);
+    item_dura_y_offset = ITEM1_DURA_Y_OFFSET + (eq - ITEM1) * (ITEM_ICON_H + ITEM_ICON_SPACE);
 
     /* Writing - if no item, then next*/
-    struct Inventory_item *invitem = Unit_InvItem(unit, i);
+    struct Inventory_item *invitem = Unit_InvItem(unit, eq);
 
     if (invitem->id <= ITEM_NULL) {
         int x = ITEM1_NAME_X_OFFSET, y = item_y_offset;
@@ -987,9 +989,9 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
 
     int width_uses_left = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
     int x = ITEM1_DURA_X_OFFSET - width_uses_left / 2, y = item_dura_y_offset;
-    if (i == UNIT_HAND_LEFT)
+    if (eq == UNIT_HAND_LEFT)
         x += ITEM_ICON_W;
-    else if (i == UNIT_HAND_RIGHT)
+    else if (eq == UNIT_HAND_RIGHT)
         x = SM_ITEMR_X - width_uses_left - 1;
 
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
@@ -1001,14 +1003,15 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
     s8 item_name_upper = s8_mut(item_name.data);
     item_name_upper = s8_toUpper(item_name_upper);
     int width = PixelFont_Width_Len(stats_menu->pixelnours_big, item_name.data);
-    int limit = i < ITEM_HANDS_INDEX ? ITEM1_NAME_W_MAX : ITEM3_NAME_W_MAX;
+    int limit = (eq - ITEM1) < ITEM_HANDS_INDEX ? ITEM1_NAME_W_MAX : ITEM3_NAME_W_MAX;
     x = ITEM1_NAME_X_OFFSET;
-    if (i == UNIT_HAND_LEFT)
+    if (eq == UNIT_HAND_LEFT)
         x += ITEM_ICON_W;
 
     if (width <= limit) {
-        if (i == UNIT_HAND_RIGHT)
-            x = SM_ITEMR_X - width_uses_left - width;
+        if (eq == UNIT_HAND_RIGHT)
+            if (eq == UNIT_HAND_RIGHT)
+                x = SM_ITEMR_X - width_uses_left - width;
 
         /* Name is short enough: write on one line */
         y = item_y_offset;
@@ -1022,7 +1025,7 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
     /* find last space to replace with \n */
     char *last_space = strrchr(item_name_upper.data, ' ');
 
-    if (i == UNIT_HAND_RIGHT) {
+    if (eq == UNIT_HAND_RIGHT) {
         size_t len2 = strlen(last_space + 1);
         size_t len1 = item_name_upper.num - len2 - 1;
 
@@ -1042,7 +1045,7 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
 
 static void _StatsMenu_Draw_Equipment(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* --- Equipment --- */
-    for (u8 i = 0; i < SOTA_EQUIPMENT_SIZE; i++) {
+    for (u8 i = ITEM1; i < SOTA_EQUIPMENT_ARRAY_SIZE; i++) {
         _StatsMenu_Draw_Item(stats_menu, renderer, i);
     }
 
