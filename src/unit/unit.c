@@ -1225,8 +1225,8 @@ u8 Unit_Brave(struct Unit *unit) {
     // TODO: use AP to compute brave factor
     // TODO: Brave for all hands
     if (Unit_isEquipped(unit, UNIT_HAND_LEFT)) {
-        int id = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
-        weapon = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
+        int id = Unit_Id_Equipped(unit, UNIT_HAND_LEFT);
+        weapon = DTAB_GET(unit->weapons_dtab, id);
         temp_effect = weapon->item->passive;
         if (flagsum_isIn(temp_effect, ITEM_EFFECT_BRAVE2X))
             out_brave = 2;
@@ -1237,8 +1237,8 @@ u8 Unit_Brave(struct Unit *unit) {
     }
 
     if (Unit_isEquipped(unit, UNIT_HAND_RIGHT)) {
-        int id = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
-        weapon = DTAB_GET(unit->weapons_dtab, unit->_equipment[id].id);
+        int id = Unit_Id_Equipped(unit, UNIT_HAND_RIGHT);
+        weapon = DTAB_GET(unit->weapons_dtab, id);
         temp_effect = weapon->item->passive;
         if (flagsum_isIn(temp_effect, ITEM_EFFECT_BRAVE2X))
             out_brave = (out_brave >  2) ? out_brave : 2;

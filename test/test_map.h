@@ -143,8 +143,6 @@ void test_map_usable(void) {
 
     /* --- Testing 1 range only --- */
     silou->equippable = ITEM_TYPE_SWORD;
-    Unit_Equip(silou, UNIT_HAND_LEFT, ITEM1);
-    Unit_Unequip(silou, UNIT_HAND_RIGHT);
     silou->_equipment[0].id             = ITEM_ID_FLEURET;
     silou->_equipment[1].id             = ITEM_ID_IRON_AXE;
     silou->_equipment[2].id             = ITEM_ID_IRON_LANCE;
@@ -160,6 +158,9 @@ void test_map_usable(void) {
     erwin_pos->tilemap_pos.y    = 1;
     enemy_pos->tilemap_pos.x    = 0;
     enemy_pos->tilemap_pos.y    = 2;
+
+    Unit_Equip(silou, UNIT_HAND_LEFT, ITEM1);
+    Unit_Unequip(silou, UNIT_HAND_RIGHT);
 
     Unit_stats eff_stats = Unit_effectiveStats(silou);
     SDL_assert(silou->current_stats.move == eff_stats.move);

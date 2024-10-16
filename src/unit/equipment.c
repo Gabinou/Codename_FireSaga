@@ -206,7 +206,9 @@ void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
     Unit_Equipped_Export(unit, start_equipped);
 
     for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
-        Unit_Equip(unit, hand, can_equip._loadout[hand - ITEM1]);
+        int eq = can_equip._loadout[hand - ITEM1];
+        if (Unit_Id_Equipment(unit, eq) > ITEM_NULL)
+            Unit_Equip(unit, hand, eq);
     }
 
     unit->num_canEquip = 0;
