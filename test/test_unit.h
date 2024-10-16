@@ -662,32 +662,34 @@ void test_canEquip_TwoHand() {
 
     // Any handed Weapon
     weapon->handedness = WEAPON_HAND_ANY;
-    for (i32 eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
+    for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
         // One handed Weapon already equipped in left hand
-        Unit_Equip(&Silou, UNIT_HAND_LEFT, SOTA_EQUIPMENT_SIZE - eq - 1);
+        int eq_opposite = SOTA_EQUIPMENT_SIZE - eq + ITEM1;
+        Unit_Equip(&Silou, UNIT_HAND_LEFT, eq_opposite);
         Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
         nourstest_true(Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_LEFT, mode));
         nourstest_true(Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_RIGHT, mode));
 
         // One handed Weapon already equipped in right hand
         Unit_Unequip(&Silou, UNIT_HAND_LEFT);
-        Unit_Equip(&Silou, UNIT_HAND_RIGHT, SOTA_EQUIPMENT_SIZE - eq - 1);
+        Unit_Equip(&Silou, UNIT_HAND_RIGHT, eq_opposite);
         nourstest_true(Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_LEFT, mode));
         nourstest_true(Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_RIGHT, mode));
     }
 
     // Two handed Weapon
     weapon->handedness = WEAPON_HAND_TWO;
-    for (i32 eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
+    for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
         // Other weapon weapon equipped in left hand
-        Unit_Equip(&Silou, UNIT_HAND_LEFT, SOTA_EQUIPMENT_SIZE - eq - 1);
+        int eq_opposite = SOTA_EQUIPMENT_SIZE - eq + ITEM1;
+        Unit_Equip(&Silou, UNIT_HAND_LEFT, eq_opposite);
         Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
         nourstest_true( Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_LEFT, mode));
         nourstest_true(!Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_RIGHT, mode));
 
         // Other weapon weapon equipped in right hand
         Unit_Unequip(&Silou, UNIT_HAND_LEFT);
-        Unit_Equip(&Silou, UNIT_HAND_RIGHT, SOTA_EQUIPMENT_SIZE - eq - 1);
+        Unit_Equip(&Silou, UNIT_HAND_RIGHT, eq_opposite);
         nourstest_true(!Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_LEFT, mode));
         nourstest_true( Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_RIGHT, mode));
     }
@@ -698,7 +700,7 @@ void test_canEquip_TwoHand() {
     weapon2->handedness = WEAPON_HAND_TWO;
 
     /* Try to equip a one hand weapon when already in other hand */
-    Unit_Equip(&Silou, UNIT_HAND_LEFT, 0);
+    Unit_Equip(&Silou, UNIT_HAND_LEFT, ITEM1);
     Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
     Silou._equipment[0].id    = ITEM_ID_FLEURET;
     Silou._equipment[1].id    = ITEM_ID_RAPIERE;
@@ -708,7 +710,7 @@ void test_canEquip_TwoHand() {
 
     /* Try to equip a one hand weapon when already in other hand with type
          that can't be twohanded */
-    Unit_Equip(&Silou,      UNIT_HAND_LEFT, 0);
+    Unit_Equip(&Silou,      UNIT_HAND_LEFT, ITEM1);
     Unit_Unequip(&Silou,    UNIT_HAND_RIGHT);
     Silou._equipment[0].id    = ITEM_ID_FLEURET;
     Silou._equipment[1].id    = ITEM_ID_RAPIERE;
@@ -1089,7 +1091,7 @@ void test_range(void) {
 
     /* Unit_Range_Eq */
     Silou.equippable = ITEM_TYPE_SWORD;
-    for (int eq = 0; eq < SOTA_EQUIPMENT_SIZE; ++eq) {
+    for (int eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; ++eq) {
         range = Unit_Range_Eq(&Silou, eq, ITEM_ARCHETYPE_WEAPON);
         nourstest_true(Range_Valid(*range));
         nourstest_true(wpns[eq]->stats.range.min == range->min);
@@ -1110,31 +1112,31 @@ void test_range(void) {
         nourstest_true(!Range_Valid(*range));
     }
 
-    wpn = DTAB_GET(weapons_dtab, Silou._equipment[1].id);
+    wpn = DTAB_GET(weapons_dtab, Unit_Id_Equipment(&Silou, ITEM2));
     SDL_assert(wpn->stats.range.min == 1);
     SDL_assert(wpn->stats.range.max == 2);
 
     /* Unit_Range_Loadout */
-    Unit_Equip(&Silou, UNIT_HAND_LEFT, 0);
-    Unit_Equip(&Silou, UNIT_HAND_RIGHT, 1);
+    Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM1);
+    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM2);
     range = Unit_Range_Equipped(&Silou, ITEM_TYPE_SWORD);
     nourstest_true(range->min == wpns[1]->stats.range.min);
     nourstest_true(range->max == wpns[1]->stats.range.max);
 
-    Unit_Equip(&Silou, UNIT_HAND_LEFT, 1);
-    Unit_Equip(&Silou, UNIT_HAND_RIGHT, 2);
+    Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM2);
+    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM3);
     range = Unit_Range_Equipped(&Silou, ITEM_TYPE_SWORD);
     nourstest_true(range->min == wpns[1]->stats.range.min);
     nourstest_true(range->max == wpns[2]->stats.range.max);
 
-    Unit_Equip(&Silou, UNIT_HAND_LEFT, 4);
-    Unit_Equip(&Silou, UNIT_HAND_RIGHT, 5);
+    Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM5);
+    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM6);
     range = Unit_Range_Equipped(&Silou, ITEM_TYPE_SWORD);
     nourstest_true(range->min == wpns[4]->stats.range.min);
     nourstest_true(range->max == wpns[5]->stats.range.max);
 
-    Unit_Equip(&Silou, UNIT_HAND_LEFT, 3);
-    Unit_Equip(&Silou, UNIT_HAND_RIGHT, 4);
+    Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM4);
+    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM5);
     range = Unit_Range_Equipped(&Silou, ITEM_TYPE_SWORD);
     nourstest_true(range->min == wpns[3]->stats.range.min);
     nourstest_true(range->max == wpns[4]->stats.range.max);

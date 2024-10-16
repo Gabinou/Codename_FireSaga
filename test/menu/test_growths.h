@@ -53,7 +53,7 @@ void test_menu_growths() {
     Weapon_Load(weapons_dtab, in_wpn.id);
 
     int stronghand  = Unit_Hand_Strong(&Silou);
-    int weakhand    = 1 - stronghand;
+    int weakhand    = Unit_Hand_Weak(&Silou);
 
     Unit_Item_Drop(&Silou,           weakhand);
     Unit_Item_Takeat(&Silou, in_wpn, weakhand);

@@ -1190,7 +1190,7 @@ enum UNIT_HAND {
     TETRABRACHIOS_ARMS_NUM      = 4,
     MAX_ARMS_NUM                = 4,
 };
-#define UNIT_OTHER_HAND(hand) 1 - hand
+#define UNIT_OTHER_HAND(hand) 2 - (hand - 1) /* Only for L/R hands*/
 
 enum WEAPON_HANDEDNESS {
     WEAPON_HAND_NULL         = 0,
