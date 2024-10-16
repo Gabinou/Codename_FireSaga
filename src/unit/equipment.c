@@ -4,7 +4,7 @@
 /* --- Items --- */
 /* Private item atker at specific spot. Does no checks */
 void _Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, i32 eq) {
-    unit->_equipment[eq] = item;
+    unit->_equipment[eq - ITEM1] = item;
 }
 
 /* Take item at specific spot */
@@ -25,7 +25,7 @@ void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, i32 eq) {
 
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
-    SDL_assert(unit->_equipment[eq].id <= ITEM_NULL);
+    SDL_assert(unit->_equipment[eq - ITEM1].id <= ITEM_NULL);
 
     _Unit_Item_Takeat(unit, item, eq);
     unit->num_equipment++;
@@ -37,7 +37,7 @@ void Unit_Item_Take(struct Unit *unit, struct Inventory_item item) {
     SDL_assert(item.id > ITEM_NULL);
 
     for (i32 eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
-        if (unit->_equipment[eq].id == ITEM_NULL) {
+        if (unit->_equipment[eq - ITEM1].id == ITEM_NULL) {
             Unit_Item_Takeat(unit, item, eq);
             break;
         }
@@ -54,8 +54,8 @@ struct Inventory_item Unit_Item_Drop(struct Unit *unit, i32 eq) {
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
 
-    struct Inventory_item out   = unit->_equipment[eq];
-    unit->_equipment[eq]        = Inventory_item_default;
+    struct Inventory_item out       = unit->_equipment[eq - ITEM1];
+    unit->_equipment[eq - ITEM1]    = Inventory_item_default;
     if (unit->num_equipment > 0)
         unit->num_equipment--;
     else
@@ -113,7 +113,7 @@ void _Unit_Check_Equipped(struct Unit *unit, i32 hand) {
 
 void Unit_Check_Equipped(struct Unit *unit) {
     /* Checks if equipped weapon is BORKED, de-equips if so */
-    for (i32 hand = 0; hand < unit->arms_num; hand++) {
+    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
         if (Unit_hasHand(unit, hand)) {
             _Unit_Check_Equipped(unit, hand);
         }
@@ -145,7 +145,7 @@ void Unit_Unequip(struct Unit *unit, i32 hand) {
     SDL_assert(hand < MAX_ARMS_NUM);
 
     /* -- Unequip -- */
-    unit->_equipped[hand] = ITEM_UNEQUIPPED;
+    unit->_equipped[hand - ITEM1] = ITEM_UNEQUIPPED;
 
     if (unit->arms_num == UNIT_ARMS_NUM) {
         /* -- If twohanding, not anymore! -- */
@@ -160,7 +160,7 @@ void Unit_Unequip(struct Unit *unit, i32 hand) {
 b32 Unit_canEquip_AnyHand(Unit *unit, canEquip can_equip) {
     /* Check that unit has hands to equip with */
     b32 found = false;
-    for (i32 hand = 0; hand < unit->arms_num; hand++) {
+    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
         if (Unit_hasHand(unit, hand)) {
             found = true;
             break;
@@ -172,7 +172,7 @@ b32 Unit_canEquip_AnyHand(Unit *unit, canEquip can_equip) {
     }
 
     /* Check that unit can equip item in hand */
-    for (i32 hand = 0; hand < unit->arms_num; hand++) {
+    for (i32 hand = UNIT_HAND_LEFT; hand < unit->arms_num; hand++) {
         /* Skip hands that unit doesn't have */
         if (!Unit_hasHand(unit, hand)) {
             continue;
@@ -205,8 +205,8 @@ void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
     i32 start_equipped[MAX_ARMS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
 
-    for (i32 hand = 0; hand < unit->arms_num; hand++) {
-        unit->_equipped[hand] = can_equip._loadout[hand];
+    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
+        Unit_Equip(unit, hand, can_equip._loadout[hand - ITEM1]);
     }
 
     unit->num_canEquip = 0;
@@ -288,8 +288,8 @@ b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
     Unit_Equipped_Export(unit, start_equipped);
 
     /* Equip loadout */
-    for (i32 hand = 0; hand < unit->arms_num; hand++) {
-        unit->_equipped[hand] = can_equip._loadout[hand];
+    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
+        Unit_Equip(unit, hand, can_equip._loadout[hand - ITEM1]);
     }
     /* Check if can equip */
     b32 can = _Unit_canEquip(unit, can_equip);
@@ -567,7 +567,7 @@ void _Unit_Item_Deplete(struct Unit *unit, i32 eq, i64 archetype) {
     // SDL_Log("Depleting");
     struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);
     struct Item   *item   = weapon->item;
-    Inventory_item_Deplete(&unit->_equipment[eq], item->stats.uses);
+    Inventory_item_Deplete(&unit->_equipment[eq - ITEM1], item->stats.uses);
 }
 
 void _Unit_Equipped_Deplete(Unit *unit, i32 hand, i64 archetype) {
@@ -605,8 +605,8 @@ void Unit_Equipped_Shields_Deplete(struct Unit *unit) {
 }
 
 b32 Unit_isEquipped(Unit *unit, i32 hand) {
-    b32 min_bound = (unit->_equipped[hand] > ITEM_UNEQUIPPED);
-    b32 max_bound = (unit->_equipped[hand] <= SOTA_EQUIPMENT_SIZE);
+    b32 min_bound = (Unit_Eq_Equipped(unit, hand) > ITEM_UNEQUIPPED);
+    b32 max_bound = (Unit_Eq_Equipped(unit, hand) <= SOTA_EQUIPMENT_SIZE);
     return (min_bound && max_bound);
 }
 
@@ -616,11 +616,11 @@ Inventory_item *Unit_Item_Equipped(Unit *unit, i32 hand) {
 
     i32 eq = Unit_Eq_Equipped(unit, hand);
 
-    return (&unit->_equipment[eq]);
+    return (&unit->_equipment[eq - ITEM1]);
 }
 
 Inventory_item *Unit_InvItem(Unit *unit, i32 eq) {
-    return (&unit->_equipment[eq]);
+    return (&unit->_equipment[eq - ITEM1]);
 }
 
 /* -- Getters -- */
@@ -640,7 +640,7 @@ Weapon *Unit_Weapon(Unit *unit, i32 eq) {
     SDL_assert(unit->weapons_dtab);
 
     /* Skipped if not a weapon */
-    i32 id = unit->_equipment[eq].id;
+    i32 id = unit->_equipment[eq - ITEM1].id;
     if (!Weapon_ID_isValid(id))
         return (NULL);
 
@@ -656,7 +656,7 @@ Item *Unit_Get_Item(Unit *unit, i32 eq) {
     SDL_assert(unit->items_dtab);
 
     /* Skipped if not an item */
-    i32 id = unit->_equipment[eq].id;
+    i32 id = unit->_equipment[eq - ITEM1].id;
     if (Weapon_ID_isValid(id))
         return (NULL);
 
@@ -671,28 +671,31 @@ Item *Unit_Get_Item(Unit *unit, i32 eq) {
 i32 Unit_Eq_Equipped(Unit *unit, i32 eq) {
     SDL_assert(unit != NULL);
     SDL_assert(eq >= ITEM1);
-    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(eq <= SOTA_EQUIPMENT_SIZE);
     SDL_assert(eq < (UNIT_ARMS_NUM + ITEM1));
     SDL_assert(eq < (unit->arms_num + ITEM1));
-    return (unit->_equipped[eq]);
+    return (unit->_equipped[eq - ITEM1]);
 }
 
 /* ID of equipment item */
 i32 Unit_Id_Equipment(Unit *unit, i32 eq) {
     SDL_assert(unit != NULL);
     SDL_assert(eq >= ITEM1);
-    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
-    return (unit->_equipment[eq].id);
+    SDL_assert(eq <= SOTA_EQUIPMENT_SIZE);
+    return (unit->_equipment[eq - ITEM1].id);
 }
 
 /* ID of equipped weapon */
 i32 Unit_Id_Equipped(Unit *unit, i32 hand) {
     SDL_assert(unit != NULL);
+    SDL_assert(hand >= UNIT_HAND_LEFT);
+    SDL_assert(hand <= unit->arms_num);
+
     if (!Unit_isEquipped(unit, hand)) {
         return (ITEM_NULL);
     }
     i32 eq = Unit_Eq_Equipped(unit, hand);
-    return (unit->_equipment[eq].id);
+    return (unit->_equipment[eq - ITEM1].id);
 }
 
 /* -- Use -- */

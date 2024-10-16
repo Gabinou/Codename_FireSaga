@@ -41,8 +41,6 @@ void test_combat_stats() {
     // Unit_Item_Takeat(defender, in_wpn, defender_equip_hand);
     // Unit_Item_Drop(attacker,           attacker_equip_hand);
     // Unit_Item_Takeat(attacker, in_wpn, attacker_equip_hand);
-    // defender->_equipped[] = true;
-    // attacker->_equipped[attacker_equip_hand] = true;
     // nourstest_true(Unit_canAttack(defender));
     // nourstest_true(Unit_canAttack(attacker));
     // Unit_setStats(defender, defender_stats);
@@ -370,12 +368,12 @@ void test_combat_flow() {
     struct Weapon defender_weapon = Weapon_default;
 
     if (Unit_isEquipped(&defender, defender_equip_hand)) {
-        defender_weapon = *((struct Weapon *)DTAB_GET(weapons_dtab,
-                                                      defender._equipment[defender_equip_hand].id));
+        defender_weapon = *((struct Weapon *)DTAB_GET(weapons_dtab, Unit_Id_Equipment(&defender,
+                                                      defender_equip_hand)));
     }
     if (Unit_isEquipped(&attacker, attacker_equip_hand)) {
-        attacker_weapon = *((struct Weapon *)DTAB_GET(weapons_dtab,
-                                                      attacker._equipment[attacker_equip_hand].id));
+        attacker_weapon = *((struct Weapon *)DTAB_GET(weapons_dtab, Unit_Id_Equipment(&defender,
+                                                      attacker_equip_hand)));
     }
 
     attacker_hit = Equation_Unit_Hit(attacker_weapon.stats.hit, attacker.effective_stats.dex,

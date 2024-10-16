@@ -518,10 +518,10 @@ void test_menu_pre_combat() {
     nourstest_true(!Unit_istwoHanding(&Hamilcar));
     Unit_Item_Drop(&Hamilcar, weakhand);
     Unit_Item_Drop(&Silou, weakhand);
-    Silou._equipment[0].id    = ITEM_ID_BROADSWORD;
-    Silou._equipment[1].id    = ITEM_ID_BROADSWORD;
-    Hamilcar._equipment[0].id = ITEM_ID_BROADSWORD;
-    Hamilcar._equipment[1].id = ITEM_ID_BROADSWORD;
+    Silou._equipment[ITEM1 - ITEM1].id    = ITEM_ID_BROADSWORD;
+    Silou._equipment[ITEM2 - ITEM1].id    = ITEM_ID_BROADSWORD;
+    Hamilcar._equipment[ITEM1 - ITEM1].id = ITEM_ID_BROADSWORD;
+    Hamilcar._equipment[ITEM2 - ITEM1].id = ITEM_ID_BROADSWORD;
     Unit_Equip(&Silou,    weakhand, stronghand);
     Unit_Equip(&Hamilcar, weakhand, stronghand);
     nourstest_true(Unit_istwoHanding(&Silou));

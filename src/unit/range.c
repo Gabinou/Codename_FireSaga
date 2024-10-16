@@ -124,7 +124,7 @@ struct Range *Unit_Range_Equipped(Unit *unit, i64 archetype) {
     struct Range *range = &unit->computed_stats.range_loadout;
     *range = Range_default;
 
-    for (int hand = 0; hand < unit->arms_num; hand++) {
+    for (int hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
         int id = Unit_Id_Equipped(unit, hand);
 
         /* Skip if no item */

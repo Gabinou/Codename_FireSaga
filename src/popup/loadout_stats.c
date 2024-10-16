@@ -604,10 +604,10 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
 void PopUp_Loadout_Stats_Unit(struct PopUp_Loadout_Stats *pls, struct Unit *unit) {
     SDL_assert(unit != NULL);
     pls->unit = unit;
-    int eq_left = unit->eq_canEquip[unit->_equipped[UNIT_HAND_LEFT]];
-    pls->eq_left  = ITEM_UNEQUIPPED;
-    int eq_right = unit->eq_canEquip[unit->_equipped[UNIT_HAND_RIGHT]];
-    pls->eq_right = ITEM_UNEQUIPPED;
+    int eq_left     = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
+    pls->eq_left    = ITEM_UNEQUIPPED;
+    int eq_right    = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
+    pls->eq_right   = ITEM_UNEQUIPPED;
 
     Unit_Unequip(unit, UNIT_HAND_LEFT);
     Unit_Unequip(unit, UNIT_HAND_RIGHT);

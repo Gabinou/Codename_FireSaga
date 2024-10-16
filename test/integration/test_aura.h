@@ -47,8 +47,8 @@ void test_aura_apply(int argc, char *argv[]) {
     Unit_Item_Drop(     bearer, UNIT_HAND_RIGHT);
     Unit_Item_Takeat(   bearer, standard, UNIT_HAND_RIGHT);
     Unit_Equip(bearer, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
-    SDL_assert(Unit_isEquipped(erwin, UNIT_HAND_RIGHT));
-    SDL_assert(bearer->_equipment[UNIT_HAND_RIGHT].id == ITEM_ID_IMPERIAL_STANDARD);
+    SDL_assert(Unit_isEquipped(bearer, UNIT_HAND_RIGHT));
+    SDL_assert(Unit_Id_Equipment(bearer, UNIT_HAND_RIGHT) == ITEM_ID_IMPERIAL_STANDARD);
 
     /* Place Friendly 1 inside */
     pos.x = 3;
@@ -183,7 +183,7 @@ void test_aura_decay(int argc, char *argv[]) {
     Unit_Item_Takeat(   bearer, standard, UNIT_HAND_RIGHT);
     Unit_Equip(bearer, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
     SDL_assert(Unit_isEquipped(bearer, UNIT_HAND_RIGHT) == true);
-    SDL_assert(bearer->_equipment[UNIT_HAND_RIGHT].id == ITEM_ID_IMPERIAL_STANDARD);
+    SDL_assert(Unit_Id_Equipment(bearer, UNIT_HAND_RIGHT) == ITEM_ID_IMPERIAL_STANDARD);
 
     /* Place Friendly 1 inside */
     pos.x = 3;
@@ -385,7 +385,7 @@ void test_aura_fsm(int argc, char *argv[]) {
     Unit_Item_Takeat(   erwin, standard, UNIT_HAND_RIGHT);
     Unit_Equip(         erwin, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
     SDL_assert(Unit_isEquipped(erwin, UNIT_HAND_RIGHT) == true);
-    SDL_assert(erwin->_equipment[UNIT_HAND_RIGHT].id == ITEM_ID_IMPERIAL_STANDARD);
+    SDL_assert(Unit_Id_Equipment(erwin, UNIT_HAND_RIGHT) == ITEM_ID_IMPERIAL_STANDARD);
 
     /* Move Friendly 1 inside */
     pos.x = 0;

@@ -143,8 +143,8 @@ void test_map_usable(void) {
 
     /* --- Testing 1 range only --- */
     silou->equippable = ITEM_TYPE_SWORD;
-    silou->_equipped[UNIT_HAND_LEFT]    =  0;
-    silou->_equipped[UNIT_HAND_RIGHT]   = -1;
+    Unit_Equip(silou, UNIT_HAND_LEFT, ITEM1);
+    Unit_Unequip(silou, UNIT_HAND_RIGHT);
     silou->_equipment[0].id             = ITEM_ID_FLEURET;
     silou->_equipment[1].id             = ITEM_ID_IRON_AXE;
     silou->_equipment[2].id             = ITEM_ID_IRON_LANCE;

@@ -114,7 +114,7 @@ int Unit_Hand_Strong(struct Unit *unit) {
 
 int Unit_Hand_Weak(struct Unit *unit) {
     SDL_assert(unit != NULL);
-    return (1 - Unit_Hand_Strong(unit));
+    return ((unit->handedness == UNIT_HAND_LEFTIE) ? UNIT_HAND_RIGHT : UNIT_HAND_LEFT);
 }
 
 b32 Unit_hasHand(Unit *unit, i32 hand) {
@@ -514,7 +514,7 @@ b32 Unit_canAttack(struct Unit *unit) {
     SDL_assert(unit != NULL);
     SDL_assert(unit->weapons_dtab != NULL);
 
-    for (int hand = 0; hand < unit->arms_num; hand++) {
+    for (int hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
         if (_Unit_canAttack(unit, hand)) {
             // SDL_Log("CanAttack!");
             return (true);
@@ -578,7 +578,7 @@ i32 *Unit_computeDefense(struct Unit *unit) {
     /* Shield protection */
     int prot_P = 0, prot_M = 0;
 
-    for (i32 hand = 0; hand < unit->arms_num; hand++) {
+    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
         i32 *prot;
         if (prot = Unit_Shield_Protection(unit, hand)) {
             prot_P += prot[DMG_TYPE_PHYSICAL];
@@ -617,7 +617,7 @@ i32 *Unit_computeAttack(struct Unit *unit, int distance) {
 
     struct Weapon *weapon;
     /* Get stats of both weapons */
-    for (i32 hand   = 0; hand < unit->arms_num; hand++) {
+    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
         if (!Unit_isEquipped(unit, hand))
             continue;
 
@@ -786,7 +786,7 @@ i32 Unit_computeHit(struct Unit *unit, int distance) {
     struct Weapon *weapon;
 
     /* Get stats of both weapons */
-    for (i32 hand = 0; hand < unit->arms_num; hand++) {
+    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
         if (!Unit_isEquipped(unit, hand))
             continue;
 
@@ -821,7 +821,7 @@ i32 Unit_computeDodge(struct Unit *unit, int distance) {
     i32 dodges[MAX_ARMS_NUM]    = {0};
     struct Weapon *weapon;
 
-    for (i32 hand = 0; hand < unit->arms_num; hand++) {
+    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
         if (!Unit_isEquipped(unit, hand))
             continue;
 
@@ -857,7 +857,7 @@ i32 Unit_computeCritical(struct Unit *unit, int distance) {
     i32 crits[MAX_ARMS_NUM] = {0};
     struct Weapon *weapon;
 
-    for (i32 hand = 0; hand < unit->arms_num; hand++) {
+    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
         if (!Unit_isEquipped(unit, hand))
             continue;
 
@@ -888,7 +888,7 @@ i32 Unit_computeFavor(struct Unit *unit, int distance) {
     i32 favors[MAX_ARMS_NUM] = {0};
     struct Weapon *weapon;
 
-    for (i32 hand = 0; hand < unit->arms_num; hand++) {
+    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
         if (!Unit_isEquipped(unit, hand))
             continue;
 
@@ -936,7 +936,7 @@ i32 Unit_computeSpeed(struct Unit *unit, int distance) {
     i32 wgts[MAX_ARMS_NUM]      = {0};
     struct Weapon *weapon;
 
-    for (i32 hand = 0; hand < unit->arms_num; hand++) {
+    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
         if (!Unit_isEquipped(unit, hand))
             continue;
 

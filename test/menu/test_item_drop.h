@@ -49,39 +49,39 @@ void test_menu_item_drop() {
 
     /* -- Long weapon names -- */
     Silou.handedness = UNIT_HAND_LEFTIE;
-    Silou._equipment[0].used = 1;
-    Silou._equipment[1].used = 0;
-    Silou._equipment[2].used = 0;
-    Silou._equipment[0].id   = ITEM_ID_RETRACTABLE_WRISTBLADE;
-    Silou._equipment[1].id   = ITEM_ID_REPEATABLE_CROSSBOW;
-    Silou._equipment[2].id   = ITEM_ID_HONJOU_MASAMUNE;
-    Silou._equipment[3].id   = ITEM_ID_SILVERLIGHT_SPEAR;
-    Weapon_Load(weapons_dtab, Silou._equipment[0].id);
-    Weapon_Load(weapons_dtab, Silou._equipment[1].id);
-    Weapon_Load(weapons_dtab, Silou._equipment[2].id);
-    Weapon_Load(weapons_dtab, Silou._equipment[3].id);
+    Silou._equipment[ITEM1 - ITEM1].used = 1;
+    Silou._equipment[ITEM2 - ITEM1].used = 0;
+    Silou._equipment[ITEM3 - ITEM1].used = 0;
+    Silou._equipment[ITEM1 - ITEM1].id   = ITEM_ID_RETRACTABLE_WRISTBLADE;
+    Silou._equipment[ITEM2 - ITEM1].id   = ITEM_ID_REPEATABLE_CROSSBOW;
+    Silou._equipment[ITEM3 - ITEM1].id   = ITEM_ID_HONJOU_MASAMUNE;
+    Silou._equipment[ITEM4 - ITEM1].id   = ITEM_ID_SILVERLIGHT_SPEAR;
+    Weapon_Load(weapons_dtab, Silou._equipment[ITEM1 - ITEM1].id);
+    Weapon_Load(weapons_dtab, Silou._equipment[ITEM2 - ITEM1].id);
+    Weapon_Load(weapons_dtab, Silou._equipment[ITEM3 - ITEM1].id);
+    Weapon_Load(weapons_dtab, Silou._equipment[ITEM4 - ITEM1].id);
     idm->unit->eq_canEquip[0] = 0;
     idm->unit->eq_canEquip[1] = 1;
     idm->unit->eq_canEquip[2] = 2;
     idm->unit->eq_canEquip[3] = 3;
     idm->unit->num_canEquip   = 4;
 
-    idm->item_todrop = 0;
+    idm->item_todrop = ITEM1;
     ItemDropMenu_Update(idm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_item_drop", "ItemDropMenu_0.png"), renderer,
                             idm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    idm->item_todrop = 1;
+    idm->item_todrop = ITEM2;
     ItemDropMenu_Update(idm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_item_drop", "ItemDropMenu_1.png"), renderer,
                             idm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    idm->item_todrop = 2;
+    idm->item_todrop = ITEM3;
     ItemDropMenu_Update(idm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_item_drop", "ItemDropMenu_2.png"), renderer,
                             idm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    idm->item_todrop = 3;
+    idm->item_todrop = ITEM4;
     ItemDropMenu_Update(idm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_item_drop", "ItemDropMenu_3.png"), renderer,
                             idm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
