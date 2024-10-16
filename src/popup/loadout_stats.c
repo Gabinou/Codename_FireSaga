@@ -290,7 +290,7 @@ static void _PopUp_Loadout_Stats_Draw_Hands(struct PopUp_Loadout_Stats *pls,
 
     /* - HAND ICONS - */
     /* Left hand */
-    if (pls->unit->hands[UNIT_HAND_LEFT]) {
+    if (Unit_hasHand(pls->unit, UNIT_HAND_LEFT)) {
         srcrect.w = PLS_HANDS_TILESIZE;
         srcrect.h = PLS_HANDS_TILESIZE;
         dstrect.w = srcrect.w;
@@ -314,7 +314,7 @@ static void _PopUp_Loadout_Stats_Draw_Hands(struct PopUp_Loadout_Stats *pls,
     }
 
     /* Right hand */
-    if (pls->unit->hands[UNIT_HAND_RIGHT]) {
+    if (Unit_hasHand(pls->unit, UNIT_HAND_RIGHT)) {
         srcrect.w = PLS_HANDS_TILESIZE;
         srcrect.h = PLS_HANDS_TILESIZE;
         dstrect.w = srcrect.w;

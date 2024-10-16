@@ -77,7 +77,7 @@ struct Unit Unit_default = {
 
     .arms_num       = UNIT_ARMS_NUM,
     .handedness     = UNIT_HAND_RIGHTIE,
-    .hands          = {true, true},
+    ._hands          = {true, true},
 
     .update_stats   = true,
 };
@@ -95,14 +95,43 @@ struct Unit Nibal_unit = {
     .alive          = true,
     .sex            = true,  /* 0:F, 1:M. eg. hasPenis. */
 
-    .hands          = {true, true},
+    ._hands          = {true, true},
 };
 
 void Tetrabrachios_Default(Unit *unit) {
     *unit = Unit_default;
     unit->arms_num = TETRABRACHIOS_ARMS_NUM;
-    unit->hands[TETRABRACHIOS_HAND_LEFT]    = true;
-    unit->hands[TETRABRACHIOS_HAND_RIGHT]   = true;
+    Unit_Hand_Set(unit, TETRABRACHIOS_HAND_LEFT,  true);
+    Unit_Hand_Set(unit, TETRABRACHIOS_HAND_RIGHT, true);
+}
+
+/* -- Hand -- */
+/* Other hands than the main two can't be strong/weak hand */
+int Unit_Hand_Strong(struct Unit *unit) {
+    SDL_assert(unit != NULL);
+    return ((unit->handedness == UNIT_HAND_LEFTIE) ? UNIT_HAND_LEFT : UNIT_HAND_RIGHT);
+}
+
+int Unit_Hand_Weak(struct Unit *unit) {
+    SDL_assert(unit != NULL);
+    return (1 - Unit_Hand_Strong(unit));
+}
+
+b32 Unit_hasHand(Unit *unit, i32 hand) {
+    SDL_assert(unit != NULL);
+    SDL_assert(hand >= UNIT_HAND_LEFT);
+    SDL_assert(hand <= unit->arms_num);
+    SDL_assert(hand <= MAX_ARMS_NUM);
+    return (unit->_hands[hand - UNIT_HAND_LEFT]);
+}
+
+void Unit_Hand_Set(Unit *unit, i32 hand, b32 has) {
+    SDL_assert(unit != NULL);
+    SDL_assert(hand >= UNIT_HAND_LEFT);
+    SDL_assert(hand <= unit->arms_num);
+    SDL_assert(hand <= MAX_ARMS_NUM);
+
+    unit->_hands[hand - UNIT_HAND_LEFT] = has;
 }
 
 /* --- Constructors/Destructors --- */
@@ -177,17 +206,6 @@ void Unit_InitWweapons(struct Unit *unit, struct dtab *weapons_dtab) {
 
 void Unit_Reinforcement_Load(struct Unit *unit, struct Reinforcement *reinf) {
     unit->army = reinf->army;
-}
-
-/* Other hands than the main two can't be strong/weak hand */
-int Unit_Hand_Strong(struct Unit *unit) {
-    SDL_assert(unit != NULL);
-    return ((unit->handedness == UNIT_HAND_LEFTIE) ? UNIT_HAND_LEFT : UNIT_HAND_RIGHT);
-}
-
-int Unit_Hand_Weak(struct Unit *unit) {
-    SDL_assert(unit != NULL);
-    return (1 - Unit_Hand_Strong(unit));
 }
 
 void Unit_setid(struct Unit *unit, i16 id) {
@@ -508,7 +526,7 @@ b32 Unit_canAttack(struct Unit *unit) {
 
 /* - Can unit attack with weapon in hand - */
 b32 _Unit_canAttack(struct Unit *unit, i32 hand) {
-    if (!unit->hands[hand]) {
+    if (!Unit_hasHand(unit, hand)) {
         // SDL_Log("No hands");
         return (false);
     }
@@ -1000,9 +1018,9 @@ void Unit_readJSON(void *input,  cJSON *junit) {
 
         unit->arms_num = cJSON_GetArraySize(jhands);
 
-        for (int i = 0; i < unit->arms_num; i++) {
-            cJSON *jhand    = cJSON_GetArrayItem(jhands, i);
-            unit->hands[i]  = cJSON_GetNumberValue(jhand);
+        for (int hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
+            cJSON *jhand    = cJSON_GetArrayItem(jhands, hand - UNIT_HAND_LEFT);
+            Unit_Hand_Set(unit, hand, cJSON_GetNumberValue(jhand));
         }
     }
 
@@ -1119,9 +1137,9 @@ void Unit_writeJSON(void *input, cJSON *junit) {
     cJSON *jhandedness  = cJSON_CreateNumber(unit->handedness);
     cJSON *jhands       = cJSON_CreateArray();
     cJSON *jequipped    = cJSON_CreateArray();
-    for (i32 i = 0; i < unit->arms_num; i++) {
-        cJSON *jhand        = cJSON_CreateNumber(unit->hands[i]);
-        cJSON *jequippedi   = cJSON_CreateNumber(unit->_equipped[i]);
+    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
+        cJSON *jhand        = cJSON_CreateNumber(Unit_hasHand(unit, hand));
+        cJSON *jequippedi   = cJSON_CreateNumber(Unit_Eq_Equipped(unit, hand));
         cJSON_AddItemToArray(jhands,    jhand);
         cJSON_AddItemToArray(jequipped, jequippedi);
     }

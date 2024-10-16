@@ -114,7 +114,7 @@ void _Unit_Check_Equipped(struct Unit *unit, i32 hand) {
 void Unit_Check_Equipped(struct Unit *unit) {
     /* Checks if equipped weapon is BORKED, de-equips if so */
     for (i32 hand = 0; hand < unit->arms_num; hand++) {
-        if (unit->hands[hand]) {
+        if (Unit_hasHand(unit, hand)) {
             _Unit_Check_Equipped(unit, hand);
         }
     }
@@ -161,7 +161,7 @@ b32 Unit_canEquip_AnyHand(Unit *unit, canEquip can_equip) {
     /* Check that unit has hands to equip with */
     b32 found = false;
     for (i32 hand = 0; hand < unit->arms_num; hand++) {
-        if (unit->hands[hand]) {
+        if (Unit_hasHand(unit, hand)) {
             found = true;
             break;
         }
@@ -174,7 +174,7 @@ b32 Unit_canEquip_AnyHand(Unit *unit, canEquip can_equip) {
     /* Check that unit can equip item in hand */
     for (i32 hand = 0; hand < unit->arms_num; hand++) {
         /* Skip hands that unit doesn't have */
-        if (!unit->hands[hand]) {
+        if (!Unit_hasHand(unit, hand)) {
             continue;
         }
         can_equip.hand = hand;
@@ -236,7 +236,7 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
         return (false);
     }
 
-    if (!unit->hands[can_equip.hand]) {
+    if (!Unit_hasHand(unit, can_equip.hand)) {
         // SDL_Log("No hand \n");
         return (false);
     }

@@ -55,9 +55,6 @@ void Unit_Free(         Unit *u);
 
 void Unit_Reinforcement_Load(Unit *u, struct Reinforcement *r);
 
-int Unit_Hand_Weak(  Unit *u);
-int Unit_Hand_Strong(Unit *u);
-
 void Unit_setid(      Unit *u, i16 id);
 void Unit_setStats(   Unit *u, Unit_stats stats);
 void Unit_setBases(   Unit *u, Unit_stats stats);
@@ -125,8 +122,14 @@ b32 Unit_canDance(Unit *u);
 /* -- Can Carry -- */
 b32 Unit_canCarry(Unit *u1, Unit *u2);
 
+/* -- Hand -- */
+b32  Unit_hasHand(       Unit *u, i32 hand);
+void Unit_Hand_Set(      Unit *u, i32 hand, b32 has);
+i32  Unit_Hand_Weak(     Unit *u);
+i32  Unit_Hand_Strong(   Unit *u);
+
 /* -- Can Attack -- */
-b32 _Unit_canAttack(   Unit *u, b32 hand);  /* with weapon in hand       */
+b32 _Unit_canAttack(   Unit *u, i32 hand);  /* with weapon in hand       */
 b32  Unit_canAttack(   Unit *u);            /* with equipped weapon      */
 b32  Unit_canAttack_Eq(Unit *u);            /* with any wpn in equipment */
 
