@@ -105,7 +105,7 @@ void ItemDropMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *rende
 void ItemDropMenu_Update(struct  ItemDropMenu  *idm, struct n9Patch *n9patch,
                          SDL_Texture *render_target, SDL_Renderer *renderer) {
     /* --- PRELIMINARIES --- */
-    SDL_assert((idm->item_todrop >= 0) && (idm->item_todrop < SOTA_EQUIPMENT_ARRAY_SIZE));
+    SDL_assert((idm->item_todrop >= 0) && (idm->item_todrop < SOTA_EQUIPMENT_SIZE));
     SDL_assert(renderer                != NULL);
     SDL_assert(idm->unit               != NULL);
     SDL_assert(idm->unit->items_dtab   != NULL);

@@ -26,7 +26,7 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
     tnecs_entity *defendants  = DARR_INIT(defendants, tnecs_entity, 4);
 
     unit->num_canEquip  = 0;
-    for (int eq = ITEM1; eq < SOTA_EQUIPMENT_ARRAY_SIZE; eq++) {
+    for (int eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         /* Skip if weapon is not usable */
         // SDL_Log("eq %d \n", eq);
         canEquip_Eq(&can_equip, eq);

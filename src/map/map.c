@@ -381,7 +381,7 @@ void Map_Members_Alloc(struct Map *map) {
     map->reinforcements = DARR_INIT(map->reinforcements, struct Reinforcement, 16);
 
     SDL_assert(map->items_num == NULL);
-    map->items_num = DARR_INIT(map->items_num, u8, SOTA_EQUIPMENT_ARRAY_SIZE);
+    map->items_num = DARR_INIT(map->items_num, u8, SOTA_EQUIPMENT_SIZE);
 
     SDL_assert(map->tilesindex == NULL);
     map->tilesindex = DARR_INIT(map->tilesindex, i32, DEFAULT_TILESPRITE_BUFFER);
@@ -750,7 +750,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
         Reinforcement_readJSON(jreinforcement, &temp_rein);
         DARR_PUT(map->reinforcements, temp_rein);
         jequipment = cJSON_GetObjectItem(jreinforcement, "Equipment");
-        temp_equip = DARR_INIT(temp_equip, struct Inventory_item, SOTA_EQUIPMENT_ARRAY_SIZE);
+        temp_equip = DARR_INIT(temp_equip, struct Inventory_item, SOTA_EQUIPMENT_SIZE);
         /* FIRST ITEM IS NULL */
         DARR_PUT(temp_equip, temp_item);
 

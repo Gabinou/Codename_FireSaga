@@ -436,7 +436,7 @@ b32 Unit_canDance(struct Unit *unit) {
 
 /* - Unit has any staff in Equipment? - */
 int Unit_canStaff_Eq( struct  Unit *unit) {
-    for (int i = ITEM1; i < SOTA_EQUIPMENT_ARRAY_SIZE; i++) {
+    for (int i = ITEM1; i < SOTA_EQUIPMENT_SIZE; i++) {
         struct Inventory_item item = unit->_equipment[i];
         if (Weapon_isStaff(item.id)) {
             return (true);
@@ -471,7 +471,7 @@ b32 Unit_canAttack_Eq(struct Unit *unit) {
     SDL_assert(unit != NULL);
     SDL_assert(unit->weapons_dtab != NULL);
     /* - If any item in equipment is a weapon, can attack - */
-    for (int i = ITEM1; i < SOTA_EQUIPMENT_ARRAY_SIZE; i++) {
+    for (int i = ITEM1; i < SOTA_EQUIPMENT_SIZE; i++) {
         struct Inventory_item item = unit->_equipment[i];
         if (item.id == ITEM_NULL)
             continue;
@@ -674,7 +674,7 @@ b32 Unit_Equipment_Full( struct Unit *unit) {
 
 void Unit_Equipment_Print( struct Unit *unit) {
     SDL_assert(unit != NULL);
-    for (int eq = ITEM1; eq < SOTA_EQUIPMENT_ARRAY_SIZE; eq++) {
+    for (int eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         if (unit->_equipment[eq].id == ITEM_NULL) {
             SDL_Log("%d ITEM_NULL", eq);
             continue;
@@ -1180,7 +1180,7 @@ void Unit_writeJSON(void *input, cJSON *junit) {
         // +2 -> +1 start at lvl1, +1 cause you level to level 2
     }
     cJSON *jitems = cJSON_CreateArray();
-    for (u8 item_num = 0; item_num < SOTA_EQUIPMENT_ARRAY_SIZE; item_num ++) {
+    for (u8 item_num = 0; item_num < SOTA_EQUIPMENT_SIZE; item_num ++) {
         cJSON *jitem = cJSON_CreateObject();
         Inventory_item_writeJSON(&unit->_equipment[item_num], jitem);
         cJSON_AddItemToArray(jitems, jitem);

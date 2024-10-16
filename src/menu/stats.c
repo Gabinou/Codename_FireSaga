@@ -931,7 +931,7 @@ static void _StatsMenu_Draw_WpnTypes(struct StatsMenu *stats_menu, SDL_Renderer 
 static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *renderer, int eq) {
     /* -- Preliminaries -- */
     SDL_assert(eq >= ITEM1);
-    SDL_assert(eq < SOTA_EQUIPMENT_ARRAY_SIZE);
+    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
     SDL_Rect dstrect, srcrect;
     char numbuff[10];
     struct Unit *unit = stats_menu->unit;
@@ -1045,7 +1045,7 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
 
 static void _StatsMenu_Draw_Equipment(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* --- Equipment --- */
-    for (u8 i = ITEM1; i < SOTA_EQUIPMENT_ARRAY_SIZE; i++) {
+    for (u8 i = ITEM1; i < SOTA_EQUIPMENT_SIZE; i++) {
         _StatsMenu_Draw_Item(stats_menu, renderer, i);
     }
 

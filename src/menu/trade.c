@@ -80,7 +80,7 @@ void TradeMenu_Select(struct   TradeMenu *tm, i8 selected) {
     i8 trader  = 1 - selected / SOTA_EQUIPMENT_SIZE;
     i8 item    =     selected % SOTA_EQUIPMENT_SIZE;
     SDL_assert((trader == TRADER_PASSIVE) || (trader == TRADER_ACTIVE));
-    SDL_assert((item    > ITEM_NULL) && (item    < SOTA_EQUIPMENT_ARRAY_SIZE));
+    SDL_assert((item    > ITEM_NULL) && (item    < SOTA_EQUIPMENT_SIZE));
 
     /* If item is selected, swap it item */
     if ((tm->selected_item == ITEM_NULL) || (tm->selected_trader == TRADER_NULL)) {

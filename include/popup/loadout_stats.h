@@ -183,7 +183,7 @@ typedef struct PopUp_Loadout_Stats {
     int eq_left;  /* item side space */
     int eq_right; /* item side space */
     // TODO: use loadout
-    Loadout initial;    /* [ITEM1, SOTA_EQUIPMENT_ARRAY_SIZE] */
+    Loadout initial;    /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
     i16 type_left;
     i16 type_right;

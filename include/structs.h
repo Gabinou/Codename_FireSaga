@@ -22,7 +22,7 @@ typedef i32(* use_function_t)(struct Item *, struct Unit *, struct Unit *);
 /* --- STRUCTS --- */
 /* -- Loadout -- */
 typedef struct Loadout {
-    i32 _loadout[MAX_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_ARRAY_SIZE] */
+    i32 _loadout[MAX_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 } Loadout;
 
 extern Loadout Loadout_default;
@@ -30,7 +30,7 @@ extern Loadout Loadout_default;
 typedef struct MapAct {
     // First to be able to cast: Loadout = &canEquip;
     /* only if eq_type == LOADOUT_INPUT */
-    i32 _loadout[MAX_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_ARRAY_SIZE] */
+    i32 _loadout[MAX_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
     b32 move;
 
@@ -56,7 +56,7 @@ extern MapAct MapAct_default;
 // Input for canEquip function
 typedef struct canEquip {
     // First to be able to cast: Loadout = &canEquip;
-    i32 _loadout[MAX_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_ARRAY_SIZE] */
+    i32 _loadout[MAX_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
     // Hand to equip to, considering loadout.
     i32 hand;
@@ -67,7 +67,7 @@ typedef struct canEquip {
     i64 archetype;
 
     // Equipped index to check.
-    i32 _eq; /* [ITEM1, SOTA_EQUIPMENT_ARRAY_SIZE] */
+    i32 _eq; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
     // Two-handed mode.
     //  - TWO_HAND_EQ_MODE_STRICT
@@ -685,15 +685,15 @@ typedef struct Unit {
     Point dft_pos; /* Used to compute stats in case of dual wielding */
 
     i32     arms_num;
-    b32     hands[UNIT_ARMS_ARRAY_SIZE]; /* Does unit have hands?             */
-    i32 _equipped[UNIT_ARMS_ARRAY_SIZE]; /* [ITEM1, SOTA_EQUIPMENT_ARRAY_SIZE] */
+    b32    _hands[UNIT_ARMS_SIZE]; /* Does unit have hands?             */
+    i32 _equipped[UNIT_ARMS_SIZE]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
     s8 *skill_names;
 
     struct dtab *weapons_dtab;
     struct dtab *items_dtab;
 
-    struct Inventory_item _equipment[SOTA_EQUIPMENT_ARRAY_SIZE];
+    struct Inventory_item _equipment[SOTA_EQUIPMENT_SIZE];
 
     /* For twohanding when computing computedstats */
     struct Inventory_item temp;

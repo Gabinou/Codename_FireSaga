@@ -478,8 +478,7 @@ enum ENUM_EQ { /* enum_equipment */
     ITEM4,
     ITEM5,
     ITEM6,
-    SOTA_EQUIPMENT_ARRAY_SIZE,
-    SOTA_EQUIPMENT_SIZE         = SOTA_EQUIPMENT_ARRAY_SIZE - 1,
+    SOTA_EQUIPMENT_SIZE         = ITEM6,
 };
 
 
@@ -1186,7 +1185,6 @@ enum UNIT_HAND {
     UNIT_HAND_LEFT              = ITEM1,
     UNIT_HAND_RIGHT             = ITEM2,
     UNIT_ARMS_NUM               = 2,
-    UNIT_ARMS_ARRAY_SIZE        = 3,
     TETRABRACHIOS_HAND_LEFT     = ITEM3, /* TOP/BOTTOM LEFT     */
     TETRABRACHIOS_HAND_RIGHT    = ITEM4, /* TOP/BOTTOM RIGHT    */
     TETRABRACHIOS_ARMS_NUM      = 4,

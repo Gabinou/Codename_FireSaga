@@ -160,8 +160,8 @@ struct LoadoutSelectMenu {
 
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
-    Loadout initial;    /* [ITEM1, SOTA_EQUIPMENT_ARRAY_SIZE] */
-    Loadout selected;   /* [ITEM1, SOTA_EQUIPMENT_ARRAY_SIZE] */
+    Loadout initial;    /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
+    Loadout selected;   /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
     s8 item_name;
     s8 header;
 

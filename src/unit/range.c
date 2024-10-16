@@ -52,7 +52,7 @@ struct Range *Unit_Range_Id(struct Unit *unit, int id, i64 archetype) {
 struct Range *Unit_Range_Eq(struct Unit *unit, i32 eq, i64 archetype) {
     SDL_assert(unit != NULL);
     SDL_assert(eq >= ITEM1);
-    SDL_assert(eq < SOTA_EQUIPMENT_ARRAY_SIZE);
+    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
 
     canEquip can_equip          = canEquip_default;
     can_equip.hand              = Unit_Hand_Strong(unit);
@@ -80,7 +80,7 @@ struct Range *Unit_Range_Equipment(Unit *unit, i64 archetype) {
     struct Range *range = &unit->computed_stats.range_equipment;
     *range              = Range_default;
 
-    for (int eq = ITEM1; eq < SOTA_EQUIPMENT_ARRAY_SIZE; eq++) {
+    for (int eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
 
         /* Skip if no item */
         i32 id = Unit_Id_Equipment(unit, eq);
