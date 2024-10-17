@@ -237,7 +237,7 @@ void LoadoutSelectMenu_Elem_Pos_Revert(struct LoadoutSelectMenu *lsm, struct Men
 
 /* --- Checking --- */
 b32 WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm) {
-    /* Are there any side_i weapons left in rest of inventory? */
+    /* Are there any eq weapons left in rest of inventory? */
     b32 remains = false;
 
     /* Get stronghand */
@@ -363,27 +363,29 @@ void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9p
     i32 num_items = unit->num_canEquip;
 
     for (i32 i = 0; i < num_items; i++) {
-        /* If stronghand was selected, i is in eq_space */
-        i32 side_i = strong_selected ? i : unit->eq_canEquip[i];  /* side space */
-        SDL_assert((side_i >= ITEM1) && (side_i <= ITEM6));
+
+        i32 eq = strong_selected ? i + ITEM1 : unit->eq_canEquip[i];
+        SDL_assert((eq >= ITEM1) && (eq <= ITEM6));
+        i32 id = Unit_Id_Equipment(unit, eq);
 
         /* unit_item ensures tophand is stronghand */
-        struct Inventory_item *item = Unit_InvItem(unit, side_i);
-        if (item->id == ITEM_NULL)
+        // struct Inventory_item *item = Unit_InvItem(unit, eq);
+
+        if (id == ITEM_NULL)
             continue;
 
         s8_free(&lsm->item_name);
-        if (Weapon_ID_isValid(item->id)) {
+        if (Weapon_ID_isValid(id)) {
             /* Item is a weapon */
             SDL_assert(unit->weapons_dtab != NULL);
-            struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, item->id);
+            struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);
             SDL_assert(weapon != NULL);
             lsm->item_name = s8_mut(weapon->item->name.data);
-        } else if (Item_ID_isValid(item->id)) {
+        } else if (Item_ID_isValid(id)) {
             /* Pure item */
-            Item_Load(unit->items_dtab, item->id);
-            struct Item *pure_item = DTAB_GET(unit->items_dtab, item->id);
-            lsm->item_name = s8_mut(pure_item->name.data);
+            Item_Load(unit->items_dtab, id);
+            struct Item *item = DTAB_GET(unit->items_dtab, id);
+            lsm->item_name = s8_mut(item->name.data);
         } else {
             SDL_Log("LoadoutSelectMenu: Neither a valid item nor weapon");
             exit(ERROR_Generic);
@@ -633,7 +635,6 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
     b32 header_drawn = (lsm->header.data != NULL);
     SDL_Rect srcrect, dstrect;
     char numbuff[10];
-    struct Inventory_item *item;
 
     /* -- HANDS --  */
     /* Icons, text drawn on stronghand's side */
@@ -658,9 +659,10 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
     for (i32 i = 0; i < unit->num_canEquip; i++) {
         /* - Icons - */
         // TODO: weapon icons images.
-        i32 side_i   = unit->eq_canEquip[i];
-
-        item = Unit_InvItem(unit, side_i);
+        i32 eq = unit->eq_canEquip[i];
+        SDL_assert((eq >= ITEM1) && (eq <= ITEM6));
+        i32 id = Unit_Id_Equipment(unit, eq);
+        struct Inventory_item *item = Unit_InvItem(unit, eq);
 
         /* Icons, text drawn on line strong_i  */
 
@@ -671,7 +673,7 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
         SDL_RenderFillRect(renderer, &srcrect);
 
         /* -- Weapon name -- */
-        if ((side_i == stronghand) && highlight) {
+        if ((eq == stronghand) && highlight) {
             /* Change black only to grey */
             PixelFont_Swap_Palette(lsm->pixelnours,     renderer, -1, 2);
             PixelFont_Swap_Palette(lsm->pixelnours_big, renderer, -1, 2);
@@ -683,13 +685,13 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
                             (header_drawn * LSM_ROW_HEIGHT);
 
 
-        if ((item->id == ITEM_NULL) || !Weapon_ID_isValid(item->id)) {
+        if ((id == ITEM_NULL) || !Weapon_ID_isValid(id)) {
             PixelFont_Write(lsm->pixelnours, renderer, "-", 1, item_x_offset, item_y_offset);
             continue;
         }
 
         SDL_assert(unit->weapons_dtab != NULL);
-        struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, item->id);
+        struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);
         SDL_assert(weapon != NULL);
 
         /* - Uses left - */
@@ -697,7 +699,7 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
         i32 item_dura_y_offset = LSM1_DURA_Y_OFFSET + i * (ITEM_ICON_H + 2) +
                                  (header_drawn * LSM_ROW_HEIGHT);
 
-        SDL_assert((side_i >= ITEM1) && (side_i <= ITEM6));
+        SDL_assert((eq >= ITEM1) && (eq <= ITEM6));
         i32 uses_left = weapon->item->stats.uses - item->used;
         stbsp_sprintf(numbuff, "%d\0\0\0\0", uses_left);
 
@@ -708,7 +710,7 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
                         item_dura_x_offset,  item_dura_y_offset);
 
         /* - Weapon name - */
-        lsm->item_name = s8cpy(lsm->item_name, Unit_Name(item->id));
+        lsm->item_name = s8cpy(lsm->item_name, Unit_Name(id));
         lsm->item_name = s8_toUpper(lsm->item_name);
         i32 name_w = PixelFont_Width(lsm->pixelnours, lsm->item_name.data, lsm->item_name.num);
         PixelFont_Write(lsm->pixelnours, renderer, lsm->item_name.data, lsm->item_name.num, item_x_offset,
