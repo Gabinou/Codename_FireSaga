@@ -280,7 +280,7 @@ void LoadoutSelectMenu_Unit(struct LoadoutSelectMenu *lsm, tnecs_entity ent) {
 }
 
 void LoadoutSelectMenu_Select_Reset(struct LoadoutSelectMenu *lsm) {
-    for (i32 hand = 0; hand < MAX_ARMS_NUM; hand++) {
+    for (i32 hand = UNIT_HAND_LEFT; hand <= MAX_ARMS_NUM; hand++) {
         Loadout_None(&lsm->selected, hand);
     }
     lsm->update = true;

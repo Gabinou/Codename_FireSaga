@@ -80,7 +80,7 @@ struct Range *Unit_Range_Equipment(Unit *unit, i64 archetype) {
     struct Range *range = &unit->computed_stats.range_equipment;
     *range              = Range_default;
 
-    for (int eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
+    for (int eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
 
         /* Skip if no item */
         i32 id = Unit_Id_Equipment(unit, eq);

@@ -101,6 +101,7 @@ void test_menu_loadout_select(void) {
 
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     Unit_canEquip_Equipment(Silou, can_equip);
+    SDL_Log("Silou->num_canEquip %d", Silou->num_canEquip);
     SDL_assert(Silou->num_canEquip == 1);
     SDL_assert(Silou->eq_canEquip[0] == ITEM1);
     SDL_assert(Unit_Id_Equipped(Silou, ITEM1) > ITEM_NULL);

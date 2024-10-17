@@ -12,29 +12,29 @@ b32 eq_valid(i32 eq) {
 
 /* --- Loadout --- */
 void Loadout_Set(Loadout *loadout, i32 hand, i32 eq) {
-    SDL_assert(hand >= 0);
-    SDL_assert(hand < MAX_ARMS_NUM);
+    SDL_assert(hand >= UNIT_HAND_LEFT);
+    SDL_assert(hand <= MAX_ARMS_NUM);
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
-    loadout->_loadout[hand] = eq;
+    loadout->_loadout[hand - UNIT_HAND_LEFT] = eq;
 }
 
 i32 Loadout_Eq(Loadout *loadout, i32 hand) {
-    SDL_assert(hand >= 0);
-    SDL_assert(hand < MAX_ARMS_NUM);
-    return (loadout->_loadout[hand]);
+    SDL_assert(hand >= UNIT_HAND_LEFT);
+    SDL_assert(hand <= MAX_ARMS_NUM);
+    return (loadout->_loadout[hand - UNIT_HAND_LEFT]);
 }
 
 b32 Loadout_isEquipped(Loadout *loadout, i32 hand) {
-    SDL_assert(hand >= 0);
-    SDL_assert(hand < MAX_ARMS_NUM);
-    return (loadout->_loadout[hand] > ITEM_UNEQUIPPED);
+    SDL_assert(hand >= UNIT_HAND_LEFT);
+    SDL_assert(hand <= MAX_ARMS_NUM);
+    return (loadout->_loadout[hand - UNIT_HAND_LEFT] > ITEM_UNEQUIPPED);
 }
 
 void Loadout_None(Loadout *loadout, i32 hand) {
-    SDL_assert(hand >= 0);
-    SDL_assert(hand < MAX_ARMS_NUM);
-    loadout->_loadout[hand] = ITEM_UNEQUIPPED;
+    SDL_assert(hand >= UNIT_HAND_LEFT);
+    SDL_assert(hand <= MAX_ARMS_NUM);
+    loadout->_loadout[hand - UNIT_HAND_LEFT] = ITEM_UNEQUIPPED;
 }
 
 /* --- canEquip --- */
@@ -45,17 +45,17 @@ void canEquip_Eq(canEquip *can_equip, i32 eq) {
 }
 
 void canEquip_Loadout(canEquip *can_equip, i32 hand, i32 eq) {
-    SDL_assert(hand >= 0);
-    SDL_assert(hand < MAX_ARMS_NUM);
+    SDL_assert(hand >= UNIT_HAND_LEFT);
+    SDL_assert(hand <= MAX_ARMS_NUM);
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
-    can_equip->_loadout[hand] = eq;
+    can_equip->_loadout[hand - UNIT_HAND_LEFT] = eq;
 }
 
 void canEquip_Loadout_None(canEquip *can_equip, i32 hand) {
-    SDL_assert(hand >= 0);
-    SDL_assert(hand < MAX_ARMS_NUM);
-    can_equip->_loadout[hand] = ITEM_UNEQUIPPED;
+    SDL_assert(hand >= UNIT_HAND_LEFT);
+    SDL_assert(hand <= MAX_ARMS_NUM);
+    can_equip->_loadout[hand - UNIT_HAND_LEFT] = ITEM_UNEQUIPPED;
 }
 
 /* --- Importing/Exporting --- */

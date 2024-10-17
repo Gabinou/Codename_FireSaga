@@ -1094,21 +1094,22 @@ void test_range(void) {
     for (int eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; ++eq) {
         range = Unit_Range_Eq(&Silou, eq, ITEM_ARCHETYPE_WEAPON);
         nourstest_true(Range_Valid(*range));
-        nourstest_true(wpns[eq]->stats.range.min == range->min);
-        nourstest_true(wpns[eq]->stats.range.max == range->max);
+        nourstest_true(wpns[eq - ITEM1]->stats.range.min == range->min);
+        nourstest_true(wpns[eq - ITEM1]->stats.range.max == range->max);
 
         range = Unit_Range_Eq(&Silou, eq, ITEM_TYPE_LANCE);
         nourstest_true(!Range_Valid(*range));
     }
 
     /* Unit_Range_Id */
-    for (int eq = 0; eq < SOTA_EQUIPMENT_SIZE; ++eq) {
-        range = Unit_Range_Id(&Silou, Silou._equipment[eq].id, ITEM_ARCHETYPE_WEAPON);
+    for (int eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; ++eq) {
+        int id = Unit_Id_Equipment(&Silou, eq);
+        range = Unit_Range_Id(&Silou, id, ITEM_ARCHETYPE_WEAPON);
         nourstest_true(Range_Valid(*range));
-        nourstest_true(wpns[eq]->stats.range.min == range->min);
-        nourstest_true(wpns[eq]->stats.range.max == range->max);
+        nourstest_true(wpns[eq - ITEM1]->stats.range.min == range->min);
+        nourstest_true(wpns[eq - ITEM1]->stats.range.max == range->max);
 
-        range = Unit_Range_Id(&Silou, Silou._equipment[eq].id, ITEM_TYPE_LANCE);
+        range = Unit_Range_Id(&Silou, id, ITEM_TYPE_LANCE);
         nourstest_true(!Range_Valid(*range));
     }
 

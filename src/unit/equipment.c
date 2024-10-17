@@ -218,8 +218,8 @@ void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
     }
 
     unit->num_canEquip = 0;
-    for (i32 eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
-        for (i32 hand = UNIT_HAND_LEFT; hand < unit->arms_num; hand++) {
+    for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
+        for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
             // canEquip hands
             canEquip_Eq(&can_equip, eq);
             can_equip.hand  = hand;
@@ -369,7 +369,7 @@ b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     //      - Other hand equipped different wpn.
     b32 eq_diff         = (eq_other != eq);
     b32 strict          = (mode == TWO_HAND_EQ_MODE_STRICT);
-    b32 eq_in_bound     = (eq_other >= ITEM1) && (eq_other < SOTA_EQUIPMENT_SIZE);
+    b32 eq_in_bound     = (eq_other >= ITEM1) && (eq_other <= SOTA_EQUIPMENT_SIZE);
     b32 two_hand_cant   = two_hand_only && (eq_in_bound && eq_diff);
     // SDL_Log("eq_other %d", eq_other);
     // SDL_Log("eq_diff, eq_in_bound, two_hand_only %d %d %d", eq_diff, eq_in_bound, two_hand_only);
@@ -416,7 +416,7 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     // One-hand only wpn can't be equipped if:
     //      - Other hand equipped different wpn.
     b32 eq_same         = (eq_other == eq);
-    b32 eq_in_bound     = (eq_other >= ITEM1) && (eq_other < SOTA_EQUIPMENT_SIZE);
+    b32 eq_in_bound     = (eq_other >= ITEM1) && (eq_other <= SOTA_EQUIPMENT_SIZE);
 
     b32 one_hand_only   = Weapon_OneHand_Only(wpn);
     b32 one_hand_cant   = one_hand_only && (eq_in_bound && eq_same);
