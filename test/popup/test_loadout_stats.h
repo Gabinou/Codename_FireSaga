@@ -19,17 +19,17 @@ void test_popup_loadout_stats() {
 
     /* -- Create Computed stats -- */
     struct Computed_Stats low_cs = {0};
-    low_cs.attack[DMG_TYPE_PHYSICAL]        = 1;
-    low_cs.attack[DMG_TYPE_MAGICAL]         = 2;
-    low_cs.protection[DMG_TYPE_PHYSICAL]    = 3;
-    low_cs.protection[DMG_TYPE_MAGICAL]     = 4;
-    low_cs.hit                              = 5;
-    low_cs.dodge                            = 6;
-    low_cs.crit                             = 7;
-    low_cs.favor                            = 8;
-    low_cs.speed                            = 9;
-    low_cs.range_loadout.min                = 2;
-    low_cs.range_loadout.max                = 2;
+    low_cs.attack[DMG_TYPE_PHYSICAL]        =   1;
+    low_cs.attack[DMG_TYPE_MAGICAL]         =   2;
+    low_cs.protection[DMG_TYPE_PHYSICAL]    =   3;
+    low_cs.protection[DMG_TYPE_MAGICAL]     =   4;
+    low_cs.hit                              =   5;
+    low_cs.dodge                            =   6;
+    low_cs.crit                             =   7;
+    low_cs.favor                            =   8;
+    low_cs.speed                            =   9;
+    low_cs.range_loadout.min                =   2;
+    low_cs.range_loadout.max                =   2;
 
     struct Computed_Stats high_cs           = {0};
     high_cs.attack[DMG_TYPE_PHYSICAL]       =  10;
@@ -70,13 +70,13 @@ void test_popup_loadout_stats() {
 
     item.id = ITEM_ID_GLAIVE;
     Weapon_Load(weapons_dtab, item.id);
-    Unit_Item_Takeat(&unit, item, 0);
+    Unit_Item_Takeat(&unit, item, ITEM1);
     item.id = ITEM_ID_LEATHER_SHIELD;
     Weapon_Load(weapons_dtab, item.id);
-    Unit_Item_Takeat(&unit, item, 1);
+    Unit_Item_Takeat(&unit, item, ITEM2);
     pls.type_left   = ITEM_TYPE_EXP_SWORD;
-    pls.eq_left   = 0;
-    pls.eq_right  = 1;
+    pls.eq_left     = ITEM1;
+    pls.eq_right    = ITEM2;
 
     pls.l_equip_override    = false;
     pls.r_equip_override    = true;

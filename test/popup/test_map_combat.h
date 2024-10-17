@@ -56,7 +56,7 @@ void test_popup_map_combat() {
     in_wpn.id = ITEM_ID_FLEURET;
 
     int stronghand  = Unit_Hand_Strong(&aggressor);
-    int weakhand    = 1 - stronghand;
+    int weakhand    = Unit_Hand_Weak(&aggressor);
 
     Unit_Item_Drop(&aggressor,           weakhand);
     Unit_Item_Takeat(&aggressor, in_wpn, weakhand);

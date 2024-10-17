@@ -61,7 +61,7 @@ void test_menu_pre_combat() {
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Hamilcar_test.json")), &Hamilcar);
 
     int stronghand  = Unit_Hand_Strong(&Silou);
-    int weakhand    = 1 - stronghand;
+    int weakhand    = Unit_Hand_Weak(&Silou);
 
     /* - Combatants equip - */
     struct Inventory_item in_wpn = Inventory_item_default;

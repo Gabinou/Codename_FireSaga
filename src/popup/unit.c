@@ -269,11 +269,11 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
 
         /* Strong hand */
         dstrect.x = PU_ICONL_X + 1;
-        int i32_strong    = Unit_Hand_Strong(pu->unit);
-        int i32_weak      = 1 - i32_strong;
+        int stronghand    = Unit_Hand_Strong(pu->unit);
+        int weakhand      = Unit_Hand_Weak(pu->unit);
 
-        Inventory_item *item = Unit_Item_Equipped(pu->unit, i32_strong);
-        if (Unit_isEquipped(pu->unit, i32_strong) && (item->id > ITEM_NULL)) {
+        Inventory_item *item = Unit_Item_Equipped(pu->unit, stronghand);
+        if (Unit_isEquipped(pu->unit, stronghand) && (item->id > ITEM_NULL)) {
             Weapon_Load(pu->unit->weapons_dtab, item->id);
             struct Weapon *weapon = DTAB_GET(pu->unit->weapons_dtab, item->id);
             SDL_assert(weapon != NULL);
@@ -288,8 +288,8 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
 
         /* right hand */
         dstrect.x = PU_ICONR_X + 1;
-        item = Unit_Item_Equipped(pu->unit, i32_weak);
-        if (Unit_isEquipped(pu->unit, i32_weak) && (item->id > ITEM_NULL)) {
+        item = Unit_Item_Equipped(pu->unit, weakhand);
+        if (Unit_isEquipped(pu->unit, weakhand) && (item->id > ITEM_NULL)) {
             Weapon_Load(pu->unit->weapons_dtab, item->id);
             struct Weapon *weapon = DTAB_GET(pu->unit->weapons_dtab, item->id);
             SDL_assert(weapon != NULL);
@@ -305,7 +305,7 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
         /* Unit is two handing, printing ONE icon in the center */
         // dstrect.x = (pu_SIMPLE_DICONL_X + pu_SIMPLE_ICON_OFFSET_X) / 2 + (pu_SIMPLE_DICONR_X +
         //             pu_SIMPLE_ICON_OFFSET_X) / 2;
-        // item = pu->unit->equipment[UNIT_HAND_WEAK];
+        // item = pu->unit->equipment[UNIT_weakhand];
         // SDL_assert(item->id > ITEM_NULL);
         // struct Weapon *weapon = DTAB_GET(pu->unit->weapons_dtab, item->id);
         // u16 type = weapon->item->type;

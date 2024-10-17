@@ -36,7 +36,7 @@ void Unit_Item_Take(struct Unit *unit, struct Inventory_item item) {
     SDL_assert(unit->num_equipment < SOTA_EQUIPMENT_SIZE);
     SDL_assert(item.id > ITEM_NULL);
 
-    for (i32 eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
+    for (i32 eq = ITEM1; eq <= ITEM6; eq++) {
         if (unit->_equipment[eq - ITEM1].id == ITEM_NULL) {
             Unit_Item_Takeat(unit, item, eq);
             break;
@@ -726,7 +726,7 @@ void Unit_Staff_Use(Unit *healer, Unit *patient) {
 
     /* Get equipped weapon id */
     i32 stronghand  = Unit_Hand_Strong(healer);
-    i32 weakhand    = 1 - stronghand;
+    i32 weakhand    = Unit_Hand_Weak(healer);
     struct Inventory_item *weakhand_inv   = Unit_Item_Equipped(healer, weakhand);
     struct Inventory_item *stronghand_inv = Unit_Item_Equipped(healer, stronghand);
     SDL_assert(stronghand_inv != NULL);
