@@ -127,9 +127,8 @@ void Unit_Equip(Unit *unit, i32 hand, i32 eq) {
     SDL_assert(hand <= MAX_ARMS_NUM);
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
+    
     i32 id = Unit_Id_Equipment(unit, eq);
-    SDL_Log("i32 id %d", id);
-
     SDL_assert(id > ITEM_NULL);
 
     unit->_equipped[hand - UNIT_HAND_LEFT] = eq;
