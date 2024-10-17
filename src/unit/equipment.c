@@ -128,6 +128,8 @@ void Unit_Equip(Unit *unit, i32 hand, i32 eq) {
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
     i32 id = Unit_Id_Equipment(unit, eq);
+    SDL_Log("i32 id %d", id);
+
     SDL_assert(id > ITEM_NULL);
 
     unit->_equipped[hand - UNIT_HAND_LEFT] = eq;
@@ -212,9 +214,12 @@ void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
             continue;
         }
 
-        if (Unit_Id_Equipment(unit, eq) > ITEM_NULL) {
-            Unit_Equip(unit, hand, eq);
+        i32 id = Unit_Id_Equipment(unit, eq);
+        if (!Weapon_ID_isValid(id)) {
+            continue;
         }
+
+        Unit_Equip(unit, hand, eq);
     }
 
     unit->num_canEquip = 0;
@@ -304,7 +309,8 @@ b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
             continue;
         }
 
-        if (Unit_Id_Equipment(unit, eq) == ITEM_NULL) {
+        i32 id = Unit_Id_Equipment(unit, eq);
+        if (!Weapon_ID_isValid(id)) {
             continue;
         }
 
