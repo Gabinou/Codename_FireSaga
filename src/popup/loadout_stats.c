@@ -400,10 +400,6 @@ static void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls,
         canEquip can_equip  = canEquip_default;
         i32 eq = Unit_Eq_Equipped(pls->unit, UNIT_HAND_LEFT);
         if (eq > ITEM_UNEQUIPPED) {
-            SDL_Log("%d", eq);
-            SDL_Log("%d", eq);
-            SDL_Log("%d", eq > ITEM_UNEQUIPPED);
-            SDL_Log("%d", eq > ITEM_UNEQUIPPED);
             canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  Unit_Eq_Equipped(pls->unit, UNIT_HAND_LEFT));
         }
         if (Unit_Eq_Equipped(pls->unit, UNIT_HAND_RIGHT) > ITEM_UNEQUIPPED) {
@@ -635,8 +631,8 @@ void PopUp_Loadout_Stats_New(struct PopUp_Loadout_Stats *pls) {
     PopUp_Loadout_Stats_ItemTypes(pls);
 
     Loadout loadout = Loadout_default;
-    Loadout_Set(&loadout, UNIT_HAND_LEFT, pls->eq_left);
-    Loadout_Set(&loadout, UNIT_HAND_RIGHT, pls->eq_right);
+    Loadout_Set(&loadout, UNIT_HAND_LEFT,   pls->eq_left);
+    Loadout_Set(&loadout, UNIT_HAND_RIGHT,  pls->eq_right);
     pls->new_cs     = Unit_computedStats_wLoadout(pls->unit,
                                                   &loadout,
                                                   pls->distance);
@@ -664,15 +660,19 @@ void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls, struct LoadoutSe
         /* Stronghand selected */
         if (stronghand == UNIT_HAND_LEFT) {
             pls->eq_left  = unit->eq_canEquip[elem];
+            SDL_assert(pls->eq_left > ITEM_UNEQUIPPED);
         } else {
             pls->eq_right = unit->eq_canEquip[elem];
+            SDL_assert(pls->eq_right > ITEM_UNEQUIPPED);
         }
     } else {
         /* Weakhand selected */
         if (weakhand == UNIT_HAND_LEFT) {
             pls->eq_left  = unit->eq_canEquip[elem];
+            SDL_assert(pls->eq_left > ITEM_UNEQUIPPED);
         } else {
             pls->eq_right = unit->eq_canEquip[elem];
+            SDL_assert(pls->eq_right > ITEM_UNEQUIPPED);
         }
     }
 }
@@ -696,8 +696,10 @@ void PopUp_Loadout_Stats_Select(struct PopUp_Loadout_Stats *pls, struct LoadoutS
         /* Stronghand selected */
         if (stronghand == UNIT_HAND_LEFT) {
             pls->eq_left  = Loadout_Eq(&wsm->selected, stronghand);
+            SDL_assert(pls->eq_left > ITEM_UNEQUIPPED);
         } else {
             pls->eq_right = Loadout_Eq(&wsm->selected, stronghand);
+            SDL_assert(pls->eq_right > ITEM_UNEQUIPPED);
         }
     }
 
@@ -705,8 +707,10 @@ void PopUp_Loadout_Stats_Select(struct PopUp_Loadout_Stats *pls, struct LoadoutS
         /* Weakhand selected */
         if (weakhand == UNIT_HAND_LEFT) {
             pls->eq_left  = Loadout_Eq(&wsm->selected, weakhand);
+            SDL_assert(pls->eq_left > ITEM_UNEQUIPPED);
         } else {
             pls->eq_right = Loadout_Eq(&wsm->selected, weakhand);
+            SDL_assert(pls->eq_right > ITEM_UNEQUIPPED);
         }
     }
     SDL_Log("pls->eq_left %d %d", pls->eq_left, pls->eq_right);

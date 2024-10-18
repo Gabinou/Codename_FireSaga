@@ -333,7 +333,6 @@ static void _PopUp_Map_Combat_Draw_CircleBars(struct PopUp_Map_Combat *pmc,
         }
         total_attack += phase.attack_num;
     }
-    // SDL_Log("%d %d %d %d", phases_agg, phases_dft, agg_p, dft_p);
     SDL_assert(phases_agg == agg_p);
     SDL_assert(phases_dft == dft_p);
 }

@@ -61,8 +61,6 @@ struct cJSON *jsonio_parseJSON(s8 filename) {
 }
 
 void jsonio_readJSON(s8 filename, void *struct_ptr) {
-    // SDL_Log("Reading JSON: '%s'", filename.data);
-
     /* Make mutable filename */
     char *string = filename.data;
     s8 filename_mut = s8_mut(filename.data);
@@ -80,7 +78,6 @@ void jsonio_readJSON(s8 filename, void *struct_ptr) {
     u8 jelem_id     = *(byte_ptr + JSON_ELEM_bOFFSET);
 
     s8 elem_name = jsonElementnames[jelem_id];
-    // SDL_Log("Reading JSON element %d %s", jelem_id, elem_name.data);
     if (jelem_id >= JSON_END) {
         SDL_Log("JSON element not set");
         exit(ERROR_JSONElementNotSet);
@@ -114,8 +111,6 @@ void jsonio_readJSON(s8 filename, void *struct_ptr) {
 }
 
 void jsonio_writeJSON(s8 filename, void *struct_ptr, b32 append) {
-    // SDL_Log("%s:", filename.data);
-
     /* Parse the json file */
     PHYSFS_file *fp     = NULL;
     struct cJSON *json  = cJSON_CreateObject();
@@ -125,7 +120,6 @@ void jsonio_writeJSON(s8 filename, void *struct_ptr, b32 append) {
     u8 jelem_id     = *(byte_ptr + JSON_ELEM_bOFFSET);
 
     s8 elem_name = jsonElementnames[jelem_id];
-    // SDL_Log("Writing JSON element %s", elem_name.data);
     if (jelem_id >= JSON_END) {
         SDL_Log("JSON element not set");
         exit(ERROR_JSONElementNotSet);
@@ -163,7 +157,6 @@ void jsonio_writeJSON(s8 filename, void *struct_ptr, b32 append) {
 /* -- Read -- */
 // TODO: rewrite with input cjson
 void Shop_readJSON(char *filename, struct Shop *shop) {
-    SDL_Log("%s", filename);
     struct cJSON *jfile = jsonio_parseJSON(s8_var(filename));
     SDL_assert(jfile != NULL);
     struct cJSON *jshop = cJSON_GetObjectItem(jfile, "Shop");
@@ -191,7 +184,6 @@ void Shop_readJSON(char *filename, struct Shop *shop) {
 }
 
 void Promotion_readJSON(char *filename, struct Promotion *promotion) {
-    // SDL_Log("%s", filename);
     struct cJSON *jfile = jsonio_parseJSON(s8_var(filename));
     SDL_assert(jfile != NULL);
     struct cJSON *jpromotion = cJSON_GetObjectItem(jfile, "Promotion");
@@ -225,7 +217,6 @@ void Promotion_readJSON(char *filename, struct Promotion *promotion) {
 }
 
 void Palette_readJSON(char *filename, struct SDL_Palette *palette) {
-    // SDL_Log("%s", filename);
     struct cJSON *jfile = jsonio_parseJSON(s8_var(filename));
     SDL_assert(jfile != NULL);
     struct cJSON *jpalette = cJSON_GetObjectItem(jfile, "Palette");
@@ -258,7 +249,6 @@ void Palette_readJSON(char *filename, struct SDL_Palette *palette) {
 }
 
 void PaletteTable_readJSON(char *filename, u8 *table) {
-    // SDL_Log("%s", filename);
     struct cJSON *jfile = jsonio_parseJSON(s8_var(filename));
     SDL_assert(jfile != NULL);
     struct cJSON *jpalette_table = cJSON_GetObjectItem(jfile, "Palette Table");

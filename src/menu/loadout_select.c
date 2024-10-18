@@ -238,6 +238,7 @@ void LoadoutSelectMenu_Elem_Pos_Revert(struct LoadoutSelectMenu *lsm, struct Men
 /* --- Checking --- */
 b32 WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm) {
     /* Are there any eq weapons left in rest of inventory? */
+    /* If both hands are equipped, returns false */
     b32 remains = false;
 
     /* Get stronghand */
@@ -254,9 +255,6 @@ b32 WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm) {
                !Loadout_isEquipped(&lsm->selected, weakhand)) {
         /* After first weapon was selected */
         remains = unit->num_equipment > 1; /* Any item remains? */
-    } else {
-        SDL_Log("WeaponSelectMenu_Usable_Remains should not be called when both hands are selectedé");
-        SDL_assert(false);
     }
 
     return (remains);

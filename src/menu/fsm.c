@@ -515,7 +515,7 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
     struct LoadoutSelectMenu *ism = mc->data;
 
     /* - Get Popup_Loadout_Stats -- */
-    SDL_assert(mc->elem >= ITEM1);
+    SDL_assert(mc->elem >= 0);
     SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
     tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS];
     SDL_assert(popup_ent > TNECS_NULL);

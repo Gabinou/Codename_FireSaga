@@ -247,11 +247,9 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
         if ((reinf->boss_icon > BOSS_ICON_NULL) && (reinf->boss_icon < BOSS_ICON_NUM)) {
             // SDL_Log("-- loading unit Boss --");
-            // SDL_Log("%d %d", position->tilemap_pos.x, position->tilemap_pos.y);
             tnecs_entity entity = TNECS_ADD_COMPONENT(sota->world, temp_unit_ent, Boss);
             position = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Position);
 
-            // SDL_Log("%d %d", position->tilemap_pos.x, position->tilemap_pos.y);
             SDL_assert(temp_unit_ent == entity);
             struct Boss *boss = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Boss);
             SDL_assert(boss != NULL);
