@@ -688,10 +688,10 @@ void PopUp_Loadout_Stats_Select(struct PopUp_Loadout_Stats *pls, struct LoadoutS
     SDL_assert(unit == pls->unit);
 
     /* - Select item - */
-    int stronghand = Unit_Hand_Strong(pls->unit);
-    int weakhand   = Unit_Hand_Weak(pls->unit);
-    pls->eq_left  = -1;
-    pls->eq_right = -1;
+    int stronghand  = Unit_Hand_Strong(pls->unit);
+    int weakhand    = Unit_Hand_Weak(pls->unit);
+    pls->eq_left    = ITEM_UNEQUIPPED;
+    pls->eq_right   = ITEM_UNEQUIPPED;
     if (Loadout_isEquipped(&wsm->selected, stronghand))  {
         /* Stronghand selected */
         if (stronghand == UNIT_HAND_LEFT) {

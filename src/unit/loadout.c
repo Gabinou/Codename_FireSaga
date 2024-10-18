@@ -14,8 +14,8 @@ b32 eq_valid(i32 eq) {
 void Loadout_Set(Loadout *loadout, i32 hand, i32 eq) {
     SDL_assert(hand >= UNIT_HAND_LEFT);
     SDL_assert(hand <= MAX_ARMS_NUM);
-    SDL_assert(eq >= ITEM1);
-    SDL_assert(eq <= ITEM6);
+    SDL_assert(eq   >= ITEM_UNEQUIPPED);
+    SDL_assert(eq   <= ITEM6);
     loadout->_loadout[hand - UNIT_HAND_LEFT] = eq;
 }
 

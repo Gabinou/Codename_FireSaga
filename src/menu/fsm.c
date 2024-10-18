@@ -462,7 +462,7 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
 }
 
 void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
-    SDL_assert(mc->elem >= ITEM1);
+    SDL_assert(mc->elem >= 0);
     SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
     /* -- Update Popup_Loadout_Stats to potential loadout -- */
     struct LoadoutSelectMenu *wsm = mc->data;
@@ -841,7 +841,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     Unit *unit = TNECS_GET_COMPONENT(sota->world, wsm->unit, Unit);
     i32 stronghand  = Unit_Hand_Strong(unit);
     i32 weakhand    = Unit_Hand_Weak(unit);
-    SDL_assert(mc->elem > ITEM_NULL);
+    SDL_assert(mc->elem >= ITEM_NULL);
     SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
 
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
