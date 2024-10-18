@@ -511,6 +511,9 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     struct AI *ai = TNECS_GET_COMPONENT(sota->world, hov_ent, AI);
     if (ai != NULL)
         map_to.move = (ai->move != AI_MOVE_NEVER);
+    else
+        map_to.move = true;
+
     map_to.archetype    = ITEM_ARCHETYPE_STAFF;
     map_to.eq_type      = LOADOUT_EQUIPMENT;
     map_to.output_type  = ARRAY_MATRIX;
@@ -1303,7 +1306,7 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     map_to.archetype     = ITEM_ARCHETYPE_WEAPON;
     Map_Act_To(sota->map, map_to);
 
-    // matrix_print(sota->map->attacktomap, sota->map->col_len, sota->map->row_len);
+    // matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
 
     int rangemap = Unit_Rangemap_Get(unit);
     if (rangemap == RANGEMAP_HEALMAP) {
