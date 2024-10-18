@@ -1581,13 +1581,12 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     // pmc->current_attack = sota->combat_outcome.current_attack;
     struct Unit *attacker = NULL, *defender = NULL;
 
-
     attacker = attack.attacker ? aggressor : defendant;
     defender = attack.attacker ? defendant : aggressor;
     Combat_Resolve_Attack(attack, attacker, defender);
 
     // 2. Check for unit agony/death
-    b32 agg_death = (!aggressor->alive) || (aggressor->agony >= 0);
+    b32 agg_death = (!aggressor->alive) || (aggressor->agony > AGONY_NULL);
     if (agg_death) {
         userevent->user.data1 = &sota->aggressor;
         userevent->user.data2 = &sota->defendant;
@@ -1595,7 +1594,7 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
         // Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &sota->aggressor, &sota->defendant);
     }
 
-    b32 dft_death = (!defendant->alive) || (defendant->agony >= 0);
+    b32 dft_death = (!defendant->alive) || (defendant->agony > AGONY_NULL);
     if (dft_death) {
         userevent->user.data1 = &sota->defendant;
         userevent->user.data2 = &sota->aggressor;

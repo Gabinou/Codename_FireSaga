@@ -713,7 +713,6 @@ void PopUp_Loadout_Stats_Select(struct PopUp_Loadout_Stats *pls, struct LoadoutS
             SDL_assert(pls->eq_right > ITEM_UNEQUIPPED);
         }
     }
-    SDL_Log("pls->eq_left %d %d", pls->eq_left, pls->eq_right);
 }
 
 /* --- Rendering --- */
