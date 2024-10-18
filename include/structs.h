@@ -26,12 +26,38 @@ typedef struct Loadout {
 } Loadout;
 
 extern Loadout Loadout_default;
+/* --- Map --- */
+/* -- find -- */
+typedef struct MapFind {
+
+    // First to be able to cast: Loadout = &canEquip;
+    /* only if eq_type == LOADOUT_INPUT */
+    i32 _loadout[MAX_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
+
+    // Is movevement taken into account?
+    b32 move;
+
+    // healtomap: ITEM_ARCHETYPE_STAFF
+    // attacktomap: ITEM_ARCHETYPE_WEAPON
+    i64 archetype;
+
+    /* LOADOUT_EQUIPPED, LOADOUT_EQUIPMENT, LOADOUT_INPUT */
+    i32 eq_type;
+
+    /* FIND_BREAKABLES, FIND_DEFENDANTS */
+    i32 mode; 
+
+    tnecs_entity *found;
+    tnecs_entity seeker;
+}
+
 /* -- attackto -- */
 typedef struct MapAct {
     // First to be able to cast: Loadout = &canEquip;
     /* only if eq_type == LOADOUT_INPUT */
     i32 _loadout[MAX_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
+    // Is movevement taken into account?
     b32 move;
 
     // healtomap: ITEM_ARCHETYPE_STAFF

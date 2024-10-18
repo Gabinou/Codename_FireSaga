@@ -132,7 +132,6 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
         map->movemap[current_i] = 1;
     }
 
-
     struct Point     start      = pos->tilemap_pos;
     i32 move_stat  = mapto.move ? Unit_getStats(unit).move : 0;
 

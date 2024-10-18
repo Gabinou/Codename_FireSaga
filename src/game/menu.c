@@ -406,36 +406,15 @@ void Game_preLoadout_Patients(struct Game *sota, tnecs_entity actor) {
 
     // matrix_print(sota->map->healtomap, sota->map->row_len, sota->map->col_len);
 
-    /* Find Patients if any */
-    // TODO: find hand which equips staff
-    i32 stronghand = Unit_Hand_Strong(unit);
-
-    if (Unit_isEquipped(unit, stronghand)) {
-        i32 id = Unit_Id_Equipped(unit, stronghand);
-        if (Weapon_isStaff(id)) {
-            sota->patients = Map_Find_Patients(sota->map, sota->map->healtolist,
-                                               sota->patients, actor,
-                                               id, true);
-        }
-    }
+    // TEMP FIX:  both kiara and kakwi have staff at ITEM2 spot
+    sota->patients = Map_Find_Patients(sota->map, sota->map->healtolist,
+                                       sota->patients, actor,
+                                       id, true);
 }
 
 /* -- Finding if any weapon in equipment has a defendant -- */
 void Game_preLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
-
     DARR_NUM(sota->defendants) = 0;
-    // struct Unit *unit = TNECS_GET_COMPONENT(sota->world, actor, Unit);
-
-    /* Combine all weapon ranges */
-    // struct Range *range = Unit_Range_Equipment(unit, ITEM_ARCHETYPE_WEAPON);
-
-    /* Compute attacktolist */
-    // tnecs_entity *occupymap = NULL;
-    // sota->map->attacktomap = _Map_Act_Tomap_Compute(sota->map->attacktomap, sota->map->movemap, occupymap,
-    //                                             sota->map->row_len,     sota->map->col_len,
-    //                                             true, range, NMATH_MOVETILE_INCLUDE);
-    // Map_Act_Tolist_Compute(sota->map);
-
     /* --- Compute attacktolist --- */
     /* -- MapAct settings for attacktolist -- */
     MapAct map_to = MapAct_default;

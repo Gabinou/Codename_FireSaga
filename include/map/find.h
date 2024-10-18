@@ -22,8 +22,11 @@ tnecs_entity Map_Find_Breakable_Ent(struct Map *map, i32 x, i32 y);
 
 /* -- Find at other tile  -- */
 /* - attackmap - */
+// TODO: need to find defendants/patients with WHOLE EQUIPMENT, or ONE ITEM
+// TODO: Map_Find(map, map_find) -> Same as Map_Act_To
+
 tnecs_entity *Map_Find_Patients(struct Map *map, i32 *h, tnecs_entity *p,
-                                tnecs_entity he, i32 eq, b32 q);
+                                tnecs_entity he, b32 q);
 tnecs_entity *Map_Find_Breakables(struct Map *map, i32 *al, tnecs_entity *a, b32 q);
 tnecs_entity *Map_Find_Defendants(struct Map *map, i32 *al, tnecs_entity *a,
                                   tnecs_entity agg, b32 q);
