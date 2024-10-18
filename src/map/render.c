@@ -510,9 +510,9 @@ void Map_Update(struct Map *map,  struct Settings *settings,
         // BROKEN
         Map_Tilemap_Texture_Stitch(map, render_target);
     }
-    map->camera_moved = false;
-    map->shading_changed = false;
-    map->update = false;
+    map->camera_moved       = false;
+    map->shading_changed    = false;
+    map->update             = false;
 }
 
 void Map_Draw(struct Map *map,  struct Settings *settings,

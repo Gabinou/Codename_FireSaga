@@ -1171,7 +1171,6 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
     // TODO: PSM fsm?
     switch (menu_ptr->id) {
         case MENU_PLAYER_SELECT_UNIT_ACTION:
-            ;
 
             tnecs_entity     unit_ent       = sota->selected_unit_entity;
             struct Unit     *unit           = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
@@ -1190,12 +1189,14 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
             // 2.1 inital pos != moved pos, so cursor would move...
             Position_Pos_Set(selected_pos, init_pos.x, init_pos.y);
 
+            sota->map->update = true;
+
             /* - MapAct settings for attacktolist - */
             MapAct map_to = MapAct_default;
 
             map_to.move         = true;
             map_to.archetype    = ITEM_ARCHETYPE_STAFF;
-            map_to.eq_type      = LOADOUT_EQUIPPED;
+            map_to.eq_type      = LOADOUT_EQUIPMENT;
             map_to.output_type  = ARRAY_MATRIX;
             map_to.aggressor    = sota->selected_unit_entity;
 
@@ -1205,6 +1206,11 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
             /* - attacktomap - */
             map_to.archetype     = ITEM_ARCHETYPE_WEAPON;
             Map_Act_To(sota->map, map_to);
+
+            // printf("movemap\n");
+            // matrix_print(sota->map->movemap, sota->map->row_len, sota->map->col_len);
+            // printf("attacktomap\n");
+            // matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
 
             // 2.2 BUT: Moving pos ptr to selected position so that cursor doesn't move
             // Position_Pos_Set(selected_pos, init_pos.x, init_pos.y);
@@ -1217,14 +1223,18 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
             selected_pos->pixel_pos.y   = selected_pos->tilemap_pos.y * selected_pos->scale[1];
 
             // 3. Compute new stackmap with recomputed attacktomap
-            if (Unit_canStaff(unit)) {
-                int overlay = MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_HEAL + MAP_OVERLAY_MOVE;
-                Map_Palettemap_Autoset(sota->map, overlay);
-            } else if (Unit_canAttack(unit)) {
-                int overlay = MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK +
-                              MAP_OVERLAY_DANGER;
-                Map_Palettemap_Autoset(sota->map, overlay);
+            int rangemap = Unit_Rangemap_Get(unit);
+
+            /* - Compute new stackmap with recomputed attacktomap - */
+            int overlays = MAP_OVERLAY_MOVE + MAP_OVERLAY_DANGER + MAP_OVERLAY_GLOBAL_DANGER;
+            if (rangemap        == RANGEMAP_HEALMAP) {
+                overlays += MAP_OVERLAY_HEAL;
+                Map_Palettemap_Autoset(sota->map, overlays);
+            } else if (rangemap == RANGEMAP_ATTACKMAP) {
+                overlays += MAP_OVERLAY_ATTACK;
+                Map_Palettemap_Autoset(sota->map, overlays);
             }
+
             Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
             // 4. Revert Unit animation state to move
@@ -1237,6 +1247,7 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
                 Sprite_Draw(sprite, sota->renderer);
             }
 
+            SDL_assert(sota->map->update);
             break;
         case MENU_PLAYER_SELECT_MAP_ACTION:
             new_substate = GAME_SUBSTATE_STANDBY;

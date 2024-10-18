@@ -186,6 +186,10 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
         Unit_Equip(unit, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
     }
 
+    if ((unit->class == UNIT_CLASS_VESTAL) && (unit->class == UNIT_CLASS_PRIEST)) {
+        unit->rangemap = RANGEMAP_HEALMAP;
+    }
+
     // SDL_Log("-- loading slider --");
     // struct Slider * slider = TNECS_GET_COMPONENT(sota->world, unit_ent, Slider);
     // SDL_assert(slider != NULL);

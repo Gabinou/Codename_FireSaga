@@ -526,6 +526,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     map_to.archetype     = ITEM_ARCHETYPE_WEAPON;
     Map_Act_To(sota->map, map_to);
 
+
     // SDL_Log("attacktomap");
     // matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
     // SDL_Log("Movemap");
@@ -534,12 +535,13 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     int rangemap = Unit_Rangemap_Get(unit_ontile);
 
     /* - Compute new stackmap with recomputed attacktomap - */
-    int all_overlays = MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL + MAP_OVERLAY_ATTACK;
-    all_overlays    += MAP_OVERLAY_DANGER + MAP_OVERLAY_GLOBAL_DANGER;
+    int overlays = MAP_OVERLAY_MOVE + MAP_OVERLAY_DANGER + MAP_OVERLAY_GLOBAL_DANGER;
     if (rangemap        == RANGEMAP_HEALMAP) {
-        Map_Palettemap_Autoset(sota->map, all_overlays);
+        overlays += MAP_OVERLAY_HEAL;
+        Map_Palettemap_Autoset(sota->map, overlays);
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
-        Map_Palettemap_Autoset(sota->map, all_overlays);
+        overlays += MAP_OVERLAY_ATTACK;
+        Map_Palettemap_Autoset(sota->map, overlays);
     }
 
     /* Stack all overlay maps */
