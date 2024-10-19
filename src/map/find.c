@@ -79,7 +79,7 @@ b32 Map_canEquip_Range(struct Map *map, tnecs_entity unit_ent,
     if (archetype == ITEM_ARCHETYPE_WEAPON) {
         defendants = Map_Find_Defendants(map, map->attacktolist, defendants, unit_ent, false);
     } else if (archetype == ITEM_ARCHETYPE_STAFF) {
-        defendants = Map_Find_Patients(map, map->attacktolist, defendants, unit_ent, false);
+        defendants = Map_Find_Patients(map, map->attacktolist, defendants, unit_ent, eq, false);
     }
 
     // printf("DARR_NUM(defendants) %d\n", DARR_NUM(defendants));

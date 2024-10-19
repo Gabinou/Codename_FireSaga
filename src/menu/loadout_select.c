@@ -625,9 +625,9 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
 
 static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
                                           SDL_Renderer       *renderer) {
-    SDL_assert(lsm != NULL);
-    SDL_assert(lsm->unit > TNECS_NULL);
-    SDL_assert(lsm->world != NULL);
+    SDL_assert(lsm          != NULL);
+    SDL_assert(lsm->unit    > TNECS_NULL);
+    SDL_assert(lsm->world   != NULL);
 
     /* -- Preliminaries -- */
     b32 header_drawn = (lsm->header.data != NULL);
@@ -643,7 +643,7 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
     // b32 highlight  = (lsm->selected[0] >= 0);
     b32 highlight  = false;
 
-    /* If stronghand is selected, menu should change to show all items in equipment */
+    /* TODO: If stronghand is selected, menu should change to show all items in equipment */
     b32 strong_selected = Loadout_isEquipped(&lsm->selected, stronghand);
 
     SDL_assert(unit->num_canEquip > 0);

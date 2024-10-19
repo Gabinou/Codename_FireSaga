@@ -368,10 +368,10 @@ void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     Map_Act_To(sota->map, map_to);
 
     /* Find all Patients if any */
-    // TODO: find hand which equips staff
+    i32 stronghand = Unit_Hand_Strong(unit);
     sota->patients = Map_Find_Patients(sota->map, sota->map->healtolist,
                                        sota->patients, actor,
-                                       Unit_Id_Equipped(unit, UNIT_HAND_LEFT),
+                                       Unit_Eq_Equipped(unit, stronghand),
                                        false);
 
 }
@@ -407,9 +407,10 @@ void Game_preLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     // matrix_print(sota->map->healtomap, sota->map->row_len, sota->map->col_len);
 
     // TEMP FIX:  both kiara and kakwi have staff at ITEM2 spot
+    i32 eq = ITEM2;
     sota->patients = Map_Find_Patients(sota->map, sota->map->healtolist,
                                        sota->patients, actor,
-                                       id, true);
+                                       eq, true);
 }
 
 /* -- Finding if any weapon in equipment has a defendant -- */

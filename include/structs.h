@@ -45,11 +45,11 @@ typedef struct MapFind {
     i32 eq_type;
 
     /* FIND_BREAKABLES, FIND_DEFENDANTS */
-    i32 mode; 
+    i32 mode;
 
     tnecs_entity *found;
     tnecs_entity seeker;
-}
+};
 
 /* -- attackto -- */
 typedef struct MapAct {
