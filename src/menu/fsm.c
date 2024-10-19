@@ -937,7 +937,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
 
 void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
     struct LoadoutSelectMenu *ssm = mc->data;
-    SDL_assert(mc->elem > ITEM_NULL);
+    SDL_assert(mc->elem >= ITEM_NULL);
     SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
 
     StaffSelectMenu_Select(ssm, mc->elem);

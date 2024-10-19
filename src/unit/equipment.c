@@ -224,13 +224,24 @@ void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
     unit->num_canEquip = 0;
     for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
         for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
-            // canEquip hands
-            canEquip_Eq(&can_equip, eq);
-            can_equip.hand  = hand;
-            if (_Unit_canEquip(unit, can_equip)) {
-                unit->eq_canEquip[unit->num_canEquip++] = eq;
+            /* Skip if hand is not the input */
+            /* If input is NULL, check for any hand */
+            if ((can_equip.hand != UNIT_HAND_NULL) && (can_equip.hand != hand)) {
                 continue;
             }
+
+            canEquip_Eq(&can_equip, eq);
+
+            /* Set can_equip.hand to durrent hand, and save original */
+            i32 input_hand  = can_equip.hand;
+            can_equip.hand  = hand;
+
+            if (_Unit_canEquip(unit, can_equip)) {
+                // No need to check other hands if added to canEquip.
+                unit->eq_canEquip[unit->num_canEquip++] = eq;
+                break;
+            }
+            can_equip.hand  = input_hand;
         }
     }
 
