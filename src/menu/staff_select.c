@@ -58,32 +58,26 @@ void StaffSelectMenu_Select(struct LoadoutSelectMenu *ssm, i32 select) {
     SDL_assert(ssm          != NULL);
     SDL_assert(ssm->unit    > TNECS_NULL);
     SDL_assert(ssm->world   != NULL);
+    SDL_assert(select       >= ITEM_NULL);
+    SDL_assert(select       < SOTA_EQUIPMENT_SIZE);
     /* Player just selected loadout. */
 
     /* Note: select is in strong space: stronghandd first hand */
-    /* - Equip weapons according to player choice - */
+    /* - Equip staff according to player choice - */
     Unit *unit      = TNECS_GET_COMPONENT(ssm->world, ssm->unit, Unit);
     i32 eq          = unit->eq_canEquip[select];
     i32 stronghand  = Unit_Hand_Strong(unit);
-    i32 weakhand    = Unit_Hand_Strong(unit);
-
-    // If stronghand is unselected, there should be usable weapons
-    if (!Loadout_isEquipped(&ssm->selected, stronghand)) {
-        SDL_assert(select < unit->num_canEquip);
-    }
+    i32 weakhand    = Unit_Hand_Weak(unit);
+    SDL_assert(eq >= ITEM1);
+    SDL_assert(eq <= ITEM6);
 
     // TODO: selection if one hand skill exists
-    if (!Loadout_isEquipped(&ssm->selected, stronghand)) {
-        // Equipping staff in both hands
-        Loadout_Set(&ssm->selected, stronghand,  eq);
-        Loadout_Set(&ssm->selected, weakhand,    eq);
-        Unit_Equip(unit, stronghand, eq);
-        Unit_Equip(unit, weakhand, eq);
-    } else {
-        /* - Both Hands already selected - */
-        SDL_Log("Both weapons already selected, but select sent to LoadoutSelectMenu");
-        SDL_assert(false);      /* For  debug   */
-        exit(ERROR_Generic);    /* For release  */
-    }
+    Loadout_Set(&ssm->selected, weakhand, eq);
+    Loadout_Set(&ssm->selected, stronghand, eq);
+    Unit_Equip(unit, stronghand,    eq);
+    Unit_Equip(unit, weakhand,      eq);
+    SDL_assert(Unit_isEquipped(unit, stronghand));
+    SDL_assert(Unit_isEquipped(unit, weakhand));
+
     ssm->update = true;
 }

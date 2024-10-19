@@ -297,13 +297,24 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moDance(struct Game *sota, struct Menu *in_mc) 
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, data1_entity, NULL);
 }
 
-void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *in_mc) {
+void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *_mc) {
+    struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->staff_select_menu, Menu);
+    SDL_assert(mc != NULL);
+    struct LoadoutSelectMenu *ssm = mc->data;
+    SDL_assert(ssm != NULL);
 
     /* - Healer uses staff on patient - */
     tnecs_entity healer_ent     = sota->selected_unit_entity;
+    SDL_assert(healer_ent == ssm->unit);
     tnecs_entity patient_ent    = sota->candidates[sota->candidate];
     struct Unit *healer     = TNECS_GET_COMPONENT(sota->world, healer_ent, Unit);
     struct Unit *patient    = TNECS_GET_COMPONENT(sota->world, patient_ent, Unit);
+    i32 stronghand  = Unit_Hand_Strong(healer);
+    i32 weakhand    = Unit_Hand_Weak(healer);
+
+    SDL_assert(Unit_isEquipped(healer, weakhand));
+    SDL_assert(Unit_isEquipped(healer, stronghand));
+
     Unit_Staff_Use(healer, patient);
 
     /* - Update maphpbar - */
@@ -604,6 +615,8 @@ void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
         int new_elem = PlayerSelectMenu_Option_Index(psm, MENU_OPTION_STAFF);
         Menu_Elem_Set(mc_ua, sota, new_elem);
     }
+
+    // TODO: revert to previous equipment
 }
 
 void fsm_eCncl_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
@@ -630,7 +643,6 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, sota->popups[popup_ind], PopUp);
     struct PopUp_Loadout_Stats *pls = (struct PopUp_Loadout_Stats *)popup->data;
-
 
     if (Loadout_isEquipped(&wsm->selected, stronghand)) {
         /* move cursor to first hand */
@@ -942,6 +954,13 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
 
     StaffSelectMenu_Select(ssm, mc->elem);
 
+    Unit *unit      = TNECS_GET_COMPONENT(ssm->world, ssm->unit, Unit);
+    i32 stronghand  = Unit_Hand_Strong(unit);
+    i32 weakhand    = Unit_Hand_Weak(unit);
+    SDL_assert(ssm->unit == sota->aggressor);
+    SDL_assert(Unit_isEquipped(unit, stronghand));
+    SDL_assert(Unit_isEquipped(unit, weakhand));
+
     /* - Switch to Map_Candidates substate - */
     SDL_assert(sota->state    == GAME_STATE_Gameplay_Map);
     SDL_assert(sota->substate == GAME_SUBSTATE_MENU);
@@ -950,7 +969,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
         /* Unit can use staff in one hand */
         /* move cursor to second hand */
         int new_elem            = LSM_ELEM_ITEM2;
-        tnecs_entity cursor   = sota->entity_cursor;
+        tnecs_entity cursor     = sota->entity_cursor;
         Menu_Elem_Set(mc, sota, new_elem);
 
         /* Switch to selecting items */
@@ -964,11 +983,28 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
             // LoadoutSelectMenu_Deselect(ssm);
         } else {
             Game_postLoadout_Patients(sota, sota->aggressor);
+
             mc->visible = false;
             strncpy(sota->reason, "staff was selected, time to select patient", sizeof(sota->reason));
             Game_Switch_toCandidates(sota, sota->patients);
+
+            unit      = TNECS_GET_COMPONENT(ssm->world, sota->aggressor, Unit);
+            stronghand  = Unit_Hand_Strong(unit);
+            weakhand    = Unit_Hand_Weak(unit);
+            SDL_assert(Unit_isEquipped(unit, stronghand));
+            SDL_assert(Unit_isEquipped(unit, weakhand));
+
+            unit      = TNECS_GET_COMPONENT(ssm->world, ssm->unit, Unit);
+            stronghand  = Unit_Hand_Strong(unit);
+            weakhand    = Unit_Hand_Weak(unit);
+
+            SDL_assert(Unit_isEquipped(unit, stronghand));
+            SDL_assert(Unit_isEquipped(unit, weakhand));
+
         }
     }
+    SDL_assert(Unit_isEquipped(unit, stronghand));
+    SDL_assert(Unit_isEquipped(unit, weakhand));
 }
 
 /* --- fsm_psm_option_accept --- */

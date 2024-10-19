@@ -334,10 +334,8 @@ void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
     i32 weakhand    = Unit_Hand_Weak(unit);
 
     /*- Skip if no item to revert -*/
-    if (
-            !Loadout_isEquipped(&lsm->selected, stronghand) &&
-            !Loadout_isEquipped(&lsm->selected, weakhand)
-    ) {
+    if (!Loadout_isEquipped(&lsm->selected, stronghand) &&
+        !Loadout_isEquipped(&lsm->selected, weakhand)) {
         SDL_Log("Warning: No item to deselect");
         return;
     } else if (Loadout_isEquipped(&lsm->selected, weakhand)) {
@@ -638,7 +636,7 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
     /* Icons, text drawn on stronghand's side */
     Unit *unit      = TNECS_GET_COMPONENT(lsm->world, lsm->unit, Unit);
     i32 stronghand  = Unit_Hand_Strong(unit);
-    i32 weakhand    = Unit_Hand_Strong(unit);
+    i32 weakhand    = Unit_Hand_Weak(unit);
     i32 num_items   = unit->num_canEquip;
     // b32 highlight  = (lsm->selected[0] >= 0);
     b32 highlight  = false;

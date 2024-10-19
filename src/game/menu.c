@@ -346,8 +346,8 @@ void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     SDL_assert(Unit_canStaff(unit));
     DARR_NUM(sota->patients) = 0;
 
-    SDL_assert(sota->weapon_select_menu > TNECS_NULL);
-    struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->weapon_select_menu, Menu);
+    SDL_assert(sota->staff_select_menu > TNECS_NULL);
+    struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->staff_select_menu, Menu);
     SDL_assert(mc != NULL);
     struct LoadoutSelectMenu *lsm = mc->data;
     SDL_assert(lsm != NULL);
@@ -365,14 +365,25 @@ void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     map_to.output_type  = ARRAY_LIST;
     map_to.aggressor    = actor;
 
+    i32 stronghand  = Unit_Hand_Strong(unit);
+    i32 weakhand    = Unit_Hand_Weak(unit);
+
+    SDL_assert(Unit_isEquipped(unit, stronghand));
+    SDL_assert(Unit_isEquipped(unit, weakhand));
+
     Map_Act_To(sota->map, map_to);
 
+    SDL_assert(Unit_isEquipped(unit, stronghand));
+    SDL_assert(Unit_isEquipped(unit, weakhand));
+
     /* Find all Patients if any */
-    i32 stronghand = Unit_Hand_Strong(unit);
     sota->patients = Map_Find_Patients(sota->map, sota->map->healtolist,
                                        sota->patients, actor,
                                        Unit_Eq_Equipped(unit, stronghand),
                                        false);
+
+    SDL_assert(Unit_isEquipped(unit, stronghand));
+    SDL_assert(Unit_isEquipped(unit, weakhand));
 
 }
 
@@ -466,7 +477,6 @@ void Game_preUnitAction_Targets(struct Game *sota, tnecs_entity actor) {
     sota->auditors  = Map_Find_Auditors(sota->map,  sota->auditors,  x, y);
     sota->openables = Map_Find_Doors(sota->map,     sota->openables, x, y);
     sota->openables = Map_Find_Chests(sota->map,    sota->openables, x, y);
-
 }
 
 void Game_PlayerSelectMenu_Create(struct Game *sota, i8 in_menu) {

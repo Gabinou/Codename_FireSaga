@@ -204,7 +204,7 @@ void PopUp_Loadout_Stats_Free(struct PopUp_Loadout_Stats *pls);
 void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls, SDL_Renderer *r,
                               struct n9Patch *n9);
 
-void  PopUp_Loadout_Stats_Starting_Eq(struct PopUp_Loadout_Stats *pls, i32 *equipped);
+void  PopUp_Loadout_Stats_Starting_Eq(struct PopUp_Loadout_Stats *pls, const i32 *const equipped);
 /* --- Setters --- */
 void  PopUp_Loadout_Stats_New(     struct PopUp_Loadout_Stats *pls);
 void  PopUp_Loadout_Stats_Unit(    struct PopUp_Loadout_Stats *pls, struct Unit *u);

@@ -121,7 +121,7 @@ b32 Unit_hasHand(Unit *unit, i32 hand) {
     SDL_assert(unit != NULL);
     SDL_assert(hand >= UNIT_HAND_LEFT);
     SDL_assert(hand <= unit->arms_num);
-    SDL_assert(hand <= MAX_ARMS_NUM);
+    SDL_assert(hand <= UNIT_ARMS_NUM);
     return (unit->_hands[hand - UNIT_HAND_LEFT]);
 }
 
@@ -129,7 +129,7 @@ void Unit_Hand_Set(Unit *unit, i32 hand, b32 has) {
     SDL_assert(unit != NULL);
     SDL_assert(hand >= UNIT_HAND_LEFT);
     SDL_assert(hand <= unit->arms_num);
-    SDL_assert(hand <= MAX_ARMS_NUM);
+    SDL_assert(hand <= UNIT_ARMS_NUM);
 
     unit->_hands[hand - UNIT_HAND_LEFT] = has;
 }

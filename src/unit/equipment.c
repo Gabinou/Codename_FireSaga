@@ -124,7 +124,9 @@ void Unit_Check_Equipped(struct Unit *unit) {
 void Unit_Equip(Unit *unit, i32 hand, i32 eq) {
     SDL_assert(unit);
     SDL_assert(hand >= UNIT_HAND_LEFT);
-    SDL_assert(hand <= MAX_ARMS_NUM);
+    SDL_assert(hand < (MAX_ARMS_NUM  + UNIT_HAND_LEFT));
+    SDL_assert(hand < (UNIT_ARMS_NUM + UNIT_HAND_LEFT));
+
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
 
@@ -146,7 +148,7 @@ void Unit_Unequip(struct Unit *unit, i32 hand) {
     SDL_assert(hand <= MAX_ARMS_NUM);
 
     /* -- Unequip -- */
-    unit->_equipped[hand - ITEM1] = ITEM_UNEQUIPPED;
+    unit->_equipped[hand - UNIT_HAND_LEFT] = ITEM_UNEQUIPPED;
 
     if (unit->arms_num == UNIT_ARMS_NUM) {
         /* -- If twohanding, not anymore! -- */
@@ -640,7 +642,7 @@ void Unit_Equipped_Shields_Deplete(struct Unit *unit) {
 }
 
 b32 Unit_isEquipped(Unit *unit, i32 hand) {
-    b32 min_bound = (Unit_Eq_Equipped(unit, hand) > ITEM_UNEQUIPPED);
+    b32 min_bound = (Unit_Eq_Equipped(unit, hand) >= ITEM1);
     b32 max_bound = (Unit_Eq_Equipped(unit, hand) <= SOTA_EQUIPMENT_SIZE);
     return (min_bound && max_bound);
 }
@@ -703,13 +705,12 @@ Item *Unit_Get_Item(Unit *unit, i32 eq) {
 }
 
 /* Order in _equipment of equipped weapon */
-i32 Unit_Eq_Equipped(Unit *unit, i32 eq) {
+i32 Unit_Eq_Equipped(const Unit *const unit, i32 hand) {
     SDL_assert(unit != NULL);
-    SDL_assert(eq >= ITEM1);
-    SDL_assert(eq <= ITEM6);
-    SDL_assert(eq < (UNIT_ARMS_NUM + ITEM1));
-    SDL_assert(eq < (unit->arms_num + ITEM1));
-    return (unit->_equipped[eq - ITEM1]);
+    SDL_assert(hand >= UNIT_HAND_LEFT);
+    SDL_assert(hand < (UNIT_ARMS_NUM + UNIT_HAND_LEFT));
+    SDL_assert(hand < (unit->arms_num + UNIT_HAND_LEFT));
+    return (unit->_equipped[hand - UNIT_HAND_LEFT]);
 }
 
 /* ID of equipment item */
@@ -743,9 +744,16 @@ void Unit_Staff_Use(Unit *healer, Unit *patient) {
     /* Get equipped weapon id */
     i32 stronghand  = Unit_Hand_Strong(healer);
     i32 weakhand    = Unit_Hand_Weak(healer);
+
+    i32 weakhand_is   = Unit_isEquipped(healer, weakhand);
+    i32 stronghand_is = Unit_isEquipped(healer, stronghand);
+    i32 weakhand_id   = Unit_Id_Equipped(healer, weakhand);
+    i32 stronghand_id = Unit_Id_Equipped(healer, stronghand);
+
     struct Inventory_item *weakhand_inv   = Unit_Item_Equipped(healer, weakhand);
     struct Inventory_item *stronghand_inv = Unit_Item_Equipped(healer, stronghand);
-    SDL_assert(stronghand_inv != NULL);
+    SDL_assert(weakhand_inv     != NULL);
+    SDL_assert(stronghand_inv   != NULL);
     SDL_assert(Weapon_isStaff(stronghand_inv->id));
 
     /* TODO: Check if healer has the staff in onehand skill */

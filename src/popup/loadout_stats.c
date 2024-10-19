@@ -518,7 +518,7 @@ void PopUp_Loadout_Stats_Free(struct PopUp_Loadout_Stats *pls) {
     }
 
 }
-void  PopUp_Loadout_Stats_Starting_Eq(struct PopUp_Loadout_Stats *pls, i32 *equipped) {
+void  PopUp_Loadout_Stats_Starting_Eq(struct PopUp_Loadout_Stats *pls, const i32 *const equipped) {
     pls->equipped[UNIT_HAND_LEFT]   = equipped[UNIT_HAND_LEFT];
     pls->equipped[UNIT_HAND_RIGHT]  = equipped[UNIT_HAND_RIGHT];
 }
