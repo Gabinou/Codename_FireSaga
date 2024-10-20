@@ -34,10 +34,10 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
 
     /* - PHYSICAL ATK ARROW - */
     arrow_index = STAT_ARROW_NULL;
-    if (pls->new_cs.attack[DMG_TYPE_PHYSICAL] > pls->previous_cs.attack[DMG_TYPE_PHYSICAL])
+    if (pls->selected_cs.attack[DMG_TYPE_PHYSICAL] > pls->initial_cs.attack[DMG_TYPE_PHYSICAL])
         arrow_index = STAT_ARROW_UP;
-    else if (pls->new_cs.attack[DMG_TYPE_PHYSICAL] <
-             pls->previous_cs.attack[DMG_TYPE_PHYSICAL])
+    else if (pls->selected_cs.attack[DMG_TYPE_PHYSICAL] <
+             pls->initial_cs.attack[DMG_TYPE_PHYSICAL])
         arrow_index = STAT_ARROW_DOWN;
 
 #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
@@ -51,10 +51,10 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
 
     /* - MAGICAL ATK ARROW - */
     arrow_index = STAT_ARROW_NULL;
-    if (pls->new_cs.attack[DMG_TYPE_MAGICAL] > pls->previous_cs.attack[DMG_TYPE_MAGICAL])
+    if (pls->selected_cs.attack[DMG_TYPE_MAGICAL] > pls->initial_cs.attack[DMG_TYPE_MAGICAL])
         arrow_index = STAT_ARROW_UP;
-    else if (pls->new_cs.attack[DMG_TYPE_MAGICAL] <
-             pls->previous_cs.attack[DMG_TYPE_MAGICAL])
+    else if (pls->selected_cs.attack[DMG_TYPE_MAGICAL] <
+             pls->initial_cs.attack[DMG_TYPE_MAGICAL])
         arrow_index = STAT_ARROW_DOWN;
 
 #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
@@ -68,9 +68,9 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
 
     /* - HIT ARROW - */
     arrow_index = STAT_ARROW_NULL;
-    if (pls->new_cs.hit > pls->previous_cs.hit)
+    if (pls->selected_cs.hit > pls->initial_cs.hit)
         arrow_index = STAT_ARROW_UP;
-    else if (pls->new_cs.hit < pls->previous_cs.hit)
+    else if (pls->selected_cs.hit < pls->initial_cs.hit)
         arrow_index = STAT_ARROW_DOWN;
 
 #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
@@ -84,9 +84,9 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
 
     /* - DODGE ARROW - */
     arrow_index = STAT_ARROW_NULL;
-    if (pls->new_cs.dodge > pls->previous_cs.dodge)
+    if (pls->selected_cs.dodge > pls->initial_cs.dodge)
         arrow_index = STAT_ARROW_UP;
-    else if (pls->new_cs.dodge < pls->previous_cs.dodge)
+    else if (pls->selected_cs.dodge < pls->initial_cs.dodge)
         arrow_index = STAT_ARROW_DOWN;
 
 #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
@@ -100,9 +100,9 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
 
     /* - CRIT ARROW - */
     arrow_index = STAT_ARROW_NULL;
-    if (pls->new_cs.crit > pls->previous_cs.crit)
+    if (pls->selected_cs.crit > pls->initial_cs.crit)
         arrow_index = STAT_ARROW_UP;
-    else if (pls->new_cs.crit < pls->previous_cs.crit)
+    else if (pls->selected_cs.crit < pls->initial_cs.crit)
         arrow_index = STAT_ARROW_DOWN;
 
 #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
@@ -116,9 +116,9 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
 
     /* - FAVOR ARROW - */
     arrow_index = STAT_ARROW_NULL;
-    if (pls->new_cs.favor > pls->previous_cs.favor)
+    if (pls->selected_cs.favor > pls->initial_cs.favor)
         arrow_index = STAT_ARROW_UP;
-    else if (pls->new_cs.favor < pls->previous_cs.favor)
+    else if (pls->selected_cs.favor < pls->initial_cs.favor)
         arrow_index = STAT_ARROW_DOWN;
 
 #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
@@ -132,11 +132,11 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
 
     /* - PHYSICAL PROT ARROW - */
     arrow_index = STAT_ARROW_NULL;
-    if (pls->new_cs.protection[DMG_TYPE_PHYSICAL] >
-        pls->previous_cs.protection[DMG_TYPE_PHYSICAL])
+    if (pls->selected_cs.protection[DMG_TYPE_PHYSICAL] >
+        pls->initial_cs.protection[DMG_TYPE_PHYSICAL])
         arrow_index = STAT_ARROW_UP;
-    else if (pls->new_cs.protection[DMG_TYPE_PHYSICAL] <
-             pls->previous_cs.protection[DMG_TYPE_PHYSICAL])
+    else if (pls->selected_cs.protection[DMG_TYPE_PHYSICAL] <
+             pls->initial_cs.protection[DMG_TYPE_PHYSICAL])
         arrow_index = STAT_ARROW_DOWN;
 
 #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
@@ -150,11 +150,11 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
 
     /* - MAGICAL PROT ARROW - */
     arrow_index = STAT_ARROW_NULL;
-    if (pls->new_cs.protection[DMG_TYPE_MAGICAL] >
-        pls->previous_cs.protection[DMG_TYPE_MAGICAL])
+    if (pls->selected_cs.protection[DMG_TYPE_MAGICAL] >
+        pls->initial_cs.protection[DMG_TYPE_MAGICAL])
         arrow_index = STAT_ARROW_UP;
-    else if (pls->new_cs.protection[DMG_TYPE_MAGICAL] <
-             pls->previous_cs.protection[DMG_TYPE_MAGICAL])
+    else if (pls->selected_cs.protection[DMG_TYPE_MAGICAL] <
+             pls->initial_cs.protection[DMG_TYPE_MAGICAL])
         arrow_index = STAT_ARROW_DOWN;
 
 #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
@@ -168,9 +168,9 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
 
     /* - RANGE MIN ARROW - */
     arrow_index = STAT_ARROW_NULL;
-    if (pls->new_cs.range_loadout.min > pls->previous_cs.range_loadout.min)
+    if (pls->selected_cs.range_loadout.min > pls->initial_cs.range_loadout.min)
         arrow_index = STAT_ARROW_DOWN;
-    else if (pls->new_cs.range_loadout.min < pls->previous_cs.range_loadout.min)
+    else if (pls->selected_cs.range_loadout.min < pls->initial_cs.range_loadout.min)
         arrow_index = STAT_ARROW_UP;
 
 #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
@@ -184,9 +184,9 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
 
     /* - RANGE MAX ARROW - */
     arrow_index = STAT_ARROW_NULL;
-    if (pls->new_cs.range_loadout.max > pls->previous_cs.range_loadout.max)
+    if (pls->selected_cs.range_loadout.max > pls->initial_cs.range_loadout.max)
         arrow_index = STAT_ARROW_UP;
-    else if (pls->new_cs.range_loadout.max < pls->previous_cs.range_loadout.max)
+    else if (pls->selected_cs.range_loadout.max < pls->initial_cs.range_loadout.max)
         arrow_index = STAT_ARROW_DOWN;
 
 #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
@@ -200,9 +200,9 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
 
     /* -- SPEED ARROW -- */
     arrow_index = STAT_ARROW_NULL;
-    if (pls->new_cs.speed > pls->previous_cs.speed)
+    if (pls->selected_cs.speed > pls->initial_cs.speed)
         arrow_index = STAT_ARROW_UP;
-    else if (pls->new_cs.speed < pls->previous_cs.speed)
+    else if (pls->selected_cs.speed < pls->initial_cs.speed)
         arrow_index = STAT_ARROW_DOWN;
 
 #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
@@ -223,60 +223,60 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls,
     char numbuff[10];
     /* - ATK - */
     PixelFont_Write(pls->pixelnours, renderer, "ATK", 3, PLS_ATK_X, PLS_ATK_Y);
-    if (pls->new_cs.attack[DMG_TYPE_TRUE] > 0) {
-        stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->new_cs.attack[DMG_TYPE_PHYSICAL]);
+    if (pls->selected_cs.attack[DMG_TYPE_TRUE] > 0) {
+        stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->selected_cs.attack[DMG_TYPE_PHYSICAL]);
 
         stbsp_sprintf(numbuff, "%d/%d/%d\0",
-                      pls->new_cs.attack[DMG_TYPE_PHYSICAL],
-                      pls->new_cs.attack[DMG_TYPE_MAGICAL],
-                      pls->new_cs.attack[DMG_TYPE_TRUE]);
+                      pls->selected_cs.attack[DMG_TYPE_PHYSICAL],
+                      pls->selected_cs.attack[DMG_TYPE_MAGICAL],
+                      pls->selected_cs.attack[DMG_TYPE_TRUE]);
         width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
         PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
                         PLS_ATK_X_STAT - width / 2 + 2, PLS_ATK_Y_STAT);
     } else {
-        stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->new_cs.attack[DMG_TYPE_PHYSICAL]);
+        stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->selected_cs.attack[DMG_TYPE_PHYSICAL]);
         width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
         stbsp_sprintf(numbuff, "%d/%d\0\0\0\0",
-                      pls->new_cs.attack[DMG_TYPE_PHYSICAL], pls->new_cs.attack[DMG_TYPE_MAGICAL]);
+                      pls->selected_cs.attack[DMG_TYPE_PHYSICAL], pls->selected_cs.attack[DMG_TYPE_MAGICAL]);
         PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
                         PLS_ATK_X_STAT - width, PLS_ATK_Y_STAT);
     }
     /* - PROT - */
     PixelFont_Write(pls->pixelnours, renderer, "DEF", 3, PLS_PROT_X, PLS_PROT_Y);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->new_cs.protection[DMG_TYPE_PHYSICAL]);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->selected_cs.protection[DMG_TYPE_PHYSICAL]);
     width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
-    stbsp_sprintf(numbuff, "%d/%d\0\0\0\0", pls->new_cs.protection[DMG_TYPE_PHYSICAL],
-                  pls->new_cs.protection[DMG_TYPE_MAGICAL]);
+    stbsp_sprintf(numbuff, "%d/%d\0\0\0\0", pls->selected_cs.protection[DMG_TYPE_PHYSICAL],
+                  pls->selected_cs.protection[DMG_TYPE_MAGICAL]);
     PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
                     PLS_PROT_X_STAT - width, PLS_PROT_Y_STAT);
     /* - HIT - */
     PixelFont_Write(pls->pixelnours, renderer, "HIT", 3,
                     PLS_HIT_X,
                     PLS_HIT_Y);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->new_cs.hit);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->selected_cs.hit);
     width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
-    stbsp_sprintf(numbuff, "%d/%d\0\0\0\0", pls->new_cs.hit, pls->new_cs.dodge);
+    stbsp_sprintf(numbuff, "%d/%d\0\0\0\0", pls->selected_cs.hit, pls->selected_cs.dodge);
     PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
                     PLS_HIT_X_STAT - width, PLS_HIT_Y_STAT);
     /* - CRIT - */
     PixelFont_Write(pls->pixelnours, renderer, "CRIT", 4,
                     PLS_CRIT_X, PLS_CRIT_Y);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->new_cs.crit);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->selected_cs.crit);
     width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
-    stbsp_sprintf(numbuff, "%d/%d\0\0\0\0", pls->new_cs.crit, pls->new_cs.favor);
+    stbsp_sprintf(numbuff, "%d/%d\0\0\0\0", pls->selected_cs.crit, pls->selected_cs.favor);
     PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
                     PLS_CRIT_X_STAT - width, PLS_CRIT_Y_STAT);
     /* - RANGE - */
     PixelFont_Write(pls->pixelnours, renderer, "RANGE", 5,
                     PLS_RANGE_X, PLS_RANGE_Y);
-    stbsp_sprintf(numbuff, "%d - %d\0", pls->new_cs.range_loadout.min,
-                  pls->new_cs.range_loadout.max);
+    stbsp_sprintf(numbuff, "%d - %d\0", pls->selected_cs.range_loadout.min,
+                  pls->selected_cs.range_loadout.max);
     PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
                     PLS_RANGE_X_STAT, PLS_RANGE_Y_STAT);
     /* - SPEED - */
     PixelFont_Write(pls->pixelnours, renderer, "SPEED", 5,
                     PLS_SPEED_X, PLS_SPEED_Y);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->new_cs.speed);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->selected_cs.speed);
     width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
     PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
                     PLS_SPEED_X_STAT - width / 2,  PLS_SPEED_Y_STAT);
@@ -573,8 +573,8 @@ void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls, SDL_Renderer *ren
 
 void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
     // Get item type of each waepon in hand to draw icons.
-    SDL_assert(pls->unit != NULL);
-    SDL_assert(pls->unit->weapons_dtab != NULL);
+    SDL_assert(pls->unit                != NULL);
+    SDL_assert(pls->unit->weapons_dtab  != NULL);
 
     /* Left hand item type */
     struct Inventory_item *item = Unit_InvItem(pls->unit, pls->eq_left);
@@ -593,58 +593,55 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
     } else {
         pls->type_right = ITEM_TYPE_ITEM;
     }
-
 }
 
 /* --- Setters --- */
 void PopUp_Loadout_Stats_Unit(struct PopUp_Loadout_Stats *pls, struct Unit *unit) {
+    SDL_assert(pls  != NULL);
     SDL_assert(unit != NULL);
-    pls->unit = unit;
-    int eq_left     = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
-    pls->eq_left    = ITEM_UNEQUIPPED;
-    int eq_right    = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
-    pls->eq_right   = ITEM_UNEQUIPPED;
+    pls->unit       = unit;
 
-    Unit_Unequip(unit, UNIT_HAND_LEFT);
-    Unit_Unequip(unit, UNIT_HAND_RIGHT);
-
-    PopUp_Loadout_Stats_ItemTypes(pls);
-    PopUp_Loadout_Stats_Previous(pls);
+    PopUp_Loadout_Stats_Initial(pls);
     PopUp_Loadout_Stats_Starting_Eq(pls, unit->_equipped);
 }
 
-void PopUp_Loadout_Stats_Previous(struct PopUp_Loadout_Stats *pls) {
-    /* Compute loadout stats of "previous" loadout to compare against */
-    PopUp_Loadout_Stats_ItemTypes(pls);
+void  PopUp_Loadout_Stats_Initial_Loadout(  struct PopUp_Loadout_Stats *pls) {
+    SDL_assert(pls          != NULL);
+    SDL_assert(pls->unit    != NULL);
 
-    Loadout loadout = Loadout_default;
-    Loadout_Set(&loadout, UNIT_HAND_LEFT,   pls->eq_left);
-    Loadout_Set(&loadout, UNIT_HAND_RIGHT,  pls->eq_right);
-    pls->previous_cs = Unit_computedStats_wLoadout(pls->unit,
-                                                   &loadout,
-                                                   pls->distance);
-    pls->update      = true;
+    Unit_Loadout_Export(pls->unit, &pls->loadout_initial);
 }
 
-void PopUp_Loadout_Stats_New(struct PopUp_Loadout_Stats *pls) {
-    /* Compute loadout stats of "new" loadout compared with "previous" loadout */
+void  PopUp_Loadout_Stats_Selected_Loadout( struct PopUp_Loadout_Stats *pls) {
+    SDL_assert(pls          != NULL);
+    SDL_assert(pls->unit    != NULL);
+
+    Unit_Loadout_Export(pls->unit, &pls->loadout_selected);
+}
+
+void PopUp_Loadout_Stats_Initial_Stats(struct PopUp_Loadout_Stats *pls) {
+    SDL_assert(pls          != NULL);
+    SDL_assert(pls->unit    != NULL);
+
+    pls->initial_cs     = Unit_computedStats_wLoadout(pls->unit, &pls->loadout_initial, pls->distance);
+    pls->update         = true;
+}
+
+void PopUp_Loadout_Stats_Selected_Stats(struct PopUp_Loadout_Stats *pls) {
+    SDL_assert(pls          != NULL);
+    SDL_assert(pls->unit    != NULL);
+
+    /* Compute loadout stats of "selected" loadout compared with "initial" loadout */
     PopUp_Loadout_Stats_ItemTypes(pls);
 
-    Loadout loadout = Loadout_default;
-    Loadout_Set(&loadout, UNIT_HAND_LEFT,   pls->eq_left);
-    Loadout_Set(&loadout, UNIT_HAND_RIGHT,  pls->eq_right);
-    pls->new_cs     = Unit_computedStats_wLoadout(pls->unit,
-                                                  &loadout,
-                                                  pls->distance);
-    pls->update     = true;
-    pls->twoHanding = Unit_istwoHanding(pls->unit);
+    pls->selected_cs    = Unit_computedStats_wLoadout(pls->unit, &pls->loadout_selected, pls->distance);
+    pls->update         = true;
 }
 
 /* --- Select --- */
 void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls, struct LoadoutSelectMenu *wsm,
                                int elem) {
     /* Set pls items to weapons hovered in wsm */
-
     SDL_assert(pls       != NULL);
     SDL_assert(wsm       != NULL);
     SDL_assert(wsm->unit > TNECS_NULL);
@@ -690,28 +687,13 @@ void PopUp_Loadout_Stats_Select(struct PopUp_Loadout_Stats *pls, struct LoadoutS
     /* - Select item - */
     int stronghand  = Unit_Hand_Strong(pls->unit);
     int weakhand    = Unit_Hand_Weak(pls->unit);
-    pls->eq_left    = ITEM_UNEQUIPPED;
-    pls->eq_right   = ITEM_UNEQUIPPED;
+
     if (Loadout_isEquipped(&wsm->selected, stronghand))  {
-        /* Stronghand selected */
-        if (stronghand == UNIT_HAND_LEFT) {
-            pls->eq_left  = Loadout_Eq(&wsm->selected, stronghand);
-            SDL_assert(pls->eq_left > ITEM_UNEQUIPPED);
-        } else {
-            pls->eq_right = Loadout_Eq(&wsm->selected, stronghand);
-            SDL_assert(pls->eq_right > ITEM_UNEQUIPPED);
-        }
+        Loadout_Set(pls->loadout_selected, stronghand, Loadout_Eq(&wsm->selected, stronghand));
     }
 
     if (Loadout_isEquipped(&wsm->selected, weakhand))  {
-        /* Weakhand selected */
-        if (weakhand == UNIT_HAND_LEFT) {
-            pls->eq_left  = Loadout_Eq(&wsm->selected, weakhand);
-            SDL_assert(pls->eq_left > ITEM_UNEQUIPPED);
-        } else {
-            pls->eq_right = Loadout_Eq(&wsm->selected, weakhand);
-            SDL_assert(pls->eq_right > ITEM_UNEQUIPPED);
-        }
+        Loadout_Set(pls->loadout_selected, weakhand, Loadout_Eq(&wsm->selected, weakhand));
     }
 }
 

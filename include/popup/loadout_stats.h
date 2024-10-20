@@ -177,16 +177,13 @@ typedef struct PopUp_Loadout_Stats {
     SDL_Texture *texture_header;
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
-    struct Computed_Stats previous_cs;
-    struct Computed_Stats new_cs;
-    int equipped[UNIT_ARMS_NUM];
-    int eq_left;  /* item side space */
-    int eq_right; /* item side space */
-    // TODO: use loadout
-    Loadout initial;    /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
-    i16 type_left;
-    i16 type_right;
+    struct Computed_Stats initial_cs;
+    struct Computed_Stats selected_cs;
+
+    Loadout loadout_initial;
+    Loadout loadout_selected;
+
     int ly_offset;
     int ry_offset;
 
@@ -194,7 +191,6 @@ typedef struct PopUp_Loadout_Stats {
     b32 l_equip_override   : 1; /* ? */
     b32 r_equip_override   : 1; /* ? */
     b32 tophand_stronghand : 1; // If false, tophand is lefthand
-    b32 twoHanding         : 1; // If false, tophand is lefthand
 } PopUp_Loadout_Stats;
 
 extern struct PopUp_Loadout_Stats PopUp_Loadout_Stats_default;
@@ -206,9 +202,12 @@ void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls, SDL_Renderer *r,
 
 void  PopUp_Loadout_Stats_Starting_Eq(struct PopUp_Loadout_Stats *pls, const i32 *const equipped);
 /* --- Setters --- */
-void  PopUp_Loadout_Stats_New(     struct PopUp_Loadout_Stats *pls);
 void  PopUp_Loadout_Stats_Unit(    struct PopUp_Loadout_Stats *pls, struct Unit *u);
-void  PopUp_Loadout_Stats_Previous(struct PopUp_Loadout_Stats *pls);
+void  PopUp_Loadout_Stats_Initial_Stats(    struct PopUp_Loadout_Stats *pls);
+void  PopUp_Loadout_Stats_Selected_Stats(   struct PopUp_Loadout_Stats *pls);
+
+void  PopUp_Loadout_Stats_Initial_Loadout(  struct PopUp_Loadout_Stats *pls);
+void  PopUp_Loadout_Stats_Selected_Loadout( struct PopUp_Loadout_Stats *pls);
 
 /* --- Select --- */
 void PopUp_Loadout_Stats_Select(struct PopUp_Loadout_Stats  *pls,

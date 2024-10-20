@@ -27,6 +27,9 @@ void canEquip_Loadout(      canEquip *e, i32 h, i32 eq);
 void canEquip_Loadout_None( canEquip *e, i32 h);
 
 /* --- Importing/Exporting --- */
+// - Export: unit       -> loadout
+// - Import: loadout    -> unit 
+
 void Unit_Equipped_Import(Unit *u, i32 *_loadout);
 void Unit_Equipped_Export(Unit *u, i32 *_loadout);
 
