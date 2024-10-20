@@ -450,7 +450,7 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     if (Item_hasType(wpn->item, ITEM_TYPE_STAFF)) {
         b32 one_hand_skill = Unit_canStaff_oneHand(unit);
         if (strict && !eq_same && !one_hand_skill) {
-            SDL_Log("Cannot onehand staves %d %d %d", strict, eq_same, one_hand_skill);
+            // SDL_Log("Cannot onehand staves %d %d %d", strict, eq_same, one_hand_skill);
             return (false);
         }
     } else if (
@@ -460,7 +460,7 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     ) {
         b32 one_hand_skill = Unit_canMagic_oneHand(unit);
         if (strict && !eq_same && !one_hand_skill) {
-            SDL_Log("Cannot onehand magic weapons");
+            // SDL_Log("Cannot onehand magic weapons");
             return (false);
         }
     }

@@ -140,7 +140,7 @@ struct Range *Unit_Range_Equipped(Unit *unit, i64 archetype) {
 
         if (!_Range_Archetype_Match(wpn, archetype)) {
             // SDL_Log("!!_Range_Archetype_Match");
-            return (range);
+            continue;
         }
 
         Ranges_Combine(range, wpn->stats.range);

@@ -323,20 +323,18 @@ void Game_postLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
     SDL_assert(Loadout_isEquipped(&lsm->selected, UNIT_HAND_RIGHT));
 
     /* - MapAct settings for attacktolist - */
-    MapAct map_to = MapAct_default;
-    Loadout *loadout = (Loadout *)&map_to;
-    Loadout_Set(loadout, UNIT_HAND_LEFT,   Loadout_Eq(&lsm->selected, UNIT_HAND_LEFT));
-    Loadout_Set(loadout, UNIT_HAND_RIGHT,  Loadout_Eq(&lsm->selected, UNIT_HAND_RIGHT));
-
+    MapAct map_to       = MapAct_default;
     map_to.move         = false;
     map_to.archetype    = ITEM_ARCHETYPE_WEAPON;
-    map_to.eq_type      = LOADOUT_LOADOUT;
+    map_to.eq_type      = LOADOUT_EQUIPPED;
     map_to.output_type  = ARRAY_LIST;
     map_to.aggressor    = actor;
 
     Map_Act_To(sota->map, map_to);
 
     /* Find all Defendants */
+    matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
+
     sota->defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist,
                                            sota->defendants, actor, false);
 }
