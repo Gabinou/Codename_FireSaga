@@ -139,10 +139,10 @@ extern char LSM_menu_description[LSM_ELEMS_NUM][LSM_BUFFER_LEN];
 
 extern struct MenuElemDirections    wsm_links[LSM_ELEMS_NUM];
 extern struct MenuElemDirections    wsm_links_start[LSM_ELEMS_NUM];
-extern struct Point   wsm_elem_pos[LSM_ELEMS_NUM];
-extern struct Point   wsm_elem_box[LSM_ELEMS_NUM];
-extern struct Point   wsm_cursor_pos[LSM_ELEMS_NUM];
-extern struct Point   wsm_cursor_box[LSM_ELEMS_NUM];
+extern struct Point                 wsm_elem_pos[LSM_ELEMS_NUM];
+extern struct Point                 wsm_elem_box[LSM_ELEMS_NUM];
+extern struct Point                 wsm_cursor_pos[LSM_ELEMS_NUM];
+extern struct Point                 wsm_cursor_box[LSM_ELEMS_NUM];
 
 
 struct LoadoutSelectMenu {
