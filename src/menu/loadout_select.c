@@ -302,6 +302,7 @@ void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
 
     if (!Loadout_isEquipped(&lsm->selected, stronghand)) {
         Loadout_Set(&lsm->selected, stronghand, eq);
+        SDL_Log("Unit_Equip hand %d equips %d", stronghand, eq);
         Unit_Equip(unit, stronghand, eq);
     } else if (Loadout_isEquipped(&lsm->selected, stronghand)) {
         Loadout_Set(&lsm->selected, weakhand, eq);

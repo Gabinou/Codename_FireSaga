@@ -910,9 +910,10 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     // TODO: Automatically equip nothing in weakhand if no other item in equipment
     if (Loadout_isEquipped(&wsm->selected, stronghand)) {
         canEquip can_equip  = canEquip_default;
-        canEquip_Loadout(&can_equip, UNIT_HAND_LEFT, ITEM1);
-        canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, ITEM2);
+        int eq = Loadout_Eq(&wsm->selected, stronghand);
+        canEquip_Loadout(&can_equip, stronghand, eq);
         can_equip.archetype = ITEM_ARCHETYPE_WEAKHAND;
+        can_equip.hand      = weakhand;
         Unit_canEquip_Equipment(unit, can_equip);
     }
 
