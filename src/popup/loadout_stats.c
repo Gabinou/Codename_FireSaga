@@ -521,7 +521,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
 
 /* --- GLOBAL FUNCTIONS --- */
 struct PopUp_Loadout_Stats *PopUp_Loadout_Stats_Alloc(void) {
-    struct PopUp_Loadout_Stats *pls = malloc(sizeof(struct LoadoutSelectMenu));
+    struct PopUp_Loadout_Stats *pls = malloc(sizeof(struct PopUp_Loadout_Stats));
     SDL_assert(pls != NULL);
     *pls = PopUp_Loadout_Stats_default;
 
@@ -554,6 +554,7 @@ void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls, SDL_Renderer *ren
                               tnecs_world* world, struct n9Patch *n9patch) {
     SDL_assert(pls      != NULL);
     SDL_assert(world    != NULL);
+    SDL_assert(n9patch  != NULL);
     PopUp_Loadout_Stats_Free(pls);
     n9Patch_Free(n9patch);
 
