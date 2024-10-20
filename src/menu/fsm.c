@@ -439,11 +439,11 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
 
     /* 2. Cancel one of the selection of item select menu */
     struct LoadoutSelectMenu *wsm = mc->data;
-    SDL_assert(!Loadout_isEquipped(&wsm->selected, UNIT_HAND_LEFT));
-    SDL_assert(!Loadout_isEquipped(&wsm->selected, UNIT_HAND_RIGHT));
-    LoadoutSelectMenu_Deselect(wsm);
     SDL_assert(Loadout_isEquipped(&wsm->selected, UNIT_HAND_LEFT)
                || Loadout_isEquipped(&wsm->selected, UNIT_HAND_RIGHT));
+    LoadoutSelectMenu_Deselect(wsm);
+    SDL_assert(!Loadout_isEquipped(&wsm->selected, UNIT_HAND_LEFT) ||
+               !Loadout_isEquipped(&wsm->selected, UNIT_HAND_RIGHT));
 
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, sota->popups[popup_ind], PopUp);
