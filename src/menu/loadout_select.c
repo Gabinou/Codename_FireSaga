@@ -250,12 +250,12 @@ b32 WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm) {
     if (!Loadout_isEquipped(&lsm->selected, stronghand) &&
         !Loadout_isEquipped(&lsm->selected, weakhand)) {
         /* No weapon was selected, there SHOULD be a weapon remaining */
-        remains = unit->num_canEquip > 0; 
+        remains = unit->num_canEquip > 0;
         SDL_assert(remains == true);
     } else if (Loadout_isEquipped(&lsm->selected, stronghand) &&
                !Loadout_isEquipped(&lsm->selected, weakhand)) {
         /* After first weapon was selected */
-        remains = unit->num_canEquip > 0; 
+        remains = unit->num_canEquip > 0;
     }
 
     return (remains);

@@ -226,7 +226,6 @@ void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
     unit->num_canEquip = 0;
     for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
         for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
-            SDL_Log("eq, hand %d", eq, hand);
             /* Skip if hand is not the input */
             /* If input is NULL, check for any hand */
             if ((can_equip.hand != UNIT_HAND_NULL) && (can_equip.hand != hand)) {
@@ -259,12 +258,12 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
     SDL_assert(can_equip._eq <= SOTA_EQUIPMENT_SIZE);
 
     if (can_equip._eq == ITEM_UNEQUIPPED) {
-        SDL_Log("Can't equip nothing \n");
+        // SDL_Log("Can't equip nothing \n");
         return (false);
     }
 
     if (!Unit_hasHand(unit, can_equip.hand)) {
-        SDL_Log("No hand \n");
+        // SDL_Log("No hand \n");
         return (false);
     }
 
@@ -272,37 +271,37 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
     i32 id = Unit_Id_Equipment(unit, eq);
 
     if (id <= ITEM_NULL) {
-        SDL_Log("ITEM_NULL\n");
+        // SDL_Log("ITEM_NULL\n");
         return (false);
     }
 
     if (!Weapon_ID_isValid(id)) {
-        SDL_Log("!Weapon_ID_isValid\n");
+        // SDL_Log("!Weapon_ID_isValid\n");
         return (false);
     }
 
     if (!Unit_canEquip_Type(unit, id)) {
-        SDL_Log("!Unit_canEquip_Type\n");
+        // SDL_Log("!Unit_canEquip_Type\n");
         return (false);
     }
 
     if (!Unit_canEquip_Archetype(unit, id, can_equip.archetype)) {
-        SDL_Log("!Unit_canEquip_Archetype\n");
+        // SDL_Log("!Unit_canEquip_Archetype\n");
         return (false);
     }
 
     if (!Unit_canEquip_Users(unit, id)) {
-        SDL_Log("!Unit_canEquip_Users\n");
+        // SDL_Log("!Unit_canEquip_Users\n");
         return (false);
     }
 
     if (!Unit_canEquip_OneHand(unit, eq, can_equip.hand, can_equip.two_hands_mode)) {
-        SDL_Log("!Unit_canEquip_OneHand\n");
+        // SDL_Log("!Unit_canEquip_OneHand\n");
         return (false);
     }
 
     if (!Unit_canEquip_TwoHand(unit, eq, can_equip.hand, can_equip.two_hands_mode)) {
-        SDL_Log("!Unit_canEquip_TwoHand\n");
+        // SDL_Log("!Unit_canEquip_TwoHand\n");
         return (false);
     }
 
@@ -355,8 +354,6 @@ b32 Unit_canEquip_Archetype(Unit *unit, i32 id, i64 archetype) {
     SDL_assert(wpn != NULL);
 
     if (!flagsum_isIn(wpn->item->type, archetype)) {
-        SDL_Log("ARCHETYPE WEAKHAND: %d %d", ITEM_ARCHETYPE_WEAKHAND, archetype);
-        SDL_Log("ARCHETYPE SHIELD: %d %d", ITEM_ARCHETYPE_SHIELD, wpn->item->type);
         return (false);
     }
 
@@ -443,9 +440,7 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     b32 one_hand_cant   = one_hand_only && (eq_in_bound && eq_same);
 
     if (one_hand_cant) {
-        SDL_Log("hand, other hand, %d %d", hand, other_hand);
-        SDL_Log("eq_other, eq, %d %d", eq_other, eq);
-        SDL_Log("one_hand_cant");
+        // SDL_Log("hand, other hand, %d %d", hand, other_hand);
         return (false);
     }
 
