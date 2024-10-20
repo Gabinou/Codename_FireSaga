@@ -610,24 +610,28 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
 
     /* Left hand item type */
     int eq = Loadout_Eq(&pls->loadout_selected, UNIT_HAND_LEFT);
-    int id = Unit_Id_Equipment(unit, eq);
+    if (eq_valid(eq)) {
+        int id = Unit_Id_Equipment(unit, eq);
 
-    if (Weapon_ID_isValid(id)) {
-        Weapon_Load(unit->weapons_dtab, id);
-        pls->type_left = Weapon_TypeExp(DTAB_GET(unit->weapons_dtab, id));
-    } else {
-        pls->type_left = ITEM_TYPE_ITEM;
+        if (Weapon_ID_isValid(id)) {
+            Weapon_Load(unit->weapons_dtab, id);
+            pls->type_left = Weapon_TypeExp(DTAB_GET(unit->weapons_dtab, id));
+        } else {
+            pls->type_left = ITEM_TYPE_ITEM;
+        }
     }
 
     /* Right hand item type */
     eq = Loadout_Eq(&pls->loadout_selected, UNIT_HAND_RIGHT);
-    id = Unit_Id_Equipment(unit, eq);
+    if (eq_valid(eq)) {
+        int id = Unit_Id_Equipment(unit, eq);
 
-    if (Weapon_ID_isValid(id)) {
-        Weapon_Load(unit->weapons_dtab, id);
-        pls->type_right = Weapon_TypeExp(DTAB_GET(unit->weapons_dtab, id));
-    } else {
-        pls->type_right = ITEM_TYPE_ITEM;
+        if (Weapon_ID_isValid(id)) {
+            Weapon_Load(unit->weapons_dtab, id);
+            pls->type_right = Weapon_TypeExp(DTAB_GET(unit->weapons_dtab, id));
+        } else {
+            pls->type_right = ITEM_TYPE_ITEM;
+        }
     }
 }
 
@@ -700,6 +704,7 @@ void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls, struct LoadoutSe
     int hand        = Loadout_isEquipped(&wsm->selected, stronghand) ? weakhand : stronghand;
 
     Loadout_Set(&pls->loadout_selected, hand, unit->eq_canEquip[elem]);
+    pls->update = true;
 }
 
 void PopUp_Loadout_Stats_Select(struct PopUp_Loadout_Stats *pls, struct LoadoutSelectMenu *wsm) {
@@ -722,6 +727,7 @@ void PopUp_Loadout_Stats_Select(struct PopUp_Loadout_Stats *pls, struct LoadoutS
     if (Loadout_isEquipped(&wsm->selected, weakhand))  {
         Loadout_Set(&pls->loadout_selected, weakhand, Loadout_Eq(&wsm->selected, weakhand));
     }
+    pls->update = true;
 }
 
 /* --- Rendering --- */
