@@ -19,7 +19,6 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
     SDL_assert(sota->defendant  > TNECS_NULL);
 
     b32 no_more_attacks = (combat_anim->attack_ind >= sota->combat_forecast.attack_num);
-    SDL_Log("sota->combat_forecast.attack_num %d", sota->combat_forecast.attack_num);
     if (no_more_attacks || sota->combat_outcome.ended) {
         /* - Check for remaining attack, ending combat after pause - */
         b32 paused = ((combat_timer->time_ns / SOTA_us) < combat_anim->pause_after_ms);

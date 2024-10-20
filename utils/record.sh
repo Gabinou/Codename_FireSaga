@@ -11,4 +11,4 @@ Screen_res_y=1080
 plus_x=$(($Screen_res_x/2 - $SotA_res_x/2))
 plus_y=$(($Screen_res_y/2 - $SotA_res_y/2))
 
-ffmpeg -f x11grab -s "$SotA_res_x"x"$SotA_res_y" -i :0.0+$plus_x,$plus_y ~/Sync/Firesaga/out.mkv
+ffmpeg -f x11grab -s "$SotA_res_x"x"$SotA_res_y" -i :0.0+$plus_x,$plus_y ~/Notes/FireSaga/Blog/gifs/raw/out.mkv

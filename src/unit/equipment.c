@@ -637,7 +637,7 @@ void Unit_Equipped_Staff_Deplete(struct Unit *unit, i32 hand) {
 
 // TODO: Tetrabrachios depletion?
 void Unit_Equipped_Weapons_Deplete(struct Unit *unit) {
-    SDL_Log("Unit_Equipped_Weapons_Deplete");
+    // SDL_Log("Unit_Equipped_Weapons_Deplete");
     /* Upon getting a hit, decrease weapon durability */
     _Unit_Equipped_Deplete(unit, UNIT_HAND_LEFT, ITEM_ARCHETYPE_WEAPON);
     if (!Unit_istwoHanding(unit))
@@ -646,7 +646,7 @@ void Unit_Equipped_Weapons_Deplete(struct Unit *unit) {
 
 // TODO: Tetrabrachios depletion?
 void Unit_Equipped_Shields_Deplete(struct Unit *unit) {
-    SDL_Log("Unit_Equipped_Shields_Deplete");
+    // SDL_Log("Unit_Equipped_Shields_Deplete");
     /* Upon getting hit, decrease shields durability */
     _Unit_Equipped_Deplete(unit, UNIT_HAND_LEFT, ITEM_ARCHETYPE_SHIELD);
     if (!Unit_istwoHanding(unit))
