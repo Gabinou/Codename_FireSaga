@@ -168,7 +168,7 @@ enum PLS_ELEMS {
 typedef struct PopUp_Loadout_Stats {
     b32 update;
     tnecs_entity unit_ent;
-    struct Unit *unit;
+    tnecs_world *world;
     SDL_Texture *texture;
     SDL_Texture *texture_arrows;
     SDL_Texture *texture_hands;
@@ -187,6 +187,9 @@ typedef struct PopUp_Loadout_Stats {
     int ly_offset;
     int ry_offset;
 
+    u16 type_left;
+    u16 type_right;
+
     int distance;
     b32 l_equip_override   : 1; /* ? */
     b32 r_equip_override   : 1; /* ? */
@@ -196,13 +199,13 @@ typedef struct PopUp_Loadout_Stats {
 extern struct PopUp_Loadout_Stats PopUp_Loadout_Stats_default;
 
 /* --- ructor/Destructor --- */
+struct PopUp_Loadout_Stats *PopUp_Loadout_Stats_Alloc(void);
 void PopUp_Loadout_Stats_Free(struct PopUp_Loadout_Stats *pls);
 void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls, SDL_Renderer *r,
-                              struct n9Patch *n9);
+                              tnecs_world *world, struct n9Patch *n9);
 
-void  PopUp_Loadout_Stats_Starting_Eq(struct PopUp_Loadout_Stats *pls, const i32 *const equipped);
 /* --- Setters --- */
-void  PopUp_Loadout_Stats_Unit(    struct PopUp_Loadout_Stats *pls, struct Unit *u);
+void  PopUp_Loadout_Stats_Unit(    struct PopUp_Loadout_Stats *pls, tnecs_entity u);
 void  PopUp_Loadout_Stats_Initial_Stats(    struct PopUp_Loadout_Stats *pls);
 void  PopUp_Loadout_Stats_Selected_Stats(   struct PopUp_Loadout_Stats *pls);
 

@@ -61,11 +61,11 @@ void canEquip_Loadout_None(canEquip *can_equip, i32 hand) {
 /* --- Importing/Exporting --- */
 /* Importing and exporting equipped for wloadout functions */
 
-void Loadout_Copy(Loadout *dest, Loadout *src) {
+void Loadout_Copy(Loadout *dest, const Loadout *const src) {
     Equipped_Copy(dest->_loadout, src->_loadout);
 }
 
-void Equipped_Copy(i32 *_dest, i32 *_src) {
+void Equipped_Copy(i32 *_dest, const i32 *const _src) {
     size_t bytesize = MAX_ARMS_NUM * sizeof(*_dest);
     memcpy(_dest, _src, bytesize);
 }

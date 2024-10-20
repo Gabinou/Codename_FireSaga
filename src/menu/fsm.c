@@ -493,8 +493,13 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     /* - MapAct settings for attacktolist - */
     MapAct map_to = MapAct_default;
     Loadout *loadout = (Loadout *)&map_to;
-    Loadout_Set(loadout, UNIT_HAND_LEFT,   pls->eq_left);
-    Loadout_Set(loadout, UNIT_HAND_RIGHT,  pls->eq_right);
+    i32 eq_left     = Loadout_Eq(&pls->loadout_selected, UNIT_HAND_LEFT);
+    i32 eq_right    = Loadout_Eq(&pls->loadout_selected, UNIT_HAND_RIGHT);
+
+    if (eq_valid(eq_left))
+        Loadout_Set(loadout, UNIT_HAND_LEFT,   eq_left);
+    if (eq_valid(eq_right))
+        Loadout_Set(loadout, UNIT_HAND_RIGHT,  eq_right);
 
     map_to.move         = false;
     map_to.archetype    = ITEM_ARCHETYPE_STAFF;
@@ -517,7 +522,8 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     }
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
-    PopUp_Loadout_Stats_Selected(pls);
+    PopUp_Loadout_Stats_Selected_Loadout(pls);
+    PopUp_Loadout_Stats_Selected_Stats(pls);
 }
 
 void fsm_eCrsMvs_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
@@ -542,7 +548,8 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
 
     Menu_Elem_Set(mc_popup, sota, 0);
     PopUp_Loadout_Stats_Hover(pls, wsm, mc_popup->elem);
-    PopUp_Loadout_Stats_Selected(pls);
+    PopUp_Loadout_Stats_Selected_Loadout(pls);
+    PopUp_Loadout_Stats_Selected_Stats(pls);
 }
 
 /* --- fsm_eCncl_sGmpMap_ssMenu_m --- */
@@ -686,14 +693,23 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
 
     /* Item selected in hand 0, swapping */
     LoadoutSelectMenu_Deselect(wsm);
-    // /* Set previous_cs to new loadout */
+
+    /* Set previous_cs to new loadout */
+    i32 eq_left     = Loadout_Eq(&pls->loadout_selected, UNIT_HAND_LEFT);
+    i32 eq_right    = Loadout_Eq(&pls->loadout_selected, UNIT_HAND_RIGHT);
+
     if (weakhand == UNIT_HAND_LEFT) {
-        pls->eq_left  = pls->equipped[UNIT_HAND_LEFT];
+        Loadout_Set(&pls->loadout_selected,
+                    UNIT_HAND_LEFT,
+                    Loadout_Eq(&pls->loadout_initial, UNIT_HAND_LEFT));
     } else {
-        pls->eq_right = pls->equipped[UNIT_HAND_RIGHT];
+        Loadout_Set(&pls->loadout_selected,
+                    UNIT_HAND_RIGHT,
+                    Loadout_Eq(&pls->loadout_initial, UNIT_HAND_RIGHT));
     }
 
-    PopUp_Loadout_Stats_Initial(pls);
+    PopUp_Loadout_Stats_Initial_Loadout(pls);
+    PopUp_Loadout_Stats_Initial_Stats(pls);
 
     /* - Compute new attackmap with equipped - */
     int rangemap = Unit_Rangemap_Get(unit);
@@ -722,7 +738,8 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
     PopUp_Loadout_Stats_Hover(pls, wsm, mc->elem);
-    PopUp_Loadout_Stats_Selected(pls);
+    PopUp_Loadout_Stats_Selected_Loadout(pls);
+    PopUp_Loadout_Stats_Selected_Stats(pls);
 }
 
 void fsm_eCncl_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
@@ -914,7 +931,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
 
         /* Use wsm loadout to compute "previous" loadout */
         PopUp_Loadout_Stats_Select(pls, wsm);
-        PopUp_Loadout_Stats_Initial(pls);
+        PopUp_Loadout_Stats_Initial_Loadout(pls);
+        PopUp_Loadout_Stats_Initial_Stats(pls);
 
         /* move cursor to top hand */
         Menu_Elem_Set(mc, sota, 0);
@@ -922,7 +940,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         // Use wsm loadout to compute loadout after changing
         // to new usable items
         PopUp_Loadout_Stats_Hover(pls, wsm, mc->elem);
-        PopUp_Loadout_Stats_Selected(pls);
+        PopUp_Loadout_Stats_Selected_Loadout(pls);
+        PopUp_Loadout_Stats_Selected_Stats(pls);
     } else {
         /* Loadout selected, find new defendants*/
         // TODO: use WeaponSelectMenu_Loadout_Valid/remove it
@@ -1124,18 +1143,19 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
     struct PopUp_Loadout_Stats *pls = popup->data;
 
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Unit);
-    PopUp_Loadout_Stats_Unit(pls, unit);
+    PopUp_Loadout_Stats_Unit(pls, sota->selected_unit_entity);
 
     /* -- Hover on new item -- */
     PopUp_Loadout_Stats_Hover(pls, wsm, mc->elem);
-    PopUp_Loadout_Stats_Selected(pls);
+    PopUp_Loadout_Stats_Selected_Loadout(pls);
+    PopUp_Loadout_Stats_Selected_Stats(pls);
 
     /* - Compute new attackmap with equipped - */
     /* - MapAct settings for attacktolist - */
     MapAct map_to = MapAct_default;
     Loadout *loadout = (Loadout *)&map_to;
-    Loadout_Set(loadout, UNIT_HAND_LEFT,   pls->eq_left);
-    Loadout_Set(loadout, UNIT_HAND_RIGHT,  pls->eq_right);
+    Loadout_Set(loadout, UNIT_HAND_LEFT,   Loadout_Eq(&pls->loadout_selected, UNIT_HAND_LEFT));
+    Loadout_Set(loadout, UNIT_HAND_RIGHT,  Loadout_Eq(&pls->loadout_selected, UNIT_HAND_RIGHT));
 
     map_to.move         = false;
     map_to.archetype    = ITEM_ARCHETYPE_STAFF;
@@ -1185,7 +1205,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moItem(struct Game *sota, struct Menu *mc) {
     struct PopUp_Loadout_Stats *pls = popup->data;
 
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Unit);
-    PopUp_Loadout_Stats_Unit(pls, unit);
+    PopUp_Loadout_Stats_Unit(pls, sota->selected_unit_entity);
 
     /* -- TODO: Render Face -- */
 

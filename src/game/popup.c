@@ -45,9 +45,8 @@ void Game_PopUp_Loadout_Stats_Create(struct Game *sota) {
     popup->visible      = true;
 
     /* - Popup_Loadout_Stats - */
-    popup->data = malloc(sizeof(struct PopUp_Loadout_Stats));
+    popup->data = PopUp_Loadout_Stats_Alloc();
     struct PopUp_Loadout_Stats *pls = popup->data;
-    *pls = PopUp_Loadout_Stats_default;
     SDL_assert(sota->pixelnours != NULL);
     pls->pixelnours         = sota->pixelnours;
     SDL_assert(sota->pixelnours_big != NULL);
@@ -58,7 +57,7 @@ void Game_PopUp_Loadout_Stats_Create(struct Game *sota) {
     position->pixel_pos.x   = sota->settings.res.x / 3;
     position->pixel_pos.y   = sota->settings.res.y / 10;
 
-    PopUp_Loadout_Stats_Load(pls, sota->renderer, &popup->n9patch);
+    PopUp_Loadout_Stats_Load(pls, sota->renderer, sota->world, &popup->n9patch);
 
 }
 void Game_PopUp_Loadout_Stats_Hide(struct Game *sota) {

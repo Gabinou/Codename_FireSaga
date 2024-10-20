@@ -28,10 +28,10 @@ void canEquip_Loadout_None( canEquip *e, i32 h);
 
 /* --- Importing/Exporting --- */
 // - Export: unit       -> loadout
-// - Import: loadout    -> unit 
+// - Import: loadout    -> unit
 
-void Loadout_Copy(Loadout *dest, Loadout *src);
-void Equipped_Copy(i32 *_dest, i32 *_src);
+void Loadout_Copy(Loadout *dest, const Loadout *const src);
+void Equipped_Copy(i32 *_dest, const i32 *const _src);
 
 void Unit_Equipped_Import(Unit *u, i32 *_loadout);
 void Unit_Equipped_Export(Unit *u, i32 *_loadout);
