@@ -905,9 +905,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     }
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
-    // TODO: Change to weakhand if other item in inventory
-    // TODO: option to equip nothing in weakhand
-    // TODO: Automatically equip nothing in weakhand if no other item in equipment
+
+    /* - Find usable equipment for weakhand - */
     if (Loadout_isEquipped(&wsm->selected, stronghand)) {
         canEquip can_equip  = canEquip_default;
         int eq = Loadout_Eq(&wsm->selected, stronghand);
@@ -915,8 +914,10 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         can_equip.archetype = ITEM_ARCHETYPE_WEAKHAND;
         can_equip.hand      = weakhand;
         Unit_canEquip_Equipment(unit, can_equip);
+        // TODO: option to equip nothing in weakhand
     }
 
+    /* - Decide what to do with remaining equippables - */
     if (WeaponSelectMenu_Usable_Remains(wsm)) {
         SDL_assert(mc->n9patch.scale.x > 0);
         SDL_assert(mc->n9patch.scale.y > 0);
@@ -945,10 +946,9 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         PopUp_Loadout_Stats_Selected_Stats(pls);
     } else {
         /* Loadout selected, find new defendants*/
-        // TODO: use WeaponSelectMenu_Loadout_Valid/remove it
         Game_postLoadout_Defendants(sota, sota->aggressor);
 
-        /* - Check that a defendant is in range of current loadout - */
+        /* - A defendant SHOULD be in range of current loadout - */
         SDL_assert(DARR_NUM(sota->defendants) > 0);
 
         Event_Emit(__func__, SDL_USEREVENT, event_Loadout_Selected, data1_entity, data2_entity);
