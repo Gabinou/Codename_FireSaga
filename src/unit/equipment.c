@@ -588,22 +588,32 @@ b32 Unit_istwoHanding(Unit *unit) {
 /* -- Deplete: decrease durability -- */
 void _Unit_Item_Deplete(struct Unit *unit, i32 eq, i64 archetype) {
     /* Only unit function that calls Inventory_item_Deplete */
+    SDL_assert(eq_valid(eq));
     i32 id = Unit_Id_Equipment(unit, eq);
+
     /* Skip if NULL. Not an error, unit can have empty hand. */
     if (id == ITEM_NULL) {
         // SDL_Log("ITEM_NULL");
         return;
     }
 
+    if (!Weapon_ID_isValid(id)) {
+        // SDL_Log("Invalid id");
+        return;
+    }
+
+
     /* Skip if item's archetype to deplete does not match input. */
-    if (!(flagsum_isIn(id, archetype))) {
+    struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);
+    struct Item   *item   = weapon->item;
+    SDL_assert(weapon != NULL);
+    SDL_assert(item != NULL);
+    if (!(flagsum_isIn(item->type, archetype))) {
         // SDL_Log("Archetype mismatch");
         return;
     }
 
     // SDL_Log("Depleting");
-    struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);
-    struct Item   *item   = weapon->item;
     Inventory_item_Deplete(&unit->_equipment[eq - ITEM1], item->stats.uses);
 }
 
@@ -627,6 +637,7 @@ void Unit_Equipped_Staff_Deplete(struct Unit *unit, i32 hand) {
 
 // TODO: Tetrabrachios depletion?
 void Unit_Equipped_Weapons_Deplete(struct Unit *unit) {
+    SDL_Log("Unit_Equipped_Weapons_Deplete");
     /* Upon getting a hit, decrease weapon durability */
     _Unit_Equipped_Deplete(unit, UNIT_HAND_LEFT, ITEM_ARCHETYPE_WEAPON);
     if (!Unit_istwoHanding(unit))
@@ -635,6 +646,7 @@ void Unit_Equipped_Weapons_Deplete(struct Unit *unit) {
 
 // TODO: Tetrabrachios depletion?
 void Unit_Equipped_Shields_Deplete(struct Unit *unit) {
+    SDL_Log("Unit_Equipped_Shields_Deplete");
     /* Upon getting hit, decrease shields durability */
     _Unit_Equipped_Deplete(unit, UNIT_HAND_LEFT, ITEM_ARCHETYPE_SHIELD);
     if (!Unit_istwoHanding(unit))

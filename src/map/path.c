@@ -138,7 +138,6 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
     Range *range = NULL;
     if (mapto.eq_type == LOADOUT_EQUIPPED) {
         range = Unit_Range_Equipped(unit, mapto.archetype);
-        SDL_Log("range %d %d", range->min, range->max);
     } else if (mapto.eq_type == LOADOUT_EQUIPMENT) {
         range = Unit_Range_Equipment(unit, mapto.archetype);
     } else if (mapto.eq_type == LOADOUT_LOADOUT) {

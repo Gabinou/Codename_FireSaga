@@ -19,6 +19,7 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
     SDL_assert(sota->defendant  > TNECS_NULL);
 
     b32 no_more_attacks = (combat_anim->attack_ind >= sota->combat_forecast.attack_num);
+    SDL_Log("sota->combat_forecast.attack_num %d", sota->combat_forecast.attack_num);
     if (no_more_attacks || sota->combat_outcome.ended) {
         /* - Check for remaining attack, ending combat after pause - */
         b32 paused = ((combat_timer->time_ns / SOTA_us) < combat_anim->pause_after_ms);
@@ -70,6 +71,7 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
     SDL_assert(sota->aggressor  > TNECS_NULL);
     SDL_assert(sota->defendant  > TNECS_NULL);
     SDL_Event *userevent = malloc(sizeof(*userevent));
+    SDL_Log("SENDING receive_event_Increment_Attack");
     receive_event_Increment_Attack(sota, userevent);
     free(userevent);
     // Event_Emit(__func__, SDL_USEREVENT, event_Increment_Attack, NULL, NULL);

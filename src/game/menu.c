@@ -333,7 +333,7 @@ void Game_postLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
     Map_Act_To(sota->map, map_to);
 
     /* Find all Defendants */
-    matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
+    // matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
 
     sota->defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist,
                                            sota->defendants, actor, false);
