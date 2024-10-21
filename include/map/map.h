@@ -266,7 +266,7 @@ void Map_RowCol_readJSON(s8 filename, i32 rowcol[TWO_D]);
 /* --- Map events / Triggers --- */
 void Map_Turn_Increment(struct Map *map);
 
-i8 Map_Army_Next(struct Map *map);
+i32 Map_Army_Next(struct Map *map);
 
 /* --- Music --- */
 void Map_Music_Load(struct Map *map);
