@@ -430,7 +430,7 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
     /* 1. Turn Item_Select_Menu visible */
     int stack_top           = DARR_NUM(sota->menu_stack) - 1;
     tnecs_entity menu_top   = sota->menu_stack[stack_top];
-    struct Menu *mc    = TNECS_GET_COMPONENT(sota->world, menu_top, Menu);
+    struct Menu *mc         = TNECS_GET_COMPONENT(sota->world, menu_top, Menu);
     SDL_assert(mc != NULL);
     SDL_assert(mc->elem_pos != NULL);
     mc->visible = true;
@@ -1232,7 +1232,7 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
 
             tnecs_entity     unit_ent       = sota->selected_unit_entity;
             struct Unit     *unit           = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
-            struct Position *selected_pos   = TNECS_GET_COMPONENT(sota->world, unit_ent, Position);
+            struct Position *unit_pos       = TNECS_GET_COMPONENT(sota->world, unit_ent, Position);
             new_substate                    = GAME_SUBSTATE_MAP_UNIT_MOVES;
             strncpy(sota->reason, "Unit action is taken after Map_unit moves only",
                     sizeof(sota->reason));
@@ -1245,7 +1245,8 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
 
             // 2. Moving pos ptr to initial position to compute initial attacktomap
             // 2.1 inital pos != moved pos, so cursor would move...
-            Position_Pos_Set(selected_pos, init_pos.x, init_pos.y);
+            Position_Pos_Set(unit_pos, init_pos.x, init_pos.y);
+            // SDL_Log("init_pos %d %d", init_pos.x, init_pos.y);
 
             sota->map->update = true;
 
@@ -1271,14 +1272,14 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
             // matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
 
             // 2.2 BUT: Moving pos ptr to selected position so that cursor doesn't move
-            // Position_Pos_Set(selected_pos, init_pos.x, init_pos.y);
+            // Position_Pos_Set(unit_pos, init_pos.x, init_pos.y);
             // tnecs_entity cursor = sota->entity_cursor;
             struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
 
-            selected_pos->tilemap_pos.x = cursor_pos->tilemap_pos.x;
-            selected_pos->tilemap_pos.y = cursor_pos->tilemap_pos.y;
-            selected_pos->pixel_pos.x   = selected_pos->tilemap_pos.x * selected_pos->scale[0];
-            selected_pos->pixel_pos.y   = selected_pos->tilemap_pos.y * selected_pos->scale[1];
+            unit_pos->tilemap_pos.x = moved_pos.x;
+            unit_pos->tilemap_pos.y = moved_pos.y;
+            unit_pos->pixel_pos.x   = unit_pos->tilemap_pos.x * unit_pos->scale[0];
+            unit_pos->pixel_pos.y   = unit_pos->tilemap_pos.y * unit_pos->scale[1];
 
             // 3. Compute new stackmap with recomputed attacktomap
             int rangemap = Unit_Rangemap_Get(unit);
