@@ -70,7 +70,6 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
     SDL_assert(sota->aggressor  > TNECS_NULL);
     SDL_assert(sota->defendant  > TNECS_NULL);
     SDL_Event *userevent = malloc(sizeof(*userevent));
-    SDL_Log("SENDING receive_event_Increment_Attack");
     receive_event_Increment_Attack(sota, userevent);
     free(userevent);
     // Event_Emit(__func__, SDL_USEREVENT, event_Increment_Attack, NULL, NULL);
