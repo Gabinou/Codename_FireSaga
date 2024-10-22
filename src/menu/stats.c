@@ -965,7 +965,7 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
     }
 
     /* Writing - number of uses left */
-    int uses_left;
+    int uses_left = 0;
     if (Weapon_ID_isValid(invitem->id)) {
         SDL_assert(unit->weapons_dtab != NULL);
         Weapon_Load(unit->weapons_dtab, invitem->id);
@@ -977,7 +977,7 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
         /* - uses left - */
         SDL_assert(weapon->item->stats.uses > 0);
         uses_left = (weapon->item->stats.uses - invitem->used);
-    } else {
+    } else if (Item_ID_isValid(invitem->id)) {
         SDL_assert(unit->items_dtab != NULL);
         Item_Load(unit->items_dtab, invitem->id);
         struct Item *item = DTAB_GET(unit->items_dtab, invitem->id);
@@ -1196,6 +1196,7 @@ void StatsMenu_Update(struct StatsMenu *stats_menu, struct n9Patch *n9patch,
         Unit_effectiveStats(stats_menu->unit);
         /* Stats Menu shows dual wielding stats ASSUMING BOTH WEAPONS IN RANGE */
         Unit_computedStats(stats_menu->unit, -1);
+        stats_menu->false;
     }
 
     /* - create render target texture - */

@@ -376,7 +376,6 @@ void Combat_Resolve(struct Combat_Attack *combat_attacks, u8 attack_num,
     struct Unit *attacker, *defender;
 
     for (int i = 0; i < attack_num; i++) {
-        SDL_Log("attack_num %d %d", i, attack_num);
         attacker = combat_attacks[i].attacker ? aggressor : defendant;
         defender = combat_attacks[i].attacker ? defendant : aggressor;
 

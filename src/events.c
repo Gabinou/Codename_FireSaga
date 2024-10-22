@@ -1584,6 +1584,8 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     attacker = attack.attacker ? aggressor : defendant;
     defender = attack.attacker ? defendant : aggressor;
     Combat_Resolve_Attack(attack, attacker, defender);
+    int id_L          = Unit_Id_Equipped(attacker, UNIT_HAND_LEFT);
+    int id_R          = Unit_Id_Equipped(attacker, UNIT_HAND_RIGHT);
 
     // 2. Check for unit agony/death
     b32 agg_death = (!aggressor->alive) || (aggressor->agony > AGONY_NULL);

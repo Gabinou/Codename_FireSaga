@@ -207,7 +207,6 @@ void Inventory_item_Break(struct Inventory_item *inventory_item) {
 b32 Item_ID_isValid(u16 id) {
     b32 valid = false;
     valid |= ((id > ITEM_ID_ITEM_START) && (id < ITEM_ID_ITEM_END));
-    valid |= (id == ITEM_ID_BROKEN);
     return (valid);
 }
 
@@ -291,7 +290,8 @@ void Item_Reload(struct dtab *items_dtab, i16 id) {
 
 /* Loads only pure items */
 void Item_Load(struct dtab *items_dtab, i16 id) {
-    SDL_assert(Item_ID_isValid(id));
+    if (!Item_ID_isValid(id))
+        return;
     SDL_assert(items_dtab != NULL);
 
     if (DTAB_GET(items_dtab, id) != NULL) {

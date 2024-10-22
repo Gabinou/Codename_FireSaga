@@ -97,17 +97,24 @@ void Unit_Item_Trade(struct Unit   *giver,  struct Unit *taker,
 
 /* Checking equipped for errors broken items */
 void _Unit_Check_Equipped(struct Unit *unit, i32 hand) {
-    if (!Unit_isEquipped(unit, hand))
+    if (!Unit_isEquipped(unit, hand)) {
+        // SDL_Log("Not equipped");
         return;
+    }
 
     i32 id = Unit_Id_Equipped(unit, hand);
 
-    if (id != ITEM_ID_BROKEN)
+    if (id != ITEM_ID_BROKEN) {
+        // SDL_Log("Not equipped");
         return;
+    }
 
-    if (Item_ID_isValid(id))
+    if (Item_ID_isValid(id)) {
+        // SDL_Log("Valid item");
         return;
+    }
 
+    // SDL_Log("Unit_Unequip");
     Unit_Unequip(unit, hand);
 }
 
