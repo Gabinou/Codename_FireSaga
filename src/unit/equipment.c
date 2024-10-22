@@ -233,6 +233,7 @@ void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
     unit->num_canEquip = 0;
     for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
         for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
+            // SDL_Log("eq, hand %d %d", eq, hand);
             /* Skip if hand is not the input */
             /* If input is NULL, check for any hand */
             if ((can_equip.hand != UNIT_HAND_NULL) && (can_equip.hand != hand)) {
