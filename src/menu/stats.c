@@ -1196,7 +1196,8 @@ void StatsMenu_Update(struct StatsMenu *stats_menu, struct n9Patch *n9patch,
         Unit_effectiveStats(stats_menu->unit);
         /* Stats Menu shows dual wielding stats ASSUMING BOTH WEAPONS IN RANGE */
         Unit_computedStats(stats_menu->unit, -1);
-        stats_menu->false;
+        // TODO: stop computing stats every iteration
+        // stats_menu->update_stats = false;
     }
 
     /* - create render target texture - */

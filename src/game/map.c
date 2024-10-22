@@ -187,7 +187,8 @@ void GameMap_Reinforcements_Free(struct Game *sota) {
 void Game_Map_Reinforcements_Load(struct Game *sota) {
     SDL_assert(sota->map != NULL);
     char filename[DEFAULT_BUFFER_SIZE];
-    for (i16 i = 0; i < DARR_NUM(sota->map->reinforcements); i++) {
+    DARR_NUM(sota->map_enemies) = 0;
+    for (int i = 0; i < DARR_NUM(sota->map->reinforcements); i++) {
         struct Reinforcement *reinf = &(sota->map->reinforcements[i]);
         // Skip if reinforcement is not for THIS turn
         if ((reinf->turn != sota->map->turn))
