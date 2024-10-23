@@ -590,18 +590,14 @@ void Game_WeaponSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_on
     SDL_assert(unit_ontile != NULL);
     SDL_assert(unit_ontile->weapons_dtab != NULL);
 
-    /* Starting wsm selection from stronghand*/
-    canEquip can_equip  = canEquip_default;
-    canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  ITEM1);
-    canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, ITEM2);
-
+    /* Find new canEquip */
+    canEquip can_equip          = canEquip_default;
     can_equip.archetype         = ITEM_ARCHETYPE_WEAPON;
     can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE;
-    // Unit_canEquip_Equipment(unit_ontile, can_equip);
+
     Map_canEquip(sota->map, unit_entity_ontile, can_equip);
     SDL_assert(unit_ontile->num_canEquip > 0);
 
-    getchar();
     struct Menu *mc;
     mc = TNECS_GET_COMPONENT(sota->world, sota->weapon_select_menu, Menu);
     mc->visible = true;
