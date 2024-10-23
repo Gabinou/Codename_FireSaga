@@ -456,21 +456,23 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
         if (unit->weapons_dtab == NULL)
             break;
 
-        struct Inventory_item *item = Unit_InvItem(unit, eq);
+        i32 id = Unit_Id_Equipment(unit, eq);
         int x = PLS_NAMEL_X;
         int y = PLS_NAMEL_Y + pls->ly_offset;
         int width;
-        if (item->id == ITEM_NULL) {
+        if (id == ITEM_NULL) {
             width = PixelFont_Width(pls->pixelnours, "-", 1);
             PixelFont_Write(pls->pixelnours, renderer, "-", 1, x - width, y);
             break;
         }
 
-        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, item->id);
+        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, id);
         if (wpn == NULL)
             break;
 
-        s8 buffer   = s8_mut(wpn->item->name.data);
+        size_t item_order = *(u16 *)DTAB_GET(global_itemOrders, id);
+
+        s8 buffer   = s8_mut(global_itemNames[item_order].data);
         buffer      = s8_toUpper(buffer);
 
         if (Unit_istwoHanding(unit)) {
@@ -494,21 +496,23 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
         if (unit->weapons_dtab == NULL)
             break;
 
-        struct Inventory_item *item = Unit_InvItem(unit, eq);
+        i32 id = Unit_Id_Equipment(unit, eq);
         int x = PLS_NAMER_X;
         int y = PLS_NAMER_Y + pls->ry_offset;
         int width;
-        if (item->id == ITEM_NULL) {
+        if (id == ITEM_NULL) {
             width = PixelFont_Width(pls->pixelnours, "-", 1);
             PixelFont_Write(pls->pixelnours, renderer, "-", 1, x - width, y);
             break;
         }
 
-        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, item->id);
+        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, id);
         if (wpn == NULL)
             break;
 
-        s8 buffer   = s8_mut(wpn->item->name.data);
+        size_t item_order = *(u16 *)DTAB_GET(global_itemOrders, id);
+
+        s8 buffer   = s8_mut(global_itemNames[item_order].data);
         buffer      = s8_toUpper(buffer);
 
         width = PixelFont_Width(pls->pixelnours, buffer.data, buffer.num);
@@ -704,6 +708,7 @@ void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls, struct LoadoutSe
     int hand        = Loadout_isEquipped(&wsm->selected, stronghand) ? weakhand : stronghand;
 
     Loadout_Set(&pls->loadout_selected, hand, unit->eq_canEquip[elem]);
+    SDL_assert(Loadout_Eq(&pls->loadout_selected, hand) == unit->eq_canEquip[elem]);
     pls->update = true;
 }
 

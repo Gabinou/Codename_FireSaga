@@ -522,7 +522,6 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     }
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
-    PopUp_Loadout_Stats_Selected_Loadout(pls);
     PopUp_Loadout_Stats_Selected_Stats(pls);
 }
 
@@ -1058,7 +1057,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moSeize( struct Game *sota, struct Menu *mc) 
 
     /* - Go back to standby - */
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, data1_entity, NULL);
-
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDance(struct Game *sota, struct Menu *mc) {
