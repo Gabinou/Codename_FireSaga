@@ -583,14 +583,8 @@ b32 Unit_isdualWielding(struct Unit *unit) {
 // TODO: Tetrabrachios twohanding?
 b32 Unit_istwoHanding(Unit *unit) {
     i32 eq_left     = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
-    if ((eq_left  < ITEM1) || (eq_left  >= SOTA_EQUIPMENT_SIZE)) {
-        return (false);
-    }
     i32 eq_right    = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
-    if ((eq_right  < ITEM1) && (eq_right  >= SOTA_EQUIPMENT_SIZE)) {
-        return (false);
-    }
-    return (eq_left == eq_right);
+    return (_istwoHanding(eq_left, eq_right));
 }
 
 /* -- Deplete: decrease durability -- */

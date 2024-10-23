@@ -21,6 +21,10 @@ void Loadout_Set(       Loadout *loadout, i32 hand, i32 eq);
 void Loadout_None(      Loadout *loadout, i32 hand);
 b32  Loadout_isEquipped(Loadout *loadout, i32 hand);
 
+b32 Loadout_istwoHanding(Loadout *loadout);
+b32 _istwoHanding(i32 eq_left, i32 eq_right);
+
+
 /* --- canEquip --- */
 void canEquip_Eq(           canEquip *e, i32 eq);
 void canEquip_Loadout(      canEquip *e, i32 h, i32 eq);

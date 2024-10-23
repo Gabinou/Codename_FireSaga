@@ -37,6 +37,25 @@ void Loadout_None(Loadout *loadout, i32 hand) {
     loadout->_loadout[hand - UNIT_HAND_LEFT] = ITEM_UNEQUIPPED;
 }
 
+b32 Loadout_istwoHanding(Loadout *loadout) {
+    i32 eq_left     = loadout->_loadout[UNIT_HAND_LEFT  - UNIT_HAND_LEFT];
+    i32 eq_right    = loadout->_loadout[UNIT_HAND_RIGHT - UNIT_HAND_LEFT];
+    return (_istwoHanding(eq_left, eq_right));
+}
+
+b32 _istwoHanding(i32 eq_left, i32 eq_right) {
+    if ((eq_left  < ITEM1) || (eq_left  >= SOTA_EQUIPMENT_SIZE)) {
+        return (false);
+    }
+
+    if ((eq_right  < ITEM1) || (eq_right  >= SOTA_EQUIPMENT_SIZE)) {
+        return (false);
+    }
+
+
+    return (eq_left == eq_right);
+}
+
 /* --- canEquip --- */
 void canEquip_Eq(canEquip *can_equip, i32 eq) {
     SDL_assert(eq >= ITEM1);

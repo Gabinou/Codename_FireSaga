@@ -359,7 +359,7 @@ static void _PopUp_Loadout_Stats_Draw_WpnIcons(struct PopUp_Loadout_Stats *pls,
     dstrect.w = srcrect.w;
     dstrect.h = srcrect.h;
 
-    if (Unit_istwoHanding(unit)) {
+    if (Loadout_istwoHanding(&pls->loadout_selected)) {
         dstrect.x = PLS_WPNL_X;
         dstrect.y = PLS_WPNL_Y + PLS_TWOHAND_Y_OFFSET;
         srcrect.x = (pls->type_left % PLS_WPN_COL_LEN)
@@ -405,7 +405,7 @@ static void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls,
 
     Unit *unit = TNECS_GET_COMPONENT(pls->world, pls->unit_ent, Unit);
 
-    if (Unit_istwoHanding(unit)) {
+    if (Loadout_istwoHanding(&pls->loadout_selected)) {
         dstrect.x = PLS_ICON_EQUIPL_X;
         dstrect.y = PLS_ICON_EQUIPL_Y + PLS_TWOHAND_Y_OFFSET;
         SDL_RenderCopy(renderer, pls->texture_equip, &srcrect, &dstrect);
@@ -475,7 +475,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
         s8 buffer   = s8_mut(global_itemNames[item_order].data);
         buffer      = s8_toUpper(buffer);
 
-        if (Unit_istwoHanding(unit)) {
+        if (Loadout_istwoHanding(&pls->loadout_selected)) {
             width = PixelFont_Width(pls->pixelnours, buffer.data, buffer.num);
             x = PLS_HEADER_X - width / 2 + PLS_HEADER_W / 2;
         }
@@ -485,7 +485,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
 
     /* Right hand */
     do {
-        if (Unit_istwoHanding(unit))
+        if (Loadout_istwoHanding(&pls->loadout_selected))
             break;
 
         i32 eq = Loadout_Eq(&pls->loadout_selected, UNIT_HAND_RIGHT);
@@ -747,12 +747,12 @@ void PopUp_Loadout_Stats_Weakhand_Offset(struct PopUp_Loadout_Stats *pls) {
     pls->ly_offset = 0;
 
     /* Weakhand offsets */
-    if (Unit_istwoHanding(unit))
+    if (Loadout_istwoHanding(&pls->loadout_selected))
         pls->ly_offset = PLS_TWOHAND_Y_OFFSET;
     else if ((pls->tophand_stronghand) && (stronghand == UNIT_HAND_RIGHT)) {
         pls->ly_offset = PLS_WEAKHAND_Y_OFFSET;
     }
-    if (Unit_istwoHanding(unit)) {
+    if (Loadout_istwoHanding(&pls->loadout_selected)) {
         pls->ry_offset = PLS_TWOHAND_Y_OFFSET;
     } else if ((!pls->tophand_stronghand) || (stronghand == UNIT_HAND_LEFT)) {
         pls->ry_offset = PLS_WEAKHAND_Y_OFFSET;
