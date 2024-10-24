@@ -518,6 +518,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     map_to.eq_type      = LOADOUT_EQUIPMENT;
     map_to.output_type  = ARRAY_MATRIX;
     map_to.aggressor    = hov_ent;
+    map_to.move          = true;
 
     /* - healtopmap - */
     Map_Act_To(sota->map, map_to);
@@ -525,7 +526,6 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     /* - attacktomap - */
     map_to.archetype     = ITEM_ARCHETYPE_WEAPON;
     Map_Act_To(sota->map, map_to);
-
 
     // SDL_Log("attacktomap");
     // matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
@@ -897,7 +897,6 @@ void fsm_eCrsMvs_sGmpMap_ssMapUnitMv(struct Game *sota,
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, ent, PopUp);
     struct PopUp_Tile *popup_tile = popup->data;
     PopUp_Tile_Set(popup_tile, sota);
-
 }
 
 // -- FSM: CURSOR_MOVED EVENT --
@@ -1235,6 +1234,20 @@ void fsm_eAcpt_sGmpMap_ssMenu(struct Game *sota, tnecs_entity accepter_entity) {
 void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_entity) {
     /* - Unit should have been selected - */
     SDL_assert(sota->selected_unit_entity != TNECS_NULL);
+    /* - Skip if friendly on tile - */
+    const struct Position *cursor_pos;
+    cursor_pos          = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    int current_i       = cursor_pos->tilemap_pos.y * sota->map->col_len +
+                          cursor_pos->tilemap_pos.x;
+    tnecs_entity ontile = sota->map->unitmap[current_i];
+
+    /* - Someone else already occupies tile -> Do nothing - */
+    if ((ontile != TNECS_NULL) && (sota->selected_unit_entity != ontile)) {
+        // TODO: ontile should be a friendly unit.
+        // SDL_assert();
+        return;
+    }
+
     tnecs_entity unit_ent = sota->selected_unit_entity;
 
     /* - Reset potential candidates - */
@@ -1249,24 +1262,13 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     }
 
     /* - Get selected unit on tile - */
-    const struct Position *cursor_pos;
     struct Position *selected_pos;
     struct Unit *unit   = TNECS_GET_COMPONENT(sota->world, unit_ent,            Unit);
     selected_pos        = TNECS_GET_COMPONENT(sota->world, unit_ent,            Position);
-    cursor_pos          = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
 
     /* - Unit should be PC - */
     SDL_assert(SotA_isPC(unit->army));
 
-    /* - Skip if friendly on tile - */
-    int current_i       = cursor_pos->tilemap_pos.y * sota->map->col_len +
-                          cursor_pos->tilemap_pos.x;
-    tnecs_entity ontile = sota->map->unitmap[current_i];
-
-    /* - Someone else already occupies tile -> Something went wrong - */
-    if ((ontile != TNECS_NULL) && (sota->selected_unit_entity != ontile)) {
-        SDL_assert(false);
-    }
 
     /* -- Creating Unit Action Menu -- */
     tnecs_entity *menu = &sota->player_select_menus[MENU_PLAYER_SELECT_UNIT_ACTION];

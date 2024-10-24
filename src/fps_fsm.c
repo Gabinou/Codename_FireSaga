@@ -182,8 +182,8 @@ void fsm_cFrame_sGmpMap_ssSave(struct Game *sota) {
 }
 
 void fsm_cFrame_sGmpMap_ssStby(struct Game *sota) {
-    Game_CursorfollowsMouse_onMap(sota);  /* CONTROL */
-    Game_Cursor_Moves_onMap(sota); /* CONTROL */
+    Game_CursorfollowsMouse_onMap(sota);    /* CONTROL */
+    Game_Cursor_Moves_onMap(sota);          /* CONTROL */
 }
 
 void fsm_cFrame_sGmpMap_ssMapCndt(struct Game *sota) {

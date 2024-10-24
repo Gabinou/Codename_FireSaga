@@ -829,9 +829,9 @@ void receive_event_Unit_Deselect(struct Game *sota, SDL_Event *userevent) {
         return;
     }
 
-    tnecs_entity unit_ent     = sota->selected_unit_entity;
+    tnecs_entity unit_ent       = sota->selected_unit_entity;
     struct Position *pos_ptr    = TNECS_GET_COMPONENT(sota->world, unit_ent, Position);
-    struct Unit *unit_ptr       = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
+    struct Unit     *unit_ptr   = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
     SDL_assert(pos_ptr  != NULL);
     SDL_assert(unit_ptr != NULL);
 
