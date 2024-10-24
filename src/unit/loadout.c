@@ -52,7 +52,6 @@ b32 _istwoHanding(i32 eq_left, i32 eq_right) {
         return (false);
     }
 
-
     return (eq_left == eq_right);
 }
 

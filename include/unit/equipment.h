@@ -51,6 +51,7 @@ i32 Unit_Id_Equipment(Unit *u, i32 eq);
 
 /* Order in _equipment of equipped weapon */
 i32 Unit_Eq_Equipped(const Unit *const unit, i32 eq);
+i32 Unit_Order_canEquip(const Unit *const unit, i32 eq);
 
 /* --- Equipping --- */
 void    Unit_Equip(     Unit *u, i32 h, i32 eq);

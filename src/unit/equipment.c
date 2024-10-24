@@ -718,7 +718,21 @@ Item *Unit_Get_Item(Unit *unit, i32 eq) {
     return (item);
 }
 
-/* Order in _equipment of equipped weapon */
+/* Order in eq in eq_canEquip equipped weapon
+- eq_valid(order) is false if NOT in eq_canEquip
+ */
+i32 Unit_Order_canEquip(const Unit *const unit, i32 eq) {
+    SDL_assert(unit != NULL);
+    SDL_assert(eq_valid(eq));
+    for (int i = 0; i < unit->num_canEquip; i++) {
+        if (eq == unit->eq_canEquip[i]) {
+            return (i);
+        }
+    }
+    return (SOTA_EQUIPMENT_SIZE);
+}
+
+/* eq of _equipped weapon in hand */
 i32 Unit_Eq_Equipped(const Unit *const unit, i32 hand) {
     SDL_assert(unit != NULL);
     SDL_assert(hand >= UNIT_HAND_LEFT);

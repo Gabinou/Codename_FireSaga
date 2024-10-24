@@ -537,7 +537,11 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
     b32 skip_draw_left  = !strong_selected && (UNIT_HAND_LEFT   == weakhand);
     b32 skip_draw_right = !strong_selected && (UNIT_HAND_RIGHT  == weakhand);
 
-    if (!skip_draw_left) {
+    do {
+
+        if (skip_draw_left)
+            break;
+
         /* -- Left hand icon -- */
         srcrect.w = LSM_HANDS_TILESIZE;
         srcrect.h = LSM_HANDS_TILESIZE;
@@ -556,13 +560,17 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
 
         // int left_hand_row = ((UNIT_HAND_LEFT == stronghand)
         // && strong_selected) ? Loadout_Eq(&lsm->selected, stronghand) : mc->elem;
-        int left_hand_row = 0;
-        if (UNIT_HAND_LEFT == stronghand) {
+        int left_hand_row = mc->elem;
+        if ((UNIT_HAND_LEFT == stronghand) && strong_selected) {
             // left hand is strong hand, selected first
-            left_hand_row = strong_selected ? Loadout_Eq(&lsm->selected, stronghand) : mc->elem;
-        } else {
-            // if left hand is weakhand and strong is not selected should not be drawn
-            left_hand_row = mc->elem;
+
+            // Find if eq is in CanEquip weapons. If so, put hand there.
+            i32 order = Unit_Order_canEquip(unit, Loadout_Eq(&lsm->selected, stronghand));
+            if (!eq_valid(order)) {
+                // If not, don't draw hand.
+                break;
+            }
+            left_hand_row = strong_selected;
         }
 
         /* Computing y offset for weak hand, or twohanding icon placement */
@@ -577,9 +585,12 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
         }
 
         SDL_RenderCopy(renderer, lsm->texture_hands, &srcrect, &dstrect);
-    }
+    } while (false);
 
-    if (!skip_draw_right) {
+    do {
+        if (skip_draw_right)
+            break;
+
         /* -- Right hand icon -- */
         srcrect.w = LSM_HANDS_TILESIZE;
         srcrect.h = LSM_HANDS_TILESIZE;
@@ -594,18 +605,19 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
         srcrect.y = 0;
 
         /* Moving hand if two handing or weak hand */
-        dstrect.x = lsm->menu_w - LSM_HANDS_TILESIZE;
-
-        // int right_hand_row = ((UNIT_HAND_RIGHT == stronghand)
-        // && strong_selected) ? Loadout_Eq(&lsm->selected, stronghand) : mc->elem;
-        int right_hand_row = 0;
-        if (UNIT_HAND_RIGHT == stronghand) {
+        int right_hand_row = mc->elem;
+        if ((UNIT_HAND_RIGHT == stronghand) && strong_selected) {
             // left hand is strong hand, selected first
-            right_hand_row = strong_selected ? Loadout_Eq(&lsm->selected, stronghand) : mc->elem;
-        } else {
-            // if left hand is weakhand and strong is not selected should not be drawn
-            right_hand_row = mc->elem;
+
+            // Find if eq is in CanEquip weapons. If so, put hand there.
+            i32 order = Unit_Order_canEquip(unit, Loadout_Eq(&lsm->selected, stronghand));
+            if (!eq_valid(order)) {
+                // If not, don't draw hand.
+                break;
+            }
+            right_hand_row = strong_selected;
         }
+
 
         /* Computing y offset for weak hand, or twohanding icon placement */
         int ry_offset = (stronghand == UNIT_HAND_RIGHT) ? LSM_STRONGHAND_Y_OFFSET : LSM_WEAKHAND_Y_OFFSET;
@@ -619,7 +631,7 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
         }
 
         SDL_RenderCopy(renderer, lsm->texture_hands, &srcrect, &dstrect);
-    }
+    } while (false);
 }
 
 static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
