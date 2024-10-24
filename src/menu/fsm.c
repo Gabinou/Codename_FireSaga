@@ -486,6 +486,7 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
 
     /* -- Hover on new item -- */
     PopUp_Loadout_Stats_Hover(pls, wsm, mc->elem);
+    PopUp_Loadout_Stats_Selected_Stats(pls);
 
     /* - Compute new attackmap with equipped - */
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, wsm->unit, Unit);
@@ -737,7 +738,6 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
     PopUp_Loadout_Stats_Hover(pls, wsm, mc->elem);
-    PopUp_Loadout_Stats_Selected_Loadout(pls);
     PopUp_Loadout_Stats_Selected_Stats(pls);
 }
 
@@ -941,7 +941,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         // Use wsm loadout to compute loadout after changing
         // to new usable items
         PopUp_Loadout_Stats_Hover(pls, wsm, mc->elem);
-        PopUp_Loadout_Stats_Selected_Loadout(pls);
         PopUp_Loadout_Stats_Selected_Stats(pls);
     } else {
         /* Loadout selected, find new defendants*/
@@ -1131,6 +1130,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
     Menu_Elem_Set(mc, sota, 0);
 
     struct LoadoutSelectMenu *wsm = mc->data;
+    wsm->update = true;
 
     /* -- Create PopUp_Loadout_Stats -- */
     if (sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS] == TNECS_NULL)
@@ -1145,8 +1145,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
     PopUp_Loadout_Stats_Unit(pls, sota->selected_unit_entity);
 
     /* -- Hover on new item -- */
-    PopUp_Loadout_Stats_Hover(pls, wsm, mc->elem);
     PopUp_Loadout_Stats_Selected_Loadout(pls);
+    PopUp_Loadout_Stats_Hover(pls, wsm, mc->elem);
     PopUp_Loadout_Stats_Selected_Stats(pls);
 
     /* - Compute new attackmap with equipped - */

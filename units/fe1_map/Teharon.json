@@ -69,15 +69,15 @@
 		},
 		"Items":	{
 			"Item":	{
-				"name":	"Steel Buckler",
-				"Infused":	-1,
-				"id": 407,
-				"used":	0
-			},
-			"Item":	{
 				"name":	"Damas Lance",
 				"Infused":	-1,
 				"id":	105,
+				"used":	0
+			},
+			"Item":	{
+				"name":	"Steel Buckler",
+				"Infused":	-1,
+				"id": 407,
 				"used":	0
 			},
 			"Item":	{
