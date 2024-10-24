@@ -530,7 +530,8 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
     b32 stronghand      = Unit_Hand_Strong(unit);
     b32 weakhand        = Unit_Hand_Weak(unit);
     b32 header_drawn    = (lsm->header.data != NULL);
-    SDL_Rect srcrect, dstrect;
+    SDL_Rect srcrect = {0};
+    SDL_Rect dstrect = {0};
 
     b32 strong_selected = Loadout_isEquipped(&lsm->selected, stronghand);
 
@@ -538,9 +539,9 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
     b32 skip_draw_right = !strong_selected && (UNIT_HAND_RIGHT  == weakhand);
 
     do {
-
-        if (skip_draw_left)
+        if (skip_draw_left) {
             break;
+        }
 
         /* -- Left hand icon -- */
         srcrect.w = LSM_HANDS_TILESIZE;
@@ -570,7 +571,7 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
                 // If not, don't draw hand.
                 break;
             }
-            left_hand_row = strong_selected;
+            left_hand_row = order;
         }
 
         /* Computing y offset for weak hand, or twohanding icon placement */
@@ -588,8 +589,9 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
     } while (false);
 
     do {
-        if (skip_draw_right)
+        if (skip_draw_right) {
             break;
+        }
 
         /* -- Right hand icon -- */
         srcrect.w = LSM_HANDS_TILESIZE;
@@ -607,7 +609,8 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
         /* Moving hand if two handing or weak hand */
         int right_hand_row = mc->elem;
         if ((UNIT_HAND_RIGHT == stronghand) && strong_selected) {
-            // left hand is strong hand, selected first
+            // right hand is strong hand, was selected
+            // SDL_Log("right hand is strong hand, was selected");
 
             // Find if eq is in CanEquip weapons. If so, put hand there.
             i32 order = Unit_Order_canEquip(unit, Loadout_Eq(&lsm->selected, stronghand));
@@ -615,16 +618,16 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
                 // If not, don't draw hand.
                 break;
             }
-            right_hand_row = strong_selected;
+            right_hand_row = order;
         }
-
 
         /* Computing y offset for weak hand, or twohanding icon placement */
         int ry_offset = (stronghand == UNIT_HAND_RIGHT) ? LSM_STRONGHAND_Y_OFFSET : LSM_WEAKHAND_Y_OFFSET;
 
+        dstrect.x = lsm->menu_w * 9 / 10;
         dstrect.y = ry_offset + (header_drawn + right_hand_row) * LSM_ROW_HEIGHT;
 
-        /* Moving hand if small */
+        // /* Moving hand if small */
         if (stronghand != UNIT_HAND_RIGHT) {
             dstrect.x += LSM_HAND_SMALLX_OFFSET;
             dstrect.y += LSM_HAND_SMALLY_OFFSET;
