@@ -29,7 +29,6 @@ void Map_Global_Dangermap_Compute(struct Map *map);
 /* --- costmap --- */
 i32   * Map_Costmap_Movement_Compute(   struct Map *map, tnecs_entity u);
 i32   * Map_Costmap_PushPull_Compute(   struct Map *map, tnecs_entity u);
-float * Map_fCostmap_Movement_Compute(  struct Map *map, tnecs_entity u);
 i32   *_Map_Costmap_Movement_Compute(   struct Map *map, struct Unit *u);
 
 /* --- Perimeter --- */
@@ -42,7 +41,6 @@ void Map_Danger_Perimeter_Compute(struct Map *map, i32 *danger);
 // Map_Movemap_Compute also computes REQUIRED costmap
 i32   * Map_Movemap_Compute( struct Map *map, tnecs_entity u);
 i32   *_Map_Movemap_Compute( struct Map *map, struct Point s, i32 mv);
-float * Map_fMovemap_Compute(struct Map *map, tnecs_entity u);
 
 /* --- Map_Act_To --- */
 // Tiles that unit can perform action TO

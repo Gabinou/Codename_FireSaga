@@ -260,14 +260,6 @@ void Map_Free(struct Map *map) {
         map->start_posmap = NULL;
     }
 
-    if (map->fcostmap != NULL) {
-        SDL_free(map->fcostmap);
-        map->fcostmap = NULL;
-    }
-    if (map->fmovemap != NULL) {
-        SDL_free(map->fmovemap);
-        map->fmovemap = NULL;
-    }
     if (map->attacktomap != NULL) {
         SDL_free(map->attacktomap);
         if (map->attacktomap == map->healtomap) {
@@ -424,12 +416,6 @@ void Map_Members_Alloc(struct Map *map) {
 
     SDL_assert(map->start_posmap == NULL);
     map->start_posmap = calloc(len,  sizeof(*map->start_posmap));
-
-    SDL_assert(map->fcostmap == NULL);
-    map->fcostmap = calloc(len,  sizeof(*map->fcostmap));
-
-    SDL_assert(map->fmovemap == NULL);
-    map->fmovemap = calloc(len,  sizeof(*map->fmovemap));
 
     SDL_assert(map->dangermap == NULL);
     map->dangermap = calloc(len,  sizeof(*map->dangermap));

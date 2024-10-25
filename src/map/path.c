@@ -69,26 +69,6 @@ void Map_Stacked_Global_Dangermap_Reset(struct Map *map) {
     map->shading_changed = true;
 }
 
-float *_Map_fMovemap_Compute(struct Map *map, struct Pointf start, float move) {
-    // map->fmovemap = pathfinding_Map_Moveto_noM_float(map->fmovemap, map->fcostmap,
-    // map->row_len, map->col_len, start, move);
-    return (map->fmovemap);
-}
-
-float *Map_fMovemap_Compute(struct Map *map, tnecs_entity unit_ent) {
-    SDL_assert(map          != NULL);
-    SDL_assert(map->world   != NULL);
-
-    Map_fCostmap_Movement_Compute(map, unit_ent);
-    struct Unit *unit = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
-    struct Position *pos = TNECS_GET_COMPONENT(map->world, unit_ent, Position);
-    i32 move = Unit_getStats(unit).move;
-    struct Pointf start;
-    start.x = (float)pos->tilemap_pos.x;
-    start.y = (float)pos->tilemap_pos.y;
-    return (_Map_fMovemap_Compute(map, start, move));
-}
-
 i32 *_Map_Movemap_Compute(struct Map *map, struct Point start_in, i32 move) {
     struct Point start = {start_in.x, start_in.y};
     Pathfinding_Moveto_noM(map->movemap, map->costmap,
@@ -295,45 +275,6 @@ i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_entity unit_ent) {
             map->costmap[i] = COSTMAP_BLOCKED;
     }
     return (map->costmap);
-}
-
-float *Map_fCostmap_Movement_Compute(struct Map *map, tnecs_entity unit_ent) {
-    SDL_assert(map->unitmap != NULL);
-    SDL_assert(map->costmap != NULL);
-    SDL_assert(((unit_ent > 0) && (unit_ent < UNIT_ID_NPC_END)));
-
-    /* Preliminaries*/
-    memset(map->fcostmap, 0, sizeof(*map->fcostmap) * map->col_len * map->row_len);
-    struct Unit *unit = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
-    struct Tile *temp_tile;
-    i32 tile_ind = 0;
-    i8 unit_movetype = unit->mvt_type;
-    u8 army = unit->army;
-
-    /* Compute cost of each tile*/
-    SDL_assert(unit_movetype > UNIT_MVT_START);
-    for (size_t i = 0; i < (map->col_len * map->row_len); i++) {
-        /* - Compute cost from tile - */
-        tile_ind = map->tilemap[i] / TILE_DIVISOR;
-        SDL_assert(tile_ind > 0);
-        size_t tile_order = Map_Tile_Order(map, tile_ind);
-        temp_tile = map->tiles + tile_order;
-        map->fcostmap[i] = temp_tile->cost_array[unit_movetype];
-
-        /* - Check if tile is blocked from opposing army - */
-        tnecs_entity ontile_unit_ent = map->unitmap[i];
-        if ((ontile_unit_ent <= UNIT_ID_START) || (ontile_unit_ent >= UNIT_ID_NPC_END))
-            continue;
-
-        struct Unit *ontile_unit = TNECS_GET_COMPONENT(map->world, ontile_unit_ent, Unit);
-        SDL_assert(ontile_unit != NULL);
-        u8 ontile_army = ontile_unit->army;
-        SDL_assert((ontile_army < ARMY_END) && (ontile_army > ARMY_START));
-
-        if (SotA_army2alignment(ontile_army) != SotA_army2alignment(army))
-            map->fcostmap[i] = costmap_fBLOCKED;
-    }
-    return (map->fcostmap);
 }
 
 /* Create costmap for unit. Block tiles if occupied by enemy.
