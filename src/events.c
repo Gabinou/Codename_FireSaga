@@ -382,11 +382,11 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
 
     /* -- Creating scene to play -- */
     // TODO: play Scene, OR cutscene?
-    sota->scene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Cutscene,
+    sota->scene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Scene,
                                                   Position, Text, Timer);
 
-    struct Scene *scene;
-    scene  = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
+    struct Scene *scene  = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
+    SDL_assert(scene != NULL);
     *scene = Scene_default;
     scene->event = event_Quit;
 
@@ -479,7 +479,7 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
     }
 
     /* -- Destroying scene -- */
-    struct Scene *scene  = TNECS_GET_COMPONENT(sota->world, sota->scene, Cutscene);
+    struct Scene *scene  = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
     if (scene != NULL) {
         Scene_Free(scene);
         tnecs_entity_destroy(sota->world, sota->scene);
