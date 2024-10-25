@@ -183,18 +183,21 @@ b32 Unit_canEquip_AnyHand(Unit *unit, canEquip can_equip) {
     }
 
     /* Check that unit can equip item in hand */
-    for (i32 hand = UNIT_HAND_LEFT; hand < unit->arms_num; hand++) {
+    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
+        // SDL_Log("hand %d", hand);
         /* Skip hands that unit doesn't have */
         if (!Unit_hasHand(unit, hand)) {
             continue;
         }
         can_equip.hand = hand;
-        if (!Unit_canEquip(unit, can_equip)) {
-            return (false);
+
+        /* AnyHand can equip: true */
+        if (Unit_canEquip(unit, can_equip)) {
+            return (true);
         }
     }
 
-    return (true);
+    return (false);
 }
 
 /* -- Usable -- */
@@ -313,6 +316,7 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
         return (false);
     }
 
+    // SDL_Log("canEquip\n");
     return (true);
 }
 
@@ -448,6 +452,8 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     b32 one_hand_cant   = one_hand_only && (eq_in_bound && eq_same);
 
     if (one_hand_cant) {
+        // SDL_Log("one_hand_cant");
+        // SDL_Log("%d %d %d", one_hand_only, eq_in_bound, eq_same);
         // SDL_Log("hand, other hand, %d %d", hand, other_hand);
         return (false);
     }

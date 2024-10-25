@@ -1269,7 +1269,6 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     /* - Unit should be PC - */
     SDL_assert(SotA_isPC(unit->army));
 
-
     /* -- Creating Unit Action Menu -- */
     tnecs_entity *menu = &sota->player_select_menus[MENU_PLAYER_SELECT_UNIT_ACTION];
     if (*menu == 0)
