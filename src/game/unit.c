@@ -86,12 +86,12 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
 
 /* --- Party utilities --- */
 void Game_Loaded_Units_Free(struct Game *sota) {
-    /* -- Free entities in units_loaded array -- */
+    /* -- SDL_free entities in units_loaded array -- */
     // TODO
 }
 
 void Game_Party_Free(struct Game *sota) {
-    /* -- Free unit struct read from JSON files in party array -- */
+    /* -- SDL_free unit struct read from JSON files in party array -- */
     tnecs_entity    *entities   = sota->party.entities;
     for (size_t j = UNIT_ID_START + 1; j < SOTA_MAX_PARTY_SIZE; j++) {
         // Skip if party unit was never read
@@ -99,7 +99,7 @@ void Game_Party_Free(struct Game *sota) {
         if (entities[j] <= TNECS_NULL) {
             return;
         }
-        // Free loaded unit component from and clear party entry
+        // SDL_free loaded unit component from and clear party entry
         Unit *unit = TNECS_GET_COMPONENT(sota->world, entities[j], Unit);
         SDL_assert(unit != NULL);
         Unit_Free(unit);

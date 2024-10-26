@@ -389,7 +389,7 @@ void test_menu_stats() {
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Names_Long.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    /* --- FREE --- */
+    /* --- SDL_free --- */
     PixelFont_Free(sm->pixelnours, true);
     PixelFont_Free(sm->pixelnours_big, true);
 

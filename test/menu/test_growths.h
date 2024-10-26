@@ -79,7 +79,7 @@ void test_menu_growths() {
         {00, 01, 00, 00, 00, 01, 00, 00, 00, 00, 00, 00},
     };
     Graph_Stat_Add(&gm->graph, &Silou.base_stats, grown_1, 2, 1, stat_toplot);
-    /* Free alloced in Unit_readJSON grown_stats*/
+    /* SDL_free alloced in Unit_readJSON grown_stats*/
     DARR_FREE(Silou.grown_stats);
     Silou.grown_stats = &grown_1[0];
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
@@ -223,7 +223,7 @@ void test_menu_growths() {
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Digits_2.png"), renderer,
                             gm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    /* --- FREE --- */
+    /* --- SDL_free --- */
     Unit_Free(&Silou);
     Game_Weapons_Free(&weapons_dtab);
     GrowthsMenu_Free(gm);

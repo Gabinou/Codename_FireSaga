@@ -11,8 +11,8 @@
 /* Imperial Eagle Bearer */
 /* Turn-based strategy Role Playing Game (RPG)
 *  Strongly inspired by Fire Emblem and Tear Ring Saga
-*  Source code is free to own, modify and compile
-*  Game is free to play only if you can compile it
+*  Source code is SDL_free to own, modify and compile
+*  Game is SDL_free to play only if you can compile it
 *  Please do not distribute compiled executables
 */
 

@@ -101,7 +101,7 @@ void test_skills(void) {
     Unit_computedStats(&Silou, distance);
     Unit_computedStats(&Enemy, distance);
 
-    /* --- FREE --- */
+    /* --- SDL_free --- */
     Unit_Free(&Silou);
     Unit_Free(&Enemy);
     Game_Weapons_Free(&weapons_dtab);
@@ -432,7 +432,7 @@ void test_bonus_decay(void) {
     Unit_Bonus_Persistent_Decay(&Silou);
     nourstest_true(DARR_NUM(Silou.bonus_stack) == 2);
 
-    /* Free */
+    /* SDL_free */
     DARR_FREE(Silou.bonus_stack);
 }
 
@@ -532,7 +532,7 @@ void test_bonus_stats(void) {
     nourstest_true(effective_stats.move == (Silou.current_stats.move));
     nourstest_true(effective_stats.prof == (Silou.current_stats.prof));
 
-    /* Free */
+    /* SDL_free */
     DARR_FREE(Silou.bonus_stack);
 }
 

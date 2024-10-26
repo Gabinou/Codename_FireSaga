@@ -359,7 +359,7 @@ struct StatsMenu StatsMenu_default = {
 };
 
 struct StatsMenu *StatsMenu_Alloc(void) {
-    struct StatsMenu *stats_menu = malloc(sizeof(struct StatsMenu));
+    struct StatsMenu *stats_menu = SDL_malloc(sizeof(struct StatsMenu));
     SDL_assert(stats_menu);
     *stats_menu = StatsMenu_default;
     SDL_assert(stats_menu->texture == NULL);

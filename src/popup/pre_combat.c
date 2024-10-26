@@ -646,7 +646,7 @@ void PreCombatPopup_Set(struct PreCombatPopup *pcp, struct Game *sota) {
 }
 
 struct PreCombatPopup *PreCombatPopup_Alloc(void) {
-    struct PreCombatPopup *pcp = malloc(sizeof(struct PreCombatPopup));
+    struct PreCombatPopup *pcp = SDL_malloc(sizeof(struct PreCombatPopup));
     SDL_assert(pcp);
     *pcp = PreCombatPopup_default;
     SDL_assert(pcp->texture == NULL);

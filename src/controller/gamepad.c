@@ -152,9 +152,9 @@ void Gamepad_Init(struct controllerGamepad *gp) {
     Gamepad_Free(gp);
     gp->controllers_num     = controllerGamepad_default.controllers_num;
     gp->controllers_len     = controllerGamepad_default.controllers_len;
-    gp->controllers         = calloc(gp->controllers_len, sizeof(*gp->controllers));
+    gp->controllers         = SDL_calloc(gp->controllers_len, sizeof(*gp->controllers));
     SDL_assert(gp->controllers != NULL);
-    gp->joystick_instances  = calloc(gp->controllers_len, sizeof(*gp->joystick_instances));
+    gp->joystick_instances  = SDL_calloc(gp->controllers_len, sizeof(*gp->joystick_instances));
     SDL_assert(gp->joystick_instances != NULL);
 
 }

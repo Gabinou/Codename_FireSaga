@@ -131,7 +131,7 @@ void test_combat_stats() {
     // nourstest_true((temp_stats.dft_stats.speed == dft_stats.speed));
     // nourstest_true((temp_stats.dft_stats.move  == defender_stats.move));
 
-    /* --- FREE --- */
+    /* --- SDL_free --- */
     Unit_Free(attacker);
     SDL_free(attacker);
     Unit_Free(defender);
@@ -529,7 +529,7 @@ void test_combat_flow() {
     nourstest_true(Combat_canDouble(&attacker, &defender));
     nourstest_true(temp_flow.defendant_phases == 2);
 
-    /* --- FREE --- */
+    /* --- SDL_free --- */
     Unit_Free(&attacker);
     Unit_Free(&defender);
     Game_Weapons_Free(&weapons_dtab);
@@ -681,7 +681,7 @@ void test_combat_sequence() {
     nourstest_true(Silou.hit_sequence.hit == true);
     nourstest_true(Silou.hit_sequence.len == 1);
 
-    /* Free everything */
+    /* SDL_free everything */
     DARR_FREE(darr_attacks);
     URN_debug = -1;
 }

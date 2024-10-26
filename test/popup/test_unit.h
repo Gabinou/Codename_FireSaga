@@ -49,7 +49,7 @@ void test_popup_unit() {
     Filesystem_Texture_Dump(PATH_JOIN("popup_unit", "PopupUnit_Test.png"),
                             renderer, pu.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    /* -- FREE -- */
+    /* -- SDL_free -- */
     Unit_Free(&Silou);
     n9Patch_Free(&n9patch);
     PixelFont_Free(pu.pixelnours, true);

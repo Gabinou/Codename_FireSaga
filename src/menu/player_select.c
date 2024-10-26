@@ -157,7 +157,7 @@ void PlayerSelectMenu_Elem_Links(struct PlayerSelectMenu *psm, struct Menu *mc) 
     if (mc->elem_links != NULL)
         SDL_free(mc->elem_links);
     SDL_assert(mc->elem_num == psm->option_num);
-    mc->elem_links = malloc(psm->option_num * sizeof(*mc->elem_links));
+    mc->elem_links = SDL_malloc(psm->option_num * sizeof(*mc->elem_links));
     for (i32 i = 0; i < psm->option_num; i++) {
         mc->elem_links[i] = MenuElemDirections_default;
         if (i < (psm->option_num - 1))
@@ -179,7 +179,7 @@ void PlayerSelectMenu_Elem_Boxes(struct PlayerSelectMenu *psm, struct Menu *mc) 
     if (mc->elem_box != NULL)
         SDL_free(mc->elem_box);
     SDL_assert(mc->elem_num > 0);
-    mc->elem_box = malloc(mc->elem_num * sizeof(*mc->elem_box));
+    mc->elem_box = SDL_malloc(mc->elem_num * sizeof(*mc->elem_box));
     for (i32 i = 0; i < mc->elem_num; i++) {
         mc->elem_box[i].x = SOTA_TILESIZE;
         mc->elem_box[i].y = SOTA_TILESIZE;
@@ -192,7 +192,7 @@ void PlayerSelectMenu_Elem_Pos(struct PlayerSelectMenu *psm, struct Menu *mc) {
 
     if (mc->elem_pos != NULL)
         SDL_free(mc->elem_pos);
-    mc->elem_pos = calloc(mc->elem_num, sizeof(*mc->elem_pos));
+    mc->elem_pos = SDL_calloc(mc->elem_num, sizeof(*mc->elem_pos));
     for (i32 i = 0; i < mc->elem_num; i++) {
         mc->elem_pos[i].x = psm->pos.x + pos9.x + mp.left * scale.x;
         mc->elem_pos[i].y = psm->pos.y + (pos9.y + ((i * psm->row_height + mp.top))) * scale.y;

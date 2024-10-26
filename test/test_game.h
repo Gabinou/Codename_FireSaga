@@ -469,7 +469,7 @@ void test_combat_game() {
     nourstest_true(firesaga.combat_forecast.flow.aggressor_phases == 1);
     nourstest_true(firesaga.combat_forecast.flow.defendant_phases == 1);
 
-    /* --- FREE --- */
+    /* --- SDL_free --- */
     Unit_Free(&attacker);
     Unit_Free(&defender);
     Game_Weapons_Free(&weapons_dtab);

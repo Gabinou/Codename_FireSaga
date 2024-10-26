@@ -63,7 +63,7 @@ struct MenuElemDirections trade_menu_links[TRADE_MENU_ELEMS_NUM] = {
 };
 
 struct TradeMenu *TradeMenu_Alloc(void) {
-    struct TradeMenu *tm = malloc(sizeof(struct TradeMenu));
+    struct TradeMenu *tm = SDL_malloc(sizeof(struct TradeMenu));
     tm->selected_item   = ITEM_NULL;
     tm->selected_trader = TRADER_NULL;
     return (tm);

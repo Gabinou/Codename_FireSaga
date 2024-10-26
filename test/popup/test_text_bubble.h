@@ -328,7 +328,7 @@ void test_Text_Bubble_Tail() {
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_tailB3.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    /* FREE */
+    /* SDL_free */
     PixelFont_Free(bubble.pixelfont, true);
     TextBubble_Free(&bubble);
     SDL_DestroyRenderer(renderer);
@@ -386,7 +386,7 @@ void test_text_bubble_scroll() {
         i++;
     }
 
-    /* FREE */
+    /* SDL_free */
     PixelFont_Free(bubble.pixelfont, true);
     TextBubble_Free(&bubble);
     SDL_DestroyRenderer(renderer);
@@ -447,7 +447,7 @@ void test_text_bubble_scroll_vertical() {
         i++;
     }
 
-    /* FREE */
+    /* SDL_free */
     PixelFont_Free(bubble.pixelfont, true);
     TextBubble_Free(&bubble);
     SDL_DestroyRenderer(renderer);
@@ -519,7 +519,7 @@ void test_text_bubble_VScroll_Anim() {
         i++;
     }
 
-    /* FREE */
+    /* SDL_free */
     PixelFont_Free(bubble.pixelfont, true);
     TextBubble_Free(&bubble);
     SDL_DestroyRenderer(renderer);
@@ -700,7 +700,7 @@ void test_Text_Bubble_pixelfont16() {
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_pixelnours_16_majus_Black.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
-    /* FREE */
+    /* SDL_free */
     PixelFont_Free(bubble.pixelfont, true);
     TextBubble_Free(&bubble);
     SDL_DestroyRenderer(renderer);
@@ -885,7 +885,7 @@ void test_Text_Bubble_pixelfont16_tight() {
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble",
                                       "TextBubble_pixelnours_16_tight_majus_Black.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
-    /* FREE */
+    /* SDL_free */
     PixelFont_Free(bubble.pixelfont, true);
     TextBubble_Free(&bubble);
     SDL_DestroyRenderer(renderer);
@@ -1071,7 +1071,7 @@ void test_Text_Bubble_pixelfont16_minus() {
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble",
                                       "TextBubble_pixelnours_16_minus_majus_Black.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
-    /* FREE */
+    /* SDL_free */
     PixelFont_Free(bubble.pixelfont, true);
     TextBubble_Free(&bubble);
     SDL_DestroyRenderer(renderer);

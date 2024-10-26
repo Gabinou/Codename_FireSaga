@@ -375,7 +375,7 @@ void test_popup_map_combat() {
     // Filesystem_Texture_Dump(PATH_JOIN("popup_map_combat", "PopupMapCombat_Phases_3.png"), renderer,
     //                         pmc.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    /* -- FREE -- */
+    /* -- SDL_free -- */
     if (pmc.pixelnours_tight != NULL) {
         PixelFont_Free(pmc.pixelnours_tight, true);
     }

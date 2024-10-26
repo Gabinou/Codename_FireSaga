@@ -91,7 +91,7 @@ void Game_PopUp_Pre_Combat_Create(struct Game *sota) {
     popup->visible      = true;
 
     /* - PreCombatPopup - */
-    popup->data = malloc(sizeof(struct PreCombatPopup));
+    popup->data = SDL_malloc(sizeof(struct PreCombatPopup));
     struct PreCombatPopup *pcp = popup->data;
     *pcp = PreCombatPopup_default;
     SDL_assert(sota->pixelnours != NULL);
@@ -176,7 +176,7 @@ void Game_PopUp_Unit_Create(struct Game *sota) {
 
     /* - n9Patch - */
     if (popup->data == NULL)
-        popup->data = malloc(sizeof(struct PopUp_Unit));
+        popup->data = SDL_malloc(sizeof(struct PopUp_Unit));
     struct PopUp_Unit *popup_unit = popup->data;
     *popup_unit = PopUp_Unit_default;
     PopUp_Unit_Load(popup_unit, sota->renderer, &popup->n9patch);
@@ -336,7 +336,7 @@ void Game_PopUp_Map_Combat_Create(struct Game *sota) {
     /* - Making PopUp_Map_Combat - */
     if (popup->data != NULL)
         SDL_free(popup->data);
-    popup->data = malloc(sizeof(struct PopUp_Map_Combat));
+    popup->data = SDL_malloc(sizeof(struct PopUp_Map_Combat));
 }
 
 void Game_PopUp_Map_Combat_Update(   struct Game *sota) {
@@ -460,7 +460,7 @@ void Game_PopUp_Tile_Create(struct Game *sota) {
     popup->draw         = &PopUp_Tile_Draw;
 
     /* - Popup - */
-    popup->data = malloc(sizeof(struct PopUp_Tile));
+    popup->data = SDL_malloc(sizeof(struct PopUp_Tile));
     struct PopUp_Tile *popup_tile = popup->data;
     *popup_tile = PopUp_Tile_default;
     PopUp_Tile_Load(popup_tile, sota->renderer, &popup->n9patch);

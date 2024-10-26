@@ -90,7 +90,7 @@ Map *Map_New(NewMap new_map) {
 }
 
 void Map_Unitmap_Free(struct Map *map) {
-    /* -- Free non-PC units on unitmap -- */
+    /* -- SDL_free non-PC units on unitmap -- */
     SDL_assert(map->unitmap);
     for (size_t i = 0; i < map->col_len * map->row_len ; i++) {
         tnecs_entity uent = map->unitmap[i];
@@ -121,7 +121,7 @@ void Map_Unitmap_Free(struct Map *map) {
 
     s8_free(&map->json_filename);
 
-    /* -- Free unitmap -- */
+    /* -- SDL_free unitmap -- */
     SDL_free(map->unitmap);
     map->unitmap = NULL;
 }
@@ -358,7 +358,7 @@ void Map_Members_Alloc(struct Map *map) {
     Map_Texture_Alloc(map);
     Map_Tilemap_Shader_Init(map);
     SDL_assert(map->tilemap == NULL);
-    map->tilemap = calloc(len, sizeof(*map->tilemap));
+    map->tilemap = SDL_calloc(len, sizeof(*map->tilemap));
 
     SDL_assert(map->start_pos == NULL);
     map->start_pos = DARR_INIT(map->start_pos, struct Point, 16);
@@ -403,49 +403,49 @@ void Map_Members_Alloc(struct Map *map) {
     map->army_onfield = DARR_INIT(map->army_onfield, i32, 5);
 
     SDL_assert(map->temp == NULL);
-    map->temp = calloc(len,  sizeof(*map->temp));
+    map->temp = SDL_calloc(len,  sizeof(*map->temp));
 
     SDL_assert(map->unitmap == NULL);
-    map->unitmap = calloc(len,  sizeof(*map->unitmap));
+    map->unitmap = SDL_calloc(len,  sizeof(*map->unitmap));
 
     SDL_assert(map->costmap == NULL);
-    map->costmap = calloc(len,  sizeof(*map->costmap));
+    map->costmap = SDL_calloc(len,  sizeof(*map->costmap));
 
     SDL_assert(map->movemap == NULL);
-    map->movemap = calloc(len,  sizeof(*map->movemap));
+    map->movemap = SDL_calloc(len,  sizeof(*map->movemap));
 
     SDL_assert(map->start_posmap == NULL);
-    map->start_posmap = calloc(len,  sizeof(*map->start_posmap));
+    map->start_posmap = SDL_calloc(len,  sizeof(*map->start_posmap));
 
     SDL_assert(map->dangermap == NULL);
-    map->dangermap = calloc(len,  sizeof(*map->dangermap));
+    map->dangermap = SDL_calloc(len,  sizeof(*map->dangermap));
 
     SDL_assert(map->palettemap == NULL);
-    map->palettemap = malloc(len * sizeof(*map->palettemap));
+    map->palettemap = SDL_malloc(len * sizeof(*map->palettemap));
 
     SDL_assert(map->attacktomap == NULL);
-    map->attacktomap = calloc(len,  sizeof(*map->attacktomap));
+    map->attacktomap = SDL_calloc(len,  sizeof(*map->attacktomap));
 
     SDL_assert(map->healtomap == NULL);
-    map->healtomap = calloc(len,  sizeof(*map->healtomap));
+    map->healtomap = SDL_calloc(len,  sizeof(*map->healtomap));
 
     SDL_assert(map->healfrommap == NULL);
-    map->healfrommap = calloc(len,  sizeof(*map->healfrommap));
+    map->healfrommap = SDL_calloc(len,  sizeof(*map->healfrommap));
 
     SDL_assert(map->temp_palette == NULL);
-    map->temp_palette = malloc(len * sizeof(*map->temp_palette));
+    map->temp_palette = SDL_malloc(len * sizeof(*map->temp_palette));
 
     SDL_assert(map->attackfrommap == NULL);
-    map->attackfrommap = calloc(len,  sizeof(*map->attackfrommap));
+    map->attackfrommap = SDL_calloc(len,  sizeof(*map->attackfrommap));
 
     SDL_assert(map->global_rangemap == NULL);
-    map->global_rangemap = calloc(len,  sizeof(*map->global_rangemap));
+    map->global_rangemap = SDL_calloc(len,  sizeof(*map->global_rangemap));
 
     SDL_assert(map->global_dangermap == NULL);
-    map->global_dangermap = calloc(len,  sizeof(*map->global_dangermap));
+    map->global_dangermap = SDL_calloc(len,  sizeof(*map->global_dangermap));
 
     SDL_assert(map->edges_danger == NULL);
-    map->edges_danger = calloc(len, sizeof(*map->edges_danger));
+    map->edges_danger = SDL_calloc(len, sizeof(*map->edges_danger));
 
     if (map->renderer != NULL) {
         Map_Tilemap_Surface_Init(map);
@@ -464,9 +464,9 @@ void Map_Members_Alloc(struct Map *map) {
     if (map->stack_mode == MAP_SETTING_STACK_DANGERMAP) {
         // SDL_Log("Allocating stacked_dangermap");
         SDL_assert(map->stacked_dangermap == NULL);
-        map->stacked_dangermap          = calloc(len, sizeof(*map->stacked_dangermap));
+        map->stacked_dangermap          = SDL_calloc(len, sizeof(*map->stacked_dangermap));
         SDL_assert(map->stacked_global_dangermap == NULL);
-        map->stacked_global_dangermap   = calloc(len, sizeof(*map->stacked_global_dangermap));
+        map->stacked_global_dangermap   = SDL_calloc(len, sizeof(*map->stacked_global_dangermap));
     }
 
     Map_Palettemap_Reset(map);

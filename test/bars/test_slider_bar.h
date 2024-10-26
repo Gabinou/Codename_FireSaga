@@ -66,7 +66,7 @@ void test_bars_slider_bar() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_TRANSPARENT);
     SDL_RenderFillRect(renderer, NULL);
 
-    /* FREE */
+    /* SDL_free */
     SDL_DestroyTexture(render_target);
     SDL_FreeSurface(surface);
     SDL_DestroyRenderer(renderer);

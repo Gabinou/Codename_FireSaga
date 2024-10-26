@@ -533,7 +533,7 @@ void test_menu_pre_combat() {
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Two_Handing.png"),
                             renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    /* --- FREE --- */
+    /* --- SDL_free --- */
     Unit_Free(&Silou);
     Unit_Free(&Hamilcar);
     PixelFont_Free(pcp->pixelnours, true);

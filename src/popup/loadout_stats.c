@@ -525,7 +525,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
 
 /* --- GLOBAL FUNCTIONS --- */
 struct PopUp_Loadout_Stats *PopUp_Loadout_Stats_Alloc(void) {
-    struct PopUp_Loadout_Stats *pls = malloc(sizeof(struct PopUp_Loadout_Stats));
+    struct PopUp_Loadout_Stats *pls = SDL_malloc(sizeof(struct PopUp_Loadout_Stats));
     SDL_assert(pls != NULL);
     *pls = PopUp_Loadout_Stats_default;
 

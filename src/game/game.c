@@ -141,7 +141,7 @@ void Game_Free(struct Game *sota) {
     }
 
     if (sota->renderer) {
-        SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Control");
+        SDL_LogVerbose(SOTA_LOG_SYSTEM, "SDL_free Control");
         // controlSDL_free();
     }
     if (sota->soundfx_cursor != NULL) {
@@ -153,27 +153,27 @@ void Game_Free(struct Game *sota) {
         sota->soundfx_next_turn = NULL;
     }
 
-    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Map");
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "SDL_free Map");
 
     if ((sota->map != NULL) && (sota->map->unitmap != NULL))
         Map_Unitmap_Free(sota->map);
     Game_Map_Free(sota);
 
-    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Camera");
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "SDL_free Camera");
     // if (sota->camera != NULL)
     // SDL_free(sota->camera);
-    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Events");
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "SDL_free Events");
     Events_Data_Free();
     Events_Names_Free();
     Events_Receivers_Free();
 #ifndef SOTA_OPENGL
-    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Renderer");
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "SDL_free Renderer");
     if (sota->render_target != NULL)
         SDL_DestroyTexture(sota->render_target);
     if (sota->renderer != NULL) {
-        SDL_DestroyRenderer(sota->renderer); /* free renderer before window */
+        SDL_DestroyRenderer(sota->renderer); /* SDL_free renderer before window */
     }
-    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Window");
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "SDL_free Window");
     if (sota->window != NULL)
         SDL_DestroyWindow(sota->window);
     SDL_QuitSubSystem(SDL_INIT_EVERYTHING);
@@ -181,7 +181,7 @@ void Game_Free(struct Game *sota) {
     SDL_Quit();
 #else /* SOTA_OPENGL */
 #endif /* SOTA_OPENGL */
-    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free tnecs world");
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "SDL_free tnecs world");
 
     if (sota->world != NULL) {
         tnecs_world_destroy(sota->world);
@@ -736,7 +736,7 @@ void _Game_loadJSON(struct Game *sota, s8  filename) {
     Party_Size(&sota->party);
     SDL_assert(sota->party.size > 0);
 
-    /* - Free - */
+    /* - SDL_free - */
     cJSON_Delete(json);
 }
 

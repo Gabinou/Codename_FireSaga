@@ -53,7 +53,7 @@ void Map_Tilesets_Free(struct Map *map) {
 
     SDL_assert(DARR_NUM(map->tiles) < 1000);
 
-    /* -- Free Tileset Surfaces -- */
+    /* -- SDL_free Tileset Surfaces -- */
     do { /*Loop never executes, just used for break*/
 
         if (map->tileset_surfaces == NULL)
@@ -72,7 +72,7 @@ void Map_Tilesets_Free(struct Map *map) {
         map->tileset_surfaces = NULL;
     } while (0);
 
-    /* -- Free Tileset Textures -- */
+    /* -- SDL_free Tileset Textures -- */
     do { /*Loop never executes, just used for break*/
         if (map->tileset_textures == NULL)
             break;
@@ -101,11 +101,11 @@ void Map_Tilesets_Load(struct Map *map) {
 
     /* -- Alloc tilesets -- */
     // TODO: Alloc only used palettes
-    map->tileset_surfaces = calloc(PALETTE_NUM, sizeof(*map->tileset_surfaces));
-    map->tileset_textures = calloc(PALETTE_NUM, sizeof(*map->tileset_textures));
+    map->tileset_surfaces = SDL_calloc(PALETTE_NUM, sizeof(*map->tileset_surfaces));
+    map->tileset_textures = SDL_calloc(PALETTE_NUM, sizeof(*map->tileset_textures));
     for (size_t i = 0; i < PALETTE_NUM; i++) {
-        map->tileset_surfaces[i] = calloc(DARR_NUM(map->tiles), sizeof(*map->tileset_surfaces[i]));
-        map->tileset_textures[i] = calloc(DARR_NUM(map->tiles), sizeof(*map->tileset_textures[i]));
+        map->tileset_surfaces[i] = SDL_calloc(DARR_NUM(map->tiles), sizeof(*map->tileset_surfaces[i]));
+        map->tileset_textures[i] = SDL_calloc(DARR_NUM(map->tiles), sizeof(*map->tileset_textures[i]));
     }
 
     /* -- Load tilesets -- */

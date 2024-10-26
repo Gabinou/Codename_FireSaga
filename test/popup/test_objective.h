@@ -36,7 +36,7 @@ void test_popup_objective() {
     /* - Sub-Objective - */
     // PopUp_Objective_Set_Obj(po, "Rout");
 
-    /* -- FREE -- */
+    /* -- SDL_free -- */
     PixelFont_Free(po->pixelnours, true);
     PopUp_Objective_Free(po);
     SDL_DestroyRenderer(renderer);

@@ -108,7 +108,7 @@ void test_pixelfonts_internals() {
     // nourstest_true(s8equal(&text_lines.lines[4], "dification negati-") == 0);
     // nourstest_true(s8equal(&text_lines.lines[5], "vitiation.") == 0);
 
-    /* -- FREE -- */
+    /* -- SDL_free -- */
     PixelFont_Free(test_font, true);
     TextLines_Free(&text_lines);
     SDL_DestroyRenderer(renderer);
@@ -252,7 +252,7 @@ void test_pixelfonts_render() {
     Filesystem_Texture_Dump(PATH_JOIN("pixelfont", "Pixelnours_Big_ENGLISH.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    /* FREE */
+    /* SDL_free */
     PixelFont_Free(bubble.pixelfont, true);
     TextBubble_Free(&bubble);
     SDL_DestroyRenderer(renderer);

@@ -311,7 +311,7 @@ void test_menu_deployment() {
                             renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
                             render_target);
 
-    /* --- FREE --- */
+    /* --- SDL_free --- */
     s8_free(&party.folder);
     Game_Party_Free(sota);
     Party_Reset(&party);

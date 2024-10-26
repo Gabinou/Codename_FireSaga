@@ -86,7 +86,7 @@ void test_menu_item_drop() {
     Filesystem_Texture_Dump(PATH_JOIN("menu_item_drop", "ItemDropMenu_3.png"), renderer,
                             idm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    /* -- FREE -- */
+    /* -- SDL_free -- */
     Unit_Free(&Silou);
     n9Patch_Free(&n9patch);
     SDL_FreeSurface(surface);

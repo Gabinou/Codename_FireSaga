@@ -57,7 +57,7 @@ void TextBubble_Free(struct Text_Bubble *bubble) {
 void TextBubble_Load(struct Text_Bubble *bubble, SDL_Renderer *renderer, struct n9Patch *n9patch) {
     SDL_assert(bubble != NULL);
 
-    /* -- Free before re-allocating -- */
+    /* -- SDL_free before re-allocating -- */
     TextBubble_Free(bubble);
     n9Patch_Free(n9patch);
 
@@ -98,7 +98,7 @@ void TextBubble_Load(struct Text_Bubble *bubble, SDL_Renderer *renderer, struct 
 }
 
 void TextBubble_Set_Text(struct Text_Bubble *bubble, char *text, struct n9Patch *n9patch) {
-    /* -- Free before re-allocating -- */
+    /* -- SDL_free before re-allocating -- */
     s8_free(&bubble->text);
     /* -- Copying input text -- */
     bubble->text = s8_mut(text);

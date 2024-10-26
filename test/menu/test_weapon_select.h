@@ -332,7 +332,7 @@ void test_menu_loadout_select(void) {
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_Header.png"), renderer,
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    /* --- FREE --- */
+    /* --- SDL_free --- */
     PixelFont_Free(wsm->pixelnours,     true);
     PixelFont_Free(wsm->pixelnours_big, true);
 
@@ -423,7 +423,7 @@ void test_menu_loadout_select_two_hands(void) {
 
     /* -- Equipping a any right-hand only weapon -- */
 
-    /* --- FREE --- */
+    /* --- SDL_free --- */
     Unit_Free(Silou);
     LoadoutSelectMenu_Free(wsm);
     Game_Weapons_Free(&weapons_dtab);

@@ -215,7 +215,7 @@ void test_popup_loadout_stats() {
     Filesystem_Texture_Dump(PATH_JOIN("popup_loadout_stats", "PopupLoadoutStats_True2.png"),
                             renderer, pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    /* -- FREE -- */
+    /* -- SDL_free -- */
     Unit_Free(&unit);
     n9Patch_Free(&n9patch);
     PixelFont_Free(pls.pixelnours, true);

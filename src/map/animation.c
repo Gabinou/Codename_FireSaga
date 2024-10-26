@@ -69,9 +69,9 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
     combat_anim->attack_ind++;
     SDL_assert(sota->aggressor  > TNECS_NULL);
     SDL_assert(sota->defendant  > TNECS_NULL);
-    SDL_Event *userevent = malloc(sizeof(*userevent));
+    SDL_Event *userevent = SDL_malloc(sizeof(*userevent));
     receive_event_Increment_Attack(sota, userevent);
-    free(userevent);
+    SDL_free(userevent);
     // Event_Emit(__func__, SDL_USEREVENT, event_Increment_Attack, NULL, NULL);
 
     /* - reset combat timer for next attack - */

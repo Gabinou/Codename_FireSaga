@@ -662,7 +662,7 @@ void Game_TradeMenu_Create(struct Game *sota) {
     // mc->visible =                   true;
     // mc->elem_links =                trade_menu_links;
     // mc->elem =                      0;
-    // mc->elem_pos =                  malloc(sizeof(*mc->elem_pos) * TRADE_MENU_ELEMS_NUM);
+    // mc->elem_pos =                  SDL_malloc(sizeof(*mc->elem_pos) * TRADE_MENU_ELEMS_NUM);
     // mc->elem_box =                  trade_menu_elem_box;
     // mc->elem_num =                  TRADE_MENU_ELEMS_NUM;
 

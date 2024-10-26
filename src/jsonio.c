@@ -735,7 +735,7 @@ void jsonio_Print(PHYSFS_file *fp, struct cJSON *_json) {
     /* Write bytes to file with Physfs */
     PHYSFS_writeBytes(fp, buffer, length);
 
-    /* Free buffer */
+    /* SDL_free buffer */
     cJSON_free(buffer);
 }
 

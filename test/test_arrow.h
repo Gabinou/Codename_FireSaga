@@ -372,7 +372,7 @@ void test_arrow() {
     Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_26.png"), renderer,
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
-    /* --- FREE --- */
+    /* --- SDL_free --- */
     Arrow_Free(arrow);
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(render_target);

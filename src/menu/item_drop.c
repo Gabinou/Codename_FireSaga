@@ -25,7 +25,7 @@ struct MenuElemDirections idm_links[IDM_ELEM_NUM] = {
 
 /* --- Constructors/Destructors --- */
 struct ItemDropMenu *ItemDropMenu_Alloc(void) {
-    struct ItemDropMenu *idm = malloc(sizeof(struct ItemDropMenu));
+    struct ItemDropMenu *idm = SDL_malloc(sizeof(struct ItemDropMenu));
     SDL_assert(idm != NULL);
     *idm = ItemDropMenu_default;
     SDL_assert(idm->texture == NULL);
@@ -132,7 +132,7 @@ void ItemDropMenu_Update(struct  ItemDropMenu  *idm, struct n9Patch *n9patch,
     s8 question = s8_mut("DROP \'");
     question = s8cat(question, name);
     question = s8cat(question, s8_literal("\'?"));
-    // char  *question  = calloc((len + len_done), sizeof(*question));
+    // char  *question  = SDL_calloc((len + len_done), sizeof(*question));
     // memcpy(question,           "DROP \'", 6);
     // memcpy(question + 6,       name.data,    len);
     // memcpy(question + 6 + len, "\'?",     2);

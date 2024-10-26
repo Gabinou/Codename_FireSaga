@@ -436,19 +436,19 @@ void Game_Cursor_Create(struct Game *sota) {
     // sprite->sprite_type = DESTRECT_FUNCTION_CURSOR;
 
     SDL_assert(sprite->spritesheet == NULL);
-    sprite->spritesheet = malloc(sizeof(*sprite->spritesheet));
+    sprite->spritesheet = SDL_malloc(sizeof(*sprite->spritesheet));
     SDL_assert(sprite->spritesheet != NULL);
 
     *sprite->spritesheet    = Spritesheet_default;
     struct Spritesheet *ss  = sprite->spritesheet;
     ss->loop_num    = 1;
-    ss->speeds      = malloc(ss->loop_num * sizeof(*ss->speeds));
-    ss->frames      = malloc(ss->loop_num * sizeof(*ss->frames));
-    ss->loops_pos   = calloc(ss->loop_num,  sizeof(*ss->loops_pos));
-    ss->loop_modes  = malloc(ss->loop_num * sizeof(*ss->loop_modes));
+    ss->speeds      = SDL_malloc(ss->loop_num * sizeof(*ss->speeds));
+    ss->frames      = SDL_malloc(ss->loop_num * sizeof(*ss->frames));
+    ss->loops_pos   = SDL_calloc(ss->loop_num,  sizeof(*ss->loops_pos));
+    ss->loop_modes  = SDL_malloc(ss->loop_num * sizeof(*ss->loop_modes));
 
     ss->frames[0] = sota->settings.cursor.frames;
-    ss->speeds[0] = malloc(ss->frames[0] * sizeof(**ss->speeds));
+    ss->speeds[0] = SDL_malloc(ss->frames[0] * sizeof(**ss->speeds));
     ss->loop_modes[0] = LOOPING_PINGPONG;
     for (int i = 0; i < ss->frames[0]; ++i)
         ss->speeds[0][i] = sota->settings.cursor.speed;
@@ -522,14 +522,14 @@ void Game_Mouse_Create(struct Game *sota) {
 
     struct Spritesheet *ss = sprite->spritesheet;
     ss->loop_num      = 1;
-    ss->frames        = malloc(ss->loop_num * sizeof(*ss->frames));
-    ss->speeds        = malloc(ss->loop_num * sizeof(*ss->speeds));
-    ss->loops_pos     = calloc(ss->loop_num,  sizeof(*ss->loops_pos));
-    ss->loop_modes    = malloc(ss->loop_num * sizeof(*ss->loop_modes));
+    ss->frames        = SDL_malloc(ss->loop_num * sizeof(*ss->frames));
+    ss->speeds        = SDL_malloc(ss->loop_num * sizeof(*ss->speeds));
+    ss->loops_pos     = SDL_calloc(ss->loop_num,  sizeof(*ss->loops_pos));
+    ss->loop_modes    = SDL_malloc(ss->loop_num * sizeof(*ss->loop_modes));
     ss->loop_modes[0] = LOOPING_INVALID;
 
     ss->frames[0]     = 1;
-    ss->speeds[0]     = calloc(ss->frames[0], sizeof(**ss->speeds));
+    ss->speeds[0]     = SDL_calloc(ss->frames[0], sizeof(**ss->speeds));
     SDL_assert(ss->current_loop == 0);
 
     sprite->srcrect.w = MOUSE_DEFAULT_SRCRECT_W;

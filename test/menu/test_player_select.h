@@ -20,7 +20,7 @@ void test_menu_player_select() {
     psm->row_height = ASCII_GLYPH_HEIGHT + 1; /* pixel fonts have python8 pixels*/
 
     /* -- Menu -- */
-    struct Menu *mc = malloc(sizeof(struct Menu));
+    struct Menu *mc = SDL_malloc(sizeof(struct Menu));
     *mc = Menu_default;
     mc->elem_box = NULL;
     mc->elem_pos = NULL;
@@ -189,7 +189,7 @@ void test_menu_player_select() {
     /* --- TEST OPTIONS AS A FUNCTION OF GAME STATE --- */
     // struct Game *sota = Game_Init();
 
-    /* --- FREE --- */
+    /* --- SDL_free --- */
     PixelFont_Free(psm->pixelnours, true);
     SDL_FreeSurface(surface);
     PlayerSelectMenu_Free(psm, mc);

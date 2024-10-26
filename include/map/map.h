@@ -258,7 +258,7 @@ void Map_Members_Alloc(Map *map);
 void Map_Texture_Alloc(         Map *map);
 void Map_Tilemap_Shader_Init(   Map *map);
 
-/* -- Free -- */
+/* -- SDL_free -- */
 void Map_Free(Map *map);
 
 void Map_Members_Free(Map *map);

@@ -68,7 +68,7 @@ static void _LoadoutSelectMenu_Draw_Highlight(  struct  LoadoutSelectMenu   *l,
 
 /* --- Constructors/Destructors --- */
 struct LoadoutSelectMenu *LoadoutSelectMenu_Alloc(void) {
-    struct LoadoutSelectMenu *lsm = malloc(sizeof(struct LoadoutSelectMenu));
+    struct LoadoutSelectMenu *lsm = SDL_malloc(sizeof(struct LoadoutSelectMenu));
     SDL_assert(lsm != NULL);
     *lsm = LoadoutSelectMenu_default;
     SDL_assert(lsm->texture == NULL);
