@@ -493,6 +493,9 @@ void Game_Init(struct Game *sota, Settings settings) {
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Tnecs: Genesis\n");
     sota->world = tnecs_world_genesis();
+    // Don't reuse entities.
+    // If I forget to update an entity somewhere, it'll be invalid for sure.
+    SDL_assert(sota->world->reuse_entities == false);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Components Registration\n");
     TNECS_REGISTER_COMPONENT(sota->world, Position);
