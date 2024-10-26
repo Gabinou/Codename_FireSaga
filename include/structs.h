@@ -49,7 +49,7 @@ typedef struct MapFind {
 
     tnecs_entity *found;
     tnecs_entity seeker;
-};
+} MapFind;
 
 /* -- attackto -- */
 typedef struct MapAct {
