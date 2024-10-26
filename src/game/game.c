@@ -409,6 +409,8 @@ void Game_Init(struct Game *sota, Settings settings) {
         exit(1);
     }
 
+    Game_Display_Bounds(sota);
+
     sota->window = SDL_CreateWindow(sota->settings.title, sota->settings.pos.x,
                                     sota->settings.pos.y, sota->settings.res.x, sota->settings.res.y, flags);
     SDL_assert(sota->window);
@@ -984,6 +986,30 @@ void Game_Brightness_Set(struct Game *sota, float bright) {
 float Game_Brightness_Get(struct Game *sota) {
     return (SDL_GetWindowBrightness(sota->window));
 }
+
+/* --- DISPLAY --- */
+void Game_Display_Bounds(struct Game *sota) {
+    // Find bounds of display.
+
+    // Skip if fullscreen
+    if (sota->settings.fullscreen)
+        return;
+
+    SDL_Rect bounds;
+    if (SDL_GetDisplayBounds(0, &bounds) != 0) {
+        SDL_LogCritical(SOTA_LOG_SYSTEM, "SDL could not get display bounds! SDL Error: %s\n",
+                        SDL_GetError() );
+        exit(1);
+    }
+
+    // Clamp resolution to display if window is bigger
+    if (sota->settings.res.x > bounds.w)
+        sota->settings.res.x = bounds.w;
+
+    if (sota->settings.res.y > bounds.h)
+        sota->settings.res.y = bounds.h;
+}
+
 
 /* --- AUDIO --- */
 

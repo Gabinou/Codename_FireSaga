@@ -110,6 +110,9 @@ void Game_FPS_Create(struct Game *sota, i64 ut);
 void  Game_Brightness_Set(struct Game *sota, float bright);
 float Game_Brightness_Get(struct Game *sota);
 
+/* --- DISPLAY --- */
+void  Game_Display_Bounds(struct Game *sota);
+
 /* --- AUDIO --- */
 /* -- Music -- */
 void Game_Music_Play( struct Game *sota);
