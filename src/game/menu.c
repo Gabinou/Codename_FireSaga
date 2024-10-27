@@ -335,8 +335,15 @@ void Game_postLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
     /* Find all Defendants */
     // matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
 
-    sota->defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist,
-                                           sota->defendants, actor, false);
+    MapFind mapfind     = MapFind_default;
+
+    mapfind.list        = sota->map->attacktolist;
+    mapfind.found       = sota->defendants;
+    mapfind.seeker      = actor;
+    mapfind.fastquit    = false;
+    mapfind.eq_type     = LOADOUT_EQUIPPED;
+
+    sota->defendants = Map_Find_Defendants(sota->map, mapfind);
 }
 
 void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
@@ -374,11 +381,28 @@ void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     SDL_assert(Unit_isEquipped(unit, stronghand));
     SDL_assert(Unit_isEquipped(unit, weakhand));
 
+    MapFind mapfind = MapFind_default;
+
+    mapfind.list       = sota->map->healtolist;
+    mapfind.found      = sota->patients;
+    mapfind.seeker     = actor;
+    mapfind.fastquit   = false;
+    mapfind.eq_type    = LOADOUT_EQUIPPED;
+
+    /* Find Defendants if any */
+    sota->defendants = Map_Find_Defendants(sota->map, mapfind);
+
+    mapfind = MapFind_default;
+
+    mapfind.list       = sota->map->healtolist;
+    mapfind.found      = sota->patients;
+    mapfind.seeker     = actor;
+    mapfind.fastquit   = false;
+    mapfind.eq_type    = LOADOUT_EQUIPPED;
+
+
     /* Find all Patients if any */
-    sota->patients = Map_Find_Patients(sota->map, sota->map->healtolist,
-                                       sota->patients, actor,
-                                       Unit_Eq_Equipped(unit, stronghand),
-                                       false);
+    sota->patients = Map_Find_Patients(sota->map, mapfind);
 
     SDL_assert(Unit_isEquipped(unit, stronghand));
     SDL_assert(Unit_isEquipped(unit, weakhand));
@@ -404,11 +428,15 @@ void Game_preLoadout_Patients(struct Game *sota, tnecs_entity actor) {
 
     // matrix_print(sota->map->healtomap, sota->map->row_len, sota->map->col_len);
 
-    // TEMP FIX:  both kiara and kakwi have staff at ITEM2 spot
-    i32 eq = ITEM2;
-    sota->patients = Map_Find_Patients(sota->map, sota->map->healtolist,
-                                       sota->patients, actor,
-                                       eq, true);
+    MapFind mapfind = MapFind_default;
+
+    mapfind.list       = sota->map->healtolist;
+    mapfind.found      = sota->patients;
+    mapfind.seeker     = actor;
+    mapfind.fastquit   = true;
+    mapfind.eq_type    = LOADOUT_EQUIPMENT;
+
+    sota->patients = Map_Find_Patients(sota->map, mapfind);
 }
 
 /* -- Finding if any weapon in equipment has a defendant -- */
@@ -426,16 +454,16 @@ void Game_preLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
 
     Map_Act_To(sota->map, map_to);
 
-    MapFind map_find = MapFind_default;
-
-    map_find.list       = sota->map->attacktolist;
-    map_find.found      = sota->defendants
-    map_find.seeker     = actor;
-    map_find.fastquit   = true;
-
     /* Find Defendants if any */
-    sota->defendants = Map_Find_Defendants(sota->map, ,
-                                           , true);
+    MapFind mapfind = MapFind_default;
+
+    mapfind.list       = sota->map->attacktolist;
+    mapfind.found      = sota->defendants;
+    mapfind.seeker     = actor;
+    mapfind.fastquit   = true;
+    mapfind.eq_type    = LOADOUT_EQUIPMENT;
+
+    sota->defendants = Map_Find_Defendants(sota->map, mapfind);
 }
 
 /* -- Decides which option are in UnitAction menu -- */

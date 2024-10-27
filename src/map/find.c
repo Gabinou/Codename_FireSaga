@@ -80,14 +80,34 @@ b32 Map_canEquip_Range(struct Map *map, tnecs_entity unit_ent,
     // printf("ATK\n");
     // matrix_print(map->attacktomap, map->row_len, map->col_len);
 
-    map->attacktolist = matrix2list_noM(map->attacktomap, map->attacktolist,
-                                        map->row_len, map->col_len);
-
     /* Find all Defendants in list */
+    MapFind mapfind = MapFind_default;
+
+    mapfind.found      = defendants;
+    mapfind.seeker     = unit_ent;
+    mapfind.fastquit   = false;
+    mapfind.eq_type    = LOADOUT_EQUIPMENT;
+
     if (can_equip.archetype == ITEM_ARCHETYPE_WEAPON) {
-        defendants = Map_Find_Defendants(map, map->attacktolist, defendants, unit_ent, false);
+        map->attacktolist = matrix2list_noM(map->attacktomap, map->attacktolist,
+                                            map->row_len, map->col_len);
+        mapfind.list       = map->attacktolist;
+        defendants = Map_Find_Defendants(map, mapfind);
     } else if (can_equip.archetype == ITEM_ARCHETYPE_STAFF) {
-        defendants = Map_Find_Patients(map, map->attacktolist, defendants, unit_ent, can_equip._eq, false);
+        /* --- Compute healtolist --- */
+        /* -- MapAct settings for healtolist -- */
+        MapAct map_to = MapAct_default;
+
+        map_to.move         = false;
+        map_to.archetype    = ITEM_ARCHETYPE_STAFF;
+        map_to.eq_type      = LOADOUT_EQUIPMENT;
+        map_to.output_type  = ARRAY_LIST;
+        map_to.aggressor    = unit_ent;
+
+        Map_Act_To(map, map_to);
+
+        mapfind.list       = map->healtolist;
+        defendants = Map_Find_Patients(map, mapfind);
     }
 
     // printf("DARR_NUM(defendants) %d\n", DARR_NUM(defendants));
@@ -98,15 +118,17 @@ b32 Map_canEquip_Range(struct Map *map, tnecs_entity unit_ent,
 }
 
 
-tnecs_entity *Map_Find_Defendants(struct Map *map, MapFind mapfind, i32 *attacktolist,
-                                  tnecs_entity *defendants, tnecs_entity aggressor,
-                                  b32 fastquit) {
+tnecs_entity *Map_Find_Defendants(struct Map *map, MapFind mapfind) {
     /* Find all defendants on attacktolist according to alignment */
+    i32 *attacktolist = mapfind.list;
+    tnecs_entity *defendants    = mapfind.found;
+    tnecs_entity aggressor      = mapfind.seeker;
+    b32 fastquit                = mapfind.fastquit;
 
     /* Note: Assumes attacktolist was created before with matrix2list_noM */
     SDL_assert(aggressor > TNECS_NULL);
-    SDL_assert(defendants != NULL);
-    SDL_assert(map.list);
+    SDL_assert(defendants   != NULL);
+    SDL_assert(attacktolist != NULL);
     for (size_t i = 0; i < DARR_NUM(attacktolist) / TWO_D; i++) {
         size_t x_at = attacktolist[TWO_D * i];
         size_t y_at = attacktolist[TWO_D * i + 1];
@@ -156,10 +178,12 @@ tnecs_entity *Map_Find_Breakables(struct Map *map, i32 *attacktolist,
     return (attackable);
 }
 
-tnecs_entity *Map_Find_Patients(struct Map *map, i32 *healtolist,
-                                tnecs_entity *patients,
-                                tnecs_entity healer_ent,
-                                i32 eq, b32 fastquit) {
+tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
+    i32 *healtolist = mapfind.list;
+    tnecs_entity *patients = mapfind.found;
+    tnecs_entity healer_ent = mapfind.seeker;
+    b32 fastquit = mapfind.fastquit;
+
     /* Find all patients on healtolist according to alignment */
     /* Assumes healtolist was created before with matrix2list_noM */
     struct Unit *healer = TNECS_GET_COMPONENT(map->world, healer_ent, Unit);
@@ -168,62 +192,64 @@ tnecs_entity *Map_Find_Patients(struct Map *map, i32 *healtolist,
 
     /* TODO: full health people arent patients FOR HEALING STAVES */
 
-    /* -- Getting staff -- */
-    Inventory_item *item = Unit_InvItem(healer, eq);
-    SDL_assert(item->id > ITEM_NULL);
+    for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
+        /* -- Getting staff -- */
+        Inventory_item *item = Unit_InvItem(healer, eq);
+        SDL_assert(item->id > ITEM_NULL);
 
-    /* Skip if its not a staff */
-    if (!Weapon_isStaff(item->id)) {
-        return (patients);
-    }
-
-
-    Weapon_Load(healer->weapons_dtab, item->id);
-    struct Weapon *staff = (struct Weapon *)DTAB_GET(healer->weapons_dtab, item->id);
-    /* -- TODO: can only use staff in two hands -- */
-    if (staff == NULL) {
-        item = Unit_InvItem(healer, Unit_Hand_Weak(healer));
-        SDL_assert(item != NULL);
-        staff = (struct Weapon *)DTAB_GET(healer->weapons_dtab, item->id);
-    }
-
-    SDL_assert(staff        != NULL);
-    SDL_assert(staff->item  != NULL);
-
-    /* -- Check healtolist for valid patients -- */
-    u8 align_healer = army_alignment[healer->army];
-    for (size_t i = 0; i < DARR_NUM(healtolist) / 2; i++) {
-        size_t x_at = healtolist[TWO_D * i];
-        size_t y_at = healtolist[TWO_D * i + 1];
-        tnecs_entity unitontile = map->unitmap[y_at * map->col_len + x_at];
-        if (unitontile <= TNECS_NULL) {
-            continue;
+        /* Skip if its not a staff */
+        if (!Weapon_isStaff(item->id)) {
+            return (patients);
         }
 
-        /* DESIGN QUESTION: Can healers heal themselves? */
-        if (healer_ent == unitontile) {
-            continue;
+
+        Weapon_Load(healer->weapons_dtab, item->id);
+        struct Weapon *staff = (struct Weapon *)DTAB_GET(healer->weapons_dtab, item->id);
+        /* -- TODO: can only use staff in two hands -- */
+        if (staff == NULL) {
+            item = Unit_InvItem(healer, Unit_Hand_Weak(healer));
+            SDL_assert(item != NULL);
+            staff = (struct Weapon *)DTAB_GET(healer->weapons_dtab, item->id);
         }
 
-        Unit *patient = TNECS_GET_COMPONENT(map->world, unitontile, Unit);
-        Unit_stats p_eff_stats = Unit_effectiveStats(patient);
+        SDL_assert(staff        != NULL);
+        SDL_assert(staff->item  != NULL);
 
-        u8 align_patient = army_alignment[patient->army];
-        b32 add = false;
-        switch (staff->item->target) {
-            case ITEM_NO_TARGET:
-                add = true;
-                break;
-            case ITEM_TARGET_FRIENDLY:
-                add = (align_patient == align_healer) && (patient->current_hp < p_eff_stats.hp);
-                break;
-            case ITEM_TARGET_ENEMY:
-                add = align_patient |= align_healer;
-                break;
+        /* -- Check healtolist for valid patients -- */
+        u8 align_healer = army_alignment[healer->army];
+        for (size_t i = 0; i < DARR_NUM(healtolist) / 2; i++) {
+            size_t x_at = healtolist[TWO_D * i];
+            size_t y_at = healtolist[TWO_D * i + 1];
+            tnecs_entity unitontile = map->unitmap[y_at * map->col_len + x_at];
+            if (unitontile <= TNECS_NULL) {
+                continue;
+            }
+
+            /* DESIGN QUESTION: Can healers heal themselves? */
+            if (healer_ent == unitontile) {
+                continue;
+            }
+
+            Unit *patient = TNECS_GET_COMPONENT(map->world, unitontile, Unit);
+            Unit_stats p_eff_stats = Unit_effectiveStats(patient);
+
+            u8 align_patient = army_alignment[patient->army];
+            b32 add = false;
+            switch (staff->item->target) {
+                case ITEM_NO_TARGET:
+                    add = true;
+                    break;
+                case ITEM_TARGET_FRIENDLY:
+                    add = (align_patient == align_healer) && (patient->current_hp < p_eff_stats.hp);
+                    break;
+                case ITEM_TARGET_ENEMY:
+                    add = align_patient |= align_healer;
+                    break;
+            }
+
+            if (add)
+                DARR_PUT(patients, unitontile);
         }
-
-        if (add)
-            DARR_PUT(patients, unitontile);
     }
     return (patients);
 }

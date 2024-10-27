@@ -1,5 +1,6 @@
 
 #include "AI.h"
+#include "map/find.h"
 
 struct AI AI_default = {
     .json_element   = JSON_AI,
@@ -93,7 +94,16 @@ static b32 _AI_Decider_Move_inRange(struct Game *sota, tnecs_entity npc_ent) {
     Map_Act_To(sota->map, map_to);
 
     tnecs_entity *dfts = DARR_INIT(dfts, tnecs_entity, 1);
-    dfts = Map_Find_Defendants(map, map->attacktolist, dfts, npc_ent, true);
+
+    MapFind mapfind = MapFind_default;
+
+    mapfind.list       = map->attacktolist;
+    mapfind.found      = dfts;
+    mapfind.seeker     = npc_ent;
+    mapfind.fastquit   = true;
+    mapfind.eq_type    = LOADOUT_EQUIPPED;
+
+    dfts = Map_Find_Defendants(map, mapfind);
 
     /* --- Move if enemy in range --- */
     b32 out = (DARR_NUM(dfts) > 0);
@@ -132,7 +142,16 @@ static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
     Map_Act_To(sota->map, map_to);
 
     tnecs_entity *defendants = DARR_INIT(defendants, tnecs_entity, 4);
-    defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist, defendants, npc_ent, false);
+
+    MapFind mapfind = MapFind_default;
+
+    mapfind.list       = sota->map->attacktolist;
+    mapfind.found      = defendants;
+    mapfind.seeker     = npc_ent;
+    mapfind.fastquit   = false;
+    mapfind.eq_type    = LOADOUT_EQUIPMENT;
+
+    defendants = Map_Find_Defendants(sota->map, mapfind);
 
     /* - TODO: Decide which loadout to attack with - */
 
@@ -247,7 +266,16 @@ static void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
     Map_Act_To(sota->map, map_to);
 
     tnecs_entity *defendants = DARR_INIT(defendants, tnecs_entity, 4);
-    defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist, defendants, npc_ent, false);
+
+    MapFind mapfind = MapFind_default;
+
+    mapfind.list       = sota->map->attacktolist;
+    mapfind.found      = defendants;
+    mapfind.seeker     = npc_ent;
+    mapfind.fastquit   = false;
+    mapfind.eq_type    = LOADOUT_EQUIPMENT;
+
+    defendants = Map_Find_Defendants(sota->map, mapfind);
 
     /* -- Revert position to previous -- */
     pos->tilemap_pos = oldpos;

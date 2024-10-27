@@ -34,6 +34,10 @@ typedef struct MapFind {
     tnecs_entity *found;
     tnecs_entity seeker;
     b32 fastquit;
+
+    /* LOADOUT_EQUIPPED, LOADOUT_EQUIPMENT, LOADOUT_INPUT */
+    i32 eq_type;
+
 } MapFind;
 extern MapFind MapFind_default;
 
