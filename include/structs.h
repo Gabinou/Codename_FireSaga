@@ -30,26 +30,12 @@ extern Loadout Loadout_default;
 /* -- find -- */
 typedef struct MapFind {
 
-    // First to be able to cast: Loadout = &canEquip;
-    /* only if eq_type == LOADOUT_INPUT */
-    i32 _loadout[MAX_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
-
-    // Is movevement taken into account?
-    b32 move;
-
-    // healtomap: ITEM_ARCHETYPE_STAFF
-    // attacktomap: ITEM_ARCHETYPE_WEAPON
-    i64 archetype;
-
-    /* LOADOUT_EQUIPPED, LOADOUT_EQUIPMENT, LOADOUT_INPUT */
-    i32 eq_type;
-
-    /* FIND_BREAKABLES, FIND_DEFENDANTS */
-    i32 mode;
-
+    i32 *list;
     tnecs_entity *found;
     tnecs_entity seeker;
+    b32 fastquit;
 } MapFind;
+extern MapFind MapFind_default;
 
 /* -- attackto -- */
 typedef struct MapAct {

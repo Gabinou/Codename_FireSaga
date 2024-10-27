@@ -390,17 +390,6 @@ void Game_preLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     DARR_NUM(sota->patients) = 0;
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, actor, Unit);
 
-    // /* Combine ranges for all staves in equipment */
-    // struct Range *range = Unit_Range_Equipment(unit, ITEM_ARCHETYPE_STAFF);
-
-    // /* Compute healtolist */
-    // // TODO: find yourself as patient for staves that can target themselves.
-    // tnecs_entity *occupymap = NULL;
-    // sota->map->healtomap = _Map_Act_Tomap_Compute(sota->map->healtomap, sota->map->movemap, occupymap,
-    //                                           sota->map->row_len,   sota->map->col_len,
-    //                                           true, range, NMATH_MOVETILE_EXCLUDE);
-
-
     /* --- Compute healtolist --- */
     /* -- MapAct settings for healtolist -- */
     MapAct map_to = MapAct_default;
@@ -437,9 +426,16 @@ void Game_preLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
 
     Map_Act_To(sota->map, map_to);
 
+    MapFind map_find = MapFind_default;
+
+    map_find.list       = sota->map->attacktolist;
+    map_find.found      = sota->defendants
+    map_find.seeker     = actor;
+    map_find.fastquit   = true;
+
     /* Find Defendants if any */
-    sota->defendants = Map_Find_Defendants(sota->map, sota->map->attacktolist,
-                                           sota->defendants, actor, true);
+    sota->defendants = Map_Find_Defendants(sota->map, ,
+                                           , true);
 }
 
 /* -- Decides which option are in UnitAction menu -- */

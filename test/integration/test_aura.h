@@ -26,6 +26,7 @@ void test_aura_apply(int argc, char *argv[]) {
     Weapon_Load(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
     SDL_assert(DTAB_GET(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD) != NULL);
     /* -- Place all friendlies close together -- */
+
     i32 id;
     /* Place Standard bearer inside */
     struct Point pos = {4, 4};
@@ -404,7 +405,8 @@ void test_aura_fsm(int argc, char *argv[]) {
     sota->selected_unit_entity = sota->party.entities[UNIT_ID_SILOU];
     sota->map->army_i = 0;
     fsm_eAcpt_sGmpMap_ssMapUnitMv(sota, TNECS_NULL);
-    struct Position *silou_pos = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SILOU],
+    struct Position *silou_pos = TNECS_GET_COMPONENT(sota->world,
+                                                     sota->party.entities[UNIT_ID_SILOU],
                                                      Position);
     SDL_assert(silou_pos->tilemap_pos.x == sota->selected_unit_moved_position.x);
     SDL_assert(silou_pos->tilemap_pos.y == sota->selected_unit_moved_position.y);

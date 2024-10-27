@@ -98,7 +98,7 @@ b32 Map_canEquip_Range(struct Map *map, tnecs_entity unit_ent,
 }
 
 
-tnecs_entity *Map_Find_Defendants(struct Map *map, i32 *attacktolist,
+tnecs_entity *Map_Find_Defendants(struct Map *map, MapFind mapfind, i32 *attacktolist,
                                   tnecs_entity *defendants, tnecs_entity aggressor,
                                   b32 fastquit) {
     /* Find all defendants on attacktolist according to alignment */
@@ -106,7 +106,7 @@ tnecs_entity *Map_Find_Defendants(struct Map *map, i32 *attacktolist,
     /* Note: Assumes attacktolist was created before with matrix2list_noM */
     SDL_assert(aggressor > TNECS_NULL);
     SDL_assert(defendants != NULL);
-    SDL_assert(attacktolist);
+    SDL_assert(map.list);
     for (size_t i = 0; i < DARR_NUM(attacktolist) / TWO_D; i++) {
         size_t x_at = attacktolist[TWO_D * i];
         size_t y_at = attacktolist[TWO_D * i + 1];
@@ -114,6 +114,7 @@ tnecs_entity *Map_Find_Defendants(struct Map *map, i32 *attacktolist,
         /* - Checking for units on x_at, y_at - */
         size_t index = y_at * map->col_len + x_at;
         tnecs_entity unitontile = map->unitmap[index];
+        // TODO: Make this an assert?
         if (unitontile <= TNECS_NULL)
             continue;
 
@@ -165,11 +166,12 @@ tnecs_entity *Map_Find_Patients(struct Map *map, i32 *healtolist,
     SDL_assert(healer               != NULL);
     SDL_assert(healer->weapons_dtab != NULL);
 
-    /* TODO: full health people arent patients. */
+    /* TODO: full health people arent patients FOR HEALING STAVES */
 
     /* -- Getting staff -- */
     Inventory_item *item = Unit_InvItem(healer, eq);
     SDL_assert(item->id > ITEM_NULL);
+
     /* Skip if its not a staff */
     if (!Weapon_isStaff(item->id)) {
         return (patients);

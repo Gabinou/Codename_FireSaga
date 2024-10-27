@@ -8,6 +8,22 @@ void test_popup_loadout_stats() {
     sota_mkdir("popup_loadout_stats");
     Names_Load_All();
 
+    /* Tnecs init */
+    tnecs_world *world = tnecs_world_genesis();
+    TNECS_REGISTER_COMPONENT(world, Unit);
+    TNECS_REGISTER_COMPONENT(world, Position);
+    tnecs_entity Silou  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
+    tnecs_entity Erwin  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
+    tnecs_entity Enemy  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
+
+    Unit *silou         = TNECS_GET_COMPONENT(world, Silou, Unit);
+    Unit *erwin         = TNECS_GET_COMPONENT(world, Erwin, Unit);
+    Unit *enemy         = TNECS_GET_COMPONENT(world, Enemy, Unit);
+
+    Position *silou_pos = TNECS_GET_COMPONENT(world, Silou, Position);
+    Position *erwin_pos = TNECS_GET_COMPONENT(world, Erwin, Position);
+    Position *enemy_pos = TNECS_GET_COMPONENT(world, Enemy, Position);
+
     /* -- Create renderer -- */
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
@@ -48,7 +64,7 @@ void test_popup_loadout_stats() {
     struct PopUp_Loadout_Stats pls = PopUp_Loadout_Stats_default;
     pls.type_left   = ITEM_TYPE_EXP_SHIELD;
     pls.type_right  = ITEM_TYPE_EXP_SWORD;
-    PopUp_Loadout_Stats_Load(&pls, renderer, &n9patch);
+    PopUp_Loadout_Stats_Load(&pls, renderer, world, &n9patch);
 
     /* - loading fonts - */
     pls.pixelnours = PixelFont_Alloc();
@@ -60,23 +76,22 @@ void test_popup_loadout_stats() {
     SDL_assert(pls.pixelnours_big);
 
     /* -- Two handing weapon -- */
-    struct Unit unit = Unit_default;
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
-    Unit_InitWweapons(&unit, weapons_dtab);
+    Unit_InitWweapons(silou, weapons_dtab);
 
-    pls.unit = &unit;
+    pls.unit_ent = Silou;
 
     struct Inventory_item item = Inventory_item_default;
 
     item.id = ITEM_ID_GLAIVE;
     Weapon_Load(weapons_dtab, item.id);
-    Unit_Item_Takeat(&unit, item, ITEM1);
+    Unit_Item_Takeat(silou, item, ITEM1);
     item.id = ITEM_ID_LEATHER_SHIELD;
     Weapon_Load(weapons_dtab, item.id);
-    Unit_Item_Takeat(&unit, item, ITEM2);
+    Unit_Item_Takeat(silou, item, ITEM2);
     pls.type_left   = ITEM_TYPE_EXP_SWORD;
-    pls.eq_left     = ITEM1;
-    pls.eq_right    = ITEM2;
+    Loadout_Set(&pls.loadout_initial, UNIT_HAND_LEFT,   ITEM1);
+    Loadout_Set(&pls.loadout_initial, UNIT_HAND_RIGHT,  ITEM2);
 
     pls.l_equip_override    = false;
     pls.r_equip_override    = true;
@@ -99,67 +114,66 @@ void test_popup_loadout_stats() {
     Filesystem_Texture_Dump(PATH_JOIN("popup_loadout_stats", "PopupLoadoutStats_TwoHanding_Lance.png"),
                             renderer, pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    unit.handedness = UNIT_HAND_LEFTIE;
+    silou->handedness = UNIT_HAND_LEFTIE;
     PopUp_Loadout_Stats_Update(&pls, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_loadout_stats", "PopupLoadoutStats_TwoHanding_LEFTIE.png"),
                             renderer, pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    unit.handedness = UNIT_HAND_AMBIDEXTROUS;
+    silou->handedness = UNIT_HAND_AMBIDEXTROUS;
     PopUp_Loadout_Stats_Update(&pls, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_loadout_stats",
                                       "PopupLoadoutStats_TwoHanding_AMBIDEXTROUS.png"),
                             renderer, pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- All higher -- */
-    pls.previous_cs = low_cs;
-    pls.new_cs      = high_cs;
-    unit.handedness = UNIT_HAND_RIGHTIE;
-    pls.type_left   = ITEM_TYPE_EXP_SHIELD;
-    pls.type_right  = ITEM_TYPE_EXP_SWORD;
+    pls.initial_cs      = low_cs;
+    pls.selected_cs     = high_cs;
+    silou->handedness   = UNIT_HAND_RIGHTIE;
+    pls.type_left       = ITEM_TYPE_EXP_SHIELD;
+    pls.type_right      = ITEM_TYPE_EXP_SWORD;
 
     PopUp_Loadout_Stats_Update(&pls, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_loadout_stats", "PopupLoadoutStats_Lower.png"), renderer,
                             pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- All equal -- */
-    pls.previous_cs = low_cs;
-    pls.new_cs      = low_cs;
-    unit.handedness = UNIT_HAND_RIGHTIE;
-    pls.type_left   = ITEM_TYPE_EXP_SHIELD;
-    pls.type_right  = ITEM_TYPE_EXP_AXE;
+    pls.initial_cs      = low_cs;
+    pls.selected_cs     = low_cs;
+    silou->handedness   = UNIT_HAND_RIGHTIE;
+    pls.type_left       = ITEM_TYPE_EXP_SHIELD;
+    pls.type_right      = ITEM_TYPE_EXP_AXE;
 
     PopUp_Loadout_Stats_Update(&pls, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_loadout_stats", "PopupLoadoutStats.png"), renderer,
                             pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- All Lower -- */
-    pls.previous_cs = high_cs;;
-
-    pls.new_cs      = low_cs;
-    unit.handedness = UNIT_HAND_LEFTIE;
-    pls.type_right  = ITEM_TYPE_EXP_LANCE;
-    pls.type_left   = ITEM_TYPE_EXP_STAFF;
+    pls.initial_cs      = high_cs;
+    pls.selected_cs     = low_cs;
+    silou->handedness   = UNIT_HAND_LEFTIE;
+    pls.type_right      = ITEM_TYPE_EXP_LANCE;
+    pls.type_left       = ITEM_TYPE_EXP_STAFF;
 
     PopUp_Loadout_Stats_Update(&pls, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_loadout_stats", "PopupLoadoutStats_Higher.png"), renderer,
                             pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- 1 digit/ 2digits -- */
-    low_cs.attack[DMG_TYPE_PHYSICAL] = 1;
-    low_cs.attack[DMG_TYPE_MAGICAL] = 20;
-    low_cs.protection[DMG_TYPE_PHYSICAL] = 3;
-    low_cs.protection[DMG_TYPE_MAGICAL] = 40;
-    low_cs.hit = 5;
-    low_cs.dodge = 60;
-    low_cs.crit = 7;
-    low_cs.favor = 80;
-    low_cs.speed = 9;
-    unit.handedness = UNIT_HAND_RIGHTIE;
-    pls.type_right  = ITEM_TYPE_EXP_CLAW;
-    pls.type_left   = ITEM_TYPE_EXP_OFFHAND;
+    low_cs.attack[DMG_TYPE_PHYSICAL]        =  1;
+    low_cs.attack[DMG_TYPE_MAGICAL]         = 20;
+    low_cs.protection[DMG_TYPE_PHYSICAL]    =  3;
+    low_cs.protection[DMG_TYPE_MAGICAL]     = 40;
+    low_cs.hit                              =  5;
+    low_cs.dodge                            = 60;
+    low_cs.crit                             =  7;
+    low_cs.favor                            = 80;
+    low_cs.speed                            =  9;
+    silou->handedness                       = UNIT_HAND_RIGHTIE;
+    pls.type_right                          = ITEM_TYPE_EXP_CLAW;
+    pls.type_left                           = ITEM_TYPE_EXP_OFFHAND;
 
-    pls.previous_cs = low_cs;
-    pls.new_cs = low_cs;
+    pls.initial_cs  = low_cs;
+    pls.selected_cs = low_cs;
     PopUp_Loadout_Stats_Update(&pls, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_loadout_stats", "PopupLoadoutStats_Digits_1_2.png"),
                             renderer, pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
@@ -174,12 +188,12 @@ void test_popup_loadout_stats() {
     low_cs.crit = 70;
     low_cs.favor = 8;
     low_cs.speed = 9;
-    unit.handedness = UNIT_HAND_LEFTIE;
+    silou->handedness = UNIT_HAND_LEFTIE;
     pls.type_right  = ITEM_TYPE_EXP_DEMONIC;
     pls.type_left   = ITEM_TYPE_EXP_ELEMENTAL;
 
-    pls.previous_cs = low_cs;
-    pls.new_cs = low_cs;
+    pls.initial_cs = low_cs;
+    pls.selected_cs = low_cs;
     /* -- 2 digit/ 1 digits -- */
 
     PopUp_Loadout_Stats_Update(&pls, &n9patch, render_target, renderer);
@@ -188,9 +202,9 @@ void test_popup_loadout_stats() {
 
     /* -- True damage -- */
     low_cs.attack[DMG_TYPE_TRUE] = 1;
-    pls.previous_cs = low_cs;
-    pls.new_cs = low_cs;
-    unit.handedness = UNIT_HAND_RIGHTIE;
+    pls.initial_cs = low_cs;
+    pls.selected_cs = low_cs;
+    silou->handedness = UNIT_HAND_RIGHTIE;
     pls.l_equip_override   = true;
     pls.r_equip_override  = true;
 
@@ -199,24 +213,24 @@ void test_popup_loadout_stats() {
                             renderer, pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- True damage 2 digits -- */
-    low_cs.attack[DMG_TYPE_MAGICAL] = 21;
-    low_cs.attack[DMG_TYPE_TRUE] = 34;
-    pls.previous_cs = low_cs;
-    pls.new_cs = low_cs;
-    unit.handedness = UNIT_HAND_LEFTIE;
-    low_cs.hit = 100;
-    low_cs.dodge = 14;
-    pls.previous_cs = low_cs;
-    pls.new_cs = low_cs;
-    pls.l_equip_override   = false;
-    pls.r_equip_override  = false;
+    low_cs.attack[DMG_TYPE_MAGICAL]     = 21;
+    low_cs.attack[DMG_TYPE_TRUE]        = 34;
+    pls.initial_cs                      = low_cs;
+    pls.selected_cs                     = low_cs;
+    silou->handedness                   = UNIT_HAND_LEFTIE;
+    low_cs.hit                          = 100;
+    low_cs.dodge                        = 14;
+    pls.initial_cs                      = low_cs;
+    pls.selected_cs                     = low_cs;
+    pls.l_equip_override                = false;
+    pls.r_equip_override                = false;
 
     PopUp_Loadout_Stats_Update(&pls, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_loadout_stats", "PopupLoadoutStats_True2.png"),
                             renderer, pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- SDL_free -- */
-    Unit_Free(&unit);
+    Unit_Free(silou);
     n9Patch_Free(&n9patch);
     PixelFont_Free(pls.pixelnours, true);
     PixelFont_Free(pls.pixelnours_big, true);
