@@ -412,7 +412,6 @@ void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
 /* -- Finding if any staff equipment has a patient -- */
 void Game_preLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     DARR_NUM(sota->patients) = 0;
-    struct Unit *unit = TNECS_GET_COMPONENT(sota->world, actor, Unit);
 
     /* --- Compute healtolist --- */
     /* -- MapAct settings for healtolist -- */
@@ -425,6 +424,7 @@ void Game_preLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     map_to.aggressor    = actor;
 
     Map_Act_To(sota->map, map_to);
+    // SDL_Log("sota->map->healtolist %d", DARR_NUM(sota->map->healtolist) / TWO_D);
 
     // matrix_print(sota->map->healtomap, sota->map->row_len, sota->map->col_len);
 
@@ -437,6 +437,7 @@ void Game_preLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     mapfind.eq_type    = LOADOUT_EQUIPMENT;
 
     sota->patients = Map_Find_Patients(sota->map, mapfind);
+    // SDL_Log("sota->patients %d", DARR_NUM(sota->patients));
 }
 
 /* -- Finding if any weapon in equipment has a defendant -- */
