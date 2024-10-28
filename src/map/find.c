@@ -16,8 +16,9 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
 
     /* Compute movemap */
     struct Point start = pos->tilemap_pos;
-    i32 move_stat = can_equip.move ? Unit_getStats(unit).move : 0;
-    _Map_Movemap_Compute(map, start, move_stat);
+    i32 move_stat       = can_equip.move ? Unit_getStats(unit).move : 0;
+    i32 effective_move  = move_stat * map->cost_multiplier;
+    _Map_Movemap_Compute(map, start, effective_move);
 
     // printf("MOVE\n");
     // matrix_print(map->movemap, map->row_len, map->col_len);

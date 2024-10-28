@@ -69,10 +69,11 @@ void Map_Stacked_Global_Dangermap_Reset(struct Map *map) {
     map->shading_changed = true;
 }
 
-i32 *_Map_Movemap_Compute(struct Map *map, struct Point start_in, i32 move) {
+/* Note: effective_move should have been multiplied by cost_multiplier */
+i32 *_Map_Movemap_Compute(struct Map *map, struct Point start_in, i32 effective_move) {
     struct Point start = {start_in.x, start_in.y};
     Pathfinding_Moveto_noM(map->movemap, map->costmap,
-                           map->row_len, map->col_len, start, move);
+                           map->row_len, map->col_len, start, effective_move);
 
     return (map->movemap);
 }
@@ -84,9 +85,9 @@ i32 *Map_Movemap_Compute(struct Map *map, tnecs_entity unit_ent) {
     Map_Costmap_Movement_Compute(map, unit_ent);
     struct Unit     *unit   = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
     struct Position *pos    = TNECS_GET_COMPONENT(map->world, unit_ent, Position);
-    i32              move   = Unit_getStats(unit).move;
+    i32    effective_move   = Unit_getStats(unit).move * map->cost_multiplier;
     struct Point     start  = pos->tilemap_pos;
-    return (_Map_Movemap_Compute(map, start, move));
+    return (_Map_Movemap_Compute(map, start, effective_move));
 }
 
 i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
@@ -187,8 +188,10 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     struct Range *range = Unit_Range_Equipped(agg_unit, ITEM_ARCHETYPE_WEAPON);
 
     /* Compute movemap */
-    i32 move_stat = map_from.move ? Unit_getStats(agg_unit).move : 0;
-    _Map_Movemap_Compute(map, agg_pos->tilemap_pos, move_stat);
+    i32 move_stat       = map_from.move ? Unit_getStats(agg_unit).move : 0;
+    i32 effective_move  = move_stat * map->cost_multiplier;
+
+    _Map_Movemap_Compute(map, agg_pos->tilemap_pos, effective_move);
     // matrix_print(map->movemap, map->row_len, map->col_len);
 
 
@@ -232,9 +235,9 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_entity unit_ent) {
     struct Unit *unit           = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
     SDL_assert(position != NULL);
     SDL_assert(unit     != NULL);
-    i32 move = Unit_getStats(unit).move;
+    i32 effective_move = Unit_getStats(unit).move * map->cost_multiplier;
     struct Point start = position->tilemap_pos;
-    _Map_Movemap_Compute(map, start, move);
+    _Map_Movemap_Compute(map, start, effective_move);
     struct Range *range = Unit_Range_Equipment(unit, ITEM_ARCHETYPE_WEAPON);
 
     Pathfinding_Attackto_noM(map->attacktomap, map->movemap, map->unitmap,
@@ -267,7 +270,7 @@ i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_entity unit_ent) {
         SDL_assert(tile_ind > 0);
         size_t tile_order = Map_Tile_Order(map, tile_ind);
         temp_tile = map->tiles + tile_order;
-        map->costmap[i] = temp_tile->cost_array[unit_movetype];
+        map->costmap[i] = temp_tile->cost_array[unit_movetype] * map->cost_multiplier;
         if (ontile_unit_ent <= TNECS_NULL)
             continue;
         struct Unit *ontile_unit = TNECS_GET_COMPONENT(map->world, ontile_unit_ent, Unit);
@@ -301,7 +304,7 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
 #ifdef UNITS_IGNORE_TERRAIN
 
         /* - All units fly - */
-        map->costmap[i] = COSTMAP_MIN;
+        map->costmap[i] = COSTMAP_MIN * map->cost_multiplier;
 
 #else /* !UNITS_IGNORE_TERRAIN */
 
@@ -310,7 +313,7 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
         SDL_assert(tile_ind > 0);
         size_t tile_order = Map_Tile_Order(map, tile_ind);
         struct Tile *temp_tile = map->tiles + tile_order;
-        map->costmap[i] = temp_tile->cost_array[unit->mvt_type];
+        map->costmap[i] = temp_tile->cost_array[unit->mvt_type] * map->cost_multiplier;
 
 #endif /* UNITS_IGNORE_TERRAIN */
 

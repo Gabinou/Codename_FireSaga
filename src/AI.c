@@ -432,7 +432,7 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
     Map_Costmap_Movement_Compute(sota->map, npc_ent);
     i32 *costmap            = sota->map->costmap;
     tnecs_entity *unitmap   = sota->map->unitmap;
-    int move                = Unit_computeMove(npc);
+    int effective_move      = Unit_computeMove(npc) * sota->map->cost_multiplier;
     SDL_assert(costmap != NULL);
     SDL_assert((target.x >= 0) && (target.x < sota->map->col_len));
     SDL_assert((target.y >= 0) && (target.y < sota->map->row_len));
@@ -451,7 +451,7 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
     // entity_print(unitmap, row_len, col_len);
 
     path_list       = Pathfinding_Astar_plus(path_list, costmap, unitmap,
-                                             row_len, col_len, move,
+                                             row_len, col_len, effective_move,
                                              start, target, true);
 
     int point_num       = DARR_NUM(path_list) / TWO_D;
