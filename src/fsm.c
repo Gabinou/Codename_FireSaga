@@ -851,6 +851,7 @@ void fsm_eCrsMvs_ssMenu(struct Game *sota, tnecs_entity mover_entity,
 
 void fsm_eCrsMvs_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
                                    struct Point *cursor_move) {
+    SDL_assert(sota->patients != sota->defendants);
 
     /* Find menu elem in direction */
     SDL_assert(sota->candidates != NULL);
@@ -873,8 +874,9 @@ void fsm_eCrsMvs_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
     sota->cursor_move.y = 0;
 
     /* Update pre_combat_popup */
-    if (sota->candidates == sota->defendants)
+    if (sota->candidates == sota->defendants) {
         Game_PopUp_Pre_Combat_Enable(sota);
+    }
 }
 
 void fsm_eCrsMvs_sGmpMap_ssMapUnitMv(struct Game *sota,

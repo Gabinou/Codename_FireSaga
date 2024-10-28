@@ -215,7 +215,7 @@ tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
             size_t x_at = healtolist[TWO_D * i];
             size_t y_at = healtolist[TWO_D * i + 1];
             tnecs_entity unitontile = map->unitmap[y_at * map->col_len + x_at];
-            
+
             /* Skip if no unit on tile */
             if (unitontile <= TNECS_NULL) {
                 continue;

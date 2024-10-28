@@ -991,6 +991,7 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     struct Menu *mc         = TNECS_GET_COMPONENT(sota->world, menu_top, Menu);
     SDL_assert(mc              != NULL);
     SDL_assert(mc->type        == MENU_TYPE_WEAPON_SELECT);
+    SDL_assert(mc->type        == MENU_TYPE_WEAPON_SELECT);
     SDL_assert(mc->elem_pos    != NULL);
     mc->visible = false;
 
@@ -1002,6 +1003,7 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->state    == GAME_STATE_Gameplay_Map);
     SDL_assert(sota->substate == GAME_SUBSTATE_MENU);
     strncpy(sota->reason, "loadout was selected, time to select defendant", sizeof(sota->reason));
+    SDL_Log("Game_Switch_toCandidates -> defendants");
     Game_Switch_toCandidates(sota, sota->defendants); // sends event_Cursor_Hovers_Unit
 
     // 1. Compute Combat stuff -> Move to cursor hovers new defendant

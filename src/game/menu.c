@@ -347,6 +347,8 @@ void Game_postLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
 }
 
 void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
+    SDL_assert(sota->patients != sota->defendants);
+
     struct Unit *unit = TNECS_GET_COMPONENT(sota->world, actor, Unit);
     SDL_assert(Unit_canStaff(unit));
     DARR_NUM(sota->patients) = 0;
@@ -383,14 +385,15 @@ void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
 
     MapFind mapfind = MapFind_default;
 
-    mapfind.list       = sota->map->healtolist;
-    mapfind.found      = sota->patients;
+    mapfind.list       = sota->map->attacktolist;
+    mapfind.found      = sota->defendants;
     mapfind.seeker     = actor;
     mapfind.fastquit   = false;
     mapfind.eq_type    = LOADOUT_EQUIPPED;
 
     /* Find Defendants if any */
     sota->defendants = Map_Find_Defendants(sota->map, mapfind);
+    SDL_assert(sota->patients != sota->defendants);
 
     mapfind = MapFind_default;
 
@@ -403,6 +406,7 @@ void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
 
     /* Find all Patients if any */
     sota->patients = Map_Find_Patients(sota->map, mapfind);
+    SDL_assert(sota->patients != sota->defendants);
 
     SDL_assert(Unit_isEquipped(unit, stronghand));
     SDL_assert(Unit_isEquipped(unit, weakhand));
@@ -437,6 +441,7 @@ void Game_preLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     mapfind.eq_type    = LOADOUT_EQUIPMENT;
 
     sota->patients = Map_Find_Patients(sota->map, mapfind);
+    SDL_assert(sota->patients != sota->defendants);
     // SDL_Log("sota->patients %d", DARR_NUM(sota->patients));
 }
 

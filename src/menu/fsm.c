@@ -965,6 +965,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
+    SDL_assert(sota->patients != sota->defendants);
     struct LoadoutSelectMenu *ssm = mc->data;
     SDL_assert(mc->elem >= ITEM_NULL);
     SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
@@ -1005,13 +1006,13 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
             strncpy(sota->reason, "staff was selected, time to select patient", sizeof(sota->reason));
             Game_Switch_toCandidates(sota, sota->patients);
 
-            unit      = TNECS_GET_COMPONENT(ssm->world, sota->aggressor, Unit);
+            unit        = TNECS_GET_COMPONENT(ssm->world, sota->aggressor, Unit);
             stronghand  = Unit_Hand_Strong(unit);
             weakhand    = Unit_Hand_Weak(unit);
             SDL_assert(Unit_isEquipped(unit, stronghand));
             SDL_assert(Unit_isEquipped(unit, weakhand));
 
-            unit      = TNECS_GET_COMPONENT(ssm->world, ssm->unit, Unit);
+            unit        = TNECS_GET_COMPONENT(ssm->world, ssm->unit, Unit);
             stronghand  = Unit_Hand_Strong(unit);
             weakhand    = Unit_Hand_Weak(unit);
 
@@ -1072,6 +1073,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDance(struct Game *sota, struct Menu *mc) {
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff(struct Game *sota, struct Menu *mc) {
+    SDL_assert(sota->patients != sota->defendants);
 
     /* -- Create StaffSelectMenu -- */
     if (sota->staff_select_menu == TNECS_NULL)
