@@ -353,7 +353,14 @@ void test_map_usable(void) {
     can_equip.archetype         = ITEM_ARCHETYPE_STAFF;
     can_equip.move              = true;
     can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE;
+    SDL_Log("Map_canEquip");
+    SDL_Log("Map_canEquip");
+    SDL_Log("Map_canEquip");
+    SDL_Log("Map_canEquip");
     Map_canEquip(map, Silou, can_equip);
+    SDL_Log("silou->num_canEquip %d", silou->num_canEquip);
+    SDL_Log("silou->eq_canEquip[0] %d", silou->eq_canEquip[0]);
+    getchar();
     nourstest_true(silou->num_canEquip      == 1);
     nourstest_true(silou->eq_canEquip[0]    == ITEM5);
 

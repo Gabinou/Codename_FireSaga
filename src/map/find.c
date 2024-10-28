@@ -33,12 +33,12 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
         canEquip_Eq(&can_equip, eq);
 
         if (!Unit_canEquip_AnyHand(unit, can_equip)) {
-            // SDL_Log("!Unit_canEquip_AnyHand");
+            SDL_Log("!Unit_canEquip_AnyHand");
             continue;
         }
 
         if (!Map_canEquip_Range(map, unit_ent, defendants, can_equip)) {
-            // SDL_Log("!Map_canEquip_Range");
+            SDL_Log("!Map_canEquip_Range");
             continue;
         }
 
@@ -76,10 +76,10 @@ b32 Map_canEquip_Range(struct Map *map, tnecs_entity unit_ent,
                              map->row_len, map->col_len,
                              (i32 *)range, MOVETILE_INCLUDE);
 
-    // printf("MOVE\n");
-    // matrix_print(map->movemap, map->row_len, map->col_len);
-    // printf("ATK\n");
-    // matrix_print(map->attacktomap, map->row_len, map->col_len);
+    printf("MOVE\n");
+    matrix_print(map->movemap, map->row_len, map->col_len);
+    printf("ATK\n");
+    matrix_print(map->attacktomap, map->row_len, map->col_len);
 
     /* Find all Defendants in list */
     MapFind mapfind = MapFind_default;
@@ -193,7 +193,7 @@ tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
 
     /* TODO: full health people arent patients FOR HEALING STAVES */
     for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
-        // SDL_Log("eq %d", eq);
+        SDL_Log("eq %d", eq);
         /* -- Getting staff -- */
         i32 id = Unit_Id_Equipment(healer, eq);
         /* Skip if its not a valid item */

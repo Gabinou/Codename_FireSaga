@@ -1050,7 +1050,7 @@ typedef struct Game {
     b32   isShadow         : 1;
     b32   fast_forward     : 1;
 } Game;
-extern struct Game ;
+extern struct Game Game_default;
 
 typedef struct Item {
     s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
