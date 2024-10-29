@@ -464,9 +464,10 @@ enum OPTIONS {
 };
 
 enum LOADOUT_TYPE {
-    LOADOUT_EQUIPPED    = 0, /* With equipped weapons */
-    LOADOUT_EQUIPMENT   = 1, /* With weapons in equipment */
+    LOADOUT_EQUIPPED    = 0, /* With equipped weapons                   */
+    LOADOUT_EQUIPMENT   = 1, /* With weapons in equipment               */
     LOADOUT_LOADOUT     = 2, /* With weapons in loadout struct equipped */
+    LOADOUT_EQ          = 3, /* With weapon specified by eq index       */
 };
 
 enum ENUM_EQ { /* enum_equipment */

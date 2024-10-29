@@ -30,13 +30,14 @@ extern Loadout Loadout_default;
 /* -- find -- */
 typedef struct MapFind {
 
-    i32 *list;
-    tnecs_entity *found;
-    tnecs_entity seeker;
-    b32 fastquit;
+    i32             *list;
+    tnecs_entity    *found;
+    tnecs_entity     seeker;
+    b32              fastquit;
 
-    /* LOADOUT_EQUIPPED, LOADOUT_EQUIPMENT, LOADOUT_INPUT */
+    /* LOADOUT_EQUIPMENT, LOADOUT_INPUT (_eq) */
     i32 eq_type;
+    i32 _eq;
 
 } MapFind;
 extern MapFind MapFind_default;
@@ -47,7 +48,7 @@ typedef struct MapAct {
     /* only if eq_type == LOADOUT_INPUT */
     i32 _loadout[MAX_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
-    // Is movevement taken into account?
+    // Is movement taken into account?
     b32 move;
 
     // healtomap: ITEM_ARCHETYPE_STAFF
@@ -59,6 +60,7 @@ typedef struct MapAct {
 
     /* LOADOUT_EQUIPPED, LOADOUT_EQUIPMENT, LOADOUT_INPUT */
     i32 eq_type;
+    i32 _eq; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
     i32 mode_movetile;
 
@@ -93,6 +95,9 @@ typedef struct canEquip {
     //      - Equivalent to TWO_HAND_EQ_MODE_STRICT with to_eq in other hand
     //      - Needed by LoadoutSelectMenu
     i32 two_hands_mode;
+
+    /* LOADOUT_EQUIPPED, LOADOUT_EQUIPMENT, LOADOUT_INPUT */
+    i32 eq_type;
 
     // For Map_canEquip
     //  - Find canEquip item in range, with or without unit movement

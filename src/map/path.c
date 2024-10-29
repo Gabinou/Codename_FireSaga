@@ -121,12 +121,14 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
         range = Unit_Range_Equipped(unit, mapto.archetype);
     } else if (mapto.eq_type == LOADOUT_EQUIPMENT) {
         range = Unit_Range_Equipment(unit, mapto.archetype);
+    } else if (mapto.eq_type == LOADOUT_EQ) {
+        Unit_Range_Eq(unit, mapto._eq, mapto.archetype);
     } else if (mapto.eq_type == LOADOUT_LOADOUT) {
         /* Save starting equipment */
         i32 start_equipped[UNIT_ARMS_NUM];
         Unit_Equipped_Export(unit, start_equipped);
 
-        /* Compute healmap with input loadout */
+        /* Compute healmap/attackmap with input loadout */
         Unit_Equipped_Import(unit, mapto._loadout);
         range = Unit_Range_Equipped(unit, mapto.archetype);
 

@@ -51,7 +51,6 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
 b32 Map_canEquip_Range(struct Map *map, tnecs_entity unit_ent,
                        tnecs_entity *defendants, struct canEquip can_equip) {
     /* NOTES:
-        1- assumes movemap was computed before
         2- assumes entities are tracked on unitmap
     */
     SDL_assert(map              != NULL);
@@ -71,60 +70,56 @@ b32 Map_canEquip_Range(struct Map *map, tnecs_entity unit_ent,
     /* Compute attacktolist to check if any enemy in it */
     tnecs_entity *input_occupymap = (can_equip.move == true) ? map->unitmap : NULL;
 
-    Pathfinding_Attackto_noM(map->attacktomap, map->movemap,
-                             input_occupymap,
-                             map->row_len, map->col_len,
-                             (i32 *)range, MOVETILE_INCLUDE);
-
     printf("MOVE\n");
     matrix_print(map->movemap, map->row_len, map->col_len);
     printf("ATK\n");
     matrix_print(map->attacktomap, map->row_len, map->col_len);
 
-    /* Find all Defendants in list */
-    MapFind mapfind = MapFind_default;
+    /* --- Compute list (attacktolist, healtolist) of unit in range --- */
+    MapAct map_to       = MapAct_default;
 
-    mapfind.found      = defendants;
-    mapfind.seeker     = unit_ent;
-    mapfind.fastquit   = false;
-    mapfind.eq_type    = LOADOUT_EQUIPMENT;
+    map_to.move         = can_equip.move;
+    map_to.archetype    = can_equip.archetype;
+    map_to.eq_type      = can_equip.eq_type;
+    map_to._eq          = can_equip._eq;
+    map_to.output_type  = ARRAY_LIST;
+    map_to.aggressor    = unit_ent;
+
+    Map_Act_To(map, map_to);
+
+    /* Find all Defendants/Patients in list */
+    MapFind mapfind     = MapFind_default;
+
+    mapfind.found       = defendants;
+    mapfind.seeker      = unit_ent;
+    mapfind.fastquit    = true;
+    mapfind.eq_type     = can_equip.eq_type;
+    // Note _eq used for LOADOUT_IEQ only
+    mapfind._eq         = can_equip._eq;
 
     if (can_equip.archetype == ITEM_ARCHETYPE_WEAPON) {
-        map->attacktolist = matrix2list_noM(map->attacktomap, map->attacktolist,
-                                            map->row_len, map->col_len);
-        mapfind.list       = map->attacktolist;
-        defendants = Map_Find_Defendants(map, mapfind);
+        mapfind.list        = map->attacktolist;
+        defendants          = Map_Find_Defendants(map, mapfind);
     } else if (can_equip.archetype == ITEM_ARCHETYPE_STAFF) {
         /* --- Compute healtolist --- */
-        /* -- MapAct settings for healtolist -- */
-        MapAct map_to = MapAct_default;
-
-        map_to.move         = false;
-        map_to.archetype    = ITEM_ARCHETYPE_STAFF;
-        map_to.eq_type      = LOADOUT_EQUIPMENT;
-        map_to.output_type  = ARRAY_LIST;
-        map_to.aggressor    = unit_ent;
-
-        Map_Act_To(map, map_to);
-
-        mapfind.list       = map->healtolist;
-        defendants = Map_Find_Patients(map, mapfind);
+        mapfind.list        = map->healtolist;
+        defendants          = Map_Find_Patients(map, mapfind);
     }
 
     // printf("DARR_NUM(defendants) %d\n", DARR_NUM(defendants));
-    b32 out = (DARR_NUM(defendants) > 0);
+    b32 iscan_equip = (DARR_NUM(defendants) > 0);
 
     DARR_NUM(defendants) = 0;
-    return (out);
+    return (iscan_equip);
 }
 
 
 tnecs_entity *Map_Find_Defendants(struct Map *map, MapFind mapfind) {
     /* Find all defendants on attacktolist according to alignment */
-    i32 *attacktolist = mapfind.list;
-    tnecs_entity *defendants    = mapfind.found;
-    tnecs_entity aggressor      = mapfind.seeker;
-    b32 fastquit                = mapfind.fastquit;
+    i32             *attacktolist   = mapfind.list;
+    tnecs_entity    *defendants     = mapfind.found;
+    tnecs_entity     aggressor      = mapfind.seeker;
+    b32              fastquit       = mapfind.fastquit;
 
     /* Note: Assumes attacktolist was created before with matrix2list_noM */
     SDL_assert(aggressor > TNECS_NULL);
@@ -180,6 +175,7 @@ tnecs_entity *Map_Find_Breakables(struct Map *map, i32 *attacktolist,
 }
 
 tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
+    /* Find all patients on healtolist according to alignment, staff */
     i32 *healtolist             = mapfind.list;
     tnecs_entity *patients      = mapfind.found;
     tnecs_entity healer_ent     = mapfind.seeker;
@@ -194,8 +190,15 @@ tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
     /* TODO: full health people arent patients FOR HEALING STAVES */
     for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
         SDL_Log("eq %d", eq);
+
+        /* -- Skip if eq doesn't match -- */
+        if ((mapfind.eq_type == LOADOUT_EQ) && (eq != mapfind._eq)) {
+            continue;
+        }
+
         /* -- Getting staff -- */
         i32 id = Unit_Id_Equipment(healer, eq);
+        SDL_Log("id %d", id);
         /* Skip if its not a valid item */
 
         if (id <= ITEM_NULL) {
