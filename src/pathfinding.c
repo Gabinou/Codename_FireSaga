@@ -695,10 +695,13 @@ void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
         i32 y = move_list[i * TWO_D + 1];
 
         /* Can only attack from tile if not occupied */
-        if ((occupymap != NULL) &&
-            (occupymap[y * col_len + x] > TNECS_NULL)) {
-            continue;
+        if (occupymap != NULL) {
+            // SDL_Log("occupymap %d %d %d", x, y, occupymap[y * col_len + x]);
+            if (occupymap[y * col_len + x] > TNECS_NULL) {
+                continue;
+            }
         }
+        // SDL_Log("Add %d %d, range %d %d", x, y, range[0], range[1]);
 
         // NOTE:    This call may overwrite attackmap distances
         //          Can't find which weapon was used to attack.

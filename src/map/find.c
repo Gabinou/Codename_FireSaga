@@ -26,19 +26,31 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
     /* Alloc defendants */
     tnecs_entity *defendants  = DARR_INIT(defendants, tnecs_entity, 4);
 
+    /* Make canEquip for Map_canEquip_Range */
+    canEquip range_can_equip    = can_equip;
+    range_can_equip.eq_type     = LOADOUT_EQ;
+
     unit->num_canEquip  = 0;
     for (int eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         /* Skip if weapon is not usable */
-        // SDL_Log("eq %d \n", eq);
+
+        // SDL_Log("Map_canEquip eq %d \n", eq);
         canEquip_Eq(&can_equip, eq);
 
-        if (!Unit_canEquip_AnyHand(unit, can_equip)) {
-            SDL_Log("!Unit_canEquip_AnyHand");
+        /* -- Skip if eq doesn't match -- */
+        if ((can_equip.eq_type == LOADOUT_EQ) && (eq != can_equip._eq)) {
             continue;
         }
 
-        if (!Map_canEquip_Range(map, unit_ent, defendants, can_equip)) {
-            SDL_Log("!Map_canEquip_Range");
+        if (!Unit_canEquip_AnyHand(unit, can_equip)) {
+            // SDL_Log("!Unit_canEquip_AnyHand");
+            continue;
+        }
+
+        range_can_equip._eq         = eq;
+
+        if (!Map_canEquip_Range(map, unit_ent, defendants, range_can_equip)) {
+            // SDL_Log("!Map_canEquip_Range");
             continue;
         }
 
@@ -70,10 +82,6 @@ b32 Map_canEquip_Range(struct Map *map, tnecs_entity unit_ent,
     /* Compute attacktolist to check if any enemy in it */
     tnecs_entity *input_occupymap = (can_equip.move == true) ? map->unitmap : NULL;
 
-    printf("MOVE\n");
-    matrix_print(map->movemap, map->row_len, map->col_len);
-    printf("ATK\n");
-    matrix_print(map->attacktomap, map->row_len, map->col_len);
 
     /* --- Compute list (attacktolist, healtolist) of unit in range --- */
     MapAct map_to       = MapAct_default;
@@ -86,6 +94,11 @@ b32 Map_canEquip_Range(struct Map *map, tnecs_entity unit_ent,
     map_to.aggressor    = unit_ent;
 
     Map_Act_To(map, map_to);
+
+    // printf("MOVE\n");
+    // matrix_print(map->movemap, map->row_len, map->col_len);
+    // printf("ATK\n");
+    // matrix_print(map->attacktomap, map->row_len, map->col_len);
 
     /* Find all Defendants/Patients in list */
     MapFind mapfind     = MapFind_default;
@@ -132,9 +145,12 @@ tnecs_entity *Map_Find_Defendants(struct Map *map, MapFind mapfind) {
         /* - Checking for units on x_at, y_at - */
         size_t index = y_at * map->col_len + x_at;
         tnecs_entity unitontile = map->unitmap[index];
+
         // TODO: Make this an assert?
-        if (unitontile <= TNECS_NULL)
+        if (unitontile <= TNECS_NULL) {
+            // SDL_Log("No unit on tile");
             continue;
+        }
 
         /* - Found unit, checking alignment - */
         // SDL_Log("Found unit on %lu %lu ", x_at, y_at);
@@ -143,8 +159,12 @@ tnecs_entity *Map_Find_Defendants(struct Map *map, MapFind mapfind) {
         u8 align_t          = SotA_army2alignment(unit->army);
         u8 align_a          = SotA_army2alignment(agg->army);
 
-        if (align_a != align_t)
-            DARR_PUT(defendants, unitontile);
+        if (align_a == align_t) {
+            // SDL_Log("Same alignment");
+            continue;
+        }
+        // SDL_Log("Adding");
+        DARR_PUT(defendants, unitontile);
     }
     return (defendants);
 }
@@ -176,6 +196,7 @@ tnecs_entity *Map_Find_Breakables(struct Map *map, i32 *attacktolist,
 
 tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
     /* Find all patients on healtolist according to alignment, staff */
+    /* NOTE: Does not check range */
     i32 *healtolist             = mapfind.list;
     tnecs_entity *patients      = mapfind.found;
     tnecs_entity healer_ent     = mapfind.seeker;
@@ -189,7 +210,7 @@ tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
 
     /* TODO: full health people arent patients FOR HEALING STAVES */
     for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
-        SDL_Log("eq %d", eq);
+        // SDL_Log("Map_Find_Patients eq %d", eq);
 
         /* -- Skip if eq doesn't match -- */
         if ((mapfind.eq_type == LOADOUT_EQ) && (eq != mapfind._eq)) {
@@ -198,7 +219,7 @@ tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
 
         /* -- Getting staff -- */
         i32 id = Unit_Id_Equipment(healer, eq);
-        SDL_Log("id %d", id);
+        // SDL_Log("id %d", id);
         /* Skip if its not a valid item */
 
         if (id <= ITEM_NULL) {
@@ -220,6 +241,9 @@ tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
             size_t y_at = healtolist[TWO_D * i + 1];
             tnecs_entity unitontile = map->unitmap[y_at * map->col_len + x_at];
 
+            /* Note: No need to check range.
+                     Should have been included in Map_Act_to call
+                     that produced the healtolist */
             /* Skip if no unit on tile */
             if (unitontile <= TNECS_NULL) {
                 continue;

@@ -118,12 +118,16 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
 
     Range *range = NULL;
     if (mapto.eq_type == LOADOUT_EQUIPPED) {
+        // SDL_Log("LOADOUT_EQUIPPED");
         range = Unit_Range_Equipped(unit, mapto.archetype);
     } else if (mapto.eq_type == LOADOUT_EQUIPMENT) {
+        // SDL_Log("LOADOUT_EQUIPMENT");
         range = Unit_Range_Equipment(unit, mapto.archetype);
     } else if (mapto.eq_type == LOADOUT_EQ) {
-        Unit_Range_Eq(unit, mapto._eq, mapto.archetype);
+        // SDL_Log("LOADOUT_EQ");
+        range = Unit_Range_Eq(unit, mapto._eq, mapto.archetype);
     } else if (mapto.eq_type == LOADOUT_LOADOUT) {
+        // SDL_Log("LOADOUT_LOADOUT");
         /* Save starting equipment */
         i32 start_equipped[UNIT_ARMS_NUM];
         Unit_Equipped_Export(unit, start_equipped);
@@ -136,6 +140,7 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
         Unit_Equipped_Import(unit, start_equipped);
     }
     SDL_assert(range != NULL);
+    // SDL_Log("range %d %d", range->min, range->max);
 
     // Enable occupymap only to check when unit actually MOVES
     tnecs_entity *input_occupymap = (mapto.move == true) ? map->unitmap : NULL;
@@ -157,6 +162,10 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
                              map->row_len, map->col_len,
                              (i32 *)range, mapto.mode_movetile);
 
+    // printf("Map_Act_to occupymap\n");
+    // if (input_occupymap != NULL)
+    //     entity_print(input_occupymap, map->row_len, map->col_len);
+    // printf("Map_Act_to ATK\n");
     // matrix_print(map->attacktomap, map->row_len, map->col_len);
 
     i32* out = NULL;
