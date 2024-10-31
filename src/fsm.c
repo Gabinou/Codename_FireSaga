@@ -518,7 +518,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     map_to.eq_type      = LOADOUT_EQUIPMENT;
     map_to.output_type  = ARRAY_MATRIX;
     map_to.aggressor    = hov_ent;
-    map_to.move          = true;
+    map_to.move         = true;
 
     /* - healtopmap - */
     Map_Act_To(sota->map, map_to);
@@ -527,10 +527,10 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     map_to.archetype     = ITEM_ARCHETYPE_WEAPON;
     Map_Act_To(sota->map, map_to);
 
-    // SDL_Log("attacktomap");
-    // matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
-    // SDL_Log("Movemap");
-    // matrix_print(sota->map->movemap, sota->map->row_len, sota->map->col_len);
+    SDL_Log("ATK");
+    matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
+    SDL_Log("HEAL");
+    matrix_print(sota->map->movemap, sota->map->row_len, sota->map->col_len);
 
     int rangemap = Unit_Rangemap_Get(unit_ontile);
 
@@ -1311,7 +1311,10 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     map_to.archetype     = ITEM_ARCHETYPE_WEAPON;
     Map_Act_To(sota->map, map_to);
 
+    // SDL_Log("ATK");
     // matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
+    // SDL_Log("HEAL");
+    // matrix_print(sota->map->healtomap, sota->map->row_len, sota->map->col_len);
 
     int rangemap = Unit_Rangemap_Get(unit);
     if (rangemap == RANGEMAP_HEALMAP) {

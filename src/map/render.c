@@ -54,7 +54,7 @@ void Map_Renderer_Set(struct Map *map, SDL_Renderer *renderer) {
     }
 }
 
-void Map_Palettemap_Autoset(struct Map *map, u16 flagsum) {
+void Map_Palettemap_Autoset(struct Map *map, MapPalettemap settings) {
     Map_Palettemap_Reset(map);
     int size = map->row_len * map->col_len;
     i32 *palette    = map->temp_palette;
@@ -62,13 +62,13 @@ void Map_Palettemap_Autoset(struct Map *map, u16 flagsum) {
 
     /* Last set Map_Palettemap_addMap is rendered */
     memset(palette, 0, bytesize);
-    if (flagsum_isIn(MAP_OVERLAY_GLOBAL_DANGER, flagsum)) {
+    if (flagsum_isIn(MAP_OVERLAY_GLOBAL_DANGER, settings.flagsum)) {
         SDL_assert(palette);
         palette = matrix_sgreater_noM(palette, map->global_dangermap, 0, size);
         Map_Palettemap_addMap(map, palette, map->ipalette_purple);
     }
     memset(palette, 0, bytesize);
-    if (flagsum_isIn(MAP_OVERLAY_DANGER, flagsum)) {
+    if (flagsum_isIn(MAP_OVERLAY_DANGER, settings.flagsum)) {
         SDL_assert(palette);
         palette = matrix_sgreater_noM(palette, map->dangermap, 0, size);
         i32 *temp_palette2 = matrix_ssmaller(map->dangermap, DANGERMAP_UNIT_DIVISOR, size);
@@ -77,25 +77,35 @@ void Map_Palettemap_Autoset(struct Map *map, u16 flagsum) {
         Map_Palettemap_addMap(map, palette, map->ipalette_darkred);
     }
     memset(palette, 0, bytesize);
-    if (flagsum_isIn(MAP_OVERLAY_ATTACK, flagsum)) {
+    if (flagsum_isIn(MAP_OVERLAY_ATTACK, settings.flagsum)) {
         SDL_assert(palette);
         palette = matrix_sgreater_noM(palette, map->attacktomap, 0, size);
         Map_Palettemap_addMap(map, palette, map->ipalette_red);
     }
     memset(palette, 0, bytesize);
-    if (flagsum_isIn(MAP_OVERLAY_HEAL, flagsum)) {
+    if (flagsum_isIn(MAP_OVERLAY_HEAL, settings.flagsum)) {
         SDL_assert(palette);
         palette = matrix_sgreater_noM(palette, map->healtomap, 0, size);
+
         Map_Palettemap_addMap(map, palette, map->ipalette_green);
     }
     memset(palette, 0, bytesize);
-    if (flagsum_isIn(MAP_OVERLAY_MOVE, flagsum)) {
+    if (flagsum_isIn(MAP_OVERLAY_MOVE, settings.flagsum)) {
         SDL_assert(palette);
         palette = matrix_sgreater_noM(palette, map->movemap, 0, size);
+
+        // DON'T show move if can heal AND move to an occupied tile
+        // EXCEPT if self sota->hovered_unit_entity
+        for (size_t i = 0; i < size; i++) {
+            if (map->healtomap[i] && map->unitmap[i] &&  map->unitmap[i] != settings.self) {
+                palette[i] = 0;
+            }
+        }
+
         Map_Palettemap_addMap(map, palette, map->ipalette_blue);
     }
     memset(palette, 0, bytesize);
-    if (flagsum_isIn(MAP_OVERLAY_START_POS, flagsum)) {
+    if (flagsum_isIn(MAP_OVERLAY_START_POS, settings.flagsum)) {
         SDL_assert(palette);
         SDL_assert(map->start_pos);
         palette = matrix_sgreater_noM(palette, map->start_posmap, 0, size);

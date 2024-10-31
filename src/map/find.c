@@ -80,9 +80,6 @@ b32 Map_canEquip_Range(struct Map *map, tnecs_entity unit_ent,
     // SDL_Log("range %d %d", range->min, range->max);
 
     /* Compute attacktolist to check if any enemy in it */
-    tnecs_entity *input_occupymap = (can_equip.move == true) ? map->unitmap : NULL;
-
-
     /* --- Compute list (attacktolist, healtolist) of unit in range --- */
     MapAct map_to       = MapAct_default;
 
