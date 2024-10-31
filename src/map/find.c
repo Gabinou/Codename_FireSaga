@@ -134,7 +134,7 @@ tnecs_entity *Map_Find_Defendants(struct Map *map, MapFind mapfind) {
     tnecs_entity     aggressor      = mapfind.seeker;
     b32              fastquit       = mapfind.fastquit;
 
-    /* Note: Assumes attacktolist was created before with matrix2list_noM */
+    /* Note: attacktolist should have been created with same eq_type and _eq before */
     SDL_assert(aggressor > TNECS_NULL);
     SDL_assert(defendants   != NULL);
     SDL_assert(attacktolist != NULL);
@@ -173,7 +173,6 @@ tnecs_entity *Map_Find_Breakables(struct Map *map, i32 *attacktolist,
                                   tnecs_entity *attackable, b32 fastquit) {
     /* Find all breakables on attacktolist */
 
-    // Note: Assumes attacktolist was created before with matrix2list_noM
     SDL_assert(attackable != NULL);
     SDL_assert(attacktolist != NULL);
     for (size_t i = 0; i < DARR_NUM(attacktolist) / TWO_D; i++) {
@@ -203,7 +202,7 @@ tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
     b32 fastquit                = mapfind.fastquit;
 
     /* Find all patients on healtolist according to alignment */
-    /* Assumes healtolist was created before with matrix2list_noM */
+    /* Note: attacktolist should have been created with same eq_type and _eq before */
     struct Unit *healer = TNECS_GET_COMPONENT(map->world, healer_ent, Unit);
     SDL_assert(healer               != NULL);
     SDL_assert(healer->weapons_dtab != NULL);
