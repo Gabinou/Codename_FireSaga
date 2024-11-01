@@ -27,13 +27,6 @@ typedef struct Loadout {
 
 extern Loadout Loadout_default;
 /* --- Map --- */
-/* -- find -- */
-typedef struct MapPalettemap {
-    u16 flagsum;
-    tnecs_entity self;
-} MapPalettemap;
-extern MapPalettemap MapPalettemap_default;
-
 typedef struct MapFind {
 
     i32             *list;

@@ -1027,7 +1027,7 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     struct Position *pos  = TNECS_GET_COMPONENT(sota->world, sota->defendant, Position);
     memset(map->attacktomap, 0, map->row_len * map->col_len * sizeof(*map->attacktomap));
     map->attacktomap[(pos->tilemap_pos.y * map->col_len + pos->tilemap_pos.x)] = 1;
-    Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_ATTACK);
+    Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_ATTACK, TNECS_NULL);
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 }
 

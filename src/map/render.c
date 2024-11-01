@@ -54,21 +54,21 @@ void Map_Renderer_Set(struct Map *map, SDL_Renderer *renderer) {
     }
 }
 
-void Map_Palettemap_Autoset(struct Map *map, MapPalettemap settings) {
+void Map_Palettemap_Autoset(struct Map *map, u16 flagsum, tnecs_entity self) {
     Map_Palettemap_Reset(map);
-    int size = map->row_len * map->col_len;
+    int size        = map->row_len * map->col_len;
     i32 *palette    = map->temp_palette;
     size_t bytesize = map->col_len * map->row_len * sizeof(*map->temp_palette);
 
     /* Last set Map_Palettemap_addMap is rendered */
     memset(palette, 0, bytesize);
-    if (flagsum_isIn(MAP_OVERLAY_GLOBAL_DANGER, settings.flagsum)) {
+    if (flagsum_isIn(MAP_OVERLAY_GLOBAL_DANGER, flagsum)) {
         SDL_assert(palette);
         palette = matrix_sgreater_noM(palette, map->global_dangermap, 0, size);
         Map_Palettemap_addMap(map, palette, map->ipalette_purple);
     }
     memset(palette, 0, bytesize);
-    if (flagsum_isIn(MAP_OVERLAY_DANGER, settings.flagsum)) {
+    if (flagsum_isIn(MAP_OVERLAY_DANGER, flagsum)) {
         SDL_assert(palette);
         palette = matrix_sgreater_noM(palette, map->dangermap, 0, size);
         i32 *temp_palette2 = matrix_ssmaller(map->dangermap, DANGERMAP_UNIT_DIVISOR, size);
@@ -77,27 +77,27 @@ void Map_Palettemap_Autoset(struct Map *map, MapPalettemap settings) {
         Map_Palettemap_addMap(map, palette, map->ipalette_darkred);
     }
     memset(palette, 0, bytesize);
-    if (flagsum_isIn(MAP_OVERLAY_ATTACK, settings.flagsum)) {
+    if (flagsum_isIn(MAP_OVERLAY_ATTACK, flagsum)) {
         SDL_assert(palette);
         palette = matrix_sgreater_noM(palette, map->attacktomap, 0, size);
         Map_Palettemap_addMap(map, palette, map->ipalette_red);
     }
     memset(palette, 0, bytesize);
-    if (flagsum_isIn(MAP_OVERLAY_HEAL, settings.flagsum)) {
+    if (flagsum_isIn(MAP_OVERLAY_HEAL, flagsum)) {
         SDL_assert(palette);
         palette = matrix_sgreater_noM(palette, map->healtomap, 0, size);
 
         Map_Palettemap_addMap(map, palette, map->ipalette_green);
     }
     memset(palette, 0, bytesize);
-    if (flagsum_isIn(MAP_OVERLAY_MOVE, settings.flagsum)) {
+    if (flagsum_isIn(MAP_OVERLAY_MOVE, flagsum)) {
         SDL_assert(palette);
         palette = matrix_sgreater_noM(palette, map->movemap, 0, size);
 
         // DON'T show move if can heal AND move to an occupied tile
         // EXCEPT if self sota->hovered_unit_entity
         for (size_t i = 0; i < size; i++) {
-            if (map->healtomap[i] && map->unitmap[i] &&  map->unitmap[i] != settings.self) {
+            if (map->healtomap[i] && map->unitmap[i] && (self != TNECS_NULL) && (map->unitmap[i] != self)) {
                 palette[i] = 0;
             }
         }
@@ -105,7 +105,7 @@ void Map_Palettemap_Autoset(struct Map *map, MapPalettemap settings) {
         Map_Palettemap_addMap(map, palette, map->ipalette_blue);
     }
     memset(palette, 0, bytesize);
-    if (flagsum_isIn(MAP_OVERLAY_START_POS, settings.flagsum)) {
+    if (flagsum_isIn(MAP_OVERLAY_START_POS, flagsum)) {
         SDL_assert(palette);
         SDL_assert(map->start_pos);
         palette = matrix_sgreater_noM(palette, map->start_posmap, 0, size);

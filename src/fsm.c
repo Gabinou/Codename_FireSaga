@@ -459,12 +459,12 @@ void fsm_eGlbRng_ssStby(struct Game *sota) {
     if (sota->map->show_globalRange) {
         /* Currently showing global map, removing */
         /* Plus, adding back player dangermap */
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_DANGER);
+        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_DANGER, TNECS_NULL);
         Map_Danger_Perimeter_Compute(sota->map, sota->map->dangermap);
         sota->map->rendered_dangermap = sota->map->dangermap;
     } else {
         /* Currently not showing global map, adding */
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER);
+        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER, TNECS_NULL);
         Map_Danger_Perimeter_Compute(sota->map, sota->map->global_dangermap);
         sota->map->rendered_dangermap = sota->map->global_dangermap;
     }
@@ -527,10 +527,10 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     map_to.archetype     = ITEM_ARCHETYPE_WEAPON;
     Map_Act_To(sota->map, map_to);
 
-    SDL_Log("ATK");
-    matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
-    SDL_Log("HEAL");
-    matrix_print(sota->map->movemap, sota->map->row_len, sota->map->col_len);
+    // SDL_Log("ATK");
+    // matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
+    // SDL_Log("HEAL");
+    // matrix_print(sota->map->movemap, sota->map->row_len, sota->map->col_len);
 
     int rangemap = Unit_Rangemap_Get(unit_ontile);
 
@@ -538,10 +538,10 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     int overlays = MAP_OVERLAY_MOVE + MAP_OVERLAY_DANGER + MAP_OVERLAY_GLOBAL_DANGER;
     if (rangemap        == RANGEMAP_HEALMAP) {
         overlays += MAP_OVERLAY_HEAL;
-        Map_Palettemap_Autoset(sota->map, overlays);
+        Map_Palettemap_Autoset(sota->map, overlays, hov_ent);
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
         overlays += MAP_OVERLAY_ATTACK;
-        Map_Palettemap_Autoset(sota->map, overlays);
+        Map_Palettemap_Autoset(sota->map, overlays, TNECS_NULL);
     }
 
     /* Stack all overlay maps */
@@ -573,7 +573,7 @@ void fsm_eCrsHvUnit_ssMapCndt(struct Game *sota, tnecs_entity hov_ent) {
 // -- FSM: Cursor_Dehovers_Unit --
 void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
     /* -- Re-computing overlay -- */
-    Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_DANGER + MAP_OVERLAY_GLOBAL_DANGER);
+    Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_DANGER + MAP_OVERLAY_GLOBAL_DANGER, TNECS_NULL);
     Map_Stacked_Dangermap_Reset(sota->map);
 
     tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_UNIT];
@@ -679,14 +679,14 @@ void fsm_eUnitDng_ssStby(struct Game *sota, tnecs_entity selector_entity) {
     if (unit->show_danger) {
         Map_Danger_Sub(sota->map, temp_danger);
         Map_Palettemap_Autoset(sota->map,
-                               MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
+                               MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK, TNECS_NULL);
         Map_Danger_Perimeter_Compute(sota->map, sota->map->dangermap);
         sota->map->rendered_dangermap = sota->map->dangermap;
 
         unit->show_danger = false;
     } else {
         Map_Danger_Add(sota->map, temp_danger);
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_DANGER);
+        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_DANGER, TNECS_NULL);
         Map_Danger_Perimeter_Compute(sota->map, sota->map->dangermap);
         sota->map->rendered_dangermap = sota->map->dangermap;
         unit->show_danger = true;
@@ -1318,10 +1318,11 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
 
     int rangemap = Unit_Rangemap_Get(unit);
     if (rangemap == RANGEMAP_HEALMAP) {
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL);
+        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL,
+                               unit_ent);
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
         Map_Palettemap_Autoset(sota->map,
-                               MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
+                               MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK, TNECS_NULL);
     }
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
@@ -1471,7 +1472,7 @@ void fsm_eUnitDsel_ssMapUnitMv(struct Game *sota, tnecs_entity selector) {
         // Only if cursor not on unit.
         // If cursor is on unit, movemap and attackmap should be shown
         Map_Palettemap_Reset(sota->map);
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_DANGER);
+        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_DANGER, TNECS_NULL);
         Map_Stacked_Dangermap_Reset(sota->map);
     }
 
