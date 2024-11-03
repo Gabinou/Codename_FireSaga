@@ -29,14 +29,21 @@ extern Loadout Loadout_default;
 /* --- Map --- */
 typedef struct MapFind {
 
+    // DARR: healtolist or attacktolist
     i32             *list;
+
+    // DARR: patients or defendants
     tnecs_entity    *found;
+
+    // Tnecs entity of searching unit
     tnecs_entity     seeker;
+
+    // Quit if ONE unit is found
     b32              fastquit;
 
     /* LOADOUT_EQUIPMENT, LOADOUT_INPUT (_eq) */
     i32 eq_type;
-    i32 _eq;
+    i32 _eq; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
 } MapFind;
 extern MapFind MapFind_default;
