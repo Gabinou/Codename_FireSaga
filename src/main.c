@@ -34,7 +34,6 @@ int main(int argc, char *argv[]) {
 
     /* -- Master loop -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Starting main game loop\n");
-    u64 i = 1;
     while (sota->isrunning) {
         Game_Step(sota);
     }
