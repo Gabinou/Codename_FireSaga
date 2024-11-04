@@ -5,6 +5,7 @@ static struct parg_opt longopts[] = {
     {"help",    PARG_NOARG,     0, 'h', NULL,   "display this help text and exit"},
     {"version", PARG_NOARG,     0, 'v', NULL,   "display version and exit"},
     {NULL,      PARG_NOARG,     0,  0,  NULL,   "Debug options:"},
+    {"scene",   PARG_REQARG,    0, 'S', "INT",  "play scene with input index"},
     {"state",   PARG_REQARG,    0, 's', "FILE", "load save state   (ignored unless -m specified)"},
     {"map",     PARG_REQARG,    0, 'm', "INT",  "load game to map  (ignored unless -s specified)"}
 };
@@ -27,6 +28,10 @@ struct Input_Arguments Input_parseInputs(int argc, char *argv[]) {
                 out_args.map_index = atoi(ps.optarg);
                 // printf("out_args.map_index %d\n", out_args.map_index);
                 break;
+            case 'S':
+                // Play scene with input index
+                printf("");
+
             case 's':
                 if (out_args.save_filename != NULL)
                     SDL_free(out_args.save_filename);

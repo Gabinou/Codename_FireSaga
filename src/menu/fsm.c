@@ -1174,7 +1174,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
     /* -- Enable attack rangemap to choose defendants -- */
     // TODO: save rangemap previous state? how to go back
     unit->rangemap = RANGEMAP_ATTACKMAP;
-    Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
+    Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK, TNECS_NULL);
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
     /* -- TODO: Render Face -- */

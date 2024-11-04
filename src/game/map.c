@@ -88,7 +88,7 @@ void Game_Gameplay_Start(struct Game *sota, i32 state, i32 substate) {
         Game_cursorFocus_onMenu(sota);
 
         /* -- Show starting positions -> for deployment -- */
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_START_POS);
+        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_START_POS, TNECS_NULL);
     } else if (sota->state == GAME_STATE_Gameplay_Map) {
         Game_cursorFocus_onMap(sota);
     }

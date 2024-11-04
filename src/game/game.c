@@ -1093,7 +1093,7 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
     }
 
     /* -- Disable palette map during turn transition -- */
-    Map_Palettemap_Autoset(sota->map, 0);
+    Map_Palettemap_Autoset(sota->map, 0, TNECS_NULL);
 
     /* -- Set cursor position to first starting position -- */
     SDL_assert(sota                     != NULL);
