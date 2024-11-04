@@ -71,7 +71,8 @@ Input_Arguments IES_Init(int argc, char *argv[]);
 void Game_Post_Free(void);
 
 /* --- Constructors/Destructors --- */
-void Game_Init(   struct Game *sota, Settings settings);
+struct Game * Game_New(Settings settings);
+
 void Game_Free(   struct Game *sota);
 void Game_AI_Free(struct Game *sota);
 

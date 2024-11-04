@@ -349,8 +349,9 @@ void Game_Step(struct Game *sota) {
     _Game_Step_PostFrame(sota, currentTime_ns);
 }
 
-void Game_Init(struct Game *sota, Settings settings) {
+struct Game * Game_New(Settings settings) {
     /* -- Setting defaults -- */
+    struct Game *sota = SDL_malloc(sizeof(struct Game));
     *sota = Game_default;
     sota->settings = settings;
 
@@ -397,7 +398,7 @@ void Game_Init(struct Game *sota, Settings settings) {
         //          suppressed 16 bytes in 1 blocks
         //          It may be cause of X11.
         //      Someone on Stack overflow said his NVIDIA drivers leak 10Mb.
-        SDL_LogCritical(SOTA_LOG_SYSTEM, "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
+        SDL_LogCritical(SOTA_LOG_SYSTEM, "SDL could not initialize! SDL Error: %s\n", SDL_GetError());
         exit(1);
     }
 
@@ -652,6 +653,7 @@ void Game_Init(struct Game *sota, Settings settings) {
     SDL_assert(sota->entity_mouse);
 
     sota->isrunning = true;
+    return(sota);
 }
 
 void Game_Save_Copy(i16 from_ind,  i16 to_ind) {

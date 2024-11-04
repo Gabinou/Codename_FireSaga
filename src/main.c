@@ -24,13 +24,11 @@ int main(int argc, char *argv[]) {
 
     /* -- Startup -- */
     Settings settings   = Settings_default;
-    settings.window     = SDL_WINDOW_SHOWN;
     settings.args       = IES_Init(argc, argv);
 
     SDL_Log("IES start.\n");
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
-    struct Game *sota = SDL_malloc(sizeof(struct Game));
-    Game_Init(sota, settings);
+    struct Game *sota = Game_New(settings);
 
     /* -- Master loop -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Starting main game loop\n");
