@@ -30,8 +30,9 @@ struct Input_Arguments Input_parseInputs(int argc, char *argv[]) {
                 break;
             case 'S':
                 // Play scene with input index
-                printf("");
-
+                out_args.scene = atoi(ps.optarg);
+                printf("out_args.scene %d\n", out_args.scene);
+                break;
             case 's':
                 if (out_args.save_filename != NULL)
                     SDL_free(out_args.save_filename);
