@@ -626,9 +626,6 @@ struct Game * Game_New(Settings settings) {
     sota->combat_outcome.attacks = DARR_INIT(sota->combat_outcome.attacks, struct Combat_Attack,
                                              SOTA_COMBAT_MAX_ATTACKS);
 
-    /* --- Set default contextual inputs --- */
-    fsm_Input_s[sota->state](sota);
-
     /* --- Soundfx --- */
     sota->soundfx_cursor    = Soundfx_Load_Cursor();
     sota->soundfx_next_turn = Soundfx_Load_Next_Turn();
@@ -639,21 +636,44 @@ struct Game * Game_New(Settings settings) {
     Game_Cursor_Create(sota);
     Game_Mouse_Create(sota);
 
-    /* -- Load Title -- */
-    Game_titleScreen_Load(sota, sota->settings.args);
-    Game_Mouse_Disable(sota);
-    Game_cursorFocus_onMenu(sota);
+    if ((sota->settings.args.map_index == 0) && (sota->settings.args.scene == 0)) {
+        /* -- Load Title -- */
+        Game_titleScreen_Load(sota, sota->settings.args);
+        Game_Mouse_Disable(sota);
+        Game_cursorFocus_onMenu(sota);
+
+        /* -- Checks -- */
+        sota->state      = GAME_STATE_Title_Screen;
+        sota->substate   = GAME_SUBSTATE_MENU;
+
+    } else if (sota->settings.args.scene != 0) {
+        /* -- Load Scene -- */
+
+        SDL_Log("IMPLEMENT ME");
+        exit(1);
+
+        sota->state      = GAME_STATE_Cutscene;
+        sota->substate   = GAME_SUBSTATE_STANDBY;
+    } else if (sota->settings.args.map_index != 0) {
+        /* -- Load Map -- */
+
+        SDL_Log("IMPLEMENT ME");
+        exit(1);
+        sota->state      = GAME_STATE_Gameplay_Map;
+        sota->substate   = GAME_SUBSTATE_MENU;
+    }
+
+    /* --- Set default contextual inputs --- */
+    fsm_Input_s[sota->state](sota);
 
     /* -- Set color -- */
     Utilities_DrawColor_Reset(sota->renderer);
 
     /* -- Checks -- */
-    SDL_assert(sota->state      == GAME_STATE_Title_Screen);
-    SDL_assert(sota->substate   == GAME_SUBSTATE_MENU);
     SDL_assert(sota->entity_mouse);
 
     sota->isrunning = true;
-    return(sota);
+    return (sota);
 }
 
 void Game_Save_Copy(i16 from_ind,  i16 to_ind) {
@@ -848,7 +868,7 @@ void Game_State_Set(struct Game *sota,  i8 new_state,  char *reason) {
     sota->state_previous = sota->state;
     sota->state          = new_state;
 
-    /* --- Set default contextual inputs --- */
+    /* --- Set contextual inputs --- */
     if (fsm_Input_s[sota->state] != NULL)
         fsm_Input_s[sota->state](sota);
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Game state changed %d->%d: %s->%s",

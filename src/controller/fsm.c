@@ -5,8 +5,8 @@
 fsm_Input_s_t fsm_Input_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
-    /* Scene_Talk */     NULL,
-    /* Cutscene */      NULL,
+    /* Scene_Talk */     &fsm_Input_sCUTSCENE,
+    /* Cutscene */       &fsm_Input_sCUTSCENE,
     /* Gameplay_Map */   &fsm_Input_sGAMEPLAY_MAP,
     /* Gameplay_Camp */  NULL,
     /* Preparation */    NULL,
@@ -39,8 +39,35 @@ void fsm_Input_sGAMEPLAY_MAP(struct Game *sota) {
 void fsm_Input_sTITLE_SCREEN(struct Game *sota) {
     if (fsm_Input_sGmpMap_ss[sota->substate] != NULL)
         fsm_Input_sGmpMap_ss[sota->substate](sota);
-
 }
+
+void fsm_Input_sCUTSCENE(struct Game *sota) {
+    /* Cutscene input map: all buttons can skip */
+    sota->inputs[SOTA_BUTTON_DPAD_RIGHT]      = event_Input_CANCEL;
+    sota->inputs[SOTA_BUTTON_DPAD_UP]         = event_Input_CANCEL;
+    sota->inputs[SOTA_BUTTON_DPAD_LEFT]       = event_Input_CANCEL;
+    sota->inputs[SOTA_BUTTON_DPAD_DOWN]       = event_Input_CANCEL;
+    sota->inputs[SOTA_BUTTON_A]               = event_Input_ACCEPT;
+    sota->inputs[SOTA_BUTTON_B]               = event_Input_CANCEL;
+    sota->inputs[SOTA_BUTTON_X]               = event_Input_CANCEL;
+    sota->inputs[SOTA_BUTTON_Y]               = event_Input_CANCEL;
+    sota->inputs[SOTA_BUTTON_START]           = event_Input_PAUSE;
+    sota->inputs[SOTA_BUTTON_SHOULDER_LEFT]   = event_Input_CANCEL;
+    sota->inputs[SOTA_BUTTON_SHOULDER_RIGHT]  = event_Input_FAST_FORWARD;
+    sota->inputs[SOTA_BUTTON_TRIGGER_LEFT]    = event_Input_CANCEL;
+    sota->inputs[SOTA_BUTTON_TRIGGER_RIGHT]   = event_Input_CANCEL;
+#ifdef SOTA_MUSIC_TOGGLE
+    sota->inputs[SOTA_BUTTON_KEYBOARD_M]      = event_Music_Toggle;
+#else
+    sota->inputs[SOTA_BUTTON_KEYBOARD_M]      = 0;
+#endif
+#ifdef SOTA_INTERACTIVE_RELOAD
+    sota->inputs[SOTA_BUTTON_KEYBOARD_SPACE]  = event_Reload;
+#else
+    sota->inputs[SOTA_BUTTON_KEYBOARD_SPACE]  = 0;
+#endif
+}
+
 
 void fsm_Input_sGmpMap_ssMenu(struct Game *sota) {
     sota->inputs[SOTA_BUTTON_DPAD_RIGHT]      = 0;
@@ -93,5 +120,4 @@ void fsm_Input_sGmpMap_ssStby(struct Game *sota) {
 #else
     sota->inputs[SOTA_BUTTON_KEYBOARD_SPACE]  = 0;
 #endif
-
 }

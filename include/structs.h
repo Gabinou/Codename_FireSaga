@@ -191,7 +191,6 @@ struct Enemy_Turn_settings {
 typedef struct Input_Arguments {
     i32   scene;            /* plays the scene then exits */
     i32   map_index;
-    i32   startup_mode;
     b32   print_help;       /* If help requested anywhere, print help and exit  */
     char *save_filename;    /* debug saves are outside normal save integers     */
 } Input_Arguments;

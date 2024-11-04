@@ -42,10 +42,7 @@ struct Timer Timer_default = {
 
 struct Range Range_default = {.min = SOTA_MAX_RANGE, .max = SOTA_MIN_RANGE};
 
-struct Input_Arguments Input_Arguments_default = {
-    .map_index     = CHAPTER_TEST,
-    .startup_mode  = STARTUP_TESTING,
-};
+struct Input_Arguments Input_Arguments_default = {0};
 
 struct Settings Settings_default = {
     .title = "Codename:Firesaga",
