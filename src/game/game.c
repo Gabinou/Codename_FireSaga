@@ -637,30 +637,11 @@ struct Game * Game_New(Settings settings) {
     Game_Mouse_Create(sota);
 
     if ((sota->settings.args.map_index == 0) && (sota->settings.args.scene == 0)) {
-        /* -- Load Title -- */
-        Game_titleScreen_Load(sota, sota->settings.args);
-        Game_Mouse_Disable(sota);
-        Game_cursorFocus_onMenu(sota);
-
-        /* -- Checks -- */
-        sota->state      = GAME_STATE_Title_Screen;
-        sota->substate   = GAME_SUBSTATE_MENU;
-
+        Game_Startup_TileScreen(sota);
     } else if (sota->settings.args.scene != 0) {
-        /* -- Load Scene -- */
-
-        SDL_Log("IMPLEMENT ME");
-        exit(1);
-
-        sota->state      = GAME_STATE_Cutscene;
-        sota->substate   = GAME_SUBSTATE_STANDBY;
+        Game_Startup_Scene(sota);
     } else if (sota->settings.args.map_index != 0) {
-        /* -- Load Map -- */
-
-        SDL_Log("IMPLEMENT ME");
-        exit(1);
-        sota->state      = GAME_STATE_Gameplay_Map;
-        sota->substate   = GAME_SUBSTATE_MENU;
+        Game_Startup_Map(sota);
     }
 
     /* --- Set default contextual inputs --- */
@@ -675,6 +656,36 @@ struct Game * Game_New(Settings settings) {
     sota->isrunning = true;
     return (sota);
 }
+
+void Game_Startup_Map(Game *IES) {
+    // sota->settings.args.map_index
+    SDL_Log("IMPLEMENT ME");
+    exit(1);
+
+    IES->state      = GAME_STATE_Gameplay_Map;
+    IES->substate   = GAME_SUBSTATE_MENU;
+}
+
+void Game_Startup_Scene(Game *IES) {
+    // sota->settings.args.scene
+    // Get scene JSON file from
+    SDL_Log("IMPLEMENT ME");
+    exit(1);
+
+    IES->state      = GAME_STATE_Cutscene;
+    IES->substate   = GAME_SUBSTATE_STANDBY;
+}
+
+void Game_Startup_TileScreen(Game *IES) {
+    Game_titleScreen_Load(IES, IES->settings.args);
+    Game_Mouse_Disable(IES);
+    Game_cursorFocus_onMenu(IES);
+
+    /* -- Checks -- */
+    IES->state      = GAME_STATE_Title_Screen;
+    IES->substate   = GAME_SUBSTATE_MENU;
+}
+
 
 void Game_Save_Copy(i16 from_ind,  i16 to_ind) {
     SDL_assert(PHYSFS_exists(SAVE_FOLDER));

@@ -1023,6 +1023,14 @@ enum SCENE_TIME {
 };
 #undef REGISTER_ENUM
 
+#define REGISTER_ENUM(x) SCENE_##x,
+enum SCENE {
+    SCENE_NULL = 0,
+#include "names/scene.h"
+    SCENE_NUM,
+};
+#undef REGISTER_ENUM
+
 enum SELECTORS {
     SELECTOR_START = 0,
     SELECTOR_MOUSE,
