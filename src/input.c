@@ -11,9 +11,9 @@ static struct parg_opt longopts[] = {
 };
 
 struct Input_Arguments Input_parseInputs(int argc, char *argv[]) {
-    struct Input_Arguments out_args = Input_Arguments_default;
-    struct parg_state ps = parg_state_default;
-    int *longindex;
+    struct Input_Arguments  out_args    = Input_Arguments_default;
+    struct parg_state       ps          = parg_state_default;
+    int longindex[1];
     int c;
     while ((c = parg_getopt_long(&ps, argc, argv, "vhs:m:", longopts, longindex)) != -1) {
         switch (c) {
