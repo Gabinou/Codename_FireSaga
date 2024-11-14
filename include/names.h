@@ -14,6 +14,7 @@
 /* -- Names -- */
 // TODO migrate names to s8
 // TODO make names not global
+extern s8 scenes[SCENE_NUM];
 extern s8 sexNames[UNIT_SEX_NUM];
 extern s8 statNames[UNIT_STAT_MALLOC];
 extern s8 armyNames[ARMY_MALLOC];
@@ -40,6 +41,7 @@ extern struct dtab   *global_unitOrders; /* DTAB_GET(global_unitOrders, id) = or
 extern u64           *class_equippables;
 
 /* -- Name makers -- */
+void Names_scenes(void);
 void Names_sceneTimes(void);
 void Names_campjobNames(void);
 void Names_mapFilenames(void);

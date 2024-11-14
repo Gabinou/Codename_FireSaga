@@ -6,6 +6,13 @@ s8 sexNames[UNIT_SEX_NUM] = {
     s8_literal("M")
 };
 
+s8 scenes[SCENE_NUM] = {0};
+void Names_scenes(void) {
+#define REGISTER_ENUM(x) scenes[SCENE_##x] = s8cat(s8_camelCase(s8_toLower(s8_mut(#x)), '_', 2), s8_literal("_"));
+#include "names/scene.h"
+#undef REGISTER_ENUM
+}
+
 s8 sceneTimes[SCENE_TIME_NUM] = {0};
 void Names_sceneTimes(void) {
 #define REGISTER_ENUM(x) sceneTimes[SCENE_TIME_##x] = s8cat(s8_camelCase(s8_toLower(s8_mut(#x)), '_', 2), s8_literal("_"));
@@ -226,6 +233,7 @@ void Names_wpnType_Free(s8 *type_names) {
 /* --- API --- */
 void Names_Load_All(void) {
     Names_unitNames();
+    Names_scenes();
     Names_sceneTimes();
     // Hashes_supportHashes();
     // Hashes_unitHashes();
