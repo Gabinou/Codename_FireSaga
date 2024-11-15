@@ -2382,6 +2382,57 @@ void test_pathfinding_attackto_unitmap() {
             nourstest_true(attackto[i] == expected_attackto[i]);
     }
 
+    {
+        // Staff with no blocked tiles next to SELF.
+        i32 range[2] = {1, 1};
+        i32 movemap[ROW_LEN * COL_LEN] = {
+            0, 0, 3, 0, 0, 0, 0, 0, 0, 0,
+            0, 1, 2, 3, 0, 0, 0, 0, 0, 0,
+            3, 2, 3, 0, 0, 0, 0, 0, 0, 0,
+            0, 3, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        };
+        u64 unitmap[ROW_LEN * COL_LEN] = {
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        };
+
+        u64 expected_healto[ROW_LEN * COL_LEN] = {
+            0, 0, 3, 0, 0, 0, 0, 0, 0, 0,
+            0, 1, 2, 3, 0, 0, 0, 0, 0, 0,
+            3, 2, 3, 0, 0, 0, 0, 0, 0, 0,
+            0, 3, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        };
+
+        i32 attackto[ROW_LEN * COL_LEN] = {0};
+        Pathfinding_Attackto_noM(attackto, movemap, unitmap,
+                                 ROW_LEN, COL_LEN,
+                                 range, MOVETILE_IGNORE);
+        // matrix_print(attackto, ROW_LEN, COL_LEN);
+        for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
+            nourstest_true(attackto[i] == expected_attackto[i]);
+    }
+
+
 }
 
 #undef ROW_LEN

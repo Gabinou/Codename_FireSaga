@@ -349,7 +349,7 @@ void test_map_usable(void) {
     erwin->current_hp       =  1;
     erwin->current_stats.hp = 19;
 
-    // Can equip staff when patient is NOT health
+    // Can equip staff when patient is NOT full health
     can_equip                   = canEquip_default;
     can_equip.archetype         = ITEM_ARCHETYPE_STAFF;
     can_equip.move              = true;
@@ -368,6 +368,7 @@ void test_map_usable(void) {
     // TODO: Staff with no target
     // TODO: Staff with enemy target
     // TODO: Ranged staff
+
 
     Map_Free(map);
     tnecs_world_destroy(world);
