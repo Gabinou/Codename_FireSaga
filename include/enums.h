@@ -1028,6 +1028,7 @@ enum SCENE {
     SCENE_NULL = 0,
 #include "names/scene.h"
     SCENE_NUM,
+    SCENE_MAX_ACTORS = 8,
 };
 #undef REGISTER_ENUM
 

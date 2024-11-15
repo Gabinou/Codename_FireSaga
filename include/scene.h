@@ -68,10 +68,6 @@ struct Boss;
 struct Game;
 struct Settings;
 
-enum SCENE {
-    SCENE_MAX_ACTORS = 8,
-};
-
 enum SCENE_bOFFSET {
     SCENE_STATEMENT_bOFFSET = 0,
 };
