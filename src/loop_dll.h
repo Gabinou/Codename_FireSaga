@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     struct Game *sota = SDL_malloc(sizeof(struct Game));
-    vtable.Game_Init(sota, settings);
+    vtable.Game *sota = Game_New(settings);
 
     /* -- Master loop -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Starting main game loop\n");

@@ -113,11 +113,10 @@ void test_menu_deployment() {
     sota_mkdir("menu_deployment");
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
-    sota    = SDL_malloc(sizeof(struct Game));
-    *sota   = Game_default;
-    sota->settings          = Settings_default;
-    sota->settings.window   = SDL_WINDOW_HIDDEN;
-    Game_Init(sota, sota->settings);
+    struct Settings settings    = Settings_default;
+    settings.window             = SDL_WINDOW_HIDDEN;
+    sota                        = Game_New(settings);
+    SDL_assert(sota->world != NULL);
 
     /* Map init */
     NewMap new_map  = NewMap_default;

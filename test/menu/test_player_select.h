@@ -187,7 +187,6 @@ void test_menu_player_select() {
                             renderer, psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* --- TEST OPTIONS AS A FUNCTION OF GAME STATE --- */
-    // struct Game *sota = Game_Init();
 
     /* --- SDL_free --- */
     PixelFont_Free(psm->pixelnours, true);

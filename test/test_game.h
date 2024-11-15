@@ -9,7 +9,6 @@
 void test_combat_game() {
 
     struct Game firesaga = Game_default;
-    // Game_Init(&firesaga);
     RNG_Init_xoroshiro256ss();
     firesaga.combat_outcome.attacks = DARR_INIT(firesaga.combat_outcome.attacks, struct Combat_Attack,
                                                 SOTA_COMBAT_MAX_ATTACKS);

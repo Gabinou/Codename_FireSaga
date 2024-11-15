@@ -6,11 +6,9 @@ void test_aura_apply(int argc, char *argv[]) {
     /* -- Startup -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     Names_Load_All();
-    struct Game *sota       = SDL_malloc(sizeof(struct Game));
-    *sota                   = Game_default;
-    sota->settings          = Settings_default;
-    sota->settings.window   = SDL_WINDOW_HIDDEN;
-    Game_Init(sota, sota->settings);
+    struct Settings settings    = Settings_default;
+    settings.window             = SDL_WINDOW_HIDDEN;
+    struct Game *sota           = Game_New(settings);
     nourstest_true(sota->state      == GAME_STATE_Title_Screen);
     nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
 
@@ -143,11 +141,9 @@ void test_aura_decay(int argc, char *argv[]) {
     /* -- Startup -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     Names_Load_All();
-    struct Game *sota       = SDL_malloc(sizeof(struct Game));
-    *sota                   = Game_default;
-    sota->settings          = Settings_default;
-    sota->settings.window   = SDL_WINDOW_HIDDEN;
-    Game_Init(sota, sota->settings);
+    struct Settings settings    = Settings_default;
+    settings.window             = SDL_WINDOW_HIDDEN;
+    struct Game *sota           = Game_New(settings);
     nourstest_true(sota->state      == GAME_STATE_Title_Screen);
     nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
 
@@ -347,11 +343,9 @@ void test_aura_fsm(int argc, char *argv[]) {
     /* -- Startup -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     Names_Load_All();
-    struct Game *sota       = SDL_malloc(sizeof(struct Game));
-    *sota                   = Game_default;
-    sota->settings          = Settings_default;
-    sota->settings.window   = SDL_WINDOW_HIDDEN;
-    Game_Init(sota, sota->settings);
+    struct Settings settings    = Settings_default;
+    settings.window             = SDL_WINDOW_HIDDEN;
+    struct Game *sota           = Game_New(settings);
     nourstest_true(sota->state      == GAME_STATE_Title_Screen);
     nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
 
