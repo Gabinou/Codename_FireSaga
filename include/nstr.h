@@ -50,6 +50,7 @@ s8 s8_toLower(s8 str8);
 s8 s8_toUpper(s8 str8);
 
 b32 s8equal(s8 s1, s8 s2);
+b32 s8valid(s8 str8);
 
 s8 s8cat(s8 s1, s8 s2);
 s8 s8cpy(s8 s1, s8 s2);

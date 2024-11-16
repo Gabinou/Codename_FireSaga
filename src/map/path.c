@@ -284,7 +284,8 @@ i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_entity unit_ent) {
         SDL_assert(tile_ind > 0);
         size_t tile_order = Map_Tile_Order(map, tile_ind);
         temp_tile = map->tiles + tile_order;
-        map->costmap[i] = temp_tile->cost_array[unit_movetype] * map->cost_multiplier;
+        i32* cost_array = Tile_Cost_Array(temp_tile);
+        map->costmap[i] = cost_array[unit_movetype] * map->cost_multiplier;
         if (ontile_unit_ent <= TNECS_NULL)
             continue;
         struct Unit *ontile_unit = TNECS_GET_COMPONENT(map->world, ontile_unit_ent, Unit);
@@ -327,7 +328,8 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
         SDL_assert(tile_ind > 0);
         size_t tile_order = Map_Tile_Order(map, tile_ind);
         struct Tile *temp_tile = map->tiles + tile_order;
-        map->costmap[i] = temp_tile->cost_array[unit->mvt_type] * map->cost_multiplier;
+        i32* cost_array = Tile_Cost_Array(temp_tile);
+        map->costmap[i] = cost_array[unit->mvt_type] * map->cost_multiplier;
 
 #endif /* UNITS_IGNORE_TERRAIN */
 

@@ -60,7 +60,7 @@ void Point_readJSON(            void *input, struct cJSON *j);
 void Unit_stats_readJSON(       void *input, struct cJSON *j);
 void Item_stats_readJSON(       void *input, struct cJSON *j);
 void Weapon_stats_readJSON(     void *input, struct cJSON *j);
-void fMovement_cost_readJSON(   void *input, struct cJSON *j);
+void Movement_cost_readJSON(   void *input, struct cJSON *j);
 void Inventory_item_readJSON(   void *input, struct cJSON *j);
 void Computed_Stats_readJSON(   void *input, struct cJSON *j);
 
@@ -83,7 +83,7 @@ void Unit_stats_writeJSON(      void *input, struct cJSON *j);
 void Tile_stats_writeJSON(      void *input, struct cJSON *j);
 void Weapon_stats_writeJSON(    void *input, struct cJSON *j);
 void Inventory_item_writeJSON(  void *input, struct cJSON *j);
-void fMovement_cost_writeJSON(  void *input, struct cJSON *j);
+void Movement_cost_writeJSON(  void *input, struct cJSON *j);
 void Computed_Stats_writeJSON(  void *input, struct cJSON *j);
 
 /* -- Print -- */

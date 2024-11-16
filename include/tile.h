@@ -14,13 +14,12 @@
 struct cJSON;
 
 typedef struct Tile {
-    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
-    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
-    char *name;
+    s8  json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
+    u8  json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
+    s8  name;
     i32 id;
     struct Tile_stats stats;
-    float cost_array[UNIT_MVT_END];
-    struct fMovement_cost cost_struct;
+    struct Movement_cost cost;
     b32 inside;
 } Tile;
 extern struct Tile Tile_default;
@@ -106,6 +105,6 @@ void Mobj_Link_writeJSON(void *input, cJSON *j);
 void Breakable_writeJSON(void *input, cJSON *j);
 
 /* --- Internals --- */
-void Tile_makeMvtCostarray(struct Tile *tile);
+i32* Tile_Cost_Array(struct Tile *tile);
 
 #endif /* TILE_H */

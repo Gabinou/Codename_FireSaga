@@ -36,7 +36,6 @@ void Map_Tiles_Load(struct Map *map) {
         filename    = s8cat(filename, global_tilenames[tile_id]);
         filename    = s8cat(filename, s8_literal(".json"));
         jsonio_readJSON(filename, &temp_tile);
-        Tile_makeMvtCostarray(&temp_tile);
         DARR_PUT(map->tiles, temp_tile);
         DARR_PUT(map->tiles_id, tile_id);
         s8_free(&filename);
@@ -122,7 +121,7 @@ void Map_Tilesets_Load(struct Map *map) {
 
         /* - Load tileset - */
         tilesetname = s8cat(tilesetname, s8_literal(DIR_SEPARATOR"Tileset_"));
-        tilesetname = s8cat(tilesetname, s8_var(temp_tile->name));
+        tilesetname = s8cat(tilesetname, temp_tile->name);
         tilesetname = s8cat(tilesetname, s8_literal(".png"));
         if (map->tileset_surfaces[map->ipalette_base][i] != NULL)
             SDL_FreeSurface(map->tileset_surfaces[map->ipalette_base][i]);

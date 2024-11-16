@@ -7,7 +7,7 @@ struct Mobj_Link Mobj_Link_default = {
 };
 
 struct Chest Chest_default = {
-    .item = 0,
+    .item =    0,
     .gold = 5000,
 };
 
@@ -25,13 +25,12 @@ struct Door Door_default = {
 };
 
 struct Tile Tile_default = {
-    .json_element = JSON_TILE,
-    .inside       = false,
-    .name         = NULL,
-    .id           = -1,
-    .stats        = {0},
-    .cost_array   = {0},
-    .cost_struct  = {0},
+    .json_element   = JSON_TILE,
+    .inside         = false,
+    .name           = {0},
+    .id             = -1,
+    .stats          = {0},
+    .cost           = {0},
 };
 
 void Mobj_Link_Init(struct Mobj_Link *mobj) {
@@ -111,24 +110,12 @@ void Mobj_Link_readJSON(void *input, cJSON *_jmobj) {
     }
 }
 
-void Tile_makeMvtCostarray(struct Tile *tile) {
-    SDL_assert(tile != NULL);
-    tile->cost_array[UNIT_MVT_FOOT_SLOW]   = tile->cost_struct.foot_slow;
-    tile->cost_array[UNIT_MVT_FOOT_FAST]   = tile->cost_struct.foot_fast;
-    tile->cost_array[UNIT_MVT_MAGES]       = tile->cost_struct.mages;
-    tile->cost_array[UNIT_MVT_RIDERS_SLOW] = tile->cost_struct.riders_slow;
-    tile->cost_array[UNIT_MVT_RIDERS_FAST] = tile->cost_struct.riders_fast;
-    tile->cost_array[UNIT_MVT_FLIERS]      = tile->cost_struct.fliers;
-    tile->cost_array[UNIT_MVT_ARMORS]      = tile->cost_struct.armors;
-    tile->cost_array[UNIT_MVT_PIRATES]     = tile->cost_struct.pirates;
-    tile->cost_array[UNIT_MVT_BANDITS]     = tile->cost_struct.bandits;
+i32* Tile_Cost_Array(struct Tile *tile) {
+    return ((i32*)&tile->cost);
 }
 
 void Tile_Free(struct Tile *tile) {
-    if (tile->name != NULL) {
-        SDL_free(tile->name);
-        tile->name = NULL;
-    }
+    s8_free(&tile->name);
     s8_free(&tile->json_filename);
 }
 
@@ -143,13 +130,12 @@ void Tile_readJSON(void *input, cJSON *_jtile) {
     tile->id = cJSON_GetNumberValue(jid);
     char *temp_str = cJSON_GetStringValue(jname);
     if (temp_str != NULL) {
-        tile->name = SDL_malloc(strlen(temp_str) + 1);
-        memcpy(tile->name, temp_str, strlen(temp_str) + 1);
+        s8_free(&tile->name);
+        tile->name = s8_mut(temp_str);
     }
     Tile_stats_readJSON(&(tile->stats), jstats);
     tile->inside = cJSON_IsTrue(jinside);
-    fMovement_cost_readJSON(&(tile->cost_struct), jmvtcost);
-    Tile_makeMvtCostarray(tile);
+    Movement_cost_readJSON(&(tile->cost), jmvtcost);
 }
 
 void Tile_writeJSON(void *_input, cJSON *jtile) {
@@ -157,11 +143,14 @@ void Tile_writeJSON(void *_input, cJSON *jtile) {
     SDL_assert(jtile != NULL);
     cJSON *jtilestats   = cJSON_CreateObject();
     cJSON *jcost        = cJSON_CreateObject();
-    cJSON *jname        = cJSON_CreateString(_tile->name);
     cJSON *jid          = cJSON_CreateNumber(_tile->id);
-    fMovement_cost_writeJSON(&(_tile->cost_struct), jcost);
+    Movement_cost_writeJSON(&(_tile->cost), jcost);
     Tile_stats_writeJSON(&(_tile->stats), jtilestats);
-    cJSON_AddItemToObject(jtile, "Name",   jname);
+    if (s8valid(_tile->name)) {
+        cJSON *jname        = cJSON_CreateString(_tile->name.data);
+        cJSON_AddItemToObject(jtile, "Name",   jname);
+    }
+
     cJSON_AddItemToObject(jtile, "id",      jid);
     cJSON_AddBoolToObject(jtile, "inside",  _tile->inside);
     cJSON_AddItemToObject(jtile, "Stats",   jtilestats);

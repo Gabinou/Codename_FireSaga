@@ -449,30 +449,17 @@ extern struct Inventory_item Inventory_item_broken;
 // extern struct Reinforcement Reinforcement_default;
 
 struct Movement_cost {
-    u8 foot_slow;
-    u8 foot_fast;
-    u8 mages;
-    u8 riders_slow;
-    u8 riders_fast;
-    u8 fliers;
-    u8 armors;
-    u8 pirates;
-    u8 bandits;
+    i32 foot_slow;
+    i32 foot_fast;
+    i32 mages;
+    i32 riders_slow;
+    i32 riders_fast;
+    i32 fliers;
+    i32 armors;
+    i32 pirates;
+    i32 bandits;
 };
 extern struct Movement_cost Movement_cost_default;
-
-struct fMovement_cost {
-    float foot_slow;
-    float foot_fast;
-    float mages;
-    float riders_slow;
-    float riders_fast;
-    float fliers;
-    float armors;
-    float pirates;
-    float bandits;
-};
-extern struct fMovement_cost fMovement_cost_default;
 
 struct Camera {
     Point offset; /* pixels */

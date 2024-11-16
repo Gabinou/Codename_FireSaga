@@ -14,22 +14,20 @@ void test_tile() {
     struct Tile tile3 = Tile_default;
     struct Tile_stats in_tile_stats = {0, 30, 0, 8};
     struct Tile_stats out_tile_stats = Tile_stats_default;
-    struct fMovement_cost in_cost = {2.0f, 2.0f, 2.0f, 3.0f, 3.0f, 1.0f, 3.0f, 2.0f, 2.0f};
+    struct Movement_cost in_cost = {2.0f, 2.0f, 2.0f, 3.0f, 3.0f, 1.0f, 3.0f, 2.0f, 2.0f};
     struct Tile tile1 =  {
         .json_element   = JSON_TILE,
-        .cost_struct    = in_cost,
+        .cost           = in_cost,
         .inside         = true,
         .name           = "Throne",
         .id             = TILE_THRONE,
         .stats          = in_tile_stats
     };
     nourstest_true(tile1.inside == true);
-    Tile_makeMvtCostarray(&tile1);
-    struct fMovement_cost out_cost = fMovement_cost_default;
-    u8 cost_array[UNIT_MVT_END];
+    struct Movement_cost out_cost = Movement_cost_default;
     nourstest_true(s8equal(s8_var(tile1.name), s8_literal("Throne")));
     nourstest_true(tile1.id == TILE_THRONE);
-    out_cost        = tile1.cost_struct;
+    out_cost        = tile1.cost;
     out_tile_stats  = tile1.stats;
     nourstest_true(in_cost.foot_slow    == out_cost.foot_slow);
     nourstest_true(in_cost.foot_fast    == out_cost.foot_fast);
@@ -40,15 +38,16 @@ void test_tile() {
     nourstest_true(in_cost.armors       == out_cost.armors);
     nourstest_true(in_cost.pirates      == out_cost.pirates);
     nourstest_true(in_cost.bandits      == out_cost.bandits);
-    nourstest_true(tile1.cost_array[UNIT_MVT_FOOT_SLOW]     == out_cost.foot_slow);
-    nourstest_true(tile1.cost_array[UNIT_MVT_FOOT_FAST]     == out_cost.foot_fast);
-    nourstest_true(tile1.cost_array[UNIT_MVT_MAGES]         == out_cost.mages);
-    nourstest_true(tile1.cost_array[UNIT_MVT_RIDERS_SLOW]   == out_cost.riders_slow);
-    nourstest_true(tile1.cost_array[UNIT_MVT_RIDERS_FAST]   == out_cost.riders_fast);
-    nourstest_true(tile1.cost_array[UNIT_MVT_FLIERS]        == out_cost.fliers);
-    nourstest_true(tile1.cost_array[UNIT_MVT_ARMORS]        == out_cost.armors);
-    nourstest_true(tile1.cost_array[UNIT_MVT_PIRATES]       == out_cost.pirates);
-    nourstest_true(tile1.cost_array[UNIT_MVT_BANDITS]       == out_cost.bandits);
+    i32* cost_array =  Tile_Cost_Array(&tile1);
+    nourstest_true(cost_array[UNIT_MVT_FOOT_SLOW]     == out_cost.foot_slow);
+    nourstest_true(cost_array[UNIT_MVT_FOOT_FAST]     == out_cost.foot_fast);
+    nourstest_true(cost_array[UNIT_MVT_MAGES]         == out_cost.mages);
+    nourstest_true(cost_array[UNIT_MVT_RIDERS_SLOW]   == out_cost.riders_slow);
+    nourstest_true(cost_array[UNIT_MVT_RIDERS_FAST]   == out_cost.riders_fast);
+    nourstest_true(cost_array[UNIT_MVT_FLIERS]        == out_cost.fliers);
+    nourstest_true(cost_array[UNIT_MVT_ARMORS]        == out_cost.armors);
+    nourstest_true(cost_array[UNIT_MVT_PIRATES]       == out_cost.pirates);
+    nourstest_true(cost_array[UNIT_MVT_BANDITS]       == out_cost.bandits);
     nourstest_true(out_tile_stats.dodge == in_tile_stats.dodge);
     nourstest_true(out_tile_stats.Pprot == in_tile_stats.Pprot);
     nourstest_true(out_tile_stats.Mprot == in_tile_stats.Mprot);
@@ -67,10 +66,9 @@ void test_tile() {
     nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "tile_test.json")));
     nourstest_true(s8equal(s8_var(tile1.name), s8_var(tile3.name)));
     nourstest_true(tile1.id == tile3.id);
-    memcpy(cost_array, tile1.cost_array, sizeof(*cost_array) * (UNIT_MVT_END));
-    out_cost        = tile1.cost_struct;
+    out_cost        = tile1.cost;
     out_tile_stats  = tile1.stats;
-    in_cost         = tile3.cost_struct;
+    in_cost         = tile3.cost;
     in_tile_stats   = tile3.stats;
     nourstest_true(in_cost.foot_slow    == out_cost.foot_slow);
     nourstest_true(in_cost.foot_fast    == out_cost.foot_fast);

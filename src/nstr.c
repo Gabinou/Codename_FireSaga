@@ -14,6 +14,10 @@ s8 s8_mut(char *string) {
     return (s8_string);
 }
 
+b32 s8valid(s8 str8) {
+    return (str8.data != NULL);
+}
+
 void s8_free(s8 *str8) {
     /* str8 is a pointer to modify to member variables */
     if (str8->data != NULL) {

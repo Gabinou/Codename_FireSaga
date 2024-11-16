@@ -305,8 +305,8 @@ void Point_readJSON(void *input, struct cJSON *_jpos) {
     }
 }
 
-void fMovement_cost_readJSON(void *input, struct cJSON *_jcost) {
-    struct fMovement_cost *cost = input;
+void Movement_cost_readJSON(void *input, struct cJSON *_jcost) {
+    struct Movement_cost *cost = input;
     SDL_assert(cost != NULL);
     struct cJSON *jmages       = cJSON_GetObjectItem(_jcost, "mages");
     struct cJSON *jfliers      = cJSON_GetObjectItem(_jcost, "fliers");
@@ -377,8 +377,8 @@ void Array2D_writeJSON(struct cJSON *arr, i32 *arr2D, u8 row_len, u8 col_len) {
     }
 }
 
-void fMovement_cost_writeJSON(void *input, struct cJSON *_jcost) {
-    struct fMovement_cost *_cost = input;
+void Movement_cost_writeJSON(void *input, struct cJSON *_jcost) {
+    struct Movement_cost *_cost = input;
     SDL_assert(_jcost != NULL);
     struct cJSON *jmages       = cJSON_CreateNumber(_cost->mages);
     struct cJSON *jfliers      = cJSON_CreateNumber(_cost->fliers);

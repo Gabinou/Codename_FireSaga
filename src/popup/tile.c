@@ -224,7 +224,7 @@ void PopUp_Tile_Update(struct PopUp_Tile *pt, struct n9Patch *n9patch,
 
     /* -- NAME -- */
     struct Point pos;
-    char *name = pt->tile->name;
+    char *name = pt->tile->name.data;
     SDL_assert(name != NULL);
     pos = PopUp_Tile_Center_Name(pt, n9patch, name, strlen(name));
     PixelFont_Write(pt->pixelnours, renderer, name, strlen(name), pos.x, pos.y);
