@@ -158,6 +158,9 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
     SDL_assert(tolist   != NULL);
 
     /* Compute new attacktomap */
+    /* Bug: healtolist: Illuminate tiles depending on staff TARGET.*/
+    /* Bug: healtolist: don't include start tile in attacktomap, but include its NEIGHBORS.
+    .*/
     Pathfinding_Attackto_noM(*tomap, map->movemap, input_occupymap,
                              map->row_len, map->col_len,
                              (i32 *)range, mapto.mode_movetile);

@@ -181,6 +181,7 @@ void test_map_usable(void) {
     for (int i = 0; i < (map->row_len * map->col_len); i++) {
         map->tilemap[i] = TILE_PLAIN * TILE_DIVISOR + 1;
     }
+
     SDL_assert(DARR_NUM(map->tilesindex)    == 1);
     SDL_assert(DARR_NUM(map->tiles)         == 1);
     SDL_assert(DARR_NUM(map->tilesindex)    == 1);
@@ -364,6 +365,27 @@ void test_map_usable(void) {
     can_equip.move      = false;
     Map_canEquip(map, Silou, can_equip);
     nourstest_true(silou->num_canEquip      == 0);
+
+    /* --- Staff with blocked tiles next to SELF --- */
+    /* -- Place staff user on, next to blocked tiles -- */
+    for (int i = 0; i < (map->row_len * map->col_len); i++) {
+        map->tilemap[i] = TILE_SEA * TILE_DIVISOR + 1;
+    }
+
+    MapAct map_to       = MapAct_default;
+    map_to.archetype    = ITEM_ARCHETYPE_STAFF;
+    map_to.eq_type      = LOADOUT_EQUIPMENT;
+    map_to.output_type  = ARRAY_MATRIX;
+    map_to.aggressor    = Silou;
+    map_to.move         = true;
+
+    /* - healtopmap - */
+    Map_Act_To(map, map_to);
+
+    printf("MOVE\n");
+    matrix_print(map->movemap, map->row_len, map->col_len);
+    printf("HEAL\n");
+    matrix_print(map->healtomap, map->row_len, map->col_len);
 
     // TODO: Staff with no target
     // TODO: Staff with enemy target
