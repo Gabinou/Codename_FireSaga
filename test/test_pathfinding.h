@@ -2383,7 +2383,7 @@ void test_pathfinding_attackto_unitmap() {
     }
 
     {
-        // Staff with no blocked tiles next to SELF.
+        // Staff with blocked tiles next to SELF.
         i32 range[2] = {1, 1};
         i32 movemap[ROW_LEN * COL_LEN] = {
             0, 0, 3, 0, 0, 0, 0, 0, 0, 0,
@@ -2411,11 +2411,11 @@ void test_pathfinding_attackto_unitmap() {
         };
 
         u64 expected_healto[ROW_LEN * COL_LEN] = {
-            0, 0, 3, 0, 0, 0, 0, 0, 0, 0,
-            0, 1, 2, 3, 0, 0, 0, 0, 0, 0,
-            3, 2, 3, 0, 0, 0, 0, 0, 0, 0,
-            0, 3, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+            1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+            1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+            1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+            0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2429,10 +2429,8 @@ void test_pathfinding_attackto_unitmap() {
                                  range, MOVETILE_IGNORE);
         // matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
-            nourstest_true(attackto[i] == expected_attackto[i]);
+            nourstest_true(attackto[i] == expected_healto[i]);
     }
-
-
 }
 
 #undef ROW_LEN

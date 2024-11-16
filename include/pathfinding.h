@@ -146,7 +146,7 @@ i32 *Pathfinding_Visible(i32 *blockmap, size_t row_len, size_t col_len,
 void Pathfinding_Visible_noM(i32 *sightmap, i32 *blockmap, size_t row_len,
                              size_t col_len, struct Point start, i32 sight);
 
-/* -- Attackto -- */
+/* -- Attackto/Healto -- */
 // NOMENCLATURE: attackto alternatives
 // - assailable
 // TODO: attack to use position and range instead of movemap
