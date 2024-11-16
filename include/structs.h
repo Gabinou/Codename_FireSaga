@@ -459,6 +459,7 @@ struct Movement_cost {
     i32 pirates;
     i32 bandits;
 };
+
 extern struct Movement_cost Movement_cost_default;
 
 struct Camera {

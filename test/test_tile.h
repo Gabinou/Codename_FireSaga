@@ -14,18 +14,18 @@ void test_tile() {
     struct Tile tile3 = Tile_default;
     struct Tile_stats in_tile_stats = {0, 30, 0, 8};
     struct Tile_stats out_tile_stats = Tile_stats_default;
-    struct Movement_cost in_cost = {2.0f, 2.0f, 2.0f, 3.0f, 3.0f, 1.0f, 3.0f, 2.0f, 2.0f};
+    struct Movement_cost in_cost = {2, 2, 2, 3, 3, 1, 3, 2, 2};
     struct Tile tile1 =  {
         .json_element   = JSON_TILE,
         .cost           = in_cost,
         .inside         = true,
-        .name           = "Throne",
         .id             = TILE_THRONE,
         .stats          = in_tile_stats
     };
+    tile1.name = s8_mut("Throne");
     nourstest_true(tile1.inside == true);
     struct Movement_cost out_cost = Movement_cost_default;
-    nourstest_true(s8equal(s8_var(tile1.name), s8_literal("Throne")));
+    nourstest_true(s8equal(tile1.name, s8_literal("Throne")));
     nourstest_true(tile1.id == TILE_THRONE);
     out_cost        = tile1.cost;
     out_tile_stats  = tile1.stats;
@@ -64,7 +64,7 @@ void test_tile() {
                                      PATH_JOIN("saves", "tile_rewrite.json")));
     nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "tile_rewrite.json")));
     nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "tile_test.json")));
-    nourstest_true(s8equal(s8_var(tile1.name), s8_var(tile3.name)));
+    nourstest_true(s8equal(tile1.name, tile3.name));
     nourstest_true(tile1.id == tile3.id);
     out_cost        = tile1.cost;
     out_tile_stats  = tile1.stats;

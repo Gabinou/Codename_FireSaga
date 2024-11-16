@@ -111,7 +111,8 @@ void Mobj_Link_readJSON(void *input, cJSON *_jmobj) {
 }
 
 i32* Tile_Cost_Array(struct Tile *tile) {
-    return ((i32*)&tile->cost);
+    /* -1 cause 0 is NULL index */
+    return ((i32*)&tile->cost - 1);
 }
 
 void Tile_Free(struct Tile *tile) {
