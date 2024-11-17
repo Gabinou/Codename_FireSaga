@@ -353,6 +353,14 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
     }
     return (map->costmap);
 }
+b32 Map_Costmap_Skip(Map *map, tnecs_entity unit_ent) {
+    /* - Skip if previously computed - */
+    return (map->costmap_ent == unit_ent);
+}
+
+void Map_Costmap_Wipe(Map *map) {
+    map->costmap_ent = TNECS_NULL;
+}
 
 i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_entity unit_ent) {
     SDL_assert(map          != NULL);
@@ -360,8 +368,7 @@ i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_entity unit_ent) {
     SDL_assert(map->unitmap != NULL);
     SDL_assert(map->costmap != NULL);
 
-    /* - Skip if previously computed - */
-    if (map->costmap_ent == unit_ent) {
+    if (Map_Costmap_Skip(map, unit_ent)) {
         return (map->costmap);
     }
 

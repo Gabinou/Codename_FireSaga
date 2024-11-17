@@ -127,7 +127,7 @@ void test_map_usable(void) {
     TNECS_REGISTER_COMPONENT(world, Position);
     tnecs_entity Silou  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
     tnecs_entity Erwin  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
-    tnecs_entity Enemy = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
+    tnecs_entity Enemy  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
 
     Unit *silou         = TNECS_GET_COMPONENT(world, Silou, Unit);
     Unit *erwin         = TNECS_GET_COMPONENT(world, Erwin, Unit);
@@ -176,15 +176,16 @@ void test_map_usable(void) {
     SDL_assert(map->tilemap         != NULL);
 
     DARR_PUT(map->tilesindex, TILE_PLAIN);
+    DARR_PUT(map->tilesindex, TILE_SEA);
     Map_Tiles_Load(map);
 
     for (int i = 0; i < (map->row_len * map->col_len); i++) {
         map->tilemap[i] = TILE_PLAIN * TILE_DIVISOR + 1;
     }
 
-    SDL_assert(DARR_NUM(map->tilesindex)    == 1);
-    SDL_assert(DARR_NUM(map->tiles)         == 1);
-    SDL_assert(DARR_NUM(map->tilesindex)    == 1);
+    SDL_assert(DARR_NUM(map->tilesindex)    == 2);
+    SDL_assert(DARR_NUM(map->tiles)         == 2);
+    SDL_assert(DARR_NUM(map->tilesindex)    == 2);
 
     /* --- NO enemy in range --- */
     _Map_Unit_Put(map, silou_pos->tilemap_pos.x, silou_pos->tilemap_pos.y, Silou);
@@ -371,6 +372,7 @@ void test_map_usable(void) {
     for (int i = 0; i < (map->row_len * map->col_len); i++) {
         map->tilemap[i] = TILE_SEA * TILE_DIVISOR + 1;
     }
+    Map_Costmap_Wipe(map);
 
     MapAct map_to       = MapAct_default;
     map_to.archetype    = ITEM_ARCHETYPE_STAFF;
@@ -379,9 +381,14 @@ void test_map_usable(void) {
     map_to.aggressor    = Silou;
     map_to.move         = true;
 
+    silou_pos->tilemap_pos.x    = 1;
+    silou_pos->tilemap_pos.y    = 1;
+
     /* - healtopmap - */
     Map_Act_To(map, map_to);
 
+    printf("COST\n");
+    matrix_print(map->costmap, map->row_len, map->col_len);
     printf("MOVE\n");
     matrix_print(map->movemap, map->row_len, map->col_len);
     printf("HEAL\n");
@@ -390,7 +397,6 @@ void test_map_usable(void) {
     // TODO: Staff with no target
     // TODO: Staff with enemy target
     // TODO: Ranged staff
-
 
     Map_Free(map);
     tnecs_world_destroy(world);
