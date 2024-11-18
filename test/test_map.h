@@ -176,7 +176,7 @@ void test_map_usable(void) {
     SDL_assert(map->tilemap         != NULL);
 
     DARR_PUT(map->tilesindex, TILE_PLAIN);
-    DARR_PUT(map->tilesindex, TILE_SEA);
+    DARR_PUT(map->tilesindex, TILE_LAKE);
     Map_Tiles_Load(map);
 
     for (int i = 0; i < (map->row_len * map->col_len); i++) {
@@ -370,7 +370,7 @@ void test_map_usable(void) {
     /* --- Staff with blocked tiles next to SELF --- */
     /* -- Place staff user on, next to blocked tiles -- */
     for (int i = 0; i < (map->row_len * map->col_len); i++) {
-        map->tilemap[i] = TILE_SEA * TILE_DIVISOR + 1;
+        map->tilemap[i] = TILE_LAKE * TILE_DIVISOR + 1;
     }
     Map_Costmap_Wipe(map);
 
@@ -383,16 +383,28 @@ void test_map_usable(void) {
 
     silou_pos->tilemap_pos.x    = 1;
     silou_pos->tilemap_pos.y    = 1;
+    i32 index;
+    index = sota_2D_index((silou_pos->tilemap_pos.x), (silou_pos->tilemap_pos.y), map->col_len);
+    map->tilemap[index] = TILE_PLAIN * TILE_DIVISOR + 1;
 
     /* - healtopmap - */
     Map_Act_To(map, map_to);
 
-    printf("COST\n");
-    matrix_print(map->costmap, map->row_len, map->col_len);
-    printf("MOVE\n");
-    matrix_print(map->movemap, map->row_len, map->col_len);
-    printf("HEAL\n");
-    matrix_print(map->healtomap, map->row_len, map->col_len);
+    // printf("COST\n");
+    // matrix_print(map->costmap, map->row_len, map->col_len);
+    // printf("MOVE\n");
+    // matrix_print(map->movemap, map->row_len, map->col_len);
+    // printf("HEAL\n");
+    // matrix_print(map->healtomap, map->row_len, map->col_len);
+
+    index = sota_2D_index((silou_pos->tilemap_pos.x + 1), (silou_pos->tilemap_pos.y), map->col_len);
+    nourstest_true(map->healtomap[index] > 0);
+    index = sota_2D_index((silou_pos->tilemap_pos.x), (silou_pos->tilemap_pos.y + 1), map->col_len);
+    nourstest_true(map->healtomap[index] > 0);
+    index = sota_2D_index((silou_pos->tilemap_pos.x - 1), (silou_pos->tilemap_pos.y), map->col_len);
+    nourstest_true(map->healtomap[index] > 0);
+    index = sota_2D_index((silou_pos->tilemap_pos.x), (silou_pos->tilemap_pos.y - 1), map->col_len);
+    nourstest_true(map->healtomap[index] > 0);
 
     // TODO: Staff with no target
     // TODO: Staff with enemy target

@@ -677,7 +677,7 @@ void Pathfinding_Attackfrom_noM(i32 *attackmap, i32 *movemap,
 //  - Note: Overwrites attackmap a couple times -> can't find which weapon
 //          can be used to attackto
 void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
-                              u64 *occupymap,
+                              u64 *occupymap, tnecs_entity self,
                               size_t row_len, size_t col_len,
                               i32 range[2], i32 mode_movetile) {
     /* -- Wipe attackmap -- */
@@ -694,10 +694,12 @@ void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
         i32 x = move_list[i * TWO_D + 0];
         i32 y = move_list[i * TWO_D + 1];
 
-        /* Can only attack from tile if not occupied */
         if (occupymap != NULL) {
             // SDL_Log("occupymap %d %d %d", x, y, occupymap[y * col_len + x]);
-            if (occupymap[y * col_len + x] > TNECS_NULL) {
+
+            /* Can only attack from tile if not occupied, except for SELF */
+            if ((occupymap[y * col_len + x] > TNECS_NULL) &&
+                (occupymap[y * col_len + x] != self)) {
                 continue;
             }
         }
@@ -711,11 +713,13 @@ void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
     DARR_FREE(move_list);
 }
 
-i32 *Pathfinding_Attackto(i32 *move_matrix, u64 *occupymap, size_t row_len, size_t col_len,
+i32 *Pathfinding_Attackto(i32 *move_matrix, u64 *occupymap, tnecs_entity self, size_t row_len,
+                          size_t col_len,
                           i32 range[2], i32 mode_movetile) {
     /* -- Setup output attackmap -- */
     i32 *attackmap = SDL_calloc(row_len * col_len, sizeof(*attackmap));
-    Pathfinding_Attackto_noM(attackmap, move_matrix, occupymap, row_len, col_len, range, mode_movetile);
+    Pathfinding_Attackto_noM(attackmap, move_matrix, occupymap, self, row_len, col_len, range,
+                             mode_movetile);
 
     return (attackmap);
 }
@@ -730,7 +734,8 @@ void _Pathfinding_Attackto(i32 x, i32 y,
                            i32 range[2], i32 mode_movetile) {
     /* -- Setup variables -- */
     struct Point point;
-    b32 add_point  = (mode_movetile != MOVETILE_EXCLUDE);
+    // Always add point if mode_movetile is MOVETILE_INCLUDE
+    b32 add_point = (mode_movetile != MOVETILE_EXCLUDE);
     if (mode_movetile == MOVETILE_INCLUDE) {
         attackmap[y * col_len + x] = 1;
     }
@@ -752,7 +757,7 @@ void _Pathfinding_Attackto(i32 x, i32 y,
                 if ((point.x < 0) || (point.x >= col_len)) {
                     continue;
                 }
-                if ((point.y < 0) || (point.y >= col_len)) {
+                if ((point.y < 0) || (point.y >= row_len)) {
                     continue;
                 }
 
