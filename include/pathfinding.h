@@ -150,7 +150,25 @@ void Pathfinding_Visible_noM(i32 *sightmap, i32 *blockmap, size_t row_len,
 // NOMENCLATURE: attackto alternatives
 // - assailable
 // TODO: attack to use position and range instead of movemap
-// TODO: struct input to all these functions
+
+/* -- attackto -- */
+
+// TODO: Use this
+typedef struct PathfindingAct {
+    i32             *movemap;
+    i32             *acttomap;
+    tnecs_entity    *occupymap;
+
+    i32              col_len;
+    i32              row_len;
+    i32              mode_movetile;
+    tnecs_entity     self;
+
+    Range range;
+    Point point;
+} PathfindingAct;
+extern PathfindingAct PathfindingAct_default;
+
 i32 *Pathfinding_Attackto(i32 *move_matrix, u64 *occupymap, tnecs_entity self,
                           size_t row_len, size_t col_len,
                           i32 range[2], i32 mode_movetile);
