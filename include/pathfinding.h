@@ -169,12 +169,8 @@ typedef struct PathfindingAct {
 } PathfindingAct;
 extern PathfindingAct PathfindingAct_default;
 
-i32 *Pathfinding_Attackto(i32 *move_matrix, u64 *occupymap, tnecs_entity self,
-                          size_t row_len, size_t col_len,
-                          i32 range[2], i32 mode_movetile);
-void Pathfinding_Attackto_noM(i32 *attackto_mat, i32 *move_matrix, u64 *occupymap,
-                              tnecs_entity self, size_t row_len, size_t col_len,
-                              i32 range[2], i32 mode_movetile);
+i32 *Pathfinding_Attackto(PathfindingAct path_act);
+void Pathfinding_Attackto_noM(PathfindingAct path_act);
 void _Pathfinding_Attackto(i32 x, i32 y,
                            i32 *attackmap, i32 *movemat,
                            u64 *occupymap,
