@@ -653,21 +653,19 @@ void Pathfinding_Neighbour(struct Node *open, struct Node *closed, struct Node n
 }
 
 /* -- Attackfrom -- */
-void Pathfinding_Attackfrom_noM(i32 *attackmap, i32 *movemap,
-                                size_t row_len, size_t col_len,
-                                struct Point target, i32 range[2]) {
+void Pathfinding_Attackfrom_noM(PathfindingAct path_act) {
+    // Note: path_act.point is the target
     /* -- Wipe attackmap -- */
-    for (i32 i = 0; i < row_len * col_len; i++)
-        attackmap[i] = ATTACKMAP_BLOCKED;
+    for (i32 i = 0; i < path_act.row_len * path_act.col_len; i++)
+        path_act.acttomap[i] = ATTACKMAP_BLOCKED;
 
     /* -- Trace range around target position -- */
-    struct Range Srange = {range[0], range[1]};
-    Taxicab_Circle(attackmap, 1, target.x, target.y,
-                   row_len, col_len, &Srange);
+    Taxicab_Circle(path_act.acttomap, 1, path_act.point.x, path_act.point.y,
+                   path_act.row_len, path_act.col_len, &path_act.range);
 
     /* -- Remove non-traversable tiles -- */
-    for (size_t i = 0; i < col_len * row_len; i++)
-        attackmap[i] *= movemap[i];
+    for (size_t i = 0; i < path_act.col_len * path_act.row_len; i++)
+        path_act.acttomap[i] *= path_act.movemap[i];
 }
 
 /* -- Attackto -- */
@@ -679,7 +677,7 @@ void Pathfinding_Attackfrom_noM(i32 *attackmap, i32 *movemap,
 void Pathfinding_Attackto_noM(PathfindingAct path_act) {
     /* -- Wipe attackmap -- */
     for (i32 i = 0; i < path_act.row_len * path_act.col_len; i++) {
-        attackmap[i] = ATTACKMAP_BLOCKED;
+        path_act.acttomap[i] = ATTACKMAP_BLOCKED;
     }
 
     /* -- Setup variables -- */
@@ -691,12 +689,12 @@ void Pathfinding_Attackto_noM(PathfindingAct path_act) {
         i32 x = move_list[i * TWO_D + 0];
         i32 y = move_list[i * TWO_D + 1];
 
-        if (occupymap != NULL) {
+        if (path_act.occupymap != NULL) {
             // SDL_Log("occupymap %d %d %d", x, y, occupymap[y * col_len + x]);
 
             /* Can only attack from tile if not occupied, except for SELF */
-            if ((path_act.occupymap[y * col_len + x] > TNECS_NULL) &&
-                (path_act.occupymap[y * col_len + x] != path_act.self)) {
+            if ((path_act.occupymap[y * path_act.col_len + x] > TNECS_NULL) &&
+                (path_act.occupymap[y * path_act.col_len + x] != path_act.self)) {
                 continue;
             }
         }
@@ -729,27 +727,27 @@ void _Pathfinding_Attackto(PathfindingAct path_act) {
     // Always add point if mode_movetile is MOVETILE_INCLUDE
     b32 add_point = (path_act.mode_movetile != MOVETILE_EXCLUDE);
     if (path_act.mode_movetile == MOVETILE_INCLUDE) {
-        path_act.acttomap[path_act.point.y * path_act.col_len + path_act.x] = 1;
+        path_act.acttomap[path_act.point.y * path_act.col_len + path_act.point.x] = 1;
     }
 
     /* -- Iterate over possible ranges in x -- */
     for (i32 rangex = 0; rangex <= path_act.range.max; rangex++) {
-        i32 subrangey_min = (rangex >= range[0]) ? 0 : (range[0] - rangex);
-        i32 subrangey_max = (rangex >= range[1]) ? 0 : (range[1] - rangex);
+        i32 subrangey_min = (rangex >= path_act.range.min) ? 0 : (path_act.range.min - rangex);
+        i32 subrangey_max = (rangex >= path_act.range.max) ? 0 : (path_act.range.max - rangex);
         /* -- Iterate over possible ranges in y, knowing x range -- */
         for (i32 rangey = subrangey_min; rangey <= subrangey_max; rangey++) {
-            SDL_assert((rangex + rangey) >= range[0]);
-            SDL_assert((rangex + rangey) <= range[1]);
+            SDL_assert((rangex + rangey) >= path_act.range.min);
+            SDL_assert((rangex + rangey) <= path_act.range.max);
             /* -- Iterate over range 4 combinations: x+y+, x+y-, x-y+, x-y- */
             for (i32 n = 0; n < SQUARE_NEIGHBOURS; n++) {
                 point.x = path_act.point.x + q_cycle4_pmmp(n) * rangex;
                 point.y = path_act.point.y + q_cycle4_ppmm(n) * rangey;
 
                 /* Skip if point out of bounds */
-                if ((point.x < 0) || (point.x >= col_len)) {
+                if ((point.x < 0) || (point.x >= path_act.col_len)) {
                     continue;
                 }
-                if ((point.y < 0) || (point.y >= row_len)) {
+                if ((point.y < 0) || (point.y >= path_act.row_len)) {
                     continue;
                 }
 

@@ -27,22 +27,6 @@ typedef struct Loadout {
 
 extern Loadout Loadout_default;
 
-/* --- Pathfinding --- */
-typedef struct PathfindingAct {
-    i32             *movemap;
-    i32             *acttomap;
-    tnecs_entity    *occupymap;
-
-    i32              col_len;
-    i32              row_len;
-    i32              mode_movetile;
-    tnecs_entity     self;
-
-    Range            range;
-    Point            point;
-} PathfindingAct;
-extern PathfindingAct PathfindingAct_default;
-
 /* --- Map --- */
 typedef struct MapFind {
 
@@ -1126,6 +1110,23 @@ typedef struct Arrow {
     b32 show;
 } Arrow;
 extern struct Arrow Arrow_default;
+
+/* --- Pathfinding --- */
+typedef struct PathfindingAct {
+    i32             *movemap;
+    i32             *acttomap;
+    tnecs_entity    *occupymap;
+
+    i32              col_len;
+    i32              row_len;
+    i32              mode_movetile;
+    tnecs_entity     self;
+
+    Range            range;
+    Point            point;
+} PathfindingAct;
+extern PathfindingAct PathfindingAct_default;
+
 
 
 #endif /* STRUCTS_H */
