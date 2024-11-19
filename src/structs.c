@@ -14,6 +14,7 @@ struct nmath_hexpoint_int32_t Cube_Diagonal_ym =    { 2, -1, -1};
 struct nmath_hexpoint_int32_t Cube_Diagonal_zp =    { 1, -2,  1};
 struct nmath_hexpoint_int32_t Cube_Diagonal_zm =    {-1,  2, -1};
 
+PathfindingAct PathfindingAct_default = {0};
 
 MapFind MapFind_default = {0};
 

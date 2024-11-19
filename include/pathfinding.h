@@ -152,38 +152,14 @@ void Pathfinding_Visible_noM(i32 *sightmap, i32 *blockmap, size_t row_len,
 // TODO: attack to use position and range instead of movemap
 
 /* -- attackto -- */
-
-// TODO: Use this
-typedef struct PathfindingAct {
-    i32             *movemap;
-    i32             *acttomap;
-    tnecs_entity    *occupymap;
-
-    i32              col_len;
-    i32              row_len;
-    i32              mode_movetile;
-    tnecs_entity     self;
-
-    Range range;
-    Point point;
-} PathfindingAct;
-extern PathfindingAct PathfindingAct_default;
-
-i32 *Pathfinding_Attackto(PathfindingAct path_act);
-void Pathfinding_Attackto_noM(PathfindingAct path_act);
-void _Pathfinding_Attackto(i32 x, i32 y,
-                           i32 *attackmap, i32 *movemat,
-                           u64 *occupymap,
-                           size_t row_len, size_t col_len,
-                           i32 range[2], i32 mode_movetile);
+i32 *Pathfinding_Attackto(      PathfindingAct path_act);
+void Pathfinding_Attackto_noM(  PathfindingAct path_act);
+void _Pathfinding_Attackto(     PathfindingAct path_act);
 
 /* -- Attackfrom -- */
 // Todo: Can't attack from occupied tiles
-i32 *Pathfinding_Attackfrom(i32 *movemap, size_t row_len, size_t col_len,
-                            struct Point target, i32 range[2], int mode_output);
-void Pathfinding_Attackfrom_noM(i32 *attackfrom, i32 *movemap,
-                                size_t row_len, size_t col_len,
-                                struct Point target, i32 range[2]);
+i32 *Pathfinding_Attackfrom(    PathfindingAct path_act);
+void Pathfinding_Attackfrom_noM(PathfindingAct path_act);
 
 /* -- Utils -- */
 typedef i32 *(*PathList_f)(i32 *, i32 *, size_t, struct Point, struct Point );

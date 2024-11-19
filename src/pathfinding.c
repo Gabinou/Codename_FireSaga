@@ -676,17 +676,14 @@ void Pathfinding_Attackfrom_noM(i32 *attackmap, i32 *movemap,
 //      - Useful for auras and supports as well
 //  - Note: Overwrites attackmap a couple times -> can't find which weapon
 //          can be used to attackto
-void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
-                              u64 *occupymap, tnecs_entity self,
-                              size_t row_len, size_t col_len,
-                              i32 range[2], i32 mode_movetile) {
+void Pathfinding_Attackto_noM(PathfindingAct path_act) {
     /* -- Wipe attackmap -- */
-    for (i32 i = 0; i < row_len * col_len; i++) {
+    for (i32 i = 0; i < path_act.row_len * path_act.col_len; i++) {
         attackmap[i] = ATTACKMAP_BLOCKED;
     }
 
     /* -- Setup variables -- */
-    i32 *move_list  = matrix2list(move_matrix, row_len, col_len);
+    i32 *move_list  = matrix2list(path_act.movemap, path_act.row_len, path_act.col_len);
     size_t list_len = DARR_NUM(move_list) / TWO_D;
 
     /* -- For every point in movemap -- */
@@ -698,8 +695,8 @@ void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
             // SDL_Log("occupymap %d %d %d", x, y, occupymap[y * col_len + x]);
 
             /* Can only attack from tile if not occupied, except for SELF */
-            if ((occupymap[y * col_len + x] > TNECS_NULL) &&
-                (occupymap[y * col_len + x] != self)) {
+            if ((path_act.occupymap[y * col_len + x] > TNECS_NULL) &&
+                (path_act.occupymap[y * col_len + x] != path_act.self)) {
                 continue;
             }
         }
@@ -707,41 +704,36 @@ void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
 
         // NOTE:    This call may overwrite attackmap distances
         //          Can't find which weapon was used to attack.
-        _Pathfinding_Attackto(x, y, attackmap, move_matrix, occupymap,
-                              row_len, col_len, range, mode_movetile);
+        path_act.point.x = x;
+        path_act.point.y = y;
+        _Pathfinding_Attackto(path_act);
     }
     DARR_FREE(move_list);
 }
 
-i32 *Pathfinding_Attackto(i32 *move_matrix, u64 *occupymap, tnecs_entity self, size_t row_len,
-                          size_t col_len,
-                          i32 range[2], i32 mode_movetile) {
+i32 *Pathfinding_Attackto(PathfindingAct path_act) {
     /* -- Setup output attackmap -- */
-    i32 *attackmap = SDL_calloc(row_len * col_len, sizeof(*attackmap));
-    Pathfinding_Attackto_noM(attackmap, move_matrix, occupymap, self, row_len, col_len, range,
-                             mode_movetile);
+    path_act.acttomap = SDL_calloc(path_act.row_len * path_act.col_len, sizeof(*path_act.acttomap));
+    Pathfinding_Attackto_noM(path_act);
 
-    return (attackmap);
+    return (path_act.acttomap);
 }
 
 /* -- Pathfinding_Attackto_Neighbours -- */
 // Compute manhattan distance to x,y point if it can be attacked from x,y.
 // If move_matrix is NULL, effectively attackto only from (x,y) point.
-void _Pathfinding_Attackto(i32 x, i32 y,
-                           i32 *attackmap, i32 *move_matrix,
-                           u64 *occupymap,
-                           size_t row_len, size_t col_len,
-                           i32 range[2], i32 mode_movetile) {
+void _Pathfinding_Attackto(PathfindingAct path_act) {
+    // Note: path_act.point is the starting location
     /* -- Setup variables -- */
     struct Point point;
     // Always add point if mode_movetile is MOVETILE_INCLUDE
-    b32 add_point = (mode_movetile != MOVETILE_EXCLUDE);
-    if (mode_movetile == MOVETILE_INCLUDE) {
-        attackmap[y * col_len + x] = 1;
+    b32 add_point = (path_act.mode_movetile != MOVETILE_EXCLUDE);
+    if (path_act.mode_movetile == MOVETILE_INCLUDE) {
+        path_act.acttomap[path_act.point.y * path_act.col_len + path_act.x] = 1;
     }
 
     /* -- Iterate over possible ranges in x -- */
-    for (i32 rangex = 0; rangex <= range[1]; rangex++) {
+    for (i32 rangex = 0; rangex <= path_act.range.max; rangex++) {
         i32 subrangey_min = (rangex >= range[0]) ? 0 : (range[0] - rangex);
         i32 subrangey_max = (rangex >= range[1]) ? 0 : (range[1] - rangex);
         /* -- Iterate over possible ranges in y, knowing x range -- */
@@ -750,8 +742,8 @@ void _Pathfinding_Attackto(i32 x, i32 y,
             SDL_assert((rangex + rangey) <= range[1]);
             /* -- Iterate over range 4 combinations: x+y+, x+y-, x-y+, x-y- */
             for (i32 n = 0; n < SQUARE_NEIGHBOURS; n++) {
-                point.x = x + q_cycle4_pmmp(n) * rangex;
-                point.y = y + q_cycle4_ppmm(n) * rangey;
+                point.x = path_act.point.x + q_cycle4_pmmp(n) * rangex;
+                point.y = path_act.point.y + q_cycle4_ppmm(n) * rangey;
 
                 /* Skip if point out of bounds */
                 if ((point.x < 0) || (point.x >= col_len)) {
@@ -761,15 +753,16 @@ void _Pathfinding_Attackto(i32 x, i32 y,
                     continue;
                 }
 
-                if (mode_movetile == MOVETILE_EXCLUDE) {
-                    if (move_matrix == NULL) {
+                if (path_act.mode_movetile == MOVETILE_EXCLUDE) {
+                    if (path_act.movemap == NULL) {
                         /*Add point only if different from start */
-                        add_point = (point.y != y) || (point.x != x);
+                        add_point = (point.y != path_act.point.y) ||
+                                    (point.x != path_act.point.x);
                     } else {
                         /* Add point if can't move to point */
-                        b32 movemap_blocked = (move_matrix[point.y * col_len + point.x] == MOVEMAP_BLOCKED);
+                        b32 movemap_blocked = (path_act.movemap[point.y * path_act.col_len + point.x] == MOVEMAP_BLOCKED);
                         // If tile blocked by unit, it CAN be attacked
-                        b32 unitmap_blocked = (occupymap == NULL) ? false : (occupymap[point.y * col_len + point.x] >
+                        b32 unitmap_blocked = (path_act.occupymap == NULL) ? false : (path_act.occupymap[point.y * path_act.col_len + point.x] >
                                                                              TNECS_NULL);
                         add_point = movemap_blocked || unitmap_blocked;
                     }
@@ -779,8 +772,8 @@ void _Pathfinding_Attackto(i32 x, i32 y,
                 if (!add_point)
                     continue;
 
-                i32 val = abs(point.x - x) + abs(point.y - y);
-                attackmap[point.y * col_len + point.x] = val > 0 ? val : 1;
+                i32 val = abs(point.x - path_act.point.x) + abs(point.y - path_act.point.y);
+                path_act.acttomap[point.y * path_act.col_len + point.x] = val > 0 ? val : 1;
             }
         }
     }
