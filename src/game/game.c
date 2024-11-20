@@ -669,6 +669,9 @@ void Game_Startup_Map(Game *IES) {
 void Game_Startup_Scene(Game *IES) {
     // sota->settings.args.scene
     // Get scene JSON file from
+    s8 filename = {}
+
+    jsonio_readJSON(filename, void *struct_ptr)
     SDL_Log("IMPLEMENT ME");
     exit(1);
 

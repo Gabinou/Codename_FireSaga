@@ -96,7 +96,14 @@ void Scene_Free(struct Scene *scene) {
 //     }
 // }
 
-// /* --- I/O --- */
+/* --- I/O --- */
+s8 Scene_Filename(i32 index) {
+    s8 filename = s8_mut(PATH_JOIN("..", "scenes"));
+
+
+    return(filename);
+}
+
 void Scene_readJSON(void *input, cJSON *jscene) {
     //     SDL_assert(jscene != NULL);
     //     struct Scene *scene = (struct Scene *)input;

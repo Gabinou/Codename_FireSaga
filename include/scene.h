@@ -199,6 +199,7 @@ i32     Scene_Actor_Find(Scene *scene, u16 actor);
 void    Scene_Actor_Add( Scene *scene, u16 actor);
 
 /* --- I/O --- */
+s8 Scene_Filename(int index);
 void Scene_readJSON( void *s, cJSON *js);
 void Scene_writeJSON(void *s, cJSON *js);
 
