@@ -760,7 +760,8 @@ void _Pathfinding_Attackto(PathfindingAct path_act) {
                         /* Add point if can't move to point */
                         b32 movemap_blocked = (path_act.movemap[point.y * path_act.col_len + point.x] == MOVEMAP_BLOCKED);
                         // If tile blocked by unit, it CAN be attacked
-                        b32 unitmap_blocked = (path_act.occupymap == NULL) ? false : (path_act.occupymap[point.y * path_act.col_len + point.x] >
+                        b32 unitmap_blocked = (path_act.occupymap == NULL) ? false : (path_act.occupymap[point.y *
+                                                      path_act.col_len + point.x] >
                                               TNECS_NULL);
                         add_point = movemap_blocked || unitmap_blocked;
                     }

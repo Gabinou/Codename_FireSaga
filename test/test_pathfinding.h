@@ -822,8 +822,15 @@ void test_pathfinding_attackto() {
         };
 
         i32 attacktomap[ROW_LEN * COL_LEN] = {0};
-        Pathfinding_Attackto_noM(attacktomap, movemap, NULL, TNECS_NULL, ROW_LEN, COL_LEN, range,
-                                 MOVETILE_EXCLUDE);
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap            = movemap;
+        actto.acttomap           = attacktomap;
+        actto.row_len            = ROW_LEN;
+        actto.col_len            = COL_LEN;
+        actto.range.min          = range[0];
+        actto.range.max          = range[1];
+        actto.mode_movetile      = MOVETILE_EXCLUDE;
+        Pathfinding_Attackto_noM(actto);
 
         // matrix_print(attacktomap, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
@@ -857,8 +864,13 @@ void test_pathfinding_attackto() {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
         };
 
-        _Pathfinding_Attackto(start.x, start.y, attacktomap, NULL, NULL, ROW_LEN, COL_LEN, range,
-                              MOVETILE_EXCLUDE);
+        actto.point     = start;
+        actto.movemap   = NULL;
+        actto.occupymap = NULL;
+        actto.range.min = range[0];
+        actto.range.max = range[1];
+
+        _Pathfinding_Attackto(actto);
 
         // matrix_print(attacktomap, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
@@ -892,8 +904,13 @@ void test_pathfinding_attackto() {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
         };
 
-        _Pathfinding_Attackto(start.x, start.y, attacktomap, NULL, NULL, ROW_LEN, COL_LEN, range,
-                              MOVETILE_INCLUDE);
+        actto.point             = start;
+        actto.movemap           = NULL;
+        actto.occupymap         = NULL;
+        actto.range.min = range[0];
+        actto.range.max = range[1];
+        actto.mode_movetile     = MOVETILE_INCLUDE;
+        _Pathfinding_Attackto(actto);
 
         // matrix_print(attacktomap, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
@@ -985,7 +1002,19 @@ void test_pathfinding_attackfrom() {
             nourstest_true(movemap[i] == expected_movemap[i]);
 
         i32 attackfrom[ROW_LEN * COL_LEN] = {0};
-        Pathfinding_Attackfrom_noM(attackfrom, movemap, ROW_LEN, COL_LEN, target, range);
+
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap           = movemap;
+        actto.acttomap          = attackfrom;
+        actto.row_len           = ROW_LEN;
+        actto.col_len           = COL_LEN;
+        actto.point             = target;
+        actto.range.min         = range[0];
+        actto.range.max         = range[1];
+        actto.mode_movetile     = MOVETILE_EXCLUDE;
+
+        Pathfinding_Attackfrom_noM(actto);
+
         // matrix_print(attackfrom, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackfrom[i] == expected_attackfrom[i]);
@@ -1072,7 +1101,19 @@ void test_pathfinding_attackfrom() {
             nourstest_true(movemap[i] == expected_movemap[i]);
 
         i32 attackfrom[ROW_LEN * COL_LEN] = {0};
-        Pathfinding_Attackfrom_noM(attackfrom, movemap, ROW_LEN, COL_LEN, target, range);
+
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap           = movemap;
+        actto.acttomap          = attackfrom;
+        actto.row_len           = ROW_LEN;
+        actto.col_len           = COL_LEN;
+        actto.point             = target;
+        actto.range.min         = range[0];
+        actto.range.max         = range[1];
+        actto.mode_movetile     = MOVETILE_EXCLUDE;
+
+        Pathfinding_Attackfrom_noM(actto);
+
         // matrix_print(attackfrom, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackfrom[i] == expected_attackfrom[i]);
@@ -1446,8 +1487,17 @@ void test_pathfinding_attackto_unitmap() {
 
         i32 attackto[ROW_LEN * COL_LEN] = {0};
 
-        Pathfinding_Attackto_noM(attackto, movemap, unitmap, TNECS_NULL,
-                                 ROW_LEN, COL_LEN, range, MOVETILE_INCLUDE);
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap           = movemap;
+        actto.acttomap          = attackto;
+        actto.occupymap         = unitmap;
+        actto.row_len           = ROW_LEN;
+        actto.col_len           = COL_LEN;
+        actto.range.min         = range[0];
+        actto.range.max         = range[1];
+        actto.mode_movetile     = MOVETILE_INCLUDE;
+        Pathfinding_Attackto_noM(actto);
+
         // matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);
@@ -1495,8 +1545,17 @@ void test_pathfinding_attackto_unitmap() {
 
         i32 attackto[ROW_LEN * COL_LEN] = {0};
 
-        Pathfinding_Attackto_noM(attackto, movemap, unitmap, TNECS_NULL,
-                                 ROW_LEN, COL_LEN, range, MOVETILE_INCLUDE);
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap            = movemap;
+        actto.acttomap           = attackto;
+        actto.occupymap          = unitmap;
+        actto.row_len            = ROW_LEN;
+        actto.col_len            = COL_LEN;
+        actto.range.min          = range[0];
+        actto.range.max          = range[1];
+        actto.mode_movetile      = MOVETILE_INCLUDE;
+        Pathfinding_Attackto_noM(actto);
+
         // matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);
@@ -1543,8 +1602,17 @@ void test_pathfinding_attackto_unitmap() {
 
         i32 attackto[ROW_LEN * COL_LEN] = {0};
 
-        Pathfinding_Attackto_noM(attackto, movemap, unitmap, TNECS_NULL,
-                                 ROW_LEN, COL_LEN, range, MOVETILE_INCLUDE);
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap            = movemap;
+        actto.acttomap           = attackto;
+        actto.occupymap          = unitmap;
+        actto.row_len            = ROW_LEN;
+        actto.col_len            = COL_LEN;
+        actto.range.min          = range[0];
+        actto.range.max          = range[1];
+        actto.mode_movetile      = MOVETILE_INCLUDE;
+        Pathfinding_Attackto_noM(actto);
+
         // matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);
@@ -1591,8 +1659,17 @@ void test_pathfinding_attackto_unitmap() {
 
         i32 attackto[ROW_LEN * COL_LEN] = {0};
 
-        Pathfinding_Attackto_noM(attackto, movemap, unitmap, TNECS_NULL,
-                                 ROW_LEN, COL_LEN, range, MOVETILE_INCLUDE);
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap            = movemap;
+        actto.acttomap           = attackto;
+        actto.occupymap          = unitmap;
+        actto.row_len            = ROW_LEN;
+        actto.col_len            = COL_LEN;
+        actto.range.min          = range[0];
+        actto.range.max          = range[1];
+        actto.mode_movetile      = MOVETILE_INCLUDE;
+        Pathfinding_Attackto_noM(actto);
+
         // matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);
@@ -1639,8 +1716,18 @@ void test_pathfinding_attackto_unitmap() {
         };
 
         i32 attackto[ROW_LEN * COL_LEN] = {0};
-        Pathfinding_Attackto_noM(attackto, movemap, unitmap, TNECS_NULL,
-                                 ROW_LEN, COL_LEN, range, MOVETILE_INCLUDE);
+
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap            = movemap;
+        actto.acttomap           = attackto;
+        actto.occupymap          = unitmap;
+        actto.row_len            = ROW_LEN;
+        actto.col_len            = COL_LEN;
+        actto.range.min          = range[0];
+        actto.range.max          = range[1];
+        actto.mode_movetile      = MOVETILE_INCLUDE;
+        Pathfinding_Attackto_noM(actto);
+
         // matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);
@@ -1687,8 +1774,18 @@ void test_pathfinding_attackto_unitmap() {
         };
 
         i32 attackto[ROW_LEN * COL_LEN] = {0};
-        Pathfinding_Attackto_noM(attackto, movemap, unitmap, TNECS_NULL,
-                                 ROW_LEN, COL_LEN, range, MOVETILE_EXCLUDE);
+
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap            = movemap;
+        actto.acttomap           = attackto;
+        actto.occupymap          = unitmap;
+        actto.row_len            = ROW_LEN;
+        actto.col_len            = COL_LEN;
+        actto.range.min          = range[0];
+        actto.range.max          = range[1];
+        actto.mode_movetile      = MOVETILE_EXCLUDE;
+        Pathfinding_Attackto_noM(actto);
+
         // matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);
@@ -1735,8 +1832,18 @@ void test_pathfinding_attackto_unitmap() {
         };
 
         i32 attackto[ROW_LEN * COL_LEN] = {0};
-        Pathfinding_Attackto_noM(attackto, movemap, unitmap, TNECS_NULL,
-                                 ROW_LEN, COL_LEN, range, MOVETILE_INCLUDE);
+
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap            = movemap;
+        actto.acttomap           = attackto;
+        actto.occupymap          = unitmap;
+        actto.row_len            = ROW_LEN;
+        actto.col_len            = COL_LEN;
+        actto.range.min          = range[0];
+        actto.range.max          = range[1];
+        actto.mode_movetile      = MOVETILE_INCLUDE;
+        Pathfinding_Attackto_noM(actto);
+
         // matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);
@@ -1783,8 +1890,18 @@ void test_pathfinding_attackto_unitmap() {
         };
 
         i32 attackto[ROW_LEN * COL_LEN] = {0};
-        Pathfinding_Attackto_noM(attackto, movemap, unitmap, TNECS_NULL,
-                                 ROW_LEN, COL_LEN, range, MOVETILE_EXCLUDE);
+
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap            = movemap;
+        actto.acttomap           = attackto;
+        actto.occupymap          = unitmap;
+        actto.row_len            = ROW_LEN;
+        actto.col_len            = COL_LEN;
+        actto.range.min          = range[0];
+        actto.range.max          = range[1];
+        actto.mode_movetile      = MOVETILE_EXCLUDE;
+        Pathfinding_Attackto_noM(actto);
+
         // matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);
@@ -1832,8 +1949,18 @@ void test_pathfinding_attackto_unitmap() {
         };
 
         i32 attackto[ROW_LEN * COL_LEN] = {0};
-        Pathfinding_Attackto_noM(attackto, movemap, unitmap, TNECS_NULL,
-                                 ROW_LEN, COL_LEN, range, MOVETILE_INCLUDE);
+
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap            = movemap;
+        actto.acttomap           = attackto;
+        actto.occupymap          = unitmap;
+        actto.row_len            = ROW_LEN;
+        actto.col_len            = COL_LEN;
+        actto.range.min          = range[0];
+        actto.range.max          = range[1];
+        actto.mode_movetile      = MOVETILE_INCLUDE;
+        Pathfinding_Attackto_noM(actto);
+
         // matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);
@@ -1880,8 +2007,18 @@ void test_pathfinding_attackto_unitmap() {
         };
 
         i32 attackto[ROW_LEN * COL_LEN] = {0};
-        Pathfinding_Attackto_noM(attackto, movemap, unitmap, TNECS_NULL,
-                                 ROW_LEN, COL_LEN, range, MOVETILE_EXCLUDE);
+
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap            = movemap;
+        actto.acttomap           = attackto;
+        actto.occupymap          = unitmap;
+        actto.row_len            = ROW_LEN;
+        actto.col_len            = COL_LEN;
+        actto.range.min          = range[0];
+        actto.range.max          = range[1];
+        actto.mode_movetile      = MOVETILE_EXCLUDE;
+        Pathfinding_Attackto_noM(actto);
+
         // matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);
@@ -1928,8 +2065,18 @@ void test_pathfinding_attackto_unitmap() {
         };
 
         i32 attackto[ROW_LEN * COL_LEN] = {0};
-        Pathfinding_Attackto_noM(attackto, movemap, unitmap, TNECS_NULL,
-                                 ROW_LEN, COL_LEN, range, MOVETILE_EXCLUDE);
+
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap            = movemap;
+        actto.acttomap           = attackto;
+        actto.occupymap          = unitmap;
+        actto.row_len            = ROW_LEN;
+        actto.col_len            = COL_LEN;
+        actto.range.min          = range[0];
+        actto.range.max          = range[1];
+        actto.mode_movetile      = MOVETILE_EXCLUDE;
+        Pathfinding_Attackto_noM(actto);
+
         // matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);
@@ -1977,8 +2124,18 @@ void test_pathfinding_attackto_unitmap() {
         };
 
         i32 attackto[ROW_LEN * COL_LEN] = {0};
-        Pathfinding_Attackto_noM(attackto, movemap, unitmap, TNECS_NULL,
-                                 ROW_LEN, COL_LEN, range, MOVETILE_EXCLUDE);
+
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap            = movemap;
+        actto.acttomap           = attackto;
+        actto.occupymap          = unitmap;
+        actto.row_len            = ROW_LEN;
+        actto.col_len            = COL_LEN;
+        actto.range.min          = range[0];
+        actto.range.max          = range[1];
+        actto.mode_movetile      = MOVETILE_EXCLUDE;
+        Pathfinding_Attackto_noM(actto);
+
         // matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);
@@ -2024,8 +2181,18 @@ void test_pathfinding_attackto_unitmap() {
         };
 
         i32 attackto[ROW_LEN * COL_LEN] = {0};
-        Pathfinding_Attackto_noM(attackto, movemap, unitmap, TNECS_NULL,
-                                 ROW_LEN, COL_LEN, range, MOVETILE_INCLUDE);
+
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap            = movemap;
+        actto.acttomap           = attackto;
+        actto.occupymap          = unitmap;
+        actto.row_len            = ROW_LEN;
+        actto.col_len            = COL_LEN;
+        actto.range.min          = range[0];
+        actto.range.max          = range[1];
+        actto.mode_movetile      = MOVETILE_INCLUDE;
+        Pathfinding_Attackto_noM(actto);
+
         // matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);
@@ -2073,8 +2240,18 @@ void test_pathfinding_attackto_unitmap() {
         };
 
         i32 attackto[ROW_LEN * COL_LEN] = {0};
-        Pathfinding_Attackto_noM(attackto, movemap, unitmap, TNECS_NULL,
-                                 ROW_LEN, COL_LEN, range, MOVETILE_INCLUDE);
+
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap            = movemap;
+        actto.acttomap           = attackto;
+        actto.occupymap          = unitmap;
+        actto.row_len            = ROW_LEN;
+        actto.col_len            = COL_LEN;
+        actto.range.min          = range[0];
+        actto.range.max          = range[1];
+        actto.mode_movetile      = MOVETILE_INCLUDE;
+        Pathfinding_Attackto_noM(actto);
+
         // matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);
@@ -2120,8 +2297,18 @@ void test_pathfinding_attackto_unitmap() {
         };
 
         i32 attackto[ROW_LEN * COL_LEN] = {0};
-        Pathfinding_Attackto_noM(attackto, movemap, unitmap, TNECS_NULL,
-                                 ROW_LEN, COL_LEN, range, MOVETILE_EXCLUDE);
+
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap            = movemap;
+        actto.acttomap           = attackto;
+        actto.occupymap          = unitmap;
+        actto.row_len            = ROW_LEN;
+        actto.col_len            = COL_LEN;
+        actto.range.min          = range[0];
+        actto.range.max          = range[1];
+        actto.mode_movetile      = MOVETILE_EXCLUDE;
+        Pathfinding_Attackto_noM(actto);
+
         // matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);
@@ -2167,8 +2354,16 @@ void test_pathfinding_attackto_unitmap() {
         };
 
         i32 attackto[ROW_LEN * COL_LEN] = {0};
-        Pathfinding_Attackto_noM(attackto, movemap, unitmap, TNECS_NULL,
-                                 ROW_LEN, COL_LEN, range, MOVETILE_EXCLUDE);
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap            = movemap;
+        actto.acttomap           = attackto;
+        actto.occupymap          = unitmap;
+        actto.row_len            = ROW_LEN;
+        actto.col_len            = COL_LEN;
+        actto.range.min          = range[0];
+        actto.range.max          = range[1];
+        actto.mode_movetile      = MOVETILE_EXCLUDE;
+        Pathfinding_Attackto_noM(actto);
         // matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);
@@ -2215,8 +2410,18 @@ void test_pathfinding_attackto_unitmap() {
         };
 
         i32 attackto[ROW_LEN * COL_LEN] = {0};
-        Pathfinding_Attackto_noM(attackto, movemap, unitmap, TNECS_NULL,
-                                 ROW_LEN, COL_LEN, range, MOVETILE_INCLUDE);
+
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap           = movemap;
+        actto.acttomap          = attackto;
+        actto.occupymap         = unitmap;
+        actto.row_len           = ROW_LEN;
+        actto.col_len           = COL_LEN;
+        actto.range.min         = range[0];
+        actto.range.max         = range[1];
+        actto.mode_movetile     = MOVETILE_INCLUDE;
+
+        Pathfinding_Attackto_noM(actto);
         // matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);
@@ -2262,8 +2467,18 @@ void test_pathfinding_attackto_unitmap() {
         };
 
         i32 attackto[ROW_LEN * COL_LEN] = {0};
-        Pathfinding_Attackto_noM(attackto, movemap, unitmap, TNECS_NULL,
-                                 ROW_LEN, COL_LEN, range, MOVETILE_INCLUDE);
+
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap           = movemap;
+        actto.acttomap          = attackto;
+        actto.occupymap         = unitmap;
+        actto.row_len           = ROW_LEN;
+        actto.col_len           = COL_LEN;
+        actto.range.min         = range[0];
+        actto.range.max         = range[1];
+        actto.mode_movetile     = MOVETILE_INCLUDE;
+
+        Pathfinding_Attackto_noM(actto);
         // matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);
@@ -2309,8 +2524,18 @@ void test_pathfinding_attackto_unitmap() {
         };
 
         i32 attackto[ROW_LEN * COL_LEN] = {0};
-        Pathfinding_Attackto_noM(attackto, movemap, unitmap, TNECS_NULL,
-                                 ROW_LEN, COL_LEN, range, MOVETILE_EXCLUDE);
+
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap            = movemap;
+        actto.acttomap           = attackto;
+        actto.occupymap          = unitmap;
+        actto.row_len            = ROW_LEN;
+        actto.col_len            = COL_LEN;
+        actto.range.min          = range[0];
+        actto.range.max          = range[1];
+        actto.mode_movetile      = MOVETILE_EXCLUDE;
+        Pathfinding_Attackto_noM(actto);
+
         // matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);
@@ -2356,8 +2581,18 @@ void test_pathfinding_attackto_unitmap() {
         };
 
         i32 attackto[ROW_LEN * COL_LEN] = {0};
-        Pathfinding_Attackto_noM(attackto, movemap, unitmap, TNECS_NULL,
-                                 ROW_LEN, COL_LEN, range, MOVETILE_IGNORE);
+
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap            = movemap;
+        actto.acttomap           = attackto;
+        actto.occupymap          = unitmap;
+        actto.row_len            = ROW_LEN;
+        actto.col_len            = COL_LEN;
+        actto.range.min          = range[0];
+        actto.range.max          = range[1];
+        actto.mode_movetile      = MOVETILE_IGNORE;
+        Pathfinding_Attackto_noM(actto);
+
         // matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);
@@ -2405,8 +2640,18 @@ void test_pathfinding_attackto_unitmap() {
         };
 
         i32 attackto[ROW_LEN * COL_LEN] = {0};
-        Pathfinding_Attackto_noM(attackto, movemap, unitmap, TNECS_NULL,
-                                 ROW_LEN, COL_LEN, range, MOVETILE_IGNORE);
+
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap            = movemap;
+        actto.acttomap           = attackto;
+        actto.occupymap          = unitmap;
+        actto.row_len            = ROW_LEN;
+        actto.col_len            = COL_LEN;
+        actto.range.min          = range[0];
+        actto.range.max          = range[1];
+        actto.mode_movetile      = MOVETILE_IGNORE;
+
+        Pathfinding_Attackto_noM(actto);
         // matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_healto[i]);
