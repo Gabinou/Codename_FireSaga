@@ -19,7 +19,7 @@ enum PATHFINDING_POINTS_MODE {
 enum PATHFINDING_MODE_MOVETILE {
     MOVETILE_INCLUDE    = 0,
     MOVETILE_EXCLUDE    = 1,
-    MOVETILE_IGNORE     = 2,
+    MOVETILE_IGNORE     = 2, /* Why? what does this do? */
 };
 
 /* --- About blocking --- */
