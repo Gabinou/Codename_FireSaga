@@ -161,9 +161,18 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
     /* Bug: healtolist: Illuminate tiles depending on staff TARGET.*/
     /* Bug: healtolist: don't include start tile in attacktomap, but include its NEIGHBORS.
     .*/
-    Pathfinding_Attackto_noM(*tomap, map->movemap, input_occupymap, mapto.aggressor,
-                             map->row_len, map->col_len,
-                             (i32 *)range, mapto.mode_movetile);
+
+    PathfindingAct actto    = PathfindingAct_default;
+    actto.movemap           = map->movemap;
+    actto.acttomap          = *tomap;
+    actto.occupymap         = input_occupymap;
+    actto.row_len           = map->row_len;
+    actto.col_len           = map->col_len;
+    actto.self              = mapto.aggressor;
+    actto.range             = *range;
+    actto.mode_movetile     = mapto.mode_movetile;
+
+    Pathfinding_Attackto_noM(actto);
 
     // printf("Map_Act_to occupymap\n");
     // if (input_occupymap != NULL)
@@ -222,9 +231,18 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     tnecs_entity *input_occupymap = (map_from.move == true) ? map->unitmap : NULL;
 
     /* Compute new attacktomap */
-    Pathfinding_Attackto_noM(*tomap, map->movemap, input_occupymap, map_from.aggressor,
-                             map->row_len, map->col_len,
-                             (i32 *)range, map_from.mode_movetile);
+
+    PathfindingAct actto    = PathfindingAct_default;
+    actto.movemap           = map->movemap;
+    actto.acttomap          = *tomap;
+    actto.occupymap         = input_occupymap;
+    actto.row_len           = map->row_len;
+    actto.col_len           = map->col_len;
+    actto.self              = map_from.aggressor;
+    actto.range             = *range;
+    actto.mode_movetile     = map_from.mode_movetile;
+
+    Pathfinding_Attackto_noM(actto);
 
     i32* out = NULL;
     if (map_from.output_type == ARRAY_MATRIX) {
@@ -254,9 +272,17 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_entity unit_ent) {
     _Map_Movemap_Compute(map, start, effective_move);
     struct Range *range = Unit_Range_Equipment(unit, ITEM_ARCHETYPE_WEAPON);
 
-    Pathfinding_Attackto_noM(map->attacktomap, map->movemap, map->unitmap, unit_ent,
-                             map->row_len, map->col_len,
-                             (i32 *)range, MOVETILE_INCLUDE);
+    PathfindingAct actto    = PathfindingAct_default;
+    actto.movemap           = map->movemap;
+    actto.acttomap          = map->attacktomap;
+    actto.occupymap         = map->unitmap;
+    actto.row_len           = map->row_len;
+    actto.col_len           = map->col_len;
+    actto.self              = unit_ent;
+    actto.range             = *range;
+    actto.mode_movetile     = MOVETILE_INCLUDE;
+
+    Pathfinding_Attackto_noM(actto);
 
     // memset(map->temp, 0, sizeof(*map->temp)*map->row_len * map->col_len);
     map->temp = matrix_plus_noM(map->temp, map->attacktomap, map->row_len * map->col_len);
@@ -413,10 +439,18 @@ void Map_globalRange(struct Map *map, u8 alignment) {
         Map_Costmap_Movement_Compute(map, unit_entities[i]);
         Pathfinding_Moveto_noM(map->movemap, map->costmap, map->row_len,
                                map->col_len, start, move);
-        Pathfinding_Attackto_noM(map->attacktomap, map->movemap,
-                                 map->unitmap, unit_entities[i],
-                                 map->row_len, map->col_len,
-                                 (i32 *)range, MOVETILE_INCLUDE);
+
+        PathfindingAct actto    = PathfindingAct_default;
+        actto.movemap           = map->movemap;
+        actto.acttomap          = map->attacktomap;
+        actto.occupymap         = map->unitmap;
+        actto.row_len           = map->row_len;
+        actto.col_len           = map->col_len;
+        actto.self              = unit_entities[i];
+        actto.range             = *range;
+        actto.mode_movetile     = MOVETILE_INCLUDE;
+
+        Pathfinding_Attackto_noM(actto);
         map->global_rangemap = matrix_plus_noM(map->global_rangemap, map->attacktomap,
                                                map->row_len * map->col_len);
     }

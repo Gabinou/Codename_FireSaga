@@ -411,11 +411,20 @@ void Map_Perimeter_Draw_Danger(struct Map *map, struct Settings *settings, struc
 void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
                              struct Camera  *camera, struct Point pos,
                              struct Range    range,  int colori) {
-    i32 *rangearr = (i32 *)&range;
     i32 include = range.min == 0 ? MOVETILE_INCLUDE : MOVETILE_EXCLUDE;
     memset(map->temp, 0, map->row_len * map->col_len * sizeof(*map->temp));
-    _Pathfinding_Attackto(pos.x, pos.y, map->temp, NULL, NULL, map->row_len, map->col_len,
-                          rangearr, include);
+
+    PathfindingAct actto    = PathfindingAct_default;
+    actto.acttomap          = map->temp;
+    actto.movemap           = NULL;
+    actto.occupymap         = NULL;
+    actto.row_len           = map->row_len;
+    actto.col_len           = map->col_len;
+    actto.point             = pos;
+    actto.range             = range;
+    actto.mode_movetile     = include;
+
+    _Pathfinding_Attackto(actto);
 
     size_t bytesize = sizeof(struct Padding);
     Map_Perimeter(map->edges_danger, map->temp, map->row_len, map->col_len);
