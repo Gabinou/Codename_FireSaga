@@ -667,11 +667,13 @@ void Game_Startup_Map(Game *IES) {
 }
 
 void Game_Startup_Scene(Game *IES) {
-    // sota->settings.args.scene
     // Get scene JSON file from
-    s8 filename = {}
+    s8 filename = Scene_Filename(IES->settings.args.scene);
+    SDL_Log("%s", filename.data);
 
-    jsonio_readJSON(filename, void *struct_ptr)
+    struct Scene scene = Scene_default 
+    jsonio_readJSON(filename, &scene);
+    
     SDL_Log("IMPLEMENT ME");
     exit(1);
 

@@ -5,11 +5,7 @@
 // #endif // STB_SPRINTF_IMPLEMENTATION
 
 struct Scene Scene_default =  {
-    //     .json_element   = JSON_SCENE,
-    //     .lines_raw      = NULL,
-    //     .with           = NULL,
-    //     .speakers       = NULL,
-    //     .actors_num     = 0,
+    .json_element   = JSON_SCENE,
 };
 
 
@@ -97,14 +93,27 @@ void Scene_Free(struct Scene *scene) {
 // }
 
 /* --- I/O --- */
+s8 Scene_Filename_Chapter(i32 chapter, i32 subindex) {
+    // TODO: checking validit
+    return (Scene_Filename(chapter * SCENE_DIVISOR + subindex));
+}
+
 s8 Scene_Filename(i32 index) {
-    s8 filename = s8_mut(PATH_JOIN("..", "scenes"));
+    // TODO: checking validity
+    s8 filename = s8_mut(PATH_JOIN("..", "scenes/"));
+    char numbuff[8];
+    stbsp_sprintf(numbuff, "%05d\0\0\0", index);
+    filename = s8cat(filename, s8_literal("scene"));
+    filename = s8cat(filename, s8_var(numbuff));
+    filename = s8cat(filename, s8_literal(".json"));
 
-
-    return(filename);
+    return (filename);
 }
 
 void Scene_readJSON(void *input, cJSON *jscene) {
+
+
+
     //     SDL_assert(jscene != NULL);
     //     struct Scene *scene = (struct Scene *)input;
     //     Scene_Free(scene);

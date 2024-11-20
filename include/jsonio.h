@@ -13,7 +13,6 @@
 #include "map/map.h"
 #include "unit/party.h"
 #include "camp.h"
-// #include "sprite.h"
 #include "utilities.h"
 #include "supports.h"
 #include "names.h"
@@ -27,6 +26,14 @@ struct Conditions;
 
 /* --- TYPEDEFS --- */
 typedef void (*json_func)(void *, cJSON *);
+
+/* --- JSON HEADER --- */
+// All structs that use jsonio need this header as the first element
+// TODO: use jsonIO_Header everywhere.
+typedef struct jsonIO_Header {
+    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
+    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
+};
 
 /* --- READERS & WRITERS --- */
 extern json_func json_read_funcs [JSON_END];
@@ -60,7 +67,7 @@ void Point_readJSON(            void *input, struct cJSON *j);
 void Unit_stats_readJSON(       void *input, struct cJSON *j);
 void Item_stats_readJSON(       void *input, struct cJSON *j);
 void Weapon_stats_readJSON(     void *input, struct cJSON *j);
-void Movement_cost_readJSON(   void *input, struct cJSON *j);
+void Movement_cost_readJSON(    void *input, struct cJSON *j);
 void Inventory_item_readJSON(   void *input, struct cJSON *j);
 void Computed_Stats_readJSON(   void *input, struct cJSON *j);
 
@@ -82,8 +89,8 @@ void Item_stats_writeJSON(      void *input, struct cJSON *j);
 void Unit_stats_writeJSON(      void *input, struct cJSON *j);
 void Tile_stats_writeJSON(      void *input, struct cJSON *j);
 void Weapon_stats_writeJSON(    void *input, struct cJSON *j);
+void Movement_cost_writeJSON(   void *input, struct cJSON *j);
 void Inventory_item_writeJSON(  void *input, struct cJSON *j);
-void Movement_cost_writeJSON(  void *input, struct cJSON *j);
 void Computed_Stats_writeJSON(  void *input, struct cJSON *j);
 
 /* -- Print -- */

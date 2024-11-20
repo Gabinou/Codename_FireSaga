@@ -33,6 +33,7 @@
 //      - Speaker movement
 //          - Basic slides
 
+// Scene index = chapter * SCENE_DIVISOR + scene_sub_index
 //
 
 /* ---------------------------------- Scene --------------------------------- */
@@ -199,7 +200,8 @@ i32     Scene_Actor_Find(Scene *scene, u16 actor);
 void    Scene_Actor_Add( Scene *scene, u16 actor);
 
 /* --- I/O --- */
-s8 Scene_Filename(int index);
+s8 Scene_Filename_Chapter(i32 chapter, i32 subindex);
+s8 Scene_Filename(i32 index);
 void Scene_readJSON( void *s, cJSON *js);
 void Scene_writeJSON(void *s, cJSON *js);
 
