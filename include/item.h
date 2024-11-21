@@ -87,11 +87,12 @@ enum ITEM_EFFECTS_ORDER {
 };
 #undef REGISTER_ENUM
 
+extern use_function_t item_effect_funcs[ITEM_EFFECT_NUM];
+extern i16            item_effect_ids  [ITEM_EFFECT_NUM];
+
 #define REGISTER_ENUM(x, y) i32 useEffect_##x(struct Item *i, struct Unit *u, struct Unit *t);
 #include "names/items_effects.h"
 #undef REGISTER_ENUM
 
-extern use_function_t item_effect_funcs[ITEM_EFFECT_NUM];
-extern i16            item_effect_ids  [ITEM_EFFECT_NUM];
 
 #endif /* ITEM_H */

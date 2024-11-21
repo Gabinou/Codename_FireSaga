@@ -25,6 +25,14 @@ typedef struct Loadout {
     i32 _loadout[MAX_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 } Loadout;
 
+/* --- JSON HEADER --- */
+// All structs that use jsonio need this header as the first element
+// TODO: use jsonIO_Header everywhere.
+typedef struct jsonIO_Header {
+    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
+    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
+} jsonIO_Header;
+
 extern Loadout Loadout_default;
 
 /* --- Map --- */
@@ -502,8 +510,9 @@ struct AI_State {
 extern struct AI_State AI_State_default;
 
 typedef struct Convoy {
-    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
-    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
+    struct jsonIO_Header jsonio_header;
+    // s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
+    // u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
 
     struct dtab *weapons_dtab;
 

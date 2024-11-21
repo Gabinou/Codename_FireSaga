@@ -42,14 +42,6 @@ enum JSON_bOFFSET {
 /* --- TYPEDEFS --- */
 typedef void (*json_func)(void *, cJSON *);
 
-/* --- JSON HEADER --- */
-// All structs that use jsonio need this header as the first element
-// TODO: use jsonIO_Header everywhere.
-typedef struct jsonIO_Header {
-    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
-    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
-} jsonIO_Header;
-
 /* --- READERS & WRITERS --- */
 extern json_func json_read_funcs [JSON_END];
 extern json_func json_write_funcs[JSON_END];

@@ -2,8 +2,8 @@
 #include "convoy.h"
 
 struct Convoy Convoy_default = {
-    .json_element    = JSON_CONVOY,
-    .json_filename   = {0},
+    .jsonio_header.json_element    = JSON_CONVOY,
+    .jsonio_header.json_filename   = {0},
 
     .books  = {0},
     .items  = {0},
@@ -17,7 +17,7 @@ struct Convoy Convoy_default = {
 };
 
 void Convoy_Free( struct Convoy *convoy) {
-    s8_free(&convoy->json_filename);
+    s8_free(&convoy->jsonio_header.json_filename);
 }
 
 void Convoy_Clear(struct Convoy *in_convoy) {
