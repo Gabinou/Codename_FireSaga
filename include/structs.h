@@ -511,8 +511,6 @@ extern struct AI_State AI_State_default;
 
 typedef struct Convoy {
     struct jsonIO_Header jsonio_header;
-    // s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
-    // u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
 
     struct dtab *weapons_dtab;
 
@@ -635,8 +633,7 @@ struct Support {
 };
 
 typedef struct Unit {
-    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
-    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
+    struct jsonIO_Header jsonio_header;
 
     i16 class;
     i8  mvt_type;
@@ -881,8 +878,7 @@ extern struct KeyboardInputMap KeyboardInputMap_default;
 /* --- Party --- */
 /* Just for JSON loading */
 struct Party {
-    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
-    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
+    struct jsonIO_Header jsonio_header;
 
     s8   folder;
 
@@ -1060,8 +1056,7 @@ typedef struct Game {
 extern struct Game Game_default;
 
 typedef struct Item {
-    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
-    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
+    struct jsonIO_Header jsonio_header;
 
     u8 target;  /* units by which item is usable. */
     struct Range range;
@@ -1091,8 +1086,7 @@ typedef struct Item {
 extern struct Item Item_default;
 
 typedef struct Weapon {
-    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
-    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
+    struct jsonIO_Header jsonio_header;
 
     u8 handedness;
     u8 subtype;        /* ex: thrust swords     */

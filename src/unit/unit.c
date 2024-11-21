@@ -60,7 +60,7 @@ int  class_mvt_types[UNIT_CLASS_END] = {
 };
 
 struct Unit Unit_default = {
-    .json_element   = JSON_UNIT,
+    .jsonio_header.json_element   = JSON_UNIT,
     .mvt_type       = UNIT_MVT_FOOT_SLOW,
     .class          = UNIT_CLASS_VILLAGER,
 
@@ -83,7 +83,7 @@ struct Unit Unit_default = {
 };
 
 struct Unit Nibal_unit = {
-    .json_element = JSON_UNIT,
+    .jsonio_header.json_element = JSON_UNIT,
     /*              hp str mag agi dex fth luck def res con move prof */
     .base_stats     = {35, 20, 20, 18, 25, 14, 12, 18, 22, 30, 06, 15},
 
@@ -191,8 +191,8 @@ void Unit_Free(struct Unit *unit) {
         DARR_FREE(unit->status_queue);
         unit->status_queue = NULL;
     }
-    if (unit->json_filename.data != NULL)
-        s8_free(&unit->json_filename);
+    if (unit->jsonio_header.json_filename.data != NULL)
+        s8_free(&unit->jsonio_header.json_filename);
     s8_free(&unit->name);
     s8_free(&unit->title);
     s8_free(&unit->ai_filename);

@@ -26,7 +26,7 @@ struct Conditions;
 
 /* --- ENUMS --- */
 enum JSON_bOFFSET {
-    // bOFFSET: offset in bytes
+    // bOFFSET: offset in bytes-
     // HOWTO: for a WHAT in a struct
     // char * byte_ptr = (char *)struct_ptr
     // WHAT * what = (WHAT *)(byte_ptr + bOFFSET)

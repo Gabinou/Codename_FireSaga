@@ -3,7 +3,7 @@
 
 /* Note: magic weapons EXPLODE if infused */
 struct Weapon Weapon_default = {
-    .json_element   = JSON_WEAPON,
+    .jsonio_header.json_element   = JSON_WEAPON,
 
     .handedness   = WEAPON_HAND_ANY,
     .subtype      = WEAPON_SUBTYPE_NONE,
@@ -26,7 +26,7 @@ void Weapon_Free(struct Weapon *weapon) {
         return;
     }
 
-    s8_free(&weapon->json_filename);
+    s8_free(&weapon->jsonio_header.json_filename);
 
     if (weapon->item == NULL) {
         return;
@@ -140,12 +140,12 @@ void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
     filename    = Weapon_Filename(filename, id);
 
     struct Weapon temp_weapon = Weapon_default;
-    SDL_assert(temp_weapon.json_element == JSON_WEAPON);
+    SDL_assert(temp_weapon.jsonio_header.json_element == JSON_WEAPON);
 
     /* - read weapon - */
-    SDL_assert(temp_weapon.json_filename.data == NULL);
+    SDL_assert(temp_weapon.jsonio_header.json_filename.data == NULL);
     jsonio_readJSON(filename, &temp_weapon);
-    SDL_assert(temp_weapon.json_filename.data != NULL);
+    SDL_assert(temp_weapon.jsonio_header.json_filename.data != NULL);
     SDL_assert(temp_weapon.item != NULL);
 
     temp_weapon.item->type = 1 << (id / ITEM_DIVISOR);

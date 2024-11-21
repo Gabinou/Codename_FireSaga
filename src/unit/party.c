@@ -2,9 +2,9 @@
 #include "unit/party.h"
 
 struct Party Party_default =  {
-    .json_element   = JSON_PARTY,
+    .jsonio_header.json_element   = JSON_PARTY,
+    .jsonio_header.json_filename  = {0},
     .size           = 0,
-    .json_filename  = {0},
     .folder         = {0},
     .entities       = {0},
     .json_names     = NULL,
@@ -42,7 +42,7 @@ void Party_Free(struct Party *party) {
     }
 
     s8_free(&party->folder);
-    s8_free(&party->json_filename);
+    s8_free(&party->jsonio_header.json_filename);
 }
 
 void Party_Init( struct Party *party) {

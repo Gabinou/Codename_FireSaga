@@ -2,8 +2,8 @@
 #include "item.h"
 
 struct Item Item_default = {
-    .json_element   = JSON_ITEM,
-    .json_filename  = {0},
+    .jsonio_header.json_element   = JSON_ITEM,
+    .jsonio_header.json_filename  = {0},
 
     .aura           = {0},
     .id             = 0, // 0 means empty.
@@ -303,7 +303,7 @@ void Item_Load(struct dtab *items_dtab, i16 id) {
     filename    = Item_Filename(filename, id);
 
     struct Item temp_item = Item_default;
-    SDL_assert(temp_item.json_element == JSON_ITEM);
+    SDL_assert(temp_item.jsonio_header.json_element == JSON_ITEM);
 
     /* - read weapon - */
     jsonio_readJSON(filename, &temp_item);
@@ -511,7 +511,7 @@ void Item_Free(struct Item *item) {
         DARR_FREE(item->users);
         item->users = NULL;
     }
-    s8_free(&item->json_filename);
+    s8_free(&item->jsonio_header.json_filename);
     s8_free(&item->name);
 }
 
