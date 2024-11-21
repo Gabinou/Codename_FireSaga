@@ -671,9 +671,9 @@ void Game_Startup_Scene(Game *IES) {
     s8 filename = Scene_Filename(IES->settings.args.scene);
     SDL_Log("%s", filename.data);
 
-    struct Scene scene = Scene_default 
+    struct Scene scene = Scene_default;
     jsonio_readJSON(filename, &scene);
-    
+
     SDL_Log("IMPLEMENT ME");
     exit(1);
 
