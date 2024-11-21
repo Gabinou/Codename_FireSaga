@@ -24,6 +24,21 @@ struct Mobj_Link;
 struct Breakable;
 struct Conditions;
 
+/* --- ENUMS --- */
+enum JSON_bOFFSET {
+    // bOFFSET: offset in bytes
+    // HOWTO: for a WHAT in a struct
+    // char * byte_ptr = (char *)struct_ptr
+    // WHAT * what = (WHAT *)(byte_ptr + bOFFSET)
+    // In words:
+    // Cast struct pointer to bytes, bOFFSET it, cast to WHAT is at bOFFSET
+    JSON_FILENAME_bOFFSET   = 0,
+    JSON_ELEM_bOFFSET       = 24, /* for u8 in json read/writable structs  */
+
+    // STRUCT ALIGNMENT -> s8 is 8-byte aligned because >
+    // json_element before json_filename -> 7 bytes padding for alignment!
+};
+
 /* --- TYPEDEFS --- */
 typedef void (*json_func)(void *, cJSON *);
 
@@ -33,7 +48,7 @@ typedef void (*json_func)(void *, cJSON *);
 typedef struct jsonIO_Header {
     s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
     u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
-};
+} jsonIO_Header;
 
 /* --- READERS & WRITERS --- */
 extern json_func json_read_funcs [JSON_END];
