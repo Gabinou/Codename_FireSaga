@@ -1,0 +1,16 @@
+{
+    "Scene":
+    [
+        {"Line": {"Erwann": "Hello."}},
+        {"Condition": {"Erwann": "alive"}},
+        {"Condition": {"Erwann": "dead"}},
+        {"Line": {"Erwann": "Can't be satisfied. Does not show up."}},
+        {"Condition": {"Erwann": "dead"}},
+        {"Line": {"Erwann": "The dead do not speak.  Does not show up."}},
+        {"Condition": {"Silou": "dead"}},
+        {"Line": {"Erwann": "Silou is actually alive.  Does not show up."}},
+        {"Condition": {"Silou": "alive"}},
+        {"Line": {"Erwann": "Silou is actually alive!"}},
+        {"Slide": [10,10,10,10]}
+    ]
+}
