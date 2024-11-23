@@ -11,6 +11,11 @@
         {"Line": {"Erwann": "Silou is actually alive.  Does not show up."}},
         {"Condition": {"Silou": "alive"}},
         {"Line": {"Erwann": "Silou is actually alive!"}},
-        {"Slide": [10,10,10,10]}
+        {"Slide": {"Silou": [10,10,10,10]}}
+        {"Condition": {"Silou": "dead"}},
+        {"Line": {"Silou": "I slid."}},
+        {"Condition": {"Silou": "dead"}},
+        {"Slide": {"Silou": [10,10,10,10]}}
+        {"Line": {"Silou": "I did not slide."}},
     ]
 }
