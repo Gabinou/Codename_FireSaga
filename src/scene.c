@@ -52,7 +52,8 @@ s8 Scene_Filename_Chapter(i32 chapter, i32 subindex) {
 
 s8 Scene_Filename(i32 index) {
     // TODO: checking validity
-    s8 filename = s8_mut(PATH_JOIN("..", "scenes/"));
+    // s8 filename = s8_mut(PATH_JOIN("..", "scenes/"));
+    s8 filename = s8_mut("scenes/");
     char numbuff[8];
     stbsp_sprintf(numbuff, "%05d\0\0\0", index);
     filename = s8cat(filename, s8_literal("scene"));
@@ -90,7 +91,7 @@ i32 Scene_Statement_Type(cJSON *jstatement) {
     return (SCENE_STATEMENT_START);
 }
 
-void Scene_Didasdalie_readJSON(void *input, cJSON *jdid) {
+void Scene_Didascalie_readJSON(void *input, cJSON *jdid) {
     Scene *scene = input;
 }
 
@@ -104,8 +105,27 @@ void Scene_Didascalie_writeJSON(void *input, cJSON *jdid) {
 
 }
 
-void Scene_Conditions_writeJSON(void *input, cJSON *jcond) {
+void Scene_Condition_writeJSON(void *input, cJSON *jcond) {
     Scene *scene = input;
+
+}
+
+void Scene_Background_writeJSON(void *c, cJSON *jc) {
+
+}
+void Scene_Background_readJSON( void *c, cJSON *jc) {
+
+}
+void Scene_Music_readJSON( void *c, cJSON *jc) {
+
+}
+void Scene_Music_writeJSON(void *c, cJSON *jc) {
+
+}
+void Scene_Line_readJSON( void *c, cJSON *jc) {
+
+}
+void Scene_Line_writeJSON(void *c, cJSON *jc) {
 
 }
 
