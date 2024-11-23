@@ -90,6 +90,10 @@ enum SCENE_STATEMENTS {
 typedef void (*fsm_scene_statement_t)(void *);
 extern fsm_scene_statement_t scene_statement_play[SCENE_STATEMENT_NUM];
 
+typedef struct SceneHeader {
+  i32 statement_type; ;  /* bOFFSET = 0  (+ 4) */
+
+} SceneHeader;
 
 /* -- Didascalie (theater vocabulary) -- */
 // - Note to actors of a scene about what to *do* during a scene
@@ -103,7 +107,7 @@ extern fsm_scene_statement_t scene_statement_play[SCENE_STATEMENT_NUM];
 //  - Animate
 //      - Fade in, fade out
 struct SceneDidascalie {
-    i32 type;  /* SCENE_STATEMENT_bOFFSET = 0  (+ 4) */
+    SceneHeader scene_header;
 
     /* -- Condition to play statement -- */
     struct Conditions    cond;
@@ -112,6 +116,7 @@ extern struct SceneDidascalie SceneDidascalie_default;
 extern struct SceneDidascalie SceneDidascalie_FadeAll;
 
 struct SceneLine {
+    SceneHeader scene_header;
     i32 type;  /* SCENE_STATEMENT_bOFFSET = 0  (+ 4) */
 
     s8 speaker;
@@ -123,8 +128,7 @@ struct SceneLine {
 extern struct SceneLine SceneLine_default;
 
 struct SceneMusic {
-    i32 type;  /* SCENE_STATEMENT_bOFFSET = 0  (+ 4) */
-
+    i32 type
     /* -- Condition to play statement -- */
     struct Conditions    cond;
 };
@@ -156,11 +160,13 @@ extern struct SceneBackground SceneBackground_FadeToBlack;
 *   - Text bubbles with scrollling text
 */
 typedef struct Scene {
-    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
-    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
-
+    jsonIO_Header jsonio_header;
+    
     /* -- Condition to play scene -- */
-    struct Conditions    cond;
+    struct Conditions    scene_cond;
+   
+    /* -- Current game condition -- */
+    struct Conditions    game_cond;
 
     u16 *actors;
 

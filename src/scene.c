@@ -48,8 +48,16 @@ s8 Scene_Filename(i32 index) {
 }
 
 void Scene_readJSON(void *input, cJSON *jscene) {
-
-
+    /* --- Conditions for Scene --- */
+  
+    /* --- Scene Array --- */
+   
+    /* -- Line array elem -- */
+    /* -- Condition array elem -- */
+    /* -- Didascalie array elem -- */
+    /* -- Music array elem -- */
+    /* -- Background array elem -- */
+    
 }
 
 void Didasdalie_readJSON(void *input, cJSON *jdid) {
