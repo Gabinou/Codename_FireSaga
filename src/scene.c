@@ -71,7 +71,12 @@ void Scene_readJSON(void *input, cJSON *jscene) {
     for (int i = 0; i < statement_num; i++) {
         struct cJSON *jstatement = cJSON_GetArrayItem(jscene, i);
         i32 statement_type = Scene_Statement_Type(jstatement);
-        // fsm_Scene_readJSON[statement_type](input, jstatement);
+
+        if ((statement_type > SCENE_STATEMENT_START) &&
+            (statement_type < SCENE_STATEMENT_NUM)) {
+            fsm_Scene_readJSON[statement_type](input, jstatement);
+
+        }
     }
     /* -- Line array elem -- */
     /* -- Condition array elem -- */
@@ -82,13 +87,29 @@ void Scene_readJSON(void *input, cJSON *jscene) {
 }
 
 i32 Scene_Statement_Type(cJSON *jstatement) {
-    SDL_Log("jstatement->string %s", jstatement->string);
-    if (s8equal(s8_literal("Line"), s8_var(jstatement->string))) {
+    cJSON *jline = cJSON_GetObjectItem(jstatement, "Line");
+    if (jline != NULL) {
+        SDL_Log("Is a Line");
         return (SCENE_STATEMENT_LINE);
     }
 
+    cJSON *jcondition = cJSON_GetObjectItem(jstatement, "Condition");
+    if (jcondition != NULL) { 
+        SDL_Log("Is a Condition");
+        return (SCENE_STATEMENT_CONDITION);
+    }
 
+    if (Scene_Didascalie_Type(jstatement) >= 0) {
+        SDL_Log("Is a Didascalie");
+        return (SCENE_STATEMENT_DIDASCALIE);
+    }
+
+    SDL_Log("Unknown statement");
     return (SCENE_STATEMENT_START);
+}
+
+i32 Scene_Didascalie_Type(cJSON *jstatement) {
+
 }
 
 void Scene_Didascalie_readJSON(void *input, cJSON *jdid) {
