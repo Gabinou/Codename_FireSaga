@@ -209,9 +209,16 @@ s8 Scene_Filename(i32 index);
 void Scene_readJSON( void *s, cJSON *js);
 void Scene_writeJSON(void *s, cJSON *js);
 
-// TODO: Split into non human readable conditions/hashes for game
-void Conditions_readJSON( void *c, cJSON *jc);
-void Conditions_writeJSON(void *c, cJSON *jc);
+void Scene_Background_readJSON( void *c, cJSON *jc);
+void Scene_Background_writeJSON(void *c, cJSON *jc);
+void Scene_Music_readJSON( void *c, cJSON *jc);
+void Scene_Music_writeJSON(void *c, cJSON *jc);
+void Scene_Line_readJSON( void *c, cJSON *jc);
+void Scene_Line_writeJSON(void *c, cJSON *jc);
+void Scene_Didascalie_readJSON( void *c, cJSON *jc);
+void Scene_Didascalie_writeJSON(void *c, cJSON *jc);
+void Scene_Condition_readJSON(  void *c, cJSON *jc);
+void Scene_Conditions_writeJSON(void *c, cJSON *jc);
 
 /* -- Load all scenes with conditions -- */
 struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_concs,
