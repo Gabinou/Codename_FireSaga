@@ -5,7 +5,7 @@
 // #endif // STB_SPRINTF_IMPLEMENTATION
 
 struct Scene Scene_default =  {
-    .json_element   = JSON_SCENE,
+    .scene_header.json_element   = JSON_SCENE,
 };
 
 json_func fsm_Scene_readJSON[SCENE_STATEMENT_NUM] = {
@@ -23,7 +23,6 @@ json_func fsm_Scene_writeJSON[SCENE_STATEMENT_NUM] = {
   Scene_Background_writeJSON,
   Scene_Music_writeJSON,
 };
-
 
 void Scene_Init(struct Scene *scene) {
     SDL_assert(scene != NULL);
@@ -47,7 +46,7 @@ void Scene_Free(struct Scene *scene) {
 
 /* --- I/O --- */
 s8 Scene_Filename_Chapter(i32 chapter, i32 subindex) {
-    // TODO: checking validit
+    // TODO: checking validity
     return (Scene_Filename(chapter * SCENE_DIVISOR + subindex));
 }
 
@@ -67,7 +66,12 @@ void Scene_readJSON(void *input, cJSON *jscene) {
     /* --- Conditions for Scene --- */
   
     /* --- Scene Array --- */
-   
+   i32 statement_num = cJSON_GetArraySize(jscene);
+   for (int i = 0; i < statement_num; i++) {
+      struct cJSON *jstatement = cJSON_GetArrayItem(jscene, i);
+      int statement_type =;
+      fsm_Scene_readJSON[statement_type](input, jstatement);
+   }
     /* -- Line array elem -- */
     /* -- Condition array elem -- */
     /* -- Didascalie array elem -- */
@@ -76,19 +80,31 @@ void Scene_readJSON(void *input, cJSON *jscene) {
     
 }
 
-void Didasdalie_readJSON(void *input, cJSON *jdid) {
+i32 Scene_Statement_Type(cJSON *jstatement) {
+  if () {
+    return(SCENE_STATEMENT_LINE);
+  }
+  
+  
+  return(SCENE_STATEMENT_START);
+}
+
+void Scene_Didasdalie_readJSON(void *input, cJSON *jdid) {
+  Scene *scene = input;
+}
+
+void Scene_Condition_readJSON(void *input, cJSON *jcond) {
+  Scene *scene = input;
+
+}
+
+void Scene_Didascalie_writeJSON(void *input, cJSON *jdid) {
+  Scene *scene = input;
   
 }
 
-void Condition_readJSON(void *input, cJSON *jcond) {
-
-}
-
-void Didascalie_writeJSON(void *input, cJSON *jdid) {
-  
-}
-
-void Conditions_writeJSON(void *input, cJSON *jcond) {
+void Scene_Conditions_writeJSON(void *input, cJSON *jcond) {
+  Scene *scene = input;
 
 }
 
@@ -100,33 +116,6 @@ void Scene_Finish(struct Scene *scene, struct Game *sota) {
     Event_Emit(__func__, SDL_USEREVENT, scene->event, NULL, NULL);
 }
 
-void Scene_Next_Line(struct Scene *scene, struct Game *sota) {
-    /* - Get next statement type, play it if its not a - */
-    struct SceneLine *next_line = NULL;
-    /* TODO: enable when ready to play statements */
-#if 0
-    u64 statement_num = DARR_NUM(scene->statements);
-    while (scene->statement < statement_num) {
-        void    *statement  = scene->statements[scene->statement++]
-                              i32     * type       = (i32 *)statement;
-        SDL_assert((*type) > SCENE_STATEMENT_START);
-        SDL_assert((*type) < SCENE_STATEMENT_NUM);
-        if ((*type) == SCENE_STATEMENT_LINE) {
-            next_line = (struct SceneLine *)statement;
-            break;
-        } else {
-            scene_statement_play[(*type)](statement);
-        }
-    }
-#endif
-
-    /* - Skip current line if in the middle of rendering - */
-
-    /* - No more lines - */
-    if (next_line == NULL) {
-        Scene_Finish(scene, sota);
-    }
-}
 
 // /* --- Animate --- */
 // void _Scene_Animate_Actors(        struct Scene *scene) {
