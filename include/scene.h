@@ -81,9 +81,11 @@ enum SCENE_STATEMENTS {
     SCENE_STATEMENT_CONDITION   =  2,
     SCENE_STATEMENT_BACKGROUND  =  3,
     SCENE_STATEMENT_MUSIC       =  4,
-    SCENE_STATEMENT_NUM         =  5,
+    SCENE_STATEMENT_NUM         =  5
 };
 
+/* --- TYPEDEFS --- */
+typedef void (*json_func)(void *, cJSON *);
 
 // Scene FSMs
 extern json_func fsm_Scene_readJSON[SCENE_STATEMENT_NUM];
@@ -94,7 +96,7 @@ typedef void (*fsm_scene_statement_t)(void *);
 extern fsm_scene_statement_t scene_statement_play[SCENE_STATEMENT_NUM];
 
 typedef struct SceneHeader {
-  i32 statement_type; ;  /* bOFFSET = 0  (+ 4) */
+    i32 statement_type; ;  /* bOFFSET = 0  (+ 4) */
 
 } SceneHeader;
 
@@ -130,7 +132,7 @@ struct SceneLine {
 extern struct SceneLine SceneLine_default;
 
 struct SceneMusic {
-     SceneHeader scene_header;
+    SceneHeader scene_header;
     /* -- Condition to play statement -- */
 };
 extern struct SceneBackground SceneMusic_default;
@@ -159,10 +161,10 @@ extern struct SceneBackground SceneBackground_FadeToBlack;
 */
 typedef struct Scene {
     jsonIO_Header jsonio_header;
-    
+
     /* -- Condition to play scene -- */
     struct Conditions    scene_cond;
-   
+
     /* -- Current game condition -- */
     struct Conditions    game_cond;
 
@@ -218,7 +220,7 @@ void Scene_Line_writeJSON(void *c, cJSON *jc);
 void Scene_Didascalie_readJSON( void *c, cJSON *jc);
 void Scene_Didascalie_writeJSON(void *c, cJSON *jc);
 void Scene_Condition_readJSON(  void *c, cJSON *jc);
-void Scene_Conditions_writeJSON(void *c, cJSON *jc);
+void Scene_Condition_writeJSON(void *c, cJSON *jc);
 
 /* -- Load all scenes with conditions -- */
 struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_concs,
@@ -248,7 +250,8 @@ void Scene_Background_Num(  struct Scene *scene);
 
 /* --- Player Interaction --- */
 void Scene_Finish(      struct Scene *scene, struct Game *sota);
-void Scene_Next_Line(   struct Scene *scene, struct Game *sota);
+
+i32 Scene_Statement_Type(cJSON *jstatement);
 
 /* --- Play --- */
 void _Scene_Animate_Actors(        struct Scene *scene);

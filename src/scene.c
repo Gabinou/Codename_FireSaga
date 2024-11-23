@@ -5,23 +5,23 @@
 // #endif // STB_SPRINTF_IMPLEMENTATION
 
 struct Scene Scene_default =  {
-    .scene_header.json_element   = JSON_SCENE,
+    .jsonio_header.json_element   = JSON_SCENE,
 };
 
 json_func fsm_Scene_readJSON[SCENE_STATEMENT_NUM] = {
-  Scene_Line_readJSON,
-  Scene_Didascalie_readJSON,
-  Scene_Condition_readJSON,
-  Scene_Background_readJSON,
-  Scene_Music_readJSON,
+    Scene_Line_readJSON,
+    Scene_Didascalie_readJSON,
+    Scene_Condition_readJSON,
+    Scene_Background_readJSON,
+    Scene_Music_readJSON,
 };
 
 json_func fsm_Scene_writeJSON[SCENE_STATEMENT_NUM] = {
-  Scene_Line_writeJSON,
-  Scene_Didascalie_writeJSON,
-  Scene_Condition_writeJSON,
-  Scene_Background_writeJSON,
-  Scene_Music_writeJSON,
+    Scene_Line_writeJSON,
+    Scene_Didascalie_writeJSON,
+    Scene_Condition_writeJSON,
+    Scene_Background_writeJSON,
+    Scene_Music_writeJSON,
 };
 
 void Scene_Init(struct Scene *scene) {
@@ -64,47 +64,48 @@ s8 Scene_Filename(i32 index) {
 
 void Scene_readJSON(void *input, cJSON *jscene) {
     /* --- Conditions for Scene --- */
-  
+
     /* --- Scene Array --- */
-   i32 statement_num = cJSON_GetArraySize(jscene);
-   for (int i = 0; i < statement_num; i++) {
-      struct cJSON *jstatement = cJSON_GetArrayItem(jscene, i);
-      int statement_type =;
-      fsm_Scene_readJSON[statement_type](input, jstatement);
-   }
+    i32 statement_num = cJSON_GetArraySize(jscene);
+    for (int i = 0; i < statement_num; i++) {
+        struct cJSON *jstatement = cJSON_GetArrayItem(jscene, i);
+        i32 statement_type = Scene_Statement_Type(jstatement);
+        // fsm_Scene_readJSON[statement_type](input, jstatement);
+    }
     /* -- Line array elem -- */
     /* -- Condition array elem -- */
     /* -- Didascalie array elem -- */
     /* -- Music array elem -- */
     /* -- Background array elem -- */
-    
+
 }
 
 i32 Scene_Statement_Type(cJSON *jstatement) {
-  if () {
-    return(SCENE_STATEMENT_LINE);
-  }
-  
-  
-  return(SCENE_STATEMENT_START);
+    SDL_Log("jstatement->string %s", jstatement->string);
+    if (s8equal(s8_literal("Line"), s8_var(jstatement->string))) {
+        return (SCENE_STATEMENT_LINE);
+    }
+
+
+    return (SCENE_STATEMENT_START);
 }
 
 void Scene_Didasdalie_readJSON(void *input, cJSON *jdid) {
-  Scene *scene = input;
+    Scene *scene = input;
 }
 
 void Scene_Condition_readJSON(void *input, cJSON *jcond) {
-  Scene *scene = input;
+    Scene *scene = input;
 
 }
 
 void Scene_Didascalie_writeJSON(void *input, cJSON *jdid) {
-  Scene *scene = input;
-  
+    Scene *scene = input;
+
 }
 
 void Scene_Conditions_writeJSON(void *input, cJSON *jcond) {
-  Scene *scene = input;
+    Scene *scene = input;
 
 }
 

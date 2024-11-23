@@ -157,8 +157,7 @@ void _Party_Load(tnecs_entity *entities, struct Game *sota,
         /* Unit init */
         temp_unit   = Unit_default;
         Unit_Init(&temp_unit);
-
-        SDL_assert(temp_unit.json_filename.data == NULL);
+        SDL_assert(temp_unit.jsonio_header.json_filename.data == NULL);
         temp_unit.items_dtab    = items_dtab;
         temp_unit.weapons_dtab  = weapons_dtab;
 
