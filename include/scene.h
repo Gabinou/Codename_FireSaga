@@ -62,8 +62,6 @@
 //  - Player clicks to move to next line
 //   ANSWER -> A Scene
 
-
-
 /* --- FORWARD DECLARATIONS --- */
 struct Boss;
 struct Game;
@@ -80,13 +78,18 @@ enum SCENE_STATEMENTS {
     SCENE_STATEMENT_START       = -1,
     SCENE_STATEMENT_LINE        =  0,
     SCENE_STATEMENT_DIDASCALIE  =  1,
-    SCENE_STATEMENT_BACKGROUND  =  2,
-    SCENE_STATEMENT_MUSIC       =  3,
-    SCENE_STATEMENT_NUM         =  4,
+    SCENE_STATEMENT_CONDITION   =  2,
+    SCENE_STATEMENT_BACKGROUND  =  3,
+    SCENE_STATEMENT_MUSIC       =  4,
+    SCENE_STATEMENT_NUM         =  5,
 };
 
-// Scene Statement FSM
 
+// Scene FSMs
+extern json_func fsm_Scene_readJSON[SCENE_STATEMENT_NUM];
+extern json_func fsm_Scene_writeJSON[SCENE_STATEMENT_NUM];
+
+// Scene Statement FSM
 typedef void (*fsm_scene_statement_t)(void *);
 extern fsm_scene_statement_t scene_statement_play[SCENE_STATEMENT_NUM];
 
@@ -117,7 +120,6 @@ extern struct SceneDidascalie SceneDidascalie_FadeAll;
 
 struct SceneLine {
     SceneHeader scene_header;
-    i32 type;  /* SCENE_STATEMENT_bOFFSET = 0  (+ 4) */
 
     s8 speaker;
     s8 line;
@@ -128,9 +130,8 @@ struct SceneLine {
 extern struct SceneLine SceneLine_default;
 
 struct SceneMusic {
-    i32 type
+     SceneHeader scene_header;
     /* -- Condition to play statement -- */
-    struct Conditions    cond;
 };
 extern struct SceneBackground SceneMusic_default;
 extern struct SceneBackground SceneMusic_Stop;
@@ -140,10 +141,7 @@ extern struct SceneBackground SceneMusic_Stop;
 //    - Slide
 //    - Fade (to black)
 struct SceneBackground {
-    i32 type;  /* SCENE_STATEMENT_bOFFSET = 0  (+ 4) */
-
-    /* -- Condition to play statement -- */
-    struct Conditions    cond;
+    SceneHeader scene_header;
 };
 extern struct SceneBackground SceneBackground_default;
 extern struct SceneBackground SceneBackground_FadeToBlack;

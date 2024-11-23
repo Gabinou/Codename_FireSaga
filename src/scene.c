@@ -8,6 +8,22 @@ struct Scene Scene_default =  {
     .json_element   = JSON_SCENE,
 };
 
+json_func fsm_Scene_readJSON[SCENE_STATEMENT_NUM] = {
+  Scene_Line_readJSON,
+  Scene_Didascalie_readJSON,
+  Scene_Condition_readJSON,
+  Scene_Background_readJSON,
+  Scene_Music_readJSON,
+};
+
+json_func fsm_Scene_writeJSON[SCENE_STATEMENT_NUM] = {
+  Scene_Line_writeJSON,
+  Scene_Didascalie_writeJSON,
+  Scene_Condition_writeJSON,
+  Scene_Background_writeJSON,
+  Scene_Music_writeJSON,
+};
+
 
 void Scene_Init(struct Scene *scene) {
     SDL_assert(scene != NULL);
