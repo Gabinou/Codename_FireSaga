@@ -74,6 +74,13 @@ enum SCENE_bOFFSET {
 // Statements: Renpy terminology
 //      Anything a Scene can do.
 //      Scene pauses only on line. Otherwise play statements.
+enum SCENE_DIDASCALIE {
+    SCENE_DIDASCALIE_START  = -1,
+    SCENE_DIDASCALIE_APPEAR =  0,
+    SCENE_DIDASCALIE_SLIDE  =  1,
+    SCENE_DIDASCALIE_NUM    =  5
+};
+
 enum SCENE_STATEMENTS {
     SCENE_STATEMENT_START       = -1,
     SCENE_STATEMENT_LINE        =  0,
