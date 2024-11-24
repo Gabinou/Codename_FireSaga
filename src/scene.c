@@ -26,8 +26,8 @@ json_func fsm_Scene_writeJSON[SCENE_STATEMENT_NUM] = {
 
 void Scene_Init(struct Scene *scene) {
     SDL_assert(scene != NULL);
-    scene->statements   = DARR_INIT(scene->statements, void *, 16);
-    scene->actors       = DARR_INIT(scene->statements, u16, 16);
+    scene->statements       = DARR_INIT(scene->statements, void *, 16);
+    scene->actors           = DARR_INIT(scene->actors, u16, 16);
 }
 
 void Scene_Free(struct Scene *scene) {
@@ -70,12 +70,11 @@ void Scene_readJSON(void *input, cJSON *jscene) {
     i32 statement_num = cJSON_GetArraySize(jscene);
     for (int i = 0; i < statement_num; i++) {
         struct cJSON *jstatement = cJSON_GetArrayItem(jscene, i);
-        i32 statement_type = Scene_Statement_Type(jstatement);
+        i32 statement_type = Scene_jsonStatement_Type(jstatement);
 
         if ((statement_type > SCENE_STATEMENT_START) &&
             (statement_type < SCENE_STATEMENT_NUM)) {
             fsm_Scene_readJSON[statement_type](input, jstatement);
-
         }
     }
     /* -- Line array elem -- */
@@ -86,7 +85,7 @@ void Scene_readJSON(void *input, cJSON *jscene) {
 
 }
 
-i32 Scene_Statement_Type(cJSON *jstatement) {
+i32 Scene_jsonStatement_Type(cJSON *jstatement) {
     cJSON *jline = cJSON_GetObjectItem(jstatement, "Line");
     if (jline != NULL) {
         SDL_Log("Is a Line");
@@ -128,11 +127,14 @@ i32 Scene_Didascalie_Type(cJSON *jstatement) {
 
 void Scene_Didascalie_readJSON(void *input, cJSON *jdid) {
     Scene *scene = input;
+    
+    Scene_Statement_Add(scene, statement)
 }
 
 void Scene_Condition_readJSON(void *input, cJSON *jcond) {
     Scene *scene = input;
 
+    Scene_Statement_Add(scene, statement)
 }
 
 void Scene_Didascalie_writeJSON(void *input, cJSON *jdid) {
@@ -148,18 +150,29 @@ void Scene_Condition_writeJSON(void *input, cJSON *jcond) {
 void Scene_Background_writeJSON(void *c, cJSON *jc) {
 
 }
+
 void Scene_Background_readJSON( void *c, cJSON *jc) {
+    Scene *scene = input;
 
+    Scene_Statement_Add(scene, statement)
 }
+
 void Scene_Music_readJSON( void *c, cJSON *jc) {
+    Scene *scene = input;
 
+    Scene_Statement_Add(scene, statement)
 }
+
 void Scene_Music_writeJSON(void *c, cJSON *jc) {
 
 }
-void Scene_Line_readJSON( void *c, cJSON *jc) {
 
+void Scene_Line_readJSON( void *c, cJSON *jc) {
+    Scene *scene = input;
+
+    Scene_Statement_Add(scene, statement)
 }
+
 void Scene_Line_writeJSON(void *c, cJSON *jc) {
 
 }
@@ -192,6 +205,23 @@ void Scene_Animate(struct Game  *sota, tnecs_entity entity,
     //     _Scene_Animate_Actors(scene);
     //     _Scene_Animate_Text_Bubbles(scene);
 }
+
+void Scene_Statement_Type(void *statement) {
+    SceneHeader *header = statement;
+    return(header->statement_type);
+}
+
+void Scene_Statement_Add(Scene *scene, void *statement) {
+    SDL_assert(scene        != NULL);
+    SDL_assert(statement    != NULL);
+
+    if (scene->statements == NULL) {
+        scene->statements       = DARR_INIT(scene->statements, void *, 16);
+    }
+
+    DARR_PUT(scene->statements, statement);
+}
+
 
 void Scene_Actor_Add(Scene *scene, u16 actor) {
     SDL_assert(scene != NULL);

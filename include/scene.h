@@ -169,9 +169,6 @@ extern struct SceneBackground SceneBackground_FadeToBlack;
 typedef struct Scene {
     jsonIO_Header jsonio_header;
 
-    /* -- Condition to play scene -- */
-    struct Conditions    scene_cond;
-
     /* -- Current game condition -- */
     struct Conditions    game_cond;
 
@@ -179,8 +176,8 @@ typedef struct Scene {
 
     /* Statements: meat of the Scene
      *  - SceneLine, SceneDidascalie, SceneMusic OR SceneBackground
+     *  - Note: only statements that satisfy game_cond 
      */
-    i32    statement;
     void **statements;
 
     /* -- Post-scene -- */
@@ -201,9 +198,7 @@ extern struct Scene Scene_default;
 void Scene_Free(struct Scene *scene);
 void Scene_Init(struct Scene *scene);
 
-/* --- Replace --- */
-// TODO: replace text dynamically
-void Scene_Replace_Add(struct Scene *scene, s8 with);
+void Scene_Statement_Add(Scene *scene, void *statement);
 
 /* --- Actors --- */
 i32     Scene_Actors_Num(Scene *scene);
@@ -231,13 +226,6 @@ void Scene_Didascalie_writeJSON(void *c, cJSON *jc);
 void Scene_Condition_readJSON(  void *c, cJSON *jc);
 void Scene_Condition_writeJSON(void *c, cJSON *jc);
 
-/* -- Load all scenes with conditions -- */
-struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_concs,
-                          i16 chapter, u16 scene_time);
-
-/* --- Speakers --- */
-void Scene_Speaker_Add(struct Scene *scene, u16 order);
-
 /* --- Rendering --- */
 /* Read game condition and render text lines */
 void Scene_Render(struct Scene *scene);
@@ -260,7 +248,8 @@ void Scene_Background_Num(  struct Scene *scene);
 /* --- Player Interaction --- */
 void Scene_Finish(      struct Scene *scene, struct Game *sota);
 
-i32 Scene_Statement_Type(cJSON *jstatement);
+i32 Scene_jsonStatement_Type(cJSON *jstatement);
+void Scene_Statement_Type(void *statement) {
 
 /* --- Play --- */
 void _Scene_Animate_Actors(        struct Scene *scene);
