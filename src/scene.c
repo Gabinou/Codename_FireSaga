@@ -14,10 +14,9 @@ struct SceneLine        SceneLine_default       = {0};
 struct SceneDidascalie  SceneDidascalie_default = {0};
 struct SceneBackground  SceneBackground_default = {0};
 
-static hash_alive     = sota_hash_djb2(s8_literal("alive"));
-// static hash_dead      = sota_hash_djb2(s8_literal("dead"));
-// static hash_recruited = sota_hash_djb2(s8_literal("recruited"));
-
+static u64 hash_alive     = 210706583606;       /* sota_hash_djb2(s8_literal("alive"));     */
+static u64 hash_dead      = 6385147891;         /* sota_hash_djb2(s8_literal("dead"));      */
+static u64 hash_recruited = 249904965071548876; /* sota_hash_djb2(s8_literal("recruited")); */
 
 json_func fsm_Scene_readJSON[SCENE_STATEMENT_NUM] = {
     Scene_Line_readJSON,
@@ -154,20 +153,24 @@ void Scene_Condition_readJSON(void *input, cJSON *jcond) {
     SDL_assert(jcondition != NULL);
 
     s8 actor        = s8_var(jcondition->child->string);
-    s8 condition    = s8_var(cJSON_GetStringValue(jcondition->child));
-
+    s8 condition    = s8_toLower(s8_mut(cJSON_GetStringValue(jcondition->child)));
 
     i32 unit_order = Unit_Name2Order(actor);
 
-    // TODO: make all letters lowercase before matching
-    if (s8equal(s8_literal("alive"), condition)) {
+    if (sota_hash_djb2(condition) == hash_alive) {
+        SDL_Log("alive");
         scene->line_cond.alive[unit_order]     = true;
-    } else if (s8equal(s8_literal("dead"), condition)) {
+    } else if (sota_hash_djb2(condition) == hash_dead) {
+        SDL_Log("dead");
         scene->line_cond.dead[unit_order]      = true;
-    } else if (s8equal(s8_literal("recruited"), condition)) {
+    } else if (sota_hash_djb2(condition) == hash_recruited) {
+        SDL_Log("recruited");
         scene->line_cond.recruited[unit_order] = true;
+    } else {
+        SDL_Log("Unknown Condition");
     }
 
+    s8_free(&condition);
 }
 
 void Scene_Didascalie_writeJSON(void *input, cJSON *jdid) {

@@ -2,7 +2,7 @@
     "Scene":
     [
         {"Line": {"Erwann": "Hello."}},
-        {"Condition": {"Erwann": "alive"}},
+        {"Condition": {"Erwann": "Alive"}},
         {"Condition": {"Erwann": "dead"}},
         {"Line": {"Erwann": "Can't be satisfied. Does not show up."}},
         {"Condition": {"Erwann": "dead"}},
