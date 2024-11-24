@@ -78,7 +78,7 @@ enum SCENE_DIDASCALIE {
     SCENE_DIDASCALIE_START  = -1,
     SCENE_DIDASCALIE_APPEAR =  0,
     SCENE_DIDASCALIE_SLIDE  =  1,
-    SCENE_DIDASCALIE_NUM    =  5
+    SCENE_DIDASCALIE_NUM    =  2
 };
 
 enum SCENE_STATEMENTS {
@@ -217,6 +217,8 @@ s8 Scene_Filename_Chapter(i32 chapter, i32 subindex);
 s8 Scene_Filename(i32 index);
 void Scene_readJSON( void *s, cJSON *js);
 void Scene_writeJSON(void *s, cJSON *js);
+
+i32 Scene_Didascalie_Type(cJSON *jstatement);
 
 void Scene_Background_readJSON( void *c, cJSON *jc);
 void Scene_Background_writeJSON(void *c, cJSON *jc);

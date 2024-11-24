@@ -94,22 +94,36 @@ i32 Scene_Statement_Type(cJSON *jstatement) {
     }
 
     cJSON *jcondition = cJSON_GetObjectItem(jstatement, "Condition");
-    if (jcondition != NULL) { 
+    if (jcondition != NULL) {
         SDL_Log("Is a Condition");
         return (SCENE_STATEMENT_CONDITION);
     }
 
-    if (Scene_Didascalie_Type(jstatement) >= 0) {
+    i32 did = Scene_Didascalie_Type(jstatement);
+    if ((did > SCENE_DIDASCALIE_START) && (did < SCENE_DIDASCALIE_NUM)) {
         SDL_Log("Is a Didascalie");
         return (SCENE_STATEMENT_DIDASCALIE);
     }
 
-    SDL_Log("Unknown statement");
+    SDL_Log("Unknown Statement");
     return (SCENE_STATEMENT_START);
 }
 
 i32 Scene_Didascalie_Type(cJSON *jstatement) {
+    cJSON *jappear = cJSON_GetObjectItem(jstatement, "Appear");
+    if (jappear != NULL) {
+        SDL_Log("Is an Appear");
+        return (SCENE_DIDASCALIE_APPEAR);
+    }
 
+    cJSON *jslide = cJSON_GetObjectItem(jstatement, "Slide");
+    if (jslide != NULL) {
+        SDL_Log("Is a Slide");
+        return (SCENE_DIDASCALIE_SLIDE);
+    }
+
+    SDL_Log("Unknown Didascalie");
+    return (SCENE_DIDASCALIE_START);
 }
 
 void Scene_Didascalie_readJSON(void *input, cJSON *jdid) {
