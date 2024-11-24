@@ -172,6 +172,7 @@ void Scene_Line_readJSON( void *c, cJSON *jstatement) {
 
     cJSON *jline = cJSON_GetObjectItem(jstatement, "Line");
     
+    // Is a line checked before -> assert
     SDL_assert(jline != NULL);
     
     if (jline->child == NULL) {
@@ -190,12 +191,11 @@ void Scene_Line_readJSON( void *c, cJSON *jstatement) {
     
     s8 actor = s8_var(jline->child->string);
     s8 line = s8_var(cJSON_GetStringValue(jline->child));
-    // 
+    
     scene_line.actor    = actor;
     scene_line.line     = line;
 
     Scene_Statement_Add(scene, &scene_line);
-    
 }
 
 void Scene_Line_writeJSON(void *c, cJSON *jc) {

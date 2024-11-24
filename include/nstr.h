@@ -32,8 +32,10 @@ typedef struct s8 {
 
 /* -- s8 from pointer to string -- */
 // -> Needed cause sizeof() gives pointer size...
+// TODO: max length
 #define s8_var(s)   s8_var_(s)
 #define s8_var_(s) (s8){(u8 *)s, strlen(s), strlen(s)}
+
 
 /* -- Mutable s8 functions -- */
 // s8 function input notes
