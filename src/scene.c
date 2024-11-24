@@ -189,10 +189,10 @@ void Scene_Line_readJSON( void *c, cJSON *jstatement) {
     }
     
     s8 actor = s8_var(jline->child->string);
-    s8 line = s8_var(jline->child->valuestring);
-
-    scene_line.actor = actor;
-    scene_line.line = line;
+    s8 line = s8_var(cJSON_GetStringValue(jline->child));
+    // 
+    scene_line.actor    = actor;
+    scene_line.line     = line;
 
     Scene_Statement_Add(scene, &scene_line);
     
