@@ -102,40 +102,40 @@ i32 Scene_Statement_Type(void *statement) {
 i32 Scene_jsonStatement_Type(cJSON *jstatement) {
     cJSON *jline = cJSON_GetObjectItem(jstatement, "Line");
     if (jline != NULL) {
-        SDL_Log("Is a Line");
+        // SDL_Log("Is a Line");
         return (SCENE_STATEMENT_LINE);
     }
 
     cJSON *jcondition = cJSON_GetObjectItem(jstatement, "Condition");
     if (jcondition != NULL) {
-        SDL_Log("Is a Condition");
+        // SDL_Log("Is a Condition");
         return (SCENE_STATEMENT_CONDITION);
     }
 
     i32 did = Scene_Didascalie_Type(jstatement);
     if ((did > SCENE_DIDASCALIE_START) && (did < SCENE_DIDASCALIE_NUM)) {
-        SDL_Log("Is a Didascalie");
+        // SDL_Log("Is a Didascalie");
         return (SCENE_STATEMENT_DIDASCALIE);
     }
 
-    SDL_Log("Unknown Statement");
+    // SDL_Log("Unknown Statement");
     return (SCENE_STATEMENT_START);
 }
 
 i32 Scene_Didascalie_Type(cJSON *jstatement) {
     cJSON *jappear = cJSON_GetObjectItem(jstatement, "Appear");
     if (jappear != NULL) {
-        SDL_Log("Is an Appear");
+        // SDL_Log("Is an Appear");
         return (SCENE_DIDASCALIE_APPEAR);
     }
 
     cJSON *jslide = cJSON_GetObjectItem(jstatement, "Slide");
     if (jslide != NULL) {
-        SDL_Log("Is a Slide");
+        // SDL_Log("Is a Slide");
         return (SCENE_DIDASCALIE_SLIDE);
     }
 
-    SDL_Log("Unknown Didascalie");
+    // SDL_Log("Unknown Didascalie");
     return (SCENE_DIDASCALIE_START);
 }
 
@@ -158,16 +158,18 @@ void Scene_Condition_readJSON(void *input, cJSON *jcond) {
     i32 unit_order = Unit_Name2Order(actor);
 
     if (sota_hash_djb2(condition) == hash_alive) {
-        SDL_Log("alive");
+        // SDL_Log("alive");
         scene->line_cond.alive[unit_order]     = true;
     } else if (sota_hash_djb2(condition) == hash_dead) {
-        SDL_Log("dead");
+        // SDL_Log("dead");
         scene->line_cond.dead[unit_order]      = true;
     } else if (sota_hash_djb2(condition) == hash_recruited) {
-        SDL_Log("recruited");
+        // SDL_Log("recruited");
         scene->line_cond.recruited[unit_order] = true;
     } else {
-        SDL_Log("Unknown Condition");
+        SDL_Log("Problem parsing Scene's Condition: Unknown condition '%s'.",
+                cJSON_GetStringValue(jcondition->child));
+        exit(1);
     }
 
     s8_free(&condition);
