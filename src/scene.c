@@ -72,17 +72,15 @@ void Scene_readJSON(void *input, cJSON *jscene) {
         struct cJSON *jstatement = cJSON_GetArrayItem(jscene, i);
         i32 statement_type = Scene_jsonStatement_Type(jstatement);
 
+        /* -- Skip is statement is invalid -- */
         if ((statement_type > SCENE_STATEMENT_START) &&
             (statement_type < SCENE_STATEMENT_NUM)) {
-            fsm_Scene_readJSON[statement_type](input, jstatement);
+             continue;
         }
-    }
-    /* -- Line array elem -- */
-    /* -- Condition array elem -- */
-    /* -- Didascalie array elem -- */
-    /* -- Music array elem -- */
-    /* -- Background array elem -- */
 
+        /* -- FSM for array elem -- */
+        fsm_Scene_readJSON[statement_type](input, jstatement);
+    }
 }
 
 i32 Scene_jsonStatement_Type(cJSON *jstatement) {
@@ -167,10 +165,37 @@ void Scene_Music_writeJSON(void *c, cJSON *jc) {
 
 }
 
-void Scene_Line_readJSON( void *c, cJSON *jc) {
+void Scene_Line_readJSON( void *c, cJSON *jstatement) {
     Scene *scene = input;
 
-    Scene_Statement_Add(scene, statement)
+    SceneLine scene_line = SceneLine_default;
+
+    cJSON *jline = cJSON_GetObjectItem(jstatement, "Line");
+    
+    SDL_assert(jline != NULL);
+    
+    if (jline->child == NULL) {
+        SDL_Log("Problem parsing Scene's Line: No child object.");
+        exit(1);
+    }
+
+    if (jline->child->string == NULL) {
+        SDL_Log("Problem parsing Scene's Line: Child has no name.");
+        exit(1);
+    }
+    if (jline->child->valuestring == NULL) {
+        SDL_Log("Problem parsing Scene's Line: Child has no value.");
+        exit(1);
+    }
+    
+    s8 actor = s8_var(jline->child->string);
+    s8 line = s8_var(jline->child->valuestring);
+
+    scene_line.actor = actor;
+    scene_line.line = line;
+
+    Scene_Statement_Add(scene, &scene_line);
+    
 }
 
 void Scene_Line_writeJSON(void *c, cJSON *jc) {

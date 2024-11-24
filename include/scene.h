@@ -130,7 +130,7 @@ extern struct SceneDidascalie SceneDidascalie_FadeAll;
 struct SceneLine {
     SceneHeader scene_header;
 
-    s8 speaker;
+    s8 actor;
     s8 line;
 
     /* -- Condition to play statement -- */
