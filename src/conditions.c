@@ -12,16 +12,16 @@ struct Conditions Conditions_Game_start = {
     .alive      = {0xFFFFFFFF},
 };
 
-/// @brief  Are all conditions in cond1 satisfied in cond2?
-/// @return  true if all bits in cond1 are set in cond2
-b32 Conditions_Compare(struct Conditions *cond1, struct Conditions *cond2) {
+/// @brief  Are all conditions in cond satisfied in game_cond?
+/// @return  true if all bits in cond are set in game_cond
+b32 Conditions_Match(struct Conditions *cond, struct Conditions *game_cond) {
     size_t len_alive    = BITFIELD_LEN(UNIT_ORDER_NPC_END);
     size_t len_dead     = BITFIELD_LEN(UNIT_ORDER_NPC_END);
     size_t len_rec      = BITFIELD_LEN(UNIT_ORDER_PC_END);
 
-    b32 isalive = Bitfield_isIn(cond1->alive,     cond2->alive,     len_alive);
-    b32 isdead  = Bitfield_isIn(cond1->dead,      cond2->dead,      len_dead);
-    b32 isrec   = Bitfield_isIn(cond1->recruited, cond2->recruited, len_rec);
+    b32 isalive = Bitfield_isIn(cond->alive,     game_cond->alive,     len_alive);
+    b32 isdead  = Bitfield_isIn(cond->dead,      game_cond->dead,      len_dead);
+    b32 isrec   = Bitfield_isIn(cond->recruited, game_cond->recruited, len_rec);
     return (isdead && isalive && isrec);
 }
 

@@ -118,29 +118,23 @@ typedef struct SceneHeader {
 //    - Rotate
 //  - Animate
 //      - Fade in, fade out
-struct SceneDidascalie {
+typedef struct SceneDidascalie {
     SceneHeader scene_header;
-
-    /* -- Condition to play statement -- */
-    struct Conditions    cond;
-};
+} SceneDidascalie;
 extern struct SceneDidascalie SceneDidascalie_default;
 extern struct SceneDidascalie SceneDidascalie_FadeAll;
 
-struct SceneLine {
+typedef struct SceneLine {
     SceneHeader scene_header;
 
     s8 actor;
     s8 line;
 
-    /* -- Condition to play statement -- */
-    struct Conditions    cond;
-};
+} SceneLine;
 extern struct SceneLine SceneLine_default;
 
 struct SceneMusic {
     SceneHeader scene_header;
-    /* -- Condition to play statement -- */
 };
 extern struct SceneBackground SceneMusic_default;
 extern struct SceneBackground SceneMusic_Stop;
@@ -149,9 +143,9 @@ extern struct SceneBackground SceneMusic_Stop;
 //  - Transition effects
 //    - Slide
 //    - Fade (to black)
-struct SceneBackground {
+typedef struct SceneBackground {
     SceneHeader scene_header;
-};
+} SceneBackground;
 extern struct SceneBackground SceneBackground_default;
 extern struct SceneBackground SceneBackground_FadeToBlack;
 //  Screen:
@@ -171,12 +165,14 @@ typedef struct Scene {
 
     /* -- Current game condition -- */
     struct Conditions    game_cond;
+    struct Conditions    line_cond; /* Reset everytime a line is read */
 
     u16 *actors;
 
     /* Statements: meat of the Scene
      *  - SceneLine, SceneDidascalie, SceneMusic OR SceneBackground
-     *  - Note: only statements that satisfy game_cond 
+     *      - No Condition
+     *  - Note: only statements that satisfy game_cond
      */
     void **statements;
 
@@ -249,7 +245,7 @@ void Scene_Background_Num(  struct Scene *scene);
 void Scene_Finish(      struct Scene *scene, struct Game *sota);
 
 i32 Scene_jsonStatement_Type(cJSON *jstatement);
-void Scene_Statement_Type(void *statement) {
+i32 Scene_Statement_Type(void *statement);
 
 /* --- Play --- */
 void _Scene_Animate_Actors(        struct Scene *scene);

@@ -24,7 +24,7 @@ extern struct Conditions Conditions_Game_start;
 extern struct Conditions Conditions_default;
 
 /* --- Conditions --- */
-b32 Conditions_Compare(struct Conditions *line_cond, struct Conditions *game_cond);
+b32 Conditions_Match(struct Conditions *line_cond, struct Conditions *game_cond);
 
 /* Set condition from Unit Name */
 void Conditions_Dead_Name(     struct Conditions *cond, char *u);

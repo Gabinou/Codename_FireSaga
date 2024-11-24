@@ -5,8 +5,14 @@
 // #endif // STB_SPRINTF_IMPLEMENTATION
 
 struct Scene Scene_default =  {
-    .jsonio_header.json_element   = JSON_SCENE,
+    .jsonio_header.json_element = JSON_SCENE,
+    /* Can't put Conditions_Game_start here. */
+    .game_cond                  = {.alive = {0xFFFFFFFF}},
 };
+
+struct SceneLine        SceneLine_default       = {0};
+struct SceneDidascalie  SceneDidascalie_default = {0};
+struct SceneBackground  SceneBackground_default = {0};
 
 json_func fsm_Scene_readJSON[SCENE_STATEMENT_NUM] = {
     Scene_Line_readJSON,
@@ -73,15 +79,21 @@ void Scene_readJSON(void *input, cJSON *jscene) {
         i32 statement_type = Scene_jsonStatement_Type(jstatement);
 
         /* -- Skip is statement is invalid -- */
-        if ((statement_type > SCENE_STATEMENT_START) &&
-            (statement_type < SCENE_STATEMENT_NUM)) {
-             continue;
+        if ((statement_type <= SCENE_STATEMENT_START) &&
+            (statement_type >= SCENE_STATEMENT_NUM)) {
+            continue;
         }
 
         /* -- FSM for array elem -- */
         fsm_Scene_readJSON[statement_type](input, jstatement);
     }
 }
+
+i32 Scene_Statement_Type(void *statement) {
+    SceneHeader *header = statement;
+    return (header->statement_type);
+}
+
 
 i32 Scene_jsonStatement_Type(cJSON *jstatement) {
     cJSON *jline = cJSON_GetObjectItem(jstatement, "Line");
@@ -125,14 +137,14 @@ i32 Scene_Didascalie_Type(cJSON *jstatement) {
 
 void Scene_Didascalie_readJSON(void *input, cJSON *jdid) {
     Scene *scene = input;
-    
-    Scene_Statement_Add(scene, statement)
+
+    // Scene_Statement_Add(scene, statement)
 }
 
 void Scene_Condition_readJSON(void *input, cJSON *jcond) {
     Scene *scene = input;
 
-    Scene_Statement_Add(scene, statement)
+
 }
 
 void Scene_Didascalie_writeJSON(void *input, cJSON *jdid) {
@@ -145,36 +157,35 @@ void Scene_Condition_writeJSON(void *input, cJSON *jcond) {
 
 }
 
-void Scene_Background_writeJSON(void *c, cJSON *jc) {
+void Scene_Background_writeJSON(void *input, cJSON *jc) {
 
 }
 
-void Scene_Background_readJSON( void *c, cJSON *jc) {
+void Scene_Background_readJSON( void *input, cJSON *jc) {
     Scene *scene = input;
 
-    Scene_Statement_Add(scene, statement)
+    // Scene_Statement_Add(scene, statement)
 }
 
-void Scene_Music_readJSON( void *c, cJSON *jc) {
+void Scene_Music_readJSON( void *input, cJSON *jc) {
     Scene *scene = input;
 
-    Scene_Statement_Add(scene, statement)
+    // Scene_Statement_Add(scene, statement)
 }
 
-void Scene_Music_writeJSON(void *c, cJSON *jc) {
+void Scene_Music_writeJSON(void *input, cJSON *jc) {
 
 }
 
-void Scene_Line_readJSON( void *c, cJSON *jstatement) {
+void Scene_Line_readJSON(void *input, cJSON *jstatement) {
     Scene *scene = input;
 
     SceneLine scene_line = SceneLine_default;
 
     cJSON *jline = cJSON_GetObjectItem(jstatement, "Line");
-    
-    // Is a line checked before -> assert
+    // Was checked before -> assert
     SDL_assert(jline != NULL);
-    
+
     if (jline->child == NULL) {
         SDL_Log("Problem parsing Scene's Line: No child object.");
         exit(1);
@@ -188,17 +199,24 @@ void Scene_Line_readJSON( void *c, cJSON *jstatement) {
         SDL_Log("Problem parsing Scene's Line: Child has no value.");
         exit(1);
     }
-    
-    s8 actor = s8_var(jline->child->string);
-    s8 line = s8_var(cJSON_GetStringValue(jline->child));
-    
+
+    s8 actor    = s8_var(jline->child->string);
+    s8 line     = s8_var(cJSON_GetStringValue(jline->child));
+
     scene_line.actor    = actor;
     scene_line.line     = line;
+    SDL_Log("%s: %s", scene_line.actor.data, scene_line.line.data);
 
-    Scene_Statement_Add(scene, &scene_line);
+    /* Compare conditions*/
+    if (Conditions_Match(&scene->line_cond, &scene->game_cond)) {
+        Scene_Statement_Add(scene, &scene_line);
+    }
+
+    scene->line_cond = Conditions_default;
+
 }
 
-void Scene_Line_writeJSON(void *c, cJSON *jc) {
+void Scene_Line_writeJSON(void *input, cJSON *jc) {
 
 }
 
@@ -231,10 +249,6 @@ void Scene_Animate(struct Game  *sota, tnecs_entity entity,
     //     _Scene_Animate_Text_Bubbles(scene);
 }
 
-void Scene_Statement_Type(void *statement) {
-    SceneHeader *header = statement;
-    return(header->statement_type);
-}
 
 void Scene_Statement_Add(Scene *scene, void *statement) {
     SDL_assert(scene        != NULL);
