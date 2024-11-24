@@ -82,12 +82,12 @@ void dtab_add(struct dtab *dtab_ptr, void *value, uint64_t in_hash) {
     size_t pos = dtab_found(dtab_ptr, in_hash);
     if (!pos) {
         dtab_ptr->keys[dtab_ptr->num] = in_hash;
-        values_bytes = (dtab_byte_t *)(dtab_ptr->values);
-        newvalue_bytes = values_bytes + (dtab_ptr->bytesize * dtab_ptr->num);
+        values_bytes    = (dtab_byte_t *)(dtab_ptr->values);
+        newvalue_bytes  = values_bytes + (dtab_ptr->bytesize * dtab_ptr->num);
         dtab_ptr->num++;
     } else {
-        values_bytes = (dtab_byte_t *)(dtab_ptr->values);
-        newvalue_bytes = values_bytes + (dtab_ptr->bytesize * pos);
+        values_bytes    = (dtab_byte_t *)(dtab_ptr->values);
+        newvalue_bytes  = values_bytes + (dtab_ptr->bytesize * pos);
     }
     memcpy(newvalue_bytes, value, dtab_ptr->bytesize);
     if (dtab_ptr->num == dtab_ptr->len)

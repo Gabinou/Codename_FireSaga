@@ -67,6 +67,7 @@ struct Boss;
 struct Game;
 struct Settings;
 
+/* --- CONSTANTS --- */
 enum SCENE_bOFFSET {
     SCENE_STATEMENT_bOFFSET = 0,
 };
@@ -106,6 +107,7 @@ typedef struct SceneHeader {
     i32 statement_type; ;  /* bOFFSET = 0  (+ 4) */
 
 } SceneHeader;
+
 
 /* -- Didascalie (theater vocabulary) -- */
 // - Note to actors of a scene about what to *do* during a scene

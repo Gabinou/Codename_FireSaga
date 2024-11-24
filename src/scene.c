@@ -14,6 +14,11 @@ struct SceneLine        SceneLine_default       = {0};
 struct SceneDidascalie  SceneDidascalie_default = {0};
 struct SceneBackground  SceneBackground_default = {0};
 
+static hash_alive     = sota_hash_djb2(s8_literal("alive"));
+// static hash_dead      = sota_hash_djb2(s8_literal("dead"));
+// static hash_recruited = sota_hash_djb2(s8_literal("recruited"));
+
+
 json_func fsm_Scene_readJSON[SCENE_STATEMENT_NUM] = {
     Scene_Line_readJSON,
     Scene_Didascalie_readJSON,
@@ -144,6 +149,24 @@ void Scene_Didascalie_readJSON(void *input, cJSON *jdid) {
 void Scene_Condition_readJSON(void *input, cJSON *jcond) {
     Scene *scene = input;
 
+    cJSON *jcondition = cJSON_GetObjectItem(jcond, "Condition");
+    // Was checked before -> assert
+    SDL_assert(jcondition != NULL);
+
+    s8 actor        = s8_var(jcondition->child->string);
+    s8 condition    = s8_var(cJSON_GetStringValue(jcondition->child));
+
+
+    i32 unit_order = Unit_Name2Order(actor);
+
+    // TODO: make all letters lowercase before matching
+    if (s8equal(s8_literal("alive"), condition)) {
+        scene->line_cond.alive[unit_order]     = true;
+    } else if (s8equal(s8_literal("dead"), condition)) {
+        scene->line_cond.dead[unit_order]      = true;
+    } else if (s8equal(s8_literal("recruited"), condition)) {
+        scene->line_cond.recruited[unit_order] = true;
+    }
 
 }
 

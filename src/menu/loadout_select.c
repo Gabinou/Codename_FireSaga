@@ -722,7 +722,7 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
                         item_dura_x_offset,  item_dura_y_offset);
 
         /* - Weapon name - */
-        lsm->item_name = s8cpy(lsm->item_name, Unit_Name(id));
+        lsm->item_name = s8cpy(lsm->item_name, Item_Name(id));
         lsm->item_name = s8_toUpper(lsm->item_name);
         i32 name_w = PixelFont_Width(lsm->pixelnours, lsm->item_name.data, lsm->item_name.num);
         PixelFont_Write(lsm->pixelnours, renderer, lsm->item_name.data, lsm->item_name.num, item_x_offset,
