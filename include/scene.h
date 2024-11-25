@@ -224,6 +224,8 @@ void Scene_Didascalie_writeJSON(void *c, cJSON *jc);
 void Scene_Condition_readJSON(  void *c, cJSON *jc);
 void Scene_Condition_writeJSON(void *c, cJSON *jc);
 
+void Scene_Didascalie_Appear_readJSON( void *c, cJSON *jc);
+void Scene_Didascalie_Slide_readJSON( void *c, cJSON *jc);
 /* --- Rendering --- */
 /* Read game condition and render text lines */
 void Scene_Render(struct Scene *scene);

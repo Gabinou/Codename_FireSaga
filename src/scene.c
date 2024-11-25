@@ -18,6 +18,11 @@ static u64 hash_alive     = 210706583606;       /* sota_hash_djb2(s8_literal("al
 static u64 hash_dead      = 6385147891;         /* sota_hash_djb2(s8_literal("dead"));      */
 static u64 hash_recruited = 249904965071548876; /* sota_hash_djb2(s8_literal("recruited")); */
 
+json_func fsm_Scene_Didascalie_readJSON[SCENE_DIDASCALIE_NUM] = {
+    Scene_Didascalie_Appear_readJSON,
+    Scene_Didascalie_Slide_readJSON
+};
+
 json_func fsm_Scene_readJSON[SCENE_STATEMENT_NUM] = {
     Scene_Line_readJSON,
     Scene_Didascalie_readJSON,
@@ -141,8 +146,19 @@ i32 Scene_Didascalie_Type(cJSON *jstatement) {
 
 void Scene_Didascalie_readJSON(void *input, cJSON *jdid) {
     Scene *scene = input;
+    
+    i32 type = Scene_Didascalie_Type(jdid);
+    if ((type > SCENE_DIDASCALIE_START) && (type < SCENE_DIDASCALIE_NUM)) {
+        fsm_Scene_Didascalie_readJSON[type](input, jdid);
+    }
+}
 
-    // Scene_Statement_Add(scene, statement)
+void Scene_Didascalie_Appear_readJSON( void *c, cJSON *jc) {
+    
+}
+
+void Scene_Didascalie_Slide_readJSON( void *c, cJSON *jc) {
+    
 }
 
 void Scene_Condition_readJSON(void *input, cJSON *jcond) {
