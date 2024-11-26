@@ -5,7 +5,7 @@
 #include "jsonio.h"
 
 void test_scene() {
-    s8 path = s8_literal(PATH_JOIN("scenes", "example.json"));
+    s8 path = s8_literal(PATH_JOIN("scenes", "scene00001.json"));
 
     /* --- Read scene file --- */
     struct cJSON *jfile = jsonio_parseJSON(path);
