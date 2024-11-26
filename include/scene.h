@@ -99,8 +99,8 @@ typedef void (*fsm_scene_statement_t)(void *);
 extern fsm_scene_statement_t scene_statement_play[SCENE_STATEMENT_NUM];
 
 typedef struct SceneHeader {
-    i32 statement_type; ;  /* bOFFSET = 0  (+ 4) */
-    i32 didascalie_type; ;  /* bOFFSET = 4  (+ 4) */
+    i32 statement_type;
+    i32 didascalie_type;
 
 } SceneHeader;
 

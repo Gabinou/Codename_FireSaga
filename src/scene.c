@@ -53,6 +53,7 @@ void Scene_Free(struct Scene *scene) {
         DARR_FREE(scene->statements);
         scene->statements = NULL;
     }
+
     if (scene->actors != NULL) {
         DARR_FREE(scene->actors);
         scene->actors = NULL;
@@ -161,12 +162,37 @@ void Scene_Didascalie_readJSON(void *input, cJSON *jdid) {
 
 void Scene_Didascalie_Appear_readJSON( void *input, cJSON *jdid) {
     Scene *scene = input;
+
+    SceneDidascalie scene_did = SceneDidascalie_default;
+
+    /* Compare conditions */
+    if (Conditions_Match(&scene->line_cond, &scene->game_cond)) {
+        scene_type.scene_header.statement_type = SCENE_STATEMENT_DIDASCALIE;
+
+        scene_type.scene_header.didascalie_type = SCENE_DIDASCALIE_APPEAR;
+      
+        // TODO parse jdid, add to scene_did
+        
+        Scene_Statement_Add(scene, &scene_did);
+    }
     
 }
 
 void Scene_Didascalie_Slide_readJSON( void *input, cJSON *jdid) {
     Scene *scene = input;
     
+    SceneDidascalie scene_did = SceneDidascalie_default;
+
+    /* Compare conditions */
+    if (Conditions_Match(&scene->line_cond, &scene->game_cond)) {
+        scene_type.scene_header.statement_type = SCENE_STATEMENT_DIDASCALIE;
+
+        scene_type.scene_header.didascalie_type = SCENE_DIDASCALIE_SLIDE;
+      
+        // TODO parse jdid, add to scene_did
+        
+        Scene_Statement_Add(scene, &scene_did);
+    }
 }
 
 void Scene_Condition_readJSON(void *input, cJSON *jcond) {
@@ -232,8 +258,6 @@ void Scene_Music_writeJSON(void *input, cJSON *jc) {
 void Scene_Line_readJSON(void *input, cJSON *jstatement) {
     Scene *scene = input;
 
-    SceneLine scene_line = SceneLine_default;
-
     cJSON *jline = cJSON_GetObjectItem(jstatement, "Line");
     // Was checked before -> assert
     SDL_assert(jline != NULL);
@@ -252,20 +276,23 @@ void Scene_Line_readJSON(void *input, cJSON *jstatement) {
         exit(1);
     }
 
-    s8 actor    = s8_var(jline->child->string);
-    s8 line     = s8_var(cJSON_GetStringValue(jline->child));
-
-    scene_line.actor    = actor;
-    scene_line.line     = line;
-    SDL_Log("%s: %s", scene_line.actor.data, scene_line.line.data);
-
-    /* Compare conditions*/
+    /* Compare conditions */
     if (Conditions_Match(&scene->line_cond, &scene->game_cond)) {
+        SceneLine scene_line = SceneLine_default;
+    
+        scene_line.scene_header.statement_type = SCENE_STATEMENT_LINE;
+    
+        s8 actor    = s8_var(jline->child->string);
+        s8 line     = s8_var(cJSON_GetStringValue(jline->child));
+
+        scene_line.actor    = actor;
+        scene_line.line     = line;
+        SDL_Log("%s: %s", scene_line.actor.data, scene_line.line.data);
+
         Scene_Statement_Add(scene, &scene_line);
     }
 
     scene->line_cond = Conditions_default;
-
 }
 
 void Scene_Line_writeJSON(void *input, cJSON *jc) {
