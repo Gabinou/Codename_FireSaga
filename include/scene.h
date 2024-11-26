@@ -67,11 +67,6 @@ struct Boss;
 struct Game;
 struct Settings;
 
-/* --- CONSTANTS --- */
-enum SCENE_bOFFSET {
-    SCENE_STATEMENT_bOFFSET = 0,
-};
-
 // Statements: Renpy terminology
 //      Anything a Scene can do.
 //      Scene pauses only on line. Otherwise play statements.
@@ -105,6 +100,7 @@ extern fsm_scene_statement_t scene_statement_play[SCENE_STATEMENT_NUM];
 
 typedef struct SceneHeader {
     i32 statement_type; ;  /* bOFFSET = 0  (+ 4) */
+    i32 didascalie_type; ;  /* bOFFSET = 4  (+ 4) */
 
 } SceneHeader;
 

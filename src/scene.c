@@ -94,6 +94,7 @@ void Scene_readJSON(void *input, cJSON *jscene) {
         }
 
         /* -- FSM for array elem -- */
+        SDL_assert(fsm_Scene_readJSON[statement_type] != NULL);
         fsm_Scene_readJSON[statement_type](input, jstatement);
     }
 }
@@ -103,6 +104,10 @@ i32 Scene_Statement_Type(void *statement) {
     return (header->statement_type);
 }
 
+i32 Scene_Statement_Didascalie_Type(void *statement) {
+    SceneHeader *header = statement;
+    return (header->didascalie_type);
+}
 
 i32 Scene_jsonStatement_Type(cJSON *jstatement) {
     cJSON *jline = cJSON_GetObjectItem(jstatement, "Line");
@@ -127,7 +132,7 @@ i32 Scene_jsonStatement_Type(cJSON *jstatement) {
     return (SCENE_STATEMENT_START);
 }
 
-i32 Scene_Didascalie_Type(cJSON *jstatement) {
+i32 Scene_jsonDidascalie_Type(cJSON *jstatement) {
     cJSON *jappear = cJSON_GetObjectItem(jstatement, "Appear");
     if (jappear != NULL) {
         // SDL_Log("Is an Appear");
@@ -149,6 +154,7 @@ void Scene_Didascalie_readJSON(void *input, cJSON *jdid) {
     
     i32 type = Scene_Didascalie_Type(jdid);
     if ((type > SCENE_DIDASCALIE_START) && (type < SCENE_DIDASCALIE_NUM)) {
+        SDL_assert(fsm_Scene_Didascalie_readJSON[statement_type] != NULL);
         fsm_Scene_Didascalie_readJSON[type](input, jdid);
     }
 }
