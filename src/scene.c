@@ -123,7 +123,7 @@ i32 Scene_jsonStatement_Type(cJSON *jstatement) {
         return (SCENE_STATEMENT_CONDITION);
     }
 
-    i32 did = Scene_Didascalie_Type(jstatement);
+    i32 did = Scene_jsonDidascalie_Type(jstatement);
     if ((did > SCENE_DIDASCALIE_START) && (did < SCENE_DIDASCALIE_NUM)) {
         // SDL_Log("Is a Didascalie");
         return (SCENE_STATEMENT_DIDASCALIE);
@@ -152,10 +152,10 @@ i32 Scene_jsonDidascalie_Type(cJSON *jstatement) {
 
 void Scene_Didascalie_readJSON(void *input, cJSON *jdid) {
     Scene *scene = input;
-    
-    i32 type = Scene_Didascalie_Type(jdid);
+
+    i32 type = Scene_jsonDidascalie_Type(jdid);
     if ((type > SCENE_DIDASCALIE_START) && (type < SCENE_DIDASCALIE_NUM)) {
-        SDL_assert(fsm_Scene_Didascalie_readJSON[statement_type] != NULL);
+        SDL_assert(fsm_Scene_Didascalie_readJSON[type] != NULL);
         fsm_Scene_Didascalie_readJSON[type](input, jdid);
     }
 }
@@ -167,30 +167,28 @@ void Scene_Didascalie_Appear_readJSON( void *input, cJSON *jdid) {
 
     /* Compare conditions */
     if (Conditions_Match(&scene->line_cond, &scene->game_cond)) {
-        scene_type.scene_header.statement_type = SCENE_STATEMENT_DIDASCALIE;
+        scene_did.scene_header.statement_type   = SCENE_STATEMENT_DIDASCALIE;
+        scene_did.scene_header.didascalie_type  = SCENE_DIDASCALIE_APPEAR;
 
-        scene_type.scene_header.didascalie_type = SCENE_DIDASCALIE_APPEAR;
-      
         // TODO parse jdid, add to scene_did
-        
+
         Scene_Statement_Add(scene, &scene_did);
     }
-    
+
 }
 
 void Scene_Didascalie_Slide_readJSON( void *input, cJSON *jdid) {
     Scene *scene = input;
-    
+
     SceneDidascalie scene_did = SceneDidascalie_default;
 
     /* Compare conditions */
     if (Conditions_Match(&scene->line_cond, &scene->game_cond)) {
-        scene_type.scene_header.statement_type = SCENE_STATEMENT_DIDASCALIE;
+        scene_did.scene_header.statement_type   = SCENE_STATEMENT_DIDASCALIE;
+        scene_did.scene_header.didascalie_type  = SCENE_DIDASCALIE_SLIDE;
 
-        scene_type.scene_header.didascalie_type = SCENE_DIDASCALIE_SLIDE;
-      
         // TODO parse jdid, add to scene_did
-        
+
         Scene_Statement_Add(scene, &scene_did);
     }
 }
@@ -276,13 +274,19 @@ void Scene_Line_readJSON(void *input, cJSON *jstatement) {
         exit(1);
     }
 
-    /* Compare conditions */
-    if (Conditions_Match(&scene->line_cond, &scene->game_cond)) {
+    s8 actor    = s8_var(jline->child->string);
+    int order   = Unit_Name2Order(actor);
+
+    /* Compare conditions: conditions match and actor is NOT DEAD */
+    if (!Conditions_Match(&scene->line_cond, &scene->game_cond)) {
+        SDL_Log("Line: Conditions don't match");
+    } else if (scene->game_cond.dead[order]) {
+        SDL_Log("Line: Actor is dead");
+    } else {
         SceneLine scene_line = SceneLine_default;
-    
+
         scene_line.scene_header.statement_type = SCENE_STATEMENT_LINE;
-    
-        s8 actor    = s8_var(jline->child->string);
+
         s8 line     = s8_var(cJSON_GetStringValue(jline->child));
 
         scene_line.actor    = actor;

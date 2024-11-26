@@ -207,7 +207,7 @@ s8 Scene_Filename(i32 index);
 void Scene_readJSON( void *s, cJSON *js);
 void Scene_writeJSON(void *s, cJSON *js);
 
-i32 Scene_Didascalie_Type(cJSON *jstatement);
+i32 Scene_jsonDidascalie_Type(cJSON *jstatement);
 
 void Scene_Background_readJSON( void *c, cJSON *jc);
 void Scene_Background_writeJSON(void *c, cJSON *jc);
