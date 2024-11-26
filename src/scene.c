@@ -153,11 +153,13 @@ void Scene_Didascalie_readJSON(void *input, cJSON *jdid) {
     }
 }
 
-void Scene_Didascalie_Appear_readJSON( void *c, cJSON *jc) {
+void Scene_Didascalie_Appear_readJSON( void *input, cJSON *jdid) {
+    Scene *scene = input;
     
 }
 
-void Scene_Didascalie_Slide_readJSON( void *c, cJSON *jc) {
+void Scene_Didascalie_Slide_readJSON( void *input, cJSON *jdid) {
+    Scene *scene = input;
     
 }
 
