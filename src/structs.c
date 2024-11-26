@@ -124,10 +124,6 @@ struct Weapon_stats Weapon_stats_default = {0};
 
 struct Movement_cost Movement_cost_default = {0};
 
-struct Condition Condition_default = {
-    .recruited   = true,
-};
-
 struct Fps Fps_default = {
     .pos         = {FPS_DEFAULT_POSX,        FPS_DEFAULT_POSY},
     .show        =  FPS_DEFAULT_SHOW,

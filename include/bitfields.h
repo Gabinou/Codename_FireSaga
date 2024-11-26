@@ -29,5 +29,6 @@ b32  Bitfield_Get(u32 *bf, size_t bit);
 void Bitfield_And( u32 *bf1, u32 *bf2, u32 *out, size_t len);
 b32  Bitfield_All( u32 *bf1, u32 *bf2, size_t len);
 b32  Bitfield_isIn(u32 *bf1, u32 *bf2, size_t len);
+b32  Bitfield_Any( u32 *bf1, u32 *bf2, size_t len);
 
 #endif /* BITFIELDS_H */

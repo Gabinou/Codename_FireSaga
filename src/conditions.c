@@ -15,14 +15,23 @@ struct Conditions Conditions_Game_start = {
 /// @brief  Are all conditions in cond satisfied in game_cond?
 /// @return  true if all bits in cond are set in game_cond
 b32 Conditions_Match(struct Conditions *cond, struct Conditions *game_cond) {
-    size_t len_alive    = BITFIELD_LEN(UNIT_ORDER_NPC_END);
-    size_t len_dead     = BITFIELD_LEN(UNIT_ORDER_NPC_END);
+    size_t len_alive    = BITFIELD_LEN(UNIT_NUM);
+    size_t len_dead     = BITFIELD_LEN(UNIT_NUM);
     size_t len_rec      = BITFIELD_LEN(UNIT_ORDER_PC_END);
 
+    /* Raw are the conditions the same? */
     b32 isalive = Bitfield_isIn(cond->alive,     game_cond->alive,     len_alive);
     b32 isdead  = Bitfield_isIn(cond->dead,      game_cond->dead,      len_dead);
     b32 isrec   = Bitfield_isIn(cond->recruited, game_cond->recruited, len_rec);
-    return (isdead && isalive && isrec);
+    b32 raw_match = (isdead && isalive && isrec);
+
+    /* Filter for impossible conditions: Units can't be both alive and deadé */
+    b32 isalive_and_dead_cond = Bitfield_Any(cond->alive,      cond->dead,         len_alive);
+    b32 isalive_and_dead_game = Bitfield_Any(game_cond->alive, game_cond->dead,    len_alive);
+
+    // SDL_Log("%d %d %d", isdead, isalive, isrec);
+    SDL_Log("%d %d", isalive_and_dead_cond, isalive_and_dead_game);
+    return (raw_match && !isalive_and_dead_cond && !isalive_and_dead_game);
 }
 
 /* Set condition from Unit Name */

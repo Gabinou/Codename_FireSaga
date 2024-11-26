@@ -335,14 +335,6 @@ typedef struct Bonus_Stats {
 } Bonus_Stats;
 extern struct Bonus_Stats Bonus_Stats_default;
 
-struct Condition {
-    /* Conversation condition? */
-    i16 unitid;
-    b32 dead;
-    b32 recruited;
-};
-extern struct Condition Condition_default;
-
 struct Promotion {
     struct Unit_stats bonus;
     u16 skill;

@@ -19,9 +19,14 @@ void Bitfield_Off(u32 *bf, size_t bit) {
 
 b32 Bitfield_Get(u32 *bf, size_t bit) {
     SDL_assert(bf != NULL);
+    SDL_Log("bit %d", bit);
     size_t len = bit / BITFIELD_BITSPERLEN;
-    u32 val = (1UL << (bit - (len * BITFIELD_BITSPERLEN)));
-    b32 out = (bf[len] & val);
+    SDL_Log("len %d", len);
+    u32 val = (1UL << (bit % BITFIELD_BITSPERLEN));
+    SDL_Log("val %lu", val);
+    SDL_Log("bf[len] %lu", bf[len]);
+    b32 out = (bf[len] & val) > 0;
+    SDL_Log("out %d", out);
     return (out);
 }
 
@@ -40,6 +45,17 @@ b32 Bitfield_All(u32 *bf1, u32 *bf2, size_t len) {
     for (u32 i = 0; i < len; i++)
         out &= (bf1[i] == bf2[i]);
     return (out);
+}
+
+b32 Bitfield_Any(u32 *bf1, u32 *bf2, size_t len) {
+    SDL_assert(bf1 != NULL);
+    SDL_assert(bf2 != NULL);
+    for (u32 i = 0; i < len; i++) {
+        if (bf1[i] == bf2[i]) {
+            return (true);
+        }
+    }
+    return (false);
 }
 
 // Combination Bitfield_And and Bitfield_All
