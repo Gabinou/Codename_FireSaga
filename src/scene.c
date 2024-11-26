@@ -8,6 +8,7 @@ struct Scene Scene_default =  {
     .jsonio_header.json_element = JSON_SCENE,
     /* Can't put Conditions_Game_start here. */
     .game_cond                  = {.alive = {0xFFFFFFFF}},
+    .line_cond                  = {.alive = {0xFFFFFFFF}},
 };
 
 struct SceneLine        SceneLine_default       = {0};
@@ -201,19 +202,25 @@ void Scene_Condition_readJSON(void *input, cJSON *jcond) {
     SDL_assert(jcondition != NULL);
 
     s8 actor        = s8_var(jcondition->child->string);
+    i32 unit_order  = Unit_Name2Order(actor);
+    if ((unit_order <= UNIT_ORDER_START) && (unit_order >= UNIT_NUM)) {
+        SDL_Log("Problem parsing Scene's Condition: Unknown name '%s'.", actor.data);
+        exit(1);
+    }
+
     s8 condition    = s8_toLower(s8_mut(cJSON_GetStringValue(jcondition->child)));
+    u64 hash_cond   = sota_hash_djb2(condition);
+    SDL_Log("Unit_Name2Order: %d", unit_order);
 
-    i32 unit_order = Unit_Name2Order(actor);
-
-    if (sota_hash_djb2(condition) == hash_alive) {
+    if (hash_cond == hash_alive) {
         // SDL_Log("alive");
-        scene->line_cond.alive[unit_order]     = true;
-    } else if (sota_hash_djb2(condition) == hash_dead) {
+        Conditions_Alive_Order(&scene->line_cond, unit_order);
+    } else if (hash_cond == hash_dead) {
         // SDL_Log("dead");
-        scene->line_cond.dead[unit_order]      = true;
-    } else if (sota_hash_djb2(condition) == hash_recruited) {
+        Conditions_Dead_Order(&scene->line_cond, unit_order);
+    } else if (hash_cond == hash_recruited) {
         // SDL_Log("recruited");
-        scene->line_cond.recruited[unit_order] = true;
+        Conditions_Recruited_Order(&scene->line_cond, unit_order);
     } else {
         SDL_Log("Problem parsing Scene's Condition: Unknown condition '%s'.",
                 cJSON_GetStringValue(jcondition->child));

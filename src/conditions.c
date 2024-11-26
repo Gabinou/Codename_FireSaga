@@ -71,16 +71,24 @@ void Conditions_Recruited_ID(struct Conditions *cond, u16 _id) {
 
 /* Set condition from Unit order */
 void Conditions_Dead_Order(struct Conditions *cond, size_t unit_order) {
+    SDL_assert(cond         != NULL);
+    SDL_assert(cond->dead   != NULL);
+    SDL_assert(cond->alive  != NULL);
     Bitfield_On( cond->dead,    unit_order);
     Bitfield_Off(cond->alive,   unit_order);
 }
 
 void Conditions_Alive_Order(struct Conditions *cond, size_t unit_order) {
+    SDL_assert(cond         != NULL);
+    SDL_assert(cond->dead   != NULL);
+    SDL_assert(cond->alive  != NULL);
     Bitfield_On( cond->alive,   unit_order);
     Bitfield_Off(cond->dead,    unit_order);
 }
 
 void Conditions_Recruited_Order(struct Conditions *cond, size_t unit_order) {
+    SDL_assert(cond             != NULL);
+    SDL_assert(cond->recruited  != NULL);
     Bitfield_On(cond->recruited, unit_order);
 }
 

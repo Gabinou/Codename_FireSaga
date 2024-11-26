@@ -60,4 +60,9 @@ void test_conditions() {
     /* Line cares if Silou died: False*/
     Conditions_Alive_Order(&line_cond, UNIT_ORDER_SILOU);
     nourstest_true(!Conditions_Match(&line_cond, &game_cond));
+
+    /* No match if condition doesn't make sense */
+    game_cond = Conditions_Game_start;
+    line_cond = Conditions_default;
+
 }
