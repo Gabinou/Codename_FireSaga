@@ -669,7 +669,7 @@ void Game_Startup_Map(Game *IES) {
 void Game_Startup_Scene(Game *IES) {
     // Get scene JSON file from
     s8 filename = Scene_Filename(IES->settings.args.scene);
-    SDL_Log("%s", filename.data);
+    // SDL_Log("%s", filename.data);
 
     struct Scene scene = Scene_default;
     jsonio_readJSON(filename, &scene);

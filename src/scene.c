@@ -69,14 +69,12 @@ s8 Scene_Filename_Chapter(i32 chapter, i32 subindex) {
 
 s8 Scene_Filename(i32 index) {
     // TODO: checking validity
-    // s8 filename = s8_mut(PATH_JOIN("..", "scenes/"));
     s8 filename = s8_mut("scenes/");
     char numbuff[8];
     stbsp_sprintf(numbuff, "%05d\0\0\0", index);
     filename = s8cat(filename, s8_literal("scene"));
     filename = s8cat(filename, s8_var(numbuff));
     filename = s8cat(filename, s8_literal(".json"));
-
     return (filename);
 }
 
@@ -210,7 +208,6 @@ void Scene_Condition_readJSON(void *input, cJSON *jcond) {
 
     s8 condition    = s8_toLower(s8_mut(cJSON_GetStringValue(jcondition->child)));
     u64 hash_cond   = sota_hash_djb2(condition);
-    SDL_Log("Unit_Name2Order: %d", unit_order);
 
     if (hash_cond == hash_alive) {
         // SDL_Log("alive");
@@ -286,9 +283,9 @@ void Scene_Line_readJSON(void *input, cJSON *jstatement) {
 
     /* Compare conditions: conditions match and actor is NOT DEAD */
     if (!Conditions_Match(&scene->line_cond, &scene->game_cond)) {
-        SDL_Log("Line: Conditions don't match");
-    } else if (scene->game_cond.dead[order]) {
-        SDL_Log("Line: Actor is dead");
+        // SDL_Log("Line: Conditions don't match");
+    } else if (Bitfield_Get(scene->game_cond.dead, order)) {
+        // SDL_Log("Line: Actor is dead");
     } else {
         SceneLine scene_line = SceneLine_default;
 
@@ -303,7 +300,7 @@ void Scene_Line_readJSON(void *input, cJSON *jstatement) {
         Scene_Statement_Add(scene, &scene_line);
     }
 
-    scene->line_cond = Conditions_default;
+    scene->line_cond = Conditions_Game_start;
 }
 
 void Scene_Line_writeJSON(void *input, cJSON *jc) {
