@@ -117,23 +117,22 @@ typedef struct SceneHeader {
 //  - Animate
 //      - Fade in, fade out
 typedef struct SceneDidascalie {
-    SceneHeader scene_header;
+    int a;
 } SceneDidascalie;
 extern struct SceneDidascalie SceneDidascalie_default;
 extern struct SceneDidascalie SceneDidascalie_FadeAll;
 
 typedef struct SceneLine {
-    SceneHeader scene_header;
-
     s8 actor;
     s8 line;
 
 } SceneLine;
 extern struct SceneLine SceneLine_default;
 
-struct SceneMusic {
-    SceneHeader scene_header;
-};
+typedef struct SceneMusic {
+    int a;
+} SceneMusic;
+
 extern struct SceneBackground SceneMusic_default;
 extern struct SceneBackground SceneMusic_Stop;
 
@@ -142,12 +141,24 @@ extern struct SceneBackground SceneMusic_Stop;
 //    - Slide
 //    - Fade (to black)
 typedef struct SceneBackground {
-    SceneHeader scene_header;
+    int a;
 } SceneBackground;
 extern struct SceneBackground SceneBackground_default;
 extern struct SceneBackground SceneBackground_FadeToBlack;
 //  Screen:
 //  - Shake screen
+
+typedef union SceneStatementUnion {
+    SceneLine       line;
+    SceneDidascalie didascalie;
+    SceneMusic      music;
+    SceneBackground background;
+} SceneStatementUnion;
+
+typedef struct SceneStatement {
+    SceneHeader header;
+    SceneStatementUnion _union;
+} SceneStatement;
 
 /* A scene is a conversation.
 *   - Up to 8 characters sprites on screen at once
@@ -165,14 +176,15 @@ typedef struct Scene {
     struct Conditions    game_cond;
     struct Conditions    line_cond; /* Reset everytime a line is read */
 
-    u16 *actors;
+    /* Unit order */
+    int *actor_order;
 
     /* Statements: meat of the Scene
      *  - SceneLine, SceneDidascalie, SceneMusic OR SceneBackground
      *      - No Condition
      *  - Note: only statements that satisfy game_cond
      */
-    void **statements;
+    SceneStatement *statements;
 
     /* -- Post-scene -- */
     // What happens after a scene ends?
@@ -192,7 +204,7 @@ extern struct Scene Scene_default;
 void Scene_Free(struct Scene *scene);
 void Scene_Init(struct Scene *scene);
 
-void Scene_Statement_Add(Scene *scene, void *statement);
+void Scene_Statement_Add(Scene *scene, SceneStatement statement);
 
 /* --- Actors --- */
 i32     Scene_Actors_Num(Scene *scene);

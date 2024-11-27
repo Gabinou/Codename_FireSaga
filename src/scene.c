@@ -42,8 +42,8 @@ json_func fsm_Scene_writeJSON[SCENE_STATEMENT_NUM] = {
 
 void Scene_Init(struct Scene *scene) {
     SDL_assert(scene != NULL);
-    scene->statements       = DARR_INIT(scene->statements, void *, 16);
-    scene->actors           = DARR_INIT(scene->actors, u16, 16);
+    scene->statements       = DARR_INIT(scene->statements, SceneStatement, 16);
+    scene->actor_order           = DARR_INIT(scene->actor_order, int, 16);
 }
 
 void Scene_Free(struct Scene *scene) {
@@ -55,9 +55,9 @@ void Scene_Free(struct Scene *scene) {
         scene->statements = NULL;
     }
 
-    if (scene->actors != NULL) {
-        DARR_FREE(scene->actors);
-        scene->actors = NULL;
+    if (scene->actor_order != NULL) {
+        DARR_FREE(scene->actor_order);
+        scene->actor_order = NULL;
     }
 }
 
@@ -162,33 +162,36 @@ void Scene_Didascalie_readJSON(void *input, cJSON *jdid) {
 void Scene_Didascalie_Appear_readJSON( void *input, cJSON *jdid) {
     Scene *scene = input;
 
-    SceneDidascalie scene_did = SceneDidascalie_default;
+    SceneStatement statement = {0};
+    SceneDidascalie *scene_did = &statement._union.didascalie;
+    *scene_did = SceneDidascalie_default;
 
     /* Compare conditions */
     if (Conditions_Match(&scene->line_cond, &scene->game_cond)) {
-        scene_did.scene_header.statement_type   = SCENE_STATEMENT_DIDASCALIE;
-        scene_did.scene_header.didascalie_type  = SCENE_DIDASCALIE_APPEAR;
+        statement.header.statement_type   = SCENE_STATEMENT_DIDASCALIE;
+        statement.header.didascalie_type  = SCENE_DIDASCALIE_APPEAR;
 
         // TODO parse jdid, add to scene_did
 
-        Scene_Statement_Add(scene, &scene_did);
+        Scene_Statement_Add(scene, statement);
     }
-
 }
 
 void Scene_Didascalie_Slide_readJSON( void *input, cJSON *jdid) {
     Scene *scene = input;
 
-    SceneDidascalie scene_did = SceneDidascalie_default;
+    SceneStatement statement = {0};
+    SceneDidascalie *scene_did = &statement._union.didascalie;
+    *scene_did = SceneDidascalie_default;
 
     /* Compare conditions */
     if (Conditions_Match(&scene->line_cond, &scene->game_cond)) {
-        scene_did.scene_header.statement_type   = SCENE_STATEMENT_DIDASCALIE;
-        scene_did.scene_header.didascalie_type  = SCENE_DIDASCALIE_SLIDE;
+        statement.header.statement_type   = SCENE_STATEMENT_DIDASCALIE;
+        statement.header.didascalie_type  = SCENE_DIDASCALIE_SLIDE;
 
         // TODO parse jdid, add to scene_did
 
-        Scene_Statement_Add(scene, &scene_did);
+        Scene_Statement_Add(scene, statement);
     }
 }
 
@@ -281,34 +284,37 @@ void Scene_Line_readJSON(void *input, cJSON *jstatement) {
     s8 actor    = s8_var(jline->child->string);
     int order   = Unit_Name2Order(actor);
 
+
     /* Compare conditions: conditions match and actor is NOT DEAD */
     if (!Conditions_Match(&scene->line_cond, &scene->game_cond)) {
         // SDL_Log("Line: Conditions don't match");
     } else if (Bitfield_Get(scene->game_cond.dead, order)) {
         // SDL_Log("Line: Actor is dead");
     } else {
-        SceneLine scene_line = SceneLine_default;
+        SceneStatement statement = {0};
+        SceneLine *scene_line = &statement._union.line;
+        *scene_line = SceneLine_default;
 
-        scene_line.scene_header.statement_type = SCENE_STATEMENT_LINE;
+        statement.header.statement_type   = SCENE_STATEMENT_LINE;
 
         s8 line     = s8_var(cJSON_GetStringValue(jline->child));
 
-        scene_line.actor    = actor;
-        scene_line.line     = line;
-        SDL_Log("%s: %s", scene_line.actor.data, scene_line.line.data);
+        scene_line->actor   = actor;
+        scene_line->line    = line;
+        SDL_Log("%s: %s", scene_line->actor.data, scene_line->line.data);
 
-        Scene_Statement_Add(scene, &scene_line);
+        Scene_Statement_Add(scene, statement);
     }
 
     scene->line_cond = Conditions_Game_start;
 }
 
-void Scene_Line_writeJSON(void *input, cJSON *jc) {
+void Scene_Line_writeJSON(void *input, cJSON * jc) {
 
 }
 
 /* --- Player interaction --- */
-void Scene_Finish(struct Scene *scene, struct Game *sota) {
+void Scene_Finish(struct Scene * scene, struct Game * sota) {
     /* - Finish scene - */
     SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "Scene Animation Finished");
     SDL_assert((scene->event > event_Start) && (scene->event < event_End));
@@ -327,8 +333,8 @@ void Scene_Finish(struct Scene *scene, struct Game *sota) {
 
 // }
 
-void Scene_Animate(struct Game  *sota, tnecs_entity entity,
-                   struct Scene *scene, struct Timer *timer) {
+void Scene_Animate(struct Game  * sota, tnecs_entity entity,
+                   struct Scene * scene, struct Timer * timer) {
     //     /* - Change frame to be drawn each frame - */
 
     //     _Scene_Animate_Background(scene);
@@ -337,39 +343,39 @@ void Scene_Animate(struct Game  *sota, tnecs_entity entity,
 }
 
 
-void Scene_Statement_Add(Scene *scene, void *statement) {
+void Scene_Statement_Add(Scene * scene, SceneStatement statement) {
     SDL_assert(scene        != NULL);
-    SDL_assert(statement    != NULL);
 
     if (scene->statements == NULL) {
-        scene->statements       = DARR_INIT(scene->statements, void *, 16);
+        scene->statements       = DARR_INIT(scene->statements, SceneStatement, 16);
     }
-
+    SceneHeader header = statement.header;
+    SDL_Log("%d %d", header.statement_type, header.didascalie_type);
     DARR_PUT(scene->statements, statement);
 }
 
 
-void Scene_Actor_Add(Scene *scene, u16 actor) {
+void Scene_Actor_Add(Scene * scene, u16 actor) {
     SDL_assert(scene != NULL);
     /* Do not add new actor if found */
     if (Scene_Actor_Find(scene, actor) >= 0) {
         return;
     }
 
-    /* Do not add new actor if too many actors already */
-    if (DARR_NUM(scene->actors) >= SCENE_MAX_ACTORS) {
+    /* Do not add new actor if too many actor_order already */
+    if (DARR_NUM(scene->actor_order) >= SCENE_MAX_ACTORS) {
         return;
     }
 
     /* Add new actor */
-    DARR_PUT(scene->actors, actor);
+    DARR_PUT(scene->actor_order, actor);
 }
 
-i32 Scene_Actor_Find(Scene *scene, u16 actor) {
+i32 Scene_Actor_Find(Scene * scene, u16 actor) {
     SDL_assert(scene != NULL);
     i32 found = -1;
-    for (i32 i = 0; i < DARR_NUM(scene->actors); i++) {
-        if (scene->actors[i] == actor) {
+    for (i32 i = 0; i < DARR_NUM(scene->actor_order); i++) {
+        if (scene->actor_order[i] == actor) {
             found = i;
             break;
         }
@@ -388,8 +394,8 @@ i32 Scene_Actor_Find(Scene *scene, u16 actor) {
 
 // }
 
-void Scene_Draw(struct Scene *scene, struct Settings *settings, struct SDL_Texture *rt,
-                SDL_Renderer *renderer) {
+void Scene_Draw(struct Scene * scene, struct Settings * settings, struct SDL_Texture * rt,
+                SDL_Renderer * renderer) {
     //     /* - Draw the scene frame - */
 
     //     _Scene_Draw_Background(scene, renderer);

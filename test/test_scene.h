@@ -15,71 +15,27 @@ void test_scene() {
     struct Scene scene = Scene_default;
     Scene_readJSON(&scene, jscene);
 
+    /* --- Check statements num ---  */
+    nourstest_true(DARR_NUM(scene.statements) == 4);
 
-    /* -- Scene 1: nothing -- */
-    // Scene_Render(&scene);
+    /* --- Check each statement --- */
+    /* -- Statement 0 -- */
+    SceneHeader scene_header = scene.statements[0].header;
+    SDL_Log("scene_header.statement_type %d", scene_header.statement_type);
+    nourstest_true(scene_header.statement_type == SCENE_STATEMENT_LINE);
 
-    // /* -- Scene 2: Otto Recruited -- */
-    // Conditions_Recruited_Order(&(scene.game_cond), UNIT_ORDER_OTTO); /* Line 4 */
+    /* -- Statement 1 -- */
+    scene_header = scene.statements[1].header;
+    nourstest_true(scene_header.statement_type == SCENE_STATEMENT_LINE);
 
-    // // nourstest_true(!Conditions_Compare(&line_cond, &scene.game_cond));
-    // nourstest_true(Conditions_Compare(&(scene.lines_raw[4].conditions), &scene.game_cond));
-    // nourstest_true(Bitfield_Get(scene.lines_raw[4].conditions.recruited, UNIT_ORDER_OTTO));
-    // nourstest_true(Bitfield_Get(scene.lines_raw[4].conditions.recruited, UNIT_ORDER_OTTO));
-    // nourstest_true(Bitfield_Get(scene.game_cond.recruited, UNIT_ORDER_OTTO) > 0);
-    // nourstest_true(!Bitfield_Get(scene.game_cond.recruited, UNIT_ORDER_SILOU));
+    /* -- Statement 2 -- */
+    scene_header = scene.statements[2].header;
+    nourstest_true(scene_header.statement_type == SCENE_STATEMENT_DIDASCALIE);
+    nourstest_true(scene_header.didascalie_type == SCENE_DIDASCALIE_SLIDE);
 
-    // Scene_Render(&scene);
-    // nourstest_true(Conditions_Compare(&(scene.lines_raw[4].conditions), &scene.game_cond));
-    // nourstest_true(scene.lines_raw_num == 6);
-    // nourstest_true(scene.lines_num == 4);
-    // nourstest_true(scene.rendered[0] == 1);
-    // nourstest_true(scene.rendered[1] == 2);
-    // nourstest_true(scene.rendered[2] == 4);
-    // nourstest_true(scene.rendered[3] == 5);
-
-    /* -- Scene 3: Silou Recruited, Hamilcar Dead -- */
-    // scene.game_cond = Conditions_Game_start;
-    // Conditions_Recruited_Order(&(scene.game_cond), UNIT_ORDER_SILOU);
-    // Conditions_Dead_Order(&(scene.game_cond), UNIT_ORDER_HAMILCAR);
-
-    // Scene_Render(&scene);
-    // nourstest_true(scene.lines_num == 4);
-    // nourstest_true(scene.rendered[0] == 1);
-    // nourstest_true(scene.rendered[1] == 2);
-    // nourstest_true(scene.rendered[2] == 3);
-    // nourstest_true(scene.rendered[3] == 5);
-
-    /* -- Scene 4: Silou Recruited, Hamilcar Dead, Zidine Dead -- */
-    // scene.game_cond = Conditions_Game_start;
-    // Conditions_Recruited_Order(&(scene.game_cond), UNIT_ORDER_SILOU);
-    // Conditions_Dead_Order(&(scene.game_cond), UNIT_ORDER_HAMILCAR);
-    // Conditions_Dead_Order(&(scene.game_cond), UNIT_ORDER_ZIDINE);
-    // Scene_Render(&scene);
-    // nourstest_true(scene.lines_num == 5);
-    // nourstest_true(scene.rendered[0] == 0);
-    // nourstest_true(scene.rendered[1] == 1);
-    // nourstest_true(scene.rendered[2] == 2);
-    // nourstest_true(scene.rendered[3] == 3);
-    // nourstest_true(scene.rendered[4] == 5);
-
-    /* -- Scene 5: All -- */
-    // scene.game_cond = Conditions_Game_start;
-    // Conditions_Recruited_Order(&(scene.game_cond), UNIT_ORDER_SILOU);
-    // Conditions_Recruited_Order(&(scene.game_cond), UNIT_ORDER_OTTO);
-    // Conditions_Dead_Order(&(scene.game_cond), UNIT_ORDER_HAMILCAR);
-    // Conditions_Dead_Order(&(scene.game_cond), UNIT_ORDER_ZIDINE);
-    // Scene_Render(&scene);
-    // nourstest_true(scene.lines_num == 6);
-    // nourstest_true(scene.rendered[0] == 0);
-    // nourstest_true(scene.rendered[1] == 1);
-    // nourstest_true(scene.rendered[2] == 2);
-    // nourstest_true(scene.rendered[3] == 3);
-    // nourstest_true(scene.rendered[4] == 4);
-    // nourstest_true(scene.rendered[5] == 5);
-
-    /* -- Output replace -- */
-    // Scene_Render_Print(&scene);
+    /* -- Statement 3 -- */
+    scene_header = scene.statements[3].header;
+    nourstest_true(scene_header.statement_type == SCENE_STATEMENT_LINE);
 
     /* Clean the jfile */
     Scene_Free(&scene);
