@@ -29,8 +29,6 @@ b32 Conditions_Match(struct Conditions *cond, struct Conditions *game_cond) {
     b32 isalive_and_dead_cond = Bitfield_Any(cond->alive,      cond->dead,         len_alive);
     b32 isalive_and_dead_game = Bitfield_Any(game_cond->alive, game_cond->dead,    len_alive);
 
-    // SDL_Log("%d %d %d", isdead, isalive, isrec);
-    SDL_Log("%d %d", isalive_and_dead_cond, isalive_and_dead_game);
     return (raw_match && !isalive_and_dead_cond && !isalive_and_dead_game);
 }
 
