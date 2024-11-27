@@ -25,7 +25,7 @@ b32 Conditions_Match(struct Conditions *cond, struct Conditions *game_cond) {
     b32 isrec   = Bitfield_isIn(cond->recruited, game_cond->recruited, len_rec);
     b32 raw_match = (isdead && isalive && isrec);
 
-    /* Filter for impossible conditions: Units can't be both alive and deadé */
+    /* Filter for impossible conditions: Units can't be both alive and dead. */
     b32 isalive_and_dead_cond = Bitfield_Any(cond->alive,      cond->dead,         len_alive);
     b32 isalive_and_dead_game = Bitfield_Any(game_cond->alive, game_cond->dead,    len_alive);
 

@@ -9,6 +9,7 @@ void test_conditions() {
     struct Conditions line_cond = Conditions_Game_start;
 
     nourstest_true(Conditions_Match(&line_cond, &game_cond));
+    getchar();
 
     /* Line should play if Silou is dead, but she is alive: False*/
     Conditions_Dead_Order(&line_cond, UNIT_ORDER_SILOU);

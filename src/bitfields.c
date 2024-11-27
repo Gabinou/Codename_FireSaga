@@ -51,7 +51,7 @@ b32 Bitfield_Any(u32 *bf1, u32 *bf2, size_t len) {
     SDL_assert(bf1 != NULL);
     SDL_assert(bf2 != NULL);
     for (u32 i = 0; i < len; i++) {
-        if (bf1[i] == bf2[i]) {
+        if ((bf1[i] & bf2[i]) > 0) {
             return (true);
         }
     }
