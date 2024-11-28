@@ -301,7 +301,8 @@ void Scene_Line_readJSON(void *input, cJSON *jstatement) {
 
         scene_line->actor   = actor;
         scene_line->line    = line;
-        SDL_Log("%s: %s", scene_line->actor.data, scene_line->line.data);
+        // Print line:
+        // SDL_Log("%s: %s", scene_line->actor.data, scene_line->line.data);
 
         Scene_Statement_Add(scene, statement);
     }
@@ -350,7 +351,6 @@ void Scene_Statement_Add(Scene * scene, SceneStatement statement) {
         scene->statements       = DARR_INIT(scene->statements, SceneStatement, 16);
     }
     SceneHeader header = statement.header;
-    SDL_Log("%d %d", header.statement_type, header.didascalie_type);
     DARR_PUT(scene->statements, statement);
 }
 

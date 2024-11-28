@@ -20,13 +20,19 @@ void test_scene() {
 
     /* --- Check each statement --- */
     /* -- Statement 0 -- */
-    SceneHeader scene_header = scene.statements[0].header;
+    SceneHeader scene_header    = scene.statements[0].header;
+    SceneLine scene_line        = scene.statements[0]._union.line;
     SDL_Log("scene_header.statement_type %d", scene_header.statement_type);
     nourstest_true(scene_header.statement_type == SCENE_STATEMENT_LINE);
+    nourstest_true(s8equal(scene_line.actor, s8_literal("Erwin")));
+    nourstest_true(s8equal(scene_line.line, s8_literal("Hello.")));
 
     /* -- Statement 1 -- */
-    scene_header = scene.statements[1].header;
+    scene_header    = scene.statements[1].header;
+    scene_line      = scene.statements[1]._union.line;
     nourstest_true(scene_header.statement_type == SCENE_STATEMENT_LINE);
+    nourstest_true(s8equal(scene_line.actor, s8_literal("Erwin")));
+    nourstest_true(s8equal(scene_line.line, s8_literal("Silou is actually alive!")));
 
     /* -- Statement 2 -- */
     scene_header = scene.statements[2].header;
@@ -34,8 +40,11 @@ void test_scene() {
     nourstest_true(scene_header.didascalie_type == SCENE_DIDASCALIE_SLIDE);
 
     /* -- Statement 3 -- */
-    scene_header = scene.statements[3].header;
+    scene_header    = scene.statements[3].header;
+    scene_line      = scene.statements[3]._union.line;
     nourstest_true(scene_header.statement_type == SCENE_STATEMENT_LINE);
+    nourstest_true(s8equal(scene_line.actor, s8_literal("Silou")));
+    nourstest_true(s8equal(scene_line.line, s8_literal("I slid.")));
 
     /* Clean the jfile */
     Scene_Free(&scene);
