@@ -667,17 +667,15 @@ void Game_Startup_Map(Game *IES) {
 }
 
 void Game_Startup_Scene(Game *IES) {
-    // Get scene JSON file from
+    /* --- Get scene JSON file from --- */
+    // TODO: differentiate between cutscene and talk scene
     s8 filename = Scene_Filename(IES->settings.args.scene);
-    // SDL_Log("%s", filename.data);
+    // SDL_Log("Loading Scene '%s'", filename.data);
 
     struct Scene scene = Scene_default;
     jsonio_readJSON(filename, &scene);
 
-    SDL_Log("IMPLEMENT ME");
-    exit(1);
-
-    IES->state      = GAME_STATE_Cutscene;
+    IES->state      = GAME_STATE_Scene_Talk;
     IES->substate   = GAME_SUBSTATE_STANDBY;
 }
 
@@ -690,7 +688,6 @@ void Game_Startup_TileScreen(Game *IES) {
     IES->state      = GAME_STATE_Title_Screen;
     IES->substate   = GAME_SUBSTATE_MENU;
 }
-
 
 void Game_Save_Copy(i16 from_ind,  i16 to_ind) {
     SDL_assert(PHYSFS_exists(SAVE_FOLDER));
