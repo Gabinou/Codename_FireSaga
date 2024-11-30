@@ -672,9 +672,11 @@ void Game_Startup_Scene(Game *IES) {
     s8 filename = Scene_Filename(IES->settings.args.scene);
     // SDL_Log("Loading Scene '%s'", filename.data);
 
-    struct Scene scene = Scene_default;
-    jsonio_readJSON(filename, &scene);
+    IES->scene      = TNECS_ENTITY_CREATE_wCOMPONENTS(IES->world, Scene);
+    Scene *scene    = TNECS_GET_COMPONENT(IES->world, IES->scene, Scene);
+    *scene = Scene_default;
 
+    jsonio_readJSON(filename, scene);
     IES->state      = GAME_STATE_Scene_Talk;
     IES->substate   = GAME_SUBSTATE_STANDBY;
 }

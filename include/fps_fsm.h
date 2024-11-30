@@ -40,7 +40,7 @@ extern fsm_main_t fsm_rFrame_sGmpMap_ss[GAME_SUBSTATE_NUM];
 /* - Control FSM standalone state - */
 void fsm_cFrame_sCmbt(   struct Game *sota);
 void fsm_cFrame_sPrep(   struct Game *sota);
-void fsm_cFrame_sScnFMV( struct Game *sota);
+void fsm_cFrame_sCutScn( struct Game *sota);
 void fsm_cFrame_sGmpMap( struct Game *sota);
 void fsm_cFrame_sScnTalk(struct Game *sota);
 void fsm_cFrame_sTtlScrn(struct Game *sota);
@@ -66,7 +66,7 @@ void fsm_cFrame_sPrep_ssMapCndt(    struct Game *sota);
 /* - Render FSM standalone state - */
 void fsm_rFrame_sCmbt(   struct Game *sota);
 void fsm_rFrame_sPrep(   struct Game *sota);
-void fsm_rFrame_sScnFMV( struct Game *sota);
+void fsm_rFrame_sCutScn( struct Game *sota);
 void fsm_rFrame_sGmpMap( struct Game *sota);
 void fsm_rFrame_sGmpCamp(struct Game *sota);
 void fsm_rFrame_sScnTalk(struct Game *sota);

@@ -5,7 +5,7 @@ fsm_main_t fsm_cFrame_s[GAME_STATE_NUM] = {
     /* GAME_STATE_START         */ NULL,
     /* GAME_STATE_Combat        */ &fsm_cFrame_sCmbt,
     /* GAME_STATE_Scene_Talk    */ &fsm_cFrame_sScnTalk,
-    /* GAME_STATE_Scene_FMV     */ &fsm_cFrame_sScnFMV,
+    /* GAME_STATE_Scene_FMV     */ &fsm_cFrame_sCutScn,
     /* GAME_STATE_Gameplay_Map  */ &fsm_cFrame_sGmpMap,
     /* GAME_STATE_Gameplay_Camp */ &fsm_cFrame_sGmpCamp,
     /* GAME_STATE_Preparation   */ &fsm_cFrame_sPrep,
@@ -17,7 +17,7 @@ fsm_main_t fsm_rFrame_s[GAME_STATE_NUM] = {
     /* GAME_STATE_START         */ NULL,
     /* GAME_STATE_Combat        */ &fsm_rFrame_sCmbt,
     /* GAME_STATE_Scene_Talk    */ &fsm_rFrame_sScnTalk,
-    /* GAME_STATE_Scene_FMV     */ &fsm_rFrame_sScnFMV,
+    /* GAME_STATE_Cutscene      */ &fsm_rFrame_sCutScn,
     /* GAME_STATE_Gameplay_Map  */ &fsm_rFrame_sGmpMap,
     /* GAME_STATE_Gameplay_Camp */ &fsm_rFrame_sGmpCamp,
     /* GAME_STATE_Preparation   */ &fsm_rFrame_sGmpMap,
@@ -207,7 +207,7 @@ void fsm_cFrame_sCmbt(struct Game *sota) {
 void fsm_cFrame_sScnTalk(struct Game *sota) {
 }
 
-void fsm_cFrame_sScnFMV(struct Game *sota) {
+void fsm_cFrame_sCutScn(struct Game *sota) {
 }
 
 void fsm_cFrame_sGmpMap(struct Game *sota) {
@@ -260,13 +260,15 @@ void fsm_rFrame_sCmbt(struct Game *sota) {
 }
 
 void fsm_rFrame_sScnTalk(struct Game *sota) {
-    /* TODO: Draw scene */
+
     SDL_assert(sota->scene > TNECS_NULL);
-    struct Scene *scene = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
+    Scene *scene = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
+    SDL_assert(scene != NULL);
+
     Scene_Draw(scene, &sota->settings, sota->render_target, sota->renderer);
 }
 
-void fsm_rFrame_sScnFMV(struct Game *sota) {
+void fsm_rFrame_sCutScn(struct Game *sota) {
 
 }
 
