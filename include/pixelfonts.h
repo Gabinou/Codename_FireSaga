@@ -64,7 +64,7 @@ typedef struct PixelFont {
     i8 black;
     i8 white;
 } PixelFont;
-extern struct PixelFont PixelFont_default;
+extern PixelFont PixelFont_default;
 extern struct PixelFont TextureFont_default;
 
 /* --- Constructors/Destructors --- */

@@ -193,6 +193,7 @@ typedef struct Scene {
     SceneStatement *statements;
 
     /* -- Rendering -- */
+    SDL_Rect texture_rect;
     SDL_Texture *texture;
     struct PixelFont   *pixelnours;
 
@@ -205,7 +206,6 @@ typedef struct Scene {
     //  - Go back to next chapter start.
     //          -> event?
     tnecs_entity event;
-
 } Scene;
 extern struct Scene Scene_default;
 
@@ -213,6 +213,7 @@ extern struct Scene Scene_default;
 /* --- Constructors/Destructors --- */
 void Scene_Free(struct Scene *scene);
 void Scene_Init(struct Scene *scene);
+void Scene_Texture_Create(struct Scene *scene, SDL_Renderer *renderer);
 
 void Scene_Statement_Add(Scene *scene, SceneStatement statement);
 

@@ -9,6 +9,11 @@ struct Scene Scene_default =  {
     /* Can't put Conditions_Game_start here. */
     .game_cond                  = {.alive = {0xFFFFFFFF}},
     .line_cond                  = {.alive = {0xFFFFFFFF}},
+
+    .texture_rect               = {
+        .w = DEFAULT_RESOLUTION_X / 4,
+        .h = DEFAULT_RESOLUTION_Y / 4
+    },
 };
 
 struct SceneLine        SceneLine_default       = {0};
@@ -46,6 +51,17 @@ void Scene_Init(struct Scene *scene) {
     scene->actor_order  = DARR_INIT(scene->actor_order, int, 16);
 }
 
+void Scene_Texture_Create(struct Scene *scene, SDL_Renderer *renderer) {
+    SDL_assert(scene->texture_rect.w > 0);
+    SDL_assert(scene->texture_rect.h > 0);
+    scene->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
+                                       SDL_TEXTUREACCESS_TARGET,
+                                       scene->texture_rect.w,
+                                       scene->texture_rect.h);
+    SDL_assert(scene->texture != NULL);
+    SDL_SetTextureBlendMode(scene->texture, SDL_BLENDMODE_BLEND);
+}
+
 void Scene_Free(struct Scene *scene) {
     if (scene == NULL)
         return;
@@ -58,6 +74,10 @@ void Scene_Free(struct Scene *scene) {
     if (scene->actor_order != NULL) {
         DARR_FREE(scene->actor_order);
         scene->actor_order = NULL;
+    }
+    if (scene->texture != NULL) {
+        SDL_DestroyTexture(scene->texture);
+        scene->texture = NULL;
     }
 }
 

@@ -678,6 +678,7 @@ void Game_Startup_Scene(Game *IES) {
     Scene *scene    = TNECS_GET_COMPONENT(IES->world, IES->scene, Scene);
     *scene = Scene_default;
     scene->pixelnours = IES->pixelnours;
+    Scene_Texture_Create(scene, IES->renderer);
 
     jsonio_readJSON(filename, scene);
     IES->state      = GAME_STATE_Scene_Talk;
