@@ -10,6 +10,8 @@ struct Scene Scene_default =  {
     .game_cond                  = {.alive = {0xFFFFFFFF}},
     .line_cond                  = {.alive = {0xFFFFFFFF}},
 
+    .update = true,
+
     .texture_rect               = {
         .w = DEFAULT_RESOLUTION_X / 4,
         .h = DEFAULT_RESOLUTION_Y / 4
@@ -291,7 +293,7 @@ void Scene_Line_readJSON(void *input, cJSON *jstatement) {
         exit(1);
     }
 
-    s8 actor    = s8_var(jline->child->string);
+    s8 actor    = s8_mut(jline->child->string);
     int order   = Unit_Name2Order(actor);
 
 
@@ -307,12 +309,12 @@ void Scene_Line_readJSON(void *input, cJSON *jstatement) {
 
         statement.header.statement_type   = SCENE_STATEMENT_LINE;
 
-        s8 line     = s8_var(cJSON_GetStringValue(jline->child));
+        s8 line     = s8_mut(cJSON_GetStringValue(jline->child));
 
         scene_line->actor   = actor;
         scene_line->line    = line;
         // Print line:
-        // SDL_Log("%s: %s", scene_line->actor.data, scene_line->line.data);
+        SDL_Log("%s: %s", scene_line->actor.data, scene_line->line.data);
 
         Scene_Statement_Add(scene, statement);
     }
@@ -430,8 +432,22 @@ void Scene_Stament_Next(struct Scene *scene) {
 // }
 
 void _Scene_Draw_Text(struct Scene *scene, SDL_Texture *render_target, SDL_Renderer *renderer) {
-    SDL_assert(scene    != NULL);
+    SDL_assert(scene                != NULL);
+    SDL_assert(scene->pixelnours    != NULL);
     SDL_assert(renderer != NULL);
+
+    // SDL_Log("scene->current_statement %d", scene->current_statement);
+    SceneStatement statement = scene->statements[scene->current_statement];
+    SDL_assert(statement.header.statement_type == SCENE_STATEMENT_LINE);
+    SceneLine *scene_line = &statement._union.line;
+
+    u32 px = scene->texture_rect.w / 4;
+    u32 py = scene->texture_rect.h / 4 * 3;
+
+    SDL_Log("scene_line->actor.data %s", scene_line->actor.data);
+    SDL_Log("scene_line->line.data %s", scene_line->line.data);
+    PixelFont_Write(scene->pixelnours, renderer, scene_line->actor.data,
+                    scene_line->actor.len, px, py);
 
 }
 
