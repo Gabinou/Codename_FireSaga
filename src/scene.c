@@ -314,7 +314,7 @@ void Scene_Line_readJSON(void *input, cJSON *jstatement) {
         scene_line->actor   = actor;
         scene_line->line    = line;
         // Print line:
-        SDL_Log("%s: %s", scene_line->actor.data, scene_line->line.data);
+        // SDL_Log("%s: %s", scene_line->actor.data, scene_line->line.data);
 
         Scene_Statement_Add(scene, statement);
     }
@@ -446,20 +446,28 @@ void _Scene_Draw_Text(struct Scene *scene, SDL_Texture *render_target, SDL_Rende
 
     SDL_Log("scene_line->actor.data %s", scene_line->actor.data);
     SDL_Log("scene_line->line.data %s", scene_line->line.data);
+    /* Writing Actor name:*/
     PixelFont_Write(scene->pixelnours, renderer, scene_line->actor.data,
                     scene_line->actor.len, px, py);
 
+    px -= 10;
+    py += 22;
+
+    /* Writing line:*/
+    PixelFont_Write(scene->pixelnours, renderer, scene_line->line.data,
+                    scene_line->line.len, px, py);
 }
 
 void Scene_Update(struct Scene *scene, struct Settings *settings,
                   struct SDL_Texture *render_target, SDL_Renderer *renderer) {
     SDL_assert(scene    != NULL);
     SDL_assert(renderer != NULL);
-    SDL_SetRenderTarget(renderer, render_target);
+    SDL_SetRenderTarget(renderer, scene->texture);
 
     _Scene_Draw_Text(scene, render_target, renderer);
     //     _Scene_Draw_Background(scene, renderer);
     //     _Scene_Draw_Actors(scene, renderer);
+    SDL_SetRenderTarget(renderer, render_target);
 }
 
 void Scene_Draw(struct Scene *scene, struct Settings *settings,
