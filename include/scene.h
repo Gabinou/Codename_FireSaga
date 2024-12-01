@@ -6,6 +6,7 @@
 #include "types.h"
 #include "utilities.h"
 #include "filesystem.h"
+#include "pixelfonts.h"
 #include "conditions.h"
 #include "jsonio.h"
 #include "enums.h"
@@ -175,7 +176,7 @@ typedef struct Scene {
     /* -- Current game condition -- */
     struct Conditions    game_cond;
     struct Conditions    line_cond; /* Reset everytime a line is read */
-    
+
 
     /* Current statement */
     int current_statement;
@@ -193,7 +194,7 @@ typedef struct Scene {
 
     /* -- Rendering -- */
     SDL_Texture *texture;
-    PixelFont   *pixelnours;
+    struct PixelFont   *pixelnours;
 
     /* -- Post-scene -- */
     // What happens after a scene ends?
@@ -279,7 +280,7 @@ void Scene_Animate(struct Game  *sota, tnecs_entity entity,
                    struct Scene *scene, struct Timer *timer);
 
 /* --- Draw --- */
-void _Scene_Draw_Text(      Scene *scene, SDL_Renderer *renderer);
+void _Scene_Draw_Text(      Scene *scene, SDL_Texture *render_target, SDL_Renderer *renderer);
 void _Scene_Draw_Actors(    Scene *scene, SDL_Renderer *renderer);
 void _Scene_Draw_Background(Scene *scene, SDL_Renderer *renderer);
 
@@ -287,6 +288,6 @@ void Scene_Draw(struct Scene *scene, struct Settings *settings,
                 struct SDL_Texture *rt, SDL_Renderer *renderer);
 
 void Scene_Update(struct Scene *scene, struct Settings *settings,
-                 struct SDL_Texture *rt, SDL_Renderer *renderer);
+                  struct SDL_Texture *rt, SDL_Renderer *renderer);
 
 #endif /* SCENE_H */

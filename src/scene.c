@@ -379,11 +379,11 @@ void Scene_Stament_Next(struct Scene *scene) {
     if ((scene->current_statement < 0) ||
         (scene->current_statement >= DARR_NUM(scene->statements))) {
         scene->current_statement = -1;
-        return;        
-    } 
+        return;
+    }
 
     SceneStatement statement;
-    
+
     // TODO: Didascalies:
     // scene->current_statement++;
 
@@ -394,8 +394,8 @@ void Scene_Stament_Next(struct Scene *scene) {
             break;
         }
         SDL_assert(scene->current_statement );
-        statement = scene->statments[scene->current_statement];
-    } while (statement.header.statement_type != SCENE_STATEMENT_LINE)
+        statement = scene->statements[scene->current_statement];
+    } while (statement.header.statement_type != SCENE_STATEMENT_LINE);
 
 }
 
@@ -416,12 +416,12 @@ void _Scene_Draw_Text(struct Scene *scene, SDL_Texture *render_target, SDL_Rende
 }
 
 void Scene_Update(struct Scene *scene, struct Settings *settings,
-                 struct SDL_Texture *render_target, SDL_Renderer *renderer) {
+                  struct SDL_Texture *render_target, SDL_Renderer *renderer) {
     SDL_assert(scene    != NULL);
     SDL_assert(renderer != NULL);
     SDL_SetRenderTarget(renderer, render_target);
 
-        _Scene_Draw_Text(scene, renderer);
+    _Scene_Draw_Text(scene, render_target, renderer);
     //     _Scene_Draw_Background(scene, renderer);
     //     _Scene_Draw_Actors(scene, renderer);
 }
@@ -432,7 +432,7 @@ void Scene_Draw(struct Scene *scene, struct Settings *settings,
     SDL_assert(renderer != NULL);
 
     if (scene->update) {
-        Scene_Update(scene, settings, rt, renderer);
+        Scene_Update(scene, settings, render_target, renderer);
         scene->update = false;
     }
 
