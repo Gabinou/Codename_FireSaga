@@ -42,8 +42,8 @@ json_func fsm_Scene_writeJSON[SCENE_STATEMENT_NUM] = {
 
 void Scene_Init(struct Scene *scene) {
     SDL_assert(scene != NULL);
-    scene->statements       = DARR_INIT(scene->statements, SceneStatement, 16);
-    scene->actor_order           = DARR_INIT(scene->actor_order, int, 16);
+    scene->statements   = DARR_INIT(scene->statements, SceneStatement, 16);
+    scene->actor_order  = DARR_INIT(scene->actor_order, int, 16);
 }
 
 void Scene_Free(struct Scene *scene) {
@@ -97,16 +97,6 @@ void Scene_readJSON(void *input, cJSON *jscene) {
         SDL_assert(fsm_Scene_readJSON[statement_type] != NULL);
         fsm_Scene_readJSON[statement_type](input, jstatement);
     }
-}
-
-i32 Scene_Statement_Type(void *statement) {
-    SceneHeader *header = statement;
-    return (header->statement_type);
-}
-
-i32 Scene_Statement_Didascalie_Type(void *statement) {
-    SceneHeader *header = statement;
-    return (header->didascalie_type);
 }
 
 i32 Scene_jsonStatement_Type(cJSON *jstatement) {
@@ -354,7 +344,6 @@ void Scene_Statement_Add(Scene * scene, SceneStatement statement) {
     DARR_PUT(scene->statements, statement);
 }
 
-
 void Scene_Actor_Add(Scene * scene, u16 actor) {
     SDL_assert(scene != NULL);
     /* Do not add new actor if found */
@@ -383,22 +372,72 @@ i32 Scene_Actor_Find(Scene * scene, u16 actor) {
     return (found);
 }
 
-// /* --- Draw --- */
+/* --- Statement --- */
+void Scene_Stament_Next(struct Scene *scene) {
+    SDL_assert(scene    != NULL);
+    // Skip if current statement index is invalid:
+    if ((scene->current_statement < 0) ||
+        (scene->current_statement >= DARR_NUM(scene->statements))) {
+        scene->current_statement = -1;
+        return;        
+    } 
+
+    SceneStatement statement;
+    
+    // TODO: Didascalies:
+    // scene->current_statement++;
+
+    do {
+        scene->current_statement++;
+        if (scene->current_statement >= DARR_NUM(scene->statements)) {
+            scene->current_statement = -1;
+            break;
+        }
+        SDL_assert(scene->current_statement );
+        statement = scene->statments[scene->current_statement];
+    } while (statement.header.statement_type != SCENE_STATEMENT_LINE)
+
+}
+
+
+/* --- Draw --- */
 // void _Scene_Draw_Actors(        struct Scene *scene, SDL_Renderer *renderer) {
 
 // }
+
 // void _Scene_Draw_Background(    struct Scene *scene, SDL_Renderer *renderer) {
 
 // }
-// void _Scene_Draw_Text_Bubbles(  struct Scene *scene, SDL_Renderer *renderer) {
 
-// }
+void _Scene_Draw_Text(struct Scene *scene, SDL_Texture *render_target, SDL_Renderer *renderer) {
+    SDL_assert(scene    != NULL);
+    SDL_assert(renderer != NULL);
 
-void Scene_Draw(struct Scene * scene, struct Settings * settings, struct SDL_Texture * rt,
-                SDL_Renderer * renderer) {
-    //     /* - Draw the scene frame - */
+}
 
+void Scene_Update(struct Scene *scene, struct Settings *settings,
+                 struct SDL_Texture *render_target, SDL_Renderer *renderer) {
+    SDL_assert(scene    != NULL);
+    SDL_assert(renderer != NULL);
+    SDL_SetRenderTarget(renderer, render_target);
+
+        _Scene_Draw_Text(scene, renderer);
     //     _Scene_Draw_Background(scene, renderer);
     //     _Scene_Draw_Actors(scene, renderer);
-    //     _Scene_Draw_Text_Bubbles(scene, renderer);
+}
+
+void Scene_Draw(struct Scene *scene, struct Settings *settings,
+                struct SDL_Texture *render_target, SDL_Renderer *renderer) {
+    SDL_assert(scene    != NULL);
+    SDL_assert(renderer != NULL);
+
+    if (scene->update) {
+        Scene_Update(scene, settings, rt, renderer);
+        scene->update = false;
+    }
+
+    /* Copy Scene texture to render_target (usually NULL -> whole window) */
+    SDL_SetRenderTarget(renderer, render_target);
+    SDL_assert(scene->texture != NULL);
+    SDL_RenderCopy(renderer, scene->texture, NULL, NULL);
 }

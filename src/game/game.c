@@ -667,7 +667,9 @@ void Game_Startup_Map(Game *IES) {
 }
 
 void Game_Startup_Scene(Game *IES) {
-    /* --- Get scene JSON file from --- */
+    SDL_assert(IES              != NULL);
+    SDL_assert(IES->pixelnours  != NULL);
+    /* --- Get scene JSON file from filename --- */
     // TODO: differentiate between cutscene and talk scene
     s8 filename = Scene_Filename(IES->settings.args.scene);
     // SDL_Log("Loading Scene '%s'", filename.data);
@@ -675,6 +677,7 @@ void Game_Startup_Scene(Game *IES) {
     IES->scene      = TNECS_ENTITY_CREATE_wCOMPONENTS(IES->world, Scene);
     Scene *scene    = TNECS_GET_COMPONENT(IES->world, IES->scene, Scene);
     *scene = Scene_default;
+    scene->pixelnours = IES->pixelnours;
 
     jsonio_readJSON(filename, scene);
     IES->state      = GAME_STATE_Scene_Talk;

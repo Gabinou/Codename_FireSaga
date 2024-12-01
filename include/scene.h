@@ -175,6 +175,11 @@ typedef struct Scene {
     /* -- Current game condition -- */
     struct Conditions    game_cond;
     struct Conditions    line_cond; /* Reset everytime a line is read */
+    
+
+    /* Current statement */
+    int current_statement;
+    b32 update;
 
     /* Unit order */
     int *actor_order;
@@ -185,6 +190,10 @@ typedef struct Scene {
      *  - Note: only statements that satisfy game_cond
      */
     SceneStatement *statements;
+
+    /* -- Rendering -- */
+    SDL_Texture *texture;
+    PixelFont   *pixelnours;
 
     /* -- Post-scene -- */
     // What happens after a scene ends?
@@ -246,6 +255,9 @@ void Scene_Render_Output(struct Scene *scene, s8 path);
 void Scene_Raw_Print(   struct Scene *scene);
 void Scene_Render_Print(struct Scene *scene);
 
+/* --- Statement --- */
+void Scene_Stament_Next(struct Scene *scene);
+
 /* --- Numbers --- */
 void Scene_Line_Num(        struct Scene *scene);
 void Scene_Music_Num(       struct Scene *scene);
@@ -257,7 +269,6 @@ void Scene_Background_Num(  struct Scene *scene);
 void Scene_Finish(      struct Scene *scene, struct Game *sota);
 
 i32 Scene_jsonStatement_Type(cJSON *jstatement);
-i32 Scene_Statement_Type(void *statement);
 
 /* --- Play --- */
 void _Scene_Animate_Actors(        struct Scene *scene);
@@ -268,11 +279,14 @@ void Scene_Animate(struct Game  *sota, tnecs_entity entity,
                    struct Scene *scene, struct Timer *timer);
 
 /* --- Draw --- */
-void _Scene_Draw_Actors(        struct Scene *scene, SDL_Renderer *renderer);
-void _Scene_Draw_Background(    struct Scene *scene, SDL_Renderer *renderer);
-void _Scene_Draw_Text_Bubbles(  struct Scene *scene, SDL_Renderer *renderer);
+void _Scene_Draw_Text(      Scene *scene, SDL_Renderer *renderer);
+void _Scene_Draw_Actors(    Scene *scene, SDL_Renderer *renderer);
+void _Scene_Draw_Background(Scene *scene, SDL_Renderer *renderer);
 
 void Scene_Draw(struct Scene *scene, struct Settings *settings,
                 struct SDL_Texture *rt, SDL_Renderer *renderer);
+
+void Scene_Update(struct Scene *scene, struct Settings *settings,
+                 struct SDL_Texture *rt, SDL_Renderer *renderer);
 
 #endif /* SCENE_H */
