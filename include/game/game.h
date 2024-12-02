@@ -79,6 +79,7 @@ void Game_AI_Free(struct Game *sota);
 /* -- Multithreaded constructors -- */
 int _Game_New_Tnecs(void *data);
 int _Game_New_Alloc(void *data);
+int _Game_New_Events(void *data);
 int _Game_New_Pixelfonts(void *data);
 
 /* --- Startup --- */

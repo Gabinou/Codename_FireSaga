@@ -400,17 +400,8 @@ struct Game * Game_New(Settings settings) {
     s8_free(&path_mapping);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Allocating space for globals\n");
 
-    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Allocating space for events\n");
-    Events_Data_Malloc();
-    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Initializing user events\n");
-    Events_Names_Declare();
-    Events_Names_Alloc();
-    Events_Receivers_Declare();
-
-    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Initializing Menus\n");
-    Game_Menus_Init(sota);
-
-    SDL_Thread *thread_tnecs_ID = SDL_CreateThread(_Game_New_Tnecs, "thread_tnecs", sota);
+    SDL_Thread *thread_game_events = SDL_CreateThread(_Game_New_Events, "thread_game_events", sota);
+    SDL_Thread *thread_game_tnecs = SDL_CreateThread(_Game_New_Tnecs, "thread_game_tnecs", sota);
 
     sota->keyboardInputMap  = KeyboardInputMap_default;
     sota->gamepadInputMap   = GamepadInputMap_switch_pro;
@@ -467,8 +458,22 @@ struct Game * Game_New(Settings settings) {
     /* -- Checks -- */
     SDL_assert(sota->entity_mouse);
 
+    SDL_WaitThread(thread_game_events, NULL);
     sota->isrunning = true;
     return (sota);
+}
+
+int _Game_New_Events(void *data) {
+    Game *IES = data;
+
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Allocating space for events\n");
+    Events_Data_Malloc();
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Initializing user events\n");
+    Events_Names_Declare();
+    Events_Names_Alloc();
+    Events_Receivers_Declare();
+
+    return (0);
 }
 
 int _Game_New_Pixelfonts(void *data) {
