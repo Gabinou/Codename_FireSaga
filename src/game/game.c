@@ -1,4 +1,5 @@
 #include "game/game.h"
+#include "SDL_thread.h"
 
 #define STB_SPRINTF_IMPLEMENTATION
 #ifndef STB_SPRINTF_IMPLEMENTATION
@@ -8,84 +9,23 @@
 struct Game Game_default = {
     .cursor_lastpos         = {1, 1},
     .moved_direction        = SOTA_DIRECTION_NULL,
-    .ismouse                = false,
     .iscursor               = true,
-    .isrunning              = false,
-    .items_dtab             = NULL,
-    .map_enemies            = NULL,
-    .weapons_dtab           = NULL,
-    .runtime_ns             = 0,
-    .combat_outcome         = {0},
-    .filename_menu          = {0},
-    .menu_options_dtab      = NULL,
-    .menu_stack             = NULL,
-    .player_select_menus    = {0},
-    .combat_forecast        = {0},
-    .popups                 = {TNECS_NULL},
-    .stats_menu             = TNECS_NULL,
-    .pre_combat_popup       = TNECS_NULL,
-    .growths_menu           = TNECS_NULL,
-    .deployment_menu        = TNECS_NULL,
 
-    .cursor_move            = {0},
-    .entity_mouse           = TNECS_NULL,
-    .ent_unit_loaded        = NULL,
-    .entity_cursor          = TNECS_NULL,
-    .entity_transition      = TNECS_NULL,
-    .entity_highlighted     = TNECS_NULL,
-    .entity_shadowed        = TNECS_NULL,
-    .entity_fps             = TNECS_NULL,
-    .scene                  = TNECS_NULL,
-    .cutscene               = TNECS_NULL,
-    .selected_unit_entity   = 0,
+    .camera = {
+        .zoom = DEFAULT_CAMERA_ZOOM,
+        .offset = {.x = DEFAULT_CAMERA_XOFFSET, .y = DEFAULT_CAMERA_YOFFSET}
+    },
 
-    .isShadow               = false,
-    .world                  = NULL,
-    .world_render           = NULL,
-    .world_control          = NULL,
-
-    .ai_timer               = TNECS_NULL,
-
-    .party                  = {0},
-    // .party                  = {0},
-    // .party_id_stack         = {0},
-
-    // .menu_font              = NULL,
-    .menu_pixelfont         = NULL,
-
-    .map                    = NULL,
     .selected_unit_moved_position   = {-1, -1},
     .selected_unit_initial_position = {-1, -1},
     // .convoy = Convoy_default,
     // .camp = Camp_default,
-
-    .aggressor              = TNECS_NULL, // combat
-    .defendant              = TNECS_NULL, // combat
-    .defendants             = NULL,       // combat
-    .patients               = NULL,       // staff
-    .victims                = NULL,       // rescue
-    .deployed               = NULL,       // rescue
-    .spectators             = NULL,       // dance
-    .auditors               = NULL,       // talk
-    .passives               = NULL,       // trade
-    .openables              = NULL,       // doors and chests
-
-    .cursor_diagonal        = false,
-
-    .inputs                 = {0},
-
-    .ai_state               = {0},
-    /* --- Music --- */
-    .music                  = NULL,
-    .soundfx_cursor         = NULL,
-    .soundfx_next_turn      = NULL,
 
     .chapter                = -1,
     .state                  = GAME_STATE_Title_Screen,
     .substate               = GAME_SUBSTATE_MENU,
     .state_previous         = GAME_STATE_START,
     .substate_previous      = GAME_SUBSTATE_START,
-    .fast_forward           = false,
 };
 
 /* --- Constructors/Destructors --- */
@@ -359,30 +299,25 @@ struct Game * Game_New(Settings settings) {
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Init game");
     sota->filename_menu = s8_literal(PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png"));
 
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "Init game");
-    /* init weapons_dtab */
-    if (sota->weapons_dtab != NULL) {
-        DTAB_FREE(sota->weapons_dtab);
-        sota->weapons_dtab = NULL;
-    }
+    /* --- Allocations --- */
+    /* -- Alloc weapons, items DTAB -- */
     DTAB_INIT(sota->weapons_dtab, struct Weapon);
-
-    /* init items_dtab */
-    if (sota->items_dtab != NULL) {
-        DTAB_FREE(sota->items_dtab);
-        sota->items_dtab = NULL;
-    }
     DTAB_INIT(sota->items_dtab, struct Item);
 
-    if (sota->map_enemies != NULL) {
-        DARR_FREE(sota->map_enemies);
-        sota->map_enemies = NULL;
-    }
-    sota->map_enemies = DARR_INIT(sota->map_enemies, tnecs_entity, 16);
+    /* -- Alloc arrays of entities -- */
+    sota->defendants    = DARR_INIT(sota->defendants,   tnecs_entity,  4);
+    sota->patients      = DARR_INIT(sota->patients,     tnecs_entity,  4);
+    sota->victims       = DARR_INIT(sota->victims,      tnecs_entity,  4);
+    sota->deployed      = DARR_INIT(sota->deployed,     tnecs_entity,  4);
+    sota->spectators    = DARR_INIT(sota->spectators,   tnecs_entity,  4);
+    sota->auditors      = DARR_INIT(sota->auditors,     tnecs_entity,  4);
+    sota->passives      = DARR_INIT(sota->passives,     tnecs_entity,  4);
+    sota->openables     = DARR_INIT(sota->openables,    tnecs_entity,  4);
+    sota->map_enemies   = DARR_INIT(sota->map_enemies,  tnecs_entity, 16);
 
-    sota->camera.offset.x = DEFAULT_CAMERA_XOFFSET;
-    sota->camera.offset.y = DEFAULT_CAMERA_YOFFSET;
-    sota->camera.zoom     = DEFAULT_CAMERA_ZOOM;
+    /* -- Alloc combat arrays -- */
+    sota->combat_outcome.attacks = DARR_INIT(sota->combat_outcome.attacks, struct Combat_Attack,
+                                             SOTA_COMBAT_MAX_ATTACKS);
 
     /* Window flags */
     u32 flags = sota->settings.window;
@@ -492,47 +427,110 @@ struct Game * Game_New(Settings settings) {
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Initializing Menus\n");
     Game_Menus_Init(sota);
 
+    SDL_Thread *thread_tnecs_ID = SDL_CreateThread(_Game_New_Tnecs, "thread_tnecs", sota);
+
+    sota->keyboardInputMap  = KeyboardInputMap_default;
+    sota->gamepadInputMap   = GamepadInputMap_switch_pro;
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Loading pixelfonts\n");
+    sota->pixelnours = PixelFont_Alloc();
+    char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
+    PixelFont_Load(sota->pixelnours, sota->renderer, path);
+    sota->pixelnours->y_offset = pixelfont_y_offset;
+
+    sota->pixelnours_big = PixelFont_Alloc();
+    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
+    PixelFont_Load(sota->pixelnours_big, sota->renderer, path);
+    sota->pixelnours_big->y_offset = pixelfont_big_y_offset;
+
+    sota->pixelnours_tight = PixelFont_Alloc();
+    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_tight.png");
+    PixelFont_Load(sota->pixelnours_tight, sota->renderer, path);
+
+    /* Sprite init */
+    b32 absolute = false;
+    b32 isCursor = false;
+    dstrect_funcs[absolute][isCursor = true]        = &Cursor_Dstrect_Relative;
+    dstrect_funcs[absolute][isCursor = false]       = &Sprite_Dstrect_Relative;
+    dstrect_funcs[absolute = true][isCursor = true] = &Cursor_Dstrect_Absolute;
+    dstrect_funcs[absolute][isCursor = false]       = &Sprite_Dstrect_Absolute;
+
+    /* --- Soundfx --- */
+    sota->soundfx_cursor    = Soundfx_Load_Cursor();
+    sota->soundfx_next_turn = Soundfx_Load_Next_Turn();
+
+    SDL_WaitThread(thread_tnecs_ID, NULL);
+
+    /* -- Load Cursor and mouse -- */
+    SDL_ShowCursor(SDL_DISABLE); /* for default cursor */
+    Game_FPS_Create(sota, SOTA_FPS_UPDATE_ns);
+    Game_Cursor_Create(sota);
+    Game_Mouse_Create(sota);
+
+    if ((sota->settings.args.map_index == 0) && (sota->settings.args.scene == 0)) {
+        Game_Startup_TileScreen(sota);
+    } else if (sota->settings.args.scene != 0) {
+        Game_Startup_Scene(sota);
+    } else if (sota->settings.args.map_index != 0) {
+        Game_Startup_Map(sota);
+    }
+
+    /* --- Set default contextual inputs --- */
+    fsm_Input_s[sota->state](sota);
+
+    /* -- Set color -- */
+    Utilities_DrawColor_Reset(sota->renderer);
+
+    /* -- Checks -- */
+    SDL_assert(sota->entity_mouse);
+
+    sota->isrunning = true;
+    return (sota);
+}
+
+int _Game_New_Tnecs(void *data) {
+    Game *IES = data;
+
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Tnecs: Genesis\n");
-    sota->world = tnecs_world_genesis();
+    IES->world = tnecs_world_genesis();
     // Don't reuse entities.
     // If I forget to update an entity somewhere, it'll be invalid for sure.
-    SDL_assert(sota->world->reuse_entities == false);
+    SDL_assert(IES->world->reuse_entities == false);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Components Registration\n");
-    TNECS_REGISTER_COMPONENT(sota->world, Position);
-    TNECS_REGISTER_COMPONENT(sota->world, Sprite);
-    TNECS_REGISTER_COMPONENT(sota->world, Unit);
-    TNECS_REGISTER_COMPONENT(sota->world, Boss);
-    TNECS_REGISTER_COMPONENT(sota->world, Menu);
-    TNECS_REGISTER_COMPONENT(sota->world, controllerGamepad);
-    TNECS_REGISTER_COMPONENT(sota->world, controllerMouse);
-    TNECS_REGISTER_COMPONENT(sota->world, controllerKeyboard);
-    TNECS_REGISTER_COMPONENT(sota->world, controllerTouchpad);
-    TNECS_REGISTER_COMPONENT(sota->world, Timer);
-    TNECS_REGISTER_COMPONENT(sota->world, PopUp);
-    TNECS_REGISTER_COMPONENT(sota->world, Slider);
-    TNECS_REGISTER_COMPONENT(sota->world, Hover);
-    TNECS_REGISTER_COMPONENT(sota->world, SliderOffscreen);
-    TNECS_REGISTER_COMPONENT(sota->world, CursorFlag);
-    TNECS_REGISTER_COMPONENT(sota->world, MouseFlag);
-    TNECS_REGISTER_COMPONENT(sota->world, Text);
-    TNECS_REGISTER_COMPONENT(sota->world, Breakable);
-    TNECS_REGISTER_COMPONENT(sota->world, Door);
-    TNECS_REGISTER_COMPONENT(sota->world, Chest);
-    TNECS_REGISTER_COMPONENT(sota->world, Mobj_Link);
-    TNECS_REGISTER_COMPONENT(sota->world, MapHPBar);
-    TNECS_REGISTER_COMPONENT(sota->world, CombatAnimation);
-    TNECS_REGISTER_COMPONENT(sota->world, MapAnimation);
-    TNECS_REGISTER_COMPONENT(sota->world, UnitMoveAnimation);
-    TNECS_REGISTER_COMPONENT(sota->world, RenderTop);
-    TNECS_REGISTER_COMPONENT(sota->world, PixelFont);
-    TNECS_REGISTER_COMPONENT(sota->world, AI);
-    TNECS_REGISTER_COMPONENT(sota->world, Scene);
-    TNECS_REGISTER_COMPONENT(sota->world, Cutscene);
-    sota->timer_typeflag = TNECS_COMPONENT_NAME2TYPE(sota->world, Timer);
+    TNECS_REGISTER_COMPONENT(IES->world, Position);
+    TNECS_REGISTER_COMPONENT(IES->world, Sprite);
+    TNECS_REGISTER_COMPONENT(IES->world, Unit);
+    TNECS_REGISTER_COMPONENT(IES->world, Boss);
+    TNECS_REGISTER_COMPONENT(IES->world, Menu);
+    TNECS_REGISTER_COMPONENT(IES->world, controllerGamepad);
+    TNECS_REGISTER_COMPONENT(IES->world, controllerMouse);
+    TNECS_REGISTER_COMPONENT(IES->world, controllerKeyboard);
+    TNECS_REGISTER_COMPONENT(IES->world, controllerTouchpad);
+    TNECS_REGISTER_COMPONENT(IES->world, Timer);
+    TNECS_REGISTER_COMPONENT(IES->world, PopUp);
+    TNECS_REGISTER_COMPONENT(IES->world, Slider);
+    TNECS_REGISTER_COMPONENT(IES->world, Hover);
+    TNECS_REGISTER_COMPONENT(IES->world, SliderOffscreen);
+    TNECS_REGISTER_COMPONENT(IES->world, CursorFlag);
+    TNECS_REGISTER_COMPONENT(IES->world, MouseFlag);
+    TNECS_REGISTER_COMPONENT(IES->world, Text);
+    TNECS_REGISTER_COMPONENT(IES->world, Breakable);
+    TNECS_REGISTER_COMPONENT(IES->world, Door);
+    TNECS_REGISTER_COMPONENT(IES->world, Chest);
+    TNECS_REGISTER_COMPONENT(IES->world, Mobj_Link);
+    TNECS_REGISTER_COMPONENT(IES->world, MapHPBar);
+    TNECS_REGISTER_COMPONENT(IES->world, CombatAnimation);
+    TNECS_REGISTER_COMPONENT(IES->world, MapAnimation);
+    TNECS_REGISTER_COMPONENT(IES->world, UnitMoveAnimation);
+    TNECS_REGISTER_COMPONENT(IES->world, RenderTop);
+    TNECS_REGISTER_COMPONENT(IES->world, PixelFont);
+    TNECS_REGISTER_COMPONENT(IES->world, AI);
+    TNECS_REGISTER_COMPONENT(IES->world, Scene);
+    TNECS_REGISTER_COMPONENT(IES->world, Cutscene);
+    IES->timer_typeflag = TNECS_COMPONENT_NAME2TYPE(IES->world, Timer);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration\n");
-    tnecs_world *world = sota->world;
+    tnecs_world *world = IES->world;
     /* --- SYSTEM REGISTERING: FIRST COME FIRST SERVED ---*/
     /* -- Control systems ran first --  */
     // TNECS_REGISTER_SYSTEM_wEXCL(world, Control_Keyboard, 0, Position, Sprite, controllerKeyboard);
@@ -547,7 +545,7 @@ struct Game * Game_New(Settings settings) {
     TNECS_REGISTER_SYSTEM_wEXCL(world, Slide_PopUp_Offscreen, 1, PopUp, Slider,
                                 SliderOffscreen, Position);
     /* - no sliders without offscreen yet -  */
-    // TNECS_REGISTER_SYSTEM_wEXCL(sota->world, slidePopUp, 0, PopUp, Slider, Position);
+    // TNECS_REGISTER_SYSTEM_wEXCL(IES->world, slidePopUp, 0, PopUp, Slider, Position);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Hover_Any,      0, Hover,  Position);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Sprite, 0, Sprite, Position, Timer);
     // Remove animated flag. Animated sprites must have a timer! Still sprites dont!
@@ -587,74 +585,7 @@ struct Game * Game_New(Settings settings) {
                                 Unit);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration DONE\n");
 
-    sota->keyboardInputMap  = KeyboardInputMap_default;
-    sota->gamepadInputMap   = GamepadInputMap_switch_pro;
-    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Loading pixelfonts\n");
-    sota->pixelnours = PixelFont_Alloc();
-    char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
-    PixelFont_Load(sota->pixelnours, sota->renderer, path);
-    sota->pixelnours->y_offset = pixelfont_y_offset;
-
-    sota->pixelnours_big = PixelFont_Alloc();
-    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
-    PixelFont_Load(sota->pixelnours_big, sota->renderer, path);
-    sota->pixelnours_big->y_offset = pixelfont_big_y_offset;
-
-    sota->pixelnours_tight = PixelFont_Alloc();
-    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_tight.png");
-    PixelFont_Load(sota->pixelnours_tight, sota->renderer, path);
-
-    /* Sprite init */
-    b32 absolute = false;
-    b32 isCursor = false;
-    dstrect_funcs[absolute][isCursor = true]        = &Cursor_Dstrect_Relative;
-    dstrect_funcs[absolute][isCursor = false]       = &Sprite_Dstrect_Relative;
-    dstrect_funcs[absolute = true][isCursor = true] = &Cursor_Dstrect_Absolute;
-    dstrect_funcs[absolute][isCursor = false]       = &Sprite_Dstrect_Absolute;
-
-    /* --- Alloc arrays of entities --- */
-    sota->defendants   = DARR_INIT(sota->defendants, tnecs_entity, 4);
-    sota->patients     = DARR_INIT(sota->patients,   tnecs_entity, 4);
-    sota->victims      = DARR_INIT(sota->victims,    tnecs_entity, 4);
-    sota->deployed     = DARR_INIT(sota->deployed,   tnecs_entity, 4);
-    sota->spectators   = DARR_INIT(sota->spectators, tnecs_entity, 4);
-    sota->auditors     = DARR_INIT(sota->auditors,   tnecs_entity, 4);
-    sota->passives     = DARR_INIT(sota->passives,   tnecs_entity, 4);
-    sota->openables    = DARR_INIT(sota->openables,  tnecs_entity, 4);
-
-    /* --- Alloc combat arrays --- */
-    sota->combat_outcome.attacks = DARR_INIT(sota->combat_outcome.attacks, struct Combat_Attack,
-                                             SOTA_COMBAT_MAX_ATTACKS);
-
-    /* --- Soundfx --- */
-    sota->soundfx_cursor    = Soundfx_Load_Cursor();
-    sota->soundfx_next_turn = Soundfx_Load_Next_Turn();
-
-    /* -- Load Cursor and mouse -- */
-    SDL_ShowCursor(SDL_DISABLE); /* for default cursor */
-    Game_FPS_Create(sota, SOTA_FPS_UPDATE_ns);
-    Game_Cursor_Create(sota);
-    Game_Mouse_Create(sota);
-
-    if ((sota->settings.args.map_index == 0) && (sota->settings.args.scene == 0)) {
-        Game_Startup_TileScreen(sota);
-    } else if (sota->settings.args.scene != 0) {
-        Game_Startup_Scene(sota);
-    } else if (sota->settings.args.map_index != 0) {
-        Game_Startup_Map(sota);
-    }
-
-    /* --- Set default contextual inputs --- */
-    fsm_Input_s[sota->state](sota);
-
-    /* -- Set color -- */
-    Utilities_DrawColor_Reset(sota->renderer);
-
-    /* -- Checks -- */
-    SDL_assert(sota->entity_mouse);
-
-    sota->isrunning = true;
-    return (sota);
+    return (0);
 }
 
 void Game_Startup_Map(Game *IES) {

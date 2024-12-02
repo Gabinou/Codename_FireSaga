@@ -76,6 +76,9 @@ struct Game *Game_New(Settings settings);
 void Game_Free(   struct Game *sota);
 void Game_AI_Free(struct Game *sota);
 
+/* -- Multithreaded constructors -- */
+int _Game_New_Tnecs(void *data);
+
 /* --- Startup --- */
 // Depending on input arguments, IES can play a scene, go directly to a map...
 // By default, and for users: Go to title screen.
