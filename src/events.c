@@ -120,6 +120,7 @@ void receive_event_Start(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_End(struct Game *sota, SDL_Event *userevent) {
+    /* --- Game stops running. --- */
     sota->isrunning = false;
 }
 

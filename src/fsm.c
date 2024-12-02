@@ -1117,8 +1117,9 @@ void fsm_eAcpt_sScnTalk(struct Game *sota, tnecs_entity nope) {
     /* --- Get next line at normal speed --- */
     SDL_assert(sota->scene > TNECS_NULL);
     struct Scene *scene = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
-    Scene_Statement_Next(scene);
-    
+    if (Scene_Statement_Next(scene) < 0) {
+        Scene_Finish(scene, sota);
+    }
 }
 
 void fsm_eAcpt_sCutScn(struct Game *sota, tnecs_entity nope) {

@@ -395,13 +395,12 @@ i32 Scene_Actor_Find(Scene * scene, u16 actor) {
 }
 
 /* --- Statement --- */
-void Scene_Statement_Next(struct Scene *scene) {
+int Scene_Statement_Next(struct Scene *scene) {
     SDL_assert(scene    != NULL);
     // Skip if current statement index is invalid:
     if ((scene->current_statement < 0) ||
         (scene->current_statement >= DARR_NUM(scene->statements))) {
-        scene->current_statement = -1;
-        return;
+        return (-1);
     }
 
     SceneStatement statement;
@@ -412,13 +411,14 @@ void Scene_Statement_Next(struct Scene *scene) {
     do {
         scene->current_statement++;
         if (scene->current_statement >= DARR_NUM(scene->statements)) {
-            scene->current_statement = -1;
-            break;
+            return (-1);
         }
-        SDL_assert(scene->current_statement );
+        SDL_assert(scene->current_statement);
         statement = scene->statements[scene->current_statement];
     } while (statement.header.statement_type != SCENE_STATEMENT_LINE);
     scene->update = true;
+
+    return (scene->current_statement);
 }
 
 
@@ -444,8 +444,6 @@ void _Scene_Draw_Text(struct Scene *scene, SDL_Texture *render_target, SDL_Rende
     u32 px = scene->texture_rect.w / 4;
     u32 py = scene->texture_rect.h / 4 * 3;
 
-    SDL_Log("scene_line->actor.data %s", scene_line->actor.data);
-    SDL_Log("scene_line->line.data %s", scene_line->line.data);
     /* Writing Actor name:*/
     PixelFont_Write(scene->pixelnours, renderer, scene_line->actor.data,
                     scene_line->actor.len, px, py);

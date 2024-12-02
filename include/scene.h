@@ -258,7 +258,7 @@ void Scene_Raw_Print(   struct Scene *scene);
 void Scene_Render_Print(struct Scene *scene);
 
 /* --- Statement --- */
-void Scene_Stament_Next(struct Scene *scene);
+int Scene_Statement_Next(struct Scene *scene);
 
 /* --- Numbers --- */
 void Scene_Line_Num(        struct Scene *scene);
