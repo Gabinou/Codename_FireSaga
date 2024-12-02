@@ -22,28 +22,13 @@ int main(int argc, char *argv[]) {
     /* -- atexit -> Quit SDL -- */
     atexit(SDL_Quit);
 
-    u64 before_ns = tnecs_get_ns();
-
     /* -- Startup -- */
     Settings settings   = Settings_default;
     settings.args       = IES_Init(argc, argv);
 
-    u64 after_ns    = tnecs_get_ns();
-    u64 elapsed_us  = (after_ns - before_ns) / SOTA_ms;
-    u64 elapsed_ms  = (after_ns - before_ns) / SOTA_us;
-    SDL_Log("IES_Init %d us", elapsed_us);
-    SDL_Log("IES_Init %d ms", elapsed_ms);
-
     SDL_Log("IES start.\n");
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     struct Game *sota = Game_New(settings);
-
-    after_ns    = tnecs_get_ns();
-    elapsed_us  = (after_ns - before_ns) / SOTA_ms;
-    elapsed_ms  = (after_ns - before_ns) / SOTA_us;
-    // SDL_Log("IES_Init + Game_New %d us", elapsed_ms);
-    // SDL_Log("IES_Init + Game_New %d us", elapsed_us);
-    // exit(0);
 
     /* -- Master loop -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Starting main game loop\n");

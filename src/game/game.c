@@ -1,5 +1,4 @@
 #include "game/game.h"
-#include "SDL_thread.h"
 
 #define STB_SPRINTF_IMPLEMENTATION
 #ifndef STB_SPRINTF_IMPLEMENTATION
@@ -290,36 +289,21 @@ void Game_Step(struct Game *sota) {
 }
 
 struct Game * Game_New(Settings settings) {
-
-    u64 before_ns = tnecs_get_ns();
-
     /* -- Setting defaults -- */
     struct Game *sota = SDL_malloc(sizeof(struct Game));
     *sota = Game_default;
     sota->settings = settings;
 
-    u64 after_ns    = tnecs_get_ns();
-    u64 elapsed_us  = (after_ns - before_ns) / SOTA_ms;
-    u64 elapsed_ms  = (after_ns - before_ns) / SOTA_us;
-    SDL_Log("Game_New 1 %d us", elapsed_us);
-    SDL_Log("Game_New 1 %d ms", elapsed_ms);
-
     SDL_assert(sota->settings.FPS.cap > 0);
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Init game");
     sota->filename_menu = s8_literal(PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png"));
 
-    SDL_Thread *thread_game_alloc       = SDL_CreateThread(_Game_New_Alloc, "thread_game_alloc", sota);
+    _Game_New_Alloc(sota);
 
     /* Window flags */
     u32 flags = sota->settings.window;
     if (sota->settings.fullscreen)
         flags |= SDL_WINDOW_FULLSCREEN;
-
-    after_ns    = tnecs_get_ns();
-    elapsed_us  = (after_ns - before_ns) / SOTA_ms;
-    elapsed_ms  = (after_ns - before_ns) / SOTA_us;
-    SDL_Log("Game_New 2 %d us", elapsed_us);
-    SDL_Log("Game_New 2 %d ms", elapsed_ms);
 
 #ifndef SOTA_OPENGL
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Firesaga: Window Initialization");
@@ -399,13 +383,6 @@ struct Game * Game_New(Settings settings) {
     }
 #endif /* SOTA_OPENGL */
 
-    after_ns    = tnecs_get_ns();
-    elapsed_us  = (after_ns - before_ns) / SOTA_ms;
-    elapsed_ms  = (after_ns - before_ns) / SOTA_us;
-    SDL_Log("Game_New 3 %d us", elapsed_us);
-    SDL_Log("Game_New 3 %d ms", elapsed_ms);
-
-
     char *temp_base = SDL_GetBasePath();
     SDL_assert(DEFAULT_BUFFER_SIZE >= strlen(temp_base));
     s8 path_mapping =  s8_mut(temp_base);
@@ -421,14 +398,8 @@ struct Game * Game_New(Settings settings) {
     s8_free(&path_mapping);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Allocating space for globals\n");
 
-    after_ns    = tnecs_get_ns();
-    elapsed_us  = (after_ns - before_ns) / SOTA_ms;
-    elapsed_ms  = (after_ns - before_ns) / SOTA_us;
-    SDL_Log("Game_New 4 %d us", elapsed_us);
-    SDL_Log("Game_New 4 %d ms", elapsed_ms);
-
-    SDL_Thread *thread_game_events = SDL_CreateThread(_Game_New_Events, "thread_game_events", sota);
-    SDL_Thread *thread_game_tnecs = SDL_CreateThread(_Game_New_Tnecs, "thread_game_tnecs", sota);
+    _Game_New_Events(sota);
+    _Game_New_Tnecs(sota);
 
     sota->keyboardInputMap  = KeyboardInputMap_default;
     sota->gamepadInputMap   = GamepadInputMap_switch_pro;
@@ -448,12 +419,6 @@ struct Game * Game_New(Settings settings) {
     path = PATH_JOIN("..", "assets", "fonts", "pixelnours_tight.png");
     PixelFont_Load(sota->pixelnours_tight, sota->renderer, path);
 
-    after_ns    = tnecs_get_ns();
-    elapsed_us  = (after_ns - before_ns) / SOTA_ms;
-    elapsed_ms  = (after_ns - before_ns) / SOTA_us;
-    SDL_Log("Game_New 5 %d us", elapsed_us);
-    SDL_Log("Game_New 5 %d ms", elapsed_ms);
-
     /* Sprite init */
     b32 absolute = false;
     b32 isCursor = false;
@@ -466,27 +431,12 @@ struct Game * Game_New(Settings settings) {
     sota->soundfx_cursor    = Soundfx_Load_Cursor();
     sota->soundfx_next_turn = Soundfx_Load_Next_Turn();
 
-    SDL_Log("Game_New 5.1 %d us", elapsed_us);
-    SDL_Log("Game_New 5.1 %d ms", elapsed_ms);
-    SDL_WaitThread(thread_game_tnecs, NULL);
-
     /* -- Load Cursor and mouse -- */
     SDL_ShowCursor(SDL_DISABLE); /* for default cursor */
     Game_FPS_Create(sota, SOTA_FPS_UPDATE_ns);
     Game_Cursor_Create(sota);
     Game_Mouse_Create(sota);
 
-    SDL_Log("Game_New 5.2 %d us", elapsed_us);
-    SDL_Log("Game_New 5.2 %d ms", elapsed_ms);
-
-    after_ns    = tnecs_get_ns();
-    elapsed_us  = (after_ns - before_ns) / SOTA_ms;
-    elapsed_ms  = (after_ns - before_ns) / SOTA_us;
-    SDL_Log("Game_New 6 %d us", elapsed_us);
-    SDL_Log("Game_New 6 %d ms", elapsed_ms);
-
-
-    SDL_WaitThread(thread_game_alloc, NULL);
     if ((sota->settings.args.map_index == 0) && (sota->settings.args.scene == 0)) {
         Game_Startup_TitleScreen(sota);
     } else if (sota->settings.args.scene != 0) {
@@ -504,13 +454,6 @@ struct Game * Game_New(Settings settings) {
     /* -- Checks -- */
     SDL_assert(sota->entity_mouse);
 
-    after_ns    = tnecs_get_ns();
-    elapsed_us  = (after_ns - before_ns) / SOTA_ms;
-    elapsed_ms  = (after_ns - before_ns) / SOTA_us;
-    SDL_Log("Game_New 7 %d us", elapsed_us);
-    SDL_Log("Game_New 7 %d ms", elapsed_ms);
-
-    SDL_WaitThread(thread_game_events, NULL);
     sota->isrunning = true;
     return (sota);
 }

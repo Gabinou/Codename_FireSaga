@@ -86,7 +86,7 @@ int _Game_New_Events(void *data);
 // By default, and for users: Go to title screen.
 void Game_Startup_Map(          Game *IES);
 void Game_Startup_Scene(        Game *IES);
-void Game_Startup_TitleScreen(   Game *IES);
+void Game_Startup_TitleScreen(  Game *IES);
 
 /* --- Stepping --- */
 void  Game_Step(            struct Game *sota);
