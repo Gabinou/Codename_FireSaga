@@ -629,12 +629,15 @@ void Game_Startup_Scene(Game *IES) {
     IES->scene      = TNECS_ENTITY_CREATE_wCOMPONENTS(IES->world, Scene);
     Scene *scene    = TNECS_GET_COMPONENT(IES->world, IES->scene, Scene);
     *scene = Scene_default;
+    // TODO: Remove quit event on scene finish
+    scene->event = event_Quit;
+
     scene->pixelnours = IES->pixelnours;
     Scene_Texture_Create(scene, IES->renderer);
 
     jsonio_readJSON(filename, scene);
-    IES->state      = GAME_STATE_Scene_Talk;
     IES->substate   = GAME_SUBSTATE_STANDBY;
+    IES->state      = GAME_STATE_Scene_Talk;
 }
 
 void Game_Startup_TitleScreen(Game *IES) {

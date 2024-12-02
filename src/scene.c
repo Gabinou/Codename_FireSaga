@@ -395,7 +395,7 @@ i32 Scene_Actor_Find(Scene * scene, u16 actor) {
 }
 
 /* --- Statement --- */
-void Scene_Stament_Next(struct Scene *scene) {
+void Scene_Statement_Next(struct Scene *scene) {
     SDL_assert(scene    != NULL);
     // Skip if current statement index is invalid:
     if ((scene->current_statement < 0) ||
@@ -418,7 +418,7 @@ void Scene_Stament_Next(struct Scene *scene) {
         SDL_assert(scene->current_statement );
         statement = scene->statements[scene->current_statement];
     } while (statement.header.statement_type != SCENE_STATEMENT_LINE);
-
+    scene->update = true;
 }
 
 
@@ -463,6 +463,11 @@ void Scene_Update(struct Scene *scene, struct Settings *settings,
     SDL_assert(scene    != NULL);
     SDL_assert(renderer != NULL);
     SDL_SetRenderTarget(renderer, scene->texture);
+
+    /* Clear the target to our selected color. */
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+    SDL_RenderClear(renderer);
+    Utilities_DrawColor_Reset(renderer);
 
     _Scene_Draw_Text(scene, render_target, renderer);
     //     _Scene_Draw_Background(scene, renderer);
