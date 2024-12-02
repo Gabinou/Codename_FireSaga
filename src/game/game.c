@@ -290,10 +290,19 @@ void Game_Step(struct Game *sota) {
 }
 
 struct Game * Game_New(Settings settings) {
+
+    u64 before_ns = tnecs_get_ns();
+
     /* -- Setting defaults -- */
     struct Game *sota = SDL_malloc(sizeof(struct Game));
     *sota = Game_default;
     sota->settings = settings;
+
+    u64 after_ns    = tnecs_get_ns();
+    u64 elapsed_us  = (after_ns - before_ns) / SOTA_ms;
+    u64 elapsed_ms  = (after_ns - before_ns) / SOTA_us;
+    SDL_Log("Game_New 1 %d us", elapsed_us);
+    SDL_Log("Game_New 1 %d ms", elapsed_ms);
 
     SDL_assert(sota->settings.FPS.cap > 0);
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Init game");
@@ -305,6 +314,12 @@ struct Game * Game_New(Settings settings) {
     u32 flags = sota->settings.window;
     if (sota->settings.fullscreen)
         flags |= SDL_WINDOW_FULLSCREEN;
+
+    after_ns    = tnecs_get_ns();
+    elapsed_us  = (after_ns - before_ns) / SOTA_ms;
+    elapsed_ms  = (after_ns - before_ns) / SOTA_us;
+    SDL_Log("Game_New 2 %d us", elapsed_us);
+    SDL_Log("Game_New 2 %d ms", elapsed_ms);
 
 #ifndef SOTA_OPENGL
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Firesaga: Window Initialization");
@@ -384,6 +399,12 @@ struct Game * Game_New(Settings settings) {
     }
 #endif /* SOTA_OPENGL */
 
+    after_ns    = tnecs_get_ns();
+    elapsed_us  = (after_ns - before_ns) / SOTA_ms;
+    elapsed_ms  = (after_ns - before_ns) / SOTA_us;
+    SDL_Log("Game_New 3 %d us", elapsed_us);
+    SDL_Log("Game_New 3 %d ms", elapsed_ms);
+
 
     char *temp_base = SDL_GetBasePath();
     SDL_assert(DEFAULT_BUFFER_SIZE >= strlen(temp_base));
@@ -400,11 +421,18 @@ struct Game * Game_New(Settings settings) {
     s8_free(&path_mapping);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Allocating space for globals\n");
 
+    after_ns    = tnecs_get_ns();
+    elapsed_us  = (after_ns - before_ns) / SOTA_ms;
+    elapsed_ms  = (after_ns - before_ns) / SOTA_us;
+    SDL_Log("Game_New 4 %d us", elapsed_us);
+    SDL_Log("Game_New 4 %d ms", elapsed_ms);
+
     SDL_Thread *thread_game_events = SDL_CreateThread(_Game_New_Events, "thread_game_events", sota);
     SDL_Thread *thread_game_tnecs = SDL_CreateThread(_Game_New_Tnecs, "thread_game_tnecs", sota);
 
     sota->keyboardInputMap  = KeyboardInputMap_default;
     sota->gamepadInputMap   = GamepadInputMap_switch_pro;
+
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Loading pixelfonts\n");
     sota->pixelnours = PixelFont_Alloc();
     char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
@@ -420,6 +448,12 @@ struct Game * Game_New(Settings settings) {
     path = PATH_JOIN("..", "assets", "fonts", "pixelnours_tight.png");
     PixelFont_Load(sota->pixelnours_tight, sota->renderer, path);
 
+    after_ns    = tnecs_get_ns();
+    elapsed_us  = (after_ns - before_ns) / SOTA_ms;
+    elapsed_ms  = (after_ns - before_ns) / SOTA_us;
+    SDL_Log("Game_New 5 %d us", elapsed_us);
+    SDL_Log("Game_New 5 %d ms", elapsed_ms);
+
     /* Sprite init */
     b32 absolute = false;
     b32 isCursor = false;
@@ -432,6 +466,8 @@ struct Game * Game_New(Settings settings) {
     sota->soundfx_cursor    = Soundfx_Load_Cursor();
     sota->soundfx_next_turn = Soundfx_Load_Next_Turn();
 
+    SDL_Log("Game_New 5.1 %d us", elapsed_us);
+    SDL_Log("Game_New 5.1 %d ms", elapsed_ms);
     SDL_WaitThread(thread_game_tnecs, NULL);
 
     /* -- Load Cursor and mouse -- */
@@ -439,6 +475,16 @@ struct Game * Game_New(Settings settings) {
     Game_FPS_Create(sota, SOTA_FPS_UPDATE_ns);
     Game_Cursor_Create(sota);
     Game_Mouse_Create(sota);
+
+    SDL_Log("Game_New 5.2 %d us", elapsed_us);
+    SDL_Log("Game_New 5.2 %d ms", elapsed_ms);
+
+    after_ns    = tnecs_get_ns();
+    elapsed_us  = (after_ns - before_ns) / SOTA_ms;
+    elapsed_ms  = (after_ns - before_ns) / SOTA_us;
+    SDL_Log("Game_New 6 %d us", elapsed_us);
+    SDL_Log("Game_New 6 %d ms", elapsed_ms);
+
 
     SDL_WaitThread(thread_game_alloc, NULL);
     if ((sota->settings.args.map_index == 0) && (sota->settings.args.scene == 0)) {
@@ -458,6 +504,12 @@ struct Game * Game_New(Settings settings) {
     /* -- Checks -- */
     SDL_assert(sota->entity_mouse);
 
+    after_ns    = tnecs_get_ns();
+    elapsed_us  = (after_ns - before_ns) / SOTA_ms;
+    elapsed_ms  = (after_ns - before_ns) / SOTA_us;
+    SDL_Log("Game_New 7 %d us", elapsed_us);
+    SDL_Log("Game_New 7 %d ms", elapsed_ms);
+
     SDL_WaitThread(thread_game_events, NULL);
     sota->isrunning = true;
     return (sota);
@@ -475,28 +527,6 @@ int _Game_New_Events(void *data) {
 
     return (0);
 }
-
-int _Game_New_Pixelfonts(void *data) {
-    Game *IES = data;
-
-    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Loading pixelfonts\n");
-    IES->pixelnours = PixelFont_Alloc();
-    char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
-    PixelFont_Load(IES->pixelnours, IES->renderer, path);
-    IES->pixelnours->y_offset = pixelfont_y_offset;
-
-    IES->pixelnours_big = PixelFont_Alloc();
-    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
-    PixelFont_Load(IES->pixelnours_big, IES->renderer, path);
-    IES->pixelnours_big->y_offset = pixelfont_big_y_offset;
-
-    IES->pixelnours_tight = PixelFont_Alloc();
-    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_tight.png");
-    PixelFont_Load(IES->pixelnours_tight, IES->renderer, path);
-
-    return (0);
-}
-
 
 int _Game_New_Alloc(void *data) {
     Game *IES = data;

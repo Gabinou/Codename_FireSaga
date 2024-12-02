@@ -41,8 +41,8 @@ int main(int argc, char *argv[]) {
     after_ns    = tnecs_get_ns();
     elapsed_us  = (after_ns - before_ns) / SOTA_ms;
     elapsed_ms  = (after_ns - before_ns) / SOTA_us;
-    SDL_Log("IES_Init + Game_New %d us", elapsed_ms);
-    SDL_Log("IES_Init + Game_New %d us", elapsed_us);
+    // SDL_Log("IES_Init + Game_New %d us", elapsed_ms);
+    // SDL_Log("IES_Init + Game_New %d us", elapsed_us);
     // exit(0);
 
     /* -- Master loop -- */
