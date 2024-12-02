@@ -44,6 +44,7 @@ int main(int argc, char *argv[]) {
     SDL_Log("IES_Init + Game_New %d us", elapsed_ms);
     SDL_Log("IES_Init + Game_New %d us", elapsed_us);
     // exit(0);
+
     /* -- Master loop -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Starting main game loop\n");
     while (sota->isrunning) {

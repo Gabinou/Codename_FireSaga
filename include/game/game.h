@@ -78,13 +78,15 @@ void Game_AI_Free(struct Game *sota);
 
 /* -- Multithreaded constructors -- */
 int _Game_New_Tnecs(void *data);
+int _Game_New_Alloc(void *data);
+int _Game_New_Pixelfonts(void *data);
 
 /* --- Startup --- */
 // Depending on input arguments, IES can play a scene, go directly to a map...
 // By default, and for users: Go to title screen.
 void Game_Startup_Map(          Game *IES);
 void Game_Startup_Scene(        Game *IES);
-void Game_Startup_TileScreen(   Game *IES);
+void Game_Startup_TitleScreen(   Game *IES);
 
 /* --- Stepping --- */
 void  Game_Step(            struct Game *sota);

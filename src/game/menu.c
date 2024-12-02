@@ -1,13 +1,11 @@
 #include "game/menu.h"
 
 /* --- All Menus --- */
-b32 Game_Menus_Init(struct Game *sota) {
-    b32 success = true;
+void Game_Menus_Init(struct Game *sota) {
     if (sota->menu_stack != NULL)
         DARR_FREE(sota->menu_stack);
     sota->menu_stack = DARR_INIT(sota->menu_stack, tnecs_entity, MENU_PLAYER_SELECT_END);
     memset(sota->menu_stack, 0, MENU_PLAYER_SELECT_END * sizeof(*sota->menu_stack));
-    return (success);
 }
 
 void Game_Switch_toCandidates(struct Game *sota, tnecs_entity *candidates) {

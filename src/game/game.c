@@ -299,25 +299,7 @@ struct Game * Game_New(Settings settings) {
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Init game");
     sota->filename_menu = s8_literal(PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png"));
 
-    /* --- Allocations --- */
-    /* -- Alloc weapons, items DTAB -- */
-    DTAB_INIT(sota->weapons_dtab, struct Weapon);
-    DTAB_INIT(sota->items_dtab, struct Item);
-
-    /* -- Alloc arrays of entities -- */
-    sota->defendants    = DARR_INIT(sota->defendants,   tnecs_entity,  4);
-    sota->patients      = DARR_INIT(sota->patients,     tnecs_entity,  4);
-    sota->victims       = DARR_INIT(sota->victims,      tnecs_entity,  4);
-    sota->deployed      = DARR_INIT(sota->deployed,     tnecs_entity,  4);
-    sota->spectators    = DARR_INIT(sota->spectators,   tnecs_entity,  4);
-    sota->auditors      = DARR_INIT(sota->auditors,     tnecs_entity,  4);
-    sota->passives      = DARR_INIT(sota->passives,     tnecs_entity,  4);
-    sota->openables     = DARR_INIT(sota->openables,    tnecs_entity,  4);
-    sota->map_enemies   = DARR_INIT(sota->map_enemies,  tnecs_entity, 16);
-
-    /* -- Alloc combat arrays -- */
-    sota->combat_outcome.attacks = DARR_INIT(sota->combat_outcome.attacks, struct Combat_Attack,
-                                             SOTA_COMBAT_MAX_ATTACKS);
+    SDL_Thread *thread_game_alloc       = SDL_CreateThread(_Game_New_Alloc, "thread_game_alloc", sota);
 
     /* Window flags */
     u32 flags = sota->settings.window;
@@ -402,6 +384,7 @@ struct Game * Game_New(Settings settings) {
     }
 #endif /* SOTA_OPENGL */
 
+
     char *temp_base = SDL_GetBasePath();
     SDL_assert(DEFAULT_BUFFER_SIZE >= strlen(temp_base));
     s8 path_mapping =  s8_mut(temp_base);
@@ -458,7 +441,7 @@ struct Game * Game_New(Settings settings) {
     sota->soundfx_cursor    = Soundfx_Load_Cursor();
     sota->soundfx_next_turn = Soundfx_Load_Next_Turn();
 
-    SDL_WaitThread(thread_tnecs_ID, NULL);
+    SDL_WaitThread(thread_game_tnecs, NULL);
 
     /* -- Load Cursor and mouse -- */
     SDL_ShowCursor(SDL_DISABLE); /* for default cursor */
@@ -466,8 +449,9 @@ struct Game * Game_New(Settings settings) {
     Game_Cursor_Create(sota);
     Game_Mouse_Create(sota);
 
+    SDL_WaitThread(thread_game_alloc, NULL);
     if ((sota->settings.args.map_index == 0) && (sota->settings.args.scene == 0)) {
-        Game_Startup_TileScreen(sota);
+        Game_Startup_TitleScreen(sota);
     } else if (sota->settings.args.scene != 0) {
         Game_Startup_Scene(sota);
     } else if (sota->settings.args.map_index != 0) {
@@ -485,6 +469,65 @@ struct Game * Game_New(Settings settings) {
 
     sota->isrunning = true;
     return (sota);
+}
+
+int _Game_New_Pixelfonts(void *data) {
+    Game *IES = data;
+
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Loading pixelfonts\n");
+    IES->pixelnours = PixelFont_Alloc();
+    char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
+    PixelFont_Load(IES->pixelnours, IES->renderer, path);
+    IES->pixelnours->y_offset = pixelfont_y_offset;
+
+    IES->pixelnours_big = PixelFont_Alloc();
+    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
+    PixelFont_Load(IES->pixelnours_big, IES->renderer, path);
+    IES->pixelnours_big->y_offset = pixelfont_big_y_offset;
+
+    IES->pixelnours_tight = PixelFont_Alloc();
+    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_tight.png");
+    PixelFont_Load(IES->pixelnours_tight, IES->renderer, path);
+
+    return (0);
+}
+
+
+int _Game_New_Alloc(void *data) {
+    Game *IES = data;
+
+    /* --- Allocations --- */
+    /* -- Alloc weapons, items DTAB -- */
+    DTAB_INIT(IES->weapons_dtab, struct Weapon);
+    DTAB_INIT(IES->items_dtab, struct Item);
+
+    /* -- Alloc arrays of entities -- */
+    IES->defendants    = DARR_INIT(IES->defendants,   tnecs_entity,  4);
+    IES->patients      = DARR_INIT(IES->patients,     tnecs_entity,  4);
+    IES->victims       = DARR_INIT(IES->victims,      tnecs_entity,  4);
+    IES->deployed      = DARR_INIT(IES->deployed,     tnecs_entity,  4);
+    IES->spectators    = DARR_INIT(IES->spectators,   tnecs_entity,  4);
+    IES->auditors      = DARR_INIT(IES->auditors,     tnecs_entity,  4);
+    IES->passives      = DARR_INIT(IES->passives,     tnecs_entity,  4);
+    IES->openables     = DARR_INIT(IES->openables,    tnecs_entity,  4);
+    IES->map_enemies   = DARR_INIT(IES->map_enemies,  tnecs_entity, 16);
+
+    /* -- Alloc combat arrays -- */
+    IES->combat_outcome.attacks = DARR_INIT(IES->combat_outcome.attacks, struct Combat_Attack,
+                                            SOTA_COMBAT_MAX_ATTACKS);
+
+    /* -- Alloc menu array -- */
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Allocating Menu Array\n");
+    Game_Menus_Init(IES);
+
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Allocating space for events\n");
+    Events_Data_Malloc();
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Initializing user events\n");
+    Events_Names_Declare();
+    Events_Names_Alloc();
+    Events_Receivers_Declare();
+
+    return (0);
 }
 
 int _Game_New_Tnecs(void *data) {
@@ -616,7 +659,7 @@ void Game_Startup_Scene(Game *IES) {
     IES->substate   = GAME_SUBSTATE_STANDBY;
 }
 
-void Game_Startup_TileScreen(Game *IES) {
+void Game_Startup_TitleScreen(Game *IES) {
     Game_titleScreen_Load(IES, IES->settings.args);
     Game_Mouse_Disable(IES);
     Game_cursorFocus_onMenu(IES);
