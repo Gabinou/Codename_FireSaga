@@ -177,7 +177,6 @@ typedef struct Scene {
     struct Conditions    game_cond;
     struct Conditions    line_cond; /* Reset everytime a line is read */
 
-
     /* Current statement */
     int current_statement;
     b32 update;
