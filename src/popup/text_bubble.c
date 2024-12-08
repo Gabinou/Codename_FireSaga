@@ -2,7 +2,7 @@
 #include "text_bubble.h"
 
 struct Text_Bubble_Tail Text_Bubble_Tail_default = {
-    .flip       = SDL_FLIP_NONE,
+    .flip           = SDL_FLIP_NONE,
 };
 
 struct Text_Bubble TextBubble_default = {
@@ -25,7 +25,8 @@ struct Text_Bubble TextBubble_default = {
     .bg_color       = SOTA_WHITE,
     .line_color     = SOTA_BLACK,
 
-    .tail     = {.flip = SDL_FLIP_NONE},
+    .tail           = {.flip = SDL_FLIP_NONE},
+    .enable_tail    = true,
 };
 
 void TextBubble_Free(struct Text_Bubble *bubble) {
@@ -476,7 +477,10 @@ void TextBubble_Update(struct Text_Bubble *bubble, struct n9Patch *n9patch,
     } else {
         TextBubble_Write(bubble, renderer);
     }
-    TextBubble_Tail_Draw(bubble, renderer);
+
+    if (bubble->enable_tail) {
+        TextBubble_Tail_Draw(bubble, renderer);
+    }
 
     SDL_SetRenderTarget(renderer, render_target);
 }

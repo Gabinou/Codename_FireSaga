@@ -10,6 +10,15 @@
 #include "stb_sprintf.h"
 #include "SDL.h"
 
+/* --- Text Bubble --- */
+/* -- Design objectives -- */
+//  - Render text for player to read
+//      - For SceneTalk, etc.
+//      - Wrapping text, multiple lines 
+//      - n9patch 
+//      - Speaker box OR tail pointing to speaker 
+
+
 /* Octants around text bubble:
 //      X -> BELOW      X -> EQUAL         X -> ABOVE
 //                    |             |
@@ -64,7 +73,7 @@ enum SOTA_Text_Bubble_Tail {
     TEXT_BUBBLE_VSCROLL_TOP         =  1,
 };
 
-struct Text_Bubble_Tail {
+typedef struct Text_Bubble_Tail {
     double              angle; /* [degree] clockwise */
     int                 octant; /* Octant around bubble target is in */
     int                 index;
@@ -76,9 +85,9 @@ struct Text_Bubble_Tail {
     struct Point        pos;
 
     b32 half : 1;  /* Half around tail target is in */
-};
+} Text_Bubble_Tail;
 
-struct Text_Bubble {
+typedef struct Text_Bubble {
     b32 update;
     s8       text;
     int      width;
@@ -98,20 +107,24 @@ struct Text_Bubble {
     SDL_Texture                *texture_vscroll;
     struct PixelFont           *pixelfont;
 
+    /* -- Color swapping: mostly useful for black and white text bubble. -- */
+    // Line color: normally black
+    // BG color: normally white
     i8 old_bg_color;
     i8 old_line_color;
     i8 bg_color;
     i8 line_color;
 
-    b32 scroll         : 1;
-    b32 animating      : 1;
-    b32 vscroll_dir    : 1;
-    b32 vscroll_anim   : 1;
+    b32 scroll          : 1;
+    b32 animating       : 1;
+    b32 vscroll_dir     : 1;
+    b32 vscroll_anim    : 1;
+    b32 enable_tail     : 1;
     SDL_Palette *palette;
-};
+} Text_Bubble;
 extern struct Text_Bubble TextBubble_default;
 
-/* --- ructor/Destructor --- */
+/* --- Constructor/Destrgit auctor --- */
 void TextBubble_Free(struct Text_Bubble *b);
 void TextBubble_Load(struct Text_Bubble *b, SDL_Renderer *r, struct n9Patch *n9patch);
 

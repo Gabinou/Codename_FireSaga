@@ -198,6 +198,7 @@ struct TextLines PixelFont_Lines_Len(struct PixelFont *font,  char *text, size_t
     return (PixelFont_Lines(font, text, len_char, line_len_px));
 }
 
+/* Splitting input text into multiple lines */
 struct TextLines PixelFont_Lines(struct PixelFont *font,  char *text, size_t len_char,
                                  size_t line_len_px) {
     SDL_assert(font                     != NULL);
