@@ -30,6 +30,7 @@ int main(int argc, char *argv[]) {
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     struct Game *sota = Game_New(settings);
 
+    exit(0);
     /* -- Master loop -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Starting main game loop\n");
     while (sota->isrunning) {
