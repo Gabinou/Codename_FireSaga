@@ -4,7 +4,6 @@
 #include "tnecs.h"
 #include "sprite.h"
 #include "structs.h"
-#include "scene.h"
 #include "cutscene.h"
 #include "position.h"
 #include "slider.h"

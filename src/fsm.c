@@ -1,5 +1,6 @@
 
 #include "fsm.h"
+#include "scene.h"
 
 /* --- ACTIONS --- */
 fsm_eGmp2Stby_s_t fsm_eGmp2Stby_s[GAME_STATE_NUM] = {

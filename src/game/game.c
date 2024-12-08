@@ -1,4 +1,5 @@
 #include "game/game.h"
+#include "scene.h"
 
 #define STB_SPRINTF_IMPLEMENTATION
 #ifndef STB_SPRINTF_IMPLEMENTATION

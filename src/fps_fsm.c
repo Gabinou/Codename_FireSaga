@@ -1,5 +1,6 @@
 
 #include "fps_fsm.h"
+#include "scene.h"
 
 fsm_main_t fsm_cFrame_s[GAME_STATE_NUM] = {
     /* GAME_STATE_START         */ NULL,

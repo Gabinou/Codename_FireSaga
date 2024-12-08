@@ -7,11 +7,9 @@
 #include "enums.h"
 #include "structs.h"
 #include "unit/unit.h"
-#include "scene.h"
 #include "equations.h"
 #include "nmath.h"
 #include "cJSON.h"
-#include "game/game.h"
 #include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
