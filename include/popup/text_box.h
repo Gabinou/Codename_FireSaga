@@ -2,6 +2,7 @@
 #define TEXT_BOX_H
 
 #include "enums.h"
+#include "structs.h"
 #include "nmath.h"
 #include "n9patch.h"
 #include "pixelfonts.h"
@@ -73,7 +74,7 @@ enum SOTA_TEXT_BOX_Tail {
     TEXT_BOX_VSCROLL_TOP         =  1,
 };
 
-typedef struct TEXT_BOX_Tail {
+typedef struct Text_Box_Tail {
     double              angle; /* [degree] clockwise */
     int                 octant; /* Octant around bubble target is in */
     int                 index;
@@ -85,7 +86,7 @@ typedef struct TEXT_BOX_Tail {
     struct Point        pos;
 
     b32 half : 1;  /* Half around tail target is in */
-} TEXT_BOX_Tail;
+} Text_Box_Tail;
 
 typedef struct Text_Box {
     b32 update;
@@ -101,7 +102,7 @@ typedef struct Text_Box {
     struct TextLines            lines;
     struct Padding              padding;
     struct Point                target; /* Where to point at */
-    struct TEXT_BOX_Tail     tail;
+    struct Text_Box_Tail        tail;
     SDL_Surface                *surface;
     SDL_Texture                *texture;
     SDL_Texture                *texture_vscroll;
@@ -126,7 +127,7 @@ extern struct Text_Box TEXT_BOX_Default;
 
 /* --- Constructor/Destrgit auctor --- */
 void Text_Box_Free(struct Text_Box *b);
-void Text_Box_Load(struct Text_Box *b, SDL_Renderer *r, struct n9Patch *n9patch);
+void Text_Bubble_Load(struct Text_Box *b, SDL_Renderer *r, struct n9Patch *n9patch);
 
 /* --- Setters --- */
 void TEXT_BOX_Set_Text(    struct Text_Box *b, char *t, struct n9Patch *n9patch);

@@ -4,9 +4,9 @@
 #include <string.h>
 #include "events.h"
 #include "types.h"
+#include "pixelfonts.h"
 #include "utilities.h"
 #include "filesystem.h"
-#include "pixelfonts.h"
 #include "conditions.h"
 #include "jsonio.h"
 #include "enums.h"
@@ -15,6 +15,7 @@
 #include "nmath.h"
 #include "cJSON.h"
 #include "bitfields.h"
+#include "popup/text_box.h"
 #include "SDL.h"
 
 // SCENE MVP
@@ -31,6 +32,7 @@
 //      - Load speaker from file
 //      - Load Lines from file
 //      - highlight speaker
+//      - Speaker movement
 //      - Speaker movement
 //          - Basic slides
 
@@ -195,6 +197,7 @@ typedef struct Scene {
     SDL_Rect texture_rect;
     SDL_Texture *texture;
     struct PixelFont   *pixelnours;
+    struct Text_Box     text_box;
 
     /* -- Post-scene -- */
     // What happens after a scene ends?

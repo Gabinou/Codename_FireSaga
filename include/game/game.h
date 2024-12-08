@@ -19,8 +19,6 @@
 #include "controller/keyboard.h"
 #include "credits.h"
 #include "index_shader.h"
-#include "index_shader.h"
-#include "scene.h"
 #include "cutscene.h"
 #include "enums.h"
 #include "structs.h"

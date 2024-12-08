@@ -1122,6 +1122,14 @@ typedef struct PathfindingAct {
 } PathfindingAct;
 extern PathfindingAct PathfindingAct_default;
 
+struct TextLines {
+    char **lines;
+    int   *lines_len;
+    int    line_num;
+    int    line_len;
+};
+extern struct TextLines TextLines_default;
+
 
 
 #endif /* STRUCTS_H */

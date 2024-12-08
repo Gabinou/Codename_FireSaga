@@ -1,5 +1,6 @@
 
 #include "graph.h"
+#include "filesystem.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
 // static void _Graph_Draw_Axes(struct Graph *g, struct n9Patch *n9patch,

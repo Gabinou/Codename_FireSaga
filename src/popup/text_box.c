@@ -1,7 +1,7 @@
 
 #include "text_box.h"
 
-struct TEXT_BOX_Tail TEXT_BOX_Tail_default = {
+struct Text_Box_Tail TEXT_BOX_Tail_default = {
     .flip           = SDL_FLIP_NONE,
 };
 
@@ -55,7 +55,7 @@ void Text_Box_Free(struct Text_Box *bubble) {
     }
 }
 
-void Text_Box_Load(struct Text_Box *bubble, SDL_Renderer *renderer, struct n9Patch *n9patch) {
+void Text_Bubble_Load(struct Text_Box *bubble, SDL_Renderer *renderer, struct n9Patch *n9patch) {
     SDL_assert(bubble != NULL);
 
     /* -- SDL_free before re-allocating -- */
@@ -76,7 +76,7 @@ void Text_Box_Load(struct Text_Box *bubble, SDL_Renderer *renderer, struct n9Pat
     n9patch->pos.y            = 0;
 
     /* -- Loading Surfaces -- */
-    char *path = PATH_JOIN("..", "assets", "GUI", "Popup", "Popup_TEXT_BOX_N9patch.png");
+    char *path = PATH_JOIN("..", "assets", "GUI", "Popup", "Popup_Text_Bubble_N9patch.png");
 
     if (bubble->surface != NULL)
         SDL_FreeSurface(bubble->surface);
@@ -84,7 +84,7 @@ void Text_Box_Load(struct Text_Box *bubble, SDL_Renderer *renderer, struct n9Pat
     SDL_assert(bubble->surface != NULL);
     SDL_assert(bubble->surface->format->palette == palette_SOTA);
 
-    path = PATH_JOIN("..", "assets", "GUI", "Popup", "Popup_TEXT_BOX_Tail.png");
+    path = PATH_JOIN("..", "assets", "GUI", "Popup", "Popup_Text_Bubble_Tail.png");
     if (bubble->tail.surface != NULL)
         SDL_FreeSurface(bubble->tail.surface);
     bubble->tail.surface = Filesystem_Surface_Load(path, SDL_PIXELFORMAT_INDEX8);
