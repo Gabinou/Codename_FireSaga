@@ -44,7 +44,7 @@
 #include "popup/test_loadout_stats.h"
 #include "popup/test_map_combat.h"
 #include "popup/test_objective.h"
-#include "popup/test_text_bubble.h"
+#include "popup/test_text_box.h"
 #include "popup/test_unit.h"
 
 #include "integration/test_aura.h"
@@ -67,7 +67,7 @@ void render_tests() {
     test_popup_objective();
     test_popup_unit();
     test_bars_slider_bar();
-    test_text_bubble();
+    test_Text_Box();
 }
 
 void unit_tests() {

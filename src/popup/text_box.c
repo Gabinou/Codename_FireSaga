@@ -1,23 +1,23 @@
 
-#include "text_bubble.h"
+#include "text_box.h"
 
-struct Text_Bubble_Tail Text_Bubble_Tail_default = {
+struct Text_Box_Tail Text_Box_Tail_default = {
     .flip           = SDL_FLIP_NONE,
 };
 
-struct Text_Bubble TextBubble_default = {
+struct Text_Box TextBubble_default = {
     .row_height         = ASCII_GLYPH_HEIGHT,
     .line_len_px        = 64,
     .line_num_max       = -1,
     .target             = {-100, -100},
-    .vscroll_speed      = TEXT_BUBBLE_VSCROLL_SPEED,
-    .vscroll_dir        = TEXT_BUBBLE_VSCROLL_TOP,
+    .vscroll_speed      = Text_Box_VSCROLL_SPEED,
+    .vscroll_dir        = Text_Box_VSCROLL_TOP,
 
     .padding     = {
-        .left       = TEXT_BUBBLE_PADDING_LEFT,
-        .top        = TEXT_BUBBLE_PADDING_TOP,
-        .bottom     = TEXT_BUBBLE_PADDING_BOTTOM,
-        .right      = TEXT_BUBBLE_PADDING_RIGHT,
+        .left       = Text_Box_PADDING_LEFT,
+        .top        = Text_Box_PADDING_TOP,
+        .bottom     = Text_Box_PADDING_BOTTOM,
+        .right      = Text_Box_PADDING_RIGHT,
     },
 
     .old_bg_color   = SOTA_WHITE,
@@ -29,7 +29,7 @@ struct Text_Bubble TextBubble_default = {
     .enable_tail    = true,
 };
 
-void TextBubble_Free(struct Text_Bubble *bubble) {
+void TextBubble_Free(struct Text_Box *bubble) {
     s8_free(&bubble->text);
 
     if (bubble->texture != NULL) {
@@ -55,7 +55,7 @@ void TextBubble_Free(struct Text_Bubble *bubble) {
     }
 }
 
-void TextBubble_Load(struct Text_Bubble *bubble, SDL_Renderer *renderer, struct n9Patch *n9patch) {
+void TextBubble_Load(struct Text_Box *bubble, SDL_Renderer *renderer, struct n9Patch *n9patch) {
     SDL_assert(bubble != NULL);
 
     /* -- SDL_free before re-allocating -- */
@@ -68,10 +68,10 @@ void TextBubble_Load(struct Text_Bubble *bubble, SDL_Renderer *renderer, struct 
 
     /* -- n9patch defaults -- */
     *n9patch                  = n9Patch_default;
-    n9patch->patch_pixels.x   = TEXT_BUBBLE_PATCH_PIXELS;
-    n9patch->patch_pixels.y   = TEXT_BUBBLE_PATCH_PIXELS;
-    n9patch->scale.x          = TEXT_BUBBLE_SCALE;
-    n9patch->scale.y          = TEXT_BUBBLE_SCALE;
+    n9patch->patch_pixels.x   = Text_Box_PATCH_PIXELS;
+    n9patch->patch_pixels.y   = Text_Box_PATCH_PIXELS;
+    n9patch->scale.x          = Text_Box_SCALE;
+    n9patch->scale.y          = Text_Box_SCALE;
     n9patch->pos.x            = 0;
     n9patch->pos.y            = 0;
 
@@ -98,7 +98,7 @@ void TextBubble_Load(struct Text_Bubble *bubble, SDL_Renderer *renderer, struct 
     SDL_assert(bubble->tail.texture != NULL);
 }
 
-void TextBubble_Set_Text(struct Text_Bubble *bubble, char *text, struct n9Patch *n9patch) {
+void TextBubble_Set_Text(struct Text_Box *bubble, char *text, struct n9Patch *n9patch) {
     /* -- SDL_free before re-allocating -- */
     s8_free(&bubble->text);
     /* -- Copying input text -- */
@@ -112,7 +112,7 @@ void TextBubble_Set_Text(struct Text_Bubble *bubble, char *text, struct n9Patch 
     TextBubble_Compute_Size(bubble, n9patch);
 }
 
-void TextBubble_Set_Target(struct Text_Bubble *bubble, struct Point target) {
+void TextBubble_Set_Target(struct Text_Box *bubble, struct Point target) {
     /* -- Compute everything related to new target --  */
     /* target is relative to bubble position */
     bubble->target = target;
@@ -121,14 +121,14 @@ void TextBubble_Set_Target(struct Text_Bubble *bubble, struct Point target) {
 }
 
 /* --- Colors --- */
-void TextBubble_Colors_Set(struct Text_Bubble *bubble, i8 bg, i8 line) {
+void TextBubble_Colors_Set(struct Text_Box *bubble, i8 bg, i8 line) {
     bubble->old_bg_color    = bubble->bg_color;
     bubble->old_line_color  = bubble->line_color;
     bubble->line_color      = line;
     bubble->bg_color        = bg;
 }
 
-void TextBubble_Colors_Swap(struct Text_Bubble *bubble, SDL_Renderer *renderer,
+void TextBubble_Colors_Swap(struct Text_Box *bubble, SDL_Renderer *renderer,
                             struct n9Patch *n9patch) {
     /* -- Switch color & create textures -- */
     Palette_Colors_Swap(bubble->palette,        renderer,
@@ -144,9 +144,9 @@ void TextBubble_Colors_Swap(struct Text_Bubble *bubble, SDL_Renderer *renderer,
     SDL_assert(bubble->tail.texture != NULL);
 }
 
-int TextBubble_Tail_Octant(struct Text_Bubble *bubble) {
+int TextBubble_Tail_Octant(struct Text_Box *bubble) {
     /* -- Find octant around text bubble target is in -- */
-    struct Point pos = {TEXT_BUBBLE_RENDER_PAD, TEXT_BUBBLE_RENDER_PAD};
+    struct Point pos = {Text_Box_RENDER_PAD, Text_Box_RENDER_PAD};
     struct Point ternary;
 
     ternary = Ternary_Direction_Octant(pos, bubble->target, bubble->width, bubble->height);
@@ -156,38 +156,38 @@ int TextBubble_Tail_Octant(struct Text_Bubble *bubble) {
     return (bubble->tail.octant);
 }
 
-void TextBubble_Tail_Pos(struct Text_Bubble *bubble, struct n9Patch *n9patch) {
+void TextBubble_Tail_Pos(struct Text_Box *bubble, struct n9Patch *n9patch) {
     /* Decide tail position. */
-    struct Point pos = {TEXT_BUBBLE_RENDER_PAD, TEXT_BUBBLE_RENDER_PAD};
+    struct Point pos = {Text_Box_RENDER_PAD, Text_Box_RENDER_PAD};
 
-    bubble->tail.dstrect.w = Text_Bubble_Tail_SIZE;
-    bubble->tail.dstrect.h = Text_Bubble_Tail_SIZE;
+    bubble->tail.dstrect.w = Text_Box_Tail_SIZE;
+    bubble->tail.dstrect.h = Text_Box_Tail_SIZE;
 
     switch (bubble->tail.octant) {
         case SOTA_DIRECTION_RIGHT:
             bubble->tail.dstrect.x = bubble->width - 2;
-            bubble->tail.dstrect.y = TEXT_BUBBLE_PATCH_PIXELS - 5;
+            bubble->tail.dstrect.y = Text_Box_PATCH_PIXELS - 5;
             if (n9patch->size_patches.y > 2) {
                 /* Place tail according to target */
-                bubble->tail.dstrect.y = bubble->target.y - TEXT_BUBBLE_RENDER_PAD / 2;
+                bubble->tail.dstrect.y = bubble->target.y - Text_Box_RENDER_PAD / 2;
             }
             break;
         case SOTA_DIRECTION_TOP:
-            // bubble->tail.dstrect.x = TEXT_BUBBLE_PATCH_PIXELS;
-            bubble->tail.dstrect.x = bubble->target.x - TEXT_BUBBLE_RENDER_PAD / 2;
+            // bubble->tail.dstrect.x = Text_Box_PATCH_PIXELS;
+            bubble->tail.dstrect.x = bubble->target.x - Text_Box_RENDER_PAD / 2;
             bubble->tail.dstrect.y = -6;
             break;
         case SOTA_DIRECTION_BOTTOM:
-            // bubble->tail.dstrect.x = TEXT_BUBBLE_PATCH_PIXELS;
-            bubble->tail.dstrect.x = bubble->target.x - TEXT_BUBBLE_RENDER_PAD / 2;
+            // bubble->tail.dstrect.x = Text_Box_PATCH_PIXELS;
+            bubble->tail.dstrect.x = bubble->target.x - Text_Box_RENDER_PAD / 2;
             bubble->tail.dstrect.y = bubble->height - 2;
             break;
         case SOTA_DIRECTION_LEFT:
             bubble->tail.dstrect.x = -6;
-            bubble->tail.dstrect.y = TEXT_BUBBLE_PATCH_PIXELS - 3;
+            bubble->tail.dstrect.y = Text_Box_PATCH_PIXELS - 3;
             if (n9patch->size_patches.y > 2) {
                 /* Place tail according to target */
-                bubble->tail.dstrect.y = bubble->target.y - TEXT_BUBBLE_RENDER_PAD / 2;
+                bubble->tail.dstrect.y = bubble->target.y - Text_Box_RENDER_PAD / 2;
             }
             break;
         case SOTA_DIRECTION_TOPRIGHT:
@@ -209,7 +209,7 @@ void TextBubble_Tail_Pos(struct Text_Bubble *bubble, struct n9Patch *n9patch) {
     }
 }
 
-void TextBubble_Tail_Angle(struct Text_Bubble *bubble) {
+void TextBubble_Tail_Angle(struct Text_Box *bubble) {
     /* Decide orientation of tail, except flip. */
     // Only puts tail in correct octant
 
@@ -217,58 +217,58 @@ void TextBubble_Tail_Angle(struct Text_Bubble *bubble) {
     switch (bubble->tail.octant) {
         case SOTA_DIRECTION_RIGHT:
             bubble->tail.angle = 270.0;
-            bubble->tail.index = TEXT_BUBBLE_STRAIGHT;
+            bubble->tail.index = Text_Box_STRAIGHT;
             break;
         case SOTA_DIRECTION_TOP:
             bubble->tail.angle = 180.0;
-            bubble->tail.index = TEXT_BUBBLE_STRAIGHT;
+            bubble->tail.index = Text_Box_STRAIGHT;
             break;
         case SOTA_DIRECTION_BOTTOM:
             bubble->tail.angle = 0.0;
-            bubble->tail.index = TEXT_BUBBLE_STRAIGHT;
+            bubble->tail.index = Text_Box_STRAIGHT;
             break;
         case SOTA_DIRECTION_LEFT:
             bubble->tail.angle = 90.0;
-            bubble->tail.index = TEXT_BUBBLE_STRAIGHT;
+            bubble->tail.index = Text_Box_STRAIGHT;
             break;
         case SOTA_DIRECTION_TOPRIGHT:
             bubble->tail.angle = 270.0;
-            bubble->tail.index = TEXT_BUBBLE_DIAGONAL;
+            bubble->tail.index = Text_Box_DIAGONAL;
             break;
         case SOTA_DIRECTION_BOTRIGHT:
             bubble->tail.angle = 0.0;
-            bubble->tail.index = TEXT_BUBBLE_DIAGONAL;
+            bubble->tail.index = Text_Box_DIAGONAL;
             break;
         case SOTA_DIRECTION_BOTLEFT:
             bubble->tail.angle = 90.0;
-            bubble->tail.index = TEXT_BUBBLE_DIAGONAL;
+            bubble->tail.index = Text_Box_DIAGONAL;
             break;
         case SOTA_DIRECTION_TOPLEFT:
             bubble->tail.angle = 180.0;
-            bubble->tail.index = TEXT_BUBBLE_DIAGONAL;
+            bubble->tail.index = Text_Box_DIAGONAL;
             break;
     }
 }
 
-void TextBubble_Tail_Draw(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
+void TextBubble_Tail_Draw(struct Text_Box *bubble, SDL_Renderer *renderer) {
     SDL_Rect srcrect;
-    srcrect.x = Text_Bubble_Tail_SIZE * bubble->tail.index;
+    srcrect.x = Text_Box_Tail_SIZE * bubble->tail.index;
     srcrect.y = 0;
-    srcrect.w = Text_Bubble_Tail_SIZE;
-    srcrect.h = Text_Bubble_Tail_SIZE;
+    srcrect.w = Text_Box_Tail_SIZE;
+    srcrect.h = Text_Box_Tail_SIZE;
     SDL_Rect dstrect;
-    dstrect.x = bubble->tail.dstrect.x + TEXT_BUBBLE_RENDER_PAD;
-    dstrect.y = bubble->tail.dstrect.y + TEXT_BUBBLE_RENDER_PAD;
+    dstrect.x = bubble->tail.dstrect.x + Text_Box_RENDER_PAD;
+    dstrect.y = bubble->tail.dstrect.y + Text_Box_RENDER_PAD;
     dstrect.w = bubble->tail.dstrect.w;
     dstrect.h = bubble->tail.dstrect.h;
 
-    SDL_Point center = {Text_Bubble_Tail_SIZE / 2, Text_Bubble_Tail_SIZE / 2};
+    SDL_Point center = {Text_Box_Tail_SIZE / 2, Text_Box_Tail_SIZE / 2};
     SDL_RenderCopyEx(renderer, bubble->tail.texture, &srcrect, &dstrect,
                      bubble->tail.angle, &center, bubble->tail.flip);
 
 }
 
-void TextBubble_Compute_Size(struct Text_Bubble *bu, struct n9Patch *n9patch) {
+void TextBubble_Compute_Size(struct Text_Box *bu, struct n9Patch *n9patch) {
     /* -- Check -- */
     SDL_assert(bu->text.data != NULL);
 
@@ -291,7 +291,7 @@ void TextBubble_Compute_Size(struct Text_Bubble *bu, struct n9Patch *n9patch) {
     bu->height = line_num * bu->row_height + bu->padding.top + bu->padding.bottom;
     if (line_num <= 1) {
         int len = PixelFont_Width_Len(bu->pixelfont, bu->text.data);
-        len = (len < TEXT_BUBBLE_MIN_WIDTH) ? (TEXT_BUBBLE_MIN_WIDTH) : len;
+        len = (len < Text_Box_MIN_WIDTH) ? (Text_Box_MIN_WIDTH) : len;
         bu->width = len + bu->padding.right * 2 + bu->padding.left;
     } else {
         bu->width = bu->line_len_px + bu->padding.right + bu->padding.left;
@@ -307,7 +307,7 @@ void TextBubble_Compute_Size(struct Text_Bubble *bu, struct n9Patch *n9patch) {
 
 }
 
-void TextBubble_Set_All(struct Text_Bubble *bubble,  char *text, struct Point target,
+void TextBubble_Set_All(struct Text_Box *bubble,  char *text, struct Point target,
                         struct n9Patch *n9patch) {
 
     TextBubble_Set_Text(bubble, text, n9patch);
@@ -319,17 +319,17 @@ void TextBubble_Set_All(struct Text_Bubble *bubble,  char *text, struct Point ta
 }
 
 /* -- Drawing elements -- */
-void TextBubble_Copy_VScroll(struct Text_Bubble *bubble, SDL_Renderer *renderer,
+void TextBubble_Copy_VScroll(struct Text_Box *bubble, SDL_Renderer *renderer,
                              SDL_Texture *render_target) {
     /* - Copy written text + middle of n9patch for VScroll - */
     bubble->vscroll = 0;
 
     /* - create render target texture - */
     SDL_Rect srcrect = {0}, dstrect = {0};
-    dstrect.w = bubble->width  - TEXT_BUBBLE_COPY_PAD * 2;
-    dstrect.h = bubble->height - TEXT_BUBBLE_COPY_PAD * 2;
-    srcrect.x = TEXT_BUBBLE_COPY_PAD + TEXT_BUBBLE_RENDER_PAD;
-    srcrect.y = TEXT_BUBBLE_COPY_PAD + TEXT_BUBBLE_RENDER_PAD;
+    dstrect.w = bubble->width  - Text_Box_COPY_PAD * 2;
+    dstrect.h = bubble->height - Text_Box_COPY_PAD * 2;
+    srcrect.x = Text_Box_COPY_PAD + Text_Box_RENDER_PAD;
+    srcrect.y = Text_Box_COPY_PAD + Text_Box_RENDER_PAD;
     srcrect.w = dstrect.w;
     srcrect.h = dstrect.h;
 
@@ -346,27 +346,27 @@ void TextBubble_Copy_VScroll(struct Text_Bubble *bubble, SDL_Renderer *renderer,
     SDL_SetRenderTarget(renderer, render_target);
 }
 
-void TextBubble_VScroll(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
+void TextBubble_VScroll(struct Text_Box *bubble, SDL_Renderer *renderer) {
     /* - To do vscroll - */
     SDL_assert(bubble->vscroll_speed > 0);
     bubble->vscroll += bubble->vscroll_speed;
 }
 
-void TextBubble_VScroll_Draw(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
+void TextBubble_VScroll_Draw(struct Text_Box *bubble, SDL_Renderer *renderer) {
     /* - To do vscroll - */
     SDL_Rect srcrect = {0}, dstrect = {0};
-    dstrect.h = bubble->height - TEXT_BUBBLE_COPY_PAD * 2;
+    dstrect.h = bubble->height - Text_Box_COPY_PAD * 2;
     if (bubble->vscroll > dstrect.h) {
         bubble->vscroll      = 0;
         bubble->vscroll_anim = false;
         return;
     }
-    dstrect.w = bubble->width  - TEXT_BUBBLE_COPY_PAD * 2;
+    dstrect.w = bubble->width  - Text_Box_COPY_PAD * 2;
 
     dstrect.h -= bubble->vscroll;
-    dstrect.x = TEXT_BUBBLE_COPY_PAD + TEXT_BUBBLE_RENDER_PAD;
-    dstrect.y = TEXT_BUBBLE_COPY_PAD + TEXT_BUBBLE_RENDER_PAD;
-    if (bubble->vscroll_dir == TEXT_BUBBLE_VSCROLL_BOTTOM) {
+    dstrect.x = Text_Box_COPY_PAD + Text_Box_RENDER_PAD;
+    dstrect.y = Text_Box_COPY_PAD + Text_Box_RENDER_PAD;
+    if (bubble->vscroll_dir == Text_Box_VSCROLL_BOTTOM) {
         dstrect.y += bubble->vscroll;
     } else {
         srcrect.y = bubble->vscroll;
@@ -379,9 +379,9 @@ void TextBubble_VScroll_Draw(struct Text_Bubble *bubble, SDL_Renderer *renderer)
 }
 
 /* --- Scrolling --- */
-void TextBubble_Write(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
+void TextBubble_Write(struct Text_Box *bubble, SDL_Renderer *renderer) {
     /* - name - */
-    int x = bubble->padding.left + TEXT_BUBBLE_RENDER_PAD, y;
+    int x = bubble->padding.left + Text_Box_RENDER_PAD, y;
     int scroll_len_rem = bubble->pixelfont->scroll_len;
 
     /* - find the start line if vertical scroll - */
@@ -411,7 +411,7 @@ void TextBubble_Write(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
             continue;
         }
 
-        y = bubble->padding.top + bubble->row_height * draw_i + TEXT_BUBBLE_RENDER_PAD;
+        y = bubble->padding.top + bubble->row_height * draw_i + Text_Box_RENDER_PAD;
         if (!bubble->scroll) {
             PixelFont_Write_Len(bubble->pixelfont, renderer, bubble->lines.lines[i], x, y);
             continue;
@@ -431,7 +431,7 @@ void TextBubble_Write(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
 }
 
 /* --- Drawing --- */
-void TextBubble_Update(struct Text_Bubble *bubble, struct n9Patch *n9patch,
+void TextBubble_Update(struct Text_Box *bubble, struct n9Patch *n9patch,
                        SDL_Texture *render_target, SDL_Renderer *renderer) {
     /* --- PRELIMINARIES --- */
     SDL_assert(bubble != NULL);
@@ -448,8 +448,8 @@ void TextBubble_Update(struct Text_Bubble *bubble, struct n9Patch *n9patch,
 
     /* - create render target texture - */
     if (bubble->texture == NULL) {
-        int x = n9patch->size_pixels.x + TEXT_BUBBLE_RENDER_PAD * 2;
-        int y = n9patch->size_pixels.y + TEXT_BUBBLE_RENDER_PAD * 2;
+        int x = n9patch->size_pixels.x + Text_Box_RENDER_PAD * 2;
+        int y = n9patch->size_pixels.y + Text_Box_RENDER_PAD * 2;
         bubble->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
                                             SDL_TEXTUREACCESS_TARGET, x, y);
         SDL_assert(bubble->texture != NULL);
@@ -466,8 +466,8 @@ void TextBubble_Update(struct Text_Bubble *bubble, struct n9Patch *n9patch,
     int scale_y         = n9patch->scale.y;
     n9patch->scale.x    = 1;
     n9patch->scale.y    = 1;
-    n9patch->pos.x      = TEXT_BUBBLE_RENDER_PAD;
-    n9patch->pos.y      = TEXT_BUBBLE_RENDER_PAD;
+    n9patch->pos.x      = Text_Box_RENDER_PAD;
+    n9patch->pos.y      = Text_Box_RENDER_PAD;
     n9Patch_Draw(n9patch, renderer);
     n9patch->scale.x    = scale_x;
     n9patch->scale.y    = scale_y;
@@ -488,7 +488,7 @@ void TextBubble_Update(struct Text_Bubble *bubble, struct n9Patch *n9patch,
 void TextBubble_Draw(struct PopUp *popup, struct Point pos,
                      SDL_Texture *target, SDL_Renderer *renderer) {
     struct n9Patch     *n9patch  = &popup->n9patch;
-    struct Text_Bubble *bubble   =  popup->data;
+    struct Text_Box *bubble   =  popup->data;
 
     SDL_assert(bubble != NULL);
     if (bubble->update) {

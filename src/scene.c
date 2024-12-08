@@ -342,7 +342,7 @@ void Scene_Finish(struct Scene * scene, struct Game * sota) {
 // void _Scene_Animate_Background(    struct Scene *scene) {
 
 // }
-// void _Scene_Animate_Text_Bubbles(  struct Scene *scene) {
+// void _Scene_Animate_Text_Boxs(  struct Scene *scene) {
 
 // }
 
@@ -352,7 +352,7 @@ void Scene_Animate(struct Game  * sota, tnecs_entity entity,
 
     //     _Scene_Animate_Background(scene);
     //     _Scene_Animate_Actors(scene);
-    //     _Scene_Animate_Text_Bubbles(scene);
+    //     _Scene_Animate_Text_Boxs(scene);
 }
 
 

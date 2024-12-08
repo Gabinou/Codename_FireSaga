@@ -1,6 +1,6 @@
 #include "nourstest.h"
 #include "pixelfonts.h"
-#include "text_bubble.h"
+#include "text_box.h"
 
 void test_pixelfonts_internals() {
 
@@ -120,7 +120,7 @@ void test_pixelfonts_render() {
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
 
-    struct Text_Bubble bubble = TextBubble_default;
+    struct Text_Box bubble = TextBubble_default;
 
     /* -- Create n9patch -- */
     // render_target is NULL cause there is render_target!
@@ -162,7 +162,7 @@ void test_pixelfonts_render() {
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
     bubble.line_len_px  = 96;
     bubble.row_height   = ASCII_GLYPH_HEIGHT + 2;
-    bubble.padding.top  = TEXT_BUBBLE_PADDING_TOP + 2;
+    bubble.padding.top  = Text_Box_PADDING_TOP + 2;
 
     /* - setting - */
     bubble.target.x = -100;
@@ -227,7 +227,7 @@ void test_pixelfonts_render() {
     bubble.pixelfont->y_offset     = pixelfont_big_y_offset;
     bubble.line_len_px  = 96;
     bubble.row_height   = ASCII_GLYPH_HEIGHT + 2;
-    bubble.padding.top  = TEXT_BUBBLE_PADDING_TOP + 2;
+    bubble.padding.top  = Text_Box_PADDING_TOP + 2;
 
     /* - setting - */
     TextBubble_Colors_Set(&bubble, SOTA_MENU_BLUE, SOTA_WHITE);

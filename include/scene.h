@@ -275,7 +275,7 @@ i32 Scene_jsonStatement_Type(cJSON *jstatement);
 /* --- Play --- */
 void _Scene_Animate_Actors(        struct Scene *scene);
 void _Scene_Animate_Background(    struct Scene *scene);
-void _Scene_Animate_Text_Bubbles(  struct Scene *scene);
+void _Scene_Animate_Text_Boxs(  struct Scene *scene);
 
 void Scene_Animate(struct Game  *sota, tnecs_entity entity,
                    struct Scene *scene, struct Timer *timer);
