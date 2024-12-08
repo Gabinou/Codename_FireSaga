@@ -1,5 +1,13 @@
 
 #include "text_box.h"
+#include "enums.h"
+#include "palette.h"
+#include "pixelfonts.h"
+// #ifndef STB_SPRINTF_IMPLEMENTATION
+// #define STB_SPRINTF_IMPLEMENTATION
+#include "stb_sprintf.h"
+// #endif // STB_SPRINTF_IMPLEMENTATION
+
 
 struct Text_Box_Tail TEXT_BOX_Tail_default = {
     .flip           = SDL_FLIP_NONE,

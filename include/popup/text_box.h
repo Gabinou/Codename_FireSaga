@@ -1,14 +1,7 @@
 #ifndef TEXT_BOX_H
 #define TEXT_BOX_H
 
-#include "enums.h"
 #include "structs.h"
-#include "nmath.h"
-#include "n9patch.h"
-#include "pixelfonts.h"
-#include "nstr.h"
-#include "menu/stats.h"
-#include "stb_sprintf.h"
 #include "SDL.h"
 
 /* --- Text Box --- */
@@ -43,6 +36,7 @@
 // Note: half = (pos_object > pos_tail)
 
 /* --- FORWARD DECLARATIONS --- */
+struct n9Patch;
 
 enum SOTA_TEXT_BOX {
     TEXT_BOX_TEXTURE_PATCH_WIDTH =  4,
