@@ -1,4 +1,5 @@
 #include "bars/simple.h"
+#include "palette.h"
 
 struct SimpleBar SimpleBar_default = {
     .fill   = 1.0f,

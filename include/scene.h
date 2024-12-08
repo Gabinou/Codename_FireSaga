@@ -1,20 +1,8 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include <string.h>
-#include "events.h"
-#include "types.h"
-#include "pixelfonts.h"
-#include "utilities.h"
-#include "filesystem.h"
-#include "conditions.h"
 #include "jsonio.h"
-#include "enums.h"
-#include "macros.h"
-#include "debug.h"
-#include "nmath.h"
-#include "cJSON.h"
-#include "bitfields.h"
+#include "conditions.h"
 #include "popup/text_box.h"
 #include "SDL.h"
 

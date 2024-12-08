@@ -1,7 +1,7 @@
 #ifndef SLIDER_BAR_H
 #define SLIDER_BAR_H
 
-#include "utilities.h"
+#include "structs.h"
 #include "SDL.h"
 
 /* --- SLIDER_BAR --- */

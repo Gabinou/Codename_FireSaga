@@ -1,16 +1,13 @@
 #ifndef CAMP_H
 #define CAMP_H
 
-#include <math.h>
 #include "enums.h"
-#include "utilities.h"
-#include "jsonio.h"
-#include "filesystem.h"
 #include "nstr.h"
-#include "RNG.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
+struct cJSON;
+typedef struct cJSON cJSON;
 
 enum SOTA_CAMP {
     // Bonus for Guards if an ambush is prevented

@@ -294,7 +294,7 @@ static void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
     DARR_FREE(defendants);
 }
 
-entity AI_Decide_Next(struct Game *sota) {
+tnecs_entity AI_Decide_Next(struct Game *sota) {
     /* --- AI finds next unit to act --- */
     struct AI_State *ai_state = &sota->ai_state;
     // TODO: better function for next unit
@@ -546,14 +546,14 @@ void AI_State_Free(struct AI_State *ai_state) {
 void AI_State_Init(struct AI_State *ai_state, tnecs_world *world, struct Map *map) {
     /* -- Init ai_state->npc --  */
     if (ai_state->npcs == NULL)
-        ai_state->npcs  = DARR_INIT(ai_state->npcs, entity, 16);
+        ai_state->npcs  = DARR_INIT(ai_state->npcs, tnecs_entity, 16);
 
     ai_state->init = true;
 
     /* -- Find all units in current army -- */
     i8 army = map->army_onfield[map->army_i];
     for (int i = 0; i < DARR_NUM(map->units_onfield); i++) {
-        entity npc_ent = map->units_onfield[i];
+        tnecs_entity npc_ent = map->units_onfield[i];
         struct Unit *unit = TNECS_GET_COMPONENT(world, npc_ent, Unit);
         /* Skip if unit is waiting e.g. a reinforcement */
         if (unit->waits)
@@ -565,7 +565,7 @@ void AI_State_Init(struct AI_State *ai_state, tnecs_world *world, struct Map *ma
 }
 
 void AI_State_Pop(struct AI_State *ai_state, tnecs_world *world) {
-    entity npc_ent = ai_state->npcs[ai_state->npc_i];
+    tnecs_entity npc_ent = ai_state->npcs[ai_state->npc_i];
     DARR_DEL(ai_state->npcs, ai_state->npc_i);
     ai_state->decided       = false;
     ai_state->move_anim     = false;

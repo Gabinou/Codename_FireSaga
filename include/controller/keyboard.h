@@ -5,12 +5,6 @@
 #include <stdbool.h>
 #include "types.h"
 #include "enums.h"
-#include "macros.h"
-#include "debug.h"
-#include "nmath.h"
-#include "utilities.h"
-#include "controller/gamepad.h"
-#include "SDL.h"
 
 #define SOTA_INTERACTIVE_RELOAD SDL_SCANCODE_SPACE
 

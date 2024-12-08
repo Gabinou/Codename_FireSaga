@@ -1,4 +1,6 @@
+
 #include "camp.h"
+#include "cJSON.h"
 
 u8 max_jobs[CAMPJOB_END] = {
     0,

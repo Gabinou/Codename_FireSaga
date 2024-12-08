@@ -1,7 +1,7 @@
 #ifndef MAP_HP_BAR_H
 #define MAP_HP_BAR_H
 
-#include "utilities.h"
+#include "structs.h"
 #include "SDL.h"
 
 #define MAP_HPBAR_THRESHOLD_LOW 0.35f

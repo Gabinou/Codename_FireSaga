@@ -1,8 +1,7 @@
 #ifndef TEXTURE_BAR_H
 #define TEXTURE_BAR_H
 
-#include <math.h>
-#include "utilities.h"
+#include "structs.h"
 #include "SDL.h"
 
 /* --- TextureBar --- */

@@ -1,27 +1,17 @@
 #ifndef CONVOY_H
 #define CONVOY_H
 
-#include <stdio.h>
-#include <math.h>
-#include <stdint.h>
-#include <stdbool.h>
+#include "types.h"
 #include "enums.h"
-#include "nmath.h"
 #include "structs.h"
-#include "physfs.h"
-#include "jsonio.h"
-#include "structs.h"
-#include "debug.h"
-#include "cJSON.h"
-#include "combat.h"
-#include "utilities.h"
-#include "platform.h"
 #include "SDL.h"
 
 /* --- FORWARD DECLARATINOS --- */
 struct Game;
 struct Unit;
 struct Inventory_item;
+struct cJSON;
+typedef struct cJSON cJSON;
 
 /* --- Destructors --- */
 void Convoy_Free( struct Convoy *conv);

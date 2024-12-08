@@ -1,5 +1,7 @@
 
 #include "bars/circle.h"
+#include "structs.h"
+#include "palette.h"
 
 /* --- CIRCLE_BAR --- */
 struct CircleBar CircleBar_default = {

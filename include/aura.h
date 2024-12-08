@@ -2,10 +2,11 @@
 #define AURA_H
 
 #include "enums.h"
-#include "cJSON.h"
-#include "utilities.h"
-#include "jsonio.h"
 #include "structs.h"
+
+/* --- FORWARD DECLARATIONS --- */
+struct cJSON;
+typedef struct cJSON cJSON;
 
 /* --- I/O --- */
 void Aura_readJSON( void *input, cJSON *jaura);

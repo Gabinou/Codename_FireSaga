@@ -1,5 +1,7 @@
 
 #include "controller/keyboard.h"
+#include "structs.h"
+#include "utilities.h"
 
 struct KeyboardInputMap KeyboardInputMap_default = {
     .dpad_right         = {SDL_SCANCODE_D,     SDL_SCANCODE_RIGHT},

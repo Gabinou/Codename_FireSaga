@@ -1,5 +1,6 @@
 
 #include "enums.h"
+#include "SDL.h"
 
 #define REGISTER_ENUM(x)  u64 UNIT_SKILL_##x = 1ULL << UNIT_SKILL_EXP_##x;
 #include "names/skills_passive.h"

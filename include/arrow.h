@@ -2,16 +2,15 @@
 #define ARROW_H
 
 #include <math.h>
-#include "SDL.h"
-#include "nmath.h"
-#include "pathfinding.h"
-#include "enums.h"
-#include "debug.h"
 #include "types.h"
+#include "enums.h"
 #include "structs.h"
-#include "utilities.h"
-#include "filesystem.h"
+#include "debug.h"
+#include "SDL.h"
 
+/* --- FORWARD DECLARATIONS --- */
+struct Arrow;
+typedef struct Arrow Arrow;
 /* NOTE: Arrow breaks if INFINITE_MOVE_ALL is defined. DON'T CARE. */
 
 enum ARROW_17PATCHES {

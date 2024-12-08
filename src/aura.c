@@ -1,5 +1,6 @@
 
 #include "aura.h"
+#include "utilities.h"
 
 void Aura_readJSON( void *input, cJSON *jaura) {
     struct Aura *aura = input;

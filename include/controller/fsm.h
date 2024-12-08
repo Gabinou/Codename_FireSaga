@@ -3,8 +3,9 @@
 
 #include <stdint.h>
 #include "enums.h"
-#include "events.h"
-#include "game/game.h"
+
+/* --- FORWARD DECLARATIONS --- */
+struct Game;
 
 /* --- FINITE-STATE MACHINE FOR INPUTS --- */
 /* Contextual inputs according to game state! */

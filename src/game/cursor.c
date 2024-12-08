@@ -1,4 +1,5 @@
 #include "game/cursor.h"
+#include "game/game.h"
 
 /* -- Focus -- */
 void Game_cursorFocus_onMap(struct Game *sota) {

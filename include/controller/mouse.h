@@ -1,15 +1,7 @@
 #ifndef CONTROLLERMOUSE_H
 #define CONTROLLERMOUSE_H
 
-// #include <math.h>
-// #include <stdbool.h>
-#include "macros.h"
-#include "debug.h"
-#include "tnecs.h"
 #include "enums.h"
-// #include "nmath.h"
-#include "events.h"
-#include "SDL.h"
 
 struct MouseInputMap {
     u8 accept;

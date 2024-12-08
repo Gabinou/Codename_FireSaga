@@ -1,3 +1,5 @@
+
+#include <math.h>
 #include "bars/texture.h"
 
 struct TextureBar TextureBar_default = {0};

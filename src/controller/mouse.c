@@ -1,5 +1,8 @@
 
 #include "controller/mouse.h"
+#include "events.h"
+#include "structs.h"
+#include "game/game.h"
 
 struct MouseInputMap MouseInputMap_default = {
     .accept          = SDL_BUTTON_LEFT,

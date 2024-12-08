@@ -1,5 +1,6 @@
 
 #include "bitfields.h"
+#include "SDL.h"
 
 /* -- Setters -- */
 // For nth bit in bitfield

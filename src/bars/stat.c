@@ -1,5 +1,6 @@
 
 #include "bars/stat.h"
+#include "palette.h"
 
 u8 statbar_highlights[STATBAR_HIGHLIGHT_NUM] = {4, 12, 18, 22, 25, 26, 32, 35};
 

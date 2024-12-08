@@ -4,7 +4,6 @@
 #include <string.h>
 #include "enums.h"
 #include "bitfields.h"
-#include "nstr.h"
 
 /* -- Game Narrative Conditions -- */
 // 1- To load and play Scenes,

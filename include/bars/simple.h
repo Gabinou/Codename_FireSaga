@@ -1,7 +1,7 @@
 #ifndef SIMPLE_BAR_H
 #define SIMPLE_BAR_H
 
-#include "utilities.h"
+#include "structs.h"
 #include "SDL.h"
 
 /* --- SimpleBar --- */

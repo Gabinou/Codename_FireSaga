@@ -1,11 +1,7 @@
 #ifndef BITFIELDS_H
 #define BITFIELDS_H
 
-#include <stdint.h>
-#include <stdlib.h>
-#include <stdbool.h>
 #include "types.h"
-#include "SDL.h"
 
 /* BITFIELDS */
 /* Array of bits */

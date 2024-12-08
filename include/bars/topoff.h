@@ -1,9 +1,8 @@
 #ifndef TOPOFF_BAR_H
 #define TOPOFF_BAR_H
 
-#include <math.h>
 #include "bars/simple.h"
-#include "utilities.h"
+#include "structs.h"
 #include "SDL.h"
 
 /* -- TopOffbar -- */

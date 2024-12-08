@@ -5,11 +5,8 @@
 #include <stdint.h>
 #include "types.h"
 #include "enums.h"
+#include "tnecs.h"
 #include "structs.h"
-#include "unit/unit.h"
-#include "equations.h"
-#include "nmath.h"
-#include "cJSON.h"
 #include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
@@ -19,8 +16,8 @@ struct Unit;
 struct Timer;
 struct UnitMoveAnimation;
 
-typedef tnecs_world  world;
-typedef tnecs_entity entity;
+struct cJSON;
+typedef struct cJSON cJSON;
 
 /* --- AI DESIGN --- */
 // AI has two parts
@@ -208,7 +205,7 @@ void AI_State_Turn_Finish(struct AI_State *ais);
 */
 
 /* -- AI Deciders -- */
-entity AI_Decide_Next(struct Game *s);
+tnecs_entity AI_Decide_Next(struct Game *s);
 
 void  AI_Decide_Move(struct Game *s, tnecs_entity e, struct AI_Action *a);
 void _AI_Decide_Move(struct Game *s, tnecs_entity e, struct AI_Action *a);

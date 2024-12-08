@@ -1,8 +1,10 @@
 #ifndef CIRCLE_BAR_H
 #define CIRCLE_BAR_H
 
-#include "utilities.h"
 #include "SDL.h"
+
+/* --- FORWARD DECLARATIONS --- */
+struct CircleBar;
 
 /* --- CIRCLE_BAR --- */
 // Circle bar used to show the number of attacks: 1 for single 2 for double.

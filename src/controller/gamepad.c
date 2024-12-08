@@ -1,5 +1,7 @@
 
 #include "controller/gamepad.h"
+#include "structs.h"
+#include "utilities.h"
 
 /* -- GLOSSARY -- */
 // - sota_button:   index to physical button in GamepadInputMap

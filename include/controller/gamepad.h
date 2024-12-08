@@ -6,7 +6,6 @@
 #include "enums.h"
 #include "nmath.h"
 #include "debug.h"
-#include "utilities.h"
 #include "macros.h"
 #include "SDL.h"
 

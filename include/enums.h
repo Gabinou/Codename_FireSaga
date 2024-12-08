@@ -5,7 +5,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "types.h"
-#include "SDL.h"
 
 #define LOGFILE          "log.txt"
 #define ASSET_LIB        "assets.binou"

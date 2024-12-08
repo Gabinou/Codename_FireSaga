@@ -1,5 +1,7 @@
 
+#include <math.h>
 #include "bars/topoff.h"
+#include "palette.h"
 
 /* --- TopoffBar --- */
 void TopoffBar_Draw(struct SimpleBar *tob, SDL_Renderer *renderer) {

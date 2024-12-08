@@ -2,19 +2,16 @@
 #define COMBAT_H
 
 #include <math.h>
-#include "SDL.h"
 #include "types.h"
 #include "enums.h"
 #include "structs.h"
-#include "jsonio.h"
-#include "RNG.h"
-#include "nmath.h"
-#include "unit/unit.h"
+#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
 struct RNG_Sequence;
 struct Unit;
+struct Point;
 
 /* --- GLOSSARY ---
 * - Combatants: Either aggressor or defendant
