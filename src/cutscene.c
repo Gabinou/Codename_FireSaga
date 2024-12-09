@@ -1,4 +1,5 @@
 #include "cutscene.h"
+#include "events.h"
 
 struct Cutscene Cutscene_default = {
     .time_ns    = 4UL * SOTA_ns,
