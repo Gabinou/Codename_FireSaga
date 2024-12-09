@@ -16,7 +16,7 @@ workspace "HelloPremake"
 		runtime "Debug"
 		kind "WindowedApp"
 		os.mkdir("obj\\Debug")
-        buildoptions{"-O0", "-D__SOTA_DEBUG__", "-DSDL_ASSERT_LEVEL=2 -I\\msys64\\mingw64\\include"}
+        buildoptions{"-O0", "-D__SOTA_DEBUG__", "-DSDL_ASSERT_LEVEL=2 -I\\msys64\\mingw64\\include $(shell sdl2-config --cflags)"}
         symbols "on"
 
 	filter{"configurations:Release"}
@@ -24,7 +24,9 @@ workspace "HelloPremake"
 		kind "WindowedApp"
 		os.mkdir("obj\\Release")
 		-- optimize "on" -- what does on do -> O1?
-		buildoptions{"-O2", "-D__SOTA_RELEASE__", "-DSDL_ASSERT_LEVEL=2 -I\\msys64\\mingw64\\include"}
+		buildoptions{"-O2", "-D__SOTA_RELEASE__", "-DSDL_ASSERT_LEVEL=2 -I\\msys64\\mingw64\\include $(shell sdl2-config --cflags)"
+		    
+		}
 
 	filter "kind:ConsoleApp"
 		files{
