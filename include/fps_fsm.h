@@ -2,9 +2,6 @@
 #define RENDER_FSM_H
 
 #include "enums.h"
-#include "game/game.h"
-#include "game/cursor.h"
-#include "n9patch.h"
 
 /* --- FINITE-STATE MACHINE FOR CONTROL --- */
 /* -- NAMING CONVENTION -- */

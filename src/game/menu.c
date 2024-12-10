@@ -1,4 +1,11 @@
 #include "game/menu.h"
+#include "text.h"
+#include "menu/deployment.h"
+#include "menu/stats.h"
+#include "menu/trade.h"
+#include "menu/staff_select.h"
+#include "menu/growths.h"
+#include "menu/player_select.h"
 
 /* --- All Menus --- */
 void Game_Menus_Init(struct Game *sota) {

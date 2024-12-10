@@ -1,6 +1,17 @@
 
 #include "fsm.h"
 #include "scene.h"
+#include "popup/popup.h"
+#include "game/popup.h"
+#include "game/unit.h"
+#include "game/unit.h"
+#include "menu/fsm.h"
+#include "menu/deployment.h"
+#include "menu/stats.h"
+#include "map/render.h"
+#include "systems/slide.h"
+#include "AI.h"
+#include "cutscene.h"
 
 /* --- ACTIONS --- */
 fsm_eGmp2Stby_s_t fsm_eGmp2Stby_s[GAME_STATE_NUM] = {

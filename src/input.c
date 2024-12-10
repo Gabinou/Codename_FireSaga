@@ -1,5 +1,6 @@
 
 #include "input.h"
+#include "parg.h"
 
 static struct parg_opt longopts[] = {
     {"help",    PARG_NOARG,     NULL, 'h', NULL,   "display this help text and exit"},

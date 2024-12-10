@@ -1,5 +1,10 @@
 
 #include "reload.h"
+#include "game/game.h"
+#include "menu/menu.h"
+#include "bars/map_hp.h"
+#include "popup/popup.h"
+#include "jsonio.h"
 
 void Reload_Entities_Archetype(struct Game *sota, entity_reload_f reload_func,
                                char *component) {

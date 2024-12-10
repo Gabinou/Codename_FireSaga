@@ -1,5 +1,8 @@
 
 #include "menu/trade.h"
+#include "menu/menu.h"
+#include "menu/trade.h"
+#include "unit/unit.h"
 
 struct Point trade_menu_cursor_pos[TRADE_MENU_ELEMS_NUM] = {
     /* TM_ELEM_ITEM1_A */   {LSM1_X_OFFSET, LSM1_Y_OFFSET},

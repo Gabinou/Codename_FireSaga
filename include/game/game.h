@@ -3,53 +3,16 @@
 
 #include <math.h>
 #include <stdio.h>
+#include "enums.h"
+#include "structs.h"
 #include "SDL.h"
+#include "SDL_mixer.h"
 #ifdef SOTA_OPENGL
     #include <GL/glew.h>
     #include <SDL_opengl.h>
     #include <GL/glu.h>
 #endif
-#include "convoy.h"
-#include "unit/party.h"
-#include "unit/unit.h"
-#include "SDL.h"
-#include "SDL_mixer.h"
 #include "tnecs.h"
-#include "combat.h"
-#include "controller/keyboard.h"
-#include "credits.h"
-#include "index_shader.h"
-#include "cutscene.h"
-#include "enums.h"
-#include "structs.h"
-#include "bitfields.h"
-#include "input.h"
-#include "controller/gamepad.h"
-#include "controller/fsm.h"
-#include "fps_fsm.h"
-#include "weapon.h"
-#include "slider.h"
-#include "game/control.h"
-#include "events.h"
-#include "nmath.h"
-#include "systems/time_system.h"
-#include "music.h"
-#include "macros.h"
-#include "hover.h"
-#include "utilities.h"
-#include "jsonio.h"
-#include "pixelfonts.h"
-#include "camp.h"
-#include "debug.h"
-#include "tile.h"
-#include "text.h"
-#include "AI.h"
-#include "RNG.h"
-#include "position.h"
-#include "sprite.h"
-#include "title_screen.h"
-#include "systems/render.h"
-#include "systems/slide.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;

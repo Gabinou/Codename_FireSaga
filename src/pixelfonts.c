@@ -1,6 +1,9 @@
 
 #include "pixelfonts.h"
 #include "filesystem.h"
+#include "palette.h"
+#include "structs.h"
+#include "utilities.h"
 
 u8 pixelfont_big_y_offset[ASCII_GLYPH_NUM] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -38,13 +41,6 @@ u8 pixelfont_y_offset[ASCII_GLYPH_NUM] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-};
-
-struct TextLines TextLines_default =  {
-    .lines      = NULL,
-    .lines_len  = NULL,
-    .line_num   = 0,
-    .line_len   = 0,
 };
 
 struct PixelFont PixelFont_default =  {

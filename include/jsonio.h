@@ -2,15 +2,8 @@
 #define JSONIO_H
 
 #include "cJSON.h"
-#include "tile.h"
-#include "weapon.h"
 #include "structs.h"
-#include "item.h"
-#include "macros.h"
-#include "convoy.h"
 #include "physfs.h"
-#include "unit/unit.h"
-#include "map/map.h"
 #include "unit/party.h"
 #include "camp.h"
 #include "utilities.h"

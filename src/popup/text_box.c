@@ -2,6 +2,10 @@
 #include "text_box.h"
 #include "enums.h"
 #include "palette.h"
+#include "n9patch.h"
+#include "utilities.h"
+#include "octant.h"
+#include "popup/popup.h"
 #include "pixelfonts.h"
 // #ifndef STB_SPRINTF_IMPLEMENTATION
 // #define STB_SPRINTF_IMPLEMENTATION

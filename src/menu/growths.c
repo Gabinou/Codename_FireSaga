@@ -1,4 +1,5 @@
 #include "menu/growths.h"
+#include "menu/stats.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
 static void _GrowthsMenu_Draw_Talk(    struct GrowthsMenu *g, SDL_Renderer *r);

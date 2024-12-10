@@ -1,5 +1,12 @@
 
 #include "item.h"
+#include "unit/unit.h"
+#include "equations.h"
+
+// #ifndef STB_SPRINTF_IMPLEMENTATION
+// #define STB_SPRINTF_IMPLEMENTATION
+#include "stb_sprintf.h"
+// #endif /* STB_SPRINTF_IMPLEMENTATION */
 
 struct Item Item_default = {
     .jsonio_header.json_element   = JSON_ITEM,

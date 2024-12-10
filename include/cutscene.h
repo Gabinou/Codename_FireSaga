@@ -2,10 +2,13 @@
 #define CUTSCENE_H
 
 #include "types.h"
-#include "structs.h"
 #include "nstr.h"
 #include "tnecs.h"
 #include "SDL.h"
+
+/* --- FORWARD DECLARATIONS --- */
+struct Game;
+typedef struct Game Game;
 
 /* -------------------------------- Cutscene -------------------------------- */
 //  An animation

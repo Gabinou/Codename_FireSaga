@@ -1,5 +1,10 @@
 
 #include "game/unit.h"
+#include "unit/unit.h"
+#include "map/map.h"
+#include "bars/map_hp.h"
+#include "weapon.h"
+#include "sprite.h"
 
 /* --- Constructors/Destructors --- */
 void Game_Items_Free(struct dtab **items_dtab) {

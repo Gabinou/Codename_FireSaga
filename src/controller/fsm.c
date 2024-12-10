@@ -1,6 +1,7 @@
 
 #include "controller/fsm.h"
 #include "game/game.h"
+#include "events.h"
 
 /* --- ACTIONS --- */
 fsm_Input_s_t fsm_Input_s[GAME_STATE_NUM] = {

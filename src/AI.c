@@ -1,6 +1,8 @@
 
 #include "AI.h"
 #include "map/find.h"
+#include "game/unit.h"
+#include "game/combat.h"
 
 struct AI AI_default = {
     .json_element   = JSON_AI,

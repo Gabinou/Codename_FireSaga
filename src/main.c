@@ -17,6 +17,7 @@
 */
 
 #include "game/game.h"
+#include "log.h"
 
 int main(int argc, char *argv[]) {
     /* -- atexit -> Quit SDL -- */

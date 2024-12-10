@@ -1,10 +1,7 @@
 #ifndef GAME_CURSOR_H
 #define GAME_CURSOR_H
 
-#include "controller/keyboard.h"
-#include "controller/gamepad.h"
-#include "controller/mouse.h"
-#include "controller/touchpad.h"
+#include "types.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;

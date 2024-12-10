@@ -1,4 +1,8 @@
+
 #include "sprite.h"
+#include "cJSON.h"
+#include "palette.h"
+#include "names.h"
 
 dstrect_func_t dstrect_funcs[TWO_D][TWO_D];
 

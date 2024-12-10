@@ -1,13 +1,13 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include "pixelfonts.h"
 #include "enums.h"
-#include "debug.h"
+#include "types.h"
 #include "tnecs.h"
-#include "nmath.h"
+#include "debug.h"
+#include "structs.h"
+#include "pixelfonts.h"
 #include "n9patch.h"
-#include "stb_sprintf.h"
 #include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */

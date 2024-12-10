@@ -2,25 +2,10 @@
 #define FSM_H
 
 #include <stdint.h>
-#include "enums.h"
-#include "unit/unit.h"
-#include "game/popup.h"
-#include "game/cursor.h"
-#include "game/menu.h"
-#include "game/unit.h"
-#include "menu/menu.h"
-#include "menu/fsm.h"
 #include "types.h"
-#include "tnecs.h"
-#include "unit/unit.h"
-#include "slider.h"
-#include "nmath.h"
-#include "popup/loadout_stats.h"
-#include "menu/player_select.h"
-#include "menu/loadout_select.h"
-#include "arrow.h"
+#include "enums.h"
 #include "structs.h"
-#include "map/ontile.h"
+#include "tnecs.h"
 #include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */

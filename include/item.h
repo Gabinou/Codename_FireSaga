@@ -2,12 +2,9 @@
 #define ITEM_H
 
 #include "enums.h"
+#include "structs.h"
 #include "cJSON.h"
-#include "utilities.h"
-#include "unit/unit.h"
-// #define STB_SPRINTF_IMPLEMENTATION
-#include "stb_sprintf.h"
-//#endif /* STB_SPRINTF_IMPLEMENTATION */
+#include "nstr.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Unit;
@@ -28,9 +25,6 @@ enum ITEM_TARGET {
     ITEM_TARGET_TILE        = 6, /* No one */
     ITEM_TARGET_NUM,
 };
-
-
-
 /* --- Inventory Item --- */
 void Inventory_item_Swap(struct Inventory_item *items, u8 i1, u8 i2);
 

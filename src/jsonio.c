@@ -1,5 +1,12 @@
 
 #include "jsonio.h"
+#include "map/map.h"
+#include "convoy.h"
+#include "tile.h"
+// #ifndef STB_SPRINTF_IMPLEMENTATION
+// #define STB_SPRINTF_IMPLEMENTATION
+#include "stb_sprintf.h"
+// #endif /* STB_SPRINTF_IMPLEMENTATION */
 
 json_func json_read_funcs [JSON_END] = {
     /* JSON_NULL        */  NULL,

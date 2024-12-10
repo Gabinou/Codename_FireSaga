@@ -4,13 +4,8 @@
 #include <math.h>
 #include <stdarg.h>
 #include <limits.h>
-#include "enums.h"
-#include "nmath.h"
-#include "macros.h"
-#include "debug.h"
 #include "types.h"
-// #include "combat.h"
-#include "structs.h"
+#include "enums.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Unit;

@@ -1,8 +1,12 @@
 #include "map/map.h"
+#include "map/render.h"
+#include "aura.h"
+#include "tile.h"
+#include "unit/bonus.h"
 // #ifndef STB_SPRINTF_IMPLEMENTATION
 // #define STB_SPRINTF_IMPLEMENTATION
 #include "stb_sprintf.h"
-//#endif /* STB_SPRINTF_IMPLEMENTATION */
+// #endif /* STB_SPRINTF_IMPLEMENTATION */
 
 NewMap NewMap_default = {
     .tilesize   = {SOTA_TILESIZE, SOTA_TILESIZE},

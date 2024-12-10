@@ -1,5 +1,6 @@
 
 #include "map/tiles.h"
+#include "tile.h"
 
 void Map_Tiles_Free(struct Map *map) {
     Map_Tilesets_Free(map);

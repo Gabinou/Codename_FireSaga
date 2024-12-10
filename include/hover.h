@@ -1,13 +1,9 @@
 #ifndef HOVER_H
 #define HOVER_H
 
-#include "enums.h"
-#include "macros.h"
-#include "debug.h"
-#include "structs.h"
 #include "types.h"
-#include "nmath.h"
-#include "SDL.h"
+#include "enums.h"
+#include "structs.h"
 
 /* NOTE: HOVER BREAKS SLIDER */
 

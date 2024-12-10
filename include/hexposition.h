@@ -5,7 +5,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <math.h>
-#include "macros.h"
 #include "types.h"
 #include "debug.h"
 #include "structs.h"

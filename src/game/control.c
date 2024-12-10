@@ -1,4 +1,9 @@
 #include "game/control.h"
+#include "controller/gamepad.h"
+#include "controller/keyboard.h"
+#include "slider.h"
+#include "events.h"
+#include "position.h"
 
 void Control_Cursor_Moves(struct Game *sota,    struct Point cursor_move,
                           struct Point target,  struct Point px_pos,

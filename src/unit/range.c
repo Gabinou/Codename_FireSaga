@@ -1,5 +1,6 @@
 
 #include "unit/range.h"
+#include "unit/unit.h"
 #include "enums.h"
 
 b32 _Range_Archetype_Match(struct Weapon *wpn, i64 archetype) {

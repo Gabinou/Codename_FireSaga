@@ -1,4 +1,5 @@
 #include "popup/tile.h"
+#include "tile.h"
 
 struct PopUp_Tile PopUp_Tile_default = {
     .update           = true,

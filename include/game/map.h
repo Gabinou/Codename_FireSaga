@@ -1,12 +1,7 @@
 #ifndef GAME_MAP_H
 #define GAME_MAP_H
 
-#include "enums.h"
-#include "map/render.h"
-#include "utilities.h"
-#include "tile.h"
-#include "unit/unit.h"
-#include "game/game.h"
+#include "types.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;

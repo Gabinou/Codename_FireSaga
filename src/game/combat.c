@@ -1,4 +1,7 @@
 #include "game/combat.h"
+#include "position.h"
+#include "game/combat.h"
+#include "combat.h"
 
 /* --- Combat --- */
 void Game_Combat_Outcome(struct Game *sota) {

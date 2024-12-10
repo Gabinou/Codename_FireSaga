@@ -1,5 +1,8 @@
 
 #include "music.h"
+#include "physfs.h"
+#include "log.h"
+#include "platform.h"
 
 /* --- MUSIC --- */
 #define MUSIC_PREXIF "../", "assets", "music"

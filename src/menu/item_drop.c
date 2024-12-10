@@ -1,5 +1,7 @@
 
 #include "menu/item_drop.h"
+#include "menu/stats.h"
+
 struct ItemDropMenu ItemDropMenu_default = {0};
 
 struct Point idm_cursor_pos[IDM_ELEM_NUM] = {

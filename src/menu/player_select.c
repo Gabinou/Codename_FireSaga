@@ -1,4 +1,9 @@
+
 #include "menu/player_select.h"
+#include "menu/menu.h"
+#include "map/map.h"
+#include "menu/stats.h"
+#include "title_screen.h"
 
 /* --- PUT PLAYER_SELECT MENU CONTENT MAKERS INTO FSM --- */
 psm_maker_t menuContentMakers[MENU_PLAYER_SELECT_END] = {

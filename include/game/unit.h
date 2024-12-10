@@ -2,13 +2,8 @@
 #define GAME_UNIT_H
 
 #include "enums.h"
-#include "bitfields.h"
-#include "weapon.h"
-#include "unit/unit.h"
-#include "unit/party.h"
-#include "game/game.h"
-#include "position.h"
-#include "sprite.h"
+#include "tnecs.h"
+#include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;

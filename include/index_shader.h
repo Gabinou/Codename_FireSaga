@@ -2,20 +2,18 @@
 #define INDEX_SHADER_H
 
 #include <math.h>
-#include "SDL.h"
-#include "structs.h"
-#include "utilities.h"
-#include "enums.h"
 #include "types.h"
-#include "nmath.h"
-#include "map/render.h"
-#include "cJSON.h"
+#include "enums.h"
+#include "structs.h"
+#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Map;
+struct cJSON;
+typedef struct cJSON cJSON;
 
 /* --- pixels --- */
-u8 *pixels2list(    u8 *matrix,            size_t row_len, size_t col_len);
+u8 *pixels2list(    u8 *matrix,           size_t row_len, size_t col_len);
 u8 *pixels2list_noM(u8 *matrix, u8 *list, size_t row_len, size_t col_len);
 
 u8 *pixels_and(              u8 *matrix1, u8 *matrix2, size_t arr_len);

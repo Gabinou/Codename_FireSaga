@@ -1,5 +1,7 @@
 
 #include "unit/party.h"
+#include "game/unit.h"
+#include "game/game.h"
 
 struct Party Party_default =  {
     .jsonio_header.json_element   = JSON_PARTY,

@@ -1,13 +1,7 @@
 #ifndef GAME_POPUP_H
 #define GAME_POPUP_H
 
-#include "popup/popup.h"
-#include "popup/tile.h"
-#include "popup/unit.h"
-#include "popup/map_combat.h"
-#include "popup/loadout_stats.h"
-#include "systems/render.h"
-#include "combat.h"
+#include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;

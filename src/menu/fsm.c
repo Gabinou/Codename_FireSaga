@@ -1,6 +1,13 @@
 
 #include "menu/fsm.h"
+#include "cutscene.h"
 #include "unit/equipment.h"
+#include "game/unit.h"
+#include "menu/trade.h"
+#include "map/render.h"
+#include "menu/deployment.h"
+#include "menu/player_select.h"
+#include "popup/loadout_stats.h"
 
 /* --- Menu FSMs --- */
 // NOTE: my menu naming convention is BAD

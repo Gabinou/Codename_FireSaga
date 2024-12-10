@@ -1,10 +1,34 @@
 #include "game/game.h"
+#include "game/map.h"
+#include "game/control.h"
+#include "game/unit.h"
+#include "systems/render.h"
+#include "menu/menu.h"
+#include "menu/loadout_select.h"
+#include "menu/deployment.h"
+#include "menu/stats.h"
+#include "map/render.h"
 #include "scene.h"
+#include "input.h"
+#include "tile.h"
+#include "combat.h"
+#include "controller/mouse.h"
+#include "controller/touchpad.h"
+#include "controller/keyboard.h"
+#include "controller/gamepad.h"
+#include "controller/fsm.h"
+#include "systems/time_system.h"
+#include "systems/slide.h"
+#include "AI.h"
+#include "fps_fsm.h"
+#include "text.h"
+#include "convoy.h"
+#include "utilities.h"
 
-#define STB_SPRINTF_IMPLEMENTATION
-#ifndef STB_SPRINTF_IMPLEMENTATION
-    #include "stb_sprintf.h"
-#endif /* STB_SPRINTF_IMPLEMENTATION */
+// #ifndef STB_SPRINTF_IMPLEMENTATION
+// #define STB_SPRINTF_IMPLEMENTATION
+#include "stb_sprintf.h"
+// #endif /* STB_SPRINTF_IMPLEMENTATION */
 
 struct Game Game_default = {
     .cursor_lastpos         = {1, 1},

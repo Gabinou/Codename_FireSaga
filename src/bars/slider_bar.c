@@ -1,6 +1,7 @@
 
 #include "bars/slider_bar.h"
 #include "palette.h"
+#include "utilities.h"
 
 SliderBar SliderBar_default = {
     .len        = SLIDER_BAR_MIN_LEN,

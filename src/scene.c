@@ -1,4 +1,6 @@
 #include "scene.h"
+#include "events.h"
+#include "pixelfonts.h"
 // #ifndef STB_SPRINTF_IMPLEMENTATION
 // #define STB_SPRINTF_IMPLEMENTATION
 #include "stb_sprintf.h"

@@ -1,6 +1,9 @@
 
 #include "systems/render.h"
 #include "scene.h"
+#include "menu/menu.h"
+#include "AI.h"
+#include "text.h"
 
 void Scroll_Text(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */

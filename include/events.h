@@ -4,9 +4,7 @@
 #include <math.h>
 #include "enums.h"
 #include "tnecs.h"
-#include "fsm.h"
-#include "game/map.h"
-#include "reload.h"
+#include "nstr.h"
 #include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */

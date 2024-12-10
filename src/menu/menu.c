@@ -1,4 +1,7 @@
 #include "menu/menu.h"
+#include "position.h"
+#include "palette.h"
+#include "utilities.h"
 
 struct MenuElemDirections MenuElemDirections_default = {
     .right  = MENU_ELEM_NULL,

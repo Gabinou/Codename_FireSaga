@@ -1,5 +1,14 @@
 #include "game/cursor.h"
 #include "game/game.h"
+#include "menu/menu.h"
+#include "controller/mouse.h"
+#include "controller/gamepad.h"
+#include "controller/keyboard.h"
+#include "slider.h"
+#include "sprite.h"
+#include "map/map.h"
+#include "menu/loadout_select.h"
+#include "jsonio.h"
 
 /* -- Focus -- */
 void Game_cursorFocus_onMap(struct Game *sota) {

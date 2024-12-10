@@ -2,9 +2,6 @@
 #define GAME_CONTROL_H
 
 #include "structs.h"
-#include "game/game.h"
-#include "controller/gamepad.h"
-#include "controller/keyboard.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;

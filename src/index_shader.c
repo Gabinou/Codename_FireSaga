@@ -1,4 +1,11 @@
+
 #include "index_shader.h"
+#include "utilities.h"
+#include "map/render.h"
+// #ifndef STB_SPRINTF_IMPLEMENTATION
+// #define STB_SPRINTF_IMPLEMENTATION
+#include "stb_sprintf.h"
+// #endif /* STB_SPRINTF_IMPLEMENTATION */
 
 struct Index_Shader Index_Shader_default = {0};
 

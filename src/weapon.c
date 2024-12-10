@@ -1,5 +1,7 @@
 
 #include "weapon.h"
+#include "log.h"
+#include "jsonio.h"
 
 /* Note: magic weapons EXPLODE if infused */
 struct Weapon Weapon_default = {

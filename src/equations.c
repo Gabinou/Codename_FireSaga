@@ -1,5 +1,7 @@
 
 #include "equations.h"
+#include "nmath.h"
+#include "structs.h"
 
 /* ---EXPECTED DAMAGE COMPUTATION--- */
 /* Outputs expected/average damage value when multiplied with (att-def) */

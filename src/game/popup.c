@@ -1,4 +1,11 @@
 #include "game/popup.h"
+#include "popup/popup.h"
+#include "popup/loadout_stats.h"
+#include "popup/unit.h"
+#include "popup/tile.h"
+#include "popup/map_combat.h"
+#include "popup/pre_combat.h"
+#include "structs.h"
 
 /* --- Constructors/Destructors --- */
 void Game_PopUps_Free(struct Game *sota) {

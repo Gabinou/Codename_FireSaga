@@ -1,5 +1,16 @@
 
 #include "filesystem.h"
+#include "platform.h"
+#include "physfs.h"
+#include "log.h"
+#include "palette.h"
+#include "utilities.h"
+#include "SDL_image.h"
+
+// #ifndef STB_SPRINTF_IMPLEMENTATION
+// #define STB_SPRINTF_IMPLEMENTATION
+#include "stb_sprintf.h"
+// #endif /* STB_SPRINTF_IMPLEMENTATION */
 
 /* --- INIT --- */
 
