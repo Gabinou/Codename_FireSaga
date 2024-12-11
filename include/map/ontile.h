@@ -3,7 +3,7 @@
 #define MAP_ONTILE_H
 
 #include "map/map.h"
-#include "include/bars/map_hp.h"
+#include "tnecs.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;

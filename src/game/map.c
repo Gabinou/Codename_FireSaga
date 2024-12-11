@@ -1,10 +1,18 @@
 #include "game/map.h"
+#include "names.h"
 #include "map/map.h"
 #include "map/render.h"
+#include "map/find.h"
+#include "map/tiles.h"
+#include "map/ontile.h"
+#include "bars/map_hp.h"
+#include "sprite.h"
+#include "unit/party.h"
 #include "menu/menu.h"
 #include "menu/deployment.h"
 #include "menu/stats.h"
 #include "tile.h"
+#include "reinforcement.h"
 #include "AI.h"
 
 // #define STB_SPRINTF_IMPLEMENTATION

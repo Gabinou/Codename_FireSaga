@@ -1,5 +1,12 @@
 
 #include "map/render.h"
+#include "map/path.h"
+#include "map/tiles.h"
+#include "sprite.h"
+#include "pathfinding.h"
+#include "arrow.h"
+#include "palette.h"
+#include "utilities.h"
 
 void Map_Units_Hide(struct Map *map) {
     if (map->unitmap == NULL)

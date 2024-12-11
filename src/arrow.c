@@ -1,6 +1,8 @@
 
 #include "arrow.h"
 #include "pathfinding.h"
+#include "filesystem.h"
+#include "utilities.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
 static struct Rendered _Arrow_Decider_Startend(i32 x_0, i32 y_0, i32 x_1, i32 y_1);

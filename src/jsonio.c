@@ -1,8 +1,12 @@
 
 #include "jsonio.h"
 #include "map/map.h"
+#include "unit/party.h"
 #include "convoy.h"
+#include "names.h"
+#include "sprite.h"
 #include "tile.h"
+#include "camp.h"
 // #ifndef STB_SPRINTF_IMPLEMENTATION
 // #define STB_SPRINTF_IMPLEMENTATION
 #include "stb_sprintf.h"

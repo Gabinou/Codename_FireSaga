@@ -1,6 +1,8 @@
 
 #include "fsm.h"
 #include "scene.h"
+#include "pathfinding.h"
+#include "arrow.h"
 #include "popup/popup.h"
 #include "game/popup.h"
 #include "game/unit.h"
@@ -9,6 +11,8 @@
 #include "menu/deployment.h"
 #include "menu/stats.h"
 #include "map/render.h"
+#include "map/path.h"
+#include "map/ontile.h"
 #include "systems/slide.h"
 #include "AI.h"
 #include "cutscene.h"

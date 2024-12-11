@@ -1,5 +1,8 @@
 
 #include "map/ontile.h"
+#include "names.h"
+#include "sprite.h"
+#include "bars/map_hp.h"
 
 /* --- Entity finders --- */
 void Map_startingPos_Add(struct Map *map, i32 col, i32 row) {

@@ -1,7 +1,7 @@
 #ifndef MAP_RENDER_H
 #define MAP_RENDER_H
 
-#include "map/map.h"
+#include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Map;

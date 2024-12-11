@@ -1,6 +1,8 @@
 
 #include "menu/deployment.h"
 #include "menu/stats.h"
+#include "unit/party.h"
+#include "names.h"
 
 /* --- ELEMENTS --- */
 MenuElemDirections dm_links[DM_ELEM_NUM] = {

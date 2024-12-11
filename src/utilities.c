@@ -1,6 +1,7 @@
 
 #include "utilities.h"
 #include "sprite.h"
+#include "names.h"
 #include "stb_sprintf.h"
 
 #ifndef __clang__

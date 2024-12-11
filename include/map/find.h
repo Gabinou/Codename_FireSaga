@@ -1,12 +1,14 @@
 #ifndef MAP_FIND_H
 #define MAP_FIND_H
 
+#include "structs.h"
 #include "nmath.h"
-#include "map/map.h"
+#include "tnecs.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Map;
 struct Unit;
+typedef struct canEquip canEquip;
 
 /*-- Map Usable -- */
 // move: find canEquip including on moveable tiles or not

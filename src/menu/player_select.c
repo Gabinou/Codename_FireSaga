@@ -4,6 +4,7 @@
 #include "map/map.h"
 #include "menu/stats.h"
 #include "title_screen.h"
+#include "names.h"
 
 /* --- PUT PLAYER_SELECT MENU CONTENT MAKERS INTO FSM --- */
 psm_maker_t menuContentMakers[MENU_PLAYER_SELECT_END] = {

@@ -1,6 +1,7 @@
 
 #include "menu/stats.h"
 #include "unit/equipment.h"
+#include "names.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
 /* --- Constructors/Destructors --- */

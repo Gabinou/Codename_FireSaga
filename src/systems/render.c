@@ -1,8 +1,11 @@
 
 #include "systems/render.h"
+#include "map/map.h"
 #include "scene.h"
 #include "menu/menu.h"
+#include "bars/map_hp.h"
 #include "AI.h"
+#include "boss.h"
 #include "text.h"
 
 void Scroll_Text(tnecs_system_input *input) {

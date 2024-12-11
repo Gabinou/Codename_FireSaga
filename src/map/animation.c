@@ -1,6 +1,7 @@
 
 #include "map/animation.h"
 #include "sprite.h"
+#include "events.h"
 
 struct CombatAnimation CombatAnimation_default = {
     .pause_before_ms    =   10,

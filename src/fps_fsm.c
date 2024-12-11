@@ -2,9 +2,12 @@
 #include "fps_fsm.h"
 #include "scene.h"
 #include "game/game.h"
+#include "map/map.h"
 #include "game/cursor.h"
 #include "AI.h"
 #include "map/render.h"
+#include "events.h"
+#include "log.h"
 
 fsm_main_t fsm_cFrame_s[GAME_STATE_NUM] = {
     /* GAME_STATE_START         */ NULL,

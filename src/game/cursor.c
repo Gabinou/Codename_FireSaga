@@ -6,6 +6,8 @@
 #include "controller/keyboard.h"
 #include "slider.h"
 #include "sprite.h"
+#include "filesystem.h"
+#include "utilities.h"
 #include "map/map.h"
 #include "menu/loadout_select.h"
 #include "jsonio.h"

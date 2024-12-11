@@ -1,6 +1,7 @@
 
 #include "menu/item_drop.h"
 #include "menu/stats.h"
+#include "names.h"
 
 struct ItemDropMenu ItemDropMenu_default = {0};
 

@@ -1,5 +1,8 @@
 
 #include "map/conditions.h"
+#include "unit/unit.h"
+#include "map/map.h"
+#include "events.h"
 
 struct Map_condition Map_condition_default = {
     .min     =   -1,

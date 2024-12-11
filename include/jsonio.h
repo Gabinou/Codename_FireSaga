@@ -1,14 +1,9 @@
 #ifndef JSONIO_H
 #define JSONIO_H
 
-#include "cJSON.h"
 #include "structs.h"
 #include "physfs.h"
-#include "unit/party.h"
-#include "camp.h"
-#include "utilities.h"
-#include "supports.h"
-#include "names.h"
+#include "cJSON.h"
 #include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */

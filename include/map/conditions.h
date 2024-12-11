@@ -2,9 +2,7 @@
 #define MAP_CONDITIONS_H
 
 #include "enums.h"
-#include "events.h"
-#include "map/map.h"
-#include "unit/unit.h"
+#include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
@@ -12,6 +10,8 @@ struct Boss;
 struct Settings;
 struct Unit;
 struct Game;
+struct cJSON;
+typedef struct cJSON cJSON;
 
 /* Conditions */
 // When condition is satisfied, something happens:

@@ -1,6 +1,8 @@
 
 #include "combat.h"
 #include "jsonio.h"
+#include "equations.h"
+#include "unit/unit.h"
 
 /* --- DEFAULT STRUCTS --- */
 struct Combat_Phase Combat_Phase_default = {

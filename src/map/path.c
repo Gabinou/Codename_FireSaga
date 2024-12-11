@@ -1,6 +1,9 @@
 
 #include "map/path.h"
+#include "map/tiles.h"
 #include "tile.h"
+#include "utilities.h"
+#include "pathfinding.h"
 
 void Map_Global_Danger_Reset(struct Map *map) {
     memset(map->global_dangermap, 0, sizeof(*map->global_dangermap) * map->row_len * map->col_len);

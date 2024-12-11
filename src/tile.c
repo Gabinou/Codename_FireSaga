@@ -1,4 +1,5 @@
 #include "tile.h"
+#include "cJSON.h"
 
 struct Mobj_Link Mobj_Link_default = {
     .num_linked     = 0,

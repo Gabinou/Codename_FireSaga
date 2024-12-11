@@ -1,25 +1,11 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include "macros.h"
 #include "enums.h"
+#include "structs.h"
 #include "tnecs.h"
-#include "map/tiles.h"
-#include "map/ontile.h"
-#include "map/conditions.h"
-#include "map/find.h"
-#include "map/path.h"
-#include "index_shader.h"
-#include "arrow.h"
-#include "reinforcement.h"
-#include "nmath.h"
-#include "unit/unit.h"
-#include "position.h"
-#include "sprite.h"
-#include "music.h"
+#include "nstr.h"
 #include "SDL.h"
-#include "SDL_render.h"
-#include "SDL_mixer.h"
 
 /* --- GLOSSARY --- */
 // Traversing and occupying tiles
@@ -31,7 +17,10 @@
 struct Game;
 struct Unit;
 struct Map_condition;
-
+struct cJSON;
+struct Arrow;
+typedef struct Arrow Arrow;
+typedef struct cJSON cJSON;
 
 /* --- ENUMS --- */
 #define ARROW_FILENAME ARROW_FILENAME_

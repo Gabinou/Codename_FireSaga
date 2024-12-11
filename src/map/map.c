@@ -1,7 +1,20 @@
+
 #include "map/map.h"
 #include "map/render.h"
+#include "map/tiles.h"
+#include "map/ontile.h"
+#include "map/conditions.h"
+#include "map/find.h"
+
 #include "aura.h"
 #include "tile.h"
+#include "names.h"
+#include "arrow.h"
+#include "music.h"
+#include "reinforcement.h"
+#include "pathfinding.h"
+#include "structs.h"
+#include "sprite.h"
 #include "unit/bonus.h"
 // #ifndef STB_SPRINTF_IMPLEMENTATION
 // #define STB_SPRINTF_IMPLEMENTATION

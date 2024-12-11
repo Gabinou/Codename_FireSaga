@@ -1,4 +1,6 @@
+
 #include "popup/loadout_stats.h"
+#include "names.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
 static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,

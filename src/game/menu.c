@@ -1,5 +1,7 @@
 #include "game/menu.h"
 #include "text.h"
+#include "map/path.h"
+#include "map/find.h"
 #include "menu/deployment.h"
 #include "menu/stats.h"
 #include "menu/trade.h"

@@ -1,7 +1,7 @@
 #ifndef MAP_TILES_H
 #define MAP_TILES_H
 
-#include "map/map.h"
+#include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Map;

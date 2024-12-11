@@ -2,8 +2,6 @@
 #define MAP_PATH_H
 
 #include "structs.h"
-#include "pathfinding.h"
-#include "map/map.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Map;

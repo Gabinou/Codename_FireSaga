@@ -1,11 +1,8 @@
 #ifndef MAP_ANIMATION_H
 #define MAP_ANIMATION_H
 
-#include "structs.h"
 #include "enums.h"
-#include "events.h"
-#include "n9patch.h"
-#include "stb_sprintf.h"
+#include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct game;

@@ -1,8 +1,20 @@
 
 #include "AI.h"
+#include "pathfinding.h"
+#include "map/find.h"
+#include "map/map.h"
+#include "map/tiles.h"
+#include "map/ontile.h"
+#include "map/conditions.h"
 #include "map/find.h"
 #include "game/unit.h"
 #include "game/combat.h"
+#include "events.h"
+#include "log.h"
+#include "position.h"
+#include "unit/range.h"
+#include "unit/unit.h"
+#include "map/path.h"
 
 struct AI AI_default = {
     .json_element   = JSON_AI,

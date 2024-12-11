@@ -1,5 +1,10 @@
 
 #include "map/find.h"
+#include "map/map.h"
+#include "map/path.h"
+#include "unit/unit.h"
+#include "position.h"
+#include "pathfinding.h"
 
 /*-- Map Usable -- */
 

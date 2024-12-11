@@ -1,9 +1,11 @@
 
 #include "game/unit.h"
+#include "map/ontile.h"
 #include "unit/unit.h"
 #include "map/map.h"
 #include "bars/map_hp.h"
 #include "weapon.h"
+#include "names.h"
 #include "sprite.h"
 
 /* --- Constructors/Destructors --- */

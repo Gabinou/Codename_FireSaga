@@ -1,6 +1,7 @@
 
 #include "unit/unit.h"
 #include "reinforcement.h"
+#include "names.h"
 
 // TODO: use `names/classes.h ` to fill
 int  class_mvt_types[UNIT_CLASS_END] = {
