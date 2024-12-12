@@ -1,6 +1,9 @@
 
 #include "aura.h"
 #include "utilities.h"
+#include "jsonio.h"
+#include "unit/unit.h"
+#include "unit/range.h"
 
 void Aura_readJSON( void *input, cJSON *jaura) {
     struct Aura *aura = input;

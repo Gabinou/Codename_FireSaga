@@ -1,5 +1,7 @@
 
 #include "unit/loadout.h"
+#include "unit/unit.h"
+#include "inventory.h"
 
 /* --- Transformation --- */
 b32 equipped_valid(i32 equipped) {

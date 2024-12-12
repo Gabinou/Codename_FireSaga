@@ -4,7 +4,6 @@
 #include "jsonio.h"
 #include "conditions.h"
 #include "popup/text_box.h"
-#include "SDL.h"
 
 // SCENE MVP
 //  1.

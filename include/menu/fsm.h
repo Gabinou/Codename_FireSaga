@@ -2,9 +2,6 @@
 #define MENU_FPS_H
 
 #include "enums.h"
-#include "menu/menu.h"
-#include "menu/staff_select.h"
-#include "stb_sprintf.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;

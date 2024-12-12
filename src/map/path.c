@@ -1,9 +1,21 @@
 
 #include "map/path.h"
 #include "map/tiles.h"
+#include "map/map.h"
 #include "tile.h"
+#include "position.h"
 #include "utilities.h"
 #include "pathfinding.h"
+#include "unit/equipment.h"
+#include "unit/unit.h"
+#include "unit/loadout.h"
+#include "unit/anim.h"
+#include "unit/status.h"
+#include "unit/equipment.h"
+#include "unit/boss.h"
+#include "unit/range.h"
+#include "unit/stats.h"
+#include "unit/mount.h"
 
 void Map_Global_Danger_Reset(struct Map *map) {
     memset(map->global_dangermap, 0, sizeof(*map->global_dangermap) * map->row_len * map->col_len);

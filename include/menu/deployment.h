@@ -2,20 +2,14 @@
 #define DEPLOYMENT_MENU_H
 
 #include "enums.h"
-#include "pixelfonts.h"
-#include "menu.h"
-#include "unit.h"
-#include "map/map.h"
-#include "graph.h"
-#include "n9patch.h"
-#include "stb_sprintf.h"
-#include "SDL.h"
+#include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Map;
 struct Unit;
 struct Menu;
 struct Game;
+struct n9Patch;
 struct MenuElemDirections;
 
 enum DM_MENU_ELEMENTS {

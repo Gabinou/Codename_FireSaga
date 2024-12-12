@@ -2,7 +2,7 @@
 #define MUSIC_H
 
 #include "enums.h"
-#include "filesystem.h"
+#include "nstr.h"
 #include "SDL_mixer.h"
 
 /* --- MUSIC --- */

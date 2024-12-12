@@ -1,7 +1,9 @@
 
 #include "map/render.h"
+#include "map/map.h"
 #include "map/path.h"
 #include "map/tiles.h"
+#include "index_shader.h"
 #include "sprite.h"
 #include "pathfinding.h"
 #include "arrow.h"

@@ -2,6 +2,7 @@
 #include "music.h"
 #include "physfs.h"
 #include "log.h"
+#include "filesystem.h"
 #include "platform.h"
 
 /* --- MUSIC --- */

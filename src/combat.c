@@ -1,8 +1,14 @@
 
 #include "combat.h"
 #include "jsonio.h"
+#include "RNG.h"
+#include "debug.h"
+#include "structs.h"
 #include "equations.h"
 #include "unit/unit.h"
+#include "unit/range.h"
+#include "unit/equipment.h"
+#include "unit/loadout.h"
 
 /* --- DEFAULT STRUCTS --- */
 struct Combat_Phase Combat_Phase_default = {

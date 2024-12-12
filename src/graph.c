@@ -2,6 +2,9 @@
 #include "graph.h"
 #include "filesystem.h"
 #include "unit/unit.h"
+#include "unit/equipment.h"
+#include "unit/loadout.h"
+#include "unit/stats.h"
 #include "palette.h"
 #include "stb_sprintf.h"
 

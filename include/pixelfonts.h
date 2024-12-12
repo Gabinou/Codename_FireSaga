@@ -2,8 +2,6 @@
 #define PIXELFONTS_H
 
 #include "enums.h"
-#include "debug.h"
-#include "macros.h"
 #include "SDL.h"
 
 /* --- ANTS --- */

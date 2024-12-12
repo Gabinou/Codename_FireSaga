@@ -1,4 +1,9 @@
+
 #include "skills.h"
+#include "RNG.h"
+#include "unit/unit.h"
+#include "unit/equipment.h"
+#include "unit/loadout.h"
 
 void Skill_SPRINT(struct Unit *actor, void *data1) {
 }

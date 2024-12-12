@@ -1,6 +1,13 @@
 
 #include "popup/loadout_stats.h"
 #include "names.h"
+#include "platform.h"
+#include "weapon.h"
+#include "utilities.h"
+#include "filesystem.h"
+#include "unit/equipment.h"
+#include "unit/unit.h"
+#include "unit/loadout.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
 static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,

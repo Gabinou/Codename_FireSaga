@@ -1,5 +1,6 @@
 
 #include "reinforcement.h"
+#include "unit/boss.h"
 
 struct Reinforcement Reinforcement_default = {
     .boss_icon      = -1,

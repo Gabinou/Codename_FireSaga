@@ -12,8 +12,10 @@
 #include "events.h"
 #include "log.h"
 #include "position.h"
+#include "jsonio.h"
 #include "unit/range.h"
 #include "unit/unit.h"
+#include "unit/anim.h"
 #include "map/path.h"
 
 struct AI AI_default = {

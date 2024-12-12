@@ -1,5 +1,14 @@
 #include "menu/growths.h"
 #include "menu/stats.h"
+#include "menu/menu.h"
+#include "unit/bonus.h"
+#include "graph.h"
+#include "n9patch.h"
+#include "filesystem.h"
+#include "platform.h"
+#include "unit/unit.h"
+#include "SDL.h"
+#include "stb_sprintf.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
 static void _GrowthsMenu_Draw_Talk(    struct GrowthsMenu *g, SDL_Renderer *r);
@@ -206,7 +215,6 @@ void GrowthsMenu_Unit_Set(struct GrowthsMenu *gm, struct Unit *unit) {
     gm->unit   = unit;
     gm->update = true;
 }
-
 void GrowthsMenu_Load(struct GrowthsMenu *gm, SDL_Renderer *renderer, struct n9Patch *n9patch) {
     n9Patch_Free(n9patch);
     n9patch->patch_pixels.x = MENU_PATCH_PIXELS;

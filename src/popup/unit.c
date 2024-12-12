@@ -1,4 +1,9 @@
+
 #include "popup/unit.h"
+#include "platform.h"
+#include "weapon.h"
+#include "utilities.h"
+#include "filesystem.h"
 
 struct PopUp_Unit PopUp_Unit_default = {
     .update           = true,

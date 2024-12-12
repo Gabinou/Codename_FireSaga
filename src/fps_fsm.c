@@ -1,6 +1,7 @@
 
 #include "fps_fsm.h"
 #include "scene.h"
+#include "nmath.h"
 #include "game/game.h"
 #include "map/map.h"
 #include "game/cursor.h"

@@ -3,11 +3,10 @@
 
 #include "types.h"
 #include "enums.h"
-#include "item.h"
-#include "weapon.h"
-#include "unit/unit.h"
 #include "structs.h"
-#include "unit/unit.h"
+
+/* --- FORWARD DECLARATIONS --- */
+struct Loadout;
 
 /* --- Transformation --- */
 b32 eq_valid(       i32 eq);

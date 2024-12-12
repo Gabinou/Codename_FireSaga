@@ -4,9 +4,6 @@
 #include "types.h"
 #include "enums.h"
 #include "structs.h"
-#include "macros.h"
-#include "debug.h"
-#include "SDL.h"
 
 /* --- ENUMS --- */
 #define REGISTER_ENUM(x) SUPPORT_TYPE_##x,

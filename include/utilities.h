@@ -6,22 +6,15 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "platform.h"
-#include "palette.h"
-#include "jsonio.h"
 #include "types.h"
-#include "octant.h"
-#include "unit/unit.h"
 #include "enums.h"
+#include "structs.h"
 #include "macros.h"
 #include "debug.h"
-#include "debug.h"
-#include "item.h"
-#include "weapon.h"
-#include "filesystem.h"
-#include "structs.h"
+// #include "octant.h"
+// #include "item.h"
+// #include "weapon.h"
 #include "nmath.h"
-#include "nstr.h"
 #include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */

@@ -1,4 +1,7 @@
 #include "popup/objective.h"
+#include "platform.h"
+#include "macros.h"
+#include "filesystem.h"
 
 struct PopUp_Objective PopUp_Objective_default =  {
     .objective =       NULL,

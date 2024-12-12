@@ -1,5 +1,6 @@
 
 #include "unit/bonus.h"
+#include "nmath.h"
 
 void Unit_Bonus_Instant_Decay(struct Unit *unit) {
     /* Any aura/bonus with value <= AURA_REMOVE_ON_MOVE gets removed */

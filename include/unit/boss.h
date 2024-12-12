@@ -4,18 +4,7 @@
 #include "types.h"
 #include "enums.h"
 #include "structs.h"
-#include "filesystem.h"
-#include "weapon.h"
-#include "supports.h"
-#include "unit/mount.h"
-#include "nmath.h"
-#include "jsonio.h"
-#include "RNG.h"
-#include "physfs.h"
-#include "equations.h"
-#include "platform.h"
-#include "utilities.h"
-#include "combat.h"
+#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Map;

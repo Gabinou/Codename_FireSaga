@@ -2,17 +2,7 @@
 #define STATS_MENU_H
 
 #include "enums.h"
-#include "bars/simple.h"
-#include "bars/stat.h"
-#include "pixelfonts.h"
 #include "menu.h"
-#include "unit/unit.h"
-#include "unit/equipment.h"
-#include "nmath.h"
-#include "n9patch.h"
-#include "events.h"
-#include "nstr.h"
-#include "stb_sprintf.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Menu;

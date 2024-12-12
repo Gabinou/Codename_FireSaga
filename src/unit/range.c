@@ -1,7 +1,13 @@
 
 #include "unit/range.h"
 #include "unit/unit.h"
+#include "unit/equipment.h"
+#include "unit/loadout.h"
+#include "nmath.h"
 #include "enums.h"
+#include "position.h"
+#include "item.h"
+#include "weapon.h"
 
 b32 _Range_Archetype_Match(struct Weapon *wpn, i64 archetype) {
     SDL_assert(wpn != NULL);

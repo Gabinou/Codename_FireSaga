@@ -2,7 +2,6 @@
 #define SSM_H
 
 #include "menu/loadout_select.h"
-#include "pixelfonts.h"
 
 /* DESIGN RULES:
 * One click for staff unless SKILL

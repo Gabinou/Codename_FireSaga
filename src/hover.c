@@ -1,5 +1,6 @@
 
 #include "hover.h"
+#include "nmath.h"
 
 struct Hover Hover_default = {
     .width           = SOTA_HOVER_WIDTH_DEFAULT,

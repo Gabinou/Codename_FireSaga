@@ -1,6 +1,7 @@
 
 #include "text.h"
 #include "utilities.h"
+#include "pixelfonts.h"
 
 #ifndef STB_SPRINTF_IMPLEMENTATION
     #define STB_SPRINTF_IMPLEMENTATION

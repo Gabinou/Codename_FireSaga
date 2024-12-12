@@ -3,14 +3,11 @@
 
 #include <math.h>
 #include "types.h"
-#include "debug.h"
 #include "enums.h"
-#include "nmath.h"
 #include "nstr.h"
 #include "tnecs.h"
 #include "SDL.h"
 #include "SDL_mixer.h"
-
 
 /* --- FORWARD DECLARATIONS --- */
 struct Unit;

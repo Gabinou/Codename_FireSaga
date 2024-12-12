@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include <math.h>
 #include "types.h"
-#include "debug.h"
+#include "nmath.h"
 #include "structs.h"
 
 // hexmap are stored as i16 * map[col_len*depth_len]

@@ -2,12 +2,7 @@
 #define GM_H
 
 #include "enums.h"
-#include "pixelfonts.h"
-#include "menu.h"
-#include "graph.h"
-#include "unit/bonus.h"
-#include "n9patch.h"
-#include "stb_sprintf.h"
+#include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Unit;
@@ -15,6 +10,7 @@ struct MenuElemDirections;
 struct Menu;
 struct Game;
 struct Graph;
+struct n9Patch;
 
 enum GM_ELEMS {
     GM_ELEM_NULL = -1,

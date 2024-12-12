@@ -1,11 +1,15 @@
 #ifndef TEXT_H
 #define TEXT_H
 
-#include "game/game.h"
-#include "filesystem.h"
-#include "pixelfonts.h"
-#include "SDL.h"
+#include "types.h"
+#include "enums.h"
+#include "tnecs.h"
 #include "nmath.h"
+#include "SDL.h"
+
+/* --- FORWARD DECLARATIONS --- */
+struct PixelFont;
+struct Game;
 
 typedef void (* onUpdate_t)(struct Game *, tnecs_entity, u32, i64, void *);
 

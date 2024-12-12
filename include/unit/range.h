@@ -3,8 +3,9 @@
 
 #include "types.h"
 #include "structs.h"
-#include "weapon.h"
-#include "position.h"
+
+/* --- FORWARD DECLARATIONS --- */
+struct Position;
 
 // Range is valid if:
 //  - min range >= max range

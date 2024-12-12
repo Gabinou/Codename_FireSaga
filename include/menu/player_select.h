@@ -2,16 +2,12 @@
 #define PLAYER_SELECT_MENU_H
 
 #include "enums.h"
-#include "pixelfonts.h"
-#include "n9patch.h"
-#include "events.h"
-#include "nstr.h"
 #include "types.h"
-#include "stb_sprintf.h"
-#include "SDL.h"
+#include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Menu;
+struct n9Patch;
 
 enum PLAYER_SELECT_ENUM {
     PSM_N9PATCH_SCALE_X =  6,
@@ -30,7 +26,7 @@ struct PlayerSelectMenu {
 
     struct Point pos; /* MENU_POS_bOFFSET = 0 */
 
-    char **option_names;        /* [option_i] */
+    char **option_names;       /* [option_i] */
     u32  *options;             /* [option_i] */
     SDL_Texture *texture;
     struct PixelFont *pixelnours;

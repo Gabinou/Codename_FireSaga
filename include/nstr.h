@@ -3,11 +3,8 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#include <ctype.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <string.h>
-#include "SDL.h"
 
 enum NSTR {
     NSTR_MIN_LEN = 16,

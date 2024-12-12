@@ -1,6 +1,9 @@
 
 #include "palette.h"
+#include "debug.h"
 #include "jsonio.h"
+#include "filesystem.h"
+#include "platform.h"
 #include "stb_sprintf.h"
 
 SDL_Palette **sota_palettes                    = NULL;

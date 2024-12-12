@@ -2,14 +2,7 @@
 #define SYSTEMRENDER_H
 
 #include "tnecs.h"
-#include "sprite.h"
 #include "structs.h"
-#include "cutscene.h"
-#include "position.h"
-#include "slider.h"
-#include "popup/tile.h"
-#include "map/animation.h"
-#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;

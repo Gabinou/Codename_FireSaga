@@ -1,6 +1,8 @@
 
 #include "bars/map_hp.h"
 #include "unit/unit.h"
+#include "palette.h"
+#include "utilities.h"
 
 /* --- MAPHPBAR --- */
 struct MapHPBar MapHPBar_default = {

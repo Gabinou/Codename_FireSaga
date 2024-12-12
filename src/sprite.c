@@ -2,7 +2,13 @@
 #include "sprite.h"
 #include "cJSON.h"
 #include "palette.h"
+#include "physfs.h"
+#include "jsonio.h"
+#include "platform.h"
+#include "log.h"
 #include "names.h"
+#include "filesystem.h"
+#include "index_shader.h"
 
 dstrect_func_t dstrect_funcs[TWO_D][TWO_D];
 

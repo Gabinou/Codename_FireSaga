@@ -2,10 +2,8 @@
 #define N9PATCH_H
 
 #include "enums.h"
-#include "structs.h"
-#include "macros.h"
-#include "debug.h"
 #include "types.h"
+#include "structs.h"
 #include "SDL.h"
 
 /* --- ENUMS --- */

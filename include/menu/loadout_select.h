@@ -2,19 +2,11 @@
 #define LSM_H
 
 #include "enums.h"
-#include "pixelfonts.h"
-#include "n9patch.h"
-#include "events.h"
-#include "enums.h"
 #include "structs.h"
-#include "types.h"
-#include "menu.h"
-#include "nstr.h"
-#include "stb_sprintf.h"
-#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Menu;
+struct n9Patch;
 struct MenuElemDirections;
 
 /* LoadoutSelectMenu */

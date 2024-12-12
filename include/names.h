@@ -2,14 +2,11 @@
 #define NAMES_H
 
 #include <math.h>
-#include "nstr.h"
-#include "platform.h"
-#include "unit/unit.h"
 #include "types.h"
 #include "enums.h"
-#include "macros.h"
-#include "debug.h"
-#include "SDL.h"
+#include "nstr.h"
+#include "unit/unit.h"
+#include "supports.h"
 
 /* -- Names -- */
 // TODO migrate names to s8

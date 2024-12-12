@@ -1,8 +1,11 @@
 
 #include "index_shader.h"
 #include "utilities.h"
+#include "palette.h"
+#include "jsonio.h"
 #include "map/render.h"
 #include "map/map.h"
+#include "filesystem.h"
 // #ifndef STB_SPRINTF_IMPLEMENTATION
 // #define STB_SPRINTF_IMPLEMENTATION
 #include "stb_sprintf.h"

@@ -2,7 +2,11 @@
 #include "item.h"
 #include "names.h"
 #include "unit/unit.h"
+#include "aura.h"
 #include "equations.h"
+#include "weapon.h"
+#include "platform.h"
+#include "jsonio.h"
 
 // #ifndef STB_SPRINTF_IMPLEMENTATION
 // #define STB_SPRINTF_IMPLEMENTATION

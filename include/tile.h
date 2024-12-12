@@ -4,14 +4,11 @@
 #include "enums.h"
 #include "types.h"
 #include "structs.h"
-#include "nmath.h"
-#include "jsonio.h"
-#include "filesystem.h"
 #include "SDL.h"
-#include "SDL_image.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct cJSON;
+typedef struct cJSON cJSON;
 
 typedef struct Tile {
     s8  json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */

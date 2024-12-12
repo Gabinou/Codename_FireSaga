@@ -2,8 +2,6 @@
 #define TITLE_PAGE_H
 
 #include "enums.h"
-#include "n9patch.h"
-#include "menu/player_select.h"
 
 enum TITLE_PAGE {
     TITLE_PAGE_NULL = -1,

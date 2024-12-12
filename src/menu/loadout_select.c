@@ -1,7 +1,17 @@
 
 #include "menu/loadout_select.h"
 #include "menu/stats.h"
+#include "pixelfonts.h"
+#include "weapon.h"
+#include "macros.h"
+#include "platform.h"
+#include "utilities.h"
+#include "filesystem.h"
 #include "names.h"
+#include "unit/equipment.h"
+#include "unit/unit.h"
+#include "unit/loadout.h"
+#include "stb_sprintf.h"
 
 struct Point wsm_cursor_pos[LSM_ELEMS_NUM] = {
     /* LSM_ELEM_ITEM2 */ {LSM1_X_OFFSET, LSM1_Y_OFFSET},

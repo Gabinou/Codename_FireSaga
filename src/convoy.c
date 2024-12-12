@@ -3,6 +3,7 @@
 #include "weapon.h"
 #include "equations.h"
 #include "utilities.h"
+#include "jsonio.h"
 
 struct Convoy Convoy_default = {
     .jsonio_header.json_element    = JSON_CONVOY,

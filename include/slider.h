@@ -2,10 +2,8 @@
 #define SLIDER_H
 
 #include "enums.h"
-#include "debug.h"
-#include "structs.h"
-#include "nmath.h"
 #include "types.h"
+#include "structs.h"
 #include "macros.h"
 
 /* --- FORWARD DECLARATIONS --- */

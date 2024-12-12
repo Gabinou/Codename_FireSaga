@@ -1,10 +1,14 @@
 
 #include "game/unit.h"
 #include "map/ontile.h"
+#include "unit/equipment.h"
 #include "unit/unit.h"
+#include "unit/loadout.h"
 #include "map/map.h"
 #include "bars/map_hp.h"
 #include "weapon.h"
+#include "filesystem.h"
+#include "position.h"
 #include "names.h"
 #include "sprite.h"
 

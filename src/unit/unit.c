@@ -1,7 +1,19 @@
 
 #include "unit/unit.h"
+#include "unit/loadout.h"
+#include "unit/range.h"
+#include "unit/stats.h"
+#include "unit/mount.h"
+#include "unit/equipment.h"
+#include "unit/loadout.h"
+#include "unit/status.h"
 #include "reinforcement.h"
+#include "RNG.h"
+#include "jsonio.h"
+#include "equations.h"
 #include "names.h"
+#include "item.h"
+#include "weapon.h"
 
 // TODO: use `names/classes.h ` to fill
 int  class_mvt_types[UNIT_CLASS_END] = {

@@ -1,4 +1,5 @@
 #include "nstr.h"
+#include "SDL.h"
 
 /* --- Pascal String s8 strings --- */
 /* 3x-4x faster than null-terminated strings! */

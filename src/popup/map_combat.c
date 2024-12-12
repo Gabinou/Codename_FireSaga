@@ -1,4 +1,9 @@
 #include "popup/map_combat.h"
+#include "macros.h"
+#include "platform.h"
+#include "palette.h"
+#include "utilities.h"
+#include "filesystem.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
 static void _PopUp_Map_Combat_Draw_HP(        struct PopUp_Map_Combat *pmc,

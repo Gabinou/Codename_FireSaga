@@ -1,3 +1,4 @@
+
 #include "game/cursor.h"
 #include "game/game.h"
 #include "menu/menu.h"
@@ -6,6 +7,10 @@
 #include "controller/keyboard.h"
 #include "slider.h"
 #include "sprite.h"
+#include "position.h"
+#include "octant.h"
+#include "platform.h"
+#include "events.h"
 #include "filesystem.h"
 #include "utilities.h"
 #include "map/map.h"

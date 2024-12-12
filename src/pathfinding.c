@@ -1,6 +1,8 @@
 
 #include "pathfinding.h"
 #include "utilities.h"
+#include "octant.h"
+#include "log.h"
 
 /* --- Manhattan distance --- */
 i32 Pathfinding_Manhattan(struct Point start, struct Point end) {

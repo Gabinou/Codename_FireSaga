@@ -1,5 +1,7 @@
 
 #include "unit/stats.h"
+#include "unit/range.h"
+#include "nmath.h"
 
 /* --- Unit stats --- */
 struct Unit_stats Unit_stats_default = {0};
@@ -8,7 +10,6 @@ i32 *Unit_stats_arr(Unit_stats *stats1) {
     i32 *stats_arr = ((i32 *)stats1) - (UNIT_STAT_NULL + 1);
     return (stats_arr);
 }
-
 
 struct Unit_stats Unit_stats_plus_cst(struct Unit_stats stats1, i32 cst) {
     struct Unit_stats out_stats = Unit_stats_default;

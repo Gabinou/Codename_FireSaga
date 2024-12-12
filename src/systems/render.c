@@ -1,12 +1,19 @@
 
 #include "systems/render.h"
 #include "map/map.h"
+#include "sprite.h"
+#include "position.h"
 #include "scene.h"
+#include "map/animation.h"
+#include "unit/anim.h"
+#include "cutscene.h"
 #include "menu/menu.h"
 #include "bars/map_hp.h"
+#include "popup/tile.h"
 #include "AI.h"
 #include "boss.h"
 #include "text.h"
+#include "SDL.h"
 
 void Scroll_Text(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */

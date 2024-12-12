@@ -1,5 +1,6 @@
 
 #include "unit/status.h"
+#include "nmath.h"
 
 struct Unit_status Unit_status_default = {.turns = 3};
 

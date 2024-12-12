@@ -3,6 +3,12 @@
 #include "map/map.h"
 #include "tile.h"
 #include "names.h"
+#include "jsonio.h"
+#include "utilities.h"
+#include "position.h"
+#include "palette.h"
+#include "platform.h"
+#include "filesystem.h"
 
 void Map_Tiles_Free(struct Map *map) {
     Map_Tilesets_Free(map);

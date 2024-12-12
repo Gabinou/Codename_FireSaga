@@ -3,6 +3,9 @@
 #include "game/unit.h"
 #include "game/game.h"
 #include "names.h"
+#include "log.h"
+#include "platform.h"
+#include "jsonio.h"
 
 struct Party Party_default =  {
     .jsonio_header.json_element   = JSON_PARTY,

@@ -2,20 +2,13 @@
 #define SLIDE_SYSTEM_H
 
 #include "tnecs.h"
-#include "sprite.h"
-#include "slider.h"
-#include "sprite.h"
-#include "hover.h"
-#include "game/game.h"
-#include "position.h"
-#include "popup/tile.h"
-#include "popup/unit.h"
-#include "popup/popup.h"
 #include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
 struct Sprite;
+struct Slider;
+struct Position;
 
 void Sprite_Target(struct Slider *sl, struct Sprite *sp, struct Position *pos);
 void Cursor_Target(struct Slider *sl, struct Sprite *sp, struct Position *pos);

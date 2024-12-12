@@ -4,13 +4,7 @@
 #include <stdint.h>
 #include <math.h>
 #include "enums.h"
-#include "debug.h"
-#include "structs.h"
-#include "macros.h"
 #include "types.h"
-#include "tinymt32.h"
-#include "cJSON.h"
-#include "SDL.h"
 
 #ifndef M_PI
     #define M_PI 3.14159265358979323846f

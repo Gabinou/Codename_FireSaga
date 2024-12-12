@@ -1,6 +1,8 @@
 
 #include "menu/staff_select.h"
 #include "unit/unit.h"
+#include "unit/equipment.h"
+#include "unit/loadout.h"
 
 struct Point ssm_cursor_pos[LSM_ELEMS_NUM] = {
     /* SSM_ELEM_ITEM1 */ {LSM1_X_OFFSET, LSM1_Y_OFFSET},

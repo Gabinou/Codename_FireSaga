@@ -1,5 +1,6 @@
 
 #include "structs.h"
+#include "nmath.h"
 
 struct nmath_hexpoint_int32_t Cube_Direction_xp =   { 0,  1, -1};
 struct nmath_hexpoint_int32_t Cube_Direction_xm =   { 0, -1,  1};

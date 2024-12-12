@@ -3,7 +3,6 @@
 
 #include "structs.h"
 #include "tnecs.h"
-#include "map/map.h"
 
 /* --- ENUMS --- */
 enum MOVEMAP {

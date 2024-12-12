@@ -1,4 +1,8 @@
+
 #include "RNG.h"
+#include "tinymt32.h"
+#include "structs.h"
+#include "cJSON.h"
 
 /* --- FIRST AND ONLY DEFINITION OF GLOBALS --- */
 b32 rng_sequence_breaker_miss_growth = true;

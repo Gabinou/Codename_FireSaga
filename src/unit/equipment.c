@@ -1,5 +1,11 @@
 
 #include "unit/equipment.h"
+#include "unit/unit.h"
+#include "unit/loadout.h"
+#include "inventory.h"
+#include "macros.h"
+#include "item.h"
+#include "weapon.h"
 
 /* --- Items --- */
 /* Private item atker at specific spot. Does no checks */

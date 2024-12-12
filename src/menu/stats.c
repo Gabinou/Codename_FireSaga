@@ -1,7 +1,21 @@
 
 #include "menu/stats.h"
 #include "unit/equipment.h"
+#include "bars/simple.h"
+#include "bars/stat.h"
+#include "unit/status.h"
+#include "unit/mount.h"
+#include "pixelfonts.h"
+#include "filesystem.h"
+#include "platform.h"
+#include "weapon.h"
+#include "utilities.h"
+#include "macros.h"
 #include "names.h"
+#include "unit/equipment.h"
+#include "unit/unit.h"
+#include "unit/loadout.h"
+#include "stb_sprintf.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
 /* --- Constructors/Destructors --- */

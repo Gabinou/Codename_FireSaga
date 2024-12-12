@@ -3,6 +3,7 @@
 #include "map/map.h"
 #include "tile.h"
 #include "position.h"
+#include "filesystem.h"
 #include "platform.h"
 
 struct PopUp_Tile PopUp_Tile_default = {

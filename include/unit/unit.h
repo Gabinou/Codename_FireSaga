@@ -5,26 +5,7 @@
 #include "types.h"
 #include "enums.h"
 #include "structs.h"
-#include "filesystem.h"
-#include "weapon.h"
-#include "supports.h"
-#include "unit/mount.h"
 #include "nmath.h"
-#include "jsonio.h"
-#include "inventory.h"
-#include "RNG.h"
-#include "physfs.h"
-#include "equations.h"
-#include "platform.h"
-#include "utilities.h"
-#include "combat.h"
-#include "unit/anim.h"
-#include "unit/status.h"
-#include "unit/equipment.h"
-#include "unit/boss.h"
-#include "unit/range.h"
-#include "unit/stats.h"
-#include "unit/mount.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
@@ -35,6 +16,8 @@ struct Position;
 struct Map;
 struct RNG_Sequence;
 struct Reinforcement;
+struct cJSON;
+typedef struct cJSON cJSON;
 
 /* -- Unit second-order info -- */
 extern i32 army_alignment[ARMY_END];

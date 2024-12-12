@@ -1,4 +1,6 @@
 #include "names.h"
+#include "platform.h"
+#include "macros.h"
 #include "stb_sprintf.h"
 
 s8 sexNames[UNIT_SEX_NUM] = {

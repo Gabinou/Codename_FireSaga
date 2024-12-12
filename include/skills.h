@@ -1,14 +1,11 @@
 #ifndef SKILLS_H
 #define SKILLS_H
 
-#include "structs.h"
-#include "nmath.h"
-#include "unit/unit.h"
-#include "RNG.h"
-#include "item.h"
+#include "enums.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Inventory_Item;
+struct Unit;
 
 /* --- TYPEDEFS --- */
 typedef void (*Active_Skill)(struct Unit *, void *);

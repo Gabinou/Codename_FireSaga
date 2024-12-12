@@ -2,14 +2,11 @@
 #define ITEM_DROP_MENU_H
 
 #include "enums.h"
-#include "game/game.h"
-#include "pixelfonts.h"
-#include "menu.h"
-#include "unit/unit.h"
-#include "unit/equipment.h"
-#include "item.h"
-#include "n9patch.h"
-#include "nstr.h"
+#include "structs.h"
+
+/* --- FORWARD DECLARATIONS --- */
+struct n9Patch;
+struct Menu;
 
 /* Dropping backpack full when twohanding */
 // 1- Player gets choice of what to equip

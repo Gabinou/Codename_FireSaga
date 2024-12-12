@@ -1,5 +1,9 @@
 
 #include "systems/slide.h"
+#include "position.h"
+#include "slider.h"
+#include "sprite.h"
+#include "hover.h"
 
 void Cursor_Target(struct Slider *slider, struct Sprite *sprite, Position *position) {
     if (position->onTilemap) {

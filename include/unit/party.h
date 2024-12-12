@@ -2,9 +2,15 @@
 #define UNIT_PARTY_H
 
 #include "types.h"
-#include "unit.h"
+#include "nmath.h"
+#include "tnecs.h"
 #include "nstr.h"
-#include "jsonio.h"
+
+/* --- FORWARD DECLARATIONS --- */
+struct Unit;
+struct Game;
+struct cJSON;
+typedef struct cJSON cJSON;
 
 /* --- Constructor/Destructors --- */
 void Party_Init( struct Party *party);

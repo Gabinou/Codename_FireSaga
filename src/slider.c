@@ -1,5 +1,6 @@
 
 #include "slider.h"
+#include "nmath.h"
 
 struct Slider Slider_default = {
     .slidetype =       SLIDETYPE_NONE,

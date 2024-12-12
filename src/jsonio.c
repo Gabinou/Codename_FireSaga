@@ -3,9 +3,12 @@
 #include "map/map.h"
 #include "unit/party.h"
 #include "convoy.h"
+#include "macros.h"
 #include "names.h"
 #include "sprite.h"
 #include "tile.h"
+#include "item.h"
+#include "weapon.h"
 #include "camp.h"
 // #ifndef STB_SPRINTF_IMPLEMENTATION
 // #define STB_SPRINTF_IMPLEMENTATION

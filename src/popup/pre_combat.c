@@ -1,4 +1,15 @@
+
 #include "popup/pre_combat.h"
+#include "position.h"
+#include "platform.h"
+#include "palette.h"
+#include "weapon.h"
+#include "nmath.h"
+#include "utilities.h"
+#include "filesystem.h"
+#include "unit/unit.h"
+#include "unit/equipment.h"
+#include "unit/loadout.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
 /* -- Drawing Utilities -- */

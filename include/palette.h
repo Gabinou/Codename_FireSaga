@@ -2,12 +2,8 @@
 #define PALETTE_H
 
 #include <math.h>
-#include "platform.h"
 #include "types.h"
 #include "enums.h"
-#include "filesystem.h"
-#include "debug.h"
-#include "macros.h"
 #include "SDL.h"
 
 /* --- DEFINITIONS --- */

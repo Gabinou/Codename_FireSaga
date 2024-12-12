@@ -1,14 +1,14 @@
 #ifndef SPRITE_H
 #define SPRITE_H
 
-#include "nmath.h"
-#include "index_shader.h"
-#include "nstr.h"
-#include "SDL.h"
+#include "enums.h"
+#include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Index_Shader;
 struct Position;
+struct cJSON;
+typedef struct cJSON cJSON;
 
 /* --- Spritesheet --- */
 /* -- ants -- */

@@ -1,5 +1,6 @@
 
 #include "systems/time_system.h"
+#include "structs.h"
 
 void Time_Synchronize(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */

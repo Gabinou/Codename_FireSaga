@@ -3,10 +3,6 @@
 
 #include "enums.h"
 #include "n9patch.h"
-#include "game/menu.h"
-#include "game/popup.h"
-#include "game/cursor.h"
-#include "stb_sprintf.h"
 
 /* --- Menu --- */
 // Main point of interaction between Player and game

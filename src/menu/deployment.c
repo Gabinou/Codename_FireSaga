@@ -1,8 +1,20 @@
 
 #include "menu/deployment.h"
+#include "pixelfonts.h"
+#include "octant.h"
+#include "map/map.h"
+#include "game/game.h"
 #include "menu/stats.h"
+#include "menu/menu.h"
+#include "utilities.h"
+#include "filesystem.h"
+#include "palette.h"
+#include "platform.h"
 #include "unit/party.h"
+#include "unit/equipment.h"
+#include "unit/mount.h"
 #include "names.h"
+#include "stb_sprintf.h"
 
 /* --- ELEMENTS --- */
 MenuElemDirections dm_links[DM_ELEM_NUM] = {

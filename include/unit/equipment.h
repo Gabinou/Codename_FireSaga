@@ -3,11 +3,7 @@
 
 #include "types.h"
 #include "enums.h"
-#include "item.h"
-#include "weapon.h"
 #include "structs.h"
-#include "unit/unit.h"
-#include "unit/loadout.h"
 
 /* --- Glossary --- */
 // - Loadout:   array of weapons that COULD be equipped

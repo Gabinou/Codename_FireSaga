@@ -4,8 +4,6 @@
 #include "enums.h"
 #include "tnecs.h"
 #include "structs.h"
-#include "unit/unit.h"
-#include "aura.h"
 
 /* Unit Bonus stats
 *   - Aura, items, supports, etc. apply bonus stats to units

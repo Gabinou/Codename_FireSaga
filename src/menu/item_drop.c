@@ -1,7 +1,14 @@
 
 #include "menu/item_drop.h"
 #include "menu/stats.h"
+#include "unit/equipment.h"
+#include "platform.h"
+#include "utilities.h"
+#include "filesystem.h"
+#include "unit/loadout.h"
+#include "pixelfonts.h"
 #include "names.h"
+#include "macros.h"
 
 struct ItemDropMenu ItemDropMenu_default = {0};
 

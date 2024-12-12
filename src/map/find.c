@@ -2,9 +2,20 @@
 #include "map/find.h"
 #include "map/map.h"
 #include "map/path.h"
-#include "unit/unit.h"
 #include "position.h"
+#include "weapon.h"
 #include "pathfinding.h"
+#include "utilities.h"
+#include "unit/equipment.h"
+#include "unit/unit.h"
+#include "unit/loadout.h"
+#include "unit/equipment.h"
+#include "unit/anim.h"
+#include "unit/status.h"
+#include "unit/boss.h"
+#include "unit/range.h"
+#include "unit/stats.h"
+#include "unit/mount.h"
 
 /*-- Map Usable -- */
 

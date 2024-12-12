@@ -1,6 +1,7 @@
 
 #include "arrow.h"
 #include "pathfinding.h"
+#include "octant.h"
 #include "filesystem.h"
 #include "utilities.h"
 

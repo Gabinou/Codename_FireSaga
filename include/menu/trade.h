@@ -1,16 +1,9 @@
 #ifndef TRADE_MENU_H
 #define TRADE_MENU_H
 
+#include "tnecs.h"
 #include "enums.h"
-#include "pixelfonts.h"
-#include "menu.h"
-#include "n9patch.h"
-#include "events.h"
-#include "menu/loadout_select.h"
 #include "structs.h"
-#include "nstr.h"
-#include "stb_sprintf.h"
-#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Menu;

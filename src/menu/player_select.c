@@ -1,8 +1,14 @@
 
 #include "menu/player_select.h"
+#include "game/menu.h"
+#include "game/popup.h"
 #include "menu/menu.h"
 #include "map/map.h"
+#include "filesystem.h"
 #include "menu/stats.h"
+#include "pixelfonts.h"
+#include "platform.h"
+#include "position.h"
 #include "title_screen.h"
 #include "names.h"
 
