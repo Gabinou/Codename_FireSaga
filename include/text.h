@@ -4,7 +4,6 @@
 #include "types.h"
 #include "enums.h"
 #include "tnecs.h"
-#include "nmath.h"
 #include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
