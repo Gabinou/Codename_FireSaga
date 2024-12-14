@@ -1,10 +1,15 @@
 
 #include "popup/tile.h"
+#include "popup/popup.h"
+#include "map/tiles.h"
 #include "map/map.h"
 #include "tile.h"
 #include "position.h"
+#include "macros.h"
 #include "filesystem.h"
 #include "platform.h"
+#include "pixelfonts.h"
+#include "stb_sprintf.h"
 
 struct PopUp_Tile PopUp_Tile_default = {
     .update           = true,

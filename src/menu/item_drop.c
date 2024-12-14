@@ -8,6 +8,7 @@
 #include "unit/loadout.h"
 #include "pixelfonts.h"
 #include "names.h"
+#include "nmath.h"
 #include "macros.h"
 
 struct ItemDropMenu ItemDropMenu_default = {0};

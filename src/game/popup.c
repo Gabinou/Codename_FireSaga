@@ -6,7 +6,9 @@
 #include "popup/tile.h"
 #include "popup/map_combat.h"
 #include "map/map.h"
+#include "slider.h"
 #include "position.h"
+#include "macros.h"
 #include "popup/pre_combat.h"
 #include "structs.h"
 

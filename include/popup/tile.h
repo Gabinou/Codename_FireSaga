@@ -2,19 +2,14 @@
 #define PT_H
 
 #include "enums.h"
-#include "combat.h"
-#include "n9patch.h"
-#include "map/tiles.h"
-#include "game/game.h"
-#include "popup/popup.h"
-#include "pixelfonts.h"
+#include "structs.h"
 #include "SDL.h"
-#include "stb_sprintf.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
 struct Settings;
 struct cJSON;
+struct n9Patch;
 
 enum POPUP_TILE {
     PT_TEXT_SCALE_X     =  1,

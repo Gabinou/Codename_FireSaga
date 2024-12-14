@@ -11,6 +11,8 @@ struct Scene;
 struct Mobj_Link;
 struct Breakable;
 struct Conditions;
+struct cJSON;
+typedef struct cJSON cJSON;
 
 /* --- ENUMS --- */
 enum JSON_bOFFSET {

@@ -2,7 +2,6 @@
 #define SLIDE_SYSTEM_H
 
 #include "tnecs.h"
-#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;

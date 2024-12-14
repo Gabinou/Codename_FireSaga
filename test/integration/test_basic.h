@@ -1,3 +1,4 @@
+
 #include "game/game.h"
 
 void test_minimal(int argc, char *argv[]) {

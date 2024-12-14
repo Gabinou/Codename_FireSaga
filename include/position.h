@@ -1,15 +1,9 @@
 #ifndef POSITION_H
 #define POSITION_H
 
-#include <stdbool.h>
 #include "types.h"
 #include "enums.h"
-#include "log.h"
-#include "debug.h"
 #include "structs.h"
-#include "macros.h"
-#include "nmath.h"
-#include "SDL.h"
 
 /* --- 2D POSITION ON A SQUARE GRID --- */
 typedef struct Position {

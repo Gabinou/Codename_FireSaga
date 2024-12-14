@@ -1,7 +1,6 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
-#include "macros.h"
 #include "SDL.h"
 
 /* -- Release switches -- */

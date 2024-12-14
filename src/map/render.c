@@ -6,6 +6,7 @@
 #include "index_shader.h"
 #include "sprite.h"
 #include "pathfinding.h"
+#include "macros.h"
 #include "arrow.h"
 #include "nmath.h"
 #include "palette.h"

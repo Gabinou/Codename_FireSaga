@@ -2,7 +2,9 @@
 #include "map/ontile.h"
 #include "names.h"
 #include "sprite.h"
+#include "log.h"
 #include "position.h"
+#include "nmath.h"
 #include "bars/map_hp.h"
 
 /* --- Entity finders --- */

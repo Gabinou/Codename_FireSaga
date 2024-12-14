@@ -6,6 +6,7 @@
 #include "position.h"
 #include "utilities.h"
 #include "pathfinding.h"
+#include "nmath.h"
 #include "unit/equipment.h"
 #include "unit/unit.h"
 #include "unit/loadout.h"

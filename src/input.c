@@ -1,5 +1,6 @@
 
 #include "input.h"
+#include "structs.h"
 #include "parg.h"
 
 static struct parg_opt longopts[] = {

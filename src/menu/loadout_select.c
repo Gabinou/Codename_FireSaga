@@ -8,6 +8,7 @@
 #include "utilities.h"
 #include "filesystem.h"
 #include "names.h"
+#include "nmath.h"
 #include "unit/equipment.h"
 #include "unit/unit.h"
 #include "unit/loadout.h"

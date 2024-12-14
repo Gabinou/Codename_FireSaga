@@ -34,6 +34,8 @@ struct VTable {
     void (*game_step)(struct Game *sota);
     void (*game_free)(struct Game *sota);
     void (*game_post_free)(void);
+    // This vtable is not enough, need ALL FUNCTIONS.
+    //  TODO: vtable for ALL SOURCE FILES
 };
 
 #define RELOAD_FRAMES 60

@@ -3,8 +3,15 @@
 #include "platform.h"
 #include "weapon.h"
 #include "utilities.h"
+#include "nmath.h"
 #include "filesystem.h"
 #include "macros.h"
+#include "pixelfonts.h"
+#include "popup/popup.h"
+#include "bars/stat.h"
+#include "unit/unit.h"
+#include "unit/equipment.h"
+#include "stb_sprintf.h"
 
 struct PopUp_Unit PopUp_Unit_default = {
     .update           = true,

@@ -3,6 +3,7 @@
 #include "sprite.h"
 #include "names.h"
 #include "palette.h"
+#include "nmath.h"
 #include "stb_sprintf.h"
 
 #ifndef __clang__

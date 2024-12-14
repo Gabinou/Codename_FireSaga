@@ -3,17 +3,14 @@
 
 #include "enums.h"
 #include "types.h"
-#include "tnecs.h"
 #include "debug.h"
 #include "structs.h"
-#include "pixelfonts.h"
-#include "n9patch.h"
-#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
 struct Unit;
 struct Game;
+struct n9Patch;
 
 #define GRAPH_POS(xory, offset) (offset * n9patch->scale.xory)
 

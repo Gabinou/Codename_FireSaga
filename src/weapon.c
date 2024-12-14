@@ -2,8 +2,10 @@
 #include "weapon.h"
 #include "log.h"
 #include "jsonio.h"
+#include "macros.h"
 #include "equations.h"
 #include "platform.h"
+#include "nmath.h"
 #include "names.h"
 
 /* Note: magic weapons EXPLODE if infused */

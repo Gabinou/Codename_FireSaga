@@ -3,6 +3,8 @@
 #include "game/menu.h"
 #include "game/popup.h"
 #include "names.h"
+#include "log.h"
+#include "position.h"
 #include "jsonio.h"
 #include "platform.h"
 #include "palette.h"

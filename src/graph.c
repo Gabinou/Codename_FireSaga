@@ -6,6 +6,7 @@
 #include "unit/loadout.h"
 #include "unit/stats.h"
 #include "palette.h"
+#include "pixelfonts.h"
 #include "stb_sprintf.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */

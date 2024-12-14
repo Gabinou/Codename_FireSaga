@@ -1,7 +1,12 @@
+
 #include "popup/objective.h"
+#include "popup/popup.h"
 #include "platform.h"
 #include "macros.h"
 #include "filesystem.h"
+#include "n9patch.h"
+#include "pixelfonts.h"
+#include "stb_sprintf.h"
 
 struct PopUp_Objective PopUp_Objective_default =  {
     .objective =       NULL,

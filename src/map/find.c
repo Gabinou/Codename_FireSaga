@@ -7,6 +7,7 @@
 #include "pathfinding.h"
 #include "utilities.h"
 #include "unit/equipment.h"
+#include "nmath.h"
 #include "unit/unit.h"
 #include "unit/loadout.h"
 #include "unit/equipment.h"

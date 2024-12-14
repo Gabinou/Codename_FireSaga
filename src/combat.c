@@ -5,6 +5,7 @@
 #include "debug.h"
 #include "structs.h"
 #include "equations.h"
+#include "nmath.h"
 #include "unit/unit.h"
 #include "unit/range.h"
 #include "unit/equipment.h"

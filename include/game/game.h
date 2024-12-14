@@ -5,14 +5,11 @@
 #include <stdio.h>
 #include "enums.h"
 #include "structs.h"
-#include "SDL.h"
-#include "SDL_mixer.h"
 #ifdef SOTA_OPENGL
     #include <GL/glew.h>
     #include <SDL_opengl.h>
     #include <GL/glu.h>
 #endif
-#include "tnecs.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;

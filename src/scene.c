@@ -1,7 +1,9 @@
 #include "scene.h"
 #include "events.h"
 #include "names.h"
+#include "cJSON.h"
 #include "utilities.h"
+#include "nmath.h"
 #include "pixelfonts.h"
 // #ifndef STB_SPRINTF_IMPLEMENTATION
 // #define STB_SPRINTF_IMPLEMENTATION

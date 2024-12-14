@@ -10,6 +10,7 @@
 #include "platform.h"
 #include "weapon.h"
 #include "utilities.h"
+#include "nmath.h"
 #include "macros.h"
 #include "names.h"
 #include "unit/equipment.h"

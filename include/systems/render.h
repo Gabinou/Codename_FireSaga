@@ -2,7 +2,6 @@
 #define SYSTEMRENDER_H
 
 #include "tnecs.h"
-#include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;

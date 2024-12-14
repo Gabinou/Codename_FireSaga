@@ -2,6 +2,7 @@
 #include "arrow.h"
 #include "pathfinding.h"
 #include "octant.h"
+#include "macros.h"
 #include "nmath.h"
 #include "filesystem.h"
 #include "utilities.h"

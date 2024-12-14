@@ -2,6 +2,7 @@
 #include "palette.h"
 #include "debug.h"
 #include "jsonio.h"
+#include "macros.h"
 #include "filesystem.h"
 #include "platform.h"
 #include "stb_sprintf.h"

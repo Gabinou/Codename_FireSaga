@@ -4,9 +4,7 @@
 #include <math.h>
 #include "types.h"
 #include "enums.h"
-#include "nmath.h"
 #include "debug.h"
-#include "macros.h"
 #include "SDL.h"
 
 /* -- How to present controller remapping to players? -- */

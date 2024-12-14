@@ -1,3 +1,4 @@
+
 #include "events.h"
 #include "reload.h"
 #include "fsm.h"
@@ -10,6 +11,7 @@
 #include "combat.h"
 #include "game/popup.h"
 #include "cutscene.h"
+#include "nmath.h"
 #include "sprite.h"
 #include "music.h"
 #include "bars/map_hp.h"
@@ -18,8 +20,10 @@
 #include "map/ontile.h"
 #include "unit/equipment.h"
 #include "unit/loadout.h"
+#include "popup/popup.h"
 #include "popup/map_combat.h"
 #include "menu/loadout_select.h"
+#include "pixelfonts.h"
 #include "game/combat.h"
 #include "game/game.h"
 #include "game/menu.h"

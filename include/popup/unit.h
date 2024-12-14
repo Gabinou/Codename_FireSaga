@@ -2,20 +2,13 @@
 #define PU_H
 
 #include "enums.h"
-#include "n9patch.h"
-#include "popup/popup.h"
-#include "bars/stat.h"
-#include "slider.h"
-#include "unit/unit.h"
-#include "unit/equipment.h"
-#include "game/game.h"
-#include "pixelfonts.h"
+#include "structs.h"
 #include "SDL.h"
-#include "stb_sprintf.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
 struct Settings;
+struct n9Patch;
 struct SliderOffscreen;
 struct cJSON;
 

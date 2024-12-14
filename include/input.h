@@ -1,8 +1,6 @@
 #ifndef INPUT_H
 #define INPUT_H
 
-#include "structs.h"
-
 /* Note: no argp on Windows.                                */
 /*  Nuance: MSYS2 has libargp, but NOT ported to mingw64.   */
 extern struct parg_state parg_state_default;

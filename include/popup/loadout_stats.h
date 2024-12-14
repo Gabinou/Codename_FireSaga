@@ -2,20 +2,15 @@
 #define PLS_H
 
 #include "enums.h"
-#include "n9patch.h"
-#include "popup/popup.h"
-#include "slider.h"
-#include "unit/unit.h"
 #include "tnecs.h"
-#include "pixelfonts.h"
-#include "SDL.h"
 #include "menu/loadout_select.h"
-#include "stb_sprintf.h"
+#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct cJSON;
 struct Settings;
 struct Menu;
+struct n9Patch;
 struct LoadoutSelectMenu;
 
 /* --- ENUMS --- */

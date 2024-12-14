@@ -1,7 +1,9 @@
 
 #include "systems/render.h"
+#include "popup/popup.h"
 #include "map/map.h"
 #include "sprite.h"
+#include "position.h"
 #include "position.h"
 #include "scene.h"
 #include "map/animation.h"
@@ -13,6 +15,7 @@
 #include "AI.h"
 #include "boss.h"
 #include "text.h"
+#include "pixelfonts.h"
 #include "SDL.h"
 
 void Scroll_Text(tnecs_system_input *input) {

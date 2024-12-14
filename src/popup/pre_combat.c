@@ -1,15 +1,19 @@
 
 #include "popup/pre_combat.h"
+#include "popup/popup.h"
 #include "position.h"
+#include "pixelfonts.h"
 #include "platform.h"
 #include "palette.h"
 #include "weapon.h"
+#include "macros.h"
 #include "nmath.h"
 #include "utilities.h"
 #include "filesystem.h"
 #include "unit/unit.h"
 #include "unit/equipment.h"
 #include "unit/loadout.h"
+#include "stb_sprintf.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
 /* -- Drawing Utilities -- */

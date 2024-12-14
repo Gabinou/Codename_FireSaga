@@ -7,7 +7,6 @@
 #include "enums.h"
 #include "tnecs.h"
 #include "structs.h"
-#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;

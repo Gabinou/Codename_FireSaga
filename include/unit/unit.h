@@ -5,7 +5,6 @@
 #include "types.h"
 #include "enums.h"
 #include "structs.h"
-#include "nmath.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;

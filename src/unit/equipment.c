@@ -6,6 +6,7 @@
 #include "macros.h"
 #include "item.h"
 #include "weapon.h"
+#include "nmath.h"
 
 /* --- Items --- */
 /* Private item atker at specific spot. Does no checks */

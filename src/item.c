@@ -6,12 +6,9 @@
 #include "equations.h"
 #include "weapon.h"
 #include "platform.h"
+#include "nmath.h"
 #include "jsonio.h"
-
-// #ifndef STB_SPRINTF_IMPLEMENTATION
-// #define STB_SPRINTF_IMPLEMENTATION
 #include "stb_sprintf.h"
-// #endif /* STB_SPRINTF_IMPLEMENTATION */
 
 struct Item Item_default = {
     .jsonio_header.json_element   = JSON_ITEM,

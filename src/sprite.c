@@ -5,8 +5,10 @@
 #include "physfs.h"
 #include "jsonio.h"
 #include "platform.h"
+#include "macros.h"
 #include "log.h"
 #include "names.h"
+#include "nmath.h"
 #include "filesystem.h"
 #include "index_shader.h"
 

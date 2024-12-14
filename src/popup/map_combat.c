@@ -1,9 +1,16 @@
+
 #include "popup/map_combat.h"
+#include "popup/popup.h"
+#include "bars/topoff.h"
+#include "bars/circle.h"
+#include "unit/unit.h"
 #include "macros.h"
 #include "platform.h"
+#include "pixelfonts.h"
 #include "palette.h"
 #include "utilities.h"
 #include "filesystem.h"
+#include "stb_sprintf.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
 static void _PopUp_Map_Combat_Draw_HP(        struct PopUp_Map_Combat *pmc,

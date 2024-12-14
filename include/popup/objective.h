@@ -2,12 +2,8 @@
 #define POPUP_OBJECTIVE_H
 
 #include "enums.h"
-#include "n9patch.h"
-#include "popup/popup.h"
-#include "unit/unit.h"
-#include "pixelfonts.h"
+#include "structs.h"
 #include "SDL.h"
-#include "stb_sprintf.h"
 
 /* What should the objective popup do? */
 // - Main objective
@@ -17,6 +13,7 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Settings;
+struct n9Patch;
 struct cJSON;
 
 enum POPUP_OBJECTIVE {

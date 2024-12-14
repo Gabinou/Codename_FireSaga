@@ -3,6 +3,7 @@
 #include "game/unit.h"
 #include "game/game.h"
 #include "names.h"
+#include "cJSON.h"
 #include "log.h"
 #include "platform.h"
 #include "jsonio.h"

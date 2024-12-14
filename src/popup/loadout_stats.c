@@ -9,6 +9,10 @@
 #include "unit/unit.h"
 #include "unit/loadout.h"
 #include "macros.h"
+#include "nmath.h"
+#include "popup/popup.h"
+#include "pixelfonts.h"
+#include "stb_sprintf.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
 static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,

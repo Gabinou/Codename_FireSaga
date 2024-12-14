@@ -3,7 +3,7 @@
 #include "unit/unit.h"
 #include "map/map.h"
 #include "events.h"
-#include "jsonio.h"
+#include "nmath.h"
 #include "jsonio.h"
 
 struct Map_condition Map_condition_default = {

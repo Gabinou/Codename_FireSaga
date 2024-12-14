@@ -6,7 +6,6 @@
 #include "enums.h"
 #include "structs.h"
 #include "tnecs.h"
-#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;

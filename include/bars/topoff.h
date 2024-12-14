@@ -1,9 +1,10 @@
 #ifndef TOPOFF_BAR_H
 #define TOPOFF_BAR_H
 
-#include "bars/simple.h"
-#include "structs.h"
 #include "SDL.h"
+
+/* --- FORWARD DECLARATIONS --- */
+struct SimpleBar;
 
 /* -- TopOffbar -- */
 // Bar with top off, for map combat

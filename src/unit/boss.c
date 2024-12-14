@@ -3,6 +3,7 @@
 #include "position.h"
 #include "filesystem.h"
 #include "platform.h"
+#include "macros.h"
 
 int army_icons[ARMY_MALLOC] = {
     /* NULL                         */ BOSS_ICON_STGEORGE,

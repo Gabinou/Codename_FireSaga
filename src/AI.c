@@ -1,5 +1,7 @@
 
 #include "AI.h"
+#include "cJSON.h"
+#include "nmath.h"
 #include "pathfinding.h"
 #include "map/find.h"
 #include "map/map.h"

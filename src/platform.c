@@ -1,5 +1,6 @@
 
 #include "platform.h"
+#include "nstr.h"
 
 u8 platform_fromSDL(void) {
     u8 out  = NO_PLATFORM;

@@ -5,15 +5,6 @@
 #include "structs.h"
 #include "tnecs.h"
 #include "n9patch.h"
-#include "popup/popup.h"
-#include "bars/circle.h"
-#include "bars/simple.h"
-#include "bars/topoff.h"
-#include "unit/unit.h"
-#include "game/game.h"
-#include "pixelfonts.h"
-#include "SDL.h"
-#include "stb_sprintf.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;

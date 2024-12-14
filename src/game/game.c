@@ -1,3 +1,4 @@
+
 #include "game/game.h"
 #include "game/map.h"
 #include "game/control.h"
@@ -10,6 +11,7 @@
 #include "systems/render.h"
 #include "filesystem.h"
 #include "log.h"
+#include "macros.h"
 #include "RNG.h"
 #include "platform.h"
 #include "position.h"

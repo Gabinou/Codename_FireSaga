@@ -1,6 +1,7 @@
 
 #include "aura.h"
 #include "utilities.h"
+#include "cJSON.h"
 #include "jsonio.h"
 #include "unit/unit.h"
 #include "unit/range.h"

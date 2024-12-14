@@ -2,7 +2,6 @@
 #define POPUP_H
 
 #include "enums.h"
-#include "nmath.h"
 #include "structs.h"
 #include "n9patch.h"
 

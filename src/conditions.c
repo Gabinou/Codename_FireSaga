@@ -2,6 +2,7 @@
 #include "conditions.h"
 #include "names.h"
 #include "unit.h"
+#include "nmath.h"
 
 /* No requirements */
 struct Conditions Conditions_default = {0};

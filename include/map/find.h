@@ -2,7 +2,6 @@
 #define MAP_FIND_H
 
 #include "structs.h"
-#include "nmath.h"
 #include "tnecs.h"
 
 /* --- FORWARD DECLARATIONS --- */

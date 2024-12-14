@@ -11,6 +11,8 @@
 #include "octant.h"
 #include "platform.h"
 #include "events.h"
+#include "nmath.h"
+#include "macros.h"
 #include "filesystem.h"
 #include "utilities.h"
 #include "map/map.h"

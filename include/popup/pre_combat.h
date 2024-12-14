@@ -2,17 +2,11 @@
 #define PRE_COMBAT_POPUP_H
 
 #include "enums.h"
-#include "pixelfonts.h"
-#include "unit/unit.h"
-#include "nmath.h"
-#include "popup/popup.h"
-#include "n9patch.h"
-#include "events.h"
-#include "nstr.h"
-#include "stb_sprintf.h"
+#include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
+struct n9Patch;
 
 // A:Aggressor
 // D:Defendant

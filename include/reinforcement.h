@@ -1,9 +1,7 @@
 #ifndef REINFORCEMENT_H
 #define REINFORCEMENT_H
 
-#include "cJSON.h"
-#include "unit/unit.h"
-#include "position.h"
+#include "structs.h"
 #include "nstr.h"
 
 /* --- FORWARD DECLARATIONS --- */

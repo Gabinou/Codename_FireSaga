@@ -5,6 +5,7 @@
 #include "unit/loadout.h"
 #include "nmath.h"
 #include "enums.h"
+#include "macros.h"
 #include "position.h"
 #include "item.h"
 #include "weapon.h"

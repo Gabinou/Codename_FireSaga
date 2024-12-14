@@ -1,7 +1,6 @@
 #ifndef CONTROLLERTOUCHPAD_H
 #define CONTROLLERTOUCHPAD_H
 
-// #include <math.h>
 #include "types.h"
 #include "SDL.h"
 

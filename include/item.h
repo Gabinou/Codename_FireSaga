@@ -3,12 +3,13 @@
 
 #include "enums.h"
 #include "structs.h"
-#include "cJSON.h"
 #include "nstr.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Unit;
 struct Item;
+struct cJSON;
+typedef struct cJSON cJSON;
 
 /* --- ANTS --- */
 #define ITEM_NAME_INVALID " "
