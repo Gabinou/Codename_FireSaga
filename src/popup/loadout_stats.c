@@ -8,6 +8,7 @@
 #include "unit/equipment.h"
 #include "unit/unit.h"
 #include "unit/loadout.h"
+#include "macros.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
 static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,

@@ -4,6 +4,7 @@
 #include "weapon.h"
 #include "utilities.h"
 #include "filesystem.h"
+#include "macros.h"
 
 struct PopUp_Unit PopUp_Unit_default = {
     .update           = true,

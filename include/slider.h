@@ -4,7 +4,6 @@
 #include "enums.h"
 #include "types.h"
 #include "structs.h"
-#include "macros.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Settings;
