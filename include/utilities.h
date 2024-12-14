@@ -1,21 +1,11 @@
 #ifndef UTILITIES_H
 #define UTILITIES_H
 
-#include <math.h>
-#include <stdio.h>
-#include <signal.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include "types.h"
 #include "enums.h"
 #include "structs.h"
 #include "macros.h"
 #include "debug.h"
-// #include "octant.h"
-// #include "item.h"
-// #include "weapon.h"
-#include "nmath.h"
-#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct RNG_Sequence;

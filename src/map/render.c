@@ -7,6 +7,7 @@
 #include "sprite.h"
 #include "pathfinding.h"
 #include "arrow.h"
+#include "nmath.h"
 #include "palette.h"
 #include "utilities.h"
 

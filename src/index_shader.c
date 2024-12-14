@@ -3,6 +3,7 @@
 #include "utilities.h"
 #include "palette.h"
 #include "jsonio.h"
+#include "nmath.h"
 #include "map/render.h"
 #include "map/map.h"
 #include "filesystem.h"

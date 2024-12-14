@@ -1,6 +1,7 @@
 
 #include "convoy.h"
 #include "weapon.h"
+#include "nmath.h"
 #include "equations.h"
 #include "utilities.h"
 #include "jsonio.h"

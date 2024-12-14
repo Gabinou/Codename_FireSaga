@@ -2,6 +2,7 @@
 #include "pathfinding.h"
 #include "utilities.h"
 #include "octant.h"
+#include "nmath.h"
 #include "log.h"
 
 /* --- Manhattan distance --- */
