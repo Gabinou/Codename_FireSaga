@@ -4,8 +4,7 @@
 #include "types.h"
 #include "enums.h"
 #include "structs.h"
-#include "macros.h"
-#include "debug.h"
+// #include "debug.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct RNG_Sequence;

@@ -7,6 +7,7 @@
 #include "filesystem.h"
 #include "utilities.h"
 #include "octant.h"
+#include "macros.h"
 #include "popup/popup.h"
 #include "pixelfonts.h"
 // #ifndef STB_SPRINTF_IMPLEMENTATION

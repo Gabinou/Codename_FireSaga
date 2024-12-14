@@ -2,6 +2,7 @@
 #include "bars/map_hp.h"
 #include "unit/unit.h"
 #include "palette.h"
+#include "macros.h"
 #include "utilities.h"
 
 /* --- MAPHPBAR --- */

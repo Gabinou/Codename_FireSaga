@@ -14,6 +14,7 @@
 #include "unit/equipment.h"
 #include "unit/mount.h"
 #include "names.h"
+#include "macros.h"
 #include "stb_sprintf.h"
 
 /* --- ELEMENTS --- */
