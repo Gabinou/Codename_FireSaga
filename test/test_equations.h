@@ -2,6 +2,7 @@
 #include "nourstest.h"
 #include <stdint.h>
 #include "equations.h"
+#include "utilities.h"
 
 void test_Equation_Unit_Hit() {
     u8 wpn_hit = 0;

@@ -1,6 +1,9 @@
 
 #include "nourstest.h"
 #include "platform.h"
+#include "map/tiles.h"
+#include "map/ontile.h"
+#include "map/find.h"
 #include "pathfinding.h"
 
 #define TEST_ROW_LEN 10

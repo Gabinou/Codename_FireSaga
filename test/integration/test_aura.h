@@ -1,7 +1,9 @@
 
 #include "game/game.h"
 #include "map/ontile.h"
+#include "fsm.h"
 #include "map/map.h"
+#include "game/map.h"
 
 void test_aura_apply(int argc, char *argv[]) {
     /* -- Startup -- */

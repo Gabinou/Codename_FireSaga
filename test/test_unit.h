@@ -2,12 +2,14 @@
 #include "nourstest.h"
 #include "platform.h"
 #include "enums.h"
+#include "weapon.h"
+#include "unit/range.h"
+#include "reinforcement.h"
 #include "unit/unit.h"
 #include "unit/bonus.h"
 #include "game/game.h"
 #include "game/unit.h"
 #include "RNG.h"
-
 
 void test_canEquip_Type(void) {
     struct Unit Silou = Unit_default;

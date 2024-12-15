@@ -3,6 +3,8 @@
 #include "platform.h"
 #include "menu/deployment.h"
 #include "unit/unit.h"
+#include "unit/mount.h"
+#include "log.h"
 #include "RNG.h"
 
 #define PARTY_FOLDER "units"

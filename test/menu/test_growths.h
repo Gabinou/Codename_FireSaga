@@ -3,6 +3,7 @@
 #include "platform.h"
 #include "menu/growths.h"
 #include "unit/unit.h"
+#include "graph.h"
 #include "RNG.h"
 
 void test_menu_growths() {

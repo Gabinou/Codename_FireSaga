@@ -1,6 +1,10 @@
 
 #include "nourstest.h"
 #include "filesystem.h"
+#include "map/map.h"
+#include "map/path.h"
+#include "palette.h"
+#include "SDL_image.h"
 
 void test_leaks() {
     sota_mkdir("filesystem");

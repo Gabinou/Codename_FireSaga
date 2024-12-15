@@ -2,6 +2,7 @@
 #include "nourstest.h"
 #include "utilities.h"
 #include "enums.h"
+#include "names.h"
 
 void test_utilities() {
 

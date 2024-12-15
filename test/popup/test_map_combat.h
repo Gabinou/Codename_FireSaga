@@ -3,6 +3,7 @@
 #include "platform.h"
 #include "combat.h"
 #include "unit/unit.h"
+#include "popup/map_combat.h"
 #include "RNG.h"
 
 void test_popup_map_combat() {

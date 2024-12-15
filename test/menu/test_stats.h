@@ -3,6 +3,7 @@
 #include "platform.h"
 #include "menu/stats.h"
 #include "unit/unit.h"
+#include "unit/status.h"
 #include "RNG.h"
 
 void test_menu_stats() {

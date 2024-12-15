@@ -7,6 +7,11 @@
 #include "game/unit.h"
 #include "unit/unit.h"
 #include "RNG.h"
+#include "pathfinding.h"
+#include "unit/unit.h"
+#include "unit/equipment.h"
+#include "unit/loadout.h"
+#include "equations.h"
 
 void test_combat_stats() {
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);

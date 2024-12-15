@@ -91,7 +91,7 @@ void Text_Bubble_Load(struct Text_Box *bubble, SDL_Renderer *renderer, struct n9
     n9patch->pos.y            = 0;
 
     /* -- Loading Surfaces -- */
-    char *path = PATH_JOIN("..", "assets", "GUI", "Popup", "Popup_Text_Bubble_N9patch.png");
+    char *path = PATH_JOIN("..", "assets", "GUI", "Popup", "Popup_TextBubble_n9patch.png");
 
     if (bubble->surface != NULL)
         SDL_FreeSurface(bubble->surface);
@@ -99,7 +99,7 @@ void Text_Bubble_Load(struct Text_Box *bubble, SDL_Renderer *renderer, struct n9
     SDL_assert(bubble->surface != NULL);
     SDL_assert(bubble->surface->format->palette == palette_SOTA);
 
-    path = PATH_JOIN("..", "assets", "GUI", "Popup", "Popup_Text_Bubble_Tail.png");
+    path = PATH_JOIN("..", "assets", "GUI", "Popup", "Popup_TextBubble_Tail.png");
     if (bubble->tail.surface != NULL)
         SDL_FreeSurface(bubble->tail.surface);
     bubble->tail.surface = Filesystem_Surface_Load(path, SDL_PIXELFORMAT_INDEX8);

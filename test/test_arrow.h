@@ -1,6 +1,9 @@
 
 #include "nourstest.h"
 #include "arrow.h"
+#include "macros.h"
+#include "platform.h"
+#include "map/map.h"
 
 #define ROW_LEN 21
 #define COL_LEN 25
