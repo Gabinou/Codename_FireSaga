@@ -16,6 +16,8 @@ struct Scene Scene_default =  {
 
     .update = true,
 
+    .current_statement = -1,
+
     .texture_rect               = {
         .w = DEFAULT_RESOLUTION_X / 4,
         .h = DEFAULT_RESOLUTION_Y / 4
@@ -53,8 +55,14 @@ json_func fsm_Scene_writeJSON[SCENE_STATEMENT_NUM] = {
 
 void Scene_Init(struct Scene *scene) {
     SDL_assert(scene != NULL);
-    scene->statements   = DARR_INIT(scene->statements, SceneStatement, 16);
-    scene->actor_order  = DARR_INIT(scene->actor_order, int, 16);
+
+    if (scene->statements == NULL) {
+        scene->statements   = DARR_INIT(scene->statements, SceneStatement, 16);
+    }
+
+    if (scene->actor_order == NULL) {
+        scene->actor_order  = DARR_INIT(scene->actor_order, int, 16);
+    }
 }
 
 void Scene_Texture_Create(struct Scene *scene, SDL_Renderer *renderer) {
@@ -175,7 +183,7 @@ void Scene_Didascalie_readJSON(void *input, cJSON *jdid) {
     }
 }
 
-void Scene_Didascalie_Appear_readJSON( void *input, cJSON *jdid) {
+void Scene_Didascalie_Appear_readJSON(void *input, cJSON *jdid) {
     Scene *scene = input;
 
     SceneStatement statement = {0};
@@ -187,7 +195,13 @@ void Scene_Didascalie_Appear_readJSON( void *input, cJSON *jdid) {
         statement.header.statement_type   = SCENE_STATEMENT_DIDASCALIE;
         statement.header.didascalie_type  = SCENE_DIDASCALIE_APPEAR;
 
-        // TODO parse jdid, add to scene_did
+        // Getting actor from Appear didascalie
+        cJSON *jappear = cJSON_GetObjectItem(jdid, "Appear");
+        SDL_assert(jappear != NULL);
+        s8 actor        = s8_var(jappear->valuestring);
+        SceneDidascalie *didascalie = &statement._union.didascalie;
+        *didascalie = SceneDidascalie_default;
+        didascalie->actor   = actor;
 
         Scene_Statement_Add(scene, statement);
     }
@@ -363,9 +377,14 @@ void Scene_Animate(struct Game  * sota, tnecs_entity entity,
 void Scene_Statement_Add(Scene * scene, SceneStatement statement) {
     SDL_assert(scene        != NULL);
 
+    // TODO: Make into asserts. Scene_init should have been called.
     if (scene->statements == NULL) {
-        scene->statements       = DARR_INIT(scene->statements, SceneStatement, 16);
+        scene->statements   = DARR_INIT(scene->statements, SceneStatement, 16);
     }
+    if (scene->actor_order == NULL) {
+        scene->actor_order  = DARR_INIT(scene->actor_order, int, 16);
+    }
+
     SceneHeader header = statement.header;
     DARR_PUT(scene->statements, statement);
 }
@@ -399,11 +418,25 @@ i32 Scene_Actor_Find(Scene * scene, u16 actor) {
 }
 
 /* --- Statement --- */
+int Scene_Line_Next(struct Scene *scene) {
+    // TODO. Maybe combine with Scene_Statement_Next?
+    // Find index of next line.
+
+    // Put ONE didascalie in scene
+    // TODO: Multiple didascalie
+}
+
 int Scene_Statement_Next(struct Scene *scene) {
-    SDL_assert(scene    != NULL);
+    SDL_Log("Scene_Statement_Next: scene->current_statement %d", scene->current_statement);
+
+    SDL_assert(scene                != NULL);
+    SDL_assert(scene->statements    != NULL);
+    int statement_num = DARR_NUM(scene->statements);
     // Skip if current statement index is invalid:
-    if ((scene->current_statement < 0) ||
-        (scene->current_statement >= DARR_NUM(scene->statements))) {
+    if ((scene->current_statement < -1) ||
+        (scene->current_statement >= statement_num)) {
+        SDL_Log("First return %d %d", (scene->current_statement < -1),
+                scene->current_statement >= statement_num);
         return (-1);
     }
 
@@ -413,15 +446,29 @@ int Scene_Statement_Next(struct Scene *scene) {
     // scene->current_statement++;
 
     do {
+
+    loopstart:
         scene->current_statement++;
+        SDL_Log("LOOP: scene->current_statement %d", scene->current_statement);
+        // Break out if no more statements.
         if (scene->current_statement >= DARR_NUM(scene->statements)) {
             return (-1);
         }
-        SDL_assert(scene->current_statement);
+
+        // Add actor to list of actors if appear didascalie
+        SDL_assert(scene->current_statement >= 0);
         statement = scene->statements[scene->current_statement];
+        if (statement.header.statement_type == SCENE_STATEMENT_DIDASCALIE) {
+            SDL_assert(scene->actor_order != NULL);
+
+            i32 unit_order  = Unit_Name2Order(statement._union.didascalie.actor);
+            DARR_PUT(scene->actor_order, unit_order);
+            goto loopstart;
+        }
+
     } while (statement.header.statement_type != SCENE_STATEMENT_LINE);
     scene->update = true;
-
+    SDL_Log("scene->current_statement %d", scene->current_statement);
     return (scene->current_statement);
 }
 
@@ -457,7 +504,8 @@ void _Scene_Draw_Text(struct Scene *scene, SDL_Texture *render_target, SDL_Rende
     SDL_assert(scene->pixelnours    != NULL);
     SDL_assert(renderer             != NULL);
 
-    // SDL_Log("scene->current_statement %d", scene->current_statement);
+    SDL_Log("DRAW_TEXT: scene->current_statement %d", scene->current_statement);
+
     SceneStatement statement = scene->statements[scene->current_statement];
     SDL_assert(statement.header.statement_type == SCENE_STATEMENT_LINE);
     SceneLine *scene_line = &statement._union.line;

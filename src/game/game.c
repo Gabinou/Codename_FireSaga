@@ -688,6 +688,9 @@ void Game_Startup_Scene(Game *IES) {
     jsonio_readJSON(filename, scene);
     IES->substate   = GAME_SUBSTATE_STANDBY;
     IES->state      = GAME_STATE_Scene_Talk;
+    SDL_Log("POST jsonio_readJSON");
+    Scene_Statement_Next(scene);
+    SDL_Log("POST Scene_Statement_Next %d", scene->current_statement);
 }
 
 void Game_Startup_TitleScreen(Game *IES) {

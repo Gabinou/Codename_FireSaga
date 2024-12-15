@@ -1,6 +1,7 @@
 {
     "Scene":
     [
+        {"Appear": "Erwin"},
         {"Line": {"Erwin": "Hello."}},
         {"Condition": {"Erwin": "Alive"}},
         {"Condition": {"Erwin": "dead"}},

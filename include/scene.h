@@ -45,6 +45,11 @@
 //      - Branching decisions during scene
 //          - Ex: Give away weapons OR Refuse to give away weapons
 
+/* --- Scene flow --- */
+// 1. Press button
+// 2. Go to next line
+//  a. All didascalies play
+
 // Is narrated map a Scene or a cutscene?
 //  - Show map (difference kind of background)
 //      - Units move around on map
@@ -117,7 +122,7 @@ typedef struct SceneHeader {
 //  - Animate
 //      - Fade in, fade out
 typedef struct SceneDidascalie {
-    int a;
+    s8 actor;
 } SceneDidascalie;
 extern struct SceneDidascalie SceneDidascalie_default;
 extern struct SceneDidascalie SceneDidascalie_FadeAll;
@@ -125,7 +130,6 @@ extern struct SceneDidascalie SceneDidascalie_FadeAll;
 typedef struct SceneLine {
     s8 actor;
     s8 line;
-
 } SceneLine;
 extern struct SceneLine SceneLine_default;
 
@@ -258,6 +262,7 @@ void Scene_Render_Print(struct Scene *scene);
 
 /* --- Statement --- */
 int Scene_Statement_Next(struct Scene *scene);
+int Scene_Line_Next(struct Scene *scene);
 
 /* --- Numbers --- */
 void Scene_Line_Num(        struct Scene *scene);
