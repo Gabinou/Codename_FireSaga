@@ -5,10 +5,8 @@
 #include "utilities.h"
 #include "nmath.h"
 #include "pixelfonts.h"
-// #ifndef STB_SPRINTF_IMPLEMENTATION
-// #define STB_SPRINTF_IMPLEMENTATION
+#include "palette.h"
 #include "stb_sprintf.h"
-// #endif // STB_SPRINTF_IMPLEMENTATION
 
 struct Scene Scene_default =  {
     .jsonio_header.json_element = JSON_SCENE,
@@ -429,9 +427,26 @@ int Scene_Statement_Next(struct Scene *scene) {
 
 
 /* --- Draw --- */
-// void _Scene_Draw_Actors(        struct Scene *scene, SDL_Renderer *renderer) {
+void _Scene_Draw_Actors(struct Scene *scene, SDL_Renderer *renderer) {
+    SDL_assert(scene                != NULL);
+    SDL_assert(renderer             != NULL);
+    SDL_assert(palette_NES          != NULL);
+    SDL_assert(scene->actor_order   != NULL);
 
-// }
+    for (i32 i = 0; i < DARR_NUM(scene->actor_order); i++) {
+        // Draw a rectangle for every actor
+        SDL_Rect dstrect = {SCENE_ACTOR_POS_X,
+                            SCENE_ACTOR_POS_Y,
+                            SCENE_ACTOR_POS_W,
+                            SCENE_ACTOR_POS_H
+                           };
+        SDL_Color color = palette_NES->colors[SCENE_ACTOR_COLOR_OFFSET + i];
+        SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
+        SDL_RenderFillRect(renderer, &dstrect);
+    }
+
+    Utilities_DrawColor_Reset(renderer);
+}
 
 // void _Scene_Draw_Background(    struct Scene *scene, SDL_Renderer *renderer) {
 
@@ -440,7 +455,7 @@ int Scene_Statement_Next(struct Scene *scene) {
 void _Scene_Draw_Text(struct Scene *scene, SDL_Texture *render_target, SDL_Renderer *renderer) {
     SDL_assert(scene                != NULL);
     SDL_assert(scene->pixelnours    != NULL);
-    SDL_assert(renderer != NULL);
+    SDL_assert(renderer             != NULL);
 
     // SDL_Log("scene->current_statement %d", scene->current_statement);
     SceneStatement statement = scene->statements[scene->current_statement];
@@ -475,7 +490,7 @@ void Scene_Update(struct Scene *scene, struct Settings *settings,
 
     _Scene_Draw_Text(scene, render_target, renderer);
     //     _Scene_Draw_Background(scene, renderer);
-    //     _Scene_Draw_Actors(scene, renderer);
+    _Scene_Draw_Actors(scene, renderer);
     SDL_SetRenderTarget(renderer, render_target);
 }
 
