@@ -121,8 +121,22 @@ typedef struct SceneHeader {
 //    - Rotate
 //  - Animate
 //      - Fade in, fade out
+
+typedef struct DidascalieSlide {
+    Point start;
+    Point end;
+    int speed;
+} DidascalieSlide;
+extern const struct DidascalieSlide DidascalieSlide_default;
+
+typedef union DidascalieUnion {
+    DidascalieSlide slide;
+} DidascalieUnion;
+
+
 typedef struct SceneDidascalie {
     s8 actor;
+    DidascalieUnion _union;
 } SceneDidascalie;
 extern const struct SceneDidascalie SceneDidascalie_default;
 extern const struct SceneDidascalie SceneDidascalie_FadeAll;

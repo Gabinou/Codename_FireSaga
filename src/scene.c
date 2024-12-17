@@ -219,7 +219,17 @@ void Scene_Didascalie_Slide_readJSON( void *input, cJSON *jdid) {
         statement.header.statement_type   = SCENE_STATEMENT_DIDASCALIE;
         statement.header.didascalie_type  = SCENE_DIDASCALIE_SLIDE;
 
-        // TODO parse jdid, add to scene_did
+        // Getting actor from Appear didascalie
+        cJSON *jslide = cJSON_GetObjectItem(jdid, "Slide");
+        SDL_assert(jslide != NULL);
+        SDL_assert(jslide->child != NULL);
+        cJSON *jslide_child = jslide->child;
+        s8 actor        = s8_var(jslide_child->string);
+        SceneDidascalie *didascalie = &statement._union.didascalie;
+        *didascalie = SceneDidascalie_default;
+        didascalie->actor   = actor;
+
+        // TODO: Getting slide parameters for Slide didascalie
 
         Scene_Statement_Add(scene, statement);
     }

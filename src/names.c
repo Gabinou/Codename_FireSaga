@@ -478,6 +478,7 @@ u64 sota_hash_djb2(s8 str) {
     /* (why it works better than many other constants, prime or not) has never been adequately explained. */
     /* [1] https://stackoverflow.com/questions/7666509/hash-function-for-string */
     /* [2] http://www.cse.yorku.ca/~oz/hash.html */
+    SDL_assert(str.data != NULL);
     u64 hash     = 5381;
     i32 str_char =    0;
     while ((str_char = *str.data++))
