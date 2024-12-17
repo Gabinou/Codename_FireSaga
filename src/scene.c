@@ -28,9 +28,9 @@ const struct SceneLine        SceneLine_default       = {0};
 const struct SceneDidascalie  SceneDidascalie_default = {0};
 const struct SceneBackground  SceneBackground_default = {0};
 
-static u64 hash_alive     = 210706583606;       /* sota_hash_djb2(s8_literal("alive"));     */
-static u64 hash_dead      = 6385147891;         /* sota_hash_djb2(s8_literal("dead"));      */
-static u64 hash_recruited = 249904965071548876; /* sota_hash_djb2(s8_literal("recruited")); */
+static u64 hash_alive     = 210706583606ull;       /* sota_hash_djb2(s8_literal("alive"));     */
+static u64 hash_dead      = 6385147891ull;         /* sota_hash_djb2(s8_literal("dead"));      */
+static u64 hash_recruited = 249904965071548876ull; /* sota_hash_djb2(s8_literal("recruited")); */
 
 const json_func fsm_Scene_Didascalie_readJSON[SCENE_DIDASCALIE_NUM] = {
     Scene_Didascalie_Appear_readJSON,
@@ -483,7 +483,7 @@ void _Scene_Draw_Actors(struct Scene *scene, SDL_Renderer *renderer) {
 
     for (i32 i = 0; i < DARR_NUM(scene->actor_order); i++) {
         // Draw a rectangle for every actor
-        SDL_Rect dstrect = {SCENE_ACTOR_POS_X,
+        SDL_Rect dstrect = {SCENE_ACTOR_POS_X + 2 * SCENE_ACTOR_POS_W * i,
                             SCENE_ACTOR_POS_Y,
                             SCENE_ACTOR_POS_W,
                             SCENE_ACTOR_POS_H
@@ -518,10 +518,12 @@ void _Scene_Draw_Text(struct Scene *scene, SDL_Texture *render_target, SDL_Rende
     PixelFont_Write(scene->pixelnours, renderer, scene_line->actor.data,
                     scene_line->actor.len, px, py);
 
+    // TODO: Set actor name position
     px -= 10;
     py += 22;
 
     /* Writing line:*/
+    // TODO: Set line position
     PixelFont_Write(scene->pixelnours, renderer, scene_line->line.data,
                     scene_line->line.len, px, py);
 }
@@ -537,9 +539,9 @@ void Scene_Update(struct Scene *scene, struct Settings *settings,
     SDL_RenderClear(renderer);
     Utilities_DrawColor_Reset(renderer);
 
-    _Scene_Draw_Text(scene, render_target, renderer);
     //     _Scene_Draw_Background(scene, renderer);
     _Scene_Draw_Actors(scene, renderer);
+    _Scene_Draw_Text(scene, render_target, renderer);
     SDL_SetRenderTarget(renderer, render_target);
 }
 

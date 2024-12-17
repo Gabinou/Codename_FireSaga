@@ -23,7 +23,6 @@ void test_scene() {
     /* -- Statement 0 -- */
     SceneHeader scene_header    = scene.statements[0].header;
     SceneLine scene_line        = scene.statements[0]._union.line;
-    SDL_Log("scene_header.statement_type %d", scene_header.statement_type);
     nourstest_true(scene_header.statement_type == SCENE_STATEMENT_LINE);
     nourstest_true(s8equal(scene_line.actor, s8_literal("Erwin")));
     nourstest_true(s8equal(scene_line.line, s8_literal("Hello.")));
