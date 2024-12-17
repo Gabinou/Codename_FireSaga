@@ -2,20 +2,20 @@
 #include "structs.h"
 #include "nmath.h"
 
-struct nmath_hexpoint_int32_t Cube_Direction_xp =   { 0,  1, -1};
-struct nmath_hexpoint_int32_t Cube_Direction_xm =   { 0, -1,  1};
-struct nmath_hexpoint_int32_t Cube_Direction_yp =   { 1,  0, -1};
-struct nmath_hexpoint_int32_t Cube_Direction_ym =   {-1,  0,  2};
-struct nmath_hexpoint_int32_t Cube_Direction_zp =   { 1, -1,  0};
-struct nmath_hexpoint_int32_t Cube_Direction_zm =   {-1,  1,  0};
-struct nmath_hexpoint_int32_t Cube_Diagonal_xp =    { 1,  1, -2};
-struct nmath_hexpoint_int32_t Cube_Diagonal_xm =    {-1, -1,  2};
-struct nmath_hexpoint_int32_t Cube_Diagonal_yp =    {-2,  1,  1};
-struct nmath_hexpoint_int32_t Cube_Diagonal_ym =    { 2, -1, -1};
-struct nmath_hexpoint_int32_t Cube_Diagonal_zp =    { 1, -2,  1};
-struct nmath_hexpoint_int32_t Cube_Diagonal_zm =    {-1,  2, -1};
+const struct nmath_hexpoint_int32_t Cube_Direction_xp =   { 0,  1, -1};
+const struct nmath_hexpoint_int32_t Cube_Direction_xm =   { 0, -1,  1};
+const struct nmath_hexpoint_int32_t Cube_Direction_yp =   { 1,  0, -1};
+const struct nmath_hexpoint_int32_t Cube_Direction_ym =   {-1,  0,  2};
+const struct nmath_hexpoint_int32_t Cube_Direction_zp =   { 1, -1,  0};
+const struct nmath_hexpoint_int32_t Cube_Direction_zm =   {-1,  1,  0};
+const struct nmath_hexpoint_int32_t Cube_Diagonal_xp =    { 1,  1, -2};
+const struct nmath_hexpoint_int32_t Cube_Diagonal_xm =    {-1, -1,  2};
+const struct nmath_hexpoint_int32_t Cube_Diagonal_yp =    {-2,  1,  1};
+const struct nmath_hexpoint_int32_t Cube_Diagonal_ym =    { 2, -1, -1};
+const struct nmath_hexpoint_int32_t Cube_Diagonal_zp =    { 1, -2,  1};
+const struct nmath_hexpoint_int32_t Cube_Diagonal_zm =    {-1,  2, -1};
 
-struct TextLines TextLines_default =  {
+const struct TextLines TextLines_default =  {
     .lines      = NULL,
     .lines_len  = NULL,
     .line_num   = 0,
@@ -39,21 +39,21 @@ canEquip canEquip_default = {
     /* 4. Of any archetype */
 };
 
-struct Damage Damage_default = {0};
+const struct Damage Damage_default = {0};
 
-struct HP HP_default = {0};
+const struct HP HP_default = {0};
 
-struct Computed_Stats Computed_Stats_default = {0};
+const struct Computed_Stats Computed_Stats_default = {0};
 
-struct Timer Timer_default = {
+const struct Timer Timer_default = {
     .limit_ns     = SOTA_ns,
 };
 
-struct Range Range_default = {.min = SOTA_MAX_RANGE, .max = SOTA_MIN_RANGE};
+const struct Range Range_default = {.min = SOTA_MAX_RANGE, .max = SOTA_MIN_RANGE};
 
-struct Input_Arguments Input_Arguments_default = {0};
+const struct Input_Arguments Input_Arguments_default = {0};
 
-struct Settings Settings_default = {
+const struct Settings Settings_default = {
     .title = "Codename:Firesaga",
 
     .res                = {DEFAULT_RESOLUTION_X, DEFAULT_RESOLUTION_Y},
@@ -103,36 +103,36 @@ struct Settings Settings_default = {
 };
 
 
-struct Rendered Rendered_default = {
+const struct Rendered Rendered_default = {
     .flip               = SDL_FLIP_NONE,
 };
 
-struct Tile_stats Tile_stats_default = {0};
+const struct Tile_stats Tile_stats_default = {0};
 
-struct Inventory_item Inventory_item_default = {
+const struct Inventory_item Inventory_item_default = {
     .highlighted = true,
 };
 
-struct Inventory_item Inventory_item_broken = {
+const struct Inventory_item Inventory_item_broken = {
     .id          = ITEM_ID_BROKEN,
     .infusion    = SOTA_NON_INFUSEABLE,
     .highlighted = true,
 };
 
-struct Bonus_Stats Bonus_Stats_default = {0};
-struct Aura Aura_default = {0};
+const struct Bonus_Stats Bonus_Stats_default = {0};
+const struct Aura Aura_default = {0};
 
-struct Shop Shop_default = {0};
+const struct Shop Shop_default = {0};
 
-struct Padding Padding_default = {0};
+const struct Padding Padding_default = {0};
 
-struct Item_stats Item_stats_default = {0};
+const struct Item_stats Item_stats_default = {0};
 
-struct Weapon_stats Weapon_stats_default = {0};
+const struct Weapon_stats Weapon_stats_default = {0};
 
-struct Movement_cost Movement_cost_default = {0};
+const struct Movement_cost Movement_cost_default = {0};
 
-struct Fps Fps_default = {
+const struct Fps Fps_default = {
     .pos         = {FPS_DEFAULT_POSX,        FPS_DEFAULT_POSY},
     .show        =  FPS_DEFAULT_SHOW,
     .sizefactor  = {FPS_DEFAULT_SIZEFACTORX, FPS_DEFAULT_SIZEFACTORY},
@@ -140,12 +140,12 @@ struct Fps Fps_default = {
     .textcolor   = {FPS_DEFAULT_COLORR,      FPS_DEFAULT_COLORG, FPS_DEFAULT_COLORB}
 };
 
-struct Mouse Mouse_default = {
+const struct Mouse Mouse_default = {
     .onhold = MOUSE_DEFAULT_ONHOLD,
     .move   = MOUSE_DEFAULT_MOVE
 };
 
-struct Cursor Cursor_default = {DEFAULT_CURSOR_FRAMES, DEFAULT_CURSOR_SPEED};
+const struct Cursor Cursor_default = {DEFAULT_CURSOR_FRAMES, DEFAULT_CURSOR_SPEED};
 
 void Computed_Stats_Print(struct Computed_Stats *stats) {
     SDL_Log("atk_P:   %3d\n", stats->attack[DAMAGE_TYPE_PHYSICAL]);
