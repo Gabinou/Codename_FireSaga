@@ -4,19 +4,19 @@
 #include "cJSON.h"
 
 /* --- FIRST AND ONLY DEFINITION OF GLOBALS --- */
-b32 rng_sequence_breaker_miss_growth = true;
+const b32 rng_sequence_breaker_miss_growth = true;
 
 i16 URN_debug = -1;
 
 // TODO: Different tables for difficulties?
 /* -- Sequence Breaker tables -- */
 /* Effective rate is base rate multiplied by this factor */
-float sb_rise_table[RNG_SB_BASE_NUM] = {
+const float sb_rise_table[RNG_SB_BASE_NUM] = {
     /*    0-9, 10-19, 20-29, 30-39, 40-49, 50-59, 60-69, 70-79, 80-89, 90-99  Base Rates */
     1.20f, 1.20f, 1.15f, 1.20f, 1.10f, 1.10f, 1.10f, 1.08f, 1.05f, 1.05f /* Factor */
 };
 
-float sb_drop_table[RNG_SB_BASE_NUM] = {
+const float sb_drop_table[RNG_SB_BASE_NUM] = {
     /*    0-9, 10-19, 20-29, 30-39, 40-49, 50-59, 60-69, 70-79, 80-89, 90-99  Base Rates */
     1.02f, 1.02f, 1.05f, 1.05f, 1.10f, 1.10f, 1.05f, 1.02f, 1.01f, 1.00f /* Factor */
 };

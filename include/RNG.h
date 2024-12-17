@@ -13,6 +13,7 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct cJSON;
+struct RNG_Sequence;
 typedef struct cJSON cJSON;
 typedef int cJSON_bool;
 cJSON *cJSON_GetObjectItem(const cJSON *const object, const char *const string);
@@ -36,7 +37,7 @@ typedef u8(*RNG_URN_ptr)(void);
 /* --- ANTS --- */
 /* FIRST OF MANY POSSIBLE GLOBAL DECLARATIONS */
 extern const b32 rng_sequence_breaker_miss_growth;
-extern const i16 URN_debug;
+extern i16 URN_debug;
 enum SOTA_RN {
     RN_MAX          = 100, /* 100 excluded */
     RN_5050         =  50,  /* < for 50/50  */

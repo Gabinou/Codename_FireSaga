@@ -22,15 +22,15 @@ const struct TextLines TextLines_default =  {
     .line_len   = 0,
 };
 
-PathfindingAct PathfindingAct_default = {0};
+const PathfindingAct PathfindingAct_default = {0};
 
-MapFind MapFind_default = {0};
+const MapFind MapFind_default = {0};
 
-MapAct MapAct_default   = {0};
+const MapAct MapAct_default   = {0};
 
-Loadout Loadout_default = {0};
+const Loadout Loadout_default = {0};
 
-canEquip canEquip_default = {
+const canEquip canEquip_default = {
     // Try to equip:
     /* 1. Weapon in equipment[eq] slot */
     /* 2. In right hand */
@@ -189,4 +189,3 @@ void Computed_Stats_Compare(struct Computed_Stats *stats1, struct Computed_Stats
     SDL_Log("range_loadout.min:  %3d\n", stats1->range_loadout.min, stats2->range_loadout.min);
     SDL_Log("range_loadout.max:  %3d\n", stats1->range_loadout.max, stats2->range_loadout.max);
 }
-

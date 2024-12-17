@@ -20,7 +20,7 @@
 #include "unit/anim.h"
 #include "map/path.h"
 
-struct AI AI_default = {
+const struct AI AI_default = {
     .json_element   = JSON_AI,
     .json_filename  = {0},
 
@@ -29,7 +29,7 @@ struct AI AI_default = {
     .move             = AI_MOVE_START,
 };
 
-struct AI_State AI_State_default = {
+const struct AI_State AI_State_default = {
     .npcs       = NULL,  /* DARR, list of npcs to control */
     .npc_i      = -1,    /* index of latext entity */
     .decided    = false, /* Did AI decide for latest entity*/
@@ -43,7 +43,7 @@ struct AI_State AI_State_default = {
     },
 };
 
-struct AI_Action AI_Action_default =  {
+const struct AI_Action AI_Action_default =  {
     .target_move     = {-1, -1},
     .target_action   = {-1, -1},
     .action          = AI_ACTION_START,
@@ -327,7 +327,7 @@ tnecs_entity AI_Decide_Next(struct Game *sota) {
 }
 
 /* --- FSM --- */
-AI_Decider AI_Decider_master[AI_PRIORITY_NUM] = {
+const AI_Decider AI_Decider_master[AI_PRIORITY_NUM] = {
     /* AI_PRIORITY_KILL         */ &_AI_Decider_Master_Kill,
     /* AI_PRIORITY_PATROL       */ NULL,
     /* AI_PRIORITY_LOOT         */ NULL,
@@ -339,7 +339,7 @@ AI_Decider AI_Decider_master[AI_PRIORITY_NUM] = {
     /* AI_PRIORITY_MOVE_TO      */ &_AI_Decider_Master_Move_To,
 };
 
-AI_Decider AI_Decider_slave[AI_PRIORITY_NUM] = {
+const AI_Decider AI_Decider_slave[AI_PRIORITY_NUM] = {
     /* AI_PRIORITY_KILL         */ &_AI_Decider_Slave_Kill,
     /* AI_PRIORITY_PATROL       */ NULL,
     /* AI_PRIORITY_LOOT         */ NULL,
@@ -351,7 +351,7 @@ AI_Decider AI_Decider_slave[AI_PRIORITY_NUM] = {
     /* AI_PRIORITY_MOVE_TO      */ NULL,
 };
 
-AI_Doer AI_Act_action[AI_ACTION_NUM] = {
+const AI_Doer AI_Act_action[AI_ACTION_NUM] = {
     /* ITEMS            */ NULL, // TODO
     /* TALK             */ NULL, // TODO
     /* STAFF            */ NULL, // TODO
@@ -379,7 +379,7 @@ AI_Doer AI_Act_action[AI_ACTION_NUM] = {
     /* DEBUG_MAP        */ NULL, /* PC only */
 };
 
-AI_Decider_Move AI_Decider_move[AI_MOVE_NUM] = {
+const AI_Decider_Move AI_Decider_move[AI_MOVE_NUM] = {
     /* AI_MOVE_ALWAYS       */ _AI_Decider_Move_Always,
     /* AI_MOVE_ONCHAPTER    */ _AI_Decider_Move_onChapter,
     /* AI_MOVE_INRANGE      */ _AI_Decider_Move_inRange,
