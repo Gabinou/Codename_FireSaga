@@ -15,7 +15,7 @@ static struct Rendered _Arrow_Decider_End(i32 x_0, i32 y_0, i32 x_1, i32 y_1, i3
 static void _Arrow_Decider(struct Arrow *arrow, i32 point);
 static void _Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in);
 
-struct Arrow Arrow_default = {
+const struct Arrow Arrow_default = {
     .costmap        = NULL,
     .col_len        = 21,
     .row_len        = 25,

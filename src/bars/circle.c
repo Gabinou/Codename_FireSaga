@@ -5,7 +5,7 @@
 #include "utilities.h"
 
 /* --- CIRCLE_BAR --- */
-struct CircleBar CircleBar_default = {
+const struct CircleBar CircleBar_default = {
     .flip = SDL_FLIP_NONE,
 };
 
