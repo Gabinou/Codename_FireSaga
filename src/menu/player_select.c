@@ -15,7 +15,7 @@
 #include "names.h"
 
 /* --- PUT PLAYER_SELECT MENU CONTENT MAKERS INTO FSM --- */
-psm_maker_t menuContentMakers[MENU_PLAYER_SELECT_END] = {
+const psm_maker_t menuContentMakers[MENU_PLAYER_SELECT_END] = {
     /* NULL */        NULL,
     /* UNIT_ACTION */ makeContent_PSM_UNIT_ACTION,
     /* MAP_ACTION */  makeContent_PSM_MAP_ACTION,
@@ -23,7 +23,7 @@ psm_maker_t menuContentMakers[MENU_PLAYER_SELECT_END] = {
     /* STAFF */       makeContent_PSM_STAFF,
 };
 
-struct PlayerSelectMenu PlayerSelectMenu_default = {
+const struct PlayerSelectMenu PlayerSelectMenu_default = {
     .row_height     = ASCII_GLYPH_HEIGHT,
     .menu_padding   = {PSM_PADDING_RIGHT, PSM_PADDING_TOP, PSM_PADDING_LEFT, PSM_PADDING_BOTTOM},
     .update         = true,

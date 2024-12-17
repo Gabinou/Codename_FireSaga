@@ -14,7 +14,7 @@
 #include "unit/loadout.h"
 #include "stb_sprintf.h"
 
-struct Point wsm_cursor_pos[LSM_ELEMS_NUM] = {
+const struct Point wsm_cursor_pos[LSM_ELEMS_NUM] = {
     /* LSM_ELEM_ITEM2 */ {LSM1_X_OFFSET, LSM1_Y_OFFSET},
     /* LSM_ELEM_ITEM2 */ {LSM2_X_OFFSET, LSM2_Y_OFFSET},
     /* LSM_ELEM_ITEM3 */ {LSM3_X_OFFSET, LSM3_Y_OFFSET},
@@ -41,7 +41,7 @@ struct Point  wsm_elem_pos[LSM_ELEMS_NUM] = {
     /* LSM_ELEM_ITEM6 */ {LSM6_X_OFFSET, LSM6_Y_OFFSET},
 };
 
-struct MenuElemDirections wsm_links_start[LSM_ELEMS_NUM] = {
+const struct MenuElemDirections wsm_links_start[LSM_ELEMS_NUM] = {
     /*right, top, left, bottom */
     /* LSM_ELEM_ITEM1 */ {LSM_ELEM_NULL, LSM_ELEM_NULL,  LSM_ELEM_NULL, LSM_ELEM_ITEM2},
     /* LSM_ELEM_ITEM2 */ {LSM_ELEM_NULL, LSM_ELEM_ITEM1, LSM_ELEM_NULL, LSM_ELEM_ITEM3},
@@ -61,7 +61,7 @@ struct MenuElemDirections wsm_links[LSM_ELEMS_NUM] = {
     /* LSM_ELEM_ITEM6 */ {LSM_ELEM_NULL, LSM_ELEM_ITEM5, LSM_ELEM_NULL, LSM_ELEM_NULL},
 };
 
-struct LoadoutSelectMenu LoadoutSelectMenu_default = {
+const struct LoadoutSelectMenu LoadoutSelectMenu_default = {
     .update                 = true,
     .archetype_stronghand   = ITEM_ARCHETYPE_STRONGHAND_ATTACK,
     .archetype_weakhand     = ITEM_ARCHETYPE_WEAKHAND,

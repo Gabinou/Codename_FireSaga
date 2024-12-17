@@ -28,7 +28,7 @@ static void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls,
 static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
                                                SDL_Renderer *renderer);
 
-struct PopUp_Loadout_Stats PopUp_Loadout_Stats_default = {
+const struct PopUp_Loadout_Stats PopUp_Loadout_Stats_default = {
     .distance                = -1,
     .tophand_stronghand      = true, /* Tophand should basically always be stronghand */
 };

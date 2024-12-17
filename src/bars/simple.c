@@ -1,7 +1,7 @@
 #include "bars/simple.h"
 #include "palette.h"
 
-struct SimpleBar SimpleBar_default = {
+const struct SimpleBar SimpleBar_default = {
     .fill   = 1.0f,
     .len    = 10,  /* [pixels] */
     .height = SIMPLEBAR_HEIGHT,  /* [pixels] */

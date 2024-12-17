@@ -10,7 +10,7 @@
 #define MUSIC_PREXIF "../", "assets", "music"
 #define MUSIC_DEBUG_FILE "FE6_FortheCommanders_NESRemix.wav"
 #define MUSIC_DEBUG_PATH PATH_JOIN(MUSIC_PREXIF, MUSIC_DEBUG_FILE)
-struct s8 music_path[SOTA_MUSIC_NUM] = {
+const s8 music_path[SOTA_MUSIC_NUM] = {
     /* SOTA_MUSIC_DEBUG */ s8_literal(MUSIC_DEBUG_PATH),
 };
 
@@ -37,7 +37,7 @@ Mix_Music *Music_Load_Debug(void) {
 #define SOUNDFX_CURSOR_PATH PATH_JOIN(SOUNDF_PREXIF, "Select 5.wav")
 #define SOUNDFX_NEXT_TURN_PATH PATH_JOIN(SOUNDF_PREXIF, "Next Turn.wav")
 
-struct s8 soundfx_path[SOTA_SOUNDFX_NUM] = {
+const s8 soundfx_path[SOTA_SOUNDFX_NUM] = {
     /* SOTA_SOUNDFX_CURSOR      */ s8_literal(SOUNDFX_CURSOR_PATH),
     /* SOTA_SOUNDFX_NEXT_TURN   */ s8_literal(SOUNDFX_NEXT_TURN_PATH),
 };

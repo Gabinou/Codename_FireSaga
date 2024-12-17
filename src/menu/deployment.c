@@ -83,14 +83,14 @@ static void _DeploymentMenu_Draw_Headers_P2(DeploymentMenu *dm, SDL_Renderer *r)
 static void _DeploymentMenu_Draw_Headers_P3(DeploymentMenu *dm, SDL_Renderer *r);
 static void _DeploymentMenu_Draw_Headers_P4(DeploymentMenu *dm, SDL_Renderer *r);
 
-fsm_DeploymentMenu_Draw fsm_DeploymentMenu_Draw_Pages[DM_PAGE_NUM] = {
+const fsm_DeploymentMenu_Draw fsm_DeploymentMenu_Draw_Pages[DM_PAGE_NUM] = {
     &_DeploymentMenu_Draw_P1,
     &_DeploymentMenu_Draw_P2,
     &_DeploymentMenu_Draw_P3,
     &_DeploymentMenu_Draw_P4
 };
 
-DeploymentMenu DeploymentMenu_default = {
+const DeploymentMenu DeploymentMenu_default = {
     .update             = true,
     .pos                = {-1, -1},
     .world              = NULL,

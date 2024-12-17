@@ -49,13 +49,9 @@
 #include "text.h"
 #include "convoy.h"
 #include "utilities.h"
-
-// #ifndef STB_SPRINTF_IMPLEMENTATION
-// #define STB_SPRINTF_IMPLEMENTATION
 #include "stb_sprintf.h"
-// #endif /* STB_SPRINTF_IMPLEMENTATION */
 
-struct Game Game_default = {
+const struct Game Game_default = {
     .cursor_lastpos         = {1, 1},
     .moved_direction        = SOTA_DIRECTION_NULL,
     .iscursor               = true,

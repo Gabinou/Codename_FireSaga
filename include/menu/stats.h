@@ -361,11 +361,11 @@ enum STATS_MENU_COLOR {
 /* --- ELEMENTS --- */
 #define STATSMENU_BUFFER_LEN 128
 
-extern const struct MenuElemDirections sm_links[STATS_MENU_ELEMS_NUM];
+extern struct MenuElemDirections sm_links[STATS_MENU_ELEMS_NUM];
 extern const char stats_menu_description[STATS_MENU_ELEMS_NUM][STATSMENU_BUFFER_LEN];
 
-extern const struct Point sm_elem_pos[STATS_MENU_ELEMS_NUM];
-extern const struct Point stats_menu_elem_box[STATS_MENU_ELEMS_NUM];
+extern struct Point sm_elem_pos[STATS_MENU_ELEMS_NUM];
+extern struct Point stats_menu_elem_box[STATS_MENU_ELEMS_NUM];
 
 extern const int status_offset_x[UNIT_STATUS_END];
 extern const int status_offset_y[UNIT_STATUS_END];

@@ -119,7 +119,7 @@ void Game_Party_Free(struct Game *sota) {
 }
 
 tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
-                                      struct Point in_pos, struct Unit *unit_init) {
+                                      struct Point in_pos, const struct Unit *const unit_init) {
     SDL_assert((unit_id > UNIT_ID_START) && (unit_id < UNIT_ID_END));
 
     /* Create Unit entity from previously loaded party unit. */

@@ -6,13 +6,13 @@
 #include "nmath.h"
 #include "jsonio.h"
 
-struct Map_condition Map_condition_default = {
+const struct Map_condition Map_condition_default = {
     .min     =   -1,
     .at      =   -1,
     .max     =   -1,
 };
 
-struct Map_condition Map_condition_main_char_loss = {
+const struct Map_condition Map_condition_main_char_loss = {
     .min     =   -1,
     .at      =   -1,
     .max     =   -1,
@@ -20,7 +20,7 @@ struct Map_condition Map_condition_main_char_loss = {
     .lose    =   true,
 };
 
-struct Map_condition Map_condition_rout_loss = {
+const struct Map_condition Map_condition_rout_loss = {
     .min     =   -1,
     .at      =   -1,
     .max     =   -1,
@@ -28,7 +28,7 @@ struct Map_condition Map_condition_rout_loss = {
     .lose    =   true,
 };
 
-struct Map_condition Map_condition_debug_map_loss = {
+const struct Map_condition Map_condition_debug_map_loss = {
     .min     =   -1,
     .at      =   -1,
     .max     =   -1,
@@ -36,7 +36,7 @@ struct Map_condition Map_condition_debug_map_loss = {
     .lose    =   true,
 };
 
-struct Map_condition Map_condition_boss_win = {
+const struct Map_condition Map_condition_boss_win = {
     .min     =   -1,
     .at      =   -1,
     .max     =   -1,

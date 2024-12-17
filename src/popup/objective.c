@@ -8,7 +8,7 @@
 #include "pixelfonts.h"
 #include "stb_sprintf.h"
 
-struct PopUp_Objective PopUp_Objective_default =  {
+const struct PopUp_Objective PopUp_Objective_default =  {
     .objective =       NULL,
     .sub_objective =   NULL,
     .texture =         NULL,

@@ -60,76 +60,76 @@ struct CRT { /* Cathode-Ray Tube filter for pretty pixels */
 };
 extern const struct CRT CRT_default;
 
-extern const void CRT_Init(struct CRT *in_crt, uint_fast32_t width, uint_fast32_t height);
-extern const void CRT_Free(struct CRT *in_crt);
+void CRT_Init(struct CRT *in_crt, uint_fast32_t width, uint_fast32_t height);
+void CRT_Free(struct CRT *in_crt);
 
 /* CRT_FILTER */
-extern const void CRT_Filter(struct CRT *in_crt, SDL_Texture *target,
-                             SDL_Renderer *renderer);
+void CRT_Filter(struct CRT *in_crt, SDL_Texture *target,
+                SDL_Renderer *renderer);
 
-extern const void CRT_Target2Surface(struct CRT *in_crt);
+void CRT_Target2Surface(struct CRT *in_crt);
 
-extern const void CRT_Shadow_Mask(u8 *mask, uint_fast32_t size_x,
-                                  uint_fast32_t size_y,
-                                  u8 cell_height, u8 cell_width, u8 Hblank,
-                                  u8 Vblank,
-                                  u8 stagger, uint_fast32_t x_offset, uint_fast32_t y_offset);
-extern const void CRT_Shadow_Filter(u8 *mask, float *color, uint_fast32_t size_x,
-                                    uint_fast32_t size_y);
+void CRT_Shadow_Mask(u8 *mask, uint_fast32_t size_x,
+                     uint_fast32_t size_y,
+                     u8 cell_height, u8 cell_width, u8 Hblank,
+                     u8 Vblank,
+                     u8 stagger, uint_fast32_t x_offset, uint_fast32_t y_offset);
+void CRT_Shadow_Filter(u8 *mask, float *color, uint_fast32_t size_x,
+                       uint_fast32_t size_y);
 
 /* pixels/floats conversion */
-extern const void CRT_Pixels2Floats(struct FloatRGB *floatrgb, SDL_Surface *surface,
-                                    uint_fast32_t width, uint_fast32_t height);
-extern const SDL_Surface *CRT_Floats2Pixels(struct FloatRGB *floatrgb, uint_fast32_t width,
-                                            uint_fast32_t height);
+void CRT_Pixels2Floats(struct FloatRGB *floatrgb, SDL_Surface *surface,
+                       uint_fast32_t width, uint_fast32_t height);
+SDL_Surface *CRT_Floats2Pixels(struct FloatRGB *floatrgb, uint_fast32_t width,
+                               uint_fast32_t height);
 
-extern const float Scanline_Brightness(float c, float n);
+float Scanline_Brightness(float c, float n);
 
 /* LANCZOS FILTER */
-extern const float Lanczos_Kernel(float x, int_fast8_t a);
-extern const void Lanczos_Filter_1D(float *samples, float *filtered,
-                                    uint_fast32_t size_samples,
-                                    uint_fast32_t size_filtered, int_fast8_t a);
-extern const void Lanczos_Filter_2D(float *samples, float *filtered,
-                                    uint_fast32_t size_samples_x,
-                                    uint_fast32_t size_samples_y, uint_fast32_t size_filtered_x,
-                                    uint_fast32_t size_filtered_y,
-                                    int_fast8_t a);
+float Lanczos_Kernel(float x, int_fast8_t a);
+void Lanczos_Filter_1D(float *samples, float *filtered,
+                       uint_fast32_t size_samples,
+                       uint_fast32_t size_filtered, int_fast8_t a);
+void Lanczos_Filter_2D(float *samples, float *filtered,
+                       uint_fast32_t size_samples_x,
+                       uint_fast32_t size_samples_y, uint_fast32_t size_filtered_x,
+                       uint_fast32_t size_filtered_y,
+                       int_fast8_t a);
 
 /* NEAREST FILTER */
-extern const void Nearest_Scanline_Filter_2D(float *samples, float *filtered,
-                                             uint_fast32_t size_samples_x, uint_fast32_t size_samples_y, uint_fast32_t size_filtered_x,
-                                             uint_fast32_t size_filtered_y);
+void Nearest_Scanline_Filter_2D(float *samples, float *filtered,
+                                uint_fast32_t size_samples_x, uint_fast32_t size_samples_y, uint_fast32_t size_filtered_x,
+                                uint_fast32_t size_filtered_y);
 
 /* GAUSSIAN BLUR */
-extern const void blur( float *input, float *output, float *temp, i32 w,
-                        i32 h,
-                        float sigma, i32 n_boxes);
+void blur( float *input, float *output, float *temp, i32 w,
+           i32 h,
+           float sigma, i32 n_boxes);
 
-extern const void gaussBlur_4(float *scl, float *tcl, uint_fast32_t width,
-                              uint_fast32_t height,
-                              float r, uint_fast32_t n);
-extern const void boxesForGauss(uint_fast32_t *sizes, float sigma, uint_fast32_t n);
-extern const void boxBlur_4(float *scl, float *tcl, uint_fast32_t width, uint_fast32_t height,
-                            float r);
-extern const void boxBlurT_4(float *scl, float *tcl, uint_fast32_t width,
-                             uint_fast32_t height,
-                             float r);
-extern const void boxBlurH_4(float *scl, float *tcl, uint_fast32_t width,
-                             uint_fast32_t height,
-                             float r);
+void gaussBlur_4(float *scl, float *tcl, uint_fast32_t width,
+                 uint_fast32_t height,
+                 float r, uint_fast32_t n);
+void boxesForGauss(uint_fast32_t *sizes, float sigma, uint_fast32_t n);
+void boxBlur_4(float *scl, float *tcl, uint_fast32_t width, uint_fast32_t height,
+               float r);
+void boxBlurT_4(float *scl, float *tcl, uint_fast32_t width,
+                uint_fast32_t height,
+                float r);
+void boxBlurH_4(float *scl, float *tcl, uint_fast32_t width,
+                uint_fast32_t height,
+                float r);
 
 /* BLOOM */
-extern const void CRT_Bloom(float *color, uint_fast32_t width, uint_fast32_t height,
-                            float radius);
-extern const void CRT_Bloom_Correction_Denom(float *color, uint_fast32_t size);
-extern const void CRT_Bloom_Correction_Enum(float *color, uint_fast32_t size);
-extern const void CRT_Bloom_Correction(float *color, uint_fast32_t size);
-extern const void CRT_Gamma_Correction(float *color, uint_fast32_t size);
-extern const void CRT_Gamma_Uncorrection(float *color, uint_fast32_t size);
+void CRT_Bloom(float *color, uint_fast32_t width, uint_fast32_t height,
+               float radius);
+void CRT_Bloom_Correction_Denom(float *color, uint_fast32_t size);
+void CRT_Bloom_Correction_Enum(float *color, uint_fast32_t size);
+void CRT_Bloom_Correction(float *color, uint_fast32_t size);
+void CRT_Gamma_Correction(float *color, uint_fast32_t size);
+void CRT_Gamma_Uncorrection(float *color, uint_fast32_t size);
 
 /* CLAMPING */
-extern const void CRT_Clamping(float *R, float *G, float *B, uint_fast32_t width,
-                               uint_fast32_t height);
+void CRT_Clamping(float *R, float *G, float *B, uint_fast32_t width,
+                  uint_fast32_t height);
 
 #endif /* CRT_H */

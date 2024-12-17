@@ -9,7 +9,7 @@
 #include "names.h"
 
 /* Note: magic weapons EXPLODE if infused */
-struct Weapon Weapon_default = {
+const struct Weapon Weapon_default = {
     .jsonio_header.json_element   = JSON_WEAPON,
 
     .handedness   = WEAPON_HAND_ANY,

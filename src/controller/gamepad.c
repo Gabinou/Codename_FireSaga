@@ -8,7 +8,7 @@
 // - mapped_button: user determining what the physical button should do
 
 /* Gamecube controller */
-struct GamepadInputMap GamepadInputMap_gamecube = {
+const struct GamepadInputMap GamepadInputMap_gamecube = {
     /*  1. L/R buttons -> TriggerLeft and TriggerRight  */
     /*  2. Z button    -> RightShoulder                 */
     /*<sota_button>     = <mapped_button> */
@@ -35,7 +35,7 @@ struct GamepadInputMap GamepadInputMap_gamecube = {
 };
 
 /* Switch Pro controller */
-struct GamepadInputMap GamepadInputMap_switch_pro = {
+const struct GamepadInputMap GamepadInputMap_switch_pro = {
     /*<sota_button>     = <mapped_button> */
     .axis_left_x        = SDL_CONTROLLER_AXIS_LEFTX,
     .axis_left_y        = SDL_CONTROLLER_AXIS_LEFTY,
@@ -61,7 +61,7 @@ struct GamepadInputMap GamepadInputMap_switch_pro = {
 };
 
 /* Generic gamepad */
-struct GamepadInputMap GamepadInputMap_default = {
+const struct GamepadInputMap GamepadInputMap_default = {
     /*<sota_button>     = <mapped_button> */
     .axis_left_x        = SDL_CONTROLLER_AXIS_LEFTX,
     .axis_left_y        = SDL_CONTROLLER_AXIS_LEFTY,
@@ -85,7 +85,7 @@ struct GamepadInputMap GamepadInputMap_default = {
     .trigger_right      = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
 };
 
-char sdl_button_names[SDL_CONTROLLER_BUTTON_MAX][SDL_BUTTON_NAME_MAX_LEN] = {
+const char sdl_button_names[SDL_CONTROLLER_BUTTON_MAX][SDL_BUTTON_NAME_MAX_LEN] = {
     "SDL_CONTROLLER_BUTTON_A",
     "SDL_CONTROLLER_BUTTON_B",
     "SDL_CONTROLLER_BUTTON_X",
@@ -109,7 +109,7 @@ char sdl_button_names[SDL_CONTROLLER_BUTTON_MAX][SDL_BUTTON_NAME_MAX_LEN] = {
     "SDL_CONTROLLER_BUTTON_TOUCHPAD"
 };
 
-char sota_button_names[SOTA_BUTTON_END][SOTA_BUTTON_NAME_MAX_LEN] = {
+const char sota_button_names[SOTA_BUTTON_END][SOTA_BUTTON_NAME_MAX_LEN] = {
     "SOTA_BUTTON_DPAD_RIGHT",
     "SOTA_BUTTON_DPAD_UP",
     "SOTA_BUTTON_DPAD_DOWN",
@@ -127,7 +127,7 @@ char sota_button_names[SOTA_BUTTON_END][SOTA_BUTTON_NAME_MAX_LEN] = {
     "SOTA_BUTTON_KEYBOARD_SPACE",
 };
 
-char sdl_axis_names[SDL_CONTROLLER_AXIS_MAX][AXIS_NAME_MAX_LEN] = {
+const char sdl_axis_names[SDL_CONTROLLER_AXIS_MAX][AXIS_NAME_MAX_LEN] = {
     "SDL_CONTROLLER_AXIS_LEFTX",
     "SDL_CONTROLLER_AXIS_LEFTY",
     "SDL_CONTROLLER_AXIS_RIGHTX",
@@ -136,13 +136,13 @@ char sdl_axis_names[SDL_CONTROLLER_AXIS_MAX][AXIS_NAME_MAX_LEN] = {
     "SDL_CONTROLLER_AXIS_TRIGGERRIGHT",
 };
 
-char sota_input_names[SOTA_INPUT_END][SOTA_INPUT_NAME_MAX_LEN] = {
+const char sota_input_names[SOTA_INPUT_END][SOTA_INPUT_NAME_MAX_LEN] = {
 #define REGISTER_ENUM(x, y) "SOTA_INPUT_##x",
 #include "names/input.h"
 };
 #undef REGISTER_ENUM
 
-struct controllerGamepad controllerGamepad_default = {
+const struct controllerGamepad controllerGamepad_default = {
     .controller_type    = CONTROLLER_GAMEPAD,
     .controllers_len    =    2,
     .deadzone_joystick  = 8000,

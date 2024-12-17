@@ -5,12 +5,12 @@
 #include "nmath.h"
 
 /* No requirements */
-struct Conditions Conditions_default = {0};
+const struct Conditions Conditions_default = {0};
 
 /* Everyone alive at start      */
 /* No one dead at start         */
 /* No one recruited at start    */
-struct Conditions Conditions_Game_start = {
+const struct Conditions Conditions_Game_start = {
     .alive      = {0xFFFFFFFF},
 };
 

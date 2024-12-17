@@ -34,17 +34,14 @@
 #include "unit/stats.h"
 #include "unit/mount.h"
 #include "unit/bonus.h"
-// #ifndef STB_SPRINTF_IMPLEMENTATION
-// #define STB_SPRINTF_IMPLEMENTATION
 #include "stb_sprintf.h"
-// #endif /* STB_SPRINTF_IMPLEMENTATION */
 
-NewMap NewMap_default = {
+const NewMap NewMap_default = {
     .tilesize   = {SOTA_TILESIZE, SOTA_TILESIZE},
     .stack_mode = MAP_SETTING_STACK_DANGERMAP,
 };
 
-Map Map_default = {
+const Map Map_default = {
     .json_element           = JSON_MAP,
     .show_icons             = true,
     .cost_multiplier        =  1,

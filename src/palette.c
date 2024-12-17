@@ -7,32 +7,32 @@
 #include "platform.h"
 #include "stb_sprintf.h"
 
-SDL_Palette **sota_palettes                    = NULL;
+SDL_Palette **sota_palettes                     = NULL;
 
-SDL_Palette *palette_NES                       = NULL;
-SDL_Palette *palette_NES_enemy                 = NULL;
-SDL_Palette *palette_NES_filter_green          = NULL;
-SDL_Palette *palette_NES_filter_darkredwshadow = NULL;
-SDL_Palette *palette_NES_filter_darkred        = NULL;
-SDL_Palette *palette_NES_filter_blue           = NULL;
-SDL_Palette *palette_NES_filter_red            = NULL;
-SDL_Palette *palette_NES_night                 = NULL;
-SDL_Palette *palette_NES_shadow                = NULL;
-SDL_Palette *palette_NES_darken                = NULL;
-SDL_Palette *palette_NES_lighten               = NULL;
-SDL_Palette *palette_NES_lightenmore           = NULL;
-SDL_Palette *palette_NES_purple                = NULL;
+SDL_Palette *palette_NES                        = NULL;
+SDL_Palette *palette_NES_enemy                  = NULL;
+SDL_Palette *palette_NES_filter_green           = NULL;
+SDL_Palette *palette_NES_filter_darkredwshadow  = NULL;
+SDL_Palette *palette_NES_filter_darkred         = NULL;
+SDL_Palette *palette_NES_filter_blue            = NULL;
+SDL_Palette *palette_NES_filter_red             = NULL;
+SDL_Palette *palette_NES_night                  = NULL;
+SDL_Palette *palette_NES_shadow                 = NULL;
+SDL_Palette *palette_NES_darken                 = NULL;
+SDL_Palette *palette_NES_lighten                = NULL;
+SDL_Palette *palette_NES_lightenmore            = NULL;
+SDL_Palette *palette_NES_purple                 = NULL;
 
-SDL_Palette *palette_SOTA                      = NULL;
-SDL_Palette *palette_SOTA_purple               = NULL;
-SDL_Palette *palette_SOTA_filter_red           = NULL;
-SDL_Palette *palette_SOTA_filter_green         = NULL;
-SDL_Palette *palette_SOTA_filter_blue          = NULL;
+SDL_Palette *palette_SOTA                       = NULL;
+SDL_Palette *palette_SOTA_purple                = NULL;
+SDL_Palette *palette_SOTA_filter_red            = NULL;
+SDL_Palette *palette_SOTA_filter_green          = NULL;
+SDL_Palette *palette_SOTA_filter_blue           = NULL;
 SDL_Palette *palette_SOTA_filter_darkredwshadow = NULL;
-SDL_Palette *palette_SOTA_shadow               = NULL;
-SDL_Palette *palette_SOTA_lighten              = NULL;
-SDL_Palette *palette_SOTA_darken               = NULL;
-SDL_Palette *palette_SOTA_enemy                = NULL;
+SDL_Palette *palette_SOTA_shadow                = NULL;
+SDL_Palette *palette_SOTA_lighten               = NULL;
+SDL_Palette *palette_SOTA_darken                = NULL;
+SDL_Palette *palette_SOTA_enemy                 = NULL;
 
 
 void Palettes_Load(void) {

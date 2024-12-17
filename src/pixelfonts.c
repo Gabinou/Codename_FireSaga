@@ -5,7 +5,7 @@
 #include "structs.h"
 #include "utilities.h"
 
-u8 pixelfont_big_y_offset[ASCII_GLYPH_NUM] = {
+const u8 pixelfont_big_y_offset[ASCII_GLYPH_NUM] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -24,7 +24,7 @@ u8 pixelfont_big_y_offset[ASCII_GLYPH_NUM] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 };
 
-u8 pixelfont_y_offset[ASCII_GLYPH_NUM] = {
+const u8 pixelfont_y_offset[ASCII_GLYPH_NUM] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -43,7 +43,7 @@ u8 pixelfont_y_offset[ASCII_GLYPH_NUM] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 };
 
-struct PixelFont PixelFont_default =  {
+const struct PixelFont PixelFont_default =  {
     .glyph_space        = PIXELFONT_GLYPH_SPACE,
     .word_space         = PIXELFONT_WORD_SPACE,
     .glyph_width        = ASCII_GLYPH_WIDTH,
@@ -56,7 +56,7 @@ struct PixelFont PixelFont_default =  {
     .white              = SOTA_WHITE,
 };
 
-struct PixelFont TextureFont_default =  {
+const struct PixelFont TextureFont_default =  {
     .glyph_space        = TEXTUREFONT_GLYPH_SPACE,
     .word_space         = TEXTUREFONT_WORD_SPACE,
     .glyph_width        = TEXTUREFONT_GLYPH_WIDTH,

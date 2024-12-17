@@ -14,7 +14,7 @@
 
 dstrect_func_t dstrect_funcs[TWO_D][TWO_D];
 
-int map_unit_offsets[MAP_UNIT_LOOP_NUM][TWO_D] = {
+const int map_unit_offsets[MAP_UNIT_LOOP_NUM][TWO_D] = {
     /* MAP_UNIT_LOOP_IDLE */     {0, 1},
     /* MAP_UNIT_LOOP_TAUNT */    {0, 1},
     /* MAP_UNIT_LOOP_ITEM */     {0, 1},
@@ -31,11 +31,11 @@ int map_unit_offsets[MAP_UNIT_LOOP_NUM][TWO_D] = {
 };
 
 /* --- Defaults --- */
-struct Spritesheet Spritesheet_default = {
+const struct Spritesheet Spritesheet_default = {
     .json_element   = JSON_SPRITE,
 };
 
-struct Sprite Sprite_default = {
+const struct Sprite Sprite_default = {
     .json_element   = JSON_SPRITE,
     .srcrect        = { 0,  0, 32, 32}, /* x,y,w,h */
     .dstrect        = { 0,  0, 32, 32}, /* x,y,w,h */

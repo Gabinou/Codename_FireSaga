@@ -11,7 +11,7 @@
 #include "pixelfonts.h"
 #include "stb_sprintf.h"
 
-struct PopUp_Tile PopUp_Tile_default = {
+const struct PopUp_Tile PopUp_Tile_default = {
     .update           = true,
     .corner           = SOTA_DIRECTION_BOTLEFT,
     .cursor_limit_min = {-1, -1},

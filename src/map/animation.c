@@ -3,12 +3,12 @@
 #include "sprite.h"
 #include "events.h"
 
-struct CombatAnimation CombatAnimation_default = {
+const struct CombatAnimation CombatAnimation_default = {
     .pause_before_ms    =   10,
     .pause_after_ms     = 1000,
 };
 
-struct MapAnimation MapAnimation_default = {
+const struct MapAnimation MapAnimation_default = {
     .time_ns         = SOTA_ns,
 };
 

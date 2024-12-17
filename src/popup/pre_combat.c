@@ -28,7 +28,7 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
 static void _PreCombatPopup_Draw_Stats_Total( struct PreCombatPopup *pcp, SDL_Renderer *r);
 static void _PreCombatPopup_Draw_Stats_Simple(struct PreCombatPopup *pcp, SDL_Renderer *r);
 
-struct PreCombatPopup PreCombatPopup_default =  {
+const struct PreCombatPopup PreCombatPopup_default =  {
     .pos = {0},
     .texture                = NULL,
     .texture_weapons        = NULL,
@@ -643,7 +643,7 @@ static void _PreCombatPopup_Draw_Doubling(struct PreCombatPopup *pcp, SDL_Render
     Utilities_DrawColor_Reset(renderer);
 }
 
-pcp_draw_stats_t pcp_draw_stats[PCP_MODE_NUM] = {
+const pcp_draw_stats_t pcp_draw_stats[PCP_MODE_NUM] = {
     /* NULL     */ NULL,
     /* TOTAL    */ _PreCombatPopup_Draw_Stats_Total,
     /* SIMPLE   */ _PreCombatPopup_Draw_Stats_Simple,

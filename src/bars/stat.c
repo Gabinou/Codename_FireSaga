@@ -2,7 +2,7 @@
 #include "bars/stat.h"
 #include "palette.h"
 
-u8 statbar_highlights[STATBAR_HIGHLIGHT_NUM] = {4, 12, 18, 22, 25, 26, 32, 35};
+const u8 statbar_highlights[STATBAR_HIGHLIGHT_NUM] = {4, 12, 18, 22, 25, 26, 32, 35};
 
 void StatBar_Init(struct SimpleBar *statbar, u8 stat, u8 cap, int posx,
                   int posy) {

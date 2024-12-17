@@ -3,7 +3,7 @@
 #include "palette.h"
 #include "utilities.h"
 
-SliderBar SliderBar_default = {
+const SliderBar SliderBar_default = {
     .len        = SLIDER_BAR_MIN_LEN,
     .increment  = SLIDER_BAR_INCREMENTS,
 };

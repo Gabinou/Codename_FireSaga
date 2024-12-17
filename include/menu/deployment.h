@@ -226,9 +226,9 @@ typedef struct DeploymentMenu {
 extern const DeploymentMenu DeploymentMenu_default;
 
 /* --- ELEMENTS --- */
-extern const MenuElemDirections dm_links[DM_ELEM_NUM];
-extern const Point dm_elem_pos[DM_ELEM_NUM];
-extern const Point dm_elem_box[DM_ELEM_NUM];
+extern MenuElemDirections dm_links[DM_ELEM_NUM];
+extern Point dm_elem_pos[DM_ELEM_NUM];
+extern Point dm_elem_box[DM_ELEM_NUM];
 
 /* --- Constructors/Destructors --- */
 DeploymentMenu *DeploymentMenu_Alloc(void);

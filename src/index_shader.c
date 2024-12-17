@@ -13,9 +13,9 @@
 #include "stb_sprintf.h"
 // #endif /* STB_SPRINTF_IMPLEMENTATION */
 
-struct Index_Shader Index_Shader_default = {0};
+const struct Index_Shader Index_Shader_default = {0};
 
-struct Tilemap_Shader Tilemap_Shader_default = {0};
+const struct Tilemap_Shader Tilemap_Shader_default = {0};
 
 /* --- STATIC FUNCTIONS --- */
 static void _Index_Shade_Rect(u8 *to, SDL_Surface *unlocked_surface,

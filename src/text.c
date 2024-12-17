@@ -8,7 +8,7 @@
     #include "stb_sprintf.h"
 #endif /* STB_SPRINTF_IMPLEMENTATION */
 
-struct Text Text_default = {
+const struct Text Text_default = {
     .visible        = true,
     .update         = true,
 };

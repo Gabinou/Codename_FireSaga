@@ -57,7 +57,8 @@ void test_load_save(int argc, char *argv[]) {
     struct Game *sota           = Game_New(settings);
     nourstest_true(sota->state      == GAME_STATE_Title_Screen);
     nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
-    sota->map = &Map_default;
+    struct Map map = Map_default;
+    sota->map = &map;
     sota->map->row_len = 21;
     sota->map->col_len = 21;
 

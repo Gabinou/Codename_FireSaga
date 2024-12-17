@@ -9,7 +9,7 @@ void matrix_print_float(float *array, size_t row_len, size_t col_len) {
     }
 }
 
-struct CRT CRT_default = {
+const struct CRT CRT_default = {
     .unfiltered = NULL,
     .filtered = NULL,
     .unfiltered_text = NULL,

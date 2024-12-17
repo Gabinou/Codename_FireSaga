@@ -15,8 +15,8 @@ struct Convoy;
 
 /* --- EVENT DATA ENTITIES --- */
 // todo: put those globals in game
-extern const tnecs_entity *data1_entity;
-extern const tnecs_entity *data2_entity;
+extern tnecs_entity *data1_entity;
+extern tnecs_entity *data2_entity;
 
 /* --- CORE --- */
 void Event_Emit(   const char *em, u32 et, i32 ec, void *d1, void *d2);
@@ -32,17 +32,17 @@ tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code);
 /* --- EVENT NAMES --- */
 /* -- Declaration -- */
 #define NO_EVENT 0
-extern const u32 event_Start;
-#define REGISTER_ENUM(x, y) extern const u32 event_##x;
+extern u32 event_Start;
+#define REGISTER_ENUM(x, y) extern u32 event_##x;
 #include "names/events.h"
 #undef REGISTER_ENUM
-#define REGISTER_ENUM(x, y) extern const u32 event_Input_##x;
+#define REGISTER_ENUM(x, y) extern u32 event_Input_##x;
 #include "names/input.h"
 #undef REGISTER_ENUM
-extern const u32 event_End;
+extern u32 event_End;
 
 /* -- Constructor/Destructors -- */
-extern const s8 *event_names;
+extern s8 *event_names;
 void Events_Names_Declare(void);
 void Events_Names_Alloc(void);
 void Events_Names_Free(void);
@@ -58,7 +58,7 @@ void Events_Names_Free(void);
 
 /* -- Receiver types -- */
 typedef void (* receiver_t)(struct Game *, SDL_Event *);
-extern const struct dtab *receivers_dtab;
+extern struct dtab *receivers_dtab;
 
 /* -- Constructor/Destructors -- */
 void Events_Receivers_Free(void);

@@ -2,13 +2,13 @@
 #include "slider.h"
 #include "nmath.h"
 
-struct Slider Slider_default = {
+const struct Slider Slider_default = {
     .slidetype =       SLIDETYPE_NONE,
     .slide_num =       10,
     .slidefactors =    {2.0f, 2.0f}, // for SLIDETYPE_GEOMETRIC
 };
 
-struct SliderOffscreen SliderOffscreen_default = {0};
+const struct SliderOffscreen SliderOffscreen_default = {0};
 
 void Slider_Start(struct Slider *slider, struct Point *pos,
                   struct Point *target) {

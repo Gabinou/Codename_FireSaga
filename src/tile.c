@@ -2,31 +2,31 @@
 #include "cJSON.h"
 #include "jsonio.h"
 
-struct Mobj_Link Mobj_Link_default = {
+const struct Mobj_Link Mobj_Link_default = {
     .num_linked     = 0,
     .relpos_linked  = NULL,
     .abspos_linked  = NULL,
 };
 
-struct Chest Chest_default = {
+const struct Chest Chest_default = {
     .item =    0,
     .gold = 5000,
 };
 
-struct Breakable Breakable_default = {
+const struct Breakable Breakable_default = {
     .hp  = 50,
     .def = 10,
     .res = 10,
 };
 
-struct Door Door_default = {
+const struct Door Door_default = {
     .chapter_open   = 0,
     .chapter_close  = 0,
     .event          = 0,
     .scene          = 0,
 };
 
-struct Tile Tile_default = {
+const struct Tile Tile_default = {
     .json_element   = JSON_TILE,
     .inside         = false,
     .name           = {0},

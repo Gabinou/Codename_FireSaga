@@ -1,7 +1,7 @@
 
 #include "n9patch.h"
 
-struct n9Patch n9Patch_default =  {
+const struct n9Patch n9Patch_default =  {
     .scale =         {1, 1},
     .patch_pixels =  {8, 8},
     .size_patches =  {3, 3},

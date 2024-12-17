@@ -13,7 +13,7 @@
 #include "unit/equipment.h"
 #include "stb_sprintf.h"
 
-struct PopUp_Unit PopUp_Unit_default = {
+const struct PopUp_Unit PopUp_Unit_default = {
     .update           = true,
     .corner           = SOTA_DIRECTION_TOPLEFT,
     .cursor_limit_min = {-1, -1},

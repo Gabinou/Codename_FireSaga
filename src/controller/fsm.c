@@ -4,7 +4,7 @@
 #include "events.h"
 
 /* --- ACTIONS --- */
-fsm_Input_s_t fsm_Input_s[GAME_STATE_NUM] = {
+const fsm_Input_s_t fsm_Input_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
     /* Scene_Talk */     &fsm_Input_sCUTSCENE,
@@ -17,7 +17,7 @@ fsm_Input_s_t fsm_Input_s[GAME_STATE_NUM] = {
 };
 
 /* --- SUB-ACTIONS --- */
-fsm_Input_s_t fsm_Input_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
+const fsm_Input_s_t fsm_Input_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            &fsm_Input_sGmpMap_ssMenu,

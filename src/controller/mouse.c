@@ -4,7 +4,7 @@
 #include "structs.h"
 #include "game/game.h"
 
-struct MouseInputMap MouseInputMap_default = {
+const struct MouseInputMap MouseInputMap_default = {
     .accept          = SDL_BUTTON_LEFT,
     .cancel          = SDL_BUTTON_RIGHT,
     .stats           = SDL_BUTTON_MIDDLE,

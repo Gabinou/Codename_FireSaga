@@ -7,7 +7,7 @@
 #include "unit/equipment.h"
 #include "utilities.h"
 
-struct Point trade_menu_cursor_pos[TRADE_MENU_ELEMS_NUM] = {
+const struct Point trade_menu_cursor_pos[TRADE_MENU_ELEMS_NUM] = {
     /* TM_ELEM_ITEM1_A */   {LSM1_X_OFFSET, LSM1_Y_OFFSET},
     /* TM_ELEM_ITEM2_A */   {LSM2_X_OFFSET, LSM2_Y_OFFSET},
     /* TM_ELEM_ITEM3_A */   {LSM3_X_OFFSET, LSM3_Y_OFFSET},
@@ -22,7 +22,7 @@ struct Point trade_menu_cursor_pos[TRADE_MENU_ELEMS_NUM] = {
     /* TM_ELEM_ITEM6_P */   {LSM6_X_OFFSET, LSM6_Y_OFFSET},
 };
 
-struct Point trade_menu_elem_box[TRADE_MENU_ELEMS_NUM] = {
+const struct Point trade_menu_elem_box[TRADE_MENU_ELEMS_NUM] = {
     /* TM_ELEM_ITEM1_A */   {SOTA_TILESIZE,  SOTA_TILESIZE},
     /* TM_ELEM_ITEM2_A */   {SOTA_TILESIZE,  SOTA_TILESIZE},
     /* TM_ELEM_ITEM3_A */   {SOTA_TILESIZE,  SOTA_TILESIZE},
@@ -37,7 +37,7 @@ struct Point trade_menu_elem_box[TRADE_MENU_ELEMS_NUM] = {
     /* TM_ELEM_ITEM6_P */   {SOTA_TILESIZE,  SOTA_TILESIZE},
 };
 
-struct Point trade_menu_elem_pos[TRADE_MENU_ELEMS_NUM] = {
+const struct Point trade_menu_elem_pos[TRADE_MENU_ELEMS_NUM] = {
     /* TM_ELEM_ITEM1_A */   {LSM1_X_OFFSET, LSM1_Y_OFFSET},
     /* TM_ELEM_ITEM2_A */   {LSM2_X_OFFSET, LSM2_Y_OFFSET},
     /* TM_ELEM_ITEM3_A */   {LSM3_X_OFFSET, LSM3_Y_OFFSET},
@@ -52,7 +52,7 @@ struct Point trade_menu_elem_pos[TRADE_MENU_ELEMS_NUM] = {
     /* TM_ELEM_ITEM6_P */   {LSM6_X_OFFSET, LSM6_Y_OFFSET},
 };
 
-struct MenuElemDirections trade_menu_links[TRADE_MENU_ELEMS_NUM] = {
+const struct MenuElemDirections trade_menu_links[TRADE_MENU_ELEMS_NUM] = {
     /*right, top, left, bottom */
     /* TM_ELEM_ITEM1_A */ {TM_ELEM_ITEM1_P, TM_ELEM_ITEM6_A, TM_ELEM_ITEM1_P, TM_ELEM_ITEM2_A},
     /* TM_ELEM_ITEM2_A */ {TM_ELEM_ITEM2_P, TM_ELEM_ITEM1_A, TM_ELEM_ITEM2_P, TM_ELEM_ITEM3_A},

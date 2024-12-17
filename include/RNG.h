@@ -36,7 +36,7 @@ typedef u8(*RNG_URN_ptr)(void);
 
 /* --- ANTS --- */
 /* FIRST OF MANY POSSIBLE GLOBAL DECLARATIONS */
-extern const b32 rng_sequence_breaker_miss_growth;
+extern b32 rng_sequence_breaker_miss_growth;
 extern i16 URN_debug;
 enum SOTA_RN {
     RN_MAX          = 100, /* 100 excluded */

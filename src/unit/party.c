@@ -8,7 +8,7 @@
 #include "platform.h"
 #include "jsonio.h"
 
-struct Party Party_default =  {
+const struct Party Party_default =  {
     .jsonio_header.json_element   = JSON_PARTY,
     .jsonio_header.json_filename  = {0},
     .size           = 0,

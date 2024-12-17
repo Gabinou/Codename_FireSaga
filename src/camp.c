@@ -3,7 +3,7 @@
 #include "cJSON.h"
 #include "SDL.h"
 
-u8 max_jobs[CAMPJOB_END] = {
+const u8 max_jobs[CAMPJOB_END] = {
     0,
     CAMP_GUARD_MAX,
     CAMP_LIBRARIAN_MAX,
@@ -16,7 +16,7 @@ u8 max_jobs[CAMPJOB_END] = {
     CAMP_MAGICRESEARCHER_MAX,
 };
 
-struct Camp Camp_default = {
+const struct Camp Camp_default = {
     .json_element   = JSON_CAMP,
 };
 

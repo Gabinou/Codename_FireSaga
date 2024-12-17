@@ -20,14 +20,14 @@ static void _GrowthsMenu_Draw_Graph(   struct GrowthsMenu *g, struct n9Patch *n9
 static void _GrowthsMenu_Draw_Growths( struct GrowthsMenu *g, SDL_Renderer *r);
 static void _GrowthsMenu_Draw_Supports(struct GrowthsMenu *g, SDL_Renderer *r);
 
-struct GrowthsMenu GrowthsMenu_default = {
+const struct GrowthsMenu GrowthsMenu_default = {
     .update         = true,
     .update_stats   = true,
     // only record menu pos. other pos are computed.
     .pos            = {-1, -1},
 };
 
-char GM_description[GM_ELEM_NUM][GM_BUFFER_LEN] = {
+const char GM_description[GM_ELEM_NUM][GM_BUFFER_LEN] = {
     /* GM_TALK */     {"a"},
     /* GM_SUPPORTS */ {"a"},
     /* GM_SUPPORT */  {"a"},
@@ -50,7 +50,7 @@ char GM_description[GM_ELEM_NUM][GM_BUFFER_LEN] = {
     /* GM_PROF */     {"a"},
 };
 
-struct Point GM_cursor_box[GM_ELEM_NUM] = {
+const struct Point GM_cursor_box[GM_ELEM_NUM] = {
     /* GM_TALK */     {GM_TALK_X_OFFSET,    GM_TALK_Y_OFFSET},
     /* GM_SUPPORTS */ {GM_SUPPORTS_X,       GM_SUPPORTS_Y},
     /* GM_SUPPORT */  {GM_BONUS_X,          GM_BONUS_Y},
@@ -74,7 +74,7 @@ struct Point GM_cursor_box[GM_ELEM_NUM] = {
     /* GM_PROF */     {GM_PROF_X_OFFSET,    GM_PROF_Y_OFFSET},
 };
 
-struct Point GM_cursor_pos[GM_ELEM_NUM] = {
+const struct Point GM_cursor_pos[GM_ELEM_NUM] = {
     /* GM_TALK */     {GM_TALK_X_OFFSET - 20,  GM_TALK_Y_OFFSET},
     /* GM_SUPPORTS */ {GM_SUPPORTS_X    - 15,  GM_SUPPORTS_Y},
     /* GM_SUPPORT */  {GM_BONUS_X       - 13,  GM_BONUS_Y},

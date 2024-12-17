@@ -1,7 +1,7 @@
 
 #include "position.h"
 
-struct Position Position_default = {
+const struct Position Position_default = {
     .onTilemap      = true,
     .pixel_pos      = {1, 1},
     .tilemap_pos    = {1, 1},

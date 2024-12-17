@@ -7,7 +7,7 @@
 #include "jsonio.h"
 #include "macros.h"
 
-struct Convoy Convoy_default = {
+const struct Convoy Convoy_default = {
     .jsonio_header.json_element    = JSON_CONVOY,
     .jsonio_header.json_filename   = {0},
 

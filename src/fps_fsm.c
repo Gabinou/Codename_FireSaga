@@ -10,7 +10,7 @@
 #include "events.h"
 #include "log.h"
 
-fsm_main_t fsm_cFrame_s[GAME_STATE_NUM] = {
+const fsm_main_t fsm_cFrame_s[GAME_STATE_NUM] = {
     /* GAME_STATE_START         */ NULL,
     /* GAME_STATE_Combat        */ &fsm_cFrame_sCmbt,
     /* GAME_STATE_Scene_Talk    */ &fsm_cFrame_sScnTalk,
@@ -22,7 +22,7 @@ fsm_main_t fsm_cFrame_s[GAME_STATE_NUM] = {
     /* GAME_STATE_Animation     */ NULL
 };
 
-fsm_main_t fsm_rFrame_s[GAME_STATE_NUM] = {
+const fsm_main_t fsm_rFrame_s[GAME_STATE_NUM] = {
     /* GAME_STATE_START         */ NULL,
     /* GAME_STATE_Combat        */ &fsm_rFrame_sCmbt,
     /* GAME_STATE_Scene_Talk    */ &fsm_rFrame_sScnTalk,
@@ -34,7 +34,7 @@ fsm_main_t fsm_rFrame_s[GAME_STATE_NUM] = {
     /* GAME_STATE_Animation     */ NULL,
 };
 
-fsm_main_t fsm_cFrame_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
+const fsm_main_t fsm_cFrame_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* GAME_SUBSTATE_START          */ NULL,
     /* GAME_SUBSTATE_MAP_MINIMAP    */ &fsm_cFrame_sGmpMap_ssMapMini,
     /* GAME_SUBSTATE_MENU           */ &fsm_cFrame_sGmpMap_ssMenu,
@@ -48,7 +48,7 @@ fsm_main_t fsm_cFrame_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* GAME_SUBSTATE_MAP_ANIMATION  */ &fsm_cFrame_sGmpMap_ssMapAnim,
 };
 
-fsm_main_t fsm_cFrame_sPrep_ss[GAME_SUBSTATE_NUM] = {
+const fsm_main_t fsm_cFrame_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* GAME_SUBSTATE_START          */ NULL,
     /* GAME_SUBSTATE_MAP_MINIMAP    */ NULL,
     /* GAME_SUBSTATE_MENU           */ &fsm_cFrame_sGmpMap_ssMenu,

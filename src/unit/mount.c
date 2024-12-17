@@ -2,7 +2,7 @@
 #include "unit/mount.h"
 
 /* --- MOUNTS --- */
-struct Mount Mount_default_horse = {
+const struct Mount Mount_default_horse = {
     .name            = "Horsie",
     .unit_bond       = 0,
     .type            = MOUNT_TYPE_HORSE,
@@ -17,7 +17,7 @@ struct Mount Mount_default_horse = {
     .skill           = 0,
 };
 
-struct Mount Mount_default_salamander = {
+const struct Mount Mount_default_salamander = {
     .name            = "Nibal",
     .unit_bond       = UNIT_ID_HAMILCAR,
     .sex             = true,
@@ -31,7 +31,7 @@ struct Mount Mount_default_salamander = {
     .skill           = UNIT_SKILL_EXP_VENOMOUS_SPIT,
 };
 
-struct Mount Mount_default_pegasus = {
+const struct Mount Mount_default_pegasus = {
     .name            = "FlyieHorsie",
     .sex             = true,
     .type            = MOUNT_TYPE_PEGASUS,
@@ -46,7 +46,7 @@ struct Mount Mount_default_pegasus = {
     .skill           = 0,
 };
 
-struct Mount Mount_default_eagle = {
+const struct Mount Mount_default_eagle = {
     .name            = "Manwe",
     .type            = MOUNT_TYPE_EAGLE,
     .sex             = true,

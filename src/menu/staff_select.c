@@ -4,7 +4,7 @@
 #include "unit/equipment.h"
 #include "unit/loadout.h"
 
-struct Point ssm_cursor_pos[LSM_ELEMS_NUM] = {
+const struct Point ssm_cursor_pos[LSM_ELEMS_NUM] = {
     /* SSM_ELEM_ITEM1 */ {LSM1_X_OFFSET, LSM1_Y_OFFSET},
     /* SSM_ELEM_ITEM2 */ {LSM2_X_OFFSET, LSM2_Y_OFFSET},
     /* SSM_ELEM_ITEM3 */ {LSM3_X_OFFSET, LSM3_Y_OFFSET},

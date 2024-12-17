@@ -36,7 +36,7 @@
 /* -- Menu-type FSMs -- */
 
 /* - menu_elem_move - */
-menu_elem_move_t menu_elem_move[MENU_TYPE_END] = {
+const menu_elem_move_t menu_elem_move[MENU_TYPE_END] = {
     /* MENU_TYPE_START */           NULL,
     /* MENU_TYPE_PLAYER_SELECT */   &PlayerSelectMenu_Elem_Move,
     /* MENU_TYPE_WEAPON_SELECT  */  &WeaponSelectMenu_Elem_Move,
@@ -52,7 +52,7 @@ menu_elem_move_t menu_elem_move[MENU_TYPE_END] = {
 };
 
 /* - Menu substate FSMs - */
-fsm_menu_t fsm_eStart_sPrep_ssMenu_m[MENU_TYPE_END] = {
+const fsm_menu_t fsm_eStart_sPrep_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_START */           NULL,
     /* MENU_TYPE_PLAYER_SELECT */   NULL,
     /* MENU_TYPE_WEAPON_SELECT  */  NULL,
@@ -67,7 +67,7 @@ fsm_menu_t fsm_eStart_sPrep_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_DEPLOYMENT */      &fsm_eStart_sPrep_ssMenu_mDM,
 };
 
-fsm_menu_t fsm_eStats_sPrep_ssMenu_m[MENU_TYPE_END] = {
+const fsm_menu_t fsm_eStats_sPrep_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_START */           NULL,
     /* MENU_TYPE_PLAYER_SELECT */   NULL,
     /* MENU_TYPE_WEAPON_SELECT  */  NULL,
@@ -82,7 +82,7 @@ fsm_menu_t fsm_eStats_sPrep_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_DEPLOYMENT */      &fsm_eStats_sPrep_ssMenu_mDM,
 };
 
-fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
+const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_START */           NULL,
     /* MENU_TYPE_PLAYER_SELECT */   &fsm_eAcpt_sGmpMap_ssMenu_mPSM,
     /* MENU_TYPE_WEAPON_SELECT  */  &fsm_eAcpt_sGmpMap_ssMenu_mLSM,
@@ -97,7 +97,7 @@ fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_DEPLOYMENT */      &fsm_eAcpt_sGmpMap_ssMenu_mDM,
 };
 
-fsm_menu_t fsm_eCncl_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
+const fsm_menu_t fsm_eCncl_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_START */           NULL,
     /* MENU_TYPE_PLAYER_SELECT */   &fsm_eCncl_sGmpMap_ssMenu_mPSM,
     /* MENU_TYPE_WEAPON_SELECT */   &fsm_eCncl_sGmpMap_ssMenu_mLSM,
@@ -112,7 +112,7 @@ fsm_menu_t fsm_eCncl_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_DEPLOYMENT */      NULL,
 };
 
-fsm_menu_t fsm_eCncl_sPrep_ssMenu_m[MENU_TYPE_END] = {
+const fsm_menu_t fsm_eCncl_sPrep_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_START */           NULL,
     /* MENU_TYPE_PLAYER_SELECT */   NULL,
     /* MENU_TYPE_WEAPON_SELECT */   NULL,
@@ -127,7 +127,7 @@ fsm_menu_t fsm_eCncl_sPrep_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_DEPLOYMENT */      &fsm_eCncl_sPrep_ssMenu_mDM,
 };
 
-fsm_menu_t fsm_eCrsMvs_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
+const fsm_menu_t fsm_eCrsMvs_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_START */           NULL,
     /* MENU_TYPE_PLAYER_SELECT */   NULL,
     /* MENU_TYPE_WEAPON_SELECT */   &fsm_eCrsMvs_sGmpMap_ssMenu_mLSM,
@@ -143,7 +143,7 @@ fsm_menu_t fsm_eCrsMvs_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
 };
 
 /* - Menu option FSMs - */
-fsm_menu_t fsm_eCrsMvs_sGmpMap_mo[MENU_OPTION_NUM] = {
+const fsm_menu_t fsm_eCrsMvs_sGmpMap_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_START */         NULL,
     /* MENU_OPTION_ITEMS */         NULL,
     /* MENU_OPTION_TALK */          NULL,
@@ -172,7 +172,7 @@ fsm_menu_t fsm_eCrsMvs_sGmpMap_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_DEBUG_MAP */     NULL,
 };
 
-fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo[MENU_OPTION_NUM] = {
+const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_START */         NULL,
     /* MENU_OPTION_ITEMS */         &fsm_eAcpt_sGmpMap_ssMenu_mPSM_moItem,
     /* MENU_OPTION_TALK */          NULL,
@@ -202,7 +202,7 @@ fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo[MENU_OPTION_NUM] = {
 };
 
 // Cancel depending on previous menu_option when selecting map candidates
-fsm_menu_t fsm_eCncl_sGmpMap_ssMapCndt_mo[MENU_OPTION_NUM] = {
+const fsm_menu_t fsm_eCncl_sGmpMap_ssMapCndt_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_START */         NULL,
     /* MENU_OPTION_ITEMS */         NULL,
     /* MENU_OPTION_TALK */          NULL,
@@ -232,7 +232,7 @@ fsm_menu_t fsm_eCncl_sGmpMap_ssMapCndt_mo[MENU_OPTION_NUM] = {
 };
 
 // Accept depending on previous menu_option when selecting map candidates
-fsm_menu_t fsm_eAcpt_sGmpMap_ssMapCndt_mo[MENU_OPTION_NUM] = {
+const fsm_menu_t fsm_eAcpt_sGmpMap_ssMapCndt_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_START */         NULL,
     /* MENU_OPTION_ITEMS */         NULL,
     /* MENU_OPTION_TALK */          NULL,
@@ -262,7 +262,7 @@ fsm_menu_t fsm_eAcpt_sGmpMap_ssMapCndt_mo[MENU_OPTION_NUM] = {
 };
 
 /* -- Menu Pop FSM -- */
-fsm_menu_t fsm_Pop_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
+const fsm_menu_t fsm_Pop_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_START */           NULL,
     /* MENU_TYPE_PLAYER_SELECT */   &fsm_Pop_sGmpMap_ssMenu_mPSM,
     /* MENU_TYPE_WEAPON_SELECT */   NULL,

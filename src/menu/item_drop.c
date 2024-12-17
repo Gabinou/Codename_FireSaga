@@ -11,24 +11,24 @@
 #include "nmath.h"
 #include "macros.h"
 
-struct ItemDropMenu ItemDropMenu_default = {0};
+const struct ItemDropMenu ItemDropMenu_default = {0};
 
-struct Point idm_cursor_pos[IDM_ELEM_NUM] = {
+const struct Point idm_cursor_pos[IDM_ELEM_NUM] = {
     /* ID_ELEM_YES */ {IDM_ELEM_YES_X, IDM_ELEM_YES_Y},
     /* IDM_ELEM_NO */ {IDM_ELEM_NO_X, IDM_ELEM_NO_Y},
 };
 
-struct Point idm_elem_box[IDM_ELEM_NUM] = {
+const struct Point idm_elem_box[IDM_ELEM_NUM] = {
     /* ID_ELEM_YES */ {SOTA_TILESIZE, SOTA_TILESIZE},
     /* IDM_ELEM_NO */ {SOTA_TILESIZE, SOTA_TILESIZE},
 };
 
-struct Point idm_elem_pos[IDM_ELEM_NUM] = {
+const struct Point idm_elem_pos[IDM_ELEM_NUM] = {
     /* IDM_ELEM_YES */ {IDM_ELEM_YES_X, IDM_ELEM_YES_Y},
     /* IDM_ELEM_NO */  {IDM_ELEM_NO_X,  IDM_ELEM_NO_Y},
 };
 
-struct MenuElemDirections idm_links[IDM_ELEM_NUM] = {
+const struct MenuElemDirections idm_links[IDM_ELEM_NUM] = {
     /*right, top, left, bottom */
     /* IDM_ELEM_YES */ {IDM_ELEM_NULL, IDM_ELEM_YES, IDM_ELEM_NULL, IDM_ELEM_YES},
     /* IDM_ELEM_NO */  {IDM_ELEM_NULL, IDM_ELEM_NO,  IDM_ELEM_NULL, IDM_ELEM_NO},

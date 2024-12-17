@@ -5,14 +5,14 @@
 #include "palette.h"
 #include "utilities.h"
 
-struct MenuElemDirections MenuElemDirections_default = {
+const struct MenuElemDirections MenuElemDirections_default = {
     .right  = MENU_ELEM_NULL,
     .top    = MENU_ELEM_NULL,
     .left   = MENU_ELEM_NULL,
     .bottom = MENU_ELEM_NULL,
 };
 
-struct Menu Menu_default =  {
+const struct Menu Menu_default =  {
     .elem_pos_frame   = ELEM_POS_MENU_FRAME,
     .visible          = true,
 };

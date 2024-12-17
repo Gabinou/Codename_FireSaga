@@ -15,7 +15,7 @@
 #include "stb_sprintf.h"
 // #endif /* STB_SPRINTF_IMPLEMENTATION */
 
-json_func json_read_funcs [JSON_END] = {
+const json_func json_read_funcs [JSON_END] = {
     /* JSON_NULL        */  NULL,
     /* JSON_ITEM        */  Item_readJSON,
     /* JSON_TILE        */  Tile_readJSON,
@@ -31,7 +31,7 @@ json_func json_read_funcs [JSON_END] = {
     /* JSON_PARTY       */  Party_readJSON,
 };
 
-json_func json_write_funcs[JSON_END] = {
+const json_func json_write_funcs[JSON_END] = {
     /* JSON_NULL        */  NULL,
     /* JSON_ITEM        */  Item_writeJSON,
     /* JSON_TILE        */  Tile_writeJSON,

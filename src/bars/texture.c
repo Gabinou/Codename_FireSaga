@@ -2,7 +2,7 @@
 #include <math.h>
 #include "bars/texture.h"
 
-struct TextureBar TextureBar_default = {0};
+const struct TextureBar TextureBar_default = {0};
 
 void TextureBar_Draw(struct TextureBar *tb, SDL_Renderer *renderer) {
     /* -- Compute fill -- */

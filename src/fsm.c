@@ -35,11 +35,11 @@
 #include "cutscene.h"
 
 /* --- ACTIONS --- */
-fsm_eGmp2Stby_s_t fsm_eGmp2Stby_s[GAME_STATE_NUM] = {
+const fsm_eGmp2Stby_s_t fsm_eGmp2Stby_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
     /* Scene_Talk */     NULL,
-    /* Cutscene */      NULL,
+    /* Cutscene */       NULL,
     /* Gameplay_Map */   &fsm_eGmp2Stby_sGmpMap,
     /* Gameplay_Camp */  NULL,
     /* Preparation */    NULL,
@@ -48,7 +48,7 @@ fsm_eGmp2Stby_s_t fsm_eGmp2Stby_s[GAME_STATE_NUM] = {
 };
 
 /* --- Input events --- */
-fsm_eAcpt_s_t fsm_eAcpt_s[GAME_STATE_NUM] = {
+const fsm_eAcpt_s_t fsm_eAcpt_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
     /* Scene_Talk */     &fsm_eAcpt_sScnTalk,
@@ -60,7 +60,7 @@ fsm_eAcpt_s_t fsm_eAcpt_s[GAME_STATE_NUM] = {
     /* Animation */      NULL,
 };
 
-fsm_eStats_s_t fsm_eStats_s[GAME_STATE_NUM] = {
+const fsm_eStats_s_t fsm_eStats_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
     /* Scene_Talk */     NULL,
@@ -72,7 +72,7 @@ fsm_eStats_s_t fsm_eStats_s[GAME_STATE_NUM] = {
     /* Animation */      NULL,
 };
 
-fsm_eStart_s_t fsm_eStart_s[GAME_STATE_NUM] = {
+const fsm_eStart_s_t fsm_eStart_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
     /* Scene_Talk */     &fsm_eStart_sScnTalk,
@@ -84,7 +84,7 @@ fsm_eStart_s_t fsm_eStart_s[GAME_STATE_NUM] = {
     /* Animation */      NULL
 };
 
-fsm_eCncl_s_t fsm_eCncl_s[GAME_STATE_NUM] = {
+const fsm_eCncl_s_t fsm_eCncl_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
     /* Scene_Talk */     &fsm_eAcpt_sScnTalk,
@@ -96,7 +96,7 @@ fsm_eCncl_s_t fsm_eCncl_s[GAME_STATE_NUM] = {
     /* Animation */      NULL,
 };
 
-fsm_eMenuRight_s_t fsm_eMenuRight_s[GAME_STATE_NUM] = {
+const fsm_eMenuRight_s_t fsm_eMenuRight_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
     /* Scene_Talk */     &fsm_eMenuRight_sScnTalk,
@@ -108,7 +108,7 @@ fsm_eMenuRight_s_t fsm_eMenuRight_s[GAME_STATE_NUM] = {
     /* Animation */      NULL,
 };
 
-fsm_eMenuLeft_s_t fsm_eMenuLeft_s[GAME_STATE_NUM] = {
+const fsm_eMenuLeft_s_t fsm_eMenuLeft_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
     /* Scene_Talk */     &fsm_eMenuRight_sScnTalk,
@@ -120,11 +120,11 @@ fsm_eMenuLeft_s_t fsm_eMenuLeft_s[GAME_STATE_NUM] = {
     /* Animation */      NULL,
 };
 
-fsm_eCrsMvs_s_t fsm_eCrsMvs_s[GAME_STATE_NUM] = {
+const fsm_eCrsMvs_s_t fsm_eCrsMvs_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
     /* Scene_Talk */     NULL,
-    /* Cutscene */      NULL,
+    /* Cutscene */       NULL,
     /* Gameplay_Map */   &fsm_eCrsMvs_sGmpMap,
     /* Gameplay_Camp */  NULL,
     /* Preparation */    &fsm_eCrsMvs_sPrep,
@@ -132,11 +132,11 @@ fsm_eCrsMvs_s_t fsm_eCrsMvs_s[GAME_STATE_NUM] = {
     /* Animation */      NULL,
 };
 
-fsm_eCrsMvd_s_t fsm_eCrsMvd_s[GAME_STATE_NUM] = {
+const fsm_eCrsMvd_s_t fsm_eCrsMvd_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
     /* Scene_Talk */     NULL,
-    /* Cutscene */      NULL,
+    /* Cutscene */       NULL,
     /* Gameplay_Map */   &fsm_eCrsMvd_sGmpMap,
     /* Gameplay_Camp */  NULL,
     /* Preparation */    NULL,
@@ -145,7 +145,7 @@ fsm_eCrsMvd_s_t fsm_eCrsMvd_s[GAME_STATE_NUM] = {
 };
 
 /* --- SUB-ACTIONS --- */
-fsm_eGmp2Stby_s_t fsm_eGmp2Stby_ss[GAME_SUBSTATE_NUM] = {
+const fsm_eGmp2Stby_s_t fsm_eGmp2Stby_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            NULL,
@@ -160,7 +160,7 @@ fsm_eGmp2Stby_s_t fsm_eGmp2Stby_ss[GAME_SUBSTATE_NUM] = {
 };
 
 /* Substate only, don't care about state*/
-fsm_eCrsMvs_s_t fsm_eCrsMvs_ss[GAME_SUBSTATE_NUM] = {
+const fsm_eCrsMvs_s_t fsm_eCrsMvs_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            &fsm_eCrsMvs_ssMenu,
@@ -174,7 +174,7 @@ fsm_eCrsMvs_s_t fsm_eCrsMvs_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL
 };
 
-fsm_eCrsMvs_s_t fsm_eCrsMvs_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
+const fsm_eCrsMvs_s_t fsm_eCrsMvs_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            NULL,
@@ -188,7 +188,7 @@ fsm_eCrsMvs_s_t fsm_eCrsMvs_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL
 };
 
-fsm_eCrsMvd_s_t fsm_eCrsMvd_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
+const fsm_eCrsMvd_s_t fsm_eCrsMvd_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            NULL,
@@ -216,7 +216,7 @@ fsm_eCrsMvd_s_t fsm_eCrsMvd_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
 //     /* MAP_ANIMATION */   NULL
 // };
 
-fsm_eCrsMvs_s_t fsm_eCrsMvs_sPrep_ss[GAME_SUBSTATE_NUM] = {
+const fsm_eCrsMvs_s_t fsm_eCrsMvs_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            NULL,
@@ -230,7 +230,7 @@ fsm_eCrsMvs_s_t fsm_eCrsMvs_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL
 };
 
-fsm_eAcpt_s_t fsm_eStart_sPrep_ss[GAME_SUBSTATE_NUM] = {
+const fsm_eAcpt_s_t fsm_eStart_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            &fsm_eStart_sPrep_ssMenu,
@@ -244,7 +244,7 @@ fsm_eAcpt_s_t fsm_eStart_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL
 };
 
-fsm_eMenuLeft_sPrep_ss_t fsm_eMenuLeft_sPrep_ss[GAME_SUBSTATE_NUM] = {
+const fsm_eMenuLeft_sPrep_ss_t fsm_eMenuLeft_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            &fsm_eMenuLeft_sPrep_ssMenu,
@@ -258,7 +258,7 @@ fsm_eMenuLeft_sPrep_ss_t fsm_eMenuLeft_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL
 };
 
-fsm_eAcpt_s_t fsm_eAcpt_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
+const fsm_eAcpt_s_t fsm_eAcpt_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     &fsm_eAcpt_sGmpMap_ssMapMini,
     /* MENU */            &fsm_eAcpt_sGmpMap_ssMenu,
@@ -272,7 +272,7 @@ fsm_eAcpt_s_t fsm_eAcpt_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL
 };
 
-fsm_eAcpt_s_t fsm_eAcpt_sPrep_ss[GAME_SUBSTATE_NUM] = {
+const fsm_eAcpt_s_t fsm_eAcpt_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            &fsm_eAcpt_sGmpMap_ssMenu,
@@ -286,7 +286,7 @@ fsm_eAcpt_s_t fsm_eAcpt_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL
 };
 
-fsm_eCncl_s_t fsm_eCncl_sPrep_ss[GAME_SUBSTATE_NUM] = {
+const fsm_eCncl_s_t fsm_eCncl_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            &fsm_eCncl_sPrep_ssMenu,
@@ -300,7 +300,7 @@ fsm_eCncl_s_t fsm_eCncl_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL
 };
 
-fsm_eCncl_s_t fsm_eCncl_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
+const fsm_eCncl_s_t fsm_eCncl_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            &fsm_eCncl_sGmpMap_ssMenu,
@@ -314,7 +314,7 @@ fsm_eCncl_s_t fsm_eCncl_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL
 };
 
-fsm_eStats_s_t fsm_eStats_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
+const fsm_eStats_s_t fsm_eStats_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            NULL,
@@ -328,7 +328,7 @@ fsm_eStats_s_t fsm_eStats_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL
 };
 
-fsm_eStats_s_t fsm_eStats_sPrep_ss[GAME_SUBSTATE_NUM] = {
+const fsm_eStats_s_t fsm_eStats_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            &fsm_eStats_sPrep_ssMenu,
@@ -342,7 +342,7 @@ fsm_eStats_s_t fsm_eStats_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL
 };
 
-fsm_eUnitDsel_s_t fsm_eUnitDsel_ss[GAME_SUBSTATE_NUM] = {
+const fsm_eUnitDsel_s_t fsm_eUnitDsel_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            &fsm_eUnitDsel_ssMenu,
@@ -356,7 +356,7 @@ fsm_eUnitDsel_s_t fsm_eUnitDsel_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL
 };
 
-fsm_eUnitSel_s_t fsm_eUnitSel_ss[GAME_SUBSTATE_NUM] = {
+const fsm_eUnitSel_s_t fsm_eUnitSel_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            NULL,
@@ -370,7 +370,7 @@ fsm_eUnitSel_s_t fsm_eUnitSel_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL
 };
 
-fsm_eUnitDng_s_t fsm_eUnitDng_ss[GAME_SUBSTATE_NUM] = {
+const fsm_eUnitDng_s_t fsm_eUnitDng_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            NULL,
@@ -384,7 +384,7 @@ fsm_eUnitDng_s_t fsm_eUnitDng_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL
 };
 
-fsm_eMenuRight_s_t fsm_eMenuRight_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
+const fsm_eMenuRight_s_t fsm_eMenuRight_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            &fsm_eMenuRight_sGmpMap_ssMenu,
@@ -398,7 +398,7 @@ fsm_eMenuRight_s_t fsm_eMenuRight_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL
 };
 
-fsm_eMenuLeft_s_t fsm_eMenuLeft_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
+const fsm_eMenuLeft_s_t fsm_eMenuLeft_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            &fsm_eMenuLeft_sGmpMap_ssMenu,
@@ -412,7 +412,7 @@ fsm_eMenuLeft_s_t fsm_eMenuLeft_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL
 };
 
-fsm_eCrsHvUnit_s_t fsm_eCrsHvUnit_ss[GAME_SUBSTATE_NUM] = {
+const fsm_eCrsHvUnit_s_t fsm_eCrsHvUnit_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            NULL,
@@ -426,7 +426,7 @@ fsm_eCrsHvUnit_s_t fsm_eCrsHvUnit_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL
 };
 
-fsm_eCrsDeHvUnit_s_t fsm_eCrsDeHvUnit_ss[GAME_SUBSTATE_NUM] = {
+const fsm_eCrsDeHvUnit_s_t fsm_eCrsDeHvUnit_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            NULL,
@@ -441,7 +441,7 @@ fsm_eCrsDeHvUnit_s_t fsm_eCrsDeHvUnit_ss[GAME_SUBSTATE_NUM] = {
 };
 
 /* -- FSM: Input_globalRange EVENT -- */
-fsm_eGlbRng_s_t fsm_eGlbRng_ss[GAME_SUBSTATE_NUM] = {
+const fsm_eGlbRng_s_t fsm_eGlbRng_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            NULL,
@@ -455,7 +455,7 @@ fsm_eGlbRng_s_t fsm_eGlbRng_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL
 };
 
-fsm_eCmbtEnd_ss_t fsm_eCmbtEnd_ss[GAME_SUBSTATE_NUM] = {
+const fsm_eCmbtEnd_ss_t fsm_eCmbtEnd_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            NULL,

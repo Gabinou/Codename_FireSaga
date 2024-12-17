@@ -255,7 +255,7 @@ char *Utilities_Print_itemStats(struct Item_stats stats) {
     return (out);
 }
 
-i32 army_alignment[ARMY_END] = {
+const i32 army_alignment[ARMY_END] = {
     /* ARMY_START                     */ ALIGNMENT_ENEMY,
     /* FRIENDLY                       */ ALIGNMENT_FRIENDLY,
     /* ENEMY                          */ ALIGNMENT_ENEMY,
@@ -272,7 +272,7 @@ i32 army_alignment[ARMY_END] = {
     /* BANDITS                        */ ALIGNMENT_ENEMY,
 };
 
-b32 army_isPC[ARMY_END] = {
+const b32 army_isPC[ARMY_END] = {
     /* ARMY_START                     */ false,
     /* FRIENDLY                       */ true,
     /* ENEMY                          */ false,

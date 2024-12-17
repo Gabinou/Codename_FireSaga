@@ -2,7 +2,7 @@
 #include "unit/status.h"
 #include "nmath.h"
 
-struct Unit_status Unit_status_default = {.turns = 3};
+const struct Unit_status Unit_status_default = {.turns = 3};
 
 /* --- Statuses --- */
 void Unit_Status_Add(struct Unit *unit, struct Unit_status status) {

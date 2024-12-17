@@ -8,7 +8,7 @@
 #include "palette.h"
 #include "stb_sprintf.h"
 
-struct Scene Scene_default =  {
+const struct Scene Scene_default =  {
     .jsonio_header.json_element = JSON_SCENE,
     /* Can't put Conditions_Game_start here. */
     .game_cond                  = {.alive = {0xFFFFFFFF}},
@@ -24,20 +24,20 @@ struct Scene Scene_default =  {
     },
 };
 
-struct SceneLine        SceneLine_default       = {0};
-struct SceneDidascalie  SceneDidascalie_default = {0};
-struct SceneBackground  SceneBackground_default = {0};
+const struct SceneLine        SceneLine_default       = {0};
+const struct SceneDidascalie  SceneDidascalie_default = {0};
+const struct SceneBackground  SceneBackground_default = {0};
 
 static u64 hash_alive     = 210706583606;       /* sota_hash_djb2(s8_literal("alive"));     */
 static u64 hash_dead      = 6385147891;         /* sota_hash_djb2(s8_literal("dead"));      */
 static u64 hash_recruited = 249904965071548876; /* sota_hash_djb2(s8_literal("recruited")); */
 
-json_func fsm_Scene_Didascalie_readJSON[SCENE_DIDASCALIE_NUM] = {
+const json_func fsm_Scene_Didascalie_readJSON[SCENE_DIDASCALIE_NUM] = {
     Scene_Didascalie_Appear_readJSON,
     Scene_Didascalie_Slide_readJSON
 };
 
-json_func fsm_Scene_readJSON[SCENE_STATEMENT_NUM] = {
+const json_func fsm_Scene_readJSON[SCENE_STATEMENT_NUM] = {
     Scene_Line_readJSON,
     Scene_Didascalie_readJSON,
     Scene_Condition_readJSON,
@@ -45,7 +45,7 @@ json_func fsm_Scene_readJSON[SCENE_STATEMENT_NUM] = {
     Scene_Music_readJSON,
 };
 
-json_func fsm_Scene_writeJSON[SCENE_STATEMENT_NUM] = {
+const json_func fsm_Scene_writeJSON[SCENE_STATEMENT_NUM] = {
     Scene_Line_writeJSON,
     Scene_Didascalie_writeJSON,
     Scene_Condition_writeJSON,
@@ -424,6 +424,7 @@ int Scene_Line_Next(struct Scene *scene) {
 
     // Put ONE didascalie in scene
     // TODO: Multiple didascalie
+    return (0);
 }
 
 int Scene_Statement_Next(struct Scene *scene) {

@@ -12,26 +12,26 @@
 #include "unit/loadout.h"
 
 /* --- DEFAULT STRUCTS --- */
-struct Combat_Phase Combat_Phase_default = {
+const struct Combat_Phase Combat_Phase_default = {
     .attacker           = SOTA_AGGRESSOR,
     .attack_num         = 1,
     .skill_multiplier   = SOTA_ASTRA_DEFAULT,
     .skillp_multipliers = {SOTA_ASTRA_DEFAULT},
 };
 
-struct Combat_Attack Combat_Attack_default = {
+const struct Combat_Attack Combat_Attack_default = {
     .attacker      = SOTA_AGGRESSOR,
 };
 
-struct Combat_Flow Combat_Flow_default = {
+const struct Combat_Flow Combat_Flow_default = {
     .aggressor_brave        = SOTA_BRAVE_DEFAULT,
     .defendant_brave        = SOTA_BRAVE_DEFAULT,
     .aggressor_phases       = 1,
     .defendant_phases       = 1,
 };
 
-struct Combat_Rates Combat_Rates_default = {0};
-struct Combat_Death Combat_Death_default = {0};
+const struct Combat_Rates Combat_Rates_default = {0};
+const struct Combat_Death Combat_Death_default = {0};
 
 b32 Combat_canDouble(struct Unit *_att, struct Unit *_dfd) {
     SDL_assert(_att != NULL);

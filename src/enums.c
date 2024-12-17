@@ -2,21 +2,21 @@
 #include "enums.h"
 #include "SDL.h"
 
-#define REGISTER_ENUM(x)  u64 UNIT_SKILL_##x = 1ULL << UNIT_SKILL_EXP_##x;
+#define REGISTER_ENUM(x)  const u64 UNIT_SKILL_##x = 1ULL << UNIT_SKILL_EXP_##x;
 #include "names/skills_passive.h"
 #include "names/skills_active.h"
 #undef REGISTER_ENUM
 
 // #define REGISTER_ENUM(x,y)  u64 ITEM_EFFECT_##x = 1ULL << ITEM_EFFECT_EXP_##x;
-#define REGISTER_ENUM(x,y)  u64 ITEM_EFFECT_##x = ITEM_EFFECT_EXP_##x;
+#define REGISTER_ENUM(x,y) const u64 ITEM_EFFECT_##x = ITEM_EFFECT_EXP_##x;
 #include "names/items_effects.h"
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y)  u64 UNIT_PC_ALIVE_##x = 1ULL << UNIT_ID_##x;
+#define REGISTER_ENUM(x, y) const u64 UNIT_PC_ALIVE_##x = 1ULL << UNIT_ID_##x;
 #include "names/units_PC.h"
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y)  u64 UNIT_PC_RECRUITED_##x = 1ULL << UNIT_ID_##x;
+#define REGISTER_ENUM(x, y) const u64 UNIT_PC_RECRUITED_##x = 1ULL << UNIT_ID_##x;
 #include "names/units_PC.h"
 #undef REGISTER_ENUM
 
@@ -24,7 +24,7 @@
 /* Direction array index from ternary index */
 // Array order: Right,    Top,     Left,     Bottom,
 //              TopRight, TopLeft, BotRight, BotLeft
-int direction_arr_i[SOTA_DIRECTIONS_NUM + 1] = {
+const int direction_arr_i[SOTA_DIRECTIONS_NUM + 1] = {
     /* SOTA_DIRECTION_NULL */          -1,
     /* SOTA_DIRECTION_LEFT */           2,
     /* SOTA_DIRECTION_RIGHT */          0,
@@ -36,7 +36,7 @@ int direction_arr_i[SOTA_DIRECTIONS_NUM + 1] = {
     /* SOTA_DIRECTION_TOPRIGHT */       4,
 };
 
-char sdl_buttons[SOTA_BUTTON_END] = {
+const char sdl_buttons[SOTA_BUTTON_END] = {
     /* SOTA_BUTTON_DPAD_RIGHT     */ SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
     /* SOTA_BUTTON_DPAD_UP        */ SDL_CONTROLLER_BUTTON_DPAD_UP,
     /* SOTA_BUTTON_DPAD_DOWN      */ SDL_CONTROLLER_BUTTON_DPAD_DOWN,
@@ -52,7 +52,7 @@ char sdl_buttons[SOTA_BUTTON_END] = {
     /* SOTA_BUTTON_TRIGGER_RIGHT  */ SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
 };
 
-u8 army_control[ARMY_MALLOC] = {
+const u8 army_control[ARMY_MALLOC] = {
 #define REGISTER_ENUM(x, y) SOTA_##y,
 #include "names/armies.h"
 #undef REGISTER_ENUM

@@ -19,7 +19,7 @@
 #include "weapon.h"
 
 // TODO: use `names/classes.h ` to fill
-int  class_mvt_types[UNIT_CLASS_END] = {
+const int class_mvt_types[UNIT_CLASS_END] = {
     /* NULL              */ UNIT_MVT_FOOT_SLOW,
     /* VILLAGER          */ UNIT_MVT_FOOT_SLOW,
     /* LORD              */ UNIT_MVT_FOOT_SLOW,
@@ -76,7 +76,7 @@ int  class_mvt_types[UNIT_CLASS_END] = {
     /* GLADIATOR         */ UNIT_MVT_FOOT_FAST,
 };
 
-struct Unit Unit_default = {
+const struct Unit Unit_default = {
     .jsonio_header.json_element   = JSON_UNIT,
     .mvt_type       = UNIT_MVT_FOOT_SLOW,
     .class          = UNIT_CLASS_VILLAGER,
@@ -99,7 +99,7 @@ struct Unit Unit_default = {
     .update_stats   = true,
 };
 
-struct Unit Nibal_unit = {
+const struct Unit Nibal_unit = {
     .jsonio_header.json_element = JSON_UNIT,
     /*              hp str mag agi dex fth luck def res con move prof */
     .base_stats     = {35, 20, 20, 18, 25, 14, 12, 18, 22, 30, 06, 15},

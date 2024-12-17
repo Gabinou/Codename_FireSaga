@@ -4,7 +4,7 @@
 #include "cJSON.h"
 
 /* --- FIRST AND ONLY DEFINITION OF GLOBALS --- */
-const b32 rng_sequence_breaker_miss_growth = true;
+b32 rng_sequence_breaker_miss_growth = true;
 
 i16 URN_debug = -1;
 

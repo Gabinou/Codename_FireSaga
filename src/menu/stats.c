@@ -40,8 +40,8 @@ static void _StatsMenu_Draw_WpnTypes(     struct StatsMenu *sm, SDL_Renderer *r)
 static void _StatsMenu_Draw_Equipment(    struct StatsMenu *sm, SDL_Renderer *r);
 static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *sm, SDL_Renderer *r);
 
-i8 stats_menu_cycle[STATS_MENU_CYCLE_NUM] = {MENU_TYPE_STATS, MENU_TYPE_GROWTHS};
-i8 stats_menu_cycle_inv[MENU_TYPE_END] = {
+const i8 stats_menu_cycle[STATS_MENU_CYCLE_NUM] = {MENU_TYPE_STATS, MENU_TYPE_GROWTHS};
+const i8 stats_menu_cycle_inv[MENU_TYPE_END] = {
     /* NULL */          -1,
     /* PLAYER_SELECT */ -1,
     /* ISM */           -1,
@@ -55,7 +55,7 @@ i8 stats_menu_cycle_inv[MENU_TYPE_END] = {
     /* PRE_COMBAT */    -1
 };
 
-int status_offset_x[UNIT_STATUS_END] = {
+const int status_offset_x[UNIT_STATUS_END] = {
     /* NULL     */  0,
     /* POISONED */ -5,
     /* STONE    */ -4,
@@ -69,7 +69,7 @@ int status_offset_x[UNIT_STATUS_END] = {
     /* SILENCE  */ -3,
 };
 
-int status_offset_y[UNIT_STATUS_END] = {
+const int status_offset_y[UNIT_STATUS_END] = {
     /* NULL     */  0,
     /* POISONED */  0,
     /* STONE    */  0,
@@ -84,7 +84,7 @@ int status_offset_y[UNIT_STATUS_END] = {
 };
 
 /* --- STATS_MENU --- */
-char stats_menu_description[SM_ELEM_NUM][STATSMENU_BUFFER_LEN] = {
+const char stats_menu_description[SM_ELEM_NUM][STATSMENU_BUFFER_LEN] = {
     /* SM_ELEM_SEX */ {"Sex: Male, Female, Unknown."},// TODO: automatic sex?
     /* SM_ELEM_TITLE */ {"Title: Indicates Nobility, denotes feats or a popular nickname"}, // TODO: automatic title
     /* SM_ELEM_NAME */ {"Unit Name"},
@@ -131,7 +131,7 @@ char stats_menu_description[SM_ELEM_NUM][STATSMENU_BUFFER_LEN] = {
     /* SM_ELEM_SPEED */ {"Speed. If defender speed is 5 or less than attacker's, attacker doubles. Weapon weight 1 -> SPEED down 1 "},
 };
 
-struct Point stats_menu_cursor_box[SM_ELEM_NUM] = {
+const struct Point stats_menu_cursor_box[SM_ELEM_NUM] = {
     /* SM_ELEM_SEX */       {SOTA_TILESIZE, SOTA_TILESIZE},
     /* SM_ELEM_TITLE */     {SOTA_TILESIZE, SOTA_TILESIZE},
     /* SM_ELEM_NAME */      {SOTA_TILESIZE, SOTA_TILESIZE},
@@ -178,7 +178,7 @@ struct Point stats_menu_cursor_box[SM_ELEM_NUM] = {
     /* SM_ELEM_SPEED */     {SOTA_TILESIZE, SOTA_TILESIZE},
 };
 
-struct Point stats_menu_cursor_pos[SM_ELEM_NUM] = {
+const struct Point stats_menu_cursor_pos[SM_ELEM_NUM] = {
     /* SM_ELEM_SEX */           {SEX_ICON_X_OFFSET,  SEX_ICON_Y_OFFSET},
     /* SM_ELEM_TITLE */         {TITLE_X_OFFSET,     TITLE_Y_OFFSET},
     /* SM_ELEM_NAME */          {NAME_X_OFFSET,      NAME_Y_OFFSET},
@@ -271,7 +271,7 @@ struct Point stats_menu_elem_box[SM_ELEM_NUM] = {
     /* SM_ELEM_CRIT */      {SOTA_TILESIZE, SOTA_TILESIZE},
     /* SM_ELEM_SPEED */     {SOTA_TILESIZE, SOTA_TILESIZE},
 };
-struct Point stats_menu_elem_pos[STATS_MENU_ELEMS_NUM] = {0};
+const struct Point stats_menu_elem_pos[STATS_MENU_ELEMS_NUM] = {0};
 
 struct Point sm_elem_pos[SM_ELEM_NUM] = {
     /* SM_ELEM_SEX */       {SEX_ICON_X_OFFSET, SEX_ICON_Y_OFFSET},
@@ -369,7 +369,7 @@ struct MenuElemDirections sm_links[SM_ELEM_NUM] = {
     /* SM_ELEM_SPEED */      {SM_ELEM_NULL,     SM_ELEM_RANGE,    SM_ELEM_CRIT,    SM_ELEM_STATUS},
 };
 
-struct StatsMenu StatsMenu_default = {
+const struct StatsMenu StatsMenu_default = {
     .update             = true,
     .update_stats       = true,
 };

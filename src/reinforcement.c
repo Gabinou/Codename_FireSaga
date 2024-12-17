@@ -5,7 +5,7 @@
 #include "unit/unit.h"
 #include "cJSON.h"
 
-struct Reinforcement Reinforcement_default = {
+const struct Reinforcement Reinforcement_default = {
     .boss_icon      = -1,
 };
 

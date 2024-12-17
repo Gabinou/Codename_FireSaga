@@ -112,7 +112,7 @@ extern const struct Sprite Sprite_default;
 
 /* --- dstrect_funcs array --- */
 typedef void (*dstrect_func_t)(struct Sprite *, struct Point *, struct Camera *);
-extern const dstrect_func_t dstrect_funcs[TWO_D][2];
+extern dstrect_func_t dstrect_funcs[TWO_D][2];
 
 /* --- Constructor/Destructors --- */
 void Sprite_Free(struct Sprite *s);

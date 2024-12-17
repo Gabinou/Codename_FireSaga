@@ -4,7 +4,7 @@
 #include "nmath.h"
 #include "stb_sprintf.h"
 
-s8 sexNames[UNIT_SEX_NUM] = {
+const s8 sexNames[UNIT_SEX_NUM] = {
     s8_literal("F"),
     s8_literal("M")
 };

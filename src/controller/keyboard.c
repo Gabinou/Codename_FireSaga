@@ -3,7 +3,7 @@
 #include "structs.h"
 #include "utilities.h"
 
-struct KeyboardInputMap KeyboardInputMap_default = {
+const struct KeyboardInputMap KeyboardInputMap_default = {
     .dpad_right         = {SDL_SCANCODE_D,     SDL_SCANCODE_RIGHT},
     .dpad_up            = {SDL_SCANCODE_W,     SDL_SCANCODE_UP},
     .dpad_left          = {SDL_SCANCODE_A,     SDL_SCANCODE_LEFT},
@@ -37,7 +37,7 @@ struct KeyboardInputMap KeyboardInputMap_default = {
     .space_len          = 1,
 };
 
-struct controllerKeyboard controllerKeyboard_default = {
+const struct controllerKeyboard controllerKeyboard_default = {
     .controller_type    = CONTROLLER_KEYBOARD,
 };
 

@@ -34,9 +34,9 @@ struct Unit_stats test_grown_stats[10] = {
 /*                                  hp str mag agi dex fth luck def res con move prof */
 struct Unit_stats test_base_stats = {05, 06, 07, 8, 9, 10, 11, 12, 13, 01, 02, 03};
 
-struct GraphStat GraphStat_default = {0};
+const struct GraphStat GraphStat_default = {0};
 
-struct Graph Graph_default = {
+const struct Graph Graph_default = {
     .y_lenperpixel = GRAPH_DEFAULT_LENPERPIXEL_HEIGHT, /* 2 or 1 */
     .plot_max = {GRAPH_DATA_WIDTH / GRAPH_DEFAULT_LENPERPIXEL_WIDTH, SOTA_MAX_STAT / GRAPH_DEFAULT_LENPERPIXEL_HEIGHT}, // [XY units]
 

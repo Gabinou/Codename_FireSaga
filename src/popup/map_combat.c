@@ -24,7 +24,7 @@ static void _PopUp_Map_Combat_Draw_Headers(   struct PopUp_Map_Combat *pmc,
 static void _PopUp_Map_Combat_Draw_CircleBars(struct PopUp_Map_Combat *pmc,
                                               SDL_Renderer *r);
 
-struct PopUp_Map_Combat PopUp_Map_Combat_default = {
+const struct PopUp_Map_Combat PopUp_Map_Combat_default = {
     .update                 = true,
 };
 

@@ -10,7 +10,7 @@
 #include "jsonio.h"
 #include "stb_sprintf.h"
 
-struct Item Item_default = {
+const struct Item Item_default = {
     .jsonio_header.json_element   = JSON_ITEM,
     .jsonio_header.json_filename  = {0},
 
@@ -31,12 +31,12 @@ struct Item Item_default = {
 };
 
 #define REGISTER_ENUM(x, y) ITEM_EFFECT_ID_##x,
-i16 item_effect_ids[ITEM_EFFECT_NUM] = {
+const i16 item_effect_ids[ITEM_EFFECT_NUM] = {
     ITEM_EFFECT_NULL,
 #include "names/items_effects.h"
 };
 
-use_function_t item_effect_funcs[ITEM_EFFECT_NUM] = {
+const use_function_t item_effect_funcs[ITEM_EFFECT_NUM] = {
     /* NULL */                 NULL,
     /* STAFF_HEAL */           useEffect_STAFF_HEAL,
     /* KILL1P */               NULL,

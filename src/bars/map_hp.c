@@ -6,7 +6,7 @@
 #include "utilities.h"
 
 /* --- MAPHPBAR --- */
-struct MapHPBar MapHPBar_default = {
+const struct MapHPBar MapHPBar_default = {
     .update         = true,
 };
 

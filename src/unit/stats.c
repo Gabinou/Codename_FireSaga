@@ -4,7 +4,7 @@
 #include "nmath.h"
 
 /* --- Unit stats --- */
-struct Unit_stats Unit_stats_default = {0};
+const struct Unit_stats Unit_stats_default = {0};
 
 i32 *Unit_stats_arr(Unit_stats *stats1) {
     i32 *stats_arr = ((i32 *)stats1) - (UNIT_STAT_NULL + 1);

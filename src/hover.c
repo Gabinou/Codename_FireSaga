@@ -2,7 +2,7 @@
 #include "hover.h"
 #include "nmath.h"
 
-struct Hover Hover_default = {
+const struct Hover Hover_default = {
     .width           = SOTA_HOVER_WIDTH_DEFAULT,
     .step            = SOTA_HOVER_STEP_DEFAULT, /* every step, move step [pixels] < width */
     .current         = SOTA_HOVER_WIDTH_DEFAULT,

@@ -5,7 +5,7 @@
 #include "platform.h"
 #include "macros.h"
 
-int army_icons[ARMY_MALLOC] = {
+const int army_icons[ARMY_MALLOC] = {
     /* NULL                         */ BOSS_ICON_STGEORGE,
     /* FRIENDLY                     */ BOSS_ICON_STGEORGE,
     /* ENEMY                        */ BOSS_ICON_STGEORGE,
@@ -22,7 +22,7 @@ int army_icons[ARMY_MALLOC] = {
     /* BANDITS                      */ BOSS_ICON_STGEORGE,
 };
 
-struct Boss Boss_default = {
+const struct Boss Boss_default = {
     .icon       = BOSS_ICON_STGEORGE,
     .srcrect    = {
         .w = BOSS_ICON_WIDTH,
