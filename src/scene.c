@@ -195,9 +195,12 @@ void Scene_Didascalie_Appear_readJSON(void *input, cJSON *jdid) {
         statement.header.statement_type   = SCENE_STATEMENT_DIDASCALIE;
         statement.header.didascalie_type  = SCENE_DIDASCALIE_APPEAR;
 
-        // Getting actor from Appear didascalie
+        // TODO: appear at a specific spot
+        // Appear didascalie structure: {"Appear": "Erwin"}
         cJSON *jappear = cJSON_GetObjectItem(jdid, "Appear");
         SDL_assert(jappear != NULL);
+
+        // Getting actor from Appear didascalie
         s8 actor        = s8_var(jappear->valuestring);
         SceneDidascalie *didascalie = &statement._union.didascalie;
         *didascalie = SceneDidascalie_default;
@@ -219,11 +222,13 @@ void Scene_Didascalie_Slide_readJSON( void *input, cJSON *jdid) {
         statement.header.statement_type   = SCENE_STATEMENT_DIDASCALIE;
         statement.header.didascalie_type  = SCENE_DIDASCALIE_SLIDE;
 
-        // Getting actor from Appear didascalie
+        // Slide didascalie structure: {"Slide": {"Silou": [10,10,10,10]}}
         cJSON *jslide = cJSON_GetObjectItem(jdid, "Slide");
         SDL_assert(jslide != NULL);
         SDL_assert(jslide->child != NULL);
         cJSON *jslide_child = jslide->child;
+
+        // Getting actor from Slide didascalie
         s8 actor        = s8_var(jslide_child->string);
         SceneDidascalie *didascalie = &statement._union.didascalie;
         *didascalie = SceneDidascalie_default;

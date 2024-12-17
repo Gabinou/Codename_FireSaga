@@ -129,6 +129,11 @@ typedef struct DidascalieSlide {
 } DidascalieSlide;
 extern const struct DidascalieSlide DidascalieSlide_default;
 
+typedef struct DidascalieAppear {
+    Point pos;
+} DidascalieAppear;
+extern const struct DidascalieAppear DidascalieAppear_default;
+
 typedef union DidascalieUnion {
     DidascalieSlide slide;
 } DidascalieUnion;
