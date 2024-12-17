@@ -10,9 +10,9 @@
 /* -- How to present controller remapping to players? -- */
 // -> Use gameplay.standby sota_inputs as labels
 
-extern struct GamepadInputMap GamepadInputMap_default;
-extern struct GamepadInputMap GamepadInputMap_gamecube;
-extern struct GamepadInputMap GamepadInputMap_switch_pro;
+extern const struct GamepadInputMap GamepadInputMap_default;
+extern const struct GamepadInputMap GamepadInputMap_gamecube;
+extern const struct GamepadInputMap GamepadInputMap_switch_pro;
 
 typedef struct controllerGamepad {
     SDL_GameController     **controllers;
@@ -39,7 +39,7 @@ typedef struct controllerGamepad {
     b32        block_buttons   : 1;
     b32        block_move      : 1;
 } controllerGamepad;
-extern struct controllerGamepad controllerGamepad_default;
+extern const struct controllerGamepad controllerGamepad_default;
 
 enum GAMEPAD_BUTTON_NAMES {
     SOTA_INPUT_NAME_MAX_LEN     = 23,
@@ -47,10 +47,10 @@ enum GAMEPAD_BUTTON_NAMES {
     SDL_BUTTON_NAME_MAX_LEN     = 36,
     AXIS_NAME_MAX_LEN           = 33,
 };
-extern char sdl_button_names[SDL_CONTROLLER_BUTTON_MAX][SDL_BUTTON_NAME_MAX_LEN];
-extern char sdl_axis_names[SDL_CONTROLLER_AXIS_MAX][AXIS_NAME_MAX_LEN];
-extern char sota_button_names[SOTA_BUTTON_END][SOTA_BUTTON_NAME_MAX_LEN];
-extern char sota_input_names[SOTA_INPUT_END][SOTA_INPUT_NAME_MAX_LEN];
+extern const char sdl_button_names[SDL_CONTROLLER_BUTTON_MAX][SDL_BUTTON_NAME_MAX_LEN];
+extern const char sdl_axis_names[SDL_CONTROLLER_AXIS_MAX][AXIS_NAME_MAX_LEN];
+extern const char sota_button_names[SOTA_BUTTON_END][SOTA_BUTTON_NAME_MAX_LEN];
+extern const char sota_input_names[SOTA_INPUT_END][SOTA_INPUT_NAME_MAX_LEN];
 
 /* --- Constructors/Destructors --- */
 void Gamepad_Init(   struct controllerGamepad *g);

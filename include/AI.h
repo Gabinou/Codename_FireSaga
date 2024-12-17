@@ -161,24 +161,24 @@ typedef struct AI {
     struct Point target_move;
     int turn_move;
 } AI;
-extern struct AI AI_default;
+extern const struct AI AI_default;
 
 /* --- Decider FSM --- */
 typedef void (*AI_Decider)(struct Game *s, tnecs_entity e, struct AI_Action *a);
 /* -- Master Deciders -- */
-extern AI_Decider AI_Decider_master[AI_PRIORITY_NUM];
+extern const AI_Decider AI_Decider_master[AI_PRIORITY_NUM];
 
 /* -- Slave Deciders -- */
-extern AI_Decider AI_Decider_slave[AI_PRIORITY_NUM];
+extern const AI_Decider AI_Decider_slave[AI_PRIORITY_NUM];
 
 /* -- Decider Move FSM -- */
 // Note: These functions return whether character moves or not
 typedef b32  (*AI_Decider_Move)(struct Game *s, tnecs_entity e);
-extern AI_Decider_Move AI_Decider_move[AI_MOVE_NUM];
+extern const AI_Decider_Move AI_Decider_move[AI_MOVE_NUM];
 
 /* --- Doer FSM --- */
 typedef AI_Decider AI_Doer;
-extern AI_Doer AI_Act_action[AI_ACTION_NUM];
+extern const AI_Doer AI_Act_action[AI_ACTION_NUM];
 
 void _AI_Doer_Wait(  struct Game *s, tnecs_entity e, struct AI_Action *a);
 void _AI_Doer_Attack(struct Game *s, tnecs_entity e, struct AI_Action *a);

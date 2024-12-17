@@ -28,7 +28,7 @@ typedef struct MapHPBar {
     b32 update  : 1;
     b32 visible : 1;
 } MapHPBar;
-extern struct MapHPBar MapHPBar_default;
+extern const struct MapHPBar MapHPBar_default;
 
 /* --- Drawing --- */
 void MapHPBar_Draw(struct MapHPBar *b, struct Camera *c, i32 t[TWO_D],

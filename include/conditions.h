@@ -19,8 +19,8 @@ struct Conditions {
 //      - does not care if unit is alive   -> alive bit 0
 //      - REQUIRES unit to be dead         -> dead bit  1
 //      - does not care if unit is dead    -> dead bit  0
-extern struct Conditions Conditions_Game_start;
-extern struct Conditions Conditions_default;
+extern const struct Conditions Conditions_Game_start;
+extern const struct Conditions Conditions_default;
 
 /* --- Conditions --- */
 b32 Conditions_Match(struct Conditions *line_cond, struct Conditions *game_cond);

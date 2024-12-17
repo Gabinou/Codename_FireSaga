@@ -11,6 +11,6 @@ typedef struct UnitMoveAnimation {
     struct Point target;
     tnecs_entity unit;
 } UnitMoveAnimation;
-extern struct UnitMoveAnimation UnitMoveAnimation_default;
+extern const struct UnitMoveAnimation UnitMoveAnimation_default;
 
 #endif /* UNIT_ANIM_H */

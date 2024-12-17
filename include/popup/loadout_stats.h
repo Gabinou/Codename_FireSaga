@@ -191,7 +191,7 @@ typedef struct PopUp_Loadout_Stats {
     b32 tophand_stronghand : 1; // If false, tophand is lefthand
 } PopUp_Loadout_Stats;
 
-extern struct PopUp_Loadout_Stats PopUp_Loadout_Stats_default;
+extern const struct PopUp_Loadout_Stats PopUp_Loadout_Stats_default;
 
 /* --- ructor/Destructor --- */
 struct PopUp_Loadout_Stats *PopUp_Loadout_Stats_Alloc(void);

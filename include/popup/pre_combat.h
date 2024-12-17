@@ -209,7 +209,7 @@ struct PreCombatPopup {
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
 };
-extern struct PreCombatPopup PreCombatPopup_default;
+extern const struct PreCombatPopup PreCombatPopup_default;
 
 /* --- Constructors/Destructors --- */
 struct PreCombatPopup *PreCombatPopup_Alloc();
@@ -237,6 +237,6 @@ void PreCombatPopup_Update(struct PreCombatPopup *pcp, struct n9Patch *n9patch,
 
 /* -- Drawing Stats mode FSM -- */
 typedef void (*pcp_draw_stats_t)(struct PreCombatPopup *, SDL_Renderer *r);
-extern pcp_draw_stats_t pcp_draw_stats[PCP_MODE_NUM];
+extern const pcp_draw_stats_t pcp_draw_stats[PCP_MODE_NUM];
 
 #endif /* PRE_COMBAT_POPUP_H */

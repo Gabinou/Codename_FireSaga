@@ -19,7 +19,7 @@ struct TextureBar {
     struct Point scale;
     struct Point size_pixels; // [pixels]
 };
-extern struct TextureBar TextureBar_default;
+extern const struct TextureBar TextureBar_default;
 
 /* -- Drawing -- */
 void TextureBar_Draw(struct TextureBar *tb, SDL_Renderer *r);

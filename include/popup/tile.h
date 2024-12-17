@@ -63,7 +63,7 @@ typedef struct PopUp_Tile {
     struct Point cursor_limit_min;
     struct Point cursor_limit_max;
 } PopUp_Tile;
-extern struct PopUp_Tile PopUp_Tile_default;
+extern const struct PopUp_Tile PopUp_Tile_default;
 
 /* --- ructor/Destructor --- */
 void PopUp_Tile_Free(struct PopUp_Tile *pt);

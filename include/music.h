@@ -20,7 +20,7 @@ enum SOTA_MUSIC {
     SOTA_MUSIC_NUM,
 };
 
-extern struct s8 music_path[SOTA_MUSIC_NUM];
+extern const struct s8 music_path[SOTA_MUSIC_NUM];
 
 Mix_Music *Music_Load_Debug(void);
 Mix_Music *Music_Load(int i);
@@ -43,7 +43,7 @@ enum SOTA_SOUNDFX_DURATION {
     SOTA_SOUNDFX_NEXT_TURN_DURATION_ms  = 1350  /* [ms] */
 };
 
-extern struct s8 soundfx_path[SOTA_SOUNDFX_NUM];
+extern const struct s8 soundfx_path[SOTA_SOUNDFX_NUM];
 
 Mix_Chunk *Soundfx_Load(int i);
 Mix_Chunk *Soundfx_Load_Cursor(void);

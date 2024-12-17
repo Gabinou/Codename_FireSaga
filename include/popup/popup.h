@@ -40,6 +40,6 @@ struct PopUp {
     u8              slidetype;
     b32            visible;
 };
-extern struct PopUp PopUp_default;
+extern const struct PopUp PopUp_default;
 
 #endif /* POPUP_H */

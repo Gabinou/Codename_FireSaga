@@ -23,7 +23,7 @@ typedef struct SliderBar {
     int increment;
     struct Point pos;
 } SliderBar;
-extern SliderBar SliderBar_default;
+extern const SliderBar SliderBar_default;
 
 /* --- Moving Cursor --- */
 void SliderBar_Increment(SliderBar *sb);

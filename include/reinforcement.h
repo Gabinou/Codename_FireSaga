@@ -16,7 +16,7 @@ struct Reinforcement {
     i32 turn;
     i32 levelups;
 };
-extern struct Reinforcement Reinforcement_default;
+extern const struct Reinforcement Reinforcement_default;
 
 void Reinforcement_Free(struct Reinforcement  *a);
 void Reinforcement_readJSON( struct cJSON *j, struct Reinforcement  *a);

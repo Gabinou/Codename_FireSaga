@@ -41,7 +41,7 @@ enum MAP_UNIT_LOOPS {
     MAP_UNIT_LOOP_NUM       = 13,
 };
 
-extern int map_unit_offsets[MAP_UNIT_LOOP_NUM][TWO_D];
+extern const int map_unit_offsets[MAP_UNIT_LOOP_NUM][TWO_D];
 
 struct Spritesheet {
     s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
@@ -62,7 +62,7 @@ struct Spritesheet {
     i8    current_frame;
     i8    frame_i;
 };
-extern struct Spritesheet Spritesheet_default;
+extern const struct Spritesheet Spritesheet_default;
 
 /* --- Constructor/Destructors --- */
 void Spritesheet_Free(struct Spritesheet *ss);
@@ -108,11 +108,11 @@ typedef struct Sprite {
     b32 map_unit : 1;
     b32 visible  : 1;
 } Sprite;
-extern struct Sprite Sprite_default;
+extern const struct Sprite Sprite_default;
 
 /* --- dstrect_funcs array --- */
 typedef void (*dstrect_func_t)(struct Sprite *, struct Point *, struct Camera *);
-extern dstrect_func_t dstrect_funcs[TWO_D][2];
+extern const dstrect_func_t dstrect_funcs[TWO_D][2];
 
 /* --- Constructor/Destructors --- */
 void Sprite_Free(struct Sprite *s);

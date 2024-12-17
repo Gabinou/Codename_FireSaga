@@ -38,7 +38,7 @@ typedef struct PopUp_Objective {
     struct PixelFont *pixelnours;
     struct Padding padding;
 } PopUp_Objective;
-extern struct PopUp_Objective PopUp_Objective_default;
+extern const struct PopUp_Objective PopUp_Objective_default;
 
 /* --- ructor/Destructor --- */
 void PopUp_Objective_Free(struct PopUp_Objective *po);

@@ -22,14 +22,14 @@ typedef struct Slider {
     i32     timer_ns;
     u8      slidetype;
 } Slider;
-extern struct Slider Slider_default;
+extern const struct Slider Slider_default;
 
 typedef struct SliderOffscreen {
     struct Settings             *settings;
     struct Point  target;
     b32   go_offscreen;
 } SliderOffscreen;
-extern struct SliderOffscreen SliderOffscreen_default;
+extern const struct SliderOffscreen SliderOffscreen_default;
 
 /* --- FUNCTIONS --- */
 void Slider_Start(           struct Slider *s, struct Point *p, struct Point *t);

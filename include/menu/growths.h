@@ -158,14 +158,14 @@ enum growths_menu {
 
 #define GM_BUFFER_LEN 128
 
-extern struct MenuElemDirections gm_links[GM_ELEM_NUM];
-extern char GM_description[GM_ELEM_NUM][GM_BUFFER_LEN];
+extern const struct MenuElemDirections gm_links[GM_ELEM_NUM];
+extern const char GM_description[GM_ELEM_NUM][GM_BUFFER_LEN];
 // TODO: reduce memory usage.
-extern struct Point gm_elem_pos[GM_ELEM_NUM];
-extern struct Point GM_elem_pos_[GM_ELEM_NUM];
-extern struct Point gm_elem_box[GM_ELEM_NUM];
-extern struct Point GM_cursor_pos_[GM_ELEM_NUM];
-extern struct Point GM_cursor_box[GM_ELEM_NUM];
+extern const struct Point gm_elem_pos[GM_ELEM_NUM];
+extern const struct Point GM_elem_pos_[GM_ELEM_NUM];
+extern const struct Point gm_elem_box[GM_ELEM_NUM];
+extern const struct Point GM_cursor_pos_[GM_ELEM_NUM];
+extern const struct Point GM_cursor_box[GM_ELEM_NUM];
 
 #define GROWTHSMENU_POS(xory, offset) (offset * n9patch->scale.xory)
 
@@ -179,7 +179,7 @@ struct GrowthsMenu {
     struct Graph graph;
     b32 update_stats : 1; /* only false in tests */
 };
-extern struct GrowthsMenu GrowthsMenu_default;
+extern const struct GrowthsMenu GrowthsMenu_default;
 
 /* --- Constructors/Destructors --- */
 struct GrowthsMenu *GrowthsMenu_Alloc(void);

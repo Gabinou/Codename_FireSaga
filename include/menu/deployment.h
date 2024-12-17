@@ -223,12 +223,12 @@ typedef struct DeploymentMenu {
     i32 start_pos_order1;
     i32 start_pos_order2;
 } DeploymentMenu;
-extern DeploymentMenu DeploymentMenu_default;
+extern const DeploymentMenu DeploymentMenu_default;
 
 /* --- ELEMENTS --- */
-extern MenuElemDirections dm_links[DM_ELEM_NUM];
-extern Point dm_elem_pos[DM_ELEM_NUM];
-extern Point dm_elem_box[DM_ELEM_NUM];
+extern const MenuElemDirections dm_links[DM_ELEM_NUM];
+extern const Point dm_elem_pos[DM_ELEM_NUM];
+extern const Point dm_elem_box[DM_ELEM_NUM];
 
 /* --- Constructors/Destructors --- */
 DeploymentMenu *DeploymentMenu_Alloc(void);

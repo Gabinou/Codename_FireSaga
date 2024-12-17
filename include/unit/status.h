@@ -20,7 +20,7 @@ typedef struct Unit_status {
     i8 status;
     i8 turns;
 } Unit_status;
-extern struct Unit_status Unit_status_default;
+extern const struct Unit_status Unit_status_default;
 
 /* --- Unit status --- */
 void Unit_Status_Add(      Unit *u, Unit_status s);

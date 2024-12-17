@@ -25,7 +25,7 @@ enum STATBAR {
 #define STATBAR_MAX_OVERFILL 1.25f
 #define STATBAR_STATSPERTILEF 5.0f
 
-extern u8 statbar_highlights[STATBAR_HIGHLIGHT_NUM]; /* < STATBAR_MAX_LEN */
+extern const u8 statbar_highlights[STATBAR_HIGHLIGHT_NUM]; /* < STATBAR_MAX_LEN */
 
 /* --- STAT BAR --- */
 /* -- Constructors/Destructors -- */

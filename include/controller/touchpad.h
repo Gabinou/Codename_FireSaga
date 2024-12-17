@@ -9,6 +9,6 @@ typedef struct controllerTouchpad {
     i32 controller_type;
 
 } controllerTouchpad;
-// extern struct controllerTouchpad controllerTouchpad_default;
+// extern const struct controllerTouchpad controllerTouchpad_default;
 
 #endif /* CONTROLLERTOUCHPAD_H */

@@ -22,7 +22,7 @@ typedef struct Boss {
     SDL_Rect dstrect; /* x,y,w,h */
     SDL_Texture *texture;  /* pixels */
 } Boss;
-extern struct Boss Boss_default;
+extern const struct Boss Boss_default;
 
 void Boss_Free(     struct Boss     *boss);
 void Boss_Icon_Pos( struct Boss     *boss, struct Camera    *camera,
@@ -32,6 +32,6 @@ void Boss_Icon_Draw(struct Boss     *boss, struct Position  *pos,
                     SDL_Renderer *r);
 
 /* -- Get default boss icon from army -- */
-extern int army_icons[ARMY_MALLOC];
+extern const int army_icons[ARMY_MALLOC];
 
 #endif /* UNIT_BOSS_H */

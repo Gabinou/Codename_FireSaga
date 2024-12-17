@@ -78,7 +78,7 @@ struct Menu {
 
     b32 visible : 1;
 };
-extern struct Menu Menu_default;
+extern const struct Menu Menu_default;
 
 /* --- Constructors/Destructors --- */
 void Menu_Elem_Free(struct Menu *mc);

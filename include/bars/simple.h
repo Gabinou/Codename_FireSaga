@@ -18,6 +18,6 @@ enum {
 typedef struct SimpleBar StatBar;
 
 /* -- Drawing -- */
-extern void SimpleBar_Draw(struct SimpleBar *SimpleBar, SDL_Renderer *renderer);
+extern const void SimpleBar_Draw(struct SimpleBar *SimpleBar, SDL_Renderer *renderer);
 
 #endif /* SIMPLE_BARS_H */

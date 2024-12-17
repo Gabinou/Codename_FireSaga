@@ -615,15 +615,15 @@ enum ITEM_STATS {
 };
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) extern  uint64_t UNIT_PC_ALIVE_##x;
+#define REGISTER_ENUM(x, y) extern const  uint64_t UNIT_PC_ALIVE_##x;
 #include "names/units_PC.h"
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) extern  uint64_t UNIT_PC_RECRUITED_##x;
+#define REGISTER_ENUM(x, y) extern const  uint64_t UNIT_PC_RECRUITED_##x;
 #include "names/units_PC.h"
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) extern  uint64_t UNIT_NPC_ALIVE_##x;
+#define REGISTER_ENUM(x, y) extern const  uint64_t UNIT_NPC_ALIVE_##x;
 #include "names/units_NPC.h"
 #undef REGISTER_ENUM
 
@@ -638,7 +638,7 @@ enum ITEM_EFFECT_EXP {
 };
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) extern  uint64_t ITEM_EFFECT_##x;
+#define REGISTER_ENUM(x, y) extern const  uint64_t ITEM_EFFECT_##x;
 #include "names/items_effects.h"
 #undef REGISTER_ENUM
 
@@ -689,7 +689,7 @@ enum UNIT_ARMIES {
 };
 #undef REGISTER_ENUM
 
-extern u8 army_control[ARMY_MALLOC];
+extern const u8 army_control[ARMY_MALLOC];
 
 /* UNIT_ID is the explicit, human-friendly unit index
 * EXAMPLE:
@@ -758,7 +758,7 @@ enum ACTIVE_SKILLS {
 };
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x) extern  uint64_t UNIT_SKILL_##x;
+#define REGISTER_ENUM(x) extern const  uint64_t UNIT_SKILL_##x;
 #include "names/skills_passive.h"
 #include "names/skills_active.h"
 enum UNIT_SKILL {
@@ -894,7 +894,7 @@ enum SOTA_BUTTONS {
     SOTA_BUTTON_KEYBOARD_SPACE, /* Debug: reload */
     SOTA_BUTTON_END,
 };
-extern char sdl_buttons[SOTA_BUTTON_END];
+extern const char sdl_buttons[SOTA_BUTTON_END];
 
 enum SKILL_VALUES {
     SOTA_SKILL_PINPRICK         = 1,
@@ -1055,7 +1055,7 @@ enum SOTA_OCTANT_DIRECTIONS { /* ternary -> octant */
 };
 
 /* Direction array index from ternary index */
-extern int direction_arr_i[SOTA_DIRECTIONS_NUM + 1];
+extern const int direction_arr_i[SOTA_DIRECTIONS_NUM + 1];
 
 enum SOTA_COMBAT {
     /* glossary */

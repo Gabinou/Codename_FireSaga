@@ -41,8 +41,8 @@ struct Game;
 typedef void (*fsm_Input_s_t)(struct Game *);
 
 /* -- FSM: Input --  */
-extern fsm_Input_s_t fsm_Input_s[GAME_STATE_NUM];
-extern fsm_Input_s_t fsm_Input_sGmpMap_ss[GAME_SUBSTATE_NUM];
+extern const fsm_Input_s_t fsm_Input_s[GAME_STATE_NUM];
+extern const fsm_Input_s_t fsm_Input_sGmpMap_ss[GAME_SUBSTATE_NUM];
 
 void fsm_Input_sCUTSCENE(       struct Game *sota);
 void fsm_Input_sTITLE_SCREEN(   struct Game *sota);

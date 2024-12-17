@@ -30,7 +30,7 @@ typedef struct jsonIO_Header {
     u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
 } jsonIO_Header;
 
-extern Loadout Loadout_default;
+extern const Loadout Loadout_default;
 
 /* --- Map --- */
 typedef struct MapFind {
@@ -52,7 +52,7 @@ typedef struct MapFind {
     i32 _eq; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
 } MapFind;
-extern MapFind MapFind_default;
+extern const MapFind MapFind_default;
 
 /* -- attackto -- */
 typedef struct MapAct {
@@ -80,7 +80,7 @@ typedef struct MapAct {
     tnecs_entity defendant; /* or patient   */
 
 } MapAct;
-extern MapAct MapAct_default;
+extern const MapAct MapAct_default;
 
 /* -- Can Equip -- */
 // Input for canEquip function
@@ -115,7 +115,7 @@ typedef struct canEquip {
     //  - Find canEquip item in range, with or without unit movement
     b32 move;
 } canEquip;
-extern canEquip canEquip_default;
+extern const canEquip canEquip_default;
 
 struct Cursor {
     i16 frames;
@@ -200,7 +200,7 @@ typedef struct Input_Arguments {
     b32   print_help;       /* If help requested anywhere, print help and exit  */
     char *save_filename;    /* debug saves are outside normal save integers     */
 } Input_Arguments;
-extern struct Input_Arguments Input_Arguments_default;
+extern const struct Input_Arguments Input_Arguments_default;
 
 typedef struct Settings {
     Point res; /* resolution */
@@ -227,7 +227,7 @@ typedef struct Settings {
     u32 window;
     b32 fullscreen          : 1;
 } Settings;
-extern struct Settings Settings_default;
+extern const struct Settings Settings_default;
 
 typedef struct MenuElemDirections {
     i8 right;
@@ -235,13 +235,13 @@ typedef struct MenuElemDirections {
     i8 left;
     i8 bottom;
 } MenuElemDirections;
-extern MenuElemDirections MenuElemDirections_default;
+extern const MenuElemDirections MenuElemDirections_default;
 
 struct Damage {
     i32 dmg[DAMAGE_TYPES];
     i32 dmg_crit[DAMAGE_TYPES];
 };
-extern struct Damage Damage_default;
+extern const struct Damage Damage_default;
 
 union Graphics {
     SDL_Texture *texture;
@@ -254,7 +254,7 @@ struct Rendered { /* for SDL_RenderCopyEx */
     SDL_RendererFlip flip;
     double angle;
 };
-extern struct Rendered Rendered_default;
+extern const struct Rendered Rendered_default;
 
 struct Tile_stats {
     i8 dodge;
@@ -262,7 +262,7 @@ struct Tile_stats {
     i8 Mprot;
     i8 heal; /* % Negative means damage. */
 };
-extern struct Tile_stats Tile_stats_default;
+extern const struct Tile_stats Tile_stats_default;
 
 /* Struct is better: Can be cast to array */
 typedef struct Unit_stats {
@@ -279,20 +279,20 @@ typedef struct Unit_stats {
     i32 move; /* movement       */
     i32 prof; /* proficiency    */
 } Unit_stats;
-extern struct Unit_stats Unit_stats_default;
+extern const struct Unit_stats Unit_stats_default;
 
 /* Struct is better: Can be cast to array */
 typedef struct Range {
     i32 min;
     i32 max;
 } Range;
-extern struct Range Range_default;
+extern const struct Range Range_default;
 
 /* Imagine I would implement a range with gaps */
 struct RangeGaps {
     i32 canatt[SOTA_MAX_RANGE];
 };
-extern struct Range Range_default;
+extern const struct Range Range_default;
 
 typedef struct Computed_Stats {
     i32 attack[DAMAGE_TYPES];
@@ -311,7 +311,7 @@ typedef struct Computed_Stats {
     //          - Only one is shown at a time: Show only one at a time
     //          - Show two at atime with Blue+Red+Purple filter
 } Computed_Stats;
-extern struct Computed_Stats Computed_Stats_default;
+extern const struct Computed_Stats Computed_Stats_default;
 
 void Computed_Stats_Print(  struct Computed_Stats *stats);
 void Computed_Stats_Compare(struct Computed_Stats *stats1,
@@ -330,14 +330,14 @@ typedef struct Bonus_Stats {
     b32 active;
     i32 turns;
 } Bonus_Stats;
-extern struct Bonus_Stats Bonus_Stats_default;
+extern const struct Bonus_Stats Bonus_Stats_default;
 
 struct Promotion {
     struct Unit_stats bonus;
     u16 skill;
     u16 level;
 };
-extern struct Promotion Promotion_default;
+extern const struct Promotion Promotion_default;
 
 struct HP {
     u8 max;
@@ -345,20 +345,20 @@ struct HP {
     u8 overheal;
     b32 divine; /* divine shield */
 };
-extern struct HP HP_default;
+extern const struct HP HP_default;
 
-extern struct nmath_hexpoint_int32_t Cube_Direction_xp;
-extern struct nmath_hexpoint_int32_t Cube_Direction_xm;
-extern struct nmath_hexpoint_int32_t Cube_Direction_yp;
-extern struct nmath_hexpoint_int32_t Cube_Direction_ym;
-extern struct nmath_hexpoint_int32_t Cube_Direction_zp;
-extern struct nmath_hexpoint_int32_t Cube_Direction_zm;
-extern struct nmath_hexpoint_int32_t Cube_Diagonal_xp;
-extern struct nmath_hexpoint_int32_t Cube_Diagonal_xm;
-extern struct nmath_hexpoint_int32_t Cube_Diagonal_yp;
-extern struct nmath_hexpoint_int32_t Cube_Diagonal_ym;
-extern struct nmath_hexpoint_int32_t Cube_Diagonal_zp;
-extern struct nmath_hexpoint_int32_t Cube_Diagonal_zm;
+extern const struct nmath_hexpoint_int32_t Cube_Direction_xp;
+extern const struct nmath_hexpoint_int32_t Cube_Direction_xm;
+extern const struct nmath_hexpoint_int32_t Cube_Direction_yp;
+extern const struct nmath_hexpoint_int32_t Cube_Direction_ym;
+extern const struct nmath_hexpoint_int32_t Cube_Direction_zp;
+extern const struct nmath_hexpoint_int32_t Cube_Direction_zm;
+extern const struct nmath_hexpoint_int32_t Cube_Diagonal_xp;
+extern const struct nmath_hexpoint_int32_t Cube_Diagonal_xm;
+extern const struct nmath_hexpoint_int32_t Cube_Diagonal_yp;
+extern const struct nmath_hexpoint_int32_t Cube_Diagonal_ym;
+extern const struct nmath_hexpoint_int32_t Cube_Diagonal_zp;
+extern const struct nmath_hexpoint_int32_t Cube_Diagonal_zm;
 
 
 enum SOTA_PADDING_DIRECTION {
@@ -374,20 +374,20 @@ struct Padding {
     i32 left;
     i32 bottom;
 };
-extern struct Padding Padding_default;
+extern const struct Padding Padding_default;
 
 struct Item_stats {
     i32 price;
     i32 uses;
     i32 AP; /* ability power: for heal (%), blowHorn, gainStats, gainSkill, Repair */
 };
-extern struct Item_stats Item_stats_default;
+extern const struct Item_stats Item_stats_default;
 
 struct Crit_Multiplier {
     u8 num;
     u8 denom;
 };
-extern struct Crit_Multiplier Crit_Multiplier_default;
+extern const struct Crit_Multiplier Crit_Multiplier_default;
 
 typedef struct Aura {
     struct Range            range; /* [0]: min, [1]: max */
@@ -395,7 +395,7 @@ typedef struct Aura {
     struct Computed_Stats   computed_stats;
     i32 turns;
 } Aura;
-extern struct Aura Aura_default;
+extern const struct Aura Aura_default;
 
 struct Weapon_stats {
     i32 attack[ATTACK_TYPES_NO_TOTAL];
@@ -408,14 +408,14 @@ struct Weapon_stats {
     i32 wgt;    /* weight */
     i32 prof;   /* proficiency */
 };
-extern struct Weapon_stats Weapon_stats_default;
+extern const struct Weapon_stats Weapon_stats_default;
 
 struct Shop {
     i16 shopkeeper;
     i16 *items;
     i8  *qty;  /* < 0 means infinity */
 };
-extern struct Shop Shop_default;
+extern const struct Shop Shop_default;
 
 typedef struct Inventory_item {
     i32 id;
@@ -425,8 +425,8 @@ typedef struct Inventory_item {
     /* Only dark when in unit inventory and unequippable */
     i8 infusion;
 }   Inventory_item;
-extern struct Inventory_item Inventory_item_default;
-extern struct Inventory_item Inventory_item_broken;
+extern const struct Inventory_item Inventory_item_default;
+extern const struct Inventory_item Inventory_item_broken;
 
 // struct Reinforcement {
 //     Point position;
@@ -444,7 +444,7 @@ extern struct Inventory_item Inventory_item_broken;
 //     u8 turn;
 //     u8 levelups;
 // };
-// extern struct Reinforcement Reinforcement_default;
+// extern const struct Reinforcement Reinforcement_default;
 
 struct Movement_cost {
     i32 foot_slow;
@@ -458,7 +458,7 @@ struct Movement_cost {
     i32 bandits;
 };
 
-extern struct Movement_cost Movement_cost_default;
+extern const struct Movement_cost Movement_cost_default;
 
 struct Camera {
     Point offset; /* pixels */
@@ -472,7 +472,7 @@ typedef struct Timer {
     b32 paused;
     u64 limit_ns;
 } Timer;
-extern struct Timer Timer_default;
+extern const struct Timer Timer_default;
 
 /* Action to be taken by AI */
 // By principle AI_Decide_Action should take intermediary action if ultimate
@@ -496,7 +496,7 @@ struct AI_State {
     b32 turn_over;      /* Is turn over? */
     struct AI_Action action;
 };
-extern struct AI_State AI_State_default;
+extern const struct AI_State AI_State_default;
 
 typedef struct Convoy {
     struct jsonIO_Header jsonio_header;
@@ -514,7 +514,7 @@ typedef struct Convoy {
     b32 sort_direction;
 } Convoy;
 
-extern struct Convoy Convoy_default;
+extern const struct Convoy Convoy_default;
 
 /* -- Combat_Phase -- */
 // Total attack num in phase = for i < brave_factor -> SUM(skillp_multipliers[i]) * skill_multiplier
@@ -527,7 +527,7 @@ struct Combat_Phase {
     u8     attack_num;
     b32    attacker;
 };
-extern struct Combat_Phase Combat_Phase_default;
+extern const struct Combat_Phase Combat_Phase_default;
 
 /* -- Combat_Attack -- */
 struct Combat_Attack {
@@ -536,7 +536,7 @@ struct Combat_Attack {
     b32    crit;
     b32    attacker;
 };
-extern struct Combat_Attack Combat_Attack_default;
+extern const struct Combat_Attack Combat_Attack_default;
 
 /* -- Combat_Flow -- */
 // Number of combat phases initiated by each combatants
@@ -549,7 +549,7 @@ struct Combat_Flow {
     u8     aggressor_brave;
     u8     defendant_brave;
 };
-extern struct Combat_Flow Combat_Flow_default;
+extern const struct Combat_Flow Combat_Flow_default;
 
 /* -- Combat_Death -- */
 // Can combatants die?
@@ -560,14 +560,14 @@ struct Combat_Death {
     b32 aggressor_possible;
     b32 defendant_possible;
 };
-extern struct Combat_Death Combat_Death_default;
+extern const struct Combat_Death Combat_Death_default;
 
 /* -- Combat_Rates -- */
 struct Combat_Rates {
     u8 hit;
     u8 crit;
 } ;
-extern struct Combat_Rates Combat_Rates_default;
+extern const struct Combat_Rates Combat_Rates_default;
 
 /* -- Combat_Stats -- */
 // All combatant stats related to combats
@@ -581,7 +581,7 @@ struct Combat_Stats {
     i8                      agg_equipment[UNIT_ARMS_NUM];
     i8                      dft_equipment[UNIT_ARMS_NUM];
 };
-extern struct Combat_Stats Combat_Stats_default;
+extern const struct Combat_Stats Combat_Stats_default;
 
 /* -- Combat_Forecast -- */
 // All stats required to predict how combat will go,
@@ -593,7 +593,7 @@ struct Combat_Forecast {
     u8                      phase_num;
     u8                      attack_num;
 };
-extern struct Combat_Forecast Combat_Forecast_default;
+extern const struct Combat_Forecast Combat_Forecast_default;
 
 /* -- Combat_Outcome -- */
 // Actual phases and attacks that happen during combat
@@ -604,7 +604,7 @@ struct Combat_Outcome {
     int current_attack;
     b32                   ended; /* death before all attacks */
 };
-extern struct Combat_Outcome Combat_Outcome_default;
+extern const struct Combat_Outcome Combat_Outcome_default;
 
 /* --- RNG SEQUENCE BREAKER (SB) --- */
 struct RNG_Sequence { /* Sequence of hits/misses in a row */
@@ -734,7 +734,7 @@ typedef struct Unit {
     b32 divine_shield;
     b32 isDualWielding;
 } Unit;
-extern struct Unit Unit_default;
+extern const struct Unit Unit_default;
 
 struct GraphStat {
     i16 level;
@@ -742,7 +742,7 @@ struct GraphStat {
     i8 cumul_stat[SOTA_MAX_LEVEL];
     i8 stat_id;
 };
-extern struct GraphStat GraphStat_default;
+extern const struct GraphStat GraphStat_default;
 
 struct Graph {
     SDL_Rect rect; // x,y,w,h
@@ -767,7 +767,7 @@ struct Graph {
     b32 x_ticks : 1;
     b32 y_ticks : 1;
 };
-extern struct Graph Graph_default;
+extern const struct Graph Graph_default;
 
 
 /* --- Bars --- */
@@ -776,7 +776,7 @@ struct CircleBar {
     SDL_RendererFlip flip;
     Point pos;
 };
-extern struct CircleBar CircleBar_default;
+extern const struct CircleBar CircleBar_default;
 
 
 struct SimpleBar {
@@ -791,7 +791,7 @@ struct SimpleBar {
     SDL_Color FG_light;
     SDL_RendererFlip flip;
 };
-extern struct SimpleBar SimpleBar_default;
+extern const struct SimpleBar SimpleBar_default;
 
 struct GamepadInputMap {
     /* Physical joysticks -> no user change */
@@ -861,7 +861,7 @@ struct KeyboardInputMap {
     u8  m_len;
     u8  space_len;
 };
-extern struct KeyboardInputMap KeyboardInputMap_default;
+extern const struct KeyboardInputMap KeyboardInputMap_default;
 
 
 /* --- Party --- */
@@ -885,7 +885,7 @@ struct Party {
 
     i32 size;
 };
-extern struct Party Party_default;
+extern const struct Party Party_default;
 
 
 /* --- Game Object --- */
@@ -1042,7 +1042,7 @@ typedef struct Game {
     b32   isShadow         : 1;
     b32   fast_forward     : 1;
 } Game;
-extern struct Game Game_default;
+extern const struct Game Game_default;
 
 typedef struct Item {
     struct jsonIO_Header jsonio_header;
@@ -1072,7 +1072,7 @@ typedef struct Item {
     b32 canUse      : 1;
     b32 canRepair   : 1; /* TODO: Move to weapon? */
 } Item;
-extern struct Item Item_default;
+extern const struct Item Item_default;
 
 typedef struct Weapon {
     struct jsonIO_Header jsonio_header;
@@ -1085,7 +1085,7 @@ typedef struct Weapon {
     Item         *item;
     struct Weapon_stats  stats;
 } Weapon;
-extern struct Weapon Weapon_default;
+extern const struct Weapon Weapon_default;
 
 typedef struct Arrow {
     i32 *costmap;
@@ -1101,7 +1101,7 @@ typedef struct Arrow {
     struct Rendered rendereds[SOTA_MAX_MOVEMENT]; /* [patch_id] */
     b32 show;
 } Arrow;
-extern struct Arrow Arrow_default;
+extern const struct Arrow Arrow_default;
 
 /* --- Pathfinding --- */
 typedef struct PathfindingAct {
@@ -1117,7 +1117,7 @@ typedef struct PathfindingAct {
     Range            range;
     Point            point;
 } PathfindingAct;
-extern PathfindingAct PathfindingAct_default;
+extern const PathfindingAct PathfindingAct_default;
 
 struct TextLines {
     char **lines;
@@ -1125,7 +1125,7 @@ struct TextLines {
     int    line_num;
     int    line_len;
 };
-extern struct TextLines TextLines_default;
+extern const struct TextLines TextLines_default;
 
 
 

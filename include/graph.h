@@ -49,8 +49,8 @@ enum GRAPH_LINESTYLE { /* palette_NES, offset by 1 for NULL == 0 */
     GRAPH_LINESTYLE_LINE  = 2,
 };
 
-extern struct Unit_stats test_grown_stats[10];
-extern struct Unit_stats test_base_stats;
+extern const struct Unit_stats test_grown_stats[10];
+extern const struct Unit_stats test_base_stats;
 
 /* --- Stats --- */
 void Graph_Stat_Remove(struct Graph *g, u8 stat);

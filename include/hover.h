@@ -24,7 +24,7 @@ typedef struct Hover {
     i32  update_wait_ns;
     i32  timer_ns;
 } Hover;
-extern struct Hover Hover_default;
+extern const struct Hover Hover_default;
 
 void Hover_Compute_Next(struct Hover *hover, struct Point *pos);
 

@@ -28,10 +28,10 @@
 
 typedef void (*fsm_main_t)(struct Game *);
 
-extern fsm_main_t fsm_cFrame_s[GAME_STATE_NUM];
-extern fsm_main_t fsm_cFrame_sGmpMap_ss[GAME_SUBSTATE_NUM];
-extern fsm_main_t fsm_rFrame_s[GAME_STATE_NUM];
-extern fsm_main_t fsm_rFrame_sGmpMap_ss[GAME_SUBSTATE_NUM];
+extern const fsm_main_t fsm_cFrame_s[GAME_STATE_NUM];
+extern const fsm_main_t fsm_cFrame_sGmpMap_ss[GAME_SUBSTATE_NUM];
+extern const fsm_main_t fsm_rFrame_s[GAME_STATE_NUM];
+extern const fsm_main_t fsm_rFrame_sGmpMap_ss[GAME_SUBSTATE_NUM];
 
 /* --- Control FSM --- */
 /* - Control FSM standalone state - */

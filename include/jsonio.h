@@ -33,8 +33,8 @@ enum JSON_bOFFSET {
 typedef void (*json_func)(void *, cJSON *);
 
 /* --- READERS & WRITERS --- */
-extern json_func json_read_funcs [JSON_END];
-extern json_func json_write_funcs[JSON_END];
+extern const json_func json_read_funcs [JSON_END];
+extern const json_func json_write_funcs[JSON_END];
 
 /* --- AI definitions --- */
 void AI_readJSON( void *ai, cJSON *jai);

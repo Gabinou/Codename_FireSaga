@@ -69,10 +69,10 @@ struct Map_condition {
     b32    win;
     b32    lose;
 };
-extern struct Map_condition Map_condition_default;
-extern struct Map_condition Map_condition_boss_win;
-extern struct Map_condition Map_condition_main_char_loss;
-extern struct Map_condition Map_condition_debug_map_loss;
+extern const struct Map_condition Map_condition_default;
+extern const struct Map_condition Map_condition_boss_win;
+extern const struct Map_condition Map_condition_main_char_loss;
+extern const struct Map_condition Map_condition_debug_map_loss;
 
 void Map_Conditions_Check_Death(struct Map_condition *cdarr,
                                 struct Map           *map,

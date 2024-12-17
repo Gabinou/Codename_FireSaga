@@ -11,31 +11,31 @@
 /* -- Names -- */
 // TODO migrate names to s8
 // TODO make names not global
-extern s8 scenes[SCENE_NUM];
-extern s8 sexNames[UNIT_SEX_NUM];
-extern s8 statNames[UNIT_STAT_MALLOC];
-extern s8 armyNames[ARMY_MALLOC];
-extern s8 classNames[UNIT_CLASS_NUM];
-extern s8 sceneTimes[SCENE_TIME_NUM];
-extern s8 unitStatuses[UNIT_STATUS_END];
-extern s8 campjobNames[CAMPJOB_END];
-extern s8 mapFilenames[CHAPTER_MALLOC];
-extern s8 support_types[SUPPORT_TYPE_NUM];
-extern s8 gameStatenames[GAME_STATE_END];
-extern s8 menuOptionnames[MENU_OPTION_END];
-extern s8 jsonElementnames[JSON_END];
-extern s8 global_unitNames[UNIT_NUM];  /* global_unitNames[order] = unit_name */
-extern s8 global_itemNames[ITEM_NUM];
-extern s8 global_tilenames[TILE_ID_MAX];
-extern s8 gamesubStatenames[GAME_SUBSTATE_END];
-extern u64 unitHashes[UNIT_NUM];  /* unitHashes[order] = unit_name hash */
+extern const s8 scenes[SCENE_NUM];
+extern const s8 sexNames[UNIT_SEX_NUM];
+extern const s8 statNames[UNIT_STAT_MALLOC];
+extern const s8 armyNames[ARMY_MALLOC];
+extern const s8 classNames[UNIT_CLASS_NUM];
+extern const s8 sceneTimes[SCENE_TIME_NUM];
+extern const s8 unitStatuses[UNIT_STATUS_END];
+extern const s8 campjobNames[CAMPJOB_END];
+extern const s8 mapFilenames[CHAPTER_MALLOC];
+extern const s8 support_types[SUPPORT_TYPE_NUM];
+extern const s8 gameStatenames[GAME_STATE_END];
+extern const s8 menuOptionnames[MENU_OPTION_END];
+extern const s8 jsonElementnames[JSON_END];
+extern const s8 global_unitNames[UNIT_NUM];  /* global_unitNames[order] = unit_name */
+extern const s8 global_itemNames[ITEM_NUM];
+extern const s8 global_tilenames[TILE_ID_MAX];
+extern const s8 gamesubStatenames[GAME_SUBSTATE_END];
+extern const u64 unitHashes[UNIT_NUM];  /* unitHashes[order] = unit_name hash */
 
 /* --- Order at run-time --- */
 /* order at comp-time: use ITEM_ORDER_##X */
-extern struct dtab   *global_itemOrders; /* DTAB_GET(global_unitOrders, id) = order */
-extern struct dtab   *global_unitOrders; /* DTAB_GET(global_unitOrders, id) = order */
+extern const struct dtab   *global_itemOrders; /* DTAB_GET(global_unitOrders, id) = order */
+extern const struct dtab   *global_unitOrders; /* DTAB_GET(global_unitOrders, id) = order */
 
-extern u64           *class_equippables;
+extern const u64           *class_equippables;
 
 /* -- Name makers -- */
 void Names_scenes(void);

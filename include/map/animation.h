@@ -24,7 +24,7 @@ typedef struct CombatAnimation { /* on Map */
     int pause_before_ms;
     int frame_count; /* highest frame index played in current animation */
 } CombatAnimation;
-extern struct CombatAnimation CombatAnimation_default;
+extern const struct CombatAnimation CombatAnimation_default;
 
 /* --- MapAnimation --- */
 /* Blocks control (except to go faster) */
@@ -35,7 +35,7 @@ typedef struct MapAnimation {
     i64 time_ns;
     anim_func_t anim;
 } MapAnimation;
-extern struct MapAnimation MapAnimation_default;
+extern const struct MapAnimation MapAnimation_default;
 
 /* --- Constructors/Destructors --- */
 

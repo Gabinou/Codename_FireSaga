@@ -26,6 +26,6 @@ struct Combat_HPBar {
     struct HP hp;
     struct BarDamage damage;
 };
-extern struct Combat_HPBar Combat_HPBar_default;
+extern const struct Combat_HPBar Combat_HPBar_default;
 
 #endif /* BARS_H */

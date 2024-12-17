@@ -30,7 +30,7 @@ typedef struct HexPosition {
     b32 orientation;
     i32 radius; // e.g. size of hexagon/side length.
 } HexPosition;
-extern struct HexPosition HexPosition_default;
+extern const struct HexPosition HexPosition_default;
 
 enum ORIENTATIONS {
     FLAT_TOP = 0,

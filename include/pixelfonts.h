@@ -26,8 +26,8 @@ enum PIXELFONT_OFFSET {
     PIXELNOURS_GOTHIC_Y_OFFSET  = 0,
 };
 
-extern u8 pixelfont_y_offset[ASCII_GLYPH_NUM];
-extern u8 pixelfont_big_y_offset[ASCII_GLYPH_NUM];
+extern const u8 pixelfont_y_offset[ASCII_GLYPH_NUM];
+extern const u8 pixelfont_big_y_offset[ASCII_GLYPH_NUM];
 
 /* --- DEFINITION --- */
 typedef struct PixelFont {
@@ -53,8 +53,8 @@ typedef struct PixelFont {
     i8 black;
     i8 white;
 } PixelFont;
-extern PixelFont PixelFont_default;
-extern struct PixelFont TextureFont_default;
+extern const PixelFont PixelFont_default;
+extern const struct PixelFont TextureFont_default;
 
 /* --- Constructors/Destructors --- */
 struct PixelFont *PixelFont_Alloc(void);

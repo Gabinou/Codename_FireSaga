@@ -28,7 +28,7 @@ typedef struct Text {
     b32                 visible;
     b32                 update;
 } Text;
-extern struct Text Text_default;
+extern const struct Text Text_default;
 
 void Text_Set(     struct Text *t, char *l, int o);
 void Text_Draw(    struct Text *t, SDL_Renderer *r, SDL_Rect *d);

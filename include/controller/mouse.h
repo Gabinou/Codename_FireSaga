@@ -22,13 +22,13 @@ struct MouseInputMap {
     u8 faster_len;
     u8 pause_len;
 };
-extern struct MouseInputMap MouseInputMap_default;
+extern const struct MouseInputMap MouseInputMap_default;
 
 typedef struct controllerMouse {
     struct MouseInputMap inputmap;
     i32 controller_type;
 } controllerMouse;
-extern struct controllerMouse controllerMouse_default;
+extern const struct controllerMouse controllerMouse_default;
 
 void Mouse_checkButton(struct controllerMouse *mouse, u8 button);
 

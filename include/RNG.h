@@ -35,8 +35,8 @@ typedef u8(*RNG_URN_ptr)(void);
 
 /* --- ANTS --- */
 /* FIRST OF MANY POSSIBLE GLOBAL DECLARATIONS */
-extern b32 rng_sequence_breaker_miss_growth;
-extern i16 URN_debug;
+extern const b32 rng_sequence_breaker_miss_growth;
+extern const i16 URN_debug;
 enum SOTA_RN {
     RN_MAX          = 100, /* 100 excluded */
     RN_5050         =  50,  /* < for 50/50  */
@@ -92,8 +92,8 @@ u8 *RNG_boxmuller( u8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev);
 #define RNG_SEQ_MAX             21 /* length until rate 1 gets close enough to 50% */
 
 /* -- Tables -- */
-extern float sb_rise_table[RNG_SB_BASE_NUM];
-extern float sb_drop_table[RNG_SB_BASE_NUM];
+extern const float sb_rise_table[RNG_SB_BASE_NUM];
+extern const float sb_drop_table[RNG_SB_BASE_NUM];
 
 /* -- Macros -- */
 #define SB_GROWTH_RISE(rate, n) (u16) ( (float) rate * sota_slowpow((float)sb_rise_table[rate/RNG_SB_BASE_NUM], (u16)((n > RNG_SB_GROWTH_OFFSET ? n : RNG_SB_GROWTH_OFFSET) - RNG_SB_GROWTH_OFFSET)))

@@ -53,7 +53,7 @@ enum SOTA_CAMP_JOB_MAX {
     CAMP_JOB_TOTAL = CAMP_GUARD_MAX + CAMP_LIBRARIAN_MAX + CAMP_ASSISTANT_MAX + CAMP_COOK_MAX + CAMP_SCRIBE_MAX + CAMP_STABLEHAND_MAX + CAMP_CLERGYMAN_MAX + CAMP_STORAGEMASTER_MAX + CAMP_MAGICRESEARCHER_MAX,
 };
 
-extern u8 max_jobs[CAMPJOB_END];
+extern const u8 max_jobs[CAMPJOB_END];
 
 // No camp automation.
 // BUT jobs are kept between chapters.
@@ -76,7 +76,7 @@ typedef struct Camp {
     // Character must have worked the job before.
     u8 forbidden_jobs[UNIT_ID_PC_END];
 } Camp;
-extern struct Camp Camp_default;
+extern const struct Camp Camp_default;
 
 void Camp_Free(struct Camp *camp);
 

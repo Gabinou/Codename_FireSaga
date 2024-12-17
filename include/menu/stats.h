@@ -8,8 +8,8 @@
 struct Menu;
 
 /* --- ELEMENTS --- */
-extern  i8 stats_menu_cycle[STATS_MENU_CYCLE_NUM];
-extern  i8 stats_menu_cycle_inv[MENU_TYPE_END];
+extern const  i8 stats_menu_cycle[STATS_MENU_CYCLE_NUM];
+extern const  i8 stats_menu_cycle_inv[MENU_TYPE_END];
 
 #define REGISTER_ENUM(x) SM_ELEM_##x,
 enum STATS_MENU_ELEMENTS {
@@ -361,14 +361,14 @@ enum STATS_MENU_COLOR {
 /* --- ELEMENTS --- */
 #define STATSMENU_BUFFER_LEN 128
 
-extern struct MenuElemDirections sm_links[STATS_MENU_ELEMS_NUM];
-extern char stats_menu_description[STATS_MENU_ELEMS_NUM][STATSMENU_BUFFER_LEN];
+extern const struct MenuElemDirections sm_links[STATS_MENU_ELEMS_NUM];
+extern const char stats_menu_description[STATS_MENU_ELEMS_NUM][STATSMENU_BUFFER_LEN];
 
-extern struct Point sm_elem_pos[STATS_MENU_ELEMS_NUM];
-extern struct Point stats_menu_elem_box[STATS_MENU_ELEMS_NUM];
+extern const struct Point sm_elem_pos[STATS_MENU_ELEMS_NUM];
+extern const struct Point stats_menu_elem_box[STATS_MENU_ELEMS_NUM];
 
-extern int status_offset_x[UNIT_STATUS_END];
-extern int status_offset_y[UNIT_STATUS_END];
+extern const int status_offset_x[UNIT_STATUS_END];
+extern const int status_offset_y[UNIT_STATUS_END];
 
 struct StatsMenu {
     b32 update;
@@ -389,7 +389,7 @@ struct StatsMenu {
     b32 update_stats       : 1; /* only false in tests */
     b32 tophand_stronghand : 1; /* If false, tophand is lefthand */
 };
-extern struct StatsMenu StatsMenu_default;
+extern const struct StatsMenu StatsMenu_default;
 
 /* --- Constructors/Destructors --- */
 struct StatsMenu *StatsMenu_Alloc(void);

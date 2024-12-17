@@ -115,7 +115,7 @@ typedef struct PopUp_Unit {
     struct Point cursor_limit_min;
     struct Point cursor_limit_max;
 } PopUp_Unit;
-extern struct PopUp_Unit PopUp_Unit_default;
+extern const struct PopUp_Unit PopUp_Unit_default;
 
 /* --- Constructors/Destructors --- */
 void PopUp_Unit_Free(struct PopUp_Unit *pu);

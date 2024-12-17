@@ -24,7 +24,7 @@ typedef struct n9Patch {
     struct Point pos;             /* [pixels]      */
     SDL_Texture *texture; /* texture is 3x3 patches */
 } n9Patch;
-extern struct n9Patch n9Patch_default;
+extern const struct n9Patch n9Patch_default;
 
 /* --- ructor/Destructor --- */
 void n9Patch_Free(struct n9Patch *n9);

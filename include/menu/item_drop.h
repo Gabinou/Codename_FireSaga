@@ -55,11 +55,11 @@ enum IDM_ELEMS {
     IDM_ELEM_NUM    =  2,
 };
 
-extern struct MenuElemDirections  idm_links         [IDM_ELEM_NUM];
-extern struct Point               idm_elem_pos      [IDM_ELEM_NUM];
-extern struct Point               idm_elem_box      [IDM_ELEM_NUM];
-extern struct Point               idm_cursor_pos    [IDM_ELEM_NUM];
-extern struct Point               idm_cursor_box    [IDM_ELEM_NUM];
+extern const struct MenuElemDirections  idm_links         [IDM_ELEM_NUM];
+extern const struct Point               idm_elem_pos      [IDM_ELEM_NUM];
+extern const struct Point               idm_elem_box      [IDM_ELEM_NUM];
+extern const struct Point               idm_cursor_pos    [IDM_ELEM_NUM];
+extern const struct Point               idm_cursor_box    [IDM_ELEM_NUM];
 
 struct ItemDropMenu {
     b32 update;
@@ -75,7 +75,7 @@ struct ItemDropMenu {
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
 };
-extern struct ItemDropMenu ItemDropMenu_default;
+extern const struct ItemDropMenu ItemDropMenu_default;
 
 /* --- Constructors/Destructors --- */
 struct ItemDropMenu *ItemDropMenu_Alloc(void);

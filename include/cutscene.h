@@ -31,8 +31,8 @@ typedef struct Cutscene {
     tnecs_entity event;
 
 } Cutscene;
-extern struct Cutscene Cutscene_default;
-extern struct Cutscene Cutscene_GameOver;
+extern const struct Cutscene Cutscene_default;
+extern const struct Cutscene Cutscene_GameOver;
 
 void Cutscene_Free(Cutscene *cutscene);
 void Cutscene_Init(Cutscene *cutscene);

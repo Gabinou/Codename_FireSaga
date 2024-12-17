@@ -38,7 +38,7 @@ typedef struct NewMap {
 
     i32 stack_mode;
 } NewMap;
-extern NewMap NewMap_default;
+extern const NewMap NewMap_default;
 
 typedef struct Map {
     s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
@@ -236,7 +236,7 @@ typedef struct Map {
     b32 shading_changed    : 1;
     b32 show_globalRange   : 1;
 } Map;
-extern struct Map Map_default;
+extern const struct Map Map_default;
 
 /* --- Constructor/Destructors --- */
 

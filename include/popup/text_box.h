@@ -117,7 +117,7 @@ typedef struct Text_Box {
     b32 enable_tail     : 1;
     SDL_Palette *palette;
 } Text_Box;
-extern struct Text_Box TEXT_BOX_Default;
+extern const struct Text_Box TEXT_BOX_Default;
 
 /* --- Constructor/Destrgit auctor --- */
 void Text_Box_Free(struct Text_Box *b);

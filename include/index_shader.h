@@ -34,7 +34,7 @@ struct Tilemap_Shader {
     u8 frames;
     u8 shadowtile_num;
 };
-extern struct Tilemap_Shader Tilemap_Shader_default;
+extern const struct Tilemap_Shader Tilemap_Shader_default;
 
 /* -- ructor/Destructor -- */
 void Tilemap_Shader_Free(       struct Tilemap_Shader *s);
@@ -60,7 +60,7 @@ struct Index_Shader {
     u8 *shaded_pixels;
     size_t pixels_num;  /* ARRAY_LIST: 2D -> X: [2*i], Y: [2*i+1], ARRAY_MATRIX */
 };
-extern struct Index_Shader Index_Shader_default;
+extern const struct Index_Shader Index_Shader_default;
 
 /* -- ructor/Destructor -- */
 void Index_Shader_Free(struct Index_Shader *is);

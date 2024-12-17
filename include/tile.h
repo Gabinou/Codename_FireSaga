@@ -19,7 +19,7 @@ typedef struct Tile {
     struct Movement_cost cost;
     b32 inside;
 } Tile;
-extern struct Tile Tile_default;
+extern const struct Tile Tile_default;
 
 /* --- Map objects --- */
 /*  Many less map objects than tiles. -> store with arrays  */
@@ -31,24 +31,24 @@ typedef struct Mobj_Link {
     i32 *abspos_linked;
     u8 num_linked;
 } Mobj_Link;
-extern struct Mobj_Link Mobj_Link_default;
+extern const struct Mobj_Link Mobj_Link_default;
 
 typedef struct Arena {
 
 } Arena;
-extern struct Arena Arena_default;
+extern const struct Arena Arena_default;
 
 typedef struct Village {
 
 } Village;
-extern struct Village Village_default;
+extern const struct Village Village_default;
 
 typedef struct Chest {
     i32 tile;
     u16 item;
     u32 gold;
 } Chest;
-extern struct Chest Chest_default;
+extern const struct Chest Chest_default;
 
 /*  Breakable is overriden by door/chest        */
 /*  -> for tile shown, linking behavior, etc.   */
@@ -63,7 +63,7 @@ typedef struct Breakable {
     u8 def;
     u8 res;
 } Breakable;
-extern struct Breakable Breakable_default;
+extern const struct Breakable Breakable_default;
 
 typedef struct Door {
     /*--- LINKING ---*/
@@ -74,7 +74,7 @@ typedef struct Door {
     u32 event;
     u32 scene;
 } Door;
-extern struct Door Door_default;
+extern const struct Door Door_default;
 
 /* --- Constructors/Destructors --- */
 /* -- Tile -- */

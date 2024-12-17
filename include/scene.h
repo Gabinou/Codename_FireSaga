@@ -96,12 +96,12 @@ enum SCENE_STATEMENTS {
 typedef void (*json_func)(void *, cJSON *);
 
 // Scene FSMs
-extern json_func fsm_Scene_readJSON[SCENE_STATEMENT_NUM];
-extern json_func fsm_Scene_writeJSON[SCENE_STATEMENT_NUM];
+extern const json_func fsm_Scene_readJSON[SCENE_STATEMENT_NUM];
+extern const json_func fsm_Scene_writeJSON[SCENE_STATEMENT_NUM];
 
 // Scene Statement FSM
 typedef void (*fsm_scene_statement_t)(void *);
-extern fsm_scene_statement_t scene_statement_play[SCENE_STATEMENT_NUM];
+extern const fsm_scene_statement_t scene_statement_play[SCENE_STATEMENT_NUM];
 
 typedef struct SceneHeader {
     i32 statement_type;
@@ -124,21 +124,21 @@ typedef struct SceneHeader {
 typedef struct SceneDidascalie {
     s8 actor;
 } SceneDidascalie;
-extern struct SceneDidascalie SceneDidascalie_default;
-extern struct SceneDidascalie SceneDidascalie_FadeAll;
+extern const struct SceneDidascalie SceneDidascalie_default;
+extern const struct SceneDidascalie SceneDidascalie_FadeAll;
 
 typedef struct SceneLine {
     s8 actor;
     s8 line;
 } SceneLine;
-extern struct SceneLine SceneLine_default;
+extern const struct SceneLine SceneLine_default;
 
 typedef struct SceneMusic {
     int a;
 } SceneMusic;
 
-extern struct SceneBackground SceneMusic_default;
-extern struct SceneBackground SceneMusic_Stop;
+extern const struct SceneBackground SceneMusic_default;
+extern const struct SceneBackground SceneMusic_Stop;
 
 //  Background:
 //  - Transition effects
@@ -147,8 +147,8 @@ extern struct SceneBackground SceneMusic_Stop;
 typedef struct SceneBackground {
     int a;
 } SceneBackground;
-extern struct SceneBackground SceneBackground_default;
-extern struct SceneBackground SceneBackground_FadeToBlack;
+extern const struct SceneBackground SceneBackground_default;
+extern const struct SceneBackground SceneBackground_FadeToBlack;
 //  Screen:
 //  - Shake screen
 
@@ -210,7 +210,7 @@ typedef struct Scene {
     //          -> event?
     tnecs_entity event;
 } Scene;
-extern struct Scene Scene_default;
+extern const struct Scene Scene_default;
 
 
 /* --- Constructors/Destructors --- */

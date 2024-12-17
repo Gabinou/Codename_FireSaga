@@ -15,7 +15,7 @@ typedef struct Position {
     /* If not on the Tilemap, position is absolute in window */
     b32 onTilemap  : 1; /* position transformed by scale   */
 } Position;
-extern struct Position Position_default;
+extern const struct Position Position_default;
 
 b32 Point_isIn(struct Point pos, struct Point *arr, size_t len);
 

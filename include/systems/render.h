@@ -6,9 +6,9 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
 
-extern b32 CursorFlag;
-extern b32 MouseFlag;
-extern b32 RenderTop;
+extern const b32 CursorFlag;
+extern const b32 MouseFlag;
+extern const b32 RenderTop;
 
 void Draw_Text(         tnecs_system_input *input);
 void Draw_Menu(         tnecs_system_input *input);
