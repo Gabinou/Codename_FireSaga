@@ -3,6 +3,7 @@
 
 #include "jsonio.h"
 #include "conditions.h"
+#include "n9patch.h"
 #include "popup/text_box.h"
 
 // SCENE MVP
@@ -62,9 +63,13 @@ struct Boss;
 struct Game;
 struct Settings;
 
-// Statements: Renpy terminology
-//      Anything a Scene can do.
-//      Scene pauses only on line. Otherwise play statements.
+enum SCENE_MISC {
+    SCENE_TEXT_BOX_PATCH_PIXELS =  16,
+    SCENE_TEXT_BOX_SCALE        =   2,
+    SCENE_TEXT_BOX_MAX_LENGTH   = 120,
+    SCENE_TEXT_BOX_MAX_LINES    =   2,
+};
+
 enum SCENE_DIDASCALIE {
     SCENE_DIDASCALIE_START  = -1,
     SCENE_DIDASCALIE_APPEAR =  0,
@@ -82,6 +87,9 @@ enum SCENE_ACTORS {
     SCENE_ACTOR_POS_X_DIFF = 100,
 };
 
+// Statements: Renpy terminology
+//      Anything a Scene can do.
+//      Scene pauses only on line. Otherwise play statements.
 enum SCENE_STATEMENTS {
     SCENE_STATEMENT_START       = -1,
     SCENE_STATEMENT_LINE        =  0,
@@ -218,6 +226,7 @@ typedef struct Scene {
     SDL_Texture *texture;
     struct PixelFont   *pixelnours;
     struct Text_Box     text_box;
+    struct n9Patch      n9patch;
 
     /* -- Post-scene -- */
     // What happens after a scene ends?
@@ -235,6 +244,7 @@ extern const struct Scene Scene_default;
 /* --- Constructors/Destructors --- */
 void Scene_Free(struct Scene *scene);
 void Scene_Init(struct Scene *scene);
+void Scene_Text_Box_Init(struct Scene *scene);
 void Scene_Texture_Create(struct Scene *scene, SDL_Renderer *renderer);
 
 void Scene_Statement_Add(Scene *scene, SceneStatement statement);

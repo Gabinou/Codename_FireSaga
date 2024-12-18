@@ -3,6 +3,9 @@
 #include "names.h"
 #include "cJSON.h"
 #include "utilities.h"
+#include "filesystem.h"
+#include "platform.h"
+#include "macros.h"
 #include "nmath.h"
 #include "pixelfonts.h"
 #include "palette.h"
@@ -53,6 +56,41 @@ const json_func fsm_Scene_writeJSON[SCENE_STATEMENT_NUM] = {
     Scene_Music_writeJSON,
 };
 
+void Scene_Text_Box_Init(struct Scene *scene) {
+    /* -- SDL_free before re-allocating -- */
+    Text_Box_Free(&scene->text_box);
+    n9Patch_Free(&scene->n9patch);
+
+    /* -- Bubble defaults -- */
+    scene->text_box.update  = true;
+    scene->text_box.palette = palette_SOTA;
+
+    /* -- n9patch defaults -- */
+    scene->n9patch                  = n9Patch_default;
+    scene->n9patch.patch_pixels.x  = SCENE_TEXT_BOX_PATCH_PIXELS;
+    scene->n9patch.patch_pixels.y  = SCENE_TEXT_BOX_PATCH_PIXELS;
+    scene->n9patch.scale.x         = SCENE_TEXT_BOX_SCALE;
+    scene->n9patch.scale.y         = SCENE_TEXT_BOX_SCALE;
+    scene->n9patch.pos.x           = scene->texture_rect.w / 4;
+    scene->n9patch.pos.y           = scene->texture_rect.h / 4 * 3;
+
+    scene->text_box.line_len_px    = SCENE_TEXT_BOX_MAX_LENGTH;
+    scene->text_box.line_num_max   = SCENE_TEXT_BOX_MAX_LINES;
+
+    /* -- Loading Surfaces -- */
+    char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu_doric_cols_16px_stairs.png");
+
+    if (scene->text_box.surface != NULL)
+        SDL_FreeSurface(scene->text_box.surface);
+    scene->text_box.surface = Filesystem_Surface_Load(path, SDL_PIXELFORMAT_INDEX8);
+    SDL_assert(scene->text_box.surface != NULL);
+    SDL_assert(scene->text_box.surface->format->palette == palette_SOTA);
+
+    scene->text_box.enable_tail = false;
+
+    SDL_assert(scene->n9patch.texture     != NULL);
+}
+
 void Scene_Init(struct Scene *scene) {
     SDL_assert(scene != NULL);
 
@@ -63,24 +101,6 @@ void Scene_Init(struct Scene *scene) {
     if (scene->actor_order == NULL) {
         scene->actor_order  = DARR_INIT(scene->actor_order, int, 16);
     }
-
-    // n9Patch_Free(n9patch);
-    // n9patch->patch_pixels.x = MENU_PATCH_PIXELS;
-    // n9patch->patch_pixels.y = MENU_PATCH_PIXELS;
-    // n9patch->size_patches.x = DM_PATCH_X_SIZE;
-    // n9patch->size_patches.y = DM_PATCH_Y_SIZE;
-    // n9patch->scale.x        = DM_N9PATCH_SCALE_X;
-    // n9patch->scale.y        = DM_N9PATCH_SCALE_Y;
-    // n9patch->size_pixels.x  = (MENU_PATCH_PIXELS * DM_PATCH_X_SIZE);
-    // n9patch->size_pixels.y  = (MENU_PATCH_PIXELS * DM_PATCH_Y_SIZE);
-
-
-    // if (n9patch->texture == NULL) {
-    //     char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
-    //     n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
-    // }
-
-
 }
 
 void Scene_Texture_Create(struct Scene *scene, SDL_Renderer *renderer) {
@@ -544,21 +564,24 @@ void _Scene_Draw_Text(struct Scene *scene, SDL_Texture *render_target, SDL_Rende
     SDL_assert(statement.header.statement_type == SCENE_STATEMENT_LINE);
     SceneLine *scene_line = &statement._union.line;
 
-    u32 px = scene->texture_rect.w / 4;
-    u32 py = scene->texture_rect.h / 4 * 3;
+    u32 px = scene->n9patch.pos.x + 10;
+    u32 py = scene->n9patch.pos.y - 22;
 
     /* Writing Actor name:*/
     PixelFont_Write(scene->pixelnours, renderer, scene_line->actor.data,
                     scene_line->actor.len, px, py);
 
     // TODO: Set actor name position
-    px -= 10;
-    py += 22;
+    // px -= 10;
+    // py += 22;
 
     /* Writing line:*/
     // TODO: Set line position
-    PixelFont_Write(scene->pixelnours, renderer, scene_line->line.data,
-                    scene_line->line.len, px, py);
+    // PixelFont_Write(scene->pixelnours, renderer, scene_line->line.data,
+    //                 scene_line->line.len, px, py);
+    Text_Box_Set_Text(&scene->text_box, scene_line->line.data, &scene->n9patch);
+    Text_Box_Update(&scene->text_box, &scene->n9patch,
+                    render_target, renderer);
 }
 
 void Scene_Update(struct Scene *scene, struct Settings *settings,

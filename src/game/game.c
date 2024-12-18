@@ -680,6 +680,7 @@ void Game_Startup_Scene(Game *IES) {
 
     scene->pixelnours = IES->pixelnours;
     Scene_Texture_Create(scene, IES->renderer);
+    Scene_Text_Box_Init(scene);
 
     jsonio_readJSON(filename, scene);
     IES->substate   = GAME_SUBSTATE_STANDBY;

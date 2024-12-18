@@ -330,7 +330,6 @@ void Text_Box_Set_All(struct Text_Box *bubble,  char *text, struct Point target,
     SDL_assert(bubble->width  > 0);
     SDL_assert(bubble->height > 0);
     Text_Box_Tail_Pos(bubble, n9patch);
-
 }
 
 /* -- Drawing elements -- */
