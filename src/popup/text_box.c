@@ -16,11 +16,11 @@
 // #endif // STB_SPRINTF_IMPLEMENTATION
 
 
-const struct Text_Box_Tail TEXT_BOX_Tail_default = {
+const struct Text_Box_Tail Text_Box_Tail_default = {
     .flip           = SDL_FLIP_NONE,
 };
 
-const struct Text_Box TEXT_BOX_Default = {
+const struct Text_Box Text_Box_Default = {
     .row_height         = ASCII_GLYPH_HEIGHT,
     .line_len_px        = 64,
     .line_num_max       = -1,

@@ -121,7 +121,7 @@ void test_pixelfonts_render() {
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
 
-    struct Text_Box bubble = TEXT_BOX_Default;
+    struct Text_Box bubble = Text_Box_Default;
 
     /* -- Create n9patch -- */
     // render_target is NULL cause there is render_target!
@@ -136,7 +136,7 @@ void test_pixelfonts_render() {
     /* - setting - */
     bubble.target.x = -100;
     bubble.target.y = -100;
-    TEXT_BOX_Set_All(&bubble, "portez ce vieux whisky au juge blond qui fume. ?!", bubble.target,
+    Text_Box_Set_All(&bubble, "portez ce vieux whisky au juge blond qui fume. ?!", bubble.target,
                      &n9patch);
 
     /* - rendering - */
@@ -145,7 +145,7 @@ void test_pixelfonts_render() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
-    TEXT_BOX_Set_All(&bubble, "PORTEZ CE VIEUX WHISKY AU JUGE BLOND QUI FUME. ?! ", bubble.target,
+    Text_Box_Set_All(&bubble, "PORTEZ CE VIEUX WHISKY AU JUGE BLOND QUI FUME. ?! ", bubble.target,
                      &n9patch);
 
     /* - rendering - */
@@ -168,7 +168,7 @@ void test_pixelfonts_render() {
     /* - setting - */
     bubble.target.x = -100;
     bubble.target.y = -100;
-    TEXT_BOX_Set_All(&bubble, "a quick brown fox jumps over the lazy dog. ?!", bubble.target,
+    Text_Box_Set_All(&bubble, "a quick brown fox jumps over the lazy dog. ?!", bubble.target,
                      &n9patch);
 
     /* - rendering - */
@@ -177,7 +177,7 @@ void test_pixelfonts_render() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
-    TEXT_BOX_Set_All(&bubble, "A QUICK BROWN FOX JUMPS OVER THE LAZY DOG. ?! ", bubble.target,
+    Text_Box_Set_All(&bubble, "A QUICK BROWN FOX JUMPS OVER THE LAZY DOG. ?! ", bubble.target,
                      &n9patch);
 
     /* - rendering - */
@@ -186,7 +186,7 @@ void test_pixelfonts_render() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Bubble with blue 9patch -- */
-    TEXT_BOX_Colors_Swap(&bubble, renderer, &n9patch);
+    Text_Box_Colors_Swap(&bubble, renderer, &n9patch);
     char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
     SDL_DestroyTexture(n9patch.texture);
     n9patch.texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
@@ -196,7 +196,7 @@ void test_pixelfonts_render() {
     /* - setting - */
     bubble.target.x = -100;
     bubble.target.y = -100;
-    TEXT_BOX_Set_All(&bubble, "portez ce vieux whisky au juge blond qui fume. ?!", bubble.target,
+    Text_Box_Set_All(&bubble, "portez ce vieux whisky au juge blond qui fume. ?!", bubble.target,
                      &n9patch);
 
     /* - rendering - */
@@ -205,7 +205,7 @@ void test_pixelfonts_render() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
-    TEXT_BOX_Set_All(&bubble, "PORTEZ CE VIEUX WHISKY AU JUGE BLOND QUI FUME. ?! ", bubble.target,
+    Text_Box_Set_All(&bubble, "PORTEZ CE VIEUX WHISKY AU JUGE BLOND QUI FUME. ?! ", bubble.target,
                      &n9patch);
 
     /* - rendering - */
@@ -231,12 +231,12 @@ void test_pixelfonts_render() {
     bubble.padding.top  = TEXT_BOX_PADDING_TOP + 2;
 
     /* - setting - */
-    TEXT_BOX_Colors_Set(&bubble, SOTA_MENU_BLUE, SOTA_WHITE);
-    TEXT_BOX_Colors_Swap(&bubble, renderer, &n9patch);
+    Text_Box_Colors_Set(&bubble, SOTA_MENU_BLUE, SOTA_WHITE);
+    Text_Box_Colors_Swap(&bubble, renderer, &n9patch);
 
     bubble.target.x = -100;
     bubble.target.y = -100;
-    TEXT_BOX_Set_All(&bubble, "a quick brown fox jumps over the lazy dog. ?!", bubble.target,
+    Text_Box_Set_All(&bubble, "a quick brown fox jumps over the lazy dog. ?!", bubble.target,
                      &n9patch);
 
     /* - rendering - */
@@ -245,7 +245,7 @@ void test_pixelfonts_render() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
-    TEXT_BOX_Set_All(&bubble, "A QUICK BROWN FOX JUMPS OVER THE LAZY DOG. ?! ", bubble.target,
+    Text_Box_Set_All(&bubble, "A QUICK BROWN FOX JUMPS OVER THE LAZY DOG. ?! ", bubble.target,
                      &n9patch);
 
     /* - rendering - */

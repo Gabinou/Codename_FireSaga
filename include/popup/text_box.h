@@ -39,7 +39,7 @@
 struct n9Patch;
 
 enum SOTA_TEXT_BOX {
-    Text_Box_TEXTURE_PATCH_WIDTH =  4,
+    TEXT_BOX_TEXTURE_PATCH_WIDTH =  4,
     TEXT_BOX_TEXTURE_CORNER      =  3,
     TEXT_BOX_TEXTURE_MID         =  7,
     TEXT_BOX_PATCH_PIXELS        =  8,
