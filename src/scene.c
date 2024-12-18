@@ -82,20 +82,11 @@ void Scene_Text_Box_Init(struct Scene *scene, SDL_Renderer *renderer) {
     scene->text_box.line_len_px    = SCENE_TEXT_BOX_MAX_LENGTH;
     scene->text_box.line_num_max   = SCENE_TEXT_BOX_MAX_LINES;
 
-    /* -- Loading Surfaces -- */
-
-    // if (scene->text_box.surface != NULL)
-    // SDL_FreeSurface(scene->text_box.surface);
-    // scene->text_box.surface = Filesystem_Surface_Load(path, SDL_PIXELFORMAT_INDEX8);
+    /* -- Loading n9patch -- */
     SDL_assert(scene->n9patch.texture == NULL);
     char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu_doric_cols_16px_stairs.png");
     scene->n9patch.texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
-    // SDL_assert(scene->text_box.surface != NULL);
-    // SDL_assert(scene->text_box.surface->format->palette == palette_SOTA);
-
     scene->text_box.enable_tail = false;
-
-    // SDL_assert(scene->n9patch.texture     != NULL);
 }
 
 void Scene_Init(struct Scene *scene) {
