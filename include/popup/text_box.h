@@ -1,5 +1,5 @@
-#ifndef TEXT_BOX_H
-#define TEXT_BOX_H
+#ifndef Text_Box_H
+#define Text_Box_H
 
 #include "structs.h"
 #include "SDL.h"
@@ -39,7 +39,7 @@
 struct n9Patch;
 
 enum SOTA_TEXT_BOX {
-    TEXT_BOX_TEXTURE_PATCH_WIDTH =  4,
+    Text_Box_TEXTURE_PATCH_WIDTH =  4,
     TEXT_BOX_TEXTURE_CORNER      =  3,
     TEXT_BOX_TEXTURE_MID         =  7,
     TEXT_BOX_PATCH_PIXELS        =  8,
@@ -117,44 +117,44 @@ typedef struct Text_Box {
     b32 enable_tail     : 1;
     SDL_Palette *palette;
 } Text_Box;
-extern const struct Text_Box TEXT_BOX_Default;
+extern const struct Text_Box Text_Box_Default;
 
 /* --- Constructor/Destrgit auctor --- */
 void Text_Box_Free(struct Text_Box *b);
 void Text_Bubble_Load(struct Text_Box *b, SDL_Renderer *r, struct n9Patch *n9patch);
 
 /* --- Setters --- */
-void TEXT_BOX_Set_Text(    struct Text_Box *b, char *t, struct n9Patch *n9patch);
-void TEXT_BOX_Set_Target(  struct Text_Box *b, struct Point t);
-void TEXT_BOX_Compute_Size(struct Text_Box *b, struct n9Patch *n9patch);
+void Text_Box_Set_Text(    struct Text_Box *b, char *t, struct n9Patch *n9patch);
+void Text_Box_Set_Target(  struct Text_Box *b, struct Point t);
+void Text_Box_Compute_Size(struct Text_Box *b, struct n9Patch *n9patch);
 
 /* --- Internals --- */
-void TEXT_BOX_Tail_Pos(   struct Text_Box *b, struct n9Patch *n9patch);
-void TEXT_BOX_Tail_Flip(  struct Text_Box *b);
-void TEXT_BOX_Tail_Angle( struct Text_Box *b);
-int  TEXT_BOX_Tail_Octant(struct Text_Box *b);
+void Text_Box_Tail_Pos(   struct Text_Box *b, struct n9Patch *n9patch);
+void Text_Box_Tail_Flip(  struct Text_Box *b);
+void Text_Box_Tail_Angle( struct Text_Box *b);
+int  Text_Box_Tail_Octant(struct Text_Box *b);
 
-void TEXT_BOX_Set_All(struct Text_Box *b, char *t, struct Point ta,
+void Text_Box_Set_All(struct Text_Box *b, char *t, struct Point ta,
                       struct n9Patch *n9patch);
 
 /* --- Colors --- */
-void TEXT_BOX_Colors_Set(struct Text_Box *b,   i8 bg, i8 line);
-void TEXT_BOX_Colors_Swap(struct Text_Box *b, SDL_Renderer *r, struct n9Patch *n9);
+void Text_Box_Colors_Set(struct Text_Box *b,   i8 bg, i8 line);
+void Text_Box_Colors_Swap(struct Text_Box *b, SDL_Renderer *r, struct n9Patch *n9);
 
 /* --- Scrolling --- */
-void TEXT_BOX_VScroll(     struct Text_Box *b, SDL_Renderer *r);
-void TEXT_BOX_Copy_VScroll(struct Text_Box *b, SDL_Renderer *r, SDL_Texture *rt);
+void Text_Box_VScroll(     struct Text_Box *b, SDL_Renderer *r);
+void Text_Box_Copy_VScroll(struct Text_Box *b, SDL_Renderer *r, SDL_Texture *rt);
 
 /* --- Drawing --- */
-void TEXT_BOX_Draw(  struct PopUp *p,       struct Point pos,
+void Text_Box_Draw(  struct PopUp *p,       struct Point pos,
                      SDL_Texture *rt, SDL_Renderer *r);
 void Text_Box_Update(struct Text_Box *b, struct n9Patch *n9patch,
                      SDL_Texture *rt, SDL_Renderer *r);
 
 /* -- Drawing elements -- */
 void Text_Box_Write(       struct Text_Box *b, SDL_Renderer *r);
-void TEXT_BOX_Tail_Draw(   struct Text_Box *b, SDL_Renderer *r);
-void TEXT_BOX_VScroll_Draw(struct Text_Box *b, SDL_Renderer *r);
+void Text_Box_Tail_Draw(   struct Text_Box *b, SDL_Renderer *r);
+void Text_Box_VScroll_Draw(struct Text_Box *b, SDL_Renderer *r);
 
 
-#endif /* TEXT_BOX_H */
+#endif /* Text_Box_H */

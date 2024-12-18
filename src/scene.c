@@ -63,6 +63,24 @@ void Scene_Init(struct Scene *scene) {
     if (scene->actor_order == NULL) {
         scene->actor_order  = DARR_INIT(scene->actor_order, int, 16);
     }
+
+    // n9Patch_Free(n9patch);
+    // n9patch->patch_pixels.x = MENU_PATCH_PIXELS;
+    // n9patch->patch_pixels.y = MENU_PATCH_PIXELS;
+    // n9patch->size_patches.x = DM_PATCH_X_SIZE;
+    // n9patch->size_patches.y = DM_PATCH_Y_SIZE;
+    // n9patch->scale.x        = DM_N9PATCH_SCALE_X;
+    // n9patch->scale.y        = DM_N9PATCH_SCALE_Y;
+    // n9patch->size_pixels.x  = (MENU_PATCH_PIXELS * DM_PATCH_X_SIZE);
+    // n9patch->size_pixels.y  = (MENU_PATCH_PIXELS * DM_PATCH_Y_SIZE);
+
+
+    // if (n9patch->texture == NULL) {
+    //     char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
+    //     n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+    // }
+
+
 }
 
 void Scene_Texture_Create(struct Scene *scene, SDL_Renderer *renderer) {
