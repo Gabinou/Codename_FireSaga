@@ -56,7 +56,7 @@ const json_func fsm_Scene_writeJSON[SCENE_STATEMENT_NUM] = {
     Scene_Music_writeJSON,
 };
 
-void Scene_Text_Box_Init(struct Scene *scene) {
+void Scene_Text_Box_Init(struct Scene *scene, SDL_Renderer *renderer) {
     SDL_assert(scene                != NULL);
     SDL_assert(scene->pixelnours    != NULL);
 
@@ -71,7 +71,7 @@ void Scene_Text_Box_Init(struct Scene *scene) {
     scene->text_box.palette = palette_SOTA;
 
     /* -- n9patch defaults -- */
-    scene->n9patch                  = n9Patch_default;
+    scene->n9patch                 = n9Patch_default;
     scene->n9patch.patch_pixels.x  = SCENE_TEXT_BOX_PATCH_PIXELS;
     scene->n9patch.patch_pixels.y  = SCENE_TEXT_BOX_PATCH_PIXELS;
     scene->n9patch.scale.x         = SCENE_TEXT_BOX_SCALE;
@@ -83,13 +83,15 @@ void Scene_Text_Box_Init(struct Scene *scene) {
     scene->text_box.line_num_max   = SCENE_TEXT_BOX_MAX_LINES;
 
     /* -- Loading Surfaces -- */
-    char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu_doric_cols_16px_stairs.png");
 
-    if (scene->text_box.surface != NULL)
-        SDL_FreeSurface(scene->text_box.surface);
-    scene->text_box.surface = Filesystem_Surface_Load(path, SDL_PIXELFORMAT_INDEX8);
-    SDL_assert(scene->text_box.surface != NULL);
-    SDL_assert(scene->text_box.surface->format->palette == palette_SOTA);
+    // if (scene->text_box.surface != NULL)
+    // SDL_FreeSurface(scene->text_box.surface);
+    // scene->text_box.surface = Filesystem_Surface_Load(path, SDL_PIXELFORMAT_INDEX8);
+    SDL_assert(scene->n9patch.texture == NULL);
+    char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu_doric_cols_16px_stairs.png");
+    scene->n9patch.texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+    // SDL_assert(scene->text_box.surface != NULL);
+    // SDL_assert(scene->text_box.surface->format->palette == palette_SOTA);
 
     scene->text_box.enable_tail = false;
 
@@ -587,8 +589,17 @@ void _Scene_Draw_Text(struct Scene *scene, SDL_Texture *render_target, SDL_Rende
     Text_Box_Set_Text(&scene->text_box, scene_line->line.data, &scene->n9patch);
     Text_Box_Update(&scene->text_box, &scene->n9patch,
                     render_target, renderer);
-    SDL_RenderCopy(renderer, scene->text_box.texture, NULL, NULL);
+    SDL_SetRenderTarget(renderer, scene->texture);
 
+    SDL_Rect dstrect =  {
+        .x = scene->n9patch.pos.x,
+        .y = scene->n9patch.pos.y,
+        .w = scene->text_box.width * scene->n9patch.scale.x,
+        .h = scene->text_box.height * scene->n9patch.scale.y,
+    };
+
+    SDL_RenderCopy(renderer, scene->text_box.texture, NULL, &dstrect);
+    SDL_SetRenderTarget(renderer, render_target);
 }
 
 void Scene_Update(struct Scene *scene, struct Settings *settings,
