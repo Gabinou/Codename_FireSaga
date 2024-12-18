@@ -57,9 +57,14 @@ const json_func fsm_Scene_writeJSON[SCENE_STATEMENT_NUM] = {
 };
 
 void Scene_Text_Box_Init(struct Scene *scene) {
+    SDL_assert(scene                != NULL);
+    SDL_assert(scene->pixelnours    != NULL);
+
     /* -- SDL_free before re-allocating -- */
     Text_Box_Free(&scene->text_box);
+    scene->text_box = Text_Box_default;
     n9Patch_Free(&scene->n9patch);
+    scene->text_box.pixelfont = scene->pixelnours;
 
     /* -- Bubble defaults -- */
     scene->text_box.update  = true;
@@ -88,7 +93,7 @@ void Scene_Text_Box_Init(struct Scene *scene) {
 
     scene->text_box.enable_tail = false;
 
-    SDL_assert(scene->n9patch.texture     != NULL);
+    // SDL_assert(scene->n9patch.texture     != NULL);
 }
 
 void Scene_Init(struct Scene *scene) {
@@ -582,6 +587,8 @@ void _Scene_Draw_Text(struct Scene *scene, SDL_Texture *render_target, SDL_Rende
     Text_Box_Set_Text(&scene->text_box, scene_line->line.data, &scene->n9patch);
     Text_Box_Update(&scene->text_box, &scene->n9patch,
                     render_target, renderer);
+    SDL_RenderCopy(renderer, scene->text_box.texture, NULL, NULL);
+
 }
 
 void Scene_Update(struct Scene *scene, struct Settings *settings,

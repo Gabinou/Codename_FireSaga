@@ -239,7 +239,7 @@ void Unit_RangeMap_Act_Toggle(struct Unit *unit) {
 
 }
 
-void Unit_Rangemap_Default(struct Unit *unit) {
+void Unit_Rangemap_default(struct Unit *unit) {
     int rangemap = unit->user_rangemap > RANGEMAP_NULL ? unit->user_rangemap : unit->rangemap;
     // Compute default rangemap priority
 

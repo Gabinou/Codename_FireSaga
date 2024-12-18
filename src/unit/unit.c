@@ -115,7 +115,7 @@ const struct Unit Nibal_unit = {
     ._hands          = {true, true},
 };
 
-void Tetrabrachios_Default(Unit *unit) {
+void Tetrabrachios_default(Unit *unit) {
     *unit = Unit_default;
     unit->arms_num = TETRABRACHIOS_ARMS_NUM;
     Unit_Hand_Set(unit, TETRABRACHIOS_HAND_LEFT,  true);
@@ -155,7 +155,7 @@ void Unit_Hand_Set(Unit *unit, i32 hand, b32 has) {
 void Tetrabrachios_Init(struct Unit *unit) {
     SDL_assert(unit != NULL);
     Unit_Free(unit);
-    Tetrabrachios_Default(unit);
+    Tetrabrachios_default(unit);
     Unit_Members_Alloc(unit);
 }
 
@@ -261,7 +261,7 @@ void Unit_setClassind(struct Unit *unit, i8 class_index) {
     b32 healclass   = (unit->class == UNIT_CLASS_BISHOP);
     healclass      |= (unit->class == UNIT_CLASS_CLERIC);
 
-    Unit_Rangemap_Default(unit);
+    Unit_Rangemap_default(unit);
 }
 
 void Unit_setStats(struct Unit *unit, struct Unit_stats stats) {

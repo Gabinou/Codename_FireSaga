@@ -7,7 +7,7 @@ void test_Text_Box_Tail() {
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
 
-    struct Text_Box bubble = Text_Box_Default;
+    struct Text_Box bubble = Text_Box_default;
 
     /* -- Create n9patch -- */
     // render_target is NULL cause there is render_target!
@@ -341,7 +341,7 @@ void test_Text_Box_Scroll() {
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
 
-    struct Text_Box bubble = Text_Box_Default;
+    struct Text_Box bubble = Text_Box_default;
 
     /* -- Create n9patch -- */
     // render_target is NULL cause there is render_target!
@@ -399,7 +399,7 @@ void test_Text_Box_Scroll_vertical() {
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
 
-    struct Text_Box bubble = Text_Box_Default;
+    struct Text_Box bubble = Text_Box_default;
 
     /* -- Create n9patch -- */
     // render_target is NULL cause there is render_target!
@@ -460,7 +460,7 @@ void test_Text_Box_VScroll_Anim() {
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
 
-    struct Text_Box bubble = Text_Box_Default;
+    struct Text_Box bubble = Text_Box_default;
 
     /* -- Create n9patch -- */
     // render_target is NULL cause there is render_target!
@@ -532,7 +532,7 @@ void test_Text_Box_Pixelfont16() {
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
 
-    struct Text_Box bubble = Text_Box_Default;
+    struct Text_Box bubble = Text_Box_default;
 
     /* -- Create n9patch -- */
     // render_target is NULL cause there is render_target!
@@ -713,7 +713,7 @@ void test_Text_Box_Pixelfont16_tight() {
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
 
-    struct Text_Box bubble = Text_Box_Default;
+    struct Text_Box bubble = Text_Box_default;
 
     /* -- Create n9patch -- */
     // render_target is NULL cause there is render_target!
@@ -898,7 +898,7 @@ void test_Text_Box_Pixelfont16_minus() {
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
 
-    struct Text_Box bubble = Text_Box_Default;
+    struct Text_Box bubble = Text_Box_default;
 
     /* -- Create n9patch -- */
     // render_target is NULL cause there is render_target!

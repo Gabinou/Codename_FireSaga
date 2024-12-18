@@ -121,7 +121,7 @@ void test_pixelfonts_render() {
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
 
-    struct Text_Box bubble = Text_Box_Default;
+    struct Text_Box bubble = Text_Box_default;
 
     /* -- Create n9patch -- */
     // render_target is NULL cause there is render_target!

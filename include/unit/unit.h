@@ -26,7 +26,7 @@ extern const b32      army_isPC[ARMY_END];
 
 /* --- Tetrabrachios --- */
 void Tetrabrachios_Init(   Unit *u);
-void Tetrabrachios_Default(Unit *u);
+void Tetrabrachios_default(Unit *u);
 
 /* --- Constructors/Destructors --- */
 void Unit_Init(         Unit *u);
