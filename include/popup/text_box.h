@@ -85,6 +85,7 @@ typedef struct Text_Box_Tail {
 typedef struct Text_Box {
     b32 update;
     s8       text;
+    /* Text bubble size without padding */
     int      width;
     int      height;
     int      row_height;
@@ -127,6 +128,8 @@ void Text_Bubble_Load(struct Text_Box *b, SDL_Renderer *r, struct n9Patch *n9pat
 void Text_Box_Set_Text(    struct Text_Box *b, char *t, struct n9Patch *n9patch);
 void Text_Box_Set_Target(  struct Text_Box *b, struct Point t);
 void Text_Box_Compute_Size(struct Text_Box *b, struct n9Patch *n9patch);
+
+SDL_Rect Text_Box_Texture_Size(struct Text_Box *b, struct n9Patch *n9patch);
 
 /* --- Internals --- */
 void Text_Box_Tail_Pos(   struct Text_Box *b, struct n9Patch *n9patch);

@@ -71,16 +71,20 @@ void Scene_Text_Box_Init(struct Scene *scene, SDL_Renderer *renderer) {
     scene->text_box.palette = palette_SOTA;
 
     /* -- n9patch defaults -- */
-    scene->n9patch                 = n9Patch_default;
-    scene->n9patch.patch_pixels.x  = SCENE_TEXT_BOX_PATCH_PIXELS;
-    scene->n9patch.patch_pixels.y  = SCENE_TEXT_BOX_PATCH_PIXELS;
-    scene->n9patch.scale.x         = SCENE_TEXT_BOX_SCALE;
-    scene->n9patch.scale.y         = SCENE_TEXT_BOX_SCALE;
-    scene->n9patch.pos.x           = scene->texture_rect.w / 4;
-    scene->n9patch.pos.y           = scene->texture_rect.h / 4 * 3;
+    scene->n9patch                  = n9Patch_default;
+    scene->n9patch.patch_pixels.x   = SCENE_TEXT_BOX_PATCH_PIXELS;
+    scene->n9patch.patch_pixels.y   = SCENE_TEXT_BOX_PATCH_PIXELS;
+    scene->n9patch.scale.x          = SCENE_TEXT_BOX_SCALE;
+    scene->n9patch.scale.y          = SCENE_TEXT_BOX_SCALE;
+    scene->n9patch.pos.x            = scene->texture_rect.w / 4;
+    scene->n9patch.pos.y            = scene->texture_rect.h / 4 * 3;
 
-    scene->text_box.line_len_px    = SCENE_TEXT_BOX_MAX_LENGTH;
-    scene->text_box.line_num_max   = SCENE_TEXT_BOX_MAX_LINES;
+    scene->text_box.line_len_px     = SCENE_TEXT_BOX_MAX_LENGTH;
+    scene->text_box.line_num_max    = SCENE_TEXT_BOX_MAX_LINES;
+
+    scene->text_box.padding.left    = SCENE_TEXT_BOX_PADDING_LEFT;
+    scene->text_box.padding.bottom  = SCENE_TEXT_BOX_PADDING_BOTTOM;
+    scene->text_box.padding.top     = SCENE_TEXT_BOX_PADDING_TOP;
 
     /* -- Loading n9patch -- */
     SDL_assert(scene->n9patch.texture == NULL);
@@ -562,32 +566,25 @@ void _Scene_Draw_Text(struct Scene *scene, SDL_Texture *render_target, SDL_Rende
     SDL_assert(statement.header.statement_type == SCENE_STATEMENT_LINE);
     SceneLine *scene_line = &statement._union.line;
 
-    u32 px = scene->n9patch.pos.x + 10;
-    u32 py = scene->n9patch.pos.y - 22;
-
     /* Writing Actor name:*/
-    PixelFont_Write(scene->pixelnours, renderer, scene_line->actor.data,
-                    scene_line->actor.len, px, py);
-
     // TODO: Set actor name position
-    // px -= 10;
-    // py += 22;
+    PixelFont_Write(scene->pixelnours, renderer, scene_line->actor.data,
+                    scene_line->actor.len,
+                    SCENE_TEXT_BOX_ACTOR_POS_X, SCENE_TEXT_BOX_ACTOR_POS_Y);
+
 
     /* Writing line:*/
     // TODO: Set line position
-    // PixelFont_Write(scene->pixelnours, renderer, scene_line->line.data,
-    //                 scene_line->line.len, px, py);
     Text_Box_Set_Text(&scene->text_box, scene_line->line.data, &scene->n9patch);
     Text_Box_Update(&scene->text_box, &scene->n9patch,
                     render_target, renderer);
     SDL_SetRenderTarget(renderer, scene->texture);
 
-    SDL_Rect dstrect =  {
-        .x = scene->n9patch.pos.x,
-        .y = scene->n9patch.pos.y,
-        .w = scene->text_box.width * scene->n9patch.scale.x,
-        .h = scene->text_box.height * scene->n9patch.scale.y,
-    };
+    // Filesystem_Texture_Dump("text_box.png", renderer, scene->text_box.texture,
+    // SDL_PIXELFORMAT_ARGB8888, render_target);
+    SDL_Rect dstrect = Text_Box_Texture_Size(&scene->text_box, &scene->n9patch);
+    dstrect.x = SCENE_TEXT_BOX_POS_X;
+    dstrect.y = SCENE_TEXT_BOX_POS_Y;
 
     SDL_RenderCopy(renderer, scene->text_box.texture, NULL, &dstrect);
     SDL_SetRenderTarget(renderer, render_target);

@@ -282,8 +282,16 @@ void Text_Box_Tail_Draw(struct Text_Box *bubble, SDL_Renderer *renderer) {
                      bubble->tail.angle, &center, bubble->tail.flip);
 
 }
+SDL_Rect Text_Box_Texture_Size(struct Text_Box *bu, struct n9Patch *n9patch) {
+    SDL_Rect out = {
+        .w = n9patch->size_pixels.x + TEXT_BOX_RENDER_PAD * 2,
+        .h = n9patch->size_pixels.y + TEXT_BOX_RENDER_PAD * 2,
+    };
+    return (out);
+}
 
 void Text_Box_Compute_Size(struct Text_Box *bu, struct n9Patch *n9patch) {
+    // Compute the size of the text box in patches
     /* -- Check -- */
     SDL_assert(bu->text.data != NULL);
 
@@ -462,10 +470,10 @@ void Text_Box_Update(struct Text_Box *bubble, struct n9Patch *n9patch,
 
     /* - create render target texture - */
     if (bubble->texture == NULL) {
-        int x = n9patch->size_pixels.x + TEXT_BOX_RENDER_PAD * 2;
-        int y = n9patch->size_pixels.y + TEXT_BOX_RENDER_PAD * 2;
+        SDL_Rect dstrect = Text_Box_Texture_Size(bubble, n9patch);
+
         bubble->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-                                            SDL_TEXTUREACCESS_TARGET, x, y);
+                                            SDL_TEXTUREACCESS_TARGET, dstrect.w, dstrect.h);
         SDL_assert(bubble->texture != NULL);
         SDL_SetTextureBlendMode(bubble->texture, SDL_BLENDMODE_BLEND);
     }

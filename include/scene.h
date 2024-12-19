@@ -64,10 +64,18 @@ struct Game;
 struct Settings;
 
 enum SCENE_MISC {
-    SCENE_TEXT_BOX_PATCH_PIXELS =  16,
-    SCENE_TEXT_BOX_SCALE        =   2,
-    SCENE_TEXT_BOX_MAX_LENGTH   = 120,
-    SCENE_TEXT_BOX_MAX_LINES    =   2,
+    SCENE_TEXT_BOX_PATCH_PIXELS     =  16,
+    SCENE_TEXT_BOX_SCALE            =   1,
+    SCENE_TEXT_BOX_MAX_LENGTH       = 120,
+    SCENE_TEXT_BOX_MAX_LINES        =   2,
+    SCENE_TEXT_BOX_PADDING_LEFT     =  15,
+    SCENE_TEXT_BOX_PADDING_BOTTOM   =   8,
+    SCENE_TEXT_BOX_PADDING_TOP      =   5,
+
+    SCENE_TEXT_BOX_POS_X            = 100,
+    SCENE_TEXT_BOX_POS_Y            = 140,
+    SCENE_TEXT_BOX_ACTOR_POS_X      = 120,
+    SCENE_TEXT_BOX_ACTOR_POS_Y      = 130,
 };
 
 enum SCENE_DIDASCALIE {
@@ -114,7 +122,6 @@ extern const fsm_scene_statement_t scene_statement_play[SCENE_STATEMENT_NUM];
 typedef struct SceneHeader {
     i32 statement_type;
     i32 didascalie_type;
-
 } SceneHeader;
 
 
