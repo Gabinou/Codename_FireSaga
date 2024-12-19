@@ -86,11 +86,11 @@ enum SCENE_DIDASCALIE {
 };
 
 enum SCENE_ACTORS {
-    SCENE_ACTOR_POS_X = 80,
-    SCENE_ACTOR_POS_Y = 10,
-    SCENE_ACTOR_POS_W = 20,
-    SCENE_ACTOR_POS_H = 160,
-    SCENE_ACTOR_COLOR_OFFSET = 8,
+    SCENE_ACTOR_POS_X           = 80,
+    SCENE_ACTOR_POS_Y           = 10,
+    SCENE_ACTOR_POS_W           = 20,
+    SCENE_ACTOR_POS_H           = 160,
+    SCENE_ACTOR_COLOR_OFFSET    = 8,
 
     SCENE_ACTOR_POS_X_DIFF = 100,
 };
@@ -231,6 +231,7 @@ typedef struct Scene {
     /* -- Rendering -- */
     SDL_Rect texture_rect;
     SDL_Texture *texture;
+    SDL_Texture *texture_background;
     struct PixelFont   *pixelnours;
     struct Text_Box     text_box;
     struct n9Patch      n9patch;

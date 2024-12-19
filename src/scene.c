@@ -90,6 +90,11 @@ void Scene_Text_Box_Init(struct Scene *scene, SDL_Renderer *renderer) {
     SDL_assert(scene->n9patch.texture == NULL);
     char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu_doric_cols_16px_stairs.png");
     scene->n9patch.texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+
+    /* -- Loading BG -- */
+    path = PATH_JOIN("..", "assets", "GUI", "Scene", "MPV_Background.png");
+    scene->texture_background = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+
     scene->text_box.enable_tail = false;
 }
 
@@ -533,7 +538,7 @@ int Scene_Statement_Next(struct Scene *scene) {
 void _Scene_Draw_Actors(struct Scene *scene, SDL_Renderer *renderer) {
     SDL_assert(scene                != NULL);
     SDL_assert(renderer             != NULL);
-    SDL_assert(palette_NES          != NULL);
+    SDL_assert(palette_SOTA          != NULL);
     SDL_assert(scene->actor_order   != NULL);
 
     for (i32 i = 0; i < DARR_NUM(scene->actor_order); i++) {
@@ -543,7 +548,7 @@ void _Scene_Draw_Actors(struct Scene *scene, SDL_Renderer *renderer) {
                             SCENE_ACTOR_POS_W,
                             SCENE_ACTOR_POS_H
                            };
-        SDL_Color color = palette_NES->colors[SCENE_ACTOR_COLOR_OFFSET + i];
+        SDL_Color color = palette_SOTA->colors[SCENE_ACTOR_COLOR_OFFSET + i];
         SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
         SDL_RenderFillRect(renderer, &dstrect);
     }
@@ -551,9 +556,9 @@ void _Scene_Draw_Actors(struct Scene *scene, SDL_Renderer *renderer) {
     Utilities_DrawColor_Reset(renderer);
 }
 
-// void _Scene_Draw_Background(    struct Scene *scene, SDL_Renderer *renderer) {
-
-// }
+void _Scene_Draw_Background(    struct Scene *scene, SDL_Renderer *renderer) {
+    SDL_RenderCopy(renderer, scene->texture_background, NULL, NULL);
+}
 
 void _Scene_Draw_Text(struct Scene *scene, SDL_Texture *render_target, SDL_Renderer *renderer) {
     SDL_assert(scene                != NULL);
@@ -571,7 +576,6 @@ void _Scene_Draw_Text(struct Scene *scene, SDL_Texture *render_target, SDL_Rende
     PixelFont_Write(scene->pixelnours, renderer, scene_line->actor.data,
                     scene_line->actor.len,
                     SCENE_TEXT_BOX_ACTOR_POS_X, SCENE_TEXT_BOX_ACTOR_POS_Y);
-
 
     /* Writing line:*/
     // TODO: Set line position
@@ -601,7 +605,7 @@ void Scene_Update(struct Scene *scene, struct Settings *settings,
     SDL_RenderClear(renderer);
     Utilities_DrawColor_Reset(renderer);
 
-    //     _Scene_Draw_Background(scene, renderer);
+    _Scene_Draw_Background(scene, renderer);
     _Scene_Draw_Actors(scene, renderer);
     _Scene_Draw_Text(scene, render_target, renderer);
     SDL_SetRenderTarget(renderer, render_target);
