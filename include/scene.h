@@ -131,7 +131,7 @@ typedef struct SceneHeader {
 //  Sprites:
 //  - Transform (animated or not)
 //    - Move to position (Sliding)
-//    - Flipeureka7349
+//    - Flip
 
 //    - Rotate
 //  - Animate

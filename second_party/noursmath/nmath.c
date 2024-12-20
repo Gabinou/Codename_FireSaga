@@ -220,13 +220,9 @@ TEMPLATE_TYPES_FLOAT
 #undef REGISTER_ENUM
 
 int32_t q_sequence_fgeometric_int32_t(int32_t current, int32_t destination, float geo_factor) {
-    int32_t distance = current - destination;\
-    int32_t sign = (int32_t )copysign(1, distance);\
-    int32_t out = (sign * (int32_t)(distance / geo_factor) < 1) ? sign : (int32_t)(distance / geo_factor);\
-    return (out);\
-
+    int32_t distance = current - destination;
+    return ((int32_t)(distance / geo_factor));
 }
-
 
 // sequence_pingpong: oscillating integer sequence. upper is excluded.
 // modulo: x % 2 = 0,1,2,0,1,2,0...for x++

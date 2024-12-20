@@ -3,24 +3,31 @@
 #include "nmath.h"
 
 const struct Slider Slider_default = {
-    .slidetype =       SLIDETYPE_NONE,
-    .slide_num =       10,
-    .slidefactors =    {2.0f, 2.0f}, // for SLIDETYPE_GEOMETRIC
+    .slidetype      = SLIDETYPE_NONE,
+    .slide_num      = 10,
+    .slidefactors   = {2.0f, 2.0f}, // for SLIDETYPE_GEOMETRIC
 };
 
 const struct SliderOffscreen SliderOffscreen_default = {0};
 
 void Slider_Start(struct Slider *slider, struct Point *pos,
                   struct Point *target) {
+    // Define start Slider point depending on slidetype
     switch (slider->slidetype) {
         case SLIDETYPE_LINEARXY:
         case SLIDETYPE_LINEARYX:
-            slider->point.x = (target->x - pos->x) / slider->slide_num * 2;
-            slider->point.y = (target->y - pos->y) / slider->slide_num * 2;
+            SDL_assert(false);
+            // TODO: FIX
+            // Distance to move in one step
+            // slider->point.x = (target->x - pos->x) / slider->slide_num * 2;
+            // slider->point.y = (target->y - pos->y) / slider->slide_num * 2;
             break;
         case SLIDETYPE_LINEAR:
-            slider->point.x = (target->x - pos->x) / slider->slide_num;
-            slider->point.y = (target->y - pos->y) / slider->slide_num;
+            SDL_assert(false);
+            // TODO: FIX
+            // Distance to move in one step
+            // slider->point.x = (target->x - pos->x) / slider->slide_num;
+            // slider->point.y = (target->y - pos->y) / slider->slide_num;
             break;
         case SLIDETYPE_EASYINEASYOUT:
             /* midpoint */
@@ -32,6 +39,8 @@ void Slider_Start(struct Slider *slider, struct Point *pos,
 
 void Slider_Target_Offscreen(struct Slider *slider, struct SliderOffscreen *offscreen,
                              struct Point *pos) {
+    // Set target of Slider to offscreen, on the CLOSEST edge to pos
+
     struct Point res = offscreen->settings->res;
     if (slider->target.x != pos->x)
         offscreen->target.x = pos->x > (res.x / 2) ? pos->x + res.x : pos->x - res.x;
@@ -39,7 +48,7 @@ void Slider_Target_Offscreen(struct Slider *slider, struct SliderOffscreen *offs
         offscreen->target.x = slider->target.x; /* just in case */
 
     if (slider->target.y != pos->y)
-        offscreen->target.y = pos->y > (res.y / 2) ? pos->y + res.y : pos->y -  res.y;
+        offscreen->target.y = pos->y > (res.y / 2) ? pos->y + res.y : pos->y - res.y;
     else
         offscreen->target.y = slider->target.y; /* just in case */
 
@@ -49,8 +58,8 @@ void Slider_Target_Offscreen(struct Slider *slider, struct SliderOffscreen *offs
 void SliderOffscreen_Compute_Next(struct Slider *slider, struct SliderOffscreen *offscreen,
                                   struct Point *pos) {
     // Slider goes offscreen and reappears on the other side
-    SDL_assert(slider != NULL);
-    SDL_assert(pos != NULL);
+    SDL_assert(slider   != NULL);
+    SDL_assert(pos      != NULL);
 
     struct Point res = offscreen->settings->res;
     struct Point *current_target;
@@ -86,47 +95,63 @@ void SliderOffscreen_Compute_Next(struct Slider *slider, struct SliderOffscreen 
 
 void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
                          struct Point *target, b32 go_offscreen) {
-    // This function is used by Slidepopup. Should not be changed.
-    // Extract what other sprites need
+    // Compute the next position of the slider.
 
-    SDL_assert(slider != NULL);
-    SDL_assert(pos != NULL);
-    SDL_assert(target != NULL);
-    SDL_assert(slider->slidefactors[DIMENSION_X] > 0.0f);
-    SDL_assert(slider->slidefactors[DIMENSION_Y] > 0.0f);
+    SDL_assert(slider   != NULL);
+    SDL_assert(pos      != NULL);
+    SDL_assert(target   != NULL);
+    SDL_assert(slider->slidefactors[DIMENSION_X] > 1.0f);
+    SDL_assert(slider->slidefactors[DIMENSION_Y] > 1.0f);
+
+    const struct Point dist = {target->x - pos->x, target->y - pos->y};
+    /* If Slider close enough to target -> move to target */
+    if ((dist.x * dist.x + dist.y * dist.y) < SLIDER_MIN_DIST) {
+        pos->x = target->x;
+        pos->y = target->y;
+        return;
+    }
 
     float *sf = slider->slidefactors;
-    struct Point dist = {target->x - pos->x, target->y - pos->y};
-    struct Point sign; // 0 if dist is 0
-    sign.x = -1 * (dist.x < 0) + 1 * (dist.x > 0);
-    sign.y = -1 * (dist.y < 0) + 1 * (dist.y > 0);
-    struct Point slide = {dist.x, dist.y};
+
+    struct Point slide      = {0};
+
     switch (slider->slidetype) {
         case SLIDETYPE_GEOMETRIC: // Cursor mvt on map
             slide.x = q_sequence_fgeometric_int32_t(target->x, pos->x, sf[DIMENSION_X]);
             slide.y = q_sequence_fgeometric_int32_t(target->y, pos->y, sf[DIMENSION_Y]);
             break;
-        case SLIDETYPE_LINEARYX: // for units?
-            slide.y = slider->point.y;
-            if (pos->y == target->y)
-                slide.x = slider->point.x;
+        case SLIDETYPE_LINEARYX:
+            SDL_assert(false);
+            // TODO: FIX
+            // slide.y = slider->point.y;
+            // if (pos->y == target->y)
+            // slide.x = slider->point.x;
             break;
         case SLIDETYPE_LINEARXY: // for units?
-            slide.x = slider->point.x;
-            if (pos->x == target->x)
-                slide.y = slider->point.y;
+            SDL_assert(false);
+            // TODO: FIX
+            // slide.x = slider->point.x;
+            // if (pos->x == target->x)
+            //     slide.y = slider->point.y;
             break;
         case SLIDETYPE_LINEAR:
-            slide.x = slider->point.x;
-            slide.y = slider->point.y;
+            SDL_assert(false);
+            // TODO: FIX
+            // slide.x = slider->point.x;
+            // slide.y = slider->point.y;
             break;
-        case SLIDETYPE_EASYINEASYOUT:; // faster, then slower
-            // NOT EASYINEASY OUT -> for slider offscreen type
-            b32 going_offscreen = (((pos->x < slider->point.x) && (pos->x < target->x))
-                                   || ((pos->y < slider->point.y) && (pos->y < target->y))
-                                   || ((pos->x > slider->point.x) && (pos->x > target->x))
-                                   || ((pos->y > slider->point.y) && (pos->y > target->y))
-                                  );
+        case SLIDETYPE_EASYINEASYOUT:
+            ;
+            b32 going_offscreen_xn = (pos->x < slider->point.x) && (pos->x < target->x);
+            b32 going_offscreen_xp = (pos->x > slider->point.x) && (pos->x > target->x);
+            b32 going_offscreen_yn = (pos->y < slider->point.y) && (pos->y < target->y);
+            b32 going_offscreen_yp = (pos->y > slider->point.y) && (pos->y > target->y);
+
+            b32 going_offscreen = ( going_offscreen_xn
+                                    || going_offscreen_xp
+                                    || going_offscreen_yn
+                                    || going_offscreen_yp);
+
             if (go_offscreen && going_offscreen) {
                 // BORKED for popup_unit
                 // Makes popup go out of screen reasonably fast/slow.
@@ -142,8 +167,18 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
             }
             break;
     }
-    /* - Anti overshoot. - */
-    // sign is 0 if dist is 0, adding 0 to pos
-    pos->x += sign.x * NMATH_MIN(abs(dist.x), abs(slide.x));
-    pos->y += sign.y * NMATH_MIN(abs(dist.y), abs(slide.y));
+
+    if (abs(slide.x) >= abs(dist.x)) {
+        /* If Slider overshoots to target -> move to target */
+        pos->x = target->x;
+    } else {
+        pos->x += slide.x;
+
+    }
+    if (abs(slide.y) >= abs(dist.y)) {
+        /* If Slider overshoots to target -> move to target */
+        pos->y = target->y;
+    } else {
+        pos->y += slide.y;
+    }
 }

@@ -611,8 +611,6 @@ int _Game_New_Tnecs(void *data) {
     TNECS_REGISTER_SYSTEM_wEXCL(world, Slide_Sprite,   0, Sprite, Position, Slider);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Slide_PopUp_Offscreen, 1, PopUp, Slider,
                                 SliderOffscreen, Position);
-    /* - no sliders without offscreen yet -  */
-    // TNECS_REGISTER_SYSTEM_wEXCL(IES->world, slidePopUp, 0, PopUp, Slider, Position);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Hover_Any,      0, Hover,  Position);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Sprite, 0, Sprite, Position, Timer);
     // Remove animated flag. Animated sprites must have a timer! Still sprites dont!

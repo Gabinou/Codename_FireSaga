@@ -92,29 +92,6 @@ void Slide_Sprite(tnecs_system_input *input) {
     }
 }
 
-/* slidePopUp MAY RUN TWICE on popups WITH slidePopUpOffscreen */
-void Slide_PopUp(tnecs_system_input *input) {
-    /* --- PRELIMINARIES --- */
-    SDL_assert(input->user_data != NULL);
-    /* -- Get components arrays -- */
-    struct Slider   *slider_arr     = TNECS_COMPONENTS_LIST(input, Slider);
-    struct Position *position_arr   = TNECS_COMPONENTS_LIST(input, Position);
-    SDL_assert(slider_arr   != NULL);
-    SDL_assert(position_arr != NULL);
-
-    for (u16 order = 0; order < input->num_entities; order++) {
-        struct Slider   *slider     = slider_arr   + order;
-        struct Position *position   = position_arr + order;
-        slider->timer_ns += input->deltat;
-
-        if (slider->timer_ns <= slider->update_wait_ns)
-            continue;
-
-        Slider_Compute_Next(slider, &position->pixel_pos, &slider->target, false);
-        slider->timer_ns = 0;
-    }
-}
-
 void Slide_PopUp_Offscreen(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_assert(input->user_data != NULL);
