@@ -77,6 +77,8 @@ void test_slider_geometric() {
     /* --- Offscreen --- */
     /* -- Slider_Target_Offscreen -- */
     struct Settings settings = Settings_default;
+    struct Point res = settings.res;
+
     struct SliderOffscreen offscreen = SliderOffscreen_default;
     offscreen.settings = &settings;
 
@@ -93,8 +95,44 @@ void test_slider_geometric() {
     nourstest_true(offscreen.target.y == pos.y + settings.res.y);
 
     /* -- SliderOffscreen_Compute_Next -- */
+    /* - go_offscreen false - */
+    // SliderOffscreen_Compute_Next === Slider_Compute_Next
+    offscreen.go_offscreen = false;
+    pos.x       = start.x;
+    pos.y       = start.y;
+    slider.target.x    = -100;
+    slider.target.y    = -100;
+    SliderOffscreen_Compute_Next(&slider, &offscreen, &pos);
+    nourstest_true(pos.x == -50);
+    nourstest_true(pos.y == -50);
+    SliderOffscreen_Compute_Next(&slider, &offscreen, &pos);
+    nourstest_true(pos.x == -75);
+    nourstest_true(pos.y == -75);
+
+    /* - go_offscreen true - */
+    offscreen.go_offscreen = true;
+    pos.x       = -res.x;
+    pos.y       =  res.y * 2;
+    offscreen.target.x = -res.x;
+    offscreen.target.y =  res.y * 3;
     SliderOffscreen_Compute_Next(&slider, &offscreen, &pos);
 
+    nourstest_true(pos.x == ((int)(res.x * SLIDER_PERIODIC_XN) + slider.target.x) /
+                   slider.ufactors.rate[0]);
+    nourstest_true(pos.y == ((int)(-res.y * SLIDER_PERIODIC_YP) + slider.target.y) /
+                   slider.ufactors.rate[1]);
+
+    offscreen.go_offscreen = true;
+    pos.x       =  res.x * 2;
+    pos.y       = -res.y;
+    offscreen.target.x =  res.x * 3;
+    offscreen.target.y = -res.y;
+    SliderOffscreen_Compute_Next(&slider, &offscreen, &pos);
+
+    nourstest_true(pos.x == ((int)(-res.x * SLIDER_PERIODIC_XP) + slider.target.x) /
+                   slider.ufactors.rate[0]);
+    nourstest_true(pos.y == ((int)(res.y * SLIDER_PERIODIC_YN) + slider.target.y) /
+                   slider.ufactors.rate[1]);
 }
 
 void test_slider_linear() {

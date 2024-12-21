@@ -87,41 +87,48 @@ void SliderOffscreen_Compute_Next(struct Slider *slider,
     SDL_assert(slider   != NULL);
     SDL_assert(pos      != NULL);
 
-    struct Point res = offscreen->settings->res;
-    struct Point *current_target;
-
-    /* - When object goes offscreen, teleport to the other side - */
-    if (offscreen->go_offscreen) {
-        /* x periodic */
-        if ((pos->x > res.x) && (offscreen->target.x > res.x)) {
-            pos->x = -res.x * 0.6f;
-            Slider_Start(slider, pos, &slider->target);
-            offscreen->go_offscreen = false;
-        }
-        if ((pos->x < (-res.x * 0.2f)) && (offscreen->target.x < 0)) {
-            pos->x = res.x * 1.5f;
-            Slider_Start(slider, pos, &slider->target);
-            offscreen->go_offscreen = false;
-        }
-        /* y periodic */
-        if ((pos->y > res.y) && (offscreen->target.y > res.y)) {
-            pos->y = -res.y * 0.8f;
-            Slider_Start(slider, pos, &slider->target);
-            offscreen->go_offscreen = false;
-        }
-        if ((pos->y < (-res.y * 0.2f)) && (offscreen->target.y < 0)) {
-            pos->y = res.y * 1.5f;
-            Slider_Start(slider, pos, &slider->target);
-            offscreen->go_offscreen = false;
-        }
+    // Skip if not going offscreen
+    if (!offscreen->go_offscreen) {
+        Slider_Compute_Next(slider, pos, &slider->target, offscreen->go_offscreen);
+        return;
     }
-    current_target = offscreen->go_offscreen ? &offscreen->target : &slider->target;
-    Slider_Compute_Next(slider, pos, current_target, offscreen->go_offscreen);
+
+    struct Point res = offscreen->settings->res;
+
+    // check if need to teleport to the other side
+    /* -- x periodic -- */
+    if ((pos->x > res.x) && (offscreen->target.x > res.x)) {
+        /* - x positive movement - */
+        pos->x = (int)(-res.x * SLIDER_PERIODIC_XP);
+        Slider_Start(slider, pos, &slider->target);
+        offscreen->go_offscreen = false;
+    } else if ((pos->x < (-res.x * SLIDER_PERIODIC_XN_LIMIT)) && (offscreen->target.x < 0)) {
+        /* - x negative movement - */
+        pos->x = (int)(res.x * SLIDER_PERIODIC_XN);
+        Slider_Start(slider, pos, &slider->target);
+        offscreen->go_offscreen = false;
+    }
+    /* -- y periodic -- */
+    if ((pos->y > res.y) && (offscreen->target.y > res.y)) {
+        /* - y positive movement - */
+        pos->y = -res.y * SLIDER_PERIODIC_YP;
+        Slider_Start(slider, pos, &slider->target);
+        offscreen->go_offscreen = false;
+    } else if ((pos->y < (-res.y * SLIDER_PERIODIC_YN_LIMIT)) && (offscreen->target.y < 0)) {
+        /* - y negative movement - */
+        pos->y = res.y * SLIDER_PERIODIC_YN;
+        Slider_Start(slider, pos, &slider->target);
+        offscreen->go_offscreen = false;
+    }
+
+    // If going offscreen, use offscreen target (which is always offscreen)
+    struct Point *current_target = offscreen->go_offscreen ? &offscreen->target : &slider->target;
+    Slider_Compute_Next(slider, pos, &slider->target, offscreen->go_offscreen);
 }
 
 void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
                          struct Point *target, b32 go_offscreen) {
-    // Compute the next position of the slider.
+    // Compute the next position of the slider on way to target
 
     SDL_assert(slider   != NULL);
     SDL_assert(pos      != NULL);

@@ -11,6 +11,13 @@ struct Settings;
 enum SLIDER {
     SLIDER_MIN_DIST = 3, /* Above this distance, don't slide */
 };
+// XP -> X positive
+#define SLIDER_PERIODIC_XN_LIMIT 0.2f
+#define SLIDER_PERIODIC_YN_LIMIT 0.2f
+#define SLIDER_PERIODIC_XP 0.6f
+#define SLIDER_PERIODIC_XN 1.5f
+#define SLIDER_PERIODIC_YP 0.8f
+#define SLIDER_PERIODIC_YN 1.5f
 
 union Slider_uPoint {
     struct Point distance; /* SLIDETYPE_LINEAR */
@@ -40,6 +47,7 @@ extern const struct Slider Slider_default;
 typedef struct SliderOffscreen {
     struct Settings             *settings;
     struct Point  target;
+    /* Is SliderOffscreen currently going offscreen */
     b32   go_offscreen;
 } SliderOffscreen;
 extern const struct SliderOffscreen SliderOffscreen_default;

@@ -17,31 +17,41 @@ void test_scene() {
     Scene_readJSON(&scene, jscene);
 
     /* --- Check statements num ---  */
-    nourstest_true(DARR_NUM(scene.statements) == 4);
+    nourstest_true(DARR_NUM(scene.statements) == 5);
+    // SDL_Log("DARR_NUM(scene.statements) %d", DARR_NUM(scene.statements));
+    // getchar();
 
     /* --- Check each statement --- */
     /* -- Statement 0 -- */
     SceneHeader scene_header    = scene.statements[0].header;
     SceneLine scene_line        = scene.statements[0]._union.line;
-    nourstest_true(scene_header.statement_type == SCENE_STATEMENT_LINE);
-    nourstest_true(s8equal(scene_line.actor, s8_literal("Erwin")));
-    nourstest_true(s8equal(scene_line.line, s8_literal("Hello.")));
+    nourstest_true(scene_header.statement_type == SCENE_STATEMENT_DIDASCALIE);
+    nourstest_true(scene_header.didascalie_type == SCENE_DIDASCALIE_APPEAR);
+    // nourstest_true(s8equal(scene_line.actor, s8_literal("Erwin")));
+    // nourstest_true(s8equal(scene_line.line, s8_literal("Hello.")));
 
     /* -- Statement 1 -- */
     scene_header    = scene.statements[1].header;
     scene_line      = scene.statements[1]._union.line;
     nourstest_true(scene_header.statement_type == SCENE_STATEMENT_LINE);
     nourstest_true(s8equal(scene_line.actor, s8_literal("Erwin")));
-    nourstest_true(s8equal(scene_line.line, s8_literal("Silou is actually alive!")));
+    nourstest_true(s8equal(scene_line.line, s8_literal("Hello.")));
 
     /* -- Statement 2 -- */
-    scene_header = scene.statements[2].header;
+    scene_header    = scene.statements[2].header;
+    scene_line      = scene.statements[2]._union.line;
+    nourstest_true(scene_header.statement_type == SCENE_STATEMENT_LINE);
+    nourstest_true(s8equal(scene_line.actor, s8_literal("Erwin")));
+    nourstest_true(s8equal(scene_line.line, s8_literal("Silou is actually alive!")));
+
+    /* -- Statement 3 -- */
+    scene_header = scene.statements[3].header;
     nourstest_true(scene_header.statement_type == SCENE_STATEMENT_DIDASCALIE);
     nourstest_true(scene_header.didascalie_type == SCENE_DIDASCALIE_SLIDE);
 
-    /* -- Statement 3 -- */
-    scene_header    = scene.statements[3].header;
-    scene_line      = scene.statements[3]._union.line;
+    /* -- Statement 4 -- */
+    scene_header    = scene.statements[4].header;
+    scene_line      = scene.statements[4]._union.line;
     nourstest_true(scene_header.statement_type == SCENE_STATEMENT_LINE);
     nourstest_true(s8equal(scene_line.actor, s8_literal("Silou")));
     nourstest_true(s8equal(scene_line.line, s8_literal("I slid.")));
