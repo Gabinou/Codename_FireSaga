@@ -24,6 +24,7 @@
 #include "test_pixelfonts.h"
 #include "test_scene.h"
 #include "test_sprite.h"
+#include "test_slider.h"
 #include "test_octant.h"
 #include "test_text.h"
 #include "test_tile.h"
@@ -96,6 +97,7 @@ void unit_tests() {
     nourstest_run("RNG ",           test_RNG);
     nourstest_run("Scene ",         test_scene);
     nourstest_run("Sprite ",        test_sprite);
+    nourstest_run("Slider ",        test_slider);
     nourstest_run("Text ",          test_text);
     nourstest_run("Tile ",          test_tile);
     nourstest_run("Unit ",          test_unit);

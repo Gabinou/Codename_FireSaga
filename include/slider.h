@@ -54,7 +54,6 @@ void Slider_Slide_Num_Set(Slider *s, i32 num);
 void Slider_Start(           struct Slider *s, struct Point *p, struct Point *t);
 void Slider_Compute_Next(    struct Slider *s, struct Point *p, struct Point *t, b32 g);
 
-
 /* --- SliderOffscreen --- */
 void Slider_Target_Offscreen(struct Slider *s, struct SliderOffscreen *o, struct Point *p);
 void SliderOffscreen_Compute_Next(struct Slider *s, struct SliderOffscreen *o,
