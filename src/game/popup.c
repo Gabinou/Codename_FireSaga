@@ -483,8 +483,9 @@ void Game_PopUp_Tile_Create(struct Game *sota) {
     /* - Making Popup_Tile - */
     *slider = Slider_default;
     slider->update_wait_ns  = POPUP_TILE_SLIDEWAIT_ns;
-    slider->slide_num       = 30;
     slider->slidetype       = SLIDETYPE_EASYINEASYOUT;
+    Slider_Rate_Set(slider, 2.0f, 2.0f);
+
     offscreen->settings     = &sota->settings;
 
     PopUp_Tile_Set(popup_tile, sota);
