@@ -12,21 +12,28 @@ enum SLIDER {
     SLIDER_MIN_DIST = 3, /* Above this distance, don't slide */
 };
 
+union Slider_uPoint {
+    struct Point distance; /* SLIDETYPE_LINEAR */
+    struct Point midpoint; /* SLIDETYPE_EASYINEASYOUT */
+};
+
+union Slider_uFactors {
+    // Divides distance between target and end -> next point.
+    float   rate[TWO_D]; /* SLIDETYPE_GEOMETRIC */
+    // Number of points slide will take
+    i32     slide_num;           /* SLIDETYPE_LINEAR, SLIDETYPE_GEOMETRIC */
+};
+
 /* --- COMPONENTS --- */
 typedef struct Slider {
-    /* Ultimate target of Slider movmement */
+    u8      slidetype;
+    /* Ultimate target of Slider movement */
     struct Point target;
-    /* point meaning depends on SLIDETYPE:                              */
-    /* SLIDETYPE_LINEAR: distance, SLIDETYPE_EASYINEASYOUT: midpoint    */
-    struct Point point;
+    union Slider_uPoint upoint;
+    union Slider_uFactors ufactors;
 
-    // Factor that divides distance between target and end -> next point.
-    float   slidefactors[TWO_D]; /* for SLIDETYPE_GEOMETRIC */
-    // Number of points slide will take
-    i32     slide_num;           /* for SLIDETYPE_LINEAR, SLIDETYPE_GEOMETRIC */
     i32     update_wait_ns;
     i32     timer_ns;
-    u8      slidetype;
 } Slider;
 extern const struct Slider Slider_default;
 
@@ -40,6 +47,10 @@ extern const struct SliderOffscreen SliderOffscreen_default;
 /* --- Slider --- */
 void Slider_Start(           struct Slider *s, struct Point *p, struct Point *t);
 void Slider_Compute_Next(    struct Slider *s, struct Point *p, struct Point *t, b32 g);
+
+float* Slider_Rate(Slider *s);
+i32 Slider_Slide_Num(Slider *s);
+void Slider_Rate_Set(Slider *s, float rate0, float rate1);
 
 /* --- SliderOffscreen --- */
 void Slider_Target_Offscreen(struct Slider *s, struct SliderOffscreen *o, struct Point *p);

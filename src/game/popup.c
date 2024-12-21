@@ -197,10 +197,8 @@ void Game_PopUp_Unit_Create(struct Game *sota) {
     SDL_assert(popup_unit->unit == NULL);
     *slider = Slider_default;
     slider->update_wait_ns = POPUP_UNIT_SLIDEWAIT_ns;
-    slider->slide_num = 30;
     slider->slidetype = SLIDETYPE_EASYINEASYOUT;
-    slider->slidefactors[0] = 2.0f;
-    slider->slidefactors[1] = 2.0f;
+    Slider_Rate_Set(slider, 2.0f, 2.0f);
     *offscreen = SliderOffscreen_default;
     offscreen->go_offscreen = false;
     offscreen->settings = &sota->settings;

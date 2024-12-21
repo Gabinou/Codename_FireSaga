@@ -2,16 +2,20 @@
 #include "slider.h"
 #include "nmath.h"
 
-const struct Slider Slider_default = {
+const struct Slider Slider_default = { /* SLIDETYPE_GEOMETRIC */
     .slidetype      = SLIDETYPE_NONE,
-    .slide_num      = 10,
-    .slidefactors   = {2.0f, 2.0f}, // for SLIDETYPE_GEOMETRIC
+    .ufactors.rate  = {2.0f, 2.0f},
+};
+
+const struct Slider Slider_Linear_default = {
+    .slidetype          = SLIDETYPE_NONE,
+    .ufactors.slide_num = 10,
 };
 
 const struct SliderOffscreen SliderOffscreen_default = {0};
 
 void Slider_Start(struct Slider *slider, struct Point *pos,
-                  struct Point *target) {
+                  struct Point  *target) {
     // Define start Slider point depending on slidetype
     switch (slider->slidetype) {
         case SLIDETYPE_LINEARXY:
@@ -19,23 +23,36 @@ void Slider_Start(struct Slider *slider, struct Point *pos,
             SDL_assert(false);
             // TODO: FIX
             // Distance to move in one step
-            // slider->point.x = (target->x - pos->x) / slider->slide_num * 2;
-            // slider->point.y = (target->y - pos->y) / slider->slide_num * 2;
+            // slider->upoint.distance.x = (target->x - pos->x) / slider->slide_num * 2;
+            // slider->upoint.distance.y = (target->y - pos->y) / slider->slide_num * 2;
             break;
         case SLIDETYPE_LINEAR:
             SDL_assert(false);
             // TODO: FIX
             // Distance to move in one step
-            // slider->point.x = (target->x - pos->x) / slider->slide_num;
-            // slider->point.y = (target->y - pos->y) / slider->slide_num;
+            // slider->upoint.distance.x = (target->x - pos->x) / slider->slide_num;
+            // slider->upoint.distance.y = (target->y - pos->y) / slider->slide_num;
             break;
         case SLIDETYPE_EASYINEASYOUT:
-            /* midpoint */
-            slider->point.x = pos->x + (target->x - pos->x) / 2;
-            slider->point.y = pos->y + (target->y - pos->y) / 2;
+            slider->upoint.midpoint.x = pos->x + (target->x - pos->x) / 2;
+            slider->upoint.midpoint.y = pos->y + (target->y - pos->y) / 2;
             break;
     }
 }
+
+void Slider_Rate_Set(Slider *slider, float rate0, float rate1) {
+    slider->ufactors.rate[0] = rate0;
+    slider->ufactors.rate[1] = rate1;
+}
+
+float* Slider_Rate(Slider *slider) {
+    return(slider->ufactors.rate);
+}
+
+i32 Slider_Slide_Num(Slider *slider) {
+    return(slider->ufactors.slide_num);
+}
+
 
 void Slider_Target_Offscreen(struct Slider *slider, struct SliderOffscreen *offscreen,
                              struct Point *pos) {
@@ -100,8 +117,8 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
     SDL_assert(slider   != NULL);
     SDL_assert(pos      != NULL);
     SDL_assert(target   != NULL);
-    SDL_assert(slider->slidefactors[DIMENSION_X] > 1.0f);
-    SDL_assert(slider->slidefactors[DIMENSION_Y] > 1.0f);
+    SDL_assert(slider->ufactors.rate[DIMENSION_X] > 1.0f);
+    SDL_assert(slider->ufactors.rate[DIMENSION_Y] > 1.0f);
 
     const struct Point dist = {target->x - pos->x, target->y - pos->y};
     /* If Slider close enough to target -> move to target */
@@ -111,14 +128,14 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
         return;
     }
 
-    float *sf = slider->slidefactors;
+    float *rate = slider->ufactors.rate;
 
     struct Point slide      = {0};
 
     switch (slider->slidetype) {
         case SLIDETYPE_GEOMETRIC: // Cursor mvt on map
-            slide.x = q_sequence_fgeometric_int32_t(target->x, pos->x, sf[DIMENSION_X]);
-            slide.y = q_sequence_fgeometric_int32_t(target->y, pos->y, sf[DIMENSION_Y]);
+            slide.x = q_sequence_fgeometric_int32_t(target->x, pos->x, rate[DIMENSION_X]);
+            slide.y = q_sequence_fgeometric_int32_t(target->y, pos->y, rate[DIMENSION_Y]);
             break;
         case SLIDETYPE_LINEARYX:
             SDL_assert(false);
@@ -127,7 +144,7 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
             // if (pos->y == target->y)
             // slide.x = slider->point.x;
             break;
-        case SLIDETYPE_LINEARXY: // for units?
+        case SLIDETYPE_LINEARXY: // for units?   
             SDL_assert(false);
             // TODO: FIX
             // slide.x = slider->point.x;
@@ -142,11 +159,11 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
             break;
         case SLIDETYPE_EASYINEASYOUT:
             ;
-            b32 going_offscreen_xn = (pos->x < slider->point.x) && (pos->x < target->x);
-            b32 going_offscreen_xp = (pos->x > slider->point.x) && (pos->x > target->x);
-            b32 going_offscreen_yn = (pos->y < slider->point.y) && (pos->y < target->y);
-            b32 going_offscreen_yp = (pos->y > slider->point.y) && (pos->y > target->y);
-
+            b32 going_offscreen_xn = (pos->x < slider->upoint.midpoint.x) && (pos->x < target->x);
+            b32 going_offscreen_xp = (pos->x > slider->upoint.midpoint.x) && (pos->x > target->x);
+            b32 going_offscreen_yn = (pos->y < slider->upoint.midpoint.y) && (pos->y < target->y);
+            b32 going_offscreen_yp = (pos->y > slider->upoint.midpoint.y) && (pos->y > target->y);
+                                                                                     
             b32 going_offscreen = ( going_offscreen_xn
                                     || going_offscreen_xp
                                     || going_offscreen_yn
@@ -156,14 +173,14 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
                 // BORKED for popup_unit
                 // Makes popup go out of screen reasonably fast/slow.
                 // Geometric is either TOO FAST/TOO SLOW
-                i32 seq = q_sequence_fgeometric_int32_t(slider->point.x, pos->x, sf[DIMENSION_X]);
+                i32 seq = q_sequence_fgeometric_int32_t(slider->upoint.midpoint.x, pos->x, rate[DIMENSION_X]);
                 slide.x = SLIDETYPE_EASYINEASYOUT_FACTOR_X * abs(target->x - pos->x) / seq;
-                seq = q_sequence_fgeometric_int32_t(slider->point.y, pos->y, sf[DIMENSION_Y]);
+                seq = q_sequence_fgeometric_int32_t(slider->upoint.midpoint.y, pos->y, rate[DIMENSION_Y]);
                 slide.y = SLIDETYPE_EASYINEASYOUT_FACTOR_Y * abs(target->y - pos->y) / seq;
             } else {
                 // Goes back in SUPER fast
-                slide.x = q_sequence_fgeometric_int32_t(target->x, pos->x, sf[DIMENSION_X]);
-                slide.y = q_sequence_fgeometric_int32_t(target->y, pos->y, sf[DIMENSION_Y]);
+                slide.x = q_sequence_fgeometric_int32_t(target->x, pos->x, rate[DIMENSION_X]);
+                slide.y = q_sequence_fgeometric_int32_t(target->y, pos->y, rate[DIMENSION_Y]);
             }
             break;
     }
