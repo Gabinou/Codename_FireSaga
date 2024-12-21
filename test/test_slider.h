@@ -75,6 +75,7 @@ void test_slider_geometric() {
     nourstest_true(pos.y == -100);
 
     /* --- Offscreen --- */
+    /* -- Slider_Target_Offscreen -- */
     struct Settings settings = Settings_default;
     struct SliderOffscreen offscreen = SliderOffscreen_default;
     offscreen.settings = &settings;
@@ -91,13 +92,8 @@ void test_slider_geometric() {
     nourstest_true(offscreen.target.x == pos.x + settings.res.x);
     nourstest_true(offscreen.target.y == pos.y + settings.res.y);
 
-
-    SDL_Log("%d %d", offscreen.target.x, offscreen.target.y);
-    getchar();
-
-    // Set target of Slider to offscreen, on the CLOSEST edge to pos
-
-
+    /* -- SliderOffscreen_Compute_Next -- */
+    SliderOffscreen_Compute_Next(&slider, &offscreen, &pos);
 
 }
 
@@ -106,9 +102,7 @@ void test_slider_linear() {
 }
 
 void test_slider() {
-
     test_slider_geometric();
     test_slider_linear();
     test_slider_easyineasyout();
-
 }

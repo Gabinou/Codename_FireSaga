@@ -80,7 +80,8 @@ void Slider_Target_Offscreen(struct Slider *slider,
     offscreen->go_offscreen = true;
 }
 
-void SliderOffscreen_Compute_Next(struct Slider *slider, struct SliderOffscreen *offscreen,
+void SliderOffscreen_Compute_Next(struct Slider *slider,
+                                  struct SliderOffscreen *offscreen,
                                   struct Point *pos) {
     // Slider goes offscreen and reappears on the other side
     SDL_assert(slider   != NULL);
