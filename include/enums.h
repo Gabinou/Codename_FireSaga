@@ -941,6 +941,7 @@ enum SLIDETYPES {
     SLIDETYPE_LINEARYX,
     /* Slow - Fast - Slow */
     SLIDETYPE_EASYINEASYOUT,
+    SLIDETYPE_VELOCITY,
     SLIDETYPE_VECTOR,
     SLIDETYPE_END,
     SLIDETYPE_EASYINEASYOUT_FACTOR_X =   8, /* TODO: proportional to screen x resolution */

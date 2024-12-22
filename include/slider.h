@@ -5,6 +5,21 @@
 #include "types.h"
 #include "structs.h"
 
+/* --- SLIDER --- */
+// Makes things slide (animation)
+// MAJOR ISSUE: ALL SLIDETYPES MAKE  SLIDER VELOCITY DEPENDS ON FRAMERATE
+// Solution:
+//  - Slider needs FPS to compute px velocity
+//     - Lag spike -> same px move on frame
+//     - 60 fps, 20px/s -> 3 px/f
+//     - Fast forward: No need to change anything. Target FPS is still 60 on FF, just called way many more times.
+//  - Get rid of linear slidetype
+//  - Define Slider velocity bounda
+//  - Introduce velocity slidetype (px/s)
+//  - Update geometric type
+//    - Velocity propto distance to target
+
+
 /* --- FORWARD DECLARATIONS --- */
 struct Settings;
 

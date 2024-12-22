@@ -27,6 +27,7 @@ void Slider_Start(struct Slider *slider, struct Point *pos,
             // slider->upoint.distance.y = (target->y - pos->y) / slider->slide_num * 2;
             break;
         case SLIDETYPE_LINEAR:
+            // Compute distance to add to slider every FRAME or every SECOND?
             SDL_assert(false);
             // TODO: FIX
             // Distance to move in one step
@@ -34,6 +35,7 @@ void Slider_Start(struct Slider *slider, struct Point *pos,
             // slider->upoint.distance.y = (target->y - pos->y) / slider->slide_num;
             break;
         case SLIDETYPE_EASYINEASYOUT:
+            // Compute sequence of distances to add to slider
             slider->upoint.midpoint.x = pos->x + (target->x - pos->x) / 2;
             slider->upoint.midpoint.y = pos->y + (target->y - pos->y) / 2;
             break;
@@ -151,7 +153,9 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
 
     switch (slider->slidetype) {
         case SLIDETYPE_EASYINEASYOUT:
-        // TODO
+            SDL_assert(false);
+            // TODO
+            break;
         case SLIDETYPE_GEOMETRIC: // Cursor mvt on map
             slide.x = q_sequence_fgeometric_int32_t(target->x, pos->x, rate[DIMENSION_X]);
             slide.y = q_sequence_fgeometric_int32_t(target->y, pos->y, rate[DIMENSION_Y]);
