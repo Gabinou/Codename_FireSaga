@@ -7,14 +7,16 @@
 
 /* --- SLIDER --- */
 // Makes things slide (animation)
-// MAJOR ISSUE: ALL SLIDETYPES MAKE  SLIDER VELOCITY DEPENDS ON FRAMERATE
+// MAJOR ISSUE: ALL SLIDETYPES SPEED DEPEND ON FRAMERATE
 // Solution:
 //  - Slider needs FPS to compute px velocity
-//     - Lag spike -> same px move on frame
-//     - 60 fps, 20px/s -> 3 px/f
-//     - Fast forward: No need to change anything. Target FPS is still 60 on FF, just called way many more times.
+//     - Lag spike: same px move on frame
+//     - 60 fps, 20px/s: 3 px/f
+//     - res : 1600 x 800 px^2
+//     - 9000 px/s pretty fast
+//     - Fast forward: No need to change anything. same px/f called way many more times.
 //  - Get rid of linear slidetype
-//  - Define Slider velocity bounda
+//  - Define Slider velocity bounds
 //  - Introduce velocity slidetype (px/s)
 //  - Update geometric type
 //    - Velocity propto distance to target
