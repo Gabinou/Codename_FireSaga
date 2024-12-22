@@ -15,7 +15,6 @@
 //     - res : 1600 x 800 px^2
 //     - 9000 px/s pretty fast
 //     - Fast forward: No need to change anything. same px/f called way many more times.
-//  - Get rid of linear slidetype
 //  - Define Slider velocity bounds
 //  - Introduce velocity slidetype (px/s)
 //  - Update geometric type
@@ -25,7 +24,11 @@
 struct Settings;
 
 enum SLIDER {
-    SLIDER_MIN_DIST = 3, /* Above this distance, don't slide */
+    /* Above this distance, don't slide */
+    SLIDER_MIN_DIST         = 3,
+    // By default, ratio makes it geometric at 60FPS:
+    // move half distance every frame
+    SLIDER_DEFAULT_RATIO    = FPS_DEFAULT_CAP / 2, 
 };
 // XP -> X positive
 #define SLIDER_PERIODIC_XN_LIMIT 0.2f
@@ -35,18 +38,17 @@ enum SLIDER {
 #define SLIDER_PERIODIC_YP 0.8f
 #define SLIDER_PERIODIC_YN 1.5f
 
-union Slider_uPoint {
-    struct Point midpoint; /* SLIDETYPE_EASYINEASYOUT */
-};
-
 union Slider_uFactors {
-    // Divides distance between target and end -> next point.
-    float   rate[TWO_D]; /* SLIDETYPE_GEOMETRIC */
-
-    // Velocity in pixel per second.
+    // Velocity in pixel per second for each axis
     // Ex: Res is 1600 x 800 px^2
-    //  Fast is way more than 1 screen per second.
-    i32     velocity;           /* [px/s] SLIDETYPE_VELOCITY */
+    i32   velocity[TWO_D]; /* [px/s] SLIDETYPE_VELOCITY */
+
+    // ratio = fps / rate  
+    //  - with rate the Geometric per frame rate 
+    // - e.g. if you want the slider to move half distance 
+    //   EVERY FRAME, ratio should be half of fps    
+    // - To keep same speed at different FPS: same ratio
+    i32   ratio[TWO_D]; /* [spf] SLIDETYPE_GEOMETRIC */
 };
 
 /* --- COMPONENTS --- */
@@ -54,9 +56,10 @@ typedef struct Slider {
     u8      slidetype;
     /* Ultimate target of Slider movement */
     struct Point target;
-    union Slider_uPoint upoint;
+    struct Point midpoint; /* SLIDETYPE_EASYINEASYOUT */
     union Slider_uFactors ufactors;
 
+    i32     fps;
     i32     update_wait_ns;
     i32     timer_ns;
 } Slider;

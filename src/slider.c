@@ -2,13 +2,10 @@
 #include "slider.h"
 #include "nmath.h"
 
-const struct Slider Slider_default = { /* SLIDETYPE_GEOMETRIC */
-    .slidetype      = SLIDETYPE_NONE,
-    .ufactors.rate  = {2.0f, 2.0f},
-};
-
-const struct Slider Slider_Linear_default = {
-    .slidetype          = SLIDETYPE_NONE,
+const struct Slider Slider_default = {
+    .slidetype      = SLIDETYPE_GEOMETRIC,
+    .ufactors.ratio = {SLIDER_DEFAULT_RATIO, SLIDER_DEFAULT_RATIO},
+    .fps            = FPS_DEFAULT_CAP,
 };
 
 const struct SliderOffscreen SliderOffscreen_default = {0};
@@ -131,9 +128,15 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
             SDL_assert(false);
             // TODO
             break;
-        case SLIDETYPE_GEOMETRIC: // Cursor mvt on map
-            slide.x = q_sequence_fgeometric_int32_t(target->x, pos->x, rate[DIMENSION_X]);
-            slide.y = q_sequence_fgeometric_int32_t(target->y, pos->y, rate[DIMENSION_Y]);
+        case SLIDETYPE_VELOCITY:
+            SDL_assert(false);
+            // TODO
+            break;
+        case SLIDETYPE_GEOMETRIC:
+            // velocity / fps is inverse of rate
+            // For geometric with rate 2 on every FRAME, velocity should be half of fps
+            slide.x = dist.x * slider->ratio[DIMENSION_X] / slider->fps; 
+            slide.y = dist.y * slider->ratio[DIMENSION_Y] / slider->fps; 
             break;
     }
 

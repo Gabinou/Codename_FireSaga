@@ -164,8 +164,8 @@ struct Fps {
     SDL_Color textcolor;
     float sizefactor[TWO_D];
     b32 show;
-    int cap;    /* [Hz] [s^-1] */
-    int ff_cap; /* [%] Fast forward cap above FPS */
+    i32 cap;    /* [Hz] [s^-1] */
+    i32 ff_cap; /* [%] Fast forward cap above FPS */
 };
 
 
