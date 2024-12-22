@@ -9,7 +9,6 @@ const struct Slider Slider_default = { /* SLIDETYPE_GEOMETRIC */
 
 const struct Slider Slider_Linear_default = {
     .slidetype          = SLIDETYPE_NONE,
-    .ufactors.slide_num = 10,
 };
 
 const struct SliderOffscreen SliderOffscreen_default = {0};
@@ -18,22 +17,6 @@ void Slider_Start(struct Slider *slider, struct Point *pos,
                   struct Point  *target) {
     // Define start Slider point depending on slidetype
     switch (slider->slidetype) {
-        case SLIDETYPE_LINEARXY:
-        case SLIDETYPE_LINEARYX:
-            SDL_assert(false);
-            // TODO: FIX
-            // Distance to move in one step
-            // slider->upoint.distance.x = (target->x - pos->x) / slider->slide_num * 2;
-            // slider->upoint.distance.y = (target->y - pos->y) / slider->slide_num * 2;
-            break;
-        case SLIDETYPE_LINEAR:
-            // Compute distance to add to slider every FRAME or every SECOND?
-            SDL_assert(false);
-            // TODO: FIX
-            // Distance to move in one step
-            // slider->upoint.distance.x = (target->x - pos->x) / slider->slide_num;
-            // slider->upoint.distance.y = (target->y - pos->y) / slider->slide_num;
-            break;
         case SLIDETYPE_EASYINEASYOUT:
             // Compute sequence of distances to add to slider
             slider->upoint.midpoint.x = pos->x + (target->x - pos->x) / 2;
@@ -47,16 +30,8 @@ void Slider_Rate_Set(Slider *slider, float rate0, float rate1) {
     slider->ufactors.rate[1] = rate1;
 }
 
-void Slider_Slide_Num_Set(Slider *slider, i32 num) {
-    slider->ufactors.slide_num = num;
-}
-
 float* Slider_Rate(Slider *slider) {
     return (slider->ufactors.rate);
-}
-
-i32 Slider_Slide_Num(Slider *slider) {
-    return (slider->ufactors.slide_num);
 }
 
 void Slider_Target_Offscreen(struct Slider *slider,
@@ -159,26 +134,6 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
         case SLIDETYPE_GEOMETRIC: // Cursor mvt on map
             slide.x = q_sequence_fgeometric_int32_t(target->x, pos->x, rate[DIMENSION_X]);
             slide.y = q_sequence_fgeometric_int32_t(target->y, pos->y, rate[DIMENSION_Y]);
-            break;
-        case SLIDETYPE_LINEARYX:
-            SDL_assert(false);
-            // TODO: FIX
-            // slide.y = slider->point.y;
-            // if (pos->y == target->y)
-            // slide.x = slider->point.x;
-            break;
-        case SLIDETYPE_LINEARXY: // for units?
-            SDL_assert(false);
-            // TODO: FIX
-            // slide.x = slider->point.x;
-            // if (pos->x == target->x)
-            //     slide.y = slider->point.y;
-            break;
-        case SLIDETYPE_LINEAR:
-            SDL_assert(false);
-            // TODO: FIX
-            // slide.x = slider->point.x;
-            // slide.y = slider->point.y;
             break;
     }
 

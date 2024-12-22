@@ -933,12 +933,6 @@ enum SLIDETYPES {
     SLIDETYPE_START             = 0,
     /* Fast - Slow */
     SLIDETYPE_GEOMETRIC,
-    /* Straight line from start to end */
-    SLIDETYPE_LINEAR,
-    /* Straight line in X, then Y direction from start to end */
-    SLIDETYPE_LINEARXY,
-    /* Straight line in Y, then X direction from start to end */
-    SLIDETYPE_LINEARYX,
     /* Slow - Fast - Slow */
     SLIDETYPE_EASYINEASYOUT,
     SLIDETYPE_VELOCITY,

@@ -21,7 +21,6 @@
 //  - Update geometric type
 //    - Velocity propto distance to target
 
-
 /* --- FORWARD DECLARATIONS --- */
 struct Settings;
 
@@ -37,15 +36,17 @@ enum SLIDER {
 #define SLIDER_PERIODIC_YN 1.5f
 
 union Slider_uPoint {
-    struct Point distance; /* SLIDETYPE_LINEAR */
     struct Point midpoint; /* SLIDETYPE_EASYINEASYOUT */
 };
 
 union Slider_uFactors {
     // Divides distance between target and end -> next point.
     float   rate[TWO_D]; /* SLIDETYPE_GEOMETRIC */
-    // Number of points slide will take
-    i32     slide_num;           /* SLIDETYPE_LINEAR, SLIDETYPE_GEOMETRIC */
+
+    // Velocity in pixel per second.
+    // Ex: Res is 1600 x 800 px^2
+    //  Fast is way more than 1 screen per second.
+    i32     velocity;           /* [px/s] SLIDETYPE_VELOCITY */
 };
 
 /* --- COMPONENTS --- */
@@ -71,9 +72,7 @@ extern const struct SliderOffscreen SliderOffscreen_default;
 
 /* --- Setters and Getters --- */
 float* Slider_Rate(Slider *s);
-i32 Slider_Slide_Num(Slider *s);
 void Slider_Rate_Set(Slider *s, float rate0, float rate1);
-void Slider_Slide_Num_Set(Slider *s, i32 num);
 
 /* --- Slider --- */
 void Slider_Start(           struct Slider *s, struct Point *p, struct Point *t);
