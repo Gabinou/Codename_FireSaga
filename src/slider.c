@@ -12,14 +12,18 @@ const struct SliderOffscreen SliderOffscreen_default = {0};
 
 void Slider_Start(struct Slider *slider, struct Point *pos,
                   struct Point  *target) {
-    // Define start Slider point depending on slidetype
+    // Initialize Slider
+
     switch (slider->slidetype) {
         case SLIDETYPE_EASYINEASYOUT:
-            // TODO: Compute sequence of distances to add to slider
+            // Keep start point and midpoint in memory
+            slider->start = *pos;
             slider->midpoint.x = pos->x + (target->x - pos->x) / 2;
             slider->midpoint.y = pos->y + (target->y - pos->y) / 2;
             break;
     }
+
+    slider->target = *target;
 }
 
 void Slider_Ratio_Set(Slider *slider, i32 ratiox, i32 ratioy) {
@@ -128,22 +132,57 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
 
     struct Point slide      = {0};
 
+    const Point sign = {
+        .x = (dist.x > 0) - (dist.x < 0),
+        .y = (dist.y > 0) - (dist.y < 0)
+    };
+
+
     switch (slider->slidetype) {
-        case SLIDETYPE_EASYINEASYOUT:
-            SDL_assert(false);
-            // TODO
+        case SLIDETYPE_EASYINEASYOUT: {
+
+            const i32 *ratio = slider->ufactors.ratio;
+
+            const struct Point midpoint_dist = {
+                .x = target->x - slider->midpoint.x,
+                .y = target->y - slider->midpoint.y
+            };
+
+            const struct Point start_dist = {
+                .x = slider->start.x - pos->x,
+                .y = slider->start.y - pos->y
+            };
+
+            if (abs(midpoint_dist.x) <= abs(dist.x)) {
+                // Before midpoint:
+                slide.x = NMATH_MAX(start_dist.x, 1) * ratio[DIMENSION_X] / slider->fps;
+            } else {
+                // After midpoint:
+                slide.x = dist.x * ratio[DIMENSION_X] / slider->fps;
+            }
+
+            if (abs(midpoint_dist.y) <= abs(dist.y)) {
+                // Before midpoint:
+                slide.y = NMATH_MAX(start_dist.y, 1) * ratio[DIMENSION_Y] / slider->fps;
+            } else {
+                // After midpoint:
+                slide.y = dist.y * ratio[DIMENSION_Y] / slider->fps;
+            }
+
             break;
-        case SLIDETYPE_VELOCITY:
-            SDL_assert(false);
+        }
+        case SLIDETYPE_VELOCITY: {
 
             const i32 *velocity = slider->ufactors.velocity;
             SDL_assert(velocity[DIMENSION_X] > 0);
             SDL_assert(velocity[DIMENSION_Y] > 0);
 
-            slide.x = velocity[DIMENSION_X] / slider->fps;
-            slide.y = velocity[DIMENSION_Y] / slider->fps;
+            slide.x = sign.x * velocity[DIMENSION_X] / slider->fps;
+            slide.y = sign.y * velocity[DIMENSION_Y] / slider->fps;
             break;
-        case SLIDETYPE_GEOMETRIC:
+        }
+        case SLIDETYPE_GEOMETRIC: {
+
             // velocity / fps is inverse of rate
             // For geometric with rate 2 on every FRAME, velocity should be half of fps
             const i32 *ratio = slider->ufactors.ratio;
@@ -153,8 +192,19 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
             slide.x = dist.x * ratio[DIMENSION_X] / slider->fps;
             slide.y = dist.y * ratio[DIMENSION_Y] / slider->fps;
             break;
+        }
     }
 
+    /* Refuse 0 speed */
+    if (slide.x == 0) {
+        slide.x = sign.x;
+    }
+
+    if (slide.y == 0) {
+        slide.y = sign.y;
+    }
+
+    /* Applying slide distance, with anti-overshoot */
     if (abs(slide.x) >= abs(dist.x)) {
         /* If Slider overshoots to target -> move to target */
         pos->x = target->x;

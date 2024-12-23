@@ -57,7 +57,10 @@ typedef struct Slider {
     u8      slidetype;
     /* Ultimate target of Slider movement */
     struct Point target;
-    struct Point midpoint; /* SLIDETYPE_EASYINEASYOUT */
+
+    /* SLIDETYPE_EASYINEASYOUT only */
+    struct Point start;
+    struct Point midpoint;
 
     /* Slidetype exclusive factors */
     union Slider_uFactors ufactors;

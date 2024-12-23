@@ -832,8 +832,8 @@ struct KeyboardInputMap {
     /* Physical buttons -> Keyboard equivalent */
     SDL_Scancode    a[SOTA_MAPPABLE_BUTTONS_NUM];
     SDL_Scancode    b[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    y[SOTA_MAPPABLE_BUTTONS_NUM];
     SDL_Scancode    x[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    y[SOTA_MAPPABLE_BUTTONS_NUM];
     SDL_Scancode    start[SOTA_MAPPABLE_BUTTONS_NUM];
     SDL_Scancode    shoulder_left[SOTA_MAPPABLE_BUTTONS_NUM];
     SDL_Scancode    shoulder_right[SOTA_MAPPABLE_BUTTONS_NUM];

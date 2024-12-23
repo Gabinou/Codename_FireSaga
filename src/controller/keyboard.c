@@ -1,5 +1,6 @@
 
 #include "controller/keyboard.h"
+#include "controller/gamepad.h"
 #include "structs.h"
 #include "utilities.h"
 
@@ -24,7 +25,7 @@ const struct KeyboardInputMap KeyboardInputMap_default = {
     .dpad_up_len        = 2,
     .dpad_left_len      = 2,
     .dpad_down_len      = 2,
-    .a_len              = 2,
+    .a_len              = 1,
     .b_len              = 2,
     .x_len              = 1,
     .y_len              = 1,
@@ -73,10 +74,11 @@ b32 Keyboard_isPressed(struct controllerKeyboard *kb, const u8 *state_array, int
     b32 out = false;
     u8 len  = *(&map->dpad_right_len + button);
 
+
     for (int i = 0; i < len; i++) {
+        // TODO: Check all mappend buttons using the _len parameters!
         if (state_array[buttons[i]]) {
             out = true;
-            // SDL_Log("Keyboard pressing %s", sdl_button_names[sdl_buttons[button]]);
             break;
         }
     }

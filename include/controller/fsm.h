@@ -7,6 +7,8 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
 
+#define SOTA_MUSIC_TOGGLE SDL_SCANCODE_M
+
 /* --- FINITE-STATE MACHINE FOR INPUTS --- */
 /* Contextual inputs according to game state! */
 

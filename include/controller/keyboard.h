@@ -8,8 +8,6 @@
 
 #define SOTA_INTERACTIVE_RELOAD SDL_SCANCODE_SPACE
 
-#define SOTA_MUSIC_TOGGLE SDL_SCANCODE_M
-
 typedef struct controllerKeyboard {
     struct KeyboardInputMap *inputmap;
 
