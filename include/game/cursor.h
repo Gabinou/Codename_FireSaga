@@ -8,6 +8,7 @@ struct Game;
 
 /* Need to be just a bit above 1.0 for cursor to sound good */
 #define SOTA_CURSOR_SLIDEFACTOR 1.05f
+#define SOTA_CURSOR_RATIO 57 /* ratio = fps / rate -> 57 = 60 / 1.05 */
 
 /* --- Cursor --- */
 void Game_Cursor_Free(   struct Game *sota);

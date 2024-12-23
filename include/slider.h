@@ -24,11 +24,11 @@
 struct Settings;
 
 enum SLIDER {
-    /* Above this distance, don't slide */
-    SLIDER_MIN_DIST         = 3,
-    // By default, ratio makes it geometric at 60FPS:
+    /* Above this distance, snap to target */
+    SLIDER_MIN_DIST         = 4,
+    // Default ratio makes it geometric at 60FPS:
     // move half distance every frame
-    SLIDER_DEFAULT_RATIO    = FPS_DEFAULT_CAP / 2, 
+    SLIDER_DEFAULT_RATIO    = FPS_DEFAULT_CAP / 2,
 };
 // XP -> X positive
 #define SLIDER_PERIODIC_XN_LIMIT 0.2f
@@ -40,13 +40,14 @@ enum SLIDER {
 
 union Slider_uFactors {
     // Velocity in pixel per second for each axis
-    // Ex: Res is 1600 x 800 px^2
+    // Ex:  Screen resolution is 1600 x 800 px^2.
+    //      Fast is way more than 1 screen per second.
     i32   velocity[TWO_D]; /* [px/s] SLIDETYPE_VELOCITY */
 
-    // ratio = fps / rate  
-    //  - with rate the Geometric per frame rate 
-    // - e.g. if you want the slider to move half distance 
-    //   EVERY FRAME, ratio should be half of fps    
+    // ratio = fps / rate -> 30 = 60 / 2
+    //  - with rate the Geometric per frame rate
+    // - e.g. if you want the slider to move half distance
+    //   EVERY FRAME, ratio should be half of fps
     // - To keep same speed at different FPS: same ratio
     i32   ratio[TWO_D]; /* [spf] SLIDETYPE_GEOMETRIC */
 };
@@ -57,6 +58,8 @@ typedef struct Slider {
     /* Ultimate target of Slider movement */
     struct Point target;
     struct Point midpoint; /* SLIDETYPE_EASYINEASYOUT */
+
+    /* Slidetype exclusive factors */
     union Slider_uFactors ufactors;
 
     i32     fps;
@@ -74,8 +77,8 @@ typedef struct SliderOffscreen {
 extern const struct SliderOffscreen SliderOffscreen_default;
 
 /* --- Setters and Getters --- */
-float* Slider_Rate(Slider *s);
-void Slider_Rate_Set(Slider *s, float rate0, float rate1);
+i32* Slider_Ratio(Slider *s);
+void Slider_Ratio_Set(Slider *s, i32 ratiox, i32 ratioy);
 
 /* --- Slider --- */
 void Slider_Start(           struct Slider *s, struct Point *p, struct Point *t);

@@ -15,20 +15,29 @@ void Slider_Start(struct Slider *slider, struct Point *pos,
     // Define start Slider point depending on slidetype
     switch (slider->slidetype) {
         case SLIDETYPE_EASYINEASYOUT:
-            // Compute sequence of distances to add to slider
-            slider->upoint.midpoint.x = pos->x + (target->x - pos->x) / 2;
-            slider->upoint.midpoint.y = pos->y + (target->y - pos->y) / 2;
+            // TODO: Compute sequence of distances to add to slider
+            slider->midpoint.x = pos->x + (target->x - pos->x) / 2;
+            slider->midpoint.y = pos->y + (target->y - pos->y) / 2;
             break;
     }
 }
 
-void Slider_Rate_Set(Slider *slider, float rate0, float rate1) {
-    slider->ufactors.rate[0] = rate0;
-    slider->ufactors.rate[1] = rate1;
+void Slider_Ratio_Set(Slider *slider, i32 ratiox, i32 ratioy) {
+    slider->ufactors.ratio[DIMENSION_X] = ratiox;
+    slider->ufactors.ratio[DIMENSION_Y] = ratioy;
 }
 
-float* Slider_Rate(Slider *slider) {
-    return (slider->ufactors.rate);
+i32* Slider_Ratio(Slider *slider) {
+    return (slider->ufactors.ratio);
+}
+
+void Slider_Velocity_Set(Slider *slider, i32 velocityx, i32 velocityy) {
+    slider->ufactors.ratio[DIMENSION_X] = velocityx;
+    slider->ufactors.ratio[DIMENSION_Y] = velocityy;
+}
+
+i32* Slider_Velocity(Slider *slider) {
+    return (slider->ufactors.velocity);
 }
 
 void Slider_Target_Offscreen(struct Slider *slider,
@@ -117,10 +126,6 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
         return;
     }
 
-    const float *rate = slider->ufactors.rate;
-    SDL_assert(rate[DIMENSION_X] > 1.0f);
-    SDL_assert(rate[DIMENSION_Y] > 1.0f);
-
     struct Point slide      = {0};
 
     switch (slider->slidetype) {
@@ -130,13 +135,23 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
             break;
         case SLIDETYPE_VELOCITY:
             SDL_assert(false);
-            // TODO
+
+            const i32 *velocity = slider->ufactors.velocity;
+            SDL_assert(velocity[DIMENSION_X] > 0);
+            SDL_assert(velocity[DIMENSION_Y] > 0);
+
+            slide.x = velocity[DIMENSION_X] / slider->fps;
+            slide.y = velocity[DIMENSION_Y] / slider->fps;
             break;
         case SLIDETYPE_GEOMETRIC:
             // velocity / fps is inverse of rate
             // For geometric with rate 2 on every FRAME, velocity should be half of fps
-            slide.x = dist.x * slider->ratio[DIMENSION_X] / slider->fps; 
-            slide.y = dist.y * slider->ratio[DIMENSION_Y] / slider->fps; 
+            const i32 *ratio = slider->ufactors.ratio;
+            SDL_assert(ratio[DIMENSION_X] > 0);
+            SDL_assert(ratio[DIMENSION_Y] > 0);
+
+            slide.x = dist.x * ratio[DIMENSION_X] / slider->fps;
+            slide.y = dist.y * ratio[DIMENSION_Y] / slider->fps;
             break;
     }
 
