@@ -196,8 +196,7 @@ void Game_PopUp_Unit_Create(struct Game *sota) {
     /* - Slider - */
     SDL_assert(popup_unit->unit == NULL);
     *slider = Slider_default;
-    slider->slidetype = SLIDETYPE_GEOMETRIC;
-    // TODO: slider->slidetype = SLIDETYPE_EASYINEASYOUT;
+    slider->slidetype = SLIDETYPE_EASYINEASYOUT;
 
     *offscreen = SliderOffscreen_default;
     offscreen->go_offscreen = false;
@@ -482,8 +481,7 @@ void Game_PopUp_Tile_Create(struct Game *sota) {
 
     /* - Making Popup_Tile - */
     *slider = Slider_default;
-    slider->slidetype = SLIDETYPE_GEOMETRIC;
-    // TODO: slider->slidetype = SLIDETYPE_EASYINEASYOUT;
+    slider->slidetype = SLIDETYPE_EASYINEASYOUT;
 
     offscreen->settings     = &sota->settings;
 

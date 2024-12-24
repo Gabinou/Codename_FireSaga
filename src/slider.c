@@ -154,7 +154,8 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
 
             if (abs(midpoint_dist.x) <= abs(dist.x)) {
                 // Before midpoint:
-                slide.x = NMATH_MAX(start_dist.x, 1) * ratio[DIMENSION_X] / slider->fps;
+                i32 min_speed_x =  slider->fps / ratio[DIMENSION_X] * 4;
+                slide.x = sign.x * NMATH_MAX(abs(start_dist.x), min_speed_x) * ratio[DIMENSION_X] / slider->fps;
             } else {
                 // After midpoint:
                 slide.x = dist.x * ratio[DIMENSION_X] / slider->fps;
@@ -162,7 +163,8 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
 
             if (abs(midpoint_dist.y) <= abs(dist.y)) {
                 // Before midpoint:
-                slide.y = NMATH_MAX(start_dist.y, 1) * ratio[DIMENSION_Y] / slider->fps;
+                i32 min_speed_y =  slider->fps / ratio[DIMENSION_Y] * 4;
+                slide.y = sign.y * NMATH_MAX(abs(start_dist.y), min_speed_y) * ratio[DIMENSION_Y] / slider->fps;
             } else {
                 // After midpoint:
                 slide.y = dist.y * ratio[DIMENSION_Y] / slider->fps;
