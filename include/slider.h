@@ -39,10 +39,11 @@ enum SLIDER {
 #define SLIDER_PERIODIC_YN 1.5f
 
 union Slider_uFactors {
-    // Velocity in pixel per second for each axis
+    // Speed in pixel per second for each axis
+    // Note: speed is scalar, absolute value of velocity vector
     // Ex:  Screen resolution is 1600 x 800 px^2.
     //      Fast is way more than 1 screen per second.
-    i32   velocity[TWO_D]; /* [px/s] SLIDETYPE_VELOCITY */
+    i32   speed[TWO_D]; /* [px/s] SLIDETYPE_VELOCITY */
 
     // ratio = fps / rate -> 30 = 60 / 2
     //  - with rate the Geometric per frame rate
@@ -66,8 +67,6 @@ typedef struct Slider {
     union Slider_uFactors ufactors;
 
     i32     fps;
-    i32     update_wait_ns;
-    i32     timer_ns;
 } Slider;
 extern const struct Slider Slider_default;
 
@@ -81,7 +80,10 @@ extern const struct SliderOffscreen SliderOffscreen_default;
 
 /* --- Setters and Getters --- */
 i32* Slider_Ratio(Slider *s);
-void Slider_Ratio_Set(Slider *s, i32 ratiox, i32 ratioy);
+i32* Slider_Speed(Slider *s);
+
+void Slider_Ratio_Set(Slider *s, i32 rx, i32 ry);
+void Slider_Speed_Set(Slider *s, i32 vx, i32 vy);
 
 /* --- Slider --- */
 void Slider_Start(           struct Slider *s, struct Point *p, struct Point *t);

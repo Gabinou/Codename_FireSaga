@@ -366,9 +366,7 @@ enum SOTA_CONVERSIONS {
 };
 
 enum SOTA_POPUP_WAIT {
-    POPUP_SLIDEWAIT_ns      = 20000000,
-    POPUP_TILE_SLIDEWAIT_ns = 10000000,
-    POPUP_UNIT_SLIDEWAIT_ns = 10000000,
+    POPUP_SLIDEWAIT_ns      = 20000000, // -> barely above 1 frame at 60fps
 };
 
 enum SOTA_CONTROL {
@@ -938,8 +936,6 @@ enum SLIDETYPES {
     SLIDETYPE_VELOCITY,
     SLIDETYPE_VECTOR,
     SLIDETYPE_END,
-    SLIDETYPE_EASYINEASYOUT_FACTOR_X =   8, /* TODO: proportional to screen x resolution */
-    SLIDETYPE_EASYINEASYOUT_FACTOR_Y =   4, /* TODO: proportional to screen y resolution */
 };
 
 #define REGISTER_ENUM(x) POPUP_TYPE_##x,

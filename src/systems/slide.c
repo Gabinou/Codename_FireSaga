@@ -81,11 +81,7 @@ void Slide_Sprite(tnecs_system_input *input) {
         else
             Sprite_Target(slider, sprite, position);
 
-        slider->timer_ns += input->deltat;
-        if (slider->timer_ns > slider->update_wait_ns) {
-            Slider_Compute_Next(slider, &position->pixel_pos, &slider->target, false);
-            slider->timer_ns = 0;
-        }
+        Slider_Compute_Next(slider, &position->pixel_pos, &slider->target, false);
 
         dstrect_func_t func = dstrect_funcs[!position->onTilemap][isCursor];
         func(sprite, &position->pixel_pos, &sota->camera);
@@ -107,10 +103,6 @@ void Slide_PopUp_Offscreen(tnecs_system_input *input) {
         struct Slider          *slider        = slider_arr    + order;
         struct Position        *position      = position_arr  + order;
         struct SliderOffscreen *offscreen_ptr = offscreen_arr + order;
-        slider->timer_ns += input->deltat;
-
-        if (slider->timer_ns <= slider->update_wait_ns)
-            continue;
 
         /* offscreen slide / onscreen slide switch */
 #ifdef DEBUG_POPUP_TILE_OFFSCREEN
@@ -118,6 +110,5 @@ void Slide_PopUp_Offscreen(tnecs_system_input *input) {
 #else
         Slider_Compute_Next(slider, &position->pixel_pos, &slider->target, false);
 #endif
-        slider->timer_ns = 0;
     }
 }

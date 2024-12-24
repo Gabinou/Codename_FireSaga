@@ -436,7 +436,6 @@ void Game_Cursor_Create(struct Game *sota) {
     SDL_assert(slider != NULL);
     *slider = Slider_default;
     Slider_Ratio_Set(slider, SOTA_CURSOR_RATIO, SOTA_CURSOR_RATIO);
-    slider->update_wait_ns              = CURSOR_SLIDEWAIT_ns;
     slider->slidetype                   = SLIDETYPE_GEOMETRIC;
 
     /* -- sprite -- */

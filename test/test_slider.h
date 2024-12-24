@@ -8,10 +8,9 @@ void test_slider_easyineasyout() {
 }
 
 void test_slider_geometric() {
-    Slider slider = Slider_default;
-    slider.update_wait_ns  = POPUP_TILE_SLIDEWAIT_ns;
-    slider.slidetype       = SLIDETYPE_GEOMETRIC;
-    Slider_Rate_Set(&slider, 2.0f, 2.0f);
+    Slider slider           = Slider_default;
+    slider.slidetype        = SLIDETYPE_GEOMETRIC;
+    Slider_Ratio_Set(&slider, FPS_DEFAULT_CAP / 2, FPS_DEFAULT_CAP / 2);
 
     /* --- Positive direction --- */
     struct Point start = {0, 0};
@@ -117,10 +116,10 @@ void test_slider_geometric() {
     offscreen.target.y =  res.y * 3;
     SliderOffscreen_Compute_Next(&slider, &offscreen, &pos);
 
-    nourstest_true(pos.x == ((int)(res.x * SLIDER_PERIODIC_XN) + slider.target.x) /
-                   slider.ufactors.rate[0]);
-    nourstest_true(pos.y == ((int)(-res.y * SLIDER_PERIODIC_YP) + slider.target.y) /
-                   slider.ufactors.rate[1]);
+    i32 rate = FPS_DEFAULT_CAP / slider.ufactors.ratio[0];
+    nourstest_true(pos.x == ((int)(res.x * SLIDER_PERIODIC_XN) + slider.target.x) / rate);
+    rate = FPS_DEFAULT_CAP / slider.ufactors.ratio[1];
+    nourstest_true(pos.y == ((int)(-res.y * SLIDER_PERIODIC_YP) + slider.target.y) / rate);
 
     offscreen.go_offscreen = true;
     pos.x       =  res.x * 2;
@@ -129,18 +128,79 @@ void test_slider_geometric() {
     offscreen.target.y = -res.y;
     SliderOffscreen_Compute_Next(&slider, &offscreen, &pos);
 
-    nourstest_true(pos.x == ((int)(-res.x * SLIDER_PERIODIC_XP) + slider.target.x) /
-                   slider.ufactors.rate[0]);
-    nourstest_true(pos.y == ((int)(res.y * SLIDER_PERIODIC_YN) + slider.target.y) /
-                   slider.ufactors.rate[1]);
+    rate = FPS_DEFAULT_CAP / slider.ufactors.ratio[1];
+    nourstest_true(pos.x == ((int)(-res.x * SLIDER_PERIODIC_XP) + slider.target.x) / rate);
+    nourstest_true(pos.y == ((int)(res.y * SLIDER_PERIODIC_YN) + slider.target.y) / rate);
 }
 
-void test_slider_linear() {
+void test_Slider_Speed() {
 
+    {
+        Slider slider           = Slider_default;
+        slider.slidetype        = SLIDETYPE_VELOCITY;
+        i32 px_vel = 100;
+        Slider_Speed_Set(&slider,
+                         FPS_DEFAULT_CAP * px_vel,
+                         FPS_DEFAULT_CAP * px_vel);
+        /* --- Positive direction --- */
+        struct Point start = {0, 0};
+        struct Point pos = start;
+        struct Point target = {
+            px_vel * 3 + px_vel / 2,
+            px_vel * 3 + px_vel / 2
+        };
+        Slider_Compute_Next(&slider, &pos, &target, false);
+        nourstest_true(pos.x == px_vel);
+        nourstest_true(pos.y == px_vel);
+        Slider_Compute_Next(&slider, &pos, &target, false);
+        nourstest_true(pos.x == px_vel * 2);
+        nourstest_true(pos.y == px_vel * 2);
+        Slider_Compute_Next(&slider, &pos, &target, false);
+        nourstest_true(pos.x == px_vel * 3);
+        nourstest_true(pos.y == px_vel * 3);
+        Slider_Compute_Next(&slider, &pos, &target, false);
+        nourstest_true(pos.x == target.x);
+        nourstest_true(pos.y == target.y);
+        Slider_Compute_Next(&slider, &pos, &target, false);
+        nourstest_true(pos.x == target.x);
+        nourstest_true(pos.y == target.y);
+    }
+
+    {
+        Slider slider           = Slider_default;
+        slider.slidetype        = SLIDETYPE_VELOCITY;
+        i32 px_vel = 100;
+        Slider_Speed_Set(&slider,
+                         FPS_DEFAULT_CAP * px_vel,
+                         FPS_DEFAULT_CAP * px_vel);
+        /* --- Positive direction --- */
+        struct Point start = {0, 0};
+        struct Point pos = start;
+        struct Point target = {
+            -px_vel * 3 - px_vel / 2,
+                -px_vel * 3 - px_vel / 2
+            };
+        Slider_Compute_Next(&slider, &pos, &target, false);
+        SDL_Log("%d %d", pos.x, pos.y);
+        nourstest_true(pos.x == -px_vel);
+        nourstest_true(pos.y == -px_vel);
+        Slider_Compute_Next(&slider, &pos, &target, false);
+        nourstest_true(pos.x == -px_vel * 2);
+        nourstest_true(pos.y == -px_vel * 2);
+        Slider_Compute_Next(&slider, &pos, &target, false);
+        nourstest_true(pos.x == -px_vel * 3);
+        nourstest_true(pos.y == -px_vel * 3);
+        Slider_Compute_Next(&slider, &pos, &target, false);
+        nourstest_true(pos.x == target.x);
+        nourstest_true(pos.y == target.y);
+        Slider_Compute_Next(&slider, &pos, &target, false);
+        nourstest_true(pos.x == target.x);
+        nourstest_true(pos.y == target.y);
+    }
 }
 
 void test_slider() {
     test_slider_geometric();
-    test_slider_linear();
+    test_Slider_Speed();
     test_slider_easyineasyout();
 }

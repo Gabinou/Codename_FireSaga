@@ -35,13 +35,13 @@ i32* Slider_Ratio(Slider *slider) {
     return (slider->ufactors.ratio);
 }
 
-void Slider_Velocity_Set(Slider *slider, i32 velocityx, i32 velocityy) {
-    slider->ufactors.ratio[DIMENSION_X] = velocityx;
-    slider->ufactors.ratio[DIMENSION_Y] = velocityy;
+void Slider_Speed_Set(Slider *slider, i32 velocityx, i32 velocityy) {
+    slider->ufactors.speed[DIMENSION_X] = velocityx;
+    slider->ufactors.speed[DIMENSION_Y] = velocityy;
 }
 
-i32* Slider_Velocity(Slider *slider) {
-    return (slider->ufactors.velocity);
+i32* Slider_Speed(Slider *slider) {
+    return (slider->ufactors.speed);
 }
 
 void Slider_Target_Offscreen(struct Slider *slider,
@@ -137,7 +137,6 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
         .y = (dist.y > 0) - (dist.y < 0)
     };
 
-
     switch (slider->slidetype) {
         case SLIDETYPE_EASYINEASYOUT: {
 
@@ -173,7 +172,7 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
         }
         case SLIDETYPE_VELOCITY: {
 
-            const i32 *velocity = slider->ufactors.velocity;
+            const i32 *velocity = slider->ufactors.speed;
             SDL_assert(velocity[DIMENSION_X] > 0);
             SDL_assert(velocity[DIMENSION_Y] > 0);
 
@@ -195,7 +194,7 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
         }
     }
 
-    /* Refuse 0 speed */
+    /* Refuse 0 speed. Target is not reached here. */
     if (slide.x == 0) {
         slide.x = sign.x;
     }
