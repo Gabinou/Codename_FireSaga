@@ -9,9 +9,10 @@
 #include "jsonio.h"
 
 #undef ITERATIONS
-#define ITERATIONS 100
+#define ITERATIONS 1000  
 
 void bench_jsonio() {
+    SDL_Log("Benchmarking jsonio: %d iterations", ITERATIONS);
     Filesystem_Init(0);
     Utilities_Load();
 

@@ -5,6 +5,7 @@
 #undef ITERATIONS
 #define ITERATIONS 100000
 void bench_s8() {
+    SDL_Log("Benchmarking nstr: %d iterations", ITERATIONS);
     char string[33] = "Hello, my mother's name is baka.\0";
 
     /* Benchmark n8 */

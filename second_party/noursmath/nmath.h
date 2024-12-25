@@ -69,6 +69,7 @@ darr[index] = elem;\
 #define DARR_POP(darr) darr[--DARR_NUM(darr)]
 
 /// @brief Delete elem by copying top element over it, and decrementing DARR_NUM
+/// Note: Called a swapback array in other places
 #define DARR_DEL_SCRAMBLE(darr, elem) do {\
     if (elem < DARR_NUM(darr)) {\
         memmove((darr + elem), (darr + --DARR_NUM(darr)), sizeof(*darr));\

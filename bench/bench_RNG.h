@@ -8,6 +8,7 @@
 #define ITERATIONS 10000000
 
 void bench_RNG() {
+    SDL_Log("Benchmarking RNG: %d iterations", ITERATIONS);
     u64 before_ns = tnecs_get_ns();
     struct TINYMT32_T tinymt;
     RNG_Init_tinymt(&tinymt);

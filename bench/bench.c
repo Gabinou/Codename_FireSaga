@@ -10,11 +10,8 @@ int main(int argc, char *argv[]) {
     Log_Init();
 
     /* -- Running benchmarks -- */
-    SDL_Log("Benchmarking nstr");
     bench_nstr();
-    SDL_Log("Benchmarking RNG");
     bench_RNG();
-    SDL_Log("Benchmarking jsonio");
     bench_jsonio();
 
     /* -- Postliminaries -- */
