@@ -1,6 +1,7 @@
 
 #include "nourstest.h"
 #include "types.h"
+#include "tnecs.h"
 #include "RNG.h"
 
 #undef ITERATIONS
