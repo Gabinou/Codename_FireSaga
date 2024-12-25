@@ -3,15 +3,23 @@
 #include "types.h"
 #include "macros.h"
 #include "platform.h"
+#include "utilities.h"
+#include "nmath.h"
+#include "unit/unit.h"
 #include "jsonio.h"
 
 #undef ITERATIONS
-#define ITERATIONS 10000000
+#define ITERATIONS 100
 
 void bench_jsonio() {
-    u64 before_ns = tnecs_get_ns();
+    Filesystem_Init(0);
+    Utilities_Load();
 
     struct Unit Silou = Unit_default;
+    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    Unit_InitWweapons(&Silou, weapons_dtab);
+
+    u64 before_ns = tnecs_get_ns();
     s8 path = s8_literal(PATH_JOIN("units", "Silou_test.json"));
     for (int i = 0; i < ITERATIONS; ++i) {
         jsonio_readJSON(path, &Silou);

@@ -29,6 +29,8 @@ void Tetrabrachios_Init(   Unit *u);
 void Tetrabrachios_default(Unit *u);
 
 /* --- Constructors/Destructors --- */
+// TODO: Only one unit_init -> WITH WEAPONS_DTAB
+// unit should be USABLE ANYWHERE AFTER INIT.
 void Unit_Init(         Unit *u);
 void Unit_InitWweapons( Unit *u, struct dtab *weapons_dtab);
 void Unit_Members_Alloc(Unit *u);
