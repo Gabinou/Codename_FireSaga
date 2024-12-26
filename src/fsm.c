@@ -630,6 +630,7 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
     struct SliderOffscreen *offscreen;
     offscreen = TNECS_GET_COMPONENT(sota->world, popup_ent, SliderOffscreen);
     offscreen->go_offscreen = true;
+    // TODO stop resetting target?
     slider->target.x = 0;
     slider->target.y = 0;
     Slider_Target_Offscreen(slider, offscreen, &position->pixel_pos);
