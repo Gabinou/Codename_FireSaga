@@ -615,19 +615,25 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
     tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_UNIT];
     SDL_assert(popup_ent > TNECS_NULL);
 
-    /* -- Making unit NULL -- */
+    /* -- Getting popup -- */
     const struct Position *cursor_pos;
     cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     struct Point pos    = cursor_pos->tilemap_pos;
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
     struct PopUp_Unit *popup_unit = popup->data;
-    popup_unit->unit = NULL;
-    Game_PopUp_Unit_Place(sota, pos);
+    // popup_unit->unit = NULL;
 
     /* -- Placing popup_unit out of view -- */
+    // Game_PopUp_Unit_Place(sota, pos);
+    struct Position *position  = TNECS_GET_COMPONENT(sota->world, popup_ent, Position);
+    struct Slider *slider  = TNECS_GET_COMPONENT(sota->world, popup_ent, Slider);
     struct SliderOffscreen *offscreen;
     offscreen = TNECS_GET_COMPONENT(sota->world, popup_ent, SliderOffscreen);
-    offscreen->go_offscreen = false;
+    offscreen->go_offscreen = true;
+    slider->target.x = 0;
+    slider->target.y = 0;
+    Slider_Target_Offscreen(slider, offscreen, &position->pixel_pos);
+    Slider_Start(slider, &position->pixel_pos, &offscreen->target);
 
     /* -- Changing animation loop to IDLE -- */
     struct Unit *unit     = TNECS_GET_COMPONENT(sota->world, dehov_ent, Unit);
@@ -648,7 +654,7 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
     // In case an enemy unit was selected.
     sota->selected_unit_entity = TNECS_NULL;
 
-    SDL_assert(popup_unit->unit == NULL);
+    // SDL_assert(popup_unit->unit == NULL);
 
 }
 
@@ -1486,7 +1492,7 @@ void fsm_eUnitSel_ssStby(struct Game *sota, tnecs_entity selector_entity) {
         tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_UNIT];
         struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
         SDL_assert(popup != NULL);
-        popup->visible = false;
+        // popup->visible = false;
         Event_Emit(__func__, SDL_USEREVENT, event_Unit_Moves, data1_entity, data2_entity);
     }
 }

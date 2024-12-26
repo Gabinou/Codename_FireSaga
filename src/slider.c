@@ -49,17 +49,18 @@ void Slider_Target_Offscreen(struct Slider *slider,
                              struct Point *pos) {
     // Set target of Slider to offscreen, on the CLOSEST edge to pos
 
+    // TODO: compute position depending on size of slider
     struct Point res = offscreen->settings->res;
     if (slider->target.x != pos->x) {
         // Always move the slider the same distance to offscreen: res
-        offscreen->target.x = pos->x > (res.x / 2) ? pos->x + res.x : pos->x - res.x;
+        offscreen->target.x = pos->x > (res.x / 3) ? pos->x + res.x / 3 : pos->x - res.x / 3;
     } else {
         offscreen->target.x = slider->target.x; /* just in case (of what?) */
     }
 
     if (slider->target.y != pos->y) {
         // Always move the slider the same distance to offscreen: res
-        offscreen->target.y = pos->y > (res.y / 2) ? pos->y + res.y : pos->y - res.y;
+        offscreen->target.y = pos->y > (res.y / 3) ? pos->y + res.y / 3 : pos->y - res.y / 3;
     } else {
         offscreen->target.y = slider->target.y; /* just in case (of what?) */
     }
