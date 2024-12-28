@@ -517,6 +517,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     if (popup_ent == TNECS_NULL)
         Game_PopUp_Unit_Create(sota);
     popup_ent = sota->popups[POPUP_TYPE_HUD_UNIT];
+    SDL_assert(popup_ent != TNECS_NULL);
 
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
     struct PopUp_Unit *popup_unit = popup->data;
@@ -625,22 +626,11 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
     // popup_unit->unit = NULL;
 
     /* -- Placing popup_unit out of view -- */
-    // Game_PopUp_Unit_Place(sota, pos);
     struct Position *position  = TNECS_GET_COMPONENT(sota->world, popup_ent, Position);
     struct Slider *slider  = TNECS_GET_COMPONENT(sota->world, popup_ent, Slider);
     struct SliderOffscreen *offscreen;
     offscreen = TNECS_GET_COMPONENT(sota->world, popup_ent, SliderOffscreen);
     offscreen->go_offscreen = true;
-    // TODO stop resetting target?
-    slider->target.x = 0;
-    slider->target.y = 0;
-
-    // SDL_Rect rect =   {
-    //     .x = position->pixel_pos.x,
-    //     .y = position->pixel_pos.y,
-    //     .w = n9patch->patch_pixels.x * n9patch->size_patches.x,
-    //     .h = n9patch->patch_pixels.y * n9patch->size_patches.y,
-    // };
 
     SDL_Rect rect = Utilities_Rect(position, n9patch);
 
@@ -665,9 +655,6 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
 
     // In case an enemy unit was selected.
     sota->selected_unit_entity = TNECS_NULL;
-
-    // SDL_assert(popup_unit->unit == NULL);
-
 }
 
 void fsm_eCrsDeHvUnit_ssMapCndt(struct Game *sota, tnecs_entity dehov_ent) {
@@ -967,7 +954,6 @@ void fsm_eCrsMvd_sGmpMap(struct Game *sota, tnecs_entity mover_entity,
     if (fsm_eCrsMvd_sGmpMap_ss[sota->substate] != NULL)
         fsm_eCrsMvd_sGmpMap_ss[sota->substate](sota, mover_entity, pos);
 
-    Game_PopUp_Unit_Place(sota, *pos);
     Game_PopUp_Tile_Place(sota, *pos);
 }
 

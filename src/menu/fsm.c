@@ -804,8 +804,9 @@ void fsm_eCncl_sGmpMap_ssMenu_mSM(struct Game *sota, struct Menu *mc) {
     /* - Make popup_unit invisible - */
     popup_ent   = sota->popups[POPUP_TYPE_HUD_UNIT];
     popup       = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
-    if (popup != NULL)
+    if (popup != NULL) {
         popup->visible = true;
+    }
 }
 
 /* --- fsm_eAcpt_sGmpMap_ssMenu_m --- */
