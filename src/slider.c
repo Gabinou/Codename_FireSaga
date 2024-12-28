@@ -134,12 +134,13 @@ void SliderOffscreen_Compute_Next(struct Slider *slider,
 }
 
 void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
-                         struct Point *target, b32 go_offscreen) {
+                         struct Point *target, b32 reverse) {
     // Compute the next position of the slider on way to target
 
     SDL_assert(slider   != NULL);
     SDL_assert(pos      != NULL);
     SDL_assert(target   != NULL);
+    SDL_assert((reverse == 0) || (reverse == 1));
 
     const struct Point dist = {target->x - pos->x, target->y - pos->y};
 
@@ -153,8 +154,10 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
     struct Point slide      = {0};
 
     const Point sign = {
-        .x = (dist.x > 0) - (dist.x < 0),
-        .y = (dist.y > 0) - (dist.y < 0)
+        // .x = (dist.x > 0) - (dist.x < 0),
+        // .y = (dist.y > 0) - (dist.y < 0)
+        .x = (!reverse * (dist.x > 0)) - (!reverse * (dist.x < 0)),
+        .y = (!reverse * (dist.y > 0)) - (!reverse * (dist.y < 0))
     };
 
     switch (slider->slidetype) {
@@ -230,13 +233,13 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
         /* If Slider overshoots to target -> move to target */
         pos->x = target->x;
     } else {
-        pos->x += slide.x;
+        pos->x += sign.x * abs(slide.x);
     }
 
     if (abs(slide.y) >= abs(dist.y)) {
         /* If Slider overshoots to target -> move to target */
         pos->y = target->y;
     } else {
-        pos->y += slide.y;
+        pos->y += sign.y * abs(slide.y);
     }
 }
