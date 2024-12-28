@@ -90,7 +90,13 @@ void Slider_Start(           struct Slider *s, struct Point *p, struct Point *t)
 void Slider_Compute_Next(    struct Slider *s, struct Point *p, struct Point *t, b32 g);
 
 /* --- SliderOffscreen --- */
-void Slider_Target_Offscreen(struct Slider *s, struct SliderOffscreen *o, struct Point *p);
+// Just offscreen
+void Slider_Target_Offscreen(struct Slider *s, struct SliderOffscreen *o, SDL_Rect *p);
+
+// Far offscreen to make sliding look better?
+void Slider_Target_Offscreen_Far(struct Slider *s, struct SliderOffscreen *o, SDL_Rect *p);
+
+
 void SliderOffscreen_Compute_Next(struct Slider *s, struct SliderOffscreen *o,
                                   struct Point *p);
 

@@ -4,9 +4,12 @@
 #include "types.h"
 #include "enums.h"
 #include "structs.h"
+#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct RNG_Sequence;
+struct Position;
+struct n9Patch;
 
 /* #if SDL_BYTEORDER == SDL_BIG_ENDIAN */
 /* rmask = 0xff000000;                 */
@@ -69,6 +72,9 @@ int Utilities_Loop(int direction, int flip);
 char *Utilities_Print_wpnStats( struct Weapon_stats stats);
 char *Utilities_Print_unitStats(struct Unit_stats   stats);
 char *Utilities_Print_itemStats(struct Item_stats   stats);
+
+/* -- SDL_Rect -- */
+SDL_Rect Utilities_Rect(struct Position *pos, struct n9Patch *n9patch);
 
 /* -- SDL stuff -- */
 size_t Util_SDL_Surface_Index(SDL_Surface *surf, int x, int y);

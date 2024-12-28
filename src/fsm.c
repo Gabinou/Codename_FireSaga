@@ -620,6 +620,7 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
     cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     struct Point pos    = cursor_pos->tilemap_pos;
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
+    struct n9Patch *n9patch = &popup->n9patch;
     struct PopUp_Unit *popup_unit = popup->data;
     // popup_unit->unit = NULL;
 
@@ -633,7 +634,17 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
     // TODO stop resetting target?
     slider->target.x = 0;
     slider->target.y = 0;
-    Slider_Target_Offscreen(slider, offscreen, &position->pixel_pos);
+
+    // SDL_Rect rect =   {
+    //     .x = position->pixel_pos.x,
+    //     .y = position->pixel_pos.y,
+    //     .w = n9patch->patch_pixels.x * n9patch->size_patches.x,
+    //     .h = n9patch->patch_pixels.y * n9patch->size_patches.y,
+    // };
+
+    SDL_Rect rect = Utilities_Rect(position, n9patch);
+
+    Slider_Target_Offscreen(slider, offscreen, &rect);
     Slider_Start(slider, &position->pixel_pos, &offscreen->target);
 
     /* -- Changing animation loop to IDLE -- */

@@ -137,18 +137,20 @@ void test_slider_geometric() {
 
     struct SliderOffscreen offscreen = SliderOffscreen_default;
     offscreen.settings = &settings;
+    SDL_Rect rect = {0};
+    rect.x       = settings.res.x / 4;
+    rect.y       = settings.res.y / 4;
 
-    pos.x       = settings.res.x / 4;
-    pos.y       = settings.res.y / 4;
-    Slider_Target_Offscreen(&slider, &offscreen, &pos);
-    nourstest_true(offscreen.target.x == pos.x - settings.res.x);
-    nourstest_true(offscreen.target.y == pos.y - settings.res.y);
+    Slider_Target_Offscreen(&slider, &offscreen, &rect);
+    nourstest_true(offscreen.target.x == -rect.w);
+    nourstest_true(offscreen.target.y == -rect.h);
 
-    pos.x       = 3 * settings.res.x / 4;
-    pos.y       = 3 * settings.res.y / 4;
-    Slider_Target_Offscreen(&slider, &offscreen, &pos);
-    nourstest_true(offscreen.target.x == pos.x + settings.res.x);
-    nourstest_true(offscreen.target.y == pos.y + settings.res.y);
+    rect.x       = 3 * settings.res.x / 4;
+    rect.y       = 3 * settings.res.y / 4;
+    Slider_Target_Offscreen(&slider, &offscreen, &rect);
+    nourstest_true(offscreen.target.x == settings.res.x);
+    nourstest_true(offscreen.target.y == settings.res.y);
+    /* -- Slider_Target_Offscreen_Far -- */
 
     /* -- SliderOffscreen_Compute_Next -- */
     /* - go_offscreen false - */

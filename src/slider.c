@@ -44,27 +44,45 @@ i32* Slider_Speed(Slider *slider) {
     return (slider->ufactors.speed);
 }
 
+
 void Slider_Target_Offscreen(struct Slider *slider,
                              struct SliderOffscreen *offscreen,
-                             struct Point *pos) {
+                             SDL_Rect *rect) {
     // Set target of Slider to offscreen, on the CLOSEST edge to pos
+    // Go JUST OUTSIDE of screen
 
-    // TODO: compute position depending on size of slider
+    SDL_assert(rect                 != NULL);
+    SDL_assert(slider               != NULL);
+    SDL_assert(offscreen            != NULL);
+    SDL_assert(offscreen->settings  != NULL);
+
     struct Point res = offscreen->settings->res;
-    // TODO: Why only if pos is not at target
-    if (slider->target.x != pos->x) {
-        // Always move the slider the same distance to offscreen: res
-        offscreen->target.x = pos->x > (res.x / 3) ? pos->x + res.x / 3 : pos->x - res.x / 3;
-    } else {
-        offscreen->target.x = slider->target.x; /* just in case (of what?) */
-    }
 
-    if (slider->target.y != pos->y) {
-        // Always move the slider the same distance to offscreen: res
-        offscreen->target.y = pos->y > (res.y / 3) ? pos->y + res.y / 3 : pos->y - res.y / 3;
-    } else {
-        offscreen->target.y = slider->target.y; /* just in case (of what?) */
-    }
+    // Only consider slider size IF it might poke through
+    offscreen->target.x = (rect->x > (res.x / 2)) ? res.x : -rect->w;
+    offscreen->target.y = (rect->y > (res.y / 2)) ? res.y : -rect->h;
+
+    offscreen->go_offscreen = true;
+}
+
+void Slider_Target_Offscreen_Far(struct Slider *slider,
+                                 struct SliderOffscreen *offscreen,
+                                 SDL_Rect *rect) {
+    // Set target of Slider to offscreen, on the CLOSEST edge to pos
+    // Go FAR -> a fraction of the screen resolution
+
+    SDL_assert(rect                 != NULL);
+    SDL_assert(slider               != NULL);
+    SDL_assert(offscreen            != NULL);
+    SDL_assert(offscreen->settings  != NULL);
+
+    struct Point res = offscreen->settings->res;
+
+    // Only consider slider size IF it might poke through
+    offscreen->target.x = (rect->x > (res.x / 2)) ? (rect->x + res.x / 3) :
+                          (rect->x - res.x / 3 - rect->w);
+    offscreen->target.y = (rect->y > (res.y / 2)) ? (rect->y + res.y / 3) :
+                          (rect->y - res.y / 3 - rect->h);
 
     offscreen->go_offscreen = true;
 }

@@ -3,6 +3,8 @@
 #include "sprite.h"
 #include "names.h"
 #include "palette.h"
+#include "position.h"
+#include "n9patch.h"
 #include "nmath.h"
 #include "stb_sprintf.h"
 
@@ -300,6 +302,19 @@ void Utilities_Free(void) {
     Palettes_Free();
     Names_Free();
     // Hashes_Free();
+}
+
+/* -- SDL_Rect -- */
+SDL_Rect Utilities_Rect(struct Position *pos, struct n9Patch *n9patch) {
+    SDL_assert(pos      != NULL);
+    SDL_assert(n9patch  != NULL);
+    SDL_Rect rect = {
+        .x = pos->pixel_pos.x,
+        .y = pos->pixel_pos.y,
+        .w = n9patch->patch_pixels.x * n9patch->size_patches.x,
+        .h = n9patch->patch_pixels.y * n9patch->size_patches.y,
+    };
+    return (rect);
 }
 
 void SOTA_Free_Surfaces(SDL_Surface **surfaces, int num) {
