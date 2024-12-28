@@ -644,7 +644,7 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
 
     SDL_Rect rect = Utilities_Rect(position, n9patch);
 
-    Slider_Target_Offscreen(slider, offscreen, &rect);
+    Slider_Target_Offscreen_Far(slider, offscreen, &rect);
     Slider_Start(slider, &position->pixel_pos, &offscreen->target);
 
     /* -- Changing animation loop to IDLE -- */

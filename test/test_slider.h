@@ -150,7 +150,54 @@ void test_slider_geometric() {
     Slider_Target_Offscreen(&slider, &offscreen, &rect);
     nourstest_true(offscreen.target.x == settings.res.x);
     nourstest_true(offscreen.target.y == settings.res.y);
+
+    rect.w       = 20;
+    rect.h       = 20;
+    rect.x       = settings.res.x / 4;
+    rect.y       = settings.res.y / 4;
+
+    Slider_Target_Offscreen(&slider, &offscreen, &rect);
+    nourstest_true(offscreen.target.x == -rect.w);
+    nourstest_true(offscreen.target.y == -rect.h);
+
+    rect.x       = 3 * settings.res.x / 4;
+    rect.y       = 3 * settings.res.y / 4;
+    Slider_Target_Offscreen(&slider, &offscreen, &rect);
+    nourstest_true(offscreen.target.x == settings.res.x);
+    nourstest_true(offscreen.target.y == settings.res.y);
+
     /* -- Slider_Target_Offscreen_Far -- */
+    rect.w      = 20;
+    rect.h      = 20;
+    rect.x      = settings.res.x / 4;
+    rect.y      = settings.res.y / 4;
+
+    Slider_Target_Offscreen_Far(&slider, &offscreen, &rect);
+
+    nourstest_true(offscreen.target.x == (rect.x - settings.res.x / 3 - rect.w));
+    nourstest_true(offscreen.target.y == (rect.y - settings.res.y / 3 - rect.h));
+
+    rect.x       = 3 * settings.res.x / 4;
+    rect.y       = 3 * settings.res.y / 4;
+    Slider_Target_Offscreen_Far(&slider, &offscreen, &rect);
+    nourstest_true(offscreen.target.x == (rect.x + res.x / 3));
+    nourstest_true(offscreen.target.y == (rect.y + res.y / 3));
+
+    rect.w      = 0;
+    rect.h      = 0;
+    rect.x      = settings.res.x / 4;
+    rect.y      = settings.res.y / 4;
+
+    Slider_Target_Offscreen_Far(&slider, &offscreen, &rect);
+
+    nourstest_true(offscreen.target.x == (rect.x - settings.res.x / 3 - rect.w));
+    nourstest_true(offscreen.target.y == (rect.y - settings.res.y / 3 - rect.h));
+
+    rect.x       = 3 * settings.res.x / 4;
+    rect.y       = 3 * settings.res.y / 4;
+    Slider_Target_Offscreen_Far(&slider, &offscreen, &rect);
+    nourstest_true(offscreen.target.x == (rect.x + res.x / 3));
+    nourstest_true(offscreen.target.y == (rect.y + res.y / 3));
 
     /* -- SliderOffscreen_Compute_Next -- */
     /* - go_offscreen false - */
