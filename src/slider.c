@@ -12,7 +12,7 @@ const struct SliderOffscreen SliderOffscreen_default = {0};
 
 void Slider_Init(struct Slider *slider, struct Point *pos,
                  struct Point  *target) {
-    
+
     slider->start   = *pos;
     slider->target  = *target;
 
@@ -166,8 +166,8 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
         .x = reverse_sign * ((dist.x > 0) - (dist.x < 0)),
         .y = reverse_sign * ((dist.y > 0) - (dist.y < 0))
     };
-    SDL_assert((sign.x == 1) || (sign.x == -1));
-    SDL_assert((sign.y == 1) || (sign.y == -1));
+    SDL_assert((sign.x == 1) || (sign.x == -1) || (sign.x == 0));
+    SDL_assert((sign.y == 1) || (sign.y == -1) || (sign.y == 0));
 
     switch (slider->slidetype) {
         case SLIDETYPE_EASYINEASYOUT: {
@@ -229,7 +229,7 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
         }
     }
 
-    /* Refuse 0 speed. Target is not reached here. */
+    /* Refuse 0 speed. Target is not reached here, UNLESS sign is 0. */
     if (slide.x == 0) {
         slide.x = sign.x;
     }

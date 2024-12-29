@@ -30,13 +30,14 @@ enum SLIDER {
     // move half distance every frame
     SLIDER_DEFAULT_RATIO    = FPS_DEFAULT_CAP / 2,
 };
+
 // XP -> X positive
-#define SLIDER_PERIODIC_XN_LIMIT 0.2f
-#define SLIDER_PERIODIC_YN_LIMIT 0.2f
-#define SLIDER_PERIODIC_XP 0.6f
-#define SLIDER_PERIODIC_XN 1.5f
-#define SLIDER_PERIODIC_YP 0.8f
-#define SLIDER_PERIODIC_YN 1.5f
+#define SLIDER_PERIODIC_XN_LIMIT    0.2f
+#define SLIDER_PERIODIC_YN_LIMIT    0.2f
+#define SLIDER_PERIODIC_XP          0.6f
+#define SLIDER_PERIODIC_XN          1.5f
+#define SLIDER_PERIODIC_YP          0.8f
+#define SLIDER_PERIODIC_YN          1.5f
 
 union Slider_uFactors {
     // Speed in pixel per second for each axis
