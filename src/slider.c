@@ -8,7 +8,8 @@ const struct Slider Slider_default = {
     .fps            = FPS_DEFAULT_CAP,
 };
 
-const struct SliderOffscreen SliderOffscreen_default = {0};
+const struct SliderOffscreen SliderOffscreen_default    = {0};
+const struct SliderInput SliderInput_default            = {0};
 
 void Slider_Init(struct Slider *slider, struct Point *pos,
                  struct Point  *target) {
@@ -90,16 +91,22 @@ void Slider_Target_Offscreen_Far(struct Slider *slider,
     offscreen->go_offscreen = true;
 }
 
-void SliderOffscreen_Compute_Next(struct Slider *slider,
-                                  struct SliderOffscreen *offscreen,
-                                  struct Point *pos) {
+void SliderOffscreen_Compute_Next(const SliderInput input) {
     // Slider goes offscreen and reappears on the other side
+
+    Slider          *slider     = input.slider;
+    SliderOffscreen *offscreen  = input.offscreen;
+    const Point pos = input.pos;
+    
     SDL_assert(slider   != NULL);
     SDL_assert(pos      != NULL);
 
     // Skip if not going offscreen
     if (!offscreen->go_offscreen) {
-        Slider_Compute_Next(slider, pos, &slider->target, offscreen->go_offscreen);
+        SliderInput input2          = input;
+        input.target                = slider->target;
+        input.go_offscreen          = offscreen->go_offscreen;
+        Slider_Compute_Next(input2);
         return;
     }
 
@@ -133,11 +140,22 @@ void SliderOffscreen_Compute_Next(struct Slider *slider,
 
     // If going offscreen, use offscreen target (which is always offscreen)
     struct Point *current_target = offscreen->go_offscreen ? &offscreen->target : &slider->target;
-    Slider_Compute_Next(slider, pos, &slider->target, offscreen->go_offscreen);
+
+    SliderInput input2          = input;
+    input.target                = current_target;
+    input.go_offscreen          = offscreen->go_offscreen;
+
+    Slider_Compute_Next(input2);
 }
 
-void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
-                         struct Point *target, b32 reverse) {
+void Slider_Compute_Next(const SliderInput input) {
+    // Slider goes offscreen and reappears on the other side
+
+    Slider *slider      = input.slider;
+    const Point pos     = input.pos;
+    const Point target  = input.target;
+    const b32 reverse   = input.go_offscreen;
+
     // Compute the next position of the slider on way to target
 
     SDL_assert(slider   != NULL);

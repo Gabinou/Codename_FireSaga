@@ -82,6 +82,17 @@ typedef struct SliderOffscreen {
 } SliderOffscreen;
 extern const struct SliderOffscreen SliderOffscreen_default;
 
+typedef struct SliderInput {
+    // Input to Slider functions
+    Slider           *slider;
+    SliderOffscreen  *offscreen;
+    Point pos;
+    Point target;
+    Point midpoint;
+    b32   go_offscreen;
+} SliderInput;
+extern const struct SliderInput SliderInput_default;
+
 /* --- Setters and Getters --- */
 i32* Slider_Ratio(Slider *s);
 i32* Slider_Speed(Slider *s);
@@ -92,7 +103,8 @@ void Slider_Speed_Set(Slider *s, i32 vx, i32 vy);
 /* --- Slider --- */
 void Slider_Init(            struct Slider *s, struct Point *p, struct Point *t);
 
-void Slider_Compute_Next(    struct Slider *s, struct Point *p, struct Point *t, b32 g);
+void Slider_Compute_Next(           const SliderInput input);
+void SliderOffscreen_Compute_Next(  const SliderInput input);
 
 /* --- SliderOffscreen --- */
 void Slider_Offscreen_Midpoint(struct Slider *s, struct SliderOffscreen *o);
@@ -104,7 +116,5 @@ void Slider_Target_Offscreen(struct Slider *s, struct SliderOffscreen *o, SDL_Re
 void Slider_Target_Offscreen_Far(struct Slider *s, struct SliderOffscreen *o, SDL_Rect *p);
 
 
-void SliderOffscreen_Compute_Next(struct Slider *s, struct SliderOffscreen *o,
-                                  struct Point *p);
 
 #endif /* SLIDER_H */
