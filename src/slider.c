@@ -10,20 +10,18 @@ const struct Slider Slider_default = {
 
 const struct SliderOffscreen SliderOffscreen_default = {0};
 
-void Slider_Start(struct Slider *slider, struct Point *pos,
-                  struct Point  *target) {
-    // Initialize Slider
+void Slider_Init(struct Slider *slider, struct Point *pos,
+                 struct Point  *target) {
+    
+    slider->start   = *pos;
+    slider->target  = *target;
 
     switch (slider->slidetype) {
         case SLIDETYPE_EASYINEASYOUT:
-            // Keep start point and midpoint in memory
-            slider->start = *pos;
             slider->midpoint.x = pos->x + (target->x - pos->x) / 2;
             slider->midpoint.y = pos->y + (target->y - pos->y) / 2;
             break;
     }
-
-    slider->target = *target;
 }
 
 void Slider_Ratio_Set(Slider *slider, i32 ratiox, i32 ratioy) {
@@ -63,6 +61,12 @@ void Slider_Target_Offscreen(struct Slider *slider,
     offscreen->target.y = (rect->y > (res.y / 2)) ? res.y : -rect->h;
 
     offscreen->go_offscreen = true;
+}
+
+void Slider_Offscreen_Midpoint(Slider *slider, SliderOffscreen *offscreen) {
+    // Compute midpoint to offscreen target
+    offscreen->midpoint.x = slider->start.x + (offscreen->target.x - slider->start.x) / 2;
+    offscreen->midpoint.y = slider->start.y + (offscreen->target.y - slider->start.y) / 2;
 }
 
 void Slider_Target_Offscreen_Far(struct Slider *slider,
@@ -107,24 +111,24 @@ void SliderOffscreen_Compute_Next(struct Slider *slider,
     if ((pos->x > res.x) && (offscreen->target.x > res.x)) {
         /* - x positive movement - */
         pos->x = (int)(-res.x * SLIDER_PERIODIC_XP);
-        Slider_Start(slider, pos, &slider->target);
+        Slider_Init(slider, pos, &slider->target);
         offscreen->go_offscreen = false;
     } else if ((pos->x < (-res.x * SLIDER_PERIODIC_XN_LIMIT)) && (offscreen->target.x < 0)) {
         /* - x negative movement - */
         pos->x = (int)(res.x * SLIDER_PERIODIC_XN);
-        Slider_Start(slider, pos, &slider->target);
+        Slider_Init(slider, pos, &slider->target);
         offscreen->go_offscreen = false;
     }
     /* -- y periodic -- */
     if ((pos->y > res.y) && (offscreen->target.y > res.y)) {
         /* - y positive movement - */
         pos->y = -res.y * SLIDER_PERIODIC_YP;
-        Slider_Start(slider, pos, &slider->target);
+        Slider_Init(slider, pos, &slider->target);
         offscreen->go_offscreen = false;
     } else if ((pos->y < (-res.y * SLIDER_PERIODIC_YN_LIMIT)) && (offscreen->target.y < 0)) {
         /* - y negative movement - */
         pos->y = res.y * SLIDER_PERIODIC_YN;
-        Slider_Start(slider, pos, &slider->target);
+        Slider_Init(slider, pos, &slider->target);
         offscreen->go_offscreen = false;
     }
 
@@ -156,7 +160,7 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
     // reverse is true -> reverse_sign is -1, else its 1
     const i32 reverse_sign = -2 * reverse + 1;
     SDL_assert((reverse_sign == 1) || (reverse_sign == -1));
-    
+
     // sign of movement direction
     const Point sign = {
         .x = reverse_sign * ((dist.x > 0) - (dist.x < 0)),

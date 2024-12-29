@@ -278,9 +278,9 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
                                || ((new_target.x < midpoint) && (popup_pos.x > midpoint)));
     if (screen_side_changed)
         Slider_Target_Offscreen(slider, offscreen, &position->pixel_pos);
-    Slider_Start(slider, &position->pixel_pos, &offscreen->target);
+    Slider_Init(slider, &position->pixel_pos, &offscreen->target);
 #else
-    Slider_Start(slider, &position->pixel_pos, &slider->target);
+    Slider_Init(slider, &position->pixel_pos, &slider->target);
 #endif
 }
 
@@ -322,9 +322,9 @@ void Game_PopUp_Tile_Place(struct Game *sota, struct Point cursor_pos) {
     slider->target = new_target;
 #ifdef DEBUG_POPUP_TILE_OFFSCREEN
     Slider_Target_Offscreen(slider, offscreen, &position->pixel_pos);
-    Slider_Start(slider, &position->pixel_pos, &offscreen->target);
+    Slider_Init(slider, &position->pixel_pos, &offscreen->target);
 #else
-    Slider_Start(slider, &position->pixel_pos, &slider->target);
+    Slider_Init(slider, &position->pixel_pos, &slider->target);
 #endif
 
 }

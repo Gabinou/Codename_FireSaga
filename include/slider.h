@@ -72,10 +72,10 @@ extern const struct Slider Slider_default;
 
 typedef struct SliderOffscreen {
     struct Settings             *settings;
-    
     // Point for periodic movement
-    struct Point  target;
+    struct Point target;
     struct Point midpoint;
+
     /* Is SliderOffscreen currently going offscreen */
     b32   go_offscreen;
 } SliderOffscreen;
@@ -89,10 +89,13 @@ void Slider_Ratio_Set(Slider *s, i32 rx, i32 ry);
 void Slider_Speed_Set(Slider *s, i32 vx, i32 vy);
 
 /* --- Slider --- */
-void Slider_Start(           struct Slider *s, struct Point *p, struct Point *t);
+void Slider_Init(            struct Slider *s, struct Point *p, struct Point *t);
+
 void Slider_Compute_Next(    struct Slider *s, struct Point *p, struct Point *t, b32 g);
 
 /* --- SliderOffscreen --- */
+void Slider_Offscreen_Midpoint(struct Slider *s, struct SliderOffscreen *o);
+
 // Just offscreen
 void Slider_Target_Offscreen(struct Slider *s, struct SliderOffscreen *o, SDL_Rect *p);
 

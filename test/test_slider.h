@@ -12,7 +12,7 @@ void test_slider_easyineasyout() {
     struct Point start = {0, 0};
     struct Point pos = start;
     struct Point target = {100, 100};
-    Slider_Start(&slider, &pos, &target);
+    Slider_Init(&slider, &pos, &target);
     Slider_Compute_Next(&slider, &pos, &target, false);
     nourstest_true(pos.x == 4);
     nourstest_true(pos.y == 4);
