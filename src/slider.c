@@ -153,16 +153,22 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
 
     struct Point slide      = {0};
 
+    // reverse is true -> reverse_sign is -1, else its 1
+    const i32 reverse_sign = -2 * reverse + 1;
+    SDL_assert((reverse_sign == 1) || (reverse_sign == -1));
+    
+    // sign of movement direction
     const Point sign = {
-        // .x = (dist.x > 0) - (dist.x < 0),
-        // .y = (dist.y > 0) - (dist.y < 0)
-        .x = (!reverse * (dist.x > 0)) - (!reverse * (dist.x < 0)),
-        .y = (!reverse * (dist.y > 0)) - (!reverse * (dist.y < 0))
+        .x = reverse_sign * ((dist.x > 0) - (dist.x < 0)),
+        .y = reverse_sign * ((dist.y > 0) - (dist.y < 0))
     };
+    SDL_assert((sign.x == 1) || (sign.x == -1));
+    SDL_assert((sign.y == 1) || (sign.y == -1));
 
     switch (slider->slidetype) {
         case SLIDETYPE_EASYINEASYOUT: {
-
+            // TODO move slowly when going offscreen
+            // Need to compute periodi  midpoint, distance
             const i32 *ratio = slider->ufactors.ratio;
 
             const struct Point midpoint_dist = {
