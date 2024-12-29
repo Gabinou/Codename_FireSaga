@@ -168,7 +168,7 @@ void Slider_Compute_Next(struct Slider *slider, struct Point *pos,
     switch (slider->slidetype) {
         case SLIDETYPE_EASYINEASYOUT: {
             // TODO move slowly when going offscreen
-            // Need to compute periodi  midpoint, distance
+            // Need to compute periodic  midpoint distance
             const i32 *ratio = slider->ufactors.ratio;
 
             const struct Point midpoint_dist = {

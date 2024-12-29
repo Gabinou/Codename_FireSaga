@@ -72,7 +72,10 @@ extern const struct Slider Slider_default;
 
 typedef struct SliderOffscreen {
     struct Settings             *settings;
+    
+    // Point for periodic movement
     struct Point  target;
+    struct Point midpoint;
     /* Is SliderOffscreen currently going offscreen */
     b32   go_offscreen;
 } SliderOffscreen;
