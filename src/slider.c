@@ -42,6 +42,11 @@ i32* Slider_Speed(Slider *slider) {
     return (slider->ufactors.speed);
 }
 
+void Slider_Offscreen_Midpoint(Slider *slider, SliderOffscreen *offscreen) {
+    // Compute midpoint to offscreen target
+    offscreen->midpoint.x = slider->start.x + (offscreen->target.x - slider->start.x) / 2;
+    offscreen->midpoint.y = slider->start.y + (offscreen->target.y - slider->start.y) / 2;
+}
 
 void Slider_Target_Offscreen(struct Slider *slider,
                              struct SliderOffscreen *offscreen,
@@ -61,12 +66,6 @@ void Slider_Target_Offscreen(struct Slider *slider,
     offscreen->target.y = (rect->y > (res.y / 2)) ? res.y : -rect->h;
 
     offscreen->go_offscreen = true;
-}
-
-void Slider_Offscreen_Midpoint(Slider *slider, SliderOffscreen *offscreen) {
-    // Compute midpoint to offscreen target
-    offscreen->midpoint.x = slider->start.x + (offscreen->target.x - slider->start.x) / 2;
-    offscreen->midpoint.y = slider->start.y + (offscreen->target.y - slider->start.y) / 2;
 }
 
 void Slider_Target_Offscreen_Far(struct Slider *slider,

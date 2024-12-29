@@ -3,7 +3,7 @@
 #include "popup/popup.h"
 #include "map/map.h"
 #include "sprite.h"
-#include "position.h"
+#include "debug.h"
 #include "position.h"
 #include "scene.h"
 #include "map/animation.h"

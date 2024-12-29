@@ -6,8 +6,10 @@
 #include "popup/tile.h"
 #include "popup/map_combat.h"
 #include "map/map.h"
+#include "debug.h"
 #include "slider.h"
 #include "position.h"
+#include "utilities.h"
 #include "macros.h"
 #include "popup/pre_combat.h"
 #include "structs.h"
@@ -263,9 +265,9 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
                                      sota->camera.offset.y, sota->camera.zoom);
     struct Point new_target;
     new_target = PopUp_Unit_Position(popup, popup_unit, &popup->n9patch, &sota->settings, &pixel_pos);
-    b32 moved = (new_target.x != slider->target.x) || (new_target.y != slider->target.y);
+    b32 target_changed = (new_target.x != slider->target.x) || (new_target.y != slider->target.y);
 
-    if (!moved) {
+    if (!target_changed) {
         return;
     }
 
@@ -273,11 +275,6 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
     struct Point popup_pos = position->pixel_pos;
     slider->target = new_target;
 #ifdef DEBUG_POPUP_UNIT_OFFSCREEN
-    i32 midpoint = sota->settings.res.x / 2;
-    b32 screen_side_changed = (((new_target.x > midpoint) && (popup_pos.x < midpoint))
-                               || ((new_target.x < midpoint) && (popup_pos.x > midpoint)));
-    if (screen_side_changed)
-        Slider_Target_Offscreen(slider, offscreen, &position->pixel_pos);
     Slider_Init(slider, &position->pixel_pos, &offscreen->target);
 #else
     Slider_Init(slider, &position->pixel_pos, &slider->target);
@@ -313,19 +310,22 @@ void Game_PopUp_Tile_Place(struct Game *sota, struct Point cursor_pos) {
     new_target = PopUp_Tile_Position(popup, popup_tile, &popup->n9patch, &sota->settings,
                                      &pixel_pos, sota->moved_direction);
 
-    b32 moved = (new_target.x != slider->target.x) || (new_target.y != slider->target.y);
-    if (!moved) {
+    b32 target_changed = (new_target.x != slider->target.x) || (new_target.y != slider->target.y);
+    if (!target_changed) {
         return;
     }
 
     /* - Update the slider target - */
     slider->target = new_target;
-#ifdef DEBUG_POPUP_TILE_OFFSCREEN
-    Slider_Target_Offscreen(slider, offscreen, &position->pixel_pos);
-    Slider_Init(slider, &position->pixel_pos, &offscreen->target);
-#else
+    // #ifdef DEBUG_POPUP_TILE_OFFSCREEN
+    SDL_Rect rect = Utilities_Rect(position, &popup->n9patch);
+
+    Slider_Target_Offscreen_Far(slider, offscreen, &rect);
     Slider_Init(slider, &position->pixel_pos, &slider->target);
-#endif
+    Slider_Offscreen_Midpoint(slider, offscreen);
+    // #else
+    //     Slider_Init(slider, &position->pixel_pos, &slider->target);
+    // #endif
 
 }
 

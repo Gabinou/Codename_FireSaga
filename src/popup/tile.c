@@ -66,9 +66,12 @@ void PopUp_Tile_Limits(struct PopUp *popup, struct PopUp_Tile *pt, struct Settin
     pt->cursor_limit_max.x = 0.6f * settings->res.x;
 }
 
+// Set Popup_Tile_Position depending on where the cursor is on the screen
 struct Point PopUp_Tile_Position(struct PopUp *popup, struct PopUp_Tile *pt,
                                  struct n9Patch *n9patch, struct Settings *settings,
                                  struct Point *pixel_pos, i8 direction) {
+    // TODO: removed unused direction, popup.
+
     /* error checking: PopUp_TILE should NOT be on top*/
     switch (pt->corner) {
         case SOTA_DIRECTION_TOPRIGHT:
