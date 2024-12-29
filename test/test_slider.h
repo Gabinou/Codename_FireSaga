@@ -9,56 +9,61 @@ void test_slider_easyineasyout() {
     Slider_Ratio_Set(&slider, FPS_DEFAULT_CAP / 2, FPS_DEFAULT_CAP / 2);
 
     /* --- Positive direction --- */
+    struct SliderInput input    = SliderInput_default;
     struct Point start = {0, 0};
     struct Point pos = start;
     struct Point target = {100, 100};
     Slider_Init(&slider, &pos, &target);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    input.slider                = &slider;
+    input.pos                   = &pos;
+    input.target                = target;
+    input.go_offscreen          = false;
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == 4);
     nourstest_true(pos.y == 4);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == 8);
     nourstest_true(pos.y == 8);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == 12);
     nourstest_true(pos.y == 12);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == 18);
     nourstest_true(pos.y == 18);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == 27);
     nourstest_true(pos.y == 27);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == 40);
     nourstest_true(pos.y == 40);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == 60);
     nourstest_true(pos.y == 60);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == 80);
     nourstest_true(pos.y == 80);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == 90);
     nourstest_true(pos.y == 90);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == 95);
     nourstest_true(pos.y == 95);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == 97);
     nourstest_true(pos.y == 97);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == 98);
     nourstest_true(pos.y == 98);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == 99);
     nourstest_true(pos.y == 99);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == 100);
     nourstest_true(pos.y == 100);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == 100);
     nourstest_true(pos.y == 100);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     // SDL_Log("%d %d", pos.x, pos.y);
     nourstest_true(pos.x == target.x);
     nourstest_true(pos.y == target.x);
@@ -68,33 +73,39 @@ void test_slider_geometric() {
     Slider slider           = Slider_default;
     slider.slidetype        = SLIDETYPE_GEOMETRIC;
     Slider_Ratio_Set(&slider, FPS_DEFAULT_CAP / 2, FPS_DEFAULT_CAP / 2);
+    struct SliderInput input    = SliderInput_default;
 
     /* --- Positive direction --- */
     struct Point start = {0, 0};
     struct Point pos = start;
     struct Point target = {100, 100};
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    input.slider                = &slider;
+    input.pos                   = &pos;
+    input.target                = target;
+    input.go_offscreen          = false;
+
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == 50);
     nourstest_true(pos.y == 50);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == 75);
     nourstest_true(pos.y == 75);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == 87);
     nourstest_true(pos.y == 87);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == 93);
     nourstest_true(pos.y == 93);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == 96);
     nourstest_true(pos.y == 96);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == 98);
     nourstest_true(pos.y == 98);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == 99);
     nourstest_true(pos.y == 99);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == 100);
     nourstest_true(pos.y == 100);
 
@@ -105,28 +116,30 @@ void test_slider_geometric() {
     pos.y       = start.y;
     target.x    = -100;
     target.y    = -100;
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    input.pos                   = &pos;
+    input.target                = target;
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == -50);
     nourstest_true(pos.y == -50);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == -75);
     nourstest_true(pos.y == -75);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == -87);
     nourstest_true(pos.y == -87);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == -93);
     nourstest_true(pos.y == -93);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == -96);
     nourstest_true(pos.y == -96);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == -98);
     nourstest_true(pos.y == -98);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == -99);
     nourstest_true(pos.y == -99);
-    Slider_Compute_Next(&slider, &pos, &target, false);
+    Slider_Compute_Next(input);
     nourstest_true(pos.x == -100);
     nourstest_true(pos.y == -100);
 
@@ -207,10 +220,15 @@ void test_slider_geometric() {
     pos.y       = start.y;
     slider.target.x    = -100;
     slider.target.y    = -100;
-    SliderOffscreen_Compute_Next(&slider, &offscreen, &pos);
+
+    input.offscreen             = &offscreen;
+    input.pos                   = &pos;
+    input.target                = target;
+
+    SliderOffscreen_Compute_Next(input);
     nourstest_true(pos.x == -50);
     nourstest_true(pos.y == -50);
-    SliderOffscreen_Compute_Next(&slider, &offscreen, &pos);
+    SliderOffscreen_Compute_Next(input);
     nourstest_true(pos.x == -75);
     nourstest_true(pos.y == -75);
 
@@ -220,7 +238,12 @@ void test_slider_geometric() {
     pos.y       =  res.y * 2;
     offscreen.target.x = -res.x;
     offscreen.target.y =  res.y * 3;
-    SliderOffscreen_Compute_Next(&slider, &offscreen, &pos);
+
+    input.offscreen             = &offscreen;
+    input.pos                   = &pos;
+    input.target                = target;
+
+    SliderOffscreen_Compute_Next(input);
 
     i32 rate = FPS_DEFAULT_CAP / slider.ufactors.ratio[0];
     nourstest_true(pos.x == ((int)(res.x * SLIDER_PERIODIC_XN) + slider.target.x) / rate);
@@ -232,7 +255,12 @@ void test_slider_geometric() {
     pos.y       = -res.y;
     offscreen.target.x =  res.x * 3;
     offscreen.target.y = -res.y;
-    SliderOffscreen_Compute_Next(&slider, &offscreen, &pos);
+
+    input.offscreen             = &offscreen;
+    input.pos                   = &pos;
+    input.target                = target;
+
+    SliderOffscreen_Compute_Next(input);
 
     rate = FPS_DEFAULT_CAP / slider.ufactors.ratio[1];
     nourstest_true(pos.x == ((int)(-res.x * SLIDER_PERIODIC_XP) + slider.target.x) / rate);
@@ -242,6 +270,7 @@ void test_slider_geometric() {
 void test_Slider_Speed() {
 
     {
+        struct SliderInput input    = SliderInput_default;
         Slider slider           = Slider_default;
         slider.slidetype        = SLIDETYPE_VELOCITY;
         i32 px_vel = 100;
@@ -255,24 +284,31 @@ void test_Slider_Speed() {
             px_vel * 3 + px_vel / 2,
             px_vel * 3 + px_vel / 2
         };
-        Slider_Compute_Next(&slider, &pos, &target, false);
+
+        input.slider                = &slider;
+        input.pos                   = &pos;
+        input.target                = target;
+        input.go_offscreen          = false;
+
+        Slider_Compute_Next(input);
         nourstest_true(pos.x == px_vel);
         nourstest_true(pos.y == px_vel);
-        Slider_Compute_Next(&slider, &pos, &target, false);
+        Slider_Compute_Next(input);
         nourstest_true(pos.x == px_vel * 2);
         nourstest_true(pos.y == px_vel * 2);
-        Slider_Compute_Next(&slider, &pos, &target, false);
+        Slider_Compute_Next(input);
         nourstest_true(pos.x == px_vel * 3);
         nourstest_true(pos.y == px_vel * 3);
-        Slider_Compute_Next(&slider, &pos, &target, false);
+        Slider_Compute_Next(input);
         nourstest_true(pos.x == target.x);
         nourstest_true(pos.y == target.y);
-        Slider_Compute_Next(&slider, &pos, &target, false);
+        Slider_Compute_Next(input);
         nourstest_true(pos.x == target.x);
         nourstest_true(pos.y == target.y);
     }
 
     {
+        struct SliderInput input    = SliderInput_default;
         Slider slider           = Slider_default;
         slider.slidetype        = SLIDETYPE_VELOCITY;
         i32 px_vel = 100;
@@ -286,19 +322,25 @@ void test_Slider_Speed() {
             -px_vel * 3 - px_vel / 2,
                 -px_vel * 3 - px_vel / 2
             };
-        Slider_Compute_Next(&slider, &pos, &target, false);
+
+        input.slider                = &slider;
+        input.pos                   = &pos;
+        input.target                = target;
+        input.go_offscreen          = false;
+
+        Slider_Compute_Next(input);
         nourstest_true(pos.x == -px_vel);
         nourstest_true(pos.y == -px_vel);
-        Slider_Compute_Next(&slider, &pos, &target, false);
+        Slider_Compute_Next(input);
         nourstest_true(pos.x == -px_vel * 2);
         nourstest_true(pos.y == -px_vel * 2);
-        Slider_Compute_Next(&slider, &pos, &target, false);
+        Slider_Compute_Next(input);
         nourstest_true(pos.x == -px_vel * 3);
         nourstest_true(pos.y == -px_vel * 3);
-        Slider_Compute_Next(&slider, &pos, &target, false);
+        Slider_Compute_Next(input);
         nourstest_true(pos.x == target.x);
         nourstest_true(pos.y == target.y);
-        Slider_Compute_Next(&slider, &pos, &target, false);
+        Slider_Compute_Next(input);
         nourstest_true(pos.x == target.x);
         nourstest_true(pos.y == target.y);
     }

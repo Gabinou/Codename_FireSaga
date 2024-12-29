@@ -84,9 +84,9 @@ extern const struct SliderOffscreen SliderOffscreen_default;
 
 typedef struct SliderInput {
     // Input to Slider functions
-    Slider           *slider;
-    SliderOffscreen  *offscreen;
-    Point pos;
+    Slider              *slider;
+    SliderOffscreen     *offscreen;
+    Point               *pos;
     Point target;
     Point midpoint;
     b32   go_offscreen;

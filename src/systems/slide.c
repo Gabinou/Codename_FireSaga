@@ -83,7 +83,7 @@ void Slide_Sprite(tnecs_system_input *input) {
 
         struct SliderInput input    = SliderInput_default;
         input.slider                = slider;
-        input.pos                   = position->pixel_pos;
+        input.pos                   = &position->pixel_pos;
         input.target                = slider->target;
         input.go_offscreen          = false;
 
@@ -115,7 +115,7 @@ void Slide_PopUp_Offscreen(tnecs_system_input *input) {
         struct SliderInput input    = SliderInput_default;
         input.slider                = slider;
         input.offscreen             = offscreen_ptr;
-        input.pos                   = position->pixel_pos;
+        input.pos                   = &position->pixel_pos;
         input.target                = slider->target;
         input.go_offscreen          = false;
 

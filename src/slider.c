@@ -96,8 +96,8 @@ void SliderOffscreen_Compute_Next(const SliderInput input) {
 
     Slider          *slider     = input.slider;
     SliderOffscreen *offscreen  = input.offscreen;
-    const Point pos = input.pos;
-    
+    Point           *pos        = input.pos;
+
     SDL_assert(slider   != NULL);
     SDL_assert(pos      != NULL);
 
@@ -142,7 +142,7 @@ void SliderOffscreen_Compute_Next(const SliderInput input) {
     struct Point *current_target = offscreen->go_offscreen ? &offscreen->target : &slider->target;
 
     SliderInput input2          = input;
-    input.target                = current_target;
+    input.target                = *current_target;
     input.go_offscreen          = offscreen->go_offscreen;
 
     Slider_Compute_Next(input2);
@@ -151,8 +151,8 @@ void SliderOffscreen_Compute_Next(const SliderInput input) {
 void Slider_Compute_Next(const SliderInput input) {
     // Slider goes offscreen and reappears on the other side
 
-    Slider *slider      = input.slider;
-    const Point pos     = input.pos;
+    Slider  *slider     = input.slider;
+    Point   *pos        = input.pos;
     const Point target  = input.target;
     const b32 reverse   = input.go_offscreen;
 
@@ -160,15 +160,14 @@ void Slider_Compute_Next(const SliderInput input) {
 
     SDL_assert(slider   != NULL);
     SDL_assert(pos      != NULL);
-    SDL_assert(target   != NULL);
     SDL_assert((reverse == 0) || (reverse == 1));
 
-    const struct Point dist = {target->x - pos->x, target->y - pos->y};
+    const struct Point dist = {target.x - pos->x, target.y - pos->y};
 
     /* If Slider close enough to target -> move to target */
     if ((dist.x * dist.x + dist.y * dist.y) < SLIDER_MIN_DIST) {
-        pos->x = target->x;
-        pos->y = target->y;
+        pos->x = target.x;
+        pos->y = target.y;
         return;
     }
 
@@ -193,8 +192,8 @@ void Slider_Compute_Next(const SliderInput input) {
             const i32 *ratio = slider->ufactors.ratio;
 
             const struct Point midpoint_dist = {
-                .x = target->x - slider->midpoint.x,
-                .y = target->y - slider->midpoint.y
+                .x = target.x - slider->midpoint.x,
+                .y = target.y - slider->midpoint.y
             };
 
             const struct Point start_dist = {
@@ -258,14 +257,14 @@ void Slider_Compute_Next(const SliderInput input) {
     /* Applying slide distance, with anti-overshoot */
     if (abs(slide.x) >= abs(dist.x)) {
         /* If Slider overshoots to target -> move to target */
-        pos->x = target->x;
+        pos->x = target.x;
     } else {
         pos->x += sign.x * abs(slide.x);
     }
 
     if (abs(slide.y) >= abs(dist.y)) {
         /* If Slider overshoots to target -> move to target */
-        pos->y = target->y;
+        pos->y = target.y;
     } else {
         pos->y += sign.y * abs(slide.y);
     }
