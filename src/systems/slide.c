@@ -106,18 +106,18 @@ void Slide_PopUp_Offscreen(tnecs_system_input *input) {
     SDL_assert(offscreen_arr != NULL);
 
     for (u16 order = 0; order < input->num_entities; order++) {
-        struct Slider          *slider        = slider_arr    + order;
-        struct Position        *position      = position_arr  + order;
-        struct SliderOffscreen *offscreen_ptr = offscreen_arr + order;
+        struct Slider          *slider      = slider_arr    + order;
+        struct Position        *position    = position_arr  + order;
+        struct SliderOffscreen *offscreen   = offscreen_arr + order;
 
         /* offscreen slide / onscreen slide switch */
 
         struct SliderInput input    = SliderInput_default;
         input.slider                = slider;
-        input.offscreen             = offscreen_ptr;
+        input.offscreen             = offscreen;
         input.pos                   = &position->pixel_pos;
         input.target                = slider->target;
-        input.go_offscreen          = false;
+        input.go_offscreen          = offscreen->go_offscreen;
 
 #ifdef DEBUG_POPUP_TILE_OFFSCREEN
         SliderOffscreen_Compute_Next(input);
