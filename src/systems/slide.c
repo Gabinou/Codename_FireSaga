@@ -1,6 +1,7 @@
 
 #include "systems/slide.h"
 #include "position.h"
+#include "debug.h"
 #include "slider.h"
 #include "sprite.h"
 #include "hover.h"
