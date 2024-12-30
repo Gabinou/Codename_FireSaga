@@ -533,7 +533,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     struct Slider *slider  = TNECS_GET_COMPONENT(sota->world, popup_ent, Slider);
     struct SliderOffscreen *offscreen;
     offscreen = TNECS_GET_COMPONENT(sota->world, popup_ent, SliderOffscreen);
-    offscreen->go_offscreen = false;
+    offscreen->reverse = false;
 
     struct Unit *unit_ontile = TNECS_GET_COMPONENT(sota->world, hov_ent, Unit);
     if (unit_ontile->waits) {
@@ -639,7 +639,7 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
 
     Slider_Target_Offscreen_Far(slider, offscreen, &rect);
     Slider_Init(slider, &position->pixel_pos, &offscreen->target);
-    offscreen->go_offscreen = false;
+    offscreen->reverse = false;
 
     /* -- Changing animation loop to IDLE -- */
     struct Unit *unit     = TNECS_GET_COMPONENT(sota->world, dehov_ent, Unit);

@@ -86,7 +86,7 @@ void Slide_Sprite(tnecs_system_input *input) {
         input.slider                = slider;
         input.pos                   = &position->pixel_pos;
         input.target                = slider->target;
-        input.go_offscreen          = false;
+        input.reverse          = false;
 
         Slider_Compute_Next(input);
 
@@ -117,7 +117,7 @@ void Slide_PopUp_Offscreen(tnecs_system_input *input) {
         input.offscreen             = offscreen;
         input.pos                   = &position->pixel_pos;
         input.target                = slider->target;
-        input.go_offscreen          = offscreen->go_offscreen;
+        input.reverse          = offscreen->reverse;
 
 #ifdef DEBUG_POPUP_TILE_OFFSCREEN
         SliderOffscreen_Compute_Next(input);

@@ -66,7 +66,7 @@ void Slider_Target_Offscreen(struct Slider *slider,
     offscreen->target.x = (rect->x > (res.x / 2)) ? res.x : -rect->w;
     offscreen->target.y = (rect->y > (res.y / 2)) ? res.y : -rect->h;
 
-    offscreen->go_offscreen = true;
+    offscreen->reverse = true;
 }
 
 void Slider_Target_Offscreen_Far(struct Slider *slider,
@@ -88,7 +88,7 @@ void Slider_Target_Offscreen_Far(struct Slider *slider,
     offscreen->target.y = (rect->y > (res.y / 2)) ? (rect->y + res.y / 3) :
                           (rect->y - res.y / 3 - rect->h);
 
-    offscreen->go_offscreen = true;
+    offscreen->reverse = true;
 }
 
 void SliderOffscreen_Compute_Next(const SliderInput input) {
@@ -102,10 +102,10 @@ void SliderOffscreen_Compute_Next(const SliderInput input) {
     SDL_assert(pos      != NULL);
 
     // Skip if not going offscreen
-    if (!offscreen->go_offscreen) {
+    if (!offscreen->reverse) {
         SliderInput input2          = input;
         input.target                = slider->target;
-        input.go_offscreen          = offscreen->go_offscreen;
+        input.reverse          = offscreen->reverse;
         Slider_Compute_Next(input2);
         return;
     }
@@ -119,32 +119,32 @@ void SliderOffscreen_Compute_Next(const SliderInput input) {
         /* - x positive movement - */
         pos->x = (int)(-res.x * SLIDER_PERIODIC_XP);
         Slider_Init(slider, pos, &slider->target);
-        offscreen->go_offscreen = false;
+        offscreen->reverse = false;
     } else if ((pos->x < (-res.x * SLIDER_PERIODIC_XN_LIMIT)) && (offscreen->target.x < 0)) {
         /* - x negative movement - */
         pos->x = (int)(res.x * SLIDER_PERIODIC_XN);
         Slider_Init(slider, pos, &slider->target);
-        offscreen->go_offscreen = false;
+        offscreen->reverse = false;
     }
     /* -- y periodic -- */
     if ((pos->y > res.y) && (offscreen->target.y > res.y)) {
         /* - y positive movement - */
         pos->y = -res.y * SLIDER_PERIODIC_YP;
         Slider_Init(slider, pos, &slider->target);
-        offscreen->go_offscreen = false;
+        offscreen->reverse = false;
     } else if ((pos->y < (-res.y * SLIDER_PERIODIC_YN_LIMIT)) && (offscreen->target.y < 0)) {
         /* - y negative movement - */
         pos->y = res.y * SLIDER_PERIODIC_YN;
         Slider_Init(slider, pos, &slider->target);
-        offscreen->go_offscreen = false;
+        offscreen->reverse = false;
     }
 
     // If going offscreen, use offscreen target (which is always offscreen)
-    struct Point *current_target = offscreen->go_offscreen ? &offscreen->target : &slider->target;
+    struct Point *current_target = offscreen->reverse ? &offscreen->target : &slider->target;
 
     SliderInput input2          = input;
     input.target                = *current_target;
-    input.go_offscreen          = offscreen->go_offscreen;
+    input.reverse          = offscreen->reverse;
 
     Slider_Compute_Next(input2);
 }
@@ -155,7 +155,7 @@ void Slider_Compute_Next(const SliderInput input) {
     Slider  *slider     = input.slider;
     Point   *pos        = input.pos;
     const Point target  = input.target;
-    const b32 reverse   = input.go_offscreen;
+    const b32 reverse   = input.reverse;
 
     // Compute the next position of the slider on way to target
 

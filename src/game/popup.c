@@ -201,7 +201,7 @@ void Game_PopUp_Unit_Create(struct Game *sota) {
     slider->slidetype = SLIDETYPE_EASYINEASYOUT;
 
     *offscreen = SliderOffscreen_default;
-    offscreen->go_offscreen = false;
+    offscreen->reverse = false;
     offscreen->settings = &sota->settings;
     SDL_assert(sota->pixelnours != NULL);
 
@@ -265,6 +265,7 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
                                      sota->camera.offset.y, sota->camera.zoom);
     struct Point new_target;
     new_target = PopUp_Unit_Position(popup, popup_unit, &popup->n9patch, &sota->settings, &pixel_pos);
+
     b32 target_changed = (new_target.x != slider->target.x) || (new_target.y != slider->target.y);
 
     if (!target_changed) {
@@ -276,6 +277,8 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
     slider->target = new_target;
 
     SDL_Rect rect = Utilities_Rect(position, &popup->n9patch);
+    rect.x = new_target.x;
+    rect.y = new_target.y;
 
     Slider_Target_Offscreen_Far(slider, offscreen, &rect);
     Slider_Init(slider, &position->pixel_pos, &slider->target);
@@ -287,7 +290,7 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
         position->pixel_pos.y   = offscreen->target.y;
         slider->target.x        = offscreen->target.x;
         slider->target.y        = offscreen->target.y;
-        offscreen->go_offscreen = false;
+        offscreen->reverse = false;
     }
 
     // #ifdef DEBUG_POPUP_UNIT_OFFSCREEN

@@ -17,7 +17,7 @@ void test_slider_easyineasyout() {
     input.slider                = &slider;
     input.pos                   = &pos;
     input.target                = target;
-    input.go_offscreen          = false;
+    input.reverse          = false;
     Slider_Compute_Next(input);
     nourstest_true(pos.x == 4);
     nourstest_true(pos.y == 4);
@@ -82,7 +82,7 @@ void test_slider_geometric() {
     input.slider                = &slider;
     input.pos                   = &pos;
     input.target                = target;
-    input.go_offscreen          = false;
+    input.reverse          = false;
 
     Slider_Compute_Next(input);
     nourstest_true(pos.x == 50);
@@ -213,9 +213,9 @@ void test_slider_geometric() {
     nourstest_true(offscreen.target.y == (rect.y + res.y / 3));
 
     /* -- SliderOffscreen_Compute_Next -- */
-    /* - go_offscreen false - */
+    /* - reverse false - */
     // SliderOffscreen_Compute_Next === Slider_Compute_Next
-    offscreen.go_offscreen = false;
+    offscreen.reverse = false;
     pos.x       = start.x;
     pos.y       = start.y;
     slider.target.x    = -100;
@@ -232,8 +232,8 @@ void test_slider_geometric() {
     nourstest_true(pos.x == -75);
     nourstest_true(pos.y == -75);
 
-    /* - go_offscreen true - */
-    offscreen.go_offscreen = true;
+    /* - reverse true - */
+    offscreen.reverse = true;
     pos.x       = -res.x;
     pos.y       =  res.y * 2;
     offscreen.target.x = -res.x;
@@ -250,7 +250,7 @@ void test_slider_geometric() {
     rate = FPS_DEFAULT_CAP / slider.ufactors.ratio[1];
     nourstest_true(pos.y == ((int)(-res.y * SLIDER_PERIODIC_YP) + slider.target.y) / rate);
 
-    offscreen.go_offscreen = true;
+    offscreen.reverse = true;
     pos.x       =  res.x * 2;
     pos.y       = -res.y;
     offscreen.target.x =  res.x * 3;
@@ -288,7 +288,7 @@ void test_Slider_Speed() {
         input.slider                = &slider;
         input.pos                   = &pos;
         input.target                = target;
-        input.go_offscreen          = false;
+        input.reverse          = false;
 
         Slider_Compute_Next(input);
         nourstest_true(pos.x == px_vel);
@@ -326,7 +326,7 @@ void test_Slider_Speed() {
         input.slider                = &slider;
         input.pos                   = &pos;
         input.target                = target;
-        input.go_offscreen          = false;
+        input.reverse          = false;
 
         Slider_Compute_Next(input);
         nourstest_true(pos.x == -px_vel);
