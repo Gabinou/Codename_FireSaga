@@ -281,6 +281,15 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
     Slider_Init(slider, &position->pixel_pos, &slider->target);
     Slider_Offscreen_Midpoint(slider, offscreen);
 
+    /* - If no unit is hovered -> teleport to the other side - */
+    if (sota->hovered_unit_entity == TNECS_NULL) {
+        position->pixel_pos.x   = offscreen->target.x;
+        position->pixel_pos.y   = offscreen->target.y;
+        slider->target.x        = offscreen->target.x;
+        slider->target.y        = offscreen->target.y;
+        offscreen->go_offscreen = false;
+    }
+
     // #ifdef DEBUG_POPUP_UNIT_OFFSCREEN
     //     Slider_Init(slider, &position->pixel_pos, &offscreen->target);
     // #else

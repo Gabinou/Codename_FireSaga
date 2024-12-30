@@ -959,7 +959,9 @@ void fsm_eCrsMvd_sGmpMap(struct Game *sota, tnecs_entity mover_entity,
         fsm_eCrsMvd_sGmpMap_ss[sota->substate](sota, mover_entity, pos);
 
     Game_PopUp_Tile_Place(sota, *pos);
-    Game_PopUp_Unit_Place(sota, *pos);
+    if (sota->hovered_unit_entity == TNECS_NULL) {
+        Game_PopUp_Unit_Place(sota, *pos);
+    }
 }
 
 void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
