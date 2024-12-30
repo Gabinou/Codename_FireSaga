@@ -112,7 +112,6 @@ void Slide_PopUp_Offscreen(tnecs_system_input *input) {
         struct SliderOffscreen *offscreen   = offscreen_arr + order;
 
         /* offscreen slide / onscreen slide switch */
-
         struct SliderInput input    = SliderInput_default;
         input.slider                = slider;
         input.offscreen             = offscreen;
