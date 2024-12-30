@@ -113,6 +113,7 @@ void SliderOffscreen_Compute_Next(const SliderInput input) {
     struct Point res = offscreen->settings->res;
 
     // check if need to teleport to the other side
+    // TODO: use slider widcth to compute teleport position
     /* -- x periodic -- */
     if ((pos->x > res.x) && (offscreen->target.x > res.x)) {
         /* - x positive movement - */

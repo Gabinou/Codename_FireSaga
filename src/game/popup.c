@@ -274,11 +274,18 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
     /* - Update the slider target - */
     struct Point popup_pos = position->pixel_pos;
     slider->target = new_target;
-#ifdef DEBUG_POPUP_UNIT_OFFSCREEN
-    Slider_Init(slider, &position->pixel_pos, &offscreen->target);
-#else
+
+    SDL_Rect rect = Utilities_Rect(position, &popup->n9patch);
+
+    Slider_Target_Offscreen_Far(slider, offscreen, &rect);
     Slider_Init(slider, &position->pixel_pos, &slider->target);
-#endif
+    Slider_Offscreen_Midpoint(slider, offscreen);
+
+    // #ifdef DEBUG_POPUP_UNIT_OFFSCREEN
+    //     Slider_Init(slider, &position->pixel_pos, &offscreen->target);
+    // #else
+    //     Slider_Init(slider, &position->pixel_pos, &slider->target);
+    // #endif
 }
 
 void Game_PopUp_Tile_Place(struct Game *sota, struct Point cursor_pos) {
@@ -326,7 +333,6 @@ void Game_PopUp_Tile_Place(struct Game *sota, struct Point cursor_pos) {
     // #else
     //     Slider_Init(slider, &position->pixel_pos, &slider->target);
     // #endif
-
 }
 
 /* --- PopUp_Map_Combat --- */

@@ -530,6 +530,11 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
 
     Game_PopUp_Unit_Place(sota, pos);
 
+    struct Slider *slider  = TNECS_GET_COMPONENT(sota->world, popup_ent, Slider);
+    struct SliderOffscreen *offscreen;
+    offscreen = TNECS_GET_COMPONENT(sota->world, popup_ent, SliderOffscreen);
+    offscreen->go_offscreen = false;
+
     struct Unit *unit_ontile = TNECS_GET_COMPONENT(sota->world, hov_ent, Unit);
     if (unit_ontile->waits) {
         return;
@@ -556,7 +561,6 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
 
     /* - healtopmap - */
     Map_Act_To(sota->map, map_to);
-
 
     /* - attacktomap - */
     map_to.archetype     = ITEM_ARCHETYPE_WEAPON;
@@ -630,12 +634,12 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
     struct Slider *slider  = TNECS_GET_COMPONENT(sota->world, popup_ent, Slider);
     struct SliderOffscreen *offscreen;
     offscreen = TNECS_GET_COMPONENT(sota->world, popup_ent, SliderOffscreen);
-    offscreen->go_offscreen = true;
 
     SDL_Rect rect = Utilities_Rect(position, n9patch);
 
     Slider_Target_Offscreen_Far(slider, offscreen, &rect);
     Slider_Init(slider, &position->pixel_pos, &offscreen->target);
+    offscreen->go_offscreen = false;
 
     /* -- Changing animation loop to IDLE -- */
     struct Unit *unit     = TNECS_GET_COMPONENT(sota->world, dehov_ent, Unit);
@@ -955,6 +959,7 @@ void fsm_eCrsMvd_sGmpMap(struct Game *sota, tnecs_entity mover_entity,
         fsm_eCrsMvd_sGmpMap_ss[sota->substate](sota, mover_entity, pos);
 
     Game_PopUp_Tile_Place(sota, *pos);
+    Game_PopUp_Unit_Place(sota, *pos);
 }
 
 void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
