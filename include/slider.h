@@ -77,8 +77,9 @@ typedef struct SliderOffscreen {
     struct Point target;
     struct Point midpoint;
 
-    // Is SliderOffscreen currently going reverse, offscreen 
-    // and teleporting from the other side (periodic bounds)
+    // If true, slider goes to target in reverse, offscreen
+    // and teleports to other screen side (periodic bounds).
+    // If false, slider goes from pos to target directly.
     b32   reverse;
 } SliderOffscreen;
 extern const struct SliderOffscreen SliderOffscreen_default;
