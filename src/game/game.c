@@ -557,8 +557,10 @@ int _Game_New_Alloc(void *data) {
 int _Game_New_Tnecs(void *data) {
     Game *IES = data;
 
+    // TODO:
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Tnecs: Genesis\n");
     IES->world = tnecs_world_genesis();
+
     // Don't reuse entities.
     // If I forget to update an entity somewhere, it'll be invalid for sure.
     SDL_assert(IES->world->reuse_entities == false);
@@ -599,10 +601,6 @@ int _Game_New_Tnecs(void *data) {
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration\n");
     tnecs_world *world = IES->world;
     /* --- SYSTEM REGISTERING: FIRST COME FIRST SERVED ---*/
-    /* -- Control systems ran first --  */
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Control_Keyboard, 0, Position, Sprite, controllerKeyboard);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Control_Gamepad,  0, Position, Sprite, controllerGamepad);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Control_Touchpad, 0, Position, Sprite, controllerTouchpad);
 
     /* -- Animating and sliding systems before drawing --  */
     TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Scene,       1, Scene,       Position, Text, Timer);
@@ -1153,6 +1151,25 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
     // TODO: bool flag to disable Game_cursorFocus_onMap resetting cursor pos.
     sota->cursor_lastpos.x = sota->map->start_pos[0].x;
     sota->cursor_lastpos.y = sota->map->start_pos[0].y;
+
+
+
+    /* -- Set popup_unit position -- */
+    /* -- Set popup_tile position -- */
+    struct Position *cursor_pos;
+    cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    struct Point *pos = &cursor_pos->tilemap_pos;
+
+    if (fsm_eCrsMvd_sGmpMap_ss[sota->substate] != NULL)
+        fsm_eCrsMvd_sGmpMap_ss[sota->substate](sota, mover_entity, pos);
+
+    tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_TILE];
+    SDL_assert(popup_ent != TNECS_NULL);
+
+    Game_PopUp_Tile_Place(sota, *pos);
+
+    Game_PopUp_Tile_Place(sota, *pos);
+
 
     /* -- Start turn transition -- */
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);

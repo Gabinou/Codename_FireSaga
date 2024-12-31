@@ -60,6 +60,7 @@ void Animate_Sprite(tnecs_system_input *input) {
     }
 }
 
+// TODO: Combine Draw_Cursor and Draw_Map_Unit
 void Draw_Cursor(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
@@ -414,7 +415,6 @@ void Animate_Scene(tnecs_system_input *input) {
         size_t           typeflag_id = input->entity_typeflag_id;
         tnecs_entity     entity      = world->entities_bytype[typeflag_id][order];
 
-        // Scene_Animate(scene, sota->settings, sota->render_target, sota->renderer);
         Scene_Animate(sota, entity, scene, timer);
     }
 }

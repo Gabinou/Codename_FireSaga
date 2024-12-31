@@ -9,6 +9,7 @@
 #include "position.h"
 #include "utilities.h"
 #include "combat.h"
+#include "debug.h"
 #include "game/popup.h"
 #include "cutscene.h"
 #include "nmath.h"
