@@ -133,11 +133,8 @@ void tnecs_world_destroy(struct tnecs_World *world) {
 
 void tnecs_world_step(tnecs_World *world, tnecs_ns deltat, void *data) {
     world->num_systems_torun = 0;
-    if (!deltat)
-        deltat = tnecs_get_ns() - world->previous_time;
     for (size_t phase = 0; phase < world->num_phases; phase++)
         tnecs_world_step_phase(world, phase, deltat, data);
-    world->previous_time = tnecs_get_ns();
 }
 
 void tnecs_world_step_phase(tnecs_World *world,  tnecs_phase  phase,

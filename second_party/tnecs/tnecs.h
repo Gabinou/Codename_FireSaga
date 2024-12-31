@@ -191,19 +191,18 @@ typedef struct tnecs_World {
     size_t            num_typeflags;                       // num is active elements
     size_t            num_systems;                         // num is active elements
     size_t            num_phases;                          // num is active elements
-    size_t   *entity_orders;                       // [entity_id]
-    size_t   *num_components_bytype;               // [typeflag_id]
-    size_t   *len_entities_bytype;                 // [typeflag_id]
-    size_t   *num_entities_bytype;                 // [typeflag_id]
-    size_t   *len_systems_byphase;                 // [phase]
-    size_t   *num_systems_byphase;                 // [phase]
+    size_t           *entity_orders;                       // [entity_id]
+    size_t           *num_components_bytype;               // [typeflag_id]
+    size_t           *len_entities_bytype;                 // [typeflag_id]
+    size_t           *num_entities_bytype;                 // [typeflag_id]
+    size_t           *len_systems_byphase;                 // [phase]
+    size_t           *num_systems_byphase;                 // [phase]
 
     size_t            num_entities_open;
     size_t            len_entities_open;
-    tnecs_entity    entity_next;
+    tnecs_entity      entity_next;
     tnecs_entity     *entities_open;
 
-    tnecs_ns previous_time;
     b32 reuse_entities;
 }tnecs_World;
 
