@@ -55,13 +55,6 @@ extern "C" {
 #define TNECS_DEBUG_ASSERT(...) (void)0
 #endif
 
-// #define TNECS_DEBUG_P // TNECS_DEBUG_PRINTF are ignored if undefined
-#ifdef TNECS_DEBUG_P
-#define TNECS_DEBUG_PRINTF(...) do {printf(__VA_ARGS__);}while(0)
-#else
-#define TNECS_DEBUG_PRINTF(...) (void)0
-#endif
-
 /********************** 0.1 MICROSECOND RESOLUTION CLOCK **********************/
 //  Modified from: https://gist.github.com/ForeverZer0/0a4f80fc02b96e19380ebb7a3debbee5
 #if defined(__linux)
