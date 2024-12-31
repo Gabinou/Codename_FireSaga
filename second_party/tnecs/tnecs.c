@@ -131,29 +131,33 @@ void tnecs_world_destroy(struct tnecs_World *world) {
     free(world);
 }
 
-void tnecs_world_step(struct tnecs_World *world, tnecs_ns deltat) {
-    tnecs_world_step_wdata(world, deltat, NULL);
-}
-
-void tnecs_world_step_wdata(struct tnecs_World *world, tnecs_ns deltat,
-                            void *data) {
+void tnecs_world_step(tnecs_World *world, tnecs_ns deltat, void *data) {
     world->num_systems_torun = 0;
     if (!deltat)
         deltat = tnecs_get_ns() - world->previous_time;
-    for (size_t phase_id = 0; phase_id < world->num_phases; phase_id++)
-        tnecs_systems_byphase_run_dt(world, phase_id, deltat, data);
+    for (size_t phase = 0; phase < world->num_phases; phase++)
+        tnecs_world_step_phase_dt(world, phase, deltat, data);
     world->previous_time = tnecs_get_ns();
 }
 
-void tnecs_world_step_phase(struct tnecs_World *world, tnecs_ns deltat,
-                            void *data) {
-    world->num_systems_torun = 0;
-    if (!deltat)
-        deltat = tnecs_get_ns() - world->previous_time;
-    for (size_t phase_id = 0; phase_id < world->num_phases; phase_id++)
-        tnecs_systems_byphase_run_dt(world, phase_id, deltat, data);
-    world->previous_time = tnecs_get_ns();
+void tnecs_world_step_phase(tnecs_World *world, tnecs_phase phase, void *data) {
+    tnecs_world_step_phase_dt(world, phase, 0, data);
 }
+
+void tnecs_world_step_phase_dt(tnecs_World *world,  tnecs_phase  phase,
+                                  tnecs_ns  deltat, void        *user_data) {
+    if (phase != world->phases[phase]) {
+        printf("Invalid phase '%d' \n", phase);
+        exit(1);        
+    }
+
+    for (size_t sorder = 0; sorder < world->num_systems_byphase[phase]; sorder++) {
+        size_t system_id = world->systems_idbyphase[phase][sorder];
+        tnecs_system_run_dt(world, system_id, deltat, user_data);
+    }
+}
+
+
 
 b32 _tnecs_world_breath_entities(struct tnecs_World *world) {
     b32 success = 1;
@@ -342,7 +346,7 @@ void tnecs_system_run_dt(struct tnecs_World *world, size_t in_system_id,
     /* Building the systems input */
     struct tnecs_System_Input input = {.world = world, .deltat = deltat, .user_data = user_data};
     size_t sorder               = world->system_orders[in_system_id];
-    tnecs_phase phase_id        = world->system_phases[in_system_id];
+    tnecs_phase phase        = world->system_phases[in_system_id];
     size_t system_typeflag_id   = tnecs_typeflagid(world, world->system_typeflags[in_system_id]);
 
     input.entity_typeflag_id    = system_typeflag_id;
@@ -350,9 +354,9 @@ void tnecs_system_run_dt(struct tnecs_World *world, size_t in_system_id,
 
     /* Running the exclusive systems in current phase */
     _tnecs_system_torun_realloc(world);
-    tnecs_system_ptr system =              world->systems_byphase[phase_id][sorder];
+    tnecs_system_ptr system =              world->systems_byphase[phase][sorder];
     int system_num =                       world->num_systems_torun++;
-    world->systems_torun[system_num] =     world->systems_byphase[phase_id][sorder];
+    world->systems_torun[system_num] =     world->systems_byphase[phase][sorder];
     system(&input);
 
     if (world->system_exclusive[in_system_id])
@@ -364,31 +368,12 @@ void tnecs_system_run_dt(struct tnecs_World *world, size_t in_system_id,
         input.num_entities =               world->num_entities_bytype[input.entity_typeflag_id];
 
         _tnecs_system_torun_realloc(world);
-        tnecs_system_ptr system =          world->systems_byphase[phase_id][sorder];
+        tnecs_system_ptr system =          world->systems_byphase[phase][sorder];
         int system_num =                   world->num_systems_torun++;
         world->systems_torun[system_num] = system;
         system(&input);
     }
 }
-
-
-void tnecs_systems_byphase_run(struct tnecs_World *world, tnecs_phase phase_id,
-                               void *user_data) {
-    tnecs_systems_byphase_run_dt(world, phase_id, 0, user_data);
-}
-
-void tnecs_systems_byphase_run_dt(struct tnecs_World *world, tnecs_phase phase_id,
-                                  tnecs_ns deltat, void *user_data) {
-    size_t current_phase = world->phases[phase_id];
-    if (phase_id != current_phase)
-        return;
-
-    for (size_t sorder = 0; sorder < world->num_systems_byphase[phase_id]; sorder++) {
-        size_t system_id = world->systems_idbyphase[phase_id][sorder];
-        tnecs_system_run_dt(world, system_id, deltat, user_data);
-    }
-}
-
 
 /***************************** REGISTRATION **********************************/
 size_t tnecs_register_system(struct tnecs_World *world, const char *name,
@@ -929,20 +914,20 @@ void tnecs_component_array_init(struct tnecs_World *world, struct tnecs_Componen
     in_array->components = calloc(TNECS_INITIAL_ENTITY_LEN, bytesize);
 }
 
-b32 tnecs_system_order_switch(struct tnecs_World *world, tnecs_phase phase_id,
+b32 tnecs_system_order_switch(struct tnecs_World *world, tnecs_phase phase,
                                size_t order1, size_t order2) {
     void (* systems_temp)(struct tnecs_System_Input *);
-    TNECS_DEBUG_ASSERT(world->num_phases > phase_id);
-    TNECS_DEBUG_ASSERT(world->phases[phase_id]);
-    TNECS_DEBUG_ASSERT(world->num_systems_byphase[phase_id] > order1);
-    TNECS_DEBUG_ASSERT(world->num_systems_byphase[phase_id] > order2);
-    TNECS_DEBUG_ASSERT(world->systems_byphase[phase_id][order1]);
-    TNECS_DEBUG_ASSERT(world->systems_byphase[phase_id][order2]);
-    systems_temp =                             world->systems_byphase[phase_id][order1];
-    world->systems_byphase[phase_id][order1] = world->systems_byphase[phase_id][order2];
-    world->systems_byphase[phase_id][order2] = systems_temp;
-    b32 out1 = (world->systems_byphase[phase_id][order1] != NULL);
-    b32 out2 = (world->systems_byphase[phase_id][order2] != NULL);
+    TNECS_DEBUG_ASSERT(world->num_phases > phase);
+    TNECS_DEBUG_ASSERT(world->phases[phase]);
+    TNECS_DEBUG_ASSERT(world->num_systems_byphase[phase] > order1);
+    TNECS_DEBUG_ASSERT(world->num_systems_byphase[phase] > order2);
+    TNECS_DEBUG_ASSERT(world->systems_byphase[phase][order1]);
+    TNECS_DEBUG_ASSERT(world->systems_byphase[phase][order2]);
+    systems_temp =                             world->systems_byphase[phase][order1];
+    world->systems_byphase[phase][order1] = world->systems_byphase[phase][order2];
+    world->systems_byphase[phase][order2] = systems_temp;
+    b32 out1 = (world->systems_byphase[phase][order1] != NULL);
+    b32 out2 = (world->systems_byphase[phase][order2] != NULL);
     return (out1 && out2);
 }
 

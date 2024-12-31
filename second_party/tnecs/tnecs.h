@@ -83,7 +83,7 @@ extern double    tnecs_get_us();
 typedef uint64_t        tnecs_entity;     // simple 64 bit integer
 typedef uint64_t        tnecs_component;  // 64 bit flags -> MAX 63 components
 typedef uint64_t        tnecs_hash;
-typedef uint8_t         tnecs_phase;
+typedef uint32_t         tnecs_phase;
 typedef uint64_t        tnecs_ns;
 typedef int32_t         b32;
 typedef unsigned char   tnecs_byte;
@@ -96,15 +96,15 @@ typedef void (*tnecs_system_ptr)(struct tnecs_System_Input *);
 
 /***************************** CONSTANT DEFINITIONS **************************/
 enum TNECS {
-    TNECS_NULL =                   0, // entity, component, system, typeflag: 0 is NULL
-    TNECS_NULLSHIFT =              1,
-    TNECS_COMPONENT_CAP =          64,
-    TNECS_OPEN_IDS_BUFFER =        128,
-    TNECS_INITIAL_ENTITY_LEN =     128,
-    TNECS_INITIAL_PHASE_LEN =      8,
-    TNECS_INITIAL_COMPONENT_LEN =  8,
-    TNECS_INITIAL_SYSTEM_LEN =     16,
-    TNECS_ARRAY_GROWTH_FACTOR =    2 // in general 2 or 1.5
+    TNECS_NULL                  =   0, // entity, component, system, typeflag: 0 is NULL
+    TNECS_NULLSHIFT             =   1,
+    TNECS_COMPONENT_CAP         =  64,
+    TNECS_OPEN_IDS_BUFFER       = 128,
+    TNECS_INITIAL_ENTITY_LEN    = 128,
+    TNECS_INITIAL_PHASE_LEN     =   8,
+    TNECS_INITIAL_COMPONENT_LEN =   8,
+    TNECS_INITIAL_SYSTEM_LEN    =  16,
+    TNECS_ARRAY_GROWTH_FACTOR   =   2 // in general 2 or 1.5
 };
 
 /************************** UTILITY MACROS ***********************************/
@@ -154,7 +154,7 @@ enum TNECS {
 #define TNECS_VARMACRO_FOREACH_SCOMMA(macro, ...) TNECS_VARMACRO_FOREACH_SCOMMA_(TNECS_VAR_EACH_ARGN(__VA_ARGS__), macro, __VA_ARGS__)
 
 /***************************** STRUCTS DEFINITIONS ***************************/
-struct tnecs_World {
+typedef struct tnecs_World {
     tnecs_entity    *entities; // (entities[entity_id] == entity_id) unless deleted
     tnecs_component *typeflags;                       // [typeflag_id]
     tnecs_component *entity_typeflags;                // [entity_id]
@@ -205,9 +205,9 @@ struct tnecs_World {
 
     tnecs_ns previous_time;
     b32 reuse_entities;
-};
+}tnecs_World;
 
-struct tnecs_System_Input {
+typedef struct tnecs_System_Input {
     // Note: Systems run over entity_order_bytype for entity_order_bytype
     struct tnecs_World   *world;
     tnecs_ns     deltat;
@@ -215,31 +215,28 @@ struct tnecs_System_Input {
     size_t              num_entities;
     size_t              entity_typeflag_id;
     void                 *user_data;
-};
+}tnecs_System_Input;
 
-struct tnecs_Components_Array {
+typedef struct tnecs_Components_Array {
     tnecs_component   type;
     size_t              num_components;
     size_t              len_components;
     void                *
     components;                                        // [entity_order_bytype]
-};
+}tnecs_Components_Array;
 
 /**************************** WORLD FUNCTIONS ********************************/
 struct tnecs_World *tnecs_world_genesis();
-void tnecs_world_destroy(struct tnecs_World             *w);
-void tnecs_world_step(struct tnecs_World                *w, tnecs_ns deltat);
-void tnecs_world_step_wdata(struct tnecs_World *w, tnecs_ns deltat,
-                            void *data);
+void tnecs_world_destroy(tnecs_World             *w);
+
+void tnecs_world_step(          tnecs_World *w, tnecs_ns deltat, void *data);
+void tnecs_world_step_phase(    tnecs_World *w, tnecs_phase phase, void *data);
+void tnecs_world_step_phase_dt( tnecs_World *w, tnecs_phase phase, tnecs_ns deltat, void *data);
 
 /**************************** SYSTEM FUNCTIONS ********************************/
 void tnecs_system_run(struct tnecs_World *w, size_t id, void *data);
 void tnecs_system_run_dt(struct tnecs_World *w, size_t id, tnecs_ns deltat,
                          void *data);
-void tnecs_systems_byphase_run(struct tnecs_World *w, tnecs_phase phase,
-                               void *data);
-void tnecs_systems_byphase_run_dt(struct tnecs_World *w, tnecs_phase phase,
-                                  tnecs_ns deltat, void *data);
 void tnecs_custom_system_run(struct tnecs_World *w, tnecs_system_ptr c,
                              tnecs_component ar,
                              tnecs_ns deltat, void *data);

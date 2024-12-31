@@ -45,6 +45,7 @@
 #include "AI.h"
 #include "events.h"
 #include "fps_fsm.h"
+#include "fsm.h"
 #include "names.h"
 #include "text.h"
 #include "convoy.h"
@@ -298,7 +299,7 @@ void _Game_Step_Render(struct Game *sota) {
     SDL_assert(fsm_rFrame_s[sota->state] != NULL);
     fsm_rFrame_s[sota->state](sota); /* RENDER */
     u64 updateTime_ns = SOTA_ns / sota->settings.FPS.cap;
-    tnecs_world_step_wdata(sota->world, updateTime_ns, sota); /* RENDER */
+    tnecs_world_step(sota->world, updateTime_ns, sota); /* RENDER */
 
     /* -- Render to screen -- */
 #ifndef RENDER2WINDOW
@@ -1152,23 +1153,21 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
     sota->cursor_lastpos.x = sota->map->start_pos[0].x;
     sota->cursor_lastpos.y = sota->map->start_pos[0].y;
 
-
-
     /* -- Set popup_unit position -- */
     /* -- Set popup_tile position -- */
-    struct Position *cursor_pos;
-    cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
-    struct Point *pos = &cursor_pos->tilemap_pos;
+    // struct Position *cursor_pos;
+    // cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    // struct Point *pos = &cursor_pos->tilemap_pos;
 
-    if (fsm_eCrsMvd_sGmpMap_ss[sota->substate] != NULL)
-        fsm_eCrsMvd_sGmpMap_ss[sota->substate](sota, mover_entity, pos);
+    // if (fsm_eCrsMvd_sGmpMap_ss[sota->substate] != NULL)
+    //     fsm_eCrsMvd_sGmpMap_ss[sota->substate](sota, mover_entity, pos);
 
-    tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_TILE];
-    SDL_assert(popup_ent != TNECS_NULL);
+    // tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_TILE];
+    // SDL_assert(popup_ent != TNECS_NULL);
 
-    Game_PopUp_Tile_Place(sota, *pos);
+    // Game_PopUp_Tile_Place(sota, *pos);
 
-    Game_PopUp_Tile_Place(sota, *pos);
+    // Game_PopUp_Tile_Place(sota, *pos);
 
 
     /* -- Start turn transition -- */
