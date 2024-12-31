@@ -363,6 +363,9 @@ enum SOTA_CONVERSIONS {
     SOTA_ns                 = 1000000000UL, /* [ns/s] */
     SOTA_us                 =    1000000, /* [us/s] */
     SOTA_ms                 =       1000, /* [ms/s] */
+    IES_ns                  = 1000000000UL, /* [ns/s] */
+    IES_us                  =    1000000, /* [us/s] */
+    IES_ms                  =       1000, /* [ms/s] */
 };
 
 enum SOTA_POPUP_WAIT {

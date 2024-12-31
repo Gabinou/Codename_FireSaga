@@ -51,7 +51,7 @@ void Animate_Sprite(tnecs_system_input *input) {
         SDL_assert(frame >= 0);
 
         /* Only draw next frame in animation loop if enough time has passed */
-        int time_ms = (int)(ut->time_ns / SOTA_us);
+        int time_ms = (int)(ut->time_ns / IES_us);
         if (time_ms <= ss->speeds[loop][frame])
             continue;
 
@@ -60,12 +60,11 @@ void Animate_Sprite(tnecs_system_input *input) {
     }
 }
 
-// TODO: Combine Draw_Cursor and Draw_Map_Unit
-void Draw_Cursor(tnecs_system_input *input) {
+void Draw_Sprite(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
-    struct Game *sota = input->data;
-    SDL_assert(sota != NULL);
+    Game *IES = input->data;
+    SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
     struct Sprite   *sprite_arr   = TNECS_COMPONENTS_LIST(input, Sprite);
@@ -73,72 +72,36 @@ void Draw_Cursor(tnecs_system_input *input) {
     SDL_assert(sprite_arr   != NULL);
     SDL_assert(position_arr != NULL);
 
-    int isCursor = true; /* Draw_Cursor is exclusive to cursor */
+    tnecs_world   *world       = input->world;
+    size_t         typeflag_id = input->entity_typeflag_id;
 
     for (u16 order = 0; order < input->num_entities; order++) {
         struct Sprite   *sprite   = (sprite_arr   + order);
-        struct Position *position = (position_arr + order);
 
         if (!sprite->visible)
             continue;
 
-        dstrect_func_t func = dstrect_funcs[!position->onTilemap][isCursor];
-        func(sprite, &position->pixel_pos, &sota->camera);
-        Sprite_Draw(sprite, sota->renderer);
-    }
+        tnecs_entity entity     = world->entities_bytype[typeflag_id][order];
 
-}
+        MouseFlag *mouse_flag   = TNECS_GET_COMPONENT(IES->world, entity, MouseFlag);
 
-void Draw_Mouse(tnecs_system_input *input) {
-    /* --- PRELIMINARIES --- */
-    /* -- Get game -- */
-    struct Game *sota = input->data;
-    SDL_assert(sota != NULL);
+        if (mouse_flag == NULL) {
+            Position    *position       = (position_arr + order);
+            CursorFlag  *cursor_flag    = TNECS_GET_COMPONENT(IES->world, entity, CursorFlag);
+            b32 isCursor = (cursor_flag != NULL);
+            dstrect_func_t func = dstrect_funcs[!position->onTilemap][isCursor];
+            func(sprite, &position->pixel_pos, &IES->camera);
+        }
 
-    /* -- Get components arrays -- */
-    struct Sprite *sprite_arr = TNECS_COMPONENTS_LIST(input, Sprite);
-    SDL_assert(sprite_arr != NULL);
-
-    for (u16 order = 0; order < input->num_entities; order++) {
-        struct Sprite *sprite = (sprite_arr + order);
-
-        if (!sprite->visible)
-            continue;
-
-        Sprite_Draw(sprite, sota->renderer);
-    }
-}
-
-void Draw_Map_Unit(tnecs_system_input *input) {
-    /* --- PRELIMINARIES --- */
-    /* -- Get game -- */
-    struct Game *sota = input->data;
-    SDL_assert(sota != NULL);
-
-    /* -- Get components arrays -- */
-    struct Sprite   *sprite_arr   = TNECS_COMPONENTS_LIST(input, Sprite);
-    struct Position *position_arr = TNECS_COMPONENTS_LIST(input, Position);
-
-    int isCursor =  false; /* Draw_Map_Unit is exclusive to units */
-
-    for (u16 order = 0; order < input->num_entities; order++) {
-        struct Sprite   *sprite   = (sprite_arr   + order);
-        struct Position *position = (position_arr + order);
-
-        if (!sprite->visible)
-            continue;
-
-        dstrect_func_t func = dstrect_funcs[!position->onTilemap][isCursor];
-        func(sprite, &position->pixel_pos, &sota->camera);
-        Sprite_Draw(sprite, sota->renderer);
+        Sprite_Draw(sprite, IES->renderer);
     }
 }
 
 void Draw_Map_Boss_Icon(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
-    struct Game *sota = input->data;
-    SDL_assert(sota != NULL);
+    Game *IES = input->data;
+    SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
     struct Boss *boss_arr = TNECS_COMPONENTS_LIST(input, Boss);
@@ -153,16 +116,16 @@ void Draw_Map_Boss_Icon(tnecs_system_input *input) {
         if (!sprite->visible)
             continue;
 
-        Boss_Icon_Pos(boss, &sota->camera, position, sota->map);
-        Boss_Icon_Draw(boss, position, sota->renderer);
+        Boss_Icon_Pos(boss, &IES->camera, position, IES->map);
+        Boss_Icon_Draw(boss, position, IES->renderer);
     }
 }
 
 void Draw_Map_HPBar(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
-    struct Game *sota = input->data;
-    SDL_assert(sota != NULL);
+    Game *IES = input->data;
+    SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
     struct Position *pos_arr        = TNECS_COMPONENTS_LIST(input, Position);
@@ -175,8 +138,8 @@ void Draw_Map_HPBar(tnecs_system_input *input) {
             continue;
 
         map_hp_bar->tilemap_pos = pos_arr[order].tilemap_pos;
-        MapHPBar_Draw(map_hp_bar, &sota->camera, sota->map->tilesize, sota->render_target,
-                      sota->renderer, sota->world);
+        MapHPBar_Draw(map_hp_bar, &IES->camera, IES->map->tilesize, IES->render_target,
+                      IES->renderer, IES->world);
     }
 
 }
@@ -184,8 +147,8 @@ void Draw_Map_HPBar(tnecs_system_input *input) {
 void Draw_PopUp(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
-    struct Game *sota = input->data;
-    SDL_assert(sota != NULL);
+    Game *IES = input->data;
+    SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
     struct PopUp    *popup_arr    = TNECS_COMPONENTS_LIST(input, PopUp);
@@ -200,15 +163,15 @@ void Draw_PopUp(tnecs_system_input *input) {
             continue;
 
         struct Position *position = (position_arr + order);
-        popup->draw(popup, position->pixel_pos, sota->render_target, sota->renderer);
+        popup->draw(popup, position->pixel_pos, IES->render_target, IES->renderer);
     }
 }
 
 void Draw_Menu(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
-    struct Game *sota = input->data;
-    SDL_assert(sota != NULL);
+    Game *IES = input->data;
+    SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
     struct Menu *mc_arr = TNECS_COMPONENTS_LIST(input, Menu);
@@ -221,10 +184,10 @@ void Draw_Menu(tnecs_system_input *input) {
         if (!mc->visible)
             continue;
 
-        mc->draw(mc, sota->render_target, sota->renderer);
+        mc->draw(mc, IES->render_target, IES->renderer);
 
-#ifdef SOTA_DEBUG_MENU_BOXES
-        Menu_Elem_Boxes_Draw(mc, sota->renderer);
+#ifdef IES_DEBUG_MENU_BOXES
+        Menu_Elem_Boxes_Draw(mc, IES->renderer);
 #endif
     }
 }
@@ -233,8 +196,8 @@ void Draw_Text(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_Rect dstrect;
     /* -- Get game -- */
-    struct Game *sota = (struct Game *)input->data;
-    SDL_assert(sota != NULL);
+    Game *IES = (Game *)input->data;
+    SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
     struct Text     *text_arr        = TNECS_COMPONENTS_LIST(input, Text);
@@ -251,7 +214,7 @@ void Draw_Text(tnecs_system_input *input) {
         dstrect.w = text->rect.w * pos->scale[0];
         dstrect.h = text->rect.h * pos->scale[1];
 
-        Text_Draw(text, sota->renderer, &dstrect);
+        Text_Draw(text, IES->renderer, &dstrect);
     }
 }
 
@@ -259,8 +222,8 @@ void Draw_Text_Timer(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_Rect dstrect;
     /* -- Get game -- */
-    struct Game *sota = (struct Game *)input->data;
-    SDL_assert(sota != NULL);
+    Game *IES = (Game *)input->data;
+    SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
     struct Text     *text_arr        = TNECS_COMPONENTS_LIST(input, Text);
@@ -275,11 +238,11 @@ void Draw_Text_Timer(tnecs_system_input *input) {
         struct Timer    *ut   = (updatetimer_arr + order);
 
         tnecs_world   *world       = input->world;
-        size_t           typeflag_id = input->entity_typeflag_id;
+        size_t         typeflag_id = input->entity_typeflag_id;
         tnecs_entity   entity      = world->entities_bytype[typeflag_id][order];
 
         if ((text->onUpdate != NULL) && (ut->time_ns >= text->update_time_ns)) {
-            (*text->onUpdate)(sota, entity, ut->frame_count, ut->time_ns, NULL);
+            (*text->onUpdate)(IES, entity, ut->frame_count, ut->time_ns, NULL);
             ut->reset = true;
         }
 
@@ -288,15 +251,15 @@ void Draw_Text_Timer(tnecs_system_input *input) {
         dstrect.w = text->rect.w * pos->scale[0];
         dstrect.h = text->rect.h * pos->scale[1];
 
-        Text_Draw(text, sota->renderer, &dstrect);
+        Text_Draw(text, IES->renderer, &dstrect);
     }
 }
 
 void Animate_Combat_onMap(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
-    struct Game *sota = (struct Game *)input->data;
-    SDL_assert(sota != NULL);
+    Game *IES = (Game *)input->data;
+    SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
     struct CombatAnimation *combatanim_arr;
@@ -312,15 +275,15 @@ void Animate_Combat_onMap(tnecs_system_input *input) {
         size_t         typeflag_id = input->entity_typeflag_id;
         tnecs_entity   entity      = world->entities_bytype[typeflag_id][order];
 
-        Map_Combat_Animate(sota, entity, map_anim, combat_timer);
+        Map_Combat_Animate(IES, entity, map_anim, combat_timer);
     }
 }
 
 void Animate_Map_Animation(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
-    struct Game *sota = (struct Game *)input->data;
-    SDL_assert(sota != NULL);
+    Game *IES = (Game *)input->data;
+    SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
     struct Timer        *timer_arr = TNECS_COMPONENTS_LIST(input, Timer);
@@ -340,15 +303,15 @@ void Animate_Map_Animation(tnecs_system_input *input) {
         size_t         typeflag_id = input->entity_typeflag_id;
         tnecs_entity   entity      = world->entities_bytype[typeflag_id][order];
 
-        map_anim->anim(sota, entity, map_anim, timer);
+        map_anim->anim(IES, entity, map_anim, timer);
     }
 }
 
 void Animate_Unit_Move_onMap(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
-    struct Game *sota = (struct Game *)input->data;
-    SDL_assert(sota != NULL);
+    Game *IES = (Game *)input->data;
+    SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
     struct Timer        *timer_arr = TNECS_COMPONENTS_LIST(input, Timer);
@@ -366,15 +329,15 @@ void Animate_Unit_Move_onMap(tnecs_system_input *input) {
         size_t         typeflag_id = input->entity_typeflag_id;
         tnecs_entity   entity      = world->entities_bytype[typeflag_id][order];
 
-        Unit_Move_onMap_Animate(sota, entity, timer, unit_anim);
+        Unit_Move_onMap_Animate(IES, entity, timer, unit_anim);
     }
 }
 
 void Animate_Cutscene(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
-    struct Game *sota = (struct Game *)input->data;
-    SDL_assert(sota != NULL);
+    Game *IES = (Game *)input->data;
+    SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
     struct Timer    *timer_arr      = TNECS_COMPONENTS_LIST(input, Timer);
@@ -390,17 +353,17 @@ void Animate_Cutscene(tnecs_system_input *input) {
         tnecs_entity     entity      = world->entities_bytype[typeflag_id][order];
 
         if (timer->time_ns >= cutscene->time_ns) {
-            Cutscene_Finish(cutscene, sota);
+            Cutscene_Finish(cutscene, IES);
         }
-        // Cutscene_Animate(sota, entity, scene, timer);
+        // Cutscene_Animate(IES, entity, scene, timer);
     }
 }
 
 void Animate_Scene(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
-    struct Game *sota = (struct Game *)input->data;
-    SDL_assert(sota != NULL);
+    Game *IES = (Game *)input->data;
+    SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
     struct Timer    *timer_arr = TNECS_COMPONENTS_LIST(input, Timer);
@@ -415,6 +378,6 @@ void Animate_Scene(tnecs_system_input *input) {
         size_t           typeflag_id = input->entity_typeflag_id;
         tnecs_entity     entity      = world->entities_bytype[typeflag_id][order];
 
-        Scene_Animate(sota, entity, scene, timer);
+        Scene_Animate(IES, entity, scene, timer);
     }
 }

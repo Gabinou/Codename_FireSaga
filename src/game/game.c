@@ -624,20 +624,20 @@ int _Game_New_Tnecs(void *data) {
 
     /* -- Drawing -- */
     /* - for now only drawn sprites are map_units - */
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Unit,   1, Unit, Position, Sprite, Timer);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Unit,   1, Unit, Position, Sprite, Timer, MapHPBar);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Unit,   1, Unit, Position, Sprite, Timer, MapHPBar, AI);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Unit,   1, Unit, Position, Sprite, Timer, MapHPBar, AI,
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer, MapHPBar);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer, MapHPBar, AI);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer, MapHPBar, AI,
                                 Boss);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Unit,   1, Unit, Position, Sprite, MapHPBar, AI);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Unit,   1, Unit, Position, Sprite, MapHPBar, AI, Boss);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Unit,   1, Unit, Position, Sprite, Timer, MapHPBar, AI,
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, MapHPBar, AI);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, MapHPBar, AI, Boss);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer, MapHPBar, AI,
                                 UnitMoveAnimation);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Unit,   1, Unit, Position, Sprite, Timer, MapHPBar, AI,
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer, MapHPBar, AI,
                                 UnitMoveAnimation, Boss);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Unit,   1, Unit, Position, Sprite, MapHPBar);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Unit,   1, Unit, Position, Sprite);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Unit,   0, Unit, Position, Sprite, RenderTop);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, MapHPBar);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   0, Unit, Position, Sprite, RenderTop);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Boss_Icon,   0, Unit, Position, Sprite, Boss);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_HPBar, 0, Unit, Position, MapHPBar);
 
@@ -646,8 +646,9 @@ int _Game_New_Tnecs(void *data) {
     TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Text_Timer, 0, Text, Position, Timer);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_PopUp,     0, PopUp, Position);
     /* - draw Cursor and Mouse last -> on top - */
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Cursor,    0, Sprite,          Position, CursorFlag);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Mouse,     1, controllerMouse, Position, Sprite, MouseFlag);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,    0, Sprite,          Position, CursorFlag);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,     1, controllerMouse, Position, Sprite,
+                                MouseFlag);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Combat_onMap, 1, CombatAnimation, Timer);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Map_Animation, 1, MapAnimation, Position, Text, Timer);
     TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Unit_Move_onMap, 0, UnitMoveAnimation, Position, Timer,
