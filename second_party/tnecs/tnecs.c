@@ -145,6 +145,16 @@ void tnecs_world_step_wdata(struct tnecs_World *world, tnecs_ns deltat,
     world->previous_time = tnecs_get_ns();
 }
 
+void tnecs_world_step_phase(struct tnecs_World *world, tnecs_ns deltat,
+                            void *data) {
+    world->num_systems_torun = 0;
+    if (!deltat)
+        deltat = tnecs_get_ns() - world->previous_time;
+    for (size_t phase_id = 0; phase_id < world->num_phases; phase_id++)
+        tnecs_systems_byphase_run_dt(world, phase_id, deltat, data);
+    world->previous_time = tnecs_get_ns();
+}
+
 b32 _tnecs_world_breath_entities(struct tnecs_World *world) {
     b32 success = 1;
     /* Variables */
@@ -518,7 +528,7 @@ size_t _tnecs_register_typeflag(struct tnecs_World *world, size_t num_components
 size_t tnecs_register_phase(struct tnecs_World *world, tnecs_phase phase) {
     while (phase >= world->len_phases)
         tnecs_growArray_phase(world);
-    world->phases[phase] =  phase;
+    world->phases[phase] = phase;
     world->num_phases = (phase >= world->num_phases) ? (phase + 1) : world->num_phases;
     return (phase);
 }

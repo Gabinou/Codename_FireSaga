@@ -161,7 +161,7 @@ struct tnecs_World {
     tnecs_component *system_typeflags;                // [system_id]
     tnecs_phase     *system_phases;                   // [system_id]
     b32             *system_exclusive;                // [system_id]
-    tnecs_phase     *phases;                          // [phase_id]
+    tnecs_phase     *phases;                          // [phase]
     size_t          *system_orders;                   // [system_id]
     size_t            component_bytesizes[TNECS_COMPONENT_CAP]; // [component_id]
     tnecs_hash      component_hashes[TNECS_COMPONENT_CAP];    // [component_id]
@@ -177,8 +177,8 @@ struct tnecs_World {
     tnecs_component **components_idbytype;            // [typeflag_id][component_order_bytype]
     tnecs_component **components_flagbytype;          // [typeflag_id][component_order_bytype]
     size_t             **components_orderbytype;        // [typeflag_id][component_id]
-    size_t             **systems_idbyphase;             // [phase_id][system_order]
-    tnecs_system_ptr   **systems_byphase;               // [phase_id][system_id]
+    size_t             **systems_idbyphase;             // [phase][system_order]
+    tnecs_system_ptr   **systems_byphase;               // [phase][system_id]
     tnecs_system_ptr   *systems_torun;                  // [torun_order] debug
     size_t            num_systems_torun;
     size_t            len_systems_torun;
@@ -195,8 +195,8 @@ struct tnecs_World {
     size_t   *num_components_bytype;               // [typeflag_id]
     size_t   *len_entities_bytype;                 // [typeflag_id]
     size_t   *num_entities_bytype;                 // [typeflag_id]
-    size_t   *len_systems_byphase;                 // [phase_id]
-    size_t   *num_systems_byphase;                 // [phase_id]
+    size_t   *len_systems_byphase;                 // [phase]
+    size_t   *num_systems_byphase;                 // [phase]
 
     size_t            num_entities_open;
     size_t            len_entities_open;
@@ -236,9 +236,9 @@ void tnecs_world_step_wdata(struct tnecs_World *w, tnecs_ns deltat,
 void tnecs_system_run(struct tnecs_World *w, size_t id, void *data);
 void tnecs_system_run_dt(struct tnecs_World *w, size_t id, tnecs_ns deltat,
                          void *data);
-void tnecs_systems_byphase_run(struct tnecs_World *w, tnecs_phase phase_id,
+void tnecs_systems_byphase_run(struct tnecs_World *w, tnecs_phase phase,
                                void *data);
-void tnecs_systems_byphase_run_dt(struct tnecs_World *w, tnecs_phase phase_id,
+void tnecs_systems_byphase_run_dt(struct tnecs_World *w, tnecs_phase phase,
                                   tnecs_ns deltat, void *data);
 void tnecs_custom_system_run(struct tnecs_World *w, tnecs_system_ptr c,
                              tnecs_component ar,
@@ -331,7 +331,7 @@ b32 tnecs_component_array_new(struct tnecs_World *w, size_t num_components,
 void tnecs_component_array_init(struct tnecs_World *w,
                                 struct tnecs_Components_Array *array, size_t component_id);
 
-b32 tnecs_system_order_switch(struct tnecs_World *w, tnecs_phase phase_id,
+b32 tnecs_system_order_switch(struct tnecs_World *w, tnecs_phase phase,
                                size_t order1, size_t order2);
 
 /************************ UTILITY FUNCTIONS/MACROS ***************************/
