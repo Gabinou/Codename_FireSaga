@@ -64,7 +64,7 @@ void Animate_Sprite(tnecs_system_input *input) {
 void Draw_Cursor(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
-    struct Game *sota = input->user_data;
+    struct Game *sota = input->data;
     SDL_assert(sota != NULL);
 
     /* -- Get components arrays -- */
@@ -92,7 +92,7 @@ void Draw_Cursor(tnecs_system_input *input) {
 void Draw_Mouse(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
-    struct Game *sota = input->user_data;
+    struct Game *sota = input->data;
     SDL_assert(sota != NULL);
 
     /* -- Get components arrays -- */
@@ -112,7 +112,7 @@ void Draw_Mouse(tnecs_system_input *input) {
 void Draw_Map_Unit(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
-    struct Game *sota = input->user_data;
+    struct Game *sota = input->data;
     SDL_assert(sota != NULL);
 
     /* -- Get components arrays -- */
@@ -137,7 +137,7 @@ void Draw_Map_Unit(tnecs_system_input *input) {
 void Draw_Map_Boss_Icon(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
-    struct Game *sota = input->user_data;
+    struct Game *sota = input->data;
     SDL_assert(sota != NULL);
 
     /* -- Get components arrays -- */
@@ -161,7 +161,7 @@ void Draw_Map_Boss_Icon(tnecs_system_input *input) {
 void Draw_Map_HPBar(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
-    struct Game *sota = input->user_data;
+    struct Game *sota = input->data;
     SDL_assert(sota != NULL);
 
     /* -- Get components arrays -- */
@@ -184,7 +184,7 @@ void Draw_Map_HPBar(tnecs_system_input *input) {
 void Draw_PopUp(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
-    struct Game *sota = input->user_data;
+    struct Game *sota = input->data;
     SDL_assert(sota != NULL);
 
     /* -- Get components arrays -- */
@@ -207,7 +207,7 @@ void Draw_PopUp(tnecs_system_input *input) {
 void Draw_Menu(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
-    struct Game *sota = input->user_data;
+    struct Game *sota = input->data;
     SDL_assert(sota != NULL);
 
     /* -- Get components arrays -- */
@@ -233,7 +233,7 @@ void Draw_Text(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_Rect dstrect;
     /* -- Get game -- */
-    struct Game *sota = (struct Game *)input->user_data;
+    struct Game *sota = (struct Game *)input->data;
     SDL_assert(sota != NULL);
 
     /* -- Get components arrays -- */
@@ -259,7 +259,7 @@ void Draw_Text_Timer(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_Rect dstrect;
     /* -- Get game -- */
-    struct Game *sota = (struct Game *)input->user_data;
+    struct Game *sota = (struct Game *)input->data;
     SDL_assert(sota != NULL);
 
     /* -- Get components arrays -- */
@@ -295,7 +295,7 @@ void Draw_Text_Timer(tnecs_system_input *input) {
 void Animate_Combat_onMap(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
-    struct Game *sota = (struct Game *)input->user_data;
+    struct Game *sota = (struct Game *)input->data;
     SDL_assert(sota != NULL);
 
     /* -- Get components arrays -- */
@@ -319,7 +319,7 @@ void Animate_Combat_onMap(tnecs_system_input *input) {
 void Animate_Map_Animation(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
-    struct Game *sota = (struct Game *)input->user_data;
+    struct Game *sota = (struct Game *)input->data;
     SDL_assert(sota != NULL);
 
     /* -- Get components arrays -- */
@@ -347,7 +347,7 @@ void Animate_Map_Animation(tnecs_system_input *input) {
 void Animate_Unit_Move_onMap(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
-    struct Game *sota = (struct Game *)input->user_data;
+    struct Game *sota = (struct Game *)input->data;
     SDL_assert(sota != NULL);
 
     /* -- Get components arrays -- */
@@ -373,7 +373,7 @@ void Animate_Unit_Move_onMap(tnecs_system_input *input) {
 void Animate_Cutscene(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
-    struct Game *sota = (struct Game *)input->user_data;
+    struct Game *sota = (struct Game *)input->data;
     SDL_assert(sota != NULL);
 
     /* -- Get components arrays -- */
@@ -399,7 +399,7 @@ void Animate_Cutscene(tnecs_system_input *input) {
 void Animate_Scene(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
-    struct Game *sota = (struct Game *)input->user_data;
+    struct Game *sota = (struct Game *)input->data;
     SDL_assert(sota != NULL);
 
     /* -- Get components arrays -- */

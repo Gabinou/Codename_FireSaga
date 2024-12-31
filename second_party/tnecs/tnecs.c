@@ -136,16 +136,12 @@ void tnecs_world_step(tnecs_World *world, tnecs_ns deltat, void *data) {
     if (!deltat)
         deltat = tnecs_get_ns() - world->previous_time;
     for (size_t phase = 0; phase < world->num_phases; phase++)
-        tnecs_world_step_phase_dt(world, phase, deltat, data);
+        tnecs_world_step_phase(world, phase, deltat, data);
     world->previous_time = tnecs_get_ns();
 }
 
-void tnecs_world_step_phase(tnecs_World *world, tnecs_phase phase, void *data) {
-    tnecs_world_step_phase_dt(world, phase, 0, data);
-}
-
-void tnecs_world_step_phase_dt(tnecs_World *world,  tnecs_phase  phase,
-                                  tnecs_ns  deltat, void        *user_data) {
+void tnecs_world_step_phase(tnecs_World *world,  tnecs_phase  phase,
+                            tnecs_ns     deltat, void        *data) {
     if (phase != world->phases[phase]) {
         printf("Invalid phase '%d' \n", phase);
         exit(1);        
@@ -153,11 +149,9 @@ void tnecs_world_step_phase_dt(tnecs_World *world,  tnecs_phase  phase,
 
     for (size_t sorder = 0; sorder < world->num_systems_byphase[phase]; sorder++) {
         size_t system_id = world->systems_idbyphase[phase][sorder];
-        tnecs_system_run_dt(world, system_id, deltat, user_data);
+        tnecs_system_run(world, system_id, deltat, data);
     }
 }
-
-
 
 b32 _tnecs_world_breath_entities(struct tnecs_World *world) {
     b32 success = 1;
@@ -304,15 +298,10 @@ b32 _tnecs_world_breath_typeflags(struct tnecs_World *world) {
 }
 
 /**************************** SYSTEM FUNCTIONS ********************************/
-void tnecs_system_run(struct tnecs_World *world, size_t in_system_id,
-                      void *user_data) {
-    tnecs_system_run_dt(world, in_system_id, 0, user_data);
-}
-
 void tnecs_custom_system_run(struct tnecs_World *world, tnecs_system_ptr custom_system,
-                             tnecs_component archetype, tnecs_ns deltat, void *user_data) {
+                             tnecs_component archetype, tnecs_ns deltat, void *data) {
     /* Building the systems input */
-    struct tnecs_System_Input input = {.world = world, .deltat = deltat, .user_data = user_data};
+    struct tnecs_System_Input input = {.world = world, .deltat = deltat, .data = data};
     size_t tID = tnecs_typeflagid(world, archetype);
     TNECS_DEBUG_ASSERT(tID != TNECS_NULL);
 
@@ -341,10 +330,10 @@ void _tnecs_system_torun_realloc(struct tnecs_World *world) {
     }
 }
 
-void tnecs_system_run_dt(struct tnecs_World *world, size_t in_system_id,
-                         tnecs_ns deltat, void *user_data) {
+void tnecs_system_run(tnecs_World *world, size_t in_system_id,
+                      tnecs_ns     deltat, void *data) {
     /* Building the systems input */
-    struct tnecs_System_Input input = {.world = world, .deltat = deltat, .user_data = user_data};
+    struct tnecs_System_Input input = {.world = world, .deltat = deltat, .data = data};
     size_t sorder               = world->system_orders[in_system_id];
     tnecs_phase phase        = world->system_phases[in_system_id];
     size_t system_typeflag_id   = tnecs_typeflagid(world, world->system_typeflags[in_system_id]);

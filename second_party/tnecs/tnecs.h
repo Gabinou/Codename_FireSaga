@@ -214,7 +214,7 @@ typedef struct tnecs_System_Input {
     tnecs_component   system_typeflag;
     size_t              num_entities;
     size_t              entity_typeflag_id;
-    void                 *user_data;
+    void                *data;
 }tnecs_System_Input;
 
 typedef struct tnecs_Components_Array {
@@ -227,19 +227,15 @@ typedef struct tnecs_Components_Array {
 
 /**************************** WORLD FUNCTIONS ********************************/
 struct tnecs_World *tnecs_world_genesis();
-void tnecs_world_destroy(tnecs_World             *w);
+void tnecs_world_destroy(tnecs_World *w);
 
-void tnecs_world_step(          tnecs_World *w, tnecs_ns deltat, void *data);
-void tnecs_world_step_phase(    tnecs_World *w, tnecs_phase phase, void *data);
-void tnecs_world_step_phase_dt( tnecs_World *w, tnecs_phase phase, tnecs_ns deltat, void *data);
+void tnecs_world_step(      tnecs_World *w, tnecs_ns deltat, void *data);
+void tnecs_world_step_phase(tnecs_World *w, tnecs_phase phase, tnecs_ns deltat, void *data);
 
 /**************************** SYSTEM FUNCTIONS ********************************/
-void tnecs_system_run(struct tnecs_World *w, size_t id, void *data);
-void tnecs_system_run_dt(struct tnecs_World *w, size_t id, tnecs_ns deltat,
-                         void *data);
-void tnecs_custom_system_run(struct tnecs_World *w, tnecs_system_ptr c,
-                             tnecs_component ar,
-                             tnecs_ns deltat, void *data);
+void tnecs_system_run(tnecs_World *w, size_t id, tnecs_ns deltat, void *data);
+void tnecs_custom_system_run(tnecs_World *w, tnecs_system_ptr c,
+                             tnecs_component ar, tnecs_ns deltat, void *data);
 
 /***************************** REGISTRATION **********************************/
 tnecs_component tnecs_register_component(struct tnecs_World *w,

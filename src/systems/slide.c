@@ -48,7 +48,7 @@ void Hover_Any(tnecs_system_input *input) {
 /* Compute next Popup position according to target position */
 void Slide_Sprite(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
-    SDL_assert(input->user_data != NULL);
+    SDL_assert(input->data != NULL);
     /* -- Get components arrays -- */
     struct Sprite   *sprite_arr     = TNECS_COMPONENTS_LIST(input, Sprite);
     struct Slider   *slider_arr     = TNECS_COMPONENTS_LIST(input, Slider);
@@ -58,7 +58,7 @@ void Slide_Sprite(tnecs_system_input *input) {
     SDL_assert(position_arr != NULL);
 
     /* -- Get Game -- */
-    struct Game *sota = input->user_data;
+    struct Game *sota = input->data;
     SDL_assert(sota != NULL);
 
     /* -- Check if entity is cursor -- */
@@ -97,7 +97,7 @@ void Slide_Sprite(tnecs_system_input *input) {
 
 void Slide_PopUp_Offscreen(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
-    SDL_assert(input->user_data != NULL);
+    SDL_assert(input->data != NULL);
     /* -- Get components arrays -- */
     struct Slider          *slider_arr      = TNECS_COMPONENTS_LIST(input, Slider);
     struct Position        *position_arr    = TNECS_COMPONENTS_LIST(input, Position);
