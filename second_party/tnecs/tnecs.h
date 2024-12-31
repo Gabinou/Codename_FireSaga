@@ -228,8 +228,8 @@ typedef struct tnecs_Components_Array {
 struct tnecs_World *tnecs_world_genesis();
 void tnecs_world_destroy(tnecs_World *w);
 
-void tnecs_world_step(      tnecs_World *w, tnecs_ns deltat, void *data);
-void tnecs_world_step_phase(tnecs_World *w, tnecs_phase phase, tnecs_ns deltat, void *data);
+b32 tnecs_world_step(      tnecs_World *w, tnecs_ns deltat, void *data);
+b32 tnecs_world_step_phase(tnecs_World *w, tnecs_phase phase, tnecs_ns deltat, void *data);
 
 /**************************** SYSTEM FUNCTIONS ********************************/
 void tnecs_system_run(tnecs_World *w, size_t id, tnecs_ns deltat, void *data);

@@ -299,7 +299,12 @@ void _Game_Step_Render(struct Game *sota) {
     SDL_assert(fsm_rFrame_s[sota->state] != NULL);
     fsm_rFrame_s[sota->state](sota); /* RENDER */
     u64 updateTime_ns = SOTA_ns / sota->settings.FPS.cap;
-    tnecs_world_step(sota->world, updateTime_ns, sota); /* RENDER */
+    b32 success = tnecs_world_step(sota->world, updateTime_ns, sota); /* RENDER */
+    if (!success) {
+        SDL_Log("tnecs_world_step failed");
+        SDL_assert(false);
+        exit(ERROR_Generic);
+    }
 
     /* -- Render to screen -- */
 #ifndef RENDER2WINDOW

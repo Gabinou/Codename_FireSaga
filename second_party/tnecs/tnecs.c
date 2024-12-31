@@ -131,23 +131,26 @@ void tnecs_world_destroy(struct tnecs_World *world) {
     free(world);
 }
 
-void tnecs_world_step(tnecs_World *world, tnecs_ns deltat, void *data) {
+b32 tnecs_world_step(tnecs_World *world, tnecs_ns deltat, void *data) {
     world->num_systems_torun = 0;
+    b32 success = 1;
     for (size_t phase = 0; phase < world->num_phases; phase++)
-        tnecs_world_step_phase(world, phase, deltat, data);
+        success &= tnecs_world_step_phase(world, phase, deltat, data);
+    return(success);
 }
 
-void tnecs_world_step_phase(tnecs_World *world,  tnecs_phase  phase,
+b32 tnecs_world_step_phase(tnecs_World *world,  tnecs_phase  phase,
                             tnecs_ns     deltat, void        *data) {
     if (phase != world->phases[phase]) {
         printf("Invalid phase '%d' \n", phase);
-        exit(1);        
+        return(0);
     }
 
     for (size_t sorder = 0; sorder < world->num_systems_byphase[phase]; sorder++) {
         size_t system_id = world->systems_idbyphase[phase][sorder];
         tnecs_system_run(world, system_id, deltat, data);
     }
+    return(1);
 }
 
 b32 _tnecs_world_breath_entities(struct tnecs_World *world) {
