@@ -1131,6 +1131,7 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
 
     /* -- Load map -- */
     Game_PopUp_Tile_Create(sota);
+    Game_PopUp_Unit_Create(sota);
     Game_cursorFocus_onMap(sota);
 
     /* -- Destroy Deployment Menu -- */
@@ -1158,22 +1159,48 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
     sota->cursor_lastpos.x = sota->map->start_pos[0].x;
     sota->cursor_lastpos.y = sota->map->start_pos[0].y;
 
+    /* -- Set popups position -- */
+    Position *cursor_pos;
+    cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    Point *pos = &cursor_pos->tilemap_pos;
+
     /* -- Set popup_unit position -- */
+
+    tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_UNIT];
+    SDL_assert(popup_ent != TNECS_NULL);
+
+    Slider          *popup_unit_slider;
+    Position        *popup_unit_pos;
+    SliderOffscreen *popup_unit_offscreen;
+    popup_unit_slider = TNECS_GET_COMPONENT(sota->world, popup_ent, Slider);
+    popup_unit_pos = TNECS_GET_COMPONENT(sota->world, popup_ent, Position);
+    popup_unit_offscreen = TNECS_GET_COMPONENT(sota->world, popup_ent, SliderOffscreen);
+    SDL_assert(popup_unit_slider != TNECS_NULL);
+    SDL_assert(popup_unit_pos != TNECS_NULL);
+    SDL_assert(popup_unit_offscreen != TNECS_NULL);
+
+    Game_PopUp_Unit_Place(sota, *pos);
+
+    popup_unit_pos->pixel_pos = popup_unit_offscreen->midpoint;
+
     /* -- Set popup_tile position -- */
-    // struct Position *cursor_pos;
-    // cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
-    // struct Point *pos = &cursor_pos->tilemap_pos;
+    popup_ent = sota->popups[POPUP_TYPE_HUD_TILE];
+    SDL_assert(popup_ent != TNECS_NULL);
 
-    // if (fsm_eCrsMvd_sGmpMap_ss[sota->substate] != NULL)
-    //     fsm_eCrsMvd_sGmpMap_ss[sota->substate](sota, mover_entity, pos);
+    Slider          *popup_tile_slider;
+    Position        *popup_tile_pos;
+    SliderOffscreen *popup_tile_offscreen;
+    popup_tile_slider = TNECS_GET_COMPONENT(sota->world, popup_ent, Slider);
+    popup_tile_pos = TNECS_GET_COMPONENT(sota->world, popup_ent, Position);
+    popup_tile_offscreen = TNECS_GET_COMPONENT(sota->world, popup_ent, SliderOffscreen);
+    SDL_assert(popup_tile_slider != TNECS_NULL);
+    SDL_assert(popup_tile_pos != TNECS_NULL);
+    SDL_assert(popup_tile_offscreen != TNECS_NULL);
 
-    // tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_TILE];
-    // SDL_assert(popup_ent != TNECS_NULL);
+    Game_PopUp_Tile_Place(sota, *pos);
 
-    // Game_PopUp_Tile_Place(sota, *pos);
-
-    // Game_PopUp_Tile_Place(sota, *pos);
-
+    popup_tile_pos->pixel_pos.x = popup_tile_offscreen->midpoint.x;
+    popup_tile_pos->pixel_pos.y = popup_tile_slider->target.y;
 
     /* -- Start turn transition -- */
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
