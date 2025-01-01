@@ -12,6 +12,7 @@
 #include "debug.h"
 #include "game/popup.h"
 #include "cutscene.h"
+#include "noursclock.h"
 #include "nmath.h"
 #include "sprite.h"
 #include "music.h"

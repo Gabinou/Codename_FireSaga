@@ -4,7 +4,7 @@
     #define _POSIX_C_SOURCE 199309L
 #endif /* _POSIX_C_SOURCE */
 
-#include "clock.h"
+#include "noursclock.h"
 
 /********************** 0.1 MICROSECOND RESOLUTION CLOCK **********************/
 uint64_t tnecs_get_ns() {

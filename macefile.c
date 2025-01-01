@@ -144,7 +144,7 @@ struct Target win_sota = {
     .sources  = "src,src/bars/,src/menu/,src/popup/,"
                 "src/systems/,src/game/,src/map/,src/unit/,"
                 "src/controller/",
-    .links    = "SDL2,SDL2_image,SDL2_mixer,m,cjson,"
+    .links    = "SDL2,SDL2_image,SDL2_mixer,m,cjson,noursclock,"
                 "noursmath,physfs,tinymt,tnecs,parg",
                 /* TODO: Remove flags given by sdl2-config */
     .flags    = "-lmingw32,-lSDL2,-lSDL2main,-std=iso9899:1999,"
@@ -170,7 +170,7 @@ struct Target sota = {
     .sources  = "src,src/bars/,src/menu/,src/popup/,"
                 "src/systems/,src/game/,src/map/,src/unit/,"
                 "src/controller/",
-    .links    = "SDL2,SDL2_image,SDL2_mixer,m,GLEW,"
+    .links    = "SDL2,SDL2_image,SDL2_mixer,m,GLEW,noursclock,"
                 "cjson,noursmath,physfs,tinymt,tnecs,parg",
     .flags    = "-fno-strict-overflow,-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
@@ -219,7 +219,7 @@ struct Target sota_dll = {
                   "src/controller/",
     .excludes   = "src/main.c",
     .link_flags = "-rpath=./,-whole-archive,",
-    .links      = "SDL2,SDL2_image,SDL2_mixer,m,GLEW,"
+    .links      = "SDL2,SDL2_image,SDL2_mixer,m,GLEW,noursclock,"
                   "cjson,noursmath,physfs,tinymt,tnecs,parg",
     .flags      = "-Lbuild,-fno-strict-overflow,-fno-strict-aliasing,"
                   "-fwrapv,-fno-delete-null-pointer-checks,"
@@ -246,7 +246,7 @@ struct Target l2w_sota = {
                 "src/systems/,src/game/,src/map/,src/unit/,"
                 "src/controller/",
     .links    = "mingw32,SDL2main,SDL2,SDL2_image,SDL2_mixer,"
-                "cjson,noursmath,physfs,tinymt,tnecs,parg",
+                "cjson,noursmath,physfs,tinymt,tnecs,parg,noursclock",
     .flags    = "-L/usr/local/x86_64-w64-mingw32/lib,-B/usr/local/lib/tcc/win32"
                 "-fno-strict-overflow,-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
@@ -273,7 +273,7 @@ struct Target test = {
                 "src/popup/,src/systems/,src/game/,src/map,"
                 "src/controller",
     .excludes = "src/main.c",
-    .links    = "SDL2,SDL2_image,SDL2_mixer,m,GLEW,"
+    .links    = "SDL2,SDL2_image,SDL2_mixer,m,GLEW,noursclock,"
                 "cjson,noursmath,physfs,tinymt,tnecs,parg",
     .flags    = "-fno-strict-overflow,-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
@@ -299,7 +299,7 @@ struct Target bench = {
                 "src/popup/,src/systems/,src/game/,src/map,"
                 "src/controller",
     .excludes = "src/main.c",
-    .links    = "SDL2,SDL2_image,SDL2_mixer,m,GLEW,"
+    .links    = "SDL2,SDL2_image,SDL2_mixer,m,GLEW,noursclock,"
                 "cjson,noursmath,physfs,tinymt,tnecs,parg",
     .flags    = "-L/usr/lib,-fno-strict-overflow,"
                 "-fno-strict-aliasing,-std=iso9899:1999,"
@@ -334,6 +334,7 @@ int mace(int argc, char *argv[]) {
     MACE_ADD_TARGET(noursmath);
     MACE_ADD_TARGET(parg); 
     MACE_ADD_TARGET(tnecs);
+    MACE_ADD_TARGET(noursclock);
 
     /* - third_party - */
     MACE_ADD_TARGET(cjson);
