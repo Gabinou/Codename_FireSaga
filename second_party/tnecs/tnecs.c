@@ -220,11 +220,11 @@ b32 _tnecs_world_breath_components(struct tnecs_World *world) {
 b32 _tnecs_world_breath_systems(struct tnecs_World *world) {
     /* Variables */
     b32 success = 1;
-    world->len_systems = TNECS_INITIAL_SYSTEM_LEN;
-    world->len_systems_torun = TNECS_INITIAL_SYSTEM_LEN;
-    world->num_systems = TNECS_NULLSHIFT;
-    world->len_phases = TNECS_INITIAL_PHASE_LEN;
-    world->num_phases = TNECS_NULLSHIFT;
+    world->len_systems          = TNECS_INITIAL_SYSTEM_LEN;
+    world->len_systems_torun    = TNECS_INITIAL_SYSTEM_LEN;
+    world->num_systems          = TNECS_NULLSHIFT;
+    world->len_phases           = TNECS_INITIAL_PHASE_LEN;
+    world->num_phases           = TNECS_NULLSHIFT;
 
     /* Allocs */
     int namelen = 5;
@@ -898,9 +898,9 @@ void tnecs_component_array_init(struct tnecs_World *world, struct tnecs_Componen
     TNECS_DEBUG_ASSERT(bytesize > 0);
 
     in_array->type = in_type;
-    in_array->num_components = 0;
-    in_array->len_components = TNECS_INITIAL_ENTITY_LEN;
-    in_array->components = calloc(TNECS_INITIAL_ENTITY_LEN, bytesize);
+    in_array->num_components    = 0;
+    in_array->len_components    = TNECS_INITIAL_COMPONENT_LEN;
+    in_array->components        = calloc(TNECS_INITIAL_COMPONENT_LEN, bytesize);
 }
 
 b32 tnecs_system_order_switch(struct tnecs_World *world, tnecs_phase phase,
