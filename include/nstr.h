@@ -14,6 +14,7 @@ typedef uint8_t u8;
 typedef int32_t b32;
 
 /* --- Pascal String s8 strings --- */
+// TODO Use flexible array member
 typedef struct s8 {
     u8      *data;
     size_t   len; /* allocated */
