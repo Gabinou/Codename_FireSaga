@@ -59,7 +59,7 @@ extern "C" {
 typedef uint64_t        tnecs_entity;     // simple 64 bit integer
 typedef uint64_t        tnecs_component;  // 64 bit flags -> MAX 63 components
 typedef uint64_t        tnecs_hash;
-typedef uint32_t         tnecs_phase;
+typedef uint32_t        tnecs_phase;
 typedef uint64_t        tnecs_ns;
 typedef int32_t         b32;
 typedef unsigned char   tnecs_byte;
@@ -184,20 +184,19 @@ typedef struct tnecs_World {
 
 typedef struct tnecs_System_Input {
     // Note: Systems run over entity_order_bytype for entity_order_bytype
-    struct tnecs_World   *world;
-    tnecs_ns     deltat;
-    tnecs_component   system_typeflag;
-    size_t              num_entities;
-    size_t              entity_typeflag_id;
-    void                *data;
+    tnecs_World     *world;
+    tnecs_ns         deltat;
+    tnecs_component  system_typeflag;
+    size_t           num_entities;
+    size_t           entity_typeflag_id;
+    void            *data;
 }tnecs_System_Input;
 
 typedef struct tnecs_Components_Array {
-    tnecs_component   type;
-    size_t              num_components;
-    size_t              len_components;
-    void                *
-    components;                                        // [entity_order_bytype]
+    tnecs_component  type;
+    size_t           num_components;
+    size_t           len_components;
+    void            *components;      /* [entity_order_bytype] */
 }tnecs_Components_Array;
 
 /**************************** WORLD FUNCTIONS ********************************/
