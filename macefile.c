@@ -74,6 +74,14 @@ struct Target parg      = {
     .kind      = MACE_STATIC_LIBRARY,
 };
 
+struct Target noursclock      = {
+    .base_dir  = "second_party/noursclock",
+    .flags     = "-std=iso9899:1999",
+    .sources   = ".",
+    .link_flags = "-whole-archive",
+    .kind      = MACE_STATIC_LIBRARY,
+};
+
 struct Target tnecs     = {
     .base_dir  = "second_party/tnecs",
     .flags     = "-std=iso9899:1999",
@@ -129,6 +137,7 @@ struct Target win_sota = {
                 "include/systems,names,names/popup,names/menu,"
                 "second_party/noursmath,second_party/tnecs,"
                 "second_party/parg,second_party/nourstest,"
+                "second_party/noursclock,"
                 "third_party/physfs,third_party/tinymt," 
                 "third_party/stb,third_party/cJson,"
                 "/usr/include/SDL2",
@@ -154,6 +163,7 @@ struct Target sota = {
                 "include/systems,names,names/popup,names/menu,"
                 "second_party/noursmath,second_party/tnecs,"
                 "second_party/parg,second_party/nourstest,"
+                "second_party/noursclock,"
                 "third_party/physfs,third_party/tinymt,"
                 "third_party/stb,third_party/cJson,"
                 "/usr/include/SDL2",
@@ -178,6 +188,7 @@ struct Target sota_main = {
                 "include/systems,names,names/popup,names/menu,"
                 "second_party/noursmath,second_party/tnecs,"
                 "second_party/parg,second_party/nourstest,"
+                "second_party/noursclock,"
                 "third_party/physfs,third_party/tinymt," 
                 "third_party/stb,third_party/cJson,"
                 "/usr/include/SDL2",
@@ -199,6 +210,7 @@ struct Target sota_dll = {
                  "include/systems,names,names/popup,names/menu,"
                  "second_party/noursmath,second_party/tnecs,"
                  "second_party/parg,second_party/nourstest,"
+                "second_party/noursclock,"
                  "third_party/physfs,third_party/tinymt," 
                  "third_party/stb,third_party/cJson,"
                  "/usr/include/SDL2",
@@ -226,6 +238,7 @@ struct Target l2w_sota = {
                 "include/systems,names,names/popup,names/menu,"
                 "second_party/noursmath,second_party/tnecs,"
                 "second_party/parg,second_party/nourstest,"
+                "second_party/noursclock,"
                 "third_party/physfs,third_party/tinymt," 
                 "third_party/stb,third_party/cJson,"
                 "/usr/local/x86_64-w64-mingw32/include",
@@ -251,6 +264,7 @@ struct Target test = {
                 "names,names/popup,names/menu,"
                 "second_party/noursmath,second_party/tnecs,"
                 "second_party/parg,second_party/nourstest,"
+                "second_party/noursclock,"
                 "third_party/physfs,third_party/tinymt,"
                 "third_party/stb,third_party/cJson,"
                 "/usr/include/SDL2,"
@@ -276,6 +290,7 @@ struct Target bench = {
                 "names,names/popup,names/menu,"
                 "second_party/noursmath,second_party/tnecs,"
                 "second_party/parg,second_party/nourstest,"
+                "second_party/noursclock,"
                 "third_party/physfs,third_party/tinymt,"
                 "third_party/stb,third_party/cJson,"
                 "/usr/include/SDL2,"

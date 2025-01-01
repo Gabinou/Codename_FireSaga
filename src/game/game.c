@@ -10,6 +10,7 @@
 #include "bars/map_hp.h"
 #include "systems/render.h"
 #include "filesystem.h"
+#include "noursclock.h"
 #include "log.h"
 #include "macros.h"
 #include "RNG.h"
