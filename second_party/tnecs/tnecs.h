@@ -64,10 +64,12 @@ typedef uint64_t        tnecs_ns;
 typedef int32_t         b32;
 typedef unsigned char   tnecs_byte;
 
-typedef struct tnecs_System_Input     tnecs_system_input;
-typedef struct tnecs_Component_Array  tnecs_component_array;
+/*** Forward declarations ***/
+typedef struct tnecs_system_input     tnecs_system_input;
+typedef struct tnecs_component_array  tnecs_component_array;
 
-typedef void (*tnecs_system_ptr)(struct tnecs_System_Input *);
+/*** Function pointer ***/
+typedef void (*tnecs_system_ptr)(struct tnecs_system_input *);
 
 /******************* CONSTANT DEFINITIONS *******************/
 enum TNECS {
@@ -152,7 +154,7 @@ typedef struct tnecs_world {
     //_bytype arrays are exclusive
     size_t           **archetype_id_bytype;                 // [typeflag_id][typeflag_id_order]
     size_t            *num_archetype_ids;                   // [typeflag_id]
-    struct tnecs_Component_Array **components_bytype;       // [typeflag_id][component_order_bytype]
+    tnecs_component_array **components_bytype;       // [typeflag_id][component_order_bytype]
     tnecs_entity     **entities_bytype;                     // [typeflag_id][entity_order_bytype]
     tnecs_component  **components_idbytype;                 // [typeflag_id][component_order_bytype]
     tnecs_component  **components_flagbytype;               // [typeflag_id][component_order_bytype]
@@ -186,7 +188,7 @@ typedef struct tnecs_world {
     b32 reuse_entities;
 } tnecs_world;
 
-typedef struct tnecs_System_Input {
+typedef struct tnecs_system_input {
     // Note: Systems run over entity_order_bytype for entity_order_bytype
     tnecs_world     *world;
     tnecs_ns         deltat;
@@ -194,15 +196,15 @@ typedef struct tnecs_System_Input {
     size_t           num_entities;
     size_t           entity_typeflag_id;
     void            *data;
-} tnecs_System_Input;
+} tnecs_system_input;
 
 // 1D array of 1 component.
-typedef struct tnecs_Component_Array {
+typedef struct tnecs_component_array {
     tnecs_component  type;
     size_t           num_components;
     size_t           len_components;
     void            *components;      /* [entity_order_bytype] */
-} tnecs_Component_Array;
+} tnecs_component_array;
 
 // 2D array of n components.
 typedef struct tnecs_ArchetypeChunk {
@@ -223,22 +225,22 @@ size_t *tnecs_ArchetypeChunk_BytesizeArr(tnecs_ArchetypeChunk *chunk);
 b32 tnecs_world_genesis(tnecs_world **w);
 b32 tnecs_world_destroy(tnecs_world **w);
 
-b32 tnecs_world_step(      tnecs_world *w, tnecs_ns deltat, void *data);
-b32 tnecs_world_step_phase(tnecs_world *w, tnecs_phase phase, tnecs_ns deltat, void *data);
+b32 tnecs_world_step(      tnecs_world *w, tnecs_ns     deltat, void *data);
+b32 tnecs_world_step_phase(tnecs_world *w, tnecs_phase  phase, tnecs_ns deltat, void *data);
 
 /******************* SYSTEM FUNCTIONS ********************/
-void tnecs_system_run(tnecs_world *w, size_t id, tnecs_ns deltat, void *data);
-b32  tnecs_custom_system_run(tnecs_world *w, tnecs_system_ptr c,
+b32 tnecs_system_run(tnecs_world *w, size_t id, tnecs_ns deltat, void *data);
+b32 tnecs_custom_system_run(tnecs_world *w, tnecs_system_ptr c,
                              tnecs_component ar, tnecs_ns deltat, void *data);
 
 /************* REGISTRATION *********************/
-tnecs_component tnecs_register_component(struct tnecs_world *w,
+tnecs_component tnecs_register_component(tnecs_world *w,
                                          const char *name, size_t b);
 
-size_t tnecs_register_system(struct tnecs_world *w, const char *name,
+size_t tnecs_register_system(tnecs_world *w, const char *name,
                              tnecs_system_ptr system, tnecs_phase run_phase,
                              b32 isExclusive, size_t component_num, tnecs_component component_typeflag);
-size_t tnecs_register_phase(struct tnecs_world *w, tnecs_phase phase);
+size_t tnecs_register_phase(tnecs_world *w, tnecs_phase phase);
 
 
 #define TNECS_REGISTER_SYSTEM(world, pfunc, ...) tnecs_register_system(world, #pfunc, &pfunc, 0, 0, TNECS_VAR_EACH_ARGN(__VA_ARGS__), tnecs_component_names2typeflag(world, TNECS_VAR_EACH_ARGN(__VA_ARGS__), TNECS_VARMACRO_FOREACH_COMMA(TNECS_STRINGIFY, __VA_ARGS__)))
@@ -264,14 +266,14 @@ size_t tnecs_register_phase(struct tnecs_world *w, tnecs_phase phase);
 
 /************ ENTITY MANIPULATION *************/
 /* -- Public -- */
-tnecs_entity tnecs_entity_create(struct tnecs_world *w);
-tnecs_entity tnecs_entity_create_wID(struct tnecs_world *w, tnecs_entity entity);
-tnecs_entity tnecs_entities_create(struct tnecs_world *w, size_t num);
-tnecs_entity tnecs_entities_create_wID(struct tnecs_world *w, size_t num,
+tnecs_entity tnecs_entity_create(tnecs_world *w);
+tnecs_entity tnecs_entity_create_wID(tnecs_world *w, tnecs_entity entity);
+tnecs_entity tnecs_entities_create(tnecs_world *w, size_t num);
+tnecs_entity tnecs_entities_create_wID(tnecs_world *w, size_t num,
                                        tnecs_entity *ents);
-tnecs_entity tnecs_entity_create_wcomponents(struct tnecs_world *w, size_t argnum, ...);
+tnecs_entity tnecs_entity_create_wcomponents(tnecs_world *w, size_t argnum, ...);
 
-b32 tnecs_entity_destroy(struct tnecs_world *w, tnecs_entity entity);
+b32 tnecs_entity_destroy(tnecs_world *w, tnecs_entity entity);
 
 // Overloaded macros: -> TNECS_ENTITY_CREATE, TNECS_ENTITIES_CREATE, TNECS_ADD_COMPONENT
 #define TNECS_ENTITY_CREATE(...) TNECS_CHOOSE_ENTITY_CREATE(__VA_ARGS__, TNECS_ENTITY_CREATE2, TNECS_ENTITY_CREATE1)(__VA_ARGS__)
@@ -304,54 +306,54 @@ b32 tnecs_entity_destroy(struct tnecs_world *w, tnecs_entity entity);
 /********************************************************/
 /****************** TNECS INTERNALS *********************/
 /********************************************************/
-tnecs_entity tnecs_entity_add_components(struct tnecs_world *w, tnecs_entity entity,
+tnecs_entity tnecs_entity_add_components(tnecs_world *w, tnecs_entity entity,
                                          size_t num_components, tnecs_component typeflag, b32 isNew);
-void tnecs_entity_remove_components(struct tnecs_world *w,
+b32  tnecs_entity_remove_components(tnecs_world *w,
                                     tnecs_entity entity, size_t num_components, tnecs_component typeflag);
-void *tnecs_entity_get_component(struct tnecs_world *w, tnecs_entity entity,
+void *tnecs_entity_get_component(tnecs_world *w, tnecs_entity entity,
                                  tnecs_component component_id);
 
-size_t tnecs_entitiesbytype_add(struct tnecs_world *w, tnecs_entity entity,
+b32 tnecs_entitiesbytype_add(tnecs_world *w, tnecs_entity entity,
                                 tnecs_component new_type);
-size_t tnecs_entitiesbytype_del(struct tnecs_world *w, tnecs_entity entity,
+b32 tnecs_entitiesbytype_del(tnecs_world *w, tnecs_entity entity,
                                 tnecs_component old_type);
-size_t tnecs_entitiesbytype_migrate(struct tnecs_world *w, tnecs_entity entity,
+b32 tnecs_entitiesbytype_migrate(tnecs_world *w, tnecs_entity entity,
                                     tnecs_component old_type, tnecs_component new_type);
 
-b32 tnecs_component_add(struct tnecs_world *w, tnecs_component flag);
-b32 tnecs_component_copy(struct tnecs_world *w, tnecs_entity entity,
+b32 tnecs_component_add(tnecs_world *w, tnecs_component flag);
+b32 tnecs_component_copy(tnecs_world *w, tnecs_entity entity,
                           tnecs_component old_flag, tnecs_component new_flag);
-b32 tnecs_component_del(struct tnecs_world *w, tnecs_entity entity,
+b32 tnecs_component_del(tnecs_world *w, tnecs_entity entity,
                          tnecs_component old_flag);
-b32 tnecs_component_migrate(struct tnecs_world *w, tnecs_entity entity,
+b32 tnecs_component_migrate(tnecs_world *w, tnecs_entity entity,
                              tnecs_component old_flag, tnecs_component new_flag);
 
-b32 tnecs_component_array_new(struct tnecs_world *w, size_t num_components,
+b32 tnecs_component_array_new(tnecs_world *w, size_t num_components,
                                tnecs_component typeflag);
-b32 tnecs_component_array_init(struct tnecs_world *w,
-                                struct tnecs_Component_Array *array, size_t component_id);
+b32 tnecs_component_array_init(tnecs_world *w,
+                                tnecs_component_array *array, size_t component_id);
 
-b32 tnecs_system_order_switch(struct tnecs_world *w, tnecs_phase phase,
+b32 tnecs_system_order_switch(tnecs_world *w, tnecs_phase phase,
                                size_t order1, size_t order2);
 
 /************* UTILITY FUNCTIONS/MACROS *************/
-size_t tnecs_component_name2id(struct tnecs_world *w, const char *name);
-size_t tnecs_component_hash2id(struct tnecs_world *w, tnecs_hash hash);
-size_t tnecs_component_order_bytype(struct tnecs_world *w, size_t component_id,
+size_t tnecs_component_name2id(tnecs_world *w, const char *name);
+size_t tnecs_component_hash2id(tnecs_world *w, tnecs_hash hash);
+size_t tnecs_component_order_bytype(tnecs_world *w, size_t component_id,
                                     tnecs_component typeflag);
-size_t tnecs_component_order_bytypeid(struct tnecs_world *w, size_t component_id,
+size_t tnecs_component_order_bytypeid(tnecs_world *w, size_t component_id,
                                       size_t typeflag_id);
-tnecs_component tnecs_component_names2typeflag(struct tnecs_world *w, size_t argnum, ...);
+tnecs_component tnecs_component_names2typeflag(tnecs_world *w, size_t argnum, ...);
 tnecs_component tnecs_component_ids2typeflag(size_t argnum, ...);
-tnecs_component tnecs_component_hash2type(struct tnecs_world *w, tnecs_hash hash);
+tnecs_component tnecs_component_hash2type(tnecs_world *w, tnecs_hash hash);
 
-void tnecs_component_names_print(struct tnecs_world *w, tnecs_entity ent);
+void tnecs_component_names_print(tnecs_world *w, tnecs_entity ent);
 
-size_t tnecs_system_name2id(struct tnecs_world *w, const char *name);
-size_t tnecs_system_hash2id(struct tnecs_world *w, tnecs_hash hash);
-tnecs_component tnecs_system_name2typeflag(struct tnecs_world *w, const char *name);
+size_t tnecs_system_name2id(tnecs_world *w, const char *name);
+size_t tnecs_system_hash2id(tnecs_world *w, tnecs_hash hash);
+tnecs_component tnecs_system_name2typeflag(tnecs_world *w, const char *name);
 
-size_t tnecs_typeflagid(struct tnecs_world *w, tnecs_component typeflag);
+size_t tnecs_typeflagid(tnecs_world *w, tnecs_component typeflag);
 
 #define TNECS_COMPONENT_HASH2ID(world, hash) tnecs_component_hash2id(world, hash)
 #define TNECS_COMPONENT_HASH2TYPE(world, hash) tnecs_component_hash2type(world, hash)
@@ -376,11 +378,11 @@ void *tnecs_realloc(void *ptr, size_t old_len, size_t new_len, size_t elem_bytes
 void *tnecs_arrdel(void *arr, size_t elem, size_t len, size_t bytesize);
 void *tnecs_arrdel_scramble(void *arr, size_t elem, size_t len, size_t bytesize);
 
-b32 tnecs_growArray_bytype(struct tnecs_world *w, size_t typeflag_id);
-b32 tnecs_growArray_entity(struct tnecs_world *w);
-b32 tnecs_growArray_system(struct tnecs_world *w);
-b32 tnecs_growArray_typeflag(struct tnecs_world *w);
-b32 tnecs_growArray_phase(struct tnecs_world *w);
+b32 tnecs_growArray_bytype(tnecs_world *w, size_t typeflag_id);
+b32 tnecs_growArray_entity(tnecs_world *w);
+b32 tnecs_growArray_system(tnecs_world *w);
+b32 tnecs_growArray_typeflag(tnecs_world *w);
+b32 tnecs_growArray_phase(tnecs_world *w);
 
 /****************** STRING HASHING ****************/
 uint64_t tnecs_hash_djb2(const char *str);  // slightly faster
