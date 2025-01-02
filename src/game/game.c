@@ -171,15 +171,15 @@ void Game_Free(struct Game *sota) {
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "SDL_free tnecs world");
 
     if (sota->world != NULL) {
-        tnecs_world_destroy(sota->world);
+        tnecs_world_destroy(&sota->world);
         sota->world = NULL;
     }
     if (sota->world_render != NULL) {
-        tnecs_world_destroy(sota->world_render);
+        tnecs_world_destroy(&sota->world_render);
         sota->world_render = NULL;
     }
     if (sota->world_control != NULL) {
-        tnecs_world_destroy(sota->world_control);
+        tnecs_world_destroy(&sota->world_control);
         sota->world_control = NULL;
     }
 
@@ -566,7 +566,11 @@ int _Game_New_Tnecs(void *data) {
 
     // TODO:
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Tnecs: Genesis\n");
-    IES->world = tnecs_world_genesis();
+    if (!tnecs_world_genesis(&IES->world)) {
+        SDL_Log("Could not init tnecs_world");
+        SDL_assert(false);
+        exit(ERROR_Generic);
+    }
 
     // Don't reuse entities.
     // If I forget to update an entity somewhere, it'll be invalid for sure.
