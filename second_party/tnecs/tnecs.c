@@ -633,7 +633,7 @@ void *tnecs_entity_get_component(struct tnecs_World *world, tnecs_entity eID,
     TNECS_DEBUG_ASSERT(component_order <= world->num_components_bytype[tID]);
     size_t entity_order = world->entity_orders[eID];
     size_t bytesize = world->component_bytesizes[cID];
-    struct tnecs_Components_Array *comp_array;
+    struct tnecs_Component_Array *comp_array;
     comp_array = &world->components_bytype[tID][component_order];
     tnecs_byte *temp_component_bytesptr = (tnecs_byte *)(comp_array->components);
     out = (temp_component_bytesptr + (bytesize * entity_order));
@@ -753,7 +753,7 @@ b32 tnecs_component_copy(struct tnecs_World *world, tnecs_entity entity,
     TNECS_DEBUG_ASSERT(old_typeflag != TNECS_NULL);
     TNECS_DEBUG_ASSERT(old_typeflag != new_typeflag);
     size_t old_component_id, new_component_id, component_bytesize;
-    struct tnecs_Components_Array *old_array,  *new_array;
+    struct tnecs_Component_Array *old_array,  *new_array;
     tnecs_byte *old_component_ptr,        *new_component_ptr;
     tnecs_byte *old_component_bytesptr,   *new_component_bytesptr;
     for (size_t old_corder = 0; old_corder < num_comp_old; old_corder++) {
@@ -824,8 +824,8 @@ b32 tnecs_component_migrate(struct tnecs_World *world, tnecs_entity entity,
 
 b32 tnecs_component_array_new(struct tnecs_World *world, size_t num_components,
                                tnecs_component typeflag) {
-    struct tnecs_Components_Array *temp_comparray;
-    temp_comparray = calloc(num_components, sizeof(struct tnecs_Components_Array));
+    struct tnecs_Component_Array *temp_comparray;
+    temp_comparray = calloc(num_components, sizeof(struct tnecs_Component_Array));
 
     tnecs_component typeflag_reduced = typeflag, typeflag_added = 0, type_toadd;
     tnecs_component tID = tnecs_typeflagid(world, typeflag);
@@ -846,7 +846,7 @@ b32 tnecs_component_array_new(struct tnecs_World *world, size_t num_components,
     return ((typeflag_added == typeflag) && (num_flags == num_components));
 }
 
-void tnecs_component_array_init(struct tnecs_World *world, struct tnecs_Components_Array *in_array,
+void tnecs_component_array_init(struct tnecs_World *world, struct tnecs_Component_Array *in_array,
                                 size_t cID) {
     TNECS_DEBUG_ASSERT(cID > 0);
     TNECS_DEBUG_ASSERT(cID < world->num_components);
