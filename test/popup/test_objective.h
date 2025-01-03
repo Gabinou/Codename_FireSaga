@@ -9,10 +9,6 @@ void test_popup_objective() {
     /* -- Preliminaries -- */
     sota_mkdir("popup_objective");
 
-    /* -- Tinymt -- */
-    struct TINYMT32_T tinymt32;
-    RNG_Init_tinymt(&tinymt32);
-
     /* -- Create renderer -- */
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);

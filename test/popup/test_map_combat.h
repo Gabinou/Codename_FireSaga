@@ -11,10 +11,6 @@ void test_popup_map_combat() {
     sota_mkdir("popup_map_combat");
     Names_Load_All();
 
-    /* -- Tinymt -- */
-    struct TINYMT32_T tinymt32;
-    RNG_Init_tinymt(&tinymt32);
-
     /* -- Combat -- */
     struct Combat_Forecast combat_forecast;
     struct Combat_Phase combat_phases[SOTA_COMBAT_MAX_PHASES];
