@@ -5,7 +5,6 @@
 #include <math.h>
 #include "enums.h"
 #include "types.h"
-#include "tinymt32.h"
 
 #ifndef M_PI
     #define M_PI 3.14159265358979323846
@@ -54,9 +53,6 @@ void RNG_Init_xoroshiro256ss(void);
 void RNG_Set_xoroshiro256ss(u64 s1, u64 s2, u64 s3, u64 s4);
 void RNG_Get_xoroshiro256ss(u64 *s);
 
-/* --- Tinymt --- */
-void RNG_Init_tinymt(struct TINYMT32_T *tinymt);
-
 /* -- API -- */
 b32 RNG_checkRate(i16 rate, i16 mode);
 
@@ -64,7 +60,6 @@ b32 RNG_checkRate(i16 rate, i16 mode);
 /* - Uniform - */
 u8 RNG_URN(void);
 u64 RNG_openBSD_u64(u64 max, u64 min);
-u32 RNG_openBSD_u32(struct TINYMT32_T *tinymt, u32 min, u32 max);
 
 /* - Checkers - */
 b32 RNG_single_roll(u8 RN,  u8 hit);

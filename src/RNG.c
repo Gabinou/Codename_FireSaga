@@ -90,14 +90,6 @@ void RNG_Get_xoroshiro256ss(u64 *s_out) {
     s_out[3] = s[3];
 }
 
-void RNG_Init_tinymt(struct TINYMT32_T *tinymt) {
-    SDL_assert(tinymt);
-    tinymt->mat1 = 1990UL;
-    tinymt->mat2 =    5UL;
-    tinymt->tmat =    8UL;
-    tinymt32_init(tinymt, 777UL);
-}
-
 u8 RNG_URN(void) {
     u8 out = (u8)RNG_openBSD_u64(RN_MIN, RN_MAX);
     return (URN_debug >= 0 ? URN_debug : out);
@@ -132,19 +124,6 @@ u8 *RNG_boxmuller( u8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev) {
     RN_G[0] = (u8)((term1 * sin(term2)) * std_dev + avg);
     RN_G[1] = (u8)((term1 * cos(term2)) * std_dev + avg);
     return (RN_G);
-}
-
-u32 RNG_openBSD_u32(struct TINYMT32_T *tinymt, u32 min, u32 max) {
-    /* "Scales" uniform integer from [0 and 2**32 - 1] to [min, max[        */
-    /* Unbiased according to: Fast Random Integer Generation in an Interval */
-    u32 s = max - min;
-    u32 t = (UINT32_MAX - s + 1) % s;
-    u32 x;
-    do {
-        x = tinymt32_generate_uint32(tinymt);
-    } while (x < t);
-    u32 out = min + (x % s);
-    return (out);
 }
 
 u64 RNG_openBSD_u64(u64 min, u64 max) {

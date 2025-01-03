@@ -120,14 +120,6 @@ struct Target physfs    = {
     .kind      = MACE_STATIC_LIBRARY,
 };
 
-struct Target tinymt    = {
-    .sources   = ".",
-    .flags     = "-std=iso9899:1999",
-    .base_dir  = "third_party/tinymt",
-    .link_flags = "-whole-archive",
-    .kind      = MACE_STATIC_LIBRARY,
-};
-
 /* --- SotA --- */
 /* -- Native Windows -- */
 /* TODO: Test native windows target */
@@ -138,14 +130,14 @@ struct Target win_sota = {
                 "second_party/noursmath,second_party/tnecs,"
                 "second_party/parg,second_party/nourstest,"
                 "second_party/noursclock,"
-                "third_party/physfs,third_party/tinymt," 
+                "third_party/physfs," 
                 "third_party/stb,third_party/cJSON,"
                 "/usr/include/SDL2",
     .sources  = "src,src/bars/,src/menu/,src/popup/,"
                 "src/systems/,src/game/,src/map/,src/unit/,"
                 "src/controller/",
     .links    = "SDL2,SDL2_image,SDL2_mixer,m,cjson,noursclock,"
-                "noursmath,physfs,tinymt,tnecs,parg",
+                "noursmath,physfs,tnecs,parg",
                 /* TODO: Remove flags given by sdl2-config */
     .flags    = "-lmingw32,-lSDL2,-lSDL2main,-std=iso9899:1999,"
                 "-fno-strict-overflow,-fno-strict-aliasing,"
@@ -164,14 +156,14 @@ struct Target sota = {
                 "second_party/noursmath,second_party/tnecs,"
                 "second_party/parg,second_party/nourstest,"
                 "second_party/noursclock,"
-                "third_party/physfs,third_party/tinymt,"
+                "third_party/physfs,"
                 "third_party/stb,third_party/cJSON,"
                 "/usr/include/SDL2",
     .sources  = "src,src/bars/,src/menu/,src/popup/,"
                 "src/systems/,src/game/,src/map/,src/unit/,"
                 "src/controller/",
     .links    = "SDL2,SDL2_image,SDL2_mixer,m,GLEW,noursclock,"
-                "cjson,noursmath,physfs,tinymt,tnecs,parg",
+                "cjson,noursmath,physfs,tnecs,parg",
     .flags    = "-fno-strict-overflow,-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
                 "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
@@ -189,7 +181,7 @@ struct Target sota_main = {
                 "second_party/noursmath,second_party/tnecs,"
                 "second_party/parg,second_party/nourstest,"
                 "second_party/noursclock,"
-                "third_party/physfs,third_party/tinymt," 
+                "third_party/physfs," 
                 "third_party/stb,third_party/cJSON,"
                 "/usr/include/SDL2",
     .sources  = "src/main.c",
@@ -211,7 +203,7 @@ struct Target sota_dll = {
                  "second_party/noursmath,second_party/tnecs,"
                  "second_party/parg,second_party/nourstest,"
                 "second_party/noursclock,"
-                 "third_party/physfs,third_party/tinymt," 
+                 "third_party/physfs," 
                  "third_party/stb,third_party/cJSON,"
                  "/usr/include/SDL2",
     .sources    = "src,src/bars/,src/menu/,src/popup/,"
@@ -220,7 +212,7 @@ struct Target sota_dll = {
     .excludes   = "src/main.c",
     .link_flags = "-rpath=./,-whole-archive,",
     .links      = "SDL2,SDL2_image,SDL2_mixer,m,GLEW,noursclock,"
-                  "cjson,noursmath,physfs,tinymt,tnecs,parg",
+                  "cjson,noursmath,physfs,tnecs,parg",
     .flags      = "-Lbuild,-fno-strict-overflow,-fno-strict-aliasing,"
                   "-fwrapv,-fno-delete-null-pointer-checks,"
                   "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999",
@@ -239,14 +231,14 @@ struct Target l2w_sota = {
                 "second_party/noursmath,second_party/tnecs,"
                 "second_party/parg,second_party/nourstest,"
                 "second_party/noursclock,"
-                "third_party/physfs,third_party/tinymt," 
+                "third_party/physfs," 
                 "third_party/stb,third_party/cJSON,"
                 "/usr/local/x86_64-w64-mingw32/include",
     .sources  = "src,src/bars/,src/menu/,src/popup/,"
                 "src/systems/,src/game/,src/map/,src/unit/,"
                 "src/controller/",
     .links    = "mingw32,SDL2main,SDL2,SDL2_image,SDL2_mixer,"
-                "cjson,noursmath,physfs,tinymt,tnecs,parg,noursclock",
+                "cjson,noursmath,physfs,tnecs,parg,noursclock",
     .flags    = "-L/usr/local/x86_64-w64-mingw32/lib,-B/usr/local/lib/tcc/win32"
                 "-fno-strict-overflow,-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
@@ -265,7 +257,7 @@ struct Target test = {
                 "second_party/noursmath,second_party/tnecs,"
                 "second_party/parg,second_party/nourstest,"
                 "second_party/noursclock,"
-                "third_party/physfs,third_party/tinymt,"
+                "third_party/physfs,"
                 "third_party/stb,third_party/cJSON,"
                 "/usr/include/SDL2,"
                 "test,test/menu,test/popup",
@@ -274,7 +266,7 @@ struct Target test = {
                 "src/controller",
     .excludes = "src/main.c",
     .links    = "SDL2,SDL2_image,SDL2_mixer,m,GLEW,noursclock,"
-                "cjson,noursmath,physfs,tinymt,tnecs,parg",
+                "cjson,noursmath,physfs,tnecs,parg",
     .flags    = "-fno-strict-overflow,-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
                 "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
@@ -291,7 +283,7 @@ struct Target bench = {
                 "second_party/noursmath,second_party/tnecs,"
                 "second_party/parg,second_party/nourstest,"
                 "second_party/noursclock,"
-                "third_party/physfs,third_party/tinymt,"
+                "third_party/physfs,"
                 "third_party/stb,third_party/cJSON,"
                 "/usr/include/SDL2,"
                 "test,test/menu,test/popup",
@@ -300,7 +292,7 @@ struct Target bench = {
                 "src/controller",
     .excludes = "src/main.c",
     .links    = "SDL2,SDL2_image,SDL2_mixer,m,GLEW,noursclock,"
-                "cjson,noursmath,physfs,tinymt,tnecs,parg",
+                "cjson,noursmath,physfs,tnecs,parg",
     .flags    = "-L/usr/lib,-fno-strict-overflow,"
                 "-fno-strict-aliasing,-std=iso9899:1999,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
@@ -339,7 +331,6 @@ int mace(int argc, char *argv[]) {
     /* - third_party - */
     MACE_ADD_TARGET(cjson);
     MACE_ADD_TARGET(physfs);
-    MACE_ADD_TARGET(tinymt);
 
     /* - SotA - */
     // MACE_ADD_TARGET(sota);
