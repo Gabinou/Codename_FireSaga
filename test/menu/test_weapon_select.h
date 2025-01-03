@@ -15,7 +15,8 @@ void test_menu_loadout_select(void) {
     sota_mkdir("menu_loadout_select");
 
     /* -- Tnecs world -- */
-    tnecs_world *world = tnecs_world_genesis();
+    tnecs_world *world = NULL;
+    tnecs_world_genesis(&world);
     TNECS_REGISTER_COMPONENT(world, Unit);
     TNECS_REGISTER_COMPONENT(world, Position);
     tnecs_entity Silou_ent  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
@@ -347,7 +348,7 @@ void test_menu_loadout_select(void) {
 
     SDL_DestroyRenderer(renderer);
     Game_Weapons_Free(&weapons_dtab);
-    tnecs_world_destroy(world);
+    tnecs_world_destroy(&world);
 }
 
 #undef TEST_ROW_LEN
@@ -362,7 +363,8 @@ void test_menu_loadout_select_two_hands(void) {
     /* --- PREPARATION --- */
 
     /* -- Tnecs world -- */
-    tnecs_world *world = tnecs_world_genesis();
+    tnecs_world *world = NULL;
+    tnecs_world_genesis(&world);
     TNECS_REGISTER_COMPONENT(world, Unit);
     TNECS_REGISTER_COMPONENT(world, Position);
     tnecs_entity Silou_ent  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);

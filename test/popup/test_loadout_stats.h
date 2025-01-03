@@ -10,7 +10,8 @@ void test_popup_loadout_stats() {
     Names_Load_All();
 
     /* Tnecs init */
-    tnecs_world *world = tnecs_world_genesis();
+    tnecs_world *world = NULL;
+    tnecs_world_genesis(&world);
     TNECS_REGISTER_COMPONENT(world, Unit);
     TNECS_REGISTER_COMPONENT(world, Position);
     tnecs_entity Silou  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);

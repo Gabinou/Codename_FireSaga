@@ -126,7 +126,8 @@ void test_map_usable(void) {
     /* Does the loadout make sense for unit/class/selection on MAP. */
 
     /* Tnecs init */
-    tnecs_world *world = tnecs_world_genesis();
+    tnecs_world *world = NULL;
+    tnecs_world_genesis(&world);
     TNECS_REGISTER_COMPONENT(world, Unit);
     TNECS_REGISTER_COMPONENT(world, Position);
     tnecs_entity Silou  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
@@ -415,7 +416,7 @@ void test_map_usable(void) {
     // TODO: Ranged staff
 
     Map_Free(map);
-    tnecs_world_destroy(world);
+    tnecs_world_destroy(&world);
     SDL_free(map);
 }
 
