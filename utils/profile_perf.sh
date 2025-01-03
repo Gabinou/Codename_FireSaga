@@ -8,4 +8,4 @@ SDL_AUDIODRIVER=pipewire perf record -F 99 -g /home/gabinours/firesaga/build/sot
 perf script | gprof2dot -f perf | dot -Tpng -o output.png
 
 # --- cache misses ---
-perf stat -B -e cache-references,cache-misses,cycles,instructions,branches,faults,migrations ./sota
+perf stat -B -e cache-references,cache-misses,cycles,instructions,branches,faults,migrations,L1-dcache-loads,L1-dcache-load-misses ./sota
