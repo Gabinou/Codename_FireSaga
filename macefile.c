@@ -92,7 +92,7 @@ struct Target tnecs     = {
 
 /* - third_party - */
 struct Target cjson     = {
-    .base_dir  = "third_party/cJson",
+    .base_dir  = "third_party/cJSON",
     .flags     = "-std=iso9899:1999",
     .sources   = ".",
     .link_flags = "-whole-archive,-rpath=/home/gabinours/firesaga/build",
@@ -139,7 +139,7 @@ struct Target win_sota = {
                 "second_party/parg,second_party/nourstest,"
                 "second_party/noursclock,"
                 "third_party/physfs,third_party/tinymt," 
-                "third_party/stb,third_party/cJson,"
+                "third_party/stb,third_party/cJSON,"
                 "/usr/include/SDL2",
     .sources  = "src,src/bars/,src/menu/,src/popup/,"
                 "src/systems/,src/game/,src/map/,src/unit/,"
@@ -165,7 +165,7 @@ struct Target sota = {
                 "second_party/parg,second_party/nourstest,"
                 "second_party/noursclock,"
                 "third_party/physfs,third_party/tinymt,"
-                "third_party/stb,third_party/cJson,"
+                "third_party/stb,third_party/cJSON,"
                 "/usr/include/SDL2",
     .sources  = "src,src/bars/,src/menu/,src/popup/,"
                 "src/systems/,src/game/,src/map/,src/unit/,"
@@ -190,7 +190,7 @@ struct Target sota_main = {
                 "second_party/parg,second_party/nourstest,"
                 "second_party/noursclock,"
                 "third_party/physfs,third_party/tinymt," 
-                "third_party/stb,third_party/cJson,"
+                "third_party/stb,third_party/cJSON,"
                 "/usr/include/SDL2",
     .sources  = "src/main.c",
     .links    = "SDL2,parg",
@@ -212,7 +212,7 @@ struct Target sota_dll = {
                  "second_party/parg,second_party/nourstest,"
                 "second_party/noursclock,"
                  "third_party/physfs,third_party/tinymt," 
-                 "third_party/stb,third_party/cJson,"
+                 "third_party/stb,third_party/cJSON,"
                  "/usr/include/SDL2",
     .sources    = "src,src/bars/,src/menu/,src/popup/,"
                   "src/systems/,src/game/,src/map/,src/unit/,"
@@ -240,7 +240,7 @@ struct Target l2w_sota = {
                 "second_party/parg,second_party/nourstest,"
                 "second_party/noursclock,"
                 "third_party/physfs,third_party/tinymt," 
-                "third_party/stb,third_party/cJson,"
+                "third_party/stb,third_party/cJSON,"
                 "/usr/local/x86_64-w64-mingw32/include",
     .sources  = "src,src/bars/,src/menu/,src/popup/,"
                 "src/systems/,src/game/,src/map/,src/unit/,"
@@ -266,7 +266,7 @@ struct Target test = {
                 "second_party/parg,second_party/nourstest,"
                 "second_party/noursclock,"
                 "third_party/physfs,third_party/tinymt,"
-                "third_party/stb,third_party/cJson,"
+                "third_party/stb,third_party/cJSON,"
                 "/usr/include/SDL2,"
                 "test,test/menu,test/popup",
     .sources  = "test/*.c,src/*.c,src/bars/,src/menu/,src/unit,"
@@ -292,7 +292,7 @@ struct Target bench = {
                 "second_party/parg,second_party/nourstest,"
                 "second_party/noursclock,"
                 "third_party/physfs,third_party/tinymt,"
-                "third_party/stb,third_party/cJson,"
+                "third_party/stb,third_party/cJSON,"
                 "/usr/include/SDL2,"
                 "test,test/menu,test/popup",
     .sources  = "bench/*.c,src/*.c,src/bars/,src/menu/,src/unit,"

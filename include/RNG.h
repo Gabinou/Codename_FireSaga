@@ -19,7 +19,7 @@ typedef int cJSON_bool;
 cJSON *cJSON_GetObjectItem(const cJSON *const object, const char *const string);
 cJSON *cJSON_CreateNumber(double num);
 cJSON_bool cJSON_AddItemToObject(cJSON *object, const char *string, cJSON *item);
-double cJSON_GetNumberValue(cJSON *item);
+double cJSON_GetNumberValue(const cJSON *const item);
 float sota_slowpow(float base, int exponent);
 
 /* -- GLOSSARY: -- */
