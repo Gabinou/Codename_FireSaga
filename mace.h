@@ -4344,6 +4344,7 @@ pid_t mace_exec_wbash(const char *exec, char *const arguments[]) {
             NULL
         };
         mace_exec_print(bashargs, 3);
+        // TODO: if (execv(exec.c_str(), argv);) { perror (cmd); exit(127); };    
         execvp("/bin/bash", bashargs);
         exit(0);
     }
