@@ -421,7 +421,9 @@ enum MOUNT_TYPES {
 };
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x) COMPONENT_##x,
+#define COMPONENT_ID(name) COMPONENT_##name
+#define TNECS_GET_COMPONENT(world, entity, name) tnecs_get_component(world, entity, COMPONENT_ID(name))
+#define REGISTER_ENUM(x) COMPONENT_ID(x),
 enum COMPONENT {
     COMPONENT_NULL  = TNECS_NULL,
 #include "names/components.h"
