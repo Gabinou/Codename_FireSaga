@@ -421,6 +421,14 @@ enum MOUNT_TYPES {
 };
 #undef REGISTER_ENUM
 
+#define REGISTER_ENUM(x) COMPONENT_##x,
+enum COMPONENT {
+    COMPONENT_NULL  = TNECS_NULL,
+#include "names/components.h"
+    COMPONENT_NUM,
+};
+#undef REGISTER_ENUM
+
 #define REGISTER_ENUM(x) MOUNT_NAME_##x,
 enum MOUNT_NAMES {
     MOUNT_NAME_START = 0,

@@ -577,36 +577,14 @@ int _Game_New_Tnecs(void *data) {
     SDL_assert(IES->world->reuse_entities == false);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Components Registration\n");
-    TNECS_REGISTER_COMPONENT(IES->world, Position);
-    TNECS_REGISTER_COMPONENT(IES->world, Sprite);
-    TNECS_REGISTER_COMPONENT(IES->world, Unit);
-    TNECS_REGISTER_COMPONENT(IES->world, Boss);
-    TNECS_REGISTER_COMPONENT(IES->world, Menu);
-    TNECS_REGISTER_COMPONENT(IES->world, controllerGamepad);
-    TNECS_REGISTER_COMPONENT(IES->world, controllerMouse);
-    TNECS_REGISTER_COMPONENT(IES->world, controllerKeyboard);
-    TNECS_REGISTER_COMPONENT(IES->world, controllerTouchpad);
-    TNECS_REGISTER_COMPONENT(IES->world, Timer);
-    TNECS_REGISTER_COMPONENT(IES->world, PopUp);
-    TNECS_REGISTER_COMPONENT(IES->world, Slider);
-    TNECS_REGISTER_COMPONENT(IES->world, Hover);
-    TNECS_REGISTER_COMPONENT(IES->world, SliderOffscreen);
-    TNECS_REGISTER_COMPONENT(IES->world, CursorFlag);
-    TNECS_REGISTER_COMPONENT(IES->world, MouseFlag);
-    TNECS_REGISTER_COMPONENT(IES->world, Text);
-    TNECS_REGISTER_COMPONENT(IES->world, Breakable);
-    TNECS_REGISTER_COMPONENT(IES->world, Door);
-    TNECS_REGISTER_COMPONENT(IES->world, Chest);
-    TNECS_REGISTER_COMPONENT(IES->world, Mobj_Link);
-    TNECS_REGISTER_COMPONENT(IES->world, MapHPBar);
-    TNECS_REGISTER_COMPONENT(IES->world, CombatAnimation);
-    TNECS_REGISTER_COMPONENT(IES->world, MapAnimation);
-    TNECS_REGISTER_COMPONENT(IES->world, UnitMoveAnimation);
-    TNECS_REGISTER_COMPONENT(IES->world, RenderTop);
-    TNECS_REGISTER_COMPONENT(IES->world, PixelFont);
-    TNECS_REGISTER_COMPONENT(IES->world, AI);
-    TNECS_REGISTER_COMPONENT(IES->world, Scene);
-    TNECS_REGISTER_COMPONENT(IES->world, Cutscene);
+    #define REGISTER_ENUM(x) TNECS_REGISTER_COMPONENT(IES->world, x);
+    #include "names/components.h"
+    #undef REGISTER_ENUM
+
+    // TODO: Replace every
+    // - TNECS_GET_COMPONENT(world, entity_id, ComponentName)
+    // - tnecs_get_component(world, entity_id, COMPONENT_Position)
+
     IES->timer_typeflag = TNECS_COMPONENT_NAME2TYPE(IES->world, Timer);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration\n");

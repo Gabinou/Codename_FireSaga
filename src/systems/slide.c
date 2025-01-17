@@ -62,7 +62,7 @@ void Slide_Sprite(tnecs_system_input *input) {
     SDL_assert(sota != NULL);
 
     /* -- Check if entity is cursor -- */
-    tnecs_component cursor_Component_Flag = TNECS_COMPONENT_NAME2TYPE(input->world, CursorFlag);
+    tnecs_component cursor_Component_Flag = TNECS_COMPONENT_ID2TYPE(COMPONENT_CursorFlag);
 
     for (u16 order = 0; order < input->num_entities; order++) {
         struct Position *position   = position_arr  + order;
