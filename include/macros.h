@@ -20,6 +20,8 @@ only the enum NAMES gets STRINGIZE'd
 #define STRINGIFY(x) #x
 #define STRINGIZE(x) STRINGIFY(x)
 
+#define TNECS_GET_COMPONENT(world, entity, component) tnecs_get_component(world, entity, component##_ID)
+
 #define SOTA_CONCATENATE( arg1, arg2) SOTA_CONCATENATE1(arg1, arg2)
 #define SOTA_CONCATENATE1(arg1, arg2) SOTA_CONCATENATE2(arg1, arg2)
 #define SOTA_CONCATENATE2(arg1, arg2) arg1##arg2
