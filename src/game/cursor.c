@@ -411,12 +411,12 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
 /* --- Cursor --- */
 void Game_Cursor_Create(struct Game *sota) {
     Game_Cursor_Free(sota);
-    sota->entity_cursor = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Slider,
-                                                          Position, Sprite,
-                                                          controllerKeyboard,
-                                                          controllerGamepad,
-                                                          controllerTouchpad,
-                                                          Timer, CursorFlag);
+    sota->entity_cursor = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Slider_ID,
+                                                          Position_ID, Sprite_ID,
+                                                          controllerKeyboard_ID,
+                                                          controllerGamepad_ID,
+                                                          controllerTouchpad_ID,
+                                                          Timer_ID, CursorFlag_ID);
     SDL_assert(sota->entity_cursor != 0);
     struct controllerKeyboard *keyboard;
     keyboard = IES_GET_COMPONENT(sota->world, sota->entity_cursor, controllerKeyboard);
@@ -516,8 +516,8 @@ void Game_Cursor_Disable(struct Game *sota) {
 /* --- Mouse --- */
 void Game_Mouse_Create(struct Game *sota) {
     Game_Mouse_Free(sota);
-    sota->entity_mouse = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, controllerMouse,
-                                                         Position, Sprite, MouseFlag);
+    sota->entity_mouse = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, controllerMouse_ID,
+                                                         Position_ID, Sprite_ID, MouseFlag_ID);
     struct Position *position;
     position = IES_GET_COMPONENT(sota->world, sota->entity_mouse, Position);
     struct controllerMouse *mouse;

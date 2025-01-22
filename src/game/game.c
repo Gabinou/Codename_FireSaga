@@ -588,8 +588,8 @@ int _Game_New_Tnecs(void *data) {
     IES->timer_typeflag = TNECS_COMPONENT_NAME2TYPE(IES->world, Timer);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration\n");
-    #define REGISTER_ENUM(pfunc, phase, excl, ...) TNECS_REGISTER_COMPONENT(IES->world, x);
-    #include "names/components.h"
+    #define REGISTER_ENUM(pfunc, phase, excl, ...) TNECS_REGISTER_SYSTEM(IES->world, pfunc, phase, excl, __VA_ARGS__);
+    #include "names/systems.h"
     #undef REGISTER_ENUM
 
     /* --- SYSTEM REGISTERING: FIRST COME FIRST SERVED ---*/
@@ -661,7 +661,7 @@ void Game_Startup_Scene(Game *IES) {
     s8 filename = Scene_Filename(IES->settings.args.scene);
     // SDL_Log("Loading Scene '%s'", filename.data);
 
-    IES->scene      = TNECS_ENTITY_CREATE_wCOMPONENTS(IES->world, Scene);
+    IES->scene      = TNECS_ENTITY_CREATE_wCOMPONENTS(IES->world, Scene_ID);
     Scene *scene    = IES_GET_COMPONENT(IES->world, IES->scene, Scene);
     *scene = Scene_default;
     // TODO: Remove quit event on scene finish
@@ -979,7 +979,7 @@ i64 Game_FPS_Delay(struct Game *sota, u64 elapsedTime_ns) {
 void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
     if (sota->entity_fps != 0)
         tnecs_entity_destroy(sota->world, sota->entity_fps);
-    sota->entity_fps = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position, Text, Timer);
+    sota->entity_fps = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position_ID, Text_ID, Timer_ID);
 
     /* -- Get timer -- */
     struct Timer *timer;
@@ -1010,8 +1010,6 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
     text->update_time_ns    = in_update_time_ns;
     Text_Set(text, "60.1", PIXELNOURS_BIG_Y_OFFSET);
 
-    SDL_assert(sota->world->entity_typeflags[sota->entity_fps] ==
-               TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Timer, Position, Text));
 }
 
 /* --- SETTINGS --- */

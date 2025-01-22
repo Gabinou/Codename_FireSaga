@@ -179,7 +179,7 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
 
         SDL_LogDebug(SOTA_LOG_AI, "AI: Pause AFTER AI_act");
         /* Pause AFTER AI action */
-        sota->reinf_timer   = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer);
+        sota->reinf_timer   = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer_ID);
         struct Timer *timer = IES_GET_COMPONENT(sota->world, sota->reinf_timer, Timer);
         *timer = Timer_default;
         timer->limit_ns = sota->settings.enemy_turn_settings.pause_post_move;

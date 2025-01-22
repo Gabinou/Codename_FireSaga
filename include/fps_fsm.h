@@ -26,6 +26,9 @@
 
 */
 
+/* --- FORWARD DECLARATIONS --- */
+struct Game;
+
 typedef void (*fsm_main_t)(struct Game *);
 
 extern const fsm_main_t fsm_cFrame_s[GAME_STATE_NUM];

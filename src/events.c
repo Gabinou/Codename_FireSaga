@@ -282,7 +282,7 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
 
         /* -- Timer for reinforcements -- */
         SDL_assert(sota->reinf_timer == TNECS_NULL);
-        sota->reinf_timer   = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer);
+        sota->reinf_timer   = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer_ID);
         struct Timer *timer = IES_GET_COMPONENT(sota->world, sota->reinf_timer, Timer);
         *timer = Timer_default;
 
@@ -396,17 +396,17 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     /* - Remove unused components - */
     for (int i = 0; i < DARR_NUM(sota->map->units_onfield); i++) {
         tnecs_entity ent = sota->map->units_onfield[i];
-        TNECS_REMOVE_COMPONENTS(sota->world, ent, MapHPBar);
+        TNECS_REMOVE_COMPONENTS(sota->world, ent, MapHPBar_ID);
         if (IES_ENTITY_HASCOMPONENT(sota->world, ent, RenderTop)) {
-            TNECS_REMOVE_COMPONENTS(sota->world, ent, RenderTop);
+            TNECS_REMOVE_COMPONENTS(sota->world, ent, RenderTop_ID);
         }
 
         if (IES_ENTITY_HASCOMPONENT(sota->world, ent, UnitMoveAnimation)) {
-            TNECS_REMOVE_COMPONENTS(sota->world, ent, UnitMoveAnimation);
+            TNECS_REMOVE_COMPONENTS(sota->world, ent, UnitMoveAnimation_ID);
         }
 
         if (IES_ENTITY_HASCOMPONENT(sota->world, ent, Boss)) {
-            TNECS_REMOVE_COMPONENTS(sota->world, ent, Boss);
+            TNECS_REMOVE_COMPONENTS(sota->world, ent, Boss_ID);
         }
     }
 
@@ -415,8 +415,8 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
 
     /* -- Creating scene to play -- */
     // TODO: play Scene, OR cutscene?
-    sota->scene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Scene,
-                                                  Position, Text, Timer);
+    sota->scene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Scene_ID,
+                                                  Position_ID, Text_ID, Timer_ID);
 
     struct Scene *scene  = IES_GET_COMPONENT(sota->world, sota->scene, Scene);
     SDL_assert(scene != NULL);
@@ -538,17 +538,17 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
     if (sota->map != NULL) {
         for (int i = 0; i < DARR_NUM(sota->map->units_onfield); i++) {
             tnecs_entity ent = sota->map->units_onfield[i];
-            TNECS_REMOVE_COMPONENTS(sota->world, ent, MapHPBar);
+            TNECS_REMOVE_COMPONENTS(sota->world, ent, MapHPBar_ID);
             if (IES_ENTITY_HASCOMPONENT(sota->world, ent, RenderTop)) {
-                TNECS_REMOVE_COMPONENTS(sota->world, ent, RenderTop);
+                TNECS_REMOVE_COMPONENTS(sota->world, ent, RenderTop_ID);
             }
 
             if (IES_ENTITY_HASCOMPONENT(sota->world, ent, UnitMoveAnimation)) {
-                TNECS_REMOVE_COMPONENTS(sota->world, ent, UnitMoveAnimation);
+                TNECS_REMOVE_COMPONENTS(sota->world, ent, UnitMoveAnimation_ID);
             }
 
             if (IES_ENTITY_HASCOMPONENT(sota->world, ent, Boss)) {
-                TNECS_REMOVE_COMPONENTS(sota->world, ent, Boss);
+                TNECS_REMOVE_COMPONENTS(sota->world, ent, Boss_ID);
             }
         }
 
@@ -596,8 +596,8 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     tnecs_component component_flag;
     size_t flag_id;
 
-    component_flag  = tnecs_component_names2typeflag(sota->world, 2, "Sprite", "Unit");
-    flag_id         = tnecs_typeflagid(sota->world, component_flag);
+    component_flag  = tnecs_component_ids2archetype(2, Sprite_ID, Unit_ID);
+    flag_id         = tnecs_archetypeid(sota->world, component_flag);
 
     Reload_Entities(sota, Reload_JSON, flag_id, "Sprite");
 
@@ -734,7 +734,7 @@ void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity turn_transition;
-    turn_transition = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, MapAnimation, Position, Text, Timer);
+    turn_transition = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, MapAnimation_ID, Position_ID, Text_ID, Timer_ID);
 
     struct Timer *timer;
     timer  = IES_GET_COMPONENT(sota->world, turn_transition, Timer);
@@ -1216,17 +1216,17 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
     /* - Remove unused components - */
     for (int i = 0; i < DARR_NUM(sota->map->units_onfield); i++) {
         tnecs_entity ent = sota->map->units_onfield[i];
-        TNECS_REMOVE_COMPONENTS(sota->world, ent, MapHPBar);
+        TNECS_REMOVE_COMPONENTS(sota->world, ent, MapHPBar_ID);
         if (IES_ENTITY_HASCOMPONENT(sota->world, ent, RenderTop)) {
-            TNECS_REMOVE_COMPONENTS(sota->world, ent, RenderTop);
+            TNECS_REMOVE_COMPONENTS(sota->world, ent, RenderTop_ID);
         }
 
         if (IES_ENTITY_HASCOMPONENT(sota->world, ent, UnitMoveAnimation)) {
-            TNECS_REMOVE_COMPONENTS(sota->world, ent, UnitMoveAnimation);
+            TNECS_REMOVE_COMPONENTS(sota->world, ent, UnitMoveAnimation_ID);
         }
 
         if (IES_ENTITY_HASCOMPONENT(sota->world, ent, Boss)) {
-            TNECS_REMOVE_COMPONENTS(sota->world, ent, Boss);
+            TNECS_REMOVE_COMPONENTS(sota->world, ent, Boss_ID);
         }
     }
 
@@ -1234,8 +1234,8 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
     Game_Map_Free(sota);
 
     /* -- Creating cutscene to play -- */
-    sota->cutscene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Cutscene,
-                                                     Position, Text, Timer);
+    sota->cutscene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Cutscene_ID,
+                                                     Position_ID, Text_ID, Timer_ID);
 
     struct Cutscene *cutscene;
     cutscene  = IES_GET_COMPONENT(sota->world, sota->cutscene, Cutscene);
@@ -1386,7 +1386,7 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     /* -- Create combat animation entity -- */
     // TODO change to MapAnimation component
     tnecs_entity combat_animation;
-    combat_animation = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer, CombatAnimation);
+    combat_animation = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer_ID, CombatAnimation_ID);
 
     struct CombatAnimation *combat_anim;
     combat_anim  = IES_GET_COMPONENT(sota->world, combat_animation, CombatAnimation);
@@ -1567,7 +1567,7 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
 
     /* --- Remove MapHPbar --- */
     if (IES_ENTITY_HASCOMPONENT(sota->world, victim_entity, MapHPBar))
-        TNECS_REMOVE_COMPONENTS(sota->world, victim_entity, MapHPBar);
+        TNECS_REMOVE_COMPONENTS(sota->world, victim_entity, MapHPBar_ID);
 
     /* Components changed place, need to reload */
     victim = IES_GET_COMPONENT(sota->world, victim_entity, Unit);
