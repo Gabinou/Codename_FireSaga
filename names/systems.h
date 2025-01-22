@@ -9,7 +9,7 @@ REGISTER_ENUM(Animate_Sprite,           0, 0, Sprite_ID,   Position_ID,   Timer_
 // Remove animated flag. Animated sprites must have a timer! Still sprites dont!
 
 /* -- Scrolling Text -- */
-REGISTER_ENUM(Scroll_Text,              0, 0, PixelFont, Timer);
+REGISTER_ENUM(Scroll_Text,              0, 0, PixelFont_ID, Timer_ID);
 
 /* -- Drawing -- */
 /* - for now only drawn sprites are map_units - */
