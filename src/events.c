@@ -397,15 +397,15 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     for (int i = 0; i < DARR_NUM(sota->map->units_onfield); i++) {
         tnecs_entity ent = sota->map->units_onfield[i];
         TNECS_REMOVE_COMPONENTS(sota->world, ent, MapHPBar);
-        if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, RenderTop)) {
+        if (IES_ENTITY_HASCOMPONENT(sota->world, ent, RenderTop)) {
             TNECS_REMOVE_COMPONENTS(sota->world, ent, RenderTop);
         }
 
-        if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, UnitMoveAnimation)) {
+        if (IES_ENTITY_HASCOMPONENT(sota->world, ent, UnitMoveAnimation)) {
             TNECS_REMOVE_COMPONENTS(sota->world, ent, UnitMoveAnimation);
         }
 
-        if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, Boss)) {
+        if (IES_ENTITY_HASCOMPONENT(sota->world, ent, Boss)) {
             TNECS_REMOVE_COMPONENTS(sota->world, ent, Boss);
         }
     }
@@ -539,15 +539,15 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
         for (int i = 0; i < DARR_NUM(sota->map->units_onfield); i++) {
             tnecs_entity ent = sota->map->units_onfield[i];
             TNECS_REMOVE_COMPONENTS(sota->world, ent, MapHPBar);
-            if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, RenderTop)) {
+            if (IES_ENTITY_HASCOMPONENT(sota->world, ent, RenderTop)) {
                 TNECS_REMOVE_COMPONENTS(sota->world, ent, RenderTop);
             }
 
-            if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, UnitMoveAnimation)) {
+            if (IES_ENTITY_HASCOMPONENT(sota->world, ent, UnitMoveAnimation)) {
                 TNECS_REMOVE_COMPONENTS(sota->world, ent, UnitMoveAnimation);
             }
 
-            if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, Boss)) {
+            if (IES_ENTITY_HASCOMPONENT(sota->world, ent, Boss)) {
                 TNECS_REMOVE_COMPONENTS(sota->world, ent, Boss);
             }
         }
@@ -1217,15 +1217,15 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
     for (int i = 0; i < DARR_NUM(sota->map->units_onfield); i++) {
         tnecs_entity ent = sota->map->units_onfield[i];
         TNECS_REMOVE_COMPONENTS(sota->world, ent, MapHPBar);
-        if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, RenderTop)) {
+        if (IES_ENTITY_HASCOMPONENT(sota->world, ent, RenderTop)) {
             TNECS_REMOVE_COMPONENTS(sota->world, ent, RenderTop);
         }
 
-        if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, UnitMoveAnimation)) {
+        if (IES_ENTITY_HASCOMPONENT(sota->world, ent, UnitMoveAnimation)) {
             TNECS_REMOVE_COMPONENTS(sota->world, ent, UnitMoveAnimation);
         }
 
-        if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, Boss)) {
+        if (IES_ENTITY_HASCOMPONENT(sota->world, ent, Boss)) {
             TNECS_REMOVE_COMPONENTS(sota->world, ent, Boss);
         }
     }
@@ -1327,8 +1327,8 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     struct Sprite *agg_sprite = IES_GET_COMPONENT(sota->world, sota->aggressor, Sprite);
     struct Sprite *dft_sprite = IES_GET_COMPONENT(sota->world, sota->defendant, Sprite);
 
-    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, sota->defendant, Timer));
-    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, sota->aggressor, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, sota->defendant, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, sota->aggressor, Timer));
 
     // 1. Make cursor visible
     struct Sprite *sprite     = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
@@ -1427,8 +1427,8 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     /* - Set previous candidate to NULL - */
     sota->previous_candidate = -1;
 
-    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, sota->defendant, Timer));
-    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, sota->aggressor, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, sota->defendant, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, sota->aggressor, Timer));
 }
 
 void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
@@ -1440,8 +1440,8 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
     aggressor->waits = true;
     struct Unit *defendant = IES_GET_COMPONENT(sota->world, sota->defendant, Unit);
 
-    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, sota->defendant, Timer));
-    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, sota->aggressor, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, sota->defendant, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, sota->aggressor, Timer));
 
     tnecs_entity  popup_ent      = sota->popups[POPUP_TYPE_MAP_COMBAT];
     struct PopUp *popup_ptr      = IES_GET_COMPONENT(sota->world, popup_ent, PopUp);
@@ -1480,8 +1480,8 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
     if (fsm_eCmbtEnd_ss[sota->substate_previous] != NULL)
         fsm_eCmbtEnd_ss[sota->substate_previous](sota);
 
-    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, sota->defendant, Timer));
-    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, sota->aggressor, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, sota->defendant, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, sota->aggressor, Timer));
 
     receive_event_Unit_Wait(sota, userevent);
 }
@@ -1566,7 +1566,7 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     sprite->visible = false;
 
     /* --- Remove MapHPbar --- */
-    if (TNECS_ENTITY_HASCOMPONENT(sota->world, victim_entity, MapHPBar))
+    if (IES_ENTITY_HASCOMPONENT(sota->world, victim_entity, MapHPBar))
         TNECS_REMOVE_COMPONENTS(sota->world, victim_entity, MapHPBar);
 
     /* Components changed place, need to reload */

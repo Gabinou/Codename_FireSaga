@@ -47,7 +47,7 @@ void Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
     DARR_PUT(map->units_onfield, entity);
 
     /* -- Adding MapHPBar -- */
-    if (!TNECS_ENTITY_HASCOMPONENT(map->world, entity, MapHPBar)) {
+    if (!IES_ENTITY_HASCOMPONENT(map->world, entity, MapHPBar)) {
         TNECS_ADD_COMPONENT(map->world, entity, MapHPBar);
         struct MapHPBar *map_hp_bar = IES_GET_COMPONENT(map->world, entity, MapHPBar);
         *map_hp_bar = MapHPBar_default;
@@ -254,7 +254,7 @@ void Map_Unit_Remove(struct Map *map, tnecs_entity entity) {
     if (sprite != NULL)
         sprite->visible = false;
 
-    if (TNECS_ENTITY_HASCOMPONENT(map->world, entity, MapHPBar))
+    if (IES_ENTITY_HASCOMPONENT(map->world, entity, MapHPBar))
         TNECS_REMOVE_COMPONENTS(map->world, entity, MapHPBar);
 
     /* --- Check that entity is really on map --- */

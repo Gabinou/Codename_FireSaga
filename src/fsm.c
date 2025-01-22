@@ -595,7 +595,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
 
     /* -- Changing animation loop to Taunt -- */
     struct Sprite *sprite = IES_GET_COMPONENT(sota->world, hov_ent, Sprite);
-    b32 animated = TNECS_ENTITY_HASCOMPONENT(sota->world, hov_ent, Timer);
+    b32 animated = IES_ENTITY_HASCOMPONENT(sota->world, hov_ent, Timer);
     if ((sprite->spritesheet != NULL) && (animated) && (!unit_ontile->waits)) {
         if (sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM) {
             Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_TAUNT, sprite->flip);
@@ -646,7 +646,7 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
     struct Sprite *sprite = IES_GET_COMPONENT(sota->world, dehov_ent, Sprite);
     SDL_assert(unit   != NULL);
     SDL_assert(sprite != NULL);
-    b32 animated = TNECS_ENTITY_HASCOMPONENT(sota->world, dehov_ent, Timer);
+    b32 animated = IES_ENTITY_HASCOMPONENT(sota->world, dehov_ent, Timer);
 
     /* Only if unit doesn't wait */
     if ((sprite->spritesheet != NULL) && (animated) && (!unit->waits)) {

@@ -59,10 +59,10 @@ void Game_Unit_Wait(struct Game *sota, tnecs_entity ent) {
 
     /* stop animation */
     Sprite_Animation_Restart(sprite, MAP_UNIT_LOOP_IDLE);
-    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, ent, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, ent, Timer));
     struct Timer *timer = IES_GET_COMPONENT(sota->world, ent, Timer);
     timer->paused = true;
-    // if (TNECS_ENTITY_HASCOMPONENT(sota->world, ent, Timer))
+    // if (IES_ENTITY_HASCOMPONENT(sota->world, ent, Timer))
 
     // TNECS_REMOVE_COMPONENTS(sota->world, ent, Timer);
     // Sprite_Draw(sprite, sota->renderer);
@@ -88,7 +88,7 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
 
     /* restart animation */
     Sprite_Animation_Restart(sprite, MAP_UNIT_LOOP_IDLE);
-    // if (!TNECS_ENTITY_HASCOMPONENT(sota->world, ent, Timer))
+    // if (!IES_ENTITY_HASCOMPONENT(sota->world, ent, Timer))
     // TNECS_ADD_COMPONENT(sota->world, ent, Timer);
     struct Timer *timer = IES_GET_COMPONENT(sota->world, ent, Timer);
     SDL_assert(timer != NULL);
@@ -144,20 +144,20 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
         SDL_assert(world->entities_bytype[typeflag_id1][current_num - 1] == unit_ent);
     }
 
-    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, unit_ent, Unit));
-    if (!TNECS_ENTITY_HASCOMPONENT(sota->world, unit_ent, MapHPBar)) {
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, unit_ent, Unit));
+    if (!IES_ENTITY_HASCOMPONENT(sota->world, unit_ent, MapHPBar)) {
         TNECS_ADD_COMPONENT(sota->world, unit_ent, MapHPBar);
     }
 
-    if (!TNECS_ENTITY_HASCOMPONENT(sota->world, unit_ent, Position)) {
+    if (!IES_ENTITY_HASCOMPONENT(sota->world, unit_ent, Position)) {
         TNECS_ADD_COMPONENT(sota->world, unit_ent, Position);
     }
 
-    if (!TNECS_ENTITY_HASCOMPONENT(sota->world, unit_ent, Sprite)) {
+    if (!IES_ENTITY_HASCOMPONENT(sota->world, unit_ent, Sprite)) {
         TNECS_ADD_COMPONENT(sota->world, unit_ent, Sprite);
     }
 
-    if (!TNECS_ENTITY_HASCOMPONENT(sota->world, unit_ent, Timer)) {
+    if (!IES_ENTITY_HASCOMPONENT(sota->world, unit_ent, Timer)) {
         TNECS_ADD_COMPONENT(sota->world, unit_ent, Timer);
     }
 
