@@ -227,14 +227,13 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         // SDL_Log("-- loading reinforcements %ld --", i);
         // SDL_Log("-- create entity --");
         tnecs_entity temp_unit_ent;
-        temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Unit, Position,
-                                                        Sprite, Timer, MapHPBar, AI);
+        temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Unit_ID, Position_ID,
+                                                        Sprite_ID, Timer_ID, MapHPBar_ID, AI_ID);
         DARR_PUT(sota->map_enemies, temp_unit_ent);
 
         // SDL_Log("-- checks --");
         tnecs_component typeflag;
-        typeflag = TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Unit, Position,
-                                                  Sprite, Timer, MapHPBar, AI);
+        typeflag = TNECS_COMPONENT_IDS2TYPEFLAG(Unit_ID, Position_ID, Sprite_ID, Timer_ID, MapHPBar_ID, AI_ID);
 
         size_t typeflag_id1 = tnecs_typeflagid(sota->world, typeflag);
         size_t typeflag_id2 = tnecs_typeflagid(sota->world, sota->world->entity_typeflags[temp_unit_ent]);
@@ -275,7 +274,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
         if ((reinf->boss_icon > BOSS_ICON_NULL) && (reinf->boss_icon < BOSS_ICON_NUM)) {
             // SDL_Log("-- loading unit Boss --");
-            tnecs_entity entity = TNECS_ADD_COMPONENT(sota->world, temp_unit_ent, Boss);
+            tnecs_entity entity = TNECS_ADD_COMPONENT(sota->world, temp_unit_ent, Boss_ID);
             position = IES_GET_COMPONENT(sota->world, temp_unit_ent, Position);
 
             SDL_assert(temp_unit_ent == entity);
@@ -284,7 +283,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
             *boss = Boss_default;
             boss->icon = reinf->boss_icon;
             Boss_Icon_Load(boss, sota->renderer);
-            typeflag += TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Boss);
+            typeflag += TNECS_COMPONENT_IDS2TYPEFLAG(Boss_ID);
             typeflag_id1 = tnecs_typeflagid(sota->world, typeflag);
         }
 
