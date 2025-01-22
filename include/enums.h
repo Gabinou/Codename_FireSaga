@@ -5,6 +5,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "types.h"
+#include "macros.h"
+#include "tnecs.h"
 
 #define LOGFILE          "log.txt"
 #define ASSET_LIB        "assets.binou"
@@ -421,8 +423,8 @@ enum MOUNT_TYPES {
 };
 #undef REGISTER_ENUM
 
-#define COMPONENT_ID(name) COMPONENT_##name
-#define TNECS_GET_COMPONENT(world, entity, name) tnecs_get_component(world, entity, COMPONENT_ID(name))
+// #define REGISTER_ENUM(x) REGISTER_ENUM_(x)
+// #define REGISTER_ENUM(x) x##_ID,
 #define REGISTER_ENUM(x) COMPONENT_ID(x),
 enum COMPONENT {
     COMPONENT_NULL  = TNECS_NULL,
@@ -430,6 +432,7 @@ enum COMPONENT {
     COMPONENT_NUM,
 };
 #undef REGISTER_ENUM
+#undef REGISTER_ENUM_
 
 #define REGISTER_ENUM(x) MOUNT_NAME_##x,
 enum MOUNT_NAMES {

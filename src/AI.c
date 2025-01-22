@@ -125,7 +125,7 @@ static b32 _AI_Decider_Move_inRange(struct Game *sota, tnecs_entity npc_ent) {
 
     /* --- Move if enemy in range --- */
     b32 out = (DARR_NUM(dfts) > 0);
-    SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: AI_MOVE_INRANGE set, %d enemies", DARR_NUM(dfts));
+    SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: AI_MOVE_INRANGE set, %zu enemies", DARR_NUM(dfts));
     DARR_FREE(dfts);
     return (out);
 }
@@ -662,7 +662,7 @@ void Unit_Move_onMap_Animate(struct Game  *sota,  tnecs_entity entity,
     if (timer->time_ns >= anim->time_ns) {
         // SDL_Log("Unit Animation Finished");
         /* Remove component to stop calling __func__ */
-        TNECS_REMOVE_COMPONENTS(sota->world, entity, UnitMoveAnimation);
+        TNECS_REMOVE_COMPONENTS(sota->world, entity, UnitMoveAnimation_ID);
         return;
     }
 }
