@@ -100,8 +100,8 @@ i32 *Map_Movemap_Compute(struct Map *map, tnecs_entity unit_ent) {
     SDL_assert(map->world   != NULL);
 
     Map_Costmap_Movement_Compute(map, unit_ent);
-    struct Unit     *unit   = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
-    struct Position *pos    = TNECS_GET_COMPONENT(map->world, unit_ent, Position);
+    struct Unit     *unit   = IES_GET_COMPONENT(map->world, unit_ent, Unit);
+    struct Position *pos    = IES_GET_COMPONENT(map->world, unit_ent, Position);
     i32    effective_move   = Unit_getStats(unit).move * map->cost_multiplier;
     struct Point     start  = pos->tilemap_pos;
     return (_Map_Movemap_Compute(map, start, effective_move));
@@ -112,8 +112,8 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
     SDL_assert(map->world       != NULL);
     SDL_assert(mapto.aggressor  > TNECS_NULL);
 
-    struct Unit     *unit = TNECS_GET_COMPONENT(map->world, mapto.aggressor, Unit);
-    struct Position *pos  = TNECS_GET_COMPONENT(map->world, mapto.aggressor, Position);
+    struct Unit     *unit = IES_GET_COMPONENT(map->world, mapto.aggressor, Unit);
+    struct Position *pos  = IES_GET_COMPONENT(map->world, mapto.aggressor, Position);
     SDL_assert(unit != NULL);
     SDL_assert(pos  != NULL);
 
@@ -220,10 +220,10 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     Map_Costmap_Movement_Compute(map, map_from.aggressor);
     // matrix_print(map->costmap, map->row_len, map->col_len);
 
-    struct Unit *agg_unit       = TNECS_GET_COMPONENT(map->world, map_from.aggressor, Unit);
+    struct Unit *agg_unit       = IES_GET_COMPONENT(map->world, map_from.aggressor, Unit);
     /* Get dft position */
-    struct Position *agg_pos    = TNECS_GET_COMPONENT(map->world, map_from.aggressor, Position);
-    struct Position *dft_pos    = TNECS_GET_COMPONENT(map->world, map_from.defendant, Position);
+    struct Position *agg_pos    = IES_GET_COMPONENT(map->world, map_from.aggressor, Position);
+    struct Position *dft_pos    = IES_GET_COMPONENT(map->world, map_from.defendant, Position);
     /* Get agg range */
     struct Range *range = Unit_Range_Equipped(agg_unit, ITEM_ARCHETYPE_WEAPON);
 
@@ -280,8 +280,8 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_entity unit_ent) {
     SDL_assert(map->world   != NULL);
 
     Map_Costmap_Movement_Compute(map, unit_ent);
-    struct Position *position   = TNECS_GET_COMPONENT(map->world, unit_ent, Position);
-    struct Unit *unit           = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
+    struct Position *position   = IES_GET_COMPONENT(map->world, unit_ent, Position);
+    struct Unit *unit           = IES_GET_COMPONENT(map->world, unit_ent, Unit);
     SDL_assert(position != NULL);
     SDL_assert(unit     != NULL);
     i32 effective_move = Unit_getStats(unit).move * map->cost_multiplier;
@@ -313,7 +313,7 @@ i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_entity unit_ent) {
     SDL_assert(map->costmap != NULL);
     SDL_assert(map->world   != NULL);
     memset(map->costmap, 0, sizeof(*map->costmap) * map->col_len * map->row_len);
-    struct Unit *unit = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
+    struct Unit *unit = IES_GET_COMPONENT(map->world, unit_ent, Unit);
     struct Tile *temp_tile;
     i32 tile_ind = 0;
     i8 unit_movetype = unit->mvt_type;
@@ -331,7 +331,7 @@ i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_entity unit_ent) {
         map->costmap[i] = cost_array[unit_movetype] * map->cost_multiplier;
         if (ontile_unit_ent <= TNECS_NULL)
             continue;
-        struct Unit *ontile_unit = TNECS_GET_COMPONENT(map->world, ontile_unit_ent, Unit);
+        struct Unit *ontile_unit = IES_GET_COMPONENT(map->world, ontile_unit_ent, Unit);
         if (ontile_unit != NULL)
             map->costmap[i] = COSTMAP_BLOCKED;
     }
@@ -384,7 +384,7 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
             continue;
         }
 
-        struct Unit *ontile_unit = TNECS_GET_COMPONENT(map->world, ontile_unit_ent, Unit);
+        struct Unit *ontile_unit = IES_GET_COMPONENT(map->world, ontile_unit_ent, Unit);
         SDL_assert(ontile_unit != NULL);
 
         u8 ontile_army = ontile_unit->army;
@@ -417,7 +417,7 @@ i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_entity unit_ent) {
 
     /* - Preliminaries - */
     map->costmap_ent = unit_ent;
-    struct Unit *unit = TNECS_GET_COMPONENT(map->world, unit_ent, Unit);
+    struct Unit *unit = IES_GET_COMPONENT(map->world, unit_ent, Unit);
 
     return (_Map_Costmap_Movement_Compute(map, unit));
 }
@@ -446,8 +446,8 @@ void Map_globalRange(struct Map *map, u8 alignment) {
 
     /* Add all enemies attackmap into global_rangemap */
     for (int i = 0; i < num_unit_entities; i++) {
-        struct Unit     *temp_unit  = TNECS_GET_COMPONENT(map->world, unit_entities[i], Unit);
-        struct Position *temp_pos   = TNECS_GET_COMPONENT(map->world, unit_entities[i], Position);
+        struct Unit     *temp_unit  = IES_GET_COMPONENT(map->world, unit_entities[i], Unit);
+        struct Position *temp_pos   = IES_GET_COMPONENT(map->world, unit_entities[i], Position);
         struct Range *range = Unit_Range_Equipment(temp_unit, ITEM_ARCHETYPE_WEAPON);
 
         struct Unit_stats temp_effective_stats = Unit_effectiveStats(temp_unit);

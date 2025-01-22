@@ -135,8 +135,8 @@ void Map_Unitmap_Free(struct Map *map) {
             continue;
         }
 
-        Unit    *unit   = TNECS_GET_COMPONENT(map->world, uent, Unit);
-        Sprite  *sprite = TNECS_GET_COMPONENT(map->world, uent, Sprite);
+        Unit    *unit   = IES_GET_COMPONENT(map->world, uent, Unit);
+        Sprite  *sprite = IES_GET_COMPONENT(map->world, uent, Sprite);
 
         if (sprite != NULL)
             Sprite_Free(sprite);
@@ -808,8 +808,8 @@ void Map_readJSON(void *input,  cJSON *jmap) {
 
         for (size_t i = 0; i < DARR_NUM(map->chests_ent); i++) {
             tnecs_entity temp_ent   = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Chest, Position);
-            struct Chest    *chest  = TNECS_GET_COMPONENT(map->world, temp_ent, Chest);
-            struct Position *pos    = TNECS_GET_COMPONENT(map->world, temp_ent, Position);
+            struct Chest    *chest  = IES_GET_COMPONENT(map->world, temp_ent, Chest);
+            struct Position *pos    = IES_GET_COMPONENT(map->world, temp_ent, Position);
             SDL_assert(pos      != NULL);
             SDL_assert(chest    != NULL);
             cJSON *jchest   = cJSON_GetArrayItem(jchests, i);
@@ -841,8 +841,8 @@ void Map_readJSON(void *input,  cJSON *jmap) {
 
         for (size_t i = 0; i < cJSON_GetArraySize(jdoors); i++) {
             tnecs_entity temp_ent   = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Door, Position);
-            struct Door     *door   = TNECS_GET_COMPONENT(map->world, temp_ent, Door);
-            struct Position *pos    = TNECS_GET_COMPONENT(map->world, temp_ent, Position);
+            struct Door     *door   = IES_GET_COMPONENT(map->world, temp_ent, Door);
+            struct Position *pos    = IES_GET_COMPONENT(map->world, temp_ent, Position);
             SDL_assert(pos  != NULL);
             SDL_assert(door != NULL);
 
@@ -875,7 +875,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
 
         for (size_t i = 0; i < cJSON_GetArraySize(jbreakables); i++) {
             tnecs_entity temp_ent   = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Breakable, Position);
-            struct Position *pos    = TNECS_GET_COMPONENT(map->world, temp_ent, Position);
+            struct Position *pos    = IES_GET_COMPONENT(map->world, temp_ent, Position);
             SDL_assert(pos != NULL);
             cJSON *jbreakable       = cJSON_GetArrayItem(jbreakables, i);
             cJSON *jpos             = cJSON_GetObjectItem(jbreakable, "position");
@@ -903,7 +903,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
                 TNECS_ADD_COMPONENT(map->world, temp_ent, Breakable);
             }
 
-            struct Breakable *breaka = TNECS_GET_COMPONENT(map->world, temp_ent, Breakable);
+            struct Breakable *breaka = IES_GET_COMPONENT(map->world, temp_ent, Breakable);
             SDL_assert(breaka != NULL);
             Breakable_readJSON(breaka, jbreakables);
 
@@ -1018,7 +1018,7 @@ void Map_Bonus_Remove_Instant(struct Map *map, i32 army) {
     for (int i = 0; i < num_ent; i++) {
         tnecs_entity ent = entities[i];
         SDL_assert(ent > TNECS_NULL);
-        struct Unit *unit = TNECS_GET_COMPONENT(map->world, ent, Unit);
+        struct Unit *unit = IES_GET_COMPONENT(map->world, ent, Unit);
         SDL_assert(unit != NULL);
         Unit_Bonus_Instant_Decay(unit);
     }
@@ -1032,7 +1032,7 @@ void Map_Bonus_Remove_Persistent(struct Map *map, i32 army) {
     for (int i = 0; i < num_ent; i++) {
         tnecs_entity ent = entities[i];
         SDL_assert(ent > TNECS_NULL);
-        struct Unit *unit = TNECS_GET_COMPONENT(map->world, ent, Unit);
+        struct Unit *unit = IES_GET_COMPONENT(map->world, ent, Unit);
         SDL_assert(unit != NULL);
         Unit_Bonus_Persistent_Decay(unit);
     }
@@ -1047,14 +1047,14 @@ void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_entity *entities,
 
     /* Apply standard bonus to all unit in range */
     struct Bonus_Stats  bonus       = Aura2Bonus(&aura, source_ent, item, skill, active, instant);
-    struct Position    *source_pos  = TNECS_GET_COMPONENT(map->world, source_ent, Position);
+    struct Position    *source_pos  = IES_GET_COMPONENT(map->world, source_ent, Position);
     SDL_assert(source_pos != NULL);
 
     size_t num_ent              = DARR_NUM(entities);
     for (int i = 0; i < num_ent; i++) {
         tnecs_entity ent = entities[i];
         SDL_assert(ent > TNECS_NULL);
-        struct Position *pos = TNECS_GET_COMPONENT(map->world, ent, Position);
+        struct Position *pos = IES_GET_COMPONENT(map->world, ent, Position);
 
         i32 distance = Pathfinding_Manhattan(source_pos->tilemap_pos, pos->tilemap_pos);
         // SDL_Log("source %d %d", source_pos->tilemap_pos.x, source_pos->tilemap_pos.y);
@@ -1062,7 +1062,7 @@ void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_entity *entities,
         // SDL_Log("distance %d", distance);
         // SDL_Log("aura %d %d", aura.range.min, aura.range.max);
         if ((distance >= aura.range.min) && (distance <= aura.range.max)) {
-            struct Unit *unit = TNECS_GET_COMPONENT(map->world, ent, Unit);
+            struct Unit *unit = IES_GET_COMPONENT(map->world, ent, Unit);
             SDL_assert(unit != NULL);
             Unit_Bonus_Refresh(unit, bonus);
         }
@@ -1074,8 +1074,8 @@ void Map_Bonus_Standard_Apply_Unit(struct Map *map, tnecs_entity ent, tnecs_enti
     /* Apply passive instant standard bonus to unit */
     // SDL_Log("Map_Bonus_Standard_Apply_Unit");
     SDL_assert(ent > TNECS_NULL);
-    struct Unit     *unit   = TNECS_GET_COMPONENT(map->world, ent, Unit);
-    struct Position *pos    = TNECS_GET_COMPONENT(map->world, ent, Position);
+    struct Unit     *unit   = IES_GET_COMPONENT(map->world, ent, Unit);
+    struct Position *pos    = IES_GET_COMPONENT(map->world, ent, Position);
     SDL_assert(pos          != NULL);
     SDL_assert(unit         != NULL);
     SDL_assert(unit->class  == UNIT_CLASS_STANDARD_BEARER);
@@ -1106,7 +1106,7 @@ void Map_Bonus_Standard_Apply(struct Map *map, i32 army) {
     for (int i = 0; i < num_ent; i++) {
         tnecs_entity ent = entities[i];
         SDL_assert(ent > TNECS_NULL);
-        struct Unit *unit = TNECS_GET_COMPONENT(map->world, ent, Unit);
+        struct Unit *unit = IES_GET_COMPONENT(map->world, ent, Unit);
         SDL_assert(unit != NULL);
 
         if (unit->class == UNIT_CLASS_STANDARD_BEARER)

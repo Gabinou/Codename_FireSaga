@@ -307,7 +307,7 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
     tnecs_entity menu_entity = sota->player_select_menus[MENU_PLAYER_SELECT_UNIT_ACTION];
     SDL_assert(menu_entity > 0);
     SDL_assert(sota->selected_unit_entity > 0);
-    struct Menu *mc_ptr = TNECS_GET_COMPONENT(sota->world, menu_entity, Menu);
+    struct Menu *mc_ptr = IES_GET_COMPONENT(sota->world, menu_entity, Menu);
     struct PlayerSelectMenu *psm = mc_ptr->data;
     SDL_assert(psm != NULL);
     PlayerSelectMenu_Options_Reset(psm);
@@ -322,14 +322,14 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
     /* --- Check if unit can SEIZE --- */
     /* -- Seizable: Check if tile is a throne --  */
     tnecs_entity unit_ent = sota->selected_unit_entity;
-    struct Position *pos = TNECS_GET_COMPONENT(sota->world, unit_ent, Position);
+    struct Position *pos = IES_GET_COMPONENT(sota->world, unit_ent, Position);
     SDL_assert(pos != NULL);
     i32 index = sota_2D_index(pos->tilemap_pos.x, pos->tilemap_pos.y, sota->map->col_len);
     i32 tile_ind = sota->map->tilemap[index] / TILE_DIVISOR;
     b32 isthrone = (tile_ind == TILE_THRONE);
 
     /* -- Seizable: Check if unit is a main character --  */
-    struct Unit *unit = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
+    struct Unit *unit = IES_GET_COMPONENT(sota->world, unit_ent, Unit);
     SDL_assert(unit != NULL);
 #ifdef DEBUG_SEIZE_ANYONE
     b32 ismainchar = true;
@@ -359,7 +359,7 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
 
 void makeContent_PSM_STAFF(struct Game *sota, void *data1, void *data2) {
     // tnecs_entity menu_entity = sota->player_select_menus[MENU_PLAYER_SELECT_STAFF];
-    // struct Menu * mc_ptr = TNECS_GET_COMPONENT(sota->world, menu_entity, Menu);
+    // struct Menu * mc_ptr = IES_GET_COMPONENT(sota->world, menu_entity, Menu);
     // struct PlayerSelectMenu * psm = mc_ptr->data;
     // for (uint32_t i = 0; i < sota->num_patients; i++) {
     // }
@@ -367,7 +367,7 @@ void makeContent_PSM_STAFF(struct Game *sota, void *data1, void *data2) {
 
 void makeContent_PSM_CONVOY(struct Game *sota, void *data1, void *data2) {
     // tnecs_entity menu_entity = sota->player_select_menus[MENU_PLAYER_SELECT_CONVOY];
-    // struct Menu * mc_ptr = TNECS_GET_COMPONENT(sota->world, menu_entity, Menu);
+    // struct Menu * mc_ptr = IES_GET_COMPONENT(sota->world, menu_entity, Menu);
     // struct PlayerSelectMenu * psm = mc_ptr->data;
 }
 
@@ -375,7 +375,7 @@ void makeContent_PSM_MAP_ACTION(struct Game *sota, void *data1, void *data2) {
     tnecs_entity menu_entity = sota->player_select_menus[MENU_PLAYER_SELECT_MAP_ACTION];
     SDL_assert(menu_entity > TNECS_NULL);
     struct Menu *mc_ptr;
-    mc_ptr = TNECS_GET_COMPONENT(sota->world, menu_entity, Menu);
+    mc_ptr = IES_GET_COMPONENT(sota->world, menu_entity, Menu);
     struct PlayerSelectMenu *psm = mc_ptr->data;
     SDL_assert(psm != NULL);
     psm->option_num = 0;
@@ -391,7 +391,7 @@ void makeContent_FirstMenu(struct Game *sota) {
     tnecs_entity menu_entity = sota->first_menu;
     SDL_assert(menu_entity > 0);
     struct Menu *mc_ptr;
-    mc_ptr = TNECS_GET_COMPONENT(sota->world, menu_entity, Menu);
+    mc_ptr = IES_GET_COMPONENT(sota->world, menu_entity, Menu);
     SDL_assert(mc_ptr != NULL);
     struct PlayerSelectMenu *psm = mc_ptr->data;
     SDL_assert(psm != NULL);
@@ -404,6 +404,6 @@ void makeContent_FirstMenu(struct Game *sota) {
 
 void makeContent_PSM_TRADE(struct Game *sota, void *data1, void *data2) {
     tnecs_entity menu_entity = sota->player_select_menus[MENU_PLAYER_SELECT_TRADE];
-    struct Menu *mc_ptr = TNECS_GET_COMPONENT(sota->world, menu_entity, Menu);
+    struct Menu *mc_ptr = IES_GET_COMPONENT(sota->world, menu_entity, Menu);
     struct PlayerSelectMenu *psm = mc_ptr->data;
 }

@@ -30,7 +30,7 @@ void Text_onUpdate_FPS(struct Game *sota, tnecs_entity entity_fps,
     SDL_assert(sota->world != NULL);
     SDL_assert(entity_fps != TNECS_NULL);
 
-    struct Text *text   = TNECS_GET_COMPONENT(sota->world, entity_fps, Text);
+    struct Text *text   = IES_GET_COMPONENT(sota->world, entity_fps, Text);
     float ratio         = (float)SOTA_ns / (float)last_update_ns;
     float fps           = (frame_count * ratio);
     sota->instant_fps   = fps;

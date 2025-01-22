@@ -115,8 +115,8 @@ void TradeMenu_Trade(struct TradeMenu *tm) {
 
     tnecs_entity giver_ent = tm->selected_trader ? tm->active->unit : tm->passive->unit;
     tnecs_entity taker_ent = tm->target_trader   ? tm->active->unit : tm->passive->unit;
-    struct Unit *giver = TNECS_GET_COMPONENT(tm->world, giver_ent, Unit);
-    struct Unit *taker = TNECS_GET_COMPONENT(tm->world, taker_ent, Unit);
+    struct Unit *giver = IES_GET_COMPONENT(tm->world, giver_ent, Unit);
+    struct Unit *taker = IES_GET_COMPONENT(tm->world, taker_ent, Unit);
 
     /* If item in hand, de-equip */
     if ((tm->selected_item == Unit_Hand_Strong(giver))

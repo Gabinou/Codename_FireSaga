@@ -106,7 +106,7 @@ void Game_Free(struct Game *sota) {
 
     if (sota->stats_menu > TNECS_NULL) {
         struct Menu *mc;
-        mc = TNECS_GET_COMPONENT(sota->world, sota->stats_menu, Menu);
+        mc = IES_GET_COMPONENT(sota->world, sota->stats_menu, Menu);
         if (mc->data != NULL) {
             struct StatsMenu *stats_menu = mc->data;
             if (mc->n9patch.texture != NULL)
@@ -118,7 +118,7 @@ void Game_Free(struct Game *sota) {
 
     if (sota->item_select_menu > TNECS_NULL) {
         struct Menu *mc;
-        mc = TNECS_GET_COMPONENT(sota->world, sota->item_select_menu, Menu);
+        mc = IES_GET_COMPONENT(sota->world, sota->item_select_menu, Menu);
         if (mc->data != NULL) {
             struct LoadoutSelectMenu *ism = mc->data;
             LoadoutSelectMenu_Free(ism);
@@ -582,7 +582,7 @@ int _Game_New_Tnecs(void *data) {
     #undef REGISTER_ENUM
 
     // TODO: Replace every
-    // - TNECS_GET_COMPONENT(world, entity_id, ComponentName)
+    // - IES_GET_COMPONENT(world, entity_id, ComponentName)
     // - tnecs_get_component(world, entity_id, COMPONENT_Position)
 
     IES->timer_typeflag = TNECS_COMPONENT_NAME2TYPE(IES->world, Timer);
@@ -662,7 +662,7 @@ void Game_Startup_Scene(Game *IES) {
     // SDL_Log("Loading Scene '%s'", filename.data);
 
     IES->scene      = TNECS_ENTITY_CREATE_wCOMPONENTS(IES->world, Scene);
-    Scene *scene    = TNECS_GET_COMPONENT(IES->world, IES->scene, Scene);
+    Scene *scene    = IES_GET_COMPONENT(IES->world, IES->scene, Scene);
     *scene = Scene_default;
     // TODO: Remove quit event on scene finish
     scene->event = event_Quit;
@@ -892,13 +892,13 @@ void Game_State_Set(struct Game *sota,  i8 new_state,  char *reason) {
 /* --- Camera --- */
 void Game_Camera_Scroll(struct Game *sota) {
     struct Position *cursor_position;
-    cursor_position = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    cursor_position = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     SDL_assert(cursor_position != NULL);
     if (!cursor_position->onTilemap)
         return;
 
     struct Sprite *cursor_sprite;
-    cursor_sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
+    cursor_sprite = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
     SDL_assert(cursor_sprite != NULL);
 
     float factor_max = (CAMERA_BOUNDS - CAMERA_BOUNDS_SCALE * sota->camera.zoom /
@@ -983,13 +983,13 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
 
     /* -- Get timer -- */
     struct Timer *timer;
-    timer  = TNECS_GET_COMPONENT(sota->world, sota->entity_fps, Timer);
+    timer  = IES_GET_COMPONENT(sota->world, sota->entity_fps, Timer);
     SDL_assert(timer != NULL);
     *timer = Timer_default;
 
     /* -- Get position -- */
     struct Position *position;
-    position = TNECS_GET_COMPONENT(sota->world, sota->entity_fps, Position);
+    position = IES_GET_COMPONENT(sota->world, sota->entity_fps, Position);
     *position = Position_default;
 
     SDL_assert(position != NULL);
@@ -1002,7 +1002,7 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
     position->scale[1] = FPS_SCALE;
 
     /* -- Get Text -- */
-    struct Text *text = TNECS_GET_COMPONENT(sota->world, sota->entity_fps, Text);
+    struct Text *text = IES_GET_COMPONENT(sota->world, sota->entity_fps, Text);
     *text = Text_default;
     SDL_assert(text != NULL);
     text->pixelfont         = sota->pixelnours_big;
@@ -1134,7 +1134,7 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
     /* -- Set cursor position to first starting position -- */
     SDL_assert(sota                     != NULL);
     SDL_assert(sota->entity_cursor      != TNECS_NULL);
-    struct Position *position = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    struct Position *position = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     SDL_assert(position                 != NULL);
     SDL_assert(sota->map                != NULL);
     SDL_assert(sota->map->start_pos     != NULL);
@@ -1148,7 +1148,7 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
 
     /* -- Set popups position -- */
     Position *cursor_pos;
-    cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     Point *pos = &cursor_pos->tilemap_pos;
 
     /* -- Set popup_unit position -- */
@@ -1159,9 +1159,9 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
     Slider          *popup_unit_slider;
     Position        *popup_unit_pos;
     SliderOffscreen *popup_unit_offscreen;
-    popup_unit_slider = TNECS_GET_COMPONENT(sota->world, popup_ent, Slider);
-    popup_unit_pos = TNECS_GET_COMPONENT(sota->world, popup_ent, Position);
-    popup_unit_offscreen = TNECS_GET_COMPONENT(sota->world, popup_ent, SliderOffscreen);
+    popup_unit_slider = IES_GET_COMPONENT(sota->world, popup_ent, Slider);
+    popup_unit_pos = IES_GET_COMPONENT(sota->world, popup_ent, Position);
+    popup_unit_offscreen = IES_GET_COMPONENT(sota->world, popup_ent, SliderOffscreen);
     SDL_assert(popup_unit_slider != TNECS_NULL);
     SDL_assert(popup_unit_pos != TNECS_NULL);
     SDL_assert(popup_unit_offscreen != TNECS_NULL);
@@ -1177,9 +1177,9 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
     Slider          *popup_tile_slider;
     Position        *popup_tile_pos;
     SliderOffscreen *popup_tile_offscreen;
-    popup_tile_slider = TNECS_GET_COMPONENT(sota->world, popup_ent, Slider);
-    popup_tile_pos = TNECS_GET_COMPONENT(sota->world, popup_ent, Position);
-    popup_tile_offscreen = TNECS_GET_COMPONENT(sota->world, popup_ent, SliderOffscreen);
+    popup_tile_slider = IES_GET_COMPONENT(sota->world, popup_ent, Slider);
+    popup_tile_pos = IES_GET_COMPONENT(sota->world, popup_ent, Position);
+    popup_tile_offscreen = IES_GET_COMPONENT(sota->world, popup_ent, SliderOffscreen);
     SDL_assert(popup_tile_slider != TNECS_NULL);
     SDL_assert(popup_tile_pos != TNECS_NULL);
     SDL_assert(popup_tile_offscreen != TNECS_NULL);

@@ -107,7 +107,7 @@ void Game_Gameplay_Start(struct Game *sota, i32 state, i32 substate) {
         /* -- Deployment Menu -- */
         // TODO: move to start deployment event or something
         Game_DeploymentMenu_Enable(sota);
-        struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
+        struct Menu *mc = IES_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
         struct DeploymentMenu *dm = mc->data;
         SDL_assert(dm->_party_size > 0);
         DeploymentMenu_Party_Set(dm, &sota->party);
@@ -186,7 +186,7 @@ void GameMap_Reinforcements_Free(struct Game *sota) {
         if (sota->world->entities[temp_unit_ent] == TNECS_NULL)
             continue;
 
-        struct Unit *unit = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
+        struct Unit *unit = IES_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
 
         if (unit) {
             b32 isPC = (unit->_id > UNIT_ID_PC_START) && (unit->_id < UNIT_ID_PC_END);
@@ -197,7 +197,7 @@ void GameMap_Reinforcements_Free(struct Game *sota) {
             }
         }
 
-        struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Sprite);
+        struct Sprite *sprite = IES_GET_COMPONENT(sota->world, temp_unit_ent, Sprite);
         if (sprite) {
             Sprite_Free(sprite);
         }
@@ -249,7 +249,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(entities_bytype != NULL);
 
         // SDL_Log("-- loading position --");
-        struct Position *position = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Position);
+        struct Position *position = IES_GET_COMPONENT(sota->world, temp_unit_ent, Position);
         SDL_assert(position != NULL);
         *position = Position_default;
         // SDL_memcpy(position, &Position_default, sizeof(Position));
@@ -276,10 +276,10 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         if ((reinf->boss_icon > BOSS_ICON_NULL) && (reinf->boss_icon < BOSS_ICON_NUM)) {
             // SDL_Log("-- loading unit Boss --");
             tnecs_entity entity = TNECS_ADD_COMPONENT(sota->world, temp_unit_ent, Boss);
-            position = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Position);
+            position = IES_GET_COMPONENT(sota->world, temp_unit_ent, Position);
 
             SDL_assert(temp_unit_ent == entity);
-            struct Boss *boss = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Boss);
+            struct Boss *boss = IES_GET_COMPONENT(sota->world, temp_unit_ent, Boss);
             SDL_assert(boss != NULL);
             *boss = Boss_default;
             boss->icon = reinf->boss_icon;
@@ -290,7 +290,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
         // TODO: Walking around on the map
         // SDL_Log("-- loading slider --");
-        // struct Slider * slider = TNECS_GET_COMPONENT(sota->world,  temp./_unit_ent, Slider);
+        // struct Slider * slider = IES_GET_COMPONENT(sota->world,  temp./_unit_ent, Slider);
         // SDL_assert(slider != NULL);
         // *slider = Slider_default;
         // slider->slidefactors[DIMENSION_X] = 2.0f;
@@ -299,7 +299,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         // slider->slidetype = SLIDETYPE_GEOMETRIC;
 
         // SDL_Log("-- loading unit --");
-        struct Unit *unit = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
+        struct Unit *unit = IES_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
         *unit = Unit_default;
         Unit_Members_Alloc(unit);
         SDL_assert(unit != NULL);
@@ -350,7 +350,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         s8_free(&unit_path);
 
         // SDL_Log("-- loading unit AI --");
-        struct AI *ai = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, AI);
+        struct AI *ai = IES_GET_COMPONENT(sota->world, temp_unit_ent, AI);
         *ai = AI_default;
         s8 ai_path  = s8_mut("ai"PHYSFS_SEPARATOR);
         /* - Default ai - */
@@ -369,7 +369,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         s8_free(&ai->json_filename);
 
         // SDL_Log("-- loading map_hp_bar --");
-        struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, MapHPBar);
+        struct MapHPBar *map_hp_bar = IES_GET_COMPONENT(sota->world, temp_unit_ent, MapHPBar);
         // *map_hp_bar = MapHPBar_default;
         map_hp_bar->unit_ent    = temp_unit_ent;
         map_hp_bar->len         = sota->settings.tilesize[0];
@@ -378,11 +378,11 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
         // SDL_Log("-- loading sprite --");
         struct Timer *timer;
-        timer = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Timer);
+        timer = IES_GET_COMPONENT(sota->world, temp_unit_ent, Timer);
         SDL_assert(timer != NULL);
         *timer = Timer_default;
 
-        struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Sprite);
+        struct Sprite *sprite = IES_GET_COMPONENT(sota->world, temp_unit_ent, Sprite);
         SDL_assert(sprite != NULL);
         memcpy(sprite, &Sprite_default, sizeof(Sprite_default));
         Sprite_Map_Unit_Load(sprite, unit, sota->renderer);
