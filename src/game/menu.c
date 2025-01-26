@@ -125,7 +125,7 @@ tnecs_entity Game_menuStack_Pop(struct Game *sota, b32 destroy) {
 /* --- Deployment --- */
 void Game_DeploymentMenu_Create(struct Game *sota) {
     if (sota->deployment_menu == TNECS_NULL)
-        sota->deployment_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
+        sota->deployment_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu_ID);
     else {
         // TODO: destroy menu?
     }
