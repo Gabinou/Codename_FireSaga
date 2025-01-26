@@ -8,6 +8,7 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
+struct PopUp;
 struct Settings;
 struct cJSON;
 

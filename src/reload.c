@@ -11,15 +11,15 @@ void Reload_Entities_Archetype(struct Game *sota, entity_reload_f reload_func,
     tnecs_component component_flag;
     size_t flag_id;
 
-    component_flag  = tnecs_component_names2typeflag(sota->world, 1, component);
-    flag_id         = tnecs_typeflagid(sota->world, component_flag);
+    component_flag  = tnecs_component_ids2archetype(1, component);
+    flag_id         = tnecs_archetypeid(sota->world, component_flag);
 
     Reload_Entities(sota, reload_func, flag_id, component);
 
     /* -- Reload entities for the all component archetypes -- */
-    size_t num_archetypes = sota->world->num_archetype_ids[flag_id];
+    size_t num_archetypes = sota->world->bytype.num_archetype_ids[flag_id];
     for (size_t tsub = 0; tsub < num_archetypes; tsub++) {
-        size_t archetype_id = sota->world->archetype_id_bytype[flag_id][tsub];
+        size_t archetype_id = sota->world->bytype.archetype_id[flag_id][tsub];
         Reload_Entities(sota, reload_func, archetype_id, component);
     }
 
@@ -27,14 +27,15 @@ void Reload_Entities_Archetype(struct Game *sota, entity_reload_f reload_func,
 
 void Reload_Entities(struct Game *sota, entity_reload_f reload_func, size_t flag_id,
                      char *component) {
-    size_t num_entities = sota->world->num_entities_bytype[flag_id];
+    // TODO: component_id input
+    // size_t num_entities = sota->world->bytype.num_entities[flag_id];
 
-    for (size_t i = 0; i < num_entities; i++) {
-        tnecs_entity entity = sota->world->entities_bytype[flag_id][i];
-        size_t component_id   = tnecs_component_name2id(sota->world, component);
-        void *struct_ptr      = tnecs_entity_get_component(sota->world, entity, component_id);
-        reload_func(struct_ptr);
-    }
+    // for (size_t i = 0; i < num_entities; i++) {
+    //     tnecs_entity entity = sota->world->bytype.entities[flag_id][i];
+    //     size_t component_id   = TNECS_COMPONENT_TYPE2ID(component);
+    //     void *struct_ptr      = tnecs_get_component(sota->world, entity, component_id);
+    //     reload_func(struct_ptr);
+    // }
 
 }
 

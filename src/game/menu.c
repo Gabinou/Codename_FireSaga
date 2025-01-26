@@ -196,7 +196,7 @@ void Game_GrowthsMenu_Enable(struct Game *sota, tnecs_entity unit_entity_ontile)
 
 void Game_GrowthsMenu_Create(struct Game *sota) {
     if (sota->growths_menu == TNECS_NULL)
-        sota->growths_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
+        sota->growths_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu_ID);
     else {
         // TODO: destroy menu?
     }
@@ -254,7 +254,7 @@ void Game_StatsMenu_Create(struct Game *sota) {
 
     // creates statsmenu entity, sets sizes, fonts
     if (sota->stats_menu == TNECS_NULL)
-        sota->stats_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
+        sota->stats_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu_ID);
     else {
         // TODO: destroy menu?
     }
@@ -537,7 +537,7 @@ void Game_PlayerSelectMenu_Create(struct Game *sota, i8 in_menu) {
         return;
     }
 
-    tnecs_entity ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
+    tnecs_entity ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu_ID);
     sota->player_select_menus[in_menu] = ent;
     SDL_assert(ent > TNECS_NULL);
     struct Menu *mc;
@@ -608,7 +608,7 @@ void Game_PlayerSelectMenu_Update(struct Game *sota, i8 in_playerselect_menu) {
 void Game_WeaponSelectMenu_Create(struct Game *sota) {
 
     if (sota->weapon_select_menu == TNECS_NULL)
-        sota->weapon_select_menu =  TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
+        sota->weapon_select_menu =  TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu_ID);
     else {
         // TODO: destroy menu?
     }
@@ -686,7 +686,7 @@ void Game_WeaponSelectMenu_Enable(struct Game *sota, tnecs_entity uent_ontile) {
 /* --- TradeMenu --- */
 void Game_TradeMenu_Create(struct Game *sota) {
     if (sota->trade_menu == TNECS_NULL)
-        sota->trade_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
+        sota->trade_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu_ID);
     else {
         // TODO: destroy menu?
     }
@@ -778,7 +778,7 @@ void Game_TradeMenu_Enable(struct Game *sota, tnecs_entity selected, tnecs_entit
 void Game_ItemSelectMenu_Create(struct Game *sota) {
 
     if (sota->item_select_menu == TNECS_NULL)
-        sota->item_select_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
+        sota->item_select_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu_ID);
     else {
         // TODO: destroy menu?
     }
@@ -854,7 +854,7 @@ void Game_ItemSelectMenu_Enable(struct Game *sota, tnecs_entity uent_ontile) {
 /* --- StaffSelectMenu --- */
 void Game_StaffSelectMenu_Create(struct Game *sota) {
     if (sota->staff_select_menu == TNECS_NULL)
-        sota->staff_select_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
+        sota->staff_select_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu_ID);
     else {
         // TODO: destroy menu?
     }
@@ -1056,7 +1056,7 @@ void Game_Title_Create(struct Game *sota) {
         return;
     }
 
-    sota->title = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position, Text);
+    sota->title = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position_ID, Text_ID);
 
     /* -- Get position -- */
     struct Position *position = IES_GET_COMPONENT(sota->world, sota->title, Position);
@@ -1103,7 +1103,7 @@ void Game_FirstMenu_Create(struct Game *sota) {
         SDL_Log("FirstMenu is already loaded");
         return;
     }
-    sota->first_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
+    sota->first_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu_ID);
     struct Menu *mc;
     struct PlayerSelectMenu *psm = PlayerSelectMenu_Alloc();
     mc = IES_GET_COMPONENT(sota->world, sota->first_menu, Menu);

@@ -21,8 +21,8 @@
 void Scroll_Text(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get components arrays -- */
-    struct Timer     *ut_arr = TNECS_COMPONENTS_LIST(input, Timer);
-    struct PixelFont *pf_arr = TNECS_COMPONENTS_LIST(input, PixelFont);
+    struct Timer     *ut_arr = TNECS_COMPONENTS_LIST(input, Timer_ID);
+    struct PixelFont *pf_arr = TNECS_COMPONENTS_LIST(input, PixelFont_ID);
 
     for (u16 order = 0; order < input->num_entities; order++) {
         struct Timer     *ut = (ut_arr + order);
@@ -35,8 +35,8 @@ void Scroll_Text(tnecs_system_input *input) {
 void Animate_Sprite(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get components arrays -- */
-    struct Timer  *ut_arr     = TNECS_COMPONENTS_LIST(input, Timer);
-    struct Sprite *sprite_arr = TNECS_COMPONENTS_LIST(input, Sprite);
+    struct Timer  *ut_arr     = TNECS_COMPONENTS_LIST(input, Timer_ID);
+    struct Sprite *sprite_arr = TNECS_COMPONENTS_LIST(input, Sprite_ID);
 
     for (u16 order = 0; order < input->num_entities; order++) {
         struct Timer       *ut     = (ut_arr     + order);
@@ -67,13 +67,13 @@ void Draw_Sprite(tnecs_system_input *input) {
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct Sprite   *sprite_arr   = TNECS_COMPONENTS_LIST(input, Sprite);
-    struct Position *position_arr = TNECS_COMPONENTS_LIST(input, Position);
+    struct Sprite   *sprite_arr   = TNECS_COMPONENTS_LIST(input, Sprite_ID);
+    struct Position *position_arr = TNECS_COMPONENTS_LIST(input, Position_ID);
     SDL_assert(sprite_arr   != NULL);
     SDL_assert(position_arr != NULL);
 
     tnecs_world   *world       = input->world;
-    size_t         typeflag_id = input->entity_typeflag_id;
+    size_t         archetype_id = input->entity_archetype_id;
 
     for (u16 order = 0; order < input->num_entities; order++) {
         struct Sprite   *sprite   = (sprite_arr   + order);
@@ -81,7 +81,7 @@ void Draw_Sprite(tnecs_system_input *input) {
         if (!sprite->visible)
             continue;
 
-        tnecs_entity entity     = world->entities_bytype[typeflag_id][order];
+        tnecs_entity entity     = world->bytype.entities[archetype_id][order];
 
         MouseFlag *mouse_flag   = IES_GET_COMPONENT(IES->world, entity, MouseFlag);
 
@@ -104,9 +104,9 @@ void Draw_Map_Boss_Icon(tnecs_system_input *input) {
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct Boss *boss_arr = TNECS_COMPONENTS_LIST(input, Boss);
-    struct Sprite *sprite_arr = TNECS_COMPONENTS_LIST(input, Sprite);
-    struct Position *position_arr = TNECS_COMPONENTS_LIST(input, Position);
+    struct Boss     *boss_arr       = TNECS_COMPONENTS_LIST(input, Boss_ID);
+    struct Sprite   *sprite_arr     = TNECS_COMPONENTS_LIST(input, Sprite_ID);
+    struct Position *position_arr   = TNECS_COMPONENTS_LIST(input, Position_ID);
 
     for (u16 order = 0; order < input->num_entities; order++) {
         struct Boss     *boss       = (boss_arr     + order);
@@ -128,8 +128,8 @@ void Draw_Map_HPBar(tnecs_system_input *input) {
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct Position *pos_arr        = TNECS_COMPONENTS_LIST(input, Position);
-    struct MapHPBar *map_hp_bar_arr = TNECS_COMPONENTS_LIST(input, MapHPBar);
+    struct Position *pos_arr        = TNECS_COMPONENTS_LIST(input, Position_ID);
+    struct MapHPBar *map_hp_bar_arr = TNECS_COMPONENTS_LIST(input, MapHPBar_ID);
 
     for (u16 order = 0; order < input->num_entities; order++) {
         struct MapHPBar *map_hp_bar = (map_hp_bar_arr + order);
@@ -151,8 +151,8 @@ void Draw_PopUp(tnecs_system_input *input) {
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct PopUp    *popup_arr    = TNECS_COMPONENTS_LIST(input, PopUp);
-    struct Position *position_arr = TNECS_COMPONENTS_LIST(input, Position);
+    struct PopUp    *popup_arr    = TNECS_COMPONENTS_LIST(input, PopUp_ID);
+    struct Position *position_arr = TNECS_COMPONENTS_LIST(input, Position_ID);
     SDL_assert(popup_arr    != NULL);
     SDL_assert(position_arr != NULL);
 
@@ -174,7 +174,7 @@ void Draw_Menu(tnecs_system_input *input) {
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct Menu *mc_arr = TNECS_COMPONENTS_LIST(input, Menu);
+    struct Menu *mc_arr = TNECS_COMPONENTS_LIST(input, Menu_ID);
     SDL_assert(mc_arr != NULL);
 
     /* --- DRAWING MENU ENTITIES --- */
@@ -200,8 +200,8 @@ void Draw_Text(tnecs_system_input *input) {
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct Text     *text_arr        = TNECS_COMPONENTS_LIST(input, Text);
-    struct Position *position_arr    = TNECS_COMPONENTS_LIST(input, Position);
+    struct Text     *text_arr        = TNECS_COMPONENTS_LIST(input, Text_ID);
+    struct Position *position_arr    = TNECS_COMPONENTS_LIST(input, Position_ID);
     SDL_assert(position_arr != NULL);
 
     /* --- DRAWING TEXT ENTITIES --- */
@@ -226,9 +226,9 @@ void Draw_Text_Timer(tnecs_system_input *input) {
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct Text     *text_arr        = TNECS_COMPONENTS_LIST(input, Text);
-    struct Position *position_arr    = TNECS_COMPONENTS_LIST(input, Position);
-    struct Timer    *updatetimer_arr = TNECS_COMPONENTS_LIST(input, Timer);
+    struct Text     *text_arr        = TNECS_COMPONENTS_LIST(input, Text_ID);
+    struct Position *position_arr    = TNECS_COMPONENTS_LIST(input, Position_ID);
+    struct Timer    *updatetimer_arr = TNECS_COMPONENTS_LIST(input, Timer_ID);
     SDL_assert(position_arr != NULL);
 
     /* --- DRAWING TEXT ENTITIES --- */
@@ -238,8 +238,8 @@ void Draw_Text_Timer(tnecs_system_input *input) {
         struct Timer    *ut   = (updatetimer_arr + order);
 
         tnecs_world   *world       = input->world;
-        size_t         typeflag_id = input->entity_typeflag_id;
-        tnecs_entity   entity      = world->entities_bytype[typeflag_id][order];
+        size_t         archetype_id = input->entity_archetype_id;
+        tnecs_entity   entity      = world->bytype.entities[archetype_id][order];
 
         if ((text->onUpdate != NULL) && (ut->time_ns >= text->update_time_ns)) {
             (*text->onUpdate)(IES, entity, ut->frame_count, ut->time_ns, NULL);
@@ -262,9 +262,8 @@ void Animate_Combat_onMap(tnecs_system_input *input) {
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct CombatAnimation *combatanim_arr;
-    struct Timer *timer_arr      = TNECS_COMPONENTS_LIST(input, Timer);
-    combatanim_arr = TNECS_COMPONENTS_LIST(input, CombatAnimation);
+    struct CombatAnimation  *combatanim_arr = TNECS_COMPONENTS_LIST(input, CombatAnimation_ID);
+    struct Timer            *timer_arr      = TNECS_COMPONENTS_LIST(input, Timer_ID);
 
     /* --- DRAWING TEXT ENTITIES --- */
     for (u16 order = 0; order < input->num_entities; order++) {
@@ -272,8 +271,8 @@ void Animate_Combat_onMap(tnecs_system_input *input) {
         struct Timer           *combat_timer    = &timer_arr[order];
 
         tnecs_world   *world       = input->world;
-        size_t         typeflag_id = input->entity_typeflag_id;
-        tnecs_entity   entity      = world->entities_bytype[typeflag_id][order];
+        size_t         archetype_id = input->entity_archetype_id;
+        tnecs_entity   entity      = world->bytype.entities[archetype_id][order];
 
         Map_Combat_Animate(IES, entity, map_anim, combat_timer);
     }
@@ -286,11 +285,10 @@ void Animate_Map_Animation(tnecs_system_input *input) {
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct Timer        *timer_arr = TNECS_COMPONENTS_LIST(input, Timer);
-    struct Text         *text_arr  = TNECS_COMPONENTS_LIST(input, Text);
-    struct Position     *pos_arr   = TNECS_COMPONENTS_LIST(input, Position);
-    struct MapAnimation *mapanim_arr;
-    mapanim_arr = TNECS_COMPONENTS_LIST(input, MapAnimation);
+    struct Timer        *timer_arr      = TNECS_COMPONENTS_LIST(input, Timer_ID);
+    struct Text         *text_arr       = TNECS_COMPONENTS_LIST(input, Text_ID);
+    struct Position     *pos_arr        = TNECS_COMPONENTS_LIST(input, Position_ID);
+    struct MapAnimation *mapanim_arr    = TNECS_COMPONENTS_LIST(input, MapAnimation_ID);
 
     /* --- DRAWING TEXT ENTITIES --- */
     for (u16 order = 0; order < input->num_entities; order++) {
@@ -300,8 +298,8 @@ void Animate_Map_Animation(tnecs_system_input *input) {
         struct Text         *text       = &text_arr[order];
 
         tnecs_world   *world       = input->world;
-        size_t         typeflag_id = input->entity_typeflag_id;
-        tnecs_entity   entity      = world->entities_bytype[typeflag_id][order];
+        size_t         archetype_id = input->entity_archetype_id;
+        tnecs_entity   entity      = world->bytype.entities[archetype_id][order];
 
         map_anim->anim(IES, entity, map_anim, timer);
     }
@@ -314,10 +312,9 @@ void Animate_Unit_Move_onMap(tnecs_system_input *input) {
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct Timer        *timer_arr = TNECS_COMPONENTS_LIST(input, Timer);
-    struct Unit         *unit_arr  = TNECS_COMPONENTS_LIST(input, Unit);
-    struct UnitMoveAnimation *unitmove_arr;
-    unitmove_arr = TNECS_COMPONENTS_LIST(input, UnitMoveAnimation);
+    struct Timer                *timer_arr      = TNECS_COMPONENTS_LIST(input, Timer_ID);
+    struct Unit                 *unit_arr       = TNECS_COMPONENTS_LIST(input, Unit_ID);
+    struct UnitMoveAnimation    *unitmove_arr   = TNECS_COMPONENTS_LIST(input, UnitMoveAnimation_ID);
 
     /* --- DRAWING TEXT ENTITIES --- */
     for (u16 order = 0; order < input->num_entities; order++) {
@@ -326,8 +323,8 @@ void Animate_Unit_Move_onMap(tnecs_system_input *input) {
         struct Unit              *unit       = &unit_arr[order];
 
         tnecs_world   *world       = input->world;
-        size_t         typeflag_id = input->entity_typeflag_id;
-        tnecs_entity   entity      = world->entities_bytype[typeflag_id][order];
+        size_t         archetype_id = input->entity_archetype_id;
+        tnecs_entity   entity      = world->bytype.entities[archetype_id][order];
 
         Unit_Move_onMap_Animate(IES, entity, timer, unit_anim);
     }
@@ -340,8 +337,8 @@ void Animate_Cutscene(tnecs_system_input *input) {
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct Timer    *timer_arr      = TNECS_COMPONENTS_LIST(input, Timer);
-    struct Cutscene *cutscene_arr   = TNECS_COMPONENTS_LIST(input, Cutscene);
+    struct Timer    *timer_arr      = TNECS_COMPONENTS_LIST(input, Timer_ID);
+    struct Cutscene *cutscene_arr   = TNECS_COMPONENTS_LIST(input, Cutscene_ID);
 
     /* --- DRAWING TEXT ENTITIES --- */
     for (u16 order = 0; order < input->num_entities; order++) {
@@ -349,8 +346,8 @@ void Animate_Cutscene(tnecs_system_input *input) {
         struct Cutscene *cutscene   = &cutscene_arr[order];
 
         tnecs_world     *world       = input->world;
-        size_t           typeflag_id = input->entity_typeflag_id;
-        tnecs_entity     entity      = world->entities_bytype[typeflag_id][order];
+        size_t           archetype_id = input->entity_archetype_id;
+        tnecs_entity     entity      = world->bytype.entities[archetype_id][order];
 
         if (timer->time_ns >= cutscene->time_ns) {
             Cutscene_Finish(cutscene, IES);
@@ -366,8 +363,8 @@ void Animate_Scene(tnecs_system_input *input) {
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct Timer    *timer_arr = TNECS_COMPONENTS_LIST(input, Timer);
-    struct Scene    *scene_arr = TNECS_COMPONENTS_LIST(input, Scene);
+    struct Timer    *timer_arr = TNECS_COMPONENTS_LIST(input, Timer_ID);
+    struct Scene    *scene_arr = TNECS_COMPONENTS_LIST(input, Scene_ID);
 
     /* --- DRAWING TEXT ENTITIES --- */
     for (u16 order = 0; order < input->num_entities; order++) {
@@ -375,8 +372,8 @@ void Animate_Scene(tnecs_system_input *input) {
         struct Scene    *scene = &scene_arr[order];
 
         tnecs_world     *world       = input->world;
-        size_t           typeflag_id = input->entity_typeflag_id;
-        tnecs_entity     entity      = world->entities_bytype[typeflag_id][order];
+        size_t           archetype_id = input->entity_archetype_id;
+        tnecs_entity     entity      = world->bytype.entities[archetype_id][order];
 
         Scene_Animate(IES, entity, scene, timer);
     }

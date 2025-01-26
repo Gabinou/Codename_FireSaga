@@ -26,8 +26,8 @@ void Sprite_Target(struct Slider *slider, struct Sprite *sprite, Position *posit
 void Hover_Any(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get components arrays -- */
-    struct Hover    *hover_arr    = TNECS_COMPONENTS_LIST(input, Hover);
-    struct Position *position_arr = TNECS_COMPONENTS_LIST(input, Position);
+    struct Hover    *hover_arr    = TNECS_COMPONENTS_LIST(input, Hover_ID);
+    struct Position *position_arr = TNECS_COMPONENTS_LIST(input, Position_ID);
     SDL_assert(hover_arr    != NULL);
     SDL_assert(position_arr != NULL);
 
@@ -50,9 +50,9 @@ void Slide_Sprite(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_assert(input->data != NULL);
     /* -- Get components arrays -- */
-    struct Sprite   *sprite_arr     = TNECS_COMPONENTS_LIST(input, Sprite);
-    struct Slider   *slider_arr     = TNECS_COMPONENTS_LIST(input, Slider);
-    struct Position *position_arr   = TNECS_COMPONENTS_LIST(input, Position);
+    struct Sprite   *sprite_arr     = TNECS_COMPONENTS_LIST(input, Sprite_ID);
+    struct Slider   *slider_arr     = TNECS_COMPONENTS_LIST(input, Slider_ID);
+    struct Position *position_arr   = TNECS_COMPONENTS_LIST(input, Position_ID);
     SDL_assert(sprite_arr   != NULL);
     SDL_assert(slider_arr   != NULL);
     SDL_assert(position_arr != NULL);
@@ -62,17 +62,17 @@ void Slide_Sprite(tnecs_system_input *input) {
     SDL_assert(sota != NULL);
 
     /* -- Check if entity is cursor -- */
-    tnecs_component cursor_Component_Flag = TNECS_COMPONENT_ID2TYPE(COMPONENT_CursorFlag);
+    tnecs_component cursor_archetype = TNECS_COMPONENT_ID2TYPE(CursorFlag_ID);
 
     for (u16 order = 0; order < input->num_entities; order++) {
         struct Position *position   = position_arr  + order;
         struct Slider   *slider     = slider_arr    + order;
         struct Sprite   *sprite     = sprite_arr    + order;
 
-        tnecs_component typeflag_id   = input->entity_typeflag_id;
-        tnecs_entity current_ent      = input->world->entities_bytype[typeflag_id][order];
-        tnecs_component ent_typeflag  = input->world->entity_typeflags[current_ent];
-        int isCursor = TNECS_TYPEFLAG_HAS_TYPE(cursor_Component_Flag, ent_typeflag);
+        tnecs_component archetype_id   = input->entity_archetype_id;
+        tnecs_entity current_ent      = input->world->bytype.entities[archetype_id][order];
+        tnecs_component ent_archetype  = input->world->entities.archetypes[current_ent];
+        int isCursor = TNECS_ARCHETYPE_HAS_TYPE(cursor_archetype, ent_archetype);
 
         if (!sprite->visible)
             continue;
@@ -99,9 +99,9 @@ void Slide_PopUp_Offscreen(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_assert(input->data != NULL);
     /* -- Get components arrays -- */
-    struct Slider          *slider_arr      = TNECS_COMPONENTS_LIST(input, Slider);
-    struct Position        *position_arr    = TNECS_COMPONENTS_LIST(input, Position);
-    struct SliderOffscreen *offscreen_arr   = TNECS_COMPONENTS_LIST(input, SliderOffscreen);
+    struct Slider          *slider_arr      = TNECS_COMPONENTS_LIST(input, Slider_ID);
+    struct Position        *position_arr    = TNECS_COMPONENTS_LIST(input, Position_ID);
+    struct SliderOffscreen *offscreen_arr   = TNECS_COMPONENTS_LIST(input, SliderOffscreen_ID);
     SDL_assert(slider_arr    != NULL);
     SDL_assert(position_arr  != NULL);
     SDL_assert(offscreen_arr != NULL);

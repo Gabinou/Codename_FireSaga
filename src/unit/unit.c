@@ -657,11 +657,11 @@ i32 *Unit_computeAttack(struct Unit *unit, int distance) {
 
     /* --- TRUE DAMAGE --- */
     /* -- FENCER SKILLS -- */
-    if (TNECS_TYPEFLAG_HAS_TYPE(unit->skills, UNIT_SKILL_PINPRICK))
+    if (TNECS_ARCHETYPE_HAS_TYPE(unit->skills, UNIT_SKILL_PINPRICK))
         attack_T += SOTA_SKILL_PINPRICK;
-    if (TNECS_TYPEFLAG_HAS_TYPE(unit->skills, UNIT_SKILL_PIERCE))
+    if (TNECS_ARCHETYPE_HAS_TYPE(unit->skills, UNIT_SKILL_PIERCE))
         attack_T += SOTA_SKILL_PIERCE;
-    if (TNECS_TYPEFLAG_HAS_TYPE(unit->skills, UNIT_SKILL_CRUSH) && Unit_istwoHanding(unit))
+    if (TNECS_ARCHETYPE_HAS_TYPE(unit->skills, UNIT_SKILL_CRUSH) && Unit_istwoHanding(unit))
         attack_T += SOTA_SKILL_CRUSH;
 
     /* -- Adding weapon attack to effective stats -- */
@@ -691,7 +691,7 @@ i32 *Unit_computeAttack(struct Unit *unit, int distance) {
 
     /* -- DUAL WIELDING -- */
     /* Terrible malus if dual wielding without skill */
-    b32 candualwield = TNECS_TYPEFLAG_HAS_TYPE(unit->skills, UNIT_SKILL_DUAL_WIELD);
+    b32 candualwield = TNECS_ARCHETYPE_HAS_TYPE(unit->skills, UNIT_SKILL_DUAL_WIELD);
     if (Unit_isdualWielding(unit) && !candualwield) {
         unit->computed_stats.attack[DMG_TYPE_PHYSICAL] /= DUAL_WIELD_NOSKILL_MALUS_FACTOR;
         unit->computed_stats.attack[DMG_TYPE_MAGICAL]  /= DUAL_WIELD_NOSKILL_MALUS_FACTOR;
@@ -975,7 +975,7 @@ i32 Unit_computeSpeed(struct Unit *unit, int distance) {
         }
     }
 
-    // if (TNECS_TYPEFLAG_HAS_TYPE(unit->skills, UNIT_SKILL_)) {
+    // if (TNECS_ARCHETYPE_HAS_TYPE(unit->skills, UNIT_SKILL_)) {
     // TODO: compute effective_weight
     struct Unit_stats fstats = unit->effective_stats;
     unit->computed_stats.speed = Equation_Unit_Speed(wpn_wgt, fstats.agi,

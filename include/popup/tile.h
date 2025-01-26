@@ -9,6 +9,7 @@
 struct Game;
 struct Settings;
 struct cJSON;
+struct PopUp;
 struct n9Patch;
 
 enum POPUP_TILE {

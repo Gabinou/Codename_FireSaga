@@ -6,6 +6,7 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
+struct PopUp;
 struct n9Patch;
 
 // A:Aggressor

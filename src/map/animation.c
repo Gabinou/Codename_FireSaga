@@ -47,7 +47,7 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
 
     /* - Add RenderTop component to attacker - */
     if (!IES_ENTITY_HASCOMPONENT(sota->world, attacker, RenderTop)) {
-        TNECS_ADD_COMPONENT(sota->world, attacker, RenderTop);
+        TNECS_ADD_COMPONENT(sota->world, attacker, RenderTop_ID);
     }
 
     /* - combat_anim's frame count only grows - */
@@ -91,9 +91,9 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
 
     /* - Remove RenderTop component from attacker - */
     if (IES_ENTITY_HASCOMPONENT(sota->world, attacker, RenderTop))
-        TNECS_REMOVE_COMPONENTS(sota->world, attacker, RenderTop);
+        TNECS_REMOVE_COMPONENTS(sota->world, attacker, RenderTop_ID);
     if (IES_ENTITY_HASCOMPONENT(sota->world, defender, RenderTop))
-        TNECS_REMOVE_COMPONENTS(sota->world, defender, RenderTop);
+        TNECS_REMOVE_COMPONENTS(sota->world, defender, RenderTop_ID);
 }
 
 void Map_TurnTransition_Animate(struct Game *sota, tnecs_entity entity,

@@ -237,7 +237,7 @@ b32             tnecs_entities_open_reuse(tnecs_world *w);
 b32             tnecs_entities_open_flush(tnecs_world *w);
 
 #define TNECS_ENTITY_CREATE_wCOMPONENTS(world, ...) tnecs_entity_create_wcomponents(world, TNECS_VAR_EACH_ARGN(__VA_ARGS__), TNECS_VARMACRO_COMMA(__VA_ARGS__))
-#define TNECS_ENTITY_EXISTS(      world, index) (world->entities[index] > TNECS_NULL)
+#define TNECS_ENTITY_EXISTS(      world, index) (world->entities.id[index] > TNECS_NULL)
 #define TNECS_ENTITY_ARCHETYPE(   world, entity) world->entities.archetypes[entity]
 #define TNECS_ENTITY_HASCOMPONENT(world, entity, cID) ((world->entities.archetypes[entity] & tnecs_component_ids2archetype(1, cID)) > 0)
 

@@ -130,7 +130,7 @@ void Map_Unitmap_Free(struct Map *map) {
             map->unitmap[i] = TNECS_NULL;
             continue;
         }
-        if (map->world->entities[uent] == TNECS_NULL) {
+        if (!TNECS_ENTITY_EXISTS(map->world, uent)) {
             map->unitmap[i] = TNECS_NULL;
             continue;
         }
@@ -807,7 +807,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
         DARR_NUM(map->chests_ent) = 0;
 
         for (size_t i = 0; i < DARR_NUM(map->chests_ent); i++) {
-            tnecs_entity temp_ent   = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Chest, Position);
+            tnecs_entity temp_ent   = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Chest_ID, Position_ID);
             struct Chest    *chest  = IES_GET_COMPONENT(map->world, temp_ent, Chest);
             struct Position *pos    = IES_GET_COMPONENT(map->world, temp_ent, Position);
             SDL_assert(pos      != NULL);
@@ -840,7 +840,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
         DARR_NUM(map->doors_ent) = 0;
 
         for (size_t i = 0; i < cJSON_GetArraySize(jdoors); i++) {
-            tnecs_entity temp_ent   = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Door, Position);
+            tnecs_entity temp_ent   = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Door_ID, Position_ID);
             struct Door     *door   = IES_GET_COMPONENT(map->world, temp_ent, Door);
             struct Position *pos    = IES_GET_COMPONENT(map->world, temp_ent, Position);
             SDL_assert(pos  != NULL);
@@ -874,7 +874,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
         DARR_NUM(map->breakables_ent) = 0;
 
         for (size_t i = 0; i < cJSON_GetArraySize(jbreakables); i++) {
-            tnecs_entity temp_ent   = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Breakable, Position);
+            tnecs_entity temp_ent   = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Breakable_ID, Position_ID);
             struct Position *pos    = IES_GET_COMPONENT(map->world, temp_ent, Position);
             SDL_assert(pos != NULL);
             cJSON *jbreakable       = cJSON_GetArrayItem(jbreakables, i);
@@ -900,7 +900,7 @@ void Map_readJSON(void *input,  cJSON *jmap) {
             if ((door_ent) || (chest_ent)) {
                 tnecs_entity_destroy(map->world, temp_ent);
                 temp_ent = door_ent > TNECS_NULL ? door_ent : chest_ent;
-                TNECS_ADD_COMPONENT(map->world, temp_ent, Breakable);
+                TNECS_ADD_COMPONENT(map->world, temp_ent, Breakable_ID);
             }
 
             struct Breakable *breaka = IES_GET_COMPONENT(map->world, temp_ent, Breakable);

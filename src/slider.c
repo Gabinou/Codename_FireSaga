@@ -91,7 +91,7 @@ void Slider_Target_Offscreen_Far(struct Slider *slider,
     offscreen->reverse = true;
 }
 
-void SliderOffscreen_Compute_Next(const SliderInput input) {
+void SliderOffscreen_Compute_Next(SliderInput input) {
     // Slider goes offscreen and reappears on the other side
 
     Slider          *slider     = input.slider;
@@ -149,7 +149,7 @@ void SliderOffscreen_Compute_Next(const SliderInput input) {
     Slider_Compute_Next(input2);
 }
 
-void Slider_Compute_Next(const SliderInput input) {
+void Slider_Compute_Next(SliderInput input) {
     // Slider goes offscreen and reappears on the other side
 
     Slider  *slider     = input.slider;

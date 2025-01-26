@@ -9,6 +9,7 @@
 struct Game;
 struct Settings;
 struct n9Patch;
+struct PopUp;
 struct SliderOffscreen;
 struct cJSON;
 

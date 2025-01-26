@@ -6,7 +6,7 @@ void Time_Synchronize(tnecs_system_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_assert(input->data == NULL);
     /* -- Get components arrays -- */
-    struct Timer *updatetimer_arr = TNECS_COMPONENTS_LIST(input, Timer);
+    struct Timer *updatetimer_arr = TNECS_COMPONENTS_LIST(input, Timer_ID);
     SDL_assert(updatetimer_arr != NULL);
 
     for (int order = 0; order < input->num_entities; order++) {

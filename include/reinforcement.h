@@ -6,6 +6,7 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Unit;
+struct cJSON;
 
 struct Reinforcement {
     struct Point position;

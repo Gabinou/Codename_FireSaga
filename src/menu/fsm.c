@@ -7,6 +7,7 @@
 #include "position.h"
 #include "events.h"
 #include "nmath.h"
+#include "tnecs.h"
 #include "unit/equipment.h"
 #include "bars/map_hp.h"
 #include "game/unit.h"
@@ -1246,7 +1247,8 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
 
     // TODO: PSM fsm?
     switch (menu_ptr->id) {
-        case MENU_PLAYER_SELECT_UNIT_ACTION:
+        case MENU_PLAYER_SELECT_UNIT_ACTION: {
+            
 
             tnecs_entity     unit_ent       = sota->selected_unit_entity;
             struct Unit     *unit           = IES_GET_COMPONENT(sota->world, unit_ent, Unit);
@@ -1326,6 +1328,7 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
 
             SDL_assert(sota->map->update);
             break;
+        }
         case MENU_PLAYER_SELECT_MAP_ACTION:
             new_substate = GAME_SUBSTATE_STANDBY;
             strncpy(sota->reason, "Map action is taken on standby only", sizeof(sota->reason));
