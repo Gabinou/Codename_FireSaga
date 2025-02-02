@@ -24,17 +24,10 @@
 #include <assert.h>
 #include <math.h>
 #ifndef log2 /* for tcc */
-    #define log2(x) (log(x) * 1.44269504088896340736)
+    #define log2(x) (log(x) * 1.44269504088896340736) /* log(x) / log(2) */
 #endif
 
 /************************ DEBUGGING *************************/
-#define TNECS_DEBUG_A // TNECS_DEBUG_ASSERT are ignored if undefined
-#ifdef TNECS_DEBUG_A
-#define TNECS_DEBUG_ASSERT(in) do {assert(in);}while(0)
-#else
-#define TNECS_DEBUG_ASSERT(...) (void)0
-#endif
-
 #define TNECS_CHECK_ALLOC(name) do {\
         if (name == NULL) { \
             printf("tnecs: failed allocation " #name "\n"); \
@@ -111,12 +104,12 @@ enum TNECS {
 #define TNECS_COMMA_8(x, ...) x,  TNECS_COMMA_7(__VA_ARGS__)
 
 /********************* STRUCTS DEFINITIONS ******************/
-typedef struct tnecs_chunk { /* 1D array of components */
+typedef struct tnecs_carr { /* 1D array of components */
     tnecs_component  type;
     size_t           num;
     size_t           len;
     void            *components;      /* [entity_order_bytype] */
-} tnecs_chunk;
+} tnecs_carr;
 
 typedef struct tnecs_array {
     void    *arr;
@@ -146,8 +139,8 @@ typedef struct tnecs_entities {
     size_t len;
 
     tnecs_entity    *id;            // [entity_id]
-    tnecs_component *archetypes;    // [entity_id]
     size_t          *orders;        // [entity_id]
+    tnecs_component *archetypes;    // [entity_id]
 } tnecs_entities;
 
 typedef struct tnecs_system {
@@ -173,8 +166,8 @@ typedef struct tnecs_archetype {
     tnecs_entity     **entities;            // [archetype_id][entity_order_bytype]
     size_t           **components_order;    // [archetype_id][component_id]
     tnecs_component  **components_id;       // [archetype_id][component_order_bytype]
-    tnecs_chunk      **components;          // [archetype_id][component_order_bytype]
 
+    tnecs_carr       **components;          // [archetype_id][component_order_bytype]
 } tnecs_archetype;
 
 typedef struct tnecs_components {
@@ -236,8 +229,9 @@ tnecs_entity    tnecs_entities_create(    tnecs_world *w, size_t num);
 b32             tnecs_entities_open_reuse(tnecs_world *w);
 b32             tnecs_entities_open_flush(tnecs_world *w);
 
+#define TNECS_PHASE_VALID(      world, index) ((index == TNECS_NULL) || (world->byphase.id[index] == index))
 #define TNECS_ENTITY_CREATE_wCOMPONENTS(world, ...) tnecs_entity_create_wcomponents(world, TNECS_VAR_EACH_ARGN(__VA_ARGS__), TNECS_VARMACRO_COMMA(__VA_ARGS__))
-#define TNECS_ENTITY_EXISTS(      world, index) (world->entities.id[index] > TNECS_NULL)
+#define TNECS_ENTITY_EXISTS(      world, index) ((index != TNECS_NULL) && (world->entities.id[index] == index))
 #define TNECS_ENTITY_ARCHETYPE(   world, entity) world->entities.archetypes[entity]
 #define TNECS_ENTITY_HASCOMPONENT(world, entity, cID) ((world->entities.archetypes[entity] & tnecs_component_ids2archetype(1, cID)) > 0)
 
@@ -249,7 +243,6 @@ b32             tnecs_entities_open_flush(tnecs_world *w);
 #define TNECS_ADD_COMPONENTS(world, entity_id, isnewtype, ...) tnecs_entity_add_components(world, entity_id, tnecs_component_ids2archetype(TNECS_VAR_EACH_ARGN(__VA_ARGS__), TNECS_VARMACRO_COMMA(__VA_ARGS__)), isnewtype)
 
 #define TNECS_REMOVE_COMPONENTS(world, entity_id, ...) tnecs_entity_remove_components(world, entity_id, tnecs_component_ids2archetype(TNECS_VAR_EACH_ARGN(__VA_ARGS__), TNECS_VARMACRO_COMMA(__VA_ARGS__)))
-
 /************************************************************/
 /********************** TNECS INTERNALS *********************/
 /************************************************************/
@@ -263,6 +256,7 @@ b32 tnecs_entitiesbytype_del(    tnecs_world *w, tnecs_entity e, tnecs_component
 b32 tnecs_entitiesbytype_migrate(tnecs_world *w, tnecs_entity e, tnecs_component ot, tnecs_component nt);
 
 b32 tnecs_component_add(    tnecs_world     *w,     tnecs_component flag);
+
 b32 tnecs_component_del(    tnecs_world     *w,     tnecs_entity    ent,
                             tnecs_component  of);
 b32 tnecs_component_copy(   tnecs_world     *w,     tnecs_entity    ent,
@@ -270,8 +264,15 @@ b32 tnecs_component_copy(   tnecs_world     *w,     tnecs_entity    ent,
 b32 tnecs_component_migrate(tnecs_world     *w,     tnecs_entity    ent,
                             tnecs_component  of,    tnecs_component nf);
 
-b32 tnecs_chunk_new( tnecs_world *w, size_t         num_,   tnecs_component a);
-b32 tnecs_chunk_init(tnecs_world *w, tnecs_chunk   *array,  size_t          cID);
+b32 tnecs_component_del(    tnecs_world     *w,     tnecs_entity    ent,
+                            tnecs_component  of);
+b32 tnecs_component_copy(   tnecs_world     *w,     tnecs_entity    ent,
+                            tnecs_component  of,    tnecs_component nf);
+b32 tnecs_component_migrate(tnecs_world     *w,     tnecs_entity    ent,
+                            tnecs_component  of,    tnecs_component nf);
+
+b32 tnecs_carr_new( tnecs_world *w, size_t         num_,   tnecs_component a);
+b32 tnecs_carr_init(tnecs_world *w, tnecs_carr   *array,  size_t          cID);
 
 b32 tnecs_system_order_switch(tnecs_world   *w, tnecs_phase phase,
                               size_t        o1, size_t      o2);
@@ -288,9 +289,10 @@ tnecs_component tnecs_component_ids2archetype(size_t argnum, ...);
 #define TNECS_COMPONENT_IDS2ARCHETYPE(...) tnecs_component_ids2archetype(TNECS_VAR_EACH_ARGN(__VA_ARGS__), TNECS_VARMACRO_COMMA(__VA_ARGS__))
 #define TNECS_COMPONENT_IDS2ARCHETYPEID(world, ...) tnecs_archetypeid(world, tnecs_component_ids2archetype(TNECS_VAR_EACH_ARGN(__VA_ARGS__), TNECS_VARMACRO_COMMA(__VA_ARGS__)))
 
-#define TNECS_COMPONENTS_LIST(input, cID) (input->world->bytype.components[input->entity_archetype_id][input->world->bytype.components_order[input->entity_archetype_id][cID]].components)
-
 #define TNECS_SYSTEM_ID2ARCHETYPE(world, id) world->systems.archetypes[id]
+
+#define TNECS_COMPONENTS_LIST(input, cID)  tnecs_carr_component_array(input->world, cID, input->entity_archetype_id)
+void *tnecs_carr_component_array(tnecs_world *world, const size_t cID, const size_t tID);
 
 /********************** "DYNAMIC" ARRAYS ********************/
 void *tnecs_arrdel( void *arr, size_t elem,     size_t len,     size_t bytesize);
@@ -304,7 +306,7 @@ b32 tnecs_grow_system(          tnecs_world *w);
 b32 tnecs_grow_archetype(       tnecs_world *w);
 b32 tnecs_grow_entities_open(   tnecs_world *w);
 b32 tnecs_grow_system_byphase(  tnecs_world *w,     tnecs_phase  phase);
-b32 tnecs_grow_component_array( tnecs_world *w,     tnecs_chunk *comp_arr, 
+b32 tnecs_grow_component_array( tnecs_world *w,     tnecs_carr *comp_arr, 
                                 size_t      tID,    size_t       corder);
 
 /********************* SET BIT COUNTING *********************/
