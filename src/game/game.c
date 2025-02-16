@@ -106,7 +106,7 @@ void Game_Free(struct Game *sota) {
 
     if (sota->stats_menu > TNECS_NULL) {
         struct Menu *mc;
-        mc = TNECS_GET_COMPONENT(sota->world, sota->stats_menu, Menu);
+        mc = IES_GET_COMPONENT(sota->world, sota->stats_menu, Menu);
         if (mc->data != NULL) {
             struct StatsMenu *stats_menu = mc->data;
             if (mc->n9patch.texture != NULL)
@@ -118,7 +118,7 @@ void Game_Free(struct Game *sota) {
 
     if (sota->item_select_menu > TNECS_NULL) {
         struct Menu *mc;
-        mc = TNECS_GET_COMPONENT(sota->world, sota->item_select_menu, Menu);
+        mc = IES_GET_COMPONENT(sota->world, sota->item_select_menu, Menu);
         if (mc->data != NULL) {
             struct LoadoutSelectMenu *ism = mc->data;
             LoadoutSelectMenu_Free(ism);
@@ -577,65 +577,68 @@ int _Game_New_Tnecs(void *data) {
     SDL_assert(IES->world->reuse_entities == false);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Components Registration\n");
-    #define REGISTER_ENUM(x) TNECS_REGISTER_COMPONENT(IES->world, x);
-    #include "names/components.h"
-    #undef REGISTER_ENUM
+#define REGISTER_ENUM(x) TNECS_REGISTER_COMPONENT(IES->world, x);
+#include "names/components.h"
+#undef REGISTER_ENUM
 
     // TODO: Replace every
-    // - TNECS_GET_COMPONENT(world, entity_id, ComponentName)
+    // - IES_GET_COMPONENT(world, entity_id, ComponentName)
     // - tnecs_get_component(world, entity_id, COMPONENT_Position)
 
-    IES->timer_typeflag = TNECS_COMPONENT_NAME2TYPE(IES->world, Timer);
+    IES->timer_typeflag = TNECS_COMPONENT_ID2TYPE(Timer_ID);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration\n");
-    tnecs_world *world = IES->world;
+#define REGISTER_ENUM(pfunc, phase, excl, ...) TNECS_REGISTER_SYSTEM(IES->world, pfunc, phase, excl, __VA_ARGS__);
+#include "names/systems.h"
+#undef REGISTER_ENUM
+
     /* --- SYSTEM REGISTERING: FIRST COME FIRST SERVED ---*/
 
     /* -- Animating and sliding systems before drawing --  */
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Scene,       1, Scene,       Position, Text, Timer);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Cutscene,    1, Cutscene,    Position, Text, Timer);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Scene,       1, Scene,       Position, Text, Timer);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Cutscene,    1, Cutscene,    Position, Text, Timer);
 
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Slide_Sprite,   0, Sprite, Position, Slider);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Slide_PopUp_Offscreen, 1, PopUp, Slider,
-                                SliderOffscreen, Position);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Hover_Any,      0, Hover,  Position);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Sprite, 0, Sprite, Position, Timer);
-    // Remove animated flag. Animated sprites must have a timer! Still sprites dont!
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Slide_Sprite,   0, Sprite, Position, Slider);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Slide_PopUp_Offscreen, 1, PopUp, Slider,
+    //                             SliderOffscreen, Position);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Hover_Any,      0, Hover,  Position);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Sprite, 0, Sprite, Position, Timer);
+    // // Remove animated flag. Animated sprites must have a timer! Still sprites dont!
 
-    /* -- Scrolling Text -- */
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Scroll_Text,    0, PixelFont, Timer);
+    // /* -- Scrolling Text -- */
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Scroll_Text,    0, PixelFont, Timer);
 
-    /* -- Drawing -- */
-    /* - for now only drawn sprites are map_units - */
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer, MapHPBar);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer, MapHPBar, AI);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer, MapHPBar, AI,
-                                Boss);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, MapHPBar, AI);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, MapHPBar, AI, Boss);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer, MapHPBar, AI,
-                                UnitMoveAnimation);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer, MapHPBar, AI,
-                                UnitMoveAnimation, Boss);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, MapHPBar);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   0, Unit, Position, Sprite, RenderTop);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Boss_Icon,   0, Unit, Position, Sprite, Boss);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_HPBar, 0, Unit, Position, MapHPBar);
+    // /* -- Drawing -- */
+    // /* - for now only drawn sprites are map_units - */
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer, MapHPBar);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer, MapHPBar, AI);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer, MapHPBar, AI,
+    //                             Boss);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, MapHPBar, AI);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, MapHPBar, AI, Boss);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer, MapHPBar, AI,
+    //                             UnitMoveAnimation);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer, MapHPBar, AI,
+    //                             UnitMoveAnimation, Boss);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, MapHPBar);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   0, Unit, Position, Sprite, RenderTop);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Boss_Icon,   0, Unit, Position, Sprite, Boss);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_HPBar, 0, Unit, Position, MapHPBar);
 
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Menu,     0, Menu);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Text,     1, Text, Position);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Text_Timer, 0, Text, Position, Timer);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_PopUp,     0, PopUp, Position);
-    /* - draw Cursor and Mouse last -> on top - */
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,    0, Sprite,          Position, CursorFlag);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,     1, controllerMouse, Position, Sprite,
-                                MouseFlag);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Combat_onMap, 1, CombatAnimation, Timer);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Map_Animation, 1, MapAnimation, Position, Text, Timer);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Unit_Move_onMap, 0, UnitMoveAnimation, Position, Timer,
-                                Unit);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Menu,     0, Menu);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Text,     1, Text, Position);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Text_Timer, 0, Text, Position, Timer);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_PopUp,     0, PopUp, Position);
+    // /* - draw Cursor and Mouse last -> on top - */
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,    0, Sprite,          Position, CursorFlag);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,     1, controllerMouse, Position, Sprite,
+    //                             MouseFlag);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Combat_onMap, 1, CombatAnimation, Timer);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Map_Animation, 1, MapAnimation, Position, Text, Timer);
+    // TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Unit_Move_onMap, 0, UnitMoveAnimation, Position, Timer,
+    //                             Unit);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration DONE\n");
 
     return (0);
@@ -658,8 +661,8 @@ void Game_Startup_Scene(Game *IES) {
     s8 filename = Scene_Filename(IES->settings.args.scene);
     // SDL_Log("Loading Scene '%s'", filename.data);
 
-    IES->scene      = TNECS_ENTITY_CREATE_wCOMPONENTS(IES->world, Scene);
-    Scene *scene    = TNECS_GET_COMPONENT(IES->world, IES->scene, Scene);
+    IES->scene      = TNECS_ENTITY_CREATE_wCOMPONENTS(IES->world, Scene_ID);
+    Scene *scene    = IES_GET_COMPONENT(IES->world, IES->scene, Scene);
     *scene = Scene_default;
     // TODO: Remove quit event on scene finish
     scene->event = event_Quit;
@@ -889,13 +892,13 @@ void Game_State_Set(struct Game *sota,  i8 new_state,  char *reason) {
 /* --- Camera --- */
 void Game_Camera_Scroll(struct Game *sota) {
     struct Position *cursor_position;
-    cursor_position = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    cursor_position = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     SDL_assert(cursor_position != NULL);
     if (!cursor_position->onTilemap)
         return;
 
     struct Sprite *cursor_sprite;
-    cursor_sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
+    cursor_sprite = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
     SDL_assert(cursor_sprite != NULL);
 
     float factor_max = (CAMERA_BOUNDS - CAMERA_BOUNDS_SCALE * sota->camera.zoom /
@@ -976,17 +979,17 @@ i64 Game_FPS_Delay(struct Game *sota, u64 elapsedTime_ns) {
 void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
     if (sota->entity_fps != 0)
         tnecs_entity_destroy(sota->world, sota->entity_fps);
-    sota->entity_fps = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position, Text, Timer);
+    sota->entity_fps = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position_ID, Text_ID, Timer_ID);
 
     /* -- Get timer -- */
     struct Timer *timer;
-    timer  = TNECS_GET_COMPONENT(sota->world, sota->entity_fps, Timer);
+    timer  = IES_GET_COMPONENT(sota->world, sota->entity_fps, Timer);
     SDL_assert(timer != NULL);
     *timer = Timer_default;
 
     /* -- Get position -- */
     struct Position *position;
-    position = TNECS_GET_COMPONENT(sota->world, sota->entity_fps, Position);
+    position = IES_GET_COMPONENT(sota->world, sota->entity_fps, Position);
     *position = Position_default;
 
     SDL_assert(position != NULL);
@@ -999,7 +1002,7 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
     position->scale[1] = FPS_SCALE;
 
     /* -- Get Text -- */
-    struct Text *text = TNECS_GET_COMPONENT(sota->world, sota->entity_fps, Text);
+    struct Text *text = IES_GET_COMPONENT(sota->world, sota->entity_fps, Text);
     *text = Text_default;
     SDL_assert(text != NULL);
     text->pixelfont         = sota->pixelnours_big;
@@ -1007,8 +1010,6 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
     text->update_time_ns    = in_update_time_ns;
     Text_Set(text, "60.1", PIXELNOURS_BIG_Y_OFFSET);
 
-    SDL_assert(sota->world->entity_typeflags[sota->entity_fps] ==
-               TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Timer, Position, Text));
 }
 
 /* --- SETTINGS --- */
@@ -1131,7 +1132,7 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
     /* -- Set cursor position to first starting position -- */
     SDL_assert(sota                     != NULL);
     SDL_assert(sota->entity_cursor      != TNECS_NULL);
-    struct Position *position = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    struct Position *position = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     SDL_assert(position                 != NULL);
     SDL_assert(sota->map                != NULL);
     SDL_assert(sota->map->start_pos     != NULL);
@@ -1145,7 +1146,7 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
 
     /* -- Set popups position -- */
     Position *cursor_pos;
-    cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     Point *pos = &cursor_pos->tilemap_pos;
 
     /* -- Set popup_unit position -- */
@@ -1156,9 +1157,9 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
     Slider          *popup_unit_slider;
     Position        *popup_unit_pos;
     SliderOffscreen *popup_unit_offscreen;
-    popup_unit_slider = TNECS_GET_COMPONENT(sota->world, popup_ent, Slider);
-    popup_unit_pos = TNECS_GET_COMPONENT(sota->world, popup_ent, Position);
-    popup_unit_offscreen = TNECS_GET_COMPONENT(sota->world, popup_ent, SliderOffscreen);
+    popup_unit_slider = IES_GET_COMPONENT(sota->world, popup_ent, Slider);
+    popup_unit_pos = IES_GET_COMPONENT(sota->world, popup_ent, Position);
+    popup_unit_offscreen = IES_GET_COMPONENT(sota->world, popup_ent, SliderOffscreen);
     SDL_assert(popup_unit_slider != TNECS_NULL);
     SDL_assert(popup_unit_pos != TNECS_NULL);
     SDL_assert(popup_unit_offscreen != TNECS_NULL);
@@ -1174,9 +1175,9 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
     Slider          *popup_tile_slider;
     Position        *popup_tile_pos;
     SliderOffscreen *popup_tile_offscreen;
-    popup_tile_slider = TNECS_GET_COMPONENT(sota->world, popup_ent, Slider);
-    popup_tile_pos = TNECS_GET_COMPONENT(sota->world, popup_ent, Position);
-    popup_tile_offscreen = TNECS_GET_COMPONENT(sota->world, popup_ent, SliderOffscreen);
+    popup_tile_slider = IES_GET_COMPONENT(sota->world, popup_ent, Slider);
+    popup_tile_pos = IES_GET_COMPONENT(sota->world, popup_ent, Position);
+    popup_tile_offscreen = IES_GET_COMPONENT(sota->world, popup_ent, SliderOffscreen);
     SDL_assert(popup_tile_slider != TNECS_NULL);
     SDL_assert(popup_tile_pos != TNECS_NULL);
     SDL_assert(popup_tile_offscreen != TNECS_NULL);

@@ -15,6 +15,7 @@
 struct Settings;
 struct n9Patch;
 struct cJSON;
+struct PopUp;
 
 enum POPUP_OBJECTIVE {
     POPUP_OBJECTIVE_NULL    = -1,

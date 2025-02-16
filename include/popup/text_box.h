@@ -13,7 +13,7 @@
 //      - Speaker box OR tail pointing to speaker
 
 
-/* Octants around text bubble:
+/* Octants around text bubble: */
 //      X -> BELOW      X -> EQUAL         X -> ABOVE
 //                    |             |
 //   ..._DIAGONAL_TL  |   ..._TOP   |  ..._DIAGONAL_TR      Y -> ABOVE
@@ -37,6 +37,7 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct n9Patch;
+struct PopUp;
 
 enum SOTA_TEXT_BOX {
     TEXT_BOX_TEXTURE_PATCH_WIDTH =  4,

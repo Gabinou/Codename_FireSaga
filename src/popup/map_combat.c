@@ -113,10 +113,10 @@ void PopUp_Map_Combat_Units(struct PopUp_Map_Combat *pmc, struct Game *sota,
     /* -- Preliminaries -- */
     // tnecs_entity popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
     // SDL_assert(popup_ent != TNECS_NULL);
-    // struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
+    // struct PopUp *popup = IES_GET_COMPONENT(sota->world, popup_ent, PopUp);
     // struct PopUp_Map_Combat *pmc = popup->data;
-    // struct Unit *aggressor = TNECS_GET_COMPONENT(sota->world, sota->aggressor, Unit);
-    // struct Unit *defendant = TNECS_GET_COMPONENT(sota->world, sota->defendant, Unit);
+    // struct Unit *aggressor = IES_GET_COMPONENT(sota->world, sota->aggressor, Unit);
+    // struct Unit *defendant = IES_GET_COMPONENT(sota->world, sota->defendant, Unit);
     // SDL_assert(popup != NULL);
     SDL_assert(pmc          != NULL);
     SDL_assert(aggressor    > TNECS_NULL);
@@ -161,8 +161,8 @@ static void _PopUp_Map_Combat_Draw_HP(struct PopUp_Map_Combat *pmc, SDL_Renderer
     struct Point temp_pos;
     SDL_assert(pmc->aggressor > TNECS_NULL);
     SDL_assert(pmc->defendant > TNECS_NULL);
-    struct Unit *agg_unit = TNECS_GET_COMPONENT(pmc->world, pmc->aggressor, Unit);
-    struct Unit *dft_unit = TNECS_GET_COMPONENT(pmc->world, pmc->defendant, Unit);
+    struct Unit *agg_unit = IES_GET_COMPONENT(pmc->world, pmc->aggressor, Unit);
+    struct Unit *dft_unit = IES_GET_COMPONENT(pmc->world, pmc->defendant, Unit);
     SDL_assert(agg_unit != NULL);
     SDL_assert(dft_unit != NULL);
 
@@ -200,7 +200,7 @@ static void _PopUp_Map_Combat_Draw_Names(struct PopUp_Map_Combat *pmc, SDL_Rende
     /* --- Names --- */
     struct Point temp_pos;
 
-    struct Unit *agg_unit = TNECS_GET_COMPONENT(pmc->world, pmc->aggressor, Unit);
+    struct Unit *agg_unit = IES_GET_COMPONENT(pmc->world, pmc->aggressor, Unit);
     s8 name = agg_unit->name;
     int width = PixelFont_Width(pmc->pixelnours_tight, name.data, name.num);
 
@@ -212,7 +212,7 @@ static void _PopUp_Map_Combat_Draw_Names(struct PopUp_Map_Combat *pmc, SDL_Rende
     temp_pos.x = POPUP_MAP_COMBAT_PATCH_RED_NAME_X - width / 2;
     temp_pos.y = POPUP_MAP_COMBAT_PATCH_RED_NAME_Y;
 
-    struct Unit *dft_unit = TNECS_GET_COMPONENT(pmc->world, pmc->defendant, Unit);
+    struct Unit *dft_unit = IES_GET_COMPONENT(pmc->world, pmc->defendant, Unit);
     name = dft_unit->name;
     PixelFont_Write(pmc->pixelnours_big, renderer, name.data, name.num,
                     temp_pos.x, temp_pos.y);

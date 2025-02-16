@@ -107,7 +107,7 @@ void Game_Gameplay_Start(struct Game *sota, i32 state, i32 substate) {
         /* -- Deployment Menu -- */
         // TODO: move to start deployment event or something
         Game_DeploymentMenu_Enable(sota);
-        struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
+        struct Menu *mc = IES_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
         struct DeploymentMenu *dm = mc->data;
         SDL_assert(dm->_party_size > 0);
         DeploymentMenu_Party_Set(dm, &sota->party);
@@ -183,10 +183,10 @@ void GameMap_Reinforcements_Free(struct Game *sota) {
         tnecs_entity temp_unit_ent =  DARR_POP(sota->map_enemies);
         if (temp_unit_ent == TNECS_NULL)
             continue;
-        if (sota->world->entities[temp_unit_ent] == TNECS_NULL)
+        if (sota->world->entities.id[temp_unit_ent] == TNECS_NULL)
             continue;
 
-        struct Unit *unit = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
+        struct Unit *unit = IES_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
 
         if (unit) {
             b32 isPC = (unit->_id > UNIT_ID_PC_START) && (unit->_id < UNIT_ID_PC_END);
@@ -197,7 +197,7 @@ void GameMap_Reinforcements_Free(struct Game *sota) {
             }
         }
 
-        struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Sprite);
+        struct Sprite *sprite = IES_GET_COMPONENT(sota->world, temp_unit_ent, Sprite);
         if (sprite) {
             Sprite_Free(sprite);
         }
@@ -227,29 +227,27 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         // SDL_Log("-- loading reinforcements %ld --", i);
         // SDL_Log("-- create entity --");
         tnecs_entity temp_unit_ent;
-        temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Unit, Position,
-                                                        Sprite, Timer, MapHPBar, AI);
+        temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Unit_ID, Position_ID,
+                                                        Sprite_ID, Timer_ID, MapHPBar_ID, AI_ID);
         DARR_PUT(sota->map_enemies, temp_unit_ent);
 
         // SDL_Log("-- checks --");
-        tnecs_component typeflag;
-        typeflag = TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Unit, Position,
-                                                  Sprite, Timer, MapHPBar, AI);
+        tnecs_component archetype;
+        archetype = TNECS_COMPONENT_IDS2ARCHETYPE(Unit_ID, Position_ID, Sprite_ID, Timer_ID, MapHPBar_ID,
+                                                  AI_ID);
 
-        size_t typeflag_id1 = tnecs_typeflagid(sota->world, typeflag);
-        size_t typeflag_id2 = tnecs_typeflagid(sota->world, sota->world->entity_typeflags[temp_unit_ent]);
+        size_t archetype_id1 = tnecs_archetypeid(sota->world, archetype);
 
-        int num_typeflag1 = sota->world->num_entities_bytype[typeflag_id1];
-        int num_typeflag2 = sota->world->num_entities_bytype[typeflag_id2];
+        int num_archetype1 = sota->world->bytype.num_entities[archetype_id1];
 
         // SDL_Log("- current -");
-        size_t current_num = sota->world->num_entities_bytype[typeflag_id1];
+        size_t current_num = sota->world->bytype.num_entities[archetype_id1];
 
-        tnecs_entity **entities_bytype = sota->world->entities_bytype;
+        tnecs_entity **entities_bytype = sota->world->bytype.entities;
         SDL_assert(entities_bytype != NULL);
 
         // SDL_Log("-- loading position --");
-        struct Position *position = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Position);
+        struct Position *position = IES_GET_COMPONENT(sota->world, temp_unit_ent, Position);
         SDL_assert(position != NULL);
         *position = Position_default;
         // SDL_memcpy(position, &Position_default, sizeof(Position));
@@ -261,7 +259,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         position->tilemap_pos.y = reinf->position.y;
         position->pixel_pos.x   = (i32)lround(position->tilemap_pos.x * position->scale[0]);
         position->pixel_pos.y   = (i32)lround(position->tilemap_pos.y * position->scale[1]);
-        SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
+        SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
 
         int index = position->tilemap_pos.y * sota->map->col_len + position->tilemap_pos.x;
 
@@ -275,22 +273,22 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
         if ((reinf->boss_icon > BOSS_ICON_NULL) && (reinf->boss_icon < BOSS_ICON_NUM)) {
             // SDL_Log("-- loading unit Boss --");
-            tnecs_entity entity = TNECS_ADD_COMPONENT(sota->world, temp_unit_ent, Boss);
-            position = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Position);
+            tnecs_entity entity = TNECS_ADD_COMPONENT(sota->world, temp_unit_ent, Boss_ID);
+            position = IES_GET_COMPONENT(sota->world, temp_unit_ent, Position);
 
             SDL_assert(temp_unit_ent == entity);
-            struct Boss *boss = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Boss);
+            struct Boss *boss = IES_GET_COMPONENT(sota->world, temp_unit_ent, Boss);
             SDL_assert(boss != NULL);
             *boss = Boss_default;
             boss->icon = reinf->boss_icon;
             Boss_Icon_Load(boss, sota->renderer);
-            typeflag += TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Boss);
-            typeflag_id1 = tnecs_typeflagid(sota->world, typeflag);
+            archetype += TNECS_COMPONENT_IDS2ARCHETYPE(Boss_ID);
+            archetype_id1 = tnecs_archetypeid(sota->world, archetype);
         }
 
         // TODO: Walking around on the map
         // SDL_Log("-- loading slider --");
-        // struct Slider * slider = TNECS_GET_COMPONENT(sota->world,  temp./_unit_ent, Slider);
+        // struct Slider * slider = IES_GET_COMPONENT(sota->world,  temp./_unit_ent, Slider);
         // SDL_assert(slider != NULL);
         // *slider = Slider_default;
         // slider->slidefactors[DIMENSION_X] = 2.0f;
@@ -299,26 +297,26 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         // slider->slidetype = SLIDETYPE_GEOMETRIC;
 
         // SDL_Log("-- loading unit --");
-        struct Unit *unit = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
+        struct Unit *unit = IES_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
         *unit = Unit_default;
         Unit_Members_Alloc(unit);
         SDL_assert(unit != NULL);
-        SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
+        SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
 
         /* DESIGN: Reinforcements wait! */
         unit->waits = true;
-        SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
+        SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
         unit->weapons_dtab  = sota->weapons_dtab;
         unit->items_dtab    = sota->items_dtab;
         s8 unit_path  = s8_mut("units"PHYSFS_SEPARATOR);
         unit_path     = s8cat(unit_path, reinf->filename);
-        SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
+        SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
         jsonio_readJSON(unit_path, unit);
 
         Unit_Reinforcement_Load(unit, reinf);
         s8_free(&unit_path);
         SDL_assert(unit->name.data != NULL);
-        SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
+        SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
 
         /* Make AI reinforcements levelup */
         Unit_Reinforcement_Levelups(unit, reinf);
@@ -344,13 +342,13 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
         Unit_effectiveStats(unit);
 
-        SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
+        SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
         SDL_assert(unit->status_queue != NULL);
 
         s8_free(&unit_path);
 
         // SDL_Log("-- loading unit AI --");
-        struct AI *ai = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, AI);
+        struct AI *ai = IES_GET_COMPONENT(sota->world, temp_unit_ent, AI);
         *ai = AI_default;
         s8 ai_path  = s8_mut("ai"PHYSFS_SEPARATOR);
         /* - Default ai - */
@@ -369,7 +367,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         s8_free(&ai->json_filename);
 
         // SDL_Log("-- loading map_hp_bar --");
-        struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, MapHPBar);
+        struct MapHPBar *map_hp_bar = IES_GET_COMPONENT(sota->world, temp_unit_ent, MapHPBar);
         // *map_hp_bar = MapHPBar_default;
         map_hp_bar->unit_ent    = temp_unit_ent;
         map_hp_bar->len         = sota->settings.tilesize[0];
@@ -378,11 +376,11 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
         // SDL_Log("-- loading sprite --");
         struct Timer *timer;
-        timer = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Timer);
+        timer = IES_GET_COMPONENT(sota->world, temp_unit_ent, Timer);
         SDL_assert(timer != NULL);
         *timer = Timer_default;
 
-        struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Sprite);
+        struct Sprite *sprite = IES_GET_COMPONENT(sota->world, temp_unit_ent, Sprite);
         SDL_assert(sprite != NULL);
         memcpy(sprite, &Sprite_default, sizeof(Sprite_default));
         Sprite_Map_Unit_Load(sprite, unit, sota->renderer);
@@ -397,10 +395,10 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         Sprite_defaultShaders_Load(sprite);
 
         // SDL_Log("-- put on map --");
-        SDL_assert(sota->world->entity_typeflags[temp_unit_ent] == typeflag);
-        SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
+        SDL_assert(sota->world->entities.archetypes[temp_unit_ent] == archetype);
+        SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
         Map_Unit_Put(sota->map, position->tilemap_pos.x, position->tilemap_pos.y, temp_unit_ent);
-        SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
+        SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
 
         SDL_assert(unit->army == reinf->army);
         SDL_assert(unit->name.data != NULL);

@@ -20,7 +20,7 @@ void Map_Units_Hide(struct Map *map) {
         tnecs_entity uent = map->unitmap[i];
         if (uent == TNECS_NULL)
             continue;
-        struct Sprite *sprite = TNECS_GET_COMPONENT(map->world, uent, Sprite);
+        struct Sprite *sprite = IES_GET_COMPONENT(map->world, uent, Sprite);
         if (sprite != NULL)
             sprite->visible = false;
     }

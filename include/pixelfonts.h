@@ -4,6 +4,9 @@
 #include "enums.h"
 #include "SDL.h"
 
+/* --- FORWARD DECLARATIONS --- */
+struct TextLines;
+
 /* --- ANTS --- */
 enum TEXTUREFONT {
     TEXTURE_CHARSET_COL_LEN     =  8,

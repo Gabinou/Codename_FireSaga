@@ -714,11 +714,11 @@ void PreCombatPopup_Load(struct PreCombatPopup *pcp, tnecs_entity aggressor,
 
     pcp->defendant = defendant;
     pcp->aggressor = aggressor;
-    struct Unit *agg_unit    = TNECS_GET_COMPONENT(pcp->sota->world, pcp->aggressor, Unit);
-    struct Unit *dft_unit    = TNECS_GET_COMPONENT(pcp->sota->world, pcp->defendant, Unit);
+    struct Unit *agg_unit    = IES_GET_COMPONENT(pcp->sota->world, pcp->aggressor, Unit);
+    struct Unit *dft_unit    = IES_GET_COMPONENT(pcp->sota->world, pcp->defendant, Unit);
     /* Getting unit positions */
-    struct Position *agg_pos = TNECS_GET_COMPONENT(pcp->sota->world, pcp->aggressor, Position);
-    struct Position *dft_pos = TNECS_GET_COMPONENT(pcp->sota->world, pcp->defendant, Position);
+    struct Position *agg_pos = IES_GET_COMPONENT(pcp->sota->world, pcp->aggressor, Position);
+    struct Position *dft_pos = IES_GET_COMPONENT(pcp->sota->world, pcp->defendant, Position);
     _PreCombatPopup_Load(pcp, agg_unit, dft_unit, agg_pos, dft_pos, renderer);
 }
 

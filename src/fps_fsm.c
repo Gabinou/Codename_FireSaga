@@ -95,7 +95,7 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     /* -- TODO: Rename to AI timer? */
     // TODO: Animate reinforcements
     if (sota->reinf_timer != TNECS_NULL) {
-        struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->reinf_timer, Timer);
+        struct Timer *timer = IES_GET_COMPONENT(sota->world, sota->reinf_timer, Timer);
         SDL_assert(timer != NULL);
         u64 limit = sota->settings.enemy_turn_settings.pause_post_reinforcement;
         if (timer->time_ns <= timer->limit_ns)
@@ -179,8 +179,8 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
 
         SDL_LogDebug(SOTA_LOG_AI, "AI: Pause AFTER AI_act");
         /* Pause AFTER AI action */
-        sota->reinf_timer   = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer);
-        struct Timer *timer = TNECS_GET_COMPONENT(sota->world, sota->reinf_timer, Timer);
+        sota->reinf_timer   = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer_ID);
+        struct Timer *timer = IES_GET_COMPONENT(sota->world, sota->reinf_timer, Timer);
         *timer = Timer_default;
         timer->limit_ns = sota->settings.enemy_turn_settings.pause_post_move;
     }
@@ -271,7 +271,7 @@ void fsm_rFrame_sCmbt(struct Game *sota) {
 void fsm_rFrame_sScnTalk(struct Game *sota) {
 
     SDL_assert(sota->scene > TNECS_NULL);
-    Scene *scene = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
+    Scene *scene = IES_GET_COMPONENT(sota->world, sota->scene, Scene);
     SDL_assert(scene != NULL);
 
     Scene_Draw(scene, &sota->settings, sota->render_target, sota->renderer);
@@ -299,7 +299,7 @@ void fsm_rFrame_sGmpMap(struct Game *sota) {
     size_t num = DARR_NUM(sota->map->friendlies_onfield);
     for (int i = 0; i < num; i++) {
         tnecs_entity entity = sota->map->friendlies_onfield[i];
-        struct Position *pos = TNECS_GET_COMPONENT(sota->world, entity, Position);
+        struct Position *pos = IES_GET_COMPONENT(sota->world, entity, Position);
         int colori = (i % (PALETTE_SOTA_COLOR_NUM - 1)) + 8;
         Map_Perimeter_Draw_Aura(sota->map, &sota->settings,
                                 &sota->camera, pos->tilemap_pos,

@@ -20,11 +20,14 @@ only the enum NAMES gets STRINGIZE'd
 #define STRINGIFY(x) #x
 #define STRINGIZE(x) STRINGIFY(x)
 
+#define COMPONENT_ID(name) name##_ID
+#define IES_GET_COMPONENT(world, entity, component) tnecs_get_component(world, entity, COMPONENT_ID(component))
+#define IES_ENTITY_HASCOMPONENT(world, entity, cID) TNECS_ENTITY_HASCOMPONENT(world, entity, cID##_ID)
+
 #define SOTA_CONCATENATE( arg1, arg2) SOTA_CONCATENATE1(arg1, arg2)
 #define SOTA_CONCATENATE1(arg1, arg2) SOTA_CONCATENATE2(arg1, arg2)
 #define SOTA_CONCATENATE2(arg1, arg2) arg1##arg2
 
-/* --- Flattened array indices --- */
 /* Note: [x -> col, y -> row, z ->depth] */
 #define sota_2D_index(x, y, col_len) (y * col_len + x)
 // Revert 2D_index (y * col_len + x) to [x, y]:

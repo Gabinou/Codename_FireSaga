@@ -10,6 +10,8 @@
 struct cJSON;
 struct Settings;
 struct Menu;
+struct Point;
+struct PopUp;
 struct n9Patch;
 struct LoadoutSelectMenu;
 

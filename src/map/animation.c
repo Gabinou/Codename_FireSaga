@@ -36,8 +36,8 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
     /* - pausing attacker for constant time - */
     int attacker_i = sota->combat_outcome.phases[combat_anim->attack_ind].attacker;
     tnecs_entity attacker = attacker_i ? sota->aggressor : sota->defendant;
-    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, attacker, Timer));
-    struct Timer *att_timer = TNECS_GET_COMPONENT(sota->world, attacker, Timer);
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, attacker, Timer));
+    struct Timer *att_timer = IES_GET_COMPONENT(sota->world, attacker, Timer);
     SDL_assert(att_timer != NULL);
     att_timer->paused = ((combat_timer->time_ns / SOTA_us) < combat_anim->pause_before_ms);
 
@@ -46,12 +46,12 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
     }
 
     /* - Add RenderTop component to attacker - */
-    if (!TNECS_ENTITY_HASCOMPONENT(sota->world, attacker, RenderTop)) {
-        TNECS_ADD_COMPONENT(sota->world, attacker, RenderTop);
+    if (!IES_ENTITY_HASCOMPONENT(sota->world, attacker, RenderTop)) {
+        TNECS_ADD_COMPONENT(sota->world, attacker, RenderTop_ID);
     }
 
     /* - combat_anim's frame count only grows - */
-    struct Sprite *att_sprite = TNECS_GET_COMPONENT(sota->world, attacker, Sprite);
+    struct Sprite *att_sprite = IES_GET_COMPONENT(sota->world, attacker, Sprite);
     SDL_assert(att_sprite != NULL);
     int current_frame   = att_sprite->spritesheet->current_frame;
     int current_loop    = att_sprite->spritesheet->current_loop;
@@ -84,16 +84,16 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
 
     /* - pause defender - */
     tnecs_entity defender = attacker_i ? sota->defendant : sota->aggressor;
-    SDL_assert(TNECS_ENTITY_HASCOMPONENT(sota->world, defender, Timer));
-    struct Timer *def_timer = TNECS_GET_COMPONENT(sota->world, defender, Timer);
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, defender, Timer));
+    struct Timer *def_timer = IES_GET_COMPONENT(sota->world, defender, Timer);
     SDL_assert(def_timer != NULL);
     def_timer->paused = true;
 
     /* - Remove RenderTop component from attacker - */
-    if (TNECS_ENTITY_HASCOMPONENT(sota->world, attacker, RenderTop))
-        TNECS_REMOVE_COMPONENTS(sota->world, attacker, RenderTop);
-    if (TNECS_ENTITY_HASCOMPONENT(sota->world, defender, RenderTop))
-        TNECS_REMOVE_COMPONENTS(sota->world, defender, RenderTop);
+    if (IES_ENTITY_HASCOMPONENT(sota->world, attacker, RenderTop))
+        TNECS_REMOVE_COMPONENTS(sota->world, attacker, RenderTop_ID);
+    if (IES_ENTITY_HASCOMPONENT(sota->world, defender, RenderTop))
+        TNECS_REMOVE_COMPONENTS(sota->world, defender, RenderTop_ID);
 }
 
 void Map_TurnTransition_Animate(struct Game *sota, tnecs_entity entity,

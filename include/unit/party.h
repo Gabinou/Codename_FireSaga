@@ -9,6 +9,7 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Unit;
 struct Game;
+struct Party;
 struct cJSON;
 typedef struct cJSON cJSON;
 

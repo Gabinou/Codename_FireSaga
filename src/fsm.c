@@ -519,23 +519,23 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     popup_ent = sota->popups[POPUP_TYPE_HUD_UNIT];
     SDL_assert(popup_ent != TNECS_NULL);
 
-    struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
+    struct PopUp *popup = IES_GET_COMPONENT(sota->world, popup_ent, PopUp);
     struct PopUp_Unit *popup_unit = popup->data;
     PopUp_Unit_Set(popup_unit, sota);
     SDL_assert(popup_unit->unit != NULL);
     popup->visible = true;
-    const struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    const struct Position *cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     // TODO: use struct Point everywhere, replace .x = with struct equality
     struct Point pos = cursor_pos->tilemap_pos;
 
     Game_PopUp_Unit_Place(sota, pos);
 
-    struct Slider *slider  = TNECS_GET_COMPONENT(sota->world, popup_ent, Slider);
+    struct Slider *slider  = IES_GET_COMPONENT(sota->world, popup_ent, Slider);
     struct SliderOffscreen *offscreen;
-    offscreen = TNECS_GET_COMPONENT(sota->world, popup_ent, SliderOffscreen);
+    offscreen = IES_GET_COMPONENT(sota->world, popup_ent, SliderOffscreen);
     offscreen->reverse = false;
 
-    struct Unit *unit_ontile = TNECS_GET_COMPONENT(sota->world, hov_ent, Unit);
+    struct Unit *unit_ontile = IES_GET_COMPONENT(sota->world, hov_ent, Unit);
     if (unit_ontile->waits) {
         return;
     }
@@ -547,7 +547,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     MapAct map_to = MapAct_default;
 
     /* Don't show movemap if AI never moves */
-    struct AI *ai = TNECS_GET_COMPONENT(sota->world, hov_ent, AI);
+    struct AI *ai = IES_GET_COMPONENT(sota->world, hov_ent, AI);
     if (ai != NULL)
         map_to.move = (ai->move != AI_MOVE_NEVER);
     else
@@ -594,8 +594,8 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     sota->map->show_icons = SotA_isPC(unit_ontile->army);
 
     /* -- Changing animation loop to Taunt -- */
-    struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, hov_ent, Sprite);
-    b32 animated = TNECS_ENTITY_HASCOMPONENT(sota->world, hov_ent, Timer);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->world, hov_ent, Sprite);
+    b32 animated = IES_ENTITY_HASCOMPONENT(sota->world, hov_ent, Timer);
     if ((sprite->spritesheet != NULL) && (animated) && (!unit_ontile->waits)) {
         if (sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM) {
             Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_TAUNT, sprite->flip);
@@ -622,18 +622,18 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
 
     /* -- Getting popup -- */
     const struct Position *cursor_pos;
-    cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     struct Point pos    = cursor_pos->tilemap_pos;
-    struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
+    struct PopUp *popup = IES_GET_COMPONENT(sota->world, popup_ent, PopUp);
     struct n9Patch *n9patch = &popup->n9patch;
     struct PopUp_Unit *popup_unit = popup->data;
     // popup_unit->unit = NULL;
 
     /* -- Placing popup_unit out of view -- */
-    struct Position *position  = TNECS_GET_COMPONENT(sota->world, popup_ent, Position);
-    struct Slider *slider  = TNECS_GET_COMPONENT(sota->world, popup_ent, Slider);
+    struct Position *position  = IES_GET_COMPONENT(sota->world, popup_ent, Position);
+    struct Slider *slider  = IES_GET_COMPONENT(sota->world, popup_ent, Slider);
     struct SliderOffscreen *offscreen;
-    offscreen = TNECS_GET_COMPONENT(sota->world, popup_ent, SliderOffscreen);
+    offscreen = IES_GET_COMPONENT(sota->world, popup_ent, SliderOffscreen);
 
     SDL_Rect rect = Utilities_Rect(position, n9patch);
 
@@ -642,11 +642,11 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
     offscreen->reverse = false;
 
     /* -- Changing animation loop to IDLE -- */
-    struct Unit *unit     = TNECS_GET_COMPONENT(sota->world, dehov_ent, Unit);
-    struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, dehov_ent, Sprite);
+    struct Unit *unit     = IES_GET_COMPONENT(sota->world, dehov_ent, Unit);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->world, dehov_ent, Sprite);
     SDL_assert(unit   != NULL);
     SDL_assert(sprite != NULL);
-    b32 animated = TNECS_ENTITY_HASCOMPONENT(sota->world, dehov_ent, Timer);
+    b32 animated = IES_ENTITY_HASCOMPONENT(sota->world, dehov_ent, Timer);
 
     /* Only if unit doesn't wait */
     if ((sprite->spritesheet != NULL) && (animated) && (!unit->waits)) {
@@ -664,7 +664,7 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
 void fsm_eCrsDeHvUnit_ssMapCndt(struct Game *sota, tnecs_entity dehov_ent) {
     /* -- Reset unit loop to Idle --  */
     // ONLY FOR ATTACK
-    struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, dehov_ent, Sprite);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->world, dehov_ent, Sprite);
     Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_IDLE, sprite->flip);
     Sprite_Animation_Loop(sprite);
     Sprite_Draw(sprite, sota->renderer);
@@ -676,7 +676,7 @@ void fsm_eCncl_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
 
     struct Menu *mc;
     tnecs_entity top_menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
-    mc = TNECS_GET_COMPONENT(sota->world, top_menu, Menu);
+    mc = IES_GET_COMPONENT(sota->world, top_menu, Menu);
 
     if (fsm_eCncl_sPrep_ssMenu_m[mc->type] != NULL)
         fsm_eCncl_sPrep_ssMenu_m[mc->type](sota, mc);
@@ -704,7 +704,7 @@ void fsm_eUnitDng_ssStby(struct Game *sota, tnecs_entity selector_entity) {
     SDL_assert(selector_entity > TNECS_NULL);
     SDL_assert(sota->selected_unit_entity > TNECS_NULL);
 
-    struct Unit *unit = TNECS_GET_COMPONENT(sota->world, selected, Unit);
+    struct Unit *unit = IES_GET_COMPONENT(sota->world, selected, Unit);
 
     /* -- Skip if enemy can't attack -- */
     if (!Unit_canAttack(unit)) {
@@ -718,7 +718,7 @@ void fsm_eUnitDng_ssStby(struct Game *sota, tnecs_entity selector_entity) {
     }
 
     /* -- Computing new dangermap -- */
-    struct Position *pos    = TNECS_GET_COMPONENT(sota->world, selector_entity, Position);
+    struct Position *pos    = IES_GET_COMPONENT(sota->world, selector_entity, Position);
     i32 *temp_danger        = Map_Danger_Compute(sota->map, selected);
     int map_index = pos->tilemap_pos.y * sota->map->col_len + pos->tilemap_pos.x;
     if (unit->show_danger) {
@@ -746,7 +746,7 @@ void fsm_eCncl_sGmpMap_ssStby(struct Game *sota, tnecs_entity canceller) {
     /* -- Preliminaries -- */
     *data1_entity = canceller;
     struct Unit *unit_ontile;
-    struct Position *pos = TNECS_GET_COMPONENT(sota->world, canceller, Position);
+    struct Position *pos = IES_GET_COMPONENT(sota->world, canceller, Position);
     struct Point cpos = pos->tilemap_pos;
     tnecs_entity ontile = sota->map->unitmap[cpos.y * sota->map->col_len + cpos.x];
 
@@ -755,7 +755,7 @@ void fsm_eCncl_sGmpMap_ssStby(struct Game *sota, tnecs_entity canceller) {
     }
 
     /* -- Show danger map if enemy -- */
-    unit_ontile = TNECS_GET_COMPONENT(sota->world, ontile, Unit);
+    unit_ontile = IES_GET_COMPONENT(sota->world, ontile, Unit);
     SDL_assert(unit_ontile);
     SDL_assert(data2_entity != NULL);
     *data2_entity = ontile;
@@ -769,7 +769,7 @@ void fsm_eCncl_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity canceller) {
     /* 1. Dehover candidate defendant */
     SDL_assert(sota->entity_cursor != TNECS_NULL);
     const struct Position *cursor_pos;
-    cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
 
     struct Point pos = cursor_pos->tilemap_pos;
     int current_i = pos.y * sota->map->col_len + pos.x;
@@ -791,7 +791,7 @@ void fsm_eCncl_sGmpMap_ssMenu(struct Game *sota, tnecs_entity canceller) {
     b32 destroy = false;
     tnecs_entity ent_topop = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     SDL_assert(ent_topop > TNECS_NULL);
-    struct Menu *mc_topop = TNECS_GET_COMPONENT(sota->world, ent_topop, Menu);
+    struct Menu *mc_topop = IES_GET_COMPONENT(sota->world, ent_topop, Menu);
 
     if (fsm_eCncl_sGmpMap_ssMenu_m[mc_topop->type] != NULL)
         fsm_eCncl_sGmpMap_ssMenu_m[mc_topop->type](sota, mc_topop);
@@ -815,14 +815,14 @@ void fsm_eCncl_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity canceller) {
 
     /* Make Popup_Tile visible */
     tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_TILE];
-    struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
+    struct PopUp *popup = IES_GET_COMPONENT(sota->world, popup_ent, PopUp);
     SDL_assert(popup != NULL);
     popup->visible = true;
 
     /* Reset cursor lastpos to current pos */
     // prevents cursor dehovering from far away
     const struct Position *cursor_pos;
-    cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     sota->cursor_lastpos.x = cursor_pos->tilemap_pos.x;
     sota->cursor_lastpos.y = cursor_pos->tilemap_pos.y;
 }
@@ -853,9 +853,9 @@ void fsm_eCrsMvs_sPrep(struct Game *sota, tnecs_entity mover_entity,
 void fsm_eCrsMvs_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
                                 struct Point *cursor_move) {
     tnecs_entity cursor = sota->entity_cursor;
-    struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, cursor, Position);
-    struct Slider   *cursor_sl  = TNECS_GET_COMPONENT(sota->world, cursor, Slider);
-    struct Sprite   *cursor_sp  = TNECS_GET_COMPONENT(sota->world, cursor, Sprite);
+    struct Position *cursor_pos = IES_GET_COMPONENT(sota->world, cursor, Position);
+    struct Slider   *cursor_sl  = IES_GET_COMPONENT(sota->world, cursor, Slider);
+    struct Sprite   *cursor_sp  = IES_GET_COMPONENT(sota->world, cursor, Sprite);
 
     /* Actually move the cursor from cursor_move_data set by systemControl */
     // Note: always on tilemap
@@ -866,7 +866,7 @@ void fsm_eCrsMvs_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
 
     /* -- Give tile to popup -- */
     tnecs_entity ent = sota->popups[POPUP_TYPE_HUD_TILE];
-    struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, ent, PopUp);
+    struct PopUp *popup = IES_GET_COMPONENT(sota->world, ent, PopUp);
     struct PopUp_Tile *popup_tile = popup->data;
     PopUp_Tile_Set(popup_tile, sota);
 }
@@ -875,7 +875,7 @@ void fsm_eCrsMvs_ssMenu(struct Game *sota, tnecs_entity mover_entity,
                         struct Point *cursor_move) {
     /* Find menu elem in direction */
     tnecs_entity menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
-    struct Menu *mc = TNECS_GET_COMPONENT(sota->world, menu, Menu);
+    struct Menu *mc = IES_GET_COMPONENT(sota->world, menu, Menu);
 
     /* menu elem move FSM to find next elem depending on menu type */
     SDL_assert(mc->type > MENU_TYPE_START);
@@ -929,9 +929,9 @@ void fsm_eCrsMvs_sGmpMap_ssMapUnitMv(struct Game *sota,
 
     /* -- Move cursor -- */
     tnecs_entity cursor         = sota->entity_cursor;
-    struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, cursor, Position);
-    struct Slider   *cursor_sl  = TNECS_GET_COMPONENT(sota->world, cursor, Slider);
-    struct Sprite   *cursor_sp  = TNECS_GET_COMPONENT(sota->world, cursor, Sprite);
+    struct Position *cursor_pos = IES_GET_COMPONENT(sota->world, cursor, Position);
+    struct Slider   *cursor_sl  = IES_GET_COMPONENT(sota->world, cursor, Slider);
+    struct Sprite   *cursor_sp  = IES_GET_COMPONENT(sota->world, cursor, Sprite);
 
     /* Always on tilemap */
     Position_Pos_Add(cursor_pos, sota->cursor_move.x, sota->cursor_move.y);
@@ -941,7 +941,7 @@ void fsm_eCrsMvs_sGmpMap_ssMapUnitMv(struct Game *sota,
 
     /* -- give tile to popup -- */
     tnecs_entity ent = sota->popups[POPUP_TYPE_HUD_TILE];
-    struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, ent, PopUp);
+    struct PopUp *popup = IES_GET_COMPONENT(sota->world, ent, PopUp);
     struct PopUp_Tile *popup_tile = popup->data;
     PopUp_Tile_Set(popup_tile, sota);
 }
@@ -952,7 +952,7 @@ void fsm_eCrsMvd_sGmpMap(struct Game *sota, tnecs_entity mover_entity,
     SDL_assert(sota->entity_cursor != TNECS_NULL);
 
     struct Position *cursor_pos;
-    cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     struct Point *pos = &cursor_pos->tilemap_pos;
 
     if (fsm_eCrsMvd_sGmpMap_ss[sota->substate] != NULL)
@@ -970,7 +970,7 @@ void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
     // SDL_assert(sota->moved_direction > -1);
     SDL_assert(sota->entity_cursor != TNECS_NULL);
     const struct Position *cursor_pos;
-    cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
 
     struct Point pos          = cursor_pos->tilemap_pos;
     struct Point previous_pos = sota->cursor_lastpos;
@@ -999,7 +999,7 @@ void fsm_eCrsMvd_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
                                    struct Point *cursor_move) {
 
     const struct Position *cursor_pos;
-    cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     struct Point pos = cursor_pos->tilemap_pos;
     // SDL_assert(sota->moved_direction > -1);
     struct Point previous_pos;
@@ -1031,9 +1031,9 @@ void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game  *sota, tnecs_entity mover_entity,
     // TODO: stop cursor moving so fast
 
     tnecs_entity cursor = sota->entity_cursor;
-    struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, cursor, Position);
-    struct Slider   *cursor_sl  = TNECS_GET_COMPONENT(sota->world, cursor, Slider);
-    struct Sprite   *cursor_sp  = TNECS_GET_COMPONENT(sota->world, cursor, Sprite);
+    struct Position *cursor_pos = IES_GET_COMPONENT(sota->world, cursor, Position);
+    struct Slider   *cursor_sl  = IES_GET_COMPONENT(sota->world, cursor, Slider);
+    struct Sprite   *cursor_sp  = IES_GET_COMPONENT(sota->world, cursor, Sprite);
 
     /* Actually move the cursor from cursor_move_data set by systemControl */
     // Note: always on tilemap
@@ -1044,7 +1044,7 @@ void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game  *sota, tnecs_entity mover_entity,
         sota->candidate = sota->candidate <= 0 ? num_pos - 1 : sota->candidate - 1;
     }
     struct Menu *mc;
-    mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
+    mc = IES_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
     struct DeploymentMenu *dm = mc->data;
     SDL_assert(dm != NULL);
     i32 start_pos_i = DeploymentMenu_Map_StartPos(dm, sota->candidate);
@@ -1062,7 +1062,7 @@ void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity mover_entit
 
     /* -- Unit follows cursor movement  -- */
     struct Position *selected_pos;
-    selected_pos = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Position);
+    selected_pos = IES_GET_COMPONENT(sota->world, sota->selected_unit_entity, Position);
     selected_pos->tilemap_pos.x = cursor_pos->x;
     selected_pos->tilemap_pos.y = cursor_pos->y;
     selected_pos->pixel_pos.x = selected_pos->tilemap_pos.x * selected_pos->scale[0];
@@ -1075,7 +1075,7 @@ void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity mover_entit
 
     /* -- Update map_unit loop to follow arrow direction -- */
     struct Sprite *sprite;
-    sprite = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Sprite);
+    sprite = IES_GET_COMPONENT(sota->world, sota->selected_unit_entity, Sprite);
     int path_num = DARR_NUM(arrow->pathlist) / TWO_D;
 
     if ((path_num > 0) && (sprite->spritesheet != NULL)) {
@@ -1118,14 +1118,14 @@ void fsm_eGmp2Stby_sGmpMap(struct Game *sota, tnecs_entity controller_entity) {
 void fsm_eStart_sScnTalk(struct Game *sota, tnecs_entity accepter) {
     /* --- Skip scene --- */
     SDL_assert(sota->scene > TNECS_NULL);
-    struct Scene *scene = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
+    struct Scene *scene = IES_GET_COMPONENT(sota->world, sota->scene, Scene);
     Scene_Finish(scene, sota);
 }
 
 void fsm_eStart_sCutScn(struct Game *sota, tnecs_entity nope) {
     /* --- Finish Cutscene --- */
     SDL_assert(sota->cutscene > TNECS_NULL);
-    struct Cutscene *cutscene = TNECS_GET_COMPONENT(sota->world, sota->cutscene, Cutscene);
+    struct Cutscene *cutscene = IES_GET_COMPONENT(sota->world, sota->cutscene, Cutscene);
     Cutscene_Finish(cutscene, sota);
 }
 
@@ -1139,7 +1139,7 @@ void fsm_eStart_sPrep(struct Game *sota, tnecs_entity accepter) {
 void fsm_eStart_sPrep_ssMapCndt(struct Game *sota, tnecs_entity ent) {
     /* --- Start battle --- */
     SDL_assert(sota->deployment_menu > TNECS_NULL);
-    struct Menu *mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
+    struct Menu *mc = IES_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
     Game_Battle_Start(sota, mc);
     SDL_assert(mc != NULL);
 }
@@ -1150,7 +1150,7 @@ void fsm_eStart_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
     tnecs_entity top_menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     SDL_assert(top_menu > TNECS_NULL);
     SDL_assert(top_menu == sota->deployment_menu);
-    struct Menu *mc = TNECS_GET_COMPONENT(sota->world, top_menu, Menu);
+    struct Menu *mc = IES_GET_COMPONENT(sota->world, top_menu, Menu);
     SDL_assert(mc != NULL);
     if (fsm_eStart_sPrep_ssMenu_m[mc->type] != NULL)
         fsm_eStart_sPrep_ssMenu_m[mc->type](sota, mc);
@@ -1160,7 +1160,7 @@ void fsm_eStart_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
 void fsm_eAcpt_sScnTalk(struct Game *sota, tnecs_entity nope) {
     /* --- Get next line at normal speed --- */
     SDL_assert(sota->scene > TNECS_NULL);
-    struct Scene *scene = TNECS_GET_COMPONENT(sota->world, sota->scene, Scene);
+    struct Scene *scene = IES_GET_COMPONENT(sota->world, sota->scene, Scene);
     if (Scene_Statement_Next(scene) < 0) {
         Scene_Finish(scene, sota);
     }
@@ -1169,7 +1169,7 @@ void fsm_eAcpt_sScnTalk(struct Game *sota, tnecs_entity nope) {
 void fsm_eAcpt_sCutScn(struct Game *sota, tnecs_entity nope) {
     /* --- Finish cutscene --- */
     SDL_assert(sota->cutscene > TNECS_NULL);
-    struct Cutscene *cutscene = TNECS_GET_COMPONENT(sota->world, sota->cutscene, Cutscene);
+    struct Cutscene *cutscene = IES_GET_COMPONENT(sota->world, sota->cutscene, Cutscene);
     Cutscene_Finish(cutscene, sota);
 }
 
@@ -1200,7 +1200,7 @@ void fsm_eAcpt_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity canceller) {
 void fsm_eAcpt_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
     SDL_assert(sota->entity_cursor);
     const struct Position *cursor_pos;
-    cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     SDL_assert(cursor_pos != NULL);
     struct Point pos = cursor_pos->tilemap_pos;
     tnecs_entity ontile = sota->map->unitmap[pos.y * sota->map->col_len + pos.x];
@@ -1229,7 +1229,7 @@ void fsm_eAcpt_sPrep_ssMapCndt(struct Game *sota, tnecs_entity accepter_entity) 
     /* Select a unit on starting position, or move it */
     SDL_assert(sota->deployment_menu > TNECS_NULL);
     struct Menu *mc;
-    mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
+    mc = IES_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
     SDL_assert(mc != NULL);
     struct DeploymentMenu *dm = mc->data;
     SDL_assert(dm != NULL);
@@ -1274,7 +1274,7 @@ void fsm_eAcpt_sGmpMap_ssMenu(struct Game *sota, tnecs_entity accepter_entity) {
     SDL_assert(DARR_NUM(sota->menu_stack) > 0);
     tnecs_entity top_menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     SDL_assert(top_menu > TNECS_NULL);
-    struct Menu *mc_topop = TNECS_GET_COMPONENT(sota->world, top_menu, Menu);
+    struct Menu *mc_topop = IES_GET_COMPONENT(sota->world, top_menu, Menu);
 
     if (fsm_eAcpt_sGmpMap_ssMenu_m[mc_topop->type] != NULL)
         fsm_eAcpt_sGmpMap_ssMenu_m[mc_topop->type](sota, mc_topop);
@@ -1287,7 +1287,7 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     SDL_assert(sota->selected_unit_entity != TNECS_NULL);
     /* - Skip if friendly on tile - */
     const struct Position *cursor_pos;
-    cursor_pos          = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    cursor_pos          = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     int current_i       = cursor_pos->tilemap_pos.y * sota->map->col_len +
                           cursor_pos->tilemap_pos.x;
     tnecs_entity ontile = sota->map->unitmap[current_i];
@@ -1307,15 +1307,15 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
 
     /* - Make popup_tile invisible - */
     tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_TILE];
-    struct PopUp *popup      = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
+    struct PopUp *popup      = IES_GET_COMPONENT(sota->world, popup_ent, PopUp);
     if (popup != NULL) {
         popup->visible = false;
     }
 
     /* - Get selected unit on tile - */
     struct Position *selected_pos;
-    struct Unit *unit   = TNECS_GET_COMPONENT(sota->world, unit_ent,            Unit);
-    selected_pos        = TNECS_GET_COMPONENT(sota->world, unit_ent,            Position);
+    struct Unit *unit   = IES_GET_COMPONENT(sota->world, unit_ent,            Unit);
+    selected_pos        = IES_GET_COMPONENT(sota->world, unit_ent,            Position);
 
     /* - Unit should be PC - */
     SDL_assert(SotA_isPC(unit->army));
@@ -1418,7 +1418,7 @@ void fsm_eStats_sGmpMap(struct Game *sota, tnecs_entity ent) {
 void fsm_eStats_sPrep_ssMapCndt(struct Game *sota, tnecs_entity ent) {
     /* Find which unit is hovered on map */
     SDL_assert(sota->entity_cursor);
-    struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    struct Position *cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     SDL_assert(cursor_pos != NULL);
     struct Point pos = cursor_pos->tilemap_pos;
     tnecs_entity ontile = sota->map->unitmap[pos.y * sota->map->col_len + pos.x];
@@ -1433,7 +1433,7 @@ void fsm_eStats_sPrep_ssMenu(  struct Game *sota, tnecs_entity ent) {
     SDL_assert(sota->deployment_menu > TNECS_NULL);
 
     struct Menu *mc;
-    mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
+    mc = IES_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
 
     if (fsm_eStats_sPrep_ssMenu_m[mc->type] != NULL)
         fsm_eStats_sPrep_ssMenu_m[mc->type](sota, mc);
@@ -1446,7 +1446,7 @@ void fsm_eStats_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
 
     /* Find which unit is hovered on map */
     SDL_assert(sota->entity_cursor);
-    struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    struct Position *cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     SDL_assert(cursor_pos != NULL);
     struct Point pos = cursor_pos->tilemap_pos;
     tnecs_entity ontile = sota->map->unitmap[pos.y * sota->map->col_len + pos.x];
@@ -1461,13 +1461,13 @@ void fsm_eStats_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
 
     /* - Make popup_tile invisible - */
     tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_TILE];
-    struct PopUp *popup    = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
+    struct PopUp *popup    = IES_GET_COMPONENT(sota->world, popup_ent, PopUp);
     if (popup != NULL)
         popup->visible = false;
 
     /* - Make popup_unit invisible - */
     popup_ent   = sota->popups[POPUP_TYPE_HUD_UNIT];
-    popup       = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
+    popup       = IES_GET_COMPONENT(sota->world, popup_ent, PopUp);
     if (popup != NULL)
         popup->visible = false;
 }
@@ -1475,9 +1475,9 @@ void fsm_eStats_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
 // -- FSM: UNIT_SELECT EVENT --
 void fsm_eUnitSel_ssStby(struct Game *sota, tnecs_entity selector_entity) {
     struct Unit *selected_unit;
-    selected_unit = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Unit);
+    selected_unit = IES_GET_COMPONENT(sota->world, sota->selected_unit_entity, Unit);
     struct Position *selected_pos;
-    selected_pos = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Position);
+    selected_pos = IES_GET_COMPONENT(sota->world, sota->selected_unit_entity, Position);
     sota->selected_unit_initial_position.x = selected_pos->tilemap_pos.x;
     sota->selected_unit_initial_position.y = selected_pos->tilemap_pos.y;
 
@@ -1495,7 +1495,7 @@ void fsm_eUnitSel_ssStby(struct Game *sota, tnecs_entity selector_entity) {
         /* Make popup_unit invisible */
         // TODO: GO OFFSCREEN
         tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_UNIT];
-        struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
+        struct PopUp *popup = IES_GET_COMPONENT(sota->world, popup_ent, PopUp);
         SDL_assert(popup != NULL);
         // popup->visible = false;
         Event_Emit(__func__, SDL_USEREVENT, event_Unit_Moves, data1_entity, data2_entity);
@@ -1514,8 +1514,8 @@ void fsm_eUnitDsel_ssMapUnitMv(struct Game *sota, tnecs_entity selector) {
 
     /*  -- Reset map overlay to danger only -- */
     struct Position *selected_pos;
-    selected_pos = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Position);
-    struct Position *pos = TNECS_GET_COMPONENT(sota->world, selector, Position);
+    selected_pos = IES_GET_COMPONENT(sota->world, sota->selected_unit_entity, Position);
+    struct Position *pos = IES_GET_COMPONENT(sota->world, selector, Position);
     struct Point initial = sota->selected_unit_initial_position;
     if ((pos->tilemap_pos.x != initial.x) || (pos->tilemap_pos.y != initial.y)) {
         // Only if cursor not on unit.
@@ -1546,13 +1546,13 @@ void fsm_eMenuRight_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     SDL_assert(popped > 0);
 
     /* - Hide previous menu - */
-    struct Menu *mc_popped = TNECS_GET_COMPONENT(sota->world, popped, Menu);
+    struct Menu *mc_popped = IES_GET_COMPONENT(sota->world, popped, Menu);
     mc_popped->visible = false;
 
     /* -- Create New menu -- */
     /* - Get unit ontile - */
     struct Position *cursor_pos;
-    cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     struct Point pos = cursor_pos->tilemap_pos;
     tnecs_entity ontile = sota->map->unitmap[pos.y * sota->map->col_len + pos.x];
 
@@ -1565,13 +1565,13 @@ void fsm_eMenuRight_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
         case MENU_TYPE_STATS:
             SDL_Log("NEW MENU_TYPE_STATS");
             Game_StatsMenu_Enable(sota, ontile);
-            new_menu_comp = TNECS_GET_COMPONENT(sota->world, sota->stats_menu, Menu);
+            new_menu_comp = IES_GET_COMPONENT(sota->world, sota->stats_menu, Menu);
             new_menu_comp->visible = true;
             break;
         case MENU_TYPE_GROWTHS:
             SDL_Log("NEW MENU_TYPE_GROWTHS");
             Game_GrowthsMenu_Enable(sota, ontile);
-            new_menu_comp = TNECS_GET_COMPONENT(sota->world, sota->growths_menu, Menu);
+            new_menu_comp = IES_GET_COMPONENT(sota->world, sota->growths_menu, Menu);
             new_menu_comp->visible = true;
             break;
         default:
@@ -1601,13 +1601,13 @@ void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     SDL_assert(popped > 0);
 
     /* - Hide previous menu - */
-    struct Menu *mc_popped = TNECS_GET_COMPONENT(sota->world, popped, Menu);
+    struct Menu *mc_popped = IES_GET_COMPONENT(sota->world, popped, Menu);
     mc_popped->visible = false;
 
     /* -- Create New menu -- */
     /* - Get unit ontile - */
     struct Position *cursor_pos;
-    cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     struct Point pos = cursor_pos->tilemap_pos;
     tnecs_entity ontile = sota->map->unitmap[pos.y * sota->map->col_len + pos.x];
 
@@ -1621,12 +1621,12 @@ void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     switch (stats_menu_cycle[new_id]) {
         case MENU_TYPE_STATS:
             Game_StatsMenu_Enable(sota, ontile);
-            new_menu_comp = TNECS_GET_COMPONENT(sota->world, sota->stats_menu, Menu);
+            new_menu_comp = IES_GET_COMPONENT(sota->world, sota->stats_menu, Menu);
             new_menu_comp->visible = true;
             break;
         case MENU_TYPE_GROWTHS:
             Game_GrowthsMenu_Enable(sota, ontile);
-            new_menu_comp = TNECS_GET_COMPONENT(sota->world, sota->growths_menu, Menu);
+            new_menu_comp = IES_GET_COMPONENT(sota->world, sota->growths_menu, Menu);
             new_menu_comp->visible = true;
             break;
         default:
@@ -1655,7 +1655,7 @@ void fsm_eMenuLeft_sPrep_ssMenu(struct Game *sota) {
 
     /* - Focus on map - */
     struct Menu *mc;
-    mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
+    mc = IES_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
     mc->visible = false;
 
     Game_cursorFocus_onMap(sota);
@@ -1675,7 +1675,7 @@ void fsm_eMenuLeft_sPrep_ssMapCndt(struct Game *sota) {
     DARR_PUT(sota->menu_stack, sota->deployment_menu);
 
     struct Menu *mc;
-    mc = TNECS_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
+    mc = IES_GET_COMPONENT(sota->world, sota->deployment_menu, Menu);
     mc->visible = true;
     Game_cursorFocus_onMenu(sota);
 
@@ -1693,7 +1693,7 @@ void fsm_eCmbtEnd_ssMapNPC(  struct Game *sota) {
     /* -- Popup_Loadout_stats -- */
     tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS];
     if (popup_ent > TNECS_NULL) {
-        struct PopUp *popup_ptr = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
+        struct PopUp *popup_ptr = IES_GET_COMPONENT(sota->world, popup_ent, PopUp);
         SDL_assert(popup_ptr != NULL);
         popup_ptr->visible = false;
     }

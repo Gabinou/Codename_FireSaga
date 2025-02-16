@@ -5,6 +5,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "types.h"
+#include "macros.h"
+#include "tnecs.h"
 
 #define LOGFILE          "log.txt"
 #define ASSET_LIB        "assets.binou"
@@ -421,8 +423,8 @@ enum MOUNT_TYPES {
 };
 #undef REGISTER_ENUM
 
-#define COMPONENT_ID(name) COMPONENT_##name
-#define TNECS_GET_COMPONENT(world, entity, name) tnecs_get_component(world, entity, COMPONENT_ID(name))
+// #define REGISTER_ENUM(x) REGISTER_ENUM_(x)
+// #define REGISTER_ENUM(x) x##_ID,
 #define REGISTER_ENUM(x) COMPONENT_ID(x),
 enum COMPONENT {
     COMPONENT_NULL  = TNECS_NULL,
@@ -430,6 +432,7 @@ enum COMPONENT {
     COMPONENT_NUM,
 };
 #undef REGISTER_ENUM
+#undef REGISTER_ENUM_
 
 #define REGISTER_ENUM(x) MOUNT_NAME_##x,
 enum MOUNT_NAMES {
@@ -626,15 +629,15 @@ enum ITEM_STATS {
 };
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) extern const  uint64_t UNIT_PC_ALIVE_##x;
+#define REGISTER_ENUM(x, y) extern const  u64 UNIT_PC_ALIVE_##x;
 #include "names/units_PC.h"
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) extern const  uint64_t UNIT_PC_RECRUITED_##x;
+#define REGISTER_ENUM(x, y) extern const  u64 UNIT_PC_RECRUITED_##x;
 #include "names/units_PC.h"
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) extern const  uint64_t UNIT_NPC_ALIVE_##x;
+#define REGISTER_ENUM(x, y) extern const  u64 UNIT_NPC_ALIVE_##x;
 #include "names/units_NPC.h"
 #undef REGISTER_ENUM
 
@@ -649,7 +652,7 @@ enum ITEM_EFFECT_EXP {
 };
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) extern const  uint64_t ITEM_EFFECT_##x;
+#define REGISTER_ENUM(x, y) extern const u64 ITEM_EFFECT_##x;
 #include "names/items_effects.h"
 #undef REGISTER_ENUM
 
@@ -769,7 +772,7 @@ enum ACTIVE_SKILLS {
 };
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x) extern const  uint64_t UNIT_SKILL_##x;
+#define REGISTER_ENUM(x) extern const u64 UNIT_SKILL_##x;
 #include "names/skills_passive.h"
 #include "names/skills_active.h"
 enum UNIT_SKILL {

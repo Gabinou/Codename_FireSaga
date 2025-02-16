@@ -105,8 +105,8 @@ void Slider_Speed_Set(Slider *s, i32 vx, i32 vy);
 /* --- Slider --- */
 void Slider_Init(            struct Slider *s, struct Point *p, struct Point *t);
 
-void Slider_Compute_Next(           const SliderInput input);
-void SliderOffscreen_Compute_Next(  const SliderInput input);
+void Slider_Compute_Next(           SliderInput input);
+void SliderOffscreen_Compute_Next(  SliderInput input);
 
 /* --- SliderOffscreen --- */
 void Slider_Offscreen_Midpoint(struct Slider *s, struct SliderOffscreen *o);
@@ -116,7 +116,5 @@ void Slider_Target_Offscreen(struct Slider *s, struct SliderOffscreen *o, SDL_Re
 
 // Far offscreen to make sliding look better?
 void Slider_Target_Offscreen_Far(struct Slider *s, struct SliderOffscreen *o, SDL_Rect *p);
-
-
 
 #endif /* SLIDER_H */

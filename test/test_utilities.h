@@ -168,7 +168,7 @@ void test_utilities() {
 
     // test_wpn_names
     u16 wpn_typecode;
-    uint64_t temp_item_id;
+    u64 temp_item_id;
     wpn_typecode = ITEM_TYPE_SWORD + ITEM_TYPE_LANCE;
     s8 *wpn_names = Names_wpnType(wpn_typecode);
     nourstest_true(s8equal(wpn_names[0], s8_literal("Sword")));

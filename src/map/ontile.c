@@ -27,7 +27,7 @@ void _Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
         return;
     }
     size_t index        = row * map->col_len + col;
-    struct Position *pos = TNECS_GET_COMPONENT(map->world, entity, Position);
+    struct Position *pos = IES_GET_COMPONENT(map->world, entity, Position);
     pos->tilemap_pos.x   = col;
     pos->tilemap_pos.y   = row;
     pos->pixel_pos.x     = pos->tilemap_pos.x * pos->scale[0];
@@ -47,20 +47,20 @@ void Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
     DARR_PUT(map->units_onfield, entity);
 
     /* -- Adding MapHPBar -- */
-    if (!TNECS_ENTITY_HASCOMPONENT(map->world, entity, MapHPBar)) {
-        TNECS_ADD_COMPONENT(map->world, entity, MapHPBar);
-        struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(map->world, entity, MapHPBar);
+    if (!IES_ENTITY_HASCOMPONENT(map->world, entity, MapHPBar)) {
+        TNECS_ADD_COMPONENT(map->world, entity, MapHPBar_ID);
+        struct MapHPBar *map_hp_bar = IES_GET_COMPONENT(map->world, entity, MapHPBar);
         *map_hp_bar = MapHPBar_default;
     }
-    struct MapHPBar *map_hp_bar = TNECS_GET_COMPONENT(map->world, entity, MapHPBar);
+    struct MapHPBar *map_hp_bar = IES_GET_COMPONENT(map->world, entity, MapHPBar);
     map_hp_bar->unit_ent    = entity;
     map_hp_bar->len         = map->tilesize[0];
     map_hp_bar->update      = true;
     map_hp_bar->visible     = true;
 
     /* -- Updating unit pos -- */
-    struct Unit     *temp_unit   = TNECS_GET_COMPONENT(map->world, entity, Unit);
-    struct Sprite   *temp_sprite = TNECS_GET_COMPONENT(map->world, entity, Sprite);
+    struct Unit     *temp_unit   = IES_GET_COMPONENT(map->world, entity, Unit);
+    struct Sprite   *temp_sprite = IES_GET_COMPONENT(map->world, entity, Sprite);
 
     if (temp_sprite != NULL)
         temp_sprite->visible = true;
@@ -126,7 +126,7 @@ void Map_Unit_Move(struct Map *map, u8 col, u8 row, u8 new_col, u8 new_row) {
 
     SDL_assert(map->unitmap[new_i] > TNECS_NULL);
     SDL_assert(map->unitmap[new_i] == entity);
-    struct Position *pos = TNECS_GET_COMPONENT(map->world, entity, Position);
+    struct Position *pos = IES_GET_COMPONENT(map->world, entity, Position);
     SDL_assert(pos->tilemap_pos.x == new_col);
     SDL_assert(pos->tilemap_pos.y == new_row);
     map->unitmap[old_i] = TNECS_NULL;
@@ -139,7 +139,7 @@ tnecs_entity *Map_Unit_Gets(struct Map *map, u8 army) {
     struct Unit *current_unit;
     for (u8 i = 0; i < DARR_NUM(map->units_onfield); i++) {
         current_unit_ent = map->units_onfield[i];
-        current_unit = TNECS_GET_COMPONENT(map->world, current_unit_ent, Unit);
+        current_unit = IES_GET_COMPONENT(map->world, current_unit_ent, Unit);
         if (current_unit->army == army)
             DARR_PUT(unit_ents, current_unit_ent);
     }
@@ -151,8 +151,8 @@ tnecs_entity Map_Unit_Get_Boss(struct Map *map, u8 army) {
 
     for (int i = 0; i < DARR_NUM(map->units_onfield); i++) {
         tnecs_entity ent = map->units_onfield[i];
-        struct Unit *unit = TNECS_GET_COMPONENT(map->world, ent, Unit);
-        struct Unit *boss = TNECS_GET_COMPONENT(map->world, ent, Boss);
+        struct Unit *unit = IES_GET_COMPONENT(map->world, ent, Unit);
+        struct Unit *boss = IES_GET_COMPONENT(map->world, ent, Boss);
         if ((unit->army == army) && (boss != NULL)) {
             out = ent;
             break;
@@ -241,7 +241,7 @@ void Map_Unit_Remove(struct Map *map, tnecs_entity entity) {
     SDL_assert(map->unitmap != NULL);
 
     /* --- Check that entity is really on map --- */
-    struct Position *pos = TNECS_GET_COMPONENT(map->world, entity, Position);
+    struct Position *pos = IES_GET_COMPONENT(map->world, entity, Position);
     SDL_assert(pos->onTilemap);
 
     // SDL_Log("pos->tilemap_pos %d %d", pos->tilemap_pos.x, pos->tilemap_pos.y);
@@ -250,12 +250,12 @@ void Map_Unit_Remove(struct Map *map, tnecs_entity entity) {
     SDL_assert(ontile_ent > TNECS_NULL);
     // SDL_Log("%s %d %d", __func__, ontile_ent, map->unitmap[index]);
     SDL_assert(ontile_ent == entity);
-    struct Sprite *sprite = TNECS_GET_COMPONENT(map->world, entity, Sprite);
+    struct Sprite *sprite = IES_GET_COMPONENT(map->world, entity, Sprite);
     if (sprite != NULL)
         sprite->visible = false;
 
-    if (TNECS_ENTITY_HASCOMPONENT(map->world, entity, MapHPBar))
-        TNECS_REMOVE_COMPONENTS(map->world, entity, MapHPBar);
+    if (IES_ENTITY_HASCOMPONENT(map->world, entity, MapHPBar))
+        TNECS_REMOVE_COMPONENTS(map->world, entity, MapHPBar_ID);
 
     /* --- Check that entity is really on map --- */
     map->unitmap[index] = 0;

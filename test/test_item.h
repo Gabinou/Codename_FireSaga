@@ -18,7 +18,7 @@ void test_item() {
     //                          hp,str,mag,agi,dex,fth,luck,def,res,con,mv
     struct Unit_stats in_stats = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
     struct Unit_stats out_stats;
-    uint64_t in_effect;
+    u64 in_effect;
     b32 in_canSell   = false;
     uint32_t in_type  = ITEM_TYPE_SWORD + ITEM_TYPE_LANCE;
     in_effect   = ITEM_EFFECT_KILL1P + ITEM_EFFECT_BRAVE2X + ITEM_EFFECT_BREAK_SHIELD;

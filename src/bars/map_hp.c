@@ -39,7 +39,7 @@ void MapHPBar_Update(struct MapHPBar *mbar, struct Camera *camera,
     mbar->update = false;
 
     /* -- Getting current HP -- */
-    struct Unit *unit = TNECS_GET_COMPONENT(world, mbar->unit_ent, Unit);
+    struct Unit *unit = IES_GET_COMPONENT(world, mbar->unit_ent, Unit);
     SDL_assert(unit != NULL);
     int current_hp = unit->current_hp;
 
