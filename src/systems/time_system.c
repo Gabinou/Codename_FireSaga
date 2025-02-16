@@ -2,7 +2,7 @@
 #include "systems/time_system.h"
 #include "structs.h"
 
-void Time_Synchronize(tnecs_system_input *input) {
+void Time_Synchronize(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_assert(input->data == NULL);
     /* -- Get components arrays -- */

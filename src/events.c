@@ -734,7 +734,8 @@ void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity turn_transition;
-    turn_transition = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, MapAnimation_ID, Position_ID, Text_ID, Timer_ID);
+    turn_transition = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, MapAnimation_ID, Position_ID,
+                                                      Text_ID, Timer_ID);
 
     struct Timer *timer;
     timer  = IES_GET_COMPONENT(sota->world, turn_transition, Timer);
@@ -1412,7 +1413,7 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     struct Unit *aggressor = IES_GET_COMPONENT(sota->world, sota->aggressor, Unit);
     struct Unit *defendant = IES_GET_COMPONENT(sota->world, sota->defendant, Unit);
     struct PopUp *popup    = IES_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_MAP_COMBAT],
-                                                 PopUp);
+                                               PopUp);
     struct PopUp_Map_Combat *pmc = popup->data;
 
     PopUp_Map_Combat_Units(pmc, sota, sota->aggressor, sota->defendant);

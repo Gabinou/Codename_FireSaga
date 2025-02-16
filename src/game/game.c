@@ -577,9 +577,9 @@ int _Game_New_Tnecs(void *data) {
     SDL_assert(IES->world->reuse_entities == false);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Components Registration\n");
-    #define REGISTER_ENUM(x) TNECS_REGISTER_COMPONENT(IES->world, x);
-    #include "names/components.h"
-    #undef REGISTER_ENUM
+#define REGISTER_ENUM(x) TNECS_REGISTER_COMPONENT(IES->world, x);
+#include "names/components.h"
+#undef REGISTER_ENUM
 
     // TODO: Replace every
     // - IES_GET_COMPONENT(world, entity_id, ComponentName)
@@ -588,9 +588,9 @@ int _Game_New_Tnecs(void *data) {
     IES->timer_typeflag = TNECS_COMPONENT_ID2TYPE(Timer_ID);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration\n");
-    #define REGISTER_ENUM(pfunc, phase, excl, ...) TNECS_REGISTER_SYSTEM(IES->world, pfunc, phase, excl, __VA_ARGS__);
-    #include "names/systems.h"
-    #undef REGISTER_ENUM
+#define REGISTER_ENUM(pfunc, phase, excl, ...) TNECS_REGISTER_SYSTEM(IES->world, pfunc, phase, excl, __VA_ARGS__);
+#include "names/systems.h"
+#undef REGISTER_ENUM
 
     /* --- SYSTEM REGISTERING: FIRST COME FIRST SERVED ---*/
 

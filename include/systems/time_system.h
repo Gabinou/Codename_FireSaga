@@ -4,6 +4,6 @@
 #include <stdio.h>
 #include "tnecs.h"
 
-void Time_Synchronize(tnecs_system_input *input);
+void Time_Synchronize(tnecs_input *input);
 
 #endif /* TIME_CONTROL_H */

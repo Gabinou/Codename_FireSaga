@@ -177,7 +177,8 @@ void Game_PopUp_Unit_Create(struct Game *sota) {
     }
 
     tnecs_entity ent;
-    ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position_ID, PopUp_ID, Slider_ID, SliderOffscreen_ID);
+    ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position_ID, PopUp_ID, Slider_ID,
+                                          SliderOffscreen_ID);
     sota->popups[POPUP_TYPE_HUD_UNIT] = ent;
     struct PopUp           *popup     = IES_GET_COMPONENT(sota->world, ent, PopUp);
     struct Slider          *slider    = IES_GET_COMPONENT(sota->world, ent, Slider);
@@ -472,7 +473,8 @@ void Game_PopUp_Tile_Create(struct Game *sota) {
         return;
     }
     tnecs_entity ent;
-    ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position_ID, PopUp_ID, Slider_ID, SliderOffscreen_ID);
+    ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position_ID, PopUp_ID, Slider_ID,
+                                          SliderOffscreen_ID);
     sota->popups[POPUP_TYPE_HUD_TILE] = ent;
 
     struct PopUp           *popup       = IES_GET_COMPONENT(sota->world, ent, PopUp);

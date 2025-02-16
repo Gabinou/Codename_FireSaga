@@ -986,7 +986,7 @@ void Game_Menu_LocationfromCursor(struct Game *sota, tnecs_entity in_menu_entity
     SDL_assert(sota->entity_cursor);
     SDL_assert(in_menu_entity > 0);
     struct Menu *mc = IES_GET_COMPONENT(sota->world, in_menu_entity,
-                                          Menu);
+                                        Menu);
     SDL_assert(mc != NULL);
     // if (cursor_pos != NULL) {
     //     if (cursor_pos->onTilemap) {

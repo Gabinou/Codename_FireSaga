@@ -127,7 +127,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     tnecs_entity unit_ent;
 
     tnecs_component archetype   = TNECS_COMPONENT_IDS2ARCHETYPE(Unit_ID, Position_ID,
-                                                              Sprite_ID, Timer_ID, MapHPBar_ID);
+                                                                Sprite_ID, Timer_ID, MapHPBar_ID);
     size_t archetype_id1 = tnecs_archetypeid(world, archetype);
 
     if (sota->party.entities[unit_id] > TNECS_NULL) {

@@ -1248,7 +1248,7 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
     // TODO: PSM fsm?
     switch (menu_ptr->id) {
         case MENU_PLAYER_SELECT_UNIT_ACTION: {
-            
+
 
             tnecs_entity     unit_ent       = sota->selected_unit_entity;
             struct Unit     *unit           = IES_GET_COMPONENT(sota->world, unit_ent, Unit);
