@@ -164,7 +164,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     size_t archetype_id2 = tnecs_archetypeid(world, TNECS_ENTITY_ARCHETYPE(   world, unit_ent));
     SDL_assert(TNECS_ENTITY_EXISTS(world, unit_ent));
     SDL_assert(unit_ent > TNECS_NULL);
-    SDL_assert(sota->world->bytype.id[unit_ent] == archetype);
+    SDL_assert(TNECS_ENTITY_ARCHETYPE(world, unit_ent) == archetype);
 
     // SDL_Log("-- loading unit --");
     struct Unit *unit = IES_GET_COMPONENT(sota->world, unit_ent, Unit);
