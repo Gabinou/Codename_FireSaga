@@ -423,8 +423,6 @@ enum MOUNT_TYPES {
 };
 #undef REGISTER_ENUM
 
-// #define REGISTER_ENUM(x) REGISTER_ENUM_(x)
-// #define REGISTER_ENUM(x) x##_ID,
 #define REGISTER_ENUM(x) COMPONENT_ID(x),
 enum COMPONENT {
     COMPONENT_NULL  = TNECS_NULL,
