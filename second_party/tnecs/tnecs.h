@@ -332,7 +332,7 @@ tnecs_component tnecs_archetypeid(
     tnecs_world *w, tnecs_component arch);
 
 #define TNECS_COMPONENT_ID2TYPE(id) \
-    (1 << (id - TNECS_NULLSHIFT))
+    (1ULL << (id - TNECS_NULLSHIFT))
 #define TNECS_COMPONENT_TYPE2ID(type) \
     (type >= 1 ? (tnecs_component)(log2(type) + 1.1f) : 0) 
 #define TNECS_COMPONENT_IDS2ARCHETYPE(...) \

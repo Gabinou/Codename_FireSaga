@@ -954,7 +954,8 @@ int tnecs_carr_init(tnecs_world *world, tnecs_carr *comp_arr, size_t cID) {
     assert(cID > 0);
     assert(cID < world->components.num);
     tnecs_component in_type = TNECS_COMPONENT_ID2TYPE(cID);
-    assert(in_type <= (1 << world->components.num));
+    assert(in_type <= TNECS_COMPONENT_ID2TYPE(world->components.num));
+
     size_t bytesize = world->components.bytesizes[cID];
     assert(bytesize > 0);
 
