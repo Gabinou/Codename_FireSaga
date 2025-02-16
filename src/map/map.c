@@ -605,7 +605,7 @@ void Map_writeJSON( void *input, cJSON *jmap) {
     cJSON *jtile;
     cJSON *jtilename;
     cJSON *jtileid;
-    uint64_t temp_tile_id;
+    u64 temp_tile_id;
     for (size_t i = 0; i < DARR_NUM(map->tiles); i++) {
         jtile = cJSON_CreateObject();
         if (map->tilesindex[i] >= TILE_END) {

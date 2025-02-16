@@ -104,7 +104,7 @@ void Names_supportTypes(void) {
 
 s8 global_tilenames[TILE_ID_MAX] = {0};
 void Names_tileNames(void) {
-    uint64_t temp_id = 1; /* 0 is reserved for NULL*/
+    u64 temp_id = 1; /* 0 is reserved for NULL*/
 #define REGISTER_ENUM(x) global_tilenames[temp_id++] = s8_camelCase(s8_toLower(s8_mut(#x)), ' ', 2);
 #include "names/tiles.h"
 }
@@ -154,7 +154,7 @@ void Names_classNames(void) {
 }
 
 
-s8 *Names_skillNames(uint64_t in_skillscode) {
+s8 *Names_skillNames(u64 in_skillscode) {
     s8 *skill_names = DARR_INIT(skill_names, s8, UNIT_SKILL_END);
 #define REGISTER_ENUM(x) if flagsum_isIn(in_skillscode, UNIT_SKILL_##x) {\
         DARR_PUT(skill_names, s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2));\

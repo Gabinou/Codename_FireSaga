@@ -629,15 +629,15 @@ enum ITEM_STATS {
 };
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) extern const  uint64_t UNIT_PC_ALIVE_##x;
+#define REGISTER_ENUM(x, y) extern const  u64 UNIT_PC_ALIVE_##x;
 #include "names/units_PC.h"
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) extern const  uint64_t UNIT_PC_RECRUITED_##x;
+#define REGISTER_ENUM(x, y) extern const  u64 UNIT_PC_RECRUITED_##x;
 #include "names/units_PC.h"
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) extern const  uint64_t UNIT_NPC_ALIVE_##x;
+#define REGISTER_ENUM(x, y) extern const  u64 UNIT_NPC_ALIVE_##x;
 #include "names/units_NPC.h"
 #undef REGISTER_ENUM
 
@@ -652,7 +652,7 @@ enum ITEM_EFFECT_EXP {
 };
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) extern const  uint64_t ITEM_EFFECT_##x;
+#define REGISTER_ENUM(x, y) extern const u64 ITEM_EFFECT_##x;
 #include "names/items_effects.h"
 #undef REGISTER_ENUM
 
@@ -772,15 +772,13 @@ enum ACTIVE_SKILLS {
 };
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x) extern const  uint64_t UNIT_SKILL_##x;
+#define REGISTER_ENUM(x) extern const u64 UNIT_SKILL_##x;
 #include "names/skills_passive.h"
 #include "names/skills_active.h"
-enum UNIT_SKILL {
-    UNIT_SKILL_START =  0,
-    UNIT_SKILL_NUM   = 49,
-    UNIT_SKILL_END   = UNIT_SKILL_NUM,
-};
 #undef REGISTER_ENUM
+enum UNIT_SKILL {
+    UNIT_SKILL_START = 0;
+};
 
 enum STAT_ID {
     STAT_ID_NULL = 0,

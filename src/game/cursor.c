@@ -222,7 +222,7 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
 }
 
 /* -- Moves -- */
-void Game_Cursor_movedTime_Compute(struct Game *sota, uint64_t time_ns) {
+void Game_Cursor_movedTime_Compute(struct Game *sota, u64 time_ns) {
     // Compute time that cursor has been moving
     if (sota->cursor_frame_moved)
         sota->cursor_moved_time_ms += time_ns / SOTA_us;

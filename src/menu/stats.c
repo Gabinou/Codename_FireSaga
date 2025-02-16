@@ -926,7 +926,7 @@ static void _StatsMenu_Draw_WpnTypes(struct StatsMenu *stats_menu, SDL_Renderer 
     /* -- WEAPON TYPES -- */
     int x = WEAPONS_X_OFFSET, y = WEAPONS_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "WPN TYPE", 8, x, y);
-    // uint64_t wpntypecode = 1;
+    // u64 wpntypecode = 1;
     srcrect.h = SM_WEAPONS_TILESIZE;
     srcrect.w = SM_WEAPONS_TILESIZE;
 
