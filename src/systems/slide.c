@@ -23,11 +23,11 @@ void Sprite_Target(struct Slider *slider, struct Sprite *sprite, Position *posit
     slider->target.y = (i32)lround(position->tilemap_pos.y * position->scale[1]);
 }
 
-void Hover_Any(tnecs_system_input *input) {
+void Hover_Any(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get components arrays -- */
-    struct Hover    *hover_arr    = TNECS_COMPONENTS_LIST(input, Hover_ID);
-    struct Position *position_arr = TNECS_COMPONENTS_LIST(input, Position_ID);
+    struct Hover    *hover_arr    = TNECS_COMPONENT_ARRAY(input, Hover_ID);
+    struct Position *position_arr = TNECS_COMPONENT_ARRAY(input, Position_ID);
     SDL_assert(hover_arr    != NULL);
     SDL_assert(position_arr != NULL);
 
@@ -46,13 +46,13 @@ void Hover_Any(tnecs_system_input *input) {
 
 /* Slide systems */
 /* Compute next Popup position according to target position */
-void Slide_Sprite(tnecs_system_input *input) {
+void Slide_Sprite(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_assert(input->data != NULL);
     /* -- Get components arrays -- */
-    struct Sprite   *sprite_arr     = TNECS_COMPONENTS_LIST(input, Sprite_ID);
-    struct Slider   *slider_arr     = TNECS_COMPONENTS_LIST(input, Slider_ID);
-    struct Position *position_arr   = TNECS_COMPONENTS_LIST(input, Position_ID);
+    struct Sprite   *sprite_arr     = TNECS_COMPONENT_ARRAY(input, Sprite_ID);
+    struct Slider   *slider_arr     = TNECS_COMPONENT_ARRAY(input, Slider_ID);
+    struct Position *position_arr   = TNECS_COMPONENT_ARRAY(input, Position_ID);
     SDL_assert(sprite_arr   != NULL);
     SDL_assert(slider_arr   != NULL);
     SDL_assert(position_arr != NULL);
@@ -95,13 +95,13 @@ void Slide_Sprite(tnecs_system_input *input) {
     }
 }
 
-void Slide_PopUp_Offscreen(tnecs_system_input *input) {
+void Slide_PopUp_Offscreen(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_assert(input->data != NULL);
     /* -- Get components arrays -- */
-    struct Slider          *slider_arr      = TNECS_COMPONENTS_LIST(input, Slider_ID);
-    struct Position        *position_arr    = TNECS_COMPONENTS_LIST(input, Position_ID);
-    struct SliderOffscreen *offscreen_arr   = TNECS_COMPONENTS_LIST(input, SliderOffscreen_ID);
+    struct Slider          *slider_arr      = TNECS_COMPONENT_ARRAY(input, Slider_ID);
+    struct Position        *position_arr    = TNECS_COMPONENT_ARRAY(input, Position_ID);
+    struct SliderOffscreen *offscreen_arr   = TNECS_COMPONENT_ARRAY(input, SliderOffscreen_ID);
     SDL_assert(slider_arr    != NULL);
     SDL_assert(position_arr  != NULL);
     SDL_assert(offscreen_arr != NULL);

@@ -18,11 +18,11 @@
 #include "pixelfonts.h"
 #include "SDL.h"
 
-void Scroll_Text(tnecs_system_input *input) {
+void Scroll_Text(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get components arrays -- */
-    struct Timer     *ut_arr = TNECS_COMPONENTS_LIST(input, Timer_ID);
-    struct PixelFont *pf_arr = TNECS_COMPONENTS_LIST(input, PixelFont_ID);
+    struct Timer     *ut_arr = TNECS_COMPONENT_ARRAY(input, Timer_ID);
+    struct PixelFont *pf_arr = TNECS_COMPONENT_ARRAY(input, PixelFont_ID);
 
     for (u16 order = 0; order < input->num_entities; order++) {
         struct Timer     *ut = (ut_arr + order);
@@ -32,11 +32,11 @@ void Scroll_Text(tnecs_system_input *input) {
     }
 }
 
-void Animate_Sprite(tnecs_system_input *input) {
+void Animate_Sprite(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get components arrays -- */
-    struct Timer  *ut_arr     = TNECS_COMPONENTS_LIST(input, Timer_ID);
-    struct Sprite *sprite_arr = TNECS_COMPONENTS_LIST(input, Sprite_ID);
+    struct Timer  *ut_arr     = TNECS_COMPONENT_ARRAY(input, Timer_ID);
+    struct Sprite *sprite_arr = TNECS_COMPONENT_ARRAY(input, Sprite_ID);
 
     for (u16 order = 0; order < input->num_entities; order++) {
         struct Timer       *ut     = (ut_arr     + order);
@@ -60,15 +60,15 @@ void Animate_Sprite(tnecs_system_input *input) {
     }
 }
 
-void Draw_Sprite(tnecs_system_input *input) {
+void Draw_Sprite(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     Game *IES = input->data;
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct Sprite   *sprite_arr   = TNECS_COMPONENTS_LIST(input, Sprite_ID);
-    struct Position *position_arr = TNECS_COMPONENTS_LIST(input, Position_ID);
+    struct Sprite   *sprite_arr   = TNECS_COMPONENT_ARRAY(input, Sprite_ID);
+    struct Position *position_arr = TNECS_COMPONENT_ARRAY(input, Position_ID);
     SDL_assert(sprite_arr   != NULL);
     SDL_assert(position_arr != NULL);
 
@@ -97,16 +97,16 @@ void Draw_Sprite(tnecs_system_input *input) {
     }
 }
 
-void Draw_Map_Boss_Icon(tnecs_system_input *input) {
+void Draw_Map_Boss_Icon(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     Game *IES = input->data;
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct Boss     *boss_arr       = TNECS_COMPONENTS_LIST(input, Boss_ID);
-    struct Sprite   *sprite_arr     = TNECS_COMPONENTS_LIST(input, Sprite_ID);
-    struct Position *position_arr   = TNECS_COMPONENTS_LIST(input, Position_ID);
+    struct Boss     *boss_arr       = TNECS_COMPONENT_ARRAY(input, Boss_ID);
+    struct Sprite   *sprite_arr     = TNECS_COMPONENT_ARRAY(input, Sprite_ID);
+    struct Position *position_arr   = TNECS_COMPONENT_ARRAY(input, Position_ID);
 
     for (u16 order = 0; order < input->num_entities; order++) {
         struct Boss     *boss       = (boss_arr     + order);
@@ -121,15 +121,15 @@ void Draw_Map_Boss_Icon(tnecs_system_input *input) {
     }
 }
 
-void Draw_Map_HPBar(tnecs_system_input *input) {
+void Draw_Map_HPBar(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     Game *IES = input->data;
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct Position *pos_arr        = TNECS_COMPONENTS_LIST(input, Position_ID);
-    struct MapHPBar *map_hp_bar_arr = TNECS_COMPONENTS_LIST(input, MapHPBar_ID);
+    struct Position *pos_arr        = TNECS_COMPONENT_ARRAY(input, Position_ID);
+    struct MapHPBar *map_hp_bar_arr = TNECS_COMPONENT_ARRAY(input, MapHPBar_ID);
 
     for (u16 order = 0; order < input->num_entities; order++) {
         struct MapHPBar *map_hp_bar = (map_hp_bar_arr + order);
@@ -144,15 +144,15 @@ void Draw_Map_HPBar(tnecs_system_input *input) {
 
 }
 
-void Draw_PopUp(tnecs_system_input *input) {
+void Draw_PopUp(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     Game *IES = input->data;
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct PopUp    *popup_arr    = TNECS_COMPONENTS_LIST(input, PopUp_ID);
-    struct Position *position_arr = TNECS_COMPONENTS_LIST(input, Position_ID);
+    struct PopUp    *popup_arr    = TNECS_COMPONENT_ARRAY(input, PopUp_ID);
+    struct Position *position_arr = TNECS_COMPONENT_ARRAY(input, Position_ID);
     SDL_assert(popup_arr    != NULL);
     SDL_assert(position_arr != NULL);
 
@@ -167,14 +167,14 @@ void Draw_PopUp(tnecs_system_input *input) {
     }
 }
 
-void Draw_Menu(tnecs_system_input *input) {
+void Draw_Menu(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     Game *IES = input->data;
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct Menu *mc_arr = TNECS_COMPONENTS_LIST(input, Menu_ID);
+    struct Menu *mc_arr = TNECS_COMPONENT_ARRAY(input, Menu_ID);
     SDL_assert(mc_arr != NULL);
 
     /* --- DRAWING MENU ENTITIES --- */
@@ -192,7 +192,7 @@ void Draw_Menu(tnecs_system_input *input) {
     }
 }
 
-void Draw_Text(tnecs_system_input *input) {
+void Draw_Text(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_Rect dstrect;
     /* -- Get game -- */
@@ -200,8 +200,8 @@ void Draw_Text(tnecs_system_input *input) {
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct Text     *text_arr        = TNECS_COMPONENTS_LIST(input, Text_ID);
-    struct Position *position_arr    = TNECS_COMPONENTS_LIST(input, Position_ID);
+    struct Text     *text_arr        = TNECS_COMPONENT_ARRAY(input, Text_ID);
+    struct Position *position_arr    = TNECS_COMPONENT_ARRAY(input, Position_ID);
     SDL_assert(position_arr != NULL);
 
     /* --- DRAWING TEXT ENTITIES --- */
@@ -218,7 +218,7 @@ void Draw_Text(tnecs_system_input *input) {
     }
 }
 
-void Draw_Text_Timer(tnecs_system_input *input) {
+void Draw_Text_Timer(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_Rect dstrect;
     /* -- Get game -- */
@@ -226,9 +226,9 @@ void Draw_Text_Timer(tnecs_system_input *input) {
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct Text     *text_arr        = TNECS_COMPONENTS_LIST(input, Text_ID);
-    struct Position *position_arr    = TNECS_COMPONENTS_LIST(input, Position_ID);
-    struct Timer    *updatetimer_arr = TNECS_COMPONENTS_LIST(input, Timer_ID);
+    struct Text     *text_arr        = TNECS_COMPONENT_ARRAY(input, Text_ID);
+    struct Position *position_arr    = TNECS_COMPONENT_ARRAY(input, Position_ID);
+    struct Timer    *updatetimer_arr = TNECS_COMPONENT_ARRAY(input, Timer_ID);
     SDL_assert(position_arr != NULL);
 
     /* --- DRAWING TEXT ENTITIES --- */
@@ -255,15 +255,15 @@ void Draw_Text_Timer(tnecs_system_input *input) {
     }
 }
 
-void Animate_Combat_onMap(tnecs_system_input *input) {
+void Animate_Combat_onMap(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     Game *IES = (Game *)input->data;
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct CombatAnimation  *combatanim_arr = TNECS_COMPONENTS_LIST(input, CombatAnimation_ID);
-    struct Timer            *timer_arr      = TNECS_COMPONENTS_LIST(input, Timer_ID);
+    struct CombatAnimation  *combatanim_arr = TNECS_COMPONENT_ARRAY(input, CombatAnimation_ID);
+    struct Timer            *timer_arr      = TNECS_COMPONENT_ARRAY(input, Timer_ID);
 
     /* --- DRAWING TEXT ENTITIES --- */
     for (u16 order = 0; order < input->num_entities; order++) {
@@ -278,17 +278,17 @@ void Animate_Combat_onMap(tnecs_system_input *input) {
     }
 }
 
-void Animate_Map_Animation(tnecs_system_input *input) {
+void Animate_Map_Animation(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     Game *IES = (Game *)input->data;
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct Timer        *timer_arr      = TNECS_COMPONENTS_LIST(input, Timer_ID);
-    struct Text         *text_arr       = TNECS_COMPONENTS_LIST(input, Text_ID);
-    struct Position     *pos_arr        = TNECS_COMPONENTS_LIST(input, Position_ID);
-    struct MapAnimation *mapanim_arr    = TNECS_COMPONENTS_LIST(input, MapAnimation_ID);
+    struct Timer        *timer_arr      = TNECS_COMPONENT_ARRAY(input, Timer_ID);
+    struct Text         *text_arr       = TNECS_COMPONENT_ARRAY(input, Text_ID);
+    struct Position     *pos_arr        = TNECS_COMPONENT_ARRAY(input, Position_ID);
+    struct MapAnimation *mapanim_arr    = TNECS_COMPONENT_ARRAY(input, MapAnimation_ID);
 
     /* --- DRAWING TEXT ENTITIES --- */
     for (u16 order = 0; order < input->num_entities; order++) {
@@ -305,16 +305,16 @@ void Animate_Map_Animation(tnecs_system_input *input) {
     }
 }
 
-void Animate_Unit_Move_onMap(tnecs_system_input *input) {
+void Animate_Unit_Move_onMap(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     Game *IES = (Game *)input->data;
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct Timer                *timer_arr      = TNECS_COMPONENTS_LIST(input, Timer_ID);
-    struct Unit                 *unit_arr       = TNECS_COMPONENTS_LIST(input, Unit_ID);
-    struct UnitMoveAnimation    *unitmove_arr   = TNECS_COMPONENTS_LIST(input, UnitMoveAnimation_ID);
+    struct Timer                *timer_arr      = TNECS_COMPONENT_ARRAY(input, Timer_ID);
+    struct Unit                 *unit_arr       = TNECS_COMPONENT_ARRAY(input, Unit_ID);
+    struct UnitMoveAnimation    *unitmove_arr   = TNECS_COMPONENT_ARRAY(input, UnitMoveAnimation_ID);
 
     /* --- DRAWING TEXT ENTITIES --- */
     for (u16 order = 0; order < input->num_entities; order++) {
@@ -330,15 +330,15 @@ void Animate_Unit_Move_onMap(tnecs_system_input *input) {
     }
 }
 
-void Animate_Cutscene(tnecs_system_input *input) {
+void Animate_Cutscene(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     Game *IES = (Game *)input->data;
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct Timer    *timer_arr      = TNECS_COMPONENTS_LIST(input, Timer_ID);
-    struct Cutscene *cutscene_arr   = TNECS_COMPONENTS_LIST(input, Cutscene_ID);
+    struct Timer    *timer_arr      = TNECS_COMPONENT_ARRAY(input, Timer_ID);
+    struct Cutscene *cutscene_arr   = TNECS_COMPONENT_ARRAY(input, Cutscene_ID);
 
     /* --- DRAWING TEXT ENTITIES --- */
     for (u16 order = 0; order < input->num_entities; order++) {
@@ -356,15 +356,15 @@ void Animate_Cutscene(tnecs_system_input *input) {
     }
 }
 
-void Animate_Scene(tnecs_system_input *input) {
+void Animate_Scene(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     Game *IES = (Game *)input->data;
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct Timer    *timer_arr = TNECS_COMPONENTS_LIST(input, Timer_ID);
-    struct Scene    *scene_arr = TNECS_COMPONENTS_LIST(input, Scene_ID);
+    struct Timer    *timer_arr = TNECS_COMPONENT_ARRAY(input, Timer_ID);
+    struct Scene    *scene_arr = TNECS_COMPONENT_ARRAY(input, Scene_ID);
 
     /* --- DRAWING TEXT ENTITIES --- */
     for (u16 order = 0; order < input->num_entities; order++) {
