@@ -775,10 +775,12 @@ enum ACTIVE_SKILLS {
 #define REGISTER_ENUM(x) extern const u64 UNIT_SKILL_##x;
 #include "names/skills_passive.h"
 #include "names/skills_active.h"
-#undef REGISTER_ENUM
 enum UNIT_SKILL {
-    UNIT_SKILL_START = 0;
+    UNIT_SKILL_START =  0,
+    UNIT_SKILL_NUM   = 49,
+    UNIT_SKILL_END   = UNIT_SKILL_NUM,
 };
+#undef REGISTER_ENUM
 
 enum STAT_ID {
     STAT_ID_NULL = 0,
