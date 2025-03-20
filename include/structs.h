@@ -712,7 +712,7 @@ typedef struct Unit {
     b32 mounted;
 
     s8 name;        /* TODO: get rid of it. Use id for global_unitNames */
-    s8 title;       /* TODO: get rid of it. Use ir for global_unitTitles */
+    s8 title;       /* TODO: get rid of it. Use id for global_unitTitles */
 
     struct Computed_Stats computed_stats;   /* Computed from Unit_Stats */
 
@@ -745,6 +745,8 @@ struct Graph {
     SDL_Texture *texture;
 
     struct GraphStat graph_stats[UNIT_STAT_MALLOC];
+    u8 stat_num;
+    u8 linestyle;
 
     Point plot_min; /* [XY units] */
     Point plot_max; /* [XY units] */
@@ -758,13 +760,10 @@ struct Graph {
     /* ant for x */
     u8 y_lenperpixel;
 
-    u8 stat_num;
-    u8 linestyle;
     b32 x_ticks : 1;
     b32 y_ticks : 1;
 };
 extern const struct Graph Graph_default;
-
 
 /* --- Bars --- */
 struct CircleBar {
@@ -773,7 +772,6 @@ struct CircleBar {
     Point pos;
 };
 extern const struct CircleBar CircleBar_default;
-
 
 struct SimpleBar {
     float fill;
@@ -1043,12 +1041,16 @@ extern const struct Game Game_default;
 typedef struct Item {
     struct jsonIO_Header jsonio_header;
 
-    u8 target;  /* units by which item is usable. */
     struct Range range;
     struct Aura aura; /* Aura with range [0, 0] to for wielder-only bonus */
 
     struct Item_stats stats;
     u16  id;           /* 0 is NULL */
+    u8 target;          /* units on which item is usable. */
+    b32 canSell     : 1;
+    b32 write_stats : 1;
+    b32 canUse      : 1;
+    b32 canRepair   : 1; /* TODO: Move to weapon? */
     u64  type;         /* and not type_exp */
     u16 *users;        /* item only usable by users.   NULL -> everyone */
     u16 *classes;      /* item only usable by classes. NULL -> everyone */
@@ -1059,27 +1061,22 @@ typedef struct Item {
     /* Use function is used for Staves effects too. */
     use_function_t active; /* NULL if not usable */
 
-    // TODO: Change to s8
     s8 name;
     char description[DEFAULT_BUFFER_SIZE * 2];
 
-    b32 canSell     : 1;
-    b32 write_stats : 1;
-    b32 canUse      : 1;
-    b32 canRepair   : 1; /* TODO: Move to weapon? */
 } Item;
 extern const struct Item Item_default;
 
 typedef struct Weapon {
     struct jsonIO_Header jsonio_header;
+    Item         *item;
+    struct Weapon_stats  stats;
 
     u8 handedness;
     u8 subtype;        /* ex: thrust swords     */
+    u16 effective;
     b32 isMagic   : 1;
     b32 canAttack : 1; /* for special weapons   */
-    u16 effective;
-    Item         *item;
-    struct Weapon_stats  stats;
 } Weapon;
 extern const struct Weapon Weapon_default;
 
@@ -1089,13 +1086,13 @@ typedef struct Arrow {
     i32 move;
     i32 col_len;
     i32 row_len;
+    b32 show;
     i32 *pathlist;  /* from initial unit position to current cursor position */
     i32 tilesize[TWO_D];
     i32 map_tilesize[TWO_D];
     struct Point start;
     struct SDL_Texture *textures;  /* [patch_id] */
     struct Rendered rendereds[SOTA_MAX_MOVEMENT]; /* [patch_id] */
-    b32 show;
 } Arrow;
 extern const struct Arrow Arrow_default;
 
@@ -1122,7 +1119,5 @@ struct TextLines {
     int    line_len;
 };
 extern const struct TextLines TextLines_default;
-
-
 
 #endif /* STRUCTS_H */

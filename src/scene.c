@@ -488,8 +488,6 @@ int Scene_Line_Next(struct Scene *scene) {
 }
 
 int Scene_Statement_Next(struct Scene *scene) {
-    SDL_Log("Scene_Statement_Next: scene->current_statement %d", scene->current_statement);
-
     SDL_assert(scene                != NULL);
     SDL_assert(scene->statements    != NULL);
     int statement_num = DARR_NUM(scene->statements);
@@ -508,6 +506,7 @@ int Scene_Statement_Next(struct Scene *scene) {
 
     do {
 
+// TODO: test removing loopstart 
     loopstart:
         scene->current_statement++;
         SDL_Log("LOOP: scene->current_statement %d", scene->current_statement);
