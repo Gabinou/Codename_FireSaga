@@ -4,6 +4,7 @@
 #include "menu/loadout_select.h"
 #include "unit/unit.h"
 #include "RNG.h"
+#include "macros.h"
 
 #define TEST_ROW_LEN 10
 #define TEST_COL_LEN 10
@@ -20,7 +21,7 @@ void test_menu_loadout_select(void) {
     TNECS_REGISTER_COMPONENT(world, Unit);
     TNECS_REGISTER_COMPONENT(world, Position);
     tnecs_entity Silou_ent  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
-    struct Unit *Silou      = TNECS_GET_COMPONENT(world, Silou_ent, Unit);
+    struct Unit *Silou      = IES_GET_COMPONENT(world, Silou_ent, Unit);
 
     /* -- Map -- */
     NewMap new_map      = NewMap_default;
@@ -368,7 +369,7 @@ void test_menu_loadout_select_two_hands(void) {
     TNECS_REGISTER_COMPONENT(world, Unit);
     TNECS_REGISTER_COMPONENT(world, Position);
     tnecs_entity Silou_ent  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
-    struct Unit *Silou      = TNECS_GET_COMPONENT(world, Silou_ent, Unit);
+    struct Unit *Silou      = IES_GET_COMPONENT(world, Silou_ent, Unit);
 
     /* -- Weapon dtab -- */
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);

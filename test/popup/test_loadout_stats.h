@@ -1,6 +1,7 @@
 
 #include "nourstest.h"
 #include "platform.h"
+#include "macros.h"
 #include "popup/loadout_stats.h"
 #include "unit/unit.h"
 
@@ -18,13 +19,13 @@ void test_popup_loadout_stats() {
     tnecs_entity Erwin  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
     tnecs_entity Enemy  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
 
-    Unit *silou         = TNECS_GET_COMPONENT(world, Silou, Unit);
-    Unit *erwin         = TNECS_GET_COMPONENT(world, Erwin, Unit);
-    Unit *enemy         = TNECS_GET_COMPONENT(world, Enemy, Unit);
+    Unit *silou         = IES_GET_COMPONENT(world, Silou, Unit);
+    Unit *erwin         = IES_GET_COMPONENT(world, Erwin, Unit);
+    Unit *enemy         = IES_GET_COMPONENT(world, Enemy, Unit);
 
-    Position *silou_pos = TNECS_GET_COMPONENT(world, Silou, Position);
-    Position *erwin_pos = TNECS_GET_COMPONENT(world, Erwin, Position);
-    Position *enemy_pos = TNECS_GET_COMPONENT(world, Enemy, Position);
+    Position *silou_pos = IES_GET_COMPONENT(world, Silou, Position);
+    Position *erwin_pos = IES_GET_COMPONENT(world, Erwin, Position);
+    Position *enemy_pos = IES_GET_COMPONENT(world, Enemy, Position);
 
     /* -- Create renderer -- */
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);

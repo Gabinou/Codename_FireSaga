@@ -6,6 +6,7 @@
 #include "unit/mount.h"
 #include "log.h"
 #include "RNG.h"
+#include "macros.h"
 
 #define PARTY_FOLDER "units"
 #define DEBUG_MAP_FOLDER "units", "debug_map"
@@ -38,10 +39,10 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
     SDL_assert(sota->party.entities[UNIT_ID_KIARA] > TNECS_NULL);
     SDL_assert(sota->party.entities[UNIT_ID_RAYAN] > TNECS_NULL);
 
-    Unit *silou = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SILOU], Unit);
-    Unit *erwin = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_ERWIN], Unit);
-    Unit *kiara = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_KIARA], Unit);
-    Unit *rayan = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_RAYAN], Unit);
+    Unit *silou = IES_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SILOU], Unit);
+    Unit *erwin = IES_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_ERWIN], Unit);
+    Unit *kiara = IES_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_KIARA], Unit);
+    Unit *rayan = IES_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_RAYAN], Unit);
     SDL_assert(silou != NULL);
     SDL_assert(erwin != NULL);
     SDL_assert(kiara != NULL);
@@ -85,10 +86,10 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
 
     Party_Ids2Filenames(&party);
     Party_Load(&party, sota, weapons_dtab, items_dtab);
-    Unit *silou = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SILOU], Unit);
-    Unit *erwin = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_ERWIN], Unit);
-    Unit *kiara = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_KIARA], Unit);
-    Unit *rayan = TNECS_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_RAYAN], Unit);
+    Unit *silou = IES_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SILOU], Unit);
+    Unit *erwin = IES_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_ERWIN], Unit);
+    Unit *kiara = IES_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_KIARA], Unit);
+    Unit *rayan = IES_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_RAYAN], Unit);
     SDL_assert(silou != NULL);
     SDL_assert(erwin != NULL);
     SDL_assert(kiara != NULL);

@@ -60,12 +60,15 @@ typedef struct MapAct {
     /* only if eq_type == LOADOUT_INPUT */
     i32 _loadout[MAX_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
-    // Is movement taken into account?
-    b32 move;
-
     // healtomap: ITEM_ARCHETYPE_STAFF
     // attacktomap: ITEM_ARCHETYPE_WEAPON
     i64 archetype;
+
+    tnecs_entity aggressor; /* or healer    */
+    tnecs_entity defendant; /* or patient   */
+
+    // Is movement taken into account?
+    b32 move;
 
     /* ARRAY_MATRIX, ARRAY_LIST */
     i32 output_type;
@@ -75,10 +78,6 @@ typedef struct MapAct {
     i32 _eq; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
     i32 mode_movetile;
-
-    tnecs_entity aggressor; /* or healer    */
-    tnecs_entity defendant; /* or patient   */
-
 } MapAct;
 extern const MapAct MapAct_default;
 
@@ -91,13 +90,13 @@ typedef struct canEquip {
     // Hand to equip to, considering loadout.
     i32 hand;
 
+    // Equipped index to check.
+    i32 _eq; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
+
     // Why do we need to know archetypes?
     //      - Find all equippable staves ONLY
     //      - Find all equippable weapons (of any type) ONLY
     i64 archetype;
-
-    // Equipped index to check.
-    i32 _eq; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
     // Two-handed mode.
     //  - TWO_HAND_EQ_MODE_STRICT
