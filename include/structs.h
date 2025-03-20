@@ -157,7 +157,6 @@ struct Nodeq {
     i32 cost;
 };
 
-
 struct Fps {
     Point pos;
     SDL_Color textcolor;
@@ -172,8 +171,8 @@ struct Fps {
 struct Music_settings {
     i32 frequency;          /*  [Hz]    */
     i32 sample_size;        /* [byte]   */
-    u16 format;             /* AUDIO_*  */
     i32 channels;
+    u16 format;             /* AUDIO_*  */
 };
 
 struct Map_settings {
@@ -194,10 +193,10 @@ struct Enemy_Turn_settings {
 };
 
 typedef struct Input_Arguments {
+    char *save_filename;    /* debug saves are outside normal save integers     */
     i32   scene;            /* plays the scene then exits */
     i32   map_index;
     b32   print_help;       /* If help requested anywhere, print help and exit  */
-    char *save_filename;    /* debug saves are outside normal save integers     */
 } Input_Arguments;
 extern const struct Input_Arguments Input_Arguments_default;
 
@@ -208,23 +207,21 @@ typedef struct Settings {
 
     struct Cursor cursor; /* 32 bits */
     u16 tilesize[TWO_D];
-    u8 fontsize;
 
     struct Map_settings map_settings;
     struct Music_settings music_settings;
+    float brightness;
     struct Enemy_Turn_settings enemy_turn_settings;
 
     struct Mouse mouse; /* 16 bits */
     char title[DEFAULT_BUFFER_SIZE];
 
+    u16 fontsize;
     int music_volume;
     int soundfx_volume;
-    float brightness;
-
-    struct Input_Arguments args;
-
     u32 window;
-    b32 fullscreen          : 1;
+    struct Input_Arguments args;
+    b32 fullscreen;
 } Settings;
 extern const struct Settings Settings_default;
 
@@ -323,11 +320,11 @@ typedef struct Bonus_Stats {
     struct Computed_Stats   computed_stats;
     /* Conditions */
     struct Range range;
-    tnecs_entity source_unit;
+    i32 turns;
     u16 source_item;              /* Should be equipped by unit_ent */
     u16 source_skill;
     b32 active;
-    i32 turns;
+    tnecs_entity source_unit;
 } Bonus_Stats;
 extern const struct Bonus_Stats Bonus_Stats_default;
 
@@ -339,10 +336,10 @@ struct Promotion {
 extern const struct Promotion Promotion_default;
 
 struct HP {
+    b32 divine; /* divine shield */
     u8 max;
     u8 current;
     u8 overheal;
-    b32 divine; /* divine shield */
 };
 extern const struct HP HP_default;
 
@@ -418,11 +415,11 @@ extern const struct Shop Shop_default;
 
 typedef struct Inventory_item {
     i32 id;
-    u8 used;
     b32 highlighted;
+    u8 used;
+    i8 infusion;
     /* item images are highlighted by default. */
     /* Only dark when in unit inventory and unequippable */
-    i8 infusion;
 }   Inventory_item;
 extern const struct Inventory_item Inventory_item_default;
 extern const struct Inventory_item Inventory_item_broken;
@@ -467,9 +464,9 @@ struct Camera {
 typedef struct Timer {
     u64 time_ns;
     u64 frame_count;
+    u64 limit_ns;
     b32 reset; /* reset if above time. */
     b32 paused;
-    u64 limit_ns;
 } Timer;
 extern const struct Timer Timer_default;
 
@@ -506,10 +503,10 @@ typedef struct Convoy {
     struct Inventory_item items[SOTA_CONVOY_SIZE_MAX];
     u8 cumnum[ITEM_TYPE_NUM + 1]; // items are [cumnum1, cumnum2)
 
-    i16 bank; // [gold]
     u8 books_num;
     u8 items_num;
     u8 size;
+    i16 bank; // [gold]
     b32 sort_direction;
 } Convoy;
 
@@ -519,21 +516,21 @@ extern const struct Convoy Convoy_default;
 // Total attack num in phase = for i < brave_factor -> SUM(skillp_multipliers[i]) * skill_multiplier
 // skill_multiplier and skillp_multipliers stack, BUT -> no skills should use both.
 struct Combat_Phase {
+    b32    attacker;
     // skillp_multipliers: Different multiplier for every brave applies to every attack in phase
     u8     skillp_multipliers[SOTA_BRAVE_MAX];
     // skill_multiplier: Applies to every higher priority attack in phase
     u8     skill_multiplier;
     u8     attack_num;
-    b32    attacker;
 };
 extern const struct Combat_Phase Combat_Phase_default;
 
 /* -- Combat_Attack -- */
 struct Combat_Attack {
-    u8     total_damage; // total damage taken, depending on hit/crit
     b32    hit;
     b32    crit;
     b32    attacker;
+    u8     total_damage; // total damage taken, depending on hit/crit
 };
 extern const struct Combat_Attack Combat_Attack_default;
 
@@ -607,9 +604,9 @@ extern const struct Combat_Outcome Combat_Outcome_default;
 
 /* --- RNG SEQUENCE BREAKER (SB) --- */
 struct RNG_Sequence { /* Sequence of hits/misses in a row */
+    b32 hit; /* 0 if sequence of misses, 1 of hits */
     i8 len;
     i8 eff_rate;
-    b32 hit; /* 0 if sequence of misses, 1 of hits */
 };
 
 
