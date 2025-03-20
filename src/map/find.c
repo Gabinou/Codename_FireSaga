@@ -28,9 +28,6 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
                (can_equip.archetype == ITEM_ARCHETYPE_STAFF));
 
     Unit     *unit = IES_GET_COMPONENT(map->world, unit_ent, Unit);
-    SDL_Log("Unit_ID %d", Unit_ID);
-    SDL_Log("Unit_ID %d", Unit_ID);
-    SDL_Log("Unit_ID %d", Unit_ID);
     SDL_assert(unit != NULL);
     Position *pos  = IES_GET_COMPONENT(map->world, unit_ent, Position);
     SDL_assert(pos != NULL);
