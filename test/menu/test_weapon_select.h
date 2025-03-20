@@ -5,6 +5,60 @@
 #include "unit/unit.h"
 #include "RNG.h"
 #include "macros.h"
+#include "nourstest.h"
+#include "platform.h"
+#include "map/tiles.h"
+#include "map/ontile.h"
+#include "map/find.h"
+#include "menu/menu.h"
+#include "pathfinding.h"
+#include "macros.h"
+#include "structs.h"
+#include "map/map.h"
+#include "bars/map_hp.h"
+#include "systems/render.h"
+#include "filesystem.h"
+#include "noursclock.h"
+#include "log.h"
+#include "macros.h"
+#include "RNG.h"
+#include "platform.h"
+#include "position.h"
+#include "popup/popup.h"
+#include "menu/menu.h"
+#include "unit/boss.h"
+#include "unit/anim.h"
+#include "menu/loadout_select.h"
+#include "menu/deployment.h"
+#include "menu/stats.h"
+#include "map/animation.h"
+#include "unit/party.h"
+#include "map/render.h"
+#include "scene.h"
+#include "cutscene.h"
+#include "slider.h"
+#include "pixelfonts.h"
+#include "sprite.h"
+#include "input.h"
+#include "tile.h"
+#include "hover.h"
+#include "combat.h"
+#include "music.h"
+#include "controller/mouse.h"
+#include "controller/touchpad.h"
+#include "controller/keyboard.h"
+#include "controller/gamepad.h"
+#include "controller/fsm.h"
+#include "systems/time_system.h"
+#include "systems/slide.h"
+#include "AI.h"
+#include "events.h"
+#include "fps_fsm.h"
+#include "fsm.h"
+#include "names.h"
+#include "text.h"
+#include "convoy.h"
+#include "utilities.h"
 
 #define TEST_ROW_LEN 10
 #define TEST_COL_LEN 10
@@ -18,8 +72,9 @@ void test_menu_loadout_select(void) {
     /* -- Tnecs world -- */
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
-    TNECS_REGISTER_COMPONENT(world, Unit);
-    TNECS_REGISTER_COMPONENT(world, Position);
+
+#include "register_components.h"
+
     tnecs_entity Silou_ent  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
     struct Unit *Silou      = IES_GET_COMPONENT(world, Silou_ent, Unit);
 
@@ -366,9 +421,10 @@ void test_menu_loadout_select_two_hands(void) {
     /* -- Tnecs world -- */
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
-    TNECS_REGISTER_COMPONENT(world, Unit);
-    TNECS_REGISTER_COMPONENT(world, Position);
-    tnecs_entity Silou_ent  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
+
+#include "register_components.h"
+
+    tnecs_entity Silou_ent  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
     struct Unit *Silou      = IES_GET_COMPONENT(world, Silou_ent, Unit);
 
     /* -- Weapon dtab -- */
