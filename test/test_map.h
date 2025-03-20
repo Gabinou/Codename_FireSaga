@@ -6,6 +6,7 @@
 #include "map/find.h"
 #include "pathfinding.h"
 #include "macros.h"
+#include "structs.h"
 
 #define TEST_ROW_LEN 10
 #define TEST_COL_LEN 10
@@ -129,12 +130,12 @@ void test_map_usable(void) {
     /* Tnecs init */
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
-    TNECS_REGISTER_COMPONENT(world, Unit);
-    TNECS_REGISTER_COMPONENT(world, Position);
-    tnecs_entity Silou  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
-    tnecs_entity Erwin  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
-    tnecs_entity Enemy  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
 
+#include "register_components.h"
+
+    tnecs_entity Silou  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
+    tnecs_entity Erwin  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
+    tnecs_entity Enemy  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
     Unit *silou         = IES_GET_COMPONENT(world, Silou, Unit);
     Unit *erwin         = IES_GET_COMPONENT(world, Erwin, Unit);
     Unit *enemy         = IES_GET_COMPONENT(world, Enemy, Unit);
@@ -419,6 +420,8 @@ void test_map_usable(void) {
     Map_Free(map);
     tnecs_world_destroy(&world);
     SDL_free(map);
+#undef Unit_ID
+#undef Position_ID
 }
 
 #undef TEST_ROW_LEN

@@ -577,9 +577,8 @@ int _Game_New_Tnecs(void *data) {
     SDL_assert(IES->world->reuse_entities == false);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Components Registration\n");
-#define REGISTER_ENUM(x) TNECS_REGISTER_COMPONENT(IES->world, x);
-#include "names/components.h"
-#undef REGISTER_ENUM
+    tnecs_world *world = IES->world;
+#include "register_components.h"
 
     // TODO: Replace every
     // - IES_GET_COMPONENT(world, entity_id, ComponentName)
