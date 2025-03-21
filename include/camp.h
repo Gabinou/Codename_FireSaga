@@ -2,6 +2,7 @@
 #define CAMP_H
 
 #include "enums.h"
+#include "jsonio.h"
 #include "nstr.h"
 
 /* --- FORWARD DECLARATIONS --- */
@@ -58,8 +59,7 @@ extern const u8 max_jobs[CAMPJOB_END];
 // No camp automation.
 // BUT jobs are kept between chapters.
 typedef struct Camp {
-    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
-    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
+    struct jsonIO_Header jsonio_header;
 
     /* All jobs */
     u8 guards[CAMP_JOB_MAX];

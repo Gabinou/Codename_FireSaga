@@ -364,7 +364,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
         s8_free(&ai_path);
         // TODO: AI_Free
-        s8_free(&ai->json_filename);
+        s8_free(&ai->jsonio_header.json_filename);
 
         // SDL_Log("-- loading map_hp_bar --");
         struct MapHPBar *map_hp_bar = IES_GET_COMPONENT(sota->world, temp_unit_ent, MapHPBar);

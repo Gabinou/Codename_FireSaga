@@ -32,11 +32,11 @@ const int map_unit_offsets[MAP_UNIT_LOOP_NUM][TWO_D] = {
 
 /* --- Defaults --- */
 const struct Spritesheet Spritesheet_default = {
-    .json_element   = JSON_SPRITE,
+    .jsonio_header.json_element   = JSON_SPRITE,
 };
 
 const struct Sprite Sprite_default = {
-    .json_element   = JSON_SPRITE,
+    .jsonio_header.json_element   = JSON_SPRITE,
     .srcrect        = { 0,  0, 32, 32}, /* x,y,w,h */
     .dstrect        = { 0,  0, 32, 32}, /* x,y,w,h */
     .scale          = { 1,  1},
@@ -80,7 +80,7 @@ void Spritesheet_Free(struct Spritesheet *spritesheet) {
     }
 
     spritesheet->loop_num = 0;
-    s8_free(&spritesheet->json_filename);
+    s8_free(&spritesheet->jsonio_header.json_filename);
 }
 
 void Sprite_readJSON(void *input,  cJSON *jsprite) {
@@ -212,7 +212,7 @@ void Sprite_Free(struct Sprite *sprite) {
 
     // SDL_Log("Freeing name");
     s8_free(&sprite->asset_name);
-    s8_free(&sprite->json_filename);
+    s8_free(&sprite->jsonio_header.json_filename);
 
     // SDL_Log("Freeing Textures");
     if (sprite->texture != NULL) {
@@ -264,7 +264,7 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit,
         sprite->spritesheet  = SDL_malloc(sizeof(*sprite->spritesheet));
         *sprite->spritesheet = Spritesheet_default;
     }
-    SDL_assert(sprite->spritesheet->json_element == JSON_SPRITE);
+    SDL_assert(sprite->spritesheet->jsonio_header.json_element == JSON_SPRITE);
 
     /* -- Loading spritesheet metadata -- */
     s8 filename = s8_mut(PATH_JOIN("assets", "map_units")PHYSFS_SEPARATOR);
@@ -313,7 +313,7 @@ void Sprite_Load(struct Sprite *sprite, char *asset_name, SDL_Renderer *renderer
         sprite->spritesheet  = SDL_malloc(sizeof(*sprite->spritesheet));
         *sprite->spritesheet = Spritesheet_default;
     }
-    SDL_assert(sprite->spritesheet->json_element == JSON_SPRITE);
+    SDL_assert(sprite->spritesheet->jsonio_header.json_element == JSON_SPRITE);
 
     /* -- Create texture from surface -- */
     if (sprite->spritesheet->surface != NULL)

@@ -11,8 +11,7 @@ struct Unit;
 
 /* -- Mount -- */
 struct Mount {
-    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
-    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
+    struct jsonIO_Header jsonio_header;
 
     i8     gets_attached;  /* How many lvlups till rider becomes owner. */
     i8     carry_capacity;

@@ -506,7 +506,7 @@ int Scene_Statement_Next(struct Scene *scene) {
 
     do {
 
-// TODO: test removing loopstart 
+        // TODO: test removing loopstart
     loopstart:
         scene->current_statement++;
         SDL_Log("LOOP: scene->current_statement %d", scene->current_statement);

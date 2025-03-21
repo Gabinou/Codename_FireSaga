@@ -41,8 +41,7 @@ typedef struct NewMap {
 extern const NewMap NewMap_default;
 
 typedef struct Map {
-    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
-    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
+    struct jsonIO_Header jsonio_header;
 
     // TODO: remove. should be in savefile
     s8 party_filename;
@@ -64,6 +63,7 @@ typedef struct Map {
     Arrow           *arrow;
     tnecs_world     *world;
     SDL_Renderer    *renderer;
+    u8 num_agonizing;
 
     /* --- SHADERS --- */
     struct Tilemap_Shader *tilemap_shader;
@@ -164,7 +164,6 @@ typedef struct Map {
 
     /* --- AGONY --- */
     struct Agony_timer *agony_stack;
-    u8 num_agonizing;
     tnecs_entity costmap_ent;
 
     /* --- ARMIES --- */

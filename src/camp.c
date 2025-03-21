@@ -17,11 +17,11 @@ const u8 max_jobs[CAMPJOB_END] = {
 };
 
 const struct Camp Camp_default = {
-    .json_element   = JSON_CAMP,
+    .jsonio_header.json_element   = JSON_CAMP,
 };
 
 void Camp_Free(struct Camp *camp) {
-    s8_free(&camp->json_filename);
+    s8_free(&camp->jsonio_header.json_filename);
 }
 
 void Camp_Job_Hire(struct Camp *in_camp, i16 unit_id, i16 job_id) {

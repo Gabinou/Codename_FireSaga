@@ -27,7 +27,7 @@ const struct Door Door_default = {
 };
 
 const struct Tile Tile_default = {
-    .json_element   = JSON_TILE,
+    .jsonio_header.json_element   = JSON_TILE,
     .inside         = false,
     .name           = {0},
     .id             = -1,
@@ -119,7 +119,7 @@ i32* Tile_Cost_Array(struct Tile *tile) {
 
 void Tile_Free(struct Tile *tile) {
     s8_free(&tile->name);
-    s8_free(&tile->json_filename);
+    s8_free(&tile->jsonio_header.json_filename);
 }
 
 void Tile_readJSON(void *input, cJSON *_jtile) {

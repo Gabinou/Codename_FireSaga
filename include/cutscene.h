@@ -4,6 +4,7 @@
 #include "types.h"
 #include "nstr.h"
 #include "tnecs.h"
+#include "jsonio.h"
 #include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
@@ -16,8 +17,7 @@ typedef struct Game Game;
 //      - Non-interactive (Player can skip scene)
 
 typedef struct Cutscene {
-    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
-    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
+    struct jsonIO_Header jsonio_header;
 
     /* Time cutscene plays */
     u64 time_ns;

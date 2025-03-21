@@ -609,7 +609,7 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     Reload_Entities_Archetype(sota, Reload_MapHpBar,  "MapHPBar");
 
     /* -- Reload Map -- */
-    jsonio_readJSON(sota->map->json_filename, sota->map);
+    jsonio_readJSON(sota->map->jsonio_header.json_filename, sota->map);
     sota->map->update = true;
 
     /* -- TODO: Reload Scenes -- */

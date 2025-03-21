@@ -89,5 +89,4 @@ extern const i16            item_effect_ids  [ITEM_EFFECT_NUM];
 #include "names/items_effects.h"
 #undef REGISTER_ENUM
 
-
 #endif /* ITEM_H */

@@ -152,8 +152,7 @@ enum AI_MOVE {
 
 /* AI COMPONENT */
 typedef struct AI {
-    s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
-    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
+    struct jsonIO_Header jsonio_header;
 
     int priority_master;
     int priority_slave;

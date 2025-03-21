@@ -42,7 +42,7 @@ const NewMap NewMap_default = {
 };
 
 const Map Map_default = {
-    .json_element           = JSON_MAP,
+    .jsonio_header.json_element = JSON_MAP,
     .show_icons             = true,
     .cost_multiplier        =  1,
     .frames                 = 10,
@@ -151,7 +151,7 @@ void Map_Unitmap_Free(struct Map *map) {
         map->unitmap[i] = TNECS_NULL;
     }
 
-    s8_free(&map->json_filename);
+    s8_free(&map->jsonio_header.json_filename);
 
     /* -- SDL_free unitmap -- */
     SDL_free(map->unitmap);
