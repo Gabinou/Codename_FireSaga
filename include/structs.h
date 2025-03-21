@@ -260,8 +260,8 @@ struct Tile_stats {
 };
 extern const struct Tile_stats Tile_stats_default;
 
-/* Struct is better: Can be cast to array */
 typedef struct Unit_stats {
+    /* Can be cast to array */
     i32 hp;   /* hit points     */
     i32 str;  /* strength       */
     i32 mag;  /* magic          */
@@ -277,8 +277,8 @@ typedef struct Unit_stats {
 } Unit_stats;
 extern const struct Unit_stats Unit_stats_default;
 
-/* Struct is better: Can be cast to array */
 typedef struct Range {
+    /* Can be cast to array */
     i32 min;
     i32 max;
 } Range;
@@ -609,6 +609,25 @@ struct RNG_Sequence { /* Sequence of hits/misses in a row */
     i8 eff_rate;
 };
 
+struct RNG_Stats_Sequence {
+    // RNG sequences for ALL stats 
+    struct RNG_Sequence hit;
+    struct RNG_Sequence crit;
+
+    struct RNG_Sequence hp;
+    struct RNG_Sequence str;
+    struct RNG_Sequence mag;
+    struct RNG_Sequence dex;
+    struct RNG_Sequence agi;
+    struct RNG_Sequence fth;
+    struct RNG_Sequence luck;
+    struct RNG_Sequence def;
+    struct RNG_Sequence res;
+    struct RNG_Sequence con;
+    struct RNG_Sequence move;
+    struct RNG_Sequence prof;
+};
+
 
 /* --- UNIT --- */
 struct Support {
@@ -659,21 +678,7 @@ typedef struct Unit {
 
     u64 skills;
 
-    struct RNG_Sequence hit_sequence;
-    struct RNG_Sequence crit_sequence;
-
-    struct RNG_Sequence hp_sequence;
-    struct RNG_Sequence str_sequence;
-    struct RNG_Sequence mag_sequence;
-    struct RNG_Sequence dex_sequence;
-    struct RNG_Sequence agi_sequence;
-    struct RNG_Sequence fth_sequence;
-    struct RNG_Sequence luck_sequence;
-    struct RNG_Sequence def_sequence;
-    struct RNG_Sequence res_sequence;
-    struct RNG_Sequence con_sequence;
-    struct RNG_Sequence move_sequence;
-    struct RNG_Sequence prof_sequence;
+    struct RNG_Stats_Sequence rng_sequence;
 
     u16 equippable;
     u16 base_exp;
