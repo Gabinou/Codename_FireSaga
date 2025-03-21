@@ -16,17 +16,12 @@ typedef struct cJSON cJSON;
 
 /* --- ENUMS --- */
 enum JSON_bOFFSET {
-    // bOFFSET: offset in bytes-
-    // HOWTO: for a WHAT in a struct
-    // char * byte_ptr = (char *)struct_ptr
-    // WHAT * what = (WHAT *)(byte_ptr + bOFFSET)
-    // In words:
-    // Cast struct pointer to bytes, bOFFSET it, cast to WHAT is at bOFFSET
+    // bOFFSET: offset in bytes
+    // HOWTO:
+    //  1. char * byte_ptr = (char *)struct_ptr
+    //  2. <type> * <var> = (<type> *)(byte_ptr + bOFFSET_<var>)
     JSON_FILENAME_bOFFSET   = 0,
     JSON_ELEM_bOFFSET       = 24, /* for u8 in json read/writable structs  */
-
-    // STRUCT ALIGNMENT -> s8 is 8-byte aligned because >
-    // json_element before json_filename -> 7 bytes padding for alignment!
 };
 
 /* --- TYPEDEFS --- */
