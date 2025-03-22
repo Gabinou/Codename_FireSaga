@@ -329,10 +329,10 @@ void *tnecs_component_array(
 tnecs_component tnecs_component_ids2archetype(
     size_t argnum, ...);
 tnecs_component tnecs_archetypeid(
-    tnecs_world *w, tnecs_component arch);
+    const tnecs_world *const w, tnecs_component arch);
 
 #define TNECS_COMPONENT_ID2TYPE(id) \
-    (1ULL << (id - TNECS_NULLSHIFT))
+    (((id >= TNECS_NULLSHIFT) && (id < TNECS_COMPONENT_CAP)) ? (1ULL << (id - TNECS_NULLSHIFT)) : 0ULL)
 #define TNECS_COMPONENT_TYPE2ID(type) \
     (type >= 1 ? (tnecs_component)(log2(type) + 1.1f) : 0) 
 #define TNECS_COMPONENT_IDS2ARCHETYPE(...) \
