@@ -194,6 +194,9 @@ struct GrowthsMenu *GrowthsMenu_Alloc(void) {
 }
 
 void GrowthsMenu_Free(struct GrowthsMenu *gm) {
+    if (gm == NULL) {
+        return;
+    }
     SDL_assert(gm != NULL);
     if (gm->texture != NULL) {
         SDL_DestroyTexture(gm->texture);
@@ -207,10 +210,8 @@ void GrowthsMenu_Free(struct GrowthsMenu *gm) {
         PixelFont_Free(gm->pixelnours_big, true);
         gm->pixelnours_big = NULL;
     }
-    if (gm != NULL) {
-        SDL_free(gm);
-        gm = NULL;
-    }
+    
+    SDL_free(gm);
 }
 
 void GrowthsMenu_Unit_Set(struct GrowthsMenu *gm, struct Unit *unit) {

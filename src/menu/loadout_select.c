@@ -96,6 +96,10 @@ struct LoadoutSelectMenu *LoadoutSelectMenu_Alloc(void) {
 }
 
 void LoadoutSelectMenu_Free(struct LoadoutSelectMenu *lsm) {
+    if (lsm == NULL) {
+        return;
+    }
+
     if (lsm->texture != NULL) {
         SDL_DestroyTexture(lsm->texture);
         lsm->texture = NULL;
@@ -106,10 +110,8 @@ void LoadoutSelectMenu_Free(struct LoadoutSelectMenu *lsm) {
     }
     s8_free(&lsm->header);
     s8_free(&lsm->item_name);
-    if (lsm != NULL) {
-        SDL_free(lsm);
-        lsm = NULL;
-    }
+
+    SDL_free(lsm);
 }
 
 void WeaponSelectMenu_Load_n9Patch(struct LoadoutSelectMenu *lsm, SDL_Renderer *r,

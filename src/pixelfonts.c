@@ -80,7 +80,12 @@ struct PixelFont *PixelFont_Alloc(void) {
 }
 
 void PixelFont_Free(struct PixelFont *font, b32 isfree) {
+    if (font == NULL) {
+        return;
+    }
+    
     SDL_assert(font != NULL);
+
     if (font->texture != NULL) {
         SDL_DestroyTexture(font->texture);
         font->texture = NULL;
@@ -98,10 +103,7 @@ void PixelFont_Free(struct PixelFont *font, b32 isfree) {
         font->glyph_bbox_height = NULL;
     }
     if (isfree) {
-        if (font != NULL) {
-            SDL_free(font);
-            font = NULL;
-        }
+        SDL_free(font);
     }
 }
 

@@ -695,6 +695,9 @@ DeploymentMenu *DeploymentMenu_Alloc(void) {
 }
 
 void DeploymentMenu_Free(DeploymentMenu *dm) {
+    if (dm == NULL) {
+        return;
+    }
     SDL_assert(dm != NULL);
     if (dm->texture != NULL) {
         SDL_DestroyTexture(dm->texture);
@@ -743,10 +746,7 @@ void DeploymentMenu_Free(DeploymentMenu *dm) {
         dm->_start_pos_i = NULL;
     }
 
-    if (dm != NULL) {
-        SDL_free(dm);
-        dm = NULL;
-    }
+    SDL_free(dm);
 }
 
 void DeploymentMenu_Load(DeploymentMenu *dm, SDL_Renderer *renderer,

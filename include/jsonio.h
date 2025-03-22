@@ -73,7 +73,7 @@ b32 Condition_Read(u32 *bitfield, size_t bits, cJSON *jcondition);
 void RNseed_writeJSON(struct cJSON *j);
 
 void Array_writeJSON(  struct cJSON *j, i32 *arr, size_t l);
-void Array2D_writeJSON(struct cJSON *j, i32 *arr, u8 rl, u8 cl);
+void Array2D_writeJSON(struct cJSON *j, i32 *a2d, u8 rl, u8 cl);
 
 void Range_writeJSON(           void *input, struct cJSON *j);
 void Point_writeJSON(           void *input, struct cJSON *j);

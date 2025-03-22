@@ -383,6 +383,9 @@ struct StatsMenu *StatsMenu_Alloc(void) {
 }
 
 void StatsMenu_Free(struct StatsMenu *stats_menu) {
+    if (stats_menu == NULL) {
+        return;
+    }
     SDL_assert(stats_menu != NULL);
     if (stats_menu->texture != NULL) {
         SDL_DestroyTexture(stats_menu->texture);
@@ -394,10 +397,8 @@ void StatsMenu_Free(struct StatsMenu *stats_menu) {
         PixelFont_Free(stats_menu->font_wpns, true);
         stats_menu->font_wpns = NULL;
     }
-    if (stats_menu != NULL) {
-        SDL_free(stats_menu);
-        stats_menu = NULL;
-    }
+    
+    SDL_free(stats_menu);
 }
 
 void StatsMenu_Load(struct StatsMenu *stats_menu, struct Unit *unit,
@@ -1026,8 +1027,7 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
 
     if (width <= limit) {
         if (eq == UNIT_HAND_RIGHT)
-            if (eq == UNIT_HAND_RIGHT)
-                x = SM_ITEMR_X - width_uses_left - width;
+            x = SM_ITEMR_X - width_uses_left - width;
 
         /* Name is short enough: write on one line */
         y = item_y_offset;

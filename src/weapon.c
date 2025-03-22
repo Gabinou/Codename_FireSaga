@@ -262,6 +262,7 @@ u16 Weapon_TypeExp(struct Weapon *weapon) {
     /* Single type loop*/
     u16 type_exp = 1;
     while (type_exp < ITEM_TYPE_EXP_END) {
+        SDL_assert(type_exp >= 1);
         if (((1UL << (type_exp - 1)) & wpntypecode) > 0)
             break;
         type_exp++;
