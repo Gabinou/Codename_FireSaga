@@ -610,7 +610,7 @@ struct RNG_Sequence { /* Sequence of hits/misses in a row */
 };
 
 struct RNG_Stats_Sequence {
-    // RNG sequences for ALL stats 
+    // RNG sequences for ALL stats
     struct RNG_Sequence hit;
     struct RNG_Sequence crit;
 
@@ -679,6 +679,22 @@ typedef struct Unit {
     u64 skills;
 
     struct RNG_Stats_Sequence rng_sequence;
+
+    // RNG sequences for ALL stats
+    struct RNG_Sequence hit_sequence;
+    struct RNG_Sequence crit_sequence;
+    struct RNG_Sequence hp_sequence;
+    struct RNG_Sequence str_sequence;
+    struct RNG_Sequence mag_sequence;
+    struct RNG_Sequence dex_sequence;
+    struct RNG_Sequence agi_sequence;
+    struct RNG_Sequence fth_sequence;
+    struct RNG_Sequence luck_sequence;
+    struct RNG_Sequence def_sequence;
+    struct RNG_Sequence res_sequence;
+    struct RNG_Sequence con_sequence;
+    struct RNG_Sequence move_sequence;
+    struct RNG_Sequence prof_sequence;
 
     u16 equippable;
     u16 base_exp;

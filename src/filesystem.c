@@ -348,7 +348,7 @@ void Filesystem_Surface_Pixels2Indices(SDL_Surface *abgr_surf, SDL_Surface *inde
 
     u64 pixel, color;
     i32 bitsmin = 24;
-    i32 bitsmax = 32; /* Bits for A channel? */
+    i32 bitsmax = 31; /* Bits for A channel? */
     SDL_LockSurface(abgr_surf);
     SDL_LockSurface(index_surf);
     u8 *arbg_pixels  = (u8 *)abgr_surf->pixels;

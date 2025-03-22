@@ -17,7 +17,7 @@ void test_tile() {
     struct Tile_stats out_tile_stats = Tile_stats_default;
     struct Movement_cost in_cost = {2, 2, 2, 3, 3, 1, 3, 2, 2};
     struct Tile tile1 =  {
-        .json_element   = JSON_TILE,
+        .jsonio_header.json_element   = JSON_TILE,
         .cost           = in_cost,
         .inside         = true,
         .id             = TILE_THRONE,

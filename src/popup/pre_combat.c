@@ -669,7 +669,9 @@ struct PreCombatPopup *PreCombatPopup_Alloc(void) {
 }
 
 void PreCombatPopup_Free(struct PreCombatPopup *pcp) {
-    SDL_assert(pcp != NULL);
+    if (pcp == NULL) {
+        return;
+    }
     if (pcp->texture != NULL) {
         SDL_DestroyTexture(pcp->texture);
         pcp->texture = NULL;
@@ -680,10 +682,8 @@ void PreCombatPopup_Free(struct PreCombatPopup *pcp) {
     }
     PreCombatPopup_Free_Faces(pcp);
     PreCombatPopup_Free_Icons(pcp);
-    if (pcp != NULL) {
-        SDL_free(pcp);
-        pcp = NULL;
-    }
+
+    SDL_free(pcp);
 }
 
 void PreCombatPopup_Load(struct PreCombatPopup *pcp, tnecs_entity aggressor,
@@ -734,6 +734,9 @@ void _PreCombatPopup_Load(struct PreCombatPopup *pcp, struct Unit *agg_unit, str
     _PreCombatPopup_Load_Icons(pcp, renderer);
 }
 void PreCombatPopup_Free_Faces(struct PreCombatPopup *pcp) {
+    if (pcp == NULL) {
+        return;
+    }
     if (pcp->texture_face_defendant != NULL) {
         SDL_DestroyTexture(pcp->texture_face_defendant);
         pcp->texture_face_defendant = NULL;
@@ -745,6 +748,9 @@ void PreCombatPopup_Free_Faces(struct PreCombatPopup *pcp) {
 }
 
 void PreCombatPopup_Free_Icons(struct PreCombatPopup *pcp) {
+    if (pcp == NULL) {
+        return;
+    }
     if (pcp->texture_weapons != NULL) {
         SDL_DestroyTexture(pcp->texture_weapons);
         pcp->texture_weapons = NULL;
