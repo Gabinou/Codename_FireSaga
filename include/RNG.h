@@ -59,7 +59,7 @@ b32 RNG_checkRate(i16 rate, i16 mode);
 /* -- Internals -- */
 /* - Uniform - */
 u8 RNG_URN(void);
-u64 RNG_openBSD_u64(u64 max, u64 min);
+u64 RNG_openBSD_u64(u64 min, u64 max);
 
 /* - Checkers - */
 b32 RNG_single_roll(u8 RN,  u8 hit);
