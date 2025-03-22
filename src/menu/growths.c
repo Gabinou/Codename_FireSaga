@@ -210,7 +210,7 @@ void GrowthsMenu_Free(struct GrowthsMenu *gm) {
         PixelFont_Free(gm->pixelnours_big, true);
         gm->pixelnours_big = NULL;
     }
-    
+
     SDL_free(gm);
 }
 

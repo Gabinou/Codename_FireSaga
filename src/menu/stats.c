@@ -397,7 +397,7 @@ void StatsMenu_Free(struct StatsMenu *stats_menu) {
         PixelFont_Free(stats_menu->font_wpns, true);
         stats_menu->font_wpns = NULL;
     }
-    
+
     SDL_free(stats_menu);
 }
 

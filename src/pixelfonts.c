@@ -83,7 +83,7 @@ void PixelFont_Free(struct PixelFont *font, b32 isfree) {
     if (font == NULL) {
         return;
     }
-    
+
     SDL_assert(font != NULL);
 
     if (font->texture != NULL) {

@@ -14,7 +14,7 @@ b32 equipped_valid( i32 equipped);
 
 /* --- Loadout --- */
 // unit._equipped:      Currently equipped equipment
-// loadout._loadout:    Possible equipped equipment
+// loadout:             Possible equipped equipment
 i32  Loadout_Eq(        Loadout *loadout, i32 hand);
 void Loadout_Set(       Loadout *loadout, i32 hand, i32 eq);
 void Loadout_None(      Loadout *loadout, i32 hand);
@@ -22,7 +22,6 @@ b32  Loadout_isEquipped(Loadout *loadout, i32 hand);
 
 b32 Loadout_istwoHanding(Loadout *loadout);
 b32 _istwoHanding(i32 eq_left, i32 eq_right);
-
 
 /* --- canEquip --- */
 void canEquip_Eq(           canEquip *e, i32 eq);

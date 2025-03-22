@@ -70,7 +70,7 @@ void ItemDropMenu_Free(struct ItemDropMenu *idm) {
         SDL_DestroyTexture(idm->texture);
         idm->texture = NULL;
     }
-    
+
     SDL_free(idm);
 }
 

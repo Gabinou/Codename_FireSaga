@@ -680,22 +680,6 @@ typedef struct Unit {
 
     struct RNG_Stats_Sequence rng_sequence;
 
-    // RNG sequences for ALL stats
-    struct RNG_Sequence hit_sequence;
-    struct RNG_Sequence crit_sequence;
-    struct RNG_Sequence hp_sequence;
-    struct RNG_Sequence str_sequence;
-    struct RNG_Sequence mag_sequence;
-    struct RNG_Sequence dex_sequence;
-    struct RNG_Sequence agi_sequence;
-    struct RNG_Sequence fth_sequence;
-    struct RNG_Sequence luck_sequence;
-    struct RNG_Sequence def_sequence;
-    struct RNG_Sequence res_sequence;
-    struct RNG_Sequence con_sequence;
-    struct RNG_Sequence move_sequence;
-    struct RNG_Sequence prof_sequence;
-
     u16 equippable;
     u16 base_exp;
     u16 exp;
@@ -712,9 +696,10 @@ typedef struct Unit {
 
     i32     arms_num;
     b32    _hands[UNIT_ARMS_NUM]; /* Does unit have hands?             */
-    i32 _equipped[UNIT_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
-    s8 *skill_names;
+    // TODO: replace raw _equipped with:
+    // struct Loadout _equipped;
+    i32 _equipped[UNIT_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
     struct dtab *weapons_dtab;
     struct dtab *items_dtab;
