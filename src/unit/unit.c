@@ -197,13 +197,6 @@ void Unit_Free(struct Unit *unit) {
         unit->grown_stats = NULL;
     }
 
-    if (unit->skill_names != NULL) {
-        for (int i = 0; i < DARR_NUM(unit->skill_names); i++) {
-            s8_free(&unit->skill_names[i]);
-        }
-        DARR_FREE(unit->skill_names);
-        unit->skill_names = NULL;
-    }
     if (unit->status_queue != NULL) {
         DARR_FREE(unit->status_queue);
         unit->status_queue = NULL;
@@ -243,12 +236,6 @@ void Unit_setid(struct Unit *unit, i16 id) {
 void Unit_setSkills(struct Unit *unit, u64 skills) {
     SDL_assert(unit);
     unit->skills = skills;
-    if (unit->skill_names != NULL)
-        DARR_FREE(unit->skill_names);
-    unit->skill_names = Names_skillNames(unit->skills);
-    // SDL_Log("Unit new skills: %lx \n", unit->skills);
-    // for (u8 i = 0; DARR_LEN(unit->skill_names); i++)
-    // SDL_Log("Skill name: %s", unit->skill_names[i].data);
 }
 
 void Unit_setClassind(struct Unit *unit, i8 class_index) {
@@ -389,7 +376,8 @@ void Unit_supportUp(struct Unit *unit, i16 id) {
 
 }
 struct RNG_Sequence *Unit_sequences_arr(Unit *unit) {
-    struct RNG_Sequence *sequences = (struct RNG_Sequence *)&unit->hp_sequence - (UNIT_STAT_NULL + 1);
+    struct RNG_Sequence *sequences = (struct RNG_Sequence *)&unit->rng_sequence.hp -
+                                     (UNIT_STAT_NULL + 1);
     return (sequences);
 }
 
