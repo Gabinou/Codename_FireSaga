@@ -614,6 +614,14 @@ enum ITEM_DIVISORS {
     ITEM_DIVISOR_STAFF      = 900,
 };
 
+#define REGISTER_ENUM(x) UNIT_TITLE_##x,
+enum UNIT_TITLES {
+    UNIT_TITLE_NULL = 0,
+#include "names/titles.h"
+    UNIT_TITLE_NUM,
+};
+#undef REGISTER_ENUM
+
 #define REGISTER_ENUM(x) ITEM_STAT_##x,
 enum ITEM_STATS {
     ITEM_STAT_START = 0,

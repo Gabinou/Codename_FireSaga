@@ -45,7 +45,9 @@ void test_menu_stats() {
     Silou._id = UNIT_ID_SILOU;
     Unit_Init(&Silou);
     /* - title - */
-    global_unitTitles[Silou._id] = s8_mut("Playful Mage");
+    Silou.title_id = 0;
+    global_unitTitlesId[Silou._id] = Silou.title_id;
+    global_unitTitles[Silou.title_id] = s8_mut("Playful Mage");
     Silou.weapons_dtab = weapons_dtab;
     SDL_assert(Silou.num_equipment == 0);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);

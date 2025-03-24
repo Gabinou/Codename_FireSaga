@@ -684,6 +684,7 @@ typedef struct Unit {
     u16 base_exp;
     u16 exp;
     u16 _id;
+    u16 title_id;
     u16 rescuee;
 
     i8 rangemap;

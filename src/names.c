@@ -23,9 +23,10 @@ void Names_sceneTimes(void) {
 #undef REGISTER_ENUM
 }
 
-s8  global_unitNames[UNIT_NUM]  = {0};
-s8  global_unitTitles[UNIT_NUM] = {0};
-u64 unitHashes[UNIT_NUM]        = {0};
+s8  global_unitNames[UNIT_NUM]          = {0};
+s8  global_unitTitles[UNIT_NUM]         = {0};
+u64 unitHashes[UNIT_NUM]                = {0};
+int global_unitTitlesId[UNIT_TITLE_NUM] = {0};
 struct dtab *global_unitOrders  = NULL;
 void Names_unitNames(void) {
     DTAB_INIT(global_unitOrders, u64);

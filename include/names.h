@@ -15,8 +15,10 @@ extern const s8 sexNames[UNIT_SEX_NUM];
 
 extern s8 scenes[SCENE_NUM];
 extern s8 sceneTimes[SCENE_TIME_NUM];
-extern s8 global_unitNames[UNIT_NUM];  /* [order]*/
-extern s8 global_unitTitles[UNIT_NUM];  /* [order]*/
+extern s8 global_unitNames[UNIT_NUM];  /* [unit_id] */
+
+extern int global_unitTitlesId[UNIT_TITLE_NUM];  /* [unit_id] */
+extern s8 global_unitTitles[UNIT_NUM];  /* [title_id] */
 
 // TODO: get rid of hashing if possible.
 extern u64 unitHashes[UNIT_NUM];  /* [order]*/
