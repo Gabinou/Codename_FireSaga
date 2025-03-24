@@ -26,7 +26,6 @@ void test_popup_unit() {
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
     Unit_InitWweapons(&Silou, weapons_dtab);
     /* - title - */
-    Silou.title = s8_mut("Playful Mage");
     Silou.weapons_dtab = weapons_dtab;
     SDL_assert(Silou.num_equipment == 0);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);

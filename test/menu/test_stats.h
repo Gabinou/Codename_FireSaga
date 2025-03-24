@@ -42,9 +42,10 @@ void test_menu_stats() {
 
     /* -- Create Unit -- */
     struct Unit Silou = Unit_default;
+    Silou._id = UNIT_ID_SILOU;
     Unit_Init(&Silou);
     /* - title - */
-    Silou.title = s8_mut("Playful Mage");
+    global_unitTitles[Silou._id] = s8_mut("Playful Mage");
     Silou.weapons_dtab = weapons_dtab;
     SDL_assert(Silou.num_equipment == 0);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);

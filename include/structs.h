@@ -718,7 +718,7 @@ typedef struct Unit {
     b32 mounted;
 
     s8 name;        /* TODO: get rid of it. Use id for global_unitNames */
-    s8 title;       /* TODO: get rid of it. Use id for global_unitTitles */
+    // s8 title;       /* TODO: get rid of it. Use id for global_unitTitles */
 
     struct Computed_Stats computed_stats;   /* Computed from Unit_Stats */
 

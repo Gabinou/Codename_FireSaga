@@ -204,7 +204,6 @@ void Unit_Free(struct Unit *unit) {
     if (unit->jsonio_header.json_filename.data != NULL)
         s8_free(&unit->jsonio_header.json_filename);
     s8_free(&unit->name);
-    s8_free(&unit->title);
     s8_free(&unit->ai_filename);
     unit->_id = 0;
 }
@@ -218,6 +217,12 @@ void Unit_Reinforcement_Load(struct Unit *unit, struct Reinforcement *reinf) {
     unit->army = reinf->army;
 }
 
+i16 Unit_id(struct Unit *unit) {
+    if (unit == NULL) {
+        return (UNIT_ID_NULL);
+    }
+    return (unit->_id);
+}
 void Unit_setid(struct Unit *unit, i16 id) {
     SDL_assert(unit != NULL);
     SDL_assert(Unit_ID_Valid(id));
@@ -993,7 +998,6 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     cJSON *jsex             = cJSON_GetObjectItem(junit, "Sex");
     cJSON *jexp             = cJSON_GetObjectItem(junit, "Exp");
     cJSON *jname            = cJSON_GetObjectItem(junit, "Name");
-    cJSON *jtitle           = cJSON_GetObjectItem(junit, "Title");
     cJSON *jitems           = cJSON_GetObjectItem(junit, "Items");
     cJSON *jgrowths         = cJSON_GetObjectItem(junit, "Growths");
     cJSON *jequipped        = cJSON_GetObjectItem(junit, "Equipped");
@@ -1157,9 +1161,6 @@ void Unit_writeJSON(void *input, cJSON *junit) {
     cJSON *jsex           = cJSON_CreateBool(unit->sex);
     cJSON *jname          = cJSON_CreateString(unit->name.data);
     cJSON *jai            = cJSON_CreateString(unit->ai_filename.data);
-    cJSON *jtitle         = NULL;
-    if (unit->title.data != NULL)
-        jtitle            = cJSON_CreateString(unit->title.data);
 
     cJSON *jclass         = cJSON_CreateString(classNames[unit->class].data);
     cJSON *jbase_exp      = cJSON_CreateNumber(unit->exp);
@@ -1180,8 +1181,6 @@ void Unit_writeJSON(void *input, cJSON *junit) {
     cJSON_AddItemToObject(junit, "id",          jid);
     cJSON_AddItemToObject(junit, "Name",        jname);
     cJSON_AddItemToObject(junit, "AI",          jai);
-    if (jtitle != NULL)
-        cJSON_AddItemToObject(junit, "Title",   jtitle);
 
     cJSON_AddItemToObject(junit, "Sex",         jsex);
     cJSON_AddItemToObject(junit, "BaseExp",     jbase_exp);

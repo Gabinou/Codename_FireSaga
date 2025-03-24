@@ -574,7 +574,7 @@ static void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *ren
     s8_free(&class);
 
     /* - title - */
-    s8 title = stats_menu->unit->title;
+    s8 title = global_unitTitles[Unit_id(stats_menu->unit)];
     if (title.data != NULL) {
         x = TITLE_X_OFFSET, y = TITLE_Y_OFFSET;
         PixelFont_Write_Len(stats_menu->pixelnours, renderer, title.data, x, y);
