@@ -59,6 +59,7 @@ void test_pixelfonts_internals() {
     nourstest_true(line_num == 4);
 
     /* -- Lines split by breaking whole words -- */
+    line_len_px = 64;
     char *text3 = "The lizard is a wizard, by joving rove. I say living hell.";
     line_num = PixelFont_Lines_Num_Len(test_font, text3, line_len_px);
     nourstest_true(line_num == 4);
@@ -66,6 +67,9 @@ void test_pixelfonts_internals() {
     nourstest_true(text_lines.line_num == 4);
     nourstest_true(text_lines.line_len == 4);
     nourstest_true(PixelFont_Width_Len(test_font, text_lines.lines[0]) < line_len_px);
+    // return;
+    // SDL_Log("'%s' \n", text_lines.lines[0]);
+    // SDL_Log("'%s' \n", text_lines.lines[1]);
     nourstest_true(PixelFont_Width_Len(test_font, text_lines.lines[1]) < line_len_px);
     nourstest_true(PixelFont_Width_Len(test_font, text_lines.lines[2]) < line_len_px);
     nourstest_true(PixelFont_Width_Len(test_font, text_lines.lines[3]) < line_len_px);

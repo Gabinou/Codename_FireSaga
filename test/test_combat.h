@@ -585,37 +585,37 @@ void test_combat_sequence() {
     attack = darr_attacks[DARR_NUM(darr_attacks) - 1];
     nourstest_true(attack.hit  == true);
     nourstest_true(attack.crit == false);
-    nourstest_true(Silou.hit_sequence.hit == true);
-    nourstest_true(Silou.hit_sequence.len == 1);
-    nourstest_true(Silou.hit_sequence.eff_rate == hit_rate);
-    nourstest_true(Silou.crit_sequence.hit == false);
-    nourstest_true(Silou.crit_sequence.len == 1);
-    nourstest_true(Silou.crit_sequence.eff_rate == crit_rate);
+    nourstest_true(Silou.rng_sequence.hit.hit == true);
+    nourstest_true(Silou.rng_sequence.hit.len == 1);
+    nourstest_true(Silou.rng_sequence.hit.eff_rate == hit_rate);
+    nourstest_true(Silou.rng_sequence.crit.hit == false);
+    nourstest_true(Silou.rng_sequence.crit.len == 1);
+    nourstest_true(Silou.rng_sequence.crit.eff_rate == crit_rate);
     nourstest_true(DARR_NUM(darr_attacks) == 1);
 
     Compute_Combat_Attack(&phase, darr_attacks, damage, &Silou, hit_rate, crit_rate);
     attack = darr_attacks[DARR_NUM(darr_attacks) - 1];
     nourstest_true(attack.hit   == true);
     nourstest_true(attack.crit  == false);
-    nourstest_true(Silou.hit_sequence.hit == true);
-    nourstest_true(Silou.hit_sequence.len == 2);
-    nourstest_true(Silou.hit_sequence.eff_rate == hit_rate);
-    nourstest_true(Silou.crit_sequence.hit == false);
-    nourstest_true(Silou.crit_sequence.len == 2);
-    nourstest_true(Silou.crit_sequence.eff_rate == crit_rate);
+    nourstest_true(Silou.rng_sequence.hit.hit == true);
+    nourstest_true(Silou.rng_sequence.hit.len == 2);
+    nourstest_true(Silou.rng_sequence.hit.eff_rate == hit_rate);
+    nourstest_true(Silou.rng_sequence.crit.hit == false);
+    nourstest_true(Silou.rng_sequence.crit.len == 2);
+    nourstest_true(Silou.rng_sequence.crit.eff_rate == crit_rate);
     nourstest_true(DARR_NUM(darr_attacks) == 2);
 
     Compute_Combat_Attack(&phase, darr_attacks, damage, &Silou, hit_rate, crit_rate);
     attack = darr_attacks[DARR_NUM(darr_attacks) - 1];
     nourstest_true(attack.hit   == true);
     nourstest_true(attack.crit  == false);
-    nourstest_true(Silou.hit_sequence.hit == true);
-    nourstest_true(Silou.hit_sequence.len == 3);
-    nourstest_true(Silou.hit_sequence.eff_rate == hit_rate);
-    nourstest_true(Silou.crit_sequence.hit == false);
-    nourstest_true(Silou.crit_sequence.len == 3);
-    nourstest_true(Silou.crit_sequence.eff_rate == SB_RATE_RISE(crit_rate,
-                                                                Silou.crit_sequence.len - 1));
+    nourstest_true(Silou.rng_sequence.hit.hit == true);
+    nourstest_true(Silou.rng_sequence.hit.len == 3);
+    nourstest_true(Silou.rng_sequence.hit.eff_rate == hit_rate);
+    nourstest_true(Silou.rng_sequence.crit.hit == false);
+    nourstest_true(Silou.rng_sequence.crit.len == 3);
+    nourstest_true(Silou.rng_sequence.crit.eff_rate == SB_RATE_RISE(crit_rate,
+                   Silou.rng_sequence.crit.len - 1));
     nourstest_true(DARR_NUM(darr_attacks) == 3);
 
     Compute_Combat_Attack(&phase, darr_attacks, damage, &Silou, hit_rate, crit_rate);
@@ -623,69 +623,73 @@ void test_combat_sequence() {
     attack = darr_attacks[DARR_NUM(darr_attacks) - 1];
     nourstest_true(attack.hit  == true);
     nourstest_true(attack.crit == false);
-    nourstest_true(Silou.hit_sequence.hit == true);
-    nourstest_true(Silou.hit_sequence.len == 4);
-    nourstest_true(Silou.hit_sequence.eff_rate == hit_rate);
-    nourstest_true(Silou.crit_sequence.hit == false);
-    nourstest_true(Silou.crit_sequence.len == 4);
-    nourstest_true(Silou.crit_sequence.eff_rate == SB_RATE_RISE(crit_rate,
-                                                                Silou.crit_sequence.len - 1));
+    nourstest_true(Silou.rng_sequence.hit.hit == true);
+    nourstest_true(Silou.rng_sequence.hit.len == 4);
+    nourstest_true(Silou.rng_sequence.hit.eff_rate == hit_rate);
+    nourstest_true(Silou.rng_sequence.crit.hit == false);
+    nourstest_true(Silou.rng_sequence.crit.len == 4);
+    nourstest_true(Silou.rng_sequence.crit.eff_rate == SB_RATE_RISE(crit_rate,
+                   Silou.rng_sequence.crit.len - 1));
 
     URN_debug = 49; /* HIT/NOCRIT*/
     Compute_Combat_Attack(&phase, darr_attacks, damage, &Silou, hit_rate, crit_rate);
     attack = darr_attacks[DARR_NUM(darr_attacks) - 1];
     nourstest_true(attack.hit == true);
     nourstest_true(attack.crit == false);
-    nourstest_true(Silou.hit_sequence.hit == true);
-    nourstest_true(Silou.hit_sequence.hit == true);
-    nourstest_true(Silou.hit_sequence.len == 5);
-    nourstest_true(Silou.hit_sequence.eff_rate == hit_rate);
-    nourstest_true(Silou.crit_sequence.hit == false);
-    nourstest_true(Silou.crit_sequence.len == 5);
-    nourstest_true(Silou.crit_sequence.eff_rate == SB_RATE_RISE(crit_rate,
-                                                                Silou.crit_sequence.len - 1));
+    nourstest_true(Silou.rng_sequence.hit.hit == true);
+    nourstest_true(Silou.rng_sequence.hit.hit == true);
+    nourstest_true(Silou.rng_sequence.hit.len == 5);
+    nourstest_true(Silou.rng_sequence.hit.eff_rate == hit_rate);
+    nourstest_true(Silou.rng_sequence.crit.hit == false);
+    nourstest_true(Silou.rng_sequence.crit.len == 5);
+    nourstest_true(Silou.rng_sequence.crit.eff_rate == SB_RATE_RISE(crit_rate,
+                   Silou.rng_sequence.crit.len - 1));
 
     URN_debug = 61; /* NOHIT/NOCRIT*/
     Compute_Combat_Attack(&phase, darr_attacks, damage, &Silou, hit_rate, crit_rate);
     attack = darr_attacks[DARR_NUM(darr_attacks) - 1];
     nourstest_true(attack.hit == false);
     nourstest_true(attack.crit == false);
-    nourstest_true(Silou.hit_sequence.hit == false);
-    nourstest_true(Silou.hit_sequence.len == 1);
-    nourstest_true(Silou.hit_sequence.eff_rate == SB_RATE_RISE(hit_rate, Silou.hit_sequence.len));
+    nourstest_true(Silou.rng_sequence.hit.hit == false);
+    nourstest_true(Silou.rng_sequence.hit.len == 1);
+    nourstest_true(Silou.rng_sequence.hit.eff_rate == SB_RATE_RISE(hit_rate,
+                   Silou.rng_sequence.hit.len));
 
     Compute_Combat_Attack(&phase, darr_attacks, damage, &Silou, hit_rate, crit_rate);
     attack = darr_attacks[DARR_NUM(darr_attacks) - 1];
     nourstest_true(attack.hit == false);
     nourstest_true(attack.crit == false);
-    nourstest_true(Silou.hit_sequence.hit == false);
-    nourstest_true(Silou.hit_sequence.len == 2);
-    nourstest_true(Silou.hit_sequence.eff_rate == SB_RATE_RISE(hit_rate, Silou.hit_sequence.len - 1));
+    nourstest_true(Silou.rng_sequence.hit.hit == false);
+    nourstest_true(Silou.rng_sequence.hit.len == 2);
+    nourstest_true(Silou.rng_sequence.hit.eff_rate == SB_RATE_RISE(hit_rate,
+                   Silou.rng_sequence.hit.len - 1));
 
     Compute_Combat_Attack(&phase, darr_attacks, damage, &Silou, hit_rate, crit_rate);
     attack = darr_attacks[DARR_NUM(darr_attacks) - 1];
     nourstest_true(attack.hit == false);
     nourstest_true(attack.crit == false);
-    nourstest_true(Silou.hit_sequence.hit == false);
-    nourstest_true(Silou.hit_sequence.len == 3);
-    nourstest_true(Silou.hit_sequence.eff_rate == SB_RATE_RISE(hit_rate, Silou.hit_sequence.len - 1));
+    nourstest_true(Silou.rng_sequence.hit.hit == false);
+    nourstest_true(Silou.rng_sequence.hit.len == 3);
+    nourstest_true(Silou.rng_sequence.hit.eff_rate == SB_RATE_RISE(hit_rate,
+                   Silou.rng_sequence.hit.len - 1));
 
     Compute_Combat_Attack(&phase, darr_attacks, damage, &Silou, hit_rate, crit_rate);
     attack = darr_attacks[DARR_NUM(darr_attacks) - 1];
     nourstest_true(attack.hit == false);
     nourstest_true(attack.crit == false);
-    nourstest_true(Silou.hit_sequence.hit == false);
-    nourstest_true(Silou.hit_sequence.len == 4);
-    nourstest_true(Silou.hit_sequence.eff_rate == SB_RATE_RISE(hit_rate, Silou.hit_sequence.len - 1));
-    nourstest_true(Silou.hit_sequence.eff_rate < URN_debug);
+    nourstest_true(Silou.rng_sequence.hit.hit == false);
+    nourstest_true(Silou.rng_sequence.hit.len == 4);
+    nourstest_true(Silou.rng_sequence.hit.eff_rate == SB_RATE_RISE(hit_rate,
+                   Silou.rng_sequence.hit.len - 1));
+    nourstest_true(Silou.rng_sequence.hit.eff_rate < URN_debug);
 
     // Hit now cause of sequence breaker increase hit
     Compute_Combat_Attack(&phase, darr_attacks, damage, &Silou, hit_rate, crit_rate);
     attack = darr_attacks[DARR_NUM(darr_attacks) - 1];
     nourstest_true(attack.hit == true);
     nourstest_true(attack.crit == false);
-    nourstest_true(Silou.hit_sequence.hit == true);
-    nourstest_true(Silou.hit_sequence.len == 1);
+    nourstest_true(Silou.rng_sequence.hit.hit == true);
+    nourstest_true(Silou.rng_sequence.hit.len == 1);
 
     /* SDL_free everything */
     DARR_FREE(darr_attacks);

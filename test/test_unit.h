@@ -287,10 +287,10 @@ void test_growth(void) {
     nourstest_true(Silou.growths.con  == 10);
     nourstest_true(Silou.growths.prof == 20);
 
-    nourstest_true(Silou.res_sequence.len  == false);
-    nourstest_true(Silou.move_sequence.len == true);
-    nourstest_true(Silou.con_sequence.len  == true);
-    nourstest_true(Silou.prof_sequence.len == false);
+    nourstest_true(Silou.rng_sequence.res.len  == false);
+    nourstest_true(Silou.rng_sequence.move.len == true);
+    nourstest_true(Silou.rng_sequence.con.len  == true);
+    nourstest_true(Silou.rng_sequence.prof.len == false);
 
     /* Second level up: con and move grow, cause of increased rate */
     Unit_lvlUp(&Silou);
@@ -310,13 +310,13 @@ void test_growth(void) {
                    true); /* grows now, SB eff rate is 10*1.2 = 12 > 11  */
     nourstest_true(Silou.grown_stats[1].prof    == temp_growths.prof);
 
-    nourstest_true(Silou.con_sequence.len    == false);
-    nourstest_true(Silou.move_sequence.len   == false);
-    nourstest_true(Silou.prof_sequence.len   == false);
+    nourstest_true(Silou.rng_sequence.con.len    == false);
+    nourstest_true(Silou.rng_sequence.move.len   == false);
+    nourstest_true(Silou.rng_sequence.prof.len   == false);
 
-    nourstest_true(Silou.prof_sequence.eff_rate == in_growths.prof);
-    nourstest_true(Silou.move_sequence.eff_rate  > in_growths.move);
-    nourstest_true(Silou.con_sequence.eff_rate   > in_growths.con);
+    nourstest_true(Silou.rng_sequence.prof.eff_rate == in_growths.prof);
+    nourstest_true(Silou.rng_sequence.move.eff_rate  > in_growths.move);
+    nourstest_true(Silou.rng_sequence.con.eff_rate   > in_growths.con);
 
     /* Runing of sequence breaker: no more sequences, no more increasing rates */
     rng_sequence_breaker_miss_growth = false;
@@ -334,19 +334,19 @@ void test_growth(void) {
     nourstest_true(Silou.grown_stats[2].move    == temp_growths.move);
     nourstest_true(Silou.grown_stats[2].prof    == temp_growths.prof);
 
-    nourstest_true(Silou.res_sequence.len  == false);
-    nourstest_true(Silou.con_sequence.len  == false);
-    nourstest_true(Silou.move_sequence.len == false);
-    nourstest_true(Silou.prof_sequence.len == false);
+    nourstest_true(Silou.rng_sequence.res.len  == false);
+    nourstest_true(Silou.rng_sequence.con.len  == false);
+    nourstest_true(Silou.rng_sequence.move.len == false);
+    nourstest_true(Silou.rng_sequence.prof.len == false);
 
     Unit_lvlUp(&Silou);
     nourstest_true(DARR_NUM(Silou.grown_stats)  == 4);
     nourstest_true(Silou.grown_stats[3].con     == temp_growths.con);
     nourstest_true(Silou.grown_stats[3].move    == temp_growths.move);
     nourstest_true(Silou.grown_stats[3].prof    == temp_growths.prof);
-    nourstest_true(Silou.prof_sequence.len      == false);
-    nourstest_true(Silou.move_sequence.len      == false);
-    nourstest_true(Silou.con_sequence.len       == false);
+    nourstest_true(Silou.rng_sequence.prof.len      == false);
+    nourstest_true(Silou.rng_sequence.move.len      == false);
+    nourstest_true(Silou.rng_sequence.con.len       == false);
 
     Unit_Free(&Silou);
 }

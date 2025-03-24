@@ -303,6 +303,7 @@ struct TextLines PixelFont_Lines(struct PixelFont *font,  char *text, size_t len
 int PixelFont_Lines_Num(struct PixelFont *font,  char *text, size_t len_char,
                         size_t line_len_px) {
     SDL_assert(line_len_px > 0);
+    SDL_assert(text != NULL);
     SDL_assert(font != NULL);
     SDL_assert(font->glyph_bbox_width != NULL);
     int next_start    = 0; /* start of next line in text [char] */
@@ -319,9 +320,11 @@ int PixelFont_Lines_Num(struct PixelFont *font,  char *text, size_t len_char,
         current_break = PixelFont_NextLine_Break(font, text, current_start, len_char, line_len_px);
         SDL_assert(current_break > current_start);
         line_len_char = current_break - current_start;
+
         /* -- Break: text fits in final row -- */
-        if (current_break >= len_char)
+        if (current_break >= len_char) {
             break;
+        }
 
         /* -- Text doesn't fit in final row -- */
         /* - If current_break a space, break line there - */
