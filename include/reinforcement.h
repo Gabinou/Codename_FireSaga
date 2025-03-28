@@ -14,7 +14,7 @@ struct Reinforcement {
     i32 boss_icon;
     s8  filename;
     // Reinforcement use filenames for clarity
-    i32 ai_filename; /* Overrides ai_id in unit */
+    i32 ai_id; /* Overrides ai_id in unit */
     i32 turn;
     i32 levelups;
 };

@@ -350,18 +350,18 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         // SDL_Log("-- loading unit AI --");
         struct AI *ai = IES_GET_COMPONENT(sota->world, temp_unit_ent, AI);
         *ai = AI_default;
-        s8 ai_path  = s8_mut("ai"PHYSFS_SEPARATOR);
-        /* - Default ai - */
-        if (unit->ai_id == AI_NULL)
-            unit->ai_id = AI_AGGRESSIVE;
+        s8 ai_path = s8_mut("ai"PHYSFS_SEPARATOR);
 
-        if (reinf->ai_filename.data != NULL)
-            ai_path = s8cat(ai_path, reinf->ai_filename);
-        else
-            ai_path = s8cat(ai_path, unit->ai_filename);
+        /* - Default ai - */
+        if (!AI_ID_isvalid(unit->ai_id))
+            unit->ai_id = AI_DEFAULT;
+        
+        s8 ai_filename = AI_ID_isvalid(reinf->ai_id) ? AI_filename(reinf->ai_id) : AI_filename(unit->ai_id);
+        ai_path = s8cat(ai_path, ai_filename);
 
         jsonio_readJSON(ai_path, ai);
 
+        s8_free(&ai_filename);
         s8_free(&ai_path);
         // TODO: AI_Free
         s8_free(&ai->jsonio_header.json_filename);

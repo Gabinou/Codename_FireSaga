@@ -437,6 +437,7 @@ enum AIs {
     AI_NULL = 0,
 #include "names/ai.h"
     AI_NUM,
+    AI_DEFAULT = AI_AGGRESSIVE,
 };
 #undef REGISTER_ENUM
 

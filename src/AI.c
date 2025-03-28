@@ -636,6 +636,15 @@ void AI_readJSON(void *input,  cJSON *jai) {
     ai->priority_slave  = cJSON_GetNumberValue(jpriority_slave);
     ai->move            = cJSON_GetNumberValue(jmove);
 }
+s8 AI_filename(i32 ai_id) {
+    SDL_assert(ai_id > AI_START);
+    SDL_assert(ai_id < AI_NUM);
+    return(s8_cat(ai_names[ai_id] ,s8_mut(".json")));
+}
+
+i32 AI_ID_isvalid(i32 ai_id) {
+    return((ai_id > AI_START) && (ai_id < AI_NUM));
+}
 
 void AI_writeJSON(void *input,  cJSON *jai) {
     struct AI *ai = (struct AI *)input;

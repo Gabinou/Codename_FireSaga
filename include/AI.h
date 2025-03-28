@@ -189,6 +189,9 @@ void Unit_Move_onMap_Animate(struct Game  *s, tnecs_entity e,
 void AI_readJSON( void *ai, cJSON *jai);
 void AI_writeJSON(void *ai, cJSON *jai);
 
+s8 AI_filename(i32 ai_id);
+s8 AI_ID_isvalid(i32 ai_id);
+
 /* --- AI_State --- */
 void AI_State_Pop( struct AI_State *ais, tnecs_world *world);
 void AI_State_Init(struct AI_State *ais, tnecs_world *world, struct Map *map);
