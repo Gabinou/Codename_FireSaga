@@ -434,7 +434,7 @@ enum COMPONENT {
 
 #define REGISTER_ENUM(x) AI_##x,
 enum AIs {
-    AI_NULL = 0,
+    AI_NULL     = 0,
 #include "names/ai.h"
     AI_NUM,
     AI_DEFAULT = AI_AGGRESSIVE,
