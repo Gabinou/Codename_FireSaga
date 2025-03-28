@@ -1,6 +1,0 @@
-[core]
-    remote = wdred12
-['remote "wdblue1"']
-    url = /mnt/WDBlue1/dvc/sota
-['remote "wdred12"']
-    url = /mnt/WDRed12/dvc/sota
