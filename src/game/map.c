@@ -352,8 +352,8 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         *ai = AI_default;
         s8 ai_path  = s8_mut("ai"PHYSFS_SEPARATOR);
         /* - Default ai - */
-        if (unit->ai_filename.data == NULL)
-            unit->ai_filename = s8_mut("aggressive.json");
+        if (unit->ai_id == AI_NULL)
+            unit->ai_id = AI_AGGRESSIVE;
 
         if (reinf->ai_filename.data != NULL)
             ai_path = s8cat(ai_path, reinf->ai_filename);

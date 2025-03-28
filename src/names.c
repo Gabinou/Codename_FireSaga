@@ -23,8 +23,23 @@ void Names_sceneTimes(void) {
 #undef REGISTER_ENUM
 }
 
-s8  global_unitNames[UNIT_NUM]          = {0};
+s8  ai_names[AI_NUM]    = {0};
+u64 ai_hashes[AI_NUM]   = {0};
+void Names_AI(void) {
+#define REGISTER_ENUM(x) ai_names[AI_##x] = s8_toLower(s8_mut(#x));\
+    ai_hashes[AI_##x] = sota_hash_djb2(ai_names[AI_##x]);
+#include "names/ai.h"
+#undef REGISTER_ENUM
+}
+
 s8  global_unitTitles[UNIT_NUM]         = {0};
+void Names_unitTitles(void) {
+#define REGISTER_ENUM(x) global_unitTitles[UNIT_TITLE_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 1);
+#include "names/titles.h"
+#undef REGISTER_ENUM
+}
+
+s8  global_unitNames[UNIT_NUM]          = {0};
 u64 unitHashes[UNIT_NUM]                = {0};
 int global_unitTitlesId[UNIT_TITLE_NUM] = {0};
 struct dtab *global_unitOrders  = NULL;
@@ -238,6 +253,7 @@ void Names_wpnType_Free(s8 *type_names) {
 /* --- API --- */
 void Names_Load_All(void) {
     Names_unitNames();
+    Names_AI();
     Names_scenes();
     Names_sceneTimes();
     // Hashes_supportHashes();

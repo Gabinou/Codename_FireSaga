@@ -639,7 +639,11 @@ struct Support {
 typedef struct Unit {
     struct jsonIO_Header jsonio_header;
 
+    u16 _id;
+    u16 title_id;
     i16 class;
+    i16 ai_id; /* Default AI for unit */
+
     i8  mvt_type;
     i8  army;
     u8  current_hp;
@@ -653,7 +657,6 @@ typedef struct Unit {
     struct Unit_status *status_queue;
 
     // TODO: change into ID for AI?
-    s8 ai_filename; /* Default AI for unit */
 
     struct Support supports[SOTA_MAX_SUPPORTS];
     u16 support_type;
@@ -683,8 +686,6 @@ typedef struct Unit {
     u16 equippable;
     u16 base_exp;
     u16 exp;
-    u16 _id;
-    u16 title_id;
     u16 rescuee;
 
     i8 rangemap;

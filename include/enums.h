@@ -432,6 +432,15 @@ enum COMPONENT {
 #undef REGISTER_ENUM
 #undef REGISTER_ENUM_
 
+#define REGISTER_ENUM(x) AI_##x,
+enum AIs {
+    AI_NULL = 0,
+#include "names/ai.h"
+    AI_NUM,
+};
+#undef REGISTER_ENUM
+
+
 #define REGISTER_ENUM(x) MOUNT_NAME_##x,
 enum MOUNT_NAMES {
     MOUNT_NAME_START = 0,

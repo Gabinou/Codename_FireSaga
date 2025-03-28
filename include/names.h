@@ -13,6 +13,8 @@
 // TODO make names not global
 extern const s8 sexNames[UNIT_SEX_NUM];
 
+extern s8   ai_names[AI_NUM];
+extern u64  ai_hashes[AI_NUM];
 extern s8 scenes[SCENE_NUM];
 extern s8 sceneTimes[SCENE_TIME_NUM];
 extern s8 global_unitNames[UNIT_NUM];  /* [unit_id] */
