@@ -636,9 +636,26 @@ struct Support {
     i8 level;
 };
 
+// TODO: unit design:
+//  - Stats values inside unit class are CONSTANT.
+//  - Any stat modified by equipments, supports, skills is output from FUNCTIONS
+//  - e.g. Unit_Equipped_Bonus_Stats
+//  - e.g. Unit_Support_Bonus_Stats
+//  - e.g. Unit_Computed_Stats
+//      - should not be kept in memory in unit!
+//      - Those values ALWAYS CHANGE DUE TO GAME STATE
+//      - SO DON'T KEEP THEM IN MEMORY.
+// Keep same design of:     
+//  - base_stats,
+//  - current_stats = base_stats + grown_stats
+//  - effective_stats = current_stats + bonus_stats
+//  - func(effective_stats, supports, bonus_computed_stats) -> computed_stats
+
+
 typedef struct Unit {
     struct jsonIO_Header jsonio_header;
 
+    // TODO: struct of all unit ids? + API
     u16 _id;
     u16 title_id;
     i16 class;
@@ -649,6 +666,8 @@ typedef struct Unit {
     u8  current_hp;
     i8  handedness;
     u16 talkable;
+
+    // TODO: Agony struct
     u8  current_agony;
     i8  agony; /* turns left before death (-1 not agonizing) */
     u8  regrets;
@@ -656,27 +675,30 @@ typedef struct Unit {
     // Status with least remaining turns on top.
     struct Unit_status *status_queue;
 
-    // TODO: change into ID for AI?
-
+    // TODO: Support struct should have the list of supporters inside it
     struct Support supports[SOTA_MAX_SUPPORTS];
     u16 support_type;
     u16 support_num;
+
+    // TODO: rm.
     struct Damage damage;
 
     /* Stats */
-    struct Unit_stats base_stats;
 
     struct Bonus_Stats *bonus_stack;
     struct Unit_stats bonus_stats; // TODO remove for new Bonus_Stat Struct
     struct Unit_stats malus_stats; // TODO remove for new Bonus_Stat Struct
     struct Unit_stats caps_stats;
+    struct Unit_stats base_stats;
     struct Unit_stats current_stats;    /* base_stats + all growths */
     struct Unit_stats effective_stats;  /* current_stats + bonuses/maluses */
 
     /* Growths */
     struct Unit_stats growths;
-    struct Unit_stats bonus_growths;
-    struct Unit_stats effective_growths;
+    // TODO rm, should be a fund
+    struct Unit_stats bonus_growths;        
+    // TODO rm, should be a fund
+    struct Unit_stats effective_growths;    
     struct Unit_stats *grown_stats;
 
     u64 skills;
@@ -686,6 +708,7 @@ typedef struct Unit {
     u16 equippable;
     u16 base_exp;
     u16 exp;
+    // TODO: rescue struct
     u16 rescuee;
 
     i8 rangemap;
@@ -694,6 +717,7 @@ typedef struct Unit {
     bitflag16_t job_talent;
 
     /* Defendant position (self is Aggressor.) */
+    // TODO: what? why? rm
     Point dft_pos; /* Used to compute stats in case of dual wielding */
 
     i32     arms_num;
@@ -706,9 +730,11 @@ typedef struct Unit {
     struct dtab *weapons_dtab;
     struct dtab *items_dtab;
 
+    // TODO: all equipment stuff in a struct
     struct Inventory_item _equipment[SOTA_EQUIPMENT_SIZE];
 
     /* For twohanding when computing computedstats */
+    // TODO: rm. why? */
     struct Inventory_item temp;
 
     /* 1. Can't equip more than SOTA_EQUIPMENT_SIZE items */
@@ -717,19 +743,17 @@ typedef struct Unit {
     i32 num_canEquip;
 
     struct Mount *mount;
-    b32 mounted;
 
-    s8 name;        /* TODO: get rid of it. Use id for global_unitNames */
+    // TODO: rm. Use id for global_unitNames */
+    s8 name;        /* 
 
     struct Computed_Stats computed_stats;   /* Computed from Unit_Stats */
 
-    // TODO: get rid of support_bonuses
-    // struct Computed_Stats support_bonuses[SOTA_MAX_SUPPORTS];
-    // struct Computed_Stats support_bonus;
-
+    // TODO: Struct of unit bools
     b32 sex;            /* 0:F, 1:M. eg. hasPenis. */
     b32 waits;
     b32 alive;
+    b32 mounted;
     b32 literate;       /* Reading/writing for scribe job. */
     b32 courageous;     /* For reaction to story events    */
     b32 show_danger;
