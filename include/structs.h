@@ -636,6 +636,8 @@ struct Support {
     i8 level;
 };
 
+
+typedef struct Unit {
 // TODO: unit design:
 //  - Stats values inside unit class are CONSTANT.
 //  - Any stat modified by equipments, supports, skills is output from FUNCTIONS
@@ -651,8 +653,6 @@ struct Support {
 //  - effective_stats = current_stats + bonus_stats
 //  - func(effective_stats, supports, bonus_computed_stats) -> computed_stats
 
-
-typedef struct Unit {
     struct jsonIO_Header jsonio_header;
 
     // TODO: struct of all unit ids? + API
