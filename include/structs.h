@@ -745,9 +745,9 @@ typedef struct Unit {
     struct Mount *mount;
 
     // TODO: rm. Use id for global_unitNames */
-    s8 name;        /* 
+    s8 name;         
 
-    struct Computed_Stats computed_stats;   /* Computed from Unit_Stats */
+    struct Computed_Stats computed_stats;   /* Computed from Unit_Stats 
 
     // TODO: Struct of unit bools
     b32 sex;            /* 0:F, 1:M. eg. hasPenis. */

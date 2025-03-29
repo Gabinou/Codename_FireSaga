@@ -11,7 +11,6 @@ const struct Reinforcement Reinforcement_default = {
 
 void Reinforcement_Free(struct Reinforcement *reinf) {
     s8_free(&reinf->filename);
-    s8_free(&reinf->ai_filename);
 }
 
 void Reinforcement_readJSON(struct cJSON         *_jreinf,
