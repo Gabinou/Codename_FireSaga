@@ -178,7 +178,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     SDL_assert((unit->handedness > UNIT_HAND_NULL) && (unit->handedness < UNIT_HAND_END));
 
     Unit_setid(unit, unit_id);
-    SDL_assert(unit->name.data != NULL);
+    SDL_assert(global_unitNames[unit->_id].data != NULL);
 
     unit->items_dtab   = sota->items_dtab;
     unit->weapons_dtab = sota->weapons_dtab;
@@ -259,7 +259,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     SDL_assert(archetype_id1 == archetype_id2);
     SDL_assert(TNECS_ENTITY_EXISTS(world, unit_ent));
     sota->party.entities[unit_id] = unit_ent;
-    SDL_assert(unit->name.data != NULL);
+    SDL_assert(global_unitNames[unit->_id].data != NULL);
 
     return (sota->party.entities[unit_id]);
 }
@@ -279,7 +279,7 @@ void Game_putPConMap(struct Game    *sota,   i16    *unit_ids,
         SDL_assert(unit_ent > TNECS_NULL);
         struct Unit *temp = IES_GET_COMPONENT(sota->world, unit_ent, Unit);
         SDL_assert(temp             != NULL);
-        SDL_assert(temp->name.data  != NULL);
+        SDL_assert(global_unitNames[temp->_id].data != NULL);
 
         SDL_assert(sota->map->world == sota->world);
         Map_Unit_Put(sota->map, posarr[i].x, posarr[i].y, unit_ent);

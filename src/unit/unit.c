@@ -205,7 +205,6 @@ void Unit_Free(struct Unit *unit) {
     }
     if (unit->jsonio_header.json_filename.data != NULL)
         s8_free(&unit->jsonio_header.json_filename);
-    s8_free(&unit->name);
     unit->_id = 0;
 }
 
@@ -229,14 +228,6 @@ void Unit_setid(struct Unit *unit, i16 id) {
     SDL_assert(Unit_ID_Valid(id));
 
     unit->_id = id;
-    s8_free(&unit->name);
-    SDL_assert(unit->name.data == NULL);
-
-    u64 order = *(u64 *)dtab_get(global_unitOrders, id);
-    if (unit->name.data != NULL) {
-        s8_free(&unit->name);
-    }
-    unit->name = s8cpy(unit->name, global_unitNames[order]);
 }
 
 void Unit_setSkills(struct Unit *unit, u64 skills) {
@@ -307,7 +298,7 @@ b32 Unit_hasSkill( struct Unit *unit, u64 skill) {
 * Input crit b32 just to determine if unit dies instantly or not.
 */
 void Unit_takesDamage(struct Unit *unit, u8 damage, b32 crit) {
-    // SDL_Log("%s takes %d damage \n", unit->name.data, damage);
+
     /* -- Checks -- */
     SDL_assert(unit);
     SDL_assert(unit->current_hp > 0);
@@ -329,7 +320,6 @@ void Unit_takesDamage(struct Unit *unit, u8 damage, b32 crit) {
 }
 
 void Unit_getsHealed(struct Unit *unit, u8 healing) {
-    // SDL_Log("%s gets healed for %d\n", unit->name.data, healing);
     /* -- Checks -- */
     SDL_assert(unit);
 
@@ -441,13 +431,11 @@ void Unit_lvlUp(struct Unit *unit) {
 
 void Unit_agonizes(struct Unit *unit) {
     unit->agony = 1;
-    // SDL_Log("%s is agonizing. %d turns until death\n", unit->name.data, unit->computed_stats.agony);
 }
 
 void Unit_dies(struct Unit *unit) {
     SDL_assert(unit);
     unit->alive = false;
-    // SDL_Log("%s is dead.\n", unit->name.data);
 }
 
 
@@ -1049,7 +1037,6 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     // SDL_Log("-- setting name from ID --");
     SDL_assert(jid);
     Unit_setid(unit, cJSON_GetNumberValue(jid));
-    SDL_assert(unit->name.data != NULL);
     char *json_name     = cJSON_GetStringValue(jname);
 
     char *ai_filename   = cJSON_GetStringValue(jai);
@@ -1060,7 +1047,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     u64 order = *(u64 *)DTAB_GET(global_unitOrders, unit->_id);
     s8 idname = global_unitNames[order];
 
-    if (!s8equal(unit->name, s8_var(json_name))) {
+    if (!s8equal(global_unitNames[unit->_id], s8_var(json_name))) {
         SDL_LogError(SOTA_LOG_SYSTEM,
                      "Name in unit filename '%s' does not match id name %d->'%s'",
                      json_name, unit->_id, idname.data);
@@ -1161,6 +1148,7 @@ void Unit_writeJSON(void *input, cJSON *junit) {
     cJSON *jid            = cJSON_CreateNumber(unit->_id);
     cJSON *jexp           = cJSON_CreateNumber(unit->base_exp);
     cJSON *jsex           = cJSON_CreateBool(unit->sex);
+    // TODO: get id from name
     cJSON *jname          = cJSON_CreateString(unit->name.data);
     s8 ai_filename        = ai_names[unit->ai_id];
     cJSON *jai            = cJSON_CreateString(ai_filename.data);

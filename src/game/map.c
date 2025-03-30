@@ -315,7 +315,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
         Unit_Reinforcement_Load(unit, reinf);
         s8_free(&unit_path);
-        SDL_assert(unit->name.data != NULL);
+        SDL_assert(global_unitNames[unit->_id].data != NULL);
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
 
         /* Make AI reinforcements levelup */
@@ -401,7 +401,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
 
         SDL_assert(unit->army == reinf->army);
-        SDL_assert(unit->name.data != NULL);
+        SDL_assert(global_unitNames[unit->_id].data != NULL);
     }
     sota->map->reinf_loaded = sota->map->turn;
     SDL_assert(DARR_NUM(sota->map_enemies) <= DARR_NUM(sota->map->reinforcements));
