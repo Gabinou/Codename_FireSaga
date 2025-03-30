@@ -30,7 +30,6 @@ void test_popup_unit() {
     SDL_assert(Silou.num_equipment == 0);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);
     SDL_assert(Silou.num_equipment == 4);
-    SDL_assert(Silou.name.data != NULL);
 
     _PopUp_Unit_Set(&pu, &Silou);
 

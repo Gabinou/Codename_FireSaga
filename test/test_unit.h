@@ -147,7 +147,7 @@ void test_io(void) {
     in_wpn.id = ITEM_ID_POT_LID;
     Unit_Item_Take(&unit1, in_wpn);
     out_stats = unit1.current_stats;
-    nourstest_true(s8equal(unit1.name, s8_literal("Silou")));
+    nourstest_true(s8equal(Unit_Name(&unit1), s8_literal("Silou")));
     nourstest_true(unit1.sex        == UNIT_SEX_F);
     nourstest_true(in_stats.hp      == out_stats.hp);
     nourstest_true(in_stats.str     == out_stats.str);
