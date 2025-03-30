@@ -5,6 +5,7 @@
 #include "bars/circle.h"
 #include "unit/unit.h"
 #include "macros.h"
+#include "names.h"
 #include "platform.h"
 #include "pixelfonts.h"
 #include "palette.h"
@@ -201,7 +202,8 @@ static void _PopUp_Map_Combat_Draw_Names(struct PopUp_Map_Combat *pmc, SDL_Rende
     struct Point temp_pos;
 
     struct Unit *agg_unit = IES_GET_COMPONENT(pmc->world, pmc->aggressor, Unit);
-    s8 name = agg_unit->name;
+
+    const s8 name = global_unitNames[agg_unit->_id];
     int width = PixelFont_Width(pmc->pixelnours_tight, name.data, name.num);
 
     temp_pos.x = POPUP_MAP_COMBAT_PATCH_BLUE_NAME_X - width / 2;
@@ -213,8 +215,8 @@ static void _PopUp_Map_Combat_Draw_Names(struct PopUp_Map_Combat *pmc, SDL_Rende
     temp_pos.y = POPUP_MAP_COMBAT_PATCH_RED_NAME_Y;
 
     struct Unit *dft_unit = IES_GET_COMPONENT(pmc->world, pmc->defendant, Unit);
-    name = dft_unit->name;
-    PixelFont_Write(pmc->pixelnours_big, renderer, name.data, name.num,
+    const s8 dft_name = global_unitNames[dft_unit->_id];
+    PixelFont_Write(pmc->pixelnours_big, renderer, dft_name.data, dft_name.num,
                     temp_pos.x, temp_pos.y);
 }
 

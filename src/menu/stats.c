@@ -562,7 +562,7 @@ static void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *ren
     SDL_RenderFillRect(renderer, &srcrect);
 
     /* - name - */
-    s8 name = stats_menu->unit->name;
+    const s8 name = global_unitNames[stats_menu->unit->_id];
     x = NAME_X_OFFSET, y = NAME_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, name.data, x, y);
 

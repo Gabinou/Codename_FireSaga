@@ -8,6 +8,7 @@
 #include "weapon.h"
 #include "macros.h"
 #include "nmath.h"
+#include "names.h"
 #include "utilities.h"
 #include "filesystem.h"
 #include "unit/unit.h"
@@ -67,12 +68,12 @@ static void _PreCombatPopup_Load_Icons(struct PreCombatPopup *pcp, SDL_Renderer 
 
 static void _PreCombatPopup_Draw_Names(struct PreCombatPopup *pcp, SDL_Renderer *renderer) {
     /* - Name - */
-    s8 name = pcp->agg_unit->name;
+    const s8 name = global_unitNames[pcp->agg_unit->_id];
     int x = PCP_SIMPLE_ANAME_X, y = PCP_SIMPLE_ANAME_Y;
     PixelFont_Write_Len(pcp->pixelnours_big, renderer, name.data, x, y);
-    name = pcp->dft_unit->name;
+    const s8 dft_name = global_unitNames[pcp->dft_unit->_id];
     x = PCP_SIMPLE_DNAME_X,     y = PCP_SIMPLE_DNAME_Y;
-    PixelFont_Write_Len(pcp->pixelnours_big, renderer, name.data, x, y);
+    PixelFont_Write_Len(pcp->pixelnours_big, renderer, dft_name.data, x, y);
 }
 
 static void _PreCombatPopup_Draw_Faces(struct PreCombatPopup *pcp, SDL_Renderer *renderer) {

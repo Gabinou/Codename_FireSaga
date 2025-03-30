@@ -6,6 +6,7 @@
 #include "nmath.h"
 #include "filesystem.h"
 #include "macros.h"
+#include "names.h"
 #include "pixelfonts.h"
 #include "popup/popup.h"
 #include "bars/stat.h"
@@ -74,7 +75,7 @@ void _PopUp_Unit_Set(struct PopUp_Unit *pu, struct Unit *unit) {
     SDL_assert(pu != NULL);
     pu->unit   = unit;
     pu->update = true;
-    SDL_assert(pu->unit->name.data != NULL);
+    SDL_assert(global_unitNames[pu->unit->_id].data != NULL);
 }
 
 /* --- Positioning --- */
@@ -241,7 +242,7 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     }
     /* -- NAME -- */
     struct Point pos;
-    s8 name = pu->unit->name;
+    const s8 name = global_unitNames[pu->unit->_id];
     SDL_assert(name.data != NULL);
     pos = PopUp_Unit_Center_Name(pu, n9patch, name.data, name.num);
     PixelFont_Write(pu->pixelnours_big, renderer, name.data, name.num, pos.x, pos.y);
