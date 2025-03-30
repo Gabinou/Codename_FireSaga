@@ -733,20 +733,13 @@ typedef struct Unit {
     // TODO: all equipment stuff in a struct
     struct Inventory_item _equipment[SOTA_EQUIPMENT_SIZE];
 
-    /* For twohanding when computing computedstats */
-    // TODO: rm. why? */
-    struct Inventory_item temp;
-
     /* 1. Can't equip more than SOTA_EQUIPMENT_SIZE items */
     i32 eq_canEquip[SOTA_EQUIPMENT_SIZE];
     i32 num_equipment;
     i32 num_canEquip;
 
     struct Mount *mount;
-
-    // TODO: rm. Use id for global_unitNames */
-    // s8 name;
-
+    
     struct Computed_Stats computed_stats;    /* Computed from Unit_Stats */
 
     // TODO: Struct of unit bools

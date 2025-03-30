@@ -54,7 +54,10 @@ void Names_unitNames(void) {
     unitIDs[UNIT_ORDER_##x] = UNIT_ID_##x;\
     SDL_assert(*(u64 *)dtab_get(global_unitOrders, UNIT_ID_##x) == order++);\
     global_unitNames[UNIT_ORDER_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);\
-    unitHashes[UNIT_ORDER_##x] = sota_hash_djb2(global_unitNames[UNIT_ORDER_##x]);
+    if (global_unitNames[UNIT_ORDER_##x].data != NULL) {\
+        SDL_assert(global_unitNames[UNIT_ORDER_##x].num == strlen(#x));\
+        unitHashes[UNIT_ORDER_##x] = sota_hash_djb2(global_unitNames[UNIT_ORDER_##x]);\
+    }
 #include "names/units_PC.h"
 #include "names/units_NPC.h"
     SDL_assert(global_unitOrders->num == order + 1);
