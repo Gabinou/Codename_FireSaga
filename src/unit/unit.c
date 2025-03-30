@@ -84,8 +84,6 @@ const struct Unit Unit_default = {
 
     .rangemap       = RANGEMAP_ATTACKMAP,
 
-    .dft_pos        = {-1, -1},
-
     .army           = 1,
     .ai_id          = -1,
 

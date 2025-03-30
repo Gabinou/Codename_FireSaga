@@ -680,11 +680,7 @@ typedef struct Unit {
     u16 support_type;
     u16 support_num;
 
-    // TODO: rm.
-    struct Damage damage;
-
     /* Stats */
-
     struct Bonus_Stats *bonus_stack;
     struct Unit_stats bonus_stats; // TODO remove for new Bonus_Stat Struct
     struct Unit_stats malus_stats; // TODO remove for new Bonus_Stat Struct
@@ -695,9 +691,9 @@ typedef struct Unit {
 
     /* Growths */
     struct Unit_stats growths;
-    // TODO rm, should be a fund
+    // TODO rm, should be a func
     struct Unit_stats bonus_growths;
-    // TODO rm, should be a fund
+    // TODO rm, should be a func
     struct Unit_stats effective_growths;
     struct Unit_stats *grown_stats;
 
@@ -708,17 +704,16 @@ typedef struct Unit {
     u16 equippable;
     u16 base_exp;
     u16 exp;
+
     // TODO: rescue struct
     u16 rescuee;
 
+    /* Map: which tiles get rendered for unit */
+    //  e.g. heal tiles for healers
     i8 rangemap;
     i8 user_rangemap; /* reset to NULL when equipment changes */
 
     bitflag16_t job_talent;
-
-    /* Defendant position (self is Aggressor.) */
-    // TODO: what? why? rm
-    Point dft_pos; /* Used to compute stats in case of dual wielding */
 
     i32     arms_num;
     b32    _hands[UNIT_ARMS_NUM]; /* Does unit have hands?             */
@@ -739,7 +734,8 @@ typedef struct Unit {
     i32 num_canEquip;
 
     struct Mount *mount;
-    
+
+    // TODO: rm
     struct Computed_Stats computed_stats;    /* Computed from Unit_Stats */
 
     // TODO: Struct of unit bools

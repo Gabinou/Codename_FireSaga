@@ -97,20 +97,21 @@ struct Damage Compute_Combat_Damage(struct Unit *attacker,
 
     // TODO: Sum appropriate damage types according to equipment.
     // Add type damage ONLY if one piece of equipment has that damage type
+    struct Damage damage = {0};
 
     /* - HIT DAMAGE - */
-    attacker->damage.dmg[DMG_TYPE_PHYSICAL] = Equation_Combat_Damage(aap, dpp, eff, CRIT_FACTOR, 0);
-    attacker->damage.dmg[DMG_TYPE_MAGICAL]  = Equation_Combat_Damage(aam, dpm, eff, CRIT_FACTOR, 0);
-    attacker->damage.dmg[DMG_TYPE_TRUE]     = aat;
+    damage.dmg[DMG_TYPE_PHYSICAL] = Equation_Combat_Damage(aap, dpp, eff, CRIT_FACTOR, 0);
+    damage.dmg[DMG_TYPE_MAGICAL]  = Equation_Combat_Damage(aam, dpm, eff, CRIT_FACTOR, 0);
+    damage.dmg[DMG_TYPE_TRUE]     = aat;
 
     /* - CRIT DAMAGE - */
-    attacker->damage.dmg_crit[DMG_TYPE_PHYSICAL] = Equation_Combat_Damage(aap, dpp, eff, CRIT_FACTOR,
-                                                   1);
-    attacker->damage.dmg_crit[DMG_TYPE_MAGICAL]  = Equation_Combat_Damage(aam, dpm, eff, CRIT_FACTOR,
-                                                   1);
-    attacker->damage.dmg_crit[DMG_TYPE_TRUE]     = Equation_Combat_Damage(aat, 0, eff, CRIT_FACTOR, 1);
-    Equation_Damage_Total(&attacker->damage);
-    return (attacker->damage);
+    damage.dmg_crit[DMG_TYPE_PHYSICAL] = Equation_Combat_Damage(aap, dpp, eff, CRIT_FACTOR,
+                                                                1);
+    damage.dmg_crit[DMG_TYPE_MAGICAL]  = Equation_Combat_Damage(aam, dpm, eff, CRIT_FACTOR,
+                                                                1);
+    damage.dmg_crit[DMG_TYPE_TRUE]     = Equation_Combat_Damage(aat, 0, eff, CRIT_FACTOR, 1);
+    Equation_Damage_Total(&damage);
+    return (damage);
 }
 
 /* Possible Combat death: For AI*/
