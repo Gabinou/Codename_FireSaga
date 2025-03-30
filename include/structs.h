@@ -645,7 +645,7 @@ struct Support {
 //      - should not be kept in memory in unit!
 //      - Those values ALWAYS CHANGE DUE TO GAME STATE
 //      - SO DON'T KEEP THEM IN MEMORY.
-// Keep same design of:     
+// Keep same design of:
 //  - base_stats,
 //  - current_stats = base_stats + grown_stats
 //  - effective_stats = current_stats + bonus_stats
@@ -659,7 +659,8 @@ typedef struct Unit {
     u16 _id;
     u16 title_id;
     i16 class;
-    i32 ai_id; /* Default AI for unit */
+    i16 ai_id;
+    s8 ai_filename; /* Default AI for unit */
 
     i8  mvt_type;
     i8  army;
@@ -696,9 +697,9 @@ typedef struct Unit {
     /* Growths */
     struct Unit_stats growths;
     // TODO rm, should be a fund
-    struct Unit_stats bonus_growths;        
+    struct Unit_stats bonus_growths;
     // TODO rm, should be a fund
-    struct Unit_stats effective_growths;    
+    struct Unit_stats effective_growths;
     struct Unit_stats *grown_stats;
 
     u64 skills;
@@ -745,9 +746,9 @@ typedef struct Unit {
     struct Mount *mount;
 
     // TODO: rm. Use id for global_unitNames */
-    s8 name;        /* 
+    s8 name;
 
-    struct Computed_Stats computed_stats;   /* Computed from Unit_Stats */
+    struct Computed_Stats computed_stats;   /* Computed from Unit_Stats  */
 
     // TODO: Struct of unit bools
     b32 sex;            /* 0:F, 1:M. eg. hasPenis. */
