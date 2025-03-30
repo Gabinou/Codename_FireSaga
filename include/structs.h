@@ -653,6 +653,14 @@ typedef struct Unit {
     //  - effective_stats = current_stats + bonus_stats
     //  - func(effective_stats, supports, bonus_computed_stats) -> computed_stats
 
+    // internals structs TODO:
+    //  1. supports
+    //  2. equipment
+    //  3. hands/arms
+    //  4. flags
+    //  5. growth
+    //  6. ?
+
     struct jsonIO_Header jsonio_header;
 
     // TODO: struct of all unit ids? + API
@@ -681,7 +689,8 @@ typedef struct Unit {
     u16 support_num;
 
     /* Stats */
-    struct Bonus_Stats *bonus_stack;
+        
+    struct Bonus_Stats *bonus_stack; // TODO rm
     struct Unit_stats bonus_stats; // TODO remove for new Bonus_Stat Struct
     struct Unit_stats malus_stats; // TODO remove for new Bonus_Stat Struct
     struct Unit_stats caps_stats;
