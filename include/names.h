@@ -22,8 +22,8 @@ extern s8 global_unitNames[UNIT_NUM];  /* [unit_id] */
 extern int global_unitTitlesId[UNIT_TITLE_NUM];  /* [unit_id] */
 extern s8 global_unitTitles[UNIT_NUM];  /* [title_id] */
 
-// TODO: get rid of hashing if possible.
 extern u64 unitHashes[UNIT_NUM];  /* [order]*/
+extern u64 unitIDs[UNIT_NUM];  /* [order]*/
 
 extern s8 statNames[UNIT_STAT_MALLOC];
 extern s8 armyNames[ARMY_MALLOC];
@@ -89,6 +89,8 @@ void Names_Print_All(char *filename);
 u64 sota_hash_djb2(s8 str);
 s8  Item_Name(int id);
 int Unit_Name2Order(s8 name);
+int Unit_Name2ID(s8 name);
+s8  Unit_Name(i32 _id);
 
 s8  AI_filename(i32 ai_id);
 i32 AI_Name2ID(s8 name);

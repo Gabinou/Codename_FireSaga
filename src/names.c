@@ -41,6 +41,7 @@ void Names_unitTitles(void) {
 
 s8  global_unitNames[UNIT_NUM]          = {0};
 u64 unitHashes[UNIT_NUM]                = {0};
+u64 unitIDs[UNIT_NUM]                   = {0};
 int global_unitTitlesId[UNIT_TITLE_NUM] = {0};
 struct dtab *global_unitOrders  = NULL;
 void Names_unitNames(void) {
@@ -50,6 +51,7 @@ void Names_unitNames(void) {
     dtab_add(global_unitOrders, &order, UNIT_ID_NULL);
     order++;
 #define REGISTER_ENUM(x, y) dtab_add(global_unitOrders, &order, UNIT_ID_##x);\
+    unitIDs[UNIT_ORDER_##x] = UNIT_ID_##x;\
     SDL_assert(*(u64 *)dtab_get(global_unitOrders, UNIT_ID_##x) == order++);\
     global_unitNames[UNIT_ORDER_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);\
     unitHashes[UNIT_ORDER_##x] = sota_hash_djb2(global_unitNames[UNIT_ORDER_##x]);
@@ -78,6 +80,15 @@ int Unit_Name2Order(s8 name) {
     }
     return (order);
 }
+
+int Unit_Name2ID(s8 name) {
+    int order = Unit_Name2Order(name);
+    if ((order < UNIT_ORDER_START) || (order >= UNIT_NUM)) {
+        return (-1);
+    }
+    return (unitIDs[order]);
+}
+
 
 i32 AI_Name2ID(s8 name) {
     i32 ID = -1;

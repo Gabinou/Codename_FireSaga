@@ -981,7 +981,6 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     SDL_assert(unit->grown_stats != NULL);
     SDL_assert(unit);
     // SDL_Log("-- Get json objects --");
-    cJSON *jid              = cJSON_GetObjectItem(junit, "id");
     cJSON *jai              = cJSON_GetObjectItem(junit, "AI");
     cJSON *jarmy            = cJSON_GetObjectItem(junit, "army");
     cJSON *jsex             = cJSON_GetObjectItem(junit, "Sex");
@@ -1035,10 +1034,8 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     }
 
     // SDL_Log("-- setting name from ID --");
-    SDL_assert(jid);
-    Unit_setid(unit, cJSON_GetNumberValue(jid));
     char *json_name     = cJSON_GetStringValue(jname);
-
+    Unit_setid(unit, Unit_Name2ID(s8_var(json_name)));
     char *ai_filename   = cJSON_GetStringValue(jai);
     if (ai_filename != NULL) {
         s8 s8_ai_filename  = s8_var(ai_filename);
@@ -1148,8 +1145,7 @@ void Unit_writeJSON(void *input, cJSON *junit) {
     cJSON *jid            = cJSON_CreateNumber(unit->_id);
     cJSON *jexp           = cJSON_CreateNumber(unit->base_exp);
     cJSON *jsex           = cJSON_CreateBool(unit->sex);
-    // TODO: get id from name
-    cJSON *jname          = cJSON_CreateString(unit->name.data);
+    cJSON *jname          = cJSON_CreateString(global_unitNames[unit->_id].data);
     s8 ai_filename        = ai_names[unit->ai_id];
     cJSON *jai            = cJSON_CreateString(ai_filename.data);
     cJSON *jclass         = cJSON_CreateString(classNames[unit->class].data);
