@@ -79,6 +79,20 @@ int Unit_Name2Order(s8 name) {
     return (order);
 }
 
+i32 AI_Name2ID(s8 name) {
+    i32 ID = -1;
+    u64 hash = sota_hash_djb2(name);
+    for (i32 i = 0; i < AI_NUM; i++) {
+        if (hash == ai_hashes[i]) {
+            ID = i;
+            break;
+        }
+    }
+    return (ID);
+
+}
+
+
 s8 statNames[UNIT_STAT_MALLOC] = {0};
 void Names_statNames(void) {
 #define REGISTER_ENUM(x) statNames[ITEM_STAT_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);

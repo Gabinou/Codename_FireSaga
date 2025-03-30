@@ -2,6 +2,7 @@
 #include "reinforcement.h"
 #include "unit/boss.h"
 #include "nmath.h"
+#include "names.h"
 #include "unit/unit.h"
 #include "cJSON.h"
 
@@ -30,8 +31,12 @@ void Reinforcement_readJSON(struct cJSON         *_jreinf,
     struct cJSON *jcol      = cJSON_GetObjectItem(jposition,    "col");
 
     reinf->filename     = s8_mut(cJSON_GetStringValue(jfilename));
-    reinf->ai_filename  = s8_mut(cJSON_GetStringValue(jai));
+    s8 ai_filename      = s8_mut(cJSON_GetStringValue(jai));
+    reinf->ai_id        = AI_Name2ID(ai_filename);
+    s8_free(&ai_filename);
     reinf->army         = cJSON_GetNumberValue(jarmy);
+    
+
     SDL_assert(reinf->army > ARMY_START);
     SDL_assert(reinf->army < ARMY_END);
     reinf->turn         = cJSON_GetNumberValue(jturn);
@@ -58,7 +63,9 @@ void Reinforcement_readJSON(struct cJSON         *_jreinf,
 void Reinforcement_writeJSON(struct cJSON         *jreinf,
                              struct Reinforcement *reinf) {
     SDL_assert(jreinf != NULL);
-    struct cJSON *jai       = cJSON_CreateString(reinf->ai_filename.data);
+    s8 ai_filename          = ai_names[reinf->ai_id];
+    struct cJSON *jai       = cJSON_CreateString(ai_filename.data);
+    s8_free(&ai_filename);
     struct cJSON *jcol      = cJSON_CreateNumber(reinf->position.x);
     struct cJSON *jrow      = cJSON_CreateNumber(reinf->position.y);
     struct cJSON *jturn     = cJSON_CreateNumber(reinf->turn);
@@ -89,4 +96,3 @@ void Unit_Reinforcement_Levelups(struct Unit *unit, struct Reinforcement *reinf)
         Unit_lvlUp(unit);
     }
 }
-
