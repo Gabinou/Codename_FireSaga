@@ -640,11 +640,11 @@ void AI_readJSON(void *input,  cJSON *jai) {
 s8 AI_filename(i32 ai_id) {
     SDL_assert(ai_id > AI_NULL);
     SDL_assert(ai_id < AI_NUM);
-    return(s8cat(ai_names[ai_id], s8_mut(".json")));
+    return (s8cat(ai_names[ai_id], s8_mut(".json")));
 }
 
 i32 AI_ID_isvalid(i32 ai_id) {
-    return((ai_id > AI_NULL) && (ai_id < AI_NUM));
+    return ((ai_id > AI_NULL) && (ai_id < AI_NUM));
 }
 
 void AI_writeJSON(void *input,  cJSON *jai) {

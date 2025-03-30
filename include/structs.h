@@ -638,21 +638,21 @@ struct Support {
 
 
 typedef struct Unit {
-// TODO: unit design:
-//  - Stats values inside unit class are CONSTANT?
-//      - Any stat modified by equipments, supports, skills is output from FUNCTIONS
-//  - e.g. Unit_Equipped_Bonus_Stats
-//  - e.g. Unit_Support_Bonus_Stats
-//  - e.g. Unit_Computed_Stats
-//      - should not be kept in memory in unit!
-//      - Those values ALWAYS CHANGE DUE TO GAME STATE
-//      - SO DON'T KEEP THEM IN MEMORY (in struct)
-//      - Put it "out of band".
-// Keep same design of:     
-//  - base_stats,
-//  - current_stats = base_stats + grown_stats
-//  - effective_stats = current_stats + bonus_stats
-//  - func(effective_stats, supports, bonus_computed_stats) -> computed_stats
+    // TODO: unit design:
+    //  - Stats values inside unit class are CONSTANT?
+    //      - Any stat modified by equipments, supports, skills is output from FUNCTIONS
+    //  - e.g. Unit_Equipped_Bonus_Stats
+    //  - e.g. Unit_Support_Bonus_Stats
+    //  - e.g. Unit_Computed_Stats
+    //      - should not be kept in memory in unit!
+    //      - Those values ALWAYS CHANGE DUE TO GAME STATE
+    //      - SO DON'T KEEP THEM IN MEMORY (in struct)
+    //      - Put it "out of band".
+    // Keep same design of:
+    //  - base_stats,
+    //  - current_stats = base_stats + grown_stats
+    //  - effective_stats = current_stats + bonus_stats
+    //  - func(effective_stats, supports, bonus_computed_stats) -> computed_stats
 
     struct jsonIO_Header jsonio_header;
 
@@ -697,9 +697,9 @@ typedef struct Unit {
     /* Growths */
     struct Unit_stats growths;
     // TODO rm, should be a fund
-    struct Unit_stats bonus_growths;        
+    struct Unit_stats bonus_growths;
     // TODO rm, should be a fund
-    struct Unit_stats effective_growths;    
+    struct Unit_stats effective_growths;
     struct Unit_stats *grown_stats;
 
     u64 skills;
@@ -746,12 +746,12 @@ typedef struct Unit {
     struct Mount *mount;
 
     // TODO: rm. Use id for global_unitNames */
-    s8 name;         
+    s8 name;
 
     struct Computed_Stats computed_stats;    /* Computed from Unit_Stats */
 
     // TODO: Struct of unit bools
-    b32 sex;            /* 0:F, 1:M. eg. hasPenis. */ 
+    b32 sex;            /* 0:F, 1:M. eg. hasPenis. */
     b32 waits;
     b32 alive;
     b32 mounted;

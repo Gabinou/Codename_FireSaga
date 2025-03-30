@@ -204,7 +204,6 @@ void Unit_Free(struct Unit *unit) {
     if (unit->jsonio_header.json_filename.data != NULL)
         s8_free(&unit->jsonio_header.json_filename);
     s8_free(&unit->name);
-    s8_free(&unit->ai_filename);
     unit->_id = 0;
 }
 
@@ -1050,10 +1049,11 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     Unit_setid(unit, cJSON_GetNumberValue(jid));
     SDL_assert(unit->name.data != NULL);
     char *json_name     = cJSON_GetStringValue(jname);
+
     char *ai_filename   = cJSON_GetStringValue(jai);
     if (ai_filename != NULL) {
-        // SDL_Log("ai_filename '%s'", ai_filename);
-        unit->ai_filename   = s8_mut(ai_filename);
+        s8 s8_ai_filename  = s8_var(ai_filename);
+        unit->ai_id   = AI_Name2ID(s8_ai_filename);
     }
     u64 order = *(u64 *)DTAB_GET(global_unitOrders, unit->_id);
     s8 idname = global_unitNames[order];
@@ -1160,8 +1160,8 @@ void Unit_writeJSON(void *input, cJSON *junit) {
     cJSON *jexp           = cJSON_CreateNumber(unit->base_exp);
     cJSON *jsex           = cJSON_CreateBool(unit->sex);
     cJSON *jname          = cJSON_CreateString(unit->name.data);
-    cJSON *jai            = cJSON_CreateString(unit->ai_filename.data);
-
+    s8 ai_filename        = ai_names[unit->ai_id];
+    cJSON *jai            = cJSON_CreateString(ai_filename.data);
     cJSON *jclass         = cJSON_CreateString(classNames[unit->class].data);
     cJSON *jbase_exp      = cJSON_CreateNumber(unit->exp);
     cJSON *jcurrent_hp    = cJSON_CreateNumber(unit->current_hp);
