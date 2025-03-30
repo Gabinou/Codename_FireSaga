@@ -89,9 +89,14 @@ i32 AI_Name2ID(s8 name) {
         }
     }
     return (ID);
-
 }
 
+s8 AI_filename(i32 ai_id) {
+    SDL_assert(ai_id > AI_NULL);
+    SDL_assert(ai_id < AI_NUM);
+    s8 filename = s8_mut(ai_names[ai_id].data);
+    return (s8cat(filename, s8_mut(".json")));
+}
 
 s8 statNames[UNIT_STAT_MALLOC] = {0};
 void Names_statNames(void) {
@@ -386,6 +391,17 @@ void Names_Print_All(char *foldername) {
     fclose(fp);
     s8_free(&filename);
 
+    /* --- AI names --- */
+    filename = s8_mut(foldername);
+    filename = s8cat(filename, s8_literal("Utilities_ai_names.txt"));
+    // SDL_Log("filename %s", filename.data);
+    fp = fopen(filename.data, "w+");
+    SDL_assert(fp != NULL);
+    for (u8 i = AI_NULL; i < AI_NUM; i++)
+        fprintf(fp, "%d %s \n", i, ai_names[i].data);
+    fclose(fp);
+    s8_free(&filename);
+
     /* --- Camp job names --- */
     filename = s8_mut(foldername);
     filename = s8cat(filename, s8_literal("Utilities_campjobNames.txt"));
@@ -465,7 +481,7 @@ void Names_Print_All(char *foldername) {
     /* --- Sex names --- */
     s8_free(&filename);
     filename = s8_mut(foldername);
-    filename = s8cat(filename, s8_literal("utilitiessexNames.txt"));
+    filename = s8cat(filename, s8_literal("Utilities_sexNames.txt"));
     // SDL_Log("filename %s", filename.data);
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);

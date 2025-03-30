@@ -89,6 +89,8 @@ void Names_Print_All(char *filename);
 u64 sota_hash_djb2(s8 str);
 s8  Item_Name(int id);
 int Unit_Name2Order(s8 name);
+
+s8  AI_filename(i32 ai_id);
 i32 AI_Name2ID(s8 name);
 
 #endif /* NAMES_H */

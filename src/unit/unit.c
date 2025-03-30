@@ -78,6 +78,7 @@ const int class_mvt_types[UNIT_CLASS_END] = {
 
 const struct Unit Unit_default = {
     .jsonio_header.json_element   = JSON_UNIT,
+
     .mvt_type       = UNIT_MVT_FOOT_SLOW,
     .class          = UNIT_CLASS_VILLAGER,
 
@@ -86,6 +87,7 @@ const struct Unit Unit_default = {
     .dft_pos        = {-1, -1},
 
     .army           = 1,
+    .ai_id          = -1,
 
     .current_hp         = SOTA_MIN_HP,
     .current_stats.hp   = SOTA_MIN_HP,

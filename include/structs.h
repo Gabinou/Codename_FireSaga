@@ -636,7 +636,6 @@ struct Support {
     i8 level;
 };
 
-
 typedef struct Unit {
     // TODO: unit design:
     //  - Stats values inside unit class are CONSTANT?
@@ -746,7 +745,7 @@ typedef struct Unit {
     struct Mount *mount;
 
     // TODO: rm. Use id for global_unitNames */
-    s8 name;
+    // s8 name;
 
     struct Computed_Stats computed_stats;    /* Computed from Unit_Stats */
 
