@@ -214,40 +214,42 @@ struct Range _Ranges_Combine(struct Range r1, struct Range r2) {
 
 /* --- Rangemap --- */
 int Unit_Rangemap_Get(struct Unit *unit) {
-    int rangemap = unit->user_rangemap > RANGEMAP_NULL ? unit->user_rangemap : unit->rangemap;
+    int rangemap = unit->render.user_rangemap > RANGEMAP_NULL ? unit->render.user_rangemap :
+                   unit->render.rangemap;
     return (rangemap);
 }
 
 void Unit_RangeMap_Act_Toggle(struct Unit *unit) {
-    SDL_assert((unit->rangemap > RANGEMAP_NULL) && (unit->rangemap < RANGEMAP_NUM));
+    SDL_assert((unit->render.rangemap > RANGEMAP_NULL) && (unit->render.rangemap < RANGEMAP_NUM));
 
     /* Set user_rangemap to default */
-    if (unit->user_rangemap == RANGEMAP_NULL)
-        unit->user_rangemap = unit->rangemap;
+    if (unit->render.user_rangemap == RANGEMAP_NULL)
+        unit->render.user_rangemap = unit->render.rangemap;
 
     /* Toggle only if hasStaff or canAttack with equipment*/
     b32 toggle = false;
-    toggle |= Unit_canAttack_Eq(unit) && (unit->user_rangemap == RANGEMAP_HEALMAP);
-    toggle |= Unit_canStaff_Eq(unit)  && (unit->user_rangemap == RANGEMAP_ATTACKMAP);
+    toggle |= Unit_canAttack_Eq(unit) && (unit->render.user_rangemap == RANGEMAP_HEALMAP);
+    toggle |= Unit_canStaff_Eq(unit)  && (unit->render.user_rangemap == RANGEMAP_ATTACKMAP);
 
     /* user_rangemap not set previously, reverse rangemap */
     // RANGEMAP_NUM - RANGEMAP_ATTACKMAP == RANGEMAP_HEALMAP and vice versa!
     //      3       -         2          ==        1
     //      3       -         1          ==        2
     if (toggle)
-        unit->user_rangemap = RANGEMAP_NUM - unit->user_rangemap;
+        unit->render.user_rangemap = RANGEMAP_NUM - unit->render.user_rangemap;
 
 }
 
 void Unit_Rangemap_default(struct Unit *unit) {
-    int rangemap = unit->user_rangemap > RANGEMAP_NULL ? unit->user_rangemap : unit->rangemap;
+    int rangemap = unit->render.user_rangemap > RANGEMAP_NULL ? unit->render.user_rangemap :
+                   unit->render.rangemap;
     // Compute default rangemap priority
 
     /* Sota default for class (healer staff) */
     if ((unit->class == UNIT_CLASS_PRIEST) || (unit->class == UNIT_CLASS_BISHOP) ||
         (unit->class == UNIT_CLASS_CLERIC) || (unit->class == UNIT_CLASS_ORACLE)) {
-        unit->rangemap = RANGEMAP_HEALMAP;
+        unit->render.rangemap = RANGEMAP_HEALMAP;
     } else {
-        unit->rangemap = RANGEMAP_ATTACKMAP;
+        unit->render.rangemap = RANGEMAP_ATTACKMAP;
     }
 }

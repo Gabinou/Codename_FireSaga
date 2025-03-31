@@ -663,6 +663,14 @@ struct Unit_Rescue {
     u16 id;
 };
 
+struct Unit_Render {
+    /* Map: which tiles get rendered for unit */
+    //  e.g. heal tiles for healers
+    i8 rangemap;
+    i8 user_rangemap; /* reset to NULL when equipment changes */
+};
+
+
 typedef struct Unit {
     // TODO: unit design:
     //  - Stats values inside unit class are CONSTANT?
@@ -696,7 +704,7 @@ typedef struct Unit {
     struct Unit_RNG_Stats_Sequence  rng_sequence;
     struct Unit_Flags               flags;
     struct Unit_Rescue              rescue;
-
+    struct Unit_Render              render;
 
     // TODO: struct of all unit ids? + API
     u16 _id;
@@ -740,11 +748,6 @@ typedef struct Unit {
     u64 skills;
 
     u16 equippable;
-
-    /* Map: which tiles get rendered for unit */
-    //  e.g. heal tiles for healers
-    i8 rangemap;
-    i8 user_rangemap; /* reset to NULL when equipment changes */
 
     i32     arms_num;
     b32    _hands[UNIT_ARMS_NUM]; /* Does unit have hands?             */
