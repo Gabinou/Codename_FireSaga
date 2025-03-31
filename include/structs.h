@@ -670,6 +670,15 @@ struct Unit_Render {
     i8 user_rangemap; /* reset to NULL when equipment changes */
 };
 
+struct Unit_Support {
+    struct Support arr[SOTA_MAX_SUPPORTS];
+    u16 type;
+    u16 num;
+};
+
+struct Unit_Equipment {
+
+};
 
 typedef struct Unit {
     // TODO: unit design:
@@ -705,6 +714,7 @@ typedef struct Unit {
     struct Unit_Flags               flags;
     struct Unit_Rescue              rescue;
     struct Unit_Render              render;
+    struct Unit_Support             support;
 
     // TODO: struct of all unit ids? + API
     u16 _id;
@@ -727,11 +737,6 @@ typedef struct Unit {
     // Status with least remaining turns on top.
     struct Unit_status *status_queue;
 
-    // TODO: Support struct should have the list of supporters inside it
-    struct Support supports[SOTA_MAX_SUPPORTS];
-    u16 support_type;
-    u16 support_num;
-
     /* Stats */
     struct Bonus_Stats *bonus_stack; // TODO rm
     struct Unit_stats bonus_stats; // TODO remove for new Bonus_Stat Struct
@@ -747,15 +752,15 @@ typedef struct Unit {
 
     u64 skills;
 
-    u16 equippable;
-
     i32     arms_num;
     b32    _hands[UNIT_ARMS_NUM]; /* Does unit have hands?             */
 
+    u16 equippable;
     // TODO: replace raw _equipped with:
     // struct Loadout _equipped;
     i32 _equipped[UNIT_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
+    // Replace with global?
     struct dtab *weapons_dtab;
     struct dtab *items_dtab;
 

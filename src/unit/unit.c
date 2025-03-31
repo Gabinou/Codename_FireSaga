@@ -83,7 +83,7 @@ const struct Unit Unit_default = {
     .mvt_type       = UNIT_MVT_FOOT_SLOW,
     .class          = UNIT_CLASS_VILLAGER,
 
-    .rangemap       = RANGEMAP_ATTACKMAP,
+    .render.rangemap    = RANGEMAP_ATTACKMAP,
 
     .army           = 1,
     .ai_id          = -1,
@@ -352,14 +352,14 @@ void Unit_gainExp(struct Unit *unit, u16 exp) {
 void Unit_supportUp(struct Unit *unit, i16 id) {
     SDL_assert(unit);
     int i;
-    for (i = 0; i < unit->support_num; i++) {
-        if (id == unit->supports[i].other_id) {
-            unit->supports[i].level += 1;
+    for (i = 0; i < unit->support.num; i++) {
+        if (id == unit->support.arr[i].other_id) {
+            unit->support.arr[i].level += 1;
             break;
         }
     }
 
-    if (id != unit->supports[i].other_id) {
+    if (id != unit->support.arr[i].other_id) {
         SDL_Log("Supporting Unit not found");
         exit(ERROR_Generic);
     }
@@ -1058,20 +1058,20 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     SDL_assert(jcurrent_stats);
 
     // SDL_Log("-- Supports --");
-    unit->support_type = cJSON_GetNumberValue(jsupport_type);
+    unit->support.type = cJSON_GetNumberValue(jsupport_type);
     if (jsupports != NULL) {
         if (!cJSON_IsArray(jsupports)) {
             SDL_LogError(SOTA_LOG_SYSTEM, "'%s' supports is not an array", json_name);
             exit(ERROR_JSONParsingFailed);
         }
 
-        unit->support_num = cJSON_GetArraySize(jsupports);
-        for (int i = 0; i < unit->support_num; ++i) {
+        unit->support.num = cJSON_GetArraySize(jsupports);
+        for (int i = 0; i < unit->support.num; ++i) {
             struct cJSON *jsupport = cJSON_GetArrayItem(jsupports, i);
             char *name = cJSON_GetStringValue(jsupport);
             // unit->supports[i].other_id = Hashes_supportName2ID(name);
-            unit->supports[i].level         = 0;
-            unit->supports[i].other_type    = 0;
+            unit->support.arr[i].level         = 0;
+            unit->support.arr[i].other_type    = 0;
         }
     }
 
