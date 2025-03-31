@@ -7,6 +7,7 @@
 #include "equations.h"
 #include "nmath.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
 #include "unit/range.h"
 #include "unit/equipment.h"
 #include "unit/loadout.h"
@@ -394,8 +395,8 @@ void Combat_Resolve(struct Combat_Attack *combat_attacks, u8 attack_num,
         if (Unit_canAttack(attacker))
             Combat_Resolve_Attack(combat_attacks[i], attacker, defender);
 
-        b32 agg_death = (!aggressor->alive) || (aggressor->agony > AGONY_NULL);
-        b32 dft_death = (!defendant->alive) || (defendant->agony > AGONY_NULL);
+        b32 agg_death = (!Unit_isAlive(aggressor)) || (aggressor->agony > AGONY_NULL);
+        b32 dft_death = (!Unit_isAlive(defendant)) || (defendant->agony > AGONY_NULL);
 
         if (agg_death || dft_death)
             break;
@@ -411,8 +412,8 @@ void Combat_Resolve_Attack(struct Combat_Attack attack, struct Unit *attacker,
         return;
 
     /* - Pop divine shield - */
-    if (defender->divine_shield) {
-        defender->divine_shield = false;
+    if (Unit_isDivineShield(defender)) {
+        defender->flags.divine_shield = false;
         return;
     }
 

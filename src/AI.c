@@ -18,6 +18,7 @@
 #include "jsonio.h"
 #include "unit/range.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
 #include "unit/anim.h"
 #include "map/path.h"
 
@@ -576,7 +577,7 @@ void AI_State_Init(struct AI_State *ai_state, tnecs_world *world, struct Map *ma
         tnecs_entity npc_ent = map->units_onfield[i];
         struct Unit *unit = IES_GET_COMPONENT(world, npc_ent, Unit);
         /* Skip if unit is waiting e.g. a reinforcement */
-        if (unit->waits)
+        if (Unit_isWaiting(unit))
             continue;
 
         if (unit->army == army)

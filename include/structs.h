@@ -636,6 +636,20 @@ struct Support {
     i8 level;
 };
 
+struct Unit_Flags {
+    b32 sex;            /* 0:F, 1:M. eg. hasPenis. */
+    b32 waits;
+    b32 alive;
+    b32 mounted;
+    b32 literate;       /* Scribe job.  */
+    b32 courageous;     /* Story events */
+    b32 show_danger;
+    b32 update_stats;
+    b32 divine_shield;
+    b32 isDualWielding;
+};
+
+
 typedef struct Unit {
     // TODO: unit design:
     //  - Stats values inside unit class are CONSTANT?
@@ -747,17 +761,7 @@ typedef struct Unit {
     // TODO: rm
     struct Computed_Stats computed_stats;    /* Computed from Unit_Stats */
 
-    // TODO: Struct of unit bools
-    b32 sex;            /* 0:F, 1:M. eg. hasPenis. */
-    b32 waits;
-    b32 alive;
-    b32 mounted;
-    b32 literate;       /* Reading/writing for scribe job. */
-    b32 courageous;     /* For reaction to story events    */
-    b32 show_danger;
-    b32 update_stats;
-    b32 divine_shield;
-    b32 isDualWielding;
+    struct Unit_Flags flags;
 } Unit;
 extern const struct Unit Unit_default;
 
