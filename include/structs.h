@@ -166,7 +166,6 @@ struct Fps {
     i32 ff_cap; /* [%] Fast forward cap above FPS */
 };
 
-
 /* --- Settings --- */
 struct Music_settings {
     i32 frequency;          /*  [Hz]    */
@@ -299,13 +298,13 @@ typedef struct Computed_Stats {
     i32 favor;
     i32 move;
     i32 speed; /* relative to agi so +/- */
-    i32 agony;
+    i32 agony; /* turns left before death (-1 not agonizing) */
     struct Range range_equipment;   /* Range of all equipment */
     struct Range range_loadout;     /* Range of equipped weapons */
     // issue:       What about staff AND weapon equipped?
     // Solution:
-    //          - Only one is shown at a time: Show only one at a time
-    //          - Show two at atime with Blue+Red+Purple filter
+    //          - Only one is shown at a time.
+    //          - Show two at a time w/ Blue+Red+Purple filter
 } Computed_Stats;
 extern const struct Computed_Stats Computed_Stats_default;
 
@@ -649,7 +648,6 @@ struct Unit_Flags {
     b32 isDualWielding; // rm. Should not be saved.
 };
 
-
 typedef struct Unit {
     // TODO: unit design:
     //  - Stats values inside unit class are CONSTANT?
@@ -691,7 +689,6 @@ typedef struct Unit {
 
     // TODO: Agony struct
     u8  current_agony;
-    i8  agony; /* turns left before death (-1 not agonizing) */
     u8  regrets;
 
     // Status with least remaining turns on top.

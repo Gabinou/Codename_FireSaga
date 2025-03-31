@@ -1624,7 +1624,7 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     int id_R          = Unit_Id_Equipped(attacker, UNIT_HAND_RIGHT);
 
     // 2. Check for unit agony/death
-    b32 agg_death = (!Unit_isAlive(aggressor)) || (aggressor->agony > AGONY_NULL);
+    b32 agg_death = (!Unit_isAlive(aggressor)) || (aggressor->computed_stats.agony > AGONY_NULL);
     if (agg_death) {
         userevent->user.data1 = &sota->aggressor;
         userevent->user.data2 = &sota->defendant;
@@ -1632,7 +1632,7 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
         // Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &sota->aggressor, &sota->defendant);
     }
 
-    b32 dft_death = (!Unit_isAlive(defendant)) || (defendant->agony > AGONY_NULL);
+    b32 dft_death = (!Unit_isAlive(defendant)) || (defendant->computed_stats.agony > AGONY_NULL);
     if (dft_death) {
         userevent->user.data1 = &sota->defendant;
         userevent->user.data2 = &sota->aggressor;

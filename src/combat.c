@@ -395,8 +395,8 @@ void Combat_Resolve(struct Combat_Attack *combat_attacks, u8 attack_num,
         if (Unit_canAttack(attacker))
             Combat_Resolve_Attack(combat_attacks[i], attacker, defender);
 
-        b32 agg_death = (!Unit_isAlive(aggressor)) || (aggressor->agony > AGONY_NULL);
-        b32 dft_death = (!Unit_isAlive(defendant)) || (defendant->agony > AGONY_NULL);
+        b32 agg_death = (!Unit_isAlive(aggressor)) || (aggressor->computed_stats.agony > AGONY_NULL);
+        b32 dft_death = (!Unit_isAlive(defendant)) || (defendant->computed_stats.agony > AGONY_NULL);
 
         if (agg_death || dft_death)
             break;

@@ -429,7 +429,8 @@ void Unit_lvlUp(struct Unit *unit) {
 }
 
 void Unit_agonizes(struct Unit *unit) {
-    unit->agony = 1;
+    // TODO: compute agony here.
+    unit->current_agony = unit->computed_stats.agony;
 }
 
 void Unit_dies(struct Unit *unit) {
