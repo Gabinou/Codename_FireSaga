@@ -850,8 +850,8 @@ static void _StatsMenu_Draw_Rescue(struct StatsMenu *stats_menu, SDL_Renderer *r
     // TODO: Rescue icon
     x = RESCUE_X_OFFSET, y = RESCUE_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "RESCUE", 7, x, y);
-    if (unit->rescuee > UNIT_ID_START) {
-        s8 name = global_unitNames[unit->rescuee];
+    if (unit->rescue.id > UNIT_ID_START) {
+        s8 name = global_unitNames[unit->rescue.id];
         int width = PixelFont_Width_Len(stats_menu->pixelnours, name.data);
         x = RESCUEE_X_OFFSET - width / 2, y = RESCUEE_Y_OFFSET;
         PixelFont_Write_Len(stats_menu->pixelnours, renderer, name.data, x, y);

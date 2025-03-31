@@ -608,7 +608,7 @@ struct RNG_Sequence { /* Sequence of hits/misses in a row */
     i8 eff_rate;
 };
 
-struct RNG_Stats_Sequence {
+struct Unit_RNG_Stats_Sequence {
     // RNG sequences for ALL stats
     struct RNG_Sequence hit;
     struct RNG_Sequence crit;
@@ -646,6 +646,7 @@ struct Unit_Flags {
     b32 update_stats;
     b32 divine_shield;
     b32 isDualWielding; // rm. Should not be saved.
+    bitflag16_t job_talent;
 };
 
 struct Unit_Growth {
@@ -656,6 +657,10 @@ struct Unit_Growth {
     // TODO rm, should be a func
     struct Unit_stats effective;
     struct Unit_stats *grown;
+};
+
+struct Unit_Rescue {
+    u16 id;
 };
 
 typedef struct Unit {
@@ -680,11 +685,18 @@ typedef struct Unit {
     //  2. equipment
     //  3. hands/arms
     //  4. flags DONE
-    //  5. growth
+    //  5. growth DONE
     //  6. id?
     //  7. story?
+    //  8. Rescue DONE
 
     struct jsonIO_Header jsonio_header;
+
+    struct Unit_Growth              growth;
+    struct Unit_RNG_Stats_Sequence  rng_sequence;
+    struct Unit_Flags               flags;
+    struct Unit_Rescue              rescue;
+
 
     // TODO: struct of all unit ids? + API
     u16 _id;
@@ -697,10 +709,12 @@ typedef struct Unit {
     u8  current_hp;
     i8  handedness;
     u16 talkable;
+    u8  regrets;
+    u16 base_exp;
+    u16 exp;
 
     // TODO: Agony struct
     u8  current_agony;
-    u8  regrets;
 
     // Status with least remaining turns on top.
     struct Unit_status *status_queue;
@@ -723,26 +737,14 @@ typedef struct Unit {
     // TODO: rm
     struct Unit_stats effective_stats;  /* current_stats + bonuses/maluses */
 
-    /* Growths */
-    struct Unit_Growth growth;
-
     u64 skills;
 
-    struct RNG_Stats_Sequence rng_sequence;
-
     u16 equippable;
-    u16 base_exp;
-    u16 exp;
-
-    // TODO: rescue struct
-    u16 rescuee;
 
     /* Map: which tiles get rendered for unit */
     //  e.g. heal tiles for healers
     i8 rangemap;
     i8 user_rangemap; /* reset to NULL when equipment changes */
-
-    bitflag16_t job_talent;
 
     i32     arms_num;
     b32    _hands[UNIT_ARMS_NUM]; /* Does unit have hands?             */
@@ -767,7 +769,6 @@ typedef struct Unit {
     // TODO: rm
     struct Computed_Stats computed_stats;    /* Computed from Unit_Stats */
 
-    struct Unit_Flags flags;
 } Unit;
 extern const struct Unit Unit_default;
 

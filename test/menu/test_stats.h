@@ -244,7 +244,7 @@ void test_menu_stats() {
 
     /* -- Rescuing -- */
     // TODO: RESCUE ICON
-    Silou.rescuee = UNIT_ID_ERWIN;
+    Silou.rescue.id = UNIT_ID_ERWIN;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Rescue.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
