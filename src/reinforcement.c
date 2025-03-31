@@ -4,6 +4,7 @@
 #include "nmath.h"
 #include "names.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
 #include "cJSON.h"
 
 const struct Reinforcement Reinforcement_default = {
@@ -84,10 +85,11 @@ void Reinforcement_writeJSON(struct cJSON         *jreinf,
 
 /* AI/NPC units only */
 void Unit_Reinforcement_Levelups(struct Unit *unit, struct Reinforcement *reinf) {
-    SDL_assert(unit->grown_stats != NULL);
+    struct Unit_stats *grown = Unit_Stats_Grown(unit);
+    SDL_assert(grown != NULL);
 
     /* Skip if unit was already leveled */
-    if (DARR_NUM(unit->grown_stats) == reinf->levelups)
+    if (DARR_NUM(grown) == reinf->levelups)
         return;
 
     for (int i = 0; i < reinf->levelups; i++) {

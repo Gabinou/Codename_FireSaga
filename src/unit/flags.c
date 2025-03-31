@@ -24,3 +24,10 @@ b32 Unit_isDualWielding(Unit *unit) {
 b32 Unit_isUpdateStats(Unit *unit) {
     return (unit->flags.update_stats);
 }
+struct Unit_stats *Unit_Stats_Grown(Unit *unit) {
+    return (unit->growth.grown);
+}
+
+struct Unit_stats *Unit_Stats_Growths(Unit *unit) {
+    return (&unit->growth.rates);
+}

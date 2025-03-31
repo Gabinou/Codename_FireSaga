@@ -168,8 +168,8 @@ void Unit_Init(struct Unit *unit) {
 }
 
 void Unit_Members_Alloc(struct Unit *unit) {
-    if (unit->grown_stats == NULL) {
-        unit->grown_stats   = DARR_INIT(unit->grown_stats,  struct Unit_stats, SOTA_MAX_LEVEL / 8);
+    if (unit->growth.grown == NULL) {
+        unit->growth.grown = DARR_INIT(unit->growth.grown,  struct Unit_stats, SOTA_MAX_LEVEL / 8);
     }
 
     if (unit->status_queue == NULL) {
@@ -178,11 +178,6 @@ void Unit_Members_Alloc(struct Unit *unit) {
 
     if (unit->bonus_stack == NULL) {
         unit->bonus_stack   = DARR_INIT(unit->bonus_stack,  struct Bonus_Stats, 2);
-    }
-    // TODO only allocate IF playable?
-    //  - unless enemies have growth haha
-    if (unit->grown_stats == NULL) {
-        unit->grown_stats = DARR_INIT(unit->grown_stats, struct Unit_stats, SOTA_MAX_LEVEL / 8);
     }
 }
 
@@ -193,9 +188,9 @@ void Unit_Free(struct Unit *unit) {
         unit->bonus_stack = NULL;
     }
 
-    if (unit->grown_stats != NULL) {
-        DARR_FREE(unit->grown_stats);
-        unit->grown_stats = NULL;
+    if (unit->growth.grown != NULL) {
+        DARR_FREE(unit->growth.grown);
+        unit->growth.grown = NULL;
     }
 
     if (unit->status_queue != NULL) {
@@ -379,12 +374,13 @@ struct RNG_Sequence *Unit_sequences_arr(Unit *unit) {
 // This function is ugly as sin. TODO: Refactor this. Make more understandable.
 void Unit_lvlUp(struct Unit *unit) {
     SDL_assert(unit != NULL);
-    SDL_assert(unit->grown_stats != NULL);
+    struct Unit_stats *grown = Unit_Stats_Grown(unit);
+    SDL_assert(grown != NULL);
 
     struct Unit_stats grows = Unit_stats_default;
     u8 temp_growth;
     struct Unit_stats temp_stats = {0};
-    i32 *growths        = Unit_stats_arr(&unit->growths);
+    i32 *growths        = Unit_stats_arr(Unit_Stats_Growths(unit));
     i32 *grows_arr      = Unit_stats_arr(&grows);
     i32 *stats_arr      = Unit_stats_arr(&temp_stats);
     i32 *caps_stats     = Unit_stats_arr(&unit->caps_stats);
@@ -425,7 +421,7 @@ void Unit_lvlUp(struct Unit *unit) {
     unit->current_stats = Unit_stats_plus(unit->current_stats, temp_stats);
 
     /* -- Adding current lvlup to all grown stats -- */
-    DARR_PUT(unit->grown_stats, temp_stats);
+    DARR_PUT(grown, temp_stats);
 }
 
 void Unit_agonizes(struct Unit *unit) {
@@ -978,7 +974,8 @@ i32 Unit_computeMove(struct Unit *unit) {
 /* --- I/O --- */
 void Unit_readJSON(void *input,  cJSON *junit) {
     struct Unit *unit = (struct Unit *)input;
-    SDL_assert(unit->grown_stats != NULL);
+    struct Unit_stats *grown = Unit_Stats_Grown(unit);
+    SDL_assert(grown != NULL);
     SDL_assert(unit);
     // SDL_Log("-- Get json objects --");
     cJSON *jai              = cJSON_GetObjectItem(junit, "AI");
@@ -1085,7 +1082,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     SDL_assert(jbase_stats);
     Unit_stats_readJSON(&unit->base_stats, jbase_stats);
     SDL_assert(jgrowths);
-    Unit_stats_readJSON(&unit->growths, jgrowths);
+    Unit_stats_readJSON(Unit_Stats_Growths(unit), jgrowths);
     // DESIGN QUESTION: Check that current stats fit with bases + levelups?
     //  - No levelups mean NO GRAPHS
     //  => Check if it fits
@@ -1097,10 +1094,10 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     cJSON *jlevelup = cJSON_GetObjectItem(jlevelups, "Level-up");
     struct Unit_stats temp_ustats;
 
-    DARR_NUM(unit->grown_stats) = 0;
+    DARR_NUM(grown) = 0;
     while (jlevelup != NULL) {
         Unit_stats_readJSON(&temp_ustats, jlevelup);
-        DARR_PUT(unit->grown_stats, temp_ustats);
+        DARR_PUT(grown, temp_ustats);
         jlevelup = jlevelup->next;
     };
 
@@ -1160,7 +1157,7 @@ void Unit_writeJSON(void *input, cJSON *junit) {
     cJSON *jbase_stats    = cJSON_CreateObject();
     Unit_stats_writeJSON(&unit->base_stats, jbase_stats);
     cJSON *jgrowths       = cJSON_CreateObject();
-    Unit_stats_writeJSON(&unit->growths, jgrowths);
+    Unit_stats_writeJSON(Unit_Stats_Growths(unit), jgrowths);
     cJSON *jgrown         = cJSON_CreateObject();
     cJSON *jlevel         = NULL;
     cJSON *jlevelup       = NULL;
@@ -1180,11 +1177,12 @@ void Unit_writeJSON(void *input, cJSON *junit) {
     cJSON_AddItemToObject(junit, "Bases",       jbase_stats);
     cJSON_AddItemToObject(junit, "Growths",     jgrowths);
     cJSON_AddItemToObject(junit, "Level-ups",   jgrown);
-    for (u8 i = 0; i < DARR_NUM(unit->grown_stats); i++) {
+    struct Unit_stats *grown = Unit_Stats_Grown(unit);
+    for (u8 i = 0; i < DARR_NUM(grown); i++) {
         jlevelup = cJSON_CreateObject();
         jlevel = cJSON_CreateNumber(i - unit->base_exp / SOTA_100PERCENT + 2);
         cJSON_AddItemToObject(jlevelup, "level", jlevel);
-        Unit_stats_writeJSON(&unit->grown_stats[i], jlevelup);
+        Unit_stats_writeJSON(&grown[i], jlevelup);
         cJSON_AddItemToObject(jgrown, "Level-up", jlevelup);
         // +2 -> +1 start at lvl1, +1 cause you level to level 2
     }
@@ -1273,9 +1271,9 @@ void Unit_HalfCap_Stats(struct Unit *unit) {
 
 struct Unit_stats Unit_effectiveGrowths(struct Unit *unit) {
     SDL_assert(unit);
-    unit->effective_growths = unit->growths;
-    Unit_stats_plus(unit->bonus_growths, unit->effective_growths);
-    return (unit->effective_growths);
+    unit->growth.effective = unit->growth.rates;
+    Unit_stats_plus(unit->growth.bonus, unit->growth.effective);
+    return (unit->growth.effective);
 }
 
 struct Unit_stats Unit_effectiveStats(struct Unit *unit) {

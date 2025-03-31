@@ -325,7 +325,7 @@ static void _GrowthsMenu_Draw_Growths( struct GrowthsMenu *gm, SDL_Renderer *ren
     /* -- STATS GROWTHS -- */
     int width;
     char numbuff[10];
-    struct Unit_stats effective_growths  = gm->unit->effective_growths;
+    struct Unit_stats effective_growths = gm->unit->growth.effective;
 
     int x = GM_STATS_X_OFFSET, y = GM_STATS_Y_OFFSET;
     PixelFont_Write(gm->pixelnours, renderer, "STATS GROWTHS", 13, x, y);

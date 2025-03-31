@@ -648,6 +648,16 @@ struct Unit_Flags {
     b32 isDualWielding; // rm. Should not be saved.
 };
 
+struct Unit_Growth {
+    /* Growths */
+    struct Unit_stats rates;
+    // TODO rm, should be a func
+    struct Unit_stats bonus;
+    // TODO rm, should be a func
+    struct Unit_stats effective;
+    struct Unit_stats *grown;
+};
+
 typedef struct Unit {
     // TODO: unit design:
     //  - Stats values inside unit class are CONSTANT?
@@ -669,9 +679,9 @@ typedef struct Unit {
     //  1. supports
     //  2. equipment
     //  3. hands/arms
-    //  4. flags
+    //  4. flags DONE
     //  5. growth
-    //  6. ?
+    //  6. id?
 
     struct jsonIO_Header jsonio_header;
 
@@ -704,18 +714,17 @@ typedef struct Unit {
     struct Bonus_Stats *bonus_stack; // TODO rm
     struct Unit_stats bonus_stats; // TODO remove for new Bonus_Stat Struct
     struct Unit_stats malus_stats; // TODO remove for new Bonus_Stat Struct
+
     struct Unit_stats caps_stats;
     struct Unit_stats base_stats;
+
+    // TODO: rm
     struct Unit_stats current_stats;    /* base_stats + all growths */
+    // TODO: rm
     struct Unit_stats effective_stats;  /* current_stats + bonuses/maluses */
 
     /* Growths */
-    struct Unit_stats growths;
-    // TODO rm, should be a func
-    struct Unit_stats bonus_growths;
-    // TODO rm, should be a func
-    struct Unit_stats effective_growths;
-    struct Unit_stats *grown_stats;
+    struct Unit_Growth growth;
 
     u64 skills;
 

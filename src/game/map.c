@@ -15,6 +15,7 @@
 #include "map/ontile.h"
 #include "unit/equipment.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
 #include "unit/boss.h"
 #include "unit/loadout.h"
 #include "game/game.h"
@@ -193,7 +194,7 @@ void GameMap_Reinforcements_Free(struct Game *sota) {
 
             if (!isPC) {
                 Unit_Free(unit);
-                SDL_assert(unit->grown_stats == NULL);
+                SDL_assert(Unit_Stats_Grown(unit) == NULL);
             }
         }
 
