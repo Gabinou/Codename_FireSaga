@@ -40,12 +40,14 @@ void test_menu_growths() {
 
     /* -- Create Unit -- */
     struct Unit Silou = Unit_default;
-    SDL_assert(Silou.grown_stats == NULL);
+    struct Unit_stats *grown = Unit_Stats_Grown(&Silou);
+    SDL_assert(grown == NULL);
     Unit_Init(&Silou);
     Silou.weapons_dtab = weapons_dtab;
     SDL_assert(Silou.num_equipment == 0);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);
-    SDL_assert(Silou.grown_stats != NULL);
+    grown = Unit_Stats_Grown(&Silou);
+    SDL_assert(grown != NULL);
     SDL_assert(Silou.num_equipment == 4);
 
     /* - Unit equip - */
@@ -82,8 +84,10 @@ void test_menu_growths() {
     };
     Graph_Stat_Add(&gm->graph, &Silou.base_stats, grown_1, 2, 1, stat_toplot);
     /* SDL_free alloced in Unit_readJSON grown_stats*/
-    DARR_FREE(Silou.grown_stats);
-    Silou.grown_stats = &grown_1[0];
+    grown = Unit_Stats_Grown(&Silou);
+
+    DARR_FREE(grown);
+    grown = &grown_1[0];
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_01.png"), renderer,
                             gm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
@@ -96,7 +100,7 @@ void test_menu_growths() {
     };
     Graph_Stat_Add(&gm->graph, &Silou.base_stats, grown_2, 13, 11,
                    stat_toplot);
-    Silou.grown_stats = &grown_2[0];
+    grown = &grown_2[0];
     // Silou.support_bonus.speed = 50;
 
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
@@ -119,7 +123,7 @@ void test_menu_growths() {
     };
     Graph_Stat_Add(&gm->graph, &Silou.base_stats, grown_10, 30, 20,
                    stat_toplot);
-    Silou.grown_stats = &grown_10[0];
+    grown = &grown_10[0];
     // Silou.support_bonus.speed = - 50;
 
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
@@ -173,13 +177,13 @@ void test_menu_growths() {
                    stat_toplot);
     // Silou.support_bonus.speed = - 5;
 
-    Silou.grown_stats = &grown_40[0];
+    grown = &grown_40[0];
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40.png"), renderer,
                             gm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
     Graph_Stat_Remove(&gm->graph, stat_toplot);
 
-    Silou.grown_stats = NULL;
+    grown = NULL;
 
     /* -- Supports -- */
     /* - 1 digit - */
@@ -198,7 +202,7 @@ void test_menu_growths() {
     // Silou.support_bonus.protection[DMG_TYPE_PHYSICAL] = 8;
     // Silou.support_bonus.protection[DMG_TYPE_MAGICAL] = 9;
     /* - Move - */
-    Silou.effective_growths.move = 1;
+    Silou.growth.effective.move = 1;
 
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Digits_1.png"), renderer,
@@ -220,7 +224,7 @@ void test_menu_growths() {
     // Silou.support_bonus.protection[DMG_TYPE_PHYSICAL] = 80;
     // Silou.support_bonus.protection[DMG_TYPE_MAGICAL] = 90;
     /* - Move - */
-    Silou.effective_growths.move = 23;
+    Silou.growth.effective.move = 23;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Digits_2.png"), renderer,
                             gm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);

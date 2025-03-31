@@ -138,7 +138,7 @@ void test_io(void) {
     unit1.caps_stats    = in_caps;
     unit1.base_stats    = in_stats;
     unit1.current_stats = in_stats;
-    unit1.growths       = in_growths;
+    unit1.growth.rates  = in_growths;
     unit1.base_exp      = 0;
     unit1.exp           = 0;
     in_wpn.id = ITEM_ID_FLEURET;
@@ -161,7 +161,7 @@ void test_io(void) {
     nourstest_true(in_stats.con     == out_stats.con);
     nourstest_true(in_stats.move    == out_stats.move);
     nourstest_true(in_stats.prof    == out_stats.prof);
-    out_growths = unit1.growths;
+    out_growths = unit1.growth.rates;
     nourstest_true(in_growths.hp    == out_growths.hp);
     nourstest_true(in_growths.str   == out_growths.str);
     nourstest_true(in_growths.mag   == out_growths.mag);
@@ -262,7 +262,7 @@ void test_growth(void) {
     Silou.caps_stats    = in_caps;
     Silou.base_stats    = in_stats;
     Silou.current_stats = in_stats;
-    Silou.growths       = in_growths;
+    Silou.growth.rates  = in_growths;
 
     URN_debug       = 11;
     /* Testing the Sequence Breaker */
@@ -271,22 +271,24 @@ void test_growth(void) {
     Unit_lvlUp(&Silou);
     /*                              hp, str, mag, agi, dex, fth, luck, def, res, con, move, prof */
     struct Unit_stats temp_growths = {1,   1,   1,   1,   1,   1,   1,    1,   1,   0,   0,  1};
-    nourstest_true(Silou.grown_stats[0].hp      == temp_growths.hp);
-    nourstest_true(Silou.grown_stats[0].str     == temp_growths.str);
-    nourstest_true(Silou.grown_stats[0].agi     == temp_growths.agi);
-    nourstest_true(Silou.grown_stats[0].dex     == temp_growths.dex);
-    nourstest_true(Silou.grown_stats[0].fth     == temp_growths.fth);
-    nourstest_true(Silou.grown_stats[0].luck    == temp_growths.luck);
-    nourstest_true(Silou.grown_stats[0].def     == temp_growths.def);
-    nourstest_true(Silou.grown_stats[0].res     == temp_growths.res);
-    nourstest_true(Silou.grown_stats[0].con     == temp_growths.con);  /* 0 at first */
-    nourstest_true(Silou.grown_stats[0].move    == temp_growths.move); /* 0 at first */
-    nourstest_true(Silou.grown_stats[0].prof    == temp_growths.prof);
-    nourstest_true(DARR_NUM(Silou.grown_stats)  == true);
+    out_growths = Silou.growth.rates;
+    struct Unit_stats *grown = Unit_Stats_Grown(&Silou);
+    nourstest_true(grown[0].hp      == temp_growths.hp);
+    nourstest_true(grown[0].str     == temp_growths.str);
+    nourstest_true(grown[0].agi     == temp_growths.agi);
+    nourstest_true(grown[0].dex     == temp_growths.dex);
+    nourstest_true(grown[0].fth     == temp_growths.fth);
+    nourstest_true(grown[0].luck    == temp_growths.luck);
+    nourstest_true(grown[0].def     == temp_growths.def);
+    nourstest_true(grown[0].res     == temp_growths.res);
+    nourstest_true(grown[0].con     == temp_growths.con);  /* 0 at first */
+    nourstest_true(grown[0].move    == temp_growths.move); /* 0 at first */
+    nourstest_true(grown[0].prof    == temp_growths.prof);
+    nourstest_true(DARR_NUM(grown)  == true);
 
-    nourstest_true(Silou.growths.move == 10);
-    nourstest_true(Silou.growths.con  == 10);
-    nourstest_true(Silou.growths.prof == 20);
+    nourstest_true(Silou.growth.rates.move == 10);
+    nourstest_true(Silou.growth.rates.con  == 10);
+    nourstest_true(Silou.growth.rates.prof == 20);
 
     nourstest_true(Silou.rng_sequence.res.len  == false);
     nourstest_true(Silou.rng_sequence.move.len == true);
@@ -295,21 +297,22 @@ void test_growth(void) {
 
     /* Second level up: con and move grow, cause of increased rate */
     Unit_lvlUp(&Silou);
-    nourstest_true(DARR_NUM(Silou.grown_stats) == 2);
 
-    nourstest_true(Silou.grown_stats[1].hp      == temp_growths.hp);
-    nourstest_true(Silou.grown_stats[1].str     == temp_growths.str);
-    nourstest_true(Silou.grown_stats[1].agi     == temp_growths.agi);
-    nourstest_true(Silou.grown_stats[1].dex     == temp_growths.dex);
-    nourstest_true(Silou.grown_stats[1].fth     == temp_growths.fth);
-    nourstest_true(Silou.grown_stats[1].luck    == temp_growths.luck);
-    nourstest_true(Silou.grown_stats[1].def     == temp_growths.def);
-    nourstest_true(Silou.grown_stats[1].res     == temp_growths.res);
-    nourstest_true(Silou.grown_stats[1].con     ==
+    grown = Unit_Stats_Grown(&Silou);
+    nourstest_true(DARR_NUM(grown) == 2);
+    nourstest_true(grown[1].hp      == temp_growths.hp);
+    nourstest_true(grown[1].str     == temp_growths.str);
+    nourstest_true(grown[1].agi     == temp_growths.agi);
+    nourstest_true(grown[1].dex     == temp_growths.dex);
+    nourstest_true(grown[1].fth     == temp_growths.fth);
+    nourstest_true(grown[1].luck    == temp_growths.luck);
+    nourstest_true(grown[1].def     == temp_growths.def);
+    nourstest_true(grown[1].res     == temp_growths.res);
+    nourstest_true(grown[1].con     ==
                    true); /* grows now, SB eff rate is 10*1.2 = 12 > 11  */
-    nourstest_true(Silou.grown_stats[1].move    ==
+    nourstest_true(grown[1].move    ==
                    true); /* grows now, SB eff rate is 10*1.2 = 12 > 11  */
-    nourstest_true(Silou.grown_stats[1].prof    == temp_growths.prof);
+    nourstest_true(grown[1].prof    == temp_growths.prof);
 
     nourstest_true(Silou.rng_sequence.con.len    == false);
     nourstest_true(Silou.rng_sequence.move.len   == false);
@@ -322,18 +325,19 @@ void test_growth(void) {
     /* Runing of sequence breaker: no more sequences, no more increasing rates */
     rng_sequence_breaker_miss_growth = false;
     Unit_lvlUp(&Silou);
-    nourstest_true(DARR_NUM(Silou.grown_stats) == 3);
-    nourstest_true(Silou.grown_stats[2].hp      == temp_growths.hp);
-    nourstest_true(Silou.grown_stats[2].str     == temp_growths.str);
-    nourstest_true(Silou.grown_stats[2].agi     == temp_growths.agi);
-    nourstest_true(Silou.grown_stats[2].dex     == temp_growths.dex);
-    nourstest_true(Silou.grown_stats[2].fth     == temp_growths.fth);
-    nourstest_true(Silou.grown_stats[2].luck    == temp_growths.luck);
-    nourstest_true(Silou.grown_stats[2].def     == temp_growths.def);
-    nourstest_true(Silou.grown_stats[2].res     == temp_growths.res);
-    nourstest_true(Silou.grown_stats[2].con     == temp_growths.con);
-    nourstest_true(Silou.grown_stats[2].move    == temp_growths.move);
-    nourstest_true(Silou.grown_stats[2].prof    == temp_growths.prof);
+    grown = Unit_Stats_Grown(&Silou);
+    nourstest_true(DARR_NUM(grown) == 3);
+    nourstest_true(grown[2].hp      == temp_growths.hp);
+    nourstest_true(grown[2].str     == temp_growths.str);
+    nourstest_true(grown[2].agi     == temp_growths.agi);
+    nourstest_true(grown[2].dex     == temp_growths.dex);
+    nourstest_true(grown[2].fth     == temp_growths.fth);
+    nourstest_true(grown[2].luck    == temp_growths.luck);
+    nourstest_true(grown[2].def     == temp_growths.def);
+    nourstest_true(grown[2].res     == temp_growths.res);
+    nourstest_true(grown[2].con     == temp_growths.con);
+    nourstest_true(grown[2].move    == temp_growths.move);
+    nourstest_true(grown[2].prof    == temp_growths.prof);
 
     nourstest_true(Silou.rng_sequence.res.len  == false);
     nourstest_true(Silou.rng_sequence.con.len  == false);
@@ -341,10 +345,10 @@ void test_growth(void) {
     nourstest_true(Silou.rng_sequence.prof.len == false);
 
     Unit_lvlUp(&Silou);
-    nourstest_true(DARR_NUM(Silou.grown_stats)  == 4);
-    nourstest_true(Silou.grown_stats[3].con     == temp_growths.con);
-    nourstest_true(Silou.grown_stats[3].move    == temp_growths.move);
-    nourstest_true(Silou.grown_stats[3].prof    == temp_growths.prof);
+    nourstest_true(DARR_NUM(grown)  == 4);
+    nourstest_true(grown[3].con     == temp_growths.con);
+    nourstest_true(grown[3].move    == temp_growths.move);
+    nourstest_true(grown[3].prof    == temp_growths.prof);
     nourstest_true(Silou.rng_sequence.prof.len      == false);
     nourstest_true(Silou.rng_sequence.move.len      == false);
     nourstest_true(Silou.rng_sequence.con.len       == false);
@@ -359,9 +363,11 @@ void test_reinforcements(void) {
     Unit_Init(&Corsair);
 
     Unit_Reinforcement_Levelups(&Corsair, &reinf);
-    nourstest_true(DARR_NUM(Corsair.grown_stats) == reinf.levelups);
+    struct Unit_stats *grown = Unit_Stats_Grown(&Corsair);
+
+    nourstest_true(DARR_NUM(grown) == reinf.levelups);
     Unit_Reinforcement_Levelups(&Corsair, &reinf);
-    nourstest_true(DARR_NUM(Corsair.grown_stats) == reinf.levelups);
+    nourstest_true(DARR_NUM(grown) == reinf.levelups);
 
     Unit_Free(&Corsair);
 }

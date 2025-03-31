@@ -682,6 +682,7 @@ typedef struct Unit {
     //  4. flags DONE
     //  5. growth
     //  6. id?
+    //  7. story?
 
     struct jsonIO_Header jsonio_header;
 
@@ -710,7 +711,6 @@ typedef struct Unit {
     u16 support_num;
 
     /* Stats */
-
     struct Bonus_Stats *bonus_stack; // TODO rm
     struct Unit_stats bonus_stats; // TODO remove for new Bonus_Stat Struct
     struct Unit_stats malus_stats; // TODO remove for new Bonus_Stat Struct
