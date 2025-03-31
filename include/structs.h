@@ -647,6 +647,7 @@ struct Unit_Flags {
     b32 divine_shield;
     b32 isDualWielding; // rm. Should not be saved.
     bitflag16_t job_talent;
+    u64 skills;
 };
 
 struct Unit_Growth {
@@ -677,8 +678,28 @@ struct Unit_Support {
 };
 
 struct Unit_Equipment {
+    u16 equippable;
+    // TODO: replace raw _equipped with:
+    // struct Loadout _equipped;
+    i32 _equipped[UNIT_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
+    // Replace with global?
+    struct dtab *weapons_dtab;
+    struct dtab *items_dtab;
+
+    // TODO: all equipment stuff in a struct
+    struct Inventory_item _equipment[SOTA_EQUIPMENT_SIZE];
+
+    /* 1. Can't equip more than SOTA_EQUIPMENT_SIZE items */
+    i32 eq_canEquip[SOTA_EQUIPMENT_SIZE];
+    i32 num_equipment;
+    i32 num_canEquip;
 };
+
+struct Unit_Level {
+    u16 base_exp;
+    u16 exp;
+}
 
 typedef struct Unit {
     // TODO: unit design:
@@ -698,8 +719,8 @@ typedef struct Unit {
     //  - func(effective_stats, supports, bonus_computed_stats) -> computed_stats
 
     // internals structs TODO:
-    //  1. supports
-    //  2. equipment
+    //  1. supports DONE
+    //  2. equipment 
     //  3. hands/arms
     //  4. flags DONE
     //  5. growth DONE
@@ -715,6 +736,7 @@ typedef struct Unit {
     struct Unit_Rescue              rescue;
     struct Unit_Render              render;
     struct Unit_Support             support;
+    struct Unit_Level               level;
 
     // TODO: struct of all unit ids? + API
     u16 _id;
@@ -728,8 +750,6 @@ typedef struct Unit {
     i8  handedness;
     u16 talkable;
     u8  regrets;
-    u16 base_exp;
-    u16 exp;
 
     // TODO: Agony struct
     u8  current_agony;
@@ -750,27 +770,8 @@ typedef struct Unit {
     // TODO: rm
     struct Unit_stats effective_stats;  /* current_stats + bonuses/maluses */
 
-    u64 skills;
-
     i32     arms_num;
     b32    _hands[UNIT_ARMS_NUM]; /* Does unit have hands?             */
-
-    u16 equippable;
-    // TODO: replace raw _equipped with:
-    // struct Loadout _equipped;
-    i32 _equipped[UNIT_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
-
-    // Replace with global?
-    struct dtab *weapons_dtab;
-    struct dtab *items_dtab;
-
-    // TODO: all equipment stuff in a struct
-    struct Inventory_item _equipment[SOTA_EQUIPMENT_SIZE];
-
-    /* 1. Can't equip more than SOTA_EQUIPMENT_SIZE items */
-    i32 eq_canEquip[SOTA_EQUIPMENT_SIZE];
-    i32 num_equipment;
-    i32 num_canEquip;
 
     struct Mount *mount;
 
