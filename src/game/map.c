@@ -304,7 +304,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
 
         /* DESIGN: Reinforcements wait! */
-        unit->waits = true;
+        unit->flags.waits = true;
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
         unit->weapons_dtab  = sota->weapons_dtab;
         unit->items_dtab    = sota->items_dtab;

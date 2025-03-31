@@ -646,7 +646,7 @@ struct Unit_Flags {
     b32 show_danger;
     b32 update_stats;
     b32 divine_shield;
-    b32 isDualWielding;
+    b32 isDualWielding; // rm. Should not be saved.
 };
 
 
@@ -703,7 +703,7 @@ typedef struct Unit {
     u16 support_num;
 
     /* Stats */
-        
+
     struct Bonus_Stats *bonus_stack; // TODO rm
     struct Unit_stats bonus_stats; // TODO remove for new Bonus_Stat Struct
     struct Unit_stats malus_stats; // TODO remove for new Bonus_Stat Struct

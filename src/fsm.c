@@ -28,6 +28,7 @@
 #include "map/ontile.h"
 #include "systems/slide.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
 #include "unit/equipment.h"
 #include "unit/range.h"
 #include "AI.h"
@@ -536,7 +537,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     offscreen->reverse = false;
 
     struct Unit *unit_ontile = IES_GET_COMPONENT(sota->world, hov_ent, Unit);
-    if (unit_ontile->waits) {
+    if (Unit_isWaiting(unit_ontile)) {
         return;
     }
 
@@ -596,7 +597,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     /* -- Changing animation loop to Taunt -- */
     struct Sprite *sprite = IES_GET_COMPONENT(sota->world, hov_ent, Sprite);
     b32 animated = IES_ENTITY_HASCOMPONENT(sota->world, hov_ent, Timer);
-    if ((sprite->spritesheet != NULL) && (animated) && (!unit_ontile->waits)) {
+    if ((sprite->spritesheet != NULL) && (animated) && (! Unit_isWaiting(unit_ontile))) {
         if (sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM) {
             Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_TAUNT, sprite->flip);
             Sprite_Animation_Loop(sprite);
@@ -649,7 +650,7 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
     b32 animated = IES_ENTITY_HASCOMPONENT(sota->world, dehov_ent, Timer);
 
     /* Only if unit doesn't wait */
-    if ((sprite->spritesheet != NULL) && (animated) && (!unit->waits)) {
+    if ((sprite->spritesheet != NULL) && (animated) && (!Unit_isWaiting(unit))) {
         if (sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM) {
             Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_IDLE, sprite->flip);
             Sprite_Animation_Loop(sprite);
@@ -721,20 +722,20 @@ void fsm_eUnitDng_ssStby(struct Game *sota, tnecs_entity selector_entity) {
     struct Position *pos    = IES_GET_COMPONENT(sota->world, selector_entity, Position);
     i32 *temp_danger        = Map_Danger_Compute(sota->map, selected);
     int map_index = pos->tilemap_pos.y * sota->map->col_len + pos->tilemap_pos.x;
-    if (unit->show_danger) {
+    if (Unit_showsDanger(unit)) {
         Map_Danger_Sub(sota->map, temp_danger);
         Map_Palettemap_Autoset(sota->map,
                                MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK, TNECS_NULL);
         Map_Danger_Perimeter_Compute(sota->map, sota->map->dangermap);
         sota->map->rendered_dangermap = sota->map->dangermap;
 
-        unit->show_danger = false;
+        unit->flags.show_danger = false;
     } else {
         Map_Danger_Add(sota->map, temp_danger);
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_DANGER, TNECS_NULL);
         Map_Danger_Perimeter_Compute(sota->map, sota->map->dangermap);
         sota->map->rendered_dangermap = sota->map->dangermap;
-        unit->show_danger = true;
+        unit->flags.show_danger = true;
     }
 
     // matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
@@ -759,7 +760,7 @@ void fsm_eCncl_sGmpMap_ssStby(struct Game *sota, tnecs_entity canceller) {
     SDL_assert(unit_ontile);
     SDL_assert(data2_entity != NULL);
     *data2_entity = ontile;
-    if (!SotA_isPC(unit_ontile->army) && unit_ontile->show_danger)
+    if (!SotA_isPC(unit_ontile->army) && Unit_showsDanger(unit_ontile))
         Event_Emit(__func__, SDL_USEREVENT, event_Unit_Danger, data1_entity, data2_entity);
 
 }
@@ -1488,7 +1489,7 @@ void fsm_eUnitSel_ssStby(struct Game *sota, tnecs_entity selector_entity) {
     }
 
     /* - Friendly unit was selected - */
-    if (!selected_unit->waits) {
+    if (!Unit_isWaiting(selected_unit)) {
         /* - Friendly unit can move - */
         sota->aggressor             = sota->selected_unit_entity;
 

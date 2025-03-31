@@ -3,6 +3,7 @@
 #include "map/ontile.h"
 #include "unit/equipment.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
 #include "unit/loadout.h"
 #include "nmath.h"
 #include "map/map.h"
@@ -52,7 +53,7 @@ void Game_Unit_Wait(struct Game *sota, tnecs_entity ent) {
 #ifndef DEBUG_UNIT_MOVEAFTERWAIT
     /* unit waits */
     Unit_wait(unit);
-    SDL_assert(unit->waits);
+    SDL_assert(Unit_isWaiting(unit));
     /* set palette to dark */
     Sprite_Darken(sprite, sota->renderer);
 #endif /*DEBUG_UNIT_MOVEAFTERWAIT*/
@@ -76,13 +77,13 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
     struct Unit *unit = IES_GET_COMPONENT(sota->world, ent, Unit);
     SDL_assert(unit != NULL);
     /* --- Skip if unit is not waiting --- */
-    if (!unit->waits)
+    if (!Unit_isWaiting(unit))
         return;
     struct Sprite *sprite = IES_GET_COMPONENT(sota->world, ent, Sprite);
     SDL_assert(sprite != NULL);
 
     Unit_refresh(unit);
-    SDL_assert(!unit->waits);
+    SDL_assert(!Unit_isWaiting(unit));
     /* -- set palette back to nes --  */
     Sprite_Unveil(sprite, sota->renderer);
 

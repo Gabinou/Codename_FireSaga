@@ -7,6 +7,7 @@
 #include "unit/equipment.h"
 #include "unit/loadout.h"
 #include "unit/status.h"
+#include "unit/flags.h"
 #include "nmath.h"
 #include "reinforcement.h"
 #include "RNG.h"
@@ -90,13 +91,13 @@ const struct Unit Unit_default = {
     .current_hp         = SOTA_MIN_HP,
     .current_stats.hp   = SOTA_MIN_HP,
 
-    .alive          = true,
 
-    .arms_num       = UNIT_ARMS_NUM,
-    .handedness     = UNIT_HAND_RIGHTIE,
-    ._hands          = {true, true},
+    .arms_num           = UNIT_ARMS_NUM,
+    .handedness         = UNIT_HAND_RIGHTIE,
+    ._hands             = {true, true},
 
-    .update_stats   = true,
+    .flags.alive                = true,
+    .flags.update_stats         = true,
 };
 
 const struct Unit Nibal_unit = {
@@ -109,8 +110,8 @@ const struct Unit Nibal_unit = {
     ._id            = UNIT_ID_NIBAL,
 
     .current_hp     = 35,
-    .alive          = true,
-    .sex            = true,  /* 0:F, 1:M. eg. hasPenis. */
+    .flags.alive    = true,
+    .flags.sex      = true,  /* 0:F, 1:M. eg. hasPenis. */
 
     ._hands          = {true, true},
 };
@@ -329,14 +330,14 @@ void Unit_getsHealed(struct Unit *unit, u8 healing) {
 
 void Unit_wait(struct Unit *unit) {
     SDL_assert(unit);
-    unit->waits         = true;
-    unit->show_danger   = false;
+    unit->flags.waits         = true;
+    unit->flags.show_danger   = false;
 }
 
 void Unit_refresh(struct Unit *unit) {
     SDL_assert(unit);
-    unit->waits = false;
-    unit->show_danger = false;
+    unit->flags.waits       = false;
+    unit->flags.show_danger = false;
 }
 
 i16 Unit_getLvl(struct Unit *unit) {
@@ -433,7 +434,7 @@ void Unit_agonizes(struct Unit *unit) {
 
 void Unit_dies(struct Unit *unit) {
     SDL_assert(unit);
-    unit->alive = false;
+    unit->flags.alive = false;
 }
 
 
@@ -724,7 +725,7 @@ struct Computed_Stats Unit_computedStats_wLoadout(Unit *unit, Loadout *loadout, 
 // Implicitely for weapons. Staves only care about range -> compute directly.
 struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance) {
     SDL_assert(unit);
-    if (!unit->update_stats) {
+    if (!Unit_isUpdateStats(unit)) {
         return (unit->computed_stats);
     }
 
@@ -1051,7 +1052,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     }
 
     // SDL_Log("-- startup misc --");
-    unit->sex               = cJSON_IsTrue(jsex);
+    unit->flags.sex         = cJSON_IsTrue(jsex);
     unit->army              = cJSON_GetNumberValue(jarmy);
     unit->exp               = cJSON_GetNumberValue(jexp);
     unit->base_exp          = cJSON_GetNumberValue(jbase_exp);
@@ -1143,7 +1144,7 @@ void Unit_writeJSON(void *input, cJSON *junit) {
 
     cJSON *jid            = cJSON_CreateNumber(unit->_id);
     cJSON *jexp           = cJSON_CreateNumber(unit->base_exp);
-    cJSON *jsex           = cJSON_CreateBool(unit->sex);
+    cJSON *jsex           = cJSON_CreateBool(Unit_Sex(unit));
     cJSON *jname          = cJSON_CreateString(global_unitNames[unit->_id].data);
     s8 ai_filename        = ai_names[unit->ai_id];
     cJSON *jai            = cJSON_CreateString(ai_filename.data);

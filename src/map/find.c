@@ -14,6 +14,7 @@
 #include "unit/anim.h"
 #include "unit/status.h"
 #include "unit/boss.h"
+#include "unit/flags.h"
 #include "unit/range.h"
 #include "unit/stats.h"
 #include "unit/mount.h"
@@ -358,7 +359,7 @@ tnecs_entity *Map_Find_Spectators(struct Map *map, tnecs_entity *spectators, i32
 
         struct Unit *unit = IES_GET_COMPONENT(map->world, spectator, Unit);
         SDL_assert(unit);
-        if (unit->waits)
+        if (Unit_isWaiting(unit))
             DARR_PUT(spectators, spectator);
     }
     return (spectators);

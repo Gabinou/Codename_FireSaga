@@ -4,6 +4,7 @@
 #include "enums.h"
 #include "weapon.h"
 #include "unit/range.h"
+#include "unit/flags.h"
 #include "reinforcement.h"
 #include "unit/unit.h"
 #include "unit/bonus.h"
@@ -133,7 +134,7 @@ void test_io(void) {
 
     Unit_setid(&unit1, UNIT_ID_SILOU);
     Unit_setClassind(&unit1, UNIT_CLASS_FENCER);
-    unit1.sex           = UNIT_SEX_F;
+    unit1.flags.sex     = UNIT_SEX_F;
     unit1.caps_stats    = in_caps;
     unit1.base_stats    = in_stats;
     unit1.current_stats = in_stats;
@@ -148,7 +149,7 @@ void test_io(void) {
     Unit_Item_Take(&unit1, in_wpn);
     out_stats = unit1.current_stats;
     nourstest_true(s8equal(Unit_Name(&unit1), s8_literal("Silou")));
-    nourstest_true(unit1.sex        == UNIT_SEX_F);
+    nourstest_true(Unit_Sex(&unit1) == UNIT_SEX_F);
     nourstest_true(in_stats.hp      == out_stats.hp);
     nourstest_true(in_stats.str     == out_stats.str);
     nourstest_true(in_stats.mag     == out_stats.mag);

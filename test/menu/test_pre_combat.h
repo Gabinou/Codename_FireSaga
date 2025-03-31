@@ -105,8 +105,8 @@ void test_menu_pre_combat() {
     _PreCombatPopup_Load(pcp, &Silou, &Hamilcar, &silou_pos, &hamilcar_pos, renderer);
 
     /* --- RENDERS --- */
-    Silou.update_stats      = false;
-    Hamilcar.update_stats   = false;
+    Silou.flags.update_stats    = false;
+    Hamilcar.flags.update_stats = false;
 
     /* -- Single Digits -- */
     Silou.computed_stats.hit        = 1;

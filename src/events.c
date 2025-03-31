@@ -33,6 +33,7 @@
 #include "game/cursor.h"
 #include "game/unit.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
 #include "scene.h"
 #include "convoy.h"
 #include "arrow.h"
@@ -882,7 +883,7 @@ void receive_event_Unit_Deselect(struct Game *sota, SDL_Event *userevent) {
         sota->map->show_overlay = false;
     } else {
         /* - Show NPC danger - */
-        if (unit_ptr->show_danger) {
+        if (Unit_showsDanger(unit_ptr)) {
             tnecs_entity *ent_ptr = &sota->selected_unit_entity;
             Event_Emit(__func__, SDL_USEREVENT, event_Unit_Danger, NULL, ent_ptr);
         }
@@ -1437,8 +1438,7 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
 
     // 1. Resolve Combat
     struct Unit *aggressor = IES_GET_COMPONENT(sota->world, sota->aggressor, Unit);
-    aggressor->waits = true;
-    aggressor->waits = true;
+    aggressor->flags.waits = true;
     struct Unit *defendant = IES_GET_COMPONENT(sota->world, sota->defendant, Unit);
 
     SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, sota->defendant, Timer));
@@ -1624,7 +1624,7 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     int id_R          = Unit_Id_Equipped(attacker, UNIT_HAND_RIGHT);
 
     // 2. Check for unit agony/death
-    b32 agg_death = (!aggressor->alive) || (aggressor->agony > AGONY_NULL);
+    b32 agg_death = (!Unit_isAlive(aggressor)) || (aggressor->agony > AGONY_NULL);
     if (agg_death) {
         userevent->user.data1 = &sota->aggressor;
         userevent->user.data2 = &sota->defendant;
@@ -1632,7 +1632,7 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
         // Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &sota->aggressor, &sota->defendant);
     }
 
-    b32 dft_death = (!defendant->alive) || (defendant->agony > AGONY_NULL);
+    b32 dft_death = (!Unit_isAlive(defendant)) || (defendant->agony > AGONY_NULL);
     if (dft_death) {
         userevent->user.data1 = &sota->defendant;
         userevent->user.data2 = &sota->aggressor;

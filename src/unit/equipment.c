@@ -1,6 +1,7 @@
 
 #include "unit/equipment.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
 #include "unit/loadout.h"
 #include "inventory.h"
 #include "macros.h"
@@ -169,7 +170,7 @@ void Unit_Unequip(struct Unit *unit, i32 hand) {
         SDL_assert(Unit_istwoHanding(unit) == false);
 
         /* -- If dual wielding, not anymore! -- */
-        unit->isDualWielding    = false;
+        unit->flags.isDualWielding    = false;
     }
     // TODO dualwielding, towhanding for Tetrabrachios
 }
@@ -586,8 +587,8 @@ b32 Unit_isdualWielding(struct Unit *unit) {
     i32 eq_R = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
     b32 left_canWeakhand    = left  ? Weapon_canWeakhand(eq_L) : true;
     b32 right_canWeakhand   = right ? Weapon_canWeakhand(eq_R) : true;
-    unit->isDualWielding    = (left_canWeakhand && right_canWeakhand) && !Unit_istwoHanding(unit);
-    return (unit->isDualWielding);
+    unit->flags.isDualWielding    = (left_canWeakhand && right_canWeakhand) && !Unit_istwoHanding(unit);
+    return (Unit_isDualWielding(unit));
 }
 
 

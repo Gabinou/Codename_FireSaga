@@ -107,7 +107,7 @@ i32 useEffect_STAFF_HEAL(struct Item *item,
 i32 useEffect_USE_DIVINE_SHIELD(struct Item *item,
                                 struct Unit *user,
                                 struct Unit *target) {
-    target->divine_shield = true;
+    target->flags.divine_shield = true;
     return (-1);
 }
 
