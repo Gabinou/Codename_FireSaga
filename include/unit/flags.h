@@ -15,6 +15,9 @@ b32 Unit_isUpdateStats(Unit *u);
 b32 Unit_isDivineShield(Unit *u);
 b32 Unit_isDualWielding(Unit *u);
 
+u64 Unit_Skills(Unit *u);
+void Unit_Skill_Add(Unit *u, u64 skill);
+
 struct Unit_stats *Unit_Stats_Grown(Unit *u);
 struct Unit_stats *Unit_Stats_Growths(Unit *u);
 

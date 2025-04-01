@@ -134,7 +134,8 @@ i32 useEffect_USE_LVL_UP(struct Item *item,
 i32 useEffect_USE_GAIN_SKILL(struct Item *item,
                              struct Unit *user,
                              struct Unit *target) {
-    target->skills += item->stats.AP;
+    Unit_Skill_Add(item->stats.AP);
+    // why return -1
     return (-1);
 }
 

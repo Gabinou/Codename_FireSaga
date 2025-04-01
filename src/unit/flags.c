@@ -31,3 +31,10 @@ struct Unit_stats *Unit_Stats_Grown(Unit *unit) {
 struct Unit_stats *Unit_Stats_Growths(Unit *unit) {
     return (&unit->growth.rates);
 }
+u64 Unit_Skills(Unit *unit) {
+    return(unit->flags->skills);
+}
+void Unit_Skill_Add(Unit *unit, u64 skill) {
+    // TODO: Set all
+    unit->flags->skills |= skill;
+}

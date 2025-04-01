@@ -699,7 +699,7 @@ struct Unit_Equipment {
 struct Unit_Level {
     u16 base_exp;
     u16 exp;
-}
+};
 
 typedef struct Unit {
     // TODO: unit design:
