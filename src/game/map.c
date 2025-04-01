@@ -15,8 +15,8 @@
 #include "map/ontile.h"
 #include "unit/equipment.h"
 #include "unit/unit.h"
-#include "unit/flags.h"
 #include "unit/boss.h"
+#include "unit/flags.h"
 #include "unit/loadout.h"
 #include "game/game.h"
 #include "bars/map_hp.h"
@@ -307,8 +307,8 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         /* DESIGN: Reinforcements wait! */
         unit->flags.waits = true;
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
-        unit->weapons_dtab  = sota->weapons_dtab;
-        unit->items_dtab    = sota->items_dtab;
+        unit->equipment.weapons_dtab  = sota->weapons_dtab;
+        unit->equipment.items_dtab    = sota->items_dtab;
         s8 unit_path  = s8_mut("units"PHYSFS_SEPARATOR);
         unit_path     = s8cat(unit_path, reinf->filename);
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
@@ -324,7 +324,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
         // SDL_Log("-- loading unit equipment --");
         for (int j = 0; j < DARR_NUM(sota->map->reinf_equipments[i]); j++) {
-            unit->_equipment[j] = sota->map->reinf_equipments[i][j];
+            unit->equipment.arr[j] = sota->map->reinf_equipments[i][j];
         }
         canEquip can_equip  = canEquip_default;
         canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  UNIT_HAND_LEFT);

@@ -1,8 +1,9 @@
 
-#include "unit/range.h"
 #include "unit/unit.h"
-#include "unit/equipment.h"
+#include "unit/range.h"
+#include "unit/flags.h"
 #include "unit/loadout.h"
+#include "unit/equipment.h"
 #include "nmath.h"
 #include "enums.h"
 #include "macros.h"
@@ -43,8 +44,10 @@ struct Range *Unit_Range_Id(struct Unit *unit, int id, i64 archetype) {
         return (range);
     }
 
+    struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
+    SDL_assert(weapons_dtab);
     // Weapon_Load(unit->weapons_dtab, id);
-    struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, id);
+    struct Weapon *wpn = DTAB_GET(weapons_dtab, id);
     SDL_assert(wpn != NULL);
 
     if (!_Range_Archetype_Match(wpn, archetype)) {
@@ -112,8 +115,9 @@ struct Range *Unit_Range_Equipment(Unit *unit, i64 archetype) {
         }
 
         /* Combine ranges */
-        Weapon_Load(unit->weapons_dtab, id);
-        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, id);
+        struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
+        Weapon_Load(weapons_dtab, id);
+        struct Weapon *wpn = DTAB_GET(weapons_dtab, id);
         SDL_assert(wpn != NULL);
 
         if (!_Range_Archetype_Match(wpn, archetype)) {
@@ -142,8 +146,10 @@ struct Range *Unit_Range_Equipped(Unit *unit, i64 archetype) {
         }
 
         /* Combine ranges */
-        Weapon_Load(unit->weapons_dtab, id);
-        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, id);
+        struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
+        SDL_assert(weapons_dtab);
+        Weapon_Load(weapons_dtab, id);
+        struct Weapon *wpn = DTAB_GET(weapons_dtab, id);
         SDL_assert(wpn != NULL);
 
         if (!_Range_Archetype_Match(wpn, archetype)) {

@@ -50,7 +50,7 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
     canEquip range_can_equip    = can_equip;
     range_can_equip.eq_type     = LOADOUT_EQ;
 
-    unit->num_canEquip  = 0;
+    unit->can_equip.num  = 0;
     for (int eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         /* Skip if weapon is not usable */
 
@@ -74,7 +74,7 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
             continue;
         }
 
-        unit->eq_canEquip[unit->num_canEquip++] = eq;
+        unit->can_equip.arr[unit->can_equip.num++] = eq;
     }
 
     DARR_FREE(defendants);
@@ -222,7 +222,8 @@ tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
     /* Note: attacktolist should have been created with same eq_type and _eq before */
     struct Unit *healer = IES_GET_COMPONENT(map->world, healer_ent, Unit);
     SDL_assert(healer               != NULL);
-    SDL_assert(healer->weapons_dtab != NULL);
+    struct dtab *weapons_dtab = Unit_dtab_Weapons(healer);
+    SDL_assert(weapons_dtab != NULL);
 
     /* TODO: full health people arent patients FOR HEALING STAVES */
     for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
@@ -247,8 +248,8 @@ tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
             continue;
         }
 
-        Weapon_Load(healer->weapons_dtab, id);
-        struct Weapon *staff = (struct Weapon *)DTAB_GET(healer->weapons_dtab, id);
+        Weapon_Load(weapons_dtab, id);
+        struct Weapon *staff = (struct Weapon *)DTAB_GET(weapons_dtab, id);
 
         /* -- Check healtolist for valid patients -- */
         u8 align_healer = army_alignment[healer->army];

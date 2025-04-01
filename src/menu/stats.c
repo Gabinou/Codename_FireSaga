@@ -13,9 +13,10 @@
 #include "nmath.h"
 #include "macros.h"
 #include "names.h"
-#include "unit/equipment.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
 #include "unit/loadout.h"
+#include "unit/equipment.h"
 #include "stb_sprintf.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
@@ -405,7 +406,8 @@ void StatsMenu_Load(struct StatsMenu *stats_menu, struct Unit *unit,
                     SDL_Renderer *renderer, struct n9Patch *n9patch) {
     SDL_assert(stats_menu != NULL);
     SDL_assert(unit != NULL);
-    SDL_assert(unit->weapons_dtab != NULL);
+    struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
+    SDL_assert(weapons_dtab != NULL);
 
     stats_menu->unit    = unit;
     stats_menu->update  = true;
@@ -600,14 +602,14 @@ static void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *ren
     /* - EXP - */
     x = EXP_X_OFFSET, y = EXP_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours_big, renderer, "Exp", 3, x, y);
-    stbsp_sprintf(numbuff, "%02d\0\0\0\0", (stats_menu->unit->exp % 100));
+    stbsp_sprintf(numbuff, "%02d\0\0\0\0", (stats_menu->unit->level.exp % 100));
     x = EXP_STAT_X_OFFSET, y = EXP_STAT_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
     /* - Level - */
     x = LV_X_OFFSET, y = LV_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours_big, renderer, "Lv", 2, x, y);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", (stats_menu->unit->exp / 100));
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", (stats_menu->unit->level.exp / 100));
     x = LV_STAT_X_OFFSET, y = LV_STAT_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
@@ -952,6 +954,11 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
     SDL_Rect dstrect, srcrect;
     char numbuff[10];
     struct Unit *unit = stats_menu->unit;
+    struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
+    SDL_assert(weapons_dtab != NULL);
+    struct dtab *items_dtab = Unit_dtab_Items(unit);
+    SDL_assert(items_dtab != NULL);
+
     i16 item_y_offset, item_dura_y_offset;
 
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
@@ -984,9 +991,8 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
     /* Writing - number of uses left */
     int uses_left = 0;
     if (Weapon_ID_isValid(invitem->id)) {
-        SDL_assert(unit->weapons_dtab != NULL);
-        Weapon_Load(unit->weapons_dtab, invitem->id);
-        struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, invitem->id);
+        Weapon_Load(weapons_dtab, invitem->id);
+        struct Weapon *weapon = DTAB_GET(weapons_dtab, invitem->id);
         SDL_assert(weapon                   != NULL);
         SDL_assert(weapon->item             != NULL);
         SDL_assert(weapon->item->name.data  != NULL);
@@ -995,9 +1001,9 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
         SDL_assert(weapon->item->stats.uses > 0);
         uses_left = (weapon->item->stats.uses - invitem->used);
     } else if (Item_ID_isValid(invitem->id)) {
-        SDL_assert(unit->items_dtab != NULL);
-        Item_Load(unit->items_dtab, invitem->id);
-        struct Item *item = DTAB_GET(unit->items_dtab, invitem->id);
+        SDL_assert(items_dtab != NULL);
+        Item_Load(items_dtab, invitem->id);
+        struct Item *item = DTAB_GET(items_dtab, invitem->id);
         uses_left = (item->stats.uses - invitem->used);
     }
     // SDL_assert(uses_left > 0);

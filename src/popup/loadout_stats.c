@@ -726,8 +726,8 @@ void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls, struct LoadoutSe
     int weakhand    = Unit_Hand_Weak(unit);
     int hand        = Loadout_isEquipped(&wsm->selected, stronghand) ? weakhand : stronghand;
 
-    Loadout_Set(&pls->loadout_selected, hand, unit->eq_canEquip[elem]);
-    SDL_assert(Loadout_Eq(&pls->loadout_selected, hand) == unit->eq_canEquip[elem]);
+    Loadout_Set(&pls->loadout_selected, hand, unit->can_equip.arr[elem]);
+    SDL_assert(Loadout_Eq(&pls->loadout_selected, hand) == unit->can_equip.arr[elem]);
     pls->update = true;
 }
 

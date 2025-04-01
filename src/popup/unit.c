@@ -11,6 +11,7 @@
 #include "popup/popup.h"
 #include "bars/stat.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
 #include "unit/equipment.h"
 #include "stb_sprintf.h"
 
@@ -288,8 +289,9 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
 
         Inventory_item *item = Unit_Item_Equipped(pu->unit, stronghand);
         if (Unit_isEquipped(pu->unit, stronghand) && (item->id > ITEM_NULL)) {
-            Weapon_Load(pu->unit->weapons_dtab, item->id);
-            struct Weapon *weapon = DTAB_GET(pu->unit->weapons_dtab, item->id);
+            struct dtab *weapons_dtab = Unit_dtab_Weapons(pu->unit);
+            Weapon_Load(weapons_dtab, item->id);
+            struct Weapon *weapon = DTAB_GET(weapons_dtab, item->id);
             SDL_assert(weapon != NULL);
             u16 type_ind = Weapon_TypeExp(weapon);
             srcrect.x = (type_ind % PU_WPN_ICON_ROWLEN) * PU_WPN_ICON_H;
@@ -304,8 +306,9 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
         dstrect.x = PU_ICONR_X + 1;
         item = Unit_Item_Equipped(pu->unit, weakhand);
         if (Unit_isEquipped(pu->unit, weakhand) && (item->id > ITEM_NULL)) {
-            Weapon_Load(pu->unit->weapons_dtab, item->id);
-            struct Weapon *weapon = DTAB_GET(pu->unit->weapons_dtab, item->id);
+            struct dtab *weapons_dtab = Unit_dtab_Weapons(pu->unit);
+            Weapon_Load(weapons_dtab, item->id);
+            struct Weapon *weapon = DTAB_GET(weapons_dtab, item->id);
             SDL_assert(weapon != NULL);
             u16 type_ind = Weapon_TypeExp(weapon);
             srcrect.x = (type_ind % PU_WPN_ICON_ROWLEN) * PU_WPN_ICON_H;
@@ -334,10 +337,10 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
 
     /* -- EXP/Level -- */
     PixelFont_Write(pu->pixelnours, renderer, "EXP", 3, PU_EXP_X, PU_EXP_Y);
-    stbsp_sprintf(numbuff, "%02d\0\0\0\0", (pu->unit->exp % SOTA_100PERCENT));
+    stbsp_sprintf(numbuff, "%02d\0\0\0\0", (pu->unit->level.exp % SOTA_100PERCENT));
     PixelFont_Write(pu->pixelnours, renderer, numbuff, strlen(numbuff), PU_EXP_STAT_X, PU_EXP_STAT_Y);
     PixelFont_Write(pu->pixelnours, renderer, "Lv", 2, PU_LV_X, PU_LV_Y);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", (pu->unit->exp / SOTA_100PERCENT));
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", (pu->unit->level.exp / SOTA_100PERCENT));
     PixelFont_Write(pu->pixelnours, renderer, numbuff, strlen(numbuff), PU_LV_STAT_X, PU_LV_STAT_Y);
     /* -- HP -- */
     PixelFont_Write(pu->pixelnours, renderer, "HP", 2,

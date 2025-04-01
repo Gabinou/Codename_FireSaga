@@ -724,7 +724,7 @@ typedef struct Unit {
 
     // internals structs TODO:
     //  1. supports DONE
-    //  2. equipment 
+    //  2. equipment
     //  3. hands/arms
     //  4. flags DONE
     //  5. growth DONE

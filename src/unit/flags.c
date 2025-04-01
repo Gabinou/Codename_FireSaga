@@ -32,14 +32,14 @@ struct Unit_stats *Unit_Stats_Growths(Unit *unit) {
     return (&unit->growth.rates);
 }
 u64 Unit_Skills(Unit *unit) {
-    return(unit->flags.skills);
+    return (unit->flags.skills);
 }
 void Unit_Skill_Add(Unit *unit, u64 skill) {
     unit->flags.skills |= skill;
 }
 struct dtab *Unit_dtab_Weapons(Unit *unit) {
-    return(unit->equipment.weapons_dtab);
+    return (unit->equipment.weapons_dtab);
 }
 struct dtab *Unit_dtab_Items(Unit *unit) {
-    return(unit->equipment.items_dtab);
+    return (unit->equipment.items_dtab);
 }

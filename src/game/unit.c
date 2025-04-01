@@ -181,8 +181,8 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     Unit_setid(unit, unit_id);
     SDL_assert(global_unitNames[unit->_id].data != NULL);
 
-    unit->items_dtab   = sota->items_dtab;
-    unit->weapons_dtab = sota->weapons_dtab;
+    unit->equipment.items_dtab   = sota->items_dtab;
+    unit->equipment.weapons_dtab = sota->weapons_dtab;
     SDL_assert(unit->mvt_type > UNIT_MVT_START);
 
     canEquip can_equip  = canEquip_default;
