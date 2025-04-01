@@ -649,6 +649,8 @@ struct Unit_Flags {
     u64 skills;
     bitflag16_t job_talent;
     u16 equippable;
+    i8  handedness;
+    i8  mvt_type;    
 };
 
 struct Unit_Growth {
@@ -705,6 +707,16 @@ struct Unit_Level {
     u16 exp;
 };
 
+struct Unit_Arms {
+    i32    num; 
+    b32    hands[UNIT_ARMS_NUM]; /* Does unit have hands? */
+};
+
+struct Unit_Private_Stats {
+    struct Unit_stats caps;
+    struct Unit_stats bases;
+}
+
 typedef struct Unit {
     // TODO: unit design:
     //  - Stats values inside unit class are CONSTANT?
@@ -722,18 +734,12 @@ typedef struct Unit {
     //  - effective_stats = current_stats + bonus_stats
     //  - func(effective_stats, supports, bonus_computed_stats) -> computed_stats
 
-    // internals structs TODO:
-    //  1. supports DONE
-    //  2. equipment
-    //  3. hands/arms
-    //  4. flags DONE
-    //  5. growth DONE
-    //  6. id?
-    //  7. story?
-    //  8. Rescue DONE
-
     struct jsonIO_Header jsonio_header;
 
+    // Naming: 
+    //  Unit_Private_<>
+    //  -> Unit_Member_<>
+    //  Unit_Sub_<>
     struct Unit_Growth              growth;
     struct Unit_RNG_Stats_Sequence  rng_sequence;
     struct Unit_Flags               flags;
@@ -743,43 +749,39 @@ typedef struct Unit {
     struct Unit_Level               level;
     struct Unit_Equipment           equipment;
     struct Unit_canEquip            can_equip;
+    struct Unit_Arms                arms;
+    struct Unit_Private_Stats       stats;
 
-    // TODO: struct of all unit ids? + API
+    // Naming? Unit_MemberIDs? unit_identifiers?
     u16 _id;
     u16 title_id;
     i16 class;
+    i8  army;
     i32 ai_id; /* Default AI for unit */
 
-    i8  mvt_type;
-    i8  army;
+    // Naming? Unit_Member_Counters? 
+    //  -> Unit_Member_Variables
+    // All other stats are constants.
     u8  current_hp;
-    i8  handedness;
-    u16 talkable;
+    u8  current_agony; // TODO: Agony struct?
     u8  regrets;
 
-    // TODO: Agony struct
-    u8  current_agony;
-
+    // Unit_Member_Status.
     // Status with least remaining turns on top.
     struct Unit_status *status_queue;
+    // Unit_Member_Mount.
+    struct Mount *mount; // TODO: ID.
 
+    // TODO: Remove all below.
     /* Stats */
-    struct Bonus_Stats *bonus_stack; // TODO rm
+    struct Bonus_Stats *bonus_stack; // TODO rm. Maybe not?
     struct Unit_stats bonus_stats; // TODO remove for new Bonus_Stat Struct
     struct Unit_stats malus_stats; // TODO remove for new Bonus_Stat Struct
-
-    struct Unit_stats caps_stats;
-    struct Unit_stats base_stats;
 
     // TODO: rm
     struct Unit_stats current_stats;    /* base_stats + all growths */
     // TODO: rm
     struct Unit_stats effective_stats;  /* current_stats + bonuses/maluses */
-
-    i32     arms_num;
-    b32    _hands[UNIT_ARMS_NUM]; /* Does unit have hands?             */
-
-    struct Mount *mount;
 
     // TODO: rm
     struct Computed_Stats computed_stats;    /* Computed from Unit_Stats */
