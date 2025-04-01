@@ -646,8 +646,9 @@ struct Unit_Flags {
     b32 update_stats;
     b32 divine_shield;
     b32 isDualWielding; // rm. Should not be saved.
-    bitflag16_t job_talent;
     u64 skills;
+    bitflag16_t job_talent;
+    u16 equippable;
 };
 
 struct Unit_Growth {
@@ -678,22 +679,25 @@ struct Unit_Support {
 };
 
 struct Unit_Equipment {
-    u16 equippable;
-    // TODO: replace raw _equipped with:
-    // struct Loadout _equipped;
-    i32 _equipped[UNIT_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
-
     // Replace with global?
     struct dtab *weapons_dtab;
     struct dtab *items_dtab;
 
-    // TODO: all equipment stuff in a struct
-    struct Inventory_item _equipment[SOTA_EQUIPMENT_SIZE];
+    // TODO: replace raw _equipped with:
+    // struct Loadout _equipped;
+    i32 _equipped[UNIT_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
+    // TODO: all equipment stuff in a struct
+    // _equipment
+    struct Inventory_item arr[SOTA_EQUIPMENT_SIZE];
+    i32 num;
+};
+
+struct Unit_canEquip {
     /* 1. Can't equip more than SOTA_EQUIPMENT_SIZE items */
-    i32 eq_canEquip[SOTA_EQUIPMENT_SIZE];
-    i32 num_equipment;
-    i32 num_canEquip;
+    // eq_canEquip
+    i32 arr[SOTA_EQUIPMENT_SIZE];
+    i32 num;
 };
 
 struct Unit_Level {
@@ -737,6 +741,8 @@ typedef struct Unit {
     struct Unit_Render              render;
     struct Unit_Support             support;
     struct Unit_Level               level;
+    struct Unit_Equipment           equipment;
+    struct Unit_canEquip            can_equip;
 
     // TODO: struct of all unit ids? + API
     u16 _id;

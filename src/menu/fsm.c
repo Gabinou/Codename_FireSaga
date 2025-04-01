@@ -1118,7 +1118,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff(struct Game *sota, struct Menu *mc) {
     can_equip.archetype         = ITEM_ARCHETYPE_STAFF;
     can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE;
     Unit_canEquip_Equipment(unit, can_equip);
-    SDL_assert(unit->num_canEquip > 0);
+    SDL_assert(unit->can_equip.num > 0);
 
     // TODO: save rangemap previous state? how to go back
     unit->render.rangemap = RANGEMAP_HEALMAP;

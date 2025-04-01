@@ -93,7 +93,7 @@ void Unit_Reinforcement_Levelups(struct Unit *unit, struct Reinforcement *reinf)
         return;
 
     for (int i = 0; i < reinf->levelups; i++) {
-        unit->exp += SOTA_100PERCENT;
+        unit->level.exp += SOTA_100PERCENT;
         Unit_lvlUp(unit);
     }
 }

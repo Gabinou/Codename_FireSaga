@@ -21,4 +21,7 @@ void Unit_Skill_Add(Unit *u, u64 skill);
 struct Unit_stats *Unit_Stats_Grown(Unit *u);
 struct Unit_stats *Unit_Stats_Growths(Unit *u);
 
+struct dtab *Unit_dtab_Weapons(Unit *u);
+struct dtab *Unit_dtab_Items(Unit *u);
+
 #endif /* UNIT_H */

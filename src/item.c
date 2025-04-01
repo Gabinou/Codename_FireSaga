@@ -2,6 +2,7 @@
 #include "item.h"
 #include "names.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
 #include "aura.h"
 #include "equations.h"
 #include "weapon.h"
@@ -134,7 +135,7 @@ i32 useEffect_USE_LVL_UP(struct Item *item,
 i32 useEffect_USE_GAIN_SKILL(struct Item *item,
                              struct Unit *user,
                              struct Unit *target) {
-    Unit_Skill_Add(item->stats.AP);
+    Unit_Skill_Add(user, item->stats.AP);
     // why return -1
     return (-1);
 }
