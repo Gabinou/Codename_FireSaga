@@ -9,6 +9,16 @@
 #include "weapon.h"
 #include "nmath.h"
 
+
+Inventory_item *Unit_Equipment(Unit *unit) {
+    return (unit->equipment.arr);
+}
+
+i32 *Unit_canEquip_Arr(Unit *unit) {
+    return (unit->can_equip.arr);
+}
+
+
 /* --- Items --- */
 /* Private item atker at specific spot. Does no checks */
 void _Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, i32 eq) {

@@ -26,10 +26,10 @@ void test_popup_unit() {
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
     Unit_InitWweapons(&Silou, weapons_dtab);
     /* - title - */
-    Silou.weapons_dtab = weapons_dtab;
-    SDL_assert(Silou.num_equipment == 0);
+    Silou.equipment.weapons_dtab = weapons_dtab;
+    SDL_assert(Silou.equipment.num == 0);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);
-    SDL_assert(Silou.num_equipment == 4);
+    SDL_assert(Silou.equipment.num == 4);
 
     _PopUp_Unit_Set(&pu, &Silou);
 

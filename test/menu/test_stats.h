@@ -48,10 +48,10 @@ void test_menu_stats() {
     Silou.title_id = 0;
     global_unitTitlesId[Silou._id] = Silou.title_id;
     global_unitTitles[Silou.title_id] = s8_mut("Playful Mage");
-    Silou.weapons_dtab = weapons_dtab;
-    SDL_assert(Silou.num_equipment == 0);
+    Silou.equipment.weapons_dtab = weapons_dtab;
+    SDL_assert(Silou.equipment.num == 0);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);
-    SDL_assert(Silou.num_equipment == 4);
+    SDL_assert(Silou.equipment.num == 4);
 
     /* - Unit equip - */
     struct Inventory_item in_wpn = Inventory_item_default;
@@ -64,7 +64,7 @@ void test_menu_stats() {
 
     Unit_Item_Drop(&Silou,           weakhand);
     Unit_Item_Takeat(&Silou, in_wpn, weakhand);
-    SDL_assert(Silou.num_equipment == 4);
+    SDL_assert(Silou.equipment.num == 4);
 
     Unit_Equip(&Silou, weakhand, weakhand);
     SDL_assert(Unit_isEquipped(&Silou, weakhand));
@@ -213,31 +213,31 @@ void test_menu_stats() {
 
     /* -- Weapon types -- */
     /* - sword + lance + shield + offhand - */
-    Silou.equippable = ITEM_TYPE_SWORD + ITEM_TYPE_LANCE + ITEM_TYPE_SHIELD + ITEM_TYPE_OFFHAND;
+    Silou.flags.equippable = ITEM_TYPE_SWORD + ITEM_TYPE_LANCE + ITEM_TYPE_SHIELD + ITEM_TYPE_OFFHAND;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Weapon_Duke.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - axe + bow - */
-    Silou.equippable = ITEM_TYPE_AXE + ITEM_TYPE_BOW;
+    Silou.flags.equippable = ITEM_TYPE_AXE + ITEM_TYPE_BOW;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Weapon_AxBo.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - angelic + claw + Sword + Lance + shield - */
-    Silou.equippable = ITEM_TYPE_SWORD + ITEM_TYPE_LANCE + ITEM_TYPE_SHIELD + ITEM_TYPE_CLAW +
-                       ITEM_TYPE_ANGELIC;
+    Silou.flags.equippable = ITEM_TYPE_SWORD + ITEM_TYPE_LANCE + ITEM_TYPE_SHIELD + ITEM_TYPE_CLAW +
+                             ITEM_TYPE_ANGELIC;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Weapon_Angel.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - demonic  + staff + trinket - */
-    Silou.equippable = ITEM_TYPE_STAFF + ITEM_TYPE_DEMONIC + ITEM_TYPE_TRINKET;
+    Silou.flags.equippable = ITEM_TYPE_STAFF + ITEM_TYPE_DEMONIC + ITEM_TYPE_TRINKET;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Weapon_DeStTr.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
     /* - NONE - */
-    Silou.equippable = ITEM_TYPE_NULL;
+    Silou.flags.equippable = ITEM_TYPE_NULL;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Weapon_None.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
@@ -344,49 +344,50 @@ void test_menu_stats() {
     // TODO: Faces Icons
 
     /* -- Empty inventory -- */
-    Silou.num_equipment = 0;
+    Silou.equipment.num = 0;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Equipment_0.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Full inventory -- */
-    Silou.num_equipment = 4;
+    Silou.equipment.num = 4;
     in_wpn.id   = ITEM_ID_IRON_SWORD;
     in_wpn.used = 0;
     Weapon_Load(weapons_dtab, in_wpn.id);
     Unit_Item_Take(&Silou, in_wpn);
-    SDL_assert(Silou.num_equipment == 5);
+    SDL_assert(Silou.equipment.num == 5);
 
     in_wpn.id   = ITEM_ID_IRON_LANCE;
     in_wpn.used = 10;
     Weapon_Load(weapons_dtab, in_wpn.id);
     Unit_Item_Take(&Silou, in_wpn);
-    SDL_assert(Silou.num_equipment == 6);
+    SDL_assert(Silou.equipment.num == 6);
 
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Equipment_Full.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Low Durability -- */
-    Silou._equipment[0].used = 20;
-    Silou._equipment[1].used = 21;
-    Silou._equipment[2].used = 12;
+    Inventory_item *silou_eq = Unit_Equipment(&Silou);
+    silou_eq[0].used = 20;
+    silou_eq[1].used = 21;
+    silou_eq[2].used = 12;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Durability_Digits_1.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Long weapon names -- */
-    Silou._equipment[0].used = 0;
-    Silou._equipment[1].used = 0;
-    Silou._equipment[2].used = 0;
-    Silou._equipment[0].id   = ITEM_ID_RETRACTABLE_WRISTBLADE;
-    Silou._equipment[1].id   = ITEM_ID_REPEATABLE_CROSSBOW;
-    Silou._equipment[2].id   = ITEM_ID_HONJOU_MASAMUNE;
-    Silou._equipment[3].id   = ITEM_ID_SILVERLIGHT_SPEAR;
-    Weapon_Load(weapons_dtab, Silou._equipment[0].id);
-    Weapon_Load(weapons_dtab, Silou._equipment[1].id);
-    Weapon_Load(weapons_dtab, Silou._equipment[2].id);
-    Weapon_Load(weapons_dtab, Silou._equipment[3].id);
+    silou_eq[0].used = 0;
+    silou_eq[1].used = 0;
+    silou_eq[2].used = 0;
+    silou_eq[0].id   = ITEM_ID_RETRACTABLE_WRISTBLADE;
+    silou_eq[1].id   = ITEM_ID_REPEATABLE_CROSSBOW;
+    silou_eq[2].id   = ITEM_ID_HONJOU_MASAMUNE;
+    silou_eq[3].id   = ITEM_ID_SILVERLIGHT_SPEAR;
+    Weapon_Load(weapons_dtab, silou_eq[0].id);
+    Weapon_Load(weapons_dtab, silou_eq[1].id);
+    Weapon_Load(weapons_dtab, silou_eq[2].id);
+    Weapon_Load(weapons_dtab, silou_eq[3].id);
     // TODO: when stats menu supports items
     // Silou._equipment[4].id   = ITEM_ID_DOUBLE_SIDED_WHETSTONE;
     // Item_Load(items_dtab, Silou._equipment[4].id);

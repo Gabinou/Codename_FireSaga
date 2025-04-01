@@ -38,8 +38,8 @@ void test_popup_map_combat() {
     Unit_Init(&aggressor);
     Unit_Init(&defendant);
 
-    aggressor.weapons_dtab = weapons_dtab;
-    defendant.weapons_dtab = weapons_dtab;
+    aggressor.equipment.weapons_dtab = weapons_dtab;
+    defendant.equipment.weapons_dtab = weapons_dtab;
 
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &aggressor);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Fencer_test.json")), &defendant);

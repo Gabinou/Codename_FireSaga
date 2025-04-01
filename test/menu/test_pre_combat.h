@@ -53,12 +53,12 @@ void test_menu_pre_combat() {
     Unit_Init(&Silou);
     struct Unit Hamilcar = Unit_default;
     Unit_Init(&Hamilcar);
-    Silou.weapons_dtab = weapons_dtab;
-    Hamilcar.weapons_dtab = weapons_dtab;
-    nourstest_true(Silou.num_equipment    == 0);
-    nourstest_true(Hamilcar.num_equipment == 0);
+    Silou.equipment.weapons_dtab = weapons_dtab;
+    Hamilcar.equipment.weapons_dtab = weapons_dtab;
+    nourstest_true(Silou.equipment.num    == 0);
+    nourstest_true(Hamilcar.equipment.num == 0);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);
-    nourstest_true(Silou.num_equipment == 4);
+    nourstest_true(Silou.equipment.num == 4);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Hamilcar_test.json")), &Hamilcar);
 
     int stronghand  = Unit_Hand_Strong(&Silou);
@@ -71,7 +71,7 @@ void test_menu_pre_combat() {
     Weapon_Load(weapons_dtab, in_wpn.id);
     // Unit_Item_Drop(&Silou,           weakhand);
     // Unit_Item_Takeat(&Silou, in_wpn, weakhand);
-    nourstest_true(Silou.num_equipment == 4);
+    nourstest_true(Silou.equipment.num == 4);
     Unit_Equip(&Silou, weakhand, weakhand);
     Unit_Equip(&Silou, stronghand, stronghand);
     // Silou has BALL LIGHTNING and WOODEN SHIELD
@@ -519,10 +519,12 @@ void test_menu_pre_combat() {
     nourstest_true(!Unit_istwoHanding(&Hamilcar));
     Unit_Item_Drop(&Hamilcar, weakhand);
     Unit_Item_Drop(&Silou, weakhand);
-    Silou._equipment[ITEM1 - ITEM1].id    = ITEM_ID_BROADSWORD;
-    Silou._equipment[ITEM2 - ITEM1].id    = ITEM_ID_BROADSWORD;
-    Hamilcar._equipment[ITEM1 - ITEM1].id = ITEM_ID_BROADSWORD;
-    Hamilcar._equipment[ITEM2 - ITEM1].id = ITEM_ID_BROADSWORD;
+    Inventory_item *silou_eq = Unit_Equipment(&Silou);
+    silou_eq[ITEM1 - ITEM1].id    = ITEM_ID_BROADSWORD;
+    silou_eq[ITEM2 - ITEM1].id    = ITEM_ID_BROADSWORD;
+    Inventory_item *hamilcar_eq = Unit_Equipment(&Hamilcar);
+    hamilcar_eq[ITEM1 - ITEM1].id = ITEM_ID_BROADSWORD;
+    hamilcar_eq[ITEM2 - ITEM1].id = ITEM_ID_BROADSWORD;
     Unit_Equip(&Silou,    weakhand, stronghand);
     Unit_Equip(&Hamilcar, weakhand, stronghand);
     nourstest_true(Unit_istwoHanding(&Silou));

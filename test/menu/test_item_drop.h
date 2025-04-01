@@ -36,11 +36,11 @@ void test_menu_item_drop() {
     idm->unit = &Silou;
 
     /* - title - */
-    Silou.weapons_dtab = weapons_dtab;
-    Silou.items_dtab   = items_dtab;
-    SDL_assert(Silou.num_equipment == 0);
+    Silou.equipment.weapons_dtab = weapons_dtab;
+    Silou.equipment.items_dtab   = items_dtab;
+    SDL_assert(Silou.equipment.num == 0);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);
-    SDL_assert(Silou.num_equipment == 4);
+    SDL_assert(Silou.equipment.num == 4);
 
     /* - Unit equip - */
     struct Inventory_item in_wpn = Inventory_item_default;
@@ -50,22 +50,25 @@ void test_menu_item_drop() {
 
     /* -- Long weapon names -- */
     Silou.handedness = UNIT_HAND_LEFTIE;
-    Silou._equipment[ITEM1 - ITEM1].used = 1;
-    Silou._equipment[ITEM2 - ITEM1].used = 0;
-    Silou._equipment[ITEM3 - ITEM1].used = 0;
-    Silou._equipment[ITEM1 - ITEM1].id   = ITEM_ID_RETRACTABLE_WRISTBLADE;
-    Silou._equipment[ITEM2 - ITEM1].id   = ITEM_ID_REPEATABLE_CROSSBOW;
-    Silou._equipment[ITEM3 - ITEM1].id   = ITEM_ID_HONJOU_MASAMUNE;
-    Silou._equipment[ITEM4 - ITEM1].id   = ITEM_ID_SILVERLIGHT_SPEAR;
-    Weapon_Load(weapons_dtab, Silou._equipment[ITEM1 - ITEM1].id);
-    Weapon_Load(weapons_dtab, Silou._equipment[ITEM2 - ITEM1].id);
-    Weapon_Load(weapons_dtab, Silou._equipment[ITEM3 - ITEM1].id);
-    Weapon_Load(weapons_dtab, Silou._equipment[ITEM4 - ITEM1].id);
-    idm->unit->eq_canEquip[0] = 0;
-    idm->unit->eq_canEquip[1] = 1;
-    idm->unit->eq_canEquip[2] = 2;
-    idm->unit->eq_canEquip[3] = 3;
-    idm->unit->num_canEquip   = 4;
+    Inventory_item *silou_eq = Unit_Equipment(&Silou);
+    silou_eq[ITEM1 - ITEM1].used = 1;
+    silou_eq[ITEM2 - ITEM1].used = 0;
+    silou_eq[ITEM3 - ITEM1].used = 0;
+    silou_eq[ITEM1 - ITEM1].id   = ITEM_ID_RETRACTABLE_WRISTBLADE;
+    silou_eq[ITEM2 - ITEM1].id   = ITEM_ID_REPEATABLE_CROSSBOW;
+    silou_eq[ITEM3 - ITEM1].id   = ITEM_ID_HONJOU_MASAMUNE;
+    silou_eq[ITEM4 - ITEM1].id   = ITEM_ID_SILVERLIGHT_SPEAR;
+    Weapon_Load(weapons_dtab, silou_eq[ITEM1 - ITEM1].id);
+    Weapon_Load(weapons_dtab, silou_eq[ITEM2 - ITEM1].id);
+    Weapon_Load(weapons_dtab, silou_eq[ITEM3 - ITEM1].id);
+    Weapon_Load(weapons_dtab, silou_eq[ITEM4 - ITEM1].id);
+
+    i32 *can_equip = Unit_canEquip_Arr(idm->unit);
+    can_equip[0] = 0;
+    can_equip[1] = 1;
+    can_equip[2] = 2;
+    can_equip[3] = 3;
+    idm->unit->can_equip.num   = 4;
 
     idm->item_todrop = ITEM1;
     ItemDropMenu_Update(idm, &n9patch, render_target, renderer);

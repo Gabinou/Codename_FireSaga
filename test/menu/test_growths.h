@@ -43,12 +43,12 @@ void test_menu_growths() {
     struct Unit_stats *grown = Unit_Stats_Grown(&Silou);
     SDL_assert(grown == NULL);
     Unit_Init(&Silou);
-    Silou.weapons_dtab = weapons_dtab;
-    SDL_assert(Silou.num_equipment == 0);
+    Silou.equipment.weapons_dtab = weapons_dtab;
+    SDL_assert(Silou.equipment.num == 0);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);
     grown = Unit_Stats_Grown(&Silou);
     SDL_assert(grown != NULL);
-    SDL_assert(Silou.num_equipment == 4);
+    SDL_assert(Silou.equipment.num == 4);
 
     /* - Unit equip - */
     struct Inventory_item in_wpn = Inventory_item_default;
@@ -61,7 +61,7 @@ void test_menu_growths() {
 
     Unit_Item_Drop(&Silou,           weakhand);
     Unit_Item_Takeat(&Silou, in_wpn, weakhand);
-    SDL_assert(Silou.num_equipment == 4);
+    SDL_assert(Silou.equipment.num == 4);
     Unit_Equip(&Silou, weakhand, ITEM1);
     // Silou._equipped[weakhand] = true;
     SDL_assert(Unit_isEquipped(&Silou, weakhand));

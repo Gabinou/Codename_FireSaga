@@ -3,6 +3,8 @@
 #include "game/game.h"
 #include "game/unit.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
+#include "unit/equipment.h"
 #include "combat.h"
 #include "equations.h"
 
@@ -24,6 +26,7 @@ void test_combat_game() {
     struct Unit_stats attacker_stats = {19,  4,  2,  7,  7,  7, 7,  4,  5,  6, 5};
     struct Unit_stats defender_stats = {19,  4,  2,  7,  7,  7, 7,  4,  5,  6, 5};
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    struct dtab *items_dtab = DTAB_INIT(weapons_dtab, struct Item);
     Unit_InitWweapons(&attacker, weapons_dtab);
     Unit_InitWweapons(&defender, weapons_dtab);
     firesaga.weapons_dtab = weapons_dtab;
@@ -38,6 +41,8 @@ void test_combat_game() {
     in_wpn.id = ITEM_ID_FLEURET;
     b32 attacker_equip_hand = Unit_Hand_Strong(&attacker);
     b32 defender_equip_hand = Unit_Hand_Strong(&defender);
+    attacker.equipment.items_dtab = items_dtab;
+    defender.equipment.items_dtab = items_dtab;
     Unit_Item_Drop(&defender,           defender_equip_hand);
     Unit_Item_Takeat(&defender, in_wpn, defender_equip_hand);
     Unit_Item_Drop(&attacker,           attacker_equip_hand);
@@ -46,22 +51,24 @@ void test_combat_game() {
     Unit_Equip(&attacker, attacker_equip_hand, attacker_equip_hand);
     SDL_assert(Unit_isEquipped(&defender, defender_equip_hand));
     SDL_assert(Unit_isEquipped(&attacker, attacker_equip_hand));
-    SDL_assert(defender._equipment[defender_equip_hand].id = ITEM_ID_FLEURET);
-    SDL_assert(attacker._equipment[attacker_equip_hand].id = ITEM_ID_FLEURET);
+    struct Inventory_item *defender_eq  = Unit_Equipment(&defender);
+    struct Inventory_item *attacker_eq  = Unit_Equipment(&attacker);
+    SDL_assert(defender_eq[defender_equip_hand].id = ITEM_ID_FLEURET);
+    SDL_assert(defender_eq[attacker_equip_hand].id = ITEM_ID_FLEURET);
     nourstest_true(Unit_canAttack(&defender));
     nourstest_true(Unit_canAttack(&attacker));
     SDL_assert(Unit_isEquipped(&defender, defender_equip_hand));
     SDL_assert(Unit_isEquipped(&attacker, attacker_equip_hand));
-    SDL_assert(defender._equipment[defender_equip_hand].id = ITEM_ID_FLEURET);
-    SDL_assert(attacker._equipment[attacker_equip_hand].id = ITEM_ID_FLEURET);
+    SDL_assert(defender_eq[defender_equip_hand].id = ITEM_ID_FLEURET);
+    SDL_assert(attacker_eq[attacker_equip_hand].id = ITEM_ID_FLEURET);
     nourstest_true(attacker.current_hp == attacker_stats.hp);
     nourstest_true(defender.current_hp == defender_stats.hp);
     Unit_computedStats(&attacker, distance);
     Unit_computedStats(&defender, distance);
     SDL_assert(Unit_isEquipped(&defender, defender_equip_hand));
     SDL_assert(Unit_isEquipped(&attacker, attacker_equip_hand));
-    SDL_assert(defender._equipment[defender_equip_hand].id = ITEM_ID_FLEURET);
-    SDL_assert(attacker._equipment[attacker_equip_hand].id = ITEM_ID_FLEURET);
+    SDL_assert(defender_eq[defender_equip_hand].id = ITEM_ID_FLEURET);
+    SDL_assert(attacker_eq[attacker_equip_hand].id = ITEM_ID_FLEURET);
 
     struct Weapon *fleuret = ((struct Weapon *)DTAB_GET(weapons_dtab, in_wpn.id));
 
@@ -106,20 +113,22 @@ void test_combat_game() {
     // checking defender equipped");
     SDL_assert(Unit_isEquipped(&defender, defender_equip_hand));
     if (Unit_isEquipped(&defender, defender_equip_hand)) {
-        SDL_assert(defender.weapons_dtab != NULL);
-        SDL_assert(defender._equipment != NULL);
-        temp_id = defender._equipment[defender_equip_hand].id;
+        struct dtab *weapons_dtab = Unit_dtab_Weapons(&defender);
+        SDL_assert(weapons_dtab != NULL);
+        SDL_assert(defender_eq != NULL);
+        temp_id = defender_eq[defender_equip_hand].id;
         SDL_assert(temp_id == in_wpn.id);
-        defender_weaponp = ((struct Weapon *)DTAB_GET(defender.weapons_dtab, temp_id));
+        defender_weaponp = ((struct Weapon *)DTAB_GET(weapons_dtab, temp_id));
         SDL_assert(defender_weaponp != NULL);
     }
 
     // checking attacker equipped");
     SDL_assert(Unit_isEquipped(&attacker, attacker_equip_hand));
     if (Unit_isEquipped(&attacker, attacker_equip_hand)) {
-        SDL_assert(attacker.weapons_dtab != NULL);
-        attacker_weaponp = ((struct Weapon *)DTAB_GET(attacker.weapons_dtab,
-                                                      attacker._equipment[attacker_equip_hand].id));
+        struct dtab *weapons_dtab = Unit_dtab_Weapons(&attacker);
+        SDL_assert(weapons_dtab != NULL);
+        temp_id = attacker_eq[attacker_equip_hand].id;
+        attacker_weaponp = ((struct Weapon *)DTAB_GET(weapons_dtab, temp_id));
         nourstest_true(attacker_weaponp != NULL);
     }
 

@@ -15,9 +15,10 @@
 void test_canEquip_Type(void) {
     struct Unit Silou = Unit_default;
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    struct dtab *items_dtab = DTAB_INIT(items_dtab, struct Item);
     Unit_InitWweapons(&Silou, weapons_dtab);
-
-    Silou.equippable = 0;
+    Silou.equipment.items_dtab = items_dtab;
+    Silou.flags.equippable = 0;
     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == false);
     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == false);
     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == false);
@@ -31,7 +32,7 @@ void test_canEquip_Type(void) {
     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == false);
     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == false);
 
-    Silou.equippable = ITEM_TYPE_SWORD | ITEM_TYPE_OFFHAND | ITEM_TYPE_SHIELD;
+    Silou.flags.equippable = ITEM_TYPE_SWORD | ITEM_TYPE_OFFHAND | ITEM_TYPE_SHIELD;
     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == true);
     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == true);
     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == false);
@@ -45,7 +46,7 @@ void test_canEquip_Type(void) {
     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == false);
     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == false);
 
-    Silou.equippable = -1;
+    Silou.flags.equippable = -1;
     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == true);
     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == true);
     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_PITCHFORK)      == true);
@@ -69,8 +70,9 @@ void test_skills(void) {
     struct Point defender_pos = {2, 2};
     int distance = 1;
     struct Unit Silou = Unit_default;
-    struct Unit Enemy = Unit_default;
+    struct Unit Hamilcar = Unit_default;
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    struct dtab *items_dtab = DTAB_INIT(items_dtab, struct Item);
     Weapon_Load(weapons_dtab, ITEM_ID_FLEURET);
     struct Weapon *fleuret = (struct Weapon *)DTAB_GET(weapons_dtab, ITEM_ID_FLEURET);
     nourstest_true(fleuret != NULL);
@@ -79,33 +81,35 @@ void test_skills(void) {
     nourstest_true(fleuret->item->id == ITEM_ID_FLEURET);
     nourstest_true(Weapon_canAttack(fleuret));
     Unit_InitWweapons(&Silou, weapons_dtab);
-    Unit_InitWweapons(&Enemy, weapons_dtab);
+    Unit_InitWweapons(&Hamilcar, weapons_dtab);
+    Silou.equipment.items_dtab = items_dtab;
+    Hamilcar.equipment.items_dtab = items_dtab;
     //                           hp, str, mag, agi, dex, fth, luck, def, res, con, move
     struct Unit_stats in_stats = {17,  6,  2,  7,  7, 7,  7,  4,  5,  6, 5};
     Unit_setClassind(&Silou, UNIT_CLASS_FENCER);
-    Unit_setClassind(&Enemy, UNIT_CLASS_FENCER);
+    Unit_setClassind(&Hamilcar, UNIT_CLASS_FENCER);
 
     Unit_setStats(&Silou, in_stats);
-    Unit_setStats(&Enemy, in_stats);
-    Silou.skills = UNIT_SKILL_PINPRICK;
+    Unit_setStats(&Hamilcar, in_stats);
+    Silou.flags.skills = UNIT_SKILL_PINPRICK;
     struct Inventory_item in_wpn = Inventory_item_default;
     in_wpn.id = ITEM_ID_FLEURET;
     Unit_Item_Drop(&Silou,           UNIT_HAND_LEFT);
     Unit_Item_Takeat(&Silou, in_wpn, UNIT_HAND_LEFT);
-    Unit_Item_Drop(&Enemy,           UNIT_HAND_LEFT);
-    Unit_Item_Takeat(&Enemy, in_wpn, UNIT_HAND_LEFT);
+    Unit_Item_Drop(&Hamilcar,           UNIT_HAND_LEFT);
+    Unit_Item_Takeat(&Hamilcar, in_wpn, UNIT_HAND_LEFT);
     Unit_Equip(&Silou, UNIT_HAND_LEFT, UNIT_HAND_LEFT);
-    Unit_Equip(&Enemy, UNIT_HAND_LEFT, UNIT_HAND_LEFT);
-    nourstest_true(Unit_isEquipped(&Enemy, UNIT_HAND_LEFT));
+    Unit_Equip(&Hamilcar, UNIT_HAND_LEFT, UNIT_HAND_LEFT);
+    nourstest_true(Unit_isEquipped(&Hamilcar, UNIT_HAND_LEFT));
     nourstest_true(Unit_isEquipped(&Silou, UNIT_HAND_LEFT));
-    nourstest_true(Unit_canAttack(&Enemy));
+    nourstest_true(Unit_canAttack(&Hamilcar));
     nourstest_true(Unit_canAttack(&Silou));
     Unit_computedStats(&Silou, distance);
-    Unit_computedStats(&Enemy, distance);
+    Unit_computedStats(&Hamilcar, distance);
 
     /* --- SDL_free --- */
     Unit_Free(&Silou);
-    Unit_Free(&Enemy);
+    Unit_Free(&Hamilcar);
     Game_Weapons_Free(&weapons_dtab);
 }
 
@@ -117,11 +121,20 @@ void test_io(void) {
     struct Unit unit5 = Unit_default;
     struct dtab *weapons_dtab  = DTAB_INIT(weapons_dtab,  struct Weapon);
     struct dtab *weapons_dtab2 = DTAB_INIT(weapons_dtab2, struct Weapon);
+    struct dtab *items_dtab = DTAB_INIT(items_dtab, struct Item);
+
     Unit_InitWweapons(&unit1, weapons_dtab);
     Unit_InitWweapons(&unit2, weapons_dtab);
     Unit_InitWweapons(&unit3, weapons_dtab);
     Unit_InitWweapons(&unit4, weapons_dtab);
     Unit_InitWweapons(&unit5, weapons_dtab);
+    unit1.equipment.items_dtab = items_dtab;
+    unit2.equipment.items_dtab = items_dtab;
+    unit3.equipment.items_dtab = items_dtab;
+    unit4.equipment.items_dtab = items_dtab;
+    unit5.equipment.items_dtab = items_dtab;
+
+
     /*                              hp, str, mag, agi, dex, fth, luck, def, res, con, move, prof */
     struct Unit_stats in_caps =    {48,  14,  25,  32,  34,  28,   28,  19,  40,  15,    0, 25};
     struct Unit_stats in_stats =   {17,   6,   2,   7,   7,   7,    7,   4,   5,   6,    5,  3};
@@ -139,8 +152,8 @@ void test_io(void) {
     unit1.base_stats    = in_stats;
     unit1.current_stats = in_stats;
     unit1.growth.rates  = in_growths;
-    unit1.base_exp      = 0;
-    unit1.exp           = 0;
+    unit1.level.base_exp      = 0;
+    unit1.level.exp           = 0;
     in_wpn.id = ITEM_ID_FLEURET;
     Unit_Item_Take(&unit1, in_wpn);
     in_wpn.id = ITEM_ID_KITCHEN_KNIFE;
@@ -258,7 +271,7 @@ void test_growth(void) {
     struct Unit_stats out_caps    = Unit_stats_default;
     struct Unit_stats out_growths = Unit_stats_default;
 
-    Silou.exp           = 0; /* lvl 1 */
+    Silou.level.exp           = 0; /* lvl 1 */
     Silou.caps_stats    = in_caps;
     Silou.base_stats    = in_stats;
     Silou.current_stats = in_stats;
@@ -547,7 +560,10 @@ void test_bonus_stats(void) {
 void test_canEquip_OneHand() {
     struct Unit Silou = Unit_default;
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    struct dtab *items_dtab = DTAB_INIT(items_dtab, struct Item);
     Unit_InitWweapons(&Silou, weapons_dtab);
+    Silou.equipment.items_dtab = items_dtab;
+
     Unit_setClassind(&Silou, UNIT_CLASS_FENCER);
     Weapon_Load(weapons_dtab, ITEM_ID_FLEURET);
     struct Weapon *weapon = DTAB_GET(weapons_dtab, ITEM_ID_FLEURET);
@@ -555,12 +571,13 @@ void test_canEquip_OneHand() {
 
     Unit_Unequip(&Silou, UNIT_HAND_LEFT);
     Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
-    Silou._equipment[0].id    = ITEM_ID_FLEURET;
-    Silou._equipment[1].id    = ITEM_ID_FLEURET;
-    Silou._equipment[2].id    = ITEM_ID_FLEURET;
-    Silou._equipment[3].id    = ITEM_ID_FLEURET;
-    Silou._equipment[4].id    = ITEM_ID_FLEURET;
-    Silou._equipment[5].id    = ITEM_ID_FLEURET;
+    Inventory_item *silou_eq = Unit_Equipment(&Silou);
+    silou_eq[0].id    = ITEM_ID_FLEURET;
+    silou_eq[1].id    = ITEM_ID_FLEURET;
+    silou_eq[2].id    = ITEM_ID_FLEURET;
+    silou_eq[3].id    = ITEM_ID_FLEURET;
+    silou_eq[4].id    = ITEM_ID_FLEURET;
+    silou_eq[5].id    = ITEM_ID_FLEURET;
 
     i32 mode = TWO_HAND_EQ_MODE_STRICT;
     // Left handed Weapon
@@ -625,7 +642,9 @@ void test_canEquip_OneHand() {
 void test_canEquip_TwoHand() {
     struct Unit Silou = Unit_default;
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    struct dtab *items_dtab = DTAB_INIT(items_dtab, struct Item);
     Unit_InitWweapons(&Silou, weapons_dtab);
+    Silou.equipment.items_dtab = items_dtab;
     Unit_setClassind(&Silou, UNIT_CLASS_FENCER);
     Weapon_Load(weapons_dtab, ITEM_ID_FLEURET);
     Weapon_Load(weapons_dtab, ITEM_ID_RAPIERE);
@@ -635,12 +654,13 @@ void test_canEquip_TwoHand() {
     /* Try to equip a one hand weapon when already in other hand */
     Unit_Unequip(&Silou, UNIT_HAND_LEFT);
     Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
-    Silou._equipment[0].id    = ITEM_ID_FLEURET;
-    Silou._equipment[1].id    = ITEM_ID_FLEURET;
-    Silou._equipment[2].id    = ITEM_ID_FLEURET;
-    Silou._equipment[3].id    = ITEM_ID_FLEURET;
-    Silou._equipment[4].id    = ITEM_ID_FLEURET;
-    Silou._equipment[5].id    = ITEM_ID_FLEURET;
+    Inventory_item *silou_eq = Unit_Equipment(&Silou);
+    silou_eq[0].id    = ITEM_ID_FLEURET;
+    silou_eq[1].id    = ITEM_ID_FLEURET;
+    silou_eq[2].id    = ITEM_ID_FLEURET;
+    silou_eq[3].id    = ITEM_ID_FLEURET;
+    silou_eq[4].id    = ITEM_ID_FLEURET;
+    silou_eq[5].id    = ITEM_ID_FLEURET;
 
     // Left handed Weapon
     weapon->handedness = WEAPON_HAND_LEFT;
@@ -710,8 +730,10 @@ void test_canEquip_TwoHand() {
     /* Try to equip a one hand weapon when already in other hand */
     Unit_Equip(&Silou, UNIT_HAND_LEFT, ITEM1);
     Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
-    Silou._equipment[0].id    = ITEM_ID_FLEURET;
-    Silou._equipment[1].id    = ITEM_ID_RAPIERE;
+
+    silou_eq = Unit_Equipment(&Silou);
+    silou_eq[0].id    = ITEM_ID_FLEURET;
+    silou_eq[1].id    = ITEM_ID_RAPIERE;
 
     nourstest_true(!Unit_canEquip_TwoHand(&Silou, ITEM2, UNIT_HAND_RIGHT, mode));
     nourstest_true( Unit_canEquip_TwoHand(&Silou, ITEM1, UNIT_HAND_RIGHT, mode));
@@ -720,8 +742,9 @@ void test_canEquip_TwoHand() {
          that can't be twohanded */
     Unit_Equip(&Silou,      UNIT_HAND_LEFT, ITEM1);
     Unit_Unequip(&Silou,    UNIT_HAND_RIGHT);
-    Silou._equipment[0].id    = ITEM_ID_FLEURET;
-    Silou._equipment[1].id    = ITEM_ID_RAPIERE;
+    silou_eq = Unit_Equipment(&Silou);
+    silou_eq[0].id    = ITEM_ID_FLEURET;
+    silou_eq[1].id    = ITEM_ID_RAPIERE;
 
     weapon->handedness  = WEAPON_HAND_ANY;
     weapon2->handedness = WEAPON_HAND_ANY;
@@ -733,7 +756,8 @@ void test_canEquip_TwoHand() {
     /* Try to equip staff  */
     Unit_Unequip(&Silou, UNIT_HAND_LEFT);
     Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
-    Silou._equipment[0].id    = ITEM_ID_HEAL;
+    silou_eq = Unit_Equipment(&Silou);
+    silou_eq[0].id    = ITEM_ID_HEAL;
 
     nourstest_true( Unit_canEquip_TwoHand(&Silou, ITEM1, UNIT_HAND_RIGHT, mode));
     nourstest_true( Unit_canEquip_TwoHand(&Silou, ITEM1, UNIT_HAND_LEFT, mode));
@@ -744,7 +768,10 @@ void test_canEquip_TwoHand() {
 void test_canEquip_Users(void) {
     struct Unit Silou = Unit_default;
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    struct dtab *items_dtab = DTAB_INIT(items_dtab, struct Item);
+
     Unit_InitWweapons(&Silou, weapons_dtab);
+    Silou.equipment.items_dtab = items_dtab;
     int id = ITEM_ID_FLEURET;
     Weapon_Load(weapons_dtab, id);
     Silou._id = UNIT_ID_SILOU;
@@ -752,7 +779,8 @@ void test_canEquip_Users(void) {
     struct Weapon *weapon = DTAB_GET(weapons_dtab, id);
 
     int eq = 0;
-    Silou._equipment[eq].id = id;
+    Inventory_item *silou_eq = Unit_Equipment(&Silou);
+    silou_eq[eq].id = id;
     weapon->item->users     = NULL;
 
     nourstest_true(Unit_canEquip_Users(&Silou, id));
@@ -774,7 +802,10 @@ void test_canEquip_Users(void) {
 void test_canEquip_Archetype(void) {
     struct Unit Silou = Unit_default;
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    struct dtab *items_dtab = DTAB_INIT(items_dtab, struct Item);
+
     Unit_InitWweapons(&Silou, weapons_dtab);
+    Silou.equipment.items_dtab = items_dtab;
     int id = ITEM_ID_FLEURET;
     Weapon_Load(weapons_dtab, id);
     Silou._id = UNIT_ID_SILOU;
@@ -782,7 +813,8 @@ void test_canEquip_Archetype(void) {
     struct Weapon *weapon = DTAB_GET(weapons_dtab, id);
 
     int eq = 0;
-    Silou._equipment[eq].id = id;
+    Inventory_item *silou_eq = Unit_Equipment(&Silou);
+    silou_eq[eq].id = id;
 
     nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_NULL));
     nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_ITEM));
@@ -814,17 +846,21 @@ void test_canEquip(void) {
     //  - Does the loadout make sense for unit/class/selection
     struct Unit Silou = Unit_default;
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    struct dtab *items_dtab = DTAB_INIT(items_dtab, struct Item);
+
     Unit_InitWweapons(&Silou, weapons_dtab);
+    Silou.equipment.items_dtab = items_dtab;
     Silou._id = UNIT_ID_SILOU;
 
     /* --- Staff user that can't twohand --- */
     Unit_setClassind(&Silou, UNIT_CLASS_VESTAL);
-    Silou.equippable = ITEM_TYPE_STAFF;
+    Silou.flags.equippable = ITEM_TYPE_STAFF;
     // Unit_Equip(&Silou, UNIT_HAND_LEFT, 0);
     // Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
-    Silou._equipment[0].id              = ITEM_ID_FLEURET;
-    Silou._equipment[1].id              = ITEM_ID_RAPIERE;
-    Silou._equipment[2].id              = ITEM_ID_HEAL;
+    Inventory_item *silou_eq = Unit_Equipment(&Silou);
+    silou_eq[0].id              = ITEM_ID_FLEURET;
+    silou_eq[1].id              = ITEM_ID_RAPIERE;
+    silou_eq[2].id              = ITEM_ID_HEAL;
 
     /* Nothing in either hand */
     canEquip can_equip  = canEquip_default;
@@ -863,7 +899,7 @@ void test_canEquip(void) {
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
 
     /* --- Staff user that can twohand with skill --- */
-    Silou.skills |= PASSIVE_SKILL_STAFF_ONE_HAND;
+    Silou.flags.skills |= PASSIVE_SKILL_STAFF_ONE_HAND;
 
     /* -- Stronghand NOT equipped -- */
     can_equip.hand      = UNIT_HAND_LEFT;
@@ -890,11 +926,12 @@ void test_canEquip(void) {
 
     /* --- Mage that can't two hand --- */
     Unit_setClassind(&Silou, UNIT_CLASS_MAGE);
-    Silou.equippable = ITEM_TYPE_ANGELIC | ITEM_TYPE_DEMONIC | ITEM_TYPE_ELEMENTAL;
+    Silou.flags.equippable = ITEM_TYPE_ANGELIC | ITEM_TYPE_DEMONIC | ITEM_TYPE_ELEMENTAL;
 
-    Silou._equipment[0].id              = ITEM_ID_WIND_SPEAR;
-    Silou._equipment[1].id              = ITEM_ID_DOWNFALL;
-    Silou._equipment[2].id              = ITEM_ID_SILVERLIGHT_SPEAR;
+    silou_eq = Unit_Equipment(&Silou);
+    silou_eq[0].id  = ITEM_ID_WIND_SPEAR;
+    silou_eq[1].id  = ITEM_ID_DOWNFALL;
+    silou_eq[2].id  = ITEM_ID_SILVERLIGHT_SPEAR;
 
     /* -- Stronghand NOT equipped -- */
     canEquip_Loadout_None(&can_equip, UNIT_HAND_LEFT);
@@ -927,7 +964,7 @@ void test_canEquip(void) {
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
 
     /* --- Mage that can two hand due to skill --- */
-    Silou.skills = PASSIVE_SKILL_MAGIC_ONE_HAND;
+    Silou.flags.skills = PASSIVE_SKILL_MAGIC_ONE_HAND;
     /* -- Stronghand NOT equipped -- */
     canEquip_Loadout_None(&can_equip, UNIT_HAND_LEFT);
     canEquip_Loadout_None(&can_equip, UNIT_HAND_RIGHT);
@@ -973,10 +1010,11 @@ void test_canEquip(void) {
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
 
     /* --- Normal physical soldier --- */
-    Silou.equippable = ITEM_TYPE_LANCE | ITEM_TYPE_SHIELD | ITEM_TYPE_SWORD;
-    Silou._equipment[0].id = ITEM_ID_IRON_LANCE;
-    Silou._equipment[1].id = ITEM_ID_WOODEN_SHIELD;
-    Silou._equipment[2].id = ITEM_ID_WRATH_LANCE;
+    Silou.flags.equippable = ITEM_TYPE_LANCE | ITEM_TYPE_SHIELD | ITEM_TYPE_SWORD;
+    silou_eq = Unit_Equipment(&Silou);
+    silou_eq[0].id = ITEM_ID_IRON_LANCE;
+    silou_eq[1].id = ITEM_ID_WOODEN_SHIELD;
+    silou_eq[2].id = ITEM_ID_WRATH_LANCE;
 
     /* -- Stronghand NOT equipped -- */
     canEquip_Loadout_None(&can_equip, UNIT_HAND_LEFT);
@@ -1001,11 +1039,12 @@ void test_canEquip(void) {
     nourstest_true( Unit_canEquip(&Silou, can_equip));
 
     /* -- Mage test -- */
-    Silou.equippable = ITEM_TYPE_ELEMENTAL | ITEM_TYPE_SHIELD | ITEM_TYPE_LANCE;
-    Silou._equipment[0].id = ITEM_ID_BALL_LIGHTNING;
-    Silou._equipment[1].id = ITEM_ID_SILVERLIGHT_SPEAR;
-    Silou._equipment[2].id = ITEM_ID_LEATHER_SHIELD;
-    Silou._equipment[3].id = ITEM_ID_SALVE;
+    Silou.flags.equippable = ITEM_TYPE_ELEMENTAL | ITEM_TYPE_SHIELD | ITEM_TYPE_LANCE;
+    silou_eq = Unit_Equipment(&Silou);
+    silou_eq[0].id = ITEM_ID_BALL_LIGHTNING;
+    silou_eq[1].id = ITEM_ID_SILVERLIGHT_SPEAR;
+    silou_eq[2].id = ITEM_ID_LEATHER_SHIELD;
+    silou_eq[3].id = ITEM_ID_SALVE;
 
     canEquip_Loadout_None(&can_equip, UNIT_HAND_LEFT);
     canEquip_Loadout_None(&can_equip, UNIT_HAND_RIGHT);
@@ -1038,31 +1077,35 @@ void test_range(void) {
     /*  - Does the loadout make sense for unit/class/selection - */
     struct Unit Silou = Unit_default;
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    struct dtab *items_dtab = DTAB_INIT(items_dtab, struct Item);
+
     Unit_InitWweapons(&Silou, weapons_dtab);
+    Silou.equipment.items_dtab = items_dtab;
     Silou._id = UNIT_ID_SILOU;
 
     Unit_Unequip(&Silou, UNIT_HAND_LEFT);
     Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
-    Silou._equipment[0].id    = ITEM_ID_FLEURET;
-    Silou._equipment[1].id    = ITEM_ID_RAPIERE;
-    Silou._equipment[2].id    = ITEM_ID_GLAIVE;
-    Silou._equipment[3].id    = ITEM_ID_IRON_SWORD;
-    Silou._equipment[4].id    = ITEM_ID_UCHIGATANA;
-    Silou._equipment[5].id    = ITEM_ID_EXSANGUE;
+    Inventory_item *silou_eq = Unit_Equipment(&Silou);
+    silou_eq[0].id    = ITEM_ID_FLEURET;
+    silou_eq[1].id    = ITEM_ID_RAPIERE;
+    silou_eq[2].id    = ITEM_ID_GLAIVE;
+    silou_eq[3].id    = ITEM_ID_IRON_SWORD;
+    silou_eq[4].id    = ITEM_ID_UCHIGATANA;
+    silou_eq[5].id    = ITEM_ID_EXSANGUE;
 
-    Weapon_Load(weapons_dtab, Silou._equipment[0].id);
-    Weapon_Load(weapons_dtab, Silou._equipment[1].id);
-    Weapon_Load(weapons_dtab, Silou._equipment[2].id);
-    Weapon_Load(weapons_dtab, Silou._equipment[3].id);
-    Weapon_Load(weapons_dtab, Silou._equipment[4].id);
-    Weapon_Load(weapons_dtab, Silou._equipment[5].id);
+    Weapon_Load(weapons_dtab, silou_eq[0].id);
+    Weapon_Load(weapons_dtab, silou_eq[1].id);
+    Weapon_Load(weapons_dtab, silou_eq[2].id);
+    Weapon_Load(weapons_dtab, silou_eq[3].id);
+    Weapon_Load(weapons_dtab, silou_eq[4].id);
+    Weapon_Load(weapons_dtab, silou_eq[5].id);
     struct Weapon *wpns[SOTA_EQUIPMENT_SIZE];
-    wpns[0] = DTAB_GET(weapons_dtab, Silou._equipment[0].id);
-    wpns[1] = DTAB_GET(weapons_dtab, Silou._equipment[1].id);
-    wpns[2] = DTAB_GET(weapons_dtab, Silou._equipment[2].id);
-    wpns[3] = DTAB_GET(weapons_dtab, Silou._equipment[3].id);
-    wpns[4] = DTAB_GET(weapons_dtab, Silou._equipment[4].id);
-    wpns[5] = DTAB_GET(weapons_dtab, Silou._equipment[5].id);
+    wpns[0] = DTAB_GET(weapons_dtab, silou_eq[0].id);
+    wpns[1] = DTAB_GET(weapons_dtab, silou_eq[1].id);
+    wpns[2] = DTAB_GET(weapons_dtab, silou_eq[2].id);
+    wpns[3] = DTAB_GET(weapons_dtab, silou_eq[3].id);
+    wpns[4] = DTAB_GET(weapons_dtab, silou_eq[4].id);
+    wpns[5] = DTAB_GET(weapons_dtab, silou_eq[5].id);
     SDL_assert(wpns[0] != NULL);
     SDL_assert(wpns[1] != NULL);
     SDL_assert(wpns[2] != NULL);
@@ -1091,14 +1134,14 @@ void test_range(void) {
     wpns[5]->stats.range.min = 2;
     wpns[5]->stats.range.max = 4;
 
-    struct Weapon *wpn = DTAB_GET(weapons_dtab, Silou._equipment[1].id);
+    struct Weapon *wpn = DTAB_GET(weapons_dtab, silou_eq[1].id);
     SDL_assert(wpn->stats.range.min == 1);
     SDL_assert(wpn->stats.range.max == 2);
 
     struct Range *range = NULL;
 
     /* Unit_Range_Eq */
-    Silou.equippable = ITEM_TYPE_SWORD;
+    Silou.flags.equippable = ITEM_TYPE_SWORD;
     for (int eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; ++eq) {
         range = Unit_Range_Eq(&Silou, eq, ITEM_ARCHETYPE_WEAPON);
         nourstest_true(Range_Valid(*range));
@@ -1151,33 +1194,35 @@ void test_range(void) {
     nourstest_true(range->max == wpns[4]->stats.range.max);
 
     /* Unit_Range_Equipment */
-
-    Silou._equipment[0].id    = ITEM_NULL;
-    Silou._equipment[1].id    = ITEM_ID_RAPIERE;
-    Silou._equipment[2].id    = ITEM_ID_GLAIVE;
-    Silou._equipment[3].id    = ITEM_NULL;
-    Silou._equipment[4].id    = ITEM_NULL;
-    Silou._equipment[5].id    = ITEM_NULL;
+    silou_eq = Unit_Equipment(&Silou);
+    silou_eq[0].id    = ITEM_NULL;
+    silou_eq[1].id    = ITEM_ID_RAPIERE;
+    silou_eq[2].id    = ITEM_ID_GLAIVE;
+    silou_eq[3].id    = ITEM_NULL;
+    silou_eq[4].id    = ITEM_NULL;
+    silou_eq[5].id    = ITEM_NULL;
     range = Unit_Range_Equipment(&Silou, ITEM_TYPE_SWORD);
     nourstest_true(range->min == wpns[1]->stats.range.min);
     nourstest_true(range->max == wpns[2]->stats.range.max);
 
-    Silou._equipment[0].id    = ITEM_NULL;
-    Silou._equipment[1].id    = ITEM_NULL;
-    Silou._equipment[2].id    = ITEM_NULL;
-    Silou._equipment[3].id    = ITEM_ID_IRON_SWORD;
-    Silou._equipment[4].id    = ITEM_ID_UCHIGATANA;
-    Silou._equipment[5].id    = ITEM_ID_EXSANGUE;
+    silou_eq = Unit_Equipment(&Silou);
+    silou_eq[0].id    = ITEM_NULL;
+    silou_eq[1].id    = ITEM_NULL;
+    silou_eq[2].id    = ITEM_NULL;
+    silou_eq[3].id    = ITEM_ID_IRON_SWORD;
+    silou_eq[4].id    = ITEM_ID_UCHIGATANA;
+    silou_eq[5].id    = ITEM_ID_EXSANGUE;
     range = Unit_Range_Equipment(&Silou, ITEM_TYPE_SWORD);
     nourstest_true(range->min == wpns[3]->stats.range.min);
     nourstest_true(range->max == wpns[5]->stats.range.max);
 
-    Silou._equipment[0].id    = ITEM_ID_FLEURET;
-    Silou._equipment[1].id    = ITEM_NULL;
-    Silou._equipment[2].id    = ITEM_ID_GLAIVE;
-    Silou._equipment[3].id    = ITEM_NULL;
-    Silou._equipment[4].id    = ITEM_NULL;
-    Silou._equipment[5].id    = ITEM_NULL;
+    silou_eq = Unit_Equipment(&Silou);
+    silou_eq[0].id    = ITEM_ID_FLEURET;
+    silou_eq[1].id    = ITEM_NULL;
+    silou_eq[2].id    = ITEM_ID_GLAIVE;
+    silou_eq[3].id    = ITEM_NULL;
+    silou_eq[4].id    = ITEM_NULL;
+    silou_eq[5].id    = ITEM_NULL;
     range = Unit_Range_Equipment(&Silou, ITEM_TYPE_SWORD);
     nourstest_true(!Range_Valid(*range));
 

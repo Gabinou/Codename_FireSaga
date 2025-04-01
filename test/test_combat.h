@@ -306,11 +306,14 @@ void test_combat_death() {
 void test_combat_flow() {
 
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    struct dtab *items_dtab = DTAB_INIT(items_dtab, struct Item);
     struct Combat_Flow temp_flow;
     struct Unit attacker = Unit_default;
     struct Unit defender = Unit_default;
     Unit_InitWweapons(&attacker, weapons_dtab);
     Unit_InitWweapons(&defender, weapons_dtab);
+    attacker.equipment.items_dtab = items_dtab;
+    defender.equipment.items_dtab = items_dtab;
     struct Point attacker_pos = {1, 2};
     struct Point defender_pos = {2, 2};
     int distance = Pathfinding_Manhattan(attacker_pos, defender_pos);
