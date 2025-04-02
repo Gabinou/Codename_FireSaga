@@ -53,10 +53,10 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
     mount2 = Mount_default_pegasus;
     mount3 = Mount_default_salamander;
     mount4 = Mount_default_eagle;
-    silou->mount = &mount1;
-    erwin->mount = &mount4;
-    kiara->mount = &mount2;
-    rayan->mount = &mount3;
+    silou->mount.ptr = &mount1;
+    erwin->mount.ptr = &mount4;
+    kiara->mount.ptr = &mount2;
+    rayan->mount.ptr = &mount3;
     SDL_assert(Unit_Current_Regrets(silou) == 0);
     SDL_assert(Unit_Current_Regrets(erwin) == 0);
     SDL_assert(Unit_Current_Regrets(kiara) == 0);
@@ -100,10 +100,10 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
     mount2 = Mount_default_pegasus;
     mount3 = Mount_default_salamander;
     mount4 = Mount_default_eagle;
-    silou->mount = &mount1;
-    erwin->mount = &mount4;
-    kiara->mount = &mount2;
-    rayan->mount = &mount3;
+    silou->mount.ptr = &mount1;
+    erwin->mount.ptr = &mount4;
+    kiara->mount.ptr = &mount2;
+    rayan->mount.ptr = &mount3;
 
     DeploymentMenu_Party_Set(dm, &party);
     SDL_assert(dm->_party_size > 0);
