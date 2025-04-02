@@ -716,6 +716,7 @@ struct Unit_Arms {
 struct Unit_Stats_Bundle {
     struct Unit_stats caps;
     struct Unit_stats bases;
+    struct Unit_stats current; /* Only changes on levelup */
 };
 
 typedef struct Unit {
@@ -782,12 +783,10 @@ typedef struct Unit {
     struct Unit_stats malus_stats; // TODO remove for new Bonus_Stat Struct
 
     // TODO: rm
-    struct Unit_stats current_stats;    /* base_stats + all grown */
-    // TODO: rm
     struct Unit_stats effective_stats;  /* current_stats + bonuses/maluses */
 
     // TODO: rm
-    struct Computed_Stats computed_stats;    /* Computed from Unit_Stats */
+    struct Computed_Stats computed_stats;    /* Computed from effective_stats */
 
 } Unit;
 extern const struct Unit Unit_default;

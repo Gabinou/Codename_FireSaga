@@ -271,8 +271,8 @@ void test_popup_map_combat() {
     // defendant.current_hp = 1;
     // pmc.agg_current_hp = aggressor.current_hp;
     // pmc.dft_current_hp = defendant.current_hp;
-    // aggressor.current_stats.hp = SOTA_MAX_HP;
-    // defendant.current_stats.hp = SOTA_MAX_HP;
+    // aggressor.stats.current.hp = SOTA_MAX_HP;
+    // defendant.stats.current.hp = SOTA_MAX_HP;
     // SDL_assert(aggressor.current_hp > 0);
     // SDL_assert(defendant.current_hp > 0);
     // PopUp_Map_Combat_Update(&pmc, &n9patch, render_target, renderer);
@@ -284,8 +284,8 @@ void test_popup_map_combat() {
     // defendant.current_hp = SOTA_MAX_HP / 2;
     // pmc.agg_current_hp = aggressor.current_hp;
     // pmc.dft_current_hp = defendant.current_hp;
-    // aggressor.current_stats.hp = SOTA_MAX_HP;
-    // defendant.current_stats.hp = SOTA_MAX_HP;
+    // aggressor.stats.current.hp = SOTA_MAX_HP;
+    // defendant.stats.current.hp = SOTA_MAX_HP;
     // SDL_assert(aggressor.current_hp > 0);
     // SDL_assert(defendant.current_hp > 0);
     // PopUp_Map_Combat_Update(&pmc, &n9patch, render_target, renderer);

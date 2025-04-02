@@ -74,31 +74,31 @@ void test_combat_game() {
 
     // computing attacker effectiveStats
     Unit_effectiveStats(&attacker);
-    nourstest_true(attacker.current_stats.hp    == attacker.effective_stats.hp);
-    nourstest_true(attacker.current_stats.str   == attacker.effective_stats.str);
-    nourstest_true(attacker.current_stats.mag   == attacker.effective_stats.mag);
-    nourstest_true(attacker.current_stats.agi   == attacker.effective_stats.agi);
-    nourstest_true(attacker.current_stats.dex   == attacker.effective_stats.dex);
-    nourstest_true(attacker.current_stats.luck  == attacker.effective_stats.luck);
-    nourstest_true(attacker.current_stats.def   == attacker.effective_stats.def);
-    nourstest_true(attacker.current_stats.res   == attacker.effective_stats.res);
-    nourstest_true(attacker.current_stats.con   == attacker.effective_stats.con);
-    nourstest_true(attacker.current_stats.move  == attacker.effective_stats.move);
-    nourstest_true(attacker.current_stats.prof  == attacker.effective_stats.prof);
+    nourstest_true(attacker.stats.current.hp    == attacker.effective_stats.hp);
+    nourstest_true(attacker.stats.current.str   == attacker.effective_stats.str);
+    nourstest_true(attacker.stats.current.mag   == attacker.effective_stats.mag);
+    nourstest_true(attacker.stats.current.agi   == attacker.effective_stats.agi);
+    nourstest_true(attacker.stats.current.dex   == attacker.effective_stats.dex);
+    nourstest_true(attacker.stats.current.luck  == attacker.effective_stats.luck);
+    nourstest_true(attacker.stats.current.def   == attacker.effective_stats.def);
+    nourstest_true(attacker.stats.current.res   == attacker.effective_stats.res);
+    nourstest_true(attacker.stats.current.con   == attacker.effective_stats.con);
+    nourstest_true(attacker.stats.current.move  == attacker.effective_stats.move);
+    nourstest_true(attacker.stats.current.prof  == attacker.effective_stats.prof);
 
     // computing defender effectiveStats
     Unit_effectiveStats(&defender);
-    nourstest_true(defender.current_stats.hp    == defender.effective_stats.hp);
-    nourstest_true(defender.current_stats.str   == defender.effective_stats.str);
-    nourstest_true(defender.current_stats.mag   == defender.effective_stats.mag);
-    nourstest_true(defender.current_stats.agi   == defender.effective_stats.agi);
-    nourstest_true(defender.current_stats.dex   == defender.effective_stats.dex);
-    nourstest_true(defender.current_stats.luck  == defender.effective_stats.luck);
-    nourstest_true(defender.current_stats.def   == defender.effective_stats.def);
-    nourstest_true(defender.current_stats.res   == defender.effective_stats.res);
-    nourstest_true(defender.current_stats.con   == defender.effective_stats.con);
-    nourstest_true(defender.current_stats.move  == defender.effective_stats.move);
-    nourstest_true(defender.current_stats.prof  == defender.effective_stats.prof);
+    nourstest_true(defender.stats.current.hp    == defender.effective_stats.hp);
+    nourstest_true(defender.stats.current.str   == defender.effective_stats.str);
+    nourstest_true(defender.stats.current.mag   == defender.effective_stats.mag);
+    nourstest_true(defender.stats.current.agi   == defender.effective_stats.agi);
+    nourstest_true(defender.stats.current.dex   == defender.effective_stats.dex);
+    nourstest_true(defender.stats.current.luck  == defender.effective_stats.luck);
+    nourstest_true(defender.stats.current.def   == defender.effective_stats.def);
+    nourstest_true(defender.stats.current.res   == defender.effective_stats.res);
+    nourstest_true(defender.stats.current.con   == defender.effective_stats.con);
+    nourstest_true(defender.stats.current.move  == defender.effective_stats.move);
+    nourstest_true(defender.stats.current.prof  == defender.effective_stats.prof);
 
     // computing attacker effectiveStats");
     Unit_computeHit(&attacker, distance);
@@ -203,7 +203,7 @@ void test_combat_game() {
 
     attacker_stats.agi = defender_stats.agi + 1;
     Unit_setStats(&attacker, attacker_stats);
-    nourstest_true(attacker.current_stats.agi = attacker_stats.agi);
+    nourstest_true(attacker.stats.current.agi = attacker_stats.agi);
     nourstest_true(attacker.effective_stats.agi = attacker_stats.agi);
     firesaga.combat_forecast = Compute_Combat_Forecast(&attacker, &defender,
                                                        &attacker_pos,
@@ -394,7 +394,7 @@ void test_combat_game() {
 
     Compute_Combat_Outcome(&firesaga.combat_outcome, &firesaga.combat_forecast,
                            &attacker, &defender);
-    attacker.current_hp = attacker.current_stats.hp;
+    attacker.current_hp = attacker.stats.current.hp;
 
     nourstest_true(firesaga.combat_forecast.attack_num == 2);
     nourstest_true(firesaga.combat_forecast.phase_num == 2);
@@ -408,9 +408,9 @@ void test_combat_game() {
     Combat_Resolve(firesaga.combat_outcome.attacks,
                    firesaga.combat_forecast.attack_num,
                    &attacker, &defender);
-    nourstest_true(attacker.current_hp == (attacker.current_stats.hp -
+    nourstest_true(attacker.current_hp == (attacker.stats.current.hp -
                                            (defender.computed_stats.attack[DAMAGE_TYPE_PHYSICAL] - attacker.effective_stats.def)));
-    nourstest_true(defender.current_hp == (defender.current_stats.hp -
+    nourstest_true(defender.current_hp == (defender.stats.current.hp -
                                            (attacker.computed_stats.attack[DAMAGE_TYPE_PHYSICAL] - defender.effective_stats.def)));
 
     Unit_getsHealed(&attacker, 100);
@@ -429,9 +429,9 @@ void test_combat_game() {
                    &defender);
     nourstest_true(firesaga.combat_forecast.flow.aggressor_phases == 1);
     nourstest_true(firesaga.combat_forecast.flow.defendant_phases == 2);
-    nourstest_true(attacker.current_hp == (attacker.current_stats.hp - 2 *
+    nourstest_true(attacker.current_hp == (attacker.stats.current.hp - 2 *
                                            (defender.computed_stats.attack[DAMAGE_TYPE_PHYSICAL] - attacker.effective_stats.def)));
-    nourstest_true(defender.current_hp == (defender.current_stats.hp -
+    nourstest_true(defender.current_hp == (defender.stats.current.hp -
                                            (attacker.computed_stats.attack[DAMAGE_TYPE_PHYSICAL] - defender.effective_stats.def)));
 
     Unit_getsHealed(&attacker, 100);
@@ -448,9 +448,9 @@ void test_combat_game() {
                            &attacker, &defender);
     Combat_Resolve(firesaga.combat_outcome.attacks, firesaga.combat_forecast.attack_num, &attacker,
                    &defender);
-    nourstest_true(attacker.current_hp == (attacker.current_stats.hp -
+    nourstest_true(attacker.current_hp == (attacker.stats.current.hp -
                                            (defender.computed_stats.attack[DAMAGE_TYPE_PHYSICAL] - attacker.effective_stats.def)));
-    nourstest_true(defender.current_hp == (defender.current_stats.hp - 2 *
+    nourstest_true(defender.current_hp == (defender.stats.current.hp - 2 *
                                            (attacker.computed_stats.attack[DAMAGE_TYPE_PHYSICAL] - defender.effective_stats.def)));
 
     nourstest_true(firesaga.combat_forecast.flow.aggressor_phases == 2);
@@ -470,7 +470,7 @@ void test_combat_game() {
                    &defender);
     nourstest_true(attacker.current_hp == (attacker.effective_stats.hp -
                                            (defender.computed_stats.attack[DAMAGE_TYPE_PHYSICAL] - attacker.effective_stats.def)));
-    nourstest_true(defender.current_hp == (defender.current_stats.hp -
+    nourstest_true(defender.current_hp == (defender.stats.current.hp -
                                            (attacker
                                             .computed_stats.attack[DAMAGE_TYPE_PHYSICAL] - defender.effective_stats.def)));
 

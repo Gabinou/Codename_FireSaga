@@ -80,24 +80,24 @@ const int class_mvt_types[UNIT_CLASS_END] = {
 const struct Unit Unit_default = {
     .jsonio_header.json_element   = JSON_UNIT,
 
-    .flags.mvt_type       = UNIT_MVT_FOOT_SLOW,
-    .class          = UNIT_CLASS_VILLAGER,
+    .flags.mvt_type     = UNIT_MVT_FOOT_SLOW,
+    .class              = UNIT_CLASS_VILLAGER,
 
     .render.rangemap    = RANGEMAP_ATTACKMAP,
 
-    .army           = 1,
-    .ai_id          = -1,
+    .army               =  1,
+    .ai_id              = -1,
 
     .current_hp         = SOTA_MIN_HP,
-    .current_stats.hp   = SOTA_MIN_HP,
+    .stats.current.hp   = SOTA_MIN_HP,
 
 
     .arms.num           = UNIT_ARMS_NUM,
     .flags.handedness   = UNIT_HAND_RIGHTIE,
-    .arms.hands             = {true, true},
+    .arms.hands         = {true, true},
 
-    .flags.alive                = true,
-    .flags.update_stats         = true,
+    .flags.alive        = true,
+    .flags.update_stats = true,
 };
 
 const struct Unit Nibal_unit = {
@@ -113,7 +113,7 @@ const struct Unit Nibal_unit = {
     .flags.alive    = true,
     .flags.sex      = true,  /* 0:F, 1:M. eg. hasPenis. */
 
-    .arms.hands          = {true, true},
+    .arms.hands     = {true, true},
 };
 
 void Tetrabrachios_default(Unit *unit) {
@@ -244,8 +244,8 @@ void Unit_setClassind(struct Unit *unit, i8 class_index) {
 
 void Unit_setStats(struct Unit *unit, struct Unit_stats stats) {
     SDL_assert(unit);
-    unit->current_stats = stats;
-    unit->current_hp    = unit->current_stats.hp;
+    unit->stats.current = stats;
+    unit->current_hp    = unit->stats.current.hp;
     Unit_effectiveStats(unit);
     Unit_computedStats(unit, -1);
     unit->current_hp = unit->effective_stats.hp;
@@ -258,7 +258,7 @@ void Unit_setBases(struct Unit *unit, struct Unit_stats stats) {
 }
 
 struct Unit_stats Unit_getStats(struct Unit *unit) {
-    struct Unit_stats out_stats = unit->current_stats;
+    struct Unit_stats out_stats = unit->stats.current;
     SDL_assert(unit);
     Unit_effectiveStats(unit);
     // Unit_stats_plus(out_stats,  unit->aura.unit_stats);
@@ -319,8 +319,8 @@ void Unit_getsHealed(struct Unit *unit, u8 healing) {
 
     // TODO: Overheal
     /* -- Actually heal -- */
-    int missing_hp   = unit->current_stats.hp - unit->current_hp;
-    unit->current_hp = healing > missing_hp ? unit->current_stats.hp : unit->current_hp + healing;
+    int missing_hp   = unit->stats.current.hp - unit->current_hp;
+    unit->current_hp = healing > missing_hp ? unit->stats.current.hp : unit->current_hp + healing;
 }
 
 void Unit_wait(struct Unit *unit) {
@@ -384,7 +384,7 @@ void Unit_lvlUp(struct Unit *unit) {
     i32 *grows_arr      = Unit_stats_arr(&grows);
     i32 *stats_arr      = Unit_stats_arr(&temp_stats);
     i32 *caps_stats     = Unit_stats_arr(&unit->stats.caps);
-    i32 *current_stats  = Unit_stats_arr(&unit->current_stats);
+    i32 *current_stats  = Unit_stats_arr(&unit->stats.current);
     struct RNG_Sequence *sequences = Unit_sequences_arr(unit);
 
     for (int i = UNIT_STAT_NULL + 1; i <= UNIT_STAT_NUM; i++) {
@@ -418,7 +418,7 @@ void Unit_lvlUp(struct Unit *unit) {
     // for (int i = UNIT_STAT_NULL + 1; i <= UNIT_STAT_NUM; i++) {
     //     current_stats[i] += stats_arr[i];
     // }
-    unit->current_stats = Unit_stats_plus(unit->current_stats, temp_stats);
+    unit->stats.current = Unit_stats_plus(unit->stats.current, temp_stats);
 
     /* -- Adding current lvlup to all grown stats -- */
     DARR_PUT(grown, temp_stats);
@@ -1087,7 +1087,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     }
 
     // SDL_Log("--set stats --");
-    Unit_stats_readJSON(&unit->current_stats, jcurrent_stats);
+    Unit_stats_readJSON(&unit->stats.current, jcurrent_stats);
     SDL_assert(jcaps_stats);
     Unit_stats_readJSON(&unit->stats.caps, jcaps_stats);
     SDL_assert(jbase_stats);
@@ -1162,7 +1162,7 @@ void Unit_writeJSON(void *input, cJSON *junit) {
     cJSON *jcurrent_hp    = cJSON_CreateNumber(unit->current_hp);
     cJSON *jclass_index   = cJSON_CreateNumber(unit->class);
     cJSON *jcurrent_stats = cJSON_CreateObject();
-    Unit_stats_writeJSON(&unit->current_stats, jcurrent_stats);
+    Unit_stats_writeJSON(&unit->stats.current, jcurrent_stats);
     cJSON *jcaps_stats    = cJSON_CreateObject();
     Unit_stats_writeJSON(&unit->stats.caps, jcaps_stats);
     cJSON *jbase_stats    = cJSON_CreateObject();
@@ -1254,33 +1254,33 @@ u8 Unit_Brave(struct Unit *unit) {
 }
 
 void Unit_Cap_Stats(struct Unit *unit) {
-    unit->current_stats.hp   = unit->stats.caps.hp;
-    unit->current_stats.str  = unit->stats.caps.str;
-    unit->current_stats.mag  = unit->stats.caps.mag;
-    unit->current_stats.agi  = unit->stats.caps.agi;
-    unit->current_stats.dex  = unit->stats.caps.dex;
-    unit->current_stats.fth  = unit->stats.caps.fth;
-    unit->current_stats.luck = unit->stats.caps.luck;
-    unit->current_stats.def  = unit->stats.caps.def;
-    unit->current_stats.res  = unit->stats.caps.res;
-    unit->current_stats.con  = unit->stats.caps.con;
-    unit->current_stats.prof = unit->stats.caps.prof;
+    unit->stats.current.hp   = unit->stats.caps.hp;
+    unit->stats.current.str  = unit->stats.caps.str;
+    unit->stats.current.mag  = unit->stats.caps.mag;
+    unit->stats.current.agi  = unit->stats.caps.agi;
+    unit->stats.current.dex  = unit->stats.caps.dex;
+    unit->stats.current.fth  = unit->stats.caps.fth;
+    unit->stats.current.luck = unit->stats.caps.luck;
+    unit->stats.current.def  = unit->stats.caps.def;
+    unit->stats.current.res  = unit->stats.caps.res;
+    unit->stats.current.con  = unit->stats.caps.con;
+    unit->stats.current.prof = unit->stats.caps.prof;
 }
 
 /* What is this for?
 caps before promotion? */
 void Unit_HalfCap_Stats(struct Unit *unit) {
-    unit->current_stats.hp   = unit->stats.caps.hp   / 2;
-    unit->current_stats.str  = unit->stats.caps.str  / 2;
-    unit->current_stats.mag  = unit->stats.caps.mag  / 2;
-    unit->current_stats.agi  = unit->stats.caps.agi  / 2;
-    unit->current_stats.dex  = unit->stats.caps.dex  / 2;
-    unit->current_stats.fth  = unit->stats.caps.fth  / 2;
-    unit->current_stats.luck = unit->stats.caps.luck / 2;
-    unit->current_stats.def  = unit->stats.caps.def  / 2;
-    unit->current_stats.res  = unit->stats.caps.res  / 2;
-    unit->current_stats.con  = unit->stats.caps.con  / 2;
-    unit->current_stats.prof = unit->stats.caps.prof / 2;
+    unit->stats.current.hp   = unit->stats.caps.hp   / 2;
+    unit->stats.current.str  = unit->stats.caps.str  / 2;
+    unit->stats.current.mag  = unit->stats.caps.mag  / 2;
+    unit->stats.current.agi  = unit->stats.caps.agi  / 2;
+    unit->stats.current.dex  = unit->stats.caps.dex  / 2;
+    unit->stats.current.fth  = unit->stats.caps.fth  / 2;
+    unit->stats.current.luck = unit->stats.caps.luck / 2;
+    unit->stats.current.def  = unit->stats.caps.def  / 2;
+    unit->stats.current.res  = unit->stats.caps.res  / 2;
+    unit->stats.current.con  = unit->stats.caps.con  / 2;
+    unit->stats.current.prof = unit->stats.caps.prof / 2;
 }
 
 struct Unit_stats Unit_effectiveGrowths(struct Unit *unit) {
@@ -1295,7 +1295,7 @@ struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
     SDL_assert(unit);
 
     /* Preparation */
-    unit->effective_stats = unit->current_stats;
+    unit->effective_stats = unit->stats.current;
 
     /* Add all bonuses */
     if (unit->bonus_stack != NULL) {
@@ -1315,7 +1315,7 @@ void Unit_Promote(struct Unit *unit, i8 new_class_index) {
     SDL_assert(unit);
     // struct Unit_stats promotion_bonus = DTAB_GET(promotion_bonus_stats, new_class_index);
     // DARR_PUT(unit->grown_stats, promotion_bonus);
-    // Unit_stats_plus(unit->current_stats, promotion_bonus);
+    // Unit_stats_plus(unit->stats.current, promotion_bonus);
     // unit->flags.skills += DTAB_GET(promotion_bonus_skills, new_class_index);
     // unit->class = new_class_index;
 }
