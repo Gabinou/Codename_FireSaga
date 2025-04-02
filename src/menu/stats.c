@@ -590,13 +590,14 @@ static void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *ren
                        STATS_MENU_HPBAR_FD, STATS_MENU_HPBAR_FL);
 
     x = (HP_X_OFFSET + HPBAR_X_OFFSET), y = (HP_Y_OFFSET + HPBAR_Y_OFFSET);
-    HPBar_Init(&hp_bar, stats_menu->unit->current_hp, effective_stats->hp, x, y);
+    i32 current_hp = Unit_Current_HP(stats_menu->unit);
+    HPBar_Init(&hp_bar, current_hp, effective_stats->hp, x, y);
 
     /* - HP - */
     x = HP_X_OFFSET, y = HP_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours_big, renderer, "HP", 2, x, y);
     HPBar_Draw(&hp_bar, renderer);
-    stbsp_sprintf(numbuff, "%02d/%02d", stats_menu->unit->current_hp, effective_stats->hp);
+    stbsp_sprintf(numbuff, "%02d/%02d", current_hp, effective_stats->hp);
     x = HP_STAT_X_OFFSET, y = HP_STAT_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
@@ -1148,11 +1149,12 @@ static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Rend
     /* -- REGRETS -- */
     x = REGRETS_X_OFFSET, y = REGRETS_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "REGRETS", 7, x, y);
-    if (unit->regrets <= 0) {
+    i32 regrets = Unit_Current_Regrets(unit);
+    if (regrets <= 0) {
         x = REGRETS_X_STAT, y = REGRETS_Y_STAT;
         PixelFont_Write(stats_menu->pixelnours, renderer, "-", 1, x, y);
     } else {
-        stbsp_sprintf(numbuff, "%d\0\0\0\0", unit->regrets);
+        stbsp_sprintf(numbuff, "%d\0\0\0\0", regrets);
         width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
         x = REGRETS_X_STAT - width / 2, y = REGRETS_Y_STAT;
         PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);

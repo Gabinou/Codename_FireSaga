@@ -719,6 +719,12 @@ struct Unit_Stats_Bundle {
     struct Unit_stats current; /* Only changes on levelup */
 };
 
+struct Unit_Counters {
+    i32  hp;
+    i32  agony;
+    i32  regrets;
+};
+
 typedef struct Unit {
     // TODO: unit design:
     //  - Stats values inside unit class are CONSTANT?
@@ -753,6 +759,7 @@ typedef struct Unit {
     struct Unit_canEquip            can_equip;
     struct Unit_Arms                arms;
     struct Unit_Stats_Bundle        stats;
+    struct Unit_Counters            counters;
 
     // Naming? Unit_MemberIDs? unit_identifiers?
     u16 _id;
@@ -760,13 +767,6 @@ typedef struct Unit {
     i16 class;
     i8  army;
     i32 ai_id; /* Default AI for unit */
-
-    // Naming? Unit_Member_Counters?
-    //  -> Unit_Member_Variables
-    // All other stats are constants.
-    u8  current_hp;
-    u8  current_agony; // TODO: Agony struct?
-    u8  regrets;
 
     // Unit_Member_Status.
     // Status with least remaining turns on top.

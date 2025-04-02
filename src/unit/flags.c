@@ -43,3 +43,12 @@ struct dtab *Unit_dtab_Weapons(Unit *unit) {
 struct dtab *Unit_dtab_Items(Unit *unit) {
     return (unit->equipment.items_dtab);
 }
+i32 Unit_HP_Current(Unit *unit) {
+    return (unit->counters.hp);
+}
+i32 Unit_Current_Agony(Unit *unit) {
+    return (unit->counters.agony);
+}
+i32 Unit_Current_Regrets(Unit *unit) {
+    return (unit->counters.regrets);
+}

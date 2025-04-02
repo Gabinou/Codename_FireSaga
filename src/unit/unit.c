@@ -724,7 +724,7 @@ struct Computed_Stats Unit_computedStats_wLoadout(Unit *unit, Loadout *loadout, 
 }
 
 /* Computed stats at distance (-1 is always in range) */
-// Implicitely for weapons. Staves only care about range -> compute directly.
+// Implicitly for weapons. Staves only care about range -> compute directly.
 struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance) {
     SDL_assert(unit);
     if (!Unit_isUpdateStats(unit)) {
@@ -1284,6 +1284,7 @@ void Unit_HalfCap_Stats(struct Unit *unit) {
 }
 
 struct Unit_stats Unit_effectiveGrowths(struct Unit *unit) {
+    // TODO: compute bonuses dynamically
     SDL_assert(unit);
     unit->growth.effective = unit->growth.rates;
     Unit_stats_plus(unit->growth.bonus, unit->growth.effective);
@@ -1291,9 +1292,11 @@ struct Unit_stats Unit_effectiveGrowths(struct Unit *unit) {
 }
 
 struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
+    // TODO: input map to computed bonuses
     /* current_stats + all bonuses */
     SDL_assert(unit);
 
+    // TODO: compute bonuses dynamically
     /* Preparation */
     unit->effective_stats = unit->stats.current;
 

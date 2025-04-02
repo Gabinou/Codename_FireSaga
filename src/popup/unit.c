@@ -345,12 +345,13 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     /* -- HP -- */
     PixelFont_Write(pu->pixelnours, renderer, "HP", 2,
                     PU_HP_X, PU_HP_Y);
-    stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", pu->unit->current_hp, eff_s.hp);
+    i32 current_hp = Unit_Current_HP(pu->unit);
+    stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", current_hp, eff_s.hp);
     PixelFont_Write(pu->pixelnours, renderer, numbuff, strlen(numbuff), PU_HP_STAT_X, PU_HP_STAT_Y);
     struct SimpleBar hp_bar = SimpleBar_default;
     hp_bar.scale.x = 1, hp_bar.scale.y = 1;
     StatBar_Colors_NES(&hp_bar, 14, 15, 52, 54);
-    StatBar_Init(&hp_bar, pu->unit->current_hp, eff_s.hp, PU_HPBAR_X, PU_HPBAR_Y);
+    StatBar_Init(&hp_bar, current_hp, eff_s.hp, PU_HPBAR_X, PU_HPBAR_Y);
     hp_bar.len = PU_HPBAR_LEN;
     hp_bar.height = 2;
     SimpleBar_Draw(&hp_bar, renderer);

@@ -1554,8 +1554,8 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     b32 died_boss = (boss != NULL);
 
     /* --- Increasing Killer's regrets --- */
-    int regrets = killer->regrets;
-    killer->regrets = regrets > UINT8_MAX - REGRET_KILL ? UINT8_MAX : regrets + REGRET_KILL;
+    int regrets = Unit_Current_Regrets(killer);
+    killer->counters.regrets = regrets > UINT8_MAX - REGRET_KILL ? UINT8_MAX : regrets + REGRET_KILL;
 
     /* --- Removing unit from map --- */
     SDL_assert(sota->map->world == sota->world);
@@ -1589,8 +1589,8 @@ void receive_event_Unit_Loots(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity victim_entity = *(tnecs_entity *) userevent->user.data2;
     struct Unit *looter = IES_GET_COMPONENT(sota->world, looter_entity, Unit);
     struct Unit *victim = IES_GET_COMPONENT(sota->world, victim_entity, Unit);
-    int regrets = looter->regrets;
-    looter->regrets = regrets > UINT8_MAX - REGRET_LOOT ? UINT8_MAX : regrets + REGRET_LOOT;
+    int regrets = Unit_Current_Regrets(looter);
+    looter->counters.regrets = regrets > UINT8_MAX - REGRET_LOOT ? UINT8_MAX : regrets + REGRET_LOOT;
 }
 
 void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
@@ -1656,8 +1656,8 @@ void receive_event_Unit_Agonizes(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity victim_entity = *(tnecs_entity *) userevent->user.data2;
     struct Unit *victor = IES_GET_COMPONENT(sota->world, victor_entity, Unit);
     struct Unit *victim = IES_GET_COMPONENT(sota->world, victim_entity, Unit);
-    int regrets = victor->regrets;
-    victor->regrets = regrets > UINT8_MAX - REGRET_LOOT ? UINT8_MAX : regrets + REGRET_LOOT;
+    int regrets = Unit_Current_Regrets(victor);
+    victor->counters.regrets = regrets > UINT8_MAX - REGRET_LOOT ? UINT8_MAX : regrets + REGRET_LOOT;
 }
 
 /* --- EVENT UTILITIES --- */

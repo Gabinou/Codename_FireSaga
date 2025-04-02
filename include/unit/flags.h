@@ -24,4 +24,8 @@ struct Unit_stats *Unit_Stats_Growths(Unit *u);
 struct dtab *Unit_dtab_Weapons(Unit *u);
 struct dtab *Unit_dtab_Items(Unit *u);
 
+i32 Unit_Current_HP(Unit *u);
+i32 Unit_Current_Agony(Unit *u);
+i32 Unit_Current_Regrets(Unit *u);
+
 #endif /* UNIT_H */

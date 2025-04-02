@@ -11,8 +11,9 @@
 #include "palette.h"
 #include "platform.h"
 #include "unit/party.h"
-#include "unit/equipment.h"
+#include "unit/flags.h"
 #include "unit/mount.h"
+#include "unit/equipment.h"
 #include "names.h"
 #include "macros.h"
 #include "stb_sprintf.h"
@@ -596,8 +597,8 @@ static void _DeploymentMenu_Draw_Stats_P4(DeploymentMenu *dm, SDL_Renderer *rend
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
         SDL_assert(unit != NULL);
-        SDL_assert(unit->regrets < REGRET_MAX);
-        stbsp_snprintf(array, 4, "%d\0\0\0\0", unit->regrets);
+        SDL_assert(Unit_Current_Regrets(unit) < REGRET_MAX);
+        stbsp_snprintf(array, 4, "%d\0\0\0\0", Unit_Current_Regrets(unit));
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 3, x, y);
     }
     _DeploymentMenu_Swap(dm, renderer, dm->white, dm->black);
