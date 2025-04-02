@@ -171,17 +171,17 @@ void _Party_Load(tnecs_entity *entities, struct Game *sota,
         /* Readjson */
         s8 filename = filenames[i];
         jsonio_readJSON(filename, &temp_unit);
-        temp_unit.army = ARMY_FRIENDLY;
-        SDL_assert(global_unitNames[temp_unit._id].data != NULL);
+        temp_unit.id.army = ARMY_FRIENDLY;
+        SDL_assert(global_unitNames[Unit_id(&temp_unit)].data != NULL);
         SDL_assert(temp_unit.flags.handedness > UNIT_HAND_NULL);
         SDL_assert(temp_unit.flags.handedness < UNIT_HAND_END);
         SDL_assert(temp_unit.flags.mvt_type > UNIT_MVT_START);
 
-        SDL_assert(temp_unit._id > UNIT_ID_PC_START);
-        SDL_assert(temp_unit._id < UNIT_ID_PC_END);
+        SDL_assert(Unit_id(&temp_unit) > UNIT_ID_PC_START);
+        SDL_assert(Unit_id(&temp_unit) < UNIT_ID_PC_END);
 
         struct Point pos = {0, 0};
-        entities[temp_unit._id] = Game_Party_Entity_Create(sota, temp_unit._id, pos, &temp_unit);
+        entities[Unit_id(&temp_unit)] = Game_Party_Entity_Create(sota, Unit_id(&temp_unit), pos, &temp_unit);
     }
 }
 

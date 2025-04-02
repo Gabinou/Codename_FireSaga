@@ -9,14 +9,15 @@
 #include "nmath.h"
 #include "unit/equipment.h"
 #include "unit/unit.h"
-#include "unit/loadout.h"
 #include "unit/anim.h"
-#include "unit/status.h"
-#include "unit/equipment.h"
 #include "unit/boss.h"
 #include "unit/range.h"
 #include "unit/stats.h"
 #include "unit/mount.h"
+#include "unit/flags.h"
+#include "unit/status.h"
+#include "unit/loadout.h"
+#include "unit/equipment.h"
 
 void Map_Global_Danger_Reset(struct Map *map) {
     memset(map->global_dangermap, 0, sizeof(*map->global_dangermap) * map->row_len * map->col_len);
@@ -317,7 +318,7 @@ i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_entity unit_ent) {
     struct Tile *temp_tile;
     i32 tile_ind = 0;
     i8 unit_movetype = unit->flags.mvt_type;
-    u8 army = unit->army;
+    u8 army = unit->id.army;
     u8 ontile_army;
     tnecs_entity ontile_unit_ent;
     SDL_assert(unit_movetype > UNIT_MVT_START);
@@ -387,10 +388,10 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
         struct Unit *ontile_unit = IES_GET_COMPONENT(map->world, ontile_unit_ent, Unit);
         SDL_assert(ontile_unit != NULL);
 
-        u8 ontile_army = ontile_unit->army;
+        u8 ontile_army = Unit_Army(ontile_unit);
         SDL_assert((ontile_army < ARMY_END) && (ontile_army > ARMY_START));
 
-        if (SotA_army2alignment(ontile_army) != SotA_army2alignment(unit->army)) {
+        if (SotA_army2alignment(ontile_army) != SotA_army2alignment(Unit_Army(unit))) {
             map->costmap[i] = COSTMAP_BLOCKED;
         }
     }

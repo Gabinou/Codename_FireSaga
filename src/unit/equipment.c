@@ -530,7 +530,7 @@ b32 Unit_canEquip_Users(struct Unit *unit, i32 id) {
     }
 
     for (i32 u = 0; u < DARR_NUM(weapon->item->users); u++) {
-        if (weapon->item->users[u] == unit->_id)
+        if (weapon->item->users[u] == Unit_id(unit))
             return (true);
     }
     return (false);

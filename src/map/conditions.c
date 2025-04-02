@@ -1,6 +1,7 @@
 
 #include "map/conditions.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
 #include "map/map.h"
 #include "events.h"
 #include "nmath.h"
@@ -73,7 +74,7 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
     /* Checking for matching army */
     b32 match_army = true;
     if ((condition->army > ARMY_START) && (condition->army <= ARMY_NUM))
-        match_army = (unit->army == condition->army);
+        match_army = (Unit_Army(unit) == condition->army);
 
     /* -- No match: army -- */
     // SDL_Log("armies: %d %d", condition->army, unit->army);
@@ -85,7 +86,7 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
     /* Checking for matching unit ID */
     b32 match_unit = false;
     if ((condition->unit > UNIT_ID_NULL) && (condition->unit < UNIT_ID_NUM))
-        match_unit = (unit->_id == condition->unit);
+        match_unit = (Unit_id(unit) == condition->unit);
 
     /* -- No match: unit -- */
     if (match_unit) {

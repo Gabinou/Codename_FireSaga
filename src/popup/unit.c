@@ -76,7 +76,7 @@ void _PopUp_Unit_Set(struct PopUp_Unit *pu, struct Unit *unit) {
     SDL_assert(pu != NULL);
     pu->unit   = unit;
     pu->update = true;
-    SDL_assert(global_unitNames[pu->unit->_id].data != NULL);
+    SDL_assert(global_unitNames[Unit_id(pu->unit)].data != NULL);
 }
 
 /* --- Positioning --- */
@@ -243,7 +243,7 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     }
     /* -- NAME -- */
     struct Point pos;
-    const s8 name = global_unitNames[pu->unit->_id];
+    const s8 name = global_unitNames[Unit_id(pu->unit)];
     SDL_assert(name.data != NULL);
     pos = PopUp_Unit_Center_Name(pu, n9patch, name.data, name.num);
     PixelFont_Write(pu->pixelnours_big, renderer, name.data, name.num, pos.x, pos.y);

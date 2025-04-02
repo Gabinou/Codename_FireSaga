@@ -173,8 +173,8 @@ tnecs_entity *Map_Find_Defendants(struct Map *map, MapFind mapfind) {
         // SDL_Log("Found unit on %lu %lu ", x_at, y_at);
         struct Unit *agg    = IES_GET_COMPONENT(map->world, aggressor, Unit);
         struct Unit *unit   = IES_GET_COMPONENT(map->world, unitontile, Unit);
-        u8 align_t          = SotA_army2alignment(unit->army);
-        u8 align_a          = SotA_army2alignment(agg->army);
+        u8 align_t          = SotA_army2alignment(Unit_Army(unit));
+        u8 align_a          = SotA_army2alignment(Unit_Army(agg));
 
         if (align_a == align_t) {
             // SDL_Log("Same alignment");
@@ -252,7 +252,7 @@ tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
         struct Weapon *staff = (struct Weapon *)DTAB_GET(weapons_dtab, id);
 
         /* -- Check healtolist for valid patients -- */
-        u8 align_healer = army_alignment[healer->army];
+        u8 align_healer = army_alignment[Unit_Army(healer)];
         for (size_t i = 0; i < DARR_NUM(healtolist) / 2; i++) {
             size_t x_at = healtolist[TWO_D * i];
             size_t y_at = healtolist[TWO_D * i + 1];
@@ -275,7 +275,7 @@ tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
             Unit *patient = IES_GET_COMPONENT(map->world, unitontile, Unit);
             Unit_stats p_eff_stats = Unit_effectiveStats(patient);
 
-            u8 align_patient = army_alignment[patient->army];
+            u8 align_patient = army_alignment[Unit_Army(patient)];
             b32 add = false;
             /* Staff patient alignment check */
             switch (staff->item->target) {
@@ -405,7 +405,7 @@ tnecs_entity *Map_Find_Traders(struct Map *map, tnecs_entity *passives, i32 x, i
             continue;
 
         struct Unit *unit = IES_GET_COMPONENT(map->world, passive, Unit);
-        if (SotA_isPC(unit->army))
+        if (SotA_isPC(Unit_Army(unit)))
             DARR_PUT(passives, passive);
     }
     return (passives);
@@ -430,7 +430,7 @@ tnecs_entity *Map_Find_Victims(struct Map *map, tnecs_entity *victims_ent,
 
         struct Unit *victim = IES_GET_COMPONENT(map->world, victim_ent, Unit);
         struct Unit *savior = IES_GET_COMPONENT(map->world, savior_ent, Unit);
-        if (Unit_canCarry(savior, victim) && SotA_isPC(victim->army))
+        if (Unit_canCarry(savior, victim) && SotA_isPC(Unit_Army(victim)))
             DARR_PUT(victims_ent, victim_ent);
     }
     return (victims_ent);

@@ -6,6 +6,7 @@
 #include "position.h"
 #include "nmath.h"
 #include "bars/map_hp.h"
+#include "unit/flags.h"
 
 /* --- Entity finders --- */
 void Map_startingPos_Add(struct Map *map, i32 col, i32 row) {
@@ -67,32 +68,32 @@ void Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
     SDL_assert(temp_unit != NULL);
 
     /* -- Adding unit to army list -- */
-    switch (army_alignment[temp_unit->army]) {
+    switch (army_alignment[Unit_Army(temp_unit)]) {
         case ALIGNMENT_FRIENDLY: {
-            SDL_assert(Unit_ID_Valid(temp_unit->_id));
+            SDL_assert(Unit_ID_Valid(Unit_id(temp_unit)));
             SDL_assert(global_unitOrders != NULL);
-            SDL_assert(dtab_get(global_unitOrders, temp_unit->_id) != NULL);
-            u64 order = *(u64 *)dtab_get(global_unitOrders, temp_unit->_id);
+            SDL_assert(dtab_get(global_unitOrders, Unit_id(temp_unit)) != NULL);
+            u64 order = *(u64 *)dtab_get(global_unitOrders, Unit_id(temp_unit));
             SDL_assert(order > 0);
             SDL_assert(order < UNIT_NUM);
             DARR_PUT(map->friendlies_onfield, entity);
             break;
         }
         case ALIGNMENT_ENEMY: {
-            SDL_assert(Unit_ID_Valid(temp_unit->_id));
+            SDL_assert(Unit_ID_Valid(Unit_id(temp_unit)));
             SDL_assert(global_unitOrders != NULL);
-            SDL_assert(dtab_get(global_unitOrders, temp_unit->_id) != NULL);
-            u64 order = *(u64 *)dtab_get(global_unitOrders, temp_unit->_id);
+            SDL_assert(dtab_get(global_unitOrders, Unit_id(temp_unit)) != NULL);
+            u64 order = *(u64 *)dtab_get(global_unitOrders, Unit_id(temp_unit));
             SDL_assert(order > 0);
             SDL_assert(order < UNIT_NUM);
             DARR_PUT(map->enemies_onfield, entity);
             break;
         }
     }
-    SDL_assert(temp_unit->_id > UNIT_ID_NULL);
-    SDL_assert(temp_unit->_id < UNIT_ID_END);
+    SDL_assert(Unit_id(temp_unit) > UNIT_ID_NULL);
+    SDL_assert(Unit_id(temp_unit) < UNIT_ID_END);
 
-    Map_addArmy(map, temp_unit->army);
+    Map_addArmy(map, Unit_Army(temp_unit));
 }
 
 void Map_Unit_Swap(struct Map *map, u8 old_col, u8 old_row, u8 new_col, u8 new_row) {
@@ -140,7 +141,7 @@ tnecs_entity *Map_Unit_Gets(struct Map *map, u8 army) {
     for (u8 i = 0; i < DARR_NUM(map->units_onfield); i++) {
         current_unit_ent = map->units_onfield[i];
         current_unit = IES_GET_COMPONENT(map->world, current_unit_ent, Unit);
-        if (current_unit->army == army)
+        if (Unit_id(current_unit) == army)
             DARR_PUT(unit_ents, current_unit_ent);
     }
     return (unit_ents);
@@ -153,7 +154,7 @@ tnecs_entity Map_Unit_Get_Boss(struct Map *map, u8 army) {
         tnecs_entity ent = map->units_onfield[i];
         struct Unit *unit = IES_GET_COMPONENT(map->world, ent, Unit);
         struct Unit *boss = IES_GET_COMPONENT(map->world, ent, Boss);
-        if ((unit->army == army) && (boss != NULL)) {
+        if ((Unit_Army(unit) == army) && (boss != NULL)) {
             out = ent;
             break;
         }
