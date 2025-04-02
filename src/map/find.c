@@ -283,7 +283,8 @@ tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
                     add = true;
                     break;
                 case ITEM_TARGET_FRIENDLY:
-                    add = (align_patient == align_healer) && (patient->current_hp < p_eff_stats.hp);
+                    i32 current_hp = Unit_Current_HP(patient);
+                    add = (align_patient == align_healer) && (current_hp < p_eff_stats.hp);
                     break;
                 case ITEM_TARGET_ENEMY:
                     add = align_patient |= align_healer;

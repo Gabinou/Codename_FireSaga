@@ -3,6 +3,7 @@
 #include "platform.h"
 #include "menu/stats.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
 #include "unit/status.h"
 #include "RNG.h"
 
@@ -314,25 +315,25 @@ void test_menu_stats() {
 
     /* -- REGRETS -- */
     /* -- 0 -- */
-    Silou.regrets = 0;
+    Silou.counters.regrets = 0;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Regrets_0.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Single digits -- */
-    Silou.regrets = 2;
+    Silou.counters.regrets = 2;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Regrets_Digits_1.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Double digits -- */
-    Silou.regrets = 25;
+    Silou.counters.regrets = 25;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Regrets_Digits_2.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Triple digits -- */
-    Silou.regrets = 137;
+    Silou.counters.regrets = 137;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Regrets_Digits_3.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);

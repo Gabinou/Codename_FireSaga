@@ -4,6 +4,7 @@
 #include "bars/topoff.h"
 #include "bars/circle.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
 #include "macros.h"
 #include "names.h"
 #include "platform.h"
@@ -171,7 +172,8 @@ static void _PopUp_Map_Combat_Draw_HP(struct PopUp_Map_Combat *pmc, SDL_Renderer
     struct Unit_stats effective_stats_dft    = Unit_effectiveStats(dft_unit);
 
     /* -- HP number -- */
-    int toprint = int_inbounds(agg_unit->current_hp, 0, SOTA_100PERCENT);
+    i32 current_hp = Unit_Current_HP(agg_unit);
+    int toprint = int_inbounds(current_hp, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
     width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
     temp_pos.x = POPUP_MAP_COMBAT_BLUE_HP_X - width / 2;
@@ -179,7 +181,8 @@ static void _PopUp_Map_Combat_Draw_HP(struct PopUp_Map_Combat *pmc, SDL_Renderer
 
     PixelFont_Write(pmc->pixelnours_tight, renderer, numbuff, strlen(numbuff), temp_pos.x, temp_pos.y);
 
-    toprint = int_inbounds(dft_unit->current_hp, 0, SOTA_100PERCENT);
+    current_hp = Unit_Current_HP(dft_unit);
+    toprint = int_inbounds(current_hp, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
     width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
     temp_pos.x = POPUP_MAP_COMBAT_RED_HP_X - width / 2;
@@ -190,8 +193,11 @@ static void _PopUp_Map_Combat_Draw_HP(struct PopUp_Map_Combat *pmc, SDL_Renderer
 
     /* -- TopoffBars -- */
     // TODO: update health before/after EACH combat attack animation
-    pmc->topoff_aggressor.fill = ((float)agg_unit->current_hp) / ((float)effective_stats_agg.hp);
-    pmc->topoff_defendant.fill = ((float)dft_unit->current_hp) / ((float)effective_stats_dft.hp);
+
+    current_hp = Unit_Current_HP(agg_unit);
+    pmc->topoff_aggressor.fill = ((float)current_hp) / ((float)effective_stats_agg.hp);
+    current_hp = Unit_Current_HP(dft_unit);
+    pmc->topoff_defendant.fill = ((float)current_hp) / ((float)effective_stats_dft.hp);
     TopoffBar_Draw(&pmc->topoff_aggressor, renderer);
     TopoffBar_Draw(&pmc->topoff_defendant, renderer);
 

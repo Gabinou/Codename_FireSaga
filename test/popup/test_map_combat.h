@@ -256,38 +256,38 @@ void test_popup_map_combat() {
     // // /* -- No HP -- */
     // // // Draw draws to the screen -> no need, use Update instead
     // // /* -- Full HP -- */
-    // // aggressor.current_hp = aggressor.effective_stats.hp;
-    // // defendant.current_hp = defendant.effective_stats.hp;
-    // // pmc.agg_current_hp = aggressor.current_hp;
-    // // pmc.dft_current_hp = defendant.current_hp;
-    // // SDL_assert(aggressor.current_hp > 0);
-    // // SDL_assert(defendant.current_hp > 0);
+    // // aggressor.counters.hp = aggressor.effective_stats.hp;
+    // // defendant.counters.hp = defendant.effective_stats.hp;
+    // // pmc.agg_current_hp = aggressor.counters.hp;
+    // // pmc.dft_current_hp = defendant.counters.hp;
+    // // SDL_assert(aggressor.counters.hp > 0);
+    // // SDL_assert(defendant.counters.hp > 0);
     // // PopUp_Map_Combat_Update(&pmc, &n9patch, render_target, renderer);
     // // Filesystem_Texture_Dump(PATH_JOIN("popup_map_combat", "PopupMapCombat_FullHP.png"), renderer,
     // //                         pmc.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     // /* -- 1 HP -- */
-    // aggressor.current_hp = 1;
-    // defendant.current_hp = 1;
-    // pmc.agg_current_hp = aggressor.current_hp;
-    // pmc.dft_current_hp = defendant.current_hp;
+    // aggressor.counters.hp = 1;
+    // defendant.counters.hp = 1;
+    // pmc.agg_current_hp = aggressor.counters.hp;
+    // pmc.dft_current_hp = defendant.counters.hp;
     // aggressor.stats.current.hp = SOTA_MAX_HP;
     // defendant.stats.current.hp = SOTA_MAX_HP;
-    // SDL_assert(aggressor.current_hp > 0);
-    // SDL_assert(defendant.current_hp > 0);
+    // SDL_assert(aggressor.counters.hp > 0);
+    // SDL_assert(defendant.counters.hp > 0);
     // PopUp_Map_Combat_Update(&pmc, &n9patch, render_target, renderer);
     // Filesystem_Texture_Dump(PATH_JOIN("popup_map_combat", "PopupMapCombat_OneHP.png"), renderer,
     //                         pmc.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     // /* -- half HP -- */
-    // aggressor.current_hp = SOTA_MAX_HP / 2;
-    // defendant.current_hp = SOTA_MAX_HP / 2;
-    // pmc.agg_current_hp = aggressor.current_hp;
-    // pmc.dft_current_hp = defendant.current_hp;
+    // aggressor.counters.hp = SOTA_MAX_HP / 2;
+    // defendant.counters.hp = SOTA_MAX_HP / 2;
+    // pmc.agg_current_hp = aggressor.counters.hp;
+    // pmc.dft_current_hp = defendant.counters.hp;
     // aggressor.stats.current.hp = SOTA_MAX_HP;
     // defendant.stats.current.hp = SOTA_MAX_HP;
-    // SDL_assert(aggressor.current_hp > 0);
-    // SDL_assert(defendant.current_hp > 0);
+    // SDL_assert(aggressor.counters.hp > 0);
+    // SDL_assert(defendant.counters.hp > 0);
     // PopUp_Map_Combat_Update(&pmc, &n9patch, render_target, renderer);
     // Filesystem_Texture_Dump(PATH_JOIN("popup_map_combat", "PopupMapCombat_HalfHP.png"), renderer,
     //                         pmc.texture, SDL_PIXELFORMAT_ARGB8888, render_target);

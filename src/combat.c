@@ -134,13 +134,13 @@ struct Combat_Death Compute_Combat_Death(struct Unit *aggressor, struct Unit *de
         //               forecast.agg_damage.dmg[DMG_TYPE_MAGICAL];
         // attacker_maxDamage_nocrit = Equation_multiplyDamage(agg_dmg, defendant_possible[SOTA_AGGRESSOR]);
         // attacker_maxDamage_crit   = Equation_multiplyDamage(agg_dmg, defendant_possible[SOTA_AGGRESSOR]);
-        // if ((defendant->current_hp < attacker_maxDamage_nocrit)
+        // if ((defendant->counters.hp < attacker_maxDamage_nocrit)
         //     && (forecast.agg_rates.hit == SOTA_100PERCENT))
         //     out_death.defendant_certain = true;
 
-        // <if ((defendant->current_hp < attacker_maxDamage_nocrit) && (forecast.agg_rates.hit < SOTA_100PERCENT))
+        // <if ((defendant->counters.hp < attacker_maxDamage_nocrit) && (forecast.agg_rates.hit < SOTA_100PERCENT))
         //     out_death.defendant_possible = true;
-        // if ((forecast.agg_rates.crit > 0) && (defendant->current_hp < attacker_maxDamage_crit))
+        // if ((forecast.agg_rates.crit > 0) && (defendant->counters.hp < attacker_maxDamage_crit))
         //     out_death.defendant_possible = true;
 
         // if ((out_death.aggressor_certain) && (out_death.defendant_certain)) {
@@ -163,14 +163,14 @@ struct Combat_Death Compute_Combat_Death(struct Unit *aggressor, struct Unit *de
         //               forecast.dft_damage.dmg[DMG_TYPE_MAGICAL];
         // defender_maxDamage_nocrit = Equation_multiplyDamage(def_dmg, defendant_possible[SOTA_DEFENDANT]);
         // defender_maxDamage_crit = Equation_multiplyDamage(def_dmg, defendant_possible[SOTA_DEFENDANT]);
-        // if ((aggressor->current_hp < defender_maxDamage_nocrit)
+        // if ((aggressor->counters.hp < defender_maxDamage_nocrit)
         //     && (forecast.dft_rates.hit == SOTA_100PERCENT))
         //     out_death.aggressor_certain = true;
-        // if ((aggressor->current_hp < defender_maxDamage_nocrit)
+        // if ((aggressor->counters.hp < defender_maxDamage_nocrit)
         //     && (forecast.dft_rates.hit < SOTA_100PERCENT))
         //     out_death.aggressor_possible = true;
         // if ((forecast.dft_rates.crit > 0)
-        //     && (aggressor->current_hp < defender_maxDamage_crit))
+        //     && (aggressor->counters.hp < defender_maxDamage_crit))
         //     out_death.aggressor_possible = true;
     } while (0);
 

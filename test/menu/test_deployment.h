@@ -4,6 +4,7 @@
 #include "menu/deployment.h"
 #include "unit/unit.h"
 #include "unit/mount.h"
+#include "unit/flags.h"
 #include "log.h"
 #include "RNG.h"
 #include "macros.h"
@@ -56,10 +57,10 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
     erwin->mount = &mount4;
     kiara->mount = &mount2;
     rayan->mount = &mount3;
-    SDL_assert(silou->regrets == 0);
-    SDL_assert(erwin->regrets == 0);
-    SDL_assert(kiara->regrets == 0);
-    SDL_assert(rayan->regrets == 0);
+    SDL_assert(Unit_Current_Regrets(silou) == 0);
+    SDL_assert(Unit_Current_Regrets(erwin) == 0);
+    SDL_assert(Unit_Current_Regrets(kiara) == 0);
+    SDL_assert(Unit_Current_Regrets(rayan) == 0);
 
     DeploymentMenu_Party_Set(dm, &party);
     SDL_assert(dm->_party_size > 0);

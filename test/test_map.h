@@ -405,7 +405,7 @@ void test_map_usable(void) {
     // printf("silou->can_equip.num %d \n", silou->can_equip.num);
     nourstest_true(silou->can_equip.num      == 0);
 
-    erwin->current_hp       =  1;
+    erwin->counters.hp       =  1;
     erwin->stats.current.hp = 19;
 
     // Can equip staff when patient is NOT full health

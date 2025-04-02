@@ -7,25 +7,25 @@
 #include "structs.h"
 
 // TODO: toggle functions for flags
-b32 Unit_Sex(Unit *u);
-b32 Unit_isAlive(Unit *u);
-b32 Unit_isWaiting(Unit *u);
-b32 Unit_showsDanger(Unit *u);
-b32 Unit_isUpdateStats(Unit *u);
-b32 Unit_isDivineShield(Unit *u);
-b32 Unit_isDualWielding(Unit *u);
+b32 Unit_Sex(const Unit *u);
+b32 Unit_isAlive(const Unit *u);
+b32 Unit_isWaiting(const Unit *u);
+b32 Unit_showsDanger(const Unit *u);
+b32 Unit_isUpdateStats(const Unit *u);
+b32 Unit_isDivineShield(const Unit *u);
+b32 Unit_isDualWielding(const Unit *u);
 
-u64 Unit_Skills(Unit *u);
+u64 Unit_Skills(const Unit *u);
 void Unit_Skill_Add(Unit *u, u64 skill);
 
-struct Unit_stats *Unit_Stats_Grown(Unit *u);
+struct Unit_stats *Unit_Stats_Grown(const Unit *u);
 struct Unit_stats *Unit_Stats_Growths(Unit *u);
 
-struct dtab *Unit_dtab_Weapons(Unit *u);
-struct dtab *Unit_dtab_Items(Unit *u);
+struct dtab *Unit_dtab_Items(const Unit *u);
+struct dtab *Unit_dtab_Weapons(const Unit *u);
 
-i32 Unit_Current_HP(Unit *u);
-i32 Unit_Current_Agony(Unit *u);
-i32 Unit_Current_Regrets(Unit *u);
+i32 Unit_Current_HP(const Unit *u);
+i32 Unit_Current_Agony(const Unit *u);
+i32 Unit_Current_Regrets(const Unit *u);
 
 #endif /* UNIT_H */

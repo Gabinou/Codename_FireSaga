@@ -52,9 +52,9 @@ void test_combat_stats() {
     // Unit_setStats(defender, defender_stats);
     // Unit_setStats(attacker, attacker_stats);
 
-    // // SOTA_Log_Debug("%d %d %d %d", attacker->current_hp, attacker_stats.hp, defender->current_hp, defender_stats.hp);
-    // nourstest_true(attacker->current_hp == attacker_stats.hp);
-    // nourstest_true(defender->current_hp == defender_stats.hp);
+    // // SOTA_Log_Debug("%d %d %d %d", attacker->counters.hp, attacker_stats.hp, defender->counters.hp, defender_stats.hp);
+    // nourstest_true(attacker->counters.hp == attacker_stats.hp);
+    // nourstest_true(defender->counters.hp == defender_stats.hp);
     // Unit_effectiveStats(attacker);
     // Unit_effectiveStats(defender);
 
@@ -210,10 +210,10 @@ void test_combat_death() {
     // // nourstest_true((temp_death.aggressor_possible == false));
     // // nourstest_true((temp_death.defendant_possible == false));
 
-    // attacker.current_hp = 1;
+    // attacker.counters.hp = 1;
     // Unit_computedStats(&attacker, distance);
     // Unit_computedStats(&defender, distance);
-    // nourstest_true((attacker.current_hp == 1));
+    // nourstest_true((attacker.counters.hp == 1));
     // forecast = Compute_Combat_Forecast(&attacker, &defender, (struct Point *)&attacker_pos,
     //                                    (struct Point *)&defender_pos);
     // temp_stats = forecast.stats;
@@ -234,12 +234,12 @@ void test_combat_death() {
     // // nourstest_true((temp_death.aggressor_possible == false));
     // // nourstest_true((temp_death.defendant_possible == false));
 
-    // attacker.current_hp = 17;
-    // defender.current_hp = 1;
+    // attacker.counters.hp = 17;
+    // defender.counters.hp = 1;
     // Unit_computedStats(&attacker, distance);
     // Unit_computedStats(&defender, distance);
-    // nourstest_true((attacker.current_hp == 17));
-    // nourstest_true((defender.current_hp == 1));
+    // nourstest_true((attacker.counters.hp == 17));
+    // nourstest_true((defender.counters.hp == 1));
     // forecast = Compute_Combat_Forecast(&attacker, &defender, (struct Point *)&attacker_pos,
     //                                    (struct Point *)&defender_pos);
     // temp_stats = forecast.stats;
@@ -255,8 +255,8 @@ void test_combat_death() {
     // // nourstest_true((temp_death.aggressor_possible == false));
     // // nourstest_true((temp_death.defendant_possible == false));
 
-    // defender.current_hp = 17;
-    // attacker.current_hp = 1;
+    // defender.counters.hp = 17;
+    // attacker.counters.hp = 1;
     // attacker_pos.x = 1;
     // attacker_pos.y = 2;
     // defender_pos.x = 2;
@@ -278,15 +278,15 @@ void test_combat_death() {
     // // nourstest_true((temp_death.aggressor_possible == false));
     // // nourstest_true((temp_death.defendant_possible == false));
 
-    // attacker.current_hp = 1;
-    // defender.current_hp = 1;
+    // attacker.counters.hp = 1;
+    // defender.counters.hp = 1;
     // attacker_pos.x = 1;
     // attacker_pos.y = 2;
     // defender_pos.x = 2;
     // defender_pos.y = 2;
     // Unit_computedStats(&attacker, distance);
     // Unit_computedStats(&defender, distance);
-    // nourstest_true((attacker.current_hp == 1));
+    // nourstest_true((attacker.counters.hp == 1));
     // forecast = Compute_Combat_Forecast(&attacker, &defender, (struct Point *)&attacker_pos,
     //                                    (struct Point *)&defender_pos);
     // temp_stats = forecast.stats;
@@ -338,8 +338,8 @@ void test_combat_flow() {
     nourstest_true(Unit_canAttack(&attacker));
     Unit_setStats(&defender, defender_stats);
     Unit_setStats(&attacker, attacker_stats);
-    nourstest_true(attacker.current_hp == attacker_stats.hp);
-    nourstest_true(defender.current_hp == defender_stats.hp);
+    nourstest_true(attacker.counters.hp == attacker_stats.hp);
+    nourstest_true(defender.counters.hp == defender_stats.hp);
     Unit_computedStats(&attacker, distance);
     Unit_computedStats(&defender, distance);
     Unit_effectiveStats(&attacker);
