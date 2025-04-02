@@ -82,7 +82,7 @@ void test_menu_growths() {
     struct Unit_stats grown_1[1] = {
         {00, 01, 00, 00, 00, 01, 00, 00, 00, 00, 00, 00},
     };
-    Graph_Stat_Add(&gm->graph, &Silou.base_stats, grown_1, 2, 1, stat_toplot);
+    Graph_Stat_Add(&gm->graph, &Silou.stats.bases, grown_1, 2, 1, stat_toplot);
     /* SDL_free alloced in Unit_readJSON grown_stats*/
     grown = Unit_Stats_Grown(&Silou);
 
@@ -98,7 +98,7 @@ void test_menu_growths() {
         {00, 01, 00, 00, 00, 01, 00, 00, 00, 00, 00, 00},
         {01, 01, 00, 00, 00, 00, 01, 01, 01, 00, 00, 00},
     };
-    Graph_Stat_Add(&gm->graph, &Silou.base_stats, grown_2, 13, 11,
+    Graph_Stat_Add(&gm->graph, &Silou.stats.bases, grown_2, 13, 11,
                    stat_toplot);
     grown = &grown_2[0];
     // Silou.support_bonus.speed = 50;
@@ -121,7 +121,7 @@ void test_menu_growths() {
         {00, 01, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
         {00, 01, 00, 00, 00, 01, 00, 00, 01, 00, 00, 01},
     };
-    Graph_Stat_Add(&gm->graph, &Silou.base_stats, grown_10, 30, 20,
+    Graph_Stat_Add(&gm->graph, &Silou.stats.bases, grown_10, 30, 20,
                    stat_toplot);
     grown = &grown_10[0];
     // Silou.support_bonus.speed = - 50;
@@ -173,7 +173,7 @@ void test_menu_growths() {
         {01, 00, 01, 00, 00, 01, 00, 01, 00, 00, 00, 00},
         {00, 01, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
     };
-    Graph_Stat_Add(&gm->graph, &Silou.base_stats, grown_40, 40, 1,
+    Graph_Stat_Add(&gm->graph, &Silou.stats.bases, grown_40, 40, 1,
                    stat_toplot);
     // Silou.support_bonus.speed = - 5;
 

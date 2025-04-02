@@ -160,19 +160,19 @@ void test_menu_stats() {
 
     /* --- HANDEDNESS --- */
     /* -- Ambidextrous -- */
-    Silou.handedness = UNIT_HAND_AMBIDEXTROUS;
+    Silou.flags.handedness = UNIT_HAND_AMBIDEXTROUS;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Handedness_Ambidex.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Rightie -- */
-    Silou.handedness = UNIT_HAND_RIGHTIE;
+    Silou.flags.handedness = UNIT_HAND_RIGHTIE;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Handedness_Rightie.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Leftie -- */
-    Silou.handedness = UNIT_HAND_LEFTIE;
+    Silou.flags.handedness = UNIT_HAND_LEFTIE;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Handedness_Leftie.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);

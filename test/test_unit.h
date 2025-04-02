@@ -148,8 +148,8 @@ void test_io(void) {
     Unit_setid(&unit1, UNIT_ID_SILOU);
     Unit_setClassind(&unit1, UNIT_CLASS_FENCER);
     unit1.flags.sex     = UNIT_SEX_F;
-    unit1.caps_stats    = in_caps;
-    unit1.base_stats    = in_stats;
+    unit1.stats.caps    = in_caps;
+    unit1.stats.bases   = in_stats;
     unit1.current_stats = in_stats;
     unit1.growth.rates  = in_growths;
     unit1.level.base_exp      = 0;
@@ -199,21 +199,21 @@ void test_io(void) {
     unit1.current_stats.con     += 1;
     unit1.current_stats.move    += 1;
     unit1.current_stats.prof    += 1;
-    nourstest_true(unit1.base_stats.hp   != unit1.current_stats.hp);
-    nourstest_true(unit1.base_stats.str  != unit1.current_stats.str);
-    nourstest_true(unit1.base_stats.mag  != unit1.current_stats.mag);
-    nourstest_true(unit1.base_stats.agi  != unit1.current_stats.agi);
-    nourstest_true(unit1.base_stats.dex  != unit1.current_stats.dex);
-    nourstest_true(unit1.base_stats.luck != unit1.current_stats.luck);
-    nourstest_true(unit1.base_stats.def  != unit1.current_stats.def);
-    nourstest_true(unit1.base_stats.res  != unit1.current_stats.res);
-    nourstest_true(unit1.base_stats.con  != unit1.current_stats.con);
-    nourstest_true(unit1.base_stats.move != unit1.current_stats.move);
-    nourstest_true(unit1.base_stats.prof != unit1.current_stats.prof);
+    nourstest_true(unit1.stats.bases.hp   != unit1.current_stats.hp);
+    nourstest_true(unit1.stats.bases.str  != unit1.current_stats.str);
+    nourstest_true(unit1.stats.bases.mag  != unit1.current_stats.mag);
+    nourstest_true(unit1.stats.bases.agi  != unit1.current_stats.agi);
+    nourstest_true(unit1.stats.bases.dex  != unit1.current_stats.dex);
+    nourstest_true(unit1.stats.bases.luck != unit1.current_stats.luck);
+    nourstest_true(unit1.stats.bases.def  != unit1.current_stats.def);
+    nourstest_true(unit1.stats.bases.res  != unit1.current_stats.res);
+    nourstest_true(unit1.stats.bases.con  != unit1.current_stats.con);
+    nourstest_true(unit1.stats.bases.move != unit1.current_stats.move);
+    nourstest_true(unit1.stats.bases.prof != unit1.current_stats.prof);
 
     Unit_lvlUp(&unit1);
     Unit_lvlUp(&unit1);
-    out_stats = unit1.base_stats;
+    out_stats = unit1.stats.bases;
     nourstest_true(in_stats.hp      == out_stats.hp);
     nourstest_true(in_stats.str     == out_stats.str);
     nourstest_true(in_stats.mag     == out_stats.mag);
@@ -272,8 +272,8 @@ void test_growth(void) {
     struct Unit_stats out_growths = Unit_stats_default;
 
     Silou.level.exp           = 0; /* lvl 1 */
-    Silou.caps_stats    = in_caps;
-    Silou.base_stats    = in_stats;
+    Silou.stats.caps    = in_caps;
+    Silou.stats.bases    = in_stats;
     Silou.current_stats = in_stats;
     Silou.growth.rates  = in_growths;
 
@@ -462,7 +462,7 @@ void test_bonus_stats(void) {
     struct Unit Silou = Unit_default;
     //                              hp, str, mag, agi, dex, fth, luck, def, res, con, move
     struct Unit_stats unit_stats    = {1,  6,  2,  7,  7, 7,  7,  4,  5,  6, 5};
-    Silou.base_stats    = unit_stats;
+    Silou.stats.bases    = unit_stats;
     Silou.current_stats = unit_stats;
 
     /* Adding bonus stats*/

@@ -49,7 +49,7 @@ void test_menu_item_drop() {
     Weapon_Load(weapons_dtab, in_wpn.id);
 
     /* -- Long weapon names -- */
-    Silou.handedness = UNIT_HAND_LEFTIE;
+    Silou.flags.handedness = UNIT_HAND_LEFTIE;
     Inventory_item *silou_eq = Unit_Equipment(&Silou);
     silou_eq[ITEM1 - ITEM1].used = 1;
     silou_eq[ITEM2 - ITEM1].used = 0;
