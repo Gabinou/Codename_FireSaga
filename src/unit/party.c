@@ -181,7 +181,8 @@ void _Party_Load(tnecs_entity *entities, struct Game *sota,
         SDL_assert(Unit_id(&temp_unit) < UNIT_ID_PC_END);
 
         struct Point pos = {0, 0};
-        entities[Unit_id(&temp_unit)] = Game_Party_Entity_Create(sota, Unit_id(&temp_unit), pos, &temp_unit);
+        entities[Unit_id(&temp_unit)] = Game_Party_Entity_Create(sota, Unit_id(&temp_unit), pos,
+                                                                 &temp_unit);
     }
 }
 

@@ -9,8 +9,9 @@
 #include "RNG.h"
 #include "pathfinding.h"
 #include "unit/unit.h"
-#include "unit/equipment.h"
+#include "unit/flags.h"
 #include "unit/loadout.h"
+#include "unit/equipment.h"
 #include "equations.h"
 
 void test_combat_stats() {
@@ -561,7 +562,7 @@ void test_combat_sequence() {
 
     struct Unit Silou = Unit_default;
 
-    nourstest_true(army_isPC[Silou.army]);
+    nourstest_true(army_isPC[Unit_Army(&Silou)]);
     struct Combat_Attack *darr_attacks;
     struct Combat_Attack temp_attack = {0};
 

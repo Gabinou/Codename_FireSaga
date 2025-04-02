@@ -344,7 +344,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         Unit_effectiveStats(unit);
 
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
-        SDL_assert(unit->status_queue != NULL);
+        SDL_assert(unit->statuses.queue != NULL);
 
         s8_free(&unit_path);
 
@@ -357,7 +357,8 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         if (!AI_ID_isvalid(Unit_AI(unit)))
             unit->id.ai = AI_DEFAULT;
 
-        s8 ai_filename = AI_ID_isvalid(reinf->ai_id) ? AI_filename(reinf->ai_id) : AI_filename(Unit_AI(unit));
+        s8 ai_filename = AI_ID_isvalid(reinf->ai_id) ? AI_filename(reinf->ai_id) : AI_filename(Unit_AI(
+                                 unit));
         ai_path = s8cat(ai_path, ai_filename);
 
         jsonio_readJSON(ai_path, ai);

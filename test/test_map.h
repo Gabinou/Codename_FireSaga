@@ -200,15 +200,15 @@ void test_map_usable(void) {
     silou->flags.equippable = ITEM_TYPE_SWORD;
     Inventory_item *silou_eq = Unit_Equipment(silou);
 
-    silou_eq[0].id             = ITEM_ID_FLEURET;
-    silou_eq[1].id             = ITEM_ID_IRON_AXE;
-    silou_eq[2].id             = ITEM_ID_IRON_LANCE;
-    silou_eq[3].id             = ITEM_ID_COMPOSITE_BOW;
-    silou_eq[4].id             = ITEM_ID_HEAL;
-    silou->army                         = ARMY_FRIENDLY;
-    erwin->army                         = ARMY_FRIENDLY;
-    enemy->army                         = ARMY_ENEMY;
-    silou->stats.current.move           = 2;
+    silou_eq[0].id              = ITEM_ID_FLEURET;
+    silou_eq[1].id              = ITEM_ID_IRON_AXE;
+    silou_eq[2].id              = ITEM_ID_IRON_LANCE;
+    silou_eq[3].id              = ITEM_ID_COMPOSITE_BOW;
+    silou_eq[4].id              = ITEM_ID_HEAL;
+    silou->id.army              = ARMY_FRIENDLY;
+    erwin->id.army              = ARMY_FRIENDLY;
+    enemy->id.army              = ARMY_ENEMY;
+    silou->stats.current.move   = 2;
     silou_pos->tilemap_pos.x    = 0;
     silou_pos->tilemap_pos.y    = 0;
     erwin_pos->tilemap_pos.x    = 0;

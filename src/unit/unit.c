@@ -171,8 +171,8 @@ void Unit_Members_Alloc(struct Unit *unit) {
         unit->growth.grown = DARR_INIT(unit->growth.grown,  struct Unit_stats, SOTA_MAX_LEVEL / 8);
     }
 
-    if (unit->status_queue == NULL) {
-        unit->status_queue  = DARR_INIT(unit->status_queue, struct Unit_status, 2);
+    if (unit->statuses.queue == NULL) {
+        unit->statuses.queue  = DARR_INIT(unit->statuses.queue, struct Unit_status, 2);
     }
 
     if (unit->bonus_stack == NULL) {
@@ -192,9 +192,9 @@ void Unit_Free(struct Unit *unit) {
         unit->growth.grown = NULL;
     }
 
-    if (unit->status_queue != NULL) {
-        DARR_FREE(unit->status_queue);
-        unit->status_queue = NULL;
+    if (unit->statuses.queue != NULL) {
+        DARR_FREE(unit->statuses.queue);
+        unit->statuses.queue = NULL;
     }
     if (unit->jsonio_header.json_filename.data != NULL)
         s8_free(&unit->jsonio_header.json_filename);
@@ -1060,9 +1060,9 @@ void Unit_readJSON(void *input,  cJSON *junit) {
 
     // SDL_Log("-- startup misc --");
     unit->flags.sex         = cJSON_IsTrue(jsex);
-    unit->army              = cJSON_GetNumberValue(jarmy);
-    unit->level.exp               = cJSON_GetNumberValue(jexp);
-    unit->level.base_exp          = cJSON_GetNumberValue(jbase_exp);
+    unit->id.army           = cJSON_GetNumberValue(jarmy);
+    unit->level.exp         = cJSON_GetNumberValue(jexp);
+    unit->level.base_exp    = cJSON_GetNumberValue(jbase_exp);
     Unit_setClassind(unit, cJSON_GetNumberValue(jclass_index));
     SDL_assert(jcurrent_stats);
 
@@ -1149,16 +1149,16 @@ void Unit_writeJSON(void *input, cJSON *junit) {
     cJSON_AddItemToObject(junit, "Equipped",    jequipped);
     cJSON_AddItemToObject(junit, "Handedness",  jhandedness);
 
-    cJSON *jid            = cJSON_CreateNumber(unit->_id);
+    cJSON *jid            = cJSON_CreateNumber(Unit_id(unit));
     cJSON *jexp           = cJSON_CreateNumber(unit->level.base_exp);
     cJSON *jsex           = cJSON_CreateBool(Unit_Sex(unit));
-    cJSON *jname          = cJSON_CreateString(global_unitNames[unit->_id].data);
-    s8 ai_filename        = ai_names[unit->ai_id];
+    cJSON *jname          = cJSON_CreateString(global_unitNames[Unit_id(unit)].data);
+    s8 ai_filename        = ai_names[Unit_AI(unit)];
     cJSON *jai            = cJSON_CreateString(ai_filename.data);
-    cJSON *jclass         = cJSON_CreateString(classNames[unit->class].data);
+    cJSON *jclass         = cJSON_CreateString(classNames[Unit_Class(unit)].data);
     cJSON *jbase_exp      = cJSON_CreateNumber(unit->level.exp);
     cJSON *jcurrent_hp    = cJSON_CreateNumber(unit->counters.hp);
-    cJSON *jclass_index   = cJSON_CreateNumber(unit->class);
+    cJSON *jclass_index   = cJSON_CreateNumber(Unit_Class(unit));
     cJSON *jcurrent_stats = cJSON_CreateObject();
     Unit_stats_writeJSON(&unit->stats.current, jcurrent_stats);
     cJSON *jcaps_stats    = cJSON_CreateObject();

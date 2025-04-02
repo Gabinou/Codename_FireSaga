@@ -43,12 +43,12 @@ void test_menu_stats() {
 
     /* -- Create Unit -- */
     struct Unit Silou = Unit_default;
-    Silou._id = UNIT_ID_SILOU;
+    Silou.id.self = UNIT_ID_SILOU;
     Unit_Init(&Silou);
     /* - title - */
-    Silou.title_id = 0;
-    global_unitTitlesId[Silou._id] = Silou.title_id;
-    global_unitTitles[Silou.title_id] = s8_mut("Playful Mage");
+    Silou.id.title = 0;
+    global_unitTitlesId[Silou.id.self] = Silou.id.title;
+    global_unitTitles[Silou.id.title] = s8_mut("Playful Mage");
     Silou.equipment.weapons_dtab = weapons_dtab;
     SDL_assert(Silou.equipment.num == 0);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);
@@ -254,61 +254,61 @@ void test_menu_stats() {
     struct Unit_status status = {.turns = 1};
     /* - poisoned - */
     Unit_Status_Add(&Silou, status);
-    Silou.status_queue[0].status = UNIT_STATUS_EXP_POISONED;
+    Silou.statuses.queue[0].status = UNIT_STATUS_EXP_POISONED;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Poisoned.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - stunned - */
-    Silou.status_queue[0].status = UNIT_STATUS_EXP_STUNNED;
+    Silou.statuses.queue[0].status = UNIT_STATUS_EXP_STUNNED;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Stunned.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - rooted - */
-    Silou.status_queue[0].status = UNIT_STATUS_EXP_ROOTED;
+    Silou.statuses.queue[0].status = UNIT_STATUS_EXP_ROOTED;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Rooted.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - seduced - */
-    Silou.status_queue[0].status = UNIT_STATUS_EXP_SEDUCED;
+    Silou.statuses.queue[0].status = UNIT_STATUS_EXP_SEDUCED;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Seduced.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - berserk - */
-    Silou.status_queue[0].status = UNIT_STATUS_EXP_BERSERK;
+    Silou.statuses.queue[0].status = UNIT_STATUS_EXP_BERSERK;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Berserk.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - terror - */
-    Silou.status_queue[0].status = UNIT_STATUS_EXP_TERROR;
+    Silou.statuses.queue[0].status = UNIT_STATUS_EXP_TERROR;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Terror.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - stone - */
-    Silou.status_queue[0].status = UNIT_STATUS_EXP_STONE;
+    Silou.statuses.queue[0].status = UNIT_STATUS_EXP_STONE;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Stone.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - slowed - */
-    Silou.status_queue[0].status = UNIT_STATUS_EXP_SLOWED;
+    Silou.statuses.queue[0].status = UNIT_STATUS_EXP_SLOWED;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Slowed.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - stasis - */
-    Silou.status_queue[0].status = UNIT_STATUS_EXP_STASIS;
+    Silou.statuses.queue[0].status = UNIT_STATUS_EXP_STASIS;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Stasis.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - silence - */
-    Silou.status_queue[0].status = UNIT_STATUS_EXP_SILENCE;
+    Silou.statuses.queue[0].status = UNIT_STATUS_EXP_SILENCE;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Silence.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);

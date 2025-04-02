@@ -738,6 +738,10 @@ struct Unit_IDs {
     i32 ai;
 };
 
+struct Unit_Statuses {
+    struct Unit_status *queue;
+};
+
 typedef struct Unit {
     // TODO: unit design:
     //  - Stats values inside unit class are CONSTANT?
@@ -771,11 +775,7 @@ typedef struct Unit {
     struct Unit_Stats_Bundle    stats;
     struct Unit_Counters        counters;
     struct Unit_Mount           mount;
-
-
-    // Unit_Member_Status.
-    // Status with least remaining turns on top.
-    struct Unit_status *status_queue;
+    struct Unit_Statuses        statuses;
 
     // TODO: Remove all below.
     /* Stats */
@@ -783,7 +783,6 @@ typedef struct Unit {
     struct Unit_stats bonus_stats; // TODO remove for new Bonus_Stat Struct
     struct Unit_stats malus_stats; // TODO remove for new Bonus_Stat Struct
 
-    // TODO: rm
     struct Unit_stats effective_stats;  /* current_stats + bonuses/maluses */
 
     // TODO: rm

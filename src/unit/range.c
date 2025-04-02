@@ -252,8 +252,11 @@ void Unit_Rangemap_default(struct Unit *unit) {
     // Compute default rangemap priority
 
     /* Sota default for class (healer staff) */
-    if ((unit->class == UNIT_CLASS_PRIEST) || (unit->class == UNIT_CLASS_BISHOP) ||
-        (unit->class == UNIT_CLASS_CLERIC) || (unit->class == UNIT_CLASS_ORACLE)) {
+    i32 class = Unit_Class(unit);
+    if ((class == UNIT_CLASS_PRIEST) ||
+        (class == UNIT_CLASS_BISHOP) ||
+        (class == UNIT_CLASS_CLERIC) ||
+        (class == UNIT_CLASS_ORACLE)) {
         unit->render.rangemap = RANGEMAP_HEALMAP;
     } else {
         unit->render.rangemap = RANGEMAP_ATTACKMAP;

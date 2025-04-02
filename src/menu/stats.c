@@ -904,14 +904,14 @@ static void _StatsMenu_Draw_Statuses(struct StatsMenu *stats_menu, SDL_Renderer 
     struct Unit *unit = stats_menu->unit;
 
     /* -- Statuses -- */
-    SDL_assert(stats_menu->unit->status_queue != NULL);
-    if (DARR_NUM(stats_menu->unit->status_queue) <= 0) {
+    SDL_assert(stats_menu->unit->statuses.queue != NULL);
+    if (DARR_NUM(stats_menu->unit->statuses.queue) <= 0) {
         int x = STATUSES_NONE_X_OFFSET, y = STATUSES_NONE_Y_OFFSET;
         PixelFont_Write(stats_menu->pixelnours, renderer, "-", 1, x, y);
         return;
     }
 
-    struct Unit_status status = stats_menu->unit->status_queue[0];
+    struct Unit_status status = stats_menu->unit->statuses.queue[0];
 
     srcrect.w = SM_STATUSES_TILESIZE;
     srcrect.h = SM_STATUSES_TILESIZE;
