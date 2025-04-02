@@ -2,6 +2,7 @@
 #include "sprite.h"
 #include "cJSON.h"
 #include "palette.h"
+#include "unit/flags.h"
 #include "physfs.h"
 #include "jsonio.h"
 #include "platform.h"
@@ -270,9 +271,9 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit,
     s8 filename = s8_mut(PATH_JOIN("assets", "map_units")PHYSFS_SEPARATOR);
 
     SDL_assert(classNames != NULL);
-    SDL_assert((unit->class > UNIT_CLASS_START) && (unit->class < UNIT_CLASS_END));
-    SDL_assert(classNames[unit->class].data != NULL);
-    filename = s8cat(filename, s8_var(classNames[unit->class].data));
+    SDL_assert((Unit_Class(unit) > UNIT_CLASS_START) && (Unit_Class(unit) < UNIT_CLASS_END));
+    SDL_assert(classNames[Unit_Class(unit)].data != NULL);
+    filename = s8cat(filename, s8_var(classNames[Unit_Class(unit)].data));
     filename = s8cat(filename, s8_literal(".json"));
     filename = s8_replaceSingle(filename, ' ', '_');
     if (!PHYSFS_exists(filename.data)) {
@@ -287,7 +288,7 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit,
 
     s8_free(&sprite->asset_name);
     sprite->asset_name = s8_mut(PATH_JOIN("..", "assets", "map_units")DIR_SEPARATOR);
-    sprite->asset_name = s8cat(sprite->asset_name, s8_var(classNames[unit->class].data));
+    sprite->asset_name = s8cat(sprite->asset_name, s8_var(classNames[Unit_Class(unit)].data));
     sprite->asset_name = s8cat(sprite->asset_name, s8_literal(".png"));
     sprite->asset_name = s8_replaceSingle(sprite->asset_name, ' ', '_');
 

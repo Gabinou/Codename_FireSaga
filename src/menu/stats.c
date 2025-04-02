@@ -565,12 +565,12 @@ static void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *ren
     SDL_RenderFillRect(renderer, &srcrect);
 
     /* - name - */
-    const s8 name = global_unitNames[stats_menu->unit->_id];
+    const s8 name = global_unitNames[Unit_id(stats_menu->unit)];
     x = NAME_X_OFFSET, y = NAME_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, name.data, x, y);
 
     /* - class - */
-    s8 class = s8_mut(classNames[stats_menu->unit->class].data);
+    s8 class = s8_mut(classNames[Unit_Class(stats_menu->unit)].data);
     class    = s8_toUpper(class);
     x = CLASS_X_OFFSET, y = CLASS_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours, renderer, class.data, x, y);

@@ -28,4 +28,8 @@ i32 Unit_Current_HP(const Unit *u);
 i32 Unit_Current_Agony(const Unit *u);
 i32 Unit_Current_Regrets(const Unit *u);
 
+i32 Unit_Army(const Unit *u);
+i32 Unit_Class(const Unit *u);
+i32 Unit_AI(const Unit *u);
+
 #endif /* UNIT_H */

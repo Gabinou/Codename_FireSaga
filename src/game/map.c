@@ -190,7 +190,7 @@ void GameMap_Reinforcements_Free(struct Game *sota) {
         struct Unit *unit = IES_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
 
         if (unit) {
-            b32 isPC = (unit->_id > UNIT_ID_PC_START) && (unit->_id < UNIT_ID_PC_END);
+            b32 isPC = (Unit_id(unit) > UNIT_ID_PC_START) && (Unit_id(unit) < UNIT_ID_PC_END);
 
             if (!isPC) {
                 Unit_Free(unit);
@@ -316,7 +316,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
         Unit_Reinforcement_Load(unit, reinf);
         s8_free(&unit_path);
-        SDL_assert(global_unitNames[*(u64 *)dtab_get(global_unitOrders, unit->_id)].data != NULL);
+        SDL_assert(global_unitNames[*(u64 *)dtab_get(global_unitOrders, Unit_id(unit))].data != NULL);
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
 
         /* Make AI reinforcements levelup */
@@ -354,10 +354,10 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         s8 ai_path = s8_mut("ai"PHYSFS_SEPARATOR);
 
         /* - Default ai - */
-        if (!AI_ID_isvalid(unit->ai_id))
-            unit->ai_id = AI_DEFAULT;
+        if (!AI_ID_isvalid(Unit_AI(unit)))
+            unit->id.ai = AI_DEFAULT;
 
-        s8 ai_filename = AI_ID_isvalid(reinf->ai_id) ? AI_filename(reinf->ai_id) : AI_filename(unit->ai_id);
+        s8 ai_filename = AI_ID_isvalid(reinf->ai_id) ? AI_filename(reinf->ai_id) : AI_filename(Unit_AI(unit));
         ai_path = s8cat(ai_path, ai_filename);
 
         jsonio_readJSON(ai_path, ai);
@@ -401,8 +401,8 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         Map_Unit_Put(sota->map, position->tilemap_pos.x, position->tilemap_pos.y, temp_unit_ent);
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
 
-        SDL_assert(unit->army == reinf->army);
-        SDL_assert(global_unitNames[*(u64 *)dtab_get(global_unitOrders, unit->_id)].data != NULL);
+        SDL_assert(unit->id.army == reinf->army);
+        SDL_assert(global_unitNames[*(u64 *)dtab_get(global_unitOrders, Unit_id(unit))].data != NULL);
     }
     sota->map->reinf_loaded = sota->map->turn;
     SDL_assert(DARR_NUM(sota->map_enemies) <= DARR_NUM(sota->map->reinforcements));

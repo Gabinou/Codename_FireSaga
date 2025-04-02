@@ -592,7 +592,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     } else {
         Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
     }
-    sota->map->show_icons = SotA_isPC(unit_ontile->army);
+    sota->map->show_icons = SotA_isPC(Unit_Army(unit_ontile));
 
     /* -- Changing animation loop to Taunt -- */
     struct Sprite *sprite = IES_GET_COMPONENT(sota->world, hov_ent, Sprite);
@@ -760,7 +760,7 @@ void fsm_eCncl_sGmpMap_ssStby(struct Game *sota, tnecs_entity canceller) {
     SDL_assert(unit_ontile);
     SDL_assert(data2_entity != NULL);
     *data2_entity = ontile;
-    if (!SotA_isPC(unit_ontile->army) && Unit_showsDanger(unit_ontile))
+    if (!SotA_isPC(Unit_Army(unit_ontile)) && Unit_showsDanger(unit_ontile))
         Event_Emit(__func__, SDL_USEREVENT, event_Unit_Danger, data1_entity, data2_entity);
 
 }
@@ -1319,7 +1319,7 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     selected_pos        = IES_GET_COMPONENT(sota->world, unit_ent,            Position);
 
     /* - Unit should be PC - */
-    SDL_assert(SotA_isPC(unit->army));
+    SDL_assert(SotA_isPC(Unit_Army(unit)));
 
     /* -- Creating Unit Action Menu -- */
     tnecs_entity *menu = &sota->player_select_menus[MENU_PLAYER_SELECT_UNIT_ACTION];
@@ -1380,9 +1380,9 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     SDL_assert(sota->map->army_i >= 0);
     SDL_assert(sota->map->army_i < DARR_NUM(sota->map->army_onfield));
     i32 army = sota->map->army_onfield[sota->map->army_i];
-    SDL_assert(army == unit->army); /* only units in current army should be moving */
-    Map_Bonus_Remove_Instant(sota->map, unit->army);
-    Map_Bonus_Standard_Apply(sota->map, unit->army);
+    SDL_assert(army == Unit_Army(unit)); /* only units in current army should be moving */
+    Map_Bonus_Remove_Instant(sota->map, Unit_Army(unit));
+    Map_Bonus_Standard_Apply(sota->map, Unit_Army(unit));
 
     /* - Pre-menu update computation for content - */
     Game_preUnitAction_Targets(sota, unit_ent);
@@ -1482,7 +1482,7 @@ void fsm_eUnitSel_ssStby(struct Game *sota, tnecs_entity selector_entity) {
     sota->selected_unit_initial_position.x = selected_pos->tilemap_pos.x;
     sota->selected_unit_initial_position.y = selected_pos->tilemap_pos.y;
 
-    if (!SotA_isPC(selected_unit->army)) {
+    if (!SotA_isPC(Unit_Army(selected_unit))) {
         /* - Enemy unit was selected - */
         Event_Emit(__func__, SDL_USEREVENT, event_Unit_Danger, data1_entity, data2_entity);
         return;

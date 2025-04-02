@@ -332,14 +332,14 @@ void Compute_Combat_Attack(struct Combat_Phase  *phase,
     /* --- CHECKING HIT --- */
     /* -- computing effective rate -- */
 #ifdef RNG_SEQUENCE_BREAKER_HIT
-    if (!SotA_isPC(attacker->army)) { /* rate drops if hit sequence for NPC ONLY */
+    if (!SotA_isPC(attacker->id.army)) { /* rate drops if hit sequence for NPC ONLY */
         if ((attacker->rng_sequence.hit.hit) && (attacker->rng_sequence.hit.len > 0)) {
             attacker->rng_sequence.hit.eff_rate = SB_RATE_DROP(hit_rate, attacker->rng_sequence.hit.len);
         }
     }
 #endif /* RNG_SEQUENCE_BREAKER_HIT */
 #ifdef RNG_SEQUENCE_BREAKER_MISS
-    if (SotA_isPC(attacker->army)) { /* rate rises if miss sequence for PC ONLY */
+    if (SotA_isPC(attacker->id.army)) { /* rate rises if miss sequence for PC ONLY */
         if ((!attacker->rng_sequence.hit.hit) && (attacker->rng_sequence.hit.len > 0)) {
             attacker->rng_sequence.hit.eff_rate = SB_RATE_RISE(hit_rate, attacker->rng_sequence.hit.len);
         }
@@ -357,13 +357,13 @@ void Compute_Combat_Attack(struct Combat_Phase  *phase,
     /* -- computing effective rate -- */
     attacker->rng_sequence.crit.eff_rate = crit_rate;
 #ifdef RNG_SEQUENCE_BREAKER_CRIT
-    if (!SotA_isPC(attacker->army)) { /* rate drops if crit sequence for PC ONLY */
+    if (!SotA_isPC(attacker->id.army)) { /* rate drops if crit sequence for PC ONLY */
         if ((attacker->rng_sequence.crit.hit) && (attacker->rng_sequence.crit.len > 0))
             attacker->rng_sequence.crit.eff_rate = SB_RATE_DROP(crit_rate, attacker->rng_sequence.crit.len);
     }
 #endif /* RNG_SEQUENCE_BREAKER_HIT */
 #ifdef RNG_SEQUENCE_BREAKER_NOCRIT
-    if (SotA_isPC(attacker->army)) { /* rate rises if nocrit sequence for PC ONLY */
+    if (SotA_isPC(attacker->id.army)) { /* rate rises if nocrit sequence for PC ONLY */
         if ((!attacker->rng_sequence.crit.hit) && (attacker->rng_sequence.crit.len > 0))
             attacker->rng_sequence.crit.eff_rate = SB_RATE_RISE(crit_rate, attacker->rng_sequence.crit.len);
     }

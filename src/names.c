@@ -93,7 +93,7 @@ int Unit_Name2ID(s8 name) {
 }
 
 s8  Unit_Name(Unit *unit) {
-    i32 *order = dtab_get(global_unitOrders, unit->_id);
+    i32 *order = dtab_get(global_unitOrders, Unit_id(unit));
     return (global_unitNames[*order]);
 }
 

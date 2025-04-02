@@ -608,7 +608,7 @@ struct RNG_Sequence { /* Sequence of hits/misses in a row */
     i8 eff_rate;
 };
 
-struct Unit_RNG_Stats_Sequence {
+struct Unit_Sequence {
     // RNG sequences for ALL stats
     struct RNG_Sequence hit;
     struct RNG_Sequence crit;
@@ -726,8 +726,16 @@ struct Unit_Counters {
 };
 
 struct Unit_Mount {
-    struct Mount *ptr; // TODO: ID.
-    i32 mount_id;
+    struct Mount *ptr; // TODO: rm, use id.
+    i32 id;
+};
+
+struct Unit_IDs {
+    i32 self;
+    i32 title;
+    i32 class;
+    i32 army;
+    i32 ai;
 };
 
 typedef struct Unit {
@@ -749,30 +757,21 @@ typedef struct Unit {
 
     struct jsonIO_Header jsonio_header;
 
-    // Naming:
-    //  Unit_Private_<>
-    //  -> Unit_Member_<>
-    //  Unit_Sub_<>
-    struct Unit_Growth              growth;
-    struct Unit_RNG_Stats_Sequence  rng_sequence;
-    struct Unit_Flags               flags;
-    struct Unit_Rescue              rescue;
-    struct Unit_Render              render;
-    struct Unit_Support             support;
-    struct Unit_Level               level;
-    struct Unit_Equipment           equipment;
-    struct Unit_canEquip            can_equip;
-    struct Unit_Arms                arms;
-    struct Unit_Stats_Bundle        stats;
-    struct Unit_Counters            counters;
-    struct Unit_Mount               mount;
+    struct Unit_IDs             id;
+    struct Unit_Growth          growth;
+    struct Unit_Sequence        rng_sequence;
+    struct Unit_Flags           flags;
+    struct Unit_Rescue          rescue;
+    struct Unit_Render          render;
+    struct Unit_Support         support;
+    struct Unit_Level           level;
+    struct Unit_Equipment       equipment;
+    struct Unit_canEquip        can_equip;
+    struct Unit_Arms            arms;
+    struct Unit_Stats_Bundle    stats;
+    struct Unit_Counters        counters;
+    struct Unit_Mount           mount;
 
-    // Naming? Unit_MemberIDs? unit_identifiers?
-    u16 _id;
-    u16 title_id;
-    i16 class;
-    i8  army;
-    i32 ai_id; /* Default AI for unit */
 
     // Unit_Member_Status.
     // Status with least remaining turns on top.

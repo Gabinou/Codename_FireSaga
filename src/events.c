@@ -878,7 +878,7 @@ void receive_event_Unit_Deselect(struct Game *sota, SDL_Event *userevent) {
         fsm_eUnitDsel_ss[sota->substate](sota, sota->entity_cursor);
 
     /* - New overlays - */
-    if (SotA_isPC(unit_ptr->army)) {
+    if (SotA_isPC(Unit_Army(unit_ptr))) {
         /* - Hide PC overlay - */
         sota->map->show_overlay = false;
     } else {
@@ -962,7 +962,7 @@ void receive_event_Cursor_Hovers_Unit(struct Game *sota, SDL_Event *userevent) {
     sota->hovered_unit_entity = *(tnecs_entity *)userevent->user.data2;
     SDL_assert(sota->hovered_unit_entity != TNECS_NULL);
     struct Unit *temp = IES_GET_COMPONENT(sota->world, sota->hovered_unit_entity, Unit);
-    SDL_assert(global_unitNames[temp->_id].data != NULL);
+    SDL_assert(global_unitNames[Unit_id(temp)].data != NULL);
 
     if (fsm_eCrsHvUnit_ss[sota->substate] != NULL)
         fsm_eCrsHvUnit_ss[sota->substate](sota, sota->hovered_unit_entity);

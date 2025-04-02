@@ -360,9 +360,9 @@ static void _DeploymentMenu_Draw_Names(DeploymentMenu *dm, SDL_Renderer *rendere
         struct Unit *unit = IES_GET_COMPONENT(dm->world, ent, Unit);
         SDL_assert(unit != NULL);
         _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
-        SDL_assert(unit->_id > UNIT_ID_PC_START);
-        SDL_assert(unit->_id < UNIT_ID_END);
-        u64 order = *(u64 *)DTAB_GET(global_unitOrders, unit->_id);
+        SDL_assert(Unit_id(unit) > UNIT_ID_PC_START);
+        SDL_assert(Unit_id(unit) < UNIT_ID_END);
+        u64 order = *(u64 *)DTAB_GET(global_unitOrders, Unit_id(unit));
         s8 idname = global_unitNames[order];
 
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, idname.data,
@@ -428,7 +428,7 @@ static void _DeploymentMenu_Draw_Stats_P1(DeploymentMenu *dm, SDL_Renderer *rend
         x = DM_CLASS_X, y = DM_CLASS_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
-        s8 class = classNames[unit->class];
+        s8 class = classNames[Unit_Class(unit)];
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, class.data,
                                  class.num, x, y);
     }

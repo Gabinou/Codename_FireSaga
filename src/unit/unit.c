@@ -80,12 +80,12 @@ const struct Unit Unit_default = {
     .jsonio_header.json_element   = JSON_UNIT,
 
     .flags.mvt_type     = UNIT_MVT_FOOT_SLOW,
-    .class              = UNIT_CLASS_VILLAGER,
+    .id.class           = UNIT_CLASS_VILLAGER,
 
     .render.rangemap    = RANGEMAP_ATTACKMAP,
 
-    .army               =  1,
-    .ai_id              = -1,
+    .id.army            =  1,
+    .id.ai              = -1,
 
     .counters.hp        = SOTA_MIN_HP,
     .stats.current.hp   = SOTA_MIN_HP,
@@ -105,8 +105,8 @@ const struct Unit Nibal_unit = {
     .stats.bases     = {35, 20, 20, 18, 25, 14, 12, 18, 22, 30, 06, 15},
 
     .level.base_exp = 2500,
-    .army           = ARMY_HAMILCAR,
-    ._id            = UNIT_ID_NIBAL,
+    .id.army        = ARMY_HAMILCAR,
+    .id.self        = UNIT_ID_NIBAL,
 
     .counters.hp    = 35,
     .flags.alive    = true,
@@ -198,7 +198,7 @@ void Unit_Free(struct Unit *unit) {
     }
     if (unit->jsonio_header.json_filename.data != NULL)
         s8_free(&unit->jsonio_header.json_filename);
-    unit->_id = 0;
+    unit->id.self = 0;
 }
 
 void Unit_InitWweapons(struct Unit *unit, struct dtab *weapons_dtab) {
@@ -207,20 +207,20 @@ void Unit_InitWweapons(struct Unit *unit, struct dtab *weapons_dtab) {
 }
 
 void Unit_Reinforcement_Load(struct Unit *unit, struct Reinforcement *reinf) {
-    unit->army = reinf->army;
+    unit->id.army = reinf->army;
 }
 
 i16 Unit_id(struct Unit *unit) {
     if (unit == NULL) {
         return (UNIT_ID_NULL);
     }
-    return (unit->_id);
+    return (unit->id.self);
 }
 void Unit_setid(struct Unit *unit, i16 id) {
     SDL_assert(unit != NULL);
     SDL_assert(Unit_ID_Valid(id));
 
-    unit->_id = id;
+    unit->id.self = id;
 }
 
 void Unit_setSkills(struct Unit *unit, u64 skills) {
@@ -231,12 +231,12 @@ void Unit_setSkills(struct Unit *unit, u64 skills) {
 void Unit_setClassind(struct Unit *unit, i8 class_index) {
     SDL_assert(unit);
     SDL_assert((class_index > 0) && (class_index < UNIT_CLASS_END));
-    unit->class      = class_index;
-    unit->flags.mvt_type   = Unit_mvtType(unit);
-    unit->flags.equippable = class_equippables[unit->class];
+    unit->id.class          = class_index;
+    unit->flags.mvt_type    = Unit_mvtType(unit);
+    unit->flags.equippable  = class_equippables[unit->id.class];
 
-    b32 healclass   = (unit->class == UNIT_CLASS_BISHOP);
-    healclass      |= (unit->class == UNIT_CLASS_CLERIC);
+    b32 healclass   = (unit->id.class == UNIT_CLASS_BISHOP);
+    healclass      |= (unit->id.class == UNIT_CLASS_CLERIC);
 
     Unit_Rangemap_default(unit);
 }
@@ -267,7 +267,7 @@ struct Unit_stats Unit_getStats(struct Unit *unit) {
 
 /* --- Second-order info --- */
 u8 Unit_mvtType( struct Unit *unit) {
-    return (class_mvt_types[unit->class]);
+    return (class_mvt_types[unit->id.class]);
 }
 
 u8 SotA_army2alignment(u8 army) {
@@ -441,8 +441,7 @@ b32 Unit_canCarry(struct Unit *savior, struct Unit *victim) {
 }
 
 b32 Unit_canDance(struct Unit *unit) {
-    b32 out = (unit->class == UNIT_CLASS_DANCER);
-
+    b32 out = (unit->id.class == UNIT_CLASS_DANCER);
     return (out);
 }
 
@@ -1046,15 +1045,15 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     char *ai_filename   = cJSON_GetStringValue(jai);
     if (ai_filename != NULL) {
         s8 s8_ai_filename  = s8_var(ai_filename);
-        unit->ai_id   = AI_Name2ID(s8_ai_filename);
+        unit->id.ai   = AI_Name2ID(s8_ai_filename);
     }
-    u64 order = *(u64 *)DTAB_GET(global_unitOrders, unit->_id);
+    u64 order = *(u64 *)DTAB_GET(global_unitOrders, unit->id.self);
     s8 idname = global_unitNames[order];
 
     if (!s8equal(global_unitNames[order], s8_var(json_name))) {
         SDL_LogError(SOTA_LOG_SYSTEM,
                      "Name in unit filename '%s' does not match id name %d->'%s'",
-                     json_name, unit->_id, idname.data);
+                     json_name, unit->id.self, idname.data);
         SDL_assert(false);
         exit(ERROR_JSONParsingFailed);
     }
