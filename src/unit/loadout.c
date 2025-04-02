@@ -91,12 +91,12 @@ void Equipped_Copy(i32 *_dest, const i32 *const _src) {
 }
 
 void Unit_Equipped_Import(Unit *unit, i32 *_loadout) {
-    size_t bytesize = unit->arms_num * sizeof(*_loadout);
+    size_t bytesize = unit->arms.num * sizeof(*_loadout);
     memcpy(unit->equipment._equipped, _loadout, bytesize);
 }
 
 void Unit_Equipped_Export(Unit *unit, i32 *_loadout) {
-    size_t bytesize = unit->arms_num * sizeof(*_loadout);
+    size_t bytesize = unit->arms.num * sizeof(*_loadout);
     memcpy(_loadout, unit->equipment._equipped, bytesize);
 }
 

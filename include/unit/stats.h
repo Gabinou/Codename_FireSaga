@@ -11,6 +11,9 @@ Unit_stats Unit_stats_plus_cst( Unit_stats stats1, i32 cst);
 
 i32 *Unit_stats_arr(Unit_stats *stats1);
 
+struct Unit_stats Unit_Stats_Caps(Unit *u);
+struct Unit_stats Unit_Stats_Bases(Unit *u);
+
 /* --- Computed stats --- */
 Computed_Stats Computed_Stats_plus(Computed_Stats s1, Computed_Stats s2);
 

@@ -80,7 +80,7 @@ const int class_mvt_types[UNIT_CLASS_END] = {
 const struct Unit Unit_default = {
     .jsonio_header.json_element   = JSON_UNIT,
 
-    .mvt_type       = UNIT_MVT_FOOT_SLOW,
+    .flags.mvt_type       = UNIT_MVT_FOOT_SLOW,
     .class          = UNIT_CLASS_VILLAGER,
 
     .render.rangemap    = RANGEMAP_ATTACKMAP,
@@ -92,9 +92,9 @@ const struct Unit Unit_default = {
     .current_stats.hp   = SOTA_MIN_HP,
 
 
-    .arms_num           = UNIT_ARMS_NUM,
-    .handedness         = UNIT_HAND_RIGHTIE,
-    ._hands             = {true, true},
+    .arms.num           = UNIT_ARMS_NUM,
+    .flags.handedness   = UNIT_HAND_RIGHTIE,
+    .arms.hands             = {true, true},
 
     .flags.alive                = true,
     .flags.update_stats         = true,
@@ -103,7 +103,7 @@ const struct Unit Unit_default = {
 const struct Unit Nibal_unit = {
     .jsonio_header.json_element = JSON_UNIT,
     /*              hp str mag agi dex fth luck def res con move prof */
-    .base_stats     = {35, 20, 20, 18, 25, 14, 12, 18, 22, 30, 06, 15},
+    .stats.bases     = {35, 20, 20, 18, 25, 14, 12, 18, 22, 30, 06, 15},
 
     .level.base_exp = 2500,
     .army           = ARMY_HAMILCAR,
@@ -113,12 +113,12 @@ const struct Unit Nibal_unit = {
     .flags.alive    = true,
     .flags.sex      = true,  /* 0:F, 1:M. eg. hasPenis. */
 
-    ._hands          = {true, true},
+    .arms.hands          = {true, true},
 };
 
 void Tetrabrachios_default(Unit *unit) {
     *unit = Unit_default;
-    unit->arms_num = TETRABRACHIOS_ARMS_NUM;
+    unit->arms.num = TETRABRACHIOS_ARMS_NUM;
     Unit_Hand_Set(unit, TETRABRACHIOS_HAND_LEFT,  true);
     Unit_Hand_Set(unit, TETRABRACHIOS_HAND_RIGHT, true);
 }
@@ -127,29 +127,29 @@ void Tetrabrachios_default(Unit *unit) {
 /* Other hands than the main two can't be strong/weak hand */
 int Unit_Hand_Strong(struct Unit *unit) {
     SDL_assert(unit != NULL);
-    return ((unit->handedness == UNIT_HAND_LEFTIE) ? UNIT_HAND_LEFT : UNIT_HAND_RIGHT);
+    return ((unit->flags.handedness == UNIT_HAND_LEFTIE) ? UNIT_HAND_LEFT : UNIT_HAND_RIGHT);
 }
 
 int Unit_Hand_Weak(struct Unit *unit) {
     SDL_assert(unit != NULL);
-    return ((unit->handedness == UNIT_HAND_LEFTIE) ? UNIT_HAND_RIGHT : UNIT_HAND_LEFT);
+    return ((unit->flags.handedness == UNIT_HAND_LEFTIE) ? UNIT_HAND_RIGHT : UNIT_HAND_LEFT);
 }
 
 b32 Unit_hasHand(Unit *unit, i32 hand) {
     SDL_assert(unit != NULL);
     SDL_assert(hand >= UNIT_HAND_LEFT);
-    SDL_assert(hand <= unit->arms_num);
+    SDL_assert(hand <= unit->arms.num);
     SDL_assert(hand <= UNIT_ARMS_NUM);
-    return (unit->_hands[hand - UNIT_HAND_LEFT]);
+    return (unit->arms.hands[hand - UNIT_HAND_LEFT]);
 }
 
 void Unit_Hand_Set(Unit *unit, i32 hand, b32 has) {
     SDL_assert(unit != NULL);
     SDL_assert(hand >= UNIT_HAND_LEFT);
-    SDL_assert(hand <= unit->arms_num);
+    SDL_assert(hand <= unit->arms.num);
     SDL_assert(hand <= UNIT_ARMS_NUM);
 
-    unit->_hands[hand - UNIT_HAND_LEFT] = has;
+    unit->arms.hands[hand - UNIT_HAND_LEFT] = has;
 }
 
 /* --- Constructors/Destructors --- */
@@ -233,7 +233,7 @@ void Unit_setClassind(struct Unit *unit, i8 class_index) {
     SDL_assert(unit);
     SDL_assert((class_index > 0) && (class_index < UNIT_CLASS_END));
     unit->class      = class_index;
-    unit->mvt_type   = Unit_mvtType(unit);
+    unit->flags.mvt_type   = Unit_mvtType(unit);
     unit->flags.equippable = class_equippables[unit->class];
 
     b32 healclass   = (unit->class == UNIT_CLASS_BISHOP);
@@ -253,8 +253,8 @@ void Unit_setStats(struct Unit *unit, struct Unit_stats stats) {
 
 void Unit_setBases(struct Unit *unit, struct Unit_stats stats) {
     SDL_assert(unit);
-    unit->base_stats = stats;
-    unit->current_hp = unit->base_stats.hp;
+    unit->stats.bases = stats;
+    unit->current_hp = unit->stats.bases.hp;
 }
 
 struct Unit_stats Unit_getStats(struct Unit *unit) {
@@ -383,7 +383,7 @@ void Unit_lvlUp(struct Unit *unit) {
     i32 *growths        = Unit_stats_arr(Unit_Stats_Growths(unit));
     i32 *grows_arr      = Unit_stats_arr(&grows);
     i32 *stats_arr      = Unit_stats_arr(&temp_stats);
-    i32 *caps_stats     = Unit_stats_arr(&unit->caps_stats);
+    i32 *caps_stats     = Unit_stats_arr(&unit->stats.caps);
     i32 *current_stats  = Unit_stats_arr(&unit->current_stats);
     struct RNG_Sequence *sequences = Unit_sequences_arr(unit);
 
@@ -511,7 +511,7 @@ b32 Unit_canAttack(struct Unit *unit) {
     struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
     SDL_assert(weapons_dtab != NULL);
 
-    for (int hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
+    for (int hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         if (_Unit_canAttack(unit, hand)) {
             // SDL_Log("CanAttack!");
             return (true);
@@ -576,7 +576,7 @@ i32 *Unit_computeDefense(struct Unit *unit) {
     /* Shield protection */
     int prot_P = 0, prot_M = 0;
 
-    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
+    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         i32 *prot;
         if (prot = Unit_Shield_Protection(unit, hand)) {
             prot_P += prot[DMG_TYPE_PHYSICAL];
@@ -616,7 +616,7 @@ i32 *Unit_computeAttack(struct Unit *unit, int distance) {
 
     struct Weapon *weapon;
     /* Get stats of both weapons */
-    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
+    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         if (!Unit_isEquipped(unit, hand))
             continue;
 
@@ -787,7 +787,7 @@ i32 Unit_computeHit(struct Unit *unit, int distance) {
     struct Weapon *weapon;
 
     /* Get stats of both weapons */
-    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
+    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         if (!Unit_isEquipped(unit, hand))
             continue;
 
@@ -823,7 +823,7 @@ i32 Unit_computeDodge(struct Unit *unit, int distance) {
     i32 dodges[MAX_ARMS_NUM]    = {0};
     struct Weapon *weapon;
 
-    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
+    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         if (!Unit_isEquipped(unit, hand))
             continue;
 
@@ -860,7 +860,7 @@ i32 Unit_computeCritical(struct Unit *unit, int distance) {
     i32 crits[MAX_ARMS_NUM] = {0};
     struct Weapon *weapon;
 
-    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
+    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         if (!Unit_isEquipped(unit, hand))
             continue;
 
@@ -892,7 +892,7 @@ i32 Unit_computeFavor(struct Unit *unit, int distance) {
     i32 favors[MAX_ARMS_NUM] = {0};
     struct Weapon *weapon;
 
-    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
+    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         if (!Unit_isEquipped(unit, hand))
             continue;
 
@@ -942,7 +942,7 @@ i32 Unit_computeSpeed(struct Unit *unit, int distance) {
     i32 wgts[MAX_ARMS_NUM]      = {0};
     struct Weapon *weapon;
 
-    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
+    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         if (!Unit_isEquipped(unit, hand))
             continue;
 
@@ -1012,7 +1012,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
 
     /* --- Hands --- */
     if (jhandedness != NULL) {
-        unit->handedness = cJSON_GetNumberValue(jhandedness);
+        unit->flags.handedness = cJSON_GetNumberValue(jhandedness);
     }
 
     if (jhands != NULL) {
@@ -1021,9 +1021,9 @@ void Unit_readJSON(void *input,  cJSON *junit) {
             exit(1);
         }
 
-        unit->arms_num = cJSON_GetArraySize(jhands);
+        unit->arms.num = cJSON_GetArraySize(jhands);
 
-        for (int hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
+        for (int hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
             cJSON *jhand    = cJSON_GetArrayItem(jhands, hand - UNIT_HAND_LEFT);
             Unit_Hand_Set(unit, hand, cJSON_GetNumberValue(jhand));
         }
@@ -1031,11 +1031,11 @@ void Unit_readJSON(void *input,  cJSON *junit) {
 
     /* --- Equipped --- */
     if (jequipped != NULL) {
-        if (cJSON_GetArraySize(jequipped) != unit->arms_num) {
+        if (cJSON_GetArraySize(jequipped) != unit->arms.num) {
             SDL_Log("Unit \"Equipped\" array should have same size as \"Hands Num\".");
             exit(1);
         }
-        for (int i = 0; i < unit->arms_num; i++) {
+        for (int i = 0; i < unit->arms.num; i++) {
             cJSON *jequippedi  = cJSON_GetArrayItem(jequipped, i);
             unit->equipment._equipped[i] = cJSON_GetNumberValue(jequippedi);
         }
@@ -1089,9 +1089,9 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     // SDL_Log("--set stats --");
     Unit_stats_readJSON(&unit->current_stats, jcurrent_stats);
     SDL_assert(jcaps_stats);
-    Unit_stats_readJSON(&unit->caps_stats, jcaps_stats);
+    Unit_stats_readJSON(&unit->stats.caps, jcaps_stats);
     SDL_assert(jbase_stats);
-    Unit_stats_readJSON(&unit->base_stats, jbase_stats);
+    Unit_stats_readJSON(&unit->stats.bases, jbase_stats);
     SDL_assert(jgrowths);
     Unit_stats_readJSON(Unit_Stats_Growths(unit), jgrowths);
     // DESIGN QUESTION: Check that current stats fit with bases + levelups?
@@ -1138,10 +1138,10 @@ void Unit_writeJSON(void *input, cJSON *junit) {
     SDL_assert(unit);
     SDL_assert(junit);
     /* --- Hands --- */
-    cJSON *jhandedness  = cJSON_CreateNumber(unit->handedness);
+    cJSON *jhandedness  = cJSON_CreateNumber(unit->flags.handedness);
     cJSON *jhands       = cJSON_CreateArray();
     cJSON *jequipped    = cJSON_CreateArray();
-    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
+    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         cJSON *jhand        = cJSON_CreateNumber(Unit_hasHand(unit, hand));
         cJSON *jequippedi   = cJSON_CreateNumber(Unit_Eq_Equipped(unit, hand));
         cJSON_AddItemToArray(jhands,    jhand);
@@ -1164,9 +1164,9 @@ void Unit_writeJSON(void *input, cJSON *junit) {
     cJSON *jcurrent_stats = cJSON_CreateObject();
     Unit_stats_writeJSON(&unit->current_stats, jcurrent_stats);
     cJSON *jcaps_stats    = cJSON_CreateObject();
-    Unit_stats_writeJSON(&unit->caps_stats, jcaps_stats);
+    Unit_stats_writeJSON(&unit->stats.caps, jcaps_stats);
     cJSON *jbase_stats    = cJSON_CreateObject();
-    Unit_stats_writeJSON(&unit->base_stats, jbase_stats);
+    Unit_stats_writeJSON(&unit->stats.bases, jbase_stats);
     cJSON *jgrowths       = cJSON_CreateObject();
     Unit_stats_writeJSON(Unit_Stats_Growths(unit), jgrowths);
     cJSON *jgrown         = cJSON_CreateObject();
@@ -1254,33 +1254,33 @@ u8 Unit_Brave(struct Unit *unit) {
 }
 
 void Unit_Cap_Stats(struct Unit *unit) {
-    unit->current_stats.hp   = unit->caps_stats.hp;
-    unit->current_stats.str  = unit->caps_stats.str;
-    unit->current_stats.mag  = unit->caps_stats.mag;
-    unit->current_stats.agi  = unit->caps_stats.agi;
-    unit->current_stats.dex  = unit->caps_stats.dex;
-    unit->current_stats.fth  = unit->caps_stats.fth;
-    unit->current_stats.luck = unit->caps_stats.luck;
-    unit->current_stats.def  = unit->caps_stats.def;
-    unit->current_stats.res  = unit->caps_stats.res;
-    unit->current_stats.con  = unit->caps_stats.con;
-    unit->current_stats.prof = unit->caps_stats.prof;
+    unit->current_stats.hp   = unit->stats.caps.hp;
+    unit->current_stats.str  = unit->stats.caps.str;
+    unit->current_stats.mag  = unit->stats.caps.mag;
+    unit->current_stats.agi  = unit->stats.caps.agi;
+    unit->current_stats.dex  = unit->stats.caps.dex;
+    unit->current_stats.fth  = unit->stats.caps.fth;
+    unit->current_stats.luck = unit->stats.caps.luck;
+    unit->current_stats.def  = unit->stats.caps.def;
+    unit->current_stats.res  = unit->stats.caps.res;
+    unit->current_stats.con  = unit->stats.caps.con;
+    unit->current_stats.prof = unit->stats.caps.prof;
 }
 
 /* What is this for?
 caps before promotion? */
 void Unit_HalfCap_Stats(struct Unit *unit) {
-    unit->current_stats.hp   = unit->caps_stats.hp   / 2;
-    unit->current_stats.str  = unit->caps_stats.str  / 2;
-    unit->current_stats.mag  = unit->caps_stats.mag  / 2;
-    unit->current_stats.agi  = unit->caps_stats.agi  / 2;
-    unit->current_stats.dex  = unit->caps_stats.dex  / 2;
-    unit->current_stats.fth  = unit->caps_stats.fth  / 2;
-    unit->current_stats.luck = unit->caps_stats.luck / 2;
-    unit->current_stats.def  = unit->caps_stats.def  / 2;
-    unit->current_stats.res  = unit->caps_stats.res  / 2;
-    unit->current_stats.con  = unit->caps_stats.con  / 2;
-    unit->current_stats.prof = unit->caps_stats.prof / 2;
+    unit->current_stats.hp   = unit->stats.caps.hp   / 2;
+    unit->current_stats.str  = unit->stats.caps.str  / 2;
+    unit->current_stats.mag  = unit->stats.caps.mag  / 2;
+    unit->current_stats.agi  = unit->stats.caps.agi  / 2;
+    unit->current_stats.dex  = unit->stats.caps.dex  / 2;
+    unit->current_stats.fth  = unit->stats.caps.fth  / 2;
+    unit->current_stats.luck = unit->stats.caps.luck / 2;
+    unit->current_stats.def  = unit->stats.caps.def  / 2;
+    unit->current_stats.res  = unit->stats.caps.res  / 2;
+    unit->current_stats.con  = unit->stats.caps.con  / 2;
+    unit->current_stats.prof = unit->stats.caps.prof / 2;
 }
 
 struct Unit_stats Unit_effectiveGrowths(struct Unit *unit) {

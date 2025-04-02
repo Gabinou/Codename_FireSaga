@@ -6,6 +6,14 @@
 /* --- Unit stats --- */
 const struct Unit_stats Unit_stats_default = {0};
 
+struct Unit_stats Unit_Stats_Caps(Unit *unit) {
+    return (unit->stats.caps);
+}
+struct Unit_stats Unit_Stats_Bases(Unit *unit) {
+    return (unit->stats.bases);
+}
+
+
 i32 *Unit_stats_arr(Unit_stats *stats1) {
     i32 *stats_arr = ((i32 *)stats1) - (UNIT_STAT_NULL + 1);
     return (stats_arr);

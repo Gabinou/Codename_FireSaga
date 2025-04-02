@@ -173,9 +173,9 @@ void _Party_Load(tnecs_entity *entities, struct Game *sota,
         jsonio_readJSON(filename, &temp_unit);
         temp_unit.army = ARMY_FRIENDLY;
         SDL_assert(global_unitNames[temp_unit._id].data != NULL);
-        SDL_assert(temp_unit.handedness > UNIT_HAND_NULL);
-        SDL_assert(temp_unit.handedness < UNIT_HAND_END);
-        SDL_assert(temp_unit.mvt_type > UNIT_MVT_START);
+        SDL_assert(temp_unit.flags.handedness > UNIT_HAND_NULL);
+        SDL_assert(temp_unit.flags.handedness < UNIT_HAND_END);
+        SDL_assert(temp_unit.flags.mvt_type > UNIT_MVT_START);
 
         SDL_assert(temp_unit._id > UNIT_ID_PC_START);
         SDL_assert(temp_unit._id < UNIT_ID_PC_END);

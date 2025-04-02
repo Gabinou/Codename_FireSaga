@@ -649,8 +649,9 @@ struct Unit_Flags {
     u64 skills;
     bitflag16_t job_talent;
     u16 equippable;
+    u16 talkable;
     i8  handedness;
-    i8  mvt_type;    
+    i8  mvt_type;
 };
 
 struct Unit_Growth {
@@ -708,14 +709,14 @@ struct Unit_Level {
 };
 
 struct Unit_Arms {
-    i32    num; 
+    i32    num;
     b32    hands[UNIT_ARMS_NUM]; /* Does unit have hands? */
 };
 
-struct Unit_Private_Stats {
+struct Unit_Stats_Bundle {
     struct Unit_stats caps;
     struct Unit_stats bases;
-}
+};
 
 typedef struct Unit {
     // TODO: unit design:
@@ -736,7 +737,7 @@ typedef struct Unit {
 
     struct jsonIO_Header jsonio_header;
 
-    // Naming: 
+    // Naming:
     //  Unit_Private_<>
     //  -> Unit_Member_<>
     //  Unit_Sub_<>
@@ -750,7 +751,7 @@ typedef struct Unit {
     struct Unit_Equipment           equipment;
     struct Unit_canEquip            can_equip;
     struct Unit_Arms                arms;
-    struct Unit_Private_Stats       stats;
+    struct Unit_Stats_Bundle        stats;
 
     // Naming? Unit_MemberIDs? unit_identifiers?
     u16 _id;
@@ -759,7 +760,7 @@ typedef struct Unit {
     i8  army;
     i32 ai_id; /* Default AI for unit */
 
-    // Naming? Unit_Member_Counters? 
+    // Naming? Unit_Member_Counters?
     //  -> Unit_Member_Variables
     // All other stats are constants.
     u8  current_hp;
@@ -769,17 +770,19 @@ typedef struct Unit {
     // Unit_Member_Status.
     // Status with least remaining turns on top.
     struct Unit_status *status_queue;
+
     // Unit_Member_Mount.
     struct Mount *mount; // TODO: ID.
+    i32 mount_id;
 
     // TODO: Remove all below.
     /* Stats */
-    struct Bonus_Stats *bonus_stack; // TODO rm. Maybe not?
+    struct Bonus_Stats *bonus_stack; // TODO rm. Maybe not? Need to host bonuses somewhere...
     struct Unit_stats bonus_stats; // TODO remove for new Bonus_Stat Struct
     struct Unit_stats malus_stats; // TODO remove for new Bonus_Stat Struct
 
     // TODO: rm
-    struct Unit_stats current_stats;    /* base_stats + all growths */
+    struct Unit_stats current_stats;    /* base_stats + all grown */
     // TODO: rm
     struct Unit_stats effective_stats;  /* current_stats + bonuses/maluses */
 
