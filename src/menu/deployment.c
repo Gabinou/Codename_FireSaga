@@ -642,9 +642,9 @@ static void _DeploymentMenu_Draw_Mount(DeploymentMenu *dm, SDL_Renderer *rendere
         _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
 
         /* - Get mount type - */
-        if (unit->mount == NULL)
+        if (unit->mount.ptr == NULL)
             continue;
-        i8 mount_type = unit->mount->type;
+        i8 mount_type = unit->mount.ptr->type;
 
         switch (mount_type) {
             case MOUNT_TYPE_HORSE:

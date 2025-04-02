@@ -635,8 +635,8 @@ static void _StatsMenu_Draw_Mount(struct StatsMenu *stats_menu, SDL_Renderer *re
 
     /* - Get mount type - */
     i8 mount_type = MOUNT_TYPE_NULL;
-    if (stats_menu->unit->mount != NULL)
-        mount_type = stats_menu->unit->mount->type;
+    if (stats_menu->unit->mount.ptr != NULL)
+        mount_type = stats_menu->unit->mount.ptr->type;
 
     if (mount_type == MOUNT_TYPE_NULL) {
         x = MOUNT_NONE_X_OFFSET, y = MOUNT_NONE_Y_OFFSET;

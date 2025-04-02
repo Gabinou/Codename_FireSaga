@@ -975,7 +975,7 @@ i32 Unit_computeSpeed(struct Unit *unit, int distance) {
 i32 Unit_computeMove(struct Unit *unit) {
     SDL_assert(unit);
     i8 move = unit->effective_stats.move;
-    if (unit->mount != NULL)
+    if (unit->mount.ptr != NULL)
         move = MOVE_WITH_MOUNT;
     unit->computed_stats.move = move;
     return (unit->computed_stats.move);
@@ -1307,8 +1307,8 @@ struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
     }
 
     /* Add Mount move */
-    if (unit->mount != NULL)
-        unit->effective_stats.move = unit->mount->move;
+    if (unit->mount.ptr != NULL)
+        unit->effective_stats.move = unit->mount.ptr->move;
 
     return (unit->effective_stats);
 }

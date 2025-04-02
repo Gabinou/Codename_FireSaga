@@ -725,6 +725,11 @@ struct Unit_Counters {
     i32  regrets;
 };
 
+struct Unit_Mount {
+    struct Mount *ptr; // TODO: ID.
+    i32 mount_id;
+};
+
 typedef struct Unit {
     // TODO: unit design:
     //  - Stats values inside unit class are CONSTANT?
@@ -760,6 +765,7 @@ typedef struct Unit {
     struct Unit_Arms                arms;
     struct Unit_Stats_Bundle        stats;
     struct Unit_Counters            counters;
+    struct Unit_Mount               mount;
 
     // Naming? Unit_MemberIDs? unit_identifiers?
     u16 _id;
@@ -771,10 +777,6 @@ typedef struct Unit {
     // Unit_Member_Status.
     // Status with least remaining turns on top.
     struct Unit_status *status_queue;
-
-    // Unit_Member_Mount.
-    struct Mount *mount; // TODO: ID.
-    i32 mount_id;
 
     // TODO: Remove all below.
     /* Stats */
