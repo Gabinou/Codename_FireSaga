@@ -582,7 +582,7 @@ i32 *Unit_computeDefense(struct Unit *unit) {
     }
 
     /* Adding shield protection to effective stats */
-    struct Unit_stats effstats = unit->effective_stats;
+    struct Unit_stats effstats = Unit_effectiveStats(unit);
     unit->computed_stats.protection[DMG_TYPE_PHYSICAL] = Equation_Weapon_Defensevar(3, prot_P,
                                                          effstats.def, bonus_P);
     unit->computed_stats.protection[DMG_TYPE_MAGICAL]  = Equation_Weapon_Defensevar(3, prot_M,
@@ -636,7 +636,7 @@ i32 *Unit_computeAttack(struct Unit *unit, int distance) {
         attack_T += SOTA_SKILL_CRUSH;
 
     /* -- Adding weapon attack to effective stats -- */
-    struct Unit_stats effstats = unit->effective_stats;
+    struct Unit_stats effstats = Unit_effectiveStats(unit);
 
     /* Add all bonuses */
     i32 bonus_P = 0, bonus_M = 0, bonus_T = 0;
@@ -704,7 +704,8 @@ struct Computed_Stats Unit_computedStats_wLoadout(Unit *unit, Loadout *loadout, 
 
     /* Compute stats with input loadout */
     Unit_Loadout_Import(unit, loadout);
-    Unit_computedStats(unit, dist);
+    Unit_stats eff_s = Unit_effectiveStats(unit);
+    Unit_computedStats(unit, dist, eff_s);
 
     /* Restore starting equipment */
     Unit_Equipped_Import(unit, start_equipped);
@@ -714,7 +715,7 @@ struct Computed_Stats Unit_computedStats_wLoadout(Unit *unit, Loadout *loadout, 
 
 /* Computed stats at distance (-1 is always in range) */
 // Implicitly for weapons. Staves only care about range -> compute directly.
-struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance) {
+struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance, Unit_stats eff_s) {
     SDL_assert(unit);
     if (!Unit_isUpdateStats(unit)) {
         return (unit->computed_stats);
@@ -757,7 +758,7 @@ struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance) {
 i32 Unit_computeRegrets(struct Unit *unit) {
     SDL_assert(unit);
     /* Pre-computation */
-    i8 malus = Equation_Regrets(unit->counters.regrets, unit->effective_stats.fth);
+    i8 malus = Equation_Regrets(unit->counters.regrets, Unit_effectiveStats(unit).fth);
     struct Computed_Stats stats = unit->computed_stats;
 
     /* Apply regrets malus to computed stats */
@@ -797,7 +798,7 @@ i32 Unit_computeHit(struct Unit *unit, int distance) {
     }
 
     /* Compute hit */
-    struct Unit_stats effstats = unit->effective_stats;
+    struct Unit_stats effstats = Unit_effectiveStats(unit);
     unit->computed_stats.hit   = Equation_Unit_Hit(wpn_hit, effstats.dex, effstats.luck, bonus);
 
     return (unit->computed_stats.hit);
@@ -833,7 +834,7 @@ i32 Unit_computeDodge(struct Unit *unit, int distance) {
         }
     }
 
-    struct Unit_stats effstats = unit->effective_stats;
+    struct Unit_stats effstats = Unit_effectiveStats(unit);
     unit->computed_stats.dodge = Equation_Unit_Dodge(wpn_wgt, wpn_dodge, effstats.luck,
                                                      effstats.fth, effstats.agi, effstats.str,
                                                      effstats.con, tile_dodge, bonus);
@@ -868,7 +869,7 @@ i32 Unit_computeCritical(struct Unit *unit, int distance) {
         }
     }
 
-    struct Unit_stats effstats = unit->effective_stats;
+    struct Unit_stats effstats = Unit_effectiveStats(unit);
     unit->computed_stats.crit = Equation_Unit_Crit(wpn_crit, effstats.dex, effstats.luck, bonus);
     return (unit->computed_stats.crit);
 }
@@ -900,7 +901,7 @@ i32 Unit_computeFavor(struct Unit *unit, int distance) {
         }
     }
 
-    struct Unit_stats effstats = unit->effective_stats;
+    struct Unit_stats effstats = Unit_effectiveStats(unit);
     unit->computed_stats.favor = Equation_Unit_Favor(wpn_favor, effstats.fth, bonus);
     return (unit->computed_stats.favor);
 }
@@ -918,7 +919,7 @@ i32 Unit_computeAgony(struct Unit *unit) {
         }
     }
 
-    struct Unit_stats effstats = unit->effective_stats;
+    struct Unit_stats effstats = Unit_effectiveStats(unit);
     unit->computed_stats.agony = Equation_Agony_Turns(effstats.str, effstats.def, effstats.con, bonus);
     return (unit->computed_stats.agony);
 }
@@ -955,7 +956,7 @@ i32 Unit_computeSpeed(struct Unit *unit, int distance) {
 
     // if (TNECS_ARCHETYPE_HAS_TYPE(unit->flags.skills, UNIT_SKILL_)) {
     // TODO: compute effective_weight
-    struct Unit_stats fstats = unit->effective_stats;
+    struct Unit_stats fstats = Unit_effectiveStats(unit);
     unit->computed_stats.speed = Equation_Unit_Speed(wpn_wgt, fstats.agi,
                                                      fstats.con, fstats.str,
                                                      bonus);
@@ -964,7 +965,7 @@ i32 Unit_computeSpeed(struct Unit *unit, int distance) {
 
 i32 Unit_computeMove(struct Unit *unit) {
     SDL_assert(unit);
-    i8 move = unit->effective_stats.move;
+    i8 move = Unit_effectiveStats(unit).move;
     if (unit->mount.ptr != NULL)
         move = MOVE_WITH_MOUNT;
     unit->computed_stats.move = move;
@@ -1291,21 +1292,21 @@ struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
 
     // TODO: compute bonuses dynamically
     /* Preparation */
-    unit->effective_stats = unit->stats.current;
+    Unit_effectiveStats(unit) = unit->stats.current;
 
     /* Add all bonuses */
     if (unit->stats.bonus_stack != NULL) {
         for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
-            unit->effective_stats = Unit_stats_plus(unit->effective_stats,
-                                                    unit->stats.bonus_stack[i].unit_stats);
+            Unit_effectiveStats(unit) = Unit_stats_plus(Unit_effectiveStats(unit),
+                                                        unit->stats.bonus_stack[i].unit_stats);
         }
     }
 
     /* Add Mount move */
     if (unit->mount.ptr != NULL)
-        unit->effective_stats.move = unit->mount.ptr->move;
+        Unit_effectiveStats(unit).move = unit->mount.ptr->move;
 
-    return (unit->effective_stats);
+    return (Unit_effectiveStats(unit));
 }
 
 void Unit_Promote(struct Unit *unit, i8 new_class_index) {
@@ -1327,5 +1328,5 @@ b32 Unit_ID_Valid(u16 id) {
 
 b32 Unit_HP_isFull(struct Unit *unit) {
     Unit_effectiveStats(unit);
-    return (unit->counters.hp >= unit->effective_stats.hp);
+    return (unit->counters.hp >= Unit_effectiveStats(unit).hp);
 }

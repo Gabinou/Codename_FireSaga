@@ -62,6 +62,7 @@ b32 Unit_hasSkill(Unit *u, u64 s);
 *    DEBUG: input -1 to always be in_range
 */
 /* Distance-dependent stats */
+// TODO: input effective_stats
 i32 Unit_computeHit(     Unit *u, int dist);
 i32 Unit_computeDodge(   Unit *u, int dist);
 i32 Unit_computeFavor(   Unit *u, int dist);

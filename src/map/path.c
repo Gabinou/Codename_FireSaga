@@ -103,7 +103,7 @@ i32 *Map_Movemap_Compute(struct Map *map, tnecs_entity unit_ent) {
     Map_Costmap_Movement_Compute(map, unit_ent);
     struct Unit     *unit   = IES_GET_COMPONENT(map->world, unit_ent, Unit);
     struct Position *pos    = IES_GET_COMPONENT(map->world, unit_ent, Position);
-    i32    effective_move   = Unit_getStats(unit).move * map->cost_multiplier;
+    i32    effective_move   = Unit_effectiveStats(unit).move * map->cost_multiplier;
     struct Point     start  = pos->tilemap_pos;
     return (_Map_Movemap_Compute(map, start, effective_move));
 }
@@ -132,7 +132,7 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
     }
 
     struct Point     start      = pos->tilemap_pos;
-    i32 move_stat  = mapto.move ? Unit_getStats(unit).move : 0;
+    i32 move_stat  = mapto.move ? Unit_effectiveStats(unit).move : 0;
 
     Range *range = NULL;
     if (mapto.eq_type == LOADOUT_EQUIPPED) {
@@ -229,7 +229,7 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     struct Range *range = Unit_Range_Equipped(agg_unit, ITEM_ARCHETYPE_WEAPON);
 
     /* Compute movemap */
-    i32 move_stat       = map_from.move ? Unit_getStats(agg_unit).move : 0;
+    i32 move_stat       = map_from.move ? Unit_effectiveStats(agg_unit).move : 0;
     i32 effective_move  = move_stat * map->cost_multiplier;
 
     _Map_Movemap_Compute(map, agg_pos->tilemap_pos, effective_move);
@@ -285,7 +285,7 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_entity unit_ent) {
     struct Unit *unit           = IES_GET_COMPONENT(map->world, unit_ent, Unit);
     SDL_assert(position != NULL);
     SDL_assert(unit     != NULL);
-    i32 effective_move = Unit_getStats(unit).move * map->cost_multiplier;
+    i32 effective_move = Unit_effectiveStats(unit).move * map->cost_multiplier;
     struct Point start = position->tilemap_pos;
     _Map_Movemap_Compute(map, start, effective_move);
     struct Range *range = Unit_Range_Equipment(unit, ITEM_ARCHETYPE_WEAPON);

@@ -341,8 +341,10 @@ void test_combat_flow() {
     Unit_setStats(&attacker, attacker_stats);
     nourstest_true(attacker.counters.hp == attacker_stats.hp);
     nourstest_true(defender.counters.hp == defender_stats.hp);
-    Unit_computedStats(&attacker, distance);
-    Unit_computedStats(&defender, distance);
+    struct Unit_stats ES_A = Unit_effectiveStats(&attacker);
+    struct Unit_stats ES_D = Unit_effectiveStats(&defender);
+    Unit_computedStats(&attacker, distance, ES_A);
+    Unit_computedStats(&defender, distance, ES_D);
     Unit_effectiveStats(&attacker);
 
     nourstest_true(attacker.stats.current.hp    == attacker.effective_stats.hp);
@@ -392,8 +394,10 @@ void test_combat_flow() {
     defender_hit = Equation_Unit_Hit(defender_weapon.stats.hit, defender.effective_stats.dex,
                                      defender.effective_stats.luck, 0);
     nourstest_true(defender.computed_stats.hit == defender_hit);
-    Unit_computedStats(&attacker, distance);
-    Unit_computedStats(&defender, distance);
+    struct Unit_stats ES_A = Unit_effectiveStats(&attacker);
+    struct Unit_stats ES_D = Unit_effectiveStats(&defender);
+    Unit_computedStats(&attacker, distance, ES_A);
+    Unit_computedStats(&defender, distance, ES_D);
     i32 attacker_speed = Equation_Unit_Speed(attacker_weapon.stats.wgt,
                                              attacker.effective_stats.agi,
                                              attacker.effective_stats.con,
