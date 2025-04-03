@@ -717,6 +717,10 @@ struct Unit_Stats_Bundle {
     struct Unit_stats caps;
     struct Unit_stats bases;
     struct Unit_stats current; /* Only changes on levelup */
+    /* Rather than checking every unit, enemy, skill, aura...
+       Bonuses track if their conditions are met themselves.
+    */
+    struct Bonus_Stats *bonus_stack;
 };
 
 struct Unit_Counters {
@@ -778,11 +782,6 @@ typedef struct Unit {
     struct Unit_Statuses        statuses;
 
     // TODO: Remove all below.
-    /* Stats */
-    struct Bonus_Stats *bonus_stack; // TODO rm. Maybe not? Need to host bonuses somewhere...
-    struct Unit_stats bonus_stats; // TODO remove for new Bonus_Stat Struct
-    struct Unit_stats malus_stats; // TODO remove for new Bonus_Stat Struct
-
     struct Unit_stats effective_stats;  /* current_stats + bonuses/maluses */
 
     // TODO: rm

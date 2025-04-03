@@ -175,16 +175,16 @@ void Unit_Members_Alloc(struct Unit *unit) {
         unit->statuses.queue  = DARR_INIT(unit->statuses.queue, struct Unit_status, 2);
     }
 
-    if (unit->bonus_stack == NULL) {
-        unit->bonus_stack   = DARR_INIT(unit->bonus_stack,  struct Bonus_Stats, 2);
+    if (unit->stats.bonus_stack == NULL) {
+        unit->stats.bonus_stack   = DARR_INIT(unit->stats.bonus_stack,  struct Bonus_Stats, 2);
     }
 }
 
 void Unit_Free(struct Unit *unit) {
     SDL_assert(unit != NULL);
-    if (unit->bonus_stack != NULL) {
-        DARR_FREE(unit->bonus_stack);
-        unit->bonus_stack = NULL;
+    if (unit->stats.bonus_stack != NULL) {
+        DARR_FREE(unit->stats.bonus_stack);
+        unit->stats.bonus_stack = NULL;
     }
 
     if (unit->growth.grown != NULL) {
@@ -584,10 +584,10 @@ i32 *Unit_computeDefense(struct Unit *unit) {
 
     /* Add all bonuses */
     i32 bonus_P = 0, bonus_M = 0;
-    SDL_assert(unit->bonus_stack != NULL);
-    for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
-        bonus_P += unit->bonus_stack[i].computed_stats.protection[DMG_TYPE_PHYSICAL];
-        bonus_M += unit->bonus_stack[i].computed_stats.protection[DMG_TYPE_MAGICAL];
+    SDL_assert(unit->stats.bonus_stack != NULL);
+    for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
+        bonus_P += unit->stats.bonus_stack[i].computed_stats.protection[DMG_TYPE_PHYSICAL];
+        bonus_M += unit->stats.bonus_stack[i].computed_stats.protection[DMG_TYPE_MAGICAL];
     }
 
     /* Adding shield protection to effective stats */
@@ -649,11 +649,11 @@ i32 *Unit_computeAttack(struct Unit *unit, int distance) {
 
     /* Add all bonuses */
     i32 bonus_P = 0, bonus_M = 0, bonus_T = 0;
-    if (unit->bonus_stack != NULL) {
-        for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
-            bonus_P += unit->bonus_stack[i].computed_stats.attack[0];
-            bonus_M += unit->bonus_stack[i].computed_stats.attack[1];
-            bonus_T += unit->bonus_stack[i].computed_stats.attack[2];
+    if (unit->stats.bonus_stack != NULL) {
+        for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
+            bonus_P += unit->stats.bonus_stack[i].computed_stats.attack[0];
+            bonus_M += unit->stats.bonus_stack[i].computed_stats.attack[1];
+            bonus_T += unit->stats.bonus_stack[i].computed_stats.attack[2];
         }
     }
 
@@ -799,10 +799,10 @@ i32 Unit_computeHit(struct Unit *unit, int distance) {
     i32 wpn_hit = Equation_Weapon_Dodgearr(hits, MAX_ARMS_NUM);
 
     /* Add all bonuses */
-    SDL_assert(unit->bonus_stack != NULL);
+    SDL_assert(unit->stats.bonus_stack != NULL);
     i32 bonus   = 0;
-    for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
-        bonus += unit->bonus_stack[i].computed_stats.hit;
+    for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
+        bonus += unit->stats.bonus_stack[i].computed_stats.hit;
     }
 
     /* Compute hit */
@@ -836,9 +836,9 @@ i32 Unit_computeDodge(struct Unit *unit, int distance) {
     i32 wpn_wgt     = Equation_Weapon_Wgtarr(wgts, MAX_ARMS_NUM);
 
     /* Add all bonuses */
-    if (unit->bonus_stack != NULL) {
-        for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
-            bonus += unit->bonus_stack[i].computed_stats.dodge;
+    if (unit->stats.bonus_stack != NULL) {
+        for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
+            bonus += unit->stats.bonus_stack[i].computed_stats.dodge;
         }
     }
 
@@ -871,9 +871,9 @@ i32 Unit_computeCritical(struct Unit *unit, int distance) {
     u8 wpn_crit = Equation_Weapon_Critarr(crits, MAX_ARMS_NUM);
 
     /* Add all bonuses */
-    if (unit->bonus_stack != NULL) {
-        for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
-            bonus += unit->bonus_stack[i].computed_stats.crit;
+    if (unit->stats.bonus_stack != NULL) {
+        for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
+            bonus += unit->stats.bonus_stack[i].computed_stats.crit;
         }
     }
 
@@ -903,9 +903,9 @@ i32 Unit_computeFavor(struct Unit *unit, int distance) {
     i32 wpn_favor = Equation_Weapon_Favorarr(favors, MAX_ARMS_NUM);
 
     /* Add all bonuses */
-    if (unit->bonus_stack != NULL) {
-        for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
-            bonus += unit->bonus_stack[i].computed_stats.favor;
+    if (unit->stats.bonus_stack != NULL) {
+        for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
+            bonus += unit->stats.bonus_stack[i].computed_stats.favor;
         }
     }
 
@@ -921,9 +921,9 @@ i32 Unit_computeAgony(struct Unit *unit) {
 
     i32 bonus = 0;
     /* Add all bonuses */
-    if (unit->bonus_stack != NULL) {
-        for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
-            bonus += unit->bonus_stack[i].computed_stats.agony;
+    if (unit->stats.bonus_stack != NULL) {
+        for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
+            bonus += unit->stats.bonus_stack[i].computed_stats.agony;
         }
     }
 
@@ -956,9 +956,9 @@ i32 Unit_computeSpeed(struct Unit *unit, int distance) {
         wpn_wgt /= TWO_HANDING_WEIGHT_FACTOR;
 
     /* Add all bonuses */
-    if (unit->bonus_stack != NULL) {
-        for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
-            bonus += unit->bonus_stack[i].computed_stats.speed;
+    if (unit->stats.bonus_stack != NULL) {
+        for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
+            bonus += unit->stats.bonus_stack[i].computed_stats.speed;
         }
     }
 
@@ -1291,6 +1291,10 @@ struct Unit_stats Unit_effectiveGrowths(struct Unit *unit) {
 
 struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
     // TODO: input map to computed bonuses
+    // TODO:
+    //  - Check all auras for bonuses/maluses
+    //  - Check all skills for bonuses/maluses
+
     /* current_stats + all bonuses */
     SDL_assert(unit);
 
@@ -1299,9 +1303,10 @@ struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
     unit->effective_stats = unit->stats.current;
 
     /* Add all bonuses */
-    if (unit->bonus_stack != NULL) {
-        for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
-            unit->effective_stats = Unit_stats_plus(unit->effective_stats, unit->bonus_stack[i].unit_stats);
+    if (unit->stats.bonus_stack != NULL) {
+        for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
+            unit->effective_stats = Unit_stats_plus(unit->effective_stats,
+                                                    unit->stats.bonus_stack[i].unit_stats);
         }
     }
 

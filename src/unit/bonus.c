@@ -5,12 +5,12 @@
 void Unit_Bonus_Instant_Decay(struct Unit *unit) {
     /* Any aura/bonus with value <= AURA_REMOVE_ON_MOVE gets removed */
     SDL_assert(unit                 != NULL);
-    SDL_assert(unit->bonus_stack    != NULL);
+    SDL_assert(unit->stats.bonus_stack    != NULL);
 
     size_t i = 0;
-    while (i < DARR_NUM(unit->bonus_stack)) {
-        if (unit->bonus_stack[i].turns <= AURA_REMOVE_ON_MOVE) {
-            DARR_DEL(unit->bonus_stack, i);
+    while (i < DARR_NUM(unit->stats.bonus_stack)) {
+        if (unit->stats.bonus_stack[i].turns <= AURA_REMOVE_ON_MOVE) {
+            DARR_DEL(unit->stats.bonus_stack, i);
             continue;
         }
         i++;
@@ -23,17 +23,17 @@ void Unit_Bonus_Persistent_Decay(struct Unit *unit) {
     */
 
     SDL_assert(unit                 != NULL);
-    SDL_assert(unit->bonus_stack    != NULL);
+    SDL_assert(unit->stats.bonus_stack    != NULL);
 
     size_t i = 0;
-    while (i < DARR_NUM(unit->bonus_stack)) {
-        if (unit->bonus_stack[i].turns == AURA_REMOVE_ON_TURN_END) {
-            DARR_DEL(unit->bonus_stack, i);
+    while (i < DARR_NUM(unit->stats.bonus_stack)) {
+        if (unit->stats.bonus_stack[i].turns == AURA_REMOVE_ON_TURN_END) {
+            DARR_DEL(unit->stats.bonus_stack, i);
             continue;
         }
 
-        if (unit->bonus_stack[i].turns > AURA_REMOVE_ON_TURN_END) {
-            unit->bonus_stack[i].turns--;
+        if (unit->stats.bonus_stack[i].turns > AURA_REMOVE_ON_TURN_END) {
+            unit->stats.bonus_stack[i].turns--;
         }
         i++;
     }
@@ -64,17 +64,17 @@ b32 Bonus_Stats_isEqual(struct Bonus_Stats bonus1, struct Bonus_Stats bonus2) {
 
 void Unit_Bonus_Add(struct Unit *unit, struct Bonus_Stats bonus) {
     SDL_assert(unit                 != NULL);
-    SDL_assert(unit->bonus_stack    != NULL);
-    DARR_PUT(unit->bonus_stack, bonus);
+    SDL_assert(unit->stats.bonus_stack    != NULL);
+    DARR_PUT(unit->stats.bonus_stack, bonus);
 }
 
 void Unit_Bonus_Refresh(struct Unit *unit, struct Bonus_Stats bonus) {
     SDL_assert(unit != NULL);
-    for (int i = 0; i < DARR_NUM(unit->bonus_stack); i++) {
-        if (Bonus_Stats_isEqual(unit->bonus_stack[i], bonus)) {
+    for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
+        if (Bonus_Stats_isEqual(unit->stats.bonus_stack[i], bonus)) {
             /* Refresh */
             // found = true;
-            unit->bonus_stack[i].turns = bonus.turns;
+            unit->stats.bonus_stack[i].turns = bonus.turns;
             return;
         }
     }
