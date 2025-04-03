@@ -45,8 +45,6 @@ void Unit_setStats(   Unit *u, Unit_stats stats);
 void Unit_setBases(   Unit *u, Unit_stats stats);
 void Unit_setClassind(Unit *u, i8 class_i);
 
-Unit_stats Unit_getStats(Unit *u);
-
 /* --- Supports --- */
 void Unit_supportUp(Unit *u, i16 id);
 
@@ -81,7 +79,7 @@ i32 *Unit_computeDefense(Unit *u);
 
 Unit_stats Unit_effectiveStats(   Unit *u);
 Unit_stats Unit_effectiveGrowths( Unit *u);
-struct Computed_Stats Unit_computedStats(Unit *u, int dist);
+struct Computed_Stats Unit_computedStats(Unit *u, int dist, Unit_stats effective_stats);
 struct Computed_Stats Unit_computedStats_wLoadout(Unit *u, Loadout *loadout, int dist);
 
 /* --- Debug Utils --- */

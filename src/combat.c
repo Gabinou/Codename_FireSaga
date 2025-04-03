@@ -184,10 +184,12 @@ struct Combat_Rates Compute_Combat_Rates(struct Unit *attacker,
     SDL_assert(attacker && defender);
     u8 distance = abs(dfd_pos->x - att_pos->x) + abs(dfd_pos->y - att_pos->y);
     struct Combat_Rates out_rates = Combat_Rates_default;
-    struct Computed_Stats CS_A    = Unit_computedStats(attacker, distance);
-    struct Computed_Stats CS_D    = Unit_computedStats(defender, distance);
-    out_rates.hit                 = Equation_Combat_Hit(CS_A.hit,   CS_D.dodge);
-    out_rates.crit                = Equation_Combat_Crit(CS_A.crit, CS_D.favor);
+    struct Unit_stats ES_A          = Unit_effectiveStats(attacker);
+    struct Unit_stats ES_D          = Unit_effectiveStats(defender);
+    struct Computed_Stats CS_A      = Unit_computedStats(attacker, distance, ES_A);
+    struct Computed_Stats CS_D      = Unit_computedStats(defender, distance, ES_D);
+    out_rates.hit                   = Equation_Combat_Hit(CS_A.hit,   CS_D.dodge);
+    out_rates.crit                  = Equation_Combat_Crit(CS_A.crit, CS_D.favor);
     return (out_rates);
 }
 
@@ -201,10 +203,10 @@ struct Combat_Forecast Compute_Combat_Forecast(struct Unit  *agg,
     SDL_assert(dft_pos);
     struct Combat_Forecast out = {0};
     u8 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
-    Unit_effectiveStats(agg);
-    Unit_effectiveStats(dft);
-    out.stats.agg_stats         = Unit_computedStats(agg, distance);
-    out.stats.dft_stats         = Unit_computedStats(dft, distance);
+    Unit_stats es_agg           = Unit_effectiveStats(agg);
+    Unit_stats es_dft           = Unit_effectiveStats(dft);
+    out.stats.agg_stats         = Unit_computedStats(agg, distance, es_agg);
+    out.stats.dft_stats         = Unit_computedStats(dft, distance, es_dft);
     out.flow = Compute_Combat_Flow(agg, dft, agg_pos, dft_pos);
     out.stats.agg_rates         = Compute_Combat_Rates(agg,  dft, agg_pos, dft_pos);
     out.stats.agg_damage        = Compute_Combat_Damage(agg, dft);

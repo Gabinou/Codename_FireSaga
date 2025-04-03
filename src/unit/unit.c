@@ -245,24 +245,15 @@ void Unit_setStats(struct Unit *unit, struct Unit_stats stats) {
     SDL_assert(unit);
     unit->stats.current = stats;
     unit->counters.hp   = unit->stats.current.hp;
-    Unit_effectiveStats(unit);
-    Unit_computedStats(unit, -1);
-    unit->counters.hp = unit->effective_stats.hp;
+    Unit_stats effective_stats = Unit_effectiveStats(unit);
+    Unit_computedStats(unit, -1, effective_stats);
+    unit->counters.hp = effective_stats.hp;
 }
 
 void Unit_setBases(struct Unit *unit, struct Unit_stats stats) {
     SDL_assert(unit);
     unit->stats.bases = stats;
     unit->counters.hp = unit->stats.bases.hp;
-}
-
-struct Unit_stats Unit_getStats(struct Unit *unit) {
-    struct Unit_stats out_stats = unit->stats.current;
-    SDL_assert(unit);
-    Unit_effectiveStats(unit);
-    // Unit_stats_plus(out_stats,  unit->aura.unit_stats);
-    // Unit_stats_minus(out_stats, unit->malus_stats);
-    return (out_stats);
 }
 
 /* --- Second-order info --- */

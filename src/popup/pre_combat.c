@@ -8,11 +8,13 @@
 #include "weapon.h"
 #include "macros.h"
 #include "nmath.h"
+#include "structs.h"
 #include "names.h"
 #include "utilities.h"
 #include "filesystem.h"
 #include "unit/unit.h"
 #include "unit/flags.h"
+#include "unit/stats.h"
 #include "unit/loadout.h"
 #include "unit/equipment.h"
 #include "stb_sprintf.h"
@@ -247,14 +249,14 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
     /* Distance between units */
     u8 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
 
-    struct Computed_Stats computed_stats_a = Unit_computedStats(pcp->agg_unit, distance);
-    struct Computed_Stats computed_stats_d = Unit_computedStats(pcp->dft_unit, distance);
+    struct Unit_stats ES_A = Unit_effectiveStats(pcp->agg_unit);
+    struct Unit_stats ES_D = Unit_effectiveStats(pcp->dft_unit);
+    struct Computed_Stats CS_A = Unit_computedStats(pcp->agg_unit, distance, ES_A);
+    struct Computed_Stats CS_D = Unit_computedStats(pcp->dft_unit, distance, ES_D);
     struct Damage damage_a                 = pcp->forecast->stats.agg_damage;
     struct Damage damage_d                 = pcp->forecast->stats.dft_damage;
     struct Combat_Rates rates_a            = pcp->forecast->stats.agg_rates;
     struct Combat_Rates rates_d            = pcp->forecast->stats.dft_rates;
-    struct Unit_stats effective_stats_a    = pcp->agg_unit->effective_stats;
-    struct Unit_stats effective_stats_d    = pcp->dft_unit->effective_stats;
 
     int x = PCP_MATH_HP_X,  y = PCP_MATH_HP_Y;
     PixelFont_Write(pcp->pixelnours, renderer, "HP",    2, x, y);
@@ -274,14 +276,14 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
 
     /* HP */
     i32 current_hp = Unit_Current_HP(pcp->dft_unit);
-    stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", current_hp, effective_stats_d.hp);
+    stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", current_hp, ES_D.hp);
     x = PCP_MATH_HP_DSTAT_X,     y = PCP_MATH_HP_DSTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
     /* atk */
-    int toprint  = int_inbounds(computed_stats_d.attack[DMG_TYPE_PHYSICAL], 0, 0xFF);
-    int toprint2 = int_inbounds(computed_stats_d.attack[DMG_TYPE_MAGICAL],  0, 0xFF);
-    int toprint3 = int_inbounds(computed_stats_d.attack[DMG_TYPE_TRUE],     0, 0xFF);
+    int toprint  = int_inbounds(CS_D.attack[DMG_TYPE_PHYSICAL], 0, 0xFF);
+    int toprint2 = int_inbounds(CS_D.attack[DMG_TYPE_MAGICAL],  0, 0xFF);
+    int toprint3 = int_inbounds(CS_D.attack[DMG_TYPE_TRUE],     0, 0xFF);
     if (toprint3 > 0)
         stbsp_sprintf(numbuff, "%d/%d/%d\0\0", toprint, toprint2, toprint3);
     else
@@ -294,8 +296,8 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
     /* prot */
-    toprint = int_inbounds(computed_stats_d.protection[DMG_TYPE_PHYSICAL], 0, 0xFF);
-    toprint2 = int_inbounds(computed_stats_d.protection[DMG_TYPE_MAGICAL], 0, 0xFF);
+    toprint = int_inbounds(CS_D.protection[DMG_TYPE_PHYSICAL], 0, 0xFF);
+    toprint2 = int_inbounds(CS_D.protection[DMG_TYPE_MAGICAL], 0, 0xFF);
     stbsp_sprintf(numbuff, "%d/%d\0\0", toprint, toprint2);
     x = PCP_MATH_PROT_DSTAT_X,   y = PCP_MATH_PROT_DSTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
@@ -312,7 +314,7 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
     x = PCP_MATH_CRIT_DSTAT_X,   y = PCP_MATH_CRIT_DSTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
     /* speed */
-    toprint = int_inbounds(computed_stats_d.speed, 0, SOTA_100PERCENT);
+    toprint = int_inbounds(CS_D.speed, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%2d\0\0\0", toprint);
     x = PCP_MATH_SPEED_DSTAT_X,   y = PCP_MATH_SPEED_DSTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
@@ -320,14 +322,14 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
     /* - Aggressor - */
     /* HP */
     current_hp = Unit_Current_HP(pcp->agg_unit);
-    stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", current_hp, effective_stats_a.hp);
+    stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", current_hp, ES_A.hp);
     x = PCP_MATH_HP_ASTAT_X,   y = PCP_MATH_HP_ASTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
     /* atk */
-    toprint  = int_inbounds(computed_stats_a.attack[DMG_TYPE_PHYSICAL],   0, 0xFF);
-    toprint2 = int_inbounds(computed_stats_a.attack[DMG_TYPE_MAGICAL],    0, 0xFF);
-    toprint3 = int_inbounds(computed_stats_a.attack[DMG_TYPE_TRUE],       0, 0xFF);
+    toprint  = int_inbounds(CS_A.attack[DMG_TYPE_PHYSICAL],   0, 0xFF);
+    toprint2 = int_inbounds(CS_A.attack[DMG_TYPE_MAGICAL],    0, 0xFF);
+    toprint3 = int_inbounds(CS_A.attack[DMG_TYPE_TRUE],       0, 0xFF);
     if (toprint3 > 0)
         stbsp_sprintf(numbuff, "%d/%d/%d\0\0", toprint, toprint2, toprint3);
     else
@@ -339,8 +341,8 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
     PixelFont_Write_Len(pcp->pixelnours_big, renderer, numbuff, x, y);
 
     /* prot */
-    toprint  = int_inbounds(computed_stats_a.protection[DMG_TYPE_PHYSICAL], 0, 0xFF);
-    toprint2 = int_inbounds(computed_stats_a.protection[DMG_TYPE_MAGICAL],  0, 0xFF);
+    toprint  = int_inbounds(CS_A.protection[DMG_TYPE_PHYSICAL], 0, 0xFF);
+    toprint2 = int_inbounds(CS_A.protection[DMG_TYPE_MAGICAL],  0, 0xFF);
     stbsp_sprintf(numbuff, "%d/%d\0\0\0", toprint, toprint2);
     x = PCP_MATH_PROT_ASTAT_X,   y = PCP_MATH_PROT_ASTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
@@ -358,7 +360,7 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
 
     /* speed */
-    toprint = int_inbounds(computed_stats_a.speed, 0, SOTA_100PERCENT);
+    toprint = int_inbounds(CS_A.speed, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%2d\0\0\0", toprint);
     x = PCP_MATH_SPEED_ASTAT_X,   y = PCP_MATH_SPEED_ASTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
@@ -392,14 +394,14 @@ static void _PreCombatPopup_Draw_Stats_Total( struct PreCombatPopup *pcp, SDL_Re
     /* Distance between units */
     u8 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
 
-    struct Computed_Stats computed_stats_a = Unit_computedStats(pcp->agg_unit, distance);
-    struct Computed_Stats computed_stats_d = Unit_computedStats(pcp->dft_unit, distance);
+    struct Unit_stats ES_A = Unit_effectiveStats(pcp->agg_unit);
+    struct Unit_stats ES_D = Unit_effectiveStats(pcp->dft_unit);
+    struct Computed_Stats CS_A = Unit_computedStats(pcp->agg_unit, distance, ES_A);
+    struct Computed_Stats CS_D = Unit_computedStats(pcp->dft_unit, distance, ES_D);
     struct Damage damage_a                 = pcp->forecast->stats.agg_damage;
     struct Damage damage_d                 = pcp->forecast->stats.dft_damage;
     struct Combat_Rates rates_a            = pcp->forecast->stats.agg_rates;
     struct Combat_Rates rates_d            = pcp->forecast->stats.dft_rates;
-    struct Unit_stats effective_stats_a    = pcp->agg_unit->effective_stats;
-    struct Unit_stats effective_stats_d    = pcp->dft_unit->effective_stats;
 
     /* - Names - */
     int x = PCP_SIMPLE_HP_X,   y   = PCP_SIMPLE_HP_Y;
@@ -416,7 +418,7 @@ static void _PreCombatPopup_Draw_Stats_Total( struct PreCombatPopup *pcp, SDL_Re
 
     /* HP */
     i32 current_hp = Unit_Current_HP(pcp->dft_unit);
-    stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", current_hp, effective_stats_d.hp);
+    stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", current_hp, ES_D.hp);
     x = PCP_SIMPLE_HP_DSTAT_X,   y = PCP_SIMPLE_HP_DSTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
@@ -441,7 +443,7 @@ static void _PreCombatPopup_Draw_Stats_Total( struct PreCombatPopup *pcp, SDL_Re
     /* - Aggressor - */
     /* HP */
     current_hp = Unit_Current_HP(pcp->agg_unit);
-    stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", current_hp, effective_stats_a.hp);
+    stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", current_hp, ES_A.hp);
     x = PCP_SIMPLE_HP_ASTAT_X,   y = PCP_SIMPLE_HP_ASTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
@@ -488,14 +490,14 @@ static void _PreCombatPopup_Draw_Stats_Simple(struct PreCombatPopup *pcp, SDL_Re
     /* Distance between units */
     u8 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
 
-    struct Computed_Stats computed_stats_a = Unit_computedStats(pcp->agg_unit, distance);
-    struct Computed_Stats computed_stats_d = Unit_computedStats(pcp->dft_unit, distance);
+    struct Unit_stats ES_A = Unit_effectiveStats(pcp->agg_unit);
+    struct Unit_stats ES_D = Unit_effectiveStats(pcp->dft_unit);
+    struct Computed_Stats CS_A = Unit_computedStats(pcp->agg_unit, distance, ES_A);
+    struct Computed_Stats CS_D = Unit_computedStats(pcp->dft_unit, distance, ES_D);
     struct Damage damage_a                 = pcp->forecast->stats.agg_damage;
     struct Damage damage_d                 = pcp->forecast->stats.dft_damage;
     struct Combat_Rates rates_a            = pcp->forecast->stats.agg_rates;
     struct Combat_Rates rates_d            = pcp->forecast->stats.dft_rates;
-    struct Unit_stats effective_stats_a    = pcp->agg_unit->effective_stats;
-    struct Unit_stats effective_stats_d    = pcp->dft_unit->effective_stats;
 
     /* - Names - */
     int x = PCP_SIMPLE_HP_X,        y = PCP_SIMPLE_HP_Y;
@@ -511,7 +513,7 @@ static void _PreCombatPopup_Draw_Stats_Simple(struct PreCombatPopup *pcp, SDL_Re
 
     /* HP */
     i32 current_hp = Unit_Current_HP(pcp->dft_unit);
-    stbsp_sprintf(numbuff, "%02d/%02d", current_hp, effective_stats_d.hp);
+    stbsp_sprintf(numbuff, "%02d/%02d", current_hp, ES_D.hp);
     x = PCP_SIMPLE_HP_DSTAT_X,      y = PCP_SIMPLE_HP_DSTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
@@ -544,7 +546,7 @@ static void _PreCombatPopup_Draw_Stats_Simple(struct PreCombatPopup *pcp, SDL_Re
     /* - Aggressor - */
     /* HP */
     current_hp = Unit_Current_HP(pcp->agg_unit);
-    stbsp_sprintf(numbuff, "%02d/%02d", current_hp, effective_stats_a.hp);
+    stbsp_sprintf(numbuff, "%02d/%02d", current_hp, ES_A.hp);
     x = PCP_SIMPLE_HP_ASTAT_X,      y = PCP_SIMPLE_HP_ASTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 

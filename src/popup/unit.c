@@ -199,8 +199,9 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     i16 menu_h = (n9patch->size_pixels.y + PU_HEADER_Y);
     SDL_assert(menu_w > 0);
     SDL_assert(menu_h > 0);
-    struct Computed_Stats comp_s    = Unit_computedStats(pu->unit, pu->distance);
-    struct Unit_stats eff_s         = Unit_effectiveStats(pu->unit);
+    
+    struct Unit_stats eff_s = Unit_effectiveStats(pu->unit);
+    struct Computed_Stats comp_s    = Unit_computedStats(pu->unit, pu->distance, eff_s);
     /* -- Create render target texture -- */
     if (pu->texture == NULL) {
         pu->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
