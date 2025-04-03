@@ -782,6 +782,7 @@ typedef struct Unit {
     struct Unit_Statuses        statuses;
 
     // TODO: Remove all below.
+    // TODO: rm
     struct Unit_stats effective_stats;  /* current_stats + bonuses/maluses */
 
     // TODO: rm

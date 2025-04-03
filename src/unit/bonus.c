@@ -63,8 +63,8 @@ b32 Bonus_Stats_isEqual(struct Bonus_Stats bonus1, struct Bonus_Stats bonus2) {
 }
 
 void Unit_Bonus_Add(struct Unit *unit, struct Bonus_Stats bonus) {
-    SDL_assert(unit                 != NULL);
-    SDL_assert(unit->stats.bonus_stack    != NULL);
+    SDL_assert(unit                     != NULL);
+    SDL_assert(unit->stats.bonus_stack  != NULL);
     DARR_PUT(unit->stats.bonus_stack, bonus);
 }
 

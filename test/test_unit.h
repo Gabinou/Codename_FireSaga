@@ -398,40 +398,40 @@ void test_bonus_decay(void) {
     bonus4.turns = 1;
     bonus5.turns = 2;
     struct Unit Silou   = Unit_default;
-    Silou.bonus_stack   = DARR_INIT(Silou.bonus_stack,  struct Bonus_Stats, 2);
+    Silou.stats.bonus_stack   = DARR_INIT(Silou.stats.bonus_stack,  struct Bonus_Stats, 2);
     Unit_Bonus_Add(&Silou, bonus1);
     Unit_Bonus_Add(&Silou, bonus2);
     Unit_Bonus_Add(&Silou, bonus3);
     Unit_Bonus_Add(&Silou, bonus4);
     Unit_Bonus_Add(&Silou, bonus5);
-    nourstest_true(DARR_NUM(Silou.bonus_stack) == 5);
-    nourstest_true(Silou.bonus_stack[0].turns == 3);
-    nourstest_true(Silou.bonus_stack[1].turns == false);
-    nourstest_true(Silou.bonus_stack[2].turns == 3);
-    nourstest_true(Silou.bonus_stack[3].turns == true);
-    nourstest_true(Silou.bonus_stack[4].turns == 2);
+    nourstest_true(DARR_NUM(Silou.stats.bonus_stack) == 5);
+    nourstest_true(Silou.stats.bonus_stack[0].turns == 3);
+    nourstest_true(Silou.stats.bonus_stack[1].turns == false);
+    nourstest_true(Silou.stats.bonus_stack[2].turns == 3);
+    nourstest_true(Silou.stats.bonus_stack[3].turns == true);
+    nourstest_true(Silou.stats.bonus_stack[4].turns == 2);
 
     Unit_Bonus_Persistent_Decay(&Silou);
-    nourstest_true(DARR_NUM(Silou.bonus_stack) == 4);
-    nourstest_true(Silou.bonus_stack[0].turns == 2);
-    nourstest_true(Silou.bonus_stack[1].turns == 2);
-    nourstest_true(Silou.bonus_stack[2].turns == false);
-    nourstest_true(Silou.bonus_stack[3].turns == true);
+    nourstest_true(DARR_NUM(Silou.stats.bonus_stack) == 4);
+    nourstest_true(Silou.stats.bonus_stack[0].turns == 2);
+    nourstest_true(Silou.stats.bonus_stack[1].turns == 2);
+    nourstest_true(Silou.stats.bonus_stack[2].turns == false);
+    nourstest_true(Silou.stats.bonus_stack[3].turns == true);
 
     Unit_Bonus_Persistent_Decay(&Silou);
-    nourstest_true(DARR_NUM(Silou.bonus_stack) == 3);
-    nourstest_true(Silou.bonus_stack[0].turns == true);
-    nourstest_true(Silou.bonus_stack[1].turns == true);
-    nourstest_true(Silou.bonus_stack[2].turns == false);
+    nourstest_true(DARR_NUM(Silou.stats.bonus_stack) == 3);
+    nourstest_true(Silou.stats.bonus_stack[0].turns == true);
+    nourstest_true(Silou.stats.bonus_stack[1].turns == true);
+    nourstest_true(Silou.stats.bonus_stack[2].turns == false);
 
     Unit_Bonus_Persistent_Decay(&Silou);
 
-    nourstest_true(DARR_NUM(Silou.bonus_stack) == 2);
-    nourstest_true(Silou.bonus_stack[0].turns == false);
-    nourstest_true(Silou.bonus_stack[1].turns == false);
+    nourstest_true(DARR_NUM(Silou.stats.bonus_stack) == 2);
+    nourstest_true(Silou.stats.bonus_stack[0].turns == false);
+    nourstest_true(Silou.stats.bonus_stack[1].turns == false);
 
     Unit_Bonus_Persistent_Decay(&Silou);
-    nourstest_true(DARR_NUM(Silou.bonus_stack) == false);
+    nourstest_true(DARR_NUM(Silou.stats.bonus_stack) == false);
 
     // TODO test instant aura decay.
     struct Bonus_Stats bonus_instant1 = Bonus_Stats_default;
@@ -444,17 +444,17 @@ void test_bonus_decay(void) {
     Unit_Bonus_Add(&Silou, bonus_instant1);
     Unit_Bonus_Add(&Silou, bonus_instant2);
     Unit_Bonus_Add(&Silou, bonus_instant3);
-    nourstest_true(DARR_NUM(Silou.bonus_stack) == 3);
+    nourstest_true(DARR_NUM(Silou.stats.bonus_stack) == 3);
     Unit_Bonus_Instant_Decay(&Silou);
-    nourstest_true(DARR_NUM(Silou.bonus_stack) == true);
+    nourstest_true(DARR_NUM(Silou.stats.bonus_stack) == true);
 
     Unit_Bonus_Add(&Silou, bonus_instant1);
     Unit_Bonus_Add(&Silou, bonus_instant3);
     Unit_Bonus_Persistent_Decay(&Silou);
-    nourstest_true(DARR_NUM(Silou.bonus_stack) == 2);
+    nourstest_true(DARR_NUM(Silou.stats.bonus_stack) == 2);
 
     /* SDL_free */
-    DARR_FREE(Silou.bonus_stack);
+    DARR_FREE(Silou.stats.bonus_stack);
 }
 
 void test_bonus_stats(void) {
@@ -468,7 +468,7 @@ void test_bonus_stats(void) {
     /* Adding bonus stats*/
     struct Unit_stats bonus_stats   = {1,  1,  1,  1,  1, 1,  1,  1,  1,  1, 1};
     bonus1.unit_stats = bonus_stats;
-    Silou.bonus_stack   = DARR_INIT(Silou.bonus_stack,  struct Bonus_Stats, 2);
+    Silou.stats.bonus_stack   = DARR_INIT(Silou.stats.bonus_stack,  struct Bonus_Stats, 2);
     Unit_Bonus_Add(&Silou, bonus1);
 
     struct Unit_stats effective_stats = Unit_effectiveStats(&Silou);
@@ -554,7 +554,7 @@ void test_bonus_stats(void) {
     nourstest_true(effective_stats.prof == (Silou.stats.current.prof));
 
     /* SDL_free */
-    DARR_FREE(Silou.bonus_stack);
+    DARR_FREE(Silou.stats.bonus_stack);
 }
 
 void test_canEquip_OneHand() {
