@@ -473,13 +473,13 @@ void Weapon_stats_writeJSON(void *input, struct cJSON *jstats) {
     struct cJSON *pprot   = cJSON_CreateArray();
     struct cJSON *prange  = cJSON_CreateArray();
     struct cJSON *pattack = cJSON_CreateArray();
-    cJSON_AddItemToArray(pprot,   cJSON_CreateNumber(stats->protection[DAMAGE_TYPE_PHYSICAL]));
-    cJSON_AddItemToArray(pprot,   cJSON_CreateNumber(stats->protection[DAMAGE_TYPE_MAGICAL]));
+    cJSON_AddItemToArray(pprot,   cJSON_CreateNumber(stats->protection[DMG_PHYSICAL]));
+    cJSON_AddItemToArray(pprot,   cJSON_CreateNumber(stats->protection[DMG_MAGICAL]));
     cJSON_AddItemToArray(prange,  cJSON_CreateNumber(stats->range.min));
     cJSON_AddItemToArray(prange,  cJSON_CreateNumber(stats->range.max));
-    cJSON_AddItemToArray(pattack, cJSON_CreateNumber(stats->attack[DAMAGE_TYPE_PHYSICAL]));
-    cJSON_AddItemToArray(pattack, cJSON_CreateNumber(stats->attack[DAMAGE_TYPE_MAGICAL]));
-    cJSON_AddItemToArray(pattack, cJSON_CreateNumber(stats->attack[DAMAGE_TYPE_TRUE]));
+    cJSON_AddItemToArray(pattack, cJSON_CreateNumber(stats->attack[DMG_PHYSICAL]));
+    cJSON_AddItemToArray(pattack, cJSON_CreateNumber(stats->attack[DMG_MAGICAL]));
+    cJSON_AddItemToArray(pattack, cJSON_CreateNumber(stats->attack[DMG_TRUE]));
     struct cJSON *phit   = cJSON_CreateNumber(stats->hit);
     struct cJSON *pdodge = cJSON_CreateNumber(stats->dodge);
     struct cJSON *pcrit  = cJSON_CreateNumber(stats->crit);

@@ -563,18 +563,18 @@ Damage_Raw Unit_computeDefense(struct Unit *unit) {
     i32 bonus[DMG_TYPES]        = {0};
 
     for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
-        Damage_Raw prot = prot = Unit_Shield_Protection(unit, hand);
-        protection[DMG_PHYSICAL]   += prot[DMG_PHYSICAL];
-        protection[DMG_MAGICAL]    += prot[DMG_MAGICAL];
+        Damage_Raw prot = Unit_Shield_Protection(unit, hand);
+        protection[DMG_PHYSICAL]   += prot.physical;
+        protection[DMG_MAGICAL]    += prot.magical;
     }
 
     /* Add all bonuses */
     i32 bonus_P = 0, bonus_M = 0;
     SDL_assert(unit->stats.bonus_stack != NULL);
     for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
-        bonus[DAMAGE_TYPE_PHYSICAL]    +=
+        bonus[DMG_PHYSICAL]    +=
                 unit->stats.bonus_stack[i].computed_stats.protection[DMG_PHYSICAL];
-        bonus[DAMAGE_TYPE_MAGICAL]     +=
+        bonus[DMG_MAGICAL]     +=
                 unit->stats.bonus_stack[i].computed_stats.protection[DMG_MAGICAL];
     }
 
@@ -596,12 +596,9 @@ Damage_Raw Unit_computeAttack(struct Unit *unit, int distance) {
     struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
     SDL_assert(weapons_dtab);
     /* Reset unit attacks */
-    Damage_Raw attack_dmg   = {0}
+    Damage_Raw attack_dmg   = {0};
+    Damage_Raw wpn_attack   = {0};
     i32 *attack = (i32 *)&attack_dmg;
-
-    /* Weapon attack */
-    u8 *att;
-    int attack_P = 0, attack_M = 0, attack_T = 0;
 
     struct Weapon *weapon;
     /* Get stats of both weapons */
@@ -669,7 +666,7 @@ Damage_Raw Unit_computeAttack(struct Unit *unit, int distance) {
         attack[DMG_MAGICAL]  /= DUAL_WIELD_NOSKILL_MALUS_FACTOR;
     }
 
-    attack[DMG_TYPE_TOTAL] = attack[DMG_PHYSICAL] + attack[DMG_MAGICAL] +
+    attack[DMG_TOTAL] = attack[DMG_PHYSICAL] + attack[DMG_MAGICAL] +
                              attack[DMG_TRUE];
 
     return (attack_dmg);

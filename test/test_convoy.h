@@ -139,8 +139,8 @@ void testConvoysort() {
             struct Weapon *weapon2 = (struct Weapon *)DTAB_GET(convoy.weapons_dtab, item2.id);
             SDL_assert(weapon2 != NULL);
             nourstest_true(weapon1->item->type == weapon2->item->type);
-            nourstest_true(weapon1->stats.attack[DAMAGE_TYPE_PHYSICAL] >=
-                           weapon2->stats.attack[DAMAGE_TYPE_PHYSICAL]);
+            nourstest_true(weapon1->stats.attack[DMG_PHYSICAL] >=
+                           weapon2->stats.attack[DMG_PHYSICAL]);
         }
     }
 
@@ -160,8 +160,8 @@ void testConvoysort() {
             struct Weapon *weapon2 = (struct Weapon *)DTAB_GET(convoy.weapons_dtab, item2.id);
             SDL_assert(weapon2 != NULL);
             nourstest_true(weapon1->item->type == weapon2->item->type);
-            nourstest_true(weapon1->stats.attack[DAMAGE_TYPE_PHYSICAL] <=
-                           weapon2->stats.attack[DAMAGE_TYPE_PHYSICAL]);
+            nourstest_true(weapon1->stats.attack[DMG_PHYSICAL] <=
+                           weapon2->stats.attack[DMG_PHYSICAL]);
         }
     }
 

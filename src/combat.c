@@ -219,9 +219,9 @@ void Combat_totalDamage(struct Combat_Attack *attack, struct Damage *damage) {
     /* - crit hit should be computed before - */
     attack->total_damage = 0;
     if (attack->hit && !attack->crit)
-        attack->total_damage = damage->dmg[DMG_TYPE_TOTAL];
+        attack->total_damage = damage->dmg[DMG_TOTAL];
     else if (attack->hit && attack->crit)
-        attack->total_damage = damage->dmg_crit[DMG_TYPE_TOTAL];
+        attack->total_damage = damage->dmg_crit[DMG_TOTAL];
 }
 
 void Compute_Combat_Outcome(struct Combat_Outcome   *outcome,

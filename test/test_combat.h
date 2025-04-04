@@ -82,7 +82,7 @@ void test_combat_stats() {
     // agg_damage = Compute_Combat_Damage(attacker, defender);
 
     // struct Weapon *fleuret = DTAB_GET(weapons_dtab, defender->_equipment[defender_equip_hand].id);
-    // nourstest_true(fleuret->stats.attack[DAMAGE_TYPE_PHYSICAL] > 0);
+    // nourstest_true(fleuret->stats.attack[DMG_PHYSICAL] > 0);
     // dft_damage = Compute_Combat_Damage(defender, attacker);
 
     // nourstest_true((temp_stats.agg_damage.dmg[DMG_PHYSICAL] ==
@@ -224,7 +224,7 @@ void test_combat_death() {
     // nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender,
     //                &attacker, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
     // nourstest_true(temp_flow.defendant_retaliates == true);
-    // nourstest_true(temp_stats.dft_damage.dmg[DMG_TYPE_TOTAL] > 0);
+    // nourstest_true(temp_stats.dft_damage.dmg[DMG_TOTAL] > 0);
     // nourstest_true(temp_stats.dft_rates.hit > 0);
     // nourstest_true(temp_stats.dft_rates.hit == (defender.computed_stats.hit -
     //                                             attacker.computed_stats.dodge));

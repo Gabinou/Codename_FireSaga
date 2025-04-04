@@ -18,8 +18,8 @@ void test_weapon1() {
     *wpn2.item  = Item_default;
     // *wpn3.item  = Item_default;
     struct Weapon_stats in_wpn_stats = {
-        .attack[DAMAGE_TYPE_PHYSICAL]   = 3,
-        .attack[DAMAGE_TYPE_MAGICAL]    = 0,
+        .attack[DMG_PHYSICAL]   = 3,
+        .attack[DMG_MAGICAL]    = 0,
         .hit    = 80,
         .crit   =  0,
         .dodge  =  0,
@@ -46,10 +46,10 @@ void test_weapon1() {
     wpn1.item->aura.unit_stats  = in_stats;
     wpn1.item->canSell          = in_canSell;
     out_wpn_stats               = wpn1.stats;
-    nourstest_true(in_wpn_stats.attack[DAMAGE_TYPE_PHYSICAL] ==
-                   out_wpn_stats.attack[DAMAGE_TYPE_PHYSICAL]);
-    nourstest_true(in_wpn_stats.attack[DAMAGE_TYPE_MAGICAL] ==
-                   out_wpn_stats.attack[DAMAGE_TYPE_MAGICAL]);
+    nourstest_true(in_wpn_stats.attack[DMG_PHYSICAL] ==
+                   out_wpn_stats.attack[DMG_PHYSICAL]);
+    nourstest_true(in_wpn_stats.attack[DMG_MAGICAL] ==
+                   out_wpn_stats.attack[DMG_MAGICAL]);
     nourstest_true(in_wpn_stats.hit         == out_wpn_stats.hit);
     nourstest_true(in_wpn_stats.crit        == out_wpn_stats.crit);
     nourstest_true(in_wpn_stats.dodge       == out_wpn_stats.dodge);
@@ -85,10 +85,10 @@ void test_weapon1() {
     jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "weapon_test.json")), &wpn1, false);
     jsonio_readJSON(s8_literal(PATH_JOIN("saves", "weapon_test.json")), &wpn3);
     out_wpn_stats = wpn3.stats;
-    nourstest_true(in_wpn_stats.attack[DAMAGE_TYPE_PHYSICAL] ==
-                   out_wpn_stats.attack[DAMAGE_TYPE_PHYSICAL]);
-    nourstest_true(in_wpn_stats.attack[DAMAGE_TYPE_MAGICAL] ==
-                   out_wpn_stats.attack[DAMAGE_TYPE_MAGICAL]);
+    nourstest_true(in_wpn_stats.attack[DMG_PHYSICAL] ==
+                   out_wpn_stats.attack[DMG_PHYSICAL]);
+    nourstest_true(in_wpn_stats.attack[DMG_MAGICAL] ==
+                   out_wpn_stats.attack[DMG_MAGICAL]);
     nourstest_true(in_wpn_stats.hit       == out_wpn_stats.hit);
     nourstest_true(in_wpn_stats.crit      == out_wpn_stats.crit);
     nourstest_true(in_wpn_stats.dodge     == out_wpn_stats.dodge);
@@ -119,10 +119,10 @@ void test_weapon1() {
     nourstest_true(Filesystem_fequal(PATH_JOIN("saves", "weapon_test.json"),
                                      PATH_JOIN("saves", "weapon_rewrite.json")));
     out_wpn_stats = wpn3.stats;
-    nourstest_true(in_wpn_stats.attack[DAMAGE_TYPE_PHYSICAL] ==
-                   out_wpn_stats.attack[DAMAGE_TYPE_PHYSICAL]);
-    nourstest_true(in_wpn_stats.attack[DAMAGE_TYPE_MAGICAL] ==
-                   out_wpn_stats.attack[DAMAGE_TYPE_MAGICAL]);
+    nourstest_true(in_wpn_stats.attack[DMG_PHYSICAL] ==
+                   out_wpn_stats.attack[DMG_PHYSICAL]);
+    nourstest_true(in_wpn_stats.attack[DMG_MAGICAL] ==
+                   out_wpn_stats.attack[DMG_MAGICAL]);
     nourstest_true(in_wpn_stats.hit         == out_wpn_stats.hit);
     nourstest_true(in_wpn_stats.crit        == out_wpn_stats.crit);
     nourstest_true(in_wpn_stats.dodge       == out_wpn_stats.dodge);
@@ -163,7 +163,7 @@ void test_weapon1() {
 
 void test_weapon_stats() {
     struct Weapon_stats wpn_stats_struct = {
-        .attack[DAMAGE_TYPE_PHYSICAL] = 3,
+        .attack[DMG_PHYSICAL] = 3,
         .hit    = 80,
         .crit   =  0,
         .dodge  = -4,

@@ -293,15 +293,15 @@ void test_popup_map_combat() {
     //                         pmc.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     // /* -- Single digit damage -- */
-    // pmc.forecast->stats.agg_damage.dmg[DMG_TYPE_TOTAL] = 1;
-    // pmc.forecast->stats.dft_damage.dmg[DMG_TYPE_TOTAL] = 2;
+    // pmc.forecast->stats.agg_damage.dmg[DMG_TOTAL] = 1;
+    // pmc.forecast->stats.dft_damage.dmg[DMG_TOTAL] = 2;
     // PopUp_Map_Combat_Update(&pmc, &n9patch, render_target, renderer);
     // Filesystem_Texture_Dump(PATH_JOIN("popup_map_combat", "PopupMapCombat_Damage_SingleDigit.png"),
     //                         renderer, pmc.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     // /* -- Double digit damage -- */
-    // pmc.forecast->stats.agg_damage.dmg[DMG_TYPE_TOTAL] = 20;
-    // pmc.forecast->stats.dft_damage.dmg[DMG_TYPE_TOTAL] = 10;
+    // pmc.forecast->stats.agg_damage.dmg[DMG_TOTAL] = 20;
+    // pmc.forecast->stats.dft_damage.dmg[DMG_TOTAL] = 10;
     // PopUp_Map_Combat_Update(&pmc, &n9patch, render_target, renderer);
     // Filesystem_Texture_Dump(PATH_JOIN("popup_map_combat", "PopupMapCombat_Damage_DoubleDigit.png"),
     //                         renderer, pmc.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
