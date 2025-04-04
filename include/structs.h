@@ -780,11 +780,6 @@ typedef struct Unit {
     struct Unit_Counters        counters;
     struct Unit_Mount           mount;
     struct Unit_Statuses        statuses;
-
-    // TODO: Remove all below.
-    // TODO: rm
-    struct Computed_Stats computed_stats;    /* Computed from effective_stats */
-
 } Unit;
 extern const struct Unit Unit_default;
 
