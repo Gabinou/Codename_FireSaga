@@ -415,8 +415,7 @@ void Unit_lvlUp(struct Unit *unit) {
 }
 
 void Unit_agonizes(struct Unit *unit) {
-    // TODO: compute agony here.
-    unit->counters.agony = unit->computed_stats.agony;
+    unit->counters.agony = Unit_computeAgony(unit);
 }
 
 void Unit_dies(struct Unit *unit) {
@@ -559,17 +558,14 @@ i32 *Unit_Shield_Protection(struct Unit *unit, i32 hand) {
 
 i32 *Unit_computeDefense(struct Unit *unit) {
     /* Reset unit protections */
-    unit->computed_stats.protection[DMG_TYPE_PHYSICAL] = 0;
-    unit->computed_stats.protection[DMG_TYPE_MAGICAL]  = 0;
-
-    /* Shield protection */
-    int prot_P = 0, prot_M = 0;
+    i32 protection[DAMAGE_TYPES]    = {0};
+    i32 bonus[DAMAGE_TYPES]         = {0};
 
     for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         i32 *prot;
         if (prot = Unit_Shield_Protection(unit, hand)) {
-            prot_P += prot[DMG_TYPE_PHYSICAL];
-            prot_M += prot[DMG_TYPE_MAGICAL];
+            protection[DMG_TYPE_PHYSICAL]   += prot[DMG_TYPE_PHYSICAL];
+            protection[DMG_TYPE_MAGICAL]    += prot[DMG_TYPE_MAGICAL];
         }
     }
 
@@ -577,17 +573,23 @@ i32 *Unit_computeDefense(struct Unit *unit) {
     i32 bonus_P = 0, bonus_M = 0;
     SDL_assert(unit->stats.bonus_stack != NULL);
     for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
-        bonus_P += unit->stats.bonus_stack[i].computed_stats.protection[DMG_TYPE_PHYSICAL];
-        bonus_M += unit->stats.bonus_stack[i].computed_stats.protection[DMG_TYPE_MAGICAL];
+        bonus[DAMAGE_TYPE_PHYSICAL]    +=
+                unit->stats.bonus_stack[i].computed_stats.protection[DMG_TYPE_PHYSICAL];
+        bonus[DAMAGE_TYPE_MAGICAL]     +=
+                unit->stats.bonus_stack[i].computed_stats.protection[DMG_TYPE_MAGICAL];
     }
 
     /* Adding shield protection to effective stats */
     struct Unit_stats effstats = Unit_effectiveStats(unit);
-    unit->computed_stats.protection[DMG_TYPE_PHYSICAL] = Equation_Weapon_Defensevar(3, prot_P,
-                                                         effstats.def, bonus_P);
-    unit->computed_stats.protection[DMG_TYPE_MAGICAL]  = Equation_Weapon_Defensevar(3, prot_M,
-                                                         effstats.res, bonus_M);
-    return (unit->computed_stats.protection);
+    protection[DMG_TYPE_PHYSICAL] = Equation_Weapon_Defensevar(3,
+                                        protection[DMG_TYPE_PHYSICAL],
+                                        effstats.def,
+                                        bonus[DMG_TYPE_PHYSICAL]);
+    protection[DMG_TYPE_MAGICAL]  = Equation_Weapon_Defensevar(3,
+                                        protection[DMG_TYPE_MAGICAL],
+                                        effstats.res,
+                                        bonus[DMG_TYPE_MAGICAL]);
+    return (protection);
 }
 
 i32 *Unit_computeAttack(struct Unit *unit, int distance) {
@@ -595,12 +597,10 @@ i32 *Unit_computeAttack(struct Unit *unit, int distance) {
     struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
     SDL_assert(weapons_dtab);
     /* Reset unit attacks */
-    unit->computed_stats.attack[DMG_TYPE_PHYSICAL] = 0;
-    unit->computed_stats.attack[DMG_TYPE_MAGICAL]  = 0;
-    unit->computed_stats.attack[DMG_TYPE_TRUE]     = 0;
+    i32 attack[DAMAGE_TYPES]    = {0};
 
     /* Weapon attack */
-    u8 *attack;
+    u8 *att;
     int attack_P = 0, attack_M = 0, attack_T = 0;
 
     struct Weapon *weapon;
@@ -650,28 +650,28 @@ i32 *Unit_computeAttack(struct Unit *unit, int distance) {
 
     /* No attacking with only fists -> 0 attack means don't add str/mag */
     if (attack_P > 0) {
-        unit->computed_stats.attack[DMG_TYPE_PHYSICAL] = Equation_Weapon_Attackvar(3, attack_P,
+        attack[DMG_TYPE_PHYSICAL] = Equation_Weapon_Attackvar(3, attack_P,
                                                          effstats.str, bonus_P);
+        attack[DMG_TYPE_TRUE] = Equation_Weapon_Attackvar(2, attack_T, bonus_T);
     }
 
     if (attack_M > 0) {
-        unit->computed_stats.attack[DMG_TYPE_MAGICAL]  = Equation_Weapon_Attackvar(3, attack_M,
+        attack[DMG_TYPE_MAGICAL]  = Equation_Weapon_Attackvar(3, attack_M,
                                                          effstats.mag, bonus_M);
+        attack[DMG_TYPE_TRUE] = Equation_Weapon_Attackvar(2, attack_T, bonus_T);
     }
-    unit->computed_stats.attack[DMG_TYPE_TRUE] = Equation_Weapon_Attackvar(2, attack_T, bonus_T);
 
     /* -- DUAL WIELDING -- */
     /* Terrible malus if dual wielding without skill */
     b32 candualwield = TNECS_ARCHETYPE_HAS_TYPE(unit->flags.skills, UNIT_SKILL_DUAL_WIELD);
     if (Unit_isdualWielding(unit) && !candualwield) {
-        unit->computed_stats.attack[DMG_TYPE_PHYSICAL] /= DUAL_WIELD_NOSKILL_MALUS_FACTOR;
-        unit->computed_stats.attack[DMG_TYPE_MAGICAL]  /= DUAL_WIELD_NOSKILL_MALUS_FACTOR;
+        attack[DMG_TYPE_PHYSICAL] /= DUAL_WIELD_NOSKILL_MALUS_FACTOR;
+        attack[DMG_TYPE_MAGICAL]  /= DUAL_WIELD_NOSKILL_MALUS_FACTOR;
     }
 
-    i32 *att = unit->computed_stats.attack;
-    att[DMG_TYPE_TOTAL] = att[DMG_TYPE_PHYSICAL] + att[DMG_TYPE_MAGICAL] + att[DMG_TYPE_TRUE];
+    attack[DMG_TYPE_TOTAL] = attack[DMG_TYPE_PHYSICAL] + attack[DMG_TYPE_MAGICAL] + attack[DMG_TYPE_TRUE];
 
-    return (unit->computed_stats.attack);
+    return (attack);
 }
 
 b32 Unit_Equipment_Full( struct Unit *unit) {
@@ -705,21 +705,19 @@ struct Computed_Stats Unit_computedStats_wLoadout(Unit *unit, Loadout *loadout, 
     /* Compute stats with input loadout */
     Unit_Loadout_Import(unit, loadout);
     Unit_stats eff_s = Unit_effectiveStats(unit);
-    Unit_computedStats(unit, dist, eff_s);
+    struct Computed_Stats computed_stats = Unit_computedStats(unit, dist, eff_s);
 
     /* Restore starting equipment */
     Unit_Equipped_Import(unit, start_equipped);
 
-    return (unit->computed_stats);
+    return (computed_stats);
 }
 
 /* Computed stats at distance (-1 is always in range) */
 // Implicitly for weapons. Staves only care about range -> compute directly.
 struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance, Unit_stats eff_s) {
     SDL_assert(unit);
-    if (!Unit_isUpdateStats(unit)) {
-        return (unit->computed_stats);
-    }
+    struct Computed_Stats computed_stats = {0};
 
     /* Weapon-dependent stats */
     if (Unit_canAttack(unit)) {
@@ -727,17 +725,6 @@ struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance, Unit_s
         Unit_computeAttack(  unit,  distance);
         Unit_computeCritical(unit,  distance);
         Unit_Range_Equipped(unit, ITEM_ARCHETYPE_WEAPON);
-    } else {
-        unit->computed_stats.attack[DMG_TYPE_PHYSICAL] = 0;
-        unit->computed_stats.attack[DMG_TYPE_MAGICAL]  = 0;
-        unit->computed_stats.attack[DMG_TYPE_TRUE]     = 0;
-        unit->computed_stats.attack[DMG_TYPE_TOTAL]    = 0;
-        unit->computed_stats.hit                       = 0;
-        unit->computed_stats.crit                      = 0;
-        unit->computed_stats.range_equipment.min       = 0;
-        unit->computed_stats.range_equipment.max       = 0;
-        unit->computed_stats.range_loadout.min         = 0;
-        unit->computed_stats.range_loadout.max         = 0;
     }
 
     /* Distance-dependent stats */

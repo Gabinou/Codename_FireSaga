@@ -232,9 +232,17 @@ typedef struct MenuElemDirections {
 } MenuElemDirections;
 extern const MenuElemDirections MenuElemDirections_default;
 
+struct Damage_Raw {
+    i32 physical;
+    i32 magical;
+    i32 ttrue;
+    i32 total;
+};
+extern const struct Damage_Raw Damage_Raw_default;
+
 struct Damage {
-    i32 dmg[DAMAGE_TYPES];
-    i32 dmg_crit[DAMAGE_TYPES];
+    Damage_Raw dmg;
+    Damage_Raw dmg_crit;
 };
 extern const struct Damage Damage_default;
 
