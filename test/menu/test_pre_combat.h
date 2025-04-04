@@ -85,7 +85,7 @@ void test_menu_pre_combat() {
     nourstest_true(Unit_canAttack(&Silou));
     nourstest_true(Unit_canAttack(&Hamilcar));
 
-    Unit_effectiveStats(&Silou);
+    Unit_stats ES_S = Unit_effectiveStats(&Silou);
 
     struct Position silou_pos = Position_default;
     silou_pos.tilemap_pos.x = 0;
@@ -94,10 +94,10 @@ void test_menu_pre_combat() {
     hamilcar_pos.tilemap_pos.x = 1;
     hamilcar_pos.tilemap_pos.y = 0;
     int dist = 1;
-    Unit_computedStats(&Silou, dist);
+    Unit_computedStats(&Silou, dist, ES_S);
 
-    Unit_computedStats(&Hamilcar, dist);
-    Unit_effectiveStats(&Hamilcar);
+    Unit_stats ES_H = Unit_effectiveStats(&Hamilcar);
+    Unit_computedStats(&Hamilcar, dist, ES_H);
     struct Combat_Forecast combat_forecast;
     combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);

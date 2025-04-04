@@ -66,8 +66,8 @@ void test_menu_growths() {
     // Silou._equipped[weakhand] = true;
     SDL_assert(Unit_isEquipped(&Silou, weakhand));
     nourstest_true(Unit_canAttack(&Silou));
-    Unit_computedStats(&Silou, -1);
-    Unit_effectiveStats(&Silou);
+    Unit_stats ES_S = Unit_effectiveStats(&Silou);
+    Unit_computedStats(&Silou, -1, ES_S);
     Unit_effectiveGrowths(&Silou);
     Unit_supportBonus(&Silou);
     gm->unit = &Silou;

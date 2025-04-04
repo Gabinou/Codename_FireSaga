@@ -104,8 +104,10 @@ void test_skills(void) {
     nourstest_true(Unit_isEquipped(&Silou, UNIT_HAND_LEFT));
     nourstest_true(Unit_canAttack(&Hamilcar));
     nourstest_true(Unit_canAttack(&Silou));
-    Unit_computedStats(&Silou, distance);
-    Unit_computedStats(&Hamilcar, distance);
+    Unit_stats ES_S = Unit_effectiveStats(&Silou);
+    Unit_stats ES_H = Unit_effectiveStats(&Hamilcar);
+    Unit_computedStats(&Silou,      distance, ES_S);
+    Unit_computedStats(&Hamilcar,   distance, ES_H);
 
     /* --- SDL_free --- */
     Unit_Free(&Silou);

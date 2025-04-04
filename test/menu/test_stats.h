@@ -70,8 +70,8 @@ void test_menu_stats() {
     Unit_Equip(&Silou, weakhand, weakhand);
     SDL_assert(Unit_isEquipped(&Silou, weakhand));
     nourstest_true(Unit_canAttack(&Silou));
-    Unit_computedStats(&Silou, -1);
-    Unit_effectiveStats(&Silou);
+    Unit_stats ES_S = Unit_effectiveStats(&Silou);
+    Unit_computedStats(&Silou, -1, ES_S);
 
     StatsMenu_Load(sm, &Silou, renderer, &n9patch);
 
@@ -84,15 +84,15 @@ void test_menu_stats() {
 
     /* -- Capped stats -- */
     Unit_Cap_Stats(&Silou);
-    Unit_computedStats(&Silou, -1);
-    Unit_effectiveStats(&Silou);
+    ES_S = Unit_effectiveStats(&Silou);
+    Unit_computedStats(&Silou, -1, ES_S);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Capped.png"), renderer, sm->texture,
                             SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Half stats -- */
     Unit_HalfCap_Stats(&Silou);
-    Unit_computedStats(&Silou, -1);
+    Unit_computedStats(&Silou, -1, ES_S);
     Unit_effectiveStats(&Silou);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_HalfCapped.png"), renderer, sm->texture,

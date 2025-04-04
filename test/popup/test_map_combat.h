@@ -69,10 +69,10 @@ void test_popup_map_combat() {
     nourstest_true(Unit_isEquipped(&defendant, weakhand));
     nourstest_true(Unit_canAttack(&aggressor));
     nourstest_true(Unit_canAttack(&defendant));
-    Unit_computedStats(&aggressor, dist);
-    Unit_computedStats(&defendant, dist);
-    Unit_effectiveStats(&aggressor);
-    Unit_effectiveStats(&defendant);
+    Unit_stats ES_A = Unit_effectiveStats(&aggressor);
+    Unit_stats ES_D = Unit_effectiveStats(&defendant);
+    Unit_computedStats(&aggressor, dist, ES_A);
+    Unit_computedStats(&defendant, dist, ES_D);
 
     /* -- Create Popup_Map_Combat -- */
     struct PopUp_Map_Combat pmc = PopUp_Map_Combat_default;
