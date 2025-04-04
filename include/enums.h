@@ -933,7 +933,7 @@ enum SKILL_VALUES {
 };
 
 /* --- DAMAGE TYPES --- */
-enum DAMAGE_TYPES {
+enum DMG_TYPES {
     DMG_PHYSICAL    = 0,
     DMG_MAGICAL     = 1,
     DMG_TRUE        = 2,

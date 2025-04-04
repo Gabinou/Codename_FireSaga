@@ -232,18 +232,18 @@ typedef struct MenuElemDirections {
 } MenuElemDirections;
 extern const MenuElemDirections MenuElemDirections_default;
 
-struct Damage_Raw {
+typedef struct Damage_Raw {
     i32 physical;
     i32 magical;
-    i32 ttrue;
+    i32 True;
     i32 total;
-};
+} Damage_Raw;
 extern const struct Damage_Raw Damage_Raw_default;
 
-struct Damage {
+typedef struct Damage {
     Damage_Raw dmg;
     Damage_Raw dmg_crit;
-};
+} Damage;
 extern const struct Damage Damage_default;
 
 union Graphics {
@@ -298,8 +298,8 @@ struct RangeGaps {
 extern const struct Range Range_default;
 
 typedef struct Computed_Stats {
-    i32 attack[DAMAGE_TYPES];
-    i32 protection[DAMAGE_TYPES];
+    i32 attack[DMG_TYPES];
+    i32 protection[DMG_TYPES];
     i32 hit;
     i32 dodge; /* can be negative */
     i32 crit;
@@ -401,8 +401,8 @@ typedef struct Aura {
 extern const struct Aura Aura_default;
 
 struct Weapon_stats {
-    i32 attack[ATTACK_TYPES_NO_TOTAL];
-    i32 protection[PROTECTION_TYPES_NO_TOTAL];
+    Damage_Raw attack;
+    Damage_Raw protection;
     struct Range range; /* of attack [0]: min, [1]: max */
     i32 hit;
     i32 dodge;  /* when the Sword is TOO HEAVY TO DODGE */

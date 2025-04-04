@@ -445,20 +445,20 @@ static void _GrowthsMenu_Draw_Supports(struct GrowthsMenu *gm, SDL_Renderer *ren
     /* - ATK - */
     x = GM_ATK_X_OFFSET,  y = GM_ATK_Y_OFFSET;
     PixelFont_Write(gm->pixelnours, renderer, "ATK", 3, x, y);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", support_stats.attack[DMG_TYPE_PHYSICAL]);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", support_stats.attack[DMG_PHYSICAL]);
     int width = PixelFont_Width_Len(gm->pixelnours_big, numbuff);
-    stbsp_sprintf(numbuff, "%d/%d\0\0", support_stats.attack[DMG_TYPE_PHYSICAL],
-                  support_stats.attack[DMG_TYPE_MAGICAL]);
+    stbsp_sprintf(numbuff, "%d/%d\0\0", support_stats.attack[DMG_PHYSICAL],
+                  support_stats.attack[DMG_MAGICAL]);
     x = (GM_ATK_X_OFFSET_STAT1 - width),  y = GM_ATK_Y_OFFSET_STAT1;
     PixelFont_Write_Len(gm->pixelnours_big, renderer, numbuff, x, y);
 
     /* - PROT - */
     x = GM_PROT_X_OFFSET,  y = GM_PROT_Y_OFFSET;
     PixelFont_Write(gm->pixelnours, renderer, "DEF", 3, x, y);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", support_stats.protection[DMG_TYPE_PHYSICAL]);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", support_stats.protection[DMG_PHYSICAL]);
     width = PixelFont_Width_Len(gm->pixelnours_big, numbuff);
-    stbsp_sprintf(numbuff, "%d/%d\0\0", support_stats.protection[DMG_TYPE_PHYSICAL],
-                  support_stats.protection[DMG_TYPE_MAGICAL]);
+    stbsp_sprintf(numbuff, "%d/%d\0\0", support_stats.protection[DMG_PHYSICAL],
+                  support_stats.protection[DMG_MAGICAL]);
     x = (GM_PROT_X_OFFSET_STAT1 - width),  y = GM_PROT_Y_OFFSET_STAT1;
     PixelFont_Write_Len(gm->pixelnours_big, renderer, numbuff, x, y);
 

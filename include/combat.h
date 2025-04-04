@@ -44,7 +44,7 @@ struct Point;
 */
 
 /* -- isCan -- */
-b32 Combat_canDouble(struct Unit *_a, struct Unit *_d);
+b32 Combat_canDouble(Computed_Stats CS_att, Computed_Stats CS_dfd);
 b32 Combat_canAttack_Equipped(struct Unit  *agg, struct Unit  *dft,
                               struct Point *_ag, struct Point *_df);
 

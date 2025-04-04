@@ -34,10 +34,8 @@ const struct Combat_Flow Combat_Flow_default = {
 const struct Combat_Rates Combat_Rates_default = {0};
 const struct Combat_Death Combat_Death_default = {0};
 
-b32 Combat_canDouble(struct Unit *_att, struct Unit *_dfd) {
-    SDL_assert(_att != NULL);
-    SDL_assert(_dfd != NULL);
-    i8 diff      = (_att->computed_stats.speed - _dfd->computed_stats.speed);
+b32 Combat_canDouble(Computed_Stats CS_att, Computed_Stats CS_dfd) {
+    i32 diff      = (CS_att.speed - CS_dfd.speed);
     return (diff > SOTA_DOUBLING_SPEED);
 }
 
@@ -90,27 +88,27 @@ struct Damage Compute_Combat_Damage(struct Unit *attacker,
                                     struct Unit *defender) {
     SDL_assert(attacker && defender);
     u8 eff = Unit_computeEffectivefactor(attacker, defender);
-    u8 aap = attacker->computed_stats.attack[DMG_TYPE_PHYSICAL];
-    u8 aam = attacker->computed_stats.attack[DMG_TYPE_MAGICAL];
-    u8 aat = attacker->computed_stats.attack[DMG_TYPE_TRUE];
-    u8 dpp = defender->computed_stats.protection[DMG_TYPE_PHYSICAL];
-    u8 dpm = defender->computed_stats.protection[DMG_TYPE_MAGICAL];
+    u8 aap = attacker->computed_stats.attack[DMG_PHYSICAL];
+    u8 aam = attacker->computed_stats.attack[DMG_MAGICAL];
+    u8 aat = attacker->computed_stats.attack[DMG_TRUE];
+    u8 dpp = defender->computed_stats.protection[DMG_PHYSICAL];
+    u8 dpm = defender->computed_stats.protection[DMG_MAGICAL];
 
     // TODO: Sum appropriate damage types according to equipment.
     // Add type damage ONLY if one piece of equipment has that damage type
     struct Damage damage = {0};
 
     /* - HIT DAMAGE - */
-    damage.dmg[DMG_TYPE_PHYSICAL] = Equation_Combat_Damage(aap, dpp, eff, CRIT_FACTOR, 0);
-    damage.dmg[DMG_TYPE_MAGICAL]  = Equation_Combat_Damage(aam, dpm, eff, CRIT_FACTOR, 0);
-    damage.dmg[DMG_TYPE_TRUE]     = aat;
+    damage.dmg[DMG_PHYSICAL] = Equation_Combat_Damage(aap, dpp, eff, CRIT_FACTOR, 0);
+    damage.dmg[DMG_MAGICAL]  = Equation_Combat_Damage(aam, dpm, eff, CRIT_FACTOR, 0);
+    damage.dmg[DMG_TRUE]     = aat;
 
     /* - CRIT DAMAGE - */
-    damage.dmg_crit[DMG_TYPE_PHYSICAL] = Equation_Combat_Damage(aap, dpp, eff, CRIT_FACTOR,
+    damage.dmg_crit[DMG_PHYSICAL] = Equation_Combat_Damage(aap, dpp, eff, CRIT_FACTOR,
                                                                 1);
-    damage.dmg_crit[DMG_TYPE_MAGICAL]  = Equation_Combat_Damage(aam, dpm, eff, CRIT_FACTOR,
+    damage.dmg_crit[DMG_MAGICAL]  = Equation_Combat_Damage(aam, dpm, eff, CRIT_FACTOR,
                                                                 1);
-    damage.dmg_crit[DMG_TYPE_TRUE]     = Equation_Combat_Damage(aat, 0, eff, CRIT_FACTOR, 1);
+    damage.dmg_crit[DMG_TRUE]     = Equation_Combat_Damage(aat, 0, eff, CRIT_FACTOR, 1);
     Equation_Damage_Total(&damage);
     return (damage);
 }
@@ -130,8 +128,8 @@ struct Combat_Death Compute_Combat_Death(struct Unit *aggressor, struct Unit *de
         if (forecast.agg_rates.hit == 0)
             break;
         // TODO: REMAKE
-        // u8 agg_dmg = forecast.agg_damage.dmg[DMG_TYPE_PHYSICAL] +
-        //               forecast.agg_damage.dmg[DMG_TYPE_MAGICAL];
+        // u8 agg_dmg = forecast.agg_damage.dmg[DMG_PHYSICAL] +
+        //               forecast.agg_damage.dmg[DMG_MAGICAL];
         // attacker_maxDamage_nocrit = Equation_multiplyDamage(agg_dmg, defendant_possible[SOTA_AGGRESSOR]);
         // attacker_maxDamage_crit   = Equation_multiplyDamage(agg_dmg, defendant_possible[SOTA_AGGRESSOR]);
         // if ((defendant->counters.hp < attacker_maxDamage_nocrit)
@@ -159,8 +157,8 @@ struct Combat_Death Compute_Combat_Death(struct Unit *aggressor, struct Unit *de
         if (forecast.dft_rates.hit == 0)
             continue;
         // TODO: REMAKE
-        // u8 def_dmg = forecast.dft_damage.dmg[DMG_TYPE_PHYSICAL] +
-        //               forecast.dft_damage.dmg[DMG_TYPE_MAGICAL];
+        // u8 def_dmg = forecast.dft_damage.dmg[DMG_PHYSICAL] +
+        //               forecast.dft_damage.dmg[DMG_MAGICAL];
         // defender_maxDamage_nocrit = Equation_multiplyDamage(def_dmg, defendant_possible[SOTA_DEFENDANT]);
         // defender_maxDamage_crit = Equation_multiplyDamage(def_dmg, defendant_possible[SOTA_DEFENDANT]);
         // if ((aggressor->counters.hp < defender_maxDamage_nocrit)

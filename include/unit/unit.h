@@ -75,8 +75,8 @@ i32 Unit_computeAgony(   Unit *u);
 i32 Unit_computeRegrets( Unit *u);
 i32 Unit_computeEffectivefactor(Unit *a, Unit *d);
 
-i32 *Unit_computeAttack( Unit *u, int dist);
-i32 *Unit_computeDefense(Unit *u);
+Damage_Raw Unit_computeAttack( Unit *u, int dist);
+Damage_Raw Unit_computeDefense(Unit *u);
 
 Unit_stats Unit_effectiveStats(   Unit *u);
 Unit_stats Unit_effectiveGrowths( Unit *u);
@@ -139,6 +139,6 @@ void Unit_Promote(Unit *u, i8 new_class_i);
 b32 Unit_ID_Valid(u16 id);
 
 
-i32 *Unit_Shield_Protection(struct Unit *unit, i32 hand);
+Damage_Raw Unit_Shield_Protection(struct Unit *unit, i32 hand);
 
 #endif /* UNIT_H */
