@@ -319,6 +319,7 @@ void test_combat_game() {
 
     attacker_stats.agi = defender_stats.agi + 5;
     Unit_setStats(&attacker, attacker_stats);
+    ES_A = Unit_effectiveStats(&attacker);
     nourstest_true(ES_A.agi == attacker_stats.agi);
     firesaga.combat_forecast = Compute_Combat_Forecast(&attacker, &defender,
                                                        &attacker_pos,

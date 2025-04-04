@@ -1291,22 +1291,21 @@ struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
     SDL_assert(unit);
 
     // TODO: compute bonuses dynamically
-    /* Preparation */
-    Unit_effectiveStats(unit) = unit->stats.current;
+    /* Reset stats to current */
+    Unit_stats effective = unit->stats.current;
 
     /* Add all bonuses */
     if (unit->stats.bonus_stack != NULL) {
         for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
-            Unit_effectiveStats(unit) = Unit_stats_plus(Unit_effectiveStats(unit),
-                                                        unit->stats.bonus_stack[i].unit_stats);
+            effective = Unit_stats_plus(effective, unit->stats.bonus_stack[i].unit_stats);
         }
     }
 
     /* Add Mount move */
     if (unit->mount.ptr != NULL)
-        Unit_effectiveStats(unit).move = unit->mount.ptr->move;
+        effective.move = unit->mount.ptr->move;
 
-    return (Unit_effectiveStats(unit));
+    return (effective);
 }
 
 void Unit_Promote(struct Unit *unit, i8 new_class_index) {
