@@ -68,15 +68,15 @@ struct Computed_Stats Computed_Stats_plus(struct Computed_Stats stats1,
                                           struct Computed_Stats stats2) {
     struct Computed_Stats out_stats = Computed_Stats_default;
 
-    out_stats.attack[0] = nmath_inbounds_int32_t((stats1.attack[0] + stats2.attack[0]),
+    out_stats.attack.physical = nmath_inbounds_int32_t((stats1.attack.physical + stats2.attack.physical),
                                                  SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
-    out_stats.attack[1] = nmath_inbounds_int32_t((stats1.attack[1] + stats2.attack[1]),
+    out_stats.attack.magical = nmath_inbounds_int32_t((stats1.attack.magical + stats2.attack.magical),
                                                  SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
-    out_stats.attack[2] = nmath_inbounds_int32_t((stats1.attack[2] + stats2.attack[2]),
+    out_stats.attack.total = nmath_inbounds_int32_t((stats1.attack.total + stats2.attack.total),
                                                  SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
-    out_stats.protection[0] = nmath_inbounds_int32_t((stats1.protection[0] + stats2.protection[0]),
+    out_stats.protection.physical = nmath_inbounds_int32_t((stats1.protection.physical + stats2.protection.physical),
                                                      SOTA_MIN_PROT, SOTA_MAX_PROT);
-    out_stats.protection[1] = nmath_inbounds_int32_t((stats1.protection[1] + stats2.protection[1]),
+    out_stats.protection.magical = nmath_inbounds_int32_t((stats1.protection.magical + stats2.protection.magical),
                                                      SOTA_MIN_PROT, SOTA_MAX_PROT);
     out_stats.hit   = nmath_inbounds_int32_t((stats1.hit    + stats2.hit),   SOTA_MIN_HIT,
                                              SOTA_MAX_HIT);
