@@ -9,7 +9,7 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Unit;
-struct Damage;
+struct Combat_Damage;
 
 /* --- MACROS --- */
 /* -- Unit Combat -- */
@@ -47,7 +47,7 @@ i32    Equation_Combat_Damage(  i32 att_a,  i32 def_d, i32 eff, i32 critp, b32 c
 float Equation_Expected_Damage(i32 hit,    i32 crit,  i32 critfactor);
 
 /* -- Compute damage total from other damae types in struct -- */
-void  Equation_Damage_Total(struct Damage *dmg);
+void  Equation_Damage_Total(struct Combat_Damage *dmg);
 
 /* -- Weapon -- */
 i32 Equation_Weapon_Hit(    i32 Lwpn_hit,       i32 Rwpn_hit);

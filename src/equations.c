@@ -143,7 +143,7 @@ i32 Equation_Weapon_Attack(i32 Lwpn_might, i32 Rwpn_might) {
     return (wpn_attack);
 }
 
-void Equation_Damage_Total(struct Damage *dmg) {
+void Equation_Damage_Total(struct Combat_Damage *dmg) {
     dmg->dmg[3] = dmg->dmg[0] + dmg->dmg[1] + dmg->dmg[2];
     dmg->dmg[3] = nmath_inbounds_int32_t(dmg->dmg[3], SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
     dmg->dmg_crit[3] = dmg->dmg_crit[0] + dmg->dmg_crit[1] + dmg->dmg_crit[2];

@@ -240,11 +240,11 @@ typedef struct Damage_Raw {
 } Damage_Raw;
 extern const struct Damage_Raw Damage_Raw_default;
 
-typedef struct Damage {
+typedef struct Combat_Damage {
     Damage_Raw dmg;
     Damage_Raw dmg_crit;
-} Damage;
-extern const struct Damage Damage_default;
+} Combat_Damage;
+extern const struct Combat_Damage struct Combat_Damage_default;
 
 union Graphics {
     SDL_Texture *texture;
@@ -577,8 +577,8 @@ extern const struct Combat_Rates Combat_Rates_default;
 struct Combat_Stats {
     struct Combat_Rates     agg_rates;
     struct Combat_Rates     dft_rates;
-    struct Damage           agg_damage;
-    struct Damage           dft_damage;
+    struct Combat_Damage    agg_damage;
+    struct Combat_Damage    dft_damage;
     struct Computed_Stats   agg_stats;
     struct Computed_Stats   dft_stats;
     i8                      agg_equipment[UNIT_ARMS_NUM];

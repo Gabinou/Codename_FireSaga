@@ -228,8 +228,8 @@ static void _PopUp_Map_Combat_Draw_Names(struct PopUp_Map_Combat *pmc, SDL_Rende
 
 static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer) {
     /* --- DMGs --- */
-    struct Damage damage_a      = pmc->forecast->stats.agg_damage;
-    struct Damage damage_d      = pmc->forecast->stats.dft_damage;
+    struct Combat_Damage damage_a      = pmc->forecast->stats.agg_damage;
+    struct Combat_Damage damage_d      = pmc->forecast->stats.dft_damage;
     struct Combat_Rates rates_a = pmc->forecast->stats.agg_rates;
     struct Combat_Rates rates_d = pmc->forecast->stats.dft_rates;
     char numbuff[10];

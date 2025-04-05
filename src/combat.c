@@ -84,7 +84,7 @@ struct Combat_Flow Compute_Combat_Flow(struct Unit *agg, struct Unit *dft,
     return (out_flow);
 }
 
-struct Damage Compute_Combat_Damage(struct Unit *attacker,
+struct Combat_Damage Compute_Combat_Damage(struct Unit *attacker,
                                     struct Unit *defender) {
     SDL_assert(attacker && defender);
     u8 eff = Unit_computeEffectivefactor(attacker, defender);
@@ -96,7 +96,7 @@ struct Damage Compute_Combat_Damage(struct Unit *attacker,
 
     // TODO: Sum appropriate damage types according to equipment.
     // Add type damage ONLY if one piece of equipment has that damage type
-    struct Damage damage = {0};
+    struct Combat_Damage damage = {0};
 
     /* - HIT DAMAGE - */
     damage.dmg[DMG_PHYSICAL] = Equation_Combat_Damage(aap, dpp, eff, CRIT_FACTOR, 0);
@@ -215,7 +215,7 @@ struct Combat_Forecast Compute_Combat_Forecast(struct Unit  *agg,
     return (out);
 }
 
-void Combat_totalDamage(struct Combat_Attack *attack, struct Damage *damage) {
+void Combat_totalDamage(struct Combat_Attack *attack, struct Combat_Damage *damage) {
     /* - crit hit should be computed before - */
     attack->total_damage = 0;
     if (attack->hit && !attack->crit)
@@ -239,7 +239,7 @@ void Compute_Combat_Outcome(struct Combat_Outcome   *outcome,
     /* -- Aggressor, Phase 1 -- */
     struct Unit *attacker           = aggressor;
     struct Combat_Phase temp_phase  = Combat_Phase_default;
-    struct Damage damage            = forecast->stats.agg_damage;
+    struct Combat_Damage damage            = forecast->stats.agg_damage;
     u8 hit     = forecast->stats.agg_rates.hit;
     u8 crit    = forecast->stats.agg_rates.crit;
     u8 brave   = forecast->flow.aggressor_brave;
@@ -313,7 +313,7 @@ int Combat_Attack_Total_Num(struct Combat_Phase *phases, int brave_factor, int p
 
 void Compute_Combat_Phase(struct Combat_Phase   *phase,
                           struct Combat_Attack  *darr_attacks,
-                          struct Damage          damage,
+                          struct Combat_Damage          damage,
                           struct Unit           *attacker,
                           u8 hit_rate, u8 crit_rate, u8 brave_factor) {
     phase->attack_num = Combat_Phase_Attack_Num(phase, brave_factor);
@@ -323,7 +323,7 @@ void Compute_Combat_Phase(struct Combat_Phase   *phase,
 
 void Compute_Combat_Attack(struct Combat_Phase  *phase,
                            struct Combat_Attack *darr_attacks,
-                           struct Damage         damage,
+                           struct Combat_Damage         damage,
                            struct Unit          *attacker,
                            u8 hit_rate, u8 crit_rate) {
     struct Combat_Attack temp_attack;

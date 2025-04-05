@@ -23,8 +23,8 @@ void test_combat_stats() {
     Unit_InitWweapons(attacker, weapons_dtab);
     Unit_InitWweapons(defender, weapons_dtab);
 
-    struct Damage dft_damage;
-    struct Damage agg_damage;
+    struct Combat_Damage dft_damage;
+    struct Combat_Damage agg_damage;
     struct Combat_Stats temp_stats;
     struct Combat_Forecast forecast;
     struct Computed_Stats agg_stats;
@@ -153,8 +153,8 @@ void test_combat_death() {
     struct Unit defender = Unit_default;
     Unit_InitWweapons(&attacker, weapons_dtab);
     Unit_InitWweapons(&defender, weapons_dtab);
-    struct Damage dft_damage;
-    struct Damage agg_damage;
+    struct Combat_Damage dft_damage;
+    struct Combat_Damage agg_damage;
     struct Combat_Stats temp_stats;
     struct Combat_Flow temp_flow;
     struct Combat_Death temp_death;
@@ -581,7 +581,7 @@ void test_combat_sequence() {
     i32 hit_rate     = 50;
     i32 crit_rate    = 10;
 
-    struct Damage damage = {0};
+    struct Combat_Damage damage = {0};
     damage.dmg[DMG_PHYSICAL] = 8;
     damage.dmg_crit[DMG_PHYSICAL] = 24;
 

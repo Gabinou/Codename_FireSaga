@@ -54,15 +54,15 @@ struct Combat_Death Compute_Combat_Death(struct Unit *agg, struct Unit *dft,
 
 /* -- Combat Attacks -- */
 void Compute_Combat_Phase( struct Combat_Phase *, struct Combat_Attack *,
-                           struct Damage, struct Unit *, u8, u8, u8);
+                           struct Combat_Damage, struct Unit *, u8, u8, u8);
 void Compute_Combat_Attack(struct Combat_Phase *, struct Combat_Attack *,
-                           struct Damage, struct Unit *, u8, u8);
+                           struct Combat_Damage, struct Unit *, u8, u8);
 
 int Combat_Attack_Total_Num(struct Combat_Phase *phases, int b, int num);
 int Combat_Phase_Attack_Num(struct Combat_Phase *phases, int brave_factor);
 
 /* -- Combat Forecast -- */
-struct Damage          Compute_Combat_Damage(  struct Unit *att, struct Unit *dfd);
+struct Combat_Damage          Compute_Combat_Damage(  struct Unit *att, struct Unit *dfd);
 struct Combat_Flow     Compute_Combat_Flow(    struct Unit *agg, struct Unit *dft,
                                                struct Point *_a, struct Point *_d);
 struct Combat_Rates    Compute_Combat_Rates(   struct Unit *att, struct Unit *dfd,

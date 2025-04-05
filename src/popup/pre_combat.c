@@ -253,8 +253,8 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
     struct Unit_stats ES_D = Unit_effectiveStats(pcp->dft_unit);
     struct Computed_Stats CS_A = Unit_computedStats(pcp->agg_unit, distance, ES_A);
     struct Computed_Stats CS_D = Unit_computedStats(pcp->dft_unit, distance, ES_D);
-    struct Damage damage_a                 = pcp->forecast->stats.agg_damage;
-    struct Damage damage_d                 = pcp->forecast->stats.dft_damage;
+    struct Combat_Damage damage_a                 = pcp->forecast->stats.agg_damage;
+    struct Combat_Damage damage_d                 = pcp->forecast->stats.dft_damage;
     struct Combat_Rates rates_a            = pcp->forecast->stats.agg_rates;
     struct Combat_Rates rates_d            = pcp->forecast->stats.dft_rates;
 
@@ -398,8 +398,8 @@ static void _PreCombatPopup_Draw_Stats_Total( struct PreCombatPopup *pcp, SDL_Re
     struct Unit_stats ES_D = Unit_effectiveStats(pcp->dft_unit);
     struct Computed_Stats CS_A = Unit_computedStats(pcp->agg_unit, distance, ES_A);
     struct Computed_Stats CS_D = Unit_computedStats(pcp->dft_unit, distance, ES_D);
-    struct Damage damage_a                 = pcp->forecast->stats.agg_damage;
-    struct Damage damage_d                 = pcp->forecast->stats.dft_damage;
+    struct Combat_Damage damage_a                 = pcp->forecast->stats.agg_damage;
+    struct Combat_Damage damage_d                 = pcp->forecast->stats.dft_damage;
     struct Combat_Rates rates_a            = pcp->forecast->stats.agg_rates;
     struct Combat_Rates rates_d            = pcp->forecast->stats.dft_rates;
 
@@ -494,8 +494,8 @@ static void _PreCombatPopup_Draw_Stats_Simple(struct PreCombatPopup *pcp, SDL_Re
     struct Unit_stats ES_D = Unit_effectiveStats(pcp->dft_unit);
     struct Computed_Stats CS_A = Unit_computedStats(pcp->agg_unit, distance, ES_A);
     struct Computed_Stats CS_D = Unit_computedStats(pcp->dft_unit, distance, ES_D);
-    struct Damage damage_a                 = pcp->forecast->stats.agg_damage;
-    struct Damage damage_d                 = pcp->forecast->stats.dft_damage;
+    struct Combat_Damage damage_a                 = pcp->forecast->stats.agg_damage;
+    struct Combat_Damage damage_d                 = pcp->forecast->stats.dft_damage;
     struct Combat_Rates rates_a            = pcp->forecast->stats.agg_rates;
     struct Combat_Rates rates_d            = pcp->forecast->stats.dft_rates;
 

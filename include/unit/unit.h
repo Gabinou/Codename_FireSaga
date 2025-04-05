@@ -9,7 +9,7 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
 struct Weapon;
-struct Damage;
+struct Combat_Damage;
 struct Game;
 struct Position;
 struct Map;
