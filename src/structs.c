@@ -39,7 +39,7 @@ const canEquip canEquip_default = {
     /* 4. Of any archetype */
 };
 
-const Damage struct Combat_Damage_default = {0};
+const Combat_Damage Combat_Damage_default = {0};
 const Damage_Raw Damage_Raw_default = {0};
 
 const struct HP HP_default = {0};

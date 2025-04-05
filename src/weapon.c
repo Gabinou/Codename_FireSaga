@@ -343,7 +343,7 @@ int Weapon_Stat(struct Weapon *weapon, i16 stattype) {
         return (Item_Stat(weapon->item, stattype));
     }
 
-    i32 *wpn_stats_arr = weapon->stats.attack;
+    i32 *wpn_stats_arr = (i32 *)&weapon->stats.attack;
     int stat = wpn_stats_arr[stattype - WEAPON_STAT_START - 1];
     return (stat);
 }
