@@ -34,15 +34,14 @@ const struct Combat_Flow Combat_Flow_default = {
 const struct Combat_Rates Combat_Rates_default = {0};
 const struct Combat_Death Combat_Death_default = {0};
 
-b32 Combat_canDouble(Computed_Stats CS_att, Computed_Stats CS_dfd) {
-    i32 diff      = (CS_att.speed - CS_dfd.speed);
+b32 Combat_canDouble(Computed_Stats cs_att, Computed_Stats cs_dfd) {
+    i32 diff      = (cs_att.speed - cs_dfd.speed);
     return (diff > SOTA_DOUBLING_SPEED);
 }
 
-b32 Combat_canAttack_Equipped(struct Unit *attacker, struct Unit *defender,
+b32 Combat_canAttack_Equipped(struct Unit *attacker,
                               struct Point *att_pos, struct Point *dfd_pos) {
     SDL_assert(attacker);
-    SDL_assert(defender);
     SDL_assert(att_pos);
     SDL_assert(dfd_pos);
     /* Get range of current loadout */
@@ -54,6 +53,7 @@ b32 Combat_canAttack_Equipped(struct Unit *attacker, struct Unit *defender,
 }
 
 struct Combat_Flow Compute_Combat_Flow(struct Unit *agg, struct Unit *dft,
+                                       Computed_Stats cs_agg, Computed_Stats cs_dfd,
                                        struct Point *agg_pos, struct Point *dft_pos) {
     SDL_assert(dft);
     SDL_assert(agg);
@@ -62,16 +62,21 @@ struct Combat_Flow Compute_Combat_Flow(struct Unit *agg, struct Unit *dft,
     struct Combat_Flow out_flow;
     out_flow.aggressor_phases = 1;
     out_flow.defendant_phases = 0;
-    out_flow.defendant_retaliates = Combat_canAttack_Equipped(dft, agg, dft_pos, agg_pos);
+    
+    out_flow.defendant_retaliates = Combat_canAttack_Equipped(dft, dft_pos, agg_pos);
     if (out_flow.defendant_retaliates)
         out_flow.defendant_phases = 1;
 
     // Set number of combat phases for adversary, if doubling
     // TODO: Triple, Quadruple phases with skill.
-    if (Combat_canDouble(agg, dft))
+    if (Combat_canDouble(cs_agg, cs_dfd)) {
         out_flow.aggressor_phases *= 2;
-    if (Combat_canDouble(dft, agg))
+        SDL_assert(!Combat_canDouble(cs_dfd, cs_agg));
+    }
+    if (Combat_canDouble(cs_dfd, cs_agg)) {
         out_flow.defendant_phases *= 2;
+        SDL_assert(!Combat_canDouble(cs_agg, cs_dfd));
+    }
 
     // Check that adversary does not have extra combat phases
     if (out_flow.defendant_phases > 1)
@@ -84,31 +89,30 @@ struct Combat_Flow Compute_Combat_Flow(struct Unit *agg, struct Unit *dft,
     return (out_flow);
 }
 
-struct Combat_Damage Compute_Combat_Damage(struct Unit *attacker,
-                                    struct Unit *defender) {
-    SDL_assert(attacker && defender);
-    u8 eff = Unit_computeEffectivefactor(attacker, defender);
-    u8 aap = attacker->computed_stats.attack[DMG_PHYSICAL];
-    u8 aam = attacker->computed_stats.attack[DMG_MAGICAL];
-    u8 aat = attacker->computed_stats.attack[DMG_TRUE];
-    u8 dpp = defender->computed_stats.protection[DMG_PHYSICAL];
-    u8 dpm = defender->computed_stats.protection[DMG_MAGICAL];
+struct Combat_Damage Compute_Combat_Damage(Unit *att, Unit *dfd,
+                                           Computed_Stats cs_att,
+                                           Computed_Stats cs_dfd) {
+    SDL_assert(att && dfd);
+    u8 eff = Unit_computeEffectivefactor(att, dfd);
+    u8 aap = cs_att.attack[DMG_PHYSICAL];
+    u8 aam = cs_att.attack[DMG_MAGICAL];
+    u8 aat = cs_att.attack[DMG_TRUE];
+    u8 dpp = cs_dfd.protection[DMG_PHYSICAL];
+    u8 dpm = cs_dfd.protection[DMG_MAGICAL];
 
     // TODO: Sum appropriate damage types according to equipment.
     // Add type damage ONLY if one piece of equipment has that damage type
     struct Combat_Damage damage = {0};
 
     /* - HIT DAMAGE - */
-    damage.dmg[DMG_PHYSICAL] = Equation_Combat_Damage(aap, dpp, eff, CRIT_FACTOR, 0);
-    damage.dmg[DMG_MAGICAL]  = Equation_Combat_Damage(aam, dpm, eff, CRIT_FACTOR, 0);
-    damage.dmg[DMG_TRUE]     = aat;
+    damage.dmg.physical = Equation_Combat_Damage(aap, dpp, eff, CRIT_FACTOR, 0);
+    damage.dmg.magical  = Equation_Combat_Damage(aam, dpm, eff, CRIT_FACTOR, 0);
+    damage.dmg.True     = aat;
 
     /* - CRIT DAMAGE - */
-    damage.dmg_crit[DMG_PHYSICAL] = Equation_Combat_Damage(aap, dpp, eff, CRIT_FACTOR,
-                                                                1);
-    damage.dmg_crit[DMG_MAGICAL]  = Equation_Combat_Damage(aam, dpm, eff, CRIT_FACTOR,
-                                                                1);
-    damage.dmg_crit[DMG_TRUE]     = Equation_Combat_Damage(aat, 0, eff, CRIT_FACTOR, 1);
+    damage.dmg_crit.physical = Equation_Combat_Damage(aap, dpp, eff, CRIT_FACTOR, 1);
+    damage.dmg_crit.magical  = Equation_Combat_Damage(aam, dpm, eff, CRIT_FACTOR, 1);
+    damage.dmg_crit.True     = Equation_Combat_Damage(aat, 0, eff, CRIT_FACTOR, 1);
     Equation_Damage_Total(&damage);
     return (damage);
 }
@@ -175,19 +179,10 @@ struct Combat_Death Compute_Combat_Death(struct Unit *aggressor, struct Unit *de
     return (out_death);
 }
 
-struct Combat_Rates Compute_Combat_Rates(struct Unit *attacker,
-                                         struct Unit *defender,
-                                         struct Point *att_pos,
-                                         struct Point *dfd_pos) {
-    SDL_assert(attacker && defender);
-    u8 distance = abs(dfd_pos->x - att_pos->x) + abs(dfd_pos->y - att_pos->y);
-    struct Combat_Rates out_rates = Combat_Rates_default;
-    struct Unit_stats ES_A          = Unit_effectiveStats(attacker);
-    struct Unit_stats ES_D          = Unit_effectiveStats(defender);
-    struct Computed_Stats CS_A      = Unit_computedStats(attacker, distance, ES_A);
-    struct Computed_Stats CS_D      = Unit_computedStats(defender, distance, ES_D);
-    out_rates.hit                   = Equation_Combat_Hit(CS_A.hit,   CS_D.dodge);
-    out_rates.crit                  = Equation_Combat_Crit(CS_A.crit, CS_D.favor);
+struct Combat_Rates Compute_Combat_Rates(Computed_Stats cs_att, Computed_Stats cs_dfd) {
+    struct Combat_Rates out_rates   = Combat_Rates_default;
+    out_rates.hit                   = Equation_Combat_Hit(  cs_att.hit,  cs_dfd.dodge);
+    out_rates.crit                  = Equation_Combat_Crit( cs_att.crit, cs_dfd.favor);
     return (out_rates);
 }
 
@@ -201,16 +196,19 @@ struct Combat_Forecast Compute_Combat_Forecast(struct Unit  *agg,
     SDL_assert(dft_pos);
     struct Combat_Forecast out = {0};
     u8 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
-    Unit_stats es_agg           = Unit_effectiveStats(agg);
-    Unit_stats es_dft           = Unit_effectiveStats(dft);
-    out.stats.agg_stats         = Unit_computedStats(agg, distance, es_agg);
-    out.stats.dft_stats         = Unit_computedStats(dft, distance, es_dft);
-    out.flow = Compute_Combat_Flow(agg, dft, agg_pos, dft_pos);
-    out.stats.agg_rates         = Compute_Combat_Rates(agg,  dft, agg_pos, dft_pos);
-    out.stats.agg_damage        = Compute_Combat_Damage(agg, dft);
+    struct Unit_stats eff_agg       = Unit_effectiveStats(agg);
+    struct Unit_stats eff_dft       = Unit_effectiveStats(dft);
+    struct Computed_Stats cs_agg    = Unit_computedStats(agg, distance, eff_agg);
+    struct Computed_Stats cs_dft    = Unit_computedStats(dft, distance, eff_dft);
+
+    out.stats.agg_stats         = cs_agg;
+    out.stats.dft_stats         = cs_dft;
+    out.flow = Compute_Combat_Flow(agg, dft, cs_agg, cs_dft, agg_pos, dft_pos);
+    out.stats.agg_rates         = Compute_Combat_Rates(cs_agg, cs_dft);
+    out.stats.agg_damage        = Compute_Combat_Damage(agg, dft, cs_agg, cs_dft);
     if (out.flow.defendant_retaliates) {
-        out.stats.dft_rates     = Compute_Combat_Rates(dft,  agg, dft_pos, agg_pos);
-        out.stats.dft_damage    = Compute_Combat_Damage(dft, agg);
+        out.stats.dft_rates     = Compute_Combat_Rates(cs_dft, cs_agg);
+        out.stats.dft_damage    = Compute_Combat_Damage(dft, agg, cs_dft, cs_agg);
     }
     return (out);
 }
@@ -219,9 +217,9 @@ void Combat_totalDamage(struct Combat_Attack *attack, struct Combat_Damage *dama
     /* - crit hit should be computed before - */
     attack->total_damage = 0;
     if (attack->hit && !attack->crit)
-        attack->total_damage = damage->dmg[DMG_TOTAL];
+        attack->total_damage = damage->dmg.total;
     else if (attack->hit && attack->crit)
-        attack->total_damage = damage->dmg_crit[DMG_TOTAL];
+        attack->total_damage = damage->dmg_crit.total;
 }
 
 void Compute_Combat_Outcome(struct Combat_Outcome   *outcome,
@@ -395,8 +393,8 @@ void Combat_Resolve(struct Combat_Attack *combat_attacks, u8 attack_num,
         if (Unit_canAttack(attacker))
             Combat_Resolve_Attack(combat_attacks[i], attacker, defender);
 
-        b32 agg_death = (!Unit_isAlive(aggressor)) || (aggressor->computed_stats.agony > AGONY_NULL);
-        b32 dft_death = (!Unit_isAlive(defendant)) || (defendant->computed_stats.agony > AGONY_NULL);
+        b32 agg_death = (!Unit_isAlive(aggressor)) || (Unit_Current_Agony(aggressor) > AGONY_NULL);
+        b32 dft_death = (!Unit_isAlive(defendant)) || (Unit_Current_Agony(defendant) > AGONY_NULL);
 
         if (agg_death || dft_death)
             break;
