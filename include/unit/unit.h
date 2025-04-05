@@ -63,20 +63,20 @@ b32 Unit_hasSkill(Unit *u, u64 s);
 */
 /* Distance-dependent stats */
 // TODO: input effective_stats
-i32 Unit_computeHit(     Unit *u, int dist);
-i32 Unit_computeDodge(   Unit *u, int dist);
-i32 Unit_computeFavor(   Unit *u, int dist);
-i32 Unit_computeSpeed(   Unit *u, int dist);
-i32 Unit_computeCritical(Unit *u, int dist);
+void Unit_computeHit(     Unit *u, int dist, i32 *hit);
+void Unit_computeDodge(   Unit *u, int dist, i32 *dodge);
+void Unit_computeFavor(   Unit *u, int dist, i32 *favor);
+void Unit_computeSpeed(   Unit *u, int dist, i32 *speed);
+void Unit_computeCritical(Unit *u, int dist, i32 *crit);
 
 /* Distance-independent stats */
-i32 Unit_computeMove(    Unit *u);
-i32 Unit_computeAgony(   Unit *u);
-i32 Unit_computeRegrets( Unit *u);
-i32 Unit_computeEffectivefactor(Unit *a, Unit *d);
+void Unit_computeMove(    Unit *u, i32 *mv);
+void Unit_computeAgony(   Unit *u, i32 *agony);
+void Unit_computeRegrets( Unit *u, i32 *regrets);
+void Unit_computeEffectivefactor(Unit *a, Unit *d, i32 *factor);
 
-Damage_Raw Unit_computeAttack( Unit *u, int dist);
-Damage_Raw Unit_computeDefense(Unit *u);
+void Unit_computeAttack( Unit *u, int dist, i32 *att);
+void Unit_computeDefense(Unit *u, i32 *def);
 
 Unit_stats Unit_effectiveStats(   Unit *u);
 Unit_stats Unit_effectiveGrowths( Unit *u);

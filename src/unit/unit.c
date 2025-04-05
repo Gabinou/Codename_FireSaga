@@ -718,28 +718,28 @@ struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance, Unit_s
 
     /* Weapon-dependent stats */
     if (Unit_canAttack(unit)) {
-        Unit_computeHit(     unit,  distance);
-        Unit_computeAttack(  unit,  distance);
-        Unit_computeCritical(unit,  distance);
+        Unit_computeHit(     unit,  distance, &computed_stats.hit);
+        Unit_computeAttack(  unit,  distance, &computed_stats.attack);
+        Unit_computeCritical(unit,  distance, &computed_stats.crit);
         Unit_Range_Equipped(unit, ITEM_ARCHETYPE_WEAPON);
     }
 
     /* Distance-dependent stats */
-    Unit_computeSpeed(unit,   distance);
-    Unit_computeDodge(unit,   distance);
-    Unit_computeFavor(unit,   distance);
+    Unit_computeSpeed(unit, distance, &computed_stats.speed);
+    Unit_computeDodge(unit, distance, &computed_stats.dodge);
+    Unit_computeFavor(unit, distance, &computed_stats.favor);
 
     /* Distance-independent stats */
-    Unit_computeMove(unit);
-    Unit_computeAgony(unit);
-    Unit_computeDefense(unit);
-    Unit_computeRegrets(unit);
+    Unit_computeMove(unit,      &computed_stats.move);
+    Unit_computeAgony(unit,     &computed_stats.agony);
+    Unit_computeDefense(unit,   &computed_stats.defense);
+    Unit_computeRegrets(unit,   &computed_stats.regrets);
 
     return (computed_stats);
 }
 
 /* Add regrets to computed stats. */
-i32 Unit_computeRegrets(struct Unit *unit) {
+void Unit_computeRegrets(struct Unit *unit, i32 *regret) {
     SDL_assert(unit);
     /* Pre-computation */
     i8 malus = Equation_Regrets(unit->counters.regrets, Unit_effectiveStats(unit).fth);
@@ -753,7 +753,7 @@ i32 Unit_computeRegrets(struct Unit *unit) {
     return (malus);
 }
 
-i32 Unit_computeHit(struct Unit *unit, int distance) {
+void Unit_computeHit(struct Unit *unit, int distance, i32 *hit) {
     SDL_assert(unit);
     struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
     SDL_assert(weapons_dtab);
@@ -783,12 +783,10 @@ i32 Unit_computeHit(struct Unit *unit, int distance) {
 
     /* Compute hit */
     struct Unit_stats effstats = Unit_effectiveStats(unit);
-    unit->computed_stats.hit   = Equation_Unit_Hit(wpn_hit, effstats.dex, effstats.luck, bonus);
-
-    return (unit->computed_stats.hit);
+    *hit   = Equation_Unit_Hit(wpn_hit, effstats.dex, effstats.luck, bonus);
 }
 
-i32 Unit_computeDodge(struct Unit *unit, int distance) {
+void Unit_computeDodge(struct Unit *unit, int distance) {
     SDL_assert(unit);
     struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
     SDL_assert(weapons_dtab);
@@ -825,7 +823,7 @@ i32 Unit_computeDodge(struct Unit *unit, int distance) {
     return (unit->computed_stats.dodge);
 }
 
-i32 Unit_computeCritical(struct Unit *unit, int distance) {
+void Unit_computeCritical(struct Unit *unit, int distance) {
     SDL_assert(unit);
     struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
     SDL_assert(weapons_dtab);
@@ -858,7 +856,7 @@ i32 Unit_computeCritical(struct Unit *unit, int distance) {
     return (unit->computed_stats.crit);
 }
 
-i32 Unit_computeFavor(struct Unit *unit, int distance) {
+void Unit_computeFavor(struct Unit *unit, int distance) {
     SDL_assert(unit);
     struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
     SDL_assert(weapons_dtab);
@@ -890,7 +888,7 @@ i32 Unit_computeFavor(struct Unit *unit, int distance) {
     return (unit->computed_stats.favor);
 }
 
-i32 Unit_computeAgony(struct Unit *unit) {
+void Unit_computeAgony(struct Unit *unit) {
     SDL_assert(unit);
     struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
     SDL_assert(weapons_dtab);
@@ -908,7 +906,7 @@ i32 Unit_computeAgony(struct Unit *unit) {
     return (unit->computed_stats.agony);
 }
 
-i32 Unit_computeSpeed(struct Unit *unit, int distance) {
+void Unit_computeSpeed(struct Unit *unit, int distance) {
     SDL_assert(unit);
     struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
     SDL_assert(weapons_dtab);
@@ -947,7 +945,7 @@ i32 Unit_computeSpeed(struct Unit *unit, int distance) {
     return (unit->computed_stats.speed);
 }
 
-i32 Unit_computeMove(struct Unit *unit) {
+void Unit_computeMove(struct Unit *unit) {
     SDL_assert(unit);
     i8 move = Unit_effectiveStats(unit).move;
     if (unit->mount.ptr != NULL)
@@ -1180,10 +1178,10 @@ void Unit_writeJSON(void *input, cJSON *junit) {
     cJSON_AddItemToObject(junit, "Items", jitems);
 }
 
-i32 Unit_computeEffectivefactor(struct Unit *attacker, struct Unit *defender) {
+void Unit_computeEffectivefactor(struct Unit *attacker, struct Unit *defender, i32 *factor) {
     SDL_assert(attacker);
     SDL_assert(defender);
-    u8 effective = NOTEFFECTIVE_FACTOR;
+    i32 effective = NOTEFFECTIVE_FACTOR;
     return (effective);
 }
 
