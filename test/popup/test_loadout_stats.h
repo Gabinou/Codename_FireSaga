@@ -38,9 +38,9 @@ void test_popup_loadout_stats() {
 
     /* -- Create Computed stats -- */
     struct Computed_Stats low_cs = {0};
-    low_cs.attack[DMG_PHYSICAL]        =   1;
+    low_cs.attack.physical        =   1;
     low_cs.attack.magical         =   2;
-    low_cs.protection[DMG_PHYSICAL]    =   3;
+    low_cs.protection.physical    =   3;
     low_cs.protection.magical     =   4;
     low_cs.hit                              =   5;
     low_cs.dodge                            =   6;
@@ -51,9 +51,9 @@ void test_popup_loadout_stats() {
     low_cs.range_loadout.max                =   2;
 
     struct Computed_Stats high_cs           = {0};
-    high_cs.attack[DMG_PHYSICAL]       =  10;
+    high_cs.attack.physical       =  10;
     high_cs.attack.magical        =  20;
-    high_cs.protection[DMG_PHYSICAL]   =  30;
+    high_cs.protection.physical   =  30;
     high_cs.protection.magical    =  40;
     high_cs.hit                             = 100;
     high_cs.dodge                           =  60;
@@ -162,9 +162,9 @@ void test_popup_loadout_stats() {
                             pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- 1 digit/ 2digits -- */
-    low_cs.attack[DMG_PHYSICAL]        =  1;
+    low_cs.attack.physical        =  1;
     low_cs.attack.magical         = 20;
-    low_cs.protection[DMG_PHYSICAL]    =  3;
+    low_cs.protection.physical    =  3;
     low_cs.protection.magical     = 40;
     low_cs.hit                              =  5;
     low_cs.dodge                            = 60;
@@ -182,9 +182,9 @@ void test_popup_loadout_stats() {
                             renderer, pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- 2 digit/ 1 digits -- */
-    low_cs.attack[DMG_PHYSICAL] = 10;
+    low_cs.attack.physical = 10;
     low_cs.attack.magical = 2;
-    low_cs.protection[DMG_PHYSICAL] = 30;
+    low_cs.protection.physical = 30;
     low_cs.protection.magical = 4;
     low_cs.hit = 50;
     low_cs.dodge = 6;

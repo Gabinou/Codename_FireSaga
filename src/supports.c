@@ -43,11 +43,11 @@ void Support_Type_Bonus(struct Computed_Stats *bonus, u16 type, u16 level) {
 
     switch (type) {
         case SUPPORT_TYPE_STRONG:
-            bonus->attack[DMG_PHYSICAL] += level;
+            bonus->attack.physical += level;
             bonus->attack.magical += level;
             break;
         case SUPPORT_TYPE_DEFENSIVE:
-            bonus->protection[DMG_PHYSICAL] += level;
+            bonus->protection.physical += level;
             bonus->protection.magical += level;
             break;
         case SUPPORT_TYPE_DODGY:

@@ -82,19 +82,19 @@ void test_combat_stats() {
     // agg_damage = Compute_Combat_Damage(attacker, defender);
 
     // struct Weapon *fleuret = DTAB_GET(weapons_dtab, defender->_equipment[defender_equip_hand].id);
-    // nourstest_true(fleuret->stats.attack[DMG_PHYSICAL] > 0);
+    // nourstest_true(fleuret->stats.attack.physical > 0);
     // dft_damage = Compute_Combat_Damage(defender, attacker);
 
-    // nourstest_true((temp_stats.agg_damage.dmg[DMG_PHYSICAL] ==
-    //                 agg_damage.dmg[DMG_PHYSICAL]));
+    // nourstest_true((temp_stats.agg_damage.dmg.physical ==
+    //                 agg_damage.dmg.physical));
     // nourstest_true((temp_stats.agg_damage.dmg.magical ==
     //                 agg_damage.dmg.magical));
-    // nourstest_true((temp_stats.agg_damage.dmg[DMG_PHYSICAL] > 0));
+    // nourstest_true((temp_stats.agg_damage.dmg.physical > 0));
     // nourstest_true((temp_stats.agg_damage.dmg.magical == 0));
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_PHYSICAL] == dft_damage.dmg[DMG_PHYSICAL]));
+    // nourstest_true((temp_stats.dft_damage.dmg.physical == dft_damage.dmg.physical));
     // nourstest_true((temp_stats.dft_damage.dmg.magical ==
     //                 dft_damage.dmg.magical));
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_PHYSICAL] > 0));
+    // nourstest_true((temp_stats.dft_damage.dmg.physical > 0));
     // nourstest_true((temp_stats.dft_damage.dmg.magical == 0));
     // nourstest_true((temp_stats.agg_stats.attack[0] == agg_stats.attack[0]));
     // nourstest_true((temp_stats.agg_stats.attack[0] > 0));
@@ -111,17 +111,17 @@ void test_combat_stats() {
     // nourstest_true((temp_stats.agg_stats.speed == agg_stats.speed));
     // nourstest_true((temp_stats.agg_stats.move == attacker_stats.move));
 
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_PHYSICAL] ==
-    //                 dft_damage.dmg[DMG_PHYSICAL]));
+    // nourstest_true((temp_stats.dft_damage.dmg.physical ==
+    //                 dft_damage.dmg.physical));
     // nourstest_true((temp_stats.dft_damage.dmg.magical ==
     //                 dft_damage.dmg.magical));
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_PHYSICAL] > 0));
+    // nourstest_true((temp_stats.dft_damage.dmg.physical > 0));
     // nourstest_true((temp_stats.dft_damage.dmg.magical == 0));
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_PHYSICAL] ==
-    //                 dft_damage.dmg[DMG_PHYSICAL]));
+    // nourstest_true((temp_stats.dft_damage.dmg.physical ==
+    //                 dft_damage.dmg.physical));
     // nourstest_true((temp_stats.dft_damage.dmg.magical ==
     //                 dft_damage.dmg.magical));
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_PHYSICAL] > 0));
+    // nourstest_true((temp_stats.dft_damage.dmg.physical > 0));
     // nourstest_true((temp_stats.dft_damage.dmg.magical == 0));
     // nourstest_true((temp_stats.dft_stats.attack[0] == dft_stats.attack[0]));
     // nourstest_true((temp_stats.dft_stats.attack[0] > 0));
@@ -582,8 +582,8 @@ void test_combat_sequence() {
     i32 crit_rate    = 10;
 
     struct Combat_Damage damage = {0};
-    damage.dmg[DMG_PHYSICAL] = 8;
-    damage.dmg_crit[DMG_PHYSICAL] = 24;
+    damage.dmg.physical = 8;
+    damage.dmg_crit.physical = 24;
 
     URN_debug = 11; /* HIT/NOCRIT */
     SDL_assert(URN_debug == RNG_URN());

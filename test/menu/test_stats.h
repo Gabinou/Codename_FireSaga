@@ -108,10 +108,10 @@ void test_menu_stats() {
     /* - Speed single digits - */
     Silou.computed_stats.speed  = 3;
     /* - Attack single digits - */
-    Silou.computed_stats.attack[DMG_PHYSICAL]       = 4;
+    Silou.computed_stats.attack.physical       = 4;
     Silou.computed_stats.attack.magical        = 5;
     /* - Prot single digits - */
-    Silou.computed_stats.protection[DMG_PHYSICAL]   = 6;
+    Silou.computed_stats.protection.physical   = 6;
     Silou.computed_stats.protection.magical    = 7;
     /* - Range single digits - */
     Silou.computed_stats.range_loadout.min = 1;
@@ -131,10 +131,10 @@ void test_menu_stats() {
     /* - Speed double digits - */
     Silou.computed_stats.speed  = 30;
     /* - Attack double digits - */
-    Silou.computed_stats.attack[DMG_PHYSICAL]       = 40;
+    Silou.computed_stats.attack.physical       = 40;
     Silou.computed_stats.attack.magical        = 50;
     /* - Prot double digits - */
-    Silou.computed_stats.protection[DMG_PHYSICAL]   = 60;
+    Silou.computed_stats.protection.physical   = 60;
     Silou.computed_stats.protection.magical    = 70;
     /* - Regret double digits - */
 

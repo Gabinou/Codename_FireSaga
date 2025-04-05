@@ -1088,15 +1088,15 @@ static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Rend
     i32 *att = computed_stats->attack;
     if (computed_stats->attack.True > 0) {
         /* Compute width of LEFTWARD STAT to center the "/" */
-        stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats->attack[DMG_PHYSICAL]);
+        stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats->attack.physical);
         width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
-        stbsp_sprintf(numbuff, "%d/%d/%d", att[DMG_PHYSICAL], att.magical,
+        stbsp_sprintf(numbuff, "%d/%d/%d", att.physical, att.magical,
                       att.True);
         x = ATK_X_OFFSET_STAT2 - width, y = ATK_Y_OFFSET_STAT1;
     } else {
-        stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats->attack[DMG_PHYSICAL]);
+        stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats->attack.physical);
         width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
-        stbsp_sprintf(numbuff, "%d/%d\0\0", att[DMG_PHYSICAL], att.magical);
+        stbsp_sprintf(numbuff, "%d/%d\0\0", att.physical, att.magical);
         x = ATK_X_OFFSET_STAT1 - width, y = ATK_Y_OFFSET_STAT1;
     }
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
@@ -1104,10 +1104,10 @@ static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Rend
     /* - DEF - */
     x = PROT_X_OFFSET, y = PROT_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "DEF", 3, x, y);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats->protection[DMG_PHYSICAL]);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats->protection.physical);
     width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
     i32 *prot = computed_stats->protection;
-    stbsp_sprintf(numbuff, "%d/%d\0\0", prot[DMG_PHYSICAL], prot.magical);
+    stbsp_sprintf(numbuff, "%d/%d\0\0", prot.physical, prot.magical);
     x = PROT_X_OFFSET_STAT1 - width, y = PROT_Y_OFFSET_STAT1;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 

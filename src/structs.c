@@ -149,10 +149,10 @@ const struct Mouse Mouse_default = {
 const struct Cursor Cursor_default = {DEFAULT_CURSOR_FRAMES, DEFAULT_CURSOR_SPEED};
 
 void Computed_Stats_Print(struct Computed_Stats *stats) {
-    SDL_Log("atk_P:   %3d\n", stats->attack[DMG_PHYSICAL]);
+    SDL_Log("atk_P:   %3d\n", stats->attack.physical);
     SDL_Log("atk_M:   %3d\n", stats->attack.magical);
     SDL_Log("atk_T:   %3d\n", stats->attack.True);
-    SDL_Log("prot_P:  %3d\n", stats->protection[DMG_PHYSICAL]);
+    SDL_Log("prot_P:  %3d\n", stats->protection.physical);
     SDL_Log("prot_M:  %3d\n", stats->protection.magical);
     SDL_Log("hit:     %3d\n", stats->hit);
     SDL_Log("dodge:   %3d\n", stats->dodge);
@@ -168,14 +168,14 @@ void Computed_Stats_Print(struct Computed_Stats *stats) {
 }
 
 void Computed_Stats_Compare(struct Computed_Stats *stats1, struct Computed_Stats *stats2) {
-    SDL_Log("atk_P:   %3d, %3d\n", stats1->attack[DMG_PHYSICAL],
-            stats2->attack[DMG_PHYSICAL]);
+    SDL_Log("atk_P:   %3d, %3d\n", stats1->attack.physical,
+            stats2->attack.physical);
     SDL_Log("atk_M:   %3d, %3d\n", stats1->attack.magical,
             stats2->attack.magical);
     SDL_Log("atk_T:   %3d, %3d\n", stats1->attack.True,
             stats2->attack.True);
-    SDL_Log("prot_P:  %3d, %3d\n", stats1->protection[DMG_PHYSICAL],
-            stats2->protection[DMG_PHYSICAL]);
+    SDL_Log("prot_P:  %3d, %3d\n", stats1->protection.physical,
+            stats2->protection.physical);
     SDL_Log("prot_M:  %3d, %3d\n", stats1->protection.magical,
             stats2->protection.magical);
     SDL_Log("hit:     %3d, %3d\n", stats1->hit, stats2->hit);

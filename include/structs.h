@@ -298,8 +298,8 @@ struct RangeGaps {
 extern const struct Range Range_default;
 
 typedef struct Computed_Stats {
-    i32 attack[DMG_TYPES];
-    i32 protection[DMG_TYPES];
+    Damage_Raw attack;
+    Damage_Raw protection;
     i32 hit;
     i32 dodge; /* can be negative */
     i32 crit;
