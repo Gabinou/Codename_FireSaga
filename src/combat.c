@@ -95,10 +95,10 @@ struct Combat_Damage Compute_Combat_Damage(Unit *att, Unit *dfd,
     SDL_assert(att && dfd);
     u8 eff = Unit_computeEffectivefactor(att, dfd);
     u8 aap = cs_att.attack[DMG_PHYSICAL];
-    u8 aam = cs_att.attack[DMG_MAGICAL];
-    u8 aat = cs_att.attack[DMG_TRUE];
+    u8 aam = cs_att.attack.magical;
+    u8 aat = cs_att.attack.True;
     u8 dpp = cs_dfd.protection[DMG_PHYSICAL];
-    u8 dpm = cs_dfd.protection[DMG_MAGICAL];
+    u8 dpm = cs_dfd.protection.magical;
 
     // TODO: Sum appropriate damage types according to equipment.
     // Add type damage ONLY if one piece of equipment has that damage type
@@ -133,7 +133,7 @@ struct Combat_Death Compute_Combat_Death(struct Unit *aggressor, struct Unit *de
             break;
         // TODO: REMAKE
         // u8 agg_dmg = forecast.agg_damage.dmg[DMG_PHYSICAL] +
-        //               forecast.agg_damage.dmg[DMG_MAGICAL];
+        //               forecast.agg_damage.dmg.magical;
         // attacker_maxDamage_nocrit = Equation_multiplyDamage(agg_dmg, defendant_possible[SOTA_AGGRESSOR]);
         // attacker_maxDamage_crit   = Equation_multiplyDamage(agg_dmg, defendant_possible[SOTA_AGGRESSOR]);
         // if ((defendant->counters.hp < attacker_maxDamage_nocrit)
@@ -162,7 +162,7 @@ struct Combat_Death Compute_Combat_Death(struct Unit *aggressor, struct Unit *de
             continue;
         // TODO: REMAKE
         // u8 def_dmg = forecast.dft_damage.dmg[DMG_PHYSICAL] +
-        //               forecast.dft_damage.dmg[DMG_MAGICAL];
+        //               forecast.dft_damage.dmg.magical;
         // defender_maxDamage_nocrit = Equation_multiplyDamage(def_dmg, defendant_possible[SOTA_DEFENDANT]);
         // defender_maxDamage_crit = Equation_multiplyDamage(def_dmg, defendant_possible[SOTA_DEFENDANT]);
         // if ((aggressor->counters.hp < defender_maxDamage_nocrit)

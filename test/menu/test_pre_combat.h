@@ -125,14 +125,14 @@ void test_menu_pre_combat() {
     Hamilcar.computed_stats.favor   = 0;
 
     Silou.computed_stats.attack[DMG_PHYSICAL]          = 5;
-    Silou.computed_stats.attack[DMG_MAGICAL]           = 0;
+    Silou.computed_stats.attack.magical           = 0;
     Hamilcar.computed_stats.attack[DMG_PHYSICAL]       = 6;
-    Hamilcar.computed_stats.attack[DMG_MAGICAL]        = 0;
+    Hamilcar.computed_stats.attack.magical        = 0;
 
     Silou.computed_stats.protection[DMG_PHYSICAL]      = 0;
-    Silou.computed_stats.protection[DMG_MAGICAL]       = 0;
+    Silou.computed_stats.protection.magical       = 0;
     Hamilcar.computed_stats.protection[DMG_PHYSICAL]   = 0;
-    Hamilcar.computed_stats.protection[DMG_MAGICAL]    = 0;
+    Hamilcar.computed_stats.protection.magical    = 0;
 
     /* -- Doubling Agg -- */
     Silou.computed_stats.speed = SOTA_DOUBLING_SPEED + 2;
@@ -209,14 +209,14 @@ void test_menu_pre_combat() {
     Hamilcar.computed_stats.favor = 0;
 
     Silou.computed_stats.attack[DMG_PHYSICAL] = 50;
-    Silou.computed_stats.attack[DMG_MAGICAL] = 10;
+    Silou.computed_stats.attack.magical = 10;
     Hamilcar.computed_stats.attack[DMG_PHYSICAL] = 60;
-    Hamilcar.computed_stats.attack[DMG_MAGICAL] = 20;
+    Hamilcar.computed_stats.attack.magical = 20;
 
     Silou.computed_stats.protection[DMG_PHYSICAL] = 0;
-    Silou.computed_stats.protection[DMG_MAGICAL] = 0;
+    Silou.computed_stats.protection.magical = 0;
     Hamilcar.computed_stats.protection[DMG_PHYSICAL] = 0;
-    Hamilcar.computed_stats.protection[DMG_MAGICAL] = 0;
+    Hamilcar.computed_stats.protection.magical = 0;
 
     /* -- Doubling Agg -- */
     Silou.computed_stats.speed = SOTA_DOUBLING_SPEED + 21;
@@ -356,11 +356,11 @@ void test_menu_pre_combat() {
     /* -- TRUE DAMAGE -- */
 
     Silou.computed_stats.attack[DMG_PHYSICAL] = 50;
-    Silou.computed_stats.attack[DMG_MAGICAL] = 10;
-    Silou.computed_stats.attack[DMG_TRUE] = 10;
+    Silou.computed_stats.attack.magical = 10;
+    Silou.computed_stats.attack.True = 10;
     Hamilcar.computed_stats.attack[DMG_PHYSICAL] = 60;
-    Hamilcar.computed_stats.attack[DMG_MAGICAL] = 20;
-    Hamilcar.computed_stats.attack[DMG_TRUE] = 10;
+    Hamilcar.computed_stats.attack.magical = 20;
+    Hamilcar.computed_stats.attack.True = 10;
 
     /* -- Doubling Agg -- */
     Silou.computed_stats.speed = SOTA_DOUBLING_SPEED + 12;
@@ -423,11 +423,11 @@ void test_menu_pre_combat() {
                             renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     Silou.computed_stats.attack[DMG_PHYSICAL]      = 50;
-    Silou.computed_stats.attack[DMG_MAGICAL]       = 10;
-    Silou.computed_stats.attack[DMG_TRUE]          = 1;
+    Silou.computed_stats.attack.magical       = 10;
+    Silou.computed_stats.attack.True          = 1;
     Hamilcar.computed_stats.attack[DMG_PHYSICAL]   = 60;
-    Hamilcar.computed_stats.attack[DMG_MAGICAL]    = 20;
-    Hamilcar.computed_stats.attack[DMG_TRUE]       = 1;
+    Hamilcar.computed_stats.attack.magical    = 20;
+    Hamilcar.computed_stats.attack.True       = 1;
 
     /* -- Doubling Agg -- */
     Silou.computed_stats.speed      = SOTA_DOUBLING_SPEED + 12;

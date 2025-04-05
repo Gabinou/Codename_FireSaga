@@ -19,7 +19,7 @@ void test_weapon1() {
     // *wpn3.item  = Item_default;
     struct Weapon_stats in_wpn_stats = {
         .attack[DMG_PHYSICAL]   = 3,
-        .attack[DMG_MAGICAL]    = 0,
+        .attack.magical    = 0,
         .hit    = 80,
         .crit   =  0,
         .dodge  =  0,
@@ -48,8 +48,8 @@ void test_weapon1() {
     out_wpn_stats               = wpn1.stats;
     nourstest_true(in_wpn_stats.attack[DMG_PHYSICAL] ==
                    out_wpn_stats.attack[DMG_PHYSICAL]);
-    nourstest_true(in_wpn_stats.attack[DMG_MAGICAL] ==
-                   out_wpn_stats.attack[DMG_MAGICAL]);
+    nourstest_true(in_wpn_stats.attack.magical ==
+                   out_wpn_stats.attack.magical);
     nourstest_true(in_wpn_stats.hit         == out_wpn_stats.hit);
     nourstest_true(in_wpn_stats.crit        == out_wpn_stats.crit);
     nourstest_true(in_wpn_stats.dodge       == out_wpn_stats.dodge);
@@ -87,8 +87,8 @@ void test_weapon1() {
     out_wpn_stats = wpn3.stats;
     nourstest_true(in_wpn_stats.attack[DMG_PHYSICAL] ==
                    out_wpn_stats.attack[DMG_PHYSICAL]);
-    nourstest_true(in_wpn_stats.attack[DMG_MAGICAL] ==
-                   out_wpn_stats.attack[DMG_MAGICAL]);
+    nourstest_true(in_wpn_stats.attack.magical ==
+                   out_wpn_stats.attack.magical);
     nourstest_true(in_wpn_stats.hit       == out_wpn_stats.hit);
     nourstest_true(in_wpn_stats.crit      == out_wpn_stats.crit);
     nourstest_true(in_wpn_stats.dodge     == out_wpn_stats.dodge);
@@ -121,8 +121,8 @@ void test_weapon1() {
     out_wpn_stats = wpn3.stats;
     nourstest_true(in_wpn_stats.attack[DMG_PHYSICAL] ==
                    out_wpn_stats.attack[DMG_PHYSICAL]);
-    nourstest_true(in_wpn_stats.attack[DMG_MAGICAL] ==
-                   out_wpn_stats.attack[DMG_MAGICAL]);
+    nourstest_true(in_wpn_stats.attack.magical ==
+                   out_wpn_stats.attack.magical);
     nourstest_true(in_wpn_stats.hit         == out_wpn_stats.hit);
     nourstest_true(in_wpn_stats.crit        == out_wpn_stats.crit);
     nourstest_true(in_wpn_stats.dodge       == out_wpn_stats.dodge);

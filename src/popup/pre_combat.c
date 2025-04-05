@@ -282,8 +282,8 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
 
     /* atk */
     int toprint  = int_inbounds(CS_D.attack[DMG_PHYSICAL], 0, 0xFF);
-    int toprint2 = int_inbounds(CS_D.attack[DMG_MAGICAL],  0, 0xFF);
-    int toprint3 = int_inbounds(CS_D.attack[DMG_TRUE],     0, 0xFF);
+    int toprint2 = int_inbounds(CS_D.attack.magical,  0, 0xFF);
+    int toprint3 = int_inbounds(CS_D.attack.True,     0, 0xFF);
     if (toprint3 > 0)
         stbsp_sprintf(numbuff, "%d/%d/%d\0\0", toprint, toprint2, toprint3);
     else
@@ -297,7 +297,7 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
 
     /* prot */
     toprint = int_inbounds(CS_D.protection[DMG_PHYSICAL], 0, 0xFF);
-    toprint2 = int_inbounds(CS_D.protection[DMG_MAGICAL], 0, 0xFF);
+    toprint2 = int_inbounds(CS_D.protection.magical, 0, 0xFF);
     stbsp_sprintf(numbuff, "%d/%d\0\0", toprint, toprint2);
     x = PCP_MATH_PROT_DSTAT_X,   y = PCP_MATH_PROT_DSTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
@@ -328,8 +328,8 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
 
     /* atk */
     toprint  = int_inbounds(CS_A.attack[DMG_PHYSICAL],   0, 0xFF);
-    toprint2 = int_inbounds(CS_A.attack[DMG_MAGICAL],    0, 0xFF);
-    toprint3 = int_inbounds(CS_A.attack[DMG_TRUE],       0, 0xFF);
+    toprint2 = int_inbounds(CS_A.attack.magical,    0, 0xFF);
+    toprint3 = int_inbounds(CS_A.attack.True,       0, 0xFF);
     if (toprint3 > 0)
         stbsp_sprintf(numbuff, "%d/%d/%d\0\0", toprint, toprint2, toprint3);
     else
@@ -342,7 +342,7 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
 
     /* prot */
     toprint  = int_inbounds(CS_A.protection[DMG_PHYSICAL], 0, 0xFF);
-    toprint2 = int_inbounds(CS_A.protection[DMG_MAGICAL],  0, 0xFF);
+    toprint2 = int_inbounds(CS_A.protection.magical,  0, 0xFF);
     stbsp_sprintf(numbuff, "%d/%d\0\0\0", toprint, toprint2);
     x = PCP_MATH_PROT_ASTAT_X,   y = PCP_MATH_PROT_ASTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
@@ -519,8 +519,8 @@ static void _PreCombatPopup_Draw_Stats_Simple(struct PreCombatPopup *pcp, SDL_Re
 
     /* dmg */
     int toprint  = int_inbounds(damage_d.dmg[DMG_PHYSICAL],  0, 0xFF);
-    int toprint2 = int_inbounds(damage_d.dmg[DMG_MAGICAL],   0, 0xFF);
-    int toprint3 = int_inbounds(damage_d.dmg[DMG_TRUE],      0, 0xFF);
+    int toprint2 = int_inbounds(damage_d.dmg.magical,   0, 0xFF);
+    int toprint3 = int_inbounds(damage_d.dmg.True,      0, 0xFF);
     if (toprint3 > 0)
         stbsp_sprintf(numbuff, "%d/%d/%d\0", toprint, toprint2, toprint3);
     else
@@ -552,8 +552,8 @@ static void _PreCombatPopup_Draw_Stats_Simple(struct PreCombatPopup *pcp, SDL_Re
 
     /* dmg */
     toprint  = int_inbounds(damage_a.dmg[DMG_PHYSICAL], 0, 0xFF);
-    toprint2 = int_inbounds(damage_a.dmg[DMG_MAGICAL],  0, 0xFF);
-    toprint3 = int_inbounds(damage_a.dmg[DMG_TRUE],     0, 0xFF);
+    toprint2 = int_inbounds(damage_a.dmg.magical,  0, 0xFF);
+    toprint3 = int_inbounds(damage_a.dmg.True,     0, 0xFF);
     if (toprint3 > 0)
         stbsp_sprintf(numbuff, "%d/%d/%d\0", toprint, toprint2, toprint3);
     else

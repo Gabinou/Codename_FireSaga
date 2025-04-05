@@ -150,10 +150,10 @@ const struct Cursor Cursor_default = {DEFAULT_CURSOR_FRAMES, DEFAULT_CURSOR_SPEE
 
 void Computed_Stats_Print(struct Computed_Stats *stats) {
     SDL_Log("atk_P:   %3d\n", stats->attack[DMG_PHYSICAL]);
-    SDL_Log("atk_M:   %3d\n", stats->attack[DMG_MAGICAL]);
-    SDL_Log("atk_T:   %3d\n", stats->attack[DMG_TRUE]);
+    SDL_Log("atk_M:   %3d\n", stats->attack.magical);
+    SDL_Log("atk_T:   %3d\n", stats->attack.True);
     SDL_Log("prot_P:  %3d\n", stats->protection[DMG_PHYSICAL]);
-    SDL_Log("prot_M:  %3d\n", stats->protection[DMG_MAGICAL]);
+    SDL_Log("prot_M:  %3d\n", stats->protection.magical);
     SDL_Log("hit:     %3d\n", stats->hit);
     SDL_Log("dodge:   %3d\n", stats->dodge);
     SDL_Log("crit:    %3d\n", stats->crit);
@@ -170,14 +170,14 @@ void Computed_Stats_Print(struct Computed_Stats *stats) {
 void Computed_Stats_Compare(struct Computed_Stats *stats1, struct Computed_Stats *stats2) {
     SDL_Log("atk_P:   %3d, %3d\n", stats1->attack[DMG_PHYSICAL],
             stats2->attack[DMG_PHYSICAL]);
-    SDL_Log("atk_M:   %3d, %3d\n", stats1->attack[DMG_MAGICAL],
-            stats2->attack[DMG_MAGICAL]);
-    SDL_Log("atk_T:   %3d, %3d\n", stats1->attack[DMG_TRUE],
-            stats2->attack[DMG_TRUE]);
+    SDL_Log("atk_M:   %3d, %3d\n", stats1->attack.magical,
+            stats2->attack.magical);
+    SDL_Log("atk_T:   %3d, %3d\n", stats1->attack.True,
+            stats2->attack.True);
     SDL_Log("prot_P:  %3d, %3d\n", stats1->protection[DMG_PHYSICAL],
             stats2->protection[DMG_PHYSICAL]);
-    SDL_Log("prot_M:  %3d, %3d\n", stats1->protection[DMG_MAGICAL],
-            stats2->protection[DMG_MAGICAL]);
+    SDL_Log("prot_M:  %3d, %3d\n", stats1->protection.magical,
+            stats2->protection.magical);
     SDL_Log("hit:     %3d, %3d\n", stats1->hit, stats2->hit);
     SDL_Log("dodge:   %3d, %3d\n", stats1->dodge, stats2->dodge);
     SDL_Log("crit:    %3d, %3d\n", stats1->crit, stats2->crit);

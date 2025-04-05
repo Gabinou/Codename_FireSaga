@@ -197,10 +197,10 @@ void test_menu_growths() {
     // Silou.support_bonus.speed = 5;
     // /* - Attack - */
     // Silou.support_bonus.attack[DMG_PHYSICAL] = 6;
-    // Silou.support_bonus.attack[DMG_MAGICAL] = 7;
+    // Silou.support_bonus.attack.magical = 7;
     // /* - Prot - */
     // Silou.support_bonus.protection[DMG_PHYSICAL] = 8;
-    // Silou.support_bonus.protection[DMG_MAGICAL] = 9;
+    // Silou.support_bonus.protection.magical = 9;
     /* - Move - */
     Silou.growth.effective.move = 1;
 
@@ -219,10 +219,10 @@ void test_menu_growths() {
     // Silou.support_bonus.speed = -50;
     // /* - Attack - */
     // Silou.support_bonus.attack[DMG_PHYSICAL] = 60;
-    // Silou.support_bonus.attack[DMG_MAGICAL] = 70;
+    // Silou.support_bonus.attack.magical = 70;
     // /* - Prot - */
     // Silou.support_bonus.protection[DMG_PHYSICAL] = 80;
-    // Silou.support_bonus.protection[DMG_MAGICAL] = 90;
+    // Silou.support_bonus.protection.magical = 90;
     /* - Move - */
     Silou.growth.effective.move = 23;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);

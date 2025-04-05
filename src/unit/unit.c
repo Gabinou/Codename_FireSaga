@@ -565,7 +565,7 @@ Damage_Raw Unit_computeDefense(struct Unit *unit) {
     for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         Damage_Raw prot = Unit_Shield_Protection(unit, hand);
         protection[DMG_PHYSICAL]   += prot.physical;
-        protection[DMG_MAGICAL]    += prot.magical;
+        protection.magical    += prot.magical;
     }
 
     /* Add all bonuses */
@@ -574,8 +574,8 @@ Damage_Raw Unit_computeDefense(struct Unit *unit) {
     for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
         bonus[DMG_PHYSICAL]    +=
                 unit->stats.bonus_stack[i].computed_stats.protection[DMG_PHYSICAL];
-        bonus[DMG_MAGICAL]     +=
-                unit->stats.bonus_stack[i].computed_stats.protection[DMG_MAGICAL];
+        bonus.magical     +=
+                unit->stats.bonus_stack[i].computed_stats.protection.magical;
     }
 
     /* Adding shield protection to effective stats */
@@ -584,10 +584,10 @@ Damage_Raw Unit_computeDefense(struct Unit *unit) {
                                                                protection[DMG_PHYSICAL],
                                                                effstats.def,
                                                                bonus[DMG_PHYSICAL]);
-    protection[DMG_MAGICAL]  = Equation_Weapon_Defensevar(3,
-                                                               protection[DMG_MAGICAL],
+    protection.magical  = Equation_Weapon_Defensevar(3,
+                                                               protection.magical,
                                                                effstats.res,
-                                                               bonus[DMG_MAGICAL]);
+                                                               bonus.magical);
     return (protection_dmg);
 }
 
@@ -649,13 +649,13 @@ Damage_Raw Unit_computeAttack(struct Unit *unit, int distance) {
     if (attack_P > 0) {
         attack[DMG_PHYSICAL] = Equation_Weapon_Attackvar(3, attack_P,
                                                               effstats.str, bonus_P);
-        attack[DMG_TRUE] = Equation_Weapon_Attackvar(2, attack_T, bonus_T);
+        attack.True = Equation_Weapon_Attackvar(2, attack_T, bonus_T);
     }
 
     if (attack_M > 0) {
-        attack[DMG_MAGICAL]  = Equation_Weapon_Attackvar(3, attack_M,
+        attack.magical  = Equation_Weapon_Attackvar(3, attack_M,
                                                               effstats.mag, bonus_M);
-        attack[DMG_TRUE] = Equation_Weapon_Attackvar(2, attack_T, bonus_T);
+        attack.True = Equation_Weapon_Attackvar(2, attack_T, bonus_T);
     }
 
     /* -- DUAL WIELDING -- */
@@ -663,11 +663,11 @@ Damage_Raw Unit_computeAttack(struct Unit *unit, int distance) {
     b32 candualwield = TNECS_ARCHETYPE_HAS_TYPE(unit->flags.skills, UNIT_SKILL_DUAL_WIELD);
     if (Unit_isdualWielding(unit) && !candualwield) {
         attack[DMG_PHYSICAL] /= DUAL_WIELD_NOSKILL_MALUS_FACTOR;
-        attack[DMG_MAGICAL]  /= DUAL_WIELD_NOSKILL_MALUS_FACTOR;
+        attack.magical  /= DUAL_WIELD_NOSKILL_MALUS_FACTOR;
     }
 
-    attack[DMG_TOTAL] = attack[DMG_PHYSICAL] + attack[DMG_MAGICAL] +
-                             attack[DMG_TRUE];
+    attack[DMG_TOTAL] = attack[DMG_PHYSICAL] + attack.magical +
+                             attack.True;
 
     return (attack_dmg);
 }

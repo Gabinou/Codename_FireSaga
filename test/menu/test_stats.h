@@ -109,10 +109,10 @@ void test_menu_stats() {
     Silou.computed_stats.speed  = 3;
     /* - Attack single digits - */
     Silou.computed_stats.attack[DMG_PHYSICAL]       = 4;
-    Silou.computed_stats.attack[DMG_MAGICAL]        = 5;
+    Silou.computed_stats.attack.magical        = 5;
     /* - Prot single digits - */
     Silou.computed_stats.protection[DMG_PHYSICAL]   = 6;
-    Silou.computed_stats.protection[DMG_MAGICAL]    = 7;
+    Silou.computed_stats.protection.magical    = 7;
     /* - Range single digits - */
     Silou.computed_stats.range_loadout.min = 1;
     Silou.computed_stats.range_loadout.max = 2;
@@ -132,10 +132,10 @@ void test_menu_stats() {
     Silou.computed_stats.speed  = 30;
     /* - Attack double digits - */
     Silou.computed_stats.attack[DMG_PHYSICAL]       = 40;
-    Silou.computed_stats.attack[DMG_MAGICAL]        = 50;
+    Silou.computed_stats.attack.magical        = 50;
     /* - Prot double digits - */
     Silou.computed_stats.protection[DMG_PHYSICAL]   = 60;
-    Silou.computed_stats.protection[DMG_MAGICAL]    = 70;
+    Silou.computed_stats.protection.magical    = 70;
     /* - Regret double digits - */
 
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
@@ -154,7 +154,7 @@ void test_menu_stats() {
                             SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - Attack double digits - */
-    Silou.computed_stats.attack[DMG_TRUE] = 9;
+    Silou.computed_stats.attack.True = 9;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Digits_4.png"), renderer, sm->texture,
                             SDL_PIXELFORMAT_ARGB8888, render_target);

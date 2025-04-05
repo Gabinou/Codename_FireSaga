@@ -87,15 +87,15 @@ void test_combat_stats() {
 
     // nourstest_true((temp_stats.agg_damage.dmg[DMG_PHYSICAL] ==
     //                 agg_damage.dmg[DMG_PHYSICAL]));
-    // nourstest_true((temp_stats.agg_damage.dmg[DMG_MAGICAL] ==
-    //                 agg_damage.dmg[DMG_MAGICAL]));
+    // nourstest_true((temp_stats.agg_damage.dmg.magical ==
+    //                 agg_damage.dmg.magical));
     // nourstest_true((temp_stats.agg_damage.dmg[DMG_PHYSICAL] > 0));
-    // nourstest_true((temp_stats.agg_damage.dmg[DMG_MAGICAL] == 0));
+    // nourstest_true((temp_stats.agg_damage.dmg.magical == 0));
     // nourstest_true((temp_stats.dft_damage.dmg[DMG_PHYSICAL] == dft_damage.dmg[DMG_PHYSICAL]));
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_MAGICAL] ==
-    //                 dft_damage.dmg[DMG_MAGICAL]));
+    // nourstest_true((temp_stats.dft_damage.dmg.magical ==
+    //                 dft_damage.dmg.magical));
     // nourstest_true((temp_stats.dft_damage.dmg[DMG_PHYSICAL] > 0));
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_MAGICAL] == 0));
+    // nourstest_true((temp_stats.dft_damage.dmg.magical == 0));
     // nourstest_true((temp_stats.agg_stats.attack[0] == agg_stats.attack[0]));
     // nourstest_true((temp_stats.agg_stats.attack[0] > 0));
     // nourstest_true((temp_stats.agg_stats.attack[1] == agg_stats.attack[1]));
@@ -113,16 +113,16 @@ void test_combat_stats() {
 
     // nourstest_true((temp_stats.dft_damage.dmg[DMG_PHYSICAL] ==
     //                 dft_damage.dmg[DMG_PHYSICAL]));
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_MAGICAL] ==
-    //                 dft_damage.dmg[DMG_MAGICAL]));
+    // nourstest_true((temp_stats.dft_damage.dmg.magical ==
+    //                 dft_damage.dmg.magical));
     // nourstest_true((temp_stats.dft_damage.dmg[DMG_PHYSICAL] > 0));
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_MAGICAL] == 0));
+    // nourstest_true((temp_stats.dft_damage.dmg.magical == 0));
     // nourstest_true((temp_stats.dft_damage.dmg[DMG_PHYSICAL] ==
     //                 dft_damage.dmg[DMG_PHYSICAL]));
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_MAGICAL] ==
-    //                 dft_damage.dmg[DMG_MAGICAL]));
+    // nourstest_true((temp_stats.dft_damage.dmg.magical ==
+    //                 dft_damage.dmg.magical));
     // nourstest_true((temp_stats.dft_damage.dmg[DMG_PHYSICAL] > 0));
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_MAGICAL] == 0));
+    // nourstest_true((temp_stats.dft_damage.dmg.magical == 0));
     // nourstest_true((temp_stats.dft_stats.attack[0] == dft_stats.attack[0]));
     // nourstest_true((temp_stats.dft_stats.attack[0] > 0));
     // nourstest_true((temp_stats.dft_stats.attack[1] == dft_stats.attack[1]));

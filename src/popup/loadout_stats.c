@@ -66,10 +66,10 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
 
     /* - MAGICAL ATK ARROW - */
     arrow_index = STAT_ARROW_NULL;
-    if (pls->selected_cs.attack[DMG_MAGICAL] > pls->initial_cs.attack[DMG_MAGICAL])
+    if (pls->selected_cs.attack.magical > pls->initial_cs.attack.magical)
         arrow_index = STAT_ARROW_UP;
-    else if (pls->selected_cs.attack[DMG_MAGICAL] <
-             pls->initial_cs.attack[DMG_MAGICAL])
+    else if (pls->selected_cs.attack.magical <
+             pls->initial_cs.attack.magical)
         arrow_index = STAT_ARROW_DOWN;
 
 #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
@@ -165,11 +165,11 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
 
     /* - MAGICAL PROT ARROW - */
     arrow_index = STAT_ARROW_NULL;
-    if (pls->selected_cs.protection[DMG_MAGICAL] >
-        pls->initial_cs.protection[DMG_MAGICAL])
+    if (pls->selected_cs.protection.magical >
+        pls->initial_cs.protection.magical)
         arrow_index = STAT_ARROW_UP;
-    else if (pls->selected_cs.protection[DMG_MAGICAL] <
-             pls->initial_cs.protection[DMG_MAGICAL])
+    else if (pls->selected_cs.protection.magical <
+             pls->initial_cs.protection.magical)
         arrow_index = STAT_ARROW_DOWN;
 
 #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
@@ -238,13 +238,13 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls,
     char numbuff[10];
     /* - ATK - */
     PixelFont_Write(pls->pixelnours, renderer, "ATK", 3, PLS_ATK_X, PLS_ATK_Y);
-    if (pls->selected_cs.attack[DMG_TRUE] > 0) {
+    if (pls->selected_cs.attack.True > 0) {
         stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->selected_cs.attack[DMG_PHYSICAL]);
 
         stbsp_sprintf(numbuff, "%d/%d/%d\0",
                       pls->selected_cs.attack[DMG_PHYSICAL],
-                      pls->selected_cs.attack[DMG_MAGICAL],
-                      pls->selected_cs.attack[DMG_TRUE]);
+                      pls->selected_cs.attack.magical,
+                      pls->selected_cs.attack.True);
         width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
         PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
                         PLS_ATK_X_STAT - width / 2 + 2, PLS_ATK_Y_STAT);
@@ -252,7 +252,7 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls,
         stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->selected_cs.attack[DMG_PHYSICAL]);
         width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
         stbsp_sprintf(numbuff, "%d/%d\0\0\0\0",
-                      pls->selected_cs.attack[DMG_PHYSICAL], pls->selected_cs.attack[DMG_MAGICAL]);
+                      pls->selected_cs.attack[DMG_PHYSICAL], pls->selected_cs.attack.magical);
         PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
                         PLS_ATK_X_STAT - width, PLS_ATK_Y_STAT);
     }
@@ -261,7 +261,7 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls,
     stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->selected_cs.protection[DMG_PHYSICAL]);
     width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
     stbsp_sprintf(numbuff, "%d/%d\0\0\0\0", pls->selected_cs.protection[DMG_PHYSICAL],
-                  pls->selected_cs.protection[DMG_MAGICAL]);
+                  pls->selected_cs.protection.magical);
     PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
                     PLS_PROT_X_STAT - width, PLS_PROT_Y_STAT);
     /* - HIT - */
