@@ -423,7 +423,7 @@ static void _PreCombatPopup_Draw_Stats_Total( struct PreCombatPopup *pcp, SDL_Re
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
     /* dmg */
-    int toprint = int_inbounds(damage_d.dmg[DMG_TOTAL], 0, 0xFF);
+    int toprint = int_inbounds(damage_d.dmg.total, 0, 0xFF);
     stbsp_sprintf(numbuff, "%2d\0\0\0", toprint);
     x = PCP_SIMPLE_DMG_DSTAT_X,   y = PCP_SIMPLE_DMG_DSTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
@@ -448,7 +448,7 @@ static void _PreCombatPopup_Draw_Stats_Total( struct PreCombatPopup *pcp, SDL_Re
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
     /* dmg */
-    toprint = int_inbounds(damage_a.dmg[DMG_TOTAL], 0, 0xFF);
+    toprint = int_inbounds(damage_a.dmg.total, 0, 0xFF);
     stbsp_sprintf(numbuff, "%2d\0\0\0", toprint);
     x = PCP_SIMPLE_DMG_ASTAT_X,   y = PCP_SIMPLE_DMG_ASTAT_Y;
     PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);

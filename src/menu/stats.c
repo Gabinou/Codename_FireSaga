@@ -1077,7 +1077,9 @@ static void _StatsMenu_Draw_Equipment(struct StatsMenu *stats_menu, SDL_Renderer
 
 static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* -- COMPUTED STATS -- */
-    struct Computed_Stats *computed_stats = &stats_menu->unit->computed_stats;
+    int dist = 1; // TODO: get distance from equipped weapon
+    Unit_stats eff_stats = Unit_effectiveStats(stats_menu->unit);
+    struct Computed_Stats computed_stats = Unit_computedStats(stats_menu->unit, dist, eff_stats);
     struct Unit *unit = stats_menu->unit;
     char numbuff[10];
 
@@ -1085,18 +1087,17 @@ static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Rend
     int width, x, y;
     x = ATK_X_OFFSET, y = ATK_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "ATK", 3, x, y);
-    i32 *att = computed_stats->attack;
-    if (computed_stats->attack.True > 0) {
+    if (computed_stats.attack.True > 0) {
         /* Compute width of LEFTWARD STAT to center the "/" */
-        stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats->attack.physical);
+        stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats.attack.physical);
         width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
-        stbsp_sprintf(numbuff, "%d/%d/%d", att.physical, att.magical,
-                      att.True);
+        stbsp_sprintf(numbuff, "%d/%d/%d", computed_stats.attack.physical, computed_stats.attack.magical,
+                      computed_stats.attack.True);
         x = ATK_X_OFFSET_STAT2 - width, y = ATK_Y_OFFSET_STAT1;
     } else {
-        stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats->attack.physical);
+        stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats.attack.physical);
         width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
-        stbsp_sprintf(numbuff, "%d/%d\0\0", att.physical, att.magical);
+        stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats.attack.physical, computed_stats.attack.magical);
         x = ATK_X_OFFSET_STAT1 - width, y = ATK_Y_OFFSET_STAT1;
     }
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
@@ -1104,10 +1105,9 @@ static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Rend
     /* - DEF - */
     x = PROT_X_OFFSET, y = PROT_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "DEF", 3, x, y);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats->protection.physical);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats.protection.physical);
     width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
-    i32 *prot = computed_stats->protection;
-    stbsp_sprintf(numbuff, "%d/%d\0\0", prot.physical, prot.magical);
+    stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats.protection.physical, computed_stats.protection.magical);
     x = PROT_X_OFFSET_STAT1 - width, y = PROT_Y_OFFSET_STAT1;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
@@ -1115,9 +1115,9 @@ static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Rend
     x = HIT_X_OFFSET, y = HIT_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "HIT", 3, x, y);
     // Compute width of LEFTWARD STAT to center the "/"
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats->hit);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats.hit);
     width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
-    stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats->hit, computed_stats->dodge);
+    stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats.hit, computed_stats.dodge);
     x = HIT_X_OFFSET_STAT - width, y = HIT_Y_OFFSET_STAT;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
@@ -1125,16 +1125,16 @@ static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Rend
     x = CRIT_X_OFFSET, y = CRIT_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "CRIT", 4, x, y);
     // Compute width of LEFTWARD STAT to center the "/"
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats->crit);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats.crit);
     width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
-    stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats->crit, computed_stats->favor);
+    stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats.crit, computed_stats.favor);
     x = CRIT_X_OFFSET_STAT - width, y = CRIT_Y_OFFSET_STAT;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
     /* - RANGE - */
     x = RANGE_X_OFFSET, y = RANGE_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "RANGE", 5, x, y);
-    struct Range *range = &computed_stats->range_loadout;
+    struct Range *range = &computed_stats.range_loadout;
     stbsp_sprintf(numbuff, "%d - %d", range->min, range->max);
     x = RANGE_X_OFFSET_STAT, y = RANGE_Y_OFFSET_STAT;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
@@ -1142,7 +1142,7 @@ static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Rend
     /* - SPEED - */
     x = SPEED_X_OFFSET, y = SPEED_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "SPEED", 5, x, y);
-    stbsp_sprintf(numbuff, "%2d\0\0\0\0", computed_stats->speed);
+    stbsp_sprintf(numbuff, "%2d\0\0\0\0", computed_stats.speed);
     x = SPEED_X_OFFSET_STAT, y = SPEED_Y_OFFSET_STAT;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
