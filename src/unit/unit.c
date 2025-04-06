@@ -1170,6 +1170,7 @@ void Unit_writeJSON(void *input, cJSON *junit) {
 void Unit_computeEffectivefactor(struct Unit *attacker, struct Unit *defender, i32 *factor) {
     SDL_assert(attacker);
     SDL_assert(defender);
+    // TODO implement
     *factor = NOTEFFECTIVE_FACTOR;
 }
 
