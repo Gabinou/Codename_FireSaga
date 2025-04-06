@@ -134,16 +134,16 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
     struct Point     start      = pos->tilemap_pos;
     i32 move_stat  = mapto.move ? Unit_effectiveStats(unit).move : 0;
 
-    Range *range = NULL;
+    Range range = Range_default;
     if (mapto.eq_type == LOADOUT_EQUIPPED) {
         // SDL_Log("LOADOUT_EQUIPPED");
-        range = Unit_Range_Equipped(unit, mapto.archetype);
+         Unit_Range_Equipped(unit, mapto.archetype, &range);
     } else if (mapto.eq_type == LOADOUT_EQUIPMENT) {
         // SDL_Log("LOADOUT_EQUIPMENT");
-        range = Unit_Range_Equipment(unit, mapto.archetype);
+        Unit_Range_Equipment(unit, mapto.archetype, &range);
     } else if (mapto.eq_type == LOADOUT_EQ) {
         // SDL_Log("LOADOUT_EQ");
-        range = Unit_Range_Eq(unit, mapto._eq, mapto.archetype);
+        Unit_Range_Eq(unit, mapto._eq, mapto.archetype, &range);
     } else if (mapto.eq_type == LOADOUT_LOADOUT) {
         // SDL_Log("LOADOUT_LOADOUT");
         /* Save starting equipment */
@@ -152,12 +152,11 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
 
         /* Compute healmap/attackmap with input loadout */
         Unit_Equipped_Import(unit, mapto._loadout);
-        range = Unit_Range_Equipped(unit, mapto.archetype);
+        Unit_Range_Equipped(unit, mapto.archetype, &range);
 
         /* Restore starting equipment */
         Unit_Equipped_Import(unit, start_equipped);
     }
-    SDL_assert(range != NULL);
     // SDL_Log("range %d %d", range->min, range->max);
 
     // Enable occupymap only to check when unit actually MOVES
@@ -187,7 +186,7 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
     actto.row_len           = map->row_len;
     actto.col_len           = map->col_len;
     actto.self              = mapto.aggressor;
-    actto.range             = *range;
+    actto.range             = range;
     actto.mode_movetile     = mapto.mode_movetile;
 
     Pathfinding_Attackto_noM(actto);
@@ -226,7 +225,8 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     struct Position *agg_pos    = IES_GET_COMPONENT(map->world, map_from.aggressor, Position);
     struct Position *dft_pos    = IES_GET_COMPONENT(map->world, map_from.defendant, Position);
     /* Get agg range */
-    struct Range *range = Unit_Range_Equipped(agg_unit, ITEM_ARCHETYPE_WEAPON);
+    struct Range range = Range_default;
+    Unit_Range_Equipped(agg_unit, ITEM_ARCHETYPE_WEAPON, &range);
 
     /* Compute movemap */
     i32 move_stat       = map_from.move ? Unit_effectiveStats(agg_unit).move : 0;
@@ -257,7 +257,7 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     actto.row_len           = map->row_len;
     actto.col_len           = map->col_len;
     actto.self              = map_from.aggressor;
-    actto.range             = *range;
+    actto.range             = range;
     actto.mode_movetile     = map_from.mode_movetile;
 
     Pathfinding_Attackto_noM(actto);
@@ -288,7 +288,8 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_entity unit_ent) {
     i32 effective_move = Unit_effectiveStats(unit).move * map->cost_multiplier;
     struct Point start = position->tilemap_pos;
     _Map_Movemap_Compute(map, start, effective_move);
-    struct Range *range = Unit_Range_Equipment(unit, ITEM_ARCHETYPE_WEAPON);
+    struct Range range = Range_default;
+    Unit_Range_Equipment(unit, ITEM_ARCHETYPE_WEAPON, &range);
 
     PathfindingAct actto    = PathfindingAct_default;
     actto.movemap           = map->movemap;
@@ -297,7 +298,7 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_entity unit_ent) {
     actto.row_len           = map->row_len;
     actto.col_len           = map->col_len;
     actto.self              = unit_ent;
-    actto.range             = *range;
+    actto.range             = range;
     actto.mode_movetile     = MOVETILE_INCLUDE;
 
     Pathfinding_Attackto_noM(actto);
@@ -449,7 +450,8 @@ void Map_globalRange(struct Map *map, u8 alignment) {
     for (int i = 0; i < num_unit_entities; i++) {
         struct Unit     *temp_unit  = IES_GET_COMPONENT(map->world, unit_entities[i], Unit);
         struct Position *temp_pos   = IES_GET_COMPONENT(map->world, unit_entities[i], Position);
-        struct Range *range = Unit_Range_Equipment(temp_unit, ITEM_ARCHETYPE_WEAPON);
+        struct Range range = Range_default;
+        Unit_Range_Equipment(temp_unit, ITEM_ARCHETYPE_WEAPON, &range);
 
         struct Unit_stats temp_effective_stats = Unit_effectiveStats(temp_unit);
         u8 move = temp_effective_stats.move;
@@ -465,7 +467,7 @@ void Map_globalRange(struct Map *map, u8 alignment) {
         actto.row_len           = map->row_len;
         actto.col_len           = map->col_len;
         actto.self              = unit_entities[i];
-        actto.range             = *range;
+        actto.range             = range;
         actto.mode_movetile     = MOVETILE_INCLUDE;
 
         Pathfinding_Attackto_noM(actto);

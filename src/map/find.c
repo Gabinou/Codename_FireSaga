@@ -96,8 +96,8 @@ b32 Map_canEquip_Range(struct Map *map, tnecs_entity unit_ent,
     Unit     *unit = IES_GET_COMPONENT(map->world, unit_ent, Unit);
 
     /* Compute range */
-    struct Range *range = Unit_Range_Eq(unit, can_equip._eq, can_equip.archetype);
-    SDL_assert(range            != NULL);
+    struct Range range = Range_default;
+    Unit_Range_Eq(unit, can_equip._eq, can_equip.archetype, &range);
     // SDL_Log("range %d %d", range->min, range->max);
 
     /* Compute attacktolist to check if any enemy in it */
