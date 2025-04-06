@@ -132,7 +132,7 @@ struct Range *Unit_Range_Equipment(Unit *unit, i64 archetype, struct Range *rang
 
 // Combine ranges of items in current loadout
 // Item was previously equipped, no need to check if CAN equip
-struct Range *Unit_Range_Equipped(Unit *unit, i64 archetype, struct Range *range) {
+void Unit_Range_Equipped(Unit *unit, i64 archetype, struct Range *range) {
     // struct Range *range = &unit->computed_stats.range_loadout;
     *range = Range_default;
 
@@ -159,7 +159,6 @@ struct Range *Unit_Range_Equipped(Unit *unit, i64 archetype, struct Range *range
 
         Ranges_Combine(range, wpn->stats.range);
     }
-    return (range);
 }
 
 b32 Unit_inRange_Loadout(struct Unit        *agg,
