@@ -431,8 +431,9 @@ void test_combat_flow() {
                                          ES_D.agi,
                                          ES_D.con,
                                          ES_D.str, 0) == defender_speed);
-    nourstest_true(defender.computed_stats.speed == defender_speed);
-    temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
+    temp_flow = Compute_Combat_Flow(&attacker, &defender,
+                                    cs_agg, cs_dft,
+                                    (struct Point *)&attacker_pos,
                                     (struct Point *)&defender_pos);
     nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
     nourstest_true(temp_flow.defendant_retaliates == false);
@@ -447,8 +448,10 @@ void test_combat_flow() {
     Unit_setStats(&attacker, attacker_stats);
     Unit_computedStats(&attacker, distance, ES_A);
     Unit_computedStats(&defender, distance, ES_D);
-    nourstest_true(attacker.computed_stats.speed == 8);
-    temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
+    nourstest_true(attacker_speed == 8);
+    temp_flow = Compute_Combat_Flow(&attacker, &defender,
+                                    cs_agg, cs_dft,
+                                    (struct Point *)&attacker_pos,
                                     (struct Point *)&defender_pos);
     nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
     nourstest_true(temp_flow.defendant_retaliates == 1);
@@ -463,8 +466,10 @@ void test_combat_flow() {
     Unit_setStats(&attacker, attacker_stats);
     Unit_computedStats(&attacker, distance, ES_A);
     Unit_computedStats(&defender, distance, ES_D);
-    nourstest_true(attacker.computed_stats.speed == 9);
-    temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
+    nourstest_true(attacker_speed == 9);
+    temp_flow = Compute_Combat_Flow(&attacker, &defender,
+                                    cs_agg, cs_dft,
+                                    (struct Point *)&attacker_pos,
                                     (struct Point *)&defender_pos);
     nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
     nourstest_true(temp_flow.defendant_retaliates == 1);
@@ -479,8 +484,10 @@ void test_combat_flow() {
     Unit_setStats(&attacker, attacker_stats);
     Unit_computedStats(&attacker, distance, ES_A);
     Unit_computedStats(&defender, distance, ES_D);
-    nourstest_true(attacker.computed_stats.speed == 10);
-    temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
+    nourstest_true(attacker_speed == 10);
+    temp_flow = Compute_Combat_Flow(&attacker, &defender,
+                                    cs_agg, cs_dft,
+                                    (struct Point *)&attacker_pos,
                                     (struct Point *)&defender_pos);
     nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
     nourstest_true(temp_flow.defendant_retaliates == 1);
@@ -495,8 +502,10 @@ void test_combat_flow() {
     Unit_setStats(&attacker, attacker_stats);
     Unit_computedStats(&attacker, distance, ES_A);
     Unit_computedStats(&defender, distance, ES_D);
-    nourstest_true(attacker.computed_stats.speed == 11);
-    temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
+    nourstest_true(attacker_speed == 11);
+    temp_flow = Compute_Combat_Flow(&attacker, &defender,
+                                    cs_agg, cs_dft,
+                                    (struct Point *)&attacker_pos,
                                     (struct Point *)&defender_pos);
     nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
     nourstest_true(temp_flow.defendant_retaliates == 1);
@@ -511,7 +520,7 @@ void test_combat_flow() {
     Unit_setStats(&attacker, attacker_stats);
     Unit_computedStats(&attacker, distance, ES_A);
     Unit_computedStats(&defender, distance, ES_D);
-    nourstest_true(attacker.computed_stats.speed == 12);
+    nourstest_true(attacker_speed == 12);
     temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
                                     (struct Point *)&defender_pos);
     nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
