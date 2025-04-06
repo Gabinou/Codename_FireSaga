@@ -29,19 +29,19 @@ b32 _Range_Archetype_Match(struct Weapon *wpn, i64 archetype) {
 }
 
 
-struct Range *Unit_Range_Id(struct Unit *unit, int id, i64 archetype, struct Range *range) {
+void Unit_Range_Id(struct Unit *unit, int id, i64 archetype, struct Range *range) {
     // struct Range *range = &unit->computed_stats.range_equipment;
     SDL_assert(range != NULL);
     *range = Range_default;
 
     if (id <= ITEM_NULL) {
         // SDL_Log("ITEM_NULL");
-        return (range);
+        return;
     }
 
     if (!Weapon_ID_isValid(id)) {
         // SDL_Log("!Weapon_ID_isValid");
-        return (range);
+        return;
     }
 
     struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
@@ -52,15 +52,13 @@ struct Range *Unit_Range_Id(struct Unit *unit, int id, i64 archetype, struct Ran
 
     if (!_Range_Archetype_Match(wpn, archetype)) {
         // SDL_Log("!_Range_Archetype_Match");
-        return (range);
+        return;
     }
 
     Ranges_Combine(range, wpn->stats.range);
-
-    return (range);
 }
 
-struct Range *Unit_Range_Eq(struct Unit *unit, i32 eq, i64 archetype, struct Range *range) {
+void Unit_Range_Eq(struct Unit *unit, i32 eq, i64 archetype, struct Range *range) {
     SDL_assert(unit != NULL);
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
@@ -78,16 +76,15 @@ struct Range *Unit_Range_Eq(struct Unit *unit, i32 eq, i64 archetype, struct Ran
         // struct Range *range = &unit->computed_stats.range_equipment;
         SDL_assert(range != NULL);
         *range = Range_default;
-        return (range);
+        return;
     }
-
-    return (Unit_Range_Id(unit, Unit_Id_Equipment(unit, eq), archetype));
+    Unit_Range_Id(unit, Unit_Id_Equipment(unit, eq), archetype, range);
 }
 
 /* Combines range of all weapons in equipment assuming NO LOADOUT */
 // - Combined range may no reflect actual loadout range
 //      - Ex: will combine range of two two-hand only weapons
-struct Range *Unit_Range_Equipment(Unit *unit, i64 archetype, struct Range *range) {
+void Unit_Range_Equipment(Unit *unit, i64 archetype, struct Range *range) {
     // struct Range *range = &unit->computed_stats.range_equipment;
     *range              = Range_default;
 
@@ -122,12 +119,12 @@ struct Range *Unit_Range_Equipment(Unit *unit, i64 archetype, struct Range *rang
 
         if (!_Range_Archetype_Match(wpn, archetype)) {
             // SDL_Log("!!_Range_Archetype_Match");
-            return (range);
+            return;
         }
 
         Ranges_Combine(range, wpn->stats.range);
     }
-    return (range);
+    return;
 }
 
 // Combine ranges of items in current loadout
@@ -165,10 +162,11 @@ b32 Unit_inRange_Loadout(struct Unit        *agg,
                          struct Position    *agg_pos,
                          struct Position    *dft_pos,
                          i64 archetype) {
-    struct Range *range = Unit_Range_Equipped(agg, archetype);
+    struct Range range = Range_default;
+    Unit_Range_Equipped(agg, archetype, &range);
     int distance    =  abs(agg_pos->tilemap_pos.x - dft_pos->tilemap_pos.x);
     distance        += abs(agg_pos->tilemap_pos.y - dft_pos->tilemap_pos.y);
-    return ((distance >= range->min) && (distance <= range->max));
+    return ((distance >= range.min) && (distance <= range.max));
 }
 
 b32 Range_Valid(struct Range range) {

@@ -285,16 +285,10 @@ typedef struct Unit_stats {
 extern const struct Unit_stats Unit_stats_default;
 
 typedef struct Range {
-    /* Can be cast to array */
+    /* No gaps in the range */
     i32 min;
     i32 max;
 } Range;
-extern const struct Range Range_default;
-
-/* Imagine I would implement a range with gaps */
-struct RangeGaps {
-    i32 canatt[SOTA_MAX_RANGE];
-};
 extern const struct Range Range_default;
 
 typedef struct Computed_Stats {
