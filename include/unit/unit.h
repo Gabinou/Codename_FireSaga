@@ -72,11 +72,11 @@ void Unit_computeCritical(Unit *u, int dist, i32 *crit);
 /* Distance-independent stats */
 void Unit_computeMove(    Unit *u, i32 *mv);
 void Unit_computeAgony(   Unit *u, i32 *agony);
-void Unit_computeRegrets( Unit *u, i32 *regrets);
+void Unit_computeRegrets( Unit *u, Computed_Stats *stats, i32 *regrets);
 void Unit_computeEffectivefactor(Unit *a, Unit *d, i32 *factor);
 
 void Unit_computeAttack( Unit *u, int dist, i32 *att);
-void Unit_computeDefense(Unit *u, i32 *def);
+void Unit_computeDefense(Unit *u, i32* def);
 
 Unit_stats Unit_effectiveStats(   Unit *u);
 Unit_stats Unit_effectiveGrowths( Unit *u);

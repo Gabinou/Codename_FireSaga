@@ -415,7 +415,7 @@ void Unit_lvlUp(struct Unit *unit) {
 }
 
 void Unit_agonizes(struct Unit *unit) {
-    unit->counters.agony = Unit_computeAgony(unit);
+    Unit_computeAgony(unit, &unit->counters.agony);
 }
 
 void Unit_dies(struct Unit *unit) {
@@ -556,7 +556,7 @@ Damage_Raw Unit_Shield_Protection(struct Unit *unit, i32 hand) {
     return (weapon->stats.protection);
 }
 
-Damage_Raw Unit_computeDefense(struct Unit *unit) {
+void Unit_computeDefense(struct Unit *unit, i32* def) {
     /* Reset unit protections */
     Damage_Raw protection   = {0};
     Damage_Raw bonus        = {0};
@@ -579,24 +579,22 @@ Damage_Raw Unit_computeDefense(struct Unit *unit) {
 
     /* Adding shield protection to effective stats */
     struct Unit_stats effstats = Unit_effectiveStats(unit);
-    protection.physical = Equation_Weapon_Defensevar(3,
-                                                               protection.physical,
-                                                               effstats.def,
-                                                               bonus.physical);
-    protection.magical  = Equation_Weapon_Defensevar(3,
-                                                               protection.magical,
-                                                               effstats.res,
-                                                               bonus.magical);
-    return (protection);
+    def[DMG_PHYSICAL] = Equation_Weapon_Defensevar(3,
+                                                protection.physical,
+                                                effstats.def,
+                                                bonus.physical);
+    def[DMG_MAGICAL]  = Equation_Weapon_Defensevar(3,
+                                                protection.magical,
+                                                effstats.res,
+                                                bonus.magical);
 }
 
-Damage_Raw Unit_computeAttack(struct Unit *unit, int distance) {
+void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
     SDL_assert(unit);
     struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
     SDL_assert(weapons_dtab);
     /* Reset unit attacks */
     Damage_Raw bonus        = {0};
-    Damage_Raw attack       = {0};
     Damage_Raw wpn_attack   = {0};
 
     struct Weapon *weapon;
@@ -608,9 +606,9 @@ Damage_Raw Unit_computeAttack(struct Unit *unit, int distance) {
         int id = Unit_Id_Equipped(unit, hand);
         SDL_assert(Weapon_ID_isValid(id));
         weapon   = DTAB_GET(weapons_dtab, id);
-        attack.physical += Weapon_Stat_inRange(weapon, WEAPON_STAT_pATTACK, distance);
-        attack.magical  += Weapon_Stat_inRange(weapon, WEAPON_STAT_mATTACK, distance);
-        attack.True     += Weapon_Stat_inRange(weapon, WEAPON_STAT_tATTACK, distance);
+        wpn_attack.physical += Weapon_Stat_inRange(weapon, WEAPON_STAT_pATTACK, distance);
+        wpn_attack.magical  += Weapon_Stat_inRange(weapon, WEAPON_STAT_mATTACK, distance);
+        wpn_attack.True     += Weapon_Stat_inRange(weapon, WEAPON_STAT_tATTACK, distance);
     }
 
     /* -- Twohanding -- */
@@ -625,11 +623,11 @@ Damage_Raw Unit_computeAttack(struct Unit *unit, int distance) {
     /* --- TRUE DAMAGE --- */
     /* -- FENCER SKILLS -- */
     if (TNECS_ARCHETYPE_HAS_TYPE(unit->flags.skills, UNIT_SKILL_PINPRICK))
-        attack.True += SOTA_SKILL_PINPRICK;
+        wpn_attack.True += SOTA_SKILL_PINPRICK;
     if (TNECS_ARCHETYPE_HAS_TYPE(unit->flags.skills, UNIT_SKILL_PIERCE))
-        attack.True += SOTA_SKILL_PIERCE;
+        wpn_attack.True += SOTA_SKILL_PIERCE;
     if (TNECS_ARCHETYPE_HAS_TYPE(unit->flags.skills, UNIT_SKILL_CRUSH) && Unit_istwoHanding(unit))
-        attack.True += SOTA_SKILL_CRUSH;
+        wpn_attack.True += SOTA_SKILL_CRUSH;
 
     /* -- Adding weapon attack to effective stats -- */
     struct Unit_stats effstats = Unit_effectiveStats(unit);
@@ -645,30 +643,28 @@ Damage_Raw Unit_computeAttack(struct Unit *unit, int distance) {
     }
 
     /* No attacking with only fists -> 0 attack means don't add str/mag */
-    if (attack.physical > 0) {
-        attack.physical = Equation_Weapon_Attackvar(3, attack.physical,
+    if (wpn_attack.physical > 0) {
+        attack[DMG_PHYSICAL] = Equation_Weapon_Attackvar(3, wpn_attack.physical,
                                                               effstats.str, bonus.physical);
-        attack.True = Equation_Weapon_Attackvar(2, attack.True, bonus.True);
+        attack[DMG_TRUE] = Equation_Weapon_Attackvar(2, wpn_attack.True, bonus.True);
     }
 
-    if (attack.magical > 0) {
-        attack.magical  = Equation_Weapon_Attackvar(3, attack.magical,
+    if (wpn_attack.magical > 0) {
+        attack[DMG_MAGICAL] = Equation_Weapon_Attackvar(3, wpn_attack.magical,
                                                               effstats.mag, bonus.magical);
-        attack.True = Equation_Weapon_Attackvar(2, attack.True, bonus.True);
+        attack[DMG_TRUE] = Equation_Weapon_Attackvar(2, wpn_attack.True, bonus.True);
     }
 
     /* -- DUAL WIELDING -- */
     /* Terrible malus if dual wielding without skill */
     b32 candualwield = TNECS_ARCHETYPE_HAS_TYPE(unit->flags.skills, UNIT_SKILL_DUAL_WIELD);
     if (Unit_isdualWielding(unit) && !candualwield) {
-        attack.physical /= DUAL_WIELD_NOSKILL_MALUS_FACTOR;
-        attack.magical  /= DUAL_WIELD_NOSKILL_MALUS_FACTOR;
+        attack[DMG_PHYSICAL] /= DUAL_WIELD_NOSKILL_MALUS_FACTOR;
+        attack[DMG_MAGICAL]  /= DUAL_WIELD_NOSKILL_MALUS_FACTOR;
     }
 
-    attack.total = attack.physical + attack.magical +
-                             attack.True;
+    attack[DMG_TOTAL] = attack[DMG_PHYSICAL] + attack[DMG_MAGICAL] + attack[DMG_TRUE];
 
-    return (attack);
 }
 
 b32 Unit_Equipment_Full( struct Unit *unit) {
@@ -719,7 +715,7 @@ struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance, Unit_s
     /* Weapon-dependent stats */
     if (Unit_canAttack(unit)) {
         Unit_computeHit(     unit,  distance, &computed_stats.hit);
-        Unit_computeAttack(  unit,  distance, &computed_stats.attack);
+        Unit_computeAttack(  unit,  distance, (i32*)&computed_stats.attack);
         Unit_computeCritical(unit,  distance, &computed_stats.crit);
         Unit_Range_Equipped(unit, ITEM_ARCHETYPE_WEAPON);
     }
@@ -732,25 +728,25 @@ struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance, Unit_s
     /* Distance-independent stats */
     Unit_computeMove(unit,      &computed_stats.move);
     Unit_computeAgony(unit,     &computed_stats.agony);
-    Unit_computeDefense(unit,   &computed_stats.defense);
-    Unit_computeRegrets(unit,   &computed_stats.regrets);
+    Unit_computeDefense(unit,   (i32 *)&computed_stats.protection);
+    Unit_computeRegrets(unit, &computed_stats, &unit->counters.regrets);
 
     return (computed_stats);
 }
 
 /* Add regrets to computed stats. */
-void Unit_computeRegrets(struct Unit *unit, i32 *regret) {
+void Unit_computeRegrets(struct Unit *unit, struct Computed_Stats *stats, i32 *regrets) {
     SDL_assert(unit);
     /* Pre-computation */
     i8 malus = Equation_Regrets(unit->counters.regrets, Unit_effectiveStats(unit).fth);
-    struct Computed_Stats stats = unit->computed_stats;
 
     /* Apply regrets malus to computed stats */
-    unit->computed_stats.hit   = stats.hit   > malus ? stats.hit               - malus : 0;
-    unit->computed_stats.dodge = stats.dodge > malus + INT8_MIN  ? stats.dodge - malus : INT8_MIN;
-    unit->computed_stats.crit  = stats.crit  > malus ? stats.crit              - malus : 0;
-    unit->computed_stats.favor = stats.favor > malus ? stats.favor             - malus : 0;
-    return (malus);
+    // TODO: add regrets to equation hit, crit, dodge, favor
+    stats->hit   = stats->hit   > malus ? stats->hit - malus : 0;
+    stats->dodge = stats->dodge > malus + INT8_MIN  ? stats->dodge - malus : INT8_MIN;
+    stats->crit  = stats->crit  > malus ? stats->crit - malus : 0;
+    stats->favor = stats->favor > malus ? stats->favor - malus : 0;
+    unit->counters.regrets += malus;
 }
 
 void Unit_computeHit(struct Unit *unit, int distance, i32 *hit) {
@@ -786,7 +782,7 @@ void Unit_computeHit(struct Unit *unit, int distance, i32 *hit) {
     *hit   = Equation_Unit_Hit(wpn_hit, effstats.dex, effstats.luck, bonus);
 }
 
-void Unit_computeDodge(struct Unit *unit, int distance) {
+void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {
     SDL_assert(unit);
     struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
     SDL_assert(weapons_dtab);

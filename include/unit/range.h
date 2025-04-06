@@ -13,19 +13,19 @@ struct Position;
 b32 Range_Valid(struct Range r1);
 
 // Range of a single piece of equipment, if can be equipped
-struct Range *Unit_Range_Eq(Unit *u, i32 eq, i64 archetype);
+struct Range *Unit_Range_Eq(Unit *u, i32 eq, i64 archetype, struct Range *range);
 // Range of a single piece of equipment -> CAN'T CHECK canEquip!
-struct Range *Unit_Range_Id(Unit *u, i32 id, i64 archetype);
+struct Range *Unit_Range_Id(Unit *u, i32 id, i64 archetype, struct Range *range);
 
 // Combine ranges of items currently equipped
 // Item was previously equipped, no need to check if CAN equip
-struct Range *Unit_Range_Equipped(Unit *u, i64 archetype);
+struct Range *Unit_Range_Equipped(Unit *u, i64 archetype, struct Range *range);
 
 /* Combines range of all weapons in equipment, if can be equipped */
 // - Combine ranges of all equippable equipment, assuming NO LOADOUT
 // - Combined range may no reflect actual loadout range
 //      - Ex: will combine range of two two-hand only weapons
-struct Range *Unit_Range_Equipment(Unit *u, i64 archetype);
+struct Range *Unit_Range_Equipment(Unit *u, i64 archetype, struct Range *range);
 
 b32 Unit_inRange_Loadout(struct Unit        *agg,
                          struct Position    *agg_pos,

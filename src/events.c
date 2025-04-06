@@ -940,7 +940,9 @@ void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(selected             != NULL);
     SDL_assert(sota->map->costmap   != NULL);
     Map *map = sota->map;
-    Arrow_Path_Init(map->arrow, map->costmap, Unit_computeMove(selected), cpos->tilemap_pos);
+    i32 move = 0;
+    Unit_computeMove(selected, &move);
+    Arrow_Path_Init(map->arrow, map->costmap, move, cpos->tilemap_pos);
     strncpy(sota->reason, "friendly unit was selected and can move", sizeof(sota->reason));
     Game_subState_Set(sota, GAME_SUBSTATE_MAP_UNIT_MOVES, sota->reason);
 

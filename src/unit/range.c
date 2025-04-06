@@ -29,8 +29,8 @@ b32 _Range_Archetype_Match(struct Weapon *wpn, i64 archetype) {
 }
 
 
-struct Range *Unit_Range_Id(struct Unit *unit, int id, i64 archetype) {
-    struct Range *range = &unit->computed_stats.range_equipment;
+struct Range *Unit_Range_Id(struct Unit *unit, int id, i64 archetype, struct Range *range) {
+    // struct Range *range = &unit->computed_stats.range_equipment;
     SDL_assert(range != NULL);
     *range = Range_default;
 
@@ -60,7 +60,7 @@ struct Range *Unit_Range_Id(struct Unit *unit, int id, i64 archetype) {
     return (range);
 }
 
-struct Range *Unit_Range_Eq(struct Unit *unit, i32 eq, i64 archetype) {
+struct Range *Unit_Range_Eq(struct Unit *unit, i32 eq, i64 archetype, struct Range *range) {
     SDL_assert(unit != NULL);
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
@@ -75,7 +75,7 @@ struct Range *Unit_Range_Eq(struct Unit *unit, i32 eq, i64 archetype) {
 
     if (!Unit_canEquip_AnyHand(unit, can_equip)) {
         // SDL_Log("!Unit_canEquip_AnyHand");
-        struct Range *range = &unit->computed_stats.range_equipment;
+        // struct Range *range = &unit->computed_stats.range_equipment;
         SDL_assert(range != NULL);
         *range = Range_default;
         return (range);
@@ -87,8 +87,8 @@ struct Range *Unit_Range_Eq(struct Unit *unit, i32 eq, i64 archetype) {
 /* Combines range of all weapons in equipment assuming NO LOADOUT */
 // - Combined range may no reflect actual loadout range
 //      - Ex: will combine range of two two-hand only weapons
-struct Range *Unit_Range_Equipment(Unit *unit, i64 archetype) {
-    struct Range *range = &unit->computed_stats.range_equipment;
+struct Range *Unit_Range_Equipment(Unit *unit, i64 archetype, struct Range *range) {
+    // struct Range *range = &unit->computed_stats.range_equipment;
     *range              = Range_default;
 
     for (int eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
@@ -132,8 +132,8 @@ struct Range *Unit_Range_Equipment(Unit *unit, i64 archetype) {
 
 // Combine ranges of items in current loadout
 // Item was previously equipped, no need to check if CAN equip
-struct Range *Unit_Range_Equipped(Unit *unit, i64 archetype) {
-    struct Range *range = &unit->computed_stats.range_loadout;
+struct Range *Unit_Range_Equipped(Unit *unit, i64 archetype, struct Range *range) {
+    // struct Range *range = &unit->computed_stats.range_loadout;
     *range = Range_default;
 
     for (int hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
