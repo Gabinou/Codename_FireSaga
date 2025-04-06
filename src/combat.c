@@ -63,7 +63,7 @@ struct Combat_Flow Compute_Combat_Flow(struct Unit *agg, struct Unit *dft,
     struct Combat_Flow out_flow;
     out_flow.aggressor_phases = 1;
     out_flow.defendant_phases = 0;
-    
+
     out_flow.defendant_retaliates = Combat_canAttack_Equipped(dft, dft_pos, agg_pos);
     if (out_flow.defendant_retaliates)
         out_flow.defendant_phases = 1;
@@ -94,7 +94,7 @@ struct Combat_Damage Compute_Combat_Damage(Unit *att, Unit *dfd,
                                            Computed_Stats cs_att,
                                            Computed_Stats cs_dfd) {
     SDL_assert(att && dfd);
-    i32 eff; 
+    i32 eff;
     Unit_computeEffectivefactor(att, dfd, &eff);
     i32 aap = cs_att.attack.physical;
     i32 aam = cs_att.attack.magical;

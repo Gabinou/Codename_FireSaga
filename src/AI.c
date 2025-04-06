@@ -453,7 +453,7 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
     Map_Costmap_Movement_Compute(sota->map, npc_ent);
     i32 *costmap            = sota->map->costmap;
     tnecs_entity *unitmap   = sota->map->unitmap;
-    int effective_move = 0; 
+    int effective_move = 0;
     Unit_computeMove(npc, &effective_move);
     effective_move *= sota->map->cost_multiplier;
     SDL_assert(costmap != NULL);

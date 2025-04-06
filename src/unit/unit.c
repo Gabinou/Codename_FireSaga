@@ -580,13 +580,13 @@ void Unit_computeDefense(struct Unit *unit, i32* def) {
     /* Adding shield protection to effective stats */
     struct Unit_stats effstats = Unit_effectiveStats(unit);
     def[DMG_PHYSICAL] = Equation_Weapon_Defensevar(3,
-                                                protection.physical,
-                                                effstats.def,
-                                                bonus.physical);
+                                                   protection.physical,
+                                                   effstats.def,
+                                                   bonus.physical);
     def[DMG_MAGICAL]  = Equation_Weapon_Defensevar(3,
-                                                protection.magical,
-                                                effstats.res,
-                                                bonus.magical);
+                                                   protection.magical,
+                                                   effstats.res,
+                                                   bonus.magical);
 }
 
 void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
@@ -645,13 +645,13 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
     /* No attacking with only fists -> 0 attack means don't add str/mag */
     if (wpn_attack.physical > 0) {
         attack[DMG_PHYSICAL] = Equation_Weapon_Attackvar(3, wpn_attack.physical,
-                                                              effstats.str, bonus.physical);
+                                                         effstats.str, bonus.physical);
         attack[DMG_TRUE] = Equation_Weapon_Attackvar(2, wpn_attack.True, bonus.True);
     }
 
     if (wpn_attack.magical > 0) {
         attack[DMG_MAGICAL] = Equation_Weapon_Attackvar(3, wpn_attack.magical,
-                                                              effstats.mag, bonus.magical);
+                                                        effstats.mag, bonus.magical);
         attack[DMG_TRUE] = Equation_Weapon_Attackvar(2, wpn_attack.True, bonus.True);
     }
 
@@ -717,7 +717,7 @@ struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance, Unit_s
         Unit_computeHit(     unit,  distance, &computed_stats.hit);
         Unit_computeAttack(  unit,  distance, (i32*)&computed_stats.attack);
         Unit_computeCritical(unit,  distance, &computed_stats.crit);
-        Unit_Range_Equipped(unit, ITEM_ARCHETYPE_WEAPON);
+        Unit_Range_Equipped(unit, ITEM_ARCHETYPE_WEAPON, &computed_stats.range_loadout);
     }
 
     /* Distance-dependent stats */
@@ -813,13 +813,12 @@ void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {
     }
 
     struct Unit_stats effstats = Unit_effectiveStats(unit);
-    unit->computed_stats.dodge = Equation_Unit_Dodge(wpn_wgt, wpn_dodge, effstats.luck,
-                                                     effstats.fth, effstats.agi, effstats.str,
-                                                     effstats.con, tile_dodge, bonus);
-    return (unit->computed_stats.dodge);
+    *dodge = Equation_Unit_Dodge(wpn_wgt, wpn_dodge, effstats.luck,
+                                 effstats.fth, effstats.agi, effstats.str,
+                                 effstats.con, tile_dodge, bonus);
 }
 
-void Unit_computeCritical(struct Unit *unit, int distance) {
+void Unit_computeCritical(struct Unit *unit, int distance, i32 *crit) {
     SDL_assert(unit);
     struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
     SDL_assert(weapons_dtab);
@@ -848,11 +847,10 @@ void Unit_computeCritical(struct Unit *unit, int distance) {
     }
 
     struct Unit_stats effstats = Unit_effectiveStats(unit);
-    unit->computed_stats.crit = Equation_Unit_Crit(wpn_crit, effstats.dex, effstats.luck, bonus);
-    return (unit->computed_stats.crit);
+    *crit = Equation_Unit_Crit(wpn_crit, effstats.dex, effstats.luck, bonus);
 }
 
-void Unit_computeFavor(struct Unit *unit, int distance) {
+void Unit_computeFavor(struct Unit *unit, int distance, i32 *favor) {
     SDL_assert(unit);
     struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
     SDL_assert(weapons_dtab);
@@ -880,11 +878,10 @@ void Unit_computeFavor(struct Unit *unit, int distance) {
     }
 
     struct Unit_stats effstats = Unit_effectiveStats(unit);
-    unit->computed_stats.favor = Equation_Unit_Favor(wpn_favor, effstats.fth, bonus);
-    return (unit->computed_stats.favor);
+    *favor = Equation_Unit_Favor(wpn_favor, effstats.fth, bonus);
 }
 
-void Unit_computeAgony(struct Unit *unit) {
+void Unit_computeAgony(struct Unit *unit, i32 *agony) {
     SDL_assert(unit);
     struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
     SDL_assert(weapons_dtab);
@@ -898,11 +895,10 @@ void Unit_computeAgony(struct Unit *unit) {
     }
 
     struct Unit_stats effstats = Unit_effectiveStats(unit);
-    unit->computed_stats.agony = Equation_Agony_Turns(effstats.str, effstats.def, effstats.con, bonus);
-    return (unit->computed_stats.agony);
+    *agony = Equation_Agony_Turns(effstats.str, effstats.def, effstats.con, bonus);
 }
 
-void Unit_computeSpeed(struct Unit *unit, int distance) {
+void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
     SDL_assert(unit);
     struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
     SDL_assert(weapons_dtab);
@@ -935,19 +931,16 @@ void Unit_computeSpeed(struct Unit *unit, int distance) {
     // if (TNECS_ARCHETYPE_HAS_TYPE(unit->flags.skills, UNIT_SKILL_)) {
     // TODO: compute effective_weight
     struct Unit_stats fstats = Unit_effectiveStats(unit);
-    unit->computed_stats.speed = Equation_Unit_Speed(wpn_wgt, fstats.agi,
-                                                     fstats.con, fstats.str,
-                                                     bonus);
-    return (unit->computed_stats.speed);
+    *speed = Equation_Unit_Speed(wpn_wgt, fstats.agi,
+                                 fstats.con, fstats.str,
+                                 bonus);
 }
 
-void Unit_computeMove(struct Unit *unit) {
+void Unit_computeMove(struct Unit *unit, i32 *move) {
     SDL_assert(unit);
-    i8 move = Unit_effectiveStats(unit).move;
+    *move = Unit_effectiveStats(unit).move;
     if (unit->mount.ptr != NULL)
-        move = MOVE_WITH_MOUNT;
-    unit->computed_stats.move = move;
-    return (unit->computed_stats.move);
+        *move = MOVE_WITH_MOUNT;
 }
 
 /* --- I/O --- */
@@ -1177,8 +1170,7 @@ void Unit_writeJSON(void *input, cJSON *junit) {
 void Unit_computeEffectivefactor(struct Unit *attacker, struct Unit *defender, i32 *factor) {
     SDL_assert(attacker);
     SDL_assert(defender);
-    i32 effective = NOTEFFECTIVE_FACTOR;
-    return (effective);
+    *factor = NOTEFFECTIVE_FACTOR;
 }
 
 /* Compute Brave factor, c-a-d combat attack multiplier in all combat phases

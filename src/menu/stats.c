@@ -1107,7 +1107,8 @@ static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Rend
     PixelFont_Write(stats_menu->pixelnours, renderer, "DEF", 3, x, y);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats.protection.physical);
     width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
-    stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats.protection.physical, computed_stats.protection.magical);
+    stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats.protection.physical,
+                  computed_stats.protection.magical);
     x = PROT_X_OFFSET_STAT1 - width, y = PROT_Y_OFFSET_STAT1;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
