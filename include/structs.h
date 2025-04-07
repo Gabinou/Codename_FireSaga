@@ -745,6 +745,7 @@ struct Unit_IDs {
 };
 
 struct Unit_Statuses {
+    // TODO: remove. Statuses should be components.
     struct Unit_status *queue;
 };
 
@@ -792,7 +793,7 @@ typedef struct Unit {
     struct Unit_Stats_Bundle    stats;
     struct Unit_Counters        counters;
     struct Unit_Mount           mount;
-    struct Unit_Statuses        statuses;
+    struct Unit_Statuses        statuses; // TODO: rm
 } Unit;
 extern const struct Unit Unit_default;
 
