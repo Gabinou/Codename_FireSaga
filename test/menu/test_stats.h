@@ -71,7 +71,7 @@ void test_menu_stats() {
     SDL_assert(Unit_isEquipped(&Silou, weakhand));
     nourstest_true(Unit_canAttack(&Silou));
     Unit_stats ES_S = Unit_effectiveStats(&Silou);
-    Unit_computedStats(&Silou, -1, ES_S);
+    Computed_Stats cs_S = Unit_computedStats(&Silou, -1, ES_S);
 
     StatsMenu_Load(sm, &Silou, renderer, &n9patch);
 
@@ -85,37 +85,37 @@ void test_menu_stats() {
     /* -- Capped stats -- */
     Unit_Cap_Stats(&Silou);
     ES_S = Unit_effectiveStats(&Silou);
-    Unit_computedStats(&Silou, -1, ES_S);
+    cs_S = Unit_computedStats(&Silou, -1, ES_S);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Capped.png"), renderer, sm->texture,
                             SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Half stats -- */
     Unit_HalfCap_Stats(&Silou);
-    Unit_computedStats(&Silou, -1, ES_S);
-    Unit_effectiveStats(&Silou);
+    ES_S = Unit_effectiveStats(&Silou);
+    cs_S = Unit_computedStats(&Silou, -1, ES_S);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_HalfCapped.png"), renderer, sm->texture,
                             SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* --- Computed Stats --- */
     /* - Hit single digits - */
-    Silou.computed_stats.hit    = 1;
-    Silou.computed_stats.dodge  = 8;
+    cs_S.hit    = 1;
+    cs_S.dodge  = 8;
     /* - Crit single digits - */
-    Silou.computed_stats.crit   = 2;
-    Silou.computed_stats.favor  = 9;
+    cs_S.crit   = 2;
+    cs_S.favor  = 9;
     /* - Speed single digits - */
-    Silou.computed_stats.speed  = 3;
+    cs_S.speed  = 3;
     /* - Attack single digits - */
-    Silou.computed_stats.attack.physical       = 4;
-    Silou.computed_stats.attack.magical        = 5;
+    cs_S.attack.physical       = 4;
+    cs_S.attack.magical        = 5;
     /* - Prot single digits - */
-    Silou.computed_stats.protection.physical   = 6;
-    Silou.computed_stats.protection.magical    = 7;
+    cs_S.protection.physical   = 6;
+    cs_S.protection.magical    = 7;
     /* - Range single digits - */
-    Silou.computed_stats.range_loadout.min = 1;
-    Silou.computed_stats.range_loadout.max = 2;
+    cs_S.range_loadout.min = 1;
+    cs_S.range_loadout.max = 2;
     /* - Regret single digits - */
 
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
@@ -123,19 +123,19 @@ void test_menu_stats() {
                             SDL_PIXELFORMAT_ARGB8888, render_target);
     /* --- Computed Stats --- */
     /* - Hit double digits - */
-    Silou.computed_stats.hit    = 10;
-    Silou.computed_stats.dodge  = 80;
+    cs_S.hit    = 10;
+    cs_S.dodge  = 80;
     /* - Crit double digits - */
-    Silou.computed_stats.crit   = 20;
-    Silou.computed_stats.favor  = 90;
+    cs_S.crit   = 20;
+    cs_S.favor  = 90;
     /* - Speed double digits - */
-    Silou.computed_stats.speed  = 30;
+    cs_S.speed  = 30;
     /* - Attack double digits - */
-    Silou.computed_stats.attack.physical       = 40;
-    Silou.computed_stats.attack.magical        = 50;
+    cs_S.attack.physical       = 40;
+    cs_S.attack.magical        = 50;
     /* - Prot double digits - */
-    Silou.computed_stats.protection.physical   = 60;
-    Silou.computed_stats.protection.magical    = 70;
+    cs_S.protection.physical   = 60;
+    cs_S.protection.magical    = 70;
     /* - Regret double digits - */
 
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
@@ -143,18 +143,18 @@ void test_menu_stats() {
                             SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - Hit triple digits - */
-    Silou.computed_stats.hit    = 100;
-    Silou.computed_stats.dodge  = 100;
+    cs_S.hit    = 100;
+    cs_S.dodge  = 100;
     /* - Crit triple digits - */
-    Silou.computed_stats.crit   = 100;
-    Silou.computed_stats.favor  = 100;
+    cs_S.crit   = 100;
+    cs_S.favor  = 100;
     /* - Regret triple digits - */
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Digits_3.png"), renderer, sm->texture,
                             SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - Attack double digits - */
-    Silou.computed_stats.attack.True = 9;
+    cs_S.attack.True = 9;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Digits_4.png"), renderer, sm->texture,
                             SDL_PIXELFORMAT_ARGB8888, render_target);

@@ -202,9 +202,9 @@ struct Combat_Forecast Compute_Combat_Forecast(struct Unit  *agg,
     struct Unit_stats eff_dft       = Unit_effectiveStats(dft);
     struct Computed_Stats cs_agg    = Unit_computedStats(agg, distance, eff_agg);
     struct Computed_Stats cs_dft    = Unit_computedStats(dft, distance, eff_dft);
+    out.stats.agg_stats             = cs_agg;
+    out.stats.dft_stats             = cs_dft;
 
-    out.stats.agg_stats         = cs_agg;
-    out.stats.dft_stats         = cs_dft;
     out.flow = Compute_Combat_Flow(agg, dft, cs_agg, cs_dft, agg_pos, dft_pos);
     out.stats.agg_rates         = Compute_Combat_Rates(cs_agg, cs_dft);
     out.stats.agg_damage        = Compute_Combat_Damage(agg, dft, cs_agg, cs_dft);
