@@ -16,13 +16,13 @@ typedef int32_t b32;
 /* --- Pascal String s8 strings --- */
 // - String concatenation
 // - Assignment copiable
-//      - Can't use flexible array member (FAM) for that.
+//      - Can't use flexible array member (FAM).
 //        User would need to malloc and memcpy.
 
 typedef struct s8 {
-    u8      *data;
-    size_t   len; /* allocated */
-    size_t   num;
+    u8      *data;  /* First element -> &s8 == &s8.data */
+    size_t   len;   /* allocated */
+    size_t   num;   /* used, < len*/
 } s8;
 
 /* -- Utilities -- */

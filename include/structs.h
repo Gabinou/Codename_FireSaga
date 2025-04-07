@@ -749,21 +749,32 @@ struct Unit_Statuses {
 };
 
 typedef struct Unit {
-    // TODO: unit design:
-    //  - Stats values inside unit class are CONSTANT?
-    //      - Any stat modified by equipments, supports, skills is output from FUNCTIONS
-    //  - e.g. Unit_Equipped_Bonus_Stats
-    //  - e.g. Unit_Support_Bonus_Stats
-    //  - e.g. Unit_Computed_Stats
-    //      - should not be kept in memory in unit!
-    //      - Those values ALWAYS CHANGE DUE TO GAME STATE
-    //      - SO DON'T KEEP THEM IN MEMORY (in struct)
-    //      - Put it "out of band".
-    // Keep same design of:
-    //  - base_stats,
-    //  - current_stats = base_stats + grown_stats
-    //  - effective_stats = current_stats + bonus_stats
-    //  - func(effective_stats, supports, bonus_computed_stats) -> computed_stats
+    /* ---------------------- Unit --------------------- */
+    /*  Represents characters occupying tiles on a map.
+    /*  Units, move, equip weapons, get afflicted with
+    /*  statuses, fight, ride mounts, agonize, die...
+    /*
+    /*  # Design
+    /*  ## Stats inside unit struct are *constant*
+    /*  - DO NOT put stats that depend on game state in unit
+    /*      - Those are variable stats
+    /*  - base_stats, current_stats do not depend on unit
+    /*    equipment, neighboring units, auras... -> unit member
+    /*  - Always compute variable stats by inputting game state:
+    /*      - effective_stats, computed_stats
+    /*  ## Record indices, not pointers
+    /*  - Centralize data into external arrays
+    /*      - Ex: all possible names in *global_unitNames*
+    /*  - "Out of band": smaller struct
+    /*  - Fewer dynamic allocs, fewer frees
+    /*  - Less fragmentation. Faster?
+
+    /*  # Terminology
+    /*  - base_stats
+    /*  - current_stats     = base_stats + grown_stats
+    /*  - effective_stats   = current_stats + bonuses
+    /*  - computed_stats    = func(effective_stats, supports, bonuses)
+    */
 
     struct jsonIO_Header jsonio_header;
 
