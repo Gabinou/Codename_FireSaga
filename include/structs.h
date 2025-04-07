@@ -659,10 +659,6 @@ struct Unit_Flags {
 struct Unit_Growth {
     /* Growths */
     struct Unit_stats rates;
-    // TODO rm, should be a func
-    struct Unit_stats bonus;
-    // TODO rm, should be a func
-    struct Unit_stats effective;
     struct Unit_stats *grown;
 };
 
@@ -692,8 +688,6 @@ struct Unit_Equipment {
     // struct Loadout _equipped;
     i32 _equipped[UNIT_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
-    // TODO: all equipment stuff in a struct
-    // _equipment
     struct Inventory_item arr[SOTA_EQUIPMENT_SIZE];
     i32 num;
 };

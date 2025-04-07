@@ -202,7 +202,7 @@ void test_menu_growths() {
     // Silou.support_bonus.protection.physical = 8;
     // Silou.support_bonus.protection.magical = 9;
     /* - Move - */
-    Silou.growth.effective.move = 1;
+    // Silou.growth.effective.move = 1;
 
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Digits_1.png"), renderer,
@@ -224,7 +224,7 @@ void test_menu_growths() {
     // Silou.support_bonus.protection.physical = 80;
     // Silou.support_bonus.protection.magical = 90;
     /* - Move - */
-    Silou.growth.effective.move = 23;
+    // Silou.growth.effective.move = 23;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Digits_2.png"), renderer,
                             gm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);

@@ -1245,11 +1245,11 @@ void Unit_HalfCap_Stats(struct Unit *unit) {
 }
 
 struct Unit_stats Unit_effectiveGrowths(struct Unit *unit) {
-    // TODO: compute bonuses dynamically
+    // TODO:
+    //  1. Compute bonuses dynamically from bonus_stack
+    //  2. Add them to a new struct Unit_stats
     SDL_assert(unit);
-    unit->growth.effective = unit->growth.rates;
-    Unit_stats_plus(unit->growth.bonus, unit->growth.effective);
-    return (unit->growth.effective);
+    return (unit->growth.rates);
 }
 
 struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
