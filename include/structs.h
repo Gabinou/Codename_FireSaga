@@ -629,14 +629,7 @@ struct Unit_Sequence {
     struct RNG_Sequence prof;
 };
 
-
 /* --- UNIT --- */
-struct Support {
-    u16 other_id;
-    u16 other_type;
-    i8 level;
-};
-
 struct Unit_Flags {
     b32 sex;            /* 0:F, 1:M. eg. hasPenis. */
     b32 waits;
@@ -657,7 +650,6 @@ struct Unit_Flags {
 };
 
 struct Unit_Growth {
-    /* Growths */
     struct Unit_stats rates;
     struct Unit_stats *grown;
 };
@@ -673,6 +665,12 @@ struct Unit_Render {
     i8 user_rangemap; /* reset to NULL when equipment changes */
 };
 
+struct Support {
+    u16 other_id;
+    u16 other_type;
+    i8 level;
+};
+
 struct Unit_Support {
     struct Support arr[SOTA_MAX_SUPPORTS];
     u16 type;
@@ -684,12 +682,13 @@ struct Unit_Equipment {
     struct dtab *weapons_dtab;
     struct dtab *items_dtab;
 
+    struct Inventory_item arr[SOTA_EQUIPMENT_SIZE];
+    i32 num;
+
     // TODO: replace raw _equipped with:
     // struct Loadout _equipped;
     i32 _equipped[UNIT_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
-    struct Inventory_item arr[SOTA_EQUIPMENT_SIZE];
-    i32 num;
 };
 
 struct Unit_canEquip {
@@ -713,6 +712,7 @@ struct Unit_Stats_Bundle {
     struct Unit_stats caps;
     struct Unit_stats bases;
     struct Unit_stats current; /* Only changes on levelup */
+    
     /* Rather than checking every unit, enemy, skill, aura...
        Bonuses track if their conditions are met themselves.
     */
