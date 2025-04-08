@@ -319,7 +319,7 @@ i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_entity unit_ent) {
     struct Tile *temp_tile;
     i32 tile_ind = 0;
     i8 unit_movetype = unit->flags.mvt_type;
-    u8 army = unit->id.army;
+    u8 army = Unit_Army(unit);
     u8 ontile_army;
     tnecs_entity ontile_unit_ent;
     SDL_assert(unit_movetype > UNIT_MVT_START);

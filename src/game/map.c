@@ -402,7 +402,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         Map_Unit_Put(sota->map, position->tilemap_pos.x, position->tilemap_pos.y, temp_unit_ent);
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
 
-        SDL_assert(unit->id.army == reinf->army);
+        SDL_assert(Unit_Army(unit) == reinf->army);
         SDL_assert(global_unitNames[*(u64 *)dtab_get(global_unitOrders, Unit_id(unit))].data != NULL);
     }
     sota->map->reinf_loaded = sota->map->turn;

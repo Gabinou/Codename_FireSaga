@@ -582,7 +582,7 @@ void AI_State_Init(struct AI_State *ai_state, tnecs_world *world, struct Map *ma
         if (Unit_isWaiting(unit))
             continue;
 
-        if (unit->id.army == army)
+        if (Unit_Army(unit) == army)
             DARR_PUT(ai_state->npcs, npc_ent);
     }
 }

@@ -216,6 +216,7 @@ i16 Unit_id(struct Unit *unit) {
     }
     return (unit->id.self);
 }
+
 void Unit_setid(struct Unit *unit, i16 id) {
     SDL_assert(unit != NULL);
     SDL_assert(Unit_ID_Valid(id));

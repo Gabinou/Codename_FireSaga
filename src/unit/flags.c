@@ -53,7 +53,7 @@ i32 Unit_Current_Regrets(const Unit *unit) {
     return (unit->counters.regrets);
 }
 i32 Unit_Army(const Unit *unit) {
-    return (unit->id.army);
+    return (Unit_Army(unit));
 }
 i32 Unit_Class(const Unit *unit) {
     return (unit->id.class);
