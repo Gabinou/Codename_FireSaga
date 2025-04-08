@@ -36,7 +36,7 @@ void test_aura_apply(int argc, char *argv[]) {
     tnecs_entity ent = sota->party.entities[UNIT_ID_ERWIN];
     struct Unit *erwin = IES_GET_COMPONENT(sota->world, ent, Unit);
 
-    erwin->id.class = UNIT_CLASS_STANDARD_BEARER;
+    Unit_Class_set(erwin, UNIT_CLASS_STANDARD_BEARER);
     SDL_assert(ent > TNECS_NULL);
     Map_Unit_Put(sota->map, pos.x, pos.y, ent);
 
@@ -168,7 +168,7 @@ void test_aura_decay(int argc, char *argv[]) {
     struct Point pos = {4, 4};
     Game_Party_Entity_Create(sota, id = UNIT_ID_ERWIN, pos, &Unit_default);
     struct Unit *erwin = IES_GET_COMPONENT(sota->world, sota->party.entities[id], Unit);
-    erwin->id.class = UNIT_CLASS_STANDARD_BEARER;
+    Unit_Class_set(erwin, UNIT_CLASS_STANDARD_BEARER);
     ent = sota->party.entities[id];
     Map_Unit_Put(sota->map, pos.x, pos.y, ent);
     SDL_assert(sota->party.entities[id] > TNECS_NULL);
@@ -371,7 +371,7 @@ void test_aura_fsm(int argc, char *argv[]) {
     struct Point pos = {4, 4};
     Game_Party_Entity_Create(sota, id = UNIT_ID_ERWIN, pos, &Unit_default);
     struct Unit *erwin = IES_GET_COMPONENT(sota->world, sota->party.entities[id], Unit);
-    erwin->id.class = UNIT_CLASS_STANDARD_BEARER;
+    Unit_Class_set(erwin, UNIT_CLASS_STANDARD_BEARER);
     ent = sota->party.entities[id];
     Map_Unit_Put(sota->map, pos.x, pos.y, ent);
     SDL_assert(sota->party.entities[id] > TNECS_NULL);

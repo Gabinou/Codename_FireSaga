@@ -355,8 +355,8 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
         /* - Default ai - */
         if (!AI_ID_isvalid(Unit_AI(unit)))
-            unit->id.ai = AI_DEFAULT;
-
+            Unit_AI_set(unit, AI_DEFAULT);
+        SDL_assert(AI_ID_isvalid(Unit_AI(unit)));
         s8 ai_filename = AI_ID_isvalid(reinf->ai_id) ? AI_filename(reinf->ai_id) : AI_filename(Unit_AI(
                                  unit));
         ai_path = s8cat(ai_path, ai_filename);

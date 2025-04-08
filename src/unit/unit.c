@@ -197,7 +197,7 @@ void Unit_Free(struct Unit *unit) {
     }
     if (unit->jsonio_header.json_filename.data != NULL)
         s8_free(&unit->jsonio_header.json_filename);
-    unit->id.self = 0;
+    Unit_id_set(unit, UNIT_NULL);
 }
 
 void Unit_InitWweapons(struct Unit *unit, struct dtab *weapons_dtab) {
@@ -206,13 +206,12 @@ void Unit_InitWweapons(struct Unit *unit, struct dtab *weapons_dtab) {
 }
 
 void Unit_Reinforcement_Load(struct Unit *unit, struct Reinforcement *reinf) {
-    unit->id.army = reinf->army;
+    Unit_Army_set(unit, reinf->army);
 }
 
 void Unit_id_set(struct Unit *unit, i16 id) {
     if (unit == NULL)
         return;
-    SDL_assert(Unit_ID_Valid(id));
     unit->id.self = id;
 }
 
@@ -231,12 +230,13 @@ void Unit_setSkills(struct Unit *unit, u64 skills) {
 void Unit_setClassind(struct Unit *unit, i8 class_index) {
     SDL_assert(unit);
     SDL_assert((class_index > 0) && (class_index < UNIT_CLASS_END));
-    unit->id.class          = class_index;
+    Unit_Class_set(unit, class_index);
+    i32 class = Unit_Class(unit);
     unit->flags.mvt_type    = Unit_mvtType(unit);
-    unit->flags.equippable  = class_equippables[unit->id.class];
+    unit->flags.equippable  = class_equippables[class];
 
-    b32 healclass   = (unit->id.class == UNIT_CLASS_BISHOP);
-    healclass      |= (unit->id.class == UNIT_CLASS_CLERIC);
+    b32 healclass   = (class == UNIT_CLASS_BISHOP);
+    healclass      |= (class == UNIT_CLASS_CLERIC);
 
     Unit_Rangemap_default(unit);
 }
@@ -258,7 +258,7 @@ void Unit_setBases(struct Unit *unit, struct Unit_stats stats) {
 
 /* --- Second-order info --- */
 u8 Unit_mvtType( struct Unit *unit) {
-    return (class_mvt_types[unit->id.class]);
+    return (class_mvt_types[Unit_Class(unit)]);
 }
 
 u8 SotA_army2alignment(u8 army) {
@@ -431,7 +431,7 @@ b32 Unit_canCarry(struct Unit *savior, struct Unit *victim) {
 }
 
 b32 Unit_canDance(struct Unit *unit) {
-    b32 out = (unit->id.class == UNIT_CLASS_DANCER);
+    b32 out = (Unit_Class(unit) == UNIT_CLASS_DANCER);
     return (out);
 }
 
@@ -1009,22 +1009,22 @@ void Unit_readJSON(void *input,  cJSON *junit) {
     char *ai_filename   = cJSON_GetStringValue(jai);
     if (ai_filename != NULL) {
         s8 s8_ai_filename  = s8_var(ai_filename);
-        unit->id.ai   = AI_Name2ID(s8_ai_filename);
+        Unit_AI_set(unit, AI_Name2ID(s8_ai_filename));
     }
-    u64 order = *(u64 *)DTAB_GET(global_unitOrders, unit->id.self);
+    u64 order = *(u64 *)DTAB_GET(global_unitOrders, Unit_id(unit));
     s8 idname = global_unitNames[order];
 
     if (!s8equal(global_unitNames[order], s8_var(json_name))) {
         SDL_LogError(SOTA_LOG_SYSTEM,
                      "Name in unit filename '%s' does not match id name %d->'%s'",
-                     json_name, unit->id.self, idname.data);
+                     json_name, Unit_id(unit), idname.data);
         SDL_assert(false);
         exit(ERROR_JSONParsingFailed);
     }
 
     // SDL_Log("-- startup misc --");
     unit->flags.sex         = cJSON_IsTrue(jsex);
-    unit->id.army           = cJSON_GetNumberValue(jarmy);
+    Unit_Army_set(unit, cJSON_GetNumberValue(jarmy));
     unit->level.exp         = cJSON_GetNumberValue(jexp);
     unit->level.base_exp    = cJSON_GetNumberValue(jbase_exp);
     Unit_setClassind(unit, cJSON_GetNumberValue(jclass_index));

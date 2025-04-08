@@ -1,4 +1,5 @@
 
+
 #include "unit/flags.h"
 #include "unit/unit.h"
 
@@ -84,18 +85,28 @@ i32 Unit_Army(const Unit *unit) {
         return (0);
     return (unit->id.army);
 }
+void Unit_Army_set(Unit *unit, i32 army) {
+    if (unit == NULL)
+        return;
+    unit->id.army = army;
+}
 i32 Unit_Class(const Unit *unit) {
     if (unit == NULL)
         return (0);
     return (unit->id.class);
+}
+void Unit_Class_set(Unit *unit, i32 class) {
+    if (unit == NULL)
+        return;
+    unit->id.class = class;
 }
 i32 Unit_AI(const Unit *unit) {
     if (unit == NULL)
         return (0);
     return (unit->id.ai);
 }
-void Unit_AI_set(const Unit *unit, i32 ai) {
+void Unit_AI_set(Unit *unit, i32 ai) {
     if (unit == NULL)
         return;
-    unit->id.ai;
+    unit->id.ai = ai;
 }

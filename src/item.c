@@ -236,7 +236,7 @@ b32 Item_canUse(struct Item *item,  struct Unit *unit) {
     } else {
         /* Check if unit is user */
         for (size_t i = 0; i < DARR_NUM(item->users); i++) {
-            if (unit->id.self == item->users[i]) {
+            if (Unit_id(unit) == item->users[i]) {
                 is_user = true;
                 break;
             }
@@ -250,7 +250,7 @@ b32 Item_canUse(struct Item *item,  struct Unit *unit) {
     } else {
         /* Check if unit is user */
         for (size_t i = 0; i < DARR_NUM(item->classes); i++) {
-            if (unit->id.class == item->classes[i]) {
+            if (Unit_Class(unit) == item->classes[i]) {
                 is_class = true;
                 break;
             }
