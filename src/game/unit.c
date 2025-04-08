@@ -200,7 +200,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     }
 
     if ((Unit_Class(unit) == UNIT_CLASS_VESTAL) || (Unit_Class(unit) == UNIT_CLASS_PRIEST)) {
-        unit->render.rangemap = RANGEMAP_HEALMAP;
+        Unit_Rangemap_set(unit, RANGEMAP_HEALMAP);
     }
 
     // SDL_Log("-- loading slider --");

@@ -39,8 +39,13 @@ struct Range _Ranges_Combine(struct Range  r1, struct Range r2);
 b32 _Range_Archetype_Match(struct Weapon    *wpn, i64 archetype);
 
 /* --- Rangemap --- */
-int  Unit_Rangemap_Get(      struct Unit *u);
-void Unit_RangeMap_Act_Toggle(   struct Unit *u);
-void Unit_Rangemap_default(  struct Unit *u);
+int  Unit_Rangemap(             Unit *u);
+int  Unit_User_Rangemap(        Unit *u);
+void Unit_Rangemap_set(         Unit *u, int rangemap);
+void Unit_User_Rangemap_set(    Unit *u, int rangemap);
+
+int  Unit_Rangemap_Get(         Unit *u);
+void Unit_Rangemap_default(     Unit *u);
+void Unit_RangeMap_Act_Toggle(  Unit *u);
 
 #endif /* UNIT_RANGE_H */

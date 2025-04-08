@@ -217,9 +217,31 @@ struct Range _Ranges_Combine(struct Range r1, struct Range r2) {
 
 /* --- Rangemap --- */
 int Unit_Rangemap_Get(struct Unit *unit) {
+    if (unit == NULL)
+        return(0);
     int rangemap = unit->render.user_rangemap > RANGEMAP_NULL ? unit->render.user_rangemap :
                    unit->render.rangemap;
     return (rangemap);
+}
+int  Unit_Rangemap(             Unit *u) {
+    if (unit == NULL)
+        return(0);
+    return(unit->render.rangemap);
+}
+int  Unit_User_Rangemap(        Unit *u) {
+    if (unit == NULL)
+        return(0);
+    return(unit->render.user_rangemap);
+}
+void Unit_Rangemap_set(         Unit *u, int rangemap) {
+    if (unit == NULL)
+        return;
+    unit->render.rangemap = rangemap;
+}
+void Unit_User_Rangemap_set(    Unit *u, int rangemap) {
+    if (unit == NULL)
+        return;
+    unit->render.user_rangemap = rangemap;
 }
 
 void Unit_RangeMap_Act_Toggle(struct Unit *unit) {

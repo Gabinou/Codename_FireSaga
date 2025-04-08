@@ -607,7 +607,7 @@ extern const struct Combat_Outcome Combat_Outcome_default;
 struct RNG_Sequence { /* Sequence of hits/misses in a row */
     b32 hit; /* 0 if sequence of misses, 1 of hits */
     i8 len;
-    i8 eff_rate;
+    i8 eff_rate; // TODO RM
 };
 
 struct Unit_Sequence {
