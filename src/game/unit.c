@@ -4,6 +4,7 @@
 #include "unit/equipment.h"
 #include "unit/unit.h"
 #include "unit/flags.h"
+#include "unit/range.h"
 #include "unit/loadout.h"
 #include "nmath.h"
 #include "map/map.h"

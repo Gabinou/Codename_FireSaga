@@ -218,27 +218,28 @@ struct Range _Ranges_Combine(struct Range r1, struct Range r2) {
 /* --- Rangemap --- */
 int Unit_Rangemap_Get(struct Unit *unit) {
     if (unit == NULL)
-        return(0);
-    int rangemap = unit->render.user_rangemap > RANGEMAP_NULL ? unit->render.user_rangemap :
-                   unit->render.rangemap;
+        return (0);
+    i32 user_rangemap = Unit_User_Rangemap(unit);
+    i32 rangemap = Unit_Rangemap(unit);
+    int out = user_rangemap > RANGEMAP_NULL ? user_rangemap : rangemap;
     return (rangemap);
 }
-int  Unit_Rangemap(             Unit *u) {
+int  Unit_Rangemap(Unit *unit) {
     if (unit == NULL)
-        return(0);
-    return(unit->render.rangemap);
+        return (0);
+    return (unit->render.rangemap);
 }
-int  Unit_User_Rangemap(        Unit *u) {
+int  Unit_User_Rangemap(Unit *unit) {
     if (unit == NULL)
-        return(0);
-    return(unit->render.user_rangemap);
+        return (0);
+    return (unit->render.user_rangemap);
 }
-void Unit_Rangemap_set(         Unit *u, int rangemap) {
+void Unit_Rangemap_set(Unit *unit, int rangemap) {
     if (unit == NULL)
         return;
     unit->render.rangemap = rangemap;
 }
-void Unit_User_Rangemap_set(    Unit *u, int rangemap) {
+void Unit_User_Rangemap_set(Unit *unit, int rangemap) {
     if (unit == NULL)
         return;
     unit->render.user_rangemap = rangemap;
@@ -248,26 +249,24 @@ void Unit_RangeMap_Act_Toggle(struct Unit *unit) {
     SDL_assert((unit->render.rangemap > RANGEMAP_NULL) && (unit->render.rangemap < RANGEMAP_NUM));
 
     /* Set user_rangemap to default */
-    if (unit->render.user_rangemap == RANGEMAP_NULL)
-        unit->render.user_rangemap = unit->render.rangemap;
+    if (Unit_User_Rangemap(unit) == RANGEMAP_NULL)
+        Unit_User_Rangemap_set(unit, Unit_Rangemap(unit));
 
     /* Toggle only if hasStaff or canAttack with equipment*/
     b32 toggle = false;
-    toggle |= Unit_canAttack_Eq(unit) && (unit->render.user_rangemap == RANGEMAP_HEALMAP);
-    toggle |= Unit_canStaff_Eq(unit)  && (unit->render.user_rangemap == RANGEMAP_ATTACKMAP);
+    toggle |= Unit_canAttack_Eq(unit) && (Unit_User_Rangemap(unit) == RANGEMAP_HEALMAP);
+    toggle |= Unit_canStaff_Eq(unit)  && (Unit_User_Rangemap(unit) == RANGEMAP_ATTACKMAP);
 
     /* user_rangemap not set previously, reverse rangemap */
     // RANGEMAP_NUM - RANGEMAP_ATTACKMAP == RANGEMAP_HEALMAP and vice versa!
     //      3       -         2          ==        1
     //      3       -         1          ==        2
     if (toggle)
-        unit->render.user_rangemap = RANGEMAP_NUM - unit->render.user_rangemap;
+        Unit_User_Rangemap_set(unit, RANGEMAP_NUM - Unit_User_Rangemap(unit));
 
 }
 
 void Unit_Rangemap_default(struct Unit *unit) {
-    int rangemap = unit->render.user_rangemap > RANGEMAP_NULL ? unit->render.user_rangemap :
-                   unit->render.rangemap;
     // Compute default rangemap priority
 
     /* Sota default for class (healer staff) */
@@ -276,8 +275,8 @@ void Unit_Rangemap_default(struct Unit *unit) {
         (class == UNIT_CLASS_BISHOP) ||
         (class == UNIT_CLASS_CLERIC) ||
         (class == UNIT_CLASS_ORACLE)) {
-        unit->render.rangemap = RANGEMAP_HEALMAP;
+        Unit_Rangemap_set(unit, RANGEMAP_HEALMAP);
     } else {
-        unit->render.rangemap = RANGEMAP_ATTACKMAP;
+        Unit_Rangemap_set(unit, RANGEMAP_ATTACKMAP);
     }
 }
