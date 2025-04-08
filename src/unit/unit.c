@@ -939,8 +939,9 @@ void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
 void Unit_computeMove(struct Unit *unit, i32 *move) {
     SDL_assert(unit);
     *move = Unit_effectiveStats(unit).move;
-    if (unit->mount.ptr != NULL)
-        *move = MOVE_WITH_MOUNT;
+    // TODO: compute move with mounts
+    // if (unit->mount.ptr != NULL)
+    // *move = MOVE_WITH_MOUNT;
 }
 
 /* --- I/O --- */
@@ -1273,8 +1274,8 @@ struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
     }
 
     /* Add Mount move */
-    if (unit->mount.ptr != NULL)
-        effective.move = unit->mount.ptr->move;
+    // if (unit->mount.ptr != NULL)
+    //     effective.move = unit->mount.ptr->move;
 
     return (effective);
 }

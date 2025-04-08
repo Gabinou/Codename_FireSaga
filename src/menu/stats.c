@@ -633,39 +633,39 @@ static void _StatsMenu_Draw_Mount(struct StatsMenu *stats_menu, SDL_Renderer *re
     /* - Write mount - */
     PixelFont_Write(stats_menu->pixelnours, renderer, "MOUNT", 5, x, y);
 
-    /* - Get mount type - */
+    /* - TODO: Get mount type - */
     i8 mount_type = MOUNT_TYPE_NULL;
-    if (stats_menu->unit->mount.ptr != NULL)
-        mount_type = stats_menu->unit->mount.ptr->type;
+    // if (stats_menu->unit->mount.ptr != NULL)
+    // mount_type = stats_menu->unit->mount.ptr->type;
 
-    if (mount_type == MOUNT_TYPE_NULL) {
-        x = MOUNT_NONE_X_OFFSET, y = MOUNT_NONE_Y_OFFSET;
-        PixelFont_Write(stats_menu->pixelnours, renderer, "-", 1, x, y);
-        return;
-    }
+    // if (mount_type == MOUNT_TYPE_NULL) {
+    //     x = MOUNT_NONE_X_OFFSET, y = MOUNT_NONE_Y_OFFSET;
+    //     PixelFont_Write(stats_menu->pixelnours, renderer, "-", 1, x, y);
+    //     return;
+    // }
 
-    switch (mount_type) {
-        case MOUNT_TYPE_HORSE:
-        case MOUNT_TYPE_SALAMANDER:
-            mount_offset_x = 6;
-            mount_offset_y = 2;
-            break;
-        case MOUNT_TYPE_PEGASUS:
-        case MOUNT_TYPE_EAGLE:
-            mount_offset_x =  0;
-            mount_offset_y = -3;
-            break;
-    }
+    // switch (mount_type) {
+    //     case MOUNT_TYPE_HORSE:
+    //     case MOUNT_TYPE_SALAMANDER:
+    //         mount_offset_x = 6;
+    //         mount_offset_y = 2;
+    //         break;
+    //     case MOUNT_TYPE_PEGASUS:
+    //     case MOUNT_TYPE_EAGLE:
+    //         mount_offset_x =  0;
+    //         mount_offset_y = -3;
+    //         break;
+    // }
 
-    srcrect.w = SM_MOUNTS_TILESIZE;
-    srcrect.h = SM_MOUNTS_TILESIZE;
-    srcrect.x = mount_type % SOTA_COL_LEN * srcrect.w;
-    srcrect.y = mount_type / SOTA_COL_LEN * srcrect.h;
-    dstrect.w = srcrect.w;
-    dstrect.h = srcrect.h;
-    dstrect.x = (MOUNT_ICON_X_OFFSET + mount_offset_x);
-    dstrect.y = (MOUNT_ICON_Y_OFFSET + mount_offset_y);
-    SDL_RenderCopy(renderer, stats_menu->texture_mount, &srcrect, &dstrect);
+    // srcrect.w = SM_MOUNTS_TILESIZE;
+    // srcrect.h = SM_MOUNTS_TILESIZE;
+    // srcrect.x = mount_type % SOTA_COL_LEN * srcrect.w;
+    // srcrect.y = mount_type / SOTA_COL_LEN * srcrect.h;
+    // dstrect.w = srcrect.w;
+    // dstrect.h = srcrect.h;
+    // dstrect.x = (MOUNT_ICON_X_OFFSET + mount_offset_x);
+    // dstrect.y = (MOUNT_ICON_Y_OFFSET + mount_offset_y);
+    // SDL_RenderCopy(renderer, stats_menu->texture_mount, &srcrect, &dstrect);
 }
 
 static void _StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {

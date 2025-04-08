@@ -704,15 +704,15 @@ struct Unit_Level {
 };
 
 struct Unit_Arms {
-    i32    num;
-    b32    hands[UNIT_ARMS_NUM]; /* Does unit have hands? */
+    i32 num;
+    b32 hands[UNIT_ARMS_NUM]; /* Does unit have hands? */
 };
 
 struct Unit_Stats_Bundle {
     struct Unit_stats caps;
     struct Unit_stats bases;
     struct Unit_stats current; /* Only changes on levelup */
-    
+
     /* Rather than checking every unit, enemy, skill, aura...
        Bonuses track if their conditions are met themselves.
     */
@@ -725,17 +725,13 @@ struct Unit_Counters {
     i32  regrets;
 };
 
-struct Unit_Mount {
-    struct Mount *ptr; // TODO: rm, use id.
-    i32 id;
-};
-
 struct Unit_IDs {
     i32 self;
     i32 title;
     i32 class;
     i32 army;
     i32 ai;
+    i32 mount;
 };
 
 struct Unit_Statuses {
@@ -786,7 +782,6 @@ typedef struct Unit {
     struct Unit_Arms            arms;
     struct Unit_Stats_Bundle    stats;
     struct Unit_Counters        counters;
-    struct Unit_Mount           mount;
     struct Unit_Statuses        statuses; // TODO: rm
 } Unit;
 extern const struct Unit Unit_default;

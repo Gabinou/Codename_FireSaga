@@ -180,31 +180,31 @@ void test_menu_stats() {
 
     /* --- MOUNT --- */
     /* - Salamander - */
-    struct Mount mount = Mount_default_salamander;
-    Silou.mount.ptr = &mount;
-    SDL_assert(Silou.mount.ptr->type = MOUNT_TYPE_SALAMANDER);
+    // struct Mount mount = Mount_default_salamander;
+    // Silou.mount.ptr = &mount;
+    // SDL_assert(Silou.mount.ptr->type = MOUNT_TYPE_SALAMANDER);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Mount_Salamander.png"), renderer,
                             sm->texture,
                             SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - Horse - */
-    mount = Mount_default_horse;
-    SDL_assert(Silou.mount.ptr->type = MOUNT_TYPE_HORSE);
+    // mount = Mount_default_horse;
+    // SDL_assert(Silou.mount.ptr->type = MOUNT_TYPE_HORSE);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Mount_Horse.png"), renderer, sm->texture,
                             SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - Eagle - */
-    mount = Mount_default_eagle;
-    SDL_assert(Silou.mount.ptr->type = MOUNT_TYPE_EAGLE);
+    // mount = Mount_default_eagle;
+    // SDL_assert(Silou.mount.ptr->type = MOUNT_TYPE_EAGLE);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Mount_Eagle.png"), renderer, sm->texture,
                             SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - Pegasus - */
-    mount = Mount_default_pegasus;
-    SDL_assert(Silou.mount.ptr->type = MOUNT_TYPE_PEGASUS);
+    // mount = Mount_default_pegasus;
+    // SDL_assert(Silou.mount.ptr->type = MOUNT_TYPE_PEGASUS);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Mount_Pegasus.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);

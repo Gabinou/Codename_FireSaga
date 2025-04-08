@@ -641,33 +641,33 @@ static void _DeploymentMenu_Draw_Mount(DeploymentMenu *dm, SDL_Renderer *rendere
         SDL_assert(unit != NULL);
         _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
 
-        /* - Get mount type - */
-        if (unit->mount.ptr == NULL)
-            continue;
-        i8 mount_type = unit->mount.ptr->type;
+        /* - TODO: Get mount type - */
+        // if (unit->mount.ptr == NULL)
+        // continue;
+        // i8 mount_type = unit->mount.ptr->type;
 
-        switch (mount_type) {
-            case MOUNT_TYPE_HORSE:
-            case MOUNT_TYPE_SALAMANDER:
-                mount_offset_x = 6;
-                mount_offset_y = 2;
-                break;
-            case MOUNT_TYPE_PEGASUS:
-            case MOUNT_TYPE_EAGLE:
-                mount_offset_x =  0;
-                mount_offset_y = -4;
-                break;
-        }
+        // switch (mount_type) {
+        //     case MOUNT_TYPE_HORSE:
+        //     case MOUNT_TYPE_SALAMANDER:
+        //         mount_offset_x = 6;
+        //         mount_offset_y = 2;
+        //         break;
+        //     case MOUNT_TYPE_PEGASUS:
+        //     case MOUNT_TYPE_EAGLE:
+        //         mount_offset_x =  0;
+        //         mount_offset_y = -4;
+        //         break;
+        // }
 
-        srcrect.w = SM_MOUNTS_TILESIZE;
-        srcrect.h = SM_MOUNTS_TILESIZE;
-        srcrect.x = mount_type % SOTA_COL_LEN * srcrect.w;
-        srcrect.y = mount_type / SOTA_COL_LEN * srcrect.h;
-        dstrect.w = srcrect.w;
-        dstrect.h = srcrect.h;
-        dstrect.x = (x + mount_offset_x);
-        dstrect.y = (y + mount_offset_y);
-        SDL_RenderCopy(renderer, dm->texture_mount, &srcrect, &dstrect);
+        // srcrect.w = SM_MOUNTS_TILESIZE;
+        // srcrect.h = SM_MOUNTS_TILESIZE;
+        // srcrect.x = mount_type % SOTA_COL_LEN * srcrect.w;
+        // srcrect.y = mount_type / SOTA_COL_LEN * srcrect.h;
+        // dstrect.w = srcrect.w;
+        // dstrect.h = srcrect.h;
+        // dstrect.x = (x + mount_offset_x);
+        // dstrect.y = (y + mount_offset_y);
+        // SDL_RenderCopy(renderer, dm->texture_mount, &srcrect, &dstrect);
     }
     _DeploymentMenu_Swap(dm, renderer, dm->white, dm->black);
 }
