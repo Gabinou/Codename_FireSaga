@@ -34,17 +34,7 @@ b32 Unit_isDualWielding(const Unit *unit) {
     // Todo: replace flag with check
     return (unit->flags.isDualWielding);
 }
-struct Unit_stats *Unit_Stats_Grown(const Unit *unit) {
-    if (unit == NULL)
-        return (NULL);
-    return (unit->growth.grown);
-}
 
-struct Unit_stats *Unit_Stats_Growths(Unit *unit) {
-    if (unit == NULL)
-        return (NULL);
-    return (&unit->growth.rates);
-}
 u64 Unit_Skills(const Unit *unit) {
     if (unit == NULL)
         return (0);

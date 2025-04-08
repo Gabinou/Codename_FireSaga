@@ -13,7 +13,6 @@ struct Unit_stats Unit_Stats_Bases(Unit *unit) {
     return (unit->stats.bases);
 }
 
-
 i32 *Unit_stats_arr(Unit_stats *stats1) {
     i32 *stats_arr = ((i32 *)stats1) - (UNIT_STAT_NULL + 1);
     return (stats_arr);
@@ -105,4 +104,22 @@ struct Computed_Stats Computed_Stats_plus(struct Computed_Stats stats1,
     Ranges_Combine(&out_stats.range_equipment, stats2.range_equipment);
 
     return (out_stats);
+}
+
+struct Unit_stats *Unit_Stats_Grown(const Unit *unit) {
+    if (unit == NULL)
+        return (NULL);
+    return (unit->growth.grown);
+}
+
+struct Unit_stats *Unit_Stats_Growths(Unit *unit) {
+    if (unit == NULL)
+        return (NULL);
+    return (&unit->growth.rates);
+}
+
+void Unit_Stats_Growths_Set(Unit *unit, Unit_stats growths) {
+    if (unit == NULL)
+        return;
+    unit->growth.rates = growths;
 }

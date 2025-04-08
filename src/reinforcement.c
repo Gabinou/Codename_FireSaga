@@ -4,6 +4,7 @@
 #include "nmath.h"
 #include "names.h"
 #include "unit/unit.h"
+#include "unit/stats.h"
 #include "unit/flags.h"
 #include "cJSON.h"
 

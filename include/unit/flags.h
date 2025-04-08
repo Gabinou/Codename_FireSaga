@@ -17,9 +17,6 @@ b32 Unit_isDualWielding(const Unit *u);
 u64 Unit_Skills(const Unit *u);
 void Unit_Skill_Add(Unit *u, u64 skill);
 
-struct Unit_stats *Unit_Stats_Grown(const Unit *u);
-struct Unit_stats *Unit_Stats_Growths(Unit *u);
-
 struct dtab *Unit_dtab_Items(const Unit *u);
 struct dtab *Unit_dtab_Weapons(const Unit *u);
 

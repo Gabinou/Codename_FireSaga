@@ -16,6 +16,7 @@
 #include "unit/equipment.h"
 #include "unit/unit.h"
 #include "unit/boss.h"
+#include "unit/stats.h"
 #include "unit/flags.h"
 #include "unit/loadout.h"
 #include "game/game.h"
