@@ -210,18 +210,19 @@ void Unit_Reinforcement_Load(struct Unit *unit, struct Reinforcement *reinf) {
     unit->id.army = reinf->army;
 }
 
+void Unit_id_set(struct Unit *unit, i16 id) {
+    if (unit == NULL) {
+        return;
+    }
+    SDL_assert(Unit_ID_Valid(id));
+    unit->id.self = id;
+}
+
 i16 Unit_id(struct Unit *unit) {
     if (unit == NULL) {
         return (UNIT_ID_NULL);
     }
     return (unit->id.self);
-}
-
-void Unit_setid(struct Unit *unit, i16 id) {
-    SDL_assert(unit != NULL);
-    SDL_assert(Unit_ID_Valid(id));
-
-    unit->id.self = id;
 }
 
 void Unit_setSkills(struct Unit *unit, u64 skills) {
@@ -1006,7 +1007,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
 
     // SDL_Log("-- setting name from ID --");
     char *json_name     = cJSON_GetStringValue(jname);
-    Unit_setid(unit, Unit_Name2ID(s8_var(json_name)));
+    Unit_id_set(unit, Unit_Name2ID(s8_var(json_name)));
     char *ai_filename   = cJSON_GetStringValue(jai);
     if (ai_filename != NULL) {
         s8 s8_ai_filename  = s8_var(ai_filename);

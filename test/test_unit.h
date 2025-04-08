@@ -147,7 +147,7 @@ void test_io(void) {
     struct Inventory_item in_wpn    = Inventory_item_default;
     struct Inventory_item out_wpn   = Inventory_item_default;
 
-    Unit_setid(&unit1, UNIT_ID_SILOU);
+    Unit_id_set(&unit1, UNIT_ID_SILOU);
     Unit_setClassind(&unit1, UNIT_CLASS_FENCER);
     unit1.flags.sex     = UNIT_SEX_F;
     unit1.stats.caps    = in_caps;
@@ -776,7 +776,7 @@ void test_canEquip_Users(void) {
     Silou.equipment.items_dtab = items_dtab;
     int id = ITEM_ID_FLEURET;
     Weapon_Load(weapons_dtab, id);
-    Silou.id.self = UNIT_ID_SILOU;
+    Unit_id_set(&Silou, UNIT_ID_SILOU);
 
     struct Weapon *weapon = DTAB_GET(weapons_dtab, id);
 
@@ -810,7 +810,7 @@ void test_canEquip_Archetype(void) {
     Silou.equipment.items_dtab = items_dtab;
     int id = ITEM_ID_FLEURET;
     Weapon_Load(weapons_dtab, id);
-    Silou.id.self = UNIT_ID_SILOU;
+    Unit_id_set(&Silou, UNIT_ID_SILOU);
 
     struct Weapon *weapon = DTAB_GET(weapons_dtab, id);
 
@@ -852,7 +852,7 @@ void test_canEquip(void) {
 
     Unit_InitWweapons(&Silou, weapons_dtab);
     Silou.equipment.items_dtab = items_dtab;
-    Silou.id.self = UNIT_ID_SILOU;
+    Unit_id_set(&Silou, UNIT_ID_SILOU);
 
     /* --- Staff user that can't twohand --- */
     Unit_setClassind(&Silou, UNIT_CLASS_VESTAL);
@@ -1083,7 +1083,7 @@ void test_range(void) {
 
     Unit_InitWweapons(&Silou, weapons_dtab);
     Silou.equipment.items_dtab = items_dtab;
-    Silou.id.self = UNIT_ID_SILOU;
+    Unit_id_set(&Silou, UNIT_ID_SILOU);
 
     Unit_Unequip(&Silou, UNIT_HAND_LEFT);
     Unit_Unequip(&Silou, UNIT_HAND_RIGHT);

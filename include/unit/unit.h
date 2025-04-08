@@ -39,8 +39,9 @@ void Unit_Free(         Unit *u);
 
 void Unit_Reinforcement_Load(Unit *u, struct Reinforcement *r);
 
-i16 Unit_id(struct Unit *unit);
-void Unit_setid(      Unit *u, i16 id);
+i16 Unit_id(Unit *unit);
+void Unit_id_set(Unit *unit, i16 id);
+
 void Unit_setStats(   Unit *u, Unit_stats stats);
 void Unit_setBases(   Unit *u, Unit_stats stats);
 void Unit_setClassind(Unit *u, i8 class_i);

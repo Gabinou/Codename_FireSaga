@@ -178,7 +178,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
 
     SDL_assert((unit->flags.handedness > UNIT_HAND_NULL) && (unit->flags.handedness < UNIT_HAND_END));
 
-    Unit_setid(unit, unit_id);
+    Unit_id_set(unit, unit_id);
     SDL_assert(global_unitNames[Unit_id(unit)].data != NULL);
 
     unit->equipment.items_dtab   = sota->items_dtab;
