@@ -27,7 +27,6 @@ void test_menu_stats() {
 
     /* -- Stats Menu -- */
     struct StatsMenu *sm    = StatsMenu_Alloc();
-    sm->update_stats        = false;
 
     /* - loading fonts - */
     sm->pixelnours = PixelFont_Alloc();

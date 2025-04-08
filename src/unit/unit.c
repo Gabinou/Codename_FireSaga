@@ -96,7 +96,6 @@ const struct Unit Unit_default = {
     .arms.hands         = {true, true},
 
     .flags.alive        = true,
-    .flags.update_stats = true,
 };
 
 const struct Unit Nibal_unit = {
@@ -211,9 +210,8 @@ void Unit_Reinforcement_Load(struct Unit *unit, struct Reinforcement *reinf) {
 }
 
 void Unit_id_set(struct Unit *unit, i16 id) {
-    if (unit == NULL) {
+    if (unit == NULL)
         return;
-    }
     SDL_assert(Unit_ID_Valid(id));
     unit->id.self = id;
 }

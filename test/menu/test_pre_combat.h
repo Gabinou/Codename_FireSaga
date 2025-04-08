@@ -104,10 +104,6 @@ void test_menu_pre_combat() {
     pcp->forecast  = &combat_forecast;
     _PreCombatPopup_Load(pcp, &Silou, &Hamilcar, &silou_pos, &hamilcar_pos, renderer);
 
-    /* --- RENDERS --- */
-    Silou.flags.update_stats    = false;
-    Hamilcar.flags.update_stats = false;
-
     /* -- Single Digits -- */
     cs_S.hit    = 1;
     cs_S.dodge  = 0;
