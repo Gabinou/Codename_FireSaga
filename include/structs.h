@@ -425,24 +425,6 @@ typedef struct Inventory_item {
 extern const struct Inventory_item Inventory_item_default;
 extern const struct Inventory_item Inventory_item_broken;
 
-// struct Reinforcement {
-//     Point position;
-//     i16 army;
-//     // i16 id;
-//     s8 filename;
-//     // TODO: 1 or 2
-//     // 1- Use unit filename instead of id
-//     //      - Gets rid of name from file vs name from id conflict
-//     //      - Gets rid of name id in file vs id in reinforcement issue
-//     // 2- Make ai id and use it instead of ai_filename
-//     //      - Have to SDL_free strings
-//     //      - char array?
-//     s8 ai_filename; /* Overrides ai_filename in unit */
-//     u8 turn;
-//     u8 levelups;
-// };
-// extern const struct Reinforcement Reinforcement_default;
-
 struct Movement_cost {
     i32 foot_slow;
     i32 foot_fast;
@@ -605,13 +587,14 @@ extern const struct Combat_Outcome Combat_Outcome_default;
 
 /* --- RNG SEQUENCE BREAKER (SB) --- */
 struct RNG_Sequence { /* Sequence of hits/misses in a row */
-    b32 hit; /* 0 if sequence of misses, 1 of hits */
+    b32 hit;        /* 0 if sequence of misses, 1 of hits */
     i8 len;
-    i8 eff_rate; // TODO RM
+    i8 eff_rate;    /* TODO RM */
 };
 
+/* --- UNIT --- */
 struct Unit_Sequence {
-    // RNG sequences for ALL stats
+    /* RNG sequences for ALL stats */
     struct RNG_Sequence hit;
     struct RNG_Sequence crit;
 
@@ -629,7 +612,6 @@ struct Unit_Sequence {
     struct RNG_Sequence prof;
 };
 
-/* --- UNIT --- */
 struct Unit_Flags {
     b32 sex;            /* 0:F, 1:M. eg. hasPenis. */
     b32 waits;

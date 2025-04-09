@@ -13,6 +13,8 @@ b32 Unit_isWaiting(const Unit *u);
 b32 Unit_showsDanger(const Unit *u);
 b32 Unit_isDivineShield(const Unit *u);
 b32 Unit_isDualWielding(const Unit *u);
+void Unit_DivineShield_set(Unit *u, b32 divine_shield);
+void Unit_Waiting_set(Unit *u, b32 wait);
 
 u64 Unit_Skills(const Unit *u);
 void Unit_Skill_Add(Unit *u, u64 skill);

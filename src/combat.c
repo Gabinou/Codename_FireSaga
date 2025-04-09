@@ -413,7 +413,7 @@ void Combat_Resolve_Attack(struct Combat_Attack attack, struct Unit *attacker,
 
     /* - Pop divine shield - */
     if (Unit_isDivineShield(defender)) {
-        defender->flags.divine_shield = false;
+        Unit_DivineShield_set(defender, false);
         return;
     }
 

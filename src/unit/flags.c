@@ -18,6 +18,11 @@ b32 Unit_isWaiting(const Unit *unit) {
         return (1);
     return (unit->flags.waits);
 }
+void Unit_Waiting_set(Unit *unit, b32 wait) {
+    if (unit == NULL)
+        return;
+    unit->flags.waits = wait;
+}
 b32 Unit_showsDanger(const Unit *unit) {
     if (unit == NULL)
         return (0);
@@ -27,6 +32,11 @@ b32 Unit_isDivineShield(const Unit *unit) {
     if (unit == NULL)
         return (0);
     return (unit->flags.divine_shield);
+}
+void Unit_DivineShield_set(Unit *unit, b32 divine_shield) {
+    if (unit == NULL)
+        return;
+    unit->flags.divine_shield = divine_shield;
 }
 b32 Unit_isDualWielding(const Unit *unit) {
     if (unit == NULL)
