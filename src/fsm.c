@@ -729,13 +729,13 @@ void fsm_eUnitDng_ssStby(struct Game *sota, tnecs_entity selector_entity) {
         Map_Danger_Perimeter_Compute(sota->map, sota->map->dangermap);
         sota->map->rendered_dangermap = sota->map->dangermap;
 
-        unit->flags.show_danger = false;
+        Unit_showsDanger_set(unit, false);
     } else {
         Map_Danger_Add(sota->map, temp_danger);
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_DANGER, TNECS_NULL);
         Map_Danger_Perimeter_Compute(sota->map, sota->map->dangermap);
         sota->map->rendered_dangermap = sota->map->dangermap;
-        unit->flags.show_danger = true;
+        Unit_showsDanger_set(unit, true);
     }
 
     // matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);

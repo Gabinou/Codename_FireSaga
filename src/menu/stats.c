@@ -549,7 +549,7 @@ static void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *ren
     SDL_assert(stats_menu->texture_sex != NULL);
     srcrect.w = SM_SEX_ICON_SIZEX;
     srcrect.h = SM_SEX_ICON_SIZEY;
-    srcrect.x = stats_menu->unit->flags.sex * SM_SEX_TILESIZE;
+    srcrect.x = Unit_Sex(stats_menu->unit) * SM_SEX_TILESIZE;
     srcrect.y = 0;
     dstrect.w = srcrect.w;
     dstrect.h = srcrect.h;

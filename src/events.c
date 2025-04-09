@@ -1440,7 +1440,7 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
 
     // 1. Resolve Combat
     struct Unit *aggressor = IES_GET_COMPONENT(sota->world, sota->aggressor, Unit);
-    aggressor->flags.waits = true;
+    Unit_Waiting_set(aggressor, true);
     struct Unit *defendant = IES_GET_COMPONENT(sota->world, sota->defendant, Unit);
 
     SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, sota->defendant, Timer));

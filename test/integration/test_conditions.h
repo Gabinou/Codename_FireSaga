@@ -1,4 +1,5 @@
 
+
 #include "game/game.h"
 #include "map/ontile.h"
 #include "macros.h"
@@ -34,7 +35,7 @@ void test_boss_death_win(int argc, char *argv[]) {
     /* Kill boss */
     struct Unit *boss_unit = IES_GET_COMPONENT(sota->world, boss_entity, Unit);
     SDL_assert(boss_unit != NULL);
-    boss_unit->flags.alive = false;
+    Unit_Alive_set(boss_unit, false);
     struct Boss *boss = IES_GET_COMPONENT(sota->world, boss_entity, Boss);
     SDL_assert(boss != NULL);
 
@@ -91,7 +92,7 @@ void test_main_char_death_loss(int argc, char *argv[]) {
     /* Kill Silou */
     struct Unit *unit = IES_GET_COMPONENT(sota->world, main_char_entity, Unit);
     SDL_assert(unit != NULL);
-    unit->flags.alive = false;
+    Unit_Alive_set(unit, false);
     struct Position *posptr = IES_GET_COMPONENT(sota->world, main_char_entity, Position);
     SDL_assert(posptr != NULL);
     SDL_assert(posptr->tilemap_pos.x == 1);
@@ -147,7 +148,7 @@ void test_silou_death_loss(int argc, char *argv[]) {
     /* Kill Silou */
     struct Unit *unit = IES_GET_COMPONENT(sota->world, silou_entity, Unit);
     SDL_assert(unit != NULL);
-    unit->flags.alive = false;
+    Unit_Alive_set(unit, false);
     struct Position *posptr = IES_GET_COMPONENT(sota->world, silou_entity, Position);
     SDL_assert(posptr != NULL);
     SDL_assert(posptr->tilemap_pos.x == 1);

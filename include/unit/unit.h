@@ -139,7 +139,6 @@ void Unit_Promote(Unit *u, i8 new_class_i);
 /* -- Unit_id -- */
 b32 Unit_ID_Valid(u16 id);
 
-
 Damage_Raw Unit_Shield_Protection(struct Unit *unit, i32 hand);
 
 #endif /* UNIT_H */

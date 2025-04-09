@@ -385,7 +385,7 @@ tnecs_entity *Map_Find_Auditors(struct Map *map, tnecs_entity *auditors, i32 x, 
 
         struct Unit *unit = IES_GET_COMPONENT(map->world, auditor_ent, Unit);
         SDL_assert(unit);
-        if (unit->flags.talkable)
+        if (Unit_isTalkable(unit))
             DARR_PUT(auditors, auditor_ent);
     }
     return (auditors);

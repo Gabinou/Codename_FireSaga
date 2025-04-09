@@ -13,6 +13,11 @@ b32 Unit_isAlive(const Unit *unit) {
         return (0);
     return (unit->flags.alive);
 }
+void Unit_Alive_set(Unit *unit, b32 alive) {
+    if (unit == NULL)
+        return;
+    unit->flags.alive = alive;
+}
 b32 Unit_isWaiting(const Unit *unit) {
     if (unit == NULL)
         return (1);
@@ -23,10 +28,41 @@ void Unit_Waiting_set(Unit *unit, b32 wait) {
         return;
     unit->flags.waits = wait;
 }
+i8  Unit_Handedness(const Unit *unit) {
+    if (unit == NULL)
+        return (0);
+    return (unit->flags.handedness);
+}
+void Unit_Handedness_set(Unit *unit, i8 handedness) {
+    if (unit == NULL)
+        return;
+    unit->flags.handedness = handedness;
+}
+u16 Unit_Equippable(const Unit *unit) {
+    if (unit == NULL)
+        return (0);
+    return (unit->flags.equippable);
+}
+
+i8  Unit_Movement(const Unit *unit) {
+    if (unit == NULL)
+        return (0);
+    return (unit->flags.handedness);
+}
+b32 Unit_isTalkable(const Unit *unit) {
+    if (unit == NULL)
+        return (0);
+    return (unit->flags.talkable);
+}
 b32 Unit_showsDanger(const Unit *unit) {
     if (unit == NULL)
         return (0);
     return (unit->flags.show_danger);
+}
+void Unit_showsDanger_set(Unit *unit, b32 show_danger) {
+    if (unit == NULL)
+        return;
+    unit->flags.show_danger = show_danger;
 }
 b32 Unit_isDivineShield(const Unit *unit) {
     if (unit == NULL)
@@ -110,3 +146,4 @@ void Unit_AI_set(Unit *unit, i32 ai) {
         return;
     unit->id.ai = ai;
 }
+

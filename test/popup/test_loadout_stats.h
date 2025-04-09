@@ -117,12 +117,12 @@ void test_popup_loadout_stats() {
     Filesystem_Texture_Dump(PATH_JOIN("popup_loadout_stats", "PopupLoadoutStats_TwoHanding_Lance.png"),
                             renderer, pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    silou->flags.handedness = UNIT_HAND_LEFTIE;
+    Unit_Handedness_set(silou, UNIT_HAND_LEFTIE);
     PopUp_Loadout_Stats_Update(&pls, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_loadout_stats", "PopupLoadoutStats_TwoHanding_LEFTIE.png"),
                             renderer, pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    silou->flags.handedness = UNIT_HAND_AMBIDEXTROUS;
+    Unit_Handedness_set(silou, UNIT_HAND_AMBIDEXTROUS);
     PopUp_Loadout_Stats_Update(&pls, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_loadout_stats",
                                       "PopupLoadoutStats_TwoHanding_AMBIDEXTROUS.png"),
@@ -131,7 +131,7 @@ void test_popup_loadout_stats() {
     /* -- All higher -- */
     pls.initial_cs      = low_cs;
     pls.selected_cs     = high_cs;
-    silou->flags.handedness   = UNIT_HAND_RIGHTIE;
+    Unit_Handedness_set(silou, UNIT_HAND_RIGHTIE);
     pls.type_left       = ITEM_TYPE_EXP_SHIELD;
     pls.type_right      = ITEM_TYPE_EXP_SWORD;
 
@@ -142,7 +142,7 @@ void test_popup_loadout_stats() {
     /* -- All equal -- */
     pls.initial_cs      = low_cs;
     pls.selected_cs     = low_cs;
-    silou->flags.handedness   = UNIT_HAND_RIGHTIE;
+    Unit_Handedness_set(silou, UNIT_HAND_RIGHTIE);
     pls.type_left       = ITEM_TYPE_EXP_SHIELD;
     pls.type_right      = ITEM_TYPE_EXP_AXE;
 
@@ -153,7 +153,7 @@ void test_popup_loadout_stats() {
     /* -- All Lower -- */
     pls.initial_cs      = high_cs;
     pls.selected_cs     = low_cs;
-    silou->flags.handedness   = UNIT_HAND_LEFTIE;
+    Unit_Handedness_set(silou, UNIT_HAND_LEFTIE);
     pls.type_right      = ITEM_TYPE_EXP_LANCE;
     pls.type_left       = ITEM_TYPE_EXP_STAFF;
 
@@ -171,7 +171,7 @@ void test_popup_loadout_stats() {
     low_cs.crit                             =  7;
     low_cs.favor                            = 80;
     low_cs.speed                            =  9;
-    silou->flags.handedness                       = UNIT_HAND_RIGHTIE;
+    Unit_Handedness_set(silou, UNIT_HAND_RIGHTIE);
     pls.type_right                          = ITEM_TYPE_EXP_CLAW;
     pls.type_left                           = ITEM_TYPE_EXP_OFFHAND;
 
@@ -191,7 +191,7 @@ void test_popup_loadout_stats() {
     low_cs.crit = 70;
     low_cs.favor = 8;
     low_cs.speed = 9;
-    silou->flags.handedness = UNIT_HAND_LEFTIE;
+    Unit_Handedness_set(silou, UNIT_HAND_LEFTIE);
     pls.type_right  = ITEM_TYPE_EXP_DEMONIC;
     pls.type_left   = ITEM_TYPE_EXP_ELEMENTAL;
 
@@ -207,7 +207,7 @@ void test_popup_loadout_stats() {
     low_cs.attack.True = 1;
     pls.initial_cs = low_cs;
     pls.selected_cs = low_cs;
-    silou->flags.handedness = UNIT_HAND_RIGHTIE;
+    Unit_Handedness_set(silou, UNIT_HAND_RIGHTIE);
     pls.l_equip_override   = true;
     pls.r_equip_override  = true;
 
@@ -220,7 +220,7 @@ void test_popup_loadout_stats() {
     low_cs.attack.True        = 34;
     pls.initial_cs                      = low_cs;
     pls.selected_cs                     = low_cs;
-    silou->flags.handedness                   = UNIT_HAND_LEFTIE;
+    Unit_Handedness_set(silou, UNIT_HAND_LEFTIE);
     low_cs.hit                          = 100;
     low_cs.dodge                        = 14;
     pls.initial_cs                      = low_cs;

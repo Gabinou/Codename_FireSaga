@@ -137,7 +137,7 @@ void test_menu_loadout_select(void) {
     // in_wpn.used = 0;
     // Weapon_Load(weapons_dtab, in_wpn.id);
 
-    Silou->flags.handedness   = UNIT_HAND_LEFTIE;
+    Unit_Handedness_set(Silou, UNIT_HAND_LEFTIE);
     i32 stronghand      = Unit_Hand_Strong(Silou);
     i32 weakhand        = Unit_Hand_Weak(Silou);
     Silou->flags.equippable |= ITEM_TYPE_ANGELIC;
@@ -200,7 +200,7 @@ void test_menu_loadout_select(void) {
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Short weapon names -- */
-    Silou->flags.handedness = UNIT_HAND_LEFTIE;
+    Unit_Handedness_set(Silou, UNIT_HAND_LEFTIE);
     silou_eq = Unit_Equipment(Silou);
     silou_eq[0].used    = 1;
     silou_eq[1].used    = 10;
@@ -319,7 +319,7 @@ void test_menu_loadout_select(void) {
                                       "WeaponSelectMenu_LNotSelected_Usable1.png"), renderer,
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    Silou->flags.handedness = UNIT_HAND_RIGHTIE;
+    Unit_Handedness_set(Silou, UNIT_HAND_RIGHTIE);
     stronghand  = Unit_Hand_Strong(Silou);
     weakhand    = Unit_Hand_Weak(Silou);
 
@@ -445,7 +445,7 @@ void test_menu_loadout_select_two_hands(void) {
     silou_eq[3].id      = ITEM_ID_FLEURET;
     silou_eq[4].id      = ITEM_ID_WOODEN_SHIELD;
     silou_eq[5].id      = ITEM_ID_SALVE;
-    Silou->flags.handedness            = UNIT_HAND_LEFTIE;
+    Unit_Handedness_set(Silou, UNIT_HAND_LEFTIE);
     Silou->flags.equippable            = ITEM_TYPE_SWORD;
 
     Weapon_Load(weapons_dtab, silou_eq[0].id);

@@ -423,7 +423,6 @@ void Unit_dies(struct Unit *unit) {
     unit->flags.alive = false;
 }
 
-
 b32 Unit_canCarry(struct Unit *savior, struct Unit *victim) {
     struct Unit_stats victim_stats = Unit_effectiveStats(victim);
     struct Unit_stats savior_stats = Unit_effectiveStats(savior);

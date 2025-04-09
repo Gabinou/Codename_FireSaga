@@ -619,7 +619,7 @@ struct Unit_Flags {
     b32 mounted;
     b32 literate;       /* Scribe job.  */
     b32 courageous;     /* Story events */
-    b32 show_danger;
+    b32 show_danger;    /* Move to render */
     b32 divine_shield;
     b32 isDualWielding; // rm. Should not be saved.
     u64 skills;

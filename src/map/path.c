@@ -318,7 +318,7 @@ i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_entity unit_ent) {
     struct Unit *unit = IES_GET_COMPONENT(map->world, unit_ent, Unit);
     struct Tile *temp_tile;
     i32 tile_ind = 0;
-    i8 unit_movetype = unit->flags.mvt_type;
+    i8 unit_movetype = Unit_Movement(unit);
     u8 army = Unit_Army(unit);
     u8 ontile_army;
     tnecs_entity ontile_unit_ent;
@@ -352,7 +352,7 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
     SDL_assert(map->col_len > 0);
     SDL_assert(map->row_len > 0);
     SDL_assert(unit         != NULL);
-    SDL_assert(unit->flags.mvt_type > UNIT_MVT_START);
+    SDL_assert(Unit_Movement(unit) > UNIT_MVT_START);
 
     /* Reset costmap */
     memset(map->costmap, 0, sizeof(*map->costmap) * map->col_len * map->row_len);
@@ -374,7 +374,7 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
         size_t tile_order = Map_Tile_Order(map, tile_ind);
         struct Tile *temp_tile = map->tiles + tile_order;
         i32* cost_array = Tile_Cost_Array(temp_tile);
-        map->costmap[i] = cost_array[unit->flags.mvt_type] * map->cost_multiplier;
+        map->costmap[i] = cost_array[Unit_Movement(unit)] * map->cost_multiplier;
 
 #endif /* UNITS_IGNORE_TERRAIN */
 

@@ -177,14 +177,14 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     }
     Unit_Members_Alloc(unit);
 
-    SDL_assert((unit->flags.handedness > UNIT_HAND_NULL) && (unit->flags.handedness < UNIT_HAND_END));
+    SDL_assert((Unit_Handedness(unit) > UNIT_HAND_NULL) && (Unit_Handedness(unit) < UNIT_HAND_END));
 
     Unit_id_set(unit, unit_id);
     SDL_assert(global_unitNames[Unit_id(unit)].data != NULL);
 
     unit->equipment.items_dtab   = sota->items_dtab;
     unit->equipment.weapons_dtab = sota->weapons_dtab;
-    SDL_assert(unit->flags.mvt_type > UNIT_MVT_START);
+    SDL_assert(Unit_Movement(unit) > UNIT_MVT_START);
 
     canEquip can_equip  = canEquip_default;
     can_equip.hand      = UNIT_HAND_LEFT;
