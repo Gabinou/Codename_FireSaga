@@ -670,7 +670,6 @@ struct Unit_Equipment {
 };
 
 struct Unit_canEquip {
-    /* 1. Can't equip more than SOTA_EQUIPMENT_SIZE items */
     i32 _loadout[SOTA_EQUIPMENT_SIZE];
     i32 num;
 };
@@ -723,7 +722,9 @@ typedef struct Unit {
     /*  statuses, fight, ride mounts, agonize, die...
     /*
     /*  # Design
-    /*  ## Stats inside unit struct are *constant*
+    /*  ## Members are *constants*, NO dependency on game state
+    /*  - Game state EXCEPT self
+    /*      - Map, other units, etc... 
     /*  - DO NOT put stats that depend on game state in unit
     /*      - Those are variable stats
     /*  - base_stats, current_stats do not depend on unit
@@ -755,6 +756,10 @@ typedef struct Unit {
     struct Unit_Support         support;
     struct Unit_Level           level;
     struct Unit_Equipment       equipment;
+    /* Note: 
+        - can_equip depends on game state!
+        - but, can_equip needs to be hosted somewhere  
+     */
     struct Unit_canEquip        can_equip;
     struct Unit_Arms            arms;
     struct Unit_Stats_Bundle    stats;
