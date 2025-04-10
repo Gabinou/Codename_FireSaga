@@ -1,6 +1,7 @@
 
-#include "unit/loadout.h"
 #include "unit/unit.h"
+#include "unit/loadout.h"
+#include "unit/equipment.h"
 #include "inventory.h"
 
 /* --- Transformation --- */
@@ -92,12 +93,14 @@ void Equipped_Copy(i32 *_dest, const i32 *const _src) {
 
 void Unit_Equipped_Import(Unit *unit, i32 *_loadout) {
     size_t bytesize = unit->arms.num * sizeof(*_loadout);
-    memcpy(unit->equipment._equipped, _loadout, bytesize);
+    i32 *equipped = Unit_Equipped_Array(unit);
+    memcpy(equipped, _loadout, bytesize);
 }
 
 void Unit_Equipped_Export(Unit *unit, i32 *_loadout) {
     size_t bytesize = unit->arms.num * sizeof(*_loadout);
-    memcpy(_loadout, unit->equipment._equipped, bytesize);
+    i32 *equipped = Unit_Equipped_Array(unit);
+    memcpy(_loadout, equipped, bytesize);
 }
 
 /* Unit <- Loadout */

@@ -18,7 +18,6 @@ i32 *Unit_canEquip_Arr(Unit *unit) {
     return (unit->can_equip.arr);
 }
 
-
 /* --- Items --- */
 /* Private item atker at specific spot. Does no checks */
 void _Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, i32 eq) {
@@ -161,14 +160,15 @@ void Unit_Equip(Unit *unit, i32 hand, i32 eq) {
 
     i32 id = Unit_Id_Equipment(unit, eq);
     SDL_assert(id > ITEM_NULL);
-
-    unit->equipment._equipped[hand - UNIT_HAND_LEFT] = eq;
+    i32 *equipped = Unit_Equipped_Array(unit);
+    equipped[hand - UNIT_HAND_LEFT] = eq;
 }
 
 void Unit_Unequip_All(Unit *unit) {
     SDL_assert(unit);
-    i64 bytesize = unit->arms.num * sizeof(*unit->equipment._equipped);
-    memset(unit->equipment._equipped, 0, bytesize);
+    i32 *equipped = Unit_Equipped_Array(unit);
+    i64 bytesize = unit->arms.num * sizeof(*equipped);
+    memset(equipped, 0, bytesize);
 }
 
 void Unit_Unequip(struct Unit *unit, i32 hand) {
@@ -177,7 +177,8 @@ void Unit_Unequip(struct Unit *unit, i32 hand) {
     SDL_assert(hand <= MAX_ARMS_NUM);
 
     /* -- Unequip -- */
-    unit->equipment._equipped[hand - UNIT_HAND_LEFT] = ITEM_UNEQUIPPED;
+    i32 *equipped = Unit_Equipped_Array(unit);
+    equipped[hand - UNIT_HAND_LEFT] = ITEM_UNEQUIPPED;
 
     if (unit->arms.num == UNIT_ARMS_NUM) {
         /* -- If twohanding, not anymore! -- */
@@ -776,7 +777,9 @@ i32 Unit_Eq_Equipped(const Unit *const unit, i32 hand) {
     SDL_assert(hand >= UNIT_HAND_LEFT);
     SDL_assert(hand < (UNIT_ARMS_NUM + UNIT_HAND_LEFT));
     SDL_assert(hand < (unit->arms.num + UNIT_HAND_LEFT));
-    return (unit->equipment._equipped[hand - UNIT_HAND_LEFT]);
+
+    i32 *equipped = Unit_Equipped_Array(unit);
+    return (equipped[hand - UNIT_HAND_LEFT]);
 }
 
 /* ID of equipment item */
@@ -791,7 +794,7 @@ i32 Unit_Id_Equipment(Unit *unit, i32 eq) {
 i32 Unit_Id_Equipped(Unit *unit, i32 hand) {
     if (unit == NULL) {
         SDL_assert(false);
-        return(0);
+        return (0);
     }
     SDL_assert(hand >= UNIT_HAND_LEFT);
     SDL_assert(hand <= unit->arms.num);
@@ -803,21 +806,21 @@ i32 Unit_Id_Equipped(Unit *unit, i32 hand) {
     return (unit->equipment.arr[eq - ITEM1].id);
 }
 
-i32* Unit_Equipped(Unit *unit) {
+i32* Unit_Equipped_Array(const Unit const *unit) {
     if (unit == NULL) {
         SDL_assert(false);
-        return(NULL);
+        return (NULL);
     }
-    return(&unit->equipment._equipped._loadout);
+    return ((i32*)&unit->equipment._equipped._loadout);
 }
 
 void Unit_Id_Equipped_Set( Unit *unit, i32 hand, i32 eq) {
     if (unit == NULL) {
         SDL_assert(false);
-        return(NULL);
+        return;
     }
-    i32 * Unit_Equipped(unit);
-    unit->equipment._equipped[hand - UNIT_HAND_LEFT] = eq;
+    i32 *equipped = Unit_Equipped_Array(unit);
+    equipped[hand - UNIT_HAND_LEFT] = eq;
 }
 
 /* -- Use -- */

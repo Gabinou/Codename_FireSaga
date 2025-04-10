@@ -996,9 +996,10 @@ void Unit_readJSON(void *input,  cJSON *junit) {
             SDL_Log("Unit \"Equipped\" array should have same size as \"Hands Num\".");
             exit(1);
         }
+        i32 *equipped = Unit_Equipped_Array(unit);
         for (int i = 0; i < unit->arms.num; i++) {
             cJSON *jequippedi  = cJSON_GetArrayItem(jequipped, i);
-            unit->equipment._equipped[i] = cJSON_GetNumberValue(jequippedi);
+            equipped[i] = cJSON_GetNumberValue(jequippedi);
         }
     }
 
