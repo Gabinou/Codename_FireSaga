@@ -671,8 +671,7 @@ struct Unit_Equipment {
 
 struct Unit_canEquip {
     /* 1. Can't equip more than SOTA_EQUIPMENT_SIZE items */
-    // eq_canEquip
-    i32 arr[SOTA_EQUIPMENT_SIZE];
+    i32 _loadout[SOTA_EQUIPMENT_SIZE];
     i32 num;
 };
 
