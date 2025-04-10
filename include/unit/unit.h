@@ -132,8 +132,9 @@ b32 Unit_HP_isFull(Unit *u);
 u8 Unit_Brave(Unit *u);
 
 /* --- Lvlup && Promotion --- */
-void Unit_lvlUp(  Unit *u);
-i16  Unit_getLvl( Unit *u);
+void Unit_lvlUp(        Unit *u);
+i16  Unit_Level(        Unit *u);
+i16  Unit_Experience(const Unit const *unit);
 void Unit_Promote(Unit *u, i8 new_class_i);
 
 /* -- Unit_id -- */

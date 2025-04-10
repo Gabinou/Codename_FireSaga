@@ -338,10 +338,10 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
 
     /* -- EXP/Level -- */
     PixelFont_Write(pu->pixelnours, renderer, "EXP", 3, PU_EXP_X, PU_EXP_Y);
-    stbsp_sprintf(numbuff, "%02d\0\0\0\0", (pu->unit->level.exp % SOTA_100PERCENT));
+    stbsp_sprintf(numbuff, "%02d\0\0\0\0", Unit_Experience(pu->unit));
     PixelFont_Write(pu->pixelnours, renderer, numbuff, strlen(numbuff), PU_EXP_STAT_X, PU_EXP_STAT_Y);
     PixelFont_Write(pu->pixelnours, renderer, "Lv", 2, PU_LV_X, PU_LV_Y);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", (pu->unit->level.exp / SOTA_100PERCENT));
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", Unit_Level(pu->unit));
     PixelFont_Write(pu->pixelnours, renderer, numbuff, strlen(numbuff), PU_LV_STAT_X, PU_LV_STAT_Y);
     /* -- HP -- */
     PixelFont_Write(pu->pixelnours, renderer, "HP", 2,

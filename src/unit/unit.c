@@ -325,9 +325,19 @@ void Unit_refresh(struct Unit *unit) {
     Unit_showsDanger_set(unit,  false);
 }
 
-i16 Unit_getLvl(struct Unit *unit) {
-    SDL_assert(unit);
-    return (ceil(unit->level.exp / SOTA_100PERCENT) + 1);
+i16 Unit_Level(struct Unit *unit) {
+    if (!unit) {
+        SDL_assert(false);
+        return (0);
+    }
+    return (ceil(unit->level.exp / SOTA_EXP_PER_LEVEL) + 1);
+}
+i16 Unit_Experience(const Unit const *unit) {
+    if (!unit) {
+        SDL_assert(false);
+        return (0);
+    }
+    return (unit->level.exp % SOTA_EXP_PER_LEVEL);
 }
 
 void Unit_gainExp(struct Unit *unit, u16 exp) {

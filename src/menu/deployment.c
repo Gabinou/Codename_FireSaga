@@ -411,7 +411,7 @@ static void _DeploymentMenu_Draw_Stats_P1(DeploymentMenu *dm, SDL_Renderer *rend
         x = DM_LVL_X, y = DM_LVL_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
-        i16 lvl = Unit_getLvl(unit);
+        i16 lvl = Unit_Level(unit);
         memset(array, 0, 8);
         stbsp_snprintf(array, 4, "%02d\0\0\0\0", lvl);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
@@ -421,7 +421,7 @@ static void _DeploymentMenu_Draw_Stats_P1(DeploymentMenu *dm, SDL_Renderer *rend
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
         memset(array, 0, 8);
-        stbsp_snprintf(array, 4, "%02d\0\0\0\0", (unit->level.exp % SOTA_EXP_PER_LEVEL));
+        stbsp_snprintf(array, 4, "%02d\0\0\0\0", Unit_Experience(unit));
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
         /* - Class - */

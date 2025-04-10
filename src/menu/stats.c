@@ -604,14 +604,14 @@ static void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *ren
     /* - EXP - */
     x = EXP_X_OFFSET, y = EXP_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours_big, renderer, "Exp", 3, x, y);
-    stbsp_sprintf(numbuff, "%02d\0\0\0\0", (stats_menu->unit->level.exp % 100));
+    stbsp_sprintf(numbuff, "%02d\0\0\0\0", Unit_Experience(stats_menu->unit));
     x = EXP_STAT_X_OFFSET, y = EXP_STAT_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
     /* - Level - */
     x = LV_X_OFFSET, y = LV_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours_big, renderer, "Lv", 2, x, y);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", (stats_menu->unit->level.exp / 100));
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", Unit_Level(stats_menu->unit));
     x = LV_STAT_X_OFFSET, y = LV_STAT_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
