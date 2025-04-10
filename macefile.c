@@ -7,7 +7,7 @@
 #ifndef AR
     #define AR "tcc -ar"
 #endif
-
+// TODO sanitize woth-fsanitize=undefined,address
 struct Config debug         = {
     .flags = "-g -gdwarf -rdynamic -O0 -DSDL_ASSERT_LEVEL=2"
 };
