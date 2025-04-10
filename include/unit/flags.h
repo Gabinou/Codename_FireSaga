@@ -6,7 +6,6 @@
 #include "enums.h"
 #include "structs.h"
 
-// TODO: toggle functions for flags
 b32 Unit_Sex(const Unit *u);
 b32 Unit_isAlive(const Unit *u);
 i8  Unit_Movement(const Unit *u);
@@ -24,11 +23,8 @@ void Unit_showsDanger_set(Unit *u, b32 show_danger);
 void Unit_DivineShield_set(Unit *u, b32 divine_shield);
 void Unit_Equippable_set(Unit *u, u16 equippable);
 
-u64 Unit_Skills(const Unit *u);
+u64  Unit_Skills(const Unit *u);
 void Unit_Skill_Add(Unit *u, u64 skill);
-
-struct dtab *Unit_dtab_Items(const Unit *u);
-struct dtab *Unit_dtab_Weapons(const Unit *u);
 
 i32 Unit_Current_HP(const Unit *u);
 i32 Unit_Current_Agony(const Unit *u);

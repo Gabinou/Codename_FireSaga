@@ -52,6 +52,7 @@
 #include "convoy.h"
 #include "utilities.h"
 #include "stb_sprintf.h"
+#include "globals.h"
 
 const struct Game Game_default = {
     .cursor_lastpos         = {1, 1},
@@ -183,8 +184,8 @@ void Game_Free(struct Game *sota) {
         sota->world_control = NULL;
     }
 
-    Game_Items_Free(&sota->items_dtab);
-    Game_Weapons_Free(&sota->weapons_dtab);
+    Game_Items_Free(&gl_items_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
     if (sota->menu_pixelfont != NULL) {
         PixelFont_Free(sota->menu_pixelfont, false);
     }
@@ -529,12 +530,12 @@ int _Game_New_Alloc(void *data) {
 
     /* --- Allocations --- */
     /* -- Alloc weapons, items DTAB -- */
-    SDL_assert(IES->weapons_dtab    == NULL);
-    SDL_assert(IES->items_dtab      == NULL);
-    DTAB_INIT(IES->weapons_dtab,    struct Weapon);
-    DTAB_INIT(IES->items_dtab,      struct Item);
-    SDL_assert(IES->weapons_dtab         != NULL);
-    SDL_assert(IES->items_dtab           != NULL);
+    SDL_assert(gl_weapons_dtab    == NULL);
+    SDL_assert(gl_items_dtab      == NULL);
+    DTAB_INIT(gl_weapons_dtab,    struct Weapon);
+    DTAB_INIT(gl_items_dtab,      struct Item);
+    SDL_assert(gl_weapons_dtab         != NULL);
+    SDL_assert(gl_items_dtab           != NULL);
 
     /* -- Alloc arrays of entities -- */
     IES->defendants    = DARR_INIT(IES->defendants,   tnecs_entity,  4);
@@ -775,7 +776,7 @@ void _Game_loadJSON(struct Game *sota, s8  filename) {
     }
 
     /* - Loading party units json - */
-    Party_Load(&sota->party, sota, sota->weapons_dtab, sota->items_dtab);
+    Party_Load(&sota->party, sota, gl_weapons_dtab, gl_items_dtab);
     Party_Size(&sota->party);
     SDL_assert(sota->party.size > 0);
 

@@ -46,6 +46,7 @@
 #include "controller/gamepad.h"
 #include "map/path.h"
 #include "text.h"
+#include "globals.h"
 
 /* --- RECEIVERS DECLARATION --- */
 struct dtab *receivers_dtab = NULL;
@@ -587,8 +588,8 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     u64 before_ns = tnecs_get_ns();
 
     /* --- Reload non-entities --- */
-    Weapons_All_Reload(sota->weapons_dtab);
-    Item_All_Reload(sota->items_dtab);
+    Weapons_All_Reload(gl_weapons_dtab);
+    Item_All_Reload(gl_items_dtab);
 
     /* --- Reload Unit --- */
     Reload_Entities_Archetype(sota, Reload_JSON, "Unit");

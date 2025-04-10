@@ -123,20 +123,6 @@ void Unit_Skill_Add(Unit *unit, u64 skill) {
     }
     unit->flags.skills |= skill;
 }
-struct dtab *Unit_dtab_Weapons(const Unit *unit) {
-    if (unit == NULL) {
-        SDL_assert(false);
-        return (NULL);
-    }
-    return (unit->equipment.weapons_dtab);
-}
-struct dtab *Unit_dtab_Items(const Unit *unit) {
-    if (unit == NULL) {
-        SDL_assert(false);
-        return (NULL);
-    }
-    return (unit->equipment.items_dtab);
-}
 i32 Unit_Current_HP(const Unit *unit) {
     if (unit == NULL) {
         SDL_assert(false);

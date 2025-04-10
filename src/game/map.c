@@ -27,6 +27,7 @@
 #include "menu/deployment.h"
 #include "menu/stats.h"
 #include "tile.h"
+#include "globals.h"
 #include "reinforcement.h"
 #include "AI.h"
 
@@ -161,7 +162,7 @@ void Game_Map_Party_Load(struct Game *sota, i32 mapi) {
     SDL_assert(sota->party.json_filenames != NULL);
 
     /* - Loading party units json - */
-    Party_Load(&sota->party, sota, sota->weapons_dtab, sota->items_dtab);
+    Party_Load(&sota->party, sota, gl_weapons_dtab, gl_items_dtab);
     Party_Size(&sota->party);
 
     SDL_assert(sota->party.size > 0);
@@ -308,8 +309,6 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         /* DESIGN: Reinforcements wait! */
         Unit_Waiting_set(unit, true);
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
-        unit->equipment.weapons_dtab  = sota->weapons_dtab;
-        unit->equipment.items_dtab    = sota->items_dtab;
         s8 unit_path  = s8_mut("units"PHYSFS_SEPARATOR);
         unit_path     = s8cat(unit_path, reinf->filename);
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);

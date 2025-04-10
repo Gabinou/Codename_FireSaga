@@ -1,6 +1,5 @@
 
 #include "nmath.h"
 
-// TODO: use them
-struct dtab *items_dtab;
-struct dtab *weapons_dtab;
+struct dtab *gl_items_dtab = NULL;
+struct dtab *gl_weapons_dtab = NULL;

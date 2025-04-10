@@ -14,6 +14,7 @@
 #include "position.h"
 #include "names.h"
 #include "sprite.h"
+#include "globals.h"
 
 /* --- Constructors/Destructors --- */
 void Game_Items_Free(struct dtab **items_dtab) {
@@ -182,8 +183,6 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     Unit_id_set(unit, unit_id);
     SDL_assert(global_unitNames[Unit_id(unit)].data != NULL);
 
-    unit->equipment.items_dtab   = sota->items_dtab;
-    unit->equipment.weapons_dtab = sota->weapons_dtab;
     SDL_assert(Unit_Movement(unit) > UNIT_MVT_START);
 
     canEquip can_equip  = canEquip_default;
@@ -295,7 +294,7 @@ void Game_putPConMap(struct Game    *sota,   i16    *unit_ids,
 /* --- Utilities --- */
 void Game_Weapons_Rewrite(struct Game *sota) {
     SDL_Log("Rewriting weapons with new data\n");
-    Weapons_All_Load(sota->weapons_dtab);
-    Weapons_All_Save(sota->weapons_dtab);
+    Weapons_All_Load(gl_weapons_dtab);
+    Weapons_All_Save(gl_weapons_dtab);
     getchar();
 }

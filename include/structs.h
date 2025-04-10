@@ -480,8 +480,6 @@ extern const struct AI_State AI_State_default;
 typedef struct Convoy {
     struct jsonIO_Header jsonio_header;
 
-    struct dtab *weapons_dtab;  // TODO RM
-
     struct Inventory_item books[SOTA_BOOKS_NUM];
     struct Inventory_item items[SOTA_CONVOY_SIZE_MAX];
     u8 cumnum[ITEM_TYPE_NUM + 1]; // items are [cumnum1, cumnum2)
@@ -657,9 +655,6 @@ struct Unit_Support {
 };
 
 struct Unit_Equipment {
-    struct dtab *weapons_dtab;  // TODO RM
-    struct dtab *items_dtab;  // TODO RM
-
     struct Inventory_item arr[SOTA_EQUIPMENT_SIZE];
     i32 num;
 
@@ -937,8 +932,6 @@ typedef struct Game {
     struct dtab *menu_options_dtab;
     struct dtab *defaultstates_dtab;
 
-    struct dtab *items_dtab; // TODO RM
-    struct dtab *weapons_dtab; // TODO RM
     struct dtab *tiles_loaded_dtab;
     struct dtab *units_loaded_dtab;
 

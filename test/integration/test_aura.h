@@ -2,6 +2,7 @@
 #include "game/game.h"
 #include "map/ontile.h"
 #include "fsm.h"
+#include "globals.h"
 #include "macros.h"
 #include "map/map.h"
 #include "game/map.h"
@@ -24,9 +25,9 @@ void test_aura_apply(int argc, char *argv[]) {
     sota->map->world = sota->world;
 
     /* Load Standard */
-    SDL_assert(sota->weapons_dtab != NULL);
-    Weapon_Load(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
-    SDL_assert(DTAB_GET(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD) != NULL);
+    SDL_assert(gl_weapons_dtab != NULL);
+    Weapon_Load(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
+    SDL_assert(DTAB_GET(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD) != NULL);
     /* -- Place all friendlies close together -- */
 
     i32 id;
@@ -79,7 +80,7 @@ void test_aura_apply(int argc, char *argv[]) {
     /* Check Aura in bonus stack */
     Map_Bonus_Standard_Apply(sota->map, ARMY_FRIENDLY);
     Map_Bonus_Standard_Apply(sota->map, ARMY_FRIENDLY);
-    struct Weapon *standardwpn          = DTAB_GET(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
+    struct Weapon *standardwpn          = DTAB_GET(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
     struct Unit_stats aura_bonus        = standardwpn->item->aura.unit_stats;
 
     /* Check effective stats */
@@ -158,9 +159,9 @@ void test_aura_decay(int argc, char *argv[]) {
     sota->map->world = sota->world;
 
     /* Load Standard */
-    SDL_assert(sota->weapons_dtab != NULL);
-    Weapon_Load(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
-    SDL_assert(DTAB_GET(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD) != NULL);
+    SDL_assert(gl_weapons_dtab != NULL);
+    Weapon_Load(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
+    SDL_assert(DTAB_GET(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD) != NULL);
     /* -- Place all friendlies close together -- */
     i32 id;
     tnecs_entity ent;
@@ -211,7 +212,7 @@ void test_aura_decay(int argc, char *argv[]) {
 
     /* Check Aura in bonus stack */
     Map_Bonus_Standard_Apply(sota->map, ARMY_FRIENDLY);
-    struct Weapon *standardwpn          = DTAB_GET(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
+    struct Weapon *standardwpn          = DTAB_GET(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
     struct Unit_stats aura_bonus        = standardwpn->item->aura.unit_stats;
 
     /*  Decaying */
@@ -360,9 +361,9 @@ void test_aura_fsm(int argc, char *argv[]) {
     sota->map->world = sota->world;
 
     /* Load Standard */
-    SDL_assert(sota->weapons_dtab != NULL);
-    Weapon_Load(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
-    SDL_assert(DTAB_GET(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD) != NULL);
+    SDL_assert(gl_weapons_dtab != NULL);
+    Weapon_Load(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
+    SDL_assert(DTAB_GET(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD) != NULL);
     /* -- Place all friendlies close together -- */
     i32 id;
     tnecs_entity ent;
@@ -412,7 +413,7 @@ void test_aura_fsm(int argc, char *argv[]) {
     struct Unit *silou = IES_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SILOU], Unit);
     nourstest_true(DARR_NUM(silou->stats.bonus_stack) == 1);
     SDL_assert(silou != NULL);
-    struct Weapon *standardwpn          = DTAB_GET(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
+    struct Weapon *standardwpn          = DTAB_GET(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
     struct Unit_stats aura_bonus        = standardwpn->item->aura.unit_stats;
     struct Unit_stats effective_stats   = Unit_effectiveStats(silou);
 
