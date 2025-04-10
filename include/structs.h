@@ -594,7 +594,6 @@ struct RNG_Sequence { /* Sequence of hits/misses in a row */
 
 /* --- UNIT --- */
 struct Unit_Sequence {
-    /* RNG sequences for ALL stats */
     struct RNG_Sequence hit;
     struct RNG_Sequence crit;
 
@@ -619,7 +618,6 @@ struct Unit_Flags {
     b32 mounted;
     b32 literate;       /* Scribe job.  */
     b32 courageous;     /* Story events */
-    b32 show_danger;    /* Move to render */
     b32 divine_shield;
     b32 isDualWielding; // rm. Should not be saved.
     u64 skills;
@@ -631,8 +629,8 @@ struct Unit_Flags {
 };
 
 struct Unit_Growth {
-    struct Unit_stats rates;
-    struct Unit_stats *grown;
+    struct Unit_stats   rates;
+    struct Unit_stats  *grown;
 };
 
 struct Unit_Rescue {
@@ -644,6 +642,7 @@ struct Unit_Render {
     //  e.g. heal tiles for healers
     i8 rangemap;
     i8 user_rangemap; /* reset to NULL when equipment changes */
+    b32 show_danger;
 };
 
 struct Support {
@@ -670,7 +669,11 @@ struct Unit_Equipment {
 };
 
 struct Unit_canEquip {
-    i32 _loadout[SOTA_EQUIPMENT_SIZE];
+    /* Design exception:
+        - can_equip depends on game state,
+        - but, can_equip needs to be hosted somewhere.
+    */
+    i32 arr[SOTA_EQUIPMENT_SIZE];
     i32 num;
 };
 
@@ -689,8 +692,9 @@ struct Unit_Stats_Bundle {
     struct Unit_stats bases;
     struct Unit_stats current; /* Only changes on levelup */
 
-    /* Rather than checking every unit, enemy, skill, aura...
-       Bonuses track if their conditions are met themselves.
+    /* Design exception:
+        - Rather than checking every unit, enemy, skill, aura...
+        - Bonuses track if their conditions are met themselves.
     */
     struct Bonus_Stats *bonus_stack;
 };
@@ -724,7 +728,7 @@ typedef struct Unit {
     /*  # Design
     /*  ## Members are *constants*, NO dependency on game state
     /*  - Game state EXCEPT self
-    /*      - Map, other units, etc... 
+    /*      - Map, other units, etc...
     /*  - DO NOT put stats that depend on game state in unit
     /*      - Those are variable stats
     /*  - base_stats, current_stats do not depend on unit
@@ -756,10 +760,6 @@ typedef struct Unit {
     struct Unit_Support         support;
     struct Unit_Level           level;
     struct Unit_Equipment       equipment;
-    /* Note: 
-        - can_equip depends on game state!
-        - but, can_equip needs to be hosted somewhere  
-     */
     struct Unit_canEquip        can_equip;
     struct Unit_Arms            arms;
     struct Unit_Stats_Bundle    stats;

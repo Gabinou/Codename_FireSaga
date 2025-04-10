@@ -315,14 +315,14 @@ void Unit_getsHealed(struct Unit *unit, u8 healing) {
 
 void Unit_wait(struct Unit *unit) {
     SDL_assert(unit);
-    unit->flags.waits         = true;
-    unit->flags.show_danger   = false;
+    Unit_Waiting_set(unit,      true);
+    Unit_showsDanger_set(unit,  false);
 }
 
 void Unit_refresh(struct Unit *unit) {
     SDL_assert(unit);
-    unit->flags.waits       = false;
-    unit->flags.show_danger = false;
+    Unit_Waiting_set(unit,      false);
+    Unit_showsDanger_set(unit,  false);
 }
 
 i16 Unit_getLvl(struct Unit *unit) {

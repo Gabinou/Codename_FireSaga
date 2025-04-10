@@ -85,14 +85,14 @@ b32 Unit_showsDanger(const Unit *unit) {
         SDL_assert(false);
         return (0);
     }
-    return (unit->flags.show_danger);
+    return (unit->render.show_danger);
 }
 void Unit_showsDanger_set(Unit *unit, b32 show_danger) {
     if (unit == NULL) {
         SDL_assert(false);
         return;
     }
-    unit->flags.show_danger = show_danger;
+    unit->render.show_danger = show_danger;
 }
 b32 Unit_isDivineShield(const Unit *unit) {
     if (unit == NULL) {
