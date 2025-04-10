@@ -250,7 +250,8 @@ tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
         }
 
         Weapon_Load(weapons_dtab, id);
-        struct Weapon *staff = (struct Weapon *)DTAB_GET(weapons_dtab, id);
+
+        const struct Weapon *staff = DTAB_GET_CONST(weapons_dtab, id);
 
         /* -- Check healtolist for valid patients -- */
         u8 align_healer = army_alignment[Unit_Army(healer)];
