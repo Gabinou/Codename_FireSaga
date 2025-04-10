@@ -789,7 +789,10 @@ i32 Unit_Id_Equipment(Unit *unit, i32 eq) {
 
 /* ID of equipped weapon */
 i32 Unit_Id_Equipped(Unit *unit, i32 hand) {
-    SDL_assert(unit != NULL);
+    if (unit == NULL) {
+        SDL_assert(false);
+        return(0);
+    }
     SDL_assert(hand >= UNIT_HAND_LEFT);
     SDL_assert(hand <= unit->arms.num);
 
@@ -798,6 +801,23 @@ i32 Unit_Id_Equipped(Unit *unit, i32 hand) {
     }
     i32 eq = Unit_Eq_Equipped(unit, hand);
     return (unit->equipment.arr[eq - ITEM1].id);
+}
+
+i32* Unit_Equipped(Unit *unit) {
+    if (unit == NULL) {
+        SDL_assert(false);
+        return(NULL);
+    }
+    return(&unit->equipment._equipped._loadout);
+}
+
+void Unit_Id_Equipped_Set( Unit *unit, i32 hand, i32 eq) {
+    if (unit == NULL) {
+        SDL_assert(false);
+        return(NULL);
+    }
+    i32 * Unit_Equipped(unit);
+    unit->equipment._equipped[hand - UNIT_HAND_LEFT] = eq;
 }
 
 /* -- Use -- */

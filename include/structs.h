@@ -666,10 +666,7 @@ struct Unit_Equipment {
     struct Inventory_item arr[SOTA_EQUIPMENT_SIZE];
     i32 num;
 
-    // TODO: replace raw _equipped with:
-    // struct Loadout _equipped;
-    i32 _equipped[UNIT_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
-
+    struct Loadout _equipped[UNIT_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 };
 
 struct Unit_canEquip {

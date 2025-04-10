@@ -125,12 +125,12 @@ void Tetrabrachios_default(Unit *unit) {
 /* Other hands than the main two can't be strong/weak hand */
 int Unit_Hand_Strong(struct Unit *unit) {
     SDL_assert(unit != NULL);
-    return ((unit->flags.handedness == UNIT_HAND_LEFTIE) ? UNIT_HAND_LEFT : UNIT_HAND_RIGHT);
+    return ((Unit_Handedness(unit) == UNIT_HAND_LEFTIE) ? UNIT_HAND_LEFT : UNIT_HAND_RIGHT);
 }
 
 int Unit_Hand_Weak(struct Unit *unit) {
     SDL_assert(unit != NULL);
-    return ((unit->flags.handedness == UNIT_HAND_LEFTIE) ? UNIT_HAND_RIGHT : UNIT_HAND_LEFT);
+    return ((Unit_Handedness(unit) == UNIT_HAND_LEFTIE) ? UNIT_HAND_RIGHT : UNIT_HAND_LEFT);
 }
 
 b32 Unit_hasHand(Unit *unit, i32 hand) {
