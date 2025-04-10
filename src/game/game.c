@@ -529,8 +529,12 @@ int _Game_New_Alloc(void *data) {
 
     /* --- Allocations --- */
     /* -- Alloc weapons, items DTAB -- */
-    DTAB_INIT(IES->weapons_dtab, struct Weapon);
-    DTAB_INIT(IES->items_dtab, struct Item);
+    SDL_assert(IES->weapons_dtab    == NULL);
+    SDL_assert(IES->items_dtab      == NULL);
+    DTAB_INIT(IES->weapons_dtab,    struct Weapon);
+    DTAB_INIT(IES->items_dtab,      struct Item);
+    SDL_assert(IES->weapons_dtab         != NULL);
+    SDL_assert(IES->items_dtab           != NULL);
 
     /* -- Alloc arrays of entities -- */
     IES->defendants    = DARR_INIT(IES->defendants,   tnecs_entity,  4);
