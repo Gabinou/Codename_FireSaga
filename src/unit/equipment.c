@@ -185,7 +185,7 @@ void Unit_Unequip(struct Unit *unit, i32 hand) {
         SDL_assert(Unit_istwoHanding(unit) == false);
 
         /* -- If dual wielding, not anymore! -- */
-        unit->flags.isDualWielding    = false;
+        SDL_assert(Unit_isdualWielding(unit) == false);
     }
     // TODO dualwielding, towhanding for Tetrabrachios
 }
@@ -607,8 +607,7 @@ b32 Unit_isdualWielding(struct Unit *unit) {
     i32 eq_R = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
     b32 left_canWeakhand    = left  ? Weapon_canWeakhand(eq_L) : true;
     b32 right_canWeakhand   = right ? Weapon_canWeakhand(eq_R) : true;
-    unit->flags.isDualWielding    = (left_canWeakhand && right_canWeakhand) && !Unit_istwoHanding(unit);
-    return (Unit_isDualWielding(unit));
+    return ((left_canWeakhand && right_canWeakhand) && !Unit_istwoHanding(unit));
 }
 
 

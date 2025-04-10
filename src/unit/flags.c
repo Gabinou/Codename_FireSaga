@@ -108,14 +108,6 @@ void Unit_DivineShield_set(Unit *unit, b32 divine_shield) {
     }
     unit->flags.divine_shield = divine_shield;
 }
-b32 Unit_isDualWielding(const Unit *unit) {
-    if (unit == NULL) {
-        SDL_assert(false);
-        return (0);
-    }
-    // Todo: replace flag with check
-    return (unit->flags.isDualWielding);
-}
 
 u64 Unit_Skills(const Unit *unit) {
     if (unit == NULL) {

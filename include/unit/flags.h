@@ -16,7 +16,6 @@ u16 Unit_Equippable(const Unit *u);
 b32 Unit_isTalkable(const Unit *u);
 b32 Unit_showsDanger(const Unit *u);
 b32 Unit_isDivineShield(const Unit *u);
-b32 Unit_isDualWielding(const Unit *u);
 
 void Unit_Alive_set(Unit *u, b32 alive);
 void Unit_Waiting_set(Unit *u, b32 wait);

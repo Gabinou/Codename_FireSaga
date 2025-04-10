@@ -480,7 +480,7 @@ extern const struct AI_State AI_State_default;
 typedef struct Convoy {
     struct jsonIO_Header jsonio_header;
 
-    struct dtab *weapons_dtab;
+    struct dtab *weapons_dtab;  // TODO RM
 
     struct Inventory_item books[SOTA_BOOKS_NUM];
     struct Inventory_item items[SOTA_CONVOY_SIZE_MAX];
@@ -619,7 +619,6 @@ struct Unit_Flags {
     b32 literate;       /* Scribe job.  */
     b32 courageous;     /* Story events */
     b32 divine_shield;
-    b32 isDualWielding; // rm. Should not be saved.
     u64 skills;
     bitflag16_t job_talent;
     u16 equippable;
@@ -658,9 +657,8 @@ struct Unit_Support {
 };
 
 struct Unit_Equipment {
-    // Replace with global?
-    struct dtab *weapons_dtab;
-    struct dtab *items_dtab;
+    struct dtab *weapons_dtab;  // TODO RM
+    struct dtab *items_dtab;  // TODO RM
 
     struct Inventory_item arr[SOTA_EQUIPMENT_SIZE];
     i32 num;
@@ -939,8 +937,8 @@ typedef struct Game {
     struct dtab *menu_options_dtab;
     struct dtab *defaultstates_dtab;
 
-    struct dtab *items_dtab;
-    struct dtab *weapons_dtab;
+    struct dtab *items_dtab; // TODO RM
+    struct dtab *weapons_dtab; // TODO RM
     struct dtab *tiles_loaded_dtab;
     struct dtab *units_loaded_dtab;
 
