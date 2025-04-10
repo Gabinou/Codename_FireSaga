@@ -140,7 +140,7 @@ void test_menu_loadout_select(void) {
     Unit_Handedness_set(Silou, UNIT_HAND_LEFTIE);
     i32 stronghand      = Unit_Hand_Strong(Silou);
     i32 weakhand        = Unit_Hand_Weak(Silou);
-    Silou->flags.equippable |= ITEM_TYPE_ANGELIC;
+    Unit_Equippable_set(Silou, Unit_Equippable(Silou) |= ITEM_TYPE_ANGELIC);
     SDL_assert(Silou->equipment.num == 4);
     Unit_Equip(Silou, stronghand,   ITEM1);
     Unit_Equip(Silou, weakhand,     ITEM4);
@@ -446,7 +446,7 @@ void test_menu_loadout_select_two_hands(void) {
     silou_eq[4].id      = ITEM_ID_WOODEN_SHIELD;
     silou_eq[5].id      = ITEM_ID_SALVE;
     Unit_Handedness_set(Silou, UNIT_HAND_LEFTIE);
-    Silou->flags.equippable            = ITEM_TYPE_SWORD;
+    Unit_Equippable_set(Silou, ITEM_TYPE_SWORD);
 
     Weapon_Load(weapons_dtab, silou_eq[0].id);
     Weapon_Load(weapons_dtab, silou_eq[1].id);

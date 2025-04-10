@@ -43,7 +43,11 @@ u16 Unit_Equippable(const Unit *unit) {
         return (0);
     return (unit->flags.equippable);
 }
-
+void Unit_Equippable_set(Unit *unit, u16 equippable) {
+    if (unit == NULL)
+        return;
+    unit->flags.equippable = equippable;
+}
 i8  Unit_Movement(const Unit *unit) {
     if (unit == NULL)
         return (0);

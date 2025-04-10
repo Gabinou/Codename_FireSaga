@@ -197,7 +197,7 @@ void test_map_usable(void) {
     Unit_InitWweapons(silou, weapons_dtab);
 
     /* --- Testing 1 range only --- */
-    silou->flags.equippable = ITEM_TYPE_SWORD;
+    Unit_Equippable_set(silou, ITEM_TYPE_SWORD);
     Inventory_item *silou_eq = Unit_Equipment(silou);
 
     silou_eq[0].id              = ITEM_ID_FLEURET;
@@ -304,7 +304,7 @@ void test_map_usable(void) {
     nourstest_true(silou->can_equip.arr[0]    == ITEM1);
 
     /* --- TODO: Range types, blocked by unit --- */
-    silou->flags.equippable = ITEM_TYPE_BOW;
+    Unit_Equippable_set(silou, ITEM_TYPE_BOW);
     memset(map->unitmap, 0, sizeof(*map->unitmap) * map->col_len * map->row_len);
     silou->stats.current.move           = 1;
 
@@ -340,7 +340,7 @@ void test_map_usable(void) {
     nourstest_true(silou->can_equip.arr[0]    == ITEM4);
 
     /* --- TODO: multiple types, blocked by unit --- */
-    silou->flags.equippable = ITEM_TYPE_BOW | ITEM_TYPE_SWORD;
+    Unit_Equippable_set(silou, ITEM_TYPE_BOW | ITEM_TYPE_SWORD);
     silou->stats.current.move           = 1;
     can_equip           = canEquip_default;
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
@@ -369,7 +369,7 @@ void test_map_usable(void) {
     nourstest_true(silou->can_equip.arr[1]    == ITEM4);
 
     /* --- Testing staff --- */
-    silou->flags.equippable = ITEM_TYPE_STAFF;
+    Unit_Equippable_set(silou, ITEM_TYPE_STAFF);
     memset(map->unitmap, 0, sizeof(*map->unitmap) * map->col_len * map->row_len);
     silou->stats.current.move = 1;
 

@@ -23,6 +23,7 @@ void Unit_Waiting_set(Unit *u, b32 wait);
 void Unit_Handedness_set(Unit *u, i8 handedness);
 void Unit_showsDanger_set(Unit *u, b32 show_danger);
 void Unit_DivineShield_set(Unit *u, b32 divine_shield);
+void Unit_Equippable_set(Unit *u, u16 equippable);
 
 u64 Unit_Skills(const Unit *u);
 void Unit_Skill_Add(Unit *u, u64 skill);
