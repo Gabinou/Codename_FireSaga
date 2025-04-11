@@ -173,7 +173,7 @@ void testConvoysort() {
 void testConvoyWriteRead() {
 
     struct Convoy convoy = Convoy_default;
-    struct dtab *gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
 
     gl_weapons_dtab = gl_weapons_dtab;
     struct Inventory_item temp = Inventory_item_default;

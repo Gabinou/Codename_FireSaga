@@ -7,6 +7,7 @@
 #include "game/unit.h"
 #include "unit/unit.h"
 #include "RNG.h"
+#include "globals.h"
 #include "pathfinding.h"
 #include "unit/unit.h"
 #include "unit/flags.h"
@@ -15,7 +16,7 @@
 #include "equations.h"
 
 void test_combat_stats() {
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
     struct Unit *attacker = (struct Unit *)SDL_calloc(1, sizeof(struct Unit));
     * attacker = Unit_default;
     struct Unit *defender = (struct Unit *)SDL_calloc(1, sizeof(struct Unit));
@@ -81,7 +82,7 @@ void test_combat_stats() {
 
     // agg_damage = Compute_Combat_Damage(attacker, defender);
 
-    // struct Weapon *fleuret = DTAB_GET(weapons_dtab, defender->_equipment[defender_equip_hand].id);
+    // struct Weapon *fleuret = DTAB_GET(gl_weapons_dtab, defender->_equipment[defender_equip_hand].id);
     // nourstest_true(fleuret->stats.attack.physical > 0);
     // dft_damage = Compute_Combat_Damage(defender, attacker);
 
@@ -143,12 +144,12 @@ void test_combat_stats() {
     SDL_free(attacker);
     Unit_Free(defender);
     SDL_free(defender);
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
 }
 
 void test_combat_death() {
 
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
     struct Unit attacker = Unit_default;
     struct Unit defender = Unit_default;
     Unit_Init(&attacker);
@@ -305,8 +306,8 @@ void test_combat_death() {
 
 void test_combat_flow() {
 
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
-    struct dtab *items_dtab = DTAB_INIT(items_dtab, struct Item);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_items_dtab   = DTAB_INIT(gl_items_dtab, struct Item);
     struct Combat_Flow temp_flow;
     struct Unit attacker = Unit_default;
     struct Unit defender = Unit_default;
@@ -376,11 +377,11 @@ void test_combat_flow() {
     struct Weapon defender_weapon = Weapon_default;
 
     if (Unit_isEquipped(&defender, defender_equip_hand)) {
-        defender_weapon = *((struct Weapon *)DTAB_GET(weapons_dtab, Unit_Id_Equipment(&defender,
+        defender_weapon = *((struct Weapon *)DTAB_GET(gl_weapons_dtab, Unit_Id_Equipment(&defender,
                                                       defender_equip_hand)));
     }
     if (Unit_isEquipped(&attacker, attacker_equip_hand)) {
-        attacker_weapon = *((struct Weapon *)DTAB_GET(weapons_dtab, Unit_Id_Equipment(&defender,
+        attacker_weapon = *((struct Weapon *)DTAB_GET(gl_weapons_dtab, Unit_Id_Equipment(&defender,
                                                       attacker_equip_hand)));
     }
 
@@ -552,7 +553,7 @@ void test_combat_flow() {
     /* --- SDL_free --- */
     Unit_Free(&attacker);
     Unit_Free(&defender);
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
 }
 
 #ifndef RNG_SEQUENCE_BREAKER_HIT

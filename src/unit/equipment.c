@@ -28,8 +28,8 @@ void _Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, i32 eq) {
 /* Take item at specific spot */
 void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, i32 eq) {
     SDL_assert(unit);
-    SDL_assert(gl_weapons_dtab != NULL);
-    SDL_assert(gl_items_dtab != NULL);
+    SDL_assert(gl_weapons_dtab  != NULL);
+    SDL_assert(gl_items_dtab    != NULL);
 
     if (item.id <= ITEM_NULL) {
         return;
@@ -599,8 +599,8 @@ b32 Unit_isdualWielding(struct Unit *unit) {
 
     i32 eq_L = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
     i32 eq_R = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
-    b32 left_canWeakhand    = left  ? Weapon_canWeakhand(eq_L) : true;
-    b32 right_canWeakhand   = right ? Weapon_canWeakhand(eq_R) : true;
+    b32 right_canWeakhand   = right ? Weapon_canWeakhand(eq_R) : false;
+    b32 left_canWeakhand    = left  ? Weapon_canWeakhand(eq_L) : false;
     return ((left_canWeakhand && right_canWeakhand) && !Unit_istwoHanding(unit));
 }
 
