@@ -579,7 +579,7 @@ struct Combat_Outcome {
     struct Combat_Phase   phases[SOTA_COMBAT_MAX_PHASES];
     struct Combat_Attack *attacks;
     int current_attack;
-    b32                   ended; /* death before all attacks */
+    b32 ended; /* death before all attacks */
 };
 extern const struct Combat_Outcome Combat_Outcome_default;
 
@@ -645,7 +645,7 @@ struct Unit_Render {
 struct Support {
     u16 other_id;
     u16 other_type;
-    i8 level;
+    i8  level;
 };
 
 struct Unit_Support {
@@ -693,9 +693,9 @@ struct Unit_Stats_Bundle {
 };
 
 struct Unit_Counters {
-    i32  hp;
-    i32  agony;
-    i32  regrets;
+    i32 hp;
+    i32 agony;
+    i32 regrets;
 };
 
 struct Unit_IDs {
