@@ -20,8 +20,8 @@ void test_combat_stats() {
     * attacker = Unit_default;
     struct Unit *defender = (struct Unit *)SDL_calloc(1, sizeof(struct Unit));
     * defender = Unit_default;
-    Unit_InitWweapons(attacker, weapons_dtab);
-    Unit_InitWweapons(defender, weapons_dtab);
+    Unit_Init(attacker);
+    Unit_Init(defender);
 
     struct Combat_Damage dft_damage;
     struct Combat_Damage agg_damage;
@@ -151,8 +151,8 @@ void test_combat_death() {
     struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
     struct Unit attacker = Unit_default;
     struct Unit defender = Unit_default;
-    Unit_InitWweapons(&attacker, weapons_dtab);
-    Unit_InitWweapons(&defender, weapons_dtab);
+    Unit_Init(&attacker);
+    Unit_Init(&defender);
     struct Combat_Damage dft_damage;
     struct Combat_Damage agg_damage;
     struct Combat_Stats temp_stats;
@@ -310,10 +310,8 @@ void test_combat_flow() {
     struct Combat_Flow temp_flow;
     struct Unit attacker = Unit_default;
     struct Unit defender = Unit_default;
-    Unit_InitWweapons(&attacker, weapons_dtab);
-    Unit_InitWweapons(&defender, weapons_dtab);
-    attacker.equipment.items_dtab = items_dtab;
-    defender.equipment.items_dtab = items_dtab;
+    Unit_Init(&attacker);
+    Unit_Init(&defender);
     struct Point attacker_pos = {1, 2};
     struct Point defender_pos = {2, 2};
     int distance = Pathfinding_Manhattan(attacker_pos, defender_pos);

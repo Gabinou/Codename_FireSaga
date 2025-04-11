@@ -7,6 +7,7 @@
 #include "macros.h"
 #include "item.h"
 #include "weapon.h"
+#include "globals.h"
 #include "nmath.h"
 
 
@@ -27,19 +28,17 @@ void _Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, i32 eq) {
 /* Take item at specific spot */
 void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, i32 eq) {
     SDL_assert(unit);
-    struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
-    SDL_assert(weapons_dtab != NULL);
-    struct dtab *items_dtab = Unit_dtab_Items(unit);
-    SDL_assert(items_dtab != NULL);
+    SDL_assert(gl_weapons_dtab != NULL);
+    SDL_assert(gl_items_dtab != NULL);
 
     if (item.id <= ITEM_NULL) {
         return;
     }
 
     if (Weapon_ID_isValid(item.id)) {
-        Weapon_Load(weapons_dtab, item.id);
+        Weapon_Load(gl_weapons_dtab, item.id);
     } else if (Item_ID_isValid(item.id)) {
-        Item_Load(items_dtab, item.id);
+        Item_Load(gl_items_dtab, item.id);
     } else {
         return;
     }
@@ -374,8 +373,7 @@ b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
 
 b32 Unit_canEquip_Archetype(Unit *unit, i32 id, i64 archetype) {
     SDL_assert(unit                 != NULL);
-    struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
-    SDL_assert(weapons_dtab   != NULL);
+    SDL_assert(gl_weapons_dtab   != NULL);
 
     if (archetype == ITEM_ARCHETYPE_NULL) {
         return (true);
@@ -385,8 +383,8 @@ b32 Unit_canEquip_Archetype(Unit *unit, i32 id, i64 archetype) {
         return (true);
     }
 
-    Weapon_Load(weapons_dtab, id);
-    struct Weapon *wpn = DTAB_GET(weapons_dtab, id);
+    Weapon_Load(gl_weapons_dtab, id);
+    struct Weapon *wpn = DTAB_GET(gl_weapons_dtab, id);
     SDL_assert(wpn != NULL);
 
     if (!flagsum_isIn(wpn->item->type, archetype)) {
@@ -402,8 +400,7 @@ b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
     SDL_assert(unit                 != NULL);
-    struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
-    SDL_assert(weapons_dtab   != NULL);
+    SDL_assert(gl_weapons_dtab   != NULL);
 
     i32 id = Unit_Id_Equipment(unit, eq);
     if (id <= ITEM_NULL) {
@@ -413,7 +410,7 @@ b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
         return (false);
     }
 
-    struct Weapon *wpn  = DTAB_GET(weapons_dtab, id);
+    struct Weapon *wpn  = DTAB_GET(gl_weapons_dtab, id);
 
     /* Failure: Trying to onehand a twohand only weapon */
     b32 two_hand_only   = Weapon_TwoHand_Only(wpn);
@@ -445,8 +442,7 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
     SDL_assert(unit                 != NULL);
-    struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
-    SDL_assert(weapons_dtab   != NULL);
+    SDL_assert(gl_weapons_dtab   != NULL);
 
     i32 id = Unit_Id_Equipment(unit, eq);
     if (id <= ITEM_NULL)
@@ -454,7 +450,7 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     if (!Weapon_ID_isValid(id))
         return (false);
 
-    struct Weapon *wpn = DTAB_GET(weapons_dtab, id);
+    struct Weapon *wpn = DTAB_GET(gl_weapons_dtab, id);
     SDL_assert(wpn != NULL);
 
     // left hand wpn in right hand
@@ -515,11 +511,10 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
 /* Is unit among item possible users? */
 b32 Unit_canEquip_Users(struct Unit *unit, i32 id) {
     SDL_assert(unit                 != NULL);
-    struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
-    SDL_assert(weapons_dtab   != NULL);
+    SDL_assert(gl_weapons_dtab   != NULL);
 
-    Weapon_Load(weapons_dtab, id);
-    struct Weapon *weapon = DTAB_GET(weapons_dtab, id);
+    Weapon_Load(gl_weapons_dtab, id);
+    struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, id);
 
     /* Can equip if no list of users */
     if (weapon->item->users == NULL) {
@@ -548,10 +543,9 @@ b32 Unit_canEquip_Type(struct Unit *unit, i32 id) {
         return (false);
     }
 
-    struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
-    SDL_assert(weapons_dtab != NULL);
-    Weapon_Load(weapons_dtab, id);
-    struct Weapon *weapon   = DTAB_GET(weapons_dtab, id);
+    SDL_assert(gl_weapons_dtab != NULL);
+    Weapon_Load(gl_weapons_dtab, id);
+    struct Weapon *weapon   = DTAB_GET(gl_weapons_dtab, id);
     u16 wpntypecode         = weapon->item->type;
     SDL_assert(wpntypecode);
 
@@ -639,9 +633,8 @@ void _Unit_Item_Deplete(struct Unit *unit, i32 eq, i64 archetype) {
 
 
     /* Skip if item's archetype to deplete does not match input. */
-    struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
-    SDL_assert(weapons_dtab != NULL);
-    struct Weapon *weapon = DTAB_GET(weapons_dtab, id);
+    SDL_assert(gl_weapons_dtab != NULL);
+    struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, id);
     struct Item   *item   = weapon->item;
     SDL_assert(weapon != NULL);
     SDL_assert(item != NULL);
@@ -712,8 +705,7 @@ Inventory_item *Unit_InvItem(Unit *unit, i32 eq) {
 /* -- Getters -- */
 Weapon *Unit_Equipped_Weapon(Unit *unit, i32 hand) {
     SDL_assert(unit);
-    struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
-    SDL_assert(weapons_dtab);
+    SDL_assert(gl_weapons_dtab);
 
     /* Skipped if not a weapon */
     if (!Unit_isEquipped(unit, hand))
@@ -724,8 +716,7 @@ Weapon *Unit_Equipped_Weapon(Unit *unit, i32 hand) {
 
 Weapon *Unit_Weapon(Unit *unit, i32 eq) {
     SDL_assert(unit);
-    struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
-    SDL_assert(weapons_dtab);
+    SDL_assert(gl_weapons_dtab);
 
     /* Skipped if not a weapon */
     i32 id = unit->equipment.arr[eq - ITEM1].id;
@@ -733,16 +724,15 @@ Weapon *Unit_Weapon(Unit *unit, i32 eq) {
         return (NULL);
 
     /* Load and return weapon */
-    Weapon_Load(weapons_dtab, id);
-    Weapon *weapon = DTAB_GET(weapons_dtab, id);
+    Weapon_Load(gl_weapons_dtab, id);
+    Weapon *weapon = DTAB_GET(gl_weapons_dtab, id);
     SDL_assert(weapon != NULL);
     return (weapon);
 }
 
 Item *Unit_Get_Item(Unit *unit, i32 eq) {
     SDL_assert(unit);
-    struct dtab *items_dtab = Unit_dtab_Items(unit);
-    SDL_assert(items_dtab);
+    SDL_assert(gl_items_dtab);
 
     /* Skipped if not an item */
     i32 id = unit->equipment.arr[eq - ITEM1].id;
@@ -750,8 +740,8 @@ Item *Unit_Get_Item(Unit *unit, i32 eq) {
         return (NULL);
 
     /* Load and return item */
-    Item_Load(items_dtab, id);
-    struct Item *item = DTAB_GET(items_dtab, id);
+    Item_Load(gl_items_dtab, id);
+    struct Item *item = DTAB_GET(gl_items_dtab, id);
     SDL_assert(item != NULL);
     return (item);
 }
@@ -852,9 +842,8 @@ void Unit_Staff_Use(Unit *healer, Unit *patient) {
     }
 
     /* Get staff weapon */
-    struct dtab *weapons_dtab = Unit_dtab_Weapons(healer);
-    SDL_assert(weapons_dtab);
-    struct Weapon *staff = DTAB_GET(weapons_dtab, stronghand_inv->id);
+    SDL_assert(gl_weapons_dtab);
+    struct Weapon *staff = DTAB_GET(gl_weapons_dtab, stronghand_inv->id);
     SDL_assert(flagsum_isIn(staff->item->type, ITEM_TYPE_STAFF));
     SDL_assert(staff->item->active != NULL);
 

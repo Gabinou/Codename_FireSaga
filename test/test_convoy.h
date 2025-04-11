@@ -1,6 +1,7 @@
 
 #include "nourstest.h"
 #include "convoy.h"
+#include "globals.h"
 #include "game/game.h"
 #include "game/unit.h"
 
@@ -8,9 +9,8 @@ void testConvoyfull() {
 
     struct Convoy convoy = Convoy_default;
     struct Inventory_item temp = Inventory_item_default;
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
 
-    convoy.weapons_dtab = weapons_dtab;
     temp.id = ITEM_ID_KITCHEN_KNIFE;
     Convoy_Deposit_byType(&convoy, temp, ITEM_TYPE_EXP_SWORD);
     nourstest_true(!Convoy_isFull(&convoy));
@@ -27,15 +27,15 @@ void testConvoyfull() {
     nourstest_true(!Convoy_isFull(&convoy));
     Convoy_Deposit_byType(&convoy, temp, ITEM_TYPE_EXP_LANCE);
     nourstest_true(Convoy_isFull(&convoy));
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
+    gl_weapons_dtab = NULL;
 }
 
 void testConvoysort() {
 
     struct Convoy convoy = Convoy_default;
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
 
-    convoy.weapons_dtab = weapons_dtab;
     struct Inventory_item temp = Inventory_item_default;
     temp.id = ITEM_ID_KITCHEN_KNIFE;
     Convoy_Deposit_byType(&convoy, temp, ITEM_TYPE_EXP_SWORD);
@@ -97,9 +97,9 @@ void testConvoysort() {
             SDL_assert(item1.id > ITEM_NULL);
             struct Inventory_item item2 = convoy.items[j + 1];
             SDL_assert(item2.id > ITEM_NULL);
-            struct Weapon *weapon1 = (struct Weapon *)DTAB_GET(convoy.weapons_dtab, item1.id);
+            struct Weapon *weapon1 = (struct Weapon *)DTAB_GET(gl_weapons_dtab, item1.id);
             SDL_assert(weapon1 != NULL);
-            struct Weapon *weapon2 = (struct Weapon *)DTAB_GET(convoy.weapons_dtab, item2.id);
+            struct Weapon *weapon2 = (struct Weapon *)DTAB_GET(gl_weapons_dtab, item2.id);
             SDL_assert(weapon2 != NULL);
             nourstest_true(weapon1->item->type == weapon2->item->type);
             nourstest_true(weapon1->stats.hit >= weapon2->stats.hit);
@@ -114,9 +114,9 @@ void testConvoysort() {
             SDL_assert(item1.id > ITEM_NULL);
             struct Inventory_item item2 = convoy.items[j + 1];
             SDL_assert(item2.id > ITEM_NULL);
-            struct Weapon *weapon1 = (struct Weapon *)DTAB_GET(convoy.weapons_dtab, item1.id);
+            struct Weapon *weapon1 = (struct Weapon *)DTAB_GET(gl_weapons_dtab, item1.id);
             SDL_assert(weapon1 != NULL);
-            struct Weapon *weapon2 = (struct Weapon *)DTAB_GET(convoy.weapons_dtab, item2.id);
+            struct Weapon *weapon2 = (struct Weapon *)DTAB_GET(gl_weapons_dtab, item2.id);
             SDL_assert(weapon2 != NULL);
             nourstest_true(weapon1->item->type == weapon2->item->type);
             nourstest_true(weapon1->stats.hit <= weapon2->stats.hit);
@@ -134,9 +134,9 @@ void testConvoysort() {
             SDL_assert(item1.id > ITEM_NULL);
             struct Inventory_item item2 = convoy.items[j + 1];
             SDL_assert(item2.id > ITEM_NULL);
-            struct Weapon *weapon1 = (struct Weapon *)DTAB_GET(convoy.weapons_dtab, item1.id);
+            struct Weapon *weapon1 = (struct Weapon *)DTAB_GET(gl_weapons_dtab, item1.id);
             SDL_assert(weapon1 != NULL);
-            struct Weapon *weapon2 = (struct Weapon *)DTAB_GET(convoy.weapons_dtab, item2.id);
+            struct Weapon *weapon2 = (struct Weapon *)DTAB_GET(gl_weapons_dtab, item2.id);
             SDL_assert(weapon2 != NULL);
             nourstest_true(weapon1->item->type == weapon2->item->type);
             nourstest_true(weapon1->stats.attack.physical >=
@@ -155,9 +155,9 @@ void testConvoysort() {
             SDL_assert(item1.id > ITEM_NULL);
             struct Inventory_item item2 = convoy.items[j + 1];
             SDL_assert(item2.id > ITEM_NULL);
-            struct Weapon *weapon1 = (struct Weapon *)DTAB_GET(convoy.weapons_dtab, item1.id);
+            struct Weapon *weapon1 = (struct Weapon *)DTAB_GET(gl_weapons_dtab, item1.id);
             SDL_assert(weapon1 != NULL);
-            struct Weapon *weapon2 = (struct Weapon *)DTAB_GET(convoy.weapons_dtab, item2.id);
+            struct Weapon *weapon2 = (struct Weapon *)DTAB_GET(gl_weapons_dtab, item2.id);
             SDL_assert(weapon2 != NULL);
             nourstest_true(weapon1->item->type == weapon2->item->type);
             nourstest_true(weapon1->stats.attack.physical <=
@@ -167,15 +167,15 @@ void testConvoysort() {
 
     // Convoy_Stats_Print(&convoy, ITEM_TYPE_EXP_SWORD, WEAPON_STAT_HIT);
     // Convoy_AllStats_Print(&convoy, ITEM_TYPE_EXP_SWORD);
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
 }
 
 void testConvoyWriteRead() {
 
     struct Convoy convoy = Convoy_default;
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    struct dtab *gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
 
-    convoy.weapons_dtab = weapons_dtab;
+    gl_weapons_dtab = gl_weapons_dtab;
     struct Inventory_item temp = Inventory_item_default;
     nourstest_true(convoy.cumnum[ITEM_TYPE_EXP_NULL] == 0);
     nourstest_true(convoy.cumnum[ITEM_TYPE_EXP_SWORD] == 0);
@@ -353,14 +353,13 @@ void testConvoyWriteRead() {
     jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "convoy_test.json")), &convoy, false);
     nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "convoy_test.json")));
     struct Convoy convoy2 = Convoy_default;
-    convoy2.weapons_dtab = weapons_dtab;
 
     jsonio_readJSON(s8_literal(PATH_JOIN("saves", "convoy_test.json")), &convoy2);
     jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "convoy_rewrite.json")), &convoy2, false);
     nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "convoy_rewrite.json")));
     nourstest_true(Filesystem_fequal(PATH_JOIN("saves", "convoy_rewrite.json"),
                                      PATH_JOIN("saves", "convoy_test.json")));
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
 
     Convoy_Free(&convoy);
     Convoy_Free(&convoy2);
@@ -386,9 +385,9 @@ void testConvoyExp() {
 
 void testConvoySwap() {
     struct Convoy convoy = Convoy_default;
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
 
-    convoy.weapons_dtab = weapons_dtab;
+    gl_weapons_dtab = gl_weapons_dtab;
     struct Inventory_item temp = Inventory_item_default;
 
     temp.id = ITEM_ID_KITCHEN_KNIFE;
@@ -416,7 +415,7 @@ void testConvoySwap() {
     nourstest_true(convoy.items[3].id == ITEM_ID_DAMAS_LANCE);
     Convoy_Swap(&convoy, 2, 3);
 
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
 }
 
 void test_convoy() {

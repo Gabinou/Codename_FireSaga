@@ -6,6 +6,7 @@
 #include "unit/flags.h"
 #include "unit/equipment.h"
 #include "combat.h"
+#include "globals.h"
 #include "equations.h"
 
 void test_combat_game() {
@@ -25,12 +26,11 @@ void test_combat_game() {
     //                               hp, str, mag, agi, dex, fth, luck, def, res, con, move
     struct Unit_stats attacker_stats = {19,  4,  2,  7,  7,  7, 7,  4,  5,  6, 5};
     struct Unit_stats defender_stats = {19,  4,  2,  7,  7,  7, 7,  4,  5,  6, 5};
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
-    struct dtab *items_dtab = DTAB_INIT(weapons_dtab, struct Item);
-    Unit_InitWweapons(&attacker, weapons_dtab);
-    Unit_InitWweapons(&defender, weapons_dtab);
-    firesaga.weapons_dtab = weapons_dtab;
-    SDL_assert(weapons_dtab != NULL);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_items_dtab   = DTAB_INIT(gl_items_dtab, struct Item);
+    Unit_Init(&attacker);
+    Unit_Init(&defender);
+    SDL_assert(gl_weapons_dtab != NULL);
     Unit_setClassind(&defender, UNIT_CLASS_FENCER);
     Unit_setClassind(&attacker, UNIT_CLASS_FENCER);
     Unit_setStats(&defender, defender_stats);
@@ -41,8 +41,6 @@ void test_combat_game() {
     in_wpn.id = ITEM_ID_FLEURET;
     b32 attacker_equip_hand = Unit_Hand_Strong(&attacker);
     b32 defender_equip_hand = Unit_Hand_Strong(&defender);
-    attacker.equipment.items_dtab = items_dtab;
-    defender.equipment.items_dtab = items_dtab;
     Unit_Item_Drop(&defender,           defender_equip_hand);
     Unit_Item_Takeat(&defender, in_wpn, defender_equip_hand);
     Unit_Item_Drop(&attacker,           attacker_equip_hand);
@@ -73,7 +71,7 @@ void test_combat_game() {
     SDL_assert(defender_eq[defender_equip_hand].id = ITEM_ID_FLEURET);
     SDL_assert(attacker_eq[attacker_equip_hand].id = ITEM_ID_FLEURET);
 
-    struct Weapon *fleuret = ((struct Weapon *)DTAB_GET(weapons_dtab, in_wpn.id));
+    struct Weapon *fleuret = ((struct Weapon *)DTAB_GET(gl_weapons_dtab, in_wpn.id));
 
     // computing attacker effectiveStats
     ES_A = Unit_effectiveStats(&attacker);
@@ -116,22 +114,20 @@ void test_combat_game() {
     // checking defender equipped");
     SDL_assert(Unit_isEquipped(&defender, defender_equip_hand));
     if (Unit_isEquipped(&defender, defender_equip_hand)) {
-        struct dtab *weapons_dtab = Unit_dtab_Weapons(&defender);
-        SDL_assert(weapons_dtab != NULL);
+        SDL_assert(gl_weapons_dtab != NULL);
         SDL_assert(defender_eq != NULL);
         temp_id = defender_eq[defender_equip_hand].id;
         SDL_assert(temp_id == in_wpn.id);
-        defender_weaponp = ((struct Weapon *)DTAB_GET(weapons_dtab, temp_id));
+        defender_weaponp = ((struct Weapon *)DTAB_GET(gl_weapons_dtab, temp_id));
         SDL_assert(defender_weaponp != NULL);
     }
 
     // checking attacker equipped");
     SDL_assert(Unit_isEquipped(&attacker, attacker_equip_hand));
     if (Unit_isEquipped(&attacker, attacker_equip_hand)) {
-        struct dtab *weapons_dtab = Unit_dtab_Weapons(&attacker);
-        SDL_assert(weapons_dtab != NULL);
+        SDL_assert(gl_weapons_dtab != NULL);
         temp_id = attacker_eq[attacker_equip_hand].id;
-        attacker_weaponp = ((struct Weapon *)DTAB_GET(weapons_dtab, temp_id));
+        attacker_weaponp = ((struct Weapon *)DTAB_GET(gl_weapons_dtab, temp_id));
         nourstest_true(attacker_weaponp != NULL);
     }
 
@@ -513,7 +509,7 @@ void test_combat_game() {
     /* --- SDL_free --- */
     Unit_Free(&attacker);
     Unit_Free(&defender);
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
     DARR_FREE(firesaga.combat_outcome.attacks);
 }
 

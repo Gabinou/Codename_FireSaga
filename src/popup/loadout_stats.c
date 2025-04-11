@@ -10,6 +10,7 @@
 #include "unit/loadout.h"
 #include "unit/equipment.h"
 #include "macros.h"
+#include "globals.h"
 #include "nmath.h"
 #include "popup/popup.h"
 #include "pixelfonts.h"
@@ -468,9 +469,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
         if (!eq_valid(eq))
             break;
 
-        struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
-        if (weapons_dtab == NULL)
-            break;
+        SDL_assert(gl_weapons_dtab != NULL);
 
         i32 id = Unit_Id_Equipment(unit, eq);
         int x = PLS_NAMEL_X;
@@ -482,7 +481,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
             break;
         }
 
-        struct Weapon *wpn = DTAB_GET(weapons_dtab, id);
+        struct Weapon *wpn = DTAB_GET(gl_weapons_dtab, id);
         if (wpn == NULL)
             break;
 
@@ -509,9 +508,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
         if (!eq_valid(eq))
             break;
 
-        struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
-        if (weapons_dtab == NULL)
-            break;
+        SDL_assert(gl_weapons_dtab != NULL);
 
         i32 id = Unit_Id_Equipment(unit, eq);
         int x = PLS_NAMER_X;
@@ -523,7 +520,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
             break;
         }
 
-        struct Weapon *wpn = DTAB_GET(weapons_dtab, id);
+        struct Weapon *wpn = DTAB_GET(gl_weapons_dtab, id);
         if (wpn == NULL)
             break;
 
@@ -628,8 +625,7 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
 
     Unit *unit = IES_GET_COMPONENT(pls->world, pls->unit_ent, Unit);
 
-    struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
-    SDL_assert(weapons_dtab  != NULL);
+    SDL_assert(gl_weapons_dtab  != NULL);
 
     /* Left hand item type */
     int eq = Loadout_Eq(&pls->loadout_selected, UNIT_HAND_LEFT);
@@ -637,8 +633,8 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
         int id = Unit_Id_Equipment(unit, eq);
 
         if (Weapon_ID_isValid(id)) {
-            Weapon_Load(weapons_dtab, id);
-            pls->type_left = Weapon_TypeExp(DTAB_GET(weapons_dtab, id));
+            Weapon_Load(gl_weapons_dtab, id);
+            pls->type_left = Weapon_TypeExp(DTAB_GET(gl_weapons_dtab, id));
         } else {
             pls->type_left = ITEM_TYPE_ITEM;
         }
@@ -650,8 +646,8 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
         int id = Unit_Id_Equipment(unit, eq);
 
         if (Weapon_ID_isValid(id)) {
-            Weapon_Load(weapons_dtab, id);
-            pls->type_right = Weapon_TypeExp(DTAB_GET(weapons_dtab, id));
+            Weapon_Load(gl_weapons_dtab, id);
+            pls->type_right = Weapon_TypeExp(DTAB_GET(gl_weapons_dtab, id));
         } else {
             pls->type_right = ITEM_TYPE_ITEM;
         }

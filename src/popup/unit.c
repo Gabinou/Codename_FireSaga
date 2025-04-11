@@ -4,6 +4,7 @@
 #include "weapon.h"
 #include "utilities.h"
 #include "nmath.h"
+#include "globals.h"
 #include "filesystem.h"
 #include "macros.h"
 #include "names.h"
@@ -290,9 +291,8 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
 
         Inventory_item *item = Unit_Item_Equipped(pu->unit, stronghand);
         if (Unit_isEquipped(pu->unit, stronghand) && (item->id > ITEM_NULL)) {
-            struct dtab *weapons_dtab = Unit_dtab_Weapons(pu->unit);
-            Weapon_Load(weapons_dtab, item->id);
-            struct Weapon *weapon = DTAB_GET(weapons_dtab, item->id);
+            Weapon_Load(gl_weapons_dtab, item->id);
+            struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, item->id);
             SDL_assert(weapon != NULL);
             u16 type_ind = Weapon_TypeExp(weapon);
             srcrect.x = (type_ind % PU_WPN_ICON_ROWLEN) * PU_WPN_ICON_H;
@@ -307,9 +307,8 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
         dstrect.x = PU_ICONR_X + 1;
         item = Unit_Item_Equipped(pu->unit, weakhand);
         if (Unit_isEquipped(pu->unit, weakhand) && (item->id > ITEM_NULL)) {
-            struct dtab *weapons_dtab = Unit_dtab_Weapons(pu->unit);
-            Weapon_Load(weapons_dtab, item->id);
-            struct Weapon *weapon = DTAB_GET(weapons_dtab, item->id);
+            Weapon_Load(gl_weapons_dtab, item->id);
+            struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, item->id);
             SDL_assert(weapon != NULL);
             u16 type_ind = Weapon_TypeExp(weapon);
             srcrect.x = (type_ind % PU_WPN_ICON_ROWLEN) * PU_WPN_ICON_H;
@@ -325,7 +324,7 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
         //             pu_SIMPLE_ICON_OFFSET_X) / 2;
         // item = pu->unit->equipment[UNIT_weakhand];
         // SDL_assert(item->id > ITEM_NULL);
-        // struct Weapon *weapon = DTAB_GET(pu->unit->weapons_dtab, item->id);
+        // struct Weapon *weapon = DTAB_GET(pu->unit->gl_weapons_dtab, item->id);
         // u16 type = weapon->item->type;
         // // TODO: weapon with multiple types
         // SDL_assert(weapon->item->type > 0);

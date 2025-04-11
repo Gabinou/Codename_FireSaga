@@ -9,6 +9,7 @@
 #include "filesystem.h"
 #include "platform.h"
 #include "weapon.h"
+#include "globals.h"
 #include "utilities.h"
 #include "nmath.h"
 #include "macros.h"
@@ -405,10 +406,9 @@ void StatsMenu_Free(struct StatsMenu *stats_menu) {
 
 void StatsMenu_Load(struct StatsMenu *stats_menu, struct Unit *unit,
                     SDL_Renderer *renderer, struct n9Patch *n9patch) {
-    SDL_assert(stats_menu != NULL);
-    SDL_assert(unit != NULL);
-    struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
-    SDL_assert(weapons_dtab != NULL);
+    SDL_assert(stats_menu       != NULL);
+    SDL_assert(unit             != NULL);
+    SDL_assert(gl_weapons_dtab  != NULL);
 
     stats_menu->unit    = unit;
     stats_menu->update  = true;
@@ -956,10 +956,8 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
     SDL_Rect dstrect, srcrect;
     char numbuff[10];
     struct Unit *unit = stats_menu->unit;
-    struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
-    SDL_assert(weapons_dtab != NULL);
-    struct dtab *items_dtab = Unit_dtab_Items(unit);
-    SDL_assert(items_dtab != NULL);
+    SDL_assert(gl_weapons_dtab  != NULL);
+    SDL_assert(gl_items_dtab    != NULL);
 
     i16 item_y_offset, item_dura_y_offset;
 
@@ -993,8 +991,8 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
     /* Writing - number of uses left */
     int uses_left = 0;
     if (Weapon_ID_isValid(invitem->id)) {
-        Weapon_Load(weapons_dtab, invitem->id);
-        struct Weapon *weapon = DTAB_GET(weapons_dtab, invitem->id);
+        Weapon_Load(gl_weapons_dtab, invitem->id);
+        struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, invitem->id);
         SDL_assert(weapon                   != NULL);
         SDL_assert(weapon->item             != NULL);
         SDL_assert(weapon->item->name.data  != NULL);
@@ -1003,9 +1001,9 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
         SDL_assert(weapon->item->stats.uses > 0);
         uses_left = (weapon->item->stats.uses - invitem->used);
     } else if (Item_ID_isValid(invitem->id)) {
-        SDL_assert(items_dtab != NULL);
-        Item_Load(items_dtab, invitem->id);
-        struct Item *item = DTAB_GET(items_dtab, invitem->id);
+        SDL_assert(gl_items_dtab != NULL);
+        Item_Load(gl_items_dtab, invitem->id);
+        struct Item *item = DTAB_GET(gl_items_dtab, invitem->id);
         uses_left = (item->stats.uses - invitem->used);
     }
     // SDL_assert(uses_left > 0);

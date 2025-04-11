@@ -7,6 +7,7 @@
 #include "platform.h"
 #include "utilities.h"
 #include "filesystem.h"
+#include "globals.h"
 #include "names.h"
 #include "nmath.h"
 #include "unit/equipment.h"
@@ -391,16 +392,14 @@ void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9p
         s8_free(&lsm->item_name);
         if (Weapon_ID_isValid(id)) {
             /* Item is a weapon */
-            struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
-            SDL_assert(weapons_dtab != NULL);
-            struct Weapon *weapon = DTAB_GET(weapons_dtab, id);
+            SDL_assert(gl_weapons_dtab != NULL);
+            struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, id);
             SDL_assert(weapon != NULL);
             lsm->item_name = s8_mut(weapon->item->name.data);
         } else if (Item_ID_isValid(id)) {
             /* Pure item */
-            struct dtab *items_dtab = Unit_dtab_Items(unit);
-            Item_Load(items_dtab, id);
-            struct Item *item = DTAB_GET(items_dtab, id);
+            Item_Load(gl_items_dtab, id);
+            struct Item *item = DTAB_GET(gl_items_dtab, id);
             lsm->item_name = s8_mut(item->name.data);
         } else {
             SDL_Log("LoadoutSelectMenu: Neither a valid item nor weapon");
@@ -498,11 +497,11 @@ static void _LoadoutSelectMenu_Draw_Header(struct LoadoutSelectMenu *lsm,
 //     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
 //     i32 stronghand = Unit_Hand_Strong(lsm->unit);
 
-//     SDL_assert(lsm->unit->weapons_dtab != NULL);
+//     SDL_assert(lsm->unit->gl_weapons_dtab != NULL);
 //     struct Inventory_item *item   = Unit_Item_Equipped(lsm->unit, Unit_Hand_Strong(lsm->unit));
 //     SDL_Log("item->id %d", item->id);
-//     Weapon_Load(lsm->unit->weapons_dtab, item->id);
-//     struct Weapon         *weapon = DTAB_GET(lsm->unit->weapons_dtab, item->id);
+//     Weapon_Load(lsm->unit->gl_weapons_dtab, item->id);
+//     struct Weapon         *weapon = DTAB_GET(lsm->unit->gl_weapons_dtab, item->id);
 //     SDL_assert(weapon               != NULL);
 //     SDL_assert(weapon->item         != NULL);
 //     s8 name = weapon->item->name;
@@ -721,9 +720,8 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
             continue;
         }
 
-        struct dtab *weapons_dtab = Unit_dtab_Weapons(unit);
-        SDL_assert(weapons_dtab != NULL);
-        struct Weapon *weapon = DTAB_GET(weapons_dtab, id);
+        SDL_assert(gl_weapons_dtab != NULL);
+        struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, id);
         SDL_assert(weapon != NULL);
 
         /* - Uses left - */

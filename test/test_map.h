@@ -1,6 +1,7 @@
 
 #include "nourstest.h"
 #include "platform.h"
+#include "globals.h"
 #include "map/tiles.h"
 #include "map/ontile.h"
 #include "map/find.h"
@@ -193,8 +194,8 @@ void test_map_usable(void) {
     Position *enemy_pos = IES_GET_COMPONENT(world, Enemy, Position);
 
     /* Units init */
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
-    Unit_InitWweapons(silou, weapons_dtab);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    Unit_Init(silou);
 
     /* --- Testing 1 range only --- */
     Unit_Equippable_set(silou, ITEM_TYPE_SWORD);
