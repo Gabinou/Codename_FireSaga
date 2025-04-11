@@ -4,6 +4,7 @@
 #include "menu/growths.h"
 #include "unit/unit.h"
 #include "graph.h"
+#include "globals.h"
 #include "RNG.h"
 
 void test_menu_growths() {
@@ -11,7 +12,7 @@ void test_menu_growths() {
     sota_mkdir("menu_growths");
 
     /* -- Weapon dtab -- */
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
 
     /* -- Create n9patch -- */
     struct n9Patch n9patch = n9Patch_default;
@@ -43,7 +44,6 @@ void test_menu_growths() {
     struct Unit_stats *grown = Unit_Stats_Grown(&Silou);
     SDL_assert(grown == NULL);
     Unit_Init(&Silou);
-    Silou.equipment.weapons_dtab = weapons_dtab;
     SDL_assert(Silou.equipment.num == 0);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);
     grown = Unit_Stats_Grown(&Silou);
@@ -54,7 +54,7 @@ void test_menu_growths() {
     struct Inventory_item in_wpn = Inventory_item_default;
     in_wpn.id   = ITEM_ID_FLEURET;
     in_wpn.used = 0;
-    Weapon_Load(weapons_dtab, in_wpn.id);
+    Weapon_Load(gl_weapons_dtab, in_wpn.id);
 
     int stronghand  = Unit_Hand_Strong(&Silou);
     int weakhand    = Unit_Hand_Weak(&Silou);
@@ -231,7 +231,7 @@ void test_menu_growths() {
 
     /* --- SDL_free --- */
     Unit_Free(&Silou);
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
     GrowthsMenu_Free(gm);
     SDL_FreeSurface(surface);
 

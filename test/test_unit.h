@@ -15,10 +15,9 @@
 
 void test_canEquip_Type(void) {
     struct Unit Silou = Unit_default;
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
-    struct dtab *items_dtab = DTAB_INIT(items_dtab, struct Item);
-    Unit_InitWweapons(&Silou, weapons_dtab);
-    Silou.equipment.items_dtab = items_dtab;
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
+    Unit_Init(&Silou);
     Silou.flags.equippable = 0;
     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_FLEURET)        == false);
     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_MAIN_GAUCHE)    == false);
@@ -61,7 +60,7 @@ void test_canEquip_Type(void) {
     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_HEAL)           == true);
     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == true);
 
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
     Unit_Free(&Silou);
 }
 
@@ -72,19 +71,17 @@ void test_skills(void) {
     int distance = 1;
     struct Unit Silou = Unit_default;
     struct Unit Hamilcar = Unit_default;
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
-    struct dtab *items_dtab = DTAB_INIT(items_dtab, struct Item);
-    Weapon_Load(weapons_dtab, ITEM_ID_FLEURET);
-    struct Weapon *fleuret = (struct Weapon *)DTAB_GET(weapons_dtab, ITEM_ID_FLEURET);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
+    Weapon_Load(gl_weapons_dtab, ITEM_ID_FLEURET);
+    struct Weapon *fleuret = (struct Weapon *)DTAB_GET(gl_weapons_dtab, ITEM_ID_FLEURET);
     nourstest_true(fleuret != NULL);
     nourstest_true(fleuret->canAttack);
     nourstest_true(fleuret->item->type == ITEM_TYPE_SWORD);
     nourstest_true(fleuret->item->id == ITEM_ID_FLEURET);
     nourstest_true(Weapon_canAttack(fleuret));
-    Unit_InitWweapons(&Silou, weapons_dtab);
-    Unit_InitWweapons(&Hamilcar, weapons_dtab);
-    Silou.equipment.items_dtab = items_dtab;
-    Hamilcar.equipment.items_dtab = items_dtab;
+    Unit_Init(&Silou);
+    Unit_Init(&Hamilcar);
     //                           hp, str, mag, agi, dex, fth, luck, def, res, con, move
     struct Unit_stats in_stats = {17,  6,  2,  7,  7, 7,  7,  4,  5,  6, 5};
     Unit_setClassind(&Silou, UNIT_CLASS_FENCER);
@@ -113,7 +110,7 @@ void test_skills(void) {
     /* --- SDL_free --- */
     Unit_Free(&Silou);
     Unit_Free(&Hamilcar);
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
 }
 
 void test_io(void) {
@@ -122,20 +119,14 @@ void test_io(void) {
     struct Unit unit3 = Unit_default;
     struct Unit unit4 = Unit_default;
     struct Unit unit5 = Unit_default;
-    struct dtab *weapons_dtab  = DTAB_INIT(weapons_dtab,  struct Weapon);
-    struct dtab *weapons_dtab2 = DTAB_INIT(weapons_dtab2, struct Weapon);
-    struct dtab *items_dtab = DTAB_INIT(items_dtab, struct Item);
+    gl_weapons_dtab  = DTAB_INIT(gl_weapons_dtab,  struct Weapon);
+    gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
 
-    Unit_InitWweapons(&unit1, weapons_dtab);
-    Unit_InitWweapons(&unit2, weapons_dtab);
-    Unit_InitWweapons(&unit3, weapons_dtab);
-    Unit_InitWweapons(&unit4, weapons_dtab);
-    Unit_InitWweapons(&unit5, weapons_dtab);
-    unit1.equipment.items_dtab = items_dtab;
-    unit2.equipment.items_dtab = items_dtab;
-    unit3.equipment.items_dtab = items_dtab;
-    unit4.equipment.items_dtab = items_dtab;
-    unit5.equipment.items_dtab = items_dtab;
+    Unit_Init(&unit1);
+    Unit_Init(&unit2);
+    Unit_Init(&unit3);
+    Unit_Init(&unit4);
+    Unit_Init(&unit5);
 
 
     /*                              hp, str, mag, agi, dex, fth, luck, def, res, con, move, prof */
@@ -257,8 +248,7 @@ void test_io(void) {
     Unit_Free(&unit4);
     Unit_Free(&unit5);
 
-    Game_Weapons_Free(&weapons_dtab);
-    Game_Weapons_Free(&weapons_dtab2);
+    Game_Weapons_Free(&gl_weapons_dtab);
 }
 
 void test_growth(void) {
@@ -564,14 +554,13 @@ void test_bonus_stats(void) {
 
 void test_canEquip_OneHand() {
     struct Unit Silou = Unit_default;
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
-    struct dtab *items_dtab = DTAB_INIT(items_dtab, struct Item);
-    Unit_InitWweapons(&Silou, weapons_dtab);
-    Silou.equipment.items_dtab = items_dtab;
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_items_dtab   = DTAB_INIT(gl_items_dtab, struct Item);
+    Unit_Init(&Silou);
 
     Unit_setClassind(&Silou, UNIT_CLASS_FENCER);
-    Weapon_Load(weapons_dtab, ITEM_ID_FLEURET);
-    struct Weapon *weapon = DTAB_GET(weapons_dtab, ITEM_ID_FLEURET);
+    Weapon_Load(gl_weapons_dtab, ITEM_ID_FLEURET);
+    struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, ITEM_ID_FLEURET);
     /* Try to equip a one hand weapon when already in other hand */
 
     Unit_Unequip(&Silou, UNIT_HAND_LEFT);
@@ -641,20 +630,19 @@ void test_canEquip_OneHand() {
         nourstest_true(Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_LEFT, mode));
         nourstest_true(Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_RIGHT, mode));
     }
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
 }
 
 void test_canEquip_TwoHand() {
     struct Unit Silou = Unit_default;
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
-    struct dtab *items_dtab = DTAB_INIT(items_dtab, struct Item);
-    Unit_InitWweapons(&Silou, weapons_dtab);
-    Silou.equipment.items_dtab = items_dtab;
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
+    Unit_Init(&Silou);
     Unit_setClassind(&Silou, UNIT_CLASS_FENCER);
-    Weapon_Load(weapons_dtab, ITEM_ID_FLEURET);
-    Weapon_Load(weapons_dtab, ITEM_ID_RAPIERE);
-    Weapon_Load(weapons_dtab, ITEM_ID_HEAL);
-    struct Weapon *weapon = DTAB_GET(weapons_dtab, ITEM_ID_FLEURET);
+    Weapon_Load(gl_weapons_dtab, ITEM_ID_FLEURET);
+    Weapon_Load(gl_weapons_dtab, ITEM_ID_RAPIERE);
+    Weapon_Load(gl_weapons_dtab, ITEM_ID_HEAL);
+    struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, ITEM_ID_FLEURET);
 
     /* Try to equip a one hand weapon when already in other hand */
     Unit_Unequip(&Silou, UNIT_HAND_LEFT);
@@ -728,7 +716,7 @@ void test_canEquip_TwoHand() {
     }
 
     /* Try to equip a two  two handes weapon when already in different hands */
-    struct Weapon *weapon2 = DTAB_GET(weapons_dtab, ITEM_ID_RAPIERE);
+    struct Weapon *weapon2 = DTAB_GET(gl_weapons_dtab, ITEM_ID_RAPIERE);
     weapon->handedness  = WEAPON_HAND_TWO;
     weapon2->handedness = WEAPON_HAND_TWO;
 
@@ -767,21 +755,20 @@ void test_canEquip_TwoHand() {
     nourstest_true( Unit_canEquip_TwoHand(&Silou, ITEM1, UNIT_HAND_RIGHT, mode));
     nourstest_true( Unit_canEquip_TwoHand(&Silou, ITEM1, UNIT_HAND_LEFT, mode));
 
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
 }
 
 void test_canEquip_Users(void) {
     struct Unit Silou = Unit_default;
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
-    struct dtab *items_dtab = DTAB_INIT(items_dtab, struct Item);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
 
-    Unit_InitWweapons(&Silou, weapons_dtab);
-    Silou.equipment.items_dtab = items_dtab;
+    Unit_Init(&Silou);
     int id = ITEM_ID_FLEURET;
-    Weapon_Load(weapons_dtab, id);
+    Weapon_Load(gl_weapons_dtab, id);
     Unit_id_set(&Silou, UNIT_ID_SILOU);
 
-    struct Weapon *weapon = DTAB_GET(weapons_dtab, id);
+    struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, id);
 
     int eq = 0;
     Inventory_item *silou_eq = Unit_Equipment(&Silou);
@@ -801,21 +788,20 @@ void test_canEquip_Users(void) {
     users[3] = UNIT_ID_SILOU;
     nourstest_true( Unit_canEquip_Users(&Silou, id));
 
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
 }
 
 void test_canEquip_Archetype(void) {
     struct Unit Silou = Unit_default;
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
-    struct dtab *items_dtab = DTAB_INIT(items_dtab, struct Item);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
 
-    Unit_InitWweapons(&Silou, weapons_dtab);
-    Silou.equipment.items_dtab = items_dtab;
+    Unit_Init(&Silou);
     int id = ITEM_ID_FLEURET;
-    Weapon_Load(weapons_dtab, id);
+    Weapon_Load(gl_weapons_dtab, id);
     Unit_id_set(&Silou, UNIT_ID_SILOU);
 
-    struct Weapon *weapon = DTAB_GET(weapons_dtab, id);
+    struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, id);
 
     int eq = 0;
     Inventory_item *silou_eq = Unit_Equipment(&Silou);
@@ -844,17 +830,16 @@ void test_canEquip_Archetype(void) {
     nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_SHIELD));
     nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_STAFF));
 
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
 }
 
 void test_canEquip(void) {
     //  - Does the loadout make sense for unit/class/selection
     struct Unit Silou = Unit_default;
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
-    struct dtab *items_dtab = DTAB_INIT(items_dtab, struct Item);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
 
-    Unit_InitWweapons(&Silou, weapons_dtab);
-    Silou.equipment.items_dtab = items_dtab;
+    Unit_Init(&Silou);
     Unit_id_set(&Silou, UNIT_ID_SILOU);
 
     /* --- Staff user that can't twohand --- */
@@ -1061,7 +1046,7 @@ void test_canEquip(void) {
     canEquip_Eq(&can_equip, ITEM3);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
 
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
 }
 
 void test_range(void) {
@@ -1081,11 +1066,10 @@ void test_range(void) {
 
     /*  - Does the loadout make sense for unit/class/selection - */
     struct Unit Silou = Unit_default;
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
-    struct dtab *items_dtab = DTAB_INIT(items_dtab, struct Item);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_items_dtab   = DTAB_INIT(gl_items_dtab, struct Item);
 
-    Unit_InitWweapons(&Silou, weapons_dtab);
-    Silou.equipment.items_dtab = items_dtab;
+    Unit_Init(&Silou);
     Unit_id_set(&Silou, UNIT_ID_SILOU);
 
     Unit_Unequip(&Silou, UNIT_HAND_LEFT);
@@ -1098,19 +1082,19 @@ void test_range(void) {
     silou_eq[4].id    = ITEM_ID_UCHIGATANA;
     silou_eq[5].id    = ITEM_ID_EXSANGUE;
 
-    Weapon_Load(weapons_dtab, silou_eq[0].id);
-    Weapon_Load(weapons_dtab, silou_eq[1].id);
-    Weapon_Load(weapons_dtab, silou_eq[2].id);
-    Weapon_Load(weapons_dtab, silou_eq[3].id);
-    Weapon_Load(weapons_dtab, silou_eq[4].id);
-    Weapon_Load(weapons_dtab, silou_eq[5].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[0].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[1].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[2].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[3].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[4].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[5].id);
     struct Weapon *wpns[SOTA_EQUIPMENT_SIZE];
-    wpns[0] = DTAB_GET(weapons_dtab, silou_eq[0].id);
-    wpns[1] = DTAB_GET(weapons_dtab, silou_eq[1].id);
-    wpns[2] = DTAB_GET(weapons_dtab, silou_eq[2].id);
-    wpns[3] = DTAB_GET(weapons_dtab, silou_eq[3].id);
-    wpns[4] = DTAB_GET(weapons_dtab, silou_eq[4].id);
-    wpns[5] = DTAB_GET(weapons_dtab, silou_eq[5].id);
+    wpns[0] = DTAB_GET(gl_weapons_dtab, silou_eq[0].id);
+    wpns[1] = DTAB_GET(gl_weapons_dtab, silou_eq[1].id);
+    wpns[2] = DTAB_GET(gl_weapons_dtab, silou_eq[2].id);
+    wpns[3] = DTAB_GET(gl_weapons_dtab, silou_eq[3].id);
+    wpns[4] = DTAB_GET(gl_weapons_dtab, silou_eq[4].id);
+    wpns[5] = DTAB_GET(gl_weapons_dtab, silou_eq[5].id);
     SDL_assert(wpns[0] != NULL);
     SDL_assert(wpns[1] != NULL);
     SDL_assert(wpns[2] != NULL);
@@ -1139,7 +1123,7 @@ void test_range(void) {
     wpns[5]->stats.range.min = 2;
     wpns[5]->stats.range.max = 4;
 
-    struct Weapon *wpn = DTAB_GET(weapons_dtab, silou_eq[1].id);
+    struct Weapon *wpn = DTAB_GET(gl_weapons_dtab, silou_eq[1].id);
     SDL_assert(wpn->stats.range.min == 1);
     SDL_assert(wpn->stats.range.max == 2);
 
@@ -1169,7 +1153,7 @@ void test_range(void) {
         nourstest_true(!Range_Valid(range));
     }
 
-    wpn = DTAB_GET(weapons_dtab, Unit_Id_Equipment(&Silou, ITEM2));
+    wpn = DTAB_GET(gl_weapons_dtab, Unit_Id_Equipment(&Silou, ITEM2));
     SDL_assert(wpn->stats.range.min == 1);
     SDL_assert(wpn->stats.range.max == 2);
 
@@ -1231,7 +1215,7 @@ void test_range(void) {
     Unit_Range_Equipment(&Silou, ITEM_TYPE_SWORD, &range);
     nourstest_true(!Range_Valid(range));
 
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
 }
 
 void test_status(void) {

@@ -6,6 +6,7 @@
 #include "unit/flags.h"
 #include "unit/status.h"
 #include "RNG.h"
+#include "globals.h"
 
 void test_menu_stats() {
     /* -- Preliminaries -- */
@@ -13,8 +14,8 @@ void test_menu_stats() {
     Names_Load_All();
 
     /* -- Weapon dtab -- */
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
-    struct dtab *items_dtab   = DTAB_INIT(items_dtab,   struct Item);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_items_dtab   = DTAB_INIT(gl_items_dtab,   struct Item);
 
     /* -- Create n9patch -- */
     struct n9Patch n9patch = n9Patch_default;
@@ -48,7 +49,6 @@ void test_menu_stats() {
     Silou.id.title = 0;
     global_unitTitlesId[Silou.id.self] = Silou.id.title;
     global_unitTitles[Silou.id.title] = s8_mut("Playful Mage");
-    Silou.equipment.weapons_dtab = weapons_dtab;
     SDL_assert(Silou.equipment.num == 0);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);
     SDL_assert(Silou.equipment.num == 4);
@@ -57,7 +57,7 @@ void test_menu_stats() {
     struct Inventory_item in_wpn = Inventory_item_default;
     in_wpn.id = ITEM_ID_FLEURET;
     in_wpn.used = 0;
-    Weapon_Load(weapons_dtab, in_wpn.id);
+    Weapon_Load(gl_weapons_dtab, in_wpn.id);
 
     int stronghand  = Unit_Hand_Strong(&Silou);
     int weakhand    = Unit_Hand_Weak(&Silou);
@@ -353,13 +353,13 @@ void test_menu_stats() {
     Silou.equipment.num = 4;
     in_wpn.id   = ITEM_ID_IRON_SWORD;
     in_wpn.used = 0;
-    Weapon_Load(weapons_dtab, in_wpn.id);
+    Weapon_Load(gl_weapons_dtab, in_wpn.id);
     Unit_Item_Take(&Silou, in_wpn);
     SDL_assert(Silou.equipment.num == 5);
 
     in_wpn.id   = ITEM_ID_IRON_LANCE;
     in_wpn.used = 10;
-    Weapon_Load(weapons_dtab, in_wpn.id);
+    Weapon_Load(gl_weapons_dtab, in_wpn.id);
     Unit_Item_Take(&Silou, in_wpn);
     SDL_assert(Silou.equipment.num == 6);
 
@@ -384,13 +384,13 @@ void test_menu_stats() {
     silou_eq[1].id   = ITEM_ID_REPEATABLE_CROSSBOW;
     silou_eq[2].id   = ITEM_ID_HONJOU_MASAMUNE;
     silou_eq[3].id   = ITEM_ID_SILVERLIGHT_SPEAR;
-    Weapon_Load(weapons_dtab, silou_eq[0].id);
-    Weapon_Load(weapons_dtab, silou_eq[1].id);
-    Weapon_Load(weapons_dtab, silou_eq[2].id);
-    Weapon_Load(weapons_dtab, silou_eq[3].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[0].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[1].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[2].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[3].id);
     // TODO: when stats menu supports items
     // Silou._equipment[4].id   = ITEM_ID_DOUBLE_SIDED_WHETSTONE;
-    // Item_Load(items_dtab, Silou._equipment[4].id);
+    // Item_Load(gl_items_dtab, Silou._equipment[4].id);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Names_Long.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
@@ -399,8 +399,8 @@ void test_menu_stats() {
     PixelFont_Free(sm->pixelnours, true);
     PixelFont_Free(sm->pixelnours_big, true);
 
-    Game_Weapons_Free(&weapons_dtab);
-    Game_Items_Free(&items_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
+    Game_Items_Free(&gl_items_dtab);
     SDL_FreeSurface(surface);
     StatsMenu_Free(sm);
 

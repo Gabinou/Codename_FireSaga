@@ -1,9 +1,10 @@
 
+#include "macros.h"
+#include "globals.h"
 #include "nourstest.h"
 #include "platform.h"
-#include "macros.h"
-#include "popup/loadout_stats.h"
 #include "unit/unit.h"
+#include "popup/loadout_stats.h"
 
 void test_popup_loadout_stats() {
     /* -- Preliminaries -- */
@@ -79,18 +80,18 @@ void test_popup_loadout_stats() {
     SDL_assert(pls.pixelnours_big);
 
     /* -- Two handing weapon -- */
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
-    Unit_InitWweapons(silou, weapons_dtab);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    Unit_Init(silou);
 
     pls.unit_ent = Silou;
 
     struct Inventory_item item = Inventory_item_default;
 
     item.id = ITEM_ID_GLAIVE;
-    Weapon_Load(weapons_dtab, item.id);
+    Weapon_Load(gl_weapons_dtab, item.id);
     Unit_Item_Takeat(silou, item, ITEM1);
     item.id = ITEM_ID_LEATHER_SHIELD;
-    Weapon_Load(weapons_dtab, item.id);
+    Weapon_Load(gl_weapons_dtab, item.id);
     Unit_Item_Takeat(silou, item, ITEM2);
     pls.type_left   = ITEM_TYPE_EXP_SWORD;
     Loadout_Set(&pls.loadout_initial, UNIT_HAND_LEFT,   ITEM1);
@@ -240,8 +241,8 @@ void test_popup_loadout_stats() {
     PopUp_Loadout_Stats_Free(&pls);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
-    Weapons_All_Free(weapons_dtab);
-    DTAB_FREE(weapons_dtab);
+    Weapons_All_Free(gl_weapons_dtab);
+    DTAB_FREE(gl_weapons_dtab);
 
     SDL_Quit();
 }

@@ -1,5 +1,6 @@
 
 #include "nourstest.h"
+#include "globals.h"
 #include "menu/item_drop.h"
 
 void test_menu_item_drop() {
@@ -7,8 +8,8 @@ void test_menu_item_drop() {
     sota_mkdir("menu_item_drop");
 
     /* -- Weapon dtab -- */
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
-    struct dtab *items_dtab   = DTAB_INIT(items_dtab,   struct Item);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_items_dtab   = DTAB_INIT(gl_items_dtab,   struct Item);
 
     /* -- Create n9patch -- */
     struct n9Patch n9patch = n9Patch_default;
@@ -36,8 +37,6 @@ void test_menu_item_drop() {
     idm->unit = &Silou;
 
     /* - title - */
-    Silou.equipment.weapons_dtab = weapons_dtab;
-    Silou.equipment.items_dtab   = items_dtab;
     SDL_assert(Silou.equipment.num == 0);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);
     SDL_assert(Silou.equipment.num == 4);
@@ -46,7 +45,7 @@ void test_menu_item_drop() {
     struct Inventory_item in_wpn = Inventory_item_default;
     in_wpn.id   = ITEM_ID_FLEURET;
     in_wpn.used = 0;
-    Weapon_Load(weapons_dtab, in_wpn.id);
+    Weapon_Load(gl_weapons_dtab, in_wpn.id);
 
     /* -- Long weapon names -- */
     Silou.flags.handedness = UNIT_HAND_LEFTIE;
@@ -58,10 +57,10 @@ void test_menu_item_drop() {
     silou_eq[ITEM2 - ITEM1].id   = ITEM_ID_REPEATABLE_CROSSBOW;
     silou_eq[ITEM3 - ITEM1].id   = ITEM_ID_HONJOU_MASAMUNE;
     silou_eq[ITEM4 - ITEM1].id   = ITEM_ID_SILVERLIGHT_SPEAR;
-    Weapon_Load(weapons_dtab, silou_eq[ITEM1 - ITEM1].id);
-    Weapon_Load(weapons_dtab, silou_eq[ITEM2 - ITEM1].id);
-    Weapon_Load(weapons_dtab, silou_eq[ITEM3 - ITEM1].id);
-    Weapon_Load(weapons_dtab, silou_eq[ITEM4 - ITEM1].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[ITEM1 - ITEM1].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[ITEM2 - ITEM1].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[ITEM3 - ITEM1].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[ITEM4 - ITEM1].id);
 
     i32 *can_equip = Unit_canEquip_Arr(idm->unit);
     can_equip[0] = 0;
@@ -97,9 +96,9 @@ void test_menu_item_drop() {
     PixelFont_Free(idm->pixelnours, true);
     PixelFont_Free(idm->pixelnours_big, true);
     ItemDropMenu_Free(idm);
-    Weapons_All_Free(weapons_dtab);
-    DTAB_FREE(items_dtab);
-    DTAB_FREE(weapons_dtab);
+    Weapons_All_Free(gl_weapons_dtab);
+    DTAB_FREE(gl_items_dtab);
+    DTAB_FREE(gl_weapons_dtab);
 
     SDL_DestroyRenderer(renderer);
 }

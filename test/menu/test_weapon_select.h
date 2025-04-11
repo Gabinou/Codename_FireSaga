@@ -89,7 +89,7 @@ void test_menu_loadout_select(void) {
     Map *map = Map_New(new_map);
 
     /* -- Weapon dtab -- */
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
 
     /* -- Create n9patch -- */
     struct n9Patch n9patch = n9Patch_default;
@@ -126,7 +126,6 @@ void test_menu_loadout_select(void) {
     *Silou = Unit_default;
     Unit_Init(Silou);
     /* - title - */
-    Silou->equipment.weapons_dtab = weapons_dtab;
     SDL_assert(Silou->equipment.num == 0);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), Silou);
     SDL_assert(Silou->equipment.num == 4);
@@ -135,7 +134,7 @@ void test_menu_loadout_select(void) {
     struct Inventory_item in_wpn = Inventory_item_default;
     // in_wpn.id   = ITEM_ID_FLEURET;
     // in_wpn.used = 0;
-    // Weapon_Load(weapons_dtab, in_wpn.id);
+    // Weapon_Load(gl_weapons_dtab, in_wpn.id);
 
     Unit_Handedness_set(Silou, UNIT_HAND_LEFTIE);
     i32 stronghand      = Unit_Hand_Strong(Silou);
@@ -184,10 +183,10 @@ void test_menu_loadout_select(void) {
     silou_eq[1].id = ITEM_ID_REPEATABLE_CROSSBOW;
     silou_eq[2].id = ITEM_ID_HONJOU_MASAMUNE;
     silou_eq[3].id = ITEM_ID_SILVERLIGHT_SPEAR;
-    Weapon_Load(weapons_dtab, silou_eq[0].id);
-    Weapon_Load(weapons_dtab, silou_eq[1].id);
-    Weapon_Load(weapons_dtab, silou_eq[2].id);
-    Weapon_Load(weapons_dtab, silou_eq[3].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[0].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[1].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[2].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[3].id);
     silou_can_equip[0] = ITEM1;
     silou_can_equip[1] = ITEM2;
     silou_can_equip[2] = ITEM3;
@@ -212,12 +211,12 @@ void test_menu_loadout_select(void) {
     silou_eq[2].id      = ITEM_ID_FLEURET;
     silou_eq[3].id      = ITEM_ID_FLEURET;
     silou_eq[4].id      = ITEM_ID_FLEURET;
-    Weapon_Load(weapons_dtab, silou_eq[0].id);
-    Weapon_Load(weapons_dtab, silou_eq[1].id);
-    Weapon_Load(weapons_dtab, silou_eq[1].id);
-    Weapon_Load(weapons_dtab, silou_eq[2].id);
-    Weapon_Load(weapons_dtab, silou_eq[3].id);
-    Weapon_Load(weapons_dtab, silou_eq[4].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[0].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[1].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[1].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[2].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[3].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[4].id);
     silou_can_equip[0]     = ITEM1;
     silou_can_equip[1]     = ITEM2;
     silou_can_equip[2]     = ITEM3;
@@ -398,7 +397,7 @@ void test_menu_loadout_select(void) {
     PixelFont_Free(wsm->pixelnours,     true);
     PixelFont_Free(wsm->pixelnours_big, true);
 
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
     SDL_FreeSurface(surface);
     LoadoutSelectMenu_Free(wsm);
 
@@ -407,7 +406,7 @@ void test_menu_loadout_select(void) {
     Unit_Free(Silou);
 
     SDL_DestroyRenderer(renderer);
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
     tnecs_world_destroy(&world);
 }
 
@@ -432,11 +431,10 @@ void test_menu_loadout_select_two_hands(void) {
     struct Unit *Silou      = IES_GET_COMPONENT(world, Silou_ent, Unit);
 
     /* -- Weapon dtab -- */
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
 
     /* -- Create Unit -- */
     Unit_Init(Silou);
-    Silou->equipment.weapons_dtab = weapons_dtab;
     SDL_assert(Silou->equipment.num == 0);
     Inventory_item *silou_eq = Unit_Equipment(Silou);
     silou_eq[0].id      = ITEM_ID_FLEURET;
@@ -448,16 +446,16 @@ void test_menu_loadout_select_two_hands(void) {
     Unit_Handedness_set(Silou, UNIT_HAND_LEFTIE);
     Unit_Equippable_set(Silou, ITEM_TYPE_SWORD);
 
-    Weapon_Load(weapons_dtab, silou_eq[0].id);
-    Weapon_Load(weapons_dtab, silou_eq[1].id);
-    Weapon_Load(weapons_dtab, silou_eq[2].id);
-    Weapon_Load(weapons_dtab, silou_eq[3].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[0].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[1].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[2].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[3].id);
     struct Weapon *weapons[6] = {0};
-    weapons[0] = DTAB_GET(weapons_dtab, silou_eq[0].id);
-    weapons[1] = DTAB_GET(weapons_dtab, silou_eq[1].id);
-    weapons[2] = DTAB_GET(weapons_dtab, silou_eq[2].id);
-    weapons[3] = DTAB_GET(weapons_dtab, silou_eq[3].id);
-    weapons[4] = DTAB_GET(weapons_dtab, silou_eq[4].id);
+    weapons[0] = DTAB_GET(gl_weapons_dtab, silou_eq[0].id);
+    weapons[1] = DTAB_GET(gl_weapons_dtab, silou_eq[1].id);
+    weapons[2] = DTAB_GET(gl_weapons_dtab, silou_eq[2].id);
+    weapons[3] = DTAB_GET(gl_weapons_dtab, silou_eq[3].id);
+    weapons[4] = DTAB_GET(gl_weapons_dtab, silou_eq[4].id);
 
     /* -- Create LoadoutSelectMenu -- */
     struct LoadoutSelectMenu *wsm = LoadoutSelectMenu_Alloc();
@@ -491,7 +489,7 @@ void test_menu_loadout_select_two_hands(void) {
     /* --- SDL_free --- */
     Unit_Free(Silou);
     LoadoutSelectMenu_Free(wsm);
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
 }
 
 

@@ -2,6 +2,7 @@
 #include "nourstest.h"
 #include "platform.h"
 #include "popup/pre_combat.h"
+#include "globals.h"
 #include "unit/unit.h"
 #include "RNG.h"
 
@@ -10,7 +11,7 @@ void test_menu_pre_combat() {
     sota_mkdir("menu_pre_combat");
 
     /* -- Weapon dtab -- */
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
 
     /* -- Create n9patch -- */
     struct n9Patch n9patch;
@@ -53,8 +54,6 @@ void test_menu_pre_combat() {
     Unit_Init(&Silou);
     struct Unit Hamilcar = Unit_default;
     Unit_Init(&Hamilcar);
-    Silou.equipment.weapons_dtab = weapons_dtab;
-    Hamilcar.equipment.weapons_dtab = weapons_dtab;
     nourstest_true(Silou.equipment.num    == 0);
     nourstest_true(Hamilcar.equipment.num == 0);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);
@@ -68,7 +67,7 @@ void test_menu_pre_combat() {
     struct Inventory_item in_wpn = Inventory_item_default;
     in_wpn.id = ITEM_ID_FLEURET;
     in_wpn.used = 0;
-    Weapon_Load(weapons_dtab, in_wpn.id);
+    Weapon_Load(gl_weapons_dtab, in_wpn.id);
     // Unit_Item_Drop(&Silou,           weakhand);
     // Unit_Item_Takeat(&Silou, in_wpn, weakhand);
     nourstest_true(Silou.equipment.num == 4);
@@ -526,7 +525,7 @@ void test_menu_pre_combat() {
     nourstest_true(Unit_istwoHanding(&Silou));
     nourstest_true(Unit_istwoHanding(&Hamilcar));
 
-    Weapon_Load(weapons_dtab, ITEM_ID_BROADSWORD);
+    Weapon_Load(gl_weapons_dtab, ITEM_ID_BROADSWORD);
 
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Two_Handing.png"),
@@ -538,7 +537,7 @@ void test_menu_pre_combat() {
     PixelFont_Free(pcp->pixelnours, true);
     PixelFont_Free(pcp->pixelnours_big, true);
 
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
     SDL_FreeSurface(surface);
     PreCombatPopup_Free(pcp);
 

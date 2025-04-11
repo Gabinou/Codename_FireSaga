@@ -1,4 +1,5 @@
 
+#include "globals.h"
 #include "nourstest.h"
 #include "platform.h"
 #include "popup/unit.h"
@@ -23,10 +24,9 @@ void test_popup_unit() {
 
     /* -- Create Unit -- */
     struct Unit Silou = Unit_default;
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
-    Unit_InitWweapons(&Silou, weapons_dtab);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    Unit_Init(&Silou);
     /* - title - */
-    Silou.equipment.weapons_dtab = weapons_dtab;
     SDL_assert(Silou.equipment.num == 0);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);
     SDL_assert(Silou.equipment.num == 4);
@@ -56,7 +56,7 @@ void test_popup_unit() {
     PopUp_Unit_Free(&pu);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
-    Weapons_All_Free(weapons_dtab);
-    DTAB_FREE(weapons_dtab);
+    Weapons_All_Free(gl_weapons_dtab);
+    DTAB_FREE(gl_weapons_dtab);
     SDL_Quit();
 }

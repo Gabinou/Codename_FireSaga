@@ -1,10 +1,11 @@
 
-#include "nourstest.h"
-#include "platform.h"
+#include "RNG.h"
 #include "combat.h"
+#include "globals.h"
+#include "platform.h"
+#include "nourstest.h"
 #include "unit/unit.h"
 #include "popup/map_combat.h"
-#include "RNG.h"
 
 void test_popup_map_combat() {
     /* -- Preliminaries -- */
@@ -21,7 +22,7 @@ void test_popup_map_combat() {
     combat_attacks = DARR_INIT(combat_attacks, struct Combat_Attack, SOTA_COMBAT_MAX_ATTACKS);
 
     /* -- Weapon dtab -- */
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
 
     /* -- Create n9patch -- */
     // render_target is NULL cause there is render_target!
@@ -37,9 +38,6 @@ void test_popup_map_combat() {
     struct Unit defendant  = Unit_default;
     Unit_Init(&aggressor);
     Unit_Init(&defendant);
-
-    aggressor.equipment.weapons_dtab = weapons_dtab;
-    defendant.equipment.weapons_dtab = weapons_dtab;
 
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &aggressor);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Fencer_test.json")), &defendant);
@@ -384,7 +382,7 @@ void test_popup_map_combat() {
 
     PopUp_Map_Combat_Free(&pmc);
     DARR_FREE(combat_attacks);
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
     Unit_Free(&aggressor);
