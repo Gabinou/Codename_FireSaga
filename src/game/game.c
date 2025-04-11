@@ -776,7 +776,7 @@ void _Game_loadJSON(struct Game *sota, s8  filename) {
     }
 
     /* - Loading party units json - */
-    Party_Load(&sota->party, sota, gl_weapons_dtab, gl_items_dtab);
+    Party_Load(&sota->party, sota);
     Party_Size(&sota->party);
     SDL_assert(sota->party.size > 0);
 

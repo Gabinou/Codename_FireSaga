@@ -162,7 +162,7 @@ void Game_Map_Party_Load(struct Game *sota, i32 mapi) {
     SDL_assert(sota->party.json_filenames != NULL);
 
     /* - Loading party units json - */
-    Party_Load(&sota->party, sota, gl_weapons_dtab, gl_items_dtab);
+    Party_Load(&sota->party, sota);
     Party_Size(&sota->party);
 
     SDL_assert(sota->party.size > 0);

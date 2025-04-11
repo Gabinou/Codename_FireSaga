@@ -36,7 +36,7 @@ b32 Unit_inRange_Loadout(struct Unit        *agg,
 void          Ranges_Combine(struct Range *r1, struct Range r2);
 struct Range _Ranges_Combine(struct Range  r1, struct Range r2);
 
-b32 _Range_Archetype_Match(struct Weapon    *wpn, i64 archetype);
+b32 _Range_Archetype_Match(const struct Weapon *wpn, i64 archetype);
 
 /* --- Rangemap --- */
 int  Unit_Rangemap(             Unit *u);

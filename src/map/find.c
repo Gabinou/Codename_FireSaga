@@ -3,10 +3,10 @@
 #include "map/map.h"
 #include "map/path.h"
 #include "position.h"
+#include "globals.h"
 #include "weapon.h"
 #include "pathfinding.h"
 #include "utilities.h"
-#include "unit/equipment.h"
 #include "nmath.h"
 #include "unit/unit.h"
 #include "unit/loadout.h"
@@ -223,8 +223,7 @@ tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
     /* Note: attacktolist should have been created with same eq_type and _eq before */
     struct Unit *healer = IES_GET_COMPONENT(map->world, healer_ent, Unit);
     SDL_assert(healer               != NULL);
-    struct dtab *weapons_dtab = Unit_dtab_Weapons(healer);
-    SDL_assert(weapons_dtab != NULL);
+    SDL_assert(gl_weapons_dtab != NULL);
 
     /* TODO: full health people arent patients FOR HEALING STAVES */
     for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
@@ -249,9 +248,9 @@ tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
             continue;
         }
 
-        Weapon_Load(weapons_dtab, id);
+        Weapon_Load(gl_weapons_dtab, id);
 
-        const struct Weapon *staff = DTAB_GET_CONST(weapons_dtab, id);
+        const struct Weapon *staff = DTAB_GET_CONST(gl_weapons_dtab, id);
 
         /* -- Check healtolist for valid patients -- */
         u8 align_healer = army_alignment[Unit_Army(healer)];

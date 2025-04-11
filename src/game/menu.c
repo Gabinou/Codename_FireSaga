@@ -25,6 +25,7 @@
 #include "events.h"
 #include "structs.h"
 #include "graph.h"
+#include "globals.h"
 
 /* --- All Menus --- */
 void Game_Menus_Init(struct Game *sota) {
@@ -241,13 +242,12 @@ void Game_GrowthsMenu_Update(struct Game *sota, tnecs_entity unit_entity_ontile)
     SDL_assert(unit_entity_ontile > TNECS_NULL);
     struct Unit *unit_ontile = IES_GET_COMPONENT(sota->world, unit_entity_ontile, Unit);
     SDL_assert(unit_ontile != NULL);
-    struct dtab *weapons_dtab = Unit_dtab_Weapons(unit_ontile);
-    SDL_assert(weapons_dtab != NULL);
+    SDL_assert(gl_weapons_dtab != NULL);
     struct Menu *mc = IES_GET_COMPONENT(sota->world, sota->growths_menu, Menu);
     mc->visible = true;
-    SDL_assert(weapons_dtab != NULL);
+    SDL_assert(gl_weapons_dtab != NULL);
     struct GrowthsMenu *growths_menu = (struct GrowthsMenu *)mc->data;
-    SDL_assert(weapons_dtab != NULL);
+    SDL_assert(gl_weapons_dtab != NULL);
     GrowthsMenu_Unit_Set(growths_menu, unit_ontile);
 }
 
@@ -288,16 +288,15 @@ void Game_StatsMenu_Update(struct Game *sota, tnecs_entity unit_entity_ontile) {
     /* - Get unit on tile - */
     struct Unit *unit_ontile = IES_GET_COMPONENT(sota->world, unit_entity_ontile, Unit);
     SDL_assert(unit_ontile != NULL);
-    struct dtab *weapons_dtab = Unit_dtab_Weapons(unit_ontile);
-    SDL_assert(weapons_dtab != NULL);
+    SDL_assert(gl_weapons_dtab != NULL);
 
     /* - Update stats menu - */
     struct Menu *mc;
     mc = IES_GET_COMPONENT(sota->world, sota->stats_menu, Menu);
     mc->visible = true;
-    SDL_assert(weapons_dtab != NULL);
+    SDL_assert(gl_weapons_dtab != NULL);
     struct StatsMenu *stats_menu = (struct StatsMenu *)mc->data;
-    SDL_assert(weapons_dtab != NULL);
+    SDL_assert(gl_weapons_dtab != NULL);
     StatsMenu_Load(stats_menu, unit_ontile, sota->renderer, &mc->n9patch);
     // Scaling elem_pos: put it last cause dependencies
     StatsMenu_Elem_Pos(stats_menu, mc);
@@ -644,8 +643,7 @@ void Game_WeaponSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_on
     SDL_assert(unit_entity_ontile > TNECS_NULL);
     struct Unit *unit_ontile = IES_GET_COMPONENT(sota->world, unit_entity_ontile, Unit);
     SDL_assert(unit_ontile != NULL);
-    struct dtab *weapons_dtab = Unit_dtab_Weapons(unit_ontile);
-    SDL_assert(weapons_dtab != NULL);
+    SDL_assert(gl_weapons_dtab != NULL);
 
     /* Find new canEquip */
     canEquip can_equip          = canEquip_default;
@@ -743,10 +741,6 @@ void Game_TradeMenu_Update(struct Game *sota, tnecs_entity selected, tnecs_entit
     struct Unit *passive    = IES_GET_COMPONENT(sota->world, candidate, Unit);
     SDL_assert(active   != NULL);
     SDL_assert(passive  != NULL);
-    struct dtab *active_weapons_dtab = Unit_dtab_Weapons(active);
-    struct dtab *passive_weapons_dtab = Unit_dtab_Weapons(active);
-    SDL_assert(active_weapons_dtab     != NULL);
-    SDL_assert(passive_weapons_dtab    != NULL);
     struct Menu *mc = IES_GET_COMPONENT(sota->world, sota->trade_menu, Menu);
 
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
@@ -832,8 +826,7 @@ void Game_ItemSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_onti
     SDL_assert(unit_entity_ontile > TNECS_NULL);
     struct Unit *unit_ontile = IES_GET_COMPONENT(sota->world, unit_entity_ontile, Unit);
     SDL_assert(unit_ontile != NULL);
-    struct dtab *weapons_dtab = Unit_dtab_Weapons(unit_ontile);
-    SDL_assert(weapons_dtab != NULL);
+    SDL_assert(gl_weapons_dtab != NULL);
     struct Menu *mc = IES_GET_COMPONENT(sota->world, sota->item_select_menu, Menu);
 
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
@@ -909,8 +902,7 @@ void Game_StaffSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_ont
     SDL_assert(unit_entity_ontile > TNECS_NULL);
     struct Unit *unit_ontile = IES_GET_COMPONENT(sota->world, unit_entity_ontile, Unit);
     SDL_assert(unit_ontile != NULL);
-    struct dtab *weapons_dtab = Unit_dtab_Weapons(unit_ontile);
-    SDL_assert(weapons_dtab != NULL);
+    SDL_assert(gl_weapons_dtab != NULL);
 
     struct Menu *mc;
     mc = IES_GET_COMPONENT(sota->world, sota->staff_select_menu, Menu);
@@ -934,7 +926,7 @@ void Game_StaffSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_ont
     // SDL_assert(unit_entity_ontile > TNECS_NULL);
     // struct Unit *unit_ontile = IES_GET_COMPONENT(sota->world, unit_entity_ontile, Unit);
     // SDL_assert(unit_ontile != NULL);
-    // SDL_assert(unit_ontile->weapons_dtab != NULL);
+    // SDL_assert(unit_ontile->gl_weapons_dtab != NULL);
     // struct Menu *mc;
     // mc = IES_GET_COMPONENT(sota->world, sota->staff_select_menu, Menu);
 

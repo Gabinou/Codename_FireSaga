@@ -36,10 +36,8 @@ i32 _Party_Size(struct Unit *party, i16 *id);
 
 /* --- JSONIO --- */
 /* Load party: Create entities for each unit in party of filenames */
-void  Party_Load(   struct Party    *party,     struct Game *sota,
-                    struct dtab     *wdtab,     struct dtab *idtab);
+void  Party_Load(   struct Party    *party,     struct Game *sota);
 void _Party_Load(   tnecs_entity *entities,     struct Game *sota,
-                    struct dtab     *wdtab,     struct dtab *idtab,
                     s8 *farr, size_t load_num);
 
 /* -- JSON I/O -- */

@@ -12,7 +12,7 @@
 #include "weapon.h"
 #include "globals.h"
 
-b32 _Range_Archetype_Match(struct Weapon *wpn, i64 archetype) {
+b32 _Range_Archetype_Match(const struct Weapon *wpn, i64 archetype) {
     SDL_assert(wpn != NULL);
     if (archetype == ITEM_ARCHETYPE_NULL) {
         return (false);
