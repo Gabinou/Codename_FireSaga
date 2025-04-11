@@ -89,7 +89,7 @@ void test_menu_loadout_select(void) {
     Map *map = Map_New(new_map);
 
     /* -- Weapon dtab -- */
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
 
     /* -- Create n9patch -- */
     struct n9Patch n9patch = n9Patch_default;
@@ -126,22 +126,21 @@ void test_menu_loadout_select(void) {
     *Silou = Unit_default;
     Unit_Init(Silou);
     /* - title - */
-    Silou->weapons_dtab = weapons_dtab;
-    SDL_assert(Silou->num_equipment == 0);
+    SDL_assert(Silou->equipment.num == 0);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), Silou);
-    SDL_assert(Silou->num_equipment == 4);
+    SDL_assert(Silou->equipment.num == 4);
 
     /* - Unit equip - */
     struct Inventory_item in_wpn = Inventory_item_default;
     // in_wpn.id   = ITEM_ID_FLEURET;
     // in_wpn.used = 0;
-    // Weapon_Load(weapons_dtab, in_wpn.id);
+    // Weapon_Load(gl_weapons_dtab, in_wpn.id);
 
-    Silou->handedness   = UNIT_HAND_LEFTIE;
+    Unit_Handedness_set(Silou, UNIT_HAND_LEFTIE);
     i32 stronghand      = Unit_Hand_Strong(Silou);
     i32 weakhand        = Unit_Hand_Weak(Silou);
-    Silou->equippable |= ITEM_TYPE_ANGELIC;
-    SDL_assert(Silou->num_equipment == 4);
+    Unit_Equippable_set(Silou, Unit_Equippable(Silou) | ITEM_TYPE_ANGELIC);
+    SDL_assert(Silou->equipment.num == 4);
     Unit_Equip(Silou, stronghand,   ITEM1);
     Unit_Equip(Silou, weakhand,     ITEM4);
     SDL_assert(Unit_isEquipped(Silou, stronghand));
@@ -153,20 +152,22 @@ void test_menu_loadout_select(void) {
     SDL_assert(Unit_Eq_Equipped(Silou, UNIT_HAND_RIGHT) >= ITEM1);
     SDL_assert(Unit_Eq_Equipped(Silou, UNIT_HAND_RIGHT) <= ITEM6);
 
-    Silou->num_canEquip = 0;
+    Silou->can_equip.num = 0;
     canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  Unit_Eq_Equipped(Silou, UNIT_HAND_LEFT));
     canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, Unit_Eq_Equipped(Silou, UNIT_HAND_RIGHT));
 
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     Unit_canEquip_Equipment(Silou, can_equip);
-    SDL_assert(Silou->num_canEquip == 1);
-    SDL_assert(Silou->eq_canEquip[0] == ITEM1);
+    SDL_assert(Silou->can_equip.num == 1);
+    i32 *silou_can_equip = Unit_canEquip_Arr(Silou);
+
+    SDL_assert(silou_can_equip[0] == ITEM1);
     SDL_assert(Unit_Id_Equipped(Silou, ITEM1) > ITEM_NULL);
 
     WeaponSelectMenu_Load(wsm, map, world, renderer, &n9patch);
     LoadoutSelectMenu_Unit(wsm, Silou_ent);
     // _LoadoutSelectMenu_Load(wsm, Silou_ent, renderer, &n9patch);
-    Loadout_Set(&wsm->selected, stronghand, Silou->eq_canEquip[0]);
+    Loadout_Set(&wsm->selected, stronghand, silou_can_equip[0]);
 
     struct Menu mc;
     mc.elem = 0;
@@ -174,52 +175,54 @@ void test_menu_loadout_select(void) {
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu.png"), renderer,
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
     /* -- Long weapon names -- */
-    Silou->_equipment[0].used = 1;
-    Silou->_equipment[1].used = 0;
-    Silou->_equipment[2].used = 0;
-    Silou->_equipment[0].id = ITEM_ID_RETRACTABLE_WRISTBLADE;
-    Silou->_equipment[1].id = ITEM_ID_REPEATABLE_CROSSBOW;
-    Silou->_equipment[2].id = ITEM_ID_HONJOU_MASAMUNE;
-    Silou->_equipment[3].id = ITEM_ID_SILVERLIGHT_SPEAR;
-    Weapon_Load(weapons_dtab, Silou->_equipment[0].id);
-    Weapon_Load(weapons_dtab, Silou->_equipment[1].id);
-    Weapon_Load(weapons_dtab, Silou->_equipment[2].id);
-    Weapon_Load(weapons_dtab, Silou->_equipment[3].id);
-    Silou->eq_canEquip[0] = ITEM1;
-    Silou->eq_canEquip[1] = ITEM2;
-    Silou->eq_canEquip[2] = ITEM3;
-    Silou->eq_canEquip[2] = ITEM4;
-    Silou->eq_canEquip[3] = ITEM5;
-    Silou->num_canEquip   = 4;
+    Inventory_item *silou_eq = Unit_Equipment(Silou);
+    silou_eq[0].used = 1;
+    silou_eq[1].used = 0;
+    silou_eq[2].used = 0;
+    silou_eq[0].id = ITEM_ID_RETRACTABLE_WRISTBLADE;
+    silou_eq[1].id = ITEM_ID_REPEATABLE_CROSSBOW;
+    silou_eq[2].id = ITEM_ID_HONJOU_MASAMUNE;
+    silou_eq[3].id = ITEM_ID_SILVERLIGHT_SPEAR;
+    Weapon_Load(gl_weapons_dtab, silou_eq[0].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[1].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[2].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[3].id);
+    silou_can_equip[0] = ITEM1;
+    silou_can_equip[1] = ITEM2;
+    silou_can_equip[2] = ITEM3;
+    silou_can_equip[2] = ITEM4;
+    silou_can_equip[3] = ITEM5;
+    Silou->can_equip.num   = 4;
 
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_Long.png"), renderer,
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Short weapon names -- */
-    Silou->handedness = UNIT_HAND_LEFTIE;
-    Silou->_equipment[0].used    = 1;
-    Silou->_equipment[1].used    = 10;
-    Silou->_equipment[2].used    = 20;
-    Silou->_equipment[3].used    = 21;
-    Silou->_equipment[4].used    = 12;
-    Silou->_equipment[0].id      = ITEM_ID_FLEURET;
-    Silou->_equipment[1].id      = ITEM_ID_FLEURET;
-    Silou->_equipment[2].id      = ITEM_ID_FLEURET;
-    Silou->_equipment[3].id      = ITEM_ID_FLEURET;
-    Silou->_equipment[4].id      = ITEM_ID_FLEURET;
-    Weapon_Load(weapons_dtab, Silou->_equipment[0].id);
-    Weapon_Load(weapons_dtab, Silou->_equipment[1].id);
-    Weapon_Load(weapons_dtab, Silou->_equipment[1].id);
-    Weapon_Load(weapons_dtab, Silou->_equipment[2].id);
-    Weapon_Load(weapons_dtab, Silou->_equipment[3].id);
-    Weapon_Load(weapons_dtab, Silou->_equipment[4].id);
-    Silou->eq_canEquip[0]     = ITEM1;
-    Silou->eq_canEquip[1]     = ITEM2;
-    Silou->eq_canEquip[2]     = ITEM3;
-    Silou->eq_canEquip[3]     = ITEM4;
-    Silou->eq_canEquip[4]     = ITEM5;
-    Silou->num_canEquip       = 5;
+    Unit_Handedness_set(Silou, UNIT_HAND_LEFTIE);
+    silou_eq = Unit_Equipment(Silou);
+    silou_eq[0].used    = 1;
+    silou_eq[1].used    = 10;
+    silou_eq[2].used    = 20;
+    silou_eq[3].used    = 21;
+    silou_eq[4].used    = 12;
+    silou_eq[0].id      = ITEM_ID_FLEURET;
+    silou_eq[1].id      = ITEM_ID_FLEURET;
+    silou_eq[2].id      = ITEM_ID_FLEURET;
+    silou_eq[3].id      = ITEM_ID_FLEURET;
+    silou_eq[4].id      = ITEM_ID_FLEURET;
+    Weapon_Load(gl_weapons_dtab, silou_eq[0].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[1].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[1].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[2].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[3].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[4].id);
+    silou_can_equip[0]     = ITEM1;
+    silou_can_equip[1]     = ITEM2;
+    silou_can_equip[2]     = ITEM3;
+    silou_can_equip[3]     = ITEM4;
+    silou_can_equip[4]     = ITEM5;
+    Silou->can_equip.num       = 5;
 
     stronghand  = Unit_Hand_Strong(Silou);
     weakhand    = Unit_Hand_Weak(Silou);
@@ -253,7 +256,7 @@ void test_menu_loadout_select(void) {
 
     Loadout_Set(&wsm->selected, stronghand, ITEM4);
     mc.elem             = 0;
-    Silou->num_canEquip = 4;
+    Silou->can_equip.num = 4;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_LSelected_Usable4.png"),
                             renderer,
@@ -261,7 +264,7 @@ void test_menu_loadout_select(void) {
 
     Loadout_Set(&wsm->selected, stronghand, ITEM3);
     mc.elem             = 0;
-    Silou->num_canEquip = 3;
+    Silou->can_equip.num = 3;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_LSelected_Usable3.png"),
                             renderer,
@@ -269,7 +272,7 @@ void test_menu_loadout_select(void) {
 
     Loadout_Set(&wsm->selected, stronghand, ITEM2);
     mc.elem             = 0;
-    Silou->num_canEquip = 2;
+    Silou->can_equip.num = 2;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_LSelected_Usable2.png"),
                             renderer,
@@ -277,7 +280,7 @@ void test_menu_loadout_select(void) {
 
     Loadout_Set(&wsm->selected, stronghand, ITEM1);
     mc.elem             = 0;
-    Silou->num_canEquip = 1;
+    Silou->can_equip.num = 1;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_LSelected_Usable1.png"),
                             renderer,
@@ -285,7 +288,7 @@ void test_menu_loadout_select(void) {
 
     Loadout_None(&wsm->selected, stronghand);
     mc.elem             =  3;
-    Silou->num_canEquip =  4;
+    Silou->can_equip.num =  4;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select",
                                       "WeaponSelectMenu_LNotSelected_Usable4.png"), renderer,
@@ -293,7 +296,7 @@ void test_menu_loadout_select(void) {
 
     Loadout_None(&wsm->selected, stronghand);
     mc.elem             =  2;
-    Silou->num_canEquip =  3;
+    Silou->can_equip.num =  3;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select",
                                       "WeaponSelectMenu_LNotSelected_Usable3.png"), renderer,
@@ -301,7 +304,7 @@ void test_menu_loadout_select(void) {
 
     Loadout_None(&wsm->selected, stronghand);
     mc.elem             =  1;
-    Silou->num_canEquip =  2;
+    Silou->can_equip.num =  2;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select",
                                       "WeaponSelectMenu_LNotSelected_Usable2.png"), renderer,
@@ -309,19 +312,19 @@ void test_menu_loadout_select(void) {
 
     Loadout_None(&wsm->selected, stronghand);
     mc.elem                 =  0;
-    Silou->num_canEquip     =  1;
+    Silou->can_equip.num     =  1;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select",
                                       "WeaponSelectMenu_LNotSelected_Usable1.png"), renderer,
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    Silou->handedness = UNIT_HAND_RIGHTIE;
+    Unit_Handedness_set(Silou, UNIT_HAND_RIGHTIE);
     stronghand  = Unit_Hand_Strong(Silou);
     weakhand    = Unit_Hand_Weak(Silou);
 
     Loadout_Set(&wsm->selected, stronghand, ITEM4);
     mc.elem                 = 0;
-    Silou->num_canEquip     = 4;
+    Silou->can_equip.num     = 4;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_RSelected_Usable4.png"),
                             renderer,
@@ -329,7 +332,7 @@ void test_menu_loadout_select(void) {
 
     Loadout_Set(&wsm->selected, stronghand, ITEM3);
     mc.elem                 = 0;
-    Silou->num_canEquip     = 3;
+    Silou->can_equip.num     = 3;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_RSelected_Usable3.png"),
                             renderer,
@@ -337,7 +340,7 @@ void test_menu_loadout_select(void) {
 
     Loadout_Set(&wsm->selected, stronghand, ITEM2);
     mc.elem                 = 0;
-    Silou->num_canEquip     = 2;
+    Silou->can_equip.num     = 2;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_RSelected_Usable2.png"),
                             renderer,
@@ -345,7 +348,7 @@ void test_menu_loadout_select(void) {
 
     Loadout_Set(&wsm->selected, stronghand, ITEM1);
     mc.elem                 = 0;
-    Silou->num_canEquip     = 1;
+    Silou->can_equip.num     = 1;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_RSelected_Usable1.png"),
                             renderer,
@@ -353,7 +356,7 @@ void test_menu_loadout_select(void) {
 
     Loadout_None(&wsm->selected, stronghand);
     mc.elem                 =  3;
-    Silou->num_canEquip     =  4;
+    Silou->can_equip.num     =  4;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select",
                                       "WeaponSelectMenu_RNotSelected_Usable4.png"), renderer,
@@ -361,7 +364,7 @@ void test_menu_loadout_select(void) {
 
     Loadout_None(&wsm->selected, stronghand);
     mc.elem                     =  2;
-    Silou->num_canEquip         =  3;
+    Silou->can_equip.num         =  3;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select",
                                       "WeaponSelectMenu_RNotSelected_Usable3.png"), renderer,
@@ -369,7 +372,7 @@ void test_menu_loadout_select(void) {
 
     Loadout_None(&wsm->selected, stronghand);
     mc.elem                     =  1;
-    Silou->num_canEquip     =  2;
+    Silou->can_equip.num     =  2;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select",
                                       "WeaponSelectMenu_RNotSelected_Usable2.png"), renderer,
@@ -377,14 +380,14 @@ void test_menu_loadout_select(void) {
 
     Loadout_None(&wsm->selected, stronghand);
     mc.elem                     =  0;
-    Silou->num_canEquip     =  1;
+    Silou->can_equip.num     =  1;
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select",
                                       "WeaponSelectMenu_RNotSelected_Usable1.png"), renderer,
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* --- Testing header drawing --- */
-    Silou->num_canEquip   = 4;
+    Silou->can_equip.num   = 4;
     LoadoutSelectMenu_Header_Set(wsm, "Drop 1 item for two-handing");
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu_Header.png"), renderer,
@@ -394,7 +397,7 @@ void test_menu_loadout_select(void) {
     PixelFont_Free(wsm->pixelnours,     true);
     PixelFont_Free(wsm->pixelnours_big, true);
 
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
     SDL_FreeSurface(surface);
     LoadoutSelectMenu_Free(wsm);
 
@@ -403,7 +406,7 @@ void test_menu_loadout_select(void) {
     Unit_Free(Silou);
 
     SDL_DestroyRenderer(renderer);
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
     tnecs_world_destroy(&world);
 }
 
@@ -428,31 +431,31 @@ void test_menu_loadout_select_two_hands(void) {
     struct Unit *Silou      = IES_GET_COMPONENT(world, Silou_ent, Unit);
 
     /* -- Weapon dtab -- */
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
 
     /* -- Create Unit -- */
     Unit_Init(Silou);
-    Silou->weapons_dtab = weapons_dtab;
-    SDL_assert(Silou->num_equipment == 0);
-    Silou->_equipment[0].id      = ITEM_ID_FLEURET;
-    Silou->_equipment[1].id      = ITEM_ID_RAPIERE;
-    Silou->_equipment[2].id      = ITEM_ID_IRON_SWORD;
-    Silou->_equipment[3].id      = ITEM_ID_FLEURET;
-    Silou->_equipment[4].id      = ITEM_ID_WOODEN_SHIELD;
-    Silou->_equipment[5].id      = ITEM_ID_SALVE;
-    Silou->handedness            = UNIT_HAND_LEFTIE;
-    Silou->equippable            = ITEM_TYPE_SWORD;
+    SDL_assert(Silou->equipment.num == 0);
+    Inventory_item *silou_eq = Unit_Equipment(Silou);
+    silou_eq[0].id      = ITEM_ID_FLEURET;
+    silou_eq[1].id      = ITEM_ID_RAPIERE;
+    silou_eq[2].id      = ITEM_ID_IRON_SWORD;
+    silou_eq[3].id      = ITEM_ID_FLEURET;
+    silou_eq[4].id      = ITEM_ID_WOODEN_SHIELD;
+    silou_eq[5].id      = ITEM_ID_SALVE;
+    Unit_Handedness_set(Silou, UNIT_HAND_LEFTIE);
+    Unit_Equippable_set(Silou, ITEM_TYPE_SWORD);
 
-    Weapon_Load(weapons_dtab, Silou->_equipment[0].id);
-    Weapon_Load(weapons_dtab, Silou->_equipment[1].id);
-    Weapon_Load(weapons_dtab, Silou->_equipment[2].id);
-    Weapon_Load(weapons_dtab, Silou->_equipment[3].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[0].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[1].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[2].id);
+    Weapon_Load(gl_weapons_dtab, silou_eq[3].id);
     struct Weapon *weapons[6] = {0};
-    weapons[0] = DTAB_GET(weapons_dtab, Silou->_equipment[0].id);
-    weapons[1] = DTAB_GET(weapons_dtab, Silou->_equipment[1].id);
-    weapons[2] = DTAB_GET(weapons_dtab, Silou->_equipment[2].id);
-    weapons[3] = DTAB_GET(weapons_dtab, Silou->_equipment[3].id);
-    weapons[4] = DTAB_GET(weapons_dtab, Silou->_equipment[4].id);
+    weapons[0] = DTAB_GET(gl_weapons_dtab, silou_eq[0].id);
+    weapons[1] = DTAB_GET(gl_weapons_dtab, silou_eq[1].id);
+    weapons[2] = DTAB_GET(gl_weapons_dtab, silou_eq[2].id);
+    weapons[3] = DTAB_GET(gl_weapons_dtab, silou_eq[3].id);
+    weapons[4] = DTAB_GET(gl_weapons_dtab, silou_eq[4].id);
 
     /* -- Create LoadoutSelectMenu -- */
     struct LoadoutSelectMenu *wsm = LoadoutSelectMenu_Alloc();
@@ -486,7 +489,7 @@ void test_menu_loadout_select_two_hands(void) {
     /* --- SDL_free --- */
     Unit_Free(Silou);
     LoadoutSelectMenu_Free(wsm);
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
 }
 
 

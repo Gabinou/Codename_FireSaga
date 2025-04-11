@@ -30,7 +30,7 @@ void s8_free(s8 *str8) {
 }
 
 b32 s8equal(s8 s1, s8 s2) {
-    /* -- s8_literal and s8_var OK -- */
+    /* -- 8_literal and s8_var OK -- */
     if (s1.num != s2.num)
         return (false);
 

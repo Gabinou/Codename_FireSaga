@@ -9,7 +9,7 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
 struct Weapon;
-struct Damage;
+struct Combat_Damage;
 struct Game;
 struct Position;
 struct Map;
@@ -32,20 +32,18 @@ void Tetrabrachios_default(Unit *u);
 // TODO: Only one unit_init -> WITH WEAPONS_DTAB
 // unit should be USABLE ANYWHERE AFTER INIT.
 void Unit_Init(         Unit *u);
-void Unit_InitWweapons( Unit *u, struct dtab *weapons_dtab);
 void Unit_Members_Alloc(Unit *u);
 
 void Unit_Free(         Unit *u);
 
 void Unit_Reinforcement_Load(Unit *u, struct Reinforcement *r);
 
-i16 Unit_id(struct Unit *unit);
-void Unit_setid(      Unit *u, i16 id);
+i16 Unit_id(Unit *unit);
+void Unit_id_set(Unit *unit, i16 id);
+
 void Unit_setStats(   Unit *u, Unit_stats stats);
 void Unit_setBases(   Unit *u, Unit_stats stats);
 void Unit_setClassind(Unit *u, i8 class_i);
-
-Unit_stats Unit_getStats(Unit *u);
 
 /* --- Supports --- */
 void Unit_supportUp(Unit *u, i16 id);
@@ -64,24 +62,25 @@ b32 Unit_hasSkill(Unit *u, u64 s);
 *    DEBUG: input -1 to always be in_range
 */
 /* Distance-dependent stats */
-i32 Unit_computeHit(     Unit *u, int dist);
-i32 Unit_computeDodge(   Unit *u, int dist);
-i32 Unit_computeFavor(   Unit *u, int dist);
-i32 Unit_computeSpeed(   Unit *u, int dist);
-i32 Unit_computeCritical(Unit *u, int dist);
+// TODO: input effective_stats
+void Unit_computeHit(     Unit *u, int dist, i32 *hit);
+void Unit_computeDodge(   Unit *u, int dist, i32 *dodge);
+void Unit_computeFavor(   Unit *u, int dist, i32 *favor);
+void Unit_computeSpeed(   Unit *u, int dist, i32 *speed);
+void Unit_computeCritical(Unit *u, int dist, i32 *crit);
 
 /* Distance-independent stats */
-i32 Unit_computeMove(    Unit *u);
-i32 Unit_computeAgony(   Unit *u);
-i32 Unit_computeRegrets( Unit *u);
-i32 Unit_computeEffectivefactor(Unit *a, Unit *d);
+void Unit_computeMove(    Unit *u, i32 *mv);
+void Unit_computeAgony(   Unit *u, i32 *agony);
+void Unit_computeRegrets( Unit *u, Computed_Stats *stats, i32 *regrets);
+void Unit_computeEffectivefactor(Unit *a, Unit *d, i32 *factor);
 
-i32 *Unit_computeAttack( Unit *u, int dist);
-i32 *Unit_computeDefense(Unit *u);
+void Unit_computeAttack( Unit *u, int dist, i32 *att);
+void Unit_computeDefense(Unit *u, i32* def);
 
 Unit_stats Unit_effectiveStats(   Unit *u);
 Unit_stats Unit_effectiveGrowths( Unit *u);
-struct Computed_Stats Unit_computedStats(Unit *u, int dist);
+struct Computed_Stats Unit_computedStats(Unit *u, int dist, Unit_stats effective_stats);
 struct Computed_Stats Unit_computedStats_wLoadout(Unit *u, Loadout *loadout, int dist);
 
 /* --- Debug Utils --- */
@@ -132,13 +131,14 @@ b32 Unit_HP_isFull(Unit *u);
 u8 Unit_Brave(Unit *u);
 
 /* --- Lvlup && Promotion --- */
-void Unit_lvlUp(  Unit *u);
-i16  Unit_getLvl( Unit *u);
+void Unit_lvlUp(        Unit *u);
+i16  Unit_Level(        Unit *u);
+i16  Unit_Experience(const Unit const *unit);
 void Unit_Promote(Unit *u, i8 new_class_i);
 
 /* -- Unit_id -- */
 b32 Unit_ID_Valid(u16 id);
 
-i32 *Unit_Shield_Protection(struct Unit *unit, i32 hand);
+Damage_Raw Unit_Shield_Protection(struct Unit *unit, i32 hand);
 
 #endif /* UNIT_H */

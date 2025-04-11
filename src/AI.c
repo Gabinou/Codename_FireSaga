@@ -18,6 +18,7 @@
 #include "jsonio.h"
 #include "unit/range.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
 #include "unit/anim.h"
 #include "map/path.h"
 
@@ -452,7 +453,9 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
     Map_Costmap_Movement_Compute(sota->map, npc_ent);
     i32 *costmap            = sota->map->costmap;
     tnecs_entity *unitmap   = sota->map->unitmap;
-    int effective_move      = Unit_computeMove(npc) * sota->map->cost_multiplier;
+    int effective_move = 0;
+    Unit_computeMove(npc, &effective_move);
+    effective_move *= sota->map->cost_multiplier;
     SDL_assert(costmap != NULL);
     SDL_assert((target.x >= 0) && (target.x < sota->map->col_len));
     SDL_assert((target.y >= 0) && (target.y < sota->map->row_len));
@@ -576,10 +579,10 @@ void AI_State_Init(struct AI_State *ai_state, tnecs_world *world, struct Map *ma
         tnecs_entity npc_ent = map->units_onfield[i];
         struct Unit *unit = IES_GET_COMPONENT(world, npc_ent, Unit);
         /* Skip if unit is waiting e.g. a reinforcement */
-        if (unit->waits)
+        if (Unit_isWaiting(unit))
             continue;
 
-        if (unit->army == army)
+        if (Unit_Army(unit) == army)
             DARR_PUT(ai_state->npcs, npc_ent);
     }
 }
@@ -636,11 +639,6 @@ void AI_readJSON(void *input,  cJSON *jai) {
     ai->priority_master = cJSON_GetNumberValue(jpriority_master);
     ai->priority_slave  = cJSON_GetNumberValue(jpriority_slave);
     ai->move            = cJSON_GetNumberValue(jmove);
-}
-s8 AI_filename(i32 ai_id) {
-    SDL_assert(ai_id > AI_NULL);
-    SDL_assert(ai_id < AI_NUM);
-    return (s8cat(ai_names[ai_id], s8_mut(".json")));
 }
 
 i32 AI_ID_isvalid(i32 ai_id) {

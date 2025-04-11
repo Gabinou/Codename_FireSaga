@@ -473,13 +473,13 @@ void Weapon_stats_writeJSON(void *input, struct cJSON *jstats) {
     struct cJSON *pprot   = cJSON_CreateArray();
     struct cJSON *prange  = cJSON_CreateArray();
     struct cJSON *pattack = cJSON_CreateArray();
-    cJSON_AddItemToArray(pprot,   cJSON_CreateNumber(stats->protection[DAMAGE_TYPE_PHYSICAL]));
-    cJSON_AddItemToArray(pprot,   cJSON_CreateNumber(stats->protection[DAMAGE_TYPE_MAGICAL]));
+    cJSON_AddItemToArray(pprot,   cJSON_CreateNumber(stats->protection.physical));
+    cJSON_AddItemToArray(pprot,   cJSON_CreateNumber(stats->protection.magical));
     cJSON_AddItemToArray(prange,  cJSON_CreateNumber(stats->range.min));
     cJSON_AddItemToArray(prange,  cJSON_CreateNumber(stats->range.max));
-    cJSON_AddItemToArray(pattack, cJSON_CreateNumber(stats->attack[DAMAGE_TYPE_PHYSICAL]));
-    cJSON_AddItemToArray(pattack, cJSON_CreateNumber(stats->attack[DAMAGE_TYPE_MAGICAL]));
-    cJSON_AddItemToArray(pattack, cJSON_CreateNumber(stats->attack[DAMAGE_TYPE_TRUE]));
+    cJSON_AddItemToArray(pattack, cJSON_CreateNumber(stats->attack.physical));
+    cJSON_AddItemToArray(pattack, cJSON_CreateNumber(stats->attack.magical));
+    cJSON_AddItemToArray(pattack, cJSON_CreateNumber(stats->attack.True));
     struct cJSON *phit   = cJSON_CreateNumber(stats->hit);
     struct cJSON *pdodge = cJSON_CreateNumber(stats->dodge);
     struct cJSON *pcrit  = cJSON_CreateNumber(stats->crit);
@@ -558,18 +558,18 @@ void Computed_Stats_writeJSON(void *input, struct cJSON *jstats) {
     struct Computed_Stats *stats = input;
 
     struct cJSON *jarr      = cJSON_CreateArray();
-    struct cJSON *jnum      = cJSON_CreateNumber(stats->attack[0]);
+    struct cJSON *jnum      = cJSON_CreateNumber(stats->attack.physical);
     cJSON_AddItemToArray(jarr, jnum);
-    jnum      = cJSON_CreateNumber(stats->attack[1]);
+    jnum      = cJSON_CreateNumber(stats->attack.magical);
     cJSON_AddItemToArray(jarr, jnum);
-    jnum      = cJSON_CreateNumber(stats->attack[2]);
+    jnum      = cJSON_CreateNumber(stats->attack.True);
     cJSON_AddItemToArray(jarr, jnum);
     cJSON_AddItemToObject(jstats, "Attack", jarr);
 
     jarr      = cJSON_CreateArray();
-    jnum      = cJSON_CreateNumber(stats->protection[0]);
+    jnum      = cJSON_CreateNumber(stats->protection.physical);
     cJSON_AddItemToArray(jarr, jnum);
-    jnum      = cJSON_CreateNumber(stats->protection[1]);
+    jnum      = cJSON_CreateNumber(stats->protection.magical);
     cJSON_AddItemToArray(jarr, jnum);
     cJSON_AddItemToObject(jstats, "Protection", jarr);
 
@@ -604,14 +604,16 @@ void Computed_Stats_readJSON(void *input, struct cJSON *jstats) {
     size_t i;
     struct cJSON *jattack = cJSON_GetObjectItem(jstats, "Attack");
     i = 0;
+    i32 *attack_arr = (i32 *)&stats->attack;
     cJSON_ArrayForEach(jnum, jattack) {
-        stats->attack[i++] = (u8)cJSON_GetNumberValue(jnum);
+        attack_arr[i++] = (u8)cJSON_GetNumberValue(jnum);
     }
 
     struct cJSON *jprot = cJSON_GetObjectItem(jstats, "Protection");
     i = 0;
+    i32 *protection_arr = (i32 *)&stats->protection;
     cJSON_ArrayForEach(jnum, jprot) {
-        stats->protection[i++] = (u8)cJSON_GetNumberValue(jnum);
+        protection_arr[i++] = (u8)cJSON_GetNumberValue(jnum);
     }
 
     struct cJSON *jrange = cJSON_GetObjectItem(jstats, "Range_loadout");
@@ -655,14 +657,16 @@ void Weapon_stats_readJSON(void *input, struct cJSON *jstats) {
     size_t i;
     struct cJSON *jattack = cJSON_GetObjectItem(jstats, "Attack");
     i = 0;
+    i32* attack_arr = (i32 *)&stats->attack;
     cJSON_ArrayForEach(jnum, jattack) {
-        stats->attack[i++] = (u8)cJSON_GetNumberValue(jnum);
+        attack_arr[i++] = (u8)cJSON_GetNumberValue(jnum);
     }
 
     struct cJSON *jprot = cJSON_GetObjectItem(jstats, "Protection");
     i = 0;
+    i32* prot_arr = (i32 *)&stats->protection;
     cJSON_ArrayForEach(jnum, jprot) {
-        stats->protection[i++] = (u8)cJSON_GetNumberValue(jnum);
+        prot_arr[i++] = (u8)cJSON_GetNumberValue(jnum);
     }
 
     struct cJSON *jrange = cJSON_GetObjectItem(jstats, "Range");

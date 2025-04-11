@@ -119,6 +119,8 @@ struct dtab {
 extern void   dtab_add(         struct dtab *dtab_ptr, void *value, uint64_t in_hash);
 extern void   dtab_del(         struct dtab *dtab_ptr, uint64_t in_hash);
 extern void  *dtab_get(         struct dtab *dtab_ptr, uint64_t in_hash);
+// Data is const
+extern const void *dtab_get_const(struct dtab *dtab_ptr, uint64_t in_hash);
 extern size_t dtab_found(       struct dtab *dtab_ptr, uint64_t in_hash);
 extern void   dtab_del_scramble(struct dtab *dtab_ptr, uint64_t in_hash);
 
@@ -159,6 +161,7 @@ S for stringify, H for hash */
 #define DTAB_ADDH(dtab_ptr,  value, name) dtab_add(dtab_ptr, value, DTAB_HASH(name))
 #define DTAB_ADDSH(dtab_ptr, value, name) dtab_add(dtab_ptr, value, DTAB_HASH(DTAB_STRINGIFY(name)))
 #define DTAB_GET(dtab_ptr,   name) dtab_get(dtab_ptr, name)
+#define DTAB_GET_CONST(dtab_ptr,   name) dtab_get_const(dtab_ptr, name)
 #define DTAB_GETH(dtab_ptr,  name) dtab_get(dtab_ptr, DTAB_HASH(name))
 #define DTAB_GETSH(dtab_ptr, name) dtab_get(dtab_ptr, DTAB_HASH(DTAB_STRINGIFY(name)))
 #define DTAB_DEL(dtab_ptr,   name) dtab_del(dtab_ptr, name)

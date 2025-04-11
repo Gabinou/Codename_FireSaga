@@ -933,20 +933,12 @@ enum SKILL_VALUES {
 };
 
 /* --- DAMAGE TYPES --- */
-enum DAMAGE_TYPES {
-    DMG_TYPE_PHYSICAL           = 0,
-    DAMAGE_TYPE_PHYSICAL        = 0,
-    DMG_TYPE_MAGICAL            = 1,
-    DAMAGE_TYPE_MAGICAL         = 1,
-    DMG_TYPE_TRUE               = 2,
-    DAMAGE_TYPE_TRUE            = 2,
-    DMG_TYPE_TOTAL              = 3,
-    DAMAGE_TYPE_TOTAL           = 3,
-    PROTECTION_TYPES            = 3,
-    PROTECTION_TYPES_NO_TOTAL   = 2,
-    ATTACK_TYPES                = 4,
-    ATTACK_TYPES_NO_TOTAL       = 3,
-    DAMAGE_TYPES                = 4,
+enum DMG_TYPES {
+    DMG_PHYSICAL    = 0,
+    DMG_MAGICAL     = 1,
+    DMG_TRUE        = 2,
+    DMG_TOTAL       = 3,
+    DMG_TYPES       = 4,
 };
 
 enum MOUSES {

@@ -334,7 +334,7 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
 #ifdef DEBUG_SEIZE_ANYONE
     b32 ismainchar = true;
 #else
-    b32 ismainchar = (unit->_id == UNIT_ID_ERWIN);
+    b32 ismainchar = (Unit_id(unit) == UNIT_ID_ERWIN);
 #endif /*DEBUG_SEIZE_ANYONE*/
 
     if (isthrone && ismainchar)

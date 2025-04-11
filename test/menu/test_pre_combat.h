@@ -2,6 +2,7 @@
 #include "nourstest.h"
 #include "platform.h"
 #include "popup/pre_combat.h"
+#include "globals.h"
 #include "unit/unit.h"
 #include "RNG.h"
 
@@ -10,7 +11,7 @@ void test_menu_pre_combat() {
     sota_mkdir("menu_pre_combat");
 
     /* -- Weapon dtab -- */
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
 
     /* -- Create n9patch -- */
     struct n9Patch n9patch;
@@ -53,12 +54,10 @@ void test_menu_pre_combat() {
     Unit_Init(&Silou);
     struct Unit Hamilcar = Unit_default;
     Unit_Init(&Hamilcar);
-    Silou.weapons_dtab = weapons_dtab;
-    Hamilcar.weapons_dtab = weapons_dtab;
-    nourstest_true(Silou.num_equipment    == 0);
-    nourstest_true(Hamilcar.num_equipment == 0);
+    nourstest_true(Silou.equipment.num    == 0);
+    nourstest_true(Hamilcar.equipment.num == 0);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);
-    nourstest_true(Silou.num_equipment == 4);
+    nourstest_true(Silou.equipment.num == 4);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Hamilcar_test.json")), &Hamilcar);
 
     int stronghand  = Unit_Hand_Strong(&Silou);
@@ -68,10 +67,10 @@ void test_menu_pre_combat() {
     struct Inventory_item in_wpn = Inventory_item_default;
     in_wpn.id = ITEM_ID_FLEURET;
     in_wpn.used = 0;
-    Weapon_Load(weapons_dtab, in_wpn.id);
+    Weapon_Load(gl_weapons_dtab, in_wpn.id);
     // Unit_Item_Drop(&Silou,           weakhand);
     // Unit_Item_Takeat(&Silou, in_wpn, weakhand);
-    nourstest_true(Silou.num_equipment == 4);
+    nourstest_true(Silou.equipment.num == 4);
     Unit_Equip(&Silou, weakhand, weakhand);
     Unit_Equip(&Silou, stronghand, stronghand);
     // Silou has BALL LIGHTNING and WOODEN SHIELD
@@ -85,7 +84,7 @@ void test_menu_pre_combat() {
     nourstest_true(Unit_canAttack(&Silou));
     nourstest_true(Unit_canAttack(&Hamilcar));
 
-    Unit_effectiveStats(&Silou);
+    Unit_stats ES_S = Unit_effectiveStats(&Silou);
 
     struct Position silou_pos = Position_default;
     silou_pos.tilemap_pos.x = 0;
@@ -94,49 +93,45 @@ void test_menu_pre_combat() {
     hamilcar_pos.tilemap_pos.x = 1;
     hamilcar_pos.tilemap_pos.y = 0;
     int dist = 1;
-    Unit_computedStats(&Silou, dist);
+    Computed_Stats cs_S = Unit_computedStats(&Silou, dist, ES_S);
 
-    Unit_computedStats(&Hamilcar, dist);
-    Unit_effectiveStats(&Hamilcar);
+    Unit_stats ES_H = Unit_effectiveStats(&Hamilcar);
+    Computed_Stats cs_H = Unit_computedStats(&Hamilcar, dist, ES_H);
     struct Combat_Forecast combat_forecast;
     combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
     pcp->forecast  = &combat_forecast;
     _PreCombatPopup_Load(pcp, &Silou, &Hamilcar, &silou_pos, &hamilcar_pos, renderer);
 
-    /* --- RENDERS --- */
-    Silou.update_stats      = false;
-    Hamilcar.update_stats   = false;
-
     /* -- Single Digits -- */
-    Silou.computed_stats.hit        = 1;
-    Silou.computed_stats.dodge      = 0;
-    Hamilcar.computed_stats.hit     = 2;
-    Hamilcar.computed_stats.dodge   = 0;
+    cs_S.hit    = 1;
+    cs_S.dodge  = 0;
+    cs_H.hit    = 2;
+    cs_H.dodge  = 0;
 
-    Silou.computed_stats.crit       = 3;
-    Silou.computed_stats.favor      = 0;
-    Hamilcar.computed_stats.crit    = 4;
-    Hamilcar.computed_stats.favor   = 0;
+    cs_S.crit   = 3;
+    cs_S.favor  = 0;
+    cs_H.crit   = 4;
+    cs_H.favor  = 0;
 
-    Silou.computed_stats.crit       = 3;
-    Silou.computed_stats.favor      = 0;
-    Hamilcar.computed_stats.crit    = 4;
-    Hamilcar.computed_stats.favor   = 0;
+    cs_S.crit   = 3;
+    cs_S.favor  = 0;
+    cs_H.crit   = 4;
+    cs_H.favor  = 0;
 
-    Silou.computed_stats.attack[DMG_TYPE_PHYSICAL]          = 5;
-    Silou.computed_stats.attack[DMG_TYPE_MAGICAL]           = 0;
-    Hamilcar.computed_stats.attack[DMG_TYPE_PHYSICAL]       = 6;
-    Hamilcar.computed_stats.attack[DMG_TYPE_MAGICAL]        = 0;
+    cs_S.attack.physical  = 5;
+    cs_S.attack.magical   = 0;
+    cs_H.attack.physical  = 6;
+    cs_H.attack.magical   = 0;
 
-    Silou.computed_stats.protection[DMG_TYPE_PHYSICAL]      = 0;
-    Silou.computed_stats.protection[DMG_TYPE_MAGICAL]       = 0;
-    Hamilcar.computed_stats.protection[DMG_TYPE_PHYSICAL]   = 0;
-    Hamilcar.computed_stats.protection[DMG_TYPE_MAGICAL]    = 0;
+    cs_S.protection.physical  = 0;
+    cs_S.protection.magical   = 0;
+    cs_H.protection.physical  = 0;
+    cs_H.protection.magical   = 0;
 
     /* -- Doubling Agg -- */
-    Silou.computed_stats.speed = SOTA_DOUBLING_SPEED + 2;
-    Hamilcar.computed_stats.speed = 0;
+    cs_S.speed = SOTA_DOUBLING_SPEED + 2;
+    cs_H.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
@@ -164,8 +159,8 @@ void test_menu_pre_combat() {
                             renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Doubling Dft -- */
-    Hamilcar.computed_stats.speed = SOTA_DOUBLING_SPEED + 2;
-    Silou.computed_stats.speed = 0;
+    cs_H.speed = SOTA_DOUBLING_SPEED + 2;
+    cs_S.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
@@ -193,34 +188,34 @@ void test_menu_pre_combat() {
                             renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Double Digits -- */
-    Silou.computed_stats.hit = 10;
-    Silou.computed_stats.dodge = 0;
-    Hamilcar.computed_stats.hit = 20;
-    Hamilcar.computed_stats.dodge = 0;
+    cs_S.hit = 10;
+    cs_S.dodge = 0;
+    cs_H.hit = 20;
+    cs_H.dodge = 0;
 
-    Silou.computed_stats.crit = 30;
-    Silou.computed_stats.favor = 0;
-    Hamilcar.computed_stats.crit = 40;
-    Hamilcar.computed_stats.favor = 0;
+    cs_S.crit = 30;
+    cs_S.favor = 0;
+    cs_H.crit = 40;
+    cs_H.favor = 0;
 
-    Silou.computed_stats.crit = 30;
-    Silou.computed_stats.favor = 0;
-    Hamilcar.computed_stats.crit = 40;
-    Hamilcar.computed_stats.favor = 0;
+    cs_S.crit = 30;
+    cs_S.favor = 0;
+    cs_H.crit = 40;
+    cs_H.favor = 0;
 
-    Silou.computed_stats.attack[DMG_TYPE_PHYSICAL] = 50;
-    Silou.computed_stats.attack[DMG_TYPE_MAGICAL] = 10;
-    Hamilcar.computed_stats.attack[DMG_TYPE_PHYSICAL] = 60;
-    Hamilcar.computed_stats.attack[DMG_TYPE_MAGICAL] = 20;
+    cs_S.attack.physical = 50;
+    cs_S.attack.magical = 10;
+    cs_H.attack.physical = 60;
+    cs_H.attack.magical = 20;
 
-    Silou.computed_stats.protection[DMG_TYPE_PHYSICAL] = 0;
-    Silou.computed_stats.protection[DMG_TYPE_MAGICAL] = 0;
-    Hamilcar.computed_stats.protection[DMG_TYPE_PHYSICAL] = 0;
-    Hamilcar.computed_stats.protection[DMG_TYPE_MAGICAL] = 0;
+    cs_S.protection.physical = 0;
+    cs_S.protection.magical = 0;
+    cs_H.protection.physical = 0;
+    cs_H.protection.magical = 0;
 
     /* -- Doubling Agg -- */
-    Silou.computed_stats.speed = SOTA_DOUBLING_SPEED + 21;
-    Hamilcar.computed_stats.speed = 0;
+    cs_S.speed = SOTA_DOUBLING_SPEED + 21;
+    cs_H.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
@@ -248,8 +243,8 @@ void test_menu_pre_combat() {
                             renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Doubling Dft -- */
-    Hamilcar.computed_stats.speed = SOTA_DOUBLING_SPEED + 12;
-    Silou.computed_stats.speed = 0;
+    cs_H.speed = SOTA_DOUBLING_SPEED + 12;
+    cs_S.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
@@ -277,24 +272,24 @@ void test_menu_pre_combat() {
                             renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Triple Digits -- */
-    Silou.computed_stats.hit = 100;
-    Silou.computed_stats.dodge = 0;
-    Hamilcar.computed_stats.hit = 100;
-    Hamilcar.computed_stats.dodge = 0;
+    cs_S.hit = 100;
+    cs_S.dodge = 0;
+    cs_H.hit = 100;
+    cs_H.dodge = 0;
 
-    Silou.computed_stats.crit = 100;
-    Silou.computed_stats.favor = 0;
-    Hamilcar.computed_stats.crit = 100;
-    Hamilcar.computed_stats.favor = 0;
+    cs_S.crit = 100;
+    cs_S.favor = 0;
+    cs_H.crit = 100;
+    cs_H.favor = 0;
 
-    Silou.computed_stats.crit = 100;
-    Silou.computed_stats.favor = 0;
-    Hamilcar.computed_stats.crit = 100;
-    Hamilcar.computed_stats.favor = 0;
+    cs_S.crit = 100;
+    cs_S.favor = 0;
+    cs_H.crit = 100;
+    cs_H.favor = 0;
 
     /* -- Doubling Agg -- */
-    Silou.computed_stats.speed = SOTA_DOUBLING_SPEED + 12;
-    Hamilcar.computed_stats.speed = 0;
+    cs_S.speed = SOTA_DOUBLING_SPEED + 12;
+    cs_H.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
@@ -325,8 +320,8 @@ void test_menu_pre_combat() {
                             renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Doubling Dft -- */
-    Hamilcar.computed_stats.speed = SOTA_DOUBLING_SPEED + 12;
-    Silou.computed_stats.speed = 0;
+    cs_H.speed = SOTA_DOUBLING_SPEED + 12;
+    cs_S.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
@@ -355,16 +350,16 @@ void test_menu_pre_combat() {
 
     /* -- TRUE DAMAGE -- */
 
-    Silou.computed_stats.attack[DMG_TYPE_PHYSICAL] = 50;
-    Silou.computed_stats.attack[DMG_TYPE_MAGICAL] = 10;
-    Silou.computed_stats.attack[DMG_TYPE_TRUE] = 10;
-    Hamilcar.computed_stats.attack[DMG_TYPE_PHYSICAL] = 60;
-    Hamilcar.computed_stats.attack[DMG_TYPE_MAGICAL] = 20;
-    Hamilcar.computed_stats.attack[DMG_TYPE_TRUE] = 10;
+    cs_S.attack.physical = 50;
+    cs_S.attack.magical = 10;
+    cs_S.attack.True = 10;
+    cs_H.attack.physical = 60;
+    cs_H.attack.magical = 20;
+    cs_H.attack.True = 10;
 
     /* -- Doubling Agg -- */
-    Silou.computed_stats.speed = SOTA_DOUBLING_SPEED + 12;
-    Hamilcar.computed_stats.speed = 0;
+    cs_S.speed = SOTA_DOUBLING_SPEED + 12;
+    cs_H.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
@@ -393,8 +388,8 @@ void test_menu_pre_combat() {
                             renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Doubling Dft -- */
-    Hamilcar.computed_stats.speed = SOTA_DOUBLING_SPEED + 12;
-    Silou.computed_stats.speed = 0;
+    cs_H.speed = SOTA_DOUBLING_SPEED + 12;
+    cs_S.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
@@ -422,16 +417,16 @@ void test_menu_pre_combat() {
                                       "PreCombatPopup_Math_True_Dft_Damage_Digit2.png"),
                             renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    Silou.computed_stats.attack[DMG_TYPE_PHYSICAL]      = 50;
-    Silou.computed_stats.attack[DMG_TYPE_MAGICAL]       = 10;
-    Silou.computed_stats.attack[DMG_TYPE_TRUE]          = 1;
-    Hamilcar.computed_stats.attack[DMG_TYPE_PHYSICAL]   = 60;
-    Hamilcar.computed_stats.attack[DMG_TYPE_MAGICAL]    = 20;
-    Hamilcar.computed_stats.attack[DMG_TYPE_TRUE]       = 1;
+    cs_S.attack.physical      = 50;
+    cs_S.attack.magical       = 10;
+    cs_S.attack.True          = 1;
+    cs_H.attack.physical   = 60;
+    cs_H.attack.magical    = 20;
+    cs_H.attack.True       = 1;
 
     /* -- Doubling Agg -- */
-    Silou.computed_stats.speed      = SOTA_DOUBLING_SPEED + 12;
-    Hamilcar.computed_stats.speed   = 0;
+    cs_S.speed      = SOTA_DOUBLING_SPEED + 12;
+    cs_H.speed   = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
@@ -460,8 +455,8 @@ void test_menu_pre_combat() {
                             renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Doubling Dft -- */
-    Hamilcar.computed_stats.speed = SOTA_DOUBLING_SPEED + 12;
-    Silou.computed_stats.speed = 0;
+    cs_H.speed = SOTA_DOUBLING_SPEED + 12;
+    cs_S.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
@@ -519,16 +514,18 @@ void test_menu_pre_combat() {
     nourstest_true(!Unit_istwoHanding(&Hamilcar));
     Unit_Item_Drop(&Hamilcar, weakhand);
     Unit_Item_Drop(&Silou, weakhand);
-    Silou._equipment[ITEM1 - ITEM1].id    = ITEM_ID_BROADSWORD;
-    Silou._equipment[ITEM2 - ITEM1].id    = ITEM_ID_BROADSWORD;
-    Hamilcar._equipment[ITEM1 - ITEM1].id = ITEM_ID_BROADSWORD;
-    Hamilcar._equipment[ITEM2 - ITEM1].id = ITEM_ID_BROADSWORD;
+    Inventory_item *silou_eq = Unit_Equipment(&Silou);
+    silou_eq[ITEM1 - ITEM1].id    = ITEM_ID_BROADSWORD;
+    silou_eq[ITEM2 - ITEM1].id    = ITEM_ID_BROADSWORD;
+    Inventory_item *hamilcar_eq = Unit_Equipment(&Hamilcar);
+    hamilcar_eq[ITEM1 - ITEM1].id = ITEM_ID_BROADSWORD;
+    hamilcar_eq[ITEM2 - ITEM1].id = ITEM_ID_BROADSWORD;
     Unit_Equip(&Silou,    weakhand, stronghand);
     Unit_Equip(&Hamilcar, weakhand, stronghand);
     nourstest_true(Unit_istwoHanding(&Silou));
     nourstest_true(Unit_istwoHanding(&Hamilcar));
 
-    Weapon_Load(weapons_dtab, ITEM_ID_BROADSWORD);
+    Weapon_Load(gl_weapons_dtab, ITEM_ID_BROADSWORD);
 
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Two_Handing.png"),
@@ -540,7 +537,7 @@ void test_menu_pre_combat() {
     PixelFont_Free(pcp->pixelnours, true);
     PixelFont_Free(pcp->pixelnours_big, true);
 
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
     SDL_FreeSurface(surface);
     PreCombatPopup_Free(pcp);
 

@@ -4,7 +4,9 @@
 #include "bars/topoff.h"
 #include "bars/circle.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
 #include "macros.h"
+#include "names.h"
 #include "platform.h"
 #include "pixelfonts.h"
 #include "palette.h"
@@ -170,7 +172,8 @@ static void _PopUp_Map_Combat_Draw_HP(struct PopUp_Map_Combat *pmc, SDL_Renderer
     struct Unit_stats effective_stats_dft    = Unit_effectiveStats(dft_unit);
 
     /* -- HP number -- */
-    int toprint = int_inbounds(agg_unit->current_hp, 0, SOTA_100PERCENT);
+    i32 current_hp = Unit_Current_HP(agg_unit);
+    int toprint = int_inbounds(current_hp, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
     width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
     temp_pos.x = POPUP_MAP_COMBAT_BLUE_HP_X - width / 2;
@@ -178,7 +181,8 @@ static void _PopUp_Map_Combat_Draw_HP(struct PopUp_Map_Combat *pmc, SDL_Renderer
 
     PixelFont_Write(pmc->pixelnours_tight, renderer, numbuff, strlen(numbuff), temp_pos.x, temp_pos.y);
 
-    toprint = int_inbounds(dft_unit->current_hp, 0, SOTA_100PERCENT);
+    current_hp = Unit_Current_HP(dft_unit);
+    toprint = int_inbounds(current_hp, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
     width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
     temp_pos.x = POPUP_MAP_COMBAT_RED_HP_X - width / 2;
@@ -189,8 +193,11 @@ static void _PopUp_Map_Combat_Draw_HP(struct PopUp_Map_Combat *pmc, SDL_Renderer
 
     /* -- TopoffBars -- */
     // TODO: update health before/after EACH combat attack animation
-    pmc->topoff_aggressor.fill = ((float)agg_unit->current_hp) / ((float)effective_stats_agg.hp);
-    pmc->topoff_defendant.fill = ((float)dft_unit->current_hp) / ((float)effective_stats_dft.hp);
+
+    current_hp = Unit_Current_HP(agg_unit);
+    pmc->topoff_aggressor.fill = ((float)current_hp) / ((float)effective_stats_agg.hp);
+    current_hp = Unit_Current_HP(dft_unit);
+    pmc->topoff_defendant.fill = ((float)current_hp) / ((float)effective_stats_dft.hp);
     TopoffBar_Draw(&pmc->topoff_aggressor, renderer);
     TopoffBar_Draw(&pmc->topoff_defendant, renderer);
 
@@ -201,7 +208,8 @@ static void _PopUp_Map_Combat_Draw_Names(struct PopUp_Map_Combat *pmc, SDL_Rende
     struct Point temp_pos;
 
     struct Unit *agg_unit = IES_GET_COMPONENT(pmc->world, pmc->aggressor, Unit);
-    s8 name = agg_unit->name;
+
+    const s8 name = global_unitNames[Unit_id(agg_unit)];
     int width = PixelFont_Width(pmc->pixelnours_tight, name.data, name.num);
 
     temp_pos.x = POPUP_MAP_COMBAT_PATCH_BLUE_NAME_X - width / 2;
@@ -213,15 +221,15 @@ static void _PopUp_Map_Combat_Draw_Names(struct PopUp_Map_Combat *pmc, SDL_Rende
     temp_pos.y = POPUP_MAP_COMBAT_PATCH_RED_NAME_Y;
 
     struct Unit *dft_unit = IES_GET_COMPONENT(pmc->world, pmc->defendant, Unit);
-    name = dft_unit->name;
-    PixelFont_Write(pmc->pixelnours_big, renderer, name.data, name.num,
+    const s8 dft_name = global_unitNames[Unit_id(dft_unit)];
+    PixelFont_Write(pmc->pixelnours_big, renderer, dft_name.data, dft_name.num,
                     temp_pos.x, temp_pos.y);
 }
 
 static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer) {
     /* --- DMGs --- */
-    struct Damage damage_a      = pmc->forecast->stats.agg_damage;
-    struct Damage damage_d      = pmc->forecast->stats.dft_damage;
+    struct Combat_Damage damage_a      = pmc->forecast->stats.agg_damage;
+    struct Combat_Damage damage_d      = pmc->forecast->stats.dft_damage;
     struct Combat_Rates rates_a = pmc->forecast->stats.agg_rates;
     struct Combat_Rates rates_d = pmc->forecast->stats.dft_rates;
     char numbuff[10];
@@ -232,7 +240,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
     PixelFont_Write(pmc->pixelnours_tight, renderer, "DMG", 3,
                     POPUP_MAP_COMBAT_RED_DMG_X, POPUP_MAP_COMBAT_RED_DMG_Y);
 
-    int toprint = int_inbounds(damage_a.dmg[DMG_TYPE_TOTAL], 0, 99);
+    int toprint = int_inbounds(damage_a.dmg.total, 0, 99);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
     int width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
     temp_pos.x = POPUP_MAP_COMBAT_BLUE_DMG_STAT_X - width / 2;
@@ -241,7 +249,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
     PixelFont_Write(pmc->pixelnours_tight, renderer, numbuff, strlen(numbuff),
                     temp_pos.x, temp_pos.y);
 
-    toprint = int_inbounds(damage_d.dmg[DMG_TYPE_TOTAL], 0, 99);
+    toprint = int_inbounds(damage_d.dmg.total, 0, 99);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
     width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
     temp_pos.x = POPUP_MAP_COMBAT_RED_DMG_STAT_X - width / 2;

@@ -2,7 +2,10 @@
 #include "reinforcement.h"
 #include "unit/boss.h"
 #include "nmath.h"
+#include "names.h"
 #include "unit/unit.h"
+#include "unit/stats.h"
+#include "unit/flags.h"
 #include "cJSON.h"
 
 const struct Reinforcement Reinforcement_default = {
@@ -11,7 +14,6 @@ const struct Reinforcement Reinforcement_default = {
 
 void Reinforcement_Free(struct Reinforcement *reinf) {
     s8_free(&reinf->filename);
-    s8_free(&reinf->ai_filename);
 }
 
 void Reinforcement_readJSON(struct cJSON         *_jreinf,
@@ -31,8 +33,12 @@ void Reinforcement_readJSON(struct cJSON         *_jreinf,
     struct cJSON *jcol      = cJSON_GetObjectItem(jposition,    "col");
 
     reinf->filename     = s8_mut(cJSON_GetStringValue(jfilename));
-    reinf->ai_filename  = s8_mut(cJSON_GetStringValue(jai));
+    s8 ai_filename      = s8_mut(cJSON_GetStringValue(jai));
+    reinf->ai_id        = AI_Name2ID(ai_filename);
+    s8_free(&ai_filename);
     reinf->army         = cJSON_GetNumberValue(jarmy);
+
+
     SDL_assert(reinf->army > ARMY_START);
     SDL_assert(reinf->army < ARMY_END);
     reinf->turn         = cJSON_GetNumberValue(jturn);
@@ -59,7 +65,8 @@ void Reinforcement_readJSON(struct cJSON         *_jreinf,
 void Reinforcement_writeJSON(struct cJSON         *jreinf,
                              struct Reinforcement *reinf) {
     SDL_assert(jreinf != NULL);
-    struct cJSON *jai       = cJSON_CreateString(reinf->ai_filename.data);
+    s8 ai_filename          = ai_names[reinf->ai_id];
+    struct cJSON *jai       = cJSON_CreateString(ai_filename.data);
     struct cJSON *jcol      = cJSON_CreateNumber(reinf->position.x);
     struct cJSON *jrow      = cJSON_CreateNumber(reinf->position.y);
     struct cJSON *jturn     = cJSON_CreateNumber(reinf->turn);
@@ -79,15 +86,15 @@ void Reinforcement_writeJSON(struct cJSON         *jreinf,
 
 /* AI/NPC units only */
 void Unit_Reinforcement_Levelups(struct Unit *unit, struct Reinforcement *reinf) {
-    SDL_assert(unit->grown_stats != NULL);
+    struct Unit_stats *grown = Unit_Stats_Grown(unit);
+    SDL_assert(grown != NULL);
 
     /* Skip if unit was already leveled */
-    if (DARR_NUM(unit->grown_stats) == reinf->levelups)
+    if (DARR_NUM(grown) == reinf->levelups)
         return;
 
     for (int i = 0; i < reinf->levelups; i++) {
-        unit->exp += SOTA_100PERCENT;
+        unit->level.exp += SOTA_EXP_PER_LEVEL;
         Unit_lvlUp(unit);
     }
 }
-

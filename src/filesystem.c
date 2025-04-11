@@ -181,6 +181,7 @@ SDL_Surface *Filesystem_Surface_Load( char *filename,  u32 format) {
     loadedsurface = IMG_Load(filename);
     if (loadedsurface == NULL) {
         SDL_LogError(SOTA_LOG_SYSTEM, "FILE '%s' does not exist", filename);
+        SDL_assert(false);
         exit(ERROR_CannotOpenFile);
     }
 

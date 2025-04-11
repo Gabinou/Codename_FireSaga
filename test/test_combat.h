@@ -7,23 +7,25 @@
 #include "game/unit.h"
 #include "unit/unit.h"
 #include "RNG.h"
+#include "globals.h"
 #include "pathfinding.h"
 #include "unit/unit.h"
-#include "unit/equipment.h"
+#include "unit/flags.h"
 #include "unit/loadout.h"
+#include "unit/equipment.h"
 #include "equations.h"
 
 void test_combat_stats() {
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
     struct Unit *attacker = (struct Unit *)SDL_calloc(1, sizeof(struct Unit));
     * attacker = Unit_default;
     struct Unit *defender = (struct Unit *)SDL_calloc(1, sizeof(struct Unit));
     * defender = Unit_default;
-    Unit_InitWweapons(attacker, weapons_dtab);
-    Unit_InitWweapons(defender, weapons_dtab);
+    Unit_Init(attacker);
+    Unit_Init(defender);
 
-    struct Damage dft_damage;
-    struct Damage agg_damage;
+    struct Combat_Damage dft_damage;
+    struct Combat_Damage agg_damage;
     struct Combat_Stats temp_stats;
     struct Combat_Forecast forecast;
     struct Computed_Stats agg_stats;
@@ -52,9 +54,9 @@ void test_combat_stats() {
     // Unit_setStats(defender, defender_stats);
     // Unit_setStats(attacker, attacker_stats);
 
-    // // SOTA_Log_Debug("%d %d %d %d", attacker->current_hp, attacker_stats.hp, defender->current_hp, defender_stats.hp);
-    // nourstest_true(attacker->current_hp == attacker_stats.hp);
-    // nourstest_true(defender->current_hp == defender_stats.hp);
+    // // SOTA_Log_Debug("%d %d %d %d", attacker->counters.hp, attacker_stats.hp, defender->counters.hp, defender_stats.hp);
+    // nourstest_true(attacker->counters.hp == attacker_stats.hp);
+    // nourstest_true(defender->counters.hp == defender_stats.hp);
     // Unit_effectiveStats(attacker);
     // Unit_effectiveStats(defender);
 
@@ -80,21 +82,21 @@ void test_combat_stats() {
 
     // agg_damage = Compute_Combat_Damage(attacker, defender);
 
-    // struct Weapon *fleuret = DTAB_GET(weapons_dtab, defender->_equipment[defender_equip_hand].id);
-    // nourstest_true(fleuret->stats.attack[DAMAGE_TYPE_PHYSICAL] > 0);
+    // struct Weapon *fleuret = DTAB_GET(gl_weapons_dtab, defender->_equipment[defender_equip_hand].id);
+    // nourstest_true(fleuret->stats.attack.physical > 0);
     // dft_damage = Compute_Combat_Damage(defender, attacker);
 
-    // nourstest_true((temp_stats.agg_damage.dmg[DMG_TYPE_PHYSICAL] ==
-    //                 agg_damage.dmg[DMG_TYPE_PHYSICAL]));
-    // nourstest_true((temp_stats.agg_damage.dmg[DMG_TYPE_MAGICAL] ==
-    //                 agg_damage.dmg[DMG_TYPE_MAGICAL]));
-    // nourstest_true((temp_stats.agg_damage.dmg[DMG_TYPE_PHYSICAL] > 0));
-    // nourstest_true((temp_stats.agg_damage.dmg[DMG_TYPE_MAGICAL] == 0));
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_TYPE_PHYSICAL] == dft_damage.dmg[DMG_TYPE_PHYSICAL]));
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_TYPE_MAGICAL] ==
-    //                 dft_damage.dmg[DMG_TYPE_MAGICAL]));
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_TYPE_PHYSICAL] > 0));
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_TYPE_MAGICAL] == 0));
+    // nourstest_true((temp_stats.agg_damage.dmg.physical ==
+    //                 agg_damage.dmg.physical));
+    // nourstest_true((temp_stats.agg_damage.dmg.magical ==
+    //                 agg_damage.dmg.magical));
+    // nourstest_true((temp_stats.agg_damage.dmg.physical > 0));
+    // nourstest_true((temp_stats.agg_damage.dmg.magical == 0));
+    // nourstest_true((temp_stats.dft_damage.dmg.physical == dft_damage.dmg.physical));
+    // nourstest_true((temp_stats.dft_damage.dmg.magical ==
+    //                 dft_damage.dmg.magical));
+    // nourstest_true((temp_stats.dft_damage.dmg.physical > 0));
+    // nourstest_true((temp_stats.dft_damage.dmg.magical == 0));
     // nourstest_true((temp_stats.agg_stats.attack[0] == agg_stats.attack[0]));
     // nourstest_true((temp_stats.agg_stats.attack[0] > 0));
     // nourstest_true((temp_stats.agg_stats.attack[1] == agg_stats.attack[1]));
@@ -110,18 +112,18 @@ void test_combat_stats() {
     // nourstest_true((temp_stats.agg_stats.speed == agg_stats.speed));
     // nourstest_true((temp_stats.agg_stats.move == attacker_stats.move));
 
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_TYPE_PHYSICAL] ==
-    //                 dft_damage.dmg[DMG_TYPE_PHYSICAL]));
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_TYPE_MAGICAL] ==
-    //                 dft_damage.dmg[DMG_TYPE_MAGICAL]));
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_TYPE_PHYSICAL] > 0));
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_TYPE_MAGICAL] == 0));
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_TYPE_PHYSICAL] ==
-    //                 dft_damage.dmg[DMG_TYPE_PHYSICAL]));
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_TYPE_MAGICAL] ==
-    //                 dft_damage.dmg[DMG_TYPE_MAGICAL]));
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_TYPE_PHYSICAL] > 0));
-    // nourstest_true((temp_stats.dft_damage.dmg[DMG_TYPE_MAGICAL] == 0));
+    // nourstest_true((temp_stats.dft_damage.dmg.physical ==
+    //                 dft_damage.dmg.physical));
+    // nourstest_true((temp_stats.dft_damage.dmg.magical ==
+    //                 dft_damage.dmg.magical));
+    // nourstest_true((temp_stats.dft_damage.dmg.physical > 0));
+    // nourstest_true((temp_stats.dft_damage.dmg.magical == 0));
+    // nourstest_true((temp_stats.dft_damage.dmg.physical ==
+    //                 dft_damage.dmg.physical));
+    // nourstest_true((temp_stats.dft_damage.dmg.magical ==
+    //                 dft_damage.dmg.magical));
+    // nourstest_true((temp_stats.dft_damage.dmg.physical > 0));
+    // nourstest_true((temp_stats.dft_damage.dmg.magical == 0));
     // nourstest_true((temp_stats.dft_stats.attack[0] == dft_stats.attack[0]));
     // nourstest_true((temp_stats.dft_stats.attack[0] > 0));
     // nourstest_true((temp_stats.dft_stats.attack[1] == dft_stats.attack[1]));
@@ -142,18 +144,18 @@ void test_combat_stats() {
     SDL_free(attacker);
     Unit_Free(defender);
     SDL_free(defender);
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
 }
 
 void test_combat_death() {
 
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
     struct Unit attacker = Unit_default;
     struct Unit defender = Unit_default;
-    Unit_InitWweapons(&attacker, weapons_dtab);
-    Unit_InitWweapons(&defender, weapons_dtab);
-    struct Damage dft_damage;
-    struct Damage agg_damage;
+    Unit_Init(&attacker);
+    Unit_Init(&defender);
+    struct Combat_Damage dft_damage;
+    struct Combat_Damage agg_damage;
     struct Combat_Stats temp_stats;
     struct Combat_Flow temp_flow;
     struct Combat_Death temp_death;
@@ -201,8 +203,7 @@ void test_combat_death() {
     // temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
     //                                 (struct Point *)&defender_pos);
     // temp_death = Compute_Combat_Death(&attacker, &defender, temp_stats, temp_flow);
-    // nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender,
-    //                &attacker, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
+    // nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
     // nourstest_true(temp_flow.aggressor_phases == 0);
     // nourstest_true(temp_flow.defendant_phases == 0);
     // // nourstest_true((temp_death.aggressor_certain == false));
@@ -210,10 +211,10 @@ void test_combat_death() {
     // // nourstest_true((temp_death.aggressor_possible == false));
     // // nourstest_true((temp_death.defendant_possible == false));
 
-    // attacker.current_hp = 1;
+    // attacker.counters.hp = 1;
     // Unit_computedStats(&attacker, distance);
     // Unit_computedStats(&defender, distance);
-    // nourstest_true((attacker.current_hp == 1));
+    // nourstest_true((attacker.counters.hp == 1));
     // forecast = Compute_Combat_Forecast(&attacker, &defender, (struct Point *)&attacker_pos,
     //                                    (struct Point *)&defender_pos);
     // temp_stats = forecast.stats;
@@ -223,7 +224,7 @@ void test_combat_death() {
     // nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender,
     //                &attacker, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
     // nourstest_true(temp_flow.defendant_retaliates == true);
-    // nourstest_true(temp_stats.dft_damage.dmg[DMG_TYPE_TOTAL] > 0);
+    // nourstest_true(temp_stats.dft_damage.dmg[DMG_TOTAL] > 0);
     // nourstest_true(temp_stats.dft_rates.hit > 0);
     // nourstest_true(temp_stats.dft_rates.hit == (defender.computed_stats.hit -
     //                                             attacker.computed_stats.dodge));
@@ -234,12 +235,12 @@ void test_combat_death() {
     // // nourstest_true((temp_death.aggressor_possible == false));
     // // nourstest_true((temp_death.defendant_possible == false));
 
-    // attacker.current_hp = 17;
-    // defender.current_hp = 1;
+    // attacker.counters.hp = 17;
+    // defender.counters.hp = 1;
     // Unit_computedStats(&attacker, distance);
     // Unit_computedStats(&defender, distance);
-    // nourstest_true((attacker.current_hp == 17));
-    // nourstest_true((defender.current_hp == 1));
+    // nourstest_true((attacker.counters.hp == 17));
+    // nourstest_true((defender.counters.hp == 1));
     // forecast = Compute_Combat_Forecast(&attacker, &defender, (struct Point *)&attacker_pos,
     //                                    (struct Point *)&defender_pos);
     // temp_stats = forecast.stats;
@@ -255,8 +256,8 @@ void test_combat_death() {
     // // nourstest_true((temp_death.aggressor_possible == false));
     // // nourstest_true((temp_death.defendant_possible == false));
 
-    // defender.current_hp = 17;
-    // attacker.current_hp = 1;
+    // defender.counters.hp = 17;
+    // attacker.counters.hp = 1;
     // attacker_pos.x = 1;
     // attacker_pos.y = 2;
     // defender_pos.x = 2;
@@ -278,15 +279,15 @@ void test_combat_death() {
     // // nourstest_true((temp_death.aggressor_possible == false));
     // // nourstest_true((temp_death.defendant_possible == false));
 
-    // attacker.current_hp = 1;
-    // defender.current_hp = 1;
+    // attacker.counters.hp = 1;
+    // defender.counters.hp = 1;
     // attacker_pos.x = 1;
     // attacker_pos.y = 2;
     // defender_pos.x = 2;
     // defender_pos.y = 2;
     // Unit_computedStats(&attacker, distance);
     // Unit_computedStats(&defender, distance);
-    // nourstest_true((attacker.current_hp == 1));
+    // nourstest_true((attacker.counters.hp == 1));
     // forecast = Compute_Combat_Forecast(&attacker, &defender, (struct Point *)&attacker_pos,
     //                                    (struct Point *)&defender_pos);
     // temp_stats = forecast.stats;
@@ -305,12 +306,13 @@ void test_combat_death() {
 
 void test_combat_flow() {
 
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_items_dtab   = DTAB_INIT(gl_items_dtab, struct Item);
     struct Combat_Flow temp_flow;
     struct Unit attacker = Unit_default;
     struct Unit defender = Unit_default;
-    Unit_InitWweapons(&attacker, weapons_dtab);
-    Unit_InitWweapons(&defender, weapons_dtab);
+    Unit_Init(&attacker);
+    Unit_Init(&defender);
     struct Point attacker_pos = {1, 2};
     struct Point defender_pos = {2, 2};
     int distance = Pathfinding_Manhattan(attacker_pos, defender_pos);
@@ -335,80 +337,80 @@ void test_combat_flow() {
     nourstest_true(Unit_canAttack(&attacker));
     Unit_setStats(&defender, defender_stats);
     Unit_setStats(&attacker, attacker_stats);
-    nourstest_true(attacker.current_hp == attacker_stats.hp);
-    nourstest_true(defender.current_hp == defender_stats.hp);
-    Unit_computedStats(&attacker, distance);
-    Unit_computedStats(&defender, distance);
-    Unit_effectiveStats(&attacker);
+    nourstest_true(attacker.counters.hp == attacker_stats.hp);
+    nourstest_true(defender.counters.hp == defender_stats.hp);
+    struct Unit_stats ES_A = Unit_effectiveStats(&attacker);
+    struct Unit_stats ES_D = Unit_effectiveStats(&defender);
+    Computed_Stats cs_agg = Unit_computedStats(&attacker, distance, ES_A);
+    Computed_Stats cs_dft = Unit_computedStats(&defender, distance, ES_D);
 
-    nourstest_true(attacker.current_stats.hp    == attacker.effective_stats.hp);
-    nourstest_true(attacker.current_stats.str   == attacker.effective_stats.str);
-    nourstest_true(attacker.current_stats.mag   == attacker.effective_stats.mag);
-    nourstest_true(attacker.current_stats.agi   == attacker.effective_stats.agi);
-    nourstest_true(attacker.current_stats.dex   == attacker.effective_stats.dex);
-    nourstest_true(attacker.current_stats.luck  == attacker.effective_stats.luck);
-    nourstest_true(attacker.current_stats.def   == attacker.effective_stats.def);
-    nourstest_true(attacker.current_stats.res   == attacker.effective_stats.res);
-    nourstest_true(attacker.current_stats.con   == attacker.effective_stats.con);
-    nourstest_true(attacker.current_stats.move  == attacker.effective_stats.move);
-    nourstest_true(attacker.current_stats.prof  == attacker.effective_stats.prof);
+    nourstest_true(attacker.stats.current.hp    == ES_A.hp);
+    nourstest_true(attacker.stats.current.str   == ES_A.str);
+    nourstest_true(attacker.stats.current.mag   == ES_A.mag);
+    nourstest_true(attacker.stats.current.agi   == ES_A.agi);
+    nourstest_true(attacker.stats.current.dex   == ES_A.dex);
+    nourstest_true(attacker.stats.current.luck  == ES_A.luck);
+    nourstest_true(attacker.stats.current.def   == ES_A.def);
+    nourstest_true(attacker.stats.current.res   == ES_A.res);
+    nourstest_true(attacker.stats.current.con   == ES_A.con);
+    nourstest_true(attacker.stats.current.move  == ES_A.move);
+    nourstest_true(attacker.stats.current.prof  == ES_A.prof);
 
     Unit_effectiveStats(&defender);
-    nourstest_true(defender.current_stats.hp    == defender.effective_stats.hp);
-    nourstest_true(defender.current_stats.str   == defender.effective_stats.str);
-    nourstest_true(defender.current_stats.mag   == defender.effective_stats.mag);
-    nourstest_true(defender.current_stats.agi   == defender.effective_stats.agi);
-    nourstest_true(defender.current_stats.dex   == defender.effective_stats.dex);
-    nourstest_true(defender.current_stats.luck  == defender.effective_stats.luck);
-    nourstest_true(defender.current_stats.def   == defender.effective_stats.def);
-    nourstest_true(defender.current_stats.res   == defender.effective_stats.res);
-    nourstest_true(defender.current_stats.con   == defender.effective_stats.con);
-    nourstest_true(defender.current_stats.move  == defender.effective_stats.move);
-    nourstest_true(defender.current_stats.prof  == defender.effective_stats.prof);
+    nourstest_true(defender.stats.current.hp    == ES_D.hp);
+    nourstest_true(defender.stats.current.str   == ES_D.str);
+    nourstest_true(defender.stats.current.mag   == ES_D.mag);
+    nourstest_true(defender.stats.current.agi   == ES_D.agi);
+    nourstest_true(defender.stats.current.dex   == ES_D.dex);
+    nourstest_true(defender.stats.current.luck  == ES_D.luck);
+    nourstest_true(defender.stats.current.def   == ES_D.def);
+    nourstest_true(defender.stats.current.res   == ES_D.res);
+    nourstest_true(defender.stats.current.con   == ES_D.con);
+    nourstest_true(defender.stats.current.move  == ES_D.move);
+    nourstest_true(defender.stats.current.prof  == ES_D.prof);
 
-    Unit_computeHit(&attacker, distance);
-    Unit_computeHit(&defender, distance);
     i32 attacker_hit;
     i32 defender_hit;
+    Unit_computeHit(&attacker, distance, &attacker_hit);
+    Unit_computeHit(&defender, distance, &defender_hit);
     struct Weapon attacker_weapon = Weapon_default;
     struct Weapon defender_weapon = Weapon_default;
 
     if (Unit_isEquipped(&defender, defender_equip_hand)) {
-        defender_weapon = *((struct Weapon *)DTAB_GET(weapons_dtab, Unit_Id_Equipment(&defender,
+        defender_weapon = *((struct Weapon *)DTAB_GET(gl_weapons_dtab, Unit_Id_Equipment(&defender,
                                                       defender_equip_hand)));
     }
     if (Unit_isEquipped(&attacker, attacker_equip_hand)) {
-        attacker_weapon = *((struct Weapon *)DTAB_GET(weapons_dtab, Unit_Id_Equipment(&defender,
+        attacker_weapon = *((struct Weapon *)DTAB_GET(gl_weapons_dtab, Unit_Id_Equipment(&defender,
                                                       attacker_equip_hand)));
     }
 
-    attacker_hit = Equation_Unit_Hit(attacker_weapon.stats.hit, attacker.effective_stats.dex,
-                                     attacker.effective_stats.luck, 0);
-    nourstest_true(attacker.computed_stats.hit == attacker_hit);
-    defender_hit = Equation_Unit_Hit(defender_weapon.stats.hit, defender.effective_stats.dex,
-                                     defender.effective_stats.luck, 0);
-    nourstest_true(defender.computed_stats.hit == defender_hit);
-    Unit_computedStats(&attacker, distance);
-    Unit_computedStats(&defender, distance);
-    i32 attacker_speed = Equation_Unit_Speed(attacker_weapon.stats.wgt,
-                                             attacker.effective_stats.agi,
-                                             attacker.effective_stats.con,
-                                             attacker.effective_stats.str, 0);
-    nourstest_true(Unit_computeSpeed(&attacker, distance) == attacker_speed);
-    nourstest_true(attacker.computed_stats.speed == attacker_speed);
-    nourstest_true(attacker.computed_stats.speed == 7);
-    i32 defender_speed = Equation_Unit_Speed(defender_weapon.stats.wgt,
-                                             defender.effective_stats.agi,
-                                             defender.effective_stats.con,
-                                             defender.effective_stats.str, 0);
-    nourstest_true(Unit_computeSpeed(&defender, distance) == defender_speed);
-    nourstest_true(defender.computed_stats.speed == defender_speed);
-    nourstest_true(defender.computed_stats.speed == 7);
+    nourstest_true(Equation_Unit_Hit(attacker_weapon.stats.hit, ES_A.dex, ES_A.luck,
+                                     0) == attacker_hit);
+    nourstest_true(Equation_Unit_Hit(defender_weapon.stats.hit, ES_D.dex, ES_D.luck,
+                                     0) == defender_hit);
+    ES_A = Unit_effectiveStats(&attacker);
+    ES_D = Unit_effectiveStats(&defender);
+    cs_agg = Unit_computedStats(&attacker, distance, ES_A);
+    cs_dft = Unit_computedStats(&defender, distance, ES_D);
+
+    i32 attacker_speed;
+    Unit_computeSpeed(&attacker, distance, &attacker_speed);
+    nourstest_true(Equation_Unit_Speed(attacker_weapon.stats.wgt,
+                                       ES_A.agi, ES_A.con, ES_A.str,
+                                       0) == attacker_speed);
+    nourstest_true(attacker_speed == 7);
+    i32 defender_speed;
+    Unit_computeSpeed(&defender, distance, &defender_speed);
+    nourstest_true(Equation_Unit_Speed(defender_weapon.stats.wgt,
+                                       ES_D.agi, ES_D.con, ES_D.str, 0) == defender_speed);
+    nourstest_true(defender_speed == 7);
     temp_flow = Compute_Combat_Flow(&attacker, &defender,
+                                    cs_agg, cs_dft,
                                     (struct Point *)&attacker_pos,
                                     (struct Point *)&defender_pos);
     nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender,
-                   &attacker, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
+                   (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
     nourstest_true(temp_flow.defendant_retaliates == true);
     nourstest_true(temp_flow.aggressor_phases == 1);
     nourstest_true(temp_flow.defendant_phases == 1);
@@ -418,24 +420,24 @@ void test_combat_flow() {
     defender_pos.x = 2;
     defender_pos.y = 3;
 
-    Unit_computedStats(&attacker, distance);
-    Unit_computedStats(&defender, distance);
-    attacker_speed = Equation_Unit_Speed(attacker_weapon.stats.wgt,
-                                         attacker.effective_stats.agi,
-                                         attacker.effective_stats.con,
-                                         attacker.effective_stats.str, 0);
-    nourstest_true(Unit_computeSpeed(&attacker, distance) == attacker_speed);
-    nourstest_true(attacker.computed_stats.speed == attacker_speed);
-    defender_speed = Equation_Unit_Speed(defender_weapon.stats.wgt,
-                                         defender.effective_stats.agi,
-                                         defender.effective_stats.con,
-                                         defender.effective_stats.str, 0);
-    nourstest_true(Unit_computeSpeed(&defender, distance) == defender_speed);
-    nourstest_true(defender.computed_stats.speed == defender_speed);
-    temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
+    cs_agg = Unit_computedStats(&attacker, distance, ES_A);
+    cs_dft = Unit_computedStats(&defender, distance, ES_D);
+    Unit_computeSpeed(&defender, distance, &attacker_speed);
+    nourstest_true(Equation_Unit_Speed(attacker_weapon.stats.wgt,
+                                       ES_A.agi,
+                                       ES_A.con,
+                                       ES_A.str, 0) == attacker_speed);
+    Unit_computeSpeed(&defender, distance, &defender_speed);
+    nourstest_true(Equation_Unit_Speed(defender_weapon.stats.wgt,
+                                       ES_D.agi,
+                                       ES_D.con,
+                                       ES_D.str, 0) == defender_speed);
+    temp_flow = Compute_Combat_Flow(&attacker, &defender,
+                                    cs_agg, cs_dft,
+                                    (struct Point *)&attacker_pos,
                                     (struct Point *)&defender_pos);
     nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender,
-                   &attacker, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
+                   (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
     nourstest_true(temp_flow.defendant_retaliates == false);
     nourstest_true(temp_flow.aggressor_phases == 1);
     nourstest_true(temp_flow.defendant_phases == 0);
@@ -446,13 +448,15 @@ void test_combat_flow() {
     defender_pos.y = 2;
     attacker_stats.agi = 8;
     Unit_setStats(&attacker, attacker_stats);
-    Unit_computedStats(&attacker, distance);
-    Unit_computedStats(&defender, distance);
-    nourstest_true(attacker.computed_stats.speed == 8);
-    temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
+    cs_agg = Unit_computedStats(&attacker, distance, ES_A);
+    cs_dft = Unit_computedStats(&defender, distance, ES_D);
+    nourstest_true(cs_agg.speed == 8);
+    temp_flow = Compute_Combat_Flow(&attacker, &defender,
+                                    cs_agg, cs_dft,
+                                    (struct Point *)&attacker_pos,
                                     (struct Point *)&defender_pos);
     nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender,
-                   &attacker, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
+                   (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
     nourstest_true(temp_flow.defendant_retaliates == 1);
     nourstest_true(temp_flow.aggressor_phases == 1);
     nourstest_true(temp_flow.defendant_phases == 1);
@@ -463,13 +467,15 @@ void test_combat_flow() {
     defender_pos.y      = 2;
     attacker_stats.agi  = 9;
     Unit_setStats(&attacker, attacker_stats);
-    Unit_computedStats(&attacker, distance);
-    Unit_computedStats(&defender, distance);
-    nourstest_true(attacker.computed_stats.speed == 9);
-    temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
+    cs_agg = Unit_computedStats(&attacker, distance, ES_A);
+    cs_dft = Unit_computedStats(&defender, distance, ES_D);
+    nourstest_true(cs_agg.speed == 9);
+    temp_flow = Compute_Combat_Flow(&attacker, &defender,
+                                    cs_agg, cs_dft,
+                                    (struct Point *)&attacker_pos,
                                     (struct Point *)&defender_pos);
     nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender,
-                   &attacker, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
+                   (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
     nourstest_true(temp_flow.defendant_retaliates == 1);
     nourstest_true(temp_flow.aggressor_phases == 1);
     nourstest_true(temp_flow.defendant_phases == 1);
@@ -480,13 +486,15 @@ void test_combat_flow() {
     defender_pos.y = 2;
     attacker_stats.agi = 10;
     Unit_setStats(&attacker, attacker_stats);
-    Unit_computedStats(&attacker, distance);
-    Unit_computedStats(&defender, distance);
-    nourstest_true(attacker.computed_stats.speed == 10);
-    temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
+    cs_agg = Unit_computedStats(&attacker, distance, ES_A);
+    cs_dft = Unit_computedStats(&defender, distance, ES_D);
+    nourstest_true(cs_agg.speed == 10);
+    temp_flow = Compute_Combat_Flow(&attacker, &defender,
+                                    cs_agg, cs_dft,
+                                    (struct Point *)&attacker_pos,
                                     (struct Point *)&defender_pos);
     nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender,
-                   &attacker, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
+                   (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
     nourstest_true(temp_flow.defendant_retaliates == 1);
     nourstest_true(temp_flow.aggressor_phases == 1);
     nourstest_true(temp_flow.defendant_phases == 1);
@@ -497,13 +505,16 @@ void test_combat_flow() {
     defender_pos.y = 2;
     attacker_stats.agi = 11;
     Unit_setStats(&attacker, attacker_stats);
-    Unit_computedStats(&attacker, distance);
-    Unit_computedStats(&defender, distance);
-    nourstest_true(attacker.computed_stats.speed == 11);
-    temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
+    cs_agg = Unit_computedStats(&attacker, distance, ES_A);
+    cs_dft = Unit_computedStats(&defender, distance, ES_D);
+    nourstest_true(cs_agg.speed == 11);
+    temp_flow = Compute_Combat_Flow(&attacker, &defender,
+                                    cs_agg, cs_dft,
+                                    (struct Point *)&attacker_pos,
+
                                     (struct Point *)&defender_pos);
     nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender,
-                   &attacker, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
+                   (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
     nourstest_true(temp_flow.defendant_retaliates == 1);
     nourstest_true(temp_flow.aggressor_phases == 1);
     nourstest_true(temp_flow.defendant_phases == 1);
@@ -514,31 +525,35 @@ void test_combat_flow() {
     defender_pos.y = 2;
     attacker_stats.agi = 12;
     Unit_setStats(&attacker, attacker_stats);
-    Unit_computedStats(&attacker, distance);
-    Unit_computedStats(&defender, distance);
-    nourstest_true(attacker.computed_stats.speed == 12);
-    temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
+    cs_agg = Unit_computedStats(&attacker, distance, ES_A);
+    cs_dft = Unit_computedStats(&defender, distance, ES_D);
+    nourstest_true(cs_agg.speed == 12);
+    temp_flow = Compute_Combat_Flow(&attacker, &defender,
+                                    cs_agg, cs_dft,
+                                    (struct Point *)&attacker_pos,
                                     (struct Point *)&defender_pos);
     nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender,
-                   &attacker, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
+                   (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
     nourstest_true(temp_flow.defendant_retaliates == 1);
     nourstest_true(temp_flow.aggressor_phases == 2);
-    nourstest_true(Combat_canDouble(&attacker, &defender));
+    nourstest_true(Combat_canDouble(cs_agg, cs_dft));
     nourstest_true(temp_flow.defendant_phases == 1);
 
-    temp_flow = Compute_Combat_Flow(&defender, &attacker, (struct Point *)&defender_pos,
+    temp_flow = Compute_Combat_Flow(&defender, &attacker,
+                                    cs_agg, cs_dft,
+                                    (struct Point *)&defender_pos,
                                     (struct Point *)&attacker_pos);
     nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&attacker,
-                   &defender, (struct Point *)&attacker_pos, (struct Point *)&defender_pos));
+                   (struct Point *)&attacker_pos, (struct Point *)&defender_pos));
     nourstest_true(temp_flow.defendant_retaliates == 1);
-    nourstest_true(temp_flow.aggressor_phases == 1);
-    nourstest_true(Combat_canDouble(&attacker, &defender));
-    nourstest_true(temp_flow.defendant_phases == 2);
+    nourstest_true(temp_flow.aggressor_phases == 2);
+    nourstest_true(Combat_canDouble(cs_agg, cs_dft));
+    nourstest_true(temp_flow.defendant_phases == 1);
 
     /* --- SDL_free --- */
     Unit_Free(&attacker);
     Unit_Free(&defender);
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
 }
 
 #ifndef RNG_SEQUENCE_BREAKER_HIT
@@ -558,7 +573,7 @@ void test_combat_sequence() {
 
     struct Unit Silou = Unit_default;
 
-    nourstest_true(army_isPC[Silou.army]);
+    nourstest_true(army_isPC[Unit_Army(&Silou)]);
     struct Combat_Attack *darr_attacks;
     struct Combat_Attack temp_attack = {0};
 
@@ -573,9 +588,9 @@ void test_combat_sequence() {
     i32 hit_rate     = 50;
     i32 crit_rate    = 10;
 
-    struct Damage damage = {0};
-    damage.dmg[DMG_TYPE_PHYSICAL] = 8;
-    damage.dmg_crit[DMG_TYPE_PHYSICAL] = 24;
+    struct Combat_Damage damage = {0};
+    damage.dmg.physical = 8;
+    damage.dmg_crit.physical = 24;
 
     URN_debug = 11; /* HIT/NOCRIT */
     SDL_assert(URN_debug == RNG_URN());

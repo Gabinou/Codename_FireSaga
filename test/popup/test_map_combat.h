@@ -1,10 +1,11 @@
 
-#include "nourstest.h"
-#include "platform.h"
+#include "RNG.h"
 #include "combat.h"
+#include "globals.h"
+#include "platform.h"
+#include "nourstest.h"
 #include "unit/unit.h"
 #include "popup/map_combat.h"
-#include "RNG.h"
 
 void test_popup_map_combat() {
     /* -- Preliminaries -- */
@@ -21,7 +22,7 @@ void test_popup_map_combat() {
     combat_attacks = DARR_INIT(combat_attacks, struct Combat_Attack, SOTA_COMBAT_MAX_ATTACKS);
 
     /* -- Weapon dtab -- */
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
 
     /* -- Create n9patch -- */
     // render_target is NULL cause there is render_target!
@@ -37,9 +38,6 @@ void test_popup_map_combat() {
     struct Unit defendant  = Unit_default;
     Unit_Init(&aggressor);
     Unit_Init(&defendant);
-
-    aggressor.weapons_dtab = weapons_dtab;
-    defendant.weapons_dtab = weapons_dtab;
 
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &aggressor);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Fencer_test.json")), &defendant);
@@ -69,10 +67,10 @@ void test_popup_map_combat() {
     nourstest_true(Unit_isEquipped(&defendant, weakhand));
     nourstest_true(Unit_canAttack(&aggressor));
     nourstest_true(Unit_canAttack(&defendant));
-    Unit_computedStats(&aggressor, dist);
-    Unit_computedStats(&defendant, dist);
-    Unit_effectiveStats(&aggressor);
-    Unit_effectiveStats(&defendant);
+    Unit_stats ES_A = Unit_effectiveStats(&aggressor);
+    Unit_stats ES_D = Unit_effectiveStats(&defendant);
+    Unit_computedStats(&aggressor, dist, ES_A);
+    Unit_computedStats(&defendant, dist, ES_D);
 
     /* -- Create Popup_Map_Combat -- */
     struct PopUp_Map_Combat pmc = PopUp_Map_Combat_default;
@@ -256,52 +254,52 @@ void test_popup_map_combat() {
     // // /* -- No HP -- */
     // // // Draw draws to the screen -> no need, use Update instead
     // // /* -- Full HP -- */
-    // // aggressor.current_hp = aggressor.effective_stats.hp;
-    // // defendant.current_hp = defendant.effective_stats.hp;
-    // // pmc.agg_current_hp = aggressor.current_hp;
-    // // pmc.dft_current_hp = defendant.current_hp;
-    // // SDL_assert(aggressor.current_hp > 0);
-    // // SDL_assert(defendant.current_hp > 0);
+    // // aggressor.counters.hp = aggressor.effective_stats.hp;
+    // // defendant.counters.hp = defendant.effective_stats.hp;
+    // // pmc.agg_current_hp = aggressor.counters.hp;
+    // // pmc.dft_current_hp = defendant.counters.hp;
+    // // SDL_assert(aggressor.counters.hp > 0);
+    // // SDL_assert(defendant.counters.hp > 0);
     // // PopUp_Map_Combat_Update(&pmc, &n9patch, render_target, renderer);
     // // Filesystem_Texture_Dump(PATH_JOIN("popup_map_combat", "PopupMapCombat_FullHP.png"), renderer,
     // //                         pmc.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     // /* -- 1 HP -- */
-    // aggressor.current_hp = 1;
-    // defendant.current_hp = 1;
-    // pmc.agg_current_hp = aggressor.current_hp;
-    // pmc.dft_current_hp = defendant.current_hp;
-    // aggressor.current_stats.hp = SOTA_MAX_HP;
-    // defendant.current_stats.hp = SOTA_MAX_HP;
-    // SDL_assert(aggressor.current_hp > 0);
-    // SDL_assert(defendant.current_hp > 0);
+    // aggressor.counters.hp = 1;
+    // defendant.counters.hp = 1;
+    // pmc.agg_current_hp = aggressor.counters.hp;
+    // pmc.dft_current_hp = defendant.counters.hp;
+    // aggressor.stats.current.hp = SOTA_MAX_HP;
+    // defendant.stats.current.hp = SOTA_MAX_HP;
+    // SDL_assert(aggressor.counters.hp > 0);
+    // SDL_assert(defendant.counters.hp > 0);
     // PopUp_Map_Combat_Update(&pmc, &n9patch, render_target, renderer);
     // Filesystem_Texture_Dump(PATH_JOIN("popup_map_combat", "PopupMapCombat_OneHP.png"), renderer,
     //                         pmc.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     // /* -- half HP -- */
-    // aggressor.current_hp = SOTA_MAX_HP / 2;
-    // defendant.current_hp = SOTA_MAX_HP / 2;
-    // pmc.agg_current_hp = aggressor.current_hp;
-    // pmc.dft_current_hp = defendant.current_hp;
-    // aggressor.current_stats.hp = SOTA_MAX_HP;
-    // defendant.current_stats.hp = SOTA_MAX_HP;
-    // SDL_assert(aggressor.current_hp > 0);
-    // SDL_assert(defendant.current_hp > 0);
+    // aggressor.counters.hp = SOTA_MAX_HP / 2;
+    // defendant.counters.hp = SOTA_MAX_HP / 2;
+    // pmc.agg_current_hp = aggressor.counters.hp;
+    // pmc.dft_current_hp = defendant.counters.hp;
+    // aggressor.stats.current.hp = SOTA_MAX_HP;
+    // defendant.stats.current.hp = SOTA_MAX_HP;
+    // SDL_assert(aggressor.counters.hp > 0);
+    // SDL_assert(defendant.counters.hp > 0);
     // PopUp_Map_Combat_Update(&pmc, &n9patch, render_target, renderer);
     // Filesystem_Texture_Dump(PATH_JOIN("popup_map_combat", "PopupMapCombat_HalfHP.png"), renderer,
     //                         pmc.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     // /* -- Single digit damage -- */
-    // pmc.forecast->stats.agg_damage.dmg[DMG_TYPE_TOTAL] = 1;
-    // pmc.forecast->stats.dft_damage.dmg[DMG_TYPE_TOTAL] = 2;
+    // pmc.forecast->stats.agg_damage.dmg[DMG_TOTAL] = 1;
+    // pmc.forecast->stats.dft_damage.dmg[DMG_TOTAL] = 2;
     // PopUp_Map_Combat_Update(&pmc, &n9patch, render_target, renderer);
     // Filesystem_Texture_Dump(PATH_JOIN("popup_map_combat", "PopupMapCombat_Damage_SingleDigit.png"),
     //                         renderer, pmc.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     // /* -- Double digit damage -- */
-    // pmc.forecast->stats.agg_damage.dmg[DMG_TYPE_TOTAL] = 20;
-    // pmc.forecast->stats.dft_damage.dmg[DMG_TYPE_TOTAL] = 10;
+    // pmc.forecast->stats.agg_damage.dmg[DMG_TOTAL] = 20;
+    // pmc.forecast->stats.dft_damage.dmg[DMG_TOTAL] = 10;
     // PopUp_Map_Combat_Update(&pmc, &n9patch, render_target, renderer);
     // Filesystem_Texture_Dump(PATH_JOIN("popup_map_combat", "PopupMapCombat_Damage_DoubleDigit.png"),
     //                         renderer, pmc.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
@@ -384,7 +382,7 @@ void test_popup_map_combat() {
 
     PopUp_Map_Combat_Free(&pmc);
     DARR_FREE(combat_attacks);
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
     Unit_Free(&aggressor);

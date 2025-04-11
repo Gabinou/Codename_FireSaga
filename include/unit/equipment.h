@@ -42,8 +42,10 @@ Item   *Unit_Get_Item(       Unit *u, i32 eq);
 Weapon *Unit_Equipped_Weapon(Unit *u, i32 hand);
 
 /* ID of equipped weapon */
-i32 Unit_Id_Equipped( Unit *u, i32 hand);
 i32 Unit_Id_Equipment(Unit *u, i32 eq);
+i32 Unit_Id_Equipped( Unit *u, i32 hand);
+void Unit_Id_Equipped_Set( Unit *u, i32 hand, i32 eq);
+i32* Unit_Equipped_Array(const Unit const *unit);
 
 /* Order in _equipment of equipped weapon */
 i32 Unit_Eq_Equipped(const Unit *const unit, i32 eq);
@@ -86,6 +88,9 @@ b32 Unit_iswrongHanding(Unit *u);
 /* --- Debug --- */
 b32  Unit_Equipment_Full( Unit *u);
 void Unit_Equipment_Print(Unit *u);
+
+Inventory_item *Unit_Equipment(Unit *u);
+i32 *Unit_canEquip_Arr(Unit *u);
 
 /* -- Use -- */
 void Unit_Staff_Use(Unit *unit, Unit *patient);

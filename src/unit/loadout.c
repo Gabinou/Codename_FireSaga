@@ -1,6 +1,7 @@
 
-#include "unit/loadout.h"
 #include "unit/unit.h"
+#include "unit/loadout.h"
+#include "unit/equipment.h"
 #include "inventory.h"
 
 /* --- Transformation --- */
@@ -91,13 +92,15 @@ void Equipped_Copy(i32 *_dest, const i32 *const _src) {
 }
 
 void Unit_Equipped_Import(Unit *unit, i32 *_loadout) {
-    size_t bytesize = unit->arms_num * sizeof(*_loadout);
-    memcpy(unit->_equipped, _loadout, bytesize);
+    size_t bytesize = unit->arms.num * sizeof(*_loadout);
+    i32 *equipped = Unit_Equipped_Array(unit);
+    memcpy(equipped, _loadout, bytesize);
 }
 
 void Unit_Equipped_Export(Unit *unit, i32 *_loadout) {
-    size_t bytesize = unit->arms_num * sizeof(*_loadout);
-    memcpy(_loadout, unit->_equipped, bytesize);
+    size_t bytesize = unit->arms.num * sizeof(*_loadout);
+    i32 *equipped = Unit_Equipped_Array(unit);
+    memcpy(_loadout, equipped, bytesize);
 }
 
 /* Unit <- Loadout */
@@ -112,9 +115,9 @@ void Unit_Loadout_Export(Unit *unit, Loadout *loadout) {
 
 /* Importing and exporting equipment */
 void Unit_Equipment_Import(struct Unit *unit, struct Inventory_item *equipment) {
-    Equipment_Copy(unit->_equipment, equipment, SOTA_EQUIPMENT_SIZE);
+    Equipment_Copy(unit->equipment.arr, equipment, SOTA_EQUIPMENT_SIZE);
 }
 
 void Unit_Equipment_Export(struct Unit *unit, struct Inventory_item *equipment) {
-    Equipment_Copy(equipment, unit->_equipment, SOTA_EQUIPMENT_SIZE);
+    Equipment_Copy(equipment, unit->equipment.arr, SOTA_EQUIPMENT_SIZE);
 }

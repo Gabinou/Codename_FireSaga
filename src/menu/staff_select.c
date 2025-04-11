@@ -68,7 +68,7 @@ void StaffSelectMenu_Select(struct LoadoutSelectMenu *ssm, i32 select) {
     /* Note: select is in strong space: stronghandd first hand */
     /* - Equip staff according to player choice - */
     Unit *unit      = IES_GET_COMPONENT(ssm->world, ssm->unit, Unit);
-    i32 eq          = unit->eq_canEquip[select];
+    i32 eq          = unit->can_equip.arr[select];
     i32 stronghand  = Unit_Hand_Strong(unit);
     i32 weakhand    = Unit_Hand_Weak(unit);
     SDL_assert(eq >= ITEM1);

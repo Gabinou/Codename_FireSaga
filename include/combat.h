@@ -44,8 +44,8 @@ struct Point;
 */
 
 /* -- isCan -- */
-b32 Combat_canDouble(struct Unit *_a, struct Unit *_d);
-b32 Combat_canAttack_Equipped(struct Unit  *agg, struct Unit  *dft,
+b32 Combat_canDouble(Computed_Stats cs_att, Computed_Stats cs_dfd);
+b32 Combat_canAttack_Equipped(struct Unit  *agg,
                               struct Point *_ag, struct Point *_df);
 
 /* -- Combat Death -- */
@@ -54,19 +54,21 @@ struct Combat_Death Compute_Combat_Death(struct Unit *agg, struct Unit *dft,
 
 /* -- Combat Attacks -- */
 void Compute_Combat_Phase( struct Combat_Phase *, struct Combat_Attack *,
-                           struct Damage, struct Unit *, u8, u8, u8);
+                           struct Combat_Damage, struct Unit *, u8, u8, u8);
 void Compute_Combat_Attack(struct Combat_Phase *, struct Combat_Attack *,
-                           struct Damage, struct Unit *, u8, u8);
+                           struct Combat_Damage, struct Unit *, u8, u8);
 
 int Combat_Attack_Total_Num(struct Combat_Phase *phases, int b, int num);
 int Combat_Phase_Attack_Num(struct Combat_Phase *phases, int brave_factor);
 
 /* -- Combat Forecast -- */
-struct Damage          Compute_Combat_Damage(  struct Unit *att, struct Unit *dfd);
+struct Combat_Damage          Compute_Combat_Damage(struct Unit *att, struct Unit *dfd,
+                                                    Computed_Stats cs_agg,
+                                                    Computed_Stats cs_dft);
 struct Combat_Flow     Compute_Combat_Flow(    struct Unit *agg, struct Unit *dft,
+                                               Computed_Stats cs_agg, Computed_Stats cs_dft,
                                                struct Point *_a, struct Point *_d);
-struct Combat_Rates    Compute_Combat_Rates(   struct Unit *att, struct Unit *dfd,
-                                               struct Point *_a, struct Point *_d);
+struct Combat_Rates    Compute_Combat_Rates(   Computed_Stats cs_agg, Computed_Stats cs_dft);
 struct Combat_Forecast Compute_Combat_Forecast(struct Unit *agg, struct Unit *dft,
                                                struct Point *ap, struct Point *dp);
 

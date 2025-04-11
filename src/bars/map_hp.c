@@ -1,6 +1,7 @@
 
 #include "bars/map_hp.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
 #include "palette.h"
 #include "macros.h"
 #include "utilities.h"
@@ -41,7 +42,7 @@ void MapHPBar_Update(struct MapHPBar *mbar, struct Camera *camera,
     /* -- Getting current HP -- */
     struct Unit *unit = IES_GET_COMPONENT(world, mbar->unit_ent, Unit);
     SDL_assert(unit != NULL);
-    int current_hp = unit->current_hp;
+    int current_hp = Unit_Current_HP(unit);
 
     /* -- Computing visibility -- */
     struct Unit_stats effective = Unit_effectiveStats(unit);

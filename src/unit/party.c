@@ -157,7 +157,6 @@ void Party_Names2Filenames(struct Party *party) {
 
 /* --- JSONIO --- */
 void _Party_Load(tnecs_entity *entities, struct Game *sota,
-                 struct dtab *weapons_dtab, struct dtab *items_dtab,
                  s8 *filenames, size_t load_num) {
     struct Unit temp_unit;
     for (size_t i = 0; i < load_num; i++) {
@@ -165,33 +164,31 @@ void _Party_Load(tnecs_entity *entities, struct Game *sota,
         temp_unit   = Unit_default;
         Unit_Init(&temp_unit);
         SDL_assert(temp_unit.jsonio_header.json_filename.data == NULL);
-        temp_unit.items_dtab    = items_dtab;
-        temp_unit.weapons_dtab  = weapons_dtab;
 
         /* Readjson */
         s8 filename = filenames[i];
         jsonio_readJSON(filename, &temp_unit);
-        temp_unit.army = ARMY_FRIENDLY;
-        SDL_assert(temp_unit.name.data != NULL);
-        SDL_assert(temp_unit.handedness > UNIT_HAND_NULL);
-        SDL_assert(temp_unit.handedness < UNIT_HAND_END);
-        SDL_assert(temp_unit.mvt_type > UNIT_MVT_START);
+        temp_unit.id.army = ARMY_FRIENDLY;
+        SDL_assert(global_unitNames[Unit_id(&temp_unit)].data != NULL);
+        SDL_assert(temp_unit.flags.handedness > UNIT_HAND_NULL);
+        SDL_assert(temp_unit.flags.handedness < UNIT_HAND_END);
+        SDL_assert(temp_unit.flags.mvt_type > UNIT_MVT_START);
 
-        SDL_assert(temp_unit._id > UNIT_ID_PC_START);
-        SDL_assert(temp_unit._id < UNIT_ID_PC_END);
+        SDL_assert(Unit_id(&temp_unit) > UNIT_ID_PC_START);
+        SDL_assert(Unit_id(&temp_unit) < UNIT_ID_PC_END);
 
         struct Point pos = {0, 0};
-        entities[temp_unit._id] = Game_Party_Entity_Create(sota, temp_unit._id, pos, &temp_unit);
+        entities[Unit_id(&temp_unit)] = Game_Party_Entity_Create(sota, Unit_id(&temp_unit), pos,
+                                                                 &temp_unit);
     }
 }
 
-void Party_Load(struct Party *party, struct Game *sota,
-                struct dtab  *wdtab, struct dtab *idtab) {
+void Party_Load(struct Party *party, struct Game *sota) {
     SDL_assert(party != NULL);
     s8 *filenames = party->json_filenames;
     SDL_assert(filenames != NULL);
     SDL_assert(DARR_NUM(filenames) > 0);
-    _Party_Load(party->entities, sota, wdtab, idtab, filenames, DARR_NUM(filenames));
+    _Party_Load(party->entities, sota, filenames, DARR_NUM(filenames));
 }
 
 void Party_readJSON(void *input, cJSON *jparty) {

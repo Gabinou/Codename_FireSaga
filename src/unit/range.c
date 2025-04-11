@@ -1,16 +1,18 @@
 
-#include "unit/range.h"
 #include "unit/unit.h"
-#include "unit/equipment.h"
+#include "unit/range.h"
+#include "unit/flags.h"
 #include "unit/loadout.h"
+#include "unit/equipment.h"
 #include "nmath.h"
 #include "enums.h"
 #include "macros.h"
 #include "position.h"
 #include "item.h"
 #include "weapon.h"
+#include "globals.h"
 
-b32 _Range_Archetype_Match(struct Weapon *wpn, i64 archetype) {
+b32 _Range_Archetype_Match(const struct Weapon *wpn, i64 archetype) {
     SDL_assert(wpn != NULL);
     if (archetype == ITEM_ARCHETYPE_NULL) {
         return (false);
@@ -28,36 +30,34 @@ b32 _Range_Archetype_Match(struct Weapon *wpn, i64 archetype) {
 }
 
 
-struct Range *Unit_Range_Id(struct Unit *unit, int id, i64 archetype) {
-    struct Range *range = &unit->computed_stats.range_equipment;
+void Unit_Range_Id(struct Unit *unit, int id, i64 archetype, struct Range *range) {
+    // struct Range *range = &unit->computed_stats.range_equipment;
     SDL_assert(range != NULL);
     *range = Range_default;
 
     if (id <= ITEM_NULL) {
         // SDL_Log("ITEM_NULL");
-        return (range);
+        return;
     }
 
     if (!Weapon_ID_isValid(id)) {
         // SDL_Log("!Weapon_ID_isValid");
-        return (range);
+        return;
     }
 
-    // Weapon_Load(unit->weapons_dtab, id);
-    struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, id);
+    SDL_assert(gl_weapons_dtab);
+    const struct Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
     SDL_assert(wpn != NULL);
 
     if (!_Range_Archetype_Match(wpn, archetype)) {
         // SDL_Log("!_Range_Archetype_Match");
-        return (range);
+        return;
     }
 
     Ranges_Combine(range, wpn->stats.range);
-
-    return (range);
 }
 
-struct Range *Unit_Range_Eq(struct Unit *unit, i32 eq, i64 archetype) {
+void Unit_Range_Eq(struct Unit *unit, i32 eq, i64 archetype, struct Range *range) {
     SDL_assert(unit != NULL);
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
@@ -72,20 +72,19 @@ struct Range *Unit_Range_Eq(struct Unit *unit, i32 eq, i64 archetype) {
 
     if (!Unit_canEquip_AnyHand(unit, can_equip)) {
         // SDL_Log("!Unit_canEquip_AnyHand");
-        struct Range *range = &unit->computed_stats.range_equipment;
+        // struct Range *range = &unit->computed_stats.range_equipment;
         SDL_assert(range != NULL);
         *range = Range_default;
-        return (range);
+        return;
     }
-
-    return (Unit_Range_Id(unit, Unit_Id_Equipment(unit, eq), archetype));
+    Unit_Range_Id(unit, Unit_Id_Equipment(unit, eq), archetype, range);
 }
 
 /* Combines range of all weapons in equipment assuming NO LOADOUT */
 // - Combined range may no reflect actual loadout range
 //      - Ex: will combine range of two two-hand only weapons
-struct Range *Unit_Range_Equipment(Unit *unit, i64 archetype) {
-    struct Range *range = &unit->computed_stats.range_equipment;
+void Unit_Range_Equipment(Unit *unit, i64 archetype, struct Range *range) {
+    // struct Range *range = &unit->computed_stats.range_equipment;
     *range              = Range_default;
 
     for (int eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
@@ -112,27 +111,27 @@ struct Range *Unit_Range_Equipment(Unit *unit, i64 archetype) {
         }
 
         /* Combine ranges */
-        Weapon_Load(unit->weapons_dtab, id);
-        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, id);
+        Weapon_Load(gl_weapons_dtab, id);
+        const struct Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
         SDL_assert(wpn != NULL);
 
         if (!_Range_Archetype_Match(wpn, archetype)) {
             // SDL_Log("!!_Range_Archetype_Match");
-            return (range);
+            return;
         }
 
         Ranges_Combine(range, wpn->stats.range);
     }
-    return (range);
+    return;
 }
 
 // Combine ranges of items in current loadout
 // Item was previously equipped, no need to check if CAN equip
-struct Range *Unit_Range_Equipped(Unit *unit, i64 archetype) {
-    struct Range *range = &unit->computed_stats.range_loadout;
+void Unit_Range_Equipped(Unit *unit, i64 archetype, struct Range *range) {
+    // struct Range *range = &unit->computed_stats.range_loadout;
     *range = Range_default;
 
-    for (int hand = UNIT_HAND_LEFT; hand <= unit->arms_num; hand++) {
+    for (int hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         int id = Unit_Id_Equipped(unit, hand);
 
         /* Skip if no item */
@@ -142,8 +141,9 @@ struct Range *Unit_Range_Equipped(Unit *unit, i64 archetype) {
         }
 
         /* Combine ranges */
-        Weapon_Load(unit->weapons_dtab, id);
-        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, id);
+        SDL_assert(gl_weapons_dtab);
+        Weapon_Load(gl_weapons_dtab, id);
+        const struct Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
         SDL_assert(wpn != NULL);
 
         if (!_Range_Archetype_Match(wpn, archetype)) {
@@ -153,17 +153,17 @@ struct Range *Unit_Range_Equipped(Unit *unit, i64 archetype) {
 
         Ranges_Combine(range, wpn->stats.range);
     }
-    return (range);
 }
 
 b32 Unit_inRange_Loadout(struct Unit        *agg,
                          struct Position    *agg_pos,
                          struct Position    *dft_pos,
                          i64 archetype) {
-    struct Range *range = Unit_Range_Equipped(agg, archetype);
+    struct Range range = Range_default;
+    Unit_Range_Equipped(agg, archetype, &range);
     int distance    =  abs(agg_pos->tilemap_pos.x - dft_pos->tilemap_pos.x);
     distance        += abs(agg_pos->tilemap_pos.y - dft_pos->tilemap_pos.y);
-    return ((distance >= range->min) && (distance <= range->max));
+    return ((distance >= range.min) && (distance <= range.max));
 }
 
 b32 Range_Valid(struct Range range) {
@@ -214,40 +214,66 @@ struct Range _Ranges_Combine(struct Range r1, struct Range r2) {
 
 /* --- Rangemap --- */
 int Unit_Rangemap_Get(struct Unit *unit) {
-    int rangemap = unit->user_rangemap > RANGEMAP_NULL ? unit->user_rangemap : unit->rangemap;
+    if (unit == NULL)
+        return (0);
+    i32 user_rangemap = Unit_User_Rangemap(unit);
+    i32 rangemap = Unit_Rangemap(unit);
+    int out = user_rangemap > RANGEMAP_NULL ? user_rangemap : rangemap;
     return (rangemap);
+}
+int  Unit_Rangemap(Unit *unit) {
+    if (unit == NULL)
+        return (0);
+    return (unit->render.rangemap);
+}
+int  Unit_User_Rangemap(Unit *unit) {
+    if (unit == NULL)
+        return (0);
+    return (unit->render.user_rangemap);
+}
+void Unit_Rangemap_set(Unit *unit, int rangemap) {
+    if (unit == NULL)
+        return;
+    unit->render.rangemap = rangemap;
+}
+void Unit_User_Rangemap_set(Unit *unit, int rangemap) {
+    if (unit == NULL)
+        return;
+    unit->render.user_rangemap = rangemap;
 }
 
 void Unit_RangeMap_Act_Toggle(struct Unit *unit) {
-    SDL_assert((unit->rangemap > RANGEMAP_NULL) && (unit->rangemap < RANGEMAP_NUM));
+    SDL_assert((unit->render.rangemap > RANGEMAP_NULL) && (unit->render.rangemap < RANGEMAP_NUM));
 
     /* Set user_rangemap to default */
-    if (unit->user_rangemap == RANGEMAP_NULL)
-        unit->user_rangemap = unit->rangemap;
+    if (Unit_User_Rangemap(unit) == RANGEMAP_NULL)
+        Unit_User_Rangemap_set(unit, Unit_Rangemap(unit));
 
     /* Toggle only if hasStaff or canAttack with equipment*/
     b32 toggle = false;
-    toggle |= Unit_canAttack_Eq(unit) && (unit->user_rangemap == RANGEMAP_HEALMAP);
-    toggle |= Unit_canStaff_Eq(unit)  && (unit->user_rangemap == RANGEMAP_ATTACKMAP);
+    toggle |= Unit_canAttack_Eq(unit) && (Unit_User_Rangemap(unit) == RANGEMAP_HEALMAP);
+    toggle |= Unit_canStaff_Eq(unit)  && (Unit_User_Rangemap(unit) == RANGEMAP_ATTACKMAP);
 
     /* user_rangemap not set previously, reverse rangemap */
     // RANGEMAP_NUM - RANGEMAP_ATTACKMAP == RANGEMAP_HEALMAP and vice versa!
     //      3       -         2          ==        1
     //      3       -         1          ==        2
     if (toggle)
-        unit->user_rangemap = RANGEMAP_NUM - unit->user_rangemap;
+        Unit_User_Rangemap_set(unit, RANGEMAP_NUM - Unit_User_Rangemap(unit));
 
 }
 
 void Unit_Rangemap_default(struct Unit *unit) {
-    int rangemap = unit->user_rangemap > RANGEMAP_NULL ? unit->user_rangemap : unit->rangemap;
     // Compute default rangemap priority
 
     /* Sota default for class (healer staff) */
-    if ((unit->class == UNIT_CLASS_PRIEST) || (unit->class == UNIT_CLASS_BISHOP) ||
-        (unit->class == UNIT_CLASS_CLERIC) || (unit->class == UNIT_CLASS_ORACLE)) {
-        unit->rangemap = RANGEMAP_HEALMAP;
+    i32 class = Unit_Class(unit);
+    if ((class == UNIT_CLASS_PRIEST) ||
+        (class == UNIT_CLASS_BISHOP) ||
+        (class == UNIT_CLASS_CLERIC) ||
+        (class == UNIT_CLASS_ORACLE)) {
+        Unit_Rangemap_set(unit, RANGEMAP_HEALMAP);
     } else {
-        unit->rangemap = RANGEMAP_ATTACKMAP;
+        Unit_Rangemap_set(unit, RANGEMAP_ATTACKMAP);
     }
 }

@@ -11,8 +11,9 @@
 #include "palette.h"
 #include "platform.h"
 #include "unit/party.h"
-#include "unit/equipment.h"
+#include "unit/flags.h"
 #include "unit/mount.h"
+#include "unit/equipment.h"
 #include "names.h"
 #include "macros.h"
 #include "stb_sprintf.h"
@@ -359,9 +360,9 @@ static void _DeploymentMenu_Draw_Names(DeploymentMenu *dm, SDL_Renderer *rendere
         struct Unit *unit = IES_GET_COMPONENT(dm->world, ent, Unit);
         SDL_assert(unit != NULL);
         _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
-        SDL_assert(unit->_id > UNIT_ID_PC_START);
-        SDL_assert(unit->_id < UNIT_ID_END);
-        u64 order = *(u64 *)DTAB_GET(global_unitOrders, unit->_id);
+        SDL_assert(Unit_id(unit) > UNIT_ID_PC_START);
+        SDL_assert(Unit_id(unit) < UNIT_ID_END);
+        u64 order = *(u64 *)DTAB_GET(global_unitOrders, Unit_id(unit));
         s8 idname = global_unitNames[order];
 
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, idname.data,
@@ -395,7 +396,7 @@ static void _DeploymentMenu_Draw_Stats_P1(DeploymentMenu *dm, SDL_Renderer *rend
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
         memset(array, 0, 8);
-        stbsp_snprintf(array, 4, "%02d\0\0\0\0", unit->current_stats.hp);
+        stbsp_snprintf(array, 4, "%02d\0\0\0\0", unit->stats.current.hp);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
         /* - Move - */
@@ -403,14 +404,14 @@ static void _DeploymentMenu_Draw_Stats_P1(DeploymentMenu *dm, SDL_Renderer *rend
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
         memset(array, 0, 8);
-        stbsp_snprintf(array, 3, "%01d\0\0\0\0", unit->current_stats.move);
+        stbsp_snprintf(array, 3, "%01d\0\0\0\0", unit->stats.current.move);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
         /* - Lvl - */
         x = DM_LVL_X, y = DM_LVL_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
-        i16 lvl = Unit_getLvl(unit);
+        i16 lvl = Unit_Level(unit);
         memset(array, 0, 8);
         stbsp_snprintf(array, 4, "%02d\0\0\0\0", lvl);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
@@ -420,14 +421,14 @@ static void _DeploymentMenu_Draw_Stats_P1(DeploymentMenu *dm, SDL_Renderer *rend
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
         memset(array, 0, 8);
-        stbsp_snprintf(array, 4, "%02d\0\0\0\0", (unit->exp % SOTA_EXP_PER_LEVEL));
+        stbsp_snprintf(array, 4, "%02d\0\0\0\0", Unit_Experience(unit));
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
         /* - Class - */
         x = DM_CLASS_X, y = DM_CLASS_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
-        s8 class = classNames[unit->class];
+        s8 class = classNames[Unit_Class(unit)];
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, class.data,
                                  class.num, x, y);
     }
@@ -462,7 +463,7 @@ static void _DeploymentMenu_Draw_Stats_P2(DeploymentMenu *dm, SDL_Renderer *rend
         y = DM_STR_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
-        stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->current_stats.str);
+        stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->stats.current.str);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
         /* MAG */
@@ -470,7 +471,7 @@ static void _DeploymentMenu_Draw_Stats_P2(DeploymentMenu *dm, SDL_Renderer *rend
         y = DM_MAG_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
-        stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->current_stats.mag);
+        stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->stats.current.mag);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
         /* DEX */
@@ -478,7 +479,7 @@ static void _DeploymentMenu_Draw_Stats_P2(DeploymentMenu *dm, SDL_Renderer *rend
         y = DM_DEX_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
-        stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->current_stats.dex);
+        stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->stats.current.dex);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
         /* AGI */
@@ -486,7 +487,7 @@ static void _DeploymentMenu_Draw_Stats_P2(DeploymentMenu *dm, SDL_Renderer *rend
         y = DM_AGI_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
-        stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->current_stats.agi);
+        stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->stats.current.agi);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
         /* CON */
@@ -494,7 +495,7 @@ static void _DeploymentMenu_Draw_Stats_P2(DeploymentMenu *dm, SDL_Renderer *rend
         y = DM_CON_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
-        stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->current_stats.con);
+        stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->stats.current.con);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
     }
     _DeploymentMenu_Swap(dm, renderer, dm->white, dm->black);
@@ -523,7 +524,7 @@ static void _DeploymentMenu_Draw_Stats_P3(DeploymentMenu *dm, SDL_Renderer *rend
         y = DM_DEF_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
-        stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->current_stats.def);
+        stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->stats.current.def);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
         /* RES */
@@ -531,7 +532,7 @@ static void _DeploymentMenu_Draw_Stats_P3(DeploymentMenu *dm, SDL_Renderer *rend
         y = DM_RES_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
-        stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->current_stats.res);
+        stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->stats.current.res);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
         /* FTH */
@@ -539,7 +540,7 @@ static void _DeploymentMenu_Draw_Stats_P3(DeploymentMenu *dm, SDL_Renderer *rend
         y = DM_FTH_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
-        stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->current_stats.fth);
+        stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->stats.current.fth);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
         /* LUCK */
@@ -547,7 +548,7 @@ static void _DeploymentMenu_Draw_Stats_P3(DeploymentMenu *dm, SDL_Renderer *rend
         y = DM_LUCK_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
-        stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->current_stats.luck);
+        stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->stats.current.luck);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
 
         /* PROF */
@@ -555,7 +556,7 @@ static void _DeploymentMenu_Draw_Stats_P3(DeploymentMenu *dm, SDL_Renderer *rend
         y = DM_PROF_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
-        stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->current_stats.prof);
+        stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->stats.current.prof);
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 2, x, y);
     }
     _DeploymentMenu_Swap(dm, renderer, dm->white, dm->black);
@@ -596,8 +597,8 @@ static void _DeploymentMenu_Draw_Stats_P4(DeploymentMenu *dm, SDL_Renderer *rend
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
         SDL_assert(unit != NULL);
-        SDL_assert(unit->regrets < REGRET_MAX);
-        stbsp_snprintf(array, 4, "%d\0\0\0\0", unit->regrets);
+        SDL_assert(Unit_Current_Regrets(unit) < REGRET_MAX);
+        stbsp_snprintf(array, 4, "%d\0\0\0\0", Unit_Current_Regrets(unit));
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 3, x, y);
     }
     _DeploymentMenu_Swap(dm, renderer, dm->white, dm->black);
@@ -640,33 +641,33 @@ static void _DeploymentMenu_Draw_Mount(DeploymentMenu *dm, SDL_Renderer *rendere
         SDL_assert(unit != NULL);
         _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
 
-        /* - Get mount type - */
-        if (unit->mount == NULL)
-            continue;
-        i8 mount_type = unit->mount->type;
+        /* - TODO: Get mount type - */
+        // if (unit->mount.ptr == NULL)
+        // continue;
+        // i8 mount_type = unit->mount.ptr->type;
 
-        switch (mount_type) {
-            case MOUNT_TYPE_HORSE:
-            case MOUNT_TYPE_SALAMANDER:
-                mount_offset_x = 6;
-                mount_offset_y = 2;
-                break;
-            case MOUNT_TYPE_PEGASUS:
-            case MOUNT_TYPE_EAGLE:
-                mount_offset_x =  0;
-                mount_offset_y = -4;
-                break;
-        }
+        // switch (mount_type) {
+        //     case MOUNT_TYPE_HORSE:
+        //     case MOUNT_TYPE_SALAMANDER:
+        //         mount_offset_x = 6;
+        //         mount_offset_y = 2;
+        //         break;
+        //     case MOUNT_TYPE_PEGASUS:
+        //     case MOUNT_TYPE_EAGLE:
+        //         mount_offset_x =  0;
+        //         mount_offset_y = -4;
+        //         break;
+        // }
 
-        srcrect.w = SM_MOUNTS_TILESIZE;
-        srcrect.h = SM_MOUNTS_TILESIZE;
-        srcrect.x = mount_type % SOTA_COL_LEN * srcrect.w;
-        srcrect.y = mount_type / SOTA_COL_LEN * srcrect.h;
-        dstrect.w = srcrect.w;
-        dstrect.h = srcrect.h;
-        dstrect.x = (x + mount_offset_x);
-        dstrect.y = (y + mount_offset_y);
-        SDL_RenderCopy(renderer, dm->texture_mount, &srcrect, &dstrect);
+        // srcrect.w = SM_MOUNTS_TILESIZE;
+        // srcrect.h = SM_MOUNTS_TILESIZE;
+        // srcrect.x = mount_type % SOTA_COL_LEN * srcrect.w;
+        // srcrect.y = mount_type / SOTA_COL_LEN * srcrect.h;
+        // dstrect.w = srcrect.w;
+        // dstrect.h = srcrect.h;
+        // dstrect.x = (x + mount_offset_x);
+        // dstrect.y = (y + mount_offset_y);
+        // SDL_RenderCopy(renderer, dm->texture_mount, &srcrect, &dstrect);
     }
     _DeploymentMenu_Swap(dm, renderer, dm->white, dm->black);
 }

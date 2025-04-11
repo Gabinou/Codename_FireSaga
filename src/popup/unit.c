@@ -4,12 +4,15 @@
 #include "weapon.h"
 #include "utilities.h"
 #include "nmath.h"
+#include "globals.h"
 #include "filesystem.h"
 #include "macros.h"
+#include "names.h"
 #include "pixelfonts.h"
 #include "popup/popup.h"
 #include "bars/stat.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
 #include "unit/equipment.h"
 #include "stb_sprintf.h"
 
@@ -74,7 +77,7 @@ void _PopUp_Unit_Set(struct PopUp_Unit *pu, struct Unit *unit) {
     SDL_assert(pu != NULL);
     pu->unit   = unit;
     pu->update = true;
-    SDL_assert(pu->unit->name.data != NULL);
+    SDL_assert(global_unitNames[Unit_id(pu->unit)].data != NULL);
 }
 
 /* --- Positioning --- */
@@ -197,8 +200,9 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     i16 menu_h = (n9patch->size_pixels.y + PU_HEADER_Y);
     SDL_assert(menu_w > 0);
     SDL_assert(menu_h > 0);
-    struct Computed_Stats comp_s    = Unit_computedStats(pu->unit, pu->distance);
-    struct Unit_stats eff_s         = Unit_effectiveStats(pu->unit);
+
+    struct Unit_stats eff_s = Unit_effectiveStats(pu->unit);
+    struct Computed_Stats comp_s    = Unit_computedStats(pu->unit, pu->distance, eff_s);
     /* -- Create render target texture -- */
     if (pu->texture == NULL) {
         pu->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
@@ -241,7 +245,7 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     }
     /* -- NAME -- */
     struct Point pos;
-    s8 name = pu->unit->name;
+    const s8 name = global_unitNames[Unit_id(pu->unit)];
     SDL_assert(name.data != NULL);
     pos = PopUp_Unit_Center_Name(pu, n9patch, name.data, name.num);
     PixelFont_Write(pu->pixelnours_big, renderer, name.data, name.num, pos.x, pos.y);
@@ -287,8 +291,8 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
 
         Inventory_item *item = Unit_Item_Equipped(pu->unit, stronghand);
         if (Unit_isEquipped(pu->unit, stronghand) && (item->id > ITEM_NULL)) {
-            Weapon_Load(pu->unit->weapons_dtab, item->id);
-            struct Weapon *weapon = DTAB_GET(pu->unit->weapons_dtab, item->id);
+            Weapon_Load(gl_weapons_dtab, item->id);
+            struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, item->id);
             SDL_assert(weapon != NULL);
             u16 type_ind = Weapon_TypeExp(weapon);
             srcrect.x = (type_ind % PU_WPN_ICON_ROWLEN) * PU_WPN_ICON_H;
@@ -303,8 +307,8 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
         dstrect.x = PU_ICONR_X + 1;
         item = Unit_Item_Equipped(pu->unit, weakhand);
         if (Unit_isEquipped(pu->unit, weakhand) && (item->id > ITEM_NULL)) {
-            Weapon_Load(pu->unit->weapons_dtab, item->id);
-            struct Weapon *weapon = DTAB_GET(pu->unit->weapons_dtab, item->id);
+            Weapon_Load(gl_weapons_dtab, item->id);
+            struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, item->id);
             SDL_assert(weapon != NULL);
             u16 type_ind = Weapon_TypeExp(weapon);
             srcrect.x = (type_ind % PU_WPN_ICON_ROWLEN) * PU_WPN_ICON_H;
@@ -320,7 +324,7 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
         //             pu_SIMPLE_ICON_OFFSET_X) / 2;
         // item = pu->unit->equipment[UNIT_weakhand];
         // SDL_assert(item->id > ITEM_NULL);
-        // struct Weapon *weapon = DTAB_GET(pu->unit->weapons_dtab, item->id);
+        // struct Weapon *weapon = DTAB_GET(pu->unit->gl_weapons_dtab, item->id);
         // u16 type = weapon->item->type;
         // // TODO: weapon with multiple types
         // SDL_assert(weapon->item->type > 0);
@@ -333,20 +337,21 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
 
     /* -- EXP/Level -- */
     PixelFont_Write(pu->pixelnours, renderer, "EXP", 3, PU_EXP_X, PU_EXP_Y);
-    stbsp_sprintf(numbuff, "%02d\0\0\0\0", (pu->unit->exp % SOTA_100PERCENT));
+    stbsp_sprintf(numbuff, "%02d\0\0\0\0", Unit_Experience(pu->unit));
     PixelFont_Write(pu->pixelnours, renderer, numbuff, strlen(numbuff), PU_EXP_STAT_X, PU_EXP_STAT_Y);
     PixelFont_Write(pu->pixelnours, renderer, "Lv", 2, PU_LV_X, PU_LV_Y);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", (pu->unit->exp / SOTA_100PERCENT));
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", Unit_Level(pu->unit));
     PixelFont_Write(pu->pixelnours, renderer, numbuff, strlen(numbuff), PU_LV_STAT_X, PU_LV_STAT_Y);
     /* -- HP -- */
     PixelFont_Write(pu->pixelnours, renderer, "HP", 2,
                     PU_HP_X, PU_HP_Y);
-    stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", pu->unit->current_hp, eff_s.hp);
+    i32 current_hp = Unit_Current_HP(pu->unit);
+    stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", current_hp, eff_s.hp);
     PixelFont_Write(pu->pixelnours, renderer, numbuff, strlen(numbuff), PU_HP_STAT_X, PU_HP_STAT_Y);
     struct SimpleBar hp_bar = SimpleBar_default;
     hp_bar.scale.x = 1, hp_bar.scale.y = 1;
     StatBar_Colors_NES(&hp_bar, 14, 15, 52, 54);
-    StatBar_Init(&hp_bar, pu->unit->current_hp, eff_s.hp, PU_HPBAR_X, PU_HPBAR_Y);
+    StatBar_Init(&hp_bar, current_hp, eff_s.hp, PU_HPBAR_X, PU_HPBAR_Y);
     hp_bar.len = PU_HPBAR_LEN;
     hp_bar.height = 2;
     SimpleBar_Draw(&hp_bar, renderer);
@@ -354,18 +359,18 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     SDL_assert(pu->pixelnours != NULL);
     SDL_assert(pu->pixelnours_big != NULL);
     PixelFont_Write(pu->pixelnours, renderer, "ATK", 3, PU_ATK_X, PU_ATK_Y);
-    if (comp_s.attack[DMG_TYPE_TRUE] > 0) {
-        stbsp_sprintf(numbuff, "%02d/%02d/%01d\0\0\0\0", comp_s.attack[DMG_TYPE_PHYSICAL],
-                      comp_s.attack[DMG_TYPE_MAGICAL], comp_s.attack[DMG_TYPE_TRUE]);
+    if (comp_s.attack.True > 0) {
+        stbsp_sprintf(numbuff, "%02d/%02d/%01d\0\0\0\0", comp_s.attack.physical,
+                      comp_s.attack.magical, comp_s.attack.True);
         PixelFont_Write(pu->pixelnours, renderer, numbuff, 7, PU_ATK_X_STAT1, PU_ATK_Y_STAT1);
     } else {
-        stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", comp_s.attack[DMG_TYPE_PHYSICAL],
-                      comp_s.attack[DMG_TYPE_MAGICAL], comp_s.attack[DMG_TYPE_TRUE]);
+        stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", comp_s.attack.physical,
+                      comp_s.attack.magical, comp_s.attack.True);
         PixelFont_Write(pu->pixelnours, renderer, numbuff, 5, PU_ATK_X_STAT1, PU_ATK_Y_STAT1);
     }
     PixelFont_Write(pu->pixelnours, renderer, "DEF", 3, PU_PROT_X, PU_PROT_Y);
-    stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", comp_s.protection[DMG_TYPE_PHYSICAL],
-                  comp_s.protection[DMG_TYPE_MAGICAL]);
+    stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", comp_s.protection.physical,
+                  comp_s.protection.magical);
     PixelFont_Write(pu->pixelnours, renderer, numbuff, 5, PU_PROT_X_STAT1, PU_PROT_Y_STAT1);
     PixelFont_Write(pu->pixelnours, renderer, "HIT", 3, PU_HIT_X, PU_HIT_Y);
     stbsp_sprintf(numbuff, "%03d/%02d\0\0\0\0", comp_s.hit, comp_s.dodge);

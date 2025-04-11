@@ -6,6 +6,7 @@
 #include "utilities.h"
 #include "jsonio.h"
 #include "macros.h"
+#include "globals.h"
 
 const struct Convoy Convoy_default = {
     .jsonio_header.json_element    = JSON_CONVOY,
@@ -81,10 +82,10 @@ u16 Convoy_Id2TypeExp(struct Convoy *in_convoy, i16 i) {
 void Convoy_Swap(struct Convoy *in_convoy, i16 i1, i16 i2) {
     SDL_assert(i1 < in_convoy->size);
     SDL_assert(i2 < in_convoy->size);
-    u16 typecode1 = ((struct Weapon *)DTAB_GET(in_convoy->weapons_dtab,
-                                               in_convoy->items[i1].id))->item->type;
-    u16 typecode2 = ((struct Weapon *)DTAB_GET(in_convoy->weapons_dtab,
-                                               in_convoy->items[i2].id))->item->type;
+    u16 typecode1 = ((struct Weapon *)DTAB_GET_CONST(gl_weapons_dtab,
+                                                     in_convoy->items[i1].id))->item->type;
+    u16 typecode2 = ((struct Weapon *)DTAB_GET_CONST(gl_weapons_dtab,
+                                                     in_convoy->items[i2].id))->item->type;
     SDL_assert(typecode1 & typecode2); /* can weapons be swapped? */
     struct Inventory_item buffer = in_convoy->items[i1];
     in_convoy->items[i1] = in_convoy->items[i2];
@@ -103,10 +104,10 @@ void Convoy_Deposit_byIndex(struct Convoy *in_convoy, struct Inventory_item in_i
 void Convoy_Deposit_byType(struct Convoy *in_convoy, struct Inventory_item in_item,
                            i16 type_exp) {
     // SDL_Log("Depositing: %ld", in_item.id);
-    SDL_assert(in_convoy->weapons_dtab != NULL);
-    Weapon_Load(in_convoy->weapons_dtab, in_item.id);
-    u16 typecode = ((struct Weapon *)DTAB_GET(in_convoy->weapons_dtab,
-                                              in_item.id))->item->type;
+    SDL_assert(gl_weapons_dtab != NULL);
+    Weapon_Load(gl_weapons_dtab, in_item.id);
+    u16 typecode = ((struct Weapon *)DTAB_GET_CONST(gl_weapons_dtab,
+                                                    in_item.id))->item->type;
     SDL_assert(flagsum_isIn((1UL << (type_exp - 1)), typecode));
     int32_t max = in_convoy->cumnum[type_exp];
     Convoy_Shift_Plus(in_convoy, max, type_exp);
@@ -120,7 +121,7 @@ void Convoy_Sort(struct Convoy *in_convoy, i16 stattype) {
     u8 sort_arr[SOTA_CONVOY_SIZE_MAX];
     for (i16 i = 0; i < in_convoy->items_num; i++) {
         struct Inventory_item item = in_convoy->items[i];
-        struct Weapon *weapon = ((struct Weapon *)DTAB_GET(in_convoy->weapons_dtab, item.id));
+        struct Weapon *weapon = ((struct Weapon *)DTAB_GET_CONST(gl_weapons_dtab, item.id));
         sort_arr[i] = Weapon_Stat(weapon, stattype);
     }
     for (i16 i = ITEM_TYPE_EXP_NULL + 1; i < ITEM_TYPE_NUM; i++)
@@ -168,7 +169,7 @@ void Convoy_AllStats_Print(struct Convoy *in_convoy, i16 type_exp) {
     }
     for (i16 i = start; i < end; i++) {
         struct Inventory_item item = in_convoy->items[i];
-        struct Weapon *weapon = ((struct Weapon *)DTAB_GET(in_convoy->weapons_dtab, item.id));
+        struct Weapon *weapon = ((struct Weapon *)DTAB_GET_CONST(gl_weapons_dtab, item.id));
         char *wpn_stats_string = Utilities_Print_wpnStats(weapon->stats);
         char *item_stats_string = Utilities_Print_itemStats(weapon->item->stats);
         SDL_Log("%-20s \t %s %s", weapon->item->name, item_stats_string, wpn_stats_string);
@@ -184,7 +185,7 @@ void Convoy_Stats_Print(struct Convoy *in_convoy, i16 type_exp, i16 stattype) {
     u8 end = in_convoy->cumnum[type_exp];
     for (i16 i = start; i < end; i++) {
         struct Inventory_item item = in_convoy->items[i];
-        struct Weapon *weapon = ((struct Weapon *)DTAB_GET(in_convoy->weapons_dtab, item.id));
+        struct Weapon *weapon = ((struct Weapon *)DTAB_GET_CONST(gl_weapons_dtab, item.id));
         SDL_Log("%-20s %d ", weapon->item->name, Weapon_Stat(weapon, stattype));
     }
 }

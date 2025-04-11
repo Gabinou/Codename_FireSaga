@@ -4,7 +4,9 @@
 #include "menu/deployment.h"
 #include "unit/unit.h"
 #include "unit/mount.h"
+#include "unit/flags.h"
 #include "log.h"
+#include "globals.h"
 #include "RNG.h"
 #include "macros.h"
 
@@ -16,8 +18,6 @@ struct Mount mount1;
 struct Mount mount2;
 struct Mount mount3;
 struct Mount mount4;
-struct dtab *weapons_dtab;
-struct dtab *items_dtab;
 struct Party party;
 
 void test_menu_deployment_party(struct DeploymentMenu *dm) {
@@ -32,7 +32,7 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
     DARR_PUT(party.json_ids, UNIT_ID_ERWIN);
 
     Party_Ids2Filenames(&party);
-    Party_Load(&party, sota, weapons_dtab, items_dtab);
+    Party_Load(&party, sota);
 
     SDL_assert(sota->party.entities[UNIT_ID_SILOU] > TNECS_NULL);
     SDL_assert(sota->party.entities[UNIT_ID_ERWIN] > TNECS_NULL);
@@ -52,14 +52,15 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
     mount2 = Mount_default_pegasus;
     mount3 = Mount_default_salamander;
     mount4 = Mount_default_eagle;
-    silou->mount = &mount1;
-    erwin->mount = &mount4;
-    kiara->mount = &mount2;
-    rayan->mount = &mount3;
-    SDL_assert(silou->regrets == 0);
-    SDL_assert(erwin->regrets == 0);
-    SDL_assert(kiara->regrets == 0);
-    SDL_assert(rayan->regrets == 0);
+    // TODO: use ids for mounts
+    // silou->mount.ptr = &mount1;
+    // erwin->mount.ptr = &mount4;
+    // kiara->mount.ptr = &mount2;
+    // rayan->mount.ptr = &mount3;
+    SDL_assert(Unit_Current_Regrets(silou) == 0);
+    SDL_assert(Unit_Current_Regrets(erwin) == 0);
+    SDL_assert(Unit_Current_Regrets(kiara) == 0);
+    SDL_assert(Unit_Current_Regrets(rayan) == 0);
 
     DeploymentMenu_Party_Set(dm, &party);
     SDL_assert(dm->_party_size > 0);
@@ -85,7 +86,7 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
     DARR_PUT(party.json_ids, UNIT_ID_TEHARON);
 
     Party_Ids2Filenames(&party);
-    Party_Load(&party, sota, weapons_dtab, items_dtab);
+    Party_Load(&party, sota);
     Unit *silou = IES_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SILOU], Unit);
     Unit *erwin = IES_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_ERWIN], Unit);
     Unit *kiara = IES_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_KIARA], Unit);
@@ -99,10 +100,11 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
     mount2 = Mount_default_pegasus;
     mount3 = Mount_default_salamander;
     mount4 = Mount_default_eagle;
-    silou->mount = &mount1;
-    erwin->mount = &mount4;
-    kiara->mount = &mount2;
-    rayan->mount = &mount3;
+    // TODO: use ids for mounts
+    // silou->mount.ptr = &mount1;
+    // erwin->mount.ptr = &mount4;
+    // kiara->mount.ptr = &mount2;
+    // rayan->mount.ptr = &mount3;
 
     DeploymentMenu_Party_Set(dm, &party);
     SDL_assert(dm->_party_size > 0);
@@ -133,8 +135,8 @@ void test_menu_deployment() {
     sota->map = Map_New(new_map);
 
     party = Party_default;
-    weapons_dtab                    = DTAB_INIT(weapons_dtab,   struct Weapon);
-    items_dtab                      = DTAB_INIT(items_dtab,     struct Item);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab,   struct Weapon);
+    gl_items_dtab   = DTAB_INIT(gl_items_dtab,     struct Item);
     Party_Init(&party);
 
     /* -- Create n9patch -- */
@@ -319,8 +321,8 @@ void test_menu_deployment() {
     Game_Party_Free(sota);
     Party_Reset(&party);
     Party_Free(&party);
-    Game_Weapons_Free(&weapons_dtab);
-    Game_Items_Free(&items_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
+    Game_Items_Free(&gl_items_dtab);
     DeploymentMenu_Free(dm);
     SDL_FreeSurface(surface);
 

@@ -39,7 +39,8 @@ const canEquip canEquip_default = {
     /* 4. Of any archetype */
 };
 
-const struct Damage Damage_default = {0};
+const Combat_Damage Combat_Damage_default = {0};
+const Damage_Raw Damage_Raw_default = {0};
 
 const struct HP HP_default = {0};
 
@@ -148,11 +149,11 @@ const struct Mouse Mouse_default = {
 const struct Cursor Cursor_default = {DEFAULT_CURSOR_FRAMES, DEFAULT_CURSOR_SPEED};
 
 void Computed_Stats_Print(struct Computed_Stats *stats) {
-    SDL_Log("atk_P:   %3d\n", stats->attack[DAMAGE_TYPE_PHYSICAL]);
-    SDL_Log("atk_M:   %3d\n", stats->attack[DAMAGE_TYPE_MAGICAL]);
-    SDL_Log("atk_T:   %3d\n", stats->attack[DAMAGE_TYPE_TRUE]);
-    SDL_Log("prot_P:  %3d\n", stats->protection[DAMAGE_TYPE_PHYSICAL]);
-    SDL_Log("prot_M:  %3d\n", stats->protection[DAMAGE_TYPE_MAGICAL]);
+    SDL_Log("atk_P:   %3d\n", stats->attack.physical);
+    SDL_Log("atk_M:   %3d\n", stats->attack.magical);
+    SDL_Log("atk_T:   %3d\n", stats->attack.True);
+    SDL_Log("prot_P:  %3d\n", stats->protection.physical);
+    SDL_Log("prot_M:  %3d\n", stats->protection.magical);
     SDL_Log("hit:     %3d\n", stats->hit);
     SDL_Log("dodge:   %3d\n", stats->dodge);
     SDL_Log("crit:    %3d\n", stats->crit);
@@ -167,16 +168,16 @@ void Computed_Stats_Print(struct Computed_Stats *stats) {
 }
 
 void Computed_Stats_Compare(struct Computed_Stats *stats1, struct Computed_Stats *stats2) {
-    SDL_Log("atk_P:   %3d, %3d\n", stats1->attack[DAMAGE_TYPE_PHYSICAL],
-            stats2->attack[DAMAGE_TYPE_PHYSICAL]);
-    SDL_Log("atk_M:   %3d, %3d\n", stats1->attack[DAMAGE_TYPE_MAGICAL],
-            stats2->attack[DAMAGE_TYPE_MAGICAL]);
-    SDL_Log("atk_T:   %3d, %3d\n", stats1->attack[DAMAGE_TYPE_TRUE],
-            stats2->attack[DAMAGE_TYPE_TRUE]);
-    SDL_Log("prot_P:  %3d, %3d\n", stats1->protection[DAMAGE_TYPE_PHYSICAL],
-            stats2->protection[DAMAGE_TYPE_PHYSICAL]);
-    SDL_Log("prot_M:  %3d, %3d\n", stats1->protection[DAMAGE_TYPE_MAGICAL],
-            stats2->protection[DAMAGE_TYPE_MAGICAL]);
+    SDL_Log("atk_P:   %3d, %3d\n", stats1->attack.physical,
+            stats2->attack.physical);
+    SDL_Log("atk_M:   %3d, %3d\n", stats1->attack.magical,
+            stats2->attack.magical);
+    SDL_Log("atk_T:   %3d, %3d\n", stats1->attack.True,
+            stats2->attack.True);
+    SDL_Log("prot_P:  %3d, %3d\n", stats1->protection.physical,
+            stats2->protection.physical);
+    SDL_Log("prot_M:  %3d, %3d\n", stats1->protection.magical,
+            stats2->protection.magical);
     SDL_Log("hit:     %3d, %3d\n", stats1->hit, stats2->hit);
     SDL_Log("dodge:   %3d, %3d\n", stats1->dodge, stats2->dodge);
     SDL_Log("crit:    %3d, %3d\n", stats1->crit, stats2->crit);

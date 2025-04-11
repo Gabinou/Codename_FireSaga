@@ -16,7 +16,7 @@
 // - True Damaged
 
 struct BarDamage {
-    u32 dmg[DAMAGE_TYPES];
+    u32 dmg[DMG_TYPES];
     u32 previoushp;
 };
 

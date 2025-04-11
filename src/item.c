@@ -2,6 +2,7 @@
 #include "item.h"
 #include "names.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
 #include "aura.h"
 #include "equations.h"
 #include "weapon.h"
@@ -99,7 +100,7 @@ i32 useEffect_STAFF_HEAL(struct Item *item,
                          struct Unit *user,
                          struct Unit *target) {
     // HEALING ITEMS CAN BE USED ON OTHER UNITS/PEGASUSES/ENEMIES.
-    u8 healing = Equation_Staff_Healing(item->stats.AP, user->current_stats.mag);
+    u8 healing = Equation_Staff_Healing(item->stats.AP, user->stats.current.mag);
     Unit_getsHealed(target, healing);
     return (-1);
 }
@@ -107,7 +108,7 @@ i32 useEffect_STAFF_HEAL(struct Item *item,
 i32 useEffect_USE_DIVINE_SHIELD(struct Item *item,
                                 struct Unit *user,
                                 struct Unit *target) {
-    target->divine_shield = true;
+    Unit_DivineShield_set(target, true);
     return (-1);
 }
 
@@ -134,7 +135,8 @@ i32 useEffect_USE_LVL_UP(struct Item *item,
 i32 useEffect_USE_GAIN_SKILL(struct Item *item,
                              struct Unit *user,
                              struct Unit *target) {
-    target->skills += item->stats.AP;
+    Unit_Skill_Add(user, item->stats.AP);
+    // why return -1
     return (-1);
 }
 
@@ -143,37 +145,37 @@ i32 useEffect_USE_GAIN_STATS(struct Item *item,
                              struct Unit *target) {
     switch (item->id) {
         case ITEM_ID_TALISMAN_HP:
-            target->current_stats.hp += item->stats.AP;
+            target->stats.current.hp += item->stats.AP;
             break;
         case ITEM_ID_TALISMAN_STR:
-            target->current_stats.str += item->stats.AP;
+            target->stats.current.str += item->stats.AP;
             break;
         case ITEM_ID_TALISMAN_MAG:
-            target->current_stats.mag += item->stats.AP;
+            target->stats.current.mag += item->stats.AP;
             break;
         case ITEM_ID_TALISMAN_DEX:
-            target->current_stats.dex += item->stats.AP;
+            target->stats.current.dex += item->stats.AP;
             break;
         case ITEM_ID_TALISMAN_AGI:
-            target->current_stats.agi += item->stats.AP;
+            target->stats.current.agi += item->stats.AP;
             break;
         case ITEM_ID_TALISMAN_LUCK:
-            target->current_stats.luck += item->stats.AP;
+            target->stats.current.luck += item->stats.AP;
             break;
         case ITEM_ID_TALISMAN_DEF:
-            target->current_stats.def += item->stats.AP;
+            target->stats.current.def += item->stats.AP;
             break;
         case ITEM_ID_TALISMAN_RES:
-            target->current_stats.res += item->stats.AP;
+            target->stats.current.res += item->stats.AP;
             break;
         case ITEM_ID_TALISMAN_CON:
-            target->current_stats.con += item->stats.AP;
+            target->stats.current.con += item->stats.AP;
             break;
         case ITEM_ID_TALISMAN_PROF:
-            target->current_stats.prof += item->stats.AP;
+            target->stats.current.prof += item->stats.AP;
             break;
         case ITEM_ID_TALISMAN_MOVE:
-            target->current_stats.move += item->stats.AP;
+            target->stats.current.move += item->stats.AP;
             break;
         default:
             SDL_Log("Wrong id for stat booster.");
@@ -234,7 +236,7 @@ b32 Item_canUse(struct Item *item,  struct Unit *unit) {
     } else {
         /* Check if unit is user */
         for (size_t i = 0; i < DARR_NUM(item->users); i++) {
-            if (unit->_id == item->users[i]) {
+            if (Unit_id(unit) == item->users[i]) {
                 is_user = true;
                 break;
             }
@@ -248,7 +250,7 @@ b32 Item_canUse(struct Item *item,  struct Unit *unit) {
     } else {
         /* Check if unit is user */
         for (size_t i = 0; i < DARR_NUM(item->classes); i++) {
-            if (unit->class == item->classes[i]) {
+            if (Unit_Class(unit) == item->classes[i]) {
                 is_class = true;
                 break;
             }

@@ -33,6 +33,7 @@
 #include "game/cursor.h"
 #include "game/unit.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
 #include "scene.h"
 #include "convoy.h"
 #include "arrow.h"
@@ -45,6 +46,7 @@
 #include "controller/gamepad.h"
 #include "map/path.h"
 #include "text.h"
+#include "globals.h"
 
 /* --- RECEIVERS DECLARATION --- */
 struct dtab *receivers_dtab = NULL;
@@ -586,8 +588,8 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     u64 before_ns = tnecs_get_ns();
 
     /* --- Reload non-entities --- */
-    Weapons_All_Reload(sota->weapons_dtab);
-    Item_All_Reload(sota->items_dtab);
+    Weapons_All_Reload(gl_weapons_dtab);
+    Item_All_Reload(gl_items_dtab);
 
     /* --- Reload Unit --- */
     Reload_Entities_Archetype(sota, Reload_JSON, "Unit");
@@ -877,12 +879,12 @@ void receive_event_Unit_Deselect(struct Game *sota, SDL_Event *userevent) {
         fsm_eUnitDsel_ss[sota->substate](sota, sota->entity_cursor);
 
     /* - New overlays - */
-    if (SotA_isPC(unit_ptr->army)) {
+    if (SotA_isPC(Unit_Army(unit_ptr))) {
         /* - Hide PC overlay - */
         sota->map->show_overlay = false;
     } else {
         /* - Show NPC danger - */
-        if (unit_ptr->show_danger) {
+        if (Unit_showsDanger(unit_ptr)) {
             tnecs_entity *ent_ptr = &sota->selected_unit_entity;
             Event_Emit(__func__, SDL_USEREVENT, event_Unit_Danger, NULL, ent_ptr);
         }
@@ -939,7 +941,9 @@ void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(selected             != NULL);
     SDL_assert(sota->map->costmap   != NULL);
     Map *map = sota->map;
-    Arrow_Path_Init(map->arrow, map->costmap, Unit_computeMove(selected), cpos->tilemap_pos);
+    i32 move = 0;
+    Unit_computeMove(selected, &move);
+    Arrow_Path_Init(map->arrow, map->costmap, move, cpos->tilemap_pos);
     strncpy(sota->reason, "friendly unit was selected and can move", sizeof(sota->reason));
     Game_subState_Set(sota, GAME_SUBSTATE_MAP_UNIT_MOVES, sota->reason);
 
@@ -961,7 +965,7 @@ void receive_event_Cursor_Hovers_Unit(struct Game *sota, SDL_Event *userevent) {
     sota->hovered_unit_entity = *(tnecs_entity *)userevent->user.data2;
     SDL_assert(sota->hovered_unit_entity != TNECS_NULL);
     struct Unit *temp = IES_GET_COMPONENT(sota->world, sota->hovered_unit_entity, Unit);
-    SDL_assert(temp->name.data != NULL);
+    SDL_assert(global_unitNames[Unit_id(temp)].data != NULL);
 
     if (fsm_eCrsHvUnit_ss[sota->substate] != NULL)
         fsm_eCrsHvUnit_ss[sota->substate](sota, sota->hovered_unit_entity);
@@ -1437,8 +1441,7 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
 
     // 1. Resolve Combat
     struct Unit *aggressor = IES_GET_COMPONENT(sota->world, sota->aggressor, Unit);
-    aggressor->waits = true;
-    aggressor->waits = true;
+    Unit_Waiting_set(aggressor, true);
     struct Unit *defendant = IES_GET_COMPONENT(sota->world, sota->defendant, Unit);
 
     SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, sota->defendant, Timer));
@@ -1554,8 +1557,8 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     b32 died_boss = (boss != NULL);
 
     /* --- Increasing Killer's regrets --- */
-    int regrets = killer->regrets;
-    killer->regrets = regrets > UINT8_MAX - REGRET_KILL ? UINT8_MAX : regrets + REGRET_KILL;
+    int regrets = Unit_Current_Regrets(killer);
+    killer->counters.regrets = regrets > UINT8_MAX - REGRET_KILL ? UINT8_MAX : regrets + REGRET_KILL;
 
     /* --- Removing unit from map --- */
     SDL_assert(sota->map->world == sota->world);
@@ -1589,8 +1592,8 @@ void receive_event_Unit_Loots(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity victim_entity = *(tnecs_entity *) userevent->user.data2;
     struct Unit *looter = IES_GET_COMPONENT(sota->world, looter_entity, Unit);
     struct Unit *victim = IES_GET_COMPONENT(sota->world, victim_entity, Unit);
-    int regrets = looter->regrets;
-    looter->regrets = regrets > UINT8_MAX - REGRET_LOOT ? UINT8_MAX : regrets + REGRET_LOOT;
+    int regrets = Unit_Current_Regrets(looter);
+    looter->counters.regrets = regrets > UINT8_MAX - REGRET_LOOT ? UINT8_MAX : regrets + REGRET_LOOT;
 }
 
 void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
@@ -1624,7 +1627,7 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     int id_R          = Unit_Id_Equipped(attacker, UNIT_HAND_RIGHT);
 
     // 2. Check for unit agony/death
-    b32 agg_death = (!aggressor->alive) || (aggressor->agony > AGONY_NULL);
+    b32 agg_death = (!Unit_isAlive(aggressor)) || (Unit_Current_Agony(aggressor) > AGONY_NULL);
     if (agg_death) {
         userevent->user.data1 = &sota->aggressor;
         userevent->user.data2 = &sota->defendant;
@@ -1632,7 +1635,7 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
         // Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &sota->aggressor, &sota->defendant);
     }
 
-    b32 dft_death = (!defendant->alive) || (defendant->agony > AGONY_NULL);
+    b32 dft_death = (!Unit_isAlive(defendant)) || (Unit_Current_Agony(defendant) > AGONY_NULL);
     if (dft_death) {
         userevent->user.data1 = &sota->defendant;
         userevent->user.data2 = &sota->aggressor;
@@ -1656,8 +1659,8 @@ void receive_event_Unit_Agonizes(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity victim_entity = *(tnecs_entity *) userevent->user.data2;
     struct Unit *victor = IES_GET_COMPONENT(sota->world, victor_entity, Unit);
     struct Unit *victim = IES_GET_COMPONENT(sota->world, victim_entity, Unit);
-    int regrets = victor->regrets;
-    victor->regrets = regrets > UINT8_MAX - REGRET_LOOT ? UINT8_MAX : regrets + REGRET_LOOT;
+    int regrets = Unit_Current_Regrets(victor);
+    victor->counters.regrets = regrets > UINT8_MAX - REGRET_LOOT ? UINT8_MAX : regrets + REGRET_LOOT;
 }
 
 /* --- EVENT UTILITIES --- */

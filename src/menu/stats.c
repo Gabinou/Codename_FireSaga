@@ -9,13 +9,16 @@
 #include "filesystem.h"
 #include "platform.h"
 #include "weapon.h"
+#include "globals.h"
 #include "utilities.h"
 #include "nmath.h"
 #include "macros.h"
 #include "names.h"
-#include "unit/equipment.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
+#include "unit/stats.h"
 #include "unit/loadout.h"
+#include "unit/equipment.h"
 #include "stb_sprintf.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
@@ -403,9 +406,9 @@ void StatsMenu_Free(struct StatsMenu *stats_menu) {
 
 void StatsMenu_Load(struct StatsMenu *stats_menu, struct Unit *unit,
                     SDL_Renderer *renderer, struct n9Patch *n9patch) {
-    SDL_assert(stats_menu != NULL);
-    SDL_assert(unit != NULL);
-    SDL_assert(unit->weapons_dtab != NULL);
+    SDL_assert(stats_menu       != NULL);
+    SDL_assert(unit             != NULL);
+    SDL_assert(gl_weapons_dtab  != NULL);
 
     stats_menu->unit    = unit;
     stats_menu->update  = true;
@@ -538,7 +541,7 @@ void StatsMenu_Elem_Pos_Revert(struct StatsMenu *sm, struct Menu *mc) {
 static void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* -- HEADER WRITING -- */
     SDL_Rect dstrect, srcrect;
-    struct Unit_stats     *effective_stats  = &stats_menu->unit->effective_stats;
+    struct Unit_stats effective_stats = Unit_effectiveStats(stats_menu->unit);
     char numbuff[10];
     int x, y;
 
@@ -546,7 +549,7 @@ static void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *ren
     SDL_assert(stats_menu->texture_sex != NULL);
     srcrect.w = SM_SEX_ICON_SIZEX;
     srcrect.h = SM_SEX_ICON_SIZEY;
-    srcrect.x = stats_menu->unit->sex * SM_SEX_TILESIZE;
+    srcrect.x = Unit_Sex(stats_menu->unit) * SM_SEX_TILESIZE;
     srcrect.y = 0;
     dstrect.w = srcrect.w;
     dstrect.h = srcrect.h;
@@ -562,12 +565,12 @@ static void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *ren
     SDL_RenderFillRect(renderer, &srcrect);
 
     /* - name - */
-    s8 name = stats_menu->unit->name;
+    const s8 name = global_unitNames[Unit_id(stats_menu->unit)];
     x = NAME_X_OFFSET, y = NAME_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, name.data, x, y);
 
     /* - class - */
-    s8 class = s8_mut(classNames[stats_menu->unit->class].data);
+    s8 class = s8_mut(classNames[Unit_Class(stats_menu->unit)].data);
     class    = s8_toUpper(class);
     x = CLASS_X_OFFSET, y = CLASS_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours, renderer, class.data, x, y);
@@ -587,34 +590,35 @@ static void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *ren
                        STATS_MENU_HPBAR_FD, STATS_MENU_HPBAR_FL);
 
     x = (HP_X_OFFSET + HPBAR_X_OFFSET), y = (HP_Y_OFFSET + HPBAR_Y_OFFSET);
-    HPBar_Init(&hp_bar, stats_menu->unit->current_hp, effective_stats->hp, x, y);
+    i32 current_hp = Unit_Current_HP(stats_menu->unit);
+    HPBar_Init(&hp_bar, current_hp, effective_stats.hp, x, y);
 
     /* - HP - */
     x = HP_X_OFFSET, y = HP_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours_big, renderer, "HP", 2, x, y);
     HPBar_Draw(&hp_bar, renderer);
-    stbsp_sprintf(numbuff, "%02d/%02d", stats_menu->unit->current_hp, effective_stats->hp);
+    stbsp_sprintf(numbuff, "%02d/%02d", current_hp, effective_stats.hp);
     x = HP_STAT_X_OFFSET, y = HP_STAT_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
     /* - EXP - */
     x = EXP_X_OFFSET, y = EXP_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours_big, renderer, "Exp", 3, x, y);
-    stbsp_sprintf(numbuff, "%02d\0\0\0\0", (stats_menu->unit->exp % 100));
+    stbsp_sprintf(numbuff, "%02d\0\0\0\0", Unit_Experience(stats_menu->unit));
     x = EXP_STAT_X_OFFSET, y = EXP_STAT_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
     /* - Level - */
     x = LV_X_OFFSET, y = LV_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours_big, renderer, "Lv", 2, x, y);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", (stats_menu->unit->exp / 100));
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", Unit_Level(stats_menu->unit));
     x = LV_STAT_X_OFFSET, y = LV_STAT_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
     /* - Move - */
     x = MOVE_X_OFFSET, y = MOVE_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours_big, renderer, "Mv", 2, x, y);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats->move);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats.move);
     x = MOVE_STAT_X_OFFSET, y = MOVE_STAT_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 }
@@ -629,46 +633,46 @@ static void _StatsMenu_Draw_Mount(struct StatsMenu *stats_menu, SDL_Renderer *re
     /* - Write mount - */
     PixelFont_Write(stats_menu->pixelnours, renderer, "MOUNT", 5, x, y);
 
-    /* - Get mount type - */
+    /* - TODO: Get mount type - */
     i8 mount_type = MOUNT_TYPE_NULL;
-    if (stats_menu->unit->mount != NULL)
-        mount_type = stats_menu->unit->mount->type;
+    // if (stats_menu->unit->mount.ptr != NULL)
+    // mount_type = stats_menu->unit->mount.ptr->type;
 
-    if (mount_type == MOUNT_TYPE_NULL) {
-        x = MOUNT_NONE_X_OFFSET, y = MOUNT_NONE_Y_OFFSET;
-        PixelFont_Write(stats_menu->pixelnours, renderer, "-", 1, x, y);
-        return;
-    }
+    // if (mount_type == MOUNT_TYPE_NULL) {
+    //     x = MOUNT_NONE_X_OFFSET, y = MOUNT_NONE_Y_OFFSET;
+    //     PixelFont_Write(stats_menu->pixelnours, renderer, "-", 1, x, y);
+    //     return;
+    // }
 
-    switch (mount_type) {
-        case MOUNT_TYPE_HORSE:
-        case MOUNT_TYPE_SALAMANDER:
-            mount_offset_x = 6;
-            mount_offset_y = 2;
-            break;
-        case MOUNT_TYPE_PEGASUS:
-        case MOUNT_TYPE_EAGLE:
-            mount_offset_x =  0;
-            mount_offset_y = -3;
-            break;
-    }
+    // switch (mount_type) {
+    //     case MOUNT_TYPE_HORSE:
+    //     case MOUNT_TYPE_SALAMANDER:
+    //         mount_offset_x = 6;
+    //         mount_offset_y = 2;
+    //         break;
+    //     case MOUNT_TYPE_PEGASUS:
+    //     case MOUNT_TYPE_EAGLE:
+    //         mount_offset_x =  0;
+    //         mount_offset_y = -3;
+    //         break;
+    // }
 
-    srcrect.w = SM_MOUNTS_TILESIZE;
-    srcrect.h = SM_MOUNTS_TILESIZE;
-    srcrect.x = mount_type % SOTA_COL_LEN * srcrect.w;
-    srcrect.y = mount_type / SOTA_COL_LEN * srcrect.h;
-    dstrect.w = srcrect.w;
-    dstrect.h = srcrect.h;
-    dstrect.x = (MOUNT_ICON_X_OFFSET + mount_offset_x);
-    dstrect.y = (MOUNT_ICON_Y_OFFSET + mount_offset_y);
-    SDL_RenderCopy(renderer, stats_menu->texture_mount, &srcrect, &dstrect);
+    // srcrect.w = SM_MOUNTS_TILESIZE;
+    // srcrect.h = SM_MOUNTS_TILESIZE;
+    // srcrect.x = mount_type % SOTA_COL_LEN * srcrect.w;
+    // srcrect.y = mount_type / SOTA_COL_LEN * srcrect.h;
+    // dstrect.w = srcrect.w;
+    // dstrect.h = srcrect.h;
+    // dstrect.x = (MOUNT_ICON_X_OFFSET + mount_offset_x);
+    // dstrect.y = (MOUNT_ICON_Y_OFFSET + mount_offset_y);
+    // SDL_RenderCopy(renderer, stats_menu->texture_mount, &srcrect, &dstrect);
 }
 
 static void _StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* -- STATS -- */
     SDL_Rect dstrect, srcrect;
-    struct Unit_stats *effective_stats  = &stats_menu->unit->effective_stats;
     struct Unit       *unit             =  stats_menu->unit;
+    struct Unit_stats effective_stats = Unit_effectiveStats(unit);
     char numbuff[10];
     int x, y;
     // TODO: BONUS/MALUS in GREEN/RED
@@ -684,11 +688,11 @@ static void _StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *re
     x = STR_X_OFFSET, y = STR_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "STR", 3, x, y);
     x += STATBAR_COL1_X_OFFSET, y += STATBAR_COL1_Y_OFFSET;
-    StatBar_Init(&stat_bar, effective_stats->str, unit->caps_stats.str, x, y);
+    StatBar_Init(&stat_bar, effective_stats.str, Unit_Stats_Caps(unit).str, x, y);
     StatBar_Draw(&stat_bar, renderer);
     // WRITING COLORED TEXT:
     // SDL_SetTextureColorMod(stats_menu->pixelnours->texture, SOTA_BONUS_RED, SOTA_BONUS_GREEN, SOTA_BONUS_BLUE); /* src texture*/
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats->str);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats.str);
     x = STR_STAT_X_OFFSET, y = STR_STAT_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
     // SDL_SetTextureColorMod(stats_menu->pixelnours->texture, 0xFF, 0xFF, 0xFF); /* src texture*/
@@ -697,9 +701,9 @@ static void _StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *re
     x = MAG_X_OFFSET, y = MAG_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "MAG", 3, x, y);
     x += STATBAR_COL2_X_OFFSET, y += STATBAR_COL2_Y_OFFSET;
-    StatBar_Init(&stat_bar, effective_stats->mag, unit->caps_stats.mag, x, y);
+    StatBar_Init(&stat_bar, effective_stats.mag, unit->stats.caps.mag, x, y);
     StatBar_Draw(&stat_bar, renderer);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats->mag);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats.mag);
     x = MAG_STAT_X_OFFSET, y = MAG_STAT_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
@@ -707,9 +711,9 @@ static void _StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *re
     x = DEX_X_OFFSET, y = DEX_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "DEX", 3, x, y);
     x += STATBAR_COL1_X_OFFSET, y += STATBAR_COL1_Y_OFFSET;
-    StatBar_Init(&stat_bar, effective_stats->dex, unit->caps_stats.dex, x, y);
+    StatBar_Init(&stat_bar, effective_stats.dex, unit->stats.caps.dex, x, y);
     StatBar_Draw(&stat_bar, renderer);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats->dex);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats.dex);
     x = DEX_STAT_X_OFFSET, y = DEX_STAT_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
@@ -717,9 +721,9 @@ static void _StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *re
     x = AGI_X_OFFSET, y = AGI_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "AGI", 3, x, y);
     x += STATBAR_COL2_X_OFFSET, y += STATBAR_COL2_Y_OFFSET;
-    StatBar_Init(&stat_bar, effective_stats->agi, unit->caps_stats.agi, x, y);
+    StatBar_Init(&stat_bar, effective_stats.agi, unit->stats.caps.agi, x, y);
     StatBar_Draw(&stat_bar, renderer);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats->agi);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats.agi);
     x = AGI_STAT_X_OFFSET, y = AGI_STAT_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
@@ -727,9 +731,9 @@ static void _StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *re
     x = FTH_X_OFFSET, y = FTH_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "FTH", 3, x, y);
     x += STATBAR_COL1_X_OFFSET, y += STATBAR_COL1_Y_OFFSET;
-    StatBar_Init(&stat_bar, effective_stats->fth, unit->caps_stats.fth, x, y);
+    StatBar_Init(&stat_bar, effective_stats.fth, unit->stats.caps.fth, x, y);
     StatBar_Draw(&stat_bar, renderer);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats->fth);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats.fth);
     x = FTH_STAT_X_OFFSET, y = FTH_STAT_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
@@ -737,9 +741,9 @@ static void _StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *re
     x = LUCK_X_OFFSET, y = LUCK_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "LUCK", 4, x, y);
     x += STATBAR_COL2_X_OFFSET, y += STATBAR_COL2_Y_OFFSET;
-    StatBar_Init(&stat_bar, effective_stats->luck, unit->caps_stats.luck, x, y);
+    StatBar_Init(&stat_bar, effective_stats.luck, unit->stats.caps.luck, x, y);
     StatBar_Draw(&stat_bar, renderer);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats->luck);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats.luck);
     x = LUCK_STAT_X_OFFSET, y = LUCK_STAT_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
@@ -747,9 +751,9 @@ static void _StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *re
     x = DEF_X_OFFSET, y = DEF_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "DEF", 3, x, y);
     x += STATBAR_COL1_X_OFFSET, y += STATBAR_COL1_Y_OFFSET;
-    StatBar_Init(&stat_bar, effective_stats->def, unit->caps_stats.def, x, y);
+    StatBar_Init(&stat_bar, effective_stats.def, unit->stats.caps.def, x, y);
     StatBar_Draw(&stat_bar, renderer);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats->def);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats.def);
     x = DEF_STAT_X_OFFSET, y = DEF_STAT_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
@@ -757,9 +761,9 @@ static void _StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *re
     x = RES_X_OFFSET, y = RES_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "RES", 3, x, y);
     x += STATBAR_COL2_X_OFFSET, y += STATBAR_COL2_Y_OFFSET;
-    StatBar_Init(&stat_bar, effective_stats->res, unit->caps_stats.res, x, y);
+    StatBar_Init(&stat_bar, effective_stats.res, unit->stats.caps.res, x, y);
     StatBar_Draw(&stat_bar, renderer);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats->res);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats.res);
     x = RES_STAT_X_OFFSET, y = RES_STAT_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
@@ -767,9 +771,9 @@ static void _StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *re
     x = CON_X_OFFSET, y = CON_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "CON", 3, x, y);
     x += STATBAR_COL1_X_OFFSET, y += STATBAR_COL1_Y_OFFSET;
-    StatBar_Init(&stat_bar, effective_stats->con, unit->caps_stats.con, x, y);
+    StatBar_Init(&stat_bar, effective_stats.con, unit->stats.caps.con, x, y);
     StatBar_Draw(&stat_bar, renderer);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats->con);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats.con);
     x = CON_STAT_X_OFFSET, y = CON_STAT_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
@@ -777,9 +781,9 @@ static void _StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *re
     x = PROF_X_OFFSET, y = PROF_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "PROF", 4, x, y);
     x += STATBAR_COL2_X_OFFSET, y += STATBAR_COL2_Y_OFFSET;
-    StatBar_Init(&stat_bar, effective_stats->prof, unit->caps_stats.prof, x, y);
+    StatBar_Init(&stat_bar, effective_stats.prof, unit->stats.caps.prof, x, y);
     StatBar_Draw(&stat_bar, renderer);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats->prof);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats.prof);
     x = PROF_STAT_X_OFFSET, y = PROF_STAT_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 }
@@ -850,8 +854,8 @@ static void _StatsMenu_Draw_Rescue(struct StatsMenu *stats_menu, SDL_Renderer *r
     // TODO: Rescue icon
     x = RESCUE_X_OFFSET, y = RESCUE_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "RESCUE", 7, x, y);
-    if (unit->rescuee > UNIT_ID_START) {
-        s8 name = global_unitNames[unit->rescuee];
+    if (unit->rescue.id > UNIT_ID_START) {
+        s8 name = global_unitNames[unit->rescue.id];
         int width = PixelFont_Width_Len(stats_menu->pixelnours, name.data);
         x = RESCUEE_X_OFFSET - width / 2, y = RESCUEE_Y_OFFSET;
         PixelFont_Write_Len(stats_menu->pixelnours, renderer, name.data, x, y);
@@ -900,14 +904,14 @@ static void _StatsMenu_Draw_Statuses(struct StatsMenu *stats_menu, SDL_Renderer 
     struct Unit *unit = stats_menu->unit;
 
     /* -- Statuses -- */
-    SDL_assert(stats_menu->unit->status_queue != NULL);
-    if (DARR_NUM(stats_menu->unit->status_queue) <= 0) {
+    SDL_assert(stats_menu->unit->statuses.queue != NULL);
+    if (DARR_NUM(stats_menu->unit->statuses.queue) <= 0) {
         int x = STATUSES_NONE_X_OFFSET, y = STATUSES_NONE_Y_OFFSET;
         PixelFont_Write(stats_menu->pixelnours, renderer, "-", 1, x, y);
         return;
     }
 
-    struct Unit_status status = stats_menu->unit->status_queue[0];
+    struct Unit_status status = stats_menu->unit->statuses.queue[0];
 
     srcrect.w = SM_STATUSES_TILESIZE;
     srcrect.h = SM_STATUSES_TILESIZE;
@@ -952,6 +956,9 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
     SDL_Rect dstrect, srcrect;
     char numbuff[10];
     struct Unit *unit = stats_menu->unit;
+    SDL_assert(gl_weapons_dtab  != NULL);
+    SDL_assert(gl_items_dtab    != NULL);
+
     i16 item_y_offset, item_dura_y_offset;
 
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
@@ -984,9 +991,8 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
     /* Writing - number of uses left */
     int uses_left = 0;
     if (Weapon_ID_isValid(invitem->id)) {
-        SDL_assert(unit->weapons_dtab != NULL);
-        Weapon_Load(unit->weapons_dtab, invitem->id);
-        struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, invitem->id);
+        Weapon_Load(gl_weapons_dtab, invitem->id);
+        struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, invitem->id);
         SDL_assert(weapon                   != NULL);
         SDL_assert(weapon->item             != NULL);
         SDL_assert(weapon->item->name.data  != NULL);
@@ -995,9 +1001,9 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
         SDL_assert(weapon->item->stats.uses > 0);
         uses_left = (weapon->item->stats.uses - invitem->used);
     } else if (Item_ID_isValid(invitem->id)) {
-        SDL_assert(unit->items_dtab != NULL);
-        Item_Load(unit->items_dtab, invitem->id);
-        struct Item *item = DTAB_GET(unit->items_dtab, invitem->id);
+        SDL_assert(gl_items_dtab != NULL);
+        Item_Load(gl_items_dtab, invitem->id);
+        struct Item *item = DTAB_GET(gl_items_dtab, invitem->id);
         uses_left = (item->stats.uses - invitem->used);
     }
     // SDL_assert(uses_left > 0);
@@ -1069,7 +1075,9 @@ static void _StatsMenu_Draw_Equipment(struct StatsMenu *stats_menu, SDL_Renderer
 
 static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* -- COMPUTED STATS -- */
-    struct Computed_Stats *computed_stats = &stats_menu->unit->computed_stats;
+    int dist = 1; // TODO: get distance from equipped weapon
+    Unit_stats eff_stats = Unit_effectiveStats(stats_menu->unit);
+    struct Computed_Stats computed_stats = Unit_computedStats(stats_menu->unit, dist, eff_stats);
     struct Unit *unit = stats_menu->unit;
     char numbuff[10];
 
@@ -1077,18 +1085,17 @@ static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Rend
     int width, x, y;
     x = ATK_X_OFFSET, y = ATK_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "ATK", 3, x, y);
-    i32 *att = computed_stats->attack;
-    if (computed_stats->attack[DMG_TYPE_TRUE] > 0) {
+    if (computed_stats.attack.True > 0) {
         /* Compute width of LEFTWARD STAT to center the "/" */
-        stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats->attack[DMG_TYPE_PHYSICAL]);
+        stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats.attack.physical);
         width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
-        stbsp_sprintf(numbuff, "%d/%d/%d", att[DMG_TYPE_PHYSICAL], att[DMG_TYPE_MAGICAL],
-                      att[DMG_TYPE_TRUE]);
+        stbsp_sprintf(numbuff, "%d/%d/%d", computed_stats.attack.physical, computed_stats.attack.magical,
+                      computed_stats.attack.True);
         x = ATK_X_OFFSET_STAT2 - width, y = ATK_Y_OFFSET_STAT1;
     } else {
-        stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats->attack[DMG_TYPE_PHYSICAL]);
+        stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats.attack.physical);
         width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
-        stbsp_sprintf(numbuff, "%d/%d\0\0", att[DMG_TYPE_PHYSICAL], att[DMG_TYPE_MAGICAL]);
+        stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats.attack.physical, computed_stats.attack.magical);
         x = ATK_X_OFFSET_STAT1 - width, y = ATK_Y_OFFSET_STAT1;
     }
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
@@ -1096,10 +1103,10 @@ static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Rend
     /* - DEF - */
     x = PROT_X_OFFSET, y = PROT_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "DEF", 3, x, y);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats->protection[DMG_TYPE_PHYSICAL]);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats.protection.physical);
     width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
-    i32 *prot = computed_stats->protection;
-    stbsp_sprintf(numbuff, "%d/%d\0\0", prot[DMG_TYPE_PHYSICAL], prot[DMG_TYPE_MAGICAL]);
+    stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats.protection.physical,
+                  computed_stats.protection.magical);
     x = PROT_X_OFFSET_STAT1 - width, y = PROT_Y_OFFSET_STAT1;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
@@ -1107,9 +1114,9 @@ static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Rend
     x = HIT_X_OFFSET, y = HIT_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "HIT", 3, x, y);
     // Compute width of LEFTWARD STAT to center the "/"
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats->hit);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats.hit);
     width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
-    stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats->hit, computed_stats->dodge);
+    stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats.hit, computed_stats.dodge);
     x = HIT_X_OFFSET_STAT - width, y = HIT_Y_OFFSET_STAT;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
@@ -1117,16 +1124,16 @@ static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Rend
     x = CRIT_X_OFFSET, y = CRIT_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "CRIT", 4, x, y);
     // Compute width of LEFTWARD STAT to center the "/"
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats->crit);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats.crit);
     width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
-    stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats->crit, computed_stats->favor);
+    stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats.crit, computed_stats.favor);
     x = CRIT_X_OFFSET_STAT - width, y = CRIT_Y_OFFSET_STAT;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
     /* - RANGE - */
     x = RANGE_X_OFFSET, y = RANGE_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "RANGE", 5, x, y);
-    struct Range *range = &computed_stats->range_loadout;
+    struct Range *range = &computed_stats.range_loadout;
     stbsp_sprintf(numbuff, "%d - %d", range->min, range->max);
     x = RANGE_X_OFFSET_STAT, y = RANGE_Y_OFFSET_STAT;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
@@ -1134,18 +1141,19 @@ static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Rend
     /* - SPEED - */
     x = SPEED_X_OFFSET, y = SPEED_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "SPEED", 5, x, y);
-    stbsp_sprintf(numbuff, "%2d\0\0\0\0", computed_stats->speed);
+    stbsp_sprintf(numbuff, "%2d\0\0\0\0", computed_stats.speed);
     x = SPEED_X_OFFSET_STAT, y = SPEED_Y_OFFSET_STAT;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
     /* -- REGRETS -- */
     x = REGRETS_X_OFFSET, y = REGRETS_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "REGRETS", 7, x, y);
-    if (unit->regrets <= 0) {
+    i32 regrets = Unit_Current_Regrets(unit);
+    if (regrets <= 0) {
         x = REGRETS_X_STAT, y = REGRETS_Y_STAT;
         PixelFont_Write(stats_menu->pixelnours, renderer, "-", 1, x, y);
     } else {
-        stbsp_sprintf(numbuff, "%d\0\0\0\0", unit->regrets);
+        stbsp_sprintf(numbuff, "%d\0\0\0\0", regrets);
         width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
         x = REGRETS_X_STAT - width / 2, y = REGRETS_Y_STAT;
         PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
@@ -1209,9 +1217,9 @@ void StatsMenu_Update(struct StatsMenu *stats_menu, struct n9Patch *n9patch,
     SDL_assert(n9patch->scale.y       > 0);
 
     if (stats_menu->update_stats) {
-        Unit_effectiveStats(stats_menu->unit);
+        Unit_stats effective_stats = Unit_effectiveStats(stats_menu->unit);
         /* Stats Menu shows dual wielding stats ASSUMING BOTH WEAPONS IN RANGE */
-        Unit_computedStats(stats_menu->unit, -1);
+        Unit_computedStats(stats_menu->unit, -1, effective_stats);
         // TODO: stop computing stats every iteration
         // stats_menu->update_stats = false;
     }

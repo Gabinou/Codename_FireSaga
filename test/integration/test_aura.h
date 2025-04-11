@@ -2,6 +2,7 @@
 #include "game/game.h"
 #include "map/ontile.h"
 #include "fsm.h"
+#include "globals.h"
 #include "macros.h"
 #include "map/map.h"
 #include "game/map.h"
@@ -24,9 +25,9 @@ void test_aura_apply(int argc, char *argv[]) {
     sota->map->world = sota->world;
 
     /* Load Standard */
-    SDL_assert(sota->weapons_dtab != NULL);
-    Weapon_Load(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
-    SDL_assert(DTAB_GET(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD) != NULL);
+    SDL_assert(gl_weapons_dtab != NULL);
+    Weapon_Load(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
+    SDL_assert(DTAB_GET(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD) != NULL);
     /* -- Place all friendlies close together -- */
 
     i32 id;
@@ -36,10 +37,9 @@ void test_aura_apply(int argc, char *argv[]) {
     tnecs_entity ent = sota->party.entities[UNIT_ID_ERWIN];
     struct Unit *erwin = IES_GET_COMPONENT(sota->world, ent, Unit);
 
-    erwin->class = UNIT_CLASS_STANDARD_BEARER;
+    Unit_Class_set(erwin, UNIT_CLASS_STANDARD_BEARER);
     SDL_assert(ent > TNECS_NULL);
     Map_Unit_Put(sota->map, pos.x, pos.y, ent);
-
 
     /* Give standard to standard bearer */
     struct Unit *bearer = IES_GET_COMPONENT(sota->world, ent, Unit);
@@ -80,7 +80,7 @@ void test_aura_apply(int argc, char *argv[]) {
     /* Check Aura in bonus stack */
     Map_Bonus_Standard_Apply(sota->map, ARMY_FRIENDLY);
     Map_Bonus_Standard_Apply(sota->map, ARMY_FRIENDLY);
-    struct Weapon *standardwpn          = DTAB_GET(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
+    struct Weapon *standardwpn          = DTAB_GET(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
     struct Unit_stats aura_bonus        = standardwpn->item->aura.unit_stats;
 
     /* Check effective stats */
@@ -88,52 +88,52 @@ void test_aura_apply(int argc, char *argv[]) {
     SDL_assert(silou != NULL);
     struct Unit_stats effective_stats   = Unit_effectiveStats(silou);
 
-    nourstest_true(effective_stats.hp   == (silou->current_stats.hp     + aura_bonus.hp));
-    nourstest_true(effective_stats.str  == (silou->current_stats.str    + aura_bonus.str));
-    nourstest_true(effective_stats.mag  == (silou->current_stats.mag    + aura_bonus.mag));
-    nourstest_true(effective_stats.agi  == (silou->current_stats.agi    + aura_bonus.agi));
-    nourstest_true(effective_stats.dex  == (silou->current_stats.dex    + aura_bonus.dex));
-    nourstest_true(effective_stats.fth  == (silou->current_stats.fth    + aura_bonus.fth));
-    nourstest_true(effective_stats.luck == (silou->current_stats.luck   + aura_bonus.luck));
-    nourstest_true(effective_stats.def  == (silou->current_stats.def    + aura_bonus.def));
-    nourstest_true(effective_stats.res  == (silou->current_stats.res    + aura_bonus.res));
-    nourstest_true(effective_stats.con  == (silou->current_stats.con    + aura_bonus.con));
-    nourstest_true(effective_stats.move == (silou->current_stats.move   + aura_bonus.move));
-    nourstest_true(effective_stats.prof == (silou->current_stats.prof   + aura_bonus.prof));
+    nourstest_true(effective_stats.hp   == (silou->stats.current.hp     + aura_bonus.hp));
+    nourstest_true(effective_stats.str  == (silou->stats.current.str    + aura_bonus.str));
+    nourstest_true(effective_stats.mag  == (silou->stats.current.mag    + aura_bonus.mag));
+    nourstest_true(effective_stats.agi  == (silou->stats.current.agi    + aura_bonus.agi));
+    nourstest_true(effective_stats.dex  == (silou->stats.current.dex    + aura_bonus.dex));
+    nourstest_true(effective_stats.fth  == (silou->stats.current.fth    + aura_bonus.fth));
+    nourstest_true(effective_stats.luck == (silou->stats.current.luck   + aura_bonus.luck));
+    nourstest_true(effective_stats.def  == (silou->stats.current.def    + aura_bonus.def));
+    nourstest_true(effective_stats.res  == (silou->stats.current.res    + aura_bonus.res));
+    nourstest_true(effective_stats.con  == (silou->stats.current.con    + aura_bonus.con));
+    nourstest_true(effective_stats.move == (silou->stats.current.move   + aura_bonus.move));
+    nourstest_true(effective_stats.prof == (silou->stats.current.prof   + aura_bonus.prof));
 
     struct Unit *kiara = IES_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_KIARA], Unit);
     SDL_assert(kiara != NULL);
     effective_stats = Unit_effectiveStats(kiara);
 
-    nourstest_true(effective_stats.hp   == (kiara->current_stats.hp     + aura_bonus.hp));
-    nourstest_true(effective_stats.str  == (kiara->current_stats.str    + aura_bonus.str));
-    nourstest_true(effective_stats.mag  == (kiara->current_stats.mag    + aura_bonus.mag));
-    nourstest_true(effective_stats.agi  == (kiara->current_stats.agi    + aura_bonus.agi));
-    nourstest_true(effective_stats.dex  == (kiara->current_stats.dex    + aura_bonus.dex));
-    nourstest_true(effective_stats.fth  == (kiara->current_stats.fth    + aura_bonus.fth));
-    nourstest_true(effective_stats.luck == (kiara->current_stats.luck   + aura_bonus.luck));
-    nourstest_true(effective_stats.def  == (kiara->current_stats.def    + aura_bonus.def));
-    nourstest_true(effective_stats.res  == (kiara->current_stats.res    + aura_bonus.res));
-    nourstest_true(effective_stats.con  == (kiara->current_stats.con    + aura_bonus.con));
-    nourstest_true(effective_stats.move == (kiara->current_stats.move   + aura_bonus.move));
-    nourstest_true(effective_stats.prof == (kiara->current_stats.prof   + aura_bonus.prof));
+    nourstest_true(effective_stats.hp   == (kiara->stats.current.hp     + aura_bonus.hp));
+    nourstest_true(effective_stats.str  == (kiara->stats.current.str    + aura_bonus.str));
+    nourstest_true(effective_stats.mag  == (kiara->stats.current.mag    + aura_bonus.mag));
+    nourstest_true(effective_stats.agi  == (kiara->stats.current.agi    + aura_bonus.agi));
+    nourstest_true(effective_stats.dex  == (kiara->stats.current.dex    + aura_bonus.dex));
+    nourstest_true(effective_stats.fth  == (kiara->stats.current.fth    + aura_bonus.fth));
+    nourstest_true(effective_stats.luck == (kiara->stats.current.luck   + aura_bonus.luck));
+    nourstest_true(effective_stats.def  == (kiara->stats.current.def    + aura_bonus.def));
+    nourstest_true(effective_stats.res  == (kiara->stats.current.res    + aura_bonus.res));
+    nourstest_true(effective_stats.con  == (kiara->stats.current.con    + aura_bonus.con));
+    nourstest_true(effective_stats.move == (kiara->stats.current.move   + aura_bonus.move));
+    nourstest_true(effective_stats.prof == (kiara->stats.current.prof   + aura_bonus.prof));
 
     struct Unit *servil = IES_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SERVIL], Unit);
     SDL_assert(servil != NULL);
     effective_stats = Unit_effectiveStats(servil);
 
-    nourstest_true(effective_stats.hp   == servil->current_stats.hp);
-    nourstest_true(effective_stats.str  == servil->current_stats.str);
-    nourstest_true(effective_stats.mag  == servil->current_stats.mag);
-    nourstest_true(effective_stats.agi  == servil->current_stats.agi);
-    nourstest_true(effective_stats.dex  == servil->current_stats.dex);
-    nourstest_true(effective_stats.fth  == servil->current_stats.fth);
-    nourstest_true(effective_stats.luck == servil->current_stats.luck);
-    nourstest_true(effective_stats.def  == servil->current_stats.def);
-    nourstest_true(effective_stats.res  == servil->current_stats.res);
-    nourstest_true(effective_stats.con  == servil->current_stats.con);
-    nourstest_true(effective_stats.move == servil->current_stats.move);
-    nourstest_true(effective_stats.prof == servil->current_stats.prof);
+    nourstest_true(effective_stats.hp   == servil->stats.current.hp);
+    nourstest_true(effective_stats.str  == servil->stats.current.str);
+    nourstest_true(effective_stats.mag  == servil->stats.current.mag);
+    nourstest_true(effective_stats.agi  == servil->stats.current.agi);
+    nourstest_true(effective_stats.dex  == servil->stats.current.dex);
+    nourstest_true(effective_stats.fth  == servil->stats.current.fth);
+    nourstest_true(effective_stats.luck == servil->stats.current.luck);
+    nourstest_true(effective_stats.def  == servil->stats.current.def);
+    nourstest_true(effective_stats.res  == servil->stats.current.res);
+    nourstest_true(effective_stats.con  == servil->stats.current.con);
+    nourstest_true(effective_stats.move == servil->stats.current.move);
+    nourstest_true(effective_stats.prof == servil->stats.current.prof);
 
     /* Quit game */
     Game_Free(sota);
@@ -159,9 +159,9 @@ void test_aura_decay(int argc, char *argv[]) {
     sota->map->world = sota->world;
 
     /* Load Standard */
-    SDL_assert(sota->weapons_dtab != NULL);
-    Weapon_Load(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
-    SDL_assert(DTAB_GET(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD) != NULL);
+    SDL_assert(gl_weapons_dtab != NULL);
+    Weapon_Load(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
+    SDL_assert(DTAB_GET(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD) != NULL);
     /* -- Place all friendlies close together -- */
     i32 id;
     tnecs_entity ent;
@@ -169,7 +169,7 @@ void test_aura_decay(int argc, char *argv[]) {
     struct Point pos = {4, 4};
     Game_Party_Entity_Create(sota, id = UNIT_ID_ERWIN, pos, &Unit_default);
     struct Unit *erwin = IES_GET_COMPONENT(sota->world, sota->party.entities[id], Unit);
-    erwin->class = UNIT_CLASS_STANDARD_BEARER;
+    Unit_Class_set(erwin, UNIT_CLASS_STANDARD_BEARER);
     ent = sota->party.entities[id];
     Map_Unit_Put(sota->map, pos.x, pos.y, ent);
     SDL_assert(sota->party.entities[id] > TNECS_NULL);
@@ -212,7 +212,7 @@ void test_aura_decay(int argc, char *argv[]) {
 
     /* Check Aura in bonus stack */
     Map_Bonus_Standard_Apply(sota->map, ARMY_FRIENDLY);
-    struct Weapon *standardwpn          = DTAB_GET(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
+    struct Weapon *standardwpn          = DTAB_GET(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
     struct Unit_stats aura_bonus        = standardwpn->item->aura.unit_stats;
 
     /*  Decaying */
@@ -220,115 +220,115 @@ void test_aura_decay(int argc, char *argv[]) {
 
     /* Check effective stats */
     struct Unit *silou = IES_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SILOU], Unit);
-    nourstest_true(DARR_NUM(silou->bonus_stack) == 0);
+    nourstest_true(DARR_NUM(silou->stats.bonus_stack) == 0);
     SDL_assert(silou != NULL);
     struct Unit_stats effective_stats   = Unit_effectiveStats(silou);
 
-    nourstest_true(effective_stats.hp   == (silou->current_stats.hp));
-    nourstest_true(effective_stats.str  == (silou->current_stats.str));
-    nourstest_true(effective_stats.mag  == (silou->current_stats.mag));
-    nourstest_true(effective_stats.agi  == (silou->current_stats.agi));
-    nourstest_true(effective_stats.dex  == (silou->current_stats.dex));
-    nourstest_true(effective_stats.fth  == (silou->current_stats.fth));
-    nourstest_true(effective_stats.luck == (silou->current_stats.luck));
-    nourstest_true(effective_stats.def  == (silou->current_stats.def));
-    nourstest_true(effective_stats.res  == (silou->current_stats.res));
-    nourstest_true(effective_stats.con  == (silou->current_stats.con));
-    nourstest_true(effective_stats.move == (silou->current_stats.move));
-    nourstest_true(effective_stats.prof == (silou->current_stats.prof));
+    nourstest_true(effective_stats.hp   == (silou->stats.current.hp));
+    nourstest_true(effective_stats.str  == (silou->stats.current.str));
+    nourstest_true(effective_stats.mag  == (silou->stats.current.mag));
+    nourstest_true(effective_stats.agi  == (silou->stats.current.agi));
+    nourstest_true(effective_stats.dex  == (silou->stats.current.dex));
+    nourstest_true(effective_stats.fth  == (silou->stats.current.fth));
+    nourstest_true(effective_stats.luck == (silou->stats.current.luck));
+    nourstest_true(effective_stats.def  == (silou->stats.current.def));
+    nourstest_true(effective_stats.res  == (silou->stats.current.res));
+    nourstest_true(effective_stats.con  == (silou->stats.current.con));
+    nourstest_true(effective_stats.move == (silou->stats.current.move));
+    nourstest_true(effective_stats.prof == (silou->stats.current.prof));
 
     struct Unit *kiara = IES_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_KIARA], Unit);
-    nourstest_true(DARR_NUM(kiara->bonus_stack) == 0);
+    nourstest_true(DARR_NUM(kiara->stats.bonus_stack) == 0);
     SDL_assert(kiara != NULL);
     effective_stats = Unit_effectiveStats(kiara);
 
-    nourstest_true(effective_stats.hp   == (kiara->current_stats.hp));
-    nourstest_true(effective_stats.str  == (kiara->current_stats.str));
-    nourstest_true(effective_stats.mag  == (kiara->current_stats.mag));
-    nourstest_true(effective_stats.agi  == (kiara->current_stats.agi));
-    nourstest_true(effective_stats.dex  == (kiara->current_stats.dex));
-    nourstest_true(effective_stats.fth  == (kiara->current_stats.fth));
-    nourstest_true(effective_stats.luck == (kiara->current_stats.luck));
-    nourstest_true(effective_stats.def  == (kiara->current_stats.def));
-    nourstest_true(effective_stats.res  == (kiara->current_stats.res));
-    nourstest_true(effective_stats.con  == (kiara->current_stats.con));
-    nourstest_true(effective_stats.move == (kiara->current_stats.move));
-    nourstest_true(effective_stats.prof == (kiara->current_stats.prof));
+    nourstest_true(effective_stats.hp   == (kiara->stats.current.hp));
+    nourstest_true(effective_stats.str  == (kiara->stats.current.str));
+    nourstest_true(effective_stats.mag  == (kiara->stats.current.mag));
+    nourstest_true(effective_stats.agi  == (kiara->stats.current.agi));
+    nourstest_true(effective_stats.dex  == (kiara->stats.current.dex));
+    nourstest_true(effective_stats.fth  == (kiara->stats.current.fth));
+    nourstest_true(effective_stats.luck == (kiara->stats.current.luck));
+    nourstest_true(effective_stats.def  == (kiara->stats.current.def));
+    nourstest_true(effective_stats.res  == (kiara->stats.current.res));
+    nourstest_true(effective_stats.con  == (kiara->stats.current.con));
+    nourstest_true(effective_stats.move == (kiara->stats.current.move));
+    nourstest_true(effective_stats.prof == (kiara->stats.current.prof));
 
     struct Unit *servil = IES_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SERVIL], Unit);
-    nourstest_true(DARR_NUM(servil->bonus_stack) == 0);
+    nourstest_true(DARR_NUM(servil->stats.bonus_stack) == 0);
     SDL_assert(servil != NULL);
     effective_stats = Unit_effectiveStats(servil);
 
-    nourstest_true(effective_stats.hp   == servil->current_stats.hp);
-    nourstest_true(effective_stats.str  == servil->current_stats.str);
-    nourstest_true(effective_stats.mag  == servil->current_stats.mag);
-    nourstest_true(effective_stats.agi  == servil->current_stats.agi);
-    nourstest_true(effective_stats.dex  == servil->current_stats.dex);
-    nourstest_true(effective_stats.fth  == servil->current_stats.fth);
-    nourstest_true(effective_stats.luck == servil->current_stats.luck);
-    nourstest_true(effective_stats.def  == servil->current_stats.def);
-    nourstest_true(effective_stats.res  == servil->current_stats.res);
-    nourstest_true(effective_stats.con  == servil->current_stats.con);
-    nourstest_true(effective_stats.move == servil->current_stats.move);
-    nourstest_true(effective_stats.prof == servil->current_stats.prof);
+    nourstest_true(effective_stats.hp   == servil->stats.current.hp);
+    nourstest_true(effective_stats.str  == servil->stats.current.str);
+    nourstest_true(effective_stats.mag  == servil->stats.current.mag);
+    nourstest_true(effective_stats.agi  == servil->stats.current.agi);
+    nourstest_true(effective_stats.dex  == servil->stats.current.dex);
+    nourstest_true(effective_stats.fth  == servil->stats.current.fth);
+    nourstest_true(effective_stats.luck == servil->stats.current.luck);
+    nourstest_true(effective_stats.def  == servil->stats.current.def);
+    nourstest_true(effective_stats.res  == servil->stats.current.res);
+    nourstest_true(effective_stats.con  == servil->stats.current.con);
+    nourstest_true(effective_stats.move == servil->stats.current.move);
+    nourstest_true(effective_stats.prof == servil->stats.current.prof);
 
     Map_Bonus_Standard_Apply(sota->map, ARMY_FRIENDLY);
 
     /* Check effective stats */
     silou = IES_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SILOU], Unit);
-    nourstest_true(DARR_NUM(silou->bonus_stack) == 1);
+    nourstest_true(DARR_NUM(silou->stats.bonus_stack) == 1);
     SDL_assert(silou != NULL);
     effective_stats   = Unit_effectiveStats(silou);
 
-    nourstest_true(effective_stats.hp   == (silou->current_stats.hp     + aura_bonus.hp));
-    nourstest_true(effective_stats.str  == (silou->current_stats.str    + aura_bonus.str));
-    nourstest_true(effective_stats.mag  == (silou->current_stats.mag    + aura_bonus.mag));
-    nourstest_true(effective_stats.agi  == (silou->current_stats.agi    + aura_bonus.agi));
-    nourstest_true(effective_stats.dex  == (silou->current_stats.dex    + aura_bonus.dex));
-    nourstest_true(effective_stats.fth  == (silou->current_stats.fth    + aura_bonus.fth));
-    nourstest_true(effective_stats.luck == (silou->current_stats.luck   + aura_bonus.luck));
-    nourstest_true(effective_stats.def  == (silou->current_stats.def    + aura_bonus.def));
-    nourstest_true(effective_stats.res  == (silou->current_stats.res    + aura_bonus.res));
-    nourstest_true(effective_stats.con  == (silou->current_stats.con    + aura_bonus.con));
-    nourstest_true(effective_stats.move == (silou->current_stats.move   + aura_bonus.move));
-    nourstest_true(effective_stats.prof == (silou->current_stats.prof   + aura_bonus.prof));
+    nourstest_true(effective_stats.hp   == (silou->stats.current.hp     + aura_bonus.hp));
+    nourstest_true(effective_stats.str  == (silou->stats.current.str    + aura_bonus.str));
+    nourstest_true(effective_stats.mag  == (silou->stats.current.mag    + aura_bonus.mag));
+    nourstest_true(effective_stats.agi  == (silou->stats.current.agi    + aura_bonus.agi));
+    nourstest_true(effective_stats.dex  == (silou->stats.current.dex    + aura_bonus.dex));
+    nourstest_true(effective_stats.fth  == (silou->stats.current.fth    + aura_bonus.fth));
+    nourstest_true(effective_stats.luck == (silou->stats.current.luck   + aura_bonus.luck));
+    nourstest_true(effective_stats.def  == (silou->stats.current.def    + aura_bonus.def));
+    nourstest_true(effective_stats.res  == (silou->stats.current.res    + aura_bonus.res));
+    nourstest_true(effective_stats.con  == (silou->stats.current.con    + aura_bonus.con));
+    nourstest_true(effective_stats.move == (silou->stats.current.move   + aura_bonus.move));
+    nourstest_true(effective_stats.prof == (silou->stats.current.prof   + aura_bonus.prof));
 
     kiara = IES_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_KIARA], Unit);
-    nourstest_true(DARR_NUM(kiara->bonus_stack) == 1);
+    nourstest_true(DARR_NUM(kiara->stats.bonus_stack) == 1);
     SDL_assert(kiara != NULL);
     effective_stats = Unit_effectiveStats(kiara);
 
-    nourstest_true(effective_stats.hp   == (kiara->current_stats.hp     + aura_bonus.hp));
-    nourstest_true(effective_stats.str  == (kiara->current_stats.str    + aura_bonus.str));
-    nourstest_true(effective_stats.mag  == (kiara->current_stats.mag    + aura_bonus.mag));
-    nourstest_true(effective_stats.agi  == (kiara->current_stats.agi    + aura_bonus.agi));
-    nourstest_true(effective_stats.dex  == (kiara->current_stats.dex    + aura_bonus.dex));
-    nourstest_true(effective_stats.fth  == (kiara->current_stats.fth    + aura_bonus.fth));
-    nourstest_true(effective_stats.luck == (kiara->current_stats.luck   + aura_bonus.luck));
-    nourstest_true(effective_stats.def  == (kiara->current_stats.def    + aura_bonus.def));
-    nourstest_true(effective_stats.res  == (kiara->current_stats.res    + aura_bonus.res));
-    nourstest_true(effective_stats.con  == (kiara->current_stats.con    + aura_bonus.con));
-    nourstest_true(effective_stats.move == (kiara->current_stats.move   + aura_bonus.move));
-    nourstest_true(effective_stats.prof == (kiara->current_stats.prof   + aura_bonus.prof));
+    nourstest_true(effective_stats.hp   == (kiara->stats.current.hp     + aura_bonus.hp));
+    nourstest_true(effective_stats.str  == (kiara->stats.current.str    + aura_bonus.str));
+    nourstest_true(effective_stats.mag  == (kiara->stats.current.mag    + aura_bonus.mag));
+    nourstest_true(effective_stats.agi  == (kiara->stats.current.agi    + aura_bonus.agi));
+    nourstest_true(effective_stats.dex  == (kiara->stats.current.dex    + aura_bonus.dex));
+    nourstest_true(effective_stats.fth  == (kiara->stats.current.fth    + aura_bonus.fth));
+    nourstest_true(effective_stats.luck == (kiara->stats.current.luck   + aura_bonus.luck));
+    nourstest_true(effective_stats.def  == (kiara->stats.current.def    + aura_bonus.def));
+    nourstest_true(effective_stats.res  == (kiara->stats.current.res    + aura_bonus.res));
+    nourstest_true(effective_stats.con  == (kiara->stats.current.con    + aura_bonus.con));
+    nourstest_true(effective_stats.move == (kiara->stats.current.move   + aura_bonus.move));
+    nourstest_true(effective_stats.prof == (kiara->stats.current.prof   + aura_bonus.prof));
 
     servil = IES_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SERVIL], Unit);
-    nourstest_true(DARR_NUM(servil->bonus_stack) == 0);
+    nourstest_true(DARR_NUM(servil->stats.bonus_stack) == 0);
     SDL_assert(servil != NULL);
     effective_stats = Unit_effectiveStats(servil);
 
-    nourstest_true(effective_stats.hp   == servil->current_stats.hp);
-    nourstest_true(effective_stats.str  == servil->current_stats.str);
-    nourstest_true(effective_stats.mag  == servil->current_stats.mag);
-    nourstest_true(effective_stats.agi  == servil->current_stats.agi);
-    nourstest_true(effective_stats.dex  == servil->current_stats.dex);
-    nourstest_true(effective_stats.fth  == servil->current_stats.fth);
-    nourstest_true(effective_stats.luck == servil->current_stats.luck);
-    nourstest_true(effective_stats.def  == servil->current_stats.def);
-    nourstest_true(effective_stats.res  == servil->current_stats.res);
-    nourstest_true(effective_stats.con  == servil->current_stats.con);
-    nourstest_true(effective_stats.move == servil->current_stats.move);
-    nourstest_true(effective_stats.prof == servil->current_stats.prof);
+    nourstest_true(effective_stats.hp   == servil->stats.current.hp);
+    nourstest_true(effective_stats.str  == servil->stats.current.str);
+    nourstest_true(effective_stats.mag  == servil->stats.current.mag);
+    nourstest_true(effective_stats.agi  == servil->stats.current.agi);
+    nourstest_true(effective_stats.dex  == servil->stats.current.dex);
+    nourstest_true(effective_stats.fth  == servil->stats.current.fth);
+    nourstest_true(effective_stats.luck == servil->stats.current.luck);
+    nourstest_true(effective_stats.def  == servil->stats.current.def);
+    nourstest_true(effective_stats.res  == servil->stats.current.res);
+    nourstest_true(effective_stats.con  == servil->stats.current.con);
+    nourstest_true(effective_stats.move == servil->stats.current.move);
+    nourstest_true(effective_stats.prof == servil->stats.current.prof);
 
     /* Quit game */
     Game_Free(sota);
@@ -361,9 +361,9 @@ void test_aura_fsm(int argc, char *argv[]) {
     sota->map->world = sota->world;
 
     /* Load Standard */
-    SDL_assert(sota->weapons_dtab != NULL);
-    Weapon_Load(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
-    SDL_assert(DTAB_GET(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD) != NULL);
+    SDL_assert(gl_weapons_dtab != NULL);
+    Weapon_Load(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
+    SDL_assert(DTAB_GET(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD) != NULL);
     /* -- Place all friendlies close together -- */
     i32 id;
     tnecs_entity ent;
@@ -372,7 +372,7 @@ void test_aura_fsm(int argc, char *argv[]) {
     struct Point pos = {4, 4};
     Game_Party_Entity_Create(sota, id = UNIT_ID_ERWIN, pos, &Unit_default);
     struct Unit *erwin = IES_GET_COMPONENT(sota->world, sota->party.entities[id], Unit);
-    erwin->class = UNIT_CLASS_STANDARD_BEARER;
+    Unit_Class_set(erwin, UNIT_CLASS_STANDARD_BEARER);
     ent = sota->party.entities[id];
     Map_Unit_Put(sota->map, pos.x, pos.y, ent);
     SDL_assert(sota->party.entities[id] > TNECS_NULL);
@@ -411,24 +411,24 @@ void test_aura_fsm(int argc, char *argv[]) {
 
     /* Check effective stats */
     struct Unit *silou = IES_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SILOU], Unit);
-    nourstest_true(DARR_NUM(silou->bonus_stack) == 1);
+    nourstest_true(DARR_NUM(silou->stats.bonus_stack) == 1);
     SDL_assert(silou != NULL);
-    struct Weapon *standardwpn          = DTAB_GET(sota->weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
+    struct Weapon *standardwpn          = DTAB_GET(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
     struct Unit_stats aura_bonus        = standardwpn->item->aura.unit_stats;
     struct Unit_stats effective_stats   = Unit_effectiveStats(silou);
 
-    nourstest_true(effective_stats.hp   == (silou->current_stats.hp     + aura_bonus.hp));
-    nourstest_true(effective_stats.str  == (silou->current_stats.str    + aura_bonus.str));
-    nourstest_true(effective_stats.mag  == (silou->current_stats.mag    + aura_bonus.mag));
-    nourstest_true(effective_stats.agi  == (silou->current_stats.agi    + aura_bonus.agi));
-    nourstest_true(effective_stats.dex  == (silou->current_stats.dex    + aura_bonus.dex));
-    nourstest_true(effective_stats.fth  == (silou->current_stats.fth    + aura_bonus.fth));
-    nourstest_true(effective_stats.luck == (silou->current_stats.luck   + aura_bonus.luck));
-    nourstest_true(effective_stats.def  == (silou->current_stats.def    + aura_bonus.def));
-    nourstest_true(effective_stats.res  == (silou->current_stats.res    + aura_bonus.res));
-    nourstest_true(effective_stats.con  == (silou->current_stats.con    + aura_bonus.con));
-    nourstest_true(effective_stats.move == (silou->current_stats.move   + aura_bonus.move));
-    nourstest_true(effective_stats.prof == (silou->current_stats.prof   + aura_bonus.prof));
+    nourstest_true(effective_stats.hp   == (silou->stats.current.hp     + aura_bonus.hp));
+    nourstest_true(effective_stats.str  == (silou->stats.current.str    + aura_bonus.str));
+    nourstest_true(effective_stats.mag  == (silou->stats.current.mag    + aura_bonus.mag));
+    nourstest_true(effective_stats.agi  == (silou->stats.current.agi    + aura_bonus.agi));
+    nourstest_true(effective_stats.dex  == (silou->stats.current.dex    + aura_bonus.dex));
+    nourstest_true(effective_stats.fth  == (silou->stats.current.fth    + aura_bonus.fth));
+    nourstest_true(effective_stats.luck == (silou->stats.current.luck   + aura_bonus.luck));
+    nourstest_true(effective_stats.def  == (silou->stats.current.def    + aura_bonus.def));
+    nourstest_true(effective_stats.res  == (silou->stats.current.res    + aura_bonus.res));
+    nourstest_true(effective_stats.con  == (silou->stats.current.con    + aura_bonus.con));
+    nourstest_true(effective_stats.move == (silou->stats.current.move   + aura_bonus.move));
+    nourstest_true(effective_stats.prof == (silou->stats.current.prof   + aura_bonus.prof));
 
     /* Move Friendly 1 outside */
     sota->selected_unit_initial_position.x  = 3;
@@ -438,25 +438,25 @@ void test_aura_fsm(int argc, char *argv[]) {
     sota->selected_unit_entity              = sota->party.entities[UNIT_ID_SILOU];
 
     fsm_eAcpt_sGmpMap_ssMapUnitMv(sota, TNECS_NULL);
-    nourstest_true(DARR_NUM(silou->bonus_stack) == 0);
+    nourstest_true(DARR_NUM(silou->stats.bonus_stack) == 0);
     silou_pos = IES_GET_COMPONENT(sota->world, sota->party.entities[UNIT_ID_SILOU], Position);
     SDL_assert(silou_pos->tilemap_pos.x == sota->selected_unit_moved_position.x);
     SDL_assert(silou_pos->tilemap_pos.y == sota->selected_unit_moved_position.y);
 
     effective_stats   = Unit_effectiveStats(silou);
 
-    nourstest_true(effective_stats.hp   == silou->current_stats.hp);
-    nourstest_true(effective_stats.str  == silou->current_stats.str);
-    nourstest_true(effective_stats.mag  == silou->current_stats.mag);
-    nourstest_true(effective_stats.agi  == silou->current_stats.agi);
-    nourstest_true(effective_stats.dex  == silou->current_stats.dex);
-    nourstest_true(effective_stats.fth  == silou->current_stats.fth);
-    nourstest_true(effective_stats.luck == silou->current_stats.luck);
-    nourstest_true(effective_stats.def  == silou->current_stats.def);
-    nourstest_true(effective_stats.res  == silou->current_stats.res);
-    nourstest_true(effective_stats.con  == silou->current_stats.con);
-    nourstest_true(effective_stats.move == silou->current_stats.move);
-    nourstest_true(effective_stats.prof == silou->current_stats.prof);
+    nourstest_true(effective_stats.hp   == silou->stats.current.hp);
+    nourstest_true(effective_stats.str  == silou->stats.current.str);
+    nourstest_true(effective_stats.mag  == silou->stats.current.mag);
+    nourstest_true(effective_stats.agi  == silou->stats.current.agi);
+    nourstest_true(effective_stats.dex  == silou->stats.current.dex);
+    nourstest_true(effective_stats.fth  == silou->stats.current.fth);
+    nourstest_true(effective_stats.luck == silou->stats.current.luck);
+    nourstest_true(effective_stats.def  == silou->stats.current.def);
+    nourstest_true(effective_stats.res  == silou->stats.current.res);
+    nourstest_true(effective_stats.con  == silou->stats.current.con);
+    nourstest_true(effective_stats.move == silou->stats.current.move);
+    nourstest_true(effective_stats.prof == silou->stats.current.prof);
 
     /* Quit game */
     Game_Free(sota);

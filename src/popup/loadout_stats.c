@@ -5,10 +5,12 @@
 #include "weapon.h"
 #include "utilities.h"
 #include "filesystem.h"
-#include "unit/equipment.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
 #include "unit/loadout.h"
+#include "unit/equipment.h"
 #include "macros.h"
+#include "globals.h"
 #include "nmath.h"
 #include "popup/popup.h"
 #include "pixelfonts.h"
@@ -48,10 +50,10 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
 
     /* - PHYSICAL ATK ARROW - */
     arrow_index = STAT_ARROW_NULL;
-    if (pls->selected_cs.attack[DMG_TYPE_PHYSICAL] > pls->initial_cs.attack[DMG_TYPE_PHYSICAL])
+    if (pls->selected_cs.attack.physical > pls->initial_cs.attack.physical)
         arrow_index = STAT_ARROW_UP;
-    else if (pls->selected_cs.attack[DMG_TYPE_PHYSICAL] <
-             pls->initial_cs.attack[DMG_TYPE_PHYSICAL])
+    else if (pls->selected_cs.attack.physical <
+             pls->initial_cs.attack.physical)
         arrow_index = STAT_ARROW_DOWN;
 
 #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
@@ -65,10 +67,10 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
 
     /* - MAGICAL ATK ARROW - */
     arrow_index = STAT_ARROW_NULL;
-    if (pls->selected_cs.attack[DMG_TYPE_MAGICAL] > pls->initial_cs.attack[DMG_TYPE_MAGICAL])
+    if (pls->selected_cs.attack.magical > pls->initial_cs.attack.magical)
         arrow_index = STAT_ARROW_UP;
-    else if (pls->selected_cs.attack[DMG_TYPE_MAGICAL] <
-             pls->initial_cs.attack[DMG_TYPE_MAGICAL])
+    else if (pls->selected_cs.attack.magical <
+             pls->initial_cs.attack.magical)
         arrow_index = STAT_ARROW_DOWN;
 
 #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
@@ -146,11 +148,11 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
 
     /* - PHYSICAL PROT ARROW - */
     arrow_index = STAT_ARROW_NULL;
-    if (pls->selected_cs.protection[DMG_TYPE_PHYSICAL] >
-        pls->initial_cs.protection[DMG_TYPE_PHYSICAL])
+    if (pls->selected_cs.protection.physical >
+        pls->initial_cs.protection.physical)
         arrow_index = STAT_ARROW_UP;
-    else if (pls->selected_cs.protection[DMG_TYPE_PHYSICAL] <
-             pls->initial_cs.protection[DMG_TYPE_PHYSICAL])
+    else if (pls->selected_cs.protection.physical <
+             pls->initial_cs.protection.physical)
         arrow_index = STAT_ARROW_DOWN;
 
 #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
@@ -164,11 +166,11 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
 
     /* - MAGICAL PROT ARROW - */
     arrow_index = STAT_ARROW_NULL;
-    if (pls->selected_cs.protection[DMG_TYPE_MAGICAL] >
-        pls->initial_cs.protection[DMG_TYPE_MAGICAL])
+    if (pls->selected_cs.protection.magical >
+        pls->initial_cs.protection.magical)
         arrow_index = STAT_ARROW_UP;
-    else if (pls->selected_cs.protection[DMG_TYPE_MAGICAL] <
-             pls->initial_cs.protection[DMG_TYPE_MAGICAL])
+    else if (pls->selected_cs.protection.magical <
+             pls->initial_cs.protection.magical)
         arrow_index = STAT_ARROW_DOWN;
 
 #ifdef DEBUG_LOADOUT_STATS_SHOW_ARROWS
@@ -237,30 +239,30 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls,
     char numbuff[10];
     /* - ATK - */
     PixelFont_Write(pls->pixelnours, renderer, "ATK", 3, PLS_ATK_X, PLS_ATK_Y);
-    if (pls->selected_cs.attack[DMG_TYPE_TRUE] > 0) {
-        stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->selected_cs.attack[DMG_TYPE_PHYSICAL]);
+    if (pls->selected_cs.attack.True > 0) {
+        stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->selected_cs.attack.physical);
 
         stbsp_sprintf(numbuff, "%d/%d/%d\0",
-                      pls->selected_cs.attack[DMG_TYPE_PHYSICAL],
-                      pls->selected_cs.attack[DMG_TYPE_MAGICAL],
-                      pls->selected_cs.attack[DMG_TYPE_TRUE]);
+                      pls->selected_cs.attack.physical,
+                      pls->selected_cs.attack.magical,
+                      pls->selected_cs.attack.True);
         width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
         PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
                         PLS_ATK_X_STAT - width / 2 + 2, PLS_ATK_Y_STAT);
     } else {
-        stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->selected_cs.attack[DMG_TYPE_PHYSICAL]);
+        stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->selected_cs.attack.physical);
         width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
         stbsp_sprintf(numbuff, "%d/%d\0\0\0\0",
-                      pls->selected_cs.attack[DMG_TYPE_PHYSICAL], pls->selected_cs.attack[DMG_TYPE_MAGICAL]);
+                      pls->selected_cs.attack.physical, pls->selected_cs.attack.magical);
         PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
                         PLS_ATK_X_STAT - width, PLS_ATK_Y_STAT);
     }
     /* - PROT - */
     PixelFont_Write(pls->pixelnours, renderer, "DEF", 3, PLS_PROT_X, PLS_PROT_Y);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->selected_cs.protection[DMG_TYPE_PHYSICAL]);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->selected_cs.protection.physical);
     width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
-    stbsp_sprintf(numbuff, "%d/%d\0\0\0\0", pls->selected_cs.protection[DMG_TYPE_PHYSICAL],
-                  pls->selected_cs.protection[DMG_TYPE_MAGICAL]);
+    stbsp_sprintf(numbuff, "%d/%d\0\0\0\0", pls->selected_cs.protection.physical,
+                  pls->selected_cs.protection.magical);
     PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
                     PLS_PROT_X_STAT - width, PLS_PROT_Y_STAT);
     /* - HIT - */
@@ -467,8 +469,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
         if (!eq_valid(eq))
             break;
 
-        if (unit->weapons_dtab == NULL)
-            break;
+        SDL_assert(gl_weapons_dtab != NULL);
 
         i32 id = Unit_Id_Equipment(unit, eq);
         int x = PLS_NAMEL_X;
@@ -480,7 +481,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
             break;
         }
 
-        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, id);
+        struct Weapon *wpn = DTAB_GET(gl_weapons_dtab, id);
         if (wpn == NULL)
             break;
 
@@ -507,8 +508,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
         if (!eq_valid(eq))
             break;
 
-        if (unit->weapons_dtab == NULL)
-            break;
+        SDL_assert(gl_weapons_dtab != NULL);
 
         i32 id = Unit_Id_Equipment(unit, eq);
         int x = PLS_NAMER_X;
@@ -520,7 +520,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
             break;
         }
 
-        struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, id);
+        struct Weapon *wpn = DTAB_GET(gl_weapons_dtab, id);
         if (wpn == NULL)
             break;
 
@@ -624,7 +624,8 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
     SDL_assert(pls->unit_ent            > TNECS_NULL);
 
     Unit *unit = IES_GET_COMPONENT(pls->world, pls->unit_ent, Unit);
-    SDL_assert(unit->weapons_dtab  != NULL);
+
+    SDL_assert(gl_weapons_dtab  != NULL);
 
     /* Left hand item type */
     int eq = Loadout_Eq(&pls->loadout_selected, UNIT_HAND_LEFT);
@@ -632,8 +633,8 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
         int id = Unit_Id_Equipment(unit, eq);
 
         if (Weapon_ID_isValid(id)) {
-            Weapon_Load(unit->weapons_dtab, id);
-            pls->type_left = Weapon_TypeExp(DTAB_GET(unit->weapons_dtab, id));
+            Weapon_Load(gl_weapons_dtab, id);
+            pls->type_left = Weapon_TypeExp(DTAB_GET(gl_weapons_dtab, id));
         } else {
             pls->type_left = ITEM_TYPE_ITEM;
         }
@@ -645,8 +646,8 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
         int id = Unit_Id_Equipment(unit, eq);
 
         if (Weapon_ID_isValid(id)) {
-            Weapon_Load(unit->weapons_dtab, id);
-            pls->type_right = Weapon_TypeExp(DTAB_GET(unit->weapons_dtab, id));
+            Weapon_Load(gl_weapons_dtab, id);
+            pls->type_right = Weapon_TypeExp(DTAB_GET(gl_weapons_dtab, id));
         } else {
             pls->type_right = ITEM_TYPE_ITEM;
         }
@@ -721,8 +722,8 @@ void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls, struct LoadoutSe
     int weakhand    = Unit_Hand_Weak(unit);
     int hand        = Loadout_isEquipped(&wsm->selected, stronghand) ? weakhand : stronghand;
 
-    Loadout_Set(&pls->loadout_selected, hand, unit->eq_canEquip[elem]);
-    SDL_assert(Loadout_Eq(&pls->loadout_selected, hand) == unit->eq_canEquip[elem]);
+    Loadout_Set(&pls->loadout_selected, hand, unit->can_equip.arr[elem]);
+    SDL_assert(Loadout_Eq(&pls->loadout_selected, hand) == unit->can_equip.arr[elem]);
     pls->update = true;
 }
 

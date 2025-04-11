@@ -166,7 +166,6 @@ struct Fps {
     i32 ff_cap; /* [%] Fast forward cap above FPS */
 };
 
-
 /* --- Settings --- */
 struct Music_settings {
     i32 frequency;          /*  [Hz]    */
@@ -233,11 +232,19 @@ typedef struct MenuElemDirections {
 } MenuElemDirections;
 extern const MenuElemDirections MenuElemDirections_default;
 
-struct Damage {
-    i32 dmg[DAMAGE_TYPES];
-    i32 dmg_crit[DAMAGE_TYPES];
-};
-extern const struct Damage Damage_default;
+typedef struct Damage_Raw {
+    i32 physical;
+    i32 magical;
+    i32 True;
+    i32 total;
+} Damage_Raw;
+extern const struct Damage_Raw Damage_Raw_default;
+
+typedef struct Combat_Damage {
+    Damage_Raw dmg;
+    Damage_Raw dmg_crit;
+} Combat_Damage;
+extern const struct Combat_Damage Combat_Damage_default;
 
 union Graphics {
     SDL_Texture *texture;
@@ -278,34 +285,28 @@ typedef struct Unit_stats {
 extern const struct Unit_stats Unit_stats_default;
 
 typedef struct Range {
-    /* Can be cast to array */
+    /* No gaps in the range */
     i32 min;
     i32 max;
 } Range;
 extern const struct Range Range_default;
 
-/* Imagine I would implement a range with gaps */
-struct RangeGaps {
-    i32 canatt[SOTA_MAX_RANGE];
-};
-extern const struct Range Range_default;
-
 typedef struct Computed_Stats {
-    i32 attack[DAMAGE_TYPES];
-    i32 protection[DAMAGE_TYPES];
+    Damage_Raw attack;
+    Damage_Raw protection;
     i32 hit;
     i32 dodge; /* can be negative */
     i32 crit;
     i32 favor;
     i32 move;
     i32 speed; /* relative to agi so +/- */
-    i32 agony;
+    i32 agony; /* turns left before death (-1 not agonizing) */
     struct Range range_equipment;   /* Range of all equipment */
     struct Range range_loadout;     /* Range of equipped weapons */
     // issue:       What about staff AND weapon equipped?
     // Solution:
-    //          - Only one is shown at a time: Show only one at a time
-    //          - Show two at atime with Blue+Red+Purple filter
+    //          - Only one is shown at a time.
+    //          - Show two at a time w/ Blue+Red+Purple filter
 } Computed_Stats;
 extern const struct Computed_Stats Computed_Stats_default;
 
@@ -394,8 +395,8 @@ typedef struct Aura {
 extern const struct Aura Aura_default;
 
 struct Weapon_stats {
-    i32 attack[ATTACK_TYPES_NO_TOTAL];
-    i32 protection[PROTECTION_TYPES_NO_TOTAL];
+    Damage_Raw attack;
+    Damage_Raw protection;
     struct Range range; /* of attack [0]: min, [1]: max */
     i32 hit;
     i32 dodge;  /* when the Sword is TOO HEAVY TO DODGE */
@@ -423,24 +424,6 @@ typedef struct Inventory_item {
 }   Inventory_item;
 extern const struct Inventory_item Inventory_item_default;
 extern const struct Inventory_item Inventory_item_broken;
-
-// struct Reinforcement {
-//     Point position;
-//     i16 army;
-//     // i16 id;
-//     s8 filename;
-//     // TODO: 1 or 2
-//     // 1- Use unit filename instead of id
-//     //      - Gets rid of name from file vs name from id conflict
-//     //      - Gets rid of name id in file vs id in reinforcement issue
-//     // 2- Make ai id and use it instead of ai_filename
-//     //      - Have to SDL_free strings
-//     //      - char array?
-//     s8 ai_filename; /* Overrides ai_filename in unit */
-//     u8 turn;
-//     u8 levelups;
-// };
-// extern const struct Reinforcement Reinforcement_default;
 
 struct Movement_cost {
     i32 foot_slow;
@@ -496,8 +479,6 @@ extern const struct AI_State AI_State_default;
 
 typedef struct Convoy {
     struct jsonIO_Header jsonio_header;
-
-    struct dtab *weapons_dtab;
 
     struct Inventory_item books[SOTA_BOOKS_NUM];
     struct Inventory_item items[SOTA_CONVOY_SIZE_MAX];
@@ -559,10 +540,10 @@ struct Combat_Death {
 extern const struct Combat_Death Combat_Death_default;
 
 /* -- Combat_Rates -- */
-struct Combat_Rates {
+typedef struct Combat_Rates {
     u8 hit;
     u8 crit;
-} ;
+} Combat_Rates;
 extern const struct Combat_Rates Combat_Rates_default;
 
 /* -- Combat_Stats -- */
@@ -570,8 +551,8 @@ extern const struct Combat_Rates Combat_Rates_default;
 struct Combat_Stats {
     struct Combat_Rates     agg_rates;
     struct Combat_Rates     dft_rates;
-    struct Damage           agg_damage;
-    struct Damage           dft_damage;
+    struct Combat_Damage    agg_damage;
+    struct Combat_Damage    dft_damage;
     struct Computed_Stats   agg_stats;
     struct Computed_Stats   dft_stats;
     i8                      agg_equipment[UNIT_ARMS_NUM];
@@ -604,13 +585,13 @@ extern const struct Combat_Outcome Combat_Outcome_default;
 
 /* --- RNG SEQUENCE BREAKER (SB) --- */
 struct RNG_Sequence { /* Sequence of hits/misses in a row */
-    b32 hit; /* 0 if sequence of misses, 1 of hits */
+    b32 hit;        /* 0 if sequence of misses, 1 of hits */
     i8 len;
-    i8 eff_rate;
+    i8 eff_rate;    /* TODO RM */
 };
 
-struct RNG_Stats_Sequence {
-    // RNG sequences for ALL stats
+/* --- UNIT --- */
+struct Unit_Sequence {
     struct RNG_Sequence hit;
     struct RNG_Sequence crit;
 
@@ -628,139 +609,155 @@ struct RNG_Stats_Sequence {
     struct RNG_Sequence prof;
 };
 
+struct Unit_Flags {
+    b32 sex;            /* 0:F, 1:M. eg. hasPenis. */
+    b32 waits;
+    b32 alive;
+    b32 mounted;
+    b32 literate;       /* Scribe job.  */
+    b32 courageous;     /* Story events */
+    b32 divine_shield;
+    u64 skills;
+    bitflag16_t job_talent;
+    u16 equippable;
+    u16 talkable;
+    i8  handedness;
+    i8  mvt_type;
+};
 
-/* --- UNIT --- */
+struct Unit_Growth {
+    struct Unit_stats   rates;
+    struct Unit_stats  *grown;
+};
+
+struct Unit_Rescue {
+    u16 id;
+};
+
+struct Unit_Render {
+    /* Map: which tiles get rendered for unit */
+    //  e.g. heal tiles for healers
+    i8 rangemap;
+    i8 user_rangemap; /* reset to NULL when equipment changes */
+    b32 show_danger;
+};
+
 struct Support {
     u16 other_id;
     u16 other_type;
     i8 level;
 };
 
-// TODO: unit design:
-//  - Stats values inside unit class are CONSTANT.
-//  - Any stat modified by equipments, supports, skills is output from FUNCTIONS
-//  - e.g. Unit_Equipped_Bonus_Stats
-//  - e.g. Unit_Support_Bonus_Stats
-//  - e.g. Unit_Computed_Stats
-//      - should not be kept in memory in unit!
-//      - Those values ALWAYS CHANGE DUE TO GAME STATE
-//      - SO DON'T KEEP THEM IN MEMORY.
-// Keep same design of:
-//  - base_stats,
-//  - current_stats = base_stats + grown_stats
-//  - effective_stats = current_stats + bonus_stats
-//  - func(effective_stats, supports, bonus_computed_stats) -> computed_stats
+struct Unit_Support {
+    struct Support arr[SOTA_MAX_SUPPORTS];
+    u16 type;
+    u16 num;
+};
 
+struct Unit_Equipment {
+    struct Inventory_item arr[SOTA_EQUIPMENT_SIZE];
+    i32 num;
 
-typedef struct Unit {
-    struct jsonIO_Header jsonio_header;
+    struct Loadout _equipped; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
+};
 
-    // TODO: struct of all unit ids? + API
-    u16 _id;
-    u16 title_id;
-    i16 class;
-    i16 ai_id;
-    s8 ai_filename; /* Default AI for unit */
+struct Unit_canEquip {
+    /* Design exception:
+        - can_equip depends on game state,
+        - but, can_equip needs to be hosted somewhere.
+    */
+    i32 arr[SOTA_EQUIPMENT_SIZE];
+    i32 num;
+};
 
-    i8  mvt_type;
-    i8  army;
-    u8  current_hp;
-    i8  handedness;
-    u16 talkable;
-
-    // TODO: Agony struct
-    u8  current_agony;
-    i8  agony; /* turns left before death (-1 not agonizing) */
-    u8  regrets;
-
-    // Status with least remaining turns on top.
-    struct Unit_status *status_queue;
-
-    // TODO: Support struct should have the list of supporters inside it
-    struct Support supports[SOTA_MAX_SUPPORTS];
-    u16 support_type;
-    u16 support_num;
-
-    // TODO: rm.
-    struct Damage damage;
-
-    /* Stats */
-
-    struct Bonus_Stats *bonus_stack;
-    struct Unit_stats bonus_stats; // TODO remove for new Bonus_Stat Struct
-    struct Unit_stats malus_stats; // TODO remove for new Bonus_Stat Struct
-    struct Unit_stats caps_stats;
-    struct Unit_stats base_stats;
-    struct Unit_stats current_stats;    /* base_stats + all growths */
-    struct Unit_stats effective_stats;  /* current_stats + bonuses/maluses */
-
-    /* Growths */
-    struct Unit_stats growths;
-    // TODO rm, should be a fund
-    struct Unit_stats bonus_growths;
-    // TODO rm, should be a fund
-    struct Unit_stats effective_growths;
-    struct Unit_stats *grown_stats;
-
-    u64 skills;
-
-    struct RNG_Stats_Sequence rng_sequence;
-
-    u16 equippable;
+struct Unit_Level {
     u16 base_exp;
     u16 exp;
-    // TODO: rescue struct
-    u16 rescuee;
+};
 
-    i8 rangemap;
-    i8 user_rangemap; /* reset to NULL when equipment changes */
+struct Unit_Arms {
+    i32 num;
+    b32 hands[UNIT_ARMS_NUM]; /* Does unit have hands? */
+};
 
-    bitflag16_t job_talent;
+struct Unit_Stats_Bundle {
+    struct Unit_stats caps;
+    struct Unit_stats bases;
+    struct Unit_stats current; /* Only changes on levelup */
 
-    /* Defendant position (self is Aggressor.) */
-    // TODO: what? why? rm
-    Point dft_pos; /* Used to compute stats in case of dual wielding */
+    /* Design exception:
+        - Rather than checking every unit, enemy, skill, aura...
+        - Bonuses track if their conditions are met themselves.
+    */
+    struct Bonus_Stats *bonus_stack;
+};
 
-    i32     arms_num;
-    b32    _hands[UNIT_ARMS_NUM]; /* Does unit have hands?             */
+struct Unit_Counters {
+    i32  hp;
+    i32  agony;
+    i32  regrets;
+};
 
-    // TODO: replace raw _equipped with:
-    // struct Loadout _equipped;
-    i32 _equipped[UNIT_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
+struct Unit_IDs {
+    i32 self;
+    i32 title;
+    i32 class;
+    i32 army;
+    i32 ai;
+    i32 mount;
+};
 
-    struct dtab *weapons_dtab;
-    struct dtab *items_dtab;
+struct Unit_Statuses {
+    // TODO: remove. Statuses should be components.
+    struct Unit_status *queue;
+};
 
-    // TODO: all equipment stuff in a struct
-    struct Inventory_item _equipment[SOTA_EQUIPMENT_SIZE];
+typedef struct Unit {
+    /* ---------------------- Unit --------------------- */
+    /*  Represents characters occupying tiles on a map.
+    /*  Units, move, equip weapons, get afflicted with
+    /*  statuses, fight, ride mounts, agonize, die...
+    /*
+    /*  # Design
+    /*  ## Members are *constants*, NO dependency on game state
+    /*  - Game state EXCEPT self
+    /*      - Map, other units, etc...
+    /*  - DO NOT put stats that depend on game state in unit
+    /*      - Those are variable stats
+    /*  - base_stats, current_stats do not depend on unit
+    /*    equipment, neighboring units, auras... -> unit member
+    /*  - Always compute variable stats by inputting game state:
+    /*      - effective_stats, computed_stats
+    /*  ## Record indices, not pointers
+    /*  - Centralize data into external arrays
+    /*      - Ex: all possible names in *global_unitNames*
+    /*  - "Out of band": smaller struct
+    /*  - Fewer dynamic allocs, fewer frees
+    /*  - Less fragmentation. Faster?
 
-    /* For twohanding when computing computedstats */
-    // TODO: rm. why? */
-    struct Inventory_item temp;
+    /*  # Terminology
+    /*  - base_stats
+    /*  - current_stats     = base_stats + grown_stats
+    /*  - effective_stats   = current_stats + bonuses
+    /*  - computed_stats    = func(effective_stats, supports, bonuses)
+    */
 
-    /* 1. Can't equip more than SOTA_EQUIPMENT_SIZE items */
-    i32 eq_canEquip[SOTA_EQUIPMENT_SIZE];
-    i32 num_equipment;
-    i32 num_canEquip;
+    struct jsonIO_Header jsonio_header;
 
-    struct Mount *mount;
-
-    // TODO: rm. Use id for global_unitNames */
-    s8 name;
-
-    struct Computed_Stats computed_stats;   /* Computed from Unit_Stats  */
-
-    // TODO: Struct of unit bools
-    b32 sex;            /* 0:F, 1:M. eg. hasPenis. */
-    b32 waits;
-    b32 alive;
-    b32 mounted;
-    b32 literate;       /* Reading/writing for scribe job. */
-    b32 courageous;     /* For reaction to story events    */
-    b32 show_danger;
-    b32 update_stats;
-    b32 divine_shield;
-    b32 isDualWielding;
+    struct Unit_IDs             id;
+    struct Unit_Growth          growth;
+    struct Unit_Sequence        rng_sequence;
+    struct Unit_Flags           flags;
+    struct Unit_Rescue          rescue;
+    struct Unit_Render          render;
+    struct Unit_Support         support;
+    struct Unit_Level           level;
+    struct Unit_Equipment       equipment;
+    struct Unit_canEquip        can_equip;
+    struct Unit_Arms            arms;
+    struct Unit_Stats_Bundle    stats;
+    struct Unit_Counters        counters;
+    struct Unit_Statuses        statuses; // TODO: rm
 } Unit;
 extern const struct Unit Unit_default;
 
@@ -935,8 +932,6 @@ typedef struct Game {
     struct dtab *menu_options_dtab;
     struct dtab *defaultstates_dtab;
 
-    struct dtab *items_dtab;
-    struct dtab *weapons_dtab;
     struct dtab *tiles_loaded_dtab;
     struct dtab *units_loaded_dtab;
 

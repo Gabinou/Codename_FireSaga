@@ -3,10 +3,10 @@
 #include "map/map.h"
 #include "map/path.h"
 #include "position.h"
+#include "globals.h"
 #include "weapon.h"
 #include "pathfinding.h"
 #include "utilities.h"
-#include "unit/equipment.h"
 #include "nmath.h"
 #include "unit/unit.h"
 #include "unit/loadout.h"
@@ -14,6 +14,7 @@
 #include "unit/anim.h"
 #include "unit/status.h"
 #include "unit/boss.h"
+#include "unit/flags.h"
 #include "unit/range.h"
 #include "unit/stats.h"
 #include "unit/mount.h"
@@ -35,8 +36,9 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
 
     /* Compute movemap */
     struct Point start = pos->tilemap_pos;
-    i32 move_stat       = can_equip.move ? Unit_getStats(unit).move : 0;
-    i32 effective_move  = move_stat * map->cost_multiplier;
+    Unit_stats eff_s = Unit_effectiveStats(unit);
+    i32 move_stat       = can_equip.move ? eff_s.move : 0;
+    i32 effective_move  = move_stat * map->cost_multiplier; // TODO make utility
     _Map_Movemap_Compute(map, start, effective_move);
 
     // printf("MOVE\n");
@@ -49,7 +51,7 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
     canEquip range_can_equip    = can_equip;
     range_can_equip.eq_type     = LOADOUT_EQ;
 
-    unit->num_canEquip  = 0;
+    unit->can_equip.num  = 0;
     for (int eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         /* Skip if weapon is not usable */
 
@@ -73,7 +75,7 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
             continue;
         }
 
-        unit->eq_canEquip[unit->num_canEquip++] = eq;
+        unit->can_equip.arr[unit->can_equip.num++] = eq;
     }
 
     DARR_FREE(defendants);
@@ -94,8 +96,8 @@ b32 Map_canEquip_Range(struct Map *map, tnecs_entity unit_ent,
     Unit     *unit = IES_GET_COMPONENT(map->world, unit_ent, Unit);
 
     /* Compute range */
-    struct Range *range = Unit_Range_Eq(unit, can_equip._eq, can_equip.archetype);
-    SDL_assert(range            != NULL);
+    struct Range range = Range_default;
+    Unit_Range_Eq(unit, can_equip._eq, can_equip.archetype, &range);
     // SDL_Log("range %d %d", range->min, range->max);
 
     /* Compute attacktolist to check if any enemy in it */
@@ -172,8 +174,8 @@ tnecs_entity *Map_Find_Defendants(struct Map *map, MapFind mapfind) {
         // SDL_Log("Found unit on %lu %lu ", x_at, y_at);
         struct Unit *agg    = IES_GET_COMPONENT(map->world, aggressor, Unit);
         struct Unit *unit   = IES_GET_COMPONENT(map->world, unitontile, Unit);
-        u8 align_t          = SotA_army2alignment(unit->army);
-        u8 align_a          = SotA_army2alignment(agg->army);
+        u8 align_t          = SotA_army2alignment(Unit_Army(unit));
+        u8 align_a          = SotA_army2alignment(Unit_Army(agg));
 
         if (align_a == align_t) {
             // SDL_Log("Same alignment");
@@ -221,7 +223,7 @@ tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
     /* Note: attacktolist should have been created with same eq_type and _eq before */
     struct Unit *healer = IES_GET_COMPONENT(map->world, healer_ent, Unit);
     SDL_assert(healer               != NULL);
-    SDL_assert(healer->weapons_dtab != NULL);
+    SDL_assert(gl_weapons_dtab != NULL);
 
     /* TODO: full health people arent patients FOR HEALING STAVES */
     for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
@@ -246,11 +248,12 @@ tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
             continue;
         }
 
-        Weapon_Load(healer->weapons_dtab, id);
-        struct Weapon *staff = (struct Weapon *)DTAB_GET(healer->weapons_dtab, id);
+        Weapon_Load(gl_weapons_dtab, id);
+
+        const struct Weapon *staff = DTAB_GET_CONST(gl_weapons_dtab, id);
 
         /* -- Check healtolist for valid patients -- */
-        u8 align_healer = army_alignment[healer->army];
+        u8 align_healer = army_alignment[Unit_Army(healer)];
         for (size_t i = 0; i < DARR_NUM(healtolist) / 2; i++) {
             size_t x_at = healtolist[TWO_D * i];
             size_t y_at = healtolist[TWO_D * i + 1];
@@ -273,7 +276,7 @@ tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
             Unit *patient = IES_GET_COMPONENT(map->world, unitontile, Unit);
             Unit_stats p_eff_stats = Unit_effectiveStats(patient);
 
-            u8 align_patient = army_alignment[patient->army];
+            u8 align_patient = army_alignment[Unit_Army(patient)];
             b32 add = false;
             /* Staff patient alignment check */
             switch (staff->item->target) {
@@ -281,7 +284,8 @@ tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
                     add = true;
                     break;
                 case ITEM_TARGET_FRIENDLY:
-                    add = (align_patient == align_healer) && (patient->current_hp < p_eff_stats.hp);
+                    i32 current_hp = Unit_Current_HP(patient);
+                    add = (align_patient == align_healer) && (current_hp < p_eff_stats.hp);
                     break;
                 case ITEM_TARGET_ENEMY:
                     add = align_patient |= align_healer;
@@ -358,7 +362,7 @@ tnecs_entity *Map_Find_Spectators(struct Map *map, tnecs_entity *spectators, i32
 
         struct Unit *unit = IES_GET_COMPONENT(map->world, spectator, Unit);
         SDL_assert(unit);
-        if (unit->waits)
+        if (Unit_isWaiting(unit))
             DARR_PUT(spectators, spectator);
     }
     return (spectators);
@@ -381,7 +385,7 @@ tnecs_entity *Map_Find_Auditors(struct Map *map, tnecs_entity *auditors, i32 x, 
 
         struct Unit *unit = IES_GET_COMPONENT(map->world, auditor_ent, Unit);
         SDL_assert(unit);
-        if (unit->talkable)
+        if (Unit_isTalkable(unit))
             DARR_PUT(auditors, auditor_ent);
     }
     return (auditors);
@@ -402,7 +406,7 @@ tnecs_entity *Map_Find_Traders(struct Map *map, tnecs_entity *passives, i32 x, i
             continue;
 
         struct Unit *unit = IES_GET_COMPONENT(map->world, passive, Unit);
-        if (SotA_isPC(unit->army))
+        if (SotA_isPC(Unit_Army(unit)))
             DARR_PUT(passives, passive);
     }
     return (passives);
@@ -427,7 +431,7 @@ tnecs_entity *Map_Find_Victims(struct Map *map, tnecs_entity *victims_ent,
 
         struct Unit *victim = IES_GET_COMPONENT(map->world, victim_ent, Unit);
         struct Unit *savior = IES_GET_COMPONENT(map->world, savior_ent, Unit);
-        if (Unit_canCarry(savior, victim) && SotA_isPC(victim->army))
+        if (Unit_canCarry(savior, victim) && SotA_isPC(Unit_Army(victim)))
             DARR_PUT(victims_ent, victim_ent);
     }
     return (victims_ent);

@@ -1118,10 +1118,10 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff(struct Game *sota, struct Menu *mc) {
     can_equip.archetype         = ITEM_ARCHETYPE_STAFF;
     can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE;
     Unit_canEquip_Equipment(unit, can_equip);
-    SDL_assert(unit->num_canEquip > 0);
+    SDL_assert(unit->can_equip.num > 0);
 
     // TODO: save rangemap previous state? how to go back
-    unit->rangemap = RANGEMAP_HEALMAP;
+    Unit_Rangemap_set(unit, RANGEMAP_HEALMAP);
     Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL, sota->selected_unit_entity);
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
@@ -1200,7 +1200,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
 
     /* -- Enable attack rangemap to choose defendants -- */
     // TODO: save rangemap previous state? how to go back
-    unit->rangemap = RANGEMAP_ATTACKMAP;
+    Unit_Rangemap_set(unit, RANGEMAP_ATTACKMAP);
+
     Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK, TNECS_NULL);
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 

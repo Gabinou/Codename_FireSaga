@@ -4,6 +4,7 @@
 #include "menu/growths.h"
 #include "unit/unit.h"
 #include "graph.h"
+#include "globals.h"
 #include "RNG.h"
 
 void test_menu_growths() {
@@ -11,7 +12,7 @@ void test_menu_growths() {
     sota_mkdir("menu_growths");
 
     /* -- Weapon dtab -- */
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
 
     /* -- Create n9patch -- */
     struct n9Patch n9patch = n9Patch_default;
@@ -40,32 +41,33 @@ void test_menu_growths() {
 
     /* -- Create Unit -- */
     struct Unit Silou = Unit_default;
-    SDL_assert(Silou.grown_stats == NULL);
+    struct Unit_stats *grown = Unit_Stats_Grown(&Silou);
+    SDL_assert(grown == NULL);
     Unit_Init(&Silou);
-    Silou.weapons_dtab = weapons_dtab;
-    SDL_assert(Silou.num_equipment == 0);
+    SDL_assert(Silou.equipment.num == 0);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);
-    SDL_assert(Silou.grown_stats != NULL);
-    SDL_assert(Silou.num_equipment == 4);
+    grown = Unit_Stats_Grown(&Silou);
+    SDL_assert(grown != NULL);
+    SDL_assert(Silou.equipment.num == 4);
 
     /* - Unit equip - */
     struct Inventory_item in_wpn = Inventory_item_default;
     in_wpn.id   = ITEM_ID_FLEURET;
     in_wpn.used = 0;
-    Weapon_Load(weapons_dtab, in_wpn.id);
+    Weapon_Load(gl_weapons_dtab, in_wpn.id);
 
     int stronghand  = Unit_Hand_Strong(&Silou);
     int weakhand    = Unit_Hand_Weak(&Silou);
 
     Unit_Item_Drop(&Silou,           weakhand);
     Unit_Item_Takeat(&Silou, in_wpn, weakhand);
-    SDL_assert(Silou.num_equipment == 4);
+    SDL_assert(Silou.equipment.num == 4);
     Unit_Equip(&Silou, weakhand, ITEM1);
     // Silou._equipped[weakhand] = true;
     SDL_assert(Unit_isEquipped(&Silou, weakhand));
     nourstest_true(Unit_canAttack(&Silou));
-    Unit_computedStats(&Silou, -1);
-    Unit_effectiveStats(&Silou);
+    Unit_stats ES_S = Unit_effectiveStats(&Silou);
+    Unit_computedStats(&Silou, -1, ES_S);
     Unit_effectiveGrowths(&Silou);
     Unit_supportBonus(&Silou);
     gm->unit = &Silou;
@@ -80,10 +82,12 @@ void test_menu_growths() {
     struct Unit_stats grown_1[1] = {
         {00, 01, 00, 00, 00, 01, 00, 00, 00, 00, 00, 00},
     };
-    Graph_Stat_Add(&gm->graph, &Silou.base_stats, grown_1, 2, 1, stat_toplot);
+    Graph_Stat_Add(&gm->graph, &Silou.stats.bases, grown_1, 2, 1, stat_toplot);
     /* SDL_free alloced in Unit_readJSON grown_stats*/
-    DARR_FREE(Silou.grown_stats);
-    Silou.grown_stats = &grown_1[0];
+    grown = Unit_Stats_Grown(&Silou);
+
+    DARR_FREE(grown);
+    grown = &grown_1[0];
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_01.png"), renderer,
                             gm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
@@ -94,9 +98,9 @@ void test_menu_growths() {
         {00, 01, 00, 00, 00, 01, 00, 00, 00, 00, 00, 00},
         {01, 01, 00, 00, 00, 00, 01, 01, 01, 00, 00, 00},
     };
-    Graph_Stat_Add(&gm->graph, &Silou.base_stats, grown_2, 13, 11,
+    Graph_Stat_Add(&gm->graph, &Silou.stats.bases, grown_2, 13, 11,
                    stat_toplot);
-    Silou.grown_stats = &grown_2[0];
+    grown = &grown_2[0];
     // Silou.support_bonus.speed = 50;
 
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
@@ -117,9 +121,9 @@ void test_menu_growths() {
         {00, 01, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
         {00, 01, 00, 00, 00, 01, 00, 00, 01, 00, 00, 01},
     };
-    Graph_Stat_Add(&gm->graph, &Silou.base_stats, grown_10, 30, 20,
+    Graph_Stat_Add(&gm->graph, &Silou.stats.bases, grown_10, 30, 20,
                    stat_toplot);
-    Silou.grown_stats = &grown_10[0];
+    grown = &grown_10[0];
     // Silou.support_bonus.speed = - 50;
 
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
@@ -169,17 +173,17 @@ void test_menu_growths() {
         {01, 00, 01, 00, 00, 01, 00, 01, 00, 00, 00, 00},
         {00, 01, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
     };
-    Graph_Stat_Add(&gm->graph, &Silou.base_stats, grown_40, 40, 1,
+    Graph_Stat_Add(&gm->graph, &Silou.stats.bases, grown_40, 40, 1,
                    stat_toplot);
     // Silou.support_bonus.speed = - 5;
 
-    Silou.grown_stats = &grown_40[0];
+    grown = &grown_40[0];
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40.png"), renderer,
                             gm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
     Graph_Stat_Remove(&gm->graph, stat_toplot);
 
-    Silou.grown_stats = NULL;
+    grown = NULL;
 
     /* -- Supports -- */
     /* - 1 digit - */
@@ -192,13 +196,13 @@ void test_menu_growths() {
     // /* - Speed - */
     // Silou.support_bonus.speed = 5;
     // /* - Attack - */
-    // Silou.support_bonus.attack[DMG_TYPE_PHYSICAL] = 6;
-    // Silou.support_bonus.attack[DMG_TYPE_MAGICAL] = 7;
+    // Silou.support_bonus.attack.physical = 6;
+    // Silou.support_bonus.attack.magical = 7;
     // /* - Prot - */
-    // Silou.support_bonus.protection[DMG_TYPE_PHYSICAL] = 8;
-    // Silou.support_bonus.protection[DMG_TYPE_MAGICAL] = 9;
+    // Silou.support_bonus.protection.physical = 8;
+    // Silou.support_bonus.protection.magical = 9;
     /* - Move - */
-    Silou.effective_growths.move = 1;
+    // Silou.growth.effective.move = 1;
 
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Digits_1.png"), renderer,
@@ -214,20 +218,20 @@ void test_menu_growths() {
     // /* - Speed - */
     // Silou.support_bonus.speed = -50;
     // /* - Attack - */
-    // Silou.support_bonus.attack[DMG_TYPE_PHYSICAL] = 60;
-    // Silou.support_bonus.attack[DMG_TYPE_MAGICAL] = 70;
+    // Silou.support_bonus.attack.physical = 60;
+    // Silou.support_bonus.attack.magical = 70;
     // /* - Prot - */
-    // Silou.support_bonus.protection[DMG_TYPE_PHYSICAL] = 80;
-    // Silou.support_bonus.protection[DMG_TYPE_MAGICAL] = 90;
+    // Silou.support_bonus.protection.physical = 80;
+    // Silou.support_bonus.protection.magical = 90;
     /* - Move - */
-    Silou.effective_growths.move = 23;
+    // Silou.growth.effective.move = 23;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Digits_2.png"), renderer,
                             gm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* --- SDL_free --- */
     Unit_Free(&Silou);
-    Game_Weapons_Free(&weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
     GrowthsMenu_Free(gm);
     SDL_FreeSurface(surface);
 

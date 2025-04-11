@@ -1,9 +1,10 @@
 
+#include "macros.h"
+#include "globals.h"
 #include "nourstest.h"
 #include "platform.h"
-#include "macros.h"
-#include "popup/loadout_stats.h"
 #include "unit/unit.h"
+#include "popup/loadout_stats.h"
 
 void test_popup_loadout_stats() {
     /* -- Preliminaries -- */
@@ -38,10 +39,10 @@ void test_popup_loadout_stats() {
 
     /* -- Create Computed stats -- */
     struct Computed_Stats low_cs = {0};
-    low_cs.attack[DMG_TYPE_PHYSICAL]        =   1;
-    low_cs.attack[DMG_TYPE_MAGICAL]         =   2;
-    low_cs.protection[DMG_TYPE_PHYSICAL]    =   3;
-    low_cs.protection[DMG_TYPE_MAGICAL]     =   4;
+    low_cs.attack.physical        =   1;
+    low_cs.attack.magical         =   2;
+    low_cs.protection.physical    =   3;
+    low_cs.protection.magical     =   4;
     low_cs.hit                              =   5;
     low_cs.dodge                            =   6;
     low_cs.crit                             =   7;
@@ -51,10 +52,10 @@ void test_popup_loadout_stats() {
     low_cs.range_loadout.max                =   2;
 
     struct Computed_Stats high_cs           = {0};
-    high_cs.attack[DMG_TYPE_PHYSICAL]       =  10;
-    high_cs.attack[DMG_TYPE_MAGICAL]        =  20;
-    high_cs.protection[DMG_TYPE_PHYSICAL]   =  30;
-    high_cs.protection[DMG_TYPE_MAGICAL]    =  40;
+    high_cs.attack.physical       =  10;
+    high_cs.attack.magical        =  20;
+    high_cs.protection.physical   =  30;
+    high_cs.protection.magical    =  40;
     high_cs.hit                             = 100;
     high_cs.dodge                           =  60;
     high_cs.crit                            =  70;
@@ -79,18 +80,18 @@ void test_popup_loadout_stats() {
     SDL_assert(pls.pixelnours_big);
 
     /* -- Two handing weapon -- */
-    struct dtab *weapons_dtab = DTAB_INIT(weapons_dtab, struct Weapon);
-    Unit_InitWweapons(silou, weapons_dtab);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    Unit_Init(silou);
 
     pls.unit_ent = Silou;
 
     struct Inventory_item item = Inventory_item_default;
 
     item.id = ITEM_ID_GLAIVE;
-    Weapon_Load(weapons_dtab, item.id);
+    Weapon_Load(gl_weapons_dtab, item.id);
     Unit_Item_Takeat(silou, item, ITEM1);
     item.id = ITEM_ID_LEATHER_SHIELD;
-    Weapon_Load(weapons_dtab, item.id);
+    Weapon_Load(gl_weapons_dtab, item.id);
     Unit_Item_Takeat(silou, item, ITEM2);
     pls.type_left   = ITEM_TYPE_EXP_SWORD;
     Loadout_Set(&pls.loadout_initial, UNIT_HAND_LEFT,   ITEM1);
@@ -117,12 +118,12 @@ void test_popup_loadout_stats() {
     Filesystem_Texture_Dump(PATH_JOIN("popup_loadout_stats", "PopupLoadoutStats_TwoHanding_Lance.png"),
                             renderer, pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    silou->handedness = UNIT_HAND_LEFTIE;
+    Unit_Handedness_set(silou, UNIT_HAND_LEFTIE);
     PopUp_Loadout_Stats_Update(&pls, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_loadout_stats", "PopupLoadoutStats_TwoHanding_LEFTIE.png"),
                             renderer, pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    silou->handedness = UNIT_HAND_AMBIDEXTROUS;
+    Unit_Handedness_set(silou, UNIT_HAND_AMBIDEXTROUS);
     PopUp_Loadout_Stats_Update(&pls, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_loadout_stats",
                                       "PopupLoadoutStats_TwoHanding_AMBIDEXTROUS.png"),
@@ -131,7 +132,7 @@ void test_popup_loadout_stats() {
     /* -- All higher -- */
     pls.initial_cs      = low_cs;
     pls.selected_cs     = high_cs;
-    silou->handedness   = UNIT_HAND_RIGHTIE;
+    Unit_Handedness_set(silou, UNIT_HAND_RIGHTIE);
     pls.type_left       = ITEM_TYPE_EXP_SHIELD;
     pls.type_right      = ITEM_TYPE_EXP_SWORD;
 
@@ -142,7 +143,7 @@ void test_popup_loadout_stats() {
     /* -- All equal -- */
     pls.initial_cs      = low_cs;
     pls.selected_cs     = low_cs;
-    silou->handedness   = UNIT_HAND_RIGHTIE;
+    Unit_Handedness_set(silou, UNIT_HAND_RIGHTIE);
     pls.type_left       = ITEM_TYPE_EXP_SHIELD;
     pls.type_right      = ITEM_TYPE_EXP_AXE;
 
@@ -153,7 +154,7 @@ void test_popup_loadout_stats() {
     /* -- All Lower -- */
     pls.initial_cs      = high_cs;
     pls.selected_cs     = low_cs;
-    silou->handedness   = UNIT_HAND_LEFTIE;
+    Unit_Handedness_set(silou, UNIT_HAND_LEFTIE);
     pls.type_right      = ITEM_TYPE_EXP_LANCE;
     pls.type_left       = ITEM_TYPE_EXP_STAFF;
 
@@ -162,16 +163,16 @@ void test_popup_loadout_stats() {
                             pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- 1 digit/ 2digits -- */
-    low_cs.attack[DMG_TYPE_PHYSICAL]        =  1;
-    low_cs.attack[DMG_TYPE_MAGICAL]         = 20;
-    low_cs.protection[DMG_TYPE_PHYSICAL]    =  3;
-    low_cs.protection[DMG_TYPE_MAGICAL]     = 40;
+    low_cs.attack.physical        =  1;
+    low_cs.attack.magical         = 20;
+    low_cs.protection.physical    =  3;
+    low_cs.protection.magical     = 40;
     low_cs.hit                              =  5;
     low_cs.dodge                            = 60;
     low_cs.crit                             =  7;
     low_cs.favor                            = 80;
     low_cs.speed                            =  9;
-    silou->handedness                       = UNIT_HAND_RIGHTIE;
+    Unit_Handedness_set(silou, UNIT_HAND_RIGHTIE);
     pls.type_right                          = ITEM_TYPE_EXP_CLAW;
     pls.type_left                           = ITEM_TYPE_EXP_OFFHAND;
 
@@ -182,16 +183,16 @@ void test_popup_loadout_stats() {
                             renderer, pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- 2 digit/ 1 digits -- */
-    low_cs.attack[DMG_TYPE_PHYSICAL] = 10;
-    low_cs.attack[DMG_TYPE_MAGICAL] = 2;
-    low_cs.protection[DMG_TYPE_PHYSICAL] = 30;
-    low_cs.protection[DMG_TYPE_MAGICAL] = 4;
+    low_cs.attack.physical = 10;
+    low_cs.attack.magical = 2;
+    low_cs.protection.physical = 30;
+    low_cs.protection.magical = 4;
     low_cs.hit = 50;
     low_cs.dodge = 6;
     low_cs.crit = 70;
     low_cs.favor = 8;
     low_cs.speed = 9;
-    silou->handedness = UNIT_HAND_LEFTIE;
+    Unit_Handedness_set(silou, UNIT_HAND_LEFTIE);
     pls.type_right  = ITEM_TYPE_EXP_DEMONIC;
     pls.type_left   = ITEM_TYPE_EXP_ELEMENTAL;
 
@@ -204,10 +205,10 @@ void test_popup_loadout_stats() {
                             renderer, pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- True damage -- */
-    low_cs.attack[DMG_TYPE_TRUE] = 1;
+    low_cs.attack.True = 1;
     pls.initial_cs = low_cs;
     pls.selected_cs = low_cs;
-    silou->handedness = UNIT_HAND_RIGHTIE;
+    Unit_Handedness_set(silou, UNIT_HAND_RIGHTIE);
     pls.l_equip_override   = true;
     pls.r_equip_override  = true;
 
@@ -216,11 +217,11 @@ void test_popup_loadout_stats() {
                             renderer, pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- True damage 2 digits -- */
-    low_cs.attack[DMG_TYPE_MAGICAL]     = 21;
-    low_cs.attack[DMG_TYPE_TRUE]        = 34;
+    low_cs.attack.magical     = 21;
+    low_cs.attack.True        = 34;
     pls.initial_cs                      = low_cs;
     pls.selected_cs                     = low_cs;
-    silou->handedness                   = UNIT_HAND_LEFTIE;
+    Unit_Handedness_set(silou, UNIT_HAND_LEFTIE);
     low_cs.hit                          = 100;
     low_cs.dodge                        = 14;
     pls.initial_cs                      = low_cs;
@@ -240,8 +241,8 @@ void test_popup_loadout_stats() {
     PopUp_Loadout_Stats_Free(&pls);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
-    Weapons_All_Free(weapons_dtab);
-    DTAB_FREE(weapons_dtab);
+    Weapons_All_Free(gl_weapons_dtab);
+    DTAB_FREE(gl_weapons_dtab);
 
     SDL_Quit();
 }

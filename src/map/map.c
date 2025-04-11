@@ -23,17 +23,17 @@
 #include "pathfinding.h"
 #include "structs.h"
 #include "sprite.h"
-#include "unit/equipment.h"
 #include "unit/unit.h"
-#include "unit/loadout.h"
 #include "unit/anim.h"
-#include "unit/status.h"
-#include "unit/equipment.h"
 #include "unit/boss.h"
 #include "unit/range.h"
 #include "unit/stats.h"
 #include "unit/mount.h"
 #include "unit/bonus.h"
+#include "unit/flags.h"
+#include "unit/status.h"
+#include "unit/loadout.h"
+#include "unit/equipment.h"
 #include "stb_sprintf.h"
 
 const NewMap NewMap_default = {
@@ -142,7 +142,7 @@ void Map_Unitmap_Free(struct Map *map) {
             Sprite_Free(sprite);
 
         // Freeing unit if not in party
-        if ((unit != NULL) && (unit->_id > UNIT_ID_PC_END)) {
+        if ((unit != NULL) && (Unit_id(unit) > UNIT_ID_PC_END)) {
             Unit_Free(unit);
             tnecs_entity_destroy(map->world, uent);
         } else if (unit == NULL) {
@@ -1078,7 +1078,7 @@ void Map_Bonus_Standard_Apply_Unit(struct Map *map, tnecs_entity ent, tnecs_enti
     struct Position *pos    = IES_GET_COMPONENT(map->world, ent, Position);
     SDL_assert(pos          != NULL);
     SDL_assert(unit         != NULL);
-    SDL_assert(unit->class  == UNIT_CLASS_STANDARD_BEARER);
+    SDL_assert(Unit_Class(unit)  == UNIT_CLASS_STANDARD_BEARER);
     b32 active  = false;
     b32 instant = true;
     u16 skill   = SKILL_START;
@@ -1109,7 +1109,7 @@ void Map_Bonus_Standard_Apply(struct Map *map, i32 army) {
         struct Unit *unit = IES_GET_COMPONENT(map->world, ent, Unit);
         SDL_assert(unit != NULL);
 
-        if (unit->class == UNIT_CLASS_STANDARD_BEARER)
+        if (Unit_Class(unit) == UNIT_CLASS_STANDARD_BEARER)
             Map_Bonus_Standard_Apply_Unit(map, ent, entities);
 
     }

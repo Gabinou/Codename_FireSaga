@@ -243,9 +243,9 @@ char *Utilities_Print_unitStats(struct Unit_stats stats) {
 char *Utilities_Print_wpnStats(struct Weapon_stats stats) {
     char *out = SDL_malloc(sizeof(char) * DEFAULT_BUFFER_SIZE);
     stbsp_sprintf(out, "%02d %02d %02d %02d %02d %02d %02d %02d %02d %02d %02d %02d %02d",
-                  stats.attack[DMG_TYPE_PHYSICAL], stats.attack[DMG_TYPE_MAGICAL],
-                  stats.attack[DMG_TYPE_TRUE], stats.protection[DMG_TYPE_PHYSICAL],
-                  stats.protection[DMG_TYPE_MAGICAL], stats.range.min, stats.range.max,
+                  stats.attack.physical, stats.attack.magical,
+                  stats.attack.True, stats.protection.physical,
+                  stats.protection.magical, stats.range.min, stats.range.max,
                   stats.hit, stats.dodge, stats.crit, stats.favor,
                   stats.wgt, stats.prof);
     return (out);

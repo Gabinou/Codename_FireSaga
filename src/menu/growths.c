@@ -325,7 +325,7 @@ static void _GrowthsMenu_Draw_Growths( struct GrowthsMenu *gm, SDL_Renderer *ren
     /* -- STATS GROWTHS -- */
     int width;
     char numbuff[10];
-    struct Unit_stats effective_growths  = gm->unit->effective_growths;
+    struct Unit_stats effective_growths = Unit_effectiveGrowths(gm->unit);
 
     int x = GM_STATS_X_OFFSET, y = GM_STATS_Y_OFFSET;
     PixelFont_Write(gm->pixelnours, renderer, "STATS GROWTHS", 13, x, y);
@@ -445,20 +445,20 @@ static void _GrowthsMenu_Draw_Supports(struct GrowthsMenu *gm, SDL_Renderer *ren
     /* - ATK - */
     x = GM_ATK_X_OFFSET,  y = GM_ATK_Y_OFFSET;
     PixelFont_Write(gm->pixelnours, renderer, "ATK", 3, x, y);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", support_stats.attack[DMG_TYPE_PHYSICAL]);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", support_stats.attack.physical);
     int width = PixelFont_Width_Len(gm->pixelnours_big, numbuff);
-    stbsp_sprintf(numbuff, "%d/%d\0\0", support_stats.attack[DMG_TYPE_PHYSICAL],
-                  support_stats.attack[DMG_TYPE_MAGICAL]);
+    stbsp_sprintf(numbuff, "%d/%d\0\0", support_stats.attack.physical,
+                  support_stats.attack.magical);
     x = (GM_ATK_X_OFFSET_STAT1 - width),  y = GM_ATK_Y_OFFSET_STAT1;
     PixelFont_Write_Len(gm->pixelnours_big, renderer, numbuff, x, y);
 
     /* - PROT - */
     x = GM_PROT_X_OFFSET,  y = GM_PROT_Y_OFFSET;
     PixelFont_Write(gm->pixelnours, renderer, "DEF", 3, x, y);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", support_stats.protection[DMG_TYPE_PHYSICAL]);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", support_stats.protection.physical);
     width = PixelFont_Width_Len(gm->pixelnours_big, numbuff);
-    stbsp_sprintf(numbuff, "%d/%d\0\0", support_stats.protection[DMG_TYPE_PHYSICAL],
-                  support_stats.protection[DMG_TYPE_MAGICAL]);
+    stbsp_sprintf(numbuff, "%d/%d\0\0", support_stats.protection.physical,
+                  support_stats.protection.magical);
     x = (GM_PROT_X_OFFSET_STAT1 - width),  y = GM_PROT_Y_OFFSET_STAT1;
     PixelFont_Write_Len(gm->pixelnours_big, renderer, numbuff, x, y);
 

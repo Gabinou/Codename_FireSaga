@@ -325,11 +325,11 @@ void Weapon_Repair(struct Weapon *wpn, struct Inventory_item *item, u8 AP) {
     /* Repair scaled by item STRENGTH.*/
     /* TODO: hardness equation */
     u8 hardness = Equation_Weapon_Attackvar(5,
-                                            wpn->stats.attack[DAMAGE_TYPE_PHYSICAL],
-                                            wpn->stats.attack[DAMAGE_TYPE_MAGICAL],
-                                            wpn->stats.attack[DAMAGE_TYPE_TRUE],
-                                            wpn->stats.protection[DAMAGE_TYPE_PHYSICAL],
-                                            wpn->stats.protection[DAMAGE_TYPE_MAGICAL]);
+                                            wpn->stats.attack.physical,
+                                            wpn->stats.attack.magical,
+                                            wpn->stats.attack.True,
+                                            wpn->stats.protection.physical,
+                                            wpn->stats.protection.magical);
 
     u8 repaired_uses = AP / hardness;
     item->used = repaired_uses > item->used ? 0 : item->used - repaired_uses;
@@ -343,7 +343,7 @@ int Weapon_Stat(struct Weapon *weapon, i16 stattype) {
         return (Item_Stat(weapon->item, stattype));
     }
 
-    i32 *wpn_stats_arr = weapon->stats.attack;
+    i32 *wpn_stats_arr = (i32 *)&weapon->stats.attack;
     int stat = wpn_stats_arr[stattype - WEAPON_STAT_START - 1];
     return (stat);
 }
