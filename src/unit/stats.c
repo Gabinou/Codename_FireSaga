@@ -109,17 +109,17 @@ struct Computed_Stats Computed_Stats_plus(struct Computed_Stats stats1,
 struct Unit_stats *Unit_Stats_Grown(const Unit *unit) {
     if (unit == NULL)
         return (NULL);
-    return (unit->growth.grown);
+    return (unit->stats.grown);
 }
 
 struct Unit_stats *Unit_Stats_Growths(Unit *unit) {
     if (unit == NULL)
         return (NULL);
-    return (&unit->growth.rates);
+    return (&unit->stats.growths);
 }
 
 void Unit_Stats_Growths_Set(Unit *unit, Unit_stats growths) {
     if (unit == NULL)
         return;
-    unit->growth.rates = growths;
+    unit->stats.growths = growths;
 }

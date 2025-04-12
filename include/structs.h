@@ -632,11 +632,6 @@ struct Unit_Flags {
     i8  mvt_type;
 };
 
-struct Unit_Growth {
-    struct Unit_stats   rates;
-    struct Unit_stats  *grown;
-};
-
 struct Unit_Rescue {
     u16 id;
 };
@@ -678,7 +673,7 @@ struct Unit_canEquip {
     i32 num;
 
     // TODO: recompute API
-    //      - Unit_canEquip(gamestate) 
+    //      - Unit_canEquip(gamestate)
     // When should recompute be set to true?
     //  - Unit movement     (new enemies in range)
     //      - All enemies, self recompute
@@ -703,9 +698,11 @@ struct Unit_Arms {
 };
 
 struct Unit_Stats_Bundle {
-    struct Unit_stats caps;
-    struct Unit_stats bases;
-    struct Unit_stats current; /* Only changes on levelup */
+    struct Unit_stats  caps;
+    struct Unit_stats  bases;
+    struct Unit_stats  current; /* Only changes on levelup */
+    struct Unit_stats  growths;
+    struct Unit_stats *grown;
 
     /* Design exception:
         - Bonuses track if their conditions are met themselves.
@@ -764,7 +761,6 @@ typedef struct Unit {
     struct jsonIO_Header jsonio_header;
 
     struct Unit_IDs             id;
-    struct Unit_Growth          growth;
     struct Unit_Sequence        rng_sequence;
     struct Unit_Flags           flags;
     struct Unit_Rescue          rescue;

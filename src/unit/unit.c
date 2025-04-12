@@ -167,8 +167,8 @@ void Unit_Init(struct Unit *unit) {
 }
 
 void Unit_Members_Alloc(struct Unit *unit) {
-    if (unit->growth.grown == NULL) {
-        unit->growth.grown = DARR_INIT(unit->growth.grown,  struct Unit_stats, SOTA_MAX_LEVEL / 8);
+    if (unit->stats.grown == NULL) {
+        unit->stats.grown = DARR_INIT(unit->stats.grown,  struct Unit_stats, SOTA_MAX_LEVEL / 8);
     }
 
     if (unit->statuses.queue == NULL) {
@@ -187,9 +187,9 @@ void Unit_Free(struct Unit *unit) {
         unit->stats.bonus_stack = NULL;
     }
 
-    if (unit->growth.grown != NULL) {
-        DARR_FREE(unit->growth.grown);
-        unit->growth.grown = NULL;
+    if (unit->stats.grown != NULL) {
+        DARR_FREE(unit->stats.grown);
+        unit->stats.grown = NULL;
     }
 
     if (unit->statuses.queue != NULL) {
@@ -1243,7 +1243,7 @@ struct Unit_stats Unit_effectiveGrowths(struct Unit *unit) {
     //  1. Compute bonuses dynamically from bonus_stack
     //  2. Add them to a new struct Unit_stats
     SDL_assert(unit);
-    return (unit->growth.rates);
+    return (unit->stats.growths);
 }
 
 struct Unit_stats Unit_effectiveStats(struct Unit *unit) {

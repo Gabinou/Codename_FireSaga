@@ -33,6 +33,8 @@ void Inventory_item_Swap(struct Inventory_item *items, u8 i1, u8 i2);
 void Item_Free(struct Item *item);
 
 /* --- I/O --- */
+// Note: all input dtab to be more general.
+//  - Can load from gl_dtab, or local dtab
 void Item_Load(      struct dtab *items_dtab, i16 id);
 void Item_Reload(    struct dtab *items_dtab, i16 id);
 void Item_All_Load(  struct dtab *items_dtab);

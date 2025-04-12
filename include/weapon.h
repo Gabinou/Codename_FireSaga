@@ -32,6 +32,8 @@ b32 Weapon_ID_isValid(i32 id);
 void Weapon_readJSON( void *input, cJSON *json);
 void Weapon_writeJSON(void *input, cJSON *json);
 
+// Note: all input dtab to be more general.
+//  - Can load from gl_dtab, or local dtab
 void Weapon_Load(     struct dtab *weapons_dtab, i16 id);
 void Weapon_Save(     struct dtab *weapons_dtab, i16 id);
 void Weapons_All_Load(struct dtab *weapons_dtab);
