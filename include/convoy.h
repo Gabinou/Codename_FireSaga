@@ -47,7 +47,7 @@ void Convoy_Stats_Print(struct Convoy *c, i16 wpnType, i16 stattype);
 void Convoy_AllStats_Print(struct Convoy *conv, i16 wpnType);
 
 /* --- I/O --- */
-void Convoy_readJSON(void        *input,  cJSON *in_json);
-void Convoy_writeJSON( void *input,       cJSON       *in_json);
+void Convoy_readJSON(       void *input,  const cJSON *json);
+void Convoy_writeJSON(const void *input,        cJSON *json);
 
 #endif /* CONVOY_H */

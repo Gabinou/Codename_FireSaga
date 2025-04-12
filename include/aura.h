@@ -9,7 +9,7 @@ struct cJSON;
 typedef struct cJSON cJSON;
 
 /* --- I/O --- */
-void Aura_readJSON( void *input, cJSON *jaura);
-void Aura_writeJSON(void *input, cJSON *jaura);
+void Aura_readJSON( void *input, const cJSON *jaura);
+void Aura_writeJSON(const void *input, cJSON *jaura);
 
 #endif /* AURA_H */

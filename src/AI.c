@@ -615,7 +615,7 @@ void AI_State_Turn_Finish(struct AI_State *ai_state) {
 }
 
 /* --- I/O --- */
-void AI_readJSON(void *input,  cJSON *jai) {
+void AI_readJSON(void *input, const cJSON *jai) {
     struct AI *ai = (struct AI *)input;
     SDL_assert(ai);
     cJSON *jpriority_master     = cJSON_GetObjectItem(jai, "priority_master");
@@ -645,7 +645,7 @@ i32 AI_ID_isvalid(i32 ai_id) {
     return ((ai_id > AI_NULL) && (ai_id < AI_NUM));
 }
 
-void AI_writeJSON(void *input,  cJSON *jai) {
+void AI_writeJSON(const void *input,  cJSON *jai) {
     struct AI *ai = (struct AI *)input;
     SDL_assert(ai);
 

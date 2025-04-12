@@ -41,7 +41,7 @@ void _Party_Load(   tnecs_entity *entities,     struct Game *sota,
                     s8 *farr, size_t load_num);
 
 /* -- JSON I/O -- */
-void Party_readJSON( void *input, cJSON *jparty);
-void Party_writeJSON(void *input, cJSON *jparty);
+void Party_readJSON( void *input, const cJSON *jparty);
+void Party_writeJSON(const void *input, cJSON *jparty);
 
 #endif /* UNIT_PARTY_H */

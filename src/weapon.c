@@ -71,7 +71,7 @@ b32 Weapon_canAttackfromID(struct Weapon *weapon) {
 }
 
 /* --- I/O --- */
-void Weapon_readJSON(void *input, cJSON *jwpn) {
+void Weapon_readJSON(void *input, const cJSON *jwpn) {
     struct Weapon *weapon = (struct Weapon *) input;
     SDL_assert(weapon != NULL);
     SDL_assert(jwpn != NULL);
@@ -99,8 +99,8 @@ void Weapon_readJSON(void *input, cJSON *jwpn) {
     weapon->canAttack       = Weapon_canAttack(weapon);
 }
 
-void Weapon_writeJSON(void *input, cJSON *jwpn) {
-    struct Weapon *weapon = (struct Weapon *) input;
+void Weapon_writeJSON(const void *const input, cJSON *jwpn) {
+    const struct Weapon *weapon = (struct Weapon *) input;
     SDL_assert(jwpn         != NULL);
     SDL_assert(weapon       != NULL);
     SDL_assert(weapon->item != NULL);
@@ -197,11 +197,11 @@ void Weapon_Save(struct dtab *weapons_dtab, i16 id) {
     SDL_assert(weapons_dtab != NULL);
     char *token;
     char buffer[DEFAULT_BUFFER_SIZE];
-    if (DTAB_GET(weapons_dtab, id) != NULL) {
+    if (DTAB_GET_CONST(weapons_dtab, id) != NULL) {
         s8 filename = s8_mut("items"PHYSFS_SEPARATOR);
         filename    = Weapon_Filename(filename, id);
         b32 append = false;
-        struct Weapon *weapon = (struct Weapon *)DTAB_GET(weapons_dtab, id);
+        const Weapon *weapon = DTAB_GET_CONST(weapons_dtab, id);
         jsonio_writeJSON(filename, weapon, false);
         s8_free(&filename);
     }
@@ -336,7 +336,7 @@ void Weapon_Repair(struct Weapon *wpn, struct Inventory_item *item, u8 AP) {
 }
 
 /* --- Stats --- */
-int Weapon_Stat(struct Weapon *weapon, i16 stattype) {
+int Weapon_Stat(const Weapon *weapon, i16 stattype) {
     SDL_assert((stattype > ITEM_STAT_START) && (stattype < WEAPON_STAT_END));
 
     if ((stattype > ITEM_STAT_START) && (stattype < ITEM_STAT_END)) {
@@ -348,7 +348,7 @@ int Weapon_Stat(struct Weapon *weapon, i16 stattype) {
     return (stat);
 }
 
-int Weapon_Stat_inRange(struct Weapon *weapon, i16 stattype, int distance) {
+int Weapon_Stat_inRange(const Weapon *weapon, i16 stattype, int distance) {
     /* Gives weapon stat if distance is in range.
     *  Shields and offhands are always in range.
     *    DEBUG: input -1 to always be in_range
@@ -362,12 +362,12 @@ int Weapon_Stat_inRange(struct Weapon *weapon, i16 stattype, int distance) {
 
 /* --- Handing --- */
 // Can weapon be onehanded?
-b32 Weapon_TwoHand_Only(Weapon *wpn) {
+b32 Weapon_TwoHand_Only(const Weapon *wpn) {
     return (wpn->handedness == WEAPON_HAND_TWO);
 }
 
 // Can weapon be twohanded?
-b32 Weapon_OneHand_Only(Weapon *wpn) {
+b32 Weapon_OneHand_Only(const Weapon *wpn) {
     b32 left_hand   = (wpn->handedness == WEAPON_HAND_LEFT);
     b32 right_hand  = (wpn->handedness == WEAPON_HAND_RIGHT);
     b32 one_hand    = (wpn->handedness == WEAPON_HAND_ONE);

@@ -74,7 +74,7 @@ void test_skills(void) {
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
     gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
     Weapon_Load(gl_weapons_dtab, ITEM_ID_FLEURET);
-    struct Weapon *fleuret = (struct Weapon *)DTAB_GET(gl_weapons_dtab, ITEM_ID_FLEURET);
+    struct Weapon *fleuret = DTAB_GET(gl_weapons_dtab, ITEM_ID_FLEURET);
     nourstest_true(fleuret != NULL);
     nourstest_true(fleuret->canAttack);
     nourstest_true(fleuret->item->type == ITEM_TYPE_SWORD);

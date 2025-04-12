@@ -109,11 +109,12 @@ enum SCENE_STATEMENTS {
 };
 
 /* --- TYPEDEFS --- */
-typedef void (*json_func)(void *, cJSON *);
+typedef void (*json_rfunc)(void *, const cJSON *);
+typedef void (*json_wfunc)(const void *, cJSON *);
 
 // Scene FSMs
-extern const json_func fsm_Scene_readJSON[SCENE_STATEMENT_NUM];
-extern const json_func fsm_Scene_writeJSON[SCENE_STATEMENT_NUM];
+extern const json_rfunc fsm_Scene_readJSON[SCENE_STATEMENT_NUM];
+extern const json_wfunc fsm_Scene_writeJSON[SCENE_STATEMENT_NUM];
 
 // Scene Statement FSM
 typedef void (*fsm_scene_statement_t)(void *);
@@ -267,24 +268,24 @@ void    Scene_Actor_Add( Scene *scene, u16 actor);
 /* --- I/O --- */
 s8 Scene_Filename_Chapter(i32 chapter, i32 subindex);
 s8 Scene_Filename(i32 index);
-void Scene_readJSON( void *s, cJSON *js);
-void Scene_writeJSON(void *s, cJSON *js);
+void Scene_readJSON( void *s, const cJSON *js);
+void Scene_writeJSON(const void *s, cJSON *js);
 
-i32 Scene_jsonDidascalie_Type(cJSON *jstatement);
+i32 Scene_jsonDidascalie_Type(const cJSON *jstatement);
 
-void Scene_Background_readJSON( void *c, cJSON *jc);
-void Scene_Background_writeJSON(void *c, cJSON *jc);
-void Scene_Music_readJSON( void *c, cJSON *jc);
-void Scene_Music_writeJSON(void *c, cJSON *jc);
-void Scene_Line_readJSON( void *c, cJSON *jc);
-void Scene_Line_writeJSON(void *c, cJSON *jc);
-void Scene_Didascalie_readJSON( void *c, cJSON *jc);
-void Scene_Didascalie_writeJSON(void *c, cJSON *jc);
-void Scene_Condition_readJSON(  void *c, cJSON *jc);
-void Scene_Condition_writeJSON(void *c, cJSON *jc);
+void Scene_Line_readJSON(       void *c, const cJSON *jc);
+void Scene_Music_readJSON(      void *c, const cJSON *jc);
+void Scene_Condition_readJSON(  void *c, const cJSON *jc);
+void Scene_Background_readJSON( void *c, const cJSON *jc);
+void Scene_Didascalie_readJSON( void *c, const cJSON *jc);
+void Scene_Line_writeJSON(      const void *c, cJSON *jc);
+void Scene_Music_writeJSON(     const void *c, cJSON *jc);
+void Scene_Condition_writeJSON( const void *c, cJSON *jc);
+void Scene_Background_writeJSON(const void *c, cJSON *jc);
+void Scene_Didascalie_writeJSON(const void *c, cJSON *jc);
 
-void Scene_Didascalie_Appear_readJSON( void *c, cJSON *jc);
-void Scene_Didascalie_Slide_readJSON( void *c, cJSON *jc);
+void Scene_Didascalie_Slide_readJSON(   void *c, const cJSON *jc);
+void Scene_Didascalie_Appear_readJSON(  void *c, const cJSON *jc);
 /* --- Rendering --- */
 /* Read game condition and render text lines */
 void Scene_Render(struct Scene *scene);

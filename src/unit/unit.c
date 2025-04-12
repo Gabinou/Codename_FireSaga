@@ -486,7 +486,7 @@ b32 Unit_canAttack_Eq(struct Unit *unit) {
         if (!Item_isWeapon(unit->equipment.arr[i].id))
             continue;
 
-        struct Weapon *wpn = DTAB_GET(gl_weapons_dtab, item.id);
+        const Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, item.id);
 
         if (!wpn->canAttack)
             continue;
@@ -531,7 +531,7 @@ b32 _Unit_canAttack(struct Unit *unit, i32 hand) {
     }
     Weapon_Load(gl_weapons_dtab, id);
 
-    struct Weapon *wpn = DTAB_GET(gl_weapons_dtab, id);
+    const Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
     SDL_assert(wpn != NULL);
     if (!wpn->canAttack) {
         // SDL_Log("!wpn->canAttack");
@@ -548,7 +548,7 @@ Damage_Raw Unit_Shield_Protection(struct Unit *unit, i32 hand) {
     i16 id = Unit_Id_Equipped(unit, hand);
     SDL_assert(Weapon_ID_isValid(id));
     Weapon_Load(gl_weapons_dtab, id);
-    struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, id);
+    const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
 
     /* should be equivalent to using archetype */
     if (!flagsum_isIn(weapon->item->type, ITEM_TYPE_SHIELD))
@@ -597,7 +597,6 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
     Damage_Raw bonus        = {0};
     Damage_Raw wpn_attack   = {0};
 
-    struct Weapon *weapon;
     /* Get stats of both weapons */
     for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         if (!Unit_isEquipped(unit, hand))
@@ -605,7 +604,7 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
 
         int id = Unit_Id_Equipped(unit, hand);
         SDL_assert(Weapon_ID_isValid(id));
-        weapon   = DTAB_GET(gl_weapons_dtab, id);
+        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
         wpn_attack.physical += Weapon_Stat_inRange(weapon, WEAPON_STAT_pATTACK, distance);
         wpn_attack.magical  += Weapon_Stat_inRange(weapon, WEAPON_STAT_mATTACK, distance);
         wpn_attack.True     += Weapon_Stat_inRange(weapon, WEAPON_STAT_tATTACK, distance);
@@ -679,7 +678,7 @@ void Unit_Equipment_Print( struct Unit *unit) {
             continue;
         }
 
-        struct Weapon *wpn = DTAB_GET(gl_weapons_dtab, unit->equipment.arr[eq].id);
+        const struct Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, unit->equipment.arr[eq].id);
         if (wpn == NULL) {
             SDL_Log("%d Unloaded", eq);
             continue;
@@ -752,7 +751,6 @@ void Unit_computeHit(struct Unit *unit, int distance, i32 *hit) {
     SDL_assert(unit);
     SDL_assert(gl_weapons_dtab);
     i32 hits[MAX_ARMS_NUM] = {0};
-    struct Weapon *weapon;
 
     /* Get stats of both weapons */
     for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
@@ -761,7 +759,7 @@ void Unit_computeHit(struct Unit *unit, int distance, i32 *hit) {
 
         int id      = Unit_Id_Equipped(unit, hand);
         SDL_assert(Weapon_ID_isValid(id));
-        weapon      = DTAB_GET(gl_weapons_dtab, id);
+        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
         /* Combine hit of both weapons */
         hits[hand]  = Weapon_Stat_inRange(weapon, WEAPON_STAT_HIT, distance);
     }
@@ -786,7 +784,6 @@ void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {
     i32 bonus       = 0, tile_dodge = 0;
     i32 wgts[MAX_ARMS_NUM]      = {0};
     i32 dodges[MAX_ARMS_NUM]    = {0};
-    struct Weapon *weapon;
 
     for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         if (!Unit_isEquipped(unit, hand))
@@ -794,7 +791,7 @@ void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {
 
         int id          = Unit_Id_Equipped(unit, hand);
         SDL_assert(Weapon_ID_isValid(id));
-        weapon          = DTAB_GET(gl_weapons_dtab, id);
+        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
         dodges[hand]    = Weapon_Stat_inRange(weapon, WEAPON_STAT_DODGE, distance);
         wgts[hand]      = Weapon_Stat(weapon, WEAPON_STAT_WGT);
     }
@@ -821,7 +818,6 @@ void Unit_computeCritical(struct Unit *unit, int distance, i32 *crit) {
     // TODO: get support bonus
     i32 bonus = 0;
     i32 crits[MAX_ARMS_NUM] = {0};
-    struct Weapon *weapon;
 
     for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         if (!Unit_isEquipped(unit, hand))
@@ -829,7 +825,7 @@ void Unit_computeCritical(struct Unit *unit, int distance, i32 *crit) {
 
         int id          = Unit_Id_Equipped(unit, hand);
         SDL_assert(Weapon_ID_isValid(id));
-        weapon          = DTAB_GET(gl_weapons_dtab, id);
+        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
         crits[hand]     = Weapon_Stat_inRange(weapon, WEAPON_STAT_CRIT, distance);
     }
 
@@ -851,7 +847,6 @@ void Unit_computeFavor(struct Unit *unit, int distance, i32 *favor) {
     SDL_assert(gl_weapons_dtab);
     i32 bonus = 0 ;
     i32 favors[MAX_ARMS_NUM] = {0};
-    struct Weapon *weapon;
 
     for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         if (!Unit_isEquipped(unit, hand))
@@ -859,7 +854,7 @@ void Unit_computeFavor(struct Unit *unit, int distance, i32 *favor) {
 
         int id          = Unit_Id_Equipped(unit, hand);
         SDL_assert(Weapon_ID_isValid(id));
-        weapon          = DTAB_GET(gl_weapons_dtab, id);
+        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
         favors[hand]    = Weapon_Stat_inRange(weapon, WEAPON_STAT_FAVOR, distance);
     }
 
@@ -897,7 +892,6 @@ void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
     SDL_assert(gl_weapons_dtab);
     i32 bonus = 0;
     i32 wgts[MAX_ARMS_NUM]      = {0};
-    struct Weapon *weapon;
 
     for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         if (!Unit_isEquipped(unit, hand))
@@ -905,7 +899,7 @@ void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
 
         int id          = Unit_Id_Equipped(unit, hand);
         SDL_assert(Weapon_ID_isValid(id));
-        weapon          = DTAB_GET(gl_weapons_dtab, id);
+        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
         wgts[hand]      = Weapon_Stat(weapon, WEAPON_STAT_WGT);
     }
 
@@ -938,7 +932,7 @@ void Unit_computeMove(struct Unit *unit, i32 *move) {
 }
 
 /* --- I/O --- */
-void Unit_readJSON(void *input,  cJSON *junit) {
+void Unit_readJSON(void *input, const cJSON *junit) {
     struct Unit *unit = (struct Unit *)input;
     struct Unit_stats *grown = Unit_Stats_Grown(unit);
     SDL_assert(grown != NULL);
@@ -1089,7 +1083,7 @@ void Unit_readJSON(void *input,  cJSON *junit) {
 
 }
 
-void Unit_writeJSON(void *input, cJSON *junit) {
+void Unit_writeJSON(const void *input, cJSON *junit) {
     struct Unit *unit = (struct Unit *)input;
     SDL_assert(unit);
     SDL_assert(junit);
@@ -1179,12 +1173,11 @@ u8 Unit_Brave(struct Unit *unit) {
 
     u8 out_brave   = 1;
     u64 temp_effect = 0;
-    struct Weapon *weapon;
     // TODO: use AP to compute brave factor
     // TODO: Brave for all hands
     if (Unit_isEquipped(unit, UNIT_HAND_LEFT)) {
         int id = Unit_Id_Equipped(unit, UNIT_HAND_LEFT);
-        weapon = DTAB_GET(gl_weapons_dtab, id);
+        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
         temp_effect = weapon->item->passive;
         if (flagsum_isIn(temp_effect, ITEM_EFFECT_BRAVE2X))
             out_brave = 2;
@@ -1196,7 +1189,7 @@ u8 Unit_Brave(struct Unit *unit) {
 
     if (Unit_isEquipped(unit, UNIT_HAND_RIGHT)) {
         int id = Unit_Id_Equipped(unit, UNIT_HAND_RIGHT);
-        weapon = DTAB_GET(gl_weapons_dtab, id);
+        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
         temp_effect = weapon->item->passive;
         if (flagsum_isIn(temp_effect, ITEM_EFFECT_BRAVE2X))
             out_brave = (out_brave >  2) ? out_brave : 2;

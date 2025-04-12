@@ -70,7 +70,7 @@ void Spritesheet_Free(struct Spritesheet *ss);
 void Spritesheet_Loop_Set(struct Spritesheet *ss, int l, SDL_RendererFlip f);
 
 /* --- I/O --- */
-void Spritesheet_readJSON(void *ss,  cJSON *jss);
+void Spritesheet_readJSON(void *ss, const cJSON *jss);
 
 /* --- Sprite --- */
 /* -- ants -- */
@@ -142,6 +142,6 @@ void Sprite_Animation_Loop(   struct Sprite *s);
 void Sprite_Animation_Restart(struct Sprite *s, int loop);
 
 /* --- I/O --- */
-void Sprite_readJSON(void *s,  cJSON *js);
+void Sprite_readJSON(void *s, const cJSON *js);
 
 #endif /* SPRITE_H */

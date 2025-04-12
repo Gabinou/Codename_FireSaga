@@ -11,8 +11,8 @@ void Weapon_Free(struct Weapon *wpn);
 void Weapon_Init(struct Weapon *wpn);
 
 /* --- Handing --- */
-b32 Weapon_TwoHand_Only(Weapon *wpn);
-b32 Weapon_OneHand_Only(Weapon *wpn);
+b32 Weapon_TwoHand_Only(const Weapon *wpn);
+b32 Weapon_OneHand_Only(const Weapon *wpn);
 
 /* --- isCan? --- */
 u16 Weapon_TypeExp(          struct Weapon *wpn);
@@ -29,8 +29,8 @@ b32 Weapon_isOffhand( i32 id);
 b32 Weapon_ID_isValid(i32 id);
 
 /* --- I/O --- */
-void Weapon_readJSON( void *input, cJSON *json);
-void Weapon_writeJSON(void *input, cJSON *json);
+void Weapon_readJSON( void *input, const cJSON *json);
+void Weapon_writeJSON(const void *const input, cJSON *json);
 
 // Note: all input dtab to be more general.
 //  - Can load from gl_dtab, or local dtab
@@ -46,8 +46,8 @@ void Weapons_All_Reload(struct dtab *weapons_dtab);
 s8 Weapon_Filename(s8 filename, i16 id);
 
 /* --- Stats --- */
-int Weapon_Stat(         struct Weapon *wpn, i16 s);
-int Weapon_Stat_inRange( struct Weapon *wpn, i16 s, int d);
+int Weapon_Stat(         const struct Weapon *wpn, i16 s);
+int Weapon_Stat_inRange( const struct Weapon *wpn, i16 s, int d);
 
 /* --- Repair --- */
 // Making weapons repairable through MAGIC only is baka.

@@ -15,7 +15,7 @@
 #include "stb_sprintf.h"
 // #endif /* STB_SPRINTF_IMPLEMENTATION */
 
-const json_func json_read_funcs [JSON_END] = {
+const json_rfunc json_rfuncs [JSON_END] = {
     /* JSON_NULL        */  NULL,
     /* JSON_ITEM        */  Item_readJSON,
     /* JSON_TILE        */  Tile_readJSON,
@@ -31,7 +31,7 @@ const json_func json_read_funcs [JSON_END] = {
     /* JSON_PARTY       */  Party_readJSON,
 };
 
-const json_func json_write_funcs[JSON_END] = {
+const json_wfunc json_wfuncs[JSON_END] = {
     /* JSON_NULL        */  NULL,
     /* JSON_ITEM        */  Item_writeJSON,
     /* JSON_TILE        */  Tile_writeJSON,
@@ -106,8 +106,8 @@ void jsonio_readJSON(s8 filename, void *struct_ptr) {
     }
 
     /* Actually read the json file */
-    SDL_assert(json_read_funcs[jelem_id] != NULL);
-    json_read_funcs[jelem_id](struct_ptr, jelement);
+    SDL_assert(json_rfuncs[jelem_id] != NULL);
+    json_rfuncs[jelem_id](struct_ptr, jelement);
 
     /* Set json_filename in struct to input filename */
     byte_ptr            = (u8 *)struct_ptr;
@@ -124,7 +124,7 @@ void jsonio_readJSON(s8 filename, void *struct_ptr) {
         cJSON_Delete(jfile);
 }
 
-void jsonio_writeJSON(s8 filename, void *struct_ptr, b32 append) {
+void jsonio_writeJSON(s8 filename, const void *struct_ptr, b32 append) {
     /* Parse the json file */
     PHYSFS_file *fp     = NULL;
     struct cJSON *json  = cJSON_CreateObject();
@@ -154,8 +154,8 @@ void jsonio_writeJSON(s8 filename, void *struct_ptr, b32 append) {
     }
 
     /* Write to the json element */
-    SDL_assert(json_write_funcs[jelem_id] != NULL);
-    json_write_funcs[jelem_id](struct_ptr, jelement);
+    SDL_assert(json_wfuncs[jelem_id] != NULL);
+    json_wfuncs[jelem_id](struct_ptr, jelement);
 
     /* Actually write to the file */
     cJSON_AddItemToObject(json, elem_name.data, jelement);
@@ -292,8 +292,8 @@ void PaletteTable_readJSON(char *filename, u8 *table) {
         cJSON_Delete(jfile);
 }
 
-void Point_writeJSON(void *input, struct cJSON *jpos) {
-    struct Point *pos = input;
+void Point_writeJSON(const void *input, struct cJSON *jpos) {
+    const struct Point *pos = input;
 
     struct cJSON *jnumx = cJSON_CreateNumber(pos->x);
     struct cJSON *jnumy = cJSON_CreateNumber(pos->y);
@@ -301,7 +301,7 @@ void Point_writeJSON(void *input, struct cJSON *jpos) {
     cJSON_AddItemToObject(jpos, "row", jnumy);
 }
 
-void Point_readJSON(void *input, struct cJSON *_jpos) {
+void Point_readJSON(void *input, const struct cJSON *_jpos) {
     struct Point *pos = input;
 
     SDL_assert(_jpos != NULL);
@@ -319,7 +319,7 @@ void Point_readJSON(void *input, struct cJSON *_jpos) {
     }
 }
 
-void Movement_cost_readJSON(void *input, struct cJSON *_jcost) {
+void Movement_cost_readJSON(void *input, const struct cJSON *_jcost) {
     struct Movement_cost *cost = input;
     SDL_assert(cost != NULL);
     struct cJSON *jmages       = cJSON_GetObjectItem(_jcost, "mages");
@@ -391,8 +391,8 @@ void Array2D_writeJSON(struct cJSON *arr, i32 *arr2D, u8 row_len, u8 col_len) {
     }
 }
 
-void Movement_cost_writeJSON(void *input, struct cJSON *_jcost) {
-    struct Movement_cost *_cost = input;
+void Movement_cost_writeJSON(const void *input, struct cJSON *_jcost) {
+    const struct Movement_cost *_cost = input;
     SDL_assert(_jcost != NULL);
     struct cJSON *jmages       = cJSON_CreateNumber(_cost->mages);
     struct cJSON *jfliers      = cJSON_CreateNumber(_cost->fliers);
@@ -414,8 +414,8 @@ void Movement_cost_writeJSON(void *input, struct cJSON *_jcost) {
     cJSON_AddItemToObject(_jcost, "riders_fast", jriders_fast);
 }
 
-void Tile_stats_writeJSON(void *input, struct cJSON *jstats) {
-    struct Tile_stats *stats = input;
+void Tile_stats_writeJSON(const void *input, struct cJSON *jstats) {
+    const struct Tile_stats *stats = input;
     SDL_assert(jstats != NULL);
     struct cJSON *jdodge = cJSON_CreateNumber(stats->dodge);
     struct cJSON *jPprot = cJSON_CreateNumber(stats->Pprot);
@@ -427,8 +427,8 @@ void Tile_stats_writeJSON(void *input, struct cJSON *jstats) {
     cJSON_AddItemToObject(jstats, "Heal",  jheal);
 }
 
-void Unit_stats_writeJSON(void *input, struct cJSON *jstats) {
-    struct Unit_stats *stats = input;
+void Unit_stats_writeJSON(const void *input, struct cJSON *jstats) {
+    const struct Unit_stats *stats = input;
     SDL_assert(jstats != NULL);
     struct cJSON *php   = cJSON_CreateNumber(stats->hp);
     struct cJSON *pstr  = cJSON_CreateNumber(stats->str);
@@ -456,8 +456,8 @@ void Unit_stats_writeJSON(void *input, struct cJSON *jstats) {
     cJSON_AddItemToObject(jstats, "prof", pprof);
 }
 
-void Item_stats_writeJSON(void *input, struct cJSON *jstats) {
-    struct Item_stats *stats = input;
+void Item_stats_writeJSON(const void *input, struct cJSON *jstats) {
+    const struct Item_stats *stats = input;
     SDL_assert(jstats != NULL);
     struct cJSON *jAP    = cJSON_CreateNumber(stats->AP);
     struct cJSON *juses  = cJSON_CreateNumber(stats->uses);
@@ -467,8 +467,8 @@ void Item_stats_writeJSON(void *input, struct cJSON *jstats) {
     cJSON_AddItemToObject(jstats, "AP", jAP);
 }
 
-void Weapon_stats_writeJSON(void *input, struct cJSON *jstats) {
-    struct Weapon_stats *stats = input;
+void Weapon_stats_writeJSON(const void *input, struct cJSON *jstats) {
+    const struct Weapon_stats *stats = input;
     SDL_assert(jstats != NULL);
     struct cJSON *pprot   = cJSON_CreateArray();
     struct cJSON *prange  = cJSON_CreateArray();
@@ -501,7 +501,7 @@ void Weapon_stats_writeJSON(void *input, struct cJSON *jstats) {
     // cJSON_AddItemToObject(jstats, "dmg_type", pdmg_type);
 }
 
-void Inventory_item_readJSON(void *input, struct cJSON *_jitem) {
+void Inventory_item_readJSON(void *input, const struct cJSON *_jitem) {
     struct Inventory_item *item = input;
     SDL_assert(_jitem != NULL);
     struct cJSON *jid       = cJSON_GetObjectItem(_jitem, "id");
@@ -512,8 +512,8 @@ void Inventory_item_readJSON(void *input, struct cJSON *_jitem) {
     item->infusion = cJSON_GetNumberValue(jinfusion);
 }
 
-void Inventory_item_writeJSON(void *input, struct cJSON *jitem) {
-    struct Inventory_item *item = input;
+void Inventory_item_writeJSON(const void *input, struct cJSON *jitem) {
+    const struct Inventory_item *item = input;
     SDL_assert(jitem != NULL);
     char buffer[DEFAULT_BUFFER_SIZE];
     cJSON *jid       = cJSON_CreateNumber(item->id);
@@ -524,7 +524,7 @@ void Inventory_item_writeJSON(void *input, struct cJSON *jitem) {
     cJSON_AddItemToObject(jitem, "infusion", jinfusion);
 }
 
-void Item_stats_readJSON(void *input, struct cJSON *_jstats) {
+void Item_stats_readJSON(void *input, const struct cJSON *_jstats) {
     SDL_assert(cJSON_IsObject(_jstats));
     struct Item_stats *stats = input;
     SDL_assert(_jstats != NULL);
@@ -536,16 +536,16 @@ void Item_stats_readJSON(void *input, struct cJSON *_jstats) {
     stats->price = cJSON_GetNumberValue(jprice);
 }
 
-void Range_writeJSON(void *input, struct cJSON *jrange) {
+void Range_writeJSON(const void *input, struct cJSON *jrange) {
     SDL_assert(cJSON_IsArray(jrange));
-    struct Range *range = input;
+    const struct Range *range = input;
     struct cJSON *jmin      = cJSON_CreateNumber(range->min);
     struct cJSON *jmax      = cJSON_CreateNumber(range->max);
     cJSON_AddItemToArray(jrange, jmin);
     cJSON_AddItemToArray(jrange, jmax);
 }
 
-void Range_readJSON(void *input, struct cJSON *jrange) {
+void Range_readJSON(void *input, const struct cJSON *jrange) {
     SDL_assert(cJSON_IsArray(jrange));
     struct Range *range = input;
     SDL_assert(jrange != NULL);
@@ -554,8 +554,8 @@ void Range_readJSON(void *input, struct cJSON *jrange) {
     range->max = cJSON_GetNumberValue(cJSON_GetArrayItem(jrange, RANGE_MAX_INDEX));
 }
 
-void Computed_Stats_writeJSON(void *input, struct cJSON *jstats) {
-    struct Computed_Stats *stats = input;
+void Computed_Stats_writeJSON(const void *input, struct cJSON *jstats) {
+    const struct Computed_Stats *stats = input;
 
     struct cJSON *jarr      = cJSON_CreateArray();
     struct cJSON *jnum      = cJSON_CreateNumber(stats->attack.physical);
@@ -597,7 +597,7 @@ void Computed_Stats_writeJSON(void *input, struct cJSON *jstats) {
     cJSON_AddItemToObject(jstats, "agony", jagony);
 }
 
-void Computed_Stats_readJSON(void *input, struct cJSON *jstats) {
+void Computed_Stats_readJSON(void *input, const struct cJSON *jstats) {
     struct Computed_Stats *stats = input;
     SDL_assert(jstats != NULL);
     struct cJSON *jnum;
@@ -650,7 +650,7 @@ void Computed_Stats_readJSON(void *input, struct cJSON *jstats) {
 }
 
 
-void Weapon_stats_readJSON(void *input, struct cJSON *jstats) {
+void Weapon_stats_readJSON(void *input, const struct cJSON *jstats) {
     struct Weapon_stats *stats = input;
     SDL_assert(jstats != NULL);
     struct cJSON *jnum;
@@ -695,7 +695,7 @@ void Weapon_stats_readJSON(void *input, struct cJSON *jstats) {
         stats->prof  = cJSON_GetNumberValue(jprof);
 }
 
-void Unit_stats_readJSON(void *input, struct cJSON *jstats) {
+void Unit_stats_readJSON(void *input, const struct cJSON *jstats) {
     struct Unit_stats *stats = input;
     SDL_assert(stats != NULL);
     SDL_assert(jstats != NULL);

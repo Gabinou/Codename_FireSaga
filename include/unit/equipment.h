@@ -37,9 +37,9 @@ void Unit_Equipment_Drop(Unit *u);
 /* TODO: Remove. No swapping -> no need to export equipment*/
 
 /* -- Getters -- */
-Weapon *Unit_Weapon(         Unit *u, i32 eq);
-Item   *Unit_Get_Item(       Unit *u, i32 eq);
-Weapon *Unit_Equipped_Weapon(Unit *u, i32 hand);
+const Weapon *Unit_Weapon(         Unit *u, i32 eq);
+const Item   *Unit_Get_Item(       Unit *u, i32 eq);
+const Weapon *Unit_Equipped_Weapon(Unit *u, i32 hand);
 
 /* ID of equipped weapon */
 i32 Unit_Id_Equipment(Unit *u, i32 eq);

@@ -96,7 +96,7 @@ u8 *pixels_and(u8 *matrix1, u8 *matrix2, size_t arr_len) {
 }
 
 /* --- TILEMAP SHADER --- */
-void Tilemap_Shader_Load_Tilemap_JSON(struct Tilemap_Shader *shd,  cJSON *jmap) {
+void Tilemap_Shader_Load_Tilemap_JSON(struct Tilemap_Shader *shd,  const cJSON *jmap) {
     /* -- Preliminaries -- */
     SDL_assert(shd != NULL);
     SDL_assert(jmap != NULL);
@@ -209,7 +209,7 @@ void Tilemap_Shader_Load_Tileset_pixels(struct Tilemap_Shader *shd,  char *filen
 }
 
 void Tilemap_Shader_Load_Tileset_JSON(struct Tilemap_Shader *shd,
-                                      cJSON *jshadow_tileset) {
+                                      const cJSON *jshadow_tileset) {
     /* -- Preliminaries -- */
     SDL_assert(shd != NULL);
     SDL_assert(jshadow_tileset != NULL);
@@ -253,8 +253,9 @@ void Tilemap_Shader_Load_Tileset_JSON(struct Tilemap_Shader *shd,
     }
 }
 
-void Tilemap_Shader_Load_JSON(struct Tilemap_Shader *shd,  cJSON *jmap,
-                              cJSON *jshadow_tileset) {
+void Tilemap_Shader_Load_JSON(struct Tilemap_Shader *shd,
+                              const cJSON *jmap,
+                              const cJSON *jshadow_tileset) {
     SDL_assert(shd);
     SDL_assert(jmap);
     SDL_assert(jshadow_tileset);

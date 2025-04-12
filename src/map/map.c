@@ -570,7 +570,7 @@ void Map_Tilemap_Surface_Init(struct Map *map) {
 }
 
 /* --- I/O --- */
-void Map_writeJSON( void *input, cJSON *jmap) {
+void Map_writeJSON(const void *input, cJSON *jmap) {
     struct Map *map = (struct Map *) input;
     SDL_assert(jmap != NULL);
     /* -- Preliminaries -- */
@@ -673,7 +673,7 @@ void Map_RowCol_readJSON(s8 filename, i32 rowcol[TWO_D]) {
         cJSON_Delete(jfile);
 }
 
-void Map_readJSON(void *input,  cJSON *jmap) {
+void Map_readJSON(void *input, const cJSON *jmap) {
     struct Map *map = (struct Map *) input;
     SDL_assert(map->death_enemy         != NULL);
     SDL_assert(map->death_friendly      != NULL);

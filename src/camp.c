@@ -91,7 +91,7 @@ void Camp_Jobs_Clear(struct Camp *in_camp) {
     }
 }
 
-void Camp_writeJSON( void *input, cJSON *in_jcamp) {
+void Camp_writeJSON(const void *input, cJSON *in_jcamp) {
     struct Camp *in_camp = (struct Camp *) input;
     SDL_assert(in_jcamp != NULL);
     u8 *jobs_arr = (u8 *)&in_camp->guards;
@@ -109,7 +109,7 @@ void Camp_writeJSON( void *input, cJSON *in_jcamp) {
     cJSON_AddItemToObject(in_jcamp, "Jobs", jjobs);
 }
 
-void Camp_readJSON(void *input,  cJSON *in_jcamp) {
+void Camp_readJSON(void *input, const cJSON *in_jcamp) {
     struct Camp *in_camp = (struct Camp *) input;
     cJSON *jjobs = cJSON_GetObjectItemCaseSensitive(in_jcamp, "Jobs");
     u8 *jobs_arr = (u8 *)&in_camp->guards;

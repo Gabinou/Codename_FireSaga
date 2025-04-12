@@ -481,7 +481,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
             break;
         }
 
-        struct Weapon *wpn = DTAB_GET(gl_weapons_dtab, id);
+        struct Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
         if (wpn == NULL)
             break;
 
@@ -520,7 +520,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
             break;
         }
 
-        struct Weapon *wpn = DTAB_GET(gl_weapons_dtab, id);
+        struct Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
         if (wpn == NULL)
             break;
 
@@ -634,7 +634,7 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
 
         if (Weapon_ID_isValid(id)) {
             Weapon_Load(gl_weapons_dtab, id);
-            pls->type_left = Weapon_TypeExp(DTAB_GET(gl_weapons_dtab, id));
+            pls->type_left = Weapon_TypeExp(DTAB_GET_CONST(gl_weapons_dtab, id));
         } else {
             pls->type_left = ITEM_TYPE_ITEM;
         }
@@ -647,7 +647,7 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
 
         if (Weapon_ID_isValid(id)) {
             Weapon_Load(gl_weapons_dtab, id);
-            pls->type_right = Weapon_TypeExp(DTAB_GET(gl_weapons_dtab, id));
+            pls->type_right = Weapon_TypeExp(DTAB_GET_CONST(gl_weapons_dtab, id));
         } else {
             pls->type_right = ITEM_TYPE_ITEM;
         }

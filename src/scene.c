@@ -35,12 +35,12 @@ static u64 hash_alive     = 210706583606ull;       /* sota_hash_djb2(s8_literal(
 static u64 hash_dead      = 6385147891ull;         /* sota_hash_djb2(s8_literal("dead"));      */
 static u64 hash_recruited = 249904965071548876ull; /* sota_hash_djb2(s8_literal("recruited")); */
 
-const json_func fsm_Scene_Didascalie_readJSON[SCENE_DIDASCALIE_NUM] = {
+const json_rfunc fsm_Scene_Didascalie_readJSON[SCENE_DIDASCALIE_NUM] = {
     Scene_Didascalie_Appear_readJSON,
     Scene_Didascalie_Slide_readJSON
 };
 
-const json_func fsm_Scene_readJSON[SCENE_STATEMENT_NUM] = {
+const json_rfunc fsm_Scene_readJSON[SCENE_STATEMENT_NUM] = {
     Scene_Line_readJSON,
     Scene_Didascalie_readJSON,
     Scene_Condition_readJSON,
@@ -48,7 +48,7 @@ const json_func fsm_Scene_readJSON[SCENE_STATEMENT_NUM] = {
     Scene_Music_readJSON,
 };
 
-const json_func fsm_Scene_writeJSON[SCENE_STATEMENT_NUM] = {
+const json_wfunc fsm_Scene_writeJSON[SCENE_STATEMENT_NUM] = {
     Scene_Line_writeJSON,
     Scene_Didascalie_writeJSON,
     Scene_Condition_writeJSON,
@@ -157,7 +157,7 @@ s8 Scene_Filename(i32 index) {
     return (filename);
 }
 
-void Scene_readJSON(void *input, cJSON *jscene) {
+void Scene_readJSON(void *input, const cJSON *jscene) {
     /* --- Conditions for Scene --- */
 
     /* --- Scene Array --- */
@@ -201,7 +201,7 @@ i32 Scene_jsonStatement_Type(cJSON *jstatement) {
     return (SCENE_STATEMENT_START);
 }
 
-i32 Scene_jsonDidascalie_Type(cJSON *jstatement) {
+i32 Scene_jsonDidascalie_Type(const cJSON *jstatement) {
     cJSON *jappear = cJSON_GetObjectItem(jstatement, "Appear");
     if (jappear != NULL) {
         // SDL_Log("Is an Appear");
@@ -218,7 +218,7 @@ i32 Scene_jsonDidascalie_Type(cJSON *jstatement) {
     return (SCENE_DIDASCALIE_START);
 }
 
-void Scene_Didascalie_readJSON(void *input, cJSON *jdid) {
+void Scene_Didascalie_readJSON(void *input, const cJSON *jdid) {
     Scene *scene = input;
 
     i32 type = Scene_jsonDidascalie_Type(jdid);
@@ -228,7 +228,7 @@ void Scene_Didascalie_readJSON(void *input, cJSON *jdid) {
     }
 }
 
-void Scene_Didascalie_Appear_readJSON(void *input, cJSON *jdid) {
+void Scene_Didascalie_Appear_readJSON(void *input, const cJSON *jdid) {
     Scene *scene = input;
 
     SceneStatement statement = {0};
@@ -255,7 +255,7 @@ void Scene_Didascalie_Appear_readJSON(void *input, cJSON *jdid) {
     }
 }
 
-void Scene_Didascalie_Slide_readJSON( void *input, cJSON *jdid) {
+void Scene_Didascalie_Slide_readJSON( void *input, const cJSON *jdid) {
     Scene *scene = input;
 
     SceneStatement statement = {0};
@@ -285,7 +285,7 @@ void Scene_Didascalie_Slide_readJSON( void *input, cJSON *jdid) {
     }
 }
 
-void Scene_Condition_readJSON(void *input, cJSON *jcond) {
+void Scene_Condition_readJSON(void *input, const cJSON *jcond) {
     Scene *scene = input;
 
     cJSON *jcondition = cJSON_GetObjectItem(jcond, "Condition");
@@ -320,37 +320,37 @@ void Scene_Condition_readJSON(void *input, cJSON *jcond) {
     s8_free(&condition);
 }
 
-void Scene_Didascalie_writeJSON(void *input, cJSON *jdid) {
-    Scene *scene = input;
+void Scene_Didascalie_writeJSON(const void *input, cJSON *jdid) {
+    const Scene *scene = input;
 
 }
 
-void Scene_Condition_writeJSON(void *input, cJSON *jcond) {
-    Scene *scene = input;
+void Scene_Condition_writeJSON(const void *input, cJSON *jcond) {
+    const Scene *scene = input;
 
 }
 
-void Scene_Background_writeJSON(void *input, cJSON *jc) {
+void Scene_Background_writeJSON(const void *input, cJSON *jc) {
 
 }
 
-void Scene_Background_readJSON( void *input, cJSON *jc) {
-    Scene *scene = input;
-
-    // Scene_Statement_Add(scene, statement)
-}
-
-void Scene_Music_readJSON( void *input, cJSON *jc) {
+void Scene_Background_readJSON( void *input, const cJSON *jc) {
     Scene *scene = input;
 
     // Scene_Statement_Add(scene, statement)
 }
 
-void Scene_Music_writeJSON(void *input, cJSON *jc) {
+void Scene_Music_readJSON(void *input, const cJSON *jc) {
+    Scene *scene = input;
+
+    // Scene_Statement_Add(scene, statement)
+}
+
+void Scene_Music_writeJSON(const void *input, cJSON *jc) {
 
 }
 
-void Scene_Line_readJSON(void *input, cJSON *jstatement) {
+void Scene_Line_readJSON(void *input, const cJSON *jstatement) {
     Scene *scene = input;
 
     cJSON *jline = cJSON_GetObjectItem(jstatement, "Line");
@@ -400,7 +400,7 @@ void Scene_Line_readJSON(void *input, cJSON *jstatement) {
     scene->line_cond = Conditions_Game_start;
 }
 
-void Scene_Line_writeJSON(void *input, cJSON * jc) {
+void Scene_Line_writeJSON(const void *input, cJSON * jc) {
 
 }
 

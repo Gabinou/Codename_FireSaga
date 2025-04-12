@@ -50,7 +50,7 @@ void Mobj_Link_Free(struct Mobj_Link *mobj) {
         SDL_free(mobj->abspos_linked);
 }
 
-void Mobj_Link_writeJSON(void *_input, cJSON *jmobj) {
+void Mobj_Link_writeJSON(const void *_input, cJSON *jmobj) {
     struct Mobj_Link *_mobj = (struct Mobj_Link *) _input;
     SDL_assert(jmobj != NULL);
     cJSON *jnum, *jrelpos, *jabspos;
@@ -78,7 +78,7 @@ void Mobj_Link_writeJSON(void *_input, cJSON *jmobj) {
     jabspos = cJSON_CreateArray();
 }
 
-void Tile_stats_readJSON(void *input, struct cJSON      *_jstats) {
+void Tile_stats_readJSON(void *input, const struct cJSON      *_jstats) {
     struct Tile_stats *stats = input;
     SDL_assert(_jstats != NULL);
     struct cJSON *jdodge = cJSON_GetObjectItem(_jstats, "Dodge");
@@ -95,7 +95,7 @@ void Tile_stats_readJSON(void *input, struct cJSON      *_jstats) {
         stats->heal      = cJSON_GetNumberValue(jHeal);
 }
 
-void Mobj_Link_readJSON(void *input, cJSON *_jmobj) {
+void Mobj_Link_readJSON(void *input, const cJSON *_jmobj) {
     struct Mobj_Link *mobj = (struct Mobj_Link *)input;
     cJSON *jlinked      = cJSON_GetObjectItemCaseSensitive(_jmobj, "linked");
     cJSON *jlinked_num  = cJSON_GetObjectItemCaseSensitive(jlinked, "num");
@@ -122,7 +122,7 @@ void Tile_Free(struct Tile *tile) {
     s8_free(&tile->jsonio_header.json_filename);
 }
 
-void Tile_readJSON(void *input, cJSON *_jtile) {
+void Tile_readJSON(void *input, const cJSON *_jtile) {
     struct Tile *tile = (struct Tile *)input;
     SDL_assert(_jtile != NULL);
     cJSON *jname    = cJSON_GetObjectItemCaseSensitive(_jtile, "Name");
@@ -141,7 +141,7 @@ void Tile_readJSON(void *input, cJSON *_jtile) {
     Movement_cost_readJSON(&(tile->cost), jmvtcost);
 }
 
-void Tile_writeJSON(void *_input, cJSON *jtile) {
+void Tile_writeJSON(const void *_input, cJSON *jtile) {
     struct Tile *_tile = (struct Tile *)_input;
     SDL_assert(jtile != NULL);
     cJSON *jtilestats   = cJSON_CreateObject();
@@ -160,7 +160,7 @@ void Tile_writeJSON(void *_input, cJSON *jtile) {
     cJSON_AddItemToObject(jtile, "MvtCost", jcost);
 }
 
-void Breakable_readJSON(void *input, cJSON *_jbreakable) {
+void Breakable_readJSON(void *input, const cJSON *_jbreakable) {
     struct Breakable *breakable = (struct Breakable *) input;
     cJSON *jhp      = cJSON_GetObjectItemCaseSensitive(_jbreakable, "hp");
     cJSON *jdef     = cJSON_GetObjectItemCaseSensitive(_jbreakable, "def");
@@ -172,7 +172,7 @@ void Breakable_readJSON(void *input, cJSON *_jbreakable) {
     // Mobj_Link_readJSON(breakable->link, jmobj);
 }
 
-void Breakable_writeJSON(void *_input, cJSON *jbreakable) {
+void Breakable_writeJSON(const void *_input, cJSON *jbreakable) {
     struct Breakable *_breakable = (struct Breakable *) _input;
     SDL_assert(jbreakable != NULL);
     cJSON *jhp  = cJSON_CreateNumber(_breakable->hp);
@@ -185,7 +185,7 @@ void Breakable_writeJSON(void *_input, cJSON *jbreakable) {
     // Mobj_Link_writeJSON(breakable->link, jmobj);
 }
 
-void Door_readJSON(void *input, cJSON *jdoor) {
+void Door_readJSON(void *input, const cJSON *jdoor) {
     struct Door *door = (struct Door *) input;
 
     cJSON *jtile            = cJSON_GetObjectItem(jdoor, "tile");
@@ -211,7 +211,7 @@ void Door_readJSON(void *input, cJSON *jdoor) {
         door->tile          = cJSON_GetNumberValue(jtile);
 }
 
-void Door_writeJSON( void *input, cJSON *jdoor) {
+void Door_writeJSON(const void *input, cJSON *jdoor) {
     struct Door *door = (struct Door *) input;
     SDL_assert(jdoor != NULL);
     cJSON *jchapter_open    = cJSON_CreateNumber(door->chapter_open);
@@ -226,7 +226,7 @@ void Door_writeJSON( void *input, cJSON *jdoor) {
     // Mobj_Link_writeJSON(door->link, jmobj);
 }
 
-void Chest_readJSON(void *input, cJSON *jchest) {
+void Chest_readJSON(void *input, const cJSON *jchest) {
     struct Chest *chest = (struct Chest *) input;
     SDL_assert(chest    != NULL);
     SDL_assert(jchest   != NULL);
@@ -252,7 +252,7 @@ void Chest_readJSON(void *input, cJSON *jchest) {
         chest->item  = cJSON_GetNumberValue(jitem);
 }
 
-void Chest_writeJSON( void *input, cJSON *jchest) {
+void Chest_writeJSON(const void *input, cJSON *jchest) {
     struct Chest *chest = (struct Chest *) input;
     SDL_assert(jchest != NULL);
     cJSON *jgold = cJSON_CreateNumber(chest->gold);

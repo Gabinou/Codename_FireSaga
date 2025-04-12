@@ -190,7 +190,7 @@ void Convoy_Stats_Print(struct Convoy *in_convoy, i16 type_exp, i16 stattype) {
     }
 }
 
-void Convoy_readJSON(void *input,  cJSON *in_jconvoy) {
+void Convoy_readJSON(void *input, const cJSON *in_jconvoy) {
     struct Convoy *in_convoy = (struct Convoy *) input;
     SDL_assert(in_jconvoy != NULL);
     cJSON *jsize    = cJSON_GetObjectItem(in_jconvoy, "size");
@@ -208,7 +208,7 @@ void Convoy_readJSON(void *input,  cJSON *in_jconvoy) {
     }
 }
 
-void Convoy_writeJSON( void *input, cJSON *in_jconvoy) {
+void Convoy_writeJSON(const void *input, cJSON *in_jconvoy) {
     struct Convoy *in_convoy = (struct Convoy *) input;
     SDL_assert(in_jconvoy != NULL);
     cJSON *jsize        = cJSON_CreateNumber(in_convoy->size);

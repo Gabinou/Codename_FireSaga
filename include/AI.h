@@ -186,8 +186,8 @@ void Unit_Move_onMap_Animate(struct Game  *s, tnecs_entity e,
                              struct Timer *t, struct UnitMoveAnimation *a);
 
 /* --- I/O --- */
-void AI_readJSON( void *ai, cJSON *jai);
-void AI_writeJSON(void *ai, cJSON *jai);
+void AI_readJSON( void *ai, const cJSON *jai);
+void AI_writeJSON(const void *ai, cJSON *jai);
 
 i32 AI_ID_isvalid(i32 ai_id);
 

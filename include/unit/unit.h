@@ -97,8 +97,8 @@ void Unit_getsHealed( Unit *u, u8 healing);
 void Unit_takesDamage(Unit *u, u8 dmg, b32 ct);
 
 /* --- I/O --- */
-void Unit_readJSON( void *u, cJSON *junit);
-void Unit_writeJSON(void *u, cJSON *junit);
+void Unit_readJSON( void *u, const cJSON *junit);
+void Unit_writeJSON(const void *u, cJSON *junit);
 
 /* --- Unit Can --- */
 b32 Unit_canDance(Unit *u);

@@ -191,7 +191,7 @@ void Party_Load(struct Party *party, struct Game *sota) {
     _Party_Load(party->entities, sota, filenames, DARR_NUM(filenames));
 }
 
-void Party_readJSON(void *input, cJSON *jparty) {
+void Party_readJSON(void *input, const cJSON *jparty) {
     struct Party *party = (struct Party *)input;
     SDL_assert(party                    != NULL);
     SDL_assert(party->json_ids          != NULL);
@@ -243,7 +243,7 @@ void Party_readJSON(void *input, cJSON *jparty) {
     }
 }
 
-void Party_writeJSON(void *input, cJSON *jparty) {
+void Party_writeJSON(const void *input, cJSON *jparty) {
     /* --- Write file with list of units --- */
     struct Party *party = (struct Party *)input;
     SDL_assert(party != NULL);

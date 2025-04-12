@@ -339,9 +339,9 @@ void Item_All_Reload(struct dtab *items_dtab) {
     }
 }
 
-void Item_writeJSON(void *_input, cJSON *jitem) {
+void Item_writeJSON(const void *_input, cJSON *jitem) {
     /* - Preliminaries - */
-    struct Item *_item = _input;
+    const struct Item *_item = _input;
     SDL_assert(jitem != NULL);
     cJSON *jid        = cJSON_CreateNumber(_item->id);
     cJSON *jname      = cJSON_CreateString(_item->name.data);
@@ -408,13 +408,13 @@ void Item_writeJSON(void *_input, cJSON *jitem) {
     /* - Writing stats - */
     if (_item->write_stats) {
         cJSON *jstats = cJSON_CreateObject();
-        struct Item_stats *_stats = &(_item->stats);
+        const struct Item_stats *_stats = &(_item->stats);
         Item_stats_writeJSON(_stats, jstats);
         cJSON_AddItemToObject(jitem, "Stats", jstats);
     }
 }
 
-void Item_readJSON(void *input, cJSON *_jitem) {
+void Item_readJSON(void *input, const cJSON *_jitem) {
     SDL_assert(_jitem != NULL);
 
     /* - Preliminaries - */

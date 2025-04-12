@@ -266,8 +266,8 @@ void Map_Size_Set(Map *map, i32 col, i32 row);
 void Map_Tilesize_Set(Map *map, i32 w, i32 h);
 
 /* --- I/O --- */
-void Map_readJSON(  void *input, cJSON *jmap);
-void Map_writeJSON( void *input, cJSON *jmap);
+void Map_readJSON(  void *input, const cJSON *jmap);
+void Map_writeJSON(const  void *input, cJSON *jmap);
 void Map_RowCol_readJSON(s8 filename, i32 rowcol[TWO_D]);
 
 /* --- Map events / Triggers --- */

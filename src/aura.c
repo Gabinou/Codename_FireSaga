@@ -6,7 +6,7 @@
 #include "unit/unit.h"
 #include "unit/range.h"
 
-void Aura_readJSON( void *input, cJSON *jaura) {
+void Aura_readJSON(void *input, const cJSON *jaura) {
     struct Aura *aura = input;
 
     struct cJSON *jUnit_stats       = cJSON_GetObjectItem(jaura, "Unit_stats");
@@ -28,8 +28,8 @@ void Aura_readJSON( void *input, cJSON *jaura) {
 
 }
 
-void Aura_writeJSON(void *input, cJSON *jaura) {
-    struct Aura *aura = input;
+void Aura_writeJSON(const void *input, cJSON *jaura) {
+    const struct Aura *aura = input;
 
     struct cJSON *jturns            = cJSON_CreateNumber(aura->turns);
     struct cJSON *jrange            = cJSON_CreateArray();

@@ -84,7 +84,7 @@ void Spritesheet_Free(struct Spritesheet *spritesheet) {
     s8_free(&spritesheet->jsonio_header.json_filename);
 }
 
-void Sprite_readJSON(void *input,  cJSON *jsprite) {
+void Sprite_readJSON(void *input, const cJSON *jsprite) {
     struct Sprite *sprite = input;
     cJSON *jspritesheet = cJSON_GetObjectItem(jsprite, "Spritesheet");
     if (jspritesheet == NULL) {
@@ -96,7 +96,7 @@ void Sprite_readJSON(void *input,  cJSON *jsprite) {
     Spritesheet_readJSON(sprite->spritesheet, jspritesheet);
 }
 
-void Spritesheet_readJSON(void *input,  cJSON *jspritesheet) {
+void Spritesheet_readJSON(void *input, const cJSON *jspritesheet) {
     struct Spritesheet *spritesheet = (struct Spritesheet *)input;
     SDL_assert(spritesheet);
     Spritesheet_Free(spritesheet);
