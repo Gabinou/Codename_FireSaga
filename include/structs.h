@@ -315,14 +315,21 @@ void Computed_Stats_Compare(struct Computed_Stats *stats1,
                             struct Computed_Stats *stats2);
 
 /* Bonus stats added to unit, including decay/removal conditions */
+// When are bonus_stats checked for removal?
+//  - Unit movement     (auras)
+//  - End of turn       (auras)
+//  - Equipping item    (bonus stat for equipping)
+//  - Trading item      (bonus stat from item in equipment)
+//  - Using item        (get a new skill)
 typedef struct Bonus_Stats {
     /* Stat bonuses */
     struct Unit_stats       unit_stats;
     struct Computed_Stats   computed_stats;
     /* Conditions */
+    // If any condition is not met, bonus stat is deactivated.
     struct Range range;
     i32 turns;
-    u16 source_item;              /* Should be equipped by unit_ent */
+    u16 source_item; /* Should be equipped by unit_ent */
     u16 source_skill;
     b32 active;
     tnecs_entity source_unit;
@@ -666,8 +673,23 @@ struct Unit_canEquip {
         - can_equip depends on game state,
         - but, can_equip needs to be hosted somewhere.
     */
+
     i32 arr[SOTA_EQUIPMENT_SIZE];
     i32 num;
+
+    // TODO: recompute API
+    //      - Unit_canEquip(gamestate) 
+    // When should recompute be set to true?
+    //  - Unit movement     (new enemies in range)
+    //      - All enemies, self recompute
+    //  - Turn end
+    //      - All friendlies recompute
+    //  - Trading item      (new item to check)
+    //      - self recompute
+    //  - Using item        (get a new skill)
+    //      - Skills can give range
+    //      - self recompute
+    b32 recompute;
 };
 
 struct Unit_Level {
@@ -686,8 +708,8 @@ struct Unit_Stats_Bundle {
     struct Unit_stats current; /* Only changes on levelup */
 
     /* Design exception:
-        - Rather than checking every unit, enemy, skill, aura...
         - Bonuses track if their conditions are met themselves.
+        - TODO: rename. Not a stack, nor queue.
     */
     struct Bonus_Stats *bonus_stack;
 };
@@ -720,13 +742,10 @@ typedef struct Unit {
     /*
     /*  # Design
     /*  ## Members are *constants*, NO dependency on game state
-    /*  - Game state EXCEPT self
-    /*      - Map, other units, etc...
-    /*  - DO NOT put stats that depend on game state in unit
-    /*      - Those are variable stats
+    /*  - Game state EXCEPT self: map, other units, etc...
     /*  - base_stats, current_stats do not depend on unit
     /*    equipment, neighboring units, auras... -> unit member
-    /*  - Always compute variable stats by inputting game state:
+    /*  - Always compute variable stats by inputing game state:
     /*      - effective_stats, computed_stats
     /*  ## Record indices, not pointers
     /*  - Centralize data into external arrays
