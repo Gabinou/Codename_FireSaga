@@ -15,11 +15,6 @@
 //  - e.g. How does the STR stat work *** ? * **
 //  - Player cannot interact directly with a Popup
 
-/* --- ENUMS --- */
-enum POPUP_bOFFSET {
-    POPUP_UPDATE_bOFFSET = 0,
-};
-
 /* --- STRUCT DEF --- */
 typedef struct PopUp PopUp;
 

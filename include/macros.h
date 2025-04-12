@@ -28,6 +28,14 @@ only the enum NAMES gets STRINGIZE'd
 #define SOTA_CONCATENATE1(arg1, arg2) SOTA_CONCATENATE2(arg1, arg2)
 #define SOTA_CONCATENATE2(arg1, arg2) arg1##arg2
 
+// Get byte offset of struct member
+//  1- Create pointer to struct at address 0 `(name *)0`
+//  2- Access member, dereferencing `->member`
+//  3- Get address of member `&` (effectively offset to member)
+//  4- Cast to integer, without warning (int)(intptr_t)
+// Note: probably only works for x86-64
+#define BYTE_OFFSET(name, member) (long long int)(&((name *)0)->member)
+
 /* Note: [x -> col, y -> row, z ->depth] */
 #define sota_2D_index(x, y, col_len) (y * col_len + x)
 // Revert 2D_index (y * col_len + x) to [x, y]:

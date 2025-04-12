@@ -20,8 +20,8 @@ enum JSON_bOFFSET {
     // HOWTO:
     //  1. char * byte_ptr = (char *)struct_ptr
     //  2. <type> * <var> = (<type> *)(byte_ptr + bOFFSET_<var>)
-    JSON_FILENAME_bOFFSET   = 0,
-    JSON_ELEM_bOFFSET       = 24, /* for u8 in json read/writable structs  */
+    JSON_FILENAME_bOFFSET   = BYTE_OFFSET(jsonIO_Header, json_filename),
+    JSON_ELEM_bOFFSET       = BYTE_OFFSET(jsonIO_Header, json_element), /* for u8 in json read/writable structs  */
 };
 
 /* --- TYPEDEFS --- */

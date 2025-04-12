@@ -32,10 +32,6 @@ struct Item;
 struct Game;
 
 /* --- ENUMS --- */
-enum MENU_bOFFSET {
-    MENU_UPDATE_bOFFSET = 0,
-};
-
 enum MENU_ELEM {
     MENU_ELEM_NULL = -1,
 };

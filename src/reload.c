@@ -53,10 +53,10 @@ void Reload_Menu(void *struct_ptr) {
 
     void *menu          = mc->data;
 
-    char *update_byte   = ((char *)menu + MENU_UPDATE_bOFFSET);
-    b32  *update        = (b32 *)update_byte;
-
-    *update      = true;
+    // TODO
+    // char *update_byte   = ((char *)menu + MENU_UPDATE_bOFFSET);
+    // b32  *update        = (b32 *)update_byte;
+    // *update      = true;
 }
 
 void Reload_Popup(void *struct_ptr) {
@@ -68,10 +68,10 @@ void Reload_Popup(void *struct_ptr) {
 
     void *popup         = pc->data;
 
-    char *update_byte   = ((char *)popup + MENU_UPDATE_bOFFSET);
-    b32  *update        = (b32 *)update_byte;
-
-    *update      = true;
+    // TODO
+    // char *update_byte   = ((char *)popup + MENU_UPDATE_bOFFSET);
+    // b32  *update        = (b32 *)update_byte;
+    // *update      = true;
 }
 
 void Reload_MapHpBar(void *struct_ptr) {
