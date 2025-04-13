@@ -6582,7 +6582,7 @@ struct Mace_Arguments mace_parse_env() {
         int argc = 1, len = 8;
         char *tmp = env_args;
         /* Count number of spaces, split into argv */
-        while (tmp = strstr(tmp, " ")) {
+        while ((tmp = strstr(tmp, " "))) {
             argc++;
             tmp++;
         }
