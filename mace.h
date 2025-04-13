@@ -170,7 +170,7 @@ struct Target {
     *                                                                      /
     * struct Target mytarget = {                                           /
     *     .includes           = "include,include/foo",                     /
-    *     .sources            = "src/*,src/bar.c",                         /
+    *     .sources            = "src/'*'',src/bar.c",                         /
     *     .sources_exclude    = "src/main.c",                              /
     *     .dependencies       = "mytarget1",                               /
     *     .links              = "lib1,lib2,mytarget2",                     /
@@ -5519,7 +5519,7 @@ void mace_parse_config(struct Config *config) {
         strncpy(flag, token, strlen(token));
         config->_flags[config->_flag_num++] = flag;
         /* Increase config->_flags size */
-        if (config->_flag_num >= config->_flag_num) {
+        if (config->_flag_num >= len) {
             len *= 2;
             size_t bytesize = len * sizeof(*config->_flags);
             config->_flags  = realloc(config->_flags, bytesize);
