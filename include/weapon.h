@@ -15,7 +15,7 @@ b32 Weapon_TwoHand_Only(const Weapon *wpn);
 b32 Weapon_OneHand_Only(const Weapon *wpn);
 
 /* --- isCan? --- */
-u16 Weapon_TypeExp(          struct Weapon *wpn);
+u16 Weapon_TypeExp(          const Weapon *wpn);
 b32 Weapon_canInfuse(        struct Weapon *wpn,  struct Inventory_item *item);
 b32 Weapon_canAttack(        struct Weapon *wpn);
 b32 Weapon_canAttackfromID(  struct Weapon *wpn);

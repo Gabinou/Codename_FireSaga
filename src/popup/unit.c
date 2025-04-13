@@ -292,7 +292,7 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
         Inventory_item *item = Unit_Item_Equipped(pu->unit, stronghand);
         if (Unit_isEquipped(pu->unit, stronghand) && (item->id > ITEM_NULL)) {
             Weapon_Load(gl_weapons_dtab, item->id);
-            struct Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
+            const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
             SDL_assert(weapon != NULL);
             u16 type_ind = Weapon_TypeExp(weapon);
             srcrect.x = (type_ind % PU_WPN_ICON_ROWLEN) * PU_WPN_ICON_H;
@@ -308,7 +308,7 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
         item = Unit_Item_Equipped(pu->unit, weakhand);
         if (Unit_isEquipped(pu->unit, weakhand) && (item->id > ITEM_NULL)) {
             Weapon_Load(gl_weapons_dtab, item->id);
-            struct Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
+            const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
             SDL_assert(weapon != NULL);
             u16 type_ind = Weapon_TypeExp(weapon);
             srcrect.x = (type_ind % PU_WPN_ICON_ROWLEN) * PU_WPN_ICON_H;

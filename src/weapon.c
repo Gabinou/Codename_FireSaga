@@ -239,7 +239,7 @@ void Weapons_All_Free(struct dtab *weapons_dtab) {
     }
 }
 
-u16 Weapon_TypeExp(struct Weapon *weapon) {
+u16 Weapon_TypeExp(const Weapon *weapon) {
     u64 wpntypecode = weapon->item->type;
 
     SDL_assert(wpntypecode > ITEM_NULL);
