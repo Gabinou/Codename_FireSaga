@@ -6418,7 +6418,8 @@ char *mace_checksum_filename(char *file, int mode) {
         checksum_len += MACE_INCLUDE_FOLDER_STR_LEN;
     }
 
-    char *sha1   = calloc(checksum_len, sizeof(*sha1));
+    char *sha1 = calloc(checksum_len, sizeof(*sha1));
+    assert(sha1 != NULL);
     strncpy(sha1, obj_dir, obj_dir_len);
     size_t total = obj_dir_len;
 
