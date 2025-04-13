@@ -5978,7 +5978,7 @@ char *mace_Target_Read_d(struct Target *target, int source_i) {
     /* obj_file_flag should start with "-o" */
     if ((obj_file_flag[0] != '-') || (obj_file_flag[1] != 'o')) {
         /* error? */
-        fprintf(stderr, "obj_file_flag '%s' missing the -o flag.\n");
+        fprintf(stderr, "obj_file_flag '%s' missing the -o flag.\n", obj_file_flag);
         exit(1);
     }
     int oflagl = 2;
@@ -6093,7 +6093,7 @@ void mace_Target_Read_ho(struct Target *target, int source_i) {
     /* obj_file_flag should start with "-o" */
     if ((obj_file_flag[0] != '-') || (obj_file_flag[1] != 'o')) {
         /* error? */
-        fprintf(stderr, "obj_file_flag '%s' missing the -o flag.\n");
+        fprintf(stderr, "obj_file_flag '%s' missing the -o flag.\n", obj_file_flag);
         exit(1);
     }
     int oflagl = 2;
