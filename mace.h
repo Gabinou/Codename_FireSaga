@@ -5506,7 +5506,7 @@ void mace_parse_config(struct Config *config) {
     }
 
     /* -- Split flags string into target orders -- */
-    int len = 8, i = 0;
+    int len = 8;
     config->_flags    = calloc(len, sizeof(*config->_flags));
     config->_flag_num = 0;
 
@@ -5853,7 +5853,6 @@ void mace_Target_Read_Objdeps(struct Target *target, char *deps, int source_i) {
     /* --- Hash headers into _deps_links --- */
     while (header != NULL) {
         /* Skip if file is not a header */
-        size_t len = strlen(header);
         char *dot  = strchr(header,  '.'); /* last dot in path */
         if (dot == NULL) {
             header = strtok(NULL, mace_d_separator);
@@ -5985,7 +5984,7 @@ char *mace_Target_Read_d(struct Target *target, int source_i) {
     char  *obj_file = calloc(obj_len - oflagl + 5, sizeof(*obj_file));
     strncpy(obj_file, obj_file_flag + oflagl, obj_len - oflagl);
     char buffer[MACE_OBJDEP_BUFFER];
-    size_t size;
+    size_t size = 0;
     char *dot        = strchr(obj_file,  '.'); /* last dot in path */
     size_t ext = dot - obj_file;
 
@@ -6095,12 +6094,9 @@ void mace_Target_Read_ho(struct Target *target, int source_i) {
         exit(1);
     }
     int oflagl = 2;
-    int obj_hash_id;
     size_t obj_len = strlen(obj_file_flag);
     char *obj_file = calloc(obj_len - oflagl + 5, sizeof(*obj_file));
     strncpy(obj_file, obj_file_flag + oflagl, obj_len - oflagl);
-    char buffer[MACE_OBJDEP_BUFFER];
-    size_t size;
 
     char *dot        = strchr(obj_file,  '.'); /* last dot in path */
     size_t ext = dot - obj_file;
@@ -6401,7 +6397,6 @@ void mace_Target_Deps_Hash(struct Target *target) {
 char *mace_checksum_filename(char *file, int mode) {
     // Files should be .c or .h
     assert(obj_dir != NULL);
-    size_t path_len  = strlen(file);
     char *dot        = strchr(file,  '.'); /* last dot in path      */
     char *slash      = strrchr(file, '/'); /* last slash in path    */
     if (dot == NULL) {
@@ -6461,7 +6456,7 @@ inline bool mace_sha1dc_cmp(uint8_t hash1[SHA1_LEN], uint8_t hash2[SHA1_LEN]) {
 void mace_sha1dc(char *file, uint8_t hash[SHA1_LEN]) {
     assert(file != NULL);
     size_t size;
-    int i, j, foundcollision;
+    int foundcollision;
 
     /* - open file - */
     FILE *fd = fopen(file, "rb");
