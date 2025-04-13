@@ -215,7 +215,7 @@ struct Target sota_dll = {
                   "cjson,noursmath,physfs,tnecs,parg",
     .flags      = "-Lbuild,-fno-strict-overflow,-fno-strict-aliasing,"
                   "-fwrapv,-fno-delete-null-pointer-checks,"
-                  "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999",
+                  "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999"
                   "$(sdl2-config --cflags)",
     .cmd_pre  = "astyle --options=utils/style.txt --verbose --recursive"
                 " src/*.c include/*.h test/*.c test/*.h names/*.h",
