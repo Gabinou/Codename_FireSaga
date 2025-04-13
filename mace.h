@@ -32,9 +32,9 @@
 
 #ifndef MACE_CONVENIENCE_EXECUTABLE
 
-/*----------------------------------------------------------------------------*/
-/*                                ENTRY POINT                                 */
-/*----------------------------------------------------------------------------*/
+/*----------------------------------------------*/
+/*                  ENTRY POINT                 */
+/*----------------------------------------------*/
 
 // The 'mace' function must be implemented by the user.
 extern int mace(int argc, char *argv[]);
@@ -50,21 +50,22 @@ extern int mace(int argc, char *argv[]);
 //      - First added config is default
 //   8- Set target config   -> MACE_TARGET_CONFIG
 
-/*---------------------------------------------------------------------*/
-/*                               EXAMPLE                                /
-*                             MACE FUNCTION                             /
-* int mace(int argc, char *argv[]) {                                    /
-*   MACE_SET_COMPILER(gcc);                                             /
-*   MACE_SET_OBJ_DIR(obj);                                              /
-*   MACE_SET_BUILD_DIR(build);                                          /
-*   ...                                                                 /
-*   MACE_ADD_TARGET(foo);                                               /
-* };                                                                    /
-*----------------------------------------------------------------------*/
 
-/*---------------------------------------------------------------------*/
-/*                             PUBLIC API                              */
-/*---------------------------------------------------------------------*/
+/*----------------------------------------------*/
+/*                   EXAMPLE                     /
+*                 MACE FUNCTION                  /
+* int mace(int argc, char *argv[]) {             /
+*   MACE_SET_COMPILER(gcc);                      /
+*   MACE_SET_OBJ_DIR(obj);                       /
+*   MACE_SET_BUILD_DIR(build);                   /
+*   ...                                          /
+*   MACE_ADD_TARGET(foo);                        /
+* };                                             /
+*------------------------------------------------*/
+
+/*----------------------------------------------*/
+/*                  PUBLIC API                  */
+/*----------------------------------------------*/
 
 /* -- Targets -- */
 struct Target;
@@ -393,7 +394,6 @@ static void mace_target_config(char *ntarget, char *nconfig);
 
 /* -- Config struct OOP -- */
 static void mace_Config_Free(    struct Config *config);
-static int mace_Config_hasTarget(struct Config *config, int target_order);
 
 /* -- Target struct OOP -- */
 /* - Free - */
@@ -3204,8 +3204,8 @@ void mace_parg_usage(const char *name, const struct parg_opt *longopts) {
         } else if (longopts[i].val || longopts[i].name)
             printf("%*c", MACE_USAGE_MIDCOLW, ' ');
 
-        if ((!longopts[i].arg) && ((longopts[i].val) || (longopts[i].name)))
-            printf("");
+        // if ((!longopts[i].arg) && ((longopts[i].val) || (longopts[i].name)))
+            // printf("");
 
         if (longopts[i].doc)
             printf("%s", longopts[i].doc);
