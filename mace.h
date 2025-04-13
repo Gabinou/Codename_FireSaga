@@ -3581,20 +3581,20 @@ int parg_zgetopt_long(struct parg_state *ps, int argc, char *const argv[],
 
 #define vprintf(format, ...) do {\
         if (verbose)\
-            printf(format, ##__VA_ARGS__);\
+            printf(format, __VA_ARGS__);\
     } while(0)
 
 #define vsprintf(format, ...) do {\
         if (verbose && !silent)\
-            printf(format, ##__VA_ARGS__);\
+            printf(format, __VA_ARGS__);\
     } while(0)
 
 #define sprintf(format, ...) do {\
         if (!silent)\
-            printf(format, ##__VA_ARGS__);\
+            printf(format, __VA_ARGS__);\
     } while(0)
 
-/******************************* MACE_ADD_CONFIG ******************************/
+/***************** MACE_ADD_CONFIG *****************/
 /// @brief Add config to list of configs. 
 ///     Note: Expects name to be stringified config variable name
 void mace_add_config(struct Config *config, char *name) {
@@ -4299,7 +4299,7 @@ void mace_exec_print(char *const arguments[], size_t argnum) {
     for (int i = 0; i < argnum; i++) {
         vsprintf("%s ", arguments[i]);
     }
-    vsprintf("\n");
+    vsprintf("%s", "\n");
 }
 
 /// @brief Put back arguments array (argv) into a single line for execvp.
@@ -4391,7 +4391,7 @@ void mace_wait_pid(int pid) {
 /********************************* mace_build **********************************/
 void mace_link_dynamic_library(struct Target *target) {
     char *lib = mace_library_path(target->_name, MACE_DYNAMIC_LIBRARY);
-    sprintf("Linking  %s \n", lib);
+    sprintf("Linking  %s", lib);
     int    argc_objects = target->_argc_sources;
     char **argv_objects = target->_argv_objects;
 
