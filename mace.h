@@ -4725,7 +4725,6 @@ void mace_Target_compile(struct Target *target) {
     target->_argv[MACE_ARGV_CC] = cc;
 
     int argc = 0;
-    bool queue_fulled = 0;
     /* - Single source argv - */
     while (true) {
         /* - Skip if no recompiles - */
@@ -4739,7 +4738,6 @@ void mace_Target_compile(struct Target *target) {
             sprintf("Compiling %s\n", target->_argv_sources[argc]);
             target->_argv[MACE_ARGV_SOURCE] = target->_argv_sources[argc];
             target->_argv[MACE_ARGV_OBJECT] = target->_argv_objects[argc];
-            size_t len = strlen(target->_argv[MACE_ARGV_OBJECT]);
             argc++;
 
             /* -- Actual compilation -- */
@@ -5236,7 +5234,7 @@ void mace_run_commands(const char *commands) {
         return;
 
     assert(chdir(cwd) == 0);
-    int argc = 0, len = 8, bytesize;
+    int argc = 0, len = 8;
     char **argv = calloc(len, sizeof(*argv));
 
     /* -- Copy sources into modifiable buffer -- */
