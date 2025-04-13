@@ -122,7 +122,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         /* left hand */
         item = Unit_Item_Equipped(pcp->dft_unit, UNIT_HAND_LEFT);
         if (Unit_isEquipped(pcp->dft_unit, UNIT_HAND_LEFT) && (item->id > ITEM_NULL)) {
-            struct Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
+            const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
             u16 type_ind = Weapon_TypeExp(weapon);
             srcrect.x = (type_ind % PCP_SIMPLE_ICON_ROWLEN) * PCP_SIMPLE_ICON_W;
             srcrect.y = (type_ind / PCP_SIMPLE_ICON_ROWLEN) * PCP_SIMPLE_ICON_H;
@@ -136,7 +136,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         dstrect.x = (PCP_SIMPLE_DICONR_X + PCP_SIMPLE_ICON_OFFSET_X);
         item = Unit_Item_Equipped(pcp->dft_unit, UNIT_HAND_RIGHT);
         if (Unit_isEquipped(pcp->dft_unit, UNIT_HAND_RIGHT) && (item->id > ITEM_NULL)) {
-            struct Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
+            const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
             u16 type_ind = Weapon_TypeExp(weapon);
             srcrect.x = (type_ind % PCP_SIMPLE_ICON_ROWLEN) * PCP_SIMPLE_ICON_W;
             srcrect.y = (type_ind / PCP_SIMPLE_ICON_ROWLEN) * PCP_SIMPLE_ICON_H;
@@ -151,7 +151,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         dstrect.x += (PCP_SIMPLE_DICONR_X + PCP_SIMPLE_ICON_OFFSET_X) / 2;
         item = Unit_Item_Equipped(pcp->dft_unit, UNIT_HAND_RIGHT);
         SDL_assert(item->id > ITEM_NULL);
-        struct Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
+        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
         u16 type = weapon->item->type;
         // TODO: weapon with multiple types
         SDL_assert(weapon->item->type > 0);
@@ -170,7 +170,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         /* left hand */
         item = Unit_Item_Equipped(pcp->agg_unit, UNIT_HAND_LEFT);
         if (Unit_isEquipped(pcp->agg_unit, UNIT_HAND_LEFT) && (item->id > ITEM_NULL)) {
-            struct Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
+            const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
             u16 type = weapon->item->type;
             // TODO: weapon with multiple types
             SDL_assert(weapon->item->type > 0);
@@ -189,7 +189,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         dstrect.y = (PCP_SIMPLE_AICONR_Y + PCP_SIMPLE_ICON_OFFSET_Y);
         item = Unit_Item_Equipped(pcp->agg_unit, UNIT_HAND_RIGHT);
         if (Unit_isEquipped(pcp->agg_unit, UNIT_HAND_RIGHT) && (item->id > ITEM_NULL)) {
-            struct Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
+            const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
             SDL_assert(weapon       != NULL);
             SDL_assert(weapon->item != NULL);
             u16 type = weapon->item->type;
@@ -211,7 +211,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         item = Unit_Item_Equipped(pcp->agg_unit, UNIT_HAND_RIGHT);
         SDL_assert(item->id > ITEM_NULL);
 
-        struct Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
+        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
         SDL_assert(weapon       != NULL);
         SDL_assert(weapon->item != NULL);
         u16 type = weapon->item->type;

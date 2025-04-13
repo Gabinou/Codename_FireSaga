@@ -992,7 +992,7 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
     int uses_left = 0;
     if (Weapon_ID_isValid(invitem->id)) {
         Weapon_Load(gl_weapons_dtab, invitem->id);
-        struct Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, invitem->id);
+        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, invitem->id);
         SDL_assert(weapon                   != NULL);
         SDL_assert(weapon->item             != NULL);
         SDL_assert(weapon->item->name.data  != NULL);
@@ -1003,7 +1003,7 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
     } else if (Item_ID_isValid(invitem->id)) {
         SDL_assert(gl_items_dtab != NULL);
         Item_Load(gl_items_dtab, invitem->id);
-        struct Item *item = DTAB_GET_CONST(gl_items_dtab, invitem->id);
+        const Item *item = DTAB_GET_CONST(gl_items_dtab, invitem->id);
         uses_left = (item->stats.uses - invitem->used);
     }
     // SDL_assert(uses_left > 0);

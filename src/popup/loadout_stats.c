@@ -481,7 +481,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
             break;
         }
 
-        struct Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
+        const Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
         if (wpn == NULL)
             break;
 
@@ -520,7 +520,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
             break;
         }
 
-        struct Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
+        const Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
         if (wpn == NULL)
             break;
 

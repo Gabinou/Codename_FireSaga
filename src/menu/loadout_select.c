@@ -393,13 +393,13 @@ void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9p
         if (Weapon_ID_isValid(id)) {
             /* Item is a weapon */
             SDL_assert(gl_weapons_dtab != NULL);
-            struct Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
+            const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
             SDL_assert(weapon != NULL);
             lsm->item_name = s8_mut(weapon->item->name.data);
         } else if (Item_ID_isValid(id)) {
             /* Pure item */
             Item_Load(gl_items_dtab, id);
-            struct Item *item = DTAB_GET_CONST(gl_items_dtab, id);
+            const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
             lsm->item_name = s8_mut(item->name.data);
         } else {
             SDL_Log("LoadoutSelectMenu: Neither a valid item nor weapon");
@@ -721,7 +721,7 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
         }
 
         SDL_assert(gl_weapons_dtab != NULL);
-        struct Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
+        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
         SDL_assert(weapon != NULL);
 
         /* - Uses left - */
