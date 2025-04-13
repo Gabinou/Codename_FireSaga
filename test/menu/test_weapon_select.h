@@ -75,7 +75,7 @@ void test_menu_loadout_select(void) {
 
 #include "register_components.h"
 
-    tnecs_entity Silou_ent  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
+    tnecs_entity Silou_ent  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
     struct Unit *Silou      = IES_GET_COMPONENT(world, Silou_ent, Unit);
 
     /* -- Map -- */

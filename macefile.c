@@ -2,12 +2,12 @@
 #include "mace.h"
 
 #ifndef CC
-    #define CC "tcc"
+    #define CC "gcc"
 #endif
 #ifndef AR
-    #define AR "tcc -ar"
+    #define AR "ar"
 #endif
-// TODO sanitize woth-fsanitize=undefined,address
+
 struct Config debug         = {
     .flags = "-g -gdwarf -rdynamic -O0 -DSDL_ASSERT_LEVEL=2"
 };
@@ -166,6 +166,7 @@ struct Target sota = {
                 "cjson,noursmath,physfs,tnecs,parg",
     .flags    = "-fno-strict-overflow,-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
+                "-fsanitize=undefined,"
                 "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
                 "$(sdl2-config --cflags)",
     .cmd_pre  = "astyle --options=utils/style.txt --verbose --recursive"

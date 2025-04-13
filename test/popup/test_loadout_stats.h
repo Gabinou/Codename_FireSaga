@@ -16,9 +16,9 @@ void test_popup_loadout_stats() {
     tnecs_world_genesis(&world);
     TNECS_REGISTER_COMPONENT(world, Unit);
     TNECS_REGISTER_COMPONENT(world, Position);
-    tnecs_entity Silou  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
-    tnecs_entity Erwin  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
-    tnecs_entity Enemy  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit, Position);
+    tnecs_entity Silou  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
+    tnecs_entity Erwin  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
+    tnecs_entity Enemy  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
 
     Unit *silou         = IES_GET_COMPONENT(world, Silou, Unit);
     Unit *erwin         = IES_GET_COMPONENT(world, Erwin, Unit);
