@@ -356,6 +356,7 @@ b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
         }
 
         i32 id = Unit_Id_Equipment(unit, eq);
+        SDL_Log("id %d", id);
         if (!Weapon_ID_isValid(id)) {
             continue;
         }

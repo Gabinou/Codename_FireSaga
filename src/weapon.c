@@ -298,10 +298,13 @@ b32 Weapon_isStaff(i32 id) {
 }
 
 b32 Weapon_ID_isValid(i32 id) {
-    if (id == ITEM_NULL) {
-        return (false);
+    if (id <= ITEM_NULL) {
+        return (0);
     }
-    b32 valid = false;
+    if (id >= ITEM_ID_END) {
+        return (0);
+    }
+    b32 valid = 0;
     valid |= ((id > ITEM_ID_SWORD_START)     && (id < ITEM_ID_SWORD_END));
     valid |= ((id > ITEM_ID_LANCE_START)     && (id < ITEM_ID_LANCE_END));
     valid |= ((id > ITEM_ID_AXE_START)       && (id < ITEM_ID_AXE_END));

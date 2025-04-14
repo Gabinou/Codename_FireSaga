@@ -657,7 +657,7 @@ struct Unit_Support {
 };
 
 struct Unit_Equipment {
-    struct Inventory_item arr[SOTA_EQUIPMENT_SIZE];
+    struct Inventory_item arr[SOTA_EQUIPMENT_SIZE + 1];
     i32 num;
 
     struct Loadout _equipped; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
@@ -669,7 +669,7 @@ struct Unit_canEquip {
         - but, can_equip needs to be hosted somewhere.
     */
 
-    i32 arr[SOTA_EQUIPMENT_SIZE];
+    i32 arr[SOTA_EQUIPMENT_SIZE + 1];
     i32 num;
 
     // TODO: recompute API

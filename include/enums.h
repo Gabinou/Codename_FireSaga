@@ -516,6 +516,7 @@ enum ITEM_ID {
 #undef REGISTER_ENUM
 
     ITEM_ID_BOOKEND,
+    ITEM_ID_END,
 };
 
 // ITEM_ORDER is the implicit, compiler-friendly item position in array
