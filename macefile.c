@@ -2,10 +2,10 @@
 #include "mace.h"
 
 #ifndef CC
-    #define CC "gcc"
+    #define CC "tcc"
 #endif
 #ifndef AR
-    #define AR "ar"
+    #define AR "tcc -ar"
 #endif
 
 struct Config debug         = {
@@ -166,7 +166,7 @@ struct Target sota = {
                 "cjson,noursmath,physfs,tnecs,parg",
     .flags    = "-fno-strict-overflow,-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
-                "-fsanitize=undefined,"
+                // "-fsanitize=undefined,-fsanitize=address,"
                 "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
                 "$(sdl2-config --cflags)",
     .cmd_pre  = "astyle --options=utils/style.txt --verbose --recursive"
@@ -270,7 +270,7 @@ struct Target test = {
                 "cjson,noursmath,physfs,tnecs,parg",
     .flags    = "-fno-strict-overflow,-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
-                "-fsanitize=undefined,"
+                // "-fsanitize=undefined,-fsanitize=address,"
                 "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
                 "$(sdl2-config --cflags)",
     .cmd_pre  = "astyle --options=utils/style.txt --verbose --recursive"
