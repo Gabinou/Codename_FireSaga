@@ -86,7 +86,6 @@ const struct Unit Unit_default = {
     .render.rangemap    = RANGEMAP_ATTACKMAP,
 
     .id.army            =  1,
-    .id.ai              = -1,
 
     .counters.hp        = SOTA_MIN_HP,
     .stats.current.hp   = SOTA_MIN_HP,
@@ -1105,7 +1104,9 @@ void Unit_writeJSON(const void *input, cJSON *junit) {
     cJSON *jexp           = cJSON_CreateNumber(unit->level.base_exp);
     cJSON *jsex           = cJSON_CreateBool(Unit_Sex(unit));
     cJSON *jname          = cJSON_CreateString(global_unitNames[Unit_id(unit)].data);
-    s8 ai_filename        = ai_names[Unit_AI(unit)];
+    i32 ai = Unit_AI(unit);
+    SDL_assert(ai >= 0);
+    s8 ai_filename        = ai_names[ai];
     cJSON *jai            = cJSON_CreateString(ai_filename.data);
     cJSON *jclass         = cJSON_CreateString(classNames[Unit_Class(unit)].data);
     cJSON *jbase_exp      = cJSON_CreateNumber(unit->level.exp);
