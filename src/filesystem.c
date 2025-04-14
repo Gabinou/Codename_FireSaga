@@ -154,10 +154,29 @@ b32 Filesystem_fequal( char *filename1,  char *filename2) {
     b32 out = false;
     PHYSFS_file *fp1  = PHYSFS_openRead(filename1);
     PHYSFS_file *fp2  = PHYSFS_openRead(filename2);
+    if ((fp1 == NULL) || (fp2 == NULL)) {
+        /* Files can't be equal if one of them doesn't exist */
+        return (0);
+    }
     SDL_assert(fp1);
     SDL_assert(fp2);
     u32 filelen1 = PHYSFS_fileLength(fp1);
     u32 filelen2 = PHYSFS_fileLength(fp2);
+    if ((filelen1 == 0) && (filelen2 == 0)) {
+        /* Both files are empty */
+        return (1);
+    }
+    if ((filelen1 == 0) && (filelen2 != 0)) {
+        /* Only one file empty */
+        return (0);
+    }
+    if ((filelen1 != 0) && (filelen2 == 0)) {
+        /* Only one file empty */
+        return (0);
+    }
+
+    SDL_assert(filelen1 > 0);
+    SDL_assert(filelen2 > 0);
     char filebuffer1[filelen1], filebuffer2[filelen2];
     PHYSFS_readBytes(fp1, filebuffer1, filelen1);
     PHYSFS_readBytes(fp2, filebuffer2, filelen2);

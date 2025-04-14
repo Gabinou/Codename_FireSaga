@@ -270,6 +270,7 @@ struct Target test = {
                 "cjson,noursmath,physfs,tnecs,parg",
     .flags    = "-fno-strict-overflow,-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
+                "-fsanitize=undefined,"
                 "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
                 "$(sdl2-config --cflags)",
     .cmd_pre  = "astyle --options=utils/style.txt --verbose --recursive"

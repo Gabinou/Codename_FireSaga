@@ -95,6 +95,7 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
     }
 
     tnecs_entity *army_onfield = NULL;
+    SDL_assert(condition->army >= 0);
     if (army_alignment[condition->army] == ALIGNMENT_FRIENDLY) {
         army_onfield = map->friendlies_onfield;
     } else {
