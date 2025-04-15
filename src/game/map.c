@@ -328,6 +328,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
         SDL_assert(sota->map->items_num[i] + 1 == DARR_NUM(sota->map->reinf_equipments[i]));
         for (int j = 0; j < DARR_NUM(sota->map->reinf_equipments[i]); j++) {
+            // uninitialized values HERE.
             unit->equipment.arr[j] = sota->map->reinf_equipments[i][j];
         }
 
