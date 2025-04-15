@@ -507,6 +507,7 @@ void Inventory_item_readJSON(void *input, const struct cJSON *_jitem) {
     struct cJSON *jid       = cJSON_GetObjectItem(_jitem, "id");
     struct cJSON *jused     = cJSON_GetObjectItem(_jitem, "used");
     struct cJSON *jinfusion = cJSON_GetObjectItem(_jitem, "infusion");
+
     item->id       = cJSON_GetNumberValue(jid);
     item->used     = cJSON_GetNumberValue(jused);
     item->infusion = cJSON_GetNumberValue(jinfusion);
