@@ -302,6 +302,14 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         // SDL_Log("-- loading unit --");
         struct Unit *unit = IES_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
         *unit = Unit_default;
+        SDL_assert(unit->equipment.arr[0].id == 0);
+        SDL_assert(unit->equipment.arr[1].id == 0);
+        SDL_assert(unit->equipment.arr[2].id == 0);
+        SDL_assert(unit->equipment.arr[3].id == 0);
+        SDL_assert(unit->equipment.arr[4].id == 0);
+        SDL_assert(unit->equipment.arr[5].id == 0);
+        SDL_assert(unit->equipment.arr[6].id == 0);
+
         Unit_Members_Alloc(unit);
         SDL_assert(unit != NULL);
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
@@ -318,19 +326,21 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         s8_free(&unit_path);
         SDL_assert(global_unitNames[*(u64 *)dtab_get(global_unitOrders, Unit_id(unit))].data != NULL);
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
+        SDL_assert(sota->map->items_num[i] + 1 == DARR_NUM(sota->map->reinf_equipments[i]));
+        for (int j = 0; j < DARR_NUM(sota->map->reinf_equipments[i]); j++) {
+            unit->equipment.arr[j] = sota->map->reinf_equipments[i][j];
+        }
 
         /* Make AI reinforcements levelup */
         Unit_Reinforcement_Levelups(unit, reinf);
 
         // SDL_Log("-- loading unit equipment --");
-        for (int j = 0; j < DARR_NUM(sota->map->reinf_equipments[i]); j++) {
-            unit->equipment.arr[j] = sota->map->reinf_equipments[i][j];
-        }
-        canEquip can_equip  = canEquip_default;
+        canEquip can_equip = canEquip_default;
         canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  UNIT_HAND_LEFT);
         canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
         canEquip_Eq(&can_equip, UNIT_HAND_LEFT);
         can_equip.hand      = UNIT_HAND_LEFT;
+
         if (Unit_canEquip(unit, can_equip)) {
             Unit_Equip(unit, UNIT_HAND_LEFT, UNIT_HAND_LEFT);
         }

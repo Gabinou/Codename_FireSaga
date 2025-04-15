@@ -74,8 +74,8 @@ struct Inventory_item Unit_Item_Drop(struct Unit *unit, i32 eq) {
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
 
-    struct Inventory_item out       = unit->equipment.arr[eq - ITEM1];
-    unit->equipment.arr[eq - ITEM1]    = Inventory_item_default;
+    struct Inventory_item out = unit->equipment.arr[eq - ITEM1];
+    unit->equipment.arr[eq - ITEM1] = Inventory_item_default;
     if (unit->equipment.num > 0)
         unit->equipment.num--;
     else

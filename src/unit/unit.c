@@ -1071,7 +1071,7 @@ void Unit_readJSON(void *input, const cJSON *junit) {
     /* -- Load equipment -- */
     cJSON *jitem;
     cJSON_ArrayForEach(jitem, jitems) {
-        struct Inventory_item temp_item;
+        struct Inventory_item temp_item = Inventory_item_default;
         Inventory_item_readJSON(&temp_item, jitem);
         if (temp_item.id > ITEM_NULL) {
             Unit_Item_Take(unit, temp_item);
