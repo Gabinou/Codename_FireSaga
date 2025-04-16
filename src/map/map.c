@@ -760,7 +760,8 @@ void Map_readJSON(void *input, const cJSON *jmap) {
     cJSON *jreinforcements = cJSON_GetObjectItem(jmap, "Reinforcements");
     SDL_assert(jreinforcements != NULL);
     cJSON *jequipment, *jitem;
-    struct Inventory_item temp_item, *temp_equip;
+    struct Inventory_item temp_item = Inventory_item_default;
+    struct Inventory_item *temp_equip = NULL;
 
     for (int i = 0; i < cJSON_GetArraySize(jreinforcements); i++) {
         struct Reinforcement temp_rein = Reinforcement_default;
@@ -770,6 +771,7 @@ void Map_readJSON(void *input, const cJSON *jmap) {
         jequipment = cJSON_GetObjectItem(jreinforcement, "Equipment");
         temp_equip = DARR_INIT(temp_equip, struct Inventory_item, SOTA_EQUIPMENT_SIZE);
         /* FIRST ITEM IS NULL */
+        temp_item = Inventory_item_default;
         DARR_PUT(temp_equip, temp_item);
 
         if (!cJSON_IsArray(jequipment)) {

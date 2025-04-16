@@ -13,6 +13,7 @@
 #include "map/find.h"
 #include "map/tiles.h"
 #include "map/ontile.h"
+#include "item.h"
 #include "unit/equipment.h"
 #include "unit/unit.h"
 #include "unit/boss.h"
@@ -327,10 +328,10 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(global_unitNames[*(u64 *)dtab_get(global_unitOrders, Unit_id(unit))].data != NULL);
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
         SDL_assert(sota->map->items_num[i] + 1 == DARR_NUM(sota->map->reinf_equipments[i]));
-        SDL_Log("num %d", DARR_NUM(sota->map->reinf_equipments[i]));
-        for (int j = 0; j < DARR_NUM(sota->map->reinf_equipments[i]); j++) {
-            // uninitialized values HERE.
-            unit->equipment.arr[j] = sota->map->reinf_equipments[i][j];
+        for (int j = ITEM1; j < DARR_NUM(sota->map->reinf_equipments[i]); j++) {
+            if (Item_ID_isValid(sota->map->reinf_equipments[i][j].id)) {
+                Unit_Item_Take(unit, sota->map->reinf_equipments[i][j]);
+            }
         }
 
         /* Make AI reinforcements levelup */
