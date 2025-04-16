@@ -76,7 +76,27 @@ void Mount_readJSON(    void *input, const cJSON *jmount) {
     Mount *mount = input;
     SDL_assert(mount);
 
-    // cJSON *jai = cJSON_GetObjectItem(junit, "AI");
+    cJSON *jsex      = cJSON_GetObjectItem(jmount, "sex");
+    cJSON *jtype     = cJSON_GetObjectItem(jmount, "type");
+    cJSON *jbond     = cJSON_GetObjectItem(jmount, "bond");
+    cJSON *jmove     = cJSON_GetObjectItem(jmount, "move");
+    cJSON *jmages    = cJSON_GetObjectItem(jmount, "mages");
+    cJSON *jskill    = cJSON_GetObjectItem(jmount, "skill");
+    cJSON *jprice    = cJSON_GetObjectItem(jmount, "price");
+    cJSON *jcarry    = cJSON_GetObjectItem(jmount, "carry");
+    cJSON *jpromoted = cJSON_GetObjectItem(jmount, "promoted");
+    cJSON *jattached = cJSON_GetObjectItem(jmount, "attached");
+
+    mount->sex      = cJSON_GetNumberValue(jsex);
+    mount->type     = cJSON_GetNumberValue(jtype);
+    mount->bond     = cJSON_GetNumberValue(jbond);
+    mount->move     = cJSON_GetNumberValue(jmove);
+    mount->mages    = cJSON_GetNumberValue(jmages);
+    mount->skill    = cJSON_GetNumberValue(jskill);
+    mount->price    = cJSON_GetNumberValue(jprice);
+    mount->carry    = cJSON_GetNumberValue(jcarry);
+    mount->promoted = cJSON_GetNumberValue(jpromoted);
+    mount->attached = cJSON_GetNumberValue(jattached);
 }
 
 void Mount_writeJSON(   const void *input, cJSON *jmount) {
