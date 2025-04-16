@@ -48,15 +48,11 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
     SDL_assert(kiara != NULL);
     SDL_assert(rayan != NULL);
 
-    mount1 = HORSIE;
-    mount2 = GOITEIA;
-    mount3 = NIBAL;
-    mount4 = MANWE;
-    // TODO: use ids for mounts
-    // silou->mount.ptr = &mount1;
-    // erwin->mount.ptr = &mount4;
-    // kiara->mount.ptr = &mount2;
-    // rayan->mount.ptr = &mount3;
+    mount1 = *gl_mounts[MOUNT_HORSIE];
+    mount2 = *gl_mounts[MOUNT_GOITEIA];
+    mount3 = *gl_mounts[MOUNT_NIBAL];
+    mount4 = *gl_mounts[MOUNT_MANWE];
+
     SDL_assert(Unit_Current_Regrets(silou) == 0);
     SDL_assert(Unit_Current_Regrets(erwin) == 0);
     SDL_assert(Unit_Current_Regrets(kiara) == 0);
@@ -96,15 +92,10 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
     SDL_assert(kiara != NULL);
     SDL_assert(rayan != NULL);
 
-    mount1 = HORSIE;
-    mount2 = GOITEIA;
-    mount3 = NIBAL;
-    mount4 = MANWE;
-    // TODO: use ids for mounts
-    // silou->mount.ptr = &mount1;
-    // erwin->mount.ptr = &mount4;
-    // kiara->mount.ptr = &mount2;
-    // rayan->mount.ptr = &mount3;
+    mount1 = *gl_mounts[MOUNT_HORSIE];
+    mount2 = *gl_mounts[MOUNT_GOITEIA];
+    mount3 = *gl_mounts[MOUNT_NIBAL];
+    mount4 = *gl_mounts[MOUNT_MANWE];
 
     DeploymentMenu_Party_Set(dm, &party);
     SDL_assert(dm->_party_size > 0);
