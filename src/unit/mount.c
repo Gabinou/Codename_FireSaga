@@ -2,7 +2,8 @@
 #include "unit/mount.h"
 
 /* --- MOUNTS --- */
-struct Mount HORSIE = {
+/* TODO read mounts from json */
+const struct Mount HORSIE = {
     .unit_bond       = 0,
     .type            = MOUNT_TYPE_HORSE,
     .price           = 2000,
@@ -16,7 +17,7 @@ struct Mount HORSIE = {
     .skill           = 0,
 };
 
-struct Mount NIBAL = {
+const struct Mount NIBAL = {
     .unit_bond       = UNIT_ID_HAMILCAR,
     .sex             = true,
     .type            = MOUNT_TYPE_SALAMANDER,
@@ -29,7 +30,7 @@ struct Mount NIBAL = {
     .skill           = UNIT_SKILL_EXP_VENOMOUS_SPIT,
 };
 
-struct Mount GOITEIA = {
+const struct Mount GOITEIA = {
     .sex             = true,
     .type            = MOUNT_TYPE_PEGASUS,
     .unit_bond       = 0,
@@ -43,7 +44,7 @@ struct Mount GOITEIA = {
     .skill           = 0,
 };
 
-struct Mount MANWE = {
+const struct Mount MANWE = {
     .type            = MOUNT_TYPE_EAGLE,
     .sex             = true,
     .unit_bond       = 0,
@@ -61,7 +62,11 @@ const struct Mount DIVINE   = {0};
 const struct Mount REMI     = {0};
 const struct Mount RAIA     = {0};
 
-const Mount *gl_mounts[MOUNT_NUM] = {
+// TODO change to array of mounts when reading from JSON
+// Array of pointers, cause array of structs can't be
+// initialized by non-constants.
+// Structs are never constants.
+const Mount *const gl_mounts[MOUNT_NUM] = {
 #define REGISTER_ENUM(x) &x,
 #include "names/mounts.h"
 #undef REGISTER_ENUM

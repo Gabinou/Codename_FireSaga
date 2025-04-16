@@ -37,7 +37,11 @@ typedef struct Mount {
     b32 mages_can_ride;
 } Mount;
 
-extern const Mount *gl_mounts[MOUNT_NUM];
+extern const Mount *const gl_mounts[MOUNT_NUM];
+
+#define REGISTER_ENUM(x) extern const Mount x;
+#include "names/mounts.h"
+#undef REGISTER_ENUM
 
 /* --- Mount --- */
 void Unit_Mount_Mount(   struct Unit *u, i16 id);

@@ -48,10 +48,10 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
     SDL_assert(kiara != NULL);
     SDL_assert(rayan != NULL);
 
-    mount1 = Mount_default_horse;
-    mount2 = Mount_default_pegasus;
-    mount3 = Mount_default_salamander;
-    mount4 = Mount_default_eagle;
+    mount1 = HORSIE;
+    mount2 = GOITEIA;
+    mount3 = NIBAL;
+    mount4 = MANWE;
     // TODO: use ids for mounts
     // silou->mount.ptr = &mount1;
     // erwin->mount.ptr = &mount4;
@@ -96,10 +96,10 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
     SDL_assert(kiara != NULL);
     SDL_assert(rayan != NULL);
 
-    mount1 = Mount_default_horse;
-    mount2 = Mount_default_pegasus;
-    mount3 = Mount_default_salamander;
-    mount4 = Mount_default_eagle;
+    mount1 = HORSIE;
+    mount2 = GOITEIA;
+    mount3 = NIBAL;
+    mount4 = MANWE;
     // TODO: use ids for mounts
     // silou->mount.ptr = &mount1;
     // erwin->mount.ptr = &mount4;
