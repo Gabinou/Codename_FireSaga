@@ -1,6 +1,10 @@
 
 #include "unit/mount.h"
 
+const Mount Mount_default = {
+    .jsonio_header.json_element = JSON_MOUNT,
+};
+
 /* --- MOUNTS --- */
 /* TODO read mounts from json */
 const struct Mount HORSIE = {
@@ -12,7 +16,6 @@ const struct Mount HORSIE = {
     .mages_can_ride  = 0,
     .gets_attached   = 1,
     .promoted        = false,
-    .owner           = 0,
     .owner_lvlups    = 0,
     .skill           = 0,
 };
@@ -25,7 +28,6 @@ const struct Mount NIBAL = {
     .carry_capacity  = 40,
     .gets_attached   = 10,
     .promoted        = true,
-    .owner           = 0,
     .owner_lvlups    = 0,
     .skill           = UNIT_SKILL_EXP_VENOMOUS_SPIT,
 };
@@ -39,7 +41,6 @@ const struct Mount GOITEIA = {
     .mages_can_ride  = 0,
     .gets_attached   = 3,
     .promoted        = false,
-    .owner           = 0,
     .owner_lvlups    = 0,
     .skill           = 0,
 };
@@ -53,7 +54,6 @@ const struct Mount MANWE = {
     .mages_can_ride  = 0,
     .gets_attached   = 0,
     .promoted        = true,
-    .owner           = 0,
     .owner_lvlups    = 0,
     .skill           = 0,
 };
@@ -71,3 +71,16 @@ const Mount *const gl_mounts[MOUNT_NUM] = {
 #include "names/mounts.h"
 #undef REGISTER_ENUM
 };
+
+void Mount_readJSON(    void *input, const cJSON *jmount) {
+    Mount *mount = input;
+    SDL_assert(mount);
+
+    // cJSON *jai = cJSON_GetObjectItem(junit, "AI");
+}
+
+void Mount_writeJSON(   const void *input, cJSON *jmount) {
+    const Mount *mount = input;
+    SDL_assert(mount);
+
+}
