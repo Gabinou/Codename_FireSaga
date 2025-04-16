@@ -143,6 +143,7 @@ void Event_Emit( const char *emitter, u32 type, i32 code, void *data1, void *dat
     // SDL_Log("emitter -> %s, event -> %s", emitter, event_name.data);
     SDL_assert(type != ((UINT32_MAX) - 1));
     SDL_Event event;
+    SDL_zero(event);
     event.type          = type;
     event.user.code     = code;
     event.user.data1    = data1;

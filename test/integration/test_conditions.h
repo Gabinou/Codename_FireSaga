@@ -4,6 +4,16 @@
 #include "map/ontile.h"
 #include "macros.h"
 
+u32 event_Start;
+#define REGISTER_ENUM(x, y) u32 event_##x;
+#include "names/events.h"
+#undef REGISTER_ENUM
+#define REGISTER_ENUM(x, y) u32 event_Input_##x;
+#include "names/input.h"
+#undef REGISTER_ENUM
+u32 event_End;
+
+
 void test_boss_death_win(int argc, char *argv[]) {
     /* -- Startup -- */
     Names_Load_All();
@@ -60,6 +70,7 @@ void test_boss_death_win(int argc, char *argv[]) {
 void test_main_char_death_loss(int argc, char *argv[]) {
     /* -- Startup -- */
     Names_Load_All();
+    Events_Receivers_Declare();
     SDL_assert(global_unitNames[UNIT_ORDER_CORSAIR].num == strlen("Corsair"));
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
@@ -98,6 +109,10 @@ void test_main_char_death_loss(int argc, char *argv[]) {
     SDL_assert(posptr->tilemap_pos.x == 1);
     SDL_assert(posptr->tilemap_pos.y == 1);
 
+    // SDL_assert(event_Unit_Dies);
+    // SDL_assert(SDL_USEREVENT);
+    // SDL_assert(&main_char_entity);
+    // SDL_assert(&boss_entity);
     Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &main_char_entity, &boss_entity);
     SDL_Event event;
     SDL_assert(SDL_PollEvent(&event));
