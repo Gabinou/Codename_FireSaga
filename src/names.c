@@ -9,6 +9,13 @@ const s8 sexNames[UNIT_SEX_NUM] = {
     s8_literal("M")
 };
 
+s8 mount_names[MOUNT_NUM] = {0};
+void Names_Mounts(void) {
+#define REGISTER_ENUM(x) mount_names[MOUNT_##x] = s8_camelCase(s8_toLower(s8_mut(#x)), '_', 2);
+#include "names/mounts.h"
+#undef REGISTER_ENUM
+}
+
 s8 scenes[SCENE_NUM] = {0};
 void Names_scenes(void) {
 #define REGISTER_ENUM(x) scenes[SCENE_##x] = s8cat(s8_camelCase(s8_toLower(s8_mut(#x)), '_', 2), s8_literal("_"));
@@ -286,11 +293,11 @@ void Names_wpnType_Free(s8 *type_names) {
     DARR_FREE(type_names);
 }
 
-
 /* --- API --- */
 void Names_Load_All(void) {
     Names_unitNames();
     Names_AI();
+    Names_Mounts();
     Names_scenes();
     Names_sceneTimes();
     // Hashes_supportHashes();

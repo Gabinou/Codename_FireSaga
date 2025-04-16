@@ -10,7 +10,7 @@
 struct Unit;
 
 /* -- Mount -- */
-struct Mount {
+typedef struct Mount {
     struct jsonIO_Header jsonio_header;
 
     i8     gets_attached;  /* How many lvlups till rider becomes owner. */
@@ -26,7 +26,6 @@ struct Mount {
     i16    owner;          /* Only one that can ride */
     i16    price;
 
-    char *name;
     /* --- TOO BUFF TO RIDE --- */
     /* con only? con + weapon weight? */
     /* ridable_classes: only if necessary: */
@@ -36,15 +35,9 @@ struct Mount {
     /* Healing magic doesn't count, not scary at all. */
     b32 promoted;
     b32 mages_can_ride;
-};
+} Mount;
 
-/* --- WALKING MOUNTS --- */
-extern const struct Mount Mount_default_horse;
-extern const struct Mount Mount_default_salamander;
-
-/* --- FLYING MOUNTS --- */
-extern const struct Mount Mount_default_pegasus;
-extern const struct Mount Mount_default_eagle;
+extern const Mount *gl_mounts[MOUNT_NUM];
 
 /* --- Mount --- */
 void Unit_Mount_Mount(   struct Unit *u, i16 id);

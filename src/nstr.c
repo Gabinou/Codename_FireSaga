@@ -106,7 +106,7 @@ s8 s8_toUpper(s8 str8) {
     return (str8);
 }
 
-s8 s8_camelCase(s8 str8,  char separator, size_t minwordlen) {
+s8 s8_camelCase(s8 str8, char separator, size_t minwordlen) {
     size_t wlen = 0;
     for (size_t i = 0; i <= str8.num; i++) {
         int word_end = (*(str8.data + i) == separator) || (i == str8.num);

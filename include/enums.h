@@ -442,11 +442,11 @@ enum AIs {
 #undef REGISTER_ENUM
 
 
-#define REGISTER_ENUM(x) MOUNT_NAME_##x,
-enum MOUNT_NAMES {
-    MOUNT_NAME_START = 0,
+#define REGISTER_ENUM(x) MOUNT_##x,
+enum MOUNTS {
+    MOUNT_NULL = 0,
 #include "names/mounts.h"
-    MOUNT_NAME_END,
+    MOUNT_NUM,
 };
 #undef REGISTER_ENUM
 

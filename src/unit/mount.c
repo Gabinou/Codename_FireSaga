@@ -2,8 +2,7 @@
 #include "unit/mount.h"
 
 /* --- MOUNTS --- */
-const struct Mount Mount_default_horse = {
-    .name            = "Horsie",
+struct Mount HORSIE = {
     .unit_bond       = 0,
     .type            = MOUNT_TYPE_HORSE,
     .price           = 2000,
@@ -17,8 +16,7 @@ const struct Mount Mount_default_horse = {
     .skill           = 0,
 };
 
-const struct Mount Mount_default_salamander = {
-    .name            = "Nibal",
+struct Mount NIBAL = {
     .unit_bond       = UNIT_ID_HAMILCAR,
     .sex             = true,
     .type            = MOUNT_TYPE_SALAMANDER,
@@ -31,8 +29,7 @@ const struct Mount Mount_default_salamander = {
     .skill           = UNIT_SKILL_EXP_VENOMOUS_SPIT,
 };
 
-const struct Mount Mount_default_pegasus = {
-    .name            = "FlyieHorsie",
+struct Mount GOITEIA = {
     .sex             = true,
     .type            = MOUNT_TYPE_PEGASUS,
     .unit_bond       = 0,
@@ -46,8 +43,7 @@ const struct Mount Mount_default_pegasus = {
     .skill           = 0,
 };
 
-const struct Mount Mount_default_eagle = {
-    .name            = "Manwe",
+struct Mount MANWE = {
     .type            = MOUNT_TYPE_EAGLE,
     .sex             = true,
     .unit_bond       = 0,
@@ -59,4 +55,14 @@ const struct Mount Mount_default_eagle = {
     .owner           = 0,
     .owner_lvlups    = 0,
     .skill           = 0,
+};
+
+const struct Mount DIVINE   = {0};
+const struct Mount REMI     = {0};
+const struct Mount RAIA     = {0};
+
+const Mount *gl_mounts[MOUNT_NUM] = {
+#define REGISTER_ENUM(x) &x,
+#include "names/mounts.h"
+#undef REGISTER_ENUM
 };

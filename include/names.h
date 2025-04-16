@@ -39,6 +39,7 @@ extern s8 jsonElementnames[JSON_END];
 extern s8 global_itemNames[ITEM_NUM];
 extern s8 global_tilenames[TILE_ID_MAX];
 extern s8 gamesubStatenames[GAME_SUBSTATE_END];
+extern s8 mount_names[MOUNT_NUM];
 
 /* --- Order at run-time --- */
 /* order at comp-time: use ITEM_ORDER_##X */
@@ -48,6 +49,7 @@ extern struct dtab   *global_unitOrders; /* DTAB_GET(global_unitOrders, id) = or
 extern u64           *class_equippables;
 
 /* -- Name makers -- */
+void Names_Mounts(void);
 void Names_scenes(void);
 void Names_sceneTimes(void);
 void Names_campjobNames(void);
