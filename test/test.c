@@ -17,6 +17,7 @@
 #include "test_item.h"
 #include "test_map.h"
 #include "test_menu.h"
+#include "test_mounts.h"
 #include "test_nstr.h"
 #include "test_RNG.h"
 #include "test_pathfinding.h"
@@ -87,6 +88,7 @@ void unit_tests() {
     nourstest_run("Game ",          test_game);
     nourstest_run("Item",           test_item);
     nourstest_run("Map ",           test_map);
+    nourstest_run("Mounts ",        test_mounts);
     nourstest_run("Pathfinding ",   test_pathfinding);
     nourstest_run("Menu ",          test_menu);
     nourstest_run("nstr ",          test_nstr);

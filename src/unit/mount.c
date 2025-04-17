@@ -12,7 +12,9 @@ Mount gl_mounts[MOUNT_NUM] = {0};
 void Mounts_Load(void) {
     s8 filename;
 #define REGISTER_ENUM(x) gl_mounts[MOUNT_##x] = Mount_default;\
-    filename = s8cat(s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2), s8_literal(".json"));\
+    filename = s8_mut("mounts/");\
+    filename = s8cat(filename, s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2));\
+    filename = s8cat(filename, s8_literal(".json"));\
     jsonio_readJSON(filename, &gl_mounts[MOUNT_##x]);\
     s8_free(&filename);
 #include "names/mounts.h"

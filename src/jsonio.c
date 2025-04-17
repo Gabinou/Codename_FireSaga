@@ -2,6 +2,7 @@
 #include "jsonio.h"
 #include "map/map.h"
 #include "unit/party.h"
+#include "unit/mount.h"
 #include "convoy.h"
 #include "macros.h"
 #include "names.h"
@@ -10,6 +11,7 @@
 #include "item.h"
 #include "weapon.h"
 #include "camp.h"
+
 // #ifndef STB_SPRINTF_IMPLEMENTATION
 // #define STB_SPRINTF_IMPLEMENTATION
 #include "stb_sprintf.h"
@@ -29,6 +31,7 @@ const json_rfunc json_rfuncs [JSON_END] = {
     /* JSON_SPRITE      */  Sprite_readJSON,
     /* JSON_AI          */  AI_readJSON,
     /* JSON_PARTY       */  Party_readJSON,
+    /* JSON_MOUNT       */  Mount_readJSON,
 };
 
 const json_wfunc json_wfuncs[JSON_END] = {
@@ -45,6 +48,7 @@ const json_wfunc json_wfuncs[JSON_END] = {
     /* JSON_SPRITESHEET */  NULL,
     /* JSON_AI          */  AI_writeJSON,
     /* JSON_PARTY       */  NULL,
+    /* JSON_MOUNT       */  Mount_writeJSON,
 };
 
 struct cJSON *jsonio_parseJSON(s8 filename) {
