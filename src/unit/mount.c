@@ -37,16 +37,17 @@ void Mount_readJSON(    void *input, const cJSON *jmount) {
     cJSON *jpromoted = cJSON_GetObjectItem(jmount, "promoted");
     cJSON *jattached = cJSON_GetObjectItem(jmount, "attached");
 
-    mount->sex      = cJSON_GetNumberValue(jsex);
     mount->type     = cJSON_GetNumberValue(jtype);
     mount->bond     = cJSON_GetNumberValue(jbond);
     mount->move     = cJSON_GetNumberValue(jmove);
-    mount->mages    = cJSON_GetNumberValue(jmages);
     mount->skill    = cJSON_GetNumberValue(jskill);
     mount->price    = cJSON_GetNumberValue(jprice);
     mount->carry    = cJSON_GetNumberValue(jcarry);
-    mount->promoted = cJSON_GetNumberValue(jpromoted);
     mount->attached = cJSON_GetNumberValue(jattached);
+
+    JSONIO_READ_FLAG(mount->sex,        jsex);
+    JSONIO_READ_FLAG(mount->mages,      jmages);
+    JSONIO_READ_FLAG(mount->promoted,   jpromoted);
 }
 
 void Mount_writeJSON(   const void *input, cJSON *jmount) {
