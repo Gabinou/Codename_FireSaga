@@ -34,11 +34,8 @@ typedef struct Mount {
 extern const Mount Mount_default;
 extern Mount gl_mounts[MOUNT_NUM];
 
-#define REGISTER_ENUM(x) extern const Mount x;
-#include "names/mounts.h"
-#undef REGISTER_ENUM
-
 /* --- Mount --- */
+void Mounts_Load(void);
 void Mount_readJSON(    void *input, const cJSON *jmount);
 void Mount_writeJSON(   const void *input, cJSON *jmount);
 

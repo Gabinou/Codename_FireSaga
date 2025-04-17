@@ -1,20 +1,22 @@
 
 #include "unit/mount.h"
+#include "jsonio.h"
 
 const Mount Mount_default = {
     .jsonio_header.json_element = JSON_MOUNT,
 };
 
 /* --- MOUNTS --- */
-Mount gl_mounts[MOUNT_NUM];
+Mount gl_mounts[MOUNT_NUM] = {0};
 
-void Mounts_Load(    void *input, const cJSON *jmount) {
-
-#define REGISTER_ENUM(x) &x,
+void Mounts_Load(void) {
+    s8 filename;
+#define REGISTER_ENUM(x) gl_mounts[MOUNT_##x] = Mount_default;\
+    filename = s8cat(s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2), s8_literal(".json"));\
+    jsonio_readJSON(filename, &gl_mounts[MOUNT_##x]);\
+    s8_free(&filename);
 #include "names/mounts.h"
 #undef REGISTER_ENUM
-
-
 }
 
 void Mount_readJSON(    void *input, const cJSON *jmount) {
