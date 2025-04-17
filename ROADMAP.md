@@ -1,72 +1,74 @@
 
-# Design considerations
+# Game design considerations
 
-More details on my thoughts are available in the [development blog] (https://averagebear.game.blog/):
-- Benevolent Dictator veto:
-	1. Permadeath
-		- Minimize story-convenient exceptions.
-		- Workaround: Units can live through the DnD-like Agony state.
-	2. No Phoenix/Casual mode
-	3. No Ambush spawns
-	4. No Teleportation
-		- Maybe except rescue staves
- 	5. No Time travel
-	6. No Dragons
-	7. Minimal so-called "fanservice"
-	8. No Digital Rights Management (DRM) software or anti-piracy measures
+More details on my thoughts are available in the [development blog] (https://averagebear.game.blog/).
 
-- Narrative is king.
-	* Everything in the game, mechanics, gameplay, items, etc. tells a story.
-	* Themes
-		- Death
-			- Of Empires & People
-			- Tragedy and Glory of War
-		- Slavery to Gods & Kings
-		- Fighting Demons within & without
+## Rules
+1. No AI-generated content. 
+2. No Digital Rights Management (DRM). No anti-piracy.
+3. No Achievements.
+4. Minimal "fanservice"
+5. Permadeath
+	- Few if any story-convenient exceptions.
+	- Workaround: Units can live through the DnD-like Agony state.
+6. No Phoenix/Casual mode
+7. No Ambush Spawns
+8. No Teleportation
+	- Maybe except rescue staves
+9. No Time travel
+10. No Dragons
 
-- Units have two hands
-	* Swords & shields
-	* Dual Wielding & Two-handing
-	* Handedness, Ambidextry
+## Narrative is king.
+- Everything in the game tells a story.
+Themes: 
+- Death
+	- Of Empires & People
+	- Tragedy and Glory of War
+- Slavery to Gods & Kings
+- Fighting Demons within & without
 
-- Linear, chapter-based
-	* Camp between chapters where you can move around on the map, go to shops, talk to people.
-		- Replaces menu navigation?
-	* Army movement on the world map only if it makes narrative sense
-		- No enemy encounters on world map
-	* Side chapters unlockable.
-	* Notes taken in books magically present on a newgame
+## Units have two hands
+- Swords & shields
+- Dual Wielding & Two-handing
+- Handedness, Ambidextry
 
-- Mounts 
-	* No mount on promotion, get mounts through story/gameplay. 
-	* Almost any unit/class can have a mount: horse, pegasus, etc.
-		- Some mounts have unit/classes preferences. Some are scared of magic.
-	* Mounts get attached to rider.
+## Linear, chapter-based
+- Camp between chapters where you can move around on the map, go to shops, talk to people.
+	- Replaces menu navigation?
+- Army movement on the world map only if it makes narrative sense
+	- No enemy encounters on world map
+- Side chapters unlockable.
+- Notes taken in books magically present on a newgame
 
-- Items
-	* Breakable
-	* Becomes unusable "broken trash" item when broken
-	* Weapon's remaining number of uses can be increased using whetstones
+## Mounts 
+- No mount on promotion, get mounts through story/gameplay. 
+- Almost any unit/class can have a mount: horse, pegasus, etc.
+	- Some mounts are scared of magic.
+	- Some mounts have unit/classes preferences. 
+- Mounts get attached to rider.
 
-- Skills:
-	* Limited number of simpler skills
-	* Skills more tightly coupled with narrative
-	* 5 Skills maximum per unit: 4 Passives, 1 Active.
+## Items
+- Breakable
+- Becomes unusable "broken trash" item when broken
+- Weapon's remaining number of uses can be increased using whetstones
 
-- Questionable:
-	* IronMan Mode 
-		Automatic game save + deletion of previous save 
-	* Forcible IronMan Mode
-		Force player into IronMan mode. The game always saves, no retries. 
-	* No Achievements
-		No. Harmful .
-	* Cities are visitable like camps?
+## Skills:
+- Limited number of simpler skills
+- Skills more tightly coupled with narrative
+- 5 Skills maximum per unit: 4 Passives, 1 Active.
+
+## Questionable:
+- IronMan Mode 
+	- Automatic game save + deletion of previous save 
+- Forcible IronMan Mode
+	- Force player into IronMan mode. The game always saves, no retries. 
+- Cities are visitable like camps?
 
 ## Under the hood:
 - Multithreading? 
-	Might be useful to load assets in the background
+	- Might be useful to load assets in the background
 - OpenGL?
-	Hardware acceleration, make use of GPU. 
+	- Hardware acceleration, make use of GPU. 
 
 ## Long-term
 Playable on
