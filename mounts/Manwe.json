@@ -1,8 +1,8 @@
 {
 	"Mount":    {
+		"type" : 4,
 		"attached" : 1,
 		"carry" : 20,
-		"type" : 1,
 		"skill" : 0,
 		"move" : 7,
 		"bond" : 0,

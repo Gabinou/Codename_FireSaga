@@ -6,60 +6,16 @@ const Mount Mount_default = {
 };
 
 /* --- MOUNTS --- */
-/* TODO read mounts from json */
+Mount gl_mounts[MOUNT_NUM];
 
-const struct Mount NIBAL = {
-    .jsonio_header.json_element = JSON_MOUNT,
-    .bond       = UNIT_ID_HAMILCAR,
-    .sex        = true,
-    .type       = MOUNT_TYPE_SALAMANDER,
-    .price      = -1,
-    .carry      = 40,
-    .attached   = 10,
-    .promoted   = true,
-    .skill      = UNIT_SKILL_EXP_VENOMOUS_SPIT,
-};
+void Mounts_Load(    void *input, const cJSON *jmount) {
 
-const struct Mount GOITEIA = {
-    .jsonio_header.json_element = JSON_MOUNT,
-    .sex        = true,
-    .type       = MOUNT_TYPE_PEGASUS,
-    .price      = 5000,
-    .carry      = 7,
-    .attached   = 3,
-};
-
-const struct Mount MANWE = {
-    .jsonio_header.json_element = JSON_MOUNT,
-    .type       = MOUNT_TYPE_EAGLE,
-    .sex        = true,
-    .price      = -1,
-    .carry      = 13,
-    .promoted   = true,
-};
-
-const struct Mount DIVINE   = {
-    .jsonio_header.json_element = JSON_MOUNT,
-
-};
-const struct Mount REMI     = {
-    .jsonio_header.json_element = JSON_MOUNT,
-
-};
-const struct Mount RAIA     = {
-    .jsonio_header.json_element = JSON_MOUNT,
-
-};
-
-// TODO change to array of mounts when reading from JSON
-// Array of pointers, cause array of structs can't be
-// initialized by non-constants.
-// Structs are never constants.
-const Mount *const gl_mounts[MOUNT_NUM] = {
 #define REGISTER_ENUM(x) &x,
 #include "names/mounts.h"
 #undef REGISTER_ENUM
-};
+
+
+}
 
 void Mount_readJSON(    void *input, const cJSON *jmount) {
     Mount *mount = input;
