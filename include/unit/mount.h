@@ -15,26 +15,20 @@ typedef struct Mount {
     struct jsonIO_Header jsonio_header;
 
     /* 0 is upon riding, -1 is never */
-    i8      attached;  /* How many lvlups till rider becomes owner. */
-    i8      carry;
-    i8      type;
-    i8      skill;
-
-    i32     move;
-
-    i16     bond;      /* get +1hit/+1 avoid bonus */
-
-    i16     price;
-
+    i32 attached;  /* lvlups to rider becoming owner. */
     /* --- TOO BUFF TO RIDE --- */
     /* con only? con + weapon weight? */
-    /* ridable_classes: only if necessary: */
-    /* i8 * ridable_classes; // 0 means all classes. */
+    i32 carry;
+    i32 type;
+    i32 skill;
+    i32 move;
+    i32 bond; /* bonus to bonded unit id */
+    i32 price;
+    /* i32 * ridable_classes; // 0 means all classes. */
     b32 sex; /* 0:F, 1:M. eg. hasPenis. */
-    /* Most mounts are scared of magic. */
+    b32 promoted;   /* promoted units only. */
+    b32 mages;      /* Most mounts are scared of magic. */
     /* Healing magic doesn't count, not scary at all. */
-    b32 promoted;
-    b32 mages;
 } Mount;
 
 extern const Mount Mount_default;

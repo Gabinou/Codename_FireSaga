@@ -7,15 +7,6 @@ const Mount Mount_default = {
 
 /* --- MOUNTS --- */
 /* TODO read mounts from json */
-const struct Mount HORSIE = {
-    .jsonio_header.json_element = JSON_MOUNT,
-    .type       = MOUNT_TYPE_HORSE,
-    .price      = 2000,
-    .sex        = true,
-    .carry      = 10,
-    .attached   = 1,
-    .promoted   = false,
-};
 
 const struct Mount NIBAL = {
     .jsonio_header.json_element = JSON_MOUNT,
