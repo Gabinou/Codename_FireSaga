@@ -14,6 +14,7 @@ struct Unit;
 typedef struct Mount {
     struct jsonIO_Header jsonio_header;
 
+    /* 0 is upon riding, -1 is never */
     i8      attached;  /* How many lvlups till rider becomes owner. */
     i8      carry;
     i8      type;
@@ -23,7 +24,6 @@ typedef struct Mount {
 
     i16     bond;      /* get +1hit/+1 avoid bonus */
 
-    /* 0 is upon riding, -1 is never */
     i16     price;
 
     /* --- TOO BUFF TO RIDE --- */

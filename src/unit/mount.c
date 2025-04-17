@@ -72,6 +72,7 @@ const Mount *const gl_mounts[MOUNT_NUM] = {
 
 void Mount_readJSON(    void *input, const cJSON *jmount) {
     Mount *mount = input;
+    SDL_assert(jmount);
     SDL_assert(mount);
 
     cJSON *jsex      = cJSON_GetObjectItem(jmount, "sex");
@@ -99,6 +100,27 @@ void Mount_readJSON(    void *input, const cJSON *jmount) {
 
 void Mount_writeJSON(   const void *input, cJSON *jmount) {
     const Mount *mount = input;
+    SDL_assert(jmount);
     SDL_assert(mount);
+    cJSON *jsex      = cJSON_CreateNumber(mount->sex);
+    cJSON *jtype     = cJSON_CreateNumber(mount->type);
+    cJSON *jbond     = cJSON_CreateNumber(mount->bond);
+    cJSON *jmove     = cJSON_CreateNumber(mount->move);
+    cJSON *jmages    = cJSON_CreateNumber(mount->mages);
+    cJSON *jskill    = cJSON_CreateNumber(mount->skill);
+    cJSON *jprice    = cJSON_CreateNumber(mount->price);
+    cJSON *jcarry    = cJSON_CreateNumber(mount->carry);
+    cJSON *jpromoted = cJSON_CreateNumber(mount->promoted);
+    cJSON *jattached = cJSON_CreateNumber(mount->attached);
 
+    cJSON_AddItemToObject(jmount,   "sex",      jsex);
+    cJSON_AddItemToObject(jmount,   "type",     jtype);
+    cJSON_AddItemToObject(jmount,   "bond",     jbond);
+    cJSON_AddItemToObject(jmount,   "move",     jmove);
+    cJSON_AddItemToObject(jmount,   "mages",    jmages);
+    cJSON_AddItemToObject(jmount,   "skill",    jskill);
+    cJSON_AddItemToObject(jmount,   "price",    jprice);
+    cJSON_AddItemToObject(jmount,   "carry",    jcarry);
+    cJSON_AddItemToObject(jmount,   "promoted", jpromoted);
+    cJSON_AddItemToObject(jmount,   "attached", jattached);
 }
