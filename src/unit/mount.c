@@ -8,18 +8,17 @@ const Mount Mount_default = {
 /* --- MOUNTS --- */
 /* TODO read mounts from json */
 const struct Mount HORSIE = {
-    .bond       = 0,
+    .jsonio_header.json_element = JSON_MOUNT,
     .type       = MOUNT_TYPE_HORSE,
     .price      = 2000,
     .sex        = true,
     .carry      = 10,
-    .mages      = 0,
     .attached   = 1,
     .promoted   = false,
-    .skill      = 0,
 };
 
 const struct Mount NIBAL = {
+    .jsonio_header.json_element = JSON_MOUNT,
     .bond       = UNIT_ID_HAMILCAR,
     .sex        = true,
     .type       = MOUNT_TYPE_SALAMANDER,
@@ -31,32 +30,35 @@ const struct Mount NIBAL = {
 };
 
 const struct Mount GOITEIA = {
+    .jsonio_header.json_element = JSON_MOUNT,
     .sex        = true,
     .type       = MOUNT_TYPE_PEGASUS,
-    .bond       = 0,
     .price      = 5000,
     .carry      = 7,
-    .mages      = 0,
     .attached   = 3,
-    .promoted   = false,
-    .skill      = 0,
 };
 
 const struct Mount MANWE = {
+    .jsonio_header.json_element = JSON_MOUNT,
     .type       = MOUNT_TYPE_EAGLE,
     .sex        = true,
-    .bond       = 0,
     .price      = -1,
     .carry      = 13,
-    .mages      = 0,
-    .attached   = 0,
     .promoted   = true,
-    .skill      = 0,
 };
 
-const struct Mount DIVINE   = {0};
-const struct Mount REMI     = {0};
-const struct Mount RAIA     = {0};
+const struct Mount DIVINE   = {
+    .jsonio_header.json_element = JSON_MOUNT,
+
+};
+const struct Mount REMI     = {
+    .jsonio_header.json_element = JSON_MOUNT,
+
+};
+const struct Mount RAIA     = {
+    .jsonio_header.json_element = JSON_MOUNT,
+
+};
 
 // TODO change to array of mounts when reading from JSON
 // Array of pointers, cause array of structs can't be
