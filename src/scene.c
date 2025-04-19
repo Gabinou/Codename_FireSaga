@@ -1,14 +1,14 @@
 #include "scene.h"
-#include "events.h"
 #include "names.h"
 #include "cJSON.h"
+#include "nmath.h"
+#include "events.h"
+#include "macros.h"
+#include "palette.h"
+#include "platform.h"
 #include "utilities.h"
 #include "filesystem.h"
-#include "platform.h"
-#include "macros.h"
-#include "nmath.h"
 #include "pixelfonts.h"
-#include "palette.h"
 #include "stb_sprintf.h"
 
 const struct Scene Scene_default =  {
@@ -31,9 +31,12 @@ const struct SceneLine        SceneLine_default       = {0};
 const struct SceneDidascalie  SceneDidascalie_default = {0};
 const struct SceneBackground  SceneBackground_default = {0};
 
-static u64 hash_alive     = 210706583606ull;       /* sota_hash_djb2(s8_literal("alive"));     */
-static u64 hash_dead      = 6385147891ull;         /* sota_hash_djb2(s8_literal("dead"));      */
-static u64 hash_recruited = 249904965071548876ull; /* sota_hash_djb2(s8_literal("recruited")); */
+/* sota_hash_djb2(s8_literal("dead"));      */
+static u64 hash_dead      = 6385147891ull;
+/* sota_hash_djb2(s8_literal("alive"));     */
+static u64 hash_alive     = 210706583606ull;
+/* sota_hash_djb2(s8_literal("recruited")); */
+static u64 hash_recruited = 249904965071548876ull;
 
 const json_rfunc fsm_Scene_Didascalie_readJSON[SCENE_DIDASCALIE_NUM] = {
     Scene_Didascalie_Appear_readJSON,

@@ -27,7 +27,7 @@
 // Scene index = chapter * SCENE_DIVISOR + scene_sub_index
 //
 
-/* ---------------------------------- Scene --------------------------------- */
+/* ---------------------- Scene --------------------- */
 //  A visual novel
 //      - Multiple characters talk to each other
 //          - Player clicks to move to next line
@@ -79,33 +79,33 @@ enum SCENE_MISC {
 };
 
 enum SCENE_DIDASCALIE {
-    SCENE_DIDASCALIE_START  = -1,
-    SCENE_DIDASCALIE_APPEAR =  0,
-    SCENE_DIDASCALIE_SLIDE  =  1,
-    SCENE_DIDASCALIE_NUM    =  2
+    SCENE_DIDASCALIE_START          = -1,
+    SCENE_DIDASCALIE_APPEAR         =  0,
+    SCENE_DIDASCALIE_SLIDE          =  1,
+    SCENE_DIDASCALIE_NUM            =  2
 };
 
 enum SCENE_ACTORS {
-    SCENE_ACTOR_POS_X           = 80,
-    SCENE_ACTOR_POS_Y           = 10,
-    SCENE_ACTOR_POS_W           = 20,
-    SCENE_ACTOR_POS_H           = 160,
-    SCENE_ACTOR_COLOR_OFFSET    = 8,
+    SCENE_ACTOR_POS_X               =  80,
+    SCENE_ACTOR_POS_Y               =  10,
+    SCENE_ACTOR_POS_W               =  20,
+    SCENE_ACTOR_POS_H               = 160,
+    SCENE_ACTOR_COLOR_OFFSET        =   8,
 
-    SCENE_ACTOR_POS_X_DIFF = 100,
+    SCENE_ACTOR_POS_X_DIFF          = 100,
 };
 
 // Statements: Renpy terminology
 //      Anything a Scene can do.
 //      Scene pauses only on line. Otherwise play statements.
 enum SCENE_STATEMENTS {
-    SCENE_STATEMENT_START       = -1,
-    SCENE_STATEMENT_LINE        =  0,
-    SCENE_STATEMENT_DIDASCALIE  =  1,
-    SCENE_STATEMENT_CONDITION   =  2,
-    SCENE_STATEMENT_BACKGROUND  =  3,
-    SCENE_STATEMENT_MUSIC       =  4,
-    SCENE_STATEMENT_NUM         =  5
+    SCENE_STATEMENT_START           = -1,
+    SCENE_STATEMENT_LINE            =  0,
+    SCENE_STATEMENT_DIDASCALIE      =  1,
+    SCENE_STATEMENT_CONDITION       =  2,
+    SCENE_STATEMENT_BACKGROUND      =  3,
+    SCENE_STATEMENT_MUSIC           =  4,
+    SCENE_STATEMENT_NUM             =  5
 };
 
 /* --- TYPEDEFS --- */
@@ -315,9 +315,9 @@ void Scene_Finish(      struct Scene *scene, struct Game *sota);
 i32 Scene_jsonStatement_Type(cJSON *jstatement);
 
 /* --- Play --- */
-void _Scene_Animate_Actors(        struct Scene *scene);
-void _Scene_Animate_Background(    struct Scene *scene);
+void _Scene_Animate_Actors(     struct Scene *scene);
 void _Scene_Animate_Text_Boxs(  struct Scene *scene);
+void _Scene_Animate_Background( struct Scene *scene);
 
 void Scene_Animate(struct Game  *sota, tnecs_entity entity,
                    struct Scene *scene, struct Timer *timer);
