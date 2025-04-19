@@ -43,6 +43,11 @@ const json_rfunc fsm_Scene_Didascalie_readJSON[SCENE_DIDASCALIE_NUM] = {
     Scene_Didascalie_Slide_readJSON
 };
 
+const scene_didascalie scene_didascalies[SCENE_DIDASCALIE_NUM] = {
+    Scene_Appear,
+    Scene_Slide
+};
+
 const json_rfunc fsm_Scene_readJSON[SCENE_STATEMENT_NUM] = {
     Scene_Line_readJSON,
     Scene_Didascalie_readJSON,
@@ -534,13 +539,16 @@ int Scene_Statement_Next(struct Scene *scene) {
         // Add actor to list of actors if appear didascalie
         SDL_assert(scene->current_statement >= 0);
         statement = scene->statements[scene->current_statement];
-        if (statement.header.statement_type == SCENE_STATEMENT_DIDASCALIE) {
-            SDL_assert(scene->actor_order != NULL);
-
-            i32 unit_order  = Unit_Name2Order(statement._union.didascalie.actor);
-            DARR_PUT(scene->actor_order, unit_order);
+        if (scene_didascalies[statement.header.statement_type] != NULL) {
+            scene_didascalies[statement.header.statement_type](scene, &statement);
             goto loopstart;
         }
+        // if (statement.header.statement_type == SCENE_STATEMENT_DIDASCALIE) {
+        // SDL_assert(scene->actor_order != NULL);
+
+        // i32 unit_order  = Unit_Name2Order(statement._union.didascalie.actor);
+        // DARR_PUT(scene->actor_order, unit_order);
+        // }
 
     } while (statement.header.statement_type != SCENE_STATEMENT_LINE);
     scene->update = true;
@@ -640,4 +648,15 @@ void Scene_Draw(struct Scene *scene, struct Settings *settings,
     SDL_SetRenderTarget(renderer, render_target);
     SDL_assert(scene->texture != NULL);
     SDL_RenderCopy(renderer, scene->texture, NULL, NULL);
+}
+
+void Scene_Appear(  struct Scene *scene, struct SceneStatement * statement) {
+    // Add actor to list of actors if appear didascalie
+    SDL_assert(scene->actor_order != NULL);
+    i32 unit_order  = Unit_Name2Order(statement->_union.didascalie.actor);
+    DARR_PUT(scene->actor_order, unit_order);
+}
+
+void Scene_Slide(  struct Scene *scene, struct SceneStatement * statement) {
+
 }

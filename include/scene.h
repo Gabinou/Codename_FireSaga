@@ -301,6 +301,15 @@ void Scene_Render_Output(struct Scene *scene, s8 path);
 void Scene_Raw_Print(   struct Scene *scene);
 void Scene_Render_Print(struct Scene *scene);
 
+/* --- Didascalies --- */
+typedef void (*scene_didascalie)(struct Scene*, struct SceneStatement *);
+extern const json_rfunc fsm_Scene_Didascalie_readJSON[SCENE_DIDASCALIE_NUM];
+
+extern const scene_didascalie scene_didascalies[SCENE_DIDASCALIE_NUM];
+
+void Scene_Slide(   struct Scene *scene, SceneStatement * statement);
+void Scene_Appear(  struct Scene *scene, SceneStatement *statement);
+
 /* --- Statement --- */
 int Scene_Statement_Next(struct Scene *scene);
 int Scene_Line_Next(struct Scene *scene);
