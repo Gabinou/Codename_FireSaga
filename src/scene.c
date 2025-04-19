@@ -285,15 +285,14 @@ void Scene_Didascalie_Slide_readJSON( void *input, const cJSON *jdid) {
         *didascalie = SceneDidascalie_default;
         didascalie->actor   = actor;
 
+        // Reading Slide paramaters from child array
         DidascalieSlide *slide = &didascalie->_union.slide;
-
-
         SDL_assert(cJSON_IsArray(jslide_arr));
         i32 array_num = cJSON_GetArraySize(jslide_arr);
         SDL_assert(array_num >= 3 && array_num <= 4);
         i32 iterations = array_num > SCENE_SLIDE_ARR_NUM ? SCENE_SLIDE_ARR_NUM : array_num;
 
-        i32 *slide_arr = (i32 *)&slide;
+        i32 *slide_arr = (i32 *)slide;
         for (int i = 0; i < iterations; i++) {
             slide_arr[i] = cJSON_GetNumberValue(cJSON_GetArrayItem(jslide_arr, i));
         }
