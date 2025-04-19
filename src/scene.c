@@ -565,6 +565,8 @@ void _Scene_Draw_Actors(struct Scene *scene, SDL_Renderer *renderer) {
     SDL_assert(scene->actor_order   != NULL);
 
     for (i32 i = 0; i < DARR_NUM(scene->actor_order); i++) {
+        // TODO: make actors into component
+
         // Draw a rectangle for every actor
         SDL_Rect dstrect = {SCENE_ACTOR_POS_X + 2 * SCENE_ACTOR_POS_W * i,
                             SCENE_ACTOR_POS_Y,
@@ -658,5 +660,8 @@ void Scene_Appear(  struct Scene *scene, struct SceneStatement * statement) {
 }
 
 void Scene_Slide(  struct Scene *scene, struct SceneStatement * statement) {
+    // TODO: 
+    //  1. add slider component to rendered portait
+    //  1. Set slider target
 
 }
