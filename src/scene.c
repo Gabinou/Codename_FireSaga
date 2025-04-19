@@ -249,6 +249,7 @@ void Scene_Didascalie_Appear_readJSON(void *input, const cJSON *jdid) {
         SDL_assert(jappear != NULL);
 
         // Getting actor from Appear didascalie
+        // TODO: cJSON_GetStringValue
         s8 actor        = s8_var(jappear->valuestring);
         SceneDidascalie *didascalie = &statement._union.didascalie;
         *didascalie = SceneDidascalie_default;
@@ -274,15 +275,28 @@ void Scene_Didascalie_Slide_readJSON( void *input, const cJSON *jdid) {
         cJSON *jslide = cJSON_GetObjectItem(jdid, "Slide");
         SDL_assert(jslide != NULL);
         SDL_assert(jslide->child != NULL);
-        cJSON *jslide_child = jslide->child;
+        cJSON *jslide_arr = jslide->child;
 
         // Getting actor from Slide didascalie
-        s8 actor        = s8_var(jslide_child->string);
+        s8 actor    = s8_var(jslide_arr->string);
+        int order   = Unit_Name2Order(actor);
+
         SceneDidascalie *didascalie = &statement._union.didascalie;
         *didascalie = SceneDidascalie_default;
         didascalie->actor   = actor;
 
-        // TODO: Getting slide parameters for Slide didascalie
+        DidascalieSlide *slide = &didascalie->_union.slide;
+
+
+        SDL_assert(cJSON_IsArray(jslide_arr));
+        i32 array_num = cJSON_GetArraySize(jslide_arr);
+        SDL_assert(array_num >= 3 && array_num <= 4);
+        i32 iterations = array_num > SCENE_SLIDE_ARR_NUM ? SCENE_SLIDE_ARR_NUM : array_num;
+
+        i32 *slide_arr = (i32 *)&slide;
+        for (int i = 0; i < iterations; i++) {
+            slide_arr[i] = cJSON_GetNumberValue(cJSON_GetArrayItem(jslide_arr, i));
+        }
 
         Scene_Statement_Add(scene, statement);
     }
@@ -369,6 +383,7 @@ void Scene_Line_readJSON(void *input, const cJSON *jstatement) {
         SDL_Log("Problem parsing Scene's Line: Child has no name.");
         exit(1);
     }
+    // todo cJSON_GetStringValue
     if (jline->child->valuestring == NULL) {
         SDL_Log("Problem parsing Scene's Line: Child has no value.");
         exit(1);
@@ -376,7 +391,6 @@ void Scene_Line_readJSON(void *input, const cJSON *jstatement) {
 
     s8 actor    = s8_mut(jline->child->string);
     int order   = Unit_Name2Order(actor);
-
 
     /* Compare conditions: conditions match and actor is NOT DEAD */
     if (!Conditions_Match(&scene->line_cond, &scene->game_cond)) {

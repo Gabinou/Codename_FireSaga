@@ -139,11 +139,13 @@ typedef struct SceneHeader {
 //      - Fade in, fade out
 
 typedef struct DidascalieSlide {
-    Point start;
-    Point end;
-    int speed;
+    /* Slides only in X axis */
+    i32 start;
+    i32 end;
+    i32 speed;
 } DidascalieSlide;
 extern const struct DidascalieSlide DidascalieSlide_default;
+#define SCENE_SLIDE_ARR_NUM 3
 
 typedef struct DidascalieAppear {
     Point pos;
@@ -151,7 +153,8 @@ typedef struct DidascalieAppear {
 extern const struct DidascalieAppear DidascalieAppear_default;
 
 typedef union DidascalieUnion {
-    DidascalieSlide slide;
+    DidascalieSlide     slide;
+    DidascalieAppear    appear;
 } DidascalieUnion;
 
 
