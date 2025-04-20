@@ -44,7 +44,12 @@ enum MAP_UNIT_LOOPS {
 extern const int map_unit_offsets[MAP_UNIT_LOOP_NUM][TWO_D];
 
 struct Spritesheet {
+    /*  Spritesheet for Sprite animation
+        - Contains actual spritesheet SDL_surfaces
+        - Determines portion of surface that gets rendered
+    */
     struct jsonIO_Header jsonio_header;
+
 
     /* metadata for 8 column spritesheet */
     SDL_Surface *surface;           /* pixels with NES color palette        */
@@ -81,6 +86,14 @@ enum SPRITE {
 };
 
 typedef struct Sprite {
+    /* Animated sprite struct 
+    *   - Animate loops: forward, reverse or ping-pong
+    *   - Any number of animation loops
+    *   - Speed for every frame of every loop
+    *   - Determines how surface gets rendered
+    *       - Flip, shading, scale.
+    *       - 3 index shaders: lighten, darken and user-set
+    */
     struct jsonIO_Header jsonio_header;
 
     SDL_Rect srcrect; /* x,y,w,h */

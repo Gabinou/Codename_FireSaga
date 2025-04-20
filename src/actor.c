@@ -23,3 +23,40 @@ i32 Actor_Eyes_Y(i32 eyes_id) {
     return (ACTOR_EYES_HEIGHT * ACTOR_EYES_FRAMES * eyes_id);
 }
 
+
+
+void Actor_Update(struct Actor *actor, SDL_Renderer *renderer) {
+    SDL_assert(scene                != NULL);
+    SDL_assert(renderer             != NULL);
+    SDL_assert(palette_SOTA         != NULL);
+
+    // Draw a rectangle for every actor
+    SDL_Rect dstrect = {SCENE_ACTOR_POS_X + 2 * SCENE_ACTOR_POS_W * i,
+                        SCENE_ACTOR_POS_Y,
+                        SCENE_ACTOR_POS_W,
+                        SCENE_ACTOR_POS_H
+                       };
+    SDL_Color color = palette_SOTA->colors[SCENE_ACTOR_COLOR_OFFSET + i];
+    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
+    SDL_RenderFillRect(renderer, &dstrect);
+
+
+    Utilities_DrawColor_Reset(renderer);
+}
+
+void Actor_Draw(struct Actor *actor,
+                struct SDL_Texture *render_target, SDL_Renderer *renderer) {
+    SDL_assert(scene    != NULL);
+    SDL_assert(renderer != NULL);
+
+    if (actor->update) {
+        Actor_Update(actor render_target, renderer);
+        actor->update = false;
+    }
+
+    /* Copy Actor texture to render_target */
+    SDL_SetRenderTarget(renderer, render_target);
+    SDL_assert(actor->texture != NULL);
+    SDL_RenderCopy(renderer, actor->texture, NULL, NULL);
+}
+

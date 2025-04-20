@@ -60,11 +60,30 @@ i32 Actor_Lips_Y(i32 lips_id);
 i32 Actor_Eyes_Y(i32 eyes_id);
 
 typedef struct Actor {
+    /* Actors for a scene 
+    *   - Characters talk to each other in a scene.
+    *   - Lips move, eyes blink, face and clothes change...
+    *   - One new component > 4 entities wSprite per actor 
+    */
+
     /* Current rendered element */
     i32 body_id;
     i32 face_id;
     i32 lips_id;
     i32 eyes_id;
+
+    /* Current animated element frame */
+    i32 lips_frame;
+    i32 eyes_frame;
+
+    /* Time before switching to new frame */
+    // TODO: speed for every frame?
+    i32 lips_speed; /* [ms] */
+    i32 eyes_speed; /* [ms] */
+
+    SDL_Texture *texture;  /* pixels actually shown on screen */
+    
+    b32 update;
 } Actor;
 
 #endif /* ACTOR_H */

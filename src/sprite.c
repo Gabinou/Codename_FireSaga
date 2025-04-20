@@ -510,7 +510,6 @@ void Sprite_Animation_Loop(struct Sprite *sprite) {
 
     sprite->srcrect.x = sprite->srcrect.w * frame_x;
     sprite->srcrect.y = sprite->srcrect.h * frame_y;
-
 }
 
 void Sprite_Draw(struct Sprite *sp, SDL_Renderer *renderer) {
