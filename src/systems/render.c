@@ -396,6 +396,7 @@ void Animate_Scene(tnecs_input *input) {
     //  - Actors need to be entities to slide.
     // Maybe this should be Draw_Scene_Static:
     //  - Nothing animated -> background?
+    // Or just remove this
     //
     /* -- Get game -- */
     Game *IES = (Game *)input->data;

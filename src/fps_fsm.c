@@ -274,6 +274,7 @@ void fsm_rFrame_sScnTalk(struct Game *sota) {
     Scene *scene = IES_GET_COMPONENT(sota->world, sota->scene, Scene);
     SDL_assert(scene != NULL);
 
+    // TODO:  Draw with systems?
     Scene_Draw(scene, &sota->settings, sota->render_target, sota->renderer);
 }
 
