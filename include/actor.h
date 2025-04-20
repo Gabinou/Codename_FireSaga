@@ -86,6 +86,7 @@ typedef struct Actor {
     SDL_Texture *texture;  /* pixels actually shown on screen */
 
     b32 update;
+    b32 visible;
 } Actor;
 
 #endif /* ACTOR_H */

@@ -1,5 +1,6 @@
 
 #include "systems/render.h"
+#include "actor.h"
 #include "popup/popup.h"
 #include "map/map.h"
 #include "sprite.h"
@@ -60,6 +61,39 @@ void Animate_Sprite(tnecs_input *input) {
     }
 }
 
+
+void Draw_Actor(tnecs_input *input) {
+    /* --- PRELIMINARIES --- */
+    /* -- Get game -- */
+    Game *IES = input->data;
+    SDL_assert(IES != NULL);
+
+    /* -- Get components arrays -- */
+    struct Actor    *Actor_arr   = TNECS_COMPONENT_ARRAY(input, Actor_ID);
+    struct Position *position_arr = TNECS_COMPONENT_ARRAY(input, Position_ID);
+    SDL_assert(actor_arr   != NULL);
+    SDL_assert(position_arr != NULL);
+
+    tnecs_world   *world        = input->world;
+    size_t         archetype_id = input->entity_archetype_id;
+
+    for (u16 order = 0; order < input->num_entities; order++) {
+        struct Actor    *actor      = (actor_arr   + order);
+        struct Position *position   = (position_arr   + order);
+
+        if (!actor->visible)
+            continue;
+
+        Actor_Draw(actor, 
+            &position->pixel_pos, 
+            IES->render_target,
+            IES->renderer
+        );
+    }
+
+
+}
+
 void Draw_Sprite(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
@@ -72,7 +106,7 @@ void Draw_Sprite(tnecs_input *input) {
     SDL_assert(sprite_arr   != NULL);
     SDL_assert(position_arr != NULL);
 
-    tnecs_world   *world       = input->world;
+    tnecs_world   *world        = input->world;
     size_t         archetype_id = input->entity_archetype_id;
 
     for (u16 order = 0; order < input->num_entities; order++) {
@@ -358,6 +392,11 @@ void Animate_Cutscene(tnecs_input *input) {
 
 void Animate_Scene(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
+    // TODO: not sure scene should be animated like this
+    //  - Actors need to be entities to slide.
+    // Maybe this should be Draw_Scene_Static:
+    //  - Nothing animated -> background?
+    //
     /* -- Get game -- */
     Game *IES = (Game *)input->data;
     SDL_assert(IES != NULL);
