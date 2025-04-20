@@ -106,16 +106,24 @@ void Scene_Text_Box_Init(struct Scene *scene, SDL_Renderer *renderer) {
     scene->text_box.enable_tail = false;
 }
 
-void Scene_Init(struct Scene *scene) {
+void Scene_Init(struct Scene *scene, tnecs_world* world) {
     SDL_assert(scene != NULL);
+    SDL_assert(world != NULL);
+
+    scene->world = world;
 
     if (scene->statements == NULL) {
-        scene->statements   = DARR_INIT(scene->statements, SceneStatement, 16);
+        scene->statements   = DARR_INIT(scene->statements, SceneStatement, 32);
     }
 
     if (scene->actor_order == NULL) {
-        scene->actor_order  = DARR_INIT(scene->actor_order, int, 16);
+        scene->actor_order  = DARR_INIT(scene->actor_order, int, 8);
     }
+
+    if (scene->actors == NULL) {
+        scene->actors  = DARR_INIT(scene->actors, tnecs_entity, 8);
+    }
+
 }
 
 void Scene_Texture_Create(struct Scene *scene, SDL_Renderer *renderer) {
@@ -146,6 +154,20 @@ void Scene_Free(struct Scene *scene) {
         SDL_DestroyTexture(scene->texture);
         scene->texture = NULL;
     }
+
+    if (scene->world == NULL) {
+        return;
+    }
+
+    if (scene->actors != NULL) {
+        int num = DARR_NUM(scene->actors);
+        for (int i = 0; i < num; ++i) {
+            tnecs_entity_destroy(scene->world, scene->actors[i]);
+        }
+        DARR_FREE(scene->actors);
+        scene->actors = NULL;
+    }
+
 }
 
 /* --- I/O --- */
@@ -470,20 +492,25 @@ void Scene_Statement_Add(Scene * scene, SceneStatement statement) {
     DARR_PUT(scene->statements, statement);
 }
 
-void Scene_Actor_Add(Scene * scene, u16 actor) {
+void Scene_Actor_Add(Scene *scene, u16 id) {
     SDL_assert(scene != NULL);
     /* Do not add new actor if found */
-    if (Scene_Actor_Find(scene, actor) >= 0) {
+    if (Scene_Actor_Find(scene, id) >= 0) {
         return;
     }
 
-    /* Do not add new actor if too many actor_order already */
-    if (DARR_NUM(scene->actor_order) >= SCENE_MAX_ACTORS) {
+    // /* Do not add new actor if too many actor_order already */
+    if (DARR_NUM(scene->id) >= SCENE_MAX_ACTORS) {
+        // TODO: error? delete previous actor?
+        SDL_assert(0);
         return;
     }
+
+    tnecs_entity actor = TNECS_ENTITY_CREATE_wCOMPONENTS(scene->world, Actor_ID, Position_ID, Slider_ID);
 
     /* Add new actor */
-    DARR_PUT(scene->actor_order, actor);
+    DARR_PUT(scene->actor_id, id);
+    DARR_PUT(scene->actors, actor);
 }
 
 i32 Scene_Actor_Find(Scene * scene, u16 actor) {

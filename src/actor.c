@@ -3,40 +3,40 @@
 
 /* Position of elements rows on spritesheet */
 //  Every character has different numbers of elements
-i32 Actor_Body_Y(i32 body_id) {
+i32 Actor_Spritesheet_Body_Y(i32 body_id) {
     // TODO: check for valid index
     return (ACTOR_BODY_HEIGHT * body_id);
 }
 
-i32 Actor_Face_Y(i32 face_id) {
+i32 Actor_Spritesheet_Face_Y(i32 face_id) {
     // TODO: check for valid index
     return (ACTOR_FACE_HEIGHT * face_id);
 }
 
-i32 Actor_Lips_Y(i32 lips_id) {
+i32 Actor_Spritesheet_Lips_Y(i32 lips_id) {
     // TODO: check for valid index
     return (ACTOR_LIPS_HEIGHT * ACTOR_LIPS_FRAMES * lips_id);
 }
 
-i32 Actor_Eyes_Y(i32 eyes_id) {
+i32 Actor_Spritesheet_Eyes_Y(i32 eyes_id) {
     // TODO: check for valid index
     return (ACTOR_EYES_HEIGHT * ACTOR_EYES_FRAMES * eyes_id);
 }
 
-
-
-void Actor_Update(struct Actor *actor, SDL_Renderer *renderer) {
+void Actor_Update(struct Actor *actor, struct Point *pos, SDL_Renderer *renderer) {
     SDL_assert(scene                != NULL);
     SDL_assert(renderer             != NULL);
     SDL_assert(palette_SOTA         != NULL);
+    // TODO: get rid of index
+    static int index = 0;
 
     // Draw a rectangle for every actor
-    SDL_Rect dstrect = {SCENE_ACTOR_POS_X + 2 * SCENE_ACTOR_POS_W * i,
-                        SCENE_ACTOR_POS_Y,
+    SDL_Rect dstrect = { pos.x, pos.y
                         SCENE_ACTOR_POS_W,
                         SCENE_ACTOR_POS_H
                        };
-    SDL_Color color = palette_SOTA->colors[SCENE_ACTOR_COLOR_OFFSET + i];
+
+    SDL_Color color = palette_SOTA->colors[SCENE_ACTOR_COLOR_OFFSET + index++];
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
     SDL_RenderFillRect(renderer, &dstrect);
 
@@ -44,7 +44,7 @@ void Actor_Update(struct Actor *actor, SDL_Renderer *renderer) {
     Utilities_DrawColor_Reset(renderer);
 }
 
-void Actor_Draw(struct Actor *actor,
+void Actor_Draw(struct Actor *actor, struct Point *pos,
                 struct SDL_Texture *render_target, SDL_Renderer *renderer) {
     SDL_assert(scene    != NULL);
     SDL_assert(renderer != NULL);

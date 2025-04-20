@@ -223,7 +223,9 @@ typedef struct Scene {
     b32 update;
 
     /* Unit order */
-    int *actor_order;
+    int *actor_id;
+    tnecs_entity *actors;
+    tnecs_world *world;
 
     /* Statements: meat of the Scene
      *  - SceneLine, SceneDidascalie, SceneMusic OR SceneBackground
@@ -255,7 +257,7 @@ extern const struct Scene Scene_default;
 
 /* --- Constructors/Destructors --- */
 void Scene_Free(struct Scene *scene);
-void Scene_Init(struct Scene *scene);
+void Scene_Init(struct Scene *scene, tnecs_world* world);
 void Scene_Text_Box_Init(struct Scene *scene, SDL_Renderer *renderer);
 void Scene_Texture_Create(struct Scene *scene, SDL_Renderer *renderer);
 

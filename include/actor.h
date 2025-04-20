@@ -54,10 +54,10 @@ enum ACTOR_SPRITESHEEET {
 };
 
 /* Position of elements rows on spritesheet */
-i32 Actor_Body_Y(i32 face_id);
-i32 Actor_Face_Y(i32 face_id);
-i32 Actor_Lips_Y(i32 lips_id);
-i32 Actor_Eyes_Y(i32 eyes_id);
+i32 Actor_Spritesheet_Body_Y(i32 face_id);
+i32 Actor_Spritesheet_Face_Y(i32 face_id);
+i32 Actor_Spritesheet_Lips_Y(i32 lips_id);
+i32 Actor_Spritesheet_Eyes_Y(i32 eyes_id);
 
 typedef struct Actor {
     /* Actors for a scene 
@@ -65,6 +65,8 @@ typedef struct Actor {
     *   - Lips move, eyes blink, face and clothes change...
     *   - One new component > 4 entities wSprite per actor 
     */
+
+    i32 unit_id; 
 
     /* Current rendered element */
     i32 body_id;
@@ -82,7 +84,7 @@ typedef struct Actor {
     i32 eyes_speed; /* [ms] */
 
     SDL_Texture *texture;  /* pixels actually shown on screen */
-    
+
     b32 update;
 } Actor;
 
