@@ -660,7 +660,7 @@ void Scene_Appear(  struct Scene *scene, struct SceneStatement * statement) {
 }
 
 void Scene_Slide(  struct Scene *scene, struct SceneStatement * statement) {
-    // TODO: 
+    // TODO:
     //  1. add slider component to rendered portait
     //  1. Set slider target
 

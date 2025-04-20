@@ -51,6 +51,7 @@ struct Spritesheet {
     SDL_Surface *surface_shaded;    /* shaded pixels to be shown on screen  */
     SDL_Palette *palette;
 
+    // TODO: simplify types -> i32
     i16  *loops_pos;    /* [loop] flattened index for 8 cols, starting top left */
     i8   *frames;       /* [loop], number of frames */
     i16 **speeds;       /* [loop][frame], ms */
@@ -103,8 +104,8 @@ typedef struct Sprite {
 
     s8 asset_name;
 
-    b32 map_unit : 1;
-    b32 visible  : 1;
+    b32 map_unit;
+    b32 visible;
 } Sprite;
 extern const struct Sprite Sprite_default;
 
