@@ -86,7 +86,7 @@ enum SPRITE {
 };
 
 typedef struct Sprite {
-    /* Animated sprite struct 
+    /* Animated sprite struct
     *   - Animate loops: forward, reverse or ping-pong
     *   - Any number of animation loops
     *   - Speed for every frame of every loop

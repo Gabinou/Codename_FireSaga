@@ -1,4 +1,6 @@
 #include "actor.h"
+#include "palette.h"
+#include "utilities.h"
 
 
 /* Position of elements rows on spritesheet */
@@ -23,17 +25,18 @@ i32 Actor_Spritesheet_Eyes_Y(i32 eyes_id) {
     return (ACTOR_EYES_HEIGHT * ACTOR_EYES_FRAMES * eyes_id);
 }
 
-void Actor_Update(struct Actor *actor, struct Point *pos, SDL_Renderer *renderer) {
-    SDL_assert(scene                != NULL);
+void Actor_Update(struct Actor *actor, struct Point *pos, SDL_Texture *render_target,
+                  SDL_Renderer *renderer) {
+    SDL_assert(actor                != NULL);
     SDL_assert(renderer             != NULL);
     SDL_assert(palette_SOTA         != NULL);
     // TODO: get rid of index
     static int index = 0;
 
     // Draw a rectangle for every actor
-    SDL_Rect dstrect = { pos.x, pos.y
-                        SCENE_ACTOR_POS_W,
-                        SCENE_ACTOR_POS_H
+    SDL_Rect dstrect = { pos->x, pos->y,
+                         SCENE_ACTOR_POS_W,
+                         SCENE_ACTOR_POS_H
                        };
 
     SDL_Color color = palette_SOTA->colors[SCENE_ACTOR_COLOR_OFFSET + index++];
@@ -45,12 +48,13 @@ void Actor_Update(struct Actor *actor, struct Point *pos, SDL_Renderer *renderer
 }
 
 void Actor_Draw(struct Actor *actor, struct Point *pos,
-                struct SDL_Texture *render_target, SDL_Renderer *renderer) {
-    SDL_assert(scene    != NULL);
+                SDL_Texture *render_target,
+                SDL_Renderer *renderer) {
+    SDL_assert(actor    != NULL);
     SDL_assert(renderer != NULL);
 
     if (actor->update) {
-        Actor_Update(actor render_target, renderer);
+        Actor_Update(actor, pos, render_target, renderer);
         actor->update = false;
     }
 

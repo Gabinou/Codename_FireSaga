@@ -15,6 +15,7 @@
 #include "popup/tile.h"
 #include "AI.h"
 #include "boss.h"
+#include "actor.h"
 #include "text.h"
 #include "pixelfonts.h"
 #include "SDL.h"
@@ -61,7 +62,6 @@ void Animate_Sprite(tnecs_input *input) {
     }
 }
 
-
 void Draw_Actor(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
@@ -69,7 +69,7 @@ void Draw_Actor(tnecs_input *input) {
     SDL_assert(IES != NULL);
 
     /* -- Get components arrays -- */
-    struct Actor    *Actor_arr   = TNECS_COMPONENT_ARRAY(input, Actor_ID);
+    struct Actor    *actor_arr   = TNECS_COMPONENT_ARRAY(input, Actor_ID);
     struct Position *position_arr = TNECS_COMPONENT_ARRAY(input, Position_ID);
     SDL_assert(actor_arr   != NULL);
     SDL_assert(position_arr != NULL);
@@ -84,11 +84,11 @@ void Draw_Actor(tnecs_input *input) {
         if (!actor->visible)
             continue;
 
-        Actor_Draw(actor, 
-            &position->pixel_pos, 
-            IES->render_target,
-            IES->renderer
-        );
+        Actor_Draw(actor,
+                   &position->pixel_pos,
+                   IES->render_target,
+                   IES->renderer
+                  );
     }
 
 

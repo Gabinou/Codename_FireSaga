@@ -116,8 +116,8 @@ void Scene_Init(struct Scene *scene, tnecs_world* world) {
         scene->statements   = DARR_INIT(scene->statements, SceneStatement, 32);
     }
 
-    if (scene->actor_order == NULL) {
-        scene->actor_order  = DARR_INIT(scene->actor_order, int, 8);
+    if (scene->actor_id == NULL) {
+        scene->actor_id  = DARR_INIT(scene->actor_id, int, 8);
     }
 
     if (scene->actors == NULL) {
@@ -146,9 +146,9 @@ void Scene_Free(struct Scene *scene) {
         scene->statements = NULL;
     }
 
-    if (scene->actor_order != NULL) {
-        DARR_FREE(scene->actor_order);
-        scene->actor_order = NULL;
+    if (scene->actor_id != NULL) {
+        DARR_FREE(scene->actor_id);
+        scene->actor_id = NULL;
     }
     if (scene->texture != NULL) {
         SDL_DestroyTexture(scene->texture);
@@ -484,8 +484,8 @@ void Scene_Statement_Add(Scene * scene, SceneStatement statement) {
     if (scene->statements == NULL) {
         scene->statements   = DARR_INIT(scene->statements, SceneStatement, 16);
     }
-    if (scene->actor_order == NULL) {
-        scene->actor_order  = DARR_INIT(scene->actor_order, int, 16);
+    if (scene->actor_id == NULL) {
+        scene->actor_id  = DARR_INIT(scene->actor_id, int, 16);
     }
 
     SceneHeader header = statement.header;
@@ -499,14 +499,15 @@ void Scene_Actor_Add(Scene *scene, u16 id) {
         return;
     }
 
-    // /* Do not add new actor if too many actor_order already */
-    if (DARR_NUM(scene->id) >= SCENE_MAX_ACTORS) {
+    // /* Do not add new actor if too many actor_id already */
+    if (DARR_NUM(scene->actor_id) >= SCENE_MAX_ACTORS) {
         // TODO: error? delete previous actor?
         SDL_assert(0);
         return;
     }
 
-    tnecs_entity actor = TNECS_ENTITY_CREATE_wCOMPONENTS(scene->world, Actor_ID, Position_ID, Slider_ID);
+    tnecs_entity actor = TNECS_ENTITY_CREATE_wCOMPONENTS(scene->world, Actor_ID, Position_ID,
+                                                         Slider_ID);
 
     /* Add new actor */
     DARR_PUT(scene->actor_id, id);
@@ -516,8 +517,8 @@ void Scene_Actor_Add(Scene *scene, u16 id) {
 i32 Scene_Actor_Find(Scene * scene, u16 actor) {
     SDL_assert(scene != NULL);
     i32 found = -1;
-    for (i32 i = 0; i < DARR_NUM(scene->actor_order); i++) {
-        if (scene->actor_order[i] == actor) {
+    for (i32 i = 0; i < DARR_NUM(scene->actor_id); i++) {
+        if (scene->actor_id[i] == actor) {
             found = i;
             break;
         }
@@ -571,10 +572,10 @@ int Scene_Statement_Next(struct Scene *scene) {
             goto loopstart;
         }
         // if (statement.header.statement_type == SCENE_STATEMENT_DIDASCALIE) {
-        // SDL_assert(scene->actor_order != NULL);
+        // SDL_assert(scene->actor_id != NULL);
 
         // i32 unit_order  = Unit_Name2Order(statement._union.didascalie.actor);
-        // DARR_PUT(scene->actor_order, unit_order);
+        // DARR_PUT(scene->actor_id, unit_order);
         // }
 
     } while (statement.header.statement_type != SCENE_STATEMENT_LINE);
@@ -589,9 +590,9 @@ void _Scene_Draw_Actors(struct Scene *scene, SDL_Renderer *renderer) {
     SDL_assert(scene                != NULL);
     SDL_assert(renderer             != NULL);
     SDL_assert(palette_SOTA          != NULL);
-    SDL_assert(scene->actor_order   != NULL);
+    SDL_assert(scene->actor_id   != NULL);
 
-    for (i32 i = 0; i < DARR_NUM(scene->actor_order); i++) {
+    for (i32 i = 0; i < DARR_NUM(scene->actor_id); i++) {
         // TODO: make actors into component
 
         // Draw a rectangle for every actor
@@ -681,9 +682,9 @@ void Scene_Draw(struct Scene *scene, struct Settings *settings,
 
 void Scene_Appear(  struct Scene *scene, struct SceneStatement * statement) {
     // Add actor to list of actors if appear didascalie
-    SDL_assert(scene->actor_order != NULL);
+    SDL_assert(scene->actor_id != NULL);
     i32 unit_order  = Unit_Name2Order(statement->_union.didascalie.actor);
-    DARR_PUT(scene->actor_order, unit_order);
+    DARR_PUT(scene->actor_id, unit_order);
 }
 
 void Scene_Slide(  struct Scene *scene, struct SceneStatement * statement) {

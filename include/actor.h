@@ -2,6 +2,9 @@
 #define ACTOR_H
 
 #include "enums.h"
+#include "scene.h"
+#include "SDL.h"
+
 // Actor in the theater/play sense
 // Spritesheet requirements
 //  - Body
@@ -60,13 +63,13 @@ i32 Actor_Spritesheet_Lips_Y(i32 lips_id);
 i32 Actor_Spritesheet_Eyes_Y(i32 eyes_id);
 
 typedef struct Actor {
-    /* Actors for a scene 
+    /* Actors for a scene
     *   - Characters talk to each other in a scene.
     *   - Lips move, eyes blink, face and clothes change...
-    *   - One new component > 4 entities wSprite per actor 
+    *   - One new component > 4 entities wSprite per actor
     */
 
-    i32 unit_id; 
+    i32 unit_id;
 
     /* Current rendered element */
     i32 body_id;
@@ -88,5 +91,9 @@ typedef struct Actor {
     b32 update;
     b32 visible;
 } Actor;
+
+void Actor_Draw(struct Actor *actor, struct Point *pos,
+                SDL_Texture *render_target,
+                SDL_Renderer *renderer);
 
 #endif /* ACTOR_H */
