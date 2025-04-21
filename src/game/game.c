@@ -669,6 +669,7 @@ void Game_Startup_Scene(Game *IES) {
     IES->scene      = TNECS_ENTITY_CREATE_wCOMPONENTS(IES->world, Scene_ID);
     Scene *scene    = IES_GET_COMPONENT(IES->world, IES->scene, Scene);
     *scene = Scene_default;
+    Scene_Init(scene, IES->world);
     // TODO: Remove quit event on scene finish
     scene->event = event_Quit;
 

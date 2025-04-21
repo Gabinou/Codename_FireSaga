@@ -512,11 +512,13 @@ void Scene_Actor_Add(Scene *scene, u16 order) {
         return;
     }
 
-    tnecs_entity actor_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(scene->world, order, Position_ID,
+    tnecs_entity actor_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(scene->world, Actor_ID, Position_ID,
                                                              Slider_ID);
     Actor *actor = IES_GET_COMPONENT(scene->world, actor_ent, Actor);
+    SDL_assert(actor != NULL);
     *actor = Actor_default;
-    Position *position = IES_GET_COMPONENT(scene->world, actor_ent, Position);
+    struct Position *position = IES_GET_COMPONENT(scene->world, actor_ent, Position);
+    SDL_assert(position != NULL);
 
     // TODO: get rid of index
     static int index = 0;
@@ -529,7 +531,8 @@ void Scene_Actor_Add(Scene *scene, u16 order) {
 }
 
 i32 Scene_Actor_Find(Scene * scene, u16 order) {
-    SDL_assert(scene != NULL);
+    SDL_assert(scene                != NULL);
+    SDL_assert(scene->actor_order   != NULL);
     i32 found = -1;
     for (i32 i = 0; i < DARR_NUM(scene->actor_order); i++) {
         if (scene->actor_order[i] == order) {
