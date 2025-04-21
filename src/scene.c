@@ -506,12 +506,20 @@ void Scene_Actor_Add(Scene *scene, u16 id) {
         return;
     }
 
-    tnecs_entity actor = TNECS_ENTITY_CREATE_wCOMPONENTS(scene->world, Actor_ID, Position_ID,
+    tnecs_entity actor_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(scene->world, Actor_ID, Position_ID,
                                                          Slider_ID);
+    Actor *actor = IES_GET_COMPONENT(scene->world, actor_ent, Actor);
+    *actor = Actor_default;
+    Position *position = IES_GET_COMPONENT(scene->world, actor_ent, Position);
+
+    // TODO: get rid of index
+    static int index = 0;
+    position->pixel_pos.x = SCENE_ACTOR_POS_X + index++ * (SCENE_ACTOR_POS_W + 10);
+    position->pixel_pos.y = SCENE_ACTOR_POS_Y;
 
     /* Add new actor */
     DARR_PUT(scene->actor_id, id);
-    DARR_PUT(scene->actors, actor);
+    DARR_PUT(scene->actors, actor_ent);
 }
 
 i32 Scene_Actor_Find(Scene * scene, u16 actor) {

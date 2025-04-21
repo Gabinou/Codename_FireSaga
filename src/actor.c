@@ -2,6 +2,10 @@
 #include "palette.h"
 #include "utilities.h"
 
+extern const Actor Actor_default = {
+    .visible    = 1;
+    .update     = 1;
+}
 
 /* Position of elements rows on spritesheet */
 //  Every character has different numbers of elements
@@ -30,8 +34,6 @@ void Actor_Update(struct Actor *actor, struct Point *pos, SDL_Texture *render_ta
     SDL_assert(actor                != NULL);
     SDL_assert(renderer             != NULL);
     SDL_assert(palette_SOTA         != NULL);
-    // TODO: get rid of index
-    static int index = 0;
 
     // Draw a rectangle for every actor
     SDL_Rect dstrect = { pos->x, pos->y,

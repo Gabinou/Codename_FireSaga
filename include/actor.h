@@ -69,8 +69,6 @@ typedef struct Actor {
     *   - One new component > 4 entities wSprite per actor
     */
 
-    i32 unit_id;
-
     /* Current rendered element */
     i32 body_id;
     i32 face_id;
@@ -91,6 +89,7 @@ typedef struct Actor {
     b32 update;
     b32 visible;
 } Actor;
+extern const Actor Actor_default;
 
 void Actor_Draw(struct Actor *actor, struct Point *pos,
                 SDL_Texture *render_target,
