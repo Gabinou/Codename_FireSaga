@@ -223,7 +223,7 @@ typedef struct Scene {
     b32 update;
 
     /* Unit order */
-    int *actor_id;
+    int *actor_order;
     tnecs_entity *actors;
     tnecs_world *world;
 
