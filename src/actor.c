@@ -3,9 +3,9 @@
 #include "utilities.h"
 
 extern const Actor Actor_default = {
-    .visible    = 1;
-    .update     = 1;
-}
+    .visible    = 1,
+    .update     = 1,
+};
 
 /* Position of elements rows on spritesheet */
 //  Every character has different numbers of elements
@@ -40,6 +40,8 @@ void Actor_Update(struct Actor *actor, struct Point *pos, SDL_Texture *render_ta
                          SCENE_ACTOR_POS_W,
                          SCENE_ACTOR_POS_H
                        };
+    // TODO: get rid of index
+    static int index = 0;
 
     SDL_Color color = palette_SOTA->colors[SCENE_ACTOR_COLOR_OFFSET + index++];
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);

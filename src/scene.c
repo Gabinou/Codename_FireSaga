@@ -1,4 +1,6 @@
 #include "scene.h"
+#include "actor.h"
+#include "position.h"
 #include "names.h"
 #include "cJSON.h"
 #include "nmath.h"
@@ -507,7 +509,7 @@ void Scene_Actor_Add(Scene *scene, u16 id) {
     }
 
     tnecs_entity actor_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(scene->world, Actor_ID, Position_ID,
-                                                         Slider_ID);
+                                                             Slider_ID);
     Actor *actor = IES_GET_COMPONENT(scene->world, actor_ent, Actor);
     *actor = Actor_default;
     Position *position = IES_GET_COMPONENT(scene->world, actor_ent, Position);
