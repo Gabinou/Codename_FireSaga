@@ -8,6 +8,7 @@ struct Game;
 
 void Draw_Text(         tnecs_input *input);
 void Draw_Menu(         tnecs_input *input);
+void Draw_Actor(        tnecs_input *input);
 void Draw_PopUp(        tnecs_input *input);
 void Draw_Actor(        tnecs_input *input);
 void Draw_Sprite(       tnecs_input *input);

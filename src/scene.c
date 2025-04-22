@@ -578,7 +578,6 @@ int Scene_Statement_Next(struct Scene *scene) {
 
     do {
 
-        // TODO: test removing loopstart
         scene->current_statement++;
         SDL_Log("LOOP: scene->current_statement %d", scene->current_statement);
         // Break out if no more statements.
@@ -586,8 +585,10 @@ int Scene_Statement_Next(struct Scene *scene) {
             return (-1);
         }
 
+        statement = scene->statements[scene->current_statement];
         if (statement.header.statement_type == SCENE_STATEMENT_LINE) {
             // If statement is a line, render it
+            SDL_Log("BREAK");
             break;
         }
 
@@ -732,5 +733,4 @@ void Scene_Slide(  struct Scene *scene, struct SceneStatement * statement) {
     Slider *slider = IES_GET_COMPONENT(scene->world, actor_ent, Slider);
     slider->target.x = SCENE_ACTOR_POS_X + 2 * SCENE_ACTOR_POS_W * 5;
     slider->target.y = SCENE_ACTOR_POS_Y;
-
 }

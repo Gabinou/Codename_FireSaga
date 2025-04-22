@@ -3,6 +3,7 @@
 REGISTER_ENUM(Animate_Scene,            0, 1, Scene_ID,    Position_ID,   Text_ID, Timer_ID);
 REGISTER_ENUM(Animate_Cutscene,         0, 1, Cutscene_ID, Position_ID,   Text_ID, Timer_ID);
 REGISTER_ENUM(Slide_Sprite,             0, 0, Sprite_ID,   Position_ID,   Slider_ID);
+REGISTER_ENUM(Slide_Actor,              0, 0, Actor_ID,    Position_ID,   Slider_ID);
 REGISTER_ENUM(Slide_PopUp_Offscreen,    0, 1, PopUp_ID,    Slider_ID,     SliderOffscreen_ID,
               Position_ID);
 REGISTER_ENUM(Hover_Any,                0, 0, Hover_ID,    Position_ID);
@@ -31,6 +32,7 @@ REGISTER_ENUM(Draw_Sprite,              0, 1, Unit_ID, Position_ID, Sprite_ID, T
 REGISTER_ENUM(Draw_Sprite,              0, 1, Unit_ID, Position_ID, Sprite_ID, MapHPBar_ID);
 REGISTER_ENUM(Draw_Sprite,              0, 1, Unit_ID, Position_ID, Sprite_ID);
 REGISTER_ENUM(Draw_Sprite,              0, 0, Unit_ID, Position_ID, Sprite_ID, RenderTop_ID);
+REGISTER_ENUM(Draw_Actor,               0, 0, Actor_ID, Position_ID);
 REGISTER_ENUM(Draw_Map_Boss_Icon,       0, 0, Unit_ID, Position_ID, Sprite_ID, Boss_ID);
 REGISTER_ENUM(Draw_Map_HPBar,           0, 0, Unit_ID, Position_ID, MapHPBar_ID);
 REGISTER_ENUM(Draw_Menu,                0, 0, Menu_ID);

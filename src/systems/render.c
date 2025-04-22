@@ -15,7 +15,6 @@
 #include "popup/tile.h"
 #include "AI.h"
 #include "boss.h"
-#include "actor.h"
 #include "text.h"
 #include "pixelfonts.h"
 #include "SDL.h"

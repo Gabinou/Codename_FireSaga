@@ -4,6 +4,7 @@
 #include "debug.h"
 #include "slider.h"
 #include "sprite.h"
+#include "actor.h"
 #include "hover.h"
 
 void Cursor_Target(struct Slider *slider, struct Sprite *sprite, Position *position) {
@@ -124,5 +125,38 @@ void Slide_PopUp_Offscreen(tnecs_input *input) {
 #else
         Slider_Compute_Next(input);
 #endif
+    }
+}
+
+void Slide_Actor(tnecs_input *input) {
+    /* --- PRELIMINARIES --- */
+    SDL_assert(input->data != NULL);
+    /* -- Get components arrays -- */
+    struct Actor   *actor_arr     = TNECS_COMPONENT_ARRAY(input, Sprite_ID);
+    struct Slider   *slider_arr     = TNECS_COMPONENT_ARRAY(input, Slider_ID);
+    struct Position *position_arr   = TNECS_COMPONENT_ARRAY(input, Position_ID);
+    SDL_assert(actor_arr   != NULL);
+    SDL_assert(slider_arr   != NULL);
+    SDL_assert(position_arr != NULL);
+
+    /* -- Get Game -- */
+    struct Game *sota = input->data;
+    SDL_assert(sota != NULL);
+
+    for (u16 order = 0; order < input->num_entities; order++) {
+        struct Actor    *actor      = actor_arr     + order;
+        struct Slider   *slider     = slider_arr    + order;
+        struct Position *position   = position_arr  + order;
+
+        if (!actor->visible)
+            continue;
+
+        struct SliderInput input    = SliderInput_default;
+        input.slider                = slider;
+        input.pos                   = &position->pixel_pos;
+        input.target                = slider->target;
+        input.reverse               = false;
+
+        Slider_Compute_Next(input);
     }
 }
