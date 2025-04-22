@@ -567,9 +567,6 @@ int Scene_Statement_Next(struct Scene *scene) {
 
     SceneStatement statement;
 
-    // TODO: Didascalies:
-    // scene->current_statement++;
-
     do {
 
         // TODO: test removing loopstart
@@ -580,14 +577,16 @@ int Scene_Statement_Next(struct Scene *scene) {
         if (scene->current_statement >= DARR_NUM(scene->statements)) {
             return (-1);
         }
+        SDL_assert(scene_didascalies[statement.header.statement_type] != NULL);
 
+        if (statement.header.statement_type == SCENE_STATEMENT_LINE) {
+            break;
+        }
         // Add actor to list of actors if appear didascalie
         SDL_assert(scene->current_statement >= 0);
         statement = scene->statements[scene->current_statement];
-        if (scene_didascalies[statement.header.statement_type] != NULL) {
-            scene_didascalies[statement.header.statement_type](scene, &statement);
-            goto loopstart;
-        }
+        scene_didascalies[statement.header.statement_type](scene, &statement);
+        goto loopstart;
         // if (statement.header.statement_type == SCENE_STATEMENT_DIDASCALIE) {
         // SDL_assert(scene->actor_order != NULL);
 
@@ -698,6 +697,7 @@ void Scene_Draw(struct Scene *scene, struct Settings *settings,
 }
 
 void Scene_Appear(  struct Scene *scene, struct SceneStatement * statement) {
+    SDL_Log("Scene_Appear");
     // Add actor to list of actors if appear didascalie
     SDL_assert(scene->actor_order != NULL);
     i32 unit_order  = Unit_Name2Order(statement->_union.didascalie.actor);
@@ -705,6 +705,7 @@ void Scene_Appear(  struct Scene *scene, struct SceneStatement * statement) {
 }
 
 void Scene_Slide(  struct Scene *scene, struct SceneStatement * statement) {
+    SDL_Log("Scene_Slide");
     // TODO:
     //  1. add slider component to rendered portait
     //  1. Set slider target

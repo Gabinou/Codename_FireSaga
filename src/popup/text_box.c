@@ -114,6 +114,7 @@ void Text_Bubble_Load(struct Text_Box *bubble, SDL_Renderer *renderer, struct n9
 }
 
 void Text_Box_Set_Text(struct Text_Box *bubble, char *text, struct n9Patch *n9patch) {
+    SDL_assert(text != NULL);
     /* -- SDL_free before re-allocating -- */
     s8_free(&bubble->text);
     /* -- Copying input text -- */
