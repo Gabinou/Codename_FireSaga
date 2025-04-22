@@ -570,7 +570,6 @@ int Scene_Statement_Next(struct Scene *scene) {
     do {
 
         // TODO: test removing loopstart
-    loopstart:
         scene->current_statement++;
         SDL_Log("LOOP: scene->current_statement %d", scene->current_statement);
         // Break out if no more statements.
@@ -580,13 +579,13 @@ int Scene_Statement_Next(struct Scene *scene) {
         SDL_assert(scene_didascalies[statement.header.statement_type] != NULL);
 
         if (statement.header.statement_type == SCENE_STATEMENT_LINE) {
+            // If statement is a line, render it
             break;
         }
         // Add actor to list of actors if appear didascalie
         SDL_assert(scene->current_statement >= 0);
         statement = scene->statements[scene->current_statement];
         scene_didascalies[statement.header.statement_type](scene, &statement);
-        goto loopstart;
         // if (statement.header.statement_type == SCENE_STATEMENT_DIDASCALIE) {
         // SDL_assert(scene->actor_order != NULL);
 

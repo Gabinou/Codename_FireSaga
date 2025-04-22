@@ -5,6 +5,7 @@
 #include "map/tiles.h"
 #include "map/ontile.h"
 #include "map/find.h"
+#include "actor.h"
 #include "menu/menu.h"
 #include "pathfinding.h"
 #include "macros.h"

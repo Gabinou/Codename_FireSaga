@@ -5,8 +5,14 @@
 #include "types.h"
 #include "jsonio.h"
 
+
 void test_scene() {
     s8 path = s8_literal(PATH_JOIN("scenes", "scene00001.json"));
+
+    /* --- Init world --- */
+    tnecs_world *world = NULL;
+    tnecs_world_genesis(&world);
+#include "register_components.h"
 
     /* --- Read scene file --- */
     struct cJSON *jfile = jsonio_parseJSON(path);
@@ -14,6 +20,7 @@ void test_scene() {
     struct cJSON *jscene = cJSON_GetObjectItem(jfile, "Scene");
 
     struct Scene scene = Scene_default;
+    Scene_Init(&scene, world);
     Scene_readJSON(&scene, jscene);
 
     /* --- Check statements num ---  */
