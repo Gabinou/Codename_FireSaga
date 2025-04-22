@@ -576,22 +576,25 @@ int Scene_Statement_Next(struct Scene *scene) {
         if (scene->current_statement >= DARR_NUM(scene->statements)) {
             return (-1);
         }
-        SDL_assert(scene_didascalies[statement.header.statement_type] != NULL);
 
         if (statement.header.statement_type == SCENE_STATEMENT_LINE) {
             // If statement is a line, render it
             break;
         }
-        // Add actor to list of actors if appear didascalie
-        SDL_assert(scene->current_statement >= 0);
-        statement = scene->statements[scene->current_statement];
-        scene_didascalies[statement.header.statement_type](scene, &statement);
+
+        if (scene_didascalies[statement.header.didascalie_type] != NULL) {
+            // Add actor to list of actors if appear didascalie
+            SDL_assert(scene->current_statement >= 0);
+            statement = scene->statements[scene->current_statement];
+            scene_didascalies[statement.header.statement_type](scene, &statement);
+        }
         // if (statement.header.statement_type == SCENE_STATEMENT_DIDASCALIE) {
         // SDL_assert(scene->actor_order != NULL);
 
         // i32 unit_order  = Unit_Name2Order(statement._union.didascalie.actor);
         // DARR_PUT(scene->actor_order, unit_order);
         // }
+
 
     } while (statement.header.statement_type != SCENE_STATEMENT_LINE);
     scene->update = true;
