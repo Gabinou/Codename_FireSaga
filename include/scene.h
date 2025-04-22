@@ -120,10 +120,12 @@ extern const json_wfunc fsm_Scene_writeJSON[SCENE_STATEMENT_NUM];
 typedef void (*fsm_scene_statement_t)(void *);
 extern const fsm_scene_statement_t scene_statement_play[SCENE_STATEMENT_NUM];
 
-typedef struct SceneHeader {
+typedef struct StatementHeader {
     i32 statement_type;
     i32 didascalie_type;
-} SceneHeader;
+    s8 name;
+    int id;
+} StatementHeader;
 
 
 /* -- Didascalie (theater vocabulary) -- */
@@ -159,7 +161,6 @@ typedef union DidascalieUnion {
 
 
 typedef struct SceneDidascalie {
-    s8 actor;
     DidascalieUnion _union;
 } SceneDidascalie;
 extern const struct SceneDidascalie SceneDidascalie_default;
@@ -198,9 +199,10 @@ typedef union SceneStatementUnion {
 } SceneStatementUnion;
 
 typedef struct SceneStatement {
-    SceneHeader header;
+    StatementHeader header;
     SceneStatementUnion _union;
 } SceneStatement;
+extern SceneStatement SceneStatement_default;
 
 /* A scene is a conversation.
 *   - Up to 8 characters sprites on screen at once
@@ -222,8 +224,8 @@ typedef struct Scene {
     int current_statement;
     b32 update;
 
-    /* Unit order */
-    int *actor_order;
+    /* Unit id */
+    int *actor_id;
     tnecs_entity *actors;
     tnecs_world *world;
 
@@ -267,8 +269,8 @@ void Scene_Statement_Add(Scene *scene, SceneStatement statement);
 i32     Scene_Actors_Num(Scene *scene);
 
 /// @return Actor order in actors DARR, or -1;
-i32     Scene_Actor_Find(Scene *scene, u16 actor);
-void    Scene_Actor_Add( Scene *scene, u16 actor);
+i32     Scene_Actor_Order(Scene *scene, i32 id);
+void    Scene_Actor_Add( Scene *scene, i32 id);
 
 /* --- I/O --- */
 s8 Scene_Filename_Chapter(i32 chapter, i32 subindex);
