@@ -25,7 +25,6 @@
 //          - Basic slides
 
 // Scene index = chapter * SCENE_DIVISOR + scene_sub_index
-//
 
 /* ---------------- Scene --------------- */
 //  A visual novel
@@ -131,6 +130,12 @@ extern const fsm_scene_statement_t scene_statement_play[SCENE_STATEMENT_NUM];
 //    - Rotate
 //  - Animate
 //      - Fade in, fade out
+
+typedef struct DidascalieAppear {
+    /* Slides only in X axis */
+    i32 id;
+} DidascalieAppear;
+extern const struct DidascalieAppear DidascalieAppear_default;
 
 typedef struct DidascalieSlide {
     /* Slides only in X axis */

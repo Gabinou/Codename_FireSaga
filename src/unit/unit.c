@@ -327,7 +327,7 @@ i16 Unit_Level(struct Unit *unit) {
     }
     return (ceil(unit->level.exp / SOTA_EXP_PER_LEVEL) + 1);
 }
-i16 Unit_Experience(const Unit const *unit) {
+i16 Unit_Experience(const Unit *const unit) {
     if (!unit) {
         SDL_assert(false);
         return (0);

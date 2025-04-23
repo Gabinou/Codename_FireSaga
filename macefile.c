@@ -9,7 +9,7 @@
 #endif
 
 struct Config debug         = {
-    .flags = "-g -gdwarf -rdynamic -O0 -DSDL_ASSERT_LEVEL=2 -Wno-unused-command-line-argument"
+    .flags = "-g -gdwarf -rdynamic -O0 -DSDL_ASSERT_LEVEL=2 -Wall -Wno-unused-command-line-argument -Wno-format-contains-nul"
 };
 
 struct Config tcc_bounds    = {
@@ -61,7 +61,7 @@ struct Config l2w_gcc_release   = {
 struct Target noursmath = {
     .base_dir  = "second_party/noursmath",
     .flags     = "-std=iso9899:1999,"
-                 "-Wno-unused-command-line-argument",
+                 "-Wall -Wno-unused-command-line-argument",
     .sources   = ".",
     .link_flags = "-whole-archive",
     .kind      = MACE_STATIC_LIBRARY,
@@ -79,7 +79,7 @@ struct Target parg      = {
 struct Target noursclock      = {
     .base_dir  = "second_party/noursclock",
     .flags     = "-std=iso9899:1999,"
-                 "-Wno-unused-command-line-argument",
+                 "-Wall -Wno-unused-command-line-argument",
     .sources   = ".",
     .link_flags = "-whole-archive",
     .kind      = MACE_STATIC_LIBRARY,
@@ -88,7 +88,7 @@ struct Target noursclock      = {
 struct Target tnecs     = {
     .base_dir  = "second_party/tnecs",
     .flags     = "-std=iso9899:1999,"
-                 "-Wno-unused-command-line-argument",
+                 "-Wall -Wno-unused-command-line-argument",
     .sources   = ".",
     .link_flags = "-whole-archive",
     .kind      = MACE_STATIC_LIBRARY,

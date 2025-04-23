@@ -69,7 +69,7 @@ void matrix_print(i32 *array, size_t row_len, size_t col_len) {
 void entity_print(tnecs_entity *array, size_t row_len, size_t col_len) {
     for (size_t row = 0; row < row_len; row++) {
         for (size_t col = 0; col < col_len; col++)
-            printf("%2d ", array[row * col_len + col]);
+            printf("%2lld ", array[row * col_len + col]);
         printf("\n");
     }
 }

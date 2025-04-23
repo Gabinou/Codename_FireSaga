@@ -732,30 +732,30 @@ struct Unit_Statuses {
 };
 
 typedef struct Unit {
-    /* ---------------------- Unit --------------------- */
-    /*  Represents characters occupying tiles on a map.
-    /*  Units, move, equip weapons, get afflicted with
-    /*  statuses, fight, ride mounts, agonize, die...
-    /*
-    /*  # Design
-    /*  ## Members are *constants*, NO dependency on game state
-    /*  - Game state EXCEPT self: map, other units, etc...
-    /*  - base_stats, current_stats do not depend on unit
-    /*    equipment, neighboring units, auras... -> unit member
-    /*  - Always compute variable stats by inputing game state:
-    /*      - effective_stats, computed_stats
-    /*  ## Record indices, not pointers
-    /*  - Centralize data into external arrays
-    /*      - Ex: all possible names in *global_unitNames*
-    /*  - "Out of band": smaller struct
-    /*  - Fewer dynamic allocs, fewer frees
-    /*  - Less fragmentation. Faster?
+    /* ---------------------- Unit --------------------- *
+    *  Represents characters occupying tiles on a map.
+    *  Units, move, equip weapons, get afflicted with
+    *  statuses, fight, ride mounts, agonize, die...
+    *
+    *  # Design
+    *  ## Members are *constants*, NO dependency on game state
+    *  - Game state EXCEPT self: map, other units, etc...
+    *  - base_stats, current_stats do not depend on unit
+    *    equipment, neighboring units, auras... -> unit member
+    *  - Always compute variable stats by inputing game state:
+    *      - effective_stats, computed_stats
+    *  ## Record indices, not pointers
+    *  - Centralize data into external arrays
+    *      - Ex: all possible names in *global_unitNames*
+    *  - "Out of band": smaller struct
+    *  - Fewer dynamic allocs, fewer frees
+    *  - Less fragmentation. Faster?
 
-    /*  # Terminology
-    /*  - base_stats
-    /*  - current_stats     = base_stats + grown_stats
-    /*  - effective_stats   = current_stats + bonuses
-    /*  - computed_stats    = func(effective_stats, supports, bonuses)
+    *  # Terminology
+    *  - base_stats
+    *  - current_stats     = base_stats + grown_stats
+    *  - effective_stats   = current_stats + bonuses
+    *  - computed_stats    = func(effective_stats, supports, bonuses)
     */
 
     struct jsonIO_Header jsonio_header;
