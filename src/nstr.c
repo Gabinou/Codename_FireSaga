@@ -35,7 +35,7 @@ b32 s8equal(s8 s1, s8 s2) {
         return (false);
 
     for (int i = 0; i < s1.num; i++)
-        if (s1.data[i] != s1.data[i])
+        if (s1.data[i] != s2.data[i])
             return (false);
 
     return (true);

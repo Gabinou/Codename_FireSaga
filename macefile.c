@@ -11,7 +11,7 @@
 #endif
 
 struct Config debug         = {
-    .flags = "-g -gdwarf -rdynamic -O0 -DSDL_ASSERT_LEVEL=2 -Wunused-variable -Wno-unused-command-line-argument -Wno-format-contains-nul"
+    .flags = "-g -gdwarf -rdynamic -O0 -DSDL_ASSERT_LEVEL=2 -Wall -Wunused-variable -Wno-unused-command-line-argument -Wno-format-contains-nul"
 };
 
 struct Config tcc_bounds    = {
