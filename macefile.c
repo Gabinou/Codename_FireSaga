@@ -2,14 +2,14 @@
 #include "mace.h"
 
 #ifndef CC
-    #define CC "tcc"
+    #define CC "gcc"
 #endif
 #ifndef AR
-    #define AR "tcc -ar"
+    #define AR "ar"
 #endif
 
 struct Config debug         = {
-    .flags = "-g -gdwarf -rdynamic -O0 -DSDL_ASSERT_LEVEL=2"
+    .flags = "-g -gdwarf -rdynamic -O0 -DSDL_ASSERT_LEVEL=2 -Wno-unused-command-line-argument"
 };
 
 struct Config tcc_bounds    = {
@@ -60,7 +60,8 @@ struct Config l2w_gcc_release   = {
 /* - second_party - */
 struct Target noursmath = {
     .base_dir  = "second_party/noursmath",
-    .flags     = "-std=iso9899:1999",
+    .flags     = "-std=iso9899:1999,"
+                 "-Wno-unused-command-line-argument",
     .sources   = ".",
     .link_flags = "-whole-archive",
     .kind      = MACE_STATIC_LIBRARY,
@@ -68,7 +69,8 @@ struct Target noursmath = {
 
 struct Target parg      = {
     .base_dir  = "second_party/parg",
-    .flags     = "-std=iso9899:1999",
+    .flags     = "-std=iso9899:1999,"
+                 "-Wno-unused-command-line-argument",
     .sources   = ".",
     .link_flags = "-whole-archive",
     .kind      = MACE_STATIC_LIBRARY,
@@ -76,7 +78,8 @@ struct Target parg      = {
 
 struct Target noursclock      = {
     .base_dir  = "second_party/noursclock",
-    .flags     = "-std=iso9899:1999",
+    .flags     = "-std=iso9899:1999,"
+                 "-Wno-unused-command-line-argument",
     .sources   = ".",
     .link_flags = "-whole-archive",
     .kind      = MACE_STATIC_LIBRARY,
@@ -84,7 +87,8 @@ struct Target noursclock      = {
 
 struct Target tnecs     = {
     .base_dir  = "second_party/tnecs",
-    .flags     = "-std=iso9899:1999",
+    .flags     = "-std=iso9899:1999,"
+                 "-Wno-unused-command-line-argument",
     .sources   = ".",
     .link_flags = "-whole-archive",
     .kind      = MACE_STATIC_LIBRARY,
@@ -93,7 +97,8 @@ struct Target tnecs     = {
 /* - third_party - */
 struct Target cjson     = {
     .base_dir  = "third_party/cJSON",
-    .flags     = "-std=iso9899:1999",
+    .flags     = "-std=iso9899:1999,"
+                 "-Wno-unused-command-line-argument",
     .sources   = ".",
     .link_flags = "-whole-archive,-rpath=/home/gabinours/firesaga/build",
     .kind      = MACE_STATIC_LIBRARY,
@@ -113,7 +118,8 @@ struct Target physfs    = {
                  "-DPHYSFS_SUPPORTS_QPAK=0,"
                  "-DPHYSFS_SUPPORTS_ISO9660=0,"
                  "-DPHYSFS_SUPPORTS_SLB=0,"
-                 "-DPHYSFS_SUPPORTS_VDF=0",
+                 "-DPHYSFS_SUPPORTS_VDF=0,"
+                 "-Wno-unused-command-line-argument",
     .base_dir  = "third_party/physfs",
     .link_flags = "-whole-archive",
     .allatonce = false,
@@ -166,6 +172,7 @@ struct Target sota = {
                 "cjson,noursmath,physfs,tnecs,parg",
     .flags    = "-fno-strict-overflow,-fno-strict-aliasing,"
                 "-fwrapv,-fno-delete-null-pointer-checks,"
+                "-Wno-unused-command-line-argument,"
                 // "-fsanitize=undefined,-fsanitize=address,"
                 "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
                 "$(sdl2-config --cflags)",
