@@ -795,7 +795,7 @@ i32 Unit_Id_Equipped(Unit *unit, i32 hand) {
     return (unit->equipment.arr[eq - ITEM1].id);
 }
 
-i32* Unit_Equipped_Array(const Unit const *unit) {
+i32* Unit_Equipped_Array(const Unit *const unit) {
     if (unit == NULL) {
         SDL_assert(false);
         return (NULL);

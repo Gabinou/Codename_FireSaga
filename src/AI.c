@@ -568,8 +568,9 @@ void AI_State_Free(struct AI_State *ai_state) {
 }
 void AI_State_Init(struct AI_State *ai_state, tnecs_world *world, struct Map *map) {
     /* -- Init ai_state->npc --  */
-    if (ai_state->npcs == NULL)
+    if (ai_state->npcs == NULL) {
         ai_state->npcs  = DARR_INIT(ai_state->npcs, tnecs_entity, 16);
+    }
 
     ai_state->init = true;
 

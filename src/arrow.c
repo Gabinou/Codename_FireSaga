@@ -19,13 +19,8 @@ const struct Arrow Arrow_default = {
     .costmap        = NULL,
     .col_len        = 21,
     .row_len        = 25,
-    .move           =  0,
-    .pathlist       = NULL,
     .tilesize       = {ARROW_TILESIZE,  ARROW_TILESIZE},
     .map_tilesize   = {SOTA_TILESIZE,   SOTA_TILESIZE},
-    .textures       = NULL,     /* [patch_id] */
-    .rendereds      = {{0}},    /* [patch_id] */
-    .show           = false,
 };
 
 /* --- STATIC FUNCTIONS --- */

@@ -957,10 +957,10 @@ void Game_Menu_LocationfromUnit(struct Game *sota, tnecs_entity in_menu_entity,
                                 tnecs_entity in_unit_entity) {
 
     struct Menu *mc = NULL;
-    struct Position *unit_pos = NULL;
+    // struct Position *unit_pos = NULL;
     SDL_assert(in_unit_entity > 0);
     SDL_assert(in_menu_entity > 0);
-    unit_pos = IES_GET_COMPONENT(sota->world, in_unit_entity, Position);
+    // unit_pos = IES_GET_COMPONENT(sota->world, in_unit_entity, Position);
     mc = IES_GET_COMPONENT(sota->world, in_menu_entity, Menu);
     SDL_assert(mc != NULL);
     // if (unit_pos != NULL) {

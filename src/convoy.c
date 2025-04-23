@@ -10,11 +10,6 @@
 
 const struct Convoy Convoy_default = {
     .jsonio_header.json_element    = JSON_CONVOY,
-    .jsonio_header.json_filename   = {0},
-
-    .books  = {0},
-    .items  = {0},
-    .cumnum = {0},
 
     .bank           = 0,
     .books_num      = 0,
@@ -172,7 +167,7 @@ void Convoy_AllStats_Print(struct Convoy *in_convoy, i16 type_exp) {
         struct Weapon *weapon = ((struct Weapon *)DTAB_GET_CONST(gl_weapons_dtab, item.id));
         char *wpn_stats_string = Utilities_Print_wpnStats(weapon->stats);
         char *item_stats_string = Utilities_Print_itemStats(weapon->item->stats);
-        SDL_Log("%-20s \t %s %s", weapon->item->name, item_stats_string, wpn_stats_string);
+        SDL_Log("%-20s \t %s %s", weapon->item->name.data, item_stats_string, wpn_stats_string);
         SDL_free(wpn_stats_string);
         SDL_free(item_stats_string);
     }
@@ -186,7 +181,7 @@ void Convoy_Stats_Print(struct Convoy *in_convoy, i16 type_exp, i16 stattype) {
     for (i16 i = start; i < end; i++) {
         struct Inventory_item item = in_convoy->items[i];
         struct Weapon *weapon = ((struct Weapon *)DTAB_GET_CONST(gl_weapons_dtab, item.id));
-        SDL_Log("%-20s %d ", weapon->item->name, Weapon_Stat(weapon, stattype));
+        SDL_Log("%-20s %d ", weapon->item->name.data, Weapon_Stat(weapon, stattype));
     }
 }
 

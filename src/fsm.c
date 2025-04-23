@@ -622,8 +622,8 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
     SDL_assert(popup_ent > TNECS_NULL);
 
     /* -- Getting popup -- */
-    const struct Position *cursor_pos;
-    cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+    // const struct Position *cursor_pos;
+    // cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     // struct Point pos    = cursor_pos->tilemap_pos;
     struct PopUp *popup = IES_GET_COMPONENT(sota->world, popup_ent, PopUp);
     struct n9Patch *n9patch = &popup->n9patch;
@@ -1514,8 +1514,8 @@ void fsm_eUnitDsel_ssMapUnitMv(struct Game *sota, tnecs_entity selector) {
     sota->map->arrow->show = false;
 
     /*  -- Reset map overlay to danger only -- */
-    struct Position *selected_pos;
-    selected_pos = IES_GET_COMPONENT(sota->world, sota->selected_unit_entity, Position);
+    // struct Position *selected_pos;
+    // selected_pos = IES_GET_COMPONENT(sota->world, sota->selected_unit_entity, Position);
     struct Position *pos = IES_GET_COMPONENT(sota->world, selector, Position);
     struct Point initial = sota->selected_unit_initial_position;
     if ((pos->tilemap_pos.x != initial.x) || (pos->tilemap_pos.y != initial.y)) {

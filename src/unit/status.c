@@ -7,8 +7,9 @@ const struct Unit_status Unit_status_default = {.turns = 3};
 /* --- Statuses --- */
 void Unit_Status_Add(struct Unit *unit, struct Unit_status status) {
     i16 i = Unit_Status_Find(unit, status.status);
-    if (unit->statuses.queue == NULL)
+    if (unit->statuses.queue == NULL) {
         unit->statuses.queue = DARR_INIT(unit->statuses.queue, struct Unit_status, 2);
+    }
 
     if (i < 0) {
         // Status not in queue, putting it

@@ -703,7 +703,8 @@ void Game_Save_Copy(i16 from_ind,  i16 to_ind) {
     stbsp_snprintf(tempfrom, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", from_ind);
     filenameto      = s8cat(filenameto,     s8_var(tempto));
     filenamefrom    = s8cat(filenamefrom,   s8_var(tempfrom));
-    SDL_LogDebug(SOTA_LOG_APP, "copy saveJSON Game from %s to %s\n", filenamefrom, filenameto);
+    SDL_LogDebug(SOTA_LOG_APP, "copy saveJSON Game from %s to %s\n", filenamefrom.data,
+                 filenameto.data);
     PHYSFS_file *pfrom  = PHYSFS_openRead(filenamefrom.data);
     PHYSFS_file *pto    = PHYSFS_openWrite(filenameto.data);
     SDL_assert(pfrom    != NULL);

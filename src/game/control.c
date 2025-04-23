@@ -99,8 +99,8 @@ void Game_Control_Keyboard(struct Game *sota) {
         kb->block_buttons = false;
 
     /* -- Keyboard move checking -- */
-    i8 pmove[SOTA_DIRECTIONS_MAIN_NUM];
-    i8 pmove_num = 0;
+    // i8 pmove[SOTA_DIRECTIONS_MAIN_NUM];
+    // i8 pmove_num = 0;
     b32 right = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_RIGHT);
     b32 up    = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_UP);
     b32 left  = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_LEFT);
@@ -109,17 +109,17 @@ void Game_Control_Keyboard(struct Game *sota) {
     /* - Collapse diagonals to one of 4 main directions - */
     if (up && !down) {
         cursor_move.y       = -1;
-        pmove[pmove_num++]  = SOTA_INPUT_UP;
+        // pmove[pmove_num++]  = SOTA_INPUT_UP;
     } else if (down && !up) {
         cursor_move.y       =  1;
-        pmove[pmove_num++]  = SOTA_INPUT_DOWN;
+        // pmove[pmove_num++]  = SOTA_INPUT_DOWN;
     }
     if (left && !right) {
         cursor_move.x       = -1;
-        pmove[pmove_num++]  = SOTA_INPUT_LEFT;
+        // pmove[pmove_num++]  = SOTA_INPUT_LEFT;
     } else if (right && !left) {
         cursor_move.x       =  1;
-        pmove[pmove_num++]  = SOTA_INPUT_RIGHT;
+        // pmove[pmove_num++]  = SOTA_INPUT_RIGHT;
     }
 
     Keyboard_Held(kb->held_move, mheld, theld_ns, press, pnum, updateTime_ns);

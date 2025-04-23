@@ -49,7 +49,7 @@ struct Input_Arguments Input_parseInputs(int argc, char *argv[]) {
                 exit(0);
             case '?':
                 if (longindex[0] >= 0) {
-                    printf("option -%shortopt/--%s requires an argument\n", longopts[longindex[0]].val,
+                    printf("option -%dshortopt/--%s requires an argument\n", longopts[longindex[0]].val,
                            longopts[longindex[0]].name);
                 } else if (ps.optopt == 's') {
                     printf("option -s/--state requires an argument\n");
@@ -58,12 +58,12 @@ struct Input_Arguments Input_parseInputs(int argc, char *argv[]) {
                 } else if (ps.optopt == 'm') {
                     printf("option -m/--map requires an argument\n");
                 } else {
-                    printf("unknown option -%shortopt\n", ps.optopt);
+                    printf("unknown option -%dshortopt\n", ps.optopt);
                 }
                 exit(ERROR_Generic);
                 break;
             default:
-                printf("error: unhandled option -%shortopt\n", shortopt);
+                printf("error: unhandled option -%dshortopt\n", shortopt);
                 exit(ERROR_Generic);
                 break;
         }

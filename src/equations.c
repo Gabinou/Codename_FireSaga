@@ -28,7 +28,8 @@ i32 Equation_Regrets(i32 kills, i32 faith) {
 
 i32 Equation_Agony_PercentonCrit(i32 luck, i32 con) {
     // i32 eff_luck    = luck + con;
-    i32 agony_prob  = nmath_inbounds_int32_t(agony_prob, 0, SOTA_100PERCENT);
+    i32 agony_prob = 0;
+    agony_prob = nmath_inbounds_int32_t(agony_prob, 0, SOTA_100PERCENT);
     return (agony_prob);
 }
 

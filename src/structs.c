@@ -185,8 +185,8 @@ void Computed_Stats_Compare(struct Computed_Stats *stats1, struct Computed_Stats
     SDL_Log("move:    %3d, %3d\n", stats1->move, stats2->move);
     SDL_Log("speed:   %3d, %3d\n", stats1->speed, stats2->speed);
     SDL_Log("agony:   %3d, %3d\n", stats1->agony, stats2->agony);
-    SDL_Log("range_equipment.min: %3d\n", stats1->range_equipment.min, stats2->range_equipment.min);
-    SDL_Log("range_equipment.max: %3d\n", stats1->range_equipment.max, stats2->range_equipment.max);
-    SDL_Log("range_loadout.min:  %3d\n", stats1->range_loadout.min, stats2->range_loadout.min);
-    SDL_Log("range_loadout.max:  %3d\n", stats1->range_loadout.max, stats2->range_loadout.max);
+    SDL_Log("range_equipment.min: %3d %3d\n", stats1->range_equipment.min, stats2->range_equipment.min);
+    SDL_Log("range_equipment.max: %3d %3d\n", stats1->range_equipment.max, stats2->range_equipment.max);
+    SDL_Log("range_loadout.min:  %3d %3d\n", stats1->range_loadout.min, stats2->range_loadout.min);
+    SDL_Log("range_loadout.max:  %3d %3d\n", stats1->range_loadout.max, stats2->range_loadout.max);
 }

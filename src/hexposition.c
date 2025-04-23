@@ -28,7 +28,7 @@ extern void plotHex2DArray(i16 *in_array, size_t depth_len, size_t col_len,
                     for (size_t z_in = 0; z_in < z; z_in++)
                         printf(" ");
                     for (size_t x = 0; x < col_len; x++)
-                        printf("%ld, ", in_array[z * col_len + x]);
+                        printf("%d, ", in_array[z * col_len + x]);
                     printf("\n");
                 }
                 break;
@@ -37,7 +37,7 @@ extern void plotHex2DArray(i16 *in_array, size_t depth_len, size_t col_len,
                     for (size_t x_in = 0; x_in < x; x_in++)
                         printf(" ");
                     for (size_t z = 0; z < depth_len; z++)
-                        printf("%ld, ", in_array[z * col_len + x]);
+                        printf("%d, ", in_array[z * col_len + x]);
                     printf("\n");
                 }
                 break;

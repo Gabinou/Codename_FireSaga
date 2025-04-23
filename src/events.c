@@ -129,9 +129,10 @@ tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code) {
             gamepad_ptr->timeheld_button_ns   = SOTA_ns / sota->settings.FPS.cap;
             keyboard_ptr->timeheld_button_ns  = SOTA_ns / sota->settings.FPS.cap;
             break;
-        default:
+        default: {
             printf("controller code is invalid.");
-            exit;
+            exit(1);
+        }
     }
     return (out_accepter_entity);
 }

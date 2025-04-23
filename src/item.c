@@ -13,16 +13,12 @@
 
 const struct Item Item_default = {
     .jsonio_header.json_element   = JSON_ITEM,
-    .jsonio_header.json_filename  = {0},
 
-    .aura           = {0},
     .id             = 0, // 0 means empty.
     .type           = 0,
     .stats          = {1000, 10, 10},
     .target         = ITEM_TARGET_ENEMY,
     .range          = {0, 1},
-    .aura           = {0, 0},
-    .passive        = 0,
     .active         = NULL,
     .users          = NULL, /* item only usable by users.   empty = everyone */
     .classes        = NULL, /* item only usable by classes. empty = everyone */

@@ -40,7 +40,7 @@
 /* --- Map utilities --- */
 void Game_Map_Load(struct Game *sota, i32 in_map_index) {
     SDL_assert((in_map_index > CHAPTER_START) && (in_map_index < CHAPTER_NUM));
-    SDL_LogDebug(SOTA_LOG_SYSTEM, "%ld \n", in_map_index);
+    SDL_LogDebug(SOTA_LOG_SYSTEM, "%d \n", in_map_index);
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Associated map filename     %s \n", mapFilenames[in_map_index].data);
 
     /* --- PRELIMINARIES --- */

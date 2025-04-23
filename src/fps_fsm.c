@@ -127,7 +127,7 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     /* -- Decide next NPC to act -- */
     if (sota->ai_state.npc_i < 0) {
         tnecs_entity debug = AI_Decide_Next(sota);
-        SDL_LogDebug(SOTA_LOG_AI, "Next npc entity: %d", debug);
+        SDL_LogDebug(SOTA_LOG_AI, "Next npc entity: %lld", debug);
     }
     tnecs_entity npc_ent = sota->ai_state.npcs[sota->ai_state.npc_i];
 

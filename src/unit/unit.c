@@ -681,7 +681,7 @@ void Unit_Equipment_Print( struct Unit *unit) {
             continue;
         }
 
-        SDL_Log("%d %s", eq, wpn->item->name);
+        SDL_Log("%d %s", eq, wpn->item->name.data);
     }
 }
 

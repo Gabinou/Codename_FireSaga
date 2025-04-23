@@ -365,7 +365,7 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
         PixelFont_Write(pu->pixelnours, renderer, numbuff, 7, PU_ATK_X_STAT1, PU_ATK_Y_STAT1);
     } else {
         stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", comp_s.attack.physical,
-                      comp_s.attack.magical, comp_s.attack.True);
+                      comp_s.attack.magical);
         PixelFont_Write(pu->pixelnours, renderer, numbuff, 5, PU_ATK_X_STAT1, PU_ATK_Y_STAT1);
     }
     PixelFont_Write(pu->pixelnours, renderer, "DEF", 3, PU_PROT_X, PU_PROT_Y);

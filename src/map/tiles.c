@@ -29,10 +29,12 @@ void Map_Tiles_Free(struct Map *map) {
 
 void Map_Tiles_Load(struct Map *map) {
     Map_Tiles_Free(map);
-    if (map->tiles == NULL)
+    if (map->tiles == NULL) {
         map->tiles      = DARR_INIT(map->tiles, struct Tile, 64);
-    if (map->tiles_id == NULL)
+    }
+    if (map->tiles_id == NULL) {
         map->tiles_id   = DARR_INIT(map->tiles_id, i32, 64);
+    }
 
     for (size_t i = 0; i < DARR_NUM(map->tilesindex); i++) {
         /* -- Get tile_id -- */
@@ -220,7 +222,7 @@ u8 Map_Tile_Order(struct Map *map, i32 tile) {
         }
     }
     if (out >= DARR_NUM(map->tiles)) {
-        SDL_LogError(SOTA_LOG_SYSTEM, "Tile %d not found in map", tile, global_tilenames[tile]);
+        SDL_LogError(SOTA_LOG_SYSTEM, "Tile %d '%s' not found in map", tile, global_tilenames[tile].data);
         exit(1);
     }
     return (out);

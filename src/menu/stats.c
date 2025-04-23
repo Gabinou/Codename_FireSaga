@@ -920,14 +920,14 @@ static void _StatsMenu_Draw_Statuses(struct StatsMenu *stats_menu, SDL_Renderer 
 
 static void _StatsMenu_Draw_WpnTypes(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     struct Unit *unit = stats_menu->unit;
-    SDL_Rect srcrect;
+    // SDL_Rect srcrect;
 
     /* -- WEAPON TYPES -- */
     int x = WEAPONS_X_OFFSET, y = WEAPONS_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "WPN TYPE", 8, x, y);
     // u64 wpntypecode = 1;
-    srcrect.h = SM_WEAPONS_TILESIZE;
-    srcrect.w = SM_WEAPONS_TILESIZE;
+    // srcrect.h = SM_WEAPONS_TILESIZE;
+    // srcrect.w = SM_WEAPONS_TILESIZE;
 
     u8 equippables[ITEM_TYPE_EXP_END];
     u8 equippable_num  = Unit_canEquip_allTypes(unit, equippables);

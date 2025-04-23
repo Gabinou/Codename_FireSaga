@@ -66,7 +66,6 @@ u64 next_xoshiro256ss(void) {
 
 /* --- RNG --- */
 void RNG_Init_xoroshiro256ss(void) {
-    SDL_assert(s);
     s[0] = 1990ULL;
     s[1] =    5ULL;
     s[2] =    8ULL;
@@ -74,7 +73,6 @@ void RNG_Init_xoroshiro256ss(void) {
 }
 
 void RNG_Set_xoroshiro256ss(u64 s1, u64 s2, u64 s3, u64 s4) {
-    SDL_assert(s);
     s[0] = s1;
     s[1] = s2;
     s[2] = s3;

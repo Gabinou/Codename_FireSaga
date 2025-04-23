@@ -242,7 +242,7 @@ struct Point Gamepad_Joystick_Direction(struct controllerGamepad *gp) {
 }
 
 void Gamepad_removeController(struct controllerGamepad *gp, i32 joystick_instance) {
-    SDL_Log("remove joystick %ld", joystick_instance);
+    SDL_Log("remove joystick %d", joystick_instance);
     for (int i = 0; i < gp->controllers_num; i++) {
         if (joystick_instance == gp->joystick_instances[i]) {
             SDL_GameControllerClose(gp->controllers[i]);
@@ -282,7 +282,7 @@ void _Gamepad_Realloc(struct controllerGamepad *gp) {
 }
 
 void Gamepad_addController(struct controllerGamepad *gp, i32 joystick_device) {
-    SDL_Log("add joystick %ld", joystick_device);
+    SDL_Log("add joystick %d", joystick_device);
     SDL_assert(SDL_IsGameController(joystick_device));
     if ((gp->controllers_num + 1) >= gp->controllers_len)
         _Gamepad_Realloc(gp);
