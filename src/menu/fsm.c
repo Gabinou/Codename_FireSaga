@@ -1225,7 +1225,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moItem(struct Game *sota, struct Menu *mc) {
     struct PopUp *popup = IES_GET_COMPONENT(sota->world, sota->popups[popup_ind], PopUp);
     struct PopUp_Loadout_Stats *pls = popup->data;
 
-    struct Unit *unit = IES_GET_COMPONENT(sota->world, sota->selected_unit_entity, Unit);
+    // struct Unit *unit = IES_GET_COMPONENT(sota->world, sota->selected_unit_entity, Unit);
     PopUp_Loadout_Stats_Unit(pls, sota->selected_unit_entity);
 
     /* -- TODO: Render Face -- */
@@ -1405,7 +1405,7 @@ void fsm_eCncl_sPrep_ssMenu_mSM( struct Game *sota, struct Menu *mc) {
     int num_menu_stack      = DARR_NUM(sota->menu_stack);
     tnecs_entity top_menu   = sota->menu_stack[num_menu_stack - 1];
 
-    tnecs_entity popped = Game_menuStack_Pop(sota, false);
+    Game_menuStack_Pop(sota, false);
 
     /* - Focus on new menu - */
     if (DARR_NUM(sota->menu_stack) > 0) {
@@ -1463,7 +1463,7 @@ void fsm_eCncl_sPrep_ssMapCndt_mSM( struct Game *sota, struct Menu *mc) {
     SDL_assert(num_menu_stack == 1);
     SDL_assert(top_menu == sota->stats_menu);
 
-    tnecs_entity popped = Game_menuStack_Pop(sota, false);
+    Game_menuStack_Pop(sota, false);
 
     /* - Focus on new menu - */
     mc->visible = true;

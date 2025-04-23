@@ -194,7 +194,7 @@ typedef struct SceneStatement {
     i32 actor_unit_id;
     SceneStatementUnion _union;
 } SceneStatement;
-extern SceneStatement SceneStatement_default;
+extern const SceneStatement SceneStatement_default;
 
 /* A scene is a conversation.
 *   - Up to 8 characters sprites on screen at once

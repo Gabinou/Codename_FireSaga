@@ -2,14 +2,16 @@
 #include "mace.h"
 
 #ifndef CC
+    // #define CC "tcc"
     #define CC "gcc"
 #endif
 #ifndef AR
+    // #define AR "tcc -ar"
     #define AR "ar"
 #endif
 
 struct Config debug         = {
-    .flags = "-g -gdwarf -rdynamic -O0 -DSDL_ASSERT_LEVEL=2 -Wall -Wno-unused-command-line-argument -Wno-format-contains-nul"
+    .flags = "-g -gdwarf -rdynamic -O0 -DSDL_ASSERT_LEVEL=2 -Wunused-variable -Wno-unused-command-line-argument -Wno-format-contains-nul"
 };
 
 struct Config tcc_bounds    = {

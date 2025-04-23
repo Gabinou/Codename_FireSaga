@@ -437,7 +437,7 @@ void Game_Tilesets_Dump(struct Game *sota) {
         struct Tile *temp_tile = sota->map->tiles + tile_order;
         dumpname = s8cat(dumpname, temp_tile->name);
         dumpname = s8cat(dumpname, s8_literal(".png"));
-        SDL_Log("%s", dumpname);
+        SDL_Log("%s", dumpname.data);
         // SDL_Texture *temptexture = DTAB_GET(sota->map->textures, (sota->map->tilesindex[i]));
         // Filesystem_Texture_Dump(dumpname, sota->renderer, temptexture, SDL_PIXELFORMAT_ARGB8888);
         // memset(&dumpname, 0, DEFAULT_BUFFER_SIZE);

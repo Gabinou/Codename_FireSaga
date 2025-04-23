@@ -647,11 +647,11 @@ void Map_writeJSON(const void *input, cJSON *jmap) {
 
 void Map_RowCol_readJSON(s8 filename, i32 rowcol[TWO_D]) {
     // SDL_Log("%s", filename);
-    struct cJSON *jfile = jsonio_parseJSON(s8_var(filename.data));
+    struct cJSON *jfile = jsonio_parseJSON(s8_var((char*)filename.data));
     SDL_assert(jfile != NULL);
 
     s8 elem_name = jsonElementnames[JSON_MAP];
-    struct cJSON *jmap = cJSON_GetObjectItem(jfile, elem_name.data);
+    struct cJSON *jmap = cJSON_GetObjectItem(jfile, (char*)elem_name.data);
     if (jmap == NULL) {
         SDL_Log("No '%s' element in map json", elem_name.data);
         exit(ERROR_JSONParsingFailed);
@@ -712,12 +712,12 @@ void Map_readJSON(void *input, const cJSON *jmap) {
     map->chapter = cJSON_GetNumberValue(jchapter);
 
     if (map->col_len != cJSON_GetNumberValue(jcol_len)) {
-        SDL_Log("map->col_len should be set to '%d'", cJSON_GetNumberValue(jcol_len));
+        SDL_Log("map->col_len should be set to '%f'", cJSON_GetNumberValue(jcol_len));
         exit(ERROR_Generic);
     }
 
     if (map->row_len != cJSON_GetNumberValue(jrow_len)) {
-        SDL_Log("map->row_len should be set to '%d'", cJSON_GetNumberValue(jrow_len));
+        SDL_Log("map->row_len should be set to '%f'", cJSON_GetNumberValue(jrow_len));
         exit(ERROR_Generic);
     }
 
@@ -818,11 +818,11 @@ void Map_readJSON(void *input, const cJSON *jmap) {
             cJSON *jpos     = cJSON_GetObjectItem(jchest, "position");
 
             if (jchest == NULL) {
-                SDL_Log("Warning: could not read chest %d", i);
+                SDL_Log("Warning: could not read chest %ld", i);
                 continue;
             }
             if (jpos == NULL) {
-                SDL_Log("Warning: could not read chest %d's position", i);
+                SDL_Log("Warning: could not read chest %ld's position", i);
                 continue;
             }
 
@@ -851,11 +851,11 @@ void Map_readJSON(void *input, const cJSON *jmap) {
             cJSON *jdoor    = cJSON_GetArrayItem(jdoors, i);
             cJSON *jpos     = cJSON_GetObjectItem(jdoor, "position");
             if (jdoor == NULL) {
-                SDL_Log("Warning: could not read door %d", i);
+                SDL_Log("Warning: could not read door %ld", i);
                 continue;
             }
             if (jpos == NULL) {
-                SDL_Log("Warning: could not read door %d's position", i);
+                SDL_Log("Warning: could not read door %ld's position", i);
                 continue;
             }
             Point_readJSON((struct Point *)&pos->tilemap_pos, jpos);
@@ -882,11 +882,11 @@ void Map_readJSON(void *input, const cJSON *jmap) {
             cJSON *jbreakable       = cJSON_GetArrayItem(jbreakables, i);
             cJSON *jpos             = cJSON_GetObjectItem(jbreakable, "position");
             if (jbreakable == NULL) {
-                SDL_Log("Warning: could not read breakable %d", i);
+                SDL_Log("Warning: could not read breakable %ld", i);
                 continue;
             }
             if (jpos == NULL) {
-                SDL_Log("Warning: could not read breakable %d's position", i);
+                SDL_Log("Warning: could not read breakable %ld's position", i);
                 continue;
             }
 

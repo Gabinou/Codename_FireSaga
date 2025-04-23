@@ -568,7 +568,6 @@ void Unit_computeDefense(struct Unit *unit, i32* def) {
     }
 
     /* Add all bonuses */
-    i32 bonus_P = 0, bonus_M = 0;
     SDL_assert(unit->stats.bonus_stack != NULL);
     for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
         bonus.physical    +=
@@ -631,7 +630,6 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
     struct Unit_stats effstats = Unit_effectiveStats(unit);
 
     /* Add all bonuses */
-    i32 bonus_P = 0, bonus_M = 0, bonus_T = 0;
     if (unit->stats.bonus_stack != NULL) {
         for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
             bonus.physical += unit->stats.bonus_stack[i].computed_stats.attack.physical;
@@ -1027,8 +1025,8 @@ void Unit_readJSON(void *input, const cJSON *junit) {
 
         unit->support.num = cJSON_GetArraySize(jsupports);
         for (int i = 0; i < unit->support.num; ++i) {
-            struct cJSON *jsupport = cJSON_GetArrayItem(jsupports, i);
-            char *name = cJSON_GetStringValue(jsupport);
+            // struct cJSON *jsupport = cJSON_GetArrayItem(jsupports, i);
+            // char *name = cJSON_GetStringValue(jsupport);
             // unit->supports[i].other_id = Hashes_supportName2ID(name);
             unit->support.arr[i].level         = 0;
             unit->support.arr[i].other_type    = 0;

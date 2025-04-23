@@ -15,7 +15,7 @@
 #include "stb_sprintf.h"
 
 
-extern SceneStatement SceneStatement_default = {0};
+const SceneStatement SceneStatement_default = {0};
 
 const struct Scene Scene_default =  {
     .jsonio_header.json_element = JSON_SCENE,
@@ -289,7 +289,7 @@ void Scene_Didascalie_Appear_readJSON(void *input, const cJSON *jdid) {
 
         SceneDidascalie *didascalie = &statement._union.didascalie;
         *didascalie = SceneDidascalie_default;
-        statement->unit_d      = id;
+        statement.actor_unit_id = id;
 
         Scene_Statement_Add(scene, statement);
     }
@@ -320,7 +320,7 @@ void Scene_Didascalie_Slide_readJSON( void *input, const cJSON *jdid) {
 
         SceneDidascalie *didascalie = &statement._union.didascalie;
         *didascalie = SceneDidascalie_default;
-        statement->actor_unit_id = id;
+        statement.actor_unit_id = id;
 
         // Reading Slide paramaters from child array
         DidascalieSlide *slide = &didascalie->_union.slide;
@@ -443,7 +443,7 @@ void Scene_Line_readJSON(void *input, const cJSON *jstatement) {
 
         s8 line     = s8_mut(cJSON_GetStringValue(jline->child));
 
-        scene_line->actor   = actor;
+        // scene_line->actor   = actor;
         scene_line->line    = line;
         // Print line:
         // SDL_Log("%s: %s", scene_line->actor.data, scene_line->line.data);
@@ -645,13 +645,15 @@ void _Scene_Draw_Text(struct Scene *scene, SDL_Texture *render_target, SDL_Rende
 
     /* Writing Actor name:*/
     // TODO: Set actor name position
-    PixelFont_Write(scene->pixelnours, renderer, scene_line->actor.data,
-                    scene_line->actor.len,
+    u64 unit_order = *(u64 *)DTAB_GET(global_unitOrders, statement.actor_unit_id);
+
+    PixelFont_Write(scene->pixelnours, renderer, global_unitNames[unit_order].data,
+                    global_unitNames[unit_order].num,
                     SCENE_TEXT_BOX_ACTOR_POS_X, SCENE_TEXT_BOX_ACTOR_POS_Y);
 
     /* Writing line:*/
     // TODO: Set line position
-    Text_Box_Set_Text(&scene->text_box, scene_line->line.data, &scene->n9patch);
+    Text_Box_Set_Text(&scene->text_box, (char*)scene_line->line.data, &scene->n9patch);
     Text_Box_Update(&scene->text_box, &scene->n9patch,
                     render_target, renderer);
     SDL_SetRenderTarget(renderer, scene->texture);

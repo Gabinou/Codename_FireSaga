@@ -195,12 +195,9 @@ s8 Weapon_Filename(s8 filename, i16 id) {
 void Weapon_Save(struct dtab *weapons_dtab, i16 id) {
     SDL_assert(Weapon_ID_isValid(id));
     SDL_assert(weapons_dtab != NULL);
-    char *token;
-    char buffer[DEFAULT_BUFFER_SIZE];
     if (DTAB_GET_CONST(weapons_dtab, id) != NULL) {
         s8 filename = s8_mut("items"PHYSFS_SEPARATOR);
         filename    = Weapon_Filename(filename, id);
-        b32 append = false;
         const Weapon *weapon = DTAB_GET_CONST(weapons_dtab, id);
         jsonio_writeJSON(filename, weapon, false);
         s8_free(&filename);
@@ -357,7 +354,7 @@ int Weapon_Stat_inRange(const Weapon *weapon, i16 stattype, int distance) {
     *    DEBUG: input -1 to always be in_range
     */
     struct Range range = weapon->stats.range;
-    b32 in_range = ((distance < 0) || (range.min <= distance) && (distance <= range.max));
+    b32 in_range = ((distance < 0) || ((range.min <= distance) && (distance <= range.max)));
     b32 isshield  = Weapon_isShield(weapon->item->id);
     b32 isoffhand = Weapon_isOffhand(weapon->item->id);
     return ((in_range || isshield || isoffhand) ? Weapon_Stat(weapon, stattype) : 0);
