@@ -5849,7 +5849,7 @@ void mace_Target_Read_Objdeps(struct Target *target, char *deps, int source_i) {
     /* --- Hash headers into _deps_links --- */
     while (header != NULL) {
         /* Skip if file is not a header */
-        char *dot  = strchr(header,  '.'); /* last dot in path */
+        char *dot  = strrchr(header,  '.'); /* last dot in path */
         if (dot == NULL) {
             header = strtok(NULL, mace_d_separator);
             continue;
@@ -5981,7 +5981,7 @@ char *mace_Target_Read_d(struct Target *target, int source_i) {
     strncpy(obj_file, obj_file_flag + oflagl, obj_len - oflagl);
     char buffer[MACE_OBJDEP_BUFFER];
     size_t size = 0;
-    char *dot        = strchr(obj_file,  '.'); /* last dot in path */
+    char *dot        = strrchr(obj_file,  '.'); /* last dot in path */
     size_t ext = dot - obj_file;
 
     /* Check if .ho exists */
@@ -6058,7 +6058,7 @@ void mace_Target_Parse_Objdep(struct Target *target, int source_i) {
         return;
 
     /* Write _deps_header to .ho file */
-    char *dot  = strchr(obj_file,  '.'); /* last dot in path */
+    char *dot  = strrchr(obj_file,  '.'); /* last dot in path */
     size_t ext = dot - obj_file;
 
     memcpy(obj_file + ext + 1, "ho", 2);
@@ -6094,7 +6094,7 @@ void mace_Target_Read_ho(struct Target *target, int source_i) {
     char *obj_file = calloc(obj_len - oflagl + 5, sizeof(*obj_file));
     strncpy(obj_file, obj_file_flag + oflagl, obj_len - oflagl);
 
-    char *dot        = strchr(obj_file,  '.'); /* last dot in path */
+    char *dot        = strrchr(obj_file,  '.'); /* last dot in path */
     size_t ext = dot - obj_file;
 
     /* Check if .ho exists */
@@ -6403,7 +6403,7 @@ void mace_Target_Deps_Hash(struct Target *target) {
 char *mace_checksum_filename(char *file, int mode) {
     // Files should be .c or .h
     assert(obj_dir != NULL);
-    char *dot        = strchr(file,  '.'); /* last dot in path      */
+    char *dot        = strrchr(file, '.'); /* last dot in path      */
     char *slash      = strrchr(file, '/'); /* last slash in path    */
     if (dot == NULL) {
         fprintf(stderr, "Error: Could not find extension in filename.\n");
@@ -6413,8 +6413,9 @@ char *mace_checksum_filename(char *file, int mode) {
     /* File length of just file without extension */
     int dot_i   = (int)(dot - file);
     int slash_i = (slash == NULL) ? 0 : (int)(slash - file + 1);
-    size_t obj_dir_len  = strlen(obj_dir);
+    assert(dot_i > slash_i);
     size_t file_len     = dot_i - slash_i;
+	  size_t obj_dir_len  = strlen(obj_dir);
 
     /* Alloc new file */
     size_t checksum_len  = (file_len + MACE_SEPARATOR_STR_LEN + MACE_CHECKSUM_EXTENSION_STR_LEN) + obj_dir_len + 1;
@@ -6425,6 +6426,7 @@ char *mace_checksum_filename(char *file, int mode) {
     }
 
     char *sha1 = calloc(checksum_len, sizeof(*sha1));
+
     assert(sha1 != NULL);
     strncpy(sha1, obj_dir, obj_dir_len);
     size_t total = obj_dir_len;
