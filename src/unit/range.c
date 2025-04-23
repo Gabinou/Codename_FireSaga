@@ -219,7 +219,7 @@ int Unit_Rangemap_Get(struct Unit *unit) {
     i32 user_rangemap = Unit_User_Rangemap(unit);
     i32 rangemap = Unit_Rangemap(unit);
     int out = user_rangemap > RANGEMAP_NULL ? user_rangemap : rangemap;
-    return (rangemap);
+    return (out);
 }
 int  Unit_Rangemap(Unit *unit) {
     if (unit == NULL)

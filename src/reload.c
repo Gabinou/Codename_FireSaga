@@ -51,7 +51,7 @@ void Reload_Menu(void *struct_ptr) {
         return;
     }
 
-    void *menu          = mc->data;
+    // void *menu          = mc->data;
 
     // TODO
     // char *update_byte   = ((char *)menu + MENU_UPDATE_bOFFSET);
@@ -66,7 +66,7 @@ void Reload_Popup(void *struct_ptr) {
         return;
     }
 
-    void *popup         = pc->data;
+    // void *popup         = pc->data;
 
     // TODO
     // char *update_byte   = ((char *)popup + MENU_UPDATE_bOFFSET);

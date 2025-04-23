@@ -403,7 +403,7 @@ void makeContent_FirstMenu(struct Game *sota) {
 }
 
 void makeContent_PSM_TRADE(struct Game *sota, void *data1, void *data2) {
-    tnecs_entity menu_entity = sota->player_select_menus[MENU_PLAYER_SELECT_TRADE];
-    struct Menu *mc_ptr = IES_GET_COMPONENT(sota->world, menu_entity, Menu);
-    struct PlayerSelectMenu *psm = mc_ptr->data;
+    // tnecs_entity menu_entity = sota->player_select_menus[MENU_PLAYER_SELECT_TRADE];
+    // struct Menu *mc_ptr = IES_GET_COMPONENT(sota->world, menu_entity, Menu);
+    // struct PlayerSelectMenu *psm = mc_ptr->data;
 }

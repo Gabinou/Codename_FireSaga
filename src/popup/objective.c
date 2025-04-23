@@ -149,7 +149,6 @@ void PopUp_Objective_Update(struct PopUp_Objective *po,
     SDL_assert(n9patch->size_pixels.y > 0);
     SDL_assert(n9patch->scale.x > 0);
     SDL_assert(n9patch->scale.y > 0);
-    SDL_Rect dstrect, srcrect;
     i16 menu_w = n9patch->size_pixels.x;
     i16 menu_h = n9patch->size_pixels.y;
     SDL_assert(menu_w > 0);

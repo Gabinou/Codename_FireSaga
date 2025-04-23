@@ -139,7 +139,7 @@ tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code) {
 /* --- EVENT RECEIVERS --- */
 void Event_Emit( const char *emitter, u32 type, i32 code, void *data1, void *data2) {
     SDL_assert(code > 0);
-    s8 event_name = event_names[code - event_Start];
+    // s8 event_name = event_names[code - event_Start];
     // SDL_Log("emitter -> %s, event -> %s", emitter, event_name.data);
     SDL_assert(type != ((UINT32_MAX) - 1));
     SDL_Event event;
@@ -586,7 +586,7 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     keyboard_ptr->block_buttons = true;
 
     /* --- Benchmarking reload time --- */
-    u64 before_ns = tnecs_get_ns();
+    // u64 before_ns = tnecs_get_ns();
 
     /* --- Reload non-entities --- */
     Weapons_All_Reload(gl_weapons_dtab);
@@ -620,9 +620,9 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     /* -- TODO: Reload Convoy -- */
 
     /* -- Benchmark reload time -- */
-    u64 after_ns    = tnecs_get_ns();
-    u64 elapsed_ms  = (after_ns - before_ns) / SOTA_us;
-    float frame     = (float)(sota->instant_fps * elapsed_ms) / SOTA_ms;
+    // u64 after_ns    = tnecs_get_ns();
+    // u64 elapsed_ms  = (after_ns - before_ns) / SOTA_us;
+    // float frame     = (float)(sota->instant_fps * elapsed_ms) / SOTA_ms;
     // SDL_Log("Reload %d ms %f frames", elapsed_ms, frame);
 }
 
@@ -1415,8 +1415,8 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
         Game_PopUp_Map_Combat_Create(sota);
     Game_PopUp_Map_Combat_Update(sota);
 
-    struct Unit *aggressor = IES_GET_COMPONENT(sota->world, sota->aggressor, Unit);
-    struct Unit *defendant = IES_GET_COMPONENT(sota->world, sota->defendant, Unit);
+    // struct Unit *aggressor = IES_GET_COMPONENT(sota->world, sota->aggressor, Unit);
+    // struct Unit *defendant = IES_GET_COMPONENT(sota->world, sota->defendant, Unit);
     struct PopUp *popup    = IES_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_MAP_COMBAT],
                                                PopUp);
     struct PopUp_Map_Combat *pmc = popup->data;
@@ -1443,13 +1443,13 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
     // 1. Resolve Combat
     struct Unit *aggressor = IES_GET_COMPONENT(sota->world, sota->aggressor, Unit);
     Unit_Waiting_set(aggressor, true);
-    struct Unit *defendant = IES_GET_COMPONENT(sota->world, sota->defendant, Unit);
+    // struct Unit *defendant = IES_GET_COMPONENT(sota->world, sota->defendant, Unit);
 
     SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, sota->defendant, Timer));
     SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, sota->aggressor, Timer));
 
-    tnecs_entity  popup_ent      = sota->popups[POPUP_TYPE_MAP_COMBAT];
-    struct PopUp *popup_ptr      = IES_GET_COMPONENT(sota->world, popup_ent, PopUp);
+    // tnecs_entity  popup_ent      = sota->popups[POPUP_TYPE_MAP_COMBAT];
+    // struct PopUp *popup_ptr      = IES_GET_COMPONENT(sota->world, popup_ent, PopUp);
     // struct PopUp_Map_Combat *pmc = popup_ptr->data;
 
     /* 2. Update maphpbars. */
@@ -1555,7 +1555,7 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(killer != NULL);
     SDL_assert(victim != NULL);
 
-    b32 died_boss = (boss != NULL);
+    // b32 died_boss = (boss != NULL);
 
     /* --- Increasing Killer's regrets --- */
     int regrets = Unit_Current_Regrets(killer);
@@ -1590,9 +1590,9 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Unit_Loots(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity looter_entity = *(tnecs_entity *) userevent->user.data1;
-    tnecs_entity victim_entity = *(tnecs_entity *) userevent->user.data2;
+    // tnecs_entity victim_entity = *(tnecs_entity *) userevent->user.data2;
     struct Unit *looter = IES_GET_COMPONENT(sota->world, looter_entity, Unit);
-    struct Unit *victim = IES_GET_COMPONENT(sota->world, victim_entity, Unit);
+    // struct Unit *victim = IES_GET_COMPONENT(sota->world, victim_entity, Unit);
     int regrets = Unit_Current_Regrets(looter);
     looter->counters.regrets = regrets > UINT8_MAX - REGRET_LOOT ? UINT8_MAX : regrets + REGRET_LOOT;
 }
@@ -1624,8 +1624,8 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     attacker = attack.attacker ? aggressor : defendant;
     defender = attack.attacker ? defendant : aggressor;
     Combat_Resolve_Attack(attack, attacker, defender);
-    int id_L          = Unit_Id_Equipped(attacker, UNIT_HAND_LEFT);
-    int id_R          = Unit_Id_Equipped(attacker, UNIT_HAND_RIGHT);
+    // int id_L          = Unit_Id_Equipped(attacker, UNIT_HAND_LEFT);
+    // int id_R          = Unit_Id_Equipped(attacker, UNIT_HAND_RIGHT);
 
     // 2. Check for unit agony/death
     b32 agg_death = (!Unit_isAlive(aggressor)) || (Unit_Current_Agony(aggressor) > AGONY_NULL);
@@ -1657,9 +1657,9 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Unit_Agonizes(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity victor_entity = *(tnecs_entity *) userevent->user.data1;
-    tnecs_entity victim_entity = *(tnecs_entity *) userevent->user.data2;
+    // tnecs_entity victim_entity = *(tnecs_entity *) userevent->user.data2;
     struct Unit *victor = IES_GET_COMPONENT(sota->world, victor_entity, Unit);
-    struct Unit *victim = IES_GET_COMPONENT(sota->world, victim_entity, Unit);
+    // struct Unit *victim = IES_GET_COMPONENT(sota->world, victim_entity, Unit);
     int regrets = Unit_Current_Regrets(victor);
     victor->counters.regrets = regrets > UINT8_MAX - REGRET_LOOT ? UINT8_MAX : regrets + REGRET_LOOT;
 }

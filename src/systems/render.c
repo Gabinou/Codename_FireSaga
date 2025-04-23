@@ -73,9 +73,6 @@ void Draw_Actor(tnecs_input *input) {
     SDL_assert(actor_arr   != NULL);
     SDL_assert(position_arr != NULL);
 
-    tnecs_world   *world        = input->world;
-    size_t         archetype_id = input->entity_archetype_id;
-
     for (u16 order = 0; order < input->num_entities; order++) {
         struct Actor    *actor      = (actor_arr   + order);
         struct Position *position   = (position_arr   + order);
@@ -319,16 +316,12 @@ void Animate_Map_Animation(tnecs_input *input) {
 
     /* -- Get components arrays -- */
     struct Timer        *timer_arr      = TNECS_COMPONENT_ARRAY(input, Timer_ID);
-    struct Text         *text_arr       = TNECS_COMPONENT_ARRAY(input, Text_ID);
-    struct Position     *pos_arr        = TNECS_COMPONENT_ARRAY(input, Position_ID);
     struct MapAnimation *mapanim_arr    = TNECS_COMPONENT_ARRAY(input, MapAnimation_ID);
 
     /* --- DRAWING TEXT ENTITIES --- */
     for (u16 order = 0; order < input->num_entities; order++) {
         struct MapAnimation *map_anim   = &mapanim_arr[order];
         struct Timer        *timer      = &timer_arr[order];
-        struct Position     *pos        = &pos_arr[order];
-        struct Text         *text       = &text_arr[order];
 
         tnecs_world   *world       = input->world;
         size_t         archetype_id = input->entity_archetype_id;
@@ -346,14 +339,12 @@ void Animate_Unit_Move_onMap(tnecs_input *input) {
 
     /* -- Get components arrays -- */
     struct Timer                *timer_arr      = TNECS_COMPONENT_ARRAY(input, Timer_ID);
-    struct Unit                 *unit_arr       = TNECS_COMPONENT_ARRAY(input, Unit_ID);
     struct UnitMoveAnimation    *unitmove_arr   = TNECS_COMPONENT_ARRAY(input, UnitMoveAnimation_ID);
 
     /* --- DRAWING TEXT ENTITIES --- */
     for (u16 order = 0; order < input->num_entities; order++) {
         struct UnitMoveAnimation *unit_anim  = &unitmove_arr[order];
         struct Timer             *timer      = &timer_arr[order];
-        struct Unit              *unit       = &unit_arr[order];
 
         tnecs_world   *world       = input->world;
         size_t         archetype_id = input->entity_archetype_id;
@@ -378,9 +369,9 @@ void Animate_Cutscene(tnecs_input *input) {
         struct Timer    *timer      = &timer_arr[order];
         struct Cutscene *cutscene   = &cutscene_arr[order];
 
-        tnecs_world     *world       = input->world;
-        size_t           archetype_id = input->entity_archetype_id;
-        tnecs_entity     entity      = world->bytype.entities[archetype_id][order];
+        // tnecs_world     *world       = input->world;
+        // size_t           archetype_id = input->entity_archetype_id;
+        // tnecs_entity     entity      = world->bytype.entities[archetype_id][order];
 
         if (timer->time_ns >= cutscene->time_ns) {
             Cutscene_Finish(cutscene, IES);

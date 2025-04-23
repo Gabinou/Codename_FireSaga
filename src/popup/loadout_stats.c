@@ -438,7 +438,6 @@ static void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls,
 
         canEquip_Eq(&can_equip, UNIT_HAND_LEFT);
         can_equip.hand      = UNIT_HAND_LEFT;
-        b32 iscan = Unit_canEquip(unit, can_equip);
         if (Unit_canEquip(unit, can_equip) || pls->l_equip_override) {
             dstrect.x = PLS_ICON_EQUIPL_X;
             dstrect.y = PLS_ICON_EQUIPL_Y + pls->ly_offset;

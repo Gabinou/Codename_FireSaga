@@ -139,7 +139,6 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
         // global_unitNames[unit_id].data, unit_ent);
     } else {
         // SDL_Log("-- create entity for unit %ld --", unit_id);
-        char filename[DEFAULT_BUFFER_SIZE];
         // SDL_Log("-- create entity --");
         unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID,
                                                    Sprite_ID, Timer_ID, MapHPBar_ID);
@@ -272,7 +271,7 @@ void Game_putPConMap(struct Game    *sota,   i16    *unit_ids,
     SDL_assert(load_num > 0);
     for (i16 i = 0; i < load_num; i++) {
         SDL_assert(Unit_ID_Valid(unit_ids[i]));
-        u64 order = *(u64 *)DTAB_GET(global_unitOrders, unit_ids[i]);
+        // u64 order = *(u64 *)DTAB_GET(global_unitOrders, unit_ids[i]);
         if (sota->party.entities[unit_ids[i]] <= TNECS_NULL)
             Game_Party_Entity_Create(sota, unit_ids[i], posarr[i], NULL);
         tnecs_entity unit_ent = sota->party.entities[unit_ids[i]];

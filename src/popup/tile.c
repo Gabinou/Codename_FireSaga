@@ -198,7 +198,7 @@ void PopUp_Tile_Update(struct PopUp_Tile *pt, struct n9Patch *n9patch,
     SDL_assert(n9patch->size_pixels.y > 0);
     SDL_assert(n9patch->scale.x > 0);
     SDL_assert(n9patch->scale.y > 0);
-    SDL_Rect dstrect, srcrect;
+    SDL_Rect dstrect;
     char numbuff[10];
     i16 menu_w = n9patch->size_pixels.x;
     i16 menu_h = (n9patch->size_pixels.y + PT_HEADER_Y) ;

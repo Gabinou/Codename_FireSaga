@@ -255,7 +255,7 @@ i32 Scene_jsonDidascalie_Type(const cJSON *jstatement) {
 }
 
 void Scene_Didascalie_readJSON(void *input, const cJSON *jdid) {
-    Scene *scene = input;
+    // Scene *scene = input;
 
     i32 type = Scene_jsonDidascalie_Type(jdid);
     if ((type > SCENE_DIDASCALIE_START) && (type < SCENE_DIDASCALIE_NUM)) {
@@ -375,12 +375,12 @@ void Scene_Condition_readJSON(void *input, const cJSON *jcond) {
 }
 
 void Scene_Didascalie_writeJSON(const void *input, cJSON *jdid) {
-    const Scene *scene = input;
+    // const Scene *scene = input;
 
 }
 
 void Scene_Condition_writeJSON(const void *input, cJSON *jcond) {
-    const Scene *scene = input;
+    // const Scene *scene = input;
 
 }
 
@@ -389,13 +389,13 @@ void Scene_Background_writeJSON(const void *input, cJSON *jc) {
 }
 
 void Scene_Background_readJSON( void *input, const cJSON *jc) {
-    Scene *scene = input;
+    // Scene *scene = input;
 
     // Scene_Statement_Add(scene, statement)
 }
 
 void Scene_Music_readJSON(void *input, const cJSON *jc) {
-    Scene *scene = input;
+    // Scene *scene = input;
 
     // Scene_Statement_Add(scene, statement)
 }

@@ -235,7 +235,7 @@ static void _PreCombatPopup_Draw_Stats(struct PreCombatPopup *pcp, SDL_Renderer 
 
 static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Renderer *renderer) {
     /* -- Preliminaries -- */
-    SDL_Rect dstrect, srcrect;
+    SDL_Rect dstrect;
 
     char numbuff[10];
     struct Point *agg_pos = &pcp->agg_pos->tilemap_pos;
@@ -248,8 +248,8 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
     struct Unit_stats ES_D = Unit_effectiveStats(pcp->dft_unit);
     struct Computed_Stats CS_A = Unit_computedStats(pcp->agg_unit, distance, ES_A);
     struct Computed_Stats CS_D = Unit_computedStats(pcp->dft_unit, distance, ES_D);
-    struct Combat_Damage damage_a                 = pcp->forecast->stats.agg_damage;
-    struct Combat_Damage damage_d                 = pcp->forecast->stats.dft_damage;
+    // struct Combat_Damage damage_a                 = pcp->forecast->stats.agg_damage;
+    // struct Combat_Damage damage_d                 = pcp->forecast->stats.dft_damage;
     struct Combat_Rates rates_a            = pcp->forecast->stats.agg_rates;
     struct Combat_Rates rates_d            = pcp->forecast->stats.dft_rates;
 
@@ -381,18 +381,18 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
 static void _PreCombatPopup_Draw_Stats_Total( struct PreCombatPopup *pcp, SDL_Renderer *renderer) {
     char numbuff[10];
     /* -- Preliminaries -- */
-    SDL_Rect dstrect, srcrect;
+    SDL_Rect dstrect;
 
-    struct Point *agg_pos = &pcp->agg_pos->tilemap_pos;
-    struct Point *dft_pos = &pcp->dft_pos->tilemap_pos;
 
     /* Distance between units */
-    u8 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
+    // struct Point *agg_pos = &pcp->agg_pos->tilemap_pos;
+    // struct Point *dft_pos = &pcp->dft_pos->tilemap_pos;
+    // u8 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
 
     struct Unit_stats ES_A = Unit_effectiveStats(pcp->agg_unit);
     struct Unit_stats ES_D = Unit_effectiveStats(pcp->dft_unit);
-    struct Computed_Stats CS_A = Unit_computedStats(pcp->agg_unit, distance, ES_A);
-    struct Computed_Stats CS_D = Unit_computedStats(pcp->dft_unit, distance, ES_D);
+    // struct Computed_Stats CS_A = Unit_computedStats(pcp->agg_unit, distance, ES_A);
+    // struct Computed_Stats CS_D = Unit_computedStats(pcp->dft_unit, distance, ES_D);
     struct Combat_Damage damage_a                 = pcp->forecast->stats.agg_damage;
     struct Combat_Damage damage_d                 = pcp->forecast->stats.dft_damage;
     struct Combat_Rates rates_a            = pcp->forecast->stats.agg_rates;
@@ -478,17 +478,17 @@ static void _PreCombatPopup_Draw_Stats_Total( struct PreCombatPopup *pcp, SDL_Re
 static void _PreCombatPopup_Draw_Stats_Simple(struct PreCombatPopup *pcp, SDL_Renderer *renderer) {
     char numbuff[10];
     /* -- Preliminaries -- */
-    SDL_Rect dstrect, srcrect;
-    struct Point *agg_pos = &pcp->agg_pos->tilemap_pos;
-    struct Point *dft_pos = &pcp->dft_pos->tilemap_pos;
+    SDL_Rect dstrect;
 
     /* Distance between units */
-    u8 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
+    // struct Point *agg_pos = &pcp->agg_pos->tilemap_pos;
+    // struct Point *dft_pos = &pcp->dft_pos->tilemap_pos;
+    // u8 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
 
     struct Unit_stats ES_A = Unit_effectiveStats(pcp->agg_unit);
     struct Unit_stats ES_D = Unit_effectiveStats(pcp->dft_unit);
-    struct Computed_Stats CS_A = Unit_computedStats(pcp->agg_unit, distance, ES_A);
-    struct Computed_Stats CS_D = Unit_computedStats(pcp->dft_unit, distance, ES_D);
+    // struct Computed_Stats CS_A = Unit_computedStats(pcp->agg_unit, distance, ES_A);
+    // struct Computed_Stats CS_D = Unit_computedStats(pcp->dft_unit, distance, ES_D);
     struct Combat_Damage damage_a                 = pcp->forecast->stats.agg_damage;
     struct Combat_Damage damage_d                 = pcp->forecast->stats.dft_damage;
     struct Combat_Rates rates_a            = pcp->forecast->stats.agg_rates;

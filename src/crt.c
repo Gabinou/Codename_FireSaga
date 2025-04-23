@@ -155,7 +155,7 @@ float Lanczos_Kernel(float x, int_fast8_t a) {
     // SDL_Log("Lanczos_Kernel");
     // kernel supposed to be 0 if |x| > a but Lanczos_Filter does not input out of bounds x
     float out = 1.0f;
-    float dist = fabsf(x) - fabsf((float)a);
+    // float dist = fabsf(x) - fabsf((float)a);
     if (x != 0.0f)
         out = a * sinf(x * M_PI) * sinf(x * M_PI / a) / (x * x * M_PI * M_PI);
     else if (x == 0.0f)

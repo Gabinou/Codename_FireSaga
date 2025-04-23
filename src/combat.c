@@ -126,8 +126,8 @@ struct Combat_Death Compute_Combat_Death(struct Unit *aggressor, struct Unit *de
 
     /* DOES NOT WORK */
     struct Combat_Death out_death = Combat_Death_default;
-    u8 attacker_maxDamage_nocrit = 0, attacker_maxDamage_crit = 0;
-    u8 defender_maxDamage_nocrit = 0, defender_maxDamage_crit = 0;
+    // u8 attacker_maxDamage_nocrit = 0, attacker_maxDamage_crit = 0;
+    // u8 defender_maxDamage_nocrit = 0, defender_maxDamage_crit = 0;
 
     /* -- Aggressor -- */
     do { /*Loop never executes, just used for break*/

@@ -823,11 +823,6 @@ void Unit_Staff_Use(Unit *healer, Unit *patient) {
     i32 stronghand  = Unit_Hand_Strong(healer);
     i32 weakhand    = Unit_Hand_Weak(healer);
 
-    i32 weakhand_is   = Unit_isEquipped(healer, weakhand);
-    i32 stronghand_is = Unit_isEquipped(healer, stronghand);
-    i32 weakhand_id   = Unit_Id_Equipped(healer, weakhand);
-    i32 stronghand_id = Unit_Id_Equipped(healer, stronghand);
-
     struct Inventory_item *weakhand_inv   = Unit_Item_Equipped(healer, weakhand);
     struct Inventory_item *stronghand_inv = Unit_Item_Equipped(healer, stronghand);
     SDL_assert(weakhand_inv     != NULL);

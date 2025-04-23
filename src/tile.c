@@ -72,7 +72,7 @@ void Mobj_Link_writeJSON(const void *_input, cJSON *jmobj) {
     cJSON_AddItemToObject(jlinked, "relative position", jrelpos);
     cJSON_AddItemToObject(jlinked, "num", jnum_linked);
     cJSON_AddItemToObject(jmobj, "linked", jlinked);
-    cJSON *j2change = cJSON_CreateObject();
+    // cJSON *j2change = cJSON_CreateObject();
     // cJSON * jnum2change = cJSON_CreateNumber(_mobj->num2change);
     jrelpos = cJSON_CreateArray();
     jabspos = cJSON_CreateArray();
@@ -107,8 +107,8 @@ void Mobj_Link_readJSON(void *input, const cJSON *_jmobj) {
     if (mobj->num_linked > 0) {
         Array_readJSON(jrelpos, mobj->relpos_linked);
         Array_readJSON(jabspos, mobj->abspos_linked);
-        cJSON *j2change     = cJSON_GetObjectItemCaseSensitive(_jmobj,   "2change");
-        cJSON *j2change_num = cJSON_GetObjectItemCaseSensitive(j2change, "num");
+        // cJSON *j2change     = cJSON_GetObjectItemCaseSensitive(_jmobj,   "2change");
+        // cJSON *j2change_num = cJSON_GetObjectItemCaseSensitive(j2change, "num");
     }
 }
 
@@ -165,7 +165,7 @@ void Breakable_readJSON(void *input, const cJSON *_jbreakable) {
     cJSON *jhp      = cJSON_GetObjectItemCaseSensitive(_jbreakable, "hp");
     cJSON *jdef     = cJSON_GetObjectItemCaseSensitive(_jbreakable, "def");
     cJSON *jres     = cJSON_GetObjectItemCaseSensitive(_jbreakable, "res");
-    cJSON *jmobj    = cJSON_GetObjectItemCaseSensitive(_jbreakable, "Map Object");
+    // cJSON *jmobj    = cJSON_GetObjectItemCaseSensitive(_jbreakable, "Map Object");
     breakable->hp   = cJSON_GetNumberValue(jhp);
     breakable->def  = cJSON_GetNumberValue(jdef);
     breakable->res  = cJSON_GetNumberValue(jres);
@@ -181,7 +181,7 @@ void Breakable_writeJSON(const void *_input, cJSON *jbreakable) {
     cJSON_AddItemToObject(jbreakable, "hp",  jhp);
     cJSON_AddItemToObject(jbreakable, "def", jdef);
     cJSON_AddItemToObject(jbreakable, "res", jres);
-    cJSON *jmobj = cJSON_CreateObject();
+    // cJSON *jmobj = cJSON_CreateObject();
     // Mobj_Link_writeJSON(breakable->link, jmobj);
 }
 
@@ -193,7 +193,7 @@ void Door_readJSON(void *input, const cJSON *jdoor) {
     cJSON *jchapter_close   = cJSON_GetObjectItem(jdoor, "chapter_close");
     cJSON *jevent           = cJSON_GetObjectItemCaseSensitive(jdoor, "event");
     cJSON *jscene           = cJSON_GetObjectItemCaseSensitive(jdoor, "scene");
-    cJSON *jmobj            = cJSON_GetObjectItemCaseSensitive(jdoor, "Map Object");
+    // cJSON *jmobj            = cJSON_GetObjectItemCaseSensitive(jdoor, "Map Object");
 
     // door->chapter_open  = cJSON_GetNumberValue(jchapter);
     // door->event         = cJSON_GetNumberValue(jchapter);
@@ -222,7 +222,7 @@ void Door_writeJSON(const void *input, cJSON *jdoor) {
     cJSON_AddItemToObject(jdoor, "chapter_close",   jchapter_close);
     cJSON_AddItemToObject(jdoor, "event",           jevent);
     cJSON_AddItemToObject(jdoor, "scene",           jscene);
-    cJSON *jmobj = cJSON_CreateObject();
+    // cJSON *jmobj = cJSON_CreateObject();
     // Mobj_Link_writeJSON(door->link, jmobj);
 }
 
@@ -244,7 +244,7 @@ void Chest_readJSON(void *input, const cJSON *jchest) {
 
     cJSON *jgold = cJSON_GetObjectItemCaseSensitive(jchest, "gold");
     cJSON *jitem = cJSON_GetObjectItemCaseSensitive(jchest, "item");
-    cJSON *jmobj = cJSON_GetObjectItemCaseSensitive(jchest, "Map Object");
+    // cJSON *jmobj = cJSON_GetObjectItemCaseSensitive(jchest, "Map Object");
 
     if (jgold != NULL)
         chest->gold  = cJSON_GetNumberValue(jgold);
@@ -259,7 +259,7 @@ void Chest_writeJSON(const void *input, cJSON *jchest) {
     cJSON *jitem = cJSON_CreateNumber(chest->item);
     cJSON_AddItemToObject(jchest, "gold", jgold);
     cJSON_AddItemToObject(jchest, "item", jitem);
-    cJSON *jmobj = cJSON_CreateObject();
+    // cJSON *jmobj = cJSON_CreateObject();
 }
 
 b32 Tile_Valid_ID(u8 id) {

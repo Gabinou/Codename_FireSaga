@@ -2,7 +2,7 @@
 #include "palette.h"
 #include "utilities.h"
 
-extern const Actor Actor_default = {
+const Actor Actor_default = {
     .visible    = 1,
     .update     = 1,
 };

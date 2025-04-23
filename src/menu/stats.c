@@ -626,15 +626,13 @@ static void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *ren
 static void _StatsMenu_Draw_Mount(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* -- MOUNT -- */
     /* - preliminaries - */
-    SDL_Rect dstrect, srcrect;
-    int mount_offset_x, mount_offset_y;
     int x = MOUNT_X_OFFSET, y = MOUNT_Y_OFFSET;
 
     /* - Write mount - */
     PixelFont_Write(stats_menu->pixelnours, renderer, "MOUNT", 5, x, y);
 
     /* - TODO: Get mount type - */
-    i8 mount_type = MOUNT_TYPE_NULL;
+    // i8 mount_type = MOUNT_TYPE_NULL;
     // if (stats_menu->unit->mount.ptr != NULL)
     // mount_type = stats_menu->unit->mount.ptr->type;
 
@@ -670,7 +668,6 @@ static void _StatsMenu_Draw_Mount(struct StatsMenu *stats_menu, SDL_Renderer *re
 
 static void _StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* -- STATS -- */
-    SDL_Rect dstrect, srcrect;
     struct Unit       *unit             =  stats_menu->unit;
     struct Unit_stats effective_stats = Unit_effectiveStats(unit);
     char numbuff[10];
@@ -793,7 +790,7 @@ static void _StatsMenu_Draw_Hands(struct StatsMenu *stats_menu, SDL_Renderer *re
     /* - HANDS - */
     int stronghand = Unit_Hand_Strong(stats_menu->unit);
 
-    int ly_offset = 0, ry_offset = 0;
+    int ly_offset = 0;
     if (Unit_istwoHanding(stats_menu->unit))
         ly_offset = SM_TWOHAND_Y_OFFSET;
 
@@ -846,7 +843,6 @@ static void _StatsMenu_Draw_Hands(struct StatsMenu *stats_menu, SDL_Renderer *re
 }
 
 static void _StatsMenu_Draw_Rescue(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
-    SDL_Rect dstrect, srcrect;
     struct Unit *unit = stats_menu->unit;
     int x, y;
 
@@ -872,8 +868,7 @@ static void _StatsMenu_Draw_Rescue(struct StatsMenu *stats_menu, SDL_Renderer *r
 }
 
 static void _StatsMenu_Draw_Skills(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
-    SDL_Rect dstrect, srcrect;
-    struct Unit *unit = stats_menu->unit;
+    SDL_Rect srcrect;
 
     /* -- SKILLS -- */
     // TODO: f and Render Skills icons 16*16 or 32*32
@@ -901,7 +896,6 @@ static void _StatsMenu_Draw_Skills(struct StatsMenu *stats_menu, SDL_Renderer *r
 
 static void _StatsMenu_Draw_Statuses(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     SDL_Rect dstrect, srcrect;
-    struct Unit *unit = stats_menu->unit;
 
     /* -- Statuses -- */
     SDL_assert(stats_menu->unit->statuses.queue != NULL);
@@ -926,7 +920,7 @@ static void _StatsMenu_Draw_Statuses(struct StatsMenu *stats_menu, SDL_Renderer 
 
 static void _StatsMenu_Draw_WpnTypes(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     struct Unit *unit = stats_menu->unit;
-    SDL_Rect dstrect, srcrect;
+    SDL_Rect srcrect;
 
     /* -- WEAPON TYPES -- */
     int x = WEAPONS_X_OFFSET, y = WEAPONS_Y_OFFSET;
@@ -953,7 +947,7 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
     /* -- Preliminaries -- */
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
-    SDL_Rect dstrect, srcrect;
+    SDL_Rect srcrect;
     char numbuff[10];
     struct Unit *unit = stats_menu->unit;
     SDL_assert(gl_weapons_dtab  != NULL);

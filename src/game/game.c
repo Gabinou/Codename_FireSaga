@@ -514,8 +514,6 @@ struct Game * Game_New(Settings settings) {
 }
 
 int _Game_New_Events(void *data) {
-    Game *IES = data;
-
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Allocating space for events\n");
     Events_Data_Malloc();
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Initializing user events\n");

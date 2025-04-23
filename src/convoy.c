@@ -162,7 +162,7 @@ u8 Convoy_Partition_wDuplicates(struct Convoy *in_convoy, u8 arr[], u8 low, u8 h
 }
 
 void Convoy_AllStats_Print(struct Convoy *in_convoy, i16 type_exp) {
-    u8 stat, start = 0, end = in_convoy->items_num;
+    u8 start = 0, end = in_convoy->items_num;
     if (type_exp > ITEM_TYPE_EXP_NULL) {
         start = in_convoy->cumnum[type_exp - 1];
         end = in_convoy->cumnum[type_exp];

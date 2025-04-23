@@ -107,7 +107,6 @@ void Map_Tilesets_Load(struct Map *map) {
     SDL_assert(map->tilesindex != NULL);
     /* -- Preliminaries -- */
     i32 tile_ind;
-    char tilesetname[DEFAULT_BUFFER_SIZE] = "";
     Map_Tilesets_Free(map);
 
     /* -- Alloc tilesets -- */

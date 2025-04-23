@@ -378,7 +378,6 @@ static void _DeploymentMenu_Draw_Stats_P1(DeploymentMenu *dm, SDL_Renderer *rend
     i32 num_to_draw = _DeploymentMenu_Num(dm);
     Point point;
     int unit_id, x, y;
-    struct Unit *unit;
     for (i32 i = 0; i < num_to_draw; i++) {
         SDL_assert(dm->party != NULL);
         SDL_assert(i + dm->top_unit < DARR_NUM(dm->party->id_stack));
@@ -626,8 +625,6 @@ static void _DeploymentMenu_Draw_Mount(DeploymentMenu *dm, SDL_Renderer *rendere
     SDL_assert(dm->world != NULL);
     /* - preliminaries - */
     i32 num_to_draw = _DeploymentMenu_Num(dm);
-    SDL_Rect dstrect, srcrect;
-    int mount_offset_x, mount_offset_y;
     int x = DM_MOUNT_X - SM_MOUNTS_TILESIZE / 2, y = DM_MOUNT_CONTENT_Y;
     Point point = _Page_Frame(x, y);
 

@@ -27,7 +27,7 @@ extern const struct Boss Boss_default;
 void Boss_Free(     struct Boss     *boss);
 void Boss_Icon_Pos( struct Boss     *boss, struct Camera    *camera,
                     struct Position *pos,  struct Map       *map);
-void Boss_Icon_Load(struct Boss     *boss, SDL_Renderer     *renderer);
+int Boss_Icon_Load(struct Boss     *boss, SDL_Renderer     *renderer);
 void Boss_Icon_Draw(struct Boss     *boss, struct Position  *pos,
                     SDL_Renderer *r);
 

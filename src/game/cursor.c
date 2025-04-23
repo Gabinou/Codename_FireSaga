@@ -235,7 +235,6 @@ void Game_Cursor_movedTime_Compute(struct Game *sota, u64 time_ns) {
 b32 Game_isCursoronTilemap(struct Game *sota) {
     b32 out = false;
     if (sota->ismouse) {
-        tnecs_entity mouse = sota->entity_mouse;
         struct Point mouse_pos, tilemap_pos;
         SDL_GetMouseState(&mouse_pos.x, &mouse_pos.y);
         tilemap_pos.x = SOTA_PIXEL2TILEMAP(mouse_pos.x, sota->map->tilesize[0],

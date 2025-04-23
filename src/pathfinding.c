@@ -582,7 +582,6 @@ void Pathfinding_Moveto_noM(i32 *move_matrix, i32 *cost_matrix, size_t row_len,
     struct Node *closed = DARR_INIT(closed, struct Node, init_size);
     struct Node current = {start.x, start.y, 0};
     DARR_PUT(open, current);
-    b32 neighbour_inclosed;
 
     /* -- Loop over open nodes -- */
     while (DARR_NUM(open) > 0) {

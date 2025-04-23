@@ -150,7 +150,7 @@ tnecs_entity *Map_Find_Defendants(struct Map *map, MapFind mapfind) {
     i32             *attacktolist   = mapfind.list;
     tnecs_entity    *defendants     = mapfind.found;
     tnecs_entity     aggressor      = mapfind.seeker;
-    b32              fastquit       = mapfind.fastquit;
+    // b32              fastquit       = mapfind.fastquit;
 
     /* Note: attacktolist should have been created with same eq_type and _eq before */
     SDL_assert(aggressor > TNECS_NULL);
@@ -217,7 +217,7 @@ tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
     i32 *healtolist             = mapfind.list;
     tnecs_entity *patients      = mapfind.found;
     tnecs_entity healer_ent     = mapfind.seeker;
-    b32 fastquit                = mapfind.fastquit;
+    // b32 fastquit                = mapfind.fastquit;
 
     /* Find all patients on healtolist according to alignment */
     /* Note: attacktolist should have been created with same eq_type and _eq before */

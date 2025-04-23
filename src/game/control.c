@@ -77,14 +77,12 @@ void Game_Control_Keyboard(struct Game *sota) {
     kb  = IES_GET_COMPONENT(sota->world, sota->entity_cursor, controllerKeyboard);
 
     /* -- Preliminaries -- */
-    struct KeyboardInputMap   *im       = kb->inputmap;
     i32                       *ct       = &kb->controller_type;
     const u8                  *kb_state = SDL_GetKeyboardState(NULL);
 
     /* -- Keyboard button checking -- */
     i8 press[SOTA_BUTTON_END];
     i8 pnum          = 0;
-    b32 butblk      =  kb->block_buttons;
     size_t *mheld    = &kb->held_move_num;
     i32    *theld    = &kb->timeheld_button_ns;
     i32    *theld_ns = &kb->timeheld_move_ns;

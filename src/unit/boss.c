@@ -36,7 +36,7 @@ void Boss_Free(struct Boss *boss) {
     }
 }
 
-void Boss_Icon_Load(struct Boss *boss, SDL_Renderer *renderer) {
+int Boss_Icon_Load(struct Boss *boss, SDL_Renderer *renderer) {
 
     if (boss->texture != NULL)
         SDL_DestroyTexture(boss->texture);
@@ -57,6 +57,7 @@ void Boss_Icon_Load(struct Boss *boss, SDL_Renderer *renderer) {
     boss->texture = SDL_CreateTextureFromSurface(renderer, icon);
     SDL_FreeSurface(icons);
     SDL_FreeSurface(icon);
+    return (success);
 }
 
 void Boss_Icon_Pos(struct Boss *boss, struct Camera *camera,

@@ -80,7 +80,6 @@ struct cJSON *jsonio_parseJSON(s8 filename) {
 
 void jsonio_readJSON(s8 filename, void *struct_ptr) {
     /* Make mutable filename */
-    char *string = filename.data;
     s8 filename_mut = s8_mut(filename.data);
     SDL_assert(filename_mut.num == filename.num);
 
@@ -195,7 +194,7 @@ void Shop_readJSON(char *filename, struct Shop *shop) {
         shop->qty[i]        = cJSON_GetNumberValue(jitem);
         // shop->items[i]      = Hashes_itemName2ID(jitem->string);
     }
-    struct cJSON *jshopkeeper = cJSON_GetObjectItem(jshop, "Shopkeeper");
+    // struct cJSON *jshopkeeper = cJSON_GetObjectItem(jshop, "Shopkeeper");
     // shop->shopkeeper = Hashes_shopkeeperName2ID(cJSON_GetStringValue(jshopkeeper));
     if (jfile != NULL)
         cJSON_Delete(jfile);
@@ -520,7 +519,6 @@ void Inventory_item_readJSON(void *input, const struct cJSON *_jitem) {
 void Inventory_item_writeJSON(const void *input, struct cJSON *jitem) {
     const struct Inventory_item *item = input;
     SDL_assert(jitem != NULL);
-    char buffer[DEFAULT_BUFFER_SIZE];
     cJSON *jid       = cJSON_CreateNumber(item->id);
     cJSON *jused     = cJSON_CreateNumber(item->used);
     cJSON *jinfusion = cJSON_CreateNumber(item->infusion);

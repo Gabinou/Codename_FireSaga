@@ -174,7 +174,7 @@ int Text_Box_Tail_Octant(struct Text_Box *bubble) {
 
 void Text_Box_Tail_Pos(struct Text_Box *bubble, struct n9Patch *n9patch) {
     /* Decide tail position. */
-    struct Point pos = {TEXT_BOX_RENDER_PAD, TEXT_BOX_RENDER_PAD};
+    // struct Point pos = {TEXT_BOX_RENDER_PAD, TEXT_BOX_RENDER_PAD};
 
     bubble->tail.dstrect.w = TEXT_BOX_TAIL_SIZE;
     bubble->tail.dstrect.h = TEXT_BOX_TAIL_SIZE;

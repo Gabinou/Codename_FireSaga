@@ -420,7 +420,7 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
     /* - Preliminaries - */
     struct Item *item = (struct Item *)input;
     Item_Free(item);
-    cJSON *jname        = cJSON_GetObjectItemCaseSensitive(_jitem,      "Name");
+    // cJSON *jname        = cJSON_GetObjectItemCaseSensitive(_jitem,      "Name");
     cJSON *jid          = cJSON_GetObjectItemCaseSensitive(_jitem,      "id");
     cJSON *jdescription = cJSON_GetObjectItemCaseSensitive(_jitem,      "Description");
     cJSON *jaura        = cJSON_GetObjectItemCaseSensitive(_jitem,      "Aura");
@@ -432,7 +432,7 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
     cJSON *jpassive     = cJSON_GetObjectItemCaseSensitive(jeffects,    "passive");
     cJSON *jactive      = cJSON_GetObjectItemCaseSensitive(jeffects,    "active");
     cJSON *jtarget      = cJSON_GetObjectItemCaseSensitive(_jitem,      "Target");
-    cJSON *jprice       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Price");
+    // cJSON *jprice       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Price");
     cJSON *jtypes       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Types");
     cJSON *jtypeid      = cJSON_GetObjectItemCaseSensitive(jtypes,      "id");
 

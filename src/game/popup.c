@@ -281,7 +281,6 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
     }
 
     /* - Update the slider target - */
-    struct Point popup_pos = position->pixel_pos;
     slider->target = new_target;
 
     SDL_Rect rect = Utilities_Rect(position, &popup->n9patch);
@@ -386,13 +385,13 @@ void Game_PopUp_Map_Combat_Update(   struct Game *sota) {
     struct PopUp_Map_Combat *pmc = popup->data;
     *pmc = PopUp_Map_Combat_default;
 
-    struct Unit *aggressor = IES_GET_COMPONENT(sota->world, sota->aggressor, Unit);
-    struct Unit *defendant = IES_GET_COMPONENT(sota->world, sota->defendant, Unit);
+    // struct Unit *aggressor = IES_GET_COMPONENT(sota->world, sota->aggressor, Unit);
+    // struct Unit *defendant = IES_GET_COMPONENT(sota->world, sota->defendant, Unit);
 
-    struct Position *agg_posc = IES_GET_COMPONENT(sota->world, sota->aggressor, Position);
-    struct Position *dft_posc = IES_GET_COMPONENT(sota->world, sota->defendant, Position);
-    struct Point *agg_pos = &agg_posc->tilemap_pos;
-    struct Point *dft_pos = &dft_posc->tilemap_pos;
+    // struct Position *agg_posc = IES_GET_COMPONENT(sota->world, sota->aggressor, Position);
+    // struct Position *dft_posc = IES_GET_COMPONENT(sota->world, sota->defendant, Position);
+    // struct Point *agg_pos = &agg_posc->tilemap_pos;
+    // struct Point *dft_pos = &dft_posc->tilemap_pos;
 
     PopUp_Map_Combat_Units(pmc, sota, sota->aggressor, sota->defendant);
 

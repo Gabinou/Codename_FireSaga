@@ -131,8 +131,8 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
         map->movemap[current_i] = 1;
     }
 
-    struct Point     start      = pos->tilemap_pos;
-    i32 move_stat  = mapto.move ? Unit_effectiveStats(unit).move : 0;
+    // struct Point     start      = pos->tilemap_pos;
+    // i32 move_stat  = mapto.move ? Unit_effectiveStats(unit).move : 0;
 
     Range range = Range_default;
     if (mapto.eq_type == LOADOUT_EQUIPPED) {
@@ -223,7 +223,6 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     struct Unit *agg_unit       = IES_GET_COMPONENT(map->world, map_from.aggressor, Unit);
     /* Get dft position */
     struct Position *agg_pos    = IES_GET_COMPONENT(map->world, map_from.aggressor, Position);
-    struct Position *dft_pos    = IES_GET_COMPONENT(map->world, map_from.defendant, Position);
     /* Get agg range */
     struct Range range = Range_default;
     Unit_Range_Equipped(agg_unit, ITEM_ARCHETYPE_WEAPON, &range);
@@ -319,8 +318,6 @@ i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_entity unit_ent) {
     struct Tile *temp_tile;
     i32 tile_ind = 0;
     i8 unit_movetype = Unit_Movement(unit);
-    u8 army = Unit_Army(unit);
-    u8 ontile_army;
     tnecs_entity ontile_unit_ent;
     SDL_assert(unit_movetype > UNIT_MVT_START);
     for (u8 i = 0; i < map->row_len * map->col_len; i++) {

@@ -182,7 +182,6 @@ void GameMap_Reinforcements_Free(struct Game *sota) {
         return;
     }
 
-    char filename[DEFAULT_BUFFER_SIZE];
     while (DARR_NUM(sota->map_enemies) > 0) {
         tnecs_entity temp_unit_ent =  DARR_POP(sota->map_enemies);
         if (temp_unit_ent == TNECS_NULL)
@@ -217,7 +216,6 @@ void GameMap_Reinforcements_Free(struct Game *sota) {
 
 void Game_Map_Reinforcements_Load(struct Game *sota) {
     SDL_assert(sota->map != NULL);
-    char filename[DEFAULT_BUFFER_SIZE];
     DARR_NUM(sota->map_enemies) = 0;
     for (int i = 0; i < DARR_NUM(sota->map->reinforcements); i++) {
         struct Reinforcement *reinf = &(sota->map->reinforcements[i]);
@@ -245,8 +243,6 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         int num_archetype1 = sota->world->bytype.num_entities[archetype_id1];
 
         // SDL_Log("- current -");
-        size_t current_num = sota->world->bytype.num_entities[archetype_id1];
-
         tnecs_entity **entities_bytype = sota->world->bytype.entities;
         SDL_assert(entities_bytype != NULL);
 

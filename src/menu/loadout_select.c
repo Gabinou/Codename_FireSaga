@@ -183,7 +183,6 @@ i32 ItemSelectMenu_Elem_Move( struct Menu *mc, i32 direction) {
 }
 
 i32 WeaponSelectMenu_Elem_Move(struct Menu *mc, i32 direction) {
-    struct LoadoutSelectMenu *wsm = mc->data;
     return (Periodic_Elem_Move(mc, direction, 0, mc->elem_num));
 }
 
@@ -448,7 +447,7 @@ void LoadoutSelectMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *
     lsm->update           = true;
 
     /*- Get the tophand -*/
-    Unit *unit      = IES_GET_COMPONENT(lsm->world, lsm->unit, Unit);
+    // Unit *unit      = IES_GET_COMPONENT(lsm->world, lsm->unit, Unit);
 
     if (lsm->update) {
         LoadoutSelectMenu_Update(mc, lsm, n9patch, target, renderer);
@@ -478,7 +477,7 @@ static void _LoadoutSelectMenu_Draw_Header(struct LoadoutSelectMenu *lsm,
         return;
 
     /* Draw textual header: information to the player */
-    i32 dura_w = PixelFont_Width(lsm->pixelnours_big, lsm->header.data, lsm->header.num);
+    // i32 dura_w = PixelFont_Width(lsm->pixelnours_big, lsm->header.data, lsm->header.num);
     PixelFont_Write(lsm->pixelnours_big, renderer, lsm->header.data, lsm->header.num,
                     LSM_HEADER_LEFT,  LSM_TOP_OF_TEXT);
 }
@@ -544,7 +543,7 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
     SDL_assert(lsm->world != NULL);
 
     Unit *unit          = IES_GET_COMPONENT(lsm->world, lsm->unit, Unit);
-    i32 num_items       = unit->can_equip.num;
+    // i32 num_items       = unit->can_equip.num;
     b32 stronghand      = Unit_Hand_Strong(unit);
     b32 weakhand        = Unit_Hand_Weak(unit);
     b32 header_drawn    = (lsm->header.data != NULL);
@@ -663,20 +662,17 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
 
     /* -- Preliminaries -- */
     b32 header_drawn = (lsm->header.data != NULL);
-    SDL_Rect srcrect, dstrect;
+    SDL_Rect srcrect;
     char numbuff[10];
 
     /* -- HANDS --  */
     /* Icons, text drawn on stronghand's side */
     Unit *unit      = IES_GET_COMPONENT(lsm->world, lsm->unit, Unit);
     i32 stronghand  = Unit_Hand_Strong(unit);
-    i32 weakhand    = Unit_Hand_Weak(unit);
-    i32 num_items   = unit->can_equip.num;
-    // b32 highlight  = (lsm->selected[0] >= 0);
     b32 highlight  = false;
 
     /* TODO: If stronghand is selected, menu should change to show all items in equipment */
-    b32 strong_selected = Loadout_isEquipped(&lsm->selected, stronghand);
+    // b32 strong_selected = Loadout_isEquipped(&lsm->selected, stronghand);
 
     SDL_assert(unit->can_equip.num > 0);
     SDL_assert(unit->can_equip.num <= SOTA_EQUIPMENT_SIZE);
@@ -742,7 +738,7 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
         /* - Weapon name - */
         lsm->item_name = s8cpy(lsm->item_name, Item_Name(id));
         lsm->item_name = s8_toUpper(lsm->item_name);
-        i32 name_w = PixelFont_Width(lsm->pixelnours, lsm->item_name.data, lsm->item_name.num);
+        // i32 name_w = PixelFont_Width(lsm->pixelnours, lsm->item_name.data, lsm->item_name.num);
         PixelFont_Write(lsm->pixelnours, renderer, lsm->item_name.data, lsm->item_name.num, item_x_offset,
                         item_y_offset);
     }

@@ -437,7 +437,6 @@ void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
 
     _Pathfinding_Attackto(actto);
 
-    size_t bytesize = sizeof(struct Padding);
     Map_Perimeter(map->edges_danger, map->temp, map->row_len, map->col_len);
 
     SDL_Palette *palette_base = sota_palettes[map->ipalette_base];

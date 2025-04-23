@@ -47,7 +47,7 @@ void HPBar_Draw(struct SimpleBar *statbar, SDL_Renderer *renderer) {
 #define BLACK_RECT_NUM 7
     SDL_Rect BG_dark_rects[BG_DARK_RECT_NUM];
     SDL_Rect FG_dark_rects[FG_DARK_RECT_NUM];
-    SDL_Rect BG_light_rects[BG_LIGHT_RECT_NUM];
+    // SDL_Rect BG_light_rects[BG_LIGHT_RECT_NUM];
     SDL_Rect FG_light_rects[FG_LIGHT_RECT_NUM];
     SDL_Rect black_rects[BLACK_RECT_NUM];
     /* -- BG_dark: actual bar -- */
@@ -200,7 +200,7 @@ void StatBar_Draw(struct SimpleBar *statbar, SDL_Renderer *renderer) {
 #define BLACK_RECT_NUM 6
     SDL_Rect BG_dark_rects[BG_DARK_RECT_NUM];
     SDL_Rect FG_dark_rects[FG_DARK_RECT_NUM];
-    SDL_Rect BG_light_rects[BG_LIGHT_RECT_NUM];
+    // SDL_Rect BG_light_rects[BG_LIGHT_RECT_NUM];
     SDL_Rect FG_light_rects[FG_LIGHT_RECT_NUM];
     SDL_Rect black_rects[BLACK_RECT_NUM];
     /* -- BG_dark: actual bar -- */

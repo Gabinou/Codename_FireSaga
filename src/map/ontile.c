@@ -43,7 +43,7 @@ void Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
     SDL_assert(entity);
 
     /* -- Preliminaries -- */
-    tnecs_entity current = map->unitmap[row * map->col_len + col];
+    // tnecs_entity current = map->unitmap[row * map->col_len + col];
     _Map_Unit_Put(map, col, row, entity);
     DARR_PUT(map->units_onfield, entity);
 
@@ -211,19 +211,19 @@ tnecs_entity _Map_Unit_Remove_List(struct Map *map,  tnecs_entity entity) {
     tnecs_entity out = TNECS_NULL;
     int found = entity_isIn(map->friendlies_onfield, entity, DARR_NUM(map->friendlies_onfield));
     if (found > -1) {
-        tnecs_entity out = map->friendlies_onfield[found];
+        // tnecs_entity out = map->friendlies_onfield[found];
         DARR_DEL(map->friendlies_onfield, found);
     }
 
     found = entity_isIn(map->enemies_onfield, entity, DARR_NUM(map->enemies_onfield));
     if (found > -1) {
-        tnecs_entity out = map->enemies_onfield[found];
+        // tnecs_entity out = map->enemies_onfield[found];
         DARR_DEL(map->enemies_onfield, found);
     }
 
     found = entity_isIn(map->units_onfield, entity, DARR_NUM(map->units_onfield));
     if (found > -1) {
-        tnecs_entity out = map->enemies_onfield[found];
+        // tnecs_entity out = map->enemies_onfield[found];
         DARR_DEL(map->units_onfield, found);
     }
     return (out);

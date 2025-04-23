@@ -70,7 +70,7 @@ void Skill_STEAL(struct Unit *actor, void *data1) {
 }
 
 void Skill_PICK(struct Unit *actor, void *tile_data) {
-    struct Tile *tile = (struct Tile *) tile_data;
+    // struct Tile *tile = (struct Tile *) tile_data;
     /* TODO: Check pick in hand */
     /* TODO: make it use one time. */
     // actor->

@@ -83,7 +83,7 @@ void Game_menuStack_Free(struct Game *sota) {
         struct Menu *mc = IES_GET_COMPONENT(sota->world, entity, Menu);
 
         if (mc->data == NULL) {
-            tnecs_entity menu = DARR_POP(sota->menu_stack);
+            DARR_POP(sota->menu_stack);
             continue;
         }
 
@@ -100,7 +100,7 @@ void Game_menuStack_Free(struct Game *sota) {
                 break;
         }
         mc->data = NULL;
-        tnecs_entity menu = DARR_POP(sota->menu_stack);
+        DARR_POP(sota->menu_stack);
     }
 
     DARR_FREE(sota->menu_stack);
@@ -334,7 +334,6 @@ void Game_PlayerSelectMenus_Free(struct Game *sota) {
 
 void Game_postLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
     /* -- Finding possible defendants with equipped weapons -- */
-    struct Unit *unit = IES_GET_COMPONENT(sota->world, actor, Unit);
     DARR_NUM(sota->defendants) = 0;
 
     /* - Compute attacktolist - */
@@ -832,7 +831,7 @@ void Game_ItemSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_onti
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
     mc->visible = true;
-    struct LoadoutSelectMenu *ism = mc->data;
+    // struct LoadoutSelectMenu *ism = mc->data;
     // ism->update = true;
     // SDL_assert(mc->elem_pos == item_select_menu_elem_pos);
     // LoadoutSelectMenu_Load(ism, unit_ontile, sota->renderer);

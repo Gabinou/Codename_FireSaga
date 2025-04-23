@@ -128,8 +128,6 @@ void ItemDropMenu_Update(struct  ItemDropMenu  *idm, struct n9Patch *n9patch,
     SDL_assert(n9patch->size_pixels.y > 0);
     SDL_assert(n9patch->scale.x > 0);
     SDL_assert(n9patch->scale.y > 0);
-    struct Unit *unit = idm->unit;
-    SDL_Rect dstrect, srcrect;
 
     /* - Loading item - */
     Inventory_item *item = Unit_InvItem(idm->unit, idm->item_todrop);
