@@ -6415,7 +6415,7 @@ char *mace_checksum_filename(char *file, int mode) {
     int slash_i = (slash == NULL) ? 0 : (int)(slash - file + 1);
     assert(dot_i > slash_i);
     size_t file_len     = dot_i - slash_i;
-	  size_t obj_dir_len  = strlen(obj_dir);
+    size_t obj_dir_len  = strlen(obj_dir);
 
     /* Alloc new file */
     size_t checksum_len  = (file_len + MACE_SEPARATOR_STR_LEN + MACE_CHECKSUM_EXTENSION_STR_LEN) + obj_dir_len + 1;
