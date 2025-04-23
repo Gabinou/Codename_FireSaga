@@ -120,12 +120,6 @@ extern const json_wfunc fsm_Scene_writeJSON[SCENE_STATEMENT_NUM];
 typedef void (*fsm_scene_statement_t)(void *);
 extern const fsm_scene_statement_t scene_statement_play[SCENE_STATEMENT_NUM];
 
-typedef struct StatementHeader {
-    i32 statement_type;
-    i32 didascalie_type;
-    s8 name;
-    int id;
-} StatementHeader;
 
 
 /* -- Didascalie (theater vocabulary) -- */
@@ -149,25 +143,19 @@ typedef struct DidascalieSlide {
 extern const struct DidascalieSlide DidascalieSlide_default;
 #define SCENE_SLIDE_ARR_NUM 3
 
-typedef struct DidascalieAppear {
-    Point pos;
-} DidascalieAppear;
-extern const struct DidascalieAppear DidascalieAppear_default;
-
 typedef union DidascalieUnion {
     DidascalieSlide     slide;
     DidascalieAppear    appear;
 } DidascalieUnion;
 
-
 typedef struct SceneDidascalie {
+    i32 type;
     DidascalieUnion _union;
 } SceneDidascalie;
 extern const struct SceneDidascalie SceneDidascalie_default;
 extern const struct SceneDidascalie SceneDidascalie_FadeAll;
 
 typedef struct SceneLine {
-    s8 actor;
     s8 line;
 } SceneLine;
 extern const struct SceneLine SceneLine_default;
@@ -199,7 +187,8 @@ typedef union SceneStatementUnion {
 } SceneStatementUnion;
 
 typedef struct SceneStatement {
-    StatementHeader header;
+    i32 type;
+    i32 unit_id;
     SceneStatementUnion _union;
 } SceneStatement;
 extern SceneStatement SceneStatement_default;
