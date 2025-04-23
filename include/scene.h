@@ -27,7 +27,7 @@
 // Scene index = chapter * SCENE_DIVISOR + scene_sub_index
 //
 
-/* ---------------------- Scene --------------------- */
+/* ---------------- Scene --------------- */
 //  A visual novel
 //      - Multiple characters talk to each other
 //          - Player clicks to move to next line
@@ -120,8 +120,6 @@ extern const json_wfunc fsm_Scene_writeJSON[SCENE_STATEMENT_NUM];
 typedef void (*fsm_scene_statement_t)(void *);
 extern const fsm_scene_statement_t scene_statement_play[SCENE_STATEMENT_NUM];
 
-
-
 /* -- Didascalie (theater vocabulary) -- */
 // - Note to actors of a scene about what to *do* during a scene
 // Only for actors -> Sprites
@@ -188,7 +186,7 @@ typedef union SceneStatementUnion {
 
 typedef struct SceneStatement {
     i32 type;
-    i32 unit_id;
+    i32 actor_unit_id;
     SceneStatementUnion _union;
 } SceneStatement;
 extern SceneStatement SceneStatement_default;
@@ -214,7 +212,7 @@ typedef struct Scene {
     b32 update;
 
     /* Unit id */
-    int *actor_id;
+    int *actor_unit_id;
     tnecs_entity *actors;
     tnecs_world *world;
 

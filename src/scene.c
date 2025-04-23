@@ -122,8 +122,8 @@ void Scene_Init(struct Scene *scene, tnecs_world* world) {
         scene->statements   = DARR_INIT(scene->statements, SceneStatement, 32);
     }
 
-    if (scene->actor_id == NULL) {
-        scene->actor_id  = DARR_INIT(scene->actor_id, int, 8);
+    if (scene->actor_unit_id == NULL) {
+        scene->actor_unit_id  = DARR_INIT(scene->actor_unit_id, int, 8);
     }
 
     if (scene->actors == NULL) {
@@ -152,9 +152,9 @@ void Scene_Free(struct Scene *scene) {
         scene->statements = NULL;
     }
 
-    if (scene->actor_id != NULL) {
-        DARR_FREE(scene->actor_id);
-        scene->actor_id = NULL;
+    if (scene->actor_unit_id != NULL) {
+        DARR_FREE(scene->actor_unit_id);
+        scene->actor_unit_id = NULL;
     }
     if (scene->texture != NULL) {
         SDL_DestroyTexture(scene->texture);
@@ -268,14 +268,13 @@ void Scene_Didascalie_Appear_readJSON(void *input, const cJSON *jdid) {
     Scene *scene = input;
 
     SceneStatement statement = SceneStatement_default;
-    StatementHeader *header = &statement.header;
     SceneDidascalie *scene_did = &statement._union.didascalie;
     *scene_did = SceneDidascalie_default;
 
     /* Compare conditions */
     if (Conditions_Match(&scene->line_cond, &scene->game_cond)) {
-        statement.header.statement_type   = SCENE_STATEMENT_DIDASCALIE;
-        statement.header.didascalie_type  = SCENE_DIDASCALIE_APPEAR;
+        statement.type   = SCENE_STATEMENT_DIDASCALIE;
+        statement._union.didascalie.type  = SCENE_DIDASCALIE_APPEAR;
 
         // TODO: appear at a specific spot
         // Appear didascalie structure: {"Appear": "Erwin"}
@@ -290,8 +289,7 @@ void Scene_Didascalie_Appear_readJSON(void *input, const cJSON *jdid) {
 
         SceneDidascalie *didascalie = &statement._union.didascalie;
         *didascalie = SceneDidascalie_default;
-        header->name    = name;
-        header->id      = id;
+        statement->unit_d      = id;
 
         Scene_Statement_Add(scene, statement);
     }
@@ -301,14 +299,13 @@ void Scene_Didascalie_Slide_readJSON( void *input, const cJSON *jdid) {
     Scene *scene = input;
 
     SceneStatement statement = SceneStatement_default;
-    StatementHeader *header = &statement.header;
     SceneDidascalie *scene_did = &statement._union.didascalie;
     *scene_did = SceneDidascalie_default;
 
     /* Compare conditions */
     if (Conditions_Match(&scene->line_cond, &scene->game_cond)) {
-        statement.header.statement_type   = SCENE_STATEMENT_DIDASCALIE;
-        statement.header.didascalie_type  = SCENE_DIDASCALIE_SLIDE;
+        statement.type   = SCENE_STATEMENT_DIDASCALIE;
+        statement._union.didascalie.type  = SCENE_DIDASCALIE_SLIDE;
 
         // Slide didascalie structure: {"Slide": {"Silou": [10,10,10,10]}}
         cJSON *jslide = cJSON_GetObjectItem(jdid, "Slide");
@@ -323,8 +320,7 @@ void Scene_Didascalie_Slide_readJSON( void *input, const cJSON *jdid) {
 
         SceneDidascalie *didascalie = &statement._union.didascalie;
         *didascalie = SceneDidascalie_default;
-        header->name    = name;
-        header->id      = id;
+        statement->actor_unit_id = id;
 
         // Reading Slide paramaters from child array
         DidascalieSlide *slide = &didascalie->_union.slide;
@@ -443,7 +439,7 @@ void Scene_Line_readJSON(void *input, const cJSON *jstatement) {
         SceneLine *scene_line = &statement._union.line;
         *scene_line = SceneLine_default;
 
-        statement.header.statement_type   = SCENE_STATEMENT_LINE;
+        statement.type   = SCENE_STATEMENT_LINE;
 
         s8 line     = s8_mut(cJSON_GetStringValue(jline->child));
 
@@ -499,11 +495,10 @@ void Scene_Statement_Add(Scene * scene, SceneStatement statement) {
     if (scene->statements == NULL) {
         scene->statements   = DARR_INIT(scene->statements, SceneStatement, 16);
     }
-    if (scene->actor_id == NULL) {
-        scene->actor_id  = DARR_INIT(scene->actor_id, int, 16);
+    if (scene->actor_unit_id == NULL) {
+        scene->actor_unit_id  = DARR_INIT(scene->actor_unit_id, int, 16);
     }
 
-    StatementHeader header = statement.header;
     DARR_PUT(scene->statements, statement);
 }
 
@@ -514,8 +509,8 @@ void Scene_Actor_Add(Scene *scene, i32 id) {
         return;
     }
 
-    // /* Do not add new actor if too many actor_id already */
-    if (DARR_NUM(scene->actor_id) >= SCENE_MAX_ACTORS) {
+    // /* Do not add new actor if too many unit_id already */
+    if (DARR_NUM(scene->actor_unit_id) >= SCENE_MAX_ACTORS) {
         // TODO: error? delete previous actor?
         SDL_assert(0);
         return;
@@ -535,16 +530,16 @@ void Scene_Actor_Add(Scene *scene, i32 id) {
     position->pixel_pos.y = SCENE_ACTOR_POS_Y;
 
     /* Add new actor */
-    DARR_PUT(scene->actor_id, id);
+    DARR_PUT(scene->actor_unit_id, id);
     DARR_PUT(scene->actors, actor_ent);
 }
 
 i32 Scene_Actor_Order(Scene * scene, i32 id) {
     SDL_assert(scene                != NULL);
-    SDL_assert(scene->actor_id   != NULL);
+    SDL_assert(scene->actor_unit_id   != NULL);
     i32 found = -1;
-    for (i32 i = 0; i < DARR_NUM(scene->actor_id); i++) {
-        if (scene->actor_id[i] == id) {
+    for (i32 i = 0; i < DARR_NUM(scene->actor_unit_id); i++) {
+        if (scene->actor_unit_id[i] == id) {
             found = i;
             break;
         }
@@ -586,23 +581,23 @@ int Scene_Statement_Next(struct Scene *scene) {
         }
 
         statement = scene->statements[scene->current_statement];
-        if (statement.header.statement_type == SCENE_STATEMENT_LINE) {
+        if (statement.type == SCENE_STATEMENT_LINE) {
             // If statement is a line, render it
             SDL_Log("BREAK");
             break;
         }
 
-        if (scene_didascalies[statement.header.didascalie_type] != NULL) {
+        if (scene_didascalies[statement._union.didascalie.type] != NULL) {
             // If statement is a didascalie, run it
             // Add actor to list of actors if appear didascalie
             SDL_assert(scene->current_statement >= 0);
             statement = scene->statements[scene->current_statement];
-            scene_didascalies[statement.header.statement_type](scene, &statement);
+            scene_didascalies[statement.type](scene, &statement);
         }
 
         // Statement might be a condition
 
-    } while (statement.header.statement_type != SCENE_STATEMENT_LINE);
+    } while (statement.type != SCENE_STATEMENT_LINE);
     scene->update = true;
     SDL_Log("scene->current_statement %d", scene->current_statement);
     return (scene->current_statement);
@@ -614,9 +609,9 @@ void _Scene_Draw_Actors(struct Scene *scene, SDL_Renderer *renderer) {
     SDL_assert(scene                != NULL);
     SDL_assert(renderer             != NULL);
     SDL_assert(palette_SOTA          != NULL);
-    SDL_assert(scene->actor_id   != NULL);
+    SDL_assert(scene->actor_unit_id   != NULL);
 
-    for (i32 i = 0; i < DARR_NUM(scene->actor_id); i++) {
+    for (i32 i = 0; i < DARR_NUM(scene->actor_unit_id); i++) {
         // TODO: make actors into component
 
         // Draw a rectangle for every actor
@@ -645,7 +640,7 @@ void _Scene_Draw_Text(struct Scene *scene, SDL_Texture *render_target, SDL_Rende
     SDL_Log("DRAW_TEXT: scene->current_statement %d", scene->current_statement);
 
     SceneStatement statement = scene->statements[scene->current_statement];
-    SDL_assert(statement.header.statement_type == SCENE_STATEMENT_LINE);
+    SDL_assert(statement.type == SCENE_STATEMENT_LINE);
     SceneLine *scene_line = &statement._union.line;
 
     /* Writing Actor name:*/
@@ -707,17 +702,17 @@ void Scene_Draw(struct Scene *scene, struct Settings *settings,
 void Scene_Appear(  struct Scene *scene, struct SceneStatement * statement) {
     SDL_Log("Scene_Appear");
     // Add actor to list of actors if appear didascalie
-    SDL_assert(scene->actor_id != NULL);
+    SDL_assert(scene->actor_unit_id != NULL);
 
-    i32 unit_id = statement->header.id;
+    i32 unit_id = statement->actor_unit_id;
     SDL_assert(Unit_ID_Valid(unit_id));
 
-    DARR_PUT(scene->actor_id, unit_id);
+    DARR_PUT(scene->actor_unit_id, unit_id);
 }
 
 void Scene_Slide(  struct Scene *scene, struct SceneStatement * statement) {
     SDL_Log("Scene_Slide");
-    i32 unit_id = statement->header.id;
+    i32 unit_id = statement->actor_unit_id;
     SDL_assert(Unit_ID_Valid(unit_id));
 
     int actor_order = Scene_Actor_Order(scene, unit_id);
