@@ -2,22 +2,69 @@
 #include "mace.h"
 
 #ifndef CC
-    // #define CC "tcc"
-    // #define CC "gcc"
-    #define CC "clang"
+    #define CC "tcc"
 #endif
 #ifndef AR
-    // #define AR "tcc -ar"
-    #define AR "ar"
-    // #define AR "ar"
+    #define AR "tcc -ar"
 #endif
 
+#define IES_C_STANDARD "-std=iso9899:1999"
+
+#define WARNING_FLAGS "-Wall -Wno-format -Wno-unused-value "\
+    "-Wno-char-subscripts -Wno-unused-function "\
+    "-Wno-pointer-sign -Wno-enum-compare -Wmissing-braces "\
+    "-Wunused-but-set-variable -Wduplicate-decl-specifier "\
+    "-Wunused-but-set-variable -Wunused-variable "\
+    "-Wno-unused-command-line-argument"\
+    "-Wno-format-contains-nul -Wno-unknown-warning-option"
+
+#define DEBUG_FLAGS "-g -gdwarf -rdynamic -O0"\
+    "-DSDL_ASSERT_LEVEL=2"
+
+#define IES_SANE_FLAGS "-fno-delete-null-pointer-checks,"\
+    "-fno-strict-aliasing,-fwrapv,-fno-strict-overflow"\
+
+#define IES_SANITIZE_FLAGS "-fsanitize=undefined,"\
+    "-fsanitize=address"
+#define IES_SDL_FLAGS "-DSDL_DISABLE_IMMINTRIN_H,"\
+    "$(sdl2-config --cflags)"
+#define IES_WINDOWS_FLAGS "-lmingw32,-lSDL2,-lSDL2main"
+
+#define IES_INCLUDES ".,include,include/bars,include/menu,"\
+    "include/popup,include/unit,"\
+    "include/systems,names,names/popup,names/menu,"\
+    "second_party/noursmath,second_party/tnecs,"\
+    "second_party/parg,second_party/nourstest,"\
+    "second_party/noursclock,"\
+    "third_party/physfs," \
+    "third_party/stb,third_party/cJSON,"\
+    "/usr/include/SDL2"
+#define IES_TEST_INCLUDES "test,test/menu,test/popup"
+#define IES_BENCH_INCLUDES "bench"
+
+#define IES_SOURCES "src,src/bars/,src/menu/,src/popup/,"\
+    "src/systems/,src/game/,src/map/,src/unit/,"\
+    "src/controller/"
+#define IES_TEST_SOURCES "test/*.c"
+#define IES_BENCH_SOURCES "bench/*.c,"
+
+#define IES_ASTYLE "astyle --options=utils/style.txt "\
+    "--verbose --recursive src/*.c include/*.h test/*.c "\
+    "test/*.h names/*.h"
+
+#define IES_LINKS "SDL2,SDL2_image,SDL2_mixer,m,"\
+    "cjson,noursclock,noursmath,physfs,tnecs,parg"
+
+#define IES_LINKS_L2W "mingw32,SDL2main,SDL2,SDL2_image,"\
+    "SDL2_mixer,cjson,noursmath,physfs,tnecs,parg,"\
+    "noursclock"
+
 struct Config debug         = {
-    .flags = "-g -gdwarf -rdynamic -O0 -DSDL_ASSERT_LEVEL=2 -Wall -Wno-format -Wno-unused-value -Wno-char-subscripts -Wno-unused-function -Wno-pointer-sign -Wno-enum-compare -Wmissing-braces -Wunused-but-set-variable -Wduplicate-decl-specifier -Wunused-but-set-variable -Wunused-variable -Wno-unused-command-line-argument -Wno-format-contains-nul -Wno-unknown-warning-option"
+    .flags = DEBUG_FLAGS
 };
 
 struct Config tcc_bounds    = {
-    .flags = "-g -gdwarf -b -rdynamic -O0 -DSDL_ASSERT_LEVEL=2"
+    .flags = DEBUG_FLAGS "-b"
 };
 
 struct Config release       = {
@@ -63,39 +110,39 @@ struct Config l2w_gcc_release   = {
 
 /* - second_party - */
 struct Target noursmath = {
-    .base_dir  = "second_party/noursmath",
-    .flags     = "-std=iso9899:1999,"
+    .base_dir   = "second_party/noursmath",
+    .flags      = "-std=iso9899:1999,"
                  "-Wall -Wno-unused-command-line-argument",
-    .sources   = ".",
+    .sources    = ".",
     .link_flags = "-whole-archive",
-    .kind      = MACE_STATIC_LIBRARY,
+    .kind       = MACE_STATIC_LIBRARY,
 };
 
 struct Target parg      = {
-    .base_dir  = "second_party/parg",
-    .flags     = "-std=iso9899:1999,"
+    .base_dir   = "second_party/parg",
+    .flags      = "-std=iso9899:1999,"
                  "-Wno-unused-command-line-argument",
-    .sources   = ".",
+    .sources    = ".",
     .link_flags = "-whole-archive",
-    .kind      = MACE_STATIC_LIBRARY,
+    .kind       = MACE_STATIC_LIBRARY,
 };
 
 struct Target noursclock      = {
-    .base_dir  = "second_party/noursclock",
-    .flags     = "-std=iso9899:1999,"
+    .base_dir   = "second_party/noursclock",
+    .flags      = "-std=iso9899:1999,"
                  "-Wall -Wno-unused-command-line-argument",
-    .sources   = ".",
+    .sources    = ".",
     .link_flags = "-whole-archive",
-    .kind      = MACE_STATIC_LIBRARY,
+    .kind       = MACE_STATIC_LIBRARY,
 };
 
 struct Target tnecs     = {
-    .base_dir  = "second_party/tnecs",
-    .flags     = "-std=iso9899:1999,"
+    .base_dir   = "second_party/tnecs",
+    .flags      = "-std=iso9899:1999,"
                  "-Wall -Wno-unused-command-line-argument",
-    .sources   = ".",
+    .sources    = ".",
     .link_flags = "-whole-archive",
-    .kind      = MACE_STATIC_LIBRARY,
+    .kind       = MACE_STATIC_LIBRARY,
 };
 
 /* - third_party - */
@@ -134,185 +181,101 @@ struct Target physfs    = {
 /* -- Native Windows -- */
 /* TODO: Test native windows target */
 struct Target win_sota = {
-    .includes = ".,include,include/bars,include/menu,"
-                "include/popup,include/unit,"
-                "include/systems,names,names/popup,names/menu,"
-                "second_party/noursmath,second_party/tnecs,"
-                "second_party/parg,second_party/nourstest,"
-                "second_party/noursclock,"
-                "third_party/physfs," 
-                "third_party/stb,third_party/cJSON,"
-                "/usr/include/SDL2",
-    .sources  = "src,src/bars/,src/menu/,src/popup/,"
-                "src/systems/,src/game/,src/map/,src/unit/,"
-                "src/controller/",
-    .links    = "SDL2,SDL2_image,SDL2_mixer,m,cjson,noursclock,"
-                "noursmath,physfs,tnecs,parg",
+    .includes = IES_INCLUDES,
+    .sources  = IES_SOURCES,
+    .links    = IES_LINKS,
                 /* TODO: Remove flags given by sdl2-config */
-    .flags    = "-lmingw32,-lSDL2,-lSDL2main,-std=iso9899:1999,"
-                "-fno-strict-overflow,-fno-strict-aliasing,"
-                "-fwrapv,-fno-delete-null-pointer-checks,"
-                "$(sdl2-config --cflags)",
-    .cmd_pre  = "astyle --options=utils/style.txt --verbose --recursive"
-                " src/*.c include/*.h test/*.c test/*.h names/*.h",
+    .flags    = IES_WINDOWS_FLAGS","
+                IES_C_STANDARD","
+                IES_SANE_FLAGS","
+                IES_SDL_FLAGS,
+    .cmd_pre  = IES_ASTYLE,
     .kind     = MACE_EXECUTABLE,
 };
 
 /* -- Native Linux -- */
 struct Target sota = {
-    .includes = ".,include,include/bars,include/menu,"
-                "include/popup,include/unit,"
-                "include/systems,names,names/popup,names/menu,"
-                "second_party/noursmath,second_party/tnecs,"
-                "second_party/parg,second_party/nourstest,"
-                "second_party/noursclock,"
-                "third_party/physfs,"
-                "third_party/stb,third_party/cJSON,"
-                "/usr/include/SDL2",
-    .sources  = "src,src/bars/,src/menu/,src/popup/,"
-                "src/systems/,src/game/,src/map/,src/unit/,"
-                "src/controller/",
-    .links    = "SDL2,SDL2_image,SDL2_mixer,m,GLEW,noursclock,"
-                "cjson,noursmath,physfs,tnecs,parg",
-    .flags    = "-fno-strict-overflow,-fno-strict-aliasing,"
-                "-fwrapv,-fno-delete-null-pointer-checks,"
-                "-Wno-unused-command-line-argument,"
-                // "-fsanitize=undefined,-fsanitize=address,"
-                "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
-                "$(sdl2-config --cflags)",
-    .cmd_pre  = "astyle --options=utils/style.txt --verbose --recursive"
-                " src/*.c include/*.h test/*.c test/*.h names/*.h",
+    .includes = IES_INCLUDES,
+    .sources  = IES_SOURCES,
+    .links    = IES_LINKS,
+    .flags    = IES_C_STANDARD","
+                IES_SANE_FLAGS","
+                IES_SDL_FLAGS","
+                WARNING_FLAGS,
+    .cmd_pre  = IES_ASTYLE,
     .kind     = MACE_EXECUTABLE,
 };
 
 /* Main loop for hot reloading */
 struct Target sota_main = {
-    .includes = ".,include,include/bars,include/menu,"
-                "include/popup,include/unit,"
-                "include/systems,names,names/popup,names/menu,"
-                "second_party/noursmath,second_party/tnecs,"
-                "second_party/parg,second_party/nourstest,"
-                "second_party/noursclock,"
-                "third_party/physfs," 
-                "third_party/stb,third_party/cJSON,"
-                "/usr/include/SDL2",
-    .sources  = "src/main.c",
-    .links    = "SDL2,parg",
+    .includes   = IES_INCLUDES,
+    .sources    = "src/main.c",
+    .links      = "SDL2,parg",
     .link_flags = "-rpath=./",
-    .flags    = "-fno-strict-overflow,-fno-strict-aliasing,"
-                "-fwrapv,-fno-delete-null-pointer-checks,"
-                "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
-                "$(sdl2-config --cflags)",
-    .cmd_pre  = "astyle --options=utils/style.txt --verbose --recursive"
-                " src/*.c include/*.h test/*.c test/*.h names/*.h",
-    .kind     = MACE_EXECUTABLE,
+    .flags      = IES_C_STANDARD","
+                  IES_SANE_FLAGS","
+                  IES_SDL_FLAGS,
+    .cmd_pre    = IES_ASTYLE,
+    .kind       = MACE_EXECUTABLE,
 };
 
 struct Target sota_dll = {
-    .includes =  ".,include,include/bars,include/menu,"
-                 "include/popup,include/unit,"
-                 "include/systems,names,names/popup,names/menu,"
-                 "second_party/noursmath,second_party/tnecs,"
-                 "second_party/parg,second_party/nourstest,"
-                "second_party/noursclock,"
-                 "third_party/physfs," 
-                 "third_party/stb,third_party/cJSON,"
-                 "/usr/include/SDL2",
-    .sources    = "src,src/bars/,src/menu/,src/popup/,"
-                  "src/systems/,src/game/,src/map/,src/unit/,"
-                  "src/controller/",
+    .includes   = IES_INCLUDES,
+    .sources    = IES_SOURCES,
     .excludes   = "src/main.c",
     .link_flags = "-rpath=./,-whole-archive,",
-    .links      = "SDL2,SDL2_image,SDL2_mixer,m,GLEW,noursclock,"
-                  "cjson,noursmath,physfs,tnecs,parg",
-    .flags      = "-Lbuild,-fno-strict-overflow,-fno-strict-aliasing,"
-                  "-fwrapv,-fno-delete-null-pointer-checks,"
-                  "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999"
-                  "$(sdl2-config --cflags)",
-    .cmd_pre  = "astyle --options=utils/style.txt --verbose --recursive"
-                " src/*.c include/*.h test/*.c test/*.h names/*.h",
+    .links      = IES_LINKS,
+    .flags      = "-Lbuild,"
+                  IES_C_STANDARD","
+                  IES_SANE_FLAGS","
+                  IES_SDL_FLAGS,
+    .cmd_pre    = IES_ASTYLE,
     .kind       = MACE_SHARED_LIBRARY, /* Check with "file" cmd */
 };
 
-
 /* -- Linux to Windows cross compilation -- */
 struct Target l2w_sota = {
-    .includes = ".,include,include/bars,include/menu,"
-                "include/popup,include/unit,"
-                "include/systems,names,names/popup,names/menu,"
-                "second_party/noursmath,second_party/tnecs,"
-                "second_party/parg,second_party/nourstest,"
-                "second_party/noursclock,"
-                "third_party/physfs," 
-                "third_party/stb,third_party/cJSON,"
+    .includes = IES_INCLUDES
                 "/usr/local/x86_64-w64-mingw32/include",
-    .sources  = "src,src/bars/,src/menu/,src/popup/,"
-                "src/systems/,src/game/,src/map/,src/unit/,"
-                "src/controller/",
-    .links    = "mingw32,SDL2main,SDL2,SDL2_image,SDL2_mixer,"
-                "cjson,noursmath,physfs,tnecs,parg,noursclock",
-    .flags    = "-L/usr/local/x86_64-w64-mingw32/lib,-B/usr/local/lib/tcc/win32"
-                "-fno-strict-overflow,-fno-strict-aliasing,"
-                "-fwrapv,-fno-delete-null-pointer-checks,"
-                "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
-                "$(sdl2-config --cflags)",
-    .cmd_pre  = "astyle --options=utils/style.txt --verbose --recursive"
-                " src/*.c include/*.h test/*.c test/*.h names/*.h",
+    .sources  = IES_SOURCES,
+    .links    = IES_LINKS_L2W,
+    .flags    = "-L/usr/local/x86_64-w64-mingw32/lib,"
+                "-B/usr/local/lib/tcc/win32,"
+                IES_C_STANDARD","
+                IES_SANE_FLAGS","
+                IES_SDL_FLAGS,
+    .cmd_pre  = IES_ASTYLE,
     .kind     = MACE_EXECUTABLE,
 };
 
 /* -- Testing -- */
 struct Target test = {
-    .includes = ".,include,include/bars,include/menu,"
-                "include/popup,include/unit,include/systems,"
-                "names,names/popup,names/menu,"
-                "second_party/noursmath,second_party/tnecs,"
-                "second_party/parg,second_party/nourstest,"
-                "second_party/noursclock,"
-                "third_party/physfs,"
-                "third_party/stb,third_party/cJSON,"
-                "/usr/include/SDL2,"
-                "test,test/menu,test/popup",
-    .sources  = "test/*.c,src/*.c,src/bars/,src/menu/,src/unit,"
-                "src/popup/,src/systems/,src/game/,src/map,"
-                "src/controller",
+    .includes = IES_INCLUDES","
+                IES_TEST_INCLUDES,
+    .sources  = IES_SOURCES","
+                IES_TEST_SOURCES,
     .excludes = "src/main.c",
-    .links    = "SDL2,SDL2_image,SDL2_mixer,m,GLEW,noursclock,"
-                "cjson,noursmath,physfs,tnecs,parg",
-    .flags    = "-fno-strict-overflow,-fno-strict-aliasing,"
-                "-fwrapv,-fno-delete-null-pointer-checks,"
-                // "-fsanitize=undefined,-fsanitize=address,"
-                "-DSDL_DISABLE_IMMINTRIN_H,-std=iso9899:1999,"
-                "$(sdl2-config --cflags)",
-    .cmd_pre  = "astyle --options=utils/style.txt --verbose --recursive"
-                " src/*.c include/*.h test/*.c test/*.h names/*.h",
+    .links    = IES_LINKS,
+    .flags    = IES_C_STANDARD","
+                IES_SANE_FLAGS","
+                IES_SDL_FLAGS,
+    .cmd_pre  = IES_ASTYLE,
     .kind     = MACE_EXECUTABLE,
 };
 
 struct Target bench = {
-    .includes = ".,include,include/bars,include/menu,"
-                "include/popup,include/unit,include/systems,"
-                "names,names/popup,names/menu,"
-                "second_party/noursmath,second_party/tnecs,"
-                "second_party/parg,second_party/nourstest,"
-                "second_party/noursclock,"
-                "third_party/physfs,"
-                "third_party/stb,third_party/cJSON,"
-                "/usr/include/SDL2,"
-                "test,test/menu,test/popup",
-    .sources  = "bench/*.c,src/*.c,src/bars/,src/menu/,src/unit,"
-                "src/popup/,src/systems/,src/game/,src/map,"
-                "src/controller",
+    .includes = IES_INCLUDES","
+                IES_TEST_INCLUDES","
+                IES_BENCH_INCLUDES,
+    .sources  = IES_SOURCES","
+                IES_BENCH_SOURCES,
     .excludes = "src/main.c",
-    .links    = "SDL2,SDL2_image,SDL2_mixer,m,GLEW,noursclock,"
-                "cjson,noursmath,physfs,tnecs,parg",
-    .flags    = "-L/usr/lib,-fno-strict-overflow,"
-                "-fno-strict-aliasing,-std=iso9899:1999,"
-                "-fwrapv,-fno-delete-null-pointer-checks,"
-                "-DSDL_DISABLE_IMMINTRIN_H,"
-                "$(sdl2-config --cflags)",
-    .cmd_pre  = "astyle --options=utils/style.txt --verbose --recursive"
-                " src/*.c include/*.h test/*.c test/*.h names/*.h",
+    .links    = IES_LINKS,
+    .flags    = "-L/usr/lib,"
+                IES_C_STANDARD","
+                IES_SANE_FLAGS","
+                IES_SDL_FLAGS,
+    .cmd_pre  = IES_ASTYLE,
     .kind     = MACE_EXECUTABLE,
 };
 
