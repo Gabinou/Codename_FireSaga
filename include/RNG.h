@@ -13,7 +13,6 @@
 /* --- FORWARD DECLARATIONS --- */
 struct cJSON;
 struct RNG_Sequence;
-typedef struct cJSON cJSON;
 typedef int cJSON_bool;
 cJSON *cJSON_GetObjectItem(const cJSON *const object, const char *const string);
 cJSON *cJSON_CreateNumber(double num);

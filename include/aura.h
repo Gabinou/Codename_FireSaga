@@ -6,7 +6,6 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct cJSON;
-typedef struct cJSON cJSON;
 
 /* --- I/O --- */
 void Aura_readJSON( void *input, const cJSON *jaura);

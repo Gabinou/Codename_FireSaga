@@ -41,6 +41,5 @@ typedef int32_t  b32;
 typedef b32 CursorFlag;
 typedef b32 MouseFlag;
 typedef b32 RenderTop;
-typedef struct cJSON cJSON;
 
 #endif /* TYPES_H */

@@ -7,7 +7,6 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Map;
 struct Unit;
-typedef struct canEquip canEquip;
 
 /*-- Map Usable -- */
 // move: find canEquip including on moveable tiles or not
