@@ -4305,16 +4305,20 @@ void mace_exec_print(char *const arguments[], size_t argnum) {
 /// @brief Put back arguments array (argv) into a single line for execvp.
 char *mace_args2line(char *const arguments[]) {
     int i   = 0;
-    int num = 0, len = 64;
+    int num = 0, len = 128;
 
     char *argline = calloc(len, sizeof(*argline));
+    assert(argline != NULL);
     while ((arguments[i] != NULL) && (i < MACE_MAX_ITERATIONS)) {
         size_t ilen = strlen(arguments[i]);
-        if ((num + ilen + 1) > len) {
-            argline = realloc(argline, len * 2 * sizeof(*argline));
+        while ((num + ilen + 1) > len) {
+            size_t bytesize = len * 2 * sizeof(*argline);
+            argline = realloc(argline, bytesize);
+            assert(argline != NULL);
             memset(argline + len, 0, len);
             len *= 2;
         }
+        assert(num < len);
         memcpy(argline + num, arguments[i], ilen);
         num += ilen;
         argline[num++] = ' ';
