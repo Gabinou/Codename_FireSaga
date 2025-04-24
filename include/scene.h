@@ -107,10 +107,6 @@ enum SCENE_STATEMENTS {
     SCENE_STATEMENT_NUM             =  5
 };
 
-/* --- TYPEDEFS --- */
-typedef void (*json_rfunc)(void *, const cJSON *);
-typedef void (*json_wfunc)(const void *, cJSON *);
-
 // Scene FSMs
 extern const json_rfunc fsm_Scene_readJSON[SCENE_STATEMENT_NUM];
 extern const json_wfunc fsm_Scene_writeJSON[SCENE_STATEMENT_NUM];

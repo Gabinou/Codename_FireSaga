@@ -9,7 +9,6 @@
 struct Unit;
 struct Item;
 struct cJSON;
-typedef struct cJSON cJSON;
 
 /* --- ANTS --- */
 #define ITEM_NAME_INVALID " "
