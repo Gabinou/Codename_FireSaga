@@ -66,7 +66,6 @@ typedef fsm_eGmp2Stby_s_t   fsm_eUnitDng_s_t;
 typedef fsm_eGmp2Stby_s_t   fsm_eCrsDeHvUnit_s_t;
 typedef fsm_eGmp2Stby_s_t   fsm_eCrsHvUnit_s_t;
 typedef fsm_eGmp2Stby_s_t   fsm_Unit_Wait_state_t;
-typedef fsm_eGmp2Stby_s_t   fsm_eUnitDsel_s_t;
 
 /* -- FSM: Cursor_Moves EVENT --  */
 extern const fsm_eCrsMvs_s_t fsm_eCrsMvs_s[GAME_STATE_NUM];

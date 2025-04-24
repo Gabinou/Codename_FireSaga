@@ -13,7 +13,7 @@
 #endif
 
 struct Config debug         = {
-    .flags = "-g -gdwarf -rdynamic -O0 -DSDL_ASSERT_LEVEL=2 -Wall -Wno-unused-value -Wno-char-subscripts -Wno-unused-function -Wno-pointer-sign -Wno-enum-compare -Wmissing-braces -Wunused-but-set-variable -Wduplicate-decl-specifier -Wunused-but-set-variable -Wunused-variable -Wno-unused-command-line-argument -Wno-format-contains-nul -Wno-unknown-warning-option"
+    .flags = "-g -gdwarf -rdynamic -O0 -DSDL_ASSERT_LEVEL=2 -Wall -Wno-format -Wno-unused-value -Wno-char-subscripts -Wno-unused-function -Wno-pointer-sign -Wno-enum-compare -Wmissing-braces -Wunused-but-set-variable -Wduplicate-decl-specifier -Wunused-but-set-variable -Wunused-variable -Wno-unused-command-line-argument -Wno-format-contains-nul -Wno-unknown-warning-option"
 };
 
 struct Config tcc_bounds    = {

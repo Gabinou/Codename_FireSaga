@@ -1117,8 +1117,8 @@ typedef struct Weapon {
     u8 handedness;
     u8 subtype;        /* ex: thrust swords     */
     u16 effective;
-    b32 isMagic   : 1;
-    b32 canAttack : 1; /* for special weapons   */
+    b32 isMagic;
+    b32 canAttack; /* for special weapons   */
 } Weapon;
 extern const struct Weapon Weapon_default;
 

@@ -181,8 +181,9 @@ i32 Equation_Weapon_Hitarr(i32 *hits, i32 num) {
             divisor++;
         wpn_hit += hits[i];
     }
-    if (divisor == 0);
-    return (0);
+    if (divisor == 0) {
+        return (0);
+    }
 
     return (wpn_hit / divisor);
 }
