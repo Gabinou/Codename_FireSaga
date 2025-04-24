@@ -3,6 +3,7 @@
 
 #include "item.h"
 #include "SDL.h"
+#include "cJSON.h"
 
 /* --- WEAPON/ITEM --- */
 

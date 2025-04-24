@@ -5,6 +5,7 @@
 #include "types.h"
 #include "structs.h"
 #include "SDL.h"
+#include "cJSON.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct cJSON;

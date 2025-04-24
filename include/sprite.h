@@ -3,6 +3,7 @@
 
 #include "enums.h"
 #include "structs.h"
+#include "cJSON.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Index_Shader;

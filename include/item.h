@@ -4,6 +4,7 @@
 #include "enums.h"
 #include "structs.h"
 #include "nstr.h"
+#include "cJSON.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Unit;

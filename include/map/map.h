@@ -6,6 +6,7 @@
 #include "tnecs.h"
 #include "nstr.h"
 #include "SDL.h"
+#include "cJSON.h"
 
 /* --- GLOSSARY --- */
 // Traversing and occupying tiles

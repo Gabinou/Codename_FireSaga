@@ -5,6 +5,7 @@
 #include "types.h"
 #include "enums.h"
 #include "structs.h"
+#include "cJSON.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Map;
