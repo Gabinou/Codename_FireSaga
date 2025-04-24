@@ -8,7 +8,6 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
 struct cJSON;
-typedef struct cJSON cJSON;
 
 enum SOTA_CAMP {
     // Bonus for Guards if an ambush is prevented

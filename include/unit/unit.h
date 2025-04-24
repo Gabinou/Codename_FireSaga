@@ -16,7 +16,6 @@ struct Map;
 struct RNG_Sequence;
 struct Reinforcement;
 struct cJSON;
-typedef struct cJSON cJSON;
 
 /* -- Unit second-order info -- */
 extern const i32 army_alignment[ARMY_END];

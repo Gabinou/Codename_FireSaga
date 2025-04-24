@@ -14,9 +14,8 @@ struct Game;
 struct Unit;
 struct Timer;
 struct UnitMoveAnimation;
-
 struct cJSON;
-typedef struct cJSON cJSON;
+
 
 /* --- AI DESIGN --- */
 // AI has two parts

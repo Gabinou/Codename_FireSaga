@@ -8,7 +8,6 @@
 struct Index_Shader;
 struct Position;
 struct cJSON;
-typedef struct cJSON cJSON;
 
 /* --- Spritesheet --- */
 /* -- ants -- */

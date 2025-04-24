@@ -9,7 +9,6 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
-typedef struct Game Game;
 
 /* -------------------------------- Cutscene -------------------------------- */
 //  An animation

@@ -10,7 +10,6 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Arrow;
-typedef struct Arrow Arrow;
 /* NOTE: Arrow breaks if INFINITE_MOVE_ALL is defined. DON'T CARE. */
 
 enum ARROW_17PATCHES {

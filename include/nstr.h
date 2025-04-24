@@ -5,13 +5,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include "types.h"
 
 enum NSTR {
     NSTR_MIN_LEN = 16,
 };
-
-typedef uint8_t u8;
-typedef int32_t b32;
 
 /* --- Pascal String s8 strings --- */
 // - String concatenation

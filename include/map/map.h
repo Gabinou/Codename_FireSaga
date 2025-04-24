@@ -19,8 +19,6 @@ struct Unit;
 struct Map_condition;
 struct cJSON;
 struct Arrow;
-typedef struct Arrow Arrow;
-typedef struct cJSON cJSON;
 
 /* --- ENUMS --- */
 #define ARROW_FILENAME ARROW_FILENAME_

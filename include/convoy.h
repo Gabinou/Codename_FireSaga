@@ -10,7 +10,6 @@ struct Game;
 struct Unit;
 struct Inventory_item;
 struct cJSON;
-typedef struct cJSON cJSON;
 
 /* --- Destructors --- */
 void Convoy_Free( struct Convoy *conv);

@@ -8,7 +8,6 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct cJSON;
-typedef struct cJSON cJSON;
 
 typedef struct Tile {
     struct jsonIO_Header jsonio_header;

@@ -9,7 +9,6 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Map;
 struct cJSON;
-typedef struct cJSON cJSON;
 
 /* --- pixels --- */
 u8 *pixels2list(    u8 *matrix,           size_t row_len, size_t col_len);

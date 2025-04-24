@@ -11,7 +11,6 @@ struct Settings;
 struct Unit;
 struct Game;
 struct cJSON;
-typedef struct cJSON cJSON;
 
 /* Conditions */
 // When condition is satisfied, something happens:
