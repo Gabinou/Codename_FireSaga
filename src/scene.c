@@ -203,7 +203,7 @@ void Scene_readJSON(void *input, const cJSON *jscene) {
         i32 statement_type = Scene_jsonStatement_Type(jstatement);
 
         /* -- Skip is statement is invalid -- */
-        if ((statement_type <= SCENE_STATEMENT_START) &&
+        if ((statement_type <= SCENE_STATEMENT_START) ||
             (statement_type >= SCENE_STATEMENT_NUM)) {
             continue;
         }

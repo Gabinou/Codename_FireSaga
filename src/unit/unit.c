@@ -230,8 +230,8 @@ void Unit_setClassind(struct Unit *unit, i8 class_index) {
     unit->flags.mvt_type    = Unit_mvtType(unit);
     unit->flags.equippable  = class_equippables[class];
 
-    b32 healclass   = (class == UNIT_CLASS_BISHOP);
-    healclass      |= (class == UNIT_CLASS_CLERIC);
+    // b32 healclass   = (class == UNIT_CLASS_BISHOP);
+    // healclass      |= (class == UNIT_CLASS_CLERIC);
 
     Unit_Rangemap_default(unit);
 }

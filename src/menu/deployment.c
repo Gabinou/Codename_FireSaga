@@ -924,25 +924,32 @@ void DeploymentMenu_Party_Set(DeploymentMenu *dm, struct Party *party) {
 
 /* --- Scrolling --- */
 void DeploymentMenu_Scroll_Up(   DeploymentMenu *dm) {
-    if (dm->top_unit < 0);
-    dm->top_unit = 0;
-    if (dm->top_unit > (dm->_party_size - DM_UNIT_SHOWN_NUM));
-    dm->top_unit = (dm->_party_size - DM_UNIT_SHOWN_NUM);
+    if (dm->top_unit < 0) {
+        dm->top_unit = 0;
+    }
 
-    if (dm->top_unit > 1)
+    if (dm->top_unit > (dm->_party_size - DM_UNIT_SHOWN_NUM)) {
+        dm->top_unit = (dm->_party_size - DM_UNIT_SHOWN_NUM);
+    }
+
+    if (dm->top_unit > 1) {
         dm->top_unit -= DM_SCROLL_UP_ADD;
+    }
 
 }
 
 void DeploymentMenu_Scroll_Down( DeploymentMenu *dm) {
-    if (dm->top_unit < 0);
-    dm->top_unit = 0;
-    if (dm->top_unit > (dm->_party_size - DM_UNIT_SHOWN_NUM));
-    dm->top_unit = (dm->_party_size - DM_UNIT_SHOWN_NUM);
+    if (dm->top_unit < 0) {
+        dm->top_unit = 0;
+    }
+    if (dm->top_unit > (dm->_party_size - DM_UNIT_SHOWN_NUM)) {
+        dm->top_unit = (dm->_party_size - DM_UNIT_SHOWN_NUM);
 
-    if (dm->top_unit < (dm->_party_size - DM_UNIT_SHOWN_NUM - DM_SCROLL_UP_ADD))
+    }
+
+    if (dm->top_unit < (dm->_party_size - DM_UNIT_SHOWN_NUM - DM_SCROLL_UP_ADD)) {
         dm->top_unit += DM_SCROLL_UP_ADD;
-
+    }
 }
 
 void DeploymentMenu_Scroll_Left( DeploymentMenu *dm) {

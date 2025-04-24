@@ -804,8 +804,8 @@ struct Graph {
     /* ant for x */
     u8 y_lenperpixel;
 
-    b32 x_ticks : 1;
-    b32 y_ticks : 1;
+    b32 x_ticks;
+    b32 y_ticks;
 };
 extern const struct Graph Graph_default;
 
@@ -1072,11 +1072,11 @@ typedef struct Game {
 
     u64    runtime_ns; // -> millions of years
     b32  *shadow_area;  /* pixels */
-    b32   ismouse          : 1;
-    b32   iscursor         : 1;
-    b32   isrunning        : 1;
-    b32   isShadow         : 1;
-    b32   fast_forward     : 1;
+    b32   ismouse;
+    b32   iscursor;
+    b32   isrunning;
+    b32   isShadow;
+    b32   fast_forward;
 } Game;
 extern const struct Game Game_default;
 
@@ -1089,10 +1089,10 @@ typedef struct Item {
     struct Item_stats stats;
     u16  id;           /* 0 is NULL */
     u8 target;          /* units on which item is usable. */
-    b32 canSell     : 1;
-    b32 write_stats : 1;
-    b32 canUse      : 1;
-    b32 canRepair   : 1; /* TODO: Move to weapon? */
+    b32 canSell;
+    b32 write_stats;
+    b32 canUse;
+    b32 canRepair; /* TODO: Move to weapon? */
     u64  type;         /* and not type_exp */
     u16 *users;        /* item only usable by users.   NULL -> everyone */
     u16 *classes;      /* item only usable by classes. NULL -> everyone */

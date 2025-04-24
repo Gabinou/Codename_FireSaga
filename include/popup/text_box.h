@@ -80,7 +80,7 @@ typedef struct Text_Box_Tail {
     SDL_Rect            dstrect;
     struct Point        pos;
 
-    b32 half : 1;  /* Half around tail target is in */
+    b32 half;  /* Half around tail target is in */
 } Text_Box_Tail;
 
 typedef struct Text_Box {
@@ -112,11 +112,11 @@ typedef struct Text_Box {
     i8 bg_color;
     i8 line_color;
 
-    b32 scroll          : 1;
-    b32 animating       : 1;
-    b32 vscroll_dir     : 1;
-    b32 vscroll_anim    : 1;
-    b32 enable_tail     : 1;
+    b32 scroll;
+    b32 animating;
+    b32 vscroll_dir;
+    b32 vscroll_anim;
+    b32 enable_tail;
     SDL_Palette *palette;
 } Text_Box;
 extern const struct Text_Box Text_Box_default;
