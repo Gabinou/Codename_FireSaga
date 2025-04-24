@@ -8,9 +8,9 @@
     #define AR "tcc -ar"
 #endif
 
-#define IES_C_STANDARD "-std=iso9899:1999"
+#define C_STANDARD "-std=iso9899:1999"
 
-#define WARNING_FLAGS "-Wno-format -Wno-unused-value "\
+#define FLAGS_WARNING "-Wno-format -Wno-unused-value "\
     "-Wno-char-subscripts -Wno-unused-function "\
     "-Wno-pointer-sign -Wno-enum-compare -Wmissing-braces "\
     "-Wunused-but-set-variable -Wduplicate-decl-specifier "\
@@ -18,19 +18,19 @@
     "-Wno-unused-command-line-argument "\
     "-Wno-format-contains-nul -Wno-unknown-warning-option"
 
-#define DEBUG_FLAGS "-g -gdwarf -rdynamic -O0"\
+#define FLAGS_DEBUG "-g -gdwarf -rdynamic -O0"\
     "-DSDL_ASSERT_LEVEL=2"
 
-#define IES_SANE_FLAGS "-fno-delete-null-pointer-checks "\
+#define FLAGS_SANE "-fno-delete-null-pointer-checks "\
     "-fno-strict-aliasing -fwrapv -fno-strict-overflow"\
 
-#define IES_SANITIZE_FLAGS "-fsanitize=undefined,"\
+#define FLAGS_SANITIZE "-fsanitize=undefined,"\
     "-fsanitize=address"
-#define IES_SDL_FLAGS "-DSDL_DISABLE_IMMINTRIN_H "\
+#define FLAGS_SDL "-DSDL_DISABLE_IMMINTRIN_H "\
     "$(sdl2-config --cflags)"
-#define IES_WINDOWS_FLAGS "-lmingw32,-lSDL2,-lSDL2main"
+#define FLAGS_WINDOWS "-lmingw32,-lSDL2,-lSDL2main"
 
-#define IES_INCLUDES ".,include,include/bars,include/menu,"\
+#define INCLUDES ".,include,include/bars,include/menu,"\
     "include/popup,include/unit,"\
     "include/systems,names,names/popup,names/menu,"\
     "second_party/noursmath,second_party/tnecs,"\
@@ -39,32 +39,37 @@
     "third_party/physfs," \
     "third_party/stb,third_party/cJSON,"\
     "/usr/include/SDL2"
-#define IES_TEST_INCLUDES "test,test/menu,test/popup"
-#define IES_BENCH_INCLUDES "bench"
+#define INCLUDES_TEST "test,test/menu,test/popup"
+#define INCLUDES_BENCH "bench"
 
-#define IES_SOURCES "src,src/bars/,src/menu/,src/popup/,"\
+#define SOURCES "src,src/bars/,src/menu/,src/popup/,"\
     "src/systems/,src/game/,src/map/,src/unit/,"\
     "src/controller/"
-#define IES_TEST_SOURCES "test/*.c"
-#define IES_BENCH_SOURCES "bench/*.c,"
+#define SOURCES_TEST "test/*.c"
+#define SOURCES_BENCH "bench/*.c,"
 
-#define IES_ASTYLE "astyle --options=utils/style.txt "\
+#define ASTYLE "astyle --options=utils/style.txt "\
     "--verbose --recursive src/*.c include/*.h test/*.c "\
     "test/*.h names/*.h"
 
-#define IES_LINKS "SDL2,SDL2_image,SDL2_mixer,m,"\
+#define LINKS "SDL2,SDL2_image,SDL2_mixer,m,"\
     "cjson,noursclock,noursmath,physfs,tnecs,parg"
 
-#define IES_LINKS_L2W "mingw32,SDL2main,SDL2,SDL2_image,"\
+#define LINKS_L2W "mingw32,SDL2main,SDL2,SDL2_image,"\
     "SDL2_mixer,cjson,noursmath,physfs,tnecs,parg,"\
     "noursclock"
 
+#define GCC_WINDOWS "x86_64-w64-mingw32-gcc"
+#define AR_WINDOWS "x86_64-w64-mingw32-ar"
+#define TCC_WINDOWS "x86_64-win32-tcc"
+#define TCC_AR_WINDOWS "x86_64-win32-tcc -ar"
+
 struct Config debug         = {
-    .flags = DEBUG_FLAGS
+    .flags = FLAGS_DEBUG
 };
 
 struct Config tcc_bounds    = {
-    .flags = DEBUG_FLAGS "-b"
+    .flags = FLAGS_DEBUG "-b"
 };
 
 struct Config release       = {
@@ -73,46 +78,46 @@ struct Config release       = {
 
 struct Config win_debug     = {
     .flags  = "-g -O0",
-    .cc     = "x86_64-w64-mingw32-gcc",
-    .ar     = "x86_64-w64-mingw32-ar"
+    .cc     = GCC_WINDOWS,
+    .ar     = AR_WINDOWS,
 };
 
 struct Config win_release   = {
     .flags  = "-O2",                
-    .cc     = "x86_64-w64-mingw32-gcc",
-    .ar     = "x86_64-w64-mingw32-ar"
+    .cc     = GCC_WINDOWS,
+    .ar     = AR_WINDOWS,
 };
 
 /* BORKED: physfs can't compile cause no userenv.h in tcc includes */
 struct Config l2w_tcc_debug     = {
     .flags  = "-g -O0",
-    .cc     = "x86_64-win32-tcc",
-    .ar     = "x86_64-win32-tcc -ar"
+    .cc     = TCC_WINDOWS,
+    .ar     = TCC_AR_WINDOWS
 };
 
 struct Config l2w_tcc_release   = {
     .flags  = "-O2",                
-    .cc     = "x86_64-win32-tcc",
-    .ar     = "x86_64-win32-tcc -ar"
+    .cc     = TCC_WINDOWS,
+    .ar     = TCC_AR_WINDOWS
 };
 
 struct Config l2w_gcc_debug     = {
     .flags  = "-g -O0",
-    .cc     = "x86_64-w64-mingw32-gcc",
-    .ar     = "x86_64-w64-mingw32-ar"
+    .cc     = GCC_WINDOWS,
+    .ar     = AR_WINDOWS,
 };
 
 struct Config l2w_gcc_release   = {
     .flags  = "-O2",                
-    .cc     = "x86_64-w64-mingw32-gcc",
-    .ar     = "x86_64-w64-mingw32-ar"
+    .cc     = GCC_WINDOWS,
+    .ar     = AR_WINDOWS,
 };
 
 /* - second_party - */
 struct Target noursmath = {
     .base_dir   = "second_party/noursmath",
-    .flags      = IES_C_STANDARD" "
-                  WARNING_FLAGS,
+    .flags      = C_STANDARD" "
+                  FLAGS_WARNING,
     .sources    = ".",
     .link_flags = "-whole-archive",
     .kind       = MACE_STATIC_LIBRARY,
@@ -120,8 +125,8 @@ struct Target noursmath = {
 
 struct Target parg      = {
     .base_dir   = "second_party/parg",
-    .flags      = IES_C_STANDARD" "
-                  WARNING_FLAGS,
+    .flags      = C_STANDARD" "
+                  FLAGS_WARNING,
     .sources    = ".",
     .link_flags = "-whole-archive",
     .kind       = MACE_STATIC_LIBRARY,
@@ -129,8 +134,8 @@ struct Target parg      = {
 
 struct Target noursclock      = {
     .base_dir   = "second_party/noursclock",
-    .flags      = IES_C_STANDARD" "
-                  WARNING_FLAGS,
+    .flags      = C_STANDARD" "
+                  FLAGS_WARNING,
     .sources    = ".",
     .link_flags = "-whole-archive",
     .kind       = MACE_STATIC_LIBRARY,
@@ -138,8 +143,8 @@ struct Target noursclock      = {
 
 struct Target tnecs     = {
     .base_dir   = "second_party/tnecs",
-    .flags      = IES_C_STANDARD" "
-                  WARNING_FLAGS,
+    .flags      = C_STANDARD" "
+                  FLAGS_WARNING,
     .sources    = ".",
     .link_flags = "-whole-archive",
     .kind       = MACE_STATIC_LIBRARY,
@@ -148,8 +153,8 @@ struct Target tnecs     = {
 /* - third_party - */
 struct Target cjson     = {
     .base_dir   = "third_party/cJSON",
-    .flags      = IES_C_STANDARD" "
-                  WARNING_FLAGS,
+    .flags      = C_STANDARD" "
+                  FLAGS_WARNING,
     .sources    = ".",
     .link_flags = "-rpath=/home/gabinours/firesaga/build",
                   "-whole-archive",
@@ -171,7 +176,7 @@ struct Target physfs    = {
                   "-DPHYSFS_SUPPORTS_ISO9660=0,"
                   "-DPHYSFS_SUPPORTS_SLB=0,"
                   "-DPHYSFS_SUPPORTS_VDF=0,"
-                  WARNING_FLAGS,
+                  FLAGS_WARNING,
     .base_dir   = "third_party/physfs",
     .link_flags = "-whole-archive",
     .allatonce  = false,
@@ -182,107 +187,107 @@ struct Target physfs    = {
 /* -- Native Windows -- */
 /* TODO: Test native windows target */
 struct Target win_sota = {
-    .includes   = IES_INCLUDES,
-    .sources    = IES_SOURCES,
-    .links      = IES_LINKS,
+    .includes   = INCLUDES,
+    .sources    = SOURCES,
+    .links      = LINKS,
                 /* TODO: Remove flags given by sdl2-config */
-    .flags      = IES_WINDOWS_FLAGS" "
-                  IES_C_STANDARD" "
-                  IES_SANE_FLAGS" "
-                  WARNING_FLAGS" "
-                  IES_SDL_FLAGS,
-    .cmd_pre    = IES_ASTYLE,
+    .flags      = FLAGS_WINDOWS" "
+                  C_STANDARD" "
+                  FLAGS_SANE" "
+                  FLAGS_WARNING" "
+                  FLAGS_SDL,
+    .cmd_pre    = ASTYLE,
     .kind       = MACE_EXECUTABLE,
 };
 
 /* -- Native Linux -- */
 struct Target sota = {
-    .includes   = IES_INCLUDES,
-    .sources    = IES_SOURCES,
-    .links      = IES_LINKS,
-    .flags      = IES_C_STANDARD" "
-                  IES_SANE_FLAGS" "
-                  WARNING_FLAGS" "
-                  IES_SDL_FLAGS,
-    .cmd_pre    = IES_ASTYLE,
+    .includes   = INCLUDES,
+    .sources    = SOURCES,
+    .links      = LINKS,
+    .flags      = C_STANDARD" "
+                  FLAGS_SANE" "
+                  FLAGS_WARNING" "
+                  FLAGS_SDL,
+    .cmd_pre    = ASTYLE,
     .kind       = MACE_EXECUTABLE,
 };
 
 /* Main loop for hot reloading */
 struct Target sota_main = {
-    .includes   = IES_INCLUDES,
+    .includes   = INCLUDES,
     .sources    = "src/main.c",
     .links      = "SDL2,parg",
     .link_flags = "-rpath=./",
-    .flags      = IES_C_STANDARD" "
-                  IES_SANE_FLAGS" "
-                  WARNING_FLAGS" "
-                  IES_SDL_FLAGS,
-    .cmd_pre    = IES_ASTYLE,
+    .flags      = C_STANDARD" "
+                  FLAGS_SANE" "
+                  FLAGS_WARNING" "
+                  FLAGS_SDL,
+    .cmd_pre    = ASTYLE,
     .kind       = MACE_EXECUTABLE,
 };
 
 struct Target sota_dll = {
-    .includes   = IES_INCLUDES,
-    .sources    = IES_SOURCES,
+    .includes   = INCLUDES,
+    .sources    = SOURCES,
     .excludes   = "src/main.c",
     .link_flags = "-rpath=./,-whole-archive,",
-    .links      = IES_LINKS,
+    .links      = LINKS,
     .flags      = "-Lbuild "
-                  IES_C_STANDARD" "
-                  IES_SANE_FLAGS" "
-                  WARNING_FLAGS" "
-                  IES_SDL_FLAGS,
-    .cmd_pre    = IES_ASTYLE,
+                  C_STANDARD" "
+                  FLAGS_SANE" "
+                  FLAGS_WARNING" "
+                  FLAGS_SDL,
+    .cmd_pre    = ASTYLE,
     .kind       = MACE_SHARED_LIBRARY, /* Check with "file" cmd */
 };
 
 /* -- Linux to Windows cross compilation -- */
 struct Target l2w_sota = {
-    .includes   = IES_INCLUDES
+    .includes   = INCLUDES
                   "/usr/local/x86_64-w64-mingw32/include",
-    .sources    = IES_SOURCES,
-    .links      = IES_LINKS_L2W,
+    .sources    = SOURCES,
+    .links      = LINKS_L2W,
     .flags      = "-L/usr/local/x86_64-w64-mingw32/lib "
                   "-B/usr/local/lib/tcc/win32 "
-                  IES_C_STANDARD" "
-                  IES_SANE_FLAGS" "
-                  WARNING_FLAGS" "
-                  IES_SDL_FLAGS,
-    .cmd_pre    = IES_ASTYLE,
+                  C_STANDARD" "
+                  FLAGS_SANE" "
+                  FLAGS_WARNING" "
+                  FLAGS_SDL,
+    .cmd_pre    = ASTYLE,
     .kind       = MACE_EXECUTABLE,
 };
 
 /* -- Testing -- */
 struct Target test = {
-    .includes   = IES_INCLUDES","
-                  IES_TEST_INCLUDES,
-    .sources    = IES_SOURCES","
-                  IES_TEST_SOURCES,
+    .includes   = INCLUDES","
+                  INCLUDES_TEST,
+    .sources    = SOURCES","
+                  SOURCES_TEST,
     .excludes   = "src/main.c",
-    .links      = IES_LINKS,
-    .flags      = IES_C_STANDARD" "
-                  IES_SANE_FLAGS" "
-                  WARNING_FLAGS" "
-                  IES_SDL_FLAGS,
-    .cmd_pre    = IES_ASTYLE,
+    .links      = LINKS,
+    .flags      = C_STANDARD" "
+                  FLAGS_SANE" "
+                  FLAGS_WARNING" "
+                  FLAGS_SDL,
+    .cmd_pre    = ASTYLE,
     .kind       = MACE_EXECUTABLE,
 };
 
 struct Target bench = {
-    .includes   = IES_INCLUDES","
-                  IES_TEST_INCLUDES","
-                  IES_BENCH_INCLUDES,
-    .sources    = IES_SOURCES","
-                  IES_BENCH_SOURCES,
+    .includes   = INCLUDES","
+                  INCLUDES_TEST","
+                  INCLUDES_BENCH,
+    .sources    = SOURCES","
+                  SOURCES_BENCH,
     .excludes   = "src/main.c",
-    .links      = IES_LINKS,
+    .links      = LINKS,
     .flags      = "-L/usr/lib "
-                  IES_C_STANDARD" "
-                  IES_SANE_FLAGS" "
-                  WARNING_FLAGS" "
-                  IES_SDL_FLAGS,
-    .cmd_pre    = IES_ASTYLE,
+                  C_STANDARD" "
+                  FLAGS_SANE" "
+                  FLAGS_WARNING" "
+                  FLAGS_SDL,
+    .cmd_pre    = ASTYLE,
     .kind       = MACE_EXECUTABLE,
 };
 
