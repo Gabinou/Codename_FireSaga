@@ -14,7 +14,6 @@
 /* --- FORWARD DECLARATIONS --- */
 struct cJSON;
 struct RNG_Sequence;
-typedef int cJSON_bool;
 cJSON *cJSON_GetObjectItem(const cJSON *const object, const char *const string);
 cJSON *cJSON_CreateNumber(double num);
 cJSON_bool cJSON_AddItemToObject(cJSON *object, const char *string, cJSON *item);

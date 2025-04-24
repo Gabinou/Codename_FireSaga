@@ -5,13 +5,13 @@
 #include "nmath.h"
 #include "tnecs.h"
 #include "nstr.h"
+#include "cJSON.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Unit;
 struct Game;
 struct Party;
 struct cJSON;
-typedef struct cJSON cJSON;
 
 /* --- Constructor/Destructors --- */
 void Party_Init( struct Party *party);
