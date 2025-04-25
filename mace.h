@@ -541,10 +541,8 @@ static int      plen    = -1;
 
 #endif /* MACE_CONVENIENCE_EXECUTABLE */
 /* -- separator -- */
-static char *mace_flag_separator       = " ";
-static char *mace_d_separator          = " ";
-static char *mace_separator            = ",";
-static char *mace_command_separator    = "&&";
+static char *mace_separator             = " ";
+static char *mace_command_separator     = "&&";
 
 #ifndef MACE_CONVENIENCE_EXECUTABLE
     /* -- Compiler -- */
@@ -4492,7 +4490,7 @@ void mace_link_static_library(struct Target *target) {
     // Note: because tcc -ar is not a standalone executable but a flag 'tcc -ar'
     char *buffer = calloc(strlen(ar) + 1, sizeof(*ar));
     strncpy(buffer, ar, strlen(ar));
-    char *token = strtok(buffer, mace_flag_separator);
+    char *token = strtok(buffer, mace_separator);
     do {
         char *flag = calloc(strlen(token) + 1, sizeof(*ar));
         strncpy(flag, token, strlen(token));
@@ -5247,7 +5245,7 @@ void mace_run_commands(const char *commands) {
         }
 
         argc = 0;
-        argv = mace_argv_flags(&len, &argc, argv, token, NULL, false, mace_d_separator);
+        argv = mace_argv_flags(&len, &argc, argv, token, NULL, false, mace_separator);
 
         mace_exec_print(argv, argc);
         if (!dry_run) {
@@ -5495,7 +5493,7 @@ void mace_make_dirs(void) {
 }
 
 /// @brief Read config string, splitting string into _flags using
-///     mace_flag_separator.
+///     mace_separator.
 void mace_parse_config(struct Config *config) {
     mace_Config_Free(config);
     if (config->flags == NULL) {
@@ -5509,7 +5507,7 @@ void mace_parse_config(struct Config *config) {
     config->_flag_num = 0;
 
     char *buffer = mace_str_buffer(config->flags);
-    char *token  = strtok(buffer, mace_flag_separator);
+    char *token  = strtok(buffer, mace_separator);
     do {
         char *flag = calloc(strlen(token) + 1, sizeof(*flag));
         strncpy(flag, token, strlen(token));
@@ -5521,7 +5519,7 @@ void mace_parse_config(struct Config *config) {
             config->_flags  = realloc(config->_flags, bytesize);
             memset(config->_flags + len / 2, 0, len / 2);
         }
-        token = strtok(NULL, mace_flag_separator);
+        token = strtok(NULL, mace_separator);
     } while (token != NULL);
     free(buffer);
 }
@@ -5843,11 +5841,11 @@ void mace_Target_Grow_Headers(struct Target *target) {
         memset(target->_headers + target->_headers_len / 2, 0, bytesize / 2);
     }
 }
-/// @brief Read target object .d files to cehck which headers are
+/// @brief Read target object .d files to check which headers are
 ///     required for re-compilation
 void mace_Target_Read_Objdeps(struct Target *target, char *deps, int source_i) {
     /* --- Split headers into tokens --- */
-    char *header   = strtok(deps, mace_d_separator);
+    char *header   = strtok(deps, mace_separator);
     size_t cwd_len = strlen(cwd);
 
     /* --- Hash headers into _deps_links --- */
@@ -5855,19 +5853,19 @@ void mace_Target_Read_Objdeps(struct Target *target, char *deps, int source_i) {
         /* Skip if file is not a header */
         char *dot  = strrchr(header,  '.'); /* last dot in path */
         if (dot == NULL) {
-            header = strtok(NULL, mace_d_separator);
+            header = strtok(NULL, mace_separator);
             continue;
         }
         size_t ext = dot - header;
 
         if (header[ext + 1] != 'h') {
-            header = strtok(NULL, mace_d_separator);
+            header = strtok(NULL, mace_separator);
             continue;
         }
 
         /* Skip if header is not in cwd */
         if (target->checkcwd && (strncmp(header, cwd, cwd_len) != 0)) {
-            header = strtok(NULL, mace_d_separator);
+            header = strtok(NULL, mace_separator);
             continue;
         }
 
@@ -5878,7 +5876,7 @@ void mace_Target_Read_Objdeps(struct Target *target, char *deps, int source_i) {
         int header_order = mace_Target_header_order(target, hash);
         mace_Target_Objdep_Add(target, header_order, source_i);
 
-        header = strtok(NULL, mace_d_separator);
+        header = strtok(NULL, mace_separator);
     }
 }
 
@@ -6593,7 +6591,7 @@ struct Mace_Arguments mace_parse_env(void) {
             tmp++;
         }
         char **argv = calloc(len, sizeof(*argv));
-        argv = mace_argv_flags(&len, &argc, argv, env_args, NULL, false, mace_d_separator);
+        argv = mace_argv_flags(&len, &argc, argv, env_args, NULL, false, mace_separator);
         argc++;
         struct Mace_Arguments out = mace_parse_args(argc, argv);
         mace_argv_free(argv, argc);

@@ -107,8 +107,8 @@ void test_combat_game() {
     // computing defender effectiveStats");
     Unit_computeHit(&attacker, distance, &attacker_hit);
     Unit_computeHit(&defender, distance, &defender_hit);
-    struct Weapon *attacker_weaponp;
-    struct Weapon *defender_weaponp;
+    struct Weapon *attacker_weaponp = NULL;
+    struct Weapon *defender_weaponp = NULL;
     uint_fast16_t temp_id;
 
     // checking defender equipped");
@@ -127,12 +127,15 @@ void test_combat_game() {
     if (Unit_isEquipped(&attacker, attacker_equip_hand)) {
         SDL_assert(gl_weapons_dtab != NULL);
         temp_id = attacker_eq[attacker_equip_hand].id;
-        attacker_weaponp = ((struct Weapon *)DTAB_GET(gl_weapons_dtab, temp_id));
-        nourstest_true(attacker_weaponp != NULL);
+        attacker_weaponp = (struct Weapon *)DTAB_GET(gl_weapons_dtab, temp_id);
+        SDL_assert(attacker_weaponp != NULL);
+        SDL_Log("attacker_weaponp->stats.hit %p", attacker_weaponp);
+        SDL_Log("attacker_weaponp->stats.hit %d", attacker_weaponp->stats.hit);
     }
 
     // manual Equation_Unit_Hit");
-    nourstest_true(attacker_weaponp != NULL);
+    SDL_assert(attacker_weaponp != NULL);
+    SDL_Log("attacker_weaponp->stats.hit %d", attacker_weaponp->stats.hit);
     nourstest_true(attacker_weaponp->stats.hit);
     nourstest_true(ES_A.dex);
     nourstest_true(ES_A.luck);

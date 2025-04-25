@@ -18,45 +18,45 @@
     "-Wno-unused-command-line-argument "\
     "-Wno-format-contains-nul -Wno-unknown-warning-option"
 
-#define FLAGS_DEBUG "-g -gdwarf -rdynamic -O0"\
+#define FLAGS_DEBUG "-g -gdwarf -rdynamic -O0 "\
     "-DSDL_ASSERT_LEVEL=2"
 
 #define FLAGS_SANE "-fno-delete-null-pointer-checks "\
-    "-fno-strict-aliasing -fwrapv -fno-strict-overflow"\
+    "-fno-strict-aliasing -fwrapv -fno-strict-overflow"
 
-#define FLAGS_SANITIZE "-fsanitize=undefined,"\
+#define FLAGS_SANITIZE "-fsanitize=undefined "\
     "-fsanitize=address"
 #define FLAGS_SDL "-DSDL_DISABLE_IMMINTRIN_H "\
     "$(sdl2-config --cflags)"
-#define FLAGS_WINDOWS "-lmingw32,-lSDL2,-lSDL2main"
+#define FLAGS_WINDOWS "-lmingw32 -lSDL2 -lSDL2main"
 
-#define INCLUDES ".,include,include/bars,include/menu,"\
-    "include/popup,include/unit,"\
-    "include/systems,names,names/popup,names/menu,"\
-    "second_party/noursmath,second_party/tnecs,"\
-    "second_party/parg,second_party/nourstest,"\
-    "second_party/noursclock,"\
-    "third_party/physfs," \
-    "third_party/stb,third_party/cJSON,"\
+#define INCLUDES ". include include/bars include/menu "\
+    "include/popup include/unit "\
+    "include/systems names names/popup names/menu "\
+    "second_party/noursmath second_party/tnecs "\
+    "second_party/parg second_party/nourstest "\
+    "second_party/noursclock "\
+    "third_party/physfs " \
+    "third_party/stb third_party/cJSON "\
     "/usr/include/SDL2"
-#define INCLUDES_TEST "test,test/menu,test/popup"
+#define INCLUDES_TEST "test test/menu test/popup"
 #define INCLUDES_BENCH "bench"
 
-#define SOURCES "src,src/bars/,src/menu/,src/popup/,"\
-    "src/systems/,src/game/,src/map/,src/unit/,"\
+#define SOURCES "src src/bars/ src/menu/ src/popup/ "\
+    "src/systems/ src/game/ src/map/ src/unit/ "\
     "src/controller/"
 #define SOURCES_TEST "test/*.c"
-#define SOURCES_BENCH "bench/*.c,"
+#define SOURCES_BENCH "bench/*.c"
 
 #define ASTYLE "astyle --options=utils/style.txt "\
     "--verbose --recursive src/*.c include/*.h test/*.c "\
     "test/*.h names/*.h"
 
-#define LINKS "SDL2,SDL2_image,SDL2_mixer,m,"\
-    "cjson,noursclock,noursmath,physfs,tnecs,parg"
+#define LINKS "SDL2 SDL2_image SDL2_mixer m "\
+    "cjson noursclock noursmath physfs tnecs parg"
 
-#define LINKS_L2W "mingw32,SDL2main,SDL2,SDL2_image,"\
-    "SDL2_mixer,cjson,noursmath,physfs,tnecs,parg,"\
+#define LINKS_L2W "mingw32 SDL2main SDL2 SDL2_image "\
+    "SDL2_mixer cjson noursmath physfs tnecs parg "\
     "noursclock"
 
 #define GCC_WINDOWS "x86_64-w64-mingw32-gcc"
@@ -69,7 +69,7 @@ struct Config debug         = {
 };
 
 struct Config tcc_bounds    = {
-    .flags = FLAGS_DEBUG "-b"
+    .flags = FLAGS_DEBUG" -b"
 };
 
 struct Config release       = {
@@ -90,7 +90,7 @@ struct Config win_release   = {
 
 /* BORKED: physfs can't compile cause no userenv.h in tcc includes */
 struct Config l2w_tcc_debug     = {
-    .flags  = "-g -O0",
+    .flags  = "-g,-O0",
     .cc     = TCC_WINDOWS,
     .ar     = TCC_AR_WINDOWS
 };
@@ -102,7 +102,7 @@ struct Config l2w_tcc_release   = {
 };
 
 struct Config l2w_gcc_debug     = {
-    .flags  = "-g -O0",
+    .flags  = "-g,-O0",
     .cc     = GCC_WINDOWS,
     .ar     = AR_WINDOWS,
 };
@@ -166,16 +166,16 @@ struct Target physfs    = {
     /* Disable all archives except .zip */
     /* Note: tcc can't compile 7z -> __cpuid missing */
     /* Cannot be compiled with -std=iso9899:1999/-std=c99 */
-    .flags      = "-DPHYSFS_SUPPORTS_7Z=0,"
-                  "-DPHYSFS_SUPPORTS_GRP=0,"
-                  "-DPHYSFS_SUPPORTS_WAD=0,"
-                  "-DPHYSFS_SUPPORTS_CSM=0,"
-                  "-DPHYSFS_SUPPORTS_HOG=0,"
-                  "-DPHYSFS_SUPPORTS_MVL=0,"
-                  "-DPHYSFS_SUPPORTS_QPAK=0,"
-                  "-DPHYSFS_SUPPORTS_ISO9660=0,"
-                  "-DPHYSFS_SUPPORTS_SLB=0,"
-                  "-DPHYSFS_SUPPORTS_VDF=0,"
+    .flags      = "-DPHYSFS_SUPPORTS_7Z=0 "
+                  "-DPHYSFS_SUPPORTS_GRP=0 "
+                  "-DPHYSFS_SUPPORTS_WAD=0 "
+                  "-DPHYSFS_SUPPORTS_CSM=0 "
+                  "-DPHYSFS_SUPPORTS_HOG=0 "
+                  "-DPHYSFS_SUPPORTS_MVL=0 "
+                  "-DPHYSFS_SUPPORTS_QPAK=0 "
+                  "-DPHYSFS_SUPPORTS_ISO9660=0 "
+                  "-DPHYSFS_SUPPORTS_SLB=0 "
+                  "-DPHYSFS_SUPPORTS_VDF=0 "
                   FLAGS_WARNING,
     .base_dir   = "third_party/physfs",
     .link_flags = "-whole-archive",
@@ -231,7 +231,7 @@ struct Target sota_dll = {
     .includes   = INCLUDES,
     .sources    = SOURCES,
     .excludes   = "src/main.c",
-    .link_flags = "-rpath=./,-whole-archive,",
+    .link_flags = "-rpath=./,-whole-archive ",
     .links      = LINKS,
     .flags      = "-Lbuild "
                   C_STANDARD" "
@@ -260,9 +260,9 @@ struct Target l2w_sota = {
 
 /* -- Testing -- */
 struct Target test = {
-    .includes   = INCLUDES","
+    .includes   = INCLUDES" "
                   INCLUDES_TEST,
-    .sources    = SOURCES","
+    .sources    = SOURCES" "
                   SOURCES_TEST,
     .excludes   = "src/main.c",
     .links      = LINKS,
@@ -275,10 +275,10 @@ struct Target test = {
 };
 
 struct Target bench = {
-    .includes   = INCLUDES","
-                  INCLUDES_TEST","
+    .includes   = INCLUDES" "
+                  INCLUDES_TEST" "
                   INCLUDES_BENCH,
-    .sources    = SOURCES","
+    .sources    = SOURCES" "
                   SOURCES_BENCH,
     .excludes   = "src/main.c",
     .links      = LINKS,
