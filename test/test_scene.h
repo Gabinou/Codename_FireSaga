@@ -55,7 +55,7 @@ void test_scene() {
     /* -- Statement 3 -- */
     statement   = scene.statements[3];
     didascalie  = scene.statements[3]._union.didascalie;
-    nourstest_true(statement.type == SCENE_STATEMENT_DIDASCALIE);
+    nourstest_true(statement.type  == SCENE_STATEMENT_DIDASCALIE);
     nourstest_true(didascalie.type == SCENE_DIDASCALIE_SLIDE);
 
     /* -- Statement 4 -- */

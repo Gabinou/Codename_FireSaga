@@ -100,7 +100,7 @@ void test_utilities() {
     memcpy(temp.data, "test_utilities", temp.num);
     nourstest_true(s8equal(s8_literal("Test_Utilities"), s8_camelCase(temp, '_', 2)));
 
-    memcpy(temp.data, "test_utilities", temp.num);
+    memcpy(temp.data, "test utilities", temp.num);
     nourstest_true(s8equal(s8_literal("Test Utilities"), s8_camelCase(temp, ' ', 2)));
 
     s8_free(&temp);

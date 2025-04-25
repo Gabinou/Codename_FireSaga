@@ -129,13 +129,10 @@ void test_combat_game() {
         temp_id = attacker_eq[attacker_equip_hand].id;
         attacker_weaponp = (struct Weapon *)DTAB_GET(gl_weapons_dtab, temp_id);
         SDL_assert(attacker_weaponp != NULL);
-        SDL_Log("attacker_weaponp->stats.hit %p", attacker_weaponp);
-        SDL_Log("attacker_weaponp->stats.hit %d", attacker_weaponp->stats.hit);
     }
 
     // manual Equation_Unit_Hit");
     SDL_assert(attacker_weaponp != NULL);
-    SDL_Log("attacker_weaponp->stats.hit %d", attacker_weaponp->stats.hit);
     nourstest_true(attacker_weaponp->stats.hit);
     nourstest_true(ES_A.dex);
     nourstest_true(ES_A.luck);

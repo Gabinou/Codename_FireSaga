@@ -305,7 +305,6 @@ void Scene_Didascalie_Slide_readJSON( void *input, const cJSON *jdid) {
     /* Compare conditions */
     if (Conditions_Match(&scene->line_cond, &scene->game_cond)) {
         statement.type   = SCENE_STATEMENT_DIDASCALIE;
-        statement._union.didascalie.type  = SCENE_DIDASCALIE_SLIDE;
 
         // Slide didascalie structure: {"Slide": {"Silou": [10,10,10,10]}}
         cJSON *jslide = cJSON_GetObjectItem(jdid, "Slide");
@@ -320,6 +319,7 @@ void Scene_Didascalie_Slide_readJSON( void *input, const cJSON *jdid) {
 
         SceneDidascalie *didascalie = &statement._union.didascalie;
         *didascalie = SceneDidascalie_default;
+        didascalie->type = SCENE_DIDASCALIE_SLIDE;
         statement.actor_unit_id = id;
 
         // Reading Slide paramaters from child array
@@ -426,8 +426,8 @@ void Scene_Line_readJSON(void *input, const cJSON *jstatement) {
         exit(1);
     }
 
-    s8 actor    = s8_mut(jline->child->string);
-    int id   = Unit_Name2ID(actor);
+    s8 name  = s8_mut(jline->child->string);
+    int id   = Unit_Name2ID(name);
 
     /* Compare conditions: conditions match and actor is NOT DEAD */
     if (!Conditions_Match(&scene->line_cond, &scene->game_cond)) {
@@ -443,10 +443,9 @@ void Scene_Line_readJSON(void *input, const cJSON *jstatement) {
 
         s8 line     = s8_mut(cJSON_GetStringValue(jline->child));
 
-        // scene_line->actor   = actor;
         scene_line->line    = line;
-        // Print line:
-        // SDL_Log("%s: %s", scene_line->actor.data, scene_line->line.data);
+
+        statement.actor_unit_id = id;
 
         Scene_Statement_Add(scene, statement);
     }
