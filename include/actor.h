@@ -28,6 +28,10 @@
 //      - Frame number (blinking, lips)
 //      - Resolution of portraits, lips, eyes
 
+/* --- FORWARD DECLARATIONS --- */
+struct Position;
+
+
 enum ACTOR_SPRITESHEEET {
     /* Order of element columns on spritesheets */
     ACTOR_BODY_ELEM     = 0,
@@ -91,7 +95,7 @@ typedef struct Actor {
 } Actor;
 extern const Actor Actor_default;
 
-void Actor_Draw(struct Actor *actor, struct Point *pos,
+void Actor_Draw(struct Actor *actor, struct Position *pos,
                 SDL_Texture *render_target,
                 SDL_Renderer *renderer);
 

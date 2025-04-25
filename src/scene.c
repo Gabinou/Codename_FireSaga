@@ -619,7 +619,7 @@ void _Scene_Draw_Actors(struct Scene *scene, SDL_Renderer *renderer) {
                             SCENE_ACTOR_POS_W,
                             SCENE_ACTOR_POS_H
                            };
-        SDL_Color color = palette_SOTA->colors[SCENE_ACTOR_COLOR_OFFSET + i];
+        SDL_Color color = palette_SOTA->colors[SCENE_ACTOR_COLOR_OFFSET + i + 10];
         SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
         SDL_RenderFillRect(renderer, &dstrect);
     }

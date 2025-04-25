@@ -1,5 +1,6 @@
 #include "actor.h"
 #include "palette.h"
+#include "position.h"
 #include "utilities.h"
 
 const Actor Actor_default = {
@@ -29,7 +30,7 @@ i32 Actor_Spritesheet_Eyes_Y(i32 eyes_id) {
     return (ACTOR_EYES_HEIGHT * ACTOR_EYES_FRAMES * eyes_id);
 }
 
-void Actor_Update(struct Actor *actor, struct Point *pos, SDL_Texture *render_target,
+void Actor_Update(struct Actor *actor, struct Position *pos, SDL_Texture *render_target,
                   SDL_Renderer *renderer) {
     SDL_assert(actor                != NULL);
     SDL_assert(renderer             != NULL);
@@ -58,7 +59,8 @@ void Actor_Update(struct Actor *actor, struct Point *pos, SDL_Texture *render_ta
     SDL_SetRenderTarget(renderer, NULL);
 }
 
-void Actor_Draw(struct Actor *actor, struct Point *pos,
+
+void Actor_Draw(struct Actor *actor, struct Position *pos,
                 SDL_Texture *render_target,
                 SDL_Renderer *renderer) {
     SDL_assert(actor    != NULL);
@@ -72,9 +74,12 @@ void Actor_Draw(struct Actor *actor, struct Point *pos,
     /* Copy Actor texture to render_target */
     SDL_SetRenderTarget(renderer, render_target);
     SDL_assert(actor->texture != NULL);
-    SDL_Rect dstrect = { pos->x, pos->y,
-                         SCENE_ACTOR_POS_W,
-                         SCENE_ACTOR_POS_H
+    pos->scale[0] = 4.;
+    pos->scale[1] = 4.;
+    SDL_Rect dstrect = { pos->pixel_pos.x + 200,
+                         pos->pixel_pos.y * 4,
+                         SCENE_ACTOR_POS_W * pos->scale[0],
+                         SCENE_ACTOR_POS_H * pos->scale[1]
                        };
 
     SDL_RenderCopy(renderer, actor->texture, NULL, &dstrect);

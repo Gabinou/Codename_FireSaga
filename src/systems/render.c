@@ -81,7 +81,7 @@ void Draw_Actor(tnecs_input *input) {
             continue;
 
         Actor_Draw(actor,
-                   &position->pixel_pos,
+                   position,
                    IES->render_target,
                    IES->renderer
                   );
