@@ -36,19 +36,26 @@ void Actor_Update(struct Actor *actor, struct Point *pos, SDL_Texture *render_ta
     SDL_assert(palette_SOTA         != NULL);
 
     // Draw a rectangle for every actor
-    SDL_Rect dstrect = { pos->x, pos->y,
+    SDL_Rect dstrect = { 0, 0,
                          SCENE_ACTOR_POS_W,
                          SCENE_ACTOR_POS_H
                        };
     // TODO: get rid of index
     static int index = 0;
+    if (actor->texture == NULL) {
+        actor->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
+                                           SDL_TEXTUREACCESS_TARGET, dstrect.w, dstrect.h);
+        SDL_assert(actor->texture != NULL);
+        SDL_SetTextureBlendMode(actor->texture, SDL_BLENDMODE_BLEND);
+    }
+    SDL_SetRenderTarget(renderer, actor->texture);
 
     SDL_Color color = palette_SOTA->colors[SCENE_ACTOR_COLOR_OFFSET + index++];
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
     SDL_RenderFillRect(renderer, &dstrect);
 
-
     Utilities_DrawColor_Reset(renderer);
+    SDL_SetRenderTarget(renderer, NULL);
 }
 
 void Actor_Draw(struct Actor *actor, struct Point *pos,
@@ -65,6 +72,11 @@ void Actor_Draw(struct Actor *actor, struct Point *pos,
     /* Copy Actor texture to render_target */
     SDL_SetRenderTarget(renderer, render_target);
     SDL_assert(actor->texture != NULL);
-    SDL_RenderCopy(renderer, actor->texture, NULL, NULL);
+    SDL_Rect dstrect = { pos->x, pos->y,
+                         SCENE_ACTOR_POS_W,
+                         SCENE_ACTOR_POS_H
+                       };
+
+    SDL_RenderCopy(renderer, actor->texture, NULL, &dstrect);
 }
 
