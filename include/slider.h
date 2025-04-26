@@ -66,9 +66,9 @@ typedef struct Slider {
     /* Slidetype exclusive factors */
     union Slider_uFactors ufactors;
 
+    i32     active;
     i32     slidetype;
     i32     fps;
-    i32     active;
 } Slider;
 extern const struct Slider Slider_default;
 

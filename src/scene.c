@@ -217,40 +217,33 @@ void Scene_readJSON(void *input, const cJSON *jscene) {
 i32 Scene_jsonStatement_Type(cJSON *jstatement) {
     cJSON *jline = cJSON_GetObjectItem(jstatement, "Line");
     if (jline != NULL) {
-        // SDL_Log("Is a Line");
         return (SCENE_STATEMENT_LINE);
     }
 
     cJSON *jcondition = cJSON_GetObjectItem(jstatement, "Condition");
     if (jcondition != NULL) {
-        // SDL_Log("Is a Condition");
         return (SCENE_STATEMENT_CONDITION);
     }
 
     i32 did = Scene_jsonDidascalie_Type(jstatement);
     if ((did > SCENE_DIDASCALIE_START) && (did < SCENE_DIDASCALIE_NUM)) {
-        // SDL_Log("Is a Didascalie");
         return (SCENE_STATEMENT_DIDASCALIE);
     }
 
-    // SDL_Log("Unknown Statement");
     return (SCENE_STATEMENT_START);
 }
 
 i32 Scene_jsonDidascalie_Type(const cJSON *jstatement) {
     cJSON *jappear = cJSON_GetObjectItem(jstatement, "Appear");
     if (jappear != NULL) {
-        // SDL_Log("Is an Appear");
         return (SCENE_DIDASCALIE_APPEAR);
     }
 
     cJSON *jslide = cJSON_GetObjectItem(jstatement, "Slide");
     if (jslide != NULL) {
-        // SDL_Log("Is a Slide");
         return (SCENE_DIDASCALIE_SLIDE);
     }
 
-    // SDL_Log("Unknown Didascalie");
     return (SCENE_DIDASCALIE_START);
 }
 
@@ -357,13 +350,10 @@ void Scene_Condition_readJSON(void *input, const cJSON *jcond) {
     u64 hash_cond   = sota_hash_djb2(condition);
 
     if (hash_cond == hash_alive) {
-        // SDL_Log("alive");
         Conditions_Alive_ID(&scene->line_cond, unit_id);
     } else if (hash_cond == hash_dead) {
-        // SDL_Log("dead");
         Conditions_Dead_ID(&scene->line_cond, unit_id);
     } else if (hash_cond == hash_recruited) {
-        // SDL_Log("recruited");
         Conditions_Recruited_ID(&scene->line_cond, unit_id);
     } else {
         SDL_Log("Problem parsing Scene's Condition: Unknown condition '%s'.",
@@ -553,8 +543,6 @@ int Scene_Statement_Next(struct Scene *scene) {
     // Skip if current statement index is invalid:
     if ((scene->current_statement < -1) ||
         (scene->current_statement >= statement_num)) {
-        SDL_Log("First return %d %d", (scene->current_statement < -1),
-                scene->current_statement >= statement_num);
         return (-1);
     }
 
@@ -563,7 +551,6 @@ int Scene_Statement_Next(struct Scene *scene) {
     do {
 
         scene->current_statement++;
-        SDL_Log("LOOP: scene->current_statement %d", scene->current_statement);
         // Break out if no more statements.
         if (scene->current_statement >= DARR_NUM(scene->statements)) {
             return (-1);
@@ -572,7 +559,6 @@ int Scene_Statement_Next(struct Scene *scene) {
         statement = scene->statements[scene->current_statement];
         if (statement.type == SCENE_STATEMENT_LINE) {
             // If statement is a line, render it
-            SDL_Log("BREAK");
             break;
         }
         if (statement.type == SCENE_STATEMENT_DIDASCALIE) {
@@ -589,7 +575,6 @@ int Scene_Statement_Next(struct Scene *scene) {
 
     } while (statement.type != SCENE_STATEMENT_LINE);
     scene->update = true;
-    SDL_Log("scene->current_statement %d", scene->current_statement);
     return (scene->current_statement);
 }
 
@@ -669,7 +654,6 @@ void Scene_Draw(struct Scene *scene, struct Settings *settings,
 }
 
 void Scene_Appear(  struct Scene *scene, struct SceneStatement * statement) {
-    SDL_Log("Scene_Appear");
     // Add actor to list of actors if appear didascalie
     SDL_assert(scene->actor_unit_id != NULL);
 
@@ -687,29 +671,28 @@ void Scene_Appear(  struct Scene *scene, struct SceneStatement * statement) {
 }
 
 void Scene_Slide(struct Scene *scene, struct SceneStatement * statement) {
-    SDL_Log("Scene_Slide");
     i32 unit_id = statement->actor_unit_id;
     SDL_assert(Unit_ID_Valid(unit_id));
 
     tnecs_entity actor_ent = Scene_Actor_Entity(scene, unit_id);
     SDL_assert(actor_ent > TNECS_NULL);
 
-    // TODO: design question: appear?
+    // TODO: design question: only appear sets visible to true?
     // Set actor position
     Actor *actor = IES_GET_COMPONENT(scene->world, actor_ent, Actor);
-    actor->visible = true;
+    actor->visible = 1;
 
     // Set actor position
     Position *position = IES_GET_COMPONENT(scene->world, actor_ent, Position);
-    position->pixel_pos.x = 10;
+    position->pixel_pos.x = -100;
     position->pixel_pos.y = SCENE_ACTOR_POS_Y;
 
-    //  Set slider target
+    // Set slider target
     Slider *slider = IES_GET_COMPONENT(scene->world, actor_ent, Slider);
-    slider->active = true;
     slider->target.x = SCENE_ACTOR_POS_X + 2 * SCENE_ACTOR_POS_W * 2 ;
     slider->target.y = SCENE_ACTOR_POS_Y;
     slider->slidetype = SLIDETYPE_GEOMETRIC;
+    slider->active = 10;
     SDL_assert(slider->active);
     SDL_assert(actor->visible);
 }
