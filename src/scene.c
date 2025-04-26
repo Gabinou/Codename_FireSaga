@@ -699,7 +699,7 @@ void Scene_Slide(struct Scene *scene, struct SceneStatement * statement) {
     Actor *actor = IES_GET_COMPONENT(scene->world, actor_ent, Actor);
     actor->visible = true;
 
-    // // Set actor position
+    // Set actor position
     Position *position = IES_GET_COMPONENT(scene->world, actor_ent, Position);
     position->pixel_pos.x = 10;
     position->pixel_pos.y = SCENE_ACTOR_POS_Y;
@@ -710,4 +710,6 @@ void Scene_Slide(struct Scene *scene, struct SceneStatement * statement) {
     slider->target.x = SCENE_ACTOR_POS_X + 2 * SCENE_ACTOR_POS_W * 2 ;
     slider->target.y = SCENE_ACTOR_POS_Y;
     slider->slidetype = SLIDETYPE_GEOMETRIC;
+    SDL_assert(slider->active);
+    SDL_assert(actor->visible);
 }

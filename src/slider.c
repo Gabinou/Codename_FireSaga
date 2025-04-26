@@ -151,7 +151,6 @@ void SliderOffscreen_Compute_Next(SliderInput input) {
 
 void Slider_Compute_Next(SliderInput input) {
     // Slider goes offscreen and reappears on the other side
-
     Slider  *slider     = input.slider;
     Point   *pos        = input.pos;
     const Point target  = input.target;

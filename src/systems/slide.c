@@ -132,10 +132,10 @@ void Slide_Actor(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_assert(input->data != NULL);
     /* -- Get components arrays -- */
-    struct Actor   *actor_arr     = TNECS_COMPONENT_ARRAY(input, Sprite_ID);
+    struct Actor   *actor_arr       = TNECS_COMPONENT_ARRAY(input, Sprite_ID);
     struct Slider   *slider_arr     = TNECS_COMPONENT_ARRAY(input, Slider_ID);
     struct Position *position_arr   = TNECS_COMPONENT_ARRAY(input, Position_ID);
-    SDL_assert(actor_arr   != NULL);
+    SDL_assert(actor_arr    != NULL);
     SDL_assert(slider_arr   != NULL);
     SDL_assert(position_arr != NULL);
 
@@ -148,9 +148,11 @@ void Slide_Actor(tnecs_input *input) {
         struct Slider   *slider     = slider_arr    + order;
         struct Position *position   = position_arr  + order;
 
+        SDL_Log("slider->active %d %d", order, slider->active);
         if (!actor->visible)
             continue;
 
+        SDL_Log("slider->active %d %d", order, slider->active);
         if (!slider->active)
             continue;
 
@@ -161,5 +163,7 @@ void Slide_Actor(tnecs_input *input) {
         input.reverse               = false;
 
         Slider_Compute_Next(input);
+        SDL_Log("pos %d %d", position->pixel_pos.x, position->pixel_pos.y);
+        SDL_Log("target %d %d", slider->target.x, slider->target.y);
     }
 }
