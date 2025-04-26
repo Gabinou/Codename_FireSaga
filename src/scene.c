@@ -274,7 +274,6 @@ void Scene_Didascalie_Appear_readJSON(void *input, const cJSON *jdid) {
     /* Compare conditions */
     if (Conditions_Match(&scene->line_cond, &scene->game_cond)) {
         statement.type   = SCENE_STATEMENT_DIDASCALIE;
-        statement._union.didascalie.type  = SCENE_DIDASCALIE_APPEAR;
 
         // TODO: appear at a specific spot
         // Appear didascalie structure: {"Appear": "Erwin"}
@@ -289,6 +288,7 @@ void Scene_Didascalie_Appear_readJSON(void *input, const cJSON *jdid) {
 
         SceneDidascalie *didascalie = &statement._union.didascalie;
         *didascalie = SceneDidascalie_default;
+        didascalie->type = SCENE_DIDASCALIE_APPEAR;
         statement.actor_unit_id = id;
 
         Scene_Statement_Add(scene, statement);
@@ -499,10 +499,16 @@ void Scene_Actor_Add(Scene *scene, i32 id) {
     Actor *actor = IES_GET_COMPONENT(scene->world, actor_ent, Actor);
     SDL_assert(actor != NULL);
     *actor = Actor_default;
-    struct Position *position = IES_GET_COMPONENT(scene->world, actor_ent, Position);
-    SDL_assert(position != NULL);
+    actor->visible = false;
+
+    //  Set slider target
+    Slider *slider = IES_GET_COMPONENT(scene->world, actor_ent, Slider);
+    *slider = Slider_default;
 
     // TODO: get rid of index
+    struct Position *position = IES_GET_COMPONENT(scene->world, actor_ent, Position);
+    *position = Position_default;
+    SDL_assert(position != NULL);
     static int index = 0;
     position->pixel_pos.x = SCENE_ACTOR_POS_X + index++ * (SCENE_ACTOR_POS_W);
     position->pixel_pos.y = SCENE_ACTOR_POS_Y;
@@ -523,6 +529,11 @@ i32 Scene_Actor_Order(Scene * scene, i32 id) {
         }
     }
     return (found);
+}
+
+tnecs_entity Scene_Actor_Entity(Scene * scene, i32 id) {
+    i32 order = Scene_Actor_Order(scene, id);
+    return (scene->actors[order]);
 }
 
 /* --- Statement --- */
@@ -564,15 +575,16 @@ int Scene_Statement_Next(struct Scene *scene) {
             SDL_Log("BREAK");
             break;
         }
-
-        if (scene_didascalies[statement._union.didascalie.type] != NULL) {
-            // If statement is a didascalie, run it
-            // Add actor to list of actors if appear didascalie
-            SDL_assert(scene->current_statement >= 0);
-            statement = scene->statements[scene->current_statement];
-            scene_didascalies[statement.type](scene, &statement);
+        if (statement.type == SCENE_STATEMENT_DIDASCALIE) {
+            i32 did_type = statement._union.didascalie.type;
+            if (scene_didascalies[did_type] != NULL) {
+                // If statement is a didascalie, run it
+                // Add actor to list of actors if appear didascalie
+                SDL_assert(scene->current_statement >= 0);
+                statement = scene->statements[scene->current_statement];
+                scene_didascalies[did_type](scene, &statement);
+            }
         }
-
         // Statement might be a condition
 
     } while (statement.type != SCENE_STATEMENT_LINE);
@@ -664,27 +676,38 @@ void Scene_Appear(  struct Scene *scene, struct SceneStatement * statement) {
     i32 unit_id = statement->actor_unit_id;
     SDL_assert(Unit_ID_Valid(unit_id));
 
-    DARR_PUT(scene->actor_unit_id, unit_id);
+    tnecs_entity actor_ent = Scene_Actor_Entity(scene, unit_id);
+
+    Actor *actor = IES_GET_COMPONENT(scene->world, actor_ent, Actor);
+    SDL_assert(actor != NULL);
+    *actor = Actor_default;
+    actor->visible = true;
+
+    // DARR_PUT(scene->actor_unit_id, unit_id);
 }
 
-void Scene_Slide(  struct Scene *scene, struct SceneStatement * statement) {
+void Scene_Slide(struct Scene *scene, struct SceneStatement * statement) {
     SDL_Log("Scene_Slide");
     i32 unit_id = statement->actor_unit_id;
     SDL_assert(Unit_ID_Valid(unit_id));
 
-    int actor_order = Scene_Actor_Order(scene, unit_id);
-    tnecs_entity actor_ent = scene->actors[actor_order];
+    tnecs_entity actor_ent = Scene_Actor_Entity(scene, unit_id);
     SDL_assert(actor_ent > TNECS_NULL);
 
+    // TODO: design question: appear?
     // Set actor position
+    Actor *actor = IES_GET_COMPONENT(scene->world, actor_ent, Actor);
+    actor->visible = true;
+
+    // // Set actor position
     Position *position = IES_GET_COMPONENT(scene->world, actor_ent, Position);
-    position->pixel_pos.x = -100;
+    position->pixel_pos.x = 10;
     position->pixel_pos.y = SCENE_ACTOR_POS_Y;
 
     //  Set slider target
     Slider *slider = IES_GET_COMPONENT(scene->world, actor_ent, Slider);
-    *slider = Slider_default;
-    slider->target.x = SCENE_ACTOR_POS_X + 2 * SCENE_ACTOR_POS_W * 2;
+    slider->active = true;
+    slider->target.x = SCENE_ACTOR_POS_X + 2 * SCENE_ACTOR_POS_W * 2 ;
     slider->target.y = SCENE_ACTOR_POS_Y;
     slider->slidetype = SLIDETYPE_GEOMETRIC;
 }

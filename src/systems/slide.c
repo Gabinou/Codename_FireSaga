@@ -151,6 +151,9 @@ void Slide_Actor(tnecs_input *input) {
         if (!actor->visible)
             continue;
 
+        if (!slider->active)
+            continue;
+
         struct SliderInput input    = SliderInput_default;
         input.slider                = slider;
         input.pos                   = &position->pixel_pos;

@@ -85,10 +85,6 @@ void Actor_Draw(      struct Actor      *actor,
         float zoom = camera->zoom;
         dstrect.x = SOTA_ZOOM(dstrect.x, zoom) + camera->offset.x / zoom;
         dstrect.y = SOTA_ZOOM(dstrect.y, zoom) + camera->offset.y / zoom;
-        // dstrect.x = dstrect.x + camera->offset.x / zoom;
-        // dstrect.y = dstrect.y + camera->offset.y / zoom;
-        // dstrect.y = dstrect.y + camera->offset.y / zoom;
-        // dstrect.x = dstrect.x + camera->offset.x / zoom;
         dstrect.w = SOTA_ZOOM(dstrect.w, zoom);
         dstrect.h = SOTA_ZOOM(dstrect.h, zoom);
     }

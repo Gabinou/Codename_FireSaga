@@ -68,6 +68,7 @@ typedef struct Slider {
 
     i32     slidetype;
     i32     fps;
+    i32     active;
 } Slider;
 extern const struct Slider Slider_default;
 

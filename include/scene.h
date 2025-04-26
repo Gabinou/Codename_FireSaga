@@ -259,6 +259,7 @@ i32     Scene_Actors_Num(Scene *scene);
 /// @return Actor order in actors DARR, or -1;
 i32     Scene_Actor_Order(Scene *scene, i32 id);
 void    Scene_Actor_Add( Scene *scene, i32 id);
+tnecs_entity Scene_Actor_Entity(Scene *scene, i32 id);
 
 /* --- I/O --- */
 s8 Scene_Filename_Chapter(i32 chapter, i32 subindex);
