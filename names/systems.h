@@ -1,6 +1,5 @@
 // TODO pfunc, phase, excl
 /* -- Animating and sliding systems before drawing --  */
-REGISTER_ENUM(Animate_Scene,            0, 1, Scene_ID,    Position_ID,   Text_ID, Timer_ID);
 REGISTER_ENUM(Animate_Cutscene,         0, 1, Cutscene_ID, Position_ID,   Text_ID, Timer_ID);
 REGISTER_ENUM(Slide_Sprite,             0, 0, Sprite_ID,   Position_ID,   Slider_ID);
 REGISTER_ENUM(Slide_Actor,              0, 1, Actor_ID,    Position_ID,   Slider_ID);

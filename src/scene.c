@@ -466,27 +466,6 @@ void Scene_Finish(struct Scene * scene, struct Game * sota) {
 }
 
 
-// /* --- Animate --- */
-// void _Scene_Animate_Actors(        struct Scene *scene) {
-
-// }
-// void _Scene_Animate_Background(    struct Scene *scene) {
-
-// }
-// void _Scene_Animate_Text_Boxs(  struct Scene *scene) {
-
-// }
-
-void Scene_Animate(struct Game  * sota, tnecs_entity entity,
-                   struct Scene * scene, struct Timer * timer) {
-    //     /* - Change frame to be drawn each frame - */
-
-    //     _Scene_Animate_Background(scene);
-    //     _Scene_Animate_Actors(scene);
-    //     _Scene_Animate_Text_Boxs(scene);
-}
-
-
 void Scene_Statement_Add(Scene * scene, SceneStatement statement) {
     SDL_assert(scene        != NULL);
 

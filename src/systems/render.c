@@ -379,32 +379,3 @@ void Animate_Cutscene(tnecs_input *input) {
         // Cutscene_Animate(IES, entity, scene, timer);
     }
 }
-
-void Animate_Scene(tnecs_input *input) {
-    /* --- PRELIMINARIES --- */
-    // TODO: not sure scene should be animated like this
-    //  - Actors need to be entities to slide.
-    // Maybe this should be Draw_Scene_Static:
-    //  - Nothing animated -> background?
-    // Or just remove this
-    //
-    /* -- Get game -- */
-    Game *IES = (Game *)input->data;
-    SDL_assert(IES != NULL);
-
-    /* -- Get components arrays -- */
-    struct Timer    *timer_arr = TNECS_COMPONENT_ARRAY(input, Timer_ID);
-    struct Scene    *scene_arr = TNECS_COMPONENT_ARRAY(input, Scene_ID);
-
-    /* --- DRAWING TEXT ENTITIES --- */
-    for (u16 order = 0; order < input->num_entities; order++) {
-        struct Timer    *timer = &timer_arr[order];
-        struct Scene    *scene = &scene_arr[order];
-
-        tnecs_world     *world       = input->world;
-        size_t           archetype_id = input->entity_archetype_id;
-        tnecs_entity     entity      = world->bytype.entities[archetype_id][order];
-
-        Scene_Animate(IES, entity, scene, timer);
-    }
-}

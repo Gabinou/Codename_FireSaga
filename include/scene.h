@@ -318,14 +318,6 @@ void Scene_Finish(      struct Scene *scene, struct Game *sota);
 
 i32 Scene_jsonStatement_Type(cJSON *jstatement);
 
-/* --- Play --- */
-void _Scene_Animate_Actors(     struct Scene *scene);
-void _Scene_Animate_Text_Boxs(  struct Scene *scene);
-void _Scene_Animate_Background( struct Scene *scene);
-
-void Scene_Animate(struct Game  *sota, tnecs_entity entity,
-                   struct Scene *scene, struct Timer *timer);
-
 /* --- Draw --- */
 void _Scene_Draw_Text(      Scene *scene, SDL_Texture *render_target, SDL_Renderer *renderer);
 void _Scene_Draw_Actors(    Scene *scene, SDL_Renderer *renderer);
