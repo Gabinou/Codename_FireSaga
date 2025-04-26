@@ -56,7 +56,6 @@ union Slider_uFactors {
 
 /* --- COMPONENTS --- */
 typedef struct Slider {
-    u8      slidetype;
     /* Ultimate target of Slider movement */
     struct Point target;
 
@@ -67,6 +66,7 @@ typedef struct Slider {
     /* Slidetype exclusive factors */
     union Slider_uFactors ufactors;
 
+    i32     slidetype;
     i32     fps;
 } Slider;
 extern const struct Slider Slider_default;

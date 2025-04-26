@@ -583,28 +583,6 @@ int Scene_Statement_Next(struct Scene *scene) {
 
 
 /* --- Draw --- */
-void _Scene_Draw_Actors(struct Scene *scene, SDL_Renderer *renderer) {
-    SDL_assert(scene                != NULL);
-    SDL_assert(renderer             != NULL);
-    SDL_assert(palette_SOTA          != NULL);
-    SDL_assert(scene->actor_unit_id   != NULL);
-
-    for (i32 i = 0; i < DARR_NUM(scene->actor_unit_id); i++) {
-        // TODO: make actors into component
-
-        // Draw a rectangle for every actor
-        SDL_Rect dstrect = {SCENE_ACTOR_POS_X + 2 * SCENE_ACTOR_POS_W * i,
-                            SCENE_ACTOR_POS_Y,
-                            SCENE_ACTOR_POS_W,
-                            SCENE_ACTOR_POS_H
-                           };
-        SDL_Color color = palette_SOTA->colors[SCENE_ACTOR_COLOR_OFFSET + i + 10];
-        SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
-        SDL_RenderFillRect(renderer, &dstrect);
-    }
-
-    Utilities_DrawColor_Reset(renderer);
-}
 
 void _Scene_Draw_Background(    struct Scene *scene, SDL_Renderer *renderer) {
     SDL_RenderCopy(renderer, scene->texture_background, NULL, NULL);
@@ -658,7 +636,6 @@ void Scene_Update(struct Scene *scene, struct Settings *settings,
     Utilities_DrawColor_Reset(renderer);
 
     _Scene_Draw_Background(scene, renderer);
-    _Scene_Draw_Actors(scene, renderer);
     _Scene_Draw_Text(scene, render_target, renderer);
     SDL_SetRenderTarget(renderer, render_target);
 }
@@ -706,6 +683,8 @@ void Scene_Slide(  struct Scene *scene, struct SceneStatement * statement) {
 
     //  Set slider target
     Slider *slider = IES_GET_COMPONENT(scene->world, actor_ent, Slider);
+    *slider = Slider_default;
     slider->target.x = SCENE_ACTOR_POS_X + 2 * SCENE_ACTOR_POS_W * 2;
     slider->target.y = SCENE_ACTOR_POS_Y;
+    slider->slidetype = SLIDETYPE_GEOMETRIC;
 }
