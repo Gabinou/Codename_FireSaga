@@ -95,8 +95,18 @@ typedef struct Actor {
 } Actor;
 extern const Actor Actor_default;
 
-void Actor_Draw(struct Actor *actor, struct Position *pos,
-                SDL_Texture *render_target,
-                SDL_Renderer *renderer);
+void Actor_Update(      struct Actor    *actor,
+                        const struct Position *pos,
+                        const struct Camera   *camera,
+                        SDL_Texture     *render_target,
+                        SDL_Renderer    *renderer);
+
+void Actor_Draw(      struct Actor      *actor,
+                      const struct Position   *pos,
+                      const struct Camera     *camera,
+                      SDL_Texture             *render_target,
+                      SDL_Renderer            *renderer);
+
+
 
 #endif /* ACTOR_H */

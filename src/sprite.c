@@ -356,6 +356,7 @@ void Sprite_Rects_Init(struct Sprite *sprite) {
 
 void Cursor_Dstrect_Relative(struct Sprite *sprite, struct Point *pixel_pos,
                              struct Camera *camera) {
+    /* Compute dstrect from camera position and zoom */
     float zoom = camera->zoom;
     sprite->dstrect.x = SOTA_ZOOM(pixel_pos->x, zoom) + camera->offset.x;
     sprite->dstrect.y = SOTA_ZOOM(pixel_pos->y, zoom) + camera->offset.y;
@@ -365,8 +366,13 @@ void Cursor_Dstrect_Relative(struct Sprite *sprite, struct Point *pixel_pos,
 
 void Sprite_Dstrect_Relative(struct Sprite *sprite, struct Point *pixel_pos,
                              struct Camera *camera) {
+    /* Compute dstrect from camera position and zoom */
     float zoom = camera->zoom;
     if (sprite->map_unit) {
+        /* Sprite is a map unit */
+        // - Map unit sprites are bigger than tiles: 32x32 > 16x16
+        // - Map units are on bottom left of 32x32 texture
+        // - Compute offset so map_unit looks to be in middle of tile
         struct Spritesheet *spritesheet = sprite->spritesheet;
         SDL_assert(spritesheet != NULL);
         int offset_x = 0, offset_y = 0;
@@ -383,6 +389,7 @@ void Sprite_Dstrect_Relative(struct Sprite *sprite, struct Point *pixel_pos,
         sprite->dstrect.w = SOTA_ZOOM((sprite->tilesize[0] * MAP_UNIT_TILESIZE_X), zoom);
         sprite->dstrect.h = SOTA_ZOOM((sprite->tilesize[1] * MAP_UNIT_TILESIZE_Y), zoom);
     } else {
+        /* Generic sprite */
         sprite->dstrect.x = SOTA_ZOOM(pixel_pos->x, zoom) + camera->offset.x;
         sprite->dstrect.y = SOTA_ZOOM(pixel_pos->y, zoom) + camera->offset.y;
         sprite->dstrect.w = SOTA_ZOOM(sprite->tilesize[0], zoom);
@@ -390,6 +397,8 @@ void Sprite_Dstrect_Relative(struct Sprite *sprite, struct Point *pixel_pos,
     }
 }
 
+
+// TODO: _Absolute functions are for camera == NULL too
 void Sprite_Dstrect_Absolute(struct Sprite *sprite, struct Point *pixel_pos,
                              struct Camera *camera) {
     sprite->dstrect.x = pixel_pos->x;

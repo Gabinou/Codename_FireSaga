@@ -504,7 +504,7 @@ void Scene_Actor_Add(Scene *scene, i32 id) {
 
     // TODO: get rid of index
     static int index = 0;
-    position->pixel_pos.x = SCENE_ACTOR_POS_X + index++ * (SCENE_ACTOR_POS_W + 10);
+    position->pixel_pos.x = SCENE_ACTOR_POS_X + index++ * (SCENE_ACTOR_POS_W);
     position->pixel_pos.y = SCENE_ACTOR_POS_Y;
 
     /* Add new actor */
@@ -706,6 +706,6 @@ void Scene_Slide(  struct Scene *scene, struct SceneStatement * statement) {
 
     //  Set slider target
     Slider *slider = IES_GET_COMPONENT(scene->world, actor_ent, Slider);
-    slider->target.x = SCENE_ACTOR_POS_X + 2 * SCENE_ACTOR_POS_W * 5;
+    slider->target.x = SCENE_ACTOR_POS_X + 2 * SCENE_ACTOR_POS_W * 2;
     slider->target.y = SCENE_ACTOR_POS_Y;
 }
