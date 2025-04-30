@@ -134,7 +134,7 @@ void Map_Tilesets_Load(struct Map *map) {
 
         /* - Load tileset - */
         tilesetname = s8cat(tilesetname, s8_literal(DIR_SEPARATOR"Tileset_"));
-        tilesetname = s8cat(tilesetname, temp_tile->name);
+        tilesetname = s8cat(tilesetname, Tile_Name(temp_tile));
         tilesetname = s8cat(tilesetname, s8_literal(".png"));
         if (map->tileset_surfaces[map->ipalette_base][i] != NULL)
             SDL_FreeSurface(map->tileset_surfaces[map->ipalette_base][i]);

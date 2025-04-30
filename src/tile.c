@@ -22,7 +22,7 @@ const struct Tile Tile_default = {
 };
 
 s8 Tile_Name(struct Tile *tile) {
-    return(global_tilenames[tile->id]);
+    return (global_tilenames[tile->id]);
 }
 
 void Mobj_Link_Init(struct Mobj_Link *mobj) {
