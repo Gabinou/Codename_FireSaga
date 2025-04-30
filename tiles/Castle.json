@@ -2,7 +2,7 @@
 	"Tile":	{
 		"Name":	"Castle",
 		"id":	66,
-		"inside":	false,
+		"indoors":	false,
 		"Stats":	{
 			"Dodge":	0,
 			"Pprot":	0,

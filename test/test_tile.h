@@ -19,14 +19,12 @@ void test_tile() {
     struct Tile tile1 =  {
         .jsonio_header.json_element   = JSON_TILE,
         .cost           = in_cost,
-        .inside         = true,
+        .indoors         = true,
         .id             = TILE_THRONE,
         .stats          = in_tile_stats
     };
-    tile1.name = s8_mut("Throne");
-    nourstest_true(tile1.inside == true);
+    nourstest_true(tile1.indoors == true);
     struct Movement_cost out_cost = Movement_cost_default;
-    nourstest_true(s8equal(tile1.name, s8_literal("Throne")));
     nourstest_true(tile1.id == TILE_THRONE);
     out_cost        = tile1.cost;
     out_tile_stats  = tile1.stats;
@@ -53,7 +51,7 @@ void test_tile() {
     nourstest_true(out_tile_stats.Pprot == in_tile_stats.Pprot);
     nourstest_true(out_tile_stats.Mprot == in_tile_stats.Mprot);
     nourstest_true(out_tile_stats.heal  == in_tile_stats.heal);
-    nourstest_true(tile1.inside == true);
+    nourstest_true(tile1.indoors == true);
     jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "tile_test.json")), &tile1, false);
     jsonio_readJSON(s8_literal(PATH_JOIN("saves", "tile_test.json")), &tile3);
     nourstest_true(tile3.stats.dodge == in_tile_stats.dodge);
@@ -65,7 +63,6 @@ void test_tile() {
                                      PATH_JOIN("saves", "tile_rewrite.json")));
     nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "tile_rewrite.json")));
     nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "tile_test.json")));
-    nourstest_true(s8equal(tile1.name, tile3.name));
     nourstest_true(tile1.id == tile3.id);
     out_cost        = tile1.cost;
     out_tile_stats  = tile1.stats;

@@ -2,7 +2,7 @@
 	"Tile":	{
 		"Name":	"Wasteland",
 		"id":	41,
-		"inside":	false,
+		"indoors":	false,
 		"Stats":	{
 			"Dodge":	0,
 			"Pprot":	0,

@@ -2,7 +2,7 @@
 	"Tile":	{
 		"Name":	"Icons",
 		"id":	47,
-		"inside":	false,
+		"indoors":	false,
 		"Stats":	{
 			"Dodge":	0,
 			"Pprot":	0,

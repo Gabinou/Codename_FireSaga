@@ -2,7 +2,7 @@
 	"Tile":	{
 		"Name":	"Thicket",
 		"id":	13,
-		"inside":	false,
+		"indoors":	false,
 		"Stats":	{
 			"Dodge":	20,
 			"Pprot":	0,

@@ -2,7 +2,7 @@
 	"Tile":	{
 		"Name":	"Cave",
 		"id":	33,
-		"inside":	false,
+		"indoors":	false,
 		"Stats":	{
 			"Dodge":	20,
 			"Pprot":	0,

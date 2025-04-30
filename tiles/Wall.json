@@ -2,7 +2,7 @@
 	"Tile":	{
 		"Name":	"Wall",
 		"id":	52,
-		"inside":	true,
+		"indoors":	true,
 		"Stats":	{
 			"Dodge":	0,
 			"Pprot":	0,

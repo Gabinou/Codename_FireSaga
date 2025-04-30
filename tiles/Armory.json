@@ -2,7 +2,7 @@
 	"Tile":	{
 		"Name":	"Armory",
 		"id":	63,
-		"inside":	false,
+		"indoors":	false,
 		"Stats":	{
 			"Dodge":	15,
 			"Pprot":	0,

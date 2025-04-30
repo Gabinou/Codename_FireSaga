@@ -2,7 +2,7 @@
 	"Tile":	{
 		"Name":	"Bones",
 		"id":	43,
-		"inside":	false,
+		"indoors":	false,
 		"Stats":	{
 			"Dodge":	0,
 			"Pprot":	0,

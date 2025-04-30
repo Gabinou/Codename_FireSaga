@@ -2,7 +2,7 @@
 	"Tile":	{
 		"Name":	"Forest",
 		"id":	12,
-		"inside":	false,
+		"indoors":	false,
 		"Stats":	{
 			"Dodge":	15,
 			"Pprot":	2,

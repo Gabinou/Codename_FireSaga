@@ -2,7 +2,7 @@
 	"Tile":	{
 		"Name":	"Peak",
 		"id":	32,
-		"inside":	false,
+		"indoors":	false,
 		"Stats":	{
 			"Dodge":	30,
 			"Pprot":	0,

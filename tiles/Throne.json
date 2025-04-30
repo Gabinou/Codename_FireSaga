@@ -2,7 +2,7 @@
 	"Tile":	{
 		"Name":	"Throne",
 		"id":	54,
-		"inside":	true,
+		"indoors":	true,
 		"Stats":	{
 			"Dodge":	20,
 			"Pprot":	2,
