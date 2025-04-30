@@ -8,7 +8,7 @@
 struct Unit;
 struct cJSON;
 
-struct Reinforcement {
+typedef struct Reinforcement {
     struct Point position;
     i32 army;
     i32 boss_icon;
@@ -18,7 +18,7 @@ struct Reinforcement {
     i32 ai_id; /* Overrides ai_id in unit */
     i32 turn;
     i32 levelups;
-};
+} Reinforcement;
 extern const struct Reinforcement Reinforcement_default;
 
 void Reinforcement_Free(struct Reinforcement  *a);

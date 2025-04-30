@@ -13,7 +13,7 @@ typedef struct Position {
     struct Point boundsmax; /* inclusive */
     float scale[TWO_D];
     /* If not on the Tilemap, position is absolute in window */
-    b32 onTilemap  : 1; /* position transformed by scale   */
+    b32 onTilemap; /* position transformed by scale   */
 } Position;
 extern const struct Position Position_default;
 
