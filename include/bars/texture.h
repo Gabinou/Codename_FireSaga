@@ -12,12 +12,12 @@
 
 struct TextureBar {
     SDL_Texture *textures;  /* [row * col_len + col] */
-    int row_len; /* number of rows of textures */
-    int len; /* [patches] */
-    float fill;
     struct Point pos; // [pixels]
     struct Point scale;
     struct Point size_pixels; // [pixels]
+    i32 row_len; /* number of rows of textures */
+    i32 len; /* [patches] */
+    float fill;
 };
 extern const struct TextureBar TextureBar_default;
 

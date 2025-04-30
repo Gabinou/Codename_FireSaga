@@ -67,8 +67,8 @@ struct ItemDropMenu {
 
     SDL_Texture *texture;
 
-    int item_todrop;   /* side space */
-    int item_width;    /* [pixels]   */
+    i32 item_todrop;   /* side space */
+    i32 item_width;    /* [pixels]   */
 
     struct Unit *unit;
 

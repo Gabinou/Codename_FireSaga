@@ -72,6 +72,7 @@ typedef struct Actor {
     *   - Lips move, eyes blink, face and clothes change...
     *   - One new component > 4 entities wSprite per actor
     */
+    SDL_Texture *texture;  /* pixels actually shown on screen */
 
     /* Current rendered element */
     i32 body_id;
@@ -87,8 +88,6 @@ typedef struct Actor {
     // TODO: speed for every frame?
     i32 lips_speed; /* [ms] */
     i32 eyes_speed; /* [ms] */
-
-    SDL_Texture *texture;  /* pixels actually shown on screen */
 
     b32 update;
     b32 visible;

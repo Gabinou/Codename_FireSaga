@@ -21,12 +21,12 @@ enum MAP_HPBAR {
 // Drawn into texture, kept in memory.
 
 typedef struct MapHPBar {
-    size_t len; /* [pixels] as filled */
-    tnecs_entity unit_ent;
     struct Point tilemap_pos;
     SDL_Texture *texture;
-    b32 update  : 1;
-    b32 visible : 1;
+    tnecs_entity unit_ent;
+    size_t len; /* [pixels] as filled */
+    b32 update;
+    b32 visible;
 } MapHPBar;
 extern const struct MapHPBar MapHPBar_default;
 

@@ -157,8 +157,8 @@ struct LoadoutSelectMenu {
     s8 item_name;
     s8 header;
 
-    int archetype_stronghand;
-    int archetype_weakhand;
+    i32 archetype_stronghand;
+    i32 archetype_weakhand;
     u8 black;
     u8 white;
 };

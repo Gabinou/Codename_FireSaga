@@ -19,10 +19,10 @@ struct Graph;
 //         - Units to fight are encoded in sota->aggressor, sota->defendant
 
 typedef struct CombatAnimation { /* on Map */
-    int attack_ind;
-    int pause_after_ms;
-    int pause_before_ms;
-    int frame_count; /* highest frame index played in current animation */
+    i32 attack_ind;
+    i32 pause_after_ms;
+    i32 pause_before_ms;
+    i32 frame_count; /* highest frame index played in current animation */
 } CombatAnimation;
 extern const struct CombatAnimation CombatAnimation_default;
 

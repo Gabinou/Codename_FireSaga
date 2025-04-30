@@ -21,23 +21,15 @@
 /*                    |             |                                   */
 /*     ..._BOTLEFT    | ..._BOTTOM  |    ..._BOTRIGHT       Y -> BELOW  */
 /*                    |             |                                   */
-// Note: actual position of all objects is in top left corner (o)
-// Note: ... is 'SOTA_DIRECTION'
+// Legend:
+//      - ...   -> 'SOTA_DIRECTION'
+//      - o     ->     origin
 
 /* --- Ternary logic --- */
-/* - Applications:                                                                      */
-/*   1. Compute 2D direction from X/Y ternaries + simple math                           */
-/*      Example:   [X = SOTA_TERNARY_BELOW, Y = SOTA_TERNARY_EQUAL]                     */
+/*  Compute 2D direction from X/Y direction */
+/*      Example:   [X = 0, Y = 1]           */
 /*             2D Direction = X * 3^0 + Y * 3^1 =  1 + 0 = 1 -> SOTA_DIRECTION_LEFT     */
-enum SOTA_TERNARY {
-    /* Unbalanced ternary */
-    SOTA_TERNARY_EQUAL  =   0,
-    SOTA_TERNARY_FALSE  =   1,
-    SOTA_TERNARY_BELOW  =   1,
-    SOTA_TERNARY_ABOVE  =   2,
-    SOTA_TERNARY_TRUE   =   2,
-};
-
+/*  Note: Ternary functions check if X/Y are below, above, or equal    */
 int Ternary_Direction(struct Point move);
 int Ternary_Direction_Index(int x, int y);
 int Ternary_Direction_Straight(int direction);

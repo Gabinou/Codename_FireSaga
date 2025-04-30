@@ -56,7 +56,6 @@ struct Menu {
 
     /* -- Top left corner of elem box -- */
     struct Point *elem_pos;                 /* [elem] absolute pos on texture */
-    i32 elem_pos_frame;                     /* elem_pos reference frame */
 
     /* -- Width/height of elem box -- */
     struct Point *elem_box;                 /* [elem] width, height of box in [pixel] */
@@ -68,11 +67,12 @@ struct Menu {
     menu_draw_f         draw;
     menu_set_update_f   set_update;
 
-    i8 elem;     /* -1 is NULL */
-    i8 elem_num;
-    i8 type;
+    i32 elem;     /* -1 is NULL */
+    i32 elem_num;
+    i32 elem_pos_frame;                     /* elem_pos reference frame */
+    i32 type;
 
-    b32 visible : 1;
+    b32 visible;
 };
 extern const struct Menu Menu_default;
 

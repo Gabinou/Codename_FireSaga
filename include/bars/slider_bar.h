@@ -18,10 +18,10 @@ enum SLIDER_BAR {
 };
 
 typedef struct SliderBar {
+    struct Point pos;
     int fill;
     int len;
     int increment;
-    struct Point pos;
 } SliderBar;
 extern const SliderBar SliderBar_default;
 

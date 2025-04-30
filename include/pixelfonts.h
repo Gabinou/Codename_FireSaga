@@ -37,14 +37,7 @@ typedef struct PixelFont {
     SDL_Texture *texture;  /* ASCII order */
     SDL_Surface *surface;  /* ASCII order */
     SDL_Texture *write_texture;
-    i8  glyph_space;    /* [pixels] */
-    u8  word_space;     /* [pixels] */
-    u8  glyph_width;
-    u8  glyph_height;
-    u8  col_len;
-    u8  row_len;
-    i8  linespace;      /* [pixels] space to add to glyph height for new line */
-    u16 charset_num;
+    SDL_Palette *palette;
     u8 *glyph_bbox_width;
     u8 *glyph_bbox_height;
     const u8 *y_offset; /* for each glyph */
@@ -52,7 +45,14 @@ typedef struct PixelFont {
     /* Text Scrolling */
     int  scroll_speed;   /* [ms] time until new character is rendered */
     int  scroll_len;   /* [pixels/char] to render */
-    SDL_Palette *palette;
+    u16 charset_num;
+    i8  glyph_space;    /* [pixels] */
+    u8  word_space;     /* [pixels] */
+    u8  glyph_width;
+    u8  glyph_height;
+    u8  col_len;
+    u8  row_len;
+    i8  linespace;      /* [pixels] space to add to glyph height for new line */
     i8 black;
     i8 white;
 } PixelFont;
