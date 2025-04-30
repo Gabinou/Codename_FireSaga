@@ -186,9 +186,7 @@ enum PRE_COMBAT_POPUP_ELEMS {
 };
 
 struct PreCombatPopup {
-    b32 update;
     struct Point pos; // [pixels]
-    int mode;
     SDL_Texture *texture;
     SDL_Texture *texture_weapons;
     SDL_Texture *texture_face_aggressor;
@@ -209,6 +207,8 @@ struct PreCombatPopup {
 
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
+    b32 update;
+    int mode;
 };
 extern const struct PreCombatPopup PreCombatPopup_default;
 

@@ -103,7 +103,6 @@ enum POPUP_UNIT {
 #define POPUP_POS(xory, offset) (offset * n9patch->scale.xory)
 
 typedef struct PopUp_Unit {
-    b32 update;
     struct Unit *unit;  /* goes offscreen if NULL */
     int distance; /* distance from unit to enemy on tilemap */
     SDL_Texture *texture;
@@ -115,6 +114,7 @@ typedef struct PopUp_Unit {
     struct Point offset; /* amount popup moves in one frame?*/
     struct Point cursor_limit_min;
     struct Point cursor_limit_max;
+    b32 update;
 } PopUp_Unit;
 extern const struct PopUp_Unit PopUp_Unit_default;
 

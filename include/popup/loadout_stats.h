@@ -163,7 +163,6 @@ enum PLS_ELEMS {
 };
 
 typedef struct PopUp_Loadout_Stats {
-    b32 update;
     tnecs_entity unit_ent;
     tnecs_world *world;
     SDL_Texture *texture;
@@ -188,9 +187,10 @@ typedef struct PopUp_Loadout_Stats {
     u16 type_right;
 
     int distance;
-    b32 l_equip_override   : 1; /* ? */
-    b32 r_equip_override   : 1; /* ? */
-    b32 tophand_stronghand : 1; // If false, tophand is lefthand
+    b32 update;
+    b32 l_equip_override; /* ? */
+    b32 r_equip_override; /* ? */
+    b32 tophand_stronghand; // If false, tophand is lefthand
 } PopUp_Loadout_Stats;
 
 extern const struct PopUp_Loadout_Stats PopUp_Loadout_Stats_default;

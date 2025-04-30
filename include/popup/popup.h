@@ -33,7 +33,7 @@ struct PopUp {
     i32             timer_ns;
     i8              type;
     u8              slidetype;
-    b32            visible;
+    b32             visible;
 };
 extern const struct PopUp PopUp_default;
 

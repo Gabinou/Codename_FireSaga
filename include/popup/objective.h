@@ -30,14 +30,14 @@ enum POPUP_OBJECTIVE {
 };
 
 typedef struct PopUp_Objective {
-    b32 update;
     char *objective;
     char *sub_objective;
-    int text_width;
     SDL_Texture *texture;
     SDL_Texture *texture_header;
     struct PixelFont *pixelnours;
     struct Padding padding;
+    int text_width;
+    b32 update;
 } PopUp_Objective;
 extern const struct PopUp_Objective PopUp_Objective_default;
 

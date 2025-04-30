@@ -17,10 +17,10 @@ struct Position;
 // For enemies: Enemy is a boss
 //      - Killing may lead to win
 typedef struct Boss {
-    i8 icon;
     SDL_Rect srcrect; /* x,y,w,h */
     SDL_Rect dstrect; /* x,y,w,h */
     SDL_Texture *texture;  /* pixels */
+    i32 icon;
 } Boss;
 extern const struct Boss Boss_default;
 

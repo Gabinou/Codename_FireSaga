@@ -53,7 +53,6 @@ enum POPUP_TILE {
 #define POPUP_POS(xory, offset) (offset * n9patch->scale.xory)
 
 typedef struct PopUp_Tile {
-    b32 update;
     struct Tile *tile;
     SDL_Texture *texture;
     SDL_Texture *texture_header;
@@ -63,6 +62,7 @@ typedef struct PopUp_Tile {
     struct Point offset;
     struct Point cursor_limit_min;
     struct Point cursor_limit_max;
+    b32 update;
 } PopUp_Tile;
 extern const struct PopUp_Tile PopUp_Tile_default;
 

@@ -17,8 +17,8 @@ enum STATUSES {
 typedef struct Unit_status {
     /* Number of turns to be in this state. */
     /* <0 means forever. */
-    i8 status;
-    i8 turns;
+    i32 status;
+    i32 turns;
 } Unit_status;
 extern const struct Unit_status Unit_status_default;
 

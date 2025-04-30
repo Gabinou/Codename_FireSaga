@@ -27,7 +27,7 @@ typedef struct Loadout {
 // TODO: use jsonIO_Header everywhere.
 typedef struct jsonIO_Header {
     s8   json_filename; /* JSON_FILENAME_bOFFSET = 0  (+ 24) */
-    u8   json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
+    i32  json_element;  /* JSON_ELEM_bOFFSET     = 24 (+ ALIGNMENT) */
 } jsonIO_Header;
 
 extern const Loadout Loadout_default;
@@ -363,7 +363,6 @@ extern const struct nmath_hexpoint_int32_t Cube_Diagonal_yp;
 extern const struct nmath_hexpoint_int32_t Cube_Diagonal_ym;
 extern const struct nmath_hexpoint_int32_t Cube_Diagonal_zp;
 extern const struct nmath_hexpoint_int32_t Cube_Diagonal_zm;
-
 
 enum SOTA_PADDING_DIRECTION {
     SOTA_PADDING_RIGHT  = 0,

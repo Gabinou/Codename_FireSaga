@@ -79,7 +79,6 @@ enum POPUP_MAP_COMBAT {
 };
 
 typedef struct PopUp_Map_Combat {
-    b32 update;
 
     tnecs_world  *world;
 
@@ -102,9 +101,10 @@ typedef struct PopUp_Map_Combat {
     struct Combat_Forecast *forecast;
     struct Combat_Phase    *phases;
 
-    int current_attack;
-
     SDL_Palette *palette;
+
+    int current_attack;
+    b32 update;
 } PopUp_Map_Combat;
 extern const struct PopUp_Map_Combat PopUp_Map_Combat_default;
 

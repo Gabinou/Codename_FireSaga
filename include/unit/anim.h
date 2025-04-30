@@ -7,8 +7,8 @@
 
 /* --- UnitMoveAnimation --- */
 typedef struct UnitMoveAnimation {
-    u64 time_ns;
     struct Point target;
+    u64 time_ns;
     tnecs_entity unit;
 } UnitMoveAnimation;
 extern const struct UnitMoveAnimation UnitMoveAnimation_default;
