@@ -32,12 +32,13 @@ typedef struct Mobj_Link {
 } Mobj_Link;
 extern const struct Mobj_Link Mobj_Link_default;
 
-typedef struct Arena {
-
-} Arena;
+typedef struct Coliseum {
+    /* Units can fight an enemy for money */
+} Coliseum;
 extern const struct Arena Arena_default;
 
 typedef struct Village {
+    /* Units can talk to villagers */
 
 } Village;
 extern const struct Village Village_default;

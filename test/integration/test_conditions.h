@@ -13,7 +13,6 @@ u32 event_Start;
 #undef REGISTER_ENUM
 u32 event_End;
 
-
 void test_boss_death_win(int argc, char *argv[]) {
     /* -- Startup -- */
     Names_Load_All();

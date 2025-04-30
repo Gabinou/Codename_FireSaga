@@ -42,6 +42,7 @@ void Map_Tiles_Load(struct Map *map) {
         /* - If above TILE_ID_MAX, tile_id encodes the tile sprite too - */
         (tile_id > TILE_ID_MAX) && (tile_id /= TILE_DIVISOR);   /* short-circuit */
 
+        SDL_assert(Tile_Valid_ID(tile_id));
         /* -- Alloc tile -- */
         struct Tile temp_tile = Tile_default;
 
@@ -50,6 +51,7 @@ void Map_Tiles_Load(struct Map *map) {
         filename    = s8cat(filename, global_tilenames[tile_id]);
         filename    = s8cat(filename, s8_literal(".json"));
         jsonio_readJSON(filename, &temp_tile);
+        temp_tile.id = tile_id;
         DARR_PUT(map->tiles, temp_tile);
         DARR_PUT(map->tiles_id, tile_id);
         s8_free(&filename);
@@ -124,7 +126,7 @@ void Map_Tilesets_Load(struct Map *map) {
     for (size_t i = 0; i < DARR_NUM(map->tiles); i++) {
         tile_ind = map->tilesindex[i];
         /* - If above TILE_ID_MAX, tile_id encodes the tile sprite too - */
-        (tile_ind > TILE_ID_MAX) &&(tile_ind /= TILE_DIVISOR);   /* short-circuit */
+        (tile_ind > TILE_ID_MAX) && (tile_ind /= TILE_DIVISOR);   /* short-circuit */
         SDL_assert(tile_ind > 0);
 
         /* - Get tile - */
@@ -134,7 +136,10 @@ void Map_Tilesets_Load(struct Map *map) {
 
         /* - Load tileset - */
         tilesetname = s8cat(tilesetname, s8_literal(DIR_SEPARATOR"Tileset_"));
-        tilesetname = s8cat(tilesetname, Tile_Name(temp_tile));
+        SDL_assert(Tile_Valid_ID(temp_tile->id));
+        s8 tilename = Tile_Name(temp_tile);
+        SDL_assert(tilename.data != NULL);
+        tilesetname = s8cat(tilesetname, tilename);
         tilesetname = s8cat(tilesetname, s8_literal(".png"));
         if (map->tileset_surfaces[map->ipalette_base][i] != NULL)
             SDL_FreeSurface(map->tileset_surfaces[map->ipalette_base][i]);
