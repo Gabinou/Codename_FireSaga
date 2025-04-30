@@ -1,15 +1,11 @@
 #include "tile.h"
 #include "cJSON.h"
 #include "jsonio.h"
+#include "names.h"
 
-const struct Mobj_Link Mobj_Link_default = {
-    .num_linked     = 0,
-    .relpos_linked  = NULL,
-    .abspos_linked  = NULL,
-};
+const struct Mobj_Link Mobj_Link_default = {0};
 
 const struct Chest Chest_default = {
-    .item =    0,
     .gold = 5000,
 };
 
@@ -19,21 +15,15 @@ const struct Breakable Breakable_default = {
     .res = 10,
 };
 
-const struct Door Door_default = {
-    .chapter_open   = 0,
-    .chapter_close  = 0,
-    .event          = 0,
-    .scene          = 0,
-};
+const struct Door Door_default = {0};
 
 const struct Tile Tile_default = {
     .jsonio_header.json_element   = JSON_TILE,
-    .inside         = false,
-    .name           = {0},
-    .id             = -1,
-    .stats          = {0},
-    .cost           = {0},
 };
+
+s8 Tile_Name(struct Tile *tile) {
+    return(global_tilenames[tile->id]);
+}
 
 void Mobj_Link_Init(struct Mobj_Link *mobj) {
     Mobj_Link_Free(mobj);
@@ -118,26 +108,19 @@ i32* Tile_Cost_Array(struct Tile *tile) {
 }
 
 void Tile_Free(struct Tile *tile) {
-    s8_free(&tile->name);
     s8_free(&tile->jsonio_header.json_filename);
 }
 
 void Tile_readJSON(void *input, const cJSON *_jtile) {
     struct Tile *tile = (struct Tile *)input;
     SDL_assert(_jtile != NULL);
-    cJSON *jname    = cJSON_GetObjectItemCaseSensitive(_jtile, "Name");
     cJSON *jid      = cJSON_GetObjectItemCaseSensitive(_jtile, "id");
-    cJSON *jinside  = cJSON_GetObjectItemCaseSensitive(_jtile, "inside");
+    cJSON *jindoors  = cJSON_GetObjectItemCaseSensitive(_jtile, "indoors");
     cJSON *jstats   = cJSON_GetObjectItemCaseSensitive(_jtile, "Stats");
     cJSON *jmvtcost = cJSON_GetObjectItemCaseSensitive(_jtile, "MvtCost");
     tile->id = cJSON_GetNumberValue(jid);
-    char *temp_str = cJSON_GetStringValue(jname);
-    if (temp_str != NULL) {
-        s8_free(&tile->name);
-        tile->name = s8_mut(temp_str);
-    }
     Tile_stats_readJSON(&(tile->stats), jstats);
-    tile->inside = cJSON_IsTrue(jinside);
+    tile->indoors = cJSON_IsTrue(jindoors);
     Movement_cost_readJSON(&(tile->cost), jmvtcost);
 }
 
@@ -149,13 +132,14 @@ void Tile_writeJSON(const void *_input, cJSON *jtile) {
     cJSON *jid          = cJSON_CreateNumber(_tile->id);
     Movement_cost_writeJSON(&(_tile->cost), jcost);
     Tile_stats_writeJSON(&(_tile->stats), jtilestats);
-    if (s8valid(_tile->name)) {
-        cJSON *jname        = cJSON_CreateString(_tile->name.data);
+    s8 name = global_tilenames[_tile->id];
+    if (s8valid(name)) {
+        cJSON *jname = cJSON_CreateString(name.data);
         cJSON_AddItemToObject(jtile, "Name",   jname);
     }
 
     cJSON_AddItemToObject(jtile, "id",      jid);
-    cJSON_AddBoolToObject(jtile, "inside",  _tile->inside);
+    cJSON_AddBoolToObject(jtile, "indoors",  _tile->indoors);
     cJSON_AddItemToObject(jtile, "Stats",   jtilestats);
     cJSON_AddItemToObject(jtile, "MvtCost", jcost);
 }
@@ -265,4 +249,3 @@ void Chest_writeJSON(const void *input, cJSON *jchest) {
 b32 Tile_Valid_ID(u8 id) {
     return ((id < TILE_ID_MAX) && (id < TILE_END) && (id > TILE_START));
 }
-

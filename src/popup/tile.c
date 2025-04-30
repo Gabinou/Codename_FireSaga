@@ -238,10 +238,10 @@ void PopUp_Tile_Update(struct PopUp_Tile *pt, struct n9Patch *n9patch,
 
     /* -- NAME -- */
     struct Point pos;
-    char *name = pt->tile->name.data;
-    SDL_assert(name != NULL);
-    pos = PopUp_Tile_Center_Name(pt, n9patch, name, strlen(name));
-    PixelFont_Write(pt->pixelnours, renderer, name, strlen(name), pos.x, pos.y);
+    s8 name = Tile_Name(pt->tile);
+    SDL_assert(name.data != NULL);
+    pos = PopUp_Tile_Center_Name(pt, n9patch, name.data, name.num);
+    PixelFont_Write(pt->pixelnours, renderer, name.data, name.num, pos.x, pos.y);
 
     /* -- TILE STATS -- */
     SDL_assert(pt->pixelnours != NULL);

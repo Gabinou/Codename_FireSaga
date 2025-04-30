@@ -15,7 +15,7 @@ typedef struct Tile {
 
     struct Tile_stats stats;
     struct Movement_cost cost;
-    i32     id;
+    i32 id;
     b32 indoors; /* Can't mount indoors */
 } Tile;
 extern const struct Tile Tile_default;
@@ -89,6 +89,7 @@ void Mobj_Link_Free(struct Mobj_Link *mobj);
 void Tile_readJSON(      void *input, const cJSON *j);
 void Tile_writeJSON(     const void *input, cJSON *j);
 void Tile_stats_readJSON(void *input, const cJSON *j);
+s8   Tile_Name(struct Tile *tile);
 
 /* -- Mobj -- */
 void Door_readJSON(      void *input, const cJSON *j);
