@@ -18,15 +18,15 @@ enum SOTA_TEXT_COMPONENT {
 
 /* -- Text: Standalone Pixelfont -- */
 typedef struct Text {
+    char                line[DEFAULT_BUFFER_SIZE];
     SDL_Texture        *texture;
     struct PixelFont   *pixelfont;
-    char                line[DEFAULT_BUFFER_SIZE];
-    i16                 len;
-    SDL_Rect            rect;
-    i64                 update_time_ns; /* 0 means update one time */
     onUpdate_t          onUpdate;
+    i64                 update_time_ns; /* 0 means update one time */
+    i32                 len;
     b32                 visible;
     b32                 update;
+    SDL_Rect            rect;
 } Text;
 extern const struct Text Text_default;
 
