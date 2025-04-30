@@ -13,11 +13,10 @@ struct cJSON;
 typedef struct Tile {
     struct jsonIO_Header jsonio_header;
 
-    s8  name;
-    i32 id;
     struct Tile_stats stats;
     struct Movement_cost cost;
-    b32 inside;
+    i32     id;
+    b32 indoors; /* Can't mount indoors */
 } Tile;
 extern const struct Tile Tile_default;
 
