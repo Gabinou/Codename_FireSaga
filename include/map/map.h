@@ -40,10 +40,30 @@ typedef struct NewMap {
 } NewMap;
 extern const NewMap NewMap_default;
 
+typedef struct Map_Cost {
+    /* Rational costs for map */
+    i32 multiplier;
+    /* No need for denominator map: just one cost_multiplier
+        1. Define all fractional effective costs on map
+        2. Compute lowest common multiple (LCM) of effective costs denominators.
+            - That's the cost_multiplier
+        3. Costmap:
+            1. Multiply all effective costs until denominator is LCM/cost_multiplier.
+            2. Costmap values are the numerators.
+        4. Effective unit move is: unit move stats * cost_multiplier.
+            1.  Compute moveable tiles in usual way i.e.
+                all tiles with effective cumulative cost < effective unit move
+       */
+    //  Example:
+    // 1. I want a map with 5/6 effective cost and 5/4 effective costs
+    //     - Denominators: 4 and 6
+    // 2. cost_multiplier/LCM = 12
+    // 3.
+    //     1. 5/6 = 10/12 -> cost in costmap = 10
+    //     2. 5/4 = 15/12 -> cost in costmap = 15
+    // 4. Move stat = 4 -> effective move = 4 * 12 = 48
+} Map_Cost;
 
-typedef struct Map_Arrays {
-
-} Map_Arrays;
 
 typedef struct Map_Flags {
     b32 win;
@@ -76,6 +96,7 @@ typedef struct Map {
     tnecs_world     *world;
     SDL_Renderer    *renderer;
     struct Camera    camera;
+    struct Map_Cost  cost;
 
     // TODO: remove. should be in savefile
     s8 party_filename;
@@ -119,32 +140,8 @@ typedef struct Map {
     /* --- costmap, MOVEMAP, ATTACKMAP... --- */
     // TODO: remove
 
-    // typedef struct Map_Cost {
-
-    /* Rational costs for map */
-    i32 cost_multiplier;
-    /* No need for denominator map: just one cost_multiplier
-        1. Define all fractional effective costs on map
-        2. Compute lowest common multiple (LCM) of effective costs denominators.
-            - That's the cost_multiplier
-        3. Costmap:
-            1. Multiply all effective costs until denominator is LCM/cost_multiplier.
-            2. Costmap values are the numerators.
-        4. Effective unit move is: unit move stats * cost_multiplier.
-            1.  Compute moveable tiles in usual way i.e.
-                all tiles with effective cumulative cost < effective unit move
-       */
-    //  Example:
-    // 1. I want a map with 5/6 effective cost and 5/4 effective costs
-    //     - Denominators: 4 and 6
-    // 2. cost_multiplier/LCM = 12
-    // 3.
-    //     1. 5/6 = 10/12 -> cost in costmap = 10
-    //     2. 5/4 = 15/12 -> cost in costmap = 15
-    // 4. Move stat = 4 -> effective move = 4 * 12 = 48
-    // } Map_Cost;
-
     // typedef struct Map_Arrays {
+    // TODO: rm temp
     i32 *temp;                  /* 2D dynamic array */
     i32 *costmap;               /* 2D dynamic array */
     i32 *movemap;               /* 2D dynamic array */
@@ -322,5 +319,7 @@ tnecs_entity *Map_Get_onField(struct Map *map, i32 army);
 b32 Map_isWon(      const Map *map);
 b32 Map_isLost(     const Map *map);
 b32 Map_isUpdate(   const Map *map);
+i32 Map_Cost_Multiplier(const Map *map);
+i32 Map_Cost_Effective(const Map *map, i32 move);
 
 #endif /* MAP_H */

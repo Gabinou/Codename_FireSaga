@@ -103,7 +103,7 @@ i32 *Map_Movemap_Compute(struct Map *map, tnecs_entity unit_ent) {
     Map_Costmap_Movement_Compute(map, unit_ent);
     struct Unit     *unit   = IES_GET_COMPONENT(map->world, unit_ent, Unit);
     struct Position *pos    = IES_GET_COMPONENT(map->world, unit_ent, Position);
-    i32    effective_move   = Unit_effectiveStats(unit).move * map->cost_multiplier;
+    i32    effective_move   = Map_Cost_Effective(map, Map_Cost_Multiplier(map));
     struct Point     start  = pos->tilemap_pos;
     return (_Map_Movemap_Compute(map, start, effective_move));
 }
@@ -229,7 +229,7 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
 
     /* Compute movemap */
     i32 move_stat       = map_from.move ? Unit_effectiveStats(agg_unit).move : 0;
-    i32 effective_move  = move_stat * map->cost_multiplier;
+    i32 effective_move  = Map_Cost_Effective(map, move_stat);
 
     _Map_Movemap_Compute(map, agg_pos->tilemap_pos, effective_move);
     // matrix_print(map->movemap, map->row_len, map->col_len);
@@ -284,7 +284,7 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_entity unit_ent) {
     struct Unit *unit           = IES_GET_COMPONENT(map->world, unit_ent, Unit);
     SDL_assert(position != NULL);
     SDL_assert(unit     != NULL);
-    i32 effective_move = Unit_effectiveStats(unit).move * map->cost_multiplier;
+    i32 effective_move = Map_Cost_Effective(map, Unit_effectiveStats(unit).move);
     struct Point start = position->tilemap_pos;
     _Map_Movemap_Compute(map, start, effective_move);
     struct Range range = Range_default;
@@ -303,7 +303,7 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_entity unit_ent) {
     Pathfinding_Attackto_noM(actto);
 
     // memset(map->temp, 0, sizeof(*map->temp)*map->row_len * map->col_len);
-    // TODO : 
+    // TODO :
     //      1. Why not use dangermap instead of temp?
     //      2. Why not memset to 0?
     map->temp = matrix_plus_noM(map->temp, map->attacktomap, map->row_len * map->col_len);
@@ -330,7 +330,7 @@ i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_entity unit_ent) {
         size_t tile_order = Map_Tile_Order(map, tile_ind);
         temp_tile = map->tiles + tile_order;
         i32* cost_array = Tile_Cost_Array(temp_tile);
-        map->costmap[i] = cost_array[unit_movetype] * map->cost_multiplier;
+        map->costmap[i] =  Map_Cost_Effective(map, cost_array[unit_movetype]);
         if (ontile_unit_ent <= TNECS_NULL)
             continue;
         struct Unit *ontile_unit = IES_GET_COMPONENT(map->world, ontile_unit_ent, Unit);
@@ -374,7 +374,7 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
         size_t tile_order = Map_Tile_Order(map, tile_ind);
         struct Tile *temp_tile = map->tiles + tile_order;
         i32* cost_array = Tile_Cost_Array(temp_tile);
-        map->costmap[i] = cost_array[Unit_Movement(unit)] * map->cost_multiplier;
+        map->costmap[i] = Map_Cost_Effective(map, cost_array[Unit_Movement(unit)]);
 
 #endif /* UNITS_IGNORE_TERRAIN */
 
