@@ -50,7 +50,17 @@ typedef struct Map_Arrays {
 } Map_Arrays;
 
 typedef struct Map_Flags {
-
+    b32 win;
+    b32 loss;
+    b32 update;
+    b32 seized; /* maybe unnecessary if turn system. */
+    b32 show_icons;
+    b32 show_danger;
+    b32 show_overlay;
+    b32 camera_moved;
+    b32 visible_changed;
+    b32 shading_changed;
+    b32 show_globalRange;
 } Map_Flags;
 
 typedef struct Map {
@@ -159,6 +169,7 @@ typedef struct Map {
     i32 *global_rangemap;       /* 2D dynamic array */
     tnecs_entity *unitmap;      /* [row * col_len + col], occupymap */
     tnecs_entity *occupymap;    /* [row * col_len + col], friendlies only, enemies only... */
+    tnecs_entity costmap_ent; /* costmap computed for*/
 
     /* --- PALETTES --- */
     SDL_Palette *palette_default;
@@ -174,10 +185,6 @@ typedef struct Map {
     u8 ipalette_darkred;
     u8 ipalette_shadow;
     u8 ipalette_enemy;
-
-    /* --- AGONY --- */
-    struct Agony_timer *agony_stack;
-    tnecs_entity costmap_ent;
 
     /* --- ARMIES --- */
     int army_i; /* Current army in control */
@@ -231,22 +238,7 @@ typedef struct Map {
 
     struct Camera camera;
 
-    /* --- MAP SWITCHES --- */
-    b32 win;
-    b32 loss;
-    b32 update;
-    b32 seized; /* maybe unnecessary if turn system. */
-    // b32 show_move          : 1;
-    // b32 show_heal          : 1;
-    // b32 show_grid          : 1;
-    b32 show_icons;
-    // b32 show_attack        : 1;
-    b32 show_danger;
-    b32 show_overlay;
-    b32 camera_moved;
-    b32 visible_changed;
-    b32 shading_changed;
-    b32 show_globalRange;
+    struct Map_Flags flags;
 } Map;
 extern const struct Map Map_default;
 
