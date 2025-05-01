@@ -99,6 +99,12 @@ typedef struct Map_Entities {
     tnecs_entity *breakables;
 } Map_Entities;
 
+typedef struct Map_Reinforcements {
+    u8 *items_num;
+    i32 loaded;
+    struct Reinforcement   *arr;  /* pointer to 1D dynamic array */
+    struct Inventory_item **equipments;
+} Map_Reinforcements;
 
 typedef struct Map {
     struct jsonIO_Header jsonio_header;
@@ -117,11 +123,12 @@ typedef struct Map {
     tnecs_world     *world;
     SDL_Renderer    *renderer;
     struct Camera    camera;
-    struct Map_Cost         cost;
-    struct Map_Music        music;
-    struct Map_Flags        flags;
-    struct Map_Conditions   conditions;
-    struct Map_Entities     entities;
+    struct Map_Cost             cost;
+    struct Map_Music            music;
+    struct Map_Flags            flags;
+    struct Map_Conditions       conditions;
+    struct Map_Entities         entities;
+    struct Map_Reinforcements   reinforcements;
 
     // TODO: remove. should be in savefile
     s8 party_filename;
@@ -242,13 +249,6 @@ typedef struct Map {
     struct SDL_Surface  ***tileset_surfaces; /* [palette_id][tiles_order] */
     struct SDL_Texture  ***tileset_textures; /* [palette_id][tiles_order] */
     // } Map_Tiles;
-
-    // typedef struct Map_Reinforcements {
-    u8 *items_num;
-    i32 reinf_loaded;
-    struct Reinforcement   *reinforcements;  /* pointer to 1D dynamic array */
-    struct Inventory_item **reinf_equipments;
-    // } Map_Reinforcements;
 
 } Map;
 extern const struct Map Map_default;

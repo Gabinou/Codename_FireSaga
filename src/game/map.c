@@ -218,8 +218,8 @@ void GameMap_Reinforcements_Free(struct Game *sota) {
 void Game_Map_Reinforcements_Load(struct Game *sota) {
     SDL_assert(sota->map != NULL);
     DARR_NUM(sota->map_enemies) = 0;
-    for (int i = 0; i < DARR_NUM(sota->map->reinforcements); i++) {
-        struct Reinforcement *reinf = &(sota->map->reinforcements[i]);
+    for (int i = 0; i < DARR_NUM(sota->map->reinforcements.arr); i++) {
+        struct Reinforcement *reinf = &(sota->map->reinforcements.arr[i]);
         // Skip if reinforcement is not for THIS turn
         if ((reinf->turn != sota->map->turn))
             continue;
@@ -324,10 +324,11 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         s8_free(&unit_path);
         SDL_assert(global_unitNames[*(u64 *)dtab_get(global_unitOrders, Unit_id(unit))].data != NULL);
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
-        SDL_assert(sota->map->items_num[i] + 1 == DARR_NUM(sota->map->reinf_equipments[i]));
-        for (int j = ITEM1; j < DARR_NUM(sota->map->reinf_equipments[i]); j++) {
-            if (Item_ID_isValid(sota->map->reinf_equipments[i][j].id)) {
-                Unit_Item_Take(unit, sota->map->reinf_equipments[i][j]);
+        SDL_assert(sota->map->reinforcements.items_num[i] + 1 == DARR_NUM(
+                           sota->map->reinforcements.equipments[i]));
+        for (int j = ITEM1; j < DARR_NUM(sota->map->reinforcements.equipments[i]); j++) {
+            if (Item_ID_isValid(sota->map->reinforcements.equipments[i][j].id)) {
+                Unit_Item_Take(unit, sota->map->reinforcements.equipments[i][j]);
             }
         }
 
@@ -415,8 +416,8 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(Unit_Army(unit) == reinf->army);
         SDL_assert(global_unitNames[*(u64 *)dtab_get(global_unitOrders, Unit_id(unit))].data != NULL);
     }
-    sota->map->reinf_loaded = sota->map->turn;
-    SDL_assert(DARR_NUM(sota->map_enemies) <= DARR_NUM(sota->map->reinforcements));
+    sota->map->reinforcements.loaded = sota->map->turn;
+    SDL_assert(DARR_NUM(sota->map_enemies) <= DARR_NUM(sota->map->reinforcements.arr));
 
 }
 

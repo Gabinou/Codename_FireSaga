@@ -79,15 +79,15 @@ const Map Map_default = {
 };
 
 void Map_Reinforcements_Free(struct Map *map) {
-    if (map->reinforcements == NULL)
+    if (map->reinforcements.arr == NULL)
         return;
 
-    for (int r = 0; r < DARR_NUM(map->reinforcements); r++) {
-        Reinforcement_Free(&map->reinforcements[r]);
+    for (int r = 0; r < DARR_NUM(map->reinforcements.arr); r++) {
+        Reinforcement_Free(&map->reinforcements.arr[r]);
     }
 
-    DARR_FREE(map->reinforcements);
-    map->reinforcements = NULL;
+    DARR_FREE(map->reinforcements.arr);
+    map->reinforcements.arr = NULL;
 }
 
 void Map_Tilemap_Shader_Free(struct Map *map) {
@@ -220,16 +220,16 @@ void Map_Free(struct Map *map) {
         DARR_FREE(map->friendlies_onfield);
         map->friendlies_onfield = NULL;
     }
-    if (map->reinf_equipments != NULL) {
-        for (size_t i = 0; i < DARR_NUM(map->reinf_equipments); i++) {
-            DARR_FREE(map->reinf_equipments[i]);
+    if (map->reinforcements.equipments != NULL) {
+        for (size_t i = 0; i < DARR_NUM(map->reinforcements.equipments); i++) {
+            DARR_FREE(map->reinforcements.equipments[i]);
         }
-        DARR_FREE(map->reinf_equipments);
-        map->reinf_equipments = NULL;
+        DARR_FREE(map->reinforcements.equipments);
+        map->reinforcements.equipments = NULL;
     }
-    if (map->items_num != NULL) {
-        DARR_FREE(map->items_num);
-        map->items_num = NULL;
+    if (map->reinforcements.items_num != NULL) {
+        DARR_FREE(map->reinforcements.items_num);
+        map->reinforcements.items_num = NULL;
     }
     if (map->tilemap != NULL) {
         SDL_free(map->tilemap);
@@ -242,10 +242,6 @@ void Map_Free(struct Map *map) {
     if (map->tiles_id != NULL) {
         DARR_FREE(map->tiles_id);
         map->tiles_id = NULL;
-    }
-    if (map->items_num != NULL) {
-        DARR_FREE(map->items_num);
-        map->items_num = NULL;
     }
     if (map->army_onfield != NULL) {
         DARR_FREE(map->army_onfield);
@@ -401,11 +397,11 @@ void Map_Members_Alloc(struct Map *map) {
     SDL_assert(map->conditions.death_friendly == NULL);
     map->conditions.death_friendly = DARR_INIT(map->conditions.death_friendly, struct Map_condition, 2);
 
-    SDL_assert(map->reinforcements == NULL);
-    map->reinforcements = DARR_INIT(map->reinforcements, struct Reinforcement, 16);
+    SDL_assert(map->reinforcements.arr == NULL);
+    map->reinforcements.arr = DARR_INIT(map->reinforcements.arr, struct Reinforcement, 16);
 
-    SDL_assert(map->items_num == NULL);
-    map->items_num = DARR_INIT(map->items_num, u8, SOTA_EQUIPMENT_SIZE);
+    SDL_assert(map->reinforcements.items_num == NULL);
+    map->reinforcements.items_num = DARR_INIT(map->reinforcements.items_num, u8, SOTA_EQUIPMENT_SIZE);
 
     SDL_assert(map->tilesindex == NULL);
     map->tilesindex = DARR_INIT(map->tilesindex, i32, DEFAULT_TILESPRITE_BUFFER);
@@ -428,8 +424,8 @@ void Map_Members_Alloc(struct Map *map) {
     SDL_assert(map->units_onfield == NULL);
     map->units_onfield = DARR_INIT(map->units_onfield, tnecs_entity, 20);
 
-    SDL_assert(map->reinf_equipments == NULL);
-    map->reinf_equipments = DARR_INIT(map->reinf_equipments, Inventory_item *, 30);
+    SDL_assert(map->reinforcements.equipments == NULL);
+    map->reinforcements.equipments = DARR_INIT(map->reinforcements.equipments, Inventory_item *, 30);
 
     SDL_assert(map->army_onfield == NULL);
     map->army_onfield = DARR_INIT(map->army_onfield, i32, 5);
@@ -622,16 +618,16 @@ void Map_writeJSON(const void *input, cJSON *jmap) {
     }
     /* -- Writing Reinforcements -- */
     struct Inventory_item *temp_equip, temp_item;
-    SDL_assert((map->reinf_equipments != NULL) & (map->reinforcements != NULL));
+    SDL_assert((map->reinforcements.equipments != NULL) & (map->reinforcements.arr != NULL));
     cJSON *jreinforcement;
     cJSON *jreinforcementeq;
     cJSON *jreinforcements = cJSON_CreateObject();
     cJSON_AddItemToObject(jmap, "Reinforcements", jreinforcements);
-    for (i32 r = 0; r < DARR_NUM(map->reinforcements); r++) {
+    for (i32 r = 0; r < DARR_NUM(map->reinforcements.arr); r++) {
         jreinforcement   = cJSON_CreateObject();
         jreinforcementeq = cJSON_CreateObject();
-        Reinforcement_writeJSON(jreinforcement, &(map->reinforcements)[r]);
-        temp_equip = map->reinf_equipments[r];
+        Reinforcement_writeJSON(jreinforcement, &(map->reinforcements.arr)[r]);
+        temp_equip = map->reinforcements.equipments[r];
         for (i32 i = 0; i < DARR_NUM(temp_equip); i++) {
             temp_item = temp_equip[i];
             if (temp_item.id > ITEM_NULL)
@@ -677,9 +673,9 @@ void Map_readJSON(void *input, const cJSON *jmap) {
     struct Map *map = (struct Map *) input;
     SDL_assert(map->conditions.death_enemy         != NULL);
     SDL_assert(map->conditions.death_friendly      != NULL);
-    SDL_assert(map->reinforcements      != NULL);
-    SDL_assert(map->reinf_equipments    != NULL);
-    SDL_assert(map->items_num           != NULL);
+    SDL_assert(map->reinforcements.arr  != NULL);
+    SDL_assert(map->reinforcements.equipments    != NULL);
+    SDL_assert(map->reinforcements.items_num != NULL);
     SDL_assert(map->entities.chests          != NULL);
     SDL_assert(map->entities.breakables      != NULL);
     SDL_assert(map->entities.doors           != NULL);
@@ -767,7 +763,7 @@ void Map_readJSON(void *input, const cJSON *jmap) {
         struct Reinforcement temp_rein = Reinforcement_default;
         cJSON *jreinforcement = cJSON_GetArrayItem(jreinforcements, i);
         Reinforcement_readJSON(jreinforcement, &temp_rein);
-        DARR_PUT(map->reinforcements, temp_rein);
+        DARR_PUT(map->reinforcements.arr, temp_rein);
         jequipment = cJSON_GetObjectItem(jreinforcement, "Equipment");
         temp_equip = DARR_INIT(temp_equip, struct Inventory_item, SOTA_EQUIPMENT_SIZE);
         /* FIRST ITEM IS NULL */
@@ -779,7 +775,7 @@ void Map_readJSON(void *input, const cJSON *jmap) {
             continue;
         }
 
-        DARR_PUT(map->items_num, cJSON_GetArraySize(jequipment));
+        DARR_PUT(map->reinforcements.items_num, cJSON_GetArraySize(jequipment));
         cJSON_ArrayForEach(jitem, jequipment) {
             temp_item = Inventory_item_default;
             Inventory_item_readJSON(&temp_item, jitem);
@@ -787,7 +783,7 @@ void Map_readJSON(void *input, const cJSON *jmap) {
             //          To be able to put weapons in right hand.
             DARR_PUT(temp_equip, temp_item);
         }
-        DARR_PUT(map->reinf_equipments, temp_equip);
+        DARR_PUT(map->reinforcements.equipments, temp_equip);
     }
 
     /* -- Read Map objects -- */
