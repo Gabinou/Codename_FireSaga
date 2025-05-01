@@ -44,7 +44,7 @@ const NewMap NewMap_default = {
 const Map Map_default = {
     .jsonio_header.json_element = JSON_MAP,
     .flags.show_icons       = true,
-    .cost_multiplier        =  1,
+    .cost.multiplier        =  1,
     .frames                 = 10,
     .frames_shadow          = 10,
     .speed                  = 50,
@@ -74,8 +74,8 @@ const Map Map_default = {
 
     .turn                   =  1, /* Automatic loss if turn 255. */
     /* --- MUSIC --- */
-    .music_i_friendly       = SOTA_MUSIC_DEBUG,
-    .music_i_enemy          = -1,
+    .music.i_friendly       = SOTA_MUSIC_DEBUG,
+    .music.i_enemy          = -1,
 };
 
 void Map_Reinforcements_Free(struct Map *map) {
@@ -161,16 +161,16 @@ void Map_Unitmap_Free(struct Map *map) {
 void Map_Free(struct Map *map) {
     SDL_assert(map);
     /* - Music -*/
-    if (map->music_enemy != NULL) {
-        Mix_FreeMusic(map->music_enemy);
-        map->music_enemy = NULL;
+    if (map->music.enemy != NULL) {
+        Mix_FreeMusic(map->music.enemy);
+        map->music.enemy = NULL;
     }
     if (map->party_filename.data != NULL) {
         s8_free(&map->party_filename);
     }
-    if (map->music_friendly != NULL) {
-        Mix_FreeMusic(map->music_friendly);
-        map->music_friendly = NULL;
+    if (map->music.friendly != NULL) {
+        Mix_FreeMusic(map->music.friendly);
+        map->music.friendly = NULL;
     }
 
     if (map->tilesindex != NULL) {
@@ -991,8 +991,8 @@ void Map_Turn_Increment(struct Map *map) {
 
 /* --- Music --- */
 void Map_Music_Load(struct Map *map) {
-    map->music_enemy       = Music_Load(map->music_i_enemy);
-    map->music_friendly    = Music_Load(map->music_i_friendly);
+    map->music.enemy       = Music_Load(map->music.i_enemy);
+    map->music.friendly    = Music_Load(map->music.i_friendly);
 }
 
 /* --- Boss --- */

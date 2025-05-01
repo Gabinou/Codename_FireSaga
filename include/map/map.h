@@ -79,6 +79,13 @@ typedef struct Map_Flags {
     b32 show_globalRange;
 } Map_Flags;
 
+typedef struct Map_Music {
+    i32 i_friendly;
+    i32 i_enemy;
+    Mix_Music *friendly;
+    Mix_Music *enemy;
+} Map_Music;
+
 typedef struct Map {
     struct jsonIO_Header jsonio_header;
 
@@ -97,7 +104,7 @@ typedef struct Map {
     SDL_Renderer    *renderer;
     struct Camera    camera;
     struct Map_Cost  cost;
-
+    struct Map_Music music;
     // TODO: remove. should be in savefile
     s8 party_filename;
 
@@ -230,13 +237,6 @@ typedef struct Map {
     tnecs_entity *chests_ent;
     tnecs_entity *breakables_ent;
     // } Map_Entities;
-
-    // typedef struct Map_Music {
-    i32 music_i_friendly;
-    i32 music_i_enemy;
-    Mix_Music *music_friendly;
-    Mix_Music *music_enemy;
-    // } Map_Music;
 
     // typedef struct Map_Conditions {
     struct Map_condition *death_enemy;

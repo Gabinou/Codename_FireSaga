@@ -38,7 +38,7 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
     struct Point start = pos->tilemap_pos;
     Unit_stats eff_s = Unit_effectiveStats(unit);
     i32 move_stat       = can_equip.move ? eff_s.move : 0;
-    i32 effective_move  = move_stat * map->cost_multiplier; // TODO make utility
+    i32 effective_move  = Map_Cost_Effective(map, move_stat); // TODO make utility
     _Map_Movemap_Compute(map, start, effective_move);
 
     // printf("MOVE\n");

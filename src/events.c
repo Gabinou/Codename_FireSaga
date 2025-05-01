@@ -171,7 +171,7 @@ void receive_event_Load_Debug_Map(struct Game *sota, SDL_Event *userevent) {
     Utilities_DrawColor_Reset(sota->renderer);
 
     /* -- Music check -- */
-    SDL_assert(sota->map->music_friendly != NULL);
+    SDL_assert(sota->map->music.friendly != NULL);
 }
 
 void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
@@ -771,10 +771,10 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     /* -- Change music -- */
     Game_Music_Stop(sota);
     if (SotA_isPC(army)) {
-        sota->music = sota->map->music_friendly;
+        sota->music = sota->map->music.friendly;
         SDL_assert(sota->music != NULL);
     } else {
-        sota->music = sota->map->music_enemy;
+        sota->music = sota->map->music.enemy;
     }
     if (sota->music != NULL)
         Game_Music_Play(sota);
