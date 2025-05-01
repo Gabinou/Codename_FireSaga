@@ -86,15 +86,15 @@ const struct Settings Settings_default = {
         .frequency          = 44100,               /*  [Hz]  */
         .sample_size        =  2048,               /* [byte] */
         .format             = MIX_DEFAULT_FORMAT,  /* [byte] */
-
+        .music_volume       = MIX_MAX_VOLUME / 2,
+        .soundfx_volume     = MIX_MAX_VOLUME / 2,
     },
+
     .enemy_turn_settings = {
         .pause_post_reinforcement   = SOTA_ns,
         .pause_post_move            = SOTA_ns / 4ULL,
     },
 
-    .music_volume   = MIX_MAX_VOLUME / 2,
-    .soundfx_volume = MIX_MAX_VOLUME / 2,
     .brightness     = SOTA_BRIGHTNESS_MAX,
 
     .mouse              = {MOUSE_DEFAULT_ONHOLD, MOUSE_DEFAULT_MOVE},

@@ -117,13 +117,13 @@ typedef struct canEquip {
 extern const canEquip canEquip_default;
 
 struct Cursor {
-    i16 frames;
-    i16 speed;
+    i32 frames;
+    i32 speed;
 };
 
 struct Mouse {
-    u8 onhold;
-    u8 move;
+    i32 onhold;
+    i32 move;
 };
 
 typedef struct Point {
@@ -167,20 +167,22 @@ struct Fps {
 };
 
 /* --- Settings --- */
-struct Music_settings {
+typedef struct Music_settings {
     i32 frequency;          /*  [Hz]    */
     i32 sample_size;        /* [byte]   */
     i32 channels;
-    u16 format;             /* AUDIO_*  */
-};
+    i32 format;             /* AUDIO_*  */
+    i32 music_volume;
+    i32 soundfx_volume;
+} Music_settings;
 
 struct Map_settings {
-    u8          overlay_mode; /* tile paletteswap or opaque overlay */
-    u8          stack_mode;
-    u8          grid_thickness; /* Number of lines to draw (mirrored) */
-    u8          perim_thickness; /* Number of lines to draw (mirrored) */
     SDL_Color   color_grid;
-    b32        grid_show;
+    i32         overlay_mode; /* tile paletteswap or opaque overlay */
+    i32         stack_mode;
+    i32         grid_thickness; /* Number of lines to draw (mirrored) */
+    i32         perim_thickness; /* Number of lines to draw (mirrored) */
+    b32         grid_show;
 };
 /* grid_thickness 1 ->  |   (center line only)          */
 /* grid_thickness 2 -> |||  (center line, +/- 1 lines)  */
@@ -200,26 +202,24 @@ typedef struct Input_Arguments {
 extern const struct Input_Arguments Input_Arguments_default;
 
 typedef struct Settings {
-    Point res; /* resolution */
+    Point res;
     Point pos;
     struct Fps   FPS;
+    struct Input_Arguments args;
 
     struct Cursor cursor; /* 32 bits */
-    u16 tilesize[TWO_D];
+    u16 tilesize[TWO_D];  /* [px] */
 
     struct Map_settings map_settings;
     struct Music_settings music_settings;
-    float brightness;
     struct Enemy_Turn_settings enemy_turn_settings;
 
     struct Mouse mouse; /* 16 bits */
     char title[DEFAULT_BUFFER_SIZE];
 
-    u16 fontsize;
-    int music_volume;
-    int soundfx_volume;
+    float brightness;
+    i32 fontsize;
     u32 window;
-    struct Input_Arguments args;
     b32 fullscreen;
 } Settings;
 extern const struct Settings Settings_default;
@@ -342,14 +342,6 @@ struct Promotion {
     u16 level;
 };
 extern const struct Promotion Promotion_default;
-
-struct HP {
-    b32 divine; /* divine shield */
-    u8 max;
-    u8 current;
-    u8 overheal;
-};
-extern const struct HP HP_default;
 
 extern const struct nmath_hexpoint_int32_t Cube_Direction_xp;
 extern const struct nmath_hexpoint_int32_t Cube_Direction_xm;
@@ -700,6 +692,8 @@ struct Unit_Stats_Bundle {
     struct Unit_stats  caps;
     struct Unit_stats  bases;
     struct Unit_stats  current; /* Only changes on levelup */
+    // Note: unit.stats.current NOT used to track current HP! 
+    //  - Use unit.HP.current for that!
     struct Unit_stats  growths;
     struct Unit_stats *grown;
 
@@ -729,6 +723,14 @@ struct Unit_Statuses {
     // TODO: remove. Statuses should be components.
     struct Unit_status *queue;
 };
+
+struct HP {
+    u8 current;
+    u8 overheal;    /* given by heal staves + skill */
+    u8 shield;      /* given by shield staff */
+};
+extern const struct HP HP_default;
+
 
 typedef struct Unit {
     /* ---------------------- Unit --------------------- *
@@ -769,6 +771,7 @@ typedef struct Unit {
     struct Unit_Equipment       equipment;
     struct Unit_canEquip        can_equip;
     struct Unit_Arms            arms;
+    struct HP                   hp;
     struct Unit_Stats_Bundle    stats;
     struct Unit_Counters        counters;
     struct Unit_Statuses        statuses; // TODO: rm

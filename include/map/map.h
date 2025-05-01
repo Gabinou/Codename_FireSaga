@@ -26,6 +26,7 @@ struct Arrow;
 #define ARROW_FILENAME_ PATH_JOIN("..", "assets", "GUI", "arrow.png")
 
 typedef struct NewMap {
+    /* Input parameters to map constructors*/
     i32 tilesize[TWO_D];
 
     i32 row_len; /* [tiles] */
@@ -38,6 +39,19 @@ typedef struct NewMap {
     i32 stack_mode;
 } NewMap;
 extern const NewMap NewMap_default;
+
+
+typedef struct Map_Perimiter {
+
+} Map_Perimiter;
+
+typedef struct Map_Arrays {
+
+} Map_Arrays;
+
+typedef struct Map_Flags {
+
+} Map_Flags;
 
 typedef struct Map {
     struct jsonIO_Header jsonio_header;
@@ -115,10 +129,10 @@ typedef struct Map {
     //  Example:
     // 1. I want a map with 5/6 effective cost and 5/4 effective costs
     //     - Denominators: 4 and 6
-    // 2. LCM = 12
+    // 2. cost_multiplier/LCM = 12
     // 3.
-    //     1. 5/6 = 10/12 -> costmap = 10
-    //     2. 5/4 = 15/12 -> costmap = 15
+    //     1. 5/6 = 10/12 -> cost in costmap = 10
+    //     2. 5/4 = 15/12 -> cost in costmap = 15
     // 4. Move stat = 4 -> effective move = 4 * 12 = 48
 
     i32 *costmap;               /* 2D dynamic array */
@@ -218,21 +232,21 @@ typedef struct Map {
     struct Camera camera;
 
     /* --- MAP SWITCHES --- */
-    b32 win                : 1;
-    b32 loss               : 1;
-    b32 update             : 1;
-    b32 seized             : 1; /* maybe unnecessary if turn system. */
+    b32 win;
+    b32 loss;
+    b32 update;
+    b32 seized; /* maybe unnecessary if turn system. */
     // b32 show_move          : 1;
     // b32 show_heal          : 1;
     // b32 show_grid          : 1;
-    b32 show_icons         : 1;
+    b32 show_icons;
     // b32 show_attack        : 1;
-    b32 show_danger        : 1;
-    b32 show_overlay       : 1;
-    b32 camera_moved       : 1;
-    b32 visible_changed    : 1;
-    b32 shading_changed    : 1;
-    b32 show_globalRange   : 1;
+    b32 show_danger;
+    b32 show_overlay;
+    b32 camera_moved;
+    b32 visible_changed;
+    b32 shading_changed;
+    b32 show_globalRange;
 } Map;
 extern const struct Map Map_default;
 
