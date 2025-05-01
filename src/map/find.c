@@ -197,15 +197,15 @@ tnecs_entity *Map_Find_Breakables(struct Map *map, i32 *attacktolist,
         size_t x_at = attacktolist[TWO_D * i];
         size_t y_at = attacktolist[TWO_D * i + 1];
         /* - Checking for breakable on x_at, y_at - */
-        for (size_t j = 0; j < DARR_NUM(map->breakables_ent); j++) {
+        for (size_t j = 0; j < DARR_NUM(map->entities.breakables); j++) {
             struct Position *pos;
-            pos = IES_GET_COMPONENT(map->world, map->breakables_ent[j], Position);
+            pos = IES_GET_COMPONENT(map->world, map->entities.breakables[j], Position);
             SDL_assert(pos != NULL);
             size_t x_br = pos->tilemap_pos.x;
             size_t y_br = pos->tilemap_pos.y;
             /* - breakable on x_br, y_br - */
             if ((x_at == x_br) && (y_at == y_br))
-                DARR_PUT(attackable, map->breakables_ent[i]);
+                DARR_PUT(attackable, map->entities.breakables[i]);
         }
     }
     return (attackable);
@@ -304,12 +304,12 @@ tnecs_entity Map_Find_Breakable_Ent(struct Map *map, i32 x, i32 y) {
     SDL_assert(map          != NULL);
     SDL_assert(map->world   != NULL);
     tnecs_entity out = TNECS_NULL;
-    for (size_t i = 0; i < DARR_NUM(map->breakables_ent); i++) {
+    for (size_t i = 0; i < DARR_NUM(map->entities.breakables); i++) {
         struct Position *pos;
-        pos = IES_GET_COMPONENT(map->world, map->breakables_ent[i], Position);
+        pos = IES_GET_COMPONENT(map->world, map->entities.breakables[i], Position);
         SDL_assert(pos != NULL);
         if ((x == pos->tilemap_pos.x) && (y == pos->tilemap_pos.y)) {
-            out = map->breakables_ent[i];
+            out = map->entities.breakables[i];
             break;
         }
     }
@@ -320,11 +320,11 @@ tnecs_entity Map_Find_Door_Ent(struct Map *map, i32 x, i32 y) {
     SDL_assert(map          != NULL);
     SDL_assert(map->world   != NULL);
     tnecs_entity out = TNECS_NULL;
-    for (size_t i = 0; i < DARR_NUM(map->doors_ent); i++) {
-        struct Position *pos = IES_GET_COMPONENT(map->world, map->doors_ent[i], Position);
+    for (size_t i = 0; i < DARR_NUM(map->entities.doors); i++) {
+        struct Position *pos = IES_GET_COMPONENT(map->world, map->entities.doors[i], Position);
         SDL_assert(pos != NULL);
         if ((x == pos->tilemap_pos.x) && (y == pos->tilemap_pos.y)) {
-            out = map->doors_ent[i];
+            out = map->entities.doors[i];
             break;
         }
     }
@@ -335,11 +335,11 @@ tnecs_entity Map_Find_Chest_Ent(struct Map *map, i32 x, i32 y) {
     SDL_assert(map          != NULL);
     SDL_assert(map->world   != NULL);
     tnecs_entity out = TNECS_NULL;
-    for (size_t i = 0; i < DARR_NUM(map->chests_ent); i++) {
-        struct Position *pos = IES_GET_COMPONENT(map->world, map->chests_ent[i], Position);
+    for (size_t i = 0; i < DARR_NUM(map->entities.chests); i++) {
+        struct Position *pos = IES_GET_COMPONENT(map->world, map->entities.chests[i], Position);
         SDL_assert(pos != NULL);
         if ((x == pos->tilemap_pos.x) && (y == pos->tilemap_pos.y)) {
-            out = map->chests_ent[i];
+            out = map->entities.chests[i];
             break;
         }
     }
@@ -440,8 +440,8 @@ tnecs_entity *Map_Find_Victims(struct Map *map, tnecs_entity *victims_ent,
 
 tnecs_entity *Map_Find_Doors(struct Map *map, tnecs_entity *openable, i32 x, i32 y) {
     /* -- Check if unit is next to a door -- */
-    for (size_t i = 0; i < DARR_NUM(map->doors_ent); i++) {
-        struct Position *pos = IES_GET_COMPONENT(map->world, map->doors_ent[i], Position);
+    for (size_t i = 0; i < DARR_NUM(map->entities.doors); i++) {
+        struct Position *pos = IES_GET_COMPONENT(map->world, map->entities.doors[i], Position);
         size_t x_at          = pos->tilemap_pos.x;
         size_t y_at          = pos->tilemap_pos.y;
         b32 door = (((x + 1) == x_at)    && (y == y_at));
@@ -450,7 +450,7 @@ tnecs_entity *Map_Find_Doors(struct Map *map, tnecs_entity *openable, i32 x, i32
         door     |= (((y - 1) == y_at)    && (x == x_at));
 
         if (door)
-            DARR_PUT(openable, map->doors_ent[i]);
+            DARR_PUT(openable, map->entities.doors[i]);
         // TODO: check if key in inventory to put in openable
     }
     return (openable);
@@ -458,8 +458,8 @@ tnecs_entity *Map_Find_Doors(struct Map *map, tnecs_entity *openable, i32 x, i32
 
 tnecs_entity *Map_Find_Chests(struct Map *map, tnecs_entity *openable, i32 x, i32 y) {
     // Find Chests on current position and neighbours
-    for (size_t i = 0; i < DARR_NUM(map->chests_ent); i++) {
-        struct Position *pos = IES_GET_COMPONENT(map->world, map->chests_ent[i], Position);
+    for (size_t i = 0; i < DARR_NUM(map->entities.chests); i++) {
+        struct Position *pos = IES_GET_COMPONENT(map->world, map->entities.chests[i], Position);
         size_t x_at          = pos->tilemap_pos.x;
         size_t y_at          = pos->tilemap_pos.y;
         b32 chest = (((x + 1) == x_at)    && (y == y_at));
@@ -468,7 +468,7 @@ tnecs_entity *Map_Find_Chests(struct Map *map, tnecs_entity *openable, i32 x, i3
         chest     |= (((y - 1) == y_at)    && (x == x_at));
 
         if (chest)
-            DARR_PUT(openable, map->chests_ent[i]);
+            DARR_PUT(openable, map->entities.chests[i]);
         // TODO: check if key in inventory to put in openable
     }
     return (openable);

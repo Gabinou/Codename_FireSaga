@@ -200,17 +200,17 @@ void Map_Free(struct Map *map) {
         SDL_free(map->edges_danger);
         map->edges_danger = NULL;
     }
-    if (map->breakables_ent != NULL) {
-        DARR_FREE(map->breakables_ent);
-        map->breakables_ent = NULL;
+    if (map->entities.breakables != NULL) {
+        DARR_FREE(map->entities.breakables);
+        map->entities.breakables = NULL;
     }
-    if (map->chests_ent != NULL) {
-        DARR_FREE(map->chests_ent);
-        map->chests_ent = NULL;
+    if (map->entities.chests != NULL) {
+        DARR_FREE(map->entities.chests);
+        map->entities.chests = NULL;
     }
-    if (map->doors_ent != NULL) {
-        DARR_FREE(map->doors_ent);
-        map->doors_ent = NULL;
+    if (map->entities.doors != NULL) {
+        DARR_FREE(map->entities.doors);
+        map->entities.doors = NULL;
     }
 
     Map_Tilesets_Free(map);
@@ -378,14 +378,14 @@ void Map_Members_Alloc(struct Map *map) {
     SDL_assert(map->col_len < MAP_MAX_ROWS);
     int len = map->row_len * map->col_len;
 
-    SDL_assert(map->doors_ent == NULL);
-    map->doors_ent = DARR_INIT(map->doors_ent, tnecs_entity, 4);
+    SDL_assert(map->entities.doors == NULL);
+    map->entities.doors = DARR_INIT(map->entities.doors, tnecs_entity, 4);
 
-    SDL_assert(map->breakables_ent == NULL);
-    map->breakables_ent = DARR_INIT(map->breakables_ent, tnecs_entity, 4);
+    SDL_assert(map->entities.breakables == NULL);
+    map->entities.breakables = DARR_INIT(map->entities.breakables, tnecs_entity, 4);
 
-    SDL_assert(map->chests_ent == NULL);
-    map->chests_ent = DARR_INIT(map->chests_ent, tnecs_entity, 4);
+    SDL_assert(map->entities.chests == NULL);
+    map->entities.chests = DARR_INIT(map->entities.chests, tnecs_entity, 4);
 
     Map_Texture_Alloc(map);
     Map_Tilemap_Shader_Init(map);
@@ -680,9 +680,9 @@ void Map_readJSON(void *input, const cJSON *jmap) {
     SDL_assert(map->reinforcements      != NULL);
     SDL_assert(map->reinf_equipments    != NULL);
     SDL_assert(map->items_num           != NULL);
-    SDL_assert(map->chests_ent          != NULL);
-    SDL_assert(map->breakables_ent      != NULL);
-    SDL_assert(map->doors_ent           != NULL);
+    SDL_assert(map->entities.chests          != NULL);
+    SDL_assert(map->entities.breakables      != NULL);
+    SDL_assert(map->entities.doors           != NULL);
 
     SDL_assert(jmap != NULL);
     /* -- Read party filename (for debug) -- */
@@ -806,9 +806,9 @@ void Map_readJSON(void *input, const cJSON *jmap) {
 
         SDL_assert(cJSON_IsArray(jchests));
 
-        DARR_NUM(map->chests_ent) = 0;
+        DARR_NUM(map->entities.chests) = 0;
 
-        for (size_t i = 0; i < DARR_NUM(map->chests_ent); i++) {
+        for (size_t i = 0; i < DARR_NUM(map->entities.chests); i++) {
             tnecs_entity temp_ent   = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Chest_ID, Position_ID);
             struct Chest    *chest  = IES_GET_COMPONENT(map->world, temp_ent, Chest);
             struct Position *pos    = IES_GET_COMPONENT(map->world, temp_ent, Position);
@@ -829,7 +829,7 @@ void Map_readJSON(void *input, const cJSON *jmap) {
             Point_readJSON((struct Point *)&pos->tilemap_pos, jpos);
             Chest_readJSON(chest, jchest);
 
-            DARR_PUT(map->chests_ent, temp_ent);
+            DARR_PUT(map->entities.chests, temp_ent);
         }
     } while (0);
 
@@ -839,7 +839,7 @@ void Map_readJSON(void *input, const cJSON *jmap) {
             break;
         SDL_assert(cJSON_IsArray(jdoors));
 
-        DARR_NUM(map->doors_ent) = 0;
+        DARR_NUM(map->entities.doors) = 0;
 
         for (size_t i = 0; i < cJSON_GetArraySize(jdoors); i++) {
             tnecs_entity temp_ent   = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Door_ID, Position_ID);
@@ -861,7 +861,7 @@ void Map_readJSON(void *input, const cJSON *jmap) {
             Point_readJSON((struct Point *)&pos->tilemap_pos, jpos);
             Door_readJSON(door, jdoor);
 
-            DARR_PUT(map->doors_ent, temp_ent);
+            DARR_PUT(map->entities.doors, temp_ent);
         }
     } while (0);
 
@@ -873,7 +873,7 @@ void Map_readJSON(void *input, const cJSON *jmap) {
 
         SDL_assert(cJSON_IsArray(jbreakables));
 
-        DARR_NUM(map->breakables_ent) = 0;
+        DARR_NUM(map->entities.breakables) = 0;
 
         for (size_t i = 0; i < cJSON_GetArraySize(jbreakables); i++) {
             tnecs_entity temp_ent   = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Breakable_ID, Position_ID);
@@ -909,7 +909,7 @@ void Map_readJSON(void *input, const cJSON *jmap) {
             SDL_assert(breaka != NULL);
             Breakable_readJSON(breaka, jbreakables);
 
-            DARR_PUT(map->breakables_ent, temp_ent);
+            DARR_PUT(map->entities.breakables, temp_ent);
         }
     } while (0);
 

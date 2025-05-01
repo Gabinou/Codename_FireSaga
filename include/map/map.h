@@ -93,6 +93,13 @@ typedef struct Map_Conditions {
     struct Map_condition *waits_friendly;
 } Map_Conditions;
 
+typedef struct Map_Entities {
+    tnecs_entity *doors;  /* breakable doors are here */
+    tnecs_entity *chests;
+    tnecs_entity *breakables;
+} Map_Entities;
+
+
 typedef struct Map {
     struct jsonIO_Header jsonio_header;
 
@@ -114,6 +121,7 @@ typedef struct Map {
     struct Map_Music        music;
     struct Map_Flags        flags;
     struct Map_Conditions   conditions;
+    struct Map_Entities     entities;
 
     // TODO: remove. should be in savefile
     s8 party_filename;
@@ -241,12 +249,6 @@ typedef struct Map {
     struct Reinforcement   *reinforcements;  /* pointer to 1D dynamic array */
     struct Inventory_item **reinf_equipments;
     // } Map_Reinforcements;
-
-    // typedef struct Map_Entities {
-    tnecs_entity *doors_ent;  /* breakable doors are here */
-    tnecs_entity *chests_ent;
-    tnecs_entity *breakables_ent;
-    // } Map_Entities;
 
 } Map;
 extern const struct Map Map_default;
