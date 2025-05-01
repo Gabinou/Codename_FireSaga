@@ -329,7 +329,7 @@ void Map_Free(struct Map *map) {
     }
     if (map->temp_palette != NULL) {
         SDL_free(map->temp_palette);
-        map->temp = NULL;
+        map->temp_palette = NULL;
     }
     if (map->stacked_dangermap != NULL) {
         SDL_free(map->stacked_dangermap);

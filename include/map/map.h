@@ -118,10 +118,10 @@ typedef struct Map {
 
     /* --- costmap, MOVEMAP, ATTACKMAP... --- */
     // TODO: remove
-    i32 *temp;                  /* 2D dynamic array */
+
+    // typedef struct Map_Cost {
 
     /* Rational costs for map */
-    // typedef struct Map_Cost {
     i32 cost_multiplier;
     /* No need for denominator map: just one cost_multiplier
         1. Define all fractional effective costs on map
@@ -145,6 +145,7 @@ typedef struct Map {
     // } Map_Cost;
 
     // typedef struct Map_Arrays {
+    i32 *temp;                  /* 2D dynamic array */
     i32 *costmap;               /* 2D dynamic array */
     i32 *movemap;               /* 2D dynamic array */
     i32 *start_posmap;          /* 2D dynamic array */

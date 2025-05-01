@@ -423,10 +423,12 @@ void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
                              struct Camera  *camera, struct Point pos,
                              struct Range    range,  int colori) {
     i32 include = range.min == 0 ? MOVETILE_INCLUDE : MOVETILE_EXCLUDE;
-    memset(map->temp, 0, map->row_len * map->col_len * sizeof(*map->temp));
+    i32 len = map->row_len * map->col_len;
+    i32 *temp = alloca(len);
+    memset(temp, 0, len * sizeof(*temp));
 
     PathfindingAct actto    = PathfindingAct_default;
-    actto.acttomap          = map->temp;
+    actto.acttomap          = temp;
     actto.movemap           = NULL;
     actto.occupymap         = NULL;
     actto.row_len           = map->row_len;
@@ -437,12 +439,12 @@ void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
 
     _Pathfinding_Attackto(actto);
 
-    Map_Perimeter(map->edges_danger, map->temp, map->row_len, map->col_len);
+    Map_Perimeter(map->edges_danger, temp, map->row_len, map->col_len);
 
     SDL_Palette *palette_base = sota_palettes[map->ipalette_base];
     SDL_Color purple = palette_base->colors[colori];
 
-    _Map_Perimeter_Draw(map, settings, camera, map->temp, purple, map->edges_danger);
+    _Map_Perimeter_Draw(map, settings, camera, temp, purple, map->edges_danger);
 }
 
 

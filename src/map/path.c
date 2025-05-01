@@ -303,6 +303,9 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_entity unit_ent) {
     Pathfinding_Attackto_noM(actto);
 
     // memset(map->temp, 0, sizeof(*map->temp)*map->row_len * map->col_len);
+    // TODO : 
+    //      1. Why not use dangermap instead of temp?
+    //      2. Why not memset to 0?
     map->temp = matrix_plus_noM(map->temp, map->attacktomap, map->row_len * map->col_len);
     // matrix_print(map->temp, map->row_len, map->col_len);
     return (map->temp);
