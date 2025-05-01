@@ -188,7 +188,6 @@ enum DM_MENU {
 //      - Mount icons
 
 typedef struct DeploymentMenu {
-    b32 update;
     Point pos;        /* [pixels] */
     tnecs_world *world;
     /* two spaces:
@@ -197,11 +196,6 @@ typedef struct DeploymentMenu {
 
     i16 *_start_pos_i;       /* [start_order]   -> unit_order */
     i32 *_selected;          /* [unit_order]    -> start_order */
-    i32  _selected_num;
-    i32  _party_size;
-    i32  select_max;
-    i32 top_unit;           /* Up   - Down  scrolling [0, _party_size] */
-    i32 page;               /* Left - Right scrolling [0, DM_PAGE_NUM]*/
 
     struct Party        *party;
     struct Map          *map;
@@ -210,18 +204,24 @@ typedef struct DeploymentMenu {
     struct PixelFont    *pixelnours_16;
     struct PixelFont    *pixelnours_big;
 
+    SDL_Palette *palette;
     SDL_Texture *texture;
     SDL_Texture *texture_dude;
     SDL_Texture *texture_mount;
     SDL_Surface *surface_mount;
 
-    u8 black;
-    u8 white;
-    u8 dark_gray;
-    SDL_Palette *palette;
+    i32 black;
+    i32 white;
+    i32 dark_gray;
 
+    i32  _selected_num;
+    i32  _party_size;
+    i32  select_max;
+    i32 top_unit;           /* Up   - Down  scrolling [0, _party_size] */
+    i32 page;               /* Left - Right scrolling [0, DM_PAGE_NUM]*/
     i32 start_pos_order1;
     i32 start_pos_order2;
+    b32 update;
 } DeploymentMenu;
 extern const DeploymentMenu DeploymentMenu_default;
 

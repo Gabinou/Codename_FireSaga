@@ -924,7 +924,6 @@ struct Party {
 };
 extern const struct Party Party_default;
 
-
 /* --- Game Object --- */
 typedef struct Game {
     SDL_Renderer    *renderer;
