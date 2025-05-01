@@ -41,10 +41,6 @@ typedef struct NewMap {
 extern const NewMap NewMap_default;
 
 
-typedef struct Map_Perimiter {
-
-} Map_Perimiter;
-
 typedef struct Map_Arrays {
 
 } Map_Arrays;
@@ -66,50 +62,49 @@ typedef struct Map_Flags {
 typedef struct Map {
     struct jsonIO_Header jsonio_header;
 
-    // TODO: remove. should be in savefile
-    s8 party_filename;
-
-    /* --- PERIMETER --- */
-    i32 perimiter_danger_color;
-    i32 perimiter_aura_color;
-
     /* --- BASICS --- */
     i32 turn; /* Automatic loss if turn 255. */
-    i32 reinf_loaded;
 
     /* Map size */
     i32 row_len; /* [tiles] */
     i32 col_len; /* [tiles] */
     i32 chapter;
+    // Is tilesize a game property of map property?
     i32 tilesize[TWO_D]; /* [pixels] */
 
     Arrow           *arrow;
     tnecs_world     *world;
     SDL_Renderer    *renderer;
-    u8 num_agonizing;
+    struct Camera    camera;
 
-    /* --- SHADERS --- */
-    struct Tilemap_Shader *tilemap_shader;
+    // TODO: remove. should be in savefile
+    s8 party_filename;
 
-    /* --- STACK_MAP --- */
+    // typedef struct Map_Perimiter {
+    i32 perimiter_danger_color;
+    i32 perimiter_aura_color;
+    struct Padding *edges_danger; /* Todo change to general purpose */
+    // } Map_Perimiter;
+
+
+    // typedef struct Map_Stack {
     i32 stack_mode;
 
     /* - Actual stackmaps - */
     i32 *stacked_dangermap;         /* 2D dynamic array */
     i32 *stacked_global_dangermap;  /* 2D dynamic array */
 
-    /* - Perimeter - */
-    struct Padding *edges_danger; /* Todo change to general purpose */
-
-    /* --- ICONS --- */
     struct SDL_Texture *stack_move;
     struct SDL_Texture *stack_attack;
     struct SDL_Texture *stack_danger;
+    // Map_Stack;
 
+    // typedef struct Map_Render {
     struct Point visiblemin;
     struct Point visiblemax;
 
-    /* --- FRAMES --- */
+    struct Tilemap_Shader *tilemap_shader;
+
     i32  speed;
     u8  frames;                /* map frames num.    < 1 no anim */
     u8  frames_shadow;         /* shadow frames num. < 1 no anim */
@@ -119,11 +114,14 @@ typedef struct Map {
     u8  tilemap_frame_counter;
     float shadow_frame_factor;  /* framerate * factor = pause */
     float tilemap_frame_factor; /* framerate * factor = pause */
+    // Map_Render;
 
     /* --- costmap, MOVEMAP, ATTACKMAP... --- */
+    // TODO: remove
     i32 *temp;                  /* 2D dynamic array */
 
     /* Rational costs for map */
+    // typedef struct Map_Cost {
     i32 cost_multiplier;
     /* No need for denominator map: just one cost_multiplier
         1. Define all fractional effective costs on map
@@ -144,7 +142,9 @@ typedef struct Map {
     //     1. 5/6 = 10/12 -> cost in costmap = 10
     //     2. 5/4 = 15/12 -> cost in costmap = 15
     // 4. Move stat = 4 -> effective move = 4 * 12 = 48
+    // } Map_Cost;
 
+    // typedef struct Map_Arrays {
     i32 *costmap;               /* 2D dynamic array */
     i32 *movemap;               /* 2D dynamic array */
     i32 *start_posmap;          /* 2D dynamic array */
@@ -170,10 +170,12 @@ typedef struct Map {
     tnecs_entity *unitmap;      /* [row * col_len + col], occupymap */
     tnecs_entity *occupymap;    /* [row * col_len + col], friendlies only, enemies only... */
     tnecs_entity costmap_ent; /* costmap computed for*/
+    // } Map_Arrays;
 
-    /* --- PALETTES --- */
+    // typedef struct Map_Palettes {
     SDL_Palette *palette_default;
-    u8 *palettemap;     /* [row * col_len + col] */
+    u8  *palettemap;     /* [row * col_len + col] */
+    // TODO: Remove
     i32 *temp_palette;  /* [row * col_len + col] */
 
     /* -- Map palette indices -- */
@@ -185,8 +187,9 @@ typedef struct Map {
     u8 ipalette_darkred;
     u8 ipalette_shadow;
     u8 ipalette_enemy;
+    // } Map_Palettes;
 
-    /* --- ARMIES --- */
+    // typedef struct Map_Armies {
     int army_i; /* Current army in control */
     // TODO: Split by army
     tnecs_entity *units_onfield;
@@ -195,6 +198,7 @@ typedef struct Map {
 
     tnecs_entity *friendlies_agony;
     tnecs_entity *enemies_agony;
+    u8 num_agonizing;
 
     tnecs_entity *friendlies_killed;
     tnecs_entity *enemies_killed;
@@ -202,8 +206,9 @@ typedef struct Map {
     i32 *army_onfield;
     struct Point *units_positions_list;  /* same order as unit_onfield */
     struct Point *start_pos;
+    // } Map_Armies;
 
-    /* --- TILES --- */
+    // typedef struct Map_Tiles {
     struct Tile *tiles;  /* [tiles_order] */
     i32 *tiles_id;       /* [tiles_order] */
     i32 *tilesindex;     /* [tiles_order] */
@@ -213,30 +218,34 @@ typedef struct Map {
     struct SDL_Texture    *texture;
     struct SDL_Surface  ***tileset_surfaces; /* [palette_id][tiles_order] */
     struct SDL_Texture  ***tileset_textures; /* [palette_id][tiles_order] */
+    // } Map_Tiles;
 
-    /* --- REINFORCEMENT --- */
+    // typedef struct Map_Reinforcements {
     u8 *items_num;
+    i32 reinf_loaded;
     struct Reinforcement   *reinforcements;  /* pointer to 1D dynamic array */
     struct Inventory_item **reinf_equipments;
+    // } Map_Reinforcements;
 
-    /* --- MAP ENTITIES --- */
+    // typedef struct Map_Entities {
     tnecs_entity *doors_ent;  /* breakable doors are here */
     tnecs_entity *chests_ent;
     tnecs_entity *breakables_ent;
+    // } Map_Entities;
 
-    /* --- MUSIC --- */
+    // typedef struct Map_Music {
     i32 music_i_friendly;
     i32 music_i_enemy;
     Mix_Music *music_friendly;
     Mix_Music *music_enemy;
+    // } Map_Music;
 
-    /* --- CONDITIONS --- */
+    // typedef struct Map_Conditions {
     struct Map_condition *death_enemy;
     struct Map_condition *death_friendly;
     struct Map_condition *turn_end;
     struct Map_condition *waits_friendly;
-
-    struct Camera camera;
+    // } Map_Conditions;
 
     struct Map_Flags flags;
 } Map;
