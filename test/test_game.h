@@ -59,8 +59,8 @@ void test_combat_game() {
     SDL_assert(Unit_isEquipped(&attacker, attacker_equip_hand));
     SDL_assert(defender_eq[defender_equip_hand].id = ITEM_ID_FLEURET);
     SDL_assert(attacker_eq[attacker_equip_hand].id = ITEM_ID_FLEURET);
-    nourstest_true(attacker.counters.hp == attacker_stats.hp);
-    nourstest_true(defender.counters.hp == defender_stats.hp);
+    nourstest_true(attacker.hp.current == attacker_stats.hp);
+    nourstest_true(defender.hp.current == defender_stats.hp);
     Unit_stats ES_A = Unit_effectiveStats(&attacker);
     Unit_stats ES_D = Unit_effectiveStats(&defender);
     Computed_Stats cs_agg = Unit_computedStats(&attacker, distance, ES_A);
@@ -424,7 +424,7 @@ void test_combat_game() {
 
     Compute_Combat_Outcome(&firesaga.combat_outcome, &firesaga.combat_forecast,
                            &attacker, &defender);
-    attacker.counters.hp = attacker.stats.current.hp;
+    attacker.hp.current = attacker.stats.current.hp;
 
     nourstest_true(firesaga.combat_forecast.attack_num == 2);
     nourstest_true(firesaga.combat_forecast.phase_num == 2);
@@ -438,10 +438,10 @@ void test_combat_game() {
     Combat_Resolve(firesaga.combat_outcome.attacks,
                    firesaga.combat_forecast.attack_num,
                    &attacker, &defender);
-    nourstest_true(attacker.counters.hp == (attacker.stats.current.hp -
-                                            (cs_dft.attack.physical - ES_A.def)));
-    nourstest_true(defender.counters.hp == (defender.stats.current.hp -
-                                            (cs_agg.attack.physical - ES_D.def)));
+    nourstest_true(attacker.hp.current == (attacker.stats.current.hp -
+                                           (cs_dft.attack.physical - ES_A.def)));
+    nourstest_true(defender.hp.current == (defender.stats.current.hp -
+                                           (cs_agg.attack.physical - ES_D.def)));
 
     Unit_getsHealed(&attacker, 100);
     Unit_getsHealed(&defender, 100);
@@ -459,10 +459,10 @@ void test_combat_game() {
                    &defender);
     nourstest_true(firesaga.combat_forecast.flow.aggressor_phases == 1);
     nourstest_true(firesaga.combat_forecast.flow.defendant_phases == 2);
-    nourstest_true(attacker.counters.hp == (attacker.stats.current.hp - 2 *
-                                            (cs_dft.attack.physical - ES_A.def)));
-    nourstest_true(defender.counters.hp == (defender.stats.current.hp -
-                                            (cs_agg.attack.physical - ES_D.def)));
+    nourstest_true(attacker.hp.current == (attacker.stats.current.hp - 2 *
+                                           (cs_dft.attack.physical - ES_A.def)));
+    nourstest_true(defender.hp.current == (defender.stats.current.hp -
+                                           (cs_agg.attack.physical - ES_D.def)));
 
     Unit_getsHealed(&attacker, 100);
     Unit_getsHealed(&defender, 100);
@@ -478,10 +478,10 @@ void test_combat_game() {
                            &attacker, &defender);
     Combat_Resolve(firesaga.combat_outcome.attacks, firesaga.combat_forecast.attack_num, &attacker,
                    &defender);
-    nourstest_true(attacker.counters.hp == (attacker.stats.current.hp -
-                                            (cs_dft.attack.physical - ES_A.def)));
-    nourstest_true(defender.counters.hp == (defender.stats.current.hp - 2 *
-                                            (cs_agg.attack.physical - ES_D.def)));
+    nourstest_true(attacker.hp.current == (attacker.stats.current.hp -
+                                           (cs_dft.attack.physical - ES_A.def)));
+    nourstest_true(defender.hp.current == (defender.stats.current.hp - 2 *
+                                           (cs_agg.attack.physical - ES_D.def)));
 
     nourstest_true(firesaga.combat_forecast.flow.aggressor_phases == 2);
     nourstest_true(firesaga.combat_forecast.flow.defendant_phases == 1);
@@ -498,10 +498,10 @@ void test_combat_game() {
     firesaga.combat_outcome.attacks[0].crit = true;
     Combat_Resolve(firesaga.combat_outcome.attacks, firesaga.combat_forecast.attack_num, &attacker,
                    &defender);
-    nourstest_true(attacker.counters.hp == (ES_A.hp -
-                                            (cs_dft.attack.physical - ES_A.def)));
-    nourstest_true(defender.counters.hp == (defender.stats.current.hp -
-                                            (cs_agg.attack.physical - ES_D.def)));
+    nourstest_true(attacker.hp.current == (ES_A.hp -
+                                           (cs_dft.attack.physical - ES_A.def)));
+    nourstest_true(defender.hp.current == (defender.stats.current.hp -
+                                           (cs_agg.attack.physical - ES_D.def)));
 
     nourstest_true(firesaga.combat_forecast.flow.aggressor_phases == 1);
     nourstest_true(firesaga.combat_forecast.flow.defendant_phases == 1);

@@ -692,7 +692,7 @@ struct Unit_Stats_Bundle {
     struct Unit_stats  caps;
     struct Unit_stats  bases;
     struct Unit_stats  current; /* Only changes on levelup */
-    // Note: unit.stats.current NOT used to track current HP! 
+    // Note: unit.stats.current NOT used to track current HP!
     //  - Use unit.HP.current for that!
     struct Unit_stats  growths;
     struct Unit_stats *grown;
@@ -705,7 +705,6 @@ struct Unit_Stats_Bundle {
 };
 
 struct Unit_Counters {
-    i32 hp;
     i32 agony;
     i32 regrets;
 };

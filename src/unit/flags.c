@@ -128,7 +128,7 @@ i32 Unit_Current_HP(const Unit *unit) {
         SDL_assert(false);
         return (0);
     }
-    return (unit->counters.hp);
+    return (unit->hp.current);
 }
 i32 Unit_Current_Agony(const Unit *unit) {
     if (unit == NULL) {

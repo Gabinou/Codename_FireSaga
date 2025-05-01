@@ -87,7 +87,7 @@ const struct Unit Unit_default = {
 
     .id.army            =  1,
 
-    .counters.hp        = SOTA_MIN_HP,
+    .hp.current         = SOTA_MIN_HP,
     .stats.current.hp   = SOTA_MIN_HP,
 
 
@@ -107,7 +107,7 @@ const struct Unit Nibal_unit = {
     .id.army        = ARMY_HAMILCAR,
     .id.self        = UNIT_ID_NIBAL,
 
-    .counters.hp    = 35,
+    .hp.current     = 35,
     .flags.alive    = true,
     .flags.sex      = true,  /* 0:F, 1:M. eg. hasPenis. */
 
@@ -239,16 +239,16 @@ void Unit_setClassind(struct Unit *unit, i8 class_index) {
 void Unit_setStats(struct Unit *unit, struct Unit_stats stats) {
     SDL_assert(unit);
     unit->stats.current = stats;
-    unit->counters.hp   = unit->stats.current.hp;
+    unit->hp.current    = unit->stats.current.hp;
     Unit_stats effective_stats = Unit_effectiveStats(unit);
     Unit_computedStats(unit, -1, effective_stats);
-    unit->counters.hp = effective_stats.hp;
+    unit->hp.current    = effective_stats.hp;
 }
 
 void Unit_setBases(struct Unit *unit, struct Unit_stats stats) {
     SDL_assert(unit);
     unit->stats.bases = stats;
-    unit->counters.hp = unit->stats.bases.hp;
+    unit->hp.current  = unit->stats.bases.hp;
 }
 
 /* --- Second-order info --- */
@@ -280,20 +280,20 @@ void Unit_takesDamage(struct Unit *unit, u8 damage, b32 crit) {
 
     /* -- Checks -- */
     SDL_assert(unit);
-    SDL_assert(unit->counters.hp > 0);
+    SDL_assert(unit->hp.current > 0);
 
     /* -- Actually take damage -- */
-    // SDL_Log("unit->counters.hp %d", unit->counters.hp);
-    unit->counters.hp = (damage > unit->counters.hp) ? 0 : (unit->counters.hp - damage);
+    // SDL_Log("unit->hp.current %d", unit->hp.current);
+    unit->hp.current = (damage > unit->hp.current) ? 0 : (unit->hp.current - damage);
     /* -- Check for Death or Agony -- */
-    if (unit->counters.hp == 0) {
+    if (unit->hp.current == 0) {
         // TODO: Check for frail skill, other things that kill instantly.
         if (crit)
             Unit_dies(unit);
         else
             Unit_agonizes(unit);
     }
-    // SDL_Log("unit->counters.hp %d", unit->counters.hp);
+    // SDL_Log("unit->hp.current %d", unit->hp.current);
     // SDL_Log("unit->agonizes %d", unit->agony);
     // SDL_Log("unit->alive %d", unit->alive);
 }
@@ -304,8 +304,8 @@ void Unit_getsHealed(struct Unit *unit, u8 healing) {
 
     // TODO: Overheal
     /* -- Actually heal -- */
-    int missing_hp   = unit->stats.current.hp - unit->counters.hp;
-    unit->counters.hp = healing > missing_hp ? unit->stats.current.hp : unit->counters.hp + healing;
+    int missing_hp   = unit->stats.current.hp - unit->hp.current;
+    unit->hp.current = healing > missing_hp ? unit->stats.current.hp : unit->hp.current + healing;
 }
 
 void Unit_wait(struct Unit *unit) {
@@ -1046,7 +1046,7 @@ void Unit_readJSON(void *input, const cJSON *junit) {
     //  => Check if it fits
 
     if (jcurrent_hp != NULL) {
-        unit->counters.hp        = cJSON_GetNumberValue(jcurrent_hp);
+        unit->hp.current        = cJSON_GetNumberValue(jcurrent_hp);
     }
 
     cJSON *jlevelup = cJSON_GetObjectItem(jlevelups, "Level-up");
@@ -1108,7 +1108,7 @@ void Unit_writeJSON(const void *input, cJSON *junit) {
     cJSON *jai            = cJSON_CreateString(ai_filename.data);
     cJSON *jclass         = cJSON_CreateString(classNames[Unit_Class(unit)].data);
     cJSON *jbase_exp      = cJSON_CreateNumber(unit->level.exp);
-    cJSON *jcurrent_hp    = cJSON_CreateNumber(unit->counters.hp);
+    cJSON *jcurrent_hp    = cJSON_CreateNumber(unit->hp.current);
     cJSON *jclass_index   = cJSON_CreateNumber(Unit_Class(unit));
     cJSON *jcurrent_stats = cJSON_CreateObject();
     Unit_stats_writeJSON(&unit->stats.current, jcurrent_stats);
@@ -1284,5 +1284,5 @@ b32 Unit_ID_Valid(u16 id) {
 
 b32 Unit_HP_isFull(struct Unit *unit) {
     Unit_effectiveStats(unit);
-    return (unit->counters.hp >= Unit_effectiveStats(unit).hp);
+    return (unit->hp.current >= Unit_effectiveStats(unit).hp);
 }
