@@ -178,21 +178,21 @@ void Map_Free(struct Map *map) {
     }
 
     /* - Conditions - */
-    if (map->death_enemy != NULL) {
-        DARR_FREE(map->death_enemy);
-        map->death_enemy = NULL;
+    if (map->conditions.death_enemy != NULL) {
+        DARR_FREE(map->conditions.death_enemy);
+        map->conditions.death_enemy = NULL;
     }
-    if (map->death_friendly != NULL) {
-        DARR_FREE(map->death_friendly);
-        map->death_friendly = NULL;
+    if (map->conditions.death_friendly != NULL) {
+        DARR_FREE(map->conditions.death_friendly);
+        map->conditions.death_friendly = NULL;
     }
-    if (map->turn_end != NULL) {
-        DARR_FREE(map->turn_end);
-        map->turn_end = NULL;
+    if (map->conditions.turn_end != NULL) {
+        DARR_FREE(map->conditions.turn_end);
+        map->conditions.turn_end = NULL;
     }
-    if (map->waits_friendly != NULL) {
-        DARR_FREE(map->waits_friendly);
-        map->waits_friendly = NULL;
+    if (map->conditions.waits_friendly != NULL) {
+        DARR_FREE(map->conditions.waits_friendly);
+        map->conditions.waits_friendly = NULL;
     }
 
     /* - Edges - */
@@ -395,11 +395,11 @@ void Map_Members_Alloc(struct Map *map) {
     SDL_assert(map->start_pos == NULL);
     map->start_pos = DARR_INIT(map->start_pos, struct Point, 16);
 
-    SDL_assert(map->death_enemy == NULL);
-    map->death_enemy = DARR_INIT(map->death_enemy, struct Map_condition, 2);
+    SDL_assert(map->conditions.death_enemy == NULL);
+    map->conditions.death_enemy = DARR_INIT(map->conditions.death_enemy, struct Map_condition, 2);
 
-    SDL_assert(map->death_friendly == NULL);
-    map->death_friendly = DARR_INIT(map->death_friendly, struct Map_condition, 2);
+    SDL_assert(map->conditions.death_friendly == NULL);
+    map->conditions.death_friendly = DARR_INIT(map->conditions.death_friendly, struct Map_condition, 2);
 
     SDL_assert(map->reinforcements == NULL);
     map->reinforcements = DARR_INIT(map->reinforcements, struct Reinforcement, 16);
@@ -675,8 +675,8 @@ void Map_RowCol_readJSON(s8 filename, i32 rowcol[TWO_D]) {
 
 void Map_readJSON(void *input, const cJSON *jmap) {
     struct Map *map = (struct Map *) input;
-    SDL_assert(map->death_enemy         != NULL);
-    SDL_assert(map->death_friendly      != NULL);
+    SDL_assert(map->conditions.death_enemy         != NULL);
+    SDL_assert(map->conditions.death_friendly      != NULL);
     SDL_assert(map->reinforcements      != NULL);
     SDL_assert(map->reinf_equipments    != NULL);
     SDL_assert(map->items_num           != NULL);
@@ -955,13 +955,13 @@ void Map_readJSON(void *input, const cJSON *jmap) {
     cJSON_ArrayForEach(jmap_condition, jdeath_enemy) {
         struct Map_condition map_cond = Map_condition_default;
         Map_Condition_readJSON(&map_cond, jmap_condition);
-        DARR_PUT(map->death_enemy, map_cond);
+        DARR_PUT(map->conditions.death_enemy, map_cond);
     }
 
     cJSON_ArrayForEach(jmap_condition, jdeath_friendly) {
         struct Map_condition map_cond = Map_condition_default;
         Map_Condition_readJSON(&map_cond, jmap_condition);
-        DARR_PUT(map->death_friendly, map_cond);
+        DARR_PUT(map->conditions.death_friendly, map_cond);
     }
 }
 

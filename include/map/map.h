@@ -86,6 +86,13 @@ typedef struct Map_Music {
     Mix_Music *enemy;
 } Map_Music;
 
+typedef struct Map_Conditions {
+    struct Map_condition *death_enemy;
+    struct Map_condition *death_friendly;
+    struct Map_condition *turn_end;
+    struct Map_condition *waits_friendly;
+} Map_Conditions;
+
 typedef struct Map {
     struct jsonIO_Header jsonio_header;
 
@@ -103,8 +110,11 @@ typedef struct Map {
     tnecs_world     *world;
     SDL_Renderer    *renderer;
     struct Camera    camera;
-    struct Map_Cost  cost;
-    struct Map_Music music;
+    struct Map_Cost         cost;
+    struct Map_Music        music;
+    struct Map_Flags        flags;
+    struct Map_Conditions   conditions;
+
     // TODO: remove. should be in savefile
     s8 party_filename;
 
@@ -238,14 +248,6 @@ typedef struct Map {
     tnecs_entity *breakables_ent;
     // } Map_Entities;
 
-    // typedef struct Map_Conditions {
-    struct Map_condition *death_enemy;
-    struct Map_condition *death_friendly;
-    struct Map_condition *turn_end;
-    struct Map_condition *waits_friendly;
-    // } Map_Conditions;
-
-    struct Map_Flags flags;
 } Map;
 extern const struct Map Map_default;
 

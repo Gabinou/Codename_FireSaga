@@ -1583,9 +1583,9 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     // - Put unit entity in list of killed units
 
     /* --- Check Map conditions --- */
-    Map_Conditions_Check_Death(sota->map->death_enemy,      sota->map,
+    Map_Conditions_Check_Death(sota->map->conditions.death_enemy,      sota->map,
                                victim,                      boss, sota);
-    Map_Conditions_Check_Death(sota->map->death_friendly,   sota->map,
+    Map_Conditions_Check_Death(sota->map->conditions.death_friendly,   sota->map,
                                victim,                      boss, sota);
 }
 
