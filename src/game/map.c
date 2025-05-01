@@ -1,3 +1,4 @@
+
 #include "game/map.h"
 #include "game/cursor.h"
 #include "game/menu.h"
@@ -78,7 +79,7 @@ void Game_Map_Load(struct Game *sota, i32 in_map_index) {
     sota->camera.offset.y   = sota->map->camera.offset.y;
     sota->camera.zoom       = sota->map->camera.zoom;
 
-    sota->map->update = true;
+    sota->map->flags.update = true;
 }
 
 void Game_Map_Free(struct Game *sota) {

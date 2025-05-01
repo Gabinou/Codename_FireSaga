@@ -308,4 +308,9 @@ void Map_Bonus_Remove_Turn_End_Unit(struct Map *map, tnecs_entity ent);
 /* -- Entities -- */
 tnecs_entity *Map_Get_onField(struct Map *map, i32 army);
 
+/* -- Flags -- */
+b32 Map_isWon(      const Map *map);
+b32 Map_isLost(     const Map *map);
+b32 Map_isUpdate(   const Map *map);
+
 #endif /* MAP_H */

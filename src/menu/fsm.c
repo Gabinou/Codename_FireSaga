@@ -1079,7 +1079,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moEndT(struct Game *sota, struct Menu *mc) {
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moSeize( struct Game *sota, struct Menu *mc) {
     SDL_Log("Throne was seized: Map was won!");
-    sota->map->win = true;
+    sota->map->flags.win = true;
 
     /* - Go back to standby - */
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, data1_entity, NULL);
@@ -1268,7 +1268,7 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
             Position_Pos_Set(unit_pos, init_pos.x, init_pos.y);
             // SDL_Log("init_pos %d %d", init_pos.x, init_pos.y);
 
-            sota->map->update = true;
+            sota->map->flags.update = true;
 
             /* - MapAct settings for attacktolist - */
             MapAct map_to = MapAct_default;
@@ -1326,7 +1326,7 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
                 Sprite_Draw(sprite, sota->renderer);
             }
 
-            SDL_assert(sota->map->update);
+            SDL_assert(Map_isUpdate(sota->map));
             break;
         }
         case MENU_PLAYER_SELECT_MAP_ACTION:

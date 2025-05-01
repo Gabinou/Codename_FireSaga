@@ -481,7 +481,7 @@ void fsm_eGlbRng_ssStby(struct Game *sota) {
         /* - Compute new dangermap  - */
         i32 *temp_danger = Map_Danger_Compute(sota->map, entity);
 
-        if (sota->map->show_globalRange) {
+        if (sota->map->flags.show_globalRange) {
             /* Currently showing global map, removing */
             Map_Global_Danger_Sub(sota->map, temp_danger);
         } else {
@@ -490,7 +490,7 @@ void fsm_eGlbRng_ssStby(struct Game *sota) {
         }
     }
 
-    if (sota->map->show_globalRange) {
+    if (sota->map->flags.show_globalRange) {
         /* Currently showing global map, removing */
         /* Plus, adding back player dangermap */
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_DANGER, TNECS_NULL);
@@ -504,7 +504,7 @@ void fsm_eGlbRng_ssStby(struct Game *sota) {
     }
 
     /* Switching show_globalRange to new mode */
-    sota->map->show_globalRange = !sota->map->show_globalRange;
+    sota->map->flags.show_globalRange = !sota->map->flags.show_globalRange;
 }
 
 // --- FSM ACTION AND SUBACTION DEFINITIONS ---
@@ -542,7 +542,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     }
 
     /* -- Compute attackmap and movemap -- */
-    sota->map->update   = true;
+    sota->map->flags.update   = true;
 
     /* - MapAct settings for attacktolist - */
     MapAct map_to = MapAct_default;
@@ -587,12 +587,12 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     }
 
     /* Stack all overlay maps */
-    if (sota->map->show_globalRange) {
+    if (sota->map->flags.show_globalRange) {
         Map_Stacked_Dangermap_Compute(sota->map, sota->map->global_dangermap);
     } else {
         Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
     }
-    sota->map->show_icons = SotA_isPC(Unit_Army(unit_ontile));
+    sota->map->flags.show_icons = SotA_isPC(Unit_Army(unit_ontile));
 
     /* -- Changing animation loop to Taunt -- */
     struct Sprite *sprite = IES_GET_COMPONENT(sota->world, hov_ent, Sprite);
@@ -713,7 +713,7 @@ void fsm_eUnitDng_ssStby(struct Game *sota, tnecs_entity selector_entity) {
         return;
     }
 
-    if (sota->map->show_globalRange) {
+    if (sota->map->flags.show_globalRange) {
         SDL_Log("Global range/danger shown. Do nothing for Unit dangermap.");
         return;
     }
@@ -1112,7 +1112,7 @@ void fsm_eGmp2Stby_sGmpMap(struct Game *sota, tnecs_entity controller_entity) {
             Event_Emit(__func__, SDL_USEREVENT, event_Unit_Deselect, data1_entity, data2_entity);
     }
 
-    sota->map->show_overlay = false;
+    sota->map->flags.show_overlay = false;
 }
 
 /* -- FSM: Input_Start EVENT -- */

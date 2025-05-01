@@ -81,7 +81,7 @@ void Game_cursorFocus_onMap(struct Game *sota) {
     position->scale[0] = (float)map_tilesize[0];
     position->scale[1] = (float)map_tilesize[1];
 
-    sota->map->update = true;
+    sota->map->flags.update = true;
 }
 
 void Game_cursorFocus_onMenu(struct Game *sota) {

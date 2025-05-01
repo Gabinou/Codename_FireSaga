@@ -183,7 +183,7 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
             SDL_Log("SDL_Error: %s", SDL_GetError());
             SDL_assert(false);
         }
-        if ((!map->stack_mode) || (!map->show_icons))
+        if ((!map->stack_mode) || (!map->flags.show_icons))
             continue;
 
         tile_order = Map_Tile_Order(map, TILE_ICONS);
@@ -224,10 +224,10 @@ void Map_Visible_Tiles(struct Map *map,  struct Settings *settings, struct Camer
     if (map->visiblemax.y >= map->row_len)
         map->visiblemax.y = map->row_len - 1;
 
-    map->visible_changed =  (visiblemprev.x != map->visiblemin.x);
-    map->visible_changed |= (visiblemprev.y != map->visiblemin.y);
-    map->visible_changed |= (visiblemax_prev.x != map->visiblemax.x);
-    map->visible_changed |= (visiblemax_prev.y != map->visiblemax.y);
+    map->flags.visible_changed =  (visiblemprev.x != map->visiblemin.x);
+    map->flags.visible_changed |= (visiblemprev.y != map->visiblemin.y);
+    map->flags.visible_changed |= (visiblemax_prev.x != map->visiblemax.x);
+    map->flags.visible_changed |= (visiblemax_prev.y != map->visiblemax.y);
 }
 
 SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {

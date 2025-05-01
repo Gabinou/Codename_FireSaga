@@ -43,7 +43,7 @@ const NewMap NewMap_default = {
 
 const Map Map_default = {
     .jsonio_header.json_element = JSON_MAP,
-    .show_icons             = true,
+    .flags.show_icons       = true,
     .cost_multiplier        =  1,
     .frames                 = 10,
     .frames_shadow          = 10,

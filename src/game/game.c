@@ -916,17 +916,17 @@ void Game_Camera_Scroll(struct Game *sota) {
 
     if ((x + w / 2) >= (factor_max * sota->settings.res.x)) {
         sota->camera.offset.x   -= offset;
-        sota->map->camera_moved = true;
+        sota->map->flags.camera_moved = true;
     } else if ((x + w / 2) <= (factor_min * sota->settings.res.x)) {
         sota->camera.offset.x   += offset;
-        sota->map->camera_moved = true;
+        sota->map->flags.camera_moved = true;
     }
     if ((y + h / 2) >= (factor_max * sota->settings.res.y)) {
         sota->camera.offset.y   -= offset;
-        sota->map->camera_moved = true;
+        sota->map->flags.camera_moved = true;
     } else if ((y + h / 2) <= (factor_min * sota->settings.res.y)) {
         sota->camera.offset.y   += offset;
-        sota->map->camera_moved = true;
+        sota->map->flags.camera_moved = true;
     }
 }
 

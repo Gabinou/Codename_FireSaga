@@ -21,34 +21,34 @@
 
 void Map_Global_Danger_Reset(struct Map *map) {
     memset(map->global_dangermap, 0, sizeof(*map->global_dangermap) * map->row_len * map->col_len);
-    map->shading_changed = true;
+    map->flags.shading_changed = true;
 }
 
 void Map_Global_Danger_Add(struct Map *map, i32 *danger) {
     map->global_dangermap = matrix_plus_noM(map->global_dangermap, danger,
                                             map->row_len * map->col_len);
-    map->shading_changed = true;
+    map->flags.shading_changed = true;
 }
 
 void Map_Global_Danger_Sub(struct Map *map, i32 *danger) {
     map->global_dangermap = matrix_sub_noM(map->global_dangermap, danger,
                                            map->row_len * map->col_len);
-    map->shading_changed = true;
+    map->flags.shading_changed = true;
 }
 
 void Map_Danger_Reset(struct Map *map) {
     memset(map->dangermap, 0, sizeof(*map->dangermap) * map->row_len * map->col_len);
-    map->shading_changed = true;
+    map->flags.shading_changed = true;
 }
 
 void Map_Danger_Add(struct Map *map, i32 *danger) {
     map->dangermap = matrix_plus_noM(map->dangermap, danger, map->row_len * map->col_len);
-    map->shading_changed = true;
+    map->flags.shading_changed = true;
 }
 
 void Map_Danger_Sub(struct Map *map, i32 *danger) {
     map->dangermap = matrix_sub_noM(map->dangermap, danger, map->row_len * map->col_len);
-    map->shading_changed = true;
+    map->flags.shading_changed = true;
 }
 
 void Map_Stacked_Dangermap_Compute(struct Map *map, i32 *dangermap) {
@@ -63,7 +63,7 @@ void Map_Stacked_Dangermap_Compute(struct Map *map, i32 *dangermap) {
                                             map->movemap,
                                             map->row_len * map->col_len);
     SDL_free(temp_map);
-    map->shading_changed = true;
+    map->flags.shading_changed = true;
 }
 
 void Map_Stacked_Dangermap_Reset(struct Map *map) {
@@ -73,7 +73,7 @@ void Map_Stacked_Dangermap_Reset(struct Map *map) {
         map->stacked_dangermap = memset(map->stacked_dangermap, 0, size * len);
     }
 
-    map->shading_changed = true;
+    map->flags.shading_changed = true;
 }
 
 void Map_Stacked_Global_Dangermap_Reset(struct Map *map) {
@@ -84,7 +84,7 @@ void Map_Stacked_Global_Dangermap_Reset(struct Map *map) {
         map->stacked_global_dangermap = memset(map->stacked_global_dangermap, 0, size * len);
     }
 
-    map->shading_changed = true;
+    map->flags.shading_changed = true;
 }
 
 /* Note: effective_move should have been multiplied by cost_multiplier */
@@ -207,7 +207,7 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
     }
     SDL_assert(out != NULL);
 
-    map->update = true;
+    map->flags.update = true;
     return (out);
 }
 
@@ -271,7 +271,7 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     }
     SDL_assert(out != NULL);
 
-    map->update = true;
+    map->flags.update = true;
     return (out);
 }
 

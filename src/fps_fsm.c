@@ -85,7 +85,8 @@ void fsm_cFrame_sGmpMap_ssMapCmbt(struct Game *sota) {
 /* --- AI CONTROL HAPPENS HERE --- */
 void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     /* --- AI CONTROL --- */
-    if (sota->map->loss) {
+    // TODO: Don't check for loss every frame
+    if (Map_isLost(sota->map)) {
         // SDL_Log("AI CONTROL -> LOSS");
         Event_Emit(__func__, SDL_USEREVENT, event_Game_Over, NULL, NULL);
         return;

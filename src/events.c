@@ -229,12 +229,12 @@ void receive_event_Input_CANCEL(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Map_Win(struct Game *sota, SDL_Event *Map_Win) {
     // SDL_Log("Map was won!");
-    sota->map->win = true;
+    sota->map->flags.win = true;
 }
 
 void receive_event_Map_Lose(struct Game *sota, SDL_Event *Map_Lose) {
     // SDL_Log("Map was lost!");
-    sota->map->loss = true;
+    sota->map->flags.loss = true;
 }
 
 void receive_event_Item_Get(struct Game *sota, SDL_Event *Map_Lose) {
@@ -367,11 +367,11 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
     }
 
     /* -- If map is won or loss, quit -- */
-    if (sota->map->win) {
+    if (Map_isWon(sota->map)) {
         Event_Emit(__func__, SDL_USEREVENT, event_Scene_Play, NULL, NULL);
     }
 
-    if (sota->map->loss) {
+    if (Map_isLost(sota->map)) {
         Event_Emit(__func__, SDL_USEREVENT, event_Game_Over, NULL, NULL);
     }
 }
@@ -614,7 +614,7 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
 
     /* -- Reload Map -- */
     jsonio_readJSON(sota->map->jsonio_header.json_filename, sota->map);
-    sota->map->update = true;
+    sota->map->flags.update = true;
 
     /* -- TODO: Reload Scenes -- */
 
@@ -883,7 +883,7 @@ void receive_event_Unit_Deselect(struct Game *sota, SDL_Event *userevent) {
     /* - New overlays - */
     if (SotA_isPC(Unit_Army(unit_ptr))) {
         /* - Hide PC overlay - */
-        sota->map->show_overlay = false;
+        sota->map->flags.show_overlay = false;
     } else {
         /* - Show NPC danger - */
         if (Unit_showsDanger(unit_ptr)) {
@@ -901,7 +901,7 @@ void receive_event_Unit_Entity_Return(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Unit_Icon_Return(struct Game *sota, SDL_Event *userevent) {
 
     /* - Hide overlay/movemap - */
-    sota->map->show_overlay = false;
+    sota->map->flags.show_overlay = false;
     tnecs_entity returning = sota->selected_unit_entity;
     SDL_assert(returning > TNECS_NULL);
 
@@ -1109,7 +1109,7 @@ void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {
     cam->zoom = new_zoom < MAX_CAMERA_ZOOM ? new_zoom : cam->zoom;
     cam->offset.x = SOTA_ZOOMTOPOINT(cam->zoom / previous_zoom, cam->offset.x, dstrect.x);
     cam->offset.y = SOTA_ZOOMTOPOINT(cam->zoom / previous_zoom, cam->offset.y, dstrect.y);
-    sota->map->camera_moved = true;
+    sota->map->flags.camera_moved = true;
 
 }
 
@@ -1151,7 +1151,7 @@ void receive_event_Input_ZOOM_OUT(struct Game *sota, SDL_Event *userevent) {
     cam->zoom = new_zoom > MIN_CAMERA_ZOOM ? new_zoom : cam->zoom;
     cam->offset.x = SOTA_ZOOMTOPOINT(cam->zoom / previous_zoom, cam->offset.x, dstrect.x);
     cam->offset.y = SOTA_ZOOMTOPOINT(cam->zoom / previous_zoom, cam->offset.y, dstrect.y);
-    sota->map->camera_moved = true;
+    sota->map->flags.camera_moved = true;
 
 }
 
