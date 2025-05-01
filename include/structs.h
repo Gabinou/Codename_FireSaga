@@ -576,7 +576,7 @@ extern const struct Combat_Forecast Combat_Forecast_default;
 struct Combat_Outcome {
     struct Combat_Phase   phases[SOTA_COMBAT_MAX_PHASES];
     struct Combat_Attack *attacks;
-    int current_attack;
+    i32 current_attack;
     b32 ended; /* death before all attacks */
 };
 extern const struct Combat_Outcome Combat_Outcome_default;
@@ -778,10 +778,10 @@ typedef struct Unit {
 extern const struct Unit Unit_default;
 
 struct GraphStat {
-    i16 level;
-    i16 base_level;
     i8 cumul_stat[SOTA_MAX_LEVEL];
     i8 stat_id;
+    i16 level;
+    i16 base_level;
 };
 extern const struct GraphStat GraphStat_default;
 
@@ -803,7 +803,7 @@ struct Graph {
 
     /* length until writing another pixel, including pixel */
     /* ant for x */
-    u8 y_lenperpixel;
+    i32 y_lenperpixel;
 
     b32 x_ticks;
     b32 y_ticks;
@@ -812,14 +812,13 @@ extern const struct Graph Graph_default;
 
 /* --- Bars --- */
 struct CircleBar {
-    int fill;
+    i32 fill;
     SDL_RendererFlip flip;
     Point pos;
 };
 extern const struct CircleBar CircleBar_default;
 
 struct SimpleBar {
-    float fill;
     size_t len; /* [pixels] as overfilled */
     size_t height; /* [pixels] */
     Point pos;
@@ -829,6 +828,7 @@ struct SimpleBar {
     SDL_Color FG_dark;
     SDL_Color FG_light;
     SDL_RendererFlip flip;
+    float fill;
 };
 extern const struct SimpleBar SimpleBar_default;
 
@@ -1085,25 +1085,26 @@ typedef struct Item {
 
     struct Range range;
     struct Aura aura; /* Aura with range [0, 0] to for wielder-only bonus */
+    u16 *users;        /* item only usable by users.   NULL -> everyone */
+    u16 *classes;      /* item only usable by classes. NULL -> everyone */
 
     struct Item_stats stats;
-    u16  id;           /* 0 is NULL */
-    u8 target;          /* units on which item is usable. */
+
+    u64  type;         /* and not type_exp */
+    u64 passive;
+    /* -- Item Effects -- */
+
+    /* Use function is used for Staves effects too. */
+    use_function_t active; /* NULL if not usable */
+    s8 name;
+
+    i32  id;           /* 0 is NULL */
+    i32 target;          /* units on which item is usable. */
     b32 canSell;
     b32 write_stats;
     b32 canUse;
     b32 canRepair; /* TODO: Move to weapon? */
-    u64  type;         /* and not type_exp */
-    u16 *users;        /* item only usable by users.   NULL -> everyone */
-    u16 *classes;      /* item only usable by classes. NULL -> everyone */
 
-    /* -- Item Effects -- */
-    u64 passive;
-
-    /* Use function is used for Staves effects too. */
-    use_function_t active; /* NULL if not usable */
-
-    s8 name;
     char description[DEFAULT_BUFFER_SIZE * 2];
 
 } Item;
@@ -1143,14 +1144,13 @@ typedef struct PathfindingAct {
     i32             *movemap;
     i32             *acttomap;
     tnecs_entity    *occupymap;
+    Range            range;
+    Point            point;
+    tnecs_entity     self;
 
     i32              col_len;
     i32              row_len;
     i32              mode_movetile;
-    tnecs_entity     self;
-
-    Range            range;
-    Point            point;
 } PathfindingAct;
 extern const PathfindingAct PathfindingAct_default;
 
