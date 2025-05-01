@@ -22,5 +22,5 @@ b32 Map_isUpdate(const Map *map) {
         SDL_assert(false);
         return (0);
     }
-    return (map->flags.update);    
+    return (map->flags.update);
 }

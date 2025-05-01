@@ -292,7 +292,7 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
 
         /* Stitch icon depending on stack mode */
         SDL_assert(success == 0);
-        if ((!map->stack_mode) || (!map->show_icons))
+        if ((!map->stack_mode) || (!map->flags.show_icons))
             continue;
 
         tile_order = Map_Tile_Order(map, TILE_ICONS);
@@ -539,9 +539,9 @@ void Map_Update(struct Map *map,  struct Settings *settings,
         // BROKEN
         Map_Tilemap_Texture_Stitch(map, render_target);
     }
-    map->camera_moved       = false;
-    map->shading_changed    = false;
-    map->update             = false;
+    map->flags.camera_moved       = false;
+    map->flags.shading_changed    = false;
+    map->flags.update             = false;
 }
 
 void Map_Draw(struct Map *map,  struct Settings *settings,
@@ -561,13 +561,13 @@ void Map_Draw(struct Map *map,  struct Settings *settings,
     /* -- Map update switches -- */
     b32 sm_up = Map_Shadowmap_newFrame(map);
     b32 tm_up = Map_Tilemap_newFrame(map);
-    if (map->update || map->camera_moved)
+    if (map->flags.update || map->flags.camera_moved)
         Map_Visible_Tiles(map, settings, camera);
     else
-        map->visible_changed = false;
+        map->flags.visible_changed = false;
 
     /* -- Update Map -- */
-    if (map->update || sm_up || tm_up || map->visible_changed || map->shading_changed)
+    if (map->flags.update || sm_up || tm_up || map->flags.visible_changed || map->flags.shading_changed)
         Map_Update(map, settings, camera, render_target);
 
     SDL_assert(map->tilemap_texture != NULL);

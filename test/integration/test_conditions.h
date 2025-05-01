@@ -57,8 +57,8 @@ void test_boss_death_win(int argc, char *argv[]) {
     Events_Manage(sota);
 
     /* Check Win */
-    nourstest_true(sota->map->win);
-    nourstest_true(!sota->map->loss);
+    nourstest_true(Map_isWon(sota->map));
+    nourstest_true(!Map_isLost(sota->map));
 
     /* Quit game */
     Game_Free(sota);
@@ -121,8 +121,8 @@ void test_main_char_death_loss(int argc, char *argv[]) {
     Events_Manage(sota);
 
     /* Check Win */
-    nourstest_true(sota->map->loss);
-    nourstest_true(!sota->map->win);
+    nourstest_true(!Map_isWon(sota->map));
+    nourstest_true(Map_isLost(sota->map));
 
     /* Quit game */
     Game_Free(sota);
@@ -176,9 +176,9 @@ void test_silou_death_loss(int argc, char *argv[]) {
     // receive_event_Unit_Dies->Map_Conditions_Check_Death->Receive_event_Map_Win
     Events_Manage(sota);
 
-    /* Check Win */
-    nourstest_true(sota->map->loss);
-    nourstest_true(!sota->map->win);
+    /* Check Loss */
+    nourstest_true(!Map_isWon(sota->map));
+    nourstest_true(Map_isLost(sota->map));
 
     /* Quit game */
     Game_Free(sota);
