@@ -39,23 +39,23 @@ void Map_Frame_Pauses(struct Map *map,  struct Settings *settings) {
 void Map_Palettemap_Reset(struct Map *map) {
     SDL_assert(map->row_len < MAP_MAX_ROWS);
     SDL_assert(map->col_len < MAP_MAX_COLS);
-    size_t bytesize = map->col_len * map->row_len * sizeof(*map->palettemap);
-    SDL_assert(map->palettemap != NULL);
-    memset(map->palettemap, map->ipalette_base, bytesize);
+    size_t bytesize = map->col_len * map->row_len * sizeof(*map->palette.map);
+    SDL_assert(map->palette.map != NULL);
+    memset(map->palette.map, map->palette.base, bytesize);
 }
 
 void Map_Palettemap_addMap(struct Map *map, i32 *palettemap, u8 palette) {
     SDL_assert(palette >= PALETTE_NES);
     SDL_assert(palette  < PALETTE_NUM);
     for (size_t i = 0; i < (map->col_len * map->row_len); i++)
-        (palettemap[i] > 0) && (map->palettemap[i] = palette); /* short-circuit */
+        (palettemap[i] > 0) && (map->palette.map[i] = palette); /* short-circuit */
 }
 
 void Map_Palettemap_addList(struct Map *map, i32 *list, u8 palette) {
-    size_t bytesize = map->row_len * map->col_len * sizeof(*map->palettemap);
-    memset(map->palettemap, map->ipalette_base, bytesize);
+    size_t bytesize = map->row_len * map->col_len * sizeof(*map->palette.map);
+    memset(map->palette.map, map->palette.base, bytesize);
     for (size_t i = 0; i < DARR_NUM(list) / TWO_D; i++)
-        map->palettemap[list[TWO_D * i] * map->col_len + list[TWO_D * i + 1]] = palette;
+        map->palette.map[list[TWO_D * i] * map->col_len + list[TWO_D * i + 1]] = palette;
 }
 
 void Map_Renderer_Set(struct Map *map, SDL_Renderer *renderer) {
@@ -68,15 +68,15 @@ void Map_Renderer_Set(struct Map *map, SDL_Renderer *renderer) {
 void Map_Palettemap_Autoset(struct Map *map, u16 flagsum, tnecs_entity self) {
     Map_Palettemap_Reset(map);
     int size        = map->row_len * map->col_len;
-    i32 *palette    = map->temp_palette;
-    size_t bytesize = map->col_len * map->row_len * sizeof(*map->temp_palette);
+    i32 *palette    = map->palette.temp;
+    size_t bytesize = map->col_len * map->row_len * sizeof(*map->palette.temp);
 
     /* Last set Map_Palettemap_addMap is rendered */
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_GLOBAL_DANGER, flagsum)) {
         SDL_assert(palette);
         palette = matrix_sgreater_noM(palette, map->global_dangermap, 0, size);
-        Map_Palettemap_addMap(map, palette, map->ipalette_purple);
+        Map_Palettemap_addMap(map, palette, map->palette.purple);
     }
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_DANGER, flagsum)) {
@@ -85,20 +85,20 @@ void Map_Palettemap_Autoset(struct Map *map, u16 flagsum, tnecs_entity self) {
         i32 *temp_palette2 = matrix_ssmaller(map->dangermap, DANGERMAP_UNIT_DIVISOR, size);
         palette = matrix_and_noM(palette, temp_palette2, palette, size);
         SDL_free(temp_palette2);
-        Map_Palettemap_addMap(map, palette, map->ipalette_darkred);
+        Map_Palettemap_addMap(map, palette, map->palette.darkred);
     }
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_ATTACK, flagsum)) {
         SDL_assert(palette);
         palette = matrix_sgreater_noM(palette, map->attacktomap, 0, size);
-        Map_Palettemap_addMap(map, palette, map->ipalette_red);
+        Map_Palettemap_addMap(map, palette, map->palette.red);
     }
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_HEAL, flagsum)) {
         SDL_assert(palette);
         palette = matrix_sgreater_noM(palette, map->healtomap, 0, size);
 
-        Map_Palettemap_addMap(map, palette, map->ipalette_green);
+        Map_Palettemap_addMap(map, palette, map->palette.green);
     }
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_MOVE, flagsum)) {
@@ -113,22 +113,22 @@ void Map_Palettemap_Autoset(struct Map *map, u16 flagsum, tnecs_entity self) {
             }
         }
 
-        Map_Palettemap_addMap(map, palette, map->ipalette_blue);
+        Map_Palettemap_addMap(map, palette, map->palette.blue);
     }
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_START_POS, flagsum)) {
         SDL_assert(palette);
         SDL_assert(map->start_pos);
         palette = matrix_sgreater_noM(palette, map->start_posmap, 0, size);
-        Map_Palettemap_addMap(map, palette, map->ipalette_purple);
+        Map_Palettemap_addMap(map, palette, map->palette.purple);
     }
     memset(palette, 0, bytesize);
 }
 
 void Map_Palettemap_SetwMap(struct Map *map, u8 *palettemap) {
-    size_t bytesize = map->row_len * map->col_len * sizeof(*map->palettemap);
-    SDL_assert(map->palettemap != NULL);
-    memcpy(map->palettemap, palettemap, bytesize);
+    size_t bytesize = map->row_len * map->col_len * sizeof(*map->palette.map);
+    SDL_assert(map->palette.map != NULL);
+    memcpy(map->palette.map, palettemap, bytesize);
 }
 
 SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *render_target) {
@@ -143,7 +143,7 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
         Map_Tilemap_Texture_Init(map);
     SDL_SetRenderTarget(map->renderer, map->tilemap_texture);
     SDL_assert(map->tilemap);
-    SDL_assert(map->palettemap);
+    SDL_assert(map->palette.map);
 
     /* Stitching map from tiles */
     SDL_assert(map->visiblemax.x <= map->col_len);
@@ -155,7 +155,7 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
     for (size_t i = visible_min; i < visible_max; i++) {
         tile_ind = map->tilemap[i] / TILE_DIVISOR;
         texture_ind = map->tilemap[i] - tile_ind * TILE_DIVISOR;
-        palette_ind = map->palettemap[i];
+        palette_ind = map->palette.map[i];
         SDL_assert(palette_ind >= PALETTE_NES);
         SDL_assert(palette_ind < PALETTE_NUM);
 
@@ -187,7 +187,7 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
             continue;
 
         tile_order = Map_Tile_Order(map, TILE_ICONS);
-        texture = map->tileset_textures[map->ipalette_base][tile_order];
+        texture = map->tileset_textures[map->palette.base][tile_order];
         srcrect.y = 0;
         switch (map->stack_mode) {
             case MAP_SETTING_STACK_DANGERMAP:
@@ -235,7 +235,7 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
     SDL_assert(map->tilemap_surface->w == (map->col_len * map->tilesize[0]));
     SDL_assert(map->tilemap_surface->h == (map->row_len * map->tilesize[1]));
     SDL_assert(map->tilemap          != NULL);
-    SDL_assert(map->palettemap       != NULL);
+    SDL_assert(map->palette.map       != NULL);
     SDL_assert(map->tileset_surfaces != NULL);
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(map->tilemap_surface->format->format));
 
@@ -259,7 +259,7 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
         /* get palette */
         tile_ind = map->tilemap[i] / TILE_DIVISOR;
         texture_ind = map->tilemap[i] - tile_ind * TILE_DIVISOR;
-        palette_ind = map->palettemap[i];
+        palette_ind = map->palette.map[i];
         SDL_assert(palette_ind >= PALETTE_NES);
         SDL_assert(palette_ind < PALETTE_NUM);
 
@@ -296,7 +296,7 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
             continue;
 
         tile_order = Map_Tile_Order(map, TILE_ICONS);
-        surf = map->tileset_surfaces[map->ipalette_base][tile_order];
+        surf = map->tileset_surfaces[map->palette.base][tile_order];
         srcrect.y = 0;
         switch (map->stack_mode) {
             case MAP_SETTING_STACK_DANGERMAP:
@@ -413,7 +413,7 @@ void Map_Perimeter_Draw_Danger(struct Map *map, struct Settings *settings, struc
     if (map->rendered_dangermap == NULL)
         return;
 
-    SDL_Palette *palette_base = sota_palettes[map->ipalette_base];
+    SDL_Palette *palette_base = sota_palettes[map->palette.base];
     SDL_Color red = palette_base->colors[map->perimiter.danger_color];
 
     _Map_Perimeter_Draw(map, settings, camera, map->rendered_dangermap, red,
@@ -442,7 +442,7 @@ void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
 
     Map_Perimeter(map->perimiter.edges_danger, temp, map->row_len, map->col_len);
 
-    SDL_Palette *palette_base = sota_palettes[map->ipalette_base];
+    SDL_Palette *palette_base = sota_palettes[map->palette.base];
     SDL_Color purple = palette_base->colors[colori];
 
     _Map_Perimeter_Draw(map, settings, camera, temp, purple, map->perimiter.edges_danger);

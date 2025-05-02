@@ -63,14 +63,14 @@ const Map Map_default = {
     .camera.offset.y        = DEFAULT_CAMERA_YOFFSET,
     .camera.zoom            = DEFAULT_CAMERA_ZOOM,
 
-    .ipalette_base          = PALETTE_SOTA,
-    .ipalette_red           = PALETTE_SOTA_FILTER_RED,
-    .ipalette_blue          = PALETTE_SOTA_FILTER_BLUE,
-    .ipalette_green         = PALETTE_SOTA_FILTER_GREEN,
-    .ipalette_purple        = PALETTE_SOTA_FILTER_PURPLE,
-    .ipalette_darkred       = PALETTE_SOTA_FILTER_DARKREDwSHADOW,
-    .ipalette_shadow        = PALETTE_SOTA_SHADOW,
-    .ipalette_enemy         = PALETTE_SOTA,
+    .palette.base           = PALETTE_SOTA,
+    .palette.red            = PALETTE_SOTA_FILTER_RED,
+    .palette.blue           = PALETTE_SOTA_FILTER_BLUE,
+    .palette.green          = PALETTE_SOTA_FILTER_GREEN,
+    .palette.purple         = PALETTE_SOTA_FILTER_PURPLE,
+    .palette.darkred        = PALETTE_SOTA_FILTER_DARKREDwSHADOW,
+    .palette.shadow         = PALETTE_SOTA_SHADOW,
+    .palette.enemy          = PALETTE_SOTA,
 
     .turn                   =  1, /* Automatic loss if turn 255. */
     /* --- MUSIC --- */
@@ -319,13 +319,13 @@ void Map_Free(struct Map *map) {
         SDL_free(map->global_rangemap);
         map->global_rangemap = NULL;
     }
-    if (map->palettemap != NULL) {
-        SDL_free(map->palettemap);
-        map->palettemap = NULL;
+    if (map->palette.map != NULL) {
+        SDL_free(map->palette.map);
+        map->palette.map = NULL;
     }
-    if (map->temp_palette != NULL) {
-        SDL_free(map->temp_palette);
-        map->temp_palette = NULL;
+    if (map->palette.temp != NULL) {
+        SDL_free(map->palette.temp);
+        map->palette.temp = NULL;
     }
     if (map->stacked_dangermap != NULL) {
         SDL_free(map->stacked_dangermap);
@@ -448,8 +448,8 @@ void Map_Members_Alloc(struct Map *map) {
     SDL_assert(map->dangermap == NULL);
     map->dangermap = SDL_calloc(len,  sizeof(*map->dangermap));
 
-    SDL_assert(map->palettemap == NULL);
-    map->palettemap = SDL_malloc(len * sizeof(*map->palettemap));
+    SDL_assert(map->palette.map == NULL);
+    map->palette.map = SDL_malloc(len * sizeof(*map->palette.map));
 
     SDL_assert(map->attacktomap == NULL);
     map->attacktomap = SDL_calloc(len,  sizeof(*map->attacktomap));
@@ -460,8 +460,8 @@ void Map_Members_Alloc(struct Map *map) {
     SDL_assert(map->healfrommap == NULL);
     map->healfrommap = SDL_calloc(len,  sizeof(*map->healfrommap));
 
-    SDL_assert(map->temp_palette == NULL);
-    map->temp_palette = SDL_malloc(len * sizeof(*map->temp_palette));
+    SDL_assert(map->palette.temp == NULL);
+    map->palette.temp = SDL_malloc(len * sizeof(*map->palette.temp));
 
     SDL_assert(map->attackfrommap == NULL);
     map->attackfrommap = SDL_calloc(len,  sizeof(*map->attackfrommap));

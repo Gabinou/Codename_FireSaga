@@ -141,13 +141,13 @@ void Map_Tilesets_Load(struct Map *map) {
         SDL_assert(tilename.data != NULL);
         tilesetname = s8cat(tilesetname, tilename);
         tilesetname = s8cat(tilesetname, s8_literal(".png"));
-        if (map->tileset_surfaces[map->ipalette_base][i] != NULL)
-            SDL_FreeSurface(map->tileset_surfaces[map->ipalette_base][i]);
+        if (map->tileset_surfaces[map->palette.base][i] != NULL)
+            SDL_FreeSurface(map->tileset_surfaces[map->palette.base][i]);
         SDL_Surface *surf = Filesystem_Surface_Load(tilesetname.data, SDL_PIXELFORMAT_INDEX8);
         /* To check if tilesets get loaded properly: check the output surface */
         SDL_assert(surf != NULL);
         SDL_assert(SDL_ISPIXELFORMAT_INDEXED(surf->format->format));
-        map->tileset_surfaces[map->ipalette_base][i] = surf;
+        map->tileset_surfaces[map->palette.base][i] = surf;
         s8_free(&tilesetname);
     }
 }
@@ -239,12 +239,12 @@ void Map_Tileset_newPalette(struct Map *map, i32 tile, u8 palette) {
     SDL_assert(tile > 0);
     u8 tileset_order = Map_Tile_Order(map, tile);
     SDL_assert(map->tileset_surfaces);
-    SDL_assert(map->tileset_surfaces[map->ipalette_base]);
-    SDL_assert(map->tileset_surfaces[map->ipalette_base][tileset_order]);
+    SDL_assert(map->tileset_surfaces[map->palette.base]);
+    SDL_assert(map->tileset_surfaces[map->palette.base][tileset_order]);
     SDL_assert(palette < PALETTE_NUM);
 
     /* -- Swap surface palette -- */
-    SDL_Surface *old_surf = map->tileset_surfaces[map->ipalette_base][tileset_order];
+    SDL_Surface *old_surf = map->tileset_surfaces[map->palette.base][tileset_order];
     /* - Allocate new surface - */
     SDL_Surface *new_surf = Filesystem_Surface_Palette_Swap(old_surf, sota_palettes[palette]);
 

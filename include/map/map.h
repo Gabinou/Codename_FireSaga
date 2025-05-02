@@ -112,6 +112,24 @@ typedef struct Map_Perimiter {
     struct Padding *edges_danger; /* Todo change to general purpose */
 } Map_Perimiter;
 
+typedef struct Map_Palette {
+    SDL_Palette *default;
+    u8  *map;     /* [row * col_len + col] */
+    // TODO: Remove
+    i32 *temp;  /* [row * col_len + col] */
+
+    /* -- Map palette indices -- */
+    u8 base;
+    u8 red;
+    u8 blue;
+    u8 green;
+    u8 purple;
+    u8 darkred;
+    u8 shadow;
+    u8 enemy;
+} Map_Palette;
+
+
 typedef struct Map {
     struct jsonIO_Header jsonio_header;
 
@@ -136,6 +154,7 @@ typedef struct Map {
     struct Map_Entities         entities;
     struct Map_Reinforcements   reinforcements;
     struct Map_Perimiter        perimiter;
+    struct Map_Palette          palette;
 
     // TODO: remove. should be in savefile
     s8 party_filename;
@@ -201,23 +220,6 @@ typedef struct Map {
     tnecs_entity *occupymap;    /* [row * col_len + col], friendlies only, enemies only... */
     tnecs_entity costmap_ent; /* costmap computed for*/
     // } Map_Arrays;
-
-    // typedef struct Map_Palettes {
-    SDL_Palette *palette_default;
-    u8  *palettemap;     /* [row * col_len + col] */
-    // TODO: Remove
-    i32 *temp_palette;  /* [row * col_len + col] */
-
-    /* -- Map palette indices -- */
-    u8 ipalette_base;
-    u8 ipalette_red;
-    u8 ipalette_blue;
-    u8 ipalette_green;
-    u8 ipalette_purple;
-    u8 ipalette_darkred;
-    u8 ipalette_shadow;
-    u8 ipalette_enemy;
-    // } Map_Palettes;
 
     // typedef struct Map_Armies {
     int army_i; /* Current army in control */

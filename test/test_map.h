@@ -302,7 +302,7 @@ void test_map_usable(void) {
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     can_equip.move      = true;
     Map_canEquip(map, Silou, can_equip);
-    nourstest_true(silou->can_equip.num         == 1);
+    nourstest_true(silou->can_equip.num    == 1);
     nourstest_true(silou->can_equip.arr[0] == ITEM1);
 
     /* --- TODO: Range types, blocked by unit --- */
