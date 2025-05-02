@@ -304,11 +304,9 @@ void test_map_usable(void) {
     can_equip           = canEquip_default;
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     can_equip.move      = true;
-    SDL_Log("HERE");
     Map_canEquip(map, Silou, can_equip);
     nourstest_true(silou->can_equip.num    == 1);
     nourstest_true(silou->can_equip.arr[0] == ITEM1);
-    getchar();
 
     /* --- TODO: Range types, blocked by unit --- */
     Unit_Equippable_set(silou, ITEM_TYPE_BOW);

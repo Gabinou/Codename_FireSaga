@@ -89,7 +89,7 @@ const struct Unit Unit_default = {
 
     .hp.current         = SOTA_MIN_HP,
     .stats.current.hp   = SOTA_MIN_HP,
-
+    .stats.current.move = 1,
 
     .arms.num           = UNIT_ARMS_NUM,
     .flags.handedness   = UNIT_HAND_RIGHTIE,
