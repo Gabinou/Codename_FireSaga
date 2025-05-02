@@ -141,11 +141,33 @@ typedef struct Map_Stack {
     struct SDL_Texture *danger;
 } Map_Stack;
 
+typedef struct Map_Units_Arrays {
+    tnecs_entity *arr;
+    tnecs_entity *friendlies;
+    tnecs_entity *enemies;
+} Map_Units_Arrays;
+
+typedef struct Map_Units {
+    // TODO: Split by army
+    struct Map_Units_Arrays onfield;
+    struct Map_Units_Arrays agony;
+    struct Map_Units_Arrays killed;
+} Map_Units;
+
+typedef struct Map_Armies {
+    int current; /* Current army in control */
+    i32 *onfield;
+} Map_Armies;
+
+
 typedef struct Map {
     struct jsonIO_Header jsonio_header;
 
     /* --- BASICS --- */
     i32 turn; /* Automatic loss if turn 255. */
+
+    struct Point *units_positions_list;  /* same order as onfield.units */
+    struct Point *start_pos;
 
     /* Map size */
     i32 row_len; /* [tiles] */
@@ -162,6 +184,8 @@ typedef struct Map {
     struct Map_Music            music;
     struct Map_Flags            flags;
     struct Map_Stack            stack;
+    struct Map_Units            units;
+    struct Map_Armies           armies;
     struct Map_Palette          palette;
     struct Map_Entities         entities;
     struct Map_Perimiter        perimiter;
@@ -219,25 +243,6 @@ typedef struct Map {
     tnecs_entity *occupymap;    /* [row * col_len + col], friendlies only, enemies only... */
     tnecs_entity costmap_ent; /* costmap computed for*/
     // } Map_Arrays;
-
-    // typedef struct Map_Armies {
-    int army_i; /* Current army in control */
-    // TODO: Split by army
-    tnecs_entity *units_onfield;
-    tnecs_entity *friendlies_onfield;
-    tnecs_entity *enemies_onfield;
-
-    tnecs_entity *friendlies_agony;
-    tnecs_entity *enemies_agony;
-    u8 num_agonizing;
-
-    tnecs_entity *friendlies_killed;
-    tnecs_entity *enemies_killed;
-
-    i32 *army_onfield;
-    struct Point *units_positions_list;  /* same order as unit_onfield */
-    struct Point *start_pos;
-    // } Map_Armies;
 
     // typedef struct Map_Tiles {
     struct Tile *tiles;  /* [tiles_order] */

@@ -475,8 +475,8 @@ const fsm_eCmbtEnd_ss_t fsm_eCmbtEnd_ss[GAME_SUBSTATE_NUM] = {
 void fsm_eGlbRng_ssStby(struct Game *sota) {
     /* --- Toggle global range --- */
 
-    for (int i = 0; i < DARR_NUM(sota->map->enemies_onfield); i++) {
-        tnecs_entity entity = sota->map->enemies_onfield[i];
+    for (int i = 0; i < DARR_NUM(sota->map->units.onfield.enemies); i++) {
+        tnecs_entity entity = sota->map->units.onfield.enemies[i];
 
         /* - Compute new dangermap  - */
         i32 *temp_danger = Map_Danger_Compute(sota->map, entity);
@@ -1377,9 +1377,9 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
 
     /* - Update Standard passive aura for all units - */
-    SDL_assert(sota->map->army_i >= 0);
-    SDL_assert(sota->map->army_i < DARR_NUM(sota->map->army_onfield));
-    i32 army = sota->map->army_onfield[sota->map->army_i];
+    SDL_assert(sota->map->armies.current >= 0);
+    SDL_assert(sota->map->armies.current < DARR_NUM(sota->map->armies.onfield));
+    i32 army = sota->map->armies.onfield[sota->map->armies.current];
     SDL_assert(army == Unit_Army(unit)); /* only units in current army should be moving */
     Map_Bonus_Remove_Instant(sota->map, Unit_Army(unit));
     Map_Bonus_Standard_Apply(sota->map, Unit_Army(unit));

@@ -26,7 +26,7 @@ void test_boss_death_win(int argc, char *argv[]) {
     /* Load Save file test/debug_map.json */
     Game_Map_Party_Load(sota, CHAPTER_TEST_V8);
     Game_Map_Reinforcements_Load(sota);
-    SDL_assert(DARR_NUM(sota->map->units_onfield) > 0);
+    SDL_assert(DARR_NUM(sota->map->units.onfield.arr) > 0);
 
     /* Get boss */
     tnecs_entity boss_entity = Map_Unit_Get_Boss(sota->map, ARMY_ENEMY);
@@ -84,7 +84,7 @@ void test_main_char_death_loss(int argc, char *argv[]) {
     SDL_assert(sota->map->stack.dangermap != NULL);
     Game_Map_Reinforcements_Load(sota);
     SDL_assert(sota->map->stack.dangermap != NULL);
-    SDL_assert(DARR_NUM(sota->map->units_onfield) > 0);
+    SDL_assert(DARR_NUM(sota->map->units.onfield.arr) > 0);
 
     /* Get boss */
     tnecs_entity boss_entity = Map_Unit_Get_Boss(sota->map, ARMY_ENEMY);
@@ -144,7 +144,7 @@ void test_silou_death_loss(int argc, char *argv[]) {
     /* Load Save file test/debug_map.json */
     Game_Map_Party_Load(sota, CHAPTER_TEST_V8);
     Game_Map_Reinforcements_Load(sota);
-    SDL_assert(DARR_NUM(sota->map->units_onfield) > 0);
+    SDL_assert(DARR_NUM(sota->map->units.onfield.arr) > 0);
 
     /* Get boss */
     tnecs_entity boss_entity = Map_Unit_Get_Boss(sota->map, ARMY_ENEMY);

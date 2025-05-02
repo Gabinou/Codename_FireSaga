@@ -21,7 +21,7 @@ void test_aura_apply(int argc, char *argv[]) {
     Game_Map_Party_Load(sota, CHAPTER_TEST_NES1);
     Game_Map_Reinforcements_Load(sota);
     SDL_assert(sota->map != NULL );
-    SDL_assert(DARR_NUM(sota->map->units_onfield) > 0);
+    SDL_assert(DARR_NUM(sota->map->units.onfield.arr) > 0);
     sota->map->world = sota->world;
 
     /* Load Standard */
@@ -155,7 +155,7 @@ void test_aura_decay(int argc, char *argv[]) {
     Game_Map_Party_Load(sota, CHAPTER_TEST_NES1);
     Game_Map_Reinforcements_Load(sota);
     SDL_assert(sota->map != NULL );
-    SDL_assert(DARR_NUM(sota->map->units_onfield) > 0);
+    SDL_assert(DARR_NUM(sota->map->units.onfield.arr) > 0);
     sota->map->world = sota->world;
 
     /* Load Standard */
@@ -357,7 +357,7 @@ void test_aura_fsm(int argc, char *argv[]) {
     Game_Map_Party_Load(sota, CHAPTER_TEST_NES1);
     Game_Map_Reinforcements_Load(sota);
     SDL_assert(sota->map != NULL );
-    SDL_assert(DARR_NUM(sota->map->units_onfield) > 0);
+    SDL_assert(DARR_NUM(sota->map->units.onfield.arr) > 0);
     sota->map->world = sota->world;
 
     /* Load Standard */
@@ -401,7 +401,7 @@ void test_aura_fsm(int argc, char *argv[]) {
 
     /* Mocking stuff for fsm_eAcpt_sGmpMap_ssMapUnitMv */
     sota->selected_unit_entity = sota->party.entities[UNIT_ID_SILOU];
-    sota->map->army_i = 0;
+    sota->map->armies.current = 0;
     fsm_eAcpt_sGmpMap_ssMapUnitMv(sota, TNECS_NULL);
     struct Position *silou_pos = IES_GET_COMPONENT(sota->world,
                                                    sota->party.entities[UNIT_ID_SILOU],

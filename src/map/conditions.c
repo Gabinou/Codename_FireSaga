@@ -94,17 +94,17 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
         return (true);
     }
 
-    tnecs_entity *army_onfield = NULL;
+    tnecs_entity *armies_onfield = NULL;
     SDL_assert(condition->army >= 0);
     if (army_alignment[condition->army] == ALIGNMENT_FRIENDLY) {
-        army_onfield = map->friendlies_onfield;
+        armies_onfield = map->units.onfield.friendlies;
     } else {
-        army_onfield = map->enemies_onfield;
+        armies_onfield = map->units.onfield.enemies;
     }
-    SDL_assert(army_onfield != NULL);
+    SDL_assert(armies_onfield != NULL);
 
     /* Match: Rout */
-    if (!condition->boss && condition->all && (DARR_NUM(army_onfield) == 0)) {
+    if (!condition->boss && condition->all && (DARR_NUM(armies_onfield) == 0)) {
         // SDL_Log("Match: Rout");
         return (true);
     }

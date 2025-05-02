@@ -218,9 +218,9 @@ void Map_Free(struct Map *map) {
     Map_Tilesets_Free(map);
     Map_Tilemap_Texture_Free(map);
     Map_Tiles_Free(map);
-    if (map->friendlies_onfield != NULL) {
-        DARR_FREE(map->friendlies_onfield);
-        map->friendlies_onfield = NULL;
+    if (map->units.onfield.friendlies != NULL) {
+        DARR_FREE(map->units.onfield.friendlies);
+        map->units.onfield.friendlies = NULL;
     }
     if (map->reinforcements.equipments != NULL) {
         for (size_t i = 0; i < DARR_NUM(map->reinforcements.equipments); i++) {
@@ -245,21 +245,21 @@ void Map_Free(struct Map *map) {
         DARR_FREE(map->tiles_id);
         map->tiles_id = NULL;
     }
-    if (map->army_onfield != NULL) {
-        DARR_FREE(map->army_onfield);
-        map->army_onfield = NULL;
+    if (map->armies.onfield != NULL) {
+        DARR_FREE(map->armies.onfield);
+        map->armies.onfield = NULL;
     }
     if (map->start_pos != NULL) {
         DARR_FREE(map->start_pos);
         map->start_pos = NULL;
     }
-    if (map->enemies_onfield != NULL) {
-        DARR_FREE(map->enemies_onfield);
-        map->enemies_onfield = NULL;
+    if (map->units.onfield.enemies != NULL) {
+        DARR_FREE(map->units.onfield.enemies);
+        map->units.onfield.enemies = NULL;
     }
-    if (map->units_onfield != NULL) {
-        DARR_FREE(map->units_onfield);
-        map->units_onfield = NULL;
+    if (map->units.onfield.arr != NULL) {
+        DARR_FREE(map->units.onfield.arr);
+        map->units.onfield.arr = NULL;
     }
     Map_Tilemap_Surface_Free(map);
     Map_Reinforcements_Free(map);
@@ -417,20 +417,20 @@ void Map_Members_Alloc(struct Map *map) {
     SDL_assert(map->attackfromlist == NULL);
     map->attackfromlist = DARR_INIT(map->attackfromlist, i32, 32);
 
-    SDL_assert(map->enemies_onfield == NULL);
-    map->enemies_onfield = DARR_INIT(map->enemies_onfield, tnecs_entity, 20);
+    SDL_assert(map->units.onfield.enemies == NULL);
+    map->units.onfield.enemies = DARR_INIT(map->units.onfield.enemies, tnecs_entity, 20);
 
-    SDL_assert(map->friendlies_onfield == NULL);
-    map->friendlies_onfield = DARR_INIT(map->friendlies_onfield, tnecs_entity, 20);
+    SDL_assert(map->units.onfield.friendlies == NULL);
+    map->units.onfield.friendlies = DARR_INIT(map->units.onfield.friendlies, tnecs_entity, 20);
 
-    SDL_assert(map->units_onfield == NULL);
-    map->units_onfield = DARR_INIT(map->units_onfield, tnecs_entity, 20);
+    SDL_assert(map->units.onfield.arr == NULL);
+    map->units.onfield.arr = DARR_INIT(map->units.onfield.arr, tnecs_entity, 20);
 
     SDL_assert(map->reinforcements.equipments == NULL);
     map->reinforcements.equipments = DARR_INIT(map->reinforcements.equipments, Inventory_item *, 30);
 
-    SDL_assert(map->army_onfield == NULL);
-    map->army_onfield = DARR_INIT(map->army_onfield, i32, 5);
+    SDL_assert(map->armies.onfield == NULL);
+    map->armies.onfield = DARR_INIT(map->armies.onfield, i32, 5);
 
     SDL_assert(map->temp == NULL);
     map->temp = SDL_calloc(len,  sizeof(*map->temp));
@@ -964,23 +964,23 @@ void Map_readJSON(void *input, const cJSON *jmap) {
 }
 
 /* --- Map events / Triggers --- */
-/* Ouputs index of army in army_onfield*/
+/* Ouputs index of army in armies.onfield*/
 i32 Map_Army_Next(struct Map *map) {
     SDL_assert(map->turn > 0);
     SDL_assert(map->turn < SOTA_MAX_TURNS);
     /* Get next army in line for control */
-    SDL_assert(map->army_onfield != NULL);
+    SDL_assert(map->armies.onfield != NULL);
 
     /* Get number of armies on field */
-    size_t army_num = DARR_NUM(map->army_onfield);
+    size_t army_num = DARR_NUM(map->armies.onfield);
     SDL_assert(army_num <= ARMY_NUM);
 
     /* Check for wrap around back to player */
-    map->army_i = (map->army_i + (map->turn > 1)) % army_num;
-    SDL_assert(map->army_i >= 0);
-    SDL_assert(map->army_i <= army_num);
+    map->armies.current = (map->armies.current + (map->turn > 1)) % army_num;
+    SDL_assert(map->armies.current >= 0);
+    SDL_assert(map->armies.current <= army_num);
 
-    return (map->army_i);
+    return (map->armies.current);
 }
 
 void Map_Turn_Increment(struct Map *map) {
@@ -1119,8 +1119,8 @@ void Map_Bonus_Standard_Apply(struct Map *map, i32 army) {
 tnecs_entity *Map_Get_onField(struct Map *map, i32 army) {
     tnecs_entity *entities = NULL;
     if (army_alignment[army] == ALIGNMENT_FRIENDLY)
-        entities = map->friendlies_onfield;
+        entities = map->units.onfield.friendlies;
     else if (army_alignment[army] == ALIGNMENT_ENEMY)
-        entities = map->enemies_onfield;
+        entities = map->units.onfield.enemies;
     return (entities);
 }

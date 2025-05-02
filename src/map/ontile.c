@@ -45,7 +45,7 @@ void Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
     /* -- Preliminaries -- */
     // tnecs_entity current = map->unitmap[row * map->col_len + col];
     _Map_Unit_Put(map, col, row, entity);
-    DARR_PUT(map->units_onfield, entity);
+    DARR_PUT(map->units.onfield.arr, entity);
 
     /* -- Adding MapHPBar -- */
     if (!IES_ENTITY_HASCOMPONENT(map->world, entity, MapHPBar)) {
@@ -76,7 +76,7 @@ void Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
             u64 order = *(u64 *)dtab_get(global_unitOrders, Unit_id(temp_unit));
             SDL_assert(order > 0);
             SDL_assert(order < UNIT_NUM);
-            DARR_PUT(map->friendlies_onfield, entity);
+            DARR_PUT(map->units.onfield.friendlies, entity);
             break;
         }
         case ALIGNMENT_ENEMY: {
@@ -86,7 +86,7 @@ void Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
             u64 order = *(u64 *)dtab_get(global_unitOrders, Unit_id(temp_unit));
             SDL_assert(order > 0);
             SDL_assert(order < UNIT_NUM);
-            DARR_PUT(map->enemies_onfield, entity);
+            DARR_PUT(map->units.onfield.enemies, entity);
             break;
         }
     }
@@ -138,8 +138,8 @@ tnecs_entity *Map_Unit_Gets(struct Map *map, u8 army) {
     unit_ents = DARR_INIT(unit_ents, tnecs_entity, 16);
     tnecs_entity current_unit_ent;
     struct Unit *current_unit;
-    for (u8 i = 0; i < DARR_NUM(map->units_onfield); i++) {
-        current_unit_ent = map->units_onfield[i];
+    for (u8 i = 0; i < DARR_NUM(map->units.onfield.arr); i++) {
+        current_unit_ent = map->units.onfield.arr[i];
         current_unit = IES_GET_COMPONENT(map->world, current_unit_ent, Unit);
         if (Unit_id(current_unit) == army)
             DARR_PUT(unit_ents, current_unit_ent);
@@ -150,8 +150,8 @@ tnecs_entity *Map_Unit_Gets(struct Map *map, u8 army) {
 tnecs_entity Map_Unit_Get_Boss(struct Map *map, u8 army) {
     tnecs_entity out = TNECS_NULL;
 
-    for (int i = 0; i < DARR_NUM(map->units_onfield); i++) {
-        tnecs_entity ent = map->units_onfield[i];
+    for (int i = 0; i < DARR_NUM(map->units.onfield.arr); i++) {
+        tnecs_entity ent = map->units.onfield.arr[i];
         struct Unit *unit = IES_GET_COMPONENT(map->world, ent, Unit);
         struct Unit *boss = IES_GET_COMPONENT(map->world, ent, Boss);
         if ((Unit_Army(unit) == army) && (boss != NULL)) {
@@ -181,21 +181,21 @@ void Map_Chest_onOpen(struct Map *map, tnecs_entity chest) {
 
 void Map_addArmy(struct Map *map, u8 army) {
     /* -- Don't add army if found -- */
-    for (u8 i = 0; i < DARR_NUM(map->army_onfield); i++)
-        if (map->army_onfield[i] == army)
+    for (u8 i = 0; i < DARR_NUM(map->armies.onfield); i++)
+        if (map->armies.onfield[i] == army)
             return;
 
     /* -- Army priority: smaller army go first -- */
     int insert = 0;
-    /* If DARR_NUM(map->army_onfield) is 0, insert is 0 */
-    for (int i = 0; i < DARR_NUM(map->army_onfield); i++) {
-        if (army > map->army_onfield[i]) {
+    /* If DARR_NUM(map->armies.onfield) is 0, insert is 0 */
+    for (int i = 0; i < DARR_NUM(map->armies.onfield); i++) {
+        if (army > map->armies.onfield[i]) {
             insert = i;
             break;
         }
     }
 
-    DARR_INSERT(map->army_onfield, army, insert);
+    DARR_INSERT(map->armies.onfield, army, insert);
 }
 
 int entity_isIn(u64 *array, u64 to_find, size_t arr_len) {
@@ -209,22 +209,23 @@ int entity_isIn(u64 *array, u64 to_find, size_t arr_len) {
 
 tnecs_entity _Map_Unit_Remove_List(struct Map *map,  tnecs_entity entity) {
     tnecs_entity out = TNECS_NULL;
-    int found = entity_isIn(map->friendlies_onfield, entity, DARR_NUM(map->friendlies_onfield));
+    int found = entity_isIn(map->units.onfield.friendlies, entity,
+                            DARR_NUM(map->units.onfield.friendlies));
     if (found > -1) {
-        // tnecs_entity out = map->friendlies_onfield[found];
-        DARR_DEL(map->friendlies_onfield, found);
+        // tnecs_entity out = map->units.onfield.friendlies[found];
+        DARR_DEL(map->units.onfield.friendlies, found);
     }
 
-    found = entity_isIn(map->enemies_onfield, entity, DARR_NUM(map->enemies_onfield));
+    found = entity_isIn(map->units.onfield.enemies, entity, DARR_NUM(map->units.onfield.enemies));
     if (found > -1) {
-        // tnecs_entity out = map->enemies_onfield[found];
-        DARR_DEL(map->enemies_onfield, found);
+        // tnecs_entity out = map->units.onfield.enemies[found];
+        DARR_DEL(map->units.onfield.enemies, found);
     }
 
-    found = entity_isIn(map->units_onfield, entity, DARR_NUM(map->units_onfield));
+    found = entity_isIn(map->units.onfield.arr, entity, DARR_NUM(map->units.onfield.arr));
     if (found > -1) {
-        // tnecs_entity out = map->enemies_onfield[found];
-        DARR_DEL(map->units_onfield, found);
+        // tnecs_entity out = map->units.onfield.enemies[found];
+        DARR_DEL(map->units.onfield.arr, found);
     }
     return (out);
 }

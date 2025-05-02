@@ -398,8 +398,8 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     }
 
     /* - Remove unused components - */
-    for (int i = 0; i < DARR_NUM(sota->map->units_onfield); i++) {
-        tnecs_entity ent = sota->map->units_onfield[i];
+    for (int i = 0; i < DARR_NUM(sota->map->units.onfield.arr); i++) {
+        tnecs_entity ent = sota->map->units.onfield.arr[i];
         TNECS_REMOVE_COMPONENTS(sota->world, ent, MapHPBar_ID);
         if (IES_ENTITY_HASCOMPONENT(sota->world, ent, RenderTop)) {
             TNECS_REMOVE_COMPONENTS(sota->world, ent, RenderTop_ID);
@@ -540,8 +540,8 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
 
     /* -- Remove unused components -- */
     if (sota->map != NULL) {
-        for (int i = 0; i < DARR_NUM(sota->map->units_onfield); i++) {
-            tnecs_entity ent = sota->map->units_onfield[i];
+        for (int i = 0; i < DARR_NUM(sota->map->units.onfield.arr); i++) {
+            tnecs_entity ent = sota->map->units.onfield.arr[i];
             TNECS_REMOVE_COMPONENTS(sota->world, ent, MapHPBar_ID);
             if (IES_ENTITY_HASCOMPONENT(sota->world, ent, RenderTop)) {
                 TNECS_REMOVE_COMPONENTS(sota->world, ent, RenderTop_ID);
@@ -724,13 +724,13 @@ void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
 
     /* - Refresh all units - */
     // TODO: Move to turn end? Make units colored again
-    for (int i = 0; i < DARR_NUM(map->units_onfield); i++) {
-        if (map->units_onfield[i] != TNECS_NULL) {
-            Game_Unit_Refresh(sota, map->units_onfield[i]);
+    for (int i = 0; i < DARR_NUM(map->units.onfield.arr); i++) {
+        if (map->units.onfield.arr[i] != TNECS_NULL) {
+            Game_Unit_Refresh(sota, map->units.onfield.arr[i]);
         }
     }
 
-    i32 *army = &sota->map->army_onfield[sota->map->army_i];
+    i32 *army = &sota->map->armies.onfield[sota->map->armies.current];
 
     /* Switch control to next army */
     Event_Emit(__func__, SDL_USEREVENT, event_Game_Control_Switch, army, NULL);
@@ -756,14 +756,14 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     map_anim->anim = &Map_TurnTransition_Animate;
 
     /* Get Army name */
-    SDL_assert(DARR_NUM(sota->map->army_onfield) > 1);
-    SDL_assert(sota->map->army_onfield[0] == ARMY_FRIENDLY);
+    SDL_assert(DARR_NUM(sota->map->armies.onfield) > 1);
+    SDL_assert(sota->map->armies.onfield[0] == ARMY_FRIENDLY);
 
     Map_Army_Next(sota->map);
-    SDL_assert(sota->map->army_i >= 0);
-    SDL_assert(sota->map->army_i < DARR_NUM(sota->map->army_onfield));
+    SDL_assert(sota->map->armies.current >= 0);
+    SDL_assert(sota->map->armies.current < DARR_NUM(sota->map->armies.onfield));
 
-    i8 army      = sota->map->army_onfield[sota->map->army_i];
+    i8 army      = sota->map->armies.onfield[sota->map->armies.current];
     SDL_assert(army >  ARMY_NULL);
     SDL_assert(army <= ARMY_NUM);
     s8 army_name = armyNames[army];
@@ -834,7 +834,7 @@ void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
     Map_Palettemap_Reset(sota->map);
 
     /* - Decrement persistent auras for all units - */
-    i32 army = sota->map->army_onfield[sota->map->army_i];
+    i32 army = sota->map->armies.onfield[sota->map->armies.current];
     Map_Bonus_Remove_Persistent(sota->map, army);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
@@ -1221,8 +1221,8 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
     }
 
     /* - Remove unused components - */
-    for (int i = 0; i < DARR_NUM(sota->map->units_onfield); i++) {
-        tnecs_entity ent = sota->map->units_onfield[i];
+    for (int i = 0; i < DARR_NUM(sota->map->units.onfield.arr); i++) {
+        tnecs_entity ent = sota->map->units.onfield.arr[i];
         TNECS_REMOVE_COMPONENTS(sota->world, ent, MapHPBar_ID);
         if (IES_ENTITY_HASCOMPONENT(sota->world, ent, RenderTop)) {
             TNECS_REMOVE_COMPONENTS(sota->world, ent, RenderTop_ID);

@@ -575,9 +575,9 @@ void AI_State_Init(struct AI_State *ai_state, tnecs_world *world, struct Map *ma
     ai_state->init = true;
 
     /* -- Find all units in current army -- */
-    i8 army = map->army_onfield[map->army_i];
-    for (int i = 0; i < DARR_NUM(map->units_onfield); i++) {
-        tnecs_entity npc_ent = map->units_onfield[i];
+    i8 army = map->units.onfield.arr[map->armies.current];
+    for (int i = 0; i < DARR_NUM(map->units.onfield.arr); i++) {
+        tnecs_entity npc_ent = map->units.onfield.arr[i];
         struct Unit *unit = IES_GET_COMPONENT(world, npc_ent, Unit);
         /* Skip if unit is waiting e.g. a reinforcement */
         if (Unit_isWaiting(unit))

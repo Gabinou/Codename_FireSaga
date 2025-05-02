@@ -298,9 +298,9 @@ void fsm_rFrame_sGmpMap(struct Game *sota) {
 #ifdef DEBUG_SUPPORT_PERIMITER
     SDL_Palette *palette_base = sota_palettes[sota->map->ipalette_base];
     struct Range support_range = {0, SOTA_SUPPORT_RANGE};
-    size_t num = DARR_NUM(sota->map->friendlies_onfield);
+    size_t num = DARR_NUM(sota->map->units.onfield.friendlies);
     for (int i = 0; i < num; i++) {
-        tnecs_entity entity = sota->map->friendlies_onfield[i];
+        tnecs_entity entity = sota->map->units.onfield.friendlies[i];
         struct Position *pos = IES_GET_COMPONENT(sota->world, entity, Position);
         int colori = (i % (PALETTE_SOTA_COLOR_NUM - 1)) + 8;
         Map_Perimeter_Draw_Aura(sota->map, &sota->settings,
