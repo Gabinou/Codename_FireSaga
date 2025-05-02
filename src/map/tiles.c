@@ -15,30 +15,30 @@
 
 void Map_Tiles_Free(struct Map *map) {
     Map_Tilesets_Free(map);
-    if (map->tiles != NULL) {
-        for (size_t i = 0; i < DARR_NUM(map->tiles); i++)
-            Tile_Free(&map->tiles[i]);
-        DARR_FREE(map->tiles);
-        map->tiles = NULL;
+    if (map->tiles.arr != NULL) {
+        for (size_t i = 0; i < DARR_NUM(map->tiles.arr); i++)
+            Tile_Free(&map->tiles.arr[i]);
+        DARR_FREE(map->tiles.arr);
+        map->tiles.arr = NULL;
     }
-    if (map->tiles_id != NULL) {
-        DARR_FREE(map->tiles_id);
-        map->tiles_id = NULL;
+    if (map->tiles.id != NULL) {
+        DARR_FREE(map->tiles.id);
+        map->tiles.id = NULL;
     }
 }
 
 void Map_Tiles_Load(struct Map *map) {
     Map_Tiles_Free(map);
-    if (map->tiles == NULL) {
-        map->tiles      = DARR_INIT(map->tiles, struct Tile, 64);
+    if (map->tiles.arr == NULL) {
+        map->tiles.arr      = DARR_INIT(map->tiles.arr, struct Tile, 64);
     }
-    if (map->tiles_id == NULL) {
-        map->tiles_id   = DARR_INIT(map->tiles_id, i32, 64);
+    if (map->tiles.id == NULL) {
+        map->tiles.id   = DARR_INIT(map->tiles.id, i32, 64);
     }
 
-    for (size_t i = 0; i < DARR_NUM(map->tilesindex); i++) {
+    for (size_t i = 0; i < DARR_NUM(map->tiles.index); i++) {
         /* -- Get tile_id -- */
-        i32 tile_id = map->tilesindex[i];
+        i32 tile_id = map->tiles.index[i];
         /* - If above TILE_ID_MAX, tile_id encodes the tile sprite too - */
         (tile_id > TILE_ID_MAX) && (tile_id /= TILE_DIVISOR);   /* short-circuit */
 
@@ -52,79 +52,81 @@ void Map_Tiles_Load(struct Map *map) {
         filename    = s8cat(filename, s8_literal(".json"));
         jsonio_readJSON(filename, &temp_tile);
         temp_tile.id = tile_id;
-        DARR_PUT(map->tiles, temp_tile);
-        DARR_PUT(map->tiles_id, tile_id);
+        DARR_PUT(map->tiles.arr, temp_tile);
+        DARR_PUT(map->tiles.id, tile_id);
         s8_free(&filename);
     }
-    SDL_assert(DARR_NUM(map->tiles_id) == DARR_NUM(map->tilesindex));
+    SDL_assert(DARR_NUM(map->tiles.id) == DARR_NUM(map->tiles.index));
 }
 
 void Map_Tilesets_Free(struct Map *map) {
-    if (map->tiles == NULL)
+    if (map->tiles.arr == NULL)
         return;
 
-    if (DARR_NUM(map->tiles) <= 0)
+    if (DARR_NUM(map->tiles.arr) <= 0)
         return;
 
-    SDL_assert(DARR_NUM(map->tiles) < 1000);
+    SDL_assert(DARR_NUM(map->tiles.arr) < 1000);
 
     /* -- SDL_free Tileset Surfaces -- */
     do { /*Loop never executes, just used for break*/
 
-        if (map->tileset_surfaces == NULL)
+        if (map->tiles.tileset_surfaces == NULL)
             break;
 
         /* Note: All surfaces use data from nes palette surface */
         for (int i = PALETTE_NUM - 1; i >= 0; i--) {
-            if (map->tileset_surfaces[i] == NULL)
+            if (map->tiles.tileset_surfaces[i] == NULL)
                 continue;
 
-            SOTA_Free_Surfaces(map->tileset_surfaces[i], DARR_NUM(map->tiles));
-            SDL_free(map->tileset_surfaces[i]);
-            map->tileset_surfaces[i] = NULL;
+            SOTA_Free_Surfaces(map->tiles.tileset_surfaces[i], DARR_NUM(map->tiles.arr));
+            SDL_free(map->tiles.tileset_surfaces[i]);
+            map->tiles.tileset_surfaces[i] = NULL;
         }
-        SDL_free(map->tileset_surfaces);
-        map->tileset_surfaces = NULL;
+        SDL_free(map->tiles.tileset_surfaces);
+        map->tiles.tileset_surfaces = NULL;
     } while (0);
 
     /* -- SDL_free Tileset Textures -- */
     do { /*Loop never executes, just used for break*/
-        if (map->tileset_textures == NULL)
+        if (map->tiles.tileset_textures == NULL)
             break;
         // Note: All surfaces use data from nes palette surface
         for (int i = PALETTE_NUM - 1; i >= 0; i--) {
-            if (map->tileset_textures[i] == NULL)
+            if (map->tiles.tileset_textures[i] == NULL)
                 continue;
 
-            SOTA_Free_Textures(map->tileset_textures[i], DARR_NUM(map->tiles));
-            SDL_free(map->tileset_textures[i]);
-            map->tileset_textures[i] = NULL;
+            SOTA_Free_Textures(map->tiles.tileset_textures[i], DARR_NUM(map->tiles.arr));
+            SDL_free(map->tiles.tileset_textures[i]);
+            map->tiles.tileset_textures[i] = NULL;
         }
-        SDL_free(map->tileset_textures);
-        map->tileset_textures = NULL;
+        SDL_free(map->tiles.tileset_textures);
+        map->tiles.tileset_textures = NULL;
     } while (0);
 
 }
 
 void Map_Tilesets_Load(struct Map *map) {
-    SDL_assert(DARR_NUM(map->tiles) > 0);
-    SDL_assert(map->tilesindex != NULL);
+    SDL_assert(DARR_NUM(map->tiles.arr) > 0);
+    SDL_assert(map->tiles.index != NULL);
     /* -- Preliminaries -- */
     i32 tile_ind;
     Map_Tilesets_Free(map);
 
     /* -- Alloc tilesets -- */
     // TODO: Alloc only used palettes
-    map->tileset_surfaces = SDL_calloc(PALETTE_NUM, sizeof(*map->tileset_surfaces));
-    map->tileset_textures = SDL_calloc(PALETTE_NUM, sizeof(*map->tileset_textures));
+    map->tiles.tileset_surfaces = SDL_calloc(PALETTE_NUM, sizeof(*map->tiles.tileset_surfaces));
+    map->tiles.tileset_textures = SDL_calloc(PALETTE_NUM, sizeof(*map->tiles.tileset_textures));
     for (size_t i = 0; i < PALETTE_NUM; i++) {
-        map->tileset_surfaces[i] = SDL_calloc(DARR_NUM(map->tiles), sizeof(*map->tileset_surfaces[i]));
-        map->tileset_textures[i] = SDL_calloc(DARR_NUM(map->tiles), sizeof(*map->tileset_textures[i]));
+        map->tiles.tileset_surfaces[i] = SDL_calloc(DARR_NUM(map->tiles.arr),
+                                                    sizeof(*map->tiles.tileset_surfaces[i]));
+        map->tiles.tileset_textures[i] = SDL_calloc(DARR_NUM(map->tiles.arr),
+                                                    sizeof(*map->tiles.tileset_textures[i]));
     }
 
     /* -- Load tilesets -- */
-    for (size_t i = 0; i < DARR_NUM(map->tiles); i++) {
-        tile_ind = map->tilesindex[i];
+    for (size_t i = 0; i < DARR_NUM(map->tiles.arr); i++) {
+        tile_ind = map->tiles.index[i];
         /* - If above TILE_ID_MAX, tile_id encodes the tile sprite too - */
         (tile_ind > TILE_ID_MAX) && (tile_ind /= TILE_DIVISOR);   /* short-circuit */
         SDL_assert(tile_ind > 0);
@@ -132,7 +134,7 @@ void Map_Tilesets_Load(struct Map *map) {
         /* - Get tile - */
         s8 tilesetname = s8_mut(PATH_JOIN("..", "assets", "tiles"));
         size_t tile_order = Map_Tile_Order(map, tile_ind);
-        struct Tile *temp_tile = map->tiles + tile_order;
+        struct Tile *temp_tile = map->tiles.arr + tile_order;
 
         /* - Load tileset - */
         tilesetname = s8cat(tilesetname, s8_literal(DIR_SEPARATOR"Tileset_"));
@@ -141,13 +143,13 @@ void Map_Tilesets_Load(struct Map *map) {
         SDL_assert(tilename.data != NULL);
         tilesetname = s8cat(tilesetname, tilename);
         tilesetname = s8cat(tilesetname, s8_literal(".png"));
-        if (map->tileset_surfaces[map->palette.base][i] != NULL)
-            SDL_FreeSurface(map->tileset_surfaces[map->palette.base][i]);
+        if (map->tiles.tileset_surfaces[map->palette.base][i] != NULL)
+            SDL_FreeSurface(map->tiles.tileset_surfaces[map->palette.base][i]);
         SDL_Surface *surf = Filesystem_Surface_Load(tilesetname.data, SDL_PIXELFORMAT_INDEX8);
         /* To check if tilesets get loaded properly: check the output surface */
         SDL_assert(surf != NULL);
         SDL_assert(SDL_ISPIXELFORMAT_INDEXED(surf->format->format));
-        map->tileset_surfaces[map->palette.base][i] = surf;
+        map->tiles.tileset_surfaces[map->palette.base][i] = surf;
         s8_free(&tilesetname);
     }
 }
@@ -214,19 +216,19 @@ void Map_Tilemap_Doors(struct Map *map) {
 u8 Map_Tile_Order(struct Map *map, i32 tile) {
     SDL_assert(Tile_Valid_ID(tile));
     SDL_assert(tile > TILE_START);
-    SDL_assert(map->tiles_id);
-    SDL_assert(map->tiles);
-    SDL_assert(DARR_NUM(map->tiles) == DARR_NUM(map->tiles_id));
-    SDL_assert(DARR_NUM(map->tiles)     > 0);
-    SDL_assert(DARR_NUM(map->tiles_id)  > 0);
+    SDL_assert(map->tiles.id);
+    SDL_assert(map->tiles.arr);
+    SDL_assert(DARR_NUM(map->tiles.arr) == DARR_NUM(map->tiles.id));
+    SDL_assert(DARR_NUM(map->tiles.arr)     > 0);
+    SDL_assert(DARR_NUM(map->tiles.id)  > 0);
     u8 out = UINT8_MAX;
-    for (u8 i = 0; i < DARR_NUM(map->tiles_id); i++) {
-        if (map->tiles_id[i] == tile) {
+    for (u8 i = 0; i < DARR_NUM(map->tiles.id); i++) {
+        if (map->tiles.id[i] == tile) {
             out = i;
             break;
         }
     }
-    if (out >= DARR_NUM(map->tiles)) {
+    if (out >= DARR_NUM(map->tiles.arr)) {
         SDL_LogError(SOTA_LOG_SYSTEM, "Tile %d '%s' not found in map", tile, global_tilenames[tile].data);
         exit(1);
     }
@@ -238,18 +240,18 @@ void Map_Tileset_newPalette(struct Map *map, i32 tile, u8 palette) {
     SDL_assert(map);
     SDL_assert(tile > 0);
     u8 tileset_order = Map_Tile_Order(map, tile);
-    SDL_assert(map->tileset_surfaces);
-    SDL_assert(map->tileset_surfaces[map->palette.base]);
-    SDL_assert(map->tileset_surfaces[map->palette.base][tileset_order]);
+    SDL_assert(map->tiles.tileset_surfaces);
+    SDL_assert(map->tiles.tileset_surfaces[map->palette.base]);
+    SDL_assert(map->tiles.tileset_surfaces[map->palette.base][tileset_order]);
     SDL_assert(palette < PALETTE_NUM);
 
     /* -- Swap surface palette -- */
-    SDL_Surface *old_surf = map->tileset_surfaces[map->palette.base][tileset_order];
+    SDL_Surface *old_surf = map->tiles.tileset_surfaces[map->palette.base][tileset_order];
     /* - Allocate new surface - */
     SDL_Surface *new_surf = Filesystem_Surface_Palette_Swap(old_surf, sota_palettes[palette]);
 
-    SDL_FreeSurface(map->tileset_surfaces[palette][tileset_order]);
-    map->tileset_surfaces[palette][tileset_order] = new_surf;
+    SDL_FreeSurface(map->tiles.tileset_surfaces[palette][tileset_order]);
+    map->tiles.tileset_surfaces[palette][tileset_order] = new_surf;
     SDL_assert(new_surf != NULL);
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(new_surf->format->format));
     SDL_assert(new_surf->w > 0);
@@ -257,9 +259,9 @@ void Map_Tileset_newPalette(struct Map *map, i32 tile, u8 palette) {
     SDL_assert(map->renderer);
 
     /* -- New texture from surface -- */
-    if (map->tileset_textures[palette][tileset_order] != NULL)
-        SDL_DestroyTexture(map->tileset_textures[palette][tileset_order]);
+    if (map->tiles.tileset_textures[palette][tileset_order] != NULL)
+        SDL_DestroyTexture(map->tiles.tileset_textures[palette][tileset_order]);
     SDL_Texture *new_textu = SDL_CreateTextureFromSurface(map->renderer, new_surf);
-    map->tileset_textures[palette][tileset_order] = new_textu;
+    map->tiles.tileset_textures[palette][tileset_order] = new_textu;
 }
 

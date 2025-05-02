@@ -175,8 +175,8 @@ void Map_Free(struct Map *map) {
         map->music.friendly = NULL;
     }
 
-    if (map->tilesindex != NULL) {
-        DARR_FREE(map->tilesindex);
+    if (map->tiles.index != NULL) {
+        DARR_FREE(map->tiles.index);
     }
 
     /* - Conditions - */
@@ -237,13 +237,13 @@ void Map_Free(struct Map *map) {
         SDL_free(map->tilemap);
         map->tilemap = NULL;
     }
-    if (map->tiles != NULL) {
-        DARR_FREE(map->tiles);
-        map->tiles = NULL;
+    if (map->tiles.arr != NULL) {
+        DARR_FREE(map->tiles.arr);
+        map->tiles.arr = NULL;
     }
-    if (map->tiles_id != NULL) {
-        DARR_FREE(map->tiles_id);
-        map->tiles_id = NULL;
+    if (map->tiles.id != NULL) {
+        DARR_FREE(map->tiles.id);
+        map->tiles.id = NULL;
     }
     if (map->armies.onfield != NULL) {
         DARR_FREE(map->armies.onfield);
@@ -269,9 +269,9 @@ void Map_Free(struct Map *map) {
         SDL_free(map->render.tilemap_shader);
         map->render.tilemap_shader = NULL;
     }
-    if (map->texture != NULL) {
-        SDL_DestroyTexture(map->texture);
-        map->texture = NULL;
+    if (map->render.texture != NULL) {
+        SDL_DestroyTexture(map->render.texture);
+        map->render.texture = NULL;
     }
     if (map->unitmap != NULL) {
         SDL_free(map->unitmap);
@@ -405,8 +405,8 @@ void Map_Members_Alloc(struct Map *map) {
     SDL_assert(map->reinforcements.items_num == NULL);
     map->reinforcements.items_num = DARR_INIT(map->reinforcements.items_num, u8, SOTA_EQUIPMENT_SIZE);
 
-    SDL_assert(map->tilesindex == NULL);
-    map->tilesindex = DARR_INIT(map->tilesindex, i32, DEFAULT_TILESPRITE_BUFFER);
+    SDL_assert(map->tiles.index == NULL);
+    map->tiles.index = DARR_INIT(map->tiles.index, i32, DEFAULT_TILESPRITE_BUFFER);
 
     SDL_assert(map->healtolist == NULL);
     map->healtolist = DARR_INIT(map->healtolist, i32, 32);
@@ -519,20 +519,20 @@ void Map_Members_Free(struct Map *map) {
 }
 
 void Map_Texture_Alloc(struct Map *map) {
-    if (map->texture != NULL)
-        SDL_DestroyTexture(map->texture);
+    if (map->render.texture != NULL)
+        SDL_DestroyTexture(map->render.texture);
 
-    map->texture = SDL_CreateTexture(map->renderer, SDL_PIXELFORMAT_ARGB8888,
-                                     SDL_TEXTUREACCESS_TARGET, map->tilesize[0] * map->col_len,
-                                     map->tilesize[1] * map->row_len);
-    SDL_SetTextureBlendMode(map->texture, SDL_BLENDMODE_BLEND);
+    map->render.texture = SDL_CreateTexture(map->renderer, SDL_PIXELFORMAT_ARGB8888,
+                                            SDL_TEXTUREACCESS_TARGET, map->tilesize[0] * map->col_len,
+                                            map->tilesize[1] * map->row_len);
+    SDL_SetTextureBlendMode(map->render.texture, SDL_BLENDMODE_BLEND);
 
 }
 
 void Map_Tilemap_Texture_Free(struct Map *map) {
-    if (map->tilemap_texture != NULL) {
-        SDL_DestroyTexture(map->tilemap_texture);
-        map->tilemap_texture = NULL;
+    if (map->tiles.tilemap_texture != NULL) {
+        SDL_DestroyTexture(map->tiles.tilemap_texture);
+        map->tiles.tilemap_texture = NULL;
     }
 }
 
@@ -541,15 +541,15 @@ void Map_Tilemap_Texture_Init(struct Map *map) {
     Map_Tilemap_Texture_Free(map);
     int x_size = map->tilesize[0] * map->col_len;
     int y_size = map->tilesize[1] * map->row_len;
-    map->tilemap_texture = SDL_CreateTexture(map->renderer, SDL_PIXELFORMAT_RGB888,
-                                             SDL_TEXTUREACCESS_TARGET, x_size, y_size);
-    SDL_assert(map->tilemap_texture);
+    map->tiles.tilemap_texture = SDL_CreateTexture(map->renderer, SDL_PIXELFORMAT_RGB888,
+                                                   SDL_TEXTUREACCESS_TARGET, x_size, y_size);
+    SDL_assert(map->tiles.tilemap_texture);
 }
 
 void Map_Tilemap_Surface_Free(struct Map *map) {
-    if (map->tilemap_surface != NULL) {
-        SDL_FreeSurface(map->tilemap_surface);
-        map->tilemap_surface = NULL;
+    if (map->tiles.tilemap_surface != NULL) {
+        SDL_FreeSurface(map->tiles.tilemap_surface);
+        map->tiles.tilemap_surface = NULL;
     }
 }
 
@@ -562,9 +562,9 @@ void Map_Tilemap_Surface_Init(struct Map *map) {
     Map_Tilemap_Surface_Free(map);
     int x_size = map->tilesize[0] * map->col_len;
     int y_size = map->tilesize[1] * map->row_len;
-    map->tilemap_surface = Filesystem_indexedSurface_Init(x_size, y_size);
-    SDL_assert(map->tilemap_surface->w == map->tilesize[0] * map->col_len);
-    SDL_assert(map->tilemap_surface->h == map->tilesize[1] * map->row_len);
+    map->tiles.tilemap_surface = Filesystem_indexedSurface_Init(x_size, y_size);
+    SDL_assert(map->tiles.tilemap_surface->w == map->tilesize[0] * map->col_len);
+    SDL_assert(map->tiles.tilemap_surface->h == map->tilesize[1] * map->row_len);
 }
 
 /* --- I/O --- */
@@ -604,15 +604,15 @@ void Map_writeJSON(const void *input, cJSON *jmap) {
     cJSON *jtilename;
     cJSON *jtileid;
     u64 temp_tile_id;
-    for (size_t i = 0; i < DARR_NUM(map->tiles); i++) {
+    for (size_t i = 0; i < DARR_NUM(map->tiles.arr); i++) {
         jtile = cJSON_CreateObject();
-        if (map->tilesindex[i] >= TILE_END) {
-            temp_tile_id = map->tilesindex[i];
+        if (map->tiles.index[i] >= TILE_END) {
+            temp_tile_id = map->tiles.index[i];
             jtilename   = cJSON_CreateString(global_tilenames[temp_tile_id].data);
             jtileid     = cJSON_CreateNumber(temp_tile_id);
         } else {
-            jtilename   = cJSON_CreateString(global_tilenames[map->tilesindex[i]].data);
-            jtileid     = cJSON_CreateNumber(map->tilesindex[i]);
+            jtilename   = cJSON_CreateString(global_tilenames[map->tiles.index[i]].data);
+            jtileid     = cJSON_CreateNumber(map->tiles.index[i]);
         }
         cJSON_AddItemToObject(jtile, "id", jtileid);
         cJSON_AddItemToObject(jtile, "name", jtilename);
@@ -742,7 +742,7 @@ void Map_readJSON(void *input, const cJSON *jmap) {
     cJSON *jid, *jtile;
     cJSON_ArrayForEach(jtile, jtiles) {
         jid = cJSON_GetObjectItem(jtile, "id");
-        DARR_PUT(map->tilesindex, cJSON_GetNumberValue(jid));
+        DARR_PUT(map->tiles.index, cJSON_GetNumberValue(jid));
     }
     // SDL_assert(map->tileset_surfaces == NULL);
     Map_Tilesets_Free(map);
@@ -750,7 +750,7 @@ void Map_readJSON(void *input, const cJSON *jmap) {
 
     Map_Tiles_Load(map);
     Map_Tilesets_Load(map);
-    SDL_assert(map->tileset_surfaces[0]);
+    SDL_assert(map->tiles.tileset_surfaces[0]);
 
     /* -- Read Reinforcements --  */
     // SDL_Log("Read Reinforcements");
@@ -1001,12 +1001,12 @@ b32 Map_Boss_Alive(struct Map *map, i16 army) {
 
 /* --- Tile --- */
 struct Tile *Map_Tile_Get(struct Map *map, i32 x, i32 y) {
-    SDL_assert(map          != NULL);
-    SDL_assert(map->tiles   != NULL);
+    SDL_assert(map              != NULL);
+    SDL_assert(map->tiles.arr   != NULL);
     i32 index = sota_2D_index(x, y, map->col_len);
     i32 tile_ind = map->tilemap[index] / TILE_DIVISOR;
     size_t tile_order = Map_Tile_Order(map, tile_ind);
-    return (map->tiles + tile_order);
+    return (map->tiles.arr + tile_order);
 }
 
 /* --- Bonus --- */

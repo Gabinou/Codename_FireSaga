@@ -328,7 +328,7 @@ i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_entity unit_ent) {
         ontile_unit_ent = map->unitmap[i];
         SDL_assert(tile_ind > 0);
         size_t tile_order = Map_Tile_Order(map, tile_ind);
-        temp_tile = map->tiles + tile_order;
+        temp_tile = map->tiles.arr + tile_order;
         i32* cost_array = Tile_Cost_Array(temp_tile);
         map->costmap[i] =  Map_Cost_Effective(map, cost_array[unit_movetype]);
         if (ontile_unit_ent <= TNECS_NULL)
@@ -372,7 +372,7 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
         i32 tile_ind = map->tilemap[i] / TILE_DIVISOR;
         SDL_assert(tile_ind > 0);
         size_t tile_order = Map_Tile_Order(map, tile_ind);
-        struct Tile *temp_tile = map->tiles + tile_order;
+        struct Tile *temp_tile = map->tiles.arr + tile_order;
         i32* cost_array = Tile_Cost_Array(temp_tile);
         map->costmap[i] = Map_Cost_Effective(map, cost_array[Unit_Movement(unit)]);
 

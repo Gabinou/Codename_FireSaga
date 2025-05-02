@@ -235,17 +235,17 @@ void test_map_usable(void) {
     SDL_assert(map->attacktolist    != NULL);
     SDL_assert(map->tilemap         != NULL);
 
-    DARR_PUT(map->tilesindex, TILE_PLAIN);
-    DARR_PUT(map->tilesindex, TILE_LAKE);
+    DARR_PUT(map->tiles.index, TILE_PLAIN);
+    DARR_PUT(map->tiles.index, TILE_LAKE);
     Map_Tiles_Load(map);
 
     for (int i = 0; i < (map->row_len * map->col_len); i++) {
         map->tilemap[i] = TILE_PLAIN * TILE_DIVISOR + 1;
     }
 
-    SDL_assert(DARR_NUM(map->tilesindex)    == 2);
-    SDL_assert(DARR_NUM(map->tiles)         == 2);
-    SDL_assert(DARR_NUM(map->tilesindex)    == 2);
+    SDL_assert(DARR_NUM(map->tiles.index)    == 2);
+    SDL_assert(DARR_NUM(map->tiles.arr)      == 2);
+    SDL_assert(DARR_NUM(map->tiles.index)    == 2);
     SDL_assert(map->cost.multiplier == 1);
 
     /* --- NO enemy in range --- */

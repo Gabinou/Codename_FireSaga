@@ -140,9 +140,9 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
     u8 palette_ind = 0;
     int success;
     SDL_assert(map->renderer);
-    if (map->tilemap_texture == NULL)
+    if (map->tiles.tilemap_texture == NULL)
         Map_Tilemap_Texture_Init(map);
-    SDL_SetRenderTarget(map->renderer, map->tilemap_texture);
+    SDL_SetRenderTarget(map->renderer, map->tiles.tilemap_texture);
     SDL_assert(map->tilemap);
     SDL_assert(map->palette.map);
 
@@ -169,11 +169,11 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
         dstrect.y = sota_ss_y(i, map->col_len) * map->tilesize[1];
 
         /* Get tile texture to stitch map into */
-        SDL_Texture *texture = map->tileset_textures[palette_ind][tile_order];
+        SDL_Texture *texture = map->tiles.tileset_textures[palette_ind][tile_order];
         SDL_assert(texture != NULL);
         SDL_assert(tile_ind > 0);
         tile_order = Map_Tile_Order(map, tile_ind);
-        if (map->tileset_textures[palette_ind][tile_order] == NULL)
+        if (map->tiles.tileset_textures[palette_ind][tile_order] == NULL)
             Map_Tileset_newPalette(map, tile_order, palette_ind);
 
         /* Stitching map */
@@ -188,7 +188,7 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
             continue;
 
         tile_order = Map_Tile_Order(map, TILE_ICONS);
-        texture = map->tileset_textures[map->palette.base][tile_order];
+        texture = map->tiles.tileset_textures[map->palette.base][tile_order];
         srcrect.y = 0;
         switch (map->stack.mode) {
             case MAP_SETTING_STACK_DANGERMAP:
@@ -201,7 +201,7 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
         }
     }
     SDL_SetRenderTarget(map->renderer, render_target); /* render to default again */
-    return (map->tilemap_texture);
+    return (map->tiles.tilemap_texture);
 }
 void Map_Visible_Tiles(struct Map *map,  struct Settings *settings, struct Camera *camera) {
     struct Point visiblemprev = map->render.visiblemin;
@@ -232,13 +232,13 @@ void Map_Visible_Tiles(struct Map *map,  struct Settings *settings, struct Camer
 }
 
 SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
-    SDL_assert(map->tilemap_surface != NULL);
-    SDL_assert(map->tilemap_surface->w == (map->col_len * map->tilesize[0]));
-    SDL_assert(map->tilemap_surface->h == (map->row_len * map->tilesize[1]));
+    SDL_assert(map->tiles.tilemap_surface != NULL);
+    SDL_assert(map->tiles.tilemap_surface->w == (map->col_len * map->tilesize[0]));
+    SDL_assert(map->tiles.tilemap_surface->h == (map->row_len * map->tilesize[1]));
     SDL_assert(map->tilemap          != NULL);
     SDL_assert(map->palette.map       != NULL);
-    SDL_assert(map->tileset_surfaces != NULL);
-    SDL_assert(SDL_ISPIXELFORMAT_INDEXED(map->tilemap_surface->format->format));
+    SDL_assert(map->tiles.tileset_surfaces != NULL);
+    SDL_assert(SDL_ISPIXELFORMAT_INDEXED(map->tiles.tilemap_surface->format->format));
 
     /* -- Preliminaries -- */
     SDL_Rect dstrect    = {0, 0, map->tilesize[0], map->tilesize[1]};
@@ -275,9 +275,9 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
         tile_order = Map_Tile_Order(map, tile_ind);
 
         /* Get tile surface to stitch map into */
-        SDL_assert(map->tileset_surfaces != NULL);
-        SDL_assert(map->tileset_surfaces[palette_ind] != NULL);
-        SDL_Surface *surf = map->tileset_surfaces[palette_ind][tile_order];
+        SDL_assert(map->tiles.tileset_surfaces != NULL);
+        SDL_assert(map->tiles.tileset_surfaces[palette_ind] != NULL);
+        SDL_Surface *surf = map->tiles.tileset_surfaces[palette_ind][tile_order];
         SDL_assert(surf != NULL);
         if (surf == NULL)
             Map_Tileset_newPalette(map, tile_order, palette_ind);
@@ -286,7 +286,7 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
         SDL_assert(SDL_ISPIXELFORMAT_INDEXED(surf->format->format));
 
         /* Stitching map */
-        success = SDL_BlitSurface(surf, &srcrect, map->tilemap_surface, &dstrect);
+        success = SDL_BlitSurface(surf, &srcrect, map->tiles.tilemap_surface, &dstrect);
         /* SDL_BlitSurface WEIRDNESS:
             ignores dstrect -> DOCUMENTED in https://wiki.libsdl.org/SDL_BlitSurface
         */
@@ -297,26 +297,26 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
             continue;
 
         tile_order = Map_Tile_Order(map, TILE_ICONS);
-        surf = map->tileset_surfaces[map->palette.base][tile_order];
+        surf = map->tiles.tileset_surfaces[map->palette.base][tile_order];
         srcrect.y = 0;
         switch (map->stack.mode) {
             case MAP_SETTING_STACK_DANGERMAP:
                 if (map->stack.dangermap[i]) {
                     srcrect.x = (TILE_ICON_DANGER % TILESET_COL_LEN) * map->tilesize[0];
-                    success = SDL_BlitSurface(surf, &srcrect, map->tilemap_surface, &dstrect);
+                    success = SDL_BlitSurface(surf, &srcrect, map->tiles.tilemap_surface, &dstrect);
                     SDL_assert(success == 0);
                 }
                 break;
         }
     }
-    return (map->tilemap_surface);
+    return (map->tiles.tilemap_surface);
 }
 
 void Map_swappedTextures_All(struct Map *map) {
-    SDL_assert(map->tilesindex != NULL);
+    SDL_assert(map->tiles.index != NULL);
     for (size_t palette_id = PALETTE_START + 1; palette_id < PALETTE_NUM; palette_id++) {
-        for (size_t tile_order = 0; tile_order < DARR_NUM(map->tiles); tile_order++)
-            Map_Tileset_newPalette(map, map->tilesindex[tile_order], palette_id);
+        for (size_t tile_order = 0; tile_order < DARR_NUM(map->tiles.arr); tile_order++)
+            Map_Tileset_newPalette(map, map->tiles.index[tile_order], palette_id);
     }
 }
 
@@ -525,21 +525,22 @@ b32 Map_Tilemap_newFrame(struct Map *map) {
 
 void Map_Update(struct Map *map,  struct Settings *settings,
                 struct Camera *camera, struct SDL_Texture *render_target) {
-    SDL_assert(map->tilemap_texture);
+    SDL_assert(map->tiles.tilemap_texture);
     if ((map->render.tilemap_shader != NULL)) {
         Map_Tilemap_Surface_Stitch(map);
-        SDL_assert(map->tilemap_surface);
+        SDL_assert(map->tiles.tilemap_surface);
         if (map->render.tilemap_shader->shadow_tilemaps != NULL) {
-            map->tilemap_surface = Tilemap_Shade_Surface(map->render.tilemap_shader,
-                                                         map->tilemap_surface, 0, settings, camera);
+            map->tiles.tilemap_surface = Tilemap_Shade_Surface(map->render.tilemap_shader,
+                                                               map->tiles.tilemap_surface, 0, settings, camera);
         }
-        SDL_assert(map->tilemap_surface);
-        SDL_DestroyTexture(map->tilemap_texture);
-        map->tilemap_texture = SDL_CreateTextureFromSurface(map->renderer, map->tilemap_surface);
+        SDL_assert(map->tiles.tilemap_surface);
+        SDL_DestroyTexture(map->tiles.tilemap_texture);
+        map->tiles.tilemap_texture = SDL_CreateTextureFromSurface(map->renderer,
+                                                                  map->tiles.tilemap_surface);
     } else {
-        SDL_assert(map->tilemap_texture);
-        SDL_DestroyTexture(map->tilemap_texture);
-        map->tilemap_texture = NULL;
+        SDL_assert(map->tiles.tilemap_texture);
+        SDL_DestroyTexture(map->tiles.tilemap_texture);
+        map->tiles.tileset_textures = NULL;
         // BROKEN
         Map_Tilemap_Texture_Stitch(map, render_target);
     }
@@ -574,8 +575,8 @@ void Map_Draw(struct Map *map,  struct Settings *settings,
     if (map->flags.update || sm_up || tm_up || map->flags.visible_changed || map->flags.shading_changed)
         Map_Update(map, settings, camera, render_target);
 
-    SDL_assert(map->tilemap_texture != NULL);
-    SDL_RenderCopy(map->renderer, map->tilemap_texture, NULL, &dstrect); /* slow */
+    SDL_assert(map->tiles.tileset_textures != NULL);
+    SDL_RenderCopy(map->renderer, map->tiles.tilemap_texture, NULL, &dstrect); /* slow */
 
     /* -- Draw Arrow -- */
     if (map->arrow && map->arrow->show) {

@@ -162,6 +162,7 @@ typedef struct Map_Armies {
 typedef struct Map_Render {
     struct Point visiblemin;
     struct Point visiblemax;
+    struct SDL_Texture    *texture;
 
     struct Tilemap_Shader *tilemap_shader;
 
@@ -176,12 +177,27 @@ typedef struct Map_Render {
     float tilemap_frame_factor; /* framerate * factor = pause */
 } Map_Render;
 
+typedef struct Map_Tiles {
+    struct Tile *arr;   /* [tiles_order] */
+    i32 *id;            /* [tiles_order] */
+    i32 *index;         /* [tiles_order] */
+    struct SDL_Surface    *tilemap_surface;
+    struct SDL_Texture    *tilemap_overlay_texture;
+    struct SDL_Texture    *tilemap_texture;
+    struct SDL_Surface  ***tileset_surfaces; /* [palette_id][tiles_order] */
+    struct SDL_Texture  ***tileset_textures; /* [palette_id][tiles_order] */
+} Map_Tiles;
+
+
 typedef struct Map {
     struct jsonIO_Header jsonio_header;
 
     /* --- BASICS --- */
     i32 turn; /* Automatic loss if turn 255. */
     i32 chapter;
+
+    // TODO: remove. should be in savefile
+    s8 party_filename;
 
     struct Point *units_positions_list;  /* same order as onfield.units */
     struct Point *start_pos;
@@ -201,6 +217,7 @@ typedef struct Map {
     struct Map_Flags            flags;
     struct Map_Stack            stack;
     struct Map_Units            units;
+    struct Map_Tiles            tiles;
     struct Map_Render           render;
     struct Map_Armies           armies;
     struct Map_Palette          palette;
@@ -208,12 +225,7 @@ typedef struct Map {
     struct Map_Perimiter        perimiter;
     struct Map_Conditions       conditions;
     struct Map_Reinforcements   reinforcements;
-    // TODO: remove. should be in savefile
-    s8 party_filename;
-
-
     /* --- costmap, MOVEMAP, ATTACKMAP... --- */
-    // TODO: remove
 
     // typedef struct Map_Arrays {
     // TODO: rm temp
@@ -244,18 +256,6 @@ typedef struct Map {
     tnecs_entity *occupymap;    /* [row * col_len + col], friendlies only, enemies only... */
     tnecs_entity costmap_ent; /* costmap computed for*/
     // } Map_Arrays;
-
-    // typedef struct Map_Tiles {
-    struct Tile *tiles;  /* [tiles_order] */
-    i32 *tiles_id;       /* [tiles_order] */
-    i32 *tilesindex;     /* [tiles_order] */
-    struct SDL_Surface    *tilemap_surface;
-    struct SDL_Texture    *tilemap_overlay_texture;
-    struct SDL_Texture    *tilemap_texture;
-    struct SDL_Texture    *texture;
-    struct SDL_Surface  ***tileset_surfaces; /* [palette_id][tiles_order] */
-    struct SDL_Texture  ***tileset_textures; /* [palette_id][tiles_order] */
-    // } Map_Tiles;
 
 } Map;
 extern const struct Map Map_default;

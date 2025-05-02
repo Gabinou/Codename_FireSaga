@@ -423,15 +423,15 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 /* --- Tiles & tilesets  --- */
 void Game_Tilesets_Dump(struct Game *sota) {
     i32 tile_ind;
-    for (size_t i = 0; i < DARR_NUM(sota->map->tiles); i++) {
+    for (size_t i = 0; i < DARR_NUM(sota->map->tiles.arr); i++) {
         s8 dumpname = s8_mut("Tileset_");
-        if (sota->map->tilesindex[i] > TILE_ID_MAX)
-            tile_ind = sota->map->tilesindex[i] / TILE_DIVISOR;
+        if (sota->map->tiles.index[i] > TILE_ID_MAX)
+            tile_ind = sota->map->tiles.index[i] / TILE_DIVISOR;
         else
-            tile_ind = sota->map->tilesindex[i];
+            tile_ind = sota->map->tiles.index[i];
         SDL_assert(tile_ind > 0);
         size_t tile_order = Map_Tile_Order(sota->map, tile_ind);
-        struct Tile *temp_tile = sota->map->tiles + tile_order;
+        struct Tile *temp_tile = sota->map->tiles.arr + tile_order;
         dumpname = s8cat(dumpname, Tile_Name(temp_tile));
         dumpname = s8cat(dumpname, s8_literal(".png"));
         SDL_Log("%s", dumpname.data);
