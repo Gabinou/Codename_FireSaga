@@ -226,29 +226,31 @@ typedef struct Map_Starting_Pos {
 
 typedef struct Map {
     struct jsonIO_Header jsonio_header;
-
-    /* --- BASICS --- */
-    i32 turn; /* Automatic loss if turn 255. */
-    i32 chapter;
-
+  
+    i32              turn; /* loss >= 255 */
+    i32              chapter;
+    Arrow           *arrow;
+    tnecs_world     *world;
+    SDL_Renderer    *renderer;
+    struct Camera    camera;
     // TODO: remove. should be in savefile
     s8 party_filename;
 
     /* Map size */
 // typedef struct Map_Size {
-    // struct Point tile;
+    // struct Point tile; /* [pixels] */
+    // struct Point grid; /* [tiles] */
+    // col_len -> map.size.grid.x
     i32 row_len; /* [tiles] */
     i32 col_len; /* [tiles] */
     // Is tilesize a game property or map property?
+    // tilesize[0] -> map.size.tile.x
     i32 tilesize[TWO_D]; /* [pixels] */
 // } Map_Size;
 
-    Arrow           *arrow;
-    tnecs_world     *world;
-    SDL_Renderer    *renderer;
-    struct Camera    camera;
     struct Map_Cost             cost;
     struct Map_Music            music;
+    // rn Map_Dynamic_Arrays
     struct Map_Grids            grids;
     struct Map_Flags            flags;
     struct Map_Stack            stack;
