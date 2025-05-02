@@ -103,7 +103,7 @@ i32 *Map_Movemap_Compute(struct Map *map, tnecs_entity unit_ent) {
     Map_Costmap_Movement_Compute(map, unit_ent);
     struct Unit     *unit   = IES_GET_COMPONENT(map->world, unit_ent, Unit);
     struct Position *pos    = IES_GET_COMPONENT(map->world, unit_ent, Position);
-    i32    effective_move   = Map_Cost_Effective(map, Map_Cost_Multiplier(map));
+    i32    effective_move   = Map_Cost_Effective(map, Unit_Movement(unit));
     struct Point     start  = pos->tilemap_pos;
     return (_Map_Movemap_Compute(map, start, effective_move));
 }
