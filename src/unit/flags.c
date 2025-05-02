@@ -66,12 +66,13 @@ void Unit_Equippable_set(Unit *unit, u16 equippable) {
     }
     unit->flags.equippable = equippable;
 }
-i8  Unit_Movement(const Unit *unit) {
+i32  Unit_Movement(Unit *unit) {
     if (unit == NULL) {
         SDL_assert(false);
         return (0);
     }
-    return (unit->flags.handedness);
+    Unit_stats eff_stats = Unit_effectiveStats(unit);
+    return (eff_stats.move);
 }
 b32 Unit_isTalkable(const Unit *unit) {
     if (unit == NULL) {

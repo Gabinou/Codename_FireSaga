@@ -364,7 +364,7 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
 #ifdef UNITS_IGNORE_TERRAIN
 
         /* - All units fly - */
-        map->costmap[i] = COSTMAP_MIN * map->cost_multiplier;
+        map->costmap[i] = COSTMAP_MIN * Map_Cost_Multiplier(map);
 
 #else /* !UNITS_IGNORE_TERRAIN */
 

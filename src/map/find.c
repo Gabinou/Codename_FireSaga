@@ -38,11 +38,14 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
     struct Point start  = pos->tilemap_pos;
     Unit_stats eff_s    = Unit_effectiveStats(unit);
     i32 move_stat       = can_equip.move ? eff_s.move : 0;
-    i32 effective_move  = Map_Cost_Effective(map, move_stat); // TODO make utility
+    i32 effective_move  = Map_Cost_Effective(map, move_stat);
+    printf("effective_move %d\n", effective_move);
+    SDL_Log("effective_move %d\n", effective_move);
+
     _Map_Movemap_Compute(map, start, effective_move);
 
-    // printf("MOVE\n");
-    // matrix_print(map->movemap, map->row_len, map->col_len);
+    printf("MOVE\n");
+    matrix_print(map->movemap, map->row_len, map->col_len);
 
     /* Alloc defendants */
     tnecs_entity *defendants  = DARR_INIT(defendants, tnecs_entity, 4);
@@ -64,14 +67,14 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
         }
 
         if (!Unit_canEquip_AnyHand(unit, can_equip)) {
-            // SDL_Log("!Unit_canEquip_AnyHand");
+            SDL_Log("!Unit_canEquip_AnyHand");
             continue;
         }
 
         range_can_equip._eq         = eq;
 
         if (!Map_canEquip_Range(map, unit_ent, defendants, range_can_equip)) {
-            // SDL_Log("!Map_canEquip_Range");
+            SDL_Log("!Map_canEquip_Range");
             continue;
         }
 
@@ -98,7 +101,7 @@ b32 Map_canEquip_Range(struct Map *map, tnecs_entity unit_ent,
     /* Compute range */
     struct Range range = Range_default;
     Unit_Range_Eq(unit, can_equip._eq, can_equip.archetype, &range);
-    // SDL_Log("range %d %d", range->min, range->max);
+    SDL_Log("range %d %d", range.min, range.max);
 
     /* Compute attacktolist to check if any enemy in it */
     /* --- Compute list (attacktolist, healtolist) of unit in range --- */
@@ -111,12 +114,17 @@ b32 Map_canEquip_Range(struct Map *map, tnecs_entity unit_ent,
     map_to.output_type  = ARRAY_LIST;
     map_to.aggressor    = unit_ent;
 
+    printf("MOVE BEFORE Map_Act_To\n");
+    matrix_print(map->movemap, map->row_len, map->col_len);
+
     Map_Act_To(map, map_to);
 
-    // printf("MOVE\n");
-    // matrix_print(map->movemap, map->row_len, map->col_len);
-    // printf("ATK\n");
-    // matrix_print(map->attacktomap, map->row_len, map->col_len);
+    printf("MOVE AFTER Map_Act_To\n");
+    matrix_print(map->movemap, map->row_len, map->col_len);
+    printf("ATK\n");
+    matrix_print(map->attacktomap, map->row_len, map->col_len);
+    printf("UNIT\n");
+    entity_print(map->unitmap, map->row_len, map->col_len);
 
     /* Find all Defendants/Patients in list */
     MapFind mapfind     = MapFind_default;

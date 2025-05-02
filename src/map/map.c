@@ -110,6 +110,7 @@ void Map_Tilemap_Shader_Init(Map *map) {
 Map *Map_New(NewMap new_map) {
     Map *map        = SDL_malloc(sizeof(Map));
     *map            = Map_default;
+    SDL_assert(map->cost.multiplier == 1);
     map->world      = new_map.world;
     map->stack_mode = new_map.stack_mode;
 
@@ -117,6 +118,7 @@ Map *Map_New(NewMap new_map) {
     Map_Tilesize_Set(   map,    new_map.tilesize[0],    new_map.tilesize[1]);
     Map_Renderer_Set(map, new_map.renderer);
     Map_Members_Alloc(map);
+    SDL_assert(map->cost.multiplier == 1);
 
     return (map);
 }

@@ -231,6 +231,7 @@ void test_map_usable(void) {
     new_map.world   = world;
 
     Map *map = Map_New(new_map);
+    SDL_assert(map->cost.multiplier == 1);
     SDL_assert(map->attacktolist    != NULL);
     SDL_assert(map->tilemap         != NULL);
 
@@ -245,6 +246,7 @@ void test_map_usable(void) {
     SDL_assert(DARR_NUM(map->tilesindex)    == 2);
     SDL_assert(DARR_NUM(map->tiles)         == 2);
     SDL_assert(DARR_NUM(map->tilesindex)    == 2);
+    SDL_assert(map->cost.multiplier == 1);
 
     /* --- NO enemy in range --- */
     _Map_Unit_Put(map, silou_pos->tilemap_pos.x, silou_pos->tilemap_pos.y, Silou);
@@ -288,6 +290,7 @@ void test_map_usable(void) {
     silou->stats.current.move           = 4;
     eff_stats = Unit_effectiveStats(silou);
     SDL_assert(silou->stats.current.move == eff_stats.move);
+    SDL_assert(Unit_Movement(silou) == silou->stats.current.move);
     _Map_Unit_Put(map, 1, 2,  Erwin);
 
     can_equip           = canEquip_default;
@@ -301,9 +304,11 @@ void test_map_usable(void) {
     can_equip           = canEquip_default;
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     can_equip.move      = true;
+    SDL_Log("HERE");
     Map_canEquip(map, Silou, can_equip);
     nourstest_true(silou->can_equip.num    == 1);
     nourstest_true(silou->can_equip.arr[0] == ITEM1);
+    getchar();
 
     /* --- TODO: Range types, blocked by unit --- */
     Unit_Equippable_set(silou, ITEM_TYPE_BOW);
