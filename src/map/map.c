@@ -249,9 +249,9 @@ void Map_Free(struct Map *map) {
         DARR_FREE(map->armies.onfield);
         map->armies.onfield = NULL;
     }
-    if (map->start_pos != NULL) {
-        DARR_FREE(map->start_pos);
-        map->start_pos = NULL;
+    if (map->start_pos.arr != NULL) {
+        DARR_FREE(map->start_pos.arr);
+        map->start_pos.arr = NULL;
     }
     if (map->units.onfield.enemies != NULL) {
         DARR_FREE(map->units.onfield.enemies);
@@ -285,9 +285,9 @@ void Map_Free(struct Map *map) {
         SDL_free(map->grids.movemap);
         map->grids.movemap = NULL;
     }
-    if (map->start_posmap != NULL) {
-        SDL_free(map->start_posmap);
-        map->start_posmap = NULL;
+    if (map->start_pos.map != NULL) {
+        SDL_free(map->start_pos.map);
+        map->start_pos.map = NULL;
     }
 
     if (map->grids.attacktomap != NULL) {
@@ -390,8 +390,8 @@ void Map_Members_Alloc(struct Map *map) {
     SDL_assert(map->grids.tilemap == NULL);
     map->grids.tilemap = SDL_calloc(len, sizeof(*map->grids.tilemap));
 
-    SDL_assert(map->start_pos == NULL);
-    map->start_pos = DARR_INIT(map->start_pos, struct Point, 16);
+    SDL_assert(map->start_pos.arr == NULL);
+    map->start_pos.arr = DARR_INIT(map->start_pos.arr, struct Point, 16);
 
     SDL_assert(map->conditions.death_enemy == NULL);
     map->conditions.death_enemy = DARR_INIT(map->conditions.death_enemy, struct Map_condition, 2);
@@ -444,8 +444,8 @@ void Map_Members_Alloc(struct Map *map) {
     SDL_assert(map->grids.movemap == NULL);
     map->grids.movemap = SDL_calloc(len,  sizeof(*map->grids.movemap));
 
-    SDL_assert(map->start_posmap == NULL);
-    map->start_posmap = SDL_calloc(len,  sizeof(*map->start_posmap));
+    SDL_assert(map->start_pos.map == NULL);
+    map->start_pos.map = SDL_calloc(len,  sizeof(*map->start_pos.map));
 
     SDL_assert(map->grids.dangermap == NULL);
     map->grids.dangermap = SDL_calloc(len,  sizeof(*map->grids.dangermap));
@@ -587,12 +587,12 @@ void Map_writeJSON(const void *input, cJSON *jmap) {
     cJSON *jstartingpos;
     cJSON *jstartingposx;
     cJSON *jstartingposy;
-    SDL_assert(map->start_pos != NULL);
-    for (size_t i = 0; i < DARR_NUM(map->start_pos); i++) {
+    SDL_assert(map->start_pos.arr != NULL);
+    for (size_t i = 0; i < DARR_NUM(map->start_pos.arr); i++) {
         jstartingpos = cJSON_CreateObject();
         cJSON_AddItemToObject(jstart_pos_arr, "Position", jstartingpos);
-        jstartingposx = cJSON_CreateNumber(map->start_pos[i].x);
-        jstartingposy = cJSON_CreateNumber(map->start_pos[i].y);
+        jstartingposx = cJSON_CreateNumber(map->start_pos.arr[i].x);
+        jstartingposy = cJSON_CreateNumber(map->start_pos.arr[i].y);
         cJSON_AddItemToObject(jstartingpos, "col", jstartingposx);
         cJSON_AddItemToObject(jstartingpos, "row", jstartingposy);
     }

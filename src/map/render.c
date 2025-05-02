@@ -120,8 +120,8 @@ void Map_Palettemap_Autoset(struct Map *map, u16 flagsum, tnecs_entity self) {
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_START_POS, flagsum)) {
         SDL_assert(palette);
-        SDL_assert(map->start_pos);
-        palette = matrix_sgreater_noM(palette, map->start_posmap, 0, size);
+        SDL_assert(map->start_pos.arr);
+        palette = matrix_sgreater_noM(palette, map->start_pos.map, 0, size);
         Map_Palettemap_addMap(map, palette, map->palette.purple);
     }
     memset(palette, 0, bytesize);

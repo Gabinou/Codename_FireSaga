@@ -219,6 +219,11 @@ typedef struct Map_Grids {
     tnecs_entity costmap_ent; /* costmap computed for */
 } Map_Grids;
 
+typedef struct Map_Starting_Pos {
+    i32 *map; /* 2D dynamic array */
+    struct Point *arr;
+} Map_Starting_Pos;
+
 typedef struct Map {
     struct jsonIO_Header jsonio_header;
 
@@ -229,17 +234,14 @@ typedef struct Map {
     // TODO: remove. should be in savefile
     s8 party_filename;
 
-    // typedef struct Map_Starting_Pos {
-    i32 *start_posmap;          /* 2D dynamic array */
-    struct Point *units_positions_list;  /* same order as onfield.units */
-    struct Point *start_pos;
-    // } Map_Starting_Pos
-
     /* Map size */
+// typedef struct Map_Size {
+    // struct Point tile;
     i32 row_len; /* [tiles] */
     i32 col_len; /* [tiles] */
     // Is tilesize a game property or map property?
     i32 tilesize[TWO_D]; /* [pixels] */
+// } Map_Size;
 
     Arrow           *arrow;
     tnecs_world     *world;
@@ -258,6 +260,7 @@ typedef struct Map {
     struct Map_Entities         entities;
     struct Map_Perimiter        perimiter;
     struct Map_Conditions       conditions;
+    struct Map_Starting_Pos     start_pos;
     struct Map_Reinforcements   reinforcements;
 } Map;
 extern const struct Map Map_default;

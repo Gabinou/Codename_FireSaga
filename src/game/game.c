@@ -1140,14 +1140,14 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
     struct Position *position = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     SDL_assert(position                 != NULL);
     SDL_assert(sota->map                != NULL);
-    SDL_assert(sota->map->start_pos     != NULL);
-    SDL_assert(DARR_NUM(sota->map->start_pos) > 0);
-    Position_Pos_Set(position, sota->map->start_pos[0].x, sota->map->start_pos[0].y);
+    SDL_assert(sota->map->start_pos.arr     != NULL);
+    SDL_assert(DARR_NUM(sota->map->start_pos.arr) > 0);
+    Position_Pos_Set(position, sota->map->start_pos.arr[0].x, sota->map->start_pos.arr[0].y);
 
     // Game_cursorFocus_onMap resets position to cursor_lastpos;
     // TODO: bool flag to disable Game_cursorFocus_onMap resetting cursor pos.
-    sota->cursor_lastpos.x = sota->map->start_pos[0].x;
-    sota->cursor_lastpos.y = sota->map->start_pos[0].y;
+    sota->cursor_lastpos.x = sota->map->start_pos.arr[0].x;
+    sota->cursor_lastpos.y = sota->map->start_pos.arr[0].y;
 
     /* -- Set popups position -- */
     Position *cursor_pos;

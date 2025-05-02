@@ -1038,7 +1038,7 @@ void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game  *sota, tnecs_entity mover_entity,
 
     /* Actually move the cursor from cursor_move_data set by systemControl */
     // Note: always on tilemap
-    int num_pos = DARR_NUM(sota->map->start_pos);
+    int num_pos = DARR_NUM(sota->map->start_pos.arr);
     if ((sota->cursor_move.x > 0) || (sota->cursor_move.y > 0)) {
         sota->candidate = sota->candidate >= (num_pos - 1) ? 0 : sota->candidate + 1;
     } else if ((sota->cursor_move.x < 0) || (sota->cursor_move.y < 0)) {
@@ -1049,7 +1049,7 @@ void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game  *sota, tnecs_entity mover_entity,
     struct DeploymentMenu *dm = mc->data;
     SDL_assert(dm != NULL);
     i32 start_pos_i = DeploymentMenu_Map_StartPos(dm, sota->candidate);
-    struct Point next_pos = sota->map->start_pos[start_pos_i];
+    struct Point next_pos = sota->map->start_pos.arr[start_pos_i];
     Position_Pos_Set(cursor_pos, next_pos.x, next_pos.y);
 
     // Always on tilemap
@@ -1246,8 +1246,8 @@ void fsm_eAcpt_sPrep_ssMapCndt(struct Game *sota, tnecs_entity accepter_entity) 
             return;
         }
 
-        struct Point pos1 = sota->map->start_pos[dm->start_pos_order1];
-        struct Point pos2 = sota->map->start_pos[dm->start_pos_order2];
+        struct Point pos1 = sota->map->start_pos.arr[dm->start_pos_order1];
+        struct Point pos2 = sota->map->start_pos.arr[dm->start_pos_order2];
 
         // tnecs_entity old_ent = Map_Unit_Get(sota->map, pos1.x, pos1.y);
         // tnecs_entity new_ent = Map_Unit_Get(sota->map, pos2.x, pos2.y);

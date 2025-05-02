@@ -842,7 +842,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
     // TODO: get start_pos_order from dm_order with list in map
 
     // i32 start_pos_i = DeploymentMenu_Map_StartPos(dm, dm_order);
-    struct Point pos = sota->map->start_pos[dm_order];
+    struct Point pos = sota->map->start_pos.arr[dm_order];
 
     tnecs_entity unit_ent = sota->party.entities[unit_id];
     SDL_assert(unit_ent > TNECS_NULL);

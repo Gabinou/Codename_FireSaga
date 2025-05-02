@@ -804,7 +804,7 @@ i32 DeploymentMenu_Map_Find_Pos(DeploymentMenu *dm, struct Map *map,
                                 u8 col, u8 row) {
     i32 out = -1;
     for (int i = 0; i < dm->select_max; i++) {
-        if ((col == map->start_pos[i].x) && (row == map->start_pos[i].y)) {
+        if ((col == map->start_pos.arr[i].x) && (row == map->start_pos.arr[i].y)) {
             out = i;
             break;
         }
@@ -891,8 +891,8 @@ void DeploymentMenu_Map_StartPos_Deselect(DeploymentMenu *dm) {
 
 void DeploymentMenu_Map_Set(DeploymentMenu *dm, struct Map *map) {
     SDL_assert(map              != NULL);
-    SDL_assert(map->start_pos   != NULL);
-    dm->select_max = DARR_NUM(map->start_pos);
+    SDL_assert(map->start_pos.arr   != NULL);
+    dm->select_max = DARR_NUM(map->start_pos.arr);
     SDL_assert(dm->select_max > 0);
 
     if (dm->_start_pos_i != NULL)
