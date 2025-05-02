@@ -159,42 +159,7 @@ typedef struct Map_Armies {
     i32 *onfield;
 } Map_Armies;
 
-
-typedef struct Map {
-    struct jsonIO_Header jsonio_header;
-
-    /* --- BASICS --- */
-    i32 turn; /* Automatic loss if turn 255. */
-
-    struct Point *units_positions_list;  /* same order as onfield.units */
-    struct Point *start_pos;
-
-    /* Map size */
-    i32 row_len; /* [tiles] */
-    i32 col_len; /* [tiles] */
-    i32 chapter;
-    // Is tilesize a game property of map property?
-    i32 tilesize[TWO_D]; /* [pixels] */
-
-    Arrow           *arrow;
-    tnecs_world     *world;
-    SDL_Renderer    *renderer;
-    struct Camera    camera;
-    struct Map_Cost             cost;
-    struct Map_Music            music;
-    struct Map_Flags            flags;
-    struct Map_Stack            stack;
-    struct Map_Units            units;
-    struct Map_Armies           armies;
-    struct Map_Palette          palette;
-    struct Map_Entities         entities;
-    struct Map_Perimiter        perimiter;
-    struct Map_Conditions       conditions;
-    struct Map_Reinforcements   reinforcements;
-
-    // TODO: remove. should be in savefile
-    s8 party_filename;
-    // typedef struct Map_Render {
+typedef struct Map_Render {
     struct Point visiblemin;
     struct Point visiblemax;
 
@@ -209,7 +174,43 @@ typedef struct Map {
     u8  tilemap_frame_counter;
     float shadow_frame_factor;  /* framerate * factor = pause */
     float tilemap_frame_factor; /* framerate * factor = pause */
-    // Map_Render;
+} Map_Render;
+
+typedef struct Map {
+    struct jsonIO_Header jsonio_header;
+
+    /* --- BASICS --- */
+    i32 turn; /* Automatic loss if turn 255. */
+    i32 chapter;
+
+    struct Point *units_positions_list;  /* same order as onfield.units */
+    struct Point *start_pos;
+
+    /* Map size */
+    i32 row_len; /* [tiles] */
+    i32 col_len; /* [tiles] */
+    // Is tilesize a game property of map property?
+    i32 tilesize[TWO_D]; /* [pixels] */
+
+    Arrow           *arrow;
+    tnecs_world     *world;
+    SDL_Renderer    *renderer;
+    struct Camera    camera;
+    struct Map_Cost             cost;
+    struct Map_Music            music;
+    struct Map_Flags            flags;
+    struct Map_Stack            stack;
+    struct Map_Units            units;
+    struct Map_Render           render;
+    struct Map_Armies           armies;
+    struct Map_Palette          palette;
+    struct Map_Entities         entities;
+    struct Map_Perimiter        perimiter;
+    struct Map_Conditions       conditions;
+    struct Map_Reinforcements   reinforcements;
+    // TODO: remove. should be in savefile
+    s8 party_filename;
+
 
     /* --- costmap, MOVEMAP, ATTACKMAP... --- */
     // TODO: remove

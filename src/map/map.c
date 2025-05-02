@@ -45,19 +45,19 @@ const Map Map_default = {
     .jsonio_header.json_element = JSON_MAP,
     .flags.show_icons       = true,
     .cost.multiplier        =  1,
-    .frames                 = 10,
-    .frames_shadow          = 10,
-    .speed                  = 50,
+    .render.frames          = 10,
+    .render.frames_shadow   = 10,
+    .render.speed           = 50,
 
     .perimiter.danger_color = SOTA_RED,
     .perimiter.aura_color   = SOTA_PURPLE,
 
-    .shadow_frame_pause     = 3,
-    .tilemap_frame_pause    = 6,
-    .shadow_frame_factor    = 0.10f,
-    .shadow_frame_counter   = UINT8_MAX - 1, /* shadow renders on first frame */
-    .tilemap_frame_factor   = 0.15f,
-    .tilemap_frame_counter  = UINT8_MAX - 1, /* map renders on first frame */
+    .render.shadow_frame_pause     = 3,
+    .render.tilemap_frame_pause    = 6,
+    .render.shadow_frame_factor    = 0.10f,
+    .render.shadow_frame_counter   = UINT8_MAX - 1, /* shadow renders on first frame */
+    .render.tilemap_frame_factor   = 0.15f,
+    .render.tilemap_frame_counter  = UINT8_MAX - 1, /* map renders on first frame */
 
     .camera.offset.x        = DEFAULT_CAMERA_XOFFSET,
     .camera.offset.y        = DEFAULT_CAMERA_YOFFSET,
@@ -91,18 +91,18 @@ void Map_Reinforcements_Free(struct Map *map) {
 }
 
 void Map_Tilemap_Shader_Free(struct Map *map) {
-    Tilemap_Shader_Free(map->tilemap_shader);
-    if (map->tilemap_shader != NULL) {
-        SDL_free(map->tilemap_shader);
-        map->tilemap_shader = NULL;
+    Tilemap_Shader_Free(map->render.tilemap_shader);
+    if (map->render.tilemap_shader != NULL) {
+        SDL_free(map->render.tilemap_shader);
+        map->render.tilemap_shader = NULL;
     }
 }
 
 void Map_Tilemap_Shader_Init(Map *map) {
-    map->tilemap_shader         = SDL_malloc(sizeof(struct Tilemap_Shader));
-    *map->tilemap_shader        = Tilemap_Shader_default;
-    map->tilemap_shader->map    = map;
-    map->tilemap_shader->to     = palette_table_SOTA_shadow;
+    map->render.tilemap_shader         = SDL_malloc(sizeof(struct Tilemap_Shader));
+    *map->render.tilemap_shader        = Tilemap_Shader_default;
+    map->render.tilemap_shader->map    = map;
+    map->render.tilemap_shader->to     = palette_table_SOTA_shadow;
 }
 
 /* --- GLOBAL FUNCTIONS --- */
@@ -264,10 +264,10 @@ void Map_Free(struct Map *map) {
     Map_Tilemap_Surface_Free(map);
     Map_Reinforcements_Free(map);
     Arrow_Free(map->arrow);
-    if (map->tilemap_shader != NULL) {
-        Tilemap_Shader_Free(map->tilemap_shader);
-        SDL_free(map->tilemap_shader);
-        map->tilemap_shader = NULL;
+    if (map->render.tilemap_shader != NULL) {
+        Tilemap_Shader_Free(map->render.tilemap_shader);
+        SDL_free(map->render.tilemap_shader);
+        map->render.tilemap_shader = NULL;
     }
     if (map->texture != NULL) {
         SDL_DestroyTexture(map->texture);
@@ -915,7 +915,7 @@ void Map_readJSON(void *input, const cJSON *jmap) {
     cJSON *jarray;
     cJSON *jtilemap = cJSON_GetObjectItem(jmap, "tilemap");
     cJSON *jframes  = cJSON_GetObjectItem(jtilemap, "frames");
-    map->frames     = cJSON_GetNumberValue(jframes);
+    map->render.frames     = cJSON_GetNumberValue(jframes);
 
     cJSON_ArrayForEach(jframe, jframes) {
         // TODO: tilemaps[i]
@@ -929,17 +929,17 @@ void Map_readJSON(void *input, const cJSON *jmap) {
 
     /* -- Misc. Computations -- */
     Map_swappedTextures_All(map);
-    map->tilemap_shader->frames = map->frames;
-    Tilemap_Shader_Load_Tilemap_JSON(map->tilemap_shader, jmap);
-    // SDL_assert(map->tilemap_shader->shadow_tilemaps);
+    map->render.tilemap_shader->frames = map->render.frames;
+    Tilemap_Shader_Load_Tilemap_JSON(map->render.tilemap_shader, jmap);
+    // SDL_assert(map->render.tilemap_shader->shadow_tilemaps);
 
     /* --- Parsing shadow tileset --- */
-    if (map->tilemap_shader->shadow_tilemaps) {
+    if (map->render.tilemap_shader->shadow_tilemaps) {
         s8 path = s8_var(PATH_JOIN("assets", "tiles", "Tileset_Shadow.json"));
         struct cJSON *jshadow_tileset_file  = jsonio_parseJSON(path);
         struct cJSON *jshadow_tileset       = cJSON_GetObjectItem(jshadow_tileset_file, "shadow_tileset");
         SDL_assert(jshadow_tileset);
-        Tilemap_Shader_Load_Tileset_JSON(map->tilemap_shader, jshadow_tileset);
+        Tilemap_Shader_Load_Tileset_JSON(map->render.tilemap_shader, jshadow_tileset);
         cJSON_Delete(jshadow_tileset_file);
     }
 

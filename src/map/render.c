@@ -27,13 +27,14 @@ void Map_Units_Hide(struct Map *map) {
 }
 
 void Map_Frame_Pauses(struct Map *map,  struct Settings *settings) {
+    // TODO: input Map_Render only
     SDL_assert(map);
-    SDL_assert(map->tilemap_frame_factor > 0.0f);
-    SDL_assert(map->tilemap_frame_factor < 1.0f);
-    SDL_assert(map->shadow_frame_factor  > 0.0f);
-    SDL_assert(map->shadow_frame_factor  < 1.0f);
-    map->tilemap_frame_pause = (u8)(map->tilemap_frame_factor * settings->FPS.cap);
-    map->shadow_frame_pause  = (u8)(map->shadow_frame_factor  * settings->FPS.cap);
+    SDL_assert(map->render.tilemap_frame_factor > 0.0f);
+    SDL_assert(map->render.tilemap_frame_factor < 1.0f);
+    SDL_assert(map->render.shadow_frame_factor  > 0.0f);
+    SDL_assert(map->render.shadow_frame_factor  < 1.0f);
+    map->render.tilemap_frame_pause = (u8)(map->render.tilemap_frame_factor * settings->FPS.cap);
+    map->render.shadow_frame_pause  = (u8)(map->render.shadow_frame_factor  * settings->FPS.cap);
 }
 
 void Map_Palettemap_Reset(struct Map *map) {
@@ -146,12 +147,12 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
     SDL_assert(map->palette.map);
 
     /* Stitching map from tiles */
-    SDL_assert(map->visiblemax.x <= map->col_len);
-    SDL_assert(map->visiblemin.x >= 0);
-    SDL_assert(map->visiblemax.y < map->row_len);
-    SDL_assert(map->visiblemin.y >= 0);
-    int visible_min = map->visiblemin.y * map->col_len + map->visiblemin.x;
-    int visible_max = map->visiblemax.y * map->col_len + map->visiblemax.x;
+    SDL_assert(map->render.visiblemax.x <= map->col_len);
+    SDL_assert(map->render.visiblemin.x >= 0);
+    SDL_assert(map->render.visiblemax.y < map->row_len);
+    SDL_assert(map->render.visiblemin.y >= 0);
+    int visible_min = map->render.visiblemin.y * map->col_len + map->render.visiblemin.x;
+    int visible_max = map->render.visiblemax.y * map->col_len + map->render.visiblemax.x;
     for (size_t i = visible_min; i < visible_max; i++) {
         tile_ind = map->tilemap[i] / TILE_DIVISOR;
         texture_ind = map->tilemap[i] - tile_ind * TILE_DIVISOR;
@@ -203,31 +204,31 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
     return (map->tilemap_texture);
 }
 void Map_Visible_Tiles(struct Map *map,  struct Settings *settings, struct Camera *camera) {
-    struct Point visiblemprev = map->visiblemin;
-    struct Point visiblemax_prev = map->visiblemax;
-    map->visiblemin.x = camera->offset.x > 0 ? 0 : SOTA_DEZOOM(
-                                -1 * camera->offset.x / map->tilesize[0], camera->zoom);
-    map->visiblemin.y = camera->offset.y > 0 ? 0 : SOTA_DEZOOM(
-                                -1 * camera->offset.y / map->tilesize[1], camera->zoom);
+    struct Point visiblemprev = map->render.visiblemin;
+    struct Point visiblemax_prev = map->render.visiblemax;
+    map->render.visiblemin.x = camera->offset.x > 0 ? 0 : SOTA_DEZOOM(
+                                       -1 * camera->offset.x / map->tilesize[0], camera->zoom);
+    map->render.visiblemin.y = camera->offset.y > 0 ? 0 : SOTA_DEZOOM(
+                                       -1 * camera->offset.y / map->tilesize[1], camera->zoom);
 
-    map->visiblemax.x = SOTA_DEZOOM((settings->res.x - camera->offset.x) / map->tilesize[0],
-                                    camera->zoom);
-    if (map->visiblemax.x < map->col_len)
-        map->visiblemax.x++;
-    if (map->visiblemax.x > map->col_len)
-        map->visiblemax.x = map->col_len;
+    map->render.visiblemax.x = SOTA_DEZOOM((settings->res.x - camera->offset.x) / map->tilesize[0],
+                                           camera->zoom);
+    if (map->render.visiblemax.x < map->col_len)
+        map->render.visiblemax.x++;
+    if (map->render.visiblemax.x > map->col_len)
+        map->render.visiblemax.x = map->col_len;
 
-    map->visiblemax.y = SOTA_DEZOOM((settings->res.y - camera->offset.y) / map->tilesize[1],
-                                    camera->zoom);
-    if (map->visiblemax.y < map->row_len)
-        map->visiblemax.y++;
-    if (map->visiblemax.y >= map->row_len)
-        map->visiblemax.y = map->row_len - 1;
+    map->render.visiblemax.y = SOTA_DEZOOM((settings->res.y - camera->offset.y) / map->tilesize[1],
+                                           camera->zoom);
+    if (map->render.visiblemax.y < map->row_len)
+        map->render.visiblemax.y++;
+    if (map->render.visiblemax.y >= map->row_len)
+        map->render.visiblemax.y = map->row_len - 1;
 
-    map->flags.visible_changed =  (visiblemprev.x != map->visiblemin.x);
-    map->flags.visible_changed |= (visiblemprev.y != map->visiblemin.y);
-    map->flags.visible_changed |= (visiblemax_prev.x != map->visiblemax.x);
-    map->flags.visible_changed |= (visiblemax_prev.y != map->visiblemax.y);
+    map->flags.visible_changed =  (visiblemprev.x != map->render.visiblemin.x);
+    map->flags.visible_changed |= (visiblemprev.y != map->render.visiblemin.y);
+    map->flags.visible_changed |= (visiblemax_prev.x != map->render.visiblemax.x);
+    map->flags.visible_changed |= (visiblemax_prev.y != map->render.visiblemax.y);
 }
 
 SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
@@ -249,12 +250,12 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
     int success;
 
     /* Stitching map from tiles */
-    SDL_assert(map->visiblemax.x <= map->col_len);
-    SDL_assert(map->visiblemin.x >= 0);
-    SDL_assert(map->visiblemax.y <  map->row_len);
-    SDL_assert(map->visiblemin.y >= 0);
-    int visible_min = map->visiblemin.y * map->col_len + map->visiblemin.x;
-    int visible_max = map->visiblemax.y * map->col_len + map->visiblemax.x;
+    SDL_assert(map->render.visiblemax.x <= map->col_len);
+    SDL_assert(map->render.visiblemin.x >= 0);
+    SDL_assert(map->render.visiblemax.y <  map->row_len);
+    SDL_assert(map->render.visiblemin.y >= 0);
+    int visible_min = map->render.visiblemin.y * map->col_len + map->render.visiblemin.x;
+    int visible_max = map->render.visiblemax.y * map->col_len + map->render.visiblemax.x;
     for (size_t i = visible_min; i < visible_max; i++) {
         /* get palette */
         tile_ind = map->tilemap[i] / TILE_DIVISOR;
@@ -525,11 +526,11 @@ b32 Map_Tilemap_newFrame(struct Map *map) {
 void Map_Update(struct Map *map,  struct Settings *settings,
                 struct Camera *camera, struct SDL_Texture *render_target) {
     SDL_assert(map->tilemap_texture);
-    if ((map->tilemap_shader != NULL)) {
+    if ((map->render.tilemap_shader != NULL)) {
         Map_Tilemap_Surface_Stitch(map);
         SDL_assert(map->tilemap_surface);
-        if (map->tilemap_shader->shadow_tilemaps != NULL) {
-            map->tilemap_surface = Tilemap_Shade_Surface(map->tilemap_shader,
+        if (map->render.tilemap_shader->shadow_tilemaps != NULL) {
+            map->tilemap_surface = Tilemap_Shade_Surface(map->render.tilemap_shader,
                                                          map->tilemap_surface, 0, settings, camera);
         }
         SDL_assert(map->tilemap_surface);
