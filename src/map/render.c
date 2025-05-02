@@ -183,15 +183,15 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
             SDL_Log("SDL_Error: %s", SDL_GetError());
             SDL_assert(false);
         }
-        if ((!map->stack_mode) || (!map->flags.show_icons))
+        if ((!map->stack.mode) || (!map->flags.show_icons))
             continue;
 
         tile_order = Map_Tile_Order(map, TILE_ICONS);
         texture = map->tileset_textures[map->palette.base][tile_order];
         srcrect.y = 0;
-        switch (map->stack_mode) {
+        switch (map->stack.mode) {
             case MAP_SETTING_STACK_DANGERMAP:
-                if (map->stacked_dangermap[i] == true) {
+                if (map->stack.dangermap[i] == true) {
                     srcrect.x = (TILE_ICON_DANGER % TILESET_COL_LEN) * map->tilesize[0];
                     success = SDL_RenderCopy(map->renderer, texture, &srcrect, &dstrect);
                     SDL_assert(success);
@@ -292,15 +292,15 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
 
         /* Stitch icon depending on stack mode */
         SDL_assert(success == 0);
-        if ((!map->stack_mode) || (!map->flags.show_icons))
+        if ((!map->stack.mode) || (!map->flags.show_icons))
             continue;
 
         tile_order = Map_Tile_Order(map, TILE_ICONS);
         surf = map->tileset_surfaces[map->palette.base][tile_order];
         srcrect.y = 0;
-        switch (map->stack_mode) {
+        switch (map->stack.mode) {
             case MAP_SETTING_STACK_DANGERMAP:
-                if (map->stacked_dangermap[i]) {
+                if (map->stack.dangermap[i]) {
                     srcrect.x = (TILE_ICON_DANGER % TILESET_COL_LEN) * map->tilesize[0];
                     success = SDL_BlitSurface(surf, &srcrect, map->tilemap_surface, &dstrect);
                     SDL_assert(success == 0);

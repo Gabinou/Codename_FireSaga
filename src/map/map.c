@@ -112,7 +112,7 @@ Map *Map_New(NewMap new_map) {
     *map            = Map_default;
     SDL_assert(map->cost.multiplier == 1);
     map->world      = new_map.world;
-    map->stack_mode = new_map.stack_mode;
+    map->stack.mode = new_map.stack_mode;
 
     Map_Size_Set(       map,    new_map.col_len,        new_map.row_len);
     Map_Tilesize_Set(   map,    new_map.tilesize[0],    new_map.tilesize[1]);
@@ -329,13 +329,13 @@ void Map_Free(struct Map *map) {
         SDL_free(map->palette.temp);
         map->palette.temp = NULL;
     }
-    if (map->stacked_dangermap != NULL) {
-        SDL_free(map->stacked_dangermap);
-        map->stacked_dangermap = NULL;
+    if (map->stack.dangermap != NULL) {
+        SDL_free(map->stack.dangermap);
+        map->stack.dangermap = NULL;
     }
-    if (map->stacked_global_dangermap != NULL) {
-        SDL_free(map->stacked_global_dangermap);
-        map->stacked_global_dangermap = NULL;
+    if (map->stack.global_dangermap != NULL) {
+        SDL_free(map->stack.global_dangermap);
+        map->stack.global_dangermap = NULL;
     }
     if (map->global_dangermap != NULL) {
         SDL_free(map->global_dangermap);
@@ -490,13 +490,13 @@ void Map_Members_Alloc(struct Map *map) {
         SDL_LogWarn(SDL_LOG_CATEGORY_RENDER, "Map: Renderer is NULL, skipping related member allocs");
     }
 
-    // SDL_Log("map->stack_mode %d %d", map->stack_mode, MAP_SETTING_STACK_DANGERMAP);
-    if (map->stack_mode == MAP_SETTING_STACK_DANGERMAP) {
-        // SDL_Log("Allocating stacked_dangermap");
-        SDL_assert(map->stacked_dangermap == NULL);
-        map->stacked_dangermap          = SDL_calloc(len, sizeof(*map->stacked_dangermap));
-        SDL_assert(map->stacked_global_dangermap == NULL);
-        map->stacked_global_dangermap   = SDL_calloc(len, sizeof(*map->stacked_global_dangermap));
+    // SDL_Log("map->stack.mode %d %d", map->stack.mode, MAP_SETTING_STACK_DANGERMAP);
+    if (map->stack.mode == MAP_SETTING_STACK_DANGERMAP) {
+        // SDL_Log("Allocating stack.dangermap");
+        SDL_assert(map->stack.dangermap == NULL);
+        map->stack.dangermap          = SDL_calloc(len, sizeof(*map->stack.dangermap));
+        SDL_assert(map->stack.global_dangermap == NULL);
+        map->stack.global_dangermap   = SDL_calloc(len, sizeof(*map->stack.global_dangermap));
     }
 
     Map_Palettemap_Reset(map);

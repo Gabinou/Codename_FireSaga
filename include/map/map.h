@@ -129,6 +129,17 @@ typedef struct Map_Palette {
     u8 enemy;
 } Map_Palette;
 
+typedef struct Map_Stack {
+    i32 mode;
+
+    /* - Actual stackmaps - */
+    i32 *dangermap;         /* 2D dynamic array */
+    i32 *global_dangermap;  /* 2D dynamic array */
+
+    struct SDL_Texture *move;
+    struct SDL_Texture *attack;
+    struct SDL_Texture *danger;
+} Map_Stack;
 
 typedef struct Map {
     struct jsonIO_Header jsonio_header;
@@ -150,27 +161,15 @@ typedef struct Map {
     struct Map_Cost             cost;
     struct Map_Music            music;
     struct Map_Flags            flags;
-    struct Map_Conditions       conditions;
-    struct Map_Entities         entities;
-    struct Map_Reinforcements   reinforcements;
-    struct Map_Perimiter        perimiter;
+    struct Map_Stack            stack;
     struct Map_Palette          palette;
+    struct Map_Entities         entities;
+    struct Map_Perimiter        perimiter;
+    struct Map_Conditions       conditions;
+    struct Map_Reinforcements   reinforcements;
 
     // TODO: remove. should be in savefile
     s8 party_filename;
-
-    // typedef struct Map_Stack {
-    i32 stack_mode;
-
-    /* - Actual stackmaps - */
-    i32 *stacked_dangermap;         /* 2D dynamic array */
-    i32 *stacked_global_dangermap;  /* 2D dynamic array */
-
-    struct SDL_Texture *stack_move;
-    struct SDL_Texture *stack_attack;
-    struct SDL_Texture *stack_danger;
-    // Map_Stack;
-
     // typedef struct Map_Render {
     struct Point visiblemin;
     struct Point visiblemax;

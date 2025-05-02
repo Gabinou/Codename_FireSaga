@@ -52,36 +52,36 @@ void Map_Danger_Sub(struct Map *map, i32 *danger) {
 }
 
 void Map_Stacked_Dangermap_Compute(struct Map *map, i32 *dangermap) {
-    SDL_assert(map->stacked_dangermap != NULL);
+    SDL_assert(map->stack.dangermap != NULL);
     int size = map->row_len * map->col_len;
     i32 *temp_map = matrix_ssmaller(dangermap, DANGERMAP_UNIT_DIVISOR, size);
-    map->stacked_dangermap = matrix_and_noM(map->stacked_dangermap,
-                                            dangermap, temp_map,
-                                            map->row_len * map->col_len);
-    map->stacked_dangermap = matrix_and_noM(map->stacked_dangermap,
-                                            map->stacked_dangermap,
-                                            map->movemap,
-                                            map->row_len * map->col_len);
+    map->stack.dangermap = matrix_and_noM(map->stack.dangermap,
+                                          dangermap, temp_map,
+                                          map->row_len * map->col_len);
+    map->stack.dangermap = matrix_and_noM(map->stack.dangermap,
+                                          map->stack.dangermap,
+                                          map->movemap,
+                                          map->row_len * map->col_len);
     SDL_free(temp_map);
     map->flags.shading_changed = true;
 }
 
 void Map_Stacked_Dangermap_Reset(struct Map *map) {
     int len = map->row_len * map->col_len;
-    if (map->stacked_dangermap != NULL) {
-        int size = sizeof(*map->stacked_dangermap);
-        map->stacked_dangermap = memset(map->stacked_dangermap, 0, size * len);
+    if (map->stack.dangermap != NULL) {
+        int size = sizeof(*map->stack.dangermap);
+        map->stack.dangermap = memset(map->stack.dangermap, 0, size * len);
     }
 
     map->flags.shading_changed = true;
 }
 
-void Map_Stacked_Global_Dangermap_Reset(struct Map *map) {
+void Map_stack_global_dangermap_Reset(struct Map *map) {
     int len = map->row_len * map->col_len;
 
-    if (map->stacked_global_dangermap != NULL) {
-        int size = sizeof(*map->stacked_global_dangermap);
-        map->stacked_global_dangermap = memset(map->stacked_global_dangermap, 0, size * len);
+    if (map->stack.global_dangermap != NULL) {
+        int size = sizeof(*map->stack.global_dangermap);
+        map->stack.global_dangermap = memset(map->stack.global_dangermap, 0, size * len);
     }
 
     map->flags.shading_changed = true;

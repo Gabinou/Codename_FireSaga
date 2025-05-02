@@ -81,9 +81,9 @@ void test_main_char_death_loss(int argc, char *argv[]) {
 
     /* Load Save file test/debug_map.json */
     Game_Map_Party_Load(sota, CHAPTER_TEST_V8);
-    SDL_assert(sota->map->stacked_dangermap != NULL);
+    SDL_assert(sota->map->stack.dangermap != NULL);
     Game_Map_Reinforcements_Load(sota);
-    SDL_assert(sota->map->stacked_dangermap != NULL);
+    SDL_assert(sota->map->stack.dangermap != NULL);
     SDL_assert(DARR_NUM(sota->map->units_onfield) > 0);
 
     /* Get boss */
