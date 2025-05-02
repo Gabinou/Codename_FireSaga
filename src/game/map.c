@@ -265,7 +265,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         int index = position->tilemap_pos.y * sota->map->col_len + position->tilemap_pos.x;
 
         // check if another unit already on the map.
-        if (sota->map->unitmap[index] != TNECS_NULL) {
+        if (sota->map->grids.unitmap[index] != TNECS_NULL) {
             // DESIGN QUESTION. If another entity is already on the map.
             //  -> FE does not even load unit
             tnecs_entity_destroy(sota->world, DARR_POP(sota->map_enemies));

@@ -125,15 +125,15 @@ Map *Map_New(NewMap new_map) {
 
 void Map_Unitmap_Free(struct Map *map) {
     /* -- SDL_free non-PC units on unitmap -- */
-    SDL_assert(map->unitmap);
+    SDL_assert(map->grids.unitmap);
     for (size_t i = 0; i < map->col_len * map->row_len ; i++) {
-        tnecs_entity uent = map->unitmap[i];
+        tnecs_entity uent = map->grids.unitmap[i];
         if (uent == TNECS_NULL) {
-            map->unitmap[i] = TNECS_NULL;
+            map->grids.unitmap[i] = TNECS_NULL;
             continue;
         }
         if (!TNECS_ENTITY_EXISTS(map->world, uent)) {
-            map->unitmap[i] = TNECS_NULL;
+            map->grids.unitmap[i] = TNECS_NULL;
             continue;
         }
 
@@ -150,14 +150,14 @@ void Map_Unitmap_Free(struct Map *map) {
         } else if (unit == NULL) {
             tnecs_entity_destroy(map->world, uent);
         }
-        map->unitmap[i] = TNECS_NULL;
+        map->grids.unitmap[i] = TNECS_NULL;
     }
 
     s8_free(&map->jsonio_header.json_filename);
 
     /* -- SDL_free unitmap -- */
-    SDL_free(map->unitmap);
-    map->unitmap = NULL;
+    SDL_free(map->grids.unitmap);
+    map->grids.unitmap = NULL;
 }
 
 void Map_Free(struct Map *map) {
@@ -233,9 +233,9 @@ void Map_Free(struct Map *map) {
         DARR_FREE(map->reinforcements.items_num);
         map->reinforcements.items_num = NULL;
     }
-    if (map->tilemap != NULL) {
-        SDL_free(map->tilemap);
-        map->tilemap = NULL;
+    if (map->grids.tilemap != NULL) {
+        SDL_free(map->grids.tilemap);
+        map->grids.tilemap = NULL;
     }
     if (map->tiles.arr != NULL) {
         DARR_FREE(map->tiles.arr);
@@ -273,53 +273,53 @@ void Map_Free(struct Map *map) {
         SDL_DestroyTexture(map->render.texture);
         map->render.texture = NULL;
     }
-    if (map->unitmap != NULL) {
-        SDL_free(map->unitmap);
-        map->unitmap = NULL;
+    if (map->grids.unitmap != NULL) {
+        SDL_free(map->grids.unitmap);
+        map->grids.unitmap = NULL;
     }
-    if (map->costmap != NULL) {
-        SDL_free(map->costmap);
-        map->costmap = NULL;
+    if (map->grids.costmap != NULL) {
+        SDL_free(map->grids.costmap);
+        map->grids.costmap = NULL;
     }
-    if (map->movemap != NULL) {
-        SDL_free(map->movemap);
-        map->movemap = NULL;
+    if (map->grids.movemap != NULL) {
+        SDL_free(map->grids.movemap);
+        map->grids.movemap = NULL;
     }
     if (map->start_posmap != NULL) {
         SDL_free(map->start_posmap);
         map->start_posmap = NULL;
     }
 
-    if (map->attacktomap != NULL) {
-        SDL_free(map->attacktomap);
-        if (map->attacktomap == map->healtomap) {
-            map->healtomap = NULL;
+    if (map->grids.attacktomap != NULL) {
+        SDL_free(map->grids.attacktomap);
+        if (map->grids.attacktomap == map->grids.healtomap) {
+            map->grids.healtomap = NULL;
         }
-        map->attacktomap = NULL;
+        map->grids.attacktomap = NULL;
     }
-    if (map->attackfrommap != NULL) {
-        SDL_free(map->attackfrommap);
-        map->attackfrommap = NULL;
+    if (map->grids.attackfrommap != NULL) {
+        SDL_free(map->grids.attackfrommap);
+        map->grids.attackfrommap = NULL;
     }
-    if (map->healtomap != NULL) {
-        SDL_free(map->healtomap);
-        map->healtomap = NULL;
+    if (map->grids.healtomap != NULL) {
+        SDL_free(map->grids.healtomap);
+        map->grids.healtomap = NULL;
     }
-    if (map->healfrommap != NULL) {
-        SDL_free(map->healfrommap);
-        map->healfrommap = NULL;
+    if (map->grids.healfrommap != NULL) {
+        SDL_free(map->grids.healfrommap);
+        map->grids.healfrommap = NULL;
     }
-    if (map->dangermap != NULL) {
-        SDL_free(map->dangermap);
-        map->dangermap = NULL;
+    if (map->grids.dangermap != NULL) {
+        SDL_free(map->grids.dangermap);
+        map->grids.dangermap = NULL;
     }
-    if (map->temp != NULL) {
-        SDL_free(map->temp);
-        map->temp = NULL;
+    if (map->grids.temp != NULL) {
+        SDL_free(map->grids.temp);
+        map->grids.temp = NULL;
     }
-    if (map->global_rangemap != NULL) {
-        SDL_free(map->global_rangemap);
-        map->global_rangemap = NULL;
+    if (map->grids.global_rangemap != NULL) {
+        SDL_free(map->grids.global_rangemap);
+        map->grids.global_rangemap = NULL;
     }
     if (map->palette.map != NULL) {
         SDL_free(map->palette.map);
@@ -337,9 +337,9 @@ void Map_Free(struct Map *map) {
         SDL_free(map->stack.global_dangermap);
         map->stack.global_dangermap = NULL;
     }
-    if (map->global_dangermap != NULL) {
-        SDL_free(map->global_dangermap);
-        map->global_dangermap = NULL;
+    if (map->grids.global_dangermap != NULL) {
+        SDL_free(map->grids.global_dangermap);
+        map->grids.global_dangermap = NULL;
     }
 
     Map_Members_Free(map);
@@ -387,8 +387,8 @@ void Map_Members_Alloc(struct Map *map) {
 
     Map_Texture_Alloc(map);
     Map_Tilemap_Shader_Init(map);
-    SDL_assert(map->tilemap == NULL);
-    map->tilemap = SDL_calloc(len, sizeof(*map->tilemap));
+    SDL_assert(map->grids.tilemap == NULL);
+    map->grids.tilemap = SDL_calloc(len, sizeof(*map->grids.tilemap));
 
     SDL_assert(map->start_pos == NULL);
     map->start_pos = DARR_INIT(map->start_pos, struct Point, 16);
@@ -408,14 +408,14 @@ void Map_Members_Alloc(struct Map *map) {
     SDL_assert(map->tiles.index == NULL);
     map->tiles.index = DARR_INIT(map->tiles.index, i32, DEFAULT_TILESPRITE_BUFFER);
 
-    SDL_assert(map->healtolist == NULL);
-    map->healtolist = DARR_INIT(map->healtolist, i32, 32);
+    SDL_assert(map->grids.healtolist == NULL);
+    map->grids.healtolist = DARR_INIT(map->grids.healtolist, i32, 32);
 
-    SDL_assert(map->attacktolist == NULL);
-    map->attacktolist = DARR_INIT(map->attacktolist, i32, 32);
+    SDL_assert(map->grids.attacktolist == NULL);
+    map->grids.attacktolist = DARR_INIT(map->grids.attacktolist, i32, 32);
 
-    SDL_assert(map->attackfromlist == NULL);
-    map->attackfromlist = DARR_INIT(map->attackfromlist, i32, 32);
+    SDL_assert(map->grids.attackfromlist == NULL);
+    map->grids.attackfromlist = DARR_INIT(map->grids.attackfromlist, i32, 32);
 
     SDL_assert(map->units.onfield.enemies == NULL);
     map->units.onfield.enemies = DARR_INIT(map->units.onfield.enemies, tnecs_entity, 20);
@@ -432,47 +432,47 @@ void Map_Members_Alloc(struct Map *map) {
     SDL_assert(map->armies.onfield == NULL);
     map->armies.onfield = DARR_INIT(map->armies.onfield, i32, 5);
 
-    SDL_assert(map->temp == NULL);
-    map->temp = SDL_calloc(len,  sizeof(*map->temp));
+    SDL_assert(map->grids.temp == NULL);
+    map->grids.temp = SDL_calloc(len,  sizeof(*map->grids.temp));
 
-    SDL_assert(map->unitmap == NULL);
-    map->unitmap = SDL_calloc(len,  sizeof(*map->unitmap));
+    SDL_assert(map->grids.unitmap == NULL);
+    map->grids.unitmap = SDL_calloc(len,  sizeof(*map->grids.unitmap));
 
-    SDL_assert(map->costmap == NULL);
-    map->costmap = SDL_calloc(len,  sizeof(*map->costmap));
+    SDL_assert(map->grids.costmap == NULL);
+    map->grids.costmap = SDL_calloc(len,  sizeof(*map->grids.costmap));
 
-    SDL_assert(map->movemap == NULL);
-    map->movemap = SDL_calloc(len,  sizeof(*map->movemap));
+    SDL_assert(map->grids.movemap == NULL);
+    map->grids.movemap = SDL_calloc(len,  sizeof(*map->grids.movemap));
 
     SDL_assert(map->start_posmap == NULL);
     map->start_posmap = SDL_calloc(len,  sizeof(*map->start_posmap));
 
-    SDL_assert(map->dangermap == NULL);
-    map->dangermap = SDL_calloc(len,  sizeof(*map->dangermap));
+    SDL_assert(map->grids.dangermap == NULL);
+    map->grids.dangermap = SDL_calloc(len,  sizeof(*map->grids.dangermap));
 
     SDL_assert(map->palette.map == NULL);
     map->palette.map = SDL_malloc(len * sizeof(*map->palette.map));
 
-    SDL_assert(map->attacktomap == NULL);
-    map->attacktomap = SDL_calloc(len,  sizeof(*map->attacktomap));
+    SDL_assert(map->grids.attacktomap == NULL);
+    map->grids.attacktomap = SDL_calloc(len,  sizeof(*map->grids.attacktomap));
 
-    SDL_assert(map->healtomap == NULL);
-    map->healtomap = SDL_calloc(len,  sizeof(*map->healtomap));
+    SDL_assert(map->grids.healtomap == NULL);
+    map->grids.healtomap = SDL_calloc(len,  sizeof(*map->grids.healtomap));
 
-    SDL_assert(map->healfrommap == NULL);
-    map->healfrommap = SDL_calloc(len,  sizeof(*map->healfrommap));
+    SDL_assert(map->grids.healfrommap == NULL);
+    map->grids.healfrommap = SDL_calloc(len,  sizeof(*map->grids.healfrommap));
 
     SDL_assert(map->palette.temp == NULL);
     map->palette.temp = SDL_malloc(len * sizeof(*map->palette.temp));
 
-    SDL_assert(map->attackfrommap == NULL);
-    map->attackfrommap = SDL_calloc(len,  sizeof(*map->attackfrommap));
+    SDL_assert(map->grids.attackfrommap == NULL);
+    map->grids.attackfrommap = SDL_calloc(len,  sizeof(*map->grids.attackfrommap));
 
-    SDL_assert(map->global_rangemap == NULL);
-    map->global_rangemap = SDL_calloc(len,  sizeof(*map->global_rangemap));
+    SDL_assert(map->grids.global_rangemap == NULL);
+    map->grids.global_rangemap = SDL_calloc(len,  sizeof(*map->grids.global_rangemap));
 
-    SDL_assert(map->global_dangermap == NULL);
-    map->global_dangermap = SDL_calloc(len,  sizeof(*map->global_dangermap));
+    SDL_assert(map->grids.global_dangermap == NULL);
+    map->grids.global_dangermap = SDL_calloc(len,  sizeof(*map->grids.global_dangermap));
 
     SDL_assert(map->perimiter.edges_danger == NULL);
     map->perimiter.edges_danger = SDL_calloc(len, sizeof(*map->perimiter.edges_danger));
@@ -503,18 +503,18 @@ void Map_Members_Alloc(struct Map *map) {
 }
 
 void Map_Members_Free(struct Map *map) {
-    if (map->attacktolist != NULL) {
-        DARR_FREE(map->attacktolist);
-        map->attacktolist = NULL;
+    if (map->grids.attacktolist != NULL) {
+        DARR_FREE(map->grids.attacktolist);
+        map->grids.attacktolist = NULL;
     }
-    if (map->attackfromlist != NULL) {
-        DARR_FREE(map->attackfromlist);
-        map->attackfromlist = NULL;
+    if (map->grids.attackfromlist != NULL) {
+        DARR_FREE(map->grids.attackfromlist);
+        map->grids.attackfromlist = NULL;
     }
 
-    if (map->healtolist != NULL) {
-        DARR_FREE(map->healtolist);
-        map->healtolist = NULL;
+    if (map->grids.healtolist != NULL) {
+        DARR_FREE(map->grids.healtolist);
+        map->grids.healtolist = NULL;
     }
 }
 
@@ -639,7 +639,7 @@ void Map_writeJSON(const void *input, cJSON *jmap) {
         cJSON_AddItemToObject(jreinforcements, "Reinforcement", jreinforcement);
     }
     cJSON *jtilemap = cJSON_CreateObject();
-    Array2D_writeJSON(jtilemap, map->tilemap, map->row_len, map->col_len);
+    Array2D_writeJSON(jtilemap, map->grids.tilemap, map->row_len, map->col_len);
     cJSON_AddItemToObject(jmap, "Tilemap", jtilemap);
 }
 
@@ -920,8 +920,8 @@ void Map_readJSON(void *input, const cJSON *jmap) {
     cJSON_ArrayForEach(jframe, jframes) {
         // TODO: tilemaps[i]
         jarray = cJSON_GetObjectItem(jframe, "array");
-        Array2D_readJSON(jarray, map->tilemap, map->row_len, map->col_len);
-        SDL_assert(map->tilemap);
+        Array2D_readJSON(jarray, map->grids.tilemap, map->row_len, map->col_len);
+        SDL_assert(map->grids.tilemap);
     }
 
     /* - Map objects override tiles - */
@@ -1004,7 +1004,7 @@ struct Tile *Map_Tile_Get(struct Map *map, i32 x, i32 y) {
     SDL_assert(map              != NULL);
     SDL_assert(map->tiles.arr   != NULL);
     i32 index = sota_2D_index(x, y, map->col_len);
-    i32 tile_ind = map->tilemap[index] / TILE_DIVISOR;
+    i32 tile_ind = map->grids.tilemap[index] / TILE_DIVISOR;
     size_t tile_order = Map_Tile_Order(map, tile_ind);
     return (map->tiles.arr + tile_order);
 }

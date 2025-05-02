@@ -118,7 +118,7 @@ static b32 _AI_Decider_Move_inRange(struct Game *sota, tnecs_entity npc_ent) {
 
     MapFind mapfind = MapFind_default;
 
-    mapfind.list       = map->attacktolist;
+    mapfind.list       = map->grids.attacktolist;
     mapfind.found      = dfts;
     mapfind.seeker     = npc_ent;
     mapfind.fastquit   = true;
@@ -166,7 +166,7 @@ static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
 
     MapFind mapfind = MapFind_default;
 
-    mapfind.list       = sota->map->attacktolist;
+    mapfind.list       = sota->map->grids.attacktolist;
     mapfind.found      = defendants;
     mapfind.seeker     = npc_ent;
     mapfind.fastquit   = false;
@@ -223,7 +223,7 @@ static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
     // action->target_move.y = attackfromlist[1];
 
     // int index = action->target_move.y * sota->map->col_len + action->target_move.x;
-    // SDL_assert(sota->map->unitmap[index] == TNECS_NULL);
+    // SDL_assert(sota->map->grids.unitmap[index] == TNECS_NULL);
 
     /* - Set target_action to enemy-occupied tile - */
     struct Position *pos = IES_GET_COMPONENT(sota->world, defendant, Position);
@@ -290,7 +290,7 @@ static void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
 
     MapFind mapfind = MapFind_default;
 
-    mapfind.list       = sota->map->attacktolist;
+    mapfind.list       = sota->map->grids.attacktolist;
     mapfind.found      = defendants;
     mapfind.seeker     = npc_ent;
     mapfind.fastquit   = false;
@@ -451,8 +451,8 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
     /* -- Compute costmap for pathfinding -- */
     sota->map->world = sota->world;
     Map_Costmap_Movement_Compute(sota->map, npc_ent);
-    i32 *costmap            = sota->map->costmap;
-    tnecs_entity *unitmap   = sota->map->unitmap;
+    i32 *costmap            = sota->map->grids.costmap;
+    tnecs_entity *unitmap   = sota->map->grids.unitmap;
     int effective_move = 0;
     Unit_computeMove(npc, &effective_move);
     effective_move *= Map_Cost_Multiplier(sota->map);
@@ -526,10 +526,10 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
         return;
     }
 
-    // entity_print(sota->map->unitmap, sota->map->row_len, sota->map->col_len);
-    // entity_print(sota->map->unitmap, sota->map->row_len, sota->map->col_len);
-    SDL_assert(sota->map->unitmap[old_index] == npc_ent);
-    SDL_assert(sota->map->unitmap[new_index] == TNECS_NULL);
+    // entity_print(sota->map->grids.unitmap, sota->map->row_len, sota->map->col_len);
+    // entity_print(sota->map->grids.unitmap, sota->map->row_len, sota->map->col_len);
+    SDL_assert(sota->map->grids.unitmap[old_index] == npc_ent);
+    SDL_assert(sota->map->grids.unitmap[new_index] == TNECS_NULL);
 
     SDL_assert(old.y > 0);
     SDL_assert(old.y < sota->map->row_len);
@@ -540,16 +540,16 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
     SDL_assert(new.x > 0);
     SDL_assert(new.x < sota->map->col_len);
 
-    SDL_assert(sota->map->unitmap[old_index] > TNECS_NULL);
+    SDL_assert(sota->map->grids.unitmap[old_index] > TNECS_NULL);
 
-    tnecs_entity ent = sota->map->unitmap[old_index];
+    tnecs_entity ent = sota->map->grids.unitmap[old_index];
     Map_Unit_Move(sota->map, old.x, old.y, new.x, new.y);
 
-    SDL_assert(sota->map->unitmap[new_index] == npc_ent);
+    SDL_assert(sota->map->grids.unitmap[new_index] == npc_ent);
     pos = IES_GET_COMPONENT(sota->map->world, npc_ent, Position);
     SDL_assert(pos->tilemap_pos.x == new.x);
     SDL_assert(pos->tilemap_pos.y == new.y);
-    SDL_assert(sota->map->unitmap[new_index] == ent);
+    SDL_assert(sota->map->grids.unitmap[new_index] == ent);
 }
 
 void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {

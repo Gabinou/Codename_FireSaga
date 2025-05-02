@@ -398,7 +398,7 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
         // SDL_Log("sota->cursor_move %d %d", sota->cursor_move.x, sota->cursor_move.y);
         int nx = int_inbounds(tx + cx, 0, sota->map->col_len - 1);
         int ny = int_inbounds(ty + cy, 0, sota->map->row_len - 1);
-        canSend &= (sota->map->movemap[ny * cl + nx] >= NMATH_MOVEMAP_MOVEABLEMIN);
+        canSend &= (sota->map->grids.movemap[ny * cl + nx] >= NMATH_MOVEMAP_MOVEABLEMIN);
     }
 #endif /* INFINITE_MOVE_ALL */
     if (canSend)

@@ -20,34 +20,35 @@
 #include "unit/equipment.h"
 
 void Map_Global_Danger_Reset(struct Map *map) {
-    memset(map->global_dangermap, 0, sizeof(*map->global_dangermap) * map->row_len * map->col_len);
+    memset(map->grids.global_dangermap, 0,
+           sizeof(*map->grids.global_dangermap) * map->row_len * map->col_len);
     map->flags.shading_changed = true;
 }
 
 void Map_Global_Danger_Add(struct Map *map, i32 *danger) {
-    map->global_dangermap = matrix_plus_noM(map->global_dangermap, danger,
-                                            map->row_len * map->col_len);
+    map->grids.global_dangermap = matrix_plus_noM(map->grids.global_dangermap, danger,
+                                                  map->row_len * map->col_len);
     map->flags.shading_changed = true;
 }
 
 void Map_Global_Danger_Sub(struct Map *map, i32 *danger) {
-    map->global_dangermap = matrix_sub_noM(map->global_dangermap, danger,
-                                           map->row_len * map->col_len);
+    map->grids.global_dangermap = matrix_sub_noM(map->grids.global_dangermap, danger,
+                                                 map->row_len * map->col_len);
     map->flags.shading_changed = true;
 }
 
 void Map_Danger_Reset(struct Map *map) {
-    memset(map->dangermap, 0, sizeof(*map->dangermap) * map->row_len * map->col_len);
+    memset(map->grids.dangermap, 0, sizeof(*map->grids.dangermap) * map->row_len * map->col_len);
     map->flags.shading_changed = true;
 }
 
 void Map_Danger_Add(struct Map *map, i32 *danger) {
-    map->dangermap = matrix_plus_noM(map->dangermap, danger, map->row_len * map->col_len);
+    map->grids.dangermap = matrix_plus_noM(map->grids.dangermap, danger, map->row_len * map->col_len);
     map->flags.shading_changed = true;
 }
 
 void Map_Danger_Sub(struct Map *map, i32 *danger) {
-    map->dangermap = matrix_sub_noM(map->dangermap, danger, map->row_len * map->col_len);
+    map->grids.dangermap = matrix_sub_noM(map->grids.dangermap, danger, map->row_len * map->col_len);
     map->flags.shading_changed = true;
 }
 
@@ -60,7 +61,7 @@ void Map_Stacked_Dangermap_Compute(struct Map *map, i32 *dangermap) {
                                           map->row_len * map->col_len);
     map->stack.dangermap = matrix_and_noM(map->stack.dangermap,
                                           map->stack.dangermap,
-                                          map->movemap,
+                                          map->grids.movemap,
                                           map->row_len * map->col_len);
     SDL_free(temp_map);
     map->flags.shading_changed = true;
@@ -90,10 +91,10 @@ void Map_stack_global_dangermap_Reset(struct Map *map) {
 /* Note: effective_move should have been multiplied by cost_multiplier */
 i32 *_Map_Movemap_Compute(struct Map *map, struct Point start_in, i32 effective_move) {
     struct Point start = {start_in.x, start_in.y};
-    Pathfinding_Moveto_noM(map->movemap, map->costmap,
+    Pathfinding_Moveto_noM(map->grids.movemap, map->grids.costmap,
                            map->row_len, map->col_len, start, effective_move);
 
-    return (map->movemap);
+    return (map->grids.movemap);
 }
 
 i32 *Map_Movemap_Compute(struct Map *map, tnecs_entity unit_ent) {
@@ -125,10 +126,10 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
         // only put start in move_matrix
         /* -- Wipe move_matrix -- */
         for (size_t i = 0; i < map->row_len * map->col_len; i++)
-            map->movemap[i] = MOVEMAP_BLOCKED;
+            map->grids.movemap[i] = MOVEMAP_BLOCKED;
 
         i32 current_i   = pos->tilemap_pos.y * map->col_len + pos->tilemap_pos.x;
-        map->movemap[current_i] = 1;
+        map->grids.movemap[current_i] = 1;
     }
 
     // struct Point     start      = pos->tilemap_pos;
@@ -160,16 +161,16 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
     // SDL_Log("range %d %d", range->min, range->max);
 
     // Enable occupymap only to check when unit actually MOVES
-    tnecs_entity *input_occupymap = (mapto.move == true) ? map->unitmap : NULL;
+    tnecs_entity *input_occupymap = (mapto.move == true) ? map->grids.unitmap : NULL;
 
     i32 **tomap  = NULL;
     i32 **tolist = NULL;
     if (mapto.archetype == ITEM_ARCHETYPE_WEAPON) {
-        tomap   = &map->attacktomap;
-        tolist  = &map->attacktolist;
+        tomap   = &map->grids.attacktomap;
+        tolist  = &map->grids.attacktolist;
     } else if (mapto.archetype == ITEM_ARCHETYPE_STAFF) {
-        tomap   = &map->healtomap;
-        tolist  = &map->healtolist;
+        tomap   = &map->grids.healtomap;
+        tolist  = &map->grids.healtolist;
     }
     SDL_assert(tomap    != NULL);
     SDL_assert(tolist   != NULL);
@@ -180,7 +181,7 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
     .*/
 
     PathfindingAct actto    = PathfindingAct_default;
-    actto.movemap           = map->movemap;
+    actto.movemap           = map->grids.movemap;
     actto.acttomap          = *tomap;
     actto.occupymap         = input_occupymap;
     actto.row_len           = map->row_len;
@@ -195,7 +196,7 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
     // if (input_occupymap != NULL)
     //     entity_print(input_occupymap, map->row_len, map->col_len);
     // printf("Map_Act_to ATK\n");
-    // matrix_print(map->attacktomap, map->row_len, map->col_len);
+    // matrix_print(map->grids.attacktomap, map->row_len, map->col_len);
 
     i32* out = NULL;
     if (mapto.output_type == ARRAY_MATRIX) {
@@ -218,7 +219,7 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     SDL_assert(map_from.defendant   > TNECS_NULL);
 
     Map_Costmap_Movement_Compute(map, map_from.aggressor);
-    // matrix_print(map->costmap, map->row_len, map->col_len);
+    // matrix_print(map->grids.costmap, map->row_len, map->col_len);
 
     struct Unit *agg_unit       = IES_GET_COMPONENT(map->world, map_from.aggressor, Unit);
     /* Get dft position */
@@ -232,25 +233,25 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     i32 effective_move  = Map_Cost_Effective(map, move_stat);
 
     _Map_Movemap_Compute(map, agg_pos->tilemap_pos, effective_move);
-    // matrix_print(map->movemap, map->row_len, map->col_len);
+    // matrix_print(map->grids.movemap, map->row_len, map->col_len);
 
 
     i32 **tomap  = NULL;
     i32 **tolist = NULL;
     if (map_from.archetype == ITEM_ARCHETYPE_WEAPON) {
-        tomap   = &map->attackfrommap;
-        tolist  = &map->attackfrommap;
+        tomap   = &map->grids.attackfrommap;
+        tolist  = &map->grids.attackfrommap;
     } else if (map_from.archetype == ITEM_ARCHETYPE_STAFF) {
-        tomap   = &map->healfrommap;
-        tolist  = &map->healfrommap;
+        tomap   = &map->grids.healfrommap;
+        tolist  = &map->grids.healfrommap;
     }
 
-    tnecs_entity *input_occupymap = (map_from.move == true) ? map->unitmap : NULL;
+    tnecs_entity *input_occupymap = (map_from.move == true) ? map->grids.unitmap : NULL;
 
     /* Compute new attacktomap */
 
     PathfindingAct actto    = PathfindingAct_default;
-    actto.movemap           = map->movemap;
+    actto.movemap           = map->grids.movemap;
     actto.acttomap          = *tomap;
     actto.occupymap         = input_occupymap;
     actto.row_len           = map->row_len;
@@ -291,9 +292,9 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_entity unit_ent) {
     Unit_Range_Equipment(unit, ITEM_ARCHETYPE_WEAPON, &range);
 
     PathfindingAct actto    = PathfindingAct_default;
-    actto.movemap           = map->movemap;
-    actto.acttomap          = map->attacktomap;
-    actto.occupymap         = map->unitmap;
+    actto.movemap           = map->grids.movemap;
+    actto.acttomap          = map->grids.attacktomap;
+    actto.occupymap         = map->grids.unitmap;
     actto.row_len           = map->row_len;
     actto.col_len           = map->col_len;
     actto.self              = unit_ent;
@@ -302,21 +303,22 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_entity unit_ent) {
 
     Pathfinding_Attackto_noM(actto);
 
-    // memset(map->temp, 0, sizeof(*map->temp)*map->row_len * map->col_len);
+    // memset(map->grids.temp, 0, sizeof(*map->grids.temp)*map->row_len * map->col_len);
     // TODO :
     //      1. Why not use dangermap instead of temp?
     //      2. Why not memset to 0?
-    map->temp = matrix_plus_noM(map->temp, map->attacktomap, map->row_len * map->col_len);
-    // matrix_print(map->temp, map->row_len, map->col_len);
-    return (map->temp);
+    map->grids.temp = matrix_plus_noM(map->grids.temp, map->grids.attacktomap,
+                                      map->row_len * map->col_len);
+    // matrix_print(map->grids.temp, map->row_len, map->col_len);
+    return (map->grids.temp);
 }
 
 i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_entity unit_ent) {
     SDL_assert(unit_ent != 0);
     SDL_assert(map          != NULL);
-    SDL_assert(map->costmap != NULL);
+    SDL_assert(map->grids.costmap != NULL);
     SDL_assert(map->world   != NULL);
-    memset(map->costmap, 0, sizeof(*map->costmap) * map->col_len * map->row_len);
+    memset(map->grids.costmap, 0, sizeof(*map->grids.costmap) * map->col_len * map->row_len);
     struct Unit *unit = IES_GET_COMPONENT(map->world, unit_ent, Unit);
     struct Tile *temp_tile;
     i32 tile_ind = 0;
@@ -324,20 +326,20 @@ i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_entity unit_ent) {
     tnecs_entity ontile_unit_ent;
     SDL_assert(unit_movetype > UNIT_MVT_START);
     for (u8 i = 0; i < map->row_len * map->col_len; i++) {
-        tile_ind = map->tilemap[i] / TILE_DIVISOR;
-        ontile_unit_ent = map->unitmap[i];
+        tile_ind = map->grids.tilemap[i] / TILE_DIVISOR;
+        ontile_unit_ent = map->grids.unitmap[i];
         SDL_assert(tile_ind > 0);
         size_t tile_order = Map_Tile_Order(map, tile_ind);
         temp_tile = map->tiles.arr + tile_order;
         i32* cost_array = Tile_Cost_Array(temp_tile);
-        map->costmap[i] =  Map_Cost_Effective(map, cost_array[unit_movetype]);
+        map->grids.costmap[i] =  Map_Cost_Effective(map, cost_array[unit_movetype]);
         if (ontile_unit_ent <= TNECS_NULL)
             continue;
         struct Unit *ontile_unit = IES_GET_COMPONENT(map->world, ontile_unit_ent, Unit);
         if (ontile_unit != NULL)
-            map->costmap[i] = COSTMAP_BLOCKED;
+            map->grids.costmap[i] = COSTMAP_BLOCKED;
     }
-    return (map->costmap);
+    return (map->grids.costmap);
 }
 
 /* Create costmap for unit. Block tiles if occupied by enemy.
@@ -346,16 +348,16 @@ i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_entity unit_ent) {
 i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
     SDL_assert(map          != NULL);
     SDL_assert(map->world   != NULL);
-    SDL_assert(map->unitmap != NULL);
-    SDL_assert(map->costmap != NULL);
-    SDL_assert(map->tilemap != NULL);
+    SDL_assert(map->grids.unitmap != NULL);
+    SDL_assert(map->grids.costmap != NULL);
+    SDL_assert(map->grids.tilemap != NULL);
     SDL_assert(map->col_len > 0);
     SDL_assert(map->row_len > 0);
     SDL_assert(unit         != NULL);
     SDL_assert(Unit_Movement(unit) > UNIT_MVT_START);
 
     /* Reset costmap */
-    memset(map->costmap, 0, sizeof(*map->costmap) * map->col_len * map->row_len);
+    memset(map->grids.costmap, 0, sizeof(*map->grids.costmap) * map->col_len * map->row_len);
 
     /* - Compute cost of each tile - */
     int len = (map->col_len * map->row_len);
@@ -364,22 +366,22 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
 #ifdef UNITS_IGNORE_TERRAIN
 
         /* - All units fly - */
-        map->costmap[i] = COSTMAP_MIN * Map_Cost_Multiplier(map);
+        map->grids.costmap[i] = COSTMAP_MIN * Map_Cost_Multiplier(map);
 
 #else /* !UNITS_IGNORE_TERRAIN */
 
         // /* - Compute cost from tile - */
-        i32 tile_ind = map->tilemap[i] / TILE_DIVISOR;
+        i32 tile_ind = map->grids.tilemap[i] / TILE_DIVISOR;
         SDL_assert(tile_ind > 0);
         size_t tile_order = Map_Tile_Order(map, tile_ind);
         struct Tile *temp_tile = map->tiles.arr + tile_order;
         i32* cost_array = Tile_Cost_Array(temp_tile);
-        map->costmap[i] = Map_Cost_Effective(map, cost_array[Unit_Movement(unit)]);
+        map->grids.costmap[i] = Map_Cost_Effective(map, cost_array[Unit_Movement(unit)]);
 
 #endif /* UNITS_IGNORE_TERRAIN */
 
         /* - Check if tile is occupied by enemy unit - */
-        tnecs_entity ontile_unit_ent = map->unitmap[i];
+        tnecs_entity ontile_unit_ent = map->grids.unitmap[i];
 
         // Skip if tile unoccupied
         if (ontile_unit_ent <= TNECS_NULL) {
@@ -393,32 +395,32 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
         SDL_assert((ontile_army < ARMY_END) && (ontile_army > ARMY_START));
 
         if (SotA_army2alignment(ontile_army) != SotA_army2alignment(Unit_Army(unit))) {
-            map->costmap[i] = COSTMAP_BLOCKED;
+            map->grids.costmap[i] = COSTMAP_BLOCKED;
         }
     }
-    return (map->costmap);
+    return (map->grids.costmap);
 }
 b32 Map_Costmap_Skip(Map *map, tnecs_entity unit_ent) {
     /* - Skip if previously computed - */
-    return (map->costmap_ent == unit_ent);
+    return (map->grids.costmap_ent == unit_ent);
 }
 
 void Map_Costmap_Wipe(Map *map) {
-    map->costmap_ent = TNECS_NULL;
+    map->grids.costmap_ent = TNECS_NULL;
 }
 
 i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_entity unit_ent) {
     SDL_assert(map          != NULL);
     SDL_assert(map->world   != NULL);
-    SDL_assert(map->unitmap != NULL);
-    SDL_assert(map->costmap != NULL);
+    SDL_assert(map->grids.unitmap != NULL);
+    SDL_assert(map->grids.costmap != NULL);
 
     if (Map_Costmap_Skip(map, unit_ent)) {
-        return (map->costmap);
+        return (map->grids.costmap);
     }
 
     /* - Preliminaries - */
-    map->costmap_ent = unit_ent;
+    map->grids.costmap_ent = unit_ent;
     struct Unit *unit = IES_GET_COMPONENT(map->world, unit_ent, Unit);
 
     return (_Map_Costmap_Movement_Compute(map, unit));
@@ -430,8 +432,9 @@ void Map_globalRange(struct Map *map, u8 alignment) {
 
     tnecs_entity *unit_entities = NULL;
     u8 num_unit_entities = 0;
-    SDL_assert(map->global_rangemap != NULL);
-    memset(map->global_rangemap, 0, sizeof(*map->global_rangemap) * map->row_len * map->col_len);
+    SDL_assert(map->grids.global_rangemap != NULL);
+    memset(map->grids.global_rangemap, 0,
+           sizeof(*map->grids.global_rangemap) * map->row_len * map->col_len);
 
     /* Get enemies depending on alignment */
     switch (alignment) {
@@ -457,13 +460,13 @@ void Map_globalRange(struct Map *map, u8 alignment) {
         u8 move = temp_effective_stats.move;
         struct Point start = {temp_pos->tilemap_pos.x, temp_pos->tilemap_pos.y};
         Map_Costmap_Movement_Compute(map, unit_entities[i]);
-        Pathfinding_Moveto_noM(map->movemap, map->costmap, map->row_len,
+        Pathfinding_Moveto_noM(map->grids.movemap, map->grids.costmap, map->row_len,
                                map->col_len, start, move);
 
         PathfindingAct actto    = PathfindingAct_default;
-        actto.movemap           = map->movemap;
-        actto.acttomap          = map->attacktomap;
-        actto.occupymap         = map->unitmap;
+        actto.movemap           = map->grids.movemap;
+        actto.acttomap          = map->grids.attacktomap;
+        actto.occupymap         = map->grids.unitmap;
         actto.row_len           = map->row_len;
         actto.col_len           = map->col_len;
         actto.self              = unit_entities[i];
@@ -471,8 +474,8 @@ void Map_globalRange(struct Map *map, u8 alignment) {
         actto.mode_movetile     = MOVETILE_INCLUDE;
 
         Pathfinding_Attackto_noM(actto);
-        map->global_rangemap = matrix_plus_noM(map->global_rangemap, map->attacktomap,
-                                               map->row_len * map->col_len);
+        map->grids.global_rangemap = matrix_plus_noM(map->grids.global_rangemap, map->grids.attacktomap,
+                                                     map->row_len * map->col_len);
     }
 }
 

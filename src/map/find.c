@@ -45,7 +45,7 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
     _Map_Movemap_Compute(map, start, effective_move);
 
     // printf("MOVE\n");
-    // matrix_print(map->movemap, map->row_len, map->col_len);
+    // matrix_print(map->grids.movemap, map->row_len, map->col_len);
 
     /* Alloc defendants */
     tnecs_entity *defendants  = DARR_INIT(defendants, tnecs_entity, 4);
@@ -92,9 +92,9 @@ b32 Map_canEquip_Range(struct Map *map, tnecs_entity unit_ent,
     SDL_assert(map              != NULL);
     SDL_assert(defendants       != NULL);
     SDL_assert(map->world       != NULL);
-    SDL_assert(map->movemap     != NULL);
-    SDL_assert(map->unitmap     != NULL);
-    SDL_assert(map->attacktomap != NULL);
+    SDL_assert(map->grids.movemap     != NULL);
+    SDL_assert(map->grids.unitmap     != NULL);
+    SDL_assert(map->grids.attacktomap != NULL);
 
     Unit     *unit = IES_GET_COMPONENT(map->world, unit_ent, Unit);
 
@@ -115,16 +115,16 @@ b32 Map_canEquip_Range(struct Map *map, tnecs_entity unit_ent,
     map_to.aggressor    = unit_ent;
 
     // printf("MOVE BEFORE Map_Act_To\n");
-    // matrix_print(map->movemap, map->row_len, map->col_len);
+    // matrix_print(map->grids.movemap, map->row_len, map->col_len);
 
     Map_Act_To(map, map_to);
 
     // printf("MOVE AFTER Map_Act_To\n");
-    // matrix_print(map->movemap, map->row_len, map->col_len);
+    // matrix_print(map->grids.movemap, map->row_len, map->col_len);
     // printf("ATK\n");
-    // matrix_print(map->attacktomap, map->row_len, map->col_len);
+    // matrix_print(map->grids.attacktomap, map->row_len, map->col_len);
     // printf("UNIT\n");
-    // entity_print(map->unitmap, map->row_len, map->col_len);
+    // entity_print(map->grids.unitmap, map->row_len, map->col_len);
 
     /* Find all Defendants/Patients in list */
     MapFind mapfind     = MapFind_default;
@@ -137,11 +137,11 @@ b32 Map_canEquip_Range(struct Map *map, tnecs_entity unit_ent,
     mapfind._eq         = can_equip._eq;
 
     if (can_equip.archetype == ITEM_ARCHETYPE_WEAPON) {
-        mapfind.list        = map->attacktolist;
+        mapfind.list        = map->grids.attacktolist;
         defendants          = Map_Find_Defendants(map, mapfind);
     } else if (can_equip.archetype == ITEM_ARCHETYPE_STAFF) {
         /* --- Compute healtolist --- */
-        mapfind.list        = map->healtolist;
+        mapfind.list        = map->grids.healtolist;
         defendants          = Map_Find_Patients(map, mapfind);
     }
 
@@ -170,7 +170,7 @@ tnecs_entity *Map_Find_Defendants(struct Map *map, MapFind mapfind) {
 
         /* - Checking for units on x_at, y_at - */
         size_t index = y_at * map->col_len + x_at;
-        tnecs_entity unitontile = map->unitmap[index];
+        tnecs_entity unitontile = map->grids.unitmap[index];
 
         // TODO: Make this an assert?
         if (unitontile <= TNECS_NULL) {
@@ -265,7 +265,7 @@ tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
         for (size_t i = 0; i < DARR_NUM(healtolist) / 2; i++) {
             size_t x_at = healtolist[TWO_D * i];
             size_t y_at = healtolist[TWO_D * i + 1];
-            tnecs_entity unitontile = map->unitmap[y_at * map->col_len + x_at];
+            tnecs_entity unitontile = map->grids.unitmap[y_at * map->col_len + x_at];
 
             /* Note: No need to check range.
                      Should have been included in Map_Act_to call
@@ -365,7 +365,7 @@ tnecs_entity *Map_Find_Spectators(struct Map *map, tnecs_entity *spectators, i32
         if ((x_at == x) && (y_at == y))
             continue;
 
-        tnecs_entity spectator = map->unitmap[y_at * map->col_len + x_at];
+        tnecs_entity spectator = map->grids.unitmap[y_at * map->col_len + x_at];
         if (spectator == TNECS_NULL)
             continue;
 
@@ -388,7 +388,7 @@ tnecs_entity *Map_Find_Auditors(struct Map *map, tnecs_entity *auditors, i32 x, 
         if ((x_at == x) && (y_at == y))
             continue;
 
-        tnecs_entity auditor_ent = map->unitmap[y_at * map->col_len + x_at];
+        tnecs_entity auditor_ent = map->grids.unitmap[y_at * map->col_len + x_at];
         if (auditor_ent <= TNECS_NULL)
             continue;
 
@@ -410,7 +410,7 @@ tnecs_entity *Map_Find_Traders(struct Map *map, tnecs_entity *passives, i32 x, i
         if ((x_at == x) && (y_at == y))
             continue;
 
-        tnecs_entity passive = map->unitmap[y_at * map->col_len + x_at];
+        tnecs_entity passive = map->grids.unitmap[y_at * map->col_len + x_at];
         if (passive <= TNECS_NULL)
             continue;
 
@@ -434,7 +434,7 @@ tnecs_entity *Map_Find_Victims(struct Map *map, tnecs_entity *victims_ent,
         if ((x_at == x) && (y_at == y))
             continue;
 
-        tnecs_entity victim_ent = map->unitmap[y_at * map->col_len + x_at];
+        tnecs_entity victim_ent = map->grids.unitmap[y_at * map->col_len + x_at];
         if (victim_ent <= TNECS_NULL)
             continue;
 

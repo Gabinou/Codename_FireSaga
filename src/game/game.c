@@ -144,7 +144,7 @@ void Game_Free(struct Game *sota) {
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "SDL_free Map");
 
-    if ((sota->map != NULL) && (sota->map->unitmap != NULL))
+    if ((sota->map != NULL) && (sota->map->grids.unitmap != NULL))
         Map_Unitmap_Free(sota->map);
     Game_Map_Free(sota);
 

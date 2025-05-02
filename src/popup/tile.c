@@ -159,7 +159,7 @@ void PopUp_Tile_Set(struct PopUp_Tile *popup_tile, struct Game *sota) {
 
     /* -- Give tile to popup_tile -- */
     int i = cursor_position->tilemap_pos.y * sota->map->col_len + cursor_position->tilemap_pos.x;
-    i32 tile_ind = sota->map->tilemap[i] / TILE_DIVISOR;
+    i32 tile_ind = sota->map->grids.tilemap[i] / TILE_DIVISOR;
     SDL_assert(tile_ind > 0);
     i32 tile_order = Map_Tile_Order(sota->map, tile_ind);
     popup_tile->tile = &sota->map->tiles.arr[tile_order];

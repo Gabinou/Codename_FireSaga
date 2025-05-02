@@ -179,6 +179,7 @@ typedef struct Map_Render {
 
 typedef struct Map_Tiles {
     struct Tile *arr;   /* [tiles_order] */
+    // What is tiles.id vs tiles.index?
     i32 *id;            /* [tiles_order] */
     i32 *index;         /* [tiles_order] */
     struct SDL_Surface    *tilemap_surface;
@@ -188,52 +189,13 @@ typedef struct Map_Tiles {
     struct SDL_Texture  ***tileset_textures; /* [palette_id][tiles_order] */
 } Map_Tiles;
 
-
-typedef struct Map {
-    struct jsonIO_Header jsonio_header;
-
-    /* --- BASICS --- */
-    i32 turn; /* Automatic loss if turn 255. */
-    i32 chapter;
-
-    // TODO: remove. should be in savefile
-    s8 party_filename;
-
-    struct Point *units_positions_list;  /* same order as onfield.units */
-    struct Point *start_pos;
-
-    /* Map size */
-    i32 row_len; /* [tiles] */
-    i32 col_len; /* [tiles] */
-    // Is tilesize a game property of map property?
-    i32 tilesize[TWO_D]; /* [pixels] */
-
-    Arrow           *arrow;
-    tnecs_world     *world;
-    SDL_Renderer    *renderer;
-    struct Camera    camera;
-    struct Map_Cost             cost;
-    struct Map_Music            music;
-    struct Map_Flags            flags;
-    struct Map_Stack            stack;
-    struct Map_Units            units;
-    struct Map_Tiles            tiles;
-    struct Map_Render           render;
-    struct Map_Armies           armies;
-    struct Map_Palette          palette;
-    struct Map_Entities         entities;
-    struct Map_Perimiter        perimiter;
-    struct Map_Conditions       conditions;
-    struct Map_Reinforcements   reinforcements;
-    /* --- costmap, MOVEMAP, ATTACKMAP... --- */
-
-    // typedef struct Map_Arrays {
+typedef struct Map_Grids {
+    // Grid meaning 2D dynamic array
     // TODO: rm temp
     i32 *temp;                  /* 2D dynamic array */
     i32 *costmap;               /* 2D dynamic array */
     i32 *movemap;               /* 2D dynamic array */
-    i32 *start_posmap;          /* 2D dynamic array */
-    // Tile index = map->tilemap[i] / TILE_DIVISOR;
+    // Tile index = map->grids.tilemap[i] / TILE_DIVISOR;
     i32 *tilemap;               /* 2D dynamic array [row * col_len + col] */
     i32 *healtomap;             /* 2D dynamic array */
 
@@ -254,14 +216,53 @@ typedef struct Map {
     i32 *global_rangemap;       /* 2D dynamic array */
     tnecs_entity *unitmap;      /* [row * col_len + col], occupymap */
     tnecs_entity *occupymap;    /* [row * col_len + col], friendlies only, enemies only... */
-    tnecs_entity costmap_ent; /* costmap computed for*/
-    // } Map_Arrays;
+    tnecs_entity costmap_ent; /* costmap computed for */
+} Map_Grids;
 
+typedef struct Map {
+    struct jsonIO_Header jsonio_header;
+
+    /* --- BASICS --- */
+    i32 turn; /* Automatic loss if turn 255. */
+    i32 chapter;
+
+    // TODO: remove. should be in savefile
+    s8 party_filename;
+
+    // typedef struct Map_Starting_Pos {
+    i32 *start_posmap;          /* 2D dynamic array */
+    struct Point *units_positions_list;  /* same order as onfield.units */
+    struct Point *start_pos;
+    // } Map_Starting_Pos
+
+    /* Map size */
+    i32 row_len; /* [tiles] */
+    i32 col_len; /* [tiles] */
+    // Is tilesize a game property or map property?
+    i32 tilesize[TWO_D]; /* [pixels] */
+
+    Arrow           *arrow;
+    tnecs_world     *world;
+    SDL_Renderer    *renderer;
+    struct Camera    camera;
+    struct Map_Cost             cost;
+    struct Map_Music            music;
+    struct Map_Grids            grids;
+    struct Map_Flags            flags;
+    struct Map_Stack            stack;
+    struct Map_Units            units;
+    struct Map_Tiles            tiles;
+    struct Map_Render           render;
+    struct Map_Armies           armies;
+    struct Map_Palette          palette;
+    struct Map_Entities         entities;
+    struct Map_Perimiter        perimiter;
+    struct Map_Conditions       conditions;
+    struct Map_Reinforcements   reinforcements;
 } Map;
 extern const struct Map Map_default;
 
 /* --- Constructor/Destructors --- */
-
 struct Map *Map_New(NewMap new_map);
 
 void Map_Members_Alloc(Map *map);

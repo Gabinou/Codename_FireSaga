@@ -270,7 +270,7 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
         struct Point pos    = cursor_pos->tilemap_pos;
         int current_i       = pos.y * sota->map->col_len + pos.x;
-        tnecs_entity ontile = sota->map->unitmap[current_i];
+        tnecs_entity ontile = sota->map->grids.unitmap[current_i];
 
         /* unit hovering */
         if (ontile != TNECS_NULL) {
@@ -941,11 +941,11 @@ void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
     selected = IES_GET_COMPONENT(sota->world, sota->selected_unit_entity, Unit);
     SDL_assert(cpos                 != NULL);
     SDL_assert(selected             != NULL);
-    SDL_assert(sota->map->costmap   != NULL);
+    SDL_assert(sota->map->grids.costmap   != NULL);
     Map *map = sota->map;
     i32 move = 0;
     Unit_computeMove(selected, &move);
-    Arrow_Path_Init(map->arrow, map->costmap, move, cpos->tilemap_pos);
+    Arrow_Path_Init(map->arrow, map->grids.costmap, move, cpos->tilemap_pos);
     strncpy(sota->reason, "friendly unit was selected and can move", sizeof(sota->reason));
     Game_subState_Set(sota, GAME_SUBSTATE_MAP_UNIT_MOVES, sota->reason);
 
@@ -1065,10 +1065,10 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     // 3. Attackmap only defendant. -> Move to cursor hovers new defendant
     struct Map *map = sota->map;
     struct Position *pos  = IES_GET_COMPONENT(sota->world, sota->defendant, Position);
-    memset(map->attacktomap, 0, map->row_len * map->col_len * sizeof(*map->attacktomap));
-    map->attacktomap[(pos->tilemap_pos.y * map->col_len + pos->tilemap_pos.x)] = 1;
+    memset(map->grids.attacktomap, 0, map->row_len * map->col_len * sizeof(*map->grids.attacktomap));
+    map->grids.attacktomap[(pos->tilemap_pos.y * map->col_len + pos->tilemap_pos.x)] = 1;
     Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_ATTACK, TNECS_NULL);
-    Map_Stacked_Dangermap_Compute(sota->map, sota->map->dangermap);
+    Map_Stacked_Dangermap_Compute(sota->map, sota->map->grids.dangermap);
 }
 
 void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {

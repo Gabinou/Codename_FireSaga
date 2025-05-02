@@ -357,11 +357,11 @@ void Game_postLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
     Map_Act_To(sota->map, map_to);
 
     /* Find all Defendants */
-    // matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
+    // matrix_print(sota->map->grids.attacktomap, sota->map->row_len, sota->map->col_len);
 
     MapFind mapfind     = MapFind_default;
 
-    mapfind.list        = sota->map->attacktolist;
+    mapfind.list        = sota->map->grids.attacktolist;
     mapfind.found       = sota->defendants;
     mapfind.seeker      = actor;
     mapfind.fastquit    = false;
@@ -409,7 +409,7 @@ void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
 
     MapFind mapfind = MapFind_default;
 
-    mapfind.list       = sota->map->attacktolist;
+    mapfind.list       = sota->map->grids.attacktolist;
     mapfind.found      = sota->defendants;
     mapfind.seeker     = actor;
     mapfind.fastquit   = false;
@@ -421,7 +421,7 @@ void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
 
     mapfind = MapFind_default;
 
-    mapfind.list       = sota->map->healtolist;
+    mapfind.list       = sota->map->grids.healtolist;
     mapfind.found      = sota->patients;
     mapfind.seeker     = actor;
     mapfind.fastquit   = false;
@@ -452,13 +452,13 @@ void Game_preLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     map_to.aggressor    = actor;
 
     Map_Act_To(sota->map, map_to);
-    // SDL_Log("sota->map->healtolist %d", DARR_NUM(sota->map->healtolist) / TWO_D);
+    // SDL_Log("sota->map->grids.healtolist %d", DARR_NUM(sota->map->grids.healtolist) / TWO_D);
 
-    // matrix_print(sota->map->healtomap, sota->map->row_len, sota->map->col_len);
+    // matrix_print(sota->map->grids.healtomap, sota->map->row_len, sota->map->col_len);
 
     MapFind mapfind = MapFind_default;
 
-    mapfind.list       = sota->map->healtolist;
+    mapfind.list       = sota->map->grids.healtolist;
     mapfind.found      = sota->patients;
     mapfind.seeker     = actor;
     mapfind.fastquit   = true;
@@ -487,7 +487,7 @@ void Game_preLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
     /* Find Defendants if any */
     MapFind mapfind = MapFind_default;
 
-    mapfind.list       = sota->map->attacktolist;
+    mapfind.list       = sota->map->grids.attacktolist;
     mapfind.found      = sota->defendants;
     mapfind.seeker     = actor;
     mapfind.fastquit   = true;
