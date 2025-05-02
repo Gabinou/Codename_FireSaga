@@ -106,6 +106,12 @@ typedef struct Map_Reinforcements {
     struct Inventory_item **equipments;
 } Map_Reinforcements;
 
+typedef struct Map_Perimiter {
+    i32 danger_color;
+    i32 aura_color;
+    struct Padding *edges_danger; /* Todo change to general purpose */
+} Map_Perimiter;
+
 typedef struct Map {
     struct jsonIO_Header jsonio_header;
 
@@ -129,16 +135,10 @@ typedef struct Map {
     struct Map_Conditions       conditions;
     struct Map_Entities         entities;
     struct Map_Reinforcements   reinforcements;
+    struct Map_Perimiter        perimiter;
 
     // TODO: remove. should be in savefile
     s8 party_filename;
-
-    // typedef struct Map_Perimiter {
-    i32 perimiter_danger_color;
-    i32 perimiter_aura_color;
-    struct Padding *edges_danger; /* Todo change to general purpose */
-    // } Map_Perimiter;
-
 
     // typedef struct Map_Stack {
     i32 stack_mode;

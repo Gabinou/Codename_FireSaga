@@ -414,9 +414,10 @@ void Map_Perimeter_Draw_Danger(struct Map *map, struct Settings *settings, struc
         return;
 
     SDL_Palette *palette_base = sota_palettes[map->ipalette_base];
-    SDL_Color red = palette_base->colors[map->perimiter_danger_color];
+    SDL_Color red = palette_base->colors[map->perimiter.danger_color];
 
-    _Map_Perimeter_Draw(map, settings, camera, map->rendered_dangermap, red, map->edges_danger);
+    _Map_Perimeter_Draw(map, settings, camera, map->rendered_dangermap, red,
+                        map->perimiter.edges_danger);
 }
 
 void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
@@ -439,12 +440,12 @@ void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
 
     _Pathfinding_Attackto(actto);
 
-    Map_Perimeter(map->edges_danger, temp, map->row_len, map->col_len);
+    Map_Perimeter(map->perimiter.edges_danger, temp, map->row_len, map->col_len);
 
     SDL_Palette *palette_base = sota_palettes[map->ipalette_base];
     SDL_Color purple = palette_base->colors[colori];
 
-    _Map_Perimeter_Draw(map, settings, camera, temp, purple, map->edges_danger);
+    _Map_Perimeter_Draw(map, settings, camera, temp, purple, map->perimiter.edges_danger);
 }
 
 

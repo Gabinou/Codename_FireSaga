@@ -49,8 +49,8 @@ const Map Map_default = {
     .frames_shadow          = 10,
     .speed                  = 50,
 
-    .perimiter_danger_color = SOTA_RED,
-    .perimiter_aura_color   = SOTA_PURPLE,
+    .perimiter.danger_color = SOTA_RED,
+    .perimiter.aura_color   = SOTA_PURPLE,
 
     .shadow_frame_pause     = 3,
     .tilemap_frame_pause    = 6,
@@ -196,9 +196,9 @@ void Map_Free(struct Map *map) {
     }
 
     /* - Edges - */
-    if (map->edges_danger != NULL) {
-        SDL_free(map->edges_danger);
-        map->edges_danger = NULL;
+    if (map->perimiter.edges_danger != NULL) {
+        SDL_free(map->perimiter.edges_danger);
+        map->perimiter.edges_danger = NULL;
     }
     if (map->entities.breakables != NULL) {
         DARR_FREE(map->entities.breakables);
@@ -472,8 +472,8 @@ void Map_Members_Alloc(struct Map *map) {
     SDL_assert(map->global_dangermap == NULL);
     map->global_dangermap = SDL_calloc(len,  sizeof(*map->global_dangermap));
 
-    SDL_assert(map->edges_danger == NULL);
-    map->edges_danger = SDL_calloc(len, sizeof(*map->edges_danger));
+    SDL_assert(map->perimiter.edges_danger == NULL);
+    map->perimiter.edges_danger = SDL_calloc(len, sizeof(*map->perimiter.edges_danger));
 
     if (map->renderer != NULL) {
         Map_Tilemap_Surface_Init(map);

@@ -477,11 +477,11 @@ void Map_globalRange(struct Map *map, u8 alignment) {
 }
 
 void Map_Danger_Perimeter_Compute(struct Map *map, i32 *danger) {
-    if (map->edges_danger == NULL) {
+    if (map->perimiter.edges_danger == NULL) {
         size_t bytesize = sizeof(struct Padding);
-        map->edges_danger = SDL_calloc(map->row_len * map->col_len, bytesize);
+        map->perimiter.edges_danger = SDL_calloc(map->row_len * map->col_len, bytesize);
     }
-    Map_Perimeter(map->edges_danger, danger, map->row_len, map->col_len);
+    Map_Perimeter(map->perimiter.edges_danger, danger, map->row_len, map->col_len);
 }
 
 struct Padding *Map_PerimeterM(i32 *map, i32 row_len, i32 col_len) {

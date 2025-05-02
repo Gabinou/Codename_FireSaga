@@ -418,7 +418,6 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
     }
     sota->map->reinforcements.loaded = sota->map->turn;
     SDL_assert(DARR_NUM(sota->map_enemies) <= DARR_NUM(sota->map->reinforcements.arr));
-
 }
 
 /* --- Tiles & tilesets  --- */
