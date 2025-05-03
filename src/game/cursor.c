@@ -54,15 +54,15 @@ void Game_cursorFocus_onMap(struct Game *sota) {
     Position_Bounds_Set(position, 0, Map_col_len(sota->map) - 1, 0, Map_row_len(sota->map) - 1);
 
     /* -- Placing cursor on map -- */
-    i32 map_tilesize[2] = {sota->map->tilesize[0], sota->map->tilesize[1]};
+    Point *tilesize = Map_Tilesize(sota->map);
     int row_len = Map_row_len(sota->map);
     int col_len = Map_col_len(sota->map);
     if (sota->ismouse) {
         struct Point mouse_pos, tilemap_pos;
         SDL_GetMouseState(&mouse_pos.x, &mouse_pos.y);
-        tilemap_pos.x = SOTA_PIXEL2TILEMAP(mouse_pos.x, map_tilesize[0],
+        tilemap_pos.x = SOTA_PIXEL2TILEMAP(mouse_pos.x, tilesize->x,
                                            sota->camera.offset.x, sota->camera.zoom);
-        tilemap_pos.y = SOTA_PIXEL2TILEMAP(mouse_pos.y, map_tilesize[1],
+        tilemap_pos.y = SOTA_PIXEL2TILEMAP(mouse_pos.y, tilesize->y,
                                            sota->camera.offset.y, sota->camera.zoom);
         tilemap_pos.x = int_inbounds(tilemap_pos.x, 0, col_len - 1);
         tilemap_pos.y = int_inbounds(tilemap_pos.y, 0, row_len - 1);
@@ -78,8 +78,8 @@ void Game_cursorFocus_onMap(struct Game *sota) {
 
     position->pixel_pos.x = sprite->tilesize[0] * (position->tilemap_pos.x - 1);
     position->pixel_pos.y = sprite->tilesize[1] * (position->tilemap_pos.y - 1);
-    position->scale[0] = (float)map_tilesize[0];
-    position->scale[1] = (float)map_tilesize[1];
+    position->scale[0] = (float)tilesize->x;
+    position->scale[1] = (float)tilesize->y;
 
     sota->map->flags.update = true;
 }
@@ -236,10 +236,12 @@ b32 Game_isCursoronTilemap(struct Game *sota) {
     b32 out = false;
     if (sota->ismouse) {
         struct Point mouse_pos, tilemap_pos;
+        Point *tilesize = Map_Tilesize(sota->map);
+
         SDL_GetMouseState(&mouse_pos.x, &mouse_pos.y);
-        tilemap_pos.x = SOTA_PIXEL2TILEMAP(mouse_pos.x, sota->map->tilesize[0],
+        tilemap_pos.x = SOTA_PIXEL2TILEMAP(mouse_pos.x, tilesize->x,
                                            sota->camera.offset.x, sota->camera.zoom);
-        tilemap_pos.y = SOTA_PIXEL2TILEMAP(mouse_pos.y, sota->map->tilesize[1],
+        tilemap_pos.y = SOTA_PIXEL2TILEMAP(mouse_pos.y, tilesize->y,
                                            sota->camera.offset.y, sota->camera.zoom);
         b32 x_isIn = int_inbounds(tilemap_pos.x, 0, Map_col_len(sota->map) - 1);
         b32 y_isIn = int_inbounds(tilemap_pos.y, 0, Map_row_len(sota->map) - 1);
