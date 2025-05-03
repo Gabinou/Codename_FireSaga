@@ -160,6 +160,7 @@ typedef struct Map_Armies {
 } Map_Armies;
 
 typedef struct Map_Render {
+    // TODO: Camera in game too, which one is right?
     struct Camera    camera;
     struct Point visiblemin;
     struct Point visiblemax;

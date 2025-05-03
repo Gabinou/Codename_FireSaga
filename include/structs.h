@@ -928,21 +928,25 @@ extern const struct Party Party_default;
 
 /* --- Game Object --- */
 typedef struct Game {
+    // typedef struct Game_Render {
     SDL_Renderer    *renderer;
     SDL_Texture     *render_target;
+    SDL_Window      *window;
 #ifdef SOTA_OPENGL
-    GLuint         gl_programid;
-    SDL_GLContext  gl_context;
-    SDL_Window     *gl_window;
+    GLuint           gl_programid;
+    SDL_GLContext    gl_context;
 #endif /* SOTA_OPENGL */
+    // } Game_Render;
+
     // world is mostly world_render
     // only entity in world_control is cursor
+    // typedef struct Game_ECS {
     tnecs_world  *world;
     tnecs_world  *world_render;
     tnecs_world  *world_control;
 
     tnecs_component timer_typeflag;
-    Point  cursor_lastpos;
+    // } Game_ECS;
 
     struct dtab *menu_options_dtab;
     struct dtab *defaultstates_dtab;
@@ -950,24 +954,38 @@ typedef struct Game {
     struct dtab *tiles_loaded_dtab;
     struct dtab *units_loaded_dtab;
 
+    // typedef struct Game_Timers {
     tnecs_entity ai_timer;
     tnecs_entity reinf_timer;
+    u64    runtime_ns; /* -> millions of years */
+    // } Game_Timers;
 
+    // typedef struct Game_Inputs {
     struct KeyboardInputMap  keyboardInputMap;
     struct GamepadInputMap   gamepadInputMap;
     // struct MouseInputMap  mouseInputMap;
+    i32   controller_code;
+    /* Button interpreted as which input?  */
+    u32 inputs[SOTA_BUTTON_END];
+    // } Game_Inputs;
 
+    // TODO: Camera in map too, which one is right?
     struct Camera camera;
 
+    // typedef struct Game_Fonts {
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_tight;
     struct PixelFont *pixelnours_big;
     struct PixelFont *menu_pixelfont;
+    // } Game_Fonts;
     struct Map *map;
 
     /* gameplay state bitfields, narrative conditions */
+    // typedef struct Game_Narrative {
     struct Conditions *conditions;
+    // } Game_Narrative;
 
+    // typedef struct Game_Menus {
     tnecs_entity *menu_stack;
     tnecs_entity player_select_menus[MENU_PLAYER_SELECT_NUM]; /* [PLAYER_SELECT_MENU_...] */
     tnecs_entity popups[POPUP_TYPE_NUM]; /* [POPUP_TYPE_...] */
@@ -983,9 +1001,12 @@ typedef struct Game {
     tnecs_entity title;
     tnecs_entity growths_menu;
     tnecs_entity deployment_menu;
-
     s8 filename_menu;
+    // } Game_Menus;
+
+    // typedef struct Game_Debug {
     char reason[DEFAULT_BUFFER_SIZE];
+    // } Game_Debug;
 
     tnecs_entity entity_cursor;
     tnecs_entity entity_mouse;
@@ -1007,45 +1028,53 @@ typedef struct Game {
 
     tnecs_entity *ent_unit_loaded;
 
-    i32  cursor_moved_time_ms;
-
+    // typedef struct Game_Combat {
     struct Combat_Outcome    combat_outcome;
     struct Combat_Forecast   combat_forecast;
     struct Combat_Flow       combat_flow;
     struct Combat_Forecast  *AI_forecasts;
+    int candidate;          // potential defendant
+    int previous_candidate; // previously selected candidate
+    /* -- Chosen by player -- */
+    // Also use for non-combat: staff, item use...
+    tnecs_entity aggressor; // combat -> player unit
+    tnecs_entity defendant; // combat -> player chose
+    // } Game_Combat;
 
+    // typedef struct Game_State {
     i8 animation_attack;
     i8 chapter;
     i8 state;
     i8 substate;
     i8 state_previous;
     i8 substate_previous;
-
-    SDL_Window *window;
+    // } Game_State;
 
     struct Settings    settings;
     struct Convoy      convoy;
-    u64 s_xoshiro256ss[4]; /* Only used to read s from RNG file */
 
-    Point cursor_move;
-    b32 cursor_frame_moved;
-    b32 cursor_diagonal;
+    // typedef struct Game_RNG {
+    u64 s_xoshiro256ss[4]; /* Only used to read s from RNG file */
+    // } Game_RNG;
+
+    // typedef struct Game_Cursor {
+    Point   cursor_move;
+    Point   cursor_lastpos;
+    b32     cursor_frame_moved;
+    b32     cursor_diagonal;
+    i32     cursor_moved_time_ms;
+    // } Game_Cursor;
 
     /* --- FPS --- */
+    // typedef struct Game_FPS {
     float instant_fps; /* frames/time after fps_text->update_time_ns */
     float rolling_fps; /* rolling average of fps */
-
-    /* --- COMBAT --- */
-    int candidate;          // potential candidate
-    int previous_candidate; // previously selected candidate
-    /* -- Chosen by player -- */
-    // Also use for non-combat: staff, item use...
-    tnecs_entity aggressor; // combat -> player unit
-    tnecs_entity defendant; // combat -> player chose
+    // } Game_FPS;
 
     /* -- Choices list for player -- */
 
     /* --- UNIT ACTION CANDIDATES --- */
+    // typedef struct Game_Player_Targets {
     // copy of one other psm list, used by choosecandidates
     tnecs_entity *candidates;
     /* on attackmap */
@@ -1058,25 +1087,24 @@ typedef struct Game {
     tnecs_entity *passives;       // trade
     tnecs_entity *openables;      // doors and chests
     tnecs_entity *deployed;       // deployment unit placement
+    // } Game_Player_Targets;
 
     struct AI_State ai_state;
 
-    i32   controller_code;
-    /* Button interpreted as which input?  */
-    u32 inputs[SOTA_BUTTON_END];
-
     /* The music that will be played. */
+    // typedef struct Game_Music {
     Mix_Music *music;
     Mix_Chunk *soundfx_cursor;
     Mix_Chunk *soundfx_next_turn;
+    // } Game_Music;
 
-    u64    runtime_ns; // -> millions of years
-    b32  *shadow_area;  /* pixels */
+    // typedef struct Game_Flags {
     b32   ismouse;
     b32   iscursor;
     b32   isrunning;
     b32   isShadow;
     b32   fast_forward;
+    // } Game_Flags;
 } Game;
 extern const struct Game Game_default;
 
