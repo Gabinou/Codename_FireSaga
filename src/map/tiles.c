@@ -256,12 +256,12 @@ void Map_Tileset_newPalette(struct Map *map, i32 tile, u8 palette) {
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(new_surf->format->format));
     SDL_assert(new_surf->w > 0);
     SDL_assert(new_surf->h > 0);
-    SDL_assert(map->renderer);
+    SDL_assert(map->render.er);
 
     /* -- New texture from surface -- */
     if (map->tiles.tileset_textures[palette][tileset_order] != NULL)
         SDL_DestroyTexture(map->tiles.tileset_textures[palette][tileset_order]);
-    SDL_Texture *new_textu = SDL_CreateTextureFromSurface(map->renderer, new_surf);
+    SDL_Texture *new_textu = SDL_CreateTextureFromSurface(map->render.er, new_surf);
     map->tiles.tileset_textures[palette][tileset_order] = new_textu;
 }
 

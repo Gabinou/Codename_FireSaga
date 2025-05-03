@@ -62,7 +62,7 @@ void Map_Palettemap_addList(struct Map *map, i32 *list, u8 palette) {
 void Map_Renderer_Set(struct Map *map, SDL_Renderer *renderer) {
     SDL_assert(map);
     if (renderer != NULL) {
-        map->renderer = renderer;
+        map->render.er = renderer;
     }
 }
 
@@ -141,10 +141,10 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
     i32 tile_ind = 0, tile_order = 0, texture_ind = 0;
     u8 palette_ind = 0;
     int success;
-    SDL_assert(map->renderer);
+    SDL_assert(map->render.er);
     if (map->tiles.tilemap_texture == NULL)
         Map_Tilemap_Texture_Init(map);
-    SDL_SetRenderTarget(map->renderer, map->tiles.tilemap_texture);
+    SDL_SetRenderTarget(map->render.er, map->tiles.tilemap_texture);
     SDL_assert(map->darrs.tilemap);
     SDL_assert(map->palette.map);
 
@@ -180,8 +180,8 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
             Map_Tileset_newPalette(map, tile_order, palette_ind);
 
         /* Stitching map */
-        // Filesystem_Texture_Dump("dump.png", map->renderer, texture, SDL_PIXELFORMAT_ARGB8888, NULL);
-        success = SDL_RenderCopy(map->renderer, texture, &srcrect, &dstrect);
+        // Filesystem_Texture_Dump("dump.png", map->render.er, texture, SDL_PIXELFORMAT_ARGB8888, NULL);
+        success = SDL_RenderCopy(map->render.er, texture, &srcrect, &dstrect);
         /* Stitch icon depending on stack mode */
         if (!success) {
             SDL_Log("SDL_Error: %s", SDL_GetError());
@@ -198,13 +198,13 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
             case MAP_SETTING_STACK_DANGERMAP:
                 if (map->stack.dangermap[i] == true) {
                     srcrect.x = (TILE_ICON_DANGER % TILESET_COL_LEN) * tilesize->x;
-                    success = SDL_RenderCopy(map->renderer, texture, &srcrect, &dstrect);
+                    success = SDL_RenderCopy(map->render.er, texture, &srcrect, &dstrect);
                     SDL_assert(success);
                 }
                 break;
         }
     }
-    SDL_SetRenderTarget(map->renderer, render_target); /* render to default again */
+    SDL_SetRenderTarget(map->render.er, render_target); /* render to default again */
     return (map->tiles.tilemap_texture);
 }
 void Map_Visible_Tiles(struct Map *map,  struct Settings *settings, struct Camera *camera) {
@@ -353,7 +353,7 @@ void _Map_Perimeter_Draw(struct Map *map, struct Settings *settings,
 
     int thick = settings->map_settings.perim_thickness;
 
-    int success = SDL_SetRenderDrawColor(map->renderer, color.r, color.g, color.b, color.a);
+    int success = SDL_SetRenderDrawColor(map->render.er, color.r, color.g, color.b, color.a);
     SDL_assert(success == 0);
 
     size_t row_len = Map_row_len(map), col_len = Map_col_len(map);
@@ -410,7 +410,7 @@ void _Map_Perimeter_Draw(struct Map *map, struct Settings *settings,
             i32 thickx = q_cycle2_pz(ii);
             i32 thicky = q_cycle2_zp(ii);
             for (int t = -(thick / 2); t < thick; t++) {
-                SDL_RenderDrawLine(map->renderer, line1_x + thickx * t,
+                SDL_RenderDrawLine(map->render.er, line1_x + thickx * t,
                                    line1_y + thicky * t,
                                    line2_x + thickx * t,
                                    line2_y + thicky * t);
@@ -473,7 +473,7 @@ void Map_Grid_Draw(struct Map *map,  struct Settings *settings, struct Camera *c
     struct Point line;
     int success, edge1, edge2;
     SDL_Color map_bg = settings->map_settings.color_grid;
-    success = SDL_SetRenderDrawColor(map->renderer, map_bg.r, map_bg.g, map_bg.b, map_bg.a);
+    success = SDL_SetRenderDrawColor(map->render.er, map_bg.r, map_bg.g, map_bg.b, map_bg.a);
     SDL_assert(success == 0);
 
     /* -- Draw Lines -- */
@@ -490,7 +490,7 @@ void Map_Grid_Draw(struct Map *map,  struct Settings *settings, struct Camera *c
         edge1 = camera->offset.y < 0 ? 0 : camera->offset.y;
         edge2 = line.y > settings->res.y ? settings->res.y : line.y;
         for (int t = -(thick / 2); t < thick; t++) {
-            SDL_RenderDrawLine(map->renderer, line.x + t, edge1, line.x + t, edge2);
+            SDL_RenderDrawLine(map->render.er, line.x + t, edge1, line.x + t, edge2);
         }
     }
 
@@ -505,10 +505,10 @@ void Map_Grid_Draw(struct Map *map,  struct Settings *settings, struct Camera *c
         edge1 = camera->offset.x < 0 ? 0 : camera->offset.x;
         edge2 = line.x > settings->res.x ? settings->res.x : line.x;
         for (int t = -(thick / 2); t < thick; t++) {
-            SDL_RenderDrawLine(map->renderer, edge1, line.y + t, edge2, line.y + t);
+            SDL_RenderDrawLine(map->render.er, edge1, line.y + t, edge2, line.y + t);
         }
     }
-    Utilities_DrawColor_Reset(map->renderer);
+    Utilities_DrawColor_Reset(map->render.er);
 }
 
 b32 Map_Shadowmap_newFrame(struct Map *map) {
@@ -545,7 +545,7 @@ void Map_Update(struct Map *map,  struct Settings *settings,
         }
         SDL_assert(map->tiles.tilemap_surface);
         SDL_DestroyTexture(map->tiles.tilemap_texture);
-        map->tiles.tilemap_texture = SDL_CreateTextureFromSurface(map->renderer,
+        map->tiles.tilemap_texture = SDL_CreateTextureFromSurface(map->render.er,
                                                                   map->tiles.tilemap_surface);
     } else {
         SDL_assert(map->tiles.tilemap_texture);
@@ -561,12 +561,12 @@ void Map_Update(struct Map *map,  struct Settings *settings,
 
 void Map_Draw(struct Map *map,  struct Settings *settings,
               struct Camera *camera, struct SDL_Texture *render_target) {
-    SDL_assert(map->renderer != NULL);
+    SDL_assert(map->render.er != NULL);
     const Point *tilesize   = Map_Tilesize(map);
 
     /* -- Preliminaries -- */
     SDL_Color map_bg = settings->map_settings.color_grid;
-    SDL_SetRenderDrawColor(map->renderer, map_bg.r, map_bg.g, map_bg.b, map_bg.a);
+    SDL_SetRenderDrawColor(map->render.er, map_bg.r, map_bg.g, map_bg.b, map_bg.a);
     SDL_Rect dstrect = {
         .x = camera->offset.x,
         .y = camera->offset.y,
@@ -587,14 +587,14 @@ void Map_Draw(struct Map *map,  struct Settings *settings,
         Map_Update(map, settings, camera, render_target);
 
     SDL_assert(map->tiles.tileset_textures != NULL);
-    SDL_RenderCopy(map->renderer, map->tiles.tilemap_texture, NULL, &dstrect); /* slow */
+    SDL_RenderCopy(map->render.er, map->tiles.tilemap_texture, NULL, &dstrect); /* slow */
 
     /* -- Draw Arrow -- */
     if (map->arrow && map->arrow->show) {
         SDL_assert(map->arrow->textures != NULL);
-        Arrow_Draw(map->arrow, map->renderer, camera);
+        Arrow_Draw(map->arrow, map->render.er, camera);
     }
 
-    Utilities_DrawColor_Reset(map->renderer);
+    Utilities_DrawColor_Reset(map->render.er);
 }
 

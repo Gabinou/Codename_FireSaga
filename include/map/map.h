@@ -163,7 +163,7 @@ typedef struct Map_Render {
     struct Point visiblemin;
     struct Point visiblemax;
     SDL_Texture     *texture;
-    SDL_Renderer    *renderer;
+    SDL_Renderer    *er;
 
     struct Tilemap_Shader *tilemap_shader;
 

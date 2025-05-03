@@ -480,7 +480,7 @@ void Map_Members_Alloc(struct Map *map) {
     SDL_assert(map->perimiter.edges_danger == NULL);
     map->perimiter.edges_danger = SDL_calloc(len, sizeof(*map->perimiter.edges_danger));
 
-    if (map->renderer != NULL) {
+    if (map->render.er != NULL) {
         Map_Tilemap_Surface_Init(map);
         Map_Tilemap_Texture_Init(map);
 
@@ -488,7 +488,7 @@ void Map_Members_Alloc(struct Map *map) {
         const i32 *tilesize = (const i32 *)Map_Tilesize(map);
         map->arrow = Arrow_Init(tilesize);
         SDL_assert(map->arrow != NULL);
-        Arrow_Textures_Load(map->arrow, ARROW_FILENAME, map->renderer);
+        Arrow_Textures_Load(map->arrow, ARROW_FILENAME, map->render.er);
         SDL_assert(map->arrow->textures != NULL);
     } else {
         SDL_LogWarn(SDL_LOG_CATEGORY_RENDER, "Map: Renderer is NULL, skipping related member allocs");
@@ -529,7 +529,7 @@ void Map_Texture_Alloc(struct Map *map) {
 
     const Point *tilesize   = Map_Tilesize(map);
     const Point *size       = Map_Gridsize(map);
-    map->render.texture = SDL_CreateTexture(map->renderer, SDL_PIXELFORMAT_ARGB8888,
+    map->render.texture = SDL_CreateTexture(map->render.er, SDL_PIXELFORMAT_ARGB8888,
                                             SDL_TEXTUREACCESS_TARGET,
                                             tilesize->x * size->x,
                                             tilesize->y * size->y);
@@ -545,13 +545,13 @@ void Map_Tilemap_Texture_Free(struct Map *map) {
 }
 
 void Map_Tilemap_Texture_Init(struct Map *map) {
-    SDL_assert(map->renderer);
+    SDL_assert(map->render.er);
     Map_Tilemap_Texture_Free(map);
     const Point *tilesize   = Map_Tilesize(map);
     const Point *size       = Map_Gridsize(map);
     i32 x_pixels = tilesize->x * size->x;
     i32 y_pixels = tilesize->y * size->y;
-    map->tiles.tilemap_texture = SDL_CreateTexture(map->renderer, SDL_PIXELFORMAT_RGB888,
+    map->tiles.tilemap_texture = SDL_CreateTexture(map->render.er, SDL_PIXELFORMAT_RGB888,
                                                    SDL_TEXTUREACCESS_TARGET, x_pixels, y_pixels);
     SDL_assert(map->tiles.tilemap_texture);
 }
