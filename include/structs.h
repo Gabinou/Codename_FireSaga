@@ -928,6 +928,13 @@ extern const struct Party Party_default;
 
 /* --- Game Object --- */
 typedef struct Game {
+    struct Settings    settings;
+    struct Convoy      convoy;
+    // TODO: Camera in map too, which one is right?
+    struct Camera camera;
+    struct Map *map;
+    struct Party party;
+
     // typedef struct Game_Render {
     SDL_Renderer    *renderer;
     SDL_Texture     *render_target;
@@ -969,16 +976,12 @@ typedef struct Game {
     u32 inputs[SOTA_BUTTON_END];
     // } Game_Inputs;
 
-    // TODO: Camera in map too, which one is right?
-    struct Camera camera;
-
     // typedef struct Game_Fonts {
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_tight;
     struct PixelFont *pixelnours_big;
     struct PixelFont *menu_pixelfont;
     // } Game_Fonts;
-    struct Map *map;
 
     /* gameplay state bitfields, narrative conditions */
     // typedef struct Game_Narrative {
@@ -1024,8 +1027,6 @@ typedef struct Game {
     Point selected_unit_moved_position;
 
     tnecs_entity *map_enemies;
-    struct Party party;
-
     tnecs_entity *ent_unit_loaded;
 
     // typedef struct Game_Combat {
@@ -1049,9 +1050,6 @@ typedef struct Game {
     i8 state_previous;
     i8 substate_previous;
     // } Game_State;
-
-    struct Settings    settings;
-    struct Convoy      convoy;
 
     // typedef struct Game_RNG {
     u64 s_xoshiro256ss[4]; /* Only used to read s from RNG file */
