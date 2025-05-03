@@ -41,7 +41,7 @@ i32 Map_Cost_Effective(const Map *map, i32 move) {
     return (Map_Cost_Multiplier(map) * move);
 }
 
-Point *Map_Tilesize(const Map *map) {
+const Point *Map_Tilesize(const Map *map) {
     /* Size of all tiles on map in [pixels] */
     if (map == NULL) {
         SDL_assert(false);

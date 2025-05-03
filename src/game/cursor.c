@@ -281,9 +281,11 @@ void Game_CursorfollowsMouse_onMap(struct Game *sota) {
     /* - Get cursor tile position - */
     struct Point mouse_pos, tilemap_pos;
     SDL_GetMouseState(&mouse_pos.x, &mouse_pos.y);
-    tilemap_pos.x = SOTA_PIXEL2TILEMAP(mouse_pos.x, sota->map->tilesize[0],
+    Point *tilesize = Map_Tilesize(sota->map);
+
+    tilemap_pos.x = SOTA_PIXEL2TILEMAP(mouse_pos.x, tilesize->x,
                                        sota->camera.offset.x, sota->camera.zoom);
-    tilemap_pos.y = SOTA_PIXEL2TILEMAP(mouse_pos.y, sota->map->tilesize[1],
+    tilemap_pos.y = SOTA_PIXEL2TILEMAP(mouse_pos.y, tilesize->y,
                                        sota->camera.offset.y, sota->camera.zoom);
     tilemap_pos.x = int_inbounds(tilemap_pos.x, 0, Map_col_len(sota->map) - 1);
     tilemap_pos.y = int_inbounds(tilemap_pos.y, 0, Map_row_len(sota->map) - 1);
