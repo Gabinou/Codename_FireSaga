@@ -359,14 +359,17 @@ void Map_Tilesize_Set(struct Map *map, i32 width, i32 height) {
 }
 
 void Map_Size_Set(struct Map *map, i32 col_len, i32 row_len) {
+    SDL_assert(col_len > 0);
+    SDL_assert(row_len > 0);
+    SDL_assert(col_len < MAP_MAX_COLS);
+    SDL_assert(row_len < MAP_MAX_ROWS);
     map->size.grid.x = col_len;
     map->size.grid.y = row_len;
-
-    SDL_assert(Map_row_len(map) > 0);
-    SDL_assert(Map_col_len(map) > 0);
-    SDL_assert(Map_row_len(map) < MAP_MAX_COLS);
-
-    SDL_assert(Map_col_len(map) < MAP_MAX_ROWS);
+    const Point *size = Map_Gridsize(map);
+    SDL_assert(size->x > 0);
+    SDL_assert(size->y > 0);
+    SDL_assert(size->x < MAP_MAX_COLS);
+    SDL_assert(size->y < MAP_MAX_ROWS);
 }
 
 void Map_Members_Alloc(struct Map *map) {
@@ -718,15 +721,8 @@ void Map_readJSON(void *input, const cJSON *jmap) {
     map->chapter = cJSON_GetNumberValue(jchapter);
     map->chapter = cJSON_GetNumberValue(jchapter);
 
-    if (Map_col_len(map) != cJSON_GetNumberValue(jcol_len)) {
-        SDL_Log("Map_col_len(map) should be set to '%f'", cJSON_GetNumberValue(jcol_len));
-        exit(ERROR_Generic);
-    }
-
-    if (Map_row_len(map) != cJSON_GetNumberValue(jrow_len)) {
-        SDL_Log("Map_row_len(map) should be set to '%f'", cJSON_GetNumberValue(jrow_len));
-        exit(ERROR_Generic);
-    }
+    map->size.grid.x = cJSON_GetNumberValue(jcol_len);
+    map->size.grid.y = cJSON_GetNumberValue(jrow_len);
 
     if (map->arrow) {
         map->arrow->col_len = Map_col_len(map);

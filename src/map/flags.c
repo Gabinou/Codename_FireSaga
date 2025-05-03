@@ -56,7 +56,7 @@ const Point *Map_Gridsize(const Map *map) {
         SDL_assert(false);
         return (NULL);
     }
-    return ((const Point *)&map->size.tile);
+    return ((const Point *)&map->size.grid);
 }
 
 i32 Map_row_len(const Map *map) {
@@ -65,7 +65,7 @@ i32 Map_row_len(const Map *map) {
         SDL_assert(false);
         return (0);
     }
-    return (map->size.tile.y);
+    return (map->size.grid.y);
 }
 
 i32 Map_col_len(const Map *map) {
@@ -74,7 +74,7 @@ i32 Map_col_len(const Map *map) {
         SDL_assert(false);
         return (0);
     }
-    return (map->size.tile.x);
+    return (map->size.grid.x);
 }
 
 i32 Map_area(const Map *map) {
