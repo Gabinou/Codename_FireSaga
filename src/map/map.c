@@ -523,7 +523,7 @@ void Map_Texture_Alloc(struct Map *map) {
     if (map->render.texture != NULL) {
         SDL_DestroyTexture(map->render.texture);
     }
-    
+
     const Point *tilesize   = Map_Tilesize(map);
     const Point *size       = Map_Gridsize(map);
     map->render.texture = SDL_CreateTexture(map->renderer, SDL_PIXELFORMAT_ARGB8888,

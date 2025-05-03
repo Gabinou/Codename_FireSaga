@@ -38,17 +38,20 @@ void Map_Global_Danger_Sub(struct Map *map, i32 *danger) {
 }
 
 void Map_Danger_Reset(struct Map *map) {
-    memset(map->darrs.dangermap, 0, sizeof(*map->darrs.dangermap) * Map_row_len(map) * Map_col_len(map));
+    memset(map->darrs.dangermap, 0,
+           sizeof(*map->darrs.dangermap) * Map_row_len(map) * Map_col_len(map));
     map->flags.shading_changed = true;
 }
 
 void Map_Danger_Add(struct Map *map, i32 *danger) {
-    map->darrs.dangermap = matrix_plus_noM(map->darrs.dangermap, danger, Map_row_len(map) * Map_col_len(map));
+    map->darrs.dangermap = matrix_plus_noM(map->darrs.dangermap, danger,
+                                           Map_row_len(map) * Map_col_len(map));
     map->flags.shading_changed = true;
 }
 
 void Map_Danger_Sub(struct Map *map, i32 *danger) {
-    map->darrs.dangermap = matrix_sub_noM(map->darrs.dangermap, danger, Map_row_len(map) * Map_col_len(map));
+    map->darrs.dangermap = matrix_sub_noM(map->darrs.dangermap, danger,
+                                          Map_row_len(map) * Map_col_len(map));
     map->flags.shading_changed = true;
 }
 
