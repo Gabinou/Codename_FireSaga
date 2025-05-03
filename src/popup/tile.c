@@ -158,7 +158,7 @@ void PopUp_Tile_Set(struct PopUp_Tile *popup_tile, struct Game *sota) {
     cursor_position = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
 
     /* -- Give tile to popup_tile -- */
-    int i = cursor_position->tilemap_pos.y * sota->map->col_len + cursor_position->tilemap_pos.x;
+    int i = cursor_position->tilemap_pos.y * Map_col_len(sota->map) + cursor_position->tilemap_pos.x;
     i32 tile_ind = sota->map->darrs.tilemap[i] / TILE_DIVISOR;
     SDL_assert(tile_ind > 0);
     i32 tile_order = Map_Tile_Order(sota->map, tile_ind);

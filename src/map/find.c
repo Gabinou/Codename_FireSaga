@@ -45,7 +45,7 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
     _Map_Movemap_Compute(map, start, effective_move);
 
     // printf("MOVE\n");
-    // matrix_print(map->darrs.movemap, map->row_len, map->col_len);
+    // matrix_print(map->darrs.movemap, map->row_len, Map_col_len(map));
 
     /* Alloc defendants */
     tnecs_entity *defendants  = DARR_INIT(defendants, tnecs_entity, 4);
@@ -115,16 +115,16 @@ b32 Map_canEquip_Range(struct Map *map, tnecs_entity unit_ent,
     map_to.aggressor    = unit_ent;
 
     // printf("MOVE BEFORE Map_Act_To\n");
-    // matrix_print(map->darrs.movemap, map->row_len, map->col_len);
+    // matrix_print(map->darrs.movemap, map->row_len, Map_col_len(map));
 
     Map_Act_To(map, map_to);
 
     // printf("MOVE AFTER Map_Act_To\n");
-    // matrix_print(map->darrs.movemap, map->row_len, map->col_len);
+    // matrix_print(map->darrs.movemap, map->row_len, Map_col_len(map));
     // printf("ATK\n");
-    // matrix_print(map->darrs.attacktomap, map->row_len, map->col_len);
+    // matrix_print(map->darrs.attacktomap, map->row_len, Map_col_len(map));
     // printf("UNIT\n");
-    // entity_print(map->darrs.unitmap, map->row_len, map->col_len);
+    // entity_print(map->darrs.unitmap, map->row_len, Map_col_len(map));
 
     /* Find all Defendants/Patients in list */
     MapFind mapfind     = MapFind_default;
@@ -169,7 +169,7 @@ tnecs_entity *Map_Find_Defendants(struct Map *map, MapFind mapfind) {
         size_t y_at = attacktolist[TWO_D * i + 1];
 
         /* - Checking for units on x_at, y_at - */
-        size_t index = y_at * map->col_len + x_at;
+        size_t index = y_at * Map_col_len(map) + x_at;
         tnecs_entity unitontile = map->darrs.unitmap[index];
 
         // TODO: Make this an assert?
@@ -265,7 +265,7 @@ tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
         for (size_t i = 0; i < DARR_NUM(healtolist) / 2; i++) {
             size_t x_at = healtolist[TWO_D * i];
             size_t y_at = healtolist[TWO_D * i + 1];
-            tnecs_entity unitontile = map->darrs.unitmap[y_at * map->col_len + x_at];
+            tnecs_entity unitontile = map->darrs.unitmap[y_at * Map_col_len(map) + x_at];
 
             /* Note: No need to check range.
                      Should have been included in Map_Act_to call
@@ -358,14 +358,14 @@ tnecs_entity *Map_Find_Spectators(struct Map *map, tnecs_entity *spectators, i32
 
     /* -- Find spectator on neighbour tiles (to dance) -- */
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
-        int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, map->col_len);
+        int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, Map_col_len(map));
         int y_at = int_inbounds(y + q_cycle4_zmzp(i), 0, map->row_len);
 
         /* Skip if tile is same as current tile */
         if ((x_at == x) && (y_at == y))
             continue;
 
-        tnecs_entity spectator = map->darrs.unitmap[y_at * map->col_len + x_at];
+        tnecs_entity spectator = map->darrs.unitmap[y_at * Map_col_len(map) + x_at];
         if (spectator == TNECS_NULL)
             continue;
 
@@ -381,14 +381,14 @@ tnecs_entity *Map_Find_Auditors(struct Map *map, tnecs_entity *auditors, i32 x, 
     /* -- Find auditors on neighbour tiles (to speak) -- */
 
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
-        int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, map->col_len);
+        int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, Map_col_len(map));
         int y_at = int_inbounds(y + q_cycle4_zmzp(i), 0, map->row_len);
 
         /* Skip if tile is same as current tile */
         if ((x_at == x) && (y_at == y))
             continue;
 
-        tnecs_entity auditor_ent = map->darrs.unitmap[y_at * map->col_len + x_at];
+        tnecs_entity auditor_ent = map->darrs.unitmap[y_at * Map_col_len(map) + x_at];
         if (auditor_ent <= TNECS_NULL)
             continue;
 
@@ -403,14 +403,14 @@ tnecs_entity *Map_Find_Auditors(struct Map *map, tnecs_entity *auditors, i32 x, 
 tnecs_entity *Map_Find_Traders(struct Map *map, tnecs_entity *passives, i32 x, i32 y) {
     /* -- Find traders on neighbours (to trade with) -- */
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
-        int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, map->col_len);
+        int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, Map_col_len(map));
         int y_at = int_inbounds(y + q_cycle4_zmzp(i), 0, map->row_len);
 
         /* Skip if tile is same as current tile */
         if ((x_at == x) && (y_at == y))
             continue;
 
-        tnecs_entity passive = map->darrs.unitmap[y_at * map->col_len + x_at];
+        tnecs_entity passive = map->darrs.unitmap[y_at * Map_col_len(map) + x_at];
         if (passive <= TNECS_NULL)
             continue;
 
@@ -427,14 +427,14 @@ tnecs_entity *Map_Find_Victims(struct Map *map, tnecs_entity *victims_ent,
     // TODO: map edges!
 
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
-        int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, map->col_len);
+        int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, Map_col_len(map));
         int y_at = int_inbounds(y + q_cycle4_zmzp(i), 0, map->row_len);
 
         /* Skip if tile is same as current tile */
         if ((x_at == x) && (y_at == y))
             continue;
 
-        tnecs_entity victim_ent = map->darrs.unitmap[y_at * map->col_len + x_at];
+        tnecs_entity victim_ent = map->darrs.unitmap[y_at * Map_col_len(map) + x_at];
         if (victim_ent <= TNECS_NULL)
             continue;
 

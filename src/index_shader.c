@@ -101,8 +101,8 @@ void Tilemap_Shader_Load_Tilemap_JSON(struct Tilemap_Shader *shd,  const cJSON *
     SDL_assert(shd != NULL);
     SDL_assert(jmap != NULL);
     SDL_assert(shd->map != NULL);
-    SDL_assert(shd->map->row_len > 0);
-    SDL_assert(shd->map->col_len > 0);
+    SDL_assert(Map_row_len(shd->map) > 0);
+    SDL_assert(Map_col_len(shd->map) > 0);
 
     /* - Frames from shadow tilemap - */
     cJSON *jtilemap_shadow = cJSON_GetObjectItem(jmap, "tilemap_shadow");
@@ -128,7 +128,7 @@ void Tilemap_Shader_Load_Tilemap_JSON(struct Tilemap_Shader *shd,  const cJSON *
         SDL_assert(jframe);
 
         /* - Read shadow tilemap for current frame - */
-        int row_len = shd->map->row_len, col_len = shd->map->col_len;
+        int row_len = Map_row_len(shd->map), col_len = Map_col_len(shd->map);
         i32 *shadow_tilemap = SDL_malloc(row_len * col_len * sizeof(*shadow_tilemap));
         cJSON *jarr = cJSON_GetObjectItem(jframe, "array");
         Array2D_readJSON(jarr, shadow_tilemap, row_len, col_len);
@@ -271,8 +271,8 @@ SDL_Surface *Tilemap_Shade_Surface(struct Tilemap_Shader *shd, SDL_Surface *surf
     SDL_assert(shd->shadow_tilemaps != NULL);
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(surf->format->format));
     u8 minpos[TWO_D], maxpos[TWO_D], st_index;
-    int row_len = shd->map->row_len, col_len = shd->map->col_len;
-    i32 *tsize = shd->map->tilesize;
+    int row_len = Map_row_len(shd->map), col_len = Map_col_len(shd->map);
+    i32 *tsize = (i32 *)Map_Tilesize(shd->map);
     Map_Visible_Bounds(minpos, maxpos, row_len, col_len, tsize, &settings->res, camera);
     SDL_assert(minpos[0] <= maxpos[0]);
     SDL_assert(minpos[1] <= maxpos[1]);

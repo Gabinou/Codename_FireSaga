@@ -222,7 +222,7 @@ static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
     // action->target_move.x = attackfromlist[0];
     // action->target_move.y = attackfromlist[1];
 
-    // int index = action->target_move.y * sota->map->col_len + action->target_move.x;
+    // int index = action->target_move.y * Map_col_len(sota->map) + action->target_move.x;
     // SDL_assert(sota->map->darrs.unitmap[index] == TNECS_NULL);
 
     /* - Set target_action to enemy-occupied tile - */
@@ -265,8 +265,8 @@ static void _AI_Decider_Master_Move_To(struct Game *sota, tnecs_entity npc_ent,
 static void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
                                    struct AI_Action *action) {
     /* --- AI unit tries to kill enemy on way to primary target --- */
-    SDL_assert((action->target_move.x >= 0) && (action->target_move.x < sota->map->col_len));
-    SDL_assert((action->target_move.y >= 0) && (action->target_move.y < sota->map->row_len));
+    SDL_assert((action->target_move.x >= 0) && (action->target_move.x < Map_col_len(sota->map)));
+    SDL_assert((action->target_move.y >= 0) && (action->target_move.y < Map_row_len(sota->map)));
 
     /* -- Find targets to attack after target_move was set -- */
     struct Position *pos = IES_GET_COMPONENT(sota->world, npc_ent, Position);
@@ -421,9 +421,9 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
     }
 
     b32 set_x   = (action->target_move.x >= 0);
-    set_x      &= (action->target_move.x < sota->map->col_len);
+    set_x      &= (action->target_move.x < Map_col_len(sota->map));
     b32 set_y   = (action->target_move.y >= 0);
-    set_y      &= (action->target_move.y < sota->map->row_len);
+    set_y      &= (action->target_move.y < Map_row_len(sota->map));
 
     /* Skip if target_move was set previously by action decider */
     if (set_y && set_x) {
@@ -457,13 +457,13 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
     Unit_computeMove(npc, &effective_move);
     effective_move *= Map_Cost_Multiplier(sota->map);
     SDL_assert(costmap != NULL);
-    SDL_assert((target.x >= 0) && (target.x < sota->map->col_len));
-    SDL_assert((target.y >= 0) && (target.y < sota->map->row_len));
-    SDL_assert((start.x  >= 0) && (start.x  < sota->map->col_len));
-    SDL_assert((start.y  >= 0) && (start.y  < sota->map->row_len));
+    SDL_assert((target.x >= 0) && (target.x < Map_col_len(sota->map)));
+    SDL_assert((target.y >= 0) && (target.y < Map_row_len(sota->map)));
+    SDL_assert((start.x  >= 0) && (start.x  < Map_col_len(sota->map)));
+    SDL_assert((start.y  >= 0) && (start.y  < Map_row_len(sota->map)));
 
-    i16 row_len     = sota->map->row_len;
-    i16 col_len     = sota->map->col_len;
+    i16 row_len     = Map_row_len(sota->map);
+    i16 col_len     = Map_col_len(sota->map);
 
     /* -- Pathfinding --  */
     int *path_list  = DARR_INIT(path_list, int, 16);
@@ -504,9 +504,9 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
 
     /* -- Skip no movement -- */
     b32 null_x   = (action->target_move.x < 0);
-    null_x      |= (action->target_move.x >= sota->map->col_len);
+    null_x      |= (action->target_move.x >= Map_col_len(sota->map));
     b32 null_y   = (action->target_move.y < 0);
-    null_y      |= (action->target_move.y >= sota->map->row_len);
+    null_y      |= (action->target_move.y >= Map_row_len(sota->map));
     if (null_x || null_y) {
         SDL_LogWarn(SOTA_LOG_AI, "AI Move: target_move is outside bounds. Skipping");
         return;
@@ -519,26 +519,26 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
     // TODO: Movement Animation
     struct Point old = pos->tilemap_pos;
     struct Point new = action->target_move;
-    int old_index = old.y * sota->map->col_len + old.x;
-    int new_index = new.y * sota->map->col_len + new.x;
+    int old_index = old.y * Map_col_len(sota->map) + old.x;
+    int new_index = new.y * Map_col_len(sota->map) + new.x;
     if ((new.x == old.x) && (new.y == old.y)) {
         SDL_LogWarn(SOTA_LOG_AI, "AI Move: target_move is current position. Skipping");
         return;
     }
 
-    // entity_print(sota->map->darrs.unitmap, sota->map->row_len, sota->map->col_len);
-    // entity_print(sota->map->darrs.unitmap, sota->map->row_len, sota->map->col_len);
+    // entity_print(sota->map->darrs.unitmap, Map_row_len(sota->map), Map_col_len(sota->map));
+    // entity_print(sota->map->darrs.unitmap, Map_row_len(sota->map), Map_col_len(sota->map));
     SDL_assert(sota->map->darrs.unitmap[old_index] == npc_ent);
     SDL_assert(sota->map->darrs.unitmap[new_index] == TNECS_NULL);
 
     SDL_assert(old.y > 0);
-    SDL_assert(old.y < sota->map->row_len);
+    SDL_assert(old.y < Map_row_len(sota->map));
     SDL_assert(old.x > 0);
-    SDL_assert(old.x < sota->map->col_len);
+    SDL_assert(old.x < Map_col_len(sota->map));
     SDL_assert(new.y > 0);
-    SDL_assert(new.y < sota->map->row_len);
+    SDL_assert(new.y < Map_row_len(sota->map));
     SDL_assert(new.x > 0);
-    SDL_assert(new.x < sota->map->col_len);
+    SDL_assert(new.x < Map_col_len(sota->map));
 
     SDL_assert(sota->map->darrs.unitmap[old_index] > TNECS_NULL);
 

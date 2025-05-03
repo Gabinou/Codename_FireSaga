@@ -324,7 +324,7 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
     tnecs_entity unit_ent = sota->selected_unit_entity;
     struct Position *pos = IES_GET_COMPONENT(sota->world, unit_ent, Position);
     SDL_assert(pos != NULL);
-    i32 index = sota_2D_index(pos->tilemap_pos.x, pos->tilemap_pos.y, sota->map->col_len);
+    i32 index = sota_2D_index(pos->tilemap_pos.x, pos->tilemap_pos.y, Map_col_len(sota->map));
     i32 tile_ind = sota->map->darrs.tilemap[index] / TILE_DIVISOR;
     b32 isthrone = (tile_ind == TILE_THRONE);
 

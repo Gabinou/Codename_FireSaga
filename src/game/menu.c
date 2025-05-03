@@ -357,7 +357,7 @@ void Game_postLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
     Map_Act_To(sota->map, map_to);
 
     /* Find all Defendants */
-    // matrix_print(sota->map->darrs.attacktomap, sota->map->row_len, sota->map->col_len);
+    // matrix_print(sota->map->darrs.attacktomap, Map_row_len(sota->map), Map_col_len(sota->map));
 
     MapFind mapfind     = MapFind_default;
 
@@ -454,7 +454,7 @@ void Game_preLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     Map_Act_To(sota->map, map_to);
     // SDL_Log("sota->map->darrs.healtolist %d", DARR_NUM(sota->map->darrs.healtolist) / TWO_D);
 
-    // matrix_print(sota->map->darrs.healtomap, sota->map->row_len, sota->map->col_len);
+    // matrix_print(sota->map->darrs.healtomap, Map_row_len(sota->map), Map_col_len(sota->map));
 
     MapFind mapfind = MapFind_default;
 

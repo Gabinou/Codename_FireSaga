@@ -51,12 +51,12 @@ void Game_cursorFocus_onMap(struct Game *sota) {
     SDL_assert(position != NULL);
     position->onTilemap = true;
 
-    Position_Bounds_Set(position, 0, sota->map->col_len - 1, 0, sota->map->row_len - 1);
+    Position_Bounds_Set(position, 0, Map_col_len(sota->map) - 1, 0, Map_row_len(sota->map) - 1);
 
     /* -- Placing cursor on map -- */
     i32 map_tilesize[2] = {sota->map->tilesize[0], sota->map->tilesize[1]};
-    int row_len = sota->map->row_len;
-    int col_len = sota->map->col_len;
+    int row_len = Map_row_len(sota->map);
+    int col_len = Map_col_len(sota->map);
     if (sota->ismouse) {
         struct Point mouse_pos, tilemap_pos;
         SDL_GetMouseState(&mouse_pos.x, &mouse_pos.y);
@@ -241,8 +241,8 @@ b32 Game_isCursoronTilemap(struct Game *sota) {
                                            sota->camera.offset.x, sota->camera.zoom);
         tilemap_pos.y = SOTA_PIXEL2TILEMAP(mouse_pos.y, sota->map->tilesize[1],
                                            sota->camera.offset.y, sota->camera.zoom);
-        b32 x_isIn = int_inbounds(tilemap_pos.x, 0, sota->map->col_len - 1);
-        b32 y_isIn = int_inbounds(tilemap_pos.y, 0, sota->map->row_len - 1);
+        b32 x_isIn = int_inbounds(tilemap_pos.x, 0, Map_col_len(sota->map) - 1);
+        b32 y_isIn = int_inbounds(tilemap_pos.y, 0, Map_row_len(sota->map) - 1);
         out = (x_isIn && y_isIn);
     }
     return (out);
@@ -283,8 +283,8 @@ void Game_CursorfollowsMouse_onMap(struct Game *sota) {
                                        sota->camera.offset.x, sota->camera.zoom);
     tilemap_pos.y = SOTA_PIXEL2TILEMAP(mouse_pos.y, sota->map->tilesize[1],
                                        sota->camera.offset.y, sota->camera.zoom);
-    tilemap_pos.x = int_inbounds(tilemap_pos.x, 0, sota->map->col_len - 1);
-    tilemap_pos.y = int_inbounds(tilemap_pos.y, 0, sota->map->row_len - 1);
+    tilemap_pos.x = int_inbounds(tilemap_pos.x, 0, Map_col_len(sota->map) - 1);
+    tilemap_pos.y = int_inbounds(tilemap_pos.y, 0, Map_row_len(sota->map) - 1);
 
     /* - Computing lastpos, move_data - */
     sota->cursor_lastpos.x = cursor_position->tilemap_pos.x;
@@ -382,7 +382,7 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
         Game_Cursor_Moves_Straight(sota);
     int cx = sota->cursor_move.x, cy = sota->cursor_move.y;
     int tx = position->tilemap_pos.x, ty = position->tilemap_pos.y;
-    int cl = sota->map->col_len, rl = sota->map->row_len;
+    int cl = Map_col_len(sota->map), rl = Map_row_len(sota->map);
     canSend &= !((cx == -1)  && (cy == 0) && (tx == 0)); /* x- */
     canSend &= !((cx == 0)  && (cy == -1) && (ty == 0)); /* y- */
     canSend &= !((cx == 1)  && (cy == 0) && (tx == (cl - 1))); /* x+ */
@@ -396,8 +396,8 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
     //    5- cursor is NOT in movemap IN map_unit move SUBSTATE
     if (sota->substate == GAME_SUBSTATE_MAP_UNIT_MOVES) {
         // SDL_Log("sota->cursor_move %d %d", sota->cursor_move.x, sota->cursor_move.y);
-        int nx = int_inbounds(tx + cx, 0, sota->map->col_len - 1);
-        int ny = int_inbounds(ty + cy, 0, sota->map->row_len - 1);
+        int nx = int_inbounds(tx + cx, 0, Map_col_len(sota->map) - 1);
+        int ny = int_inbounds(ty + cy, 0, Map_row_len(sota->map) - 1);
         canSend &= (sota->map->darrs.movemap[ny * cl + nx] >= NMATH_MOVEMAP_MOVEABLEMIN);
     }
 #endif /* INFINITE_MOVE_ALL */

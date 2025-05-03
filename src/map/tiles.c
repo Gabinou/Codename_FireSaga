@@ -173,7 +173,7 @@ void Map_Tilemap_Chests(struct Map *map) {
         int x = pos->tilemap_pos.x;
         int y = pos->tilemap_pos.y;
         i32 tile = chest->tile + TILE_CHEST * TILE_DIVISOR;
-        map->darrs.tilemap[y * map->col_len + x] = tile;
+        map->darrs.tilemap[y * Map_col_len(map) + x] = tile;
     }
 }
 
@@ -193,7 +193,7 @@ void Map_Tilemap_Breakables(struct Map *map) {
         int x = pos->tilemap_pos.x;
         int y = pos->tilemap_pos.y;
         i32 tile = breaka->tile + TILE_DOOR * TILE_DIVISOR;
-        map->darrs.tilemap[y * map->col_len + x] = tile;
+        map->darrs.tilemap[y * Map_col_len(map) + x] = tile;
     }
 }
 
@@ -209,7 +209,7 @@ void Map_Tilemap_Doors(struct Map *map) {
         int x = pos->tilemap_pos.x;
         int y = pos->tilemap_pos.y;
         i32 tile = door->tile + TILE_DOOR * TILE_DIVISOR;
-        map->darrs.tilemap[y * map->col_len + x] = tile;
+        map->darrs.tilemap[y * Map_col_len(map) + x] = tile;
     }
 }
 

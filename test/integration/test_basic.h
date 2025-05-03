@@ -59,8 +59,8 @@ void test_load_save(int argc, char *argv[]) {
     nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
     struct Map map = Map_default;
     sota->map = &map;
-    sota->map->row_len = 21;
-    sota->map->col_len = 21;
+    Map_row_len(sota->map) = 21;
+    Map_col_len(sota->map) = 21;
 
     /* Load Save test file */
     char *path1 = PATH_JOIN("saves", "debug_save.json");

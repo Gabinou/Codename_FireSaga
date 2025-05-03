@@ -253,7 +253,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         *position = Position_default;
         // SDL_memcpy(position, &Position_default, sizeof(Position));
         position->onTilemap = true;
-        Position_Bounds_Set(position, 0, sota->map->col_len, 0, sota->map->row_len);
+        Position_Bounds_Set(position, 0, Map_col_len(sota->map), 0, Map_row_len(sota->map));
         position->scale[0]      = (float)sota->map->tilesize[0];
         position->scale[1]      = (float)sota->map->tilesize[0];
         position->tilemap_pos.x = reinf->position.x;
@@ -262,7 +262,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         position->pixel_pos.y   = (i32)lround(position->tilemap_pos.y * position->scale[1]);
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
 
-        int index = position->tilemap_pos.y * sota->map->col_len + position->tilemap_pos.x;
+        int index = position->tilemap_pos.y * Map_col_len(sota->map) + position->tilemap_pos.x;
 
         // check if another unit already on the map.
         if (sota->map->darrs.unitmap[index] != TNECS_NULL) {

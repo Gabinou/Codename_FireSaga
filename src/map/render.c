@@ -16,7 +16,7 @@ void Map_Units_Hide(struct Map *map) {
     if (map->darrs.unitmap == NULL)
         return;
 
-    for (size_t i = 0; i < (map->col_len * map->row_len); i++) {
+    for (size_t i = 0; i < (Map_col_len(map) * map->row_len); i++) {
         tnecs_entity uent = map->darrs.unitmap[i];
         if (uent == TNECS_NULL)
             continue;
@@ -39,8 +39,8 @@ void Map_Frame_Pauses(struct Map *map,  struct Settings *settings) {
 
 void Map_Palettemap_Reset(struct Map *map) {
     SDL_assert(map->row_len < MAP_MAX_ROWS);
-    SDL_assert(map->col_len < MAP_MAX_COLS);
-    size_t bytesize = map->col_len * map->row_len * sizeof(*map->palette.map);
+    SDL_assert(Map_col_len(map) < MAP_MAX_COLS);
+    size_t bytesize = Map_col_len(map) * map->row_len * sizeof(*map->palette.map);
     SDL_assert(map->palette.map != NULL);
     memset(map->palette.map, map->palette.base, bytesize);
 }
@@ -48,15 +48,15 @@ void Map_Palettemap_Reset(struct Map *map) {
 void Map_Palettemap_addMap(struct Map *map, i32 *palettemap, u8 palette) {
     SDL_assert(palette >= PALETTE_NES);
     SDL_assert(palette  < PALETTE_NUM);
-    for (size_t i = 0; i < (map->col_len * map->row_len); i++)
+    for (size_t i = 0; i < (Map_col_len(map) * map->row_len); i++)
         (palettemap[i] > 0) && (map->palette.map[i] = palette); /* short-circuit */
 }
 
 void Map_Palettemap_addList(struct Map *map, i32 *list, u8 palette) {
-    size_t bytesize = map->row_len * map->col_len * sizeof(*map->palette.map);
+    size_t bytesize = map->row_len * Map_col_len(map) * sizeof(*map->palette.map);
     memset(map->palette.map, map->palette.base, bytesize);
     for (size_t i = 0; i < DARR_NUM(list) / TWO_D; i++)
-        map->palette.map[list[TWO_D * i] * map->col_len + list[TWO_D * i + 1]] = palette;
+        map->palette.map[list[TWO_D * i] * Map_col_len(map) + list[TWO_D * i + 1]] = palette;
 }
 
 void Map_Renderer_Set(struct Map *map, SDL_Renderer *renderer) {
@@ -68,9 +68,9 @@ void Map_Renderer_Set(struct Map *map, SDL_Renderer *renderer) {
 
 void Map_Palettemap_Autoset(struct Map *map, u16 flagsum, tnecs_entity self) {
     Map_Palettemap_Reset(map);
-    int size        = map->row_len * map->col_len;
+    int size        = map->row_len * Map_col_len(map);
     i32 *palette    = map->palette.temp;
-    size_t bytesize = map->col_len * map->row_len * sizeof(*map->palette.temp);
+    size_t bytesize = Map_col_len(map) * map->row_len * sizeof(*map->palette.temp);
 
     /* Last set Map_Palettemap_addMap is rendered */
     memset(palette, 0, bytesize);
@@ -128,7 +128,7 @@ void Map_Palettemap_Autoset(struct Map *map, u16 flagsum, tnecs_entity self) {
 }
 
 void Map_Palettemap_SetwMap(struct Map *map, u8 *palettemap) {
-    size_t bytesize = map->row_len * map->col_len * sizeof(*map->palette.map);
+    size_t bytesize = map->row_len * Map_col_len(map) * sizeof(*map->palette.map);
     SDL_assert(map->palette.map != NULL);
     memcpy(map->palette.map, palettemap, bytesize);
 }
@@ -148,12 +148,12 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
     SDL_assert(map->palette.map);
 
     /* Stitching map from tiles */
-    SDL_assert(map->render.visiblemax.x <= map->col_len);
+    SDL_assert(map->render.visiblemax.x <= Map_col_len(map));
     SDL_assert(map->render.visiblemin.x >= 0);
     SDL_assert(map->render.visiblemax.y < map->row_len);
     SDL_assert(map->render.visiblemin.y >= 0);
-    int visible_min = map->render.visiblemin.y * map->col_len + map->render.visiblemin.x;
-    int visible_max = map->render.visiblemax.y * map->col_len + map->render.visiblemax.x;
+    int visible_min = map->render.visiblemin.y * Map_col_len(map) + map->render.visiblemin.x;
+    int visible_max = map->render.visiblemax.y * Map_col_len(map) + map->render.visiblemax.x;
     for (size_t i = visible_min; i < visible_max; i++) {
         tile_ind = map->darrs.tilemap[i] / TILE_DIVISOR;
         texture_ind = map->darrs.tilemap[i] - tile_ind * TILE_DIVISOR;
@@ -166,8 +166,8 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
         srcrect.y = sota_ss_y(texture_ind, TILESET_COL_LEN) * map->tilesize[1];
 
         /* tile position in tilemap */
-        dstrect.x = sota_ss_x(i, map->col_len) * map->tilesize[0];
-        dstrect.y = sota_ss_y(i, map->col_len) * map->tilesize[1];
+        dstrect.x = sota_ss_x(i, Map_col_len(map)) * map->tilesize[0];
+        dstrect.y = sota_ss_y(i, Map_col_len(map)) * map->tilesize[1];
 
         /* Get tile texture to stitch map into */
         SDL_Texture *texture = map->tiles.tileset_textures[palette_ind][tile_order];
@@ -214,10 +214,10 @@ void Map_Visible_Tiles(struct Map *map,  struct Settings *settings, struct Camer
 
     map->render.visiblemax.x = SOTA_DEZOOM((settings->res.x - camera->offset.x) / map->tilesize[0],
                                            camera->zoom);
-    if (map->render.visiblemax.x < map->col_len)
+    if (map->render.visiblemax.x < Map_col_len(map))
         map->render.visiblemax.x++;
-    if (map->render.visiblemax.x > map->col_len)
-        map->render.visiblemax.x = map->col_len;
+    if (map->render.visiblemax.x > Map_col_len(map))
+        map->render.visiblemax.x = Map_col_len(map);
 
     map->render.visiblemax.y = SOTA_DEZOOM((settings->res.y - camera->offset.y) / map->tilesize[1],
                                            camera->zoom);
@@ -234,7 +234,7 @@ void Map_Visible_Tiles(struct Map *map,  struct Settings *settings, struct Camer
 
 SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
     SDL_assert(map->tiles.tilemap_surface != NULL);
-    SDL_assert(map->tiles.tilemap_surface->w == (map->col_len * map->tilesize[0]));
+    SDL_assert(map->tiles.tilemap_surface->w == (Map_col_len(map) * map->tilesize[0]));
     SDL_assert(map->tiles.tilemap_surface->h == (map->row_len * map->tilesize[1]));
     SDL_assert(map->darrs.tilemap          != NULL);
     SDL_assert(map->palette.map       != NULL);
@@ -251,12 +251,12 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
     int success;
 
     /* Stitching map from tiles */
-    SDL_assert(map->render.visiblemax.x <= map->col_len);
+    SDL_assert(map->render.visiblemax.x <= Map_col_len(map));
     SDL_assert(map->render.visiblemin.x >= 0);
     SDL_assert(map->render.visiblemax.y <  map->row_len);
     SDL_assert(map->render.visiblemin.y >= 0);
-    int visible_min = map->render.visiblemin.y * map->col_len + map->render.visiblemin.x;
-    int visible_max = map->render.visiblemax.y * map->col_len + map->render.visiblemax.x;
+    int visible_min = map->render.visiblemin.y * Map_col_len(map) + map->render.visiblemin.x;
+    int visible_max = map->render.visiblemax.y * Map_col_len(map) + map->render.visiblemax.x;
     for (size_t i = visible_min; i < visible_max; i++) {
         /* get palette */
         tile_ind = map->darrs.tilemap[i] / TILE_DIVISOR;
@@ -270,8 +270,8 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
         srcrect.y = (texture_ind / TILESET_COL_LEN) * map->tilesize[1];
 
         /* tile position in tilemap */
-        dstrect.x = (i % map->col_len) * map->tilesize[0];
-        dstrect.y = (i / map->col_len) * map->tilesize[1];
+        dstrect.x = (i % Map_col_len(map)) * map->tilesize[0];
+        dstrect.y = (i / Map_col_len(map)) * map->tilesize[1];
         SDL_assert(tile_ind > 0);
         tile_order = Map_Tile_Order(map, tile_ind);
 
@@ -349,7 +349,7 @@ void _Map_Perimeter_Draw(struct Map *map, struct Settings *settings,
     int success = SDL_SetRenderDrawColor(map->renderer, color.r, color.g, color.b, color.a);
     SDL_assert(success == 0);
 
-    size_t row_len = map->row_len, col_len = map->col_len;
+    size_t row_len = map->row_len, col_len = Map_col_len(map);
     /* -- Draw Lines -- */
     for (i32 i = 0; i < row_len * col_len; i++) {
 
@@ -426,7 +426,7 @@ void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
                              struct Camera  *camera, struct Point pos,
                              struct Range    range,  int colori) {
     i32 include = range.min == 0 ? MOVETILE_INCLUDE : MOVETILE_EXCLUDE;
-    i32 len = map->row_len * map->col_len;
+    i32 len = map->row_len * Map_col_len(map);
     i32 *temp = alloca(len);
     memset(temp, 0, len * sizeof(*temp));
 
@@ -435,14 +435,14 @@ void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
     actto.movemap           = NULL;
     actto.occupymap         = NULL;
     actto.row_len           = map->row_len;
-    actto.col_len           = map->col_len;
+    actto.col_len           = Map_col_len(map);
     actto.point             = pos;
     actto.range             = range;
     actto.mode_movetile     = include;
 
     _Pathfinding_Attackto(actto);
 
-    Map_Perimeter(map->perimiter.edges_danger, temp, map->row_len, map->col_len);
+    Map_Perimeter(map->perimiter.edges_danger, temp, map->row_len, Map_col_len(map));
 
     SDL_Palette *palette_base = sota_palettes[map->palette.base];
     SDL_Color purple = palette_base->colors[colori];
@@ -471,7 +471,7 @@ void Map_Grid_Draw(struct Map *map,  struct Settings *settings, struct Camera *c
     /* -- Draw Lines -- */
     // Note: edge grids are not drawn
     /* - Draw Vertical lines - */
-    for (size_t col = 1; col < map->col_len; col++) {
+    for (size_t col = 1; col < Map_col_len(map); col++) {
         line.x = SOTA_ZOOM(map->tilesize[0] * col, camera->zoom) + camera->offset.x;
         /* if line.x is outside the screen, skip it */
         if ((line.x <= 0) || (line.x > settings->res.x))
@@ -492,7 +492,7 @@ void Map_Grid_Draw(struct Map *map,  struct Settings *settings, struct Camera *c
         if ((line.y <= 0) || (line.y > settings->res.y))
             continue;
 
-        line.x = SOTA_ZOOM(map->tilesize[0] * map->col_len, camera->zoom) + camera->offset.x;
+        line.x = SOTA_ZOOM(map->tilesize[0] * Map_col_len(map), camera->zoom) + camera->offset.x;
         edge1 = camera->offset.x < 0 ? 0 : camera->offset.x;
         edge2 = line.x > settings->res.x ? settings->res.x : line.x;
         for (int t = -(thick / 2); t < thick; t++) {
@@ -560,7 +560,7 @@ void Map_Draw(struct Map *map,  struct Settings *settings,
     SDL_Rect dstrect = {
         .x = camera->offset.x,
         .y = camera->offset.y,
-        .w = SOTA_ZOOM(map->col_len * map->tilesize[0], camera->zoom),
+        .w = SOTA_ZOOM(Map_col_len(map) * map->tilesize[0], camera->zoom),
         .h = SOTA_ZOOM(map->row_len * map->tilesize[1], camera->zoom)
     };
 

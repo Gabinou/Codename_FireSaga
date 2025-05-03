@@ -269,7 +269,7 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         const struct Position *cursor_pos;
         cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
         struct Point pos    = cursor_pos->tilemap_pos;
-        int current_i       = pos.y * sota->map->col_len + pos.x;
+        int current_i       = pos.y * Map_col_len(sota->map) + pos.x;
         tnecs_entity ontile = sota->map->darrs.unitmap[current_i];
 
         /* unit hovering */
@@ -1065,8 +1065,8 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     // 3. Attackmap only defendant. -> Move to cursor hovers new defendant
     struct Map *map = sota->map;
     struct Position *pos  = IES_GET_COMPONENT(sota->world, sota->defendant, Position);
-    memset(map->darrs.attacktomap, 0, map->row_len * map->col_len * sizeof(*map->darrs.attacktomap));
-    map->darrs.attacktomap[(pos->tilemap_pos.y * map->col_len + pos->tilemap_pos.x)] = 1;
+    memset(map->darrs.attacktomap, 0, Map_area(map) * sizeof(*map->darrs.attacktomap));
+    map->darrs.attacktomap[(pos->tilemap_pos.y * Map_col_len(map) + pos->tilemap_pos.x)] = 1;
     Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_ATTACK, TNECS_NULL);
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->darrs.dangermap);
 }

@@ -169,7 +169,8 @@ void Draw_Map_HPBar(tnecs_input *input) {
             continue;
 
         map_hp_bar->tilemap_pos = pos_arr[order].tilemap_pos;
-        MapHPBar_Draw(map_hp_bar, &IES->camera, IES->map->tilesize, IES->render_target,
+        i32 *tilesize = (i32 *)Map_Tilesize(IES->map);
+        MapHPBar_Draw(map_hp_bar, &IES->camera, tilesize, IES->render_target,
                       IES->renderer, IES->world);
     }
 

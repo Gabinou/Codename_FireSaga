@@ -1287,9 +1287,9 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
             Map_Act_To(sota->map, map_to);
 
             // printf("movemap\n");
-            // matrix_print(sota->map->darrs.movemap, sota->map->row_len, sota->map->col_len);
+            // matrix_print(sota->map->darrs.movemap, Map_row_len(sota->map), Map_col_len(sota->map));
             // printf("attacktomap\n");
-            // matrix_print(sota->map->darrs.attacktomap, sota->map->row_len, sota->map->col_len);
+            // matrix_print(sota->map->darrs.attacktomap, Map_row_len(sota->map), Map_col_len(sota->map));
 
             // 2.2 BUT: Moving pos ptr to selected position so that cursor doesn't move
             // Position_Pos_Set(unit_pos, init_pos.x, init_pos.y);

@@ -16,7 +16,7 @@ void Map_startingPos_Add(struct Map *map, i32 col, i32 row) {
         SDL_LogError(SOTA_LOG_SYSTEM, "Start position %d %d not unique", col, row);
         exit(ERROR_Generic);
     }
-    map->start_pos.map[row * map->col_len + col] = 1;
+    map->start_pos.map[row * Map_col_len(map) + col] = 1;
     DARR_PUT(map->start_pos.arr, pos);
 }
 
@@ -27,7 +27,7 @@ void _Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
     if (entity <= TNECS_NULL) {
         return;
     }
-    size_t index        = row * map->col_len + col;
+    size_t index        = row * Map_col_len(map) + col;
     struct Position *pos = IES_GET_COMPONENT(map->world, entity, Position);
     pos->tilemap_pos.x   = col;
     pos->tilemap_pos.y   = row;
@@ -39,11 +39,11 @@ void _Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
 void Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
     SDL_assert(map->world != NULL);
     SDL_assert(map->darrs.unitmap != NULL);
-    SDL_assert((row < map->row_len) && (col < map->col_len));
+    SDL_assert((row < map->row_len) && (col < Map_col_len(map)));
     SDL_assert(entity);
 
     /* -- Preliminaries -- */
-    // tnecs_entity current = map->darrs.unitmap[row * map->col_len + col];
+    // tnecs_entity current = map->darrs.unitmap[row * Map_col_len(map) + col];
     _Map_Unit_Put(map, col, row, entity);
     DARR_PUT(map->units.onfield.arr, entity);
 
@@ -98,8 +98,8 @@ void Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
 
 void Map_Unit_Swap(struct Map *map, u8 old_col, u8 old_row, u8 new_col, u8 new_row) {
     /* New position of unit should always be empty */
-    size_t old_i = old_row * map->col_len + old_col;
-    size_t new_i = new_row * map->col_len + new_col;
+    size_t old_i = old_row * Map_col_len(map) + old_col;
+    size_t new_i = new_row * Map_col_len(map) + new_col;
     tnecs_entity unit_old = map->darrs.unitmap[old_i];
     tnecs_entity unit_new = map->darrs.unitmap[new_i];
 
@@ -110,14 +110,14 @@ void Map_Unit_Swap(struct Map *map, u8 old_col, u8 old_row, u8 new_col, u8 new_r
 void Map_Unit_Move(struct Map *map, u8 col, u8 row, u8 new_col, u8 new_row) {
     /* Note: Does NOT check if [new_x, new_y] is empty. */
     SDL_assert(map->darrs.unitmap != NULL);
-    SDL_assert(col      < map->col_len);
+    SDL_assert(col      < Map_col_len(map));
     SDL_assert(row      < map->row_len);
-    SDL_assert(new_col  < map->col_len);
+    SDL_assert(new_col  < Map_col_len(map));
     SDL_assert(new_row  < map->row_len);
 
     /* New position of unit should always be empty */
-    size_t old_i = row      * map->col_len + col;
-    size_t new_i = new_row  * map->col_len + new_col;
+    size_t old_i = row      * Map_col_len(map) + col;
+    size_t new_i = new_row  * Map_col_len(map) + new_col;
 
     /* -- Move unit on unitmap -- */
     tnecs_entity entity = map->darrs.unitmap[old_i];
@@ -165,9 +165,9 @@ tnecs_entity Map_Unit_Get_Boss(struct Map *map, u8 army) {
 
 tnecs_entity Map_Unit_Get(struct Map *map, u8 col, u8 row) {
     SDL_assert(map->darrs.unitmap != NULL);
-    SDL_assert(col < map->col_len);
+    SDL_assert(col < Map_col_len(map));
     SDL_assert(row < map->row_len);
-    return (map->darrs.unitmap[row * map->col_len + col]);
+    return (map->darrs.unitmap[row * Map_col_len(map) + col]);
 }
 
 void Map_Breakable_onBroken(struct Map *map, tnecs_entity breakable) {
@@ -232,8 +232,8 @@ tnecs_entity _Map_Unit_Remove_List(struct Map *map,  tnecs_entity entity) {
 
 tnecs_entity _Map_Unit_Remove_Map(struct Map *map, u8 col, u8 row) {
     SDL_assert(map->darrs.unitmap != NULL);
-    tnecs_entity out = map->darrs.unitmap[row * map->col_len + col];
-    map->darrs.unitmap[row * map->col_len + col] = TNECS_NULL;
+    tnecs_entity out = map->darrs.unitmap[row * Map_col_len(map) + col];
+    map->darrs.unitmap[row * Map_col_len(map) + col] = TNECS_NULL;
     return (out);
 }
 
@@ -247,7 +247,7 @@ void Map_Unit_Remove(struct Map *map, tnecs_entity entity) {
     SDL_assert(pos->onTilemap);
 
     // SDL_Log("pos->tilemap_pos %d %d", pos->tilemap_pos.x, pos->tilemap_pos.y);
-    int index = pos->tilemap_pos.y * map->col_len + pos->tilemap_pos.x;
+    int index = pos->tilemap_pos.y * Map_col_len(map) + pos->tilemap_pos.x;
     tnecs_entity ontile_ent = map->darrs.unitmap[index];
     SDL_assert(ontile_ent > TNECS_NULL);
     // SDL_Log("%s %d %d", __func__, ontile_ent, map->darrs.unitmap[index]);

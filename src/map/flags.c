@@ -39,5 +39,49 @@ i32 Map_Cost_Effective(const Map *map, i32 move) {
         return (0);
     }
     return (Map_Cost_Multiplier(map) * move);
+}
 
+Point *Map_Tilesize(const Map *map) {
+    /* Size of all tiles on map in [pixels] */
+    if (map == NULL) {
+        SDL_assert(false);
+        return (NULL);
+    }
+    return(&map->size.tile);
+}
+
+Point *Map_Gridsize(const Map *map) {
+    /* Size of the map in [tiles] */
+    if (map == NULL) {
+        SDL_assert(false);
+        return (NULL);
+    }
+    return(&map->size.tile);
+}
+
+i32 Map_row_len(const Map *map) {
+    /* Size of the map in [tiles] in y */
+    if (map == NULL) {
+        SDL_assert(false);
+        return (NULL);
+    }
+    return(map->size.tile.y);
+}
+
+i32 Map_col_len(const Map *map) {
+    /* Size of the map in [tiles] in x */
+    if (map == NULL) {
+        SDL_assert(false);
+        return (NULL);
+    }
+    return(map->size.tile.x);
+}
+
+i32 Map_area(const Map *map) {
+    /* Size of the map in [tiles] in x*y */
+    if (map == NULL) {
+        SDL_assert(false);
+        return (NULL);
+    }
+    return(map->size.tile.x * map->size.tile.y);
 }

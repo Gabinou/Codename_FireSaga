@@ -224,6 +224,11 @@ typedef struct Map_Starting_Pos {
     struct Point *arr;
 } Map_Starting_Pos;
 
+typedef struct Map_Size {
+    struct Point tile; /* [pixels] */
+    struct Point grid; /* [tiles] */
+} Map_Size;
+
 typedef struct Map {
     struct jsonIO_Header jsonio_header;
 
@@ -233,22 +238,12 @@ typedef struct Map {
     tnecs_world     *world;
     SDL_Renderer    *renderer;
     struct Camera    camera;
+
     // TODO: remove. should be in savefile
     s8 party_filename;
 
-    /* Map size */
-    // typedef struct Map_Size {
-    // struct Point tile; /* [pixels] */
-    // struct Point grid; /* [tiles] */
-    // col_len -> map.size.grid.x
-    i32 row_len; /* [tiles] */
-    i32 col_len; /* [tiles] */
-    // Is tilesize a game property or map property?
-    // tilesize[0] -> map.size.tile.x
-    i32 tilesize[TWO_D]; /* [pixels] */
-    // } Map_Size;
-
     struct Map_Cost             cost;
+    struct Map_Size             size;
     struct Map_Music            music;
     struct Map_Flags            flags;
     struct Map_Stack            stack;
@@ -337,5 +332,10 @@ b32 Map_isLost(     const Map *map);
 b32 Map_isUpdate(   const Map *map);
 i32 Map_Cost_Multiplier(const Map *map);
 i32 Map_Cost_Effective(const Map *map, i32 move);
+Point *Map_Tilesize(const Map *map);
+Point *Map_Gridsize(const Map *map);
+i32 Map_col_len(const Map *map);
+i32 Map_row_len(const Map *map);
+i32 Map_area(const Map *map);
 
 #endif /* MAP_H */

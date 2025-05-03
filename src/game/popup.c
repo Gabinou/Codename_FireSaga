@@ -438,7 +438,7 @@ void Game_PopUp_Map_Combat_Free(struct Game *sota) {
 //     SDL_assert(popup_tile != NULL);
 
 //     /* -- Give tile to popup_tile -- */
-//     int i = cursor_position->tilemap_pos.y * sota->map->col_len + cursor_position->tilemap_pos.x;
+//     int i = cursor_position->tilemap_pos.y * Map_col_len(sota->map) + cursor_position->tilemap_pos.x;
 //     i32 tile_ind = sota->map->darrs.tilemap[i] / TILE_DIVISOR;
 //     SDL_assert(tile_ind > 0);
 //     i32 tile_order = Map_Tile_Order(sota->map, tile_ind);
