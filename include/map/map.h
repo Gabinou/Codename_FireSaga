@@ -162,7 +162,8 @@ typedef struct Map_Armies {
 typedef struct Map_Render {
     struct Point visiblemin;
     struct Point visiblemax;
-    struct SDL_Texture    *texture;
+    SDL_Texture     *texture;
+    SDL_Renderer    *renderer;
 
     struct Tilemap_Shader *tilemap_shader;
 
@@ -220,8 +221,8 @@ typedef struct Map_Dynamic_Arrays {
 } Map_Dynamic_Arrays;
 
 typedef struct Map_Starting_Pos {
-    i32 *map; /* 2D dynamic array */
-    struct Point *arr;
+    i32             *map; /* 2D dynamic array */
+    struct Point    *arr;
 } Map_Starting_Pos;
 
 typedef struct Map_Size {
@@ -236,10 +237,9 @@ typedef struct Map {
     i32              chapter;
     Arrow           *arrow;
     tnecs_world     *world;
-    SDL_Renderer    *renderer;
     struct Camera    camera;
 
-    // TODO: remove. should be in savefile
+    // TODO: remove. should be in savefile, not the map.
     s8 party_filename;
 
     struct Map_Cost             cost;

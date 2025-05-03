@@ -138,7 +138,7 @@ void Game_Map_Party_Load(struct Game *sota, i32 mapi) {
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Loading in test Map\n");
     /* - Updating game states - */
 
-    // TODO read party from save json, not map
+    // TODO: Read party from savefile json, not map
     // Game_Map_Load(sota, CHAPTER_TEST_V8);
     // SDL_assert(DARR_NUM(sota->map->death_enemy) == 1);
     // SDL_assert(DARR_NUM(sota->map->death_friendly) == 2);
