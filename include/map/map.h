@@ -160,6 +160,7 @@ typedef struct Map_Armies {
 } Map_Armies;
 
 typedef struct Map_Render {
+    struct Camera    camera;
     struct Point visiblemin;
     struct Point visiblemax;
     SDL_Texture     *texture;
@@ -237,7 +238,6 @@ typedef struct Map {
     i32              chapter;
     Arrow           *arrow;
     tnecs_world     *world;
-    struct Camera    camera;
 
     // TODO: remove. should be in savefile, not the map.
     s8 party_filename;

@@ -59,9 +59,9 @@ const Map Map_default = {
     .render.tilemap_frame_factor   = 0.15f,
     .render.tilemap_frame_counter  = UINT8_MAX - 1, /* map renders on first frame */
 
-    .camera.offset.x        = DEFAULT_CAMERA_XOFFSET,
-    .camera.offset.y        = DEFAULT_CAMERA_YOFFSET,
-    .camera.zoom            = DEFAULT_CAMERA_ZOOM,
+    .render.camera.offset.x        = DEFAULT_CAMERA_XOFFSET,
+    .render.camera.offset.y        = DEFAULT_CAMERA_YOFFSET,
+    .render.camera.zoom            = DEFAULT_CAMERA_ZOOM,
 
     .palette.base           = PALETTE_SOTA,
     .palette.red            = PALETTE_SOTA_FILTER_RED,
@@ -714,9 +714,9 @@ void Map_readJSON(void *input, const cJSON *jmap) {
         SDL_assert(cJSON_GetArraySize(joffset) == TWO_D);
     }
 
-    map->camera.offset.x = cJSON_GetNumberValue(cJSON_GetArrayItem(joffset, 0));
-    map->camera.offset.y = cJSON_GetNumberValue(cJSON_GetArrayItem(joffset, 1));
-    map->camera.zoom     = cJSON_GetNumberValue(jzoom);
+    map->render.camera.offset.x = cJSON_GetNumberValue(cJSON_GetArrayItem(joffset, 0));
+    map->render.camera.offset.y = cJSON_GetNumberValue(cJSON_GetArrayItem(joffset, 1));
+    map->render.camera.zoom     = cJSON_GetNumberValue(jzoom);
 
     map->chapter = cJSON_GetNumberValue(jchapter);
     map->chapter = cJSON_GetNumberValue(jchapter);
