@@ -39,7 +39,7 @@ void _Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
 void Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
     SDL_assert(map->world != NULL);
     SDL_assert(map->darrs.unitmap != NULL);
-    SDL_assert((row < map->row_len) && (col < Map_col_len(map)));
+    SDL_assert((row < Map_row_len(map)) && (col < Map_col_len(map)));
     SDL_assert(entity);
 
     /* -- Preliminaries -- */
@@ -55,7 +55,9 @@ void Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
     }
     struct MapHPBar *map_hp_bar = IES_GET_COMPONENT(map->world, entity, MapHPBar);
     map_hp_bar->unit_ent    = entity;
-    map_hp_bar->len         = map->tilesize[0];
+    const Point *tilesize = Map_Tilesize(map);
+
+    map_hp_bar->len         = tilesize->x;
     map_hp_bar->update      = true;
     map_hp_bar->visible     = true;
 
@@ -111,9 +113,9 @@ void Map_Unit_Move(struct Map *map, u8 col, u8 row, u8 new_col, u8 new_row) {
     /* Note: Does NOT check if [new_x, new_y] is empty. */
     SDL_assert(map->darrs.unitmap != NULL);
     SDL_assert(col      < Map_col_len(map));
-    SDL_assert(row      < map->row_len);
+    SDL_assert(row      < Map_row_len(map));
     SDL_assert(new_col  < Map_col_len(map));
-    SDL_assert(new_row  < map->row_len);
+    SDL_assert(new_row  < Map_row_len(map));
 
     /* New position of unit should always be empty */
     size_t old_i = row      * Map_col_len(map) + col;
@@ -166,7 +168,7 @@ tnecs_entity Map_Unit_Get_Boss(struct Map *map, u8 army) {
 tnecs_entity Map_Unit_Get(struct Map *map, u8 col, u8 row) {
     SDL_assert(map->darrs.unitmap != NULL);
     SDL_assert(col < Map_col_len(map));
-    SDL_assert(row < map->row_len);
+    SDL_assert(row < Map_row_len(map));
     return (map->darrs.unitmap[row * Map_col_len(map) + col]);
 }
 

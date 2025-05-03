@@ -333,7 +333,7 @@ b32 Map_isUpdate(   const Map *map);
 i32 Map_Cost_Multiplier(const Map *map);
 i32 Map_Cost_Effective(const Map *map, i32 move);
 const Point *Map_Tilesize(const Map *map);
-constPoint *Map_Gridsize(const Map *map);
+const Point *Map_Gridsize(const Map *map);
 i32 Map_col_len(const Map *map);
 i32 Map_row_len(const Map *map);
 i32 Map_area(const Map *map);

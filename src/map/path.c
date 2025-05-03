@@ -21,54 +21,54 @@
 
 void Map_Global_Danger_Reset(struct Map *map) {
     memset(map->darrs.global_dangermap, 0,
-           sizeof(*map->darrs.global_dangermap) * map->row_len * Map_col_len(map));
+           sizeof(*map->darrs.global_dangermap) * Map_row_len(map) * Map_col_len(map));
     map->flags.shading_changed = true;
 }
 
 void Map_Global_Danger_Add(struct Map *map, i32 *danger) {
     map->darrs.global_dangermap = matrix_plus_noM(map->darrs.global_dangermap, danger,
-                                                  map->row_len * Map_col_len(map));
+                                                  Map_row_len(map) * Map_col_len(map));
     map->flags.shading_changed = true;
 }
 
 void Map_Global_Danger_Sub(struct Map *map, i32 *danger) {
     map->darrs.global_dangermap = matrix_sub_noM(map->darrs.global_dangermap, danger,
-                                                 map->row_len * Map_col_len(map));
+                                                 Map_row_len(map) * Map_col_len(map));
     map->flags.shading_changed = true;
 }
 
 void Map_Danger_Reset(struct Map *map) {
-    memset(map->darrs.dangermap, 0, sizeof(*map->darrs.dangermap) * map->row_len * Map_col_len(map));
+    memset(map->darrs.dangermap, 0, sizeof(*map->darrs.dangermap) * Map_row_len(map) * Map_col_len(map));
     map->flags.shading_changed = true;
 }
 
 void Map_Danger_Add(struct Map *map, i32 *danger) {
-    map->darrs.dangermap = matrix_plus_noM(map->darrs.dangermap, danger, map->row_len * Map_col_len(map));
+    map->darrs.dangermap = matrix_plus_noM(map->darrs.dangermap, danger, Map_row_len(map) * Map_col_len(map));
     map->flags.shading_changed = true;
 }
 
 void Map_Danger_Sub(struct Map *map, i32 *danger) {
-    map->darrs.dangermap = matrix_sub_noM(map->darrs.dangermap, danger, map->row_len * Map_col_len(map));
+    map->darrs.dangermap = matrix_sub_noM(map->darrs.dangermap, danger, Map_row_len(map) * Map_col_len(map));
     map->flags.shading_changed = true;
 }
 
 void Map_Stacked_Dangermap_Compute(struct Map *map, i32 *dangermap) {
     SDL_assert(map->stack.dangermap != NULL);
-    int size = map->row_len * Map_col_len(map);
+    int size = Map_row_len(map) * Map_col_len(map);
     i32 *temp_map = matrix_ssmaller(dangermap, DANGERMAP_UNIT_DIVISOR, size);
     map->stack.dangermap = matrix_and_noM(map->stack.dangermap,
                                           dangermap, temp_map,
-                                          map->row_len * Map_col_len(map));
+                                          Map_row_len(map) * Map_col_len(map));
     map->stack.dangermap = matrix_and_noM(map->stack.dangermap,
                                           map->stack.dangermap,
                                           map->darrs.movemap,
-                                          map->row_len * Map_col_len(map));
+                                          Map_row_len(map) * Map_col_len(map));
     SDL_free(temp_map);
     map->flags.shading_changed = true;
 }
 
 void Map_Stacked_Dangermap_Reset(struct Map *map) {
-    int len = map->row_len * Map_col_len(map);
+    int len = Map_row_len(map) * Map_col_len(map);
     if (map->stack.dangermap != NULL) {
         int size = sizeof(*map->stack.dangermap);
         map->stack.dangermap = memset(map->stack.dangermap, 0, size * len);
@@ -78,7 +78,7 @@ void Map_Stacked_Dangermap_Reset(struct Map *map) {
 }
 
 void Map_stack_global_dangermap_Reset(struct Map *map) {
-    int len = map->row_len * Map_col_len(map);
+    int len = Map_row_len(map) * Map_col_len(map);
 
     if (map->stack.global_dangermap != NULL) {
         int size = sizeof(*map->stack.global_dangermap);
@@ -92,7 +92,7 @@ void Map_stack_global_dangermap_Reset(struct Map *map) {
 i32 *_Map_Movemap_Compute(struct Map *map, struct Point start_in, i32 effective_move) {
     struct Point start = {start_in.x, start_in.y};
     Pathfinding_Moveto_noM(map->darrs.movemap, map->darrs.costmap,
-                           map->row_len, Map_col_len(map), start, effective_move);
+                           Map_row_len(map), Map_col_len(map), start, effective_move);
 
     return (map->darrs.movemap);
 }
@@ -125,7 +125,7 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
     } else {
         // only put start in move_matrix
         /* -- Wipe move_matrix -- */
-        for (size_t i = 0; i < map->row_len * Map_col_len(map); i++)
+        for (size_t i = 0; i < Map_row_len(map) * Map_col_len(map); i++)
             map->darrs.movemap[i] = MOVEMAP_BLOCKED;
 
         i32 current_i   = pos->tilemap_pos.y * Map_col_len(map) + pos->tilemap_pos.x;
@@ -184,7 +184,7 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
     actto.movemap           = map->darrs.movemap;
     actto.acttomap          = *tomap;
     actto.occupymap         = input_occupymap;
-    actto.row_len           = map->row_len;
+    actto.row_len           = Map_row_len(map);
     actto.col_len           = Map_col_len(map);
     actto.self              = mapto.aggressor;
     actto.range             = range;
@@ -194,16 +194,16 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
 
     // printf("Map_Act_to occupymap\n");
     // if (input_occupymap != NULL)
-    //     entity_print(input_occupymap, map->row_len, Map_col_len(map));
+    //     entity_print(input_occupymap, Map_row_len(map), Map_col_len(map));
     // printf("Map_Act_to ATK\n");
-    // matrix_print(map->darrs.attacktomap, map->row_len, Map_col_len(map));
+    // matrix_print(map->darrs.attacktomap, Map_row_len(map), Map_col_len(map));
 
     i32* out = NULL;
     if (mapto.output_type == ARRAY_MATRIX) {
         out     = *tomap;
     } else if (mapto.output_type == ARRAY_LIST)  {
         *tolist = matrix2list_noM(*tomap, *tolist,
-                                  map->row_len, Map_col_len(map));
+                                  Map_row_len(map), Map_col_len(map));
         out     = *tolist;
     }
     SDL_assert(out != NULL);
@@ -219,7 +219,7 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     SDL_assert(map_from.defendant   > TNECS_NULL);
 
     Map_Costmap_Movement_Compute(map, map_from.aggressor);
-    // matrix_print(map->darrs.costmap, map->row_len, Map_col_len(map));
+    // matrix_print(map->darrs.costmap, Map_row_len(map), Map_col_len(map));
 
     struct Unit *agg_unit       = IES_GET_COMPONENT(map->world, map_from.aggressor, Unit);
     /* Get dft position */
@@ -233,7 +233,7 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     i32 effective_move  = Map_Cost_Effective(map, move_stat);
 
     _Map_Movemap_Compute(map, agg_pos->tilemap_pos, effective_move);
-    // matrix_print(map->darrs.movemap, map->row_len, Map_col_len(map));
+    // matrix_print(map->darrs.movemap, Map_row_len(map), Map_col_len(map));
 
 
     i32 **tomap  = NULL;
@@ -254,7 +254,7 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     actto.movemap           = map->darrs.movemap;
     actto.acttomap          = *tomap;
     actto.occupymap         = input_occupymap;
-    actto.row_len           = map->row_len;
+    actto.row_len           = Map_row_len(map);
     actto.col_len           = Map_col_len(map);
     actto.self              = map_from.aggressor;
     actto.range             = range;
@@ -267,7 +267,7 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
         out     = *tomap;
     } else if (map_from.output_type == ARRAY_LIST)  {
         *tolist = matrix2list_noM(*tomap, *tolist,
-                                  map->row_len, Map_col_len(map));
+                                  Map_row_len(map), Map_col_len(map));
         out     = *tolist;
     }
     SDL_assert(out != NULL);
@@ -295,7 +295,7 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_entity unit_ent) {
     actto.movemap           = map->darrs.movemap;
     actto.acttomap          = map->darrs.attacktomap;
     actto.occupymap         = map->darrs.unitmap;
-    actto.row_len           = map->row_len;
+    actto.row_len           = Map_row_len(map);
     actto.col_len           = Map_col_len(map);
     actto.self              = unit_ent;
     actto.range             = range;
@@ -303,13 +303,13 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_entity unit_ent) {
 
     Pathfinding_Attackto_noM(actto);
 
-    // memset(map->darrs.temp, 0, sizeof(*map->darrs.temp)*map->row_len * Map_col_len(map));
+    // memset(map->darrs.temp, 0, sizeof(*map->darrs.temp)*Map_row_len(map) * Map_col_len(map));
     // TODO :
     //      1. Why not use dangermap instead of temp?
     //      2. Why not memset to 0?
     map->darrs.temp = matrix_plus_noM(map->darrs.temp, map->darrs.attacktomap,
-                                      map->row_len * Map_col_len(map));
-    // matrix_print(map->darrs.temp, map->row_len, Map_col_len(map));
+                                      Map_row_len(map) * Map_col_len(map));
+    // matrix_print(map->darrs.temp, Map_row_len(map), Map_col_len(map));
     return (map->darrs.temp);
 }
 
@@ -318,14 +318,14 @@ i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_entity unit_ent) {
     SDL_assert(map          != NULL);
     SDL_assert(map->darrs.costmap != NULL);
     SDL_assert(map->world   != NULL);
-    memset(map->darrs.costmap, 0, sizeof(*map->darrs.costmap) * Map_col_len(map) * map->row_len);
+    memset(map->darrs.costmap, 0, sizeof(*map->darrs.costmap) * Map_col_len(map) * Map_row_len(map));
     struct Unit *unit = IES_GET_COMPONENT(map->world, unit_ent, Unit);
     struct Tile *temp_tile;
     i32 tile_ind = 0;
     i8 unit_movetype = Unit_Movement(unit);
     tnecs_entity ontile_unit_ent;
     SDL_assert(unit_movetype > UNIT_MVT_START);
-    for (u8 i = 0; i < map->row_len * Map_col_len(map); i++) {
+    for (u8 i = 0; i < Map_row_len(map) * Map_col_len(map); i++) {
         tile_ind = map->darrs.tilemap[i] / TILE_DIVISOR;
         ontile_unit_ent = map->darrs.unitmap[i];
         SDL_assert(tile_ind > 0);
@@ -352,15 +352,15 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
     SDL_assert(map->darrs.costmap != NULL);
     SDL_assert(map->darrs.tilemap != NULL);
     SDL_assert(Map_col_len(map) > 0);
-    SDL_assert(map->row_len > 0);
+    SDL_assert(Map_row_len(map) > 0);
     SDL_assert(unit         != NULL);
     SDL_assert(Unit_Movement(unit) > UNIT_MVT_START);
 
     /* Reset costmap */
-    memset(map->darrs.costmap, 0, sizeof(*map->darrs.costmap) * Map_col_len(map) * map->row_len);
+    memset(map->darrs.costmap, 0, sizeof(*map->darrs.costmap) * Map_col_len(map) * Map_row_len(map));
 
     /* - Compute cost of each tile - */
-    int len = (Map_col_len(map) * map->row_len);
+    int len = (Map_col_len(map) * Map_row_len(map));
     SDL_assert(len > 0);
     for (int i = 0; i < len; ++i) {
 #ifdef UNITS_IGNORE_TERRAIN
@@ -434,7 +434,7 @@ void Map_globalRange(struct Map *map, u8 alignment) {
     u8 num_unit_entities = 0;
     SDL_assert(map->darrs.global_rangemap != NULL);
     memset(map->darrs.global_rangemap, 0,
-           sizeof(*map->darrs.global_rangemap) * map->row_len * Map_col_len(map));
+           sizeof(*map->darrs.global_rangemap) * Map_row_len(map) * Map_col_len(map));
 
     /* Get enemies depending on alignment */
     switch (alignment) {
@@ -460,14 +460,14 @@ void Map_globalRange(struct Map *map, u8 alignment) {
         u8 move = temp_effective_stats.move;
         struct Point start = {temp_pos->tilemap_pos.x, temp_pos->tilemap_pos.y};
         Map_Costmap_Movement_Compute(map, unit_entities[i]);
-        Pathfinding_Moveto_noM(map->darrs.movemap, map->darrs.costmap, map->row_len,
+        Pathfinding_Moveto_noM(map->darrs.movemap, map->darrs.costmap, Map_row_len(map),
                                Map_col_len(map), start, move);
 
         PathfindingAct actto    = PathfindingAct_default;
         actto.movemap           = map->darrs.movemap;
         actto.acttomap          = map->darrs.attacktomap;
         actto.occupymap         = map->darrs.unitmap;
-        actto.row_len           = map->row_len;
+        actto.row_len           = Map_row_len(map);
         actto.col_len           = Map_col_len(map);
         actto.self              = unit_entities[i];
         actto.range             = range;
@@ -475,16 +475,16 @@ void Map_globalRange(struct Map *map, u8 alignment) {
 
         Pathfinding_Attackto_noM(actto);
         map->darrs.global_rangemap = matrix_plus_noM(map->darrs.global_rangemap, map->darrs.attacktomap,
-                                                     map->row_len * Map_col_len(map));
+                                                     Map_row_len(map) * Map_col_len(map));
     }
 }
 
 void Map_Danger_Perimeter_Compute(struct Map *map, i32 *danger) {
     if (map->perimiter.edges_danger == NULL) {
         size_t bytesize = sizeof(struct Padding);
-        map->perimiter.edges_danger = SDL_calloc(map->row_len * Map_col_len(map), bytesize);
+        map->perimiter.edges_danger = SDL_calloc(Map_row_len(map) * Map_col_len(map), bytesize);
     }
-    Map_Perimeter(map->perimiter.edges_danger, danger, map->row_len, Map_col_len(map));
+    Map_Perimeter(map->perimiter.edges_danger, danger, Map_row_len(map), Map_col_len(map));
 }
 
 struct Padding *Map_PerimeterM(i32 *map, i32 row_len, i32 col_len) {

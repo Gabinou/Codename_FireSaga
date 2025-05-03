@@ -254,7 +254,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         // SDL_memcpy(position, &Position_default, sizeof(Position));
         position->onTilemap = true;
         Position_Bounds_Set(position, 0, Map_col_len(sota->map), 0, Map_row_len(sota->map));
-        Point *tilesize = Map_Tilesize(sota->map);
+        const Point *tilesize = Map_Tilesize(sota->map);
         position->scale[0]      = tilesize->x;
         position->scale[1]      = tilesize->y;
         position->tilemap_pos.x = reinf->position.x;

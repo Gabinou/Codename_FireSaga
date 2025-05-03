@@ -239,7 +239,7 @@ void test_map_usable(void) {
     DARR_PUT(map->tiles.index, TILE_LAKE);
     Map_Tiles_Load(map);
 
-    for (int i = 0; i < (map->row_len * Map_col_len(map)); i++) {
+    for (int i = 0; i < (Map_row_len(map) * Map_col_len(map)); i++) {
         map->darrs.tilemap[i] = TILE_PLAIN * TILE_DIVISOR + 1;
     }
 
@@ -310,7 +310,7 @@ void test_map_usable(void) {
 
     /* --- TODO: Range types, blocked by unit --- */
     Unit_Equippable_set(silou, ITEM_TYPE_BOW);
-    memset(map->darrs.unitmap, 0, sizeof(*map->darrs.unitmap) * Map_col_len(map) * map->row_len);
+    memset(map->darrs.unitmap, 0, sizeof(*map->darrs.unitmap) * Map_col_len(map) * Map_row_len(map));
     silou->stats.current.move           = 1;
 
     silou_pos->tilemap_pos.x    = 0;
@@ -354,7 +354,7 @@ void test_map_usable(void) {
     nourstest_true(silou->can_equip.num      == 0);
 
     // printf("UNITMAP\n");
-    // entity_print(map->darrs.unitmap, map->row_len, Map_col_len(map));
+    // entity_print(map->darrs.unitmap, Map_row_len(map), Map_col_len(map));
 
     silou->stats.current.move           = 2;
     can_equip           = canEquip_default;
@@ -375,7 +375,7 @@ void test_map_usable(void) {
 
     /* --- Testing staff --- */
     Unit_Equippable_set(silou, ITEM_TYPE_STAFF);
-    memset(map->darrs.unitmap, 0, sizeof(*map->darrs.unitmap) * Map_col_len(map) * map->row_len);
+    memset(map->darrs.unitmap, 0, sizeof(*map->darrs.unitmap) * Map_col_len(map) * Map_row_len(map));
     silou->stats.current.move = 1;
 
     silou_pos->tilemap_pos.x    = 0;
@@ -431,7 +431,7 @@ void test_map_usable(void) {
 
     /* --- Staff with blocked tiles next to SELF --- */
     /* -- Place staff user on, next to blocked tiles -- */
-    for (int i = 0; i < (map->row_len * Map_col_len(map)); i++) {
+    for (int i = 0; i < (Map_row_len(map) * Map_col_len(map)); i++) {
         map->darrs.tilemap[i] = TILE_LAKE * TILE_DIVISOR + 1;
     }
     Map_Costmap_Wipe(map);
@@ -453,11 +453,11 @@ void test_map_usable(void) {
     Map_Act_To(map, map_to);
 
     // printf("COST\n");
-    // matrix_print(map->darrs.costmap, map->row_len, Map_col_len(map));
+    // matrix_print(map->darrs.costmap, Map_row_len(map), Map_col_len(map));
     // printf("MOVE\n");
-    // matrix_print(map->darrs.movemap, map->row_len, Map_col_len(map));
+    // matrix_print(map->darrs.movemap, Map_row_len(map), Map_col_len(map));
     // printf("HEAL\n");
-    // matrix_print(map->darrs.healtomap, map->row_len, Map_col_len(map));
+    // matrix_print(map->darrs.healtomap, Map_row_len(map), Map_col_len(map));
 
     index = sota_2D_index((silou_pos->tilemap_pos.x + 1), (silou_pos->tilemap_pos.y), Map_col_len(map));
     nourstest_true(map->darrs.healtomap[index] > 0);

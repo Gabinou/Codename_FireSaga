@@ -219,7 +219,7 @@ void Game_PopUp_Unit_Create(struct Game *sota) {
     /* - Popup position - */
     PopUp_Unit_Offset(popup_unit, &sota->settings);
     PopUp_Unit_Limits(popup, popup_unit, &sota->settings);
-    Point *tilesize = Map_Tilesize(sota->map);
+    const Point *tilesize = Map_Tilesize(sota->map);
     position->pixel_pos.x = SOTA_TILEMAP2PIXEL(position->tilemap_pos.x,
                                                tilesize->x, sota->camera.offset.x, sota->camera.zoom);
     position->pixel_pos.y = SOTA_TILEMAP2PIXEL(position->tilemap_pos.x,
@@ -268,7 +268,7 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
     struct PopUp_Unit *popup_unit = popup->data;
     SDL_assert(popup_unit != NULL);
     struct Point pixel_pos;
-    Point *tilesize = Map_Tilesize(sota->map);
+    const Point *tilesize = Map_Tilesize(sota->map);
 
     pixel_pos.x = SOTA_TILEMAP2PIXEL(cursor_pos.x, tilesize->x,
                                      sota->camera.offset.x, sota->camera.zoom);
@@ -331,7 +331,7 @@ void Game_PopUp_Tile_Place(struct Game *sota, struct Point cursor_pos) {
     struct PopUp_Tile *popup_tile       = popup->data;
     SDL_assert(popup_tile != NULL);
     struct Point pixel_pos;
-    Point *tilesize = Map_Tilesize(sota->map);
+    const Point *tilesize = Map_Tilesize(sota->map);
     pixel_pos.x = SOTA_TILEMAP2PIXEL(cursor_pos.x, tilesize->x,
                                      sota->camera.offset.x, sota->camera.zoom);
     pixel_pos.y = SOTA_TILEMAP2PIXEL(cursor_pos.y, tilesize->y,
@@ -519,7 +519,7 @@ void Game_PopUp_Tile_Create(struct Game *sota) {
     PopUp_Tile_Offset(popup_tile, &sota->settings);
     PopUp_Tile_Limits(popup, popup_tile, &sota->settings);
     // struct Point pixel_pos;
-    Point *tilesize = Map_Tilesize(sota->map);
+    const Point *tilesize = Map_Tilesize(sota->map);
     position->pixel_pos.x = SOTA_TILEMAP2PIXEL(position->tilemap_pos.x,
                                                tilesize->x, sota->camera.offset.x, sota->camera.zoom);
     position->pixel_pos.y = SOTA_TILEMAP2PIXEL(position->tilemap_pos.x,

@@ -126,7 +126,7 @@ Map *Map_New(NewMap new_map) {
 void Map_Unitmap_Free(struct Map *map) {
     /* -- SDL_free non-PC units on unitmap -- */
     SDL_assert(map->darrs.unitmap);
-    for (size_t i = 0; i < Map_col_len(map) * map->row_len ; i++) {
+    for (size_t i = 0; i < Map_col_len(map) * Map_row_len(map) ; i++) {
         tnecs_entity uent = map->darrs.unitmap[i];
         if (uent == TNECS_NULL) {
             map->darrs.unitmap[i] = TNECS_NULL;
@@ -350,8 +350,8 @@ void Map_Tilesize_Set(struct Map *map, i32 width, i32 height) {
     SDL_assert(height > 0);
     SDL_assert(width  == SOTA_TILESIZE);
     SDL_assert(height == SOTA_TILESIZE);
-    map->tilesize[0] = width;
-    map->tilesize[1] = height;
+    map->size.tile.x = width;
+    map->size.tile.y = height;
     if (map->arrow) {
         map->arrow->map_tilesize[0] = width;
         map->arrow->map_tilesize[1] = height;
@@ -359,22 +359,22 @@ void Map_Tilesize_Set(struct Map *map, i32 width, i32 height) {
 }
 
 void Map_Size_Set(struct Map *map, i32 col_len, i32 row_len) {
-    map->row_len = row_len;
-    Map_col_len(map) = col_len;
+    map->size.grid.x = col_len;
+    map->size.grid.y = row_len;
 
-    SDL_assert(map->row_len > 0);
+    SDL_assert(Map_row_len(map) > 0);
     SDL_assert(Map_col_len(map) > 0);
-    SDL_assert(map->row_len < MAP_MAX_COLS);
+    SDL_assert(Map_row_len(map) < MAP_MAX_COLS);
 
     SDL_assert(Map_col_len(map) < MAP_MAX_ROWS);
 }
 
 void Map_Members_Alloc(struct Map *map) {
-    SDL_assert(map->row_len > 0);
+    SDL_assert(Map_row_len(map) > 0);
     SDL_assert(Map_col_len(map) > 0);
-    SDL_assert(map->row_len < MAP_MAX_COLS);
+    SDL_assert(Map_row_len(map) < MAP_MAX_COLS);
     SDL_assert(Map_col_len(map) < MAP_MAX_ROWS);
-    int len = map->row_len * Map_col_len(map);
+    int len = Map_row_len(map) * Map_col_len(map);
 
     SDL_assert(map->entities.doors == NULL);
     map->entities.doors = DARR_INIT(map->entities.doors, tnecs_entity, 4);
@@ -482,7 +482,8 @@ void Map_Members_Alloc(struct Map *map) {
         Map_Tilemap_Texture_Init(map);
 
         SDL_assert(map->arrow == NULL);
-        map->arrow = Arrow_Init(map->tilesize);
+        const i32 *tilesize = (const i32 *)Map_Tilesize(map);
+        map->arrow = Arrow_Init(tilesize);
         SDL_assert(map->arrow != NULL);
         Arrow_Textures_Load(map->arrow, ARROW_FILENAME, map->renderer);
         SDL_assert(map->arrow->textures != NULL);
@@ -519,12 +520,16 @@ void Map_Members_Free(struct Map *map) {
 }
 
 void Map_Texture_Alloc(struct Map *map) {
-    if (map->render.texture != NULL)
+    if (map->render.texture != NULL) {
         SDL_DestroyTexture(map->render.texture);
-
+    }
+    
+    const Point *tilesize   = Map_Tilesize(map);
+    const Point *size       = Map_Gridsize(map);
     map->render.texture = SDL_CreateTexture(map->renderer, SDL_PIXELFORMAT_ARGB8888,
-                                            SDL_TEXTUREACCESS_TARGET, map->tilesize[0] * Map_col_len(map),
-                                            map->tilesize[1] * map->row_len);
+                                            SDL_TEXTUREACCESS_TARGET,
+                                            tilesize->x * size->x,
+                                            tilesize->y * size->y);
     SDL_SetTextureBlendMode(map->render.texture, SDL_BLENDMODE_BLEND);
 
 }
@@ -539,10 +544,12 @@ void Map_Tilemap_Texture_Free(struct Map *map) {
 void Map_Tilemap_Texture_Init(struct Map *map) {
     SDL_assert(map->renderer);
     Map_Tilemap_Texture_Free(map);
-    int x_size = map->tilesize[0] * Map_col_len(map);
-    int y_size = map->tilesize[1] * map->row_len;
+    const Point *tilesize   = Map_Tilesize(map);
+    const Point *size       = Map_Gridsize(map);
+    i32 x_pixels = tilesize->x * size->x;
+    i32 y_pixels = tilesize->y * size->y;
     map->tiles.tilemap_texture = SDL_CreateTexture(map->renderer, SDL_PIXELFORMAT_RGB888,
-                                                   SDL_TEXTUREACCESS_TARGET, x_size, y_size);
+                                                   SDL_TEXTUREACCESS_TARGET, x_pixels, y_pixels);
     SDL_assert(map->tiles.tilemap_texture);
 }
 
@@ -555,16 +562,18 @@ void Map_Tilemap_Surface_Free(struct Map *map) {
 
 void Map_Tilemap_Surface_Init(struct Map *map) {
     SDL_assert(Map_col_len(map) > 0);
-    SDL_assert(map->row_len > 0);
+    SDL_assert(Map_row_len(map) > 0);
     SDL_assert(Map_col_len(map) < MAP_MAX_COLS);
-    SDL_assert(map->row_len < MAP_MAX_ROWS);
+    SDL_assert(Map_row_len(map) < MAP_MAX_ROWS);
 
     Map_Tilemap_Surface_Free(map);
-    int x_size = map->tilesize[0] * Map_col_len(map);
-    int y_size = map->tilesize[1] * map->row_len;
-    map->tiles.tilemap_surface = Filesystem_indexedSurface_Init(x_size, y_size);
-    SDL_assert(map->tiles.tilemap_surface->w == map->tilesize[0] * Map_col_len(map));
-    SDL_assert(map->tiles.tilemap_surface->h == map->tilesize[1] * map->row_len);
+    const Point *tilesize   = Map_Tilesize(map);
+    const Point *size       = Map_Gridsize(map);
+    i32 x_pixels = tilesize->x * size->x;
+    i32 y_pixels = tilesize->y * size->y;
+    map->tiles.tilemap_surface = Filesystem_indexedSurface_Init(x_pixels, y_pixels);
+    SDL_assert(map->tiles.tilemap_surface->w == x_pixels);
+    SDL_assert(map->tiles.tilemap_surface->h == y_pixels);
 }
 
 /* --- I/O --- */
@@ -576,7 +585,7 @@ void Map_writeJSON(const void *input, cJSON *jmap) {
     cJSON_AddItemToObject(jmap, "chapter", jchapter);
     cJSON *jstart_pos_arr   = cJSON_CreateObject();
     cJSON *jmap_size        = cJSON_CreateObject();
-    cJSON *jrow_len         = cJSON_CreateNumber(map->row_len);
+    cJSON *jrow_len         = cJSON_CreateNumber(Map_row_len(map));
     cJSON *jcol_len         = cJSON_CreateNumber(Map_col_len(map));
     cJSON_AddItemToObject(jmap_size, "row_len", jrow_len);
     cJSON_AddItemToObject(jmap_size, "col_len", jcol_len);
@@ -639,7 +648,7 @@ void Map_writeJSON(const void *input, cJSON *jmap) {
         cJSON_AddItemToObject(jreinforcements, "Reinforcement", jreinforcement);
     }
     cJSON *jtilemap = cJSON_CreateObject();
-    Array2D_writeJSON(jtilemap, map->darrs.tilemap, map->row_len, Map_col_len(map));
+    Array2D_writeJSON(jtilemap, map->darrs.tilemap, Map_row_len(map), Map_col_len(map));
     cJSON_AddItemToObject(jmap, "Tilemap", jtilemap);
 }
 
@@ -714,14 +723,14 @@ void Map_readJSON(void *input, const cJSON *jmap) {
         exit(ERROR_Generic);
     }
 
-    if (map->row_len != cJSON_GetNumberValue(jrow_len)) {
-        SDL_Log("map->row_len should be set to '%f'", cJSON_GetNumberValue(jrow_len));
+    if (Map_row_len(map) != cJSON_GetNumberValue(jrow_len)) {
+        SDL_Log("Map_row_len(map) should be set to '%f'", cJSON_GetNumberValue(jrow_len));
         exit(ERROR_Generic);
     }
 
     if (map->arrow) {
         map->arrow->col_len = Map_col_len(map);
-        map->arrow->row_len = map->row_len;
+        map->arrow->row_len = Map_row_len(map);
     }
 
     /* -- Read Starting Positions -- */
@@ -920,7 +929,7 @@ void Map_readJSON(void *input, const cJSON *jmap) {
     cJSON_ArrayForEach(jframe, jframes) {
         // TODO: tilemaps[i]
         jarray = cJSON_GetObjectItem(jframe, "array");
-        Array2D_readJSON(jarray, map->darrs.tilemap, map->row_len, Map_col_len(map));
+        Array2D_readJSON(jarray, map->darrs.tilemap, Map_row_len(map), Map_col_len(map));
         SDL_assert(map->darrs.tilemap);
     }
 

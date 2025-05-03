@@ -246,7 +246,7 @@ static void _Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in) {
 
 /* --- GLOBAL FUNCTIONS --- */
 /* --- Constructor/Destructors --- */
-struct Arrow *Arrow_Init(i32 tilesize[TWO_D]) {
+struct Arrow *Arrow_Init(const i32 tilesize[TWO_D]) {
     struct Arrow *arrow = SDL_malloc(sizeof(*arrow));
     *arrow = Arrow_default;
     arrow->map_tilesize[0]      = tilesize[0];

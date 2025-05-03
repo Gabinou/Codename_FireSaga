@@ -40,7 +40,7 @@ enum ARROW_17PATCHES {
 
 /* --- PUBLIC --- */
 /* -- Constructors/Destructors -- */
-Arrow   *Arrow_Init(i32 tilesize[TWO_D]);
+Arrow   *Arrow_Init(const i32 tilesize[TWO_D]);
 void     Arrow_Free(struct Arrow *a);
 
 /* -- Path -- */

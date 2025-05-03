@@ -54,7 +54,7 @@ void Game_cursorFocus_onMap(struct Game *sota) {
     Position_Bounds_Set(position, 0, Map_col_len(sota->map) - 1, 0, Map_row_len(sota->map) - 1);
 
     /* -- Placing cursor on map -- */
-    Point *tilesize = Map_Tilesize(sota->map);
+    const Point *tilesize = Map_Tilesize(sota->map);
     int row_len = Map_row_len(sota->map);
     int col_len = Map_col_len(sota->map);
     if (sota->ismouse) {
@@ -236,7 +236,7 @@ b32 Game_isCursoronTilemap(struct Game *sota) {
     b32 out = false;
     if (sota->ismouse) {
         struct Point mouse_pos, tilemap_pos;
-        Point *tilesize = Map_Tilesize(sota->map);
+        const Point *tilesize = Map_Tilesize(sota->map);
 
         SDL_GetMouseState(&mouse_pos.x, &mouse_pos.y);
         tilemap_pos.x = SOTA_PIXEL2TILEMAP(mouse_pos.x, tilesize->x,
@@ -281,7 +281,7 @@ void Game_CursorfollowsMouse_onMap(struct Game *sota) {
     /* - Get cursor tile position - */
     struct Point mouse_pos, tilemap_pos;
     SDL_GetMouseState(&mouse_pos.x, &mouse_pos.y);
-    Point *tilesize = Map_Tilesize(sota->map);
+    const Point *tilesize = Map_Tilesize(sota->map);
 
     tilemap_pos.x = SOTA_PIXEL2TILEMAP(mouse_pos.x, tilesize->x,
                                        sota->camera.offset.x, sota->camera.zoom);
