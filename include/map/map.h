@@ -189,13 +189,13 @@ typedef struct Map_Tiles {
     struct SDL_Texture  ***tileset_textures; /* [palette_id][tiles_order] */
 } Map_Tiles;
 
-typedef struct Map_Grids {
+typedef struct Map_Dynamic_Arrays {
     // Grid meaning 2D dynamic array
     // TODO: rm temp
     i32 *temp;                  /* 2D dynamic array */
     i32 *costmap;               /* 2D dynamic array */
     i32 *movemap;               /* 2D dynamic array */
-    // Tile index = map->grids.tilemap[i] / TILE_DIVISOR;
+    // Tile index = map->darrs.tilemap[i] / TILE_DIVISOR;
     i32 *tilemap;               /* 2D dynamic array [row * col_len + col] */
     i32 *healtomap;             /* 2D dynamic array */
 
@@ -217,7 +217,7 @@ typedef struct Map_Grids {
     tnecs_entity *unitmap;      /* [row * col_len + col], occupymap */
     tnecs_entity *occupymap;    /* [row * col_len + col], friendlies only, enemies only... */
     tnecs_entity costmap_ent; /* costmap computed for */
-} Map_Grids;
+} Map_Dynamic_Arrays;
 
 typedef struct Map_Starting_Pos {
     i32 *map; /* 2D dynamic array */
@@ -226,8 +226,8 @@ typedef struct Map_Starting_Pos {
 
 typedef struct Map {
     struct jsonIO_Header jsonio_header;
-  
-    i32              turn; /* loss >= 255 */
+
+    i32              turn; /* loss if >= 255 */
     i32              chapter;
     Arrow           *arrow;
     tnecs_world     *world;
@@ -237,7 +237,7 @@ typedef struct Map {
     s8 party_filename;
 
     /* Map size */
-// typedef struct Map_Size {
+    // typedef struct Map_Size {
     // struct Point tile; /* [pixels] */
     // struct Point grid; /* [tiles] */
     // col_len -> map.size.grid.x
@@ -246,12 +246,10 @@ typedef struct Map {
     // Is tilesize a game property or map property?
     // tilesize[0] -> map.size.tile.x
     i32 tilesize[TWO_D]; /* [pixels] */
-// } Map_Size;
+    // } Map_Size;
 
     struct Map_Cost             cost;
     struct Map_Music            music;
-    // rn Map_Dynamic_Arrays
-    struct Map_Grids            grids;
     struct Map_Flags            flags;
     struct Map_Stack            stack;
     struct Map_Units            units;
@@ -263,6 +261,7 @@ typedef struct Map {
     struct Map_Perimiter        perimiter;
     struct Map_Conditions       conditions;
     struct Map_Starting_Pos     start_pos;
+    struct Map_Dynamic_Arrays   darrs;
     struct Map_Reinforcements   reinforcements;
 } Map;
 extern const struct Map Map_default;

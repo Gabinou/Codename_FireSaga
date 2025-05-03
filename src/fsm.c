@@ -494,13 +494,13 @@ void fsm_eGlbRng_ssStby(struct Game *sota) {
         /* Currently showing global map, removing */
         /* Plus, adding back player dangermap */
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_DANGER, TNECS_NULL);
-        Map_Danger_Perimeter_Compute(sota->map, sota->map->grids.dangermap);
-        sota->map->grids.rendered_dangermap = sota->map->grids.dangermap;
+        Map_Danger_Perimeter_Compute(sota->map, sota->map->darrs.dangermap);
+        sota->map->darrs.rendered_dangermap = sota->map->darrs.dangermap;
     } else {
         /* Currently not showing global map, adding */
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER, TNECS_NULL);
-        Map_Danger_Perimeter_Compute(sota->map, sota->map->grids.global_dangermap);
-        sota->map->grids.rendered_dangermap = sota->map->grids.global_dangermap;
+        Map_Danger_Perimeter_Compute(sota->map, sota->map->darrs.global_dangermap);
+        sota->map->darrs.rendered_dangermap = sota->map->darrs.global_dangermap;
     }
 
     /* Switching show_globalRange to new mode */
@@ -568,11 +568,11 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     Map_Act_To(sota->map, map_to);
 
     // SDL_Log("MOVE");
-    // matrix_print(sota->map->grids.movemap, sota->map->row_len, sota->map->col_len);
+    // matrix_print(sota->map->darrs.movemap, sota->map->row_len, sota->map->col_len);
     // SDL_Log("ATK");
-    // matrix_print(sota->map->grids.attacktomap, sota->map->row_len, sota->map->col_len);
+    // matrix_print(sota->map->darrs.attacktomap, sota->map->row_len, sota->map->col_len);
     // SDL_Log("HEAL");
-    // matrix_print(sota->map->grids.healtomap, sota->map->row_len, sota->map->col_len);
+    // matrix_print(sota->map->darrs.healtomap, sota->map->row_len, sota->map->col_len);
 
     int rangemap = Unit_Rangemap_Get(unit_ontile);
 
@@ -588,9 +588,9 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
 
     /* Stack all overlay maps */
     if (sota->map->flags.show_globalRange) {
-        Map_Stacked_Dangermap_Compute(sota->map, sota->map->grids.global_dangermap);
+        Map_Stacked_Dangermap_Compute(sota->map, sota->map->darrs.global_dangermap);
     } else {
-        Map_Stacked_Dangermap_Compute(sota->map, sota->map->grids.dangermap);
+        Map_Stacked_Dangermap_Compute(sota->map, sota->map->darrs.dangermap);
     }
     sota->map->flags.show_icons = SotA_isPC(Unit_Army(unit_ontile));
 
@@ -726,19 +726,19 @@ void fsm_eUnitDng_ssStby(struct Game *sota, tnecs_entity selector_entity) {
         Map_Danger_Sub(sota->map, temp_danger);
         Map_Palettemap_Autoset(sota->map,
                                MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK, TNECS_NULL);
-        Map_Danger_Perimeter_Compute(sota->map, sota->map->grids.dangermap);
-        sota->map->grids.rendered_dangermap = sota->map->grids.dangermap;
+        Map_Danger_Perimeter_Compute(sota->map, sota->map->darrs.dangermap);
+        sota->map->darrs.rendered_dangermap = sota->map->darrs.dangermap;
 
         Unit_showsDanger_set(unit, false);
     } else {
         Map_Danger_Add(sota->map, temp_danger);
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_DANGER, TNECS_NULL);
-        Map_Danger_Perimeter_Compute(sota->map, sota->map->grids.dangermap);
-        sota->map->grids.rendered_dangermap = sota->map->grids.dangermap;
+        Map_Danger_Perimeter_Compute(sota->map, sota->map->darrs.dangermap);
+        sota->map->darrs.rendered_dangermap = sota->map->darrs.dangermap;
         Unit_showsDanger_set(unit, true);
     }
 
-    // matrix_print(sota->map->grids.attacktomap, sota->map->row_len, sota->map->col_len);
+    // matrix_print(sota->map->darrs.attacktomap, sota->map->row_len, sota->map->col_len);
 }
 
 void fsm_eCncl_sGmpMap_ssStby(struct Game *sota, tnecs_entity canceller) {
@@ -749,7 +749,7 @@ void fsm_eCncl_sGmpMap_ssStby(struct Game *sota, tnecs_entity canceller) {
     struct Unit *unit_ontile;
     struct Position *pos = IES_GET_COMPONENT(sota->world, canceller, Position);
     struct Point cpos = pos->tilemap_pos;
-    tnecs_entity ontile = sota->map->grids.unitmap[cpos.y * sota->map->col_len + cpos.x];
+    tnecs_entity ontile = sota->map->darrs.unitmap[cpos.y * sota->map->col_len + cpos.x];
 
     if (ontile == TNECS_NULL) {
         return;
@@ -774,7 +774,7 @@ void fsm_eCncl_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity canceller) {
 
     struct Point pos = cursor_pos->tilemap_pos;
     int current_i = pos.y * sota->map->col_len + pos.x;
-    tnecs_entity ontile = sota->map->grids.unitmap[current_i];
+    tnecs_entity ontile = sota->map->darrs.unitmap[current_i];
 
     SDL_assert(ontile > TNECS_NULL);
     // Try to limit calling FSM function directly.
@@ -977,10 +977,10 @@ void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
     struct Point previous_pos = sota->cursor_lastpos;
     int previous_i = previous_pos.y * sota->map->col_len + previous_pos.x;
     int current_i  = pos.y * sota->map->col_len + pos.x;
-    tnecs_entity unit_entity_previoustile = sota->map->grids.unitmap[previous_i];
+    tnecs_entity unit_entity_previoustile = sota->map->darrs.unitmap[previous_i];
     // NOTE: unit_entity_previoustile might be different than selected_unit_entity
     //     because
-    tnecs_entity ontile = sota->map->grids.unitmap[current_i];
+    tnecs_entity ontile = sota->map->darrs.unitmap[current_i];
 
     /* unit hovering/dehovering */
     if (unit_entity_previoustile != TNECS_NULL) {
@@ -1011,8 +1011,8 @@ void fsm_eCrsMvd_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
 
     int previous_i = previous_pos.y * sota->map->col_len + previous_pos.x;
     int current_i = pos.y * sota->map->col_len + pos.x;
-    tnecs_entity unit_entity_previoustile = sota->map->grids.unitmap[previous_i];
-    tnecs_entity ontile = sota->map->grids.unitmap[current_i];
+    tnecs_entity unit_entity_previoustile = sota->map->darrs.unitmap[previous_i];
+    tnecs_entity ontile = sota->map->darrs.unitmap[current_i];
 
     /* unit hovering/dehovering */
     if (unit_entity_previoustile != TNECS_NULL) {
@@ -1204,7 +1204,7 @@ void fsm_eAcpt_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
     cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     SDL_assert(cursor_pos != NULL);
     struct Point pos = cursor_pos->tilemap_pos;
-    tnecs_entity ontile = sota->map->grids.unitmap[pos.y * sota->map->col_len + pos.x];
+    tnecs_entity ontile = sota->map->darrs.unitmap[pos.y * sota->map->col_len + pos.x];
     if (ontile != TNECS_NULL) {
         /* -- select unit -- */
         *data2_entity = ontile;
@@ -1291,7 +1291,7 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     cursor_pos          = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     int current_i       = cursor_pos->tilemap_pos.y * sota->map->col_len +
                           cursor_pos->tilemap_pos.x;
-    tnecs_entity ontile = sota->map->grids.unitmap[current_i];
+    tnecs_entity ontile = sota->map->darrs.unitmap[current_i];
 
     /* - Someone else already occupies tile -> Do nothing - */
     if ((ontile != TNECS_NULL) && (sota->selected_unit_entity != ontile)) {
@@ -1362,9 +1362,9 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     Map_Act_To(sota->map, map_to);
 
     // SDL_Log("ATK");
-    // matrix_print(sota->map->grids.attacktomap, sota->map->row_len, sota->map->col_len);
+    // matrix_print(sota->map->darrs.attacktomap, sota->map->row_len, sota->map->col_len);
     // SDL_Log("HEAL");
-    // matrix_print(sota->map->grids.healtomap, sota->map->row_len, sota->map->col_len);
+    // matrix_print(sota->map->darrs.healtomap, sota->map->row_len, sota->map->col_len);
 
     int rangemap = Unit_Rangemap_Get(unit);
     if (rangemap == RANGEMAP_HEALMAP) {
@@ -1374,7 +1374,7 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
         Map_Palettemap_Autoset(sota->map,
                                MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK, TNECS_NULL);
     }
-    Map_Stacked_Dangermap_Compute(sota->map, sota->map->grids.dangermap);
+    Map_Stacked_Dangermap_Compute(sota->map, sota->map->darrs.dangermap);
 
     /* - Update Standard passive aura for all units - */
     SDL_assert(sota->map->armies.current >= 0);
@@ -1422,7 +1422,7 @@ void fsm_eStats_sPrep_ssMapCndt(struct Game *sota, tnecs_entity ent) {
     struct Position *cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     SDL_assert(cursor_pos != NULL);
     struct Point pos = cursor_pos->tilemap_pos;
-    tnecs_entity ontile = sota->map->grids.unitmap[pos.y * sota->map->col_len + pos.x];
+    tnecs_entity ontile = sota->map->darrs.unitmap[pos.y * sota->map->col_len + pos.x];
 
     /* Enabling stats menu for hovered unit */
     if (ontile > TNECS_NULL) {
@@ -1450,7 +1450,7 @@ void fsm_eStats_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
     struct Position *cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     SDL_assert(cursor_pos != NULL);
     struct Point pos = cursor_pos->tilemap_pos;
-    tnecs_entity ontile = sota->map->grids.unitmap[pos.y * sota->map->col_len + pos.x];
+    tnecs_entity ontile = sota->map->darrs.unitmap[pos.y * sota->map->col_len + pos.x];
 
     /* Enabling stats menu for hovered unit */
     if (ontile > TNECS_NULL)
@@ -1555,7 +1555,7 @@ void fsm_eMenuRight_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     struct Position *cursor_pos;
     cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     struct Point pos = cursor_pos->tilemap_pos;
-    tnecs_entity ontile = sota->map->grids.unitmap[pos.y * sota->map->col_len + pos.x];
+    tnecs_entity ontile = sota->map->darrs.unitmap[pos.y * sota->map->col_len + pos.x];
 
     /* - Determine which menu is the next one - */
     SDL_assert((mc_popped->type == MENU_TYPE_STATS) || (mc_popped->type == MENU_TYPE_GROWTHS));
@@ -1610,7 +1610,7 @@ void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     struct Position *cursor_pos;
     cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     struct Point pos = cursor_pos->tilemap_pos;
-    tnecs_entity ontile = sota->map->grids.unitmap[pos.y * sota->map->col_len + pos.x];
+    tnecs_entity ontile = sota->map->darrs.unitmap[pos.y * sota->map->col_len + pos.x];
 
     /* - Determine which menu is the next one - */
     SDL_assert((mc_popped->type == MENU_TYPE_STATS)         ||

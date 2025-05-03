@@ -13,11 +13,11 @@
 #include "utilities.h"
 
 void Map_Units_Hide(struct Map *map) {
-    if (map->grids.unitmap == NULL)
+    if (map->darrs.unitmap == NULL)
         return;
 
     for (size_t i = 0; i < (map->col_len * map->row_len); i++) {
-        tnecs_entity uent = map->grids.unitmap[i];
+        tnecs_entity uent = map->darrs.unitmap[i];
         if (uent == TNECS_NULL)
             continue;
         struct Sprite *sprite = IES_GET_COMPONENT(map->world, uent, Sprite);
@@ -76,14 +76,14 @@ void Map_Palettemap_Autoset(struct Map *map, u16 flagsum, tnecs_entity self) {
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_GLOBAL_DANGER, flagsum)) {
         SDL_assert(palette);
-        palette = matrix_sgreater_noM(palette, map->grids.global_dangermap, 0, size);
+        palette = matrix_sgreater_noM(palette, map->darrs.global_dangermap, 0, size);
         Map_Palettemap_addMap(map, palette, map->palette.purple);
     }
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_DANGER, flagsum)) {
         SDL_assert(palette);
-        palette = matrix_sgreater_noM(palette, map->grids.dangermap, 0, size);
-        i32 *temp_palette2 = matrix_ssmaller(map->grids.dangermap, DANGERMAP_UNIT_DIVISOR, size);
+        palette = matrix_sgreater_noM(palette, map->darrs.dangermap, 0, size);
+        i32 *temp_palette2 = matrix_ssmaller(map->darrs.dangermap, DANGERMAP_UNIT_DIVISOR, size);
         palette = matrix_and_noM(palette, temp_palette2, palette, size);
         SDL_free(temp_palette2);
         Map_Palettemap_addMap(map, palette, map->palette.darkred);
@@ -91,26 +91,26 @@ void Map_Palettemap_Autoset(struct Map *map, u16 flagsum, tnecs_entity self) {
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_ATTACK, flagsum)) {
         SDL_assert(palette);
-        palette = matrix_sgreater_noM(palette, map->grids.attacktomap, 0, size);
+        palette = matrix_sgreater_noM(palette, map->darrs.attacktomap, 0, size);
         Map_Palettemap_addMap(map, palette, map->palette.red);
     }
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_HEAL, flagsum)) {
         SDL_assert(palette);
-        palette = matrix_sgreater_noM(palette, map->grids.healtomap, 0, size);
+        palette = matrix_sgreater_noM(palette, map->darrs.healtomap, 0, size);
 
         Map_Palettemap_addMap(map, palette, map->palette.green);
     }
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_MOVE, flagsum)) {
         SDL_assert(palette);
-        palette = matrix_sgreater_noM(palette, map->grids.movemap, 0, size);
+        palette = matrix_sgreater_noM(palette, map->darrs.movemap, 0, size);
 
         // DON'T show move if can heal AND move to an occupied tile
         // EXCEPT if self sota->hovered_unit_entity
         for (size_t i = 0; i < size; i++) {
-            if (map->grids.healtomap[i] && map->grids.unitmap[i] && (self != TNECS_NULL)
-                && (map->grids.unitmap[i] != self)) {
+            if (map->darrs.healtomap[i] && map->darrs.unitmap[i] && (self != TNECS_NULL)
+                && (map->darrs.unitmap[i] != self)) {
                 palette[i] = 0;
             }
         }
@@ -144,7 +144,7 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
     if (map->tiles.tilemap_texture == NULL)
         Map_Tilemap_Texture_Init(map);
     SDL_SetRenderTarget(map->renderer, map->tiles.tilemap_texture);
-    SDL_assert(map->grids.tilemap);
+    SDL_assert(map->darrs.tilemap);
     SDL_assert(map->palette.map);
 
     /* Stitching map from tiles */
@@ -155,8 +155,8 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
     int visible_min = map->render.visiblemin.y * map->col_len + map->render.visiblemin.x;
     int visible_max = map->render.visiblemax.y * map->col_len + map->render.visiblemax.x;
     for (size_t i = visible_min; i < visible_max; i++) {
-        tile_ind = map->grids.tilemap[i] / TILE_DIVISOR;
-        texture_ind = map->grids.tilemap[i] - tile_ind * TILE_DIVISOR;
+        tile_ind = map->darrs.tilemap[i] / TILE_DIVISOR;
+        texture_ind = map->darrs.tilemap[i] - tile_ind * TILE_DIVISOR;
         palette_ind = map->palette.map[i];
         SDL_assert(palette_ind >= PALETTE_NES);
         SDL_assert(palette_ind < PALETTE_NUM);
@@ -236,7 +236,7 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
     SDL_assert(map->tiles.tilemap_surface != NULL);
     SDL_assert(map->tiles.tilemap_surface->w == (map->col_len * map->tilesize[0]));
     SDL_assert(map->tiles.tilemap_surface->h == (map->row_len * map->tilesize[1]));
-    SDL_assert(map->grids.tilemap          != NULL);
+    SDL_assert(map->darrs.tilemap          != NULL);
     SDL_assert(map->palette.map       != NULL);
     SDL_assert(map->tiles.tileset_surfaces != NULL);
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(map->tiles.tilemap_surface->format->format));
@@ -259,8 +259,8 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
     int visible_max = map->render.visiblemax.y * map->col_len + map->render.visiblemax.x;
     for (size_t i = visible_min; i < visible_max; i++) {
         /* get palette */
-        tile_ind = map->grids.tilemap[i] / TILE_DIVISOR;
-        texture_ind = map->grids.tilemap[i] - tile_ind * TILE_DIVISOR;
+        tile_ind = map->darrs.tilemap[i] / TILE_DIVISOR;
+        texture_ind = map->darrs.tilemap[i] - tile_ind * TILE_DIVISOR;
         palette_ind = map->palette.map[i];
         SDL_assert(palette_ind >= PALETTE_NES);
         SDL_assert(palette_ind < PALETTE_NUM);
@@ -412,13 +412,13 @@ void _Map_Perimeter_Draw(struct Map *map, struct Settings *settings,
 }
 
 void Map_Perimeter_Draw_Danger(struct Map *map, struct Settings *settings, struct Camera *camera) {
-    if (map->grids.rendered_dangermap == NULL)
+    if (map->darrs.rendered_dangermap == NULL)
         return;
 
     SDL_Palette *palette_base = sota_palettes[map->palette.base];
     SDL_Color red = palette_base->colors[map->perimiter.danger_color];
 
-    _Map_Perimeter_Draw(map, settings, camera, map->grids.rendered_dangermap, red,
+    _Map_Perimeter_Draw(map, settings, camera, map->darrs.rendered_dangermap, red,
                         map->perimiter.edges_danger);
 }
 
@@ -516,9 +516,9 @@ b32 Map_Shadowmap_newFrame(struct Map *map) {
 b32 Map_Tilemap_newFrame(struct Map *map) {
     b32 tm_up = false ;
 #if !defined(MAP_NO_ANIMATION) || !defined(MAP_TILEMAP_NO_ANIMATION)
-    if (map->grids.tilemap_frame_counter++ > map->grids.tilemap_frame_pause) {
+    if (map->darrs.tilemap_frame_counter++ > map->darrs.tilemap_frame_pause) {
         tm_up = true;
-        map->grids.tilemap_frame_counter = 0;
+        map->darrs.tilemap_frame_counter = 0;
     }
 #endif /* !defined(MAP_NO_ANIMATION) || !defined(MAP_TILEMAP_NO_ANIMATION) */
     return (tm_up);

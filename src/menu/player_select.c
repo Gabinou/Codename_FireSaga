@@ -303,7 +303,7 @@ void PlayerSelectMenu_Update(struct PlayerSelectMenu *psm, struct n9Patch *n9pat
 /* Only for interactive MENU_TYPE_PLAYER_SELECT */
 void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
     SDL_assert(sota->map            != NULL);
-    SDL_assert(sota->map->grids.tilemap   != NULL);
+    SDL_assert(sota->map->darrs.tilemap   != NULL);
     tnecs_entity menu_entity = sota->player_select_menus[MENU_PLAYER_SELECT_UNIT_ACTION];
     SDL_assert(menu_entity > 0);
     SDL_assert(sota->selected_unit_entity > 0);
@@ -325,7 +325,7 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
     struct Position *pos = IES_GET_COMPONENT(sota->world, unit_ent, Position);
     SDL_assert(pos != NULL);
     i32 index = sota_2D_index(pos->tilemap_pos.x, pos->tilemap_pos.y, sota->map->col_len);
-    i32 tile_ind = sota->map->grids.tilemap[index] / TILE_DIVISOR;
+    i32 tile_ind = sota->map->darrs.tilemap[index] / TILE_DIVISOR;
     b32 isthrone = (tile_ind == TILE_THRONE);
 
     /* -- Seizable: Check if unit is a main character --  */

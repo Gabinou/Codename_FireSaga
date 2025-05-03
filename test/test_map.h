@@ -232,15 +232,15 @@ void test_map_usable(void) {
 
     Map *map = Map_New(new_map);
     SDL_assert(map->cost.multiplier == 1);
-    SDL_assert(map->grids.attacktolist    != NULL);
-    SDL_assert(map->grids.tilemap         != NULL);
+    SDL_assert(map->darrs.attacktolist    != NULL);
+    SDL_assert(map->darrs.tilemap         != NULL);
 
     DARR_PUT(map->tiles.index, TILE_PLAIN);
     DARR_PUT(map->tiles.index, TILE_LAKE);
     Map_Tiles_Load(map);
 
     for (int i = 0; i < (map->row_len * map->col_len); i++) {
-        map->grids.tilemap[i] = TILE_PLAIN * TILE_DIVISOR + 1;
+        map->darrs.tilemap[i] = TILE_PLAIN * TILE_DIVISOR + 1;
     }
 
     SDL_assert(DARR_NUM(map->tiles.index)    == 2);
@@ -310,7 +310,7 @@ void test_map_usable(void) {
 
     /* --- TODO: Range types, blocked by unit --- */
     Unit_Equippable_set(silou, ITEM_TYPE_BOW);
-    memset(map->grids.unitmap, 0, sizeof(*map->grids.unitmap) * map->col_len * map->row_len);
+    memset(map->darrs.unitmap, 0, sizeof(*map->darrs.unitmap) * map->col_len * map->row_len);
     silou->stats.current.move           = 1;
 
     silou_pos->tilemap_pos.x    = 0;
@@ -354,7 +354,7 @@ void test_map_usable(void) {
     nourstest_true(silou->can_equip.num      == 0);
 
     // printf("UNITMAP\n");
-    // entity_print(map->grids.unitmap, map->row_len, map->col_len);
+    // entity_print(map->darrs.unitmap, map->row_len, map->col_len);
 
     silou->stats.current.move           = 2;
     can_equip           = canEquip_default;
@@ -375,7 +375,7 @@ void test_map_usable(void) {
 
     /* --- Testing staff --- */
     Unit_Equippable_set(silou, ITEM_TYPE_STAFF);
-    memset(map->grids.unitmap, 0, sizeof(*map->grids.unitmap) * map->col_len * map->row_len);
+    memset(map->darrs.unitmap, 0, sizeof(*map->darrs.unitmap) * map->col_len * map->row_len);
     silou->stats.current.move = 1;
 
     silou_pos->tilemap_pos.x    = 0;
@@ -432,7 +432,7 @@ void test_map_usable(void) {
     /* --- Staff with blocked tiles next to SELF --- */
     /* -- Place staff user on, next to blocked tiles -- */
     for (int i = 0; i < (map->row_len * map->col_len); i++) {
-        map->grids.tilemap[i] = TILE_LAKE * TILE_DIVISOR + 1;
+        map->darrs.tilemap[i] = TILE_LAKE * TILE_DIVISOR + 1;
     }
     Map_Costmap_Wipe(map);
 
@@ -447,26 +447,26 @@ void test_map_usable(void) {
     silou_pos->tilemap_pos.y    = 1;
     i32 index;
     index = sota_2D_index((silou_pos->tilemap_pos.x), (silou_pos->tilemap_pos.y), map->col_len);
-    map->grids.tilemap[index] = TILE_PLAIN * TILE_DIVISOR + 1;
+    map->darrs.tilemap[index] = TILE_PLAIN * TILE_DIVISOR + 1;
 
     /* - healtopmap - */
     Map_Act_To(map, map_to);
 
     // printf("COST\n");
-    // matrix_print(map->grids.costmap, map->row_len, map->col_len);
+    // matrix_print(map->darrs.costmap, map->row_len, map->col_len);
     // printf("MOVE\n");
-    // matrix_print(map->grids.movemap, map->row_len, map->col_len);
+    // matrix_print(map->darrs.movemap, map->row_len, map->col_len);
     // printf("HEAL\n");
-    // matrix_print(map->grids.healtomap, map->row_len, map->col_len);
+    // matrix_print(map->darrs.healtomap, map->row_len, map->col_len);
 
     index = sota_2D_index((silou_pos->tilemap_pos.x + 1), (silou_pos->tilemap_pos.y), map->col_len);
-    nourstest_true(map->grids.healtomap[index] > 0);
+    nourstest_true(map->darrs.healtomap[index] > 0);
     index = sota_2D_index((silou_pos->tilemap_pos.x), (silou_pos->tilemap_pos.y + 1), map->col_len);
-    nourstest_true(map->grids.healtomap[index] > 0);
+    nourstest_true(map->darrs.healtomap[index] > 0);
     index = sota_2D_index((silou_pos->tilemap_pos.x - 1), (silou_pos->tilemap_pos.y), map->col_len);
-    nourstest_true(map->grids.healtomap[index] > 0);
+    nourstest_true(map->darrs.healtomap[index] > 0);
     index = sota_2D_index((silou_pos->tilemap_pos.x), (silou_pos->tilemap_pos.y - 1), map->col_len);
-    nourstest_true(map->grids.healtomap[index] > 0);
+    nourstest_true(map->darrs.healtomap[index] > 0);
 
     // TODO: Staff with no target
     // TODO: Staff with enemy target
