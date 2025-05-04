@@ -964,18 +964,18 @@ void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Cursor_Hovers_Unit(struct Game *sota, SDL_Event *userevent) {
-    sota->hovered_unit_entity = *(tnecs_entity *)userevent->user.data2;
-    SDL_assert(sota->hovered_unit_entity != TNECS_NULL);
-    struct Unit *temp = IES_GET_COMPONENT(sota->ecs.world, sota->hovered_unit_entity, Unit);
+    sota->hovered.unit_entity = *(tnecs_entity *)userevent->user.data2;
+    SDL_assert(sota->hovered.unit_entity != TNECS_NULL);
+    struct Unit *temp = IES_GET_COMPONENT(sota->ecs.world, sota->hovered.unit_entity, Unit);
     SDL_assert(global_unitNames[Unit_id(temp)].data != NULL);
 
     if (fsm_eCrsHvUnit_ss[Game_Substate_Current(sota)] != NULL)
-        fsm_eCrsHvUnit_ss[Game_Substate_Current(sota)](sota, sota->hovered_unit_entity);
+        fsm_eCrsHvUnit_ss[Game_Substate_Current(sota)](sota, sota->hovered.unit_entity);
 }
 
 void receive_event_Cursor_Dehovers_Unit(struct Game *sota, SDL_Event *userevent) {
-    tnecs_entity dehovered_unit_entity = sota->hovered_unit_entity;
-    sota->hovered_unit_entity            = TNECS_NULL;
+    tnecs_entity dehovered_unit_entity = sota->hovered.unit_entity;
+    sota->hovered.unit_entity            = TNECS_NULL;
 
     if (fsm_eCrsDeHvUnit_ss[Game_Substate_Current(sota)] != NULL)
         fsm_eCrsDeHvUnit_ss[Game_Substate_Current(sota)](sota, dehovered_unit_entity);
@@ -1482,7 +1482,7 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
     Game_PopUp_Map_Combat_Hide(sota);
 
     // 6. Revert hovered entity to aggressor
-    sota->hovered_unit_entity = sota->combat.aggressor;
+    sota->hovered.unit_entity = sota->combat.aggressor;
 
     if (fsm_eCmbtEnd_ss[Game_Substate_Previous(sota)] != NULL)
         fsm_eCmbtEnd_ss[Game_Substate_Previous(sota)](sota);

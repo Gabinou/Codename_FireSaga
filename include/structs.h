@@ -1053,6 +1053,10 @@ typedef struct Game_Popups {
     tnecs_entity pre_combat;
 } Game_Popups;
 
+typedef struct Game_Hovered {
+    tnecs_entity unit_entity;
+} Game_Hovered;
+
 /* --- Game Object --- */
 typedef struct Game {
     struct Settings         settings;
@@ -1076,6 +1080,7 @@ typedef struct Game {
     struct Game_Timers      timers;
     struct Game_Inputs      inputs;
     struct Game_Cursor      cursor;
+    struct Game_Hovered     hovered;
     struct Game_Selected    selected;
     struct Game_Narrative   narrative;
     struct Combat           combat;
@@ -1103,10 +1108,6 @@ typedef struct Game {
     tnecs_entity deployment_menu;
     s8 filename_menu;
     // } Game_Menus;
-
-    // typedef struct Game_Hovered {
-    tnecs_entity hovered_unit_entity;
-    // } Game_Hovered;
 
     tnecs_entity *map_enemies;
     tnecs_entity *ent_unit_loaded;

@@ -167,7 +167,7 @@ void Game_PopUp_Unit_Free(struct Game *sota) {
 
 void Game_PopUp_Unit_Create(struct Game *sota) {
     if (sota->popups.arr[POPUP_TYPE_HUD_UNIT] != TNECS_NULL) {
-        if (sota->hovered_unit_entity != TNECS_NULL) {
+        if (sota->hovered.unit_entity != TNECS_NULL) {
             tnecs_entity ent = sota->popups.arr[POPUP_TYPE_HUD_UNIT];
             struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, ent, PopUp);
             struct PopUp_Unit *popup_unit = popup->data;
@@ -231,7 +231,7 @@ void Game_PopUp_Unit_Create(struct Game *sota) {
                                               &sota->settings, &position->pixel_pos);
 
     /* - Setting popup - */
-    if (sota->hovered_unit_entity != TNECS_NULL) {
+    if (sota->hovered.unit_entity != TNECS_NULL) {
         PopUp_Unit_Set(popup_unit, sota);
         SDL_assert(popup_unit->unit != NULL);
     }
@@ -297,7 +297,7 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
     Slider_Offscreen_Midpoint(slider, offscreen);
 
     /* - If no unit is hovered -> teleport to the other side - */
-    if (sota->hovered_unit_entity == TNECS_NULL) {
+    if (sota->hovered.unit_entity == TNECS_NULL) {
         position->pixel_pos.x   = offscreen->target.x;
         position->pixel_pos.y   = offscreen->target.y;
         slider->target.x        = offscreen->target.x;

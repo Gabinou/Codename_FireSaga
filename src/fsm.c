@@ -610,7 +610,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
 void fsm_eCrsHvUnit_ssMapCndt(struct Game *sota, tnecs_entity hov_ent) {
     /* --- Select new candidate for action --- */
     SDL_assert(hov_ent > TNECS_NULL);
-    sota->hovered_unit_entity = hov_ent;
+    sota->hovered.unit_entity = hov_ent;
 }
 
 // -- FSM: Cursor_Dehovers_Unit --
@@ -961,7 +961,7 @@ void fsm_eCrsMvd_sGmpMap(struct Game *sota, tnecs_entity mover_entity,
         fsm_eCrsMvd_sGmpMap_ss[Game_Substate_Current(sota)](sota, mover_entity, pos);
 
     Game_PopUp_Tile_Place(sota, *pos);
-    if (sota->hovered_unit_entity == TNECS_NULL) {
+    if (sota->hovered.unit_entity == TNECS_NULL) {
         Game_PopUp_Unit_Place(sota, *pos);
     }
 }

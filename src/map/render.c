@@ -107,7 +107,7 @@ void Map_Palettemap_Autoset(struct Map *map, u16 flagsum, tnecs_entity self) {
         palette = matrix_sgreater_noM(palette, map->darrs.movemap, 0, size);
 
         // DON'T show move if can heal AND move to an occupied tile
-        // EXCEPT if self sota->hovered_unit_entity
+        // EXCEPT if self sota->hovered.unit_entity
         for (size_t i = 0; i < size; i++) {
             if (map->darrs.healtomap[i] && map->darrs.unitmap[i] && (self != TNECS_NULL)
                 && (map->darrs.unitmap[i] != self)) {
