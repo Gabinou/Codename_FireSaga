@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
 
     /* -- Master loop -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Starting main game loop\n");
-    while (sota->isrunning) {
+    while (sota->flags.isrunning) {
         Game_Step(sota);
     }
 

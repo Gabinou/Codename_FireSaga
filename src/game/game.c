@@ -58,7 +58,7 @@
 const struct Game Game_default = {
     .cursor_lastpos         = {1, 1},
     .moved_direction        = SOTA_DIRECTION_NULL,
-    .iscursor               = true,
+    .flags.iscursor         = true,
 
     .camera = {
         .zoom = DEFAULT_CAMERA_ZOOM,
@@ -509,7 +509,7 @@ struct Game * Game_New(Settings settings) {
     /* -- Checks -- */
     SDL_assert(sota->entity_mouse);
 
-    sota->isrunning = true;
+    sota->flags.isrunning = true;
     return (sota);
 }
 
@@ -1017,12 +1017,12 @@ i64 Game_FPS_Delay(struct Game *sota, u64 elapsedTime_ns) {
     int ff_cap      = sota->settings.FPS.ff_cap; /* [%]    */
 
     /* 0 frame delay if fast-forwarding (ff) without limit */
-    if ((sota->fast_forward) && (ff_cap <= SOTA_100PERCENT)) {
+    if ((sota->flags.fast_forward) && (ff_cap <= SOTA_100PERCENT)) {
         return (delay);
     }
 
     /* Compute delay for ff_cap */
-    if ((sota->fast_forward) && (ff_cap > SOTA_100PERCENT)) {
+    if ((sota->flags.fast_forward) && (ff_cap > SOTA_100PERCENT)) {
         int ff_fps_cap = fps_cap * ff_cap / SOTA_100PERCENT;
         delay = ceil((1000.0f / ff_fps_cap) - (elapsedTime_ns / 1e6));
         return (delay);

@@ -57,7 +57,7 @@ void Game_cursorFocus_onMap(struct Game *sota) {
     const Point *tilesize = Map_Tilesize(sota->map);
     int row_len = Map_row_len(sota->map);
     int col_len = Map_col_len(sota->map);
-    if (sota->ismouse) {
+    if (sota->flags.ismouse) {
         struct Point mouse_pos, tilemap_pos;
         SDL_GetMouseState(&mouse_pos.x, &mouse_pos.y);
         tilemap_pos.x = SOTA_PIXEL2TILEMAP(mouse_pos.x, tilesize->x,
@@ -69,7 +69,7 @@ void Game_cursorFocus_onMap(struct Game *sota) {
         position->tilemap_pos.x = tilemap_pos.x;
         position->tilemap_pos.y = tilemap_pos.y;
         Position_Pos_Set(position, tilemap_pos.x, sota->cursor_lastpos.y);
-    } else if (sota->iscursor) {
+    } else if (sota->flags.iscursor) {
         Position_Pos_Set(position, sota->cursor_lastpos.x, sota->cursor_lastpos.y);
     }
 
@@ -166,8 +166,8 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
     /* - Skip if Keyboard/Gamepad set sota->cursor_move -*/
     b32 skip = !((sota->cursor_move.x == 0) && (sota->cursor_move.y == 0));
     skip |= (menu == TNECS_NULL);
-    skip |= !sota->ismouse;
-    skip |= sota->iscursor;
+    skip |= !sota->flags.ismouse;
+    skip |= sota->flags.iscursor;
     skip |= (sota->entity_mouse <= TNECS_NULL);
     skip |= (sota->entity_cursor <= TNECS_NULL);
 
@@ -234,7 +234,7 @@ void Game_Cursor_movedTime_Compute(struct Game *sota, u64 time_ns) {
 
 b32 Game_isCursoronTilemap(struct Game *sota) {
     b32 out = false;
-    if (sota->ismouse) {
+    if (sota->flags.ismouse) {
         struct Point mouse_pos, tilemap_pos;
         const Point *tilesize = Map_Tilesize(sota->map);
 
@@ -257,8 +257,8 @@ void Game_CursorfollowsMouse_onMap(struct Game *sota) {
     /* --- SKIPPING --- */
     /* - skip if any sota->cursor_move not 0 (other controller moved) - */
     b32 skip = ((sota->cursor_move.x != 0) || (sota->cursor_move.y != 0));
-    skip |= !sota->ismouse;
-    skip |= sota->iscursor;
+    skip |= !sota->flags.ismouse;
+    skip |= sota->flags.iscursor;
     skip |= (sota->entity_mouse <= TNECS_NULL);
     skip |= (sota->entity_cursor <= TNECS_NULL);
     if (skip) {
@@ -498,7 +498,7 @@ void Game_Cursor_Free(struct Game *sota) {
 }
 
 void Game_Cursor_Enable(struct Game *sota) {
-    sota->iscursor = true;
+    sota->flags.iscursor = true;
     sota->controller_code = CONTROLLER_KEYBOARD;
     SDL_assert(sota->entity_cursor != 0);
     struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Sprite);
@@ -507,7 +507,7 @@ void Game_Cursor_Enable(struct Game *sota) {
 }
 
 void Game_Cursor_Disable(struct Game *sota) {
-    sota->iscursor = false;
+    sota->flags.iscursor = false;
     SDL_assert(sota->entity_cursor != 0);
     struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Sprite);
     SDL_assert(sprite != NULL);
@@ -561,7 +561,7 @@ void Game_Mouse_Create(struct Game *sota) {
 }
 
 void Game_Mouse_Enable(struct Game *sota) {
-    sota->ismouse = true;
+    sota->flags.ismouse = true;
     sota->controller_code = CONTROLLER_MOUSE;
     SDL_assert(sota->entity_mouse != 0);
     struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->entity_mouse, Sprite);
@@ -573,7 +573,7 @@ void Game_Mouse_Enable(struct Game *sota) {
 }
 
 void Game_Mouse_Disable(struct Game *sota) {
-    sota->ismouse = false;
+    sota->flags.ismouse = false;
     sota->controller_code = CONTROLLER_KEYBOARD;
     SDL_assert(sota->entity_mouse != 0);
     struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->entity_mouse, Sprite);

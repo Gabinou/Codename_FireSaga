@@ -964,6 +964,14 @@ typedef struct Game_Timers {
     u64    runtime_ns; /* -> millions of years */
 } Game_Timers;
 
+typedef struct Game_Flags {
+    b32   ismouse;
+    b32   iscursor;
+    b32   isrunning;
+    b32   isShadow;
+    b32   fast_forward;
+} Game_Flags;
+
 
 /* --- Game Object --- */
 typedef struct Game {
@@ -976,6 +984,7 @@ typedef struct Game {
 
     struct Game_ECS         ecs;
     struct Game_State       state;
+    struct Game_Flags       flags;
     struct Game_Render      render;
     struct Game_Timers      timers;
 
@@ -1105,13 +1114,6 @@ typedef struct Game {
     Mix_Chunk *soundfx_next_turn;
     // } Game_Music;
 
-    // typedef struct Game_Flags {
-    b32   ismouse;
-    b32   iscursor;
-    b32   isrunning;
-    b32   isShadow;
-    b32   fast_forward;
-    // } Game_Flags;
 } Game;
 extern const struct Game Game_default;
 

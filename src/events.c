@@ -81,7 +81,7 @@ tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code) {
     switch (code) {
         case CONTROLLER_MOUSE:
             // SDL_Log("CONTROLLER_MOUSE");
-            if (!sota->ismouse) {
+            if (!sota->flags.ismouse) {
                 Event_Emit(__func__, SDL_USEREVENT, event_Mouse_Enable, NULL, NULL);
                 // Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Disable, NULL, NULL);
             }
@@ -89,7 +89,7 @@ tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code) {
             break;
         case CONTROLLER_GAMEPAD:
             // SDL_Log("CONTROLLER_GAMEPAD");
-            if (!sota->iscursor) {
+            if (!sota->flags.iscursor) {
                 Event_Emit(__func__, SDL_USEREVENT, event_Mouse_Disable, NULL, NULL);
                 Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Enable, NULL, NULL);
             }
@@ -103,7 +103,7 @@ tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code) {
             break;
         case CONTROLLER_KEYBOARD:
             // SDL_Log("CONTROLLER_KEYBOARD");
-            if (!sota->iscursor) {
+            if (!sota->flags.iscursor) {
                 Event_Emit(__func__, SDL_USEREVENT, event_Mouse_Disable, NULL, NULL);
                 Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Enable, NULL, NULL);
             }
@@ -117,7 +117,7 @@ tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code) {
             break;
         case CONTROLLER_TOUCHPAD:
             SDL_Log("CONTROLLER_TOUCHPAD");
-            if (!sota->iscursor) {
+            if (!sota->flags.iscursor) {
                 Event_Emit(__func__, SDL_USEREVENT, event_Mouse_Disable, NULL, NULL);
                 Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Enable, NULL, NULL);
             }
@@ -157,7 +157,7 @@ void receive_event_Start(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_End(struct Game *sota, SDL_Event *userevent) {
     /* --- Game stops running. --- */
-    sota->isrunning = false;
+    sota->flags.isrunning = false;
 }
 
 void receive_event_Load_Debug_Map(struct Game *sota, SDL_Event *userevent) {
@@ -628,7 +628,7 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
 }
 
 void receive_event_SDL_QUIT(struct Game *sota, SDL_Event *event) {
-    sota->isrunning = false;
+    sota->flags.isrunning = false;
 }
 
 void receive_event_SDL_CONTROLLERDEVICEREMOVED(struct Game *sota, SDL_Event *event) {
@@ -1185,7 +1185,7 @@ void receive_event_Input_MINIMAP(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Input_FAST_FORWARD(struct Game *sota, SDL_Event *userevent) {
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
-    sota->fast_forward = !sota->fast_forward;
+    sota->flags.fast_forward = !sota->flags.fast_forward;
 }
 
 void receive_event_Input_PAUSE(struct Game *sota, SDL_Event *userevent) {

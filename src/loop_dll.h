@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
     /* -- Master loop -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Starting main game loop\n");
     u64 i = 1;
-    while (sota->isrunning) {
+    while (sota->flags.isrunning) {
         // if (i++ % 120 == 0) {
         VTable_Load(&vtable);
         // }
