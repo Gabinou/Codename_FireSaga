@@ -96,13 +96,13 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     /* -- TODO: Rename to AI timer? */
     // TODO: Animate reinforcements
     if (sota->reinf_timer != TNECS_NULL) {
-        struct Timer *timer = IES_GET_COMPONENT(sota->world, sota->reinf_timer, Timer);
+        struct Timer *timer = IES_GET_COMPONENT(sota->ecs.world, sota->reinf_timer, Timer);
         SDL_assert(timer != NULL);
         // u64 limit = sota->settings.enemy_turn_settings.pause_post_reinforcement;
         if (timer->time_ns <= timer->limit_ns)
             return;
 
-        tnecs_entity_destroy(sota->world, sota->reinf_timer);
+        tnecs_entity_destroy(sota->ecs.world, sota->reinf_timer);
         sota->reinf_timer = TNECS_NULL;
     }
 
@@ -113,7 +113,7 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     /* -- Build list of npcs to control -- */
     if (sota->ai_state.init == false) {
         SDL_LogDebug(SOTA_LOG_AI, "Building NPC list");
-        AI_State_Init(&sota->ai_state, sota->world, sota->map);
+        AI_State_Init(&sota->ai_state, sota->ecs.world, sota->map);
     }
     SDL_assert(sota->ai_state.npcs != NULL);
 
@@ -176,12 +176,12 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     /* -- Pop unit from list in AI_State -- */
     if ((act_anim) && ((DARR_NUM(sota->ai_state.npcs) > 0))) {
         SDL_LogDebug(SOTA_LOG_AI, "AI_Pop");
-        AI_State_Pop(&sota->ai_state, sota->world);
+        AI_State_Pop(&sota->ai_state, sota->ecs.world);
 
         SDL_LogDebug(SOTA_LOG_AI, "AI: Pause AFTER AI_act");
         /* Pause AFTER AI action */
-        sota->reinf_timer   = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer_ID);
-        struct Timer *timer = IES_GET_COMPONENT(sota->world, sota->reinf_timer, Timer);
+        sota->reinf_timer   = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Timer_ID);
+        struct Timer *timer = IES_GET_COMPONENT(sota->ecs.world, sota->reinf_timer, Timer);
         *timer = Timer_default;
         timer->limit_ns = sota->settings.enemy_turn_settings.pause_post_move;
     }
@@ -272,7 +272,7 @@ void fsm_rFrame_sCmbt(struct Game *sota) {
 void fsm_rFrame_sScnTalk(struct Game *sota) {
 
     SDL_assert(sota->scene > TNECS_NULL);
-    Scene *scene = IES_GET_COMPONENT(sota->world, sota->scene, Scene);
+    Scene *scene = IES_GET_COMPONENT(sota->ecs.world, sota->scene, Scene);
     SDL_assert(scene != NULL);
 
     // TODO:  Draw with systems?
@@ -301,7 +301,7 @@ void fsm_rFrame_sGmpMap(struct Game *sota) {
     size_t num = DARR_NUM(sota->map->units.onfield.friendlies);
     for (int i = 0; i < num; i++) {
         tnecs_entity entity = sota->map->units.onfield.friendlies[i];
-        struct Position *pos = IES_GET_COMPONENT(sota->world, entity, Position);
+        struct Position *pos = IES_GET_COMPONENT(sota->ecs.world, entity, Position);
         int colori = (i % (PALETTE_SOTA_COLOR_NUM - 1)) + 8;
         Map_Perimeter_Draw_Aura(sota->map, &sota->settings,
                                 &sota->camera, pos->tilemap_pos,

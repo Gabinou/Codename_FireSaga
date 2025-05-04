@@ -114,11 +114,11 @@ void Draw_Sprite(tnecs_input *input) {
 
         tnecs_entity entity     = world->bytype.entities[archetype_id][order];
 
-        MouseFlag *mouse_flag   = IES_GET_COMPONENT(IES->world, entity, MouseFlag);
+        MouseFlag *mouse_flag   = IES_GET_COMPONENT(IES->ecs.world, entity, MouseFlag);
 
         if (mouse_flag == NULL) {
             Position    *position       = (position_arr + order);
-            CursorFlag  *cursor_flag    = IES_GET_COMPONENT(IES->world, entity, CursorFlag);
+            CursorFlag  *cursor_flag    = IES_GET_COMPONENT(IES->ecs.world, entity, CursorFlag);
             b32 isCursor = (cursor_flag != NULL);
             dstrect_func_t func = dstrect_funcs[!position->onTilemap][isCursor];
             func(sprite, &position->pixel_pos, &IES->camera);
@@ -171,7 +171,7 @@ void Draw_Map_HPBar(tnecs_input *input) {
         map_hp_bar->tilemap_pos = pos_arr[order].tilemap_pos;
         i32 *tilesize = (i32 *)Map_Tilesize(IES->map);
         MapHPBar_Draw(map_hp_bar, &IES->camera, tilesize, IES->render.target,
-                      IES->render.er, IES->world);
+                      IES->render.er, IES->ecs.world);
     }
 
 }

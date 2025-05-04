@@ -49,9 +49,9 @@ void Game_Weapons_Free(struct dtab **weapons_dtab) {
 
 /* --- Wait/Refresh --- */
 void Game_Unit_Wait(struct Game *sota, tnecs_entity ent) {
-    struct Unit *unit = IES_GET_COMPONENT(sota->world, ent, Unit);
+    struct Unit *unit = IES_GET_COMPONENT(sota->ecs.world, ent, Unit);
     SDL_assert(unit != NULL);
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->world, ent, Sprite);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, ent, Sprite);
 #ifndef DEBUG_UNIT_MOVEAFTERWAIT
     /* unit waits */
     Unit_wait(unit);
@@ -62,12 +62,12 @@ void Game_Unit_Wait(struct Game *sota, tnecs_entity ent) {
 
     /* stop animation */
     Sprite_Animation_Restart(sprite, MAP_UNIT_LOOP_IDLE);
-    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, ent, Timer));
-    struct Timer *timer = IES_GET_COMPONENT(sota->world, ent, Timer);
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, ent, Timer));
+    struct Timer *timer = IES_GET_COMPONENT(sota->ecs.world, ent, Timer);
     timer->paused = true;
-    // if (IES_ENTITY_HASCOMPONENT(sota->world, ent, Timer))
+    // if (IES_ENTITY_HASCOMPONENT(sota->ecs.world, ent, Timer))
 
-    // TNECS_REMOVE_COMPONENTS(sota->world, ent, Timer);
+    // TNECS_REMOVE_COMPONENTS(sota->ecs.world, ent, Timer);
     // Sprite_Draw(sprite, sota->render.er);
 }
 
@@ -75,13 +75,13 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
     SDL_assert(sota != NULL);
 
     /* --- Refresh unit on map --- */
-    SDL_assert(TNECS_ENTITY_EXISTS(sota->world, ent));
-    struct Unit *unit = IES_GET_COMPONENT(sota->world, ent, Unit);
+    SDL_assert(TNECS_ENTITY_EXISTS(sota->ecs.world, ent));
+    struct Unit *unit = IES_GET_COMPONENT(sota->ecs.world, ent, Unit);
     SDL_assert(unit != NULL);
     /* --- Skip if unit is not waiting --- */
     if (!Unit_isWaiting(unit))
         return;
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->world, ent, Sprite);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, ent, Sprite);
     SDL_assert(sprite != NULL);
 
     Unit_refresh(unit);
@@ -91,9 +91,9 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
 
     /* restart animation */
     Sprite_Animation_Restart(sprite, MAP_UNIT_LOOP_IDLE);
-    // if (!IES_ENTITY_HASCOMPONENT(sota->world, ent, Timer))
-    // TNECS_ADD_COMPONENT(sota->world, ent, Timer);
-    struct Timer *timer = IES_GET_COMPONENT(sota->world, ent, Timer);
+    // if (!IES_ENTITY_HASCOMPONENT(sota->ecs.world, ent, Timer))
+    // TNECS_ADD_COMPONENT(sota->ecs.world, ent, Timer);
+    struct Timer *timer = IES_GET_COMPONENT(sota->ecs.world, ent, Timer);
     SDL_assert(timer != NULL);
     *timer = Timer_default;
     Sprite_Draw(sprite, sota->render.er);
@@ -115,7 +115,7 @@ void Game_Party_Free(struct Game *sota) {
             return;
         }
         // SDL_free loaded unit component from and clear party entry
-        Unit *unit = IES_GET_COMPONENT(sota->world, entities[j], Unit);
+        Unit *unit = IES_GET_COMPONENT(sota->ecs.world, entities[j], Unit);
         SDL_assert(unit != NULL);
         Unit_Free(unit);
     }
@@ -126,7 +126,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     SDL_assert((unit_id > UNIT_ID_START) && (unit_id < UNIT_ID_END));
 
     /* Create Unit entity from previously loaded party unit. */
-    tnecs_world *world = sota->world;
+    tnecs_world *world = sota->ecs.world;
     tnecs_entity unit_ent;
 
     tnecs_component archetype   = TNECS_COMPONENT_IDS2ARCHETYPE(Unit_ID, Position_ID,
@@ -146,21 +146,21 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
         SDL_assert(world->bytype.entities[archetype_id1][current_num - 1] == unit_ent);
     }
 
-    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, unit_ent, Unit));
-    if (!IES_ENTITY_HASCOMPONENT(sota->world, unit_ent, MapHPBar)) {
-        TNECS_ADD_COMPONENT(sota->world, unit_ent, MapHPBar_ID);
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, unit_ent, Unit));
+    if (!IES_ENTITY_HASCOMPONENT(sota->ecs.world, unit_ent, MapHPBar)) {
+        TNECS_ADD_COMPONENT(sota->ecs.world, unit_ent, MapHPBar_ID);
     }
 
-    if (!IES_ENTITY_HASCOMPONENT(sota->world, unit_ent, Position)) {
-        TNECS_ADD_COMPONENT(sota->world, unit_ent, Position_ID);
+    if (!IES_ENTITY_HASCOMPONENT(sota->ecs.world, unit_ent, Position)) {
+        TNECS_ADD_COMPONENT(sota->ecs.world, unit_ent, Position_ID);
     }
 
-    if (!IES_ENTITY_HASCOMPONENT(sota->world, unit_ent, Sprite)) {
-        TNECS_ADD_COMPONENT(sota->world, unit_ent, Sprite_ID);
+    if (!IES_ENTITY_HASCOMPONENT(sota->ecs.world, unit_ent, Sprite)) {
+        TNECS_ADD_COMPONENT(sota->ecs.world, unit_ent, Sprite_ID);
     }
 
-    if (!IES_ENTITY_HASCOMPONENT(sota->world, unit_ent, Timer)) {
-        TNECS_ADD_COMPONENT(sota->world, unit_ent, Timer_ID);
+    if (!IES_ENTITY_HASCOMPONENT(sota->ecs.world, unit_ent, Timer)) {
+        TNECS_ADD_COMPONENT(sota->ecs.world, unit_ent, Timer_ID);
     }
 
     size_t archetype_id2 = tnecs_archetypeid(world, TNECS_ENTITY_ARCHETYPE(   world, unit_ent));
@@ -169,7 +169,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     SDL_assert(TNECS_ENTITY_ARCHETYPE(world, unit_ent) == archetype);
 
     // SDL_Log("-- loading unit --");
-    struct Unit *unit = IES_GET_COMPONENT(sota->world, unit_ent, Unit);
+    struct Unit *unit = IES_GET_COMPONENT(sota->ecs.world, unit_ent, Unit);
     *unit = Unit_default;
     SDL_assert(unit != NULL);
     if (unit_init != NULL) {
@@ -203,7 +203,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     }
 
     // SDL_Log("-- loading slider --");
-    // struct Slider * slider = IES_GET_COMPONENT(sota->world, unit_ent, Slider);
+    // struct Slider * slider = IES_GET_COMPONENT(sota->ecs.world, unit_ent, Slider);
     // SDL_assert(slider != NULL);
     // *slider = Slider_default;
     // slider->slidefactors[DIMENSION_X] = 2.0f;
@@ -211,7 +211,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     // slider->update_wait = CURSOR_SLIDEWAIT;
     // slider->slidetype = SLIDETYPE_GEOMETRIC;
     // SDL_Log("-- loading map_hp_bar --");
-    struct MapHPBar *map_hp_bar = IES_GET_COMPONENT(sota->world, unit_ent, MapHPBar);
+    struct MapHPBar *map_hp_bar = IES_GET_COMPONENT(sota->ecs.world, unit_ent, MapHPBar);
     *map_hp_bar             = MapHPBar_default;
     map_hp_bar->unit_ent    = unit_ent;
     map_hp_bar->len         = sota->settings.tilesize[0];
@@ -220,7 +220,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
 
     // SDL_Log("-- loading position --");
     struct Position *pos;
-    pos = IES_GET_COMPONENT(sota->world, unit_ent, Position);
+    pos = IES_GET_COMPONENT(sota->ecs.world, unit_ent, Position);
     SDL_assert(pos != NULL);
     memcpy(pos, &Position_default, sizeof(Position_default));
     pos->onTilemap = true;
@@ -236,11 +236,11 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
 
     // SDL_Log("-- loading sprite --");
     struct Timer *timer;
-    timer = IES_GET_COMPONENT(sota->world, unit_ent, Timer);
+    timer = IES_GET_COMPONENT(sota->ecs.world, unit_ent, Timer);
     SDL_assert(timer != NULL);
     *timer = Timer_default;
 
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->world, unit_ent, Sprite);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, unit_ent, Sprite);
     SDL_assert(sprite != NULL);
     memcpy(sprite, &Sprite_default, sizeof(Sprite_default));
     Sprite_Map_Unit_Load(sprite, unit, sota->render.er);
@@ -277,14 +277,14 @@ void Game_putPConMap(struct Game    *sota,   i16    *unit_ids,
         tnecs_entity unit_ent = sota->party.entities[unit_ids[i]];
 
         SDL_assert(unit_ent > TNECS_NULL);
-        struct Unit *temp = IES_GET_COMPONENT(sota->world, unit_ent, Unit);
+        struct Unit *temp = IES_GET_COMPONENT(sota->ecs.world, unit_ent, Unit);
         SDL_assert(temp             != NULL);
         SDL_assert(global_unitNames[Unit_id(temp)].data != NULL);
 
-        SDL_assert(sota->map->world == sota->world);
+        SDL_assert(sota->map->world == sota->ecs.world);
         Map_Unit_Put(sota->map, posarr[i].x, posarr[i].y, unit_ent);
 
-        struct Position *pos = IES_GET_COMPONENT(sota->world, unit_ent, Position);
+        struct Position *pos = IES_GET_COMPONENT(sota->ecs.world, unit_ent, Position);
         SDL_assert(pos->tilemap_pos.x == posarr[i].x);
         SDL_assert(pos->tilemap_pos.y == posarr[i].y);
     }

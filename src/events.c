@@ -94,8 +94,8 @@ tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code) {
                 Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Enable, NULL, NULL);
             }
             out_accepter_entity = sota->entity_cursor;
-            gamepad_ptr  = IES_GET_COMPONENT(sota->world, sota->entity_cursor, controllerGamepad);
-            keyboard_ptr = IES_GET_COMPONENT(sota->world, sota->entity_cursor, controllerKeyboard);
+            gamepad_ptr  = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerGamepad);
+            keyboard_ptr = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerKeyboard);
             gamepad_ptr->block_buttons        = true;
             keyboard_ptr->block_buttons       = true;
             gamepad_ptr->timeheld_button_ns   = SOTA_ns / sota->settings.FPS.cap;
@@ -108,8 +108,8 @@ tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code) {
                 Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Enable, NULL, NULL);
             }
             out_accepter_entity = sota->entity_cursor;
-            gamepad_ptr  = IES_GET_COMPONENT(sota->world, sota->entity_cursor, controllerGamepad);
-            keyboard_ptr = IES_GET_COMPONENT(sota->world, sota->entity_cursor, controllerKeyboard);
+            gamepad_ptr  = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerGamepad);
+            keyboard_ptr = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerKeyboard);
             gamepad_ptr->block_buttons        = true;
             keyboard_ptr->block_buttons       = true;
             gamepad_ptr->timeheld_button_ns   = SOTA_ns / sota->settings.FPS.cap;
@@ -122,8 +122,8 @@ tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code) {
                 Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Enable, NULL, NULL);
             }
             out_accepter_entity = sota->entity_cursor;
-            gamepad_ptr  = IES_GET_COMPONENT(sota->world, sota->entity_cursor, controllerGamepad);
-            keyboard_ptr = IES_GET_COMPONENT(sota->world, sota->entity_cursor, controllerKeyboard);
+            gamepad_ptr  = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerGamepad);
+            keyboard_ptr = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerKeyboard);
             gamepad_ptr->block_buttons        = true;
             keyboard_ptr->block_buttons       = true;
             gamepad_ptr->timeheld_button_ns   = SOTA_ns / sota->settings.FPS.cap;
@@ -267,7 +267,7 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
 
         /* Only if unit on tile */
         const struct Position *cursor_pos;
-        cursor_pos = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+        cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
         struct Point pos    = cursor_pos->tilemap_pos;
         int current_i       = pos.y * Map_col_len(sota->map) + pos.x;
         tnecs_entity ontile = sota->map->darrs.unitmap[current_i];
@@ -286,8 +286,8 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
 
         /* -- Timer for reinforcements -- */
         SDL_assert(sota->reinf_timer == TNECS_NULL);
-        sota->reinf_timer   = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer_ID);
-        struct Timer *timer = IES_GET_COMPONENT(sota->world, sota->reinf_timer, Timer);
+        sota->reinf_timer   = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Timer_ID);
+        struct Timer *timer = IES_GET_COMPONENT(sota->ecs.world, sota->reinf_timer, Timer);
         *timer = Timer_default;
 
 #ifdef SOTA_PLAYER_CONTROLS_ENEMY
@@ -331,7 +331,7 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
     /* -- Make Popup_Tile visible -- */
     popup_ent = sota->popups[POPUP_TYPE_HUD_TILE];
     if (popup_ent > TNECS_NULL) {
-        popup_ptr = IES_GET_COMPONENT(sota->world, popup_ent, PopUp);
+        popup_ptr = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
         SDL_assert(popup_ptr != NULL);
         popup_ptr->visible = true;
     }
@@ -339,7 +339,7 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
     /* -- Make Popup_Unit visible -- */
     popup_ent = sota->popups[POPUP_TYPE_HUD_UNIT];
     if (popup_ent > TNECS_NULL) {
-        popup_ptr = IES_GET_COMPONENT(sota->world, popup_ent, PopUp);
+        popup_ptr = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
         SDL_assert(popup_ptr != NULL);
         popup_ptr->visible = true;
     }
@@ -348,7 +348,7 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
     /* -- Popup_Loadout_stats -- */
     popup_ent = sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS];
     if (popup_ent > TNECS_NULL) {
-        popup_ptr = IES_GET_COMPONENT(sota->world, popup_ent, PopUp);
+        popup_ptr = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
         SDL_assert(popup_ptr != NULL);
         popup_ptr->visible = false;
     }
@@ -385,7 +385,7 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
         Game_menuStack_Pop(sota, destroy);
 
     /* - Hide Cursor - */
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Sprite);
     SDL_assert(sprite != NULL);
     sprite->visible = false;
 
@@ -400,17 +400,17 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     /* - Remove unused components - */
     for (int i = 0; i < DARR_NUM(sota->map->units.onfield.arr); i++) {
         tnecs_entity ent = sota->map->units.onfield.arr[i];
-        TNECS_REMOVE_COMPONENTS(sota->world, ent, MapHPBar_ID);
-        if (IES_ENTITY_HASCOMPONENT(sota->world, ent, RenderTop)) {
-            TNECS_REMOVE_COMPONENTS(sota->world, ent, RenderTop_ID);
+        TNECS_REMOVE_COMPONENTS(sota->ecs.world, ent, MapHPBar_ID);
+        if (IES_ENTITY_HASCOMPONENT(sota->ecs.world, ent, RenderTop)) {
+            TNECS_REMOVE_COMPONENTS(sota->ecs.world, ent, RenderTop_ID);
         }
 
-        if (IES_ENTITY_HASCOMPONENT(sota->world, ent, UnitMoveAnimation)) {
-            TNECS_REMOVE_COMPONENTS(sota->world, ent, UnitMoveAnimation_ID);
+        if (IES_ENTITY_HASCOMPONENT(sota->ecs.world, ent, UnitMoveAnimation)) {
+            TNECS_REMOVE_COMPONENTS(sota->ecs.world, ent, UnitMoveAnimation_ID);
         }
 
-        if (IES_ENTITY_HASCOMPONENT(sota->world, ent, Boss)) {
-            TNECS_REMOVE_COMPONENTS(sota->world, ent, Boss_ID);
+        if (IES_ENTITY_HASCOMPONENT(sota->ecs.world, ent, Boss)) {
+            TNECS_REMOVE_COMPONENTS(sota->ecs.world, ent, Boss_ID);
         }
     }
 
@@ -419,21 +419,21 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
 
     /* -- Creating scene to play -- */
     // TODO: play Scene, OR cutscene?
-    sota->scene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Scene_ID,
+    sota->scene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Scene_ID,
                                                   Position_ID, Text_ID, Timer_ID);
 
-    struct Scene *scene  = IES_GET_COMPONENT(sota->world, sota->scene, Scene);
+    struct Scene *scene  = IES_GET_COMPONENT(sota->ecs.world, sota->scene, Scene);
     SDL_assert(scene != NULL);
     *scene = Scene_default;
     scene->event = event_Quit;
 
     struct Timer *timer;
-    timer  = IES_GET_COMPONENT(sota->world, sota->scene, Timer);
+    timer  = IES_GET_COMPONENT(sota->ecs.world, sota->scene, Timer);
     *timer = Timer_default;
 
     /* TODO: remove when scene can actually play */
     struct Text *text;
-    text  = IES_GET_COMPONENT(sota->world, sota->scene, Text);
+    text  = IES_GET_COMPONENT(sota->ecs.world, sota->scene, Text);
     *text = Text_default;
     text->pixelfont         = sota->pixelnours_big;
     s8 line = s8_literal("You win!");
@@ -441,7 +441,7 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     SDL_assert((text->rect.w > 0) && (text->rect.h > 0));
 
     struct Position *position;
-    position  = IES_GET_COMPONENT(sota->world, sota->scene, Position);
+    position  = IES_GET_COMPONENT(sota->ecs.world, sota->scene, Position);
     *position = Position_default;
     position->onTilemap = false;
     position->scale[0] = 10.0f;
@@ -503,23 +503,23 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
         Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
 
     /* - Show Cursor - */
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Sprite);
     SDL_assert(sprite != NULL);
     sprite->visible = true;
 
     /* -- Destroying Cutscene -- */
-    struct Cutscene *cutscene  = IES_GET_COMPONENT(sota->world, sota->cutscene, Cutscene);
+    struct Cutscene *cutscene  = IES_GET_COMPONENT(sota->ecs.world, sota->cutscene, Cutscene);
     if (cutscene != NULL) {
         Cutscene_Free(cutscene);
-        tnecs_entity_destroy(sota->world, sota->cutscene);
+        tnecs_entity_destroy(sota->ecs.world, sota->cutscene);
         sota->cutscene = TNECS_NULL;
     }
 
     /* -- Destroying scene -- */
-    struct Scene *scene  = IES_GET_COMPONENT(sota->world, sota->scene, Scene);
+    struct Scene *scene  = IES_GET_COMPONENT(sota->ecs.world, sota->scene, Scene);
     if (scene != NULL) {
         Scene_Free(scene);
-        tnecs_entity_destroy(sota->world, sota->scene);
+        tnecs_entity_destroy(sota->ecs.world, sota->scene);
         sota->scene = TNECS_NULL;
     }
 
@@ -542,17 +542,17 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
     if (sota->map != NULL) {
         for (int i = 0; i < DARR_NUM(sota->map->units.onfield.arr); i++) {
             tnecs_entity ent = sota->map->units.onfield.arr[i];
-            TNECS_REMOVE_COMPONENTS(sota->world, ent, MapHPBar_ID);
-            if (IES_ENTITY_HASCOMPONENT(sota->world, ent, RenderTop)) {
-                TNECS_REMOVE_COMPONENTS(sota->world, ent, RenderTop_ID);
+            TNECS_REMOVE_COMPONENTS(sota->ecs.world, ent, MapHPBar_ID);
+            if (IES_ENTITY_HASCOMPONENT(sota->ecs.world, ent, RenderTop)) {
+                TNECS_REMOVE_COMPONENTS(sota->ecs.world, ent, RenderTop_ID);
             }
 
-            if (IES_ENTITY_HASCOMPONENT(sota->world, ent, UnitMoveAnimation)) {
-                TNECS_REMOVE_COMPONENTS(sota->world, ent, UnitMoveAnimation_ID);
+            if (IES_ENTITY_HASCOMPONENT(sota->ecs.world, ent, UnitMoveAnimation)) {
+                TNECS_REMOVE_COMPONENTS(sota->ecs.world, ent, UnitMoveAnimation_ID);
             }
 
-            if (IES_ENTITY_HASCOMPONENT(sota->world, ent, Boss)) {
-                TNECS_REMOVE_COMPONENTS(sota->world, ent, Boss_ID);
+            if (IES_ENTITY_HASCOMPONENT(sota->ecs.world, ent, Boss)) {
+                TNECS_REMOVE_COMPONENTS(sota->ecs.world, ent, Boss_ID);
             }
         }
 
@@ -576,14 +576,14 @@ void receive_event_Music_Toggle(struct Game *sota, SDL_Event *event) {
 
     /* --- Blocking keyboard --- */
     struct controllerKeyboard *keyboard_ptr;
-    keyboard_ptr = IES_GET_COMPONENT(sota->world, sota->entity_cursor, controllerKeyboard);
+    keyboard_ptr = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerKeyboard);
     keyboard_ptr->block_buttons = true;
 }
 
 void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     /* --- Blocking keyboard --- */
     struct controllerKeyboard *keyboard_ptr;
-    keyboard_ptr = IES_GET_COMPONENT(sota->world, sota->entity_cursor, controllerKeyboard);
+    keyboard_ptr = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerKeyboard);
     keyboard_ptr->block_buttons = true;
 
     /* --- Benchmarking reload time --- */
@@ -601,7 +601,7 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     size_t flag_id;
 
     component_flag  = tnecs_component_ids2archetype(2, Sprite_ID, Unit_ID);
-    flag_id         = tnecs_archetypeid(sota->world, component_flag);
+    flag_id         = tnecs_archetypeid(sota->ecs.world, component_flag);
 
     Reload_Entities(sota, Reload_JSON, flag_id, "Sprite");
 
@@ -638,7 +638,7 @@ void receive_event_SDL_CONTROLLERDEVICEREMOVED(struct Game *sota, SDL_Event *eve
     SDL_assert(sota->entity_cursor != TNECS_NULL);
 
     struct controllerGamepad *gamepad_ptr;
-    gamepad_ptr = IES_GET_COMPONENT(sota->world, sota->entity_cursor, controllerGamepad);
+    gamepad_ptr = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerGamepad);
     if (gamepad_ptr != NULL)
         Gamepad_removeController(gamepad_ptr, event->cdevice.which);
     else
@@ -662,7 +662,7 @@ void receive_event_SDL_CONTROLLERDEVICEADDED(struct Game *sota, SDL_Event *event
     }
 
     struct controllerGamepad *gamepad_ptr;
-    gamepad_ptr = IES_GET_COMPONENT(sota->world, sota->entity_cursor, controllerGamepad);
+    gamepad_ptr = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerGamepad);
     if (gamepad_ptr != NULL)
         Gamepad_addController(gamepad_ptr, event->cdevice.which);
     else
@@ -685,8 +685,8 @@ void receive_event_SDL_MOUSEMOTION(struct Game *sota, SDL_Event *event) {
         return;
     }
 
-    struct Sprite   *msprite  = IES_GET_COMPONENT(sota->world, mouse, Sprite);
-    struct Position *mpos     = IES_GET_COMPONENT(sota->world, mouse, Position);
+    struct Sprite   *msprite  = IES_GET_COMPONENT(sota->ecs.world, mouse, Sprite);
+    struct Position *mpos     = IES_GET_COMPONENT(sota->ecs.world, mouse, Position);
     SDL_assert(msprite);
     SDL_assert(mpos);
     SDL_Point motion = {event->motion.x, event->motion.y};
@@ -713,7 +713,7 @@ void receive_event_SDL_MOUSEBUTTON(struct Game *sota, SDL_Event *event) {
 
     struct controllerMouse *mouse;
     if (event->button.state == SDL_PRESSED) {
-        mouse = IES_GET_COMPONENT(sota->world, sota->entity_mouse, controllerMouse);
+        mouse = IES_GET_COMPONENT(sota->ecs.world, sota->entity_mouse, controllerMouse);
         Mouse_checkButton(mouse, event->button.button);
     }
 }
@@ -738,11 +738,11 @@ void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity turn_transition;
-    turn_transition = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, MapAnimation_ID, Position_ID,
+    turn_transition = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, MapAnimation_ID, Position_ID,
                                                       Text_ID, Timer_ID);
 
     struct Timer *timer;
-    timer  = IES_GET_COMPONENT(sota->world, turn_transition, Timer);
+    timer  = IES_GET_COMPONENT(sota->ecs.world, turn_transition, Timer);
     *timer = Timer_default;
 
     // TODO: How to do a fancy animation?
@@ -750,7 +750,7 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     // 2- Modify MapAnimation component
     // 3- Implement animation checker in Map_TurnTransition_Animate
     struct MapAnimation *map_anim;
-    map_anim  = IES_GET_COMPONENT(sota->world, turn_transition, MapAnimation);
+    map_anim  = IES_GET_COMPONENT(sota->ecs.world, turn_transition, MapAnimation);
     *map_anim = MapAnimation_default;
     map_anim->time_ns = SOTA_SOUNDFX_NEXT_TURN_DURATION_ms * SOTA_us;
     map_anim->anim = &Map_TurnTransition_Animate;
@@ -787,7 +787,7 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
 #endif /* DEBUG_NO_SOUNDFX */
 
     struct Text *text;
-    text  = IES_GET_COMPONENT(sota->world, turn_transition, Text);
+    text  = IES_GET_COMPONENT(sota->ecs.world, turn_transition, Text);
     *text = Text_default;
     text->pixelfont         = sota->pixelnours_big;
     s8 line = s8_mut(army_name.data);
@@ -797,7 +797,7 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     s8_free(&line);
 
     struct Position *position;
-    position  = IES_GET_COMPONENT(sota->world, turn_transition, Position);
+    position  = IES_GET_COMPONENT(sota->ecs.world, turn_transition, Position);
     *position = Position_default;
     position->onTilemap = false;
     position->scale[0] = 10.0f;
@@ -813,7 +813,7 @@ void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
     /* - Pop all menus - */
     while (DARR_NUM(sota->menu_stack) > 0) {
         tnecs_entity menu_pop       = DARR_POP(sota->menu_stack);
-        struct Menu *mc             = IES_GET_COMPONENT(sota->world, menu_pop, Menu);
+        struct Menu *mc             = IES_GET_COMPONENT(sota->ecs.world, menu_pop, Menu);
         SDL_assert(mc           != NULL);
         SDL_assert(mc->elem_pos != NULL);
         mc->visible = false;
@@ -824,7 +824,7 @@ void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
 
     /* - Destroy reinforcement timer - */
     if (sota->reinf_timer != TNECS_NULL) {
-        tnecs_entity_destroy(sota->world, sota->reinf_timer);
+        tnecs_entity_destroy(sota->ecs.world, sota->reinf_timer);
         sota->reinf_timer = TNECS_NULL;
     }
 
@@ -868,8 +868,8 @@ void receive_event_Unit_Deselect(struct Game *sota, SDL_Event *userevent) {
     }
 
     tnecs_entity unit_ent       = sota->selected_unit_entity;
-    struct Position *pos_ptr    = IES_GET_COMPONENT(sota->world, unit_ent, Position);
-    struct Unit     *unit_ptr   = IES_GET_COMPONENT(sota->world, unit_ent, Unit);
+    struct Position *pos_ptr    = IES_GET_COMPONENT(sota->ecs.world, unit_ent, Position);
+    struct Unit     *unit_ptr   = IES_GET_COMPONENT(sota->ecs.world, unit_ent, Unit);
     SDL_assert(pos_ptr  != NULL);
     SDL_assert(unit_ptr != NULL);
 
@@ -905,8 +905,8 @@ void receive_event_Unit_Icon_Return(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity returning = sota->selected_unit_entity;
     SDL_assert(returning > TNECS_NULL);
 
-    struct Position *pos_ptr  = IES_GET_COMPONENT(sota->world, returning, Position);
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->world, sota->selected_unit_entity, Sprite);
+    struct Position *pos_ptr  = IES_GET_COMPONENT(sota->ecs.world, returning, Position);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->selected_unit_entity, Sprite);
     SDL_assert(pos_ptr != NULL);
     SDL_assert(sprite != NULL);
 
@@ -937,8 +937,8 @@ void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
     /* -- Initialize Arrow -- */
     Position *cpos;
     Unit     *selected;
-    cpos     = IES_GET_COMPONENT(sota->world, sota->entity_cursor,        Position);
-    selected = IES_GET_COMPONENT(sota->world, sota->selected_unit_entity, Unit);
+    cpos     = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor,        Position);
+    selected = IES_GET_COMPONENT(sota->ecs.world, sota->selected_unit_entity, Unit);
     SDL_assert(cpos                 != NULL);
     SDL_assert(selected             != NULL);
     SDL_assert(sota->map->darrs.costmap   != NULL);
@@ -950,7 +950,7 @@ void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
     Game_subState_Set(sota, GAME_SUBSTATE_MAP_UNIT_MOVES, sota->reason);
 
     /* -- Sprite walking animation -- */
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->world, sota->selected_unit_entity, Sprite);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->selected_unit_entity, Sprite);
     SDL_assert(sprite->spritesheet != NULL);
     if (sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM) {
         // TODO: check if arrow exists and is long, revert to correct orientation
@@ -966,7 +966,7 @@ void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Cursor_Hovers_Unit(struct Game *sota, SDL_Event *userevent) {
     sota->hovered_unit_entity = *(tnecs_entity *)userevent->user.data2;
     SDL_assert(sota->hovered_unit_entity != TNECS_NULL);
-    struct Unit *temp = IES_GET_COMPONENT(sota->world, sota->hovered_unit_entity, Unit);
+    struct Unit *temp = IES_GET_COMPONENT(sota->ecs.world, sota->hovered_unit_entity, Unit);
     SDL_assert(global_unitNames[Unit_id(temp)].data != NULL);
 
     if (fsm_eCrsHvUnit_ss[Game_Substate_Current(sota)] != NULL)
@@ -1006,7 +1006,7 @@ void receive_event_Menu_Created(struct Game *sota, SDL_Event *userevent) {
     // Note: Map Action menu does not select unit
     if ((menu_entity == sota->item_select_menu) && (sota->selected_unit_entity)) {
         struct Sprite *sprite;
-        sprite = IES_GET_COMPONENT(sota->world, sota->selected_unit_entity, Sprite);
+        sprite = IES_GET_COMPONENT(sota->ecs.world, sota->selected_unit_entity, Sprite);
 
         SDL_assert(sprite->spritesheet != NULL);
         SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM);
@@ -1028,7 +1028,7 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     /* - Turn menu_attack invisible - */
     int stack_top           = DARR_NUM(sota->menu_stack) - 1;
     tnecs_entity menu_top   = sota->menu_stack[stack_top];
-    struct Menu *mc         = IES_GET_COMPONENT(sota->world, menu_top, Menu);
+    struct Menu *mc         = IES_GET_COMPONENT(sota->ecs.world, menu_top, Menu);
     SDL_assert(mc              != NULL);
     SDL_assert(mc->type        == MENU_TYPE_WEAPON_SELECT);
     SDL_assert(mc->type        == MENU_TYPE_WEAPON_SELECT);
@@ -1055,7 +1055,7 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
 
     /* -- Start unit combat stance loop -- */
     // NOTE: ONLY FOR ATTACK
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->world, sota->defendant, Sprite);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Sprite);
     if (MAP_UNIT_LOOP_STANCE < sprite->spritesheet->loop_num) {
         Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_STANCE, sprite->flip);
         Sprite_Animation_Loop(sprite);
@@ -1064,7 +1064,7 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
 
     // 3. Attackmap only defendant. -> Move to cursor hovers new defendant
     struct Map *map = sota->map;
-    struct Position *pos  = IES_GET_COMPONENT(sota->world, sota->defendant, Position);
+    struct Position *pos  = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Position);
     memset(map->darrs.attacktomap, 0, Map_area(map) * sizeof(*map->darrs.attacktomap));
     map->darrs.attacktomap[(pos->tilemap_pos.y * Map_col_len(map) + pos->tilemap_pos.x)] = 1;
     Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_ATTACK, TNECS_NULL);
@@ -1087,8 +1087,8 @@ void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {
     struct Sprite *sprite_atorigin;
     struct Sprite *cursor_sprite;
     struct Sprite *mouse_sprite;
-    cursor_sprite   = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
-    mouse_sprite    = IES_GET_COMPONENT(sota->world, sota->entity_mouse, Sprite);
+    cursor_sprite   = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Sprite);
+    mouse_sprite    = IES_GET_COMPONENT(sota->ecs.world, sota->entity_mouse, Sprite);
     SDL_assert(cursor_sprite != NULL);
     SDL_assert(mouse_sprite != NULL);
 
@@ -1129,8 +1129,8 @@ void receive_event_Input_ZOOM_OUT(struct Game *sota, SDL_Event *userevent) {
     struct Sprite *cursor_sprite;
     struct Sprite *mouse_sprite;
     struct Sprite *sprite_atorigin;
-    cursor_sprite   = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
-    mouse_sprite    = IES_GET_COMPONENT(sota->world, sota->entity_mouse, Sprite);
+    cursor_sprite   = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Sprite);
+    mouse_sprite    = IES_GET_COMPONENT(sota->ecs.world, sota->entity_mouse, Sprite);
     SDL_assert(cursor_sprite != NULL);
     SDL_assert(mouse_sprite != NULL);
 
@@ -1208,7 +1208,7 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
         Game_menuStack_Pop(sota, destroy);
 
     /* - Hide Cursor - */
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Sprite);
     SDL_assert(sprite != NULL);
     sprite->visible = false;
 
@@ -1223,17 +1223,17 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
     /* - Remove unused components - */
     for (int i = 0; i < DARR_NUM(sota->map->units.onfield.arr); i++) {
         tnecs_entity ent = sota->map->units.onfield.arr[i];
-        TNECS_REMOVE_COMPONENTS(sota->world, ent, MapHPBar_ID);
-        if (IES_ENTITY_HASCOMPONENT(sota->world, ent, RenderTop)) {
-            TNECS_REMOVE_COMPONENTS(sota->world, ent, RenderTop_ID);
+        TNECS_REMOVE_COMPONENTS(sota->ecs.world, ent, MapHPBar_ID);
+        if (IES_ENTITY_HASCOMPONENT(sota->ecs.world, ent, RenderTop)) {
+            TNECS_REMOVE_COMPONENTS(sota->ecs.world, ent, RenderTop_ID);
         }
 
-        if (IES_ENTITY_HASCOMPONENT(sota->world, ent, UnitMoveAnimation)) {
-            TNECS_REMOVE_COMPONENTS(sota->world, ent, UnitMoveAnimation_ID);
+        if (IES_ENTITY_HASCOMPONENT(sota->ecs.world, ent, UnitMoveAnimation)) {
+            TNECS_REMOVE_COMPONENTS(sota->ecs.world, ent, UnitMoveAnimation_ID);
         }
 
-        if (IES_ENTITY_HASCOMPONENT(sota->world, ent, Boss)) {
-            TNECS_REMOVE_COMPONENTS(sota->world, ent, Boss_ID);
+        if (IES_ENTITY_HASCOMPONENT(sota->ecs.world, ent, Boss)) {
+            TNECS_REMOVE_COMPONENTS(sota->ecs.world, ent, Boss_ID);
         }
     }
 
@@ -1241,21 +1241,21 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
     Game_Map_Free(sota);
 
     /* -- Creating cutscene to play -- */
-    sota->cutscene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Cutscene_ID,
+    sota->cutscene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Cutscene_ID,
                                                      Position_ID, Text_ID, Timer_ID);
 
     struct Cutscene *cutscene;
-    cutscene  = IES_GET_COMPONENT(sota->world, sota->cutscene, Cutscene);
+    cutscene  = IES_GET_COMPONENT(sota->ecs.world, sota->cutscene, Cutscene);
     *cutscene = Cutscene_default;
     cutscene->event = event_Quit;
 
     struct Timer *timer;
-    timer  = IES_GET_COMPONENT(sota->world, sota->cutscene, Timer);
+    timer  = IES_GET_COMPONENT(sota->ecs.world, sota->cutscene, Timer);
     *timer = Timer_default;
 
     /* TODO: remove Text when cutscene can actually play */
     struct Text *text;
-    text  = IES_GET_COMPONENT(sota->world, sota->cutscene, Text);
+    text  = IES_GET_COMPONENT(sota->ecs.world, sota->cutscene, Text);
     *text = Text_default;
     text->pixelfont         = sota->pixelnours_big;
     s8 line = s8_literal("Tragedy.");
@@ -1264,7 +1264,7 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
 
     /* TODO: remove Position when cutscene can actually play */
     struct Position *position;
-    position  = IES_GET_COMPONENT(sota->world, sota->cutscene, Position);
+    position  = IES_GET_COMPONENT(sota->ecs.world, sota->cutscene, Position);
     *position = Position_default;
     position->onTilemap = false;
     position->scale[0] = 10.0f;
@@ -1331,14 +1331,14 @@ void receive_event_Unit_Rescue(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->aggressor > TNECS_NULL);
     SDL_assert(sota->defendant > TNECS_NULL);
-    struct Sprite *agg_sprite = IES_GET_COMPONENT(sota->world, sota->aggressor, Sprite);
-    struct Sprite *dft_sprite = IES_GET_COMPONENT(sota->world, sota->defendant, Sprite);
+    struct Sprite *agg_sprite = IES_GET_COMPONENT(sota->ecs.world, sota->aggressor, Sprite);
+    struct Sprite *dft_sprite = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Sprite);
 
-    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, sota->defendant, Timer));
-    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, sota->aggressor, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->defendant, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->aggressor, Timer));
 
     // 1. Make cursor visible
-    struct Sprite *sprite     = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
+    struct Sprite *sprite     = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Sprite);
     sprite->visible = true;
 
     // 3. Animate Combat
@@ -1347,8 +1347,8 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     strncpy(sota->reason, "Quitting gameplay", sizeof(sota->reason));
     Game_subState_Set(sota, GAME_SUBSTATE_MAP_ANIMATION, sota->reason);
     /* -- find attack direction -- */
-    struct Position *agg_posc   = IES_GET_COMPONENT(sota->world, sota->aggressor, Position);
-    struct Position *dft_posc   = IES_GET_COMPONENT(sota->world, sota->defendant, Position);
+    struct Position *agg_posc   = IES_GET_COMPONENT(sota->ecs.world, sota->aggressor, Position);
+    struct Position *dft_posc   = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Position);
     struct Point    *dft_pos    = &dft_posc->tilemap_pos;
     struct Point    *agg_pos    = &agg_posc->tilemap_pos;
 
@@ -1383,8 +1383,8 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
             break;
     }
 
-    struct Timer *agg_timer = IES_GET_COMPONENT(sota->world, sota->aggressor, Timer);
-    struct Timer *dft_timer = IES_GET_COMPONENT(sota->world, sota->defendant, Timer);
+    struct Timer *agg_timer = IES_GET_COMPONENT(sota->ecs.world, sota->aggressor, Timer);
+    struct Timer *dft_timer = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Timer);
     SDL_assert(agg_timer != NULL);
     SDL_assert(dft_timer != NULL);
     dft_timer->paused = true;
@@ -1393,21 +1393,21 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     /* -- Create combat animation entity -- */
     // TODO change to MapAnimation component
     tnecs_entity combat_animation;
-    combat_animation = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Timer_ID, CombatAnimation_ID);
+    combat_animation = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Timer_ID, CombatAnimation_ID);
 
     struct CombatAnimation *combat_anim;
-    combat_anim  = IES_GET_COMPONENT(sota->world, combat_animation, CombatAnimation);
+    combat_anim  = IES_GET_COMPONENT(sota->ecs.world, combat_animation, CombatAnimation);
     SDL_assert(combat_anim != NULL);
     *combat_anim = CombatAnimation_default;
 
-    struct Timer *timer = IES_GET_COMPONENT(sota->world, combat_animation, Timer);
+    struct Timer *timer = IES_GET_COMPONENT(sota->ecs.world, combat_animation, Timer);
     SDL_assert(combat_anim != NULL);
     *timer = Timer_default;
     timer->time_ns = 0;
 
     /* - Hide pre combat popup, if it exists - */
     struct Menu *mc;
-    mc = IES_GET_COMPONENT(sota->world, sota->pre_combat_popup, Menu);
+    mc = IES_GET_COMPONENT(sota->ecs.world, sota->pre_combat_popup, Menu);
     if (mc != NULL)
         mc->visible = false;
 
@@ -1416,16 +1416,16 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
         Game_PopUp_Map_Combat_Create(sota);
     Game_PopUp_Map_Combat_Update(sota);
 
-    // struct Unit *aggressor = IES_GET_COMPONENT(sota->world, sota->aggressor, Unit);
-    // struct Unit *defendant = IES_GET_COMPONENT(sota->world, sota->defendant, Unit);
-    struct PopUp *popup    = IES_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_MAP_COMBAT],
+    // struct Unit *aggressor = IES_GET_COMPONENT(sota->ecs.world, sota->aggressor, Unit);
+    // struct Unit *defendant = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Unit);
+    struct PopUp *popup    = IES_GET_COMPONENT(sota->ecs.world, sota->popups[POPUP_TYPE_MAP_COMBAT],
                                                PopUp);
     struct PopUp_Map_Combat *pmc = popup->data;
 
     PopUp_Map_Combat_Units(pmc, sota, sota->aggressor, sota->defendant);
     popup->visible = true;
     /* - Deselect weapons in LoadoutSelectMenu, if it exists - */
-    mc = IES_GET_COMPONENT(sota->world, sota->weapon_select_menu, Menu);
+    mc = IES_GET_COMPONENT(sota->ecs.world, sota->weapon_select_menu, Menu);
     if (mc != NULL) {
         struct LoadoutSelectMenu *wsm = mc->data;
         LoadoutSelectMenu_Select_Reset(wsm);
@@ -1434,47 +1434,47 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     /* - Set previous candidate to NULL - */
     sota->previous_candidate = -1;
 
-    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, sota->defendant, Timer));
-    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, sota->aggressor, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->defendant, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->aggressor, Timer));
 }
 
 void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
     // Event_Emit(__func__, SDL_USEREVENT, event_Unit_Wait, NULL, NULL);
 
     // 1. Resolve Combat
-    struct Unit *aggressor = IES_GET_COMPONENT(sota->world, sota->aggressor, Unit);
+    struct Unit *aggressor = IES_GET_COMPONENT(sota->ecs.world, sota->aggressor, Unit);
     Unit_Waiting_set(aggressor, true);
-    // struct Unit *defendant = IES_GET_COMPONENT(sota->world, sota->defendant, Unit);
+    // struct Unit *defendant = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Unit);
 
-    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, sota->defendant, Timer));
-    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, sota->aggressor, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->defendant, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->aggressor, Timer));
 
     // tnecs_entity  popup_ent      = sota->popups[POPUP_TYPE_MAP_COMBAT];
-    // struct PopUp *popup_ptr      = IES_GET_COMPONENT(sota->world, popup_ent, PopUp);
+    // struct PopUp *popup_ptr      = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
     // struct PopUp_Map_Combat *pmc = popup_ptr->data;
 
     /* 2. Update maphpbars. */
     // Unit might be dead, only update if maphpbar exists
-    struct MapHPBar *map_hp_bar = IES_GET_COMPONENT(sota->world, sota->aggressor, MapHPBar);
+    struct MapHPBar *map_hp_bar = IES_GET_COMPONENT(sota->ecs.world, sota->aggressor, MapHPBar);
     if (map_hp_bar != NULL) {
         map_hp_bar->update  = true;
         map_hp_bar->visible = true;
     }
 
-    map_hp_bar = IES_GET_COMPONENT(sota->world, sota->defendant, MapHPBar);
+    map_hp_bar = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, MapHPBar);
     if (map_hp_bar != NULL) {
         map_hp_bar->update  = true;
         map_hp_bar->visible = true;
     }
 
     // 3. reset animation states
-    struct Sprite *dft_sprite = IES_GET_COMPONENT(sota->world, sota->defendant, Sprite);
-    struct Sprite *agg_sprite = IES_GET_COMPONENT(sota->world, sota->aggressor, Sprite);
+    struct Sprite *dft_sprite = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Sprite);
+    struct Sprite *agg_sprite = IES_GET_COMPONENT(sota->ecs.world, sota->aggressor, Sprite);
     Sprite_Animation_Restart(agg_sprite, MAP_UNIT_LOOP_IDLE);
     Sprite_Animation_Restart(dft_sprite, MAP_UNIT_LOOP_IDLE);
 
     // 4. Restart Defendant animation
-    struct Timer *dft_timer = IES_GET_COMPONENT(sota->world, sota->defendant, Timer);
+    struct Timer *dft_timer = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Timer);
     dft_timer->paused = false;
 
     // 5. Hide PopUp_Map_Combat
@@ -1486,8 +1486,8 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
     if (fsm_eCmbtEnd_ss[Game_Substate_Previous(sota)] != NULL)
         fsm_eCmbtEnd_ss[Game_Substate_Previous(sota)](sota);
 
-    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, sota->defendant, Timer));
-    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, sota->aggressor, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->defendant, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->aggressor, Timer));
 
     receive_event_Unit_Wait(sota, userevent);
 }
@@ -1549,9 +1549,9 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
 
     SDL_assert(victim_entity > TNECS_NULL);
     SDL_assert(killer_entity > TNECS_NULL);
-    struct Unit *killer = IES_GET_COMPONENT(sota->world, killer_entity, Unit);
-    struct Unit *victim = IES_GET_COMPONENT(sota->world, victim_entity, Unit);
-    struct Boss *boss   = IES_GET_COMPONENT(sota->world, victim_entity, Boss);
+    struct Unit *killer = IES_GET_COMPONENT(sota->ecs.world, killer_entity, Unit);
+    struct Unit *victim = IES_GET_COMPONENT(sota->ecs.world, victim_entity, Unit);
+    struct Boss *boss   = IES_GET_COMPONENT(sota->ecs.world, victim_entity, Boss);
 
     SDL_assert(killer != NULL);
     SDL_assert(victim != NULL);
@@ -1563,21 +1563,21 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     killer->counters.regrets = regrets > UINT8_MAX - REGRET_KILL ? UINT8_MAX : regrets + REGRET_KILL;
 
     /* --- Removing unit from map --- */
-    SDL_assert(sota->map->world == sota->world);
+    SDL_assert(sota->map->world == sota->ecs.world);
     SDL_assert(victim_entity > TNECS_NULL);
     Map_Unit_Remove(sota->map, victim_entity);
 
     /* --- Making unit sprite invisible --- */
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->world, victim_entity, Sprite);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, victim_entity, Sprite);
     sprite->visible = false;
 
     /* --- Remove MapHPbar --- */
-    if (IES_ENTITY_HASCOMPONENT(sota->world, victim_entity, MapHPBar))
-        TNECS_REMOVE_COMPONENTS(sota->world, victim_entity, MapHPBar_ID);
+    if (IES_ENTITY_HASCOMPONENT(sota->ecs.world, victim_entity, MapHPBar))
+        TNECS_REMOVE_COMPONENTS(sota->ecs.world, victim_entity, MapHPBar_ID);
 
     /* Components changed place, need to reload */
-    victim = IES_GET_COMPONENT(sota->world, victim_entity, Unit);
-    boss   = IES_GET_COMPONENT(sota->world, victim_entity, Boss);
+    victim = IES_GET_COMPONENT(sota->ecs.world, victim_entity, Unit);
+    boss   = IES_GET_COMPONENT(sota->ecs.world, victim_entity, Boss);
 
     /* --- Deleting entity? --- */
     // - Put unit entity in list of killed units
@@ -1592,8 +1592,8 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Unit_Loots(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity looter_entity = *(tnecs_entity *) userevent->user.data1;
     // tnecs_entity victim_entity = *(tnecs_entity *) userevent->user.data2;
-    struct Unit *looter = IES_GET_COMPONENT(sota->world, looter_entity, Unit);
-    // struct Unit *victim = IES_GET_COMPONENT(sota->world, victim_entity, Unit);
+    struct Unit *looter = IES_GET_COMPONENT(sota->ecs.world, looter_entity, Unit);
+    // struct Unit *victim = IES_GET_COMPONENT(sota->ecs.world, victim_entity, Unit);
     int regrets = Unit_Current_Regrets(looter);
     looter->counters.regrets = regrets > UINT8_MAX - REGRET_LOOT ? UINT8_MAX : regrets + REGRET_LOOT;
 }
@@ -1601,7 +1601,7 @@ void receive_event_Unit_Loots(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     /* -- Popup_Map_Combat -- */
     // tnecs_entity popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
-    // struct PopUp *popup_ptr  = IES_GET_COMPONENT(sota->world, popup_ent, PopUp);
+    // struct PopUp *popup_ptr  = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
     // struct PopUp_Map_Combat *pmc = popup_ptr->data;
     // SDL_assert(pmc->defendant == sota->defendant);
     // SDL_assert(pmc->aggressor == sota->aggressor);
@@ -1609,8 +1609,8 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     // SDL_assert(pmc->aggressor > TNECS_NULL);
     SDL_assert(sota->aggressor > TNECS_NULL);
     SDL_assert(sota->defendant > TNECS_NULL);
-    Unit *aggressor  = IES_GET_COMPONENT(sota->world, sota->aggressor, Unit);
-    Unit *defendant  = IES_GET_COMPONENT(sota->world, sota->defendant, Unit);
+    Unit *aggressor  = IES_GET_COMPONENT(sota->ecs.world, sota->aggressor, Unit);
+    Unit *defendant  = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Unit);
     SDL_assert(aggressor != NULL);
     SDL_assert(defendant != NULL);
 
@@ -1659,8 +1659,8 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Unit_Agonizes(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity victor_entity = *(tnecs_entity *) userevent->user.data1;
     // tnecs_entity victim_entity = *(tnecs_entity *) userevent->user.data2;
-    struct Unit *victor = IES_GET_COMPONENT(sota->world, victor_entity, Unit);
-    // struct Unit *victim = IES_GET_COMPONENT(sota->world, victim_entity, Unit);
+    struct Unit *victor = IES_GET_COMPONENT(sota->ecs.world, victor_entity, Unit);
+    // struct Unit *victim = IES_GET_COMPONENT(sota->ecs.world, victim_entity, Unit);
     int regrets = Unit_Current_Regrets(victor);
     victor->counters.regrets = regrets > UINT8_MAX - REGRET_LOOT ? UINT8_MAX : regrets + REGRET_LOOT;
 }

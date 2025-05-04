@@ -948,6 +948,17 @@ typedef struct Game_Render {
 #endif /* SOTA_OPENGL */
 } Game_Render;
 
+typedef struct Game_ECS {
+    // world is mostly world_render
+    // only entity in world_control is cursor
+    tnecs_world  *world;
+    tnecs_world  *world_render;
+    tnecs_world  *world_control;
+
+    tnecs_component timer_typeflag;
+} Game_ECS;
+
+
 /* --- Game Object --- */
 typedef struct Game {
     struct Settings    settings;
@@ -957,18 +968,9 @@ typedef struct Game {
     struct Map *map;
     struct Party party;
 
-    struct Game_State state;
-    struct Game_Render render;
-
-    // world is mostly world_render
-    // only entity in world_control is cursor
-    // typedef struct Game_ECS {
-    tnecs_world  *world;
-    tnecs_world  *world_render;
-    tnecs_world  *world_control;
-
-    tnecs_component timer_typeflag;
-    // } Game_ECS;
+    struct Game_ECS         ecs;
+    struct Game_State       state;
+    struct Game_Render      render;
 
     struct dtab *menu_options_dtab;
     struct dtab *defaultstates_dtab;

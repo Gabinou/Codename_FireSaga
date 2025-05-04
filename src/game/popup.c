@@ -19,20 +19,20 @@ void Game_PopUps_Free(struct Game *sota) {
     // /* - Popup Loadout Stats - */
     // int popup_id = POPUP_TYPE_HUD_LOADOUT_STATS;
     // struct PopUp * popup
-    // popup = IES_GET_COMPONENT(sota->world, sota->popups[popup_id], PopUp);
+    // popup = IES_GET_COMPONENT(sota->ecs.world, sota->popups[popup_id], PopUp);
     // SDL_assert(popup != NULL);
     // SDL_free(popup->data);
-    // tnecs_entity_destroy(sota->world, sota->popups[popup_id]);
+    // tnecs_entity_destroy(sota->ecs.world, sota->popups[popup_id]);
     // sota->popups[popup_id] = TNECS_NULL;
 
     // /* - Popup Tile - */
     // int popup_id = POPUP_TYPE_HUD_LOADOUT_STATS;
-    // struct PopUp * popup = IES_GET_COMPONENT(sota->world,
+    // struct PopUp * popup = IES_GET_COMPONENT(sota->ecs.world,
     //                            sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS],
     //                            PopUp);
     // SDL_assert(popup != NULL);
     // SDL_free(popup->data);
-    // tnecs_entity_destroy(sota->world, sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS]);
+    // tnecs_entity_destroy(sota->ecs.world, sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS]);
     // sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS] = TNECS_NULL;
 
 }
@@ -45,11 +45,11 @@ void Game_PopUp_Loadout_Stats_Create(struct Game *sota) {
         return;
     }
 
-    tnecs_entity popup_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position_ID, PopUp_ID);
+    tnecs_entity popup_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Position_ID, PopUp_ID);
     sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS] = popup_ent;
-    struct Position *position = IES_GET_COMPONENT(sota->world, popup_ent, Position);
+    struct Position *position = IES_GET_COMPONENT(sota->ecs.world, popup_ent, Position);
     SDL_assert(position != NULL);
-    struct PopUp *popup = IES_GET_COMPONENT(sota->world, popup_ent, PopUp);
+    struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
 
     /* -- Popup -- */
     *popup              = PopUp_default;
@@ -71,30 +71,30 @@ void Game_PopUp_Loadout_Stats_Create(struct Game *sota) {
     position->pixel_pos.x   = sota->settings.res.x / 3;
     position->pixel_pos.y   = sota->settings.res.y / 10;
 
-    PopUp_Loadout_Stats_Load(pls, sota->render.er, sota->world, &popup->n9patch);
+    PopUp_Loadout_Stats_Load(pls, sota->render.er, sota->ecs.world, &popup->n9patch);
 
 }
 void Game_PopUp_Loadout_Stats_Hide(struct Game *sota) {
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
-    struct PopUp *popup = IES_GET_COMPONENT(sota->world, sota->popups[popup_ind], PopUp);
+    struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, sota->popups[popup_ind], PopUp);
     popup->visible = false;
 }
 
 /* --- POPUP_PRE_COMBAT --- */
 void Game_PopUp_Pre_Combat_Create(struct Game *sota) {
     if (sota->pre_combat_popup == TNECS_NULL)
-        sota->pre_combat_popup = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu_ID);
+        sota->pre_combat_popup = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Menu_ID);
     else {
         return;
     }
 
     tnecs_entity ent;
-    ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position_ID, PopUp_ID);
+    ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Position_ID, PopUp_ID);
     sota->popups[POPUP_TYPE_PRE_COMBAT] = ent;
 
-    struct PopUp    *popup       = IES_GET_COMPONENT(sota->world, ent, PopUp);
+    struct PopUp    *popup       = IES_GET_COMPONENT(sota->ecs.world, ent, PopUp);
     SDL_assert(popup            != NULL);
-    struct Position *position    = IES_GET_COMPONENT(sota->world, ent, Position);
+    struct Position *position    = IES_GET_COMPONENT(sota->ecs.world, ent, Position);
     SDL_assert(position            != NULL);
 
     /* -- Popup -- */
@@ -126,7 +126,7 @@ void Game_PopUp_Pre_Combat_Enable(struct Game *sota) {
     tnecs_entity ent = sota->popups[POPUP_TYPE_PRE_COMBAT];
     SDL_assert(ent > TNECS_NULL);
 
-    struct PopUp *popup = IES_GET_COMPONENT(sota->world, ent, PopUp);
+    struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, ent, PopUp);
 
     struct PreCombatPopup *pcp = (struct PreCombatPopup *)popup->data;
 
@@ -142,7 +142,7 @@ void Game_PopUp_Pre_Combat_Hide(struct Game *sota) {
         return;
 
     tnecs_entity ent = sota->popups[POPUP_TYPE_PRE_COMBAT];
-    struct PopUp *popup = IES_GET_COMPONENT(sota->world, ent, PopUp);
+    struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, ent, PopUp);
     popup->visible = false;
 }
 
@@ -154,12 +154,12 @@ void Game_PopUp_Pre_Combat_Free(struct Game *sota) {
 void Game_PopUp_Unit_Free(struct Game *sota) {
     if (sota->popups[POPUP_TYPE_HUD_UNIT] > TNECS_NULL) {
         tnecs_entity         popup_ent      = sota->popups[POPUP_TYPE_HUD_UNIT];
-        struct PopUp        *popup          = IES_GET_COMPONENT(sota->world, popup_ent, PopUp);
+        struct PopUp        *popup          = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
         struct PopUp_Unit   *pu             = popup->data;
 
         PopUp_Unit_Free(pu);
         SDL_free(popup->data);
-        tnecs_entity_destroy(sota->world, popup_ent);
+        tnecs_entity_destroy(sota->ecs.world, popup_ent);
         sota->popups[POPUP_TYPE_HUD_UNIT]   = TNECS_NULL;
     }
 }
@@ -168,7 +168,7 @@ void Game_PopUp_Unit_Create(struct Game *sota) {
     if (sota->popups[POPUP_TYPE_HUD_UNIT] != TNECS_NULL) {
         if (sota->hovered_unit_entity != TNECS_NULL) {
             tnecs_entity ent = sota->popups[POPUP_TYPE_HUD_UNIT];
-            struct PopUp *popup = IES_GET_COMPONENT(sota->world, ent, PopUp);
+            struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, ent, PopUp);
             struct PopUp_Unit *popup_unit = popup->data;
             PopUp_Unit_Set(popup_unit, sota);
             SDL_assert(popup_unit->unit != NULL);
@@ -177,13 +177,13 @@ void Game_PopUp_Unit_Create(struct Game *sota) {
     }
 
     tnecs_entity ent;
-    ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position_ID, PopUp_ID, Slider_ID,
+    ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Position_ID, PopUp_ID, Slider_ID,
                                           SliderOffscreen_ID);
     sota->popups[POPUP_TYPE_HUD_UNIT] = ent;
-    struct PopUp           *popup     = IES_GET_COMPONENT(sota->world, ent, PopUp);
-    struct Slider          *slider    = IES_GET_COMPONENT(sota->world, ent, Slider);
-    struct Position        *position  = IES_GET_COMPONENT(sota->world, ent, Position);
-    struct SliderOffscreen *offscreen = IES_GET_COMPONENT(sota->world, ent, SliderOffscreen);
+    struct PopUp           *popup     = IES_GET_COMPONENT(sota->ecs.world, ent, PopUp);
+    struct Slider          *slider    = IES_GET_COMPONENT(sota->ecs.world, ent, Slider);
+    struct Position        *position  = IES_GET_COMPONENT(sota->ecs.world, ent, Position);
+    struct SliderOffscreen *offscreen = IES_GET_COMPONENT(sota->ecs.world, ent, SliderOffscreen);
     SDL_assert(popup     != NULL);
     SDL_assert(slider    != NULL);
     SDL_assert(position  != NULL);
@@ -239,7 +239,7 @@ void Game_PopUp_Unit_Create(struct Game *sota) {
 void Game_PopUp_Unit_Hide(struct Game *sota) {
     SDL_assert(sota->popups[POPUP_TYPE_HUD_UNIT] != TNECS_NULL);
     struct PopUp *popup;
-    popup = IES_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_HUD_UNIT], PopUp);
+    popup = IES_GET_COMPONENT(sota->ecs.world, sota->popups[POPUP_TYPE_HUD_UNIT], PopUp);
     popup->visible = false;
 }
 
@@ -254,10 +254,10 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
     struct Position         *position;
     struct Slider           *slider;
     struct SliderOffscreen  *offscreen;
-    popup     = IES_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_HUD_UNIT], PopUp);
-    position  = IES_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_HUD_UNIT], Position);
-    slider    = IES_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_HUD_UNIT], Slider);
-    offscreen = IES_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_HUD_UNIT], SliderOffscreen);
+    popup     = IES_GET_COMPONENT(sota->ecs.world, sota->popups[POPUP_TYPE_HUD_UNIT], PopUp);
+    position  = IES_GET_COMPONENT(sota->ecs.world, sota->popups[POPUP_TYPE_HUD_UNIT], Position);
+    slider    = IES_GET_COMPONENT(sota->ecs.world, sota->popups[POPUP_TYPE_HUD_UNIT], Slider);
+    offscreen = IES_GET_COMPONENT(sota->ecs.world, sota->popups[POPUP_TYPE_HUD_UNIT], SliderOffscreen);
     SDL_assert(popup);
 
     if (!popup->visible) {
@@ -318,16 +318,16 @@ void Game_PopUp_Tile_Place(struct Game *sota, struct Point cursor_pos) {
     }
 
     /* - Is popup is visible - */
-    struct PopUp *popup = IES_GET_COMPONENT(sota->world, ent, PopUp);
+    struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, ent, PopUp);
     SDL_assert(popup);
     if (!popup->visible) {
         return;
     }
 
     /* - Has popup target position changed - */
-    struct Slider *slider               = IES_GET_COMPONENT(sota->world, ent, Slider);
-    struct Position *position           = IES_GET_COMPONENT(sota->world, ent, Position);
-    struct SliderOffscreen *offscreen   = IES_GET_COMPONENT(sota->world, ent, SliderOffscreen);
+    struct Slider *slider               = IES_GET_COMPONENT(sota->ecs.world, ent, Slider);
+    struct Position *position           = IES_GET_COMPONENT(sota->ecs.world, ent, Position);
+    struct SliderOffscreen *offscreen   = IES_GET_COMPONENT(sota->ecs.world, ent, SliderOffscreen);
     struct PopUp_Tile *popup_tile       = popup->data;
     SDL_assert(popup_tile != NULL);
     struct Point pixel_pos;
@@ -365,9 +365,9 @@ void Game_PopUp_Map_Combat_Create(struct Game *sota) {
         return;
     }
 
-    tnecs_entity ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position_ID, PopUp_ID);
+    tnecs_entity ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Position_ID, PopUp_ID);
     sota->popups[POPUP_TYPE_MAP_COMBAT] = ent;
-    struct PopUp    *popup      = IES_GET_COMPONENT(sota->world, ent, PopUp);
+    struct PopUp    *popup      = IES_GET_COMPONENT(sota->ecs.world, ent, PopUp);
     popup->draw                 = &PopUp_Map_Combat_Draw;
     SDL_assert(popup    != NULL);
 
@@ -379,8 +379,8 @@ void Game_PopUp_Map_Combat_Create(struct Game *sota) {
 
 void Game_PopUp_Map_Combat_Update(   struct Game *sota) {
     tnecs_entity ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
-    struct Position *position   = IES_GET_COMPONENT(sota->world, ent, Position);
-    struct PopUp    *popup      = IES_GET_COMPONENT(sota->world, ent, PopUp);
+    struct Position *position   = IES_GET_COMPONENT(sota->ecs.world, ent, Position);
+    struct PopUp    *popup      = IES_GET_COMPONENT(sota->ecs.world, ent, PopUp);
     SDL_assert(position != NULL);
     SDL_assert(popup    != NULL);
 
@@ -389,11 +389,11 @@ void Game_PopUp_Map_Combat_Update(   struct Game *sota) {
     struct PopUp_Map_Combat *pmc = popup->data;
     *pmc = PopUp_Map_Combat_default;
 
-    // struct Unit *aggressor = IES_GET_COMPONENT(sota->world, sota->aggressor, Unit);
-    // struct Unit *defendant = IES_GET_COMPONENT(sota->world, sota->defendant, Unit);
+    // struct Unit *aggressor = IES_GET_COMPONENT(sota->ecs.world, sota->aggressor, Unit);
+    // struct Unit *defendant = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Unit);
 
-    // struct Position *agg_posc = IES_GET_COMPONENT(sota->world, sota->aggressor, Position);
-    // struct Position *dft_posc = IES_GET_COMPONENT(sota->world, sota->defendant, Position);
+    // struct Position *agg_posc = IES_GET_COMPONENT(sota->ecs.world, sota->aggressor, Position);
+    // struct Position *dft_posc = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Position);
     // struct Point *agg_pos = &agg_posc->tilemap_pos;
     // struct Point *dft_pos = &dft_posc->tilemap_pos;
 
@@ -415,28 +415,28 @@ void Game_PopUp_Map_Combat_Hide(struct Game *sota) {
     tnecs_entity popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
     if (popup_ent == TNECS_NULL)
         return;
-    struct PopUp *popup = IES_GET_COMPONENT(sota->world, popup_ent, PopUp);
+    struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
     popup->visible = false;
 }
 
 void Game_PopUp_Map_Combat_Free(struct Game *sota) {
     tnecs_entity popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
-    struct PopUp *popup = IES_GET_COMPONENT(sota->world, popup_ent, PopUp);
+    struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
     struct PopUp_Map_Combat *pmc = popup->data;
     PopUp_Map_Combat_Free(pmc);
-    tnecs_entity_destroy(sota->world, popup_ent);
+    tnecs_entity_destroy(sota->ecs.world, popup_ent);
     sota->popups[POPUP_TYPE_MAP_COMBAT] = TNECS_NULL;
 }
 
 /* --- POPUP_TILE --- */
 // void Game_PopUp_Tile_Set(struct Game *sota) {
 // //     struct Position *cursor_position;
-//     cursor_position = IES_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
+//     cursor_position = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
 
 //     /* -- Get popup stuff -- */
 //     tnecs_entity popup_ent =  sota->popups[POPUP_TYPE_HUD_TILE];
 //     SDL_assert(popup_ent > TNECS_NULL);
-//     struct PopUp *popup = IES_GET_COMPONENT(sota->world, popup_ent, PopUp);
+//     struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
 //     SDL_assert(popup      != NULL);
 //     struct PopUp_Tile *popup_tile = popup->data;
 //     SDL_assert(popup_tile != NULL);
@@ -457,14 +457,14 @@ void Game_PopUp_Tile_Destroy(struct Game *sota) {
 void Game_PopUp_Tile_Hide(struct Game *sota) {
     SDL_assert(sota->popups[POPUP_TYPE_HUD_TILE] != TNECS_NULL);
     struct PopUp *popup;
-    popup = IES_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_HUD_TILE], PopUp);
+    popup = IES_GET_COMPONENT(sota->ecs.world, sota->popups[POPUP_TYPE_HUD_TILE], PopUp);
     popup->visible = false;
 }
 
 void Game_PopUp_Tile_Free(struct Game *sota) {
     if (sota->popups[POPUP_TYPE_HUD_TILE] > TNECS_NULL) {
         struct PopUp *popup;
-        popup = IES_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_HUD_TILE], PopUp);
+        popup = IES_GET_COMPONENT(sota->ecs.world, sota->popups[POPUP_TYPE_HUD_TILE], PopUp);
         SDL_free(popup->data);
     }
     sota->popups[POPUP_TYPE_HUD_TILE] = TNECS_NULL;
@@ -476,20 +476,20 @@ void Game_PopUp_Tile_Create(struct Game *sota) {
         return;
     }
     tnecs_entity ent;
-    ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position_ID, PopUp_ID, Slider_ID,
+    ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Position_ID, PopUp_ID, Slider_ID,
                                           SliderOffscreen_ID);
     sota->popups[POPUP_TYPE_HUD_TILE] = ent;
 
-    struct PopUp           *popup       = IES_GET_COMPONENT(sota->world, ent, PopUp);
-    struct Slider          *slider      = IES_GET_COMPONENT(sota->world, ent, Slider);
-    struct Position        *position    = IES_GET_COMPONENT(sota->world, ent, Position);
-    struct SliderOffscreen *offscreen   = IES_GET_COMPONENT(sota->world, ent, SliderOffscreen);
+    struct PopUp           *popup       = IES_GET_COMPONENT(sota->ecs.world, ent, PopUp);
+    struct Slider          *slider      = IES_GET_COMPONENT(sota->ecs.world, ent, Slider);
+    struct Position        *position    = IES_GET_COMPONENT(sota->ecs.world, ent, Position);
+    struct SliderOffscreen *offscreen   = IES_GET_COMPONENT(sota->ecs.world, ent, SliderOffscreen);
     SDL_assert(popup     != NULL);
     SDL_assert(slider    != NULL);
     SDL_assert(position  != NULL);
     SDL_assert(offscreen != NULL);
     /* - DEBUG: Making Hover - */
-    // struct Hover * hover = IES_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_HUD_TILE], Hover);
+    // struct Hover * hover = IES_GET_COMPONENT(sota->ecs.world, sota->popups[POPUP_TYPE_HUD_TILE], Hover);
     // SDL_assert(hover != NULL);
     // *hover = Hover_default;
     /* - Making Popup - */

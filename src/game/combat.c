@@ -6,11 +6,11 @@
 /* --- Combat --- */
 void Game_Combat_Outcome(struct Game *sota) {
     struct Unit *aggressor, *defendant;
-    defendant   = IES_GET_COMPONENT(sota->world, sota->defendant, Unit);
-    aggressor   = IES_GET_COMPONENT(sota->world, sota->aggressor, Unit);
+    defendant   = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Unit);
+    aggressor   = IES_GET_COMPONENT(sota->ecs.world, sota->aggressor, Unit);
     struct Position *agg_pos_cmp, *dft_pos_cmp;
-    dft_pos_cmp = IES_GET_COMPONENT(sota->world, sota->defendant, Position);
-    agg_pos_cmp = IES_GET_COMPONENT(sota->world, sota->aggressor, Position);
+    dft_pos_cmp = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Position);
+    agg_pos_cmp = IES_GET_COMPONENT(sota->ecs.world, sota->aggressor, Position);
 
     struct Point *agg_pos = &agg_pos_cmp->tilemap_pos;
     struct Point *dft_pos = &dft_pos_cmp->tilemap_pos;
